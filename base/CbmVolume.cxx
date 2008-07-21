@@ -1,0 +1,45 @@
+#include "CbmVolume.h"
+
+//_____________________________________________________________________________
+   CbmVolume::CbmVolume() 
+ : fName(""), 	       /**Volume Name in MC*/
+   fRealName(""),	   /**Volume Name in ASCII file*/
+   fVolumeId(-1),      /**Volume Id in GeoManager*/
+   fModId(-1),         /**Module Id in which this volume exist*/
+   fMCid(-1),		   /**Volume Id in MC*/
+   fCopyNo(-1),        /**Volume Copy No*/
+   fMotherId(-1),	   /**Mother Volume Id*/
+   fMotherCopyNo(-1),  /**Mother Volume Copy No*/
+   fModule(0),	       /**The Module (detector) which will proccess the hits for this volume*/
+   fNode(0)            /**Node corre*/
+{
+
+
+}
+
+//_____________________________________________________________________________
+CbmVolume::CbmVolume(TString name, Int_t id, Int_t ModId, CbmModule *fMod) 
+	:TNamed(name,name),
+	 fName(name), 
+	 fRealName(""),	   /**Volume Name in ASCII file*/
+     fVolumeId(id),      /**Volume Id in GeoManager*/
+     fModId(ModId),         /**Module Id in which this volume exist*/
+     fMCid(-1),		   /**Volume Id in MC*/
+     fCopyNo(-1),        /**Volume Copy No*/
+     fMotherId(0),	   /**Mother Volume Id*/
+     fMotherCopyNo(0),  /**Mother Volume Copy No*/
+     fModule(fMod),	       /**The Module (detector) which will proccess the hits for this volume*/
+     fNode(0)            /**Node corre*/
+
+{
+    
+}
+
+
+//_____________________________________________________________________________
+CbmVolume::~CbmVolume() {
+    //
+
+}
+ClassImp(CbmVolume)
+
