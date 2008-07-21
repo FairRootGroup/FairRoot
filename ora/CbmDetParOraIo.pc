@@ -1,0 +1,170 @@
+//*-- AUTHOR : Ilse Koenig
+//*-- Created : 26/11/2004
+
+//////////////////////////////////////////////////////////////////////////////
+// CbmDetParOraIo
+//
+// Base class for all detector I/O  classes from database Oracle
+// (uses the Oracle C/C++ precompiler)
+//
+//////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+#include "CbmOraConn.h"
+#include "CbmDetParOraIo.h"
+#include "CbmRun.h"
+#include "CbmRuntimeDb.h"
+#include "CbmRtdbRun.h"
+#include "CbmParSet.h"
+#include "TClass.h"
+#include <iostream>
+#include <iomanip>
+
+#define SQLCA_STORAGE_CLASS extern
+#define ORACA_STORAGE_CLASS extern
+
+// Oracle communication area
+#include <oraca.h>
+// Include the SQL Communications Area
+#include <sqlca.h>
+ 
+ClassImp(CbmDetParOraIo)
+ClassImp(CbmParOraSet)
+
+CbmParOraSet::CbmParOraSet(const char* pName) {
+  SetName(pName);
+  contextId=-1;
+  clearVersDate();
+}
+
+void CbmParOraSet::clearVersDate() {
+  versDate[0]=-1;
+  versDate[1]=1.E+12;
+}
+
+CbmDetParOraIo::CbmDetParOraIo(CbmOraConn* pC) : CbmDetParIo() {
+  // constructor gets a pointer to the connection class
+  pConn=pC;
+  actContVers=0;
+  actRunId=-1;
+  containerList=0;
+}
+
+CbmDetParOraIo::~CbmDetParOraIo(void) {
+  // destructor
+  if (containerList) {
+    containerList->Delete();
+    delete containerList;
+    containerList=0;
+  } 
+}
+
+void CbmDetParOraIo::commit(void) {
+  // commits all changes
+  EXEC SQL COMMIT WORK;
+  cout<<"Transaction committed"<<endl;
+  return;
+}
+ 
+
+void CbmDetParOraIo::rollback(void) {
+  // discards all changes since last commit
+  EXEC SQL ROLLBACK WORK;
+  cout<<"Transaction rolled back"<<endl;
+  return;
+}
+
+
+void CbmDetParOraIo::showSqlError(const char* f) {
+  // shows SQL error messages 
+  Error(f,"\n%s",sqlca.sqlerrm.sqlerrmc);
+}
+
+
+Int_t CbmDetParOraIo::getRunStart(CbmParSet* pPar) {
+  // Gets the actual run id from the runtime database and compares it with
+  // the last used actRunId for fetching data.
+  // If they are different, the run start time (converted to ansi C time) is
+  // read from Oracle and stored together with the run id in the data members
+  // run_id and runStart
+  actRunId=-1;
+  Int_t runStart=-1;
+  actContVers=(CbmRtdbRun*)CbmRun::Instance()->GetRuntimeDb()->getCurrentRun();
+  if (!actContVers) {
+    Error("getRunStart()","current run not set in runtime database");
+    return -1;
+  }
+  const Text_t* refRun=actContVers->getRefRun();
+  if (strlen(refRun)>0) sscanf(refRun,"%i",&actRunId); 
+  else actRunId=actContVers->getRunId();
+  if (pPar) {
+    Int_t contVers=getPredefVersion(pPar);
+    if (contVers>=0) actRunId=contVers;
+  }
+  runStart=pConn->getRunStart(actRunId);
+  return runStart;
+}
+
+
+const char* CbmDetParOraIo::getHistoryDate() {
+  // returns the timestamp set by the user to read historic data
+  return pConn->getHistoryDate();
+}
+
+
+Int_t CbmDetParOraIo::getPredefVersion(CbmParSet* pPar) {
+  // finds out if a version for the parameter container has been set by
+  // the user (typically by defining a reference run for initialisation
+  // in the macro
+  // returns -1, if no version found 
+  CbmParVersion* pv=(CbmParVersion*)actContVers->getParVersion((char*)pPar->GetName());
+  if (pv) return pv->getInputVersion(inputNumber);
+  else return -1;
+}
+
+
+CbmParOraSet* CbmDetParOraIo::getOraSet(CbmParSet* pPar) {
+  if (!containerList) containerList=new TList;
+  CbmParOraSet* pSet=(CbmParOraSet*)(containerList->FindObject(pPar->GetName()));
+  if (!pSet) { 
+    pSet=new CbmParOraSet(pPar->GetName());
+    pSet->contextId=getContextId(pPar->IsA()->GetName(),pPar->getParamContext());
+    containerList->Add(pSet);
+  }
+  return pSet;
+}
+
+Int_t CbmDetParOraIo::getContextId(const char* className, const char* paramContext) {
+  // return the parameter_context_id
+  if (strlen(paramContext)==0) return -1;
+  EXEC SQL BEGIN DECLARE SECTION;
+     char* p_class;
+     char* p_context;
+     int context_id=-1;
+  EXEC SQL END DECLARE SECTION;
+  p_class=(char*)className;
+  p_context=(char*)paramContext;
+  EXEC SQL WHENEVER SQLERROR GOTO not_found;
+  EXEC SQL WHENEVER NOT FOUND GOTO not_found;
+  EXEC SQL SELECT context_id
+           INTO :context_id
+           FROM cbm_ana.all_param_contexts
+           WHERE class = :p_class and context = :p_context;
+  // cout<<"Id of context "<<paramContext<<": "<<context_id<<endl;
+  return context_id;
+not_found:
+  Error("CbmDetParOraIo::getContextId","\nContext %s for class %s not found!",
+        p_context,p_class);
+  return -1;
+};
+
+void CbmDetParOraIo::setChanged(CbmParSet* pPar) {
+  // sets the changed flag, the version (id of actual run) and the comment
+  pPar->setChanged();
+  pPar->setInputVersion(getActRunId(),inputNumber);
+  TString s="Read from Oracle\n             Valid for Run Id ";
+  s.Append(Form("%d",getActRunId()));
+  s.Append("\n             Status at ");
+  s.Append(pConn->getHistoryDate());
+  pPar->setDescription(s.Data());    
+}

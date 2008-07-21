@@ -1,0 +1,14 @@
+//*-- AUTHOR : Ilse Koenig
+//*-- Created : 20/10/2004
+
+/////////////////////////////////////////////////////////////
+//  CbmDetParIo
+//
+//  Abstract class for parameter input/output needed by a
+//  detector
+/////////////////////////////////////////////////////////////
+
+#include "CbmDetParIo.h"
+
+ClassImp(CbmDetParIo)
+
