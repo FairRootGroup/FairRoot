@@ -9,6 +9,7 @@
 #include "CbmTrackParH.h"
 #include "CbmRunAna.h"
 #include "CbmField.h"
+#include "CbmGeaneUtil.h"
 
 #include "TGeant3TGeo.h"
 #include "TVector3.h"
@@ -263,7 +264,16 @@ void CbmGeanePro::Propagate(Int_t PDG) {
  
   trklength=gMC3->TrackLength();
 
-}
+  Double_t trasp[25];
+  for(int i = 0; i < 25; i++)
+    {
+      CbmGeaneUtil fUtil;
+      //       trasp[i] = afErtrio->ertrsp[i]; // single precision tr. mat.
+      trasp[i] = afErtrio->erdtrp[i];          // double precision tr. mat.
+      fUtil.FromVecToMat(trpmat, trasp);
+    }
+  
+  }
 
 void CbmGeanePro::Init(CbmTrackPar *TParam)
 {
