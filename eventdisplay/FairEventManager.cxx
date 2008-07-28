@@ -49,7 +49,7 @@ void FairEventManager::Init()
    fRunAna->LoadGeometry();
    fRunAna->Init();   
    if(gGeoManager) {
-     TGeoVolume *V= gGeoManager->GetTopVolume();
+     //     TGeoVolume *V= gGeoManager->GetTopVolume();
 	 TGeoNode *N=  gGeoManager->GetTopNode();
      TEveGeoTopNode *TNod=new  TEveGeoTopNode(gGeoManager, N);
 	  gEve->AddGlobalElement(TNod);
