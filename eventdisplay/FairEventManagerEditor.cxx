@@ -151,13 +151,13 @@ void FairEventManagerEditor::DoVizPri()
 //______________________________________________________________________________
 void FairEventManagerEditor::SelectPDG()
 {
-   fManager->SelectPDG(fCurrentPDG->GetNumber());
+   fManager->SelectPDG(fCurrentPDG->GetIntNumber());
 }
 
 //______________________________________________________________________________
 void FairEventManagerEditor::SelectEvent()
 {
-   fManager->GotoEvent(fCurrentEvent->GetNumber());
+   fManager->GotoEvent(fCurrentEvent->GetIntNumber());
  
    fMinEnergy->SetLimits(fManager->GetEvtMinEnergy(), fManager->GetEvtMaxEnergy(), 100);
    fMinEnergy->SetValue(fManager->GetEvtMinEnergy());

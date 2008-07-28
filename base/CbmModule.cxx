@@ -285,7 +285,7 @@ void CbmModule::ExpandNode(TGeoNode *fN){
       M->SetDefaultName();
       if(fNode->GetNdaughters()>0) ExpandNode(fNode);
       TGeoVolume *v= fNode->GetVolume();
-      Int_t MatId=0;
+//      Int_t MatId=0;
       TGeoMedium* med1=v->GetMedium();
       if(med1){
          TGeoMaterial*mat1=v->GetMaterial(); 
