@@ -18,7 +18,7 @@ CbmRun::CbmRun()
    Outfname(""),
    fRootManager(CbmRootManager::Instance()),
    fOutFile(0),
-   fRunId(-1),
+   fRunId(0),
    fAna(kFALSE)
 {
   if (fRunInstance) {

@@ -77,7 +77,8 @@ void CbmRadLenManager::AddPoint()
     fLength = gMC->TrackLength();
     gMC->TrackPosition(fPosIn);
     gMC->TrackMomentum(fMomIn);
-    Int_t MatId=  gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
+    //    Int_t MatId=  gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
+    gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
  }
  /** Sum energy loss for all steps in the active volume */
     fELoss += gMC->Edep();
