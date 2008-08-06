@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <cmath>
-
+#include "stdlib.h"
 using std::cout;
 using std::log;
 using std::pow;
