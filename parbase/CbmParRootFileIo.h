@@ -12,8 +12,8 @@ class CbmRtdbRun;
 class CbmParRootFile : public TNamed{
 public:
   CbmRtdbRun* run;     //! pointer to current run in ROOT file
-  CbmParRootFile(Text_t* fname, Option_t* option="READ",
-               Text_t* ftitle="",Int_t compress=1);
+  CbmParRootFile(const Text_t* fname, Option_t* option="READ",
+               const Text_t* ftitle="",Int_t compress=1);
   CbmParRootFile(TFile *f);	       
   ~CbmParRootFile();
   CbmRtdbRun* getRun() {return run;}
@@ -43,8 +43,8 @@ public:
    CbmParRootFileIo();
    CbmParRootFileIo(Bool_t merged);
   ~CbmParRootFileIo();
-  Bool_t open(Text_t* fname, Option_t* option="READ",
-              Text_t* ftitle="",Int_t compress=1);
+  Bool_t open(const Text_t* fname, Option_t* option="READ",
+              const Text_t* ftitle="",Int_t compress=1);
   void close();
   void print();
   CbmParRootFile* getParRootFile();

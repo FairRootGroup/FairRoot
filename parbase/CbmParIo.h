@@ -14,7 +14,7 @@ protected:
 public:
   CbmParIo();
   virtual ~CbmParIo();
-  virtual CbmDetParIo* getDetParIo(Text_t*);
+  virtual CbmDetParIo* getDetParIo(const Text_t*);
   virtual void setDetParIo(CbmDetParIo*);
   virtual void removeDetParIo(Text_t*);
   void setInputNumber(Int_t);

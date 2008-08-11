@@ -15,7 +15,7 @@ public:
   Int_t write(CbmParSet*);
 private:
   Bool_t readGenericSet(CbmParGenericSet* pPar);
-  template <class type> UChar_t* readArray(type,char*,Int_t&);
+  template <class type> UChar_t* readArray(type,const char*,Int_t&);
   Int_t writeGenericSet(CbmParGenericSet* pPar);
   ClassDef(CbmGenericParAsciiFileIo,0) // I/O from Ascii file for parameter containers derived from CbmParGenericSet
 };

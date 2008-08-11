@@ -13,7 +13,7 @@ class CbmGeoInterface;
  */
 class CbmGeoIo : public TObject {
 public:
-  virtual Bool_t open(const char*,Text_t* status="in")=0;
+  virtual Bool_t open(const char*,const Text_t* status="in")=0;
   virtual void close()=0;
   virtual void print()=0;
   virtual Bool_t isOpen()=0;

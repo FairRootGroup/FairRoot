@@ -27,7 +27,7 @@ public:
   void setDirectory(const char* fDir) {filedir=fDir;}
   const char* getDirectory() {return filedir.Data();}
   const char* getFilename() {return filename.Data();}
-  Bool_t open(const char*,Text_t* status="in");
+  Bool_t open(const char*,const Text_t* status="in");
   Bool_t isOpen();
   Bool_t isWritable();
   void close();

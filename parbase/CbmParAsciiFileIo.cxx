@@ -37,7 +37,7 @@ CbmParAsciiFileIo::~CbmParAsciiFileIo() {
   close();
 }
 
-Bool_t CbmParAsciiFileIo::open(Text_t* fname, Text_t* status) {
+Bool_t CbmParAsciiFileIo::open(const Text_t* fname, const Text_t* status) {
   // opens file
   // if a file is already open, this file will be closed
   // activates detector I/Os
