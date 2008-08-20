@@ -95,8 +95,8 @@ void CbmRunAna::Init() {
 		 TFile *currentfile= gFile;
 		 TFile *nextfile=0;
 		 TSeqCollection *fileList=gROOT->GetListOfFiles();
-		 for (Int_t i=0; i<fileList->GetEntries(); i++){
-			nextfile=(TFile *)fileList->At(i);
+		 for (Int_t k=0; k<fileList->GetEntries(); k++){
+			nextfile=(TFile *)fileList->At(k);
 			if(nextfile) nextfile->Get("CBMGeom");
 			if(gGeoManager) break;
 		 }	
@@ -114,7 +114,7 @@ void CbmRunAna::Init() {
    // Init the RTDB containers
    fRtdb= GetRuntimeDb();
    CbmBaseParSet* par=(CbmBaseParSet*)
-            (rtdb->getContainer("CbmBaseParSet"));
+            (fRtdb->getContainer("CbmBaseParSet"));
    CbmFieldFactory *fieldfact= CbmFieldFactory::Instance();
    if(fieldfact)fieldfact->SetParm();
    // Assure that basic info is there for the run

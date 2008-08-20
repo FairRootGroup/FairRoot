@@ -109,12 +109,12 @@ void CbmRunSim::Init()
     
     // Add a Generated run ID to the CbmRunTimeDb
     CbmRunIdGenerator genid;
-    CbmRuntimeDb *rtdb= GetRuntimeDb();
+   // CbmRuntimeDb *rtdb= GetRuntimeDb();
     fRunId = genid.generateId();
-    rtdb->addRun(fRunId);
+    fRtdb->addRun(fRunId);
 
     // Set global Parameter Info
-    CbmBaseParSet* par=(CbmBaseParSet*)(rtdb->getContainer("CbmBaseParSet"));
+    CbmBaseParSet* par=(CbmBaseParSet*)(fRtdb->getContainer("CbmBaseParSet"));
     par->SetDetList(GetListOfModules());
     par->SetGen(GetPrimaryGenerator());
     par->setChanged();
