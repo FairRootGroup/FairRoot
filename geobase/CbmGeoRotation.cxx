@@ -111,7 +111,7 @@ Double_t CbmGeoRotation::diff2(const CbmGeoRotation& r) const {
 }
 
 
-TRotMatrix* CbmGeoRotation::createTRotMatrix(Text_t* name,Text_t* title) {
+TRotMatrix* CbmGeoRotation::createTRotMatrix(const Text_t* name,const Text_t* title) {
   // creates a TRotMatrix
   // (uses a new() operator and the user has to take care to free the memory)
   TRotMatrix* t=0;

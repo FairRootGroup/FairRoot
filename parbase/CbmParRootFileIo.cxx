@@ -38,8 +38,8 @@ using std::endl;
 ClassImp(CbmParRootFile)
 ClassImp(CbmParRootFileIo)
 
-CbmParRootFile::CbmParRootFile(Text_t* fname, Option_t* option,
-                           Text_t* ftitle, Int_t compress)
+CbmParRootFile::CbmParRootFile(const Text_t* fname, Option_t* option,
+                           const Text_t* ftitle, Int_t compress)
 		:TNamed(fname,  ftitle){
 //              : TFile(fname,option,ftitle,compress) {
   // constructor opens a ROOT file
@@ -90,8 +90,8 @@ CbmParRootFileIo::~CbmParRootFileIo() {
   close();
 }
 
-Bool_t CbmParRootFileIo::open(Text_t* fname, Option_t* option,
-                        Text_t* ftitle, Int_t compress) {
+Bool_t CbmParRootFileIo::open(const Text_t* fname, Option_t* option,
+                        const Text_t* ftitle, Int_t compress) {
   // It opens a ROOT file (default option "READ"). An open file will be closed.
   // The detector I/Os for all detectors defined in the setup are activated.
 

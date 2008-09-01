@@ -46,7 +46,7 @@ void CbmParIo::setInputNumber(Int_t num) {
   }
 } 
 
-CbmDetParIo* CbmParIo::getDetParIo(Text_t* detName) {
+CbmDetParIo* CbmParIo::getDetParIo(const Text_t* detName) {
   // returns pointer to input/output class for a detector
   return ((CbmDetParIo*)detParIoList->FindObject(detName));
 }

@@ -20,7 +20,7 @@ public:
   // opens file
   // if a file is already open, this file will be closed
   // activates detector I/Os
-  Bool_t open(Text_t* fname, Text_t* status="in");
+  Bool_t open(const Text_t* fname, const Text_t* status="in");
 
   // closes file
   void close();

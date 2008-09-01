@@ -35,7 +35,7 @@ CbmParVersion::CbmParVersion(Text_t* name) : TNamed(name,"version info") {
   for(Int_t i=0;i<3;i++) {inputVersions[i]=-1;}
 }
 
-CbmRtdbRun::CbmRtdbRun(Text_t* name,Text_t* refName)
+CbmRtdbRun::CbmRtdbRun(const Text_t* name,const Text_t* refName)
               : TNamed(name,"run parameters") {
   // constructor with the run id and reference run as strings
   parVersions=new TList();
@@ -84,7 +84,7 @@ void CbmRtdbRun::addParVersion(CbmParVersion *pv) {
   parVersions->Add(pv);
 }
 
-CbmParVersion* CbmRtdbRun::getParVersion(Text_t* name) {
+CbmParVersion* CbmRtdbRun::getParVersion(const Text_t* name) {
   // return a container version object called by the name of
   // the container
   return (CbmParVersion*)parVersions->FindObject(name);

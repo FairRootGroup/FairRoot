@@ -44,7 +44,7 @@ public:
   inline void setUnitMatrix();
   inline void setZero();
   inline void print() const;
-  TRotMatrix* createTRotMatrix(Text_t* name="",Text_t* title="");
+  TRotMatrix* createTRotMatrix(const Text_t* name="",const Text_t* title="");
 
   ClassDef(CbmGeoRotation,1) // 
 };

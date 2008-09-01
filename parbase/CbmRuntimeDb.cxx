@@ -120,7 +120,7 @@ Bool_t CbmRuntimeDb::addContainer(CbmParSet* container) {
   return kFALSE;
 }
 
-CbmParSet* CbmRuntimeDb::getContainer(Text_t* name) {
+CbmParSet* CbmRuntimeDb::getContainer(const Text_t* name) {
   // The function loops over the container factories to find the corresponding container
   // with the give name and its context.
   // The name is the original name of the parameter container without the concatination

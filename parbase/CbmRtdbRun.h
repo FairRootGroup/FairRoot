@@ -38,13 +38,13 @@ protected:
   TString refRun;       //! name of the reference run for initialization
 public:
   CbmRtdbRun();
-  CbmRtdbRun(Text_t* name,Text_t* refName="");
+  CbmRtdbRun(const Text_t* name,const Text_t* refName="");
   CbmRtdbRun(Int_t r,Int_t rr=-1);
   CbmRtdbRun(CbmRtdbRun &run);
   ~CbmRtdbRun();
   inline Int_t getRunId(void);
   void addParVersion(CbmParVersion *pv);
-  CbmParVersion* getParVersion(Text_t* name);
+  CbmParVersion* getParVersion(const Text_t* name);
   TList* getParVersions() {return parVersions;}
   const Text_t* getRefRun() {return refRun.Data();}
   void setRefRun(Text_t* s) {refRun=s;}

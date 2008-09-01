@@ -34,7 +34,7 @@ public:
   void addContFactory(CbmContFact*);
 
   Bool_t addContainer(CbmParSet*);
-  CbmParSet* getContainer(Text_t*);
+  CbmParSet* getContainer(const Text_t*);
   CbmParSet* findContainer(const char*);
   void removeContainer(Text_t*);
   void removeAllContainers(void);

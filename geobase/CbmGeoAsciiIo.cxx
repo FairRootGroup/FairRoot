@@ -40,7 +40,7 @@ CbmGeoAsciiIo::~CbmGeoAsciiIo() {
   }
 }
 
-Bool_t CbmGeoAsciiIo::open(const char* fname,Text_t* status) {
+Bool_t CbmGeoAsciiIo::open(const char* fname,const Text_t* status) {
   // Opens the file fname
   close();
   if (!file) file=new fstream();

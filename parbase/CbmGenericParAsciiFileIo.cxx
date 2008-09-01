@@ -162,7 +162,7 @@ Bool_t CbmGenericParAsciiFileIo::readGenericSet(CbmParGenericSet* pPar) {
 }
 
 template <class type> UChar_t* CbmGenericParAsciiFileIo::readArray(
-              type t,char* format,Int_t& length) {
+              type t,const char* format,Int_t& length) {
   const Int_t st=sizeof(t);
   const Int_t maxbuf=8000;
   const Int_t bufSizeExt=10000*st;
