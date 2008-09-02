@@ -78,6 +78,8 @@
 
 #include "CbmGenerator.h"
 
+#include <fstream>
+
 class TDatabasePDG;
 class CbmPrimaryGenerator;
 
