@@ -26,6 +26,7 @@ FairMCTracks.cxx
 FairEventManagerEditor.cxx
 FairMCTracksEditor.cxx
 FairMCPointDraw.cxx
+FairMCStack.cxx
 )
 
 if(RULE_CHECKER_FOUND)

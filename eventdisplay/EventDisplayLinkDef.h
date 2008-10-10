@@ -6,8 +6,10 @@
  
 #pragma link C++ class  FairEventManager;
 #pragma link C++ class  FairMCTracks;
+#pragma link C++ class  FairMCStack;
 #pragma link C++ class  FairEventManagerEditor;    
 #pragma link C++ class  FairMCTracksEditor;
 #pragma link C++ class  FairMCPointDraw;
+
 #endif
 
