@@ -624,7 +624,9 @@ int CbmGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wire
   // calculated track length corresponding 
   // to the point of closest approach
   trklength = clen[0]+Le;
-           
+
+  // PCA before starting point
+  if(trklength<0) return 1;       
   flag = flg;
 
   return 0;
