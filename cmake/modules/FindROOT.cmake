@@ -213,8 +213,49 @@ MACRO (ROOT_GENERATE_DICTIONARY INFILES LINKDEF_FILE OUTFILE INCLUDE_DIRS_IN)
 #  MESSAGE("BLA: ${bla}")
   SET (OUTFILES ${OUTFILE} ${bla})
 
-  ADD_CUSTOM_COMMAND(OUTPUT ${OUTFILES}
-     COMMAND ${ROOT_CINT_EXECUTABLE}
-     ARGS -f ${OUTFILE} -c -DHAVE_CONFIG_H ${INCLUDE_DIRS} ${INFILES} ${LINKDEF_FILE} DEPENDS ${INFILES} ${LINKDEF_FILE})
+
+  if (CMAKE_SYSTEM_NAME MATCHES Linux)
+    ADD_CUSTOM_COMMAND(OUTPUT ${OUTFILES}
+       COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE}
+       ARGS -f ${OUTFILE} -c -DHAVE_CONFIG_H ${INCLUDE_DIRS} ${INFILES} ${LINKDEF_FILE} DEPENDS ${INFILES} ${LINKDEF_FILE})
+  else (CMAKE_SYSTEM_NAME MATCHES Linux)
+    if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+      ADD_CUSTOM_COMMAND(OUTPUT ${OUTFILES}
+       COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE}
+       ARGS -f ${OUTFILE} -c -DHAVE_CONFIG_H ${INCLUDE_DIRS} ${INFILES} ${LINKDEF_FILE} DEPENDS ${INFILES} ${LINKDEF_FILE})
+    endif (CMAKE_SYSTEM_NAME MATCHES Darwin)
+  endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 
 ENDMACRO (ROOT_GENERATE_DICTIONARY)
+
+MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
+
+  get_filename_component(path_name ${SCRIPT_FULL_NAME} PATH)
+  get_filename_component(file_extension ${SCRIPT_FULL_NAME} EXT)
+  get_filename_component(file_name ${SCRIPT_FULL_NAME} NAME_WE)
+  set(shell_script_name "${file_name}.sh")
+
+  #MESSAGE("PATH: ${path_name}")
+  #MESSAGE("Ext: ${file_extension}")
+  #MESSAGE("Name: ${file_name}")
+  #MESSAGE("Shell Name: ${shell_script_name}")
+
+  string(REPLACE ${PROJECT_SOURCE_DIR} 
+         ${PROJECT_BINARY_DIR} new_path ${path_name}
+        )
+
+  #MESSAGE("New PATH: ${new_path}")
+
+  file(MAKE_DIRECTORY ${new_path}/data)
+
+  CONVERT_LIST_TO_STRING(${LD_LIBRARY_PATH})
+  set(MY_LD_LIBRARY_PATH ${output})
+  set(my_script_name ${SCRIPT_FULL_NAME})
+
+  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/test_root.sh.in
+                 ${new_path}/${shell_script_name}
+                )
+
+  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
+
+ENDMACRO (GENERATE_ROOT_TEST_SCRIPT)
