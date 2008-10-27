@@ -267,12 +267,11 @@ void CbmGeanePro::Propagate(Int_t PDG) {
   Double_t trasp[25];
   for(int i = 0; i < 25; i++)
     {
-      CbmGeaneUtil fUtil;
       //       trasp[i] = afErtrio->ertrsp[i]; // single precision tr. mat.
       trasp[i] = afErtrio->erdtrp[i];          // double precision tr. mat.
-      fUtil.FromVecToMat(trpmat, trasp);
     }
-  
+    CbmGeaneUtil fUtil;
+    fUtil.FromVecToMat(trpmat, trasp);
   }
 
 void CbmGeanePro::Init(CbmTrackPar *TParam)
@@ -830,6 +829,12 @@ void CbmGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
 
   x31 = x3-x1;
   e3 = e1.Cross(x31);
+  // if the points are on the same line
+  if(e3.Mag() < 1e-8) 
+    {
+      Iflag = 1;
+      return;
+    }
   e3 = e3.Unit();
   
   T[2][0] = e3.X();
