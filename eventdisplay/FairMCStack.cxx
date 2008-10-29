@@ -14,6 +14,9 @@
 #include "TEveManager.h"
 #include "FairEventManager.h"
 #include "CbmMCTrack.h"
+#include "TGeant3.h"
+#include "CbmGeanePro.h"
+#include "CbmTrajFilter.h"
 
 using std::cout;
 using std::endl;
@@ -51,8 +54,35 @@ InitStatus FairMCStack::Init()
    MinEnergyLimit=fEventManager->GetEvtMinEnergy();
    MaxEnergyLimit=fEventManager->GetEvtMaxEnergy();
    PEnergy=0;
-   if(IsActive()) return kSUCCESS;
+   fPro = new CbmGeanePro();
+	 gMC3 = (TGeant3*) gMC;    
+	x1[0]=0;
+	x1[1]=0;
+	x1[2]=0;
+	p1[0]=0;
+	p1[1]=0;
+	p1[2]=0;
+	
+	
+	x2[0]=0;
+	x2[1]=0;
+	x2[2]=0;
+	p2[0]=0;
+	p2[1]=0;
+	p2[2]=0;
+	
+	
+	for(Int_t i=0;i<15;i++) ein[i]=0;
+	Float_t length[1];
+	length[0]=100.0;
+	//gMC3->Eufill(1, ein, length);
+	
+	
+	fTrajFilter = CbmTrajFilter::Instance();
+	
+	if(IsActive()) return kSUCCESS;
    else return kERROR;
+	
 }  
 // -------------------------------------------------------------------------
 void FairMCStack::Exec(Option_t* option)
@@ -73,7 +103,17 @@ void FairMCStack::Exec(Option_t* option)
 		TVector3 Ptot = tr->GetMomentum();
 		Int_t  MotherId =tr->GetMotherID();  
 		TVector3 Vertex =tr->GetStartVertex();
+		
 		Double_t time= tr->GetStartTime()*1e-09; 
+		
+		x1[0]=Vertex.x();
+		x1[1]=Vertex.y();
+		x1[2]=Vertex.z();
+		p1[0]=Ptot.Px();
+		p1[1]=Ptot.Py();
+		p1[2]=Ptot.Pz();
+		
+		
 		
         //TParticle *P=(TParticle *)tr->GetParticle();
 		Double_t mass=0.0;
@@ -106,6 +146,40 @@ void FairMCStack::Exec(Option_t* option)
         TEveTrack *track= new TEveTrack(P, tr->GetPdgCode(), fTrPr);
         track->SetLineColor(fEventManager->Color(tr->GetPdgCode()));
      
+	//	Int_t GeantCode=TDatabasePDG::Instance()->ConvertPdgToGeant3(tr->GetPdgCode());
+		
+	//	gMC3->Ertrak(x1,p1,x2,p2,GeantCode,"L");
+		fPro->PropagateToLength(100.0);
+		fPro->Propagate(x1, p1, x2, p2,tr->GetPdgCode());
+	TGeoTrack *tr1=	fTrajFilter->GetCurrentTrk();
+	
+	Int_t Np=tr1->GetNpoints(); 
+	
+	for (Int_t n=0; n<Np; n++){
+           point=tr1->GetPoint(n);
+           track->SetPoint(n,point[0],point[1],point[2]);
+           TEveVector pos= TEveVector(point[0], point[1],point[2]);
+	       TEvePathMark *path = new TEvePathMark();
+		   path->fV=pos ;
+		   path->fTime= point[3];
+           if(n==0){
+               TEveVector Mom= TEveVector(P->Px(), P->Py(),P->Pz());
+               path->fP=Mom; 
+           }
+           if(fVerbose>3) cout << "Path marker added " << path << endl;     
+#if ROOT_VERSION_CODE <= ROOT_VERSION(5,18,0)	   
+           track->AddPathMark(path);
+#else
+           track->AddPathMark(*path);
+#endif	   
+		  if(fVerbose>3) cout << "Path marker added " << path << endl;     
+        }
+        fTrList->AddElement(track);
+		if(fVerbose>3)cout << "track added " << track->GetName() << endl; 
+		
+	
+//	cout << "CurrentTrack " << fTrajFilter->GetCurrentTrk() << endl;
+			
 		/*   for (Int_t n=0; n<Np; n++){
            point=tr->GetPoint(n);
            track->SetPoint(n,point[0],point[1],point[2]);

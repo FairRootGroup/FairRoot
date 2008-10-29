@@ -32,7 +32,7 @@ class CbmGeanePro : public TNamed
   Bool_t Propagate(CbmTrackParP *TStart, CbmTrackParH *TEnd, Int_t PDG);
   Bool_t Propagate(CbmTrackParP *TStart, CbmTrackParP *TEnd, Int_t PDG);
   Bool_t Propagate(CbmTrackParH *TStart, CbmTrackParP *TEnd, Int_t PDG);
-
+  Bool_t Propagate(Float_t *x1, Float_t *p1, Float_t *x2, Float_t *p2,Int_t PDG);
   Bool_t PropagateToPlane(TVector3 &v0, TVector3 &v1, TVector3 &v2);
   Bool_t PropagateFromPlane(TVector3 &v1, TVector3 &v2);
   Bool_t PropagateToVolume(TString VolName, Int_t CopyNo ,Int_t option);

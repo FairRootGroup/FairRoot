@@ -18,9 +18,13 @@
 #include "CbmTask.h"
 #include "TEveTrackPropagator.h"
 #include "TString.h"
+class CbmGeanePro;
+class TGeant3;
 class TEveTrackList;
 class FairEventManager;
 class TObjArray;
+class CbmTrajFilter;
+
 //class TEveElementList;
 class FairMCStack : public CbmTask {
 
@@ -62,11 +66,18 @@ protected:
   TString fEvent; //!
   TEveTrackList *fTrList;  //!
   //TEveElementList *fTrackCont;
-    
+	Float_t x1[3];
+	Float_t p1[3];
+	Float_t ein[15];
+	Float_t x2[3];
+	Float_t p2[3];
+	 TGeant3 *gMC3; //!
    Double_t MinEnergyLimit;
    Double_t MaxEnergyLimit;
- Double_t PEnergy;
-  ClassDef(FairMCStack,1);
+   Double_t PEnergy;
+   CbmGeanePro *fPro;//!
+   CbmTrajFilter *fTrajFilter;//!
+   ClassDef(FairMCStack,1);
     
 };
                                   
