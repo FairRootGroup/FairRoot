@@ -252,7 +252,7 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
   set(MY_LD_LIBRARY_PATH ${output})
   set(my_script_name ${SCRIPT_FULL_NAME})
 
-  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/test_root.sh.in
+  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro.sh.in
                  ${new_path}/${shell_script_name}
                 )
 
