@@ -31,6 +31,7 @@
 #include "THashList.h"
 #include <iostream>
 #include "CbmRadLenManager.h"
+#include "TSystem.h"
 
 using std::cout;              
 using std::endl;
@@ -784,9 +785,19 @@ void  CbmMCApplication::AddParticles()
 void CbmMCApplication::AddDecayModes()
 {
    TString work = getenv("VMCWORKDIR"); 
+   TString work_config=work+"/gconfig/";
+   TString config_dir= getenv("CONFIG_DIR");
+
+   if (!config_dir.EndsWith("/")) config_dir+="/"; 
    // set Pythia as external decayer
-   if(fPythiaDecayer){                             
-      TString decayConfig = work + "/gconfig/DecayConfig.C";
+
+   if(fPythiaDecayer){ 
+      TString decayConfig ="DecayConfig.C";
+      if (TString(gSystem->FindFile(config_dir.Data(), decayConfig)) != TString("")){
+          cout << "---User path for Configuration (DecayConfig.C) is used : " <<  config_dir.Data() << endl;
+      }else{
+          decayConfig=work_config+"DecayConfig.C";
+      }
       // Add decay modes using an external configuration script
       cout << "External Decay Modes with script \n "<<  decayConfig.Data() << endl;
       // Load configuration script and execute it
@@ -795,10 +806,15 @@ void CbmMCApplication::AddDecayModes()
    }
    // set user defined phase space decay for particles (ions)
    if(fUserDecay){
-     TString decayConfig = work + "/gconfig/UserDecay.C";
-     cout << "User Decay Modes with script \n "<<  decayConfig.Data() << endl;
-     Int_t dec= gROOT->LoadMacro(decayConfig.Data());
-     if(dec==0)gInterpreter->ProcessLine("UserDecayConfig()"); 
+      TString Userdecay ="UserDecay.C";
+      if (TString(gSystem->FindFile(config_dir.Data(), Userdecay)) != TString("")){
+          cout << "---User path for Configuration (UserDecay.C) is used : " <<  config_dir.Data() << endl;
+      }else{
+          Userdecay=work_config+"UserDecay.C";
+      }
+      cout << "User Decay Modes with script \n "<<  Userdecay.Data() << endl;
+      Int_t dec= gROOT->LoadMacro(Userdecay.Data());
+      if(dec==0)gInterpreter->ProcessLine("UserDecayConfig()"); 
    }
 }
 //_____________________________________________________________________________
