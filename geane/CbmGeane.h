@@ -17,7 +17,7 @@ class CbmGeane : public TObject
   /** Default constructor **/
   CbmGeane();
 
-  CbmGeane(const char* name);
+  CbmGeane(const char* name, TString fUserConfig="",    TString fUserCuts="");
 
   virtual ~CbmGeane();
 
