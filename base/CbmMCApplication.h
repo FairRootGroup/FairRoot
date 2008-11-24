@@ -102,9 +102,12 @@ class CbmMCApplication : public TVirtualMCApplication
     void                  SetField(CbmField *field);
     void                  SetGenerator(CbmPrimaryGenerator *fxGenerator);
     void                  SetPythiaDecayer(Bool_t decayer){fPythiaDecayer=decayer;}
+	void                  SetPythiaDecayerConfig(const TString decayerConf){fPythiaDecayerConfig=decayerConf;}
     void                  SetRadiationLengthReg(Bool_t RadLen);
     void                  SetTrackingDebugMode( Bool_t set ) {fDebug = set;}
     void                  SetUserDecay(Bool_t decay){fUserDecay= decay;}
+    void                  SetUserDecayConfig(const TString decayerConf){fUserDecayConfig= decayerConf;}
+
 	/** Define action at each step */
     virtual void          Stepping();                                       // MC Application
     virtual void          StopRun();                                        
@@ -139,6 +142,8 @@ private:
     Int_t                fNoSenVolumes; //!
     /**flag for using Pythia as external decayer */
     Bool_t               fPythiaDecayer;
+	/** Pythia decay config macro*/
+	TString               fPythiaDecayerConfig; //!
     /** Simulation Stack  */
     CbmGenericStack     *fStack; //!
     /**Pointer to thr I/O Manager */
@@ -157,6 +162,8 @@ private:
     Bool_t               fTrajAccepted; //!
     /**Flag for using user decay*/
     Bool_t               fUserDecay;
+	/**User decay config macro*/
+	TString               fUserDecayConfig; //!
     /** Debug flag*/
     Bool_t               fDebug;//!
     /**dispatcher internal use */

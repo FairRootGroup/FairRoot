@@ -314,4 +314,24 @@ void CbmRunSim::SetGeoModel( char * name )
     }
 }
 
+    
+void  CbmRunSim::SetPythiaDecayer(const TString& Config )
+{
+/**switch On external decayer (Pythia). Config macro will be used */
+   fPythiaDecayerConfig = Config; 
+   fPythiaDecayer =kTRUE; }
+					  
+					  
+void  CbmRunSim::SetUserDecay(const TString& Config)
+{
+ /**switch On user defined decay, Config  macro will be called  */   
+	fUserDecayConfig = Config; 
+	fUserDecay = kTRUE;
+}
+					  
+
+
 CbmRunSim *CbmRunSim::fginstance= 0;
+
+
+

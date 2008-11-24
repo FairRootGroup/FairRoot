@@ -51,6 +51,7 @@ CbmMCApplication::CbmMCApplication(const char *name, const char *title,
     fModules(0),
     fNoSenVolumes(0),
     fPythiaDecayer(kFALSE),
+    fPythiaDecayerConfig(""),
     fStack(0),
     fRootManager(0),
     fSenVolumes(0),
@@ -60,6 +61,7 @@ CbmMCApplication::CbmMCApplication(const char *name, const char *title,
     fTrajFilter(NULL),
     fTrajAccepted(kFALSE),
 	fUserDecay(kFALSE),
+    fUserDecayConfig(""),
     fDebug(kFALSE),
     fDisVol(0),
     fDisDet(0),
@@ -116,6 +118,7 @@ CbmMCApplication::CbmMCApplication()
     fModules(0),
     fNoSenVolumes(0),
     fPythiaDecayer(kFALSE),
+    fPythiaDecayerConfig(""),
     fStack(0),
     fRootManager(0),
     fSenVolumes(0),
@@ -125,6 +128,7 @@ CbmMCApplication::CbmMCApplication()
     fTrajFilter(NULL),
     fTrajAccepted(kFALSE),
 	fUserDecay(kFALSE),
+    fUserDecayConfig(""),
     fDebug(kFALSE),
     fDisVol(0),
     fDisDet(0),
@@ -150,7 +154,8 @@ CbmMCApplication::CbmMCApplication(Bool_t Geane)
     fModIter(0),
     fModules(0),
     fNoSenVolumes(0),
-    fPythiaDecayer(kFALSE),
+    fPythiaDecayer(kFALSE),   
+    fPythiaDecayerConfig(""),
     fStack(0),
     fRootManager(0),
     fSenVolumes(0),
@@ -160,6 +165,7 @@ CbmMCApplication::CbmMCApplication(Bool_t Geane)
     fTrajFilter(NULL),
     fTrajAccepted(kFALSE),
 	fUserDecay(kFALSE),
+    fUserDecayConfig(""),
     fDebug(kFALSE),
     fDisVol(0),
     fDisDet(0),
@@ -792,16 +798,26 @@ void CbmMCApplication::AddDecayModes()
    TString work = getenv("VMCWORKDIR"); 
    TString work_config=work+"/gconfig/";
    TString config_dir= getenv("CONFIG_DIR");
-
+   Bool_t AbsPath=kFALSE;
+   
    if (!config_dir.EndsWith("/")) config_dir+="/"; 
    // set Pythia as external decayer
 
    if(fPythiaDecayer){ 
-      TString decayConfig ="DecayConfig.C";
-      if (TString(gSystem->FindFile(config_dir.Data(), decayConfig)) != TString("")){
+	   TString decayConfig; 
+	   if(fPythiaDecayerConfig.IsNull()){
+	       decayConfig="DecayConfig.C";
+		   fPythiaDecayerConfig= decayConfig;
+	   }else{
+		   if (fPythiaDecayerConfig.Contains("/")) AbsPath=kTRUE;
+		   decayConfig=fPythiaDecayerConfig;
+	   }
+	 
+      if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), decayConfig)) != TString("")){
           cout << "---User path for Configuration (DecayConfig.C) is used : " <<  config_dir.Data() << endl;
       }else{
-          decayConfig=work_config+"DecayConfig.C";
+		  if(AbsPath) decayConfig=   fPythiaDecayerConfig;
+          else decayConfig=work_config+ fPythiaDecayerConfig ;
       }
       // Add decay modes using an external configuration script
       cout << "External Decay Modes with script \n "<<  decayConfig.Data() << endl;
@@ -810,13 +826,24 @@ void CbmMCApplication::AddDecayModes()
       if(pyt==0)gInterpreter->ProcessLine("DecayConfig()"); 
    }
    // set user defined phase space decay for particles (ions)
-   if(fUserDecay){
-      TString Userdecay ="UserDecay.C";
-      if (TString(gSystem->FindFile(config_dir.Data(), Userdecay)) != TString("")){
+   AbsPath=kFALSE;
+   if(fUserDecay) {
+	   TString Userdecay;
+	   if(fUserDecayConfig.IsNull()){
+	       Userdecay="UserDecay.C";
+		   fUserDecayConfig =Userdecay;	   
+	   }else{
+		   if(fUserDecayConfig.Contains("/"))AbsPath=kTRUE;
+		   Userdecay=  fUserDecayConfig;
+	   }
+			   
+			   
+	if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), Userdecay)) != TString("")){
           cout << "---User path for Configuration (UserDecay.C) is used : " <<  config_dir.Data() << endl;
       }else{
-          Userdecay=work_config+"UserDecay.C";
-      }
+		 if(AbsPath) Userdecay=fUserDecayConfig;
+         else Userdecay=work_config+fUserDecayConfig; 
+	  }
       cout << "User Decay Modes with script \n "<<  Userdecay.Data() << endl;
       Int_t dec= gROOT->LoadMacro(Userdecay.Data());
       if(dec==0)gInterpreter->ProcessLine("UserDecayConfig()"); 
