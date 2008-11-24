@@ -94,6 +94,11 @@ public:
     Bool_t  IsUserDecay(){return fUserDecay; }
     /** */
     void SetRadLenRegister(Bool_t value) {fRadLength= value;}
+	
+	void SetUserConfig(const TString& Config) {fUserConfig = Config;}
+	
+	void SetUserCuts(const TString& Cuts) {fUserCuts= Cuts;}
+	
 private:
    CbmRunSim(const CbmRunSim &M);
     CbmRunSim& operator= (const  CbmRunSim&) {return *this;}
@@ -114,6 +119,9 @@ protected:
     Bool_t                fPythiaDecayer;
     Bool_t                fUserDecay;
     Bool_t                fRadLength;
+	TString               fUserConfig; //!
+	TString               fUserCuts; //!
+	
     
     ClassDef(CbmRunSim ,1)
     

@@ -33,7 +33,9 @@ CbmRunSim::CbmRunSim()
    fLoaderName( new TString("TGeo")),
    fPythiaDecayer(kFALSE),
    fUserDecay(kFALSE),
-   fRadLength(kFALSE)
+   fRadLength(kFALSE),
+   fUserConfig(""),
+   fUserCuts("SetCuts.C")
 
 {
   if (fginstance) {
@@ -145,89 +147,134 @@ void CbmRunSim::Init()
         fApp->SetRadiationLengthReg(fRadLength);
     }
  
- 
     fApp->AddTask(fTask);
     
     if(fField)fField->Init();
     fApp->SetField(fField);
 
+	TString LibMacro;
+	TString LibFunction;
+	TString ConfigMacro;
+	TString cuts=fUserCuts;
     //----------------------------------------------Geant4 Config-----------------------------------------
     if (strcmp(GetName(),"TGeant4") == 0 ) {
-      TString g4LibMacro="g4libs.C";
-      TString g4Macro="g4Config.C";
-      if (TString(gSystem->FindFile(config_dir.Data(),g4LibMacro)) != TString("")){  //be carfull after this call the string g4LibMacro is empty if not found!!!!
+	   TString g4LibMacro="g4libs.C";
+	   TString g4Macro;	
+	   if(fUserConfig.IsNull()){
+		   g4Macro="g4Config.C";
+	       fUserConfig = g4Macro;
+	   }else{ 
+		  g4Macro = fUserConfig;
+		   cout << "---------------User config is used :  " << g4Macro.Data() <<"-----------------"<< endl;
+	   }
+	   if (TString(gSystem->FindFile(config_dir.Data(),g4LibMacro)) != TString("")){  //be carfull after this call the string g4LibMacro is empty if not found!!!!
           cout << "---User path for Configuration (g4libs.C) is used : " <<  config_dir.Data() << endl;
-      }else{
+       }else{
           g4LibMacro=work_config+"g4libs.C";
-      }
-      gROOT->LoadMacro(g4LibMacro.Data());
-      gROOT->ProcessLine("g4libs()");
-
-      if (TString(gSystem->FindFile(config_dir.Data(),g4Macro)) != TString("")){
+       }
+       LibMacro=g4LibMacro;
+	   LibFunction="g4libs()";	
+       if (TString(gSystem->FindFile(config_dir.Data(),g4Macro)) != TString("")){
           cout << "---User path for Configuration (g4Config.C) is used : " <<  config_dir.Data() << endl;
-      }else{
-          g4Macro=work_config+"g4Config.C";
-      }
-      fApp->InitMC(g4Macro.Data());
+		  ConfigMacro=g4Macro;
+       }else{
+		  ConfigMacro =work_config+fUserConfig;
+       }
     //----------------------------------------------Geant3 Config-----------------------------------------
     }else if(strcmp(GetName(),"TGeant3") == 0 ){
-      TString g3LibMacro="g3libs.C";
-      TString g3Macro="g3Config.C";
-      if (TString(gSystem->FindFile(config_dir.Data(),g3LibMacro)) != TString("")){
-          cout << "---User path for Configuration (g3libs.C) is used : " <<  config_dir.Data() << endl;
-      }else{
+       TString g3LibMacro="g3libs.C";
+	   TString g3Macro="g3Config.C";	
+		if(fUserConfig.IsNull()) {
+			g3Macro="g3Config.C";
+			fUserConfig = g3Macro;
+			cout << "-------------- Standard Config is called ------------------------------------" << endl;
+		}else{ 
+	      g3Macro = fUserConfig;
+		  cout << "---------------User config is used :  " << g3Macro.Data() <<"-----------------"<< endl;
+	   }
+	   if (TString(gSystem->FindFile(config_dir.Data(),g3LibMacro)) != TString("")){
+           cout << "---User path for Configuration (g3libs.C) is used : " <<  config_dir.Data() << endl;
+       }else{
            g3LibMacro=work_config+"g3libs.C";
-      }
-      gROOT->LoadMacro(g3LibMacro.Data());
-      gROOT->ProcessLine("g3libs()");
-
-      if (TString(gSystem->FindFile(config_dir.Data(),g3Macro)) != TString("")){
-          cout << "---User path for Configuration (g3Config.C) is used : " <<  config_dir.Data() << endl;
-      }else{
-          g3Macro=work_config+"g3Config.C";
-      }
-      fApp->InitMC(g3Macro.Data());
+       }   
+	   LibMacro=g3LibMacro;
+	   LibFunction="g3libs()";	
+       if (TString(gSystem->FindFile(config_dir.Data(),g3Macro)) != TString("")){
+           cout << "---User path for Configuration (g3Config.C) is used : " <<  config_dir.Data() << endl;
+           ConfigMacro=g3Macro;
+       }else{
+		   ConfigMacro =work_config+fUserConfig;
+	   }
     //----------------------------------------------Fluka Config-----------------------------------------    
     }else if(strcmp(GetName(),"TFluka") == 0 ){
-      TString flLibMacro="fllibs.C";
-      TString flMacro="flConfig.C";
-      if (TString(gSystem->FindFile(config_dir.Data(), flLibMacro)) != TString("")){
+       TString flLibMacro="fllibs.C";
+       TString flMacro="flConfig.C";
+		if(fUserConfig.IsNull()){
+			flMacro="flConfig.C";
+			fUserConfig=flMacro;
+		}else {
+			flMacro = fUserConfig;
+			cout << "---------------User config is used :  " << flMacro.Data() <<"-----------------"<< endl;
+		}
+	    if (TString(gSystem->FindFile(config_dir.Data(), flLibMacro)) != TString("")){
           cout << "---User path for Configuration (fllibs.C) is used : " <<  config_dir.Data() << endl;
-      }else{
+       }else{
           flLibMacro=work_config+"fllibs.C";
-      }
-      gROOT->LoadMacro(flLibMacro.Data());
-      gROOT->ProcessLine("fllibs()");
-
-      if (TString(gSystem->FindFile(config_dir.Data(),flMacro)) != TString("")){
+       }
+	   LibMacro=flLibMacro;
+	   LibFunction="fllibs()";	
+       if (TString(gSystem->FindFile(config_dir.Data(),flMacro)) != TString("")){
           cout << "---User path for Configuration (flConfig.C) is used : " <<  config_dir.Data() << endl;
-      }else{
-          flMacro=work_config+"flConfig.C";
-      }
-      fApp->InitMC(flMacro.Data());
-     //----------------------------------------------Geane Config-----------------------------------------
+		  ConfigMacro=flMacro;
+	   }else{
+		  ConfigMacro =work_config+fUserConfig;  
+       }
+	//----------------------------------------------Geane Config-----------------------------------------
     }else{
-      TString geaneLibMacro="g3libs.C";
-      TString geaneMacro="Geane.C";
-      if (TString(gSystem->FindFile(config_dir.Data(),geaneLibMacro)) != TString("")){
+       TString geaneLibMacro="g3libs.C";
+       TString geaneMacro;
+		if(fUserConfig.IsNull()){
+			geaneMacro="Geane.C";
+			fUserConfig=geaneMacro;
+		}else{
+			geaneMacro = fUserConfig;
+			cout << "---------------User config is used :  " << geaneMacro.Data() <<"-----------------"<< endl;
+		}
+		if (TString(gSystem->FindFile(config_dir.Data(),geaneLibMacro)) != TString("")){
           cout << "---User path for Configuration (g3libs.C) is used : " <<  config_dir.Data() << endl;
-      }else{
+       }else{
           geaneLibMacro=work_config+"g3libs.C";
-      }
-      gROOT->LoadMacro(geaneLibMacro.Data());
-      gROOT->ProcessLine("g3libs()");
-
-      if (TString(gSystem->FindFile(config_dir.Data(),geaneMacro)) != TString("")){
+       }
+	   LibMacro=geaneLibMacro;
+	   LibFunction="g3libs()";			
+		
+	   if (TString(gSystem->FindFile(config_dir.Data(),geaneMacro)) != TString("")){
           cout << "---User path for Configuration (Geane.C) is used : " <<  config_dir.Data() << endl;
-      }else{
-          geaneMacro=work_config+"Geane.C";
-      }
-      fApp->InitMC(geaneMacro.Data());
+		  ConfigMacro =geaneMacro;
+       }else{
+		  ConfigMacro =work_config+fUserConfig;
+       }
    }
-    
-         
-  
+  //----------------------------------------------SetCuts------------------------------------------------ 
+   if (TString(gSystem->FindFile(config_dir.Data(),cuts)) != TString("")){
+	   cout << "---User path for Cuts and Processes  (SetCuts.C) is used : " <<  config_dir.Data() << endl;
+   }else{
+       cuts =work_config+ fUserCuts;
+   }
+  //--------------------------------------Now load the Config and Cuts------------------------------------	
+   gROOT->LoadMacro(LibMacro.Data());
+   gROOT->ProcessLine(LibFunction.Data());
+
+   gROOT->LoadMacro(ConfigMacro.Data());
+   gROOT->ProcessLine("Config()");
+	
+   gROOT->LoadMacro(cuts);
+   gROOT->ProcessLine("SetCuts()");
+	
+   fApp->InitMC(ConfigMacro.Data(), cuts.Data());
 }
+
+
 void CbmRunSim::Run(Int_t NStart, Int_t NStop)
 {
   fApp->RunMC(NStart);

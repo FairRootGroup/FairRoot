@@ -190,12 +190,17 @@ void CbmMCApplication::RegisterStack()
    if(fEvGen) fStack->Register();
 }
 //_____________________________________________________________________________
-void CbmMCApplication::InitMC(const char* setup)
+void CbmMCApplication::InitMC(const char* setup, const char *cuts)
 {
 // Initialize MC.
 // ---
-  gROOT->LoadMacro(setup);
+/*  gROOT->LoadMacro(setup);
   gInterpreter->ProcessLine("Config()");
+  
+  gROOT->LoadMacro(cuts);
+  gInterpreter->ProcessLine("SetCuts()");
+	
+*/	
   fStack = (CbmGenericStack*) gMC->GetStack();
   gMC->Init();
   gMC->BuildPhysics();

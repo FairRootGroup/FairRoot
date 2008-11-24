@@ -53,31 +53,51 @@ class CbmMCApplication : public TVirtualMCApplication
     /** Singelton instance 
     */
     static CbmMCApplication* Instance(); 
-    virtual void        AddDecayModes();  
-    virtual void        AddParticles();                                   // MC Application
-    virtual void        AddIons();                                        // MC Application
-    void                  AddTask(TTask *fTask);
-    virtual void        BeginEvent();                                     // MC Application
-    virtual void        BeginPrimary();                                   // MC Application
-    virtual void        ConstructGeometry();                              // MC Application
-    virtual void        ConstructOpGeometry();                            // MC Application
-    virtual void        Field(const Double_t* x, Double_t* b) const;      // MC Application
-    virtual void        FinishEvent();                                    // MC Application
-    virtual void        FinishPrimary();                                  // MC Application
+    virtual void          AddDecayModes();  
+	 /**  Add user defined particles (optional) */
+    virtual void          AddParticles();                                   // MC Application
+	 /** Add user defined ions (optional) */
+    virtual void          AddIons();                                        // MC Application
+     /** Add user defined Tasks to be executed after each event (optional) */
+	void                  AddTask(TTask *fTask);
+    /** Define actions at the beginning of the event */
+	virtual void          BeginEvent();                                     // MC Application
+	/** Define actions at the beginning of primary track */
+    virtual void          BeginPrimary();                                   // MC Application
+    /** Construct user geometry */
+	virtual void          ConstructGeometry();                              // MC Application
+    /** Define parameters for optical processes (optional) */
+	virtual void          ConstructOpGeometry();                            // MC Application
+	/** Calculate user field  b at point x */
+    virtual void          Field(const Double_t* x, Double_t* b) const;      // MC Application
+	/** Define actions at the end of event */
+    virtual void          FinishEvent();                                    // MC Application
+	/** Define actions at the end of primary track */
+    virtual void          FinishPrimary();                                  // MC Application
+	/** Define actions at the end of run */
     void                  FinishRun();
-    virtual void        GeneratePrimaries();                              // MC Application
+	/** Generate primary particles */
+    virtual void          GeneratePrimaries();                              // MC Application
+	/** Return detector by name  */
     CbmDetector*          GetDetector(const char *DetName);
+	/** Return Field used in simulation*/
     CbmField*             GetField(){return fxField;}
+	/**Return primary generator*/
     CbmPrimaryGenerator*  GetGenerator();
+	/**Return list of tasks*/
     TTask*                GetListOfTasks();    
     CbmGenericStack*      GetStack();
     TChain*               GetChain();
-    virtual void        InitGeometry();                                   // MC Application
-    void                  InitMC(const char *setup);
+	/** Initialize geometry */
+    virtual void          InitGeometry();                                   // MC Application
+	/** Initialize MC engine */
+    void                  InitMC(const char *setup,  const char *cuts);
     void                  InitTasks();
-    Bool_t 		  IsGeane(){return fGeane;}
-    virtual void        PostTrack();                                      // MC Application
-    virtual void        PreTrack();                                       // MC Application
+    Bool_t 		          IsGeane(){return fGeane;}
+	/**Define actions at the end of each track */
+    virtual void          PostTrack();                                      // MC Application
+	/** Define actions at the beginning of each track*/
+    virtual void          PreTrack();                                       // MC Application
     void                  RunMC(Int_t nofEvents);
     void                  SetField(CbmField *field);
     void                  SetGenerator(CbmPrimaryGenerator *fxGenerator);
@@ -85,11 +105,14 @@ class CbmMCApplication : public TVirtualMCApplication
     void                  SetRadiationLengthReg(Bool_t RadLen);
     void                  SetTrackingDebugMode( Bool_t set ) {fDebug = set;}
     void                  SetUserDecay(Bool_t decay){fUserDecay= decay;}
-    virtual void        Stepping();                                       // MC Application
-    virtual void        StopRun();                                        // MC Application
-    virtual Double_t    TrackingRmax() const;                             // MC Application
-    virtual Double_t    TrackingZmax() const;                             // MC Application
-    void                GeanePreTrack(Float_t *x,Float_t *p ,Int_t PDG);                     // PreTrack for Geane
+	/** Define action at each step */
+    virtual void          Stepping();                                       // MC Application
+    virtual void          StopRun();                                        
+	/**Define maximum radius for tracking (optional) */
+    virtual Double_t      TrackingRmax() const;                             // MC Application
+    /** Define maximum z for tracking (optional) */
+	virtual Double_t      TrackingZmax() const;                             // MC Application
+    void                  GeanePreTrack(Float_t *x,Float_t *p ,Int_t PDG);                     // PreTrack for Geane
 private:
     // methods
     void RegisterStack();
@@ -164,4 +187,3 @@ inline CbmMCApplication* CbmMCApplication::Instance()
 { return (CbmMCApplication*)(TVirtualMCApplication::Instance());}
 
 #endif
-
