@@ -6,6 +6,7 @@
 #define CBMGeane_H
 
 #include "TObject.h"
+#include "TString.h"
 
 class CbmMCApplication;
 class CbmField;
