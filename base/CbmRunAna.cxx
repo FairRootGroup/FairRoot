@@ -95,8 +95,8 @@ void CbmRunAna::Init() {
 		 TFile *currentfile= gFile;
 		 TFile *nextfile=0;
 		 TSeqCollection *fileList=gROOT->GetListOfFiles();
-		 for (Int_t i=0; i<fileList->GetEntries(); i++){
-			nextfile=(TFile *)fileList->At(i);
+		 for (Int_t k=0; k<fileList->GetEntries(); k++){
+			nextfile=(TFile *)fileList->At(k);
 			if(nextfile) nextfile->Get("CBMGeom");
 			if(gGeoManager) break;
 		 }	
@@ -114,7 +114,7 @@ void CbmRunAna::Init() {
    // Init the RTDB containers
    fRtdb= GetRuntimeDb();
    CbmBaseParSet* par=(CbmBaseParSet*)
-            (rtdb->getContainer("CbmBaseParSet"));
+            (fRtdb->getContainer("CbmBaseParSet"));
    CbmFieldFactory *fieldfact= CbmFieldFactory::Instance();
    if(fieldfact)fieldfact->SetParm();
    // Assure that basic info is there for the run
@@ -157,13 +157,25 @@ void CbmRunAna::Run(Int_t Ev_start, Int_t Ev_end)
   if(Ev_end==0){ 
      if (Ev_start==0){
         Ev_end=Int_t((fRootManager->GetInChain())->GetEntries());
-   }else {
+	 }else {
        Ev_end =  Ev_start;  
        if ( Ev_end > ((fRootManager->GetInChain())->GetEntries()) ){
            Ev_end = (Int_t) (fRootManager->GetInChain())->GetEntries();
        }
        Ev_start=0;
      }
+  }else{
+	  Int_t fileEnd=(fRootManager->GetInChain())->GetEntries();
+	  if(Ev_end > fileEnd){
+		  cout << "-------------------Warning---------------------------" << endl;
+		  cout << " -W CbmRunAna : File has less events than requested!!" << endl;
+		  cout << " File contains : " << fileEnd  << " Events" << endl;
+		  cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
+		  cout << " The number of events is set to " << fileEnd << " Events"<< endl;
+		  cout << "-----------------------------------------------------" << endl;
+	      Ev_end = fileEnd;
+	  }
+	  
   }
  
   for (int i=Ev_start; i< Ev_end;i++){

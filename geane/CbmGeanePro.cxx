@@ -253,6 +253,18 @@ Bool_t CbmGeanePro::Propagate(CbmTrackParH *TStart, CbmTrackParP *TEnd, Int_t PD
   return kTRUE;  
 }
 
+Bool_t CbmGeanePro::Propagate(Float_t *x1, Float_t *p1, Float_t *x2, Float_t *p2,Int_t PDG)
+{
+  fApp->GeanePreTrack(x1, p1, PDG);
+  GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
+  Float_t xlf[1];
+  xlf[0]=1000
+  ;
+  gMC3->Eufill(1, ein,xlf);
+  gMC3->Ertrak(x1,p1,x2,p2,GeantCode, "L");
+
+}
+
 void CbmGeanePro::Propagate(Int_t PDG) {
   // main propagate call to fortran ERTRAK
 

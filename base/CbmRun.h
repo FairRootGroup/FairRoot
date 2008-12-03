@@ -42,7 +42,7 @@ public:
       Set the output file name for analysis or simulation
     */
     void        SetOutputFile(const char *fname);
-    CbmRuntimeDb* GetRuntimeDb(void) {return rtdb;}
+    CbmRuntimeDb* GetRuntimeDb(void) {return fRtdb;}
     TFile *GetOutputFile(){return fOutFile;}
      Int_t                GetRunId() { return ((Int_t) fRunId);}
    /** return true for Anaylsis session*/
@@ -56,13 +56,13 @@ private:
 
 protected:
 
-    static CbmRun*        fRunInstance;
-    CbmRuntimeDb*         rtdb;
-    CbmTask*              fTask;
-    const char*           Outfname;
-    CbmRootManager*       fRootManager;
-    TFile*		  fOutFile;
-    UInt_t                 fRunId;//!
+    static CbmRun*          fRunInstance;
+    CbmRuntimeDb*           fRtdb;
+    CbmTask*                fTask;
+    const char*             Outfname;
+    CbmRootManager*         fRootManager;
+    TFile*		            fOutFile;
+    UInt_t                  fRunId;//!
    /** true for Anaylsis session*/
     Bool_t	          fAna;  //! 
     ClassDef(CbmRun ,1)

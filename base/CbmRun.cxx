@@ -13,7 +13,7 @@ CbmRun * CbmRun::Instance(){
 //_____________________________________________________________________________
 CbmRun::CbmRun()
   :TNamed(),
-   rtdb(CbmRuntimeDb::instance()),
+   fRtdb(CbmRuntimeDb::instance()),
    fTask(new CbmTask("CbmTask List")),
    Outfname(""),
    fRootManager(CbmRootManager::Instance()),
@@ -32,7 +32,7 @@ CbmRun::CbmRun()
 CbmRun::~CbmRun()
 {
 	delete fTask;
-        delete rtdb;
+	delete fRtdb;
 }
 //_____________________________________________________________________________
 

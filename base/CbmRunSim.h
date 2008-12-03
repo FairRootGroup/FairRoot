@@ -84,16 +84,31 @@ public:
     TObjArray*        GetListOfModules() { return ListOfModules;}
     /**Get the used primary generator*/
     CbmPrimaryGenerator* GetPrimaryGenerator() { return fGen;}
-    /**switch On/Off external decayer (Pythia) */    
+    
+	/**switch On/Off external decayer (Pythia) */    
     void SetPythiaDecayer(Bool_t decayer){fPythiaDecayer = decayer;}
+	
+	/**switch On external decayer (Pythia). Config macro will be used */    
+    void SetPythiaDecayer(const TString & Config );
+
+    /**switch On user defined decay, Config  macro will be called  */    
+    void SetUserDecay(const TString& Config);
+
     /**switch On/Off user defined decay if true gconfig/UserDecay.C macro will be called  */    
     void SetUserDecay(Bool_t decay){fUserDecay = decay;}
-    /**Flag for external decayer*/
+
+    
+	/**Flag for external decayer*/
     Bool_t  IsExtDecayer(){return fPythiaDecayer; }
     /**Flag for User decay*/
     Bool_t  IsUserDecay(){return fUserDecay; }
     /** */
     void SetRadLenRegister(Bool_t value) {fRadLength= value;}
+	
+	void SetUserConfig(const TString& Config) {fUserConfig = Config;}
+	
+	void SetUserCuts(const TString& Cuts) {fUserCuts= Cuts;}
+	
 private:
    CbmRunSim(const CbmRunSim &M);
     CbmRunSim& operator= (const  CbmRunSim&) {return *this;}
@@ -112,10 +127,21 @@ protected:
     Bool_t                fStoreTraj;
     TString*              fLoaderName;
     Bool_t                fPythiaDecayer;
+	TString               fPythiaDecayerConfig; //!
     Bool_t                fUserDecay;
-    Bool_t                fRadLength;
+    TString               fUserDecayConfig; //!
+    Bool_t                fRadLength;   //!
+	TString               fUserConfig; //!
+	TString               fUserCuts; //!
+	
     
     ClassDef(CbmRunSim ,1)
     
 };
+
 #endif //CBMRUNSIM_H
+
+
+
+
+
