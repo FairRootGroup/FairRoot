@@ -524,8 +524,9 @@ TObject* CbmRootManager::GetRegisteredObject(const char* BrName)
   if(!Obj){
 	  Obj=CheckActivatedBranch(BrName);
   }
-  if(!Obj){
+  if(cbmroot && !Obj){
 	  Obj=cbmroot->FindObjectAny(BrName);
+	  Obj=ActivateBranch(BrName);
   }
 
   return Obj;
