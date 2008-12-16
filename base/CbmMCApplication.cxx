@@ -32,7 +32,7 @@
 #include <iostream>
 #include "CbmRadLenManager.h"
 #include "TSystem.h"
-
+#include "CbmRuntimeDb.h"
 using std::cout;              
 using std::endl;
 using std::pair;
@@ -881,7 +881,14 @@ TTask *CbmMCApplication::GetListOfTasks()
 //_____________________________________________________________________________
 void CbmMCApplication::InitTasks()
 {	
-    fCbmTaskList->InitTask();
+	fCbmTaskList->SetParTask();
+	
+	CbmRunSim::Instance()->GetRunId();
+	CbmRuntimeDb*  fRtdb =CbmRunSim::Instance()->GetRuntimeDb();
+		
+	fRtdb->initContainers( CbmRunSim::Instance()->GetRunId() );
+	
+	fCbmTaskList->InitTask();
 }
 //_____________________________________________________________________________
 TChain* CbmMCApplication::GetChain()
