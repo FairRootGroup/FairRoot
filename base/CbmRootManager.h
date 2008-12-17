@@ -79,11 +79,10 @@ private:
 	 /**private methods*/
 	 CbmRootManager(const CbmRootManager &F);
      CbmRootManager& operator= (const CbmRootManager&) {return *this;}
-	 TObject*            GetRegisteredObject(const char* BrName);
 	 TObject*            GetMergedObject(const char* BrName) ;     
 	 void                ReindexStack(); 
-	 void                AddActivatedBranch(const char*, TObject* );
-	 TObject*            CheckActivatedBranch( const char* );   
+	 void                AddMemoryBranch(const char*, TObject* );
+	 TObject*            GetMemoryBranch( const char* );   
 	 /**Members*/ 
 	 TFolder*                            cbmout;     /**folder structure of output*/
 	 TFolder*                            cbmroot;    /**folder structure of input*/

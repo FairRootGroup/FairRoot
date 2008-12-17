@@ -600,6 +600,7 @@ void CbmMCApplication::InitGeometry()
         detector->SetSpecialPhysicsCuts();
         detector->Register();
       }
+	  /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
       InitTasks();
      // store the EventHeader Info
       CbmEventHeader *evt = new CbmEventHeader();
