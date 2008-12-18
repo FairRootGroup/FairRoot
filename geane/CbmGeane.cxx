@@ -34,7 +34,7 @@ CbmGeane::CbmGeane(const char* name, TString fUserConfig,   TString fUserCuts )
 	  TString LibFunction;
 	  TString ConfigMacro;
 	  TString cuts=fUserCuts;
-	  
+	  if(cuts== TString(""))cuts="SetCuts.C";
 	  
 	  TString work = getenv("VMCWORKDIR");
 	  TString work_config=work+"/gconfig/";
@@ -69,6 +69,12 @@ CbmGeane::CbmGeane(const char* name, TString fUserConfig,   TString fUserCuts )
 		  else ConfigMacro =work_config+fUserConfig;
 	  }
 	
+	  if (!AbsPath &&TString(gSystem->FindFile(config_dir.Data(),cuts)) != TString("")){
+	      cout << "---User path for Cuts and Processes  (SetCuts.C) is used : " <<  config_dir.Data() << endl;
+          }else{
+             cuts =work_config+ "SetCuts.C";
+          }
+
 	  gROOT->LoadMacro(LibMacro.Data());
 	  gROOT->ProcessLine(LibFunction.Data());
 	  
