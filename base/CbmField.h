@@ -89,6 +89,7 @@ public:
   /** Screen output. To be implemented in the concrete class. **/
   virtual void Print() { };
 
+  virtual void GetBxyz(const Double_t point[3], Double_t* bField){ std::cout << "GetBz Should be implimented" << std::endl;};
 
  protected:
 
