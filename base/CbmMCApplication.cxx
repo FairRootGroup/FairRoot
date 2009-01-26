@@ -473,12 +473,11 @@ void CbmMCApplication::Field(const Double_t* x, Double_t* b) const
 // put here a const magnetic field as 0th approx 
 // ---
  // cout<< "CbmMCApplication::Field" <<endl;
+  b[0]=0;
+  b[1]=0;
+  b[2]=0;
   if(fxField){
      fxField->GetFieldValue(x,b);
-  }else{
-     b[0]=0;
-     b[1]=0;
-     b[2]=0;
   }
 }
 //_____________________________________________________________________________
