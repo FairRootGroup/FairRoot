@@ -294,7 +294,7 @@ CbmRootManager::~CbmRootManager()
 //_____________________________________________________________________________
 void  CbmRootManager::Register(const char* name, const char* folderName , TNamed *obj, Bool_t toFile)
 {
-  if(toFile){  /**Write the Object to the Tree*/
+   if(toFile){  /**Write the Object to the Tree*/
      TFolder *folder=0;
      TFolder *f=0;
      if(cbmout==0){
@@ -308,9 +308,9 @@ void  CbmRootManager::Register(const char* name, const char* folderName , TNamed
      }
      obj->SetName(name);
      folder->Add(obj);
-   }else{
-      AddActivatedBranch(name, obj );
    }
+   AddMemoryBranch(name, obj );
+   //cout << " CbmRootManager::Register Adding branch:(Obj) " << name << " In folder : " << folderName << endl;
 }
 
 //_____________________________________________________________________________
@@ -333,9 +333,11 @@ void  CbmRootManager::Register(const char* name,const char* Foldername ,TCollect
       }
       obj->SetName(name);
       folder->Add(obj);
-   }else{	/**Keep the Object in Memory, and do not write it to the tree*/
-      AddActivatedBranch(name, obj );
-   }	
+    }
+    /**Keep the Object in Memory, and do not write it to the tree*/
+   AddMemoryBranch(name, obj );
+   //cout << " CbmRootManager::Register Adding branch:(collection)  " << name << " In folder : " << Foldername << endl;
+	
 }
  //_____________________________________________________________________________
 void  CbmRootManager::Fill()
@@ -463,7 +465,7 @@ TObject * CbmRootManager::ActivateBranch(const char *BrName)
       fObj2[fNObj] = GetMergedObject(BrName);
       return fObj2[fNObj];
   }else{
-        fObj2[fNObj]  =  CheckActivatedBranch ( BrName );
+        fObj2[fNObj]  =  GetMemoryBranch ( BrName );
       if ( fObj2[fNObj]   ){
           return  fObj2[fNObj];
       }
@@ -481,12 +483,12 @@ TObject * CbmRootManager::ActivateBranch(const char *BrName)
 	  fInChain->SetBranchStatus(BrName,1);
 	  fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
       }
-      AddActivatedBranch( BrName , fObj2[fNObj] );
+      AddMemoryBranch( BrName , fObj2[fNObj] );
       return  fObj2[fNObj];
   }
 }
 //_____________________________________________________________________________
-TObject*  CbmRootManager::CheckActivatedBranch( const char* fName ) {
+TObject*  CbmRootManager::GetMemoryBranch( const char* fName ) {
  
  //return fMap[BrName];
     TString BrName=fName;
@@ -495,9 +497,9 @@ TObject*  CbmRootManager::CheckActivatedBranch( const char* fName ) {
 
   if(p!=fMap.end()){
 	return p->second;
-     //   cout << " -E- CbmRootManager::CheckActivatedBranch " << BrName << " is found " << endl;
+    //    cout << " -E- CbmRootManager::GetMemoryBranch " << BrName << " is found " << endl;
   }else{
-    //    cout << " -E- CbmRootManager::CheckActivatedBranch " << BrName << " Not found " << endl;
+   // cout << " -E- CbmRootManager::GetMemoryBranch " << BrName << " Not found " << endl;
 	return 0;
   }
 }
@@ -505,27 +507,23 @@ TObject*  CbmRootManager::CheckActivatedBranch( const char* fName ) {
  TObject* CbmRootManager::GetObject(const char* BrName)
  {
  	TObject *Obj =NULL;
-	Obj=GetRegisteredObject( BrName);
-
-  	if(!Obj) {
+	if(cbmout) Obj = cbmout->FindObjectAny(BrName);
+	if(!Obj){
+	   Obj=GetMemoryBranch(BrName);
+	 }
+	 if(cbmroot && !Obj){
+		
+	    Obj=cbmroot->FindObjectAny(BrName);
+	    Obj=ActivateBranch(BrName);
+	//	cout<< "CbmRootManager::GetObject Try folder for simulations! " <<  Obj <<   endl; 
+	 }
+	 if(!Obj) {
 		 Obj=ActivateBranch(BrName);
 	// 	cout << "now ActivatedBranch "<<endl;
-		 }
-//	cout<< "CbmRootManager::GetObject will return  " << Obj <<" " << BrName
-//	<<  endl;	 
-	return Obj;
+	 }	
+    // cout<< "CbmRootManager::GetObject will return  " << Obj <<" " << BrName <<  endl;	 
+	 return Obj;
  }
-//_____________________________________________________________________________
-
-TObject* CbmRootManager::GetRegisteredObject(const char* BrName)
-{
-  TObject *Obj =NULL;
-  if(cbmout) Obj = cbmout->FindObjectAny(BrName);
-  if(!Obj){
-	  Obj=CheckActivatedBranch(BrName);
-  }
-  return Obj;
-}
 //_____________________________________________________________________________
 TObject* CbmRootManager::GetMergedObject(const char* BrName)
 {
@@ -648,7 +646,7 @@ void CbmRootManager::CopyClones(TClonesArray *cl1, TClonesArray* cl2 , Int_t off
 }
 
 //_____________________________________________________________________________
-void  CbmRootManager::AddActivatedBranch( const char* fName, TObject* pObj ){
+void  CbmRootManager::AddMemoryBranch( const char* fName, TObject* pObj ){
 	
    map < TString, TObject*>::iterator p;
    TString BrName=fName;
@@ -656,9 +654,9 @@ void  CbmRootManager::AddActivatedBranch( const char* fName, TObject* pObj ){
    p=fMap.find(BrName);
    
    if(p!=fMap.end()){
-       //  cout << " -E- CbmRootManager::AddActivatedBranch " << BrName << " is already inserted " << endl;
+       //  cout << " -E- CbmRootManager::AddMemoryBranch " << BrName << " is already inserted " << endl;
    }else{
-      //  cout << " -E- CbmRootManager::AddActivatedBranch " << BrName << " isAdded " << endl;
+      //  cout << " -E- CbmRootManager::AddMemoryBranch " << BrName << " isAdded " << endl;
    	fMap.insert(pair<TString, TObject*> (BrName, pObj));
    }
 

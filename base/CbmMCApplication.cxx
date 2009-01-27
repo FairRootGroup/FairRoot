@@ -32,7 +32,7 @@
 #include <iostream>
 #include "CbmRadLenManager.h"
 #include "TSystem.h"
-
+#include "CbmRuntimeDb.h"
 using std::cout;              
 using std::endl;
 using std::pair;
@@ -473,12 +473,11 @@ void CbmMCApplication::Field(const Double_t* x, Double_t* b) const
 // put here a const magnetic field as 0th approx 
 // ---
  // cout<< "CbmMCApplication::Field" <<endl;
+  b[0]=0;
+  b[1]=0;
+  b[2]=0;
   if(fxField){
      fxField->GetFieldValue(x,b);
-  }else{
-     b[0]=0;
-     b[1]=0;
-     b[2]=0;
   }
 }
 //_____________________________________________________________________________
@@ -600,6 +599,7 @@ void CbmMCApplication::InitGeometry()
         detector->SetSpecialPhysicsCuts();
         detector->Register();
       }
+	  /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
       InitTasks();
      // store the EventHeader Info
       CbmEventHeader *evt = new CbmEventHeader();
@@ -881,7 +881,14 @@ TTask *CbmMCApplication::GetListOfTasks()
 //_____________________________________________________________________________
 void CbmMCApplication::InitTasks()
 {	
-    fCbmTaskList->InitTask();
+	fCbmTaskList->SetParTask();
+	
+	CbmRunSim::Instance()->GetRunId();
+	CbmRuntimeDb*  fRtdb =CbmRunSim::Instance()->GetRuntimeDb();
+		
+	fRtdb->initContainers( CbmRunSim::Instance()->GetRunId() );
+	
+	fCbmTaskList->InitTask();
 }
 //_____________________________________________________________________________
 TChain* CbmMCApplication::GetChain()
