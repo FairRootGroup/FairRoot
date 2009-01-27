@@ -296,8 +296,15 @@ void CbmRunSim::SetGenerator(CbmPrimaryGenerator *Gen)
 
 void CbmRunSim::SetMaterials(const char * MatFileName)
 {
-  TString work = getenv("VMCWORKDIR"); 
-  TString Mat=work+"/geometry/";
+  TString Mat="";
+  TString work = getenv("GEOMPATH");
+  if (work.IsNull()){
+    work = getenv("VMCWORKDIR"); 
+    Mat=work+"/geometry/";
+  }else{
+    Mat=work;
+    if (!Mat.EndsWith("/")) Mat+="/";
+  }
   MatFname=Mat+MatFileName;
   cout << "-I- CbmRun::SetMaterials() Media file used: "<< MatFname << endl;
 }
