@@ -13,8 +13,8 @@
 **/
 
 
-#ifndef CBM_PLUTOGENERATOR_H
-#define CBM_PLUTOGENERATOR_H
+#ifndef FAIR_PLUTOGENERATOR_H
+#define FAIR_PLUTOGENERATOR_H
 
 
 #include "FairGenerator.h"

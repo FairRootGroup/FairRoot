@@ -1,5 +1,5 @@
-#ifndef CBMGEOPGON_H
-#define CBMGEOPGON_H
+#ifndef FAIRGEOPGON_H
+#define FAIRGEOPGON_H
 
 #include "FairGeoBasicShape.h"
 
@@ -23,4 +23,4 @@ public:
   ClassDef(FairGeoPgon,0) // 
 };
 
-#endif  /* !CBMGEOPGON_H */
+#endif  /* !FAIRGEOPGON_H */

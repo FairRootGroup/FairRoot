@@ -4,7 +4,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // FairGeoOldAsciiIo
 //
-// Class for geometry I/O from ASCII file written in old CBM input format
+// Class for geometry I/O from ASCII file written in old FAIR input format
 // This class is only used for conversion to the new format!
 //
 ///////////////////////////////////////////////////////////////////////////////

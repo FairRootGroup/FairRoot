@@ -3,8 +3,8 @@
 // -----          Created 08/09/04                 D.Bertini           -----
 // -------------------------------------------------------------------------
 
-#ifndef CBMEVENTHEADER_H
-#define CBMEVENTHEADER_H
+#ifndef FAIREVENTHEADER_H
+#define FAIREVENTHEADER_H
 
 
 #include "TNamed.h"

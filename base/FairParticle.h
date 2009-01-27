@@ -1,12 +1,12 @@
-/// Class CBMParticle
+/// Class FAIRParticle
 /// ------------------
 /// Extended TParticle with persistent pointers to mother and daughters
 /// particles  (Ivana Hrivnacova, 5.4.2002)
 /// Used to define particles which will be added to Geant3/4 (M. Al-Turany)
 
 
-#ifndef CBM_PARTICLE_H
-#define CBM_PARTICLE_H
+#ifndef FAIR_PARTICLE_H
+#define FAIR_PARTICLE_H
 
 #include "TObject.h"
 #include "TRef.h"
@@ -88,6 +88,6 @@ class FairParticle : public TObject
     ClassDef(FairParticle,1) // Extended TParticle
 };
 
-#endif //CBM_PARTICLE_H   
+#endif //FAIR_PARTICLE_H   
    
 

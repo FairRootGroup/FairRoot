@@ -54,7 +54,7 @@ SET(PARBASE_SRCS ${PARBASE_SRCS} ${PARBASE_DICTIONARY})
 
 add_library(ParBase SHARED ${PARBASE_SRCS})
 target_link_libraries(ParBase ${ROOT_LIBRARIES})
-set_target_properties(ParBase PROPERTIES ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(ParBase PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ################ install ###################
 install(TARGETS ParBase DESTINATION ${CMAKE_BINARY_DIR}/lib)

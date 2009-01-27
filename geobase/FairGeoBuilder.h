@@ -1,5 +1,5 @@
-#ifndef CBMGEOBUILDER_H
-#define CBMGEOBUILDER_H
+#ifndef FAIRGEOBUILDER_H
+#define FAIRGEOBUILDER_H
 
 #include "TNamed.h"
 
@@ -26,4 +26,4 @@ public:
   ClassDef(FairGeoBuilder,0) 
 };
 
-#endif /* !CBMGEOBUILDER_H */
+#endif /* !FAIRGEOBUILDER_H */

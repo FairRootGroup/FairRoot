@@ -2,8 +2,8 @@
 // -----                      FairRadLenManager source file             -----
 // -----                  Created 14/01/08  by M. Al-Turany            -----
 // -------------------------------------------------------------------------
-#ifndef CBMRADLENMANAGER_H
-#define CBMRADLENMANAGER_H 1
+#ifndef FAIRRADLENMANAGER_H
+#define FAIRRADLENMANAGER_H 1
 
 
 #include "Rtypes.h"

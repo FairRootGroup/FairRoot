@@ -1,5 +1,5 @@
-#ifndef CBMMODULE_H
-#define CBMMODULE_H
+#ifndef FAIRMODULE_H
+#define FAIRMODULE_H
 
 #include "TString.h"
 #include "TNamed.h"
@@ -94,4 +94,4 @@ protected:
     ClassDef( FairModule,1)
 };
     
-#endif //CBMMODULE_H
+#endif //FAIRMODULE_H

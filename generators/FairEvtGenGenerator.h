@@ -72,8 +72,8 @@
 **/
 
 
-#ifndef CBM_EVTGENGENERATOR_H
-#define CBM_EVTGENGENERATOR_H
+#ifndef FAIR_EVTGENGENERATOR_H
+#define FAIR_EVTGENGENERATOR_H
 
 
 #include "FairGenerator.h"

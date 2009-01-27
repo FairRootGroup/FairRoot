@@ -62,7 +62,7 @@ set(GENERATORS_SRCS ${GENERATORS_SRCS}  ${GENERATORS_DICTIONARY})
 
 add_library(Gen SHARED ${GENERATORS_SRCS})
 target_link_libraries(Gen ${ROOT_LIBRARIES} Pluto)
-set_target_properties(Gen PROPERTIES ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(Gen PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ################ install ###################
 install(TARGETS Gen DESTINATION ${CMAKE_BINARY_DIR}/lib)

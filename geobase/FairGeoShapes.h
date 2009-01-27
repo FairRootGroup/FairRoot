@@ -1,5 +1,5 @@
-#ifndef CBMGEOSHAPES_H
-#define CBMGEOSHAPES_H
+#ifndef FAIRGEOSHAPES_H
+#define FAIRGEOSHAPES_H
 
 
 //#include "FairGeoTransform.h"
@@ -34,4 +34,4 @@ public :
   ClassDef(FairGeoShapes,0) //
 };
 
-#endif  /* !CBMGEOSHAPES_H */
+#endif  /* !FAIRGEOSHAPES_H */

@@ -10,8 +10,8 @@
  **/
 
 
-#ifndef CBMGENERICSTACK_H
-#define CBMGENERICSTACK_H
+#ifndef FAIRGENERICSTACK_H
+#define FAIRGENERICSTACK_H
 
 
 //#include <map>

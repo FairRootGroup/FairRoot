@@ -1,5 +1,5 @@
-#ifndef CBMTUTORIALDETGEOPAR_H
-#define CBMTUTORIALDETGEOPAR_H
+#ifndef FAIRTUTORIALDETGEOPAR_H
+#define FAIRTUTORIALDETGEOPAR_H
 
 #include "FairParGenericSet.h"
 
@@ -28,4 +28,4 @@ public:
   ClassDef(FairTutorialDetGeoPar,1)
 };
 
-#endif /* CBMTUTORIALDETGEOPAR_H */
+#endif /* FAIRTUTORIALDETGEOPAR_H */

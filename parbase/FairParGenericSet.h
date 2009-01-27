@@ -1,5 +1,5 @@
-#ifndef CBMPARGENERICSET_H
-#define CBMPARGENERICSET_H
+#ifndef FAIRPARGENERICSET_H
+#define FAIRPARGENERICSET_H
 
 #include "FairParSet.h"
 
@@ -20,4 +20,4 @@ protected:
   ClassDef(FairParGenericSet,1) // Base class for generic-style parameter containers
 };
 
-#endif  /* !CBMPARGENERICSET_H */
+#endif  /* !FAIRPARGENERICSET_H */

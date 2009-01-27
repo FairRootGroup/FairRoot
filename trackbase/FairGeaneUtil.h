@@ -1,5 +1,5 @@
-#ifndef CBMGEANEUTIL_H
-#define CBMGEANEUTIL_H
+#ifndef FAIRGEANEUTIL_H
+#define FAIRGEANEUTIL_H
 
 #include "FairTrackPar.h"
 #include "TVector3.h"

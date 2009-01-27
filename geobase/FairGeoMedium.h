@@ -1,5 +1,5 @@
-#ifndef CBMGEOMEDIUM_H
-#define CBMGEOMEDIUM_H
+#ifndef FAIRGEOMEDIUM_H
+#define FAIRGEOMEDIUM_H
 
 #include "TNamed.h"
 
@@ -78,4 +78,4 @@ inline Bool_t FairGeoMedium::isSensitive() {
   else return kFALSE; 
 }
 
-#endif /* !CBMGEOMEDIUM_H */
+#endif /* !FAIRGEOMEDIUM_H */

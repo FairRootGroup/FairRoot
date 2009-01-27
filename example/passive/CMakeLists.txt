@@ -48,6 +48,6 @@ SET(PASSIVE_SRCS ${PASSIVE_SRCS} ${PASSIVE_DICTIONARY})
 
 add_library(Passive SHARED ${PASSIVE_SRCS})
 target_link_libraries(Passive ${ROOT_LIBRARIES})
-set_target_properties(Passive PROPERTIES ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(Passive PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 ################ install ###################
 install(TARGETS Passive DESTINATION ${CMAKE_BINARY_DIR}/lib)

@@ -12,7 +12,7 @@
  ** @since 06.01.2004
  ** @version1.0
  **
- ** Abstract base class for magnetic fields in CBM 
+ ** Abstract base class for magnetic fields in FAIR 
  ** Concrete field must implement the pure virtual methods
  ** GetBx, GetBy and GetBz
  **
@@ -20,8 +20,8 @@
  **/
 
 
-#ifndef CBMFIELD_H
-#define CBMFIELD_H 1
+#ifndef FAIRFIELD_H
+#define FAIRFIELD_H 1
 
 
 #include "TNamed.h"
@@ -37,7 +37,7 @@ public:
 
 
   /** Constructor with name and title **/
-  FairField(const char* name, const char* title = "CBM Magnetic Field");
+  FairField(const char* name, const char* title = "FAIR Magnetic Field");
 
 
   /** Destructor **/

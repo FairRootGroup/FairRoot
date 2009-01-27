@@ -17,8 +17,8 @@
  **/
 
 
-#ifndef CBMSTSTRACKPARAM
-#define CBMSTSTRACKPARAM 1
+#ifndef FAIRSTSTRACKPARAM
+#define FAIRSTSTRACKPARAM 1
 
 
 # include "TObject.h"

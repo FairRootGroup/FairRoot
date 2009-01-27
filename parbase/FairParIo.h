@@ -1,5 +1,5 @@
-#ifndef CBMPARIO_H
-#define CBMPARIO_H
+#ifndef FAIRPARIO_H
+#define FAIRPARIO_H
 
 #include "TObject.h"
 #include "TList.h"
@@ -45,7 +45,7 @@ public:
   ClassDef(FairParIo,0) // Base class for all parameter I/Os
 };
 
-#endif  /* !CBMPARIO_H */
+#endif  /* !FAIRPARIO_H */
 
 
 

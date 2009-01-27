@@ -1,5 +1,5 @@
-#ifndef CBMGEOASCIIIO_H
-#define CBMGEOASCIIIO_H
+#ifndef FAIRGEOASCIIIO_H
+#define FAIRGEOASCIIIO_H
 
 #include "FairGeoIo.h"
 
@@ -46,4 +46,4 @@ private:
   ClassDef(FairGeoAsciiIo,0) // Class for geometry I/O from ASCII file
 };
 
-#endif  /* !CBMGEOASCIIIO_H */
+#endif  /* !FAIRGEOASCIIIO_H */

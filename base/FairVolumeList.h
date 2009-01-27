@@ -1,5 +1,5 @@
-#ifndef CBM_VOLUMELIST_H
-#define CBM_VOLUMELIST_H
+#ifndef FAIR_VOLUMELIST_H
+#define FAIR_VOLUMELIST_H
 
 //#include "FairVolume.h"
 
@@ -42,6 +42,6 @@ class FairVolumeList : public TObject
     ClassDef(FairVolumeList,1) // Volume List
 };
 
-#endif //CBM_VOLUMELIST_H
+#endif //FAIR_VOLUMELIST_H
    
 

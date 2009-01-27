@@ -27,8 +27,8 @@
  **/
 
 
-#ifndef CBMSTACK_H
-#define CBMSTACK_H
+#ifndef FAIRSTACK_H
+#define FAIRSTACK_H
 
 
 #include "FairDetectorList.h"

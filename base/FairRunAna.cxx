@@ -88,7 +88,7 @@ void FairRunAna::Init() {
          fRootManager->AddAndMerge((TFile*) MergedFileList->At(i));
       } 
       //Load geometry from first input
-	  if(LoadGeo)InputFile->Get("CBMGeom");
+	  if(LoadGeo)InputFile->Get("FAIRGeom");
 	  //check that the geometry was loaded if not try all connected files!
 	  if(gGeoManager==0) {
 		 cout << "-I-  Geometry was not found in the input file we will look in the friends if any!" << endl;
@@ -97,7 +97,7 @@ void FairRunAna::Init() {
 		 TSeqCollection *fileList=gROOT->GetListOfFiles();
 		 for (Int_t k=0; k<fileList->GetEntries(); k++){
 			nextfile=(TFile *)fileList->At(k);
-			if(nextfile) nextfile->Get("CBMGeom");
+			if(nextfile) nextfile->Get("FAIRGeom");
 			if(gGeoManager) break;
 		 }	
 		 gFile=currentfile;	

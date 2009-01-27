@@ -4,8 +4,8 @@
 // -------------------------------------------------------------------------
 
 
-#ifndef CBMFIELDFACTORY_H
-#define CBMFIELDFACTORY_H
+#ifndef FAIRFIELDFACTORY_H
+#define FAIRFIELDFACTORY_H
 
 #include "FairField.h"
 
@@ -34,7 +34,7 @@ private:
     FairFieldFactory& operator= (const  FairFieldFactory&) {return *this;}
 
 };
-#endif //CBMFIELDFACTORY_H
+#endif //FAIRFIELDFACTORY_H
 
 
 

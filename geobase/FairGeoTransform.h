@@ -1,5 +1,5 @@
-#ifndef CBMGEOTRANSFORM_H
-#define CBMGEOTRANSFORM_H
+#ifndef FAIRGEOTRANSFORM_H
+#define FAIRGEOTRANSFORM_H
 
 #include "FairGeoVector.h"
 #include "FairGeoRotation.h"
@@ -58,4 +58,4 @@ inline void FairGeoTransform::setTransform(const FairGeoTransform& t)
   trans=t.getTransVector();
 }
 
-#endif /* !CBMGEOTRANSFORM_H */
+#endif /* !FAIRGEOTRANSFORM_H */

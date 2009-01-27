@@ -5,8 +5,8 @@
 
 
 
-#ifndef CBMTUTORIALDETDIGITIZER_H
-#define CBMTUTORIALDETDIGITIZER_H
+#ifndef FAIRTUTORIALDETDIGITIZER_H
+#define FAIRTUTORIALDETDIGITIZER_H
 
 
 #include "FairTask.h"
@@ -26,7 +26,7 @@ public:
     FairTutorialDetDigitizer();
 
     /** Standard constructor **/
-    FairTutorialDetDigitizer(const char *name, const char *title="CBM Task");
+    FairTutorialDetDigitizer(const char *name, const char *title="FAIR Task");
 
     /** Destructor **/
     virtual ~FairTutorialDetDigitizer();
@@ -62,4 +62,4 @@ private:
     ClassDef(FairTutorialDetDigitizer,1)
 
     };
-#endif //CBMTUTORIALDETDIGITIZER_H
+#endif //FAIRTUTORIALDETDIGITIZER_H

@@ -1,5 +1,5 @@
-#ifndef CBMGEOOLDASCIIIO_H
-#define CBMGEOOLDASCIIIO_H
+#ifndef FAIRGEOOLDASCIIIO_H
+#define FAIRGEOOLDASCIIIO_H
 
 #include "FairGeoIo.h"
 
@@ -10,7 +10,7 @@
 class FairGeoNode;
 
 /**
- * Class for geometry I/O from ASCII file in CBM format
+ * Class for geometry I/O from ASCII file in FAIR format
  * @author Ilse koenig 
  */
 class FairGeoOldAsciiIo: public FairGeoIo {
@@ -45,4 +45,4 @@ private:
   ClassDef(FairGeoOldAsciiIo,0) //
 };
 
-#endif  /* !CBMGEOOLDASCIIIO_H */
+#endif  /* !FAIRGEOOLDASCIIIO_H */

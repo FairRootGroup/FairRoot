@@ -1,5 +1,5 @@
-#ifndef CBMRUNIDGENERATOR_H
-#define CBMRUNIDGENERATOR_H
+#ifndef FAIRRUNIDGENERATOR_H
+#define FAIRRUNIDGENERATOR_H
 
 
 typedef unsigned char      uint8_t;

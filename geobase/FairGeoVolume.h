@@ -1,5 +1,5 @@
-#ifndef CBMGEOVOLUME_H
-#define CBMGEOVOLUME_H
+#ifndef FAIRGEOVOLUME_H
+#define FAIRGEOVOLUME_H
 
 #include "FairGeoTransform.h"
 #include "FairGeoMedium.h"
@@ -91,4 +91,4 @@ inline void FairGeoVolume::setMother(const Text_t* s) {
   mother.ToUpper();
 }
 
-#endif /* !CBMGEOVOLUME_H */
+#endif /* !FAIRGEOVOLUME_H */

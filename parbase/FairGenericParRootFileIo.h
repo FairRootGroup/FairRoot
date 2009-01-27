@@ -1,5 +1,5 @@
-#ifndef CBMGENERICPARROOTFILEIO_H
-#define CBMGENERICPARROOTFILEIO_H
+#ifndef FAIRGENERICPARROOTFILEIO_H
+#define FAIRGENERICPARROOTFILEIO_H
 
 #include "FairDetParRootFileIo.h"
 
@@ -13,4 +13,4 @@ public:
   ClassDef(FairGenericParRootFileIo,0) // I/O from ROOT file for parameter containers derived from FairParGenericSet
 };
 
-#endif  /* !CBMGENERICPARROOTFILEIO_H */
+#endif  /* !FAIRGENERICPARROOTFILEIO_H */

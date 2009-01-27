@@ -1,5 +1,5 @@
-#ifndef CBMGEOTRAP_H
-#define CBMGEOTRAP_H
+#ifndef FAIRGEOTRAP_H
+#define FAIRGEOTRAP_H
 
 #include "FairGeoBasicShape.h"
 #include "FairGeoRotation.h"
@@ -19,4 +19,4 @@ public:
   ClassDef(FairGeoTrap,0) // class for geometry shape TRAP
 };
 
-#endif  /* !CBMGEOTRAP_H */
+#endif  /* !FAIRGEOTRAP_H */

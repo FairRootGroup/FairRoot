@@ -1,5 +1,5 @@
-#ifndef CBMGEOTORUS_H
-#define CBMGEOTORUS_H
+#ifndef FAIRGEOTORUS_H
+#define FAIRGEOTORUS_H
 
 #include "FairGeoBasicShape.h"
 
@@ -20,4 +20,4 @@ public:
   ClassDef(FairGeoTorus,0) // class for geometry shape TORUS
 };
 
-#endif  /* !CBMGEOTORUS_H */
+#endif  /* !FAIRGEOTORUS_H */

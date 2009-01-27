@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef CBMRADLENPOINT_H
-#define CBMRADLENPOINT_H
+#ifndef FAIRRADLENPOINT_H
+#define FAIRRADLENPOINT_H
 
 #include "TObject.h"
 #include "TVector3.h"

@@ -24,8 +24,8 @@
  *
  */
 
-#ifndef CBM_BOXGENERATOR_H
-#define CBM_BOXGENERATOR_H
+#ifndef FAIR_BOXGENERATOR_H
+#define FAIR_BOXGENERATOR_H
 
 #include "FairGenerator.h"
 

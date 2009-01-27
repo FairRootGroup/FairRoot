@@ -3,8 +3,8 @@
 // ***        D.Kresan@gsi.de                *** //
 // ********************************************* //
 
-#ifndef CBM_TRAJ_FILTER_H
-#define CBM_TRAJ_FILTER_H 1
+#ifndef FAIR_TRAJ_FILTER_H
+#define FAIR_TRAJ_FILTER_H 1
 
 
 #include "Rtypes.h"

@@ -1,5 +1,5 @@
-#ifndef CBMDETECTOR_H
-#define CBMDETECTOR_H
+#ifndef FAIRDETECTOR_H
+#define FAIRDETECTOR_H
 
 #include "FairModule.h"
 
@@ -45,7 +45,7 @@ public:
     */ 
     virtual void   EndOfEvent(){;}
     /**
-      Registers the produced collections in CBMRootManager.
+      Registers the produced collections in FAIRRootManager.
     */
     virtual void   Register()=0;
 
@@ -81,4 +81,4 @@ private:
     ClassDef(FairDetector,1)
 
 };
-#endif //CBMDETECTOR_H
+#endif //FAIRDETECTOR_H

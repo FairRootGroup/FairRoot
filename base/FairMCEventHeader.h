@@ -12,8 +12,8 @@
  **/
 
 
-#ifndef CBMMCEVENTHEADER_H
-#define CBMMCEVENTHEADER_H 1
+#ifndef FAIRMCEVENTHEADER_H
+#define FAIRMCEVENTHEADER_H 1
 
 
 #include "TNamed.h"

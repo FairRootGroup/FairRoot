@@ -13,8 +13,8 @@
 **/
 
 
-#ifndef CBM_PARTICLEGENERATOR_H
-#define CBM_PARTICLEGENERATOR_H
+#ifndef FAIR_PARTICLEGENERATOR_H
+#define FAIR_PARTICLEGENERATOR_H
 
 
 #include "FairGenerator.h"

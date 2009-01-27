@@ -1,5 +1,5 @@
-#ifndef CBMRUNTIMEDB_H
-#define CBMRUNTIMEDB_H
+#ifndef FAIRRUNTIMEDB_H
+#define FAIRRUNTIMEDB_H
 
 #include "TObject.h"
 #include "TList.h"
@@ -87,4 +87,4 @@ private:
   ClassDef(FairRuntimeDb,0) // Class for runtime database
 };
 
-#endif  /* !CBMRUNTIMEDB_H */
+#endif  /* !FAIRRUNTIMEDB_H */

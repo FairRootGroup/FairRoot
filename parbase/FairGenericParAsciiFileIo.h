@@ -1,5 +1,5 @@
-#ifndef CBMGENERICPARASCIIFILEIO_H
-#define CBMGENERICPARASCIIFILEIO_H
+#ifndef FAIRGENERICPARASCIIFILEIO_H
+#define FAIRGENERICPARASCIIFILEIO_H
 
 #include "FairDetParAsciiFileIo.h"
 
@@ -20,4 +20,4 @@ private:
   ClassDef(FairGenericParAsciiFileIo,0) // I/O from Ascii file for parameter containers derived from FairParGenericSet
 };
 
-#endif  /* !CBMGENERICPARASCIIFILEIO_H */
+#endif  /* !FAIRGENERICPARASCIIFILEIO_H */

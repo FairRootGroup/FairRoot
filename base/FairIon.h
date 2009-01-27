@@ -12,8 +12,8 @@
  **/
 
 
-#ifndef CBMION_H
-#define CBMION_H
+#ifndef FAIRION_H
+#define FAIRION_H
 
 #include "TNamed.h"
 

@@ -15,8 +15,8 @@
  **/
 
 
-#ifndef CBMMCTRACK_H
-#define CBMMCTRACK_H 1
+#ifndef FAIRMCTRACK_H
+#define FAIRMCTRACK_H 1
 
 
 #include "FairDetectorList.h"

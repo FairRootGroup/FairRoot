@@ -4,8 +4,8 @@
  * @version 0.1
  * @since 22.11.07
  */
-#ifndef CBMVPOINT_H
-#define CBMVPOINT_H
+#ifndef FAIRVPOINT_H
+#define FAIRVPOINT_H
 #include "TPolyMarker3D.h"
 class TParticle;
 class TGeoTrack;

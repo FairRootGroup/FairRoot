@@ -1,5 +1,5 @@
-#ifndef CBMGEONODE_H
-#define CBMGEONODE_H
+#ifndef FAIRGEONODE_H
+#define FAIRGEONODE_H
 
 #include "FairGeoVolume.h"
 #include "FairGeoBasicShape.h"
@@ -134,4 +134,4 @@ inline Bool_t FairGeoNode::isSensitive() {
   else return kFALSE;
 }
 
-#endif /* !CBMGEONODE_H */
+#endif /* !FAIRGEONODE_H */

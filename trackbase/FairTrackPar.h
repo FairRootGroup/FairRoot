@@ -1,5 +1,5 @@
-#ifndef CBMSTSTRACKPAR
-#define CBMSTSTRACKPAR 1
+#ifndef FAIRSTSTRACKPAR
+#define FAIRSTSTRACKPAR 1
 
 #include "TObject.h"
 

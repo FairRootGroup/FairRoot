@@ -1,5 +1,5 @@
-#ifndef CBMGEOSET_H
-#define CBMGEOSET_H
+#ifndef FAIRGEOSET_H
+#define FAIRGEOSET_H
 
 
 #include "FairGeoTransform.h"
@@ -97,4 +97,4 @@ public :
 };
 
 
-#endif  /* !CBMGEOSET_H */
+#endif  /* !FAIRGEOSET_H */

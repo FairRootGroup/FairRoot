@@ -69,7 +69,7 @@ SET(GEOBASE_SRCS ${GEOBASE_SRCS} ${GEOBASE_DICTIONARY})
 
 add_library(GeoBase SHARED ${GEOBASE_SRCS})
 target_link_libraries(GeoBase ${ROOT_LIBRARIES})
-set_target_properties(GeoBase PROPERTIES ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(GeoBase PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ################ install ###################
 install(TARGETS GeoBase DESTINATION ${CMAKE_BINARY_DIR}/lib)

@@ -1,5 +1,5 @@
-#ifndef CBMGEOIO_H
-#define CBMGEOIO_H
+#ifndef FAIRGEOIO_H
+#define FAIRGEOIO_H
 
 #include "TObject.h"
 
@@ -29,4 +29,4 @@ private:
   ClassDef(FairGeoIo,0) // 
 };
 
-#endif  /* !CBMGEOIO_H */
+#endif  /* !FAIRGEOIO_H */

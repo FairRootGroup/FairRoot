@@ -19,8 +19,8 @@
 **/
 
 
-#ifndef CBMSHIELDGENERATOR_H
-#define CBMSHIELDGENERATOR_H 1
+#ifndef FAIRSHIELDGENERATOR_H
+#define FAIRSHIELDGENERATOR_H 1
 
 
 #include "FairGenerator.h"

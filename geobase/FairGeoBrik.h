@@ -1,5 +1,5 @@
-#ifndef CBMGEOBRIK_H
-#define CBMGEOBRIK_H
+#ifndef FAIRGEOBRIK_H
+#define FAIRGEOBRIK_H
 
 #include "FairGeoBasicShape.h"
 
@@ -16,4 +16,4 @@ public:
   ClassDef(FairGeoBrik,0) // class for geometry shape BOX or BRIK
 };
 
-#endif  /* !CBMGEOBRIK_H */
+#endif  /* !FAIRGEOBRIK_H */

@@ -12,8 +12,8 @@
  ** Derived classes should implement the Exec method.
  **/
 
-#ifndef CBMTASK_H
-#define CBMTASK_H
+#ifndef FAIRTASK_H
+#define FAIRTASK_H
 
 
 #include "TTask.h"

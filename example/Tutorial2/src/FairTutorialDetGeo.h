@@ -1,5 +1,5 @@
-#ifndef CBMTUTORIALDETGEO_H
-#define CBMTUTORIALDETGEO_H
+#ifndef FAIRTUTORIALDETGEO_H
+#define FAIRTUTORIALDETGEO_H
 
 #include "FairGeoSet.h"
 
@@ -26,4 +26,4 @@ inline Int_t FairTutorialDetGeo::getModNumInMod(const TString& name) {
   return (Int_t)(name[6]-'0')-1; // 
 }
 
-#endif  /*  CBMTUTORIALDETGEO_H */
+#endif  /*  FAIRTUTORIALDETGEO_H */

@@ -11,7 +11,7 @@
 
 // -----   Default constructor   -------------------------------------------
 FairField::FairField() 
- : TNamed("", "CBM Magnetic Field"), fType(0)
+ : TNamed("", "FAIR Magnetic Field"), fType(0)
 { 
 }
 // -------------------------------------------------------------------------

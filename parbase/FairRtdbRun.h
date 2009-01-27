@@ -1,5 +1,5 @@
-#ifndef CBMRTDBRUN_H
-#define CBMRTDBRUN_H
+#ifndef FAIRRTDBRUN_H
+#define FAIRRTDBRUN_H
 
 #include "TNamed.h"
 #include "TList.h"
@@ -74,5 +74,5 @@ inline void FairRtdbRun::setRefRun(Int_t r) {
   }
 }
 
-#endif  /* !CBMRTDBRUN_H */
+#endif  /* !FAIRRTDBRUN_H */
 

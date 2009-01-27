@@ -1,5 +1,5 @@
-#ifndef CBMGEOTUBS_H
-#define CBMGEOTUBS_H
+#ifndef FAIRGEOTUBS_H
+#define FAIRGEOTUBS_H
 
 #include "FairGeoBasicShape.h"
 
@@ -19,4 +19,4 @@ public:
   ClassDef(FairGeoTubs,0) // class for geometry shape TUBS
 };
 
-#endif  /* !CBMGEOTUBS_H */
+#endif  /* !FAIRGEOTUBS_H */

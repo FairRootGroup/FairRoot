@@ -1,5 +1,5 @@
-#ifndef CBMGEOROTATION_H
-#define CBMGEOROTATION_H
+#ifndef FAIRGEOROTATION_H
+#define FAIRGEOROTATION_H
 
 #include "TObject.h"
 
@@ -173,4 +173,4 @@ inline void FairGeoRotation::print() const {
   std::cout<<'\n';
 }
 
-#endif /* !CBMGEOROTATION_H */
+#endif /* !FAIRGEOROTATION_H */

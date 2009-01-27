@@ -1,5 +1,5 @@
-#ifndef CBM_VOLUME_H
-#define CBM_VOLUME_H
+#ifndef FAIR_VOLUME_H
+#define FAIR_VOLUME_H
 
 #include "TNamed.h"
 

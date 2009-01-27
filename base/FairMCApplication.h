@@ -1,6 +1,6 @@
 
-#ifndef CBM_MC_APPLICATION_H
-#define CBM_MC_APPLICATION_H
+#ifndef FAIR_MC_APPLICATION_H
+#define FAIR_MC_APPLICATION_H
 
 #include "FairTask.h"
 #include "TVirtualMCApplication.h"

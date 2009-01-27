@@ -14,8 +14,8 @@
 
 
 
-#ifndef CBMMCPOINT_H
-#define CBMMCPOINT_H
+#ifndef FAIRMCPOINT_H
+#define FAIRMCPOINT_H
 
 #include "TObject.h"
 #include "TVector3.h"

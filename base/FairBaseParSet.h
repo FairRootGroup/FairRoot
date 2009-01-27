@@ -1,5 +1,5 @@
-#ifndef CBMBASEPARSET_H
-#define CBMBASEPARSET_H
+#ifndef FAIRBASEPARSET_H
+#define FAIRBASEPARSET_H
 
 #include "FairParGenericSet.h"
 
@@ -41,4 +41,4 @@ private:
   
 };
 
-#endif /* !CBMBASEPARSET_H */
+#endif /* !FAIRBASEPARSET_H */

@@ -49,6 +49,6 @@ set(EVEDISP_SRCS ${EVEDISP_SRCS} ${EVEDISP_DICTIONARY})
 
 add_library(EventDisplay SHARED ${EVEDISP_SRCS})
 target_link_libraries(EventDisplay ${ROOT_LIBRARIES})
-set_target_properties(EventDisplay PROPERTIES ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(EventDisplay PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 ################ install ###################
 install(TARGETS EventDisplay DESTINATION ${CMAKE_BINARY_DIR}/lib)

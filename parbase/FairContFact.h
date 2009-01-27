@@ -1,5 +1,5 @@
-#ifndef CBMCONTFACT_H
-#define CBMCONTFACT_H
+#ifndef FAIRCONTFACT_H
+#define FAIRCONTFACT_H
 
 #include "TList.h"
 #include "TNamed.h"
@@ -52,4 +52,4 @@ private:
   
 };
 
-#endif  /* !CBMCONTFACT_H */
+#endif  /* !FAIRCONTFACT_H */

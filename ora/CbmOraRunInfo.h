@@ -1,5 +1,5 @@
-#ifndef CBMORARUNINFO_H
-#define CBMORARUNINFO_H
+#ifndef FAIRORARUNINFO_H
+#define FAIRORARUNINFO_H
 
 using namespace std;
 #include "TNamed.h"
@@ -27,4 +27,4 @@ private:
   ClassDef(FairOraRunInfo,0) // Class for run information
 };
 
-#endif  /* !CBMORARUNINFO */
+#endif  /* !FAIRORARUNINFO */

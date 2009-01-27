@@ -19,8 +19,8 @@ the tracking from the macro (M. Al-Turany)
 **/
  
 
-#ifndef CBMPRIMARYGENERATOR_H
-#define CBMPRIMARYGENERATOR_H
+#ifndef FAIRPRIMARYGENERATOR_H
+#define FAIRPRIMARYGENERATOR_H
 
 #include "FairGenerator.h"
 
@@ -46,7 +46,7 @@ class FairPrimaryGenerator : public TNamed
 
 
   /** Constructor with name and title **/
-  FairPrimaryGenerator(const char* name, const char *title="CBM Generator");
+  FairPrimaryGenerator(const char* name, const char *title="FAIR Generator");
 
 
   /** Destructor. **/

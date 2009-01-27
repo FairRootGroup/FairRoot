@@ -5,8 +5,8 @@
  * @since 22.11.07
  */
 
-#ifndef CBMVTRACK_H
-#define CBMVTRACK_H
+#ifndef FAIRVTRACK_H
+#define FAIRVTRACK_H
 #include "TPolyLine3D.h"
 #include "TGeoTrack.h"
 

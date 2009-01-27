@@ -1,5 +1,5 @@
-#ifndef CBMRUNANA_H
-#define CBMRUNANA_H
+#ifndef FAIRRUNANA_H
+#define FAIRRUNANA_H
 
 
 /**
@@ -86,4 +86,4 @@ private:
     ClassDef(FairRunAna ,1)
 
 };
-#endif //CBMRUNANA_H
+#endif //FAIRRUNANA_H

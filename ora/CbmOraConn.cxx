@@ -182,9 +182,9 @@ ClassImp(FairOraConn)
 
 FairOraConn::FairOraConn() {
   // default constructor
-  // defines default values for user ("CBM_ANA_PUBLIC") and the database
-  //   ("db-cbm.oracle.gsi.de", the CBM Oracle database on Linux at GSI)
-  // User CBM_ANA_PUBLIC has Readonly access to the Oracle tables.
+  // defines default values for user ("FAIR_ANA_PUBLIC") and the database
+  //   ("db-cbm.oracle.gsi.de", the FAIR Oracle database on Linux at GSI)
+  // User FAIR_ANA_PUBLIC has Readonly access to the Oracle tables.
   // The connection to Oracle is not opened!
   strcpy(dbName,"db-cbm");
   strcpy(userName,"cbm_ana_public");

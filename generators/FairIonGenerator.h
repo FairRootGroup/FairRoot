@@ -7,8 +7,8 @@
  * 24.10.07  implement constructor with ion name. M. Al-Turany
 */
 
-#ifndef CBMIONGENERATOR_H
-#define CBMIONGENERATOR_H
+#ifndef FAIRIONGENERATOR_H
+#define FAIRIONGENERATOR_H
 
 
 #include "FairGenerator.h"

@@ -1,5 +1,5 @@
-#ifndef CBMBASECONTFACT_H
-#define CBMBASECONTFACT_H
+#ifndef FAIRBASECONTFACT_H
+#define FAIRBASECONTFACT_H
 
 #include "FairContFact.h"
 
@@ -15,4 +15,4 @@ public:
   ClassDef( FairBaseContFact,0) // Factory for all Base parameter containers
 };
 
-#endif  /* !CBMBASECONTFACT_H */
+#endif  /* !FAIRBASECONTFACT_H */

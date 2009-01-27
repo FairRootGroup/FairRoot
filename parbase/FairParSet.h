@@ -1,5 +1,5 @@
-#ifndef CBMPARSET_H
-#define CBMPARSET_H
+#ifndef FAIRPARSET_H
+#define FAIRPARSET_H
 
 #include "TNamed.h"
 //#include "TArrayI.h"
@@ -55,5 +55,5 @@ public:
   ClassDef(FairParSet,1) // Base class for all parameter containers
 };
 
-#endif  /* !CBMPARSET_H */
+#endif  /* !FAIRPARSET_H */
 

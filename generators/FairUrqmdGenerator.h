@@ -16,8 +16,8 @@
 
 
 
-#ifndef CBMURQMDGENERATOR_H
-#define CBMURQMDGENERATOR_H
+#ifndef FAIRURQMDGENERATOR_H
+#define FAIRURQMDGENERATOR_H
 
 
 #include "FairGenerator.h"

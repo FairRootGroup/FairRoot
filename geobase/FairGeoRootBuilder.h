@@ -1,5 +1,5 @@
-#ifndef CBMGEOROOTBUILDER_H
-#define CBMGEOROOTBUILDER_H
+#ifndef FAIRGEOROOTBUILDER_H
+#define FAIRGEOROOTBUILDER_H
 
 #include "FairGeoBuilder.h"
 
@@ -28,4 +28,4 @@ public:
   ClassDef(FairGeoRootBuilder,0) //
 };
 
-#endif /* !CBMGEOROOTBUILDER_H */
+#endif /* !FAIRGEOROOTBUILDER_H */

@@ -7,8 +7,8 @@
 // The Helix can be constructed using the Helix parameter (1/p, v', w', v, w) in SC reference 
 // and the covariance matrix. Or using position and momentum in LAB referance. 
 
-#ifndef CBMSTSTRACKPARP
-#define CBMSTSTRACKPARP 1
+#ifndef FAIRSTSTRACKPARP
+#define FAIRSTSTRACKPARP 1
 #include "TVector3.h"
 #include "FairTrackPar.h"
     

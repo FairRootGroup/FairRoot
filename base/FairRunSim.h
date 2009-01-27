@@ -1,5 +1,5 @@
-#ifndef CBMRUNSIM_H
-#define CBMRUNSIM_H
+#ifndef FAIRRUNSIM_H
+#define FAIRRUNSIM_H
 
 #include "FairRun.h"
 
@@ -41,11 +41,11 @@ public:
     */
     void        AddNewParticle(FairParticle *Particle){fParticles->Add(Particle);}
     /**
-     *       this method is used by the CBMMCApplication
+     *       this method is used by the FAIRMCApplication
     */
     TObjArray*  GetUserDefIons();
     /**
-     *       this method is used by the CBMMCApplication
+     *       this method is used by the FAIRMCApplication
     */
     TObjArray*  GetUserDefParticles();
 
@@ -139,7 +139,7 @@ protected:
     
 };
 
-#endif //CBMRUNSIM_H
+#endif //FAIRRUNSIM_H
 
 
 

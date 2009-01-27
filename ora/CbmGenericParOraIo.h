@@ -1,5 +1,5 @@
-#ifndef CBMGENERICPARORAIO_H
-#define CBMGENERICPARORAIO_H
+#ifndef FAIRGENERICPARORAIO_H
+#define FAIRGENERICPARORAIO_H
 
 #include "FairDetParOraIo.h"
 
@@ -33,5 +33,5 @@ private:
   ClassDef(FairGenericParOraIo,0) // I/O from Oracle for gemeric parameter containers
 };
 
-#endif  /* !CBMGENERICPARORAIO_H */
+#endif  /* !FAIRGENERICPARORAIO_H */
 

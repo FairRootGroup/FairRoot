@@ -1,5 +1,5 @@
-#ifndef CBMPARROOTFILEIO_H
-#define CBMPARROOTFILEIO_H
+#ifndef FAIRPARROOTFILEIO_H
+#define FAIRPARROOTFILEIO_H
 
 #include "FairParIo.h"
 
@@ -67,5 +67,5 @@ public:
   ClassDef(FairParRootFileIo,0) // Parameter I/O from ROOT files
 };
 
-#endif  /* !CBMPARROOTFILEIO_H */
+#endif  /* !FAIRPARROOTFILEIO_H */
 

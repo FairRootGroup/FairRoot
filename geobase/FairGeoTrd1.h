@@ -1,5 +1,5 @@
-#ifndef CBMGEOTRD1_H
-#define CBMGEOTRD1_H
+#ifndef FAIRGEOTRD1_H
+#define FAIRGEOTRD1_H
 
 #include "FairGeoBasicShape.h"
 #include "FairGeoRotation.h"
@@ -19,4 +19,4 @@ public:
   ClassDef(FairGeoTrd1,0) // class for geometry shape TRD1
 };
 
-#endif  /* !CBMGEOTRD1_H */
+#endif  /* !FAIRGEOTRD1_H */

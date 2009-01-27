@@ -1,5 +1,5 @@
-#ifndef CBMPARASCIFILEIIO_H
-#define CBMPARASCIFILEIIO_H
+#ifndef FAIRPARASCIFILEIIO_H
+#define FAIRPARASCIFILEIIO_H
 
 #include "FairParIo.h"
 
@@ -42,5 +42,5 @@ public:
   ClassDef(FairParAsciiFileIo,0) // Parameter I/O from ASCII files
 };
 
-#endif  /* !CBMPARASCIIFILEIO_H */
+#endif  /* !FAIRPARASCIIFILEIO_H */
 

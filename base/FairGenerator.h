@@ -15,8 +15,8 @@ which has to use the method FairPrimaryGenerator::AddTrack.
 **/
 
 
-#ifndef CBMGENERATOR_H
-#define CBMGENERATOR_H
+#ifndef FAIRGENERATOR_H
+#define FAIRGENERATOR_H
 
 #include "TNamed.h"
 
@@ -34,7 +34,7 @@ class FairGenerator : public TNamed
 
 
   /** Constructor with name and title **/
-  FairGenerator(const char* name, const char *title="CBM Generator");
+  FairGenerator(const char* name, const char *title="FAIR Generator");
 
 
   /** Destructor. **/

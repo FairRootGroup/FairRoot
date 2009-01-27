@@ -1,5 +1,5 @@
-#ifndef CBMTUTORIALDET_H
-#define CBMTUTORIALDET_H
+#ifndef FAIRTUTORIALDET_H
+#define FAIRTUTORIALDET_H
 
 #include "FairDetector.h"
 
@@ -34,7 +34,7 @@ class FairTutorialDet: public FairDetector {
     */
     virtual Bool_t ProcessHits( FairVolume *v=0);
 
-    /**       Registers the produced collections in CBMRootManager.     */
+    /**       Registers the produced collections in FAIRRootManager.     */
     virtual void   Register();
 
     /** Gets the produced collections */
@@ -92,4 +92,4 @@ class FairTutorialDet: public FairDetector {
     ClassDef(FairTutorialDet,1)
 };
 
-#endif //CBMTUTORIALDET_H
+#endif //FAIRTUTORIALDET_H

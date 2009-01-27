@@ -1,5 +1,5 @@
-#ifndef CBMGEOG3BUILDER_H
-#define CBMGEOG3BUILDER_H
+#ifndef FAIRGEOG3BUILDER_H
+#define FAIRGEOG3BUILDER_H
 
 #include "FairGeoBuilder.h"
 #include "TMap.h"
@@ -62,4 +62,4 @@ private:
   FairGeoG3Builder& operator= (const FairGeoG3Builder&) {return *this;}
 };
 
-#endif /* !CBMGEOG3BUILDER_H */
+#endif /* !FAIRGEOG3BUILDER_H */

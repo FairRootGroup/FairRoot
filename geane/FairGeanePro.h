@@ -2,8 +2,8 @@
 //
 // Authors: M. Al-Turany, A. Fontana, L. Lavezzi and A. Rotondi
 //
-#ifndef CBMGEANEPRO_H
-#define CBMGEANEPRO_H 1
+#ifndef FAIRGEANEPRO_H
+#define FAIRGEANEPRO_H 1
 
 #include "TNamed.h"
 #include "TVector3.h"

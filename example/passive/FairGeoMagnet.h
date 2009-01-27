@@ -16,4 +16,4 @@ public:
   ClassDef(FairGeoMagnet,0) // Class for the geometry of Magnet
 };
 
-#endif  /* !CBMGEOMAGNET_H */
+#endif  /* !FAIRGEOMAGNET_H */

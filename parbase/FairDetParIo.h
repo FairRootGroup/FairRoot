@@ -1,5 +1,5 @@
-#ifndef CBMDETPARIO_H
-#define CBMDETPARIO_H
+#ifndef FAIRDETPARIO_H
+#define FAIRDETPARIO_H
 
 
 //#include "Rtypes.h"

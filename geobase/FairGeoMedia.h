@@ -1,5 +1,5 @@
-#ifndef CBMGEOMEDIA_H
-#define CBMGEOMEDIA_H
+#ifndef FAIRGEOMEDIA_H
+#define FAIRGEOMEDIA_H
 
 
 #include "TNamed.h"
@@ -43,4 +43,4 @@ private:
   ClassDef(FairGeoMedia,0) //
 };
 
-#endif /* !CBMGEOMEDIA_H */
+#endif /* !FAIRGEOMEDIA_H */

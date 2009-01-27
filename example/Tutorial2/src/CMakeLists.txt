@@ -5,11 +5,11 @@
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR} 
 #put here all directories where header files are located
-${CBMROOT_SOURCE_DIR}/example/Tutorial2/src
-${CBMROOT_SOURCE_DIR}/base
-${CBMROOT_SOURCE_DIR}/example/mcstack
-${CBMROOT_SOURCE_DIR}/parbase
-${CBMROOT_SOURCE_DIR}/geobase
+${FAIRROOT_SOURCE_DIR}/example/Tutorial2/src
+${FAIRROOT_SOURCE_DIR}/base
+${FAIRROOT_SOURCE_DIR}/example/mcstack
+${FAIRROOT_SOURCE_DIR}/parbase
+${FAIRROOT_SOURCE_DIR}/geobase
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -44,7 +44,7 @@ set(TUTORIAL2_SRCS ${TUTORIAL2_SRCS} ${TUTORIAL2_DICTIONARY})
 
 add_library(Tutorial2 SHARED ${TUTORIAL2_SRCS})
 target_link_libraries(Tutorial2 ${ROOT_LIBRARIES})
-set_target_properties(Tutorial2 PROPERTIES  ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(Tutorial2 PROPERTIES  ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ################ install ###################
 install(TARGETS Tutorial2 DESTINATION ${CMAKE_BINARY_DIR}/lib)

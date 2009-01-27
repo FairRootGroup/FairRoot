@@ -1,5 +1,5 @@
-#ifndef CBMGEOBASICSHAPE_H
-#define CBMGEOBASICSHAPE_H
+#ifndef FAIRGEOBASICSHAPE_H
+#define FAIRGEOBASICSHAPE_H
 
 //#include "FairGeoTransform.h"
 
@@ -49,4 +49,4 @@ private:
   
 };
 
-#endif  /* !CBMGEOBASICSHAPE_H */
+#endif  /* !FAIRGEOBASICSHAPE_H */

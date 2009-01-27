@@ -1,5 +1,5 @@
-#ifndef CBMDETPARASCIIFILEIO_H
-#define CBMDETPARASCIIFILEIO_H
+#ifndef FAIRDETPARASCIIFILEIO_H
+#define FAIRDETPARASCIIFILEIO_H
 
 
 #include "FairDetParIo.h"
@@ -34,4 +34,4 @@ protected:
   ClassDef(FairDetParAsciiFileIo,0) // Class for detector parameter I/O from ascii file
 };
 
-#endif  /* !CBMDETPARASCIIFILEIO_H */
+#endif  /* !FAIRDETPARASCIIFILEIO_H */

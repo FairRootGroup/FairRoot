@@ -4,10 +4,10 @@
 // -------------------------------------------------------------------------
 
 
-/** Defines unique identifier for all CBM detector systems **/
+/** Defines unique identifier for all FAIR detector systems **/
 
-#ifndef CBMDETECTORLIST_H
-#define CBMDETECTORLIST_H 1
+#ifndef FAIRDETECTORLIST_H
+#define FAIRDETECTORLIST_H 1
  
 enum DetectorId {kREF, kMVD, kSTS, kRICH, kMUCH, kTRD, kTOF, kECAL, kZDC, kSTT,kTutDet};
 

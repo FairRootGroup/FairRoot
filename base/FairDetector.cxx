@@ -12,7 +12,7 @@
 #include "TROOT.h"
 
 FairDetector::FairDetector(const char * Name, Bool_t Active, Int_t DetId )
-	:FairModule(Name, "CBM Detector", Active),
+	:FairModule(Name, "FAIR Detector", Active),
 	fDetId(DetId)
 {
     flGeoPar = new TList();

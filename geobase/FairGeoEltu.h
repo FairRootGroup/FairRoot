@@ -1,5 +1,5 @@
-#ifndef CBMGEOELTU_H
-#define CBMGEOELTU_H
+#ifndef FAIRGEOELTU_H
+#define FAIRGEOELTU_H
 
 #include "FairGeoBasicShape.h"
 
@@ -23,4 +23,4 @@ public:
   ClassDef(FairGeoEltu,0) //
 };
 
-#endif  /* !CBMGEOELTU_H */
+#endif  /* !FAIRGEOELTU_H */

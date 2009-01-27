@@ -1,5 +1,5 @@
-#ifndef CBMPARAMLIST_H
-#define CBMPARAMLIST_H
+#ifndef FAIRPARAMLIST_H
+#define FAIRPARAMLIST_H
 
 #include "TNamed.h"
 #include "TString.h"
@@ -132,5 +132,5 @@ public:
   ClassDef(FairParamList,0) // Class for lists of parameters (of type FairParamObj and FairParamBinObj)
 };
 
-#endif  /* !CBMPARAMLIST_H */
+#endif  /* !FAIRPARAMLIST_H */
  

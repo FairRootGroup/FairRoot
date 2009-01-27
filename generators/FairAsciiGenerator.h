@@ -19,8 +19,8 @@
 **/
 
 
-#ifndef CBM_ASCIIGENERATOR_H
-#define CBM_ASCIIGENERATOR_H
+#ifndef FAIR_ASCIIGENERATOR_H
+#define FAIR_ASCIIGENERATOR_H
 
 
 #include "FairGenerator.h"

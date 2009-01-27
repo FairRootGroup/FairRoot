@@ -120,7 +120,7 @@ void FairModule::SetGeometryFileName(TString fname, TString geoVer)
              fgeoName=FileName;  
              cout << "---Reading detector geometry from : "<<  FileName.Data() << endl;
 	 }else{
-	     Fatal("CBMModule::SetGeometryFileName", "Detector geometry not found."); 
+	     Fatal("FAIRModule::SetGeometryFileName", "Detector geometry not found."); 
 	 }
 	  cout << "------------------------------------------------------------------"<< endl; 
       }

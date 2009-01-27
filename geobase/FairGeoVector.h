@@ -1,5 +1,5 @@
-#ifndef CBMGEOVECTOR_H
-#define CBMGEOVECTOR_H
+#ifndef FAIRGEOVECTOR_H
+#define FAIRGEOVECTOR_H
 
 #include "TObject.h"
 #include "TMath.h"
@@ -223,7 +223,7 @@ inline istream& operator >> (istream& get,FairGeoVector& v) {
   return get;
 }
 
-#endif /* !CBMGEOVECTOR_H */
+#endif /* !FAIRGEOVECTOR_H */
 
 
 

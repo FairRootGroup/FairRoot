@@ -1,5 +1,5 @@
-#ifndef CBMORAINFO_H
-#define CBMORAINFO_H
+#ifndef FAIRORAINFO_H
+#define FAIRORAINFO_H
 
 #include "TObject.h"
 #include "TString.h"
@@ -22,4 +22,4 @@ private:
   ClassDef(FairOraInfo,0) // utility class for the interface to Oracle
 };
 
-#endif  /* !CBMORAINFO_H */
+#endif  /* !FAIRORAINFO_H */

@@ -1,5 +1,5 @@
-#ifndef CBM_ROOT_MANAGER_H
-#define CBM_ROOT_MANAGER_H
+#ifndef FAIR_ROOT_MANAGER_H
+#define FAIR_ROOT_MANAGER_H
 #include "TObject.h"
 #include "TString.h"
 #include "TFile.h"
@@ -109,6 +109,6 @@ private:
 
 
 
-#endif //CBM_ROOT_MANAGER_H   
+#endif //FAIR_ROOT_MANAGER_H   
    
 

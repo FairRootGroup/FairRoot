@@ -1,5 +1,5 @@
-#ifndef CBMGEOINTERFACE_H
-#define CBMGEOINTERFACE_H
+#ifndef FAIRGEOINTERFACE_H
+#define FAIRGEOINTERFACE_H
 
 #include "TObject.h"
 #include "TString.h"
@@ -87,4 +87,4 @@ private:
   ClassDef(FairGeoInterface,0) //
 };
 
-#endif /* !CBMGEOINTERFACE_H */
+#endif /* !FAIRGEOINTERFACE_H */

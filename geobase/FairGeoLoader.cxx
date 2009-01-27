@@ -45,7 +45,7 @@ FairGeoLoader::FairGeoLoader(const char *Name, const char *title)
 	fgInstance = this;
 	fInterface= new FairGeoInterface;
         if ( strncmp(Name,"TGeo",4) == 0 ){
-          TGeoManager* geom = new TGeoManager("CBMGeom", "CBM geometry");
+          TGeoManager* geom = new TGeoManager("FAIRGeom", "FAIR geometry");
 	  fGeoBuilder=new FairGeoRootBuilder("TGeo builder","geometry builder");
 	  ((FairGeoRootBuilder*)fGeoBuilder)->setGeoManager(geom);
         }else if ( strncmp(Name,"G3Native",8) == 0) {

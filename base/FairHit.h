@@ -3,15 +3,15 @@
 // -----          Created 08/09/04  by V. Friese / D.Bertini           -----
 // -------------------------------------------------------------------------
 
-#ifndef CBMHIT_H
-#define CBMHIT_H
+#ifndef FAIRHIT_H
+#define FAIRHIT_H
 
 
 #include "TObject.h"
 #include "TVector3.h"
 
 /**
- * Abstract base class for reconstructed hits in the CBM detectors.
+ * Abstract base class for reconstructed hits in the FAIR detectors.
   **@author V.Friese <v.friese@gsi.de>
   **@author D.Bertini <d.bertini@gsi.de>
   **@author M.Al-Turany <m.al-turany@gsi.de>

@@ -1,5 +1,5 @@
-#ifndef CBMGEOCOMPOSITEVOLUME_H
-#define CBMGEOCOMPOSITEVOLUME_H
+#ifndef FAIRGEOCOMPOSITEVOLUME_H
+#define FAIRGEOCOMPOSITEVOLUME_H
 
 #include "FairGeoVolume.h"
 
@@ -27,4 +27,4 @@ private:
 
 };
 
-#endif /* !CBMGEOCOMPOSITEVOLUME_H */
+#endif /* !FAIRGEOCOMPOSITEVOLUME_H */

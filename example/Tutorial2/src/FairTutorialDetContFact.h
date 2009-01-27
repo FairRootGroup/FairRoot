@@ -1,5 +1,5 @@
-#ifndef CBMTUTORIALDETCONTFACT_H
-#define CBMTUTORIALDETCONTFACT_H
+#ifndef FAIRTUTORIALDETCONTFACT_H
+#define FAIRTUTORIALDETCONTFACT_H
 
 #include "FairContFact.h"
 
@@ -15,4 +15,4 @@ class FairTutorialDetContFact : public FairContFact {
   ClassDef( FairTutorialDetContFact,0) // Factory for all MyDet parameter containers
 };
 
-#endif  /* !CBMTUTORIALDETCONTFACT_H */
+#endif  /* !FAIRTUTORIALDETCONTFACT_H */

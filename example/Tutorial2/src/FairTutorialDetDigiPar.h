@@ -3,8 +3,8 @@
 // -----                 Created 15/05/08  by F. Uhlig                 -----
 // -------------------------------------------------------------------------
 
-#ifndef CBMTUTORIALDETDIGIPAR_H
-#define CBMTUTORIALDETDIGIPAR_H
+#ifndef FAIRTUTORIALDETDIGIPAR_H
+#define FAIRTUTORIALDETDIGIPAR_H
 
 
 #include "FairParGenericSet.h"

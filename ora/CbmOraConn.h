@@ -1,5 +1,5 @@
-#ifndef CBMORACONN_H
-#define CBMORACONN_H
+#ifndef FAIRORACONN_H
+#define FAIRORACONN_H
 
 #include "string.h"
 #include "TObject.h"
@@ -40,4 +40,4 @@ private:
   ClassDef(FairOraConn,0) // Connection class to Oracle
 };
 
-#endif  /* !CBMORACONN_H */
+#endif  /* !FAIRORACONN_H */

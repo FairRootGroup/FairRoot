@@ -1,5 +1,5 @@
-#ifndef CBMDETPARROOTFILEIO_H
-#define CBMDETPARROOTFILEIO_H
+#ifndef FAIRDETPARROOTFILEIO_H
+#define FAIRDETPARROOTFILEIO_H
 
 #include "FairDetParIo.h"
 //#include "TFile.h"
@@ -24,5 +24,5 @@ protected:
   ClassDef(FairDetParRootFileIo,0) // detector base class for parameter I/O from ROOT file
 };
 
-#endif  /* !CBMDETPARROOTFILEIO_H */
+#endif  /* !FAIRDETPARROOTFILEIO_H */
 

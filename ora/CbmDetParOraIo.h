@@ -1,5 +1,5 @@
-#ifndef CBMDETPARORAIO_H
-#define CBMDETPARORAIO_H
+#ifndef FAIRDETPARORAIO_H
+#define FAIRDETPARORAIO_H
 
 #include "FairDetParIo.h"
 
@@ -40,4 +40,4 @@ private:
   ClassDef(FairDetParOraIo,0) // base class for the detector interface to Oracle
 };
 
-#endif  /* !CBMDETPARORAIO_H */
+#endif  /* !FAIRDETPARORAIO_H */

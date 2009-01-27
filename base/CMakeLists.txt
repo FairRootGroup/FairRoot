@@ -77,7 +77,7 @@ SET(BASE_SRCS ${BASE_SRCS} ${BASE_DICTIONARY})
 ############### build the library #####################
 add_library(Base SHARED ${BASE_SRCS})
 target_link_libraries(Base ${ROOT_LIBRARIES})
-set_target_properties(Base PROPERTIES ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(Base PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ############### install the library ###################
 install(TARGETS Base DESTINATION ${CMAKE_BINARY_DIR}/lib)

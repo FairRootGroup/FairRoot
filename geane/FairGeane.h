@@ -2,8 +2,8 @@
 //
 // Author: M. Al-Turany
 //
-#ifndef CBMGeane_H
-#define CBMGeane_H
+#ifndef FAIRGeane_H
+#define FAIRGeane_H
 
 #include "TObject.h"
 #include "TString.h"

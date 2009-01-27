@@ -1,5 +1,5 @@
-#ifndef CBMPARORAIO_H
-#define CBMPARORAIO_H
+#ifndef FAIRPARORAIO_H
+#define FAIRPARORAIO_H
 
 #include "string.h"
 #include "FairParIo.h"
@@ -33,5 +33,5 @@ private:
   ClassDef(FairParOraIo,0) // Class for parameter I/O from Oracle
 };
 
-#endif  /* !CBMPARORAIO_H */
+#endif  /* !FAIRPARORAIO_H */
 

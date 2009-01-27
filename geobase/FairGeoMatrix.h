@@ -1,5 +1,5 @@
-#ifndef CBMGEOMATRIX_H
-#define CBMGEOMATRIX_H
+#ifndef FAIRGEOMATRIX_H
+#define FAIRGEOMATRIX_H
 
 #include "FairGeoVector.h"
 

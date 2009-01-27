@@ -1,5 +1,5 @@
-#ifndef CBMRUN_H
-#define CBMRUN_H
+#ifndef FAIRRUN_H
+#define FAIRRUN_H
 
 #include "TNamed.h"
 //#include "TString.h"
@@ -27,7 +27,7 @@ public:
     virtual ~FairRun();
     static FairRun * Instance();
     /**
-      Add a CBMTask to the simulation or analysis
+      Add a FAIRTask to the simulation or analysis
     */
     virtual void        AddTask(FairTask *t);
     /**
@@ -67,4 +67,4 @@ protected:
     Bool_t	          fAna;  //! 
     ClassDef(FairRun ,1)
 };
-#endif //CBMRUN_H
+#endif //FAIRRUN_H
