@@ -4,7 +4,7 @@
 
 void Config()
 {
-  CbmRunSim *fRun = CbmRunSim::Instance();
+  FairRunSim *fRun = FairRunSim::Instance();
   TString* gModel = fRun->GetGeoModel();
   TGeant3* geant3 = NULL;
   if ( strncmp(gModel->Data(),"TGeo",4) == 0 ) {
@@ -18,8 +18,8 @@ void Config()
       cout << "-I- G3Config: Geant3 native has been created."
              << endl;
   }
-  // create Cbm Specific Stack
-  CbmStack *st = new CbmStack();
+  // create Fair Specific Stack
+  FairStack *st = new FairStack();
   st->SetMinPoints(0);
   st->StoreSecondaries(kTRUE);
   geant3->SetStack( st ) ;

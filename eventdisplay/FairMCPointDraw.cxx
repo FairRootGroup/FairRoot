@@ -4,9 +4,9 @@
 // -------------------------------------------------------------------------
 
 #include "FairMCPointDraw.h"
-#include "CbmMCPoint.h"
+#include "FairMCPoint.h"
 #include "TEveQuadSet.h"
-#include "CbmRootManager.h"
+#include "FairRootManager.h"
 #include "TClonesArray.h"
 #include "TObjArray.h"
 #include "FairEventManager.h"
@@ -31,7 +31,7 @@ FairMCPointDraw::FairMCPointDraw()
 
 // -----   Standard constructor   ------------------------------------------
 FairMCPointDraw::FairMCPointDraw(const char* name, Color_t color ,Style_t mstyle,Int_t iVerbose) 
-  : CbmTask(name, iVerbose),
+  : FairTask(name, iVerbose),
     fVerbose(iVerbose),
     fPointList(0),
     fEventManager(0),
@@ -45,7 +45,7 @@ FairMCPointDraw::FairMCPointDraw(const char* name, Color_t color ,Style_t mstyle
 InitStatus FairMCPointDraw::Init()
 {
   if(fVerbose>1) cout<<  "FairMCPointDraw::Init()" << endl;
-   CbmRootManager* fManager = CbmRootManager::Instance();
+   FairRootManager* fManager = FairRootManager::Instance();
    fPointList = (TClonesArray *)fManager->GetObject(GetName());
    if(fPointList==0){
       cout << "FairMCPointDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< endl; 
@@ -63,7 +63,7 @@ InitStatus FairMCPointDraw::Init()
 void FairMCPointDraw::Exec(Option_t* option)
 {
    if (IsActive()){
-   CbmMCPoint *p=0;
+   FairMCPoint *p=0;
   // Reset();
 //   TEveQuadSet* q = new TEveQuadSet(GetName());
 //   TEvePointSet* q = new TEvePointSet();
@@ -77,7 +77,7 @@ void FairMCPointDraw::Exec(Option_t* option)
    q->SetMarkerStyle(fStyle);
 
    for (Int_t i=0; i<npoints; ++i) {   
-      p=(CbmMCPoint *)fPointList->At(i);
+      p=(FairMCPoint *)fPointList->At(i);
       //fq->AddQad(p->GetX(),p->GetY(),p->GetZ(),1.5, 1.5);
 	  if(p!=0) {
 		q->SetNextPoint(p->GetX(),p->GetY(),p->GetZ());

@@ -3,5 +3,5 @@ Pro*C/C++: Release 10.1.0.3.0 - Production on Tue Jan 4 10:08:36 2005
 
 Copyright (c) 1982, 2004, Oracle.  All rights reserved.
 
-Error at line 0, column 0 in file src/CbmParOraIo.cxx
+Error at line 0, column 0 in file src/FairParOraIo.cxx
 PCC-F-02394, Input file name and output filename are identical

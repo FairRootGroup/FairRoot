@@ -21,8 +21,8 @@ ${CMAKE_SOURCE_DIR}/example/mcstack
 link_directories( ${LINK_DIRECTORIES})
 
 set(MCSTACK_SRCS
-CbmStack.cxx 
-CbmMCTrack.cxx
+FairStack.cxx 
+FairMCTrack.cxx
 )
 
 if(RULE_CHECKER_FOUND)
@@ -32,10 +32,10 @@ endif(RULE_CHECKER_FOUND)
 # fill list of header files from list of source files
 # by exchanging the file extension
 CHANGE_FILE_EXTENSION(*.cxx *.h MCSTACK_HEADERS "${MCSTACK_SRCS}")
-SET( MCSTACK_HEADERS ${MCSTACK_HEADERS} CbmDetectorList.h )
+SET( MCSTACK_HEADERS ${MCSTACK_HEADERS} FairDetectorList.h )
 
 set(MCSTACK_LINKDEF  MCStackLinkDef.h)
-set(MCSTACK_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/CbmMCStackDict.cxx) 
+set(MCSTACK_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairMCStackDict.cxx) 
 
 ROOT_GENERATE_DICTIONARY("${MCSTACK_HEADERS}" "${MCSTACK_LINKDEF}" "${MCSTACK_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
 

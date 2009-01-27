@@ -4,8 +4,8 @@
 #pragma link off all classes;
 #pragma link off all functions;
  
-#pragma link C++ class  CbmGeane+;
-#pragma link C++ class  CbmGeanePro+;
+#pragma link C++ class  FairGeane+;
+#pragma link C++ class  FairGeanePro+;
 
 #endif
 

@@ -33,12 +33,12 @@ void Config()
    cout << "Geant4 has been created." << endl;
 
 /// create the Specific stack
-   CbmStack *stack = new CbmStack(1000); 
+   FairStack *stack = new FairStack(1000); 
    stack->StoreSecondaries(kTRUE);
    stack->SetMinPoints(0);
    geant4->SetStack(stack);
 
-   if(CbmRunSim::Instance()->IsExtDecayer()){
+   if(FairRunSim::Instance()->IsExtDecayer()){
       TVirtualMCDecayer* decayer = TPythia6Decayer::Instance();
       geant4->SetExternalDecayer(decayer);
    }

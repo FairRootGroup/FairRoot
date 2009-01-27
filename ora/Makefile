@@ -130,18 +130,18 @@ libOra_la_LDFLAGS = -version-info 0:0:0
 
 libOra_la_LIBADD = -L$(ROOTLIBDIR) $(ROOTLIBS) -L$(top_srcdir)/base/ 
 
-include_HEADERS = CbmDetParOraIo.h CbmOraConn.h CbmOraRunInfo.h	\
-			  CbmGenericParOraIo.h CbmOraInfo.h CbmParOraIo.h
+include_HEADERS = FairDetParOraIo.h FairOraConn.h FairOraRunInfo.h	\
+			  FairGenericParOraIo.h FairOraInfo.h FairParOraIo.h
 
 
 noinst_HEADERS = OraLinkDef.h 
 
-libOra_la_SOURCES = CbmDetParOraIo.cxx CbmGenericParOraIo.cxx	\
-			  CbmOraConn.cxx CbmOraInfo.cxx	\
-			  CbmOraDict.cxx  
+libOra_la_SOURCES = FairDetParOraIo.cxx FairGenericParOraIo.cxx	\
+			  FairOraConn.cxx FairOraInfo.cxx	\
+			  FairOraDict.cxx  
 
 
-CLEANFILES = CbmOraDict.cxx CbmOraDict.h *~ libOra.la
+CLEANFILES = FairOraDict.cxx FairOraDict.h *~ libOra.la
 
 SUFFIXES = .cxx .pc
 subdir = ora
@@ -150,8 +150,8 @@ CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(lib_LTLIBRARIES)
 
 libOra_la_DEPENDENCIES =
-am_libOra_la_OBJECTS = CbmDetParOraIo.lo CbmGenericParOraIo.lo \
-	CbmOraConn.lo CbmOraInfo.lo CbmOraDict.lo
+am_libOra_la_OBJECTS = FairDetParOraIo.lo FairGenericParOraIo.lo \
+	FairOraConn.lo FairOraInfo.lo FairOraDict.lo
 libOra_la_OBJECTS = $(am_libOra_la_OBJECTS)
 
 DEFS = -DPACKAGE_NAME=\"cbmroot\" -DPACKAGE_TARNAME=\"cbmroot\" -DPACKAGE_VERSION=\"1.0\" -DPACKAGE_STRING=\"cbmroot\ 1.0\" -DPACKAGE_BUGREPORT=\"f.uhlig@gsi.de\" -DPACKAGE=\"cbmroot\" -DVERSION=\"1.0\" -DSTDC_HEADERS=1 -DHAVE_SYS_TYPES_H=1 -DHAVE_SYS_STAT_H=1 -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 -DHAVE_MEMORY_H=1 -DHAVE_STRINGS_H=1 -DHAVE_INTTYPES_H=1 -DHAVE_STDINT_H=1 -DHAVE_UNISTD_H=1 -DHAVE_DLFCN_H=1 
@@ -161,11 +161,11 @@ LDFLAGS =
 LIBS = 
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
-DEP_FILES = ./$(DEPDIR)/CbmDetParOraIo.Plo \
-	./$(DEPDIR)/CbmGenericParOraIo.Plo \
-	./$(DEPDIR)/CbmOraConn.Plo \
-	./$(DEPDIR)/CbmOraDict.Plo \
-	./$(DEPDIR)/CbmOraInfo.Plo
+DEP_FILES = ./$(DEPDIR)/FairDetParOraIo.Plo \
+	./$(DEPDIR)/FairGenericParOraIo.Plo \
+	./$(DEPDIR)/FairOraConn.Plo \
+	./$(DEPDIR)/FairOraDict.Plo \
+	./$(DEPDIR)/FairOraInfo.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -236,11 +236,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-include ./$(DEPDIR)/CbmDetParOraIo.Plo
-include ./$(DEPDIR)/CbmGenericParOraIo.Plo
-include ./$(DEPDIR)/CbmOraConn.Plo
-include ./$(DEPDIR)/CbmOraDict.Plo
-include ./$(DEPDIR)/CbmOraInfo.Plo
+include ./$(DEPDIR)/FairDetParOraIo.Plo
+include ./$(DEPDIR)/FairGenericParOraIo.Plo
+include ./$(DEPDIR)/FairOraConn.Plo
+include ./$(DEPDIR)/FairOraDict.Plo
+include ./$(DEPDIR)/FairOraInfo.Plo
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -439,7 +439,7 @@ uninstall-am: uninstall-includeHEADERS uninstall-info-am \
 	uninstall-info-am uninstall-libLTLIBRARIES
 
 
-CbmOraDict.cxx: $(include_HEADERS) OraLinkDef.h
+FairOraDict.cxx: $(include_HEADERS) OraLinkDef.h
 	$(ROOTCINT) -f $@ -c -DHAVE_CONFIG_H $(INCLUDES) $^
 .pc.cxx:
 	$(ORACLE_HOME)/bin/proc $(PROCFLAGS) iname=$< oname=$*.cxx

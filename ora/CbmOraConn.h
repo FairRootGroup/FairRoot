@@ -4,7 +4,7 @@
 #include "string.h"
 #include "TObject.h"
 
-class CbmOraConn : public TObject {
+class FairOraConn : public TObject {
 protected:
   char dbName[31];         // database name (may be a remote database)
   char userName[31];       // name of user
@@ -14,8 +14,8 @@ protected:
   char historyDate[21];    // timestamp to retrieve historic data
   Bool_t needsServerCheck; // kTRUE before first call to getRunStart
 public:
-  CbmOraConn();
-  ~CbmOraConn();
+  FairOraConn();
+  ~FairOraConn();
   Bool_t open();
   Bool_t open(char*);
   Bool_t open(char*, char*);
@@ -37,7 +37,7 @@ private:
   char* getPassword();
   Int_t checkServerLoad();
 
-  ClassDef(CbmOraConn,0) // Connection class to Oracle
+  ClassDef(FairOraConn,0) // Connection class to Oracle
 };
 
 #endif  /* !CBMORACONN_H */

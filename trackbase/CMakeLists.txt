@@ -23,10 +23,10 @@ ${ROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 set(TRKBASE_SRCS
-CbmTrackPar.cxx
-CbmTrackParP.cxx
-CbmTrackParH.cxx 
-CbmGeaneUtil.cxx
+FairTrackPar.cxx
+FairTrackParP.cxx
+FairTrackParH.cxx 
+FairGeaneUtil.cxx
 )
 
 if(RULE_CHECKER_FOUND)

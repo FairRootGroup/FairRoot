@@ -6,17 +6,17 @@
 #pragma link off all classes;
 #pragma link off all functions;
  
-#pragma link C++ class  PndMagnet+;
-#pragma link C++ class  PndTarget+;
-#pragma link C++ class  PndPipe+;
-#pragma link C++ class  PndCave+;
+#pragma link C++ class  FairMagnet+;
+#pragma link C++ class  FairTarget+;
+#pragma link C++ class  FairPipe+;
+#pragma link C++ class  FairCave+;
 
-#pragma link C++ class PndGeoCave;
-#pragma link C++ class PndGeoPipe;
-#pragma link C++ class PndGeoTarget;
-#pragma link C++ class PndGeoMagnet;
-#pragma link C++ class PndGeoPassivePar;
-#pragma link C++ class PndPassiveContFact;
+#pragma link C++ class FairGeoCave;
+#pragma link C++ class FairGeoPipe;
+#pragma link C++ class FairGeoTarget;
+#pragma link C++ class FairGeoMagnet;
+#pragma link C++ class FairGeoPassivePar;
+#pragma link C++ class FairPassiveContFact;
 
 #endif
 

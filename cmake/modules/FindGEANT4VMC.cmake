@@ -47,7 +47,7 @@ FIND_PATH(GEANT4VMC_LIBRARY_DIR NAMES libgeant4vmc.so libgeant4vmc.dylib PATHS
   NO_DEFAULT_PATH
 )
 
-# check for existence of header file, which is needed in CbmRunConfiguration
+# check for existence of header file, which is needed in FairRunConfiguration
 # The file is only present in old versions of VMC
 FIND_FILE(GEANT4_MODULAR_PHYSICS_LIST TG4ModularPhysicsList.h PATHS
   ${GEANT4VMC_INCLUDE_DIR}

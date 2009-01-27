@@ -72,10 +72,10 @@ void run_tutorial2(Int_t nEvents = 10)
    
  
   // -----   Create simulation run   ----------------------------------------
-  CbmRunSim* run = new CbmRunSim();
+  FairRunSim* run = new FairRunSim();
   run->SetName("TGeant3");              // Transport engine
   run->SetOutputFile(outFile);          // Output file
-  CbmRuntimeDb* rtdb = run->GetRuntimeDb();
+  FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
   
   // -----   Create media   -------------------------------------------------
@@ -83,18 +83,18 @@ void run_tutorial2(Int_t nEvents = 10)
   // ------------------------------------------------------------------------
   
   // -----   Create geometry   ----------------------------------------------
-  CbmModule* cave= new PndCave("CAVE");
+  FairModule* cave= new  FairCave("CAVE");
   cave->SetGeometryFileName("cave_vacuum.geo"); 
   run->AddModule(cave);
 
-  CbmDetector* tutdet = new CbmTutorialDet("TUTDET", kTRUE);
+  FairDetector* tutdet = new FairTutorialDet("TUTDET", kTRUE);
   tutdet->SetGeometryFileName("double_sector.geo"); 
   run->AddModule(tutdet);
   // ------------------------------------------------------------------------
 
   // -----   Create PrimaryGenerator   --------------------------------------
-  CbmPrimaryGenerator* primGen = new CbmPrimaryGenerator();
-  CbmBoxGenerator* boxGen = new CbmBoxGenerator(partPdgC[chosenPart], 1);
+  FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
+  FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 1);
 
   boxGen->SetThetaRange (   theta,   theta+0.01);
   boxGen->SetPRange     (momentum,momentum+0.01);
@@ -111,14 +111,14 @@ void run_tutorial2(Int_t nEvents = 10)
 
   // -----   Runtime database   ---------------------------------------------
   /*
-  CbmFieldPar* fieldPar = (CbmFieldPar*) rtdb->getContainer("CbmFieldPar");
+  FairFieldPar* fieldPar = (FairFieldPar*) rtdb->getContainer("FairFieldPar");
   fieldPar->SetParameters(magField);
   fieldPar->setChanged();
   fieldPar->setInputVersion(run->GetRunId(),1);
   */
   Bool_t kParameterMerged = kTRUE;
-  CbmParRootFileIo* parOut = new CbmParRootFileIo(kParameterMerged);
-//  CbmParAsciiFileIo* parOut = new CbmParAsciiFileIo();
+  FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
+//  FairParAsciiFileIo* parOut = new FairParAsciiFileIo();
   parOut->open(parFile.Data());
   rtdb->setOutput(parOut);
   rtdb->saveOutput();

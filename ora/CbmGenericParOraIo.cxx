@@ -65,7 +65,7 @@ struct sqlcxp
 static const struct sqlcxp sqlfpn =
 {
     21,
-    "CbmGenericParOraIo.pc"
+    "FairGenericParOraIo.pc"
 };
 
 
@@ -160,15 +160,15 @@ static const short sqlcud0[] =
 //*-- Created : 26/11/2004
 
 //////////////////////////////////////////////////////////////////////////////
-// CbmGenericParOraIo
+// FairGenericParOraIo
 //
 // Interface class to database Oracle for input/output of generic parameter
 // containers
 //////////////////////////////////////////////////////////////////////////////
 
-#include "CbmGenericParOraIo.h"
-#include "CbmParGenericSet.h"
-#include "CbmParamList.h"
+#include "FairGenericParOraIo.h"
+#include "FairParGenericSet.h"
+#include "FairParamList.h"
 #include "TClass.h"
 
 #define SQLCA_STORAGE_CLASS extern
@@ -179,40 +179,40 @@ static const short sqlcud0[] =
 // Include the SQL Communications Area
 #include "sqlca.h"
 
-ClassImp(CbmGenericParOraIo)
+ClassImp(FairGenericParOraIo)
 
 #define NMAX_PARAM 200
 #define LOB_BUFSIZE 32512
 
-CbmGenericParOraIo::CbmGenericParOraIo(CbmOraConn* pC) : CbmDetParOraIo(pC) {
+FairGenericParOraIo::FairGenericParOraIo(FairOraConn* pC) : FairDetParOraIo(pC) {
   // constructor
-  // sets the name of the I/O class "CbmGenericParIo"
+  // sets the name of the I/O class "FairGenericParIo"
   // gets the pointer to the connection class
-  fName="CbmGenericParIo";
+  fName="FairGenericParIo";
 }
 
-Bool_t CbmGenericParOraIo::init(CbmParSet* pPar,Int_t* set) {
-  // calls read(CbmParGenericSet*,Int_t*)
-  if (pPar->InheritsFrom("CbmParGenericSet")) return read((CbmParGenericSet*)pPar);
-  Error("CbmGenericParOraIo::init(CbmParSet*,Int_t*)",
-        "%s does not inherit from CbmParGenericSet",pPar->GetName());
+Bool_t FairGenericParOraIo::init(FairParSet* pPar,Int_t* set) {
+  // calls read(FairParGenericSet*,Int_t*)
+  if (pPar->InheritsFrom("FairParGenericSet")) return read((FairParGenericSet*)pPar);
+  Error("FairGenericParOraIo::init(FairParSet*,Int_t*)",
+        "%s does not inherit from FairParGenericSet",pPar->GetName());
   return kFALSE;
 }
 
-Int_t CbmGenericParOraIo::write(CbmParSet* pPar) {
-  // calls write(CbmParGenericSet*)
+Int_t FairGenericParOraIo::write(FairParSet* pPar) {
+  // calls write(FairParGenericSet*)
   Int_t runStart=getRunStart(pPar);
   if (runStart<=0) return -1;
-  if (pPar->InheritsFrom("CbmParGenericSet")) return writeSet((CbmParGenericSet*)pPar);
-  Error("CbmGenericParOraIo::write(CbmParSet*)",
-        "%s does not inherit from CbmParGenericSet",pPar->GetName());
+  if (pPar->InheritsFrom("FairParGenericSet")) return writeSet((FairParGenericSet*)pPar);
+  Error("FairGenericParOraIo::write(FairParSet*)",
+        "%s does not inherit from FairParGenericSet",pPar->GetName());
   return -1;
 }
 
-Bool_t CbmGenericParOraIo::read(CbmParGenericSet* pPar) {
+Bool_t FairGenericParOraIo::read(FairParGenericSet* pPar) {
   // reads the parameters and fills the container
   Int_t runStart=getRunStart(pPar);
-  CbmParOraSet* pSet=getOraSet(pPar);
+  FairParOraSet* pSet=getOraSet(pPar);
   if (pSet->contextId==-1 || runStart==-1) {
     pPar->setInputVersion(-1,inputNumber);
     return kFALSE;
@@ -254,7 +254,7 @@ struct { unsigned short len; unsigned char arr[82]; } p_type[200];
     } ana_Ind;
   /* EXEC SQL END DECLARE SECTION; */ 
 
-  /* EXEC SQL WHENEVER SQLERROR DO showSqlError("read(CbmParGenericSet*)"); */ 
+  /* EXEC SQL WHENEVER SQLERROR DO showSqlError("read(FairParGenericSet*)"); */ 
 
   /* EXEC SQL WHENEVER NOT FOUND CONTINUE; */ 
 
@@ -385,11 +385,11 @@ ere param_context_id=:b2 order by par_value_id ";
   sqlstm.sqpadto = sqlstm.sqadto;
   sqlstm.sqptdso = sqlstm.sqtdso;
   sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-  if (sqlca.sqlcode < 0) showSqlError("read(CbmParGenericSet*)");
+  if (sqlca.sqlcode < 0) showSqlError("read(FairParGenericSet*)");
 }
 
 
-  CbmParamList* paramList = new CbmParamList;
+  FairParamList* paramList = new FairParamList;
   TList* blobList=new TList;
   for(Int_t i=0;i<sqlca.sqlerrd[2];i++) {
     if (ana_Ind.p_name_Ind[i]!=-1 && ana_Ind.p_value_Ind[i]!=-1) {
@@ -403,24 +403,24 @@ ere param_context_id=:b2 order by par_value_id ";
         paramList->add((char*)(ana.p_name[i].arr),(char*)(ana.p_value[i].arr),
                        ana.p_type[i].arr[0],ana.p_num[i]);
       else {
-        CbmParamBinObj* o=new CbmParamBinObj;
+        FairParamBinObj* o=new FairParamBinObj;
         o->SetName((char*)(ana.p_name[i].arr));
         o->setParamType((char*)(ana.p_type[i].arr));
         if (ana.p_is_basic[i]==0) o->setClassVersion(ana.p_class_vers[i]);
         paramList->getBinaryList()->Add(o);
         Int_t lobId;
         sscanf((char*)(ana.p_value[i].arr),"%i",&lobId);
-        CbmParOraBlob* ob=new CbmParOraBlob(o,lobId);
+        FairParOraBlob* ob=new FairParOraBlob(o,lobId);
         blobList->Add(ob);
       }
     }
   }
   TIter next(blobList);
-  CbmParOraBlob* b;
+  FairParOraBlob* b;
   Bool_t rc;
   if (sqlca.sqlerrd[2]==0) rc=kFALSE;
   else rc=kTRUE;
-  while ((b=(CbmParOraBlob*)next())!=0 && rc) {
+  while ((b=(FairParOraBlob*)next())!=0 && rc) {
     rc=readBlob(b->binaryParam,b->blobId);
   }    
   if (rc) rc=pPar->getParams(paramList);
@@ -435,7 +435,7 @@ ere param_context_id=:b2 order by par_value_id ";
   return rc;
 }
 
-Bool_t CbmGenericParOraIo::readBlob(CbmParamBinObj* obj,Int_t lobId) {
+Bool_t FairGenericParOraIo::readBlob(FairParamBinObj* obj,Int_t lobId) {
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
     int            id;
@@ -600,7 +600,7 @@ notfound:
   return kFALSE;
 }
 
-Int_t CbmGenericParOraIo::createParamVers(CbmParGenericSet* pPar) {
+Int_t FairGenericParOraIo::createParamVers(FairParGenericSet* pPar) {
   // create analysis parameter version in Oracle
   // returns version number or -1 if error occurred
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
@@ -741,7 +741,7 @@ not_found:
   return vers;    
 };
 
-Int_t CbmGenericParOraIo::writeSet(CbmParGenericSet* pPar) {
+Int_t FairGenericParOraIo::writeSet(FairParGenericSet* pPar) {
   // write analysis parameters to Oracle
   Int_t runStart=getRunStart();
   if (runStart==-1) {
@@ -768,16 +768,16 @@ Int_t CbmGenericParOraIo::writeSet(CbmParGenericSet* pPar) {
     int rows_to_insert;
   /* EXEC SQL END DECLARE SECTION; */ 
 
-  CbmParamList* paramList = new CbmParamList;
+  FairParamList* paramList = new FairParamList;
   pPar->putParams(paramList);
   TList* pList=paramList->getList();
   TIter next(pList);
-  CbmParamObj* po;
+  FairParamObj* po;
   TList* pBinList=paramList->getBinaryList();
   TIter nextBin(pBinList);
-  CbmParamBinObj* pbo;
+  FairParamBinObj* pbo;
   Int_t n=0, m=0;
-  while ((po=(CbmParamObj*)next())) {
+  while ((po=(FairParamObj*)next())) {
     vers[n]=version;
     strcpy(p_name[n],po->GetName());
     strcpy(p_value[n],po->getParamValue());
@@ -909,7 +909,7 @@ num) values (:b1,:b2,:b3,:b4,:b5,:b6,:b7,:b8)";
   }
   m=n;
   n=0;
-  while ((pbo=(CbmParamBinObj*)nextBin())) {
+  while ((pbo=(FairParamBinObj*)nextBin())) {
     vers[n]=version;
     strcpy(p_name[n],pbo->GetName());
     strcpy(p_type[n],pbo->getParamType());
@@ -1058,14 +1058,14 @@ num,class_version) values (:b1,:b2,:b3,:b4,:b5,:b6,:b7,:b8,:b9:b10)";
   delete paramList;
   return version;
 not_found:
-  showSqlError("writeSet(CbmParGenericSet*)");
+  showSqlError("writeSet(FairParGenericSet*)");
   rollback();
   pPar->setChanged(kFALSE);
   delete paramList;
   return -1;
 }
 
-Int_t CbmGenericParOraIo::storeBlob(UChar_t* pValue, Int_t pLength) {
+Int_t FairGenericParOraIo::storeBlob(UChar_t* pValue, Int_t pLength) {
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
     unsigned char buffer[LOB_BUFSIZE];
@@ -1258,7 +1258,7 @@ errorfound:
   return -1;
 }
 
-Bool_t CbmGenericParOraIo::readFromLoadingTable(CbmParGenericSet* pPar,Int_t version) {
+Bool_t FairGenericParOraIo::readFromLoadingTable(FairParGenericSet* pPar,Int_t version) {
   // reads the analysis parameters from the LOAD table and fills the container
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
@@ -1289,7 +1289,7 @@ struct { unsigned short len; unsigned char arr[82]; } p_type[200];
     } cl_Ind;
   /* EXEC SQL END DECLARE SECTION; */ 
 
-  /* EXEC SQL WHENEVER SQLERROR DO showSqlError("readFromLoadingTable(CbmParGenericSet*,Int_t*)"); */ 
+  /* EXEC SQL WHENEVER SQLERROR DO showSqlError("readFromLoadingTable(FairParGenericSet*,Int_t*)"); */ 
 
   /* EXEC SQL WHENEVER NOT FOUND CONTINUE; */ 
 
@@ -1399,11 +1399,11 @@ s_load_id=:b2";
   sqlstm.sqpadto = sqlstm.sqadto;
   sqlstm.sqptdso = sqlstm.sqtdso;
   sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-  if (sqlca.sqlcode < 0) showSqlError("readFromLoadingTable(CbmParGenericSet*,Int_t*)");
+  if (sqlca.sqlcode < 0) showSqlError("readFromLoadingTable(FairParGenericSet*,Int_t*)");
 }
 
 
-  CbmParamList* paramList = new CbmParamList;
+  FairParamList* paramList = new FairParamList;
   TList* blobList=new TList;
   for(Int_t i=0;i<sqlca.sqlerrd[2];i++) {
     if (cl_Ind.p_name_Ind[i]!=-1 && cl_Ind.p_value_Ind[i]!=-1) {
@@ -1414,22 +1414,22 @@ s_load_id=:b2";
         paramList->add((char*)(cl.p_name[i].arr),(char*)(cl.p_value[i].arr),
                        cl.p_type[i].arr[0],cl.p_num[i]);
       else {
-        CbmParamBinObj* o=new CbmParamBinObj;
+        FairParamBinObj* o=new FairParamBinObj;
         o->SetName((char*)(cl.p_name[i].arr));
         o->setParamType((char*)(cl.p_type[i].arr));
         if (cl.p_is_basic[i]==0) o->setClassVersion(cl.p_class_vers[i]);
         paramList->getBinaryList()->Add(o);
         Int_t lobId;
         sscanf((char*)(cl.p_value[i].arr),"%i",&lobId);
-        CbmParOraBlob* ob=new CbmParOraBlob(o,lobId);
+        FairParOraBlob* ob=new FairParOraBlob(o,lobId);
         blobList->Add(ob);
       }
     }
   }
   TIter next(blobList);
-  CbmParOraBlob* b;
+  FairParOraBlob* b;
   Bool_t rc=kTRUE;
-  while ((b=(CbmParOraBlob*)next())!=0 && rc) {
+  while ((b=(FairParOraBlob*)next())!=0 && rc) {
     rc=readLoadBlob(b->binaryParam,b->blobId);
   }
   if (rc && sqlca.sqlerrd[2]>0) {
@@ -1446,7 +1446,7 @@ s_load_id=:b2";
   return rc;
 }
 
-Bool_t CbmGenericParOraIo::readLoadBlob(CbmParamBinObj* obj,Int_t lobId) {
+Bool_t FairGenericParOraIo::readLoadBlob(FairParamBinObj* obj,Int_t lobId) {
   // reads the BLOB from the LOAD table
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 

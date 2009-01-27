@@ -24,8 +24,8 @@ link_directories( ${LINK_DIRECTORIES})
 
 
 set(GEANE_SRCS
-CbmGeane.cxx       
-CbmGeanePro.cxx
+FairGeane.cxx       
+FairGeanePro.cxx
 )
 
 if(RULE_CHECKER_FOUND)

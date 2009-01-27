@@ -19,16 +19,16 @@ ${ROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 set(PASSIVE_SRCS
-PndCave.cxx            
-PndGeoCave.cxx        
-PndGeoMagnet.cxx      
-PndGeoPassivePar.cxx  
-PndGeoPipe.cxx        
-PndGeoTarget.cxx      
-PndMagnet.cxx         
-PndPassiveContFact.cxx
-PndPipe.cxx           
-PndTarget.cxx 
+FairCave.cxx            
+FairGeoCave.cxx        
+FairGeoMagnet.cxx      
+FairGeoPassivePar.cxx  
+FairGeoPipe.cxx        
+FairGeoTarget.cxx      
+FairMagnet.cxx         
+FairPassiveContFact.cxx
+FairPipe.cxx           
+FairTarget.cxx 
 )
 
 if(RULE_CHECKER_FOUND)
@@ -40,7 +40,7 @@ endif(RULE_CHECKER_FOUND)
 CHANGE_FILE_EXTENSION(*.cxx *.h PASSIVE_HEADERS "${PASSIVE_SRCS}")
 
 set(PASSIVE_LINKDEF  PassiveLinkDef.h)
-set(PASSIVE_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/PndPassiveDict.cxx) 
+set(PASSIVE_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairPassiveDict.cxx) 
 
 ROOT_GENERATE_DICTIONARY("${PASSIVE_HEADERS}" "${PASSIVE_LINKDEF}" "${PASSIVE_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
 

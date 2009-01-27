@@ -65,7 +65,7 @@ struct sqlcxp
 static const struct sqlcxp sqlfpn =
 {
     17,
-    "CbmDetParOraIo.pc"
+    "FairDetParOraIo.pc"
 };
 
 
@@ -146,7 +146,7 @@ static const short sqlcud0[] =
 //*-- Created : 26/11/2004
 
 //////////////////////////////////////////////////////////////////////////////
-// CbmDetParOraIo
+// FairDetParOraIo
 //
 // Base class for all detector I/O  classes from database Oracle
 // (uses the Oracle C/C++ precompiler)
@@ -154,12 +154,12 @@ static const short sqlcud0[] =
 //////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
-#include "CbmOraConn.h"
-#include "CbmDetParOraIo.h"
-#include "CbmRun.h"
-#include "CbmRuntimeDb.h"
-#include "CbmRtdbRun.h"
-#include "CbmParSet.h"
+#include "FairOraConn.h"
+#include "FairDetParOraIo.h"
+#include "FairRun.h"
+#include "FairRuntimeDb.h"
+#include "FairRtdbRun.h"
+#include "FairParSet.h"
 #include "TClass.h"
 #include <iostream>
 #include <iomanip>
@@ -172,21 +172,21 @@ using namespace std;
 // Include the SQL Communications Area
 #include "sqlca.h"
  
-ClassImp(CbmDetParOraIo)
-ClassImp(CbmParOraSet)
+ClassImp(FairDetParOraIo)
+ClassImp(FairParOraSet)
 
-CbmParOraSet::CbmParOraSet(const char* pName) {
+FairParOraSet::FairParOraSet(const char* pName) {
   SetName(pName);
   contextId=-1;
   clearVersDate();
 }
 
-void CbmParOraSet::clearVersDate() {
+void FairParOraSet::clearVersDate() {
   versDate[0]=-1;
   versDate[1]=1.E+12;
 }
 
-CbmDetParOraIo::CbmDetParOraIo(CbmOraConn* pC) : CbmDetParIo() {
+FairDetParOraIo::FairDetParOraIo(FairOraConn* pC) : FairDetParIo() {
   // constructor gets a pointer to the connection class
   pConn=pC;
   actContVers=0;
@@ -194,7 +194,7 @@ CbmDetParOraIo::CbmDetParOraIo(CbmOraConn* pC) : CbmDetParIo() {
   containerList=0;
 }
 
-CbmDetParOraIo::~CbmDetParOraIo(void) {
+FairDetParOraIo::~FairDetParOraIo(void) {
   // destructor
   if (containerList) {
     containerList->Delete();
@@ -203,7 +203,7 @@ CbmDetParOraIo::~CbmDetParOraIo(void) {
   } 
 }
 
-void CbmDetParOraIo::commit(void) {
+void FairDetParOraIo::commit(void) {
   // commits all changes
   /* EXEC SQL COMMIT WORK; */ 
 
@@ -229,7 +229,7 @@ void CbmDetParOraIo::commit(void) {
 }
  
 
-void CbmDetParOraIo::rollback(void) {
+void FairDetParOraIo::rollback(void) {
   // discards all changes since last commit
   /* EXEC SQL ROLLBACK WORK; */ 
 
@@ -255,13 +255,13 @@ void CbmDetParOraIo::rollback(void) {
 }
 
 
-void CbmDetParOraIo::showSqlError(const char* f) {
+void FairDetParOraIo::showSqlError(const char* f) {
   // shows SQL error messages 
   Error(f,"\n%s",sqlca.sqlerrm.sqlerrmc);
 }
 
 
-Int_t CbmDetParOraIo::getRunStart(CbmParSet* pPar) {
+Int_t FairDetParOraIo::getRunStart(FairParSet* pPar) {
   // Gets the actual run id from the runtime database and compares it with
   // the last used actRunId for fetching data.
   // If they are different, the run start time (converted to ansi C time) is
@@ -269,7 +269,7 @@ Int_t CbmDetParOraIo::getRunStart(CbmParSet* pPar) {
   // run_id and runStart
   actRunId=-1;
   Int_t runStart=-1;
-  actContVers=(CbmRtdbRun*)CbmRun::Instance()->GetRuntimeDb()->getCurrentRun();
+  actContVers=(FairRtdbRun*)FairRun::Instance()->GetRuntimeDb()->getCurrentRun();
   if (!actContVers) {
     Error("getRunStart()","current run not set in runtime database");
     return -1;
@@ -286,35 +286,35 @@ Int_t CbmDetParOraIo::getRunStart(CbmParSet* pPar) {
 }
 
 
-const char* CbmDetParOraIo::getHistoryDate() {
+const char* FairDetParOraIo::getHistoryDate() {
   // returns the timestamp set by the user to read historic data
   return pConn->getHistoryDate();
 }
 
 
-Int_t CbmDetParOraIo::getPredefVersion(CbmParSet* pPar) {
+Int_t FairDetParOraIo::getPredefVersion(FairParSet* pPar) {
   // finds out if a version for the parameter container has been set by
   // the user (typically by defining a reference run for initialisation
   // in the macro
   // returns -1, if no version found 
-  CbmParVersion* pv=(CbmParVersion*)actContVers->getParVersion((char*)pPar->GetName());
+  FairParVersion* pv=(FairParVersion*)actContVers->getParVersion((char*)pPar->GetName());
   if (pv) return pv->getInputVersion(inputNumber);
   else return -1;
 }
 
 
-CbmParOraSet* CbmDetParOraIo::getOraSet(CbmParSet* pPar) {
+FairParOraSet* FairDetParOraIo::getOraSet(FairParSet* pPar) {
   if (!containerList) containerList=new TList;
-  CbmParOraSet* pSet=(CbmParOraSet*)(containerList->FindObject(pPar->GetName()));
+  FairParOraSet* pSet=(FairParOraSet*)(containerList->FindObject(pPar->GetName()));
   if (!pSet) { 
-    pSet=new CbmParOraSet(pPar->GetName());
+    pSet=new FairParOraSet(pPar->GetName());
     pSet->contextId=getContextId(pPar->IsA()->GetName(),pPar->getParamContext());
     containerList->Add(pSet);
   }
   return pSet;
 }
 
-Int_t CbmDetParOraIo::getContextId(const char* className, const char* paramContext) {
+Int_t FairDetParOraIo::getContextId(const char* className, const char* paramContext) {
   // return the parameter_context_id
   if (strlen(paramContext)==0) return -1;
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
@@ -393,12 +393,12 @@ Int_t CbmDetParOraIo::getContextId(const char* className, const char* paramConte
   // cout<<"Id of context "<<paramContext<<": "<<context_id<<endl;
   return context_id;
 not_found:
-  Error("CbmDetParOraIo::getContextId","\nContext %s for class %s not found!",
+  Error("FairDetParOraIo::getContextId","\nContext %s for class %s not found!",
         p_context,p_class);
   return -1;
 };
 
-void CbmDetParOraIo::setChanged(CbmParSet* pPar) {
+void FairDetParOraIo::setChanged(FairParSet* pPar) {
   // sets the changed flag, the version (id of actual run) and the comment
   pPar->setChanged();
   pPar->setInputVersion(getActRunId(),inputNumber);

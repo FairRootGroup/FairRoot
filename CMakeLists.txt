@@ -17,7 +17,7 @@ project(CBMROOT)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 # Load some basic macros which are needed later on
-include(CbmMacros)
+include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
@@ -48,7 +48,7 @@ if(NOT CBMROOT_MINIMAL)
   SET(SIMPATH $ENV{SIMPATH})
 else(NOT CBMROOT_MINIMAL)
   if(NOT DEFINED ENV{ROOTSYS})
-    MESSAGE(FATAL_ERROR "You did not define the environment variable ROOTSYS which is nedded for the installation of the minimal version of CbmRoot. Please set this variable and execute cmake again.")
+    MESSAGE(FATAL_ERROR "You did not define the environment variable ROOTSYS which is nedded for the installation of the minimal version of FairRoot. Please set this variable and execute cmake again.")
   endif(NOT DEFINED ENV{ROOTSYS})
 endif(NOT CBMROOT_MINIMAL)
 
@@ -58,7 +58,7 @@ endif(NOT CBMROOT_MINIMAL)
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 if(CBMROOT_MINIMAL)
-  MESSAGE("******* Install minimal CbmRoot Version ********")
+  MESSAGE("******* Install minimal FairRoot Version ********")
   find_package(ROOT REQUIRED)
 else(CBMROOT_MINIMAL)
   find_package(ROOT REQUIRED)

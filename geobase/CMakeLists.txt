@@ -17,37 +17,37 @@ link_directories( ${LINK_DIRECTORIES})
 
 
 set(GEOBASE_SRCS
-CbmGeoCone.cxx	
-CbmGeoCons.cxx 
-CbmGeoEltu.cxx 
-CbmGeoBuilder.cxx  
-CbmGeoInterface.cxx  
-CbmGeoIo.cxx  
-CbmGeoLoader.cxx  
-CbmGeoMatrix.cxx 
-CbmGeoMedia.cxx	 
-CbmGeoMedium.cxx 
-CbmGeoNode.cxx 
-CbmGeoOldAsciiIo.cxx 
-CbmGeoPcon.cxx  
-CbmGeoPgon.cxx 
-CbmGeoRootBuilder.cxx  
-CbmGeoRotation.cxx 
-CbmGeoSet.cxx  
-CbmGeoShapes.cxx 
-CbmGeoSphe.cxx  
-CbmGeoTransform.cxx 
-CbmGeoTrap.cxx	
-CbmGeoTrd1.cxx 
-CbmGeoTube.cxx  
-CbmGeoTubs.cxx  
-CbmGeoTorus.cxx 
-CbmGeoVector.cxx  
-CbmGeoVolume.cxx 
-CbmGeoCompositeVolume.cxx 
-CbmGeoAsciiIo.cxx	
-CbmGeoBrik.cxx 
-CbmGeoBasicShape.cxx 
+FairGeoCone.cxx	
+FairGeoCons.cxx 
+FairGeoEltu.cxx 
+FairGeoBuilder.cxx  
+FairGeoInterface.cxx  
+FairGeoIo.cxx  
+FairGeoLoader.cxx  
+FairGeoMatrix.cxx 
+FairGeoMedia.cxx	 
+FairGeoMedium.cxx 
+FairGeoNode.cxx 
+FairGeoOldAsciiIo.cxx 
+FairGeoPcon.cxx  
+FairGeoPgon.cxx 
+FairGeoRootBuilder.cxx  
+FairGeoRotation.cxx 
+FairGeoSet.cxx  
+FairGeoShapes.cxx 
+FairGeoSphe.cxx  
+FairGeoTransform.cxx 
+FairGeoTrap.cxx	
+FairGeoTrd1.cxx 
+FairGeoTube.cxx  
+FairGeoTubs.cxx  
+FairGeoTorus.cxx 
+FairGeoVector.cxx  
+FairGeoVolume.cxx 
+FairGeoCompositeVolume.cxx 
+FairGeoAsciiIo.cxx	
+FairGeoBrik.cxx 
+FairGeoBasicShape.cxx 
 )
 
 if(RULE_CHECKER_FOUND)
@@ -59,7 +59,7 @@ endif(RULE_CHECKER_FOUND)
 CHANGE_FILE_EXTENSION(*.cxx *.h GEOBASE_HEADERS "${GEOBASE_SRCS}")
 
 
-set(GEOBASE_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/CbmGeoDict.cxx) 
+set(GEOBASE_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairGeoDict.cxx) 
 ROOT_GENERATE_DICTIONARY("${GEOBASE_HEADERS}" "${GEOBASE_LINKDEF}" "${GEOBASE_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
 
 

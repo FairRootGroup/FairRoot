@@ -7,8 +7,8 @@ void Config()
   gMC3= new  TGeant3TGeo("C++ Interface to Geant3");
   cout << "-I- G3Config: Geant3 with TGeo has been created for Geane."
        << endl;
-  // create Cbm Specific Stack
-  CbmStack *st = new CbmStack(10);
+  // create Fair Specific Stack
+  FairStack *st = new FairStack(10);
   gMC3->SetStack( st ) ;
 
   // ******* GEANEconfiguration for simulated Runs  *******

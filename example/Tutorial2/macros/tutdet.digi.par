@@ -7,11 +7,11 @@
 # StationNr global_rot nSectors
 # sect iType x0        y0       angle    lx       ly      dx       dy     stereo
 #################################################################
-[CbmTutorialDetDigiPar]
+[FairTutorialDetDigiPar]
 //-------------------------------------------------------------
-CbmTutorialDetDigiStations: i 8
-CbmTutorialDetDigiSectorsPerStation: i 84, 88, 60, 72, 100, 100, 120, 132
-CbmTutorialDetDigiPar: fBin  \
+FairTutorialDetDigiStations: i 8
+FairTutorialDetDigiSectorsPerStation: i 84, 88, 60, 72, 100, 100, 120, 132
+FairTutorialDetDigiPar: fBin  \
                   1.0, 0.0, 84.0, \
                   1.0,   3.0,    3.650,     1.000,      0.0,    4.70,     2.00,   0.0060,   0.0000,    15.0, \
                   2.0,   3.0,    3.000,     3.000,      0.0,    6.00,     2.00,   0.0060,   0.0000,    15.0, \

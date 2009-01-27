@@ -65,7 +65,7 @@ struct sqlcxp
 static const struct sqlcxp sqlfpn =
 {
     13,
-    "CbmOraConn.pc"
+    "FairOraConn.pc"
 };
 
 
@@ -152,14 +152,14 @@ static const short sqlcud0[] =
 //*-- Created : 26/11/2004 by I.Koenig
 
 /////////////////////////////////////////////////////////////
-// CbmOraConn
+// FairOraConn
 //
 // Connection class to database Oracle 
 // (uses the Oracle C/C++ precompiler)
 //
 /////////////////////////////////////////////////////////////
 using namespace std;
-#include "CbmOraConn.h"
+#include "FairOraConn.h"
 #include "TRandom.h"
 #include "stdio.h"
 #include "iostream>
@@ -178,9 +178,9 @@ using namespace std;
 // SQL Communications Area
 #include "sqlca.h"
  
-ClassImp(CbmOraConn)
+ClassImp(FairOraConn)
 
-CbmOraConn::CbmOraConn() {
+FairOraConn::FairOraConn() {
   // default constructor
   // defines default values for user ("CBM_ANA_PUBLIC") and the database
   //   ("db-cbm.oracle.gsi.de", the CBM Oracle database on Linux at GSI)
@@ -196,13 +196,13 @@ CbmOraConn::CbmOraConn() {
 }
 
 
-CbmOraConn::~CbmOraConn() {
+FairOraConn::~FairOraConn() {
   // default destructor (closes connection)
   close();
 }
 
 
-Bool_t CbmOraConn::open() {
+Bool_t FairOraConn::open() {
   // opens default connection with readonly access
   char* password = new char[9];
   strcpy(password,"cbm");
@@ -211,7 +211,7 @@ Bool_t CbmOraConn::open() {
   return rc;
 }
 
-Bool_t CbmOraConn::open(char *uName) {
+Bool_t FairOraConn::open(char *uName) {
   // opens connection to database db-cbm for user given by name
   // asks for password
   strncpy(userName,uName,30);
@@ -222,7 +222,7 @@ Bool_t CbmOraConn::open(char *uName) {
 }
 
 
-Bool_t CbmOraConn::open(char *dbN, char *uN) {
+Bool_t FairOraConn::open(char *dbN, char *uN) {
   // opens connection to database with name dbName for user given by name
   // asks for password
   strncpy(dbName,dbN,30);
@@ -234,7 +234,7 @@ Bool_t CbmOraConn::open(char *dbN, char *uN) {
 }
 
 
-Bool_t CbmOraConn::reconnect() {
+Bool_t FairOraConn::reconnect() {
   // opens connection (contains the SQL-statements)
   if (isConnected) return kTRUE;
   if (strcmp(userName,"cbm_ana_public")!=0) return kFALSE;
@@ -312,7 +312,7 @@ Bool_t CbmOraConn::reconnect() {
 }
 
 
-void CbmOraConn::close() {
+void FairOraConn::close() {
   // disconnects from ORACLE
   // A transaction will be automatically rolled back,
   // that means changes in the database are not stored
@@ -351,7 +351,7 @@ void CbmOraConn::close() {
 }
 
 
-void CbmOraConn::disconnect() {
+void FairOraConn::disconnect() {
   // disconnects from ORACLE
   // may be opened again via reconnect()
   if (isConnected) {
@@ -387,7 +387,7 @@ void CbmOraConn::disconnect() {
 }
 
 
-void CbmOraConn::print() {
+void FairOraConn::print() {
   // prints information about the database connection
   if (isConnected)
     cout<<"Oracle-Database: "<<dbName<<"    Username: "<<userName<<'\n';
@@ -397,7 +397,7 @@ void CbmOraConn::print() {
 }
 
 
-void CbmOraConn::showSqlError(const char* fctName,const char* msg) {
+void FairOraConn::showSqlError(const char* fctName,const char* msg) {
   // shows SQL error messages
   if (msg)
     Error(fctName,"\n%s\n%s\n",sqlca.sqlerrm.sqlerrmc,msg);
@@ -405,7 +405,7 @@ void CbmOraConn::showSqlError(const char* fctName,const char* msg) {
 }
 
 
-char* CbmOraConn::getPassword() {
+char* FairOraConn::getPassword() {
   // asks for the password
   char* passwd = new char[20];
   char buf[20];
@@ -434,7 +434,7 @@ char* CbmOraConn::getPassword() {
 }
 
 
-Bool_t CbmOraConn::openConnection(char* password) {
+Bool_t FairOraConn::openConnection(char* password) {
   // opens connection (contains the SQL-statements)
   if (isConnected) close();
   char connId[80];
@@ -511,7 +511,7 @@ Bool_t CbmOraConn::openConnection(char* password) {
   return isConnected; 
 }
 
-Int_t CbmOraConn::checkServerLoad() {
+Int_t FairOraConn::checkServerLoad() {
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
     int retval; 
@@ -567,7 +567,7 @@ notfound:
   return -1; 
 }
 
-Int_t CbmOraConn::getRunStart(Int_t id) {
+Int_t FairOraConn::getRunStart(Int_t id) {
   // Gets the actual run id from the current event file and compares it with
   // the last used actRunId for fetching data.
   // If they are different, the run start time (converted to ansi C time) is
@@ -662,7 +662,7 @@ notfound:
 }
 
 
-Bool_t CbmOraConn::setHistoryDate(const char* dateString) {
+Bool_t FairOraConn::setHistoryDate(const char* dateString) {
   // Sets the date to retrieve historic data
   // Returns kFALSE when the date string cannot be converted to a valid date.
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
@@ -738,7 +738,7 @@ notfound:
   return kFALSE;
 }
 
-Bool_t CbmOraConn::setParamRelease(const char* release_name) {
+Bool_t FairOraConn::setParamRelease(const char* release_name) {
   // Sets the history date to the creation date of the parameter release give by name
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
@@ -814,7 +814,7 @@ notfound:
   return kFALSE;
 }
 
-Bool_t CbmOraConn::setParamRelease(Int_t run) {
+Bool_t FairOraConn::setParamRelease(Int_t run) {
   // Sets the history date to the creation date of the parameter release
   // for the corresponding experiment
   /* EXEC SQL BEGIN DECLARE SECTION; */ 

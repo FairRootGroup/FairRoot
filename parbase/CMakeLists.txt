@@ -18,20 +18,20 @@ ${ROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 set(PARBASE_SRCS
-CbmContFact.cxx       
-CbmDetParAsciiFileIo.cxx    
-CbmDetParIo.cxx         
-CbmDetParRootFileIo.cxx     
-CbmGenericParAsciiFileIo.cxx     
-CbmGenericParRootFileIo.cxx     
-CbmParAsciiFileIo.cxx   
-CbmParGenericSet.cxx   
-CbmParIo.cxx  
-CbmParRootFileIo.cxx 
-CbmParSet.cxx 
-CbmParamList.cxx  
-CbmRtdbRun.cxx  
-CbmRuntimeDb.cxx
+FairContFact.cxx       
+FairDetParAsciiFileIo.cxx    
+FairDetParIo.cxx         
+FairDetParRootFileIo.cxx     
+FairGenericParAsciiFileIo.cxx     
+FairGenericParRootFileIo.cxx     
+FairParAsciiFileIo.cxx   
+FairParGenericSet.cxx   
+FairParIo.cxx  
+FairParRootFileIo.cxx 
+FairParSet.cxx 
+FairParamList.cxx  
+FairRtdbRun.cxx  
+FairRuntimeDb.cxx
 )
 
 if(RULE_CHECKER_FOUND)

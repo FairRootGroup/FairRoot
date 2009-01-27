@@ -22,13 +22,13 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(TUTORIAL2_SRCS
 #Put here your sourcefiles
-CbmTutorialDet.cxx
-CbmTutorialDetContFact.cxx
-CbmTutorialDetGeo.cxx
-CbmTutorialDetGeoPar.cxx
-CbmTutorialDetPoint.cxx
-CbmTutorialDetDigiPar.cxx
-CbmTutorialDetDigitizer.cxx
+FairTutorialDet.cxx
+FairTutorialDetContFact.cxx
+FairTutorialDetGeo.cxx
+FairTutorialDetGeoPar.cxx
+FairTutorialDetPoint.cxx
+FairTutorialDetDigiPar.cxx
+FairTutorialDetDigitizer.cxx
 )
 
 # fill list of header files from list of source files
@@ -36,7 +36,7 @@ CbmTutorialDetDigitizer.cxx
 CHANGE_FILE_EXTENSION(*.cxx *.h TUTORIAL2_HEADERS "${TUTORIAL2_SRCS}")
 
 set(TUTORIAL2_LINKDEF Tutorial2LinkDef.h)
-set(TUTORIAL2_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/CbmTutorial2Dict.cxx) 
+set(TUTORIAL2_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairTutorial2Dict.cxx) 
 
 ROOT_GENERATE_DICTIONARY("${TUTORIAL2_HEADERS}" "${TUTORIAL2_LINKDEF}" "${TUTORIAL2_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
 

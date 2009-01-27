@@ -29,17 +29,17 @@ void create_digis(){
     cout << "OutFile: " << outFile << endl;
     cout << "******************************" << endl;
 
-    CbmRunAna *fRun= new CbmRunAna();
+    FairRunAna *fRun= new FairRunAna();
     fRun->SetInputFile(inFile);
     fRun->SetOutputFile(outFile);
 
 
     // Init Simulation Parameters from Root File
-    CbmRuntimeDb* rtdb=fRun->GetRuntimeDb();
-    CbmParRootFileIo* io1=new CbmParRootFileIo();
+    FairRuntimeDb* rtdb=fRun->GetRuntimeDb();
+    FairParRootFileIo* io1=new FairParRootFileIo();
     io1->open(paramFile.Data(),"UPDATE");
  
-    CbmParAsciiFileIo* parInput2 = new CbmParAsciiFileIo();
+    FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
     TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
     tutDetDigiFile += "/example/Tutorial2/macros/tutdet.digi.par";
     parInput2->open(tutDetDigiFile.Data(),"in");
@@ -51,7 +51,7 @@ void create_digis(){
 
     //**  TUt Det Digi Producer **//
 
-    CbmTutorialDetDigitizer *digi = new CbmTutorialDetDigitizer("tutdet","tut det task");
+    FairTutorialDetDigitizer *digi = new FairTutorialDetDigitizer("tutdet","tut det task");
 
     // add the task
     fRun->AddTask( digi );
@@ -61,10 +61,10 @@ void create_digis(){
     fRun->LoadGeometry();
     fRun->Init();
 
-    rtdb->getContainer("CbmTutorialDetDigiPar")->print();
+    rtdb->getContainer("FairTutorialDetDigiPar")->print();
 
-    CbmTutorialDetDigiPar* DigiPar = (CbmTutorialDetDigiPar*) 
-                                      rtdb->getContainer("CbmTutorialDetDigiPar");
+    FairTutorialDetDigiPar* DigiPar = (FairTutorialDetDigiPar*) 
+                                      rtdb->getContainer("FairTutorialDetDigiPar");
 
     DigiPar->setChanged();
     DigiPar->setInputVersion(fRun->GetRunId(),1);

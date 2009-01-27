@@ -1,36 +1,36 @@
 #ifndef CBMGENERICPARORAIO_H
 #define CBMGENERICPARORAIO_H
 
-#include "CbmDetParOraIo.h"
+#include "FairDetParOraIo.h"
 
-class CbmOraConn;
-class CbmParSet;
-class CbmParGenericSet;
-class CbmParamBinObj;
+class FairOraConn;
+class FairParSet;
+class FairParGenericSet;
+class FairParamBinObj;
 
-class CbmGenericParOraIo : public CbmDetParOraIo {
+class FairGenericParOraIo : public FairDetParOraIo {
 private:
-  class CbmParOraBlob : public TObject {
+  class FairParOraBlob : public TObject {
     public:
-      CbmParamBinObj* binaryParam;   // Pointer to object in parameter list
+      FairParamBinObj* binaryParam;   // Pointer to object in parameter list
       Int_t           blobId;        // Id of BinaryLargeObject
-      CbmParOraBlob(CbmParamBinObj* o=0,Int_t id=0) { binaryParam=o; blobId=id; }
-      ~CbmParOraBlob() {}
+      FairParOraBlob(FairParamBinObj* o=0,Int_t id=0) { binaryParam=o; blobId=id; }
+      ~FairParOraBlob() {}
   };
 public:
-  CbmGenericParOraIo(CbmOraConn* p=0);
-  ~CbmGenericParOraIo() {;}
-  Bool_t init(CbmParSet*,Int_t*);
-  Int_t write(CbmParSet*);
-  Bool_t read(CbmParGenericSet*);
-  Int_t writeSet(CbmParGenericSet*);
-  Bool_t readFromLoadingTable(CbmParGenericSet*,Int_t);
+  FairGenericParOraIo(FairOraConn* p=0);
+  ~FairGenericParOraIo() {;}
+  Bool_t init(FairParSet*,Int_t*);
+  Int_t write(FairParSet*);
+  Bool_t read(FairParGenericSet*);
+  Int_t writeSet(FairParGenericSet*);
+  Bool_t readFromLoadingTable(FairParGenericSet*,Int_t);
 private:
-  Bool_t readBlob(CbmParamBinObj* obj,Int_t lobId);
-  Int_t createParamVers(CbmParGenericSet*);
+  Bool_t readBlob(FairParamBinObj* obj,Int_t lobId);
+  Int_t createParamVers(FairParGenericSet*);
   Int_t storeBlob(UChar_t*, Int_t);
-  Bool_t readLoadBlob(CbmParamBinObj*,Int_t);
-  ClassDef(CbmGenericParOraIo,0) // I/O from Oracle for gemeric parameter containers
+  Bool_t readLoadBlob(FairParamBinObj*,Int_t);
+  ClassDef(FairGenericParOraIo,0) // I/O from Oracle for gemeric parameter containers
 };
 
 #endif  /* !CBMGENERICPARORAIO_H */
