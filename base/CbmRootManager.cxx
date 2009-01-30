@@ -106,7 +106,7 @@ TFile *CbmRootManager::OpenInFile(TFile* f, Bool_t Connect)
 
   
   fInChain->GetEntry(0);
-  fInChain->SetBranchStatus("*" , 0);
+  //fInChain->SetBranchStatus("*" , 0);
   fPtrTree = fInChain->GetTree();
   fCurrentEntries =  (Int_t) fInChain->GetTree()->GetEntries();
   
