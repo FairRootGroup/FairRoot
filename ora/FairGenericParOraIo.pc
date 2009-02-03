@@ -23,7 +23,6 @@
 
 ClassImp(FairGenericParOraIo)
 
-#define NMAX_PARAM 200
 #define LOB_BUFSIZE 32512
 
 FairGenericParOraIo::FairGenericParOraIo(FairOraConn* pC) : FairDetParOraIo(pC) {
@@ -41,12 +40,6 @@ Bool_t FairGenericParOraIo::init(FairParSet* pPar,Int_t* set) {
   return kFALSE;
 }
 
-
-
-
-
-
-
 Int_t FairGenericParOraIo::write(FairParSet* pPar) {
   // calls write(FairParGenericSet*)
   Int_t runStart=getRunStart(pPar);
@@ -57,24 +50,14 @@ Int_t FairGenericParOraIo::write(FairParSet* pPar) {
   return -1;
 }
 
-
-
-
-
-
-
-
-
-
-Bool_t FairGenericParOraIo::read(FairParGenericSet* pPar){
-//Bool_t HDetParOraIo::readCond(HParCond* pPar, Int_t*) {
+Bool_t FairGenericParOraIo::read(FairParGenericSet* pPar) {
   // reads the analysis parameters and fill the container
   Int_t runStart=getRunStart(pPar);
-  HParOraSet* pSet=getOraSet(pPar);
+  FairParOraSet* pSet=getOraSet(pPar);
   if (pSet->contextId==-1 || runStart==-1) {
     pPar->setInputVersion(-1,inputNumber);
     return kFALSE;
-  }    
+  }
   Int_t contVers=pPar->getInputVersion(inputNumber);
   if (contVers!=-1 && runStart>=pSet->versDate[0] && runStart<=pSet->versDate[1])
     return contVers;
@@ -85,7 +68,7 @@ Bool_t FairGenericParOraIo::read(FairParGenericSet* pPar){
       unsigned char  arr[2000];
     } vraw;
     EXEC SQL TYPE vraw IS VARRAW(2002);
-    int id; 
+    int id;
     varchar p_name[83];
     varchar p_type[85];
     vraw    p_value;
@@ -100,7 +83,7 @@ Bool_t FairGenericParOraIo::read(FairParGenericSet* pPar){
     short   p_streamer_Ind;
   EXEC SQL END DECLARE SECTION;
   id=pSet->contextId;
-  HParamList paramList;
+  FairParamList paramList;
   Bool_t rc=kTRUE;
   Int_t n=0;
   EXEC SQL WHENEVER SQLERROR GOTO errorfound;
@@ -121,7 +104,7 @@ Bool_t FairGenericParOraIo::read(FairParGenericSet* pPar){
     p_type.arr[p_type.len]='\0';
     if (p_since>pSet->versDate[0]) pSet->versDate[0]=p_since;
     if (p_until<pSet->versDate[1] || pSet->versDate[1]<0) pSet->versDate[1]=p_until;
-    HParamObj* o=new HParamObj((Char_t*)(p_name.arr));
+    FairParamObj* o=new FairParamObj((Char_t*)(p_name.arr));
     o->setParamType((Char_t*)(p_type.arr));
     if (p_blob_Ind!=-1) {
       rc=readBlob(o,p_blob,kFALSE);
@@ -136,10 +119,10 @@ Bool_t FairGenericParOraIo::read(FairParGenericSet* pPar){
       memcpy(v,p_value.arr,p_value.len);
       o->setParamValue(v,p_value.len);
     } else {
-      Error("readCond(HParCond*, Int_t*)",
+      Error("read(FairParGenericSet*, Int_t*)",
             "Data undefined for parameter %s",o->GetName());
       rc=kFALSE;
-    } 
+    }
     if (rc) {
       paramList.getList()->Add(o);
       n++;
@@ -147,21 +130,21 @@ Bool_t FairGenericParOraIo::read(FairParGenericSet* pPar){
   }
   EXEC SQL CLOSE gplana_cursor;
   if (rc&&n>0) {
-    rc=pPar->getParams(&paramList); 
+    rc=pPar->getParams(&paramList);
   }
   if (rc) {
     setChanged(pPar);
     cout<<pPar->GetName()<<" initialized from Oracle"<<'\n';
-  } else {    
+  } else {
     pPar->setInputVersion(-1,inputNumber);
   }
   return rc;
 errorfound:
-  showSqlError("readCond(HParCond*, Int_t*)");
+  showSqlError("read(FairParGenericSet*, Int_t*)");
   return kFALSE;
 }
 
-Bool_t HDetParOraIo::readBlob(HParamObj* obj,Int_t lobId,Bool_t isStreamerInfo) {
+Bool_t FairGenericParOraIo::readBlob(FairParamObj* obj,Int_t lobId,Bool_t isStreamerInfo) {
   EXEC SQL BEGIN DECLARE SECTION;
     int            id;
     unsigned int   loblength;
@@ -220,7 +203,7 @@ notfound:
   return kFALSE;
 }
 
-Int_t HDetParOraIo::createParamVers(HParCond* pPar) {
+Int_t FairGenericParOraIo::createParamVers(FairParGenericSet* pPar) {
   // create analysis parameter version in Oracle
   // returns version number or -1 if error occurred
   EXEC SQL BEGIN DECLARE SECTION;
@@ -277,13 +260,13 @@ not_found:
 return -1;
 };
 
-Int_t HDetParOraIo::writeCond(HParCond* pPar) {
+Int_t FairGenericParOraIo::writeSet(FairParGenericSet* pPar) {
   // write analysis parameters to Oracle
   Int_t runStart=getRunStart();
   if (runStart==-1) {
     pPar->setChanged(kFALSE);
     return -1;
-  }    
+  }
   cout<<"---------------  Storage of "<<pPar->GetName()<<"  ---------------\n";
   Int_t version=createParamVers(pPar);
   if (version==-1) return -1;
@@ -310,16 +293,16 @@ Int_t HDetParOraIo::writeCond(HParCond* pPar) {
     short         class_vers_Ind;
     short         streamerinfo_Ind;
   EXEC SQL END DECLARE SECTION;
-  HParamList* paramList = new HParamList;
+  FairParamList* paramList = new FairParamList;
   pPar->putParams(paramList);
   TList* pList=paramList->getList();
   TIter next(pList);
-  HParamObj* po;
+  FairParamObj* po;
   Int_t n=0, olen=0;
   EXEC SQL WHENEVER SQLERROR GOTO not_found;
   EXEC SQL WHENEVER NOT FOUND GOTO not_found;
   vers=version;
-  while ((po=(HParamObj*)next())) {
+  while ((po=(FairParamObj*)next())) {
     strcpy(p_name,po->GetName());
     strcpy(p_type,po->getParamType());
     p_nvalues=po->getNumParams();
@@ -327,7 +310,7 @@ Int_t HDetParOraIo::writeCond(HParCond* pPar) {
     if (po->isBasicType()) {
       p_is_basic=1;
       if (olen<=2000) {
-        p_value.len=olen; 
+        p_value.len=olen;
         memcpy(p_value.val,po->getParamValue(),olen);
         value_Ind=0;
         blob_Ind=-1;
@@ -368,14 +351,14 @@ Int_t HDetParOraIo::writeCond(HParCond* pPar) {
   delete paramList;
   return version;
 not_found:
-  showSqlError("writeCond(HParCond*)");
+  showSqlError("writeSet(FairParGenericSet*)");
   rollback();
   pPar->setChanged(kFALSE);
   delete paramList;
   return -1;
 }
 
-Int_t HDetParOraIo::storeBlob(UChar_t* pValue, Int_t pLength,Bool_t isStreamerInfo) {
+Int_t FairGenericParOraIo::storeBlob(UChar_t* pValue, Int_t pLength,Bool_t isStreamerInfo) {
   EXEC SQL BEGIN DECLARE SECTION;
     unsigned char buffer[LOB_BUFSIZE];
     int           totlen;
@@ -429,8 +412,7 @@ errorfound:
   return -1;
 }
 
-
-Bool_t HCondParOraIo::readFromLoadingTable(HParCond* pPar,Int_t version) {
+Bool_t FairGenericParOraIo::readFromLoadingTable(FairParGenericSet* pPar,Int_t version) {
   // reads the analysis parameters from the LOAD table and fills the container
   EXEC SQL BEGIN DECLARE SECTION;
     typedef struct {
@@ -451,12 +433,12 @@ Bool_t HCondParOraIo::readFromLoadingTable(HParCond* pPar,Int_t version) {
     short         p_streamer_Ind;
   EXEC SQL END DECLARE SECTION;
   vers=version;
-  HParamList paramList;
+  FairParamList paramList;
   Bool_t rc=kTRUE;
   Int_t n=0;
   EXEC SQL WHENEVER SQLERROR GOTO errorfound;
   EXEC SQL DECLARE gplraw_cursor CURSOR FOR
-           SELECT param_name, param_value_type, param_value, 
+           SELECT param_name, param_value_type, param_value,
                   blob_id, class_version, streamerinfo_id
            FROM hanal.genparam_values_load_ana
            WHERE param_vers_load_id = :vers;
@@ -469,7 +451,7 @@ Bool_t HCondParOraIo::readFromLoadingTable(HParCond* pPar,Int_t version) {
                   :p_streamer:p_streamer_Ind;
     p_name.arr[p_name.len]='\0';
     p_type.arr[p_type.len]='\0';
-    HParamObj* o=new HParamObj((Char_t*)(p_name.arr));
+    FairParamObj* o=new FairParamObj((Char_t*)(p_name.arr));
     o->setParamType((Char_t*)(p_type.arr));
     if (p_blob_Ind!=-1) {
       rc=readLoadBlob(o,p_blob,kFALSE);
@@ -484,11 +466,11 @@ Bool_t HCondParOraIo::readFromLoadingTable(HParCond* pPar,Int_t version) {
       memcpy(v,p_value.arr,p_value.len);
       o->setParamValue(v,p_value.len);
     } else {
-      Error("readFromLoadingTable(HParCond*,Int_t*)",
+      Error("readFromLoadingTable(FairParGenericSet*,Int_t*)",
             "Data undefined for parameter %s",o->GetName());
       rc=kFALSE;
     }
-    if (rc) { 
+    if (rc) {
       paramList.getList()->Add(o);
       n++;
     }
@@ -510,7 +492,7 @@ errorfound:
   return kFALSE;
 }
 
-Bool_t HCondParOraIo::readLoadBlob(HParamObj* obj,Int_t lobId,Bool_t isStreamerInfo) {
+Bool_t FairGenericParOraIo::readLoadBlob(FairParamObj* obj,Int_t lobId,Bool_t isStreamerInfo) {
   // reads the BLOB from the LOAD table
   EXEC SQL BEGIN DECLARE SECTION;
     int           id;
@@ -570,459 +552,4 @@ notfound:
 }
 
 
-/**************************************************************************************/
 
-
-
-
-Bool_t FairGenericParOraIo::read(FairParGenericSet* pPar) {
-  // reads the parameters and fills the container
-  Int_t runStart=getRunStart(pPar);
-  FairParOraSet* pSet=getOraSet(pPar);
-  if (pSet->contextId==-1 || runStart==-1) {
-    pPar->setInputVersion(-1,inputNumber);
-    return kFALSE;
-  }    
-  Int_t contVers=pPar->getInputVersion(inputNumber);
-  if (contVers!=-1 && runStart>=pSet->versDate[0] && runStart<=pSet->versDate[1])
-    return contVers;
-  pSet->clearVersDate();
-  EXEC SQL BEGIN DECLARE SECTION;
-    int id; 
-    struct {
-      varchar p_name[NMAX_PARAM][81];
-      varchar p_value[NMAX_PARAM][4001];
-      varchar p_type[NMAX_PARAM][81];
-      int     p_is_binary[NMAX_PARAM]; 
-      int     p_is_basic[NMAX_PARAM]; 
-      int     p_class_vers[NMAX_PARAM]; 
-      int     p_num[NMAX_PARAM];
-      double  p_since[NMAX_PARAM];
-      double  p_until[NMAX_PARAM];
-    } ana;
-    struct {
-      short p_name_Ind[NMAX_PARAM];
-      short p_value_Ind[NMAX_PARAM];
-      short p_type_Ind[NMAX_PARAM];
-      short p_is_binary_Ind[NMAX_PARAM];
-      short p_is_basic_Ind[NMAX_PARAM];
-      short p_class_vers_Ind[NMAX_PARAM];
-      short p_num_Ind[NMAX_PARAM];
-      short p_since_Ind[NMAX_PARAM];
-      short p_until_Ind[NMAX_PARAM];
-    } ana_Ind;
-  EXEC SQL END DECLARE SECTION;
-  EXEC SQL WHENEVER SQLERROR DO showSqlError("read(FairParGenericSet*)");
-  EXEC SQL WHENEVER NOT FOUND CONTINUE;
-  id=pSet->contextId;
-  EXEC SQL SELECT par_name, par_value, par_value_type, is_binary, is_basic_type,
-                  class_version, n_values,
-                  cbmdate.to_ansitime(valid_since), cbmdate.to_ansitime(valid_until)
-           INTO :ana INDICATOR :ana_Ind
-           FROM cbm_ana.param_values_at_histdate_ext
-           WHERE param_context_id = :id
-           ORDER BY par_value_id;
-  FairParamList* paramList = new FairParamList;
-  TList* blobList=new TList;
-  for(Int_t i=0;i<sqlca.sqlerrd[2];i++) {
-    if (ana_Ind.p_name_Ind[i]!=-1 && ana_Ind.p_value_Ind[i]!=-1) {
-      ana.p_name[i].arr[ana.p_name[i].len]='\0';    
-      ana.p_value[i].arr[ana.p_value[i].len]='\0';
-      ana.p_type[i].arr[ana.p_type[i].len]='\0';
-      if (ana.p_since[i]>pSet->versDate[0]) pSet->versDate[0]=ana.p_since[i];
-      if (ana.p_until[i]<pSet->versDate[1] || pSet->versDate[1]<0)
-        pSet->versDate[1]=ana.p_until[i];
-      if (ana.p_is_binary[i]==0)
-        paramList->add((char*)(ana.p_name[i].arr),(char*)(ana.p_value[i].arr),
-                       ana.p_type[i].arr[0],ana.p_num[i]);
-      else {
-        FairParamBinObj* o=new FairParamBinObj;
-        o->SetName((char*)(ana.p_name[i].arr));
-        o->setParamType((char*)(ana.p_type[i].arr));
-        if (ana.p_is_basic[i]==0) o->setClassVersion(ana.p_class_vers[i]);
-        paramList->getBinaryList()->Add(o);
-        Int_t lobId;
-        sscanf((char*)(ana.p_value[i].arr),"%i",&lobId);
-        FairParOraBlob* ob=new FairParOraBlob(o,lobId);
-        blobList->Add(ob);
-      }
-    }
-  }
-  TIter next(blobList);
-  FairParOraBlob* b;
-  Bool_t rc;
-  if (sqlca.sqlerrd[2]==0) rc=kFALSE;
-  else rc=kTRUE;
-  while ((b=(FairParOraBlob*)next())!=0 && rc) {
-    rc=readBlob(b->binaryParam,b->blobId);
-  }    
-  if (rc) rc=pPar->getParams(paramList);
-  else pPar->setInputVersion(-1,inputNumber);
-  blobList->Delete();
-  delete blobList;  
-  delete paramList;
-  if (rc==kTRUE) {
-    setChanged(pPar);
-    cout<<pPar->GetName()<<" initialized from Oracle"<<'\n';
-  }
-  return rc;
-}
-
-Bool_t FairGenericParOraIo::readBlob(FairParamBinObj* obj,Int_t lobId) {
-  EXEC SQL BEGIN DECLARE SECTION;
-    int            id;
-    unsigned int   loblength;
-    unsigned int   amount;
-    unsigned int   offset;
-    unsigned char  buffer[LOB_BUFSIZE];
-    EXEC SQL VAR buffer IS RAW(LOB_BUFSIZE);
-  EXEC SQL END DECLARE SECTION;
-  id=lobId;
-  amount=LOB_BUFSIZE;
-  UChar_t* paramValue=0;
-  UInt_t amountRead=0;
-  EXEC SQL WHENEVER SQLERROR GOTO notfound;
-  EXEC SQL WHENEVER NOT FOUND GOTO notfound;
-  EXEC SQL EXECUTE
-    BEGIN
-      cbm_ana.param_lob_access.read_blob(:id,:amount,:loblength,:buffer);
-    END;
-  END-EXEC;
-  obj->setLength(loblength);
-  paramValue=obj->getParamValue();
-  amountRead=amount;
-  memcpy((unsigned char*)paramValue,buffer,amount);
-  while (amountRead<loblength) {
-    amount= (loblength>LOB_BUFSIZE) ? LOB_BUFSIZE : loblength ;
-    offset=amountRead+1;
-    EXEC SQL EXECUTE
-      BEGIN
-        cbm_ana.param_lob_access.read_next_buffer(:amount,:offset,:buffer);
-      END;
-    END-EXEC;
-    memcpy((unsigned char*)(&paramValue[amountRead]),buffer,amount);
-    amountRead+=amount;
-  }
-  return kTRUE;
-notfound:
-  showSqlError("readBlob");
-  Error("readBlob","Blob %i not read",lobId);
-  return kFALSE;
-}
-
-Int_t FairGenericParOraIo::createParamVers(FairParGenericSet* pPar) {
-  // create analysis parameter version in Oracle
-  // returns version number or -1 if error occurred
-  EXEC SQL BEGIN DECLARE SECTION;
-     char* p_class;
-     char* p_author;
-     char* p_descript;
-     char* p_context;
-     int vers=-1;
-     int context_id=-1;
-  EXEC SQL END DECLARE SECTION;
-  p_class=(char*)(pPar->IsA()->GetName());
-  p_author=(char*)(pPar->getAuthor());
-  p_descript=(char*)(pPar->getDescription());
-  p_context=(char*)(pPar->getParamContext());
-  if (strlen(p_author)==0) {
-    Error("createParamVers(...)",
-          "author of parameters not defined");
-    return -1;
-  }
-  if (strlen(p_descript)==0) {
-    Error("createParamVers(...)",
-          "description of parameters not defined");
-    return -1;
-  }
-  if (strlen(p_context)==0) {
-    Error("createParamVers(...)",
-          "Purpose of parameters not defined");
-    return -1;
-  }
-  EXEC SQL WHENEVER SQLERROR GOTO not_found;
-  EXEC SQL WHENEVER NOT FOUND GOTO not_found;
-  EXEC SQL EXECUTE
-    DECLARE
-    BEGIN
-      :context_id := cbm_ana.param_query.get_context_id(
-                         :p_class,:p_context);
-      IF :context_id > 0 THEN
-        :vers := cbm_ana.param_query.next_param_vers_load(:p_class);
-        IF :vers > 0 THEN
-          INSERT INTO cbm_ana.param_vers_load
-            (param_vers_load_id,param_context_id,author,description)
-            VALUES (:vers,:context_id,:p_author,:p_descript);
-        END IF;
-      END IF;
-    END;
-  END-EXEC;
-  return vers;
-not_found:
-  showSqlError("createParamVers(const char*)");
-  rollback();
-  return vers;    
-};
-
-Int_t FairGenericParOraIo::writeSet(FairParGenericSet* pPar) {
-  // write analysis parameters to Oracle
-  Int_t runStart=getRunStart();
-  if (runStart==-1) {
-    pPar->setChanged(kFALSE);
-    return -1;
-  }    
-  cout<<"---------------  Storage of "<<pPar->GetName()<<"  ---------------\n";
-  Int_t version=createParamVers(pPar);
-  if (version==-1) return -1;
-  cout<<"****************************************************************\n";
-  cout<<"***  Version:                     "<<version<<endl;
-  EXEC SQL BEGIN DECLARE SECTION;
-    int vers[NMAX_PARAM];
-    char p_name[NMAX_PARAM][81];
-    char p_value[NMAX_PARAM][4000];
-    char p_type[NMAX_PARAM][81];
-    int  p_is_binary[NMAX_PARAM];
-    int  p_is_basic[NMAX_PARAM];
-    int p_nvalues[NMAX_PARAM];
-    int p_num[NMAX_PARAM];
-    int p_class_vers [NMAX_PARAM];
-    short class_vers_Ind [NMAX_PARAM];
-    int rows_to_insert;
-  EXEC SQL END DECLARE SECTION;
-  FairParamList* paramList = new FairParamList;
-  pPar->putParams(paramList);
-  TList* pList=paramList->getList();
-  TIter next(pList);
-  FairParamObj* po;
-  TList* pBinList=paramList->getBinaryList();
-  TIter nextBin(pBinList);
-  FairParamBinObj* pbo;
-  Int_t n=0, m=0;
-  while ((po=(FairParamObj*)next())) {
-    vers[n]=version;
-    strcpy(p_name[n],po->GetName());
-    strcpy(p_value[n],po->getParamValue());
-    p_type[n][0]=po->getParamType();
-    p_type[n][1]='\0';
-    p_is_binary[n]=0;
-    p_is_basic[n]=1;
-    p_nvalues[n]=po->getNumParams();
-    p_num[n]=n+1;
-    n++;
-  }
-  EXEC SQL WHENEVER SQLERROR GOTO not_found;
-  EXEC SQL WHENEVER NOT FOUND GOTO not_found;
-  if (n>0) {
-    rows_to_insert=n;
-    EXEC SQL FOR :rows_to_insert
-      INSERT INTO cbm_ana.param_value_load
-        ( param_vers_load_id,param_name,param_value,param_value_type,
-          is_binary,is_basic_type,nvalues,param_num)
-        VALUES(:vers,:p_name,:p_value,:p_type,:p_is_binary,:p_is_basic,
-          :p_nvalues,:p_num);
-    cout<<"***  Number of parameters:        "<<rows_to_insert<<endl;
-  }
-  m=n;
-  n=0;
-  while ((pbo=(FairParamBinObj*)nextBin())) {
-    vers[n]=version;
-    strcpy(p_name[n],pbo->GetName());
-    strcpy(p_type[n],pbo->getParamType());
-    p_is_binary[n]=1;
-    if (pbo->isBasicType()) {
-      p_is_basic[n]=1;
-      class_vers_Ind[n]=-1;
-    } else {
-      p_is_basic[n]=0;
-      p_class_vers[n]=pbo->getClassVersion();
-      class_vers_Ind[n]=0;
-      p_nvalues[n]=0;
-    }
-    p_nvalues[n]=pbo->getNumParams();
-    sprintf(p_value[n],"%i",storeBlob(pbo->getParamValue(),pbo->getLength()));
-    p_num[n]=m+n+1;
-    n++;
-  }
-  if (n>0) {
-    rows_to_insert=n;
-    EXEC SQL FOR :rows_to_insert
-      INSERT INTO cbm_ana.param_value_load
-          (param_vers_load_id,param_name,param_value,param_value_type,
-           is_binary,is_basic_type,nvalues,param_num,class_version)
-        VALUES(:vers,:p_name,:p_value,:p_type,:p_is_binary,:p_is_basic,
-               :p_nvalues,:p_num,:p_class_vers:class_vers_Ind);
-    cout<<"***  Number of binary parameters: "<<rows_to_insert<<endl;
-  }
-  cout<<"***  "<<pPar->GetName()<<" written to Oracle"<<endl;
-  cout<<"****************************************************************\n";
-  commit();
-  pPar->setChanged(kFALSE);
-  delete paramList;
-  return version;
-not_found:
-  showSqlError("writeSet(FairParGenericSet*)");
-  rollback();
-  pPar->setChanged(kFALSE);
-  delete paramList;
-  return -1;
-}
-
-Int_t FairGenericParOraIo::storeBlob(UChar_t* pValue, Int_t pLength) {
-  EXEC SQL BEGIN DECLARE SECTION;
-    unsigned char buffer[LOB_BUFSIZE];
-    int           totlen;
-    int           amount;
-    int           offset;
-    int           id;
-    EXEC SQL VAR buffer IS RAW(LOB_BUFSIZE);
-  EXEC SQL END DECLARE SECTION;
-  offset=1;
-  totlen=pLength;
-  amount= (totlen>LOB_BUFSIZE) ? LOB_BUFSIZE : totlen;
-  memcpy(buffer,pValue,amount);
-  id=-1;
-  Int_t restlen=totlen-amount;
-  EXEC SQL WHENEVER SQLERROR GOTO errorfound;
-  EXEC SQL WHENEVER NOT FOUND GOTO errorfound;
-  EXEC SQL EXECUTE
-    DECLARE
-    BEGIN
-      cbm_ana.param_lob_access.add_blob(:totlen,:amount,:buffer,:id);
-    END;
-  END-EXEC;
-  while (restlen>0) {
-    offset+=LOB_BUFSIZE;
-    amount= (restlen>LOB_BUFSIZE) ? LOB_BUFSIZE : restlen;
-    memcpy(buffer,&pValue[offset-1],amount);
-    EXEC SQL EXECUTE
-      DECLARE
-      BEGIN
-        cbm_ana.param_lob_access.append_to_blob(:id,:amount,:offset,:buffer);
-      END;
-    END-EXEC;
-    restlen-=amount;
-  }
-  return id;
-errorfound:
-  showSqlError("storeBlob");
-  EXEC SQL ROLLBACK WORK;
-  cout<<"Blob not stored."<<endl;
-  return -1;
-}
-
-Bool_t FairGenericParOraIo::readFromLoadingTable(FairParGenericSet* pPar,Int_t version) {
-  // reads the analysis parameters from the LOAD table and fills the container
-  EXEC SQL BEGIN DECLARE SECTION;
-    int vers;
-    struct {
-      varchar p_name[NMAX_PARAM][81];
-      varchar p_value[NMAX_PARAM][4001];
-      int     p_num[NMAX_PARAM];
-      varchar p_type[NMAX_PARAM][81];
-      int     p_is_binary[NMAX_PARAM];
-      int     p_is_basic[NMAX_PARAM];
-      int     p_class_vers[NMAX_PARAM];
-    } cl;
-    struct {
-      short p_name_Ind[NMAX_PARAM];
-      short p_value_Ind[NMAX_PARAM];
-      short p_num_Ind[NMAX_PARAM];
-      short p_type_Ind[NMAX_PARAM];
-      short p_is_binary_Ind[NMAX_PARAM];
-      short p_is_basic_Ind[NMAX_PARAM];
-      short p_class_vers_Ind[NMAX_PARAM];
-    } cl_Ind;
-  EXEC SQL END DECLARE SECTION;
-  EXEC SQL WHENEVER SQLERROR DO showSqlError("readFromLoadingTable(FairParGenericSet*,Int_t*)");
-  EXEC SQL WHENEVER NOT FOUND CONTINUE;
-  vers=version;
-  EXEC SQL SELECT param_name, param_value, nvalues, param_value_type,
-                  is_binary, is_basic_type, class_version
-           INTO :cl INDICATOR :cl_Ind
-           FROM cbm_ana.param_value_load_all
-           WHERE param_vers_load_id = :vers;
-  FairParamList* paramList = new FairParamList;
-  TList* blobList=new TList;
-  for(Int_t i=0;i<sqlca.sqlerrd[2];i++) {
-    if (cl_Ind.p_name_Ind[i]!=-1 && cl_Ind.p_value_Ind[i]!=-1) {
-      cl.p_name[i].arr[cl.p_name[i].len]='\0';
-      cl.p_value[i].arr[cl.p_value[i].len]='\0';
-      cl.p_type[i].arr[cl.p_type[i].len]='\0';
-      if (cl.p_is_binary[i]==0)
-        paramList->add((char*)(cl.p_name[i].arr),(char*)(cl.p_value[i].arr),
-                       cl.p_type[i].arr[0],cl.p_num[i]);
-      else {
-        FairParamBinObj* o=new FairParamBinObj;
-        o->SetName((char*)(cl.p_name[i].arr));
-        o->setParamType((char*)(cl.p_type[i].arr));
-        if (cl.p_is_basic[i]==0) o->setClassVersion(cl.p_class_vers[i]);
-        paramList->getBinaryList()->Add(o);
-        Int_t lobId;
-        sscanf((char*)(cl.p_value[i].arr),"%i",&lobId);
-        FairParOraBlob* ob=new FairParOraBlob(o,lobId);
-        blobList->Add(ob);
-      }
-    }
-  }
-  TIter next(blobList);
-  FairParOraBlob* b;
-  Bool_t rc=kTRUE;
-  while ((b=(FairParOraBlob*)next())!=0 && rc) {
-    rc=readLoadBlob(b->binaryParam,b->blobId);
-  }
-  if (rc && sqlca.sqlerrd[2]>0) {
-    rc=pPar->getParams(paramList);
-    pPar->setInputVersion(version,inputNumber);
-  } else pPar->setInputVersion(-1,inputNumber);
-  blobList->Delete();
-  delete blobList;
-  delete paramList;
-  if (rc==kTRUE) {
-    setChanged(pPar);
-    cout<<pPar->GetName()<<" initialized from Load Table"<<'\n';
-  }
-  return rc;
-}
-
-Bool_t FairGenericParOraIo::readLoadBlob(FairParamBinObj* obj,Int_t lobId) {
-  // reads the BLOB from the LOAD table
-  EXEC SQL BEGIN DECLARE SECTION;
-    int            id;
-    unsigned int   loblength;
-    unsigned int   amount;
-    unsigned int   offset;
-    unsigned char  buffer[LOB_BUFSIZE];
-    EXEC SQL VAR buffer IS RAW(LOB_BUFSIZE);
-  EXEC SQL END DECLARE SECTION;
-  id=lobId;
-  amount=LOB_BUFSIZE;
-  UChar_t* paramValue=0;
-  UInt_t amountRead=0;
-  EXEC SQL WHENEVER SQLERROR GOTO notfound;
-  EXEC SQL WHENEVER NOT FOUND GOTO notfound;
-  EXEC SQL EXECUTE
-    BEGIN
-      cbm_ana.param_lob_access.read_load_blob(:id,:amount,:loblength,:buffer);
-    END;
-  END-EXEC;
-  obj->setLength(loblength);
-  paramValue=obj->getParamValue();
-  amountRead=amount;
-  memcpy((unsigned char*)paramValue,buffer,amount);
-  while (amountRead<loblength) {
-    amount= (loblength>LOB_BUFSIZE) ? LOB_BUFSIZE : loblength ;
-    offset=amountRead+1;
-    EXEC SQL EXECUTE
-      BEGIN
-        cbm_ana.param_lob_access.read_next_buffer(:amount,:offset,:buffer);
-      END;
-    END-EXEC;
-    memcpy((unsigned char*)(&paramValue[amountRead]),buffer,amount);
-    amountRead+=amount;
-  }
-  return kTRUE;
-notfound:
-  showSqlError("readBlob");
-  Error("readBlob","Blob %i not read",lobId);
-  return kFALSE;
-}

@@ -47,9 +47,9 @@ void FairOraInfo::showRunStart(Int_t run) {
   EXEC SQL WHENEVER SQLERROR DO
     showSqlError("showRunStart(Int_t)");
   EXEC SQL WHENEVER NOT FOUND GOTO notfound;
-  EXEC SQL SELECT TO_CHAR(run_start,'DD-MON-YYYY HH:MI:SS')
+  EXEC SQL SELECT TO_CHAR(run_start,'DD-MON-YYYY HH24:MI:SS')
            INTO :runDate INDICATOR :runDate_Ind
-           FROM cbm_ana.all_runs
+           FROM hanal.simul_ref_run
            WHERE run_id = :id;
   if (runDate_Ind>=0) cout<<"Run "<<run<<" started at "<<runDate<<'\n';
   else cout << "no Run_Start for run "<<run<<'\n';
@@ -70,8 +70,8 @@ Int_t FairOraInfo::getRunId(Text_t* filename) {
     showSqlError("getRunId(Text_t*)");
   EXEC SQL WHENEVER NOT FOUND GOTO notfound;
   EXEC SQL SELECT run_id INTO :run
-           FROM cbm_ana.all_runs
-           WHERE LOWER(run_filename) = LOWER(:runname);           
+           FROM hanal.simul_ref_run
+           WHERE LOWER(ref_run_name) = LOWER(:runname);
   return run;
 notfound:
   Error("getRunId(Text_t*)","No such file %s",filename);
@@ -125,14 +125,14 @@ TList* FairOraInfo::getListOfRuns(const char* projectname,
            SELECT ref_run_id, ref_run_name,
                   TO_CHAR(run_start,'DD-MON-YYYY HH24:MI:SS'),
                   TO_CHAR(run_stop,'DD-MON-YYYY HH24:MI:SS')
-           FROM cbm_ana.simul_subproject p,
-                cbm_ana.simul_ref_run rr
+           FROM hanal.simul_project p,
+                hanal.simul_ref_run rr
            WHERE upper(project_id)= :project
-             AND p.subproject_id = rr.subproject_id
+             AND p.project_id = rr.project_id
              AND run_start BETWEEN TO_DATE(:pstart,'DD-MON-YYYY HH24:MI:SS')
                            AND TO_DATE(:pend,'DD-MON-YYYY HH24:MI:SS')
              AND rr.generation = ( SELECT MAX(generation)
-                                   FROM cbm_ana.simul_ref_run
+                                   FROM hanal.simul_ref_run
                                    WHERE subproject_id = p.subproject_id )
            ORDER BY ref_run_id;
   EXEC SQL OPEN refruns_cursor;
@@ -187,13 +187,13 @@ Bool_t FairOraInfo::getRefRunStart(const char* startAt,TString& pTime) {
       pid=atoi(startAt);
       EXEC SQL SELECT TO_CHAR(run_start,'DD-MON-YYYY HH24:MI:SS')
                INTO :ts
-               FROM cbm_ana.simul_ref_run
+               FROM hanal.simul_ref_run
                WHERE ref_run_id = :pid;
     } else {
       pfile=(char*)startAt;
       EXEC SQL SELECT TO_CHAR(run_start,'DD-MON-YYYY HH24:MI:SS')
                INTO :ts
-               FROM cbm_ana.simul_ref_run
+               FROM hanal.simul_ref_run
                WHERE ref_run_name = :pfile;
     }
     ts[20]='\0';    
