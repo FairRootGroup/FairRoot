@@ -1,35 +1,34 @@
 //*-- AUTHOR : Ilse Koenig
-//*-- Created : 21/10/2004
+//*-- Created : 28/01/2009
 
+//_HADES_CLASS_DESCRIPTION 
 ///////////////////////////////////////////////////////////////////////////
+//
 //  FairParGenericSet
 //
-//  Base class for all generic-style parameter containers
+//  Base class for all condition-stype parameter containers
 //
 //  The following functions must be implemented by the derived class:
 //
 //    void putParams(FairParamList*)    Fills all persistent data members into
-//                                     the list for write.
+//                                   the list for write.
 //
 //    Bool_t getParams(FairParamList*)  Fills all persistent data members from
-//                                     the list after reading. The function
-//                                     returns false, when a data member is
-//                                     not in the list.
+//                                   the list after reading. The function
+//                                   returns false, when a data member is
+//                                   not in the list.
+//
 ///////////////////////////////////////////////////////////////////////////
 
-
 #include "FairParGenericSet.h"
-
 #include "FairParamList.h"
-#include "FairParIo.h"
+#include <iostream> 
+#include <iomanip>
 #include "FairDetParIo.h"
-
-#include <iostream>
-//#include <iomanip>
-
-using std::cout;
-
+#include "FairParIo.h"
 ClassImp(FairParGenericSet)
+
+
 
 Bool_t FairParGenericSet::init(FairParIo* inp) {
   // intitializes the container from an input
@@ -47,15 +46,16 @@ Int_t FairParGenericSet::write(FairParIo* output) {
 
 void FairParGenericSet::printParams() {
   // prints information about the container
-  cout<<"---------------------------------------------"<<'\n';
-  cout<<"-----  "<<GetName()<<"  -----"<<'\n';
-  if (!paramContext.IsNull()) cout<<"--  Context/Purpose:  "<<paramContext<<'\n';
-  if (!author.IsNull()) cout<<"--  Author:           "<<author<<'\n';
-  if (!description.IsNull()) cout<<"--  Description:      "<<description<<'\n';
-  cout<<"---------------------------------------------"<<'\n';
+  std::cout<<"\n---------------------------------------------\n";
+  std::cout<<"-----  "<<GetName()<<"  -----\n";
+  if (!paramContext.IsNull()) std::cout<<"--  Context/Purpose:  "<<paramContext<<'\n';
+  if (!author.IsNull())       std::cout<<"--  Author:           "<<author<<'\n';
+  if (!description.IsNull())  std::cout<<"--  Description:      "<<description<<'\n';
+  std::cout<<"---------------------------------------------\n";
   FairParamList* condList = new FairParamList;
   putParams(condList);
   condList->print();
+  std::cout<<"---------------------------------------------\n\n";
   delete condList;
 } 
  

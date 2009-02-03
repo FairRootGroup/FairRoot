@@ -52,7 +52,7 @@ class FairTutorialDetDigiPar : public FairParGenericSet
 
   // private:
 
-  TArrayF ftutdetdigipar;  //
+  TArrayF *ftutdetdigipar;  //
   TArrayI ftutdetdigiparsector; //
   Int_t ftutdetdigiparstation; //
 

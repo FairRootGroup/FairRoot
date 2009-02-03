@@ -32,17 +32,17 @@ void FairBaseParSet::clear(void) {
 
 void FairBaseParSet::putParams(FairParamList* l) {
   if (!l) return;
-  l->addBinary("Detector List", fDetList);
-  l->addBinary("Event Generator", fPriGen);
-  l->addBinary("FairGeoNodes List", fGeoNodes);
+  l->addObject("Detector List", fDetList);
+  l->addObject("Event Generator", fPriGen);
+  l->addObject("FairGeoNodes List", fGeoNodes);
   
 }
 
 Bool_t FairBaseParSet::getParams(FairParamList* l) {
   if (!l) return kFALSE;
-  if (!l->fillBinary("Detector List", fDetList)) return kFALSE;
-  if (!l->fillBinary("Event Generator", fPriGen))return kFALSE;
-  if (!l->fillBinary("FairGeoNodes List", fGeoNodes)) return kFALSE;
+  if (!l->fillObject("Detector List", fDetList)) return kFALSE;
+  if (!l->fillObject("Event Generator", fPriGen))return kFALSE;
+  if (!l->fillObject("FairGeoNodes List", fGeoNodes)) return kFALSE;
   return kTRUE;
 }
 

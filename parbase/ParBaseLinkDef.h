@@ -23,7 +23,7 @@
 #pragma link C++ class FairParRootFileIo+;
 #pragma link C++ class FairParSet+;
 #pragma link C++ class FairParVersion+;
-#pragma link C++ class FairParamBinObj+;
+//#pragma link C++ class FairParamBinObj+;
 #pragma link C++ class FairParamList+;
 #pragma link C++ class FairParamObj+;
 #pragma link C++ class FairRtdbRun+;

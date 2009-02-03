@@ -43,7 +43,7 @@ Bool_t FairParSet::init() {
     if (io) allFound=init(io);
     if (!allFound) {
       io=rtdb->getSecondInput();
-      //  cout << "-I FairParSet::init() 2 " << io <<  endl;
+        cout << "-I FairParSet::init() 2 " << io <<  std::endl;
       if (io) allFound=init(io);
     } else setInputVersion(-1,2);
   }

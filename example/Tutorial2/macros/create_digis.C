@@ -47,7 +47,7 @@ void create_digis(){
     rtdb->setFirstInput(io1);
     rtdb->setSecondInput(parInput2);
 
-    rtdb->print();
+   rtdb->print();
 
     //**  TUt Det Digi Producer **//
 
@@ -68,10 +68,11 @@ void create_digis(){
 
     DigiPar->setChanged();
     DigiPar->setInputVersion(fRun->GetRunId(),1);
-//    DigiPar->printparams();
+   // DigiPar->printParams();
     rtdb->setOutput(io1);
     rtdb->saveOutput();
     rtdb->print();
+
 
     fRun->Run();
 

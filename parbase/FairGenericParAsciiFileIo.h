@@ -14,10 +14,13 @@ public:
   Bool_t init(FairParSet*);
   Int_t write(FairParSet*);
 private:
-  Bool_t readGenericSet(FairParGenericSet* pPar);
-  template <class type> UChar_t* readArray(type,const char*,Int_t&);
-  Int_t writeGenericSet(FairParGenericSet* pPar);
+  
   ClassDef(FairGenericParAsciiFileIo,0) // I/O from Ascii file for parameter containers derived from FairParGenericSet
+  Bool_t readGenericSet(FairParGenericSet* pPar);
+  Int_t writeGenericSet(FairParGenericSet* pPar);
+
+  template <class type> UChar_t* readData(type,Char_t*,TString&,Int_t&);
+  template <class type> void writeData(type*,Int_t);
 };
 
 #endif  /* !FAIRGENERICPARASCIIFILEIO_H */

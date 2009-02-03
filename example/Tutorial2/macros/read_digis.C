@@ -50,7 +50,7 @@ void read_digis(){
 
     rtdb->print();
 
-    fRun->LoadGeometry();
+  //  fRun->LoadGeometry();
     fRun->Init();
 
     rtdb->getContainer("FairTutorialDetDigiPar")->print();

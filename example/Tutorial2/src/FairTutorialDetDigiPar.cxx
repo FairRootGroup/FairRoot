@@ -23,6 +23,8 @@ FairTutorialDetDigiPar::FairTutorialDetDigiPar(const char* name,
 					     const char* context)
   : FairParGenericSet(name, title, context) {
   detName="TutorialDet";
+  ftutdetdigipar= new TArrayF(10);
+  //ftutdetdigipar= new TArrayF(10);
 }
 // -------------------------------------------------------------------------
 
@@ -31,6 +33,7 @@ FairTutorialDetDigiPar::FairTutorialDetDigiPar(const char* name,
 // -----   Destructor   ----------------------------------------------------
 FairTutorialDetDigiPar::~FairTutorialDetDigiPar() {
   clear();
+  
 }
 // -------------------------------------------------------------------------
 
@@ -52,10 +55,10 @@ void FairTutorialDetDigiPar::printparams() {
   for ( Int_t i=0; i< size; i++) {
     cout << i <<" :" << ftutdetdigiparsector.GetAt(i) << endl;
   }
-  size =  ftutdetdigipar.GetSize();
+  size =  ftutdetdigipar->GetSize();
   cout <<"size: " << size << endl;
   for ( Int_t i=0; i< size; i++) {
-    cout << i <<" :" << ftutdetdigipar.GetAt(i) << endl;
+    cout << i <<" :" << ftutdetdigipar->GetAt(i) << endl;
   }
     
 }
@@ -73,18 +76,21 @@ void FairTutorialDetDigiPar::putParams(FairParamList* l) {
    }
    Int_t array_size = (count_sectors * 10 + ftutdetdigiparstation * 3);
    cout << "Array Size: " << array_size << endl;
-   Float_t zwischen[array_size];
+/*   Float_t zwischen[array_size];
    for ( Int_t i=0; i< array_size; i++) {
      zwischen[i] = ftutdetdigipar.GetAt(i);
    }
-   l->addBinary("FairTutorialDetDigiPar",zwischen,array_size);
+ */
+  ftutdetdigipar->Set(array_size);
+  l->add("FairTutorialDetDigiPar",*ftutdetdigipar);
 }
 
 //------------------------------------------------------
 
 Bool_t FairTutorialDetDigiPar::getParams(FairParamList* l) {
   //print();
-    cout << " I am in FairTutorialDetDigiPar::getParams " << endl;
+    
+     cout << " I am in FairTutorialDetDigiPar::getParams " << endl;
 
     if (!l) return kFALSE;
     if ( ! l->fill("FairTutorialDetDigiStations", &ftutdetdigiparstation) ) return kFALSE;
@@ -100,13 +106,13 @@ Bool_t FairTutorialDetDigiPar::getParams(FairParamList* l) {
 
     Int_t array_size = (count_sectors * 10 + ftutdetdigiparstation * 3);
     cout << "Array Size: " << array_size << endl;
-
-    Float_t zwischen[array_size];
-    if (!(l->fillBinary("FairTutorialDetDigiPar",zwischen,array_size))) {
+    ftutdetdigipar->Set(array_size);
+    //Float_t zwischen[array_size];
+    if (!(l->fill("FairTutorialDetDigiPar",ftutdetdigipar))) {
       cout << "--W-- Could not initialize FairTutorialDetDigiPar"<< endl;
       return kFALSE;
     }
-    ftutdetdigipar.Set(array_size, zwischen);    
+    //ftutdetdigipar.Set(array_size, zwischen);    
     return kTRUE;
 }
 
