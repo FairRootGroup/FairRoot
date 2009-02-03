@@ -98,8 +98,10 @@ ENDIF (NOT DEFINED ORACLE_OCI_VERSION AND UNIX)
 
 
 IF (ORACLE_FOUND)
+    SET( ENV{ORA_USER} fairana/fair@db-hades-test)
     IF (NOT ORACLE_FIND_QUIETLY)
          MESSAGE(STATUS "Found Oracle: ${ORACLE_LIBRARY} (ORACLE_HOME='${ORACLE_HOME}')")
+         MESSAGE(STATUS "Using Oracle User: $ENV{ORA_USER} ")
     ENDIF (NOT ORACLE_FIND_QUIETLY)
     # there *must* be OCI version defined for internal libraries
     IF (ORACLE_OCI_VERSION)
