@@ -148,7 +148,7 @@ Int_t FairDetParOraIo::getContextId(const char* className, const char* paramCont
   EXEC SQL WHENEVER NOT FOUND GOTO not_found;
   EXEC SQL SELECT context_id
            INTO :context_id
-           FROM cbm_ana.all_param_contexts
+           FROM hanal.all_parameter_contexts
            WHERE class = :p_class and context = :p_context;
   // cout<<"Id of context "<<paramContext<<": "<<context_id<<endl;
   return context_id;
