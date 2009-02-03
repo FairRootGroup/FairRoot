@@ -69,6 +69,7 @@ else(FAIRROOT_MINIMAL)
   find_package(GEANT4VMC)
   find_package(CLHEP)
   find_package(RuleChecker)
+  find_package(Oracle)
 endif(FAIRROOT_MINIMAL)
 
 
@@ -107,6 +108,10 @@ if(BUILD_DOXYGEN)
   MESSAGE(STATUS "*** Building the Doxygen documentaion ***")
   ADD_SUBDIRECTORY(doxygen)
 endif(BUILD_DOXYGEN)
+
+if(ORACLE_FOUND)  
+  add_subdirectory (ora)
+endif(ORACLE_FOUND)  
 
 if(RULE_CHECKER_FOUND)
 

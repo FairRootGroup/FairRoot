@@ -1,0 +1,35 @@
+
+Pro*C/C++: Release 10.2.0.1.0 - Production on Tue Feb 3 13:35:52 2009
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+Error at line 50, column 3 in file /misc/uhlig/SVN/test/fairbase/ora/FairOraInf
+o.pc
+    50    EXEC SQL SELECT TO_CHAR(run_start,'DD-MON-YYYY HH:MI:SS')
+    50  ..1
+    50  PLS-S-00201, identifier 'CBM_ANA.ALL_RUNS' must be declared
+Error at line 50, column 3 in file /misc/uhlig/SVN/test/fairbase/ora/FairOraInf
+o.pc
+    50    EXEC SQL SELECT TO_CHAR(run_start,'DD-MON-YYYY HH:MI:SS')
+    50  ..1
+    50  PLS-S-00000, SQL Statement ignored
+Error at line 50, column 3 in file /misc/uhlig/SVN/test/fairbase/ora/FairOraInf
+o.pc
+    50    EXEC SQL SELECT TO_CHAR(run_start,'DD-MON-YYYY HH:MI:SS')
+    50  ..1
+    50  PCC-S-02346, PL/SQL found semantic errors
+Error at line 125, column 12 in file /misc/uhlig/SVN/test/fairbase/ora/FairOraI
+nfo.pc
+   125             SELECT ref_run_id, ref_run_name,
+   125  ...........1
+   125  PLS-S-00201, identifier 'CBM_ANA.SIMUL_SUBPROJECT' must be declared
+Error at line 125, column 12 in file /misc/uhlig/SVN/test/fairbase/ora/FairOraI
+nfo.pc
+   125             SELECT ref_run_id, ref_run_name,
+   125  ...........1
+   125  PLS-S-00000, SQL Statement ignored
+Error at line 125, column 12 in file /misc/uhlig/SVN/test/fairbase/ora/FairOraI
+nfo.pc
+   125             SELECT ref_run_id, ref_run_name,
+   125  ...........1
+   125  PCC-S-02346, PL/SQL found semantic errors
