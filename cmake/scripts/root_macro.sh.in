@@ -1,5 +1,4 @@
 #!/bin/bash
-
 export LD_LIBRARY_PATH=@MY_LD_LIBRARY_PATH@
 export ROOTSYS=@ROOTSYS@
 export VMCWORKDIR=@PROJECT_SOURCE_DIR@
@@ -8,3 +7,6 @@ export USE_VGM=1
 
 cd @new_path@
 $ROOTSYS/bin/root.exe -b -l  @my_script_name@
+
+
+
