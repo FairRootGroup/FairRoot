@@ -47,7 +47,7 @@ set(ORA_SRCS ${ORA_SRCS} ${ORA_DICTIONARY})
 
 add_library(Ora SHARED ${ORA_SRCS})
 target_link_libraries(Ora ${ROOT_LIBRARIES})
-#set_target_properties(Ora PROPERTIES  ${CBMROOT_LIBRARY_PROPERTIES})
+#set_target_properties(Ora PROPERTIES  ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ################ install ###################
 install(TARGETS Ora  DESTINATION ${CMAKE_BINARY_DIR}/lib)
