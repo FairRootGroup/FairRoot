@@ -8,15 +8,15 @@
 #include <iostream>
 #include "TEveTrackPropagator.h"
 #include "TGeoTrack.h"
-#include "CbmRootManager.h"
+#include "FairRootManager.h"
 #include "TClonesArray.h"
 #include "TObjArray.h"
 #include "TEveManager.h"
 #include "FairEventManager.h"
-#include "CbmMCTrack.h"
+#include "FairMCTrack.h"
 #include "TGeant3.h"
-#include "CbmGeanePro.h"
-#include "CbmTrajFilter.h"
+#include "FairGeanePro.h"
+#include "FairTrajFilter.h"
 
 using std::cout;
 using std::endl;
@@ -31,7 +31,7 @@ FairMCStack::FairMCStack()
 
 // -----   Standard constructor   ------------------------------------------
 FairMCStack::FairMCStack(const char* name, Int_t iVerbose) 
-  : CbmTask(name, iVerbose),
+  : FairTask(name, iVerbose),
     fEveTrList( new TObjArray(16))
 {
 
@@ -40,7 +40,7 @@ FairMCStack::FairMCStack(const char* name, Int_t iVerbose)
 InitStatus FairMCStack::Init()
 {
    if(fVerbose>1) cout<<  "FairMCStack::Init()" << endl;
-   CbmRootManager* fManager = CbmRootManager::Instance();
+   FairRootManager* fManager = FairRootManager::Instance();
    fTrackList = (TClonesArray *)fManager->GetObject("MCTrack");
    if(fTrackList==0){
       cout << "FairMCPointDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< endl; 
@@ -54,7 +54,7 @@ InitStatus FairMCStack::Init()
    MinEnergyLimit=fEventManager->GetEvtMinEnergy();
    MaxEnergyLimit=fEventManager->GetEvtMaxEnergy();
    PEnergy=0;
-   fPro = new CbmGeanePro();
+   fPro = new FairGeanePro();
 	 gMC3 = (TGeant3*) gMC;    
 	x1[0]=0;
 	x1[1]=0;
@@ -78,7 +78,7 @@ InitStatus FairMCStack::Init()
 	//gMC3->Eufill(1, ein, length);
 	
 	
-	fTrajFilter = CbmTrajFilter::Instance();
+	fTrajFilter = FairTrajFilter::Instance();
 	
 	if(IsActive()) return kSUCCESS;
    else return kERROR;
@@ -91,14 +91,14 @@ void FairMCStack::Exec(Option_t* option)
   if (IsActive()){
  
 	if(fVerbose>1)  cout << " FairMCStack::Exec "<< endl;
-    CbmMCTrack *tr;             
+    FairMCTrack *tr;             
     const Double_t *point;
     
     Reset();
    
     for (Int_t i=0; i<fTrackList->GetEntriesFast(); i++)	{
 		if(fVerbose>2) cout << "FairMCStack::Exec "<< i << endl;
-        tr=(CbmMCTrack *)fTrackList->At(i);
+        tr=(FairMCTrack *)fTrackList->At(i);
 		
 		TVector3 Ptot = tr->GetMomentum();
 		Int_t  MotherId =tr->GetMotherID();  

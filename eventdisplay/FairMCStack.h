@@ -15,18 +15,18 @@
 #define FairMCStack_H
 
 
-#include "CbmTask.h"
+#include "FairTask.h"
 #include "TEveTrackPropagator.h"
 #include "TString.h"
-class CbmGeanePro;
+class FairGeanePro;
 class TGeant3;
 class TEveTrackList;
 class FairEventManager;
 class TObjArray;
-class CbmTrajFilter;
+class FairTrajFilter;
 
 //class TEveElementList;
-class FairMCStack : public CbmTask {
+class FairMCStack : public FairTask {
 
  public:
 
@@ -75,8 +75,8 @@ protected:
    Double_t MinEnergyLimit;
    Double_t MaxEnergyLimit;
    Double_t PEnergy;
-   CbmGeanePro *fPro;//!
-   CbmTrajFilter *fTrajFilter;//!
+   FairGeanePro *fPro;//!
+   FairTrajFilter *fTrajFilter;//!
    ClassDef(FairMCStack,1);
     
 };

@@ -5,12 +5,12 @@
 #ifndef FairEventManager_H
 #define FairEventManager_H
 
-#include "CbmTask.h"
-#include "CbmRunAna.h"
+#include "FairTask.h"
+#include "FairRunAna.h"
 #include "TEveEventManager.h"
 #include "TList.h"
 
-class CbmRootManager;
+class FairRootManager;
 
 
 class FairEventManager : public TEveEventManager
@@ -26,7 +26,7 @@ public:
    virtual void Close();  
    void DisplaySettings();       //  *Menu* 
    Int_t Color(Int_t pdg);    
-   void AddTask(CbmTask *t){fRunAna->AddTask(t);}
+   void AddTask(FairTask *t){fRunAna->AddTask(t);}
    void Init();
    Int_t GetCurrentEvent(){return fEntry;}
    void SetPriOnly(Bool_t Pri){fPriOnly=Pri;}
@@ -46,9 +46,9 @@ public:
                                           
    ClassDef(FairEventManager,1);            
 private:                          
-   CbmRootManager *fRootManager; //!
+   FairRootManager *fRootManager; //!
    Int_t fEntry;                 //!
-   CbmRunAna *fRunAna;          //!
+   FairRunAna *fRunAna;          //!
    TGListTreeItem  *fEvent;     //!
    Bool_t fPriOnly;             //!
    Int_t fCurrentPDG;           //! 

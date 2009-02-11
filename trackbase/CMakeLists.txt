@@ -23,10 +23,10 @@ ${ROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 set(TRKBASE_SRCS
-CbmTrackPar.cxx
-CbmTrackParP.cxx
-CbmTrackParH.cxx 
-CbmGeaneUtil.cxx
+FairTrackPar.cxx
+FairTrackParP.cxx
+FairTrackParH.cxx 
+FairGeaneUtil.cxx
 )
 
 if(RULE_CHECKER_FOUND)
@@ -46,6 +46,6 @@ SET(TRKBASE_SRCS ${TRKBASE_SRCS} ${TRKBASE_DICTIONARY})
 
 add_library(TrkBase SHARED ${TRKBASE_SRCS})
 target_link_libraries(TrkBase ${ROOT_LIBRARIES})
-set_target_properties(TrkBase PROPERTIES ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(TrkBase PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 ################ install ###################
 install(TARGETS TrkBase DESTINATION ${CMAKE_BINARY_DIR}/lib)

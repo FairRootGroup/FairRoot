@@ -18,20 +18,20 @@ ${ROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 set(PARBASE_SRCS
-CbmContFact.cxx       
-CbmDetParAsciiFileIo.cxx    
-CbmDetParIo.cxx         
-CbmDetParRootFileIo.cxx     
-CbmGenericParAsciiFileIo.cxx     
-CbmGenericParRootFileIo.cxx     
-CbmParAsciiFileIo.cxx   
-CbmParGenericSet.cxx   
-CbmParIo.cxx  
-CbmParRootFileIo.cxx 
-CbmParSet.cxx 
-CbmParamList.cxx  
-CbmRtdbRun.cxx  
-CbmRuntimeDb.cxx
+FairContFact.cxx       
+FairDetParAsciiFileIo.cxx    
+FairDetParIo.cxx         
+FairDetParRootFileIo.cxx     
+FairGenericParAsciiFileIo.cxx     
+FairGenericParRootFileIo.cxx     
+FairParAsciiFileIo.cxx   
+FairParGenericSet.cxx   
+FairParIo.cxx  
+FairParRootFileIo.cxx 
+FairParSet.cxx 
+FairParamList.cxx  
+FairRtdbRun.cxx  
+FairRuntimeDb.cxx
 )
 
 if(RULE_CHECKER_FOUND)
@@ -54,7 +54,7 @@ SET(PARBASE_SRCS ${PARBASE_SRCS} ${PARBASE_DICTIONARY})
 
 add_library(ParBase SHARED ${PARBASE_SRCS})
 target_link_libraries(ParBase ${ROOT_LIBRARIES})
-set_target_properties(ParBase PROPERTIES ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(ParBase PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ################ install ###################
 install(TARGETS ParBase DESTINATION ${CMAKE_BINARY_DIR}/lib)

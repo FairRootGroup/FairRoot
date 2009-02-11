@@ -6,13 +6,13 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class  CbmAsciiGenerator+;
-#pragma link C++ class  CbmIonGenerator+;
-#pragma link C++ class  CbmParticleGenerator+;
-#pragma link C++ class  CbmPlutoGenerator+;
-#pragma link C++ class  CbmShieldGenerator+;
-#pragma link C++ class  CbmUrqmdGenerator+;
-#pragma link C++ class  CbmBoxGenerator+;
-#pragma link C++ class  CbmEvtGenGenerator+;
+#pragma link C++ class  FairAsciiGenerator+;
+#pragma link C++ class  FairIonGenerator+;
+#pragma link C++ class  FairParticleGenerator+;
+#pragma link C++ class  FairPlutoGenerator+;
+#pragma link C++ class  FairShieldGenerator+;
+#pragma link C++ class  FairUrqmdGenerator+;
+#pragma link C++ class  FairBoxGenerator+;
+#pragma link C++ class  FairEvtGenGenerator+;
 
 #endif

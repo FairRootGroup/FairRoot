@@ -10,7 +10,7 @@
 #include "TGColorSelect.h"
 #include "TGDoubleSlider.h"
 #include "FairEventManager.h"
-#include "CbmRunAna.h"
+#include "FairRunAna.h"
 
 //______________________________________________________________________________
 // FairMCTracksEditor
@@ -38,12 +38,12 @@ FairMCTracksEditor::FairMCTracksEditor(const TGWindow* p, Int_t width, Int_t hei
                                                    kFixedWidth      |
                                                    kOwnBackground);
    TString Infile= "Input File : ";
-   TFile *file =CbmRunAna::Instance()->GetInputFile();
+   TFile *file =FairRunAna::Instance()->GetInputFile();
    Infile+=file->GetName();
    TGLabel *TFName=new TGLabel(title1, Infile.Data());   
    title1->AddFrame(TFName);
  
-   UInt_t RunId= CbmRunAna::Instance()->getRunId();
+   UInt_t RunId= FairRunAna::Instance()->getRunId();
    TString run= "Run Id : ";
    run += RunId; 
    TGLabel *TRunId=new TGLabel(title1, run.Data());

@@ -10,9 +10,9 @@
 #include "TGColorSelect.h"
 #include "TGDoubleSlider.h"
 #include "FairEventManager.h"
-#include "CbmRunAna.h"
+#include "FairRunAna.h"
 #include "TGeoManager.h"
-#include "CbmRootManager.h"
+#include "FairRootManager.h"
 #include "TChain.h"
 #include "TEveGValuators.h"
 //______________________________________________________________________________
@@ -40,7 +40,7 @@ FairEventManagerEditor::FairEventManagerEditor(const TGWindow* p, Int_t width, I
 
   // Resize(width, height);
 //   fManager= FairEventManager::Instance();
-   CbmRootManager *fRootManager=CbmRootManager::Instance();
+   FairRootManager *fRootManager=FairRootManager::Instance();
    TChain *chain =fRootManager->GetInChain();
    Int_t Entries= chain->GetEntriesFast();
 
@@ -52,12 +52,12 @@ FairEventManagerEditor::FairEventManagerEditor(const TGWindow* p, Int_t width, I
                                                    kFixedWidth    | kOwnBackground);
    
    TString Infile= "Input file : ";
-   TFile *file =CbmRunAna::Instance()->GetInputFile();
+   TFile *file =FairRunAna::Instance()->GetInputFile();
    Infile+=file->GetName();
    TGLabel *TFName=new TGLabel(title1, Infile.Data());   
    title1->AddFrame(TFName);
  
-   UInt_t RunId= CbmRunAna::Instance()->getRunId();
+   UInt_t RunId= FairRunAna::Instance()->getRunId();
    TString run= "Run Id : ";
    run += RunId; 
    TGLabel *TRunId=new TGLabel(title1, run.Data());

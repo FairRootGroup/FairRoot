@@ -24,8 +24,8 @@ link_directories( ${LINK_DIRECTORIES})
 
 
 set(GEANE_SRCS
-CbmGeane.cxx       
-CbmGeanePro.cxx
+FairGeane.cxx       
+FairGeanePro.cxx
 )
 
 if(RULE_CHECKER_FOUND)
@@ -46,6 +46,6 @@ set(GEANE_SRCS ${GEANE_SRCS} ${GEANE_DICTIONARY})
 
 add_library(Geane SHARED ${GEANE_SRCS})
 target_link_libraries(Geane ${ROOT_LIBRARIES})
-set_target_properties(Geane PROPERTIES ${CBMROOT_LIBRARY_PROPERTIES})
+set_target_properties(Geane PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 ################ install ###################
 install(TARGETS Geane DESTINATION ${CMAKE_BINARY_DIR}/lib)

@@ -5,10 +5,10 @@
 #pragma link off all functions;
  
 
-#pragma link C++ class  CbmTrackPar+;
-#pragma link C++ class  CbmTrackParP+;
-#pragma link C++ class  CbmTrackParH+;
-#pragma link C++ class  CbmGeaneUtil+;
+#pragma link C++ class  FairTrackPar+;
+#pragma link C++ class  FairTrackParP+;
+#pragma link C++ class  FairTrackParH+;
+#pragma link C++ class  FairGeaneUtil+;
 
 
 #endif

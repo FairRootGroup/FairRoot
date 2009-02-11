@@ -15,14 +15,14 @@
 #define FAIRMCTRACKS_H
 
 
-#include "CbmTask.h"
+#include "FairTask.h"
 #include "TEveTrackPropagator.h"
 #include "TString.h"
 class TEveTrackList;
 class FairEventManager;
 class TObjArray;
 //class TEveElementList;
-class FairMCTracks : public CbmTask {
+class FairMCTracks : public FairTask {
 
  public:
 

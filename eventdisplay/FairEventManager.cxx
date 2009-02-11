@@ -5,8 +5,8 @@
 **/
 
 #include "FairEventManager.h"
-#include "CbmRootManager.h"
-#include "CbmRunAna.h"
+#include "FairRootManager.h"
+#include "FairRunAna.h"
 #include <iostream>
 #include "TEveManager.h"
 #include "TGeoVolume.h"
@@ -27,9 +27,9 @@ FairEventManager * FairEventManager::Instance(){
 //______________________________________________________________________________
 FairEventManager::FairEventManager() 
   :TEveEventManager("FairEventManager", ""),
-   fRootManager(CbmRootManager::Instance()),
+   fRootManager(FairRootManager::Instance()),
    fEntry(0),
-   fRunAna(CbmRunAna::Instance()),
+   fRunAna(FairRunAna::Instance()),
    fEvent(0),
    fPriOnly(kFALSE),
    fCurrentPDG(0),

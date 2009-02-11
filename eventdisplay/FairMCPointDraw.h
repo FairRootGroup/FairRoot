@@ -15,12 +15,12 @@
 #define FAIRMCPOINTDRAW_H
 
 
-#include "CbmTask.h"
+#include "FairTask.h"
 
 class FairEventManager;
 class TClonesArray;
 class TEvePointSet;
-class FairMCPointDraw : public CbmTask {
+class FairMCPointDraw : public FairTask {
 
  public:
 

@@ -8,7 +8,7 @@
 #include <iostream>
 #include "TEveTrackPropagator.h"
 #include "TGeoTrack.h"
-#include "CbmRootManager.h"
+#include "FairRootManager.h"
 #include "TClonesArray.h"
 #include "TObjArray.h"
 #include "TEveManager.h"
@@ -26,7 +26,7 @@ FairMCTracks::FairMCTracks()
 
 // -----   Standard constructor   ------------------------------------------
 FairMCTracks::FairMCTracks(const char* name, Int_t iVerbose) 
-  : CbmTask(name, iVerbose),
+  : FairTask(name, iVerbose),
     fEveTrList( new TObjArray(16))
 {
 
@@ -35,7 +35,7 @@ FairMCTracks::FairMCTracks(const char* name, Int_t iVerbose)
 InitStatus FairMCTracks::Init()
 {
    if(fVerbose>1) cout<<  "FairMCTracks::Init()" << endl;
-   CbmRootManager* fManager = CbmRootManager::Instance();
+   FairRootManager* fManager = FairRootManager::Instance();
    fTrackList = (TClonesArray *)fManager->GetObject("GeoTracks");
    if(fTrackList==0){
       cout << "FairMCPointDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< endl; 
