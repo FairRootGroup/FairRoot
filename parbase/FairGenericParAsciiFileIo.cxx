@@ -32,7 +32,7 @@ Bool_t FairGenericParAsciiFileIo::init(FairParSet* pPar) {
   if (!pFile) return kFALSE;
 
   if (pPar->InheritsFrom("FairParGenericSet")) {
-      std::cout << "airGenericParAsciiFileIo ##########calling read function " << std::endl;
+//      std::cout << "airGenericParAsciiFileIo ##########calling read function " << std::endl;
       return readGenericSet((FairParGenericSet*)pPar);
   }
  
