@@ -130,18 +130,18 @@ libOra_la_LDFLAGS = -version-info 0:0:0
 
 libOra_la_LIBADD = -L$(ROOTLIBDIR) $(ROOTLIBS) -L$(top_srcdir)/base/ 
 
-include_HEADERS = CbmDetParOraIo.h CbmOraConn.h CbmOraRunInfo.h	\
-			  CbmGenericParOraIo.h CbmOraInfo.h CbmParOraIo.h
+include_HEADERS = FairDetParOraIo.h FairOraConn.h FairOraRunInfo.h	\
+			  FairGenericParOraIo.h FairOraInfo.h FairParOraIo.h
 
 
 noinst_HEADERS = OraLinkDef.h 
 
-libOra_la_SOURCES = CbmDetParOraIo.cxx CbmGenericParOraIo.cxx	\
-			  CbmOraConn.cxx CbmOraInfo.cxx	\
-			  CbmOraDict.cxx  
+libOra_la_SOURCES = FairDetParOraIo.cxx FairGenericParOraIo.cxx	\
+			  FairOraConn.cxx FairOraInfo.cxx	\
+			  FairOraDict.cxx  
 
 
-CLEANFILES = CbmOraDict.cxx CbmOraDict.h *~ libOra.la
+CLEANFILES = FairOraDict.cxx FairOraDict.h *~ libOra.la
 
 SUFFIXES = .cxx .pc
 subdir = ora
@@ -150,8 +150,8 @@ CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(lib_LTLIBRARIES)
 
 libOra_la_DEPENDENCIES =
-am_libOra_la_OBJECTS = CbmDetParOraIo.lo CbmGenericParOraIo.lo \
-	CbmOraConn.lo CbmOraInfo.lo CbmOraDict.lo
+am_libOra_la_OBJECTS = FairDetParOraIo.lo FairGenericParOraIo.lo \
+	FairOraConn.lo FairOraInfo.lo FairOraDict.lo
 libOra_la_OBJECTS = $(am_libOra_la_OBJECTS)
 
 DEFS = @DEFS@
@@ -161,11 +161,11 @@ LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/CbmDetParOraIo.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/CbmGenericParOraIo.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/CbmOraConn.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/CbmOraDict.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/CbmOraInfo.Plo
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/FairDetParOraIo.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/FairGenericParOraIo.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/FairOraConn.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/FairOraDict.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/FairOraInfo.Plo
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 LTCXXCOMPILE = $(LIBTOOL) --mode=compile $(CXX) $(DEFS) \
@@ -236,11 +236,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CbmDetParOraIo.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CbmGenericParOraIo.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CbmOraConn.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CbmOraDict.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/CbmOraInfo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FairDetParOraIo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FairGenericParOraIo.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FairOraConn.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FairOraDict.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FairOraInfo.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)
@@ -439,7 +439,7 @@ uninstall-am: uninstall-includeHEADERS uninstall-info-am \
 	uninstall-info-am uninstall-libLTLIBRARIES
 
 
-CbmOraDict.cxx: $(include_HEADERS) OraLinkDef.h
+FairOraDict.cxx: $(include_HEADERS) OraLinkDef.h
 	$(ROOTCINT) -f $@ -c -DHAVE_CONFIG_H $(INCLUDES) $^
 .pc.cxx:
 	$(ORACLE_HOME)/bin/proc $(PROCFLAGS) iname=$< oname=$*.cxx

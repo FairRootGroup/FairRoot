@@ -65,7 +65,7 @@ struct sqlcxp
 static const struct sqlcxp sqlfpn =
 {
     13,
-    "CbmOraInfo.pc"
+    "FairOraInfo.pc"
 };
 
 
@@ -159,7 +159,7 @@ static const short sqlcud0[] =
 //*-- Created : 26/11/2004 by I.Koenig
 
 //////////////////////////////////////////////////////////////////////////////
-// CbmOraInfo
+// FairOraInfo
 //
 // Class for additional information from database Oracle
 // (uses the Oracle C/C++ precompiler)
@@ -169,9 +169,9 @@ static const short sqlcud0[] =
 //////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
-#include "CbmOraInfo.h"
-#include "CbmOraConn.h"
-#include "CbmOraRunInfo.h"
+#include "FairOraInfo.h"
+#include "FairOraConn.h"
+#include "FairOraRunInfo.h"
 #include <iostream>
 #include <iomanip>
 
@@ -183,17 +183,17 @@ using namespace std;
 // Include the SQL Communications Area
 #include "sqlca.h"
  
-ClassImp(CbmOraInfo)
+ClassImp(FairOraInfo)
 
 #define NMAX_INFO 2000
  
-void CbmOraInfo::showSqlError(char* f) {
+void FairOraInfo::showSqlError(char* f) {
   // shows SQL error messages
   Error(f,"\n%s",sqlca.sqlerrm.sqlerrmc);
 }
 
 
-void CbmOraInfo::showRunStart(Int_t run) {
+void FairOraInfo::showRunStart(Int_t run) {
   // prints the start date and time of given run
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
@@ -268,7 +268,7 @@ notfound:
   return;
 }
 
-Int_t CbmOraInfo::getRunId(Text_t* filename) {
+Int_t FairOraInfo::getRunId(Text_t* filename) {
   // returns the run id of a daq file
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
@@ -340,7 +340,7 @@ notfound:
 }
 
 
-TList* CbmOraInfo::getListOfRuns(const char* projectname,
+TList* FairOraInfo::getListOfRuns(const char* projectname,
                                const char* startAt, const char* endAt) {
   // returns the list of simulation reference runs (only last generation)
   //   for the specifies project and range
@@ -531,7 +531,7 @@ struct { unsigned short len; unsigned char arr[82]; } rname[2000];
     nLast=sqlca.sqlerrd[2]-nTot;
     for (Int_t i=0;i<nLast;i++) {
       refruns.rname[i].arr[refruns.rname[i].len]='\0';
-      CbmOraRunInfo* p=new CbmOraRunInfo((char*)(refruns.rname[i].arr));
+      FairOraRunInfo* p=new FairOraRunInfo((char*)(refruns.rname[i].arr));
       p->setRunId(refruns.rid[i]);
       refruns.ts[i][20]='\0';
       p->setStartTime((char*)(refruns.ts[i]));
@@ -576,7 +576,7 @@ errorfound:
 }
 
 
-Bool_t CbmOraInfo::getRefRunStart(const char* startAt,TString& pTime) {
+Bool_t FairOraInfo::getRefRunStart(const char* startAt,TString& pTime) {
   // gets the run start for a simulation reference run
   TString s(startAt);
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
