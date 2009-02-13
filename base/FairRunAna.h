@@ -35,9 +35,9 @@ public:
     void        AddAndMerge(TFile *f ) { MergedFileList->Add(f);}    
     void        Init();
     void        Run(Int_t NStart ,Int_t NStop);
-    void 	Run(Long64_t entry);
+    void 	    Run(Long64_t entry);
     /** the dummy run does not check the evt header or the parameters!! */
-    void 	DummyRun(Int_t NStart ,Int_t NStop);
+    void 	    DummyRun(Int_t NStart ,Int_t NStop);
     TFile*      SetInputFile(TString fname);
     void        SetInputFile(TFile *f);
     TObjArray * GetListOfMergedFile() { return MergedFileList;}

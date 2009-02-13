@@ -21,7 +21,8 @@ ClassImp(FairRunSim)
 FairRunSim::FairRunSim()
   :FairRun(),
    count(0),
-   fApp(0),                                   
+   fApp(0),   
+   fBeamEnergy(0),
    fGen(0),
    fField(0),
    fMapName(""),
