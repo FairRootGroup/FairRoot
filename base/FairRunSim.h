@@ -116,11 +116,14 @@ public:
 	void SetUserCuts(const TString& Cuts) {fUserCuts= Cuts;}
 	
 	/** Set Beam energy in GeV/c */
-	void SetBeamEnergy(Double_t BeamEnergy) {fBeamEnergy= BeamEnergy;}
+	void SetBeamEnergy(Double_t BeamEnergy) {  fBeamEnergy= BeamEnergy; fUseBeamEnergy=kTRUE;}
 	
 	/** Get the Beam energy */
 	Double_t GetBeamEnergy() {return fBeamEnergy;}
 	
+        /**Get beam energy flag */
+        Bool_t UseBeamEnergy() {return fUseBeamEnergy;}
+
 private:
     FairRunSim(const FairRunSim &M);
     FairRunSim& operator= (const  FairRunSim&) {return *this;}
@@ -128,7 +131,8 @@ protected:
 
     Int_t                  count;//!		                       /** Internal counter*/
     FairMCApplication*     fApp;  //!		                       /** Main VMC application */
-	Double_t			   fBeamEnergy; //!	                       /** Beam Energy in GeV/c  */
+    Double_t               fBeamEnergy; //!	                       /** Beam Energy in GeV/c  */
+    Bool_t                 fUseBeamEnergy; //!	                       /** flag for use Beam Energy  */
     FairPrimaryGenerator*  fGen; //!                               /** Primary Event Generator */
     static FairRunSim*     fginstance;//!                          /** Singelton Instance */ 
     FairField*             fField;                                 /** Magnetic Field */ 

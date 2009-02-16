@@ -23,6 +23,7 @@ FairRunSim::FairRunSim()
    count(0),
    fApp(0),   
    fBeamEnergy(0),
+   fUseBeamEnergy(kFALSE),
    fGen(0),
    fField(0),
    fMapName(""),
