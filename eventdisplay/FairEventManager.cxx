@@ -46,8 +46,8 @@ FairEventManager::FairEventManager()
 void FairEventManager::Init()
 {
    TEveManager::Create();
- //  fRunAna->LoadGeometry();
- //  fRunAna->Init();   
+   fRunAna->LoadGeometry();
+   fRunAna->Init();   
    if(gGeoManager) {
      //     TGeoVolume *V= gGeoManager->GetTopVolume();
 	 TGeoNode *N=  gGeoManager->GetTopNode();
