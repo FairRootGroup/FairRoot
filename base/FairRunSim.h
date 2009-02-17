@@ -116,7 +116,7 @@ public:
 	void SetUserCuts(const TString& Cuts) {fUserCuts= Cuts;}
 	
 	/** Set Beam energy in GeV/c */
-	void SetBeamEnergy(Double_t BeamEnergy) {  fBeamEnergy= BeamEnergy; fUseBeamEnergy=kTRUE;}
+	void SetBeamMom(Double_t BeamEnergy) {  fBeamEnergy= BeamEnergy; fUseBeamEnergy=kTRUE;}
 	
 	/** Get the Beam energy */
 	Double_t GetBeamEnergy() {return fBeamEnergy;}
