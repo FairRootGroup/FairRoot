@@ -32,9 +32,9 @@ ClassImp(FairOraConn)
 
 FairOraConn::FairOraConn() {
   // default constructor
-  // defines default values for user ("FAIR_ANA_PUBLIC") and the database
-  //   ("db-cbm.oracle.gsi.de", the FAIR Oracle database on Linux at GSI)
-  // User FAIR_ANA_PUBLIC has Readonly access to the Oracle tables.
+  // defines default values for user ("FAIRANA") and the database
+  //   ("db-hades-test.oracle.gsi.de", the HADES test Oracle database on Linux at GSI)
+  // User FAIRANA has Readonly access to the Oracle tables.
   // The connection to Oracle is not opened!
   strcpy(dbName,"db-hades-test");
   strcpy(userName,"fairana");
@@ -54,30 +54,30 @@ FairOraConn::~FairOraConn() {
 
 Bool_t FairOraConn::open() {
   // opens default connection with readonly access
-  char* password = new char[9];
+  Char_t* password = new Char_t[9];
   strcpy(password,"fair");
   Bool_t rc=openConnection(password);
   if (!rc) close();
   return rc;
 }
 
-Bool_t FairOraConn::open(char *uName) {
-  // opens connection to database db-cbm for user given by name
+Bool_t FairOraConn::open(Char_t *uName) {
+  // opens connection to database db-hades-test for user given by name
   // asks for password
   strncpy(userName,uName,30);
-  char* password=getPassword();
+  Char_t* password=getPassword();
   Bool_t rc=openConnection(password);
   if (!rc) close();
   return rc;
 }
 
 
-Bool_t FairOraConn::open(char *dbN, char *uN) {
+Bool_t FairOraConn::open(Char_t *dbN, Char_t *uN) {
   // opens connection to database with name dbName for user given by name
   // asks for password
   strncpy(dbName,dbN,30);
   strncpy(userName,uN,30);
-  char* password=getPassword();
+  Char_t* password=getPassword();
   Bool_t rc=openConnection(password);
   if (!rc) close();
   return rc;
@@ -88,8 +88,8 @@ Bool_t FairOraConn::reconnect() {
   // opens connection (contains the SQL-statements)
   if (isConnected) return kTRUE;
   if (strcmp(userName,"fairana")!=0) return kFALSE;
-  char connId[80];
-  char password[]={"fair"};
+  Char_t connId[80];
+  Char_t password[]={"fair"};
   strcpy(connId,userName);
   strcat(connId,"@");
   strcat(connId,dbName);
@@ -100,7 +100,7 @@ Bool_t FairOraConn::reconnect() {
   uName=connId;
   pWord=password;
   EXEC SQL WHENEVER SQLERROR DO
-    showSqlError("openConnection(char*)","Wrong user/password");
+    showSqlError("openConnection(Char_t*)","Wrong user/password");
   EXEC SQL CONNECT :uName IDENTIFIED BY :pWord;
   if (sqlca.sqlcode==0) {
     isConnected=kTRUE;
@@ -155,7 +155,7 @@ void FairOraConn::print() {
 }
 
 
-void FairOraConn::showSqlError(const char* fctName,const char* msg) {
+void FairOraConn::showSqlError(const Char_t* fctName,const Char_t* msg) {
   // shows SQL error messages
   if (msg)
     Error(fctName,"\n%s\n%s\n",sqlca.sqlerrm.sqlerrmc,msg);
@@ -163,10 +163,10 @@ void FairOraConn::showSqlError(const char* fctName,const char* msg) {
 }
 
 
-char* FairOraConn::getPassword() {
+Char_t* FairOraConn::getPassword() {
   // asks for the password
-  char* passwd = new char[20];
-  char buf[20];
+  Char_t* passwd = new Char_t[20];
+  Char_t buf[20];
   int ttyfd = 0;
   struct termios tio, itio;
   if ((ttyfd = ::open("/dev/tty", O_RDWR)) < 0) {
@@ -192,10 +192,10 @@ char* FairOraConn::getPassword() {
 }
 
 
-Bool_t FairOraConn::openConnection(char* password) {
+Bool_t FairOraConn::openConnection(Char_t* password) {
   // opens connection (contains the SQL-statements)
   if (isConnected) close();
-  char connId[80];
+  Char_t connId[80];
   strcpy(connId,userName);
   strcat(connId,"@");
   strcat(connId,dbName);
@@ -206,7 +206,7 @@ Bool_t FairOraConn::openConnection(char* password) {
   uName=connId;
   pWord=password;
   EXEC SQL WHENEVER SQLERROR DO
-    showSqlError("openConnection(char*)","Wrong user/password");
+    showSqlError("openConnection(Char_t*)","Wrong user/password");
   EXEC SQL CONNECT :uName IDENTIFIED BY :pWord;
   if (sqlca.sqlcode==0) isConnected=kTRUE;
   else cout<<"*** Failed to connect to Oracle ***"<<endl;
@@ -260,16 +260,28 @@ Int_t FairOraConn::getRunStart(Int_t id) {
   EXEC SQL BEGIN DECLARE SECTION;
     int ri; 
     int rs;
+    varchar exp_loc[11];
   EXEC SQL END DECLARE SECTION;
   EXEC SQL WHENEVER SQLERROR GOTO notfound;
   ri = actRunId;
+  exp_loc.len=11;
   EXEC SQL EXECUTE
     BEGIN
-      hades_oper.run_query.get_run_start(:ri,:rs);
+      hades_oper.run_query.get_run_start(:ri,:rs,:exp_loc);
     END;
   END-EXEC;
-  if (ri==(int)actRunId) {
+  if (ri==(Int_t)actRunId) {
     runStart=rs;
+    exp_loc.arr[exp_loc.len]='\0';
+    if (strlen(expLocation)==0) strcpy(expLocation,(Char_t*)exp_loc.arr);
+    else {
+      if (strcmp(expLocation,(Char_t*)exp_loc.arr)!=0) {
+        Error("getRunStart(Int_t)",
+          "\nA switch from beamtime runs to simulations runs and vice versa is not "
+          "possible\nwithout the close and reopen of the Oracle connection!\n\n");
+        runStart=-1;
+      }
+    }
     /* cout<<"actRunId: "<<actRunId<<"   runStart: "<<runStart<<endl; */
     return runStart;
   }
@@ -279,7 +291,7 @@ notfound:
 }
 
 
-Bool_t FairOraConn::setHistoryDate(const char* dateString) {
+Bool_t FairOraConn::setHistoryDate(const Char_t* dateString) {
   // Sets the date to retrieve historic data
   // Returns kFALSE when the date string cannot be converted to a valid date.
   EXEC SQL BEGIN DECLARE SECTION;
@@ -287,7 +299,7 @@ Bool_t FairOraConn::setHistoryDate(const char* dateString) {
     char rd[21];
   EXEC SQL END DECLARE SECTION;
   EXEC SQL WHENEVER SQLERROR GOTO notfound;
-  d=(char*)dateString;
+  d=(Char_t*)dateString;
   EXEC SQL EXECUTE
     BEGIN
       hades_oper.run_query.set_history_date(:d);
@@ -305,7 +317,7 @@ notfound:
   return kFALSE;
 }
 
-Bool_t FairOraConn::setParamRelease(const char* release_name) {
+Bool_t FairOraConn::setParamRelease(const Char_t* release_name) {
   // Sets the history date to the creation date of the parameter release give by name
   EXEC SQL BEGIN DECLARE SECTION;
     char* r;
@@ -313,7 +325,7 @@ Bool_t FairOraConn::setParamRelease(const char* release_name) {
   EXEC SQL END DECLARE SECTION;
   EXEC SQL WHENEVER SQLERROR GOTO notfound;
   rd[0]='\0';	
-  r=(char*)release_name;
+  r=(Char_t*)release_name;
   EXEC SQL EXECUTE
     BEGIN
       hades_oper.run_query.set_param_release(:r);
@@ -327,7 +339,7 @@ Bool_t FairOraConn::setParamRelease(const char* release_name) {
   cout<<"*************************************************************\n";
   return kTRUE;
 notfound:
-  showSqlError("setParamRelease(const char*)");
+  showSqlError("setParamRelease(const Char_t*)");
   return kFALSE;
 }
 

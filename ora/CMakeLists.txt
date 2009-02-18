@@ -35,9 +35,7 @@ CHANGE_FILE_EXTENSION(*.pc *.cxx ORA_SRCS "${Ora_input_files}")
 FOREACH(_actual_file ${ORA_SRCS})
   SET(Full_path ${Full_path} ${CMAKE_CURRENT_BINARY_DIR}/${_actual_file})
 ENDFOREACH(_actual_file ${ORA_SRCS})
-SET(ORA_SRCS ${Full_path} FairParOraIo.cxx
-#FairOraRunInfo.cxx
-)
+SET(ORA_SRCS ${Full_path} FairParOraIo.cxx FairOraRunInfo.cxx)
 
 CHANGE_FILE_EXTENSION(*.pc *.h ORA_HEADERS "${Ora_input_files}")
 set(ORA_HEADERS ${ORA_HEADERS} FairParOraIo.h FairOraRunInfo.h)

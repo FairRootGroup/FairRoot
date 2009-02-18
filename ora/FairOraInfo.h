@@ -13,12 +13,14 @@ private:
 public:
   FairOraInfo(FairOraConn* p=0) {pConn=p;}
   ~FairOraInfo(void) {}
-  void showSqlError(char*);
+  void showSqlError(Char_t*);
   void showRunStart(Int_t);  
   Int_t getRunId(Text_t*);
-  TList* getListOfRuns(const char* ,const char* startAt="",const char* endAt="");
+  TList* getListOfRuns(const Char_t* ,const Char_t* startAt="",const Char_t* endAt="");
 private:
-  Bool_t getRefRunStart(const char*,TString&);
+  TList* getListOfSimRefRuns(const Char_t* ,const Char_t*,const Char_t*);
+  Bool_t getRunStart(const Char_t*,TString&);
+  Bool_t getSimRefRunStart(const Char_t*,TString&);
   ClassDef(FairOraInfo,0) // utility class for the interface to Oracle
 };
 
