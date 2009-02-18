@@ -11,6 +11,7 @@ protected:
   Bool_t isConnected;      // ==kTRUE if connection is open
   Int_t actRunId;          // actual runId (can be -1 if there are no data in Oracle)
   Int_t runStart;          // start time of actual run
+  Char_t expLocation[11];  // Beam or simulation run
   char historyDate[21];    // timestamp to retrieve historic data
   Bool_t needsServerCheck; // kTRUE before first call to getRunStart
 public:
@@ -28,6 +29,7 @@ public:
   Int_t getActRunId(void) { return actRunId; }
   Int_t getRunStart(Int_t);
   Int_t getActRunStart() { return runStart; }
+  const Char_t* getExpLocation() { return expLocation; }
   Bool_t setHistoryDate(const char*);
   const char* getHistoryDate() { return historyDate; }
   Bool_t setParamRelease(const char*);

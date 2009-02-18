@@ -29,10 +29,16 @@ FairGenericParOraIo.pc
 FairOraConn.pc  
 FairOraInfo.pc
 )
+set(ORA_SRCS
+${CMAKE_CURRENT_BINARY_DIR}/FairDetParOraIo.cxx  
+${CMAKE_CURRENT_BINARY_DIR}/FairGenericParOraIo.cxx  
+${CMAKE_CURRENT_BINARY_DIR}/FairOraConn.cxx  
+${CMAKE_CURRENT_BINARY_DIR}/FairOraInfo.cxx
+)
 
 PREPROCESS_ORACLE_FILES("${Ora_input_files}" "${INCLUDE_DIRECTORIES}")
 
-CHANGE_FILE_EXTENSION(*.pc *.cxx ORA_SRCS "${Ora_input_files}")
+#CHANGE_FILE_EXTENSION(*.pc *.cxx ORA_SRCS "${Ora_input_files}")
 CHANGE_FILE_EXTENSION(*.pc *.h ORA_HEADERS "${Ora_input_files}")
 
 set(ORA_HEADERS ${ORA_HEADERS} FairOraRunInfo.h FairParOraIo.h)
@@ -41,9 +47,9 @@ set(ORA_HEADERS ${ORA_HEADERS} FairOraRunInfo.h FairParOraIo.h)
 set(ORA_LINKDEF OraLinkDef.h)
 set(ORA_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/CbmOraDict.cxx)
  
-ROOT_GENERATE_DICTIONARY("${ORA_HEADERS}" "${ORA_LINKDEF}" "${ORA_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
+#ROOT_GENERATE_DICTIONARY("${ORA_HEADERS}" "${ORA_LINKDEF}" "${ORA_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
 
-set(ORA_SRCS ${ORA_SRCS} ${ORA_DICTIONARY})
+#set(ORA_SRCS ${ORA_SRCS} ${ORA_DICTIONARY})
 
 add_library(Ora SHARED ${ORA_SRCS})
 target_link_libraries(Ora ${ROOT_LIBRARIES})

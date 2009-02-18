@@ -49,8 +49,14 @@ void FairOraInfo::showRunStart(Int_t run) {
   EXEC SQL WHENEVER NOT FOUND GOTO notfound;
   EXEC SQL SELECT TO_CHAR(run_start,'DD-MON-YYYY HH24:MI:SS')
            INTO :runDate INDICATOR :runDate_Ind
+           FROM daq.daq_runs_ana
+           WHERE run_id = :id;
+/*
+  EXEC SQL SELECT TO_CHAR(run_start,'DD-MON-YYYY HH24:MI:SS')
+           INTO :runDate INDICATOR :runDate_Ind
            FROM hanal.simul_ref_run
            WHERE run_id = :id;
+*/
   if (runDate_Ind>=0) cout<<"Run "<<run<<" started at "<<runDate<<'\n';
   else cout << "no Run_Start for run "<<run<<'\n';
   return;
@@ -69,7 +75,7 @@ Int_t FairOraInfo::getRunId(Text_t* filename) {
   EXEC SQL WHENEVER SQLERROR DO
     showSqlError("getRunId(Text_t*)");
   EXEC SQL WHENEVER NOT FOUND GOTO notfound;
-  EXEC SQL SELECT run_id INTO :run
+  EXEC SQL SELECT ref_run_id INTO :run
            FROM hanal.simul_ref_run
            WHERE LOWER(ref_run_name) = LOWER(:runname);
   return run;
@@ -127,13 +133,13 @@ TList* FairOraInfo::getListOfRuns(const char* projectname,
                   TO_CHAR(run_stop,'DD-MON-YYYY HH24:MI:SS')
            FROM hanal.simul_project p,
                 hanal.simul_ref_run rr
-           WHERE upper(project_id)= :project
+           WHERE upper(exp_id)= :project
              AND p.project_id = rr.project_id
              AND run_start BETWEEN TO_DATE(:pstart,'DD-MON-YYYY HH24:MI:SS')
                            AND TO_DATE(:pend,'DD-MON-YYYY HH24:MI:SS')
              AND rr.generation = ( SELECT MAX(generation)
                                    FROM hanal.simul_ref_run
-                                   WHERE subproject_id = p.subproject_id )
+                                   WHERE project_id = p.project_id )
            ORDER BY ref_run_id;
   EXEC SQL OPEN refruns_cursor;
   do {

@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "FairGenericParOraIo.h"
+#include "FairOraConn.h"
 #include "FairParGenericSet.h"
 #include "FairParamList.h"
 #include "TClass.h"
@@ -20,6 +21,10 @@
 #include <oraca.h>
 // Include the SQL Communications Area
 #include <sqlca.h>
+
+#include <iostream>
+using std::cout;
+using std::endl;
 
 ClassImp(FairGenericParOraIo)
 

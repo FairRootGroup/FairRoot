@@ -224,7 +224,7 @@ Int_t FairOraConn::checkServerLoad() {
   EXEC SQL WHENEVER SQLERROR GOTO notfound;
   EXEC SQL EXECUTE
     BEGIN
-      :retval := hades_util.check_analysis_sessions;
+      :retval := hanal.check_analysis_sessions;
     END;
   END-EXEC;
   return retval;
