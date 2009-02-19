@@ -117,7 +117,7 @@ IF (ROOT_FOUND)
 #  STRING(REGEX MATCHALL "-L([^ ])+"  root_library ${root_flags})
 #  REMOVE_FROM_LIST(root_flags "${root_libs_all}" "${root_library}")
 
-  SET(ROOT_LIBRARIES ${root_flags})
+  SET(ROOT_LIBRARIES "${root_flags} -lEGPythia6")
 
   # Make variables changeble to the advanced user
   MARK_AS_ADVANCED( ROOT_LIBRARY_DIR ROOT_INCLUDE_DIR ROOT_DEFINITIONS)
@@ -252,9 +252,15 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
   set(MY_LD_LIBRARY_PATH ${output})
   set(my_script_name ${SCRIPT_FULL_NAME})
 
-  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro.sh.in
-                 ${new_path}/${shell_script_name}
-                )
+  if(CMAKE_SYSTEM MATCHES Darwin)
+    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro_macos.sh.in
+                   ${new_path}/${shell_script_name}
+                  )
+  else(CMAKE_SYSTEM MATCHES Darwin)
+    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro.sh.in
+                   ${new_path}/${shell_script_name}
+                  )
+  endif(CMAKE_SYSTEM MATCHES Darwin)
 
   EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
 
