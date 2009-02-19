@@ -26,7 +26,7 @@ class FairTutorialDetDigiPar : public FairParGenericSet
   /** Standard constructor **/
   FairTutorialDetDigiPar(const char* name    = "FairTutorialDetDigiPar",
 			const char* title   = "Tutorial Det digi parameters",
-			const char* context = "Default");
+			const char* context = "TestDefaultContext");
 
 
   /** Destructor **/

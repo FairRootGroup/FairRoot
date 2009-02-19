@@ -15,6 +15,8 @@ void create_digis(){
     gSystem->Load("libPassive");
     gSystem->Load("libGen");
     gSystem->Load("libTutorial2");
+    gSystem->Load("libOra");
+    
 
     TString dir = getenv("VMCWORKDIR");
     TString tutdir = dir + "/example/Tutorial2";
@@ -44,10 +46,15 @@ void create_digis(){
     tutDetDigiFile += "/example/Tutorial2/macros/tutdet.digi.par";
     parInput2->open(tutDetDigiFile.Data(),"in");
 
+    FairParOraIo *OraIo= new FairParOraIo();
+    OraIo->open("alturany");
+    
+    rtdb->setOutput(OraIo);
+    
     rtdb->setFirstInput(io1);
     rtdb->setSecondInput(parInput2);
 
-   rtdb->print();
+    rtdb->print();
 
     //**  TUt Det Digi Producer **//
 
@@ -60,21 +67,43 @@ void create_digis(){
 
     fRun->LoadGeometry();
     fRun->Init();
-
-    rtdb->getContainer("FairTutorialDetDigiPar")->print();
-
+   
+    
+     
     FairTutorialDetDigiPar* DigiPar = (FairTutorialDetDigiPar*) 
-                                      rtdb->getContainer("FairTutorialDetDigiPar");
-
+                                      rtdb->findContainer("FairTutorialDetDigiPar");
+    DigiPar->setAuthor("alturany");
+    DigiPar->setDescription("Test digi parameters");
     DigiPar->setChanged();
     DigiPar->setInputVersion(fRun->GetRunId(),1);
-   // DigiPar->printParams();
-    rtdb->setOutput(io1);
-    rtdb->saveOutput();
+    
+    fRun->Run();
+    FairTutorialDetGeoPar* GeoPar = (FairTutorialDetGeoPar*) 
+                                      rtdb->findContainer("FairTutorialDetGeoPar");
+    
+    GeoPar->setAuthor("alturany");
+    GeoPar->setDescription("Test Geo parameters");
+    GeoPar->setChanged();
+    GeoPar->setInputVersion(fRun->GetRunId(),1);
+				      
+    
+    rtdb->setContainersStatic();
+    
+    rtdb->initContainers(8000); 
+    
+    DigiPar->setChanged();
+    DigiPar->print();
+    DigiPar->write(OraIo);
+    
+    GeoPar->setChanged();
+    GeoPar->print();
+    GeoPar->write(OraIo);
+    
+    
     rtdb->print();
 
 
-    fRun->Run();
+   
 
 
     timer.Stop();

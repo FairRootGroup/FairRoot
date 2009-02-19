@@ -1,5 +1,5 @@
 #include "FairTutorialDetDigitizer.h"
-
+#include "FairTutorialDetGeoPar.h"
 #include "FairTutorialDetDigiPar.h"
 #include "FairTutorialDetPoint.h"
 
@@ -64,6 +64,10 @@ void FairTutorialDetDigitizer::SetParContainers()
 
     fDigiPar = (FairTutorialDetDigiPar*)
                (rtdb->getContainer("FairTutorialDetDigiPar"));
+	       
+	       
+    FairTutorialDetGeoPar* GeoPar =(FairTutorialDetGeoPar*) 
+                          rtdb->getContainer("FairTutorialDetGeoPar");       
 
     fDigiPar->printparams();
 }
