@@ -29,8 +29,9 @@ using std::endl;
 ClassImp(FairGeoVolume)
 
 FairGeoVolume::FairGeoVolume(FairGeoVolume& r) 
-  : shape(""),
-	mother(""),
+  : TNamed(r),
+    shape(""),
+    mother(""),
     points(0),
     transform(FairGeoTransform()), 
     fLabTransform(FairGeoTransform()),

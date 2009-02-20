@@ -62,7 +62,7 @@ inline Double_t FairGeoRotation::operator () (Int_t i) const {
   return 0;
 }
 
-inline FairGeoRotation::FairGeoRotation(const FairGeoRotation& r) {
+inline FairGeoRotation::FairGeoRotation(const FairGeoRotation& r) : TObject(r) {
   for(Int_t i=0;i<9;i++) rot[i]=r(i);
 }
 

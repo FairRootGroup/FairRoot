@@ -40,18 +40,19 @@ FairGeoNode::FairGeoNode()
 }
 
 FairGeoNode::FairGeoNode(FairGeoNode& r)
-    :active(kFALSE),               
-	center (r.getCenterPosition()),      
-    volumeType(r.getVolumeType()),  
-    created(kFALSE),               
-    copyNode(r.getCopyNode()),        
-    rootVolume(r.getRootVolume()),      
-	pShape(0),      
-	pMother(0),        
-	medium(0),   
-	labTransform(new FairGeoTransform(*(r.getLabTransform()))), 
-	fDaughterList(new TObjArray(*(r.GetListOfDaughters()))),	  
-	fTruncName(r.getTruncName())
+   : FairGeoVolume(r),
+     active(kFALSE),               
+     center (r.getCenterPosition()),      
+     volumeType(r.getVolumeType()),  
+     created(kFALSE),               
+     copyNode(r.getCopyNode()),        
+     rootVolume(r.getRootVolume()),      
+     pShape(0),      
+     pMother(0),        
+     medium(0),   
+     labTransform(new FairGeoTransform(*(r.getLabTransform()))), 
+     fDaughterList(new TObjArray(*(r.GetListOfDaughters()))),	  
+     fTruncName(r.getTruncName())
 
  {
   // Copy constructor
