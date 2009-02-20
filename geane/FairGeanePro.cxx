@@ -58,7 +58,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
 {
   // Propagate a helix track and return a helix (SC system)
 
-  Bool_t NeedSDSC=kFALSE;
+//  Bool_t NeedSDSC=kFALSE;
   Float_t ch=1;   //        CHARGE OF PARTICLE
 
   Double_t fCov[15], fCovOut[15];
@@ -263,6 +263,7 @@ Bool_t FairGeanePro::Propagate(Float_t *x1, Float_t *p1, Float_t *x2, Float_t *p
   gMC3->Eufill(1, ein,xlf);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, "L");
 
+  return kTRUE;
 }
 
 void FairGeanePro::Propagate(Int_t PDG) {
@@ -548,8 +549,8 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   
   if(pca == 1) 
     {
-      if(      po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2]
-	       || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
+      if(      ((po1[0] == po2[0]) && (po1[1] == po2[1]) && (po1[2] == po2[2]))
+	    || ((po2[0] == po3[0]) && (po2[1] == po3[1]) && (po2[2] == po3[2])) )
 	{
 	  Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le);
 	}
@@ -564,8 +565,8 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
     }
   else if(pca == 2) 
     {
-      if(      po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2]
-	       || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
+      if(      ((po1[0] == po2[0]) && (po1[1] == po2[1]) && (po1[2] == po2[2]))
+	    || ((po2[0] == po3[0]) && (po2[1] == po3[1]) && (po2[2] == po3[2])) )
 	{
 	  Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
 		       TVector3(w2),vpf,vwi,flg,Di,Le);
@@ -824,7 +825,8 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
 
   TVector3 N, M, D, B, Pointw;
   Double_t a0, a1, b0, b1, c0, c1, c2;
-  Double_t d0, d1, d2, d3, d4, sol4[4], dist4[4], dmin;
+  Double_t d0, d1, d2, d3, d4, sol4[4], dmin;
+//  Double_t dist4[4];
   Double_t Angle;
   Double_t dx;
   Int_t it, imin;
