@@ -22,7 +22,7 @@ FairTutorialDetPoint::~FairTutorialDetPoint() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void FairTutorialDetPoint::Print(const Option_t* opt) const {
+void FairTutorialDetPoint::Print(const Option_t*) const {
   cout << "-I- FairTutorialDetPoint: TutorialDet point for track " << fTrackID
        << " in detector " << fDetectorID << endl;
   cout << "    Position (" << fX << ", " << fY << ", " << fZ

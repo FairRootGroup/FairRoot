@@ -358,7 +358,7 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
 void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
 			       Double_t Px, Double_t Py, Double_t Pz, Double_t Q,
 			       Double_t  CovMatrix[15],
-			       TVector3 o, TVector3 di, TVector3 dj, TVector3 dk)
+			       TVector3 o, TVector3, TVector3 dj, TVector3 dk)
 {
 
   
@@ -444,7 +444,7 @@ void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
 void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
 				Double_t Tw, Double_t qp,
 				Double_t CovMatrix[15],
-				TVector3 o, TVector3 di, TVector3 dj, TVector3 dk, Double_t spu)
+				TVector3 o, TVector3, TVector3 dj, TVector3 dk, Double_t spu)
 {
   Reset();
   SetPlane(o, dj, dk); 

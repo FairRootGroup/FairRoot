@@ -36,8 +36,9 @@ void FairMagnet::ConstructGeometry(){
   }
 }
 
-Bool_t FairMagnet::CheckIfSensitive(std::string name){
+Bool_t FairMagnet::CheckIfSensitive(std::string){
 	// just to get rid of the warrning during run, not need this is a passive element! 
+        return kFALSE;
 }
 
 void FairMagnet::ConstructASCIIGeometry(){

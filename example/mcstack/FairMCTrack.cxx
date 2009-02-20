@@ -42,7 +42,7 @@ FairMCTrack::FairMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
 
 
 // -----   Copy constructor   ----------------------------------------------
-FairMCTrack::FairMCTrack(const FairMCTrack& track) { 
+FairMCTrack::FairMCTrack(const FairMCTrack& track) : TObject(track) { 
   *this = track;
 }
 // -------------------------------------------------------------------------

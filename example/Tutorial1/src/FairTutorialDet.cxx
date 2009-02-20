@@ -45,8 +45,8 @@ FairTutorialDet::~FairTutorialDet() {
 void FairTutorialDet::Initialize()
 {
   FairDetector::Initialize();
-  FairRuntimeDb *rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDetGeoPar* par=(FairTutorialDetGeoPar*)(rtdb->getContainer("FairTutorialDetGeoPar"));
+//  FairRuntimeDb *rtdb= FairRun::Instance()->GetRuntimeDb();
+//  FairTutorialDetGeoPar* par=(FairTutorialDetGeoPar*)(rtdb->getContainer("FairTutorialDetGeoPar"));
 }
  
 Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
