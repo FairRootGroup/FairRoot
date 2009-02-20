@@ -39,38 +39,38 @@ public:
     /**
       this method is called for each step during simulation (see FairMCApplication::Stepping())
     */
-    virtual Bool_t ProcessHits( FairVolume *v=0)=0;
+    virtual Bool_t ProcessHits( FairVolume *v=0){;}
     /**
       this is called at the end of an event
     */ 
-    virtual void   EndOfEvent()=0;
+    virtual void   EndOfEvent() {;}
     /**
       Registers the produced collections in FAIRRootManager.
     */
-    virtual void   Register()=0;
+    virtual void   Register() {;}
 
     /** Gets the produced collections **/
-    virtual TClonesArray* GetCollection(Int_t iColl) const = 0;
+    virtual TClonesArray* GetCollection(Int_t iColl) const {;}
 
     /**
       has to be called after each event to reset the containers    
     */
-    virtual void   Reset()=0;
+    virtual void   Reset() {;}
     
-    virtual void   CopyClones( TClonesArray*,  TClonesArray*, Int_t)=0;
+    virtual void   CopyClones( TClonesArray*,  TClonesArray*, Int_t) {;}
     
-    virtual void   FinishPrimary()=0;                              
-    virtual void   FinishRun()=0;
-    virtual void   BeginPrimary()=0;   
-    virtual void   PostTrack()=0;                                    
-    virtual void   PreTrack()=0;                                     
-    virtual void   BeginEvent()=0;
-    virtual void   SetSpecialPhysicsCuts()=0;
+    virtual void   FinishPrimary() {;}                              
+    virtual void   FinishRun() {;}
+    virtual void   BeginPrimary() {;}   
+    virtual void   PostTrack() {;}                                    
+    virtual void   PreTrack() {;}                                     
+    virtual void   BeginEvent() {;}
+    virtual void   SetSpecialPhysicsCuts() {;}
     void SaveGeoParams();
     Int_t  GetDetId() {return fDetId;}
 
 private:
-   FairDetector(const FairDetector &M);
+    FairDetector(const FairDetector &M){;}
    FairDetector& operator= (const FairDetector&) {return *this;}
 
 

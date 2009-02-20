@@ -61,7 +61,7 @@ class FairGenericStack : public TVirtualMCStack
 			 Double_t e, Double_t vx, Double_t vy, 
 			 Double_t vz, Double_t time, Double_t polx, 
 			 Double_t poly, Double_t polz, TMCProcess proc, 
-			 Int_t& ntr, Double_t weight, Int_t is);
+			   Int_t& ntr, Double_t weight, Int_t is){;}
 
 
   /** Virtual method PopNextTrack.
@@ -81,33 +81,33 @@ class FairGenericStack : public TVirtualMCStack
 
 
   /** Add a TParticle to the fParticles array **/
-  virtual void AddParticle(TParticle* part);
+  virtual void AddParticle(TParticle* part) {;}
 
 
   /** Fill the MCTrack output array, applying filter criteria **/
-  virtual void FillTrackArray();
+  virtual void FillTrackArray() {;}
 
 
   /** Update the track index in the MCTracks and MCPoints **/
-  virtual void UpdateTrackIndex(TRefArray* detArray);
+  virtual void UpdateTrackIndex(TRefArray* detArray) {;}
 
 
   /** Resets arrays and stack and deletes particles and tracks **/
-  virtual void Reset();
+  virtual void Reset() {;}
 
 
   /** Register the MCTrack array to the Root Manager  **/
-  virtual void Register();
+  virtual void Register() {;}
 
 
   /** Output to screen 
    **@param iVerbose: 0=events summary, 1=track info
    **/
-  virtual void Print(Int_t iVerbose=0) const;
+  virtual void Print(Int_t iVerbose=0) const {;}
 
 
   /** Modifiers  **/
-  virtual void SetCurrentTrack(Int_t iTrack);
+  virtual void SetCurrentTrack(Int_t iTrack) {;}
 /*  void StoreSecondaries(Bool_t choice = kTRUE) { fStoreSecondaries = choice; }
   void SetMinPoints(Int_t min)                 { fMinPoints        = min;    }
   void SetEnergyCut(Double_t eMin)             { fEnergyCut        = eMin;   }
