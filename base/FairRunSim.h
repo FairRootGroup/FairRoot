@@ -64,25 +64,30 @@ public:
     /**
      *       Set the event generator that has to be used for simulation field
     */
-
     void        SetGenerator(FairPrimaryGenerator *Gen);
-    /**
-    *       Set the material file name to be used
-    */
-    void        SetMaterials(const char * MatFileName);
-    /**switch On/Off the track visualisation */    
+    
+	/** Set the material file name to be used */
+    void    SetMaterials(const char * MatFileName);
+    
+	/**switch On/Off the track visualisation */    
     void SetStoreTraj(Bool_t storeTraj=kTRUE) {fStoreTraj = storeTraj;}
-    /**switch On/Off the debug mode */    
+    
+	/**switch On/Off the debug mode */    
     void SetTrackingDebugMode( Bool_t set ) { if (fApp) fApp->SetTrackingDebugMode( set ); }
-    /**Set geometry builder*/
+    
+	/**Set geometry builder*/
     void SetGeoModel( char * name );
-    /**return the geometry loader used in this session*/
+    
+	/**return the geometry loader used in this session*/
     TString* GetGeoModel () { return fLoaderName; }
-    /**Get the field used in simulation*/
+    
+	/**Get the field used in simulation*/
     FairField*  GetField() { return fField;}
-    /**return the full list of modules used in simulation*/
+    
+	/**return the full list of modules used in simulation*/
     TObjArray*        GetListOfModules() { return ListOfModules;}
-    /**Get the used primary generator*/
+    
+	/**Get the used primary generator*/
     FairPrimaryGenerator* GetPrimaryGenerator() { return fGen;}
     
 	/**switch On/Off external decayer (Pythia) */    
@@ -97,42 +102,54 @@ public:
     /**switch On/Off user defined decay if true gconfig/UserDecay.C macro will be called  */    
     void SetUserDecay(Bool_t decay){fUserDecay = decay;}
 
-    
 	/**Flag for external decayer*/
     Bool_t  IsExtDecayer(){return fPythiaDecayer; }
-    /**Flag for User decay*/
+    
+	/**Flag for User decay*/
     Bool_t  IsUserDecay(){return fUserDecay; }
-    /** */
+    
+	/**Switch on/off Radiation length register */
     void SetRadLenRegister(Bool_t value) {fRadLength= value;}
 	
 	void SetUserConfig(const TString& Config) {fUserConfig = Config;}
 	
 	void SetUserCuts(const TString& Cuts) {fUserCuts= Cuts;}
 	
+	/** Set Beam energy in GeV/c */
+	void SetBeamMom(Double_t BeamEnergy) {  fBeamEnergy= BeamEnergy; fUseBeamEnergy=kTRUE;}
+	
+	/** Get the Beam energy */
+	Double_t GetBeamEnergy() {return fBeamEnergy;}
+	
+        /**Get beam energy flag */
+        Bool_t UseBeamEnergy() {return fUseBeamEnergy;}
+
 private:
-   FairRunSim(const FairRunSim &M);
+    FairRunSim(const FairRunSim &M);
     FairRunSim& operator= (const  FairRunSim&) {return *this;}
 protected:
 
-    Int_t                 count;  /*Internal counter*/
-    FairMCApplication*     fApp;  //!
-    FairPrimaryGenerator*  fGen; //!
-    static FairRunSim*     fginstance;//!
-    FairField*             fField;
-    const char*           fMapName; //!
-    TObjArray*            fIons; //!
-    TObjArray*            fParticles; //!
-    TObjArray*            ListOfModules; //!
-    TString 	          MatFname; //!
-    Bool_t                fStoreTraj;
-    TString*              fLoaderName;
-    Bool_t                fPythiaDecayer;
-	TString               fPythiaDecayerConfig; //!
-    Bool_t                fUserDecay;
-    TString               fUserDecayConfig; //!
-    Bool_t                fRadLength;   //!
-	TString               fUserConfig; //!
-	TString               fUserCuts; //!
+    Int_t                  count;//!		                       /** Internal counter*/
+    FairMCApplication*     fApp;  //!		                       /** Main VMC application */
+    Double_t               fBeamEnergy; //!	                       /** Beam Energy in GeV/c  */
+    Bool_t                 fUseBeamEnergy; //!	                       /** flag for use Beam Energy  */
+    FairPrimaryGenerator*  fGen; //!                               /** Primary Event Generator */
+    static FairRunSim*     fginstance;//!                          /** Singelton Instance */ 
+    FairField*             fField;                                 /** Magnetic Field */ 
+    const char*            fMapName; //!                           /** Input file name map*/
+    TObjArray*             fIons; //!                              /** Array of user defined ions */
+    TObjArray*             fParticles; //!                         /** Array of user defined particles*/
+    TObjArray*             ListOfModules;//!                       /** Array of used modules */
+    TString 	           MatFname; //!                           /** Material file name */
+    Bool_t                 fStoreTraj;   //!                       /** Trajectory store flags */
+    TString*               fLoaderName;  //!                       /** Geometry Model (TGeo or G3)*/
+    Bool_t                 fPythiaDecayer;  //!                    /** flag for using Pythia decayer*/
+	TString                fPythiaDecayerConfig; //!               /** Macro for Pythia decay configuration*/
+    Bool_t                 fUserDecay;                             /** flag for setting user decay */
+    TString                fUserDecayConfig; //!                   /** Macro for decay configuration*/
+    Bool_t                 fRadLength;   //!                       /** flag for registring radiation length*/
+	TString                fUserConfig; //!                        /** Macro for geant configuration*/
+	TString                fUserCuts; //!                          /** Macro for geant cuts*/
 	
     
     ClassDef(FairRunSim ,1)
