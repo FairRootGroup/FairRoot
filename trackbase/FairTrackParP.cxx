@@ -69,7 +69,8 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fDW   = TMath::Sqrt(fabs(fCovMatrix[14]));
   
   
-  Double_t PD[3],RD[6][6],H[3],CH,PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Double_t PD[3],RD[6][6],H[3],CH,PC[3],RC[15], SP1;
+//  Double_t DJ1[3], DK1[3];
   PC[0]   = fQp;
   PC[1]   = fTV; 
   PC[2]   = fTW;
@@ -153,7 +154,8 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fDW   = TMath::Sqrt(fabs(fCovMatrix[14]));
   
   
-  Double_t PD[3],RD[6][6],H[3],CH,PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Double_t PD[3],RD[6][6],H[3],CH,PC[3],RC[15], SP1;
+//  Double_t DJ1[3], DK1[3];
   PC[0]   = fQp;
   PC[1]   = fTV; 
   PC[2]   = fTW;
@@ -478,7 +480,8 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
   fDW  = TMath::Sqrt(fabs(fCovMatrix[14]));
 
   
-  Double_t PD[3],RD[6][6],H[3],CH,PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Double_t PD[3],RD[6][6],H[3],CH,PC[3],RC[15], SP1;
+//Double_t DJ1[3], DK1[3];
   PC[0]   = fQp;
   PC[1]   = fTV; 
   PC[2]   = fTW;
@@ -683,7 +686,7 @@ void FairTrackParP::SetPlane(TVector3 o, TVector3 j, TVector3 k)
   fDJ[0] = j.X();
   fDJ[1] = j.Y();
   fDJ[2] = j.Z();
-  fjver = TVector3(fDJ[0],fDJ[1],fDJ[2]);j;
+  fjver = TVector3(fDJ[0],fDJ[1],fDJ[2]);
   // k
   fDK[0] = k.X();
   fDK[1] = k.Y();
