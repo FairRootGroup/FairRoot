@@ -39,7 +39,7 @@ class FairMCApplication : public TVirtualMCApplication
    *@param ModList  a TObjArray containing all detectors and modules used in this simulation
    *@param MatName  material file name 
    */
-    FairMCApplication(const char * name,   const char * title, TObjArray *ModList, const char *MatName);
+    FairMCApplication(const char * name,   const char * title, TObjArray *ModList, const char *MatName="");
    /** default constructor 
    */
     FairMCApplication();

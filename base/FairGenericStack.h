@@ -69,7 +69,7 @@ class FairGenericStack : public TVirtualMCStack
    *@param  iTrack  index of popped track
    *@return Pointer to the TParticle of the track
    **/
-  virtual TParticle* PopNextTrack(Int_t& iTrack);
+  virtual TParticle* PopNextTrack(Int_t&) {return NULL;}
 
 
   /** Virtual method PopPrimaryForTracking.
@@ -77,11 +77,11 @@ class FairGenericStack : public TVirtualMCStack
    *@param  iPrim   index of primary particle
    *@return Pointer to the TParticle of the track
    **/
-  virtual TParticle* PopPrimaryForTracking(Int_t iPrim); 
+  virtual TParticle* PopPrimaryForTracking(Int_t) {return NULL;} 
 
 
   /** Add a TParticle to the fParticles array **/
-  void AddParticle(TParticle* part);
+  virtual void AddParticle(TParticle* part);
 
 
   /** Fill the MCTrack output array, applying filter criteria **/
@@ -115,12 +115,12 @@ class FairGenericStack : public TVirtualMCStack
 */
 
   /** Accessors **/
-  virtual Int_t GetNtrack() const;   // Total number of tracks
-  virtual Int_t GetNprimary() const; // Number of primaries
-  virtual TParticle* GetCurrentTrack() const;
-  virtual Int_t GetCurrentTrackNumber() const; 
-  virtual Int_t GetCurrentParentTrackNumber() const;
-  virtual TParticle* GetParticle(Int_t trackID) const{ return NULL; }
+  virtual Int_t GetNtrack() const {return 0;}   // Total number of tracks
+  virtual Int_t GetNprimary() const {return 0;} // Number of primaries
+  virtual TParticle* GetCurrentTrack() const {return NULL;}
+  virtual Int_t GetCurrentTrackNumber() const {return 0;} 
+  virtual Int_t GetCurrentParentTrackNumber() const {return 0;}
+  virtual TParticle* GetParticle(Int_t) const{ return NULL; }
   
 
  private:

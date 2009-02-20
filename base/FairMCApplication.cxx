@@ -38,7 +38,7 @@ using std::endl;
 using std::pair;
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const char *name, const char *title, 
-   TObjArray *ModList, const char *MatName) 
+   TObjArray *ModList, const char *) 
   : TVirtualMCApplication(name,title),
     fActDetIter(0),
     fActiveDetectors(0),
@@ -196,7 +196,7 @@ void FairMCApplication::RegisterStack()
    if(fEvGen) fStack->Register();
 }
 //_____________________________________________________________________________
-void FairMCApplication::InitMC(const char* setup, const char *cuts)
+void FairMCApplication::InitMC(const char*, const char *)
 {
 // Initialize MC.
 // ---

@@ -4,6 +4,7 @@
 #include "TNamed.h"
 //#include "TString.h"
 
+#include <iostream>
     
 class FairTask;
 class TFile;
@@ -37,7 +38,7 @@ public:
     /**
       run the analysis or simulation
     */
-    virtual void    Run(Int_t NStart =0,Int_t NStop=0);
+    virtual void    Run(Int_t =0,Int_t =0) {std::cout<<"This function has to implemented in the derived classes"<<std::endl;}
     /**
       Set the output file name for analysis or simulation
     */

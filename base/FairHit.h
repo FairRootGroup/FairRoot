@@ -62,7 +62,7 @@ class FairHit : public TObject
 
 
   /*** Output to screen */
-  virtual void Print(const Option_t* opt = 0) const {;}
+  virtual void Print(const Option_t* = 0) const {;}
 
 
 

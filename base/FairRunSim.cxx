@@ -21,7 +21,9 @@ ClassImp(FairRunSim)
 FairRunSim::FairRunSim()
   :FairRun(),
    count(0),
-   fApp(0),                                   
+   fApp(0),   
+   fBeamEnergy(0),
+   fUseBeamEnergy(kFALSE),
    fGen(0),
    fField(0),
    fMapName(""),
@@ -281,7 +283,7 @@ void FairRunSim::Init()
 }
 
 
-void FairRunSim::Run(Int_t NStart, Int_t NStop)
+void FairRunSim::Run(Int_t NStart, Int_t)
 {
   fApp->RunMC(NStart);
 }

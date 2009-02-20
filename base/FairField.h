@@ -64,19 +64,19 @@ public:
   /** Get x component of magnetic field [kG]
    ** @param x,y,z    Position [cm]
    **/
-  virtual Double_t GetBx(Double_t x, Double_t y, Double_t z) {std::cout << "GetBx Should be implimented" << std::endl; return 0;}
+  virtual Double_t GetBx(Double_t, Double_t, Double_t) {std::cout << "GetBx Should be implimented" << std::endl; return 0;}
 
 
   /** Get y component of magnetic field [kG]
    ** @param x,y,z    Position [cm]
    **/
-  virtual Double_t GetBy(Double_t x, Double_t y, Double_t z) {std::cout << "GetBy Should be implimented" << std::endl; return 0;}
+  virtual Double_t GetBy(Double_t, Double_t, Double_t) {std::cout << "GetBy Should be implimented" << std::endl; return 0;}
 
 
   /** Get z component of magnetic field [kG]
    ** @param x,y,z    Position [cm]
    **/
-  virtual Double_t GetBz(Double_t x, Double_t y, Double_t z) {std::cout << "GetBz Should be implimented" << std::endl; return 0;}
+  virtual Double_t GetBz(Double_t, Double_t, Double_t) {std::cout << "GetBz Should be implimented" << std::endl; return 0;}
 
 
   /** Get magnetic field. For use of GEANT3
@@ -89,7 +89,7 @@ public:
   /** Screen output. To be implemented in the concrete class. **/
   virtual void Print() { };
 
-  virtual void GetBxyz(const Double_t point[3], Double_t* bField){ std::cout << "GetBz Should be implimented" << std::endl;};
+  virtual void GetBxyz(const Double_t [3], Double_t* ){ std::cout << "GetBz Should be implimented" << std::endl;};
 
  protected:
 

@@ -46,7 +46,8 @@ FairTrackParam::FairTrackParam(Double_t x, Double_t y, Double_t z,
 // -------------------------------------------------------------------------
 // -----   Copy Constructor             -----------------------------------
 FairTrackParam::FairTrackParam(const FairTrackParam& param) 
-: fX(param.GetX()),
+: TObject(param),
+  fX(param.GetX()),
   fY(param.GetY()),
   fZ(param.GetZ()),
   fTx(param.GetTx()),

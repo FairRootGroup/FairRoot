@@ -52,7 +52,7 @@ public:
     /**called from ConstructRootGeometry()*/
     virtual void        ExpandNode(TGeoNode *Node);
     /**return the MC id of a volume named vname*/
-    virtual Int_t       getVolId( const TString& vname ) const {return 0;}
+    virtual Int_t       getVolId( const TString&) const {return 0;}
     /**return the detector/Module id (which was set in the sim macro for the detector)*/
     Int_t               GetModId(){return fModId;}
     /**Set the verbose level in this detector*/

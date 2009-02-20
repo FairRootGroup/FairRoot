@@ -43,7 +43,7 @@ public:
     /**
       this is called at the end of an event
     */ 
-    virtual void   EndOfEvent(){;}
+    virtual void   EndOfEvent()=0;
     /**
       Registers the produced collections in FAIRRootManager.
     */
@@ -57,15 +57,15 @@ public:
     */
     virtual void   Reset()=0;
     
-    virtual void   CopyClones( TClonesArray *cl1,  TClonesArray *cl2 , Int_t offset) {;}
+    virtual void   CopyClones( TClonesArray*,  TClonesArray*, Int_t)=0;
     
-    virtual void   FinishPrimary(){;}                               
-    virtual void   FinishRun(){;}
-    virtual void   BeginPrimary(){;}   
-    virtual void   PostTrack(){;}                                     
-    virtual void   PreTrack(){;}                                      
-    virtual void   BeginEvent(){;}
-    virtual void   SetSpecialPhysicsCuts(){;} 
+    virtual void   FinishPrimary()=0;                              
+    virtual void   FinishRun()=0;
+    virtual void   BeginPrimary()=0;   
+    virtual void   PostTrack()=0;                                    
+    virtual void   PreTrack()=0;                                     
+    virtual void   BeginEvent()=0;
+    virtual void   SetSpecialPhysicsCuts()=0;
     void SaveGeoParams();
     Int_t  GetDetId() {return fDetId;}
 

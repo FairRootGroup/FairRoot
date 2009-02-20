@@ -265,7 +265,7 @@ void FairModule::ConstructRootGeometry(){
 void FairModule::ConstructASCIIGeometry(){
 	cout << " FairModule::ConstructASCIIGeometry() : this method has to be implimented in detector class " << endl;
 }
-Bool_t FairModule::CheckIfSensitive(std::string name){
+Bool_t FairModule::CheckIfSensitive(std::string){
 	cout << " FairModule::CheckIfSensitive(std::string name): this method has to be implimented in detector class " << endl;
 	return kFALSE;
 }
