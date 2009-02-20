@@ -98,7 +98,7 @@ FairParamObj::FairParamObj(const Text_t* name) {
   streamerInfoSize=0;
 }
 
-FairParamObj::FairParamObj(FairParamObj& o) {
+FairParamObj::FairParamObj(FairParamObj& o) : TNamed(o) {
   // Copy constructor
   SetName(o.GetName());
   arraySize=o.getLength();

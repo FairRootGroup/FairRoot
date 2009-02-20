@@ -51,7 +51,7 @@ FairRtdbRun::FairRtdbRun(Int_t r,Int_t rr) {
   setRefRun(rr);
 }
 
-FairRtdbRun::FairRtdbRun(FairRtdbRun &run) {
+FairRtdbRun::FairRtdbRun(FairRtdbRun &run) : TNamed(run) {
   // copy constructor
   SetName(run.GetName());
   parVersions=new TList();

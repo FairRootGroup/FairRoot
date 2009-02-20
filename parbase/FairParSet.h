@@ -19,7 +19,7 @@ public:
   FairParSet(const char* name="",const char* title="",const char* context="");
   virtual ~FairParSet() {}
   virtual Bool_t init();
-  virtual Bool_t init(FairParIo* io) { return kFALSE; }
+  virtual Bool_t init(FairParIo*) { return kFALSE; }
   virtual Int_t write();
   virtual Int_t write(FairParIo*) { return kFALSE; }
   virtual void clear() {}

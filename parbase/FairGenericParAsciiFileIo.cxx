@@ -52,8 +52,8 @@ Int_t FairGenericParAsciiFileIo::write(FairParSet* pPar) {
   return -1;
 }
 
-template <class type> UChar_t* FairGenericParAsciiFileIo::readData(
-              type t,Char_t* format,TString& line, Int_t& length) {
+template <class type> const UChar_t* FairGenericParAsciiFileIo::readData(
+              type t,const Char_t* format,TString& line, Int_t& length) {
   // reads c-type single data and arrays
   const Int_t st=sizeof(t);
   const Int_t maxbuf=8000;
@@ -196,7 +196,7 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar) {
             paramList->add(pName.Data(),pVal.Data());
           }
         } else {
-          UChar_t* val=0;
+          const UChar_t* val=0;
           Int_t length=0;
           if (pType.CompareTo("Int_t")==0) {
             Int_t v=0;
