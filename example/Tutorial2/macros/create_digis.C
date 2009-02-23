@@ -15,14 +15,15 @@ void create_digis(){
     gSystem->Load("libPassive");
     gSystem->Load("libGen");
     gSystem->Load("libTutorial2");
-    gSystem->Load("libOra");
+//    gSystem->Load("libOra");
     
 
     TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/example/Tutorial2";
+//    TString tutdir = dir + "/example/Tutorial2";
+    TString tutdir = ".";
 
-    TString inFile = tutdir + "/macros/tutorial2_pions.mc_p2.000_t0_n10.root";
-    TString paramFile = tutdir + "/macros/tutorial2_pions.params_p2.000_t0_n10.root";
+    TString inFile = tutdir + "/tutorial2_pions.mc_p2.000_t0_n10.root";
+    TString paramFile = tutdir + "/tutorial2_pions.params_p2.000_t0_n10.root";
     TString outFile = "./digis.mc.root";
 
     cout << "******************************" << endl;
@@ -46,10 +47,16 @@ void create_digis(){
     tutDetDigiFile += "/example/Tutorial2/macros/tutdet.digi.par";
     parInput2->open(tutDetDigiFile.Data(),"in");
 
-    FairParOraIo *OraIo= new FairParOraIo();
-    OraIo->open("alturany");
+//    FairParOraIo *OraIo= new FairParOraIo();
+//    OraIo->open("alturany");
+//    rtdb->setOutput(OraIo);
+
+    FairParRootFileIo *RootIo= new FairParRootFileIo();
+//    OraIo->open("alturany");
     
-    rtdb->setOutput(OraIo);
+    rtdb->setOutput(RootIo);
+
+
     
     rtdb->setFirstInput(io1);
     rtdb->setSecondInput(parInput2);
@@ -93,11 +100,11 @@ void create_digis(){
     
     DigiPar->setChanged();
     DigiPar->print();
-    DigiPar->write(OraIo);
+    DigiPar->write(RootIo);
     
     GeoPar->setChanged();
     GeoPar->print();
-    GeoPar->write(OraIo);
+    GeoPar->write(RootIo);
     
     
     rtdb->print();
@@ -110,4 +117,8 @@ void create_digis(){
     Double_t rtime = timer.RealTime();
     Double_t ctime = timer.CpuTime();
     printf("RealTime=%f seconds, CpuTime=%f seconds\n",rtime,ctime);
+    cout << "Macro finished succesfully." << endl;
+  cout << " Test passed" << endl;
+  cout << " All ok " << endl;
+  exit(0);
 }
