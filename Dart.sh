@@ -89,5 +89,4 @@ echo "Nr. of processes: " $number_of_processors
 echo "************************"
 
 cd $SOURCEDIR
-
 ctest -S $SOURCEDIR/FairRoot_test.cmake -V --VV 
