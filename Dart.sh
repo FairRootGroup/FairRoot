@@ -42,11 +42,11 @@ if [ "$#" -lt "2" ]; then
 fi
 
 # test if a ctest model is either Experimantal or Nightly
-if [ "$1" == "Experimental" -o "$1" == "Nightly" ]; then
+if [ "$1" == "Experimental" -o "$1" == "Nightly" -o "$1" == "Continuous" ]; then
   echo ""
 else
   echo "-- Error -- This ctest model is not supported."
-  echo "-- Error -- Possible arguments are Nightly and Experimental ."
+  echo "-- Error -- Possible arguments are Nightly, Experimental or Continuous."
   exit 1
 fi 
 
