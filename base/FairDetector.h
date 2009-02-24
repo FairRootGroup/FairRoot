@@ -1,7 +1,6 @@
 #ifndef FAIRDETECTOR_H
 #define FAIRDETECTOR_H
 
-
 #include "FairModule.h"
 
 class FairVolume;
