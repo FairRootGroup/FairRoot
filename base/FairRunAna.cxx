@@ -194,6 +194,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 
      fTask->ExecuteTask("");
      fRootManager->Fill();
+     fTask->FinishEvent();
 	 
 	 if(NULL !=  FairTrajFilter::Instance())  FairTrajFilter::Instance()->Reset();
      

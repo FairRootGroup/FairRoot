@@ -243,7 +243,8 @@ void FairMCApplication::FinishRun()
 		  if (detector) detector->FinishRun();
 	  }  
   }
-   fRootManager->Write();
+  fFairTaskList->FinishTask();
+  fRootManager->Write();
 }     
 //_____________________________________________________________________________
 void FairMCApplication::BeginEvent()
@@ -435,6 +436,7 @@ void FairMCApplication::FinishEvent()
   fStack->UpdateTrackIndex(fActiveDetectors);
   // --> Screen output of stack
   fFairTaskList->ExecuteTask("");
+  fFairTaskList->FinishEvent();
   fRootManager->Fill();
   fActDetIter->Reset();
   FairDetector *detector=NULL;
