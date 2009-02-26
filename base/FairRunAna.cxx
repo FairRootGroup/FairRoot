@@ -13,6 +13,9 @@
 #include <list>
 #include "TSeqCollection.h"
 #include "TGeoManager.h"
+#include "TKey.h"
+#include "FairRunIdGenerator.h"
+
 using std::cout;
 using std::endl;
 using std::list;
@@ -28,15 +31,16 @@ FairRunAna * FairRunAna::Instance(){
 //_____________________________________________________________________________
 FairRunAna::FairRunAna() 
   :FairRun(),
-   FriendFileList(new TObjArray()),
-   MergedFileList(new TObjArray()),
-   InputFile(0),
+   fFriendFileList(new TObjArray()),
+   fMergedFileList(new TObjArray()),
+   fInputFile(0),
+   fInputGeoFile(0),
    fCurrentFileName (""),
    fWildcard(""),
    fChainList(0),
-   current(0),
+   fcurrent(0),
    fInputFileStruct(),
-   LoadGeo( kFALSE),
+   fLoadGeo( kFALSE),
    fEvtHeader(0),
    fRtdb(0),
    fRunId(0),
@@ -51,16 +55,34 @@ FairRunAna::FairRunAna()
 
 FairRunAna::~FairRunAna()
 {
-   delete FriendFileList;
-   delete MergedFileList;
+   delete fFriendFileList;
+   delete fMergedFileList;
 }
+
 //_____________________________________________________________________________
+
+void  FairRunAna::SetGeomFile(const char *GeoFileName)
+{
+   TFile *CurrentFile=gFile;
+   fInputGeoFile= new TFile(GeoFileName);
+   if (fInputGeoFile->IsZombie()) {
+       cout << "-E- FairRunAna: Error opening Geometry Input file" << endl;
+       fInputGeoFile=0;
+   }
+    
+   cout << "-I- FairRunAna: Opening Geometry input file: " << GeoFileName << endl;
+   gFile=CurrentFile;
+}
+
+
+//_____________________________________________________________________________
+
 void FairRunAna::Init() {
-   if(InputFile ){
+   if(fInputFile ){
       if ("" == fWildcard) {
-         fRootManager->OpenInFile(InputFile, kTRUE);
+         fRootManager->OpenInFile(fInputFile, kTRUE);
       }else{
-         fRootManager->OpenInFile(InputFile);
+         fRootManager->OpenInFile(fInputFile);
          fRootManager->SetWildcard(fWildcard);
       }
       // chain mechanism
@@ -70,9 +92,9 @@ void FairRunAna::Init() {
       }
       cout << endl
       << "-I- FairRunAna::Init : " << endl
-      << InputFile->GetName() << "  is connected with:";
+      << fInputFile->GetName() << "  is connected with:";
          list<TString>* friendList =
-         fInputFileStruct[TString(InputFile->GetName())];
+         fInputFileStruct[TString(fInputFile->GetName())];
       if(NULL != friendList) {
          list<TString>::iterator iter1;
          for(iter1 = friendList->begin();
@@ -84,11 +106,23 @@ void FairRunAna::Init() {
       cout << endl << endl;
       // merge case
       Int_t i = 0;
-      for ( i=0;i<MergedFileList->GetEntriesFast();i++) { 
-         fRootManager->AddAndMerge((TFile*) MergedFileList->At(i));
+      for ( i=0;i<fMergedFileList->GetEntriesFast();i++) { 
+         fRootManager->AddAndMerge((TFile*) fMergedFileList->At(i));
       } 
-      //Load geometry from first input
-	  if(LoadGeo)InputFile->Get("FAIRGeom");
+      //Load geometry
+	  if(fLoadGeo) {
+            if(fInputGeoFile!=0){  //First check if the user has a separate Geo file!
+               TIter next(fInputGeoFile->GetListOfKeys());
+               TKey *key;
+               while ((key = (TKey*)next())) {
+                 if (strcmp(key->GetClassName(),"TGeoManager") != 0) continue;
+                 gGeoManager = (TGeoManager*)key->ReadObj();
+                 break;
+               }
+            }else{ //try the input file 
+              fInputFile->Get("FAIRGeom");
+            }
+          }
 	  //check that the geometry was loaded if not try all connected files!
 	  if(gGeoManager==0) {
 		 cout << "-I-  Geometry was not found in the input file we will look in the friends if any!" << endl;
@@ -101,14 +135,23 @@ void FairRunAna::Init() {
 			if(gGeoManager) break;
 		 }	
 		 gFile=currentfile;	
-		
 	  }
-
-	  
-   } //  if(InputFile )
-
+   }else{ //  if(fInputFile )
+        // NO input file but there is a geometry file
+       if(fLoadGeo) {
+          if(fInputGeoFile!=0){  //First check if the user has a separate Geo file!
+             TIter next(fInputGeoFile->GetListOfKeys());
+             TKey *key;
+             while ((key = (TKey*)next())) {
+                if (strcmp(key->GetClassName(),"TGeoManager") != 0) continue;
+                gGeoManager = (TGeoManager*)key->ReadObj();
+                break;
+            }
+         }
+       }
+   }
   //Init the Chain ptr
-   current = fChainList.begin();
+   fcurrent = fChainList.begin();
    TFile *Output = fRootManager->OpenOutFile(Outfname);
    gROOT->GetListOfBrowsables()->Add(fTask);
    // Init the RTDB containers
@@ -118,7 +161,7 @@ void FairRunAna::Init() {
    FairFieldFactory *fieldfact= FairFieldFactory::Instance();
    if(fieldfact)fieldfact->SetParm();
    // Assure that basic info is there for the run
-   if(par && InputFile){
+   if(par && fInputFile){
       fRootManager->ReadEvent(0);
       fEvtHeader = (FairEventHeader*)
       fRootManager->ActivateBranch("EventHeader.");
@@ -128,32 +171,42 @@ void FairRunAna::Init() {
       // Init the containers in Tasks
       fTask->SetParTask();
       fRtdb->initContainers( fRunId );
+   }else{
+   
+      FairEventHeader *evt = new FairEventHeader();
+      fRootManager->Register("EventHeader.","EvtHeader",evt, kTRUE);
+      FairRunIdGenerator genid;
+      fRunId = genid.generateId();
+      fRtdb->addRun(fRunId);
+      evt->SetRunId( fRunId);
+      fTask->SetParTask();
+      fRtdb->initContainers( fRunId );
+      
    }
-
-
- // create a field 
-    if(fieldfact) fField= fieldfact->createFairField();
-
+   // create a field 
+   if(fieldfact) fField= fieldfact->createFairField();
    // Now call the User initialize for Tasks
    fTask->InitTask();
-   
   // if the vis manager is available then initialize it!
-  
-    FairTrajFilter *fTrajFilter = FairTrajFilter::Instance();
-    if(fTrajFilter) fTrajFilter->Init();
+   FairTrajFilter *fTrajFilter = FairTrajFilter::Instance();
+   if(fTrajFilter) fTrajFilter->Init();
    // create the output tree after tasks initialisation
    Output->cd();
    TTree *outTree =new TTree("cbmsim", "/cbmout", 99);
    fRootManager->TranicateBranchNames(outTree, "cbmout");
    fRootManager->SetOutTree(outTree);
    fRootManager->WriteFolder();
+   if(fInputFile==0 && gGeoManager)fRootManager->WriteGeometry();
 }
 
 
 void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 {
   UInt_t tmpId =0;
-
+  if (fInputFile==0){ 
+     DummyRun(Ev_start,Ev_end);
+     return;
+  }
   if(Ev_end==0){ 
      if (Ev_start==0){
         Ev_end=Int_t((fRootManager->GetInChain())->GetEntries());
@@ -257,15 +310,15 @@ void FairRunAna::AddAndMerge (const char *Name)
 //_____________________________________________________________________________
 TFile *FairRunAna::SetInputFile(TString name)
 {
-   InputFile= new TFile(name);
-   if (InputFile->IsZombie()) {
+   fInputFile= new TFile(name);
+   if (fInputFile->IsZombie()) {
             cout << "-E- FairRunAna: Error opening Input file" << endl;
              exit(-1);
          }else{
    }
         fCurrentFileName = name;
         cout << "-I- FairRunAna: Opening Input file: " << fCurrentFileName << endl;
-   return InputFile;
+   return fInputFile;
 }
 
 
@@ -276,7 +329,7 @@ void FairRunAna::SetInputFile(TFile *f)
       cout << "-E- FairRunAna: Error opening Input file" << endl;
     exit(-1);
   }else{
-    InputFile=f;
+    fInputFile=f;
   }
    fCurrentFileName = TString( f->GetName());
 }
@@ -297,7 +350,7 @@ void FairRunAna::AddFriend (TString Name)
 
 }
 //_____________________________________________________________________________
-void FairRunAna::DumpInputFileStruct() {
+void FairRunAna::DumpfInputFileStruct() {
   // to be finished ...   
 
 }
@@ -316,7 +369,7 @@ void FairRunAna::AddFile(TString name){
 }
 //_____________________________________________________________________________
 TString FairRunAna::GetNextFileName(){
- TString name = *current++;
+ TString name = *fcurrent++;
  return name;
 }
 
