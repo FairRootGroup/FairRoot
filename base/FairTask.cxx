@@ -75,12 +75,17 @@ void FairTask::SetParTask() {
 }
 // -------------------------------------------------------------------------
 
-
+// -----    Public method FinishEvent -------------------------------------
+void FairTask::FinishEvent() {
+  if ( ! fActive ) return;
+  FinishEvents();
+  //  FinishTasks();
+}
 
 // -----    Public method FinishTask   -------------------------------------
 void FairTask::FinishTask() {
   if ( ! fActive ) return;
-  Finish();
+  //  Finish();
   FinishTasks();
 }
 // -------------------------------------------------------------------------
@@ -134,9 +139,17 @@ void FairTask::FinishTasks() {
   TIter next(GetListOfTasks());
   FairTask *task;
   while( ( task=dynamic_cast<FairTask*>(next()) ) ) task->FinishTask();
+  while( ( task=dynamic_cast<FairTask*>(next()) ) ) task->Finish();
 }
 // -------------------------------------------------------------------------
 
+// -----   Protected method FinishEvents   ----------------------------------
+void FairTask::FinishEvents() {
+  TIter next(GetListOfTasks());
+  FairTask *task;
+  while( ( task=dynamic_cast<FairTask*>(next()) ) ) task->FinishEvent();
+}
+// -------------------------------------------------------------------------
 
 
 ClassImp(FairTask)

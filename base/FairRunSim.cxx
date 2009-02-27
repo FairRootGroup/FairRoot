@@ -22,8 +22,8 @@ FairRunSim::FairRunSim()
   :FairRun(),
    count(0),
    fApp(0),   
-   fBeamEnergy(0),
-   fUseBeamEnergy(kFALSE),
+   fBeamMom(0),
+   fUseBeamMom(kFALSE),
    fGen(0),
    fField(0),
    fMapName(""),
@@ -128,6 +128,7 @@ void FairRunSim::Init()
     FairBaseParSet* par=(FairBaseParSet*)(fRtdb->getContainer("FairBaseParSet"));
     par->SetDetList(GetListOfModules());
     par->SetGen(GetPrimaryGenerator());
+    par->SetBeamMom(fBeamMom);
     par->setChanged();
     par->setInputVersion(GetRunId(),1);
  
@@ -283,7 +284,7 @@ void FairRunSim::Init()
 }
 
 
-void FairRunSim::Run(Int_t NStart, Int_t)
+void FairRunSim::Run(Int_t NStart, Int_t NStop)
 {
   fApp->RunMC(NStart);
 }

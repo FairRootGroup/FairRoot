@@ -30,32 +30,34 @@ public:
     FairRunAna();
 
     void        AddFriend(TString fName);
-    void        AddFriend(TFile *f ) {  FriendFileList->Add(f);}
+    void        AddFriend(TFile *f ) {  fFriendFileList->Add(f);}
     void        AddAndMerge( const char* fName );
-    void        AddAndMerge(TFile *f ) { MergedFileList->Add(f);}    
+    void        AddAndMerge(TFile *f ) { fMergedFileList->Add(f);}    
     void        Init();
     void        Run(Int_t NStart ,Int_t NStop);
-    void 	Run(Long64_t entry);
+    void 	    Run(Long64_t entry);
     /** the dummy run does not check the evt header or the parameters!! */
-    void 	DummyRun(Int_t NStart ,Int_t NStop);
+    void 	    DummyRun(Int_t NStart ,Int_t NStop);
     TFile*      SetInputFile(TString fname);
     void        SetInputFile(TFile *f);
-    TObjArray * GetListOfMergedFile() { return MergedFileList;}
-    TObjArray * GetListOfFriendFile() { return FriendFileList;}
+    TObjArray * GetListOfMergedFile() { return fMergedFileList;}
+    TObjArray * GetListOfFriendFile() { return fFriendFileList;}
     void        SetWildcard(TString Wildcard) {fWildcard = Wildcard;}
-    void        DumpInputFileStruct();
+    void        DumpfInputFileStruct();
     void        AddFile(TString name);
     std::map <TString, std::list<TString> * > GetFileStructure() { return fInputFileStruct;}
     TString     GetCurrentFileName() { return fCurrentFileName;}
     TString     GetNextFileName();
-    void        LoadGeometry(){LoadGeo=kTRUE;}
+    void        LoadGeometry(){fLoadGeo=kTRUE;}
     void   	Reinit(UInt_t runId);
     UInt_t 	getRunId(){return fRunId;}
     std::list <TString>  GetChainList() {return fChainList;}
     /** Get the magnetic field **/
-    FairField*   GetField(){return fField; }
+    FairField*  GetField(){return fField; }
     void 	SetField (FairField *ffield ) {fField=ffield ;}
-    TFile      *GetInputFile(){return InputFile; }
+    TFile      *GetInputFile(){return fInputFile; }
+    void 	SetGeomFile(const char *GeoFileName);
+    TFile*      GetGeoFile(){return fInputGeoFile;}
     void SetContainerStatic() {
         fStatic=kTRUE;
         std::cout << "-I- FairRunAna : Parameter Cont. initialisation is static"
@@ -67,23 +69,25 @@ private:
 
     FairRunAna(const FairRunAna &M);
     FairRunAna& operator= (const  FairRunAna&) {return *this;}
-    TObjArray*            FriendFileList; 
-    TObjArray*            MergedFileList; 
-    TFile*                InputFile;
-    TString               fCurrentFileName;//!
-    TString               fWildcard;//!
-    std::list<TString>         fChainList;//!
-    std::list<TString>::iterator current;//!
+    TObjArray*                              fFriendFileList; 
+    TObjArray*                              fMergedFileList; 
+    TFile*                                  fInputFile;
+    TFile*                                  fInputGeoFile;
+    TString                                 fCurrentFileName;//!
+    TString                                 fWildcard;//!
+    std::list<TString>                      fChainList;//!
+    std::list<TString>::iterator            fcurrent;//!
     std::map<TString, std::list<TString>* > fInputFileStruct; //!
-    static FairRunAna*        fgRinstance;
-    Bool_t                LoadGeo;
-    FairEventHeader *      fEvtHeader;//!
-    FairRuntimeDb*         fRtdb;//!
-    UInt_t                 fRunId;//!
+    static FairRunAna*                      fgRinstance;
+    Bool_t                                  fLoadGeo;
+    FairEventHeader *                       fEvtHeader;//!
+    FairRuntimeDb*                          fRtdb;//!
+    UInt_t                                  fRunId;//!
      /** true for static initialisation of parameters */
-    Bool_t                fStatic;//!
-    FairField*   fField;
+    Bool_t                                  fStatic;//!
+    FairField*                              fField;
     ClassDef(FairRunAna ,1)
 
 };
+
 #endif //FAIRRUNANA_H

@@ -56,14 +56,15 @@ class FairTask : public TTask {
   void SetParTask();
 
 
-  /** Action at end of event. For this task and all of the subtasks. **/
-  void FinishTask();
+  /** Action at end of run. For this task and all of the subtasks. **/
+  virtual void FinishTask();
 
+  /** Action at end of event. For this task and all of the subtasks. **/
+  virtual void FinishEvent();
 
   /** Set verbosity level. For this task and all of the subtasks. **/
   void SetVerbose(Int_t iVerbose);
   
-
 
 protected:
 
@@ -91,6 +92,9 @@ protected:
   /** Action after each event. To be implemented in the derived class **/
   virtual void Finish() { };
 
+  //  /** Action after each event. To be implemented in the derived class **/
+  //  virtual void FinishTask() { };
+
 
   /** Recursive intialisation of subtasks at begin of run **/
   void InitTasks();
@@ -103,10 +107,11 @@ protected:
   /** Recursive parameter initialisation for subtasks **/
   void SetParTasks();
 
-
   /** Recursive finish of subtasks **/
   void FinishTasks();
 
+  /** Recursive FinishEvent of subtasks **/
+  void FinishEvents();
 
   ClassDef(FairTask,1);
     
