@@ -16,6 +16,11 @@
 #include "FairDetParIo.h"
 #include "FairRuntimeDb.h"
 
+#include "TString.h"
+#include "TObjString.h"
+#include "TList.h"
+#include "TSystem.h"
+
 //#include <cstring>
 #include <iostream>
 
@@ -59,6 +64,28 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status) {
   cerr << "-E- Could not open input file " << fname << endl;
   Fatal("open","Could not open input file");
   return kFALSE;
+}
+
+Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status) {
+
+  TString outFileName = "all.par";
+  TString catCommand = "cat ";
+  TObjString *string;
+  TListIter myIter(fnamelist);
+  while((string = (TObjString*)myIter.Next())) {
+    //    cout <<  string->GetString() <<endl;
+    catCommand += string->GetString();
+    catCommand += " ";
+  }
+  catCommand += "> ";
+  catCommand += outFileName;
+
+  //  cout <<"CAT: "<<catCommand.Data()<<endl;
+
+  gSystem->Exec(catCommand);
+
+  open(outFileName, status);
+
 }
 
 void FairParAsciiFileIo::close() {

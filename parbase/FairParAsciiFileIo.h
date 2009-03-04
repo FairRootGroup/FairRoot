@@ -3,9 +3,9 @@
 
 #include "FairParIo.h"
 
-//#include "TList.h"
-
 #include <fstream>
+
+class TList;
 
 class FairParAsciiFileIo : public FairParIo {
 protected:
@@ -21,6 +21,12 @@ public:
   // if a file is already open, this file will be closed
   // activates detector I/Os
   Bool_t open(const Text_t* fname, const Text_t* status="in");
+
+  // concatenate files whose names are stored in the TList
+  // TList holds list od TObjStrings
+  // create file all.par in local working directory 
+  // calls open to open the generated file all.par
+  Bool_t open(const TList* fnamelist, const Text_t* status="in");
 
   // closes file
   void close();
