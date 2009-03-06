@@ -85,7 +85,7 @@ void FairTask::FinishEvent() {
 // -----    Public method FinishTask   -------------------------------------
 void FairTask::FinishTask() {
   if ( ! fActive ) return;
-  //  Finish();
+  Finish();
   FinishTasks();
 }
 // -------------------------------------------------------------------------
