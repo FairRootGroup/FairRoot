@@ -19,7 +19,7 @@ private:
   Bool_t readGenericSet(FairParGenericSet* pPar);
   Int_t writeGenericSet(FairParGenericSet* pPar);
 
-  template <class type> UChar_t* readData(type,Char_t*,TString&,Int_t&);
+  template <class type> const UChar_t* readData(type,const Char_t*,TString&,Int_t&);
   template <class type> void writeData(type*,Int_t);
 };
 
