@@ -15,6 +15,7 @@
 #include "TGeoManager.h"
 #include "TEveProjectionManager.h"
 #include "TDatabasePDG.h"
+#include "TGLViewer.h"
 
 ClassImp(FairEventManager)
 
@@ -47,21 +48,22 @@ void FairEventManager::Init()
 {
    TEveManager::Create();
    fRunAna->LoadGeometry();
-   fRunAna->Init();   
+   fRunAna->Init();
    if(gGeoManager) {
      //     TGeoVolume *V= gGeoManager->GetTopVolume();
 	 TGeoNode *N=  gGeoManager->GetTopNode();
      TEveGeoTopNode *TNod=new  TEveGeoTopNode(gGeoManager, N);
-	  gEve->AddGlobalElement(TNod);
-	  gEve->FullRedraw3D(kTRUE);
-      fEvent= gEve->AddEvent(this);
+     TNod->SetVisLevel(10);
+	 gEve->AddGlobalElement(TNod);
+     gEve->GetGLViewer()->CurrentCamera().SetExternalCenter(kTRUE);
+	 gEve->FullRedraw3D(kTRUE);
+     fEvent= gEve->AddEvent(this);
     /*  TEveProjectionManager *proj= new TEveProjectionManager();
       proj-> ImportElementsRecurse(TNod,0);
       gEve->AddElement(proj);
-      proj->ProjectChildrenRecurse(TNod);   
+      proj->ProjectChildrenRecurse(TNod);
    */
    }
-	
 }
 //______________________________________________________________________________
 void FairEventManager::UpdateEditor()
@@ -75,28 +77,28 @@ FairEventManager::~FairEventManager()
 //______________________________________________________________________________
 void FairEventManager::Open()
 {
-	
+
 }
 //______________________________________________________________________________
-void FairEventManager::GotoEvent(Int_t event) 
+void FairEventManager::GotoEvent(Int_t event)
 {
   fEntry=event;
   fRunAna->Run(event);
 }
 //______________________________________________________________________________
-void FairEventManager::NextEvent() 
+void FairEventManager::NextEvent()
 {
   fEntry+=1;
     fRunAna->Run(fEntry);
 }
 //______________________________________________________________________________
-void FairEventManager::PrevEvent() 
+void FairEventManager::PrevEvent()
 {
   fEntry-=1;
-  fRunAna->Run(fEntry); 
+  fRunAna->Run(fEntry);
 }
 //______________________________________________________________________________
-void FairEventManager::Close() 
+void FairEventManager::Close()
 {
 
 }
@@ -158,19 +160,19 @@ Int_t FairEventManager::Color( int pdg)
       case   3312   : return  43;   // Xi-
       case   3334   : return  44;   // Omega- (PB)
       case   50000050   : return  801;   // Cerenkov
-      case   1000010020  : return  45; 
-      case   1000010030  : return  48; 
-      case   1000020040   : return  50; 
-      case   1000020030   : return  55; 
+      case   1000010020  : return  45;
+      case   1000010030  : return  48;
+      case   1000020040   : return  50;
+      case   1000020030   : return  55;
       default  : return 0;
 
   }
 
 
-} 
+}
 //______________________________________________________________________________
 
-void FairEventManager::AddParticlesToPdgDataBase() 
+void FairEventManager::AddParticlesToPdgDataBase()
 {
 
 //

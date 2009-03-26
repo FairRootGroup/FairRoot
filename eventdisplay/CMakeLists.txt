@@ -10,6 +10,7 @@ ${CMAKE_SOURCE_DIR}/base
 ${CMAKE_SOURCE_DIR}/trackbase 
 ${CMAKE_SOURCE_DIR}/geane
 ${CMAKE_SOURCE_DIR}/eventdisplay
+${CMAKE_SOURCE_DIR}/pnddata
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -27,6 +28,9 @@ FairEventManagerEditor.cxx
 FairMCTracksEditor.cxx
 FairMCPointDraw.cxx
 #FairMCStack.cxx
+FairRecoPointDraw.cxx
+#FairTrackCandDraw.cxx
+FairRiemannPointDraw.cxx
 )
 
 if(RULE_CHECKER_FOUND)
