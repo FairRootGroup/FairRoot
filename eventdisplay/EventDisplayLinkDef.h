@@ -10,9 +10,9 @@
 //#pragma link C++ class  FairMCStack;
 #pragma link C++ class  FairEventManagerEditor;
 #pragma link C++ class  FairMCPointDraw;
-#pragma link C++ class  FairRecoPointDraw;
-#pragma link C++ class  FairRiemannPointDraw;
-#pragma link C++ class  FairRecoPointDraw;
+//#pragma link C++ class  FairRecoPointDraw;
+//#pragma link C++ class  FairRiemannPointDraw;
+//#pragma link C++ class  FairRecoPointDraw;
 //#pragma link C++ class  FairTrackCandDraw;
 #endif
 

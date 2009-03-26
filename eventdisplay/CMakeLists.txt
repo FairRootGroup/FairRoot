@@ -28,9 +28,9 @@ FairEventManagerEditor.cxx
 FairMCTracksEditor.cxx
 FairMCPointDraw.cxx
 #FairMCStack.cxx
-FairRecoPointDraw.cxx
+#FairRecoPointDraw.cxx
 #FairTrackCandDraw.cxx
-FairRiemannPointDraw.cxx
+#FairRiemannPointDraw.cxx
 )
 
 if(RULE_CHECKER_FOUND)
