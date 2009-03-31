@@ -760,7 +760,7 @@ void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVect
 
   // w-point - x-line distance
   Double_t d=(x2-x1).Mag();
-  if(fabs(d)<1E8){
+  if(fabs(d)<1E-8){
     Iflag=1;
     return;
   }
@@ -886,8 +886,14 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
 
   xp32= xp3 - xp2;
   xpR[0] = 0.5*xp2[0];
+  
+  if(fabs(xp3[1])<1E-8){
+    Iflag = 4;
+    return;
+  }
   xpR[1] = 0.5*(xp32[0]*xp3[0]/xp3[1]+ xp3[1]);
   xpR[2] = 0.; 
+
   Radius = sqrt(pow(xpR[0]-xp1[0],2)+pow(xpR[1]-xp1[1],2));
  
   // Eberly's method
