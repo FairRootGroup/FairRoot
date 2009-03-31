@@ -1019,6 +1019,7 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   //         Iflag   when =1 the points are on a straight line
   //                 within the precision of the method (20 micron).
   //                 In this case the user should recall Track2ToPoint
+  //                 when =2 other error
   //
   // Authors: Andrea Fontana and Alberto Rotondi 20 May 2007
   //
