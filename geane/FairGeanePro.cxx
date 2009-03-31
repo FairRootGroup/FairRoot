@@ -551,12 +551,12 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
       if(      po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2]
 	       || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
 	{
-	  Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le);
+	  Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,flg);
 	}
       else
 	{
 	  Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(pf),vpf,flg,Di,Le,Rad);
-	  if(flg==1) Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le);
+	  if(flg==1) Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,flg);
 	}
       // if the propagation to closest approach to a POINT  is performed
       // vwi is the point itself (with respect to which the PCA is calculated)
@@ -574,8 +574,8 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
 	      dist1 = (vwi-TVector3(w1)).Mag();
 	      dist2 = (vwi-TVector3(w2)).Mag();
 		  
-	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le):
-		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le);
+	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,flg):
+		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,flg);
 	    }
 	  else if(flg==2)
 	    {
@@ -596,8 +596,8 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
 		  dist1 = (vwi-TVector3(w1)).Mag();
 		  dist2 = (vwi-TVector3(w2)).Mag();
 		      
-		  dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le):
-		    Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le);
+		  dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,flg):
+		    Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,flg);
 		}
 	      else if(flg==2)
 		{
@@ -618,8 +618,8 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
 	      dist1 = (vwi-TVector3(w1)).Mag();
 	      dist2 = (vwi-TVector3(w2)).Mag();
 		  
-	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le):
-		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le);
+	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,flg):
+		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,flg);
 		  
 	    }
 	  else if(flg==4)
@@ -734,7 +734,7 @@ void FairGeanePro::Track2ToLine( TVector3 x1,  TVector3 x2,  TVector3 w1,
 
 
 void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVector3 &Pfinal, 
-				 Double_t &Dist, Double_t &Length)  {
+				 Double_t &Dist, Double_t &Length, Int_t &Iflag )  {
 
   //
   // Closest approach to a point from 2 GEANE points
@@ -748,6 +748,7 @@ void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVect
   // OUTPUT: Pfinal  point of closest approach 
   //         Dist    distance between Pfinal and w1
   //         Length  arc length to add to the GEANE length of x1
+  //         Iflag   error flag = 2 if x1 and x2 do not define a proper line
   //
   // Authors: Andrea Fontana and Alberto Rotondi  May 2007
   //
@@ -758,8 +759,12 @@ void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVect
   Double_t a, t1;
 
   // w-point - x-line distance
-
-  a= 1./(x2-x1).Mag();
+  Double_t d=(x2-x1).Mag();
+  if(fabs(d)<1E8){
+    Iflag=1;
+    return;
+  }
+  a= 1./d;
   u21 = (x2-x1).Unit();
 
   // output

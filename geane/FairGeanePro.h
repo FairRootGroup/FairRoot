@@ -41,10 +41,13 @@ class FairGeanePro : public TNamed
   void Init(FairTrackPar *TParam);
   void Propagate(Int_t PDG);
 
+private:
   void Track2ToLine(TVector3 x1, TVector3 x2, TVector3 w1, TVector3 w2, TVector3 &Pfinal, TVector3 &Pwire, Int_t &Iflag, Double_t &Dist, Double_t &Length);
-  void Track2ToPoint(TVector3 x1, TVector3 x2, TVector3 w1, TVector3 &Pfinal, Double_t &Dist, Double_t &Length);
+  void Track2ToPoint(TVector3 x1, TVector3 x2, TVector3 w1, TVector3 &Pfinal, Double_t &Dist, Double_t &Length, Int_t &Iflag);
   void Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, TVector3 w2, TVector3 &Pfinal, TVector3 &Wire, Int_t &Iflag, Double_t &Dist, Double_t &Length, Double_t &Radius);
   void Track3ToPoint(TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, TVector3 &Pfinal, Int_t &Iflag, Double_t &Dist, Double_t &Length, Double_t &Radius);
+
+public:
 
   Bool_t SetWire(TVector3 extremity1, TVector3 extremity2);
   Bool_t SetPoint(TVector3 pnt);
