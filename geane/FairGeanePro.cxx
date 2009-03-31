@@ -986,7 +986,7 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
 
   double dx1=(x1-xR).Mag();
   double dx2=(Pfinal-xR).Mag();
-  double dx12=d1*d2;
+  double dx12=dx1*dx2;
   if(fabs(dx12)<1E-8){
     Iflag = 4;
     return;
@@ -1065,8 +1065,12 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   // matrix of director cosines
 
   x21 = x2-x1;
-  
-  m1 = 1./x21.Mag();
+  Double_t x21mag=x21.Mag();
+  if(x21mag<1E-8){
+    Iflag=2;
+    return;
+  }
+  m1 = 1./x21mag;
   e1 = m1*x21;
   T[0][0] = e1.X();
   T[0][1] = e1.Y();
@@ -1078,7 +1082,7 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   // if the points are on the same line
   if(e3.Mag() < 1e-8) 
     {
-      Iflag = 1;
+      Iflag = 2;
       return;
     }
 
@@ -1114,6 +1118,10 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
 
   xp32= xp3 - xp2;
   xpR[0] = 0.5*xp2[0];
+  if(fabs(xp3[1])<1E-8){
+    Iflag = 2;
+    return;
+  }
   xpR[1] = 0.5*(xp32[0]*xp3[0]/xp3[1]+ xp3[1]);
   xpR[2] = 0.;
  
@@ -1122,7 +1130,16 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   // distance and points
   wpt = wp1;
   wpt[2] =0.;   // point projection on the circle plane
-  Rt = Radius/(wpt-xpR).Mag();
+  Double_t dwp=(wpt-xpR).Mag();
+  if(fabs(dwp)<1e-8){
+    Iflag = 2;
+    return;
+  }
+  Rt = Radius/dwp;
+  if(fabs(Rt)<1e-8){
+    Iflag = 2;
+    return;
+  }
   Ppfinal = (wpt-xpR)*Rt + xpR;
   Dist = (wp1-Ppfinal).Mag();
   
@@ -1145,11 +1162,22 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   xR = xR +x1;
 
   // now find the length
-  Angle = TMath::ACos((x1-xR).Dot(Pfinal-xR)/((x1-xR).Mag()*(Pfinal-xR).Mag()));
+  double dx1=(x1-xR).Mag();
+  double dx2=(Pfinal-xR).Mag();
+  double dx12=dx1*dx2;
+  if(fabs(dx12)<1E-8){
+    Iflag = 4;
+    return;
+  }
+  // now find the length
+  Angle = TMath::ACos((x1-xR).Dot(Pfinal-xR)/(dx12));
   Length = Radius*Angle;
 
+
   // flag straight points within 20 microns
-  Double_t epsi = Radius*(1.-TMath::Cos(0.5*(x3-x1).Mag()/Radius));
+  
+  Double_t epsi=0;
+  if(Radius>1E-8)epsi = Radius*(1.-TMath::Cos(0.5*(x3-x1).Mag()/Radius));
   if(epsi < 0.0020) Iflag=1;
 }
 
