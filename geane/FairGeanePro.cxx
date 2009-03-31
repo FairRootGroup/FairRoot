@@ -921,7 +921,7 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
   for(Int_t k=0; k<4; k++){ 
     sol4[k] =0.; 
   }
-  if(d4 == 0.) {
+  if(fabs(d4) < 1E-8) {
     Iflag = 4;
     return;
   }
@@ -984,13 +984,21 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
   Wire   = Wire + x1;
   xR     = xR + x1;
 
+  double dx1=(x1-xR).Mag();
+  double dx2=(Pfinal-xR).Mag();
+  double dx12=d1*d2;
+  if(fabs(dx12)<1E-8){
+    Iflag = 4;
+    return;
+  }
   // now find the length
-  Angle = TMath::ACos((x1-xR).Dot(Pfinal-xR)/((x1-xR).Mag()*(Pfinal-xR).Mag()));
+  Angle = TMath::ACos((x1-xR).Dot(Pfinal-xR)/(dx12));
   Length = Radius*Angle;
   if((x2-x1).Dot(Pfinal-x1) < 0.) Length = -Length;
 
   // flag straight points within 20 microns
-  Double_t epsi = Radius*(1.-TMath::Cos(0.5*(x3-x1).Mag()/Radius));
+  Double_t epsi=0;
+  if(Radius>1E-8)epsi = Radius*(1.-TMath::Cos(0.5*(x3-x1).Mag()/Radius));
   if(epsi < 0.0020) Iflag=1;
 
   // flag when the point on the wire is outside (w1,w2)
@@ -1057,6 +1065,7 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   // matrix of director cosines
 
   x21 = x2-x1;
+  
   m1 = 1./x21.Mag();
   e1 = m1*x21;
   T[0][0] = e1.X();
