@@ -551,12 +551,19 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
       if(      po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2]
 	       || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
 	{
-	  Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,flg);
+	  Int_t quitFlag=0;
+	  Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
+	  if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
 	}
       else
 	{
 	  Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(pf),vpf,flg,Di,Le,Rad);
-	  if(flg==1) Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,flg);
+	  if(flg==1) {
+	    Int_t quitFlag=0;
+	    Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
+	    if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
+	  }
+	  else if(flg==2) {std::cerr<<"################################################### NEW ABORT 2"<<std::endl;return 1;}//abort
 	}
       // if the propagation to closest approach to a POINT  is performed
       // vwi is the point itself (with respect to which the PCA is calculated)
@@ -573,12 +580,14 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
 	    {
 	      dist1 = (vwi-TVector3(w1)).Mag();
 	      dist2 = (vwi-TVector3(w2)).Mag();
-		  
-	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,flg):
-		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,flg);
+	      Int_t quitFlag=0;
+	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
+		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
+	      if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
 	    }
 	  else if(flg==2)
 	    {
+	      std::cerr<<"################################################### NEW ABORT 3"<<std::endl;
 	      cout << "No solution exist!" << endl;
 	      return 1;
 	    }
@@ -595,12 +604,14 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
 		{
 		  dist1 = (vwi-TVector3(w1)).Mag();
 		  dist2 = (vwi-TVector3(w2)).Mag();
-		      
-		  dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,flg):
-		    Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,flg);
+		  Int_t quitFlag=0;
+		  dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
+		    Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
+		  if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
 		}
 	      else if(flg==2)
 		{
+		  std::cerr<<"################################################### NEW ABORT 3"<<std::endl;
 		  cout << "No solution exist!" << endl;
 		  return 1;
 		}
@@ -612,21 +623,26 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
 		  
 	      dist1<dist2?Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w1),vpf,flg,Di,Le,Rad):
 		Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w2),vpf,flg,Di,Le,Rad);
+	      if(flg==2) {std::cerr<<"################################################### NEW ABORT 2"<<std::endl;return 1;}//abort
 	    }
 	  else if(flg==3)
 	    {
 	      dist1 = (vwi-TVector3(w1)).Mag();
 	      dist2 = (vwi-TVector3(w2)).Mag();
-		  
-	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,flg):
-		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,flg);
-		  
+	      Int_t quitFlag=0;
+	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
+		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
+	      if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
 	    }
 	  else if(flg==4)
 	    {
 	      Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
 			   TVector3(w2),vpf,vwi,flg,Di,Le);
-		  
+	      if(flg==2)
+		{
+		  cout << "No solution exist!" << endl;
+		  return 1;
+		}
 	    }
 	      
 	}
@@ -734,7 +750,7 @@ void FairGeanePro::Track2ToLine( TVector3 x1,  TVector3 x2,  TVector3 w1,
 
 
 void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVector3 &Pfinal, 
-				 Double_t &Dist, Double_t &Length, Int_t &Iflag )  {
+				  Double_t &Dist, Double_t &Length, Int_t &quitFlag)  {
 
   //
   // Closest approach to a point from 2 GEANE points
@@ -748,11 +764,11 @@ void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVect
   // OUTPUT: Pfinal  point of closest approach 
   //         Dist    distance between Pfinal and w1
   //         Length  arc length to add to the GEANE length of x1
-  //         Iflag   error flag = 2 if x1 and x2 do not define a proper line
-  //
+  //         quitFlag error flag which will be set to 1 if points dont form line
   // Authors: Andrea Fontana and Alberto Rotondi  May 2007
   //
 
+  quitFlag = 0;
 
   TVector3 u21;
 
@@ -760,11 +776,12 @@ void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVect
 
   // w-point - x-line distance
   Double_t d=(x2-x1).Mag();
-  if(fabs(d)<1E-8){
-    Iflag=1;
+  if(fabs(d)<1.E-8){
+    quitFlag=1;
     return;
   }
   a= 1./d;
+
   u21 = (x2-x1).Unit();
 
   // output
@@ -886,14 +903,12 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
 
   xp32= xp3 - xp2;
   xpR[0] = 0.5*xp2[0];
-  
-  if(fabs(xp3[1])<1E-8){
+  if(fabs(xp3[1])<1.E-8){
     Iflag = 4;
     return;
   }
   xpR[1] = 0.5*(xp32[0]*xp3[0]/xp3[1]+ xp3[1]);
   xpR[2] = 0.; 
-
   Radius = sqrt(pow(xpR[0]-xp1[0],2)+pow(xpR[1]-xp1[1],2));
  
   // Eberly's method
@@ -921,7 +936,7 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
   for(Int_t k=0; k<4; k++){ 
     sol4[k] =0.; 
   }
-  if(fabs(d4) < 1E-8) {
+  if(fabs(d4) < 1.E-12) {
     Iflag = 4;
     return;
   }
@@ -942,6 +957,10 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
     Pointw[1] = B[1] + sol4[j]*M[1];
     Pointw[2] = B[2] + sol4[j]*M[2];
     Track3ToPoint(xp1,xp2,xp3, Pointw, px, Iflag, dx, Length, Radius);
+    if(Iflag==2){
+      Iflag = 4;
+      return;
+    }
     if(dx<dmin){
       dmin=dx;
       imin=j;
@@ -953,6 +972,10 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
   Pwire[1] = B[1] + sol4[imin]*M[1];
   Pwire[2] = B[2] + sol4[imin]*M[2];
   Track3ToPoint(xp1,xp2,xp3, Pwire, px, Iflag, dx, Length, Radius);
+  if(Iflag==2){
+    Iflag = 4;
+    return;
+  }
 
   // output: distance and points in the circle plane reference
 
@@ -987,10 +1010,11 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
   double dx1=(x1-xR).Mag();
   double dx2=(Pfinal-xR).Mag();
   double dx12=dx1*dx2;
-  if(fabs(dx12)<1E-8){
+  if(fabs(dx12)<1.E-8){
     Iflag = 4;
     return;
   }
+
   // now find the length
   Angle = TMath::ACos((x1-xR).Dot(Pfinal-xR)/(dx12));
   Length = Radius*Angle;
@@ -1009,7 +1033,7 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
      || (((Wire[2]<w1[2] && Wire[2]<w2[2]) || (w2[2]<Wire[2] && w1[2]<Wire[2])) 
 	 && (fabs(Wire[2]-w1[2]) > 1e-11 && fabs(Wire[2]- w2[2]) > 1e-11)))
     { 
-      Iflag+=2;
+      Iflag=2;
     }  
 }
 
@@ -1038,8 +1062,7 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   //         Iflag   when =1 the points are on a straight line
   //                 within the precision of the method (20 micron).
   //                 In this case the user should recall Track2ToPoint
-  //                 when =2 other error
-  //
+  //                 if =2 mathematical errors
   // Authors: Andrea Fontana and Alberto Rotondi 20 May 2007
   //
 
@@ -1065,11 +1088,13 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   // matrix of director cosines
 
   x21 = x2-x1;
+
   Double_t x21mag=x21.Mag();
-  if(x21mag<1E-8){
+  if(x21mag<1.E-8){
     Iflag=2;
     return;
   }
+
   m1 = 1./x21mag;
   e1 = m1*x21;
   T[0][0] = e1.X();
@@ -1082,7 +1107,7 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   // if the points are on the same line
   if(e3.Mag() < 1e-8) 
     {
-      Iflag = 2;
+      Iflag = 1;
       return;
     }
 
@@ -1118,7 +1143,7 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
 
   xp32= xp3 - xp2;
   xpR[0] = 0.5*xp2[0];
-  if(fabs(xp3[1])<1E-8){
+  if(fabs(xp3[1])<1.E-8){
     Iflag = 2;
     return;
   }
@@ -1130,16 +1155,13 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   // distance and points
   wpt = wp1;
   wpt[2] =0.;   // point projection on the circle plane
+
   Double_t dwp=(wpt-xpR).Mag();
-  if(fabs(dwp)<1e-8){
+  if(fabs(dwp)<1.E-8){
     Iflag = 2;
     return;
   }
   Rt = Radius/dwp;
-  if(fabs(Rt)<1e-8){
-    Iflag = 2;
-    return;
-  }
   Ppfinal = (wpt-xpR)*Rt + xpR;
   Dist = (wp1-Ppfinal).Mag();
   
@@ -1165,17 +1187,15 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   double dx1=(x1-xR).Mag();
   double dx2=(Pfinal-xR).Mag();
   double dx12=dx1*dx2;
-  if(fabs(dx12)<1E-8){
-    Iflag = 4;
+  if(fabs(dx12)<1.E-8){
+    Iflag = 2;
     return;
   }
   // now find the length
   Angle = TMath::ACos((x1-xR).Dot(Pfinal-xR)/(dx12));
   Length = Radius*Angle;
 
-
   // flag straight points within 20 microns
-  
   Double_t epsi=0;
   if(Radius>1E-8)epsi = Radius*(1.-TMath::Cos(0.5*(x3-x1).Mag()/Radius));
   if(epsi < 0.0020) Iflag=1;
