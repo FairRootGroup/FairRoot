@@ -33,7 +33,7 @@ FairTrackCandDraw::FairTrackCandDraw(const char* TrackCandName, Int_t iVerbose)
 InitStatus FairTrackCandDraw::Init()
 {
    if(fVerbose>1)  cout<<  "FairTrackCandDraw::Init()" << endl;
-   FairRootManager* fManager = CbmRootManager::Instance();
+   FairRootManager* fManager = FairRootManager::Instance();
    fPixPointList = (TClonesArray *)fManager->GetObject("MVDHitsPixel");
    fStripPointList = (TClonesArray *)fManager->GetObject("MVDHitsStrip");
    fTpcClusterList = (TClonesArray *)fManager->GetObject("PndTpcCluster");
@@ -105,7 +105,7 @@ void FairTrackCandDraw::Exec(Option_t* option)
             p=(FairHit *) fPixPointList->At(hitId);
         }
         else if (detId == 3){
-          p = 0; // do it without CbmHit.. tpc package has none
+          p = 0; // do it without FairHit.. tpc package has none
           PndTpcCluster* myCluster = (PndTpcCluster*)fTpcClusterList->At(hitId);
           if(myCluster != 0){
             fq->AddQuad(myCluster->pos().X(),myCluster->pos().Y(),myCluster->pos().Z(),.5, .5);
