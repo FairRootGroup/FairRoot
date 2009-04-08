@@ -69,10 +69,10 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
   if (Q!=0)ch= Q/TMath::Abs(Q);
   if (ProMode==1){ //Propagate to Volume  
     //***** We have the right representation go further
-      for(Int_t i=0;i<15;i++) {
-	ein[i]=fCov[i]; 
+	for(Int_t i=0;i<15;i++) {
+	  ein[i]=fCov[i]; 
         
-      }
+	}
     if(fPropOption == "VE") {
       cout << "Propagate Helix to Volume" << endl;
       Int_t option;
@@ -84,28 +84,28 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
       if(fPCA == 0)  cout << "Propagate Helix to Length not yet implemented" << endl;
       else if(fPCA != 0){
 	
-	// max length estimate:
-	// we calculate the geometrical distance of the start point
-	// from the point/wire extremity and multiply it * 2 
-	TVector3 start = TVector3(TParam->GetX(), TParam->GetY(), TParam->GetZ());
-	Double_t maxdistance = 0;
-	if(fPCA == 1) maxdistance = (fpoint - start).Mag();
-	else if(fPCA == 2) {
-	  Double_t distance1, distance2;
-	  distance1 = (fwire1 - start).Mag();
-	  distance2 = (fwire2 - start).Mag();
-	  if(distance1 < distance2) maxdistance = distance2;
-	  else maxdistance = distance1;
-	}
-	maxdistance *= 2.; 
+		// max length estimate:
+		// we calculate the geometrical distance of the start point
+		// from the point/wire extremity and multiply it * 2 
+		TVector3 start = TVector3(TParam->GetX(), TParam->GetY(), TParam->GetZ());
+		Double_t maxdistance = 0;
+		if(fPCA == 1) maxdistance = (fpoint - start).Mag();
+		else if(fPCA == 2) {
+		  Double_t distance1, distance2;
+		  distance1 = (fwire1 - start).Mag();
+		  distance2 = (fwire2 - start).Mag();
+		  if(distance1 < distance2) maxdistance = distance2;
+		  else maxdistance = distance1;
+		}
+		maxdistance *= 2.; 
 	
-	// output 
-	Int_t findpca = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, Rad, vpf, vwi, Di, trklength);
-	if(findpca != 0) return kFALSE;
+		// output 
+		Int_t findpca = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, Rad, vpf, vwi, Di, trklength);
+		if(findpca != 0) return kFALSE;
 
-	// reset parameters
-	Init(TParam);
-	gMC3->Eufill(nepred, ein, &trklength);
+		// reset parameters
+		Init(TParam);
+		gMC3->Eufill(nepred, ein, &trklength);
       }
     }
   }else if(ProMode ==3){ 
@@ -122,7 +122,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
   }
   
   // do not remove (useful for debug)
-    if(p2[0] == 0 && p2[1] == 0 && p2[2] == 0) return kFALSE; 
+  if(p2[0] == 0 && p2[1] == 0 && p2[2] == 0) return kFALSE; 
   TEnd->SetTrackPar(x2[0], x2[1], x2[2],p2[0],p2[1],p2[2], ch ,fCovOut );              
   return kTRUE;
 
@@ -161,63 +161,63 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t
       if(fPCA == 0) cout << "Propagate Parabola to Parabola in Length not yet implemented" << endl;
       else if(fPCA != 0){
 	
-	// max length estimate:
-	// we calculate the geometrical distance of the start point
-	// from the point/wire extremity and multiply it * 2 
-	TVector3 start = TVector3(TStart->GetX(), TStart->GetY(), TStart->GetZ());
-	Double_t maxdistance = 0;
-	if(fPCA == 1) maxdistance = (fpoint - start).Mag();
-	else if(fPCA == 2) {
-	  Double_t distance1, distance2;
-	  distance1 = (fwire1 - start).Mag();
-	  distance2 = (fwire2 - start).Mag();
-	  if(distance1 < distance2) maxdistance = distance2;
-	  else maxdistance = distance1;
-	}
-	maxdistance *= 2.; 
+		// max length estimate:
+		// we calculate the geometrical distance of the start point
+		// from the point/wire extremity and multiply it * 2 
+		TVector3 start = TVector3(TStart->GetX(), TStart->GetY(), TStart->GetZ());
+		Double_t maxdistance = 0;
+		if(fPCA == 1) maxdistance = (fpoint - start).Mag();
+		else if(fPCA == 2) {
+		  Double_t distance1, distance2;
+		  distance1 = (fwire1 - start).Mag();
+		  distance2 = (fwire2 - start).Mag();
+		  if(distance1 < distance2) maxdistance = distance2;
+		  else maxdistance = distance1;
+		}
+		maxdistance *= 2.; 
 
-	// output 
-	Int_t findpca = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, Rad, vpf, vwi, Di, trklength);
-	//std::cout<<" FairGeanePro::trklength="<<trklength<< std::endl;
-	if(findpca != 0) return kFALSE;
+		// output 
+		Int_t findpca = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, Rad, vpf, vwi, Di, trklength);
+		//std::cout<<" FairGeanePro::trklength="<<trklength<< std::endl;
+		if(findpca != 0) return kFALSE;
 
-	// reset parameters
-	Init(TStart);
+		// reset parameters
+		Init(TStart);
 
-	// find plane
-	// unitary vector along distance
-	// vpf on track, vwi on wire
-	TVector3 fromwiretoextr = vpf - vwi;     
-	fromwiretoextr.SetMag(1.);
-	if(fabs(fromwiretoextr.Mag()-1)>1E-4){
-	  std::cerr<<"fromwire.Mag()!=1"<<std::endl;
-	  return kFALSE;
-	}
+		// find plane
+		// unitary vector along distance
+		// vpf on track, vwi on wire
+		TVector3 fromwiretoextr = vpf - vwi;     
+		fromwiretoextr.SetMag(1.);
+		if(fabs(fromwiretoextr.Mag()-1)>1E-4){
+		  std::cerr<<"fromwire.Mag()!=1"<<std::endl;
+		  return kFALSE;
+		}
 
-	//for wires:
-	// unitary vector along the wire
-	TVector3 wiredirection = fwire2 - fwire1;
-	if(fPCA==1){// point
-	  TVector3 mom(TStart->GetPx(),TStart->GetPy(),TStart->GetPz());
-	  wiredirection=mom.Cross(fromwiretoextr);
-	}
-	wiredirection.SetMag(1.);
-	// check orthogonality	   
-	if(fabs(fromwiretoextr * wiredirection) > 1e-3) {
-	  return kFALSE; // throw away the event
-	  // wiredirection = (fromwiretoextr.Cross(wiredirection)).Cross(fromwiretoextr);
-	  // wiredirection.SetMag(1.);
-	}
+		//for wires:
+		// unitary vector along the wire
+		TVector3 wiredirection = fwire2 - fwire1;
+		if(fPCA==1){// point
+		  TVector3 mom(TStart->GetPx(),TStart->GetPy(),TStart->GetPz());
+		  wiredirection=mom.Cross(fromwiretoextr);
+		}
+		wiredirection.SetMag(1.);
+		// check orthogonality	   
+		if(fabs(fromwiretoextr * wiredirection) > 1e-3) {
+		  return kFALSE; // throw away the event
+		  // wiredirection = (fromwiretoextr.Cross(wiredirection)).Cross(fromwiretoextr);
+		  // wiredirection.SetMag(1.);
+		}
 
-	TVector3 jver = TStart->GetJVer();;
-	TVector3 kver = TStart->GetKVer();
-	Bool_t backtracking = kFALSE;
-	if(fPropOption == "BLE") backtracking = kTRUE;
-	PropagateFromPlane(jver, kver);
-	PropagateToPlane(vwi, fromwiretoextr, wiredirection);
-	if(backtracking == kTRUE) fPropOption = "BPE";
+		TVector3 jver = TStart->GetJVer();;
+		TVector3 kver = TStart->GetKVer();
+		Bool_t backtracking = kFALSE;
+		if(fPropOption == "BLE") backtracking = kTRUE;
+		PropagateFromPlane(jver, kver);
+		PropagateToPlane(vwi, fromwiretoextr, wiredirection);
+		if(backtracking == kTRUE) fPropOption = "BPE";
 	
-	gMC3->Eufilp(nepred, ein, pli, plo);
+		gMC3->Eufilp(nepred, ein, pli, plo);
       }
     }
   }
@@ -259,7 +259,7 @@ Bool_t FairGeanePro::Propagate(Float_t *x1, Float_t *p1, Float_t *x2, Float_t *p
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   Float_t xlf[1];
   xlf[0]=1000
-  ;
+	;
   gMC3->Eufill(1, ein,xlf);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, "L");
 
@@ -282,9 +282,9 @@ void FairGeanePro::Propagate(Int_t PDG) {
       //       trasp[i] = afErtrio->ertrsp[i]; // single precision tr. mat.
       trasp[i] = afErtrio->erdtrp[i];          // double precision tr. mat.
     }
-    FairGeaneUtil fUtil;
-    fUtil.FromVecToMat(trpmat, trasp);
-  }
+  FairGeaneUtil fUtil;
+  fUtil.FromVecToMat(trpmat, trasp);
+}
 
 void FairGeanePro::Init(FairTrackPar *TParam)
 {
@@ -549,22 +549,22 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   if(pca == 1) 
     {
       if(      po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2]
-	       || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
-	{
-	  Int_t quitFlag=0;
-	  Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
-	  if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
-	}
+			   || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
+		{
+		  Int_t quitFlag=0;
+		  Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
+		  if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl;return 1;}//abort
+		}
       else
-	{
-	  Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(pf),vpf,flg,Di,Le,Rad);
-	  if(flg==1) {
-	    Int_t quitFlag=0;
-	    Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
-	    if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
-	  }
-	  else if(flg==2) {std::cerr<<"################################################### NEW ABORT 2"<<std::endl;return 1;}//abort
-	}
+		{
+		  Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(pf),vpf,flg,Di,Le,Rad);
+		  if(flg==1) {
+			Int_t quitFlag=0;
+			Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
+			if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl;return 1;}//abort
+		  }
+		  else if(flg==2) {std::cerr<<"ABORT"<<std::endl;return 1;}//abort
+		}
       // if the propagation to closest approach to a POINT  is performed
       // vwi is the point itself (with respect to which the PCA is calculated)
       vwi = point;
@@ -572,80 +572,78 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   else if(pca == 2) 
     {
       if(      po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2]
-	       || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
-	{
-	  Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
-		       TVector3(w2),vpf,vwi,flg,Di,Le);
-	  if(flg==1) 
-	    {
-	      dist1 = (vwi-TVector3(w1)).Mag();
-	      dist2 = (vwi-TVector3(w2)).Mag();
-	      Int_t quitFlag=0;
-	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
-		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
-	      if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
-	    }
-	  else if(flg==2)
-	    {
-	      std::cerr<<"################################################### NEW ABORT 3"<<std::endl;
-	      cout << "No solution exist!" << endl;
-	      return 1;
-	    }
-	}
+			   || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
+		{
+		  Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
+					   TVector3(w2),vpf,vwi,flg,Di,Le);
+		  if(flg==1) 
+			{
+			  dist1 = (vwi-TVector3(w1)).Mag();
+			  dist2 = (vwi-TVector3(w2)).Mag();
+			  Int_t quitFlag=0;
+			  dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
+				Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
+			  if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl;return 1;}//abort
+			}
+		  else if(flg==2)
+			{
+			  std::cerr<<"ABORT"<<std::endl;
+			  return 1;
+			}
+		}
       else 
-	{     
-	  Track3ToLine(TVector3(po1),TVector3(po2),TVector3(po3),
-		       TVector3(w1),TVector3(w2),vpf,vwi,flg,Di,Le,Rad);
-	  if(flg==1)
-	    {
-	      Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
-			   TVector3(w2),vpf,vwi,flg,Di,Le);
-	      if(flg==1) 
-		{
-		  dist1 = (vwi-TVector3(w1)).Mag();
-		  dist2 = (vwi-TVector3(w2)).Mag();
-		  Int_t quitFlag=0;
-		  dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
-		    Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
-		  if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
-		}
-	      else if(flg==2)
-		{
-		  std::cerr<<"################################################### NEW ABORT 3"<<std::endl;
-		  cout << "No solution exist!" << endl;
-		  return 1;
-		}
-	    }
-	  else if(flg==2)
-	    {
-	      dist1 = (vwi-TVector3(w1)).Mag();
-	      dist2 = (vwi-TVector3(w2)).Mag();
+		{     
+		  Track3ToLine(TVector3(po1),TVector3(po2),TVector3(po3),
+					   TVector3(w1),TVector3(w2),vpf,vwi,flg,Di,Le,Rad);
+		  if(flg==1)
+			{
+			  Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
+						   TVector3(w2),vpf,vwi,flg,Di,Le);
+			  if(flg==1) 
+				{
+				  dist1 = (vwi-TVector3(w1)).Mag();
+				  dist2 = (vwi-TVector3(w2)).Mag();
+				  Int_t quitFlag=0;
+				  dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
+					Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
+				  if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl;return 1;}//abort
+				}
+			  else if(flg==2)
+				{
+				  std::cerr<<"ABORT"<<std::endl;
+				  return 1;
+				}
+			}
+		  else if(flg==2)
+			{
+			  dist1 = (vwi-TVector3(w1)).Mag();
+			  dist2 = (vwi-TVector3(w2)).Mag();
 		  
-	      dist1<dist2?Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w1),vpf,flg,Di,Le,Rad):
-		Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w2),vpf,flg,Di,Le,Rad);
-	      if(flg==2) {std::cerr<<"################################################### NEW ABORT 2"<<std::endl;return 1;}//abort
-	    }
-	  else if(flg==3)
-	    {
-	      dist1 = (vwi-TVector3(w1)).Mag();
-	      dist2 = (vwi-TVector3(w2)).Mag();
-	      Int_t quitFlag=0;
-	      dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
-		Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
-	      if(quitFlag!=0) {std::cerr<<"################################################### NEW ABORT"<<std::endl;return 1;}//abort
-	    }
-	  else if(flg==4)
-	    {
-	      Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
-			   TVector3(w2),vpf,vwi,flg,Di,Le);
-	      if(flg==2)
-		{
-		  cout << "No solution exist!" << endl;
-		  return 1;
-		}
-	    }
+			  dist1<dist2?Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w1),vpf,flg,Di,Le,Rad):
+				Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w2),vpf,flg,Di,Le,Rad);
+			  if(flg==2) {std::cerr<<"ABORT"<<std::endl;return 1;}//abort
+			}
+		  else if(flg==3)
+			{
+			  dist1 = (vwi-TVector3(w1)).Mag();
+			  dist2 = (vwi-TVector3(w2)).Mag();
+			  Int_t quitFlag=0;
+			  dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
+				Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
+			  if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl;return 1;}//abort
+			}
+		  else if(flg==4)
+			{
+			  Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
+						   TVector3(w2),vpf,vwi,flg,Di,Le);
+			  if(flg==2)
+				{
+				  std::cerr<<"ABORT"<<std::endl;
+				  return 1;
+				}
+			}
 	      
-	}
+		}
     }
       
   // calculated track length corresponding 
@@ -661,8 +659,8 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
 
 
 void FairGeanePro::Track2ToLine( TVector3 x1,  TVector3 x2,  TVector3 w1,
-				TVector3 w2,  TVector3 &Pfinal, TVector3 &Pwire,
-				Int_t &Iflag, Double_t &Dist, Double_t &Length) {
+								 TVector3 w2,  TVector3 &Pfinal, TVector3 &Pwire,
+								 Int_t &Iflag, Double_t &Dist, Double_t &Length) {
 
   // Closest approach to a line from 2 GEANE points
   //
@@ -739,9 +737,9 @@ void FairGeanePro::Track2ToLine( TVector3 x1,  TVector3 x2,  TVector3 w1,
   if((((Pwire[0]<w1[0] && Pwire[0]<w2[0]) || (w2[0]<Pwire[0] && w1[0]<Pwire[0])) 
       && (fabs(Pwire[0]-w1[0]) > 1e-11 && fabs(Pwire[0]- w2[0]) > 1e-11))
      || (((Pwire[1]<w1[1] && Pwire[1]<w2[1]) || (w2[1]<Pwire[1] && w1[1]<Pwire[1])) 
-	 && (fabs(Pwire[1]-w1[1]) > 1e-11 && fabs(Pwire[1]- w2[1]) > 1e-11))
+		 && (fabs(Pwire[1]-w1[1]) > 1e-11 && fabs(Pwire[1]- w2[1]) > 1e-11))
      || (((Pwire[2]<w1[2] && Pwire[2]<w2[2]) || (w2[2]<Pwire[2] && w1[2]<Pwire[2])) 
-	 && (fabs(Pwire[2]-w1[2]) > 1e-11 && fabs(Pwire[2]- w2[2]) > 1e-11)))
+		 && (fabs(Pwire[2]-w1[2]) > 1e-11 && fabs(Pwire[2]- w2[2]) > 1e-11)))
     {
       Iflag=1;  
     }
@@ -750,7 +748,7 @@ void FairGeanePro::Track2ToLine( TVector3 x1,  TVector3 x2,  TVector3 w1,
 
 
 void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVector3 &Pfinal, 
-				  Double_t &Dist, Double_t &Length, Int_t &quitFlag)  {
+								  Double_t &Dist, Double_t &Length, Int_t &quitFlag)  {
 
   //
   // Closest approach to a point from 2 GEANE points
@@ -793,11 +791,11 @@ void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVect
 
 
 void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3, 
-			       TVector3 w1, TVector3 w2,
-			       // output
-			       TVector3 &Pfinal, TVector3 &Wire, 
-			       Int_t &Iflag, Double_t &Dist, 
-			       Double_t &Length, Double_t &Radius) {
+								TVector3 w1, TVector3 w2,
+								// output
+								TVector3 &Pfinal, TVector3 &Wire, 
+								Int_t &Iflag, Double_t &Dist, 
+								Double_t &Length, Double_t &Radius) {
 
   // Find the closest approach points between a curve (helix) 
   // and a line (wire)
@@ -1029,18 +1027,18 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
   if((((Wire[0]<w1[0] && Wire[0]<w2[0]) || (w2[0]<Wire[0] && w1[0]<Wire[0]))
       && (fabs(Wire[0]-w1[0]) > 1e-11 && fabs(Wire[0]- w2[0]) > 1e-11))
      || (((Wire[1]<w1[1] && Wire[1]<w2[1]) || (w2[1]<Wire[1] && w1[1]<Wire[1])) 
-	 && (fabs(Wire[1]-w1[1]) > 1e-11 && fabs(Wire[1]- w2[1]) > 1e-11))
+		 && (fabs(Wire[1]-w1[1]) > 1e-11 && fabs(Wire[1]- w2[1]) > 1e-11))
      || (((Wire[2]<w1[2] && Wire[2]<w2[2]) || (w2[2]<Wire[2] && w1[2]<Wire[2])) 
-	 && (fabs(Wire[2]-w1[2]) > 1e-11 && fabs(Wire[2]- w2[2]) > 1e-11)))
+		 && (fabs(Wire[2]-w1[2]) > 1e-11 && fabs(Wire[2]- w2[2]) > 1e-11)))
     { 
       Iflag=2;
     }  
 }
 
 void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, 
-				 // output
-				 TVector3 &Pfinal, Int_t &Iflag, 
-				 Double_t &Dist, Double_t &Length, Double_t &Radius) {
+								  // output
+								  TVector3 &Pfinal, Int_t &Iflag, 
+								  Double_t &Dist, Double_t &Length, Double_t &Radius) {
   
   // Closest approach to a point from 3 GEANE points
   //
@@ -1208,3 +1206,4 @@ void FairGeanePro::GetTransportMatrix(Double_t trm[5][5])
 
 ClassImp(FairGeanePro)
 
+  
