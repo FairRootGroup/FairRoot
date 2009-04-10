@@ -66,7 +66,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
   
   Init(TParam);
   Double_t Q = TParam->GetQ();
-  if (Q!=0)ch= Q/TMath::Abs(Q);
+  if (fabs(Q)>1.E-8)ch= Q/TMath::Abs(Q);
   if (ProMode==1){ //Propagate to Volume  
     //***** We have the right representation go further
 	for(Int_t i=0;i<15;i++) {
@@ -271,7 +271,8 @@ void FairGeanePro::Propagate(Int_t PDG) {
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   cout <<  " FairGeanePro::Propagate ---------------------------"<< "  " << x1[0]<< " "<< x1[1]<< "  "<<  x1[2] << endl; 
   fApp->GeanePreTrack(x1, p1, PDG);
-  
+  TVector3 mymom(p1[0],p1[1],p1[2]);
+  printf("$$$$$$$$$$$$$$$$$$$ momentum vetor theta %10.10f\n",mymom.Theta()/TMath::Pi()*180.);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
  
   trklength=gMC3->TrackLength();
