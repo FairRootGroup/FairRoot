@@ -131,7 +131,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParH *TEnd, Int_t
 {
   // Propagate a parabola track (SD system) and return a helix (SC system) (not used nor implemented)
   cout << "FairGeanePro::Propagate(FairTrackParP *TParam, FairTrackParH &TEnd, Int_t PDG) : (not used nor implemented)" << endl;
-  return kTRUE;
+  return kFALSE;
 }
 
 Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t PDG)
