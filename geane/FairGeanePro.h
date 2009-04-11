@@ -39,7 +39,7 @@ class FairGeanePro : public TNamed
   Bool_t PropagateToLength(Float_t length);
 
   void Init(FairTrackPar *TParam);
-  void Propagate(Int_t PDG);
+  Bool_t Propagate(Int_t PDG);
 
 private:
   void Track2ToLine(TVector3 x1, TVector3 x2, TVector3 w1, TVector3 w2, TVector3 &Pfinal, TVector3 &Pwire, Int_t &Iflag, Double_t &Dist, Double_t &Length);

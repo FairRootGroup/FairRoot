@@ -113,7 +113,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
     return kFALSE;
   }
   //Propagate 
-  Propagate(PDG);
+  if(Propagate(PDG)==kFALSE) return kFALSE;
  
   for(Int_t i=0;i<15;i++) {
     fCovOut[i]=afErtrio->errout[i]; 
@@ -131,7 +131,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParH *TEnd, Int_t
 {
   // Propagate a parabola track (SD system) and return a helix (SC system) (not used nor implemented)
   cout << "FairGeanePro::Propagate(FairTrackParP *TParam, FairTrackParH &TEnd, Int_t PDG) : (not used nor implemented)" << endl;
-  return kFALSE;
+  return kTRUE;
 }
 
 Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t PDG)
@@ -222,7 +222,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t
     }
   }
   //Propagate 
-  Propagate(PDG);
+  if(Propagate(PDG)==kFALSE) return kFALSE;
   
   for(Int_t i=0;i<15;i++) {
     fCovOut[i]=afErtrio->errout[i]; 
@@ -250,7 +250,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TStart, FairTrackParP *TEnd, Int_t
 {
   // Propagate a helix track (SC system) and return a parabola (SD system) (not used nor implemented)
   cout << "FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParP &TEnd, Int_t PDG)" << endl;
-  return kTRUE;  
+  return kFALSE;  
 }
 
 Bool_t FairGeanePro::Propagate(Float_t *x1, Float_t *p1, Float_t *x2, Float_t *p2,Int_t PDG)
@@ -262,17 +262,17 @@ Bool_t FairGeanePro::Propagate(Float_t *x1, Float_t *p1, Float_t *x2, Float_t *p
 	;
   gMC3->Eufill(1, ein,xlf);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, "L");
-
+  if(x2[0]<-1.E29) return kFALSE;
 }
 
-void FairGeanePro::Propagate(Int_t PDG) {
+Bool_t FairGeanePro::Propagate(Int_t PDG) {
   // main propagate call to fortran ERTRAK
 
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   cout <<  " FairGeanePro::Propagate ---------------------------"<< "  " << x1[0]<< " "<< x1[1]<< "  "<<  x1[2] << endl; 
   fApp->GeanePreTrack(x1, p1, PDG);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
- 
+  if(x2[0]<-1.E29) return kFALSE;
   trklength=gMC3->TrackLength();
 
   Double_t trasp[25];
@@ -283,6 +283,7 @@ void FairGeanePro::Propagate(Int_t PDG) {
     }
   FairGeaneUtil fUtil;
   fUtil.FromVecToMat(trpmat, trasp);
+  return kTRUE;
 }
 
 void FairGeanePro::Init(FairTrackPar *TParam)
@@ -530,8 +531,8 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   gMC3->Eufill(1, ein, stdlength);
 
   //check needed for low momentum tracks
-
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
+  if(x2[0]<-1.E29) return 1;
   gMC3->GetClose(po1,po2,po3,clen);
       
   // check on cases when only two steps are performed!
