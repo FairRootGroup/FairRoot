@@ -271,8 +271,6 @@ void FairGeanePro::Propagate(Int_t PDG) {
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   cout <<  " FairGeanePro::Propagate ---------------------------"<< "  " << x1[0]<< " "<< x1[1]<< "  "<<  x1[2] << endl; 
   fApp->GeanePreTrack(x1, p1, PDG);
-  TVector3 mymom(p1[0],p1[1],p1[2]);
-  printf("$$$$$$$$$$$$$$$$$$$ momentum vetor theta %10.10f\n",mymom.Theta()/TMath::Pi()*180.);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
  
   trklength=gMC3->TrackLength();
