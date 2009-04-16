@@ -15,19 +15,15 @@
 #define FairTrackCandDraw_H
 
 
-#include "FairTask.h"
+#include "FairHitDraw.h"
 #include "TClonesArray.h"
 
-#include <string>
-
-class FairEventManager;
-class TEveQuadSet;
-class FairTrackCandDraw : public FairTask {
+class FairTrackCandDraw : public FairHitDraw {
 
  public:
 
   /** Default constructor **/
-  FairTrackCandDraw();
+  FairTrackCandDraw(){};
 
 
   /** Standard constructor
@@ -38,25 +34,19 @@ class FairTrackCandDraw : public FairTask {
 
   /** Destructor **/
   virtual ~FairTrackCandDraw();
-
-  /** Set verbosity level. For this task and all of the subtasks. **/
-  void SetVerbose(Int_t iVerbose);
-   /** Executed task **/
-  virtual void Exec(Option_t* option);
-  void Reset();
-protected:
-
-  Int_t   fVerbose;       //  Verbosity level
-  virtual void SetParContainers() ;
   virtual InitStatus Init();
-  /** Action after each event**/
-  virtual void Finish() ;
+
+protected:
+	  //virtual TVector3 GetVector(TObject* obj);
+	  virtual TVector3 GetVector(Int_t detId, Int_t hitId);
+	  //virtual Int_t GetValue(TObject* obj,Int_t i);
+	  virtual void AddBoxes(TEveBoxSet* set, TObject* obj, Int_t i = 0);
+
   TClonesArray *fPixPointList; //!
   TClonesArray *fStripPointList; //!
   TClonesArray *fTrackCandList; //!
   TClonesArray *fTpcClusterList;
-  FairEventManager *fEventManager;   //!
-  TEveQuadSet* fq;    //!
+
   ClassDef(FairTrackCandDraw,1);
 
 };

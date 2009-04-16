@@ -10,6 +10,9 @@ ${CMAKE_SOURCE_DIR}/base
 ${CMAKE_SOURCE_DIR}/trackbase 
 ${CMAKE_SOURCE_DIR}/geane
 ${CMAKE_SOURCE_DIR}/eventdisplay
+${CMAKE_SOURCE_DIR}/tpc
+${CMAKE_SOURCE_DIR}/genfit
+${CMAKE_SOURCE_DIR}/PndTools/riemannfit
 ${CMAKE_SOURCE_DIR}/pnddata
 )
 
@@ -27,10 +30,10 @@ FairMCTracks.cxx
 FairEventManagerEditor.cxx
 FairMCTracksEditor.cxx
 FairMCPointDraw.cxx
+FairBoxSetDraw.cxx
+FairHitDraw.cxx
 #FairMCStack.cxx
-#FairRecoPointDraw.cxx
-#FairTrackCandDraw.cxx
-#FairRiemannPointDraw.cxx
+FairTrackCandDraw.cxx
 )
 
 if(RULE_CHECKER_FOUND)
