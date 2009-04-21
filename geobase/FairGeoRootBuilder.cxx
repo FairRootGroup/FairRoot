@@ -62,6 +62,9 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat) {
   }
 
 
+
+	
+	
   TGeoVolume* rv=0;
   FairGeoNode* cv=volu->getCopyNode();
 //  if (cv) cout<<"Copy of "<<cv->GetName()<<endl;
@@ -80,9 +83,12 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat) {
       TGeoMedium *medium =geoManager->GetMedium(nMed);
       rv = geoManager->MakeTorus(nodeName.Data(),medium,par->At(0),par->At(1),par->At(2),par->At(3),par->At(4));
      // cout << "Create Torus" << nodeName.Data() << endl;
-    }else {
-	rv=geoManager->Volume(nodeName.Data(),volu->getShape().Data(),
-         nMed,par->GetArray(),par->GetSize());
+	}else if (volu->getShape().Contains("ASSEMBLY")) {
+		rv=geoManager->MakeVolumeAssembly(nodeName.Data());	
+		
+	}else {
+	    rv=geoManager->Volume(nodeName.Data(),volu->getShape().Data(),
+             nMed,par->GetArray(),par->GetSize());
      }
     volu->setCreated();
     if (volu->isModule()&&cv) {

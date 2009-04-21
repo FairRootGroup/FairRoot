@@ -41,6 +41,7 @@
 #include "FairGeoSphe.h"
 #include "FairGeoEltu.h"
 #include "FairGeoTorus.h"
+#include "FairGeoAssembly.h"
 
 #include "TList.h"
 
@@ -75,14 +76,14 @@ FairGeoBasicShape* FairGeoShapes::selectShape(const TString& name) {
   // creates a shape object and adds it to the list of shapes if
   // not existing
   // returns NULL if the corresponding shape class is not implemented 
-  TString allShapes[12]={"BOX ","TRAP","TRD1","PGON","PCON","TUBE","TUBS",
-                         "CONE","CONS","SPHE","ELTU","TORUS"};
+  TString allShapes[13]={"BOX ","TRAP","TRD1","PGON","PCON","TUBE","TUBS",
+                         "CONE","CONS","SPHE","ELTU","TORUS", "ASSEMBLY"};
   TString sName(name);
   if (sName.Length()==3) sName+=" ";
   FairGeoBasicShape* s=(FairGeoBasicShape*)shapes->FindObject(sName);
   if (s) return s;
   Int_t no=-1;
-  for(Int_t i=0;i<12;i++) {if (sName.CompareTo(allShapes[i])==0) no=i;}
+  for(Int_t i=0;i<13;i++) {if (sName.CompareTo(allShapes[i])==0) no=i;}
   switch(no) {
     case 0:  {s= new FairGeoBrik();  break;}
     case 1:  {s= new FairGeoTrap();  break;}
@@ -96,6 +97,7 @@ FairGeoBasicShape* FairGeoShapes::selectShape(const TString& name) {
     case 9:  {s= new FairGeoSphe();  break;}
     case 10: {s= new FairGeoEltu();  break;}
     case 11: {s= new FairGeoTorus();  break;}
+	case 12: {s= new FairGeoAssembly();  break;}	  
     default: {
       Error("selectShape","shape %s not implemented",name.Data());
     }

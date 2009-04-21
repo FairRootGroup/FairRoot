@@ -17,6 +17,8 @@ link_directories( ${LINK_DIRECTORIES})
 
 
 set(GEOBASE_SRCS
+
+FairGeoAssembly.cxx
 FairGeoCone.cxx	
 FairGeoCons.cxx 
 FairGeoEltu.cxx 
@@ -48,6 +50,7 @@ FairGeoCompositeVolume.cxx
 FairGeoAsciiIo.cxx	
 FairGeoBrik.cxx 
 FairGeoBasicShape.cxx 
+ 
 )
 
 if(RULE_CHECKER_FOUND)
