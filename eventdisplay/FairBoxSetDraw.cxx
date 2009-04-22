@@ -5,13 +5,9 @@
 
 #include "FairBoxSetDraw.h"
 #include "FairHit.h"
-#include "TEveBoxSet.h"
 #include "FairRootManager.h"
-#include "TClonesArray.h"
 #include "TObjArray.h"
-#include "FairEventManager.h"
 #include "TEveManager.h"
-#include "TVector3.h"
 #include <iostream>
 using std::cout;
 using std::endl;

@@ -20,11 +20,11 @@
 
 
 #include "FairTask.h"
+#include "TEveBoxSet.h"
+#include "TClonesArray.h"
+#include "TVector3.h"
+#include "FairEventManager.h"
 
-class FairEventManager;
-class TClonesArray;
-class TEveBoxSet;
-class TVector3;
 
 
 class FairBoxSetDraw : public FairTask {
