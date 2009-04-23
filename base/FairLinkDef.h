@@ -32,8 +32,8 @@
 #pragma link C++ class FairGenericStack+;
 #pragma link C++ class FairTask+;
 #pragma link C++ class FairFieldFactory+;
-#pragma link C++ class FairVPoint+;
-#pragma link C++ class FairVTrack+;
+//#pragma link C++ class FairVPoint+;
+//#pragma link C++ class FairVTrack+;
 #pragma link C++ class FairRadLenPoint+;
 #pragma link C++ class FairRadLenManager+;
 #endif

@@ -50,8 +50,8 @@ FairVolume.cxx
 FairVolumeList.cxx 
 FairField.cxx
 FairFieldFactory.cxx
-FairVPoint.cxx
-FairVTrack.cxx
+#FairVPoint.cxx
+#FairVTrack.cxx
 FairRadLenPoint.cxx
 FairRadLenManager.cxx
 )
