@@ -100,6 +100,31 @@ MACRO (WRITE_CONFIG_FILE filename)
   ENDIF(RULE_CHECKER_FOUND)
 
 
+  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system.sh.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
+                  )
+
+  IF(CMAKE_SYSTEM_NAME MATCHES Linux)
+    FILE(READ /etc/issue _linux_flavour)
+    STRING(REGEX REPLACE "\n" ";" _result "${_linux_flavour}")
+    SET(_counter 0)
+    FOREACH(_line ${_result})
+      if (_counter EQUAL 0)
+        SET(_counter 1)
+        set(_linux_flavour ${_line})
+      endif (_counter EQUAL 0)
+    ENDFOREACH(_line ${_result})
+    EXECUTE_PROCESS(COMMAND uname -m 
+                    OUTPUT_VARIABLE _system 
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                   )
+   
+    WRITE_TO_FILE(${filename} Linux_Flavour_ ${_linux_flavour} APPEND)
+    WRITE_TO_FILE(${filename} System_ ${_system} APPEND)
+    WRITE_FILE(${filename} ". ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh" APPEND)
+  ENDIF(CMAKE_SYSTEM_NAME MATCHES Linux)
+
+
 
 ENDMACRO (WRITE_CONFIG_FILE)
 
