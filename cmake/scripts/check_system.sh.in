@@ -1,6 +1,6 @@
 #!/bin/bash
 
-linux_flavour=$(head -n 1 /etc/issue | tr  '\' ' ')
+linux_flavour=$(head -n 1 /etc/issue | tr  '\\' ' ')
 system=$(uname -m)
 echo ${linux_flavour}
 echo ${system}
