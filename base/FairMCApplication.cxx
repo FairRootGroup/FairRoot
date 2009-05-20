@@ -217,6 +217,9 @@ void FairMCApplication::InitMC(const char* setup, const char *cuts)
   else fMcVersion = 3;  //Geane
   fTrajFilter = FairTrajFilter::Instance();
  
+  if(fEvGen)fEvGen->Init();
+
+
   cout << " -I- FairMCApplication:: Monte carlo Engine Initialisation  with "<< MCName.Data() << endl;
 }
 //_____________________________________________________________________________

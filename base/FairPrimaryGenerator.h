@@ -52,7 +52,9 @@ class FairPrimaryGenerator : public TNamed
   /** Destructor. **/
   virtual ~FairPrimaryGenerator();
 
-
+  /** Initialize the generater (if needed!)*/ 
+  virtual void Init() { };
+  
   /** Register a generator derived from FairGenerator.  **/
   void AddGenerator(FairGenerator* generator) {
     if ( ! fGenList ) {
@@ -70,7 +72,7 @@ class FairPrimaryGenerator : public TNamed
       *@param pStack The particle stack
       *@return kTRUE if successful, kFALSE if not
   **/
-  Bool_t GenerateEvent(FairGenericStack* pStack);
+  virtual Bool_t GenerateEvent(FairGenericStack* pStack);
 
 
   /** Public method AddTrack
@@ -135,7 +137,7 @@ class FairPrimaryGenerator : public TNamed
   void SetEventMeanTime(Double_t mean);
   
 
- private:
+ protected:
 
   Double_t    fBeamX0;        //  Nominal beam position at target in x [cm]
   Double_t    fBeamY0;        //  Nominal beam position at target in y [cm]
