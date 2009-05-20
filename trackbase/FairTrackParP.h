@@ -23,6 +23,10 @@ class FairTrackParP : public FairTrackPar
   /** Constructor with all track variables in SD **/
   // spu = the sign of u-component of particle momentum 
   // constructor without spu, to be used when spu is calculated as output
+  //  DJ(3)     UNIT VECTOR IN V-DIRECTION
+  //      DK(3)     UNIT VECTOR IN W-DIRECTION    OF DETECTOR SYSTEM
+
+
   FairTrackParP(Double_t v, Double_t w, 
 	       Double_t Tv, Double_t Tw, Double_t qp, 
 	       Double_t CovMatrix[15], 

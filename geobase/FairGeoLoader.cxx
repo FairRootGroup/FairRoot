@@ -10,7 +10,7 @@
 
 #include "FairGeoInterface.h"
 #include "FairGeoRootBuilder.h"
-#include "FairGeoG3Builder.h"
+//#include "FairGeoG3Builder.h"
 
 #include "TGeoManager.h"
 
@@ -49,9 +49,10 @@ FairGeoLoader::FairGeoLoader(const char *Name, const char *title)
 	  fGeoBuilder=new FairGeoRootBuilder("TGeo builder","geometry builder");
 	  ((FairGeoRootBuilder*)fGeoBuilder)->setGeoManager(geom);
         }else if ( strncmp(Name,"G3Native",8) == 0) {
-            cout << "-I- FairGeoLoader() : Native G3 Geometry is used" << endl;
-          gGeoManager = NULL;
-          fGeoBuilder=new FairGeoG3Builder("G3 builder","geometry builder");
+            cout << "-I- FairGeoLoader() : Native G3 Geometry is used: This option is not supported any more!" << endl;
+            exit(0);
+  //        gGeoManager = NULL;
+  //        fGeoBuilder=new FairGeoG3Builder("G3 builder","geometry builder");
         }
 
         fInterface->setGeomBuilder(fGeoBuilder);
