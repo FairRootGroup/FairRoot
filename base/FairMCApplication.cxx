@@ -217,9 +217,7 @@ void FairMCApplication::InitMC(const char* setup, const char *cuts)
   else fMcVersion = 3;  //Geane
   fTrajFilter = FairTrajFilter::Instance();
  
-  if(fEvGen)fEvGen->Init();
-
-
+ 
   cout << " -I- FairMCApplication:: Monte carlo Engine Initialisation  with "<< MCName.Data() << endl;
 }
 //_____________________________________________________________________________
@@ -597,12 +595,16 @@ void FairMCApplication::InitGeometry()
       FairDetector *detector=NULL;
       if(fEvGen!=0 && fStack!=0)fStack->Register();
       else cout << "--Warning-- Stack is not registerd " << endl;
-      fActDetIter->Reset();
-
+      
+	  // Initialize the event generator 
+	  if(fEvGen)fEvGen->Init();
+	   
+	  // Initialize the detectors.    
+	  fActDetIter->Reset();
       while((detector = dynamic_cast<FairDetector*>(fActDetIter->Next()))) {
-        detector->Initialize();
-        detector->SetSpecialPhysicsCuts();
-        detector->Register();
+        detector->Initialize();                // initialize the detectors
+        detector->SetSpecialPhysicsCuts();     // set the detector specific detector cuts
+        detector->Register();                  //  add branches to tree
       }
 	  /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
       InitTasks();
