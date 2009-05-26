@@ -68,8 +68,8 @@ public:
   void write (fstream&);
   Bool_t calcRadiationLength();
 //private:  
-  FairGeoMedium(const FairGeoMedium &L);
-  FairGeoMedium& operator= (const FairGeoMedium&) {return *this;}
+//  FairGeoMedium(const FairGeoMedium &L);
+//  FairGeoMedium& operator= (const FairGeoMedium&) {return *this;}
   ClassDef(FairGeoMedium,1) //
 };
 
