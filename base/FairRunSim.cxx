@@ -84,6 +84,7 @@ void FairRunSim::Init()
 {
     /**Initialize the simulation session*/
     TString work = getenv("VMCWORKDIR");
+    TString Lib_config= getenv("GEANT4VMC_MACRO_DIR");
     TString work_config=work+"/gconfig/";
     TString config_dir= getenv("CONFIG_DIR");
     Bool_t AbsPath=kFALSE;
@@ -157,25 +158,24 @@ void FairRunSim::Init()
 	TString ConfigMacro;
 	TString cuts=fUserCuts;
     //----------------------------------------------Geant4 Config-----------------------------------------
-    if (strcmp(GetName(),"TGeant4") == 0 ) {
-	   TString g4LibMacro="g4libs.C";
-	   TString g4Macro;	
-	   if(fUserConfig.IsNull()){
-		   g4Macro="g4Config.C";
-	       fUserConfig = g4Macro;
-	   }else { 
-		  if (fUserConfig.Contains("/")) AbsPath=kTRUE;		
-		  g4Macro = fUserConfig;
-		   cout << "---------------User config is used :  " << g4Macro.Data() <<"-----------------"<< endl;
-	   }
-				
-	   if (TString(gSystem->FindFile(config_dir.Data(),g4LibMacro)) != TString("")){  //be carfull after this call the string g4LibMacro is empty if not found!!!!
-          cout << "---User path for Configuration (g4libs.C) is used : " <<  config_dir.Data() << endl;
+    if(strcmp(GetName(),"TGeant4") == 0 ) {
+       TString g4LibMacro="g4libs.C";
+       TString g4Macro;	
+       if(fUserConfig.IsNull()){
+          g4Macro="g4Config.C"; 
+          fUserConfig = g4Macro;
+       }else { 
+          if (fUserConfig.Contains("/")) AbsPath=kTRUE;		
+          g4Macro = fUserConfig;
+          cout << "---------------User config is used :  " << g4Macro.Data() <<"-----------------"<< endl;
+       }
+       if (TString(gSystem->FindFile(config_dir.Data(),g4LibMacro)) != TString("")){  //be carfull after this call the string g4LibMacro is empty if not found!!!!
+           cout << "---User path for Configuration (g4libs.C) is used : " <<  config_dir.Data() << endl;
        }else{
-		   g4LibMacro=work_config+"g4libs.C";
+           g4LibMacro=Lib_config+"g4libs.C";
        }
        LibMacro=g4LibMacro;
-	   LibFunction="g4libs()";	
+       LibFunction="g4libs()";	
        if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),g4Macro)) != TString("")){
           cout << "---User path for Configuration (g4Config.C) is used : " <<  config_dir.Data() << endl;
 		  ConfigMacro=g4Macro;
