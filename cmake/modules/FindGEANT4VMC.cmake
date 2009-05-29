@@ -38,6 +38,9 @@ ${SIMPATH}/transport/vgm/packages/VGM/include
 ${SIMPATH}/transport/vgm/packages/XmlVGM/include
 )
 
+set(GEANT4VMC_MACRO_DIR
+${SIMPATH}/transport/geant4_vmc/examples/macro/
+)
 
 FIND_PATH(GEANT4VMC_LIBRARY_DIR NAMES libgeant4vmc.so libgeant4vmc.dylib PATHS
   ${SIMPATH}/transport/geant4_vmc/lib/tgt_linux

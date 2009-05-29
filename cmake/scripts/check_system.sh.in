@@ -1,9 +1,8 @@
 #!/bin/bash
 
-linux_flavour=$(head -n 1 /etc/issue | tr  '\\' ' ')
+linux_flavour=$(sed '/^$/d' /etc/issue | head -n 1 | tr  '\\' ' ')
 system=$(uname -m)
-echo ${linux_flavour}
-echo ${system}
+same_system=1
 
 echo "System during compilation: $Linux_Flavour_"
 echo "                           $System_"
@@ -17,7 +16,7 @@ if [ ! "$linux_flavour" = "$Linux_Flavour_" ]; then
   echo "the execution at this point."
   echo "If you know what you do you can change the"
   echo "config.sh script to bypass this security issue."
-  exit 
+  same_system=0
 fi
 if [ ! "$system" = "$System_" ]; then
   echo "You try to run the software on a different"
@@ -26,6 +25,7 @@ if [ ! "$system" = "$System_" ]; then
   echo "the execution at this point."
   echo "If you know what you do you can change the"
   echo "config.sh script to bypass this security issue."
-  exit 
+  same_system=0
 fi
 
+export same_system

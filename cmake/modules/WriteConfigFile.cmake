@@ -16,7 +16,35 @@ MACRO (WRITE_CONFIG_FILE filename)
     ENDIF(CMAKE_SYSTEM_NAME MATCHES Darwin)
   ENDIF(CMAKE_SYSTEM_NAME MATCHES Linux)
   
-  WRITE_TO_FILE(${filename} SIMPATH ${SIMPATH} "") 
+
+  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system.sh.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
+                  )
+
+  IF(CMAKE_SYSTEM_NAME MATCHES Linux)
+    FILE(READ /etc/issue _linux_flavour)
+    STRING(REGEX REPLACE "[\\]" " " _result1 "${_linux_flavour}")
+    STRING(REGEX REPLACE "\n" ";" _result "${_result1}")
+    SET(_counter 0)
+    FOREACH(_line ${_result})
+      if (_counter EQUAL 0)
+        SET(_counter 1)
+        set(_linux_flavour ${_line})
+      endif (_counter EQUAL 0)
+    ENDFOREACH(_line ${_result})
+    EXECUTE_PROCESS(COMMAND uname -m 
+                    OUTPUT_VARIABLE _system 
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                   )
+   
+    WRITE_TO_FILE(${filename} Linux_Flavour_ ${_linux_flavour} "")
+    WRITE_TO_FILE(${filename} System_ ${_system} APPEND)
+    WRITE_FILE(${filename} ". ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh" APPEND)
+    WRITE_FILE(${filename} " if [ \"$same_system\" == \"1\" ]; then" APPEND)
+  ENDIF(CMAKE_SYSTEM_NAME MATCHES Linux)
+
+
+  WRITE_TO_FILE(${filename} SIMPATH ${SIMPATH} APPEND) 
   WRITE_TO_FILE(${filename} ROOTSYS ${ROOTSYS} APPEND) 
 
   IF (GEANT4_FOUND AND GEANT4VMC_FOUND AND CLHEP_FOUND)
@@ -31,6 +59,9 @@ MACRO (WRITE_CONFIG_FILE filename)
  
     CONVERT_LIST_TO_STRING(${GEANT4VMC_LIBRARY_DIR})
     WRITE_TO_FILE(${filename} GEANT4VMC_LIBRARY_DIR ${output} APPEND)
+
+    CONVERT_LIST_TO_STRING(${GEANT4VMC_MACRO_DIR})
+    WRITE_TO_FILE(${filename} GEANT4VMC_MACRO_DIR ${output} APPEND)
 
     CONVERT_LIST_TO_STRING(${CLHEP_INCLUDE_DIR})
     WRITE_TO_FILE(${filename} CLHEP_INCLUDE_DIR ${output}  APPEND)
@@ -99,33 +130,9 @@ MACRO (WRITE_CONFIG_FILE filename)
     WRITE_TO_FILE(${filename} CLASSPATH ${output} APPEND)
   ENDIF(RULE_CHECKER_FOUND)
 
-
-  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system.sh.in
-                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
-                  )
-
   IF(CMAKE_SYSTEM_NAME MATCHES Linux)
-    FILE(READ /etc/issue _linux_flavour)
-    STRING(REGEX REPLACE "[\\]" " " _result1 "${_linux_flavour}")
-    STRING(REGEX REPLACE "\n" ";" _result "${_result1}")
-    SET(_counter 0)
-    FOREACH(_line ${_result})
-      if (_counter EQUAL 0)
-        SET(_counter 1)
-        set(_linux_flavour ${_line})
-      endif (_counter EQUAL 0)
-    ENDFOREACH(_line ${_result})
-    EXECUTE_PROCESS(COMMAND uname -m 
-                    OUTPUT_VARIABLE _system 
-                    OUTPUT_STRIP_TRAILING_WHITESPACE
-                   )
-   
-    WRITE_TO_FILE(${filename} Linux_Flavour_ ${_linux_flavour} APPEND)
-    WRITE_TO_FILE(${filename} System_ ${_system} APPEND)
-    WRITE_FILE(${filename} ". ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh" APPEND)
+    WRITE_FILE(${filename} "fi" APPEND)
   ENDIF(CMAKE_SYSTEM_NAME MATCHES Linux)
-
-
 
 ENDMACRO (WRITE_CONFIG_FILE)
 
