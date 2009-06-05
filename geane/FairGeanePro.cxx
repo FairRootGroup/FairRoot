@@ -74,7 +74,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
         
 	}
     if(fPropOption == "VE") {
-      cout << "Propagate Helix to Volume" << endl;
+      //cout << "Propagate Helix to Volume" << endl;
       Int_t option;
       if(VEnter)option =1;
       else  option =2;
@@ -249,7 +249,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t
 Bool_t FairGeanePro::Propagate(FairTrackParH *TStart, FairTrackParP *TEnd, Int_t PDG)
 {
   // Propagate a helix track (SC system) and return a parabola (SD system) (not used nor implemented)
-  cout << "FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParP &TEnd, Int_t PDG)" << endl;
+  cout << "FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParP &TEnd, Int_t PDG) not implemented" << endl;
   return kFALSE;  
 }
 
@@ -269,7 +269,7 @@ Bool_t FairGeanePro::Propagate(Int_t PDG) {
   // main propagate call to fortran ERTRAK
 
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
-  cout <<  " FairGeanePro::Propagate ---------------------------"<< "  " << x1[0]<< " "<< x1[1]<< "  "<<  x1[2] << endl; 
+  //cout <<  " FairGeanePro::Propagate ---------------------------"<< "  " << x1[0]<< " "<< x1[1]<< "  "<<  x1[2] << endl; 
   fApp->GeanePreTrack(x1, p1, PDG);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
   if(x2[0]<-1.E29) return kFALSE;
