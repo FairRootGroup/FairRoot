@@ -63,7 +63,6 @@ void run_tutorial1(Int_t nEvents = 10)
   gSystem->Load("libParBase");
   gSystem->Load("libBase");
   gSystem->Load("libMCStack");
-  gSystem->Load("libField");
   gSystem->Load("libGen");
   gSystem->Load("libPassive");
   gSystem->Load("libTutorial1");
@@ -113,12 +112,7 @@ void run_tutorial1(Int_t nEvents = 10)
   // ------------------------------------------------------------------------
 
   // -----   Runtime database   ---------------------------------------------
-  /*
-  FairFieldPar* fieldPar = (FairFieldPar*) rtdb->getContainer("FairFieldPar");
-  fieldPar->SetParameters(magField);
-  fieldPar->setChanged();
-  fieldPar->setInputVersion(run->GetRunId(),1);
-  */
+
   Bool_t kParameterMerged = kTRUE;
   FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
 //  FairParAsciiFileIo* parOut = new FairParAsciiFileIo();
