@@ -105,7 +105,7 @@ void FairMCTracks::Exec(Option_t* option)
     }
     for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++){
        TEveTrackList *TrListIn=( TEveTrackList *) fEveTrList->At(i);
-       TrListIn->FindMomentumLimits(TrListIn, kFALSE); 
+       //TrListIn->FindMomentumLimits(TrListIn, kFALSE); 
     } 
     fEventManager->SetEvtMaxEnergy(MaxEnergyLimit);
     fEventManager->SetEvtMinEnergy(MinEnergyLimit);

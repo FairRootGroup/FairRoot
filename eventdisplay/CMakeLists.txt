@@ -10,14 +10,6 @@ ${CMAKE_SOURCE_DIR}/base
 ${CMAKE_SOURCE_DIR}/trackbase 
 ${CMAKE_SOURCE_DIR}/geane
 ${CMAKE_SOURCE_DIR}/eventdisplay
-${CMAKE_SOURCE_DIR}/tpc
-${CMAKE_SOURCE_DIR}/genfit
-${CMAKE_SOURCE_DIR}/PndTools/riemannfit
-${CMAKE_SOURCE_DIR}/pnddata
-${CMAKE_SOURCE_DIR}/pnddata/MvdData
-${CMAKE_SOURCE_DIR}/pnddata/SttData
-${CMAKE_SOURCE_DIR}/mvd/MvdTools
-${CMAKE_SOURCE_DIR}/mvd/MvdDigi
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -37,13 +29,6 @@ FairBoxSetDraw.cxx
 FairPointSetDraw.cxx
 FairMCPointDraw.cxx
 FairHitDraw.cxx
-#FairRiemannPointDraw.cxx
-#PndTPCRecoPointDraw.cxx
-FairTrackCandDraw.cxx
-#FairRiemannTrackCandDraw.cxx
-#FairMCStack.cxx
-#PndMvdDigiPixelDraw.cxx
-PndSttMCPointDraw.cxx
 )
 
 if(RULE_CHECKER_FOUND)

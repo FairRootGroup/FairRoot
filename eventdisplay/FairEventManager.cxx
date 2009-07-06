@@ -50,19 +50,12 @@ void FairEventManager::Init()
    fRunAna->LoadGeometry();
    fRunAna->Init();
    if(gGeoManager) {
-     //     TGeoVolume *V= gGeoManager->GetTopVolume();
-	 TGeoNode *N=  gGeoManager->GetTopNode();
+     TGeoNode *N=  gGeoManager->GetTopNode();
      TEveGeoTopNode *TNod=new  TEveGeoTopNode(gGeoManager, N);
      TNod->SetVisLevel(10);
-	 gEve->AddGlobalElement(TNod);
-     gEve->GetGLViewer()->CurrentCamera().SetExternalCenter(kTRUE);
-	 gEve->FullRedraw3D(kTRUE);
+     gEve->AddGlobalElement(TNod);
+     gEve->FullRedraw3D(kTRUE);
      fEvent= gEve->AddEvent(this);
-    /*  TEveProjectionManager *proj= new TEveProjectionManager();
-      proj-> ImportElementsRecurse(TNod,0);
-      gEve->AddElement(proj);
-      proj->ProjectChildrenRecurse(TNod);
-   */
    }
 }
 //______________________________________________________________________________
