@@ -18,11 +18,13 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 
 
-set(CUDA_BUILD_TYPE "Device")
+#set(CUDA_BUILD_TYPE "Device")
 #set(CUDA_BUILD_TYPE "Emulation")
 # Load some basic macros which are needed later on
+#include(${CMAKE_SOURCE_DIR}/cmake/cuda/FindCuda.cmake)
 
-include(${CMAKE_SOURCE_DIR}/cmake/cuda/FindCuda.cmake)
+
+
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(WriteConfigFile)
@@ -103,8 +105,8 @@ add_subdirectory (parbase)
 add_subdirectory (generators)
 add_subdirectory (geane)
 add_subdirectory (trackbase)
-add_subdirectory (cuda)
-#add_subdirectory (eventdisplay)
+#add_subdirectory (cuda)
+add_subdirectory (eventdisplay)
 add_subdirectory (example/Tutorial1/src)
 add_subdirectory (example/Tutorial2/src)
 add_subdirectory (example/passive)
