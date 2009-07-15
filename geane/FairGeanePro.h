@@ -52,6 +52,7 @@ public:
   Bool_t SetWire(TVector3 extremity1, TVector3 extremity2);
   Bool_t SetPoint(TVector3 pnt);
   Bool_t PropagateToPCA(Int_t pca);
+  Bool_t PropagateToPCA(Int_t pca, Int_t dir);
   int FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, Double_t maxdistance, Double_t &Rad, TVector3 &vpf, TVector3 &vwi, Double_t &Di, Float_t &trklength);
   TVector3 GetPCAOnWire() { return vwi; }
   TVector3 GetPCAOnTrack() { return vpf; }

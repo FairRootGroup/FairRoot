@@ -404,6 +404,23 @@ Bool_t FairGeanePro::PropagateToPCA(Int_t pca)
   return kTRUE;
 }
 
+Bool_t FairGeanePro::PropagateToPCA(Int_t pca, Int_t dir)
+{
+  // through track length
+  if(dir > 0) fPropOption="LE";
+  else if(dir < 0) fPropOption="BLE";
+  else cout << "FairGeanePro::PropagateToPCA(int, int) ERROR: no direction set" << endl;
+  ProMode=1; //need errors in representation 1 (SC)(see Geane doc)   
+  fPCA = pca;
+  // initialization 
+  Rad = 0.;
+  Di = 0.;
+  vpf = TVector3(0.,0.,0.);
+  vwi = TVector3(0.,0.,0.);
+  trklength = 0;
+  return kTRUE;
+}
+
 Bool_t FairGeanePro::ActualFindPCA(Int_t pca, FairTrackParP *par, Int_t dir)
 {
   Init(par);
