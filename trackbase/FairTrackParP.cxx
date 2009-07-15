@@ -29,9 +29,9 @@ ClassImp(FairTrackParP)
 
 // -----   Constructor with track parameters in SD -----------------------------------
 FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
-			   Double_t Tw, Double_t qp,
-			   Double_t CovMatrix[15],
-                           TVector3 o, TVector3 dj, TVector3 dk)
+			     Double_t Tw, Double_t qp,
+			     Double_t CovMatrix[15],
+			     TVector3 o, TVector3 dj, TVector3 dk)
   : FairTrackPar()
 {
   Reset();
@@ -111,9 +111,9 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 
 // -----   Constructor with track parameters in SD -----------------------------------
 FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
-			   Double_t Tw, Double_t qp,
-			   Double_t CovMatrix[15],
-                           TVector3 o, TVector3 dj, TVector3 dk, Double_t spu)
+			     Double_t Tw, Double_t qp,
+			     Double_t CovMatrix[15],
+			     TVector3 o, TVector3 dj, TVector3 dk, Double_t spu)
   : FairTrackPar()
 {
   Reset();
@@ -279,8 +279,8 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
 
 // -----   Constructor with track parameters in LAB (with complete covariance matrix in MARS) -----------------------------------
 FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, 
-			   Double_t covMARS[6][6], Double_t Q, 
-			   TVector3 o, TVector3 dj, TVector3 dk)
+			     Double_t covMARS[6][6], Double_t Q, 
+			     TVector3 o, TVector3 dj, TVector3 dk)
   : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),Q)
 {
   Reset();
@@ -351,12 +351,55 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
   fPz_sd = fTW * fPx_sd;
 }
 
+FairTrackParP::FairTrackParP(FairTrackParH *helix, TVector3 dj, TVector3 dk, Int_t &ierr)   : FairTrackPar()
+{
+
+  // q/p, lambda, phi --> q/p, v', w'
+  Double_t PC[3] = {helix->GetQp(), helix->GetLambda(), helix->GetPhi()};
+  Double_t RC[15]; 
+  helix->GetCov(RC);
+  // retrieve field
+  TVector3 xyz(helix->GetX(), helix->GetY(), helix->GetZ());
+  Double_t H[3], pnt[3];
+  pnt[0] = xyz.X(); 
+  pnt[1] = xyz.Y();
+  pnt[2] = xyz.Z();
+  FairRunAna *fRun = FairRunAna::Instance();
+  fRun->GetField()->GetFieldValue(pnt, H);
+  Double_t CH  = helix->GetQ();
+
+  Double_t DJ[3] = {dj.X(), dj.Y(), dj.Z()};
+  Double_t DK[3] = {dk.X(), dk.Y(), dk.Z()};
+
+  Int_t IERR = 0;
+  Double_t SPU = 0;
+  Double_t PD[3], RD[15];
+
+  FairGeaneUtil util;
+  util.FromSCToSD(PC, RC, H, CH, DJ, DK,   
+		  IERR, SPU, PD, RD);
+
+  ierr = IERR;
+
+  // MARS coordinates
+  TVector3 o(xyz.X(), xyz.Y(), xyz.Z());
+  TVector3 di = dj.Cross(dk);
+  TVector3 uvm = util.FromMARSToSDCoord(xyz, o, di, dj, dk);
+
+  if(ierr == 0)  SetTrackPar(uvm.Y(), uvm.Z(), 
+			     PD[1], PD[2], PD[0],
+			     RD,
+			     o, di, dj, dk, SPU);
+  else cout << "FairTrackParP(FairTrackParH *) contructor ERROR: CANNOT convert helix to parabola" << endl;
+
+}
+
 //define track in LAB
 
 void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
-			       Double_t Px, Double_t Py, Double_t Pz, Double_t Q,
-			       Double_t  CovMatrix[15],
-			       TVector3 o, TVector3 di, TVector3 dj, TVector3 dk)
+				Double_t Px, Double_t Py, Double_t Pz, Double_t Q,
+				Double_t  CovMatrix[15],
+				TVector3 o, TVector3 di, TVector3 dj, TVector3 dk)
 {
 
   
@@ -440,9 +483,9 @@ void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
 
 //define track in SD
 void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
-				Double_t Tw, Double_t qp,
-				Double_t CovMatrix[15],
-				TVector3 o, TVector3 di, TVector3 dj, TVector3 dk, Double_t spu)
+				 Double_t Tw, Double_t qp,
+				 Double_t CovMatrix[15],
+				 TVector3 o, TVector3 di, TVector3 dj, TVector3 dk, Double_t spu)
 {
   Reset();
   SetPlane(o, dj, dk); 

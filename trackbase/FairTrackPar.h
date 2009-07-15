@@ -2,7 +2,7 @@
 #define FAIRSTSTRACKPAR 1
 
 #include "TObject.h"
-
+#include "TVector3.h"
 
 class FairTrackPar : public TObject
 {
@@ -23,6 +23,8 @@ class FairTrackPar : public TObject
   virtual void Print();
 
   /** Accessors **/
+  virtual TVector3 GetPosition() const {return TVector3(fX, fY, fZ); };
+
   virtual Double_t GetX()   { return fX; };
   virtual Double_t GetY()   { return fY; };
   virtual Double_t GetZ()   { return fZ; };
@@ -31,6 +33,8 @@ class FairTrackPar : public TObject
   virtual Double_t GetDX()  const { return fDX; };
   virtual Double_t GetDY()  const { return fDY; };
   virtual Double_t GetDZ()  const { return fDZ; };
+
+  virtual TVector3 GetMomentum() const {return TVector3(fPx, fPy, fPz); };
 
   virtual Double_t GetPx() const { return fPx; };
   virtual Double_t GetPy() const { return fPy; };

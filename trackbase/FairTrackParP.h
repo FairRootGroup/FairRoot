@@ -11,7 +11,10 @@
 #define FAIRSTSTRACKPARP 1
 #include "TVector3.h"
 #include "FairTrackPar.h"
-    
+#include "FairTrackParH.h"
+
+class FairTrackParH;
+
 class FairTrackParP : public FairTrackPar
 {
 
@@ -46,7 +49,9 @@ class FairTrackParP : public FairTrackPar
   FairTrackParP(TVector3 pos, TVector3 Mom, 
 	       Double_t covMARS[6][6], Double_t q, 
 	       TVector3 o, TVector3 dj, TVector3 dk);
-   
+  // constructor from helix
+   FairTrackParP(FairTrackParH *helix, TVector3 dj, TVector3 dk, Int_t &ierr);
+
    /** Destructor **/
   virtual ~FairTrackParP();
   

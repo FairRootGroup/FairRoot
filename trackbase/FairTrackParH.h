@@ -11,8 +11,12 @@
 #define FAIRSTSTRACKPARH 1
 
 #include "FairTrackPar.h"
+#include "FairTrackParP.h"
+
 #include "TVector3.h"
     
+class FairTrackParP;
+
 class FairTrackParH : public FairTrackPar
 {
 
@@ -34,6 +38,8 @@ class FairTrackParH : public FairTrackPar
   FairTrackParH(FairTrackPar &Trkbase);
 
   //FairTrackParH(FairTrackParH &Trk);
+
+  FairTrackParH(FairTrackParP *parab, Int_t &ierr);
 
   /** Destructor **/
   virtual ~FairTrackParH();       
