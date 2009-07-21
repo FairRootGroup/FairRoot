@@ -8,4 +8,4 @@ export USE_VGM=1
 . @GEANT4_DIR@/env.sh
 
 cd @new_path@
-$ROOTSYS/bin/root.exe -b -l  @my_script_name@
+$ROOTSYS/bin/root.exe -q -b -l  @my_script_name@
