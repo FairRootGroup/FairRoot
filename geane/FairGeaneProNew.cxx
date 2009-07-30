@@ -7,9 +7,7 @@
 
 #include "FairTrackParP.h"
 #include "FairTrackParH.h"
-#include "FairRunAna.h"
-#include "FairField.h"
-#include "FairGeaneUtil.h"
+
 
 #include "TGeant3TGeo.h"
 #include "TVector3.h"
@@ -19,9 +17,15 @@
 #include "TMatrixFSym.h"
 #include "TVirtualMC.h"
 #include "TGeant3.h"
-#include "FairMCApplication.h"
 #include <iostream>
 #include <cmath>
+
+
+#include "FairRunAna.h"
+#include "FairField.h"
+#include "FairGeaneUtil.h"
+#include "FairMCApplication.h"
+
 
 using std::cout;
 using std::endl;
@@ -46,7 +50,7 @@ FairGeaneProNew::FairGeaneProNew() : TNamed("Geane", "Propagate Tracks")
   FairRunAna *fRun= FairRunAna::Instance();
   fField= fRun->GetField();
   fPCA = 0;
-  fApp =FairMCApplication::Instance();
+  //fApp =FairMCApplication::Instance();
 }
 
 // -----   Destructor   ----------------------------------------------------
@@ -255,7 +259,7 @@ Bool_t FairGeaneProNew::Propagate(FairTrackParH *TStart, FairTrackParP *TEnd, In
 
 Bool_t FairGeaneProNew::Propagate(Float_t *x1, Float_t *p1, Float_t *x2, Float_t *p2,Int_t PDG)
 {
-  fApp->GeanePreTrack(x1, p1, PDG);
+  //fApp->GeanePreTrack(x1, p1, PDG);
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   Float_t xlf[1];
   xlf[0]=1000
@@ -270,7 +274,7 @@ Bool_t FairGeaneProNew::Propagate(Int_t PDG) {
 
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   //cout <<  " FairGeaneProNew::Propagate ---------------------------"<< "  " << x1[0]<< " "<< x1[1]<< "  "<<  x1[2] << endl; 
-  fApp->GeanePreTrack(x1, p1, PDG);
+  //fApp->GeanePreTrack(x1, p1, PDG);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
   if(x2[0]<-1.E29) return kFALSE;
   trklength=gMC3->TrackLength();
