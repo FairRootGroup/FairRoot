@@ -81,7 +81,9 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
       gMC3->Eufilv(1, ein, (Char_t *)VName.Data(), &VCopyNo, &option);
     }
     else if(fPropOption == "LE" || fPropOption == "BLE" ) {
-      if(fPCA == 0)  cout << "Propagate Helix to Length not yet implemented" << endl;
+      if(fPCA == 0) {
+	// move eufill here? maybe not necessary, CHECK; 
+	;}
       else if(fPCA != 0){
 	
 		// max length estimate:
@@ -369,7 +371,7 @@ Bool_t FairGeanePro::PropagateToLength(Float_t length)
   xlf[0]=length;
   fPropOption="LE";
   ProMode=1; //need errors in representation 1 (SC)(see Geane doc)
-  //gMC3->Eufill(nepred, ein,xlf);
+  gMC3->Eufill(nepred, ein,xlf);
   return kTRUE;
 }
 
