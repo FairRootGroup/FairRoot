@@ -21,10 +21,10 @@
 #include <cmath>
 
 
-#include "FairRunAna.h"
-#include "FairField.h"
-#include "FairGeaneUtil.h"
-#include "FairMCApplication.h"
+//#include "FairRunAna.h"
+//#include "FairField.h"
+//#include "FairGeaneUtil.h"
+//#include "FairMCApplication.h"
 
 
 using std::cout;
@@ -47,8 +47,8 @@ FairGeaneProNew::FairGeaneProNew() : TNamed("Geane", "Propagate Tracks")
   Mom=TVector3(0,0,0);
   fTrkPar= new FairTrackPar();
   ProMode=0;
-  FairRunAna *fRun= FairRunAna::Instance();
-  fField= fRun->GetField();
+  //FairRunAna *fRun= FairRunAna::Instance();
+  //fField= fRun->GetField();
   fPCA = 0;
   //fApp =FairMCApplication::Instance();
 }
@@ -264,6 +264,7 @@ Bool_t FairGeaneProNew::Propagate(Float_t *x1, Float_t *p1, Float_t *x2, Float_t
   Float_t xlf[1];
   xlf[0]=1000
 	;
+  std::cout<<"2019";gMC3->GetMedium();//->GetMaterial()->Print();
   gMC3->Eufill(1, ein,xlf);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, "L");
   if(x2[0]<-1.E29) return kFALSE;
@@ -275,6 +276,8 @@ Bool_t FairGeaneProNew::Propagate(Int_t PDG) {
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   //cout <<  " FairGeaneProNew::Propagate ---------------------------"<< "  " << x1[0]<< " "<< x1[1]<< "  "<<  x1[2] << endl; 
   //fApp->GeanePreTrack(x1, p1, PDG);
+  std::cout<<"2019"<<gMC3->CurrentMedium()<<std::endl;//->GetMaterial()->Print();
+  
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
   if(x2[0]<-1.E29) return kFALSE;
   trklength=gMC3->TrackLength();
@@ -285,8 +288,38 @@ Bool_t FairGeaneProNew::Propagate(Int_t PDG) {
       //       trasp[i] = afErtrio->ertrsp[i]; // single precision tr. mat.
       trasp[i] = afErtrio->erdtrp[i];          // double precision tr. mat.
     }
-  FairGeaneUtil fUtil;
-  fUtil.FromVecToMat(trpmat, trasp);
+  //FairGeaneUtil fUtil;
+  //fUtil.FromVecToMat(trpmat, trasp);
+    trpmat[0][0] = trasp[0];
+    trpmat[1][0] = trasp[1];
+    trpmat[2][0] = trasp[2];
+    trpmat[3][0] = trasp[3];
+    trpmat[4][0] = trasp[4];
+    
+    trpmat[0][1] = trasp[5];;
+    trpmat[1][1] = trasp[6];;
+    trpmat[2][1] = trasp[7];;
+    trpmat[3][1] = trasp[8];;
+    trpmat[4][1] = trasp[9];;
+    
+    trpmat[0][2] = trasp[10] ;
+    trpmat[1][2] = trasp[11] ;
+    trpmat[2][2] = trasp[12] ;
+    trpmat[3][2] = trasp[13] ;
+    trpmat[4][2] = trasp[14] ;
+    
+    trpmat[0][3] = trasp[15] ;
+    trpmat[1][3] = trasp[16] ;
+    trpmat[2][3] = trasp[17] ;
+    trpmat[3][3] = trasp[18] ;
+    trpmat[4][3] = trasp[19] ;
+    
+    trpmat[0][4] = trasp[20] ;
+    trpmat[1][4] = trasp[21] ;
+    trpmat[2][4] = trasp[22] ;
+    trpmat[3][4] = trasp[23] ;
+    trpmat[4][4] = trasp[24] ;
+
   return kTRUE;
 }
 
