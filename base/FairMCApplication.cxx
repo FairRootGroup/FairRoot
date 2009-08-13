@@ -602,8 +602,12 @@ void FairMCApplication::InitGeometry()
         detector->Register();
       }
 	  /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
-      InitTasks();
-     // store the EventHeader Info
+
+      // There is always a Main Task  !
+      // so .. always a InitTasks() is called <D.B>
+      if (fFairTaskList) InitTasks();
+
+      // store the EventHeader Info
       FairEventHeader *evt = new FairEventHeader();
       fRootManager->Register("EventHeader.","EvtHeader",evt, kTRUE);
       cout << " -I- FairMCApplication ->  simulation RunID:  " <<  FairRunSim::Instance()->GetRunId() << endl;
@@ -885,11 +889,15 @@ void FairMCApplication::InitTasks()
 {	
 	fFairTaskList->SetParTask();
 	
+
+        // Only RTDB init when more than Main Task list
+	if(fFairTaskList->GetListOfTasks()->GetEntries() > 1 ) {
 	FairRunSim::Instance()->GetRunId();
 	FairRuntimeDb*  fRtdb =FairRunSim::Instance()->GetRuntimeDb();
-		
 	fRtdb->initContainers( FairRunSim::Instance()->GetRunId() );
-	
+	}
+
+
 	fFairTaskList->InitTask();
 }
 //_____________________________________________________________________________
