@@ -13,23 +13,28 @@ using std::cout;
 using std::endl;
 
 // -----   Default constructor   -------------------------------------------
-FairBoxSetDraw::FairBoxSetDraw() { }
+FairBoxSetDraw::FairBoxSetDraw() : fX(1), fY(1), fZ(1), fVerbose(0), fq(0){ }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Standard constructor   ------------------------------------------
 FairBoxSetDraw::FairBoxSetDraw(const char* name, Int_t iVerbose)
-  : FairTask(name, iVerbose), fX(1), fY(1), fZ(1){
-
+  : FairTask(name, iVerbose), fX(1), fY(1), fZ(1), fVerbose(iVerbose), fq(0)
+{
 }
 // -------------------------------------------------------------------------
 InitStatus FairBoxSetDraw::Init()
 {
 	if(fVerbose>1)
 	  cout<<  "FairBoxSetDraw::Init()" << endl;
-   FairRootManager* fManager = FairRootManager::Instance();
+   fManager = FairRootManager::Instance();
    fList = (TClonesArray *)fManager->GetObject(GetName());
+   //std::cout << fList << std::endl;
+   if (fList==0){
+	   cout << "FairBoxSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< endl;
+	   SetActive(kFALSE);
+   }
    if(fVerbose>2)
 	   cout<<  "FairBoxSetDraw::Init() get track list" <<  fList<< endl;
    fEventManager =FairEventManager::Instance();
@@ -40,21 +45,25 @@ InitStatus FairBoxSetDraw::Init()
 // -------------------------------------------------------------------------
 void FairBoxSetDraw::Exec(Option_t* option)
 {
-   TObject *p;
-   Reset();
- //  cout<<  "FairBoxSetDraw::Init() Exec! " << fList->GetEntriesFast() << endl;
-   fq = new TEveBoxSet(GetName());
-   fq->Reset(TEveBoxSet::kBT_AABoxFixedDim, kFALSE, 32);
-   fq->SetDefWidth(1);
-   fq->SetDefHeight(1);
-   fq->SetDefDepth(1);
+	if(IsActive()){
+	   TObject *p;
+	   Reset();
+	 //  cout<<  "FairBoxSetDraw::Init() Exec! " << fList->GetEntriesFast() << endl;
+	   fq = new TEveBoxSet(GetName());
+	   fq->Reset(TEveBoxSet::kBT_AABoxFixedDim, kFALSE, 32);
+	   fq->SetDefWidth(1);
+	   fq->SetDefHeight(1);
+	   fq->SetDefDepth(1);
 
-   for (Int_t i=0; i<fList->GetEntriesFast(); ++i) {
-      p=fList->At(i);
-      AddBoxes(fq, p, i);
-    }
-    gEve->AddElement(fq, fEventManager );
-    gEve->Redraw3D(kFALSE);
+	   //fList = (TClonesArray *)fManager->GetObject(GetName());
+	   //std::cout << "fList: " << fList << " " << fList->GetEntries() << std::endl;
+	   for (Int_t i=0; i<fList->GetEntriesFast(); ++i) {
+		  p=fList->At(i);
+		  AddBoxes(fq, p, i);
+		}
+		gEve->AddElement(fq, fEventManager );
+		gEve->Redraw3D(kFALSE);
+	}
 }
 
 void FairBoxSetDraw::AddBoxes(TEveBoxSet* set, TObject* obj, Int_t i)
@@ -89,8 +98,8 @@ void FairBoxSetDraw::Finish()
 void FairBoxSetDraw::Reset()
 {
     if(fq!=0){
-//	   fq->Reset();
-      gEve->RemoveElement(fq, fEventManager );
+    	fq->Reset();
+    	gEve->RemoveElement(fq, fEventManager );
 	 }
 }
 

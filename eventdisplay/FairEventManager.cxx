@@ -5,7 +5,7 @@
 **/
 
 #include "FairEventManager.h"
-#include "FairRootManager.h"
+//#include "FairRootManager.h"
 #include "FairRunAna.h"
 #include <iostream>
 #include "TEveManager.h"
@@ -26,7 +26,7 @@ FairEventManager * FairEventManager::Instance(){
         return fgRinstance;
 }
 //______________________________________________________________________________
-FairEventManager::FairEventManager() 
+FairEventManager::FairEventManager()
   :TEveEventManager("FairEventManager", ""),
    fRootManager(FairRootManager::Instance()),
    fEntry(0),
@@ -34,11 +34,11 @@ FairEventManager::FairEventManager()
    fEvent(0),
    fPriOnly(kFALSE),
    fCurrentPDG(0),
-   fMinEnergy(0), 
+   fMinEnergy(0),
    fMaxEnergy(25),
    fEvtMinEnergy(0),
    fEvtMaxEnergy(10)
-   
+
 {
    fgRinstance=this;
    AddParticlesToPdgDataBase();

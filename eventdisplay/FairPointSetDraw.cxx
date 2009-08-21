@@ -62,35 +62,25 @@ InitStatus FairPointSetDraw::Init()
 void FairPointSetDraw::Exec(Option_t* option)
 {
    if (IsActive()){
-  // Reset();
-//   TEveQuadSet* q = new TEveQuadSet(GetName());
-//   TEvePointSet* q = new TEvePointSet();
-  // gEve->RemoveElement(fq, fEventManager );
-   Int_t npoints=fPointList->GetEntriesFast();
-   Reset();
-   TEvePointSet *q = new TEvePointSet(GetName(),npoints,  TEvePointSelectorConsumer::kTVT_XYZ);
-   q->SetOwnIds(kTRUE);
-   q->SetMarkerColor(fColor);
-   q->SetMarkerSize(1.5);
-   q->SetMarkerStyle(fStyle);
-
-   for (Int_t i=0; i<npoints; ++i) {
-      TObject*  p=(TObject *)fPointList->At(i);
-      //fq->AddQad(p->GetX(),p->GetY(),p->GetZ(),1.5, 1.5);
-	  if(p!=0) {
-		  TVector3 vec(GetVector(p));
-		q->SetNextPoint(vec.X(),vec.Y(), vec.Z());
-        q->SetPointId(GetValue(p, i));
-	  }
-	//  TVector3 fMom;
-    //  p->Momentum(fMom);
-    //  fq->QuadValue(fMom.Mag());
-    //  if(fVerbose>2) cout<<  "FairPointSetDraw::Init() Add point " <<p->GetX()<< " "<<p->GetY()<< " "<< p->GetZ()<< " " << endl;
-
-    }
-	gEve->AddElement(q);
-	gEve->Redraw3D(kFALSE);
-	fq=q;
+	   Int_t npoints=fPointList->GetEntriesFast();
+	   Reset();
+	   TEvePointSet *q = new TEvePointSet(GetName(),npoints,  TEvePointSelectorConsumer::kTVT_XYZ);
+	   q->SetOwnIds(kTRUE);
+	   q->SetMarkerColor(fColor);
+	   q->SetMarkerSize(1.5);
+	   q->SetMarkerStyle(fStyle);
+	   std::cout << "fPointList: " << fPointList << " " << fPointList->GetEntries() << std::endl;
+	   for (Int_t i=0; i<npoints; ++i) {
+		  TObject*  p=(TObject *)fPointList->At(i);
+		  if(p!=0) {
+			TVector3 vec(GetVector(p));
+			q->SetNextPoint(vec.X(),vec.Y(), vec.Z());
+			q->SetPointId(GetValue(p, i));
+		  }
+		}
+		gEve->AddElement(q);
+		gEve->Redraw3D(kFALSE);
+		fq=q;
   }
 
 }

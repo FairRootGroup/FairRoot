@@ -67,6 +67,7 @@ protected:
 
   TClonesArray *fList; //!
   FairEventManager *fEventManager;   //!
+  FairRootManager* fManager;
   TEveBoxSet* fq;    //!
   Double_t fX, fY, fZ;
   ClassDef(FairBoxSetDraw,1);

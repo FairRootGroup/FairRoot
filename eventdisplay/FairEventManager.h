@@ -6,6 +6,7 @@
 #define FairEventManager_H
 
 #include "FairTask.h"
+#include "FairRootManager.h"
 #include "FairRunAna.h"
 #include "TEveEventManager.h"
 #include "TList.h"
@@ -16,16 +17,16 @@ class FairRootManager;
 class FairEventManager : public TEveEventManager
 {
 public:
-   static FairEventManager *Instance(); 
+   static FairEventManager *Instance();
    FairEventManager();
    virtual ~FairEventManager();
    virtual void Open();
    virtual void GotoEvent(Int_t event); // *MENU*
    virtual void NextEvent();   // *MENU*
    virtual void PrevEvent();   // *MENU*
-   virtual void Close();  
-   void DisplaySettings();       //  *Menu* 
-   Int_t Color(Int_t pdg);    
+   virtual void Close();
+   void DisplaySettings();       //  *Menu*
+   Int_t Color(Int_t pdg);
    void AddTask(FairTask *t){fRunAna->AddTask(t);}
    void Init();
    Int_t GetCurrentEvent(){return fEntry;}
@@ -43,15 +44,15 @@ public:
    Float_t GetMinEnergy(){return fMinEnergy;}
    void UpdateEditor();
    void AddParticlesToPdgDataBase() ;
-                                          
-   ClassDef(FairEventManager,1);            
-private:                          
+
+   ClassDef(FairEventManager,1);
+private:
    FairRootManager *fRootManager; //!
    Int_t fEntry;                 //!
    FairRunAna *fRunAna;          //!
    TGListTreeItem  *fEvent;     //!
    Bool_t fPriOnly;             //!
-   Int_t fCurrentPDG;           //! 
+   Int_t fCurrentPDG;           //!
    Float_t fMinEnergy;         //!
    Float_t fMaxEnergy;         //!
    Float_t fEvtMinEnergy;         //!
@@ -60,4 +61,4 @@ private:
    static FairEventManager*    fgRinstance; //!
 };
 
-#endif                                               
+#endif
