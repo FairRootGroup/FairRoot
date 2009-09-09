@@ -74,7 +74,7 @@ FairTrackParH::FairTrackParH(Double_t x, Double_t y, Double_t z,
 }
 
 //constructor in LAB
-FairTrackParH::FairTrackParH(TVector3 pos, TVector3 Mom, TVector3 posErr, TVector3 MomErr, Double_t q)
+FairTrackParH::FairTrackParH(TVector3 pos, TVector3 Mom, TVector3 posErr, TVector3 MomErr, Int_t q)
   : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),q)
 {
   Reset();
@@ -192,7 +192,7 @@ FairTrackParH::FairTrackParH(FairTrackParP *parab, Int_t &ierr)   : FairTrackPar
 
 // track definition in LAB
 void FairTrackParH::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
-				Double_t Px, Double_t Py, Double_t Pz, Double_t Q,
+				Double_t Px, Double_t Py, Double_t Pz, Int_t Q,
 				Double_t  CovMatrix[15])
 {
   Reset();

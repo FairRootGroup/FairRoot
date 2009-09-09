@@ -43,11 +43,11 @@ class FairTrackParP : public FairTrackPar
   /** Constructor with position and momentum track in LAB **/
   // DIAGONAL MARS covariance matrix
   FairTrackParP(TVector3 pos, TVector3 Mom, 
-	       TVector3 posErr, TVector3 MomErr, Double_t q, 
+	       TVector3 posErr, TVector3 MomErr, Int_t q, 
 	       TVector3 o, TVector3 dj, TVector3 dk);
   // NON DIAGONAL MARS covariance matrix
   FairTrackParP(TVector3 pos, TVector3 Mom, 
-	       Double_t covMARS[6][6], Double_t q, 
+	       Double_t covMARS[6][6], Int_t q, 
 	       TVector3 o, TVector3 dj, TVector3 dk);
   // constructor from helix
    FairTrackParP(FairTrackParH *helix, TVector3 dj, TVector3 dk, Int_t &ierr);
@@ -63,8 +63,8 @@ class FairTrackParP : public FairTrackPar
   void Print();
 
   //define track parameters in LAB
-  void SetTrackPar(Double_t X,  Double_t Y,  Double_t Z, Double_t Px, Double_t Py, Double_t Pz, Double_t Q, Double_t  CovMatrix[15], TVector3 o, TVector3 di, TVector3 dj, TVector3 dk);
-  void SetTrackPar(Double_t X,  Double_t Y,  Double_t Z, Double_t Px, Double_t Py, Double_t Pz, Double_t Q, Double_t  CovMatrix[15]);
+  void SetTrackPar(Double_t X,  Double_t Y,  Double_t Z, Double_t Px, Double_t Py, Double_t Pz, Int_t Q, Double_t  CovMatrix[15], TVector3 o, TVector3 di, TVector3 dj, TVector3 dk);
+  void SetTrackPar(Double_t X,  Double_t Y,  Double_t Z, Double_t Px, Double_t Py, Double_t Pz, Int_t Q, Double_t  CovMatrix[15]);
   //define track parameters in SD
   void SetTrackPar(Double_t v, Double_t w, Double_t Tv,	Double_t Tw, Double_t qp,Double_t CovMatrix[15], TVector3 o, TVector3 di, TVector3 dj, TVector3 dk, Double_t spu);
   void SetTrackPar(Double_t v, Double_t w, Double_t Tv,	Double_t Tw, Double_t qp,Double_t CovMatrix[15]);

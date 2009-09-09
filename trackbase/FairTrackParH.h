@@ -32,7 +32,7 @@ class FairTrackParH : public FairTrackPar
 
   /** Constructor track parameters with position and momentum (in LAB)**/
 
-  FairTrackParH(TVector3 pos, TVector3 Mom, TVector3 posErr, TVector3 MomErr, Double_t q);
+  FairTrackParH(TVector3 pos, TVector3 Mom, TVector3 posErr, TVector3 MomErr, Int_t q);
 
   /** copy Constructor **/
   FairTrackParH(FairTrackPar &Trkbase);
@@ -83,7 +83,7 @@ class FairTrackParH : public FairTrackPar
   void  SetZ_sc(Double_t z){fZ_sc =z;}  /**Set z in SC*/
   void  SetCov(Double_t *Cov) {for(Int_t i=0;i<15;i++) fCovMatrix[i]=Cov[i];}
   void  SetTrackPar(Double_t x,  Double_t y,  Double_t z,
-		Double_t Px, Double_t Py, Double_t Pz, Double_t Q,
+		Double_t Px, Double_t Py, Double_t Pz, Int_t Q,
 		Double_t CovMatrix[15]);
   
   void  SetTrackPar(Double_t x,  Double_t y,  Double_t z,

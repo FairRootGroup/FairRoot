@@ -193,7 +193,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 }
 
 // -----   Constructor with track parameters in LAB -----------------------------------
-FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVector3 MomErr, Double_t Q, TVector3 o, TVector3 dj, TVector3 dk)
+FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVector3 MomErr, Int_t Q, TVector3 o, TVector3 dj, TVector3 dk)
   : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),Q)
 {
   Reset();
@@ -279,7 +279,7 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
 
 // -----   Constructor with track parameters in LAB (with complete covariance matrix in MARS) -----------------------------------
 FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, 
-			     Double_t covMARS[6][6], Double_t Q, 
+			     Double_t covMARS[6][6], Int_t Q, 
 			     TVector3 o, TVector3 dj, TVector3 dk)
   : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),Q)
 {
@@ -397,7 +397,7 @@ FairTrackParP::FairTrackParP(FairTrackParH *helix, TVector3 dj, TVector3 dk, Int
 //define track in LAB
 
 void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
-				Double_t Px, Double_t Py, Double_t Pz, Double_t Q,
+				Double_t Px, Double_t Py, Double_t Pz, Int_t Q,
 				Double_t  CovMatrix[15],
 				TVector3 o, TVector3 di, TVector3 dj, TVector3 dk)
 {

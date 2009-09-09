@@ -35,7 +35,7 @@ FairTrackPar::FairTrackPar()
 
 // -----   Constructor with parameters   -----------------------------------
 FairTrackPar::FairTrackPar(Double_t x, Double_t y, Double_t z,
-				   Double_t px, Double_t py, Double_t pz, Double_t q)
+				   Double_t px, Double_t py, Double_t pz, Int_t q)
 
   : fX (x),
     fY (y),

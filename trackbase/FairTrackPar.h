@@ -14,7 +14,7 @@ class FairTrackPar : public TObject
 
   /** Constructor with all variables **/
   FairTrackPar(Double_t x,  Double_t y,  Double_t z,
-		Double_t fx, Double_t fy, Double_t fz, Double_t q);
+		Double_t fx, Double_t fy, Double_t fz, Int_t q);
 
   /** Destructor **/
   virtual ~FairTrackPar();
@@ -28,7 +28,7 @@ class FairTrackPar : public TObject
   virtual Double_t GetX()   { return fX; };
   virtual Double_t GetY()   { return fY; };
   virtual Double_t GetZ()   { return fZ; };
-  Double_t GetQ()  const { return fq; };
+  Int_t   GetQ()  const { return fq; };
 
   virtual Double_t GetDX()  const { return fDX; };
   virtual Double_t GetDY()  const { return fDY; };
@@ -88,7 +88,7 @@ class FairTrackPar : public TObject
   Double_t fDQp;
 
  /** charge*/
-  Double_t fq;
+  Int_t fq;
 
   ClassDef(FairTrackPar,1);
 
