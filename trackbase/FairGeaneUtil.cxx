@@ -85,7 +85,7 @@ void FairGeaneUtil::FromPtToSC(Double_t PC[3], Double_t RC[15],
   for(Int_t I=0; I<15; I++)  RD[I]=S[I];
 }
 
-void FairGeaneUtil::FromPtToSD(Double_t PD[3], Double_t RD[15], Double_t H[3], Double_t CH,
+void FairGeaneUtil::FromPtToSD(Double_t PD[3], Double_t RD[15], Double_t H[3], Int_t &CH,
                 Double_t SPU, Double_t DJ[2], Double_t DK[2],
 		// output
 		Int_t &IERR, Double_t* PC, Double_t* RC) {
@@ -291,7 +291,7 @@ void FairGeaneUtil::FromSCToPt(Double_t PC[3], Double_t RC[15],
   
 }
 
-void FairGeaneUtil::FromSCToSD(Double_t PC[3], Double_t RC[15], Double_t H[3], Double_t CH,
+void FairGeaneUtil::FromSCToSD(Double_t PC[3], Double_t RC[15], Double_t H[3], Int_t &CH,
 		Double_t DJ[3], Double_t DK[3],   
 		//    output
                 Int_t &IERR, Double_t &SPU,
@@ -437,7 +437,7 @@ void FairGeaneUtil::FromSCToSD(Double_t PC[3], Double_t RC[15], Double_t H[3], D
 
 
 void FairGeaneUtil::FromSD1ToSD2(Double_t PD1[2], Double_t RD1[15],Double_t H[2],
-                    Double_t CH, Double_t SP1,
+                    Int_t &CH, Double_t SP1,
 	            Double_t DJ1[2], Double_t DK1[2], 
                     Double_t DJ2[2], Double_t DK2[2],
 		    //           output
@@ -616,7 +616,7 @@ void FairGeaneUtil::FromSD1ToSD2(Double_t PD1[2], Double_t RD1[15],Double_t H[2]
 }
  
 void FairGeaneUtil::FromSDToPt(Double_t PD[3], Double_t RD[15], Double_t H[3], 
-		Double_t CH, Double_t SPU, Double_t DJ[3], Double_t DK[3],
+		Int_t &CH, Double_t SPU, Double_t DJ[3], Double_t DK[3],
 		// output
 		Int_t &IERR, Double_t* PC, Double_t* RC) {
 // 
@@ -751,7 +751,7 @@ void FairGeaneUtil::FromSDToPt(Double_t PD[3], Double_t RD[15], Double_t H[3],
 
 
 
-void FairGeaneUtil::FromSDToSC(Double_t PD[3], Double_t RD[15], Double_t H[3], Double_t CH,
+void FairGeaneUtil::FromSDToSC(Double_t PD[3], Double_t RD[15], Double_t H[3], Int_t &CH,
 		Double_t SPU, Double_t DJ[3], Double_t DK[3],
 		//  output
 		Int_t &IERR, Double_t* PC, Double_t* RC) {
@@ -963,7 +963,7 @@ void FairGeaneUtil::FromVecToMat(fiveMat& A, Double_t V[25]) {
 
 }
 
-void FairGeaneUtil::FromMarsToSC(Double_t PD[3], Double_t RD[6][6],  Double_t H[3], Double_t CH, 
+void FairGeaneUtil::FromMarsToSC(Double_t PD[3], Double_t RD[6][6],  Double_t H[3], Int_t &CH, 
 				//  output 
 				Double_t* PC, Double_t* RC)
 {
@@ -1053,7 +1053,7 @@ void FairGeaneUtil::FromMarsToSC(Double_t PD[3], Double_t RD[6][6],  Double_t H[
 
 
 
-void FairGeaneUtil::FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3], Double_t CH,
+void FairGeaneUtil::FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3], Int_t &CH,
 				//  output
 			 	Double_t* PD, sixMat& RD) {
 //  ------------------------------------------------------------------------
@@ -1143,7 +1143,7 @@ void FairGeaneUtil::FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3],
 }
 
 void FairGeaneUtil::FromMarsToSD(Double_t PD[3], Double_t RD[6][6], 
-				Double_t H[3], Double_t CH,
+				Double_t H[3], Int_t &CH,
 				Double_t DJ1[3], Double_t DK1[3],
 				//  output
 				Int_t &IERR, Double_t &SP1, 
@@ -1388,7 +1388,7 @@ void FairGeaneUtil::FromMarsToSD(Double_t PD[3], Double_t RD[6][6],
 
 
 void FairGeaneUtil::FromSDToMars(Double_t PC[3], Double_t RC[15],
- 				Double_t H[3], Double_t CH,
+ 				Double_t H[3], Int_t &CH,
  				Double_t SP1, Double_t DJ1[3], Double_t DK1[3],
  				//  output
 				Double_t* PD, sixMat& RD) {

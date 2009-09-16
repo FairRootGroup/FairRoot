@@ -43,7 +43,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fQp = qp;
 
   Double_t P  = TMath::Abs(1/fQp);
-  fq= P * fQp;
+  fq= int (P * fQp);
   for(Int_t i=0;i<15;i++)  {
     fCovMatrix[i]=CovMatrix[i];
   }
@@ -69,7 +69,8 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fDW   = TMath::Sqrt(fabs(fCovMatrix[14]));
   
   
-  Double_t PD[3],RD[6][6],H[3],CH,PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Int_t CH;	
   PC[0]   = fQp;
   PC[1]   = fTV; 
   PC[2]   = fTW;
@@ -127,7 +128,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   Double_t P=0;
   if(0!=fQp){ 
     P = TMath::Abs(1/fQp);
-    fq= P * fQp;
+    fq= int (P * fQp);
   }else fq=1;
   for(Int_t i=0;i<15;i++)  {
     fCovMatrix[i]=CovMatrix[i];
@@ -153,7 +154,8 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fDW   = TMath::Sqrt(fabs(fCovMatrix[14]));
   
   
-  Double_t PD[3],RD[6][6],H[3],CH,PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1, DJ1[3], DK1[3];
+	Int_t CH;	
   PC[0]   = fQp;
   PC[1]   = fTV; 
   PC[2]   = fTW;
@@ -229,8 +231,9 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
   fDY  = posErr.y(); //dpy
   fDZ  = posErr.z(); //dpz
    
-  Double_t PD[3], RD[6][6], H[3], CH, SP1, PC[3], RC[15];
-  Int_t IERR;
+  Double_t PD[3], RD[6][6], H[3], SP1, PC[3], RC[15];
+  
+  Int_t CH, IERR;
    
   PD[0] = fPx;
   PD[1] = fPy;
@@ -310,8 +313,8 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
   fDY  = TMath::Sqrt(fabs(covMARS[4][4])); //dpy
   fDZ  = TMath::Sqrt(fabs(covMARS[5][5])); //dpz
   
-  Double_t PD[3], RD[6][6], H[3], CH, SP1, PC[3], RC[15];
-  Int_t IERR;
+  Double_t PD[3], RD[6][6], H[3], SP1, PC[3], RC[15];
+  Int_t IERR, CH;
   
   PD[0] = fPx;
   PD[1] = fPy;
@@ -366,7 +369,7 @@ FairTrackParP::FairTrackParP(FairTrackParH *helix, TVector3 dj, TVector3 dk, Int
   pnt[2] = xyz.Z();
   FairRunAna *fRun = FairRunAna::Instance();
   fRun->GetField()->GetFieldValue(pnt, H);
-  Double_t CH  = helix->GetQ();
+  Int_t CH  = helix->GetQ();
 
   Double_t DJ[3] = {dj.X(), dj.Y(), dj.Z()};
   Double_t DK[3] = {dk.X(), dk.Y(), dk.Z()};
@@ -434,8 +437,8 @@ void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
   fQp = fq/P;
   
 
-  Double_t PD[3], RD[6][6], H[3], CH, SP1, PC[3], RC[15];
-  Int_t IERR;
+  Double_t PD[3], RD[6][6], H[3], SP1, PC[3], RC[15];
+  Int_t IERR, CH;
   PD[0] = Px;
   PD[1] = Py;
   PD[2] = Pz;
@@ -498,7 +501,7 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
   fSPU = spu;
 
   Double_t P  = TMath::Abs(1/fQp);
-  fq= P * fQp;
+  fq= int (P * fQp);
   for(Int_t i=0;i<15;i++)  {
     fCovMatrix[i]=CovMatrix[i];
   }
@@ -521,7 +524,8 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
   fDW  = TMath::Sqrt(fabs(fCovMatrix[14]));
 
   
-  Double_t PD[3],RD[6][6],H[3],CH,PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Int_t CH;
   PC[0]   = fQp;
   PC[1]   = fTV; 
   PC[2]   = fTW;

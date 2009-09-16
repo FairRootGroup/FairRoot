@@ -59,14 +59,14 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
   // Propagate a helix track and return a helix (SC system)
 
   Bool_t NeedSDSC=kFALSE;
-  Float_t ch=1;   //        CHARGE OF PARTICLE
+  Int_t ch=1;   //        CHARGE OF PARTICLE
 
   Double_t fCov[15], fCovOut[15];
   TParam->GetCovQ(fCov);
   
   Init(TParam);
   Double_t Q = TParam->GetQ();
-  if (fabs(Q)>1.E-8)ch= Q/TMath::Abs(Q);
+  if (fabs(Q)>1.E-8)ch= int (Q/TMath::Abs(Q));
   if (ProMode==1){ //Propagate to Volume  
     //***** We have the right representation go further
 	for(Int_t i=0;i<15;i++) {
@@ -139,13 +139,13 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParH *TEnd, Int_t
 Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t PDG)
 {
   // Propagate a parabola track (SD system) and return a parabola (SD system) (not used nor implemented)
-  Float_t ch=1;   //        CHARGE OF PARTICLE
+  Int_t ch=1;   //        CHARGE OF PARTICLE
   Double_t fCov[15], fCovOut[15];
   TStart->GetCovQ(fCov);
   
   Init(TStart);
   Double_t Q = TStart->GetQ() ;
-  if (Q!=0)ch= Q/TMath::Abs(Q);
+  if (Q!=0)ch= int (Q/TMath::Abs(Q));
  
   if (ProMode==1){ //Propagate to Volume  
     cout << "Propagate Parabola parameter to Volume is not implimented yet" << endl;        
