@@ -16,48 +16,48 @@ class FairGeaneUtil : public TObject
   void FromPtToSC(Double_t PC[3], Double_t RC[15], 
 		  Double_t* PD, Double_t* RD, Int_t &IERR);
 
-  void FromPtToSD(Double_t PD[3], Double_t RD[15], Double_t H[3],Int_t &CH,
+  void FromPtToSD(Double_t PD[3], Double_t RD[15], Double_t H[3],Int_t CH,
 		  Double_t SPU, Double_t DJ[2], Double_t DK[2],
 		  Int_t &IERR, Double_t* PC, Double_t* RC);
 
   void FromSCToPt(Double_t PC[3], Double_t RC[15],
 		  Double_t* PD, Double_t* RD, Int_t &IERR);
 
-  void FromSCToSD(Double_t PC[3], Double_t RC[15], Double_t H[3], Int_t &CH,
+  void FromSCToSD(Double_t PC[3], Double_t RC[15], Double_t H[3], Int_t CH,
 		  Double_t DJ[3], Double_t DK[3],   
 		  Int_t &IERR, Double_t &SPU,
 		  Double_t* PD, Double_t* RD);
 
   void FromSD1ToSD2(Double_t PD1[2], Double_t RD1[15],Double_t H[2],
-		    Int_t &CH, Double_t SP1,
+		    Int_t CH, Double_t SP1,
 		    Double_t DJ1[2], Double_t DK1[2], 
 		    Double_t DJ2[2], Double_t DK2[2],
 		    Int_t &IERR, Double_t &SP2, 
 		    Double_t* PD2, Double_t* RD2);
 
   void FromSDToPt(Double_t PD[3], Double_t RD[15], Double_t H[3], 
-		  Int_t &CH, Double_t SPU, Double_t DJ[3], Double_t DK[3],
+		  Int_t CH, Double_t SPU, Double_t DJ[3], Double_t DK[3],
 		  Int_t &IERR, Double_t* PC, Double_t* RC);
 
-  void FromSDToSC(Double_t PD[3], Double_t RD[15], Double_t H[3], Int_t &CH,
+  void FromSDToSC(Double_t PD[3], Double_t RD[15], Double_t H[3], Int_t CH,
 		  Double_t SPU, Double_t DJ[3], Double_t DK[3],
 		  Int_t &IERR, Double_t* PC, Double_t* RC);
 
   typedef Double_t sixMat[6][6];
-  void FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3], Int_t &CH,
+  void FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3], Int_t CH,
 		    Double_t* PD, sixMat& RD); 
 
   void FromMarsToSC(Double_t PD[3], Double_t RD[6][6],  Double_t H[3],
-		    Int_t &CH,
+		    Int_t CH,
 		    Double_t* PC, Double_t* RC);
 
   void FromSDToMars(Double_t PC[3], Double_t RC[15], 
-		    Double_t H[3], Int_t &CH,
+		    Double_t H[3], Int_t CH,
 		    Double_t SP1, Double_t DJ1[3], Double_t DK1[3],
 		    Double_t* PD, sixMat& RD);
   
   void FromMarsToSD(Double_t PD[3], Double_t RD[6][6], 
-		    Double_t H[3], Int_t &CH,
+		    Double_t H[3], Int_t CH,
 		    Double_t DJ1[3], Double_t DK1[3],
 		    Int_t &IERR, Double_t &SP1, 
 		    Double_t* PC, Double_t* RC);
