@@ -99,7 +99,11 @@ void FairRunSim::Init()
           flexec=work_config+"run_fluka.sh";
        }
        gSystem->Exec(flexec.Data());
-       flout = work + "/macro/run/fluka_out" ;
+       // More generic for different macro
+       // dir layout <D.B>
+       TString macrodir = getenv("PWD");
+       cout << macrodir << endl;
+       flout = macrodir + "/fluka_out" ;
        gSystem->cd(flout.Data());
      }
     
