@@ -41,7 +41,8 @@ FairTrackParH::FairTrackParH(Double_t x, Double_t y, Double_t z,
   fPhi = phi;
   fQp = qp;
   Double_t P  = TMath::Abs(1/fQp);
-  fq= int (P * fQp);
+  //fq= int (P * fQp);
+  fq = (int)TMath::Sign(1.0, fQp);	
   for(Int_t i=0;i<15;i++)  {
     fCovMatrix[i]=CovMatrix[i];
   }
@@ -276,7 +277,8 @@ void  FairTrackParH::SetTrackPar(Double_t x,  Double_t y,  Double_t z,
   fPhi = phi;
   fQp = qp;
   Double_t P  = TMath::Abs(1/fQp);
-  fq= int (P * fQp);
+ // fq= int (P * fQp);
+	fq = (int)TMath::Sign(1.0, fQp);
   for(Int_t i=0;i<15;i++)  {
     fCovMatrix[i]=CovMatrix[i];
         
