@@ -213,11 +213,11 @@ TList* FairGeoNode::getTree() {
   // Returns the tree of the mother volumes
   TList* tree=new TList();  
   FairGeoNode* v=this;
-  FairGeoNode* mother;
+  FairGeoNode* lmother;
   do {
-    mother=v->getMotherNode();
-    if (mother) tree->Add(mother);
-    v=mother;
+    lmother=v->getMotherNode();
+    if (lmother) tree->Add(lmother);
+    v=lmother;
   } while (v&&!v->isTopNode());
   return tree; 
 }

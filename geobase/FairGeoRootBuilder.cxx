@@ -70,17 +70,17 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat) {
 //  if (cv) cout<<"Copy of "<<cv->GetName()<<endl;
   if (cv) rv=cv->getRootVolume();
   if (!rv) {
-    FairGeoMedium* medium=volu->getMedium();
-    Int_t nMed=medium->getMediumIndex();
-    if (nMed<=0) nMed=createMedium(medium);
-    if (nMed<=0) return kFALSE;
+    FairGeoMedium* lmedium=volu->getMedium();
+    Int_t lnMed=lmedium->getMediumIndex();
+    if (lnMed<=0) lnMed=createMedium(lmedium);
+    if (lnMed<=0) return kFALSE;
     TArrayD* par=volu->getParameters();
     //for (Int_t k=0;k<par->GetSize();k++) cout<<par->At(k)<<" ";
     // cout<<endl;
        //cout << "Create Volume of Shape " << volu->getShape() << endl;
     if (volu->getShape().Contains("TORUS")) { // Torus is missing in the TGeoManager::Volume
 						// this should solve the problem tell it is implimented in root
-      TGeoMedium *medium =geoManager->GetMedium(nMed);
+      TGeoMedium *medium =geoManager->GetMedium(lnMed);
       rv = geoManager->MakeTorus(nodeName.Data(),medium,par->At(0),par->At(1),par->At(2),par->At(3),par->At(4));
      // cout << "Create Torus" << nodeName.Data() << endl;
 	}else if (volu->getShape().Contains("ASSEMBLY")) {
@@ -88,7 +88,7 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat) {
 		
 	}else {
 	    rv=geoManager->Volume(nodeName.Data(),volu->getShape().Data(),
-             nMed,par->GetArray(),par->GetSize());
+             lnMed,par->GetArray(),par->GetSize());
      }
     volu->setCreated();
     if (volu->isModule()&&cv) {

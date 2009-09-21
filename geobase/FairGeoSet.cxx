@@ -192,7 +192,7 @@ Bool_t FairGeoSet::readVolumeParams(fstream& fin,FairGeoMedia* media,
       volu->setShape(cn->getShapePointer());
       Int_t n=cn->getNumPoints();
       volu->createPoints(n);
-      for (Int_t i=0;i<n;i++) volu->setPoint(i,*(cn->getPoint(i)));
+      for (Int_t k=0;k<n;k++) volu->setPoint(k,*(cn->getPoint(k)));
     }
   }
 
@@ -219,7 +219,7 @@ Bool_t FairGeoSet::readVolumeParams(fstream& fin,FairGeoMedia* media,
       volu->setShape(cn->getShapePointer());
       Int_t n=cn->getNumPoints();
       volu->createPoints(n);
-      for (Int_t i=0;i<n;i++) volu->setPoint(i,*(cn->getPoint(i)));
+      for (Int_t k=0;k<n;k++) volu->setPoint(k,*(cn->getPoint(k)));
     }
   }
 
@@ -296,7 +296,8 @@ Bool_t FairGeoSet::readModule(fstream& fin,FairGeoMedia* media,TString& modName,
     fin>>buf;
     if (buf[0]=='/') fin.getline(buf,maxbuf);
     else if (!fin.eof()) {
-      TString name(buf);      
+      //TString name(buf);   
+	   name=buf;	
       if (name.BeginsWith(modName)) {
         volu=new FairGeoNode;
         volu->SetName(buf);
