@@ -224,7 +224,7 @@ void FairMCApplication::InitMC(const char* setup, const char *cuts)
 void FairMCApplication::RunMC(Int_t nofEvents)
 {    
   //write geometry to first output file
-  fRootManager->WriteGeometry();
+ // fRootManager->WriteGeometry();
   // MC run.
   gMC->ProcessRun(nofEvents);
   // finish run

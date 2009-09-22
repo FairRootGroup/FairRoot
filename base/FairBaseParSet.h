@@ -2,9 +2,10 @@
 #define FAIRBASEPARSET_H
 
 #include "FairParGenericSet.h"
-
+#include "TGeoManager.h"
 class FairPrimaryGenerator;
 class TObjArray;
+
 
 class FairBaseParSet : public FairParGenericSet {
 public:
@@ -21,19 +22,22 @@ public:
   void SetGeoNodes(TObjArray *array){fGeoNodes=array;}
   void SetGen(FairPrimaryGenerator *gen){fPriGen=gen;}
   void SetBeamMom(Double_t  BMom){fBeamMom = BMom;}
+  void SetGeometry(TGeoManager *Geom){fGeom=Geom;}
 
   TObjArray             *GetDetList(){return fDetList;}    
   TObjArray             *GetGeoNodes(){return fGeoNodes;}
   FairPrimaryGenerator   *GetPriGen(){return fPriGen; }
-  Double_t 		GetBeamMom(){return fBeamMom; }
-  
+  Double_t			    GetBeamMom(){return fBeamMom; }
+  TGeoManager           *GetGeometry(){return fGeom;}
 
 protected:
 
   TObjArray              *fDetList;  // Detectors used in the simulation
   TObjArray              *fGeoNodes; // List of FairGeoNodes for sensitive volumes
   FairPrimaryGenerator   *fPriGen;   //Generator used for simulation
-  Double_t 		 fBeamMom;  //Beam momentum
+  Double_t 		          fBeamMom;  //Beam momentum
+  TGeoManager            *fGeom; // Geometry
+  
   ClassDef(FairBaseParSet,2)
 private:  
   FairBaseParSet(const FairBaseParSet &L);
