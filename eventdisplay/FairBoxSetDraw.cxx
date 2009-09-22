@@ -13,14 +13,14 @@ using std::cout;
 using std::endl;
 
 // -----   Default constructor   -------------------------------------------
-FairBoxSetDraw::FairBoxSetDraw() : fX(1), fY(1), fZ(1), fVerbose(0), fq(0){ }
+FairBoxSetDraw::FairBoxSetDraw() : fVerbose(0), fq(0),fX(1), fY(1), fZ(1){ }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Standard constructor   ------------------------------------------
 FairBoxSetDraw::FairBoxSetDraw(const char* name, Int_t iVerbose)
-  : FairTask(name, iVerbose), fX(1), fY(1), fZ(1), fVerbose(iVerbose), fq(0)
+  : FairTask(name, iVerbose),  fVerbose(iVerbose), fq(0), fX(1), fY(1), fZ(1)
 {
 }
 // -------------------------------------------------------------------------

@@ -84,7 +84,7 @@ Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status) {
 
   gSystem->Exec(catCommand);
 
-  open(outFileName, status);
+  return open(outFileName, status);
 
 }
 

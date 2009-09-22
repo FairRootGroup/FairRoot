@@ -72,7 +72,7 @@ template <class type> const UChar_t* FairGenericParAsciiFileIo::readData(
     do {             
       pFile->getline(buf,maxbuf);
       if (buf[0]!='/' && buf[0]!='#') {
-        TString s=buf;
+         s=buf;
         m=s.Last('\\');
         if (m>0) s=s(0,s.Length()-2);
         if ((bufSize-1000)<l) {

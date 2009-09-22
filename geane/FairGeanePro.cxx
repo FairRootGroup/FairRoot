@@ -255,16 +255,17 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TStart, FairTrackParP *TEnd, Int_t
   return kFALSE;  
 }
 
-Bool_t FairGeanePro::Propagate(Float_t *x1, Float_t *p1, Float_t *x2, Float_t *p2,Int_t PDG)
+Bool_t FairGeanePro::Propagate(Float_t *X1, Float_t *P1, Float_t *X2, Float_t *P2,Int_t PDG)
 {
-  fApp->GeanePreTrack(x1, p1, PDG);
+  fApp->GeanePreTrack(X1, P1, PDG);
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   Float_t xlf[1];
   xlf[0]=1000
 	;
   gMC3->Eufill(1, ein,xlf);
-  gMC3->Ertrak(x1,p1,x2,p2,GeantCode, "L");
-  if(x2[0]<-1.E29) return kFALSE;
+  gMC3->Ertrak(X1,P1,X2,P2,GeantCode, "L");
+  if(X2[0]<-1.E29) return kFALSE;
+  else return kTRUE;
 }
 
 Bool_t FairGeanePro::Propagate(Int_t PDG) {

@@ -1156,7 +1156,7 @@ void FairGeaneUtil::FromMarsToSD(Double_t PD[3], Double_t RD[6][6],
 //      TO     SD (transverse or local system) 
 //                                     VARIABLES (q/p, v', w', v, w)
 //
-//      Method: the MARS system is rotated to a local cartesia system \
+//      Method: the MARS system is rotated to a local cartesia system 
 //              with the x-y plane on the v-w one of SD.   Hence eq (79) of the 
 //              report CMS 2006/001 is used to go from canonical to SD variables.
 //              In this way the track length variation and the magnetic field
