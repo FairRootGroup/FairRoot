@@ -104,7 +104,7 @@ void FairMCTracks::Exec(Option_t* option)
 		if(fVerbose>3)cout << "track added " << track->GetName() << endl; 
     }
     for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++){
-       TEveTrackList *TrListIn=( TEveTrackList *) fEveTrList->At(i);
+      // TEveTrackList *TrListIn=( TEveTrackList *) fEveTrList->At(i);
        //TrListIn->FindMomentumLimits(TrListIn, kFALSE); 
     } 
     fEventManager->SetEvtMaxEnergy(MaxEnergyLimit);

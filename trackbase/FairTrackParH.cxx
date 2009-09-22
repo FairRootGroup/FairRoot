@@ -516,6 +516,7 @@ Double_t FairTrackParH::GetDZ_sc()
 
 Double_t FairTrackParH::GetX()   
 {  
+	
   if(fX==0){
     fX =fX_sc*cLm*cphi -fY_sc*sphi -fZ_sc*cphi*sLm;
   }
@@ -538,20 +539,16 @@ Double_t FairTrackParH::GetZ()
 }
 
 
-Double_t FairTrackParH::GetDPx()  
+/*Double_t FairTrackParH::GetDPx()  
 { 
-
   return fDPx;
 }
 Double_t FairTrackParH::GetDPy()  
 {
-   
   return fDPy;
 }
 Double_t FairTrackParH::GetDPz()  
 { 	
-
-  
   return fDPz;
 }
 
@@ -559,6 +556,7 @@ Double_t FairTrackParH::GetDQp()
 { 
   return fDQp;
 }
+*/ 
 Double_t FairTrackParH::GetDLambda() 
 { 	return fDLm; 
 };

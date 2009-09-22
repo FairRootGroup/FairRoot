@@ -4,7 +4,6 @@
 //
 
 #include "FairGeanePro.h"
-
 #include "FairTrackParP.h"
 #include "FairTrackParH.h"
 #include "FairRunAna.h"
@@ -58,7 +57,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
 {
   // Propagate a helix track and return a helix (SC system)
 
-  Bool_t NeedSDSC=kFALSE;
+  //Bool_t NeedSDSC=kFALSE;
   Int_t ch=1;   //        CHARGE OF PARTICLE
 
   Double_t fCov[15], fCovOut[15];
@@ -678,7 +677,7 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
 }
 
 
-void FairGeanePro::Track2ToLine( TVector3 x1,  TVector3 x2,  TVector3 w1,
+void FairGeanePro::Track2ToLine( TVector3 X1,  TVector3 X2,  TVector3 w1,
 								 TVector3 w2,  TVector3 &Pfinal, TVector3 &Pwire,
 								 Int_t &Iflag, Double_t &Dist, Double_t &Length) {
 
@@ -720,11 +719,11 @@ void FairGeanePro::Track2ToLine( TVector3 x1,  TVector3 x2,  TVector3 w1,
   Iflag =0;
 
   // line-line distance
-  x21 = x2-x1;
+  x21 = X2-X1;
   w21 = w2-w1;
 
-  xw1 = x1-w1;
-  xw2 = x2-w1;
+  xw1 = X1-w1;
+  xw2 = X2-w1;
 
   a1 =  x21.Mag2();  
   b1 =  x21.Dot(w21);
@@ -738,7 +737,7 @@ void FairGeanePro::Track2ToLine( TVector3 x1,  TVector3 x2,  TVector3 w1,
     t1 = (a1*e1-b1*d1)/Delta1;
     s1 = (b1*e1-c1*d1)/Delta1;
 
-    Pfinal = (x1 + x21*s1);
+    Pfinal = (X1 + x21*s1);
     Pwire  = (w1 + w21*t1);
     Length = s1*x21.Mag();
     Dist= (Pfinal-Pwire).Mag();
@@ -767,7 +766,7 @@ void FairGeanePro::Track2ToLine( TVector3 x1,  TVector3 x2,  TVector3 w1,
 
 
 
-void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVector3 &Pfinal, 
+void FairGeanePro::Track2ToPoint( TVector3 X1,  TVector3 X2,  TVector3 w1, TVector3 &Pfinal, 
 								  Double_t &Dist, Double_t &Length, Int_t &quitFlag)  {
 
   //
@@ -793,24 +792,24 @@ void FairGeanePro::Track2ToPoint( TVector3 x1,  TVector3 x2,  TVector3 w1, TVect
   Double_t a, t1;
 
   // w-point - x-line distance
-  Double_t d=(x2-x1).Mag();
+  Double_t d=(X2-X1).Mag();
   if(fabs(d)<1.E-8){
     quitFlag=1;
     return;
   }
   a= 1./d;
 
-  u21 = (x2-x1).Unit();
+  u21 = (X2-X1).Unit();
 
   // output
-  Dist= ((w1-x1).Cross(u21)).Mag();
-  t1  =  a*(w1-x1).Dot(u21);
-  Pfinal = (x2-x1)*t1 + x1;
-  Length = (x2-x1).Mag()*t1;
+  Dist= ((w1-X1).Cross(u21)).Mag();
+  t1  =  a*(w1-X1).Dot(u21);
+  Pfinal = (X2-X1)*t1 + X1;
+  Length = (X2-X1).Mag()*t1;
 }
 
 
-void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3, 
+void FairGeanePro::Track3ToLine(TVector3 X1, TVector3 X2, TVector3 X3, 
 								TVector3 w1, TVector3 w2,
 								// output
 								TVector3 &Pfinal, TVector3 &Wire, 
@@ -858,13 +857,13 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
   TVector3 Ppfinal, Pwire;
   TVector3 wp1, wp2, wpt, xR, xpR;
   TVector3 xw1, xw2;
-  TVector3 p1, p2, px; 
+  TVector3 px; 
 
   Double_t T[3][3], TM1[3][3];
 
   TVector3 N, M, D, B, Pointw;
   Double_t a0, a1, b0, b1, c0, c1, c2;
-  Double_t d0, d1, d2, d3, d4, sol4[4], dist4[4], dmin;
+  Double_t d0, d1, d2, d3, d4, sol4[4], dmin;
   Double_t Angle;
   Double_t dx;
   Int_t it, imin;
@@ -873,13 +872,13 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
 
   // go to the circle plane: matrix of director cosines
 
-  x21 = x2-x1;
+  x21 = X2-X1;
   e1 = x21.Unit();
   T[0][0] = e1.X();
   T[0][1] = e1.Y();
   T[0][2] = e1.Z();
 
-  x31 = x3-x1;
+  x31 = X3-X1;
   e3 = e1.Cross(x31);
   // if the points are on the same line
   if(e3.Mag() < 1e-8) 
@@ -910,10 +909,10 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
     xp1[i] = 0.;
     for(Int_t j=0; j<3; j++) {
       TM1[i][j] = T[j][i];
-      xp2[i] += T[i][j] * (x2[j]-x1[j]);
-      xp3[i] += T[i][j] * (x3[j]-x1[j]);
-      wp1[i] += T[i][j] * (w1[j]-x1[j]);
-      wp2[i] += T[i][j] * (w2[j]-x1[j]);
+      xp2[i] += T[i][j] * (X2[j]-X1[j]);
+      xp3[i] += T[i][j] * (X3[j]-X1[j]);
+      wp1[i] += T[i][j] * (w1[j]-X1[j]);
+      wp2[i] += T[i][j] * (w2[j]-X1[j]);
     }
   }
 
@@ -1021,11 +1020,11 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
       xR[i]     += TM1[i][j] * xpR[j];
     }
   }
-  Pfinal = Pfinal+x1;
-  Wire   = Wire + x1;
-  xR     = xR + x1;
+  Pfinal = Pfinal+X1;
+  Wire   = Wire + X1;
+  xR     = xR + X1;
 
-  double dx1=(x1-xR).Mag();
+  double dx1=(X1-xR).Mag();
   double dx2=(Pfinal-xR).Mag();
   double dx12=dx1*dx2;
   if(fabs(dx12)<1.E-8){
@@ -1034,13 +1033,13 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
   }
 
   // now find the length
-  Angle = TMath::ACos((x1-xR).Dot(Pfinal-xR)/(dx12));
+  Angle = TMath::ACos((X1-xR).Dot(Pfinal-xR)/(dx12));
   Length = Radius*Angle;
-  if((x2-x1).Dot(Pfinal-x1) < 0.) Length = -Length;
+  if((X2-X1).Dot(Pfinal-X1) < 0.) Length = -Length;
 
   // flag straight points within 20 microns
   Double_t epsi=0;
-  if(Radius>1E-8)epsi = Radius*(1.-TMath::Cos(0.5*(x3-x1).Mag()/Radius));
+  if(Radius>1E-8)epsi = Radius*(1.-TMath::Cos(0.5*(X3-X1).Mag()/Radius));
   if(epsi < 0.0020) Iflag=1;
 
   // flag when the point on the wire is outside (w1,w2)
@@ -1055,7 +1054,7 @@ void FairGeanePro::Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3,
     }  
 }
 
-void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, 
+void FairGeanePro::Track3ToPoint( TVector3 X1, TVector3 X2, TVector3 X3, TVector3 w1, 
 								  // output
 								  TVector3 &Pfinal, Int_t &Iflag, 
 								  Double_t &Dist, Double_t &Length, Double_t &Radius) {
@@ -1105,7 +1104,7 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   // go to the circle plane with origin in x1 prime (xp1):
   // matrix of director cosines
 
-  x21 = x2-x1;
+  x21 = X2-X1;
 
   Double_t x21mag=x21.Mag();
   if(x21mag<1.E-8){
@@ -1119,7 +1118,7 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
   T[0][1] = e1.Y();
   T[0][2] = e1.Z();
 
-  x31 = x3-x1;
+  x31 = X3-X1;
   e3 = e1.Cross(x31);
 
   // if the points are on the same line
@@ -1151,9 +1150,9 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
     for(Int_t j=0; j<3; j++) {
       TM1[i][j] = T[j][i];
       xp1[i] += 0.;
-      xp2[i] += T[i][j] * (x2[j]-x1[j]);
-      xp3[i] += T[i][j] * (x3[j]-x1[j]);
-      wp1[i] += T[i][j] * (w1[j]-x1[j]);
+      xp2[i] += T[i][j] * (X2[j]-X1[j]);
+      xp3[i] += T[i][j] * (X3[j]-X1[j]);
+      wp1[i] += T[i][j] * (w1[j]-X1[j]);
     }
   }
 
@@ -1198,11 +1197,11 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
       xR[i]     += TM1[i][j] * xpR[j];
     }
   }
-  Pfinal = Pfinal+x1;
-  xR = xR +x1;
+  Pfinal = Pfinal+X1;
+  xR = xR +X1;
 
   // now find the length
-  double dx1=(x1-xR).Mag();
+  double dx1=(X1-xR).Mag();
   double dx2=(Pfinal-xR).Mag();
   double dx12=dx1*dx2;
   if(fabs(dx12)<1.E-8){
@@ -1210,12 +1209,12 @@ void FairGeanePro::Track3ToPoint( TVector3 x1, TVector3 x2, TVector3 x3, TVector
     return;
   }
   // now find the length
-  Angle = TMath::ACos((x1-xR).Dot(Pfinal-xR)/(dx12));
+  Angle = TMath::ACos((X1-xR).Dot(Pfinal-xR)/(dx12));
   Length = Radius*Angle;
 
   // flag straight points within 20 microns
   Double_t epsi=0;
-  if(Radius>1E-8)epsi = Radius*(1.-TMath::Cos(0.5*(x3-x1).Mag()/Radius));
+  if(Radius>1E-8)epsi = Radius*(1.-TMath::Cos(0.5*(X3-X1).Mag()/Radius));
   if(epsi < 0.0020) Iflag=1;
 }
 

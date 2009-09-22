@@ -61,10 +61,10 @@ class FairTrackParH : public FairTrackPar
   Double_t GetX_sc(){return fX_sc;}  /**Get x in SC*/
   Double_t GetY_sc(){return fY_sc;}  /**Get y in SC*/
   Double_t GetZ_sc(){return fZ_sc;}  /**Get z in SC*/
-  Double_t GetDPx() ;   /**Get error in Px (in SC frame)*/
-  Double_t GetDPy() ;   /**Get error in Py (in SC frame)*/
-  Double_t GetDPz() ;   /**Get error in Pz (in SC frame)*/
-  Double_t GetDQp() ;   /**Get error in Q/P*/
+ // Double_t GetDPx() ;   /**Get error in Px (in SC frame)*/
+ // Double_t GetDPy() ;   /**Get error in Py (in SC frame)*/
+ // Double_t GetDPz() ;   /**Get error in Pz (in SC frame)*/
+//  Double_t GetDQp() ;   /**Get error in Q/P*/
   Double_t GetX(); 	/**Get X in Lab*/
   Double_t GetY(); 	/**Get Y in Lab*/
   Double_t GetZ(); 	/**Get Z in Lab*/

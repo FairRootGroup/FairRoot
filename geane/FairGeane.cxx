@@ -24,11 +24,12 @@ FairGeane::FairGeane() {
 // -----   Standard constructor   ------------------------------------------
 FairGeane::FairGeane(const char* name, TString fUserConfig,   TString fUserCuts )
   : TObject(){
-
-  TGeoManager* geom = new TGeoManager("Geometry", "Geane geometry");
-  TGeoManager *geom2= TGeoManager::Import(name);
+     //Create a new Geometry
+     new TGeoManager("Geometry", "Geane geometry");
+     // now import the geometry from file to the empty TGeo	  
+     TGeoManager::Import(name);
   
-  fApp= new FairMCApplication(kTRUE);
+     fApp= new FairMCApplication(kTRUE);
 
 	  TString LibMacro;
 	  TString LibFunction;

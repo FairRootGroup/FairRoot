@@ -9,11 +9,17 @@
 #include <iostream>
 
 // -----   Default constructor   ------------------------------------------
-FairParticleGenerator::FairParticleGenerator() {
-  fPDGType =  -1;
-  fMult    =   0;
-  fPx = fPy = fPz = 0.;
-  fVx = fVy = fVz = 0.;
+FairParticleGenerator::FairParticleGenerator() 
+: fPDGType(-1),
+  fMult(0),
+  fPx(0),
+  fPy(0),
+  fPz(0),
+  fVx(0),
+  fVy(0),
+  fVz(0)
+
+{
 }
 // ------------------------------------------------------------------------
 
@@ -23,15 +29,17 @@ FairParticleGenerator::FairParticleGenerator() {
 FairParticleGenerator::FairParticleGenerator(Int_t pdgid, Int_t mult, 
 					   Double32_t px, Double32_t py, 
 					   Double32_t pz, Double32_t vx, 
-					   Double32_t vy, Double32_t vz) {
-  fPDGType = pdgid;
-  fMult    = mult;
-  fPx      = px;
-  fPy      = py;
-  fPz      = pz;
-  fVx      = vx;
-  fVy      = vy;
-  fVz      = vz;
+					   Double32_t vy, Double32_t vz) 
+: fPDGType(pdgid),
+fMult(mult),
+fPx(px),
+fPy(py),
+fPz(pz),
+fVx(vx),
+fVy(vy),
+fVz(vz)
+
+{
 }
 // ------------------------------------------------------------------------
 

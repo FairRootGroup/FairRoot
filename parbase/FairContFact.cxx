@@ -21,19 +21,27 @@ using std::cout;
 ClassImp(FairContainer)
 ClassImp(FairContFact)
 
-FairContainer::FairContainer() { contexts=0; }
+FairContainer::FairContainer() 
+ :contexts(0),
+  actualContext("")
+{ 
+	//contexts=0; 
+}
   // Default constructor
 
 FairContainer::FairContainer(const char* name, const char* title,
                        const char* defContext)
-           : TNamed(name, title) {
+: TNamed(name, title),
+  contexts(new TList),
+  actualContext("")
+{
   // Constructor
   // Arguments:  name       = name of the corresponding parameter container
   //             title      = title of this parameter container
   //             defContext = default context of this parameter container  
-  contexts=new TList;
+  //contexts=new TList;
   addContext(defContext);
-  actualContext="";
+  //actualContext="";
 }
 
 FairContainer::~FairContainer() {
@@ -113,7 +121,10 @@ const char* FairContainer::getContext() {
 
 //------------------------------------------------------------------
 
-FairContFact::FairContFact() : TNamed() {
+FairContFact::FairContFact() 
+: TNamed(), 
+  containers(new TList)
+{
   // Constructor creates a list to store objects of type FairContainer
   containers=new TList;
 }

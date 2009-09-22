@@ -22,24 +22,62 @@ using std::endl;
 ClassImp(FairTrackParP)
 
 // -----   Default constructor   -------------------------------------------
-  FairTrackParP::FairTrackParP(): FairTrackPar() {
-    Reset();
+  FairTrackParP::FairTrackParP()
+: FairTrackPar(),
+  fU (0.),
+  fV (0.), 
+  fW (0.),
+  fTV(0.),
+  fTW(0.),
+  fPx_sd(0.),
+  fPy_sd(0.),
+  fPz_sd(0.),
+  fDU(0.),
+  fDV(0.), 
+  fDW(0.),
+  fDTV(0.),
+  fDTW(0.),
+  forigin(TVector3(0,0,0)),
+  fiver(TVector3(0,0,0)),
+  fjver(TVector3(0,0,0)),
+  fkver(TVector3(0,0,0)),
+  fSPU(0.)
+{
+ //   Reset();
 
-  }
+}
 
 // -----   Constructor with track parameters in SD -----------------------------------
 FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 			     Double_t Tw, Double_t qp,
 			     Double_t CovMatrix[15],
 			     TVector3 o, TVector3 dj, TVector3 dk)
-  : FairTrackPar()
+  : FairTrackPar(),
+    fU (0.),
+    fV (v), 
+    fW (w),
+    fTV(Tv),
+    fTW(Tw),
+    fPx_sd(0.),
+    fPy_sd(0.),
+    fPz_sd(0.),
+    fDU(0.),
+    fDV(0.), 
+    fDW(0.),
+    fDTV(0.),
+    fDTW(0.),
+    forigin(TVector3(0,0,0)),
+    fiver(TVector3(0,0,0)),
+    fjver(TVector3(0,0,0)),
+    fkver(TVector3(0,0,0)),
+    fSPU(0.)
 {
-  Reset();
+ // Reset();
   SetPlane(o, dj, dk); 
-  fV = v;
-  fW = w;
-  fTV = Tv;
-  fTW = Tw;
+ // fV = v;
+ // fW = w;
+//  fTV = Tv;
+//  fTW = Tw;
   fQp = qp;
 
   Double_t P  = TMath::Abs(1/fQp);
@@ -55,7 +93,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fPz_sd = fTW * fPx_sd;
 
   
-  fU = 0.; 
+ // fU = 0.; 
 
   FairGeaneUtil util;
   TVector3 position = util.FromSDToMARSCoord(TVector3(fU, fV, fW), forigin, fiver, fjver, fkver);  
@@ -70,7 +108,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fDW   = TMath::Sqrt(fabs(fCovMatrix[14]));
   
   
-  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1;
   Int_t CH;	
   PC[0]   = fQp;
   PC[1]   = fTV; 
@@ -116,16 +154,35 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 			     Double_t Tw, Double_t qp,
 			     Double_t CovMatrix[15],
 			     TVector3 o, TVector3 dj, TVector3 dk, Double_t spu)
-  : FairTrackPar()
+: FairTrackPar(),
+  fU (0.),
+  fV (v), 
+  fW (w),
+  fTV(Tv),
+  fTW(Tw),
+  fPx_sd(0.),
+  fPy_sd(0.),
+  fPz_sd(0.),
+  fDU(0.),
+  fDV(0.), 
+  fDW(0.),
+  fDTV(0.),
+  fDTW(0.),
+  forigin(TVector3(0,0,0)),
+  fiver(TVector3(0,0,0)),
+  fjver(TVector3(0,0,0)),
+  fkver(TVector3(0,0,0)),
+  fSPU(spu)
+
 {
-  Reset();
+//  Reset();
   SetPlane(o, dj, dk); 
-  fV = v;
-  fW = w;
-  fTV = Tv;
-  fTW = Tw;
+//  fV = v;
+//  fW = w;
+//  fTV = Tv;
+//  fTW = Tw;
   fQp = qp;
-  fSPU = spu;
+//  fSPU = spu;
   Double_t P=0;
   if(0!=fQp){ 
     P = TMath::Abs(1/fQp);
@@ -141,7 +198,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fPy_sd = fTV * fPx_sd;
   fPz_sd = fTW * fPx_sd;
 
-  fU = 0.; 
+//  fU = 0.; 
 
   FairGeaneUtil util;
   TVector3 position = util.FromSDToMARSCoord(TVector3(fU, fV, fW), forigin, fiver, fjver, fkver);  
@@ -156,7 +213,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fDW   = TMath::Sqrt(fabs(fCovMatrix[14]));
   
   
-  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1;
 	Int_t CH;	
   PC[0]   = fQp;
   PC[1]   = fTV; 
@@ -198,9 +255,27 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 
 // -----   Constructor with track parameters in LAB -----------------------------------
 FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVector3 MomErr, Int_t Q, TVector3 o, TVector3 dj, TVector3 dk)
-  : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),Q)
+  : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),Q),
+    fU (0.),
+    fV (0), 
+    fW (0),
+    fTV(0),
+    fTW(0),
+    fPx_sd(0.),
+    fPy_sd(0.),
+    fPz_sd(0.),
+    fDU(0.),
+    fDV(0.), 
+    fDW(0.),
+    fDTV(0.),
+    fDTW(0.),
+    forigin(TVector3(0,0,0)),
+    fiver(TVector3(0,0,0)),
+    fjver(TVector3(0,0,0)),
+    fkver(TVector3(0,0,0)),
+    fSPU(0.)
 {
-  Reset();
+ // Reset();
   SetPlane(o, dj, dk);
 
   SetPx(Mom.x());
@@ -286,9 +361,27 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
 FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, 
 			     Double_t covMARS[6][6], Int_t Q, 
 			     TVector3 o, TVector3 dj, TVector3 dk)
-  : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),Q)
+  : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),Q),
+    fU (0.),
+    fV (0), 
+    fW (0),
+    fTV(0),
+    fTW(0),
+    fPx_sd(0.),
+    fPy_sd(0.),
+    fPz_sd(0.),
+    fDU(0.),
+    fDV(0.), 
+    fDW(0.),
+    fDTV(0.),
+    fDTW(0.),
+    forigin(TVector3(0,0,0)),
+    fiver(TVector3(0,0,0)),
+    fjver(TVector3(0,0,0)),
+    fkver(TVector3(0,0,0)),
+    fSPU(0.)
 {
-  Reset();
+//  Reset();
   SetPlane(o, dj, dk);
   
   SetPx(Mom.x());
@@ -356,7 +449,26 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
   fPz_sd = fTW * fPx_sd;
 }
 
-FairTrackParP::FairTrackParP(FairTrackParH *helix, TVector3 dj, TVector3 dk, Int_t &ierr)   : FairTrackPar()
+FairTrackParP::FairTrackParP(FairTrackParH *helix, TVector3 dj, TVector3 dk, Int_t &ierr)   
+: FairTrackPar(),
+  fU (0.),
+  fV (0), 
+  fW (0),
+  fTV(0),
+  fTW(0),
+  fPx_sd(0.),
+  fPy_sd(0.),
+  fPz_sd(0.),
+  fDU(0.),
+  fDV(0.), 
+  fDW(0.),
+  fDTV(0.),
+  fDTW(0.),
+  forigin(TVector3(0,0,0)),
+  fiver(TVector3(0,0,0)),
+  fjver(TVector3(0,0,0)),
+  fkver(TVector3(0,0,0)),
+  fSPU(0.)
 {
 
   // q/p, lambda, phi --> q/p, v', w'
@@ -527,7 +639,7 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
   fDW  = TMath::Sqrt(fabs(fCovMatrix[14]));
 
   
-  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1, DJ1[3], DK1[3];
+  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1;
   Int_t CH;
   PC[0]   = fQp;
   PC[1]   = fTV; 
@@ -588,13 +700,13 @@ void FairTrackParP::Print() {
   cout << "q/p = " << fQp << endl;
 }
 // -------------------------------------------------------------------------
-Double_t FairTrackParP::GetDX()   
+/*Double_t FairTrackParP::GetDX()   
 { return fDX; }
 Double_t FairTrackParP::GetDY()   
 { return fDY; }
 Double_t FairTrackParP::GetDZ()  
 { return fDZ; }
-
+*/
 Double_t FairTrackParP::GetV()   
 { 
   return fV; 
@@ -629,6 +741,7 @@ Double_t FairTrackParP::GetDTW()
 { 
   return fDTW; 
 }
+/*
 Double_t FairTrackParP::GetX()   
 {  
   return fX;
@@ -662,7 +775,7 @@ Double_t FairTrackParP::GetDQp()
 { 
   return fDQp;
 }
-
+*/
 TVector3 FairTrackParP::GetOrigin()
 {
   return forigin;
@@ -733,7 +846,7 @@ void FairTrackParP::SetPlane(TVector3 o, TVector3 j, TVector3 k)
   fDJ[0] = j.X();
   fDJ[1] = j.Y();
   fDJ[2] = j.Z();
-  fjver = TVector3(fDJ[0],fDJ[1],fDJ[2]);j;
+  fjver = TVector3(fDJ[0],fDJ[1],fDJ[2]);
   // k
   fDK[0] = k.X();
   fDK[1] = k.Y();

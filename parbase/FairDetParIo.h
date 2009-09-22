@@ -11,8 +11,8 @@ class FairDetParIo : public TNamed {
 protected:
   Int_t inputNumber; // input number (first or second input in runtime database)
 public:
-  FairDetParIo() {}
-  virtual ~FairDetParIo() {}
+    FairDetParIo();
+	virtual ~FairDetParIo() {;}
 
   // sets the input number
   void setInputNumber(Int_t n) {inputNumber=n;}

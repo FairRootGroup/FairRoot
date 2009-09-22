@@ -34,6 +34,7 @@ InitStatus FairBoxSetDraw::Init()
    if (fList==0){
 	   cout << "FairBoxSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< endl;
 	   SetActive(kFALSE);
+	   return kERROR;
    }
    if(fVerbose>2)
 	   cout<<  "FairBoxSetDraw::Init() get track list" <<  fList<< endl;
@@ -41,6 +42,7 @@ InitStatus FairBoxSetDraw::Init()
    if(fVerbose>2)
 	   cout<<  "FairBoxSetDraw::Init() get instance of FairEventManager " << endl;
    fq=0;
+	return kSUCCESS;	
 }
 // -------------------------------------------------------------------------
 void FairBoxSetDraw::Exec(Option_t* option)

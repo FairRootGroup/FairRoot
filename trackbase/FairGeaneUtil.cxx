@@ -998,7 +998,7 @@ void FairGeaneUtil::FromMarsToSC(Double_t PD[3], Double_t RD[6][6],  Double_t H[
 // ---------------------------------------------------------------------
 
 
-  Double_t PDD[3], RDD[15];
+//  Double_t PDD[3], RDD[15];
   
   Double_t SPU, DJ[3], DK[3], PM, PM3, PT;
   Int_t    IERR;
@@ -1085,12 +1085,14 @@ void FairGeaneUtil::FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3],
 //
 // ---------------------------------------------------------------------------
 
-  Double_t M65[6][5], M65T[5][6], AJ[5][6];
-  Double_t DJ[3], DK[3], RCM[5][5];
+//  Double_t M65[6][5], M65T[5][6], AJ[5][6];
+  //Double_t DJ[3], DK[3], RCM[5][5];
+  Double_t DJ[3], DK[3];
   Double_t PDD[3], RDD[15];
 
   Int_t IERR;
-  Double_t SPU, PM, PM2, PM3, PVW, PVW3;
+ // Double_t SPU, PM, PM2, PM3, PVW, PVW3;
+  Double_t SPU;
   Double_t clam, slam, cphi, sphi;
   // -------------------------------------------------------------------------
 
@@ -1189,11 +1191,13 @@ void FairGeaneUtil::FromMarsToSD(Double_t PD[3], Double_t RD[6][6],
 // ---------------------------------------------------------------------
 
 
-  Double_t PDD[3], RDD[15];
-  Double_t M56[5][6], M56T[6][5], AJ[5][5], AJT[6][5];
+//	Double_t PDD[3], RDD[15];
+	Double_t PDD[3];
+ 	Double_t M56[5][6], M56T[6][5], AJ[5][5], AJT[6][5];
   Double_t R6[6][6], RLC[6][6];
-  Double_t SPU, PM, PM3, PT;
-  Double_t Rot[3][3], Rmat[6][6], Rtra[6][6];
+//	Double_t SPU, PM, PM3, PT;
+	Double_t PM, PM3, PT;
+ 	Double_t Rot[3][3], Rmat[6][6], Rtra[6][6];
   // ------------------------------------------------------------------
 
   // reset
@@ -1427,8 +1431,8 @@ void FairGeaneUtil::FromSDToMars(Double_t PC[3], Double_t RC[15],
 // ---------------------------------------------------------------------------
 
   Double_t M65[6][5], M65T[5][6], AJ[5][6];
-  Double_t DJ2[3], DK2[3], RCM[5][5];
-  Double_t PDD[3], RDD[15];
+  Double_t RCM[5][5];
+  Double_t PDD[3];
   Double_t Rot[3][3];
 
   //    TVector3 PD1, PD2;

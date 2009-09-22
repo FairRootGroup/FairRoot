@@ -79,7 +79,7 @@ class FairTrackParP : public FairTrackPar
   /** Accessors **/
   
   // MARS
-  Double_t GetDX();
+ /* Double_t GetDX();
   Double_t GetDY();
   Double_t GetDZ();
   Double_t GetDPx(); 
@@ -89,7 +89,7 @@ class FairTrackParP : public FairTrackPar
   Double_t GetX(); 	
   Double_t GetY(); 	
   Double_t GetZ(); 	
-
+*/
   // MARS 
   void GetMARSCov(Double_t Cov66[6][6]) {for(Int_t i=0;i<6;i++) for(Int_t j=0;j<6;j++) Cov66[i][j] = fCovMatrix66[i][j];  } 
   
