@@ -160,6 +160,9 @@ void FairRunAna::Init() {
             (fRtdb->getContainer("FairBaseParSet"));
    FairFieldFactory *fieldfact= FairFieldFactory::Instance();
    if(fieldfact)fieldfact->SetParm();
+ 
+   
+	
    // Assure that basic info is there for the run
    if(par && fInputFile){
       fRootManager->ReadEvent(0);
@@ -171,6 +174,7 @@ void FairRunAna::Init() {
       // Init the containers in Tasks
       fTask->SetParTask();
       fRtdb->initContainers( fRunId );
+	  if(gGeoManager==0)par->GetGeometry(); 
    }else{
    
       FairEventHeader *evt = new FairEventHeader();

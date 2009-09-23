@@ -5,29 +5,39 @@
 #ifndef FAIRGeane_H
 #define FAIRGeane_H
 
-#include "TObject.h"
+#include "FairTask.h"
 #include "TString.h"
 
 class FairMCApplication;
 class FairField;
 
-class FairGeane : public TObject
+class FairGeane : public  FairTask
 {
  public:
 
   /** Default constructor **/
-  FairGeane();
+  //FairGeane();
 
-  FairGeane(const char* name, TString fUserConfig="",    TString fUserCuts="");
+  FairGeane(const char* name, TString UserConfig="",    TString UserCuts="");
 
+  FairGeane(TString fUserConfig="",    TString fUserCuts="");
+
+  InitStatus Init();
+	
+	void SetParTask();	
+	
   virtual ~FairGeane();
 
   void SetField(FairField *field);
 
-  ClassDef(FairGeane,1)
+  ClassDef(FairGeane,2)
+
 protected:
-  
-  FairMCApplication *fApp;
+    FairMCApplication *fApp; //!
+	const char* fName; //!
+	TString fUserConfig;  //! 
+	TString fUserCuts; //!
+	
 
 }; 
 
