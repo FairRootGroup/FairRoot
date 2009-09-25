@@ -173,7 +173,7 @@ class FairPrimaryGenerator : public TNamed
   **/
   void MakeVertex();
   
-  FairPrimaryGenerator(const FairPrimaryGenerator &P);
+//  FairPrimaryGenerator(const FairPrimaryGenerator &P);
   FairPrimaryGenerator& operator= (const  FairPrimaryGenerator&) {return *this;}
 
   ClassDef(FairPrimaryGenerator,3);
