@@ -13,8 +13,8 @@
  ** @version1.0
  **
  ** Abstract base class for magnetic fields in FAIR 
- ** Concrete field must implement the pure virtual methods
- ** GetBx, GetBy and GetBz
+ ** Concrete field should implement the pure virtual methods
+ ** GetBx, GetBy and GetBz and/or  GetBxyz
  **
  ** Note: Field values should be returned in kG (thanks to GEANT3)
  **/
@@ -23,11 +23,10 @@
 #ifndef FAIRFIELD_H
 #define FAIRFIELD_H 1
 
-
-#include "TNamed.h"
+#include "TVirtualMagField.h"
 #include <iostream>
 
-class FairField : public TNamed 
+class FairField : public TVirtualMagField  
 {
 
 public:    
@@ -85,6 +84,9 @@ public:
    **/
   virtual void GetFieldValue(const Double_t point[3], Double_t* bField);
 
+  
+  void Field(const Double_t point[3], Double_t *B){GetFieldValue(point,B);}
+  
 
   /** Screen output. To be implemented in the concrete class. **/
   virtual void Print() { };
@@ -100,7 +102,7 @@ public:
 protected:
 
 
-  ClassDef(FairField,2);
+  ClassDef(FairField,3);
 
 };
 

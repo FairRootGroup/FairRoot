@@ -69,7 +69,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** Define parameters for optical processes (optional) */
 	virtual void          ConstructOpGeometry();                            // MC Application
 	/** Calculate user field  b at point x */
-    virtual void          Field(const Double_t* x, Double_t* b) const;      // MC Application
+  //  virtual void          Field(const Double_t* x, Double_t* b) const;      // MC Application
 	/** Define actions at the end of event */
     virtual void          FinishEvent();                                    // MC Application
 	/** Define actions at the end of primary track */

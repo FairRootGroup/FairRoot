@@ -208,6 +208,7 @@ void FairMCApplication::InitMC(const char* setup, const char *cuts)
 	
 */	
   fStack = (FairGenericStack*) gMC->GetStack();
+ 
   gMC->Init();
   gMC->BuildPhysics();
   TString MCName=gMC->GetName();
@@ -217,7 +218,8 @@ void FairMCApplication::InitMC(const char* setup, const char *cuts)
   else fMcVersion = 3;  //Geane
   fTrajFilter = FairTrajFilter::Instance();
  
- 
+  cout << " -I- FairMCApplication::InitMC  Set the field to the gMC " << fxField << endl;
+  gMC->SetMagField(fxField);
   cout << " -I- FairMCApplication:: Monte carlo Engine Initialisation  with "<< MCName.Data() << endl;
 }
 //_____________________________________________________________________________
@@ -471,7 +473,7 @@ Double_t FairMCApplication::TrackingZmax() const
   return DBL_MAX; 
 }
 //_____________________________________________________________________________
-void FairMCApplication::Field(const Double_t* x, Double_t* b) const
+/*void FairMCApplication::Field(const Double_t* x, Double_t* b) const
 {
 // put here a const magnetic field as 0th approx 
 // ---
@@ -481,8 +483,10 @@ void FairMCApplication::Field(const Double_t* x, Double_t* b) const
   b[2]=0;
   if(fxField){
      fxField->GetFieldValue(x,b);
+     cout << " FairMCApplication::Field the old way of getting field " << endl;
   }
 }
+*/
 //_____________________________________________________________________________
 void FairMCApplication::SetField(FairField *field)
 { 

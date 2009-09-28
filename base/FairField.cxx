@@ -11,7 +11,7 @@
 
 // -----   Default constructor   -------------------------------------------
 FairField::FairField() 
- : TNamed("", "FAIR Magnetic Field"), fType(0)
+ : TVirtualMagField("FAIR Magnetic Field"), fType(0)
 { 
 }
 // -------------------------------------------------------------------------
@@ -20,7 +20,7 @@ FairField::FairField()
 
 // -----   Constructor with name and title   -------------------------------
 FairField::FairField(const char* name, const char* title) 
-  : TNamed(name, title), fType(0) 
+  :TVirtualMagField(name), fType(0) 
 {
   
 }
