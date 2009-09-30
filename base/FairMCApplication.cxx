@@ -218,8 +218,10 @@ void FairMCApplication::InitMC(const char* setup, const char *cuts)
   else fMcVersion = 3;  //Geane
   fTrajFilter = FairTrajFilter::Instance();
  
-  cout << " -I- FairMCApplication::InitMC  Set the field to the gMC " << fxField << endl;
-  gMC->SetMagField(fxField);
+  
+#if ROOT_VERSION_CODE >= 333824
+ gMC->SetMagField(fxField);
+#endif
   cout << " -I- FairMCApplication:: Monte carlo Engine Initialisation  with "<< MCName.Data() << endl;
 }
 //_____________________________________________________________________________
@@ -472,8 +474,10 @@ Double_t FairMCApplication::TrackingZmax() const
 // ---
   return DBL_MAX; 
 }
+
+#if ROOT_VERSION_CODE < 333824
 //_____________________________________________________________________________
-/*void FairMCApplication::Field(const Double_t* x, Double_t* b) const
+void FairMCApplication::Field(const Double_t* x, Double_t* b) const
 {
 // put here a const magnetic field as 0th approx 
 // ---
@@ -486,7 +490,7 @@ Double_t FairMCApplication::TrackingZmax() const
      cout << " FairMCApplication::Field the old way of getting field " << endl;
   }
 }
-*/
+#endif
 //_____________________________________________________________________________
 void FairMCApplication::SetField(FairField *field)
 { 

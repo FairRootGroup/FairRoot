@@ -19,11 +19,42 @@
  ** Note: Field values should be returned in kG (thanks to GEANT3)
  **/
 
-
 #ifndef FAIRFIELD_H
 #define FAIRFIELD_H 1
+#include "RVersion.h"
+
+
+//#ifndef ROOT_TVirtualMagField
+//#include "TVirtualMagField.h"
+//#endif
+
+#if ROOT_VERSION_CODE < 333824
+
+#ifndef ROOT_TVirtualMagField
+#define ROOT_TVirtualMagField
+// copied from ROOT for backward compatibility with ROOT versions before 5.24
+#include "TNamed.h"
+
+class TVirtualMagField : public TNamed
+{
+public:
+   TVirtualMagField()                 : TNamed() {}
+   TVirtualMagField(const char *name) : TNamed(name,"") {}
+   virtual ~TVirtualMagField(){}
+   virtual void Field(const Double_t *x, Double_t *B) = 0;
+   ClassDef(TVirtualMagField, 1)              // Abstract base field class
+};
+#endif
+
+ClassImp(TVirtualMagField)
+
+#else 
 
 #include "TVirtualMagField.h"
+
+#endif
+
+
 #include <iostream>
 
 class FairField : public TVirtualMagField  
