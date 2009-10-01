@@ -6,7 +6,7 @@
 
 #include "FairMCApplication.h"
 #include "FairField.h"
-
+#include "FairRunAna.h"
 #include "TGeoManager.h"
 #include "TString.h"
 #include "TGeoManager.h"
@@ -118,8 +118,12 @@ InitStatus FairGeane::Init()
 	 gROOT->LoadMacro(g3LibMacro.Data());
 	 gROOT->ProcessLine("g3libs()");
 	 TString g3Macro = work+"/gconfig/Geane.C";*/
+	FairField *field=FairRunAna::Instance()->GetField();
+	field->Print();
+	fApp->SetField(field);
 	
 	fApp->InitMC(ConfigMacro.Data(), "");
+	 
 	cout <<"I- FairGeane::FairGeane:  Geane is Initialized " << endl; 
 	
     
@@ -139,9 +143,9 @@ FairGeane::~FairGeane() {
 void FairGeane::SetField(FairField *field)
 {
    if(field && fApp) {
-      cout << "-I- Geane:  Magnetic Field is Set and will be used" << endl;
-      field->Print();
-      fApp->SetField(field);
+    //  cout << "-I- Geane:  Magnetic Field is Set and will be used" << endl;
+    //   field->Print();
+    //  fApp->SetField(field);
     }
 }
 

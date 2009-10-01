@@ -24,13 +24,13 @@ class FairGeane : public  FairTask
 
   InitStatus Init();
 	
-	void SetParTask();	
+  void SetParTask();	
 	
   virtual ~FairGeane();
 
   void SetField(FairField *field);
 
-  ClassDef(FairGeane,2)
+  ClassDef(FairGeane,1)
 
 protected:
     FairMCApplication *fApp; //!
