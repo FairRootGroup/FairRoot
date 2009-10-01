@@ -36,4 +36,9 @@
 //#pragma link C++ class FairVTrack+;
 #pragma link C++ class FairRadLenPoint+;
 #pragma link C++ class FairRadLenManager+;
+
+#if ROOT_VERSION_CODE < 333824
+#pragma link C++ class TVirtualMagField
+#endif
+
 #endif
