@@ -33,11 +33,11 @@ public:
     /**
       Initialize the Simulation or analysis
     */
-    virtual void    Init();
+    virtual void    Init()=0;
     /**
       run the analysis or simulation
     */
-    virtual void    Run(Int_t NStart =0,Int_t NStop=0);
+    virtual void    Run(Int_t NStart =0,Int_t NStop=0)=0;
     /**
       Set the output file name for analysis or simulation
     */

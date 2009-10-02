@@ -12,7 +12,8 @@ FairBaseParSet::FairBaseParSet(const char* name,const char* title,const char* co
   fDetList(0),
   fGeoNodes(new TObjArray()),
   fPriGen(0),
-  fBeamMom(15)
+  fBeamMom(15),
+  fGeom(0)
 {
   
 			
