@@ -51,11 +51,7 @@ void FairBoxSetDraw::Exec(Option_t* option)
 	   TObject *p;
 	   Reset();
 	 //  cout<<  "FairBoxSetDraw::Init() Exec! " << fList->GetEntriesFast() << endl;
-	   fq = new TEveBoxSet(GetName());
-	   fq->Reset(TEveBoxSet::kBT_AABoxFixedDim, kFALSE, 32);
-	   fq->SetDefWidth(1);
-	   fq->SetDefHeight(1);
-	   fq->SetDefDepth(1);
+	   CreateBoxSet();
 
 	   //fList = (TClonesArray *)fManager->GetObject(GetName());
 	   //std::cout << "fList: " << fList << " " << fList->GetEntries() << std::endl;
@@ -81,6 +77,18 @@ void FairBoxSetDraw::AddBoxes(TEveBoxSet* set, TObject* obj, Int_t i)
 Int_t FairBoxSetDraw::GetValue(TObject* obj, Int_t i)
 {
 	return i;
+}
+
+TEveBoxSet* FairBoxSetDraw::CreateBoxSet()
+{
+	TEveBoxSet* aBoxSet = new TEveBoxSet(GetName());
+	aBoxSet->Reset(TEveBoxSet::kBT_AABoxFixedDim, kFALSE, 32);
+	aBoxSet->SetDefWidth(1);
+	aBoxSet->SetDefHeight(1);
+	aBoxSet->SetDefDepth(1);
+	fq = aBoxSet;
+
+	return aBoxSet;
 }
 // -----   Destructor   ----------------------------------------------------
 FairBoxSetDraw::~FairBoxSetDraw()

@@ -29,6 +29,7 @@ FairBoxSetDraw.cxx
 FairPointSetDraw.cxx
 FairMCPointDraw.cxx
 FairHitDraw.cxx
+FairHitPointSetDraw.cxx
 )
 
 if(RULE_CHECKER_FOUND)

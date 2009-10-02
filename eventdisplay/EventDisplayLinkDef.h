@@ -11,17 +11,8 @@
 #pragma link C++ class  FairBoxSetDraw;
 #pragma link C++ class  FairPointSetDraw;
 #pragma link C++ class  FairHitDraw;
+#pragma link C++ class  FairHitPointSetDraw;
 #pragma link C++ class  FairMCPointDraw;
-
-//#pragma link C++ class  FairRiemannPointDraw;
-//#pragma link C++ class  PndTPCRecoPointDraw;
-//#pragma link C++ class  PndMvdDigiPixelDraw;
-//#pragma link C++ class  PndSttMCPointDraw;
-//#pragma link C++ class  FairTrackCandDraw;
-//#pragma link C++ class  PndLheHitDraw;
-//#pragma link C++ class  PndTpcLheTrackDraw;
-//#pragma link C++ class  FairRiemannTrackCandDraw;
-
 
 #endif
 
