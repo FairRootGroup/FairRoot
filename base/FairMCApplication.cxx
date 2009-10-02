@@ -487,7 +487,7 @@ void FairMCApplication::Field(const Double_t* x, Double_t* b) const
   b[2]=0;
   if(fxField){
      fxField->GetFieldValue(x,b);
-     cout << " FairMCApplication::Field the old way of getting field " << endl;
+//     cout << " FairMCApplication::Field the old way of getting field " << endl;
   }
 }
 #endif
