@@ -44,9 +44,9 @@ public:
    virtual void Field(const Double_t *x, Double_t *B) = 0;
    ClassDef(TVirtualMagField, 1)              // Abstract base field class
 };
+ClassImp(TVirtualMagField)
 #endif
 
-ClassImp(TVirtualMagField)
 
 #else 
 
