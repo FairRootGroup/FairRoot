@@ -54,9 +54,9 @@ public:
   Bool_t PropagateToPCA(Int_t pca);
   Bool_t PropagateToPCA(Int_t pca, Int_t dir);
   int FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, Double_t maxdistance, Double_t &Rad, TVector3 &vpf, TVector3 &vwi, Double_t &Di, Float_t &trklength);
-  TVector3 GetPCAOnWire() { return vwi; }
-  TVector3 GetPCAOnTrack() { return vpf; }
-  Float_t GetLengthAtPCA() { return trklength; }
+  TVector3 GetPCAOnWire() { return fvwi; }
+  TVector3 GetPCAOnTrack() { return fvpf; }
+  Float_t GetLengthAtPCA() { return ftrklength; }
   Bool_t PropagateToVirtualPlaneAtPCA(Int_t pca);
   Bool_t BackTrackToVertex();
   Bool_t BackTrackToVirtualPlaneAtPCA(Int_t pca);
@@ -100,9 +100,9 @@ public:
 
   TVector3 fpoint, fwire1, fwire2;
   Int_t fPCA;
-  Double_t Rad, Di;
-  TVector3 vpf, vwi;
-  Float_t trklength;
+  Double_t fRad, fDi;
+  TVector3 fvpf, fvwi;
+  Float_t ftrklength;
   Int_t flag; 
   FairMCApplication *fApp; 
   Double_t trpmat[5][5];

@@ -101,12 +101,12 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
 		maxdistance *= 2.; 
 	
 		// output 
-		Int_t findpca = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, Rad, vpf, vwi, Di, trklength);
+		Int_t findpca = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, fRad, fvpf, fvwi, fDi, ftrklength);
 		if(findpca != 0) return kFALSE;
 
 		// reset parameters
 		Init(TParam);
-		gMC3->Eufill(nepred, ein, &trklength);
+		gMC3->Eufill(nepred, ein, &ftrklength);
       }
     }
   }else if(ProMode ==3){ 
@@ -178,8 +178,8 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t
 		maxdistance *= 2.; 
 
 		// output 
-		Int_t findpca = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, Rad, vpf, vwi, Di, trklength);
-		//std::cout<<" FairGeanePro::trklength="<<trklength<< std::endl;
+		Int_t findpca = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, fRad, fvpf, fvwi, fDi, ftrklength);
+		//std::cout<<" FairGeanePro::ftrklength="<<ftrklength<< std::endl;
 		if(findpca != 0) return kFALSE;
 
 		// reset parameters
@@ -187,8 +187,8 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t
 
 		// find plane
 		// unitary vector along distance
-		// vpf on track, vwi on wire
-		TVector3 fromwiretoextr = vpf - vwi;     
+		// fvpf on track, fvwi on wire
+		TVector3 fromwiretoextr = fvpf - fvwi;     
 		fromwiretoextr.SetMag(1.);
 		if(fabs(fromwiretoextr.Mag()-1)>1E-4){
 		  std::cerr<<"fromwire.Mag()!=1"<<std::endl;
@@ -215,7 +215,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t
 		Bool_t backtracking = kFALSE;
 		if(fPropOption == "BLE") backtracking = kTRUE;
 		PropagateFromPlane(jver, kver);
-		PropagateToPlane(vwi, fromwiretoextr, wiredirection);
+		PropagateToPlane(fvwi, fromwiretoextr, wiredirection);
 		if(backtracking == kTRUE) fPropOption = "BPE";
 	
 		gMC3->Eufilp(nepred, ein, pli, plo);
@@ -275,7 +275,7 @@ Bool_t FairGeanePro::Propagate(Int_t PDG) {
   fApp->GeanePreTrack(x1, p1, PDG);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
   if(x2[0]<-1.E29) return kFALSE;
-  trklength=gMC3->TrackLength();
+  ftrklength=gMC3->TrackLength();
 
   Double_t trasp[25];
   for(int i = 0; i < 25; i++)
@@ -398,11 +398,11 @@ Bool_t FairGeanePro::PropagateToPCA(Int_t pca)
   ProMode=1; //need errors in representation 1 (SC)(see Geane doc)   
   fPCA = pca;
   // initialization 
-  Rad = 0.;
-  Di = 0.;
-  vpf = TVector3(0.,0.,0.);
-  vwi = TVector3(0.,0.,0.);
-  trklength = 0;
+  fRad = 0.;
+  fDi = 0.;
+  fvpf = TVector3(0.,0.,0.);
+  fvwi = TVector3(0.,0.,0.);
+  ftrklength = 0;
   return kTRUE;
 }
 
@@ -415,11 +415,11 @@ Bool_t FairGeanePro::PropagateToPCA(Int_t pca, Int_t dir)
   ProMode=1; //need errors in representation 1 (SC)(see Geane doc)   
   fPCA = pca;
   // initialization 
-  Rad = 0.;
-  Di = 0.;
-  vpf = TVector3(0.,0.,0.);
-  vwi = TVector3(0.,0.,0.);
-  trklength = 0;
+  fRad = 0.;
+  fDi = 0.;
+  fvpf = TVector3(0.,0.,0.);
+  fvwi = TVector3(0.,0.,0.);
+  ftrklength = 0;
   return kTRUE;
 }
 
@@ -433,11 +433,11 @@ Bool_t FairGeanePro::ActualFindPCA(Int_t pca, FairTrackParP *par, Int_t dir)
   ProMode=1; //need errors in representation 1 (SC)(see Geane doc)   
   fPCA = pca;
   // initialization 
-  Rad = 0.;
-  Di = 0.;
-  vpf = TVector3(0.,0.,0.);
-  vwi = TVector3(0.,0.,0.);
-  trklength = 0;
+  fRad = 0.;
+  fDi = 0.;
+  fvpf = TVector3(0.,0.,0.);
+  fvwi = TVector3(0.,0.,0.);
+  ftrklength = 0;
   for(Int_t i=0;i<15;i++) ein[i]=0.00; 
   return kTRUE;
 }
@@ -449,11 +449,11 @@ Bool_t FairGeanePro::BackTrackToVertex()
   ProMode=1; //need errors in representation 1 (SC)(see Geane doc)   
   fPCA = 1; // to point
   // initialization (forse non necessario) CHECK!!!!
-  Rad = 0.;
-  Di = 0.;
-  vpf = TVector3(0.,0.,0.);
-  vwi = TVector3(0.,0.,0.);
-  trklength = 0;
+  fRad = 0.;
+  fDi = 0.;
+  fvpf = TVector3(0.,0.,0.);
+  fvwi = TVector3(0.,0.,0.);
+  ftrklength = 0;
   return kTRUE;
 }
 
@@ -464,11 +464,11 @@ Bool_t FairGeanePro::PropagateToVirtualPlaneAtPCA(Int_t pca)
   ProMode=3; //need errors in representation 3 (SD)(see Geane doc) 
   fPCA = pca;
   // initialization 
-  Rad = 0.;
-  Di = 0.;
-  vpf = TVector3(0.,0.,0.);
-  vwi = TVector3(0.,0.,0.);
-  trklength = 0;
+  fRad = 0.;
+  fDi = 0.;
+  fvpf = TVector3(0.,0.,0.);
+  fvwi = TVector3(0.,0.,0.);
+  ftrklength = 0;
   return kTRUE;
 }
 
@@ -479,11 +479,11 @@ Bool_t FairGeanePro::BackTrackToVirtualPlaneAtPCA(Int_t pca)
   ProMode=3; //need errors in representation 3 (SD)(see Geane doc) 
   fPCA = pca;
   // initialization 
-  Rad = 0.;
-  Di = 0.;
-  vpf = TVector3(0.,0.,0.);
-  vwi = TVector3(0.,0.,0.);
-  trklength = 0;
+  fRad = 0.;
+  fDi = 0.;
+  fvpf = TVector3(0.,0.,0.);
+  fvwi = TVector3(0.,0.,0.);
+  ftrklength = 0;
   return kTRUE;
 }
 
