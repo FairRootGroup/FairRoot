@@ -9,6 +9,7 @@
 # RULE_CHECKER_PERL  = Perl script to be executed to patch preprocessor files
 
 
+
 # Check if Java and Perl are available. Both are nedded for the Rule
 # checker.
 
