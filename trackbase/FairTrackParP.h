@@ -141,15 +141,15 @@ class FairTrackParP : public FairTrackPar
   void CalCov();
   
    // plane
-  TVector3 forigin; //!
-  TVector3 fiver; //!
-  TVector3 fjver; //!
-  TVector3 fkver; //!
+  TVector3 forigin;
+  TVector3 fiver;
+  TVector3 fjver;
+  TVector3 fkver;
   Double_t fDI[3]; //!
   Double_t fDJ[3]; //!
   Double_t fDK[3]; //!
   // spu
-  Double_t fSPU; //!
+  Double_t fSPU; 
   // transport matrix
   Double_t ftrmat[5][5]; //! 
 
