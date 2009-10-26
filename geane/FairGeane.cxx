@@ -142,11 +142,14 @@ FairGeane::~FairGeane() {
 }
 void FairGeane::SetField(FairField *field)
 {
-   if(field && fApp) {
+    
+	cout<< "-W- FairGeane::SetField  This method is not used anymore, use FairRunAna::SetField instead  " << endl;
+	
+	// if(field && fApp) {
     //  cout << "-I- Geane:  Magnetic Field is Set and will be used" << endl;
     //   field->Print();
     //  fApp->SetField(field);
-    }
+   // }
 }
 
 ClassImp(FairGeane)
