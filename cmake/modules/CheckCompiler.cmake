@@ -68,10 +68,11 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
       MESSAGE("--- Found GNU compiler collection")
 
       STRING(COMPARE EQUAL "10.5" "${MAC_OS_VERSION}" MAC_OS_10_5)
-      IF(MAC_OS_10_5)
+      STRING(COMPARE EQUAL "10.6" "${MAC_OS_VERSION}" MAC_OS_10_6)
+      IF(MAC_OS_10_5 OR MAC_OS_10_6)
         SET(CMAKE_CXX_FLAGS "-m64")
         SET(CMAKE_Fortran_FLAGS "-m64")
-      ENDIF(MAC_OS_10_5)
+      ENDIF(MAC_OS_10_5 OR MAC_OS_10_6)
 
       SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
       SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
