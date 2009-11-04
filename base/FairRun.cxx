@@ -31,8 +31,8 @@ FairRun::FairRun()
 //_____________________________________________________________________________
 FairRun::~FairRun()
 {
-	delete fTask;
-	delete fRtdb;
+	if (fTask) delete fTask;
+	if (fRtdb) delete fRtdb;
 }
 //_____________________________________________________________________________
 

@@ -182,11 +182,12 @@ FairMCApplication::FairMCApplication(Bool_t Geane)
 FairMCApplication::~FairMCApplication() 
 {
 // Destructor  
-  delete fStack;
-  delete fActiveDetectors;
-  delete fActDetIter;
-  delete fDetectors;
-  delete fFairTaskList;
+   delete fStack;
+   delete fActiveDetectors;
+   delete fActDetIter;
+   delete fDetectors;
+   delete gMC;	
+   gMC=0;
 }
 //_____________________________________________________________________________
 void FairMCApplication::RegisterStack()
