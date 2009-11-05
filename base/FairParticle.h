@@ -20,6 +20,7 @@ class FairParticle : public TObject
   public:
     FairParticle(Int_t id, TParticle* particle);
     FairParticle(Int_t id, TParticle* particle, FairParticle* mother);
+    FairParticle(const char* name, Int_t z, Int_t a, Int_t s,Double_t mass , Int_t q, Bool_t stable, Double_t decaytime);
     FairParticle(const char* name, Int_t z, Int_t a, Double_t mass , Int_t q, Bool_t stable, Double_t decaytime);
     FairParticle( Int_t pdg , const TString name, TMCParticleType mcType, Double_t mass, Double_t charge,
                  Double_t lifetime, const TString pType="Ion",  Double_t width=0, Int_t iSpin=0, Int_t iParity=0, 
@@ -85,7 +86,7 @@ class FairParticle : public TObject
     Int_t 		fbaryon;
     Bool_t 		fstable;
 
-    ClassDef(FairParticle,1) // Extended TParticle
+    ClassDef(FairParticle,3) // Extended TParticle
 };
 
 #endif //FAIR_PARTICLE_H   
