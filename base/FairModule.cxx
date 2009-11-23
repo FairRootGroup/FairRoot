@@ -241,8 +241,9 @@ void FairModule::ConstructRootGeometry(){
 	   n=volume->GetNode(0);        
 	   v1=n->GetVolume();
    }
+
    if(v1==0) {
-	   cout << "FairModule::ConstructRootGeometry(): could not find any geometry in File!! " << GetGeometryFileName().Data() <<  endl; 
+	   cout << "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find any geometry in File!!  \033[0m" << GetGeometryFileName().Data() <<  endl; 
 	   exit(0);
    }
    gGeoManager=OldGeo;
@@ -266,7 +267,8 @@ void FairModule::ConstructASCIIGeometry(){
 	cout << " FairModule::ConstructASCIIGeometry() : this method has to be implimented in detector class " << endl;
 }
 Bool_t FairModule::CheckIfSensitive(std::string name){
-	cout << " FairModule::CheckIfSensitive(std::string name): this method has to be implimented in detector class " << endl;
+		
+	cout << "\033[5m\033[31m FairModule::CheckIfSensitive(std::string name): this method has to be implimented in detector class  \033[0m\n" << endl;
 	return kFALSE;
 }
 void FairModule::ExpandNode(TGeoNode *fN){
@@ -294,7 +296,7 @@ void FairModule::ExpandNode(TGeoNode *fN){
             std::cout<< "Material " << mat1->GetName() << " is not defined " << std::endl;
             FairGeoMedium *FairMedium=Media->getMedium(mat1->GetName());
             if (!FairMedium) {
-               std::cout << "Material is not defined in ASCII file nor in Root file" << std::endl;
+               std::cout << "\033[5m\033[31m Material is not defined in ASCII file nor in Root file  \033[0m\n" << std::endl;
                FairMedium=new FairGeoMedium(mat1->GetName());
                Media->addMedium(FairMedium);
             }

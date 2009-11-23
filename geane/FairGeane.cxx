@@ -3,7 +3,6 @@
 // Author: M. Al-Turany
 //
 #include "FairGeane.h"
-
 #include "FairMCApplication.h"
 #include "FairField.h"
 #include "FairRunAna.h"
@@ -113,11 +112,6 @@ InitStatus FairGeane::Init()
 	gROOT->LoadMacro(cuts);
 	gROOT->ProcessLine("SetCuts()");
 		
-	/*TString work = getenv("VMCWORKDIR"); 
-	 TString g3LibMacro = work + "/gconfig/g3libs.C";
-	 gROOT->LoadMacro(g3LibMacro.Data());
-	 gROOT->ProcessLine("g3libs()");
-	 TString g3Macro = work+"/gconfig/Geane.C";*/
 	FairField *field=FairRunAna::Instance()->GetField();
 	field->Print();
 	fApp->SetField(field);
@@ -137,19 +131,15 @@ InitStatus FairGeane::Init()
 
 
 
-FairGeane::~FairGeane() {
+FairGeane::~FairGeane() 
+{
   
 }
 void FairGeane::SetField(FairField *field)
 {
-    
-	cout<< "-W- FairGeane::SetField  This method is not used anymore, use FairRunAna::SetField instead  " << endl;
+  
+	cout<< "\033[5m\033[31m -W- FairGeane::SetField  This method is not used anymore, use FairRunAna::SetField instead \033[0m " << endl;
 	
-	// if(field && fApp) {
-    //  cout << "-I- Geane:  Magnetic Field is Set and will be used" << endl;
-    //   field->Print();
-    //  fApp->SetField(field);
-   // }
 }
 
 ClassImp(FairGeane)

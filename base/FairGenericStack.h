@@ -123,8 +123,9 @@ class FairGenericStack : public TVirtualMCStack
   virtual TParticle* GetParticle(Int_t trackID) const{ return NULL; }
   
 
- private:
+  protected:
 
+  Int_t fVerbose;
 
   ClassDef(FairGenericStack,1)
 

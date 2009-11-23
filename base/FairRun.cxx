@@ -47,18 +47,6 @@ void FairRun::AddTask(FairTask *t)
   fTask->Add(t);
 }
 //_____________________________________________________________________________
-/*
-void FairRun::Run(Int_t NStart,Int_t NStop)
-{
-}
-//_____________________________________________________________________________
-
-void FairRun::Init()
-{
-}
- 
- */
-//_____________________________________________________________________________
 FairTask* FairRun::GetTask(const char* taskName) {
     TList* taskList = fTask->GetListOfTasks();
     TObject* task = taskList->FindObject(taskName);

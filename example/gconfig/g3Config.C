@@ -35,14 +35,8 @@ void Config()
     geant3->SetABAN(0);         //Restore 3.16 behaviour for abandoned tracks
     geant3->SetOPTI(2);         //Select optimisation level for GEANT geometry searches (0,1,2)
     geant3->SetERAN(5.e-7);
-    geant3->SetCKOV(1);     // cerenkov photons 
-  // set common stuff 
-    TString configm(gSystem->Getenv("VMCWORKDIR"));
-    TString cuts = configm + "/gconfig/SetCuts.C";
-    cout << "Physics cuts with script \n "<<  cuts.Data() << endl;
-    Int_t cut=gROOT->LoadMacro(cuts.Data());
-    if(cut==0)gInterpreter->ProcessLine("SetCuts()"); 
-
+    geant3->SetCKOV(1);     // cerenkov photons
+ 
 }
 
 

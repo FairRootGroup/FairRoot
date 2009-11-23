@@ -20,11 +20,15 @@
 
 
 // -----   Default constructor   -------------------------------------------
-FairGenericStack::FairGenericStack() {
+FairGenericStack::FairGenericStack()
+: fVerbose(1)
+{
 }
 // -------------------------------------------------------------------------
 // -----   Constructor with estimated array dimension   --------------------
-FairGenericStack::FairGenericStack(Int_t size) {
+FairGenericStack::FairGenericStack(Int_t size) 
+: fVerbose(1)
+{
 }
 // -------------------------------------------------------------------------
 // -----   Destructor   ----------------------------------------------------

@@ -201,13 +201,6 @@ void FairMCApplication::InitMC(const char* setup, const char *cuts)
 {
 // Initialize MC.
 // ---
-/*  gROOT->LoadMacro(setup);
-  gInterpreter->ProcessLine("Config()");
-  
-  gROOT->LoadMacro(cuts);
-  gInterpreter->ProcessLine("SetCuts()");
-	
-*/	
   fStack = (FairGenericStack*) gMC->GetStack();
  
   gMC->Init();
@@ -228,8 +221,6 @@ void FairMCApplication::InitMC(const char* setup, const char *cuts)
 //_____________________________________________________________________________
 void FairMCApplication::RunMC(Int_t nofEvents)
 {    
-  //write geometry to first output file
- // fRootManager->WriteGeometry();
   // MC run.
   gMC->ProcessRun(nofEvents);
   // finish run
@@ -374,17 +365,12 @@ void FairMCApplication::Stepping()
     }
   } else {  //Geane tracking
 	  gMC->TrackPosition(fTrkPos); 
-	//  TLorentzVector mom;
-	//  gMC->TrackMomentum(mom);
-	//  cout <<  "FairMCApplication::Stepping()" <<  gMC->TrackPid() << " Pos : " << fTrkPos.X()<< " "<< fTrkPos.Y()<< "  "<<  fTrkPos.Z() << endl;
-	//  cout <<  "FairMCApplication::Stepping()" <<  gMC->TrackPid() << " Mom : " << mom.X() << " "<< mom.Y()<< "  "<<  mom.Z() << endl;
   }
   
   if(fTrajAccepted) {
         if(gMC->TrackStep() > fTrajFilter->GetStepSizeCut()) {
            gMC->TrackPosition(fTrkPos);
            fTrajFilter->GetCurrentTrk()->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
-	//	   cout << "Current Track" <<  fTrajFilter->GetCurrentTrk() << endl;
         }
   }
   if(fRadLenMan){
@@ -555,7 +541,7 @@ void FairMCApplication::ConstructGeometry()
       if(fSenVolumes)fNoSenVolumes=fSenVolumes->GetEntries();
    }
    if (gGeoManager) {
-      cout << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<<endl;
+    //  cout << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<<endl;
       gGeoManager->CloseGeometry();   // close geometry
       gMC->SetRootGeometry();         // notify VMC about Root geometry
       gGeoManager->SetPdgName(22, "gamma");

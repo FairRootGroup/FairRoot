@@ -103,11 +103,9 @@ FairPrimaryGenerator::~FairPrimaryGenerator() {
 
 // -----   Public method GenerateEvent   -----------------------------------
 Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack) {
-
   // Check for MCEventHeader
   if ( ! fEvent) {
-    cout << "-E- FairPrimaryGenerator::GenerateEvent: "
-	 << "No MCEventHeader branch! " << endl;
+    cout << " \033[5m\033[31m -E- FairPrimaryGenerator::GenerateEvent: No MCEventHeader branch! \033[0m" << endl;
     Fatal("GenerateEvent", "No MCEventHeader branch");
   }
 
@@ -120,7 +118,6 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack) {
   MakeVertex();
   fEvent->SetVertex(fVertex);
 
-
   // Call the ReadEvent methods from all registered generators
   fListIter->Reset();
   TObject* obj = 0;
@@ -131,7 +128,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack) {
     const char* genName = gen->GetName();
     Bool_t test = gen->ReadEvent(this);
     if ( ! test ) {
-      cout << "-E FairPrimaryGenerator: ReadEvent failed for generator "
+      cout << " \033[5m\033[31m -E FairPrimaryGenerator: ReadEvent failed for generator \033[0m"
 	   << genName << endl;
       return kFALSE;
     }
@@ -146,9 +143,11 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack) {
   fEvent->SetTime(fEventTime);
 	 
   // Screen output
+	
   cout << "-I FairPrimaryGenerator: " << fNTracks << " primary tracks "
        << "from vertex (" <<  fVertex.X() << ", " << fVertex.Y() << ", "
        << fVertex.Z() << ")" << "Event Time = " << fEventTime <<  "(ns) "<< endl;
+  
   fEvent->SetNPrim(fNTracks);
 
   return kTRUE;
@@ -180,8 +179,7 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
 			 "No TDatabasePDG instantiated");
   TParticlePDG* pdgPart = pdgBase->GetParticle(pdgid);
   if ( ! pdgPart ) {
-    cout << "-E FairPrimaryGenerator: PDG code " << pdgid 
-	 << " not found in database. Discarding particle." << endl;
+    cout << "\033[5m\033[31m -E FairPrimaryGenerator: PDG code " << pdgid << " not found in database. Discarding particle. \033[0m " << endl;
     return;
   }
 

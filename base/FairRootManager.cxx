@@ -139,10 +139,12 @@ void FairRootManager::AddFriend( TFile *f ){
 
   }else{
 
-    Fatal(" FairRootManager::AddFriend","not input tree");
+    Fatal("\033[5m\033[31m FairRootManager::AddFriend","not input tree. \033[0m\n");
 
   }
 }
+
+////	"\033[5m\033[31mThis is blue.\033[0m\n" 
 //_____________________________________________________________________________}
 void  FairRootManager::AddAndMerge (TFile *f ) {
  

@@ -109,8 +109,7 @@ void FairRunSim::Init()
     
     fOutFile=fRootManager->OpenOutFile(Outfname);
     cout << endl;
-    cout << "==============  FairRunSim: Initialising simulation run  "
-       << "==============" << endl;
+    cout << "==============  FairRunSim: Initialising simulation run ==============" << endl;
      
     FairGeoLoader *loader=new FairGeoLoader(fLoaderName->Data(), "Geo Loader");
     FairGeoInterface *GeoInterFace=loader->getGeoInterface();
