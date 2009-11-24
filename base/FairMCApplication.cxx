@@ -887,18 +887,19 @@ TTask *FairMCApplication::GetListOfTasks()
 //_____________________________________________________________________________
 void FairMCApplication::InitTasks()
 {	
-	fFairTaskList->SetParTask();
 	
-
         // Only RTDB init when more than Main Task list
-	if(fFairTaskList->GetListOfTasks()->GetEntries() > 1 ) {
-	FairRunSim::Instance()->GetRunId();
-	FairRuntimeDb*  fRtdb =FairRunSim::Instance()->GetRuntimeDb();
-	fRtdb->initContainers( FairRunSim::Instance()->GetRunId() );
-	}
+   if(fFairTaskList->GetListOfTasks()->GetEntries() >= 1 ) {
+         cout <<"\033[1m\033[34m -I- Initialize Tasks--------------------------Start"<< endl; 
+	 fFairTaskList->SetParTask();
+	 FairRunSim::Instance()->GetRunId();
+	 FairRuntimeDb*  fRtdb =FairRunSim::Instance()->GetRuntimeDb();
+	 fRtdb->initContainers( FairRunSim::Instance()->GetRunId() );
+	 fFairTaskList->InitTask();
+	 cout <<"-I- Initialize Tasks--------------------------End\033[0m "<< endl; 
+   }
 
-
-	fFairTaskList->InitTask();
+	
 }
 //_____________________________________________________________________________
 TChain* FairMCApplication::GetChain()

@@ -133,7 +133,7 @@ void FairRunSim::Init()
     par->SetDetList(GetListOfModules());
     par->SetGen(GetPrimaryGenerator());
     par->SetBeamMom(fBeamMom);
-	par->SetGeometry(gGeoManager);
+    par->SetGeometry(gGeoManager);
     par->setChanged();
     par->setInputVersion(GetRunId(),1);
  
