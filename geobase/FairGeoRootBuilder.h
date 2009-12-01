@@ -20,7 +20,7 @@ public:
   FairGeoRootBuilder();
   FairGeoRootBuilder(const char*,const char*);
   ~FairGeoRootBuilder() {}
-  void setGeoManager(TGeoManager* m) {geoManager=m;}
+  void setGeoManager(TGeoManager* me) {geoManager=me;}
   Bool_t createNode(FairGeoNode*, Int_t hadFormat=0);
   Int_t createMedium(FairGeoMedium*);
   void finalize();
