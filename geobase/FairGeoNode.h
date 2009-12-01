@@ -80,7 +80,7 @@ public:
   void setVolumePar(FairGeoNode&);
   void setShape(FairGeoBasicShape* s);
   void setMother(FairGeoNode* s);
-  void setMedium(FairGeoMedium* m) {medium=m; }
+  void setMedium(FairGeoMedium* med) {medium=med; }
   void setActive(Bool_t a=kTRUE) {active=a;}
   void setCenterPosition(const FairGeoTransform& t) {center=t;}
   void setCopyNode(FairGeoNode* p) {copyNode=p;}
@@ -120,10 +120,10 @@ inline void FairGeoNode::setShape(FairGeoBasicShape* s) {
   }
 }
 
-inline void FairGeoNode::setMother(FairGeoNode* m) {
+inline void FairGeoNode::setMother(FairGeoNode* moth) {
   // Sets the mother of the volume
-  if (m) {
-    pMother=m;
+  if (moth) {
+    pMother=moth;
     mother=pMother->GetName();
     pMother->AddDaughter(this);
   }
