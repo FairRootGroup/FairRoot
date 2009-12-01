@@ -74,7 +74,7 @@ public:
   void closeSecondInput(void);
   void closeOutput(void);
   void activateParIo(FairParIo*);
-
+  TList *getListOfContainers(){return containerList;}
   void print(void);
 
   Int_t findOutputVersion(FairParSet*);
