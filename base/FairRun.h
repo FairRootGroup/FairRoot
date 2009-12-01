@@ -49,10 +49,13 @@ public:
     Bool_t	          IsAna(){return fAna;} 
    /**Get task by name*/
     FairTask* GetTask(const char* taskName);
+   /** Return the number of Tasks added to this Run*/	
+	Int_t     GetNTasks(){return fNTasks;}
 private:
     FairRun(const FairRun &M);
     FairRun& operator= (const  FairRun&) {return *this;}
-
+    /** Number of Tasks added*/
+	Int_t fNTasks;
 
 protected:
 

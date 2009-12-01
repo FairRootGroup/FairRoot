@@ -56,7 +56,7 @@ public:
     /**
     *       run the analysis or simulation
     */
-    virtual void    Run(Int_t NStart =0,Int_t NStop=0);
+    virtual void    Run(Int_t NEvents =0, Int_t NotUsed=0);
     /**  
     *       Set the magnetic that has to be used for simulation field
     */
@@ -123,10 +123,12 @@ public:
 	
         /**Get beam energy flag */
         Bool_t UseBeamMom() {return fUseBeamMom;}
-
+	void SetFieldContainer();
 private:
     FairRunSim(const FairRunSim &M);
     FairRunSim& operator= (const  FairRunSim&) {return *this;}
+	void SetMCConfig();
+	void CheckFlukaExec();
 protected:
 
     Int_t                  count;//!		                       /** Internal counter*/

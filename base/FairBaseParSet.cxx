@@ -2,7 +2,7 @@
 #include "FairPrimaryGenerator.h"
 #include "FairParamList.h"
 #include "TObjArray.h"
-
+#include "TList.h"
 
 
 ClassImp(FairBaseParSet)
@@ -13,7 +13,8 @@ FairBaseParSet::FairBaseParSet(const char* name,const char* title,const char* co
   fGeoNodes(new TObjArray()),
   fPriGen(0),
   fBeamMom(15),
-  fGeom(0)
+  fGeom(0),
+  fContNameList(new TObjArray())
 {
   
 			
@@ -38,6 +39,7 @@ void FairBaseParSet::putParams(FairParamList* l) {
   l->addObject("FairGeoNodes List", fGeoNodes);
   l->add("Beam Momentum Gev/c", fBeamMom);
   l->addObject("Detector Geometry", fGeom);
+  l->addObject("Parameter containers list", fContNameList);	
 }
 
 Bool_t FairBaseParSet::getParams(FairParamList* l) {
@@ -47,6 +49,7 @@ Bool_t FairBaseParSet::getParams(FairParamList* l) {
   if (!l->fillObject("FairGeoNodes List", fGeoNodes)) return kFALSE;
   if (!l->fill("Beam Momentum Gev/c", &fBeamMom)) return kFALSE;
   if (!l->fillObject("Detector Geometry", fGeom)) return kFALSE;
+  if (!l->fillObject("Parameter containers list", fContNameList)) return kFALSE;
   return kTRUE;
 }
 

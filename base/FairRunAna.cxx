@@ -158,10 +158,8 @@ void FairRunAna::Init() {
    fRtdb= GetRuntimeDb();
    FairBaseParSet* par=(FairBaseParSet*)
             (fRtdb->getContainer("FairBaseParSet"));
-   FairFieldFactory *fieldfact= FairFieldFactory::Instance();
-   if(fieldfact)fieldfact->SetParm();
- 
-   
+  
+
 	
    // Assure that basic info is there for the run
    if(par && fInputFile){
@@ -172,6 +170,13 @@ void FairRunAna::Init() {
       fRootManager->Register("EventHeader.","EvtHeader",fEvtHeader, kTRUE);
       fRunId = fEvtHeader->GetRunId();
       // Init the containers in Tasks
+	   cout << "Run Id for this run : " << fRunId << endl;
+      fRtdb->initContainers(fRunId);   
+
+	   TObjArray *contList= par->GetContList();
+	   contList->Print();
+	   
+	   
       fTask->SetParTask();
       fRtdb->initContainers( fRunId );
 	  if(gGeoManager==0)par->GetGeometry(); 
@@ -187,6 +192,14 @@ void FairRunAna::Init() {
       fRtdb->initContainers( fRunId );
       
    }
+	FairFieldFactory *fieldfact= FairFieldFactory::Instance();
+	if(fieldfact)fieldfact->SetParm();
+	
+	
+		
+	fRtdb->initContainers(fRunId);	
+	
+	
    // create a field 
    if(fieldfact) fField= fieldfact->createFairField();
    // Now call the User initialize for Tasks

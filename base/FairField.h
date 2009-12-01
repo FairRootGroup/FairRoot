@@ -124,7 +124,12 @@ public:
 
   virtual void GetBxyz(const Double_t point[3], Double_t* bField){ std::cout << "GetBz Should be implimented" << std::endl;};
 
- protected:
+	
+	
+  /**Fill Paramater*/	
+	
+	virtual void FillParContainer(){printf("This should implimented in the exp. part \n");}
+protected:
 
   /** Field type. 1 = constant field, 2 = field map. **/
   Int_t fType;

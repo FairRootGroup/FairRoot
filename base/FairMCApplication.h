@@ -103,6 +103,7 @@ class FairMCApplication : public TVirtualMCApplication
     void                  RunMC(Int_t nofEvents);
     void                  SetField(FairField *field);
     void                  SetGenerator(FairPrimaryGenerator *fxGenerator);
+	void                  SetParTask();
     void                  SetPythiaDecayer(Bool_t decayer){fPythiaDecayer=decayer;}
 	void                  SetPythiaDecayerConfig(const TString decayerConf){fPythiaDecayerConfig=decayerConf;}
     void                  SetRadiationLengthReg(Bool_t RadLen);

@@ -594,6 +594,8 @@ void FairMCApplication::InitGeometry()
 	  // Initialize the event generator 
 	  if(fEvGen)fEvGen->Init();
 	   
+	   
+	   
 	  // Initialize the detectors.    
 	  fActDetIter->Reset();
       while((detector = dynamic_cast<FairDetector*>(fActDetIter->Next()))) {
@@ -601,8 +603,8 @@ void FairMCApplication::InitGeometry()
         detector->SetSpecialPhysicsCuts();     // set the detector specific detector cuts
         detector->Register();                  //  add branches to tree
       }
+	   
 	  /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
-
       // There is always a Main Task  !
       // so .. always a InitTasks() is called <D.B>
       if (fFairTaskList) InitTasks();
@@ -627,6 +629,7 @@ void FairMCApplication::InitGeometry()
       TTree *outTree =new TTree("cbmsim", "/cbmroot", 99);
       fRootManager->TranicateBranchNames(outTree, "cbmroot");
       fRootManager->SetOutTree(outTree);
+	   
       for ( Int_t i = 0 ; i < fNoSenVolumes ; i++ ){
          fv= (FairVolume *)fSenVolumes->At(i);
          id=fv->getMCid();
@@ -873,6 +876,7 @@ void FairMCApplication::AddTask(TTask *fTask)
       gROOT->GetListOfBrowsables()->Add(fFairTaskList);
    }
    fFairTaskList->Add(fTask);
+   SetParTask(); 
 }
 //_____________________________________________________________________________
 FairGenericStack *FairMCApplication::GetStack()
@@ -882,19 +886,26 @@ FairGenericStack *FairMCApplication::GetStack()
 //_____________________________________________________________________________
 TTask *FairMCApplication::GetListOfTasks()
 {
-    return fFairTaskList;
+	return fFairTaskList;	
 }
+
+//_____________________________________________________________________________
+void FairMCApplication::SetParTask()
+{// Only RTDB init when more than Main Task list
+	if(FairRun::Instance()->GetNTasks() >= 1 ) {		
+	   fFairTaskList->SetParTask();
+		FairRuntimeDb *fRTdb=  FairRun::Instance()->GetRuntimeDb();
+		fRTdb->initContainers(FairRunSim::Instance()->GetRunId());
+		
+	}
+}	
 //_____________________________________________________________________________
 void FairMCApplication::InitTasks()
 {	
-	
-        // Only RTDB init when more than Main Task list
-   if(fFairTaskList->GetListOfTasks()->GetEntries() >= 1 ) {
-         cout <<"\033[1m\033[34m -I- Initialize Tasks--------------------------Start"<< endl; 
-	 fFairTaskList->SetParTask();
-	 FairRunSim::Instance()->GetRunId();
-	 FairRuntimeDb*  fRtdb =FairRunSim::Instance()->GetRuntimeDb();
-	 fRtdb->initContainers( FairRunSim::Instance()->GetRunId() );
+
+   // Only RTDB init when more than Main Task list
+   if(FairRun::Instance()->GetNTasks() >= 1 ) {
+     cout <<"\033[1m\033[34m -I- Initialize Tasks--------------------------Start"<< endl; 
 	 fFairTaskList->InitTask();
 	 cout <<"-I- Initialize Tasks--------------------------End\033[0m "<< endl; 
    }

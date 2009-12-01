@@ -59,54 +59,32 @@ FairRunSim::~FairRunSim()
 
 }
 FairRunSim * FairRunSim::Instance(){
-
-        return fginstance;
+    return fginstance;
 }
 void FairRunSim::AddModule (FairModule *Mod)
 {
-  ListOfModules->Add(Mod);
-  Mod->SetModId(count++);
+    ListOfModules->Add(Mod);
+    Mod->SetModId(count++);
 }
 
 TObjArray *FairRunSim::GetUserDefIons()
 {
-  /** return the array of user defined ions*/
-  return fIons;
+    /** return the array of user defined ions*/
+    return fIons;
 }
 
 TObjArray *FairRunSim::GetUserDefParticles()                              
 {
-  /** return the array of user defined particles*/
-  return fParticles;
+    /** return the array of user defined particles*/
+    return fParticles;
 }
 
 void FairRunSim::Init()
 {
     /**Initialize the simulation session*/
-    TString work = getenv("VMCWORKDIR");
-    TString Lib_config= getenv("GEANT4VMC_MACRO_DIR");
-    TString work_config=work+"/gconfig/";
-    TString config_dir= getenv("CONFIG_DIR");
-    Bool_t AbsPath=kFALSE;
-    if (!config_dir.EndsWith("/")) config_dir+="/";
-    
-    TString flout;
-    if(strcmp(GetName(),"TFluka") == 0 ){
-       TString flexec="run_fluka.sh";
-       if (TString(gSystem->FindFile(config_dir.Data(),flexec)) != TString("")){
-          cout << "---User path for Configuration is used : " <<  config_dir.Data() << endl;
-       }else{
-          flexec=work_config+"run_fluka.sh";
-       }
-       gSystem->Exec(flexec.Data());
-       // More generic for different macro
-       // dir layout <D.B>
-       TString macrodir = getenv("PWD");
-       cout << macrodir << endl;
-       flout = macrodir + "/fluka_out" ;
-       gSystem->cd(flout.Data());
-     }
-    
+   
+	CheckFlukaExec();
+		   
     fOutFile=fRootManager->OpenOutFile(Outfname);
     cout << endl;
     cout << "==============  FairRunSim: Initialising simulation run ==============" << endl;
@@ -117,10 +95,10 @@ void FairRunSim::Init()
     GeoInterFace->setMediaFile(MatFname.Data());
     GeoInterFace->readMedia();
     
-    gSystem->cd(flout.Data());
+  //  gSystem->cd(flout.Data());
 
-       fApp= new FairMCApplication("Fair","The Fair VMC App",ListOfModules, MatFname);
-       fApp->SetGenerator(fGen);
+	fApp= new FairMCApplication("Fair","The Fair VMC App",ListOfModules, MatFname);
+    fApp->SetGenerator(fGen);
     
     // Add a Generated run ID to the FairRunTimeDb
     FairRunIdGenerator genid;
@@ -128,15 +106,22 @@ void FairRunSim::Init()
     fRunId = genid.generateId();
     fRtdb->addRun(fRunId);
 
+	
+	/** Add Tasks to simulation if any*/
+    fApp->AddTask(fTask);
+
+	
+	FairBaseParSet* par=(FairBaseParSet*)(fRtdb->getContainer("FairBaseParSet"));
+	par->SetDetList(GetListOfModules());
+	par->SetGen(GetPrimaryGenerator());
+	par->SetBeamMom(fBeamMom);
+	par->SetGeometry(gGeoManager);
+	
+	
+	
+		
     // Set global Parameter Info
-    FairBaseParSet* par=(FairBaseParSet*)(fRtdb->getContainer("FairBaseParSet"));
-    par->SetDetList(GetListOfModules());
-    par->SetGen(GetPrimaryGenerator());
-    par->SetBeamMom(fBeamMom);
-    par->SetGeometry(gGeoManager);
-    par->setChanged();
-    par->setInputVersion(GetRunId(),1);
- 
+   	
     if(fPythiaDecayer){
        fApp->SetPythiaDecayer(fPythiaDecayer);
     }
@@ -151,12 +136,95 @@ void FairRunSim::Init()
     if(fRadLength){
         fApp->SetRadiationLengthReg(fRadLength);
     }
- 
-    fApp->AddTask(fTask);
-    
+	
     if(fField)fField->Init();
     fApp->SetField(fField);
+	SetFieldContainer();
+	
+	
+	
+	TList *containerList=fRtdb->getListOfContainers();
+	TIter next(containerList);
+	FairParSet* cont;
+	TObjArray *ContList= new TObjArray();	
+	while ((cont=(FairParSet*)next())) {
+		ContList->Add(new TObjString(cont->GetName()));
+	}
+	
+	par->SetContListStr(ContList);
+	par->setChanged();
+	par->setInputVersion(fRunId,1);
+	
+	
+	/**Set the configuration for MC engine*/
+	SetMCConfig();
+	
+}
 
+void FairRunSim::SetFieldContainer()
+{
+
+  //  FairRuntimeDb *rtdb=fRun->GetRuntimeDb();
+//	Bool_t kParameterMerged=kTRUE;
+	
+//	PndMultiFieldPar* Par = (PndMultiFieldPar*) rtdb->getContainer("PndMultiFieldPar");
+//	if (fField) {  Par->SetParameters(fField); }
+//	Par->setInputVersion(fRun->GetRunId(),1);
+//	Par->setChanged();
+
+	
+	//printf("###################FairRunSim::SetFieldContainer() ######################\n");
+	if (fField) {
+		fField->FillParContainer();
+		
+	}
+	
+
+}
+
+
+
+void FairRunSim::CheckFlukaExec()
+{
+	/** Private method for setting FLUKA simulation*/
+	
+	TString work = getenv("VMCWORKDIR");
+    TString work_config=work+"/gconfig/";
+    TString config_dir= getenv("CONFIG_DIR");
+    if (!config_dir.EndsWith("/")) config_dir+="/";
+    
+    TString flout;
+    if(strcmp(GetName(),"TFluka") == 0 ){
+		TString flexec="run_fluka.sh";
+		if (TString(gSystem->FindFile(config_dir.Data(),flexec)) != TString("")){
+			cout << "---User path for Configuration is used : " <<  config_dir.Data() << endl;
+		}else{
+			flexec=work_config+"run_fluka.sh";
+		}
+		gSystem->Exec(flexec.Data());
+		// More generic for different macro
+		// dir layout <D.B>
+		TString macrodir = getenv("PWD");
+		cout << macrodir << endl;
+		flout = macrodir + "/fluka_out" ;
+		gSystem->cd(flout.Data());
+   }
+	
+
+}
+
+void FairRunSim::SetMCConfig()
+{	
+	/** Private method for setting simulation and/or Geane configuration and cuts*/
+	
+	TString work = getenv("VMCWORKDIR");
+    TString Lib_config= getenv("GEANT4VMC_MACRO_DIR");
+    TString work_config=work+"/gconfig/";
+    TString config_dir= getenv("CONFIG_DIR");
+    Bool_t AbsPath=kFALSE;
+    if (!config_dir.EndsWith("/")) config_dir+="/";
+	
+	
 	TString LibMacro;
 	TString LibFunction;
 	TString ConfigMacro;
@@ -288,9 +356,11 @@ void FairRunSim::Init()
 }
 
 
-void FairRunSim::Run(Int_t NStart, Int_t NStop)
+void FairRunSim::Run(Int_t NEvents, Int_t NotUsed)
 {
-  fApp->RunMC(NStart);
+	
+   
+  fApp->RunMC(NEvents);
 }
 void FairRunSim::SetField(FairField *field)
 {

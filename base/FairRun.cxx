@@ -13,6 +13,7 @@ FairRun * FairRun::Instance(){
 //_____________________________________________________________________________
 FairRun::FairRun()
   :TNamed(),
+   fNTasks(0),
    fRtdb(FairRuntimeDb::instance()),
    fTask(new FairTask("FairTask List")),
    Outfname(""),
@@ -45,6 +46,7 @@ void FairRun::SetOutputFile(const char *fname)
 void FairRun::AddTask(FairTask *t)
 {
   fTask->Add(t);
+  fNTasks++;	
 }
 //_____________________________________________________________________________
 FairTask* FairRun::GetTask(const char* taskName) {

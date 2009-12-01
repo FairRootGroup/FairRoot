@@ -3,9 +3,10 @@
 
 #include "FairParGenericSet.h"
 #include "TGeoManager.h"
+#include "TObjString.h"
 class FairPrimaryGenerator;
 class TObjArray;
-
+class TList;
 
 class FairBaseParSet : public FairParGenericSet {
 public:
@@ -23,13 +24,17 @@ public:
   void SetGen(FairPrimaryGenerator *gen){fPriGen=gen;}
   void SetBeamMom(Double_t  BMom){fBeamMom = BMom;}
   void SetGeometry(TGeoManager *Geom){fGeom=Geom;}
+  void SetContListStr(TObjArray *list){fContNameList= list;}
+	  
+
 
   TObjArray             *GetDetList(){return fDetList;}    
   TObjArray             *GetGeoNodes(){return fGeoNodes;}
   FairPrimaryGenerator   *GetPriGen(){return fPriGen; }
   Double_t			    GetBeamMom(){return fBeamMom; }
   TGeoManager           *GetGeometry(){return fGeom;}
-
+  TObjArray             *GetContList(){return fContNameList;}
+  
 protected:
 
   TObjArray              *fDetList;  // Detectors used in the simulation
@@ -37,8 +42,9 @@ protected:
   FairPrimaryGenerator   *fPriGen;   //Generator used for simulation
   Double_t 		          fBeamMom;  //Beam momentum
   TGeoManager            *fGeom; // Geometry
-  
-  ClassDef(FairBaseParSet,2)
+  TObjArray              *fContNameList; // List of parameter container names in the RUN
+    
+  ClassDef(FairBaseParSet,3)
 private:  
   FairBaseParSet(const FairBaseParSet &L);
   FairBaseParSet& operator= (const FairBaseParSet&) {return *this;}
