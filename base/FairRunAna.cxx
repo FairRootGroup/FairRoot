@@ -9,12 +9,13 @@
 #include "TROOT.h"
 #include "TTree.h"
 #include "FairTrajFilter.h"
-#include <iostream>
-#include <list>
 #include "TSeqCollection.h"
 #include "TGeoManager.h"
 #include "TKey.h"
 #include "FairRunIdGenerator.h"
+
+#include <iostream>
+#include <list>
 
 using std::cout;
 using std::endl;
@@ -170,13 +171,8 @@ void FairRunAna::Init() {
       fRootManager->Register("EventHeader.","EvtHeader",fEvtHeader, kTRUE);
       fRunId = fEvtHeader->GetRunId();
       // Init the containers in Tasks
-	   cout << "Run Id for this run : " << fRunId << endl;
+//	   cout << "Run Id for this run : " << fRunId << endl;
       fRtdb->initContainers(fRunId);   
-
-	   TObjArray *contList= par->GetContList();
-	   contList->Print();
-	   
-	   
       fTask->SetParTask();
       fRtdb->initContainers( fRunId );
 	  if(gGeoManager==0)par->GetGeometry(); 
@@ -356,26 +352,21 @@ void FairRunAna::AddFriend (TString Name)
 {
   cout << "-I- FairRunAna Input file: " << fCurrentFileName <<
           " is connected to friend: " << Name << endl;
-
   if ( fInputFileStruct[fCurrentFileName]){
       fInputFileStruct[fCurrentFileName]->push_back(Name);
   }else {
       fInputFileStruct[fCurrentFileName] = new list<TString>;
       fInputFileStruct[fCurrentFileName]->push_back(Name);
   }
-
-
 }
 //_____________________________________________________________________________
 void FairRunAna::DumpfInputFileStruct() {
   // to be finished ...   
-
 }
 //_____________________________________________________________________________
 void FairRunAna::Reinit(UInt_t runId) {
     // reinit procedure
     fRtdb->initContainers( runId );
-
 }
 //_____________________________________________________________________________
 
@@ -389,12 +380,8 @@ TString FairRunAna::GetNextFileName(){
  TString name = *fcurrent++;
  return name;
 }
-
-
-
-
 //_____________________________________________________________________________
 
-
 ClassImp(FairRunAna)
+
 

@@ -293,14 +293,14 @@ void FairModule::ExpandNode(TGeoNode *fN){
          TGeoMaterial*mat1=v->GetMaterial(); 
          TGeoMaterial *newMat = gGeoManager->GetMaterial(mat1->GetName());
          if( newMat==0){
-            std::cout<< "Material " << mat1->GetName() << " is not defined " << std::endl;
+            //std::cout<< "Material " << mat1->GetName() << " is not defined " << std::endl;
             FairGeoMedium *FairMedium=Media->getMedium(mat1->GetName());
             if (!FairMedium) {
                std::cout << "\033[5m\033[31m Material is not defined in ASCII file nor in Root file  \033[0m\n" << std::endl;
                FairMedium=new FairGeoMedium(mat1->GetName());
                Media->addMedium(FairMedium);
             }
-            std::cout << "Create Medium " << mat1->GetName() << std::endl;
+            //std::cout << "Create Medium " << mat1->GetName() << std::endl;
             Int_t nmed=geobuild->createMedium(FairMedium);
             v->SetMedium(gGeoManager->GetMedium(nmed));
             gGeoManager->SetAllIndex();
