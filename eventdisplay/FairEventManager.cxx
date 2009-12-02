@@ -52,7 +52,6 @@ void FairEventManager::Init()
    if(gGeoManager) {
      TGeoNode *N=  gGeoManager->GetTopNode();
      TEveGeoTopNode *TNod=new  TEveGeoTopNode(gGeoManager, N);
-     TNod->SetVisLevel(10);
      gEve->AddGlobalElement(TNod);
      gEve->FullRedraw3D(kTRUE);
      fEvent= gEve->AddEvent(this);
