@@ -79,6 +79,11 @@ void FairRuntimeDb::addContFactory(FairContFact* fact) {
   }
 }
 
+FairContFact *FairRuntimeDb::getContFactory(const Text_t* FactName)
+{
+	return ((FairContFact *)contFactories.FindObject(FactName));
+}
+
 Bool_t FairRuntimeDb::addParamContext(const char* context) {
   // Sets via the container factories the context of all parameter containers,
   // which accept this context 

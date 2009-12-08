@@ -32,6 +32,7 @@ public:
   Bool_t addParamContext(const char*);
   void printParamContexts();
   void addContFactory(FairContFact*);
+  FairContFact *getContFactory(const Text_t*);	
 
   Bool_t addContainer(FairParSet*);
   FairParSet* getContainer(const Text_t*);
