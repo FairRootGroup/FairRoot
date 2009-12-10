@@ -50,7 +50,11 @@ public:
    /**Get task by name*/
     FairTask* GetTask(const char* taskName);
    /** Return the number of Tasks added to this Run*/	
-	Int_t     GetNTasks(){return fNTasks;}
+
+    Int_t     GetNTasks(){return fNTasks;}
+
+    void CreateGeometryFile(const char *geofile);
+
 private:
     FairRun(const FairRun &M);
     FairRun& operator= (const  FairRun&) {return *this;}

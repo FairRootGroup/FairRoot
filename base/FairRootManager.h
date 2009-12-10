@@ -74,6 +74,7 @@ class FairRootManager : public TObject
     void                SetWildcard(TString Wildcard);
     void                TranicateBranchNames(TBranch *b, TString ffn);
     void                TranicateBranchNames(TTree *fTree, const char *folderName);
+    void                CreateGeometryFile(const char *geofile);
 	
 private:
 	 /**private methods*/

@@ -48,6 +48,13 @@ void FairRun::AddTask(FairTask *t)
   fTask->Add(t);
   fNTasks++;	
 }
+
+void FairRun::CreateGeometryFile(const char *geofile)
+{
+  fRootManager->CreateGeometryFile(geofile);
+}
+
+
 //_____________________________________________________________________________
 FairTask* FairRun::GetTask(const char* taskName) {
     TList* taskList = fTask->GetListOfTasks();

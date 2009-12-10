@@ -387,6 +387,25 @@ void FairRootManager:: WriteGeometry()
   }
 
 }
+
+void FairRootManager::CreateGeometryFile(const char *geofile)
+{
+// Writes the geometry in a separate file.
+// This is only to have a file which can be read without the
+// framework. The geomanager used by the framework is still
+// stored in the parameter file or database
+// ---
+
+  TFile* oldfile=gFile;
+  TFile* file=new TFile(geofile,"RECREATE");
+  file->cd();
+  gGeoManager->Write();
+  file->Close();
+  file->Delete();
+  gFile=oldfile;
+
+}
+
 //_____________________________________________________________________________
 void FairRootManager:: WriteFolder()
 {
