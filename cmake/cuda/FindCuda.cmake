@@ -113,7 +113,7 @@ IF (CUDA_BUILD_TYPE MATCHES "Emulation")
   SET(nvcc_flags --device-emulation -D_DEVICEEMU -g)
 ELSE(CUDA_BUILD_TYPE MATCHES "Emulation")
   # Device present.
-  SET(nvcc_flags "--gpu-name=sm_13")
+  SET(nvcc_flags "-arch=sm_13")
 ENDIF(CUDA_BUILD_TYPE MATCHES "Emulation")
 
 SET(CUDA_BUILD_CUBIN TRUE CACHE BOOL "Generate and parse .cubin files in Device mode.")
@@ -178,7 +178,7 @@ IF (NOT CUDA_TARGET_LINK)
 
   FIND_LIBRARY(FOUND_CUDART
     cudart
-    PATHS ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
+    PATHS ${CUDA_INSTALL_PREFIX}/lib64 ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
     DOC "\"cudart\" library"
     )
   
@@ -191,7 +191,7 @@ IF (NOT CUDA_TARGET_LINK)
   # some platforms.
   FIND_LIBRARY(FOUND_CUDA
     cuda
-    PATHS ${CUDA_INSTALL_PREFIX}/lib
+    PATHS ${CUDA_INSTALL_PREFIX}/lib64 ${CUDA_INSTALL_PREFIX}/lib
     DOC "\"cuda\" library (older versions only)."
     NO_DEFAULT_PATH
     NO_CMAKE_ENVIRONMENT_PATH
@@ -232,6 +232,7 @@ IF(NOT CUDA_CUT_INCLUDE)
           $ENV{HOME}/NVIDIA_CUDA_SDK/common/inc
           $ENV{HOME}/NVIDIA_CUDA_SDK_MACOSX/common/inc
           $ENV{NVSDKCUDA_ROOT}/common/inc
+          ${CUDA_INSTALL_PREFIX}/NVIDIA_GPU_Computing_SDK/C/common/inc/
     DOC "Location of cutil.h"
     )
   IF(FOUND_CUT_INCLUDE)
@@ -254,6 +255,7 @@ IF(NOT CUDA_CUT_TARGET_LINK)
           $ENV{HOME}/NVIDIA_CUDA_SDK/lib
           $ENV{HOME}/NVIDIA_CUDA_SDK_MACOSX/lib
           $ENV{NVSDKCUDA_ROOT}/common/lib
+          ${CUDA_INSTALL_PREFIX}/NVIDIA_GPU_Computing_SDK/C/lib
     NO_DEFAULT_PATH
     NO_CMAKE_ENVIRONMENT_PATH
     NO_CMAKE_PATH
@@ -271,22 +273,22 @@ IF(NOT CUDA_CUT_TARGET_LINK)
 # Add variables for cufft and cublas target link
 FIND_LIBRARY(FOUND_CUFFTEMU
   cufftemu
-  PATHS ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
+  PATHS ${CUDA_INSTALL_PREFIX}/lib64 ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
   DOC "\"cufftemu\" library"
   )
 FIND_LIBRARY(FOUND_CUBLASEMU
   cublasemu
-  PATHS ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
+  PATHS ${CUDA_INSTALL_PREFIX}/lib64 ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
   DOC "\"cublasemu\" library"
   )
 FIND_LIBRARY(FOUND_CUFFT
   cufft
-  PATHS ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
+  PATHS ${CUDA_INSTALL_PREFIX}/lib64 ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
   DOC "\"cufft\" library"
   )
 FIND_LIBRARY(FOUND_CUBLAS
   cublas
-  PATHS ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
+  PATHS ${CUDA_INSTALL_PREFIX}/lib64 ${CUDA_INSTALL_PREFIX}/lib $ENV{CUDA_LIB_PATH}
   DOC "\"cublas\" library"
   )
 
