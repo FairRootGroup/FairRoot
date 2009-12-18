@@ -77,6 +77,7 @@
 
 
 #include "FairGenerator.h"
+#include "TF1.h"
 
 #include <fstream>
 
@@ -98,6 +99,10 @@ class FairEvtGenGenerator : public FairGenerator
    ** @param fileName The input file name
    **/
   FairEvtGenGenerator(const char* fileName);
+  
+  /** @param fileName: The input file name, DensityFunction: axial gas density
+   **/
+  FairEvtGenGenerator(const char* fileName, Double_t Rsigma, TF1 * DensityFunction);  
 
 
   /** Destructor. **/
@@ -114,13 +119,16 @@ class FairEvtGenGenerator : public FairGenerator
 
  private:
 
-  //ifstream* fInputFile;               //! Input file stream
+  //ifstream* fInputFile;             //! Input file stream
   const Char_t * fFileName;           //! Input file Name
   FILE *fInputFile;
 
   /** Private method CloseInput. Just for convenience. Closes the 
    ** input file properly. Called from destructor and from ReadEvent. **/
   void CloseInput();
+  
+  int    fGasmode;
+  double fRsigma;
 	
 	
   /** PDG data base */

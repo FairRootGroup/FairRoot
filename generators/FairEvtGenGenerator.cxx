@@ -9,9 +9,18 @@
 #include <iostream>
 #include <cstdio>
 
+// New includes here:
+
+#include "TMath.h"
+#include "TRandom.h"
+
 using std::cout;
 using std::endl;
 using std::max;
+
+
+TF1 * fDensityFunction;
+
 
 // -----   Default constructor   ------------------------------------------
 FairEvtGenGenerator::FairEvtGenGenerator() {}
@@ -27,8 +36,26 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName) {
     //  fInputFile = new ifstream(fFileName);
     //  if ( ! fInputFile->is_open() ) 
     Fatal("FairEvtGenGenerator","Cannot open input file.");
+
+    fGasmode = 0;
+    fRsigma = 0.;
   
   // fPDG=TDatabasePDG::Instance();
+}
+// ------------------------------------------------------------------------
+
+
+// -----   Gas mode constructor   -----------------------------------------
+FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, TF1 * DensityFunction) {
+  fFileName  = fileName;
+  cout << "-I FairEvtGenGenerator: Opening input file " << fileName << endl;
+  if ((fInputFile = fopen(fFileName,"r"))==NULL)
+    Fatal("FairEvtGenGenerator","Cannot open input file.");
+
+  fGasmode = 1;
+  fRsigma = Rsigma;
+  fDensityFunction = DensityFunction;
+  
 }
 // ------------------------------------------------------------------------
 
@@ -76,15 +103,35 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     }
     //cout << endl;
      
-    for (Int_t ll=0; ll<ntracks; ll++) 
-      {
+    for (Int_t ll=0; ll<ntracks; ll++) {
 	ncols = fscanf(fInputFile,"%d %d %d %d %d %d %d %g %f %f %f %f %f %f %f", &nLine, &pdgID, &nDecay, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz, &fE, &fT, &fVx, &fVy, &fVz);
 //	cout << nLine << "\t" << pdgID << "\t" << nDecay << "\t" << nM1 << "\t" << nM2 << "\t" << nDF << "\t" << nDL <<
 	//  "\t" << fPx << "\t" << fPy << "\t" << fPz << "\t" << fE << "\t" << fT << "\t" << fVx << "\t" << fVy << "\t" << fVz << endl;
 	max_nr = max(max_nr, nDF);
 	max_nr = max(max_nr, nDL);
-	if ((nDF==-1) && (nDL==-1))  
-	  primGen->AddTrack(pdgID, fPx, fPy, fPz, fVx, fVy, fVz);
+	if ((nDF==-1) && (nDL==-1)) 
+  {
+	
+    /* Check if fGasmode is set */
+    if (fGasmode == 1) {
+
+      // Random 2D point in a circle of radius r (simple beamprofile)
+      Double_t fX, fY, fZ, radius;
+      radius = gRandom->Gaus(0,fRsigma);
+      gRandom->Circle(fX, fY, radius);
+      fVx = fVx + fX;
+      fVy = fVy + fY;
+        
+			// calculate fZ according to some (probability) density function of the
+      // gas
+      fZ=fDensityFunction->GetRandom();
+      fVz = fVz + fZ;
+     	
+    }	
+    printf("Insert coordinates: %f, %f, %f ...\n", fVx, fVy, fVz);
+    primGen->AddTrack(pdgID, fPx, fPy, fPz, fVx, fVy, fVz);     
+	  
+  }	  
       }
   }
   else {
