@@ -20,6 +20,7 @@
 class TEveTrackList;
 class FairEventManager;
 class TObjArray;
+class TParticle;
 
 class FairMCTracks : public FairTask {
 

@@ -4,15 +4,18 @@
 // -------------------------------------------------------------------------
 
 #include "FairMCTracks.h"
+#include "FairEventManager.h"
+#include "FairRootManager.h"
+
 #include "TEveTrack.h"
-#include <iostream>
 #include "TEveTrackPropagator.h"
 #include "TGeoTrack.h"
-#include "FairRootManager.h"
 #include "TClonesArray.h"
 #include "TObjArray.h"
 #include "TEveManager.h"
-#include "FairEventManager.h"
+
+#include "TParticle.h"
+#include <iostream>
 using std::cout;
 using std::endl;
 
