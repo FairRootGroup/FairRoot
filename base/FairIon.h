@@ -49,28 +49,48 @@ public:
 
 
   /** Accessors **/
+  /**
+  * Return the atomic number
+  */
   Int_t GetZ()            const { return fZ; }
+  /**
+   * Return the atomic mass
+  */
   Int_t GetA()            const { return fA; }
+  /**
+   * Return the charge
+  */	
   Int_t GetQ()            const { return fQ; }
+  /**
+  * Return the  excitation energy
+  */
   Double_t GetExcEnergy() const { return fExcEnergy; }
+  /**
+  * Return the mass in GeV
+  */ 
   Double_t GetMass()      const { return fMass; }
 
-
   /** Modifiers **/
+  /**
+  * Set the  excitation energy
+  */
   void SetExcEnergy(Double_t eExc) { fExcEnergy = eExc; }
+  /**
+  * Set the mass in GeV
+  */	
   void SetMass(Double_t mass)      { fMass = mass; }
-
 
    
  private:     
 
   /** Data members **/
-  static Int_t fgNIon;  //! Number of ions instantiated. One per generator.
-  Int_t    fZ;          // Atomic number
-  Int_t    fA;          // Atomic mass
-  Int_t    fQ;          // Electric charge
-  Double_t fExcEnergy;  // Excitation energy [GeV]
-  Double_t fMass;       // Mass [GeV]
+	
+  static Int_t fgNIon;  //! /// Number of ions instantiated. One per generator.
+  Int_t    fZ;          /// Atomic number
+  Int_t    fA;          /// Atomic mass
+  Int_t    fQ;          /// Electric charge
+  Double_t fExcEnergy;  /// Excitation energy [GeV]
+  Double_t fMass;       /// Mass [GeV]
 
 
   ClassDef(FairIon,1);

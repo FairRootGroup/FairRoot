@@ -1,3 +1,8 @@
+// -------------------------------------------------------------------------
+// -----                       FairBaseParSet source file              -----
+// -----                Created 06/01/04  by M. Al/Turany              -----
+// -------------------------------------------------------------------------
+
 #include "FairBaseParSet.h"
 #include "FairPrimaryGenerator.h"
 #include "FairParamList.h"

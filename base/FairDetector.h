@@ -18,55 +18,72 @@ class FairDetector : public FairModule{
 public:
   
     /**
-      constructor
-      Name :  Detector Name
-      Active: kTRUE for active detectors  (ProcessHits() will be called)
-              kFALSE for inactive detectors
+     * constructor
+     * @param Name :  Detector Name
+	 * @param Active: kTRUE for active detectors  (ProcessHits() will be called)
+					  kFALSE for inactive detectors
     */
     FairDetector(const char * Name, Bool_t Active, Int_t DetId=0);
     /**
-      default constructor
-    */
+	 * default constructor
+     */
     FairDetector();
     /**
-      destructor
+     *Destructor
     */
     virtual ~FairDetector();
     /**
-      Initialization of the detector is done here
+     *Initialization of the detector is done here
     */
     virtual void   Initialize();
     /**
-      this method is called for each step during simulation (see FairMCApplication::Stepping())
+	 *This method is called for each step during simulation (see FairMCApplication::Stepping())
+	 *Has to be implimented in specific detector class
+	 * @param FairVolume: current volume in stepping 
     */
     virtual Bool_t ProcessHits( FairVolume *v=0)=0;
     /**
-      this is called at the end of an event
+     *this is called at the end of an event
     */ 
     virtual void   EndOfEvent(){;}
     /**
-      Registers the produced collections in FAIRRootManager.
+     * Registers the produced collections in FairRootManager.
+	 * Has to be implimented in specific detector class
     */
     virtual void   Register()=0;
 
-    /** Gets the produced collections **/
+    /** Gets the produced collections 
+	 * Has to be implimented in specific detector class
+	*/
     virtual TClonesArray* GetCollection(Int_t iColl) const = 0;
 
     /**
-      has to be called after each event to reset the containers    
+     * called after each event to reset the containers
+	 * Has to be implimented in specific detector class
     */
     virtual void   Reset()=0;
     
     virtual void   CopyClones( TClonesArray *cl1,  TClonesArray *cl2 , Int_t offset) {;}
-    
-    virtual void   FinishPrimary(){;}                               
+    /** Action can be taken after each primary here*/
+    virtual void   FinishPrimary(){;}                
+	/** Action can be taken at end of a run here*/
     virtual void   FinishRun(){;}
-    virtual void   BeginPrimary(){;}   
-    virtual void   PostTrack(){;}                                     
-    virtual void   PreTrack(){;}                                      
+	/** Action can be taken before each primary here*/
+    virtual void   BeginPrimary(){;}
+	/** Action can be taken after each track here*/
+    virtual void   PostTrack(){;}           
+	/** Action can be taken before each primary here*/
+    virtual void   PreTrack(){;}  
+	/** Action can be taken before each event here*/
     virtual void   BeginEvent(){;}
+	/** User can impliment this method to set special cuts/process for the detector media
+	 *  setting in this method will overwrite the global setting in g3/4Config.C and SetCuts.C
+	 */
     virtual void   SetSpecialPhysicsCuts(){;} 
-    void SaveGeoParams();
+    /**Save the geometry parameters to the rtdb*/
+	void SaveGeoParams();
+	
+	/**Return the Detector unique ID */
     Int_t  GetDetId() {return fDetId;}
 
 private:
@@ -76,7 +93,7 @@ private:
 
  protected:
 
-    Int_t fDetId; // Detector Id has to be set from ctr.
+    Int_t fDetId; /** Detector Id has to be set from ctr.*/
 
     ClassDef(FairDetector,1)
 

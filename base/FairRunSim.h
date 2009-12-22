@@ -54,7 +54,7 @@ public:
     */
     virtual void        Init();
     /**
-    *       run the analysis or simulation
+    *       run the  simulation
     */
     virtual void    Run(Int_t NEvents =0, Int_t NotUsed=0);
     /**  

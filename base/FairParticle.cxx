@@ -1,3 +1,8 @@
+// -------------------------------------------------------------------------
+// -----                   FairParticle source file                    -----
+// -----            Created 06/01/04  by M. Al-Turany                  -----
+// -------------------------------------------------------------------------
+
 
 // Extended TParticle with pointers to mother and daughters
 // particles

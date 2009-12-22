@@ -20,7 +20,6 @@ which has to use the method FairPrimaryGenerator::AddTrack.
 
 #include "TNamed.h"
 
-//class TVirtualMCStack;
 class FairPrimaryGenerator;
 
 

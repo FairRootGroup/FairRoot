@@ -3,7 +3,7 @@
 
 
 /**
- * Configure the  Analysis
+ * Configure and manage the  Analysis
  * @author M. Al-Turany D. Bertini
  * @version 0.1
  * @since 28.02.05
@@ -24,7 +24,7 @@ class FairField;
 class FairRunAna : public FairRun {
 
 public:
-
+    
     static FairRunAna *Instance();
     virtual ~FairRunAna();
     FairRunAna();

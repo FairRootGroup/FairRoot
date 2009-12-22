@@ -1,15 +1,22 @@
+// -------------------------------------------------------------------------
+// -----                   FairRootManager source file                 -----
+// -----            Created 06/01/04  by M. Al-Turany/D. Bertini       -----
+// -------------------------------------------------------------------------
+
+
+
 // Class FairRootManager
 // ------------------
 // Class that takes care of Root IO.
 
 #include "FairRootManager.h"
-
 #include "FairDetector.h"
 #include "FairRunAna.h"    
 #include "FairRun.h"    
 #include "FairMCApplication.h"
 #include "FairGenericStack.h"
 #include "FairGeoNode.h"
+
 #include "TFriendElement.h"
 #include "TObjArray.h"
 #include "TFolder.h"
@@ -19,6 +26,7 @@
 #include "TGeoManager.h"
 #include "TROOT.h"
 #include "TClonesArray.h"
+
 #include <iostream>
 #include <map>
 #include <list>

@@ -1,25 +1,32 @@
+// -------------------------------------------------------------------------
+// -----               FairMCApplication header file                   -----
+// -----            Created 06/01/04  by M. Al-Turany                  -----
+// -------------------------------------------------------------------------
 
 #ifndef FAIR_MC_APPLICATION_H
 #define FAIR_MC_APPLICATION_H
 
-#include "FairTask.h"
+
 #include "TVirtualMCApplication.h"
-#include <map>
 #include "TLorentzVector.h"
+#include "FairTask.h"
+
+#include <map>
 
 class FairRootManager;
-class TRefArray;
-class TObjArray;
 class FairGenericStack;
 class FairModule;
 class FairDetector;
 class FairField;
-class TTask;
 class FairPrimaryGenerator;
 class FairTrajFilter;
-class TChain;
 class FairVolume;
 class FairRadLenManager;
+
+class TChain;
+class TRefArray;
+class TObjArray;
+class TTask;
 
 
 /**
@@ -58,7 +65,10 @@ class FairMCApplication : public TVirtualMCApplication
     virtual void          AddParticles();                                   // MC Application
 	 /** Add user defined ions (optional) */
     virtual void          AddIons();                                        // MC Application
-     /** Add user defined Tasks to be executed after each event (optional) */
+     /** 
+	  *Add user defined Tasks to be executed after each event (optional)
+	  * @param fTask: Task that has to be excuted during simulation
+	  */
 	void                  AddTask(TTask *fTask);
     /** Define actions at the beginning of the event */
 	virtual void          BeginEvent();                                     // MC Application
@@ -94,31 +104,69 @@ class FairMCApplication : public TVirtualMCApplication
     virtual void          InitGeometry();                                   // MC Application
 	/** Initialize MC engine */
     void                  InitMC(const char *setup,  const char *cuts);
+	/** Initialize Tasks if any*/
     void                  InitTasks();
+	/** True if this is a Geane application */
     Bool_t 		          IsGeane(){return fGeane;}
 	/**Define actions at the end of each track */
     virtual void          PostTrack();                                      // MC Application
 	/** Define actions at the beginning of each track*/
     virtual void          PreTrack();                                       // MC Application
+	/** Run the MC engine 
+	 * @param nofEvents : number of events to simulate
+	 */
     void                  RunMC(Int_t nofEvents);
+	/**
+	* Set the magnetic field for simulation or Geane 
+	* @param field: magnetic field 
+	*/
     void                  SetField(FairField *field);
+	/**
+	 * Set the event generator  for simulation  
+	 * @param fxGenerator: Event generator(s) 
+	 */
     void                  SetGenerator(FairPrimaryGenerator *fxGenerator);
+	/**
+	 * Set the parameter containers needed by Tasks(if any) 
+	 */	
 	void                  SetParTask();
+	/**
+	 * Switch for using Pythia as external decayer 
+	 * @param decayer: if TRUE pythia will decay particles specifid in the Decay Config macro (see SetPythiaDecayerConfig)
+	 */
     void                  SetPythiaDecayer(Bool_t decayer){fPythiaDecayer=decayer;}
+	/**
+	 * set the decay configuration macro to be used by Pythia
+	 */
 	void                  SetPythiaDecayerConfig(const TString decayerConf){fPythiaDecayerConfig=decayerConf;}
+	/**
+	 * Switch for using the radiation length manager
+	 */
     void                  SetRadiationLengthReg(Bool_t RadLen);
+	/**
+	 * Switch for debuging the tracking
+	 */
     void                  SetTrackingDebugMode( Bool_t set ) {fDebug = set;}
+	/**
+	 * Switch for using 2 or 3 body phase-space decay 
+	 * @param  decay: if TRUE 2/3 body phase space decay will be used for particle specified in the User Decay Config macro (see SetUserDecayConfig)
+	 */	
     void                  SetUserDecay(Bool_t decay){fUserDecay= decay;}
+	/**
+	 * set the decay configuration macro to be used by user decay
+	 */	
     void                  SetUserDecayConfig(const TString decayerConf){fUserDecayConfig= decayerConf;}
 
-	/** Define action at each step */
+	/** Define action at each step, dispatch the action to the corresponding detectors */
     virtual void          Stepping();                                       // MC Application
+	/** Stop the run*/
     virtual void          StopRun();                                        
 	/**Define maximum radius for tracking (optional) */
     virtual Double_t      TrackingRmax() const;                             // MC Application
     /** Define maximum z for tracking (optional) */
-	virtual Double_t      TrackingZmax() const;                             // MC Application
-    void                  GeanePreTrack(Float_t *x,Float_t *p ,Int_t PDG);                     // PreTrack for Geane
+	virtual Double_t      TrackingZmax() const;                              // MC Application
+    /** PreTrack for Geane */
+	void                  GeanePreTrack(Float_t *x,Float_t *p ,Int_t PDG);                    
 private:
     // methods
     void RegisterStack();

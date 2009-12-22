@@ -79,15 +79,15 @@ class FairMCEventHeader : public TNamed
 
  private:
 
-  UInt_t     fRunId;       //  Run identifier
-  UInt_t     fEventId;     //  Event identifier
-  Double32_t fX;           //  Primary vertex x [cm]
-  Double32_t fY;           //  Primary vertex y [cm]
-  Double32_t fZ;           //  Primary vertex z [cm]
-  Double32_t fT;           //  Event time [s]
-  Double32_t fB;           //  Impact parameter [fm] (if relevant)
-  Int_t      fNPrim;       //  Number of input tracks
-  Bool_t     fIsSet;       //  Flag whether variables are filled
+  UInt_t     fRunId;       ///  Run identifier
+  UInt_t     fEventId;     ///  Event identifier
+  Double32_t fX;           ///  Primary vertex x [cm]
+  Double32_t fY;           ///  Primary vertex y [cm]
+  Double32_t fZ;           ///  Primary vertex z [cm]
+  Double32_t fT;           ///  Event time [s]
+  Double32_t fB;           ///  Impact parameter [fm] (if relevant)
+  Int_t      fNPrim;       ///  Number of input tracks
+  Bool_t     fIsSet;       ///  Flag whether variables are filled
 
 
   ClassDef(FairMCEventHeader,1);

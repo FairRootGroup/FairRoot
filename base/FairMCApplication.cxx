@@ -1,3 +1,9 @@
+// -------------------------------------------------------------------------
+// -----                    FairDetector source file                   -----
+// -----            Created 06/01/04  by M. Al-Turany                  -----
+// -------------------------------------------------------------------------
+
+
 #include "FairMCApplication.h"
 #include "FairGenericStack.h"
 #include "FairField.h"
@@ -16,6 +22,9 @@
 #include "FairGeoInterface.h"
 #include "FairGeoMedia.h"
 #include "FairGeoMedium.h"
+#include "FairRadLenManager.h"
+#include "FairRuntimeDb.h"
+
 #include "TObjArray.h"
 #include "TGeoTrack.h"
 #include "TGeoVolume.h"
@@ -29,10 +38,10 @@
 #include "TParticlePDG.h"
 #include "TMCParticleType.h"
 #include "THashList.h"
-#include <iostream>
-#include "FairRadLenManager.h"
 #include "TSystem.h"
-#include "FairRuntimeDb.h"
+
+#include <iostream>
+
 using std::cout;              
 using std::endl;
 using std::pair;
@@ -670,7 +679,7 @@ void FairMCApplication::GeneratePrimaries()
  // Fill the user stack (derived from TVirtualMCStack) with primary particles.
  // ---
   if(fEvGen){
-     cout << "FairMCApplication::GeneratePrimaries()" << endl;
+ //    cout << "FairMCApplication::GeneratePrimaries()" << endl;
     if (!fEvGen->GenerateEvent( fStack) ){
        StopRun();
     }

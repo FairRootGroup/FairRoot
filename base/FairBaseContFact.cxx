@@ -1,19 +1,15 @@
-//*-- AUTHOR : Ilse Koenig
-//*-- Created : 25/10/2004
+// -------------------------------------------------------------------------
+// -----                     FairBaseContFact source file              -----
+// -----                Created 25/10/04  by  Ilse Koenig              -----
+// -------------------------------------------------------------------------
 
-/////////////////////////////////////////////////////////////
-//
-//  FairBaseContFact
-//
-//  Factory for the parameter containers in libSts
-//
-/////////////////////////////////////////////////////////////
+
+//  Factory for the parameter containers in Base
 
 #include "FairBaseContFact.h"
-
 #include "FairBaseParSet.h"
-
 #include "FairRuntimeDb.h"
+
 
 ClassImp(FairBaseContFact)
 
@@ -29,10 +25,10 @@ FairBaseContFact::FairBaseContFact() {
 
 void FairBaseContFact::setAllContainers() {
   /** Creates the Container objects with all accepted contexts and adds them to
-   *  the list of containers for the STS library.*/
+   *  the list of containers for the base library.*/
     FairContainer* pTest= new FairContainer("FairBaseParSet",
-                                          "Test class for parameter io",
-                                          "TestDefaultContext");
+                                            "class for parameter io",
+                                            "DefaultContext");
     pTest->addContext("TestNonDefaultContext");
     containers->Add(pTest);
 }
