@@ -264,7 +264,8 @@ Bool_t FairGeanePro::Propagate(Float_t *X1, Float_t *P1, Float_t *X2, Float_t *P
   gMC3->Eufill(1, ein,xlf);
   gMC3->Ertrak(X1,P1,X2,P2,GeantCode, "L");
   if(X2[0]<-1.E29) return kFALSE;
-  else return kTRUE;
+  if(gMC3->IsTrackOut()) return kFALSE;
+  return kTRUE;
 }
 
 Bool_t FairGeanePro::Propagate(Int_t PDG) {
@@ -275,6 +276,8 @@ Bool_t FairGeanePro::Propagate(Int_t PDG) {
   fApp->GeanePreTrack(x1, p1, PDG);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
   if(x2[0]<-1.E29) return kFALSE;
+  if(gMC3->IsTrackOut()) return kFALSE;
+
   ftrklength=gMC3->TrackLength();
 
   Double_t trasp[25];
@@ -552,6 +555,7 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   //check needed for low momentum tracks
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
   if(x2[0]<-1.E29) return 1;
+  if(gMC3->IsTrackOut()) return 1;
   gMC3->GetClose(po1,po2,po3,clen);
       
   // check on cases when only two steps are performed!
