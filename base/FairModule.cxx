@@ -68,7 +68,8 @@ FairModule::FairModule(const char * Name, const char *title ,Bool_t Active)
     
 {
     svList=new TRefArray();
-	vList=new FairVolumeList();
+    vList=new FairVolumeList();
+    
 }
 
 //__________________________________________________________________________

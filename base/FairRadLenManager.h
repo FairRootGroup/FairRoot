@@ -80,7 +80,7 @@ class FairRadLenManager {
  
 public:
    /**Add point to collection*/	
-   void  AddPoint();
+   void  AddPoint(Int_t &ModuleId);
    /**initialize the manager*/
    void  Init();
    /**reset*/

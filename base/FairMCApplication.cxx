@@ -35,6 +35,10 @@
 #include "TInterpreter.h"
 #include "TVirtualMC.h"
 #include "TDatabasePDG.h"
+#include "TGeoTrack.h"
+#include "TGeoVolume.h"
+#include "TParticle.h"
+#include "TGeoManager.h"
 #include "TParticlePDG.h"
 #include "TMCParticleType.h"
 #include "THashList.h"
@@ -383,7 +387,11 @@ void FairMCApplication::Stepping()
         }
   }
   if(fRadLenMan){
-      fRadLenMan->AddPoint();
+      
+      Int_t copyNo;
+      Int_t id = gMC->CurrentVolID(copyNo);
+      fModVolIter =fModVolMap.find(id);
+      fRadLenMan->AddPoint(fModVolIter->second);
   }
 }
 //_____________________________________________________________________________
@@ -543,8 +551,16 @@ void FairMCApplication::ConstructGeometry()
    if(!IsGeane()){
       fModIter->Reset();
       FairModule *Mod=NULL;
+      Int_t NoOfVolumes=0;
+      Int_t NoOfVolumesBefore=0;
+      Int_t ModId=0;
       while((Mod = dynamic_cast<FairModule *>(fModIter->Next()))) {
+         NoOfVolumesBefore=gGeoManager->GetListOfVolumes()->GetEntriesFast();
          Mod->ConstructGeometry();
+	 ModId=Mod->GetModId();
+	 NoOfVolumes=gGeoManager->GetListOfVolumes()->GetEntriesFast();
+	 for (Int_t n=NoOfVolumesBefore; n <= NoOfVolumes; n++) fModVolMap.insert(pair<Int_t, Int_t >(n,ModId));
+//	 cout << "FairModule  ----" << Mod->GetName() << Mod->GetModId()<< "----- Last Volume id  " <<  gGeoManager->GetListOfVolumes()->GetEntriesFast() << endl;
       }
       fSenVolumes=FairModule::svList;
       if(fSenVolumes)fNoSenVolumes=fSenVolumes->GetEntries();

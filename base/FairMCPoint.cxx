@@ -9,7 +9,8 @@
 
 // -----   Default constructor   -------------------------------------------
 FairMCPoint::FairMCPoint() 
- : fTrackID    (-1),
+ : TObject(),
+   fTrackID    (-1),
    fDetectorID (-1),
    fX(0.),
    fY(0.),

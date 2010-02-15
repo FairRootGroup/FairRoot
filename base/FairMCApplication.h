@@ -226,6 +226,10 @@ private:
     /**dispatcher internal use */   
     std::multimap <Int_t, FairVolume* >::iterator fVolIter; //!
     /** Track position*/
+   /**dispatcher internal use RadLeng*/  
+    std::map <Int_t, Int_t > fModVolMap;//!
+    /**dispatcher internal use RadLen*/   
+    std::map <Int_t, Int_t >::iterator fModVolIter; //!
     TLorentzVector fTrkPos; //!
     /** Flag for Radiation length register mode  */
     Bool_t   fRadLength;  //!

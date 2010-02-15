@@ -216,6 +216,9 @@ void FairRunAna::Init() {
    fRootManager->TranicateBranchNames(outTree, "cbmout");
    fRootManager->SetOutTree(outTree);
    fRootManager->WriteFolder();
+
+  // gDirectory->cd(0);
+  // fTask->Write("TaskList");
  //  if(fInputFile==0 && gGeoManager)fRootManager->WriteGeometry();
 }
 
