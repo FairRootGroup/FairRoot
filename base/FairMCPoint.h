@@ -17,10 +17,10 @@
 #ifndef FAIRMCPOINT_H
 #define FAIRMCPOINT_H
 
-#include "TObject.h"
+#include "FairBasePoint.h"
 #include "TVector3.h"
 
-class FairMCPoint : public TObject
+class FairMCPoint : public FairBasePoint
 {
 
  public:    
@@ -48,27 +48,20 @@ class FairMCPoint : public TObject
 
   /** Accessors **/
   Int_t    GetTrackID()    const { return fTrackID; };
-  Int_t    GetDetectorID() const { return fDetectorID; };
-  Double_t GetX()          const { return fX; };
-  Double_t GetY()          const { return fY; };
-  Double_t GetZ()          const { return fZ; };
   Double_t GetPx()         const { return fPx; };
   Double_t GetPy()         const { return fPy; };
   Double_t GetPz()         const { return fPz; };
   Double_t GetTime()       const { return fTime; };
   Double_t GetLength()     const { return fLength; };
   Double_t GetEnergyLoss() const { return fELoss; };
-  void Position(TVector3& pos) { pos.SetXYZ(fX, fY, fZ); };
   void Momentum(TVector3& mom) { mom.SetXYZ(fPx, fPy, fPz); };
 
 
   /** Modifiers **/
-  void SetTrackID(Int_t id)          { fTrackID = id; };
-  void SetDetectorID(Int_t id)       { fDetectorID = id; };
+  virtual void SetTrackID(Int_t id) { fTrackID = id;};
   void SetTime(Double_t time)        { fTime = time; };
   void SetLength(Double_t length)    { fLength = length; };
   void SetEnergyLoss(Double_t eLoss) { fELoss = eLoss; };
-  void SetPosition(const TVector3& pos);
   void SetMomentum(const TVector3& mom);
 
 
@@ -80,8 +73,6 @@ class FairMCPoint : public TObject
  protected:
 
   Int_t fTrackID;               // Track index
-  Int_t fDetectorID;            // Detector ID
-  Double32_t fX, fY, fZ;        // Point coordinates [cm]
   Double32_t fPx, fPy, fPz;     // Momentum components [GeV]
   Double32_t fTime;             // Time since event start [ns]
   Double32_t fLength;           // Track length since creation [cm]
@@ -89,17 +80,9 @@ class FairMCPoint : public TObject
 
 
 
-  ClassDef(FairMCPoint,1)
+  ClassDef(FairMCPoint,2)
 
 };
-
-
-
-inline void FairMCPoint::SetPosition(const TVector3& pos) {
-  fX = pos.X();
-  fY = pos.Y();
-  fZ = pos.Z();
-}
 
 
 inline void FairMCPoint::SetMomentum(const TVector3& mom) {

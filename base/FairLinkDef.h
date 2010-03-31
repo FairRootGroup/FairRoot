@@ -11,6 +11,11 @@
 #pragma link C++ class FairDetector+;
 #pragma link C++ class FairEventHeader;
 #pragma link C++ class FairGenerator+;
+#pragma link C++ class FairLink+;
+#pragma link C++ class FairLinkedData+;
+#pragma link C++ class FairSingleLinkedData+;
+#pragma link C++ class FairMultiLinkedData+;
+#pragma link C++ class FairBasePoint+;
 #pragma link C++ class FairHit+;
 #pragma link C++ class FairIon+;
 #pragma link C++ class FairMCApplication+;
@@ -32,8 +37,6 @@
 #pragma link C++ class FairGenericStack+;
 #pragma link C++ class FairTask+;
 #pragma link C++ class FairFieldFactory+;
-//#pragma link C++ class FairVPoint+;
-//#pragma link C++ class FairVTrack+;
 #pragma link C++ class FairRadLenPoint+;
 #pragma link C++ class FairRadLenManager+;
 

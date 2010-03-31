@@ -4,10 +4,10 @@
 #define FAIRDOUBLEHIT_H
 
 
-#include "TObject.h"
+#include "FairMultiLinkedData.h"
 #include "TVector3.h"
 
-class FairDoubleHit : public TObject {
+class FairDoubleHit : public FairMultiLinkedData {
 protected:
   Int_t  fRefIndex; 
   Int_t fDetectorID; 

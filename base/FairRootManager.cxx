@@ -50,24 +50,24 @@ FairRootManager* FairRootManager::Instance()
 //_____________________________________________________________________________
 FairRootManager::FairRootManager()
   : TObject(),
-		cbmout(0),  
-		cbmroot(0),
-    	fInFile(0),
-		fInChain( new TChain("cbmsim", "/cbmroot")),
-		fOutFile(0),
-		fOutTree(0), 
-		listFolder(0),
-		fListOfTrees(0), 
-    	fListOfClones(0),
-    	fListOfStack(0),
-    	isMerging(kFALSE),  
-    	fMergedStack(0),
-		fListOfMergedClones(0),
-		fObj2(new TObject*[100]),
-		fNObj(-1),
-    	tmpPtrTree(0),
-		fPtrTree(0),
-    	fCurrentEntries(0)
+   cbmout(0),  
+   cbmroot(0),
+   fInFile(0),
+   fInChain( new TChain("cbmsim", "/cbmroot")),
+   fOutFile(0),
+   fOutTree(0), 
+   listFolder(0),
+   fListOfTrees(0), 
+   fListOfClones(0),
+   fListOfStack(0),
+   isMerging(kFALSE),  
+   fMergedStack(0),
+   fListOfMergedClones(0),
+   fObj2(new TObject*[100]),
+   fNObj(-1),
+   tmpPtrTree(0),
+   fPtrTree(0),
+   fCurrentEntries(0)
 
 {
 //
@@ -292,12 +292,18 @@ TFile *FairRootManager::OpenOutFile(const char* fname)
 FairRootManager::~FairRootManager() 
 {
 //
-  if(fInFile) delete fInFile;
-  if(fOutFile) {
-        fOutFile->cd();
-  //	fOutFile->Write();
-  	delete fOutFile;
-  }
+   if(cbmout) delete cbmout;  
+   if(cbmroot) delete cbmroot;
+   if(fInChain) delete fInChain;
+   if(fOutTree)  delete fOutTree;
+   if(tmpPtrTree)delete tmpPtrTree;
+   if(fPtrTree)delete fPtrTree;
+   if(fInFile) delete fInFile;
+   if(fOutFile) {
+      fOutFile->cd();
+     delete fOutFile;
+   }
+
   fgInstance = 0;
   delete fObj2;
 }

@@ -25,7 +25,12 @@ link_directories( ${LINK_DIRECTORIES})
 # List of source files
 set(BASE_SRCS
 FairBaseContFact.cxx 
-FairBaseParSet.cxx 
+FairBaseParSet.cxx
+FairLink.cxx
+FairLinkedData.cxx
+FairSingleLinkedData.cxx
+FairMultiLinkedData.cxx 
+FairBasePoint.cxx
 FairDetector.cxx 
 FairEventHeader.cxx 
 FairGenerator.cxx 
