@@ -59,6 +59,7 @@ FairFieldFactory.cxx
 #FairVTrack.cxx
 FairRadLenPoint.cxx
 FairRadLenManager.cxx
+FairRKPropagator.cxx
 )
 
 if(RULE_CHECKER_FOUND)
