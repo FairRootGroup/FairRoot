@@ -69,7 +69,7 @@ void FairPointSetDraw::Exec(Option_t* option)
 	   q->SetMarkerColor(fColor);
 	   q->SetMarkerSize(1.5);
 	   q->SetMarkerStyle(fStyle);
-	   std::cout << "fPointList: " << fPointList << " " << fPointList->GetEntries() << std::endl;
+	   //std::cout << "fPointList: " << fPointList << " " << fPointList->GetEntries() << std::endl;
 	   for (Int_t i=0; i<npoints; ++i) {
 		  TObject*  p=(TObject *)fPointList->At(i);
 		  if(p!=0) {
