@@ -767,7 +767,7 @@ void FairRootManager::TranicateBranchNames(TBranch *b, TString ffn)
 Int_t FairRootManager::CheckBranch(const char* BrName)
 {
 
-	Int_t returnvalue=2;
+	Int_t returnvalue=0;
 	TObject *Obj1 =NULL;
 	if(cbmout)           Obj1 = cbmout->FindObjectAny(BrName);  //Branch in output folder
 	if(cbmroot && !Obj1) Obj1 = cbmroot->FindObjectAny(BrName); //Branch comes from simulation file
@@ -775,9 +775,9 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
 	TObject *Obj2 =NULL;
 	Obj2=GetMemoryBranch(BrName);  // Branch in Memory
 	
-	if (Obj1!=0) returnvalue=0;		
-	else if(Obj2!=0) returnvalue=1;
-	else returnvalue= 2;
+	if (Obj1!=0) returnvalue=1;		
+	else if(Obj2!=0) returnvalue=2;
+	else returnvalue= 0;
 
 	return returnvalue;
 

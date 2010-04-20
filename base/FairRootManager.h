@@ -57,9 +57,9 @@ class FairRootManager : public TObject
 	/**
 	 Check if Branch persistence or not (Memory branch)
 	 return value:
-	 0 : Branch is Persistance
-	 1 : Memory Branch
-	 2 : Branch does not exist
+	 1 : Branch is Persistance
+	 2 : Memory Branch
+	 0 : Branch does not exist
 	 */
 	Int_t               CheckBranch(const char* BrName);
     TFile*              OpenInFile(const char* fname="cbmsim.root", Bool_t Connect=kFALSE);
