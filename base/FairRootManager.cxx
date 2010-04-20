@@ -505,18 +505,18 @@ TObject * FairRootManager::ActivateBranch(const char *BrName)
           return  fObj2[fNObj];
       }
       for(Int_t i=0;i<listFolder.GetEntriesFast();i++){
-	  TFolder *fold = (TFolder*) listFolder.At(i);
-	  fObj2[fNObj] = fold->FindObjectAny(BrName);
-	  if (fObj2[fNObj] ) break;
+	     TFolder *fold = (TFolder*) listFolder.At(i);
+	     fObj2[fNObj] = fold->FindObjectAny(BrName);
+	     if (fObj2[fNObj] ) break;
       }
       if(!fObj2[fNObj]){
-	  cout << "-E- FairRootManager Branch: "
-	      << BrName  << " not found in Tree" << endl;
+	     cout << "-E- FairRootManager Branch: "
+			  << BrName  << " not found in Tree" << endl;
 	  //	  Fatal(" No Branch in the tree", BrName );
 	  return 0;
       } else {
-	  fInChain->SetBranchStatus(BrName,1);
-	  fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
+	    fInChain->SetBranchStatus(BrName,1);
+	    fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
       }
       AddMemoryBranch( BrName , fObj2[fNObj] );
       return  fObj2[fNObj];
@@ -762,6 +762,26 @@ void FairRootManager::TranicateBranchNames(TBranch *b, TString ffn)
   delete  BrIter;
 }
 
+//_____________________________________________________________________________
+
+Int_t FairRootManager::CheckBranch(const char* BrName)
+{
+
+	Int_t returnvalue=2;
+	TObject *Obj1 =NULL;
+	if(cbmout)           Obj1 = cbmout->FindObjectAny(BrName);  //Branch in output folder
+	if(cbmroot && !Obj1) Obj1 = cbmroot->FindObjectAny(BrName); //Branch comes from simulation file
+	
+	TObject *Obj2 =NULL;
+	Obj2=GetMemoryBranch(BrName);  // Branch in Memory
+	
+	if (Obj1!=0) returnvalue=0;		
+	else if(Obj2!=0) returnvalue=1;
+	else returnvalue= 2;
+
+	return returnvalue;
+
+}
 
 
 ClassImp(FairRootManager)

@@ -53,7 +53,15 @@ class FairRootManager : public TObject
       analysis task, and not written in the tree yet.
       the user have to cast this pointer to the right type.
     */
-    FairGeoNode*         GetGeoParameter(const char* detname, const char* gname);
+    FairGeoNode*        GetGeoParameter(const char* detname, const char* gname);
+	/**
+	 Check if Branch persistence or not (Memory branch)
+	 return value:
+	 0 : Branch is Persistance
+	 1 : Memory Branch
+	 2 : Branch does not exist
+	 */
+	Int_t               CheckBranch(const char* BrName);
     TFile*              OpenInFile(const char* fname="cbmsim.root", Bool_t Connect=kFALSE);
     TFile*              OpenInFile(TFile *f, Bool_t Connect=kFALSE);
     TFile*              OpenOutFile(const char*fname="cbmsim.root");
