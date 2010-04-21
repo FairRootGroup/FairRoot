@@ -30,7 +30,6 @@ the tracking from the macro (M. Al-Turany)
 
 #include <iostream>
 
-class TRandom;
 class TF1;
 class FairGenericStack;
 class FairMCEventHeader;
@@ -150,7 +149,6 @@ class FairPrimaryGenerator : public TNamed
   Int_t       fNTracks;       //  Number of primary tracks in current event
   Bool_t      fSmearVertexZ;  //  Flag for vertex smearing in z
   Bool_t      fSmearVertexXY; //  Flag for vertex smearing in xy
-  TRandom*    fRandGen;       //  Pointer to random generator
   FairGenericStack*   fStack;  //!  Pointer to MC stack
   TObjArray*  fGenList;       //  List of registered generators
   TIterator*  fListIter;      //!  Iterator over generator list

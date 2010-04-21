@@ -34,7 +34,6 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fNTracks(0),   
    fSmearVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
-   fRandGen(new TRandom()),
    fStack(NULL),
    fGenList(new TObjArray()),
    fListIter(fGenList->MakeIterator()),
@@ -68,7 +67,6 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fNTracks(0),   
    fSmearVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
-   fRandGen(new TRandom()),
    fStack(NULL),
    fGenList(new TObjArray()),
    fListIter(fGenList->MakeIterator()),
@@ -89,7 +87,6 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
 
 // -----   Destructor   ----------------------------------------------------
 FairPrimaryGenerator::~FairPrimaryGenerator() {
-  delete fRandGen;
   delete fListIter;
   if (1 == fNrTargets) {
     delete fTargetZ;
@@ -137,7 +134,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack) {
   if(fTimeProb!=0){
      fEventTime = fEventTime + fTimeProb->GetRandom();
   }else{
-     fEventTime = fEventTime + fRandGen->Uniform( fEventTimeMin,  fEventTimeMax);
+     fEventTime = fEventTime + gRandom->Uniform( fEventTimeMin,  fEventTimeMax);
   }
   
   fEvent->SetTime(fEventTime);
@@ -168,7 +165,7 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
 
   // ---> Convert K0 and AntiK0 into K0s and K0L
   if ( pdgid == 311 || pdgid == -311 ) {
-    Double_t test = fRandGen->Uniform(0.,1.);
+    Double_t test = gRandom->Uniform(0.,1.);
     if (test >= 0.5) pdgid = 310;    // K0S
     else             pdgid = 130;    // K0L
   }
@@ -263,12 +260,12 @@ void FairPrimaryGenerator::MakeVertex() {
     vz = fTargetZ[Target];
   }
 
-  if (fSmearVertexZ) vz = fRandGen->Uniform(vz - fTargetDz/2., 
+  if (fSmearVertexZ) vz = gRandom->Uniform(vz - fTargetDz/2., 
 					    vz + fTargetDz/2.);
 
   if (fSmearVertexXY) {
-    if (fBeamSigmaX != 0.) vx = fRandGen->Gaus(fBeamX0, fBeamSigmaX);
-    if (fBeamSigmaY != 0.) vy = fRandGen->Gaus(fBeamY0, fBeamSigmaY);
+    if (fBeamSigmaX != 0.) vx = gRandom->Gaus(fBeamX0, fBeamSigmaX);
+    if (fBeamSigmaY != 0.) vy = gRandom->Gaus(fBeamY0, fBeamSigmaY);
   }
 
   fVertex = TVector3(vx,vy,vz);
