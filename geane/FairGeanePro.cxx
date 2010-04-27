@@ -123,7 +123,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
   }
   
   // do not remove (useful for debug)
-  if(p2[0] == 0 && p2[1] == 0 && p2[2] == 0) return kFALSE; 
+  if(fabs(p2[0]) < 1e-9 && fabs(p2[1]) < 1e-9 && fabs(p2[2]) < 1e-9) return kFALSE; 
   TEnd->SetTrackPar(x2[0], x2[1], x2[2],p2[0],p2[1],p2[2], ch ,fCovOut );              
   return kTRUE;
 
@@ -238,7 +238,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t
   TVector3 di(plo[9], plo[10], plo[11]); // = dj.Cross(dk);
   
 
-  if(fabs(p2[0])==0. && fabs(p2[1])==0. && fabs(p2[2])==0) return kFALSE;
+  if(fabs(p2[0]) < 1e-9 && fabs(p2[1]) < 1e-9 && fabs(p2[2]) < 1e-9) return kFALSE;
   
   TEnd->SetTrackPar(x2[0], x2[1], x2[2],p2[0],p2[1],p2[2], ch ,fCovOut, origin, di, dj, dk);
   
