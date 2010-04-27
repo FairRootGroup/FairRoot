@@ -22,14 +22,27 @@ using std::cout;
 using std::endl;   
 
 ClassImp(FairTrackParH)
-
-  FairTrackParH::FairTrackParH(): FairTrackPar() {
   
+  FairTrackParH::FairTrackParH() :
+ FairTrackPar(),
+ fLm (0.),
+ fPhi (0.), 
+ fX_sc (0.),
+ fY_sc (0.),
+ fZ_sc (0.),
+ fDLm(0.),
+ fDPhi(0.), 
+ fDX_sc(0.),
+ fDY_sc(0.),
+ fDZ_sc(0.)
+{
+    
     for(Int_t i=0;i<15;i++)  {
       fCovMatrix[i]=0;
     }
+    
+}
 
-  }
 // constructor in SC
 FairTrackParH::FairTrackParH(Double_t x, Double_t y, Double_t z,
 			     Double_t lm, Double_t phi, Double_t qp,
