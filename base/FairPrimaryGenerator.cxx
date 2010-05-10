@@ -156,7 +156,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack) {
 // -----   Public method AddTrack   ----------------------------------------
 void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
 				   Double_t pz, Double_t vx, Double_t vy,
-				   Double_t vz) {
+				   Double_t vz, Int_t parent) {
 
   // ---> Add event vertex to track vertex
   vx += fVertex.X();
@@ -187,7 +187,7 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
   // ---> Set all other parameters required by PushTrack
   Int_t    doTracking =  1;   // Go to tracking
   if(!fdoTracking) doTracking = 0 ;
-  Int_t    parent     = -1;   // Primary particle
+ // Int_t    parent     = -1;   // Primary particle (now the value is -1 by default)
   Double_t tof        =  0.;  // Time of flight
   Double_t polx       =  0.;  // Polarisation
   Double_t poly       =  0.;

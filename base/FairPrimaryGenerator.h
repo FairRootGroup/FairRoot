@@ -82,7 +82,7 @@ class FairPrimaryGenerator : public TNamed
       *@param vx,vy,vz Track origin relative to event vertex
   **/
   void AddTrack(Int_t pdgid, Double_t px, Double_t py, Double_t pz,
-		Double_t vx, Double_t vy, Double_t vz);
+		Double_t vx, Double_t vy, Double_t vz, Int_t parent=-1);
 
 
   /** Set beam position and widths. 
