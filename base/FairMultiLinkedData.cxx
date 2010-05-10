@@ -14,22 +14,22 @@ FairMultiLinkedData::FairMultiLinkedData() {
 
 }
 
-FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<int> links){
-	for (int i = 0; i < links.size(); i++){
+FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links){
+	for (UInt_t i = 0; i < links.size(); i++){
 		AddLink(FairLink(dataType, links[i], 1.0));
 	}
 }
 
 
-bool FairMultiLinkedData::IsLinkInList(Int_t type, Int_t index)
+Bool_t FairMultiLinkedData::IsLinkInList(Int_t type, Int_t index)
 {
 	if (LinkPosInList(type, index) > -1)
-		return true;
-	return false;
+		return kFALSE;
+	return kFALSE;
 }
 
 Int_t FairMultiLinkedData::LinkPosInList(Int_t type, Int_t index){
-	for (int i = 0; i < fLinks.size(); i++){
+	for (UInt_t i = 0; i < fLinks.size(); i++){
 		if (index == fLinks[i].GetIndex() && type == fLinks[i].GetType())
 				return i;
 	}
@@ -37,7 +37,7 @@ Int_t FairMultiLinkedData::LinkPosInList(Int_t type, Int_t index){
 }
 
 void FairMultiLinkedData::DeleteLink(Int_t type, Int_t index){
-	int pos = LinkPosInList(type, index);
+	Int_t pos = LinkPosInList(type, index);
 	if (pos < 0) return;
 	else{
 		fLinks.erase(fLinks.begin()+pos);
@@ -47,10 +47,10 @@ void FairMultiLinkedData::DeleteLink(Int_t type, Int_t index){
 FairMultiLinkedData FairMultiLinkedData::GetLinksWithType(Int_t type) const
 {
 	FairMultiLinkedData result;
-	for (int i = 0; i < GetNLinks(); i++)
+	for (UInt_t i = 0; i < GetNLinks(); i++)
 	{
 		if (GetLink(i).GetType() == type)
-			result.AddLink(GetLink(i), false);
+			result.AddLink(GetLink(i), kFALSE);
 	}
 	return result;
 }

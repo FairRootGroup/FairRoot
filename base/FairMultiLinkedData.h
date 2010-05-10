@@ -16,11 +16,11 @@ public:
 	FairMultiLinkedData();																					///< Default constructor
 	virtual ~FairMultiLinkedData(){};
 	FairMultiLinkedData(std::vector<FairLink> links):fLinks(links){}	 										///< Constructor
-	FairMultiLinkedData(Int_t dataType, std::vector<int> links);
+	FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links);
 	virtual std::vector<FairLink>	GetLinks() const {return fLinks;} 					///< returns stored links as FairLinks
 	virtual Int_t 					GetNLinks() const {	return fLinks.size();	} 			///< returns the number of stored links
 	virtual FairLink				GetLink(Int_t pos) const {
-		if (pos < fLinks.size())
+		if (pos < (Int_t)fLinks.size())
 			return fLinks.at(pos);
 		else{
 			std::cout << "-E- FairMultiLinkedData:GetLink(pos) pos " << pos << " outside range " << fLinks.size() << std::endl;
@@ -30,41 +30,41 @@ public:
 
 	virtual FairMultiLinkedData		GetLinksWithType(Int_t type) const;   					///< Gives you a list of links which contain the given type
 
-	virtual void SetLinks(FairMultiLinkedData links, bool addup = true, Float_t mult = 1.0){
+	virtual void SetLinks(FairMultiLinkedData links, Bool_t addup = kTRUE, Float_t mult = 1.0){
 		fLinks.clear();
 		AddLinks(links, addup, mult);
 	}																											///< Sets the links as vector of FairLink
 
 	virtual void SetLink(FairLink link, Float_t mult = 1.0); 																		///< Sets the Links with a single FairLink
 
-	virtual void AddLink(FairLink link, bool addup = true, Float_t mult = 1.0);													///< Adds a FairLink link at the end of fLinks. If multi is true a link is allowed more than once otherwise it is stored only once
-	virtual void AddLinks(FairMultiLinkedData links, bool addup = true, Float_t mult = 1.0){
-		for (int i = 0; i < links.GetNLinks(); i++){
+	virtual void AddLink(FairLink link, Bool_t addup = kTRUE, Float_t mult = 1.0);													///< Adds a FairLink link at the end of fLinks. If multi is kTRUE a link is allowed more than once otherwise it is stored only once
+	virtual void AddLinks(FairMultiLinkedData links, Bool_t addup = kTRUE, Float_t mult = 1.0){
+		for (UInt_t i = 0; i < links.GetNLinks(); i++){
 			AddLink(links.GetLink(i), addup, mult);
 		}
 	}																											///< Adds a List of FairLinks (FairMultiLinkedData) to fLinks
 
 	virtual void SetAllWeights(Double_t weight){
-		for (int i = 0; i < GetNLinks(); i++){
+		for (UInt_t i = 0; i < GetNLinks(); i++){
 			fLinks[i].SetWeight(weight);
 		}
 	}
 
 	virtual void AddAllWeights(Double_t weight){
-		for (int i = 0; i < GetNLinks(); i++){
+		for (UInt_t i = 0; i < GetNLinks(); i++){
 			fLinks[i].SetWeight(weight+fLinks[i].GetWeight());
 		}
 	}
 
 	virtual void MultiplyAllWeights(Double_t weight){
-		for (int i = 0; i < GetNLinks(); i++){
+		for (UInt_t i = 0; i < GetNLinks(); i++){
 			fLinks[i].SetWeight(weight*fLinks[i].GetWeight());
 		}
 	}
 
 
-	virtual bool IsLinkInList(FairLink link)		{return IsLinkInList(link.GetType(), link.GetIndex());} 	///< Test if a given link is in fLinks
-	virtual bool IsLinkInList(Int_t type, Int_t index); 														///< Same as IsLinkInList(FairLink) just with type and index given separately
+	virtual Bool_t IsLinkInList(FairLink link)		{return IsLinkInList(link.GetType(), link.GetIndex());} 	///< Test if a given link is in fLinks
+	virtual Bool_t IsLinkInList(Int_t type, Int_t index); 														///< Same as IsLinkInList(FairLink) just with type and index given separately
 	virtual Int_t LinkPosInList(FairLink link)	{return LinkPosInList(link.GetType(), link.GetIndex());} 	///< returns position of link in fLinks. If it is not in the list -1 is returned
 	virtual Int_t LinkPosInList(Int_t type, Int_t index);														///< Same as LinkPosInList(FairLink)
 
@@ -78,7 +78,7 @@ public:
 	}																											///< Output
 
 	friend std::ostream& operator<< (std::ostream& out, const FairMultiLinkedData& data){
-		for (int i = 0; i < data.GetNLinks(); i++){
+		for (Int_t i = 0; i < data.GetNLinks(); i++){
 			data.GetLink(i).Print(out);
 			out << " ";
 		}
@@ -102,12 +102,12 @@ inline void FairMultiLinkedData::SetLink(FairLink link, Float_t mult){
 	AddLink(link);
 }
 
-inline void FairMultiLinkedData::AddLink(FairLink link, bool addup, Float_t mult){
+inline void FairMultiLinkedData::AddLink(FairLink link, Bool_t addup, Float_t mult){
 
 	Float_t weight = link.GetWeight() * mult;
 
-	if (addup == true)
-		if (IsLinkInList(link) == true){
+	if (addup == kTRUE)
+		if (IsLinkInList(link) == kTRUE){
 			fLinks[LinkPosInList(link)].AddWeight(weight);
 			return;
 		}
