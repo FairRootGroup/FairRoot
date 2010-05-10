@@ -27,7 +27,7 @@ public:
 		
 	
   FairBaseParSet(const char* name="FairBaseParSet",
-             const char* title="Test class for parameter io",
+             const char* title="Class for base parameter io",
              const char* context="BaseDefaultContext");
    /** dtor*/
   ~FairBaseParSet(void);
@@ -45,7 +45,15 @@ public:
 	 */
 	
   Bool_t getParams(FairParamList*);
-  
+	
+	
+	/**
+	 * Set the branch list used in the sim/Reco session
+	 * @param list: TList of branch names 
+	 */
+	
+	void SetBranchNameList(TList *list){fBranchlist = list;}
+	
 	/**
 	 * Set the detector list used in the simulation
 	 * @param array: TObjArray of detector
@@ -77,6 +85,10 @@ public:
 	 */
   void SetContListStr(TObjArray *list){fContNameList= list;}
 	/**
+	 *  Get the Branch name list used in the sim/reco
+	 */	
+  TList                *GetBranchNameList(){return fBranchlist;}    
+	/**
 	 *  Get the detector list used in the simulation
 	 */	
   TObjArray             *GetDetList(){return fDetList;}    
@@ -103,6 +115,8 @@ public:
   
 protected:
 
+  /// Branch names used  in the sim/reco
+  TList                  *fBranchlist;
   /// Detectors used in the simulation
   TObjArray              *fDetList;  
   /// List of FairGeoNodes for sensitive volumes	
@@ -116,7 +130,7 @@ protected:
   /// List of parameter container names in the RUN
   TObjArray              *fContNameList;   
 	
-  ClassDef(FairBaseParSet,3)
+  ClassDef(FairBaseParSet,4)
 
 private:  
   FairBaseParSet(const FairBaseParSet &L);

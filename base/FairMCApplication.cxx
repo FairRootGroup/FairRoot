@@ -636,7 +636,8 @@ void FairMCApplication::InitGeometry()
 
       // store the EventHeader Info
       FairEventHeader *evt = new FairEventHeader();
-      fRootManager->Register("EventHeader.","EvtHeader",evt, kTRUE);
+      //Dot at the end of the name is needed for splitting!!
+	  fRootManager->Register("EventHeader.","EvtHeader",evt, kTRUE);
       cout << " -I- FairMCApplication ->  simulation RunID:  " <<  FairRunSim::Instance()->GetRunId() << endl;
       evt->SetRunId( FairRunSim::Instance()->GetRunId() );
 

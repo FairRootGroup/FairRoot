@@ -121,7 +121,7 @@ void FairRunSim::Init()
 	par->SetGen(GetPrimaryGenerator());
 	par->SetBeamMom(fBeamMom);
 	par->SetGeometry(gGeoManager);
-	
+	par->SetBranchNameList(fRootManager->GetBranchNameList());
 	
 	
 		

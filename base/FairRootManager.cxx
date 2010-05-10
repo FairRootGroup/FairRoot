@@ -26,6 +26,7 @@
 #include "TGeoManager.h"
 #include "TROOT.h"
 #include "TClonesArray.h"
+#include "TList.h"
 
 #include <iostream>
 #include <map>
@@ -67,7 +68,9 @@ FairRootManager::FairRootManager()
    fNObj(-1),
    tmpPtrTree(0),
    fPtrTree(0),
-   fCurrentEntries(0)
+   fCurrentEntries(0),
+   fBranchSeqId(0),
+   fBranchNameList(new TList())
 
 {
 //
@@ -327,9 +330,13 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
    }
    AddMemoryBranch(name, obj );
    //cout << " FairRootManager::Register Adding branch:(Obj) " << name << " In folder : " << folderName << endl;
+   if(fBranchNameList->FindObject(name)==0){;
+		fBranchNameList->AddLast(new TObjString(name));
+		fBranchSeqId++;
+   }
 }
 
-//_____________________________________________________________________________
+//_____________________________________________________________________-- ________
 void  FairRootManager::Register(const char* name,const char* Foldername ,TCollection *obj, Bool_t toFile)
 {	
 /**
@@ -354,7 +361,42 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
    AddMemoryBranch(name, obj );
    //cout << " FairRootManager::Register Adding branch:(collection)  " << name << " In folder : " << Foldername << endl;
 	
+	if(fBranchNameList->FindObject(name)==0){;
+	   fBranchNameList->AddLast(new TObjString(name));
+       fBranchSeqId++;
+	}
 }
+ //_____________________________________________________________________________ 
+
+TString FairRootManager::GetBranchName(Int_t id)
+{
+	if(id < fBranchSeqId){
+	   TObjString *ObjStr= (TObjString *) fBranchNameList->At(id);
+	   return ObjStr->GetString();
+	}else{
+		TString NotFound("Branch not found");
+		return NotFound;
+	}
+
+}
+
+ //_____________________________________________________________________________
+
+Int_t FairRootManager::GetBranchId(TString BrName)
+{
+	TObjString *ObjStr;
+	Int_t Id=-1;
+	for(Int_t t=0; t<fBranchNameList->GetEntries(); t++){
+	   ObjStr= (TObjString *) fBranchNameList->At(t);
+		if(BrName==ObjStr->GetString()){
+			Id=t;
+			break;
+		} 	
+	}
+	return Id;
+	
+}
+
  //_____________________________________________________________________________
 void  FairRootManager::Fill()
 {
@@ -556,7 +598,7 @@ TObject*  FairRootManager::GetMemoryBranch( const char* fName ) {
 		 Obj=ActivateBranch(BrName);
 	// 	cout << "now ActivatedBranch "<<endl;
 	 }	
-    // cout<< "FairRootManager::GetObject will return  " << Obj <<" " << BrName <<  endl;	 
+   //  cout<< "FairRootManager::GetObject will return  " << Obj <<" " << BrName <<  endl;	 
 	 return Obj;
  }
 //_____________________________________________________________________________
@@ -783,7 +825,16 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
 
 }
 
-
+//_____________________________________________________________________________
+void  FairRootManager::SetBranchNameList(TList *list)
+{
+	
+	for(Int_t t=0; t<list->GetEntries(); t++){
+		fBranchNameList->AddAt(list->At(t),t); 
+	}
+	
+	
+}
 ClassImp(FairRootManager)
 
 

@@ -14,6 +14,7 @@ class TFolder;
 class TTree;
 class TNamed;
 class TBranch;
+class TList;
 
 /**
  * I/O Manager class
@@ -41,6 +42,7 @@ class FairRootManager : public TObject
     void                CloseInFile() { if(fInFile)fInFile->Close();} 
     void                CloseOutFile() { if(fOutFile)fOutFile->Close();} 
     void                Fill();
+	TList*              GetBranchNameList(){return fBranchNameList;}
     TTree*              GetInTree(){return fInChain->GetTree();}
     TChain*             GetInChain(){return fInChain;}
     TTree*              GetOutTree(){return fOutTree;}
@@ -83,37 +85,44 @@ class FairRootManager : public TObject
     void                TranicateBranchNames(TBranch *b, TString ffn);
     void                TranicateBranchNames(TTree *fTree, const char *folderName);
     void                CreateGeometryFile(const char *geofile);
-	
+	/**Return branch name by Id*/
+	TString             GetBranchName(Int_t id);
+	/**Return Id of a branch named */
+	Int_t               GetBranchId(TString BrName);
+	void                SetBranchNameList(TList *list);
+		
 private:
-	 /**private methods*/
-	 FairRootManager(const FairRootManager &F);
-     FairRootManager& operator= (const FairRootManager&) {return *this;}
-	 TObject*            GetMergedObject(const char* BrName) ;     
-	 void                ReindexStack(); 
-	 void                AddMemoryBranch(const char*, TObject* );
-	 TObject*            GetMemoryBranch( const char* );   
-	 /**Members*/ 
-	 TFolder*                            cbmout;     /**folder structure of output*/
-	 TFolder*                            cbmroot;    /**folder structure of input*/
-	 TFile*                              fInFile;    /**Input file */
-	 TChain*                             fInChain;    /**Input Tree */ 
-	 TFile*                              fOutFile;   /**Output file */
-	 TTree*                              fOutTree;   /**Output tree */
-	 TObjArray                           listFolder; //!
-	 TObjArray                           fListOfTrees; //!
-	 TObjArray                           fListOfClones; //!
-	 TObjArray                           fListOfStack; //!
-	 Bool_t                              isMerging; //! 
-	 FairGenericStack*                    fMergedStack; //!
-	 TObjArray                           fListOfMergedClones; //!
-	 TObject**                           fObj2; //!
-	 Int_t                               fNObj;//!
-	 std::map < TString , TObject * >    fMap; //!
-	 TTree*                              tmpPtrTree;//!
-	 TTree*                              fPtrTree;//!
-	 Int_t                               fCurrentEntries;//!
-	 static FairRootManager*              fgInstance; /**Singleton instance*/
-	 ClassDef(FairRootManager,1) // Root IO manager
+	/**private methods*/
+	FairRootManager(const FairRootManager &F);
+    FairRootManager& operator= (const FairRootManager&) {return *this;}
+	TObject*            GetMergedObject(const char* BrName) ;     
+	void                ReindexStack(); 
+	void                AddMemoryBranch(const char*, TObject* );
+	TObject*            GetMemoryBranch( const char* );   
+	/**Members*/ 
+	TFolder*                            cbmout;     /**folder structure of output*/
+	TFolder*                            cbmroot;    /**folder structure of input*/
+	TFile*                              fInFile;    /**Input file */
+	TChain*                             fInChain;    /**Input Tree */ 
+	TFile*                              fOutFile;   /**Output file */
+	TTree*                              fOutTree;   /**Output tree */
+	TObjArray                           listFolder; //!
+	TObjArray                           fListOfTrees; //!
+	TObjArray                           fListOfClones; //!
+	TObjArray                           fListOfStack; //!
+	Bool_t                              isMerging; //! 
+	FairGenericStack*                   fMergedStack; //!
+	TObjArray                           fListOfMergedClones; //!
+	TObject**                           fObj2; //!
+	Int_t                               fNObj;//!
+	std::map < TString , TObject * >    fMap; //!
+	TTree*                              tmpPtrTree;//!
+	TTree*                              fPtrTree;//!
+	Int_t                               fCurrentEntries;//!
+	static FairRootManager*             fgInstance; /**Singleton instance*/
+	Int_t                               fBranchSeqId; /**Branch id for this run */
+	TList                               *fBranchNameList; //! /**List of branch names as TObjString*/
+	ClassDef(FairRootManager,1) // Root IO manager
 };
 
 
