@@ -9,7 +9,13 @@
 
 ClassImp(FairLink);
 
-FairLink::FairLink() {
+FairLink::FairLink() 
+ :TObject(),
+  fType(0),
+  fIndex(0),
+  fWeight(1.0)
+  
+{
 	// TODO Auto-generated constructor stub
 
 }

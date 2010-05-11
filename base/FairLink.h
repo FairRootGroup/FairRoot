@@ -16,7 +16,7 @@
 class FairLink : public TObject{
 public:
 	FairLink();
-	FairLink(Int_t type, Int_t index, Float_t weight = 1.):fType(type), fIndex(index), fWeight(weight){}
+	FairLink(Int_t type, Int_t index, Float_t weight = 1.):TObject(), fType(type), fIndex(index), fWeight(weight){}
 	virtual ~FairLink();
 
 	void SetLink(Int_t type, Int_t index, Float_t weight = 1.){fType = type; fIndex = index; fWeight = weight;}
@@ -35,12 +35,15 @@ public:
 		return out;
 	}
 
+    ClassDef(FairLink, 1);
+
+
 private:
 	Int_t fType;
 	Int_t fIndex;
 	Float_t fWeight;
 
-	ClassDef(FairLink, 1);
+	
 };
 
 #endif /* FAIRLINK_H_ */

@@ -4,7 +4,7 @@
 #include "FairMultiLinkedData.h"
 #include "TVector3.h"
 
-#include <vector>
+//#include <vector>
 
 /**
  * Abstract base class for 3D hit information in the FAIR detectors.

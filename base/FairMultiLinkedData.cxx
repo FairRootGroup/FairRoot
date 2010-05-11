@@ -9,12 +9,16 @@
 
 ClassImp(FairMultiLinkedData);
 
-FairMultiLinkedData::FairMultiLinkedData() {
+FairMultiLinkedData::FairMultiLinkedData()
+:FairLinkedData()
+{
 	// TODO Auto-generated constructor stub
 
 }
 
-FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links){
+FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links)
+:FairLinkedData()
+{
 	for (UInt_t i = 0; i < links.size(); i++){
 		AddLink(FairLink(dataType, links[i], 1.0));
 	}
@@ -47,7 +51,7 @@ void FairMultiLinkedData::DeleteLink(Int_t type, Int_t index){
 FairMultiLinkedData FairMultiLinkedData::GetLinksWithType(Int_t type) const
 {
 	FairMultiLinkedData result;
-	for (UInt_t i = 0; i < GetNLinks(); i++)
+	for (Int_t i = 0; i < GetNLinks(); i++)
 	{
 		if (GetLink(i).GetType() == type)
 			result.AddLink(GetLink(i), kFALSE);

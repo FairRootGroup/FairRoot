@@ -39,25 +39,25 @@ public:
 
 	virtual void AddLink(FairLink link, Bool_t addup = kTRUE, Float_t mult = 1.0);													///< Adds a FairLink link at the end of fLinks. If multi is kTRUE a link is allowed more than once otherwise it is stored only once
 	virtual void AddLinks(FairMultiLinkedData links, Bool_t addup = kTRUE, Float_t mult = 1.0){
-		for (UInt_t i = 0; i < links.GetNLinks(); i++){
+		for (Int_t i = 0; i < links.GetNLinks(); i++){
 			AddLink(links.GetLink(i), addup, mult);
 		}
 	}																											///< Adds a List of FairLinks (FairMultiLinkedData) to fLinks
 
 	virtual void SetAllWeights(Double_t weight){
-		for (UInt_t i = 0; i < GetNLinks(); i++){
+		for (Int_t i = 0; i < GetNLinks(); i++){
 			fLinks[i].SetWeight(weight);
 		}
 	}
 
 	virtual void AddAllWeights(Double_t weight){
-		for (UInt_t i = 0; i < GetNLinks(); i++){
+		for (Int_t i = 0; i < GetNLinks(); i++){
 			fLinks[i].SetWeight(weight+fLinks[i].GetWeight());
 		}
 	}
 
 	virtual void MultiplyAllWeights(Double_t weight){
-		for (UInt_t i = 0; i < GetNLinks(); i++){
+		for (Int_t i = 0; i < GetNLinks(); i++){
 			fLinks[i].SetWeight(weight*fLinks[i].GetWeight());
 		}
 	}

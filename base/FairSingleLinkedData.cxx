@@ -9,7 +9,10 @@
 
 ClassImp(FairSingleLinkedData);
 
-FairSingleLinkedData::FairSingleLinkedData():fLink(-1, -1) {
+FairSingleLinkedData::FairSingleLinkedData()
+  :FairLinkedData(),
+  fLink(-1, -1) 
+{
 	// TODO Auto-generated constructor stub
 
 }
