@@ -205,7 +205,9 @@ void FairRunAna::Init() {
 	
 	
    // create a field 
-   if(fieldfact) fField= fieldfact->createFairField();
+   // <DB>
+   // Add test for external FairField settings
+    if(fieldfact && !fField) fField= fieldfact->createFairField();
    // Now call the User initialize for Tasks
    fTask->InitTask();
   // if the vis manager is available then initialize it!
