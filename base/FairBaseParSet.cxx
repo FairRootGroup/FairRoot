@@ -7,14 +7,12 @@
 #include "FairPrimaryGenerator.h"
 #include "FairParamList.h"
 #include "TObjArray.h"
-#include "TList.h"
 
 
 ClassImp(FairBaseParSet)
 
 FairBaseParSet::FairBaseParSet(const char* name,const char* title,const char* context)
 : FairParGenericSet(name,title,context),
-  fBranchlist(new TList()),
   fDetList(0),
   fGeoNodes(new TObjArray()),
   fPriGen(0),
@@ -40,7 +38,6 @@ void FairBaseParSet::clear(void) {
 
 void FairBaseParSet::putParams(FairParamList* l) {
   if (!l) return;
-  l->addObject("Branch Name List", fBranchlist);
   l->addObject("Detector List", fDetList);
   l->addObject("Event Generator", fPriGen);
   l->addObject("FairGeoNodes List", fGeoNodes);
@@ -51,7 +48,6 @@ void FairBaseParSet::putParams(FairParamList* l) {
 
 Bool_t FairBaseParSet::getParams(FairParamList* l) {
   if (!l) return kFALSE;
-  if (!l->fillObject("Branch Name List", fBranchlist)) return kFALSE;
   if (!l->fillObject("Detector List", fDetList)) return kFALSE;
   if (!l->fillObject("Event Generator", fPriGen))return kFALSE;
   if (!l->fillObject("FairGeoNodes List", fGeoNodes)) return kFALSE;

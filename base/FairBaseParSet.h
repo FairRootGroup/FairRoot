@@ -14,7 +14,6 @@
 #include "TObjString.h"
 class FairPrimaryGenerator;
 class TObjArray;
-class TList;
 
 class FairBaseParSet : public FairParGenericSet {
 public:
@@ -45,15 +44,6 @@ public:
 	 */
 	
   Bool_t getParams(FairParamList*);
-	
-	
-	/**
-	 * Set the branch list used in the sim/Reco session
-	 * @param list: TList of branch names 
-	 */
-	
-	void SetBranchNameList(TList *list){fBranchlist = list;}
-	
 	/**
 	 * Set the detector list used in the simulation
 	 * @param array: TObjArray of detector
@@ -85,10 +75,6 @@ public:
 	 */
   void SetContListStr(TObjArray *list){fContNameList= list;}
 	/**
-	 *  Get the Branch name list used in the sim/reco
-	 */	
-  TList                *GetBranchNameList(){return fBranchlist;}    
-	/**
 	 *  Get the detector list used in the simulation
 	 */	
   TObjArray             *GetDetList(){return fDetList;}    
@@ -114,9 +100,7 @@ public:
   TObjArray             *GetContList(){return fContNameList;}
   
 protected:
-
-  /// Branch names used  in the sim/reco
-  TList                  *fBranchlist;
+  
   /// Detectors used in the simulation
   TObjArray              *fDetList;  
   /// List of FairGeoNodes for sensitive volumes	

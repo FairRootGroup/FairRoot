@@ -109,7 +109,17 @@ TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
        }
 
     }
-
+    /**Get Thwe list of branches from the input file and add it to the actual list*/
+    TList *list= dynamic_cast <TList *> (fInFile->Get("BranchList"));
+    if(list) {
+       TObjString *Obj=0;
+       for(Int_t i =0; i< list->GetEntries(); i++){
+          Obj=dynamic_cast <TObjString *> (list->At(i));
+          if(fBranchNameList->FindObject(Obj->GetString().Data())==0){
+              fBranchNameList->AddLast(Obj);
+          }
+       } 
+    }
 
     gROOT->GetListOfBrowsables()->Add(cbmroot);
     listFolder.Add( cbmroot );
@@ -139,14 +149,23 @@ void FairRootManager::AddFile(TString name) {
 void FairRootManager::AddFriend( TFile *f ){
  
   if (fInChain) {
-
-     fInChain->AddFriend("cbmsim",f); 
-     TFolder *added=NULL; 
-     added = dynamic_cast <TFolder *> (f->Get("cbmout"));
-     if(added==0){
+    fInChain->AddFriend("cbmsim",f); 
+    TFolder *added=NULL; 
+    added = dynamic_cast <TFolder *> (f->Get("cbmout"));
+    if(added==0){
        added = dynamic_cast <TFolder *> (f->Get("cbmroot"));       
-     }
-     listFolder.Add( added );  
+    }
+    listFolder.Add( added );  
+
+    /**Get Thwe list of branches from the friend file and add it to the actual list*/
+    TList *list= dynamic_cast <TList *> (f->Get("BranchList"));
+    if(list) {
+       TObjString *Obj=0;
+       for(Int_t i =0; i< list->GetEntries(); i++){
+          Obj=dynamic_cast <TObjString *> (list->At(i));
+          if(fBranchNameList->FindObject(Obj->GetString().Data())==0) fBranchNameList->AddLast(Obj);
+       } 
+    }
 
   }else{
 
@@ -473,6 +492,9 @@ void FairRootManager:: WriteFolder()
     if(cbmout!=0){
        cbmout->Write(); 
     }
+
+    fBranchNameList->Write("BranchList", TObject::kSingleKey);
+
 }
 
 //_____________________________________________________________________________
@@ -674,51 +696,7 @@ void FairRootManager::ReindexStack(){
 void FairRootManager::CopyClones(TClonesArray *cl1, TClonesArray* cl2 , Int_t offset ){
 
   // copy clone mechanism 
-  TString str1( cl1->GetClass()->GetName() ); 
-  TString str2( cl2->GetClass()->GetName() ); 
-  // get clones
-//  TClonesArray &particleRef = *cl2;
-  FairMCApplication *fcbm = FairMCApplication::Instance(); 
-    
-//  Int_t i=0;
-    // test name 
-  if ( str1 != str2 ) Fatal("FairRootManager::CopyClones"," inconsistency "); 
-
-  // Sts 
-  if ( (str1.Contains("FairSTSDoublePoint") ) 
-       || (str1.Contains("FairSTSPoint") ) ) {
-    // cout << " -I  FairSTSDouble Point found at " << offset << " class " << str2 <<  endl; 
-    // reindex the points 
-    FairDetector * sts = fcbm->GetDetector("STS");
-    sts->CopyClones(cl1,cl2,offset);
-
-  } 
-
- 
-  //Tof
-  if ( str1.Contains("FairTofPoint") ) {
-    // cout << " -I  FairSTSDouble Point found at " << offset << " class " << str2 <<  endl; 
-    // reindex the points 
-    FairDetector * tof = fcbm->GetDetector("TOF");
-    tof->CopyClones(cl1,cl2,offset);
-  } 
-
-  //Trd
-  if ( str1.Contains("FairTRDPoint") ) {
-    // cout << " -I  FairSTSDouble Point found at " << offset << " class " << str2 <<  endl; 
-    // reindex the points 
-    FairDetector * trd = fcbm->GetDetector("TRD");
-    trd->CopyClones(cl1,cl2,offset);
-  } 
-
-
-  //Rich
-  if ( str1.Contains("FairRichPoint") ) {
-    // cout << " -I  FairRichDouble Point found at " << offset << " class " << str2 <<  endl; 
-    // reindex the points 
-    FairDetector * trd = fcbm->GetDetector("RICH");
-    trd->CopyClones(cl1,cl2,offset);
-  } 
+  //ToDo 
 
 }
 

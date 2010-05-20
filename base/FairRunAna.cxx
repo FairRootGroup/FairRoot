@@ -183,7 +183,7 @@ void FairRunAna::Init() {
       fTask->SetParTask();
       fRtdb->initContainers( fRunId );
 	  if(gGeoManager==0)par->GetGeometry(); 
-	  fRootManager->SetBranchNameList(par->GetBranchNameList());
+	//  fRootManager->SetBranchNameList(par->GetBranchNameList());
    }else{
    
       FairEventHeader *evt = new FairEventHeader();
