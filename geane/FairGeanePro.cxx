@@ -571,8 +571,8 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   
   if(pca == 1) 
     {
-      if(      po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2]
-			   || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
+      if((po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2])
+	 || (po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2]))
 		{
 		  Int_t quitFlag=0;
 		  Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
@@ -594,8 +594,8 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
     }
   else if(pca == 2) 
     {
-      if(      po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2]
-			   || po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])
+      if((po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2])
+	 || (po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2]))
 		{
 		  Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
 					   TVector3(w2),vpf,vwi,flg,Di,Le);
