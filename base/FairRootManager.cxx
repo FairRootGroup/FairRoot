@@ -117,6 +117,7 @@ TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
           Obj=dynamic_cast <TObjString *> (list->At(i));
           if(fBranchNameList->FindObject(Obj->GetString().Data())==0){
               fBranchNameList->AddLast(Obj);
+              fBranchSeqId++;
           }
        } 
     }
@@ -163,7 +164,10 @@ void FairRootManager::AddFriend( TFile *f ){
        TObjString *Obj=0;
        for(Int_t i =0; i< list->GetEntries(); i++){
           Obj=dynamic_cast <TObjString *> (list->At(i));
-          if(fBranchNameList->FindObject(Obj->GetString().Data())==0) fBranchNameList->AddLast(Obj);
+          if(fBranchNameList->FindObject(Obj->GetString().Data())==0) { 
+               fBranchNameList->AddLast(Obj);
+               fBranchSeqId++;
+          }
        } 
     }
 
@@ -382,7 +386,7 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
 	
 	if(fBranchNameList->FindObject(name)==0){;
 	   fBranchNameList->AddLast(new TObjString(name));
-       fBranchSeqId++;
+           fBranchSeqId++;
 	}
 }
  //_____________________________________________________________________________ 
@@ -789,9 +793,11 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
 
 	Int_t returnvalue=0;
 	TObject *Obj1 =NULL;
-	if(cbmout)           Obj1 = cbmout->FindObjectAny(BrName);  //Branch in output folder
-	if(cbmroot && !Obj1) Obj1 = cbmroot->FindObjectAny(BrName); //Branch comes from simulation file
-	
+        for(Int_t i=0;i<listFolder.GetEntriesFast();i++){
+	     TFolder *fold = (TFolder*) listFolder.At(i);
+	     Obj1= fold->FindObjectAny(BrName);
+	     if (Obj1) break;
+        }
 	TObject *Obj2 =NULL;
 	Obj2=GetMemoryBranch(BrName);  // Branch in Memory
 	
@@ -799,6 +805,10 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
 	else if(Obj2!=0) returnvalue=2;
 	else returnvalue= 0;
 
+	/**  1 : Branch is Persistance
+	     2 : Memory Branch
+	     0 : Branch does not exist
+        */
 	return returnvalue;
 
 }
