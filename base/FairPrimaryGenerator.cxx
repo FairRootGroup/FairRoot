@@ -291,6 +291,22 @@ void  FairPrimaryGenerator::SetEventMeanTime(Double_t mean)
    fTimeProb= new TF1("TimeProb.", form.Data(), 0., mean*10);
    
 }
+// -------------------------------------------------------------------------
+
+
+void  FairPrimaryGenerator::SetEventTime(TF1 *timeProb)
+{
+	if (timeProb!=0) {
+		fTimeProb= timeProb;
+	}else{
+		cout << " \033[5m\033[31m -E FairPrimaryGenerator: invalid time function, Event time is not SET \033[0m " << endl;
+	}
+}
+
+
+
+
+
 
 ClassImp(FairPrimaryGenerator)
 

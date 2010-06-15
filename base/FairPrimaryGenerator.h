@@ -134,7 +134,10 @@ class FairPrimaryGenerator : public TNamed
   
   /** Set the mean time for the event in ns */
   void SetEventMeanTime(Double_t mean);
-  
+	
+  /** Set the time function for event */
+  void SetEventTime(TF1 *timeProb);
+	
 
  protected:
 
