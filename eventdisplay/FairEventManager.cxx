@@ -5,17 +5,14 @@
 **/
 
 #include "FairEventManager.h"
-//#include "FairRootManager.h"
+
+#include "FairRootManager.h"
 #include "FairRunAna.h"
-#include <iostream>
+
 #include "TEveManager.h"
-#include "TGeoVolume.h"
 #include "TEveGeoNode.h"
-#include "TGeoNode.h"
 #include "TGeoManager.h"
-#include "TEveProjectionManager.h"
 #include "TDatabasePDG.h"
-#include "TGLViewer.h"
 
 ClassImp(FairEventManager)
 

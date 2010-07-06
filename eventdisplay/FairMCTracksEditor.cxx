@@ -1,16 +1,9 @@
 #include "FairMCTracksEditor.h"
-#include "TGedFrame.h"
-#include <iostream>
-#include "TStyle.h"
 
-#include "TGLabel.h"
-#include "TG3DLine.h"
-#include "TGButton.h"
-#include "TGNumberEntry.h"
-#include "TGColorSelect.h"
-#include "TGDoubleSlider.h"
 #include "FairEventManager.h"
 #include "FairRunAna.h"
+
+#include "TGLabel.h"
 
 //______________________________________________________________________________
 // FairMCTracksEditor

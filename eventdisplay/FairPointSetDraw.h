@@ -16,11 +16,13 @@
 
 
 #include "FairTask.h"
-#include "TVector3.h"
+//#include "TVector3.h"
 
 class FairEventManager;
+
 class TClonesArray;
 class TEvePointSet;
+class TVector3;
 
 class FairPointSetDraw : public FairTask {
 

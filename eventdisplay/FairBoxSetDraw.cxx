@@ -4,13 +4,18 @@
 // -------------------------------------------------------------------------
 
 #include "FairBoxSetDraw.h"
-#include "FairHit.h"
+
 #include "FairRootManager.h"
-#include "TObjArray.h"
+#include "FairEventManager.h"
+
 #include "TEveManager.h"
+#include "TEveBoxSet.h"
+#include "TClonesArray.h"
+
 #include <iostream>
 using std::cout;
 using std::endl;
+
 
 // -----   Default constructor   -------------------------------------------
 FairBoxSetDraw::FairBoxSetDraw() : fVerbose(0), fq(0),fX(1), fY(1), fZ(1){ }

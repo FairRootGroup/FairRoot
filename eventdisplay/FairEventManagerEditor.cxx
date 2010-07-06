@@ -1,20 +1,16 @@
 #include "FairEventManagerEditor.h"
-#include "TGedFrame.h"
-#include <iostream>
-#include "TStyle.h"
 
-#include "TGLabel.h"
-#include "TG3DLine.h"
-#include "TGButton.h"
-#include "TGNumberEntry.h"
-#include "TGColorSelect.h"
-#include "TGDoubleSlider.h"
+#include "FairRootManager.h"
 #include "FairEventManager.h"
 #include "FairRunAna.h"
+
+#include "TGLabel.h"
+#include "TGButton.h"
+#include "TGNumberEntry.h"
 #include "TGeoManager.h"
-#include "FairRootManager.h"
 #include "TChain.h"
 #include "TEveGValuators.h"
+
 //______________________________________________________________________________
 // FairEventManagerEditor
 //

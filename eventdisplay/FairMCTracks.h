@@ -17,8 +17,11 @@
 #include "FairTask.h"
 #include "TEveTrackPropagator.h"
 #include "TString.h"
-class TEveTrackList;
+
 class FairEventManager;
+
+//class TEveTrackPropagator;
+class TEveTrackList;
 class TObjArray;
 class TParticle;
 

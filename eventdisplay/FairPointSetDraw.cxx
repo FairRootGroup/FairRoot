@@ -4,15 +4,16 @@
 // -------------------------------------------------------------------------
 
 #include "FairPointSetDraw.h"
-#include "TEveQuadSet.h"
+
 #include "FairRootManager.h"
-#include "TClonesArray.h"
-#include "TObjArray.h"
 #include "FairEventManager.h"
+
+#include "TClonesArray.h"
 #include "TEveManager.h"
 #include "TEvePointSet.h"
-#include <iostream>
 #include "TEveTreeTools.h"
+
+#include <iostream>
 using std::cout;
 using std::endl;
 

@@ -20,12 +20,13 @@
 
 
 #include "FairTask.h"
-#include "TEveBoxSet.h"
-#include "TClonesArray.h"
-#include "TVector3.h"
-#include "FairEventManager.h"
 
-
+class TEveBoxSet;
+class Tobject;
+class TVector3;
+class TClonesArray;
+class FairEventManager;
+class FairRootManager;
 
 class FairBoxSetDraw : public FairTask {
 
@@ -70,7 +71,7 @@ protected:
 
   TClonesArray *fList; //!
   FairEventManager *fEventManager;   //!
-  FairRootManager* fManager;
+  FairRootManager* fManager;  
   TEveBoxSet* fq;    //!
   Double_t fX, fY, fZ;
   ClassDef(FairBoxSetDraw,1);

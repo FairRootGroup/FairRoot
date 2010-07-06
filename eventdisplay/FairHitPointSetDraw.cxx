@@ -6,9 +6,12 @@
  */
 
 #include "FairHitPointSetDraw.h"
+
 #include "FairHit.h"
 
 #include <iostream>
+using std::cout;
+using std::endl;
 
 FairHitPointSetDraw::FairHitPointSetDraw()
 {
@@ -25,7 +28,7 @@ TVector3 FairHitPointSetDraw::GetVector(TObject* obj)
 {
 	FairHit* p = (FairHit*)obj;
 	if (fVerbose > 1)
-		std::cout << "-I- FairHitPointSetDraw::GetVector: " << p->GetX() << " " << p->GetY() << " " << p->GetZ() << std::endl;
+		cout << "-I- FairHitPointSetDraw::GetVector: " << p->GetX() << " " << p->GetY() << " " << p->GetZ() << endl;
 	return TVector3(p->GetX(), p->GetY(), p->GetZ());
 }
 

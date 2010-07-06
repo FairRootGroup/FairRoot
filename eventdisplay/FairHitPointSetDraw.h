@@ -9,7 +9,8 @@
 #define FAIRHITPOINTSETDRAW_H_
 
 #include "FairPointSetDraw.h"
-#include "TVector3.h"
+
+class TVector3;
 
 class FairHitPointSetDraw: public FairPointSetDraw
 {
