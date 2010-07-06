@@ -12,6 +12,7 @@
 #include "TEveManager.h"
 #include "TEvePointSet.h"
 #include "TEveTreeTools.h"
+#include "TVector3.h"
 
 #include <iostream>
 using std::cout;

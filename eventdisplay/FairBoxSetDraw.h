@@ -22,7 +22,7 @@
 #include "FairTask.h"
 
 class TEveBoxSet;
-class Tobject;
+class TObject;
 class TVector3;
 class TClonesArray;
 class FairEventManager;

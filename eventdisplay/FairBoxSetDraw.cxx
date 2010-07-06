@@ -11,6 +11,7 @@
 #include "TEveManager.h"
 #include "TEveBoxSet.h"
 #include "TClonesArray.h"
+#include "TVector3.h"
 
 #include <iostream>
 using std::cout;
