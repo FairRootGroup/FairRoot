@@ -166,11 +166,11 @@ inline void FairMultiLinkedData::SetLink(FairLink link, Bool_t bypass, Float_t m
 
 inline void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult){
 
-	SetVerboseLevel(2);
+	//SetVerboseLevel(2);
 	Float_t weight = link.GetWeight() * mult;
 	link.SetWeight(weight);
-	std::cout << fVerbose << std::endl;
-	//if (fVerbose > 1)
+	//std::cout << fVerbose << std::endl;
+	if (fVerbose > 1)
 		std::cout << "Add FairLink: " << link << std::endl;
 
 	if (fPersistanceCheck == kFALSE){
@@ -179,10 +179,10 @@ inline void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t m
 
 	if (bypass == kFALSE){
 		FairRootManager* ioman = FairRootManager::Instance();
-	//	if (fVerbose > 1)
+		if (fVerbose > 1)
 			std::cout << "BranchName " << ioman->GetBranchName(link.GetType()) << " checkStatus: " <<  ioman->CheckBranch(ioman->GetBranchName(link.GetType())) << std::endl;
 		if (link.GetType() > ioman->GetBranchId("MCTrack") && ioman->CheckBranch(ioman->GetBranchName(link.GetType())) != 1){
-	//		if (fVerbose > 1)
+			if (fVerbose > 1)
 				std::cout << "BYPASS!" << std::endl;
 			bypass = kTRUE;
 		}
@@ -195,10 +195,10 @@ inline void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t m
 			if (fVerbose > 1)
 				std::cout << "Entries in " << ioman->GetBranchName(link.GetType()) << " Array: " << array->GetEntries() << std::endl;
 			FairMultiLinkedData* links = (FairMultiLinkedData*)array->At(link.GetIndex());
-		//	if (fVerbose > 1){
+			if (fVerbose > 1){
 				std::cout << "FairMultiLinkedData has " << links->GetNLinks() << " Entries: " << std::endl;
 				std::cout << *links << std::endl;
-		//	}
+			}
 			AddLinks(*links, mult);
 			return;
 		}
