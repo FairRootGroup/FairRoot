@@ -6,6 +6,7 @@
  */
 
 #include "FairLink.h"
+#include "FairRootManager.h"
 
 ClassImp(FairLink);
 
@@ -15,9 +16,23 @@ FairLink::FairLink()
   fIndex(0),
   fWeight(1.0)
   
-{
-	// TODO Auto-generated constructor stub
+{}
 
+FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
+:TObject(),
+ fType(type),
+ fIndex(index),
+ fWeight(weight)
+
+ {}
+
+
+FairLink::FairLink(TString branchName, Int_t index, Float_t weight)
+{
+	FairRootManager* ioman = FairRootManager::Instance();
+	if (0==ioman)
+		std::cout << "-E- FairLink: No iomanager" << std::endl;
+	SetLink(ioman->GetBranchId(branchName), index, weight);
 }
 
 FairLink::~FairLink() {

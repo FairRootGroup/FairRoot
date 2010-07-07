@@ -170,7 +170,6 @@ void FairRootManager::AddFriend( TFile *f ){
           }
        } 
     }
-
   }else{
 
     Fatal("\033[5m\033[31m FairRootManager::AddFriend","not input tree. \033[0m\n");
@@ -790,27 +789,28 @@ void FairRootManager::TranicateBranchNames(TBranch *b, TString ffn)
 
 Int_t FairRootManager::CheckBranch(const char* BrName)
 {
+   Int_t returnvalue=0;
+   TObject *Obj1 =NULL;
+   if (cbmroot) Obj1 = cbmroot->FindObjectAny(BrName);
+   if(cbmout && !Obj1) Obj1 = cbmout->FindObjectAny(BrName);  //Branch in output folder
+   if(!Obj1){
+      for(Int_t i=0;i<listFolder.GetEntriesFast();i++){
+         TFolder *fold = (TFolder*) listFolder.At(i);
+         Obj1= fold->FindObjectAny(BrName);
+         if (Obj1) break;
+      }
+   }
+   TObject *Obj2 =NULL;
+   Obj2=GetMemoryBranch(BrName);  // Branch in Memory
+   if (Obj1!=0) returnvalue=1;		
+   else if(Obj2!=0) returnvalue=2;
+   else returnvalue= 0;
 
-	Int_t returnvalue=0;
-	TObject *Obj1 =NULL;
-        for(Int_t i=0;i<listFolder.GetEntriesFast();i++){
-	     TFolder *fold = (TFolder*) listFolder.At(i);
-	     Obj1= fold->FindObjectAny(BrName);
-	     if (Obj1) break;
-        }
-	TObject *Obj2 =NULL;
-	Obj2=GetMemoryBranch(BrName);  // Branch in Memory
-	
-	if (Obj1!=0) returnvalue=1;		
-	else if(Obj2!=0) returnvalue=2;
-	else returnvalue= 0;
-
-	/**  1 : Branch is Persistance
-	     2 : Memory Branch
-	     0 : Branch does not exist
-        */
-	return returnvalue;
-
+   /**  1 : Branch is Persistance
+        2 : Memory Branch
+        0 : Branch does not exist
+   */
+   return returnvalue;
 }
 
 //_____________________________________________________________________________

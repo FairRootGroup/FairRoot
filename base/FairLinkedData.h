@@ -22,7 +22,7 @@
 #include "FairLink.h"
 
 #include <TObject.h>
-#include <vector>
+#include <set>
 #include <utility>
 
 class FairLinkedData : public TObject{
@@ -39,17 +39,17 @@ public:
 	virtual ~FairLinkedData();
 
 
-	virtual std::vector<FairLink> GetLinks() const = 0;
+	virtual std::set<FairLink> GetLinks() const = 0;
 	virtual Int_t GetNLinks() const = 0;
 	virtual FairLink GetLink(Int_t pos) const = 0;
 
 	virtual Int_t GetDefaultType(){ return fDefaultType;}
 
-	virtual void SetLink(FairLink link, Float_t mult = 1.0) = 0;
+	virtual void SetLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0) = 0;
 
 	virtual void SetDefaultType(Int_t type){	fDefaultType = type;}
 
-	virtual void AddLink(FairLink link, bool addup = true, Float_t mult = 1.0) = 0;
+	virtual void AddLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0) = 0;
 
 	virtual void DeleteLink(Int_t type, Int_t index) = 0;
 

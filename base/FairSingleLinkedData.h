@@ -17,7 +17,7 @@ public:
 	FairSingleLinkedData();
 	virtual ~FairSingleLinkedData(){};
 
-	virtual std::vector<FairLink> GetLinks() const;
+	virtual std::set<FairLink> GetLinks() const;
 
 	virtual Int_t GetNLinks() const {return 1;}
 	virtual FairLink GetLink(Int_t pos = 0) const {return fLink;}
@@ -45,10 +45,10 @@ private:
 	ClassDef(FairSingleLinkedData, 0);
 };
 
-inline std::vector<FairLink> FairSingleLinkedData::GetLinks() const{
-	std::vector<FairLink> result;
+inline std::set<FairLink> FairSingleLinkedData::GetLinks() const{
+	std::set<FairLink> result;
 	if (GetNLinks() > 0)
-		result.push_back(GetLink());
+		result.insert(GetLink());
 	return result;
 }
 

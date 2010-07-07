@@ -9,6 +9,7 @@
 #define FAIRLINK_H_
 
 #include "TObject.h"
+#include "TString.h"
 
 #include <utility>
 #include <iostream>
@@ -16,7 +17,8 @@
 class FairLink : public TObject{
 public:
 	FairLink();
-	FairLink(Int_t type, Int_t index, Float_t weight = 1.):TObject(), fType(type), fIndex(index), fWeight(weight){}
+	FairLink(Int_t type, Int_t index, Float_t weight = 1.);
+	FairLink(TString branchName, Int_t index, Float_t weight = 1.);
 	virtual ~FairLink();
 
 	void SetLink(Int_t type, Int_t index, Float_t weight = 1.){fType = type; fIndex = index; fWeight = weight;}
@@ -29,6 +31,23 @@ public:
 	void AddWeight(Float_t weight) {fWeight += weight;}
 
 	virtual void Print(std::ostream& out = std::cout){out << *this;}
+
+	bool operator==(const FairLink& link) const{
+		if (fType == link.GetType() && fIndex == link.GetIndex())
+			return true;
+		else
+			return false;
+	}
+
+	bool operator<(const FairLink& link) const{
+		if(fType < link.GetType()){
+			return true;
+		}
+		else if (fType == link.GetType() && fIndex < link.GetIndex()){
+			return true;
+		}
+		else return false;
+	}
 
 	friend std::ostream& operator<< (std::ostream& out, FairLink& link){
 		out << "(" << link.GetType() << "/" << link.GetIndex() << "/" << link.GetWeight() << ")";
