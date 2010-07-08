@@ -176,7 +176,10 @@ inline void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t m
 	if (fVerbose > 1)
 		std::cout << "Add FairLink: " << link << std::endl;
 
-	if (fPersistanceCheck == kFALSE || ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0){
+	if (fPersistanceCheck == kFALSE ||
+		link.GetIndex() < 0 ||
+		ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0)
+	{
 		InsertLink(link);
 		return;
 	}
