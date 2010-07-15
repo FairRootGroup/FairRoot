@@ -55,6 +55,8 @@ class FairTrackParH : public FairTrackPar
   /**Get the coveriant matrix*/
   void GetCov(Double_t *Cov) {for(Int_t i=0;i<15;i++) Cov[i]=fCovMatrix[i];}
   void GetCovQ(Double_t *CovQ);
+  // MARS 
+  void GetMARSCov(Double_t Cov66[6][6]) {for(Int_t i=0;i<6;i++) for(Int_t j=0;j<6;j++) Cov66[i][j] = fCovMatrix66[i][j];  } 
   Double_t GetDX_sc();  /**Get dx in SC*/
   Double_t GetDY_sc();  /**Get dy in SC*/
   Double_t GetDZ_sc();  /**Get dz in SC*/
@@ -106,8 +108,10 @@ class FairTrackParH : public FairTrackPar
   Double_t fX_sc, fY_sc, fZ_sc;
   /** Errors for X,Y,Z  (in SC system) */
   Double_t fDX_sc, fDY_sc, fDZ_sc;
-  /** Covariant matrix*/
+  /** Covariant matrix in SC*/
   Double_t fCovMatrix[15];
+  // in MARS
+  Double_t fCovMatrix66[6][6];
 
   /**Calculate the cov. mat. for this helix*/
   void CalCov();

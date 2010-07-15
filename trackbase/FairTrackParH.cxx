@@ -40,7 +40,8 @@ ClassImp(FairTrackParH)
     for(Int_t i=0;i<15;i++)  {
       fCovMatrix[i]=0;
     }
-    
+    for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) fCovMatrix66[i][j] = 0;
+ 
 }
 
 // constructor in SC
@@ -84,7 +85,39 @@ FairTrackParH::FairTrackParH(Double_t x, Double_t y, Double_t z,
   fDX_sc   = 0;
   fDY_sc   = TMath::Sqrt(fabs(fCovMatrix[12]));
   fDZ_sc   = TMath::Sqrt(fabs(fCovMatrix[14]));
+ 
+  Double_t PD[3],RD[6][6],H[3],PC[3],RC[15];
+  Int_t CH;
+  PC[0]   = fQp;
+  PC[1]   = fLm; 
+  PC[2]   = fPhi;
+  
+  for(Int_t i=0;i<15;i++)  {
+    RC[i]=fCovMatrix[i];
+  }
 
+  // retrieve field
+  Double_t pnt[3];
+  pnt[0] = fX; 
+  pnt[1] = fY;
+  pnt[2] = fZ;
+  FairRunAna *fRun = FairRunAna::Instance();
+  fRun->GetField()->GetFieldValue(pnt, H);
+
+  CH=fq;
+  FairGeaneUtil util;
+  util.FromSCToMars(PC,RC,H,CH,PD,RD);
+
+  // test
+  fDPx = sqrt(fabs(RD[0][0]));
+  fDPy = sqrt(fabs(RD[1][1]));
+  fDPz = sqrt(fabs(RD[2][2]));
+  fDX = sqrt(fabs(RD[3][3]));
+  fDY = sqrt(fabs(RD[4][4]));
+  fDZ = sqrt(fabs(RD[5][5]));
+
+  for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) fCovMatrix66[i][j] = RD[i][j];
+ 
 }
 
 //constructor in LAB
@@ -163,7 +196,9 @@ FairTrackParH::FairTrackParH(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
   fDX_sc   = 0;
   fDY_sc   = TMath::Sqrt(fabs(fCovMatrix[12]));
   fDZ_sc   = TMath::Sqrt(fabs(fCovMatrix[14]));
- 
+
+  for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) fCovMatrix66[i][j] = RD[i][j];
+  
 }
 
 FairTrackParH::FairTrackParH(FairTrackParP *parab, Int_t &ierr)   : FairTrackPar()
@@ -279,6 +314,7 @@ void FairTrackParH::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
   fDY = sqrt(fabs(RD[4][4]));
   fDZ = sqrt(fabs(RD[5][5]));
  
+   for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) fCovMatrix66[i][j] = RD[i][j];
  
 }
 
@@ -355,7 +391,9 @@ void  FairTrackParH::SetTrackPar(Double_t x,  Double_t y,  Double_t z,
   fDX = sqrt(fabs(RD[3][3]));
   fDY = sqrt(fabs(RD[4][4]));
   fDZ = sqrt(fabs(RD[5][5]));
-}
+
+  for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) fCovMatrix66[i][j] = RD[i][j];
+} 
 
 
 void FairTrackParH::CalCov()
@@ -494,6 +532,9 @@ FairTrackParH::FairTrackParH(FairTrackPar &Trkbase)
   fDX_sc   = 0;
   fDY_sc   = TMath::Sqrt(fabs(fCovMatrix[12]));
   fDZ_sc   = TMath::Sqrt(fabs(fCovMatrix[14]));
+
+  for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) fCovMatrix66[i][j] = RD[i][j];
+  
 }
 
 FairTrackParH::~FairTrackParH() 

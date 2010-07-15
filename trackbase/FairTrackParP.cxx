@@ -44,6 +44,12 @@ ClassImp(FairTrackParP)
   fSPU(0.)
 {
  //   Reset();
+  for(Int_t i=0;i<15;i++)  {
+    fCovMatrix[i]=0;
+  }
+  for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) fCovMatrix66[i][j] = 0;
+
+
 
 }
 
@@ -449,6 +455,13 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
   fPz_sd = fTW * fPx_sd;
 }
 
+
+// ctor from helix to parabola ---------------------------------------------------------------
+// -- WARNING -- please pay attention to choose a plane which DOES NOT CONTAIN the TRACK, i.e. 
+// the plane normal axis u MUST NOT BE ORTHOGONAL to the particle momentum. If this happens 
+// you will get an error flag:
+// IERR = 1 [when the particle moves perpendicular to u-axis (i.e. ON the CHOSEN PLANE)
+//          ==> v', w' are not definded.] 
 FairTrackParP::FairTrackParP(FairTrackParH *helix, TVector3 dj, TVector3 dk, Int_t &ierr)   
 : FairTrackPar(),
   fU (0.),
