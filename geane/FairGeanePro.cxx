@@ -72,14 +72,14 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
 	  ein[i]=fCov[i]; 
         
 	}
-    if(fPropOption == "VE") {
+    if(fPropOption.Contains("V")) {
       //cout << "Propagate Helix to Volume" << endl;
       Int_t option;
       if(VEnter)option =1;
       else  option =2;
       gMC3->Eufilv(1, ein, (Char_t *)VName.Data(), &VCopyNo, &option);
     }
-    else if(fPropOption == "LE" || fPropOption == "BLE" ) {
+    else if(fPropOption.Contains("L")) {
       if(fPCA == 0) {
 	// move eufill here? maybe not necessary, CHECK; 
 	;}
@@ -157,8 +157,8 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t
      
     }
 
-    if(fPropOption == "PE" || fPropOption == "BPE") gMC3->Eufilp(nepred, ein, pli, plo);
-    else if(fPropOption == "LE" || fPropOption == "BLE") {
+    if(fPropOption.Contains("P")) gMC3->Eufilp(nepred, ein, pli, plo);
+    else if(fPropOption.Contains("L")) {
       if(fPCA == 0) cout << "Propagate Parabola to Parabola in Length not yet implemented" << endl;
       else if(fPCA != 0){
 	
@@ -213,7 +213,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParP *TStart, FairTrackParP *TEnd, Int_t
 		TVector3 jver = TStart->GetJVer();;
 		TVector3 kver = TStart->GetKVer();
 		Bool_t backtracking = kFALSE;
-		if(fPropOption == "BLE") backtracking = kTRUE;
+		if(fPropOption.Contains("B")) backtracking = kTRUE;
 		PropagateFromPlane(jver, kver);
 		PropagateToPlane(fvwi, fromwiretoextr, wiredirection);
 		if(backtracking == kTRUE) fPropOption = "BPE";
@@ -377,7 +377,13 @@ Bool_t FairGeanePro::PropagateToLength(Float_t length)
   gMC3->Eufill(nepred, ein,xlf);
   return kTRUE;
 }
-
+Bool_t FairGeanePro::PropagateOnlyParameters()
+{
+  int index = fPropOption.Index("E");
+  if(index == -1) fPropOption.Append("O");
+  else fPropOption.Replace(index, 1, "O");
+  return kTRUE;
+}
 
 Bool_t FairGeanePro::SetWire(TVector3 extremity1, TVector3 extremity2)
 {

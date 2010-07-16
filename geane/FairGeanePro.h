@@ -37,6 +37,7 @@ class FairGeanePro : public TNamed
   Bool_t PropagateFromPlane(TVector3 &v1, TVector3 &v2);
   Bool_t PropagateToVolume(TString VolName, Int_t CopyNo ,Int_t option);
   Bool_t PropagateToLength(Float_t length);
+  Bool_t PropagateOnlyParameters();
 
   void Init(FairTrackPar *TParam);
   Bool_t Propagate(Int_t PDG);
