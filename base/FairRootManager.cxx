@@ -669,7 +669,11 @@ void FairRootManager::ReindexStack(){
 	  part =  st->GetParticle ( j ) ;        
           // shift what's needed .. 
           if (i>0) {
-                 for (Int_t k=0;k<2; k++ ) part->SetMother(k,part->GetMother(k)+offset[i]); 
+                 for (Int_t k=0;k<2; k++ ){
+                	  Int_t inx;
+                	  inx=part->GetMother(k);
+                	  if(inx>=0) part->SetMother(k,inx+offset[i]);
+                 }
             }
           fMergedStack->AddParticle(part);       
 	}      

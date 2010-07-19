@@ -18,6 +18,7 @@
 #include <iostream>
 
 using std::cout;
+using std::cerr;
 using std::endl;
 
 
@@ -123,6 +124,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack) {
     gen = dynamic_cast<FairGenerator*> (obj);
     if ( ! gen ) return kFALSE;
     const char* genName = gen->GetName();
+    fMCIndexOffset = fNTracks;// number tracks before generator is called
     Bool_t test = gen->ReadEvent(this);
     if ( ! test ) {
       cout << " \033[5m\033[31m -E FairPrimaryGenerator: ReadEvent failed for generator \033[0m"
@@ -156,7 +158,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack) {
 // -----   Public method AddTrack   ----------------------------------------
 void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
 				   Double_t pz, Double_t vx, Double_t vy,
-				   Double_t vz, Int_t parent) {
+				   Double_t vz, Int_t parent,Bool_t wanttracking,Double_t e) {
 
   // ---> Add event vertex to track vertex
   vx += fVertex.X();
@@ -176,18 +178,26 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
 			 "No TDatabasePDG instantiated");
   TParticlePDG* pdgPart = pdgBase->GetParticle(pdgid);
   if ( ! pdgPart ) {
-    cout << "\033[5m\033[31m -E FairPrimaryGenerator: PDG code " << pdgid << " not found in database. Discarding particle. \033[0m " << endl;
+	  if( e<0){
+		  cerr << "\033[5m\033[31m -E FairPrimaryGenerator: PDG code " << pdgid << " not found in database.\033[0m " << endl;
+		  cerr << "\033[5m\033[31m -E FairPrimaryGenerator: Discarding particle \033[0m " << endl;
+		  cerr << "\033[5m\033[31m -E FairPrimaryGenerator: now MC Index is corrupted \033[0m " << endl;
     return;
+	  }else{
+		  cout << "\033[5m\033[31m -W FairPrimaryGenerator: PDG code " << pdgid << " not found in database. This warning can be savely ignored.\033[0m " << endl;
+  }
   }
 
   // ---> Get mass and calculate energy of particle
+  if(e<0){
   Double_t mass = pdgBase->GetParticle(pdgid)->Mass();
-  Double_t e = TMath::Sqrt( px*px + py*py + pz*pz + mass*mass );
+	  e = TMath::Sqrt( px*px + py*py + pz*pz + mass*mass );
+  }// else, use the value of e given to the function
 
   // ---> Set all other parameters required by PushTrack
-  Int_t    doTracking =  1;   // Go to tracking
-  if(!fdoTracking) doTracking = 0 ;
- // Int_t    parent     = -1;   // Primary particle (now the value is -1 by default)
+  Int_t    doTracking =  0;   // Go to tracking
+  if(fdoTracking && wanttracking) doTracking = 1 ;
+  Int_t    dummyparent     = -1;   // Primary particle (now the value is -1 by default)
   Double_t tof        =  0.;  // Time of flight
   Double_t polx       =  0.;  // Polarisation
   Double_t poly       =  0.;
@@ -196,9 +206,10 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
   Double_t weight     =  1.;  // Weight
   Int_t    status     =  0;   // Generation status
 
+  if( parent!=-1) parent+=fMCIndexOffset;// correct for tracks which are in list before generator is called
   // Add track to stack
-  fStack->PushTrack(doTracking, parent, pdgid, px, py, pz, e, vx, vy, vz,
-		    tof, polx, poly, polz, kPPrimary, ntr, weight, status);
+  fStack->PushTrack(doTracking, dummyparent, pdgid, px, py, pz, e, vx, vy, vz,
+		    tof, polx, poly, polz, kPPrimary, ntr, weight, status, parent);
   fNTracks++;
 
 }

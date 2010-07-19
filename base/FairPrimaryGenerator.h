@@ -82,7 +82,7 @@ class FairPrimaryGenerator : public TNamed
       *@param vx,vy,vz Track origin relative to event vertex
   **/
   void AddTrack(Int_t pdgid, Double_t px, Double_t py, Double_t pz,
-		Double_t vx, Double_t vy, Double_t vz, Int_t parent=-1);
+		Double_t vx, Double_t vy, Double_t vz, Int_t parent=-1,Bool_t wanttracking=true,Double_t e=-9e9);
 
 
   /** Set beam position and widths. 
@@ -162,6 +162,7 @@ class FairPrimaryGenerator : public TNamed
   Double_t    fEventTime;     //! Time of event since th start (ns)
   Double_t    fEventMeanTime; //! EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime)
   TF1*        fTimeProb;      //! used to generate random numbers for event time;
+  Int_t       fMCIndexOffset; //! Number of MC tracks before a Generator is called, needed for MC index update
 
   /** Private method MakeVertex. If vertex smearing in xy is switched on, 
       the event vertex is smeared Gaussianlike in x and y direction 
@@ -177,7 +178,7 @@ class FairPrimaryGenerator : public TNamed
 //  FairPrimaryGenerator(const FairPrimaryGenerator &P);
   FairPrimaryGenerator& operator= (const  FairPrimaryGenerator&) {return *this;}
 
-  ClassDef(FairPrimaryGenerator,3);
+  ClassDef(FairPrimaryGenerator,4);
 
 };
 
