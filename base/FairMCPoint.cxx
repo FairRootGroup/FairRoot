@@ -1,11 +1,4 @@
-// -------------------------------------------------------------------------
-// -----                      FairMCPoint source file                   -----
-// -----                  Created 26/07/04  by V. Friese               -----
-// -------------------------------------------------------------------------
-
-
 #include "FairMCPoint.h"
-
 
 // -----   Default constructor   -------------------------------------------
 FairMCPoint::FairMCPoint() 
@@ -15,8 +8,8 @@ FairMCPoint::FairMCPoint()
    fPz(0.),
    fTime (0.),
    fLength(0.),
-   fELoss(0.)
-
+   fELoss(0.),
+   fEventId(0)
 {
   
 }
@@ -27,7 +20,7 @@ FairMCPoint::FairMCPoint()
 // -----   Standard constructor   ------------------------------------------
 FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos, 
 			TVector3 mom, Double_t tof, Double_t length, 
-			Double_t eLoss) 
+			Double_t eLoss, UInt_t EventId) 
   :FairBasePoint(detID, pos),
    fTrackID    ( trackID),
    fPx         ( mom.Px()),
@@ -35,7 +28,8 @@ FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
    fPz         ( mom.Pz()),
    fTime       ( tof),
    fLength     ( length),
-   fELoss      ( eLoss)
+   fELoss      ( eLoss),
+   fEventId    (EventId)
 {
 }
 // -------------------------------------------------------------------------

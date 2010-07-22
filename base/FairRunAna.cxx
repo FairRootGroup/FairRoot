@@ -3,8 +3,6 @@
 // -----            Created 06/01/04  by M. Al-Turany                  -----
 // -------------------------------------------------------------------------
 
-
-
 #include "FairRunAna.h"
 
 #include "FairRootManager.h"
@@ -82,7 +80,6 @@ void  FairRunAna::SetGeomFile(const char *GeoFileName)
    gFile=CurrentFile;
 }
 
-
 //_____________________________________________________________________________
 
 void FairRunAna::Init() {
@@ -114,9 +111,10 @@ void FairRunAna::Init() {
       cout << endl << endl;
       // merge case
       Int_t i = 0;
-      for ( i=0;i<fMergedFileList->GetEntriesFast();i++) { 
+    /*  for ( i=0;i<fMergedFileList->GetEntriesFast();i++) { 
          fRootManager->AddAndMerge((TFile*) fMergedFileList->At(i));
-      } 
+      }
+    */ 
       //Load geometry
 	  if(fLoadGeo) {
             if(fInputGeoFile!=0){  //First check if the user has a separate Geo file!
@@ -167,7 +165,6 @@ void FairRunAna::Init() {
    FairBaseParSet* par=(FairBaseParSet*)
             (fRtdb->getContainer("FairBaseParSet"));
   
-
 	
    // Assure that basic info is there for the run
    if(par && fInputFile){
@@ -285,44 +282,39 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 //_____________________________________________________________________________
 void FairRunAna::Run(Long64_t entry)
 {
-      UInt_t tmpId =0;
-     fRootManager->ReadEvent(entry);
-     tmpId = fEvtHeader->GetRunId();
-     if ( tmpId != fRunId ) {
-          fRunId = tmpId;
-          if( !fStatic ) {
-          cout << " -I FairRunAna : reinitialization done for RunID: "
-               << fRunId << endl;
+   UInt_t tmpId =0;
+   fRootManager->ReadEvent(entry);
+   tmpId = fEvtHeader->GetRunId();
+   if ( tmpId != fRunId ) {
+      fRunId = tmpId;
+      if( !fStatic ) {
+         cout << " -I FairRunAna : reinitialization done for RunID: "
+              << fRunId << endl;
 
-          Reinit( fRunId );
-          fTask->ReInitTask();
-          }
-     }
-
-     fTask->ExecuteTask("");
-     fRootManager->Fill();
-     fTask->FinishTask();
-     fRootManager->Write();
-
+         Reinit( fRunId );
+         fTask->ReInitTask();
+        }
+   }
+   fTask->ExecuteTask("");
+   fRootManager->Fill();
+   fTask->FinishTask();
+   fRootManager->Write();
 }
 //_____________________________________________________________________________
 void FairRunAna::DummyRun(Int_t Ev_start, Int_t Ev_end)
 {
   
-  /** This methode is just for testing, if you are not sure about what you do, don't use it */
-  
-  for (int i=Ev_start; i< Ev_end;i++){
-     fTask->ExecuteTask("");
-     fRootManager->Fill();
-     
+   /** This methode is just for testing, if you are not sure about what you do, don't use it */
+   for (int i=Ev_start; i< Ev_end;i++){
+      fTask->ExecuteTask("");
+      fRootManager->Fill();
    }
-  fTask->FinishTask();
-  fRootManager->Write();
+   fTask->FinishTask();
+   fRootManager->Write();
 
  }
 //_____________________________________________________________________________
-
-
+/*
 void FairRunAna::AddAndMerge (const char *Name)
 {
   TFile *fFile = new TFile(Name);
@@ -333,6 +325,7 @@ void FairRunAna::AddAndMerge (const char *Name)
   }
 
 }
+*/
 //_____________________________________________________________________________
 TFile *FairRunAna::SetInputFile(TString name)
 {

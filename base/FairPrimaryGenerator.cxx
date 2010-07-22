@@ -1,10 +1,4 @@
-// -------------------------------------------------------------------------
-// -----                FairPrimaryGenerator source file                -----
-// -----                 Created 23/06/04  by V. Friese                -----
-// -------------------------------------------------------------------------
-
 #include "FairPrimaryGenerator.h"
-
 #include "FairGenerator.h"
 #include "FairMCEventHeader.h"
 #include "FairGenericStack.h"

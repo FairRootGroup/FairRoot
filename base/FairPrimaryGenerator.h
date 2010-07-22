@@ -1,9 +1,3 @@
-// -------------------------------------------------------------------------
-// -----                  FairPrimaryGenerator header file              -----
-// -----                 Created 23/06/04  by  V. Friese               -----
-// -------------------------------------------------------------------------
-
-
 /** FairPrimaryGenerator.h
  *@author V.Friese  <v.friese@gsi.de>
  *
@@ -140,29 +134,51 @@ class FairPrimaryGenerator : public TNamed
 	
 
  protected:
+/**  Nominal beam position at target in x [cm] */
+  Double_t    fBeamX0;        
+ /** Nominal beam position at target in y [cm]*/
+  Double_t    fBeamY0;       
+/** Beam width (Gaussian) in x [cm]*/
+  Double_t    fBeamSigmaX;    
+/**  Beam width (Gaussian) in y [cm]*/
+  Double_t    fBeamSigmaY;    
+  /**  Nominal z position of center of targets [cm]*/
+  Double_t*   fTargetZ;       //!
+/**  Number of targets;*/
+  Int_t       fNrTargets;     
+/**  Full target thickness [cm]*/
+  Double_t    fTargetDz;      
+ /** Vertex position of current event [cm]*/
+  TVector3    fVertex;       
+ /** Number of primary tracks in current event*/
+  Int_t       fNTracks;      
+ /**  Flag for vertex smearing in z*/
+  Bool_t      fSmearVertexZ; 
+ /**  Flag for vertex smearing in xy*/
+  Bool_t      fSmearVertexXY;
+/**  Pointer to MC stack*/
+  FairGenericStack*   fStack; //! 
+/**  List of registered generators */
+  TObjArray*  fGenList;       
+ /**  Iterator over generator list */
+  TIterator*  fListIter;      //!
+ /**  Pointer to MCEventHeader */
+  FairMCEventHeader* fEvent;  //!
+/** go to tracking  */
+  Bool_t      fdoTracking;    //! 
+ /** min time for one event (ns) */
+  Double_t    fEventTimeMin;  //!
+ /** max time for one Event (ns) */
+  Double_t    fEventTimeMax;  //!
+/** Time of event since th start (ns) */
+  Double_t    fEventTime;     //! 
+/** EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime) */
+  Double_t    fEventMeanTime; //! 
+ /** used to generate random numbers for event time; */
+  TF1*        fTimeProb;      //!
+/** Number of MC tracks before a Generator is called, needed for MC index update */
+  Int_t       fMCIndexOffset; //! 
 
-  Double_t    fBeamX0;        //  Nominal beam position at target in x [cm]
-  Double_t    fBeamY0;        //  Nominal beam position at target in y [cm]
-  Double_t    fBeamSigmaX;    //  Beam width (Gaussian) in x [cm]
-  Double_t    fBeamSigmaY;    //  Beam width (Gaussian) in y [cm]
-  Double_t*   fTargetZ;       //!  Nominal z position of center of targets [cm]
-  Int_t       fNrTargets;     //  Number of targets;
-  Double_t    fTargetDz;      //  Full target thickness [cm]
-  TVector3    fVertex;        //  Vertex position of current event [cm]
-  Int_t       fNTracks;       //  Number of primary tracks in current event
-  Bool_t      fSmearVertexZ;  //  Flag for vertex smearing in z
-  Bool_t      fSmearVertexXY; //  Flag for vertex smearing in xy
-  FairGenericStack*   fStack;  //!  Pointer to MC stack
-  TObjArray*  fGenList;       //  List of registered generators
-  TIterator*  fListIter;      //!  Iterator over generator list
-  FairMCEventHeader* fEvent;   //!  Pointer to MCEventHeader
-  Bool_t      fdoTracking;    //! go to tracking  
-  Double_t    fEventTimeMin;  //! min time for one event (ns)
-  Double_t    fEventTimeMax;  //! max time for one Event (ns)
-  Double_t    fEventTime;     //! Time of event since th start (ns)
-  Double_t    fEventMeanTime; //! EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime)
-  TF1*        fTimeProb;      //! used to generate random numbers for event time;
-  Int_t       fMCIndexOffset; //! Number of MC tracks before a Generator is called, needed for MC index update
 
   /** Private method MakeVertex. If vertex smearing in xy is switched on, 
       the event vertex is smeared Gaussianlike in x and y direction 

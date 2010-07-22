@@ -3,8 +3,6 @@
 // -----            Created 06/01/04  by M. Al-Turany/D. Bertini       -----
 // -------------------------------------------------------------------------
 
-
-
 // Class FairRootManager
 // ------------------
 // Class that takes care of Root IO.
@@ -14,7 +12,6 @@
 #include "FairRunAna.h"    
 #include "FairRun.h"    
 #include "FairMCApplication.h"
-#include "FairGenericStack.h"
 #include "FairGeoNode.h"
 
 #include "TFriendElement.h"
@@ -59,11 +56,6 @@ FairRootManager::FairRootManager()
    fOutTree(0), 
    listFolder(0),
    fListOfTrees(0), 
-   fListOfClones(0),
-   fListOfStack(0),
-   isMerging(kFALSE),  
-   fMergedStack(0),
-   fListOfMergedClones(0),
    fObj2(new TObject*[100]),
    fNObj(-1),
    tmpPtrTree(0),
@@ -84,59 +76,52 @@ FairRootManager::FairRootManager()
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
 {
-  fInFile=f;
-  if (fInFile->IsZombie()) {
-    cout << "Error opening input file: " << endl;
-    exit(-1);
-  }else{
-    if(Connect) {
+   /** Check if the file is there and readable otherwise exit*/
+   fInFile=f;
+   if (fInFile->IsZombie()) {
+      cout << "Error opening input file: " << endl;
+      exit(-1);
+   }else{
+      /** if connect is true, this file is part of the input and should go to a chain*/
+      if(Connect) {
+         if (!fInChain )
+         fInChain = new TChain("cbmsim", "/cbmroot");
+         fInChain->Add( fInFile->GetName() );
+      }
+      /** get the folder structure from file which describe the input tree */
+      cbmroot= dynamic_cast <TFolder *> (fInFile->Get("cbmroot"));
+      if(!cbmroot){
+         cbmroot= dynamic_cast <TFolder *> (fInFile->Get("cbmout"));
+         if(!cbmroot){
+            cbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");   
+         }else{
+            cbmroot->SetName("cbmroot");
+         }
+      }
 
-      if (!fInChain )
-      fInChain = new TChain("cbmsim", "/cbmroot");
 
-      fInChain->Add( fInFile->GetName() );
-
-    }
-
-
-    cbmroot= dynamic_cast <TFolder *> (fInFile->Get("cbmroot"));
-    if(!cbmroot){
-       cbmroot= dynamic_cast <TFolder *> (fInFile->Get("cbmout"));
-       if(!cbmroot){
-          cbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");   
-       }else{
-          cbmroot->SetName("cbmroot");
-       }
-
-    }
-    /**Get Thwe list of branches from the input file and add it to the actual list*/
-    TList *list= dynamic_cast <TList *> (fInFile->Get("BranchList"));
-    if(list) {
-       TObjString *Obj=0;
-       for(Int_t i =0; i< list->GetEntries(); i++){
-          Obj=dynamic_cast <TObjString *> (list->At(i));
-          if(fBranchNameList->FindObject(Obj->GetString().Data())==0){
-              fBranchNameList->AddLast(Obj);
-              fBranchSeqId++;
-          }
-       } 
-    }
-
-    gROOT->GetListOfBrowsables()->Add(cbmroot);
-    listFolder.Add( cbmroot );
-  }
-
-  
-  fInChain->GetEntry(0);
-  fPtrTree = fInChain->GetTree();
-  fCurrentEntries =  (Int_t) fInChain->GetTree()->GetEntries();
-  
-  //  fInFile->Close();
-  //  fInFile = fInChain->GetFile();
-  // cout << "-I FairRootManager: Opening input file: " << fInFile->GetName()
- //      << " Nb entries: " << fCurrentEntries << endl;
-  return  fInFile;
+      /**Get The list of branches from the input file and add it to the actual list*/
+      TList *list= dynamic_cast <TList *> (fInFile->Get("BranchList"));
+      if(list) {
+         TObjString *Obj=0;
+          for(Int_t i =0; i< list->GetEntries(); i++){
+             Obj=dynamic_cast <TObjString *> (list->At(i));
+             if(fBranchNameList->FindObject(Obj->GetString().Data())==0){
+                fBranchNameList->AddLast(Obj);
+                fBranchSeqId++;
+             }
+          } 
+      }
+      gROOT->GetListOfBrowsables()->Add(cbmroot);
+      listFolder.Add( cbmroot );
+   }
+//  fInChain->SetBranchStatus("*",0);
+   fInChain->GetEntry(0);
+   fPtrTree = fInChain->GetTree();
+   fCurrentEntries =  (Int_t) fInChain->GetTree()->GetEntries();
+   return  fInFile;
 }
+
 //_____________________________________________________________________________}
 void FairRootManager::SetWildcard(TString Wildcard) {
  fInChain->Add(Wildcard);
@@ -158,7 +143,7 @@ void FairRootManager::AddFriend( TFile *f ){
     }
     listFolder.Add( added );  
 
-    /**Get Thwe list of branches from the friend file and add it to the actual list*/
+    /**Get The list of branches from the friend file and add it to the actual list*/
     TList *list= dynamic_cast <TList *> (f->Get("BranchList"));
     if(list) {
        TObjString *Obj=0;
@@ -176,133 +161,33 @@ void FairRootManager::AddFriend( TFile *f ){
 
   }
 }
-
-////	"\033[5m\033[31mThis is blue.\033[0m\n" 
-//_____________________________________________________________________________}
-void  FairRootManager::AddAndMerge (TFile *f ) {
- 
-  cout << "-I  FairRootManager::AddAndMerge called for file: " << 
-    f->GetName() << endl;
-  if ( fInChain ) {
-
-    // do the merging ...  
-   
-   TFolder *added=NULL; 
-    added = dynamic_cast <TFolder *> (f->Get("cbmout"));
-    
-    if ( added == 0 ) {      
-      // test consistency on branches
-      TObjArray *brList = (TObjArray*) fInChain->GetListOfBranches(); 
-      Int_t nBranches =  brList->GetEntriesFast();
-      // Get the TTree from file
-      TTree* t = (TTree* ) f->Get("cbmsim"); 
-      if ( nBranches == t->GetListOfBranches()->GetEntriesFast() 
-          && ( t->GetEntries() >= fInChain->GetEntries() )  ) {   	
-	fListOfTrees.Add ( t ) ; 
-	// Get Run Info
-       // FairMCApplication *fcbm = (FairMCApplication*) f->Get("Fair");
-
-	TFolder *fd = (TFolder*) f->Get("cbmroot");
-	FairGenericStack *stack = (FairGenericStack*) fd->FindObjectAny("FairStack");
-        //Create memory-mapped stack 
-        if (!isMerging) {
-                   fMergedStack = new FairGenericStack(1000);
-      	} 
-        // activate stack 
-        t->SetBranchAddress("FairStack",&stack);
-        fListOfStack.Add( stack ); 
-
-        // Get Clones and activate them 
-	// Get Objects from tree
-       TObjArray * clist = new TObjArray(); 
-	for (Int_t k=0; k<nBranches; k++ ){
-	  TBranch * br = (TBranch*) brList->At(k); 
-	  cout << "-I FairRootManager: Branches: " << br->GetName() << endl;
-	  TObject * obj = (TObject* ) fd->FindObjectAny( br->GetName() );  
-	  if (obj ) {
-	   cout << "-I FairRootManager: Object name " << obj->GetName() 
-                << " class: " << obj->IsA()->GetName() << endl;    
-
-	     if (strcmp(obj->IsA()->GetName(),"TClonesArray") == 0 ){
-               TClass * cl = ((TClonesArray*) obj)->GetClass();
-               if (!isMerging ) {
-                  cout << "-I FairRootManager: Adding class " 
-                       << cl->GetName() << endl; 
-                  
-		  TClonesArray * m_clone = new TClonesArray(cl->GetName());
-		  m_clone->SetName(   br->GetName() );                 
-                  fListOfMergedClones.Add( m_clone );
-	       }  
-	       // Internal bookkeepin of clones
-	
-                clist->Add( (TClonesArray*) 
-                             fd->FindObjectAny( br->GetName() ) );     
-		
-             
-                //Set Branch address for clones
-		Int_t nobj = clist->GetEntriesFast(); 
-                TClonesArray *clon = (TClonesArray*) clist->At(nobj-1);          
-                 t->SetBranchAddress(clon->GetName(),&clon);   
-
-	     }
-
-
-	    
-	  } else Fatal("FairRootManager::AddAndMerge","No object found in Tree");
-	    
-	}//! branches        
-       fListOfClones.Add( clist );	
-
-      } else {
-	Fatal(" FairRootManager::AddAndMerge "," Branches inconsistency ");
-      } 
-      
-      
-    }else{ 
-      Fatal(" FairRootManager::AddAndMerge "," No merging of Analysis Output or inconsistent Nentries");   
-    }  
-   
-  isMerging = kTRUE;    
-  } else {
-  isMerging = kFALSE;     
-    Fatal(" FairRootManager::AddAndMerge ","No Input File defined"); 
-
-  }
- 
-}
-
-
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenOutFile(TFile* f)      
 {
-
- fOutFile=f;
- if (fOutFile->IsZombie()) {
-     cout << "-E- FairRootManager: Error opening output file " << endl;
-  exit(-1);
- }
-  FairRun* fRun = FairRun::Instance();
-
- if(!fRun->IsAna()){
-  cbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-  gROOT->GetListOfBrowsables()->Add(cbmroot);
- }else{
-  cbmout= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
-  gROOT->GetListOfBrowsables()->Add(cbmout);
- }
- return fOutFile;
-
+   fOutFile=f;
+   /**Check the output file, if anything wronge with it exit!*/
+   if (fOutFile->IsZombie()) {
+      cout << "-E- FairRootManager: Error opening output file " << endl;
+      exit(-1);
+   }
+   FairRun* fRun = FairRun::Instance();
+   /**Check if a simulation run!*/
+   if(!fRun->IsAna()){
+      cbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
+      gROOT->GetListOfBrowsables()->Add(cbmroot);
+   }else{ 
+      cbmout= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
+      gROOT->GetListOfBrowsables()->Add(cbmout);
+   }
+   return fOutFile;
 }
 
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenInFile(const char* fname, Bool_t Connect)
 {
- 
   if(fInFile) CloseInFile();
   fInFile = new TFile(fname);
-  return OpenInFile(fInFile, Connect);
-      
-  
+  return OpenInFile(fInFile, Connect); 
 }
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenOutFile(const char* fname)
@@ -378,42 +263,42 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
       }
       obj->SetName(name);
       folder->Add(obj);
-    }
+   }
     /**Keep the Object in Memory, and do not write it to the tree*/
    AddMemoryBranch(name, obj );
-   //cout << " FairRootManager::Register Adding branch:(collection)  " << name << " In folder : " << Foldername << endl;
-	
-	if(fBranchNameList->FindObject(name)==0){;
-	   fBranchNameList->AddLast(new TObjString(name));
-           fBranchSeqId++;
-	}
+
+   if(fBranchNameList->FindObject(name)==0){;
+      fBranchNameList->AddLast(new TObjString(name));
+      fBranchSeqId++;
+   }
 }
  //_____________________________________________________________________________ 
 
 TString FairRootManager::GetBranchName(Int_t id)
 {
-	if(id < fBranchSeqId){
-	   TObjString *ObjStr= (TObjString *) fBranchNameList->At(id);
-	   return ObjStr->GetString();
-	}else{
-		TString NotFound("Branch not found");
-		return NotFound;
-	}
-
+   /**Return the branch name from the id*/
+   if(id < fBranchSeqId){
+      TObjString *ObjStr= (TObjString *) fBranchNameList->At(id);
+      return ObjStr->GetString();
+   }else{
+      TString NotFound("Branch not found");
+      return NotFound;
+   }
 }
 
  //_____________________________________________________________________________
 
 Int_t FairRootManager::GetBranchId(TString BrName)
 {
-	TObjString *ObjStr;
-	Int_t Id=-1;
-	for(Int_t t=0; t<fBranchNameList->GetEntries(); t++){
-	   ObjStr= (TObjString *) fBranchNameList->At(t);
-		if(BrName==ObjStr->GetString()){
-			Id=t;
-			break;
-		} 	
+   /**Return the branch id from the name*/
+   TObjString *ObjStr;
+   Int_t Id=-1;
+   for(Int_t t=0; t<fBranchNameList->GetEntries(); t++){
+      ObjStr= (TObjString *) fBranchNameList->At(t);
+      if(BrName==ObjStr->GetString()){
+      Id=t;
+      break;
+   } 	
 	}
 	return Id;
 	
@@ -434,122 +319,98 @@ void  FairRootManager::Fill()
 //_____________________________________________________________________________
 void FairRootManager:: Write()
 {
-// Writes the tree in the file.
-// ---
-
+/** Writes the tree in the file.*/
   if(fOutTree!=0){
-    // Get the file handle to the current output file from the tree. 
-    // If ROOT splits the file (due to the size of the file) the file 
-    // handle fOutFile is lost and the program crash while writing the
-    // last part of the last file.
-
-    fOutFile = fOutTree->GetCurrentFile(); 
-
-    fOutFile->cd();
-    fOutTree->Write();
+  /** Get the file handle to the current output file from the tree. 
+    * If ROOT splits the file (due to the size of the file) the file 
+    * handle fOutFile is lost and the program crash while writing the
+    * last part of the last file.
+  */
+      fOutFile = fOutTree->GetCurrentFile(); 
+      fOutFile->cd();
+      fOutTree->Write();
   }else{
      cout << "-E- FairRootManager::Write()  No Output Tree"  << endl;
   }
-  
 }
+//_____________________________________________________________________________
 
 void FairRootManager:: WriteGeometry()
 {
-// Writes the geometry in the file.
-// ---
+/** Writes the geometry in the current output file.*/
 
-  if(fOutTree!=0){
-    fOutFile = fOutTree->GetCurrentFile(); 
-    fOutFile->cd();
-    gGeoManager->Write();
-  }
-
+   if(fOutTree!=0){
+      fOutFile = fOutTree->GetCurrentFile(); 
+      fOutFile->cd();
+      gGeoManager->Write();
+   }
 }
+//_____________________________________________________________________________
 
 void FairRootManager::CreateGeometryFile(const char *geofile)
 {
-// Writes the geometry in a separate file.
-// This is only to have a file which can be read without the
-// framework. The geomanager used by the framework is still
-// stored in the parameter file or database
-// ---
-
-  TFile* oldfile=gFile;
-  TFile* file=new TFile(geofile,"RECREATE");
-  file->cd();
-  gGeoManager->Write();
-  file->Close();
-  file->Delete();
-  gFile=oldfile;
-
+/** Writes the geometry in a separate file.
+ *  This is only to have a file which can be read without the
+ *  framework. The geomanager used by the framework is still
+ *  stored in the parameter file or database
+*/
+   TFile* oldfile=gFile;
+   TFile* file=new TFile(geofile,"RECREATE");
+   file->cd();
+   gGeoManager->Write();
+   file->Close();
+   file->Delete();
+   gFile=oldfile;
 }
 
 //_____________________________________________________________________________
 void FairRootManager:: WriteFolder()
 {
-    fOutFile->cd();
-
-    if(cbmroot!=0 && fInFile==0){
-       cbmroot->Write();
-    }
-    if(cbmout!=0){
+   fOutFile->cd();
+   if(cbmroot!=0 && fInFile==0){
+      cbmroot->Write();
+   }
+   if(cbmout!=0){
        cbmout->Write(); 
-    }
-
-    fBranchNameList->Write("BranchList", TObject::kSingleKey);
-
+   }
+   fBranchNameList->Write("BranchList", TObject::kSingleKey);
 }
 
 //_____________________________________________________________________________
 void  FairRootManager::ReadEvent(Int_t i)
 {
-// Reads the event data for i-th event for all connected branches.
-// ---
-    if (isMerging ) {
-
-	cout << "-I FairRootManager Readevent and merge:" << fListOfTrees.GetEntriesFast() << endl;
-	for (Int_t j=0; j<fListOfTrees.GetEntriesFast(); j++ ) {
-	    TTree * t = (TTree*) fListOfTrees.At(j);
-	    t->GetEntry( i );
-	}
-	ReindexStack();
-    }else{ 
-	fInChain->GetEntry(i);
-	FairRunAna* fRun = FairRunAna::Instance();
-	if ( (i == fCurrentEntries)  &&
-	    fInChain->GetListOfFriends()  ) {
-	    // get the next file name in the list of chained files
-	    TString cfilename = fRun->GetNextFileName();
-
-	    // clear the Friend contents of Chains
-	    TList *lf = fInChain->GetListOfFriends();
-//            if (lf) { lf->Clear(); }
-	    if(lf) {
-		TFriendElement *fr;
-		TFile *file;
-		for(Int_t ii = 0; ii < lf->GetEntries(); ii++) {
-		    fr = (TFriendElement*) lf->At(ii);
-		    file = fr->GetFile();
-		    file->Close();
-		}
-		lf->Clear();
-	    }
-
-	    cout << endl;
-	    cout << "-I FairRootManager: switching to chained file: " << cfilename <<  endl;
-	    map<TString, list<TString>* >  fileS = fRun->GetFileStructure();
-	    list<TString>* lFriends = fileS[cfilename];
-	    list<TString>::const_iterator iter;
-	    for(iter = lFriends->begin(); iter != lFriends->end(); iter++) {
-		cout << "                         connected friends: " << *iter << endl;
-		fInChain->AddFriend("cbmsim", new TFile(*iter));
-	    }
-	    cout << endl;
-
-	    fInChain->GetEntry(i);
-	    fCurrentEntries += (Int_t ) fInChain->GetTree()->GetEntries();
-	}
-    }
+/** Reads the event data for i-th event for all connected branches.*/
+   fInChain->GetEntry(i);
+   FairRunAna* fRun = FairRunAna::Instance();
+   if ( (i == fCurrentEntries)  && fInChain->GetListOfFriends()  ) {
+      // get the next file name in the list of chained files
+      TString cfilename = fRun->GetNextFileName();
+      // clear the Friend contents of Chains
+      TList *lf = fInChain->GetListOfFriends();
+      if(lf) {
+         TFriendElement *fr;
+         TFile *file;
+         for(Int_t ii = 0; ii < lf->GetEntries(); ii++) {
+            fr = (TFriendElement*) lf->At(ii);
+            file = fr->GetFile();
+            file->Close();
+         }
+         lf->Clear();
+      }
+      cout << endl;
+      cout << "-I FairRootManager: switching to chained file: " << cfilename <<  endl;
+      map<TString, list<TString>* >  fileS = fRun->GetFileStructure();
+      list<TString>* lFriends = fileS[cfilename];
+      list<TString>::const_iterator iter;
+      for(iter = lFriends->begin(); iter != lFriends->end(); iter++) {
+         cout << "                         connected friends: " << *iter << endl;
+         fInChain->AddFriend("cbmsim", new TFile(*iter));
+      }
+         cout << endl;
+         fInChain->GetEntry(i);
+         fCurrentEntries += (Int_t ) fInChain->GetTree()->GetEntries();
+      }
+ //   }
 }
 
 //_____________________________________________________________________________
@@ -563,10 +424,10 @@ TObject * FairRootManager::ActivateBranch(const char *BrName)
  <DB>
  **/
   fNObj++;
-  if ( isMerging ){
-      fObj2[fNObj] = GetMergedObject(BrName);
-      return fObj2[fNObj];
-  }else{
+//  if ( isMerging ){
+ //     fObj2[fNObj] = GetMergedObject(BrName);
+//      return fObj2[fNObj];
+ // }else{
         fObj2[fNObj]  =  GetMemoryBranch ( BrName );
       if ( fObj2[fNObj]   ){
           return  fObj2[fNObj];
@@ -587,7 +448,7 @@ TObject * FairRootManager::ActivateBranch(const char *BrName)
       }
       AddMemoryBranch( BrName , fObj2[fNObj] );
       return  fObj2[fNObj];
-  }
+ // }
 }
 //_____________________________________________________________________________
 TObject*  FairRootManager::GetMemoryBranch( const char* fName ) {
@@ -607,140 +468,50 @@ TObject*  FairRootManager::GetMemoryBranch( const char* fName ) {
 }
 //_____________________________________________________________________________
  TObject* FairRootManager::GetObject(const char* BrName)
- {
- 	TObject *Obj =NULL;
-	if(cbmout) Obj = cbmout->FindObjectAny(BrName);
-	if(!Obj){
-	   Obj=GetMemoryBranch(BrName);
-	 }
-	 if(cbmroot && !Obj){
-		
-	    Obj=cbmroot->FindObjectAny(BrName);
-	    Obj=ActivateBranch(BrName);
-	//	cout<< "FairRootManager::GetObject Try folder for simulations! " <<  Obj <<   endl; 
-	 }
-	 if(!Obj) {
-		 Obj=ActivateBranch(BrName);
-	// 	cout << "now ActivatedBranch "<<endl;
-	 }	
-   //  cout<< "FairRootManager::GetObject will return  " << Obj <<" " << BrName <<  endl;	 
-	 return Obj;
+{
+   /**Get Data object by name*/
+   TObject *Obj =NULL;
+   /**Try to fine the object in the folder structure, object already activated by other task or call*/
+   if(cbmout) Obj = cbmout->FindObjectAny(BrName);
+   /**if the object does not exist then it could be a memory branch */
+   if(!Obj){  Obj=GetMemoryBranch(BrName); }
+   /**if the object does not exist then look in the input tree */
+   if(cbmroot && !Obj){
+      /** there is an input tree and the object was not in memory */
+      Obj=cbmroot->FindObjectAny(BrName);
+      Obj=ActivateBranch(BrName);
+   }
+   if(!Obj) {  Obj=ActivateBranch(BrName); }	
+   return Obj;
  }
 //_____________________________________________________________________________
-TObject* FairRootManager::GetMergedObject(const char* BrName)
-{
-  TObject *Obj =NULL;
-  TString ObjName (BrName); 
-  if ( ObjName.Contains("MCTrack") ) {
-      return fMergedStack;
-  }
-  else {
-    Obj = fListOfMergedClones.FindObject(BrName);     
-    cout << " -I FairRootManager Branch name " << BrName << " " << Obj << endl;
-    return Obj;
-  }
-
-}
-//_____________________________________________________________________________
-
-void FairRootManager::ReindexStack(){
-
-  // Reset the Stack 
-  fMergedStack->Reset();
-  Int_t nStack = fListOfStack.GetEntriesFast(); 
-  Int_t offset[nStack];
-  Int_t n[nStack];
-  Int_t i= 0; 
-  
-  // calculate offsets
-  for (i=0;i<nStack;i++ ){offset[i]=n[i]=0;}    
-  for (i=0;i<nStack;i++ ){    
-    FairGenericStack *st = (FairGenericStack*) fListOfStack.At(i);
-    n[i] = st->GetNtrack();
-    if ( i == 0 ) offset[i] = 0 ; 
-    if ( i == 1 ) offset[i] = n[i-1]; 
-    if ( i>1 ) offset [i] = offset[i-1] + n[i-1]; 
-  } 
-  for (i=0; i<nStack; i++ ){
-        FairGenericStack *st = (FairGenericStack*) fListOfStack.At(i);
-        TParticle *part = NULL;  
-        // cout << "-I Nparticle " << st->GetNtrack() << endl;
-        for (Int_t j=0;j<st->GetNtrack();j++){
-	  part =  st->GetParticle ( j ) ;        
-          // shift what's needed .. 
-          if (i>0) {
-                 for (Int_t k=0;k<2; k++ ){
-                	  Int_t inx;
-                	  inx=part->GetMother(k);
-                	  if(inx>=0) part->SetMother(k,inx+offset[i]);
-                 }
-            }
-          fMergedStack->AddParticle(part);       
-	}      
-
-  }
-  
-  // reindex clones 
-  for (Int_t k=0;k<fListOfMergedClones.GetEntriesFast() ; k++ ) 
-     ((TClonesArray*)fListOfMergedClones.At(k))->Clear();
-  Int_t ncl = fListOfClones.GetEntriesFast(); 
-  for (Int_t ii=0; ii< ncl; ii++ ) {
-    TObjArray *clist= (TObjArray*) fListOfClones.At( ii );
-    Int_t ncl2 =  clist->GetEntriesFast(); 
-   
-    for (Int_t kk=0;kk< ncl2; kk++ ){ 
-      TClonesArray* clone = (TClonesArray*) clist->At( kk ); 
-      TClonesArray* clone2 = (TClonesArray*) fListOfMergedClones.At( kk ); 
-      //   cout << " k: " << kk << " entries " << clone2->GetEntriesFast() << endl;
-     CopyClones ( clone , clone2, offset[ii] );  
-    
-    } 
-  } 
-
-
-}
-//_____________________________________________________________________________
-void FairRootManager::CopyClones(TClonesArray *cl1, TClonesArray* cl2 , Int_t offset ){
-
-  // copy clone mechanism 
-  //ToDo 
-
-}
-
-//_____________________________________________________________________________
 void  FairRootManager::AddMemoryBranch( const char* fName, TObject* pObj ){
-	
+   /**branch will be available ionly in Memory, will not be written to disk */
    map < TString, TObject*>::iterator p;
    TString BrName=fName;
-   
    p=fMap.find(BrName);
-   
    if(p!=fMap.end()){
        //  cout << " -E- FairRootManager::AddMemoryBranch " << BrName << " is already inserted " << endl;
    }else{
       //  cout << " -E- FairRootManager::AddMemoryBranch " << BrName << " isAdded " << endl;
    	fMap.insert(pair<TString, TObject*> (BrName, pObj));
    }
-
 }
-
 //_____________________________________________________________________________
 FairGeoNode*  FairRootManager::GetGeoParameter(const char* detname, const char* gname){
- TFolder *detf= NULL;
-    FairGeoNode *node = NULL;
-    TList *lgeo=NULL;
-    TString lname(detname);
-    lname+="GeoPar";
-    TFolder *froot =  dynamic_cast<TFolder*> (gROOT->FindObject("cbmroot"));
-    if ( froot )  detf = dynamic_cast<TFolder*> (froot->FindObjectAny( detname ));
-    else cout << "-E- GetGeoParameter() Main Folder not found ! " << endl;
-//    detf->ls();
-    if ( detf    )  lgeo = dynamic_cast<TList*> (detf->FindObjectAny( lname.Data() ));
-    else cout << "-E- GetGeoParameter() GeoPar: " << lname << endl;
-    if ( lgeo    )  node = dynamic_cast<FairGeoNode*> (lgeo->FindObject(gname));
-    else cout << "-E- GetGeoParameter() GeoList not found " << endl;
-    return node;
-
+   TFolder *detf= NULL;
+   FairGeoNode *node = NULL;
+   TList *lgeo=NULL;
+   TString lname(detname);
+   lname+="GeoPar";
+   TFolder *froot =  dynamic_cast<TFolder*> (gROOT->FindObject("cbmroot"));
+   if ( froot )  detf = dynamic_cast<TFolder*> (froot->FindObjectAny( detname ));
+   else cout << "-E- GetGeoParameter() Main Folder not found ! " << endl;
+   if ( detf    )  lgeo = dynamic_cast<TList*> (detf->FindObjectAny( lname.Data() ));
+   else cout << "-E- GetGeoParameter() GeoPar: " << lname << endl;
+   if ( lgeo    )  node = dynamic_cast<FairGeoNode*> (lgeo->FindObject(gname));
+   else cout << "-E- GetGeoParameter() GeoList not found " << endl;
+   return node;
 }
 
 //_____________________________________________________________________________
@@ -820,12 +591,9 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
 //_____________________________________________________________________________
 void  FairRootManager::SetBranchNameList(TList *list)
 {
-	
-	for(Int_t t=0; t<list->GetEntries(); t++){
-		fBranchNameList->AddAt(list->At(t),t); 
-	}
-	
-	
+   for(Int_t t=0; t<list->GetEntries(); t++){
+      fBranchNameList->AddAt(list->At(t),t); 
+   }
 }
 ClassImp(FairRootManager)
 

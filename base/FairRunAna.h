@@ -31,8 +31,6 @@ public:
 
     void        AddFriend(TString fName);
     void        AddFriend(TFile *f ) {  fFriendFileList->Add(f);}
-    void        AddAndMerge( const char* fName );
-    void        AddAndMerge(TFile *f ) { fMergedFileList->Add(f);}    
     void        Init();
     void        Run(Int_t NStart ,Int_t NStop);
     void 	    Run(Long64_t entry);
@@ -66,9 +64,9 @@ public:
     }
  
 private:
-
     FairRunAna(const FairRunAna &M);
     FairRunAna& operator= (const  FairRunAna&) {return *this;}
+protected: 
     TObjArray*                              fFriendFileList; 
     TObjArray*                              fMergedFileList; 
     TFile*                                  fInputFile;

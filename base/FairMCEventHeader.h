@@ -1,10 +1,3 @@
-// ------------------------------------------------------------------------
-// -----                  FairMCEventHeader header file                -----
-// -----                                                              -----
-// -----    Created 08/12/05                      V. Friese           -----
-// ------------------------------------------------------------------------
-
-
 /** FairMCEventHeader.h
  *@author V.Friese <v.friese@gsi.de>
  ** Data class (level MC) containing information about the input event.
@@ -50,20 +43,21 @@ class FairMCEventHeader : public TNamed
 
 
   /** Accessors **/
-  UInt_t GetRunID()   const { return fRunId; }     // run identifier
-  Int_t  GetEventID() const { return fEventId; }   // event identifier
-  Double_t GetX()     const { return fX; }         // vertex x [cm]
-  Double_t GetY()     const { return fY; }         // vertex y [cm]
-  Double_t GetZ()     const { return fZ; }         // vertex z [cm]
-  Double_t GetT()     const { return fT; }         // event time [ns]
-  Double_t GetB()     const { return fB; }         // impact parameter [fm]
-  Int_t GetNPrim()    const { return fNPrim; }     // number of input tracks
-  Bool_t IsSet()      const { return fIsSet; }     // Flag
+  UInt_t GetRunID()   const { return fRunId; }     /// run identifier
+  UInt_t GetEventID() const { return fEventId; }   /// event identifier
+  Double_t GetX()     const { return fX; }         /// vertex x [cm]
+  Double_t GetY()     const { return fY; }         /// vertex y [cm]
+  Double_t GetZ()     const { return fZ; }         /// vertex z [cm]
+  Double_t GetT()     const { return fT; }         /// event time [ns]
+  Double_t GetB()     const { return fB; }         /// impact parameter [fm]
+  Int_t GetNPrim()    const { return fNPrim; }     /// number of input tracks
+  Bool_t IsSet()      const { return fIsSet; }     /// Flag
+
   void GetVertex(TVector3& vertex) { vertex.SetXYZ(fX, fY, fZ); }
   
 
   /** Modifiers **/
-  void SetEventID(Int_t eventId) { fEventId = eventId; }
+  void SetEventID(UInt_t eventId) { fEventId = eventId; }
   void SetTime(Double_t t)       { fT = t; }
   void SetB(Double_t b)          { fB = b; }
   void SetNPrim(Int_t nPrim)     { fNPrim = nPrim; }
