@@ -134,6 +134,11 @@ void FairRootManager::AddFile(TString name) {
 //_____________________________________________________________________________}
 void FairRootManager::AddFriend( TFile *f ){
  
+  if (f->IsZombie()) {
+     cout << "-E- FairRootManager: Error opening friend file " << endl;
+	 exit(-1);
+  }
+	
   if (fInChain) {
     fInChain->AddFriend("cbmsim",f); 
     TFolder *added=NULL; 
@@ -141,6 +146,7 @@ void FairRootManager::AddFriend( TFile *f ){
     if(added==0){
        added = dynamic_cast <TFolder *> (f->Get("cbmroot"));       
     }
+//	cout << "Add Folder to the list " << added->GetName() <<" from file " << f->GetName()<< endl;  
     listFolder.Add( added );  
 
     /**Get The list of branches from the friend file and add it to the actual list*/
@@ -152,7 +158,7 @@ void FairRootManager::AddFriend( TFile *f ){
           if(fBranchNameList->FindObject(Obj->GetString().Data())==0) { 
                fBranchNameList->AddLast(Obj);
                fBranchSeqId++;
-          }
+		  }
        } 
     }
   }else{
@@ -570,8 +576,9 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
    if(cbmout && !Obj1) Obj1 = cbmout->FindObjectAny(BrName);  //Branch in output folder
    if(!Obj1){
       for(Int_t i=0;i<listFolder.GetEntriesFast();i++){
-         TFolder *fold = (TFolder*) listFolder.At(i);
-         Obj1= fold->FindObjectAny(BrName);
+//		  cout << "Search in Folder: " << i << "  " <<  listFolder.At(i) << endl;
+         TFolder *fold = dynamic_cast<TFolder *> (listFolder.At(i));
+         if(fold!=0)Obj1= fold->FindObjectAny(BrName);
          if (Obj1) break;
       }
    }
