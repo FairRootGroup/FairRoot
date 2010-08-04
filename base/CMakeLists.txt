@@ -60,6 +60,7 @@ FairFieldFactory.cxx
 FairRadLenPoint.cxx
 FairRadLenManager.cxx
 FairRKPropagator.cxx
+FairTimeStamp.cxx
 )
 
 if(RULE_CHECKER_FOUND)

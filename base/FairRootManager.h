@@ -67,6 +67,8 @@ class FairRootManager : public TObject
    TFile*              OpenOutFile(const char*fname="cbmsim.root");
    TFile*              OpenOutFile(TFile *f);
    void                ReadEvent(Int_t i);
+   /**Read all entries from input tree(s) with time stamp from current time to dt (time in ns)*/
+   Bool_t              ReadNextEvent(Double_t dt);
    /**create a new branch in the output tree
     *@param name            Name of the branch to create
     *@param Foldername      Folder name containing this branch (e.g Detector name)
@@ -98,6 +100,8 @@ class FairRootManager : public TObject
    TString             GetBranchName(Int_t id);
    /**Return Id of a branch named */
    Int_t               GetBranchId(TString BrName);
+   /**Use time stamps to read data and not tree entries*/
+   void                RunWithTimeStamps(){fTimeStamps = kTRUE;}	
    /**Set the branch name list*/
    void                SetBranchNameList(TList *list);
 		
@@ -105,15 +109,30 @@ private:
    /**private methods*/
    FairRootManager(const FairRootManager &F);
    FairRootManager& operator= (const FairRootManager&) {return *this;}
-//   TObject*            GetMergedObject(const char* BrName) ;     
-//   void                ReindexStack(); 
+   /**Add a branch to memory, it will not be written to the output files*/
    void                AddMemoryBranch(const char*, TObject* );
+   /**Get a memory branch*/	
    TObject*            GetMemoryBranch( const char* );   
+  
+   /** Internal Check if Branch persistence or not (Memory branch)
+   return value:
+   1 : Branch is Persistance
+   2 : Memory Branch
+   0 : Branch does not exist
+   */
+   Int_t               CheckBranchSt(const char* BrName);
+   /**Create the Map for the branch persistency status  */
+   void                CreatePerMap();
+
    /**Members*/ 
+
+
    /**folder structure of output*/
-   TFolder*                            cbmout;     
+   TFolder*                            fCbmout;     
    /**folder structure of input*/
-   TFolder*                            cbmroot;    
+   TFolder*                            fCbmroot;
+   /** current time in ns*/
+   Double_t                            fCurrentTime;
    /**Input file */
    TFile*                              fInFile;   
    /**Input Tree */ 
@@ -122,20 +141,15 @@ private:
    TFile*                              fOutFile;  
    /**Output tree */
    TTree*                              fOutTree;  
-
-   TObjArray                           listFolder; //!
-
-   TObjArray                           fListOfTrees; //!
-
-
+   /** list of folders from all input (and friends) files*/
+   TObjArray                           fListFolder; //!
+  
    TObject**                           fObj2; //!
 
    Int_t                               fNObj;//!
 
    std::map < TString , TObject * >    fMap; //!
-
-   TTree*                              tmpPtrTree;//!
-
+ 
    TTree*                              fPtrTree;//!
 
    Int_t                               fCurrentEntries;//!
@@ -145,9 +159,16 @@ private:
    Int_t                               fBranchSeqId; 
    /**List of branch names as TObjString*/
    TList                               *fBranchNameList; //!
+   /**if kTRUE Read data according to time and not entries*/
+   Bool_t                              fTimeStamps;
+   /**Flag for creation of Map for branch persistency list  */
+   Bool_t                              fBranchPerMap; 
+   /** Map for branch persistency list */
+   std::map < TString , Int_t >        fBrPerMap; //!
+   /**Iterator for the fBrPerMap  Map*/
+   std::map < TString, Int_t>::iterator     fBrPerMapIter;
 
-   
-   ClassDef(FairRootManager,2) // Root IO manager
+   ClassDef(FairRootManager,3) // Root IO manager
 };
 
 

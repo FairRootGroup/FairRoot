@@ -48,22 +48,22 @@ FairRootManager* FairRootManager::Instance()
 //_____________________________________________________________________________
 FairRootManager::FairRootManager()
   : TObject(),
-   cbmout(0),  
-   cbmroot(0),
+   fCbmout(0),  
+   fCbmroot(0),
+   fCurrentTime(0),
    fInFile(0),
    fInChain( new TChain("cbmsim", "/cbmroot")),
    fOutFile(0),
    fOutTree(0), 
-   listFolder(0),
-   fListOfTrees(0), 
+   fListFolder(0),
    fObj2(new TObject*[100]),
    fNObj(-1),
-   tmpPtrTree(0),
    fPtrTree(0),
    fCurrentEntries(0),
    fBranchSeqId(0),
-   fBranchNameList(new TList())
-
+   fBranchNameList(new TList()),
+   fTimeStamps(kFALSE),
+   fBranchPerMap(kFALSE)
 {
 //
   if (fgInstance) {
@@ -89,13 +89,13 @@ TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
          fInChain->Add( fInFile->GetName() );
       }
       /** get the folder structure from file which describe the input tree */
-      cbmroot= dynamic_cast <TFolder *> (fInFile->Get("cbmroot"));
-      if(!cbmroot){
-         cbmroot= dynamic_cast <TFolder *> (fInFile->Get("cbmout"));
-         if(!cbmroot){
-            cbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");   
+      fCbmroot= dynamic_cast <TFolder *> (fInFile->Get("cbmroot"));
+      if(!fCbmroot){
+         fCbmroot= dynamic_cast <TFolder *> (fInFile->Get("cbmout"));
+         if(!fCbmroot){
+            fCbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");   
          }else{
-            cbmroot->SetName("cbmroot");
+            fCbmroot->SetName("cbmroot");
          }
       }
 
@@ -112,8 +112,8 @@ TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
              }
           } 
       }
-      gROOT->GetListOfBrowsables()->Add(cbmroot);
-      listFolder.Add( cbmroot );
+      gROOT->GetListOfBrowsables()->Add(fCbmroot);
+      fListFolder.Add( fCbmroot );
    }
 //  fInChain->SetBranchStatus("*",0);
    fInChain->GetEntry(0);
@@ -147,7 +147,8 @@ void FairRootManager::AddFriend( TFile *f ){
        added = dynamic_cast <TFolder *> (f->Get("cbmroot"));       
     }
 //	cout << "Add Folder to the list " << added->GetName() <<" from file " << f->GetName()<< endl;  
-    listFolder.Add( added );  
+    fListFolder.Add( added );  
+
 
     /**Get The list of branches from the friend file and add it to the actual list*/
     TList *list= dynamic_cast <TList *> (f->Get("BranchList"));
@@ -179,11 +180,11 @@ TFile *FairRootManager::OpenOutFile(TFile* f)
    FairRun* fRun = FairRun::Instance();
    /**Check if a simulation run!*/
    if(!fRun->IsAna()){
-      cbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-      gROOT->GetListOfBrowsables()->Add(cbmroot);
+      fCbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
+      gROOT->GetListOfBrowsables()->Add(fCbmroot);
    }else{ 
-      cbmout= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
-      gROOT->GetListOfBrowsables()->Add(cbmout);
+      fCbmout= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
+      gROOT->GetListOfBrowsables()->Add(fCbmout);
    }
    return fOutFile;
 }
@@ -208,11 +209,10 @@ TFile *FairRootManager::OpenOutFile(const char* fname)
 FairRootManager::~FairRootManager() 
 {
 //
-   if(cbmout) delete cbmout;  
-   if(cbmroot) delete cbmroot;
+   if(fCbmout) delete fCbmout;  
+   if(fCbmroot) delete fCbmroot;
    if(fInChain) delete fInChain;
    if(fOutTree)  delete fOutTree;
-   if(tmpPtrTree)delete tmpPtrTree;
    if(fPtrTree)delete fPtrTree;
    if(fInFile) delete fInFile;
    if(fOutFile) {
@@ -229,13 +229,13 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
    if(toFile){  /**Write the Object to the Tree*/
      TFolder *folder=0;
      TFolder *f=0;
-     if(cbmout==0){
-        f=(TFolder *)cbmroot->FindObjectAny(folderName);
-        if(f==0)folder= cbmroot->AddFolder(folderName,folderName);
+     if(fCbmout==0){
+        f=(TFolder *)fCbmroot->FindObjectAny(folderName);
+        if(f==0)folder= fCbmroot->AddFolder(folderName,folderName);
         else folder=f;           
      }else{
-        f=(TFolder *)cbmout->FindObjectAny(folderName);
-        if(f==0)folder= cbmout->AddFolder(folderName,folderName);      
+        f=(TFolder *)fCbmout->FindObjectAny(folderName);
+        if(f==0)folder= fCbmout->AddFolder(folderName,folderName);      
         else folder=f;  
      }
      obj->SetName(name);
@@ -258,13 +258,13 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
    if(toFile){  /**Write the Object to the Tree*/
       TFolder *folder=0;
       TFolder *f=0;
-      if(cbmout==0){
-         f=(TFolder *)cbmroot->FindObjectAny(Foldername);
-         if(f==0)folder= cbmroot->AddFolder(Foldername,Foldername);
+      if(fCbmout==0){
+         f=(TFolder *)fCbmroot->FindObjectAny(Foldername);
+         if(f==0)folder= fCbmroot->AddFolder(Foldername,Foldername);
          else folder=f;
       }else{
-         f=(TFolder *)cbmout->FindObjectAny(Foldername);
-         if(f==0)  folder= cbmout->AddFolder(Foldername,Foldername);      
+         f=(TFolder *)fCbmout->FindObjectAny(Foldername);
+         if(f==0)  folder= fCbmout->AddFolder(Foldername,Foldername);      
          else folder=f;
       }
       obj->SetName(name);
@@ -373,11 +373,11 @@ void FairRootManager::CreateGeometryFile(const char *geofile)
 void FairRootManager:: WriteFolder()
 {
    fOutFile->cd();
-   if(cbmroot!=0 && fInFile==0){
-      cbmroot->Write();
+   if(fCbmroot!=0 && fInFile==0){
+      fCbmroot->Write();
    }
-   if(cbmout!=0){
-       cbmout->Write(); 
+   if(fCbmout!=0){
+       fCbmout->Write(); 
    }
    fBranchNameList->Write("BranchList", TObject::kSingleKey);
 }
@@ -419,6 +419,18 @@ void  FairRootManager::ReadEvent(Int_t i)
  //   }
 }
 
+
+
+//_____________________________________________________________________________
+
+
+Bool_t FairRootManager::ReadNextEvent(Double_t dt)
+{
+	Bool_t readentry=kFALSE; 
+	///TODO
+	return readentry;
+}
+
 //_____________________________________________________________________________
 
 TObject * FairRootManager::ActivateBranch(const char *BrName)
@@ -438,8 +450,8 @@ TObject * FairRootManager::ActivateBranch(const char *BrName)
       if ( fObj2[fNObj]   ){
           return  fObj2[fNObj];
       }
-      for(Int_t i=0;i<listFolder.GetEntriesFast();i++){
-	     TFolder *fold = (TFolder*) listFolder.At(i);
+      for(Int_t i=0;i<fListFolder.GetEntriesFast();i++){
+	     TFolder *fold = (TFolder*) fListFolder.At(i);
 	     fObj2[fNObj] = fold->FindObjectAny(BrName);
 	     if (fObj2[fNObj] ) break;
       }
@@ -478,13 +490,13 @@ TObject*  FairRootManager::GetMemoryBranch( const char* fName ) {
    /**Get Data object by name*/
    TObject *Obj =NULL;
    /**Try to fine the object in the folder structure, object already activated by other task or call*/
-   if(cbmout) Obj = cbmout->FindObjectAny(BrName);
+   if(fCbmout) Obj = fCbmout->FindObjectAny(BrName);
    /**if the object does not exist then it could be a memory branch */
    if(!Obj){  Obj=GetMemoryBranch(BrName); }
    /**if the object does not exist then look in the input tree */
-   if(cbmroot && !Obj){
+   if(fCbmroot && !Obj){
       /** there is an input tree and the object was not in memory */
-      Obj=cbmroot->FindObjectAny(BrName);
+      Obj=fCbmroot->FindObjectAny(BrName);
       Obj=ActivateBranch(BrName);
    }
    if(!Obj) {  Obj=ActivateBranch(BrName); }	
@@ -570,14 +582,49 @@ void FairRootManager::TranicateBranchNames(TBranch *b, TString ffn)
 
 Int_t FairRootManager::CheckBranch(const char* BrName)
 {
+   /**The first time this method is called the map is generated and then used*/ 
+   if(!fBranchPerMap){
+      CreatePerMap();
+      return CheckBranchSt(BrName);
+   }else{
+      fBrPerMapIter=fBrPerMap.find(BrName);
+      if(fBrPerMapIter!=fBrPerMap.end()) return fBrPerMapIter->second;
+      else  return 0;
+   }
+}
+
+//_____________________________________________________________________________
+void  FairRootManager::SetBranchNameList(TList *list)
+{
+   for(Int_t t=0; t<list->GetEntries(); t++){
+      fBranchNameList->AddAt(list->At(t),t); 
+   }
+}
+
+//_____________________________________________________________________________
+void  FairRootManager::CreatePerMap()
+{
+//   cout << " FairRootManager::CreatePerMap() " << endl;
+   fBranchPerMap=kTRUE;
+   for (Int_t i=0; i<fBranchSeqId; i++){
+      TObjString *name= (TObjString *)(fBranchNameList->At(i));
+//      cout << " FairRootManager::CreatePerMap() Obj At " << i << "  is "  << name->GetString() << endl;
+      TString BrName=name->GetString();
+      fBrPerMap.insert(pair<TString, Int_t> (BrName, CheckBranchSt(BrName.Data())));
+   }
+
+}
+//_____________________________________________________________________________
+Int_t FairRootManager::CheckBranchSt(const char* BrName)
+{
    Int_t returnvalue=0;
    TObject *Obj1 =NULL;
-   if (cbmroot) Obj1 = cbmroot->FindObjectAny(BrName);
-   if(cbmout && !Obj1) Obj1 = cbmout->FindObjectAny(BrName);  //Branch in output folder
+   if (fCbmroot) Obj1 = fCbmroot->FindObjectAny(BrName);
+   if(fCbmout && !Obj1) Obj1 = fCbmout->FindObjectAny(BrName);  //Branch in output folder
    if(!Obj1){
-      for(Int_t i=0;i<listFolder.GetEntriesFast();i++){
+      for(Int_t i=0;i<fListFolder.GetEntriesFast();i++){
 //		  cout << "Search in Folder: " << i << "  " <<  listFolder.At(i) << endl;
-         TFolder *fold = dynamic_cast<TFolder *> (listFolder.At(i));
+         TFolder *fold = dynamic_cast<TFolder *> (fListFolder.At(i));
          if(fold!=0)Obj1= fold->FindObjectAny(BrName);
          if (Obj1) break;
       }
@@ -595,13 +642,7 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
    return returnvalue;
 }
 
-//_____________________________________________________________________________
-void  FairRootManager::SetBranchNameList(TList *list)
-{
-   for(Int_t t=0; t<list->GetEntries(); t++){
-      fBranchNameList->AddAt(list->At(t),t); 
-   }
-}
+
 ClassImp(FairRootManager)
 
 

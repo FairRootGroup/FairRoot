@@ -72,19 +72,19 @@ void FairEventManager::Open()
 void FairEventManager::GotoEvent(Int_t event)
 {
   fEntry=event;
-  fRunAna->Run(event);
+  fRunAna->Run((Long64_t)event);
 }
 //______________________________________________________________________________
 void FairEventManager::NextEvent()
 {
   fEntry+=1;
-    fRunAna->Run(fEntry);
+    fRunAna->Run((Long64_t)fEntry);
 }
 //______________________________________________________________________________
 void FairEventManager::PrevEvent()
 {
   fEntry-=1;
-  fRunAna->Run(fEntry);
+  fRunAna->Run((Long64_t)fEntry);
 }
 //______________________________________________________________________________
 void FairEventManager::Close()
