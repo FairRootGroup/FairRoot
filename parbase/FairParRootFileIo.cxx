@@ -97,21 +97,23 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
 
   //DB, lock file for NFS in case of mulitple access
   //gDirectory->ReadKeys();
-    close();
+  close();
   if (fMerging ){
-  // used test merging
-  fstream *f = new fstream(fname);
-  if (f->good()){
-      // check if file already exists
-      option = "UPDATE";
-  }else{
-  // if file doesn't exist recreate option is used
-      option = "RECREATE";
+     // used test merging
+     fstream *f = new fstream(fname);
+     if (f->good()){
+        // check if file already exists
+        option = "UPDATE";
+     }else{
+         // if file doesn't exist recreate option is used
+         option = "RECREATE";
+     }
+     f->close();
+     delete f;
   }
-  f->close();
-   }
 
   file=new FairParRootFile(fname,option,ftitle,compress);
+  
   if (file && file->IsOpen()) {
     FairRuntimeDb::instance()->activateParIo(this);
     return kTRUE;
