@@ -10,6 +10,7 @@ class FairVolumeList;
 class FairVolume;
 class FairGeoNode;
 class TGeoNode;
+class TGeoMatrix;
 class TGeoVolume;
 class TList;
 class TArrayI;
@@ -79,12 +80,14 @@ public:
 private:
    FairModule(const FairModule &M);
    FairModule& operator= (const FairModule&) {return *this;}
-	 
+   /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */
+   void SetDefaultMatrixName(TGeoMatrix* matrix);
+
 protected:    
     TString             fgeoVer;
     TString             fgeoName;    
     Int_t               fModId;
-    Bool_t	            fActive; 
+    Bool_t	        fActive; 
     Int_t               fNbOfSensitiveVol; //!
     Int_t               fVerboseLevel;
     TList *flGeoPar; //!  list of Detector Geometry parameters

@@ -87,6 +87,8 @@ FairModule::FairModule()
 {
 
 }
+
+//__________________________________________________________________________
 void FairModule::Streamer(TBuffer& b)
 {
   TNamed::Streamer(b);
@@ -103,7 +105,7 @@ void FairModule::Streamer(TBuffer& b)
    }
   
 }
-
+//__________________________________________________________________________
 void FairModule::SetGeometryFileName(TString fname, TString geoVer)
 {
    fgeoVer=geoVer; 
@@ -135,7 +137,7 @@ void FairModule::SetGeometryFileName(TString fname, TString geoVer)
       fgeoName+=fname;
    }	
 }
-
+//__________________________________________________________________________
 void FairModule::ProcessNodes(TList *aList){
 
   TListIter iter(aList);
@@ -180,7 +182,7 @@ void FairModule::ProcessNodes(TList *aList){
   cout << " FairModule::ProcessNodes "<< endl;
 */
 }
-
+//__________________________________________________________________________
 void	FairModule::AddSensitiveVolume(TGeoVolume *v){
 
 //	cout <<"FairModule::AddSensitiveVolume  " << v->GetName() << endl;
@@ -195,7 +197,7 @@ void	FairModule::AddSensitiveVolume(TGeoVolume *v){
 }
 
 
-
+//__________________________________________________________________________
 FairVolume* FairModule::getFairVolume(FairGeoNode *fN)
 {
 	FairVolume *fv;
@@ -213,7 +215,7 @@ FairVolume* FairModule::getFairVolume(FairGeoNode *fN)
     	}
 	return fvol;
 }
-
+//__________________________________________________________________________
 void FairModule::ConstructRootGeometry(){
    
    TGeoManager *OldGeo=gGeoManager;
@@ -259,7 +261,8 @@ void FairModule::ConstructRootGeometry(){
    TGeoVoxelFinder *voxels = v1->GetVoxels();
    if (voxels) voxels->SetNeedRebuild();
    TGeoMatrix *M = n->GetMatrix();
-   M->SetDefaultName();
+  // M->SetDefaultName();
+   SetDefaultMatrixName(M);
    gGeoManager->GetListOfMatrices()->Remove(M);
    TGeoHMatrix *global = gGeoManager->GetHMatrix();             
    gGeoManager->GetListOfMatrices()->Remove(global); //Remove the Identity matrix 
@@ -268,15 +271,17 @@ void FairModule::ConstructRootGeometry(){
  //  delete NewGeo;
    delete f;
 }
-
+//__________________________________________________________________________
 void FairModule::ConstructASCIIGeometry(){
 	cout << " FairModule::ConstructASCIIGeometry() : this method has to be implimented in detector class " << endl;
 }
+//__________________________________________________________________________
 Bool_t FairModule::CheckIfSensitive(std::string name){
 		
 	cout << "\033[5m\033[31m FairModule::CheckIfSensitive(std::string name): this method has to be implimented in detector class  \033[0m\n" << endl;
 	return kFALSE;
 }
+//__________________________________________________________________________
 void FairModule::ExpandNode(TGeoNode *fN){
 	
    FairGeoLoader*geoLoad = FairGeoLoader::Instance();
@@ -290,7 +295,8 @@ void FairModule::ExpandNode(TGeoNode *fN){
    for (Int_t Nod=0; Nod<NodeList->GetEntriesFast();Nod++) {   
       TGeoNode *fNode =(TGeoNode *)NodeList->At(Nod);
       TGeoMatrix *M =fNode->GetMatrix();
-      M->SetDefaultName();
+      //M->SetDefaultName();
+      SetDefaultMatrixName(M);
       if(fNode->GetNdaughters()>0) ExpandNode(fNode);
       TGeoVolume *v= fNode->GetVolume();
 //      Int_t MatId=0;
@@ -334,6 +340,33 @@ void FairModule::ExpandNode(TGeoNode *fN){
      } 
    }
 }
+//__________________________________________________________________________
+void FairModule::SetDefaultMatrixName(TGeoMatrix* matrix)
+{
+  // Copied from root TGeoMatrix::SetDefaultName() and modified (memory leak)
+  // If no name was supplied in the ctor, the type of transformation is checked.
+  // A letter will be prepended to the name :
+  //   t - translation
+  //   r - rotation
+  //   s - scale
+  //   c - combi (translation + rotation)
+  //   g - general (tr+rot+scale)
+  // The index of the transformation in gGeoManager list of transformations will
+  // be appended.
+  if (!gGeoManager) return;
+  if (strlen(matrix->GetName())) return;
+  char type = 'n';
+  if (matrix->IsTranslation()) type = 't'; 
+  if (matrix->IsRotation()) type = 'r';
+  if (matrix->IsScale()) type = 's';
+  if (matrix->IsCombi()) type = 'c';
+  if (matrix->IsGeneral()) type = 'g';
+  TObjArray *matrices = gGeoManager->GetListOfMatrices();
+  Int_t index = 0;
+  if (matrices) index =matrices->GetEntriesFast() - 1;
+  matrix->SetName(Form("%c%i", type, index));
+}
+
 
 //__________________________________________________________________________
 ClassImp(FairModule)
