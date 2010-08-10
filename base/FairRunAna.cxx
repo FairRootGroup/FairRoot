@@ -422,6 +422,10 @@ void  FairRunAna::RunWithTimeStamps()
 
 //_____________________________________________________________________________
 
+void FairRunAna::CompressData(){
+	fRootManager->SetCompressData(kTRUE);
+}
+
 
 ClassImp(FairRunAna)
 

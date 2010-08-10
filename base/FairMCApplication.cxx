@@ -824,7 +824,7 @@ void  FairMCApplication::AddParticles()
 #else
 	AddIons();
 #endif
-    
+    delete Iter;
   }
 }
 //_____________________________________________________________________________

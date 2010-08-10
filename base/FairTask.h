@@ -17,6 +17,7 @@
 
 
 #include "TTask.h"
+#include "FairRootManager.h"
 //#include "TObject.h"
 
 
@@ -65,10 +66,18 @@ class FairTask : public TTask {
   /** Set verbosity level. For this task and all of the subtasks. **/
   void SetVerbose(Int_t iVerbose);
   
+  void SetInputPersistance(Bool_t val){fInputPersistance = val;}
+
+  void CheckInputPersistance(TString branchName){
+	  FairRootManager* ioman = FairRootManager::Instance();
+	  fInputPersistance = ioman->CheckBranch(branchName);
+  }
+
 
 protected:
 
   Int_t   fVerbose;       //  Verbosity level
+  Int_t  fInputPersistance; ///< Indicates if input branch is persistant
 
 
   /** Intialisation at begin of run. To be implemented in the derived class.

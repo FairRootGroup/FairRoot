@@ -11,7 +11,7 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairTask::FairTask()
-: fVerbose(0)
+: fVerbose(0), fInputPersistance(-1)
 { 
 }
 // -------------------------------------------------------------------------
@@ -21,7 +21,7 @@ FairTask::FairTask()
 // -----   Standard constructor   ------------------------------------------
 FairTask::FairTask(const char* name, Int_t iVerbose) 
   : TTask(name, "FairTask"), 
-    fVerbose(iVerbose)
+    fVerbose(iVerbose), fInputPersistance(-1)
 {
   
 }

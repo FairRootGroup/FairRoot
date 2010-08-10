@@ -71,6 +71,7 @@ public:
                 }
 	void        RunWithTimeStamps();
     Bool_t      IsTimeStamp(){return fTimeStamps;}
+    void		CompressData();
 	
 	
 private:

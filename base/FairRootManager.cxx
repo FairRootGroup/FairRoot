@@ -25,6 +25,7 @@
 #include "TClonesArray.h"
 #include "TList.h"
 
+
 #include <iostream>
 #include <map>
 #include <list>
@@ -63,7 +64,8 @@ FairRootManager::FairRootManager()
    fBranchSeqId(0),
    fBranchNameList(new TList()),
    fTimeStamps(kFALSE),
-   fBranchPerMap(kFALSE)
+   fBranchPerMap(kFALSE),
+   fCompressData(kFALSE)
 {
 //
   if (fgInstance) {
@@ -278,6 +280,76 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
       fBranchSeqId++;
    }
 }
+
+TClonesArray* FairRootManager::Register(TString branchName, TString className, TString folderName, Bool_t toFile){
+
+	TClonesArray* outputArray;
+	fActiveContainer[branchName] = new TClonesArray(className);
+	if (fCompressData){
+		std::queue<TClonesArray*> myQueue;
+		fDataContainer[branchName] = myQueue;
+		outputArray = new TClonesArray(className);
+	}
+	else outputArray = fActiveContainer[branchName];
+
+	Register(branchName, folderName, outputArray, toFile);
+	return fActiveContainer[branchName];
+}
+
+TClonesArray* FairRootManager::GetTClonesArray(TString branchName){
+	if (fActiveContainer.find(branchName) != fActiveContainer.end()){						//if a TClonesArray is registered in the active container
+		if (fCompressData && fActiveContainer[branchName]->GetEntries() > 0){								//if the container is not empty push it into the DataContainer storage and create a new one
+			fDataContainer[branchName].push(fActiveContainer[branchName]);
+			fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
+		}
+		return fActiveContainer[branchName];												// return the container
+	}
+	else std::cout << "-E- Branch: " << branchName << " not registered!" << std::endl;		// error if the branch is not registered
+	return 0;
+}
+
+void FairRootManager::AssignTClonesArrays(){
+	 for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
+		AssignTClonesArray(it->first);
+	 }
+}
+
+void FairRootManager::AssignTClonesArray(TString branchName){
+	TClonesArray* output = (TClonesArray*)GetObject(branchName);
+	TClonesArray* input = ForceGetDataContainer(branchName);
+	output->Clear();
+	if (input != 0){
+		output->AbsorbObjects(input);
+	}
+}
+
+void FairRootManager::SaveAllContainers(){
+	while(!DataContainersEmpty()){
+		AssignTClonesArrays();
+		ForceFill();
+	}
+}
+
+TClonesArray* FairRootManager::GetDataContainer(TString branchName)
+{
+	if (DataContainersFilled()){
+		return fDataContainer[branchName].front();
+	}
+	return 0;
+}
+
+
+TClonesArray* FairRootManager::ForceGetDataContainer(TString branchName)
+{
+	TClonesArray* result = 0;
+	if (fDataContainer.find(branchName)!= fDataContainer.end()){
+		if (!fDataContainer[branchName].empty()){
+			result = fDataContainer[branchName].front();
+			fDataContainer[branchName].pop();
+		}
+	}
+	return result;
+}
  //_____________________________________________________________________________ 
 
 TString FairRootManager::GetBranchName(Int_t id)
@@ -315,17 +387,30 @@ void  FairRootManager::Fill()
 {
 // Fills the tree.
 // ---
-  if(fOutTree!=0){
-    fOutTree->Fill();
-  }else{
-      cout << "-E- FairRootManager::Fill()  No Output Tree"  << endl;
-  }
-}  
+	if (fCompressData){
+		if (DataContainersFilled()) {
+			AssignTClonesArrays();
+			ForceFill();
+		}
+	}
+	else ForceFill();
+}
+
+void FairRootManager::ForceFill()
+{
+	if (fOutTree != 0) {
+		fOutTree->Fill();
+	} else {
+		cout << "-E- FairRootManager::Fill()  No Output Tree" << endl;
+	}
+}
 
 //_____________________________________________________________________________
 void FairRootManager:: Write()
 {
 /** Writes the tree in the file.*/
+	if (fCompressData)
+		SaveAllContainers();
   if(fOutTree!=0){
   /** Get the file handle to the current output file from the tree. 
     * If ROOT splits the file (due to the size of the file) the file 

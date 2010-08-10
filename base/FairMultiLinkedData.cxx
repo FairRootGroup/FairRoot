@@ -13,16 +13,130 @@
 ClassImp(FairMultiLinkedData);
 
 FairMultiLinkedData::FairMultiLinkedData()
-:FairLinkedData(), fPersistanceCheck(kTRUE), fVerbose(2)
-{
-	// TODO Auto-generated constructor stub
+	:fPersistanceCheck(kTRUE), fVerbose(0)
+{}
 
+FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persistanceCheck)
+	:fLinks(links), fPersistanceCheck(persistanceCheck), fVerbose(0){}
+
+FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
+	:fPersistanceCheck(persistanceCheck), fVerbose(0)
+{
+	FairRootManager* ioman = FairRootManager::Instance();
+	SimpleAddLinks(ioman->GetBranchId(dataType), links, bypass, mult);
+//	FairMultiLinkedData(ioman->GetBranchId(dataType), links, persistanceCheck, bypass, addup, mult);
 }
 
 FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
-:FairLinkedData(), fPersistanceCheck(persistanceCheck), fVerbose(2)
+:FairLinkedData(), fPersistanceCheck(persistanceCheck), fVerbose(0)
 {
 	SimpleAddLinks(dataType, links, bypass, mult);
+}
+
+FairLink FairMultiLinkedData::GetLink(Int_t pos) const{
+	if (pos < (Int_t)fLinks.size()){
+		std::set<FairLink>::iterator it = fLinks.begin();
+		for (int i = 0; i < pos; i++)it++;
+		return *it;
+	}
+	else{
+		std::cout << "-E- FairMultiLinkedData:GetLink(pos) pos " << pos << " outside range " << fLinks.size() << std::endl;
+		return FairLink();
+	}
+}
+
+void FairMultiLinkedData::SetLinks(FairMultiLinkedData links, Float_t mult){
+	fLinks = links.GetLinks();
+	MultiplyAllWeights(mult);
+}
+
+
+inline void FairMultiLinkedData::SetLink(FairLink link, Bool_t bypass, Float_t mult){
+	fLinks.clear();
+	Float_t weight = link.GetWeight() * mult;
+	link.SetWeight(weight);
+	AddLink(link, bypass);
+}
+
+
+void FairMultiLinkedData::AddLinks(FairMultiLinkedData links, Float_t mult){
+	std::set<FairLink> myLinks = links.GetLinks();
+	for (std::set<FairLink>::iterator it = myLinks.begin(); it != myLinks.end(); it++){
+		FairLink myLink = *it;
+		myLink.SetWeight(myLink.GetWeight()*mult);
+		AddLink(myLink);
+	}
+}
+
+inline void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult){
+
+	Float_t weight = link.GetWeight() * mult;
+	link.SetWeight(weight);
+	//std::cout << fVerbose << std::endl;
+
+	FairRootManager* ioman = FairRootManager::Instance();
+
+	if (ioman == 0){
+		std::cout << "-W- no IOManager present!" << std::endl;
+		fPersistanceCheck = kFALSE;
+	}
+	if (fVerbose > 1)
+		std::cout << "Add FairLink: " << link << std::endl;
+
+	if (fPersistanceCheck == kFALSE ||
+		link.GetIndex() < 0 ||
+		ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0)
+	{
+		InsertLink(link);
+		return;
+	}
+
+	if (bypass == kFALSE){
+		if (fVerbose > 1)
+			std::cout << "BranchName " << ioman->GetBranchName(link.GetType()) << " checkStatus: " <<  ioman->CheckBranch(ioman->GetBranchName(link.GetType())) << std::endl;
+		if (link.GetType() > ioman->GetBranchId("MCTrack") && ioman->CheckBranch(ioman->GetBranchName(link.GetType())) != 1){
+			if (fVerbose > 1)
+				std::cout << "BYPASS!" << std::endl;
+			bypass = kTRUE;
+		}
+	}
+
+	if (bypass == kTRUE){
+		//FairRootManager* ioman = FairRootManager::Instance();
+		if (link.GetType() > ioman->GetBranchId("MCTrack")){
+			TClonesArray* array = (TClonesArray*)ioman->GetObject(ioman->GetBranchName(link.GetType()));
+			if (fVerbose > 1)
+				std::cout << "Entries in " << ioman->GetBranchName(link.GetType()) << " Array: " << array->GetEntries() << std::endl;
+			FairMultiLinkedData* links = (FairMultiLinkedData*)array->At(link.GetIndex());
+			if (fVerbose > 1){
+				std::cout << "FairMultiLinkedData has " << links->GetNLinks() << " Entries: " << std::endl;
+				std::cout << *links << std::endl;
+			}
+			AddLinks(*links, mult);
+			return;
+		}
+		else {
+			InsertLink(link);
+		}
+	}
+	else {
+		InsertLink(link);
+	}
+
+}
+
+void FairMultiLinkedData::InsertLink(FairLink link){
+	std::set<FairLink>::iterator it = fLinks.find(link);
+	if (it != fLinks.end()){
+		FairLink myTempLink = *it;
+		myTempLink.AddWeight(link.GetWeight());
+		fLinks.erase(it);
+		fLinks.insert(myTempLink);
+	}
+	else{
+		fLinks.insert(link);
+	}
+	return;
 }
 
 
@@ -78,4 +192,34 @@ TObject* FairMultiLinkedData::GetData(FairLink& myLink)
 	else std::cout << "-E- FairMultiLinkedData::GetData Branch does not exist in Memory" << std::endl;
 
 	return 0;
+}
+
+void FairMultiLinkedData::SetAllWeights(Double_t weight){
+	std::set<FairLink> tempLinks;
+	for (std::set<FairLink>::iterator it = fLinks.begin(); it != fLinks.end(); it++){
+		FairLink tempLink = *it;
+		tempLink.SetWeight(weight);
+		tempLinks.insert(tempLink);
+	}
+	fLinks = tempLinks;
+}
+
+void FairMultiLinkedData::AddAllWeights(Double_t weight){
+	std::set<FairLink> tempLinks;
+	for (std::set<FairLink>::iterator it = fLinks.begin(); it != fLinks.end(); it++){
+		FairLink tempLink = *it;
+		tempLink.SetWeight(weight + tempLink.GetWeight());
+		tempLinks.insert(tempLink);
+	}
+	fLinks = tempLinks;
+}
+
+void FairMultiLinkedData::MultiplyAllWeights(Double_t weight){
+	std::set<FairLink> tempLinks;
+	for (std::set<FairLink>::iterator it = fLinks.begin(); it != fLinks.end(); it++){
+		FairLink tempLink = *it;
+		tempLink.SetWeight(weight * tempLink.GetWeight());
+		tempLinks.insert(tempLink);
+	}
+	fLinks = tempLinks;
 }

@@ -5,6 +5,7 @@
 #include "TFile.h"
 #include "TChain.h"
 #include <map>
+#include <queue>
 
 class FairGeoNode;
 class TCollection;
@@ -40,6 +41,7 @@ class FairRootManager : public TObject
     void                CloseInFile() { if(fInFile)fInFile->Close();} 
     void                CloseOutFile() { if(fOutFile)fOutFile->Close();} 
     void                Fill();
+    void				ForceFill();
     TList*              GetBranchNameList(){return fBranchNameList;}
     TTree*              GetInTree(){return fInChain->GetTree();}
     TChain*             GetInChain(){return fInChain;}
@@ -83,6 +85,8 @@ class FairRootManager : public TObject
     *@param toFile          if kTRUE, branch will be saved to the tree
    */
    void                Register(const char* name,const char* Foldername ,TCollection *obj, Bool_t toFile);
+
+   TClonesArray*		Register(TString branchName, TString className, TString folderName, Bool_t toFile);
    /** Return a pointer to the object (collection) saved in the branch named BrName*/
    TObject*   GetObject(const char* BrName);
   
@@ -104,6 +108,29 @@ class FairRootManager : public TObject
    void                RunWithTimeStamps(){fTimeStamps = kTRUE;}	
    /**Set the branch name list*/
    void                SetBranchNameList(TList *list);
+
+   void			SetCompressData(Bool_t val){fCompressData = val;}
+
+   TClonesArray* GetTClonesArray(TString branchName);
+   TClonesArray* GetDataContainer(TString branchName);
+   TClonesArray* ForceGetDataContainer(TString branchName);
+
+   Bool_t  DataContainersEmpty(){
+	   for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
+	   		   if (it->second.empty() == false){
+	   			   return kFALSE;
+	   		   }
+	   	   }
+	   	   return kTRUE;
+   }
+
+   Bool_t	DataContainersFilled(){
+	   for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
+		   if (it->second.empty() == true)
+			   return kFALSE;
+	   }
+	   return kTRUE;
+   }
 		
 private:
    /**private methods*/
@@ -111,8 +138,13 @@ private:
    FairRootManager& operator= (const FairRootManager&) {return *this;}
    /**Add a branch to memory, it will not be written to the output files*/
    void                AddMemoryBranch(const char*, TObject* );
-   /**Get a memory branch*/	
-   TObject*            GetMemoryBranch( const char* );   
+
+   TObject*            GetMemoryBranch( const char* );
+
+
+   void	 AssignTClonesArrays();
+   void	 AssignTClonesArray(TString branchName);
+   void SaveAllContainers();
   
    /** Internal Check if Branch persistence or not (Memory branch)
    return value:
@@ -159,6 +191,13 @@ private:
    Int_t                               fBranchSeqId; 
    /**List of branch names as TObjString*/
    TList                               *fBranchNameList; //!
+
+   std::map<TString, std::queue<TClonesArray*> > fDataContainer;
+   std::map<TString, TClonesArray*> fActiveContainer;
+
+   /** if kTRUE the entries of a branch are filled from the beginning --> no empty entries*/
+   Bool_t								fCompressData;
+
    /**if kTRUE Read data according to time and not entries*/
    Bool_t                              fTimeStamps;
    /**Flag for creation of Map for branch persistency list  */
@@ -167,6 +206,7 @@ private:
    std::map < TString , Int_t >        fBrPerMap; //!
    /**Iterator for the fBrPerMap  Map*/
    std::map < TString, Int_t>::iterator     fBrPerMapIter;
+
 
    ClassDef(FairRootManager,3) // Root IO manager
 };

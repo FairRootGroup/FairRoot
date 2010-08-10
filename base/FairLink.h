@@ -30,16 +30,18 @@ public:
 	void SetWeight(Float_t weight) {fWeight = weight;}
 	void AddWeight(Float_t weight) {fWeight += weight;}
 
-	virtual void Print(std::ostream& out = std::cout){out << *this;}
+	virtual void Print(std::ostream& out = std::cout){
+		out << "(" << GetType() << "/" << GetIndex() << "/" << GetWeight() << ")";
+	}
 
-	bool operator==(const FairLink& link) const{
+	virtual bool operator==(const FairLink& link) const{
 		if (fType == link.GetType() && fIndex == link.GetIndex())
 			return true;
 		else
 			return false;
 	}
 
-	bool operator<(const FairLink& link) const{
+	virtual bool operator<(const FairLink& link) const{
 		if(fType < link.GetType()){
 			return true;
 		}
@@ -50,7 +52,7 @@ public:
 	}
 
 	friend std::ostream& operator<< (std::ostream& out, FairLink& link){
-		out << "(" << link.GetType() << "/" << link.GetIndex() << "/" << link.GetWeight() << ")";
+		link.Print(out);
 		return out;
 	}
 
