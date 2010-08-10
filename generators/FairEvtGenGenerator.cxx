@@ -128,7 +128,7 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
       fVz = fVz + fZ;
      	
     }	
-    printf("Insert coordinates: %f, %f, %f ...\n", fVx, fVy, fVz);
+//    printf("Insert coordinates: %f, %f, %f ...\n", fVx, fVy, fVz);
     primGen->AddTrack(pdgID, fPx, fPy, fPz, fVx, fVy, fVz);     
 	  
   }	  
