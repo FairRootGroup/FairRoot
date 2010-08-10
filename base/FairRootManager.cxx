@@ -318,9 +318,14 @@ void FairRootManager::AssignTClonesArray(TString branchName){
 	TClonesArray* output = (TClonesArray*)GetObject(branchName);
 	TClonesArray* input = ForceGetDataContainer(branchName);
 	output->Clear();
+#if ROOT_VERSION_CODE >= ROOT_VERSION(5,27,4)
 	if (input != 0){
 		output->AbsorbObjects(input);
 	}
+#else
+	cout <<"FairRootManager::AssignTClonesArray(TString branchName) "<<endl;
+        cout <<"Is only available in ROOT 5.27-04 "<<endl;
+#endif
 }
 
 void FairRootManager::SaveAllContainers(){
