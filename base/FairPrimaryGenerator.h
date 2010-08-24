@@ -75,7 +75,7 @@ class FairPrimaryGenerator : public TNamed
       *@param px,py,pz Momentum coordinates [GeV]
       *@param vx,vy,vz Track origin relative to event vertex
   **/
-  void AddTrack(Int_t pdgid, Double_t px, Double_t py, Double_t pz,
+  virtual void AddTrack(Int_t pdgid, Double_t px, Double_t py, Double_t pz,
 		Double_t vx, Double_t vy, Double_t vz, Int_t parent=-1,Bool_t wanttracking=true,Double_t e=-9e9);
 
 
