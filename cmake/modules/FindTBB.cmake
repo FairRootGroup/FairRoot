@@ -25,6 +25,7 @@
 # TBB_DEBUG_LIBRARIES, the libraries to link against to use TBB with debug symbols.
 # TBB_FOUND, If false, don't try to use TBB.
 
+MESSAGE(STATUS "Looking for TBB...")
 
 if (WIN32)
     # has em64t/vc8   em64t/vc9
@@ -85,7 +86,7 @@ endif (CMAKE_SYSTEM MATCHES "SunOS.*")
 
 
 #-- Clear the public variables
-set (TBB_FOUND "NO")
+set (TBB_FOUND FALSE)
 
 
 #-- Find TBB install dir and set ${_TBB_INSTALL_DIR} and cached ${TBB_INSTALL_DIR}
@@ -117,7 +118,7 @@ if (NOT _TBB_INSTALL_DIR)
 endif (NOT _TBB_INSTALL_DIR)
 # sanity check
 if (NOT _TBB_INSTALL_DIR)
-    message ("ERROR: TBB_INSTALL_DIR not found. ${_TBB_INSTALL_DIR}")
+    message(STATUS "Looking for TBB ... - Not found")
 else (NOT _TBB_INSTALL_DIR)
 # finally: set the cached CMake variable TBB_INSTALL_DIR
 if (NOT TBB_INSTALL_DIR)
@@ -182,22 +183,22 @@ mark_as_advanced(TBB_LIBRARY_DEBUG TBB_MALLOC_LIBRARY_DEBUG)
 
 if (TBB_INCLUDE_DIR)
     if (TBB_LIBRARY)
-        set (TBB_FOUND "YES")
+        set (TBB_FOUND TRUE)
         set (TBB_LIBRARIES ${TBB_LIBRARY} ${TBB_MALLOC_LIBRARY} ${TBB_LIBRARIES})
         set (TBB_DEBUG_LIBRARIES ${TBB_LIBRARY_DEBUG} ${TBB_MALLOC_LIBRARY_DEBUG} ${TBB_DEBUG_LIBRARIES})
         set (TBB_INCLUDE_DIRS ${TBB_INCLUDE_DIR} CACHE PATH "TBB include directory" FORCE)
         set (TBB_LIBRARY_DIRS ${TBB_LIBRARY_DIR} CACHE PATH "TBB library directory" FORCE)
         mark_as_advanced(TBB_INCLUDE_DIRS TBB_LIBRARY_DIRS TBB_LIBRARIES TBB_DEBUG_LIBRARIES)
-        message(STATUS "Found Intel TBB")
+        MESSAGE(STATUS "Looking for TBB... - found ${TBB_LIBRARY_DIRS}")
     endif (TBB_LIBRARY)
 endif (TBB_INCLUDE_DIR)
 
 if (NOT TBB_FOUND)
-    message("ERROR: Intel TBB NOT found!")
+    message(STATUS "Looking for TBB ... - Not found")
     message(STATUS "Looked for Threading Building Blocks in ${_TBB_INSTALL_DIR}")
     # do only throw fatal, if this pkg is REQUIRED
     if (TBB_FIND_REQUIRED)
-        message(FATAL_ERROR "Could NOT find TBB library.")
+      message(FATAL_ERROR "Looking for TBB ... - Not found")
     endif (TBB_FIND_REQUIRED)
 endif (NOT TBB_FOUND)
 
