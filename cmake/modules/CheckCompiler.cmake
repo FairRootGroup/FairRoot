@@ -20,7 +20,8 @@ if (CMAKE_SYSTEM_NAME MATCHES Linux)
 #      endif(CMAKE_BUILD_TYPE_TOLOWER MATCHES profile)
 
    # Select flags.
-   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wshadow ")
+   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wshadow")
+   set(CMAKE_CXX_FLAGS_NIGHTLY        "-O2 -g -Wshadow -Weffc++")
    set(CMAKE_CXX_FLAGS_RELEASE        "-O2 -Wshadow ")
 #   set(CMAKE_CXX_FLAGS_DEBUG          "-g -O2 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
    set(CMAKE_CXX_FLAGS_DEBUG          "-g -Wshadow ")
