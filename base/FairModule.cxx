@@ -67,8 +67,8 @@ FairModule::FairModule(const char * Name, const char *title ,Bool_t Active)
      kGeoSaved(kFALSE)
     
 {
-    svList=new TRefArray();
-    vList=new FairVolumeList();
+    if(!svList)svList=new TRefArray();
+    if(!vList) vList=new FairVolumeList();
     
 }
 
