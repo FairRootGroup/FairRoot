@@ -81,19 +81,19 @@ public:
   Float_t pli[6];
   Float_t x2[3];
   Float_t p2[3];
-  TVector3 Pos;
-  TVector3 PosErr;
-  TVector3 Mom;
-  TArrayD *fErrorMat;
+/*   TVector3 Pos; */
+/*   TVector3 PosErr; */
+/*   TVector3 Mom; */
+/*   TArrayD *fErrorMat; */
   Ertrio_t *afErtrio;
   Float_t x1[3];
   Float_t p1[3];
   Int_t GeantCode;
-  FairTrackParH *fTrkParH;
-  FairTrackParP *fTrkParP;
-  FairTrackPar *fTrkPar;
+/*   FairTrackParH *fTrkParH; */
+/*   FairTrackParP *fTrkParP; */
+/*   FairTrackPar *fTrkPar; */
   Int_t ProMode;
-  FairField *fField;
+/*   FairField *fField; */
   Float_t plo[12];
   TString VName;
   Int_t VCopyNo;

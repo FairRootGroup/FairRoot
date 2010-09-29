@@ -35,17 +35,31 @@ FairGeanePro::FairGeanePro() : TNamed("Geane", "Propagate Tracks")
   }
   nepred=1;
   fdbPDG= TDatabasePDG::Instance();
-  fErrorMat= new TArrayD(15);
+  //  fErrorMat= new TArrayD(15);
   afErtrio=gMC3->fErtrio;
-  Pos=TVector3(0,  0 , 0);
-  PosErr = TVector3(0,0,0);
-  Mom=TVector3(0,0,0);
-  fTrkPar= new FairTrackPar();
+  // Pos=TVector3(0,  0 , 0);
+  // PosErr = TVector3(0,0,0);
+  // Mom=TVector3(0,0,0);
+  // fTrkPar= new FairTrackPar();
   ProMode=0;
-  FairRunAna *fRun= FairRunAna::Instance();
-  fField= fRun->GetField();
+  //   FairRunAna *fRun= FairRunAna::Instance();
+  //   fField= fRun->GetField();
+  
+  // PCA stuff
   fPCA = 0;
+  fpoint = TVector3(0., 0., 0.);
+  fwire1 = TVector3(0., 0., 0.);
+  fwire2 = TVector3(0., 0., 0.);
+  fRad = 0; fDi = 0;
+  ftrklength = 0; flag = 0;  
+  fvpf = TVector3(0., 0., 0.);
+  fvwi = TVector3(0., 0., 0.);
+
+  for(int i = 0; i < 5; i++) for(int j = 0; j < 5; j++) trpmat[i][j] = 0.;
+
   fApp =FairMCApplication::Instance();
+  
+
 }
 
 // -----   Destructor   ----------------------------------------------------
