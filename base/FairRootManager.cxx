@@ -623,25 +623,47 @@ FairGeoNode*  FairRootManager::GetGeoParameter(const char* detname, const char* 
 }
 
 //_____________________________________________________________________________
+
 void FairRootManager::TranicateBranchNames(TTree *fTree, const char *folderName)
 {
+  // If a object is created in a folder the corresponding branch
+  // in the tree is crated with a wrong name.
+  // The name of the branch is created as follows
+  // mainFolder.subFolder.nameOfStoredObject
+  // e.g. cbmroot.Event.ExampleClass.
+  // The name which is wanted is only nameOfStoredObject
+  // e.g. ExampleClass.
+  // This is corrected in this function
+
+  // If the folder does not exist don't do anything
   TFolder *cbm=(TFolder *)gROOT->FindObjectAny(folderName);
   if(cbm){
      TCollection* lf=cbm->GetListOfFolders();
-     //TObject *evth = cbm->FindObject("EventHeader");
      TIterator* iter= lf->MakeIterator();
      TObjArray* Br= fTree->GetListOfBranches();
      TIterator* BrIter= Br->MakeIterator();
      TObject *obj;
      TObject *BrObj;
 
-    // troncate in sub folder
+    // correct branch names in all folders below the main output folder
     while((obj=iter->Next())) {
+
+      // Create TString with the part of the branch name which should be
+      // removed. This is mainFolderName.folderName. e.g. cbmroot.Event.
+      // This part of the branch name is obsolete, so it is removed from
+      // the branch name.
       TString ffn=cbm->GetName();
       ffn=ffn+".";
       ffn=ffn+obj->GetName();
       ffn=ffn+".";
+
+      // Correct name of all branches and leaves which correspond to
+      // the subfolder. To do so loop over all branches and check
+      // if the branch corresponds with the folder. If it corresponds
+      // correct the branch names of all sub branches.
+      // Only correct branch names for up to now uncorrected branches.
       BrIter->Reset();
+
       while((BrObj=BrIter->Next())) {
         TBranch *b=(TBranch *)BrObj;
         TranicateBranchNames(b, ffn);
@@ -652,8 +674,15 @@ void FairRootManager::TranicateBranchNames(TTree *fTree, const char *folderName)
  }
 }
 //_____________________________________________________________________________
+
 void FairRootManager::TranicateBranchNames(TBranch *b, TString ffn)
 {
+  // Get the branch name from the branch object, remove common
+  // and wrong part of the name and and set branch name to
+  // the new corrected name. This has to be done recursivly for
+  // all subbranches/leaves
+  
+  // Remove wrong part of branch name
   TObject *BrObj;
   TString nn= b->GetName();
   nn.ReplaceAll(ffn.Data(),"");
@@ -667,7 +696,6 @@ void FairRootManager::TranicateBranchNames(TBranch *b, TString ffn)
   }
   delete  BrIter;
 }
-
 //_____________________________________________________________________________
 
 Int_t FairRootManager::CheckBranch(const char* BrName)
