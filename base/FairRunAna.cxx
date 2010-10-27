@@ -166,6 +166,8 @@ void FairRunAna::Init() {
   //Init the Chain ptr
    fcurrent = fChainList.begin();
    TFile *Output = fRootManager->OpenOutFile(Outfname);
+   // <DB> forwarding ptr
+   fOutFile= Output;
    gROOT->GetListOfBrowsables()->Add(fTask);
    // Init the RTDB containers
    fRtdb= GetRuntimeDb();
