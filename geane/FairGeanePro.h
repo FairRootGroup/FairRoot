@@ -75,6 +75,7 @@ public:
 
   TGeant3 *gMC3;
   TString fPropOption;
+  Float_t xlf[1];    // track length when PropagateToTrack is chosen
   Float_t ein[15];   // Input error matrix
   Int_t nepred;      // Number of predictions
   TDatabasePDG *fdbPDG;

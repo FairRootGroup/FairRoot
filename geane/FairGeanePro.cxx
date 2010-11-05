@@ -34,6 +34,7 @@ FairGeanePro::FairGeanePro() : TNamed("Geane", "Propagate Tracks")
     throw;
   }
   nepred=1;
+  xlf[0] = 0.;
   fdbPDG= TDatabasePDG::Instance();
   //  fErrorMat= new TArrayD(15);
   afErtrio=gMC3->fErtrio;
@@ -95,8 +96,8 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParH *TEnd, Int_t
     }
     else if(fPropOption.Contains("L")) {
       if(fPCA == 0) {
-	// move eufill here? maybe not necessary, CHECK; 
-	;}
+	gMC3->Eufill(nepred, ein,xlf);
+      }
       else if(fPCA != 0){
 	
 		// max length estimate:
@@ -384,11 +385,9 @@ Bool_t FairGeanePro::PropagateToVolume(TString VolName, Int_t CopyNo , Int_t opt
 Bool_t FairGeanePro::PropagateToLength(Float_t length)
 {
   // define final length (option "L")
-  Float_t xlf[1];
   xlf[0]=length;
   fPropOption="LE";
   ProMode=1; //need errors in representation 1 (SC)(see Geane doc)
-  gMC3->Eufill(nepred, ein,xlf);
   return kTRUE;
 }
 Bool_t FairGeanePro::PropagateOnlyParameters()
