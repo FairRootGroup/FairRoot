@@ -273,7 +273,6 @@ Bool_t FairGeanePro::Propagate(Float_t *X1, Float_t *P1, Float_t *X2, Float_t *P
 {
   fApp->GeanePreTrack(X1, P1, PDG);
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
-  Float_t xlf[1];
   xlf[0]=1000
 	;
   gMC3->Eufill(1, ein,xlf);
