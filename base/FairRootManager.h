@@ -27,27 +27,39 @@ class TList;
 
 class FairRootManager : public TObject
 {
-  public:
-    FairRootManager();
-    virtual ~FairRootManager();     
-    // static access method
-    static FairRootManager* Instance(); 
-    // methods
-    /**  Set the branch address for a given branch name and return
-         a TObject pointer, the user have to cast this pointer to the right type.
-    */
-    TObject*            ActivateBranch(const char *BrName);
-    void                AddFriend( TFile *f );      
-    void                CloseInFile() { if(fInFile)fInFile->Close();} 
-    void                CloseOutFile() { if(fOutFile)fOutFile->Close();} 
-    void                Fill();
-    void				ForceFill();
-    TList*              GetBranchNameList(){return fBranchNameList;}
-    TTree*              GetInTree(){return fInChain->GetTree();}
-    TChain*             GetInChain(){return fInChain;}
-    TTree*              GetOutTree(){return fOutTree;}
-    TFile*              GetInFile(){return  fInFile;}
-    TFile*              GetOutFile(){return  fOutFile;}
+public:
+   /**ctor*/
+   FairRootManager();
+   /**dtor*/
+   virtual ~FairRootManager();     
+   /** static access method */
+   static FairRootManager* Instance(); 
+   /**  Set the branch address for a given branch name and return
+        a TObject pointer, the user have to cast this pointer to the right type.
+   */
+   TObject*            ActivateBranch(const char *BrName);
+   void                AddFriend( TFile *f );     
+   Bool_t              DataContainersEmpty();
+   Bool_t	           DataContainersFilled();
+	
+	/**
+	 Check if Branch persistence or not (Memory branch)
+	 return value:
+	 1 : Branch is Persistance
+	 2 : Memory Branch
+	 0 : Branch does not exist
+   */
+   Int_t               CheckBranch(const char* BrName);
+   void                CloseInFile() { if(fInFile)fInFile->Close();} 
+   void                CloseOutFile() { if(fOutFile)fOutFile->Close();} 
+   void                Fill();
+   void				   ForceFill();
+   TList*              GetBranchNameList(){return fBranchNameList;}
+   TTree*              GetInTree(){return fInChain->GetTree();}
+   TChain*             GetInChain(){return fInChain;}
+   TTree*              GetOutTree(){return fOutTree;}
+   TFile*              GetInFile(){return  fInFile;}
+   TFile*              GetOutFile(){return  fOutFile;}
     /**
       Get the Object (container) for the given branch name,
       this method can be used to access the data of
@@ -55,15 +67,10 @@ class FairRootManager : public TObject
       analysis task, and not written in the tree yet.
       the user have to cast this pointer to the right type.
     */
-    FairGeoNode*        GetGeoParameter(const char* detname, const char* gname);
-   /**
-   Check if Branch persistence or not (Memory branch)
-   return value:
-   1 : Branch is Persistance
-   2 : Memory Branch
-   0 : Branch does not exist
-   */
-   Int_t               CheckBranch(const char* BrName);
+   FairGeoNode*        GetGeoParameter(const char* detname, const char* gname);
+	/** Return a pointer to the object (collection) saved in the branch named BrName*/
+   TObject*            GetObject(const char* BrName);
+	
    TFile*              OpenInFile(const char* fname="cbmsim.root", Bool_t Connect=kFALSE);
    TFile*              OpenInFile(TFile *f, Bool_t Connect=kFALSE);
    TFile*              OpenOutFile(const char*fname="cbmsim.root");
@@ -85,11 +92,7 @@ class FairRootManager : public TObject
     *@param toFile          if kTRUE, branch will be saved to the tree
    */
    void                Register(const char* name,const char* Foldername ,TCollection *obj, Bool_t toFile);
-
-   TClonesArray*		Register(TString branchName, TString className, TString folderName, Bool_t toFile);
-   /** Return a pointer to the object (collection) saved in the branch named BrName*/
-   TObject*   GetObject(const char* BrName);
-  
+   TClonesArray*	   Register(TString branchName, TString className, TString folderName, Bool_t toFile);
    void                SetOutTree(TTree *fTree){ fOutTree=fTree;}
    void                Write();
    void                WriteGeometry();
@@ -109,28 +112,13 @@ class FairRootManager : public TObject
    /**Set the branch name list*/
    void                SetBranchNameList(TList *list);
 
-   void			SetCompressData(Bool_t val){fCompressData = val;}
+   void			       SetCompressData(Bool_t val){fCompressData = val;}
 
-   TClonesArray* GetTClonesArray(TString branchName);
-   TClonesArray* GetDataContainer(TString branchName);
-   TClonesArray* ForceGetDataContainer(TString branchName);
+   TClonesArray*       GetTClonesArray(TString branchName);
+   TClonesArray*       GetDataContainer(TString branchName);
+   TClonesArray*       ForceGetDataContainer(TString branchName);
 
-   Bool_t  DataContainersEmpty(){
-	   for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
-	   		   if (it->second.empty() == false){
-	   			   return kFALSE;
-	   		   }
-	   	   }
-	   	   return kTRUE;
-   }
-
-   Bool_t	DataContainersFilled(){
-	   for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
-		   if (it->second.empty() == true)
-			   return kFALSE;
-	   }
-	   return kTRUE;
-   }
+   
 		
 private:
    /**private methods*/
@@ -138,13 +126,10 @@ private:
    FairRootManager& operator= (const FairRootManager&) {return *this;}
    /**Add a branch to memory, it will not be written to the output files*/
    void                AddMemoryBranch(const char*, TObject* );
-
    TObject*            GetMemoryBranch( const char* );
-
-
-   void	 AssignTClonesArrays();
-   void	 AssignTClonesArray(TString branchName);
-   void SaveAllContainers();
+   void	               AssignTClonesArrays();
+   void	               AssignTClonesArray(TString branchName);
+   void                SaveAllContainers();
   
    /** Internal Check if Branch persistence or not (Memory branch)
    return value:
@@ -207,6 +192,7 @@ private:
    /**Iterator for the fBrPerMap  Map*/
    std::map < TString, Int_t>::iterator     fBrPerMapIter;
 
+  	
 
    ClassDef(FairRootManager,3) // Root IO manager
 };

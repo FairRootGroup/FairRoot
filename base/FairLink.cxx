@@ -20,7 +20,7 @@ FairLink::FairLink()
 
 FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
 :TObject(),
- fType(type),
+ fType(0),
  fIndex(index),
  fWeight(weight)
 
@@ -28,6 +28,10 @@ FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
 
 
 FairLink::FairLink(TString branchName, Int_t index, Float_t weight)
+:TObject(),
+fType(0),
+fIndex(index),
+fWeight(weight)
 {
 	FairRootManager* ioman = FairRootManager::Instance();
 	if (0==ioman)

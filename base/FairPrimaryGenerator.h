@@ -30,6 +30,7 @@ class FairMCEventHeader;
 //class FairGenerator;
 
 class FairPrimaryGenerator : public TNamed 
+
 {
 
  public:

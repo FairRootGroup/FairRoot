@@ -167,15 +167,15 @@ void FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
   ///	******************************************************************
 
   Double_t h2, h4, f[4];
-  Double_t xyzt[3], a, b, c, ph,ph2;
-  Double_t secxs[4],secys[4],seczs[4],hxp[3];
-  Double_t g1, g2, g3, g4, g5, g6, ang2, dxt, dyt, dzt;
+  Double_t xyzt[3], a=0, b=0, c=0, ph,ph2;
+	Double_t secxs[4],secys[4],seczs[4]; //hxp[3];
+  Double_t /*g1 , g2, g3, g4, g5, g6,*/ ang2, dxt, dyt, dzt;
   Double_t est, at, bt, ct, cba;
-  Double_t f1, f2, f3, f4, rho, tet, hnorm, hp, rho1, sint, cost;
+//  Double_t /*f1, f2, f3, f4, rho, tet, hnorm, hp, rho1, sint, cost*/;
 
-  Double_t x;
-  Double_t y;
-  Double_t z;
+  Double_t x=0;
+  Double_t y=0;
+  Double_t z=0;
 
   Double_t xt;
   Double_t yt;
@@ -192,13 +192,13 @@ void FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
   const Double_t khalf  = 0.5;
   const Double_t kec    = 2.9979251e-3;
   const Double_t kpisqua = 9.86960440109;
-  const Int_t kix  = 0;
+/*  const Int_t kix  = 0;
   const Int_t kiy  = 1;
   const Int_t kiz  = 2;
   const Int_t kipx = 3;
   const Int_t kipy = 4;
   const Int_t kipz = 5;
-
+*/
   // *.
   // *.    ------------------------------------------------------------------
   // *.

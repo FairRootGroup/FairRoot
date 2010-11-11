@@ -3,13 +3,14 @@
 // -----   Default constructor   -------------------------------------------
 FairMCPoint::FairMCPoint() 
  : fTrackID    (-1),
+   fEventId(0),
    fPx(0.),         
    fPy(0.), 
    fPz(0.),
    fTime (0.),
    fLength(0.),
-   fELoss(0.),
-   fEventId(0)
+   fELoss(0.)
+   
 {
   
 }
@@ -23,13 +24,14 @@ FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
 			Double_t eLoss, UInt_t EventId) 
   :FairBasePoint(detID, pos),
    fTrackID    ( trackID),
+   fEventId    (EventId),
    fPx         ( mom.Px()),
    fPy         ( mom.Py()),
    fPz         ( mom.Pz()),
    fTime       ( tof),
    fLength     ( length),
-   fELoss      ( eLoss),
-   fEventId    (EventId)
+   fELoss      ( eLoss)
+   
 {
 }
 // -------------------------------------------------------------------------

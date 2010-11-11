@@ -63,10 +63,11 @@ FairRootManager::FairRootManager()
    fCurrentEntries(0),
    fBranchSeqId(0),
    fBranchNameList(new TList()),
+   fCompressData(kFALSE),
    fTimeStamps(kFALSE),
-   fBranchPerMap(kFALSE),
-   fCompressData(kFALSE)
-{
+   fBranchPerMap(kFALSE)
+  
+  {
 //
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
@@ -171,6 +172,28 @@ void FairRootManager::AddFriend( TFile *f ){
   }
 }
 //_____________________________________________________________________________
+
+Bool_t  FairRootManager::DataContainersEmpty()
+{
+	for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
+		if (it->second.empty() == false){
+			return kFALSE;
+		}
+	}
+	return kTRUE;
+}
+//_____________________________________________________________________________
+
+Bool_t	FairRootManager::DataContainersFilled()
+{
+	for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
+		if (it->second.empty() == true)
+			return kFALSE;
+	}
+	return kTRUE;
+}
+
+//_____________________________________________________________________________
 TFile *FairRootManager::OpenOutFile(TFile* f)      
 {
    fOutFile=f;
@@ -251,7 +274,7 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
    }
 }
 
-//_____________________________________________________________________-- ________
+//_____________________________________________________________________________
 void  FairRootManager::Register(const char* name,const char* Foldername ,TCollection *obj, Bool_t toFile)
 {	
 /**
@@ -280,7 +303,7 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
       fBranchSeqId++;
    }
 }
-
+//_____________________________________________________________________________
 TClonesArray* FairRootManager::Register(TString branchName, TString className, TString folderName, Bool_t toFile){
 
 	TClonesArray* outputArray;
@@ -295,10 +318,10 @@ TClonesArray* FairRootManager::Register(TString branchName, TString className, T
 	Register(branchName, folderName, outputArray, toFile);
 	return fActiveContainer[branchName];
 }
-
+//_____________________________________________________________________________
 TClonesArray* FairRootManager::GetTClonesArray(TString branchName){
-	if (fActiveContainer.find(branchName) != fActiveContainer.end()){						//if a TClonesArray is registered in the active container
-		if (fCompressData && fActiveContainer[branchName]->GetEntries() > 0){								//if the container is not empty push it into the DataContainer storage and create a new one
+	if (fActiveContainer.find(branchName) != fActiveContainer.end()){					//if a TClonesArray is registered in the active container
+		if (fCompressData && fActiveContainer[branchName]->GetEntries() > 0){			//if the container is not empty push it into the DataContainer storage and create a new one
 			fDataContainer[branchName].push(fActiveContainer[branchName]);
 			fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
 		}
@@ -307,13 +330,13 @@ TClonesArray* FairRootManager::GetTClonesArray(TString branchName){
 	else std::cout << "-E- Branch: " << branchName << " not registered!" << std::endl;		// error if the branch is not registered
 	return 0;
 }
-
+//_____________________________________________________________________________
 void FairRootManager::AssignTClonesArrays(){
 	 for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
 		AssignTClonesArray(it->first);
 	 }
 }
-
+//_____________________________________________________________________________
 void FairRootManager::AssignTClonesArray(TString branchName){
 	TClonesArray* output = (TClonesArray*)GetObject(branchName);
 	TClonesArray* input = ForceGetDataContainer(branchName);
@@ -327,14 +350,14 @@ void FairRootManager::AssignTClonesArray(TString branchName){
         cout <<"Is only available in ROOT 5.27-04 "<<endl;
 #endif
 }
-
+//_____________________________________________________________________________
 void FairRootManager::SaveAllContainers(){
 	while(!DataContainersEmpty()){
 		AssignTClonesArrays();
 		ForceFill();
 	}
 }
-
+//_____________________________________________________________________________
 TClonesArray* FairRootManager::GetDataContainer(TString branchName)
 {
 	if (DataContainersFilled()){
@@ -343,7 +366,7 @@ TClonesArray* FairRootManager::GetDataContainer(TString branchName)
 	return 0;
 }
 
-
+//_____________________________________________________________________________
 TClonesArray* FairRootManager::ForceGetDataContainer(TString branchName)
 {
 	TClonesArray* result = 0;
@@ -506,13 +529,10 @@ void  FairRootManager::ReadEvent(Int_t i)
          fInChain->GetEntry(i);
          fCurrentEntries += (Int_t ) fInChain->GetTree()->GetEntries();
       }
- //   }
+ 
 }
 
-
-
 //_____________________________________________________________________________
-
 
 Bool_t FairRootManager::ReadNextEvent(Double_t dt)
 {
@@ -520,7 +540,6 @@ Bool_t FairRootManager::ReadNextEvent(Double_t dt)
 	///TODO
 	return readentry;
 }
-
 //_____________________________________________________________________________
 
 TObject * FairRootManager::ActivateBranch(const char *BrName)
@@ -531,38 +550,39 @@ TObject * FairRootManager::ActivateBranch(const char *BrName)
  calls to activate branch is done , and then just forward the pointer.
  <DB>
  **/
-  fNObj++;
-//  if ( isMerging ){
- //     fObj2[fNObj] = GetMergedObject(BrName);
-//      return fObj2[fNObj];
- // }else{
-        fObj2[fNObj]  =  GetMemoryBranch ( BrName );
-      if ( fObj2[fNObj]   ){
-          return  fObj2[fNObj];
-      }
-      for(Int_t i=0;i<fListFolder.GetEntriesFast();i++){
-	     TFolder *fold = (TFolder*) fListFolder.At(i);
-	     fObj2[fNObj] = fold->FindObjectAny(BrName);
-	     if (fObj2[fNObj] ) break;
-      }
-      if(!fObj2[fNObj]){
-	     cout << "-E- FairRootManager Branch: "
-			  << BrName  << " not found in Tree" << endl;
-	  //	  Fatal(" No Branch in the tree", BrName );
-	  return 0;
-      } else {
-	    fInChain->SetBranchStatus(BrName,1);
-	    fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
-      }
-      AddMemoryBranch( BrName , fObj2[fNObj] );
+   fNObj++;
+   fObj2[fNObj]  =  GetMemoryBranch ( BrName );
+   if ( fObj2[fNObj]   ){
       return  fObj2[fNObj];
- // }
+   }
+   /**try to find the object decribing the branch in the folder structure in file*/
+   for(Int_t i=0;i<fListFolder.GetEntriesFast();i++){
+      TFolder *fold = (TFolder*) fListFolder.At(i);
+      fObj2[fNObj] = fold->FindObjectAny(BrName);
+      if (fObj2[fNObj] ) break;
+   }
+   
+   if(!fObj2[fNObj]){
+       /** if we do not find an object corresponding to the branch in the folder structure
+		*  then we have no idea about what type of object is this and we cannot set the branch address
+		*/
+	   cout << "-E- FairRootManager Branch: "  << BrName  << " not found in Tree" << endl;
+	  //Fatal(" No Branch in the tree", BrName );
+	  return 0;
+   }else {
+      fInChain->SetBranchStatus(BrName,1);
+      fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
+   }
+   
+   AddMemoryBranch( BrName , fObj2[fNObj] );
+   return  fObj2[fNObj];
+
 }
 //_____________________________________________________________________________
 TObject*  FairRootManager::GetMemoryBranch( const char* fName ) {
  
  //return fMap[BrName];
-    TString BrName=fName;
+  TString BrName=fName;
   map < TString, TObject*>::iterator p;
   p=fMap.find(BrName);
 
