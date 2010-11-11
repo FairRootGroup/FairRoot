@@ -30,6 +30,8 @@ ${SIMPATH}/transport/geant4_vmc/source/run/include
 ${SIMPATH}/transport/geant4_vmc/source/interfaces/include 
 ${SIMPATH}/transport/geant4_vmc/source/visualization/include 
 ${SIMPATH}/transport/geant4_vmc/include 
+${SIMPATH}/transport/geant4_vmc/include/geant4vmc 
+${SIMPATH}/transport/geant4_vmc/include/g4root 
 ${SIMPATH}/transport/vgm/packages/BaseVGM/include 
 ${SIMPATH}/transport/vgm/packages/ClhepVGM/include 
 ${SIMPATH}/transport/vgm/packages/Geant4GM/include 
