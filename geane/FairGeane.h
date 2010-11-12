@@ -8,7 +8,7 @@
 #include "FairTask.h"
 #include "TString.h"
 
-class FairMCApplication;
+class FairGeaneApplication;
 class FairField;
 
 class FairGeane : public  FairTask
@@ -33,7 +33,7 @@ class FairGeane : public  FairTask
   ClassDef(FairGeane,1)
 
 protected:
-    FairMCApplication *fApp; //!
+    FairGeaneApplication *fApp; //!
 	const char* fName; //!
 	TString fUserConfig;  //! 
 	TString fUserCuts; //!

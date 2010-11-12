@@ -6,7 +6,6 @@
 // Class FairRootManager
 // ------------------
 // Class that takes care of Root IO.
-
 #include "FairRootManager.h"
 #include "FairDetector.h"
 #include "FairRunAna.h"    
@@ -25,7 +24,6 @@
 #include "TClonesArray.h"
 #include "TList.h"
 
-
 #include <iostream>
 #include <map>
 #include <list>
@@ -37,7 +35,6 @@ using std::list;
 using std::pair;
 
 FairRootManager* FairRootManager::fgInstance = 0;
-
 //_____________________________________________________________________________
 FairRootManager* FairRootManager::Instance()
 {
@@ -45,7 +42,6 @@ FairRootManager* FairRootManager::Instance()
 // ---
   return fgInstance;
 }  
-
 //_____________________________________________________________________________
 FairRootManager::FairRootManager()
   : TObject(),
@@ -66,16 +62,13 @@ FairRootManager::FairRootManager()
    fCompressData(kFALSE),
    fTimeStamps(kFALSE),
    fBranchPerMap(kFALSE)
-  
-  {
-//
-  if (fgInstance) {
-    Fatal("FairRootManager", "Singleton instance already exists.");
-    return;
-  }  
-  fgInstance = this;
+{
+   if (fgInstance) {
+      Fatal("FairRootManager", "Singleton instance already exists.");
+      return;
+   }
+   fgInstance = this;
 }
-
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
 {
@@ -101,8 +94,6 @@ TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
             fCbmroot->SetName("cbmroot");
          }
       }
-
-
       /**Get The list of branches from the input file and add it to the actual list*/
       TList *list= dynamic_cast <TList *> (fInFile->Get("BranchList"));
       if(list) {
@@ -118,22 +109,11 @@ TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
       gROOT->GetListOfBrowsables()->Add(fCbmroot);
       fListFolder.Add( fCbmroot );
    }
-//  fInChain->SetBranchStatus("*",0);
    fInChain->GetEntry(0);
    fPtrTree = fInChain->GetTree();
    fCurrentEntries =  (Int_t) fInChain->GetTree()->GetEntries();
    return  fInFile;
 }
-
-//_____________________________________________________________________________}
-void FairRootManager::SetWildcard(TString Wildcard) {
- fInChain->Add(Wildcard);
-}
-//_____________________________________________________________________________}
-void FairRootManager::AddFile(TString name) {
-  //  cout << "-I- FairRootManager: adding file " << name << endl;
-    fInChain->Add(name);
-}    
 //_____________________________________________________________________________}
 void FairRootManager::AddFriend( TFile *f ){
  
@@ -172,7 +152,6 @@ void FairRootManager::AddFriend( TFile *f ){
   }
 }
 //_____________________________________________________________________________
-
 Bool_t  FairRootManager::DataContainersEmpty()
 {
 	for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
@@ -183,7 +162,6 @@ Bool_t  FairRootManager::DataContainersEmpty()
 	return kTRUE;
 }
 //_____________________________________________________________________________
-
 Bool_t	FairRootManager::DataContainersFilled()
 {
 	for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
@@ -192,7 +170,6 @@ Bool_t	FairRootManager::DataContainersFilled()
 	}
 	return kTRUE;
 }
-
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenOutFile(TFile* f)      
 {
@@ -213,22 +190,19 @@ TFile *FairRootManager::OpenOutFile(TFile* f)
    }
    return fOutFile;
 }
-
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenInFile(const char* fname, Bool_t Connect)
 {
-  if(fInFile) CloseInFile();
-  fInFile = new TFile(fname);
-  return OpenInFile(fInFile, Connect); 
+   if(fInFile) CloseInFile();
+   fInFile = new TFile(fname);
+   return OpenInFile(fInFile, Connect); 
 }
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenOutFile(const char* fname)
 {
- 
-  if(fOutFile) CloseOutFile();
-  fOutFile = new TFile(fname, "recreate");
-  return OpenOutFile(fOutFile);
- 
+   if(fOutFile) CloseOutFile();
+   fOutFile = new TFile(fname, "recreate");
+   return OpenOutFile(fOutFile);
 }
 //_____________________________________________________________________________
 FairRootManager::~FairRootManager() 
@@ -244,9 +218,8 @@ FairRootManager::~FairRootManager()
       fOutFile->cd();
      delete fOutFile;
    }
-
-  fgInstance = 0;
-  delete fObj2;
+   fgInstance = 0;
+   delete fObj2;
 }
 //_____________________________________________________________________________
 void  FairRootManager::Register(const char* name, const char* folderName , TNamed *obj, Bool_t toFile)
@@ -269,8 +242,8 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
    AddMemoryBranch(name, obj );
    //cout << " FairRootManager::Register Adding branch:(Obj) " << name << " In folder : " << folderName << endl;
    if(fBranchNameList->FindObject(name)==0){;
-		fBranchNameList->AddLast(new TObjString(name));
-		fBranchSeqId++;
+      fBranchNameList->AddLast(new TObjString(name));
+      fBranchSeqId++;
    }
 }
 
@@ -297,7 +270,6 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
    }
     /**Keep the Object in Memory, and do not write it to the tree*/
    AddMemoryBranch(name, obj );
-
    if(fBranchNameList->FindObject(name)==0){;
       fBranchNameList->AddLast(new TObjString(name));
       fBranchSeqId++;
@@ -306,66 +278,40 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
 //_____________________________________________________________________________
 TClonesArray* FairRootManager::Register(TString branchName, TString className, TString folderName, Bool_t toFile){
 
-	TClonesArray* outputArray;
-	fActiveContainer[branchName] = new TClonesArray(className);
-	if (fCompressData){
-		std::queue<TClonesArray*> myQueue;
-		fDataContainer[branchName] = myQueue;
-		outputArray = new TClonesArray(className);
-	}
-	else outputArray = fActiveContainer[branchName];
-
-	Register(branchName, folderName, outputArray, toFile);
-	return fActiveContainer[branchName];
+   TClonesArray* outputArray;
+   fActiveContainer[branchName] = new TClonesArray(className);
+   if (fCompressData){
+      std::queue<TClonesArray*> myQueue;
+      fDataContainer[branchName] = myQueue;
+      outputArray = new TClonesArray(className);
+   } else outputArray = fActiveContainer[branchName];
+   Register(branchName, folderName, outputArray, toFile);
+   return fActiveContainer[branchName];
 }
 //_____________________________________________________________________________
 TClonesArray* FairRootManager::GetTClonesArray(TString branchName){
-	if (fActiveContainer.find(branchName) != fActiveContainer.end()){					//if a TClonesArray is registered in the active container
-		if (fCompressData && fActiveContainer[branchName]->GetEntries() > 0){			//if the container is not empty push it into the DataContainer storage and create a new one
-			fDataContainer[branchName].push(fActiveContainer[branchName]);
-			fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
-		}
-		return fActiveContainer[branchName];												// return the container
-	}
-	else std::cout << "-E- Branch: " << branchName << " not registered!" << std::endl;		// error if the branch is not registered
-	return 0;
+   if (fActiveContainer.find(branchName) != fActiveContainer.end()){  
+      /**if a TClonesArray is registered in the active container*/
+      if (fCompressData && fActiveContainer[branchName]->GetEntries() > 0){
+         /**if the container is not empty push it into the DataContainer storage and create a new one*/
+         fDataContainer[branchName].push(fActiveContainer[branchName]);
+         fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
+       }
+       return fActiveContainer[branchName]; // return the container
+    } else std::cout << "-E- Branch: " << branchName << " not registered!" << std::endl;	
+   // error if the branch is not registered
+   return 0;
 }
-//_____________________________________________________________________________
-void FairRootManager::AssignTClonesArrays(){
-	 for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
-		AssignTClonesArray(it->first);
-	 }
-}
-//_____________________________________________________________________________
-void FairRootManager::AssignTClonesArray(TString branchName){
-	TClonesArray* output = (TClonesArray*)GetObject(branchName);
-	TClonesArray* input = ForceGetDataContainer(branchName);
-	output->Clear();
-#if ROOT_VERSION_CODE >= ROOT_VERSION(5,27,4)
-	if (input != 0){
-		output->AbsorbObjects(input);
-	}
-#else
-	cout <<"FairRootManager::AssignTClonesArray(TString branchName) "<<endl;
-        cout <<"Is only available in ROOT 5.27-04 "<<endl;
-#endif
-}
-//_____________________________________________________________________________
-void FairRootManager::SaveAllContainers(){
-	while(!DataContainersEmpty()){
-		AssignTClonesArrays();
-		ForceFill();
-	}
-}
+
+
 //_____________________________________________________________________________
 TClonesArray* FairRootManager::GetDataContainer(TString branchName)
 {
-	if (DataContainersFilled()){
-		return fDataContainer[branchName].front();
-	}
-	return 0;
+   if (DataContainersFilled()){
+      return fDataContainer[branchName].front();
+   }
+   return 0;
 }
-
 //_____________________________________________________________________________
 TClonesArray* FairRootManager::ForceGetDataContainer(TString branchName)
 {
@@ -379,7 +325,6 @@ TClonesArray* FairRootManager::ForceGetDataContainer(TString branchName)
 	return result;
 }
  //_____________________________________________________________________________ 
-
 TString FairRootManager::GetBranchName(Int_t id)
 {
    /**Return the branch name from the id*/
@@ -391,7 +336,6 @@ TString FairRootManager::GetBranchName(Int_t id)
       return NotFound;
    }
 }
-
  //_____________________________________________________________________________
 
 Int_t FairRootManager::GetBranchId(TString BrName)
@@ -409,7 +353,6 @@ Int_t FairRootManager::GetBranchId(TString BrName)
 	return Id;
 	
 }
-
  //_____________________________________________________________________________
 void  FairRootManager::Fill()
 {
@@ -423,7 +366,6 @@ void  FairRootManager::Fill()
 	}
 	else ForceFill();
 }
-
 void FairRootManager::ForceFill()
 {
 	if (fOutTree != 0) {
@@ -432,7 +374,6 @@ void FairRootManager::ForceFill()
 		cout << "-E- FairRootManager::Fill()  No Output Tree" << endl;
 	}
 }
-
 //_____________________________________________________________________________
 void FairRootManager:: Write()
 {
@@ -453,7 +394,6 @@ void FairRootManager:: Write()
   }
 }
 //_____________________________________________________________________________
-
 void FairRootManager:: WriteGeometry()
 {
 /** Writes the geometry in the current output file.*/
@@ -494,7 +434,6 @@ void FairRootManager:: WriteFolder()
    }
    fBranchNameList->Write("BranchList", TObject::kSingleKey);
 }
-
 //_____________________________________________________________________________
 void  FairRootManager::ReadEvent(Int_t i)
 {
@@ -531,16 +470,159 @@ void  FairRootManager::ReadEvent(Int_t i)
       }
  
 }
-
 //_____________________________________________________________________________
-
 Bool_t FairRootManager::ReadNextEvent(Double_t dt)
 {
 	Bool_t readentry=kFALSE; 
 	///TODO
 	return readentry;
 }
+
+
 //_____________________________________________________________________________
+ TObject* FairRootManager::GetObject(const char* BrName)
+{
+   /**Get Data object by name*/
+   TObject *Obj =NULL;
+   /**Try to fine the object in the folder structure, object already activated by other task or call*/
+   if(fCbmout) Obj = fCbmout->FindObjectAny(BrName);
+   /**if the object does not exist then it could be a memory branch */
+   if(!Obj){  Obj=GetMemoryBranch(BrName); }
+   /**if the object does not exist then look in the input tree */
+   if(fCbmroot && !Obj){
+      /** there is an input tree and the object was not in memory */
+      Obj=fCbmroot->FindObjectAny(BrName);
+      Obj=ActivateBranch(BrName);
+   }
+   if(!Obj) {  Obj=ActivateBranch(BrName); }	
+   return Obj;
+ }
+
+//_____________________________________________________________________________
+FairGeoNode*  FairRootManager::GetGeoParameter(const char* detname, const char* gname){
+   TFolder *detf= NULL;
+   FairGeoNode *node = NULL;
+   TList *lgeo=NULL;
+   TString lname(detname);
+   lname+="GeoPar";
+   TFolder *froot =  dynamic_cast<TFolder*> (gROOT->FindObject("cbmroot"));
+   if ( froot )  detf = dynamic_cast<TFolder*> (froot->FindObjectAny( detname ));
+   else cout << "-E- GetGeoParameter() Main Folder not found ! " << endl;
+   if ( detf    )  lgeo = dynamic_cast<TList*> (detf->FindObjectAny( lname.Data() ));
+   else cout << "-E- GetGeoParameter() GeoPar: " << lname << endl;
+   if ( lgeo    )  node = dynamic_cast<FairGeoNode*> (lgeo->FindObject(gname));
+   else cout << "-E- GetGeoParameter() GeoList not found " << endl;
+   return node;
+}
+
+//_____________________________________________________________________________
+
+void FairRootManager::TruncateBranchNames(TTree *fTree, const char *folderName)
+{
+  /** If a object is created in a folder the corresponding branch
+  * in the tree is crated with a wrong name.
+  * The name of the branch is created as follows
+  * mainFolder.subFolder.nameOfStoredObject
+  * e.g. cbmroot.Event.ExampleClass.
+  * The name which is wanted is only nameOfStoredObject
+  * e.g. ExampleClass.
+  * This is corrected in this function
+  * If the folder does not exist don't do anything
+  */
+  TFolder *cbm=(TFolder *)gROOT->FindObjectAny(folderName);
+  if(cbm){
+     TCollection* lf=cbm->GetListOfFolders();
+     TIterator* iter= lf->MakeIterator();
+     TObjArray* Br= fTree->GetListOfBranches();
+     TIterator* BrIter= Br->MakeIterator();
+     TObject *obj;
+     TObject *BrObj;
+
+     /** correct branch names in all folders below the main output folder*/
+    while((obj=iter->Next())) {
+
+      /** Create TString with the part of the branch name which should be
+      * removed. This is mainFolderName.folderName. e.g. cbmroot.Event.
+      * This part of the branch name is obsolete, so it is removed from
+      * the branch name.
+      */
+      TString ffn=cbm->GetName();
+      ffn=ffn+".";
+      ffn=ffn+obj->GetName();
+      ffn=ffn+".";
+
+      /** Correct name of all branches and leaves which correspond to
+      * the subfolder. To do so loop over all branches and check
+      * if the branch corresponds with the folder. If it corresponds
+      * correct the branch names of all sub branches.
+      * Only correct branch names for up to now uncorrected branches.
+      */
+      BrIter->Reset();
+
+      while((BrObj=BrIter->Next())) {
+        TBranch *b=(TBranch *)BrObj;
+        TruncateBranchNames(b, ffn);
+      }
+    }
+    delete  iter;
+    delete  BrIter;
+ }
+}
+//_____________________________________________________________________________
+
+void FairRootManager::TruncateBranchNames(TBranch *b, TString ffn)
+{
+  /** Get the branch name from the branch object, remove common
+  *  and wrong part of the name and and set branch name to
+  *  the new corrected name. This has to be done recursivly for
+  *  all subbranches/leaves
+  *  Remove wrong part of branch name
+  */
+  TObject *BrObj;
+  TString nn= b->GetName();
+  nn.ReplaceAll(ffn.Data(),"");
+  b->SetName(nn.Data());
+  TObjArray* Br= b->GetListOfBranches();
+  TIterator* BrIter= Br->MakeIterator();
+  BrIter->Reset();
+  while((BrObj=BrIter->Next())) {
+    TBranch *bb=(TBranch *)BrObj;
+    TruncateBranchNames(bb, ffn);
+  }
+  delete  BrIter;
+}
+//_____________________________________________________________________________
+
+Int_t FairRootManager::CheckBranch(const char* BrName)
+{
+   /**The first time this method is called the map is generated and then used*/ 
+   if(!fBranchPerMap){
+      CreatePerMap();
+      return CheckBranchSt(BrName);
+   }else{
+      fBrPerMapIter=fBrPerMap.find(BrName);
+      if(fBrPerMapIter!=fBrPerMap.end()) return fBrPerMapIter->second;
+      else  return 0;
+   }
+}
+
+//_____________________________________________________________________________
+void  FairRootManager::SetBranchNameList(TList *list)
+{
+   for(Int_t t=0; t<list->GetEntries(); t++){
+      fBranchNameList->AddAt(list->At(t),t); 
+   }
+}
+
+
+
+
+
+
+//_____________________________________________________________________________
+/** Private functions*/
+//_____________________________________________________________________________
+
 
 TObject * FairRootManager::ActivateBranch(const char *BrName)
 {
@@ -578,41 +660,11 @@ TObject * FairRootManager::ActivateBranch(const char *BrName)
    return  fObj2[fNObj];
 
 }
-//_____________________________________________________________________________
-TObject*  FairRootManager::GetMemoryBranch( const char* fName ) {
- 
- //return fMap[BrName];
-  TString BrName=fName;
-  map < TString, TObject*>::iterator p;
-  p=fMap.find(BrName);
 
-  if(p!=fMap.end()){
-	return p->second;
-    //    cout << " -E- FairRootManager::GetMemoryBranch " << BrName << " is found " << endl;
-  }else{
-   // cout << " -E- FairRootManager::GetMemoryBranch " << BrName << " Not found " << endl;
-	return 0;
-  }
-}
 //_____________________________________________________________________________
- TObject* FairRootManager::GetObject(const char* BrName)
-{
-   /**Get Data object by name*/
-   TObject *Obj =NULL;
-   /**Try to fine the object in the folder structure, object already activated by other task or call*/
-   if(fCbmout) Obj = fCbmout->FindObjectAny(BrName);
-   /**if the object does not exist then it could be a memory branch */
-   if(!Obj){  Obj=GetMemoryBranch(BrName); }
-   /**if the object does not exist then look in the input tree */
-   if(fCbmroot && !Obj){
-      /** there is an input tree and the object was not in memory */
-      Obj=fCbmroot->FindObjectAny(BrName);
-      Obj=ActivateBranch(BrName);
-   }
-   if(!Obj) {  Obj=ActivateBranch(BrName); }	
-   return Obj;
- }
-//_____________________________________________________________________________
+
+
+
 void  FairRootManager::AddMemoryBranch( const char* fName, TObject* pObj ){
    /**branch will be available ionly in Memory, will not be written to disk */
    map < TString, TObject*>::iterator p;
@@ -626,131 +678,24 @@ void  FairRootManager::AddMemoryBranch( const char* fName, TObject* pObj ){
    }
 }
 //_____________________________________________________________________________
-FairGeoNode*  FairRootManager::GetGeoParameter(const char* detname, const char* gname){
-   TFolder *detf= NULL;
-   FairGeoNode *node = NULL;
-   TList *lgeo=NULL;
-   TString lname(detname);
-   lname+="GeoPar";
-   TFolder *froot =  dynamic_cast<TFolder*> (gROOT->FindObject("cbmroot"));
-   if ( froot )  detf = dynamic_cast<TFolder*> (froot->FindObjectAny( detname ));
-   else cout << "-E- GetGeoParameter() Main Folder not found ! " << endl;
-   if ( detf    )  lgeo = dynamic_cast<TList*> (detf->FindObjectAny( lname.Data() ));
-   else cout << "-E- GetGeoParameter() GeoPar: " << lname << endl;
-   if ( lgeo    )  node = dynamic_cast<FairGeoNode*> (lgeo->FindObject(gname));
-   else cout << "-E- GetGeoParameter() GeoList not found " << endl;
-   return node;
-}
-
-//_____________________________________________________________________________
-
-void FairRootManager::TranicateBranchNames(TTree *fTree, const char *folderName)
-{
-  // If a object is created in a folder the corresponding branch
-  // in the tree is crated with a wrong name.
-  // The name of the branch is created as follows
-  // mainFolder.subFolder.nameOfStoredObject
-  // e.g. cbmroot.Event.ExampleClass.
-  // The name which is wanted is only nameOfStoredObject
-  // e.g. ExampleClass.
-  // This is corrected in this function
-
-  // If the folder does not exist don't do anything
-  TFolder *cbm=(TFolder *)gROOT->FindObjectAny(folderName);
-  if(cbm){
-     TCollection* lf=cbm->GetListOfFolders();
-     TIterator* iter= lf->MakeIterator();
-     TObjArray* Br= fTree->GetListOfBranches();
-     TIterator* BrIter= Br->MakeIterator();
-     TObject *obj;
-     TObject *BrObj;
-
-    // correct branch names in all folders below the main output folder
-    while((obj=iter->Next())) {
-
-      // Create TString with the part of the branch name which should be
-      // removed. This is mainFolderName.folderName. e.g. cbmroot.Event.
-      // This part of the branch name is obsolete, so it is removed from
-      // the branch name.
-      TString ffn=cbm->GetName();
-      ffn=ffn+".";
-      ffn=ffn+obj->GetName();
-      ffn=ffn+".";
-
-      // Correct name of all branches and leaves which correspond to
-      // the subfolder. To do so loop over all branches and check
-      // if the branch corresponds with the folder. If it corresponds
-      // correct the branch names of all sub branches.
-      // Only correct branch names for up to now uncorrected branches.
-      BrIter->Reset();
-
-      while((BrObj=BrIter->Next())) {
-        TBranch *b=(TBranch *)BrObj;
-        TranicateBranchNames(b, ffn);
-      }
-    }
-    delete  iter;
-    delete  BrIter;
- }
+void FairRootManager::AssignTClonesArrays(){
+	 for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++){
+		AssignTClonesArray(it->first);
+	 }
 }
 //_____________________________________________________________________________
-
-void FairRootManager::TranicateBranchNames(TBranch *b, TString ffn)
-{
-  // Get the branch name from the branch object, remove common
-  // and wrong part of the name and and set branch name to
-  // the new corrected name. This has to be done recursivly for
-  // all subbranches/leaves
-  
-  // Remove wrong part of branch name
-  TObject *BrObj;
-  TString nn= b->GetName();
-  nn.ReplaceAll(ffn.Data(),"");
-  b->SetName(nn.Data());
-  TObjArray* Br= b->GetListOfBranches();
-  TIterator* BrIter= Br->MakeIterator();
-  BrIter->Reset();
-  while((BrObj=BrIter->Next())) {
-    TBranch *bb=(TBranch *)BrObj;
-    TranicateBranchNames(bb, ffn);
-  }
-  delete  BrIter;
-}
-//_____________________________________________________________________________
-
-Int_t FairRootManager::CheckBranch(const char* BrName)
-{
-   /**The first time this method is called the map is generated and then used*/ 
-   if(!fBranchPerMap){
-      CreatePerMap();
-      return CheckBranchSt(BrName);
-   }else{
-      fBrPerMapIter=fBrPerMap.find(BrName);
-      if(fBrPerMapIter!=fBrPerMap.end()) return fBrPerMapIter->second;
-      else  return 0;
-   }
-}
-
-//_____________________________________________________________________________
-void  FairRootManager::SetBranchNameList(TList *list)
-{
-   for(Int_t t=0; t<list->GetEntries(); t++){
-      fBranchNameList->AddAt(list->At(t),t); 
-   }
-}
-
-//_____________________________________________________________________________
-void  FairRootManager::CreatePerMap()
-{
-//   cout << " FairRootManager::CreatePerMap() " << endl;
-   fBranchPerMap=kTRUE;
-   for (Int_t i=0; i<fBranchSeqId; i++){
-      TObjString *name= (TObjString *)(fBranchNameList->At(i));
-//      cout << " FairRootManager::CreatePerMap() Obj At " << i << "  is "  << name->GetString() << endl;
-      TString BrName=name->GetString();
-      fBrPerMap.insert(pair<TString, Int_t> (BrName, CheckBranchSt(BrName.Data())));
-   }
-
+void FairRootManager::AssignTClonesArray(TString branchName){
+	TClonesArray* output = (TClonesArray*)GetObject(branchName);
+	TClonesArray* input = ForceGetDataContainer(branchName);
+	output->Clear();
+#if ROOT_VERSION_CODE >= ROOT_VERSION(5,27,4)
+	if (input != 0){
+		output->AbsorbObjects(input);
+	}
+#else
+	cout <<"FairRootManager::AssignTClonesArray(TString branchName) "<<endl;
+        cout <<"Is only available in ROOT 5.27-04 "<<endl;
+#endif
 }
 //_____________________________________________________________________________
 Int_t FairRootManager::CheckBranchSt(const char* BrName)
@@ -779,7 +724,43 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
    */
    return returnvalue;
 }
+//_____________________________________________________________________________
+void  FairRootManager::CreatePerMap()
+{
+//   cout << " FairRootManager::CreatePerMap() " << endl;
+   fBranchPerMap=kTRUE;
+   for (Int_t i=0; i<fBranchSeqId; i++){
+      TObjString *name= (TObjString *)(fBranchNameList->At(i));
+//      cout << " FairRootManager::CreatePerMap() Obj At " << i << "  is "  << name->GetString() << endl;
+      TString BrName=name->GetString();
+      fBrPerMap.insert(pair<TString, Int_t> (BrName, CheckBranchSt(BrName.Data())));
+   }
 
+}
+//_____________________________________________________________________________
+TObject*  FairRootManager::GetMemoryBranch( const char* fName ) {
+ 
+ //return fMap[BrName];
+  TString BrName=fName;
+  map < TString, TObject*>::iterator p;
+  p=fMap.find(BrName);
+
+  if(p!=fMap.end()){
+	return p->second;
+    //    cout << " -E- FairRootManager::GetMemoryBranch " << BrName << " is found " << endl;
+  }else{
+   // cout << " -E- FairRootManager::GetMemoryBranch " << BrName << " Not found " << endl;
+	return 0;
+  }
+}
+//_____________________________________________________________________________
+void FairRootManager::SaveAllContainers(){
+   while(!DataContainersEmpty()){
+      AssignTClonesArrays();
+      ForceFill();
+   }
+}
+//_____________________________________________________________________________
 
 ClassImp(FairRootManager)
 

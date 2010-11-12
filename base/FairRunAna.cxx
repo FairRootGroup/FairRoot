@@ -182,7 +182,7 @@ void FairRunAna::Init() {
    if(par && fInputFile){
       fRootManager->ReadEvent(0);
       fEvtHeader = (FairEventHeader*)
-      fRootManager->ActivateBranch("EventHeader.");
+      fRootManager->GetObject("EventHeader.");
       //Copy the Event Header Info to Output
       fRootManager->Register("EventHeader.","EvtHeader",fEvtHeader, kTRUE);
       fRunId = fEvtHeader->GetRunId();
@@ -221,7 +221,7 @@ void FairRunAna::Init() {
    // create the output tree after tasks initialisation
    Output->cd();
    TTree *outTree =new TTree("cbmsim", "/cbmout", 99);
-   fRootManager->TranicateBranchNames(outTree, "cbmout");
+   fRootManager->TruncateBranchNames(outTree, "cbmout");
    fRootManager->SetOutTree(outTree);
    fRootManager->WriteFolder();
 }

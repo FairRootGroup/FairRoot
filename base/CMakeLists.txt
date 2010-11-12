@@ -37,6 +37,7 @@ FairGenerator.cxx
 FairHit.cxx 
 FairIon.cxx 
 FairMCApplication.cxx 
+FairGeaneApplication.cxx 
 FairMCEventHeader.cxx 
 FairMCPoint.cxx 
 FairModule.cxx 

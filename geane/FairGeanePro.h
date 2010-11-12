@@ -16,7 +16,7 @@ class FairTrackPar;
 class FairTrackParP;
 class FairTrackParH;
 class FairField;
-class FairMCApplication;
+class FairGeaneApplication;
 class FairGeanePro : public TNamed
 
 {
@@ -106,7 +106,7 @@ public:
   TVector3 fvpf, fvwi;
   Float_t ftrklength;
   Int_t flag; 
-  FairMCApplication *fApp; 
+  FairGeaneApplication *fApp; 
   Double_t trpmat[5][5];
   ClassDef(FairGeanePro,1);
 };

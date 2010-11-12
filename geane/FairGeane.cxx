@@ -3,7 +3,7 @@
 // Author: M. Al-Turany
 //
 #include "FairGeane.h"
-#include "FairMCApplication.h"
+#include "FairGeaneApplication.h"
 #include "FairField.h"
 #include "FairRunAna.h"
 #include "TGeoManager.h"
@@ -23,7 +23,7 @@ using std::endl;
 // -----   Standard constructor   ------------------------------------------
 FairGeane::FairGeane(const char* name, TString UserConfig,   TString UserCuts )
 :  FairTask("Geane Application"),
-  fApp(new FairMCApplication(kTRUE)),
+  fApp(new FairGeaneApplication(kTRUE)),
   fName(name),
   fUserConfig(UserConfig),  
   fUserCuts (UserCuts)
@@ -38,7 +38,7 @@ FairGeane::FairGeane(const char* name, TString UserConfig,   TString UserCuts )
 
 FairGeane::FairGeane(TString UserConfig,   TString UserCuts )
 : FairTask("Geane Application"),
-  fApp(new FairMCApplication(kTRUE)),
+  fApp(new FairGeaneApplication(kFALSE)),
   fName(""),
   fUserConfig(UserConfig),  
   fUserCuts (UserCuts)

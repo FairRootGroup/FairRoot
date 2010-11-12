@@ -18,7 +18,7 @@
 #include "TMatrixFSym.h"
 #include "TVirtualMC.h"
 #include "TGeant3.h"
-#include "FairMCApplication.h"
+#include "FairGeaneApplication.h"
 #include <iostream>
 #include <cmath>
 
@@ -58,7 +58,7 @@ FairGeanePro::FairGeanePro() : TNamed("Geane", "Propagate Tracks")
 
   for(int i = 0; i < 5; i++) for(int j = 0; j < 5; j++) trpmat[i][j] = 0.;
 
-  fApp =FairMCApplication::Instance();
+  fApp =FairGeaneApplication::Instance();
   
 
 }
@@ -271,7 +271,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH *TStart, FairTrackParP *TEnd, Int_t
 
 Bool_t FairGeanePro::Propagate(Float_t *X1, Float_t *P1, Float_t *X2, Float_t *P2,Int_t PDG)
 {
-  fApp->GeanePreTrack(X1, P1, PDG);
+//  fApp->GeanePreTrack(X1, P1, PDG);
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   xlf[0]=1000
 	;
@@ -287,7 +287,7 @@ Bool_t FairGeanePro::Propagate(Int_t PDG) {
 
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDG);
   //cout <<  " FairGeanePro::Propagate ---------------------------"<< "  " << x1[0]<< " "<< x1[1]<< "  "<<  x1[2] << endl; 
-  fApp->GeanePreTrack(x1, p1, PDG);
+  //fApp->GeanePreTrack(x1, p1, PDG);
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
   if(x2[0]<-1.E29) return kFALSE;
   if(gMC3->IsTrackOut()) return kFALSE;
