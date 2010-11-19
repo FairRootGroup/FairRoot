@@ -33,7 +33,7 @@ class FairEventHeader : public TNamed
    */
   virtual ~FairEventHeader();
 
-
+  virtual void Register();
 
  protected:
    /** Run Id */

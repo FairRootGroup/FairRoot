@@ -9,6 +9,7 @@
 #include "FairTask.h"
 #include "FairRootManager.h"
 #include "FairRuntimeDb.h"
+#include "FairEventHeader.h"
 
 //_____________________________________________________________________________
 FairRun * FairRun::fRunInstance= 0;
@@ -27,7 +28,8 @@ FairRun::FairRun()
    fRootManager(FairRootManager::Instance()),
    fOutFile(0),
    fRunId(0),
-   fAna(kFALSE)
+   fAna(kFALSE),
+   fEvHead(NULL)
 {
   if (fRunInstance) {
       Fatal("FairRun", "Singleton instance already exists.");
@@ -68,7 +70,14 @@ FairTask* FairRun::GetTask(const char* taskName) {
     TObject* task = taskList->FindObject(taskName);
     return dynamic_cast<FairTask*>(task);
 }
-ClassImp(FairRun)
 
+FairEventHeader*  FairRun::GetEventHeader() 
+{ 
+  if ( NULL == fEvHead ) fEvHead = new FairEventHeader();  
+  return fEvHead;
+}
+
+
+ClassImp(FairRun)
 
 

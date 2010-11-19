@@ -13,6 +13,7 @@
 class FairModule;
 class FairField;
 class FairPrimaryGenerator;
+class FairMCEventHeader;
 
 /**
  * Configure the Simulation session
@@ -66,6 +67,12 @@ public:
     */
     void        SetGenerator(FairPrimaryGenerator *Gen);
     
+    /**
+     *       Set the experiment dependent event header
+     *       for each Monte Carlo Event
+     */
+    void  SetMCEventHeader(FairMCEventHeader *McHeader) {fMCEvHead=McHeader;}
+     
 	/** Set the material file name to be used */
     void    SetMaterials(const char * MatFileName);
     
@@ -83,6 +90,9 @@ public:
     
 	/**Get the field used in simulation*/
     FairField*  GetField() { return fField;}
+
+ 	/**Get the detector specific event header*/
+    FairMCEventHeader*  GetMCEventHeader(); 
     
 	/**return the full list of modules used in simulation*/
     TObjArray*        GetListOfModules() { return ListOfModules;}
@@ -136,6 +146,8 @@ protected:
     Double_t               fBeamMom; //!	                       /** Beam Energy in GeV/c  */
     Bool_t                 fUseBeamMom; //!	                       /** flag for use Beam Energy  */
     FairPrimaryGenerator*  fGen; //!                               /** Primary Event Generator */
+    FairMCEventHeader*     fMCEvHead; //!
+        /** MC Event Header */
     static FairRunSim*     fginstance;//!                          /** Singelton Instance */ 
     FairField*             fField;                                 /** Magnetic Field */ 
     const char*            fMapName; //!                           /** Input file name map*/

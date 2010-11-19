@@ -5,7 +5,7 @@
 
 
 #include "FairEventHeader.h"
-
+#include "FairRootManager.h"
 
 // -----   Default constructor   -------------------------------------------
 FairEventHeader::FairEventHeader() 
@@ -22,6 +22,10 @@ FairEventHeader::FairEventHeader()
 FairEventHeader::~FairEventHeader() { }
 // -------------------------------------------------------------------------
 
+void FairEventHeader::Register()
+{  
+  FairRootManager::Instance()->Register("EventHeader.", "EvtHeader", this, kTRUE);
+}
 
 
 ClassImp(FairEventHeader)

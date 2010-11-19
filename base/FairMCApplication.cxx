@@ -555,22 +555,28 @@ void FairMCApplication::InitGeometry()
    /// There is always a Main Task  !
    /// so .. always a InitTasks() is called <D.B>
    if (fFairTaskList) InitTasks();
-   /// store the EventHeader Info
-   FairEventHeader *evt = new FairEventHeader();
-   ///Dot at the end of the name is needed for splitting!!
-   fRootManager->Register("EventHeader.","EvtHeader",evt, kTRUE);
-   cout << " -I- FairMCApplication ->  simulation RunID:  " <<  FairRunSim::Instance()->GetRunId() << endl;
-   evt->SetRunId( FairRunSim::Instance()->GetRunId() );
 
-   /// Create and register MCEventHeader
+   // store the EventHeader Info
+   // Get and register EventHeader
    UInt_t runId = FairRunSim::Instance()->GetRunId();
-   FairMCEventHeader* mcEvent = new FairMCEventHeader(runId);
-   fRootManager->Register("MCEventHeader.", "Event", mcEvent, kTRUE);
+
+   FairEventHeader* evt = FairRunSim::Instance()->GetEventHeader();
+   evt->SetRunId(runId);                          
+   evt->Register();
+   cout << " -I- FairMCApplication ->  simulation RunID:  " 
+	<<  runId << endl;
+
+   // Get and register the MCEventHeader
+   FairMCEventHeader* mcEvent = FairRunSim::Instance()->GetMCEventHeader();
+   mcEvent->SetRunID(runId);                          
+   mcEvent->Register();
+   
+
    if(fEvGen)fEvGen->SetEvent(mcEvent);
    fTrajFilter = FairTrajFilter::Instance();
    if(NULL != fTrajFilter ) fTrajFilter->Init();
    if(NULL !=fRadLenMan)fRadLenMan->Init();
-
+   
    /// save Geo Params in Output file
    fRootManager->WriteFolder();
    TTree *outTree =new TTree("cbmsim", "/cbmroot", 99);

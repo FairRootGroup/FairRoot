@@ -7,6 +7,7 @@ class FairTask;
 class TFile;
 class FairRuntimeDb;
 class FairRootManager;
+class FairEventHeader;
 
 /**
  * Configure the Simuation or Analysis
@@ -49,6 +50,14 @@ public:
      * Set the output file name for analysis or simulation
     */
     void        SetOutputFile(const char *fname);
+
+    /**
+     *       Set the experiment dependent run header
+     *       for each run
+     */
+    void        SetEventHeader(FairEventHeader *EvHeader)  {fEvHead=EvHeader;}
+
+
 	/**
 	 * return a pointer to the RuntimeDB
 	 */
@@ -61,6 +70,11 @@ public:
 	 * return the run ID for the actul run
 	 */
 	Int_t  GetRunId() { return ((Int_t) fRunId);}
+
+	/**Get the detector specific run header*/
+
+    FairEventHeader*  GetEventHeader();
+
     /** 
 	* return true for Anaylsis session
 	*/
@@ -99,6 +113,10 @@ protected:
     UInt_t                   fRunId;//!
     /** true for Anaylsis session*/
     Bool_t	          fAna;  //! 
+
+    FairEventHeader*       fEvHead; //!
+        /** MC Event Header */
+
     
 	ClassDef(FairRun ,1)
 };

@@ -7,6 +7,7 @@
 
 
 #include "FairMCEventHeader.h"
+#include "FairRootManager.h"
 
 
 
@@ -83,6 +84,10 @@ void FairMCEventHeader::Reset() {
 }
 // ------------------------------------------------------------------------
 
-  
+void FairMCEventHeader::Register()
+{  
+  // Dot at the end of the name is needed for splitting!!
+  FairRootManager::Instance()->Register("MCEventHeader.", "Event", this, kTRUE);
+}
 
 ClassImp(FairMCEventHeader)

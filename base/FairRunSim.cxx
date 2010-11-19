@@ -14,6 +14,7 @@
 #include "FairRuntimeDb.h"
 #include "FairGeoLoader.h"
 #include "FairGeoInterface.h"
+#include "FairMCEventHeader.h"
 #include "TROOT.h"
 #include "TSystem.h"
 #include <iostream>
@@ -30,6 +31,7 @@ FairRunSim::FairRunSim()
    fBeamMom(0),
    fUseBeamMom(kFALSE),
    fGen(0),
+   fMCEvHead(0),
    fField(0),
    fMapName(""),
    fIons(new TObjArray()),
@@ -416,7 +418,12 @@ void  FairRunSim::SetUserDecay(const TString& Config)
 	fUserDecayConfig = Config; 
 	fUserDecay = kTRUE;
 }
-					  
+		  
+FairMCEventHeader*  FairRunSim::GetMCEventHeader() 
+{ 
+  if ( NULL == fMCEvHead ) fMCEvHead = new FairMCEventHeader();  
+  return fMCEvHead;
+}
 
 
 FairRunSim *FairRunSim::fginstance= 0;

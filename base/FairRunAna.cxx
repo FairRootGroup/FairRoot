@@ -176,15 +176,15 @@ void FairRunAna::Init() {
   
    /**Set the IO Manager to run with time stamps*/	
    if(fTimeStamps)fRootManager->RunWithTimeStamps();
-	
-	
+		
    // Assure that basic info is there for the run
    if(par && fInputFile){
       fRootManager->ReadEvent(0);
       fEvtHeader = (FairEventHeader*)
       fRootManager->GetObject("EventHeader.");
       //Copy the Event Header Info to Output
-      fRootManager->Register("EventHeader.","EvtHeader",fEvtHeader, kTRUE);
+      fEvtHeader->Register();
+
       fRunId = fEvtHeader->GetRunId();
       // Init the containers in Tasks
 //	   cout << "Run Id for this run : " << fRunId << endl;
@@ -195,8 +195,9 @@ void FairRunAna::Init() {
 	//  fRootManager->SetBranchNameList(par->GetBranchNameList());
    }else{
    
-      FairEventHeader *evt = new FairEventHeader();
-      fRootManager->Register("EventHeader.","EvtHeader",evt, kTRUE);
+      FairEventHeader* evt = this->GetEventHeader();
+      evt->Register();
+
       FairRunIdGenerator genid;
       fRunId = genid.generateId();
       fRtdb->addRun(fRunId);

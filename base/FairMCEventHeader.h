@@ -58,6 +58,7 @@ class FairMCEventHeader : public TNamed
 
   /** Modifiers **/
   void SetEventID(UInt_t eventId) { fEventId = eventId; }
+  void SetRunID(UInt_t runId) { fRunId = runId; }
   void SetTime(Double_t t)       { fT = t; }
   void SetB(Double_t b)          { fB = b; }
   void SetNPrim(Int_t nPrim)     { fNPrim = nPrim; }
@@ -69,9 +70,11 @@ class FairMCEventHeader : public TNamed
   /** Reset all members **/
   void Reset();
 
+  /** Register the class as data branch to the output */
+  virtual void Register();
 
+ protected:
 
- private:
 
   UInt_t     fRunId;       ///  Run identifier
   UInt_t     fEventId;     ///  Event identifier

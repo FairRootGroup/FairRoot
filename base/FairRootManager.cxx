@@ -561,9 +561,40 @@ void FairRootManager::TruncateBranchNames(TTree *fTree, const char *folderName)
 
       while((BrObj=BrIter->Next())) {
         TBranch *b=(TBranch *)BrObj;
-        TruncateBranchNames(b, ffn);
+	TruncateBranchNames(b, ffn);
       }
     }
+
+    // Remove all occurence of FairMCEventHeader and FairEventHeader from 
+    // all branches containing that string.
+    // This is not the correct way to do it, but up tonow we don't understand
+    // why this part comes in when storing a derrived class from 
+    // FairMCEventHeader or FairEventHeader.
+ 
+    iter->Reset();
+    while((obj=iter->Next())) {
+
+      TString ffn=".FairMCEventHeader";
+      BrIter->Reset();
+
+      while((BrObj=BrIter->Next())) {
+        TBranch *b=(TBranch *)BrObj;
+	TruncateBranchNames(b, ffn);
+      }
+    }
+
+    iter->Reset();
+    while((obj=iter->Next())) {
+
+      TString ffn=".FairEventHeader";
+      BrIter->Reset();
+
+      while((BrObj=BrIter->Next())) {
+        TBranch *b=(TBranch *)BrObj;
+	TruncateBranchNames(b, ffn);
+      }
+    }
+
     delete  iter;
     delete  BrIter;
  }
@@ -580,11 +611,15 @@ void FairRootManager::TruncateBranchNames(TBranch *b, TString ffn)
   */
   TObject *BrObj;
   TString nn= b->GetName();
+  //  cout<<"nn.Data before: "<<nn.Data()<<endl;
   nn.ReplaceAll(ffn.Data(),"");
+  //  cout<<"nn.Data after: "<<nn.Data()<<endl;
+  //  cout <<"##################"<<endl;
   b->SetName(nn.Data());
   TObjArray* Br= b->GetListOfBranches();
   TIterator* BrIter= Br->MakeIterator();
   BrIter->Reset();
+
   while((BrObj=BrIter->Next())) {
     TBranch *bb=(TBranch *)BrObj;
     TruncateBranchNames(bb, ffn);
