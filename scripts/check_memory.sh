@@ -12,6 +12,8 @@ sleeptime=$2
 
 check=true
 
+echo "Date  vmPeak vmSize vmLck vmHWM vmRSS vmData vmStk vmExe vmLib vmPTE" > memory_consumption_$pid.txt
+
 while $check; do
 
 
@@ -73,7 +75,7 @@ vmPTE=$(echo $result | cut -f 29-30 -d" ")
 #echo "$datestring  $vmExe" >> vmExe_$pid.txt
 #echo "$datestring  $vmLib" >> vmLib_$pid.txt
 #echo "$datestring  $vmPTE" >> vmPTE_$pid.txt
-echo "$datestring  $vmPeak $vmSize $vmLck $vmHWM $vmRSS $vmData $vmStk $vmExe $vmLib $vmPTE" memory_consumption_$pid.txt
+echo "$datestring  $vmPeak $vmSize $vmLck $vmHWM $vmRSS $vmData $vmStk $vmExe $vmLib $vmPTE" >> memory_consumption_$pid.txt
 
 
 # if pid does not exist any longer (process ends) leave the loop
