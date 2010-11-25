@@ -15,16 +15,16 @@ FairLink::FairLink()
   fType(0),
   fIndex(0),
   fWeight(1.0)
-  
-{}
+ {
+ }
 
 FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
 :TObject(),
- fType(0),
+ fType(type),
  fIndex(index),
  fWeight(weight)
-
- {}
+ {
+ }
 
 
 FairLink::FairLink(TString branchName, Int_t index, Float_t weight)
