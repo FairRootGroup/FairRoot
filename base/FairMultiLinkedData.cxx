@@ -22,8 +22,7 @@ FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persis
 FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
 	:fPersistanceCheck(persistanceCheck), fVerbose(0)
 {
-	FairRootManager* ioman = FairRootManager::Instance();
-	SimpleAddLinks(ioman->GetBranchId(dataType), links, bypass, mult);
+	SimpleAddLinks(FairRootManager::Instance()->GetBranchId(dataType), links, bypass, mult);
 //	FairMultiLinkedData(ioman->GetBranchId(dataType), links, persistanceCheck, bypass, addup, mult);
 }
 

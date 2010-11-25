@@ -33,10 +33,9 @@ fType(0),
 fIndex(index),
 fWeight(weight)
 {
-	FairRootManager* ioman = FairRootManager::Instance();
-	if (0==ioman)
-		std::cout << "-E- FairLink: No iomanager" << std::endl;
-	SetLink(ioman->GetBranchId(branchName), index, weight);
+	//FairRootManager* ioman = FairRootManager::Instance();
+	//if (0==ioman)	std::cout << "-E- FairLink: No iomanager" << std::endl;
+	SetLink(FairRootManager::Instance()->GetBranchId(branchName), index, weight);
 }
 
 FairLink::~FairLink() {
