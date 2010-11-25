@@ -95,7 +95,7 @@ InitStatus FairTutorialDetDigitizer::Init()
     if ( ! ioman ) Fatal("Init", "No FairRootManager");
     
     fTutorialDetPoints=(TClonesArray *)  
-      ioman->ActivateBranch("TutorialDetPoint");
+      ioman->GetObject("TutorialDetPoint");
  
     if ( ! fTutorialDetPoints ) {
       cout << "-W FairTutorialDetDigitizer::Init: No TutorialDetPoints array!" << endl;
@@ -103,7 +103,7 @@ InitStatus FairTutorialDetDigitizer::Init()
       return kERROR;
     }
 
-    //fListStack = (TClonesArray*)ioman->ActivateBranch("MCTrack");
+    //fListStack = (TClonesArray*)ioman->GetObject("MCTrack");
     //fDigiCollection = new TClonesArray("FairTrdDigi", 100);
     //ioman->Register("TRDDigi","TRD Digis",fDigiCollection,kTRUE);
 
