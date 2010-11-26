@@ -61,6 +61,15 @@ FairRuntimeDb::~FairRuntimeDb() {
   closeSecondInput();
   closeOutput();
   if (containerList) {
+/*
+    TIter next(containerList);
+    FairParSet* cont;
+    while ((cont=(FairParSet*)next())) {
+      Text_t* name=(char*)cont->GetName();
+      cout<<"Remove Container: "<<name<<endl;
+      removeContainer(name);
+    }
+*/
     containerList->Delete();
     delete containerList;
   }

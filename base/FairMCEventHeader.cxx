@@ -9,8 +9,6 @@
 #include "FairMCEventHeader.h"
 #include "FairRootManager.h"
 
-
-
 // -----   Default constructor   ------------------------------------------
 FairMCEventHeader::FairMCEventHeader() 
 : TNamed("MCEvent", "MC"), 
@@ -71,7 +69,9 @@ FairMCEventHeader::FairMCEventHeader(Int_t iEvent, Double_t x, Double_t y,
 
 
 // -----   Destructor   ---------------------------------------------------
-FairMCEventHeader::~FairMCEventHeader() { }
+FairMCEventHeader::~FairMCEventHeader() 
+{ 
+}
 // ------------------------------------------------------------------------
 
 

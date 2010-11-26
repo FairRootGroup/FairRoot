@@ -15,6 +15,7 @@
 #include "FairGeoLoader.h"
 #include "FairGeoInterface.h"
 #include "FairMCEventHeader.h"
+#include "FairPrimaryGenerator.h"
 #include "TROOT.h"
 #include "TSystem.h"
 #include <iostream>
@@ -27,12 +28,12 @@ ClassImp(FairRunSim)
 FairRunSim::FairRunSim()
   :FairRun(),
    count(0),
-   fApp(0),   
+   fApp(NULL),   
    fBeamMom(0),
    fUseBeamMom(kFALSE),
-   fGen(0),
-   fMCEvHead(0),
-   fField(0),
+   fGen(NULL),
+   fMCEvHead(NULL),
+   fField(NULL),
    fMapName(""),
    fIons(new TObjArray()),
    fParticles( new TObjArray()),
@@ -59,11 +60,25 @@ FairRunSim::FairRunSim()
 
 FairRunSim::~FairRunSim()
 {
+  //   cout<<"Enter Destructor of FairRunSim"<<endl;
+   // List of Modules is filled via AddModule from the macro, but it
+   // is the responsibility of FairRunSim to call the destructors of
+   // the modules-
+   cout<<"Start deleting all registered modules"<<endl;
+   ListOfModules->Delete();
    delete ListOfModules;
-   delete fApp;
+   cout<<"Finish deleting all registered modules"<<endl;
+   
+   fIons->Delete();
    delete fIons;
+   fParticles->Delete();
    delete fParticles;    
 
+   delete fApp;
+   delete fField;
+   delete fGen;
+   delete fMCEvHead;
+   //   cout<<"Leave Destructor of FairRunSim"<<endl;
 }
 FairRunSim * FairRunSim::Instance(){
     return fginstance;
@@ -164,6 +179,7 @@ void FairRunSim::Init()
 	
 	/**Set the configuration for MC engine*/
 	SetMCConfig();
+
 	
 }
 

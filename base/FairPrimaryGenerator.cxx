@@ -32,7 +32,7 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fStack(NULL),
    fGenList(new TObjArray()),
    fListIter(fGenList->MakeIterator()),
-   fEvent(0),
+   fEvent(NULL),
    fdoTracking(kTRUE),
    fEventTimeMin(0),
    fEventTimeMax(0),
@@ -65,13 +65,13 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fStack(NULL),
    fGenList(new TObjArray()),
    fListIter(fGenList->MakeIterator()),
-   fEvent(0),
+   fEvent(NULL),
    fdoTracking(kTRUE),
    fEventTimeMin(0),
    fEventTimeMax(0),
    fEventTime(0),
    fEventMeanTime(0),
-   fTimeProb(0)
+   fTimeProb(NULL)
 {
   fTargetZ[0] = 0.;
   
@@ -82,12 +82,19 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
 
 // -----   Destructor   ----------------------------------------------------
 FairPrimaryGenerator::~FairPrimaryGenerator() {
-  delete fListIter;
+  //  cout<<"Enter Destructor of FairPrimaryGenerator"<<endl;
+  // the stack is deleted by FairMCApplication
   if (1 == fNrTargets) {
     delete fTargetZ;
   } else {
-    delete[] fTargetZ;
+    delete [] fTargetZ;
   }
+  fGenList->Delete();
+  delete fGenList;
+  delete fListIter;
+
+  delete fTimeProb;
+  //  cout<<"Leave Destructor of FairPrimaryGenerator"<<endl;
 }
 // -------------------------------------------------------------------------
 

@@ -45,10 +45,13 @@ FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName) {
 
 // -----   Destructor   ---------------------------------------------------
 FairUrqmdGenerator::~FairUrqmdGenerator() {
+  //  cout<<"Enter Destructor of FairUrqmdGenerator"<<endl;
   if ( fInputFile ) {
     fclose(fInputFile);
     fInputFile = NULL;
   }
+  fParticleTable.clear();
+  //  cout<<"Leave Destructor of FairUrqmdGenerator"<<endl;
 }
 // ------------------------------------------------------------------------
 
@@ -267,6 +270,9 @@ void FairUrqmdGenerator::ReadConversionTable() {
       fParticleTable[index] = pdgId;
   }
     
+  pdgconv->close();
+  delete pdgconv;
+
   cout << "-I FairUrqmdGenerator: Particle table for conversion from "
        << "UrQMD loaded" <<  endl;
 

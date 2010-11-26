@@ -126,7 +126,7 @@ FairContFact::FairContFact()
   containers(new TList)
 {
   // Constructor creates a list to store objects of type FairContainer
-  containers=new TList;
+  //  containers=new TList;
 }
 
 FairContFact::~FairContFact() {

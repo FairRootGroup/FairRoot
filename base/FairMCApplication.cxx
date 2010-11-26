@@ -53,31 +53,34 @@ using std::pair;
 FairMCApplication::FairMCApplication(const char *name, const char *title, 
    TObjArray *ModList, const char *MatName) 
   :TVirtualMCApplication(name,title),
-   fActDetIter(0),
-   fActiveDetectors(0),
-   fFairTaskList(0),
-   fDetIter(0),
-   fDetectors(0),
-   fDetMap(0),
-   fModIter(0),
-   fModules(0),
+   fActDetIter(NULL),
+   fActiveDetectors(NULL),
+   fFairTaskList(NULL),
+   fDetIter(NULL),
+   fDetectors(NULL),
+   fDetMap(NULL),
+   fModIter(NULL),
+   fModules(NULL),
    fNoSenVolumes(0),
    fPythiaDecayer(kFALSE),
    fPythiaDecayerConfig(""),
-   fStack(0),
-   fRootManager(0),
-   fSenVolumes(0),
-   fxField(0),
-   fEvGen(0),
+   fStack(NULL),
+   fRootManager(NULL),
+   fSenVolumes(NULL),
+   fxField(NULL),
+   fEvGen(NULL),
    fMcVersion(-1),
    fTrajFilter(NULL),
    fTrajAccepted(kFALSE),
    fUserDecay(kFALSE),
    fUserDecayConfig(""),
    fDebug(kFALSE),
-   fDisVol(0),
-   fDisDet(0),
-   fVolIter(0),
+   fDisVol(NULL),
+   fDisDet(NULL),
+   fVolMap(),
+   fVolIter(NULL),
+   fModVolMap(),
+   fModVolIter(NULL),
    fTrkPos(TLorentzVector(0,0,0,0)),
    fRadLength(kFALSE),
    fRadLenMan(NULL)
@@ -85,7 +88,6 @@ FairMCApplication::FairMCApplication(const char *name, const char *title,
 // Standard Simulation constructor
 // Check if the Fair root manager exist!
    fRootManager=FairRootManager::Instance();
-   if(fRootManager==0) fRootManager= new FairRootManager();
 // Create an ObjArray of Modules and its iterator
    fModules=ModList;
    fModIter = fModules->MakeIterator();
@@ -153,12 +155,15 @@ FairMCApplication::FairMCApplication()
 FairMCApplication::~FairMCApplication() 
 {
 // Destructor  
+//   cout<<"Enter Destructor of FairMCApplication"<<endl;
    delete fStack;
-   delete fActiveDetectors;
+   delete fActiveDetectors; // don't do fActiveDetectors->Delete() here
+                            // the modules are already deleted in FairRunSim
    delete fActDetIter;
    delete fDetectors;
    delete gMC;	
    gMC=0;
+   //   cout<<"Leave Destructor of FairMCApplication"<<endl;
 }
 //_____________________________________________________________________________
 void FairMCApplication::RegisterStack()

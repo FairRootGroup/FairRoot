@@ -11,6 +11,10 @@
 #include "FairRuntimeDb.h"
 #include "FairEventHeader.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 //_____________________________________________________________________________
 FairRun * FairRun::fRunInstance= 0;
 //_____________________________________________________________________________
@@ -25,7 +29,8 @@ FairRun::FairRun()
    fRtdb(FairRuntimeDb::instance()),
    fTask(new FairTask("FairTask List")),
    Outfname(""),
-   fRootManager(FairRootManager::Instance()),
+   //   fRootManager(FairRootManager::Instance()),
+   fRootManager(new FairRootManager()),
    fOutFile(0),
    fRunId(0),
    fAna(kFALSE),
@@ -36,13 +41,24 @@ FairRun::FairRun()
       return;
   } 
   fRunInstance=this;
-  if(fRootManager==0) fRootManager= new FairRootManager();
+  /*
+   if(fRootManager==0) {
+     cout<<"******* FairRootManager is constructed in FairRun. *******"<<endl;
+     fRootManager= new FairRootManager();
+   }
+   //  if(fRootManager==0) fRootManager= new FairRootManager();
+   */
 }
 //_____________________________________________________________________________
 FairRun::~FairRun()
 {
-	if (fTask) delete fTask;
-	if (fRtdb) delete fRtdb;
+  //  cout<<"Enter Destructor of FairRun"<<endl;
+  if (fTask) delete fTask; // There is another tasklist in MCApplication,
+                           // but this should be independent
+  if (fRtdb) delete fRtdb; // who is responsible for the RuntimeDataBase
+  if (fRootManager) delete fRootManager; // who is responsible
+  if (fEvHead) delete fEvHead;
+  //  cout<<"Leave Destructor of FairRun"<<endl;
 }
 //_____________________________________________________________________________
 

@@ -45,29 +45,56 @@ FairRootManager* FairRootManager::Instance()
 //_____________________________________________________________________________
 FairRootManager::FairRootManager()
   : TObject(),
-   fCbmout(0),  
-   fCbmroot(0),
-   fCurrentTime(0),
-   fInFile(0),
-   fInChain( new TChain("cbmsim", "/cbmroot")),
-   fOutFile(0),
-   fOutTree(0), 
-   fListFolder(0),
-   fObj2(new TObject*[100]),
-   fNObj(-1),
-   fPtrTree(0),
-   fCurrentEntries(0),
-   fBranchSeqId(0),
-   fBranchNameList(new TList()),
-   fCompressData(kFALSE),
-   fTimeStamps(kFALSE),
-   fBranchPerMap(kFALSE)
+    fCbmout(NULL),  
+    fCbmroot(NULL),
+    fCurrentTime(0),
+    fInFile(NULL),
+    fInChain( new TChain("cbmsim", "/cbmroot")),
+    fOutFile(NULL),
+    fOutTree(NULL), 
+    fListFolder(0),
+    fObj2(new TObject*[100]),
+    fNObj(-1),
+    fMap(),
+    fPtrTree(NULL),
+    fCurrentEntries(0),
+    fBranchSeqId(0),
+    fBranchNameList(new TList()),
+    fDataContainer(),
+    fActiveContainer(),
+    fCompressData(kFALSE),
+    fTimeStamps(kFALSE),
+    fBranchPerMap(kFALSE),
+    fBrPerMap(),
+    fBrPerMapIter()
 {
    if (fgInstance) {
       Fatal("FairRootManager", "Singleton instance already exists.");
       return;
    }
    fgInstance = this;
+}
+//_____________________________________________________________________________
+FairRootManager::~FairRootManager() 
+{
+//
+//  cout<<"Enter Destructor of FairRootManager"<<endl;
+  if(fCbmout) delete fCbmout;  
+  if(fCbmroot) delete fCbmroot;
+  if(fInFile) delete fInFile;
+  if(fInChain) delete fInChain;
+  if(fOutTree)  delete fOutTree;
+  if(fOutFile) {
+    fOutFile->cd();
+    delete fOutFile;
+  }
+  //  fObj2->Delete();
+  delete fObj2;
+  if(fPtrTree)delete fPtrTree;
+  fBranchNameList->Delete();
+  delete fBranchNameList;
+  fgInstance = 0;
+  //  cout<<"Leave Destructor of FairRootManager"<<endl;
 }
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
@@ -203,23 +230,6 @@ TFile *FairRootManager::OpenOutFile(const char* fname)
    if(fOutFile) CloseOutFile();
    fOutFile = new TFile(fname, "recreate");
    return OpenOutFile(fOutFile);
-}
-//_____________________________________________________________________________
-FairRootManager::~FairRootManager() 
-{
-//
-   if(fCbmout) delete fCbmout;  
-   if(fCbmroot) delete fCbmroot;
-   if(fInChain) delete fInChain;
-   if(fOutTree)  delete fOutTree;
-   if(fPtrTree)delete fPtrTree;
-   if(fInFile) delete fInFile;
-   if(fOutFile) {
-      fOutFile->cd();
-     delete fOutFile;
-   }
-   fgInstance = 0;
-   delete fObj2;
 }
 //_____________________________________________________________________________
 void  FairRootManager::Register(const char* name, const char* folderName , TNamed *obj, Bool_t toFile)
