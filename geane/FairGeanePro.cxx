@@ -58,8 +58,31 @@ FairGeanePro::FairGeanePro() : TNamed("Geane", "Propagate Tracks")
 
   for(int i = 0; i < 5; i++) for(int j = 0; j < 5; j++) trpmat[i][j] = 0.;
 
-  fApp =FairGeaneApplication::Instance();
+  fApp = FairGeaneApplication::Instance();
   
+  fPropOption = "";
+  for(int i = 0; i < 15; i++){
+    ein[i] = 0.;
+    if(i < 3) {
+      x2[i] = 0;
+      p2[i] = 0;
+      x1[i] = 0;
+      p1[i] = 0;
+    }
+  }
+
+  pli[0] = 1.; pli[1] = 0.; pli[2] = 0.;
+  pli[3] = 0.; pli[4] = 1.; pli[5] = 0.;
+
+  plo[0] = 0.; plo[1] = 0.; plo[2] = 0.;
+  plo[3] = 1.; plo[4] = 0.; plo[5] = 0.;
+  plo[6] = 0.; plo[7] = 1.; plo[8] = 0.;
+  plo[9] = 0.; plo[10] = 0.; plo[11] = 1.;
+
+  GeantCode = 0;
+  VName = "";
+  VCopyNo = 0;
+  VEnter = kTRUE;
 
 }
 
