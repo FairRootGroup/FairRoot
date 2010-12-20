@@ -49,6 +49,10 @@ class FairGenerator : public TNamed
   **/
   virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen) = 0;
 
+  
+  /**Initialize the generator if needed */
+  virtual Bool_t Init(){ return kTRUE;}
+  
   ClassDef(FairGenerator,1);
 
 private:

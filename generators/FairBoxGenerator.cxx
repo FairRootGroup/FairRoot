@@ -55,9 +55,12 @@ FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
   SetPhiRange  ();
 }
 // ------------------------------------------------------------------------
-void FairBoxGenerator::Init()
+Bool_t  FairBoxGenerator::Init()
 {
   // Initialize generator
+  printf("------------------------------------------------------------------------------------------------------------\n");
+  printf(" FairBoxGenerator::Init()  \n");
+  printf("------------------------------------------------------------------------------------------------------------\n");
 
   if (fPhiMax-fPhiMin>360)
     Fatal("Init()","FairBoxGenerator: phi range is too wide: %f<phi<%f",
@@ -76,8 +79,14 @@ void FairBoxGenerator::Init()
   // Check for particle type
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   TParticlePDG *particle = pdgBase->GetParticle(fPDGType);
+  
   if (! particle) Fatal("FairBoxGenerator","PDG code %d not defined.",fPDGType);
+  
+  
   fPDGMass = particle->Mass();
+ // printf("particle->Mass() = %f \n", fPDGMass);
+  return kTRUE;  
+  
 }
 
 // ------------------------------------------------------------------------
@@ -88,6 +97,9 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   // those kinematics variables which were limitted by setters.
   // if SetCosTheta() function is used, the distribution will be uniform in 
   // cos(theta)
+  printf("------------------------------------------------------------------------------------------------------------\n");
+  printf(" FairBoxGenerator::ReadEvent()  \n");
+  printf("------------------------------------------------------------------------------------------------------------\n");
 
   Double32_t pabs=0, phi, pt=0, theta=0, eta, y, mt, px, py, pz=0;
 

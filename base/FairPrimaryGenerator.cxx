@@ -73,11 +73,19 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fEventMeanTime(0),
    fTimeProb(NULL)
 {
-  fTargetZ[0] = 0.;
+   fTargetZ[0] = 0.;
   
 }
 // -------------------------------------------------------------------------
-
+Bool_t FairPrimaryGenerator::Init()
+{
+   /** Initialize list of generators*/
+   for(UInt_t i=0; i<fGenList->GetEntries(); i++ ){
+      FairGenerator *gen= (FairGenerator *) fGenList->At(i);
+      if(gen) gen->Init();
+   }
+   return kTRUE;
+}
 
 
 // -----   Destructor   ----------------------------------------------------

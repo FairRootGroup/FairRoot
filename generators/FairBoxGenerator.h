@@ -84,7 +84,7 @@ public:
   void SetDebug(Bool_t debug=0) {fDebug = debug;}
 
   /** Initializer **/
-  void Init();
+  Bool_t Init();
 
   /** Creates an event with given type and multiplicity.
    **@param primGen  pointer to the FairPrimaryGenerator

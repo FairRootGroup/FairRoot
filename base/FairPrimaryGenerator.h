@@ -47,7 +47,7 @@ class FairPrimaryGenerator : public TNamed
   virtual ~FairPrimaryGenerator();
 
   /** Initialize the generater (if needed!)*/ 
-  virtual void Init() { };
+  virtual Bool_t Init();
   
   /** Register a generator derived from FairGenerator.  **/
   void AddGenerator(FairGenerator* generator) {
