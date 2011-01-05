@@ -19,42 +19,50 @@ using std::endl;
 using std::max;
 
 
-TF1 * fDensityFunction;
+
 
 
 // -----   Default constructor   ------------------------------------------
-FairEvtGenGenerator::FairEvtGenGenerator() {}
+FairEvtGenGenerator::FairEvtGenGenerator()
+   : FairGenerator(), 
+    fFileName(""), 
+    fGasmode(0.),
+    fRsigma (0.),
+    fDensityFunction(0)
+{
+}
 // ------------------------------------------------------------------------
 
-
-
 // -----   Standard constructor   -----------------------------------------
-FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName) {
-  fFileName  = fileName;
+FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName) 
+   :FairGenerator ("EvtGen", fileName),
+    fFileName(fileName), 
+    fGasmode(0.),
+    fRsigma (0.),
+    fDensityFunction(0)
+{
   cout << "-I FairEvtGenGenerator: Opening input file " << fileName << endl;
   if ((fInputFile = fopen(fFileName,"r"))==NULL)
     //  fInputFile = new ifstream(fFileName);
     //  if ( ! fInputFile->is_open() ) 
     Fatal("FairEvtGenGenerator","Cannot open input file.");
-
-    fGasmode = 0;
-    fRsigma = 0.;
-  
+ 
   // fPDG=TDatabasePDG::Instance();
 }
 // ------------------------------------------------------------------------
 
 
 // -----   Gas mode constructor   -----------------------------------------
-FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, TF1 * DensityFunction) {
-  fFileName  = fileName;
-  cout << "-I FairEvtGenGenerator: Opening input file " << fileName << endl;
-  if ((fInputFile = fopen(fFileName,"r"))==NULL)
-    Fatal("FairEvtGenGenerator","Cannot open input file.");
-
-  fGasmode = 1;
-  fRsigma = Rsigma;
-  fDensityFunction = DensityFunction;
+FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, TF1 * DensityFunction) 
+   :FairGenerator ("EvtGen", fileName),
+    fFileName(fileName), 
+    fGasmode(1),
+    fRsigma (Rsigma),
+    fDensityFunction(DensityFunction)
+ {
+   cout << "-I FairEvtGenGenerator: Opening input file " << fileName << endl;
+   if ((fInputFile = fopen(fFileName,"r"))==NULL)
+       Fatal("FairEvtGenGenerator","Cannot open input file.");
   
 }
 // ------------------------------------------------------------------------
@@ -63,7 +71,8 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, 
 
 // -----   Destructor   ---------------------------------------------------
 FairEvtGenGenerator::~FairEvtGenGenerator() {
-  CloseInput();
+  if(fDensityFunction) delete fDensityFunction; 
+  if(fInputFile)fclose(fInputFile);  
 }
 // ------------------------------------------------------------------------
 
@@ -171,7 +180,7 @@ void FairEvtGenGenerator::CloseInput() {
       
       fclose(fInputFile);
     }
-    delete fInputFile;
+   // delete fInputFile;
     fInputFile = NULL;
   }
 }

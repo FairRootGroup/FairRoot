@@ -78,9 +78,9 @@ FairRootManager::FairRootManager()
 FairRootManager::~FairRootManager() 
 {
 //
-//  cout<<"Enter Destructor of FairRootManager"<<endl;
-  if(fCbmout) delete fCbmout;  
-  if(fCbmroot) delete fCbmroot;
+  cout<<"Enter Destructor of FairRootManager"<<endl;
+ // if(fCbmout) delete fCbmout;  
+ // if(fCbmroot) delete fCbmroot;
   if(fInFile) delete fInFile;
   if(fInChain) delete fInChain;
   if(fOutTree)  delete fOutTree;
@@ -94,7 +94,7 @@ FairRootManager::~FairRootManager()
   fBranchNameList->Delete();
   delete fBranchNameList;
   fgInstance = 0;
-  //  cout<<"Leave Destructor of FairRootManager"<<endl;
+   cout<<"Leave Destructor of FairRootManager"<<endl;
 }
 //_____________________________________________________________________________
 TFile *FairRootManager::OpenInFile(TFile* f, Bool_t Connect)

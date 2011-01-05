@@ -134,7 +134,7 @@ class FairEvtGenGenerator : public FairGenerator
   /** PDG data base */
   
 //  TDatabasePDG *fPDG; //!
-
+   TF1 * fDensityFunction;
   ClassDef(FairEvtGenGenerator,1);
 
 };

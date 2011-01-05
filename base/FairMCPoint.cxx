@@ -2,7 +2,8 @@
 
 // -----   Default constructor   -------------------------------------------
 FairMCPoint::FairMCPoint() 
- : fTrackID    (-1),
+ : FairBasePoint(),
+   fTrackID(-1),
    fEventId(0),
    fPx(0.),         
    fPy(0.), 
