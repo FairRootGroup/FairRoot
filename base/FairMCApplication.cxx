@@ -548,7 +548,7 @@ void FairMCApplication::InitGeometry()
    if(fEvGen!=0 && fStack!=0)fStack->Register();
    else cout << "--Warning-- Stack is not registerd " << endl;
    /** Initialize the event generator */
-   if(fEvGen)fEvGen->Init();
+  // if(fEvGen)fEvGen->Init();
    /** Initialize the detectors.    */
    fActDetIter->Reset();
    while((detector = dynamic_cast<FairDetector*>(fActDetIter->Next()))) {
@@ -660,7 +660,8 @@ void  FairMCApplication::AddIons()
       }
    }
    delete   Iter;    
- 
+    /** Initialize the event generator */
+   if(fEvGen)fEvGen->Init();
 }
 #else
 void  FairMCApplication::AddIons()
@@ -681,7 +682,10 @@ void  FairMCApplication::AddIons()
           cout << "Add Ion: " << ion->GetName()  << " with PDG " <<  TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode() << endl;
       }
    }
-   delete   Iter;   
+   delete   Iter;    
+   
+   /** Initialize the event generator */
+   if(fEvGen)fEvGen->Init(); 
 }
 #endif
 
