@@ -33,15 +33,16 @@ FairEventManagerEditor::FairEventManagerEditor(const TGWindow* p, Int_t width, I
 	 fMaxEnergy(0)
 
 {
+  Init();
+}
 
-  // Resize(width, height);
-//   fManager= FairEventManager::Instance();
+void FairEventManagerEditor::Init(){
+
    FairRootManager *fRootManager=FairRootManager::Instance();
    TChain *chain =fRootManager->GetInChain();
    Int_t Entries= chain->GetEntriesFast();
 
    MakeTitle("FairEventManager  Editor");
- //  TGVerticalFrame* fInfoFrame = new TGVerticalFrame();
    TGVerticalFrame      *fInfoFrame= CreateEditorTabSubFrame("Info");
    TGCompositeFrame *title1 = new TGCompositeFrame(fInfoFrame, 250, 10,
                                                    kVerticalFrame | kLHintsExpandX |
@@ -124,7 +125,9 @@ FairEventManagerEditor::FairEventManagerEditor(const TGWindow* p, Int_t width, I
    fInfoFrame->AddFrame(title1, new TGLayoutHints(kLHintsTop, 0, 0, 2, 0));
 
    fManager->SetMaxEnergy(25);
-}
+} 
+
+
 //______________________________________________________________________________
 void FairEventManagerEditor::MaxEnergy()
 {

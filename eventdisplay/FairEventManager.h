@@ -43,7 +43,7 @@ public:
    Float_t GetMaxEnergy(){return fMaxEnergy;}
    Float_t GetMinEnergy(){return fMinEnergy;}
    void UpdateEditor();
-   void AddParticlesToPdgDataBase() ;
+   virtual void AddParticlesToPdgDataBase();
 
    ClassDef(FairEventManager,1);
 private:

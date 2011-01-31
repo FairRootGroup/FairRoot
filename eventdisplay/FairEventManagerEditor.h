@@ -25,13 +25,13 @@ public:
    FairEventManagerEditor(const TGWindow* p=0, Int_t width=170, Int_t height=30,
                       UInt_t options = kChildFrame, Pixel_t back=GetDefaultFrameBackground());
    virtual ~FairEventManagerEditor() {}
-   virtual void SetModel( TObject* obj);
-   void SelectEvent();
-   void SelectPDG();                  
+   void SetModel( TObject* obj);
+   virtual void SelectEvent();
+   virtual void SelectPDG();                  
    void DoVizPri();
-   void MaxEnergy();
-   void MinEnergy();
-
+   virtual void MaxEnergy();
+   virtual void MinEnergy();
+   virtual void Init();
    ClassDef(FairEventManagerEditor, 0); // Specialization of TGedEditor for proper update propagation to TEveManager.
 };
 
