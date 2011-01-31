@@ -34,7 +34,7 @@ ${SIMPATH}/transport/geant4/physics_lists/hadronic/Packaging/include
 ${SIMPATH}/transport/geant4/physics_lists/hadronic/QGSP/include
 )
 
-FIND_PATH(GEANT4_LIB_DIR NAMES libG4baryons.so libG4baryons.dylib PATHS
+FIND_PATH(GEANT4_LIB_DIR NAMES libG3toG4.so libG3toG4.dylib PATHS
   ${SIMPATH}/transport/geant4/lib/Linux-g++
   ${SIMPATH}/transport/geant4/lib/Linux-icc
   ${SIMPATH}/transport/geant4/lib
