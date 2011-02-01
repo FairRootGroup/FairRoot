@@ -245,7 +245,7 @@ void FairRunSim::SetMCConfig()
     TString config_dir= getenv("CONFIG_DIR");
     Bool_t AbsPath=kFALSE;
     if (!config_dir.EndsWith("/")) config_dir+="/";
-	
+    if (!Lib_config.EndsWith("/")) Lib_config+="/";
 	
 	TString LibMacro;
 	TString LibFunction;
