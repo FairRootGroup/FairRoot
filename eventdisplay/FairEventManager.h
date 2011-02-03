@@ -25,23 +25,23 @@ public:
    virtual void NextEvent();   // *MENU*
    virtual void PrevEvent();   // *MENU*
    virtual void Close();
-   void DisplaySettings();       //  *Menu*
-   Int_t Color(Int_t pdg);
+   virtual void DisplaySettings();       //  *Menu*
+   virtual Int_t Color(Int_t pdg);
    void AddTask(FairTask *t){fRunAna->AddTask(t);}
-   void Init();
-   Int_t GetCurrentEvent(){return fEntry;}
-   void SetPriOnly(Bool_t Pri){fPriOnly=Pri;}
-   Bool_t IsPriOnly(){return fPriOnly;}
-   void SelectPDG(Int_t PDG){fCurrentPDG= PDG;}
-   Int_t GetCurrentPDG(){return fCurrentPDG;}
-   void SetMaxEnergy( Float_t max){fMaxEnergy = max;}
-   void SetMinEnergy( Float_t min){fMinEnergy = min;}
-   void SetEvtMaxEnergy( Float_t max){fEvtMaxEnergy = max;}
-   void SetEvtMinEnergy( Float_t min){fEvtMinEnergy = min;}
-   Float_t GetEvtMaxEnergy(){return fEvtMaxEnergy ;}
-   Float_t GetEvtMinEnergy(){return fEvtMinEnergy ;}
-   Float_t GetMaxEnergy(){return fMaxEnergy;}
-   Float_t GetMinEnergy(){return fMinEnergy;}
+   virtual void Init();
+   virtual Int_t GetCurrentEvent(){return fEntry;}
+   virtual void SetPriOnly(Bool_t Pri){fPriOnly=Pri;}
+   virtual Bool_t IsPriOnly(){return fPriOnly;}
+   virtual void SelectPDG(Int_t PDG){fCurrentPDG= PDG;}
+   virtual Int_t GetCurrentPDG(){return fCurrentPDG;}
+   virtual void SetMaxEnergy( Float_t max){fMaxEnergy = max;}
+   virtual void SetMinEnergy( Float_t min){fMinEnergy = min;}
+   virtual void SetEvtMaxEnergy( Float_t max){fEvtMaxEnergy = max;}
+   virtual void SetEvtMinEnergy( Float_t min){fEvtMinEnergy = min;}
+   virtual Float_t GetEvtMaxEnergy(){return fEvtMaxEnergy ;}
+   virtual Float_t GetEvtMinEnergy(){return fEvtMinEnergy ;}
+   virtual Float_t GetMaxEnergy(){return fMaxEnergy;}
+   virtual Float_t GetMinEnergy(){return fMinEnergy;}
    void UpdateEditor();
    virtual void AddParticlesToPdgDataBase();
 

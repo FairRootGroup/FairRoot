@@ -11,6 +11,8 @@
 #include "TChain.h"
 #include "TEveGValuators.h"
 
+#define MAXE 5000
+
 //______________________________________________________________________________
 // FairEventManagerEditor
 //
@@ -102,7 +104,7 @@ void FairEventManagerEditor::Init(){
    fMinEnergy->SetNELength(5);
    fMinEnergy->SetLabelWidth(80);
    fMinEnergy->Build();
-   fMinEnergy->SetLimits(0, 25, 2501, TGNumberFormat::kNESRealOne);
+   fMinEnergy->SetLimits(0, MAXE, 2501, TGNumberFormat::kNESRealOne);
    fMinEnergy->SetToolTip("Minimum energy of displayed track.");
    fMinEnergy->Connect("ValueSet(Double_t)", "FairEventManagerEditor",this, "MinEnergy()");
    title1->AddFrame(fMinEnergy, new TGLayoutHints(kLHintsTop, 1, 1, 1, 0));
@@ -112,9 +114,9 @@ void FairEventManagerEditor::Init(){
    fMaxEnergy->SetNELength(5);
    fMaxEnergy->SetLabelWidth(80);
    fMaxEnergy->Build();
-   fMaxEnergy->SetLimits(0, 25, 2501, TGNumberFormat::kNESRealOne);
+   fMaxEnergy->SetLimits(0, MAXE, 2501, TGNumberFormat::kNESRealOne);
    fMaxEnergy->SetToolTip("Maximum energy of displayed track.");
-   fMaxEnergy->SetValue(25);
+   fMaxEnergy->SetValue(MAXE);
    fMaxEnergy->Connect("ValueSet(Double_t)", "FairEventManagerEditor",this, "MaxEnergy()");
    title1->AddFrame(fMaxEnergy, new TGLayoutHints(kLHintsTop, 1, 1, 1, 0));
 
@@ -124,7 +126,7 @@ void FairEventManagerEditor::Init(){
 
    fInfoFrame->AddFrame(title1, new TGLayoutHints(kLHintsTop, 0, 0, 2, 0));
 
-   fManager->SetMaxEnergy(25);
+   fManager->SetMaxEnergy(MAXE);
 } 
 
 
