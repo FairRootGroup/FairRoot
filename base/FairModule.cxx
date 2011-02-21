@@ -56,16 +56,16 @@ FairModule::~FairModule()
 }
 //__________________________________________________________________________
 FairModule::FairModule(const char * Name, const char *title ,Bool_t Active)
-	:TNamed(Name, title),
-	 fgeoVer("Not defined"),
-     fgeoName("Not defined"),    
-	 fModId(-1),
-     fActive(Active), 
-     fNbOfSensitiveVol(0),
-     fVerboseLevel(0),
-     flGeoPar(0),
-     kGeoSaved(kFALSE)
-    
+  :TNamed(Name, title),
+   fgeoVer("Not defined"),
+   fgeoName("Not defined"),    
+   fModId(-1),
+   fActive(Active), 
+   fNbOfSensitiveVol(0),
+   fVerboseLevel(0),
+   flGeoPar(0),
+   kGeoSaved(kFALSE),
+   fMotherVolumeName("") 
 {
     if(!svList)svList=new TRefArray();
     if(!vList) vList=new FairVolumeList();
@@ -82,8 +82,8 @@ FairModule::FairModule()
    fNbOfSensitiveVol(0),
    fVerboseLevel(0),
    flGeoPar(0),
-   kGeoSaved(kFALSE)
-
+   kGeoSaved(kFALSE),
+   fMotherVolumeName("") 
 {
 
 }
@@ -256,7 +256,20 @@ void FairModule::ConstructRootGeometry(){
    }
    gGeoManager=OldGeo;
    gGeoManager->cd();
-   TGeoVolume *Cave= gGeoManager->GetTopVolume();
+   // If AddToVolume is empty add the volume to the top volume Cave
+   // If it is defined check i´f the volume exists and if it exists add the volume from the root file
+   // to the already existing volume
+   TGeoVolume *Cave=NULL;
+   if ( 0 == fMotherVolumeName.Length() ) {
+     Cave= gGeoManager->GetTopVolume();
+   } else {
+     Cave = gGeoManager->GetVolume(fMotherVolumeName);
+     if ( NULL == Cave ) {
+       cout << "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find the given mother volume \033[0m" << fMotherVolumeName << "\033[5m\033[31m where the geomanger should be added. \033[0m" <<  endl; 
+       exit(0);
+     }
+   }
+
    gGeoManager->AddVolume(v1);
    TGeoVoxelFinder *voxels = v1->GetVoxels();
    if (voxels) voxels->SetNeedRebuild();

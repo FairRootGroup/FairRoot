@@ -62,6 +62,10 @@ public:
     Bool_t              IsActive(){return fActive;}
     /**set the detector/module id*/
     void                SetModId(Int_t id){fModId=id;}
+    /** Set the name of the mother volume to which a new geometry is added. 
+     ** This function is needed for geometries which are defined as ROOT geometry manager. 
+     **/
+    void                SetMotherVolume(TString volName){fMotherVolumeName=volName;}
     /**called from ConstuctASCIIGeometry*/
     void                ProcessNodes ( TList *aList );
     /**return the geo parameter of this detector/module*/
@@ -74,6 +78,7 @@ public:
     static TRefArray*   svList;   //!
     
     static TArrayI*     volNumber; //! 
+    TString             fMotherVolumeName; //!
     FairVolume*		getFairVolume(FairGeoNode *fNode);
     void		AddSensitiveVolume(TGeoVolume *v);
    
