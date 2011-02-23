@@ -52,7 +52,8 @@ FairVolume * FairVolumeList::findObject(TString name) {
     FairVolume * obj = NULL;
     for (int i = 0; i < fData->GetEntriesFast(); i++) {
             obj = (FairVolume *) fData->At(i);
-        if (obj ) {
+        if (obj ) 
+{
 
             if (obj->getName() == name) return (FairVolume *) obj;
         }
