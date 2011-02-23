@@ -5,7 +5,6 @@
 #include "TNamed.h"
 #include "TRefArray.h"
 
-
 class FairVolumeList;
 class FairVolume;
 class FairGeoNode;
