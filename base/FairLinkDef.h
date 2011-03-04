@@ -45,5 +45,6 @@
 #if ROOT_VERSION_CODE < 333824
 #pragma link C++ class TVirtualMagField+;
 #endif
+#pragma link C++ class FairLogger+;
 
 #endif

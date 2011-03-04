@@ -62,6 +62,7 @@ FairRadLenPoint.cxx
 FairRadLenManager.cxx
 FairRKPropagator.cxx
 FairTimeStamp.cxx
+FairLogger.cxx
 )
 
 if(RULE_CHECKER_FOUND)
