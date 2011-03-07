@@ -11,15 +11,19 @@
 
 #define IMP_CONVERTTOSTRING(s)  # s
 #define CONVERTTOSTRING(s)      IMP_CONVERTTOSTRING(s)
-#define __SRCLINE__             __FILE__,CONVERTTOSTRING(__LINE__), __FUNCTION__
-#define MESSAGE_ORIGIN          __FILE__,CONVERTTOSTRING(__LINE__), __FUNCTION__
+#define MESSAGE_ORIGIN          __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
 
 #include "TObject.h"
 
 // Definiton of the different log levels
-// TODO: Find bettter names for DEBUG1..4
-enum FairLogLevel {logFATAL, logERROR, logWARNING, logINFO, logDEBUG, logDEBUG1, logDEBUG2, logDEBUG3, logDEBUG4};
-static const char* const LogLevelString[] = { "FATAL", "ERROR", "WARNING", "INFO", "DEBUG", "DEBUG1", "DEBUG2", "DEBUG3", "DEBUG4" };
+// TODO(F.U): Find bettter names for DEBUG1..4
+enum FairLogLevel {logFATAL, logERROR, logWARNING, logINFO,
+                   logDEBUG, logDEBUG1, logDEBUG2, logDEBUG3, logDEBUG4
+                  };
+static const char* const LogLevelString[] = { "FATAL", "ERROR", "WARNING",
+    "INFO", "DEBUG", "DEBUG1",
+    "DEBUG2", "DEBUG3", "DEBUG4"
+                                            };
 
 // Definition of the different verbosity levels of the output
 // With the level HIGH the output contains a time stamp, the location from
@@ -36,16 +40,19 @@ class FairLogger : public TObject
     static FairLogger* GetLogger();
 
     void SetLogFileName(const char* name) { fLogFileName = name; }
+
     void SetLogToScreen(Bool_t log1) { fLogToScreen = log1; }
+
     void SetLogToFile(Bool_t log1) { fLogToFile = log1; }
-    //        void SetLogTimeOn(Bool_t log1) { fLogTimeOn = log1; }
-    //        void SetLogOriginOn(Bool_t log1) { fLogOriginOn = log1; }
+
     void SetLogFileLevel(const char* level) {
       fLogFileLevel = ConvertToLogLevel(level);
     }
+
     void SetLogScreenLevel(const char* level) {
       fLogScreenLevel = ConvertToLogLevel(level);
     }
+
     void SetLogVerbosityLevel(const char* vlevel) {
       fLogVerbosityLevel = ConvertToLogVerbosityLevel(vlevel);
     }
@@ -76,7 +83,8 @@ class FairLogger : public TObject
   private:
     static FairLogger* instance;
     FairLogger();
-    FairLogger(const FairLogger&) {}
+    FairLogger(const FairLogger&);
+    FairLogger operator=(const FairLogger&);
     ~FairLogger();
 
     void Log(FairLogLevel level, const char* file, const char* line,
@@ -102,7 +110,7 @@ class FairLogger : public TObject
     FairLogLevel fLogFileLevel;
     FairLogLevel fLogScreenLevel;
     FairLogVerbosityLevel fLogVerbosityLevel;
-    ClassDef(FairLogger,1)
+    ClassDef(FairLogger, 1)
 };
 
-#endif /* BASE_FAIRLOGGER_H_ */
+#endif  // BASE_FAIRLOGGER_H_

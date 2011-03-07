@@ -7,33 +7,35 @@
 
 #include "FairLogger.h"
 
-#include "TSystem.h";
 #include "TString.h"
+#include "TSystem.h";
 
 #include <cassert>
 #include <cstdio>
+#include <cstdlib>
 #include <iostream>
 
 using std::cerr;
 using std::endl;
 
 
-FairLogger* FairLogger::instance=NULL;
+FairLogger* FairLogger::instance = NULL;
 
 FairLogger::FairLogger()
-  :fLogFileName(""),
-   fLogToScreen(kTRUE),
-   fLogToFile(kTRUE),
-   fLogFile(NULL),
-   fLogFileLevel(logINFO),
-   fLogScreenLevel(logINFO),
-   fLogVerbosityLevel(verbosityLOW)
+  :
+  fLogFileName(""),
+  fLogToScreen(kTRUE),
+  fLogToFile(kTRUE),
+  fLogFile(NULL),
+  fLogFileLevel(logINFO),
+  fLogScreenLevel(logINFO),
+  fLogVerbosityLevel(verbosityLOW)
 {
 }
 
 FairLogger::~FairLogger()
 {
-  cerr<<"FairLooger::Destructor LogFileName"<<fLogFileName<<endl;
+  cerr << "FairLooger::Destructor LogFileName" << fLogFileName << endl;
   if (fLogFile) {
     fclose(fLogFile);
     delete fLogFile;
@@ -42,7 +44,7 @@ FairLogger::~FairLogger()
 
 FairLogger* FairLogger::GetLogger()
 {
-  if ( !instance) {
+  if (!instance) {
     instance = new FairLogger();
   }
   return instance;
@@ -65,9 +67,9 @@ void FairLogger::Fatal(const char* file, const char* line, const char* func,
   fprintf(stderr, "We stop the execution of the process at this point.\n");
   if (gSystem) {
     fprintf(stderr, "For later analysis we write a core dump to file\n");
-    freopen ("core_dump","w",stderr);
+    freopen("core_dump", "w", stderr);
     gSystem->StackTrace();
-    fclose (stderr);
+    fclose(stderr);
     gSystem->Abort(1);
   } else {
     abort();
@@ -149,20 +151,19 @@ void FairLogger::Debug4(const char* file, const char* line, const char* func,
 void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
                      const char* func, const char* format, va_list arglist)
 {
-
   TString bla(file);
   Ssiz_t pos = bla.Last('/');
-  TString s2( bla(pos+1,bla.Length()) );
+  TString s2(bla(pos+1, bla.Length()));
   TString s3 = s2 + "::" + func + ":" + line;
 
   const char* loglevel =  ConvertLogLevelToString(level);
   const char* s4 = s3;
 
-  cerr<<loglevel<<" ";
+  cerr << loglevel << " ";
   //  if (fLogOriginOn) {
   //    cerr<<s3<<" ";
   //  }
-  cerr<<format<<endl;
+  cerr << format << endl;
 
   // Check if the log mesaage should go to the screen, the file or to
   // both sinks.
@@ -173,30 +174,28 @@ void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
   if (fLogToScreen && level <= fLogScreenLevel) {
     LogToScreen(loglevel, s3, format, arglist);
   }
-
-
 }
 
-void FairLogger::LogToScreen(const char* loglevel, const char* origin, const char* msg,
-                             va_list arglist)
+void FairLogger::LogToScreen(const char* loglevel, const char* origin,
+                             const char* msg, va_list arglist)
 {
   fprintf(stderr, "[%s] ", loglevel);
   if ( fLogVerbosityLevel == verbosityHIGH ) {
     // Add the timestamd
-    // TODO: Implement some timestamp
+    // TODO(F.U.): Implement some timestamp
     fprintf(stderr, "[12-12-12] ");
   }
   if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
     fprintf(stderr, "[%s] ", origin);
   }
   //  fprintf(fLogFile, msg, arglist);
-  fprintf(stderr, "%s ", msg);
+  //vfprintf(stderr, msg, arglist);
   fprintf(stderr, "\n");
   fflush(stderr);
 }
 
-void FairLogger::LogToFile(const char* loglevel, const char* origin, const char* msg,
-                           va_list arglist)
+void FairLogger::LogToFile(const char* loglevel, const char* origin,
+                           const char* msg, va_list arglist)
 {
   // Chek if the log file is open. If not open the logfile
   if (fLogFile == NULL) {
@@ -205,21 +204,20 @@ void FairLogger::LogToFile(const char* loglevel, const char* origin, const char*
   fprintf(fLogFile, "[%s] ", loglevel);
   if ( fLogVerbosityLevel == verbosityHIGH ) {
     // Add the timestamd
-    // TODO: Implement some timestamp
+    // TODO(F.U.): Implement some timestamp
     fprintf(fLogFile, "[12-12-12] ");
   }
   if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
     fprintf(fLogFile, "[%s] ", origin);
   }
   //  fprintf(fLogFile, msg, arglist);
-  fprintf(fLogFile, "%s", msg);
+  vfprintf(fLogFile, msg, arglist);
   fprintf(fLogFile, "\n");
   fflush(fLogFile);
 }
 
 void FairLogger::CloseLogFile()
 {
-
 }
 
 void FairLogger::OpenLogFile()
@@ -228,7 +226,7 @@ void FairLogger::OpenLogFile()
   // the name FairLogfile_<pid>.log. <pid> is the pid of the runing job.
   TString logfile = fLogFileName;
   if (logfile.IsNull()) {
-    Int_t PID=gSystem->GetPid();
+    Int_t PID = gSystem->GetPid();
     logfile = "FairLogfile_";
     logfile += PID;
     logfile += ".log";
@@ -236,17 +234,17 @@ void FairLogger::OpenLogFile()
 
   // Check if filename contains a full path. If not create logfile
   // in the current directory.
-  // TODO: Check if the path exists and is writeable.
+  // TODO(F.U.): Check if the path exists and is writeable.
   if (!logfile.Contains('/')) {
     logfile = "./" + logfile;
   }
 
   // Open the log file and check if it is open.
-  cerr<< "Openning log file: " << logfile<<endl;
+  cerr << "Openning log file: " << logfile << endl;
 
   fLogFile = fopen(logfile, "w");
   if (fLogFile == NULL) {
-    cerr<<"Cannot open log file: "<< logfile;
+    cerr << "Cannot open log file: " << logfile;
   }
 
   assert(fLogFile != NULL);
