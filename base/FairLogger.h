@@ -15,6 +15,8 @@
 
 #include "TObject.h"
 
+#include <cstdio>
+
 // Definiton of the different log levels
 // TODO(F.U): Find bettter names for DEBUG1..4
 enum FairLogLevel {logFATAL, logERROR, logWARNING, logINFO,
@@ -57,8 +59,10 @@ class FairLogger : public TObject
       fLogVerbosityLevel = ConvertToLogVerbosityLevel(vlevel);
     }
 
+
     void Fatal(const char* file, const char* line, const char* func,
                const char* format, ...);
+
 
     void Error(const char* file, const char* line, const char* func,
                const char* format, ...);
@@ -87,18 +91,20 @@ class FairLogger : public TObject
     FairLogger operator=(const FairLogger&);
     ~FairLogger();
 
+
     void Log(FairLogLevel level, const char* file, const char* line,
              const char*, const char* format, va_list  arglist);
 
     void OpenLogFile();
     void CloseLogFile();
-    void LogToScreen(const char* loglevel, const char* origin, const char* msg,
-                     va_list arglist);
-    void LogToFile(const char* loglevel, const char* origin, const char* msg,
-                   va_list arglist);
+
+    void LogTo(FILE* out, const char* loglevel, const char* origin);
 
     FairLogLevel ConvertToLogLevel(const char* level) const;
     FairLogVerbosityLevel ConvertToLogVerbosityLevel(const char* level) const;
+
+    void GetTime();
+
 
     const char* ConvertLogLevelToString(FairLogLevel level) const
     { return LogLevelString[level]; }
@@ -110,6 +116,11 @@ class FairLogger : public TObject
     FairLogLevel fLogFileLevel;
     FairLogLevel fLogScreenLevel;
     FairLogVerbosityLevel fLogVerbosityLevel;
+    static const int fgkBufferLength = 1024;
+    char fBuffer[fgkBufferLength];
+    static const int fgkTimeBufferLength = 80;
+    char fTimeBuffer[fgkTimeBufferLength];
+
     ClassDef(FairLogger, 1)
 };
 

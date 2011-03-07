@@ -8,11 +8,12 @@
 #include "FairLogger.h"
 
 #include "TString.h"
-#include "TSystem.h";
+#include "TSystem.h"
 
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 using std::cerr;
@@ -29,7 +30,8 @@ FairLogger::FairLogger()
   fLogFile(NULL),
   fLogFileLevel(logINFO),
   fLogScreenLevel(logINFO),
-  fLogVerbosityLevel(verbosityLOW)
+  fLogVerbosityLevel(verbosityLOW),
+  fBuffer()
 {
 }
 
@@ -151,73 +153,61 @@ void FairLogger::Debug4(const char* file, const char* line, const char* func,
 void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
                      const char* func, const char* format, va_list arglist)
 {
+  // If the format string together with the argument list was used once it can't
+  // be used another time. Don't know why but if we do so the arguments are not
+  // correct any longer and the program may crash (On Mac OSX). Even if it does
+  // not crash it does not work as expected.
+  // To vercome the problem the output is written to a buffer which then can be
+  // used several times.
+
+  vsprintf(fBuffer, format, arglist);
+
+  // Don't print the full path to the source file but only the file name.
+  // Create a string containing the information about the file name, the
+  // function name and the line number from which the log message originates
   TString bla(file);
   Ssiz_t pos = bla.Last('/');
   TString s2(bla(pos+1, bla.Length()));
   TString s3 = s2 + "::" + func + ":" + line;
 
+  // Convert to const char*
   const char* loglevel =  ConvertLogLevelToString(level);
   const char* s4 = s3;
-
-  cerr << loglevel << " ";
-  //  if (fLogOriginOn) {
-  //    cerr<<s3<<" ";
-  //  }
-  cerr << format << endl;
 
   // Check if the log mesaage should go to the screen, the file or to
   // both sinks.
 
   if (fLogToFile && level <= fLogFileLevel) {
-    LogToFile(loglevel, s3, format, arglist);
+    // Chek if the log file is open. If not open the logfile
+    if (fLogFile == NULL) {
+      OpenLogFile();
+    }
+    LogTo(fLogFile, loglevel, s4);
   }
   if (fLogToScreen && level <= fLogScreenLevel) {
-    LogToScreen(loglevel, s3, format, arglist);
+    LogTo(stderr, loglevel, s4);
   }
 }
 
-void FairLogger::LogToScreen(const char* loglevel, const char* origin,
-                             const char* msg, va_list arglist)
+void FairLogger::LogTo(FILE* out, const char* loglevel, const char* origin)
 {
-  fprintf(stderr, "[%s] ", loglevel);
+  fprintf(out, "[%-7s] ", loglevel);
   if ( fLogVerbosityLevel == verbosityHIGH ) {
-    // Add the timestamd
-    // TODO(F.U.): Implement some timestamp
-    fprintf(stderr, "[12-12-12] ");
+    GetTime();
+    fprintf(out, "%s", fTimeBuffer);
   }
   if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
-    fprintf(stderr, "[%s] ", origin);
+    fprintf(out, "[%s] ", origin);
   }
-  //  fprintf(fLogFile, msg, arglist);
-  //vfprintf(stderr, msg, arglist);
-  fprintf(stderr, "\n");
-  fflush(stderr);
+  fprintf(out, "%s ", fBuffer);
+  fprintf(out, "\n");
+  fflush(out);
 }
 
-void FairLogger::LogToFile(const char* loglevel, const char* origin,
-                           const char* msg, va_list arglist)
-{
-  // Chek if the log file is open. If not open the logfile
-  if (fLogFile == NULL) {
-    OpenLogFile();
-  }
-  fprintf(fLogFile, "[%s] ", loglevel);
-  if ( fLogVerbosityLevel == verbosityHIGH ) {
-    // Add the timestamd
-    // TODO(F.U.): Implement some timestamp
-    fprintf(fLogFile, "[12-12-12] ");
-  }
-  if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
-    fprintf(fLogFile, "[%s] ", origin);
-  }
-  //  fprintf(fLogFile, msg, arglist);
-  vfprintf(fLogFile, msg, arglist);
-  fprintf(fLogFile, "\n");
-  fflush(fLogFile);
-}
 
 void FairLogger::CloseLogFile()
 {
+  fclose(fLogFile);
 }
 
 void FairLogger::OpenLogFile()
@@ -282,4 +272,14 @@ FairLogVerbosityLevel FairLogger::ConvertToLogVerbosityLevel(const char* vlevelc
   return verbosityLOW;
 }
 
+void FairLogger::GetTime()
+{
+  time_t rawtime;
+  struct tm* timeinfo;
+
+  time(&rawtime);
+  timeinfo = localtime(&rawtime);
+
+  strftime(fTimeBuffer, 80, "[%d.%m.%Y %X] ", timeinfo);
+}
 ClassImp(FairLogger)
