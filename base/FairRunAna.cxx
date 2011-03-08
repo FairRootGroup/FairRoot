@@ -28,14 +28,15 @@ using std::list;
 
 
 //_____________________________________________________________________________
-FairRunAna * FairRunAna::fgRinstance= 0;
+FairRunAna* FairRunAna::fgRinstance= 0;
 //_____________________________________________________________________________
-FairRunAna * FairRunAna::Instance(){
+FairRunAna* FairRunAna::Instance()
+{
 
-        return fgRinstance;
+  return fgRinstance;
 }
 //_____________________________________________________________________________
-FairRunAna::FairRunAna() 
+FairRunAna::FairRunAna()
   :FairRun(),
    fFriendFileList(new TObjArray()),
    fIsInitialized(kFALSE),
@@ -55,378 +56,386 @@ FairRunAna::FairRunAna()
    fTimeStamps(kFALSE)
 {
 
-   fgRinstance=this;
-   fAna=kTRUE;
+  fgRinstance=this;
+  fAna=kTRUE;
 }
 //_____________________________________________________________________________
 
 FairRunAna::~FairRunAna()
 {
-   delete fFriendFileList;
+  delete fFriendFileList;
+  if(fField) { delete fField; }
+  if(gGeoManager) { delete gGeoManager; }
 }
 
 //_____________________________________________________________________________
 
-void  FairRunAna::SetGeomFile(const char *GeoFileName)
+void  FairRunAna::SetGeomFile(const char* GeoFileName)
 {
-   if(fIsInitialized){
-	  cout << "-E- FairRunAna: Error, Geometry file has to be set before Run::Init !" << endl;
-      exit(-1);
-   }else{
-		
-      TFile *CurrentFile=gFile;
-      fInputGeoFile= new TFile(GeoFileName);
-	  if (fInputGeoFile->IsZombie()) {
-         cout << "-E- FairRunAna: Error opening Geometry Input file" << endl;
-         fInputGeoFile=0;
-      }
-      cout << "-I- FairRunAna: Opening Geometry input file: " << GeoFileName << endl;
-      gFile=CurrentFile;
-   }
+  if(fIsInitialized) {
+    cout << "-E- FairRunAna: Error, Geometry file has to be set before Run::Init !" << endl;
+    exit(-1);
+  } else {
+
+    TFile* CurrentFile=gFile;
+    fInputGeoFile= new TFile(GeoFileName);
+    if (fInputGeoFile->IsZombie()) {
+      cout << "-E- FairRunAna: Error opening Geometry Input file" << endl;
+      fInputGeoFile=0;
+    }
+    cout << "-I- FairRunAna: Opening Geometry input file: " << GeoFileName << endl;
+    gFile=CurrentFile;
+  }
 }
 
 //_____________________________________________________________________________
 
-void FairRunAna::Init() {
-	
-   if(fIsInitialized){
-	   cout << "-E- FairRunAna: Error Init is already called before!" << endl;
-	   exit(-1);
-   }else{
-	   fIsInitialized=kTRUE;
-   }
+void FairRunAna::Init()
+{
 
-   if(fInputFile ){
-      if ("" == fWildcard) {
-         fRootManager->OpenInFile(fInputFile, kTRUE);
-      }else{
-         fRootManager->OpenInFile(fInputFile);
-         fRootManager->SetWildcard(fWildcard);
+  if(fIsInitialized) {
+    cout << "-E- FairRunAna: Error Init is already called before!" << endl;
+    exit(-1);
+  } else {
+    fIsInitialized=kTRUE;
+  }
+
+  if(fInputFile ) {
+    if ("" == fWildcard) {
+      fRootManager->OpenInFile(fInputFile, kTRUE);
+    } else {
+      fRootManager->OpenInFile(fInputFile);
+      fRootManager->SetWildcard(fWildcard);
+    }
+    // chain mechanism
+    std::list<TString>::const_iterator iter;
+    for(iter = fChainList.begin(); iter != fChainList.end(); iter++) {
+      fRootManager->AddFile( (*iter) );
+    }
+    cout << endl
+         << "-I- FairRunAna::Init : " << endl
+         << fInputFile->GetName() << "  is connected with:";
+    list<TString>* friendList =
+      fInputFileStruct[TString(fInputFile->GetName())];
+    if(NULL != friendList) {
+      list<TString>::iterator iter1;
+      for(iter1 = friendList->begin();
+          iter1 != friendList->end(); iter1++) {
+        cout << "   " << (*iter1);
+        fRootManager->AddFriend(new TFile(*iter1));
       }
-      // chain mechanism
-      std::list<TString>::const_iterator iter;
-      for(iter = fChainList.begin(); iter != fChainList.end(); iter++) {
-         fRootManager->AddFile( (*iter) );
+    }
+    cout << endl << endl;
+    //Load geometry
+    if(fLoadGeo) {
+      if(fInputGeoFile!=0) { //First check if the user has a separate Geo file!
+        TIter next(fInputGeoFile->GetListOfKeys());
+        TKey* key;
+        while ((key = (TKey*)next())) {
+          if (strcmp(key->GetClassName(),"TGeoManager") != 0) { continue; }
+          gGeoManager = (TGeoManager*)key->ReadObj();
+          break;
+        }
+      } else { //try the input file
+        fInputFile->Get("FAIRGeom");
       }
-      cout << endl
-      << "-I- FairRunAna::Init : " << endl
-      << fInputFile->GetName() << "  is connected with:";
-         list<TString>* friendList =
-         fInputFileStruct[TString(fInputFile->GetName())];
-      if(NULL != friendList) {
-         list<TString>::iterator iter1;
-         for(iter1 = friendList->begin();
-         iter1 != friendList->end(); iter1++) {
-            cout << "   " << (*iter1);
-            fRootManager->AddFriend(new TFile(*iter1));
-         }
+    }
+    //check that the geometry was loaded if not try all connected files!
+    if(gGeoManager==0) {
+      cout << "-I-  Geometry was not found in the input file we will look in the friends if any!" << endl;
+      TFile* currentfile= gFile;
+      TFile* nextfile=0;
+      TSeqCollection* fileList=gROOT->GetListOfFiles();
+      for (Int_t k=0; k<fileList->GetEntries(); k++) {
+        nextfile=(TFile*)fileList->At(k);
+        if(nextfile) { nextfile->Get("FAIRGeom"); }
+        if(gGeoManager) { break; }
       }
-      cout << endl << endl;
-       //Load geometry
-	  if(fLoadGeo) {
-            if(fInputGeoFile!=0){  //First check if the user has a separate Geo file!
-               TIter next(fInputGeoFile->GetListOfKeys());
-               TKey *key;
-               while ((key = (TKey*)next())) {
-                 if (strcmp(key->GetClassName(),"TGeoManager") != 0) continue;
-                 gGeoManager = (TGeoManager*)key->ReadObj();
-                 break;
-               }
-            }else{ //try the input file 
-              fInputFile->Get("FAIRGeom");
-            }
-          }
-	  //check that the geometry was loaded if not try all connected files!
-	  if(gGeoManager==0) {
-		 cout << "-I-  Geometry was not found in the input file we will look in the friends if any!" << endl;
-		 TFile *currentfile= gFile;
-		 TFile *nextfile=0;
-		 TSeqCollection *fileList=gROOT->GetListOfFiles();
-		 for (Int_t k=0; k<fileList->GetEntries(); k++){
-			nextfile=(TFile *)fileList->At(k);
-			if(nextfile) nextfile->Get("FAIRGeom");
-			if(gGeoManager) break;
-		 }	
-		 gFile=currentfile;	
-	  }
-   }else{ //  if(fInputFile )
-        // NO input file but there is a geometry file
-       if(fLoadGeo) {
-          if(fInputGeoFile!=0){  //First check if the user has a separate Geo file!
-             TIter next(fInputGeoFile->GetListOfKeys());
-             TKey *key;
-             while ((key = (TKey*)next())) {
-                if (strcmp(key->GetClassName(),"TGeoManager") != 0) continue;
-                gGeoManager = (TGeoManager*)key->ReadObj();
-                break;
-            }
-         }
-       }
-   }
+      gFile=currentfile;
+    }
+  } else { //  if(fInputFile )
+    // NO input file but there is a geometry file
+    if(fLoadGeo) {
+      if(fInputGeoFile!=0) { //First check if the user has a separate Geo file!
+        TIter next(fInputGeoFile->GetListOfKeys());
+        TKey* key;
+        while ((key = (TKey*)next())) {
+          if (strcmp(key->GetClassName(),"TGeoManager") != 0) { continue; }
+          gGeoManager = (TGeoManager*)key->ReadObj();
+          break;
+        }
+      }
+    }
+  }
   //Init the Chain ptr
-   fcurrent = fChainList.begin();
-   TFile *Output = fRootManager->OpenOutFile(Outfname);
-   // <DB> forwarding ptr
-   fOutFile= Output;
-   gROOT->GetListOfBrowsables()->Add(fTask);
-   // Init the RTDB containers
-   fRtdb= GetRuntimeDb();
-   FairBaseParSet* par=(FairBaseParSet*)
-            (fRtdb->getContainer("FairBaseParSet"));
-  
-   /**Set the IO Manager to run with time stamps*/	
-   if(fTimeStamps)fRootManager->RunWithTimeStamps();
-		
-   // Assure that basic info is there for the run
-   if(par && fInputFile){
-      fRootManager->ReadEvent(0);
-      fEvtHeader = (FairEventHeader*)
-      fRootManager->GetObject("EventHeader.");
-      //Copy the Event Header Info to Output
-      fEvtHeader->Register();
+  fcurrent = fChainList.begin();
+  TFile* Output = fRootManager->OpenOutFile(Outfname);
+  // <DB> forwarding ptr
+  fOutFile= Output;
+  gROOT->GetListOfBrowsables()->Add(fTask);
+  // Init the RTDB containers
+  fRtdb= GetRuntimeDb();
+  FairBaseParSet* par=(FairBaseParSet*)
+                      (fRtdb->getContainer("FairBaseParSet"));
 
-      fRunId = fEvtHeader->GetRunId();
-      // Init the containers in Tasks
-//	   cout << "Run Id for this run : " << fRunId << endl;
-      fRtdb->initContainers(fRunId);   
-      fTask->SetParTask();
-      fRtdb->initContainers( fRunId );
-	  if(gGeoManager==0)par->GetGeometry(); 
-	//  fRootManager->SetBranchNameList(par->GetBranchNameList());
-   }else{
-   
-      FairEventHeader* evt = this->GetEventHeader();
-      evt->Register();
+  /**Set the IO Manager to run with time stamps*/
+  if(fTimeStamps) { fRootManager->RunWithTimeStamps(); }
 
-      FairRunIdGenerator genid;
-      fRunId = genid.generateId();
-      fRtdb->addRun(fRunId);
-      evt->SetRunId( fRunId);
-      fTask->SetParTask();
-      fRtdb->initContainers( fRunId );
-      
-   }
-	FairFieldFactory *fieldfact= FairFieldFactory::Instance();
-	if(fieldfact)fieldfact->SetParm();
-		
-	fRtdb->initContainers(fRunId);	
-   // create a field 
-   // <DB>
-   // Add test for external FairField settings
-    if(fieldfact && !fField) fField= fieldfact->createFairField();
-   // Now call the User initialize for Tasks
-   fTask->InitTask();
+  // Assure that basic info is there for the run
+  if(par && fInputFile) {
+    fRootManager->ReadEvent(0);
+    fEvtHeader = (FairEventHeader*)
+                 fRootManager->GetObject("EventHeader.");
+    //Copy the Event Header Info to Output
+    fEvtHeader->Register();
+
+    fRunId = fEvtHeader->GetRunId();
+    // Init the containers in Tasks
+//     cout << "Run Id for this run : " << fRunId << endl;
+    fRtdb->initContainers(fRunId);
+    fTask->SetParTask();
+    fRtdb->initContainers( fRunId );
+    if(gGeoManager==0) { par->GetGeometry(); }
+    //  fRootManager->SetBranchNameList(par->GetBranchNameList());
+  } else {
+
+    FairEventHeader* evt = this->GetEventHeader();
+    evt->Register();
+
+    FairRunIdGenerator genid;
+    fRunId = genid.generateId();
+    fRtdb->addRun(fRunId);
+    evt->SetRunId( fRunId);
+    fTask->SetParTask();
+    fRtdb->initContainers( fRunId );
+
+  }
+  FairFieldFactory* fieldfact= FairFieldFactory::Instance();
+  if(fieldfact) { fieldfact->SetParm(); }
+
+  fRtdb->initContainers(fRunId);
+  // create a field
+  // <DB>
+  // Add test for external FairField settings
+  if(fieldfact && !fField) { fField= fieldfact->createFairField(); }
+  // Now call the User initialize for Tasks
+  fTask->InitTask();
   // if the vis manager is available then initialize it!
-   FairTrajFilter *fTrajFilter = FairTrajFilter::Instance();
-   if(fTrajFilter) fTrajFilter->Init();
-   // create the output tree after tasks initialisation
-   Output->cd();
-   TTree *outTree =new TTree("cbmsim", "/cbmout", 99);
-   fRootManager->TruncateBranchNames(outTree, "cbmout");
-   fRootManager->SetOutTree(outTree);
-   fRootManager->WriteFolder();
+  FairTrajFilter* fTrajFilter = FairTrajFilter::Instance();
+  if(fTrajFilter) { fTrajFilter->Init(); }
+  // create the output tree after tasks initialisation
+  Output->cd();
+  TTree* outTree =new TTree("cbmsim", "/cbmout", 99);
+  fRootManager->TruncateBranchNames(outTree, "cbmout");
+  fRootManager->SetOutTree(outTree);
+  fRootManager->WriteFolder();
 }
 //_____________________________________________________________________________
 void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 {
-	
-	if(fTimeStamps){
-		cout << "With time stamp only FairRunAna::Run(Double_t time_interval) can be used " << endl;
-		exit(-1);
-	}
-	
-	UInt_t tmpId =0;
-	if (fInputFile==0){ 
-		DummyRun(Ev_start,Ev_end);
-		return;
-	}
-	if(Ev_end==0){ 
-		if (Ev_start==0){
-			Ev_end=Int_t((fRootManager->GetInChain())->GetEntries());
-		}else {
-			Ev_end =  Ev_start;  
-			if ( Ev_end > ((fRootManager->GetInChain())->GetEntries()) ){
-				Ev_end = (Int_t) (fRootManager->GetInChain())->GetEntries();
-			}
-			Ev_start=0;
-		}
-	}else{
-		Int_t fileEnd=(fRootManager->GetInChain())->GetEntries();
-		if(Ev_end > fileEnd){
-			cout << "-------------------Warning---------------------------" << endl;
-			cout << " -W FairRunAna : File has less events than requested!!" << endl;
-			cout << " File contains : " << fileEnd  << " Events" << endl;
-			cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
-			cout << " The number of events is set to " << fileEnd << " Events"<< endl;
-			cout << "-----------------------------------------------------" << endl;
-			Ev_end = fileEnd;
-		}
-		
-	}
-	
-	for (int i=Ev_start; i< Ev_end;i++){
-		fRootManager->ReadEvent(i);
-		tmpId = fEvtHeader->GetRunId();
-		if ( tmpId != fRunId ) {
-			fRunId = tmpId;
-			if( !fStatic ) {
-				cout << " -I FairRunAna : reinitialization done for RunID: "
-				<< fRunId << endl;
-				
-				Reinit( fRunId );
-				fTask->ReInitTask();
-			}
-		}
-		
-		fTask->ExecuteTask("");
-		fRootManager->Fill();
-		fTask->FinishEvent();
-		
-		if(NULL !=  FairTrajFilter::Instance())  FairTrajFilter::Instance()->Reset();
-		
-	}
-	fTask->FinishTask();
-	fRootManager->Write();
-	
+
+  if(fTimeStamps) {
+    cout << "With time stamp only FairRunAna::Run(Double_t time_interval) can be used " << endl;
+    exit(-1);
+  }
+
+  UInt_t tmpId =0;
+  if (fInputFile==0) {
+    DummyRun(Ev_start,Ev_end);
+    return;
+  }
+  if(Ev_end==0) {
+    if (Ev_start==0) {
+      Ev_end=Int_t((fRootManager->GetInChain())->GetEntries());
+    } else {
+      Ev_end =  Ev_start;
+      if ( Ev_end > ((fRootManager->GetInChain())->GetEntries()) ) {
+        Ev_end = (Int_t) (fRootManager->GetInChain())->GetEntries();
+      }
+      Ev_start=0;
+    }
+  } else {
+    Int_t fileEnd=(fRootManager->GetInChain())->GetEntries();
+    if(Ev_end > fileEnd) {
+      cout << "-------------------Warning---------------------------" << endl;
+      cout << " -W FairRunAna : File has less events than requested!!" << endl;
+      cout << " File contains : " << fileEnd  << " Events" << endl;
+      cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
+      cout << " The number of events is set to " << fileEnd << " Events"<< endl;
+      cout << "-----------------------------------------------------" << endl;
+      Ev_end = fileEnd;
+    }
+
+  }
+
+  for (int i=Ev_start; i< Ev_end; i++) {
+    fRootManager->ReadEvent(i);
+    tmpId = fEvtHeader->GetRunId();
+    if ( tmpId != fRunId ) {
+      fRunId = tmpId;
+      if( !fStatic ) {
+        cout << " -I FairRunAna : reinitialization done for RunID: "
+             << fRunId << endl;
+
+        Reinit( fRunId );
+        fTask->ReInitTask();
+      }
+    }
+
+    fTask->ExecuteTask("");
+    fRootManager->Fill();
+    fTask->FinishEvent();
+
+    if(NULL !=  FairTrajFilter::Instance()) { FairTrajFilter::Instance()->Reset(); }
+
+  }
+  fTask->FinishTask();
+  fRootManager->Write();
+
 }
 //_____________________________________________________________________________
 
 void FairRunAna::Run(Double_t delta_t)
-{	
-   while (fRootManager->ReadNextEvent(delta_t)==kTRUE) {
-        fTask->ExecuteTask("");
-        fRootManager->Fill();
-        fTask->FinishEvent();
-	if(NULL !=  FairTrajFilter::Instance())  FairTrajFilter::Instance()->Reset();
-   }
-   fTask->FinishTask();
-   fRootManager->Write();
+{
+  while (fRootManager->ReadNextEvent(delta_t)==kTRUE) {
+    fTask->ExecuteTask("");
+    fRootManager->Fill();
+    fTask->FinishEvent();
+    if(NULL !=  FairTrajFilter::Instance()) { FairTrajFilter::Instance()->Reset(); }
+  }
+  fTask->FinishTask();
+  fRootManager->Write();
 
 }
 
 //_____________________________________________________________________________
 void FairRunAna::Run(Long64_t entry)
 {
-	
-	
-   if(fTimeStamps){
-      cout << "With time stamp only FairRunAna::Run(Double_t time_interval) can be used " << endl;
-      exit(-1);
-   }
-	
-	
-   UInt_t tmpId =0;
-   fRootManager->ReadEvent(entry);
-   tmpId = fEvtHeader->GetRunId();
-   if ( tmpId != fRunId ) {
-      fRunId = tmpId;
-      if( !fStatic ) {
-         cout << " -I FairRunAna : reinitialization done for RunID: "
-              << fRunId << endl;
 
-         Reinit( fRunId );
-         fTask->ReInitTask();
-        }
-   }
-   fTask->ExecuteTask("");
-   fRootManager->Fill();
-   fTask->FinishTask();
-   fRootManager->Write();
+
+  if(fTimeStamps) {
+    cout << "With time stamp only FairRunAna::Run(Double_t time_interval) can be used " << endl;
+    exit(-1);
+  }
+
+
+  UInt_t tmpId =0;
+  fRootManager->ReadEvent(entry);
+  tmpId = fEvtHeader->GetRunId();
+  if ( tmpId != fRunId ) {
+    fRunId = tmpId;
+    if( !fStatic ) {
+      cout << " -I FairRunAna : reinitialization done for RunID: "
+           << fRunId << endl;
+
+      Reinit( fRunId );
+      fTask->ReInitTask();
+    }
+  }
+  fTask->ExecuteTask("");
+  fRootManager->Fill();
+  fTask->FinishTask();
+  fRootManager->Write();
 }
 //_____________________________________________________________________________
 void FairRunAna::DummyRun(Int_t Ev_start, Int_t Ev_end)
 {
-  
-   /** This methode is just for testing, if you are not sure about what you do, don't use it */
-   for (int i=Ev_start; i< Ev_end;i++){
-      fTask->ExecuteTask("");
-      fRootManager->Fill();
-   }
-   fTask->FinishTask();
-   fRootManager->Write();
 
- }
+  /** This methode is just for testing, if you are not sure about what you do, don't use it */
+  for (int i=Ev_start; i< Ev_end; i++) {
+    fTask->ExecuteTask("");
+    fRootManager->Fill();
+  }
+  fTask->FinishTask();
+  fRootManager->Write();
+
+}
 //_____________________________________________________________________________
-TFile *FairRunAna::SetInputFile(TString name)
+TFile* FairRunAna::SetInputFile(TString name)
 {
-   fInputFile= new TFile(name);
-   if (fInputFile->IsZombie()) {
-            cout << "-E- FairRunAna: Error opening Input file" << endl;
-             exit(-1);
-         }else{
-   }
-        fCurrentFileName = name;
-        cout << "-I- FairRunAna: Opening Input file: " << fCurrentFileName << endl;
-   return fInputFile;
+  fInputFile= new TFile(name);
+  if (fInputFile->IsZombie()) {
+    cout << "-E- FairRunAna: Error opening Input file" << endl;
+    exit(-1);
+  } else {
+  }
+  fCurrentFileName = name;
+  cout << "-I- FairRunAna: Opening Input file: " << fCurrentFileName << endl;
+  return fInputFile;
 }
 
 
 //_____________________________________________________________________________
-void FairRunAna::SetInputFile(TFile *f)
+void FairRunAna::SetInputFile(TFile* f)
 {
   if (f->IsZombie()) {
-      cout << "-E- FairRunAna: Error opening Input file" << endl;
+    cout << "-E- FairRunAna: Error opening Input file" << endl;
     exit(-1);
-  }else{
+  } else {
     fInputFile=f;
   }
-   fCurrentFileName = TString( f->GetName());
+  fCurrentFileName = TString( f->GetName());
 }
 
 //_____________________________________________________________________________
 void FairRunAna::AddFriend (TString Name)
-{ 
-  if(fIsInitialized){
-	 cout << "-E- FairRunAna: Error, AddFriend has to be set before Run::Init !" << endl;
-     exit(-1);
-  }else{
-	 cout << "-I- FairRunAna Input file: " << fCurrentFileName <<
-          " is connected to friend: " << Name << endl;
-     if ( fInputFileStruct[fCurrentFileName]){
-        fInputFileStruct[fCurrentFileName]->push_back(Name);
-     }else {
-        fInputFileStruct[fCurrentFileName] = new list<TString>;
-        fInputFileStruct[fCurrentFileName]->push_back(Name);
-     }
+{
+  if(fIsInitialized) {
+    cout << "-E- FairRunAna: Error, AddFriend has to be set before Run::Init !" << endl;
+    exit(-1);
+  } else {
+    cout << "-I- FairRunAna Input file: " << fCurrentFileName <<
+         " is connected to friend: " << Name << endl;
+    if ( fInputFileStruct[fCurrentFileName]) {
+      fInputFileStruct[fCurrentFileName]->push_back(Name);
+    } else {
+      fInputFileStruct[fCurrentFileName] = new list<TString>;
+      fInputFileStruct[fCurrentFileName]->push_back(Name);
+    }
   }
 }
 //_____________________________________________________________________________
-void FairRunAna::DumpfInputFileStruct() {
-  // to be finished ...   
+void FairRunAna::DumpfInputFileStruct()
+{
+  // to be finished ...
 }
 //_____________________________________________________________________________
-void FairRunAna::Reinit(UInt_t runId) {
-    // reinit procedure
-    fRtdb->initContainers( runId );
+void FairRunAna::Reinit(UInt_t runId)
+{
+  // reinit procedure
+  fRtdb->initContainers( runId );
 }
 //_____________________________________________________________________________
 
-void FairRunAna::AddFile(TString name){
-    cout << "-I- FairRunAna Adding input file: " << name << endl;
-    fChainList.push_back(name);
-    fCurrentFileName = name;
+void FairRunAna::AddFile(TString name)
+{
+  cout << "-I- FairRunAna Adding input file: " << name << endl;
+  fChainList.push_back(name);
+  fCurrentFileName = name;
 }
 //_____________________________________________________________________________
-TString FairRunAna::GetNextFileName(){
- TString name = *fcurrent++;
- return name;
+TString FairRunAna::GetNextFileName()
+{
+  TString name = *fcurrent++;
+  return name;
 }
 //_____________________________________________________________________________
 
 void  FairRunAna::RunWithTimeStamps()
 {
-   if(fIsInitialized){
-      cout << "-E- FairRunAna: Error, RunWithTimeStamps has to be set before Run::Init !" << endl;
-	  exit(-1);
-	}else{
-		fTimeStamps=kTRUE;
-	}
+  if(fIsInitialized) {
+    cout << "-E- FairRunAna: Error, RunWithTimeStamps has to be set before Run::Init !" << endl;
+    exit(-1);
+  } else {
+    fTimeStamps=kTRUE;
+  }
 }
 
 //_____________________________________________________________________________
 
-void FairRunAna::CompressData(){
-	fRootManager->SetCompressData(kTRUE);
+void FairRunAna::CompressData()
+{
+  fRootManager->SetCompressData(kTRUE);
 }
 
 

@@ -16,11 +16,12 @@ using std::cout;
 using std::endl;
 
 //_____________________________________________________________________________
-FairRun * FairRun::fRunInstance= 0;
+FairRun* FairRun::fRunInstance= 0;
 //_____________________________________________________________________________
-FairRun * FairRun::Instance(){
+FairRun* FairRun::Instance()
+{
 
-        return fRunInstance;
+  return fRunInstance;
 }
 //_____________________________________________________________________________
 FairRun::FairRun()
@@ -37,9 +38,9 @@ FairRun::FairRun()
    fEvHead(NULL)
 {
   if (fRunInstance) {
-      Fatal("FairRun", "Singleton instance already exists.");
-      return;
-  } 
+    Fatal("FairRun", "Singleton instance already exists.");
+    return;
+  }
   fRunInstance=this;
   /*
    if(fRootManager==0) {
@@ -53,43 +54,47 @@ FairRun::FairRun()
 FairRun::~FairRun()
 {
   //  cout<<"Enter Destructor of FairRun"<<endl;
-  if (fTask) delete fTask; // There is another tasklist in MCApplication,
-                           // but this should be independent
-  if (fRtdb) delete fRtdb; // who is responsible for the RuntimeDataBase
-  if (fRootManager) delete fRootManager; // who is responsible
-  if (fEvHead) delete fEvHead;
+  if (fTask) { delete fTask; } // There is another tasklist in MCApplication,
+  // but this should be independent
+  if (fRtdb) { delete fRtdb; } // who is responsible for the RuntimeDataBase
+  if (fRootManager) {
+    delete fRootManager; // who is responsible
+    fRootManager=0;
+  }
+  if (fEvHead) { delete fEvHead; }
   //  cout<<"Leave Destructor of FairRun"<<endl;
 }
 //_____________________________________________________________________________
 
-void FairRun::SetOutputFile(const char *fname)
+void FairRun::SetOutputFile(const char* fname)
 {
-	Outfname=fname;
+  Outfname=fname;
 }
 //_____________________________________________________________________________
 
-void FairRun::AddTask(FairTask *t)
+void FairRun::AddTask(FairTask* t)
 {
   fTask->Add(t);
-  fNTasks++;	
+  fNTasks++;
 }
 
-void FairRun::CreateGeometryFile(const char *geofile)
+void FairRun::CreateGeometryFile(const char* geofile)
 {
   fRootManager->CreateGeometryFile(geofile);
 }
 
 
 //_____________________________________________________________________________
-FairTask* FairRun::GetTask(const char* taskName) {
-    TList* taskList = fTask->GetListOfTasks();
-    TObject* task = taskList->FindObject(taskName);
-    return dynamic_cast<FairTask*>(task);
+FairTask* FairRun::GetTask(const char* taskName)
+{
+  TList* taskList = fTask->GetListOfTasks();
+  TObject* task = taskList->FindObject(taskName);
+  return dynamic_cast<FairTask*>(task);
 }
 
-FairEventHeader*  FairRun::GetEventHeader() 
-{ 
-  if ( NULL == fEvHead ) fEvHead = new FairEventHeader();  
+FairEventHeader*  FairRun::GetEventHeader()
+{
+  if ( NULL == fEvHead ) { fEvHead = new FairEventHeader(); }
   return fEvHead;
 }
 
