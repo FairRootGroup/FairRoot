@@ -7,42 +7,43 @@
 class FairDetParIo;
 class FairRtdbRun;
 
-class FairParIo : public TObject {
-protected:
-  TList* detParIoList;  // list of detector I/Os
-  Bool_t autoWritable;  // flag indicating if automatic write is possible
-public:
-  FairParIo();
-  virtual ~FairParIo();
-  virtual FairDetParIo* getDetParIo(const Text_t*);
-  virtual void setDetParIo(FairDetParIo*);
-  virtual void removeDetParIo(Text_t*);
-  void setInputNumber(Int_t);
-  virtual void close() {;}
+class FairParIo : public TObject
+{
+  protected:
+    TList* detParIoList;  // list of detector I/Os
+    Bool_t autoWritable;  // flag indicating if automatic write is possible
+  public:
+    FairParIo();
+    virtual ~FairParIo();
+    virtual FairDetParIo* getDetParIo(const Text_t*);
+    virtual void setDetParIo(FairDetParIo*);
+    virtual void removeDetParIo(Text_t*);
+    void setInputNumber(Int_t);
+    virtual void close() {;}
 
-  // creates input/output class for a special detector and stores pointer
-  // used only for Oracle input/output
-  // (code in  class OraIo)
-  virtual void setDetParIo(Text_t*) {;}
+    // creates input/output class for a special detector and stores pointer
+    // used only for Oracle input/output
+    // (code in  class OraIo)
+    virtual void setDetParIo(Text_t*) {;}
 
-  // prints information about input/output
-  virtual void print() {;}
+    // prints information about input/output
+    virtual void print() {;}
 
-  // checks if the input/output is open
-  virtual Bool_t check() { return kFALSE; }
+    // checks if the input/output is open
+    virtual Bool_t check() { return kFALSE; }
 
-  // reads versions of parameter containers for an event file
-  virtual void readVersions(FairRtdbRun*) {;}
+    // reads versions of parameter containers for an event file
+    virtual void readVersions(FairRtdbRun*) {;}
 
-  // sets global file pointer in ROOT if input/output is a ROOT-file
-  // (code in FairParRootFileIo)
-  virtual void cd() {;}
+    // sets global file pointer in ROOT if input/output is a ROOT-file
+    // (code in FairParRootFileIo)
+    virtual void cd() {;}
 
-  // set and get for flag autoWritable
-  void setAutoWritable(Bool_t f=kTRUE) {autoWritable=f;}
-  Bool_t isAutoWritable() {return autoWritable;}
+    // set and get for flag autoWritable
+    void setAutoWritable(Bool_t f=kTRUE) {autoWritable=f;}
+    Bool_t isAutoWritable() {return autoWritable;}
 
-  ClassDef(FairParIo,0) // Base class for all parameter I/Os
+    ClassDef(FairParIo,0) // Base class for all parameter I/Os
 };
 
 #endif  /* !FAIRPARIO_H */

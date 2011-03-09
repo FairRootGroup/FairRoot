@@ -23,7 +23,7 @@ using std::cout;
 
 ClassImp(FairGeoBasicShape)
 
-FairGeoBasicShape::FairGeoBasicShape() 
+FairGeoBasicShape::FairGeoBasicShape()
   : nPoints(0),
     nParam(0),
     param(0),
@@ -31,11 +31,12 @@ FairGeoBasicShape::FairGeoBasicShape()
     position(new FairGeoTransform())
 {
   // default constructor
- 
+
 }
 
 
-FairGeoBasicShape::~FairGeoBasicShape() {
+FairGeoBasicShape::~FairGeoBasicShape()
+{
   // destructor
   if (param) {
     delete param;
@@ -52,30 +53,32 @@ FairGeoBasicShape::~FairGeoBasicShape() {
 }
 
 
-Int_t FairGeoBasicShape::readPoints(fstream* pFile,FairGeoVolume* volu) {
+Int_t FairGeoBasicShape::readPoints(fstream* pFile,FairGeoVolume* volu)
+{
   // reads nPoints with 3 components from Ascii file
   // if the array of points is not existing in the volume it is created and
   // the values are stored inside
   // returns the number of points
-  if (!pFile) return 0;
-  if (volu->getNumPoints()!=nPoints) volu->createPoints(nPoints);
+  if (!pFile) { return 0; }
+  if (volu->getNumPoints()!=nPoints) { volu->createPoints(nPoints); }
   Double_t x,y,z;
   const Int_t maxbuf=155;
   Text_t buf[maxbuf];
-  for(Int_t i=0;i<nPoints;i++) {
+  for(Int_t i=0; i<nPoints; i++) {
     pFile->getline(buf,maxbuf);
     sscanf(buf,"%lf%lf%lf",&x,&y,&z);
     volu->setPoint(i,x,y,z);
-  }  
+  }
   return nPoints;
 }
-   
 
-Bool_t FairGeoBasicShape::writePoints(fstream* pFile,FairGeoVolume* volu) {
+
+Bool_t FairGeoBasicShape::writePoints(fstream* pFile,FairGeoVolume* volu)
+{
   // writes nPoints with 3 components to Ascii file
-  if (!pFile) return kFALSE;  
+  if (!pFile) { return kFALSE; }
   Text_t buf[155];
-  for(Int_t i=0;i<volu->getNumPoints();i++) {
+  for(Int_t i=0; i<volu->getNumPoints(); i++) {
     FairGeoVector& v=*(volu->getPoint(i));
     sprintf(buf,"%9.3f%10.3f%10.3f\n",v(0),v(1),v(2));
     pFile->write(buf,strlen(buf));
@@ -84,9 +87,10 @@ Bool_t FairGeoBasicShape::writePoints(fstream* pFile,FairGeoVolume* volu) {
 }
 
 
-void FairGeoBasicShape::printPoints(FairGeoVolume* volu) {
+void FairGeoBasicShape::printPoints(FairGeoVolume* volu)
+{
   // prints nPoints with 3 components to screen
-  for(Int_t i=0;i<volu->getNumPoints();i++) {
+  for(Int_t i=0; i<volu->getNumPoints(); i++) {
     FairGeoVector& v=*(volu->getPoint(i));
     printf("%9.3f%10.3f%10.3f\n",v(0),v(1),v(2));
   }
@@ -94,19 +98,21 @@ void FairGeoBasicShape::printPoints(FairGeoVolume* volu) {
 
 
 void FairGeoBasicShape::calcVoluPosition(FairGeoVolume* volu,
-                                       const FairGeoTransform& mTR) {
+    const FairGeoTransform& mTR)
+{
   // calculates the relevant information to position the corresponding volume
   // in its mother and to position later other components inside this volume.
   // The transformation mTR describes the position and orientation of the
   // mother volume (center) relative to the physical coordinate system of
-  // the volume from which it was created.   
+  // the volume from which it was created.
   FairGeoTransform& dTC=volu->getTransform();
   calcVoluPosition(volu,dTC,mTR);
 }
 
 
 void FairGeoBasicShape::posInMother(const FairGeoTransform& dTC,
-                                  const FairGeoTransform& mTR) {
+                                    const FairGeoTransform& mTR)
+{
   // calculates the position of the volume inside its mother
   // dTC is the coordinate system of the ROOT volume relative to its physical
   // coordinate system
@@ -121,10 +127,11 @@ void FairGeoBasicShape::posInMother(const FairGeoTransform& dTC,
 }
 
 
-void FairGeoBasicShape::printParam() {
-  // prints the parameters of the ROOT shape 
+void FairGeoBasicShape::printParam()
+{
+  // prints the parameters of the ROOT shape
   if (param) {
-    for (Int_t i=0;i<nParam;i++) cout<<param->At(i)<<" ";
+    for (Int_t i=0; i<nParam; i++) { cout<<param->At(i)<<" "; }
     cout<<'\n';
   }
 }

@@ -32,56 +32,56 @@ class TDatabasePDG;
 class FairPrimaryGenerator;
 class FairIon;
 
-class FairShieldGenerator : public FairGenerator  
+class FairShieldGenerator : public FairGenerator
 {
 
- public: 
+  public:
 
-  /** Default constructor without arguments should not be used. **/
-  FairShieldGenerator();
-
-
-  /** Standard constructor. 
-   ** @param fileName The input file name
-   **/
-  FairShieldGenerator(const char* fileName);
+    /** Default constructor without arguments should not be used. **/
+    FairShieldGenerator();
 
 
-  /** Destructor. **/
-  virtual ~FairShieldGenerator();
-
-	
-  /** Reads on event from the input file and pushes the tracks onto
-   ** the stack. Abstract method in base class.
-   ** @param primGen  pointer to the FairPrimaryGenerator
-   **/
-  virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
+    /** Standard constructor.
+     ** @param fileName The input file name
+     **/
+    FairShieldGenerator(const char* fileName);
 
 
-
- private:
-
-  ifstream*      fInputFile;          //! Input file stream
-  const Char_t*  fFileName;           //! Input file Name
-  TDatabasePDG*  fPDG;                //!  PDG database
-
-	
-  /** Private method CloseInput. Just for convenience. Closes the 
-   ** input file properly. Called from destructor and from ReadEvent. **/
-  void CloseInput();
+    /** Destructor. **/
+    virtual ~FairShieldGenerator();
 
 
-  /** Private method RegisterIons. Goes through the input file and registers
-   ** any ion needed. **/
-  Int_t RegisterIons();
+    /** Reads on event from the input file and pushes the tracks onto
+     ** the stack. Abstract method in base class.
+     ** @param primGen  pointer to the FairPrimaryGenerator
+     **/
+    virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
 
 
-  /** STL map from ion name to FairIon **/
-  std::map<TString, FairIon*> fIonMap;       //!
-	
-	
-  ClassDef(FairShieldGenerator,1);
+  private:
+
+    ifstream*      fInputFile;          //! Input file stream
+    const Char_t*  fFileName;           //! Input file Name
+    TDatabasePDG*  fPDG;                //!  PDG database
+
+
+    /** Private method CloseInput. Just for convenience. Closes the
+     ** input file properly. Called from destructor and from ReadEvent. **/
+    void CloseInput();
+
+
+    /** Private method RegisterIons. Goes through the input file and registers
+     ** any ion needed. **/
+    Int_t RegisterIons();
+
+
+
+    /** STL map from ion name to FairIon **/
+    std::map<TString, FairIon*> fIonMap;       //!
+
+
+    ClassDef(FairShieldGenerator,1);
 
 };
 

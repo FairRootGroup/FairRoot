@@ -15,23 +15,24 @@ class FairGeoBasicShape;
 class TList;
 /**
  * manager class for geometry shapes
- * @author Ilse koenig 
+ * @author Ilse koenig
  */
-class  FairGeoShapes : public TObject {
-private:
-  FairGeoShapes(const FairGeoShapes &L);
-  FairGeoShapes& operator= (const FairGeoShapes&) {return *this;}
-protected:
-  TList* shapes;  // list of already created shape classes
-public :
-  FairGeoShapes();
-  ~FairGeoShapes();
-  FairGeoBasicShape* selectShape(FairGeoVolume *);  
-  FairGeoBasicShape* selectShape(const TString&);  
-  Int_t readPoints(fstream*,FairGeoVolume*);
-  Bool_t writePoints(fstream*,FairGeoVolume*);
-  void printPoints(FairGeoVolume* volu);
-  ClassDef(FairGeoShapes,0) //
+class  FairGeoShapes : public TObject
+{
+  private:
+    FairGeoShapes(const FairGeoShapes& L);
+    FairGeoShapes& operator= (const FairGeoShapes&) {return *this;}
+  protected:
+    TList* shapes;  // list of already created shape classes
+  public :
+    FairGeoShapes();
+    ~FairGeoShapes();
+    FairGeoBasicShape* selectShape(FairGeoVolume*);
+    FairGeoBasicShape* selectShape(const TString&);
+    Int_t readPoints(fstream*,FairGeoVolume*);
+    Bool_t writePoints(fstream*,FairGeoVolume*);
+    void printPoints(FairGeoVolume* volu);
+    ClassDef(FairGeoShapes,0) //
 };
 
 #endif  /* !FAIRGEOSHAPES_H */

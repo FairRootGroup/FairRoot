@@ -12,7 +12,7 @@
 
 ClassImp(FairGeoBuilder)
 
-FairGeoBuilder::FairGeoBuilder() 
+FairGeoBuilder::FairGeoBuilder()
   :nRot(0),
    nMed(0)
 {
@@ -20,9 +20,9 @@ FairGeoBuilder::FairGeoBuilder()
 }
 
 FairGeoBuilder::FairGeoBuilder(const char* name,const char* title)
-   : TNamed(name,title),
-     nRot(0),
-     nMed(0) 
+  : TNamed(name,title),
+    nRot(0),
+    nMed(0)
 {
   // Constructor
 }

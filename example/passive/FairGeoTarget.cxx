@@ -12,7 +12,8 @@
 
 ClassImp(FairGeoTarget)
 
-FairGeoTarget::FairGeoTarget() {
+FairGeoTarget::FairGeoTarget()
+{
   // Constructor
   fName="target";
   strcpy(modName,"t");

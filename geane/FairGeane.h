@@ -13,33 +13,33 @@ class FairField;
 
 class FairGeane : public  FairTask
 {
- public:
+  public:
 
-  /** Default constructor **/
-  //FairGeane();
+    /** Default constructor **/
+    //FairGeane();
 
-  FairGeane(const char* name, TString UserConfig="",    TString UserCuts="");
+    FairGeane(const char* name, TString UserConfig="",    TString UserCuts="");
 
-  FairGeane(TString fUserConfig="",    TString fUserCuts="");
+    FairGeane(TString fUserConfig="",    TString fUserCuts="");
 
-  InitStatus Init();
-	
-  void SetParTask();	
-	
-  virtual ~FairGeane();
+    InitStatus Init();
 
-  void SetField(FairField *field);
+    void SetParTask();
 
-  ClassDef(FairGeane,1)
+    virtual ~FairGeane();
 
-protected:
-    FairGeaneApplication *fApp; //!
-	const char* fName; //!
-	TString fUserConfig;  //! 
-	TString fUserCuts; //!
-	
+    void SetField(FairField* field);
 
-}; 
+    ClassDef(FairGeane,1)
+
+  protected:
+    FairGeaneApplication* fApp; //!
+    const char* fName; //!
+    TString fUserConfig;  //!
+    TString fUserCuts; //!
+
+
+};
 
 
 #endif

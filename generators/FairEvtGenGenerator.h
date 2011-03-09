@@ -3,7 +3,7 @@
 // -----          Created 09/10/06  by S. Spataro                      -----
 // -------------------------------------------------------------------------
 
-/**  FairEvtGenGenerator.h 
+/**  FairEvtGenGenerator.h
  *@author S.Spataro  <stefano.spataro@exp2.physik.uni-giessen.de>
  *
  The FairEvtGenGenerator reads an EvtGen input file. The file must contain
@@ -42,11 +42,11 @@
 
 ...
  [stop]
- 
+
  where the first row has the number of event and the number of particles, and below "N" is the line
  number of the event, "Id" is the PDG id number, "Ist" is the number of daughter particles, "M1" and
  "M2" are the two "N" numbers of the mother particle, "DF" and "DL" the "N" of the daughter particles,
- "px" "py" "pz" "E" are the 4-momentum components [in GeV/c], "x" "y" "z" "t" are vertex positions 
+ "px" "py" "pz" "E" are the 4-momentum components [in GeV/c], "x" "y" "z" "t" are vertex positions
  [in mm] and decay time.
 
  In order to produce the output file one shoulkd write, in the EvtGen macro:
@@ -55,15 +55,15 @@
   ...
   ofstream out;
   out.open("evtgen_out.evt");
-  
+
   EvtStdHep stdhep;
   myGenerator.generateEvent(root_part,t_init);
   stdhep.init();
   root_part->makeStdHep(stdhep);
-  
+
   out << count << "\t" << stdhep.getNPart();
   out <<stdhep<<endl;
-  
+
   root_part->deleteTree();
 ...
 [CUT]
@@ -86,56 +86,56 @@ class FairPrimaryGenerator;
 
 
 
-class FairEvtGenGenerator : public FairGenerator  
+class FairEvtGenGenerator : public FairGenerator
 {
 
- public: 
+  public:
 
-  /** Default constructor without arguments should not be used. **/
-  FairEvtGenGenerator();
-
-
-  /** Standard constructor. 
-   ** @param fileName The input file name
-   **/
-  FairEvtGenGenerator(const char* fileName);
-  
-  /** @param fileName: The input file name, DensityFunction: axial gas density
-   **/
-  FairEvtGenGenerator(const char* fileName, Double_t Rsigma, TF1 * DensityFunction);  
+    /** Default constructor without arguments should not be used. **/
+    FairEvtGenGenerator();
 
 
-  /** Destructor. **/
-  virtual ~FairEvtGenGenerator();
+    /** Standard constructor.
+     ** @param fileName The input file name
+     **/
+    FairEvtGenGenerator(const char* fileName);
 
-	
-  /** Reads on event from the input file and pushes the tracks onto
-   ** the stack. Abstract method in base class.
-   ** @param primGen  pointer to the FairrimaryGenerator
-   **/
-  virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
-
+    /** @param fileName: The input file name, DensityFunction: axial gas density
+     **/
+    FairEvtGenGenerator(const char* fileName, Double_t Rsigma, TF1* DensityFunction);
 
 
- private:
+    /** Destructor. **/
+    virtual ~FairEvtGenGenerator();
 
-  //ifstream* fInputFile;             //! Input file stream
-  const Char_t * fFileName;           //! Input file Name
-  FILE *fInputFile;
 
-  /** Private method CloseInput. Just for convenience. Closes the 
-   ** input file properly. Called from destructor and from ReadEvent. **/
-  void CloseInput();
-  
-  int    fGasmode;
-  double fRsigma;
-	
-	
-  /** PDG data base */
-  
+    /** Reads on event from the input file and pushes the tracks onto
+     ** the stack. Abstract method in base class.
+     ** @param primGen  pointer to the FairrimaryGenerator
+     **/
+    virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
+
+
+
+  private:
+
+    //ifstream* fInputFile;             //! Input file stream
+    const Char_t* fFileName;            //! Input file Name
+    FILE* fInputFile;
+
+    /** Private method CloseInput. Just for convenience. Closes the
+     ** input file properly. Called from destructor and from ReadEvent. **/
+    void CloseInput();
+
+    int    fGasmode;
+    double fRsigma;
+
+
+    /** PDG data base */
+
 //  TDatabasePDG *fPDG; //!
-   TF1 * fDensityFunction;
-  ClassDef(FairEvtGenGenerator,1);
+    TF1* fDensityFunction;
+    ClassDef(FairEvtGenGenerator,1);
 
 };
 

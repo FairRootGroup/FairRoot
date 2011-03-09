@@ -18,26 +18,27 @@
 #include "TFolder.h"
 #include "TROOT.h"
 
-FairDetector::FairDetector(const char * Name, Bool_t Active, Int_t DetId )
-	:FairModule(Name, "FAIR Detector", Active),
-	fDetId(DetId)
+FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId )
+  :FairModule(Name, "FAIR Detector", Active),
+   fDetId(DetId)
 {
-    flGeoPar = new TList();
-    TString lname( GetName());
-    lname += "GeoPar";
-    flGeoPar->SetName(lname.Data());
-    kGeoSaved = kFALSE;
-    
+  flGeoPar = new TList();
+  TString lname( GetName());
+  lname += "GeoPar";
+  flGeoPar->SetName(lname.Data());
+  kGeoSaved = kFALSE;
+
 
 }
-FairDetector::~FairDetector(){
+FairDetector::~FairDetector()
+{
 
-    if ( flGeoPar ) delete flGeoPar;
+  if ( flGeoPar ) { delete flGeoPar; }
 
 }
 
 FairDetector::FairDetector()
- :fDetId(0)
+  :fDetId(0)
 {
 
 }
@@ -49,38 +50,39 @@ void   FairDetector::Initialize()
 // ---
   Int_t NoOfEntries=svList->GetEntries();
   Int_t fMCid;
-  FairGeoNode *fN;
+  FairGeoNode* fN;
   TString cutName;
   TString copysign="#";
   for (Int_t i = 0 ; i < NoOfEntries ; i++ )  {
-      FairVolume* aVol = (FairVolume*) svList->At(i);
-      cutName = aVol->getName();
-      Ssiz_t pos = cutName.Index (copysign, 1); 
+    FairVolume* aVol = (FairVolume*) svList->At(i);
+    cutName = aVol->getName();
+    Ssiz_t pos = cutName.Index (copysign, 1);
 //      std::cout << " Ssiz_t= cutName" << pos << " Name  " << cutName << std::endl;
-      if(pos>1) cutName.Resize(pos);
-      if ( aVol->getModId() == GetModId()  ) {  
-		fMCid=gMC->VolId(cutName.Data());
-        	aVol->setMCid(fMCid);
-		fN=aVol->getGeoNode();
-		if (fN) fN->setMCid(fMCid);
-      }
-  } 
+    if(pos>1) { cutName.Resize(pos); }
+    if ( aVol->getModId() == GetModId()  ) {
+      fMCid=gMC->VolId(cutName.Data());
+      aVol->setMCid(fMCid);
+      fN=aVol->getGeoNode();
+      if (fN) { fN->setMCid(fMCid); }
+    }
+  }
 
 }
 
-void FairDetector::SaveGeoParams(){
+void FairDetector::SaveGeoParams()
+{
 
-    if ( ! kGeoSaved  ) {
-  std::cout << " -I FairDetector: " << GetName() << " Geometry parameters saved ... " << std::endl;
-  TFolder *mf = (TFolder*) gROOT->FindObjectAny("cbmroot");
-  TFolder *stsf = NULL;
-  if (mf ) stsf = (TFolder*) mf->FindObjectAny(GetName());
-  if (stsf) {
-    TFolder *newf = stsf->AddFolder("Parameters","Detector parameters",NULL);
-    newf->Add( flGeoPar ) ;
+  if ( ! kGeoSaved  ) {
+    std::cout << " -I FairDetector: " << GetName() << " Geometry parameters saved ... " << std::endl;
+    TFolder* mf = (TFolder*) gROOT->FindObjectAny("cbmroot");
+    TFolder* stsf = NULL;
+    if (mf ) { stsf = (TFolder*) mf->FindObjectAny(GetName()); }
+    if (stsf) {
+      TFolder* newf = stsf->AddFolder("Parameters","Detector parameters",NULL);
+      newf->Add( flGeoPar ) ;
+    }
+    kGeoSaved = kTRUE;
   }
-  kGeoSaved = kTRUE;
- }
 }
 
 

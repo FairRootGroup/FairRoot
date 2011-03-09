@@ -11,7 +11,7 @@
 
 #include "FairRuntimeDb.h"
 
-#include <iostream> 
+#include <iostream>
 //#include <iomanip>
 
 using std::cout;
@@ -19,15 +19,17 @@ using std::cout;
 ClassImp(FairParSet)
 
 FairParSet::FairParSet(const char* name,const char* title,const char* context)
-        : TNamed(name,title) {
+  : TNamed(name,title)
+{
   // constructor sets default values of data elements
   paramContext=context;
-  for(Int_t i=0;i<3;i++) {versions[i]=-1;}
+  for(Int_t i=0; i<3; i++) {versions[i]=-1;}
   status=kFALSE;
   changed=kFALSE;
 }
 
-Bool_t FairParSet::init() {
+Bool_t FairParSet::init()
+{
   // intitializes the container from an input in run time
   // database. If this is not successful it is initialized from
   // the second input. If this failes too, it returns an error.
@@ -40,47 +42,50 @@ Bool_t FairParSet::init() {
   FairParIo* io=0;
   if (rtdb) {
     io=rtdb->getFirstInput();
-    if (io) allFound=init(io);
+    if (io) { allFound=init(io); }
     if (!allFound) {
       io=rtdb->getSecondInput();
-        //cout << "-I FairParSet::init() 2 " << io <<  std::endl;
-      if (io) allFound=init(io);
-    } else setInputVersion(-1,2);
+      //cout << "-I FairParSet::init() 2 " << io <<  std::endl;
+      if (io) { allFound=init(io); }
+    } else { setInputVersion(-1,2); }
   }
-  if (allFound) return kTRUE;
+  if (allFound) { return kTRUE; }
   Error("init()","%s not initialized",GetName());
   return kFALSE;
 }
 
-Int_t FairParSet::write() {
+Int_t FairParSet::write()
+{
   // writes the container to the output defined in the runtime database
   // returns the output version in the ROOT file
   // returns -1 if error occured
   // (calls internally the init function in the derived class)
   FairParIo* output=FairRuntimeDb::instance()->getOutput();
-  if (output) return write(output);
+  if (output) { return write(output); }
   Error("write()","%s could not be written to output",GetName());
   return -1;
 }
 
-void FairParSet::print() {
+void FairParSet::print()
+{
   // prints information about container (versions,status,hasChanged...)
   cout<<"-----  "<<GetName()<<"  -----"<<'\n';
-  if (!paramContext.IsNull()) cout<<"Context/Purpose:       "<<paramContext<<'\n';
-  if (!author.IsNull()) cout<<"Author:                "<<author<<'\n';
-  if (!description.IsNull()) cout<<"Description:           "<<description<<'\n';
+  if (!paramContext.IsNull()) { cout<<"Context/Purpose:       "<<paramContext<<'\n'; }
+  if (!author.IsNull()) { cout<<"Author:                "<<author<<'\n'; }
+  if (!description.IsNull()) { cout<<"Description:           "<<description<<'\n'; }
   cout<<"first input version:   "<<versions[1]<<'\n';
   cout<<"second input version:  "<<versions[2]<<'\n';
-  if (changed) cout<<"has changed"<<'\n';
-  else cout<<"has not changed"<<'\n';
-  if (status) cout<<"is static"<<'\n';
-  else cout<<"is not static"<<'\n';
+  if (changed) { cout<<"has changed"<<'\n'; }
+  else { cout<<"has not changed"<<'\n'; }
+  if (status) { cout<<"is static"<<'\n'; }
+  else { cout<<"is not static"<<'\n'; }
 }
 
-void FairParSet::resetInputVersions() {
+void FairParSet::resetInputVersions()
+{
   // resets the input versions if the container is not static
   if (!status) {
-    for(Int_t i=0;i<3;i++) {versions[i]=-1;}
+    for(Int_t i=0; i<3; i++) {versions[i]=-1;}
     changed=kFALSE;
   }
 }

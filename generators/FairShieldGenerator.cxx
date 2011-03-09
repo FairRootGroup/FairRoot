@@ -24,30 +24,33 @@ FairShieldGenerator::FairShieldGenerator() {}
 
 
 // -----   Standard constructor   -----------------------------------------
-FairShieldGenerator::FairShieldGenerator(const char* fileName) {
+FairShieldGenerator::FairShieldGenerator(const char* fileName)
+{
 
   fPDG=TDatabasePDG::Instance();
   fFileName  = fileName;
   cout << "-I- FairShieldGenerator: Opening input file " << fileName << endl;
   fInputFile = new ifstream(fFileName);
-  if ( ! fInputFile->is_open() ) 
+  if ( ! fInputFile->is_open() ) {
     Fatal("FairShieldGenerator","Cannot open input file.");
+  }
   cout << "-I- FairShieldGenerator: Looking for ions..." << endl;
   Int_t nIons = RegisterIons();
-  cout << "-I- FairShieldGenerator: " << nIons << " ions registered." 
+  cout << "-I- FairShieldGenerator: " << nIons << " ions registered."
        << endl;
   CloseInput();
-  cout << "-I- FairShieldGenerator: Reopening input file " << fileName 
+  cout << "-I- FairShieldGenerator: Reopening input file " << fileName
        << endl;
   fInputFile = new ifstream(fFileName);
-   
+
 }
 // ------------------------------------------------------------------------
 
 
 
 // -----   Destructor   ---------------------------------------------------
-FairShieldGenerator::~FairShieldGenerator() {
+FairShieldGenerator::~FairShieldGenerator()
+{
   CloseInput();
 }
 // ------------------------------------------------------------------------
@@ -55,7 +58,8 @@ FairShieldGenerator::~FairShieldGenerator() {
 
 
 // -----   Public method ReadEvent   --------------------------------------
-Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
+Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
+{
 
   // Check for input file
   if ( ! fInputFile->is_open() ) {
@@ -90,7 +94,7 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
   }
 
   cout << "-I- FairShieldGenerator: Event " << eventId << ",  pBeam = "
-       << pBeam << "GeV, b = " << b << " fm, multiplicity " << nTracks 
+       << pBeam << "GeV, b = " << b << " fm, multiplicity " << nTracks
        << endl;
 
   // Loop over tracks in the current event
@@ -105,14 +109,13 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
       sprintf(ionName, "Ion_%d_%d", iMass, iCharge);
       TParticlePDG* part = fPDG->GetParticle(ionName);
       if ( ! part ) {
-	cout << "-W- FairShieldGenerator::ReadEvent: Cannot find "
-	     << ionName << " in database!" << endl;
-	continue;
+        cout << "-W- FairShieldGenerator::ReadEvent: Cannot find "
+             << ionName << " in database!" << endl;
+        continue;
       }
       pdgType = part->PdgCode();
-    }
-    else pdgType = fPDG->ConvertGeant3ToPdg(iPid);  // "normal" particle
-    
+    } else { pdgType = fPDG->ConvertGeant3ToPdg(iPid); } // "normal" particle
+
     // Give track to PrimaryGenerator
     primGen->AddTrack(pdgType, px, py, pz, 0., 0., 0.);
 
@@ -126,12 +129,13 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
 
 
 // -----   Private method CloseInput   ------------------------------------
-void FairShieldGenerator::CloseInput() {
+void FairShieldGenerator::CloseInput()
+{
   if ( fInputFile ) {
     if ( fInputFile->is_open() ) {
-       cout << "-I- FairShieldGenerator: Closing input file " 
-	    << fFileName << endl;
-       fInputFile->close();
+      cout << "-I- FairShieldGenerator: Closing input file "
+           << fFileName << endl;
+      fInputFile->close();
     }
     delete fInputFile;
     fInputFile = NULL;
@@ -142,7 +146,8 @@ void FairShieldGenerator::CloseInput() {
 
 
 // -----   Private method RegisterIons   ----------------------------------
-Int_t FairShieldGenerator::RegisterIons() {
+Int_t FairShieldGenerator::RegisterIons()
+{
 
   Int_t nIons = 0;
   Int_t eventId, nTracks, iPid, iMass, iCharge;
@@ -150,20 +155,20 @@ Int_t FairShieldGenerator::RegisterIons() {
   fIonMap.clear();
 
   while ( ! fInputFile->eof()) {
-    
+
     *fInputFile >> eventId >> nTracks >> pBeam >> b;
-    if ( fInputFile->eof() ) continue;
+    if ( fInputFile->eof() ) { continue; }
     for (Int_t iTrack=0; iTrack<nTracks; iTrack++) {
       *fInputFile >> iPid >> iMass >> iCharge >> px >> py >> pz;
       if ( iPid == 1000 ) { // ion
-	char buffer[20];
-	sprintf(buffer, "Ion_%d_%d", iMass, iCharge);
-	TString ionName(buffer);
-	if ( fIonMap.find(ionName) == fIonMap.end() ) { // new ion
-	  FairIon* ion = new FairIon(ionName, iCharge, iMass, iCharge);
-	  fIonMap[ionName] = ion;
-	  nIons++;
-	}  // new ion
+        char buffer[20];
+        sprintf(buffer, "Ion_%d_%d", iMass, iCharge);
+        TString ionName(buffer);
+        if ( fIonMap.find(ionName) == fIonMap.end() ) { // new ion
+          FairIon* ion = new FairIon(ionName, iCharge, iMass, iCharge);
+          fIonMap[ionName] = ion;
+          nIons++;
+        }  // new ion
       }    // ion
     }      // track loop
 
@@ -181,8 +186,8 @@ Int_t FairShieldGenerator::RegisterIons() {
 // ------------------------------------------------------------------------
 
 
-      
- 
+
+
 
 
 ClassImp(FairShieldGenerator)

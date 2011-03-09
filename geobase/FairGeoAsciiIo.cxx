@@ -21,17 +21,18 @@ using std::ios;
 
 ClassImp(FairGeoAsciiIo)
 
-FairGeoAsciiIo::FairGeoAsciiIo() 
+FairGeoAsciiIo::FairGeoAsciiIo()
   :filename(""),
    filedir(""),
    writable(kFALSE),
    file(0)
 {
   // Constructor
- 
+
 }
 
-FairGeoAsciiIo::~FairGeoAsciiIo() {
+FairGeoAsciiIo::~FairGeoAsciiIo()
+{
   // Destructor
   close();
   if (file) {
@@ -40,14 +41,15 @@ FairGeoAsciiIo::~FairGeoAsciiIo() {
   }
 }
 
-Bool_t FairGeoAsciiIo::open(const char* fname,const Text_t* status) {
+Bool_t FairGeoAsciiIo::open(const char* fname,const Text_t* status)
+{
   // Opens the file fname
   close();
-  if (!file) file=new fstream();
-  else (file->clear());
-  if (!filedir.IsNull()) filename=filedir+"/"+fname;
-  else filename=fname;
-  filename=filename.Strip();  
+  if (!file) { file=new fstream(); }
+  else { (file->clear()); }
+  if (!filedir.IsNull()) { filename=filedir+"/"+fname; }
+  else { filename=fname; }
+  filename=filename.Strip();
   if (strcmp(status,"in")==0) {
     file->open(filename,ios::in);
     writable=kFALSE;
@@ -65,7 +67,7 @@ Bool_t FairGeoAsciiIo::open(const char* fname,const Text_t* status) {
               filename.Data());
         return kFALSE;
       }
-    } else Error("open","Invalid file option!");
+    } else { Error("open","Invalid file option!"); }
   }
   if (file->rdbuf()->is_open()==0) {
     Fatal("open","Failed to open file %s",filename.Data());
@@ -74,68 +76,76 @@ Bool_t FairGeoAsciiIo::open(const char* fname,const Text_t* status) {
   return kTRUE;
 }
 
-Bool_t FairGeoAsciiIo::isOpen() {
+Bool_t FairGeoAsciiIo::isOpen()
+{
   // Returns kTRUE, if the file is open
-  if (file && file->rdbuf()->is_open()==1) return kTRUE; 
+  if (file && file->rdbuf()->is_open()==1) { return kTRUE; }
   return kFALSE;
 }
 
-Bool_t FairGeoAsciiIo::isWritable() {
+Bool_t FairGeoAsciiIo::isWritable()
+{
   // Returns kTRUE, if the file is open and writable
-  if (isOpen() && writable) return kTRUE; 
+  if (isOpen() && writable) { return kTRUE; }
   return kFALSE;
 }
 
-void FairGeoAsciiIo::close() {
+void FairGeoAsciiIo::close()
+{
   // Closes the file
-  if (isOpen()) { 
+  if (isOpen()) {
     file->close();
     filename="";
   }
 }
 
-void FairGeoAsciiIo::print() {
+void FairGeoAsciiIo::print()
+{
   // Prints file information
   if (isOpen()) {
-     if (writable) cout<<"Open output file: "<<filename<<endl;
-     else cout<<"Open input file: "<<filename<<endl;
-  }
-  else cout<<"No file open."<<endl;
+    if (writable) { cout<<"Open output file: "<<filename<<endl; }
+    else { cout<<"Open input file: "<<filename<<endl; }
+  } else { cout<<"No file open."<<endl; }
 }
 
-Bool_t FairGeoAsciiIo::read(FairGeoMedia* media) {
+Bool_t FairGeoAsciiIo::read(FairGeoMedia* media)
+{
   // Reads the media from file
-  if (!isOpen() || writable || media==0) return kFALSE;
+  if (!isOpen() || writable || media==0) { return kFALSE; }
   media->read(*file);
   return kTRUE;
 }
 
-Bool_t FairGeoAsciiIo::read(FairGeoSet* set,FairGeoMedia* media) {
+Bool_t FairGeoAsciiIo::read(FairGeoSet* set,FairGeoMedia* media)
+{
   // Reads the geometry set from file
-  if (!isOpen() || writable || set==0) return kFALSE;
+  if (!isOpen() || writable || set==0) { return kFALSE; }
   set->read(*file,media);
   return kTRUE;
 }
 
-Bool_t FairGeoAsciiIo::write(FairGeoMedia* media) {
+Bool_t FairGeoAsciiIo::write(FairGeoMedia* media)
+{
   // Writes the media to file
-  if (!isOpen() || !writable || media==0) return kFALSE;
+  if (!isOpen() || !writable || media==0) { return kFALSE; }
   media->write(*file);
   return kTRUE;
 }
 
-Bool_t FairGeoAsciiIo::write(FairGeoSet* set) {
+Bool_t FairGeoAsciiIo::write(FairGeoSet* set)
+{
   // Writes the geometry set to file
-  if (!isOpen() || !writable || set==0) return kFALSE;
+  if (!isOpen() || !writable || set==0) { return kFALSE; }
   set->write(*file);
   return kTRUE;
 }
 
-Bool_t FairGeoAsciiIo::readGeomConfig(FairGeoInterface* interface) {
+Bool_t FairGeoAsciiIo::readGeomConfig(FairGeoInterface* interface)
+{
   // Reads the GEANT configuration file
-  if (!isOpen() || writable || interface==0) return kFALSE;
+  if (!isOpen() || writable || interface==0) { return kFALSE; }
   TString buf(256);
-  TString simRefRun,historyDate;  
+  TString simRefRun,historyDate;
   Int_t k=-1;
   while(!(*file).eof()) {
     buf.ReadLine(*file);
@@ -149,14 +159,14 @@ Bool_t FairGeoAsciiIo::readGeomConfig(FairGeoInterface* interface) {
         } else {
           if (buf.Contains("SimulRefRunDb:")) {
             k=buf.Last(' ')+1;
-            if (k) simRefRun=buf(k,buf.Length()-k);
+            if (k) { simRefRun=buf(k,buf.Length()-k); }
           } else {
             if (buf.Contains("HistoryDateDb:")) {
               k=buf.First(' ')+1;
               if (buf.Length()>k) {
                 historyDate=buf(k,buf.Length()-k);
                 historyDate=historyDate.Strip(historyDate.kBoth);
-	      }
+              }
             }
           }
         }
@@ -164,17 +174,18 @@ Bool_t FairGeoAsciiIo::readGeomConfig(FairGeoInterface* interface) {
     }
   }
   Bool_t rc=kTRUE;
-  FairGeoIo* oraIo=interface->getOraInput(); 
+  FairGeoIo* oraIo=interface->getOraInput();
   if (oraIo) {
-    if (historyDate.Length()>0) rc=oraIo->setHistoryDate(historyDate.Data());
-    if (rc&&simRefRun.Length()>0) rc=oraIo->setSimulRefRun(simRefRun.Data());
+    if (historyDate.Length()>0) { rc=oraIo->setHistoryDate(historyDate.Data()); }
+    if (rc&&simRefRun.Length()>0) { rc=oraIo->setSimulRefRun(simRefRun.Data()); }
   }
   return rc;
 }
 
-Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface) {
+Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface)
+{
   // Reads the detector setups, needed for create only subsets
-  if (!isOpen() || writable || interface==0) return kFALSE;
+  if (!isOpen() || writable || interface==0) { return kFALSE; }
   const Int_t maxbuf=256;
   char buf[maxbuf];
   TString s, det;
@@ -184,7 +195,7 @@ Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface) {
   const char d[]=" ";
   while(!(*file).eof()) {
     (*file).getline(buf,maxbuf);
-    if (strlen(buf)>=3 && buf[1]!='/') { 
+    if (strlen(buf)>=3 && buf[1]!='/') {
       if (buf[0]=='[') {
         set=0;
         if (mod) {
@@ -198,7 +209,7 @@ Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface) {
         set=interface->findSet(det);
         if (!set) {
           Error("readDetectorSetup","Detector %s not found",det.Data());
-          if (mod) delete [] mod;
+          if (mod) { delete [] mod; }
           return kFALSE;
         }
         maxModules=set->getMaxModules();
@@ -208,19 +219,19 @@ Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface) {
           char* ss=strtok(buf,d);
           if (ss&&strlen(ss)>3) {
             secNo=(Int_t)(ss[3]-'0')-1;
-            for(Int_t i=0;i<maxModules&&mod;i++) {
+            for(Int_t i=0; i<maxModules&&mod; i++) {
               ss=strtok(NULL,d);
-              if (ss) sscanf(ss,"%i",&mod[i]);
+              if (ss) { sscanf(ss,"%i",&mod[i]); }
             }
             set->setModules(secNo,mod);
           }
         } else {
-          if (mod) delete [] mod;
+          if (mod) { delete [] mod; }
           return kFALSE;
         }
       }
     }
   }
-  if (mod) delete [] mod;
+  if (mod) { delete [] mod; }
   return kTRUE;
 }

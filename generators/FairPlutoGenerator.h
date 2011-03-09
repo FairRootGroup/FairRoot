@@ -30,44 +30,44 @@ class FairPrimaryGenerator;
 class FairPlutoGenerator : public FairGenerator
 {
 
- public: 
+  public:
 
-  /** Default constructor (should not be used) **/
-  FairPlutoGenerator();
-
-
-  /** Standard constructor
-   ** @param fileName The input (PLUTO) file name
-   **/
-  FairPlutoGenerator(const Char_t* fileName);
+    /** Default constructor (should not be used) **/
+    FairPlutoGenerator();
 
 
-  /** Destructor **/
-  virtual ~FairPlutoGenerator();
+    /** Standard constructor
+     ** @param fileName The input (PLUTO) file name
+     **/
+    FairPlutoGenerator(const Char_t* fileName);
 
 
-  /** Reads on event from the input file and pushes the tracks onto
-   ** the stack. Abstract method in base class.
-   ** @param primGen  pointer to the FairPrimaryGenerator
-   **/
-  virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
+    /** Destructor **/
+    virtual ~FairPlutoGenerator();
 
 
-	
- private:
-
-  Int_t iEvent;      //! Event number
-  const Char_t* fFileName;   //! Input file name
-  TFile* fInputFile;        //! Pointer to input file
-  TTree* fInputTree;        //! Pointer to input tree
-  TClonesArray* fParticles;  //! Particle array from PLUTO
-
-  /** Private method CloseInput. Just for convenience. Closes the 
-   ** input file properly. Called from destructor and from ReadEvent. **/
-  void CloseInput();
+    /** Reads on event from the input file and pushes the tracks onto
+     ** the stack. Abstract method in base class.
+     ** @param primGen  pointer to the FairPrimaryGenerator
+     **/
+    virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
 
-  ClassDef(FairPlutoGenerator,1);
+
+  private:
+
+    Int_t iEvent;      //! Event number
+    const Char_t* fFileName;   //! Input file name
+    TFile* fInputFile;        //! Pointer to input file
+    TTree* fInputTree;        //! Pointer to input tree
+    TClonesArray* fParticles;  //! Particle array from PLUTO
+
+    /** Private method CloseInput. Just for convenience. Closes the
+     ** input file properly. Called from destructor and from ReadEvent. **/
+    void CloseInput();
+
+
+    ClassDef(FairPlutoGenerator,1);
 
 };
 

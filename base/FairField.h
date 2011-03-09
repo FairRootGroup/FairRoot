@@ -12,7 +12,7 @@
  ** @since 06.01.2004
  ** @version1.0
  **
- ** Abstract base class for magnetic fields in FAIR 
+ ** Abstract base class for magnetic fields in FAIR
  ** Concrete field should implement the pure virtual methods
  ** GetBx, GetBy and GetBz and/or  GetBxyz
  **
@@ -37,18 +37,18 @@
 
 class TVirtualMagField : public TNamed
 {
-public:
-   TVirtualMagField()                 : TNamed() {}
-   TVirtualMagField(const char *name) : TNamed(name,"") {}
-   virtual ~TVirtualMagField(){}
-   virtual void Field(const Double_t *x, Double_t *B) = 0;
-   ClassDef(TVirtualMagField, 1)              // Abstract base field class
+  public:
+    TVirtualMagField()                 : TNamed() {}
+    TVirtualMagField(const char* name) : TNamed(name,"") {}
+    virtual ~TVirtualMagField() {}
+    virtual void Field(const Double_t* x, Double_t* B) = 0;
+    ClassDef(TVirtualMagField, 1)              // Abstract base field class
 };
 ClassImp(TVirtualMagField)
 #endif
 
 
-#else 
+#else
 
 #include "TVirtualMagField.h"
 
@@ -57,88 +57,88 @@ ClassImp(TVirtualMagField)
 
 #include <iostream>
 
-class FairField : public TVirtualMagField  
+class FairField : public TVirtualMagField
 {
 
-public:    
+  public:
 
-  /** Default constructor **/
-  FairField();
-
-
-  /** Constructor with name and title **/
-  FairField(const char* name, const char* title = "FAIR Magnetic Field");
+    /** Default constructor **/
+    FairField();
 
 
-  /** Destructor **/
-  virtual ~FairField();
+    /** Constructor with name and title **/
+    FairField(const char* name, const char* title = "FAIR Magnetic Field");
 
 
-  /** Intialisation. E.g. read in the field map. If needed, to be
-   ** implemented in the concrete class. 
-   **/
-  virtual void Init() { };
-
-  /** Test whether field type is Constant **/
-  Bool_t IsConst();
+    /** Destructor **/
+    virtual ~FairField();
 
 
-  /** Test whether field typ is Map **/
-  Bool_t IsMap();
+    /** Intialisation. E.g. read in the field map. If needed, to be
+     ** implemented in the concrete class.
+     **/
+    virtual void Init() { };
+
+    /** Test whether field type is Constant **/
+    Bool_t IsConst();
 
 
-  /** Field type ( 0=constant, 1=map, 2=map sym2, 3 = map sym3 ) **/
-  Int_t GetType() const { return fType; }
+    /** Test whether field typ is Map **/
+    Bool_t IsMap();
 
 
-  /** Get x component of magnetic field [kG]
-   ** @param x,y,z    Position [cm]
-   **/
-  virtual Double_t GetBx(Double_t x, Double_t y, Double_t z) {std::cout << "GetBx Should be implimented" << std::endl; return 0;}
+    /** Field type ( 0=constant, 1=map, 2=map sym2, 3 = map sym3 ) **/
+    Int_t GetType() const { return fType; }
 
 
-  /** Get y component of magnetic field [kG]
-   ** @param x,y,z    Position [cm]
-   **/
-  virtual Double_t GetBy(Double_t x, Double_t y, Double_t z) {std::cout << "GetBy Should be implimented" << std::endl; return 0;}
+    /** Get x component of magnetic field [kG]
+     ** @param x,y,z    Position [cm]
+     **/
+    virtual Double_t GetBx(Double_t x, Double_t y, Double_t z) {std::cout << "GetBx Should be implimented" << std::endl; return 0;}
 
 
-  /** Get z component of magnetic field [kG]
-   ** @param x,y,z    Position [cm]
-   **/
-  virtual Double_t GetBz(Double_t x, Double_t y, Double_t z) {std::cout << "GetBz Should be implimented" << std::endl; return 0;}
+    /** Get y component of magnetic field [kG]
+     ** @param x,y,z    Position [cm]
+     **/
+    virtual Double_t GetBy(Double_t x, Double_t y, Double_t z) {std::cout << "GetBy Should be implimented" << std::endl; return 0;}
 
 
-  /** Get magnetic field. For use of GEANT3
-   ** @param point            Coordinates [cm]
-   ** @param bField (return)  Field components [kG] 
-   **/
-  virtual void GetFieldValue(const Double_t point[3], Double_t* bField);
-
-  
-  void Field(const Double_t point[3], Double_t *B){GetFieldValue(point,B);}
-  
-
-  /** Screen output. To be implemented in the concrete class. **/
-  virtual void Print() { };
-
-  virtual void GetBxyz(const Double_t point[3], Double_t* bField){ std::cout << "GetBz Should be implimented" << std::endl;};
-
-	
-	
-  /**Fill Paramater*/	
-	
-	virtual void FillParContainer(){printf("This should implimented in the exp. part \n");}
-protected:
-
-  /** Field type. 1 = constant field, 2 = field map. **/
-  Int_t fType;
-  
-
-protected:
+    /** Get z component of magnetic field [kG]
+     ** @param x,y,z    Position [cm]
+     **/
+    virtual Double_t GetBz(Double_t x, Double_t y, Double_t z) {std::cout << "GetBz Should be implimented" << std::endl; return 0;}
 
 
-  ClassDef(FairField,3);
+    /** Get magnetic field. For use of GEANT3
+     ** @param point            Coordinates [cm]
+     ** @param bField (return)  Field components [kG]
+     **/
+    virtual void GetFieldValue(const Double_t point[3], Double_t* bField);
+
+
+    void Field(const Double_t point[3], Double_t* B) {GetFieldValue(point,B);}
+
+
+    /** Screen output. To be implemented in the concrete class. **/
+    virtual void Print() { };
+
+    virtual void GetBxyz(const Double_t point[3], Double_t* bField) { std::cout << "GetBz Should be implimented" << std::endl;};
+
+
+
+    /**Fill Paramater*/
+
+    virtual void FillParContainer() {printf("This should implimented in the exp. part \n");}
+  protected:
+
+    /** Field type. 1 = constant field, 2 = field map. **/
+    Int_t fType;
+
+
+  protected:
+
+
+    ClassDef(FairField,3);
 
 };
 

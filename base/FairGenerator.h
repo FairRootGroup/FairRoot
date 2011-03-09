@@ -8,8 +8,8 @@
  *@author D.Bertini <d.bertini@gsi.de>
  *@author V.Friese  <v.friese@gsi.de>
  *
-The FairGenerator is the abtract base class for the generators used to 
-generate input for the transport simulation.Each concrete generator class 
+The FairGenerator is the abtract base class for the generators used to
+generate input for the transport simulation.Each concrete generator class
 derived from this one must implement the abtract method ReadEvent,
 which has to use the method FairPrimaryGenerator::AddTrack.
 **/
@@ -23,41 +23,41 @@ which has to use the method FairPrimaryGenerator::AddTrack.
 class FairPrimaryGenerator;
 
 
-class FairGenerator : public TNamed 
+class FairGenerator : public TNamed
 {
 
- public:
+  public:
 
-  /** Default constructor. **/
-  FairGenerator();
-
-
-  /** Constructor with name and title **/
-  FairGenerator(const char* name, const char *title="FAIR Generator");
+    /** Default constructor. **/
+    FairGenerator();
 
 
-  /** Destructor. **/
-  virtual ~FairGenerator();
+    /** Constructor with name and title **/
+    FairGenerator(const char* name, const char* title="FAIR Generator");
 
 
-  /** Abstract method ReadEvent must be implemented by any derived class.
-      It has to handle the generation of input tracks (reading from input 
-      file) and the handing of the tracks to the FairPrimaryGenerator. I
-      t is called from FairMCApplication.
-      *@param pStack The stack
-      *@return kTRUE if successful, kFALSE if not
-  **/
-  virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen) = 0;
+    /** Destructor. **/
+    virtual ~FairGenerator();
 
-  
-  /**Initialize the generator if needed */
-  virtual Bool_t Init(){ return kTRUE;}
-  
-  ClassDef(FairGenerator,1);
 
-private:
-   FairGenerator(const FairGenerator &G);
-   FairGenerator& operator= (const FairGenerator&) {return *this;}
+    /** Abstract method ReadEvent must be implemented by any derived class.
+        It has to handle the generation of input tracks (reading from input
+        file) and the handing of the tracks to the FairPrimaryGenerator. I
+        t is called from FairMCApplication.
+        *@param pStack The stack
+        *@return kTRUE if successful, kFALSE if not
+    **/
+    virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen) = 0;
+
+
+    /**Initialize the generator if needed */
+    virtual Bool_t Init() { return kTRUE;}
+
+    ClassDef(FairGenerator,1);
+
+  private:
+    FairGenerator(const FairGenerator& G);
+    FairGenerator& operator= (const FairGenerator&) {return *this;}
 
 
 };

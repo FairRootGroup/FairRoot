@@ -26,60 +26,61 @@ class TObjArray;
 class FairTrajFilter;
 
 //class TEveElementList;
-class FairMCStack : public FairTask {
+class FairMCStack : public FairTask
+{
 
- public:
+  public:
 
-  /** Default constructor **/
-  FairMCStack();
-
-
-
-  /** Standard constructor 
-  *@param name        Name of task
-  *@param iVerbose    Verbosity level
-  **/
-  FairMCStack(const char* name, Int_t iVerbose = 1);
-
-  /** Destructor **/
-  virtual ~FairMCStack();
-
-  /** Set verbosity level. For this task and all of the subtasks. **/
-  void SetVerbose(Int_t iVerbose);
-   /** Executed task **/ 
-  virtual void Exec(Option_t* option);
-   virtual InitStatus Init();
-   virtual void SetParContainers();
-  
-  /** Action after each event**/
-  virtual void Finish();
-  void Reset();
-  TEveTrackList *GetTrGroup(TParticle *P);
-
-protected:
+    /** Default constructor **/
+    FairMCStack();
 
 
-  TClonesArray  *fTrackList;  //!
-  TEveTrackPropagator *fTrPr; 
-  FairEventManager * fEventManager; //!
-  TObjArray *fEveTrList;
-  TString fEvent; //!
-  TEveTrackList *fTrList;  //!
-  //TEveElementList *fTrackCont;
-	Float_t x1[3];
-	Float_t p1[3];
-	Float_t ein[15];
-	Float_t x2[3];
-	Float_t p2[3];
-	 TGeant3 *gMC3; //!
-   Double_t MinEnergyLimit;
-   Double_t MaxEnergyLimit;
-   Double_t PEnergy;
-   FairGeanePro *fPro;//!
-   FairTrajFilter *fTrajFilter;//!
-   ClassDef(FairMCStack,1);
-    
+
+    /** Standard constructor
+    *@param name        Name of task
+    *@param iVerbose    Verbosity level
+    **/
+    FairMCStack(const char* name, Int_t iVerbose = 1);
+
+    /** Destructor **/
+    virtual ~FairMCStack();
+
+    /** Set verbosity level. For this task and all of the subtasks. **/
+    void SetVerbose(Int_t iVerbose);
+    /** Executed task **/
+    virtual void Exec(Option_t* option);
+    virtual InitStatus Init();
+    virtual void SetParContainers();
+
+    /** Action after each event**/
+    virtual void Finish();
+    void Reset();
+    TEveTrackList* GetTrGroup(TParticle* P);
+
+  protected:
+
+
+    TClonesArray*  fTrackList;  //!
+    TEveTrackPropagator* fTrPr;
+    FairEventManager* fEventManager;  //!
+    TObjArray* fEveTrList;
+    TString fEvent; //!
+    TEveTrackList* fTrList;  //!
+    //TEveElementList *fTrackCont;
+    Float_t x1[3];
+    Float_t p1[3];
+    Float_t ein[15];
+    Float_t x2[3];
+    Float_t p2[3];
+    TGeant3* gMC3; //!
+    Double_t MinEnergyLimit;
+    Double_t MaxEnergyLimit;
+    Double_t PEnergy;
+    FairGeanePro* fPro;//!
+    FairTrajFilter* fTrajFilter;//!
+    ClassDef(FairMCStack,1);
+
 };
-                                  
+
 
 #endif

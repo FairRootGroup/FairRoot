@@ -8,11 +8,11 @@
 
 
 // -----   Default constructor   -------------------------------------------
-FairHit::FairHit() 
-: fDx(0),
-  fDy(0),
-  fDz(0),
-  fRefIndex(-1)
+FairHit::FairHit()
+  : fDx(0),
+    fDy(0),
+    fDz(0),
+    fRefIndex(-1)
 
 {
 }
@@ -21,7 +21,7 @@ FairHit::FairHit()
 
 
 // -----   Standard constructor   ------------------------------------------
-FairHit::FairHit(Int_t detID, TVector3& pos, TVector3& dpos, Int_t index) 
+FairHit::FairHit(Int_t detID, TVector3& pos, TVector3& dpos, Int_t index)
   :FairBasePoint(detID, pos),
    fDx          (dpos.X()),
    fDy          (dpos.Y()),

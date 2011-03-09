@@ -1,10 +1,10 @@
 # setup of the default options used for the fairbase classes
 # to use this option "astyle --options=fair.astyle <infile>"
---brackets=linux 
---indent=spaces=2 
---convert-tabs
---add-brackets 
---keep-one-line-blocks 
---lineend=linux 
---indent-classes 
---align-pointer=type
+--brackets=linux
+           --indent=spaces=2
+                           --convert-tabs
+                           --add-brackets
+                           --keep-one-line-blocks
+                           --lineend=linux
+                                     --indent-classes
+                                     --align-pointer=type

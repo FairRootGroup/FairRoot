@@ -20,40 +20,45 @@ using std::ios;
 
 ClassImp(FairGenericParAsciiFileIo)
 
-FairGenericParAsciiFileIo::FairGenericParAsciiFileIo(fstream* f) : FairDetParAsciiFileIo(f) {
+FairGenericParAsciiFileIo::FairGenericParAsciiFileIo(fstream* f) : FairDetParAsciiFileIo(f)
+{
   // constructor
   // sets the name of the I/O class "FairGenericParIo"
   // gets the pointer to the ASCII file
   fName="FairGenericParIo";
 }
 
-Bool_t FairGenericParAsciiFileIo::init(FairParSet* pPar) {
+Bool_t FairGenericParAsciiFileIo::init(FairParSet* pPar)
+{
   // initializes the parameter container from ASCII file
-  if (!pFile) return kFALSE;
+  if (!pFile) { return kFALSE; }
 
   if (pPar->InheritsFrom("FairParGenericSet")) {
 //      std::cout << "airGenericParAsciiFileIo ##########calling read function " << std::endl;
-      return readGenericSet((FairParGenericSet*)pPar);
+    return readGenericSet((FairParGenericSet*)pPar);
   }
- 
- 
+
+
   Error("init(FairParSet*)",
         "%s does not inherit from FairParGenericSet",pPar->GetName());
   return kFALSE;
 }
 
-Int_t FairGenericParAsciiFileIo::write(FairParSet* pPar) {
+Int_t FairGenericParAsciiFileIo::write(FairParSet* pPar)
+{
   // writes the parameter container to ASCII file
-  if (!pFile) return -1; 
-  if (pPar->InheritsFrom("FairParGenericSet"))
-      return writeGenericSet((FairParGenericSet*)pPar);
+  if (!pFile) { return -1; }
+  if (pPar->InheritsFrom("FairParGenericSet")) {
+    return writeGenericSet((FairParGenericSet*)pPar);
+  }
   Error("write(FairParSet*)",
         "%s does not inherit from FairParGenericSet",pPar->GetName());
   return -1;
 }
 
 template <class type> const UChar_t* FairGenericParAsciiFileIo::readData(
-              type t,const Char_t* format,TString& line, Int_t& length) {
+  type t,const Char_t* format,TString& line, Int_t& length)
+{
   // reads c-type single data and arrays
   const Int_t st=sizeof(t);
   const Int_t maxbuf=8000;
@@ -69,12 +74,12 @@ template <class type> const UChar_t* FairGenericParAsciiFileIo::readData(
     memcpy(&val[l],&t,st);
     length=st;
   } else {
-    do {             
+    do {
       pFile->getline(buf,maxbuf);
       if (buf[0]!='/' && buf[0]!='#') {
-         s=buf;
+        s=buf;
         m=s.Last('\\');
-        if (m>0) s=s(0,s.Length()-2);
+        if (m>0) { s=s(0,s.Length()-2); }
         if ((bufSize-1000)<l) {
           bufSize+=bufSizeExt;
           UChar_t* va=new UChar_t[bufSize];
@@ -96,12 +101,13 @@ template <class type> const UChar_t* FairGenericParAsciiFileIo::readData(
   return val;
 }
 
-template <class type> void FairGenericParAsciiFileIo::writeData(type* val, Int_t nParams) {
+template <class type> void FairGenericParAsciiFileIo::writeData(type* val, Int_t nParams)
+{
   // writes c-type arrays
   Int_t i=0, k=0;
   while (k<nParams) {
     if (i==10) {
-      *pFile<<" \\\n  "; 
+      *pFile<<" \\\n  ";
       i=0;
     }
     *pFile<<val[k]<<" ";
@@ -113,20 +119,21 @@ template <class type> void FairGenericParAsciiFileIo::writeData(type* val, Int_t
 
 
 
-Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar) {
+Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar)
+{
   // reads condition-stype parameter containers from ASCII file
-  if (!pFile) return kFALSE;
+  if (!pFile) { return kFALSE; }
   pFile->clear();
   pFile->seekg(0,ios::beg);
   Text_t* name=(Char_t*)pPar->GetName();
-  if (!findContainer(name)) return kFALSE;
+  if (!findContainer(name)) { return kFALSE; }
   FairParamList* paramList = new FairParamList;
   const Int_t maxbuf=8000;
   Text_t buf[maxbuf];
   buf[0]='\0';
   TString s, pName, pVal, pType;
   Ssiz_t n, m;
-  while (buf[0]!='#' && !pFile->eof()) {             
+  while (buf[0]!='#' && !pFile->eof()) {
     pFile->getline(buf,maxbuf);
     if (buf[0]!='/' && buf[0]!='#') {
       s=buf;
@@ -136,7 +143,7 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar) {
               "%s:\n  Missing backslash for parameter %s",name,pName.Data());
         delete paramList;
         return  kFALSE;
-      } 
+      }
       pName=s(0,n);
       s=s(n+1,s.Length()-n-1);
       s=s.Strip(s.kLeading);
@@ -160,7 +167,7 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar) {
               }
             }
           }
-	}
+        }
         if (pName.CompareTo("author")==0) {
           pPar->setAuthor(pVal.Data());
         } else if (pName.CompareTo("description")==0) {
@@ -171,7 +178,7 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar) {
         pType=s(0,n);
         s=s(n+1,s.Length()-n-1);
         s=s.Strip(s.kLeading);
-    	if (pType.CompareTo("Text_t")==0) {
+        if (pType.CompareTo("Text_t")==0) {
           m=s.Last('\\');
           if (m<0) {
             pVal=s;
@@ -201,7 +208,7 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar) {
           if (pType.CompareTo("Int_t")==0) {
             Int_t v=0;
             val=readData(v,"%i",s,length);
-          } else if  (pType.CompareTo("Float_t")==0){
+          } else if  (pType.CompareTo("Float_t")==0) {
             Float_t v=0.F;
             val=readData(v,"%f",s,length);
           } else if (pType.CompareTo("Double_t")==0) {
@@ -212,8 +219,8 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar) {
             val=readData(v,"%c",s,length);
           } else {
             Error("readCond(FairParGenericSet*)",
-              "%s:\n  Parameter %s with unsupported type %s",
-              name,pName.Data(),pType.Data());
+                  "%s:\n  Parameter %s with unsupported type %s",
+                  name,pName.Data(),pType.Data());
             delete paramList;
             return kFALSE;
           }
@@ -221,24 +228,25 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar) {
           obj->setParamType(pType.Data());
           UChar_t* pValue=obj->setLength(length);
           memcpy(pValue,val,length);
-          paramList->getList()->Add(obj);          
-          if (val) delete [] val;
-	}
+          paramList->getList()->Add(obj);
+          if (val) { delete [] val; }
+        }
       }
     }
   }
   Bool_t allFound=pPar->getParams(paramList);
-  if (allFound) { 
+  if (allFound) {
     pPar->setInputVersion(1,inputNumber);
     pPar->setChanged();
     printf("%s initialized from Ascii file\n",name);
-  } else pPar->setInputVersion(-1,inputNumber);
+  } else { pPar->setInputVersion(-1,inputNumber); }
   delete paramList;
   return allFound;
 }
 
 
-Int_t FairGenericParAsciiFileIo::writeGenericSet(FairParGenericSet* pPar) {
+Int_t FairGenericParAsciiFileIo::writeGenericSet(FairParGenericSet* pPar)
+{
   // writes condition-stype parameter containers to ASCII file
   if (pFile) {
     Int_t version=1;
@@ -250,7 +258,7 @@ Int_t FairGenericParAsciiFileIo::writeGenericSet(FairParGenericSet* pPar) {
     *pFile<<"["<<name<<"]\n";
     writeComment(pPar);
     *pFile<<"//-----------------------------------------------------------"
-            "-----------------\n";
+          "-----------------\n";
     FairParamList* paramList = new FairParamList;
     pPar->putParams(paramList);
     TList* pList=paramList->getList();
@@ -294,7 +302,7 @@ Int_t FairGenericParAsciiFileIo::writeGenericSet(FairParGenericSet* pPar) {
     return 1;
   }
   Error("writeCond(FairParGenericSet*)",
-              "Output is not writable");
+        "Output is not writable");
   return -1;
-}  
+}
 

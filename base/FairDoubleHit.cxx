@@ -13,7 +13,8 @@ FairDoubleHit::FairDoubleHit():
 
 }
 
-FairDoubleHit::~FairDoubleHit(){
+FairDoubleHit::~FairDoubleHit()
+{
 
 }
 

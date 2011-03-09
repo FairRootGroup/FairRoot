@@ -46,12 +46,12 @@
 
 #include <iostream>
 
-using std::cout;              
+using std::cout;
 using std::endl;
 using std::pair;
 //_____________________________________________________________________________
-FairMCApplication::FairMCApplication(const char *name, const char *title, 
-   TObjArray *ModList, const char *MatName) 
+FairMCApplication::FairMCApplication(const char* name, const char* title,
+                                     TObjArray* ModList, const char* MatName)
   :TVirtualMCApplication(name,title),
    fActDetIter(NULL),
    fActiveDetectors(NULL),
@@ -84,38 +84,38 @@ FairMCApplication::FairMCApplication(const char *name, const char *title,
    fTrkPos(TLorentzVector(0,0,0,0)),
    fRadLength(kFALSE),
    fRadLenMan(NULL)
-{ 
+{
 // Standard Simulation constructor
 // Check if the Fair root manager exist!
-   fRootManager=FairRootManager::Instance();
+  fRootManager=FairRootManager::Instance();
 // Create an ObjArray of Modules and its iterator
-   fModules=ModList;
-   fModIter = fModules->MakeIterator();
+  fModules=ModList;
+  fModIter = fModules->MakeIterator();
 // Create and fill a list of active detectors
-   fDetectors=new TRefArray;
-   fActiveDetectors=new TRefArray();
-   fModIter->Reset();
-   FairDetector *detector;
-   TObject *obj;
-   while((obj=fModIter->Next())) {
-      if(obj->InheritsFrom("FairDetector")){
-         detector=(FairDetector *)obj;
-         fDetectors->Add(detector);
-         if(detector->IsActive())fActiveDetectors->Add(detector);
-      }
-   }  
-   fDetIter=fDetectors->MakeIterator();
-   fActDetIter=fActiveDetectors->MakeIterator();
+  fDetectors=new TRefArray;
+  fActiveDetectors=new TRefArray();
+  fModIter->Reset();
+  FairDetector* detector;
+  TObject* obj;
+  while((obj=fModIter->Next())) {
+    if(obj->InheritsFrom("FairDetector")) {
+      detector=(FairDetector*)obj;
+      fDetectors->Add(detector);
+      if(detector->IsActive()) { fActiveDetectors->Add(detector); }
+    }
+  }
+  fDetIter=fDetectors->MakeIterator();
+  fActDetIter=fActiveDetectors->MakeIterator();
 // Create a Task list
-   fFairTaskList= new FairTask("Task List", 1);
-   gROOT->GetListOfBrowsables()->Add(fFairTaskList);  
-   fMcVersion=-1;
-   // Initialise fTrajFilter pointer
-   fTrajFilter = NULL;
-   fDetMap=new TRefArray(1000);
-   fDisVol=0; 
-   fDisDet=0;
-   
+  fFairTaskList= new FairTask("Task List", 1);
+  gROOT->GetListOfBrowsables()->Add(fFairTaskList);
+  fMcVersion=-1;
+  // Initialise fTrajFilter pointer
+  fTrajFilter = NULL;
+  fDetMap=new TRefArray(1000);
+  fDisVol=0;
+  fDisDet=0;
+
 }
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication()
@@ -148,238 +148,239 @@ FairMCApplication::FairMCApplication()
    fTrkPos(TLorentzVector(0,0,0,0)),
    fRadLength(kFALSE),
    fRadLenMan(NULL)
-{    
+{
 // Default constructor
 }
 //_____________________________________________________________________________
-FairMCApplication::~FairMCApplication() 
+FairMCApplication::~FairMCApplication()
 {
-// Destructor  
+// Destructor
 //   cout<<"Enter Destructor of FairMCApplication"<<endl;
-   delete fStack;
-   delete fActiveDetectors; // don't do fActiveDetectors->Delete() here
-                            // the modules are already deleted in FairRunSim
-   delete fActDetIter;
-   delete fDetectors;
-   delete gMC;	
-   gMC=0;
-   //   cout<<"Leave Destructor of FairMCApplication"<<endl;
+  delete fStack;
+  delete fActiveDetectors; // don't do fActiveDetectors->Delete() here
+  // the modules are already deleted in FairRunSim
+  delete fActDetIter;
+  delete fDetectors;
+  delete gMC;
+  gMC=0;
+  //   cout<<"Leave Destructor of FairMCApplication"<<endl;
 }
 //_____________________________________________________________________________
 void FairMCApplication::RegisterStack()
 {
 // Registers stack in Root manager.
- //  cout << "FairMCApplication::RegisterStack() " << endl;
-   if(fEvGen) fStack->Register();
+//  cout << "FairMCApplication::RegisterStack() " << endl;
+  if(fEvGen) { fStack->Register(); }
 }
 //_____________________________________________________________________________
-void FairMCApplication::InitMC(const char* setup, const char *cuts)
+void FairMCApplication::InitMC(const char* setup, const char* cuts)
 {
 // Initialize MC.
 // ---
   fStack = (FairGenericStack*) gMC->GetStack();
- 
+
   gMC->Init();
   gMC->BuildPhysics();
   TString MCName=gMC->GetName();
-  if     (MCName == "TGeant3" || MCName == "TGeant3TGeo")  fMcVersion = 0 ; 
-  else if(MCName == "TGeant4")  fMcVersion = 1;
-  else if(MCName == "TFluka")   fMcVersion = 2;
-  else fMcVersion = 3;  //Geane
+  if     (MCName == "TGeant3" || MCName == "TGeant3TGeo") { fMcVersion = 0 ; }
+  else if(MCName == "TGeant4") { fMcVersion = 1; }
+  else if(MCName == "TFluka") { fMcVersion = 2; }
+  else { fMcVersion = 3; }  //Geane
   fTrajFilter = FairTrajFilter::Instance();
- 
-  
+
+
 #if ROOT_VERSION_CODE >= 333824
- gMC->SetMagField(fxField);
+  gMC->SetMagField(fxField);
 #endif
   cout << " -I- FairMCApplication:: Monte carlo Engine Initialisation  with "<< MCName.Data() << endl;
 }
 //_____________________________________________________________________________
 void FairMCApplication::RunMC(Int_t nofEvents)
-{    
+{
   // MC run.
   gMC->ProcessRun(nofEvents);
   // finish run
   FinishRun();
-}                                                      
+}
 //____________________________________________________________________________
 void FairMCApplication::FinishRun()
-{    
+{
 // Finish MC run.
 // ---
-  if(fActDetIter){
-	  fActDetIter->Reset();
-	  FairDetector *detector=NULL;
-	  TObject *obj=0;
-	  while((obj=fActDetIter->Next())) {
-		  detector = dynamic_cast<FairDetector*>(obj);
-		  if (detector) detector->FinishRun();
-	  }  
+  if(fActDetIter) {
+    fActDetIter->Reset();
+    FairDetector* detector=NULL;
+    TObject* obj=0;
+    while((obj=fActDetIter->Next())) {
+      detector = dynamic_cast<FairDetector*>(obj);
+      if (detector) { detector->FinishRun(); }
+    }
   }
   fFairTaskList->FinishTask();
   fRootManager->Write();
-}     
+}
 //_____________________________________________________________________________
 void FairMCApplication::BeginEvent()
-{    
+{
 // User actions at beginning of event
 // ---
-   if(fActDetIter){
-	   fActDetIter->Reset();
-	   FairDetector *detector;
-	   TObject *obj=0;
-	   while((obj=fActDetIter->Next())) {
-		   detector = dynamic_cast<FairDetector*>(obj);
-		   if (detector) detector->BeginEvent();
-	   }
-   }
+  if(fActDetIter) {
+    fActDetIter->Reset();
+    FairDetector* detector;
+    TObject* obj=0;
+    while((obj=fActDetIter->Next())) {
+      detector = dynamic_cast<FairDetector*>(obj);
+      if (detector) { detector->BeginEvent(); }
+    }
+  }
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::BeginPrimary()
-{    
+{
 // User actions at beginning of a primary track
 // ---
- if(fActDetIter){
-	 fActDetIter->Reset();
-	 FairDetector *detector=NULL;
-	 TObject *obj=0;
-	 while((obj=fActDetIter->Next())) {
-		 detector = dynamic_cast<FairDetector*>(obj);
-		 if( detector ) detector->BeginPrimary();
-	 }  
- }
+  if(fActDetIter) {
+    fActDetIter->Reset();
+    FairDetector* detector=NULL;
+    TObject* obj=0;
+    while((obj=fActDetIter->Next())) {
+      detector = dynamic_cast<FairDetector*>(obj);
+      if( detector ) { detector->BeginPrimary(); }
+    }
+  }
 }
 //_____________________________________________________________________________
 void FairMCApplication::PreTrack()
-{    
+{
 
 // User actions at beginning of each track
 // ---
 
-  if(fActDetIter){
-	  fActDetIter->Reset();
-	  FairDetector *detector=NULL;
-	  TObject *obj=0;
-	  while((obj=fActDetIter->Next())) {
-		  detector = dynamic_cast<FairDetector*>(obj);
-		  if (detector) detector->PreTrack();
-	  }
-  }    
+  if(fActDetIter) {
+    fActDetIter->Reset();
+    FairDetector* detector=NULL;
+    TObject* obj=0;
+    while((obj=fActDetIter->Next())) {
+      detector = dynamic_cast<FairDetector*>(obj);
+      if (detector) { detector->PreTrack(); }
+    }
+  }
   fTrajAccepted=kFALSE;
   if(NULL != fTrajFilter) {
     // Get the pointer to current track
-    TParticle *particle = fStack->GetCurrentTrack();
-//	cout << " FairMCApplication::PreTrack()" << particle << endl;
+    TParticle* particle = fStack->GetCurrentTrack();
+//  cout << " FairMCApplication::PreTrack()" << particle << endl;
     // Apply cuts
     fTrajAccepted = fTrajFilter->IsAccepted(particle);
     if(fTrajAccepted) {
       // Add trajectory to geo manager
-   //    Int_t trackId = fStack->GetCurrentTrackNumber();
-       TGeoTrack *fTrack=fTrajFilter->AddTrack(particle);
+      //    Int_t trackId = fStack->GetCurrentTrackNumber();
+      TGeoTrack* fTrack=fTrajFilter->AddTrack(particle);
       // TLorentzVector pos;
-       gMC->TrackPosition(fTrkPos);
-       fTrack->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
+      gMC->TrackPosition(fTrkPos);
+      fTrack->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
     }
   }
 }
 //_____________________________________________________________________________
 void FairMCApplication::Stepping()
-{    
+{
 // User actions at each step
-// ---  
+// ---
   // Work around for Fluka VMC, which does not call
   // MCApplication::PreTrack()
-   static Int_t TrackId = 0;
-   if ( fMcVersion ==2 && gMC->GetStack()->GetCurrentTrackNumber() != TrackId ) {
-       PreTrack();
-       TrackId = gMC->GetStack()->GetCurrentTrackNumber();
-   }   
-   Int_t copyNo;
-   Int_t id = gMC->CurrentVolID(copyNo);
-   Bool_t InMap =kFALSE;
-   fDisVol=0; 
-   fDisDet=0;
-   Int_t fCopyNo=0;                                      
-   fVolIter =fVolMap.find(id);
-   if (fVolIter!=fVolMap.end()){
-      do{
-         fDisVol=fVolIter->second;
-         fCopyNo=fDisVol->getCopyNo();		
-         if(copyNo==fCopyNo){
-            fDisDet=dynamic_cast<FairDetector*> (fDisVol->GetModule());
-            if (fDisDet) fDisDet->ProcessHits(fDisVol);
-            InMap=kTRUE;
-            break;
-         }
-         fVolIter++;
-      }while(fVolIter!=fVolMap.upper_bound(id));
-      if(fDisVol && !InMap){ 
-         FairVolume *fNewV=new FairVolume( gMC->CurrentVolName(), id);
-         fNewV->setMCid(id);
-         fNewV->setModId(fDisVol->getModId());
-         fNewV->SetModule(fDisVol->GetModule());
-         fNewV->setCopyNo(copyNo);
-         fVolMap.insert(pair<Int_t, FairVolume* >(id, fNewV));
-         fDisDet=dynamic_cast<FairDetector*> (fDisVol->GetModule());
-         if ( fDisDet) fDisDet->ProcessHits(fNewV);
+  static Int_t TrackId = 0;
+  if ( fMcVersion ==2 && gMC->GetStack()->GetCurrentTrackNumber() != TrackId ) {
+    PreTrack();
+    TrackId = gMC->GetStack()->GetCurrentTrackNumber();
+  }
+  Int_t copyNo;
+  Int_t id = gMC->CurrentVolID(copyNo);
+  Bool_t InMap =kFALSE;
+  fDisVol=0;
+  fDisDet=0;
+  Int_t fCopyNo=0;
+  fVolIter =fVolMap.find(id);
+  if (fVolIter!=fVolMap.end()) {
+    do {
+      fDisVol=fVolIter->second;
+      fCopyNo=fDisVol->getCopyNo();
+      if(copyNo==fCopyNo) {
+        fDisDet=dynamic_cast<FairDetector*> (fDisVol->GetModule());
+        if (fDisDet) { fDisDet->ProcessHits(fDisVol); }
+        InMap=kTRUE;
+        break;
       }
-   }
-   if(fTrajAccepted) {
-      if(gMC->TrackStep() > fTrajFilter->GetStepSizeCut()) {
-          gMC->TrackPosition(fTrkPos);
-          fTrajFilter->GetCurrentTrk()->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
-      }
-   }
-   if(fRadLenMan){
-      id = gMC->CurrentVolID(copyNo);
-      fModVolIter =fModVolMap.find(id);
-      fRadLenMan->AddPoint(fModVolIter->second);
-   }
+      fVolIter++;
+    } while(fVolIter!=fVolMap.upper_bound(id));
+    if(fDisVol && !InMap) {
+      FairVolume* fNewV=new FairVolume( gMC->CurrentVolName(), id);
+      fNewV->setMCid(id);
+      fNewV->setModId(fDisVol->getModId());
+      fNewV->SetModule(fDisVol->GetModule());
+      fNewV->setCopyNo(copyNo);
+      fVolMap.insert(pair<Int_t, FairVolume* >(id, fNewV));
+      fDisDet=dynamic_cast<FairDetector*> (fDisVol->GetModule());
+      if ( fDisDet) { fDisDet->ProcessHits(fNewV); }
+    }
+  }
+  if(fTrajAccepted) {
+    if(gMC->TrackStep() > fTrajFilter->GetStepSizeCut()) {
+      gMC->TrackPosition(fTrkPos);
+      fTrajFilter->GetCurrentTrk()->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
+    }
+  }
+  if(fRadLenMan) {
+    id = gMC->CurrentVolID(copyNo);
+    fModVolIter =fModVolMap.find(id);
+    fRadLenMan->AddPoint(fModVolIter->second);
+  }
 }
 //_____________________________________________________________________________
 void FairMCApplication::PostTrack()
-{    
+{
 // User actions after finishing of each track
 // ---
   fActDetIter->Reset();
-  FairDetector *detector=NULL;
-  TObject *obj=0;
+  FairDetector* detector=NULL;
+  TObject* obj=0;
   while((obj=fActDetIter->Next())) {
     detector = dynamic_cast<FairDetector*>(obj);
-    if (detector ) detector->PostTrack();
-  }  
+    if (detector ) { detector->PostTrack(); }
+  }
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::FinishPrimary()
-{    
+{
 // User actions after finishing of a primary track
 // ---
-  if(fActDetIter){
-	  fActDetIter->Reset();
-	  FairDetector *detector=NULL;
-	  TObject *obj=0;
-	  while((obj=fActDetIter->Next())) {
-		  detector = dynamic_cast<FairDetector*>(obj);
-		  if (detector) detector->FinishPrimary();
-	  }  
+  if(fActDetIter) {
+    fActDetIter->Reset();
+    FairDetector* detector=NULL;
+    TObject* obj=0;
+    while((obj=fActDetIter->Next())) {
+      detector = dynamic_cast<FairDetector*>(obj);
+      if (detector) { detector->FinishPrimary(); }
+    }
   }
 }
 
 //_____________________________________________________________________________
 
-void FairMCApplication::StopRun(){
+void FairMCApplication::StopRun()
+{
   FinishEvent();
   FinishRun();
-  fRootManager->Write(); 
-  fRootManager->CloseOutFile(); 
+  fRootManager->Write();
+  fRootManager->CloseOutFile();
   cout << "StopRun() exiting not safetly oopps !!!@@@!!!" << endl;
-  exit(0) ; 
+  exit(0) ;
 }
 //_____________________________________________________________________________
 void FairMCApplication::FinishEvent()
-{    
+{
 // User actions after finishing of an event
 // ---
   // --> Fill the stack output array
@@ -391,301 +392,301 @@ void FairMCApplication::FinishEvent()
   fFairTaskList->FinishEvent();
   fRootManager->Fill();
   fActDetIter->Reset();
-  FairDetector *detector=NULL;
-  TObject *obj=0;
+  FairDetector* detector=NULL;
+  TObject* obj=0;
   while((obj=fActDetIter->Next())) {
-     detector = dynamic_cast<FairDetector*>(obj);
-     if (detector) detector->EndOfEvent();
-  }  
-  fStack->Reset();
-  if(NULL != fTrajFilter){
-     fTrajFilter->Reset();
-     TObjArray *fListOfTracks=gGeoManager->GetListOfTracks();
-     fListOfTracks->Delete();
+    detector = dynamic_cast<FairDetector*>(obj);
+    if (detector) { detector->EndOfEvent(); }
   }
-  if(NULL !=fRadLenMan) fRadLenMan->Reset();
+  fStack->Reset();
+  if(NULL != fTrajFilter) {
+    fTrajFilter->Reset();
+    TObjArray* fListOfTracks=gGeoManager->GetListOfTracks();
+    fListOfTracks->Delete();
+  }
+  if(NULL !=fRadLenMan) { fRadLenMan->Reset(); }
 
 
-} 
+}
 //_____________________________________________________________________________
 Double_t FairMCApplication::TrackingRmax() const
-{ 
+{
 // No limit
 // ---
-  return DBL_MAX; 
+  return DBL_MAX;
 }
 //_____________________________________________________________________________
 Double_t FairMCApplication::TrackingZmax() const
-{ 
+{
 // No limit
 // ---
-  return DBL_MAX; 
+  return DBL_MAX;
 }
 
 #if ROOT_VERSION_CODE < 333824
 //_____________________________________________________________________________
 void FairMCApplication::Field(const Double_t* x, Double_t* b) const
 {
-// put here a const magnetic field as 0th approx 
+// put here a const magnetic field as 0th approx
 // ---
- // cout<< "FairMCApplication::Field" <<endl;
+// cout<< "FairMCApplication::Field" <<endl;
   b[0]=0;
   b[1]=0;
   b[2]=0;
-  if(fxField){
-     fxField->GetFieldValue(x,b);
+  if(fxField) {
+    fxField->GetFieldValue(x,b);
 //     cout << " FairMCApplication::Field the old way of getting field " << endl;
   }
 }
 #endif
 //_____________________________________________________________________________
-void FairMCApplication::SetField(FairField *field)
-{ 
-    fxField=field;
+void FairMCApplication::SetField(FairField* field)
+{
+  fxField=field;
 }
 //_____________________________________________________________________________
 void FairMCApplication::ConstructOpGeometry()
 {
-   FairGeoLoader *loader=FairGeoLoader::Instance();
-   FairGeoInterface *GeoInterface =loader->getGeoInterface();
-   FairGeoMedia* media= GeoInterface->getMedia();
-   TList* MediaList= media->getListOfMedia();
-   TListIter iter(MediaList);
-   FairGeoMedium* medium;
-   Int_t NK=0;
-   Double_t p[4]; 
-   while((medium=(FairGeoMedium*)iter.Next())) {
-      NK=medium->getNpckov();
-      if(NK>0){
-         Int_t Mid=0;
-         TGeoMedium * Med = 0;
-         if ( gGeoManager && (Med = gGeoManager->GetMedium(medium->GetName())) ){
-            Mid=Med->GetId();
-         }else{
-            Mid=medium->getMediumIndex();
-            if(Mid<=0) continue;
-         }
-         Double_t ppckov[NK], absco[NK], effic[NK],rindex[NK];
-         for (Int_t i=0; i<NK; i++){
-            medium->getCerenkovPar(i, p);
-            ppckov[i]=p[0]*1E-9;
-            absco[i]=p[1];
-            effic[i]=p[2];
-            rindex[i]=p[3];
-         }
-         gMC->SetCerenkov(Mid, NK, ppckov,absco, effic, rindex);
-     }
-   }
-   fModIter->Reset();
-   FairModule *Mod=NULL;
-   while((Mod = dynamic_cast<FairModule *>(fModIter->Next()))) {
-      Mod->ConstructOpGeometry();
-   }
+  FairGeoLoader* loader=FairGeoLoader::Instance();
+  FairGeoInterface* GeoInterface =loader->getGeoInterface();
+  FairGeoMedia* media= GeoInterface->getMedia();
+  TList* MediaList= media->getListOfMedia();
+  TListIter iter(MediaList);
+  FairGeoMedium* medium;
+  Int_t NK=0;
+  Double_t p[4];
+  while((medium=(FairGeoMedium*)iter.Next())) {
+    NK=medium->getNpckov();
+    if(NK>0) {
+      Int_t Mid=0;
+      TGeoMedium* Med = 0;
+      if ( gGeoManager && (Med = gGeoManager->GetMedium(medium->GetName())) ) {
+        Mid=Med->GetId();
+      } else {
+        Mid=medium->getMediumIndex();
+        if(Mid<=0) { continue; }
+      }
+      Double_t ppckov[NK], absco[NK], effic[NK],rindex[NK];
+      for (Int_t i=0; i<NK; i++) {
+        medium->getCerenkovPar(i, p);
+        ppckov[i]=p[0]*1E-9;
+        absco[i]=p[1];
+        effic[i]=p[2];
+        rindex[i]=p[3];
+      }
+      gMC->SetCerenkov(Mid, NK, ppckov,absco, effic, rindex);
+    }
+  }
+  fModIter->Reset();
+  FairModule* Mod=NULL;
+  while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+    Mod->ConstructOpGeometry();
+  }
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::ConstructGeometry()
 {
-   
-   fModIter->Reset();
-   FairModule *Mod=NULL;
-   Int_t NoOfVolumes=0;
-   Int_t NoOfVolumesBefore=0;
-   Int_t ModId=0;
-   while((Mod = dynamic_cast<FairModule *>(fModIter->Next()))) {
-      NoOfVolumesBefore=gGeoManager->GetListOfVolumes()->GetEntriesFast();
-      Mod->ConstructGeometry();
-      ModId=Mod->GetModId();
-      NoOfVolumes=gGeoManager->GetListOfVolumes()->GetEntriesFast();
-      for (Int_t n=NoOfVolumesBefore; n <= NoOfVolumes; n++) fModVolMap.insert(pair<Int_t, Int_t >(n,ModId));
-   }
-   fSenVolumes=FairModule::svList;
-   if(fSenVolumes)fNoSenVolumes=fSenVolumes->GetEntries();
-   if (gGeoManager) {
+
+  fModIter->Reset();
+  FairModule* Mod=NULL;
+  Int_t NoOfVolumes=0;
+  Int_t NoOfVolumesBefore=0;
+  Int_t ModId=0;
+  while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+    NoOfVolumesBefore=gGeoManager->GetListOfVolumes()->GetEntriesFast();
+    Mod->ConstructGeometry();
+    ModId=Mod->GetModId();
+    NoOfVolumes=gGeoManager->GetListOfVolumes()->GetEntriesFast();
+    for (Int_t n=NoOfVolumesBefore; n <= NoOfVolumes; n++) { fModVolMap.insert(pair<Int_t, Int_t >(n,ModId)); }
+  }
+  fSenVolumes=FairModule::svList;
+  if(fSenVolumes) { fNoSenVolumes=fSenVolumes->GetEntries(); }
+  if (gGeoManager) {
     //  cout << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<<endl;
-      gGeoManager->CloseGeometry();   // close geometry
-      gMC->SetRootGeometry();         // notify VMC about Root geometry
-      gGeoManager->SetPdgName(22, "gamma");
-      gGeoManager->SetPdgName(211, "pi+");
-      gGeoManager->SetPdgName(321, "K+");
-      gGeoManager->SetPdgName(2212, "proton");
-      gGeoManager->SetPdgName(-211, "pi-");
-      gGeoManager->SetPdgName(-321, "K-");
-      gGeoManager->SetPdgName(111, "pi0");
-      gGeoManager->SetPdgName(310, "K0");
-      gGeoManager->SetPdgName(130, "K0");
-      gGeoManager->SetPdgName(2112, "neutron");
-      gGeoManager->SetPdgName(11, "e-");
-      gGeoManager->SetPdgName(13, "mu-");
-      gGeoManager->SetPdgName(-11, "e+");
-      gGeoManager->SetPdgName(-13, "mu+");
-      gGeoManager->SetPdgName(3312, "Xsi");
-      gGeoManager->SetPdgName(3334, "Omega");
-      gGeoManager->SetPdgName(50000050, "Ckov");
-      gGeoManager->SetPdgName(-421, "D0bar");
-      gGeoManager->SetPdgName(421, "D0");
-      gGeoManager->SetPdgName(-411, "D-");
-      gGeoManager->SetPdgName(411, "D+");
-      gGeoManager->SetPdgName(-213, "rho-");
-      gGeoManager->SetPdgName(213, "rho+");
-      gGeoManager->SetPdgName(113, "rho0"); 
-      gGeoManager->SetPdgName(1000010020, "Deuteron");
-      gGeoManager->SetPdgName(1000010030, "Triton");
-      gGeoManager->SetPdgName(1000020030, "HE3");
-      gGeoManager->SetPdgName(1000020040, "Alpha");
-   } 
+    gGeoManager->CloseGeometry();   // close geometry
+    gMC->SetRootGeometry();         // notify VMC about Root geometry
+    gGeoManager->SetPdgName(22, "gamma");
+    gGeoManager->SetPdgName(211, "pi+");
+    gGeoManager->SetPdgName(321, "K+");
+    gGeoManager->SetPdgName(2212, "proton");
+    gGeoManager->SetPdgName(-211, "pi-");
+    gGeoManager->SetPdgName(-321, "K-");
+    gGeoManager->SetPdgName(111, "pi0");
+    gGeoManager->SetPdgName(310, "K0");
+    gGeoManager->SetPdgName(130, "K0");
+    gGeoManager->SetPdgName(2112, "neutron");
+    gGeoManager->SetPdgName(11, "e-");
+    gGeoManager->SetPdgName(13, "mu-");
+    gGeoManager->SetPdgName(-11, "e+");
+    gGeoManager->SetPdgName(-13, "mu+");
+    gGeoManager->SetPdgName(3312, "Xsi");
+    gGeoManager->SetPdgName(3334, "Omega");
+    gGeoManager->SetPdgName(50000050, "Ckov");
+    gGeoManager->SetPdgName(-421, "D0bar");
+    gGeoManager->SetPdgName(421, "D0");
+    gGeoManager->SetPdgName(-411, "D-");
+    gGeoManager->SetPdgName(411, "D+");
+    gGeoManager->SetPdgName(-213, "rho-");
+    gGeoManager->SetPdgName(213, "rho+");
+    gGeoManager->SetPdgName(113, "rho0");
+    gGeoManager->SetPdgName(1000010020, "Deuteron");
+    gGeoManager->SetPdgName(1000010030, "Triton");
+    gGeoManager->SetPdgName(1000020030, "HE3");
+    gGeoManager->SetPdgName(1000020040, "Alpha");
+  }
 }
 //_____________________________________________________________________________
 
 void FairMCApplication::InitGeometry()
-{    
-   /// Initialize geometry
-   /** Register stack and detector collections*/
-   FairVolume *fv=0;
-   Int_t id=0;
-   fModIter->Reset();
-   FairDetector *detector=NULL;
-   if(fEvGen!=0 && fStack!=0)fStack->Register();
-   else cout << "--Warning-- Stack is not registerd " << endl;
-   /** Initialize the event generator */
+{
+  /// Initialize geometry
+  /** Register stack and detector collections*/
+  FairVolume* fv=0;
+  Int_t id=0;
+  fModIter->Reset();
+  FairDetector* detector=NULL;
+  if(fEvGen!=0 && fStack!=0) { fStack->Register(); }
+  else { cout << "--Warning-- Stack is not registerd " << endl; }
+  /** Initialize the event generator */
   // if(fEvGen)fEvGen->Init();
-   /** Initialize the detectors.    */
-   fActDetIter->Reset();
-   while((detector = dynamic_cast<FairDetector*>(fActDetIter->Next()))) {
-      detector->Initialize();                // initialize the detectors
-      detector->SetSpecialPhysicsCuts();     // set the detector specific detector cuts
-      detector->Register();                  //  add branches to tree
-   }
-   /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
-   /// There is always a Main Task  !
-   /// so .. always a InitTasks() is called <D.B>
-   if (fFairTaskList) InitTasks();
+  /** Initialize the detectors.    */
+  fActDetIter->Reset();
+  while((detector = dynamic_cast<FairDetector*>(fActDetIter->Next()))) {
+    detector->Initialize();                // initialize the detectors
+    detector->SetSpecialPhysicsCuts();     // set the detector specific detector cuts
+    detector->Register();                  //  add branches to tree
+  }
+  /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
+  /// There is always a Main Task  !
+  /// so .. always a InitTasks() is called <D.B>
+  if (fFairTaskList) { InitTasks(); }
 
-   // store the EventHeader Info
-   // Get and register EventHeader
-   UInt_t runId = FairRunSim::Instance()->GetRunId();
+  // store the EventHeader Info
+  // Get and register EventHeader
+  UInt_t runId = FairRunSim::Instance()->GetRunId();
 
-   FairEventHeader* evt = FairRunSim::Instance()->GetEventHeader();
-   evt->SetRunId(runId);                          
-   evt->Register();
-   cout << " -I- FairMCApplication ->  simulation RunID:  " 
-	<<  runId << endl;
+  FairEventHeader* evt = FairRunSim::Instance()->GetEventHeader();
+  evt->SetRunId(runId);
+  evt->Register();
+  cout << " -I- FairMCApplication ->  simulation RunID:  "
+       <<  runId << endl;
 
-   // Get and register the MCEventHeader
-   FairMCEventHeader* mcEvent = FairRunSim::Instance()->GetMCEventHeader();
-   mcEvent->SetRunID(runId);                          
-   mcEvent->Register();
-   
+  // Get and register the MCEventHeader
+  FairMCEventHeader* mcEvent = FairRunSim::Instance()->GetMCEventHeader();
+  mcEvent->SetRunID(runId);
+  mcEvent->Register();
 
-   if(fEvGen)fEvGen->SetEvent(mcEvent);
-   fTrajFilter = FairTrajFilter::Instance();
-   if(NULL != fTrajFilter ) fTrajFilter->Init();
-   if(NULL !=fRadLenMan)fRadLenMan->Init();
-   
-   /// save Geo Params in Output file
-   fRootManager->WriteFolder();
-   TTree *outTree =new TTree("cbmsim", "/cbmroot", 99);
-   fRootManager->TruncateBranchNames(outTree, "cbmroot");
-   fRootManager->SetOutTree(outTree);
 
-   for ( Int_t i = 0 ; i < fNoSenVolumes ; i++ ){
-         fv= (FairVolume *)fSenVolumes->At(i);
-         id=fv->getMCid();
-         if(fv->getGeoNode()==0){   //handel sensetive volumes created directly by user 
-            TGeoNode *fN=0;
-            TGeoVolume *v=gGeoManager->GetVolume(fv->GetName());
-            TObjArray *fNs=0;
-            if(v)fNs=v->GetNodes();	
-            if(fNs){
-               for(Int_t k=0; k<fNs->GetEntriesFast();k++){
-                  fN=(TGeoNode *)fNs->At(k);
-                  FairVolume *fNewV=new FairVolume( fv->GetName(), id);
-                  fNewV->setModId(fv->getModId());
-                  fNewV->SetModule(fv->GetModule());
-                  fNewV->setCopyNo(fN->GetNumber());
-                  fNewV->setMCid(id);
-                  fVolMap.insert(pair<Int_t, FairVolume* >(id, fNewV));
-               }
-            }else{
-               FairVolume *fNewV=new FairVolume( fv->GetName(), id);
-               fNewV->setModId(fv->getModId());
-               fNewV->SetModule(fv->GetModule());
-               fNewV->setCopyNo(1);
-               fNewV->setMCid(id);
-               fVolMap.insert(pair<Int_t, FairVolume* >(id, fNewV));
-            }
-        }else{
-            fVolMap.insert(pair<Int_t, FairVolume* >(id, fv));
+  if(fEvGen) { fEvGen->SetEvent(mcEvent); }
+  fTrajFilter = FairTrajFilter::Instance();
+  if(NULL != fTrajFilter ) { fTrajFilter->Init(); }
+  if(NULL !=fRadLenMan) { fRadLenMan->Init(); }
+
+  /// save Geo Params in Output file
+  fRootManager->WriteFolder();
+  TTree* outTree =new TTree("cbmsim", "/cbmroot", 99);
+  fRootManager->TruncateBranchNames(outTree, "cbmroot");
+  fRootManager->SetOutTree(outTree);
+
+  for ( Int_t i = 0 ; i < fNoSenVolumes ; i++ ) {
+    fv= (FairVolume*)fSenVolumes->At(i);
+    id=fv->getMCid();
+    if(fv->getGeoNode()==0) {  //handel sensetive volumes created directly by user
+      TGeoNode* fN=0;
+      TGeoVolume* v=gGeoManager->GetVolume(fv->GetName());
+      TObjArray* fNs=0;
+      if(v) { fNs=v->GetNodes(); }
+      if(fNs) {
+        for(Int_t k=0; k<fNs->GetEntriesFast(); k++) {
+          fN=(TGeoNode*)fNs->At(k);
+          FairVolume* fNewV=new FairVolume( fv->GetName(), id);
+          fNewV->setModId(fv->getModId());
+          fNewV->SetModule(fv->GetModule());
+          fNewV->setCopyNo(fN->GetNumber());
+          fNewV->setMCid(id);
+          fVolMap.insert(pair<Int_t, FairVolume* >(id, fNewV));
         }
-     }
+      } else {
+        FairVolume* fNewV=new FairVolume( fv->GetName(), id);
+        fNewV->setModId(fv->getModId());
+        fNewV->SetModule(fv->GetModule());
+        fNewV->setCopyNo(1);
+        fNewV->setMCid(id);
+        fVolMap.insert(pair<Int_t, FairVolume* >(id, fNewV));
+      }
+    } else {
+      fVolMap.insert(pair<Int_t, FairVolume* >(id, fv));
+    }
+  }
 
 
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::GeneratePrimaries()
-{    
- // Fill the user stack (derived from TVirtualMCStack) with primary particles.
- // ---
-  if(fEvGen){
- //    cout << "FairMCApplication::GeneratePrimaries()" << endl;
-    if (!fEvGen->GenerateEvent( fStack) ){
-       StopRun();
+{
+// Fill the user stack (derived from TVirtualMCStack) with primary particles.
+// ---
+  if(fEvGen) {
+//    cout << "FairMCApplication::GeneratePrimaries()" << endl;
+    if (!fEvGen->GenerateEvent( fStack) ) {
+      StopRun();
     }
   }
 }
 //_____________________________________________________________________________
-FairDetector *FairMCApplication::GetDetector(const char *DetName)
+FairDetector* FairMCApplication::GetDetector(const char* DetName)
 {
-   return (FairDetector *)fModules->FindObject(DetName);
+  return (FairDetector*)fModules->FindObject(DetName);
 }
 #if ROOT_VERSION_CODE >= ROOT_VERSION(5,17,4)
 //_____________________________________________________________________________
 void  FairMCApplication::AddIons()
 {
-   FairRunSim *fRun=FairRunSim::Instance();
-   TObjArray *NewIons=fRun->GetUserDefIons();
-   TIterator *Iter=NewIons->MakeIterator();
-   Iter->Reset();
-   TObject *obj=0;
-   FairIon *ion=0;
-   while((obj=Iter->Next())) {
-      ion=dynamic_cast <FairIon *> (obj);
-      if(ion){  
-         gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
-         ion->GetExcEnergy(),ion->GetMass());
-         //Add Ion to gGeoManager visualization
-         if(gGeoManager)gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() );
-         cout << "Add Ion: " << ion->GetName()  << " with PDG " <<  TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode() << endl;
-      }
-   }
-   delete   Iter;    
-    /** Initialize the event generator */
-   if(fEvGen)fEvGen->Init();
+  FairRunSim* fRun=FairRunSim::Instance();
+  TObjArray* NewIons=fRun->GetUserDefIons();
+  TIterator* Iter=NewIons->MakeIterator();
+  Iter->Reset();
+  TObject* obj=0;
+  FairIon* ion=0;
+  while((obj=Iter->Next())) {
+    ion=dynamic_cast <FairIon*> (obj);
+    if(ion) {
+      gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
+                     ion->GetExcEnergy(),ion->GetMass());
+      //Add Ion to gGeoManager visualization
+      if(gGeoManager) { gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() ); }
+      cout << "Add Ion: " << ion->GetName()  << " with PDG " <<  TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode() << endl;
+    }
+  }
+  delete   Iter;
+  /** Initialize the event generator */
+  if(fEvGen) { fEvGen->Init(); }
 }
 #else
 void  FairMCApplication::AddIons()
 {
-   FairRunSim *fRun=FairRunSim::Instance();
-   TObjArray *NewIons=fRun->GetUserDefIons();
-   TIterator *Iter=NewIons->MakeIterator();
-   Iter->Reset();
-   TObject *obj=0;
-   FairIon *ion=0;
-   while((obj=Iter->Next())) {
-      ion=dynamic_cast <FairIon *> (obj);
-      if(ion){
-          gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
-          ion->GetExcEnergy(),ion->GetMass());
-          //Add Ion to gGeoManager visualization
-          if(gGeoManager)gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() );
-          cout << "Add Ion: " << ion->GetName()  << " with PDG " <<  TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode() << endl;
-      }
-   }
-   delete   Iter;    
-   
-   /** Initialize the event generator */
-   if(fEvGen)fEvGen->Init(); 
+  FairRunSim* fRun=FairRunSim::Instance();
+  TObjArray* NewIons=fRun->GetUserDefIons();
+  TIterator* Iter=NewIons->MakeIterator();
+  Iter->Reset();
+  TObject* obj=0;
+  FairIon* ion=0;
+  while((obj=Iter->Next())) {
+    ion=dynamic_cast <FairIon*> (obj);
+    if(ion) {
+      gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
+                     ion->GetExcEnergy(),ion->GetMass());
+      //Add Ion to gGeoManager visualization
+      if(gGeoManager) { gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() ); }
+      cout << "Add Ion: " << ion->GetName()  << " with PDG " <<  TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode() << endl;
+    }
+  }
+  delete   Iter;
+
+  /** Initialize the event generator */
+  if(fEvGen) { fEvGen->Init(); }
 }
 #endif
 
@@ -693,192 +694,193 @@ void  FairMCApplication::AddIons()
 void  FairMCApplication::AddParticles()
 {
 
-   FairRunSim *fRun=FairRunSim::Instance();
-   TObjArray *NewIons=fRun->GetUserDefIons();
-   TIterator *Iter=NewIons->MakeIterator();
-   Iter->Reset();
-   TObject *obj=0;
+  FairRunSim* fRun=FairRunSim::Instance();
+  TObjArray* NewIons=fRun->GetUserDefIons();
+  TIterator* Iter=NewIons->MakeIterator();
+  Iter->Reset();
+  TObject* obj=0;
 #if ROOT_VERSION_CODE >= ROOT_VERSION(5,17,4)
-   TObjArray *NewPart=fRun->GetUserDefParticles();
-   TIterator *parIter=NewPart->MakeIterator();
-   parIter->Reset();
-   obj=0;
-   FairParticle *particle=0;
-   while((obj=parIter->Next())) {
-      particle=dynamic_cast <FairParticle *> (obj);
-      if(particle){                 // (Int_t pdg, const char* name, TMCParticleType type,
-                                    //Double_t mass, Double_t charge, Double_t lifetime);
-         cout << "Add Particle: " << particle->GetName()  << " with PDG " <<   particle->GetPDG() << "\n"<< 
-         particle->GetName() << "            // const TString& name \n" <<  
-         particle->GetMCType()<<"             // TMCParticleType mcType \n" <<
-         particle->GetMass()<<"             // Double_t mass   \n" <<
-         particle->GetCharge()<<"           // Double_t charge \n" <<
-         particle->GetDecayTime()<<"        // Double_t lifetime  \n" <<
-         particle->GetPType()<<  "           // const TString& pType, \n" <<
-         particle->GetWidth()<<   "         // Double_t width   \n" <<
-         particle->GetSpin()<<    "         // Int_t iSpin  \n" <<
-         particle->GetiParity()<< "         // Int_t iParity \n" <<
-         particle->GetConjugation()<<"       // Int_t iConjugation  \n" <<
-         particle->GetIsospin()<<   "       // Int_t iIsospin   \n" <<
-         particle->GetIsospinZ()<<  "       // Int_t iIsospinZ    \n" <<
-         particle->GetgParity()<<   "       // Int_t gParity    \n" <<
-         particle->GetLepton()<<  "         // Int_t lepton  \n" <<
-         particle->GetBaryon()<<  "         // Int_t baryon   \n" <<
-         particle->IsStable() <<  "         // Bool_t stable   \n" << endl;
-         gMC->DefineParticle(particle->GetPDG(),              // Int_t pdg
-            particle->GetName(),             // const TString& name
-            particle->GetMCType(),             // TMCParticleType mcType
-            particle->GetMass(),             // Double_t mass
-            particle->GetCharge(),           // Double_t charge
-            particle->GetDecayTime(),        // Double_t lifetime
-            particle->GetPType(),             // const TString& pType, 
-            particle->GetWidth(),            // Double_t width 
-            particle->GetSpin(),             // Int_t iSpin 
-            particle->GetiParity(),          // Int_t iParity 
-            particle->GetConjugation(),       // Int_t iConjugation 
-            particle->GetIsospin(),          // Int_t iIsospin 
-            particle->GetIsospinZ(),         // Int_t iIsospinZ 
-            particle->GetgParity(),          // Int_t gParity
-            particle->GetLepton(),           // Int_t lepton 
-            particle->GetBaryon(),           // Int_t baryon
-            particle->IsStable()             // Bool_t stable 
-            );
-        //Add Ion to gGeoManager visualization
-       if(gGeoManager)gGeoManager->SetPdgName(particle->GetPDG(),particle->GetName() );	
-       }
-   }
-   delete   parIter;      
-   AddDecayModes();
+  TObjArray* NewPart=fRun->GetUserDefParticles();
+  TIterator* parIter=NewPart->MakeIterator();
+  parIter->Reset();
+  obj=0;
+  FairParticle* particle=0;
+  while((obj=parIter->Next())) {
+    particle=dynamic_cast <FairParticle*> (obj);
+    if(particle) {                // (Int_t pdg, const char* name, TMCParticleType type,
+      //Double_t mass, Double_t charge, Double_t lifetime);
+      cout << "Add Particle: " << particle->GetName()  << " with PDG " <<   particle->GetPDG() << "\n"<<
+           particle->GetName() << "            // const TString& name \n" <<
+           particle->GetMCType()<<"             // TMCParticleType mcType \n" <<
+           particle->GetMass()<<"             // Double_t mass   \n" <<
+           particle->GetCharge()<<"           // Double_t charge \n" <<
+           particle->GetDecayTime()<<"        // Double_t lifetime  \n" <<
+           particle->GetPType()<<  "           // const TString& pType, \n" <<
+           particle->GetWidth()<<   "         // Double_t width   \n" <<
+           particle->GetSpin()<<    "         // Int_t iSpin  \n" <<
+           particle->GetiParity()<< "         // Int_t iParity \n" <<
+           particle->GetConjugation()<<"       // Int_t iConjugation  \n" <<
+           particle->GetIsospin()<<   "       // Int_t iIsospin   \n" <<
+           particle->GetIsospinZ()<<  "       // Int_t iIsospinZ    \n" <<
+           particle->GetgParity()<<   "       // Int_t gParity    \n" <<
+           particle->GetLepton()<<  "         // Int_t lepton  \n" <<
+           particle->GetBaryon()<<  "         // Int_t baryon   \n" <<
+           particle->IsStable() <<  "         // Bool_t stable   \n" << endl;
+      gMC->DefineParticle(particle->GetPDG(),              // Int_t pdg
+                          particle->GetName(),             // const TString& name
+                          particle->GetMCType(),             // TMCParticleType mcType
+                          particle->GetMass(),             // Double_t mass
+                          particle->GetCharge(),           // Double_t charge
+                          particle->GetDecayTime(),        // Double_t lifetime
+                          particle->GetPType(),             // const TString& pType,
+                          particle->GetWidth(),            // Double_t width
+                          particle->GetSpin(),             // Int_t iSpin
+                          particle->GetiParity(),          // Int_t iParity
+                          particle->GetConjugation(),       // Int_t iConjugation
+                          particle->GetIsospin(),          // Int_t iIsospin
+                          particle->GetIsospinZ(),         // Int_t iIsospinZ
+                          particle->GetgParity(),          // Int_t gParity
+                          particle->GetLepton(),           // Int_t lepton
+                          particle->GetBaryon(),           // Int_t baryon
+                          particle->IsStable()             // Bool_t stable
+                         );
+      //Add Ion to gGeoManager visualization
+      if(gGeoManager) { gGeoManager->SetPdgName(particle->GetPDG(),particle->GetName() ); }
+    }
+  }
+  delete   parIter;
+  AddDecayModes();
 #else
-   AddIons();
+  AddIons();
 #endif
-   delete Iter;
+  delete Iter;
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::AddDecayModes()
 {
-   TString work = getenv("VMCWORKDIR"); 
-   TString work_config=work+"/gconfig/";
-   TString config_dir= getenv("CONFIG_DIR");
-   Bool_t AbsPath=kFALSE;
-   
-   if (!config_dir.EndsWith("/")) config_dir+="/"; 
-   // set Pythia as external decayer
+  TString work = getenv("VMCWORKDIR");
+  TString work_config=work+"/gconfig/";
+  TString config_dir= getenv("CONFIG_DIR");
+  Bool_t AbsPath=kFALSE;
 
-   if(fPythiaDecayer){ 
-	   TString decayConfig; 
-	   if(fPythiaDecayerConfig.IsNull()){
-	       decayConfig="DecayConfig.C";
-		   fPythiaDecayerConfig= decayConfig;
-	   }else{
-		   if (fPythiaDecayerConfig.Contains("/")) AbsPath=kTRUE;
-		   decayConfig=fPythiaDecayerConfig;
-	   }
-	 
-      if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), decayConfig)) != TString("")){
-          cout << "---User path for Configuration (DecayConfig.C) is used : " <<  config_dir.Data() << endl;
-      }else{
-		  if(AbsPath) decayConfig=   fPythiaDecayerConfig;
-          else decayConfig=work_config+ fPythiaDecayerConfig ;
-      }
-      // Add decay modes using an external configuration script
-      cout << "External Decay Modes with script \n "<<  decayConfig.Data() << endl;
-      // Load configuration script and execute it
-      Int_t pyt= gROOT->LoadMacro(decayConfig.Data());
-      if(pyt==0)gInterpreter->ProcessLine("DecayConfig()"); 
-   }
-   // set user defined phase space decay for particles (ions)
-   AbsPath=kFALSE;
-   if(fUserDecay) {
-	   TString Userdecay;
-	   if(fUserDecayConfig.IsNull()){
-	       Userdecay="UserDecay.C";
-		   fUserDecayConfig =Userdecay;	   
-	   }else{
-		   if(fUserDecayConfig.Contains("/"))AbsPath=kTRUE;
-		   Userdecay=  fUserDecayConfig;
-	   }
-			   
-			   
-	if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), Userdecay)) != TString("")){
-          cout << "---User path for Configuration (UserDecay.C) is used : " <<  config_dir.Data() << endl;
-      }else{
-		 if(AbsPath) Userdecay=fUserDecayConfig;
-         else Userdecay=work_config+fUserDecayConfig; 
-	  }
-      cout << "User Decay Modes with script \n "<<  Userdecay.Data() << endl;
-      Int_t dec= gROOT->LoadMacro(Userdecay.Data());
-      if(dec==0)gInterpreter->ProcessLine("UserDecayConfig()"); 
-   }
+  if (!config_dir.EndsWith("/")) { config_dir+="/"; }
+  // set Pythia as external decayer
+
+  if(fPythiaDecayer) {
+    TString decayConfig;
+    if(fPythiaDecayerConfig.IsNull()) {
+      decayConfig="DecayConfig.C";
+      fPythiaDecayerConfig= decayConfig;
+    } else {
+      if (fPythiaDecayerConfig.Contains("/")) { AbsPath=kTRUE; }
+      decayConfig=fPythiaDecayerConfig;
+    }
+
+    if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), decayConfig)) != TString("")) {
+      cout << "---User path for Configuration (DecayConfig.C) is used : " <<  config_dir.Data() << endl;
+    } else {
+      if(AbsPath) { decayConfig=   fPythiaDecayerConfig; }
+      else { decayConfig=work_config+ fPythiaDecayerConfig ; }
+    }
+    // Add decay modes using an external configuration script
+    cout << "External Decay Modes with script \n "<<  decayConfig.Data() << endl;
+    // Load configuration script and execute it
+    Int_t pyt= gROOT->LoadMacro(decayConfig.Data());
+    if(pyt==0) { gInterpreter->ProcessLine("DecayConfig()"); }
+  }
+  // set user defined phase space decay for particles (ions)
+  AbsPath=kFALSE;
+  if(fUserDecay) {
+    TString Userdecay;
+    if(fUserDecayConfig.IsNull()) {
+      Userdecay="UserDecay.C";
+      fUserDecayConfig =Userdecay;
+    } else {
+      if(fUserDecayConfig.Contains("/")) { AbsPath=kTRUE; }
+      Userdecay=  fUserDecayConfig;
+    }
+
+
+    if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), Userdecay)) != TString("")) {
+      cout << "---User path for Configuration (UserDecay.C) is used : " <<  config_dir.Data() << endl;
+    } else {
+      if(AbsPath) { Userdecay=fUserDecayConfig; }
+      else { Userdecay=work_config+fUserDecayConfig; }
+    }
+    cout << "User Decay Modes with script \n "<<  Userdecay.Data() << endl;
+    Int_t dec= gROOT->LoadMacro(Userdecay.Data());
+    if(dec==0) { gInterpreter->ProcessLine("UserDecayConfig()"); }
+  }
 }
 //_____________________________________________________________________________
-FairPrimaryGenerator *FairMCApplication::GetGenerator()
+FairPrimaryGenerator* FairMCApplication::GetGenerator()
 {
-	return fEvGen;            
+  return fEvGen;
 }
 //_____________________________________________________________________________
-void FairMCApplication::SetGenerator(FairPrimaryGenerator *pGen)
+void FairMCApplication::SetGenerator(FairPrimaryGenerator* pGen)
 {
-     fEvGen=pGen;
+  fEvGen=pGen;
 }
 //_____________________________________________________________________________
-void FairMCApplication::AddTask(TTask *fTask)
+void FairMCApplication::AddTask(TTask* fTask)
 {
-   if (! fFairTaskList ) {
-      fFairTaskList= new FairTask("Task List", 1);
-      gROOT->GetListOfBrowsables()->Add(fFairTaskList);
-   }
-   fFairTaskList->Add(fTask);
-   SetParTask(); 
+  if (! fFairTaskList ) {
+    fFairTaskList= new FairTask("Task List", 1);
+    gROOT->GetListOfBrowsables()->Add(fFairTaskList);
+  }
+  fFairTaskList->Add(fTask);
+  SetParTask();
 }
 //_____________________________________________________________________________
-FairGenericStack *FairMCApplication::GetStack()
+FairGenericStack* FairMCApplication::GetStack()
 {
-    return fStack;
+  return fStack;
 }
 //_____________________________________________________________________________
-TTask *FairMCApplication::GetListOfTasks()
+TTask* FairMCApplication::GetListOfTasks()
 {
-	return fFairTaskList;	
+  return fFairTaskList;
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::SetParTask()
-{// Only RTDB init when more than Main Task list
-	if(FairRun::Instance()->GetNTasks() >= 1 ) {		
-	   fFairTaskList->SetParTask();
-		FairRuntimeDb *fRTdb=  FairRun::Instance()->GetRuntimeDb();
-		fRTdb->initContainers(FairRunSim::Instance()->GetRunId());
-		
-	}
-}	
+{
+  // Only RTDB init when more than Main Task list
+  if(FairRun::Instance()->GetNTasks() >= 1 ) {
+    fFairTaskList->SetParTask();
+    FairRuntimeDb* fRTdb=  FairRun::Instance()->GetRuntimeDb();
+    fRTdb->initContainers(FairRunSim::Instance()->GetRunId());
+
+  }
+}
 //_____________________________________________________________________________
 void FairMCApplication::InitTasks()
-{	
+{
 
-   // Only RTDB init when more than Main Task list
-   if(FairRun::Instance()->GetNTasks() >= 1 ) {
-     cout <<"\033[1m\033[34m -I- Initialize Tasks--------------------------Start"<< endl; 
-	 fFairTaskList->InitTask();
-	 cout <<"-I- Initialize Tasks--------------------------End\033[0m "<< endl; 
-   }
+  // Only RTDB init when more than Main Task list
+  if(FairRun::Instance()->GetNTasks() >= 1 ) {
+    cout <<"\033[1m\033[34m -I- Initialize Tasks--------------------------Start"<< endl;
+    fFairTaskList->InitTask();
+    cout <<"-I- Initialize Tasks--------------------------End\033[0m "<< endl;
+  }
 
-	
+
 }
 //_____________________________________________________________________________
 TChain* FairMCApplication::GetChain()
 {
-    return fRootManager->GetInChain();
+  return fRootManager->GetInChain();
 }
 //_____________________________________________________________________________
 
 void  FairMCApplication::SetRadiationLengthReg(Bool_t RadLen)
 {
-    fRadLength=RadLen;
-    if(fRadLength){
-        fRadLenMan= new FairRadLenManager();
-    }
+  fRadLength=RadLen;
+  if(fRadLength) {
+    fRadLenMan= new FairRadLenManager();
+  }
 }
 //_____________________________________________________________________________
 

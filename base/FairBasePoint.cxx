@@ -3,11 +3,11 @@
 
 // -----   Default constructor   -------------------------------------------
 FairBasePoint::FairBasePoint()
-: FairMultiLinkedData(),
-  fDetectorID (-1),
-  fX(0), 
-  fY (0), 
-  fZ(0)
+  : FairMultiLinkedData(),
+    fDetectorID (-1),
+    fX(0),
+    fY (0),
+    fZ(0)
 {
 }
 // -------------------------------------------------------------------------
@@ -22,7 +22,7 @@ FairBasePoint::FairBasePoint(Int_t detID, TVector3& pos)
    fY           (pos.Y()),
    fZ           (pos.Z())
 {
-	//AddLink(detID, index);
+  //AddLink(detID, index);
 }
 // -------------------------------------------------------------------------
 

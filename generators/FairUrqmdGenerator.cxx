@@ -32,11 +32,12 @@ FairUrqmdGenerator::FairUrqmdGenerator() { }
 
 
 // -----   Standard constructor   -----------------------------------------
-FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName) {
+FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName)
+{
   fFileName = fileName;
   cout << "-I FairUrqmdGenerator: Opening input file " << fileName << endl;
   fInputFile = fopen(fFileName, "r");
-  if ( ! fInputFile ) Fatal("FairUrqmdgenerator","Cannot open input file.");
+  if ( ! fInputFile ) { Fatal("FairUrqmdgenerator","Cannot open input file."); }
   ReadConversionTable();
 }
 // ------------------------------------------------------------------------
@@ -44,7 +45,8 @@ FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName) {
 
 
 // -----   Destructor   ---------------------------------------------------
-FairUrqmdGenerator::~FairUrqmdGenerator() {
+FairUrqmdGenerator::~FairUrqmdGenerator()
+{
   //  cout<<"Enter Destructor of FairUrqmdGenerator"<<endl;
   if ( fInputFile ) {
     fclose(fInputFile);
@@ -58,25 +60,26 @@ FairUrqmdGenerator::~FairUrqmdGenerator() {
 
 
 // -----   Public method ReadEvent   --------------------------------------
-Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
+Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
+{
 
-  // ---> Check for input file  
+  // ---> Check for input file
   if ( ! fInputFile ) {
-    cout << "-E FairUrqmdGenerator: Input file not open! " << endl; 
+    cout << "-E FairUrqmdGenerator: Input file not open! " << endl;
     return kFALSE;
   }
 
   // ---> Check for primary generator
   if ( ! primGen ) {
     cout << "-E- FairUrqmdGenerator::ReadEvent: "
-	 << "No PrimaryGenerator!" << endl;
+         << "No PrimaryGenerator!" << endl;
     return kFALSE;
   }
 
   // ---> Define event variables to be read from file
   int evnr=0, ntracks=0, aProj=0, zProj=0, aTarg=0, zTarg=0;
   float b = 0., ekin = 0.;
-  
+
   int ityp=0, i3=0, ichg=0, pid=0;
   float ppx=0., ppy=0., ppz=0., m=0.;
 
@@ -93,7 +96,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     cout << "-E FairUrqmdGenerator: Wrong event header" << endl;
     return kFALSE;
   }
- 
+
   // ---> Read rest of event header
   fgets(read, 26, fInputFile);
   fscanf(fInputFile, "%d", &aProj);
@@ -116,15 +119,15 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
   fscanf(fInputFile, "%d", &ntracks);
   fgets(read, 200, fInputFile);
   fgets(read, 200, fInputFile);
-  
+
   // ---> Calculate beta and gamma for Lorentztransformation
   Double_t eBeam   = ekin + kProtonMass;
   Double_t pBeam   = TMath::Sqrt(eBeam*eBeam - kProtonMass*kProtonMass);
   Double_t betaCM  = pBeam / (eBeam + kProtonMass);
   Double_t gammaCM = TMath::Sqrt( 1. / ( 1. - betaCM*betaCM) );
 
-  cout << "-I FairUrqmdGenerator: Event " << evnr << ",  b = " << b 
-      << " fm,  multiplicity " << ntracks  << ", ekin: " << ekin << endl;
+  cout << "-I FairUrqmdGenerator: Event " << evnr << ",  b = " << b
+       << " fm,  multiplicity " << ntracks  << ", ekin: " << ekin << endl;
 
   // Set event id and impact parameter in MCEvent if not yet done
   FairMCEventHeader* event = primGen->GetEvent();
@@ -133,8 +136,8 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     event->SetB(b);
     event->MarkSet(kTRUE);
   }
-  
- 
+
+
   // ---> Loop over tracks in the current event
   for(int itrack=0; itrack<ntracks; itrack++) {
 
@@ -150,13 +153,13 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     fgets(read, 200, fInputFile);
 
     // Convert UrQMD type and charge to unique pid identifier
-    if (ityp >= 0) pid =  1000 * (ichg+2) + ityp;
-    else           pid = -1000 * (ichg+2) + ityp;
-     
-    // Convert Unique PID into PDG particle code 
+    if (ityp >= 0) { pid =  1000 * (ichg+2) + ityp; }
+    else { pid = -1000 * (ichg+2) + ityp; }
+
+    // Convert Unique PID into PDG particle code
     if (fParticleTable.find(pid) == fParticleTable.end()) {
       cout << "-W FairUrqmdGenerator: PID " << ityp << " charge "
-	   << ichg << " not found in table (" << pid << ")" << endl;
+           << ichg << " not found in table (" << pid << ")" << endl;
       continue;
     }
     Int_t pdgID = fParticleTable[pid];
@@ -167,7 +170,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     Double_t py   = Double_t(ppy);
     Double_t pz   = Double_t(ppz);
     Double_t e    = sqrt( mass*mass + px*px + py*py + pz*pz );
-     pz = gammaCM * ( pz + betaCM * e );
+    pz = gammaCM * ( pz + betaCM * e );
     Double_t ee = sqrt( mass*mass + px*px + py*py + pz*pz );
 
     TVector3 aa(px,py,pz);
@@ -179,30 +182,30 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
 
     // Give track to PrimaryGenerator
     primGen->AddTrack(pdgID, px, py, pz, 0., 0., 0.);
-    
+
   }
-  
+
   return kTRUE;
 }
 // ------------------------------------------------------------------------
 
 
 // -----   Public method ReadEvent   --------------------------------------
-Bool_t FairUrqmdGenerator::SkipEvents(Int_t count) {
-  if (count<=0) return kTRUE;
+Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
+{
+  if (count<=0) { return kTRUE; }
 
-  for(Int_t ii=0; ii<count;ii++)
-  {
-    // ---> Check for input file  
+  for(Int_t ii=0; ii<count; ii++) {
+    // ---> Check for input file
     if ( ! fInputFile ) {
-      cout << "-E FairUrqmdGenerator: Input file not open! " << endl; 
+      cout << "-E FairUrqmdGenerator: Input file not open! " << endl;
       return kFALSE;
     }
 
     // ---> Define event variables to be read from file
     int evnr=0, ntracks=0, aProj=0, zProj=0, aTarg=0, zTarg=0;
     float b = 0., ekin = 0.;
-  
+
     // ---> Read and check first event header line from input file
     char read[200];
     fgets(read, 200, fInputFile);
@@ -216,7 +219,7 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count) {
       cout << "-E FairUrqmdGenerator: Wrong event header" << endl;
       return kFALSE;
     }
- 
+
     // ---> Read rest of event header
     fgets(read, 26, fInputFile);
     fscanf(fInputFile, "%d", &aProj);
@@ -239,7 +242,7 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count) {
     fscanf(fInputFile, "%d", &ntracks);
     fgets(read, 200, fInputFile);
     fgets(read, 200, fInputFile);
-  
+
     cout << "-I FairUrqmdGenerator: Event " << evnr << " skipped!" << endl;
 
     // ---> Loop over tracks in the current event
@@ -247,7 +250,7 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count) {
 
       // Read momentum and PID from file
       fgets(read, 81, fInputFile);
-      fgets(read, 200, fInputFile);     
+      fgets(read, 200, fInputFile);
     }
   }
   return kTRUE;
@@ -255,21 +258,22 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count) {
 // ------------------------------------------------------------------------
 
 // -----   Private method ReadConverisonTable   ---------------------------
-void FairUrqmdGenerator::ReadConversionTable() {
- 
+void FairUrqmdGenerator::ReadConversionTable()
+{
+
   TString work      = getenv("VMCWORKDIR");
-  TString fileName  = work + "/input/urqmd_pdg.dat";  
+  TString fileName  = work + "/input/urqmd_pdg.dat";
   ifstream* pdgconv = new ifstream(fileName.Data());
-    
-  Int_t index = 0;  
-  Int_t pdgId = 0; 
-    
+
+  Int_t index = 0;
+  Int_t pdgId = 0;
+
   while ( ! pdgconv->eof() ) {
-      index =pdgId =0 ;
-      *pdgconv >> index >> pdgId ;   
-      fParticleTable[index] = pdgId;
+    index =pdgId =0 ;
+    *pdgconv >> index >> pdgId ;
+    fParticleTable[index] = pdgId;
   }
-    
+
   pdgconv->close();
   delete pdgconv;
 

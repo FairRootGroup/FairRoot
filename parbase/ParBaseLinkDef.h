@@ -1,4 +1,4 @@
-// ParBaseLinkDef.h 
+// ParBaseLinkDef.h
 // V. Friese  20/02/06
 
 

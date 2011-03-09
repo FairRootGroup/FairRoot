@@ -6,7 +6,7 @@
 //
 // Interface class for parameter I/O from ASCII file
 // derived from the interface base class FairParIo
-// 
+//
 // It contains pointers to the ascii file and to the interface classes for all
 // detectors defined in the actual setup.
 ///////////////////////////////////////////////////////////////////////////////
@@ -32,29 +32,32 @@ using std::filebuf;
 
 ClassImp(FairParAsciiFileIo)
 
-FairParAsciiFileIo::FairParAsciiFileIo() {
+FairParAsciiFileIo::FairParAsciiFileIo()
+{
   // default destructor
   file=0;
 }
 
-FairParAsciiFileIo::~FairParAsciiFileIo() {
+FairParAsciiFileIo::~FairParAsciiFileIo()
+{
   // default destructor closes an open file and deletes list of I/Os
   close();
 }
 
-Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status) {
+Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
+{
   // opens file
   // if a file is already open, this file will be closed
   // activates detector I/Os
   close();
   if (!((strcmp(status,"in")==0) || (strcmp(status,"out")==0))) {
     cout<<"Put the right stream option for file "<<fname
-        <<"\n  writing state : out\n   reading state : in  \nopen  aborted \n"; 
+        <<"\n  writing state : out\n   reading state : in  \nopen  aborted \n";
     return kFALSE;
   }
   file=new fstream();
-  if(strcmp(status,"in")==0){file->open( fname, ios::in);};
-  if(strcmp(status,"out")==0){file->open( fname, ios::out);};
+  if(strcmp(status,"in")==0) {file->open( fname, ios::in);};
+  if(strcmp(status,"out")==0) {file->open( fname, ios::out);};
   filebuf* buf = file->rdbuf();
   if (file && (buf->is_open()==1)) {
     filename=fname;
@@ -66,11 +69,12 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status) {
   return kFALSE;
 }
 
-Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status) {
+Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
+{
 
   TString outFileName = "all.par";
   TString catCommand = "cat ";
-  TObjString *string;
+  TObjString* string;
   TListIter myIter(fnamelist);
   while((string = (TObjString*)myIter.Next())) {
     //    cout <<  string->GetString() <<endl;
@@ -88,7 +92,8 @@ Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status) {
 
 }
 
-void FairParAsciiFileIo::close() {
+void FairParAsciiFileIo::close()
+{
   // closes the file and deletes the detector I/Os
   if (file) {
     file->close();
@@ -96,10 +101,11 @@ void FairParAsciiFileIo::close() {
     file=0;
     filename="";
   }
-  if (detParIoList) detParIoList->Delete();
+  if (detParIoList) { detParIoList->Delete(); }
 }
 
-void FairParAsciiFileIo::print() {
+void FairParAsciiFileIo::print()
+{
   // prints information about the file and the detector I/Os
   if (check()) {
     cout<<"Ascii I/O "<<filename<<" is open\n";
@@ -110,11 +116,11 @@ void FairParAsciiFileIo::print() {
       cout<<" "<<io->GetName();
     }
     cout<<'\n';
-  }
-  else cout<<"No file open\n";
+  } else { cout<<"No file open\n"; }
 }
 
-fstream* FairParAsciiFileIo::getFile() {
+fstream* FairParAsciiFileIo::getFile()
+{
   // returns the file pointer
   return file;
 }

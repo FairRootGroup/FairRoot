@@ -17,29 +17,29 @@
 class FairEventHeader : public TNamed
 {
 
- public:
+  public:
 
-  /** Default constructor */
-  FairEventHeader();
-  /** Set the run ID for this run 
-   * @param runid : unique run id 
-   */	
-  void SetRunId(UInt_t runid){fRunId=runid;}
-  /** Get the run ID for this run*/	
-  UInt_t GetRunId() {return fRunId;}
+    /** Default constructor */
+    FairEventHeader();
+    /** Set the run ID for this run
+     * @param runid : unique run id
+     */
+    void SetRunId(UInt_t runid) {fRunId=runid;}
+    /** Get the run ID for this run*/
+    UInt_t GetRunId() {return fRunId;}
 
-  /** 
-   * Destructor 
-   */
-  virtual ~FairEventHeader();
+    /**
+     * Destructor
+     */
+    virtual ~FairEventHeader();
 
-  virtual void Register();
+    virtual void Register();
 
- protected:
-   /** Run Id */
-   UInt_t fRunId;
+  protected:
+    /** Run Id */
+    UInt_t fRunId;
 
-  ClassDef(FairEventHeader,1)
+    ClassDef(FairEventHeader,1)
 
 };
 #endif

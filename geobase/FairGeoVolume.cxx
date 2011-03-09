@@ -10,13 +10,13 @@
 // The reference volume defines the shape, the mother, the size
 // and the transformation relative to the mother volume which
 // is either the cave (for modules) or the detector (for the
-// inner parts). 
+// inner parts).
 // As an example:
 // The Mdc modules built at GSI (plane 1 type) are all identical
 // independent where the sit in the cave. This module type has a
 // fixed coordinate system. The first layers in all these modules
 // are identical and they have the same position in the module
-// coordinate system.   
+// coordinate system.
 //
 /////////////////////////////////////////////////////////////
 #include "FairGeoVolume.h"
@@ -28,11 +28,11 @@ using std::endl;
 
 ClassImp(FairGeoVolume)
 
-FairGeoVolume::FairGeoVolume(FairGeoVolume& r) 
+FairGeoVolume::FairGeoVolume(FairGeoVolume& r)
   : shape(""),
-	mother(""),
+    mother(""),
     points(0),
-    transform(FairGeoTransform()), 
+    transform(FairGeoTransform()),
     fLabTransform(FairGeoTransform()),
     fMedium(0),
     nPoints(0),
@@ -44,17 +44,19 @@ FairGeoVolume::FairGeoVolume(FairGeoVolume& r)
   setVolumePar(r);
 }
 
-void FairGeoVolume::setVolumePar(FairGeoVolume& r) {
+void FairGeoVolume::setVolumePar(FairGeoVolume& r)
+{
   // copies all volume parameters except the name
   shape=r.getShape();
   mother=r.getMother();
   Int_t n=r.getNumPoints();
   createPoints(n);
-  for (Int_t i=0;i<nPoints;i++) setPoint(i,*(r.getPoint(i)));
+  for (Int_t i=0; i<nPoints; i++) { setPoint(i,*(r.getPoint(i))); }
   transform=r.getTransform();
 }
 
-void FairGeoVolume::createPoints(const Int_t n) {
+void FairGeoVolume::createPoints(const Int_t n)
+{
   // Creates n Points (objects of class FairGeoVector).
   // If the array exists already and the size is different from n it is
   // deleted and recreated with the new size n.
@@ -67,10 +69,9 @@ void FairGeoVolume::createPoints(const Int_t n) {
         delete points;
       }
       points=new TObjArray(n);
-      for(Int_t i=0;i<n;i++) points->AddAt(new FairGeoVector(),i);
-    }
-    else {
-      if (points) points->Delete();
+      for(Int_t i=0; i<n; i++) { points->AddAt(new FairGeoVector(),i); }
+    } else {
+      if (points) { points->Delete(); }
       delete points;
       points=0;
     }
@@ -78,7 +79,8 @@ void FairGeoVolume::createPoints(const Int_t n) {
 }
 
 void FairGeoVolume::setPoint(const Int_t n,const Double_t x,
-                           const Double_t y,const Double_t z) {
+                             const Double_t y,const Double_t z)
+{
   // set the 3 values of the point with index n
   if (points && n<nPoints) {
     FairGeoVector* v=(FairGeoVector*)points->At(n);
@@ -88,48 +90,54 @@ void FairGeoVolume::setPoint(const Int_t n,const Double_t x,
   }
 }
 
-void FairGeoVolume::setPoint(const Int_t n,const FairGeoVector& p) {
-  // sets point with index n by copying the 3 components of point p 
+void FairGeoVolume::setPoint(const Int_t n,const FairGeoVector& p)
+{
+  // sets point with index n by copying the 3 components of point p
   if (points && n<nPoints) {
     FairGeoVector& v=*((FairGeoVector*)points->At(n));
     v=p;
   }
 }
 
-void FairGeoVolume::clear() {
+void FairGeoVolume::clear()
+{
   // clears the volume
   // deletes the points
   shape="";
   mother="";
-  if (points) points->Delete();
+  if (points) { points->Delete(); }
   delete points;
   points=0;
   nPoints=0;
   transform.clear();
 }
 
-void FairGeoVolume::print() {
+void FairGeoVolume::print()
+{
   // prints all parameters of a volume
-    cout<<"Volume: " <<((const char*)fName)<<"  Shape: "<<((const char*)shape)<<"  Mother: "
+  cout<<"Volume: " <<((const char*)fName)<<"  Shape: "<<((const char*)shape)<<"  Mother: "
       <<((const char*)mother)<<'\n';
   cout << "Points definition " << endl;
   if (points) {
-    for (Int_t i=0;i<nPoints;i++)
-        cout<<(*((FairGeoVector*)points->At(i)));
+    for (Int_t i=0; i<nPoints; i++) {
+      cout<<(*((FairGeoVector*)points->At(i)));
+    }
   }
   cout << "Lab Transform " << endl;
   fLabTransform.print();
   cout<<'\n';
 }
 
-Double_t FairGeoVolume::getVolParameter( Int_t nPoint, Int_t pos ){
-  FairGeoVector *vec = (FairGeoVector*) points->At( nPoint );
-  if ( vec ) return vec->getValues( pos );
-  else return -1;
+Double_t FairGeoVolume::getVolParameter( Int_t nPoint, Int_t pos )
+{
+  FairGeoVector* vec = (FairGeoVector*) points->At( nPoint );
+  if ( vec ) { return vec->getValues( pos ); }
+  else { return -1; }
 }
 
 
-FairGeoVolume::~FairGeoVolume() {
+FairGeoVolume::~FairGeoVolume()
+{
   if (points) {
     points->Delete();
     delete points;

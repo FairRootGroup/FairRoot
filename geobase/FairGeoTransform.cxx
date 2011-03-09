@@ -18,7 +18,7 @@
 // Inline functions:
 //
 // FairGeoTransform()
-//    The default constructor creates an identity transformation  
+//    The default constructor creates an identity transformation
 // FairGeoTransform(FairGeoTransform& t)
 //    copy constructor
 // void setTransform(const FairGeoTransform& t)
@@ -26,7 +26,7 @@
 // void setRotMatrix(const FairGeoRotation& r)
 //    copies the given rotation matrix
 // void setRotMatrix(const Double_t* a)
-//    creates a rotation matrix taking an Double_t array with 9 components 
+//    creates a rotation matrix taking an Double_t array with 9 components
 // void setTransVector(const FairGeoVector& t)
 //    copies the given translation vector
 // void setTransVector(const Double_t* a)
@@ -46,13 +46,14 @@
 
 ClassImp(FairGeoTransform)
 FairGeoTransform::FairGeoTransform()
-: rot(FairGeoRotation(0,0,0)),  
-  trans(FairGeoVector(0,0,0)),
-  trans_cm(FairGeoVector(0,0,0))
+  : rot(FairGeoRotation(0,0,0)),
+    trans(FairGeoVector(0,0,0)),
+    trans_cm(FairGeoVector(0,0,0))
 {
- 
+
 }
-FairGeoTransform& FairGeoTransform::operator=(const FairGeoTransform& t)  {
+FairGeoTransform& FairGeoTransform::operator=(const FairGeoTransform& t)
+{
   rot=t.getRotMatrix();
   trans=t.getTransVector();
 
@@ -60,7 +61,8 @@ FairGeoTransform& FairGeoTransform::operator=(const FairGeoTransform& t)  {
 }
 
 
-FairGeoVector FairGeoTransform::transFrom(const FairGeoVector& p) const {
+FairGeoVector FairGeoTransform::transFrom(const FairGeoVector& p) const
+{
   // Transforms a vector (point) given in its own coordinate
   // system (2) into the reference coordinate system (1)
   // e.g. v2 is a vector (point) in the detector coordinate system;
@@ -70,7 +72,8 @@ FairGeoVector FairGeoTransform::transFrom(const FairGeoVector& p) const {
   return rot*p+trans;
 }
 
-FairGeoVector FairGeoTransform::transTo(const FairGeoVector& p) const {
+FairGeoVector FairGeoTransform::transTo(const FairGeoVector& p) const
+{
   // Transforms a vector (point) given in the reference system (1)
   // into the local coordinate system (2)
   // e.g. v1 is a vector (point) in the lab system; it can be transformed to
@@ -80,7 +83,8 @@ FairGeoVector FairGeoTransform::transTo(const FairGeoVector& p) const {
   return rot.inverse()*(p-trans);
 }
 
-void FairGeoTransform::transTo(const FairGeoTransform& s) {
+void FairGeoTransform::transTo(const FairGeoTransform& s)
+{
   // Transforms the coordinate system into the coordinate system
   // described by s. Both transformations must have the same reference
   // system e.g. the lab system
@@ -89,14 +93,15 @@ void FairGeoTransform::transTo(const FairGeoTransform& s) {
   // system.
   const FairGeoRotation& rm=s.getRotMatrix();
   FairGeoRotation rt(rm.inverse());
-  if (rm.diff2(rot)<0.000001) rot.setUnitMatrix();
-  else rot.transform(rt);
+  if (rm.diff2(rot)<0.000001) { rot.setUnitMatrix(); }
+  else { rot.transform(rt); }
   trans-=s.getTransVector();
   trans=rt*trans;
   //  trans.round(3); // rounds to 3 digits (precision 1 micrometer)
 }
 
-void FairGeoTransform::transFrom(const FairGeoTransform& s) {
+void FairGeoTransform::transFrom(const FairGeoTransform& s)
+{
   // Transforms the coordinate system described by s into the local
   // coordinate system
   // This function is e.g. used to transform a daughter coordinate system
@@ -108,17 +113,20 @@ void FairGeoTransform::transFrom(const FairGeoTransform& s) {
   trans+=s.getTransVector();
 }
 
-void FairGeoTransform::clear() {
+void FairGeoTransform::clear()
+{
   trans.clear();
   rot.setUnitMatrix();
 }
 
-void FairGeoTransform::print() {
+void FairGeoTransform::print()
+{
   rot.print();
   trans.print();
 }
 
-void FairGeoTransform::invert(void) {
+void FairGeoTransform::invert(void)
+{
   rot.invert();
   trans = rot*trans;
   trans *= -1.;

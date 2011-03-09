@@ -18,46 +18,46 @@ class FairParIo;
 class FairParamList;
 
 
-class FairTutorialDetDigiPar : public FairParGenericSet 
+class FairTutorialDetDigiPar : public FairParGenericSet
 {
 
- public:
+  public:
 
-  /** Standard constructor **/
-  FairTutorialDetDigiPar(const char* name    = "FairTutorialDetDigiPar",
-			const char* title   = "Tutorial Det digi parameters",
-			const char* context = "Default");
-
-
-  /** Destructor **/
-  virtual ~FairTutorialDetDigiPar();
+    /** Standard constructor **/
+    FairTutorialDetDigiPar(const char* name    = "FairTutorialDetDigiPar",
+                           const char* title   = "Tutorial Det digi parameters",
+                           const char* context = "Default");
 
 
-  /** Initialisation from input device**/
-  //virtual Bool_t init(FairParIo* input);
+    /** Destructor **/
+    virtual ~FairTutorialDetDigiPar();
 
 
-  /** Output to file **/
-  //  virtual Int_t write(FairParIo* output);
-
-  //  virtual void print(); 
-  virtual void printparams();
-
-  
-  /** Reset all parameters **/
-  virtual void clear();
-
-  void putParams(FairParamList*);
-  Bool_t getParams(FairParamList*);
-
-  // private:
-
-  TArrayF *ftutdetdigipar;  //
-  TArrayI ftutdetdigiparsector; //
-  Int_t ftutdetdigiparstation; //
+    /** Initialisation from input device**/
+    //virtual Bool_t init(FairParIo* input);
 
 
-  ClassDef(FairTutorialDetDigiPar,1);
+    /** Output to file **/
+    //  virtual Int_t write(FairParIo* output);
+
+    //  virtual void print();
+    virtual void printparams();
+
+
+    /** Reset all parameters **/
+    virtual void clear();
+
+    void putParams(FairParamList*);
+    Bool_t getParams(FairParamList*);
+
+    // private:
+
+    TArrayF* ftutdetdigipar;  //
+    TArrayI ftutdetdigiparsector; //
+    Int_t ftutdetdigiparstation; //
+
+
+    ClassDef(FairTutorialDetDigiPar,1);
 
 
 };

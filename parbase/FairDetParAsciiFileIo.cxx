@@ -19,7 +19,8 @@ using std::ios;
 
 
 
-FairDetParAsciiFileIo::FairDetParAsciiFileIo(fstream* f) {
+FairDetParAsciiFileIo::FairDetParAsciiFileIo(fstream* f)
+{
   // constructor
   pFile=f;
   sepLine=
@@ -27,7 +28,8 @@ FairDetParAsciiFileIo::FairDetParAsciiFileIo(fstream* f) {
 }
 
 
-Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name) {
+Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name)
+{
   // searches the container in the file
   const Int_t maxbuf=4000;
   Text_t buf[maxbuf];
@@ -37,15 +39,16 @@ Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name) {
   pFile->seekg(0,ios::beg);
   while (!pFile->eof()) {
     pFile->getline(buf,maxbuf);
-    if (buf[0]!='[') continue;
-    if (!strncmp(buf,buf2,strlen(buf2))) break;
+    if (buf[0]!='[') { continue; }
+    if (!strncmp(buf,buf2,strlen(buf2))) { break; }
   }
-  if (pFile->eof()) return kFALSE;
+  if (pFile->eof()) { return kFALSE; }
   return kTRUE;
 }
 
 
-Bool_t FairDetParAsciiFileIo::checkAllFound(Int_t* set, Int_t setSize) {
+Bool_t FairDetParAsciiFileIo::checkAllFound(Int_t* set, Int_t setSize)
+{
   // checks if all modules have been initialized
   Bool_t allFound=kTRUE;
   for(Int_t i=0; i<setSize; i++) {
@@ -53,7 +56,7 @@ Bool_t FairDetParAsciiFileIo::checkAllFound(Int_t* set, Int_t setSize) {
       set[i]=0;
       printf(" %i",i);
     }
-    if (set[i]) allFound=kFALSE;
+    if (set[i]) { allFound=kFALSE; }
   }
   printf("\n");
   return allFound;
@@ -61,26 +64,28 @@ Bool_t FairDetParAsciiFileIo::checkAllFound(Int_t* set, Int_t setSize) {
 
 
 void FairDetParAsciiFileIo::writeHeader(const Text_t* name, const Text_t* context,
-                                     const Text_t* author, const Text_t* description) {
+                                        const Text_t* author, const Text_t* description)
+{
   // calls the function putAsciiHeader(...) of the parameter container
   // class and writes the header to the file
   pFile->write(sepLine,strlen(sepLine));
   pFile->write(fHeader.Data(),fHeader.Length());
   pFile->write(sepLine,strlen(sepLine));
   *pFile<<"["<<name<<"]\n";
-  if (strlen(context)>0) *pFile<<"// Parameter Context: "<<context<<"\n";
-  if (strlen(author)>0) *pFile<<"author:      "<<author<<"\n";
+  if (strlen(context)>0) { *pFile<<"// Parameter Context: "<<context<<"\n"; }
+  if (strlen(author)>0) { *pFile<<"author:      "<<author<<"\n"; }
   TString t=description;
   if (!t.IsNull()) {
     t=t.ReplaceAll("\n"," \\\n");
     *pFile<<"description: "<<t<<"\n";
   }
   *pFile<<"//-----------------------------------------------------------"
-            "-----------------\n";
+        "-----------------\n";
 }
 
 
-void FairDetParAsciiFileIo::readComment(const Char_t* lastBuf, FairParSet* pPar) {
+void FairDetParAsciiFileIo::readComment(const Char_t* lastBuf, FairParSet* pPar)
+{
   // reads the author or the description
   const Int_t maxbuf=4000;
   Text_t buf[maxbuf];
@@ -89,8 +94,8 @@ void FairDetParAsciiFileIo::readComment(const Char_t* lastBuf, FairParSet* pPar)
   Ssiz_t n=s.First(':');
   Ssiz_t m=s.Last('\\');
   pName=s(0,n);
-  if (m>0) pVal=s(n+1,m-n-1);
-  else pVal=s(n+1,s.Length()-n-1);
+  if (m>0) { pVal=s(n+1,m-n-1); }
+  else { pVal=s(n+1,s.Length()-n-1); }
   pVal=pVal.Strip(pVal.kLeading);
   while (m>0) {
     pVal+="\n";
@@ -98,17 +103,18 @@ void FairDetParAsciiFileIo::readComment(const Char_t* lastBuf, FairParSet* pPar)
     if (buf[0]!='/') {
       s=buf;
       m=s.Last('\\');
-      if (m>0) pVal+=s(0,m);
-      else pVal+=s;
+      if (m>0) { pVal+=s(0,m); }
+      else { pVal+=s; }
     }
   }
-  if (pName.CompareTo("author")==0) pPar->setAuthor(pVal.Data());
-  else if ( pName.CompareTo("description")==0) pPar->setDescription(pVal.Data());
+  if (pName.CompareTo("author")==0) { pPar->setAuthor(pVal.Data()); }
+  else if ( pName.CompareTo("description")==0) { pPar->setDescription(pVal.Data()); }
 }
 
-void FairDetParAsciiFileIo::writeComment(FairParSet* pPar) {
+void FairDetParAsciiFileIo::writeComment(FairParSet* pPar)
+{
   TString t=pPar->getAuthor();
-  if (!t.IsNull()) *pFile<<"author:      "<<t<<"\n";
+  if (!t.IsNull()) { *pFile<<"author:      "<<t<<"\n"; }
   t=pPar->getDescription();
   if (!t.IsNull()) {
     t=t.ReplaceAll("\n"," \\\n");

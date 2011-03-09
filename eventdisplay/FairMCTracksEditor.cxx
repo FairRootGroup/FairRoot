@@ -16,39 +16,39 @@ ClassImp(FairMCTracksEditor)
 
 //______________________________________________________________________________
 FairMCTracksEditor::FairMCTracksEditor(const TGWindow* p, Int_t width, Int_t height,
-                      UInt_t options, Pixel_t back) :
-   TGedFrame(p, width, height, options | kVerticalFrame, back)
+                                       UInt_t options, Pixel_t back) :
+  TGedFrame(p, width, height, options | kVerticalFrame, back)
 {
   // Resize(width, height);
-   fManager= FairEventManager::Instance();
+  fManager= FairEventManager::Instance();
 
-   MakeTitle("FairEventManager  Editor");
+  MakeTitle("FairEventManager  Editor");
 
-   TGVerticalFrame      *fInfoFrame= CreateEditorTabSubFrame("Info");
-   TGCompositeFrame *title1 = new TGCompositeFrame(fInfoFrame, 180, 10,
-                                                   kVerticalFrame |
-                                                   kLHintsExpandX   |
-                                                   kFixedWidth      |
-                                                   kOwnBackground);
-   TString Infile= "Input File : ";
-   TFile *file =FairRunAna::Instance()->GetInputFile();
-   Infile+=file->GetName();
-   TGLabel *TFName=new TGLabel(title1, Infile.Data());   
-   title1->AddFrame(TFName);
- 
-   UInt_t RunId= FairRunAna::Instance()->getRunId();
-   TString run= "Run Id : ";
-   run += RunId; 
-   TGLabel *TRunId=new TGLabel(title1, run.Data());
-   title1->AddFrame( TRunId);
+  TGVerticalFrame*      fInfoFrame= CreateEditorTabSubFrame("Info");
+  TGCompositeFrame* title1 = new TGCompositeFrame(fInfoFrame, 180, 10,
+      kVerticalFrame |
+      kLHintsExpandX   |
+      kFixedWidth      |
+      kOwnBackground);
+  TString Infile= "Input File : ";
+  TFile* file =FairRunAna::Instance()->GetInputFile();
+  Infile+=file->GetName();
+  TGLabel* TFName=new TGLabel(title1, Infile.Data());
+  title1->AddFrame(TFName);
 
-   fInfoFrame->AddFrame(title1, new TGLayoutHints(kLHintsTop, 0, 0, 2, 0));
+  UInt_t RunId= FairRunAna::Instance()->getRunId();
+  TString run= "Run Id : ";
+  run += RunId;
+  TGLabel* TRunId=new TGLabel(title1, run.Data());
+  title1->AddFrame( TRunId);
+
+  fInfoFrame->AddFrame(title1, new TGLayoutHints(kLHintsTop, 0, 0, 2, 0));
 }
 
 //______________________________________________________________________________
 void FairMCTracksEditor::SetModel( TObject* obj)
 {
-   fObject     = obj;
+  fObject     = obj;
 }
 //______________________________________________________________________________
 

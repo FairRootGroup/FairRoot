@@ -25,51 +25,52 @@ class TEveTrackList;
 class TObjArray;
 class TParticle;
 
-class FairMCTracks : public FairTask {
+class FairMCTracks : public FairTask
+{
 
- public:
+  public:
 
-  /** Default constructor **/
-  FairMCTracks();
-
-
-  /** Standard constructor 
-  *@param name        Name of task
-  *@param iVerbose    Verbosity level
-  **/
-  FairMCTracks(const char* name, Int_t iVerbose = 1);
-
-  /** Destructor **/
-  virtual ~FairMCTracks();
-
-  /** Set verbosity level. For this task and all of the subtasks. **/
-  void SetVerbose(Int_t iVerbose);
-   /** Executed task **/ 
-  virtual void Exec(Option_t* option);
-   virtual InitStatus Init();
-   virtual void SetParContainers();
-  
-  /** Action after each event**/
-  virtual void Finish();
-  void Reset();
-  TEveTrackList *GetTrGroup(TParticle *P);
-
-protected:
+    /** Default constructor **/
+    FairMCTracks();
 
 
-  TClonesArray  *fTrackList;  //!
-  TEveTrackPropagator *fTrPr; 
-  FairEventManager * fEventManager; //!
-  TObjArray *fEveTrList;
-  TString fEvent; //!
-  TEveTrackList *fTrList;  //!
-  //TEveElementList *fTrackCont;
-    
-   Double_t MinEnergyLimit;
-   Double_t MaxEnergyLimit;
-   Double_t PEnergy;
-  ClassDef(FairMCTracks,1);
-    
+    /** Standard constructor
+    *@param name        Name of task
+    *@param iVerbose    Verbosity level
+    **/
+    FairMCTracks(const char* name, Int_t iVerbose = 1);
+
+    /** Destructor **/
+    virtual ~FairMCTracks();
+
+    /** Set verbosity level. For this task and all of the subtasks. **/
+    void SetVerbose(Int_t iVerbose);
+    /** Executed task **/
+    virtual void Exec(Option_t* option);
+    virtual InitStatus Init();
+    virtual void SetParContainers();
+
+    /** Action after each event**/
+    virtual void Finish();
+    void Reset();
+    TEveTrackList* GetTrGroup(TParticle* P);
+
+  protected:
+
+
+    TClonesArray*  fTrackList;  //!
+    TEveTrackPropagator* fTrPr;
+    FairEventManager* fEventManager;  //!
+    TObjArray* fEveTrList;
+    TString fEvent; //!
+    TEveTrackList* fTrList;  //!
+    //TEveElementList *fTrackCont;
+
+    Double_t MinEnergyLimit;
+    Double_t MaxEnergyLimit;
+    Double_t PEnergy;
+    ClassDef(FairMCTracks,1);
+
 };
 
 

@@ -11,23 +11,27 @@ ClassImp(FairSingleLinkedData);
 
 FairSingleLinkedData::FairSingleLinkedData()
   :FairLinkedData(),
-  fLink(-1, -1) 
+   fLink(-1, -1)
 {
-	// TODO Auto-generated constructor stub
+  // TODO Auto-generated constructor stub
 
 }
 
-bool FairSingleLinkedData::IsLinkInList(Int_t type, Int_t index){
-	if (LinkPosInList(type, index) == 0)
-		return true;
-	return false;
+bool FairSingleLinkedData::IsLinkInList(Int_t type, Int_t index)
+{
+  if (LinkPosInList(type, index) == 0) {
+    return true;
+  }
+  return false;
 }
-Int_t FairSingleLinkedData::LinkPosInList(Int_t type, Int_t index){
-	if (index == fLink.GetIndex() && type == fLink.GetType())
-		return 0;
-	else return -1;
+Int_t FairSingleLinkedData::LinkPosInList(Int_t type, Int_t index)
+{
+  if (index == fLink.GetIndex() && type == fLink.GetType()) {
+    return 0;
+  } else { return -1; }
 }
 
-void FairSingleLinkedData::DeleteLink(Int_t type, Int_t index){
-	fLink.SetLink(-1, -1);
+void FairSingleLinkedData::DeleteLink(Int_t type, Int_t index)
+{
+  fLink.SetLink(-1, -1);
 }

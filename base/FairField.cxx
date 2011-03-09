@@ -9,19 +9,19 @@
 
 
 // -----   Default constructor   -------------------------------------------
-FairField::FairField() 
- : TVirtualMagField("FAIR Magnetic Field"), fType(0)
-{ 
+FairField::FairField()
+  : TVirtualMagField("FAIR Magnetic Field"), fType(0)
+{
 }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Constructor with name and title   -------------------------------
-FairField::FairField(const char* name, const char* title) 
-  :TVirtualMagField(name), fType(0) 
+FairField::FairField(const char* name, const char* title)
+  :TVirtualMagField(name), fType(0)
 {
-  
+
 }
 // -------------------------------------------------------------------------
 
@@ -34,8 +34,9 @@ FairField::~FairField() { }
 
 
 // -----   Test field type Constant   --------------------------------------
-Bool_t FairField::IsConst() {
-  if ( fType == 1 ) return kTRUE;
+Bool_t FairField::IsConst()
+{
+  if ( fType == 1 ) { return kTRUE; }
   return kFALSE;
 }
 // -------------------------------------------------------------------------
@@ -43,12 +44,13 @@ Bool_t FairField::IsConst() {
 
 
 // -----   Test field type Map   -------------------------------------------
-Bool_t FairField::IsMap() {
-  if ( fType == 2 ) return kTRUE;
+Bool_t FairField::IsMap()
+{
+  if ( fType == 2 ) { return kTRUE; }
   return kFALSE;
 }
 // -------------------------------------------------------------------------
-void FairField::GetFieldValue(const Double_t point[3], Double_t* bField) 
+void FairField::GetFieldValue(const Double_t point[3], Double_t* bField)
 {
   bField[0] = GetBx(point[0], point[1], point[2]);
   bField[1] = GetBy(point[0], point[1], point[2]);

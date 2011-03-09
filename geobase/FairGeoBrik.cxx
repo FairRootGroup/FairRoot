@@ -7,11 +7,11 @@
 // FairGeoBrik
 //
 // class for the GEANT shape BOX
-// 
+//
 // The intrisic coordinate system of a BOX in GEANT/ROOT has the
 // same orientation as the volume described by its 8 points
-// in the technical coordinate system 
-// 
+// in the technical coordinate system
+//
 /////////////////////////////////////////////////////////////
 
 #include "FairGeoBrik.h"
@@ -23,7 +23,8 @@
 
 ClassImp(FairGeoBrik)
 
-FairGeoBrik::FairGeoBrik() {
+FairGeoBrik::FairGeoBrik()
+{
   // constructor
   fName="BOX ";
   nPoints=8;
@@ -32,7 +33,8 @@ FairGeoBrik::FairGeoBrik() {
 }
 
 
-FairGeoBrik::~FairGeoBrik() {
+FairGeoBrik::~FairGeoBrik()
+{
   // destructor
   if (param) {
     delete param;
@@ -49,21 +51,23 @@ FairGeoBrik::~FairGeoBrik() {
 }
 
 
-TArrayD* FairGeoBrik::calcVoluParam(FairGeoVolume* volu) {
-  // calculates the parameters needed to create the shape 
-  if (!volu) return 0;
+TArrayD* FairGeoBrik::calcVoluParam(FairGeoVolume* volu)
+{
+  // calculates the parameters needed to create the shape
+  if (!volu) { return 0; }
   FairGeoVector v=*(volu->getPoint(5)) - *(volu->getPoint(3));
   v.abs();
   v*=(1/20.);
-  for(Int_t i=0;i<nParam;i++) param->AddAt(v(i),i);
+  for(Int_t i=0; i<nParam; i++) { param->AddAt(v(i),i); }
   return param;
-} 
+}
 
 
 void FairGeoBrik::calcVoluPosition(FairGeoVolume* volu,
-          const FairGeoTransform& dTC,const FairGeoTransform& mTR) {
+                                   const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+{
   // calls the function posInMother(...) to calculate the position of the
-  // volume in its mother 
+  // volume in its mother
   FairGeoVector trans=*(volu->getPoint(5)) + *(volu->getPoint(3));
   trans*=0.5;
   center->clear();

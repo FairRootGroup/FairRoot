@@ -7,7 +7,7 @@
 // FairGeoCons
 //
 // class for the GEANT shape CONS
-// 
+//
 // The size of a CONS is defined by 5 'points'.
 //   point 0:   origin of starting circle of the cons;
 //   point 1:   inner radius of starting circle,
@@ -37,7 +37,8 @@
 
 ClassImp(FairGeoCons)
 
-FairGeoCons::FairGeoCons() {
+FairGeoCons::FairGeoCons()
+{
   // constructor
   fName="CONS";
   nPoints=5;
@@ -46,7 +47,8 @@ FairGeoCons::FairGeoCons() {
 }
 
 
-FairGeoCons::~FairGeoCons() {
+FairGeoCons::~FairGeoCons()
+{
   // default destructor
   if (param) {
     delete param;
@@ -63,17 +65,18 @@ FairGeoCons::~FairGeoCons() {
 }
 
 
-Int_t FairGeoCons::readPoints(fstream* pFile,FairGeoVolume* volu) {
+Int_t FairGeoCons::readPoints(fstream* pFile,FairGeoVolume* volu)
+{
   // reads the 5 'points' decribed above from ascii file
   // if the array of points is not existing in the volume it is created and
   // the values are stored inside
   // returns the number of points
-  if (!pFile) return 0;
-  if (volu->getNumPoints()!=nPoints) volu->createPoints(nPoints);
+  if (!pFile) { return 0; }
+  if (volu->getNumPoints()!=nPoints) { volu->createPoints(nPoints); }
   Double_t x,y,z;
   const Int_t maxbuf=155;
   Text_t buf[maxbuf];
-  for(Int_t i=0;i<nPoints;i++) {
+  for(Int_t i=0; i<nPoints; i++) {
     pFile->getline(buf,maxbuf);
     if (i==0 || i==2) {
       sscanf(buf,"%lf%lf%lf",&x,&y,&z);
@@ -87,32 +90,35 @@ Int_t FairGeoCons::readPoints(fstream* pFile,FairGeoVolume* volu) {
 }
 
 
-Bool_t FairGeoCons::writePoints(fstream* pFile,FairGeoVolume* volu) {
+Bool_t FairGeoCons::writePoints(fstream* pFile,FairGeoVolume* volu)
+{
   // writes the 5 'points' decribed above to ascii file
-  if (!pFile) return kFALSE;  
+  if (!pFile) { return kFALSE; }
   Text_t buf[155];
-  for(Int_t i=0;i<nPoints;i++) {
+  for(Int_t i=0; i<nPoints; i++) {
     FairGeoVector& v=*(volu->getPoint(i));
-    if (i==0 || i==2) sprintf(buf,"%9.3f%10.3f%10.3f\n",v(0),v(1),v(2));
-    else sprintf(buf,"%9.3f%10.3f\n",v(0),v(1));
+    if (i==0 || i==2) { sprintf(buf,"%9.3f%10.3f%10.3f\n",v(0),v(1),v(2)); }
+    else { sprintf(buf,"%9.3f%10.3f\n",v(0),v(1)); }
     pFile->write(buf,strlen(buf));
   }
   return kTRUE;
 }
 
 
-void FairGeoCons::printPoints(FairGeoVolume* volu) {
+void FairGeoCons::printPoints(FairGeoVolume* volu)
+{
   // prints volume points to screen
-  for(Int_t i=0;i<nPoints;i++) {
+  for(Int_t i=0; i<nPoints; i++) {
     FairGeoVector& v=*(volu->getPoint(i));
-    if (i==0 || i==2) printf("%9.3f%10.3f%10.3f\n",v(0),v(1),v(2));
-    else printf("%9.3f%10.3f\n",v(0),v(1));
+    if (i==0 || i==2) { printf("%9.3f%10.3f%10.3f\n",v(0),v(1),v(2)); }
+    else { printf("%9.3f%10.3f\n",v(0),v(1)); }
   }
 }
 
 
-TArrayD* FairGeoCons::calcVoluParam(FairGeoVolume* volu) {
-  // calculates the parameters needed to create the shape CONS 
+TArrayD* FairGeoCons::calcVoluParam(FairGeoVolume* volu)
+{
+  // calculates the parameters needed to create the shape CONS
   Double_t fac=10.;
   FairGeoVector v=*(volu->getPoint(2)) - *(volu->getPoint(0));
   param->AddAt(TMath::Abs(v(2))/fac/2.,0);
@@ -126,18 +132,19 @@ TArrayD* FairGeoCons::calcVoluParam(FairGeoVolume* volu) {
   param->AddAt(v4(0),5);
   param->AddAt(v4(1),6);
   return param;
-} 
+}
 
 
 void FairGeoCons::calcVoluPosition(FairGeoVolume* volu,
-          const FairGeoTransform& dTC,const FairGeoTransform& mTR) {
+                                   const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+{
   // calculates the position of the center of the volume in the intrinsic
   // coordinate system and stores it in the data element 'center'
   // calls the function posInMother(...) to calculate the position of the
-  // volume in its mother 
-  Double_t t[3]={0.,0.,0.};
+  // volume in its mother
+  Double_t t[3]= {0.,0.,0.};
   FairGeoVector v=*(volu->getPoint(2)) + *(volu->getPoint(0));
-  t[2]=v(2)/2.;  
+  t[2]=v(2)/2.;
   center->clear();
   center->setTransVector(t);
   posInMother(dTC,mTR);

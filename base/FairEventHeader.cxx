@@ -8,7 +8,7 @@
 #include "FairRootManager.h"
 
 // -----   Default constructor   -------------------------------------------
-FairEventHeader::FairEventHeader() 
+FairEventHeader::FairEventHeader()
   :fRunId(0)
 {
 
@@ -23,7 +23,7 @@ FairEventHeader::~FairEventHeader() { }
 // -------------------------------------------------------------------------
 
 void FairEventHeader::Register()
-{  
+{
   FairRootManager::Instance()->Register("EventHeader.", "EvtHeader", this, kTRUE);
 }
 

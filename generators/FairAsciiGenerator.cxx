@@ -14,9 +14,9 @@ using std::cout;
 using std::endl;
 
 // -----   Default constructor   ------------------------------------------
-FairAsciiGenerator::FairAsciiGenerator() 
-:fInputFile(0),
-fFileName("")
+FairAsciiGenerator::FairAsciiGenerator()
+  :fInputFile(0),
+   fFileName("")
 {
 }
 // ------------------------------------------------------------------------
@@ -24,16 +24,17 @@ fFileName("")
 
 
 // -----   Standard constructor   -----------------------------------------
-FairAsciiGenerator::FairAsciiGenerator(const char* fileName) 
-:fInputFile(0),
-fFileName( fileName)
+FairAsciiGenerator::FairAsciiGenerator(const char* fileName)
+  :fInputFile(0),
+   fFileName( fileName)
 {
   fFileName  = fileName;
   cout << "-I FairAsciiGenerator: Opening input file " << fileName << endl;
   fInputFile = new ifstream(fFileName);
-  if ( ! fInputFile->is_open() ) 
+  if ( ! fInputFile->is_open() ) {
     Fatal("FairAsciiGenerator","Cannot open input file.");
-    
+  }
+
   // fPDG=TDatabasePDG::Instance();
 }
 // ------------------------------------------------------------------------
@@ -41,7 +42,8 @@ fFileName( fileName)
 
 
 // -----   Destructor   ---------------------------------------------------
-FairAsciiGenerator::~FairAsciiGenerator() {
+FairAsciiGenerator::~FairAsciiGenerator()
+{
   CloseInput();
 }
 // ------------------------------------------------------------------------
@@ -49,7 +51,8 @@ FairAsciiGenerator::~FairAsciiGenerator() {
 
 
 // -----   Public method ReadEvent   --------------------------------------
-Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
+Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen)
+{
 
   // Check for input file
   if ( ! fInputFile->is_open() ) {
@@ -86,9 +89,9 @@ Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     // Read PID and momentum from file
     *fInputFile >> pdgID >> px >> py >> pz;
     // convert Geant3 code to PDG code
-    
-   // Int_t pdg= fPDG->ConvertGeant3ToPdg(pdgID);
-    
+
+    // Int_t pdg= fPDG->ConvertGeant3ToPdg(pdgID);
+
     // Give track to PrimaryGenerator
     primGen->AddTrack(pdgID, px, py, pz, vx, vy, vz);
 
@@ -102,12 +105,13 @@ Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
 
 
 // -----   Private method CloseInput   ------------------------------------
-void FairAsciiGenerator::CloseInput() {
+void FairAsciiGenerator::CloseInput()
+{
   if ( fInputFile ) {
     if ( fInputFile->is_open() ) {
-       cout << "-I FairAsciiGenerator: Closing input file " 
-	    << fFileName << endl;
-       fInputFile->close();
+      cout << "-I FairAsciiGenerator: Closing input file "
+           << fFileName << endl;
+      fInputFile->close();
     }
     delete fInputFile;
     fInputFile = NULL;

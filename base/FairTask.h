@@ -25,105 +25,106 @@ enum InitStatus {kSUCCESS, kERROR, kFATAL};
 
 
 
-class FairTask : public TTask {
+class FairTask : public TTask
+{
 
- public:
+  public:
 
-  /** Default constructor **/
-  FairTask();
-
-
-  /** Standard constructor 
-  *@param name        Name of task
-  *@param iVerbose    Verbosity level
-  **/
-  FairTask(const char* name, Int_t iVerbose = 1);
+    /** Default constructor **/
+    FairTask();
 
 
-  /** Destructor **/
-  virtual ~FairTask();
+    /** Standard constructor
+    *@param name        Name of task
+    *@param iVerbose    Verbosity level
+    **/
+    FairTask(const char* name, Int_t iVerbose = 1);
 
 
-  /** Initialisation at begin of run. For this task and all of the 
-      subtasks. **/
-  void InitTask();
+    /** Destructor **/
+    virtual ~FairTask();
 
 
-  /** Reinitialisation. For this task and all of the subtasks. **/
-  void ReInitTask();
+    /** Initialisation at begin of run. For this task and all of the
+        subtasks. **/
+    void InitTask();
 
 
-  /** Set parameters. For this task and all of the subtasks. **/
-  void SetParTask();
+    /** Reinitialisation. For this task and all of the subtasks. **/
+    void ReInitTask();
 
 
-  /** Action at end of run. For this task and all of the subtasks. **/
-  virtual void FinishTask();
-
-  /** Action at end of event. For this task and all of the subtasks. **/
-  virtual void FinishEvent();
-
-  /** Set verbosity level. For this task and all of the subtasks. **/
-  void SetVerbose(Int_t iVerbose);
-  
-  void SetInputPersistance(Bool_t val){fInputPersistance = val;}
-
-  void CheckInputPersistance(TString branchName){
-	  FairRootManager* ioman = FairRootManager::Instance();
-	  fInputPersistance = ioman->CheckBranch(branchName);
-  }
+    /** Set parameters. For this task and all of the subtasks. **/
+    void SetParTask();
 
 
-protected:
+    /** Action at end of run. For this task and all of the subtasks. **/
+    virtual void FinishTask();
 
-  Int_t   fVerbose;       //  Verbosity level
-  Int_t  fInputPersistance; ///< Indicates if input branch is persistant
+    /** Action at end of event. For this task and all of the subtasks. **/
+    virtual void FinishEvent();
 
+    /** Set verbosity level. For this task and all of the subtasks. **/
+    void SetVerbose(Int_t iVerbose);
 
-  /** Intialisation at begin of run. To be implemented in the derived class.
-  *@value  Success   If not kSUCCESS, task will be set inactive.
-  **/
-  virtual InitStatus Init() { return kSUCCESS; };
+    void SetInputPersistance(Bool_t val) {fInputPersistance = val;}
 
-
-  /** Reinitialisation. To be implemented in the derived class.
-  *@value  Success   If not kSUCCESS, task will be set inactive.
-  **/
-  virtual InitStatus ReInit() { return kSUCCESS; };
-
-
-  /** Intialise parameter containers. 
-      To be implemented in the derived class. 
-  **/
-  virtual void SetParContainers() { };
+    void CheckInputPersistance(TString branchName) {
+      FairRootManager* ioman = FairRootManager::Instance();
+      fInputPersistance = ioman->CheckBranch(branchName);
+    }
 
 
-  /** Action after each event. To be implemented in the derived class **/
-  virtual void Finish() { };
+  protected:
 
-  //  /** Action after each event. To be implemented in the derived class **/
-  //  virtual void FinishTask() { };
-
-
-  /** Recursive intialisation of subtasks at begin of run **/
-  void InitTasks();
+    Int_t   fVerbose;       //  Verbosity level
+    Int_t  fInputPersistance; ///< Indicates if input branch is persistant
 
 
-  /** Recursive reinitialisation of subtasks **/
-  void ReInitTasks();
+    /** Intialisation at begin of run. To be implemented in the derived class.
+    *@value  Success   If not kSUCCESS, task will be set inactive.
+    **/
+    virtual InitStatus Init() { return kSUCCESS; };
 
 
-  /** Recursive parameter initialisation for subtasks **/
-  void SetParTasks();
+    /** Reinitialisation. To be implemented in the derived class.
+    *@value  Success   If not kSUCCESS, task will be set inactive.
+    **/
+    virtual InitStatus ReInit() { return kSUCCESS; };
 
-  /** Recursive finish of subtasks **/
-  void FinishTasks();
 
-  /** Recursive FinishEvent of subtasks **/
-  void FinishEvents();
+    /** Intialise parameter containers.
+        To be implemented in the derived class.
+    **/
+    virtual void SetParContainers() { };
 
-  ClassDef(FairTask,1);
-    
+
+    /** Action after each event. To be implemented in the derived class **/
+    virtual void Finish() { };
+
+    //  /** Action after each event. To be implemented in the derived class **/
+    //  virtual void FinishTask() { };
+
+
+    /** Recursive intialisation of subtasks at begin of run **/
+    void InitTasks();
+
+
+    /** Recursive reinitialisation of subtasks **/
+    void ReInitTasks();
+
+
+    /** Recursive parameter initialisation for subtasks **/
+    void SetParTasks();
+
+    /** Recursive finish of subtasks **/
+    void FinishTasks();
+
+    /** Recursive FinishEvent of subtasks **/
+    void FinishEvents();
+
+    ClassDef(FairTask,1);
+
 };
 
 

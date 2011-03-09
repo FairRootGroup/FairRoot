@@ -5,7 +5,7 @@
 #pragma link off all functions;
 
 
-#pragma link C++ class FairCuda;  
+#pragma link C++ class FairCuda;
 
 
 #endif

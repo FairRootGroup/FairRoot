@@ -1,4 +1,4 @@
-//*-- AUTHOR : M. Al-Turany  21/04/2009 
+//*-- AUTHOR : M. Al-Turany  21/04/2009
 
 /////////////////////////////////////////////////////////////
 //
@@ -16,7 +16,8 @@
 
 ClassImp(FairGeoAssembly)
 
-FairGeoAssembly::FairGeoAssembly() {
+FairGeoAssembly::FairGeoAssembly()
+{
   // constructor
   fName="ASSEMBLY";
   nPoints=0;
@@ -25,7 +26,8 @@ FairGeoAssembly::FairGeoAssembly() {
 }
 
 
-FairGeoAssembly::~FairGeoAssembly() {
+FairGeoAssembly::~FairGeoAssembly()
+{
   // destructor
   if (param) {
     delete param;
@@ -41,24 +43,27 @@ FairGeoAssembly::~FairGeoAssembly() {
   }
 }
 
-Int_t FairGeoAssembly::readPoints(fstream* pFile,FairGeoVolume* volu) {
-  
-	//Assemblies has no parameters so just return 1;
-	return 1;
+Int_t FairGeoAssembly::readPoints(fstream* pFile,FairGeoVolume* volu)
+{
+
+  //Assemblies has no parameters so just return 1;
+  return 1;
 }
-   
 
-TArrayD* FairGeoAssembly::calcVoluParam(FairGeoVolume* volu) {
-  // nothing to calculate  
-  
-     return param;
-} 
 
-Bool_t FairGeoAssembly::writePoints(fstream* pFile,FairGeoVolume* volu) {
+TArrayD* FairGeoAssembly::calcVoluParam(FairGeoVolume* volu)
+{
+  // nothing to calculate
+
+  return param;
+}
+
+Bool_t FairGeoAssembly::writePoints(fstream* pFile,FairGeoVolume* volu)
+{
   // writes the 4 'points' decribed above to ascii file
-  if (!pFile) return kFALSE;  
+  if (!pFile) { return kFALSE; }
   Text_t buf[155];
-  for(Int_t i=0;i<nPoints;i++) {
+  for(Int_t i=0; i<nPoints; i++) {
     FairGeoVector& v=*(volu->getPoint(i));
     sprintf(buf,"%9.3f\n",v(0));
     pFile->write(buf,strlen(buf));
@@ -67,9 +72,10 @@ Bool_t FairGeoAssembly::writePoints(fstream* pFile,FairGeoVolume* volu) {
 }
 
 
-void FairGeoAssembly::printPoints(FairGeoVolume* volu) {
+void FairGeoAssembly::printPoints(FairGeoVolume* volu)
+{
   // prints volume points to screen
-  for(Int_t i=0;i<nPoints;i++) {
+  for(Int_t i=0; i<nPoints; i++) {
     FairGeoVector& v=*(volu->getPoint(i));
     printf("%9.3f\n",v(0));
   }
@@ -78,10 +84,11 @@ void FairGeoAssembly::printPoints(FairGeoVolume* volu) {
 
 
 void FairGeoAssembly::calcVoluPosition(FairGeoVolume* volu,
-            const FairGeoTransform& dTC,const FairGeoTransform& mTR) {
+                                       const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+{
   // calls the function posInMother(...) to calculate the position of the
-  // volume in its mother 
-  Double_t t[3]={0.,0.,0.};
+  // volume in its mother
+  Double_t t[3]= {0.,0.,0.};
   center->setTransVector(t);
   posInMother(dTC,mTR);
 }

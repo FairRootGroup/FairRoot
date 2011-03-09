@@ -30,61 +30,62 @@ enum EHGeoDetPart {
 /**
  * Class to manage geometry for simulations
  * @author Ilse koenig
- * @author M. Al-Turany 
+ * @author M. Al-Turany
  */
-class FairGeoInterface : public TObject { 
-  FairGeoIo*      fileInput;   /** ASCII file I/O */
-  FairGeoIo*      oraInput;    /** Oracle input */
-  FairGeoIo*      output;      /** Oracle output */
-  Int_t         nSets;       /** number of geometry sets (detector parts) */
-  Int_t         nActualSets; /** number of set in actual geometry */
-  TObjArray*    sets;        /** array of geometry  sets */
-  FairGeoMedia*   media;       /** list of media */
-  FairGeoShapes*  shapes;      /** list of shapes */
-  TList*        masterNodes; /** list of mother nodes used by several sets */
-  TString       setupFile;   /** file with detector setups (subsets) */
-  FairGeoBuilder* geoBuilder;  /** actually used geometry builder */
-public:
-  FairGeoInterface();
-  ~FairGeoInterface();
-  void setOracleInput(FairGeoIo* p) {oraInput=p;}
-  void setOutput(FairGeoIo* p) {output=p;}
-  void setGeomBuilder(FairGeoBuilder* p) {geoBuilder=p;}
-  FairGeoIo* getFileInput() { return fileInput; }
-  FairGeoIo* getOraInput() { return oraInput; }
-  FairGeoIo* getOutput() { return output; }
-  FairGeoShapes* getShapes() { return shapes; }
-  FairGeoMedia* getMedia() { return media; }
-  TList* getMasterNodes() { return masterNodes; }
-  void addInputFile(const char*);
-  void addGeoModule(FairGeoSet*);
-  void setMediaFile(const char *file);
-  FairGeoSet* findSet(const char*);
-  Bool_t readSet(FairGeoSet*);
-  Bool_t writeSet(FairGeoSet*);
-  Bool_t writeSet(FairGeoSet*,const char*);
-  Bool_t createSet(FairGeoSet*);
-  void deleteSet(FairGeoSet* pSet);
-  Bool_t readMedia();
-  Bool_t writeMedia();
-  Bool_t writeMedia(const char*);
-  Bool_t readAll();
-  Bool_t writeAll();
-  Bool_t createAll(Bool_t withCleanup=kFALSE);
-  Bool_t createGeometry(Bool_t withCleanup=kFALSE);
-  Bool_t readGeomConfig(const char*);
-  void addSetupFile(const char* f) {setupFile=f;}
-  Bool_t readSetupFile();
-  void print();
-  void SetNoOfSets(Int_t n){nSets=n;} //
-private:
-  FairGeoInterface(const FairGeoInterface &L);
-  FairGeoInterface& operator= (const FairGeoInterface&) {return *this;}
+class FairGeoInterface : public TObject
+{
+    FairGeoIo*      fileInput;   /** ASCII file I/O */
+    FairGeoIo*      oraInput;    /** Oracle input */
+    FairGeoIo*      output;      /** Oracle output */
+    Int_t         nSets;       /** number of geometry sets (detector parts) */
+    Int_t         nActualSets; /** number of set in actual geometry */
+    TObjArray*    sets;        /** array of geometry  sets */
+    FairGeoMedia*   media;       /** list of media */
+    FairGeoShapes*  shapes;      /** list of shapes */
+    TList*        masterNodes; /** list of mother nodes used by several sets */
+    TString       setupFile;   /** file with detector setups (subsets) */
+    FairGeoBuilder* geoBuilder;  /** actually used geometry builder */
+  public:
+    FairGeoInterface();
+    ~FairGeoInterface();
+    void setOracleInput(FairGeoIo* p) {oraInput=p;}
+    void setOutput(FairGeoIo* p) {output=p;}
+    void setGeomBuilder(FairGeoBuilder* p) {geoBuilder=p;}
+    FairGeoIo* getFileInput() { return fileInput; }
+    FairGeoIo* getOraInput() { return oraInput; }
+    FairGeoIo* getOutput() { return output; }
+    FairGeoShapes* getShapes() { return shapes; }
+    FairGeoMedia* getMedia() { return media; }
+    TList* getMasterNodes() { return masterNodes; }
+    void addInputFile(const char*);
+    void addGeoModule(FairGeoSet*);
+    void setMediaFile(const char* file);
+    FairGeoSet* findSet(const char*);
+    Bool_t readSet(FairGeoSet*);
+    Bool_t writeSet(FairGeoSet*);
+    Bool_t writeSet(FairGeoSet*,const char*);
+    Bool_t createSet(FairGeoSet*);
+    void deleteSet(FairGeoSet* pSet);
+    Bool_t readMedia();
+    Bool_t writeMedia();
+    Bool_t writeMedia(const char*);
+    Bool_t readAll();
+    Bool_t writeAll();
+    Bool_t createAll(Bool_t withCleanup=kFALSE);
+    Bool_t createGeometry(Bool_t withCleanup=kFALSE);
+    Bool_t readGeomConfig(const char*);
+    void addSetupFile(const char* f) {setupFile=f;}
+    Bool_t readSetupFile();
+    void print();
+    void SetNoOfSets(Int_t n) {nSets=n;} //
+  private:
+    FairGeoInterface(const FairGeoInterface& L);
+    FairGeoInterface& operator= (const FairGeoInterface&) {return *this;}
 
-  FairGeoIo* connectInput(const char*);
-  Bool_t connectOutput(const char*);
- 
-  ClassDef(FairGeoInterface,0) //
+    FairGeoIo* connectInput(const char*);
+    Bool_t connectOutput(const char*);
+
+    ClassDef(FairGeoInterface,0) //
 };
 
 #endif /* !FAIRGEOINTERFACE_H */

@@ -24,7 +24,7 @@
 #include "FairRtdbRun.h"
 
 //#include "TDirectory.h"
-//#include "TROOT.h"  
+//#include "TROOT.h"
 
 //#include <fstream>
 //#include "stdio.h"
@@ -39,16 +39,18 @@ ClassImp(FairParRootFile)
 ClassImp(FairParRootFileIo)
 
 FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option,
-                           const Text_t* ftitle, Int_t compress)
-		:TNamed(fname,  ftitle){
+                                 const Text_t* ftitle, Int_t compress)
+  :TNamed(fname,  ftitle)
+{
 //              : TFile(fname,option,ftitle,compress) {
   // constructor opens a ROOT file
   RootFile=new TFile(fname,option,ftitle,compress);
   run=0;
 }
-FairParRootFile::FairParRootFile(TFile *f) 
-	:TNamed(f->GetName(), f->GetTitle()){
-//	:TFile(f->GetName(),"UPDATE"){
+FairParRootFile::FairParRootFile(TFile* f)
+  :TNamed(f->GetName(), f->GetTitle())
+{
+//  :TFile(f->GetName(),"UPDATE"){
   // constructor opens a ROOT file
   //RootFile=new TFile(f->GetName(),"UPDATE");
   RootFile=f;
@@ -56,64 +58,70 @@ FairParRootFile::FairParRootFile(TFile *f)
 }
 
 
-FairParRootFile::~FairParRootFile() {
+FairParRootFile::~FairParRootFile()
+{
   // destructor
-  if (run) delete run;
+  if (run) { delete run; }
   run=0;
 }
 
-void FairParRootFile::readVersions(FairRtdbRun* currentRun) {
+void FairParRootFile::readVersions(FairRtdbRun* currentRun)
+{
   // finds the current run containing the parameter container versions
   // in the ROOT file
-  if (run) delete run;
+  if (run) { delete run; }
   run=(FairRtdbRun*)RootFile->Get(((char*)currentRun->GetName()));
 }
 
 
-FairParRootFileIo::FairParRootFileIo() {
+FairParRootFileIo::FairParRootFileIo()
+{
   // constructor
-    file=0;
-    fMerging=kFALSE;
+  file=0;
+  fMerging=kFALSE;
 
 }
 
-FairParRootFileIo::FairParRootFileIo(Bool_t merged) {
+FairParRootFileIo::FairParRootFileIo(Bool_t merged)
+{
   // constructor
-    file=0;
-    fMerging=merged;
+  file=0;
+  fMerging=merged;
 
 }
 
 
-FairParRootFileIo::~FairParRootFileIo() {
+FairParRootFileIo::~FairParRootFileIo()
+{
   // destructor closes an open file
   close();
 }
 
 Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
-                        const Text_t* ftitle, Int_t compress) {
+                               const Text_t* ftitle, Int_t compress)
+{
   // It opens a ROOT file (default option "READ"). An open file will be closed.
   // The detector I/Os for all detectors defined in the setup are activated.
 
   //DB, lock file for NFS in case of mulitple access
   //gDirectory->ReadKeys();
   close();
-  if (fMerging ){
-     // used test merging
-     fstream *f = new fstream(fname);
-     if (f->good()){
-        // check if file already exists
-        option = "UPDATE";
-     }else{
-         // if file doesn't exist recreate option is used
-         option = "RECREATE";
-     }
-     f->close();
-     delete f;
+  if (fMerging ) {
+    // used test merging
+    fstream* f = new fstream(fname);
+    if (f->good()) {
+      // check if file already exists
+      option = "UPDATE";
+    } else {
+      // if file doesn't exist recreate option is used
+      option = "RECREATE";
+    }
+    f->close();
+    delete f;
   }
 
   file=new FairParRootFile(fname,option,ftitle,compress);
-  
+
   if (file && file->IsOpen()) {
     FairRuntimeDb::instance()->activateParIo(this);
     return kTRUE;
@@ -123,7 +131,8 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
   return kFALSE;
 }
 
-Bool_t FairParRootFileIo::open(TFile *f) {
+Bool_t FairParRootFileIo::open(TFile* f)
+{
   // It opens a ROOT file (default option "READ"). An open file will be closed.
   // The detector I/Os for all detectors defined in the setup are activated.
 //  close();
@@ -135,17 +144,19 @@ Bool_t FairParRootFileIo::open(TFile *f) {
   return kFALSE;
 }
 
-void FairParRootFileIo::close() {
+void FairParRootFileIo::close()
+{
   // closes an open ROOT file and deletes the detector I/Os
   if (file) {
     file->Close();
     delete file;
     file=0;
   }
-  if (detParIoList) detParIoList->Delete();
+  if (detParIoList) { detParIoList->Delete(); }
 }
 
-void FairParRootFileIo::print() {
+void FairParRootFileIo::print()
+{
   // prints the content of a open ROOT file and the list of detector I/Os
   if (file) {
     file->ls();
@@ -157,23 +168,25 @@ void FairParRootFileIo::print() {
       cout<<" "<<io->GetName();
     }
     cout<<'\n';
-  }
-  else cout<<"No ROOT file open\n";
+  } else { cout<<"No ROOT file open\n"; }
 }
 
-FairParRootFile* FairParRootFileIo::getParRootFile() {
+FairParRootFile* FairParRootFileIo::getParRootFile()
+{
   // returns a pointer to the current ROOT file
   return file;
 }
 
-void FairParRootFileIo::readVersions(FairRtdbRun* currentRun) {
+void FairParRootFileIo::readVersions(FairRtdbRun* currentRun)
+{
   // reads the parameter container versions for the current run from
   // the ROOT file
-  if (file) file->readVersions(currentRun);
+  if (file) { file->readVersions(currentRun); }
 }
 
-TList* FairParRootFileIo::getKeys() {
+TList* FairParRootFileIo::getKeys()
+{
   // returns the list of keys found in the ROOT file
-  if (file) return file->GetListOfKeys();
+  if (file) { return file->GetListOfKeys(); }
   return 0;
 }

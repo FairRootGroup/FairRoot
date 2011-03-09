@@ -2,8 +2,8 @@
 
 // -----   Default constructor   -------------------------------------------
 FairTimeStamp::FairTimeStamp()
-: FairMultiLinkedData(),
-  fTimeStamp(0)
+  : FairMultiLinkedData(),
+    fTimeStamp(0)
 {
 }
 // -----   Standard constructor   ------------------------------------------
@@ -14,7 +14,7 @@ FairTimeStamp::FairTimeStamp(Double_t time)
 }
 
 // -----   Destructor   ----------------------------------------------------
-FairTimeStamp::~FairTimeStamp() 
+FairTimeStamp::~FairTimeStamp()
 {
 }
 

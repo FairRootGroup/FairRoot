@@ -55,7 +55,7 @@
 //
 // FairGeoRotation operator * (const FairGeoRotation&) const;
 //      rotates the given rotation
-//  
+//
 // void print()
 //      shows the matrix
 //
@@ -72,16 +72,18 @@ ClassImp(FairGeoRotation)
 
 
 FairGeoRotation::FairGeoRotation(const Double_t a,const Double_t b,
-                             const Double_t c) {
+                                 const Double_t c)
+{
   // constructor taking three Euler angles
   setEulerAngles(a,b,c);
 }
 
 
 void FairGeoRotation::setEulerAngles(const Double_t a,const Double_t b,
-                                   const Double_t c) {
+                                     const Double_t c)
+{
   // sets the matrix calculating the values from the given Euler angles
-  const double deg2rad=0.01745329252; 
+  const double deg2rad=0.01745329252;
   Double_t s0=TMath::Sin(a*deg2rad);
   Double_t c0=TMath::Cos(a*deg2rad);
   Double_t s1=TMath::Sin(b*deg2rad);
@@ -100,10 +102,11 @@ void FairGeoRotation::setEulerAngles(const Double_t a,const Double_t b,
 }
 
 
-Double_t FairGeoRotation::diff2(const FairGeoRotation& r) const {
+Double_t FairGeoRotation::diff2(const FairGeoRotation& r) const
+{
   // calculates the square of the difference between 2 matrices
   Double_t s=0;
-  for(Int_t i=0;i<9;i++) {
+  for(Int_t i=0; i<9; i++) {
     Double_t d=rot[i]-r(i);
     s+=d*d;
   }
@@ -111,14 +114,15 @@ Double_t FairGeoRotation::diff2(const FairGeoRotation& r) const {
 }
 
 
-TRotMatrix* FairGeoRotation::createTRotMatrix(const Text_t* name,const Text_t* title) {
+TRotMatrix* FairGeoRotation::createTRotMatrix(const Text_t* name,const Text_t* title)
+{
   // creates a TRotMatrix
   // (uses a new() operator and the user has to take care to free the memory)
   TRotMatrix* t=0;
-  if (isUnitMatrix()==kTRUE) return t;
+  if (isUnitMatrix()==kTRUE) { return t; }
   Double_t a[9];
-  for(Int_t i=0;i<3;i++) {
-    for(Int_t j=0;j<3;j++) a[j+3*i]=rot[i+3*j];
+  for(Int_t i=0; i<3; i++) {
+    for(Int_t j=0; j<3; j++) { a[j+3*i]=rot[i+3*j]; }
   }
   t=new TRotMatrix(name,title,a);
   return t;

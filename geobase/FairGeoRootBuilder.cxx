@@ -32,27 +32,28 @@ FairGeoRootBuilder::FairGeoRootBuilder()
 }
 
 FairGeoRootBuilder::FairGeoRootBuilder(const char* name,const char* title)
-	: FairGeoBuilder(name,title),
-	   geoManager(0)
-	
+  : FairGeoBuilder(name,title),
+    geoManager(0)
+
 {
   // Constructor
- 
+
 }
 
-Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat) {
+Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat)
+{
   // Creates the volume
-  if (!geoManager||!volu) return kFALSE;
+  if (!geoManager||!volu) { return kFALSE; }
   //  volu->print();
 
   TString nodeName= volu->GetName();
   if ( hadFormat == 1 ) {
-  volu->setHadFormat( hadFormat );
-  nodeName=nodeName(0,4);
+    volu->setHadFormat( hadFormat );
+    nodeName=nodeName(0,4);
   } else {
-  nodeName = (volu->GetName());
-  Ssiz_t l=nodeName.Last('#');
-  if (l>0) nodeName=nodeName(0,l);
+    nodeName = (volu->GetName());
+    Ssiz_t l=nodeName.Last('#');
+    if (l>0) { nodeName=nodeName(0,l); }
   }
 
   FairGeoNode* mother=volu->getMotherNode();
@@ -63,33 +64,33 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat) {
 
 
 
-	
-	
+
+
   TGeoVolume* rv=0;
   FairGeoNode* cv=volu->getCopyNode();
 //  if (cv) cout<<"Copy of "<<cv->GetName()<<endl;
-  if (cv) rv=cv->getRootVolume();
+  if (cv) { rv=cv->getRootVolume(); }
   if (!rv) {
     FairGeoMedium* lmedium=volu->getMedium();
     Int_t lnMed=lmedium->getMediumIndex();
-    if (lnMed<=0) lnMed=createMedium(lmedium);
-    if (lnMed<=0) return kFALSE;
+    if (lnMed<=0) { lnMed=createMedium(lmedium); }
+    if (lnMed<=0) { return kFALSE; }
     TArrayD* par=volu->getParameters();
     //for (Int_t k=0;k<par->GetSize();k++) cout<<par->At(k)<<" ";
     // cout<<endl;
-       //cout << "Create Volume of Shape " << volu->getShape() << endl;
+    //cout << "Create Volume of Shape " << volu->getShape() << endl;
     if (volu->getShape().Contains("TORUS")) { // Torus is missing in the TGeoManager::Volume
-						// this should solve the problem tell it is implimented in root
-      TGeoMedium *medium =geoManager->GetMedium(lnMed);
+      // this should solve the problem tell it is implimented in root
+      TGeoMedium* medium =geoManager->GetMedium(lnMed);
       rv = geoManager->MakeTorus(nodeName.Data(),medium,par->At(0),par->At(1),par->At(2),par->At(3),par->At(4));
-     // cout << "Create Torus" << nodeName.Data() << endl;
-	}else if (volu->getShape().Contains("ASSEMBLY")) {
-		rv=geoManager->MakeVolumeAssembly(nodeName.Data());	
-		
-	}else {
-	    rv=geoManager->Volume(nodeName.Data(),volu->getShape().Data(),
-             lnMed,par->GetArray(),par->GetSize());
-     }
+      // cout << "Create Torus" << nodeName.Data() << endl;
+    } else if (volu->getShape().Contains("ASSEMBLY")) {
+      rv=geoManager->MakeVolumeAssembly(nodeName.Data());
+
+    } else {
+      rv=geoManager->Volume(nodeName.Data(),volu->getShape().Data(),
+                            lnMed,par->GetArray(),par->GetSize());
+    }
     volu->setCreated();
     if (volu->isModule()&&cv) {
       cv->setCreated();
@@ -97,36 +98,37 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat) {
       cv->getPosition();
     }
   }
-  if (!rv) return kFALSE;
+  if (!rv) { return kFALSE; }
   volu->setRootVolume(rv);
-  if (volu->isTopNode()) geoManager->SetTopVolume(rv);
+  if (volu->isTopNode()) { geoManager->SetTopVolume(rv); }
   else {
     FairGeoTransform* trans=volu->getPosition();
     const FairGeoRotation& rot=trans->getRotMatrix();
     const FairGeoVector& pos=trans->getTransVector();
     TGeoMatrix* tr=0;
-    if (((FairGeoRotation&)rot).isUnitMatrix())
+    if (((FairGeoRotation&)rot).isUnitMatrix()) {
       tr=new TGeoTranslation(pos.getX(),pos.getY(),pos.getZ());
-    else {
+    } else {
       nRot++;
       char b[10];
       sprintf(b,"R%i",nRot);
       TGeoRotation* r=new TGeoRotation(b);
       Double_t a[9];
-      for (Int_t i=0;i<9;i++) a[i]=rot(i);
+      for (Int_t i=0; i<9; i++) { a[i]=rot(i); }
       r->SetMatrix(a);
       tr=new TGeoCombiTrans(pos.getX(),pos.getY(),pos.getZ(),r);
     }
     TGeoVolume* mo=mother->getRootVolume();
-    if (!mo) return kFALSE;
+    if (!mo) { return kFALSE; }
     mo->AddNode(rv,volu->getCopyNo(),tr);
   }
   return kTRUE;
 }
 
-Int_t FairGeoRootBuilder::createMedium(FairGeoMedium* med) {
+Int_t FairGeoRootBuilder::createMedium(FairGeoMedium* med)
+{
   // Creates the medium
-  if (!geoManager&&!med) return 0;
+  if (!geoManager&&!med) { return 0; }
   Int_t nComp=med->getNComponents();
   Int_t weightFac=med->getWeightFac();
   TGeoMaterial* material=0;
@@ -134,23 +136,24 @@ Int_t FairGeoRootBuilder::createMedium(FairGeoMedium* med) {
   if (nComp==1) {
     med->getComponent(0,p);
     material=new TGeoMaterial(med->GetName(),p[0],p[1],med->getDensity(),
-                         med->getRadiationLength());
-          // Interaction length not defined!!!!!!
+                              med->getRadiationLength());
+    // Interaction length not defined!!!!!!
   } else {
     material=new TGeoMixture(med->GetName(),nComp,med->getDensity());
     Double_t sumWeights=0.;
     if (weightFac<0) {
-      for(Int_t i=0;i<nComp;i++) {
+      for(Int_t i=0; i<nComp; i++) {
         med->getComponent(i,p);
         sumWeights+=p[0]*p[2];
       }
     }
-    for(Int_t i=0;i<nComp;i++) {
+    for(Int_t i=0; i<nComp; i++) {
       med->getComponent(i,p);
-      if (weightFac>0)
+      if (weightFac>0) {
         ((TGeoMixture*)material)->DefineElement(i,p[0],p[1],p[2]);
-      else
+      } else {
         ((TGeoMixture*)material)->DefineElement(i,p[0],p[1],p[0]*p[2]/sumWeights);
+      }
     }
   }
   nMed++;
@@ -158,20 +161,22 @@ Int_t FairGeoRootBuilder::createMedium(FairGeoMedium* med) {
   Double_t mp[10];
   med->getMediumPar(mp);
   TGeoMedium* medium=new TGeoMedium(med->GetName(),nMed,material,mp);
-  if (medium) return nMed;
-  else return 0;
+  if (medium) { return nMed; }
+  else { return 0; }
 }
 
-void FairGeoRootBuilder::finalize() {
+void FairGeoRootBuilder::finalize()
+{
   // Closes the geometry input in ROOT and draws the cave
   if (geoManager) {
     geoManager->CloseGeometry();
     geoManager->SetVisLevel(5);
     geoManager->GetTopVolume()->Draw();
-  }    
+  }
 }
 
-void FairGeoRootBuilder::checkOverlaps(Double_t ovlp) {
+void FairGeoRootBuilder::checkOverlaps(Double_t ovlp)
+{
   // Checks the geometry for overlaps and extrusions wit a default precision of 1 micron
   if (geoManager) {
     geoManager->CheckOverlaps(ovlp,"SAME");

@@ -7,8 +7,8 @@
 
 
 // -----   Default constructor   -------------------------------------------
-FairGenerator::FairGenerator() 
- : TNamed(){}
+FairGenerator::FairGenerator()
+  : TNamed() {}
 // -------------------------------------------------------------------------
 
 

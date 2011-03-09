@@ -7,7 +7,7 @@
 // FairGeoTube
 //
 // class for the GEANT shape TUBE
-// 
+//
 // The size of a TUBE is defined by 3 'points'.
 //   point 0:   origin of starting circle of the tube;
 //   point 1:   inner radius of starting circle,
@@ -31,7 +31,8 @@
 
 ClassImp(FairGeoTube)
 
-FairGeoTube::FairGeoTube() {
+FairGeoTube::FairGeoTube()
+{
   // constructor
   fName="TUBE";
   nPoints=3;
@@ -40,7 +41,8 @@ FairGeoTube::FairGeoTube() {
 }
 
 
-FairGeoTube::~FairGeoTube() {
+FairGeoTube::~FairGeoTube()
+{
   // default destructor
   if (param) {
     delete param;
@@ -57,17 +59,18 @@ FairGeoTube::~FairGeoTube() {
 }
 
 
-Int_t FairGeoTube::readPoints(fstream* pFile,FairGeoVolume* volu) {
+Int_t FairGeoTube::readPoints(fstream* pFile,FairGeoVolume* volu)
+{
   // reads the 3 'points' decribed above from ascii file
   // if the array of points is not existing in the volume it is created and
   // the values are stored inside
   // returns the number of points
-  if (!pFile) return 0;
-  if (volu->getNumPoints()!=nPoints) volu->createPoints(nPoints);
+  if (!pFile) { return 0; }
+  if (volu->getNumPoints()!=nPoints) { volu->createPoints(nPoints); }
   Double_t x,y,z;
   const Int_t maxbuf=155;
   Text_t buf[maxbuf];
-  for(Int_t i=0;i<nPoints;i++) {
+  for(Int_t i=0; i<nPoints; i++) {
     pFile->getline(buf,maxbuf);
     if (i!=1) {
       sscanf(buf,"%lf%lf%lf",&x,&y,&z);
@@ -81,32 +84,35 @@ Int_t FairGeoTube::readPoints(fstream* pFile,FairGeoVolume* volu) {
 }
 
 
-Bool_t FairGeoTube::writePoints(fstream* pFile,FairGeoVolume* volu) {
+Bool_t FairGeoTube::writePoints(fstream* pFile,FairGeoVolume* volu)
+{
   // writes the 3 'points' decribed above to ascii file
-  if (!pFile) return kFALSE;  
+  if (!pFile) { return kFALSE; }
   Text_t buf[155];
-  for(Int_t i=0;i<nPoints;i++) {
+  for(Int_t i=0; i<nPoints; i++) {
     FairGeoVector& v=*(volu->getPoint(i));
-    if (i!=1) sprintf(buf,"%9.3f%10.3f%10.3f\n",v(0),v(1),v(2));
-    else sprintf(buf,"%9.3f%10.3f\n",v(0),v(1));
+    if (i!=1) { sprintf(buf,"%9.3f%10.3f%10.3f\n",v(0),v(1),v(2)); }
+    else { sprintf(buf,"%9.3f%10.3f\n",v(0),v(1)); }
     pFile->write(buf,strlen(buf));
   }
   return kTRUE;
 }
 
 
-void FairGeoTube::printPoints(FairGeoVolume* volu) {
+void FairGeoTube::printPoints(FairGeoVolume* volu)
+{
   // prints volume points to screen
-  for(Int_t i=0;i<nPoints;i++) {
+  for(Int_t i=0; i<nPoints; i++) {
     FairGeoVector& v=*(volu->getPoint(i));
-    if (i!=1) printf("%9.3f%10.3f%10.3f\n",v(0),v(1),v(2));
-    else printf("%9.3f%10.3f\n",v(0),v(1));
+    if (i!=1) { printf("%9.3f%10.3f%10.3f\n",v(0),v(1),v(2)); }
+    else { printf("%9.3f%10.3f\n",v(0),v(1)); }
   }
 }
 
 
-TArrayD* FairGeoTube::calcVoluParam(FairGeoVolume* volu) {
-  // calculates the parameters needed to create the shape TUBE 
+TArrayD* FairGeoTube::calcVoluParam(FairGeoVolume* volu)
+{
+  // calculates the parameters needed to create the shape TUBE
   Double_t fac=10.;
   FairGeoVector& v1=*(volu->getPoint(1));
   param->AddAt(v1(0)/fac,0);
@@ -114,18 +120,19 @@ TArrayD* FairGeoTube::calcVoluParam(FairGeoVolume* volu) {
   FairGeoVector v=*(volu->getPoint(2)) - *(volu->getPoint(0));
   param->AddAt(TMath::Abs(v(2))/fac/2.,2);
   return param;
-} 
+}
 
 
 void FairGeoTube::calcVoluPosition(FairGeoVolume* volu,
-          const FairGeoTransform& dTC,const FairGeoTransform& mTR) {
+                                   const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+{
   // calculates the position of the center of the ROOT volume in the intrinsic
   // coordinate system and stores it in the data element 'center'
   // calls the function posInMother(...) to calculate the position of the
-  // volume in its mother 
-  Double_t t[3]={0.,0.,0.};
+  // volume in its mother
+  Double_t t[3]= {0.,0.,0.};
   FairGeoVector v=*(volu->getPoint(2)) + *(volu->getPoint(0));
-  t[2]=v(2)/2.;  
+  t[2]=v(2)/2.;
   center->clear();
   center->setTransVector(t);
   posInMother(dTC,mTR);

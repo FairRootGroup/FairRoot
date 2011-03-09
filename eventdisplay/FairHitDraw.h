@@ -14,20 +14,20 @@
 
 class FairHitDraw: public FairBoxSetDraw
 {
-public:
-	FairHitDraw();
+  public:
+    FairHitDraw();
 
-	/** Standard constructor
-	  *@param name        Name of task
-	  *@param iVerbose    Verbosity level
-	  **/
-	FairHitDraw(const char* name, Int_t iVerbose = 1);
+    /** Standard constructor
+      *@param name        Name of task
+      *@param iVerbose    Verbosity level
+      **/
+    FairHitDraw(const char* name, Int_t iVerbose = 1);
 
-protected:
+  protected:
 
-	TVector3 GetVector(TObject* obj);
+    TVector3 GetVector(TObject* obj);
 
-	ClassDef(FairHitDraw,1);
+    ClassDef(FairHitDraw,1);
 };
 
 #endif /* FAIRHITDRAW_H_ */

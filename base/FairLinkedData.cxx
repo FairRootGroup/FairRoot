@@ -9,11 +9,13 @@
 
 ClassImp(FairLinkedData);
 
-FairLinkedData::FairLinkedData():fDefaultType(0) {
-	// TODO Auto-generated constructor stub
+FairLinkedData::FairLinkedData():fDefaultType(0)
+{
+  // TODO Auto-generated constructor stub
 
 }
 
-FairLinkedData::~FairLinkedData() {
-	// TODO Auto-generated destructor stub
+FairLinkedData::~FairLinkedData()
+{
+  // TODO Auto-generated destructor stub
 }

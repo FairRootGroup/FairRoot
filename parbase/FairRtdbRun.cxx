@@ -9,7 +9,7 @@
 //  The name of each run is the run id converted to a string.
 //  The run id number identifies the event file.
 //  In the parameter ROOT file the valid parameter versions are
-//  accessible via the name. 
+//  accessible via the name.
 //  Associated with the run is a list of container
 //  names with the versions of the containers in the two
 //  possible inputs and the output (class FairParVersions).
@@ -29,20 +29,23 @@ using std::setw;
 ClassImp(FairParVersion)
 ClassImp(FairRtdbRun)
 
-FairParVersion::FairParVersion(Text_t* name) : TNamed(name,"version info") {
+FairParVersion::FairParVersion(Text_t* name) : TNamed(name,"version info")
+{
   // constructor with the name of the container
   rootVersion=0;
-  for(Int_t i=0;i<3;i++) {inputVersions[i]=-1;}
+  for(Int_t i=0; i<3; i++) {inputVersions[i]=-1;}
 }
 
 FairRtdbRun::FairRtdbRun(const Text_t* name,const Text_t* refName)
-              : TNamed(name,"run parameters") {
+  : TNamed(name,"run parameters")
+{
   // constructor with the run id and reference run as strings
   parVersions=new TList();
   refRun=refName;
 }
 
-FairRtdbRun::FairRtdbRun(Int_t r,Int_t rr) {
+FairRtdbRun::FairRtdbRun(Int_t r,Int_t rr)
+{
   // constructor with the run id and reference run as numbers
   parVersions=new TList();
   char name[255];
@@ -51,7 +54,8 @@ FairRtdbRun::FairRtdbRun(Int_t r,Int_t rr) {
   setRefRun(rr);
 }
 
-FairRtdbRun::FairRtdbRun(FairRtdbRun &run) {
+FairRtdbRun::FairRtdbRun(FairRtdbRun& run)
+{
   // copy constructor
   SetName(run.GetName());
   parVersions=new TList();
@@ -64,13 +68,15 @@ FairRtdbRun::FairRtdbRun(FairRtdbRun &run) {
   refRun=run.refRun;
 }
 
-FairRtdbRun::FairRtdbRun() {
-  // default Constructor 
-  // parVersions has to be set to zero otherwise the 
+FairRtdbRun::FairRtdbRun()
+{
+  // default Constructor
+  // parVersions has to be set to zero otherwise the
   // root file is not browsable
   parVersions=0;
 }
-FairRtdbRun::~FairRtdbRun() {
+FairRtdbRun::~FairRtdbRun()
+{
   // destructor
   if (parVersions) {
     parVersions->Delete();
@@ -79,18 +85,21 @@ FairRtdbRun::~FairRtdbRun() {
   }
 }
 
-void FairRtdbRun::addParVersion(FairParVersion *pv) {
+void FairRtdbRun::addParVersion(FairParVersion* pv)
+{
   // adds a container version object to the list
   parVersions->Add(pv);
 }
 
-FairParVersion* FairRtdbRun::getParVersion(const Text_t* name) {
+FairParVersion* FairRtdbRun::getParVersion(const Text_t* name)
+{
   // return a container version object called by the name of
   // the container
   return (FairParVersion*)parVersions->FindObject(name);
 }
 
-void FairRtdbRun::resetInputVersions() {
+void FairRtdbRun::resetInputVersions()
+{
   TIter next(parVersions);
   FairParVersion* v;
   while ((v=(FairParVersion*)next())) {
@@ -98,7 +107,8 @@ void FairRtdbRun::resetInputVersions() {
   }
 }
 
-void FairRtdbRun::resetOutputVersions() {
+void FairRtdbRun::resetOutputVersions()
+{
   TIter next(parVersions);
   FairParVersion* v;
   while ((v=(FairParVersion*)next())) {
@@ -106,7 +116,8 @@ void FairRtdbRun::resetOutputVersions() {
   }
 }
 
-void FairRtdbRun::print() {
+void FairRtdbRun::print()
+{
   // prints the list of container versions for this run
   cout<<"run: "<<GetName()<<'\n';
   FairParVersion* v;
@@ -121,7 +132,8 @@ void FairRtdbRun::print() {
   }
 }
 
-void FairRtdbRun::write(fstream& fout) {
+void FairRtdbRun::write(fstream& fout)
+{
   // writes the list of container versions for this run to fstream
   fout<<"run: "<<GetName()<<'\n';
   FairParVersion* v;

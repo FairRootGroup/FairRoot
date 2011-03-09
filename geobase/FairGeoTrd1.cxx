@@ -7,7 +7,7 @@
 // FairGeoTrd1
 //
 // class for the GEANT shape TRD1
-// 
+//
 // The technical coordinate system of a TRD1, which sits in
 // CAVE and is not rotated, is the laboratory system.
 // The y-axis points from the smaller side to the larger one.
@@ -19,7 +19,7 @@
 //              z-technical = y-Geant
 // This is stored in the data element intrinsicRot which is
 // created in the function calcVoluPosition(...)
-// 
+//
 /////////////////////////////////////////////////////////////
 
 #include "FairGeoTrd1.h"
@@ -31,8 +31,8 @@
 
 ClassImp(FairGeoTrd1)
 
-FairGeoTrd1::FairGeoTrd1() 
-  :intrinsicRot(FairGeoRotation()) 
+FairGeoTrd1::FairGeoTrd1()
+  :intrinsicRot(FairGeoRotation())
 {
   // constructor
   fName="TRD1";
@@ -46,7 +46,8 @@ FairGeoTrd1::FairGeoTrd1()
 }
 
 
-FairGeoTrd1::~FairGeoTrd1() {
+FairGeoTrd1::~FairGeoTrd1()
+{
   // destructor
   if (param) {
     delete param;
@@ -63,8 +64,9 @@ FairGeoTrd1::~FairGeoTrd1() {
 }
 
 
-TArrayD* FairGeoTrd1::calcVoluParam(FairGeoVolume* volu) {
-  // calculates the parameters needed to create the shape 
+TArrayD* FairGeoTrd1::calcVoluParam(FairGeoVolume* volu)
+{
+  // calculates the parameters needed to create the shape
   Double_t fac=20.;
   FairGeoVector& v0=*(volu->getPoint(0));
   FairGeoVector& v1=*(volu->getPoint(1));
@@ -76,15 +78,16 @@ TArrayD* FairGeoTrd1::calcVoluParam(FairGeoVolume* volu) {
   param->AddAt((v4(2)-v0(2))/fac,2);
   param->AddAt((v1(1)-v0(1))/fac,3);
   return param;
-} 
+}
 
 
 void FairGeoTrd1::calcVoluPosition(FairGeoVolume* volu,
-            const FairGeoTransform& dTC,const FairGeoTransform& mTR) {
+                                   const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+{
   // calls the function posInMother(...) to calculate the position of the
-  // volume in its mother 
-  Double_t t[3]={0.,0.,0.};
-  for(Int_t i=0;i<4;i++) t[0]+=(*(volu->getPoint(i)))(0);
+  // volume in its mother
+  Double_t t[3]= {0.,0.,0.};
+  for(Int_t i=0; i<4; i++) { t[0]+=(*(volu->getPoint(i)))(0); }
   t[0]/=4.;
   FairGeoVector& v0=*(volu->getPoint(0));
   FairGeoVector& v1=*(volu->getPoint(1));

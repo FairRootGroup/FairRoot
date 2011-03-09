@@ -8,7 +8,7 @@
  *@ author V.Friese <v.friese@gsi.de>
  *@author D.Bertini <d.bertini@gsi.de>
  *
- The FairUrqmdGenerator reads the output file 14 (ftn14) from UrQMD. The UrQMD 
+ The FairUrqmdGenerator reads the output file 14 (ftn14) from UrQMD. The UrQMD
  calculation has to be performed in the CM system of the collision; Lorentz
  transformation into the lab is performed by this class.
  Derived from FairGenerator.
@@ -24,7 +24,7 @@
 
 #include <fstream>
 #include <map>
- 
+
 class TVirtualMCStack;
 class FairPrimaryGenerator;
 
@@ -32,49 +32,49 @@ class FairPrimaryGenerator;
 class FairUrqmdGenerator : public FairGenerator
 {
 
- public:
+  public:
 
-  /** Default constructor without arguments should not be used. **/
-  FairUrqmdGenerator();
-
-
-  /** Standard constructor.
-   * @param fileName The input file name
-   **/
-  FairUrqmdGenerator(const char* fileName);
+    /** Default constructor without arguments should not be used. **/
+    FairUrqmdGenerator();
 
 
-  /** Destructor. **/
-  ~FairUrqmdGenerator();
+    /** Standard constructor.
+     * @param fileName The input file name
+     **/
+    FairUrqmdGenerator(const char* fileName);
 
 
-  /** Reads on event from the input file and pushes the tracks onto
-   ** the stack. Abstract method in base class.
-   ** @param pStack    pointer to the stack
-   ** @param ver       not used
-   **/
-  Bool_t ReadEvent(FairPrimaryGenerator* primGen);
+    /** Destructor. **/
+    ~FairUrqmdGenerator();
 
-  //Skip some events in file
-  Bool_t SkipEvents(Int_t count);
-   
- private:
 
-  FILE* fInputFile;                     //!  Input file
+    /** Reads on event from the input file and pushes the tracks onto
+     ** the stack. Abstract method in base class.
+     ** @param pStack    pointer to the stack
+     ** @param ver       not used
+     **/
+    Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
-  std::map<Int_t,Int_t> fParticleTable;      //!  Map from UrQMD PID to PDGPID
+    //Skip some events in file
+    Bool_t SkipEvents(Int_t count);
 
-  const Char_t * fFileName;             //!  Input file name
+  private:
 
-  /** Private method ReadConversionTable. Reads the conversion table
-      from UrQMD particle code to PDG particle code and fills the
-      conversion map. Is called from the constructor. **/
-  void ReadConversionTable();
+    FILE* fInputFile;                     //!  Input file
 
-  ClassDef(FairUrqmdGenerator,1);
- 
+    std::map<Int_t,Int_t> fParticleTable;      //!  Map from UrQMD PID to PDGPID
+
+    const Char_t* fFileName;              //!  Input file name
+
+    /** Private method ReadConversionTable. Reads the conversion table
+        from UrQMD particle code to PDG particle code and fills the
+        conversion map. Is called from the constructor. **/
+    void ReadConversionTable();
+
+    ClassDef(FairUrqmdGenerator,1);
+
 };
 
 #endif
-   
+
 

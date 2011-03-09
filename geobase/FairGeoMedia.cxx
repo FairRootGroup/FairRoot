@@ -20,16 +20,17 @@ using std::endl;
 
 ClassImp(FairGeoMedia)
 
-FairGeoMedia::FairGeoMedia() 
- : media(new TList()),
-   inputFile(""),
-   author(""),
-   description("")
+FairGeoMedia::FairGeoMedia()
+  : media(new TList()),
+    inputFile(""),
+    author(""),
+    description("")
 {
   // Constructor
 }
 
-FairGeoMedia::~FairGeoMedia() {
+FairGeoMedia::~FairGeoMedia()
+{
   // Destructor
   if (media) {
     media->Delete();
@@ -38,17 +39,20 @@ FairGeoMedia::~FairGeoMedia() {
   }
 }
 
-FairGeoMedium* FairGeoMedia::getMedium(const char* mediumName) {
+FairGeoMedium* FairGeoMedia::getMedium(const char* mediumName)
+{
   // Returns the medium with name mediumName
   return (FairGeoMedium*)media->FindObject(mediumName);
 }
 
-void FairGeoMedia::addMedium(FairGeoMedium* m) {
+void FairGeoMedia::addMedium(FairGeoMedium* m)
+{
   // Adds a medium to the list of media
   media->Add(m);
 }
 
-void FairGeoMedia::list() {
+void FairGeoMedia::list()
+{
   // Lists all media
   cout<<"********************************************************************\n";
   cout<<"List of media:\n";
@@ -59,16 +63,17 @@ void FairGeoMedia::list() {
   }
 }
 
-void FairGeoMedia::print() {
+void FairGeoMedia::print()
+{
   // Prints the media
-  if (!author.IsNull())      cout<<"//Author:      "<<author<<'\n';
-  if (!description.IsNull()) cout<<"//Description: "<<description<<'\n';
+  if (!author.IsNull()) { cout<<"//Author:      "<<author<<'\n'; }
+  if (!description.IsNull()) { cout<<"//Description: "<<description<<'\n'; }
   cout<<"//----------------------------------------------------------\n";
   TListIter iter(media);
   FairGeoMedium* medium;
   Int_t i=0;
   while((medium=(FairGeoMedium*)iter.Next())) {
-    if (medium->getAutoFlag()!=0){
+    if (medium->getAutoFlag()!=0) {
       medium->print();
       i++;
     }
@@ -79,12 +84,13 @@ void FairGeoMedia::print() {
     cout<<"AUTONULL\n";
     cout<<"//----------------------------------------------\n";
     while((medium=(FairGeoMedium*)iter.Next())) {
-      if (medium->getAutoFlag()==0) medium->print();
+      if (medium->getAutoFlag()==0) { medium->print(); }
     }
   }
 }
 
-void FairGeoMedia::read(fstream& fin) {
+void FairGeoMedia::read(fstream& fin)
+{
   // Reads the media from file
   cout<<"-I- FairGeoMedia  Read media"<<endl;
   const Int_t maxBuf=256;
@@ -92,29 +98,30 @@ void FairGeoMedia::read(fstream& fin) {
   Int_t autoflag=1;
   while(!fin.eof()) {
     fin>>buf;
-    if (buf[0]=='\0' || buf[0]=='/') fin.getline(buf,maxBuf);
-    else if (fin.eof()) break;
+    if (buf[0]=='\0' || buf[0]=='/') { fin.getline(buf,maxBuf); }
+    else if (fin.eof()) { break; }
     else {
       TString eleName(buf);
       if (eleName.CompareTo("AUTONULL")!=0) {
         FairGeoMedium* medium=new FairGeoMedium(eleName);
         medium->read(fin,autoflag);
         media->Add(medium);
-      } else autoflag=0;
+      } else { autoflag=0; }
     }
   }
 }
 
-void FairGeoMedia::write(fstream& fout) {
+void FairGeoMedia::write(fstream& fout)
+{
   // Writes the media to file
-  if (!author.IsNull())      fout<<"//Author:      "<<author<<'\n';
-  if (!description.IsNull()) fout<<"//Description: "<<description<<'\n';
+  if (!author.IsNull()) { fout<<"//Author:      "<<author<<'\n'; }
+  if (!description.IsNull()) { fout<<"//Description: "<<description<<'\n'; }
   fout<<"//----------------------------------------------------------\n";
   TListIter iter(media);
   FairGeoMedium* medium;
   Int_t i=0;
   while((medium=(FairGeoMedium*)iter.Next())) {
-    if (medium->getAutoFlag()!=0){
+    if (medium->getAutoFlag()!=0) {
       medium->write(fout);
       i++;
     }
@@ -125,7 +132,7 @@ void FairGeoMedia::write(fstream& fout) {
     fout<<"AUTONULL\n";
     fout<<"//----------------------------------------------\n";
     while((medium=(FairGeoMedium*)iter.Next())) {
-      if (medium->getAutoFlag()==0) medium->write(fout);
+      if (medium->getAutoFlag()==0) { medium->write(fout); }
     }
   }
 }

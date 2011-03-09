@@ -17,7 +17,7 @@ using std::pow;
 
 ClassImp(FairGeoMedium)
 
-FairGeoMedium::FairGeoMedium(const char* name) : TNamed(), 
+FairGeoMedium::FairGeoMedium(const char* name) : TNamed(),
   medId(0),
   autoflag(1),
   nComponents(0),
@@ -42,10 +42,11 @@ FairGeoMedium::FairGeoMedium(const char* name) : TNamed(),
   rindex(0)
 {
   // Constructor for a medium with name and index id
-  SetName(name); 
+  SetName(name);
 };
 
-FairGeoMedium::~FairGeoMedium() {
+FairGeoMedium::~FairGeoMedium()
+{
   // Destructor
   if (nComponents>0) {
     delete [] ca;
@@ -69,9 +70,10 @@ FairGeoMedium::~FairGeoMedium() {
   }
 }
 
-void FairGeoMedium::setNComponents(Int_t n) {
+void FairGeoMedium::setNComponents(Int_t n)
+{
   // Sets the number of components in the material
-  if (n==0) return;
+  if (n==0) { return; }
   Int_t k=abs(n);
   if (nComponents!=0 && k!=nComponents) {
     delete [] ca;
@@ -81,14 +83,15 @@ void FairGeoMedium::setNComponents(Int_t n) {
   }
   if (nComponents==0) {
     nComponents=k;
-    ca=new Double_t[k];  
-    cz=new Double_t[k];  
+    ca=new Double_t[k];
+    cz=new Double_t[k];
     cw=new Double_t[k];
   }
   weightFac=(Int_t)(n/nComponents);
-}  
+}
 
-Bool_t FairGeoMedium::setComponent (Int_t i,Double_t a,Double_t z,Double_t weight) {
+Bool_t FairGeoMedium::setComponent (Int_t i,Double_t a,Double_t z,Double_t weight)
+{
   // Defines the ith material component
   if (i<0||i>=nComponents) {
     Error("setNComponents","Wrong index");
@@ -97,20 +100,22 @@ Bool_t FairGeoMedium::setComponent (Int_t i,Double_t a,Double_t z,Double_t weigh
   ca[i]=a;
   cz[i]=z;
   cw[i]=weight;
-  return kTRUE;     
+  return kTRUE;
 }
 
-void FairGeoMedium::getComponent(Int_t i,Double_t* p) {
+void FairGeoMedium::getComponent(Int_t i,Double_t* p)
+{
   // Returns the ith material component
   if (i>=0&&i<nComponents) {
     p[0]=ca[i];
     p[1]=cz[i];
     p[2]=cw[i];
- //   cout << " -I p: " << p[0] << p[1] << p[2] << endl;
-  } else p[0]=p[1]=p[2]=0.;
+//   cout << " -I p: " << p[0] << p[1] << p[2] << endl;
+  } else { p[0]=p[1]=p[2]=0.; }
 }
 
-void FairGeoMedium::setNpckov (Int_t n) {
+void FairGeoMedium::setNpckov (Int_t n)
+{
   // Sets the number of optical parameters for the tracking of Cerenkov light
   if (n!=npckov && npckov>0) {
     delete [] ppckov;
@@ -121,13 +126,14 @@ void FairGeoMedium::setNpckov (Int_t n) {
   npckov=n;
   if (n>0) {
     ppckov=new Double_t[npckov];
-    absco=new Double_t[npckov];  
-    effic=new Double_t[npckov];  
-    rindex=new Double_t[npckov];  
+    absco=new Double_t[npckov];
+    effic=new Double_t[npckov];
+    rindex=new Double_t[npckov];
   }
 }
 
-Bool_t FairGeoMedium::setCerenkovPar(Int_t i,Double_t p,Double_t a,Double_t e ,Double_t r) {  
+Bool_t FairGeoMedium::setCerenkovPar(Int_t i,Double_t p,Double_t a,Double_t e ,Double_t r)
+{
   // Defines the ith parameter set of the optical parameters
   if (i<0 || i>=npckov) {
     Error("setNpckov","Wrong index");
@@ -137,22 +143,24 @@ Bool_t FairGeoMedium::setCerenkovPar(Int_t i,Double_t p,Double_t a,Double_t e ,D
   absco[i]=a;
   effic[i]=e;
   rindex[i]=r;
-  return kTRUE;     
+  return kTRUE;
 }
 
-void FairGeoMedium::getCerenkovPar(Int_t i,Double_t* p) {
+void FairGeoMedium::getCerenkovPar(Int_t i,Double_t* p)
+{
   // returns the ith parameter set of the optical parameters
   if (i>=0&&i<npckov) {
     p[0]=ppckov[i];
     p[1]=absco[i];
     p[2]=effic[i];
     p[3]=rindex[i];
-  } else p[0]=p[1]=p[2]=p[3]=0.;
+  } else { p[0]=p[1]=p[2]=p[3]=0.; }
 }
 
 void FairGeoMedium::setMediumPar(Int_t sensitivityFlag,Int_t fieldFlag,
-              Double_t maxField,Double_t precision,Double_t maxDeviation,
-              Double_t maxStep,Double_t maxDE,Double_t minStep ) { 
+                                 Double_t maxField,Double_t precision,Double_t maxDeviation,
+                                 Double_t maxStep,Double_t maxDE,Double_t minStep )
+{
   // Sets the medium parameters
   sensFlag=sensitivityFlag;
   fldFlag=fieldFlag;
@@ -164,7 +172,8 @@ void FairGeoMedium::setMediumPar(Int_t sensitivityFlag,Int_t fieldFlag,
   minstep=minStep;
 }
 
-void FairGeoMedium::getMediumPar(Double_t* params) {
+void FairGeoMedium::getMediumPar(Double_t* params)
+{
   // Returns the medium parameters
   params[0]=sensFlag;
   params[1]=fldFlag;
@@ -178,16 +187,17 @@ void FairGeoMedium::getMediumPar(Double_t* params) {
   params[9]=0.;
 }
 
-void FairGeoMedium::read(fstream& fin, Int_t aflag ) {
+void FairGeoMedium::read(fstream& fin, Int_t aflag )
+{
   // Reads the parameters from file
   autoflag=aflag;
   Int_t n;
   fin>>n;
-  setNComponents(n);  
-  for(Int_t ik=0;ik<nComponents;ik++) {
+  setNComponents(n);
+  for(Int_t ik=0; ik<nComponents; ik++) {
     fin>>ca[ik];
   }
-  for(Int_t i=0;i<nComponents;i++) {
+  for(Int_t i=0; i<nComponents; i++) {
     fin>>cz[i];
   }
   fin>>density;
@@ -195,73 +205,79 @@ void FairGeoMedium::read(fstream& fin, Int_t aflag ) {
     cw[0]=1.;
     calcRadiationLength();
   } else {
-    for(Int_t i=0;i<nComponents;i++) {
+    for(Int_t i=0; i<nComponents; i++) {
       fin>>cw[i];
     }
   }
   fin>>sensFlag>>fldFlag>>fld>>epsil ;
-  if (autoflag<1) fin>>madfld>>maxstep>>maxde>>minstep;
+  if (autoflag<1) { fin>>madfld>>maxstep>>maxde>>minstep; }
   else {
-        //to use this feature one has to set TGeant3::SetAUTO(0), thus if the media does not
-	// defined these values one can force Geant3 to calculate them by given them a value 
-	// of -1 
-	madfld=-1;
-	maxstep=-1;
-	maxde=-1;
-	minstep=-1;
+    //to use this feature one has to set TGeant3::SetAUTO(0), thus if the media does not
+    // defined these values one can force Geant3 to calculate them by given them a value
+    // of -1
+    madfld=-1;
+    maxstep=-1;
+    maxde=-1;
+    minstep=-1;
   }
   fin>>n;
   setNpckov(n);
   if (n>0) {
-    for(Int_t i=0;i<n;i++)
+    for(Int_t i=0; i<n; i++) {
       fin>>ppckov[i]>>absco[i]>>effic[i]>>rindex[i];
+    }
   }
 
 }
 
-void FairGeoMedium::print() {
+void FairGeoMedium::print()
+{
   // Prints the medium definition
   const char* bl="  ";
-  cout<<GetName()<<'\n'<<nComponents*weightFac<<bl;
-  for(Int_t ii=0;ii<nComponents;ii++) { cout<<ca[ii]<<bl ;}
-  for(Int_t j=0;j<nComponents;j++) { cout<<cz[j]<<bl ;}
+  cout<<GetName()<<'\n'<<nComponents* weightFac<<bl;
+  for(Int_t ii=0; ii<nComponents; ii++) { cout<<ca[ii]<<bl ;}
+  for(Int_t j=0; j<nComponents; j++) { cout<<cz[j]<<bl ;}
   cout<<density<<bl;
-  if (nComponents<2) cout<<radLen;
-  else for(Int_t iik=0;iik<nComponents;iik++) { cout<<cw[iik]<<bl ;}
+  if (nComponents<2) { cout<<radLen; }
+  else for(Int_t iik=0; iik<nComponents; iik++) { cout<<cw[iik]<<bl ;}
   cout<<'\n'<<sensFlag<<bl<<fldFlag<<bl<<fld<<bl<<epsil<<'\n';
-  if (autoflag<1)
+  if (autoflag<1) {
     cout<<madfld<<bl<<maxstep<<bl<<maxde<<bl<<minstep<<'\n';
+  }
   cout<<npckov<<'\n';
   if (npckov>0) {
-    for(Int_t i=0;i<npckov;i++) {
+    for(Int_t i=0; i<npckov; i++) {
       cout<<ppckov[i]<< bl<<absco[i]<<bl<<effic[i]<<bl<<rindex[i]<<'\n';
     }
   }
   cout<<'\n';
 }
 
-void FairGeoMedium::write (fstream& fout) {
+void FairGeoMedium::write (fstream& fout)
+{
   // Writes the medium definition into stream
   const char* bl="  ";
-  fout<<GetName()<<'\n'<<nComponents*weightFac<<bl;
-  for(Int_t i=0;i<nComponents;i++) { fout<<ca[i]<<bl ;}
-  for(Int_t j=0;j<nComponents;j++) { fout<<cz[j]<<bl ;}
+  fout<<GetName()<<'\n'<<nComponents* weightFac<<bl;
+  for(Int_t i=0; i<nComponents; i++) { fout<<ca[i]<<bl ;}
+  for(Int_t j=0; j<nComponents; j++) { fout<<cz[j]<<bl ;}
   fout<<density<<bl;
-  if (nComponents<2) fout<<radLen;
-  else for(Int_t i=0;i<nComponents;i++) { fout<<cw[i]<<bl ;}
+  if (nComponents<2) { fout<<radLen; }
+  else for(Int_t i=0; i<nComponents; i++) { fout<<cw[i]<<bl ;}
   fout<<'\n'<<sensFlag<<bl<<fldFlag<<bl<<fld<<bl<<epsil<<'\n';
-  if (autoflag<1)
+  if (autoflag<1) {
     fout<<madfld<<bl<<maxstep<<bl<<maxde<<bl<<minstep<<'\n';
+  }
   fout<<npckov<<'\n';
   if (npckov>0) {
-    for(Int_t i=0;i<npckov;i++) {
+    for(Int_t i=0; i<npckov; i++) {
       fout<<ppckov[i]<< bl<<absco[i]<<bl<<effic[i]<<bl<<rindex[i]<<'\n';
     }
   }
   fout<<'\n';
 }
 
-Bool_t FairGeoMedium::calcRadiationLength() {
+Bool_t FairGeoMedium::calcRadiationLength()
+{
   // calculates radiation length
   // formula in GEANT manual CONS110
   if (cz[0]<1.e-6) { // VAKUUM$
@@ -271,9 +287,9 @@ Bool_t FairGeoMedium::calcRadiationLength() {
   Double_t alpha=1/137.;     // fine structure constant
   Double_t fac=.1912821;     // 4*((electron radius)**2)*(avogadro's number)
   Double_t z, a, w, az2, fc, y, xi, x0i, amol=0., x0itot=0.;
-  if (weightFac>0) amol=1.;
+  if (weightFac>0) { amol=1.; }
   else {
-    for (int i=0;i<nComponents;i++) {
+    for (int i=0; i<nComponents; i++) {
       amol+=cw[i]*ca[i];
       if (amol==0.) {
         Error("calcRadiationLength()","amol==0 for medium %s",fName.Data());
@@ -281,13 +297,13 @@ Bool_t FairGeoMedium::calcRadiationLength() {
       }
     }
   }
-  for (int i=0;i<nComponents;i++) {
+  for (int i=0; i<nComponents; i++) {
     z=cz[i];
     a=ca[i];
     if(weightFac>0) {
-        w=cw[i]/amol;
+      w=cw[i]/amol;
     } else {
-        w=a*cw[i]/amol;
+      w=a*cw[i]/amol;
     }
     az2=alpha*alpha*z*z;
     fc=az2 * (1./(1.+az2) + 0.20206 - 0.0369*az2 + 0.0083*az2*az2

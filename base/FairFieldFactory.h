@@ -9,28 +9,29 @@
 
 #include "FairField.h"
 
-class FairFieldFactory {
+class FairFieldFactory
+{
 
-public:
-    static FairFieldFactory *Instance();
+  public:
+    static FairFieldFactory* Instance();
     FairFieldFactory();
     virtual ~FairFieldFactory();
     virtual FairField* createFairField() {
-	FairField* field=0;
-    	if(fCreator) field= fCreator->createFairField();
-	return field;
+      FairField* field=0;
+      if(fCreator) { field= fCreator->createFairField(); }
+      return field;
     };
-    virtual void SetParm(){
-    	if(fCreator) fCreator->SetParm();
-    } 
+    virtual void SetParm() {
+      if(fCreator) { fCreator->SetParm(); }
+    }
 
-protected:
-    FairFieldFactory *fCreator;
+  protected:
+    FairFieldFactory* fCreator;
     static FairFieldFactory*  fgRinstance;
 
-    ClassDef(FairFieldFactory,1) 
-private:
-    FairFieldFactory(const FairFieldFactory &M);
+    ClassDef(FairFieldFactory,1)
+  private:
+    FairFieldFactory(const FairFieldFactory& M);
     FairFieldFactory& operator= (const  FairFieldFactory&) {return *this;}
 
 };

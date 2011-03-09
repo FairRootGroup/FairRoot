@@ -6,13 +6,13 @@
 
 #include "FairFieldFactory.h"
 
-FairFieldFactory * FairFieldFactory::fgRinstance= 0;
+FairFieldFactory* FairFieldFactory::fgRinstance= 0;
 
 
 FairFieldFactory::FairFieldFactory()
- :fCreator(0)
+  :fCreator(0)
 {
-  
+
   fgRinstance=this;
 }
 
@@ -20,14 +20,14 @@ FairFieldFactory::~FairFieldFactory()
 {
 }
 
-FairFieldFactory * FairFieldFactory::Instance()
+FairFieldFactory* FairFieldFactory::Instance()
 {
-         
-     return fgRinstance;
+
+  return fgRinstance;
 }
 
 
-ClassImp(FairFieldFactory) 
+ClassImp(FairFieldFactory)
 
 
 

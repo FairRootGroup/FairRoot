@@ -17,16 +17,18 @@
 using namespace std;
 ClassImp(FairGeoCave)
 
-FairGeoCave::FairGeoCave() {
+FairGeoCave::FairGeoCave()
+{
   // Constructor
   fName="cave";
   name="cave";
   maxModules=1;
 }
 
-Bool_t FairGeoCave::read(fstream& fin,FairGeoMedia* media) {
+Bool_t FairGeoCave::read(fstream& fin,FairGeoMedia* media)
+{
   // Reads the geometry from file
-  if (!media) return kFALSE;
+  if (!media) { return kFALSE; }
   const Int_t maxbuf=256;
   char buf[maxbuf];
   FairGeoNode* volu=0;
@@ -43,8 +45,8 @@ Bool_t FairGeoCave::read(fstream& fin,FairGeoMedia* media) {
         fin.getline(buf,maxbuf);
         TString shape(buf);
         FairGeoBasicShape* sh=pShapes->selectShape(shape);
-        if (sh) volu->setShape(sh);
-        else rc=kFALSE;
+        if (sh) { volu->setShape(sh); }
+        else { rc=kFALSE; }
         fin.getline(buf,maxbuf);
         medium=media->getMedium(buf);
         if (!medium) {
@@ -53,11 +55,11 @@ Bool_t FairGeoCave::read(fstream& fin,FairGeoMedia* media) {
         }
         volu->setMedium(medium);
         Int_t n=0;
-        if (sh) n=sh->readPoints(&fin,volu);
-        if (n<=0) rc=kFALSE;
-      } else rc=kFALSE;
+        if (sh) { n=sh->readPoints(&fin,volu); }
+        if (n<=0) { rc=kFALSE; }
+      } else { rc=kFALSE; }
     }
-  } while (rc && !volu && !fin.eof()); 
+  } while (rc && !volu && !fin.eof());
   if (volu && rc) {
     volumes->Add(volu);
     masterNodes->Add(new FairGeoNode(*volu));
@@ -69,13 +71,15 @@ Bool_t FairGeoCave::read(fstream& fin,FairGeoMedia* media) {
   return rc;
 }
 
-void FairGeoCave::addRefNodes() {
+void FairGeoCave::addRefNodes()
+{
   // Adds the reference node
   FairGeoNode* volu=getVolume(name);
-  if (volu) masterNodes->Add(new FairGeoNode(*volu));
+  if (volu) { masterNodes->Add(new FairGeoNode(*volu)); }
 }
 
-void FairGeoCave::write(fstream& fout) {
+void FairGeoCave::write(fstream& fout)
+{
   // Writes the geometry to file
   fout.setf(ios::fixed,ios::floatfield);
   FairGeoNode* volu=getVolume(name);
@@ -89,7 +93,8 @@ void FairGeoCave::write(fstream& fout) {
   }
 }
 
-void FairGeoCave::print() {
+void FairGeoCave::print()
+{
   // Prints the geometry
   FairGeoNode* volu=getVolume(name);
   if (volu) {

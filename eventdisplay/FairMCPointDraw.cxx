@@ -10,19 +10,19 @@
 
 FairMCPointDraw::FairMCPointDraw()
 {
-	// TODO Auto-generated constructor stub
+  // TODO Auto-generated constructor stub
 
 }
 
 FairMCPointDraw::~FairMCPointDraw()
 {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
 TVector3 FairMCPointDraw::GetVector(TObject* obj)
 {
-	FairMCPoint* p = (FairMCPoint*)obj;
-	return TVector3(p->GetX(), p->GetY(), p->GetZ());
+  FairMCPoint* p = (FairMCPoint*)obj;
+  return TVector3(p->GetX(), p->GetY(), p->GetZ());
 }
 
 

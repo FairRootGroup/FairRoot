@@ -24,16 +24,17 @@ using std::ios;
 
 ClassImp(FairGeoOldAsciiIo)
 
-FairGeoOldAsciiIo::FairGeoOldAsciiIo() 
+FairGeoOldAsciiIo::FairGeoOldAsciiIo()
   : filename(""),
     filedir(""),
     writable(kFALSE),
-	file(0)
+    file(0)
 {
   // Constructor
 }
 
-FairGeoOldAsciiIo::~FairGeoOldAsciiIo() {
+FairGeoOldAsciiIo::~FairGeoOldAsciiIo()
+{
   // Destructor
   close();
   if (file) {
@@ -42,14 +43,15 @@ FairGeoOldAsciiIo::~FairGeoOldAsciiIo() {
   }
 }
 
-Bool_t FairGeoOldAsciiIo::open(const char* fname,const Text_t* status) {
+Bool_t FairGeoOldAsciiIo::open(const char* fname,const Text_t* status)
+{
   // Opens the file fname
   close();
-  if (!file) file=new fstream();
-  else (file->clear());
-  if (!filedir.IsNull()) filename=filedir+"/"+fname;
-  else filename=fname;
-  filename=filename.Strip();  
+  if (!file) { file=new fstream(); }
+  else { (file->clear()); }
+  if (!filedir.IsNull()) { filename=filedir+"/"+fname; }
+  else { filename=fname; }
+  filename=filename.Strip();
   if (strcmp(status,"in")==0) {
     file->open(filename,ios::in);
     writable=kFALSE;
@@ -67,7 +69,7 @@ Bool_t FairGeoOldAsciiIo::open(const char* fname,const Text_t* status) {
               filename.Data());
         return kFALSE;
       }
-    } else Error("open","Invalid file option!");
+    } else { Error("open","Invalid file option!"); }
   }
   if (file->rdbuf()->is_open()==0) {
     Error("open","Failed to open file %s",filename.Data());
@@ -76,38 +78,42 @@ Bool_t FairGeoOldAsciiIo::open(const char* fname,const Text_t* status) {
   return kTRUE;
 }
 
-Bool_t FairGeoOldAsciiIo::isOpen() {
+Bool_t FairGeoOldAsciiIo::isOpen()
+{
   // Returns kTRUE, if the file is open
-  if (file && file->rdbuf()->is_open()==1) return kTRUE; 
+  if (file && file->rdbuf()->is_open()==1) { return kTRUE; }
   return kFALSE;
 }
 
-Bool_t FairGeoOldAsciiIo::isWritable() {
+Bool_t FairGeoOldAsciiIo::isWritable()
+{
   // Returns kTRUE, if the file is open and writable
-  if (isOpen() && writable) return kTRUE; 
+  if (isOpen() && writable) { return kTRUE; }
   return kFALSE;
 }
 
-void FairGeoOldAsciiIo::close() {
+void FairGeoOldAsciiIo::close()
+{
   // Closes the file
-  if (isOpen()) { 
+  if (isOpen()) {
     file->close();
     filename="";
   }
 }
 
-void FairGeoOldAsciiIo::print() {
+void FairGeoOldAsciiIo::print()
+{
   // Prints file information
   if (isOpen()) {
-     if (writable) cout<<"Open output file: "<<filename<<endl;
-     else cout<<"Open input file: "<<filename<<endl;
-  }
-  else cout<<"No file open."<<endl;
+    if (writable) { cout<<"Open output file: "<<filename<<endl; }
+    else { cout<<"Open input file: "<<filename<<endl; }
+  } else { cout<<"No file open."<<endl; }
 }
 
-Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set,FairGeoMedia* media) {
+Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set,FairGeoMedia* media)
+{
   // Reads the geometry from file and converts it to the new format
-  if (!isOpen() || writable || set==0) return kFALSE;
+  if (!isOpen() || writable || set==0) { return kFALSE; }
   fstream& fin=*file;
   fin.clear();
   fin.seekg(0,ios::beg);
@@ -120,25 +126,25 @@ Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set,FairGeoMedia* media) {
     // Read volumeName
     TString volumeName = "";
     fin >> volumeName;
-    if (fin.eof()) break;
+    if (fin.eof()) { break; }
     volu=new FairGeoNode;
     volu->SetName(volumeName);
     // Read sensitivity
     fin >> sensitivity;
 // Why this additional integer only in trd file ????????????
-    if (sensitivity>0) fin >> na;
+    if (sensitivity>0) { fin >> na; }
     // Read motherName
     TString motherName = "";
     fin >> motherName;
     FairGeoNode* mother=0;
-    if (motherName=="world") mother=set->getMasterNode("cave");
-    else mother=set->getVolume(motherName.Data());
+    if (motherName=="world") { mother=set->getMasterNode("cave"); }
+    else { mother=set->getVolume(motherName.Data()); }
     volu->setMother(mother);
     // Read position and rotation matrix
     Double_t r[9], t[3];
     fin>>t[0]>>t[1]>>t[2];
-    for(Int_t kk=0;kk<3;kk++) t[kk]*=10.;
-    for(Int_t i=0;i<9;i++) fin>>r[i];
+    for(Int_t kk=0; kk<3; kk++) { t[kk]*=10.; }
+    for(Int_t i=0; i<9; i++) { fin>>r[i]; }
     FairGeoTransform& tf=volu->getTransform();
     tf.setRotMatrix(r);
     tf.setTransVector(t);
@@ -155,14 +161,14 @@ Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set,FairGeoMedia* media) {
     TString type = "";
     fin >> type;
     FairGeoBasicShape* sh=pShapes->selectShape(type);
-    if (sh) volu->setShape(sh);
+    if (sh) { volu->setShape(sh); }
     else {
       cerr << "Shape "<<type<<" not supported."<<endl;
       return kFALSE;
     }
     Int_t npar = sh->getNumParam();
     for (Int_t ik=0; ik<npar; ik++) {
-        fin >> par[ik];
+      fin >> par[ik];
     }
     Bool_t rc=calculateShapePoints(par,volu);
     if (!rc) {
@@ -182,7 +188,8 @@ Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set,FairGeoMedia* media) {
   return kTRUE;
 }
 
-Bool_t FairGeoOldAsciiIo::calculateShapePoints(Double_t* par,FairGeoNode* volu) {
+Bool_t FairGeoOldAsciiIo::calculateShapePoints(Double_t* par,FairGeoNode* volu)
+{
   FairGeoBasicShape* sh=volu->getShapePointer();
   TString shName=sh->GetName();
   Int_t n=sh->getNumPoints();
@@ -236,6 +243,6 @@ Bool_t FairGeoOldAsciiIo::calculateShapePoints(Double_t* par,FairGeoNode* volu) 
     volu->setPoint(0,0.,0.,-z);
     volu->setPoint(1,par[0]*10.,par[1]*10.,0.);
     volu->setPoint(2,0.,0.,z);
-  } else rc=kFALSE;  
+  } else { rc=kFALSE; }
   return rc;
 }

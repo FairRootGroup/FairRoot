@@ -14,15 +14,15 @@ class TVector3;
 
 class FairHitPointSetDraw: public FairPointSetDraw
 {
-public:
-	FairHitPointSetDraw();
-	FairHitPointSetDraw(const char* name, Color_t color ,Style_t mstyle, Int_t iVerbose = 1):FairPointSetDraw(name, color, mstyle, iVerbose){};
-	virtual ~FairHitPointSetDraw();
+  public:
+    FairHitPointSetDraw();
+    FairHitPointSetDraw(const char* name, Color_t color ,Style_t mstyle, Int_t iVerbose = 1):FairPointSetDraw(name, color, mstyle, iVerbose) {};
+    virtual ~FairHitPointSetDraw();
 
-protected:
-	TVector3 GetVector(TObject* obj);
+  protected:
+    TVector3 GetVector(TObject* obj);
 
-	ClassDef(FairHitPointSetDraw,1);
+    ClassDef(FairHitPointSetDraw,1);
 };
 
 #endif /* FAIRHITPOINTSETDRAW_H_ */

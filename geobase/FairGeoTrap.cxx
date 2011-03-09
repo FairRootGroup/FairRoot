@@ -7,7 +7,7 @@
 // FairGeoTrap
 //
 // class for the GEANT shape TRAP
-// 
+//
 // The technical coordinate system of a TRAP, which sits in
 // CAVE and is not rotated, is the laboratory system.
 // The y-axis points from the smaller side to the larger one.
@@ -19,7 +19,7 @@
 //              z-technical = z-Geant
 // This is stored in the data element intrinsicRot which is
 // created in the function calcVoluPosition(...)
-// 
+//
 /////////////////////////////////////////////////////////////
 
 #include "FairGeoTrap.h"
@@ -35,8 +35,8 @@ using std::cout;
 
 ClassImp(FairGeoTrap)
 
-FairGeoTrap::FairGeoTrap() 
- : intrinsicRot(FairGeoRotation()) 
+FairGeoTrap::FairGeoTrap()
+  : intrinsicRot(FairGeoRotation())
 {
   // constructor
   fName="TRAP";
@@ -48,7 +48,8 @@ FairGeoTrap::FairGeoTrap()
 }
 
 
-FairGeoTrap::~FairGeoTrap() {
+FairGeoTrap::~FairGeoTrap()
+{
   // destructor
   if (param) {
     delete param;
@@ -65,14 +66,15 @@ FairGeoTrap::~FairGeoTrap() {
 }
 
 
-TArrayD* FairGeoTrap::calcVoluParam(FairGeoVolume* volu) {
-  // calculates the parameters needed to create the shape 
+TArrayD* FairGeoTrap::calcVoluParam(FairGeoVolume* volu)
+{
+  // calculates the parameters needed to create the shape
   const Double_t fac=20.;
   const Double_t raddeg=180./TMath::Pi();
   Double_t alpha, beta;
   FairGeoVector cb, ct, dc;
-  for(Int_t i=0;i<4;i++) cb+=*(volu->getPoint(i));  // bottom plane
-  for(Int_t j=4;j<8;j++) ct+=*(volu->getPoint(j));  // top plane
+  for(Int_t i=0; i<4; i++) { cb+=*(volu->getPoint(i)); } // bottom plane
+  for(Int_t j=4; j<8; j++) { ct+=*(volu->getPoint(j)); } // top plane
   dc=(ct-cb);
 //  cout << dc <<" "<< ct <<" "<< cb <<" "<< endl;
   dc*=0.25;    // vector from bottom to top plane
@@ -85,12 +87,12 @@ TArrayD* FairGeoTrap::calcVoluParam(FairGeoVolume* volu) {
     beta=0.0;
   } else {
     if (TMath::Abs(dc(0))<0.0001) {
-      if (dc(1)>0) beta=90.0;
-      else beta=270.0;
+      if (dc(1)>0) { beta=90.0; }
+      else { beta=270.0; }
     } else {
       beta=atan(dc(1)/dc(0))*raddeg;
-      if (dc(0)<0) beta=180.0 + beta;
-      if (beta<0) beta=360.0 + beta;
+      if (dc(0)<0) { beta=180.0 + beta; }
+      if (beta<0) { beta=360.0 + beta; }
     }
   }
   param->AddAt(alpha,1);
@@ -103,18 +105,18 @@ TArrayD* FairGeoTrap::calcVoluParam(FairGeoVolume* volu) {
                           - (*(volu->getPoint(0)))(0)
                           + (*(volu->getPoint(2)))(0)
                           - (*(volu->getPoint(3)))(0))/40./param->At(3)
-              )*raddeg;
-  if (TMath::Abs(a)<=0.0001) param->AddAt(0.,6);
-  else param->AddAt(a,6);
+                        )*raddeg;
+  if (TMath::Abs(a)<=0.0001) { param->AddAt(0.,6); }
+  else { param->AddAt(a,6); }
   param->AddAt(((*(volu->getPoint(5)))(1)-(*(volu->getPoint(4)))(1))/fac,7);
   param->AddAt(((*(volu->getPoint(5)))(0)-(*(volu->getPoint(6)))(0))/fac,8);
   param->AddAt(((*(volu->getPoint(4)))(0)-(*(volu->getPoint(7)))(0))/fac,9);
   a=TMath::ATan(((*(volu->getPoint(5)))(0)
-               - (*(volu->getPoint(4)))(0)
-               + (*(volu->getPoint(6)))(0)
-               - (*(volu->getPoint(7)))(0))/40./param->At(7))*raddeg;
-  if (TMath::Abs(a)<=0.0001) param->AddAt(0.,10);
-  else param->AddAt(a,10);
+                 - (*(volu->getPoint(4)))(0)
+                 + (*(volu->getPoint(6)))(0)
+                 - (*(volu->getPoint(7)))(0))/40./param->At(7))*raddeg;
+  if (TMath::Abs(a)<=0.0001) { param->AddAt(0.,10); }
+  else { param->AddAt(a,10); }
 // check if coplanar
   Double_t dx=(param->At(4) - param->At(5)) / param->At(3) * param->At(7) -
               (param->At(8) - param->At(9));
@@ -127,18 +129,19 @@ TArrayD* FairGeoTrap::calcVoluParam(FairGeoVolume* volu) {
     cout << "new values: " << param->At(8) << "  " << param->At(9) << "\n";
   }
   return param;
-} 
+}
 
 
 void FairGeoTrap::calcVoluPosition(FairGeoVolume* volu,
-           const FairGeoTransform& dTC,const FairGeoTransform& mTR) {
+                                   const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+{
   // calls the function posInMother(...) to calculate the position of the
-  // volume in its mother 
-  Double_t t[3]={0.,0.,0.};
-  for(Int_t i=0;i<8;i++) t[0]+=(*(volu->getPoint(i)))(0);
+  // volume in its mother
+  Double_t t[3]= {0.,0.,0.};
+  for(Int_t i=0; i<8; i++) { t[0]+=(*(volu->getPoint(i)))(0); }
   t[0]/=8.;
   t[1]=((*(volu->getPoint(1)))(1) + (*(volu->getPoint(0)))(1) +
-           (*(volu->getPoint(5)))(1) + (*(volu->getPoint(4)))(1))/4.;
+        (*(volu->getPoint(5)))(1) + (*(volu->getPoint(4)))(1))/4.;
   t[2]=((*(volu->getPoint(4)))(2) + (*(volu->getPoint(0)))(2))/2.;
   center->setTransVector(t);
   center->setRotMatrix(intrinsicRot);

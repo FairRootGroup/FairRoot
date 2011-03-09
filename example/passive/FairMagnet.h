@@ -8,9 +8,10 @@
 #include "FairModule.h"
 
 
-class FairMagnet : public FairModule {
+class FairMagnet : public FairModule
+{
   public:
-    FairMagnet(const char * name, const char *Title="PND Magnet");
+    FairMagnet(const char* name, const char* Title="PND Magnet");
     FairMagnet();
     virtual ~FairMagnet();
     void ConstructGeometry();

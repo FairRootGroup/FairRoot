@@ -26,44 +26,44 @@ FairTrajFilter* FairTrajFilter::Instance()
 
 
 FairTrajFilter::FairTrajFilter()
-: fVxMin (-2000.),
-  fVxMax ( 2000.),
-  fVyMin (-2000.),
-  fVyMax ( 2000.),
-  fVzMin (-2000.),
-  fVzMax ( 2000.),
-  fPMin ( 0.),
-  fPMax ( 1e10),
-  fThetaMin ( 0.),
-  fThetaMax ( TMath::Pi()),
-  fPhiMin ( 0.),
-  fPhiMax ( TMath::TwoPi()),
-  fPxMin (-1e10),
-  fPxMax ( 1e10),
-  fPyMin (-1e10),
-  fPyMax ( 1e10),
-  fPzMin (-1e10),
-  fPzMax ( 1e10),
-  fPtMin ( 0.),
-  fPtMax ( 1e10),
-  fRapidityMin (-1e10),
-  fRapidityMax ( 1e10),
-  fKinCutType ( 0), // polar system by default
-  fEtotMin ( 0.),
-  fEtotMax ( 1e10),
-  fStorePrim ( kTRUE),
-  fStoreSec ( kTRUE),
-  fStepSizeMin ( 0.1), // 1mm by default
-  fTrackCollection(new TClonesArray("TGeoTrack")),
-  fCurrentTrk(0)
+  : fVxMin (-2000.),
+    fVxMax ( 2000.),
+    fVyMin (-2000.),
+    fVyMax ( 2000.),
+    fVzMin (-2000.),
+    fVzMax ( 2000.),
+    fPMin ( 0.),
+    fPMax ( 1e10),
+    fThetaMin ( 0.),
+    fThetaMax ( TMath::Pi()),
+    fPhiMin ( 0.),
+    fPhiMax ( TMath::TwoPi()),
+    fPxMin (-1e10),
+    fPxMax ( 1e10),
+    fPyMin (-1e10),
+    fPyMax ( 1e10),
+    fPzMin (-1e10),
+    fPzMax ( 1e10),
+    fPtMin ( 0.),
+    fPtMax ( 1e10),
+    fRapidityMin (-1e10),
+    fRapidityMax ( 1e10),
+    fKinCutType ( 0), // polar system by default
+    fEtotMin ( 0.),
+    fEtotMax ( 1e10),
+    fStorePrim ( kTRUE),
+    fStoreSec ( kTRUE),
+    fStepSizeMin ( 0.1), // 1mm by default
+    fTrackCollection(new TClonesArray("TGeoTrack")),
+    fCurrentTrk(0)
 
 {
   if(NULL != fgInstance) {
     Fatal("FairTrajFilter", "Singleton class already exists.");
     return;
   }
-  
-   fgInstance = this;
+
+  fgInstance = this;
 }
 
 
@@ -75,7 +75,7 @@ FairTrajFilter::~FairTrajFilter()
 
 void FairTrajFilter::Init(TString brName, TString folderName)
 {
-  
+
   FairRootManager::Instance()->Register(brName.Data(), folderName.Data(), fTrackCollection, kTRUE);
 
 }
@@ -85,7 +85,7 @@ void FairTrajFilter::Reset()
   fTrackCollection->Delete();
 }
 
-Bool_t FairTrajFilter::IsAccepted(const TParticle *p) const
+Bool_t FairTrajFilter::IsAccepted(const TParticle* p) const
 {
   if( NULL == p ) {
     return kFALSE;
@@ -101,21 +101,21 @@ Bool_t FairTrajFilter::IsAccepted(const TParticle *p) const
   // Apply cut on kinematics
   if( 0 == fKinCutType ) {
     if( (p->P()<fPMin) || (p->P()>fPMax) ||
-	(p->Theta()<fThetaMin) || (p->Theta()>fThetaMax) ||
-	(p->Phi()<fPhiMin) || (p->Phi()>fPhiMax) ) {
+        (p->Theta()<fThetaMin) || (p->Theta()>fThetaMax) ||
+        (p->Phi()<fPhiMin) || (p->Phi()>fPhiMax) ) {
       return kFALSE;
     }
   } else if( 1 == fKinCutType ) {
     if( (p->Px()<fPxMin) || (p->Px()>fPxMax) ||
-	(p->Py()<fPyMin) || (p->Py()>fPyMax) ||
-	(p->Pz()<fPzMin) || (p->Pz()>fPzMax) ) {
+        (p->Py()<fPyMin) || (p->Py()>fPyMax) ||
+        (p->Pz()<fPzMin) || (p->Pz()>fPzMax) ) {
       return kFALSE;
     }
   } else {
-    Double_t rapidity = 0.5*TMath::Log( (p->Energy()+p->Pz()) / 
-					(p->Energy()-p->Pz()) );
+    Double_t rapidity = 0.5*TMath::Log( (p->Energy()+p->Pz()) /
+                                        (p->Energy()-p->Pz()) );
     if( (p->Pt()<fPtMin) || (p->Pt()>fPtMax) ||
-	(rapidity<fRapidityMin) || (rapidity>fRapidityMax) ) {
+        (rapidity<fRapidityMin) || (rapidity>fRapidityMax) ) {
       return kFALSE;
     }
   }
@@ -142,7 +142,7 @@ Bool_t FairTrajFilter::IsAccepted(const TParticle *p) const
 
 
 void FairTrajFilter::SetVertexCut(Double_t vxMin, Double_t vyMin, Double_t vzMin,
-				 Double_t vxMax, Double_t vyMax, Double_t vzMax)
+                                  Double_t vxMax, Double_t vyMax, Double_t vzMax)
 {
   if( (vxMax<vxMin) || (vyMax<vyMin) || (vzMax<vzMin) ||
       (TMath::Abs(vxMin)>2000.) || (TMath::Abs(vxMax)>2000.) ||
@@ -162,7 +162,7 @@ void FairTrajFilter::SetVertexCut(Double_t vxMin, Double_t vyMin, Double_t vzMin
 
 
 void FairTrajFilter::SetMomentumCutP(Double_t pMin, Double_t thetaMin, Double_t phiMin,
-				    Double_t pMax, Double_t thetaMax, Double_t phiMax)
+                                     Double_t pMax, Double_t thetaMax, Double_t phiMax)
 {
   if( (pMax<pMin) || (thetaMax<thetaMin) || (phiMax<phiMin) ||
       (pMin<0.) || (pMax<0.) || (thetaMin<0.) || (thetaMax>TMath::Pi()) ||
@@ -182,7 +182,7 @@ void FairTrajFilter::SetMomentumCutP(Double_t pMin, Double_t thetaMin, Double_t 
 
 
 void FairTrajFilter::SetMomentumCutD(Double_t pxMin, Double_t pyMin, Double_t pzMin,
-				    Double_t pxMax, Double_t pyMax, Double_t pzMax)
+                                     Double_t pxMax, Double_t pyMax, Double_t pzMax)
 {
   if( (pxMax<pxMin) || (pyMax<pyMin) || (pzMax<pzMin) ) {
     cout << "-E- FairTrajFilter::SetMomentumCutD() : invalid region, ignoring." << endl;
@@ -200,7 +200,7 @@ void FairTrajFilter::SetMomentumCutD(Double_t pxMin, Double_t pyMin, Double_t pz
 
 
 void FairTrajFilter::SetPtRapidityCut(Double_t ptMin, Double_t ptMax,
-				     Double_t rapidityMin, Double_t rapidityMax)
+                                      Double_t rapidityMin, Double_t rapidityMax)
 {
   if( (ptMax<ptMin) || (rapidityMax<rapidityMin) ||
       (ptMin<0.) || (ptMax<0.) ) {
@@ -239,8 +239,8 @@ void FairTrajFilter::SetStepSizeCut(Double_t stepSizeMin)
 
 
 
-void FairTrajFilter::GetVertexCut(Double_t &vxMin, Double_t &vyMin, Double_t &vzMin,
-				 Double_t &vxMax, Double_t &vyMax, Double_t &vzMax) const
+void FairTrajFilter::GetVertexCut(Double_t& vxMin, Double_t& vyMin, Double_t& vzMin,
+                                  Double_t& vxMax, Double_t& vyMax, Double_t& vzMax) const
 {
   vxMin = fVxMin;
   vxMax = fVxMax;
@@ -251,8 +251,8 @@ void FairTrajFilter::GetVertexCut(Double_t &vxMin, Double_t &vyMin, Double_t &vz
 }
 
 
-void FairTrajFilter::GetMomentumCutP(Double_t &pMin, Double_t &thetaMin, Double_t &phiMin,
-				    Double_t &pMax, Double_t &thetaMax, Double_t &phiMax) const
+void FairTrajFilter::GetMomentumCutP(Double_t& pMin, Double_t& thetaMin, Double_t& phiMin,
+                                     Double_t& pMax, Double_t& thetaMax, Double_t& phiMax) const
 {
   pMin = fPMin;
   pMax = fPMax;
@@ -263,8 +263,8 @@ void FairTrajFilter::GetMomentumCutP(Double_t &pMin, Double_t &thetaMin, Double_
 }
 
 
-void FairTrajFilter::GetMomentumCutD(Double_t &pxMin, Double_t &pyMin, Double_t &pzMin,
-				    Double_t &pxMax, Double_t &pyMax, Double_t &pzMax) const
+void FairTrajFilter::GetMomentumCutD(Double_t& pxMin, Double_t& pyMin, Double_t& pzMin,
+                                     Double_t& pxMax, Double_t& pyMax, Double_t& pzMax) const
 {
   pxMin = fPxMin;
   pxMax = fPxMax;
@@ -275,8 +275,8 @@ void FairTrajFilter::GetMomentumCutD(Double_t &pxMin, Double_t &pyMin, Double_t 
 }
 
 
-void FairTrajFilter::GetPtRapidityCut(Double_t &ptMin, Double_t &ptMax,
-				     Double_t &rapidityMin, Double_t &rapidityMax) const
+void FairTrajFilter::GetPtRapidityCut(Double_t& ptMin, Double_t& ptMax,
+                                      Double_t& rapidityMin, Double_t& rapidityMax) const
 {
   ptMin = fPtMin;
   ptMax = fPtMax;
@@ -285,14 +285,14 @@ void FairTrajFilter::GetPtRapidityCut(Double_t &ptMin, Double_t &ptMax,
 }
 
 
-void FairTrajFilter::GetEnergyCut(Double_t &etotMin, Double_t &etotMax) const
+void FairTrajFilter::GetEnergyCut(Double_t& etotMin, Double_t& etotMax) const
 {
   etotMin = fEtotMin;
   etotMax = fEtotMax;
 }
 
 
-TGeoTrack *FairTrajFilter::AddTrack(Int_t trackId, Int_t pdgCode)
+TGeoTrack* FairTrajFilter::AddTrack(Int_t trackId, Int_t pdgCode)
 {
 
 //  cout << "FairTrajFilter::AddTrack" << endl;
@@ -302,12 +302,12 @@ TGeoTrack *FairTrajFilter::AddTrack(Int_t trackId, Int_t pdgCode)
   return fCurrentTrk;
 }
 
-TGeoTrack *FairTrajFilter::AddTrack(TParticle *p)
+TGeoTrack* FairTrajFilter::AddTrack(TParticle* p)
 {
 
   Int_t trackId=0;
 //  cout << "FairTrajFilter::AddTrack" << endl;
-  if(fCurrentTrk) trackId=fCurrentTrk->GetId();
+  if(fCurrentTrk) { trackId=fCurrentTrk->GetId(); }
   Int_t pdgCode = p->GetPdgCode();
   TClonesArray& clref = *fTrackCollection;
   Int_t tsize = clref.GetEntriesFast();
@@ -317,10 +317,10 @@ TGeoTrack *FairTrajFilter::AddTrack(TParticle *p)
 
 
 
-TGeoTrack *FairTrajFilter::GetTrack(Int_t trackId)
+TGeoTrack* FairTrajFilter::GetTrack(Int_t trackId)
 {
-                            
-  return (TGeoTrack *)fTrackCollection->At(trackId);
+
+  return (TGeoTrack*)fTrackCollection->At(trackId);
 }
 
 

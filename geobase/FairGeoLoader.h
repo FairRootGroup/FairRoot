@@ -15,28 +15,29 @@
 
 class FairGeoInterface;
 class FairGeoBuilder;
-/**New Geometry Loader, this loader handel the Hades geometry description 
+/**New Geometry Loader, this loader handel the Hades geometry description
  * @author Ilse koenig
  * @author M. Al-Turany*/
 
-class FairGeoLoader : public TNamed  {
-public: 
-   FairGeoLoader(const char *Name, const char *title);
-   FairGeoLoader();
-   virtual ~FairGeoLoader();
-   FairGeoInterface *getGeoInterface(){return fInterface;}
-   FairGeoBuilder   *getGeoBuilder(){return   fGeoBuilder; }
-   /** static access method*/
-   static FairGeoLoader* Instance(); 
+class FairGeoLoader : public TNamed
+{
+  public:
+    FairGeoLoader(const char* Name, const char* title);
+    FairGeoLoader();
+    virtual ~FairGeoLoader();
+    FairGeoInterface* getGeoInterface() {return fInterface;}
+    FairGeoBuilder*   getGeoBuilder() {return   fGeoBuilder; }
+    /** static access method*/
+    static FairGeoLoader* Instance();
 
-private: 
-   FairGeoLoader(const FairGeoLoader &L);
-   FairGeoLoader& operator= (const FairGeoLoader&) {return *this;}
-   static FairGeoLoader*	fgInstance;//!  /**Singleton instance*/
-   FairGeoInterface*		fInterface; //!  /** Hades Geometry Interface*/
-   FairGeoBuilder* 		fGeoBuilder; //!   /**Geometry builder*/
-   ClassDef(FairGeoLoader,1)
+  private:
+    FairGeoLoader(const FairGeoLoader& L);
+    FairGeoLoader& operator= (const FairGeoLoader&) {return *this;}
+    static FairGeoLoader*  fgInstance;//!  /**Singleton instance*/
+    FairGeoInterface*    fInterface; //!  /** Hades Geometry Interface*/
+    FairGeoBuilder*    fGeoBuilder; //!   /**Geometry builder*/
+    ClassDef(FairGeoLoader,1)
 
-};   
+};
 
 #endif

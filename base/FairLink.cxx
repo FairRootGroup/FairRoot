@@ -10,34 +10,35 @@
 
 ClassImp(FairLink);
 
-FairLink::FairLink() 
- :TObject(),
-  fType(0),
-  fIndex(0),
-  fWeight(1.0)
- {
- }
+FairLink::FairLink()
+  :TObject(),
+   fType(0),
+   fIndex(0),
+   fWeight(1.0)
+{
+}
 
 FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
-:TObject(),
- fType(type),
- fIndex(index),
- fWeight(weight)
- {
- }
+  :TObject(),
+   fType(type),
+   fIndex(index),
+   fWeight(weight)
+{
+}
 
 
 FairLink::FairLink(TString branchName, Int_t index, Float_t weight)
-:TObject(),
-fType(0),
-fIndex(index),
-fWeight(weight)
+  :TObject(),
+   fType(0),
+   fIndex(index),
+   fWeight(weight)
 {
-	//FairRootManager* ioman = FairRootManager::Instance();
-	//if (0==ioman)	std::cout << "-E- FairLink: No iomanager" << std::endl;
-	SetLink(FairRootManager::Instance()->GetBranchId(branchName), index, weight);
+  //FairRootManager* ioman = FairRootManager::Instance();
+  //if (0==ioman) std::cout << "-E- FairLink: No iomanager" << std::endl;
+  SetLink(FairRootManager::Instance()->GetBranchId(branchName), index, weight);
 }
 
-FairLink::~FairLink() {
-	// TODO Auto-generated destructor stub
+FairLink::~FairLink()
+{
+  // TODO Auto-generated destructor stub
 }

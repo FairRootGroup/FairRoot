@@ -3,7 +3,7 @@
 // -----          Created 09/06/04  by V. Friese / D.Bertini           -----
 // -------------------------------------------------------------------------
 
-/**  FairAsciiGenerator.h 
+/**  FairAsciiGenerator.h
  *@author V.Friese  <v.friese@gsi.de>
  *@author D.Bertini <d.bertini@gsi.de>
  *@author M.Al-Turany<M.Al-Turany@gsi.de>
@@ -13,7 +13,7 @@
  where NTRACKS is the number of tracks in the event, IEV the event number,
  and VX, VY, VZ the event vertex coordinates in cm. The header line is
  followed by NTRACKS lines of the format G3PID, PX, PY, PZ, where
- G3PID is the GEANT3 particle code, and PX, PY, PZ the cartesian 
+ G3PID is the GEANT3 particle code, and PX, PY, PZ the cartesian
  momentum coordinates in GeV.
  Derived from FairGenerator.
 **/
@@ -32,49 +32,49 @@ class FairPrimaryGenerator;
 
 
 
-class FairAsciiGenerator : public FairGenerator  
+class FairAsciiGenerator : public FairGenerator
 {
 
- public: 
+  public:
 
-  /** Default constructor without arguments should not be used. **/
-  FairAsciiGenerator();
-
-
-  /** Standard constructor. 
-   ** @param fileName The input file name
-   **/
-  FairAsciiGenerator(const char* fileName);
+    /** Default constructor without arguments should not be used. **/
+    FairAsciiGenerator();
 
 
-  /** Destructor. **/
-  virtual ~FairAsciiGenerator();
-
-	
-  /** Reads on event from the input file and pushes the tracks onto
-   ** the stack. Abstract method in base class.
-   ** @param primGen  pointer to the FairPrimaryGenerator
-   **/
-  virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
+    /** Standard constructor.
+     ** @param fileName The input file name
+     **/
+    FairAsciiGenerator(const char* fileName);
 
 
+    /** Destructor. **/
+    virtual ~FairAsciiGenerator();
 
- private:
 
-  ifstream* fInputFile;               //! Input file stream
-  const Char_t * fFileName;           //! Input file Name
-	
+    /** Reads on event from the input file and pushes the tracks onto
+     ** the stack. Abstract method in base class.
+     ** @param primGen  pointer to the FairPrimaryGenerator
+     **/
+    virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
-  /** Private method CloseInput. Just for convenience. Closes the 
-   ** input file properly. Called from destructor and from ReadEvent. **/
-  void CloseInput();
-	
-	
-  /** PDG data base */
-  
+
+
+  private:
+
+    ifstream* fInputFile;               //! Input file stream
+    const Char_t* fFileName;            //! Input file Name
+
+
+    /** Private method CloseInput. Just for convenience. Closes the
+     ** input file properly. Called from destructor and from ReadEvent. **/
+    void CloseInput();
+
+
+    /** PDG data base */
+
 //  TDatabasePDG *fPDG; //!
 
-  ClassDef(FairAsciiGenerator,1);
+    ClassDef(FairAsciiGenerator,1);
 
 };
 

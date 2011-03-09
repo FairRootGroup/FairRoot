@@ -23,7 +23,8 @@ using std::pair;
 
 
 // -----   Default constructor   -------------------------------------------
-FairStack::FairStack(Int_t size) {
+FairStack::FairStack(Int_t size)
+{
   fParticles = new TClonesArray("TParticle", size);
   fTracks    = new TClonesArray("FairMCTrack", size);
   fCurrentTrack = -1;
@@ -40,7 +41,8 @@ FairStack::FairStack(Int_t size) {
 
 
 // -----   Destructor   ----------------------------------------------------
-FairStack::~FairStack() {
+FairStack::~FairStack()
+{
   if (fParticles) {
     fParticles->Delete();
     delete fParticles;
@@ -52,15 +54,16 @@ FairStack::~FairStack() {
 }
 // -------------------------------------------------------------------------
 
-  
+
 
 // -----   Virtual public method PushTrack   -------------------------------
 void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
-			 Double_t px, Double_t py, Double_t pz,
-			 Double_t e, Double_t vx, Double_t vy, Double_t vz, 
-			 Double_t time, Double_t polx, Double_t poly,
-			 Double_t polz, TMCProcess proc, Int_t& ntr, 
-			 Double_t weight, Int_t is) {
+                          Double_t px, Double_t py, Double_t pz,
+                          Double_t e, Double_t vx, Double_t vy, Double_t vz,
+                          Double_t time, Double_t polx, Double_t poly,
+                          Double_t polz, TMCProcess proc, Int_t& ntr,
+                          Double_t weight, Int_t is)
+{
 
   // --> Get TParticle array
   TClonesArray& partArray = *fParticles;
@@ -70,31 +73,32 @@ void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   Int_t nPoints = 0;
   Int_t daughter1Id = -1;
   Int_t daughter2Id = -1;
-  TParticle* particle = 
-    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId, 
-					    nPoints, daughter1Id, 
-					    daughter2Id, px, py, pz, e, 
-					    vx, vy, vz, time);
+  TParticle* particle =
+    new(partArray[fNParticles++]) TParticle(pdgCode, trackId, parentId,
+        nPoints, daughter1Id,
+        daughter2Id, px, py, pz, e,
+        vx, vy, vz, time);
   particle->SetPolarisation(polx, poly, polz);
   particle->SetWeight(weight);
   particle->SetUniqueID(proc);
 
   // --> Increment counter
-  if (parentId < 0) fNPrimaries++;
+  if (parentId < 0) { fNPrimaries++; }
 
   // --> Set argument variable
   ntr = trackId;
 
   // --> Push particle on the stack if toBeDone is set
-  if (toBeDone == 1) fStack.push(particle);
+  if (toBeDone == 1) { fStack.push(particle); }
 
 }
 // -------------------------------------------------------------------------
 
-  
+
 
 // -----   Virtual method PopNextTrack   -----------------------------------
-TParticle* FairStack::PopNextTrack(Int_t& iTrack) {
+TParticle* FairStack::PopNextTrack(Int_t& iTrack)
+{
 
   // If end of stack: Return empty pointer
   if (fStack.empty()) {
@@ -119,10 +123,11 @@ TParticle* FairStack::PopNextTrack(Int_t& iTrack) {
 }
 // -------------------------------------------------------------------------
 
-  
+
 
 // -----   Virtual method PopPrimaryForTracking   --------------------------
-TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim) {
+TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim)
+{
 
   // Get the iPrimth particle from the fStack TClonesArray. This
   // should be a primary (if the index is correct).
@@ -149,7 +154,8 @@ TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim) {
 
 
 // -----   Virtual public method GetCurrentTrack   -------------------------
-TParticle* FairStack::GetCurrentTrack() const {
+TParticle* FairStack::GetCurrentTrack() const
+{
   TParticle* currentPart = GetParticle(fCurrentTrack);
   if ( ! currentPart) {
     cout << "-W- FairStack: Current track not found in stack!" << endl;
@@ -160,9 +166,10 @@ TParticle* FairStack::GetCurrentTrack() const {
 // -------------------------------------------------------------------------
 
 
-  
+
 // -----   Public method AddParticle   -------------------------------------
-void FairStack::AddParticle(TParticle* oldPart) {
+void FairStack::AddParticle(TParticle* oldPart)
+{
   TClonesArray& array = *fParticles;
   TParticle* newPart = new(array[fIndex]) TParticle(*oldPart);
   newPart->SetWeight(oldPart->GetWeight());
@@ -174,7 +181,8 @@ void FairStack::AddParticle(TParticle* oldPart) {
 
 
 // -----   Public method FillTrackArray   ----------------------------------
-void FairStack::FillTrackArray() {
+void FairStack::FillTrackArray()
+{
 
   cout << "-I- FairStack: Filling MCTrack array..." << endl;
 
@@ -190,25 +198,24 @@ void FairStack::FillTrackArray() {
 
     fStoreIter = fStoreMap.find(iPart);
     if (fStoreIter == fStoreMap.end() ) {
-      cout << "-E- FairStack: Particle " << iPart 
-	   << " not found in storage map!" << endl;
+      cout << "-E- FairStack: Particle " << iPart
+           << " not found in storage map!" << endl;
       Fatal("FairStack::FillTrackArray",
-	    "Particle not found in storage map.");
+            "Particle not found in storage map.");
     }
     Bool_t store = (*fStoreIter).second;
 
     if (store) {
-      FairMCTrack* track = 
-	new( (*fTracks)[fNTracks]) FairMCTrack(GetParticle(iPart));
+      FairMCTrack* track =
+        new( (*fTracks)[fNTracks]) FairMCTrack(GetParticle(iPart));
       fIndexMap[iPart] = fNTracks;
       // --> Set the number of points in the detectors for this track
       for (Int_t iDet=kREF; iDet<=kZDC; iDet++) {
-	pair<Int_t, Int_t> a(iPart, iDet);
-	track->SetNPoints(iDet, fPointsMap[a]);
+        pair<Int_t, Int_t> a(iPart, iDet);
+        track->SetNPoints(iDet, fPointsMap[a]);
       }
       fNTracks++;
-    }
-    else fIndexMap[iPart] = -2;
+    } else { fIndexMap[iPart] = -2; }
 
   }
 
@@ -224,7 +231,8 @@ void FairStack::FillTrackArray() {
 
 
 // -----   Public method UpdateTrackIndex   --------------------------------
-void FairStack::UpdateTrackIndex(TRefArray* detList) {
+void FairStack::UpdateTrackIndex(TRefArray* detList)
+{
 
   cout << "-I- FairStack: Updating track indizes...";
   Int_t nColl = 0;
@@ -235,10 +243,10 @@ void FairStack::UpdateTrackIndex(TRefArray* detList) {
     Int_t iMotherOld = track->GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
-      cout << "-E- FairStack: Particle index " << iMotherOld 
-	   << " not found in dex map! " << endl;
+      cout << "-E- FairStack: Particle index " << iMotherOld
+           << " not found in dex map! " << endl;
       Fatal("FairStack::UpdateTrackIndex",
-		"Particle index not found in map");
+            "Particle index not found in map");
     }
     track->SetMotherId( (*fIndexIter).second );
   }
@@ -256,20 +264,20 @@ void FairStack::UpdateTrackIndex(TRefArray* detList) {
     while ( (hitArray = det->GetCollection(iColl++)) ) {
       nColl++;
       Int_t nPoints = hitArray->GetEntriesFast();
-      
+
       // --> Update track index for all MCPoints in the collection
       for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
-	FairMCPoint* point = (FairMCPoint*)hitArray->At(iPoint);
-	Int_t iTrack = point->GetTrackID();
+        FairMCPoint* point = (FairMCPoint*)hitArray->At(iPoint);
+        Int_t iTrack = point->GetTrackID();
 
-	fIndexIter = fIndexMap.find(iTrack);
-	if (fIndexIter == fIndexMap.end()) {
-	  cout << "-E- FairStack: Particle index " << iTrack 
-	       << " not found in index map! " << endl;
-	  Fatal("FairStack::UpdateTrackIndex",
-		"Particle index not found in map");
-	}
-	point->SetTrackID((*fIndexIter).second);
+        fIndexIter = fIndexMap.find(iTrack);
+        if (fIndexIter == fIndexMap.end()) {
+          cout << "-E- FairStack: Particle index " << iTrack
+               << " not found in index map! " << endl;
+          Fatal("FairStack::UpdateTrackIndex",
+                "Particle index not found in map");
+        }
+        point->SetTrackID((*fIndexIter).second);
       }
 
     }   // Collections of this detector
@@ -283,11 +291,12 @@ void FairStack::UpdateTrackIndex(TRefArray* detList) {
 
 
 // -----   Public method Reset   -------------------------------------------
-void FairStack::Reset() {
+void FairStack::Reset()
+{
   fIndex = 0;
   fCurrentTrack = -1;
   fNPrimaries = fNParticles = fNTracks = 0;
-  while (! fStack.empty() ) fStack.pop();
+  while (! fStack.empty() ) { fStack.pop(); }
   fParticles->Clear();
   fTracks->Clear();
   fPointsMap.clear();
@@ -297,7 +306,8 @@ void FairStack::Reset() {
 
 
 // -----   Public method Register   ----------------------------------------
-void FairStack::Register() {
+void FairStack::Register()
+{
   FairRootManager::Instance()->Register("MCTrack", "Stack", fTracks,kTRUE);
 }
 // -------------------------------------------------------------------------
@@ -305,16 +315,18 @@ void FairStack::Register() {
 
 
 // -----   Public method Print  --------------------------------------------
-void FairStack::Print(Int_t iVerbose) const {
-  cout << "-I- FairStack: Number of primaries        = " 
+void FairStack::Print(Int_t iVerbose) const
+{
+  cout << "-I- FairStack: Number of primaries        = "
        << fNPrimaries << endl;
-  cout << "              Total number of particles  = " 
+  cout << "              Total number of particles  = "
        << fNParticles << endl;
   cout << "              Number of tracks in output = "
        << fNTracks << endl;
   if (iVerbose) {
-    for (Int_t iTrack=0; iTrack<fNTracks; iTrack++) 
+    for (Int_t iTrack=0; iTrack<fNTracks; iTrack++) {
       ((FairMCTrack*) fTracks->At(iTrack))->Print(iTrack);
+    }
   }
 }
 // -------------------------------------------------------------------------
@@ -322,23 +334,25 @@ void FairStack::Print(Int_t iVerbose) const {
 
 
 // -----   Public method AddPoint (for current track)   --------------------
-void FairStack::AddPoint(DetectorId detId) {
+void FairStack::AddPoint(DetectorId detId)
+{
   Int_t iDet = detId;
   pair<Int_t, Int_t> a(fCurrentTrack, iDet);
-  if ( fPointsMap.find(a) == fPointsMap.end() ) fPointsMap[a] = 1;
-  else fPointsMap[a]++;
+  if ( fPointsMap.find(a) == fPointsMap.end() ) { fPointsMap[a] = 1; }
+  else { fPointsMap[a]++; }
 }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Public method AddPoint (for arbitrary track)  -------------------
-void FairStack::AddPoint(DetectorId detId, Int_t iTrack) {
-  if ( iTrack < 0 ) return;
+void FairStack::AddPoint(DetectorId detId, Int_t iTrack)
+{
+  if ( iTrack < 0 ) { return; }
   Int_t iDet = detId;
   pair<Int_t, Int_t> a(iTrack, iDet);
-  if ( fPointsMap.find(a) == fPointsMap.end() ) fPointsMap[a] = 1;
-  else fPointsMap[a]++;
+  if ( fPointsMap.find(a) == fPointsMap.end() ) { fPointsMap[a] = 1; }
+  else { fPointsMap[a]++; }
 }
 // -------------------------------------------------------------------------
 
@@ -346,20 +360,22 @@ void FairStack::AddPoint(DetectorId detId, Int_t iTrack) {
 
 
 // -----   Virtual method GetCurrentParentTrackNumber   --------------------
-Int_t FairStack::GetCurrentParentTrackNumber() const {
+Int_t FairStack::GetCurrentParentTrackNumber() const
+{
   TParticle* currentPart = GetCurrentTrack();
-  if ( currentPart ) return currentPart->GetFirstMother();
-  else               return -1;
+  if ( currentPart ) { return currentPart->GetFirstMother(); }
+  else { return -1; }
 }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Public method GetParticle   -------------------------------------
-TParticle* FairStack::GetParticle(Int_t trackID) const {
+TParticle* FairStack::GetParticle(Int_t trackID) const
+{
   if (trackID < 0 || trackID >= fNParticles) {
-    cout << "-E- FairStack: Particle index " << trackID 
-	 << " out of range." << endl;
+    cout << "-E- FairStack: Particle index " << trackID
+         << " out of range." << endl;
     Fatal("FairStack::GetParticle", "Index out of range");
   }
   return (TParticle*)fParticles->At(trackID);
@@ -369,7 +385,8 @@ TParticle* FairStack::GetParticle(Int_t trackID) const {
 
 
 // -----   Private method SelectTracks   -----------------------------------
-void FairStack::SelectTracks() {
+void FairStack::SelectTracks()
+{
 
   // --> Clear storage map
   fStoreMap.clear();
@@ -392,16 +409,17 @@ void FairStack::SelectTracks() {
     Int_t nPoints = 0;
     for (Int_t iDet=kMVD; iDet<=kZDC; iDet++) {
       pair<Int_t, Int_t> a(i, iDet);
-      if ( fPointsMap.find(a) != fPointsMap.end() )
-	nPoints += fPointsMap[a];
+      if ( fPointsMap.find(a) != fPointsMap.end() ) {
+        nPoints += fPointsMap[a];
+      }
     }
 
     // --> Check for cuts (store primaries in any case)
-    if (iMother < 0)            store = kTRUE;
+    if (iMother < 0) { store = kTRUE; }
     else {
-      if (!fStoreSecondaries)   store = kFALSE;
-      if (nPoints < fMinPoints) store = kFALSE;
-      if (eKin < fEnergyCut)    store = kFALSE;
+      if (!fStoreSecondaries) { store = kFALSE; }
+      if (nPoints < fMinPoints) { store = kFALSE; }
+      if (eKin < fEnergyCut) { store = kFALSE; }
     }
 
     // --> Set storage flag
@@ -414,11 +432,11 @@ void FairStack::SelectTracks() {
   if (fStoreMothers) {
     for (Int_t i=0; i<fNParticles; i++) {
       if (fStoreMap[i]) {
-	Int_t iMother = GetParticle(i)->GetMother(0);
-	while(iMother >= 0) {
-	  fStoreMap[iMother] = kTRUE;
-	  iMother = GetParticle(iMother)->GetMother(0);
-	}
+        Int_t iMother = GetParticle(i)->GetMother(0);
+        while(iMother >= 0) {
+          fStoreMap[iMother] = kTRUE;
+          iMother = GetParticle(iMother)->GetMother(0);
+        }
       }
     }
   }

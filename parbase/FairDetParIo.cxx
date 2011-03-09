@@ -8,8 +8,8 @@
 //  detector
 /////////////////////////////////////////////////////////////
 FairDetParIo::FairDetParIo()
-:TNamed(),
-inputNumber(0)
+  :TNamed(),
+   inputNumber(0)
 {
 }
 

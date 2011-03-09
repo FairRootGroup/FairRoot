@@ -12,12 +12,12 @@ const Double_t kProtonMass = 0.92827231;
 
 
 // -----   Default constructor   -------------------------------------------
-FairIon::FairIon() 
- :fZ(0),
-  fA(0),
-  fQ(0),
-  fExcEnergy(0), 
-  fMass(0)
+FairIon::FairIon()
+  :fZ(0),
+   fA(0),
+   fQ(0),
+   fExcEnergy(0),
+   fMass(0)
 {
 
 }
@@ -26,19 +26,19 @@ FairIon::FairIon()
 
 // -----   Standard constructor   ------------------------------------------
 FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e,
-	       Double_t mass) 
+                 Double_t mass)
   : TNamed(name, "User defined ion"),
     fZ(z),
     fA(a),
     fQ(q),
-    fExcEnergy(e), 
+    fExcEnergy(e),
     fMass(0)
 {
-  if (mass == 0.) fMass = kProtonMass * Double_t(a);
-  else fMass = mass;
+  if (mass == 0.) { fMass = kProtonMass * Double_t(a); }
+  else { fMass = mass; }
   cout << "-I- FairIon: New ion " << name << ", z = " <<  z << ", a = "
        << a << ", charge = " << q << ", mass = " << fMass << " GeV "
-       << endl;     
+       << endl;
 }
 // -------------------------------------------------------------------------
 

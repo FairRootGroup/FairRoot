@@ -14,79 +14,80 @@
 #include "TClonesArray.h"
 
 
-class FairMultiLinkedData : public FairLinkedData {
-public:
-	FairMultiLinkedData();///< Default constructor
-	FairMultiLinkedData(std::set<FairLink> links, Bool_t persistanceCheck = kTRUE);///< Constructor
-	FairMultiLinkedData(TString dataType, std::vector<Int_t> links,Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
-	FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
+class FairMultiLinkedData : public FairLinkedData
+{
+  public:
+    FairMultiLinkedData();///< Default constructor
+    FairMultiLinkedData(std::set<FairLink> links, Bool_t persistanceCheck = kTRUE);///< Constructor
+    FairMultiLinkedData(TString dataType, std::vector<Int_t> links,Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
+    FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
 
-	virtual ~FairMultiLinkedData(){};
+    virtual ~FairMultiLinkedData() {};
 
-	virtual std::set<FairLink>		GetLinks() const {		return fLinks;} 					///< returns stored links as FairLinks
-	virtual Int_t 					GetNLinks() const {	return fLinks.size();	} 			///< returns the number of stored links
-	virtual FairLink				GetLink(Int_t pos) const;									///< returns the FairLink at the given position
-	virtual FairMultiLinkedData		GetLinksWithType(Int_t type) const;   					///< Gives you a list of links which contain the given type
-	TObject* 						GetData(FairLink& myLink);									///< Get the TObject the Link is pointing to
-	Bool_t							GetPersistanceCheck(){return fPersistanceCheck;}			///< Returns the value of PersistanceCheck
-	Int_t							GetVerbose(){return fVerbose;}							///< Returns the verbosity level
+    virtual std::set<FairLink>    GetLinks() const {    return fLinks;}           ///< returns stored links as FairLinks
+    virtual Int_t           GetNLinks() const { return fLinks.size(); }       ///< returns the number of stored links
+    virtual FairLink        GetLink(Int_t pos) const;                 ///< returns the FairLink at the given position
+    virtual FairMultiLinkedData   GetLinksWithType(Int_t type) const;             ///< Gives you a list of links which contain the given type
+    TObject*            GetData(FairLink& myLink);                  ///< Get the TObject the Link is pointing to
+    Bool_t              GetPersistanceCheck() {return fPersistanceCheck;}     ///< Returns the value of PersistanceCheck
+    Int_t             GetVerbose() {return fVerbose;}             ///< Returns the verbosity level
 
-	virtual void SetPersistanceCheck(Bool_t check){fPersistanceCheck = check;}				///< Controls if a persistance check of a link is done or not
-	virtual void SetVerbose(Int_t level){fVerbose = level;}									///< Sets the verbosity level
+    virtual void SetPersistanceCheck(Bool_t check) {fPersistanceCheck = check;}       ///< Controls if a persistance check of a link is done or not
+    virtual void SetVerbose(Int_t level) {fVerbose = level;}                ///< Sets the verbosity level
 
-	virtual void SetLinks(FairMultiLinkedData links, Float_t mult = 1.0);						///< Sets the links as vector of FairLink
-	virtual void SetLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0); 			///< Sets the Links with a single FairLink
+    virtual void SetLinks(FairMultiLinkedData links, Float_t mult = 1.0);           ///< Sets the links as vector of FairLink
+    virtual void SetLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0);      ///< Sets the Links with a single FairLink
 
-	virtual void AddLinks(FairMultiLinkedData links, Float_t mult = 1.0);						///< Adds a List of FairLinks (FairMultiLinkedData) to fLinks
-	virtual void AddLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0);			///< Adds a FairLink link at the end of fLinks. If multi is kTRUE a link is allowed more than once otherwise it is stored only once
+    virtual void AddLinks(FairMultiLinkedData links, Float_t mult = 1.0);           ///< Adds a List of FairLinks (FairMultiLinkedData) to fLinks
+    virtual void AddLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0);      ///< Adds a FairLink link at the end of fLinks. If multi is kTRUE a link is allowed more than once otherwise it is stored only once
 
-	virtual void InsertLink(FairLink link);													///< Inserts a link into the list of links without persistance checking
-
-
-
-	virtual void AddAllWeights(Double_t weight);												///< Adds weight to all Links
-	virtual void SetAllWeights(Double_t weight);												///< Sets a common weight for Links
-	virtual void MultiplyAllWeights(Double_t weight);										///<Multiplies all Links with weight
-
-
-	virtual Bool_t IsLinkInList(FairLink link)		{return IsLinkInList(link.GetType(), link.GetIndex());} 	///< Test if a given link is in fLinks
-	virtual Bool_t IsLinkInList(Int_t type, Int_t index); 														///< Same as IsLinkInList(FairLink) just with type and index given separately
-	virtual Int_t LinkPosInList(FairLink link)	{return LinkPosInList(link.GetType(), link.GetIndex());} 		///< returns position of link in fLinks. If it is not in the list -1 is returned
-	virtual Int_t LinkPosInList(Int_t type, Int_t index);															///< Same as LinkPosInList(FairLink)
-
-	virtual void DeleteLink(FairLink link)		{DeleteLink(link.GetType(), link.GetIndex());}					///< Deletes a link ouf of fLinks
-	virtual void DeleteLink(Int_t type, Int_t index);																///< Deletes a link ouf of fLinks
-
-	virtual void Reset(){fLinks.clear();}																			///< Clears fLinks
-
-
-	virtual void Print(std::ostream& out = std::cout) const{
-		for (Int_t i = 0; i < GetNLinks(); i++){
-			GetLink(i).Print(out);
-			out << " ";
-		}
-		out << std::endl;
-	}																											///< Output
-
-	friend std::ostream& operator<< (std::ostream& out, const FairMultiLinkedData& data){
-		data.Print(out);
-		return out;
-	}																											///< Output
-
-protected:
-	std::set<FairLink> fLinks;
-	Bool_t fPersistanceCheck;
-	Int_t fVerbose;
-
-	virtual void SimpleAddLinks(Int_t dataType, std::vector<Int_t> links, Bool_t bypass, Float_t mult){
-		for (UInt_t i = 0; i < links.size(); i++){
-				AddLink(FairLink(dataType, links[i]), bypass, mult);
-			}
-	}
+    virtual void InsertLink(FairLink link);                         ///< Inserts a link into the list of links without persistance checking
 
 
 
-	ClassDef(FairMultiLinkedData, 3);
+    virtual void AddAllWeights(Double_t weight);                        ///< Adds weight to all Links
+    virtual void SetAllWeights(Double_t weight);                        ///< Sets a common weight for Links
+    virtual void MultiplyAllWeights(Double_t weight);                   ///<Multiplies all Links with weight
+
+
+    virtual Bool_t IsLinkInList(FairLink link)    {return IsLinkInList(link.GetType(), link.GetIndex());}   ///< Test if a given link is in fLinks
+    virtual Bool_t IsLinkInList(Int_t type, Int_t index);                             ///< Same as IsLinkInList(FairLink) just with type and index given separately
+    virtual Int_t LinkPosInList(FairLink link)  {return LinkPosInList(link.GetType(), link.GetIndex());}    ///< returns position of link in fLinks. If it is not in the list -1 is returned
+    virtual Int_t LinkPosInList(Int_t type, Int_t index);                             ///< Same as LinkPosInList(FairLink)
+
+    virtual void DeleteLink(FairLink link)    {DeleteLink(link.GetType(), link.GetIndex());}          ///< Deletes a link ouf of fLinks
+    virtual void DeleteLink(Int_t type, Int_t index);                               ///< Deletes a link ouf of fLinks
+
+    virtual void Reset() {fLinks.clear();}                                    ///< Clears fLinks
+
+
+    virtual void Print(std::ostream& out = std::cout) const {
+      for (Int_t i = 0; i < GetNLinks(); i++) {
+        GetLink(i).Print(out);
+        out << " ";
+      }
+      out << std::endl;
+    }                                                     ///< Output
+
+    friend std::ostream& operator<< (std::ostream& out, const FairMultiLinkedData& data) {
+      data.Print(out);
+      return out;
+    }                                                     ///< Output
+
+  protected:
+    std::set<FairLink> fLinks;
+    Bool_t fPersistanceCheck;
+    Int_t fVerbose;
+
+    virtual void SimpleAddLinks(Int_t dataType, std::vector<Int_t> links, Bool_t bypass, Float_t mult) {
+      for (UInt_t i = 0; i < links.size(); i++) {
+        AddLink(FairLink(dataType, links[i]), bypass, mult);
+      }
+    }
+
+
+
+    ClassDef(FairMultiLinkedData, 3);
 };
 
 /**\fn virtual void FairMultiLinkedData::SetLinks(Int_t type, std::vector<Int_t> links)

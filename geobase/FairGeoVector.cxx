@@ -25,7 +25,7 @@
 //   Double_t getZ() const
 //   Double_t operator() (const Int_t i) const;
 //
-// Check for the size of all components: 
+// Check for the size of all components:
 //   Bool_t operator < (const Double_t a)
 //   Bool_t operator <= (const Double_t a)
 //   Bool_t operator > (const Double_t a)
@@ -55,7 +55,7 @@
 //      assignment
 //
 // FairGeoVector& abs()
-//      builds absolute value of each components  
+//      builds absolute value of each components
 //
 // Double_t scalarProduct(const FairGeoVector& v) const;
 //      returns the scalar product

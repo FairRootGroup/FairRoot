@@ -1,7 +1,7 @@
 //*-- AUTHOR : Ilse Koenig
 //*-- Created : 28/01/2009
 
-//_HADES_CLASS_DESCRIPTION 
+//_HADES_CLASS_DESCRIPTION
 ///////////////////////////////////////////////////////////////////////////
 //
 //  FairParGenericSet
@@ -22,7 +22,7 @@
 
 #include "FairParGenericSet.h"
 #include "FairParamList.h"
-#include <iostream> 
+#include <iostream>
 #include <iomanip>
 #include "FairDetParIo.h"
 #include "FairParIo.h"
@@ -30,32 +30,35 @@ ClassImp(FairParGenericSet)
 
 
 
-Bool_t FairParGenericSet::init(FairParIo* inp) {
+Bool_t FairParGenericSet::init(FairParIo* inp)
+{
   // intitializes the container from an input
   FairDetParIo* input=inp->getDetParIo("FairGenericParIo");
-  if (input) return (input->init(this));
+  if (input) { return (input->init(this)); }
   return kFALSE;
 }
 
-Int_t FairParGenericSet::write(FairParIo* output) {
+Int_t FairParGenericSet::write(FairParIo* output)
+{
   // writes the container to an output
   FairDetParIo* out=output->getDetParIo("FairGenericParIo");
-  if (out)  return out->write(this);
+  if (out) { return out->write(this); }
   return -1;
 }
 
-void FairParGenericSet::printParams() {
+void FairParGenericSet::printParams()
+{
   // prints information about the container
   std::cout<<"\n---------------------------------------------\n";
   std::cout<<"-----  "<<GetName()<<"  -----\n";
-  if (!paramContext.IsNull()) std::cout<<"--  Context/Purpose:  "<<paramContext<<'\n';
-  if (!author.IsNull())       std::cout<<"--  Author:           "<<author<<'\n';
-  if (!description.IsNull())  std::cout<<"--  Description:      "<<description<<'\n';
+  if (!paramContext.IsNull()) { std::cout<<"--  Context/Purpose:  "<<paramContext<<'\n'; }
+  if (!author.IsNull()) { std::cout<<"--  Author:           "<<author<<'\n'; }
+  if (!description.IsNull()) { std::cout<<"--  Description:      "<<description<<'\n'; }
   std::cout<<"---------------------------------------------\n";
   FairParamList* condList = new FairParamList;
   putParams(condList);
   condList->print();
   std::cout<<"---------------------------------------------\n\n";
   delete condList;
-} 
- 
+}
+

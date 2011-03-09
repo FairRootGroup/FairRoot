@@ -10,10 +10,10 @@ FairTutorialDetPoint::FairTutorialDetPoint() : FairMCPoint() { }
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
-FairTutorialDetPoint::FairTutorialDetPoint(Int_t trackID, Int_t detID, 
-					 TVector3 pos, TVector3 mom, 
-					 Double_t tof, Double_t length,
-					 Double_t eLoss)
+FairTutorialDetPoint::FairTutorialDetPoint(Int_t trackID, Int_t detID,
+    TVector3 pos, TVector3 mom,
+    Double_t tof, Double_t length,
+    Double_t eLoss)
   : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss) { }
 // -------------------------------------------------------------------------
 
@@ -22,7 +22,8 @@ FairTutorialDetPoint::~FairTutorialDetPoint() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void FairTutorialDetPoint::Print(const Option_t* opt) const {
+void FairTutorialDetPoint::Print(const Option_t* opt) const
+{
   cout << "-I- FairTutorialDetPoint: TutorialDet point for track " << fTrackID
        << " in detector " << fDetectorID << endl;
   cout << "    Position (" << fX << ", " << fY << ", " << fZ
@@ -35,4 +36,4 @@ void FairTutorialDetPoint::Print(const Option_t* opt) const {
 // -------------------------------------------------------------------------
 
 ClassImp(FairTutorialDetPoint)
-  
+

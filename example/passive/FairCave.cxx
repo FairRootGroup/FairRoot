@@ -24,49 +24,50 @@
 ClassImp(FairCave)
 void FairCave::ConstructGeometry()
 {
-	FairGeoLoader *loader=FairGeoLoader::Instance();
-	FairGeoInterface *GeoInterface =loader->getGeoInterface();
-	FairGeoCave *MGeo=new FairGeoCave();
-	MGeo->setGeomFile(GetGeometryFileName());
-	GeoInterface->addGeoModule(MGeo);
-	Bool_t rc = GeoInterface->readSet(MGeo);
-	if ( rc ) MGeo->create(loader->getGeoBuilder());
+  FairGeoLoader* loader=FairGeoLoader::Instance();
+  FairGeoInterface* GeoInterface =loader->getGeoInterface();
+  FairGeoCave* MGeo=new FairGeoCave();
+  MGeo->setGeomFile(GetGeometryFileName());
+  GeoInterface->addGeoModule(MGeo);
+  Bool_t rc = GeoInterface->readSet(MGeo);
+  if ( rc ) { MGeo->create(loader->getGeoBuilder()); }
 
-        TList* volList = MGeo->getListOfVolumes();
-        // store geo parameter
-        FairRun *fRun = FairRun::Instance();
-        FairRuntimeDb *rtdb= FairRun::Instance()->GetRuntimeDb();
-        FairGeoPassivePar* par=(FairGeoPassivePar*)(rtdb->getContainer("FairGeoPassivePar"));
-        TObjArray *fSensNodes = par->GetGeoSensitiveNodes();
-        TObjArray *fPassNodes = par->GetGeoPassiveNodes();
+  TList* volList = MGeo->getListOfVolumes();
+  // store geo parameter
+  FairRun* fRun = FairRun::Instance();
+  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
+  FairGeoPassivePar* par=(FairGeoPassivePar*)(rtdb->getContainer("FairGeoPassivePar"));
+  TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
+  TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
-        TListIter iter(volList);
-        FairGeoNode* node   = NULL;
-        FairGeoVolume *aVol=NULL;
+  TListIter iter(volList);
+  FairGeoNode* node   = NULL;
+  FairGeoVolume* aVol=NULL;
 
-        while( (node = (FairGeoNode*)iter.Next()) ) {
-            aVol = dynamic_cast<FairGeoVolume*> ( node );
-            if ( node->isSensitive()  ) {
-                fSensNodes->AddLast( aVol );
-            }else{
-                fPassNodes->AddLast( aVol );
-            }
-        }
-        par->setChanged();
-        par->setInputVersion(fRun->GetRunId(),1);
+  while( (node = (FairGeoNode*)iter.Next()) ) {
+    aVol = dynamic_cast<FairGeoVolume*> ( node );
+    if ( node->isSensitive()  ) {
+      fSensNodes->AddLast( aVol );
+    } else {
+      fPassNodes->AddLast( aVol );
+    }
+  }
+  par->setChanged();
+  par->setInputVersion(fRun->GetRunId(),1);
 
 }
-FairCave::FairCave(){
+FairCave::FairCave()
+{
 }
 
 FairCave::~FairCave()
 {
 
 }
-FairCave::FairCave(const char * name,  const char *Title)
+FairCave::FairCave(const char* name,  const char* Title)
   : FairModule(name ,Title)
 {
-    world[0] = 0;
-    world[1] = 0;
-    world[2] = 0;
+  world[0] = 0;
+  world[1] = 0;
+  world[2] = 0;
 }

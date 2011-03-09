@@ -45,90 +45,110 @@
 
 #include "TList.h"
 
-ClassImp(FairGeoShapes) 
+ClassImp(FairGeoShapes)
 
-FairGeoShapes::FairGeoShapes() 
-   : shapes(new TList())
+FairGeoShapes::FairGeoShapes()
+  : shapes(new TList())
 {
   // constructor creates empty list of shapes
- 
+
 }
 
 
-FairGeoShapes::~FairGeoShapes() {
+FairGeoShapes::~FairGeoShapes()
+{
   // destructor deletes all shapes
   shapes->Delete();
   delete shapes;
 }
 
 
-FairGeoBasicShape* FairGeoShapes::selectShape(FairGeoVolume * volu) {
+FairGeoBasicShape* FairGeoShapes::selectShape(FairGeoVolume* volu)
+{
   // returns a pointer to the shape used in the given volume
   // calls internally selectShape(TString&) with the name of the shape
-  // returns NULL if the corresponding shape class is not implemented 
+  // returns NULL if the corresponding shape class is not implemented
   const TString& name(volu->getShape());
   return selectShape(name);
 }
 
 
-FairGeoBasicShape* FairGeoShapes::selectShape(const TString& name) {
+FairGeoBasicShape* FairGeoShapes::selectShape(const TString& name)
+{
   // returns a pointer to the shape given by name
   // creates a shape object and adds it to the list of shapes if
   // not existing
-  // returns NULL if the corresponding shape class is not implemented 
-  TString allShapes[13]={"BOX ","TRAP","TRD1","PGON","PCON","TUBE","TUBS",
-                         "CONE","CONS","SPHE","ELTU","TORUS", "ASSEMBLY"};
+  // returns NULL if the corresponding shape class is not implemented
+  TString allShapes[13]= {"BOX ","TRAP","TRD1","PGON","PCON","TUBE","TUBS",
+                          "CONE","CONS","SPHE","ELTU","TORUS", "ASSEMBLY"
+                         };
   TString sName(name);
-  if (sName.Length()==3) sName+=" ";
+  if (sName.Length()==3) { sName+=" "; }
   FairGeoBasicShape* s=(FairGeoBasicShape*)shapes->FindObject(sName);
-  if (s) return s;
+  if (s) { return s; }
   Int_t no=-1;
-  for(Int_t i=0;i<13;i++) {if (sName.CompareTo(allShapes[i])==0) no=i;}
+  for(Int_t i=0; i<13; i++) {if (sName.CompareTo(allShapes[i])==0) { no=i; }}
   switch(no) {
-    case 0:  {s= new FairGeoBrik();  break;}
-    case 1:  {s= new FairGeoTrap();  break;}
-    case 2:  {s= new FairGeoTrd1();  break;}
-    case 3:  {s= new FairGeoPgon();  break;}
-    case 4:  {s= new FairGeoPcon();  break;}
-    case 5:  {s= new FairGeoTube();  break;}
-    case 6:  {s= new FairGeoTubs();  break;}
-    case 7:  {s= new FairGeoCone();  break;}
-    case 8:  {s= new FairGeoCons();  break;}
-    case 9:  {s= new FairGeoSphe();  break;}
-    case 10: {s= new FairGeoEltu();  break;}
-    case 11: {s= new FairGeoTorus();  break;}
-	case 12: {s= new FairGeoAssembly();  break;}	  
-    default: {
-      Error("selectShape","shape %s not implemented",name.Data());
-    }
+  case 0:
+  {s= new FairGeoBrik();  break;}
+  case 1:
+  {s= new FairGeoTrap();  break;}
+  case 2:
+  {s= new FairGeoTrd1();  break;}
+  case 3:
+  {s= new FairGeoPgon();  break;}
+  case 4:
+  {s= new FairGeoPcon();  break;}
+  case 5:
+  {s= new FairGeoTube();  break;}
+  case 6:
+  {s= new FairGeoTubs();  break;}
+  case 7:
+  {s= new FairGeoCone();  break;}
+  case 8:
+  {s= new FairGeoCons();  break;}
+  case 9:
+  {s= new FairGeoSphe();  break;}
+  case 10:
+  {s= new FairGeoEltu();  break;}
+  case 11:
+  {s= new FairGeoTorus();  break;}
+  case 12:
+  {s= new FairGeoAssembly();  break;}
+  default: {
+    Error("selectShape","shape %s not implemented",name.Data());
   }
-  if (s) shapes->Add(s);
+  }
+  if (s) { shapes->Add(s); }
   return s;
 }
- 
- 
-Int_t FairGeoShapes::readPoints(fstream* pFile,FairGeoVolume* volu) {
+
+
+Int_t FairGeoShapes::readPoints(fstream* pFile,FairGeoVolume* volu)
+{
   // reads the points of the given volume from the Ascii file
   // returns the number of points read
   // returns 0 if if the corresponding shape class is not implemented
   FairGeoBasicShape* s=selectShape(volu);
-  if (s) return s->readPoints(pFile,volu);
-  else return 0;
-}
-
-  
-Bool_t FairGeoShapes::writePoints(fstream* pFile,FairGeoVolume* volu) {
-  // writes the points of the given volume to the Ascii file
-  // return kFALSE if the corresponding shape class is not implemented
-  FairGeoBasicShape* s=selectShape(volu);
-  if (s) return s->writePoints(pFile,volu);
-  else return kFALSE;
+  if (s) { return s->readPoints(pFile,volu); }
+  else { return 0; }
 }
 
 
-void FairGeoShapes::printPoints(FairGeoVolume* volu) {
+Bool_t FairGeoShapes::writePoints(fstream* pFile,FairGeoVolume* volu)
+{
   // writes the points of the given volume to the Ascii file
   // return kFALSE if the corresponding shape class is not implemented
   FairGeoBasicShape* s=selectShape(volu);
-  if (s) return s->printPoints(volu);
+  if (s) { return s->writePoints(pFile,volu); }
+  else { return kFALSE; }
+}
+
+
+void FairGeoShapes::printPoints(FairGeoVolume* volu)
+{
+  // writes the points of the given volume to the Ascii file
+  // return kFALSE if the corresponding shape class is not implemented
+  FairGeoBasicShape* s=selectShape(volu);
+  if (s) { return s->printPoints(volu); }
 }

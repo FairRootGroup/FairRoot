@@ -25,43 +25,44 @@
 #include <set>
 #include <utility>
 
-class FairLinkedData : public TObject{
-public:
+class FairLinkedData : public TObject
+{
+  public:
 
 
-	FairLinkedData();
+    FairLinkedData();
 
-	/**
-	 * Constructor
-	 * \param defaultType an Int_t which is used if no type argument is given in SetLink and Add Link
-	 */
-	FairLinkedData(Int_t defaultType):fDefaultType(defaultType){}
-	virtual ~FairLinkedData();
-
-
-	virtual std::set<FairLink> GetLinks() const = 0;
-	virtual Int_t GetNLinks() const = 0;
-	virtual FairLink GetLink(Int_t pos) const = 0;
-
-	virtual Int_t GetDefaultType(){ return fDefaultType;}
-
-	virtual void SetLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0) = 0;
-
-	virtual void SetDefaultType(Int_t type){	fDefaultType = type;}
-
-	virtual void AddLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0) = 0;
-
-	virtual void DeleteLink(Int_t type, Int_t index) = 0;
+    /**
+     * Constructor
+     * \param defaultType an Int_t which is used if no type argument is given in SetLink and Add Link
+     */
+    FairLinkedData(Int_t defaultType):fDefaultType(defaultType) {}
+    virtual ~FairLinkedData();
 
 
-	virtual bool IsLinkInList(Int_t type, Int_t index) = 0;
-	virtual Int_t LinkPosInList(Int_t type, Int_t index) = 0;
+    virtual std::set<FairLink> GetLinks() const = 0;
+    virtual Int_t GetNLinks() const = 0;
+    virtual FairLink GetLink(Int_t pos) const = 0;
+
+    virtual Int_t GetDefaultType() { return fDefaultType;}
+
+    virtual void SetLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0) = 0;
+
+    virtual void SetDefaultType(Int_t type) {  fDefaultType = type;}
+
+    virtual void AddLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0) = 0;
+
+    virtual void DeleteLink(Int_t type, Int_t index) = 0;
 
 
-private:
-	Int_t fDefaultType;
+    virtual bool IsLinkInList(Int_t type, Int_t index) = 0;
+    virtual Int_t LinkPosInList(Int_t type, Int_t index) = 0;
 
-	ClassDef(FairLinkedData,2);
+
+  private:
+    Int_t fDefaultType;
+
+    ClassDef(FairLinkedData,2);
 };
 
 /** \fn virtual std::vector<std::pair<Int_t, Int_t> > FairLinkedData::GetLinks()

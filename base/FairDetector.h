@@ -11,20 +11,21 @@ class TClonesArray;
  * Base class for constructing detecors
  * @author M. Al-Turany, Denis Bertini
  * @version 0.1
- * @since 12.01.04 
+ * @since 12.01.04
  */
-class FairDetector : public FairModule{
+class FairDetector : public FairModule
+{
 
 
-public:
-  
+  public:
+
     /**
       constructor
       Name :  Detector Name
       Active: kTRUE for active detectors  (ProcessHits() will be called)
               kFALSE for inactive detectors
     */
-    FairDetector(const char * Name, Bool_t Active, Int_t DetId=0);
+    FairDetector(const char* Name, Bool_t Active, Int_t DetId=0);
     /**
       default constructor
     */
@@ -40,11 +41,11 @@ public:
     /**
       this method is called for each step during simulation (see FairMCApplication::Stepping())
     */
-    virtual Bool_t ProcessHits( FairVolume *v=0)=0;
+    virtual Bool_t ProcessHits( FairVolume* v=0)=0;
     /**
       this is called at the end of an event
-    */ 
-    virtual void   EndOfEvent(){;}
+    */
+    virtual void   EndOfEvent() {;}
     /**
       Registers the produced collections in FAIRRootManager.
     */
@@ -54,28 +55,28 @@ public:
     virtual TClonesArray* GetCollection(Int_t iColl) const = 0;
 
     /**
-      has to be called after each event to reset the containers    
+      has to be called after each event to reset the containers
     */
     virtual void   Reset()=0;
-    
-    virtual void   CopyClones( TClonesArray *cl1,  TClonesArray *cl2 , Int_t offset) {;}
-    
-    virtual void   FinishPrimary(){;}                               
-    virtual void   FinishRun(){;}
-    virtual void   BeginPrimary(){;}   
-    virtual void   PostTrack(){;}                                     
-    virtual void   PreTrack(){;}                                      
-    virtual void   BeginEvent(){;}
-    virtual void   SetSpecialPhysicsCuts(){;} 
+
+    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 , Int_t offset) {;}
+
+    virtual void   FinishPrimary() {;}
+    virtual void   FinishRun() {;}
+    virtual void   BeginPrimary() {;}
+    virtual void   PostTrack() {;}
+    virtual void   PreTrack() {;}
+    virtual void   BeginEvent() {;}
+    virtual void   SetSpecialPhysicsCuts() {;}
     void SaveGeoParams();
     Int_t  GetDetId() {return fDetId;}
 
-private:
-   FairDetector(const FairDetector &M);
-   FairDetector& operator= (const FairDetector&) {return *this;}
+  private:
+    FairDetector(const FairDetector& M);
+    FairDetector& operator= (const FairDetector&) {return *this;}
 
 
- protected:
+  protected:
 
     Int_t fDetId; // Detector Id has to be set from ctr.
 

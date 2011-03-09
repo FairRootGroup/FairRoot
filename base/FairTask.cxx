@@ -11,19 +11,19 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairTask::FairTask()
-: fVerbose(0), fInputPersistance(-1)
-{ 
+  : fVerbose(0), fInputPersistance(-1)
+{
 }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Standard constructor   ------------------------------------------
-FairTask::FairTask(const char* name, Int_t iVerbose) 
-  : TTask(name, "FairTask"), 
+FairTask::FairTask(const char* name, Int_t iVerbose)
+  : TTask(name, "FairTask"),
     fVerbose(iVerbose), fInputPersistance(-1)
 {
-  
+
 }
 // -------------------------------------------------------------------------
 
@@ -36,15 +36,16 @@ FairTask::~FairTask() { }
 
 
 // -----   Public method InitTask   ----------------------------------------
-void FairTask::InitTask() {
-  if ( ! fActive ) return;
+void FairTask::InitTask()
+{
+  if ( ! fActive ) { return; }
   InitStatus tStat = Init();
   if ( tStat == kFATAL ) {
     cout << "-E- FairTask::InitTask: Intialisation of task "
-	 << fName << " failed fatally! " << endl;
+         << fName << " failed fatally! " << endl;
     Fatal("InitTask", "Init failed");
   }
-  if ( tStat == kERROR ) fActive = kFALSE;
+  if ( tStat == kERROR ) { fActive = kFALSE; }
   InitTasks();
 }
 // -------------------------------------------------------------------------
@@ -52,15 +53,16 @@ void FairTask::InitTask() {
 
 
 // -----   Public method ReInitTask   --------------------------------------
-void FairTask::ReInitTask() {
-  if ( ! fActive ) return;
+void FairTask::ReInitTask()
+{
+  if ( ! fActive ) { return; }
   InitStatus tStat = ReInit();
   if ( tStat == kFATAL ) {
     cout << "-E- FairTask::ReInitTask: Reintialisation of task "
-	 << fName << " failed fatally! " << endl;
+         << fName << " failed fatally! " << endl;
     Fatal("ReInitTask", "Init failed");
   }
-  if ( tStat == kERROR ) fActive = kFALSE;
+  if ( tStat == kERROR ) { fActive = kFALSE; }
   ReInitTasks();
 }
 // -------------------------------------------------------------------------
@@ -68,23 +70,26 @@ void FairTask::ReInitTask() {
 
 
 // -----   Public method SetParTask   --------------------------------------
-void FairTask::SetParTask() {
-  if ( ! fActive ) return;
+void FairTask::SetParTask()
+{
+  if ( ! fActive ) { return; }
   SetParContainers();
   SetParTasks();
 }
 // -------------------------------------------------------------------------
 
 // -----    Public method FinishEvent -------------------------------------
-void FairTask::FinishEvent() {
-  if ( ! fActive ) return;
+void FairTask::FinishEvent()
+{
+  if ( ! fActive ) { return; }
   FinishEvents();
   //  FinishTasks();
 }
 
 // -----    Public method FinishTask   -------------------------------------
-void FairTask::FinishTask() {
-  if ( ! fActive ) return;
+void FairTask::FinishTask()
+{
+  if ( ! fActive ) { return; }
   Finish();
   FinishTasks();
 }
@@ -93,11 +98,12 @@ void FairTask::FinishTask() {
 
 
 // -----   Public method SetVerbose   --------------------------------------
-void FairTask::SetVerbose(Int_t iVerbose) {
+void FairTask::SetVerbose(Int_t iVerbose)
+{
   fVerbose = iVerbose;
   TIter next(GetListOfTasks());
-  FairTask *task;
-  while((task=dynamic_cast <FairTask*> (next()))) task->SetVerbose(iVerbose);
+  FairTask* task;
+  while((task=dynamic_cast <FairTask*> (next()))) { task->SetVerbose(iVerbose); }
 }
 // -------------------------------------------------------------------------
 
@@ -105,49 +111,54 @@ void FairTask::SetVerbose(Int_t iVerbose) {
 
 
 // -----   Protected method InitTasks   ------------------------------------
-void FairTask::InitTasks() {
+void FairTask::InitTasks()
+{
   TIter next(GetListOfTasks());
-  FairTask *task;
-  while( ( task=dynamic_cast<FairTask*>(next()) ) ) task->InitTask();
+  FairTask* task;
+  while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->InitTask(); }
 }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Protected method ReInitTasks   ----------------------------------
-void FairTask::ReInitTasks() {
+void FairTask::ReInitTasks()
+{
   TIter next(GetListOfTasks());
-  FairTask *task;
-  while( ( task=dynamic_cast<FairTask*>(next()) ) ) task->ReInitTask();
+  FairTask* task;
+  while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->ReInitTask(); }
 }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Protected method SetParTasks   ----------------------------------
-void FairTask::SetParTasks() {
+void FairTask::SetParTasks()
+{
   TIter next(GetListOfTasks());
-  FairTask *task;
-  while( ( task=dynamic_cast<FairTask*>(next()) ) ) task->SetParTask();
+  FairTask* task;
+  while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->SetParTask(); }
 }
 // -------------------------------------------------------------------------
 
 
 
 // -----   Protected method FinishTasks   ----------------------------------
-void FairTask::FinishTasks() {
+void FairTask::FinishTasks()
+{
   TIter next(GetListOfTasks());
-  FairTask *task;
-  while( ( task=dynamic_cast<FairTask*>(next()) ) ) task->FinishTask();
-  while( ( task=dynamic_cast<FairTask*>(next()) ) ) task->Finish();
+  FairTask* task;
+  while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->FinishTask(); }
+  while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->Finish(); }
 }
 // -------------------------------------------------------------------------
 
 // -----   Protected method FinishEvents   ----------------------------------
-void FairTask::FinishEvents() {
+void FairTask::FinishEvents()
+{
   TIter next(GetListOfTasks());
-  FairTask *task;
-  while( ( task=dynamic_cast<FairTask*>(next()) ) ) task->FinishEvent();
+  FairTask* task;
+  while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->FinishEvent(); }
 }
 // -------------------------------------------------------------------------
 

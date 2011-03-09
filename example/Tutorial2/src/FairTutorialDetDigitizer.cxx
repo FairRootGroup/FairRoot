@@ -26,16 +26,16 @@ using std::endl;
 
 // ---- Default constructor -------------------------------------------
 FairTutorialDetDigitizer::FairTutorialDetDigitizer()
-    :FairTask("TutorialDetDigitizer")
-	//:fRef(0)
+  :FairTask("TutorialDetDigitizer")
+  //:fRef(0)
 {
   //    fDigiCollection = new TClonesArray("FairTrdDigi");
 }
 // --------------------------------------------------------------------
 
 // ---- Constructor ----------------------------------------------------
-FairTutorialDetDigitizer::FairTutorialDetDigitizer(const char *name, const char *title)
-	:FairTask(name)
+FairTutorialDetDigitizer::FairTutorialDetDigitizer(const char* name, const char* title)
+  :FairTask(name)
 {
 
 }
@@ -55,22 +55,23 @@ FairTutorialDetDigitizer::~FairTutorialDetDigitizer()
 // ----  Initialisation  ----------------------------------------------
 void FairTutorialDetDigitizer::SetParContainers()
 {
-    cout<<" * FairTutorialDetDigitizer * :: SetParContainers() "<<endl;
+  cout<<" * FairTutorialDetDigitizer * :: SetParContainers() "<<endl;
 
 
-    // Get Base Container
-    FairRunAna* ana = FairRunAna::Instance();
-    FairRuntimeDb* rtdb=ana->GetRuntimeDb();
+  // Get Base Container
+  FairRunAna* ana = FairRunAna::Instance();
+  FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-    fDigiPar = (FairTutorialDetDigiPar*)
-               (rtdb->getContainer("FairTutorialDetDigiPar"));
+  fDigiPar = (FairTutorialDetDigiPar*)
+             (rtdb->getContainer("FairTutorialDetDigiPar"));
 
-    fDigiPar->printparams();
+  fDigiPar->printparams();
 }
 // --------------------------------------------------------------------
 
 // ---- ReInit  -------------------------------------------------------
-InitStatus FairTutorialDetDigitizer::ReInit(){
+InitStatus FairTutorialDetDigitizer::ReInit()
+{
 
   cout<<" * FairTutorialDetDigitizer * :: ReInit() "<<endl;
 
@@ -79,8 +80,8 @@ InitStatus FairTutorialDetDigitizer::ReInit(){
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
   fDigiPar = (FairTutorialDetDigiPar*)
-    (rtdb->getContainer("FairTutorialDetDigiPar"));
-  
+             (rtdb->getContainer("FairTutorialDetDigiPar"));
+
   return kSUCCESS;
 }
 // --------------------------------------------------------------------
@@ -89,32 +90,32 @@ InitStatus FairTutorialDetDigitizer::ReInit(){
 InitStatus FairTutorialDetDigitizer::Init()
 {
 
-    cout<<" * FairTutorialDetDigitizer * :: Init() "<<endl;
+  cout<<" * FairTutorialDetDigitizer * :: Init() "<<endl;
 
-    FairRootManager *ioman = FairRootManager::Instance();
-    if ( ! ioman ) Fatal("Init", "No FairRootManager");
-    
-    fTutorialDetPoints=(TClonesArray *)  
-      ioman->GetObject("TutorialDetPoint");
- 
-    if ( ! fTutorialDetPoints ) {
-      cout << "-W FairTutorialDetDigitizer::Init: No TutorialDetPoints array!" << endl;
-      cout << "                            Task will be inactive" << endl;
-      return kERROR;
-    }
+  FairRootManager* ioman = FairRootManager::Instance();
+  if ( ! ioman ) { Fatal("Init", "No FairRootManager"); }
 
-    //fListStack = (TClonesArray*)ioman->GetObject("MCTrack");
-    //fDigiCollection = new TClonesArray("FairTrdDigi", 100);
-    //ioman->Register("TRDDigi","TRD Digis",fDigiCollection,kTRUE);
+  fTutorialDetPoints=(TClonesArray*)
+                     ioman->GetObject("TutorialDetPoint");
 
-    return kSUCCESS;
+  if ( ! fTutorialDetPoints ) {
+    cout << "-W FairTutorialDetDigitizer::Init: No TutorialDetPoints array!" << endl;
+    cout << "                            Task will be inactive" << endl;
+    return kERROR;
+  }
+
+  //fListStack = (TClonesArray*)ioman->GetObject("MCTrack");
+  //fDigiCollection = new TClonesArray("FairTrdDigi", 100);
+  //ioman->Register("TRDDigi","TRD Digis",fDigiCollection,kTRUE);
+
+  return kSUCCESS;
 
 }
 // --------------------------------------------------------------------
 
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDetDigitizer::Exec(Option_t * option)
+void FairTutorialDetDigitizer::Exec(Option_t* option)
 {
 
   // Here we print something
@@ -122,23 +123,23 @@ void FairTutorialDetDigitizer::Exec(Option_t * option)
   cout <<" I am in FairTutorialDetDigitizer::Exec" << endl;
 
   /*
-    
+
   fNHits = 0;
   FairTutorialDetPoint *pt=NULL;
-  
+
   Int_t nentries = fTutorialDetPoints->GetEntriesFast();
-  
+
   Double_t ELoss;       // total energy loss
-  
+
   for (int j=0; j < nentries; j++ ) {
-  
+
     pt = (FairTutorialDetPoint*) fTutorialDetPoints->At(j);
-  
+
     if(NULL == pt) continue;
 
-//        Double_t x_mean = (pt->GetXIn()+pt->GetXOut())/2.;
-//        Double_t y_mean = (pt->GetYIn()+pt->GetYOut())/2.;
-//        Double_t z_mean = (pt->GetZIn()+pt->GetZOut())/2.;
+  //        Double_t x_mean = (pt->GetXIn()+pt->GetXOut())/2.;
+  //        Double_t y_mean = (pt->GetYIn()+pt->GetYOut())/2.;
+  //        Double_t z_mean = (pt->GetZIn()+pt->GetZOut())/2.;
 
 
         Double_t x_mean = pt->GetXOut();
@@ -155,32 +156,32 @@ void FairTutorialDetDigitizer::Exec(Option_t * option)
 
         const Double_t *global_point = gGeoManager->GetCurrentPoint();
         Double_t local_point[3];  // global_point[3];
- 
-        gGeoManager->MasterToLocal(global_point, local_point);
-        
-        TGeoHMatrix *matrix = gGeoManager->GetCurrentMatrix(); 
 
-        TGeoBBox *shape = (TGeoBBox*)curvol->GetShape(); 
+        gGeoManager->MasterToLocal(global_point, local_point);
+
+        TGeoHMatrix *matrix = gGeoManager->GetCurrentMatrix();
+
+        TGeoBBox *shape = (TGeoBBox*)curvol->GetShape();
         Float_t sizex = shape->GetDX();
         Float_t sizey = shape->GetDY();
         Float_t sizez = shape->GetDZ();
 
-	//        cout <<"x_in: " << pt->GetXIn() << endl;
-	// cout <<"x_mean: " << x_mean << endl;
+  //        cout <<"x_in: " << pt->GetXIn() << endl;
+  // cout <<"x_mean: " << x_mean << endl;
         //cout <<"x_out: " << pt->GetXOut() << endl;
 
         //cout <<"y: " << y_mean << endl;
 
         //cout <<"z_in: " << pt->GetZIn() << endl;
         //cout <<"z_mean: " << z_mean << endl;
-	//        cout <<"z_out: " << pt->GetZOut() << endl;
+  //        cout <<"z_out: " << pt->GetZOut() << endl;
 
 
         if (matrix->IsRotation()){
           cout <<"Module is rotated" << endl;
-	} else {
+  } else {
           cout <<"Module is not rotated" << endl;
-	}
+  }
 
 
     }
@@ -197,7 +198,8 @@ void FairTutorialDetDigitizer::Finish()
 // --------------------------------------------------------------------
 
 // ---- Register ------------------------------------------------------
-void FairTutorialDetDigitizer::Register(){
+void FairTutorialDetDigitizer::Register()
+{
 
   //FairRootManager::Instance()->Register("TrdDigi","Trd Digi", fDigiCollection, kTRUE);
 

@@ -12,7 +12,8 @@
 
 ClassImp(FairGeoMagnet)
 
-FairGeoMagnet::FairGeoMagnet() {
+FairGeoMagnet::FairGeoMagnet()
+{
   // Constructor
   fName="magnet";
   maxSectors=0;

@@ -64,29 +64,33 @@ Bool_t  FairBoxGenerator::Init()
 
   if (fPhiMax-fPhiMin>360)
     Fatal("Init()","FairBoxGenerator: phi range is too wide: %f<phi<%f",
-	  fPhiMin,fPhiMax);
-  if (fPRangeIsSet && fPtRangeIsSet)
+          fPhiMin,fPhiMax);
+  if (fPRangeIsSet && fPtRangeIsSet) {
     Fatal("Init()","FairBoxGenerator: Cannot set P and Pt ranges simultaneously");
-  if (fPRangeIsSet && fYRangeIsSet)
+  }
+  if (fPRangeIsSet && fYRangeIsSet) {
     Fatal("Init()","FairBoxGenerator: Cannot set P and Y ranges simultaneously");
+  }
   if ( (fThetaRangeIsSet && fYRangeIsSet) ||
        (fThetaRangeIsSet && fEtaRangeIsSet) ||
-       (fYRangeIsSet     && fEtaRangeIsSet) )
+       (fYRangeIsSet     && fEtaRangeIsSet) ) {
     Fatal("Init()","FairBoxGenerator: Cannot set Y, Theta or Eta ranges simultaneously");
-  if (fPointVtxIsSet && fBoxVtxIsSet)
+  }
+  if (fPointVtxIsSet && fBoxVtxIsSet) {
     Fatal("Init()","FairBoxGenerator: Cannot set point and box vertices simultaneously");
+  }
 
   // Check for particle type
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  TParticlePDG *particle = pdgBase->GetParticle(fPDGType);
-  
-  if (! particle) Fatal("FairBoxGenerator","PDG code %d not defined.",fPDGType);
-  
-  
+  TParticlePDG* particle = pdgBase->GetParticle(fPDGType);
+
+  if (! particle) { Fatal("FairBoxGenerator","PDG code %d not defined.",fPDGType); }
+
+
   fPDGMass = particle->Mass();
- // printf("particle->Mass() = %f \n", fPDGMass);
-  return kTRUE;  
-  
+// printf("particle->Mass() = %f \n", fPDGMass);
+  return kTRUE;
+
 }
 
 // ------------------------------------------------------------------------
@@ -95,7 +99,7 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   // Generate one event: produce primary particles emitted from one vertex.
   // Primary particles are distributed uniformly along
   // those kinematics variables which were limitted by setters.
-  // if SetCosTheta() function is used, the distribution will be uniform in 
+  // if SetCosTheta() function is used, the distribution will be uniform in
   // cos(theta)
   printf("------------------------------------------------------------------------------------------------------------\n");
   printf(" FairBoxGenerator::ReadEvent()  \n");
@@ -107,33 +111,32 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   for (Int_t k = 0; k < fMult; k++) {
     phi = gRandom->Uniform(fPhiMin,fPhiMax) * TMath::DegToRad();
 
-    if      (fPRangeIsSet ) pabs = gRandom->Uniform(fPMin,fPMax);
-    else if (fPtRangeIsSet) pt   = gRandom->Uniform(fPtMin,fPtMax);
+    if      (fPRangeIsSet ) { pabs = gRandom->Uniform(fPMin,fPMax); }
+    else if (fPtRangeIsSet) { pt   = gRandom->Uniform(fPtMin,fPtMax); }
 
     if      (fThetaRangeIsSet) {
       if (fCosThetaIsSet)
-	theta = acos(gRandom->Uniform(cos(fThetaMin* TMath::DegToRad()),
-                cos(fThetaMax* TMath::DegToRad())));
-      else
-	theta = gRandom->Uniform(fThetaMin,fThetaMax) * TMath::DegToRad();
-    }
-    else if (fEtaRangeIsSet) {
+        theta = acos(gRandom->Uniform(cos(fThetaMin* TMath::DegToRad()),
+                                      cos(fThetaMax* TMath::DegToRad())));
+      else {
+        theta = gRandom->Uniform(fThetaMin,fThetaMax) * TMath::DegToRad();
+      }
+    } else if (fEtaRangeIsSet) {
       eta   = gRandom->Uniform(fEtaMin,fEtaMax);
       theta = 2*TMath::ATan(TMath::Exp(-eta));
-    }
-    else if (fYRangeIsSet) {
+    } else if (fYRangeIsSet) {
       y     = gRandom->Uniform(fYMin,fYMax);
       mt = TMath::Sqrt(fPDGMass*fPDGMass + pt*pt);
       pz = mt * TMath::SinH(y);
     }
-    
+
     if (fThetaRangeIsSet || fEtaRangeIsSet) {
       if      (fPRangeIsSet ) {
-	pz = pabs*TMath::Cos(theta);
-	pt = pabs*TMath::Sin(theta);
+        pz = pabs*TMath::Cos(theta);
+        pt = pabs*TMath::Sin(theta);
+      } else if (fPtRangeIsSet) {
+        pz = pt/TMath::Tan(theta);
       }
-      else if (fPtRangeIsSet) 
-	pz = pt/TMath::Tan(theta);
     }
 
     px = pt*TMath::Cos(phi);
@@ -146,7 +149,7 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
     if (fDebug)
       printf("BoxGen: kf=%d, p=(%.2f, %.2f, %.2f) GeV, x=(%.1f, %.1f, %.1f) cm\n",
-	     fPDGType, px, py, pz, fX, fY, fZ);
+             fPDGType, px, py, pz, fX, fY, fZ);
 
     primGen->AddTrack(fPDGType, px, py, pz, fX, fY, fZ);
   }

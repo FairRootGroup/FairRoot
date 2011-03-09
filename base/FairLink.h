@@ -14,57 +14,57 @@
 #include <utility>
 #include <iostream>
 
-class FairLink : public TObject{
-public:
-	FairLink();
-	FairLink(Int_t type, Int_t index, Float_t weight = 1.);
-	FairLink(TString branchName, Int_t index, Float_t weight = 1.);
-	virtual ~FairLink();
+class FairLink : public TObject
+{
+  public:
+    FairLink();
+    FairLink(Int_t type, Int_t index, Float_t weight = 1.);
+    FairLink(TString branchName, Int_t index, Float_t weight = 1.);
+    virtual ~FairLink();
 
-	void SetLink(Int_t type, Int_t index, Float_t weight = 1.){fType = type; fIndex = index; fWeight = weight;}
+    void SetLink(Int_t type, Int_t index, Float_t weight = 1.) {fType = type; fIndex = index; fWeight = weight;}
 
-	Int_t GetType() const {return fType;}
-	Int_t GetIndex() const {return fIndex;}
-	Float_t GetWeight() const {return fWeight;}
+    Int_t GetType() const {return fType;}
+    Int_t GetIndex() const {return fIndex;}
+    Float_t GetWeight() const {return fWeight;}
 
-	void SetWeight(Float_t weight) {fWeight = weight;}
-	void AddWeight(Float_t weight) {fWeight += weight;}
+    void SetWeight(Float_t weight) {fWeight = weight;}
+    void AddWeight(Float_t weight) {fWeight += weight;}
 
-	virtual void Print(std::ostream& out = std::cout){
-		out << "(" << GetType() << "/" << GetIndex() << "/" << GetWeight() << ")";
-	}
+    virtual void Print(std::ostream& out = std::cout) {
+      out << "(" << GetType() << "/" << GetIndex() << "/" << GetWeight() << ")";
+    }
 
-	virtual bool operator==(const FairLink& link) const{
-		if (fType == link.GetType() && fIndex == link.GetIndex())
-			return true;
-		else
-			return false;
-	}
+    virtual bool operator==(const FairLink& link) const {
+      if (fType == link.GetType() && fIndex == link.GetIndex()) {
+        return true;
+      } else {
+        return false;
+      }
+    }
 
-	virtual bool operator<(const FairLink& link) const{
-		if(fType < link.GetType()){
-			return true;
-		}
-		else if (fType == link.GetType() && fIndex < link.GetIndex()){
-			return true;
-		}
-		else return false;
-	}
+    virtual bool operator<(const FairLink& link) const {
+      if(fType < link.GetType()) {
+        return true;
+      } else if (fType == link.GetType() && fIndex < link.GetIndex()) {
+        return true;
+      } else { return false; }
+    }
 
-	friend std::ostream& operator<< (std::ostream& out, FairLink& link){
-		link.Print(out);
-		return out;
-	}
+    friend std::ostream& operator<< (std::ostream& out, FairLink& link) {
+      link.Print(out);
+      return out;
+    }
 
     ClassDef(FairLink, 1);
 
 
-private:
-	Int_t fType;
-	Int_t fIndex;
-	Float_t fWeight;
+  private:
+    Int_t fType;
+    Int_t fIndex;
+    Float_t fWeight;
 
-	
+
 };
 
 #endif /* FAIRLINK_H_ */

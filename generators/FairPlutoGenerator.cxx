@@ -17,7 +17,8 @@
 #include <iostream>
 
 // -----   Default constructor   ------------------------------------------
-FairPlutoGenerator::FairPlutoGenerator() {
+FairPlutoGenerator::FairPlutoGenerator()
+{
   iEvent     = 0;
   fInputFile = NULL;
   fInputTree = NULL;
@@ -27,7 +28,8 @@ FairPlutoGenerator::FairPlutoGenerator() {
 
 
 // -----   Standard constructor   -----------------------------------------
-FairPlutoGenerator::FairPlutoGenerator(const Char_t* fileName) {
+FairPlutoGenerator::FairPlutoGenerator(const Char_t* fileName)
+{
   iEvent     = 0;
   fFileName  = fileName;
   fInputFile = new TFile(fFileName);
@@ -40,7 +42,8 @@ FairPlutoGenerator::FairPlutoGenerator(const Char_t* fileName) {
 
 
 // -----   Destructor   ---------------------------------------------------
-FairPlutoGenerator::~FairPlutoGenerator() {
+FairPlutoGenerator::~FairPlutoGenerator()
+{
   CloseInput();
 }
 // ------------------------------------------------------------------------
@@ -48,7 +51,8 @@ FairPlutoGenerator::~FairPlutoGenerator() {
 
 
 // -----   Public method ReadEvent   --------------------------------------
-Bool_t FairPlutoGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
+Bool_t FairPlutoGenerator::ReadEvent(FairPrimaryGenerator* primGen)
+{
 
   // Check for input file
   if ( ! fInputFile ) {
@@ -62,7 +66,7 @@ Bool_t FairPlutoGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     CloseInput();
     return kFALSE;
   }
-  TFile  *g=gFile;
+  TFile*  g=gFile;
   fInputFile->cd();
   fInputTree->GetEntry(iEvent++);
   g->cd();
@@ -81,7 +85,7 @@ Bool_t FairPlutoGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
     // Check if particle type is known to database
     if ( ! pdgType ) {
       cout << "-W FairPlutoGenerator: Unknown type " << part->ID()
-	   << ", skipping particle." << endl;
+           << ", skipping particle." << endl;
       continue;
     }
 
@@ -109,10 +113,11 @@ Bool_t FairPlutoGenerator::ReadEvent(FairPrimaryGenerator* primGen) {
 
 
 // -----   Private method CloseInput   ------------------------------------
-void FairPlutoGenerator::CloseInput() {
+void FairPlutoGenerator::CloseInput()
+{
   if ( fInputFile ) {
     cout << "-I FairPlutoGenerator: Closing input file " << fFileName
-	 << endl;
+         << endl;
     fInputFile->Close();
     delete fInputFile;
   }

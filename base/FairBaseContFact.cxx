@@ -15,7 +15,8 @@ ClassImp(FairBaseContFact)
 
 static FairBaseContFact gFairBaseContFact;
 
-FairBaseContFact::FairBaseContFact() {
+FairBaseContFact::FairBaseContFact()
+{
   // Constructor (called when the library is loaded)
   fName="FairBaseContFact";
   fTitle="Factory for parameter containers in libSts";
@@ -23,17 +24,19 @@ FairBaseContFact::FairBaseContFact() {
   FairRuntimeDb::instance()->addContFactory(this);
 }
 
-void FairBaseContFact::setAllContainers() {
+void FairBaseContFact::setAllContainers()
+{
   /** Creates the Container objects with all accepted contexts and adds them to
    *  the list of containers for the base library.*/
-    FairContainer* pTest= new FairContainer("FairBaseParSet",
-                                            "class for parameter io",
-                                            "DefaultContext");
-    pTest->addContext("TestNonDefaultContext");
-    containers->Add(pTest);
+  FairContainer* pTest= new FairContainer("FairBaseParSet",
+                                          "class for parameter io",
+                                          "DefaultContext");
+  pTest->addContext("TestNonDefaultContext");
+  containers->Add(pTest);
 }
 
-FairParSet* FairBaseContFact::createContainer(FairContainer* c) {
+FairParSet* FairBaseContFact::createContainer(FairContainer* c)
+{
   /** Calls the constructor of the corresponding parameter container.
    * For an actual context, which is not an empty string and not the default context
    * of this container, the name is concatinated with the context. */

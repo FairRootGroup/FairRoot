@@ -26,7 +26,7 @@ FairParticle::FairParticle(Int_t id, TParticle* particle)
     fMother(0),
     fDaughters(0),
     fname(particle->GetName()),
-	fmcType (kPTIon),
+    fmcType (kPTIon),
     fmass  (0),
     fcharge(0),
     fDecayTime(0),
@@ -43,146 +43,146 @@ FairParticle::FairParticle(Int_t id, TParticle* particle)
     fstable(kTRUE)
 {
 
- //  fname=particle->GetName();
-   fmcType= kPTIon;
-   fmass= particle->GetMass();
-   fcharge= particle->GetPDG()->Charge();
-   fDecayTime= particle->GetPDG()->Lifetime();
- //  fpType=   "Ion";
-   fwidth=   particle-> GetPDG()->Width();
-   fiSpin= (Int_t)  particle->GetPDG()->Spin();
-   fiParity=particle->GetPDG()->Parity();
-   fiConjugation= 0;
-   fiIsospin= (Int_t) particle->GetPDG()->Isospin();
-   fiIsospinZ= 0;
-   fgParity= 0;           
-   flepton=  0;
-   fbaryon=  0;                            
-   fstable= particle->GetPDG()->Stable();
+//  fname=particle->GetName();
+  fmcType= kPTIon;
+  fmass= particle->GetMass();
+  fcharge= particle->GetPDG()->Charge();
+  fDecayTime= particle->GetPDG()->Lifetime();
+//  fpType=   "Ion";
+  fwidth=   particle-> GetPDG()->Width();
+  fiSpin= (Int_t)  particle->GetPDG()->Spin();
+  fiParity=particle->GetPDG()->Parity();
+  fiConjugation= 0;
+  fiIsospin= (Int_t) particle->GetPDG()->Isospin();
+  fiIsospinZ= 0;
+  fgParity= 0;
+  flepton=  0;
+  fbaryon=  0;
+  fstable= particle->GetPDG()->Stable();
 
 //
 }
 //_____________________________________________________________________________
 
 FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Int_t s,Double_t mass ,Int_t q, Bool_t stable, Double_t decaytime)
- :  fpdg(0),
-    fParticle(0),
-    fMother(0),
-    fDaughters(0),
-    fname(name),
-	fmcType (kPTIon),
-    fmass  (0),
-    fcharge(0),
-    fDecayTime(0),
-    fpType("Ion"),
-    fwidth(0),
-    fiSpin(0),
-    fiParity(0),
-    fiConjugation(0),
-    fiIsospin(0),
-    fiIsospinZ(0),
-    fgParity(0),
-    flepton(0),
-    fbaryon(0),
-    fstable(kTRUE)
+  :  fpdg(0),
+     fParticle(0),
+     fMother(0),
+     fDaughters(0),
+     fname(name),
+     fmcType (kPTIon),
+     fmass  (0),
+     fcharge(0),
+     fDecayTime(0),
+     fpType("Ion"),
+     fwidth(0),
+     fiSpin(0),
+     fiParity(0),
+     fiConjugation(0),
+     fiIsospin(0),
+     fiIsospinZ(0),
+     fgParity(0),
+     flepton(0),
+     fbaryon(0),
+     fstable(kTRUE)
 {
   //fpdg= 10000000+10000* z +10 * a;
-   fpdg= 1000000000+10000000*s+10000* z +10 * a;
-   fDecayTime= decaytime;
-   
-   if (!TDatabasePDG::Instance()->GetParticle(fpdg)){
-        if(mass ==0 )mass = a*kProtonMass;
-    	TDatabasePDG::Instance()
-      		->AddParticle(name, name, mass, stable, 0, q, "kPTHadron", fpdg);
+  fpdg= 1000000000+10000000*s+10000* z +10 * a;
+  fDecayTime= decaytime;
 
-                /*   AddParticle(const char *name, const char *title,
-                                        Double_t mass, Bool_t stable,
-                                        Double_t width, Double_t charge,
-                                        const char* ParticleClass,
-                                        Int_t PDGcode,
-                                        Int_t Anti,
-                                        Int_t TrackingCode)
-                  */
-   }
-   fParticle = new TParticle();
-   fParticle->SetPdgCode(fpdg);
-  
-   fmcType= kPTHadron;
-   fmass= mass;
-   fcharge= fParticle->GetPDG()->Charge();
-   fDecayTime=decaytime ;
-   fwidth=   fParticle->GetPDG()->Width();
-   fiSpin=   (Int_t)fParticle->GetPDG()->Spin();
-   fiParity=  fParticle->GetPDG()->Parity();
-   fiConjugation= 0;
-   fiIsospin= (Int_t) fParticle->GetPDG()->Isospin();
-   fiIsospinZ= 0;
-   fgParity= 0;
-   flepton=  0;
-   fbaryon=  0;
-   fstable= fParticle->GetPDG()->Stable();
+  if (!TDatabasePDG::Instance()->GetParticle(fpdg)) {
+    if(mass ==0 ) { mass = a*kProtonMass; }
+    TDatabasePDG::Instance()
+    ->AddParticle(name, name, mass, stable, 0, q, "kPTHadron", fpdg);
+
+    /*   AddParticle(const char *name, const char *title,
+                            Double_t mass, Bool_t stable,
+                            Double_t width, Double_t charge,
+                            const char* ParticleClass,
+                            Int_t PDGcode,
+                            Int_t Anti,
+                            Int_t TrackingCode)
+      */
+  }
+  fParticle = new TParticle();
+  fParticle->SetPdgCode(fpdg);
+
+  fmcType= kPTHadron;
+  fmass= mass;
+  fcharge= fParticle->GetPDG()->Charge();
+  fDecayTime=decaytime ;
+  fwidth=   fParticle->GetPDG()->Width();
+  fiSpin=   (Int_t)fParticle->GetPDG()->Spin();
+  fiParity=  fParticle->GetPDG()->Parity();
+  fiConjugation= 0;
+  fiIsospin= (Int_t) fParticle->GetPDG()->Isospin();
+  fiIsospinZ= 0;
+  fgParity= 0;
+  flepton=  0;
+  fbaryon=  0;
+  fstable= fParticle->GetPDG()->Stable();
 
 
 }
 //_____________________________________________________________________________
 
 FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Double_t mass ,Int_t q, Bool_t stable, Double_t decaytime)
- :  fpdg(0),
-    fParticle(0),
-    fMother(0),
-    fDaughters(0),
-    fname(name),
-	fmcType (kPTIon),
-    fmass  (0),
-    fcharge(0),
-    fDecayTime(0),
-    fpType("Ion"),
-    fwidth(0),
-    fiSpin(0),
-    fiParity(0),
-    fiConjugation(0),
-    fiIsospin(0),
-    fiIsospinZ(0),
-    fgParity(0),
-    flepton(0),
-    fbaryon(0),
-    fstable(kTRUE)
+  :  fpdg(0),
+     fParticle(0),
+     fMother(0),
+     fDaughters(0),
+     fname(name),
+     fmcType (kPTIon),
+     fmass  (0),
+     fcharge(0),
+     fDecayTime(0),
+     fpType("Ion"),
+     fwidth(0),
+     fiSpin(0),
+     fiParity(0),
+     fiConjugation(0),
+     fiIsospin(0),
+     fiIsospinZ(0),
+     fgParity(0),
+     flepton(0),
+     fbaryon(0),
+     fstable(kTRUE)
 {
   fpdg= 10000000+10000* z +10 * a;
-   
-   fDecayTime= decaytime;
-   
-   if (!TDatabasePDG::Instance()->GetParticle(fpdg)){
-        if(mass ==0 )mass = a*kProtonMass;
-    	TDatabasePDG::Instance()
-      		->AddParticle(name, name, mass, stable, 0, q, "kPTHadron", fpdg);
 
-                /*   AddParticle(const char *name, const char *title,
-                                        Double_t mass, Bool_t stable,
-                                        Double_t width, Double_t charge,
-                                        const char* ParticleClass,
-                                        Int_t PDGcode,
-                                        Int_t Anti,
-                                        Int_t TrackingCode)
-                  */
-   }
-   fParticle = new TParticle();
-   fParticle->SetPdgCode(fpdg);
-  
-   fmcType= kPTHadron;
-   fmass= mass;
-   fcharge= fParticle->GetPDG()->Charge();
-   fDecayTime=decaytime ;
-   fwidth=   fParticle->GetPDG()->Width();
-   fiSpin=   (Int_t)fParticle->GetPDG()->Spin();
-   fiParity=  fParticle->GetPDG()->Parity();
-   fiConjugation= 0;
-   fiIsospin= (Int_t) fParticle->GetPDG()->Isospin();
-   fiIsospinZ= 0;
-   fgParity= 0;
-   flepton=  0;
-   fbaryon=  0;
-   fstable= fParticle->GetPDG()->Stable();
+  fDecayTime= decaytime;
+
+  if (!TDatabasePDG::Instance()->GetParticle(fpdg)) {
+    if(mass ==0 ) { mass = a*kProtonMass; }
+    TDatabasePDG::Instance()
+    ->AddParticle(name, name, mass, stable, 0, q, "kPTHadron", fpdg);
+
+    /*   AddParticle(const char *name, const char *title,
+                            Double_t mass, Bool_t stable,
+                            Double_t width, Double_t charge,
+                            const char* ParticleClass,
+                            Int_t PDGcode,
+                            Int_t Anti,
+                            Int_t TrackingCode)
+      */
+  }
+  fParticle = new TParticle();
+  fParticle->SetPdgCode(fpdg);
+
+  fmcType= kPTHadron;
+  fmass= mass;
+  fcharge= fParticle->GetPDG()->Charge();
+  fDecayTime=decaytime ;
+  fwidth=   fParticle->GetPDG()->Width();
+  fiSpin=   (Int_t)fParticle->GetPDG()->Spin();
+  fiParity=  fParticle->GetPDG()->Parity();
+  fiConjugation= 0;
+  fiIsospin= (Int_t) fParticle->GetPDG()->Isospin();
+  fiIsospinZ= 0;
+  fgParity= 0;
+  flepton=  0;
+  fbaryon=  0;
+  fstable= fParticle->GetPDG()->Stable();
 
 
 }
@@ -194,7 +194,7 @@ FairParticle::FairParticle(Int_t id, TParticle* particle, FairParticle* mother)
     fMother(mother),
     fDaughters(),
     fname(particle->GetName()),
-	fmcType (kPTIon),
+    fmcType (kPTIon),
     fmass  (0),
     fcharge(0),
     fDecayTime(0),
@@ -209,58 +209,58 @@ FairParticle::FairParticle(Int_t id, TParticle* particle, FairParticle* mother)
     flepton(0),
     fbaryon(0),
     fstable(kTRUE)
-  
+
 {
 //
 }
 
 //_____________________________________________________________________________
 FairParticle::FairParticle( Int_t pdg,
-                 const TString name,
-                 TMCParticleType mcType,
-                 Double_t mass,    
-		 Double_t charge,
-                 Double_t lifetime,
-                 const TString pType, 
-                 Double_t width, 
-                 Int_t iSpin, 
-                 Int_t iParity, 
-                 Int_t iConjugation, 
-                 Int_t iIsospin, 
-                 Int_t iIsospinZ, 
-                 Int_t gParity,
-                 Int_t lepton, 
-                 Int_t baryon,
-		 Bool_t stable )
- : fpdg  (pdg),
-   fParticle( new TParticle()),
-   fMother(0),
-   fDaughters(0),
-   fname(name),
-   fmcType (mcType),
-   fmass  (mass),
-   fcharge( charge),
-   fDecayTime( lifetime),
-   fpType(   pType),
-   fwidth(   width),
-   fiSpin(  iSpin),
-   fiParity(   iParity),
-   fiConjugation( iConjugation),
-   fiIsospin(   iIsospin),
-   fiIsospinZ(  iIsospinZ),
-   fgParity( gParity),
-   flepton(  lepton),
-   fbaryon(  baryon),
-   fstable(  stable)
+                            const TString name,
+                            TMCParticleType mcType,
+                            Double_t mass,
+                            Double_t charge,
+                            Double_t lifetime,
+                            const TString pType,
+                            Double_t width,
+                            Int_t iSpin,
+                            Int_t iParity,
+                            Int_t iConjugation,
+                            Int_t iIsospin,
+                            Int_t iIsospinZ,
+                            Int_t gParity,
+                            Int_t lepton,
+                            Int_t baryon,
+                            Bool_t stable )
+  : fpdg  (pdg),
+    fParticle( new TParticle()),
+    fMother(0),
+    fDaughters(0),
+    fname(name),
+    fmcType (mcType),
+    fmass  (mass),
+    fcharge( charge),
+    fDecayTime( lifetime),
+    fpType(   pType),
+    fwidth(   width),
+    fiSpin(  iSpin),
+    fiParity(   iParity),
+    fiConjugation( iConjugation),
+    fiIsospin(   iIsospin),
+    fiIsospinZ(  iIsospinZ),
+    fgParity( gParity),
+    flepton(  lepton),
+    fbaryon(  baryon),
+    fstable(  stable)
 {
-  
-   if (!TDatabasePDG::Instance()->GetParticle(fpdg)){
-    	TDatabasePDG::Instance()
-      		->AddParticle(fname, fname, fmass, fstable, fwidth,fcharge ,pType, fpdg);
 
-   }
-   
-   fParticle->SetPdgCode(fpdg);
+  if (!TDatabasePDG::Instance()->GetParticle(fpdg)) {
+    TDatabasePDG::Instance()
+    ->AddParticle(fname, fname, fmass, fstable, fwidth,fcharge ,pType, fpdg);
+
+  }
+
+  fParticle->SetPdgCode(fpdg);
 
 }
 
@@ -287,11 +287,11 @@ FairParticle::FairParticle()
     fbaryon(0),
     fstable(kTRUE)
 {
-//   
+//
 }
 
 //_____________________________________________________________________________
-FairParticle::~FairParticle() 
+FairParticle::~FairParticle()
 {
 //
   delete fParticle;
@@ -308,7 +308,7 @@ void FairParticle::SetMother(FairParticle* particle)
 // ---
 
   fMother.SetObject(particle);
-}  
+}
 
 //_____________________________________________________________________________
 void FairParticle::AddDaughter(FairParticle* particle)
@@ -317,29 +317,29 @@ void FairParticle::AddDaughter(FairParticle* particle)
 // ---
 
   fDaughters.Add(particle);
-}  
+}
 
 //_____________________________________________________________________________
 void FairParticle::Print() const
 {
 // Prints particle properties.
 // ---
-//  return; 
+//  return;
 
   cout << "Particle: " << fParticle->GetName()  << "  with ID:  " << fpdg << endl;
 
-  // fParticle->Print();  
-  
+  // fParticle->Print();
+
   if (GetMother()) {
-    cout << "Mother:    " << GetMother()->GetParticle()->GetName() 
-                          << "  with ID: " << GetMother()->GetPDG() << endl;
+    cout << "Mother:    " << GetMother()->GetParticle()->GetName()
+         << "  with ID: " << GetMother()->GetPDG() << endl;
+  } else {
+    cout << "Primary    " << endl;
   }
-  else			    
-    cout << "Primary    " << endl; 
-    
+
   cout << "Number of daughters: " << GetNofDaughters() << endl;
-  cout << endl;			  
-}  
+  cout << endl;
+}
 
 //_____________________________________________________________________________
 void FairParticle::PrintDaughters() const
@@ -350,8 +350,8 @@ void FairParticle::PrintDaughters() const
   for (Int_t i=0; i<GetNofDaughters(); i++)  {
     cout << i << "th daughter: " << endl;
     GetDaughter(i)->Print();
-  }  
-}  
+  }
+}
 
 //_____________________________________________________________________________
 Int_t  FairParticle::GetPDG() const
@@ -360,7 +360,7 @@ Int_t  FairParticle::GetPDG() const
 // ---
 
   return fpdg;
-}  
+}
 
 
 //_____________________________________________________________________________
@@ -370,7 +370,7 @@ TParticle*  FairParticle::GetParticle() const
 // ---
 
   return fParticle;
-}  
+}
 
 //_____________________________________________________________________________
 FairParticle* FairParticle::GetMother() const
@@ -379,7 +379,7 @@ FairParticle* FairParticle::GetMother() const
 // ---
 
   return (FairParticle*) fMother.GetObject();
-}  
+}
 
 //_____________________________________________________________________________
 Int_t FairParticle::GetNofDaughters() const
@@ -388,7 +388,7 @@ Int_t FairParticle::GetNofDaughters() const
 // ---
 
   return fDaughters.GetEntriesFast();
-}  
+}
 
 //_____________________________________________________________________________
 FairParticle* FairParticle::GetDaughter(Int_t i) const
@@ -396,9 +396,10 @@ FairParticle* FairParticle::GetDaughter(Int_t i) const
 // Returns i-th daughter.
 // ---
 
-  if (i < 0 || i >= GetNofDaughters())
-    Fatal("GetDaughter", "Index out of range"); 
+  if (i < 0 || i >= GetNofDaughters()) {
+    Fatal("GetDaughter", "Index out of range");
+  }
 
   return (FairParticle*) fDaughters.At(i);
-}  
+}
 

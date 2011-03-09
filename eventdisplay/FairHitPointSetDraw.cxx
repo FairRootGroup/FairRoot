@@ -15,21 +15,22 @@ using std::endl;
 
 FairHitPointSetDraw::FairHitPointSetDraw()
 {
-	// TODO Auto-generated constructor stub
+  // TODO Auto-generated constructor stub
 
 }
 
 FairHitPointSetDraw::~FairHitPointSetDraw()
 {
-	// TODO Auto-generated destructor stub
+  // TODO Auto-generated destructor stub
 }
 
 TVector3 FairHitPointSetDraw::GetVector(TObject* obj)
 {
-	FairHit* p = (FairHit*)obj;
-	if (fVerbose > 1)
-		cout << "-I- FairHitPointSetDraw::GetVector: " << p->GetX() << " " << p->GetY() << " " << p->GetZ() << endl;
-	return TVector3(p->GetX(), p->GetY(), p->GetZ());
+  FairHit* p = (FairHit*)obj;
+  if (fVerbose > 1) {
+    cout << "-I- FairHitPointSetDraw::GetVector: " << p->GetX() << " " << p->GetY() << " " << p->GetZ() << endl;
+  }
+  return TVector3(p->GetX(), p->GetY(), p->GetZ());
 }
 
 
