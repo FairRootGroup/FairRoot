@@ -109,8 +109,8 @@ InitStatus FairGeane::Init()
   gROOT->LoadMacro(ConfigMacro.Data());
   gROOT->ProcessLine("Config()");
 
-  gROOT->LoadMacro(cuts);
-  gROOT->ProcessLine("SetCuts()");
+  //gROOT->LoadMacro(cuts);
+  //gROOT->ProcessLine("SetCuts()");
 
   FairField* field=FairRunAna::Instance()->GetField();
   field->Print();
