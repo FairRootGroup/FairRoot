@@ -60,12 +60,12 @@ static struct sqltdss sqltds =
 struct sqlcxp
 {
   unsigned short fillen;
-           char  filnam[14];
+  char  filnam[14];
 };
 static const struct sqlcxp sqlfpn =
 {
-    13,
-    "FairOraConn.pc"
+  13,
+  "FairOraConn.pc"
 };
 
 
@@ -73,45 +73,45 @@ static unsigned int sqlctx = 567307;
 
 
 static struct sqlexd {
-   unsigned int   sqlvsn;
-   unsigned int   arrsiz;
-   unsigned int   iters;
-   unsigned int   offset;
-   unsigned short selerr;
-   unsigned short sqlety;
-   unsigned int   occurs;
-      const short *cud;
-   unsigned char  *sqlest;
-      const char  *stmt;
-   sqladts *sqladtp;
-   sqltdss *sqltdsp;
-            void  **sqphsv;
-   unsigned int   *sqphsl;
-            int   *sqphss;
-            void  **sqpind;
-            int   *sqpins;
-   unsigned int   *sqparm;
-   unsigned int   **sqparc;
-   unsigned short  *sqpadto;
-   unsigned short  *sqptdso;
-   unsigned int   sqlcmax;
-   unsigned int   sqlcmin;
-   unsigned int   sqlcincr;
-   unsigned int   sqlctimeout;
-   unsigned int   sqlcnowait;
-              int   sqfoff;
-   unsigned int   sqcmod;
-   unsigned int   sqfmod;
-            void  *sqhstv[4];
-   unsigned int   sqhstl[4];
-            int   sqhsts[4];
-            void  *sqindv[4];
-            int   sqinds[4];
-   unsigned int   sqharm[4];
-   unsigned int   *sqharc[4];
-   unsigned short  sqadto[4];
-   unsigned short  sqtdso[4];
-} sqlstm = {12,4};
+  unsigned int   sqlvsn;
+  unsigned int   arrsiz;
+  unsigned int   iters;
+  unsigned int   offset;
+  unsigned short selerr;
+  unsigned short sqlety;
+  unsigned int   occurs;
+  const short *cud;
+  unsigned char  *sqlest;
+  const char  *stmt;
+  sqladts *sqladtp;
+  sqltdss *sqltdsp;
+  void  **sqphsv;
+  unsigned int   *sqphsl;
+  int   *sqphss;
+  void  **sqpind;
+  int   *sqpins;
+  unsigned int   *sqparm;
+  unsigned int   **sqparc;
+  unsigned short  *sqpadto;
+  unsigned short  *sqptdso;
+  unsigned int   sqlcmax;
+  unsigned int   sqlcmin;
+  unsigned int   sqlcincr;
+  unsigned int   sqlctimeout;
+  unsigned int   sqlcnowait;
+  int   sqfoff;
+  unsigned int   sqcmod;
+  unsigned int   sqfmod;
+  void  *sqhstv[4];
+  unsigned int   sqhstl[4];
+  int   sqhsts[4];
+  void  *sqindv[4];
+  int   sqinds[4];
+  unsigned int   sqharm[4];
+  unsigned int   *sqharc[4];
+  unsigned short  sqadto[4];
+  unsigned short  sqtdso[4];
+} qlstm = {12,4};
 
 // Prototypes
 extern "C" {
@@ -134,8 +134,8 @@ typedef struct { unsigned short len; unsigned char arr[1]; } VARCHAR;
 typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 
 /* cud (compilation unit data) array */
-static const short sqlcud0[] =
-{12,4130,1,0,0,
+/*
+static const short sqlcud0[] = {12,4130,1,0,0,
 5,0,0,1,0,0,27,104,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
 36,0,0,2,0,0,32,124,0,0,0,0,0,1,0,
 51,0,0,3,0,0,32,140,0,0,0,0,0,1,0,
@@ -146,7 +146,7 @@ static const short sqlcud0[] =
 162,0,0,8,153,0,6,317,0,0,2,2,0,1,0,1,97,0,0,2,97,0,0,
 185,0,0,9,159,0,6,344,0,0,2,2,0,1,0,1,3,0,0,2,97,0,0,
 };
-
+*/
 
 //*-- AUTHOR : Ilse Koenig
 //*-- Created : 26/11/2004 by I.Koenig
@@ -245,63 +245,63 @@ Bool_t FairOraConn::reconnect() {
   strcat(connId,dbName);
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
-    char* uName;
-    char* pWord;
+  char* uName;
+  char* pWord;
   /* EXEC SQL END DECLARE SECTION; */ 
 
   uName=connId;
   pWord=password;
   /* EXEC SQL WHENEVER SQLERROR DO
-    showSqlError("openConnection(char*)","Wrong user/password"); */ 
+  showSqlError("openConnection(char*)","Wrong user/password"); */ 
 
   /* EXEC SQL CONNECT :uName IDENTIFIED BY :pWord; */ 
 
-{
-  struct sqlexd sqlstm;
-  sqlorat((void **)0, &sqlctx, &oraca);
-  sqlstm.sqlvsn = 12;
-  sqlstm.arrsiz = 4;
-  sqlstm.sqladtp = &sqladt;
-  sqlstm.sqltdsp = &sqltds;
-  sqlstm.iters = (unsigned int  )10;
-  sqlstm.offset = (unsigned int  )5;
-  sqlstm.cud = sqlcud0;
-  sqlstm.sqlest = (unsigned char  *)&sqlca;
-  sqlstm.sqlety = (unsigned short)256;
-  sqlstm.occurs = (unsigned int  )0;
-  sqlstm.sqhstv[0] = (         void  *)uName;
-  sqlstm.sqhstl[0] = (unsigned int  )0;
-  sqlstm.sqhsts[0] = (         int  )0;
-  sqlstm.sqindv[0] = (         void  *)0;
-  sqlstm.sqinds[0] = (         int  )0;
-  sqlstm.sqharm[0] = (unsigned int  )0;
-  sqlstm.sqadto[0] = (unsigned short )0;
-  sqlstm.sqtdso[0] = (unsigned short )0;
-  sqlstm.sqhstv[1] = (         void  *)pWord;
-  sqlstm.sqhstl[1] = (unsigned int  )0;
-  sqlstm.sqhsts[1] = (         int  )0;
-  sqlstm.sqindv[1] = (         void  *)0;
-  sqlstm.sqinds[1] = (         int  )0;
-  sqlstm.sqharm[1] = (unsigned int  )0;
-  sqlstm.sqadto[1] = (unsigned short )0;
-  sqlstm.sqtdso[1] = (unsigned short )0;
-  sqlstm.sqphsv = sqlstm.sqhstv;
-  sqlstm.sqphsl = sqlstm.sqhstl;
-  sqlstm.sqphss = sqlstm.sqhsts;
-  sqlstm.sqpind = sqlstm.sqindv;
-  sqlstm.sqpins = sqlstm.sqinds;
-  sqlstm.sqparm = sqlstm.sqharm;
-  sqlstm.sqparc = sqlstm.sqharc;
-  sqlstm.sqpadto = sqlstm.sqadto;
-  sqlstm.sqptdso = sqlstm.sqtdso;
-  sqlstm.sqlcmax = (unsigned int )100;
-  sqlstm.sqlcmin = (unsigned int )2;
-  sqlstm.sqlcincr = (unsigned int )1;
-  sqlstm.sqlctimeout = (unsigned int )0;
-  sqlstm.sqlcnowait = (unsigned int )0;
-  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-  if (sqlca.sqlcode < 0) showSqlError("openConnection(char*)","Wrong user/password");
-}
+  {
+    struct sqlexd sqlstm;
+    sqlorat((void **)0, &sqlctx, &oraca);
+    sqlstm.sqlvsn = 12;
+    sqlstm.arrsiz = 4;
+    sqlstm.sqladtp = &sqladt;
+    sqlstm.sqltdsp = &sqltds;
+    sqlstm.iters = (unsigned int  )10;
+    sqlstm.offset = (unsigned int  )5;
+    sqlstm.cud = sqlcud0;
+    sqlstm.sqlest = (unsigned char  *)&sqlca;
+    sqlstm.sqlety = (unsigned short)256;
+    sqlstm.occurs = (unsigned int  )0;
+    sqlstm.sqhstv[0] = (         void  *)uName;
+    sqlstm.sqhstl[0] = (unsigned int  )0;
+    sqlstm.sqhsts[0] = (         int  )0;
+    sqlstm.sqindv[0] = (         void  *)0;
+    sqlstm.sqinds[0] = (         int  )0;
+    sqlstm.sqharm[0] = (unsigned int  )0;
+    sqlstm.sqadto[0] = (unsigned short )0;
+    sqlstm.sqtdso[0] = (unsigned short )0;
+    sqlstm.sqhstv[1] = (         void  *)pWord;
+    sqlstm.sqhstl[1] = (unsigned int  )0;
+    sqlstm.sqhsts[1] = (         int  )0;
+    sqlstm.sqindv[1] = (         void  *)0;
+    sqlstm.sqinds[1] = (         int  )0;
+    sqlstm.sqharm[1] = (unsigned int  )0;
+    sqlstm.sqadto[1] = (unsigned short )0;
+    sqlstm.sqtdso[1] = (unsigned short )0;
+    sqlstm.sqphsv = sqlstm.sqhstv;
+    sqlstm.sqphsl = sqlstm.sqhstl;
+    sqlstm.sqphss = sqlstm.sqhsts;
+    sqlstm.sqpind = sqlstm.sqindv;
+    sqlstm.sqpins = sqlstm.sqinds;
+    sqlstm.sqparm = sqlstm.sqharm;
+    sqlstm.sqparc = sqlstm.sqharc;
+    sqlstm.sqpadto = sqlstm.sqadto;
+    sqlstm.sqptdso = sqlstm.sqtdso;
+    sqlstm.sqlcmax = (unsigned int )100;
+    sqlstm.sqlcmin = (unsigned int )2;
+    sqlstm.sqlcincr = (unsigned int )1;
+    sqlstm.sqlctimeout = (unsigned int )0;
+    sqlstm.sqlcnowait = (unsigned int )0;
+    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+    if (sqlca.sqlcode < 0) showSqlError("openConnection(char*)","Wrong user/password");
+  }
 
 
   if (sqlca.sqlcode==0) {
@@ -321,31 +321,31 @@ void FairOraConn::close() {
   runStart=-1;
   historyDate[0]='\0';
   /* EXEC SQL WHENEVER SQLERROR DO
-    showSqlError("close()"); */ 
+  showSqlError("close()"); */ 
 
   if (isConnected) {
     /* EXEC SQL ROLLBACK RELEASE; */ 
 
-{
-    struct sqlexd sqlstm;
-    sqlorat((void **)0, &sqlctx, &oraca);
-    sqlstm.sqlvsn = 12;
-    sqlstm.arrsiz = 4;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )36;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)256;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-    if (sqlca.sqlcode < 0) showSqlError("close()");
-}
+    {
+      struct sqlexd sqlstm;
+      sqlorat((void **)0, &sqlctx, &oraca);
+      sqlstm.sqlvsn = 12;
+      sqlstm.arrsiz = 4;
+      sqlstm.sqladtp = &sqladt;
+      sqlstm.sqltdsp = &sqltds;
+      sqlstm.iters = (unsigned int  )1;
+      sqlstm.offset = (unsigned int  )36;
+      sqlstm.cud = sqlcud0;
+      sqlstm.sqlest = (unsigned char  *)&sqlca;
+      sqlstm.sqlety = (unsigned short)256;
+      sqlstm.occurs = (unsigned int  )0;
+      sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+      if (sqlca.sqlcode < 0) showSqlError("close()");
+    }
 
 
-    isConnected=kFALSE;
-    cout<<"connection to Oracle closed"<<endl;
+  isConnected=kFALSE;
+  cout<<"connection to Oracle closed"<<endl;
   }
   needsServerCheck=kTRUE;
 }
@@ -358,31 +358,31 @@ void FairOraConn::disconnect() {
     actRunId=-1;
     runStart=-1;
     /* EXEC SQL WHENEVER SQLERROR DO
-      showSqlError("disconnect()"); */ 
+    showSqlError("disconnect()"); */ 
 
     /* EXEC SQL ROLLBACK RELEASE; */ 
 
-{
-    struct sqlexd sqlstm;
-    sqlorat((void **)0, &sqlctx, &oraca);
-    sqlstm.sqlvsn = 12;
-    sqlstm.arrsiz = 4;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )51;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)256;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-    if (sqlca.sqlcode < 0) showSqlError("disconnect()");
-}
+    {
+      struct sqlexd sqlstm;
+      sqlorat((void **)0, &sqlctx, &oraca);
+      sqlstm.sqlvsn = 12;
+      sqlstm.arrsiz = 4;
+      sqlstm.sqladtp = &sqladt;
+      sqlstm.sqltdsp = &sqltds;
+      sqlstm.iters = (unsigned int  )1;
+      sqlstm.offset = (unsigned int  )51;
+      sqlstm.cud = sqlcud0;
+      sqlstm.sqlest = (unsigned char  *)&sqlca;
+      sqlstm.sqlety = (unsigned short)256;
+      sqlstm.occurs = (unsigned int  )0;
+      sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+      if (sqlca.sqlcode < 0) showSqlError("disconnect()");
+    }
 
 
-    isConnected=kFALSE;
-    cout<<"connection to Oracle closed"<<endl;
-    needsServerCheck=kTRUE;
+  isConnected=kFALSE;
+  cout<<"connection to Oracle closed"<<endl;
+  needsServerCheck=kTRUE;
   }
 }
 
@@ -443,63 +443,63 @@ Bool_t FairOraConn::openConnection(char* password) {
   strcat(connId,dbName);
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
-    char* uName;
-    char* pWord;
+  char* uName;
+  char* pWord;
   /* EXEC SQL END DECLARE SECTION; */ 
 
   uName=connId;
   pWord=password;
   /* EXEC SQL WHENEVER SQLERROR DO
-    showSqlError("openConnection(char*)","Wrong user/password"); */ 
+  showSqlError("openConnection(char*)","Wrong user/password"); */ 
 
   /* EXEC SQL CONNECT :uName IDENTIFIED BY :pWord; */ 
 
-{
-  struct sqlexd sqlstm;
-  sqlorat((void **)0, &sqlctx, &oraca);
-  sqlstm.sqlvsn = 12;
-  sqlstm.arrsiz = 4;
-  sqlstm.sqladtp = &sqladt;
-  sqlstm.sqltdsp = &sqltds;
-  sqlstm.iters = (unsigned int  )10;
-  sqlstm.offset = (unsigned int  )66;
-  sqlstm.cud = sqlcud0;
-  sqlstm.sqlest = (unsigned char  *)&sqlca;
-  sqlstm.sqlety = (unsigned short)256;
-  sqlstm.occurs = (unsigned int  )0;
-  sqlstm.sqhstv[0] = (         void  *)uName;
-  sqlstm.sqhstl[0] = (unsigned int  )0;
-  sqlstm.sqhsts[0] = (         int  )0;
-  sqlstm.sqindv[0] = (         void  *)0;
-  sqlstm.sqinds[0] = (         int  )0;
-  sqlstm.sqharm[0] = (unsigned int  )0;
-  sqlstm.sqadto[0] = (unsigned short )0;
-  sqlstm.sqtdso[0] = (unsigned short )0;
-  sqlstm.sqhstv[1] = (         void  *)pWord;
-  sqlstm.sqhstl[1] = (unsigned int  )0;
-  sqlstm.sqhsts[1] = (         int  )0;
-  sqlstm.sqindv[1] = (         void  *)0;
-  sqlstm.sqinds[1] = (         int  )0;
-  sqlstm.sqharm[1] = (unsigned int  )0;
-  sqlstm.sqadto[1] = (unsigned short )0;
-  sqlstm.sqtdso[1] = (unsigned short )0;
-  sqlstm.sqphsv = sqlstm.sqhstv;
-  sqlstm.sqphsl = sqlstm.sqhstl;
-  sqlstm.sqphss = sqlstm.sqhsts;
-  sqlstm.sqpind = sqlstm.sqindv;
-  sqlstm.sqpins = sqlstm.sqinds;
-  sqlstm.sqparm = sqlstm.sqharm;
-  sqlstm.sqparc = sqlstm.sqharc;
-  sqlstm.sqpadto = sqlstm.sqadto;
-  sqlstm.sqptdso = sqlstm.sqtdso;
-  sqlstm.sqlcmax = (unsigned int )100;
-  sqlstm.sqlcmin = (unsigned int )2;
-  sqlstm.sqlcincr = (unsigned int )1;
-  sqlstm.sqlctimeout = (unsigned int )0;
-  sqlstm.sqlcnowait = (unsigned int )0;
-  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-  if (sqlca.sqlcode < 0) showSqlError("openConnection(char*)","Wrong user/password");
-}
+  {
+    struct sqlexd sqlstm;
+    sqlorat((void **)0, &sqlctx, &oraca);
+    sqlstm.sqlvsn = 12;
+    sqlstm.arrsiz = 4;
+    sqlstm.sqladtp = &sqladt;
+    sqlstm.sqltdsp = &sqltds;
+    sqlstm.iters = (unsigned int  )10;
+    sqlstm.offset = (unsigned int  )66;
+    sqlstm.cud = sqlcud0;
+    sqlstm.sqlest = (unsigned char  *)&sqlca;
+    sqlstm.sqlety = (unsigned short)256;
+    sqlstm.occurs = (unsigned int  )0;
+    sqlstm.sqhstv[0] = (         void  *)uName;
+    sqlstm.sqhstl[0] = (unsigned int  )0;
+    sqlstm.sqhsts[0] = (         int  )0;
+    sqlstm.sqindv[0] = (         void  *)0;
+    sqlstm.sqinds[0] = (         int  )0;
+    sqlstm.sqharm[0] = (unsigned int  )0;
+    sqlstm.sqadto[0] = (unsigned short )0;
+    sqlstm.sqtdso[0] = (unsigned short )0;
+    sqlstm.sqhstv[1] = (         void  *)pWord;
+    sqlstm.sqhstl[1] = (unsigned int  )0;
+    sqlstm.sqhsts[1] = (         int  )0;
+    sqlstm.sqindv[1] = (         void  *)0;
+    sqlstm.sqinds[1] = (         int  )0;
+    sqlstm.sqharm[1] = (unsigned int  )0;
+    sqlstm.sqadto[1] = (unsigned short )0;
+    sqlstm.sqtdso[1] = (unsigned short )0;
+    sqlstm.sqphsv = sqlstm.sqhstv;
+    sqlstm.sqphsl = sqlstm.sqhstl;
+    sqlstm.sqphss = sqlstm.sqhsts;
+    sqlstm.sqpind = sqlstm.sqindv;
+    sqlstm.sqpins = sqlstm.sqinds;
+    sqlstm.sqparm = sqlstm.sqharm;
+    sqlstm.sqparc = sqlstm.sqharc;
+    sqlstm.sqpadto = sqlstm.sqadto;
+    sqlstm.sqptdso = sqlstm.sqtdso;
+    sqlstm.sqlcmax = (unsigned int )100;
+    sqlstm.sqlcmin = (unsigned int )2;
+    sqlstm.sqlcincr = (unsigned int )1;
+    sqlstm.sqlctimeout = (unsigned int )0;
+    sqlstm.sqlcnowait = (unsigned int )0;
+    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+    if (sqlca.sqlcode < 0) showSqlError("openConnection(char*)","Wrong user/password");
+  }
 
 
   if (sqlca.sqlcode==0) isConnected=kTRUE;
@@ -514,51 +514,51 @@ Bool_t FairOraConn::openConnection(char* password) {
 Int_t FairOraConn::checkServerLoad() {
   /* EXEC SQL BEGIN DECLARE SECTION; */ 
 
-    int retval; 
+  int retval; 
   /* EXEC SQL END DECLARE SECTION; */ 
 
   /* EXEC SQL WHENEVER SQLERROR GOTO notfound; */ 
 
   /* EXEC SQL EXECUTE
-    BEGIN
+  BEGIN
       :retval := cbm_util.check_analysis_sessions;
-    END;
+  END;
   END-EXEC; */ 
 
-{
-  struct sqlexd sqlstm;
-  sqlorat((void **)0, &sqlctx, &oraca);
-  sqlstm.sqlvsn = 12;
-  sqlstm.arrsiz = 4;
-  sqlstm.sqladtp = &sqladt;
-  sqlstm.sqltdsp = &sqltds;
-  sqlstm.stmt = "begin :retval := cbm_util . check_analysis_sessions ; END ;";
-  sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )97;
-  sqlstm.cud = sqlcud0;
-  sqlstm.sqlest = (unsigned char  *)&sqlca;
-  sqlstm.sqlety = (unsigned short)256;
-  sqlstm.occurs = (unsigned int  )0;
-  sqlstm.sqhstv[0] = (         void  *)&retval;
-  sqlstm.sqhstl[0] = (unsigned int  )sizeof(int);
-  sqlstm.sqhsts[0] = (         int  )0;
-  sqlstm.sqindv[0] = (         void  *)0;
-  sqlstm.sqinds[0] = (         int  )0;
-  sqlstm.sqharm[0] = (unsigned int  )0;
-  sqlstm.sqadto[0] = (unsigned short )0;
-  sqlstm.sqtdso[0] = (unsigned short )0;
-  sqlstm.sqphsv = sqlstm.sqhstv;
-  sqlstm.sqphsl = sqlstm.sqhstl;
-  sqlstm.sqphss = sqlstm.sqhsts;
-  sqlstm.sqpind = sqlstm.sqindv;
-  sqlstm.sqpins = sqlstm.sqinds;
-  sqlstm.sqparm = sqlstm.sqharm;
-  sqlstm.sqparc = sqlstm.sqharc;
-  sqlstm.sqpadto = sqlstm.sqadto;
-  sqlstm.sqptdso = sqlstm.sqtdso;
-  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-  if (sqlca.sqlcode < 0) goto notfound;
-}
+  {
+    struct sqlexd sqlstm;
+    sqlorat((void **)0, &sqlctx, &oraca);
+    sqlstm.sqlvsn = 12;
+    sqlstm.arrsiz = 4;
+    sqlstm.sqladtp = &sqladt;
+    sqlstm.sqltdsp = &sqltds;
+    sqlstm.stmt = "begin :retval := cbm_util . check_analysis_sessions ; END ;";
+    sqlstm.iters = (unsigned int  )1;
+    sqlstm.offset = (unsigned int  )97;
+    sqlstm.cud = sqlcud0;
+    sqlstm.sqlest = (unsigned char  *)&sqlca;
+    sqlstm.sqlety = (unsigned short)256;
+    sqlstm.occurs = (unsigned int  )0;
+    sqlstm.sqhstv[0] = (         void  *)&retval;
+    sqlstm.sqhstl[0] = (unsigned int  )sizeof(int);
+    sqlstm.sqhsts[0] = (         int  )0;
+    sqlstm.sqindv[0] = (         void  *)0;
+    sqlstm.sqinds[0] = (         int  )0;
+    sqlstm.sqharm[0] = (unsigned int  )0;
+    sqlstm.sqadto[0] = (unsigned short )0;
+    sqlstm.sqtdso[0] = (unsigned short )0;
+    sqlstm.sqphsv = sqlstm.sqhstv;
+    sqlstm.sqphsl = sqlstm.sqhstl;
+    sqlstm.sqphss = sqlstm.sqhsts;
+    sqlstm.sqpind = sqlstm.sqindv;
+    sqlstm.sqpins = sqlstm.sqinds;
+    sqlstm.sqparm = sqlstm.sqharm;
+    sqlstm.sqparc = sqlstm.sqharc;
+    sqlstm.sqpadto = sqlstm.sqadto;
+    sqlstm.sqptdso = sqlstm.sqtdso;
+    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+    if (sqlca.sqlcode < 0) goto notfound;
+  }
 
 
   return retval;
