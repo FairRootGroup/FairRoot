@@ -45,7 +45,9 @@ class FairDetector : public FairModule
     /**
       this is called at the end of an event
     */
-    virtual void   EndOfEvent() {;}
+    virtual void   EndOfEvent() {
+      ;
+    }
     /**
       Registers the produced collections in FAIRRootManager.
     */
@@ -59,21 +61,44 @@ class FairDetector : public FairModule
     */
     virtual void   Reset()=0;
 
-    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 , Int_t offset) {;}
+    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 , Int_t offset) {
+      ;
+    }
 
-    virtual void   FinishPrimary() {;}
-    virtual void   FinishRun() {;}
-    virtual void   BeginPrimary() {;}
-    virtual void   PostTrack() {;}
-    virtual void   PreTrack() {;}
-    virtual void   BeginEvent() {;}
-    virtual void   SetSpecialPhysicsCuts() {;}
+    virtual void   FinishPrimary() {
+      ;
+    }
+    virtual void   FinishRun() {
+      ;
+    }
+    virtual void   BeginPrimary() {
+      ;
+    }
+    virtual void   PostTrack() {
+      ;
+    }
+    virtual void   PreTrack() {
+      ;
+    }
+    virtual void   BeginEvent() {
+      ;
+    }
+    virtual void   FinishEvent() {
+      ;
+    }
+    virtual void   SetSpecialPhysicsCuts() {
+      ;
+    }
     void SaveGeoParams();
-    Int_t  GetDetId() {return fDetId;}
+    Int_t  GetDetId() {
+      return fDetId;
+    }
 
   private:
     FairDetector(const FairDetector& M);
-    FairDetector& operator= (const FairDetector&) {return *this;}
+    FairDetector& operator= (const FairDetector&) {
+      return *this;
+    }
 
 
   protected:
