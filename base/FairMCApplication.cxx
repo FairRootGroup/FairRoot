@@ -390,10 +390,19 @@ void FairMCApplication::FinishEvent()
   // --> Screen output of stack
   fFairTaskList->ExecuteTask("");
   fFairTaskList->FinishEvent();
+  TObject* obj=NULL;
+  FairDetector* detector=NULL;
+  fActDetIter->Reset();
+
+  while((obj=fActDetIter->Next())) {
+    detector = dynamic_cast<FairDetector*>(obj);
+    if (detector) { detector->FinishEvent(); }
+  }
+
   fRootManager->Fill();
   fActDetIter->Reset();
-  FairDetector* detector=NULL;
-  TObject* obj=0;
+  detector=NULL;
+  obj=NULL;
   while((obj=fActDetIter->Next())) {
     detector = dynamic_cast<FairDetector*>(obj);
     if (detector) { detector->EndOfEvent(); }
