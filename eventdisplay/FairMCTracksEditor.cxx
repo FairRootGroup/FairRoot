@@ -31,7 +31,8 @@ FairMCTracksEditor::FairMCTracksEditor(const TGWindow* p, Int_t width, Int_t hei
       kFixedWidth      |
       kOwnBackground);
   TString Infile= "Input File : ";
-  TFile* file =FairRunAna::Instance()->GetInputFile();
+//  TFile* file =FairRunAna::Instance()->GetInputFile();
+  TFile* file =FairRootManager::Instance()->GetInChain()->GetFile();
   Infile+=file->GetName();
   TGLabel* TFName=new TGLabel(title1, Infile.Data());
   title1->AddFrame(TFName);

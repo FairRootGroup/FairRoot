@@ -12,6 +12,9 @@
 #include "FairRun.h"
 #include "FairMCApplication.h"
 #include "FairGeoNode.h"
+#include "FairLogger.h"
+#include "FairMCEventHeader.h"
+#include "FairEventHeader.h"
 
 #include "TFriendElement.h"
 #include "TObjArray.h"
@@ -23,16 +26,22 @@
 #include "TROOT.h"
 #include "TClonesArray.h"
 #include "TList.h"
+#include "TChainElement.h"
+#include "TPRegexp.h"
+#include "TArray.h"
 
 #include <iostream>
 #include <map>
 #include <list>
+#include <set>
+#include <vector>
 
 using std::cout;
 using std::endl;
 using std::map;
 using std::list;
 using std::pair;
+using std::set;
 
 FairRootManager* FairRootManager::fgInstance = 0;
 //_____________________________________________________________________________
@@ -63,10 +72,14 @@ FairRootManager::FairRootManager()
     fDataContainer(),
     fActiveContainer(),
     fCompressData(kFALSE),
+    fFriendTypeList(),
     fTimeStamps(kFALSE),
     fBranchPerMap(kFALSE),
     fBrPerMap(),
-    fBrPerMapIter()
+    fFriendFileList(),
+    fBrPerMapIter(),
+    fInputFileName(""),
+    fLogger(FairLogger::GetLogger())
 {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
@@ -97,89 +110,225 @@ FairRootManager::~FairRootManager()
   cout<<"Leave Destructor of FairRootManager"<<endl;
 }
 //_____________________________________________________________________________
-TFile* FairRootManager::OpenInFile(TFile* f, Bool_t Connect)
+
+Bool_t FairRootManager::OpenInChain()
 {
-  /** Check if the file is there and readable otherwise exit*/
-  fInFile=f;
+  if ( fInputFileName.IsNull() ) {
+    FairLogger* logger = FairLogger::GetLogger();
+    logger->Info(MESSAGE_ORIGIN, "No input file defined.");
+    return kFALSE;
+  }
+
+  // Temporarily open the input file to extract information which
+  // is needed to bring the friend trees in the correct order
+  fInFile = new TFile(fInputFileName);
   if (fInFile->IsZombie()) {
-    cout << "Error opening input file: " << endl;
-    exit(-1);
-  } else {
-    /** if connect is true, this file is part of the input and should go to a chain*/
-    if(Connect) {
-      if (!fInChain ) {
-        fInChain = new TChain("cbmsim", "/cbmroot");
-      }
-      fInChain->Add( fInFile->GetName() );
-    }
-    /** get the folder structure from file which describe the input tree */
-    fCbmroot= dynamic_cast <TFolder*> (fInFile->Get("cbmroot"));
+    FairLogger* logger = FairLogger::GetLogger();
+    logger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
+  }
+
+  if (!fInChain ) {
+    fInChain = new TChain("cbmsim", "/cbmroot");
+  }
+  fInChain->Add( fInFile->GetName() );
+
+  // Get the folder structure from file which describes the input tree.
+  // There are two different names possible, so check both.
+  fCbmroot= dynamic_cast <TFolder*> (fInFile->Get("cbmroot"));
+  if(!fCbmroot) {
+    fCbmroot= dynamic_cast <TFolder*> (fInFile->Get("cbmout"));
     if(!fCbmroot) {
-      fCbmroot= dynamic_cast <TFolder*> (fInFile->Get("cbmout"));
-      if(!fCbmroot) {
-        fCbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-      } else {
-        fCbmroot->SetName("cbmroot");
-      }
+      fCbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
+    } else {
+      fCbmroot->SetName("cbmroot");
     }
-    /**Get The list of branches from the input file and add it to the actual list*/
-    TList* list= dynamic_cast <TList*> (fInFile->Get("BranchList"));
-    if(list) {
-      TObjString* Obj=0;
-      for(Int_t i =0; i< list->GetEntries(); i++) {
-        Obj=dynamic_cast <TObjString*> (list->At(i));
-        if(fBranchNameList->FindObject(Obj->GetString().Data())==0) {
-          fBranchNameList->AddLast(Obj);
-          fBranchSeqId++;
-        }
-      }
-    }
-    gROOT->GetListOfBrowsables()->Add(fCbmroot);
-    fListFolder.Add( fCbmroot );
   }
-  fInChain->GetEntry(0);
-  fPtrTree = fInChain->GetTree();
-  fCurrentEntries =  (Int_t) fInChain->GetTree()->GetEntries();
-  return  fInFile;
+
+  // Get The list of branches from the input file and add it to the
+  // actual list of existing branches.
+  // Add this list of branches also to the map of input trees, which
+  // stores the information which branches belong to which input tree.
+  // There is at least one primary input tree, but there can be many
+  // additional friend trees.
+  // This information is needed to add new files to the correct friend
+  // tree. With this information it is also possible to check if the
+  // input files which are added to the input chain all have the same
+  // branch structure. Without this check it is possible to add trees
+  // with a different branch structure but the same tree name. ROOT
+  // probably only checks if the name of the tree is the same.
+  TList* list= dynamic_cast <TList*> (fInFile->Get("BranchList"));
+  TString chainName = "InputChain";
+  fInputLevel.push_back(chainName);
+  fCheckInputBranches[chainName] = new std::list<TString>;
+  if(list) {
+    TObjString* Obj=0;
+    for(Int_t i =0; i< list->GetEntries(); i++) {
+      Obj=dynamic_cast <TObjString*> (list->At(i));
+      fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
+      if(fBranchNameList->FindObject(Obj->GetString().Data())==0) {
+        fBranchNameList->AddLast(Obj);
+        fBranchSeqId++;
+      }
+    }
+  }
+
+  gROOT->GetListOfBrowsables()->Add(fCbmroot);
+  fListFolder.Add( fCbmroot );
+
+  // Store the information about the unique runids in the input file
+  // together with the filename and the number of events for each runid
+  // this information is needed later to check if inconsitencies exist
+  // between the main input chain and any of the friend chains.
+  GetRunIdInfo(fInFile->GetName(), chainName);
+
+  // Add all additional input files to the input chain and do a
+  // consitency check
+  std::list<TString>::const_iterator iter;
+  for(iter = fInputChainList.begin(); iter != fInputChainList.end(); iter++) {
+    // Store global gFile pointer for safety reasons.
+    // Set gFile to old value at the end of the routine.
+    TFile* temp = gFile;
+
+    // Temporarily open the input file to extract information which
+    // is needed to bring the friend trees in the correct order
+    TFile* inputFile = new TFile((*iter));
+    if (inputFile->IsZombie()) {
+      FairLogger* logger = FairLogger::GetLogger();
+      logger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (const char*)(*iter));
+    }
+
+    // Check if the branchlist is the same as for the first input file.
+    Bool_t isOk = CompareBranchList(inputFile, chainName);
+    if ( !isOk ) {
+      FairLogger* logger = FairLogger::GetLogger();
+      logger->Fatal(MESSAGE_ORIGIN, "Branch structure of the input file %s and the file to be added %s are different.", (const char*)fInputFileName, (const char*)(*iter));
+    }
+
+    // Add the runid information for all files in the chain.
+    GetRunIdInfo(inputFile->GetName(), chainName);
+    // Add the file to the input chain
+    fInChain->Add( (*iter) );
+
+    // Close the temporarly file and restore the gFile pointer.
+    inputFile->Close();
+    gFile = temp;
+
+  }
+
+//  fCurrentEntries =  (Int_t) fInChain->GetTree()->GetEntries();
+//  cout<<"Input Chain has "<<fCurrentEntries<<" entries"<<endl;
+
+  return kTRUE;
 }
-//_____________________________________________________________________________}
-void FairRootManager::AddFriend( TFile* f )
+
+void FairRootManager::AddFile(TString name)
 {
+  fInputChainList.push_back(name);
+}
 
-  if (f->IsZombie()) {
-    cout << "-E- FairRootManager: Error opening friend file " << endl;
-    exit(-1);
+void FairRootManager::PrintFriendList( )
+{
+  // Print information about the input structure
+  // List files from the input chain together with all files of
+  // all friend chains
+
+  fLogger->Info(MESSAGE_ORIGIN,
+                "The input consists out of the following trees and files:");
+  fLogger->Info(MESSAGE_ORIGIN," - %s",(const char*)fInChain->GetName());
+  TObjArray* fileElements=fInChain->GetListOfFiles();
+  TIter next(fileElements);
+  TChainElement* chEl=0;
+  while (( chEl=(TChainElement*)next() )) {
+    fLogger->Info(MESSAGE_ORIGIN,"    - %s",(const char*)chEl->GetTitle());
   }
 
-  if (fInChain) {
-    fInChain->AddFriend("cbmsim",f);
-    TFolder* added=NULL;
-    added = dynamic_cast <TFolder*> (f->Get("cbmout"));
-    if(added==0) {
-      added = dynamic_cast <TFolder*> (f->Get("cbmroot"));
+  map< TString, TChain* >::iterator mapIterator;
+  for (mapIterator = fFriendTypeList.begin();
+       mapIterator != fFriendTypeList.end(); mapIterator++ ) {
+    TChain* chain = (TChain*)mapIterator->second;
+    fLogger->Info(MESSAGE_ORIGIN," - %s",(const char*)chain->GetName());
+    fileElements=chain->GetListOfFiles();
+    TIter next1(fileElements);
+    chEl=0;
+    while (( chEl=(TChainElement*)next1() )) {
+      fLogger->Info(MESSAGE_ORIGIN,"    - %s",(const char*)chEl->GetTitle());
     }
-//  cout << "Add Folder to the list " << added->GetName() <<" from file " << f->GetName()<< endl;
-    fListFolder.Add( added );
+  }
 
+}
 
-    /**Get The list of branches from the friend file and add it to the actual list*/
-    TList* list= dynamic_cast <TList*> (f->Get("BranchList"));
-    if(list) {
-      TObjString* Obj=0;
-      for(Int_t i =0; i< list->GetEntries(); i++) {
-        Obj=dynamic_cast <TObjString*> (list->At(i));
-        if(fBranchNameList->FindObject(Obj->GetString().Data())==0) {
-          fBranchNameList->AddLast(Obj);
-          fBranchSeqId++;
+void FairRootManager::CheckFriendChains()
+{
+  std::multimap< TString, std::multimap<TString,TArrayI> >::iterator it1;
+  std::multimap<TString,TArrayI> map1;
+
+  // Get the structure from the input chain
+  it1=fRunIdInfoAll.find("InputChain");
+  map1 = it1->second;
+  std::vector<Int_t> runid;
+  std::vector<Int_t> events;
+  std::multimap<TString,TArrayI>::iterator it;
+  for ( it=map1.begin() ; it != map1.end(); it++ ) {
+    TArrayI bla = (*it).second;
+    runid.push_back(bla[0]);
+    events.push_back(bla[1]);
+  }
+
+  // Now loop over all chains except the input chain and comapare the
+  // runids and event numbers.
+  // If there is a mismatch stop the execution.
+  Int_t errorFlag = 0;
+  TString inputLevel;
+  std::list<TString>::iterator listit;
+  for ( listit=fInputLevel.begin() ; listit != fInputLevel.end(); listit++ ) {
+    inputLevel = (*listit);
+    if ( !inputLevel.Contains("InputChain") ) {
+      it1=fRunIdInfoAll.find(inputLevel);
+      map1 = it1->second;
+      if ( runid.size() != map1.size()) {
+        errorFlag = 1;
+        goto error_label;
+      }
+      Int_t counter = 0;
+      for ( it=map1.begin() ; it != map1.end(); it++ ) {
+        TArrayI bla = (*it).second;
+        if ( (bla[0] != runid[counter]) || (bla[1] != events[counter]) ) {
+          errorFlag = 2;
+          goto error_label;
         }
+        counter++;
       }
     }
-  } else {
+  }
 
-    Fatal("\033[5m\033[31m FairRootManager::AddFriend","not input tree. \033[0m\n");
-
+  // Use goto to leave double loop at once in case of error
+error_label:
+  if (errorFlag>0) {
+    fLogger->Error(MESSAGE_ORIGIN,"The input chain and the friend chain %s have a different structure:", (const char*)inputLevel);
+    if (errorFlag == 1) {
+      fLogger->Error(MESSAGE_ORIGIN,"The input chain has the following runids and event numbers:");
+      for ( Int_t i=0; i<runid.size(); i++) {
+        fLogger->Error(MESSAGE_ORIGIN," - Runid %i with %i events", runid[i], events[i]);
+      }
+      fLogger->Error(MESSAGE_ORIGIN,"The %s chain has the following runids and event numbers:", (const char*)inputLevel);
+      for ( it=map1.begin() ; it != map1.end(); it++ ) {
+        TArrayI bla = (*it).second;
+        fLogger->Error(MESSAGE_ORIGIN," - Runid %i with %i events", bla[0], bla[1]);
+      }
+    }
+    if (errorFlag == 2) {
+      Int_t counter = 0;
+      for ( it=map1.begin() ; it != map1.end(); it++ ) {
+        TArrayI bla = (*it).second;
+        fLogger->Error(MESSAGE_ORIGIN,"Runid Input Chain, %s chain: %i, %i", (const char*)inputLevel, bla[0], runid[counter]);
+        fLogger->Error(MESSAGE_ORIGIN,"Event number Input Chain, %s chain: %i, %i", (const char*)inputLevel, bla[1], events[counter]);
+        counter++;
+      }
+    }
+    fLogger->Fatal(MESSAGE_ORIGIN,"Event structure mismatch");
   }
 }
+
 //_____________________________________________________________________________
 Bool_t  FairRootManager::DataContainersEmpty()
 {
@@ -219,13 +368,6 @@ TFile* FairRootManager::OpenOutFile(TFile* f)
     gROOT->GetListOfBrowsables()->Add(fCbmout);
   }
   return fOutFile;
-}
-//_____________________________________________________________________________
-TFile* FairRootManager::OpenInFile(const char* fname, Bool_t Connect)
-{
-  if(fInFile) { CloseInFile(); }
-  fInFile = new TFile(fname);
-  return OpenInFile(fInFile, Connect);
 }
 //_____________________________________________________________________________
 TFile* FairRootManager::OpenOutFile(const char* fname)
@@ -454,37 +596,13 @@ void FairRootManager:: WriteFolder()
 //_____________________________________________________________________________
 void  FairRootManager::ReadEvent(Int_t i)
 {
-  /** Reads the event data for i-th event for all connected branches.*/
-  fInChain->GetEntry(i);
-  FairRunAna* fRun = FairRunAna::Instance();
-  if ( (i == fCurrentEntries)  && fInChain->GetListOfFriends()  ) {
-    // get the next file name in the list of chained files
-    TString cfilename = fRun->GetNextFileName();
-    // clear the Friend contents of Chains
-    TList* lf = fInChain->GetListOfFriends();
-    if(lf) {
-      TFriendElement* fr;
-      TFile* file;
-      for(Int_t ii = 0; ii < lf->GetEntries(); ii++) {
-        fr = (TFriendElement*) lf->At(ii);
-        file = fr->GetFile();
-        file->Close();
-      }
-      lf->Clear();
-    }
-    cout << endl;
-    cout << "-I FairRootManager: switching to chained file: " << cfilename <<  endl;
-    map<TString, list<TString>* >  fileS = fRun->GetFileStructure();
-    list<TString>* lFriends = fileS[cfilename];
-    list<TString>::const_iterator iter;
-    for(iter = lFriends->begin(); iter != lFriends->end(); iter++) {
-      cout << "                         connected friends: " << *iter << endl;
-      fInChain->AddFriend("cbmsim", new TFile(*iter));
-    }
-    cout << endl;
-    fInChain->GetEntry(i);
-    fCurrentEntries += (Int_t ) fInChain->GetTree()->GetEntries();
+
+  if(0==i) {
+    Int_t totEnt = fInChain->GetEntries();
+    fLogger->Info(MESSAGE_ORIGIN,"The number of entries in chain is %i",totEnt);
   }
+
+  fInChain->GetEntry(i);
 
 }
 //_____________________________________________________________________________
@@ -817,6 +935,274 @@ void FairRootManager::SaveAllContainers()
     AssignTClonesArrays();
     ForceFill();
   }
+}
+//_____________________________________________________________________________
+
+void FairRootManager::AddFriend(TString Name)
+{
+  fFriendFileList.push_back(Name);
+}
+//_____________________________________________________________________________
+
+void FairRootManager::AddFriendsToChain()
+{
+  // Loop over all Friend files and extract the type. The type is defined by
+  // the tree which is stored in the file. If there is already a chain of with
+  // this type of tree then the file will be added to this chain.
+  // If there is no such chain it will be created.
+  //
+  // Check if the order of runids and the event numbers per runid for all
+  // friend chains is the same as the one defined by the input chain.
+  // TODO: Should the order be corrected or should the execution be stopped.
+  // The order in the input tree defined by the order in which the files have
+  // been added. A file is defined by the runid.
+
+  // In the old way it was needed sometimes to add a freind file more
+  // than once. This is not needed any longer, so we remove deuplicates
+  // from the list and display a warning.
+  std::list<TString> friendList;
+  std::list<TString>::iterator iter1;
+  for(iter1 = fFriendFileList.begin();
+      iter1 != fFriendFileList.end(); iter1++) {
+    if (find(friendList.begin(), friendList.end(), (*iter1))
+        == friendList.end()) {
+      friendList.push_back(*iter1);
+    }
+  }
+  // TODO: print a warning if it was neccessary to remove a filname from the
+  // list. This can be chacked by comparing the size of both list
+
+  TFile* temp = gFile;
+
+  Int_t friendType = 1;
+  // Loop over all files which have been added as friends
+  for(iter1 = friendList.begin();
+      iter1 != friendList.end(); iter1++) {
+    std::list<TString>::iterator iter;
+    TString inputLevel;
+    // Loop over all already defined input levels to check if this type
+    // of friend tree is already added.
+    // If this type of friend tree already exist add the file to the
+    // then already existing friend chain. If this type of friend tree
+    // does not exist already create a new friend chain and add the file.
+    Bool_t inputLevelFound = kFALSE;
+    TFile* inputFile;
+    for ( iter = fInputLevel.begin(); iter !=fInputLevel.end(); iter++ ) {
+      inputLevel = (*iter);
+
+      inputFile = new TFile((*iter1));
+      if (inputFile->IsZombie()) {
+        FairLogger* logger = FairLogger::GetLogger();
+        logger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (const char*)(*iter));
+      }
+
+      // Check if the branchlist is already stored in the map. If it is
+      // already stored add the file to the chain.
+      Bool_t isOk = CompareBranchList(inputFile, inputLevel);
+      if ( isOk ) {
+        inputLevelFound = kTRUE;
+        inputFile->Close();
+        continue;
+      }
+      inputFile->Close();
+    }
+    if (!inputLevelFound) {
+      inputLevel= Form("FriendTree_%i",friendType);
+      CreateNewFriendChain((*iter1), inputLevel);
+      friendType++;
+    }
+
+    GetRunIdInfo((*iter1), inputLevel);
+    TChain* chain = (TChain*) fFriendTypeList[inputLevel];
+    chain->AddFile((*iter1), 1234567890, "cbmsim");
+  }
+  gFile=temp;
+
+  // Check if all friend chains have the same runids and the same
+  // number of event numbers as the corresponding input chain
+  CheckFriendChains();
+
+  // Add all the friend chains which have been created to the
+  // main input chain.
+  map< TString, TChain* >::iterator mapIterator;
+  for (mapIterator = fFriendTypeList.begin();
+       mapIterator != fFriendTypeList.end(); mapIterator++ ) {
+
+    TChain* chain = (TChain*)mapIterator->second;
+    fInChain->AddFriend(chain);
+  }
+
+  // Print some output about the input structure
+  PrintFriendList();
+
+}
+//_____________________________________________________________________________
+
+void FairRootManager::CreateNewFriendChain(TString inputFile, TString inputLevel)
+{
+
+  TFile* temp = gFile;
+  TFile* f = new TFile(inputFile);
+
+  TFolder* added=NULL;
+  TString folderName = "/cbmout";
+  TString folderName1 = "cbmout";
+  added = dynamic_cast <TFolder*> (f->Get("cbmout"));
+  if(added==0) {
+    folderName = "/cbmroot";
+    folderName1 = "cbmroot";
+    added = dynamic_cast <TFolder*> (f->Get("cbmroot"));
+  }
+  folderName1=folderName1+"_"+inputLevel;
+  added->SetName(folderName1);
+  fListFolder.Add( added );
+
+  /**Get The list of branches from the friend file and add it to the actual list*/
+  TList* list= dynamic_cast <TList*> (f->Get("BranchList"));
+  TString chainName = inputLevel;
+  fInputLevel.push_back(chainName);
+  fCheckInputBranches[chainName] = new std::list<TString>;
+  if(list) {
+    TObjString* Obj=0;
+    for(Int_t i =0; i< list->GetEntries(); i++) {
+      Obj=dynamic_cast <TObjString*> (list->At(i));
+      fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
+      if(fBranchNameList->FindObject(Obj->GetString().Data())==0) {
+        fBranchNameList->AddLast(Obj);
+        fBranchSeqId++;
+      }
+    }
+  }
+
+  TChain* chain = new TChain(inputLevel,folderName);
+  fFriendTypeList[inputLevel]=chain;
+
+  f->Close();
+  gFile = temp;
+
+}
+//_____________________________________________________________________________
+
+Bool_t FairRootManager::CompareBranchList(TFile* fileHandle, TString inputLevel)
+{
+  // fill a set with the original branch structure
+  // This allows to use functions find and erase
+  std::set<TString> branches;
+  list<TString>::const_iterator iter;
+  for(iter = fCheckInputBranches[inputLevel]->begin();
+      iter != fCheckInputBranches[inputLevel]->end(); iter++) {
+    branches.insert(*iter);
+  }
+
+  // To do so we have to loop over the branches in the file and to compare
+  // the branches in the file with the information stored in
+  // fCheckInputBranches["InputChain"]. If both lists are equal everything
+  // is okay
+
+  // Get The list of branches from the input file one by one and compare
+  // it to the reference list of branches which is defined for this tree.
+  // If a branch with the same name is found, this branch is removed from
+  // the list. If in the end no branch is left in the list everything is
+  // fine.
+  set<TString>::iterator iter1;
+  TList* list= dynamic_cast <TList*> (fileHandle->Get("BranchList"));
+  if(list) {
+    TObjString* Obj=0;
+    for(Int_t i =0; i< list->GetEntries(); i++) {
+      Obj=dynamic_cast <TObjString*> (list->At(i));
+      iter1=branches.find(Obj->GetString().Data());
+      if (iter1 != branches.end() ) {
+        branches.erase (iter1);
+      } else {
+        // Not found is an error because branch structure is
+        // different. It is impossible to add to tree with a
+        // different branch structure
+        return kFALSE;
+      }
+    }
+  }
+  // If the size of branches is !=0 after removing all branches also in the
+  // reference list, this is also a sign that both branch list are not the
+  // same
+  if (branches.size() != 0 ) {
+    return kFALSE;
+  }
+
+  return kTRUE;
+}
+//_____________________________________________________________________________
+
+//void FairRootManager::GetRunIdInfo(TFile* fileHandle, TString inputLevel)
+void FairRootManager::GetRunIdInfo(TString fileName, TString inputLevel)
+{
+  TFile* temp=gFile;
+  TFile* fileHandle = new TFile(fileName);
+
+  TTree* testTree = dynamic_cast<TTree*>(fileHandle->Get("cbmsim"));
+  TFolder* folder = dynamic_cast<TFolder*>(fileHandle->Get("cbmroot"));
+  if (!folder) {
+    folder = dynamic_cast<TFolder*>(fileHandle->Get("cbmout"));
+  }
+
+  // Get the information about runid and start and stop event number
+  // If there is a branch with this information use this information
+  // directly. If not loop over all events and read the MCEventHeader
+  // information to extract all different runids and start/stop event
+  // numbers.
+
+  FairEventHeader* header =
+    (FairEventHeader*)folder->FindObjectAny("EventHeader.");
+  // With the follwing two lines the MCEventHeader is not filled
+  // correctely. The runid is correct but the event numbers are
+  // zero all the time. This must be a bug.
+  // TODO: Create example and submit a bug report to the ROOT team
+  //   testTree->SetBranchStatus("*",0); //disable all branches
+  //   testTree->SetBranchStatus("MCEventHeader.",1);
+  testTree->SetBranchAddress("EventHeader.", &header);
+
+  Int_t entries =  (Int_t) testTree->GetEntriesFast();
+
+
+  TArrayI runidInfo(2);
+
+  testTree->GetEntry(0);
+
+  Int_t runid;
+  Int_t counter = 1;
+  runid = header->GetRunId();
+  runidInfo.AddAt(runid,0);
+
+  std::map<TString, std::multimap<TString,TArrayI> >::iterator it;
+
+  std::multimap<TString, TArrayI>  myRunIdInfo;
+  it=fRunIdInfoAll.find(inputLevel);
+  if ( it != fRunIdInfoAll.end()) {
+    myRunIdInfo=it->second;
+  }
+
+  for (Int_t i=1; i<entries ; i++) {
+    testTree->GetEntry(i);
+    runid = header->GetRunId();
+    if ( runid != runidInfo[0] ) {
+      runidInfo.AddAt(counter,1);
+      // Fill info to structure
+      myRunIdInfo.insert(pair<TString,TArrayI>(fileName,runidInfo));
+      runidInfo.Reset();
+      runid = header->GetRunId();
+      runidInfo.AddAt(runid,0);
+      counter = 0;
+    }
+    counter++;
+  }
+
+  runidInfo.AddAt(counter,1);
+  myRunIdInfo.insert(pair<TString,TArrayI>(fileName,runidInfo));
+  fRunIdInfoAll.erase(inputLevel);
+  fRunIdInfoAll.insert(pair<TString, std::multimap<TString,TArrayI> >
+                       (inputLevel, myRunIdInfo));
+
+  fileHandle->Close();
+  gFile=temp;
 }
 //_____________________________________________________________________________
 

@@ -10,16 +10,15 @@
  */
 
 #include "FairRun.h"
-#include "TObjArray.h"
 #include "TString.h"
-#include "TFile.h"
 #include <iostream>
-#include <list>
-#include <map>
 
 class FairRuntimeDb;
 class FairEventHeader;
 class FairField;
+class TFile;
+class FairLogger;
+
 
 class FairRunAna : public FairRun
 {
@@ -29,10 +28,8 @@ class FairRunAna : public FairRun
     static FairRunAna* Instance();
     virtual ~FairRunAna();
     FairRunAna();
-    /**Add a friend file (input) by name)*/
+    /** Add a friend file (input) by name)*/
     void        AddFriend(TString fName);
-    /**Add a friend file (input) by TFile pointer */
-    void        AddFriend(TFile* f ) {  fFriendFileList->Add(f);}
     /**initialize the run manager*/
     void        Init();
     /**Run from event number NStart to event number NStop */
@@ -40,30 +37,19 @@ class FairRunAna : public FairRun
     /**Run over the whole input file with timpe window delta_t as unit (entry)*/
     void        Run(Double_t delta_t);
     /**Run for the given single entry*/
-    void      Run(Long64_t entry);
+    void        Run(Long64_t entry);
     /** the dummy run does not check the evt header or the parameters!! */
-    void      DummyRun(Int_t NStart ,Int_t NStop);
+    void        DummyRun(Int_t NStart ,Int_t NStop);
     /**Set the input file by name*/
-    TFile*      SetInputFile(TString fname);
-    /**Set the input file by TFile pointer*/
-    void        SetInputFile(TFile* f);
-//   TObjArray * GetListOfMergedFile() { return fMergedFileList;}
-    TObjArray* GetListOfFriendFile() { return fFriendFileList;}
-    void        SetWildcard(TString Wildcard) {fWildcard = Wildcard;}
-    void        DumpfInputFileStruct();
+    void        SetInputFile(TString fname);
     void        AddFile(TString name);
-    std::map <TString, std::list<TString> * > GetFileStructure() { return fInputFileStruct;}
-    TString     GetCurrentFileName() { return fCurrentFileName;}
-    TString     GetNextFileName();
     void        LoadGeometry() {fLoadGeo=kTRUE;}
     void        Reinit(UInt_t runId);
     UInt_t      getRunId() {return fRunId;}
-    std::list <TString>  GetChainList() {return fChainList;}
     /** Get the magnetic field **/
     FairField*  GetField() {return fField; }
     void      SetField (FairField* ffield ) {fField=ffield ;}
-    TFile*      GetInputFile() {return fInputFile; }
-    void      SetGeomFile(const char* GeoFileName);
+    void        SetGeomFile(const char* GeoFileName);
     TFile*      GetGeoFile() {return fInputGeoFile;}
     void        SetContainerStatic() {
       fStatic=kTRUE;
@@ -72,7 +58,7 @@ class FairRunAna : public FairRun
     }
     void        RunWithTimeStamps();
     Bool_t      IsTimeStamp() {return fTimeStamps;}
-    void    CompressData();
+    void        CompressData();
 
 
   private:
@@ -80,15 +66,8 @@ class FairRunAna : public FairRun
     FairRunAna& operator= (const  FairRunAna&) {return *this;}
 
   protected:
-    TObjArray*                              fFriendFileList;
     Bool_t                                  fIsInitialized;
-    TFile*                                  fInputFile;
     TFile*                                  fInputGeoFile;
-    TString                                 fCurrentFileName;//!
-    TString                                 fWildcard;//!
-    std::list<TString>                      fChainList;//!
-    std::list<TString>::iterator            fcurrent;//!
-    std::map<TString, std::list<TString>* > fInputFileStruct; //!
     static FairRunAna*                      fgRinstance;
     Bool_t                                  fLoadGeo;
     FairEventHeader*                        fEvtHeader;//!
@@ -98,8 +77,9 @@ class FairRunAna : public FairRun
     Bool_t                                  fStatic;//!
     FairField*                              fField;
     Bool_t                                  fTimeStamps;
+    Bool_t                                  fInFileIsOpen;//!
 
-    ClassDef(FairRunAna ,2)
+    ClassDef(FairRunAna ,3)
 
 };
 

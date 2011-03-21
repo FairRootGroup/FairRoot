@@ -2,12 +2,16 @@
 #define FAIR_ROOT_MANAGER_H
 #include "TObject.h"
 #include "TString.h"
+#include "TArrayI.h"
+#include "TObjArray.h"
 #include "TFile.h"
 #include "TChain.h"
 #include <map>
+#include <list>
 #include <queue>
 
 class FairGeoNode;
+class FairLogger;
 class TCollection;
 class TClonesarray;
 class TFolder;
@@ -35,20 +39,21 @@ class FairRootManager : public TObject
     /** static access method */
     static FairRootManager* Instance();
 
-    void                AddFile(TString name) {fInChain->Add(name);}
-    void                AddFriend( TFile* f );
+    void                AddFile(TString name);
+    void                AddFriend(TString Name);
+    void                AddFriendsToChain();
     /**
-     Check if Branch persistence or not (Memory branch)
-     return value:
-     1 : Branch is Persistance
-     2 : Memory Branch
-     0 : Branch does not exist   */
+    Check if Branch persistence or not (Memory branch)
+    return value:
+    1 : Branch is Persistance
+    2 : Memory Branch
+    0 : Branch does not exist   */
     Int_t               CheckBranch(const char* BrName);
     void                CloseInFile() { if(fInFile) { fInFile->Close(); }}
     void                CloseOutFile() { if(fOutFile) { fOutFile->Close(); }}
     void                CreateGeometryFile(const char* geofile);
     Bool_t              DataContainersEmpty();
-    Bool_t        DataContainersFilled();
+    Bool_t              DataContainersFilled();
     void                Fill();
     void                ForceFill();
     TClonesArray*       ForceGetDataContainer(TString branchName);
@@ -72,8 +77,7 @@ class FairRootManager : public TObject
     FairGeoNode*        GetGeoParameter(const char* detname, const char* gname);
     /** Return a pointer to the object (collection) saved in the branch named BrName*/
     TObject*            GetObject(const char* BrName);
-    TFile*              OpenInFile(const char* fname="cbmsim.root", Bool_t Connect=kFALSE);
-    TFile*              OpenInFile(TFile* f, Bool_t Connect=kFALSE);
+    Bool_t              OpenInChain();
     TFile*              OpenOutFile(const char* fname="cbmsim.root");
     TFile*              OpenOutFile(TFile* f);
     void                ReadEvent(Int_t i);
@@ -96,15 +100,16 @@ class FairRootManager : public TObject
     void                RunWithTimeStamps() {fTimeStamps = kTRUE;}
     /**Set the branch name list*/
     void                SetBranchNameList(TList* list);
-    void          SetCompressData(Bool_t val) {fCompressData = val;}
+    void                SetCompressData(Bool_t val) {fCompressData = val;}
+    void                SetInputFile(TString name) {fInputFileName=name;}
     void                SetOutTree(TTree* fTree) { fOutTree=fTree;}
-    void                SetWildcard(TString Wildcard) {fInChain->Add(Wildcard);}
+    //    void                SetWildcard(TString Wildcard) {fInChain->Add(Wildcard);}
     void                TruncateBranchNames(TBranch* b, TString ffn);
     void                TruncateBranchNames(TTree* fTree, const char* folderName);
     void                Write();
     void                WriteGeometry();
     void                WriteFolder() ;
-//_____________________________________________________________________
+
   private:
     /**private methods*/
     FairRootManager(const FairRootManager& F);
@@ -112,6 +117,7 @@ class FairRootManager : public TObject
     /**  Set the branch address for a given branch name and return
         a TObject pointer, the user have to cast this pointer to the right type.*/
     TObject*            ActivateBranch(const char* BrName);
+    void                AddFriends( );
     /**Add a branch to memory, it will not be written to the output files*/
     void                AddMemoryBranch(const char*, TObject* );
     void                AssignTClonesArrays();
@@ -123,9 +129,14 @@ class FairRootManager : public TObject
     0 : Branch does not exist
     */
     Int_t               CheckBranchSt(const char* BrName);
+    void                CheckFriendChains();
+    Bool_t              CompareBranchList(TFile* fileHandle, TString inputLevel);
+    void                CreateNewFriendChain(TString inputFile, TString inputLevel);
     /**Create the Map for the branch persistency status  */
     void                CreatePerMap();
     TObject*            GetMemoryBranch( const char* );
+    void                GetRunIdInfo(TString fileName, TString inputLevel);
+    void                PrintFriendList();
     void                SaveAllContainers();
 
 //_____________________________________________________________________
@@ -159,6 +170,7 @@ class FairRootManager : public TObject
     TList*                               fBranchNameList; //!
     std::map<TString, std::queue<TClonesArray*> > fDataContainer;
     std::map<TString, TClonesArray*> fActiveContainer;
+
     /** if kTRUE the entries of a branch are filled from the beginning --> no empty entries*/
     Bool_t                              fCompressData;
     /**if kTRUE Read data according to time and not entries*/
@@ -169,6 +181,20 @@ class FairRootManager : public TObject
     std::map < TString , Int_t >        fBrPerMap; //!
     /**Iterator for the fBrPerMap  Map*/
     std::map < TString, Int_t>::iterator     fBrPerMapIter;
+
+    /** List of all files added with AddFriend */
+    std::list<TString>                      fFriendFileList; //!
+
+    TString                             fInputFileName; //!
+    std::list<TString>                  fInputChainList;//!
+    std::map<TString, TChain*>          fFriendTypeList;//!
+
+    std::map<TString, std::list<TString>* > fCheckInputBranches; //!
+    std::list<TString>                      fInputLevel; //!
+    std::map<TString, std::multimap<TString, TArrayI> > fRunIdInfoAll; //!
+
+    FairLogger*                             fLogger;//!
+
     ClassDef(FairRootManager,3) // Root IO manager
 };
 

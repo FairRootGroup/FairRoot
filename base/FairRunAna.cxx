@@ -18,6 +18,7 @@
 #include "TGeoManager.h"
 #include "TKey.h"
 #include "FairRunIdGenerator.h"
+#include "FairLogger.h"
 
 #include <iostream>
 #include <list>
@@ -38,22 +39,18 @@ FairRunAna* FairRunAna::Instance()
 //_____________________________________________________________________________
 FairRunAna::FairRunAna()
   :FairRun(),
-   fFriendFileList(new TObjArray()),
+   //   fFriendFileList(new TObjArray()),
    fIsInitialized(kFALSE),
-   fInputFile(0),
+   //   fInputFile(0),
    fInputGeoFile(0),
-   fCurrentFileName (""),
-   fWildcard(""),
-   fChainList(0),
-   fcurrent(0),
-   fInputFileStruct(),
    fLoadGeo( kFALSE),
    fEvtHeader(0),
    fRtdb(0),
    fRunId(0),
    fStatic(kFALSE),
    fField(0),
-   fTimeStamps(kFALSE)
+   fTimeStamps(kFALSE),
+   fInFileIsOpen(kFALSE)
 {
 
   fgRinstance=this;
@@ -63,7 +60,7 @@ FairRunAna::FairRunAna()
 
 FairRunAna::~FairRunAna()
 {
-  delete fFriendFileList;
+  //  delete fFriendFileList;
   if(fField) { delete fField; }
   if(gGeoManager) { delete gGeoManager; }
 }
@@ -100,32 +97,17 @@ void FairRunAna::Init()
     fIsInitialized=kTRUE;
   }
 
-  if(fInputFile ) {
-    if ("" == fWildcard) {
-      fRootManager->OpenInFile(fInputFile, kTRUE);
-    } else {
-      fRootManager->OpenInFile(fInputFile);
-      fRootManager->SetWildcard(fWildcard);
-    }
-    // chain mechanism
-    std::list<TString>::const_iterator iter;
-    for(iter = fChainList.begin(); iter != fChainList.end(); iter++) {
-      fRootManager->AddFile( (*iter) );
-    }
-    cout << endl
-         << "-I- FairRunAna::Init : " << endl
-         << fInputFile->GetName() << "  is connected with:";
-    list<TString>* friendList =
-      fInputFileStruct[TString(fInputFile->GetName())];
-    if(NULL != friendList) {
-      list<TString>::iterator iter1;
-      for(iter1 = friendList->begin();
-          iter1 != friendList->end(); iter1++) {
-        cout << "   " << (*iter1);
-        fRootManager->AddFriend(new TFile(*iter1));
-      }
-    }
-    cout << endl << endl;
+  // Open the input file and add other input files added by AddFile to the
+  // input chain. Do a check if the added files are of the same type
+  // as the the input file. Same type means check if they contain the
+  // same branch.
+  fInFileIsOpen = fRootManager->OpenInChain();
+
+  if (fInFileIsOpen) {
+
+    // Add all friend files defined by AddFriend to the correct chain
+    fRootManager->AddFriendsToChain();
+
     //Load geometry
     if(fLoadGeo) {
       if(fInputGeoFile!=0) { //First check if the user has a separate Geo file!
@@ -137,7 +119,9 @@ void FairRunAna::Init()
           break;
         }
       } else { //try the input file
-        fInputFile->Get("FAIRGeom");
+        //  fInputFile->Get("FAIRGeom");
+        // The geometry must be in the first file
+        fRootManager->GetInChain()->GetFile()->Get("FAIRGeom");
       }
     }
     //check that the geometry was loaded if not try all connected files!
@@ -168,7 +152,7 @@ void FairRunAna::Init()
     }
   }
   //Init the Chain ptr
-  fcurrent = fChainList.begin();
+  //  fcurrent = fChainList.begin();
   TFile* Output = fRootManager->OpenOutFile(Outfname);
   // <DB> forwarding ptr
   fOutFile= Output;
@@ -182,7 +166,8 @@ void FairRunAna::Init()
   if(fTimeStamps) { fRootManager->RunWithTimeStamps(); }
 
   // Assure that basic info is there for the run
-  if(par && fInputFile) {
+  //  if(par && fInputFile) {
+  if(par && fInFileIsOpen) {
     fRootManager->ReadEvent(0);
     fEvtHeader = (FairEventHeader*)
                  fRootManager->GetObject("EventHeader.");
@@ -240,7 +225,8 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
   }
 
   UInt_t tmpId =0;
-  if (fInputFile==0) {
+  //  if (fInputFile==0) {
+  if (!fInFileIsOpen) {
     DummyRun(Ev_start,Ev_end);
     return;
   }
@@ -351,21 +337,13 @@ void FairRunAna::DummyRun(Int_t Ev_start, Int_t Ev_end)
 
 }
 //_____________________________________________________________________________
-TFile* FairRunAna::SetInputFile(TString name)
+
+void FairRunAna::SetInputFile(TString name)
 {
-  fInputFile= new TFile(name);
-  if (fInputFile->IsZombie()) {
-    cout << "-E- FairRunAna: Error opening Input file" << endl;
-    exit(-1);
-  } else {
-  }
-  fCurrentFileName = name;
-  cout << "-I- FairRunAna: Opening Input file: " << fCurrentFileName << endl;
-  return fInputFile;
+  fRootManager->SetInputFile(name);
 }
-
-
 //_____________________________________________________________________________
+/*
 void FairRunAna::SetInputFile(TFile* f)
 {
   if (f->IsZombie()) {
@@ -376,7 +354,7 @@ void FairRunAna::SetInputFile(TFile* f)
   }
   fCurrentFileName = TString( f->GetName());
 }
-
+*/
 //_____________________________________________________________________________
 void FairRunAna::AddFriend (TString Name)
 {
@@ -384,22 +362,23 @@ void FairRunAna::AddFriend (TString Name)
     cout << "-E- FairRunAna: Error, AddFriend has to be set before Run::Init !" << endl;
     exit(-1);
   } else {
-    cout << "-I- FairRunAna Input file: " << fCurrentFileName <<
-         " is connected to friend: " << Name << endl;
-    if ( fInputFileStruct[fCurrentFileName]) {
-      fInputFileStruct[fCurrentFileName]->push_back(Name);
-    } else {
-      fInputFileStruct[fCurrentFileName] = new list<TString>;
-      fInputFileStruct[fCurrentFileName]->push_back(Name);
-    }
+    fRootManager->AddFriend(Name);
   }
 }
 //_____________________________________________________________________________
-void FairRunAna::DumpfInputFileStruct()
+/*
+void FairRunAna::AddFriend (TString Name, Int_t friendType)
 {
-  // to be finished ...
+  if(fIsInitialized) {
+    cout << "-E- FairRunAna: Error, AddFriend has to be set before Run::Init !" << endl;
+    exit(-1);
+  } else {
+    fRootManager->AddFriend(Name, 1);
+  }
 }
+*/
 //_____________________________________________________________________________
+
 void FairRunAna::Reinit(UInt_t runId)
 {
   // reinit procedure
@@ -409,15 +388,7 @@ void FairRunAna::Reinit(UInt_t runId)
 
 void FairRunAna::AddFile(TString name)
 {
-  cout << "-I- FairRunAna Adding input file: " << name << endl;
-  fChainList.push_back(name);
-  fCurrentFileName = name;
-}
-//_____________________________________________________________________________
-TString FairRunAna::GetNextFileName()
-{
-  TString name = *fcurrent++;
-  return name;
+  fRootManager->AddFile(name);
 }
 //_____________________________________________________________________________
 
@@ -430,7 +401,6 @@ void  FairRunAna::RunWithTimeStamps()
     fTimeStamps=kTRUE;
   }
 }
-
 //_____________________________________________________________________________
 
 void FairRunAna::CompressData()

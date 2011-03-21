@@ -52,7 +52,8 @@ void FairEventManagerEditor::Init()
       kFixedWidth    | kOwnBackground);
 
   TString Infile= "Input file : ";
-  TFile* file =FairRunAna::Instance()->GetInputFile();
+//  TFile* file =FairRunAna::Instance()->GetInputFile();
+  TFile* file =FairRootManager::Instance()->GetInChain()->GetFile();
   Infile+=file->GetName();
   TGLabel* TFName=new TGLabel(title1, Infile.Data());
   title1->AddFrame(TFName);
