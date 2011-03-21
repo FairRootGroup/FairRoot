@@ -65,11 +65,15 @@ void FairLogger::Fatal(const char* file, const char* line, const char* func,
   // core dump file for later usage.
   // Fatal also indicates a problem which is so severe that the process should
   // not go on, so the process is aborted.
-  fprintf(stderr, "There was a fatal error !!!\n");
-  fprintf(stderr, "We stop the execution of the process at this point.\n");
+  fprintf(stderr, "[FATAL  ] We stop the execution of the process at this point.\n");
   if (gSystem) {
-    fprintf(stderr, "For later analysis we write a core dump to file\n");
-    freopen("core_dump", "w", stderr);
+    TString corefile = "core_dump_";
+    Int_t PID = gSystem->GetPid();
+    corefile += PID;
+
+    fprintf(stderr, "[FATAL  ] For later analysis we write a core dump to %s\n",
+            (const char*)corefile);
+    freopen(corefile, "w", stderr);
     gSystem->StackTrace();
     fclose(stderr);
     gSystem->Abort(1);
@@ -230,12 +234,13 @@ void FairLogger::OpenLogFile()
   }
 
   // Open the log file and check if it is open.
-  cerr << "Openning log file: " << logfile << endl;
 
   fLogFile = fopen(logfile, "w");
   if (fLogFile == NULL) {
     cerr << "Cannot open log file: " << logfile;
   }
+  cerr << "[INFO   ] Openning log file: " << logfile << endl;
+  cerr << " " << endl;
 
   assert(fLogFile != NULL);
 }
