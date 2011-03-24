@@ -79,6 +79,7 @@ else(FAIRROOT_MINIMAL)
   find_package(CLHEP)
   find_package(RuleChecker)
   find_package(Oracle)
+
 endif(FAIRROOT_MINIMAL)
 
 
@@ -111,6 +112,7 @@ add_subdirectory (example/Tutorial1/src)
 add_subdirectory (example/Tutorial2/src)
 add_subdirectory (example/passive)
 add_subdirectory (example/mcstack)
+add_subdirectory (MbsAPI)
 
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
