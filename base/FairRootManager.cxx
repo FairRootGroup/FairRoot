@@ -287,16 +287,21 @@ void FairRootManager::CheckFriendChains()
       map1 = it1->second;
       if ( runid.size() != map1.size()) {
         errorFlag = 1;
-        goto error_label;
+//        goto error_label;
+        break;
       }
       Int_t counter = 0;
       for ( it=map1.begin() ; it != map1.end(); it++ ) {
         TArrayI bla = (*it).second;
         if ( (bla[0] != runid[counter]) || (bla[1] != events[counter]) ) {
           errorFlag = 2;
-          goto error_label;
+//          goto error_label;
+          break;
         }
         counter++;
+      }
+      if (errorFlag>0) {
+        break;
       }
     }
   }
