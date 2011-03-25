@@ -15,6 +15,7 @@
 class FairRootManager;
 class FairGenericStack;
 class FairModule;
+class FairLogger;
 class FairDetector;
 class FairField;
 class FairPrimaryGenerator;
@@ -172,6 +173,8 @@ class FairMCApplication : public TVirtualMCApplication
     TRefArray*           fDetectors;
     /**Map used for dispatcher*/
     TRefArray*           fDetMap;
+    /** Fair Logger */
+    FairLogger*          fLogger;//!
     /**Iterator for Module list*/
     TIterator*           fModIter; //!
     /**Module list in simulation*/

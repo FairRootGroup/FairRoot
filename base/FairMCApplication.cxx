@@ -24,6 +24,8 @@
 #include "FairGeoMedium.h"
 #include "FairRadLenManager.h"
 #include "FairRuntimeDb.h"
+#include "FairLogger.h"
+
 
 #include "TObjArray.h"
 #include "TGeoTrack.h"
@@ -59,6 +61,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fDetIter(NULL),
    fDetectors(NULL),
    fDetMap(NULL),
+   fLogger(FairLogger::GetLogger()),
    fModIter(NULL),
    fModules(NULL),
    fNoSenVolumes(0),
@@ -126,6 +129,7 @@ FairMCApplication::FairMCApplication()
    fDetIter(0),
    fDetectors(0),
    fDetMap(0),
+   fLogger(FairLogger::GetLogger()),
    fModIter(0),
    fModules(0),
    fNoSenVolumes(0),
@@ -192,7 +196,7 @@ void FairMCApplication::InitMC(const char* setup, const char* cuts)
 #if ROOT_VERSION_CODE >= 333824
   gMC->SetMagField(fxField);
 #endif
-  cout << " -I- FairMCApplication:: Monte carlo Engine Initialisation  with "<< MCName.Data() << endl;
+  fLogger->Info(MESSAGE_ORIGIN, "Monte carlo Engine Initialisation  with : %s  ", MCName.Data());
 }
 //_____________________________________________________________________________
 void FairMCApplication::RunMC(Int_t nofEvents)
@@ -375,7 +379,7 @@ void FairMCApplication::StopRun()
   FinishRun();
   fRootManager->Write();
   fRootManager->CloseOutFile();
-  cout << "StopRun() exiting not safetly oopps !!!@@@!!!" << endl;
+  fLogger->Warning(MESSAGE_ORIGIN, "StopRun() exiting not safetly oopps !!!@@@!!!" );
   exit(0) ;
 }
 //_____________________________________________________________________________
@@ -556,7 +560,7 @@ void FairMCApplication::InitGeometry()
   fModIter->Reset();
   FairDetector* detector=NULL;
   if(fEvGen!=0 && fStack!=0) { fStack->Register(); }
-  else { cout << "--Warning-- Stack is not registerd " << endl; }
+  else { fLogger->Warning(MESSAGE_ORIGIN, "Stack is not registerd "); }
   /** Initialize the event generator */
   // if(fEvGen)fEvGen->Init();
   /** Initialize the detectors.    */
@@ -578,8 +582,7 @@ void FairMCApplication::InitGeometry()
   FairEventHeader* evt = FairRunSim::Instance()->GetEventHeader();
   evt->SetRunId(runId);
   evt->Register();
-  cout << " -I- FairMCApplication ->  simulation RunID:  "
-       <<  runId << endl;
+  fLogger->Info(MESSAGE_ORIGIN, "Simulation RunID: %i  ", runId);
 
   // Get and register the MCEventHeader
   FairMCEventHeader* mcEvent = FairRunSim::Instance()->GetMCEventHeader();
@@ -666,7 +669,7 @@ void  FairMCApplication::AddIons()
                      ion->GetExcEnergy(),ion->GetMass());
       //Add Ion to gGeoManager visualization
       if(gGeoManager) { gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() ); }
-      cout << "Add Ion: " << ion->GetName()  << " with PDG " <<  TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode() << endl;
+      fLogger->Info(MESSAGE_ORIGIN, "Add Ion:  %s  with PDG  %i ", ion->GetName(), TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode());
     }
   }
   delete   Iter;
@@ -689,7 +692,7 @@ void  FairMCApplication::AddIons()
                      ion->GetExcEnergy(),ion->GetMass());
       //Add Ion to gGeoManager visualization
       if(gGeoManager) { gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() ); }
-      cout << "Add Ion: " << ion->GetName()  << " with PDG " <<  TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode() << endl;
+      fLogger->Info(MESSAGE_ORIGIN, "Add Ion:  %s  with PDG  %i ", ion->GetName(), TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode());
     }
   }
   delete   Iter;

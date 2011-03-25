@@ -1,9 +1,13 @@
 #ifndef FAIRMODULE_H
 #define FAIRMODULE_H
 
+#include "FairLogger.h"
+
 #include "TString.h"
 #include "TNamed.h"
 #include "TRefArray.h"
+
+
 
 class FairVolumeList;
 class FairVolume;
@@ -91,12 +95,13 @@ class FairModule:  public TNamed
     TString             fgeoVer;
     TString             fgeoName;
     Int_t               fModId;
-    Bool_t          fActive;
+    Bool_t              fActive;
     Int_t               fNbOfSensitiveVol; //!
     Int_t               fVerboseLevel;
     TList* flGeoPar; //!  list of Detector Geometry parameters
     Bool_t kGeoSaved; //! flag for initialisation
-
+    /** Fair Logger */
+    FairLogger*            fLogger;//!
 
     ClassDef( FairModule,1)
 };

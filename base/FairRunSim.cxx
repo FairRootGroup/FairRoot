@@ -19,7 +19,6 @@
 #include "TROOT.h"
 #include "TSystem.h"
 #include <iostream>
-
 using std::cout;
 using std::endl;
 
@@ -60,14 +59,14 @@ FairRunSim::FairRunSim()
 
 FairRunSim::~FairRunSim()
 {
-  //   cout<<"Enter Destructor of FairRunSim"<<endl;
+  fLogger->Debug(MESSAGE_ORIGIN," Enter Destructor of FairRunSim ");
   // List of Modules is filled via AddModule from the macro, but it
   // is the responsibility of FairRunSim to call the destructors of
   // the modules-
-  cout<<"Start deleting all registered modules"<<endl;
+  fLogger->Debug(MESSAGE_ORIGIN," Start deleting all registered modules");
   ListOfModules->Delete();
   delete ListOfModules;
-  cout<<"Finish deleting all registered modules"<<endl;
+  fLogger->Debug(MESSAGE_ORIGIN," Finish deleting all registered modules");
 
   fIons->Delete();
   delete fIons;
@@ -78,7 +77,6 @@ FairRunSim::~FairRunSim()
   delete fField;
   delete fGen;
   delete fMCEvHead;
-  //   cout<<"Leave Destructor of FairRunSim"<<endl;
 }
 FairRunSim* FairRunSim::Instance()
 {
@@ -109,8 +107,7 @@ void FairRunSim::Init()
   CheckFlukaExec();
 
   fOutFile=fRootManager->OpenOutFile(Outfname);
-  cout << endl;
-  cout << "==============  FairRunSim: Initialising simulation run ==============" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,"==============  FairRunSim: Initialising simulation run ==============");
 
   FairGeoLoader* loader=new FairGeoLoader(fLoaderName->Data(), "Geo Loader");
   FairGeoInterface* GeoInterFace=loader->getGeoInterface();
@@ -152,7 +149,7 @@ void FairRunSim::Init()
   }
   // on/off visualisation
   if( fStoreTraj ) {
-    cout << "FairRunSim::Init() create visualisation manager "<<endl;
+    fLogger->Info(MESSAGE_ORIGIN, "Create visualisation manager ");
     new FairTrajFilter();
   }
   if(fRadLength) {
@@ -220,7 +217,7 @@ void FairRunSim::CheckFlukaExec()
   if(strcmp(GetName(),"TFluka") == 0 ) {
     TString flexec="run_fluka.sh";
     if (TString(gSystem->FindFile(config_dir.Data(),flexec)) != TString("")) {
-      cout << "---User path for Configuration is used : " <<  config_dir.Data() << endl;
+      fLogger->Info(MESSAGE_ORIGIN,"---User path for Configuration is used :  %s ", config_dir.Data());
     } else {
       flexec=work_config+"run_fluka.sh";
     }
@@ -262,17 +259,17 @@ void FairRunSim::SetMCConfig()
     } else {
       if (fUserConfig.Contains("/")) { AbsPath=kTRUE; }
       g4Macro = fUserConfig;
-      cout << "---------------User config is used :  " << g4Macro.Data() <<"-----------------"<< endl;
+      fLogger->Info(MESSAGE_ORIGIN,"---------------User config is used : %s ",g4Macro.Data());
     }
     if (TString(gSystem->FindFile(config_dir.Data(),g4LibMacro)) != TString("")) { //be carfull after this call the string g4LibMacro is empty if not found!!!!
-      cout << "---User path for Configuration (g4libs.C) is used : " <<  config_dir.Data() << endl;
+      fLogger->Info(MESSAGE_ORIGIN,"---User path for Configuration (g4libs.C) is used : %s" ,config_dir.Data());
     } else {
       g4LibMacro=Lib_config+"g4libs.C";
     }
     LibMacro=g4LibMacro;
     LibFunction="g4libs()";
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),g4Macro)) != TString("")) {
-      cout << "---User path for Configuration (g4Config.C) is used : " <<  config_dir.Data() << endl;
+      fLogger->Info(MESSAGE_ORIGIN,"---User path for Configuration (g4Config.C) is used : %s" , config_dir.Data());
       ConfigMacro=g4Macro;
     } else {
       if(AbsPath) { ConfigMacro = fUserConfig; }
@@ -285,21 +282,21 @@ void FairRunSim::SetMCConfig()
     if(fUserConfig.IsNull()) {
       g3Macro="g3Config.C";
       fUserConfig = g3Macro;
-      cout << "-------------- Standard Config is called ------------------------------------" << endl;
+      fLogger->Info(MESSAGE_ORIGIN,"-------------- Standard Config is called ------------------------------------");
     } else {
       if (fUserConfig.Contains("/")) { AbsPath=kTRUE; }
       g3Macro = fUserConfig;
-      cout << "---------------User config is used :  " << g3Macro.Data() <<"-----------------"<< endl;
+      fLogger->Info(MESSAGE_ORIGIN,"---------------User config is used :  ", g3Macro.Data());
     }
     if (TString(gSystem->FindFile(config_dir.Data(),g3LibMacro)) != TString("")) {
-      cout << "---User path for Configuration (g3libs.C) is used : " <<  config_dir.Data() << endl;
+      fLogger->Info(MESSAGE_ORIGIN,"---User path for Configuration (g3libs.C) is used : %s " , config_dir.Data());
     } else {
       g3LibMacro=work_config+"g3libs.C";
     }
     LibMacro=g3LibMacro;
     LibFunction="g3libs()";
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),g3Macro)) != TString("")) {
-      cout << "---User path for Configuration (g3Config.C) is used : " <<  config_dir.Data() << endl;
+      fLogger->Info(MESSAGE_ORIGIN,"---User path for Configuration (g3Config.C) is used : %s", config_dir.Data());
       ConfigMacro=g3Macro;
     } else {
       if(AbsPath) { ConfigMacro = fUserConfig; }
@@ -315,45 +312,18 @@ void FairRunSim::SetMCConfig()
     } else {
       if (fUserConfig.Contains("/")) { AbsPath=kTRUE; }
       flMacro = fUserConfig;
-      cout << "---------------User config is used :  " << flMacro.Data() <<"-----------------"<< endl;
+      fLogger->Info(MESSAGE_ORIGIN,"---------------User config is used : %s " , flMacro.Data());
     }
     if (TString(gSystem->FindFile(config_dir.Data(), flLibMacro)) != TString("")) {
-      cout << "---User path for Configuration (fllibs.C) is used : " <<  config_dir.Data() << endl;
+      fLogger->Info(MESSAGE_ORIGIN,"---User path for Configuration (fllibs.C) is used : %s", config_dir.Data());
     } else {
       flLibMacro=work_config+"fllibs.C";
     }
     LibMacro=flLibMacro;
     LibFunction="fllibs()";
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),flMacro)) != TString("")) {
-      cout << "---User path for Configuration (flConfig.C) is used : " <<  config_dir.Data() << endl;
+      fLogger->Info(MESSAGE_ORIGIN, "---User path for Configuration (flConfig.C) is used : %s",  config_dir.Data());
       ConfigMacro=flMacro;
-    } else {
-      if(AbsPath) { ConfigMacro = fUserConfig; }
-      else { ConfigMacro =work_config+fUserConfig; }
-    }
-    //----------------------------------------------Geane Config-----------------------------------------
-  } else {
-    TString geaneLibMacro="g3libs.C";
-    TString geaneMacro;
-    if(fUserConfig.IsNull()) {
-      geaneMacro="Geane.C";
-      fUserConfig=geaneMacro;
-    } else {
-      if (fUserConfig.Contains("/")) { AbsPath=kTRUE; }
-      geaneMacro = fUserConfig;
-      cout << "---------------User config is used :  " << geaneMacro.Data() <<"-----------------"<< endl;
-    }
-    if (TString(gSystem->FindFile(config_dir.Data(),geaneLibMacro)) != TString("")) {
-      cout << "---User path for Configuration (g3libs.C) is used : " <<  config_dir.Data() << endl;
-    } else {
-      geaneLibMacro=work_config+"g3libs.C";
-    }
-    LibMacro=geaneLibMacro;
-    LibFunction="g3libs()";
-
-    if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),geaneMacro)) != TString("")) {
-      cout << "---User path for Configuration (Geane.C) is used : " <<  config_dir.Data() << endl;
-      ConfigMacro =geaneMacro;
     } else {
       if(AbsPath) { ConfigMacro = fUserConfig; }
       else { ConfigMacro =work_config+fUserConfig; }
@@ -361,7 +331,7 @@ void FairRunSim::SetMCConfig()
   }
   //----------------------------------------------SetCuts------------------------------------------------
   if (TString(gSystem->FindFile(config_dir.Data(),cuts)) != TString("")) {
-    cout << "---User path for Cuts and Processes  (SetCuts.C) is used : " <<  config_dir.Data() << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"---User path for Cuts and Processes  (SetCuts.C) is used : %s", config_dir.Data());
   } else {
     cuts =work_config+ fUserCuts;
   }
@@ -406,7 +376,7 @@ void FairRunSim::SetMaterials(const char* MatFileName)
     if (!Mat.EndsWith("/")) { Mat+="/"; }
   }
   MatFname=Mat+MatFileName;
-  cout << "-I- FairRun::SetMaterials() Media file used: "<< MatFname << endl;
+  fLogger->Info(MESSAGE_ORIGIN,"Media file used : %s ", MatFname.Data());
 }
 
 void FairRunSim::SetGeoModel( char* name )
@@ -414,10 +384,10 @@ void FairRunSim::SetGeoModel( char* name )
   if ( strncmp(fName,"TGeant3",7) == 0 ) {
     if (fLoaderName) { delete fLoaderName; }
     fLoaderName = new TString(name);
-    cout << " -I-  FairRun::SetGeoModel(): G3 native geometry model used " << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairRun::SetGeoModel(): G3 native geometry model used ");
   } else {
-    cout << " -E-  FairRun::SetGeoModel(): Geant3 MC engine only !" << endl;
-    cout << " -E-  FairRun::SetGeoModel(): Method skipped ... " << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairRun::SetGeoModel(): Geant3 MC engine only !");
+    fLogger->Info(MESSAGE_ORIGIN,"FairRun::SetGeoModel(): Method skipped ... ");
   }
 }
 

@@ -10,10 +10,8 @@
 #include "FairRootManager.h"
 #include "FairRuntimeDb.h"
 #include "FairEventHeader.h"
-
 #include <iostream>
-using std::cout;
-using std::endl;
+
 
 //_____________________________________________________________________________
 FairRun* FairRun::fRunInstance= 0;
@@ -26,6 +24,7 @@ FairRun* FairRun::Instance()
 //_____________________________________________________________________________
 FairRun::FairRun()
   :TNamed(),
+   fLogger(FairLogger::GetLogger()),
    fNTasks(0),
    fRtdb(FairRuntimeDb::instance()),
    fTask(new FairTask("FairTask List")),
@@ -53,7 +52,7 @@ FairRun::FairRun()
 //_____________________________________________________________________________
 FairRun::~FairRun()
 {
-  //  cout<<"Enter Destructor of FairRun"<<endl;
+  fLogger->Debug(MESSAGE_ORIGIN," Enter Destructor of FairRun ");
   if (fTask) { delete fTask; } // There is another tasklist in MCApplication,
   // but this should be independent
   if (fRtdb) { delete fRtdb; } // who is responsible for the RuntimeDataBase
@@ -62,7 +61,6 @@ FairRun::~FairRun()
     fRootManager=0;
   }
   if (fEvHead) { delete fEvHead; }
-  //  cout<<"Leave Destructor of FairRun"<<endl;
 }
 //_____________________________________________________________________________
 

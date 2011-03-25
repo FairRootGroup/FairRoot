@@ -2,7 +2,7 @@
 #define FAIRRUN_H
 
 #include "TNamed.h"
-
+#include "FairLogger.h"
 class FairTask;
 class TFile;
 class FairRuntimeDb;
@@ -98,6 +98,8 @@ class FairRun : public TNamed
     Int_t fNTasks;
 
   protected:
+    /** Fair Logger */
+    FairLogger*            fLogger;//!
     /** static pointer to this run*/
     static FairRun*          fRunInstance;
     /** RuntimeDb*/

@@ -91,7 +91,7 @@ FairRootManager::FairRootManager()
 FairRootManager::~FairRootManager()
 {
 //
-  cout<<"Enter Destructor of FairRootManager"<<endl;
+  fLogger->Info(MESSAGE_ORIGIN,"Enter Destructor of FairRootManager");
 // if(fCbmout) delete fCbmout;
 // if(fCbmroot) delete fCbmroot;
   if(fInFile) { delete fInFile; }
@@ -107,15 +107,14 @@ FairRootManager::~FairRootManager()
   fBranchNameList->Delete();
   delete fBranchNameList;
   fgInstance = 0;
-  cout<<"Leave Destructor of FairRootManager"<<endl;
+  fLogger->Info(MESSAGE_ORIGIN, "Leave Destructor of FairRootManager");
 }
 //_____________________________________________________________________________
 
 Bool_t FairRootManager::OpenInChain()
 {
   if ( fInputFileName.IsNull() ) {
-    FairLogger* logger = FairLogger::GetLogger();
-    logger->Info(MESSAGE_ORIGIN, "No input file defined.");
+    fLogger->Info(MESSAGE_ORIGIN, "No input file defined.");
     return kFALSE;
   }
 
@@ -123,8 +122,7 @@ Bool_t FairRootManager::OpenInChain()
   // is needed to bring the friend trees in the correct order
   fInFile = new TFile(fInputFileName);
   if (fInFile->IsZombie()) {
-    FairLogger* logger = FairLogger::GetLogger();
-    logger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
+    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
   }
 
   if (!fInChain ) {
@@ -193,15 +191,13 @@ Bool_t FairRootManager::OpenInChain()
     // is needed to bring the friend trees in the correct order
     TFile* inputFile = new TFile((*iter));
     if (inputFile->IsZombie()) {
-      FairLogger* logger = FairLogger::GetLogger();
-      logger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (const char*)(*iter));
+      fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (*iter).Data());
     }
 
     // Check if the branchlist is the same as for the first input file.
     Bool_t isOk = CompareBranchList(inputFile, chainName);
     if ( !isOk ) {
-      FairLogger* logger = FairLogger::GetLogger();
-      logger->Fatal(MESSAGE_ORIGIN, "Branch structure of the input file %s and the file to be added %s are different.", (const char*)fInputFileName, (const char*)(*iter));
+      fLogger->Fatal(MESSAGE_ORIGIN, "Branch structure of the input file %s and the file to be added %s are different.", fInputFileName.Data(), (*iter).Data());
     }
 
     // Add the runid information for all files in the chain.
@@ -234,24 +230,24 @@ void FairRootManager::PrintFriendList( )
 
   fLogger->Info(MESSAGE_ORIGIN,
                 "The input consists out of the following trees and files:");
-  fLogger->Info(MESSAGE_ORIGIN," - %s",(const char*)fInChain->GetName());
+  fLogger->Info(MESSAGE_ORIGIN," - %s",fInChain->GetName());
   TObjArray* fileElements=fInChain->GetListOfFiles();
   TIter next(fileElements);
   TChainElement* chEl=0;
   while (( chEl=(TChainElement*)next() )) {
-    fLogger->Info(MESSAGE_ORIGIN,"    - %s",(const char*)chEl->GetTitle());
+    fLogger->Info(MESSAGE_ORIGIN,"    - %s",chEl->GetTitle());
   }
 
   map< TString, TChain* >::iterator mapIterator;
   for (mapIterator = fFriendTypeList.begin();
        mapIterator != fFriendTypeList.end(); mapIterator++ ) {
     TChain* chain = (TChain*)mapIterator->second;
-    fLogger->Info(MESSAGE_ORIGIN," - %s",(const char*)chain->GetName());
+    fLogger->Info(MESSAGE_ORIGIN," - %s",chain->GetName());
     fileElements=chain->GetListOfFiles();
     TIter next1(fileElements);
     chEl=0;
     while (( chEl=(TChainElement*)next1() )) {
-      fLogger->Info(MESSAGE_ORIGIN,"    - %s",(const char*)chEl->GetTitle());
+      fLogger->Info(MESSAGE_ORIGIN,"    - %s",chEl->GetTitle());
     }
   }
 
@@ -309,13 +305,13 @@ void FairRootManager::CheckFriendChains()
   // Use goto to leave double loop at once in case of error
 error_label:
   if (errorFlag>0) {
-    fLogger->Error(MESSAGE_ORIGIN,"The input chain and the friend chain %s have a different structure:", (const char*)inputLevel);
+    fLogger->Error(MESSAGE_ORIGIN,"The input chain and the friend chain %s have a different structure:", inputLevel.Data());
     if (errorFlag == 1) {
       fLogger->Error(MESSAGE_ORIGIN,"The input chain has the following runids and event numbers:");
       for ( Int_t i=0; i<runid.size(); i++) {
         fLogger->Error(MESSAGE_ORIGIN," - Runid %i with %i events", runid[i], events[i]);
       }
-      fLogger->Error(MESSAGE_ORIGIN,"The %s chain has the following runids and event numbers:", (const char*)inputLevel);
+      fLogger->Error(MESSAGE_ORIGIN,"The %s chain has the following runids and event numbers:", inputLevel.Data());
       for ( it=map1.begin() ; it != map1.end(); it++ ) {
         TArrayI bla = (*it).second;
         fLogger->Error(MESSAGE_ORIGIN," - Runid %i with %i events", bla[0], bla[1]);
@@ -325,8 +321,8 @@ error_label:
       Int_t counter = 0;
       for ( it=map1.begin() ; it != map1.end(); it++ ) {
         TArrayI bla = (*it).second;
-        fLogger->Error(MESSAGE_ORIGIN,"Runid Input Chain, %s chain: %i, %i", (const char*)inputLevel, bla[0], runid[counter]);
-        fLogger->Error(MESSAGE_ORIGIN,"Event number Input Chain, %s chain: %i, %i", (const char*)inputLevel, bla[1], events[counter]);
+        fLogger->Error(MESSAGE_ORIGIN,"Runid Input Chain, %s chain: %i, %i", inputLevel.Data(), bla[0], runid[counter]);
+        fLogger->Error(MESSAGE_ORIGIN,"Event number Input Chain, %s chain: %i, %i", inputLevel.Data(), bla[1], events[counter]);
         counter++;
       }
     }
@@ -360,7 +356,7 @@ TFile* FairRootManager::OpenOutFile(TFile* f)
   fOutFile=f;
   /**Check the output file, if anything wronge with it exit!*/
   if (fOutFile->IsZombie()) {
-    cout << "-E- FairRootManager: Error opening output file " << endl;
+    fLogger->Fatal(MESSAGE_ORIGIN,"FairRootManager: Error opening output file ");
     exit(-1);
   }
   FairRun* fRun = FairRun::Instance();
@@ -462,7 +458,9 @@ TClonesArray* FairRootManager::GetTClonesArray(TString branchName)
       fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
     }
     return fActiveContainer[branchName]; // return the container
-  } else { std::cout << "-E- Branch: " << branchName << " not registered!" << std::endl; }
+  } else {
+    fLogger->Info(MESSAGE_ORIGIN,  "Branch: %s not registered!" , branchName.Data());
+  }
   // error if the branch is not registered
   return 0;
 }
@@ -534,7 +532,7 @@ void FairRootManager::ForceFill()
   if (fOutTree != 0) {
     fOutTree->Fill();
   } else {
-    cout << "-E- FairRootManager::Fill()  No Output Tree" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,  " No Output Tree");
   }
 }
 //_____________________________________________________________________________
@@ -554,7 +552,7 @@ void FairRootManager:: Write()
     fOutFile->cd();
     fOutTree->Write();
   } else {
-    cout << "-E- FairRootManager::Write()  No Output Tree"  << endl;
+    fLogger->Info(MESSAGE_ORIGIN, "No Output Tree" );
   }
 }
 //_____________________________________________________________________________
@@ -648,11 +646,11 @@ FairGeoNode*  FairRootManager::GetGeoParameter(const char* detname, const char* 
   lname+="GeoPar";
   TFolder* froot =  dynamic_cast<TFolder*> (gROOT->FindObject("cbmroot"));
   if ( froot ) { detf = dynamic_cast<TFolder*> (froot->FindObjectAny( detname )); }
-  else { cout << "-E- GetGeoParameter() Main Folder not found ! " << endl; }
+  else { fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() Main Folder not found ! "); }
   if ( detf    ) { lgeo = dynamic_cast<TList*> (detf->FindObjectAny( lname.Data() )); }
-  else { cout << "-E- GetGeoParameter() GeoPar: " << lname << endl; }
+  else { fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() GeoPar: %s " , lname.Data() ); }
   if ( lgeo    ) { node = dynamic_cast<FairGeoNode*> (lgeo->FindObject(gname)); }
-  else { cout << "-E- GetGeoParameter() GeoList not found " << endl; }
+  else { fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() GeoList not found " ); }
   return node;
 }
 
@@ -824,7 +822,7 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
     /** if we do not find an object corresponding to the branch in the folder structure
     *  then we have no idea about what type of object is this and we cannot set the branch address
     */
-    cout << "-E- FairRootManager Branch: "  << BrName  << " not found in Tree" << endl;
+    fLogger->Info(MESSAGE_ORIGIN, " Branch: %s  not found in Tree ", BrName);
     //Fatal(" No Branch in the tree", BrName );
     return 0;
   } else {
@@ -872,8 +870,8 @@ void FairRootManager::AssignTClonesArray(TString branchName)
     output->AbsorbObjects(input);
   }
 #else
-  cout <<"FairRootManager::AssignTClonesArray(TString branchName) "<<endl;
-  cout <<"Is only available in ROOT 5.27-04 "<<endl;
+  fLogger->Info(MESSAGE_ORIGIN, "FairRootManager::AssignTClonesArray(TString branchName) ");
+  fLogger->Info(MESSAGE_ORIGIN, "Is only available in ROOT 5.27-04 ");
 #endif
 }
 //_____________________________________________________________________________
@@ -997,8 +995,7 @@ void FairRootManager::AddFriendsToChain()
 
       inputFile = new TFile((*iter1));
       if (inputFile->IsZombie()) {
-        FairLogger* logger = FairLogger::GetLogger();
-        logger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (const char*)(*iter));
+        fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (*iter).Data());
       }
 
       // Check if the branchlist is already stored in the map. If it is

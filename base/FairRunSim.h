@@ -142,20 +142,19 @@ class FairRunSim : public FairRun
     void CheckFlukaExec();
   protected:
 
-    Int_t                  count;//!                           /** Internal counter*/
-    FairMCApplication*     fApp;  //!                          /** Main VMC application */
-    Double_t               fBeamMom; //!                         /** Beam Energy in GeV/c  */
+    Int_t                  count;//!                               /** Internal counter*/
+    FairMCApplication*     fApp;  //!                              /** Main VMC application */
+    Double_t               fBeamMom; //!                           /** Beam Energy in GeV/c  */
     Bool_t                 fUseBeamMom; //!                        /** flag for use Beam Energy  */
     FairPrimaryGenerator*  fGen; //!                               /** Primary Event Generator */
-    FairMCEventHeader*     fMCEvHead; //!
-    /** MC Event Header */
+    FairMCEventHeader*     fMCEvHead; //!                          /** MC Event Header */
     static FairRunSim*     fginstance;//!                          /** Singelton Instance */
     FairField*             fField;                                 /** Magnetic Field */
     const char*            fMapName; //!                           /** Input file name map*/
     TObjArray*             fIons; //!                              /** Array of user defined ions */
     TObjArray*             fParticles; //!                         /** Array of user defined particles*/
     TObjArray*             ListOfModules;//!                       /** Array of used modules */
-    TString              MatFname; //!                           /** Material file name */
+    TString                MatFname; //!                           /** Material file name */
     Bool_t                 fStoreTraj;   //!                       /** Trajectory store flags */
     TString*               fLoaderName;  //!                       /** Geometry Model (TGeo or G3)*/
     Bool_t                 fPythiaDecayer;  //!                    /** flag for using Pythia decayer*/

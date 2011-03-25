@@ -38,7 +38,8 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fEventTimeMax(0),
    fEventTime(0),
    fEventMeanTime(0),
-   fTimeProb(0)
+   fTimeProb(0),
+   fLogger(FairLogger::GetLogger())
 {
 
   fTargetZ[0] = 0.;
@@ -71,7 +72,8 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fEventTimeMax(0),
    fEventTime(0),
    fEventMeanTime(0),
-   fTimeProb(NULL)
+   fTimeProb(NULL),
+   fLogger(FairLogger::GetLogger())
 {
   fTargetZ[0] = 0.;
 
@@ -114,7 +116,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
 {
   // Check for MCEventHeader
   if ( ! fEvent) {
-    cout << " \033[5m\033[31m -E- FairPrimaryGenerator::GenerateEvent: No MCEventHeader branch! \033[0m" << endl;
+    fLogger->Fatal(MESSAGE_ORIGIN,"FairPrimaryGenerator::GenerateEvent: No MCEventHeader branch!");
     Fatal("GenerateEvent", "No MCEventHeader branch");
   }
 
@@ -138,8 +140,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
     fMCIndexOffset = fNTracks;// number tracks before generator is called
     Bool_t test = gen->ReadEvent(this);
     if ( ! test ) {
-      cout << " \033[5m\033[31m -E FairPrimaryGenerator: ReadEvent failed for generator \033[0m"
-           << genName << endl;
+      fLogger->Error(MESSAGE_ORIGIN,"FairPrimaryGenerator: ReadEvent failed for generator ", genName );
       return kFALSE;
     }
   }
@@ -154,9 +155,9 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
 
   // Screen output
 
-  cout << "-I FairPrimaryGenerator: " << fNTracks << " primary tracks "
-       << "from vertex (" <<  fVertex.X() << ", " << fVertex.Y() << ", "
-       << fVertex.Z() << ")" << "Event Time = " << fEventTime <<  "(ns) "<< endl;
+  fLogger->Info(MESSAGE_ORIGIN,"FairPrimaryGenerator: %i  primary tracks from vertex (%f, %f, %f )  Event Time = %f (ns)" ,fNTracks, fVertex.X(), fVertex.Y(), fVertex.Z(), fEventTime);
+
+
 
   fEvent->SetNPrim(fNTracks);
 

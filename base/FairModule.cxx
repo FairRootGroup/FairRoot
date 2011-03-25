@@ -66,7 +66,8 @@ FairModule::FairModule(const char* Name, const char* title ,Bool_t Active)
    fVerboseLevel(0),
    flGeoPar(0),
    kGeoSaved(kFALSE),
-   fMotherVolumeName("")
+   fMotherVolumeName(""),
+   fLogger(FairLogger::GetLogger())
 {
   if(!svList) { svList=new TRefArray(); }
   if(!vList) { vList=new FairVolumeList(); }
@@ -84,7 +85,8 @@ FairModule::FairModule()
     fVerboseLevel(0),
     flGeoPar(0),
     kGeoSaved(kFALSE),
-    fMotherVolumeName("")
+    fMotherVolumeName(""),
+    fLogger(FairLogger::GetLogger())
 {
 
 }

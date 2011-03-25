@@ -17,6 +17,7 @@ the tracking from the macro (M. Al-Turany)
 #define FAIRPRIMARYGENERATOR_H
 
 #include "FairGenerator.h"
+#include "FairLogger.h"
 
 #include "TNamed.h"
 #include "TObjArray.h"
@@ -179,6 +180,8 @@ class FairPrimaryGenerator : public TNamed
     TF1*        fTimeProb;      //!
     /** Number of MC tracks before a Generator is called, needed for MC index update */
     Int_t       fMCIndexOffset; //!
+    /** Fair Logger */
+    FairLogger*            fLogger;//!
 
 
     /** Private method MakeVertex. If vertex smearing in xy is switched on,

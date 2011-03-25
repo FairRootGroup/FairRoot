@@ -19,6 +19,7 @@
 //#include <iostream>
 //#include "TClonesArray.h"
 #include "TVirtualMCStack.h"
+#include "FairLogger.h"
 
 
 class TParticle;
@@ -131,6 +132,8 @@ class FairGenericStack : public TVirtualMCStack
 
 
   protected:
+    /** Fair Logger */
+    FairLogger*            fLogger;//!
 
     Int_t fVerbose;
 

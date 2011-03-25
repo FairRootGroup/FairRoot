@@ -58,9 +58,7 @@ FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
 Bool_t  FairBoxGenerator::Init()
 {
   // Initialize generator
-  printf("------------------------------------------------------------------------------------------------------------\n");
-  printf(" FairBoxGenerator::Init()  \n");
-  printf("------------------------------------------------------------------------------------------------------------\n");
+
 
   if (fPhiMax-fPhiMin>360)
     Fatal("Init()","FairBoxGenerator: phi range is too wide: %f<phi<%f",
@@ -101,9 +99,6 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   // those kinematics variables which were limitted by setters.
   // if SetCosTheta() function is used, the distribution will be uniform in
   // cos(theta)
-  printf("------------------------------------------------------------------------------------------------------------\n");
-  printf(" FairBoxGenerator::ReadEvent()  \n");
-  printf("------------------------------------------------------------------------------------------------------------\n");
 
   Double32_t pabs=0, phi, pt=0, theta=0, eta, y, mt, px, py, pz=0;
 
