@@ -13,6 +13,7 @@
 #pragma link C++ class  FairHitDraw;
 #pragma link C++ class  FairHitPointSetDraw;
 #pragma link C++ class  FairMCPointDraw;
+#pragma link C++ class  FairTimeStampPointDraw;
 
 #endif
 

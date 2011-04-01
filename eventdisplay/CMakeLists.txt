@@ -30,6 +30,7 @@ FairPointSetDraw.cxx
 FairMCPointDraw.cxx
 FairHitDraw.cxx
 FairHitPointSetDraw.cxx
+FairTimeStampPointDraw.cxx
 )
 
 if(RULE_CHECKER_FOUND)
