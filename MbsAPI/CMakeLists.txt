@@ -1,7 +1,13 @@
 # Create a library called "libBase" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
-ADD_DEFINITIONS(-DLinux  -DSYSTEM64  -D_LARGEFILE64_SOURCE)
+if (CMAKE_SYSTEM_NAME MATCHES Linux)
+   ADD_DEFINITIONS(-DLinux  -DSYSTEM64  -D_LARGEFILE64_SOURCE)
+endif (CMAKE_SYSTEM_NAME MATCHES Linux)
+
+if (CMAKE_SYSTEM_NAME MATCHES Darwin)
+   ADD_DEFINITIONS(-DDarwin  -DSYSTEM64  -D_LARGEFILE64_SOURCE)
+endif (CMAKE_SYSTEM_NAME MATCHES Darwin)
 
 set(INCLUDE_DIRECTORIES
     ${ROOT_INCLUDE_DIR}
