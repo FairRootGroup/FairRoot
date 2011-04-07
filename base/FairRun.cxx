@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------
 
 
-
 #include "FairRun.h"
 #include "FairTask.h"
 #include "FairRootManager.h"
@@ -41,13 +40,6 @@ FairRun::FairRun()
     return;
   }
   fRunInstance=this;
-  /*
-   if(fRootManager==0) {
-     cout<<"******* FairRootManager is constructed in FairRun. *******"<<endl;
-     fRootManager= new FairRootManager();
-   }
-   //  if(fRootManager==0) fRootManager= new FairRootManager();
-   */
 }
 //_____________________________________________________________________________
 FairRun::~FairRun()

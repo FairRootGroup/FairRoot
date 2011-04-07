@@ -1,6 +1,7 @@
 #ifndef FAIRPARSET_H
 #define FAIRPARSET_H
 
+#include "FairLogger.h"
 #include "TNamed.h"
 //#include "TArrayI.h"
 
@@ -16,6 +17,8 @@ class FairParSet : public TNamed
     TString paramContext;    // Context/purpose for parameters and conditions
     TString author;          // Author of parameters
     TString description ;    // Description of parameters
+    /** Fair Logger */
+    FairLogger*  fLogger;  //!
   public:
     FairParSet(const char* name="",const char* title="",const char* context="");
     virtual ~FairParSet() {}

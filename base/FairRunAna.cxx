@@ -68,17 +68,17 @@ FairRunAna::~FairRunAna()
 void  FairRunAna::SetGeomFile(const char* GeoFileName)
 {
   if(fIsInitialized) {
-    cout << "-E- FairRunAna: Error, Geometry file has to be set before Run::Init !" << endl;
+    fLogger->Fatal(MESSAGE_ORIGIN, "Geometry file has to be set before Run::Init !") ;
     exit(-1);
   } else {
 
     TFile* CurrentFile=gFile;
     fInputGeoFile= new TFile(GeoFileName);
     if (fInputGeoFile->IsZombie()) {
-      cout << "-E- FairRunAna: Error opening Geometry Input file" << endl;
+      fLogger->Error(MESSAGE_ORIGIN, "Error opening Geometry Input file");
       fInputGeoFile=0;
     }
-    cout << "-I- FairRunAna: Opening Geometry input file: " << GeoFileName << endl;
+    fLogger->Error(MESSAGE_ORIGIN, " Opening Geometry input file: %s ", GeoFileName);
     gFile=CurrentFile;
   }
 }
@@ -89,7 +89,7 @@ void FairRunAna::Init()
 {
 
   if(fIsInitialized) {
-    cout << "-E- FairRunAna: Error Init is already called before!" << endl;
+    fLogger->Fatal(MESSAGE_ORIGIN,"Error Init is already called before!");
     exit(-1);
   } else {
     fIsInitialized=kTRUE;
@@ -124,7 +124,7 @@ void FairRunAna::Init()
     }
     //check that the geometry was loaded if not try all connected files!
     if(gGeoManager==0) {
-      cout << "-I-  Geometry was not found in the input file we will look in the friends if any!" << endl;
+      fLogger->Info(MESSAGE_ORIGIN, "Geometry was not found in the input file we will look in the friends if any!" );
       TFile* currentfile= gFile;
       TFile* nextfile=0;
       TSeqCollection* fileList=gROOT->GetListOfFiles();
@@ -174,7 +174,6 @@ void FairRunAna::Init()
 
     fRunId = fEvtHeader->GetRunId();
     // Init the containers in Tasks
-//     cout << "Run Id for this run : " << fRunId << endl;
     fRtdb->initContainers(fRunId);
     fTask->SetParTask();
     fRtdb->initContainers( fRunId );
@@ -218,7 +217,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 {
 
   if(fTimeStamps) {
-    cout << "With time stamp only FairRunAna::Run(Double_t time_interval) can be used " << endl;
+    fLogger->Fatal(MESSAGE_ORIGIN, "With time stamp only FairRunAna::Run(Double_t time_interval) can be used ");
     exit(-1);
   }
 
@@ -298,7 +297,7 @@ void FairRunAna::Run(Long64_t entry)
 
 
   if(fTimeStamps) {
-    cout << "With time stamp only FairRunAna::Run(Double_t time_interval) can be used " << endl;
+    fLogger->Fatal(MESSAGE_ORIGIN, "With time stamp only FairRunAna::Run(Double_t time_interval) can be used ");
     exit(-1);
   }
 
