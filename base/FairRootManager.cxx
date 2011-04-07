@@ -91,7 +91,7 @@ FairRootManager::FairRootManager()
 FairRootManager::~FairRootManager()
 {
 //
-  fLogger->Info(MESSAGE_ORIGIN,"Enter Destructor of FairRootManager");
+  fLogger->Debug(MESSAGE_ORIGIN,"Enter Destructor of FairRootManager");
 // if(fCbmout) delete fCbmout;
 // if(fCbmroot) delete fCbmroot;
   if(fInFile) { delete fInFile; }
@@ -107,7 +107,7 @@ FairRootManager::~FairRootManager()
   fBranchNameList->Delete();
   delete fBranchNameList;
   fgInstance = 0;
-  fLogger->Info(MESSAGE_ORIGIN, "Leave Destructor of FairRootManager");
+  fLogger->Debug(MESSAGE_ORIGIN, "Leave Destructor of FairRootManager");
 }
 //_____________________________________________________________________________
 

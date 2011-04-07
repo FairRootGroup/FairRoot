@@ -71,8 +71,6 @@ class FairRunAna : public FairRun
     static FairRunAna*                      fgRinstance;
     Bool_t                                  fLoadGeo;
     FairEventHeader*                        fEvtHeader;//!
-    FairRuntimeDb*                          fRtdb;//!
-    UInt_t                                  fRunId;//!
     /** true for static initialisation of parameters */
     Bool_t                                  fStatic;//!
     FairField*                              fField;

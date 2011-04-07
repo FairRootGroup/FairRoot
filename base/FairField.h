@@ -19,6 +19,9 @@
  ** Note: Field values should be returned in kG (thanks to GEANT3)
  **/
 
+#include "FairLogger.h"
+
+
 #ifndef FAIRFIELD_H
 #define FAIRFIELD_H 1
 #include "RVersion.h"
@@ -134,9 +137,8 @@ class FairField : public TVirtualMagField
     /** Field type. 1 = constant field, 2 = field map. **/
     Int_t fType;
 
-
-  protected:
-
+    /** Fair Logger */
+    FairLogger*            fLogger;//!
 
     ClassDef(FairField,3);
 

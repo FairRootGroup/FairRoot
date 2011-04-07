@@ -10,9 +10,10 @@
 /////////////////////////////////////////////////////////////
 
 #include "FairContFact.h"
-
 #include "FairRuntimeDb.h"
+
 #include "TObjString.h"
+
 
 #include <iostream>
 
@@ -23,7 +24,8 @@ ClassImp(FairContFact)
 
 FairContainer::FairContainer()
   :contexts(0),
-   actualContext("")
+   actualContext(""),
+   fLogger(FairLogger::GetLogger())
 {
   //contexts=0;
 }
@@ -33,7 +35,8 @@ FairContainer::FairContainer(const char* name, const char* title,
                              const char* defContext)
   : TNamed(name, title),
     contexts(new TList),
-    actualContext("")
+    actualContext(""),
+    fLogger(FairLogger::GetLogger())
 {
   // Constructor
   // Arguments:  name       = name of the corresponding parameter container
@@ -130,7 +133,8 @@ const char* FairContainer::getContext()
 
 FairContFact::FairContFact()
   : TNamed(),
-    containers(new TList)
+    containers(new TList),
+    fLogger(FairLogger::GetLogger())
 {
   // Constructor creates a list to store objects of type FairContainer
   //  containers=new TList;

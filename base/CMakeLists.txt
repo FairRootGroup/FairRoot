@@ -4,6 +4,7 @@
 
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR} 
+${CMAKE_SOURCE_DIR}/logger
 ${CMAKE_SOURCE_DIR}/geobase 
 ${CMAKE_SOURCE_DIR}/parbase 
 ${CMAKE_SOURCE_DIR}/base 
@@ -62,7 +63,6 @@ FairRadLenPoint.cxx
 FairRadLenManager.cxx
 FairRKPropagator.cxx
 FairTimeStamp.cxx
-FairLogger.cxx
 )
 
 if(RULE_CHECKER_FOUND)

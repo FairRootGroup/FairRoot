@@ -45,8 +45,6 @@ FairRunAna::FairRunAna()
    fInputGeoFile(0),
    fLoadGeo( kFALSE),
    fEvtHeader(0),
-   fRtdb(0),
-   fRunId(0),
    fStatic(kFALSE),
    fField(0),
    fTimeStamps(kFALSE),

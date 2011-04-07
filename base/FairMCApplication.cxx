@@ -873,9 +873,9 @@ void FairMCApplication::InitTasks()
 
   // Only RTDB init when more than Main Task list
   if(FairRun::Instance()->GetNTasks() >= 1 ) {
-    cout <<"\033[1m\033[34m -I- Initialize Tasks--------------------------Start"<< endl;
+    fLogger->Info(MESSAGE_ORIGIN, "Initialize Tasks--------------------------");
     fFairTaskList->InitTask();
-    cout <<"-I- Initialize Tasks--------------------------End\033[0m "<< endl;
+
   }
 
 

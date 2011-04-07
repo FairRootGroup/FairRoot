@@ -1,6 +1,8 @@
 #ifndef FAIRCONTFACT_H
 #define FAIRCONTFACT_H
 
+#include "FairLogger.h"
+
 #include "TList.h"
 #include "TNamed.h"
 
@@ -16,8 +18,12 @@ class FairContainer : public TNamed
     FairContainer& operator= (const FairContainer&) {return *this;}
 
   protected:
-    TList* contexts;       // available contexts for this parameter container
-    TString actualContext; // actual context set by the user
+    /** available contexts for this parameter container*/
+    TList* contexts;
+    /** actual context set by the user */
+    TString actualContext;
+    /** Fair Logger */
+    FairLogger*  fLogger;//!
   public:
     FairContainer( const char*, const char*, const char*);
     ~FairContainer();
@@ -42,10 +48,13 @@ class FairContFact : public TNamed
     virtual FairParSet* createContainer(FairContainer*) {return 0;}
     virtual void activateParIo(FairParIo*) {}
   protected:
+
     TList* containers;   // all parameter containers managed by this factory
     const char* getActualContext(const char* name) {
       return ((FairContainer*)containers->FindObject(name))->getActualContext();
     }
+    /** Fair Logger */
+    FairLogger*  fLogger;//!
     ClassDef(FairContFact,0) // base class of all factories for parameter containers
   private:
     FairContFact(const FairContFact& M);
