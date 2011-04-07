@@ -100,6 +100,7 @@ SET(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
+add_subdirectory (fairtools)
 add_subdirectory (base)
 add_subdirectory (geobase)
 add_subdirectory (parbase) 
@@ -113,6 +114,7 @@ add_subdirectory (example/Tutorial2/src)
 add_subdirectory (example/passive)
 add_subdirectory (example/mcstack)
 add_subdirectory (MbsAPI)
+
 
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
