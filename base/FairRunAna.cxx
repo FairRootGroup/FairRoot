@@ -78,7 +78,8 @@ void  FairRunAna::SetGeomFile(const char* GeoFileName)
       fLogger->Error(MESSAGE_ORIGIN, "Error opening Geometry Input file");
       fInputGeoFile=0;
     }
-    fLogger->Error(MESSAGE_ORIGIN, " Opening Geometry input file: %s ", GeoFileName);
+    fLogger->Info(MESSAGE_ORIGIN, " Opening Geometry input file: %s ", GeoFileName);
+    fLoadGeo=kTRUE;
     gFile=CurrentFile;
   }
 }

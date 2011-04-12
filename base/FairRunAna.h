@@ -43,7 +43,6 @@ class FairRunAna : public FairRun
     /**Set the input file by name*/
     void        SetInputFile(TString fname);
     void        AddFile(TString name);
-    void        LoadGeometry() {fLoadGeo=kTRUE;}
     void        Reinit(UInt_t runId);
     UInt_t      getRunId() {return fRunId;}
     /** Get the magnetic field **/
