@@ -15,7 +15,7 @@ ENDIF(${req_gcc_major_vers} MATCHES "4" AND NOT ${req_gcc_minor_vers} MATCHES "0
 
 
 set(INCLUDE_DIRECTORIES
-${INCLUDE_DIRECTORIES}
+${ROOT_INCLUDE_DIR}
 ${PLUTO_INCLUDE_DIR} 
 ${CMAKE_SOURCE_DIR}/fairtools
 ${CMAKE_SOURCE_DIR}/geobase 

@@ -3,8 +3,8 @@
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
-${INCLUDE_DIRECTORIES} 
-${CMAKE_SOURCE_DIR}/fairtools
+ ${ROOT_INCLUDE_DIR} 
+ ${CMAKE_SOURCE_DIR}/fairtools
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
