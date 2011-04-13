@@ -4,6 +4,7 @@
 
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR} 
+${CMAKE_SOURCE_DIR}/fairtools
 ${CMAKE_SOURCE_DIR}/geobase
 )
 
