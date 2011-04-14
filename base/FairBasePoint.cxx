@@ -3,7 +3,7 @@
 
 // -----   Default constructor   -------------------------------------------
 FairBasePoint::FairBasePoint()
-  : FairMultiLinkedData(),
+  : FairTimeStamp(),
     fDetectorID (-1),
     fX(0),
     fY (0),
@@ -16,7 +16,7 @@ FairBasePoint::FairBasePoint()
 
 // -----   Standard constructor   ------------------------------------------
 FairBasePoint::FairBasePoint(Int_t detID, TVector3& pos)
-  :FairMultiLinkedData(),
+  :FairTimeStamp(),
    fDetectorID  (detID),
    fX           (pos.X()),
    fY           (pos.Y()),

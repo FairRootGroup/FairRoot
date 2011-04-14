@@ -38,6 +38,8 @@ class FairRunAna : public FairRun
     void        Run(Double_t delta_t);
     /**Run for the given single entry*/
     void        Run(Long64_t entry);
+    /**Run over all TSBuffers until the data is processed*/
+    void        RunTSBuffers();
     /** the dummy run does not check the evt header or the parameters!! */
     void        DummyRun(Int_t NStart ,Int_t NStop);
     /**Set the input file by name*/

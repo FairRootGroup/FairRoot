@@ -12,6 +12,7 @@
 #include "FairRun.h"
 #include "FairMCApplication.h"
 #include "FairGeoNode.h"
+#include "FairTSBufferFunctional.h"
 #include "FairLogger.h"
 #include "FairMCEventHeader.h"
 #include "FairEventHeader.h"
@@ -448,6 +449,25 @@ TClonesArray* FairRootManager::Register(TString branchName, TString className, T
   return fActiveContainer[branchName];
 }
 //_____________________________________________________________________________
+TClonesArray* FairRootManager::GetEmptyTClonesArray(TString branchName)
+{
+  if (fActiveContainer.find(branchName) != fActiveContainer.end()) {          //if a TClonesArray is registered in the active container
+    if (fActiveContainer[branchName] == 0) {                      //the address of the TClonesArray is still valid
+      std::cout << "-E- FairRootManager::GetEmptyTClonesArray: Container deleted outside FairRootManager!" << std::endl;
+    } else if (!fCompressData) {                          //if the data is not compressed the existing TClonesArray is just emptied
+      fActiveContainer[branchName]->Delete();
+    } else if (fActiveContainer[branchName]->GetEntries() > 0) {    //if the container is not empty push it into the DataContainer storage and create a new one
+      fDataContainer[branchName].push(fActiveContainer[branchName]);
+      std::cout << "-I- FairRootManager::GetEmptyTClonesArray moved " << branchName << " with " << fActiveContainer[branchName]->GetEntries() << " to data container." << std::endl;
+      fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
+    } else {
+      std::cout << "-I- FairRootManager::GetEmptyTClonesArray not moved " << branchName << " " << fActiveContainer[branchName] << " with " << fActiveContainer[branchName]->GetEntries() << " to data container." << std::endl;
+    }
+    return fActiveContainer[branchName];                        // return the container
+  } else { std::cout << "-E- Branch: " << branchName << " not registered!" << std::endl; }  // error if the branch is not registered
+  return 0;
+}
+//_____________________________________________________________________________
 TClonesArray* FairRootManager::GetTClonesArray(TString branchName)
 {
   if (fActiveContainer.find(branchName) != fActiveContainer.end()) {
@@ -514,6 +534,26 @@ Int_t FairRootManager::GetBranchId(TString BrName)
   }
   return Id;
 
+}
+//_____________________________________________________________________________
+
+TClonesArray*    FairRootManager::GetData(TString branchName, BinaryFunctor* function, Double_t parameter)
+{
+  if (fTSBufferMap[branchName] == 0) {
+    fTSBufferMap[branchName] = new FairTSBufferFunctional(branchName, GetInTree());
+  }
+  return fTSBufferMap[branchName]->GetData(function, parameter);
+}
+
+//_____________________________________________________________________________
+Bool_t FairRootManager::AllDataProcessed()
+{
+  for(std::map<TString, FairTSBufferFunctional*>::iterator it = fTSBufferMap.begin(); it != fTSBufferMap.end(); it++) {
+    if (it->second->AllDataProcessed() == kFALSE) {
+      return kFALSE;
+    }
+  }
+  return kTRUE;
 }
 //_____________________________________________________________________________
 void  FairRootManager::Fill()
@@ -865,9 +905,9 @@ void FairRootManager::AssignTClonesArray(TString branchName)
   TClonesArray* output = (TClonesArray*)GetObject(branchName);
   TClonesArray* input = ForceGetDataContainer(branchName);
   output->Clear();
-#if ROOT_VERSION_CODE >= ROOT_VERSION(5,27,4)
+#if ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)
   if (input != 0) {
-    output->AbsorbObjects(input);
+    output->AbsorbObjects(input, 0, input->GetEntries() - 1);
   }
 #else
   fLogger->Info(MESSAGE_ORIGIN, "FairRootManager::AssignTClonesArray(TString branchName) ");
@@ -1022,7 +1062,7 @@ void FairRootManager::AddFriendsToChain()
 
   // Check if all friend chains have the same runids and the same
   // number of event numbers as the corresponding input chain
-  CheckFriendChains();
+// CheckFriendChains();
 
   // Add all the friend chains which have been created to the
   // main input chain.
@@ -1205,6 +1245,17 @@ void FairRootManager::GetRunIdInfo(TString fileName, TString inputLevel)
 
   fileHandle->Close();
   gFile=temp;
+}
+//_____________________________________________________________________________
+Double_t FairRootManager::GetEventTime()
+{
+  FairMCEventHeader* header = (FairMCEventHeader*)GetObject("MCEventHeader.");
+  if (!header) {
+    std::cout << "No MCEventHeader. array" << std::endl;
+    return 0;
+  } else {
+    return header->GetT();
+  }
 }
 //_____________________________________________________________________________
 

@@ -12,6 +12,8 @@
 
 class FairGeoNode;
 class FairLogger;
+class FairTSBufferFunctional;
+class BinaryFunctor;
 class TCollection;
 class TClonesarray;
 class TFolder;
@@ -57,6 +59,7 @@ class FairRootManager : public TObject
     void                Fill();
     void                ForceFill();
     TClonesArray*       ForceGetDataContainer(TString branchName);
+    TClonesArray*       GetEmptyTClonesArray(TString branchName);
     TClonesArray*       GetTClonesArray(TString branchName);
     TClonesArray*       GetDataContainer(TString branchName);
     /**Return branch name by Id*/
@@ -77,6 +80,15 @@ class FairRootManager : public TObject
     FairGeoNode*        GetGeoParameter(const char* detname, const char* gname);
     /** Return a pointer to the object (collection) saved in the branch named BrName*/
     TObject*            GetObject(const char* BrName);
+    Double_t      GetEventTime();
+    /** Get the data of the given branch name,
+     *  this method runs over multiple entries
+     *  of the tree and selects the data according
+     *  to the function and the parameter given.
+     */
+    TClonesArray*     GetData(TString branchName, BinaryFunctor* function, Double_t parameter);
+    Bool_t          AllDataProcessed();
+
     Bool_t              OpenInChain();
     TFile*              OpenOutFile(const char* fname="cbmsim.root");
     TFile*              OpenOutFile(TFile* f);
@@ -159,7 +171,7 @@ class FairRootManager : public TObject
     TObjArray                           fListFolder; //!
     TObject**                           fObj2; //!
     Int_t                               fNObj;//!
-    std::map < TString , TObject* >    fMap;  //!
+    std::map < TString , TObject* >     fMap;  //!
     TTree*                              fPtrTree;//!
     Int_t                               fCurrentEntries;//!
     /**Singleton instance*/
@@ -168,9 +180,12 @@ class FairRootManager : public TObject
     Int_t                               fBranchSeqId;
     /**List of branch names as TObjString*/
     TList*                               fBranchNameList; //!
+    /** Internally used to compress empty slots in data buffer*/
     std::map<TString, std::queue<TClonesArray*> > fDataContainer;
+    /** Internally used to compress empty slots in data buffer*/
     std::map<TString, TClonesArray*> fActiveContainer;
-
+    /** Internally used to read time ordered data from branches*/
+    std::map<TString, FairTSBufferFunctional*> fTSBufferMap; //!
     /** if kTRUE the entries of a branch are filled from the beginning --> no empty entries*/
     Bool_t                              fCompressData;
     /**if kTRUE Read data according to time and not entries*/
@@ -181,7 +196,6 @@ class FairRootManager : public TObject
     std::map < TString , Int_t >        fBrPerMap; //!
     /**Iterator for the fBrPerMap  Map*/
     std::map < TString, Int_t>::iterator     fBrPerMapIter;
-
     /** List of all files added with AddFriend */
     std::list<TString>                      fFriendFileList; //!
 

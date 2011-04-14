@@ -1,7 +1,7 @@
 #ifndef FAIRBASEPOINT_H
 #define FAIRBASEPOINT_H
 
-#include "FairMultiLinkedData.h"
+#include "FairTimeStamp.h"
 #include "TVector3.h"
 
 //#include <vector>
@@ -13,7 +13,7 @@
   **@author M.Al-Turany <m.al-turany@gsi.de>
   **@author T.Stockmanns <t.stockmanns@fz-juelich.de>
  */
-class FairBasePoint : public FairMultiLinkedData
+class FairBasePoint : public FairTimeStamp
 {
 
   public:

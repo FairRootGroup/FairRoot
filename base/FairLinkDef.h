@@ -42,6 +42,7 @@
 #pragma link C++ class FairRadLenManager+;
 #pragma link C++ class FairRKPropagator+;
 #pragma link C++ class FairTimeStamp+;
+#pragma link C++ class FairTSBufferFunctional+;
 #if ROOT_VERSION_CODE < 333824
 #pragma link C++ class TVirtualMagField+;
 #endif

@@ -218,64 +218,63 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 {
 
   if(fTimeStamps) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "With time stamp only FairRunAna::Run(Double_t time_interval) can be used ");
-    exit(-1);
-  }
-
-  UInt_t tmpId =0;
-  //  if (fInputFile==0) {
-  if (!fInFileIsOpen) {
-    DummyRun(Ev_start,Ev_end);
-    return;
-  }
-  if(Ev_end==0) {
-    if (Ev_start==0) {
-      Ev_end=Int_t((fRootManager->GetInChain())->GetEntries());
-    } else {
-      Ev_end =  Ev_start;
-      if ( Ev_end > ((fRootManager->GetInChain())->GetEntries()) ) {
-        Ev_end = (Int_t) (fRootManager->GetInChain())->GetEntries();
-      }
-      Ev_start=0;
-    }
+    RunTSBuffers();
   } else {
-    Int_t fileEnd=(fRootManager->GetInChain())->GetEntries();
-    if(Ev_end > fileEnd) {
-      cout << "-------------------Warning---------------------------" << endl;
-      cout << " -W FairRunAna : File has less events than requested!!" << endl;
-      cout << " File contains : " << fileEnd  << " Events" << endl;
-      cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
-      cout << " The number of events is set to " << fileEnd << " Events"<< endl;
-      cout << "-----------------------------------------------------" << endl;
-      Ev_end = fileEnd;
+
+    UInt_t tmpId =0;
+    //  if (fInputFile==0) {
+    if (!fInFileIsOpen) {
+      DummyRun(Ev_start,Ev_end);
+      return;
     }
-
-  }
-
-  for (int i=Ev_start; i< Ev_end; i++) {
-    fRootManager->ReadEvent(i);
-    tmpId = fEvtHeader->GetRunId();
-    if ( tmpId != fRunId ) {
-      fRunId = tmpId;
-      if( !fStatic ) {
-        cout << " -I FairRunAna : reinitialization done for RunID: "
-             << fRunId << endl;
-
-        Reinit( fRunId );
-        fTask->ReInitTask();
+    if(Ev_end==0) {
+      if (Ev_start==0) {
+        Ev_end=Int_t((fRootManager->GetInChain())->GetEntries());
+      } else {
+        Ev_end =  Ev_start;
+        if ( Ev_end > ((fRootManager->GetInChain())->GetEntries()) ) {
+          Ev_end = (Int_t) (fRootManager->GetInChain())->GetEntries();
+        }
+        Ev_start=0;
       }
+    } else {
+      Int_t fileEnd=(fRootManager->GetInChain())->GetEntries();
+      if(Ev_end > fileEnd) {
+        cout << "-------------------Warning---------------------------" << endl;
+        cout << " -W FairRunAna : File has less events than requested!!" << endl;
+        cout << " File contains : " << fileEnd  << " Events" << endl;
+        cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
+        cout << " The number of events is set to " << fileEnd << " Events"<< endl;
+        cout << "-----------------------------------------------------" << endl;
+        Ev_end = fileEnd;
+      }
+
     }
 
-    fTask->ExecuteTask("");
-    fRootManager->Fill();
-    fTask->FinishEvent();
+    for (int i=Ev_start; i< Ev_end; i++) {
+      fRootManager->ReadEvent(i);
+      tmpId = fEvtHeader->GetRunId();
+      if ( tmpId != fRunId ) {
+        fRunId = tmpId;
+        if( !fStatic ) {
+          cout << " -I FairRunAna : reinitialization done for RunID: "
+               << fRunId << endl;
 
-    if(NULL !=  FairTrajFilter::Instance()) { FairTrajFilter::Instance()->Reset(); }
+          Reinit( fRunId );
+          fTask->ReInitTask();
+        }
+      }
 
+      fTask->ExecuteTask("");
+      fRootManager->Fill();
+      fTask->FinishEvent();
+
+      if(NULL !=  FairTrajFilter::Instance()) { FairTrajFilter::Instance()->Reset(); }
+
+    }
+    fTask->FinishTask();
+    fRootManager->Write();
   }
-  fTask->FinishTask();
-  fRootManager->Write();
-
 }
 //_____________________________________________________________________________
 
@@ -298,26 +297,43 @@ void FairRunAna::Run(Long64_t entry)
 
 
   if(fTimeStamps) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "With time stamp only FairRunAna::Run(Double_t time_interval) can be used ");
-    exit(-1);
-  }
+    RunTSBuffers();
+  } else {
+    UInt_t tmpId =0;
+    fRootManager->ReadEvent(entry);
+    tmpId = fEvtHeader->GetRunId();
+    if ( tmpId != fRunId ) {
+      fRunId = tmpId;
+      if( !fStatic ) {
+        cout << " -I FairRunAna : reinitialization done for RunID: "
+             << fRunId << endl;
 
-
-  UInt_t tmpId =0;
-  fRootManager->ReadEvent(entry);
-  tmpId = fEvtHeader->GetRunId();
-  if ( tmpId != fRunId ) {
-    fRunId = tmpId;
-    if( !fStatic ) {
-      cout << " -I FairRunAna : reinitialization done for RunID: "
-           << fRunId << endl;
-
-      Reinit( fRunId );
-      fTask->ReInitTask();
+        Reinit( fRunId );
+        fTask->ReInitTask();
+      }
     }
+    fTask->ExecuteTask("");
+    fRootManager->Fill();
+    fTask->FinishTask();
+    fRootManager->Write();
   }
-  fTask->ExecuteTask("");
-  fRootManager->Fill();
+}
+//_____________________________________________________________________________
+void FairRunAna::RunTSBuffers()
+{
+  Int_t globalEvent = 0;
+
+  bool firstRun = true;
+  while (firstRun || fRootManager->AllDataProcessed() == kFALSE) {
+    firstRun = false;
+    if(globalEvent + 1 < fRootManager->GetInTree()->GetEntriesFast()) { //this step is necessary to load in all data which is not read in via TSBuffers
+      fRootManager->ReadEvent(globalEvent++);
+    }
+    fTask->ExecuteTask("");
+    fRootManager->Fill();
+    fTask->FinishEvent();
+    if(NULL !=  FairTrajFilter::Instance()) { FairTrajFilter::Instance()->Reset(); }
+  }
   fTask->FinishTask();
   fRootManager->Write();
 }
@@ -392,11 +408,15 @@ void FairRunAna::AddFile(TString name)
 
 void  FairRunAna::RunWithTimeStamps()
 {
-  if(fIsInitialized) {
-    cout << "-E- FairRunAna: Error, RunWithTimeStamps has to be set before Run::Init !" << endl;
-    exit(-1);
+  if(ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)) {
+    if(fIsInitialized) {
+      fLogger->Warning(MESSAGE_ORIGIN, "RunWithTimeStamps has to be set before Run::Init !");
+      exit(-1);
+    } else {
+      fTimeStamps=kTRUE;
+    }
   } else {
-    fTimeStamps=kTRUE;
+    fLogger->Fatal(MESSAGE_ORIGIN, "RunWithTimeStamps need at least ROOT version 5.29.1") ;
   }
 }
 //_____________________________________________________________________________

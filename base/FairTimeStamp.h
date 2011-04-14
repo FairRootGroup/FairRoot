@@ -13,14 +13,21 @@ class FairTimeStamp : public FairMultiLinkedData
     FairTimeStamp();
     /** Constructor with time **/
     FairTimeStamp(Double_t time);
+    /** Constructor with time and time error **/
+    FairTimeStamp(Double_t time, Double_t timeerror);
+
     /** Destructor **/
     virtual ~FairTimeStamp();
     /** Accessors **/
     Double_t GetTimeStamp()             const { return fTimeStamp; };
+    Double_t GetTimeStampError()     const { return fTimeStampError;};
     /** Modifiers **/
     void SetTimeStamp(Double_t t) { fTimeStamp = t; }
+    void SetTimeStampError(Double_t t) {fTimeStampError = t;}
+
   protected:
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
+    Double_t fTimeStampError;     /** Error on time stamp */
     ClassDef(FairTimeStamp,1);
 };
 
