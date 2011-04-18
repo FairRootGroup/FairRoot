@@ -5,6 +5,8 @@
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR} 
 #put here all directories where header files are located
+
+${FAIRROOT_SOURCE_DIR}/fairtools
 ${FAIRROOT_SOURCE_DIR}/example/Tutorial1/src
 ${FAIRROOT_SOURCE_DIR}/base
 ${FAIRROOT_SOURCE_DIR}/example/mcstack
