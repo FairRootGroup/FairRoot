@@ -26,7 +26,7 @@ FairLogger::FairLogger()
   :
   fLogFileName(""),
   fLogToScreen(kTRUE),
-  fLogToFile(kTRUE),
+  fLogToFile(kFALSE),
   fLogFile(NULL),
   fLogFileLevel(logINFO),
   fLogScreenLevel(logINFO),
