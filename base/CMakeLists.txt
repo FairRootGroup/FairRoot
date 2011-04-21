@@ -34,6 +34,7 @@ FairMultiLinkedData.cxx
 FairBasePoint.cxx
 FairDetector.cxx 
 FairEventHeader.cxx 
+FairFileHeader.cxx 
 FairGenerator.cxx 
 FairHit.cxx 
 FairIon.cxx 
