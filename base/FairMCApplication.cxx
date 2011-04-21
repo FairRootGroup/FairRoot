@@ -23,6 +23,9 @@
 #include "FairGeoMedia.h"
 #include "FairGeoMedium.h"
 #include "FairRadLenManager.h"
+#include "FairRadGridManager.h"
+#include "FairRadMapManager.h"
+#include "FairMesh.h"
 #include "FairRuntimeDb.h"
 #include "FairLogger.h"
 
@@ -86,7 +89,10 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fModVolIter(NULL),
    fTrkPos(TLorentzVector(0,0,0,0)),
    fRadLength(kFALSE),
-   fRadLenMan(NULL)
+   fRadLenMan(NULL),
+   fRadMap(kFALSE),
+   fRadMapMan(NULL),
+   fRadGridMan(NULL)
 {
 // Standard Simulation constructor
 // Check if the Fair root manager exist!
@@ -151,7 +157,10 @@ FairMCApplication::FairMCApplication()
    fVolIter(0),
    fTrkPos(TLorentzVector(0,0,0,0)),
    fRadLength(kFALSE),
-   fRadLenMan(NULL)
+   fRadLenMan(NULL),
+   fRadMap(kFALSE),
+   fRadMapMan(NULL),
+   fRadGridMan(NULL)
 {
 // Default constructor
 }
@@ -221,7 +230,58 @@ void FairMCApplication::FinishRun()
     }
   }
   fFairTaskList->FinishTask();
-  fRootManager->Write();
+
+  FairPrimaryGenerator* gen = FairRunSim::Instance()->GetPrimaryGenerator();
+  FairMCEventHeader* header = gen->GetEvent();
+  Int_t nprimary = gen->GetTotPrimary();
+  TObjArray* meshlist  = NULL;
+
+  if (fRadGridMan ) {
+    //      cout << "-I FairMCApplication::FinishRun scaling ... " << endl;
+    meshlist = fRadGridMan->GetMeshList();
+    //      cout << " entries " << meshlist->GetEntriesFast() << endl;
+    for(Int_t i=0; i<meshlist->GetEntriesFast(); i++ ) {
+      FairMesh* aMesh = (FairMesh*) meshlist->At(i);
+      aMesh->Scale(1./nprimary);
+    }
+  }
+  if (fRadGridMan) {
+    TH2D* tid = NULL;
+    TH2D* flu = NULL;
+    TH2D* seu = NULL;
+    //      cout << "-I FairMCApplication::FinishRun saving ... " << endl;
+    //      cout << " entries " << meshlist->GetEntriesFast() << endl;
+
+    cout << endl << endl;
+    cout << "======================================================="
+         << endl;
+    cout << "   Dosimetry  histos saving " << endl << endl;
+    cout << "======================================================="
+         << endl;
+    cout << endl << endl;
+
+    gDirectory->mkdir("Dosimetry");
+    gDirectory->cd("Dosimetry");
+    gDirectory->cd("");
+
+
+    for(Int_t i=0; i<meshlist->GetEntriesFast(); i++ ) {
+      FairMesh* aMesh = (FairMesh*) meshlist->At(i);
+      tid = aMesh->GetMeshTid();
+      flu = aMesh->GetMeshFlu();
+      seu = aMesh->GetMeshSEU();
+      //
+      // tid->Dump();
+      tid->Write();
+      flu->Write();
+      seu->Write();
+    }
+  }
+  gDirectory->cd("..");
+  if (!fRadGridMan) { fRootManager->Write(); }
+
+  //  fRootManager->Write();
+
 }
 //_____________________________________________________________________________
 void FairMCApplication::BeginEvent()
@@ -340,6 +400,15 @@ void FairMCApplication::Stepping()
     fModVolIter =fModVolMap.find(id);
     fRadLenMan->AddPoint(fModVolIter->second);
   }
+  if(fRadMapMan) {
+    id = gMC->CurrentVolID(copyNo);
+    fModVolIter =fModVolMap.find(id);
+    fRadMapMan->AddPoint(fModVolIter->second);
+  }
+  if(fRadGridMan) {
+    fRadGridMan->FillMeshList();
+  }
+
 }
 //_____________________________________________________________________________
 void FairMCApplication::PostTrack()
@@ -589,6 +658,7 @@ void FairMCApplication::InitGeometry()
   mcEvent->SetRunID(runId);
   mcEvent->Register();
 
+  if(NULL !=fRadGridMan) { fRadGridMan->Init(); }
 
   if(fEvGen) { fEvGen->SetEvent(mcEvent); }
   fTrajFilter = FairTrajFilter::Instance();
@@ -896,6 +966,15 @@ void  FairMCApplication::SetRadiationLengthReg(Bool_t RadLen)
 }
 //_____________________________________________________________________________
 
+
+void  FairMCApplication::AddMeshList(TObjArray* meshList)
+{
+  if (!fRadGridMan) {
+    fRadGridMan = new FairRadGridManager();
+  }
+  fRadGridMan->AddMeshList (meshList);
+}
+//_____________________________________________________________________________
 
 ClassImp(FairMCApplication)
 

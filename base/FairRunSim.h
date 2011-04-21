@@ -14,6 +14,7 @@ class FairModule;
 class FairField;
 class FairPrimaryGenerator;
 class FairMCEventHeader;
+class FairMesh;
 
 /**
  * Configure the Simulation session
@@ -122,6 +123,13 @@ class FairRunSim : public FairRun
     /**Switch on/off Radiation length register */
     void SetRadLenRegister(Bool_t value) {fRadLength= value;}
 
+    void SetRadMapRegister(Bool_t value) {
+      fRadMap=value;
+    }
+    void SetRadGridRegister(Bool_t value) {fRadGrid= value;}
+
+    void AddMesh (FairMesh* Mesh);
+
     void SetUserConfig(const TString& Config) {fUserConfig = Config;}
 
     void SetUserCuts(const TString& Cuts) {fUserCuts= Cuts;}
@@ -162,11 +170,14 @@ class FairRunSim : public FairRun
     Bool_t                 fUserDecay;                             /** flag for setting user decay */
     TString                fUserDecayConfig; //!                   /** Macro for decay configuration*/
     Bool_t                 fRadLength;   //!                       /** flag for registring radiation length*/
+    Bool_t                 fRadMap; //!                            /** flag for RadiationMapManager
+    Bool_t                 fRadGrid;  //!
+    TObjArray*             fMeshList; //!                          /** radiation grid scoring
     TString                fUserConfig; //!                        /** Macro for geant configuration*/
     TString                fUserCuts; //!                          /** Macro for geant cuts*/
 
 
-    ClassDef(FairRunSim ,1)
+    ClassDef(FairRunSim ,2)
 
 };
 

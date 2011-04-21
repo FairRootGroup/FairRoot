@@ -22,6 +22,8 @@ class FairPrimaryGenerator;
 class FairTrajFilter;
 class FairVolume;
 class FairRadLenManager;
+class FairRadGridManager;
+class FairRadMapManager;
 
 class TChain;
 class TRefArray;
@@ -136,6 +138,10 @@ class FairMCApplication : public TVirtualMCApplication
     */
     void                  SetRadiationLengthReg(Bool_t RadLen);
     /**
+    * Switch for using the radiation map manager
+    */
+    void                  SetRadiationMapReg(Bool_t RadMap);
+    /**
     * Switch for debuging the tracking
     */
     void                  SetTrackingDebugMode( Bool_t set ) {fDebug = set;}
@@ -156,6 +162,8 @@ class FairMCApplication : public TVirtualMCApplication
     virtual Double_t      TrackingRmax() const;                             // MC Application
     /** Define maximum z for tracking (optional) */
     virtual Double_t      TrackingZmax() const;                              // MC Application
+
+    void AddMeshList ( TObjArray* meshList );
 
   private:
     // methods
@@ -226,8 +234,15 @@ class FairMCApplication : public TVirtualMCApplication
 
     /**Radiation length Manager*/
     FairRadLenManager*  fRadLenMan; //!
+    /** Flag for Radiation map register mode  */
+    Bool_t   fRadMap;     //!
+    /**Radiation Map Manager*/
+    FairRadMapManager*  fRadMapMan; //!
+    /**Radiation map Grid Manager*/
+    FairRadGridManager* fRadGridMan; //!
 
-    ClassDef(FairMCApplication,1)  //Interface to MonteCarlo application
+    ClassDef(FairMCApplication,2)  //Interface to MonteCarlo application
+
   private:
     FairMCApplication(const FairMCApplication& M);
     FairMCApplication& operator= (const FairMCApplication&) {return *this;}

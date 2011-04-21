@@ -124,7 +124,6 @@ class FairPrimaryGenerator : public TNamed
 
     void DoTracking(Bool_t doTracking= kTRUE) {fdoTracking=doTracking ;}
 
-
     /** Set the min and max limit for event time in ns */
     void SetEventTimeInterval(Double_t min, Double_t max);
 
@@ -133,6 +132,10 @@ class FairPrimaryGenerator : public TNamed
 
     /** Set the time function for event */
     void SetEventTime(TF1* timeProb);
+
+    Int_t GetTotPrimary() { return fTotPrim;}
+
+
 
 
   protected:
@@ -182,6 +185,8 @@ class FairPrimaryGenerator : public TNamed
     Int_t       fMCIndexOffset; //!
     /** Fair Logger */
     FairLogger*            fLogger;//!
+    /** Number of all primaries of this run*/
+    static Int_t fTotPrim; //!
 
 
     /** Private method MakeVertex. If vertex smearing in xy is switched on,

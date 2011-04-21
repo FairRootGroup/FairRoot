@@ -16,6 +16,7 @@
 #include "FairGeoInterface.h"
 #include "FairMCEventHeader.h"
 #include "FairPrimaryGenerator.h"
+#include "FairMesh.h"
 #include "TROOT.h"
 #include "TSystem.h"
 #include <iostream>
@@ -43,6 +44,8 @@ FairRunSim::FairRunSim()
    fPythiaDecayer(kFALSE),
    fUserDecay(kFALSE),
    fRadLength(kFALSE),
+   fRadGrid(kFALSE),
+   fMeshList( new TObjArray() ),
    fUserConfig(""),
    fUserCuts("SetCuts.C")
 
@@ -87,6 +90,12 @@ void FairRunSim::AddModule (FairModule* Mod)
   ListOfModules->Add(Mod);
   Mod->SetModId(count++);
 }
+void FairRunSim::AddMesh (FairMesh* Mesh)
+{
+  Mesh->print();
+  Mesh->calculate();
+  fMeshList->Add(Mesh);
+}
 
 TObjArray* FairRunSim::GetUserDefIons()
 {
@@ -126,18 +135,14 @@ void FairRunSim::Init()
   fRunId = genid.generateId();
   fRtdb->addRun(fRunId);
 
-
   /** Add Tasks to simulation if any*/
   fApp->AddTask(fTask);
-
 
   FairBaseParSet* par=(FairBaseParSet*)(fRtdb->getContainer("FairBaseParSet"));
   par->SetDetList(GetListOfModules());
   par->SetGen(GetPrimaryGenerator());
   par->SetBeamMom(fBeamMom);
   par->SetGeometry(gGeoManager);
-
-
 
   // Set global Parameter Info
 
@@ -155,6 +160,13 @@ void FairRunSim::Init()
   if(fRadLength) {
     fApp->SetRadiationLengthReg(fRadLength);
   }
+  if(fRadMap) {
+    fApp->SetRadiationMapReg(fRadMap);
+  }
+  if(fRadGrid) {
+    fApp->AddMeshList(fMeshList);
+  }
+
 
   if(fField) { fField->Init(); }
   fApp->SetField(fField);
@@ -177,8 +189,6 @@ void FairRunSim::Init()
 
   /**Set the configuration for MC engine*/
   SetMCConfig();
-
-
 }
 
 void FairRunSim::SetFieldContainer()
@@ -213,6 +223,7 @@ void FairRunSim::CheckFlukaExec()
   TString config_dir= getenv("CONFIG_DIR");
   if (!config_dir.EndsWith("/")) { config_dir+="/"; }
 
+
   TString flout;
   if(strcmp(GetName(),"TFluka") == 0 ) {
     TString flexec="run_fluka.sh";
@@ -230,8 +241,8 @@ void FairRunSim::CheckFlukaExec()
     gSystem->cd(flout.Data());
   }
 
-
 }
+
 
 void FairRunSim::SetMCConfig()
 {

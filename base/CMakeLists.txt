@@ -61,7 +61,11 @@ FairFieldFactory.cxx
 #FairVPoint.cxx
 #FairVTrack.cxx
 FairRadLenPoint.cxx
+FairRadMapManager.cxx
+FairRadMapPoint.cxx
 FairRadLenManager.cxx
+FairRadGridManager.cxx
+FairMesh.cxx
 FairRKPropagator.cxx
 FairTimeStamp.cxx
 FairTSBufferFunctional.cxx

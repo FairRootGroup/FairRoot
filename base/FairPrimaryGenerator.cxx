@@ -11,6 +11,7 @@
 
 #include <iostream>
 
+Int_t FairPrimaryGenerator::fTotPrim=0;
 using std::cout;
 using std::cerr;
 using std::endl;
@@ -153,6 +154,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
 
   fEvent->SetTime(fEventTime);
 
+  fTotPrim += fNTracks;
   // Screen output
 
   fLogger->Info(MESSAGE_ORIGIN,"FairPrimaryGenerator: %i  primary tracks from vertex (%f, %f, %f )  Event Time = %f (ns)" ,fNTracks, fVertex.X(), fVertex.Y(), fVertex.Z(), fEventTime);
