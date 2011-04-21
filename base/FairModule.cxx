@@ -121,19 +121,17 @@ void FairModule::SetGeometryFileName(TString fname, TString geoVer)
     //fgeoName+=fname;
     if (TString(gSystem->FindFile(fgeoName.Data(),fname)) != TString("")) {
       fgeoName=fname;
-      cout << "------------------------------------------------------------------"<< endl;
-      cout << "---User path for detector geometry : " << fgeoName.Data() << endl;
+      fLogger->Info(MESSAGE_ORIGIN, "User path for detector geometry : %s ", fgeoName.Data());
     } else {
-      cout << "---Detector geometry was not found in user path : " << FileName.Data() << endl;
+      fLogger->Warning(MESSAGE_ORIGIN, "Detector geometry was not found in user path : %s ", FileName.Data());
       fgeoName=work+"/geometry/";
-      cout << "---Try the standard path : " << fgeoName.Data() << endl;
+      fLogger->Info(MESSAGE_ORIGIN, "Try the standard path : %s ",fgeoName.Data());
       if (TString(gSystem->FindFile(fgeoName.Data(),FileName)) != TString("")) {
         fgeoName=FileName;
-        cout << "---Reading detector geometry from : "<<  FileName.Data() << endl;
+        fLogger->Info(MESSAGE_ORIGIN, "Reading detector geometry from : %s ", FileName.Data());
       } else {
-        Fatal("FAIRModule::SetGeometryFileName", "Detector geometry not found.");
+        fLogger->Fatal(MESSAGE_ORIGIN,"Detector geometry not found.");
       }
-      cout << "------------------------------------------------------------------"<< endl;
     }
   } else {
     fgeoName=work+"/geometry/";
@@ -257,7 +255,7 @@ void FairModule::ConstructRootGeometry()
   }
 
   if(v1==0) {
-    cout << "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find any geometry in File!!  \033[0m" << GetGeometryFileName().Data() <<  endl;
+    fLogger->Info(MESSAGE_ORIGIN, "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find any geometry in File!!  \033[0m", GetGeometryFileName().Data());
     exit(0);
   }
   gGeoManager=OldGeo;
@@ -271,7 +269,7 @@ void FairModule::ConstructRootGeometry()
   } else {
     Cave = gGeoManager->GetVolume(fMotherVolumeName);
     if ( NULL == Cave ) {
-      cout << "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find the given mother volume \033[0m" << fMotherVolumeName << "\033[5m\033[31m where the geomanger should be added. \033[0m" <<  endl;
+      fLogger->Error(MESSAGE_ORIGIN,"\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find the given mother volume \033[0m   %s \033[5m\033[31m where the geomanger should be added. \033[0m", fMotherVolumeName.Data());
       exit(0);
     }
   }

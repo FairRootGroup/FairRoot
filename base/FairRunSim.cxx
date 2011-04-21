@@ -44,6 +44,7 @@ FairRunSim::FairRunSim()
    fPythiaDecayer(kFALSE),
    fUserDecay(kFALSE),
    fRadLength(kFALSE),
+   fRadMap(kFALSE),
    fRadGrid(kFALSE),
    fMeshList( new TObjArray() ),
    fUserConfig(""),

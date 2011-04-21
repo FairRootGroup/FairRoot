@@ -487,7 +487,7 @@ void FairMCApplication::FinishEvent()
     fListOfTracks->Delete();
   }
   if(NULL !=fRadLenMan) { fRadLenMan->Reset(); }
-
+  if(NULL !=fRadMapMan) { fRadMapMan->Reset(); }
 
 }
 //_____________________________________________________________________________
@@ -664,6 +664,9 @@ void FairMCApplication::InitGeometry()
   fTrajFilter = FairTrajFilter::Instance();
   if(NULL != fTrajFilter ) { fTrajFilter->Init(); }
   if(NULL !=fRadLenMan) { fRadLenMan->Init(); }
+  if(NULL !=fRadMapMan) { fRadMapMan->Init(); }
+  if(NULL !=fRadGridMan) { fRadGridMan->Init(); }
+
 
   /// save Geo Params in Output file
   fRootManager->WriteFolder();
@@ -962,6 +965,16 @@ void  FairMCApplication::SetRadiationLengthReg(Bool_t RadLen)
   fRadLength=RadLen;
   if(fRadLength) {
     fRadLenMan= new FairRadLenManager();
+  }
+}
+//_____________________________________________________________________________
+
+
+void  FairMCApplication::SetRadiationMapReg(Bool_t RadMap)
+{
+  fRadMap=RadMap;
+  if(fRadMap) {
+    fRadMapMan= new FairRadMapManager();
   }
 }
 //_____________________________________________________________________________
