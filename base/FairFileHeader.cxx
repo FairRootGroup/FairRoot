@@ -9,21 +9,30 @@
 
 // -----   Default constructor   -------------------------------------------
 FairFileHeader::FairFileHeader()
-  :fRunId(0)
+  :TNamed(),
+   fRunId(0),
+   fTaskList(new TList()),
+   fFileList(new TList())
 {
 
 }
 // -------------------------------------------------------------------------
-
+void FairFileHeader::AddTaskClassName(TString taskname)
+{
+  fTaskList->AddLast(new TObjString(taskname));
+}
+// -------------------------------------------------------------------------
+void FairFileHeader::AddInputFileName(TString filename)
+{
+  printf("Add file name : %s \n", filename.Data());
+  fFileList->AddLast(new TObjString(filename));
+}
 
 // -----   Destructor   ----------------------------------------------------
-FairFileHeader::~FairFileHeader() { }
+FairFileHeader::~FairFileHeader()
+{
+}
 // -------------------------------------------------------------------------
-
-//void FairFileHeader::Register()
-//{
-//  FairRootManager::Instance()->Register("EventHeader.", "EvtHeader", this, kTRUE);
-//}
 
 
 ClassImp(FairFileHeader)

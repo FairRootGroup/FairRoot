@@ -20,6 +20,8 @@
 #include "TROOT.h"
 #include "TSystem.h"
 #include <iostream>
+#include "FairFileHeader.h"
+
 using std::cout;
 using std::endl;
 
@@ -136,6 +138,7 @@ void FairRunSim::Init()
   fRunId = genid.generateId();
   fRtdb->addRun(fRunId);
 
+  fFileHeader->SetRunId(fRunId);
   /** Add Tasks to simulation if any*/
   fApp->AddTask(fTask);
 
@@ -190,6 +193,7 @@ void FairRunSim::Init()
 
   /**Set the configuration for MC engine*/
   SetMCConfig();
+  fRootManager->WriteFileHeader(fFileHeader);
 }
 
 void FairRunSim::SetFieldContainer()

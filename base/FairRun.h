@@ -5,6 +5,7 @@
 #include "FairLogger.h"
 class FairTask;
 class TFile;
+class FairFileHeader;
 class FairRuntimeDb;
 class FairRootManager;
 class FairEventHeader;
@@ -83,11 +84,18 @@ class FairRun : public TNamed
     /**
     *Get task by name
     */
+
     FairTask* GetTask(const char* taskName);
+    /**
+    *Get Main Task
+    */
+    FairTask* GetMainTask() {return fTask;}
     /**
     * Return the number of Tasks added to this Run
     */
     Int_t     GetNTasks() {return fNTasks;}
+
+    /**Create a new file and save the TGeoManager to it*/
 
     void CreateGeometryFile(const char* geofile);
 
@@ -116,10 +124,10 @@ class FairRun : public TNamed
     UInt_t                   fRunId;//!
     /** true for Anaylsis session*/
     Bool_t            fAna;  //!
-
-    FairEventHeader*       fEvHead; //!
     /** MC Event Header */
-
+    FairEventHeader*       fEvHead; //!
+    /** File  Header */
+    FairFileHeader* fFileHeader;
 
     ClassDef(FairRun ,1)
 };

@@ -16,6 +16,7 @@
 #include "FairLogger.h"
 #include "FairMCEventHeader.h"
 #include "FairEventHeader.h"
+#include "FairFileHeader.h"
 
 #include "TFriendElement.h"
 #include "TObjArray.h"
@@ -217,11 +218,14 @@ Bool_t FairRootManager::OpenInChain()
 
   return kTRUE;
 }
+//_____________________________________________________________________________
 
 void FairRootManager::AddFile(TString name)
 {
   fInputChainList.push_back(name);
+
 }
+//_____________________________________________________________________________
 
 void FairRootManager::PrintFriendList( )
 {
@@ -253,6 +257,7 @@ void FairRootManager::PrintFriendList( )
   }
 
 }
+//_____________________________________________________________________________
 
 void FairRootManager::CheckFriendChains()
 {
@@ -458,10 +463,12 @@ TClonesArray* FairRootManager::GetEmptyTClonesArray(TString branchName)
       fActiveContainer[branchName]->Delete();
     } else if (fActiveContainer[branchName]->GetEntries() > 0) {    //if the container is not empty push it into the DataContainer storage and create a new one
       fDataContainer[branchName].push(fActiveContainer[branchName]);
-      std::cout << "-I- FairRootManager::GetEmptyTClonesArray moved " << branchName << " with " << fActiveContainer[branchName]->GetEntries() << " to data container." << std::endl;
+      fLogger->Info(MESSAGE_ORIGIN, "GetEmptyTClonesArray moved %s with  %i to data container ",
+                    branchName.Data(),  fActiveContainer[branchName]->GetEntries());
       fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
     } else {
-      std::cout << "-I- FairRootManager::GetEmptyTClonesArray not moved " << branchName << " " << fActiveContainer[branchName] << " with " << fActiveContainer[branchName]->GetEntries() << " to data container." << std::endl;
+      fLogger->Info(MESSAGE_ORIGIN, "GetEmptyTClonesArray not moved %s  %s  with %i to data container ",
+                    branchName.Data(),fActiveContainer[branchName]  , fActiveContainer[branchName]->GetEntries());
     }
     return fActiveContainer[branchName];                        // return the container
   } else { std::cout << "-E- Branch: " << branchName << " not registered!" << std::endl; }  // error if the branch is not registered
@@ -1258,6 +1265,14 @@ Double_t FairRootManager::GetEventTime()
   }
 }
 //_____________________________________________________________________________
+void FairRootManager::WriteFileHeader(FairFileHeader* f)
+{
+  fOutFile->cd();
+  f->SetName(fOutFile->GetName());
+  f->Write("FileHeader", TObject::kSingleKey);
+}
+
+
 
 ClassImp(FairRootManager)
 

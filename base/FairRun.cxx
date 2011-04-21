@@ -9,6 +9,7 @@
 #include "FairRootManager.h"
 #include "FairRuntimeDb.h"
 #include "FairEventHeader.h"
+#include "FairFileHeader.h"
 #include <iostream>
 
 
@@ -17,7 +18,6 @@ FairRun* FairRun::fRunInstance= 0;
 //_____________________________________________________________________________
 FairRun* FairRun::Instance()
 {
-
   return fRunInstance;
 }
 //_____________________________________________________________________________
@@ -26,14 +26,16 @@ FairRun::FairRun()
    fLogger(FairLogger::GetLogger()),
    fNTasks(0),
    fRtdb(FairRuntimeDb::instance()),
-   fTask(new FairTask("FairTask List")),
+   fTask(new FairTask("FairTaskList")),
    Outfname(""),
    //   fRootManager(FairRootManager::Instance()),
    fRootManager(new FairRootManager()),
    fOutFile(0),
    fRunId(0),
    fAna(kFALSE),
-   fEvHead(NULL)
+   fEvHead(NULL),
+   fFileHeader(new FairFileHeader())
+
 {
   if (fRunInstance) {
     Fatal("FairRun", "Singleton instance already exists.");
@@ -66,14 +68,13 @@ void FairRun::AddTask(FairTask* t)
 {
   fTask->Add(t);
   fNTasks++;
+  fFileHeader->AddTaskClassName(t->ClassName());
 }
-
+//_____________________________________________________________________________
 void FairRun::CreateGeometryFile(const char* geofile)
 {
   fRootManager->CreateGeometryFile(geofile);
 }
-
-
 //_____________________________________________________________________________
 FairTask* FairRun::GetTask(const char* taskName)
 {
@@ -81,14 +82,13 @@ FairTask* FairRun::GetTask(const char* taskName)
   TObject* task = taskList->FindObject(taskName);
   return dynamic_cast<FairTask*>(task);
 }
-
+//_____________________________________________________________________________
 FairEventHeader*  FairRun::GetEventHeader()
 {
   if ( NULL == fEvHead ) { fEvHead = new FairEventHeader(); }
   return fEvHead;
 }
-
-
+//_____________________________________________________________________________
 ClassImp(FairRun)
 
 

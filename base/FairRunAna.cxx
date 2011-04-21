@@ -19,6 +19,8 @@
 #include "TKey.h"
 #include "FairRunIdGenerator.h"
 #include "FairLogger.h"
+#include "FairFileHeader.h"
+
 
 #include <iostream>
 #include <list>
@@ -197,6 +199,7 @@ void FairRunAna::Init()
   if(fieldfact) { fieldfact->SetParm(); }
 
   fRtdb->initContainers(fRunId);
+  fFileHeader->SetRunId(fRunId);
   // create a field
   // <DB>
   // Add test for external FairField settings
@@ -212,6 +215,7 @@ void FairRunAna::Init()
   fRootManager->TruncateBranchNames(outTree, "cbmout");
   fRootManager->SetOutTree(outTree);
   fRootManager->WriteFolder();
+  fRootManager->WriteFileHeader(fFileHeader);
 }
 //_____________________________________________________________________________
 void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
@@ -355,6 +359,7 @@ void FairRunAna::DummyRun(Int_t Ev_start, Int_t Ev_end)
 void FairRunAna::SetInputFile(TString name)
 {
   fRootManager->SetInputFile(name);
+  fFileHeader->AddInputFileName(name);
 }
 //_____________________________________________________________________________
 /*
@@ -373,10 +378,10 @@ void FairRunAna::SetInputFile(TFile* f)
 void FairRunAna::AddFriend (TString Name)
 {
   if(fIsInitialized) {
-    cout << "-E- FairRunAna: Error, AddFriend has to be set before Run::Init !" << endl;
-    exit(-1);
+    fLogger->Fatal(MESSAGE_ORIGIN, "AddFriend has to be set before Run::Init !");
   } else {
     fRootManager->AddFriend(Name);
+    fFileHeader->AddInputFileName(Name);
   }
 }
 //_____________________________________________________________________________
@@ -403,6 +408,8 @@ void FairRunAna::Reinit(UInt_t runId)
 void FairRunAna::AddFile(TString name)
 {
   fRootManager->AddFile(name);
+  fFileHeader->AddInputFileName(name);
+
 }
 //_____________________________________________________________________________
 

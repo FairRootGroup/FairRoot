@@ -8,6 +8,8 @@
 
 
 #include "TNamed.h"
+#include "TList.h"
+#include "TObjString.h"
 
 /**
  *  File Header Class
@@ -20,12 +22,24 @@ class FairFileHeader : public TNamed
 
     /** Default constructor */
     FairFileHeader();
+
+    /**Add a class name of a task*/
+    void AddTaskClassName(TString taskname);
+
+    /**Add file name */
+    void AddInputFileName(TString filename);
+
     /** Set the run ID for this run
-     * @param runid : unique run id
-     */
+       * @param runid : unique run id
+       */
     void SetRunId(UInt_t runid) {fRunId=runid;}
+
     /** Get the run ID for this run*/
     UInt_t GetRunId() {return fRunId;}
+
+    /** Return the list of tasks class names */
+    TList* GetListOfTasks() {return fTaskList;}
+
 
     /**
      * Destructor
@@ -36,7 +50,13 @@ class FairFileHeader : public TNamed
     /** Run Id */
     UInt_t fRunId;
 
-    ClassDef(FairFileHeader,1)
+    /**list of TObjStrings presenting the class names of tasks used to produce this file */
+    TList* fTaskList;
+
+    /**list of TObjStrings presenting the input files used to produce this file*/
+    TList* fFileList;
+
+    ClassDef(FairFileHeader,2)
 
 };
 #endif

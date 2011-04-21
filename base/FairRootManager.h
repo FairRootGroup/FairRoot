@@ -1,5 +1,6 @@
 #ifndef FAIR_ROOT_MANAGER_H
 #define FAIR_ROOT_MANAGER_H
+
 #include "TObject.h"
 #include "TString.h"
 #include "TArrayI.h"
@@ -11,6 +12,7 @@
 #include <queue>
 
 class FairGeoNode;
+class FairFileHeader;
 class FairLogger;
 class FairTSBufferFunctional;
 class BinaryFunctor;
@@ -21,6 +23,7 @@ class TTree;
 class TNamed;
 class TBranch;
 class TList;
+
 
 /**
  * I/O Manager class
@@ -120,6 +123,7 @@ class FairRootManager : public TObject
     void                TruncateBranchNames(TTree* fTree, const char* folderName);
     void                Write();
     void                WriteGeometry();
+    void                WriteFileHeader(FairFileHeader* f);
     void                WriteFolder() ;
 
   private:
