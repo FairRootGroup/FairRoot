@@ -17,41 +17,43 @@
 
 #include <functional>
 
-class BinaryFunctor : public std::binary_function<double,double,bool>
+class BinaryFunctor : public std::binary_function<FairTimeStamp* ,double, bool>
 {
   public :
-    virtual bool operator() (double a, double b) = 0;
-    virtual bool Call(double a, double b) = 0;
+    virtual bool operator() (FairTimeStamp* a, double b) {return Call(a,b);};
+    virtual bool Call(FairTimeStamp* a, double b) = 0;
+
 };
 
 class StopTime : public BinaryFunctor
 {
   public :
-    bool operator() (double a, double b) {Call(a, b);};
-    bool Call(double a, double b) {return a > b;};
+    bool Call(FairTimeStamp* a, double b) {return a->GetTimeStamp() > b;};
 };
 
 class TimeGap : public BinaryFunctor
 {
   public:
     TimeGap():fOldTime(-1.) {};
-    bool operator()(double a, double b) {
-      return Call(a, b);
-    }
 
-    bool Call(double a, double b) {
+
+
+    bool Call(FairTimeStamp* a, double b) {
+      double aTime = a->GetTimeStamp();
+
       if (fOldTime < 0) {
-        fOldTime = a;
+        fOldTime = aTime;
         return false;
       }
-      if (a - fOldTime > b) {
-        fOldTime = a;
+      if (aTime - fOldTime > b) {
+        fOldTime = aTime;
         return true;
       } else {
-        fOldTime = a;
+        fOldTime = aTime;
         return false;
       }
     };
+
 
   private:
     double fOldTime;

@@ -49,7 +49,7 @@ TClonesArray* FairTSBufferFunctional::GetData(BinaryFunctor* function, Double_t 
 
   dataPoint = (FairTimeStamp*)fBufferArray->First();
 
-  while (!(*function)((double)(dataPoint->GetTimeStamp()), parameter)) {
+  while (!(*function)(dataPoint, parameter)) {
     index++;
     //if you have reached the end of the BufferArray fill it with new data from tree
     if (index == fBufferArray->GetEntriesFast()) {

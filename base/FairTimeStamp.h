@@ -1,34 +1,27 @@
-#ifndef FAIRTIMESTAMP_H
-#define FAIRTIMESTAMP_H
-#include "FairMultiLinkedData.h"
-/**
- * Base class for Time stamp information
- ** Aug. 2010
- **@author M.Al-Turany <m.al-turany@gsi.de>
- */
-class FairTimeStamp : public FairMultiLinkedData
+#include "FairTimeStamp.h"
+
+// -----   Default constructor   -------------------------------------------
+FairTimeStamp::FairTimeStamp()
+  : FairMultiLinkedData(),
+    fTimeStamp(0), fTimeStampError(-1)
 {
-  public:
-    /** Default constructor **/
-    FairTimeStamp();
-    /** Constructor with time **/
-    FairTimeStamp(Double_t time);
-    /** Constructor with time and time error **/
-    FairTimeStamp(Double_t time, Double_t timeerror);
+}
+// -----   Standard constructor   ------------------------------------------
+FairTimeStamp::FairTimeStamp(Double_t time)
+  :FairMultiLinkedData(),
+   fTimeStamp(time), fTimeStampError(-1)
+{
+}
 
-    /** Destructor **/
-    virtual ~FairTimeStamp();
-    /** Accessors **/
-    Double_t GetTimeStamp()             const { return fTimeStamp; };
-    Double_t GetTimeStampError()     const { return fTimeStampError;};
-    /** Modifiers **/
-    void SetTimeStamp(Double_t t) { fTimeStamp = t; }
-    void SetTimeStampError(Double_t t) {fTimeStampError = t;}
+FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
+  :FairMultiLinkedData(),
+   fTimeStamp(time), fTimeStampError(timeerror)
+{
+}
+// -----   Destructor   ----------------------------------------------------
+FairTimeStamp::~FairTimeStamp()
+{
+}
 
-  protected:
-    Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
-    Double_t fTimeStampError;     /** Error on time stamp */
-    ClassDef(FairTimeStamp,1);
-};
-
-#endif
+// -------------------------------------------------------------------------
+ClassImp(FairTimeStamp)
