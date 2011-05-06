@@ -4,6 +4,7 @@ source @CMAKE_BINARY_DIR@/check_system.sh
 if [ "$same_system" == "1" ]; then 
   export SIMPATH="@SIMPATH@"
   export ROOTSYS="@ROOTSYS@"
+  if (@FULL_CONFIG_FILE@); then
   export GEANT4_LIBRARY_DIR="@GEANT4_LIBRARY_DIR@"
   export GEANT4_INCLUDE_DIR="@GEANT4_INCLUDE_DIR@"
   export GEANT4VMC_INCLUDE_DIR="@GEANT4VMC_INCLUDE_DIR@"
@@ -18,6 +19,11 @@ if [ "$same_system" == "1" ]; then
   export GEANT3_INCLUDE_DIR="@GEANT3_INCLUDE_DIR@"
   export GEANT3_LIBRARY_DIR="@GEANT3_LIBRARY_DIR@"
   export GEANT3_LIBRARIES="@GEANT3_LIBRARIES@"
+  export USE_VGM="1"
+  export PYTHIA8DATA="@PYTHIA8DATA@"
+  export CLASSPATH="@MY_CLASSPATH@"
+  source @GEANT4_DIR@/env.sh
+  fi
   export ROOT_LIBRARY_DIR="@ROOT_LIBRARY_DIR@"
   export ROOT_LIBRARIES="@ROOT_LIBRARIES@"
   export ROOT_INCLUDE_DIR="@ROOT_INCLUDE_DIR@"
@@ -25,9 +31,5 @@ if [ "$same_system" == "1" ]; then
   export FAIRLIBDIR="@FAIRLIBDIR@"
   export DYLD_LIBRARY_PATH="@MY_DYLD_LIBRARY_PATH@"
   export LD_LIBRARY_PATH="@MY_LD_LIBRARY_PATH@"
-  export USE_VGM="1"
   export PATH="@MY_PATH@"
-  export PYTHIA8DATA="@PYTHIA8DATA@"
-  export CLASSPATH="@MY_CLASSPATH@"
-  source @GEANT4_DIR@/env.sh
 fi
