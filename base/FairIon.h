@@ -79,7 +79,7 @@ class FairIon: public TNamed
     /**
     * Set the mass in GeV
     */
-    void SetMass(Double_t mass)      { fMass = mass; }
+    void SetMass(Double_t mass)      { fMass = mass*amu; }
 
 
   private:
@@ -93,6 +93,7 @@ class FairIon: public TNamed
     Double_t fExcEnergy;  /// Excitation energy [GeV]
     Double_t fMass;       /// Mass [GeV]
 
+    static const Double_t amu = .931494028 ; // Gev/c**2
 
     ClassDef(FairIon,1);
 
