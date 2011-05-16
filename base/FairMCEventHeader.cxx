@@ -13,7 +13,7 @@
 FairMCEventHeader::FairMCEventHeader()
   : TNamed("MCEvent", "MC"),
     fRunId(0),
-    fEventId(0),
+    fEventId(-1),
     fX (0.),
     fY (0.),
     fZ (0.),
@@ -32,7 +32,7 @@ FairMCEventHeader::FairMCEventHeader()
 FairMCEventHeader::FairMCEventHeader(UInt_t runId)
   : TNamed("MCEvent", "MC"),
     fRunId(runId),
-    fEventId(0),
+    fEventId(-1),
     fX (0.),
     fY (0.),
     fZ (0.),
@@ -79,7 +79,8 @@ FairMCEventHeader::~FairMCEventHeader()
 // -----   Public method Reset   ------------------------------------------
 void FairMCEventHeader::Reset()
 {
-  fEventId = fNPrim = 0;
+  fEventId = -1;
+  fNPrim = 0;
   fX = fY = fZ = fT = fB = 0.;
   fIsSet = kFALSE;
 }

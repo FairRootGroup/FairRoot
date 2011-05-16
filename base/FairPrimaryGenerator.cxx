@@ -40,7 +40,8 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fEventTime(0),
    fEventMeanTime(0),
    fTimeProb(0),
-   fLogger(FairLogger::GetLogger())
+   fLogger(FairLogger::GetLogger()),
+   fEventNr(0)
 {
 
   fTargetZ[0] = 0.;
@@ -74,7 +75,8 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fEventTime(0),
    fEventMeanTime(0),
    fTimeProb(NULL),
-   fLogger(FairLogger::GetLogger())
+   fLogger(FairLogger::GetLogger()),
+   fEventNr(0)
 {
   fTargetZ[0] = 0.;
 
@@ -157,11 +159,16 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
   fTotPrim += fNTracks;
   // Screen output
 
-  fLogger->Info(MESSAGE_ORIGIN,"FairPrimaryGenerator: %i  primary tracks from vertex (%f, %f, %f )  Event Time = %f (ns)" ,fNTracks, fVertex.X(), fVertex.Y(), fVertex.Z(), fEventTime);
+  // Set the event number if not set already by one of the dedicated generators
+  if (-1 == fEvent->GetEventID()) {
+    fEventNr++;
+    fEvent->SetEventID(fEventNr);
+  }
 
-
+  fLogger->Info(MESSAGE_ORIGIN,"FairPrimaryGenerator: (Event %i) %i  primary tracks from vertex (%f, %f, %f )  Event Time = %f (ns)" ,fEvent->GetEventID(), fNTracks, fVertex.X(), fVertex.Y(), fVertex.Z(), fEventTime);
 
   fEvent->SetNPrim(fNTracks);
+
 
   return kTRUE;
 }

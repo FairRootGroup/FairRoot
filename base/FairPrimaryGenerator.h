@@ -187,7 +187,10 @@ class FairPrimaryGenerator : public TNamed
     FairLogger*            fLogger;//!
     /** Number of all primaries of this run*/
     static Int_t fTotPrim; //!
-
+    /** Event number (Set by the primary generator if not set already by one of
+        the specific generators
+     **/
+    Int_t fEventNr;
 
     /** Private method MakeVertex. If vertex smearing in xy is switched on,
         the event vertex is smeared Gaussianlike in x and y direction
