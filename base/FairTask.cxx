@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------
 
 #include "FairTask.h"
+#include "FairLogger.h"
 
 #include <iostream>
 using std::cout;
@@ -11,7 +12,9 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairTask::FairTask()
-  : fVerbose(0), fInputPersistance(-1)
+  : fVerbose(0),
+    fInputPersistance(-1),
+    fLogger(FairLogger::GetLogger())
 {
 }
 // -------------------------------------------------------------------------
@@ -21,7 +24,9 @@ FairTask::FairTask()
 // -----   Standard constructor   ------------------------------------------
 FairTask::FairTask(const char* name, Int_t iVerbose)
   : TTask(name, "FairTask"),
-    fVerbose(iVerbose), fInputPersistance(-1)
+    fVerbose(iVerbose),
+    fInputPersistance(-1),
+    fLogger(FairLogger::GetLogger())
 {
 
 }
@@ -41,9 +46,7 @@ void FairTask::InitTask()
   if ( ! fActive ) { return; }
   InitStatus tStat = Init();
   if ( tStat == kFATAL ) {
-    cout << "-E- FairTask::InitTask: Intialisation of task "
-         << fName << " failed fatally! " << endl;
-    Fatal("InitTask", "Init failed");
+    fLogger->Fatal(MESSAGE_ORIGIN,"Initialization of Task %s failed fatally", fName.Data());
   }
   if ( tStat == kERROR ) { fActive = kFALSE; }
   InitTasks();
@@ -58,9 +61,7 @@ void FairTask::ReInitTask()
   if ( ! fActive ) { return; }
   InitStatus tStat = ReInit();
   if ( tStat == kFATAL ) {
-    cout << "-E- FairTask::ReInitTask: Reintialisation of task "
-         << fName << " failed fatally! " << endl;
-    Fatal("ReInitTask", "Init failed");
+    fLogger->Fatal(MESSAGE_ORIGIN,"Reinitialization of Task %s failed fatally", fName.Data());
   }
   if ( tStat == kERROR ) { fActive = kFALSE; }
   ReInitTasks();

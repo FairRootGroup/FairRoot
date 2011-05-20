@@ -18,8 +18,8 @@
 
 #include "TTask.h"
 #include "FairRootManager.h"
-//#include "TObject.h"
 
+class FairLogger;
 
 enum InitStatus {kSUCCESS, kERROR, kFATAL};
 
@@ -77,9 +77,9 @@ class FairTask : public TTask
 
   protected:
 
-    Int_t   fVerbose;       //  Verbosity level
-    Int_t  fInputPersistance; ///< Indicates if input branch is persistant
-
+    Int_t        fVerbose;  //  Verbosity level
+    Int_t        fInputPersistance; ///< Indicates if input branch is persistant
+    FairLogger*  fLogger; //!
 
     /** Intialisation at begin of run. To be implemented in the derived class.
     *@value  Success   If not kSUCCESS, task will be set inactive.
@@ -123,7 +123,7 @@ class FairTask : public TTask
     /** Recursive FinishEvent of subtasks **/
     void FinishEvents();
 
-    ClassDef(FairTask,1);
+    ClassDef(FairTask,2);
 
 };
 
