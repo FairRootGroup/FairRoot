@@ -119,7 +119,7 @@ InitStatus FairGeane::Init()
   fApp->InitMC(ConfigMacro.Data(), "");
 
   cout <<"I- FairGeane::FairGeane:  Geane is Initialized " << endl;
-
+  return kSUCCESS;
 
 }
 
