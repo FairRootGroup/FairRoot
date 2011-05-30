@@ -4,7 +4,7 @@ rootlogon()
   basiclibs();
   
   // Load this example libraries
-        gSystem->Load("libDpmEvtGen.so");
+        gSystem->Load("libFairTools");
   	gSystem->Load("libGeoBase");
 	gSystem->Load("libParBase");
 	gSystem->Load("libBase");
@@ -13,24 +13,5 @@ rootlogon()
 	gSystem->Load("libPassive");
 	gSystem->Load("libGen");
 	gSystem->Load("libPGen");
-	gSystem->Load("libEmc"); 
-        gSystem->Load("libgenfit");
-	gSystem->Load("libtrackrep");
-        gSystem->Load("libriemann");
-        gSystem->Load("libtpc"); 
-        gSystem->Load("libtpcreco");
-        gSystem->Load("libStt");
-        gSystem->Load("libSttReco");
-	gSystem->Load("libTrkBase");
-        gSystem->Load("librecotasks");
-        gSystem->Load("libMvd");
-        gSystem->Load("libMvdReco");
-        gSystem->Load("libMvdTrk");
-	gSystem->Load("libTof");
-	gSystem->Load("libDrcProp");
-	gSystem->Load("libDrc");
-	gSystem->Load("libMdt");
-	gSystem->Load("libDch");
-        gSystem->Load("libLHETrack");
 	gSystem->Load("libGeane");
 }
