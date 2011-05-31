@@ -103,7 +103,7 @@ class FairRadMapManager
      * with FairRadMapManager::FairRadMapManager().
      */
     static FairRadMapManager* Instance();
-    void GetGeoManager();
+    //  void GetGeoManager();
 };
 
 #endif

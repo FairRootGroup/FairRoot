@@ -30,6 +30,7 @@ FairRadMapManager::FairRadMapManager()
   : fPointCollection(new TClonesArray("FairRadMapPoint")),
     fTrackID(0),
     fVolumeID(0),
+    fPdg(0),
     fPosIn(TLorentzVector(0,0,0,0)),
     fPosOut(TLorentzVector(0,0,0,0)),
     fMomIn(TLorentzVector(0,0,0,0)),
@@ -38,14 +39,17 @@ FairRadMapManager::FairRadMapManager()
     fLength(0),
     fStep(0),
     fELoss(0),
-    fA(0),
-    fZmat(0),
-    fDensity(0),
-    fRadl(0),
-    fAbsl(0),
     fDose(0),
     fDoseSL(0),
-    fPdg(0)
+    fA(0),
+    fZmat(0),
+    fRadl(0),
+    fDensity(0),
+    fAbsl(0),
+    fActVol(0),
+    fActMass(0)
+
+
 {
   /** radiation length default ctor */
   if(NULL == fgInstance) {
@@ -54,6 +58,7 @@ FairRadMapManager::FairRadMapManager()
   }
 
 }
+
 
 FairRadMapManager::~FairRadMapManager()
 {
@@ -129,7 +134,7 @@ void FairRadMapManager::AddPoint(Int_t& ModuleId)
     //    Int_t MatId=  gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
     gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
 
-    if (!gGeoManager) { GetGeoManager(); }
+    //    if (!gGeoManager) { GetGeoManager(); }
     //    TGeoVolume* actVolume = gGeoManager->GetCurrentVolume();
     TGeoVolume* actVolume = gGeoManager->GetVolume(fVolumeID);
 
