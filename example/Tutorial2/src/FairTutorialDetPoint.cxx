@@ -6,7 +6,10 @@ using std::endl;
 
 
 // -----   Default constructor   -------------------------------------------
-FairTutorialDetPoint::FairTutorialDetPoint() : FairMCPoint() { }
+FairTutorialDetPoint::FairTutorialDetPoint()
+  : FairMCPoint()
+{
+}
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
@@ -14,7 +17,9 @@ FairTutorialDetPoint::FairTutorialDetPoint(Int_t trackID, Int_t detID,
     TVector3 pos, TVector3 mom,
     Double_t tof, Double_t length,
     Double_t eLoss)
-  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss) { }
+  : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)
+{
+}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------

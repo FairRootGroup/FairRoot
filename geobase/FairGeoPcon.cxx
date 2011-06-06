@@ -33,6 +33,7 @@
 ClassImp(FairGeoPcon)
 
 FairGeoPcon::FairGeoPcon()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="PCON";

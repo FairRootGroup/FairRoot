@@ -15,6 +15,7 @@
 ClassImp(FairGeoPipe)
 
 FairGeoPipe::FairGeoPipe()
+  : FairGeoSet()
 {
   // Constructor
   fName="pipe";

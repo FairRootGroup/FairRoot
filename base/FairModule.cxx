@@ -77,7 +77,8 @@ FairModule::FairModule(const char* Name, const char* title ,Bool_t Active)
 //__________________________________________________________________________
 
 FairModule::FairModule()
-  : fgeoVer("Not defined"),
+  : TNamed(),
+    fgeoVer("Not defined"),
     fgeoName("Not defined"),
     fModId(-1),
     fActive(kFALSE),

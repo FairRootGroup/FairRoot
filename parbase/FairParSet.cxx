@@ -12,22 +12,22 @@
 #include "FairRuntimeDb.h"
 
 #include <iostream>
-//#include <iomanip>
 
 using std::cout;
 
 ClassImp(FairParSet)
 
 FairParSet::FairParSet(const char* name,const char* title,const char* context)
-  : TNamed(name,title)
+  : TNamed(name,title),
+    detName(""),
+    status(kFALSE),
+    changed(kFALSE),
+    paramContext(context),
+    author(""),
+    description(""),
+    fLogger(FairLogger::GetLogger())
 {
-  // constructor sets default values of data elements
-  paramContext=context;
   for(Int_t i=0; i<3; i++) {versions[i]=-1;}
-  status=kFALSE;
-  changed=kFALSE;
-  fLogger=FairLogger::GetLogger();
-
 }
 
 Bool_t FairParSet::init()

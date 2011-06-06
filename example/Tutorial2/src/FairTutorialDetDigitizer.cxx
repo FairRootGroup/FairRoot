@@ -26,18 +26,19 @@ using std::endl;
 
 // ---- Default constructor -------------------------------------------
 FairTutorialDetDigitizer::FairTutorialDetDigitizer()
-  :FairTask("TutorialDetDigitizer")
-  //:fRef(0)
+  : FairTask("TutorialDetDigitizer", 0),
+    fTutorialDetPoints(NULL),
+    fDigiPar(NULL)
 {
-  //    fDigiCollection = new TClonesArray("FairTrdDigi");
 }
 // --------------------------------------------------------------------
 
 // ---- Constructor ----------------------------------------------------
 FairTutorialDetDigitizer::FairTutorialDetDigitizer(const char* name, const char* title)
-  :FairTask(name)
+  : FairTask(name, 0),
+    fTutorialDetPoints(NULL),
+    fDigiPar(NULL)
 {
-
 }
 // --------------------------------------------------------------------
 

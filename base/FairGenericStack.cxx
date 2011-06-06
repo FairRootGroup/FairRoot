@@ -21,15 +21,16 @@
 
 // -----   Default constructor   -------------------------------------------
 FairGenericStack::FairGenericStack()
-  : fLogger(FairLogger::GetLogger()),
+  : TVirtualMCStack(),
+    fLogger(FairLogger::GetLogger()),
     fVerbose(1)
-
 {
 }
 // -------------------------------------------------------------------------
 // -----   Constructor with estimated array dimension   --------------------
 FairGenericStack::FairGenericStack(Int_t size)
-  : fLogger(FairLogger::GetLogger()),
+  : TVirtualMCStack(),
+    fLogger(FairLogger::GetLogger()),
     fVerbose(1)
 {
 }

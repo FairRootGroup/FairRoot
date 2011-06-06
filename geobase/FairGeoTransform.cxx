@@ -46,7 +46,8 @@
 
 ClassImp(FairGeoTransform)
 FairGeoTransform::FairGeoTransform()
-  : rot(FairGeoRotation(0,0,0)),
+  : TObject(),
+    rot(FairGeoRotation(0,0,0)),
     trans(FairGeoVector(0,0,0)),
     trans_cm(FairGeoVector(0,0,0))
 {

@@ -12,7 +12,8 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairTask::FairTask()
-  : fVerbose(0),
+  : TTask(),
+    fVerbose(0),
     fInputPersistance(-1),
     fLogger(FairLogger::GetLogger())
 {

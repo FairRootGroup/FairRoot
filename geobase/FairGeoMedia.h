@@ -38,8 +38,8 @@ class FairGeoMedia : public TNamed
     TString& getAuthor() {return author;}
     TString& getDescription() {return description;}
   private:
-    FairGeoMedia(const FairGeoMedia& L);
-    FairGeoMedia& operator= (const FairGeoMedia&) {return *this;}
+    FairGeoMedia(const FairGeoMedia&);
+    FairGeoMedia& operator=(const FairGeoMedia&);
 
     ClassDef(FairGeoMedia,0) //
 };

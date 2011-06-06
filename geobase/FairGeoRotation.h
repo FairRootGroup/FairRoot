@@ -53,6 +53,7 @@ class FairGeoRotation : public TObject
 // -------------------- inlines ---------------------------
 
 inline FairGeoRotation::FairGeoRotation()
+  :TObject()
 {
   rot[0]=rot[4]=rot[8]=1.;
   rot[1]=rot[2]=rot[3]=rot[5]=rot[6]=rot[7]=0.;
@@ -66,11 +67,13 @@ inline Double_t FairGeoRotation::operator () (Int_t i) const
 }
 
 inline FairGeoRotation::FairGeoRotation(const FairGeoRotation& r)
+  :TObject(r)
 {
   for(Int_t i=0; i<9; i++) { rot[i]=r(i); }
 }
 
 inline FairGeoRotation::FairGeoRotation(const Double_t* a)
+  :TObject()
 {
   for(Int_t i=0; i<9; i++) { rot[i]=a[i]; }
 }

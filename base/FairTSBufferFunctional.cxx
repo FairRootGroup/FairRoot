@@ -6,7 +6,14 @@
 ClassImp(FairTSBufferFunctional);
 
 
-FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* sourceTree):fBranchIndex(-1), fVerbose(2)
+FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* sourceTree)
+  :TObject(),
+   fOutputArray(NULL),
+   fInputArray(NULL),
+   fBufferArray(NULL),
+   fBranch(NULL),
+   fBranchIndex(-1),
+   fVerbose(2)
 {
   fBranch = sourceTree->GetBranch(branchName.Data());
   if (fBranch == 0) {

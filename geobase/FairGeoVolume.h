@@ -15,7 +15,7 @@ class FairGeoVector;
 class FairGeoVolume : public TNamed
 {
   private:
-    FairGeoVolume& operator= (const  FairGeoVolume&) {return *this;}
+    FairGeoVolume& operator=(const  FairGeoVolume&);
   protected:
     TString shape;              /**eant shape of the volume*/
     TString mother;            /** Name of the mother volume*/
@@ -59,15 +59,16 @@ class FairGeoVolume : public TNamed
 // -------------------- inlines --------------------------
 
 inline FairGeoVolume::FairGeoVolume()
-  : shape(""),
-    mother(""),
-    points(0),
-    transform(FairGeoTransform()),
-    fLabTransform(FairGeoTransform()),
-    fMedium(0),
-    nPoints(0),
-    fHadFormat(0),
-    fgMCid(0)
+  :TNamed(),
+   shape(""),
+   mother(""),
+   points(NULL),
+   transform(FairGeoTransform()),
+   fLabTransform(FairGeoTransform()),
+   fMedium(0),
+   nPoints(0),
+   fHadFormat(0),
+   fgMCid(0)
 {
 }
 

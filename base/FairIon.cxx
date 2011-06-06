@@ -13,7 +13,8 @@ const Double_t kProtonMass = 0.92827231;
 
 // -----   Default constructor   -------------------------------------------
 FairIon::FairIon()
-  :fZ(0),
+  :TNamed(),
+   fZ(0),
    fA(0),
    fQ(0),
    fExcEnergy(0),

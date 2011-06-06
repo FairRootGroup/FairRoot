@@ -23,6 +23,7 @@
 ClassImp(FairGeoTorus)
 
 FairGeoTorus::FairGeoTorus()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="TORUS";

@@ -58,8 +58,8 @@ class FairTrajFilter
 
   private:
 
-    FairTrajFilter(const FairTrajFilter& F);
-    FairTrajFilter& operator= (const FairTrajFilter&) {return *this;}
+    FairTrajFilter(const FairTrajFilter&);
+    FairTrajFilter& operator=(const FairTrajFilter&);
 
     static FairTrajFilter* fgInstance;
 

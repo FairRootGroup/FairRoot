@@ -28,6 +28,11 @@ Int_t FairIonGenerator::fgNIon = 0;
 
 // -----   Default constructor   ------------------------------------------
 FairIonGenerator::FairIonGenerator()
+  :FairGenerator(),
+   fMult(0),
+   fPx(0), fPy(0), fPz(0),
+   fVx(0), fVy(0), fVz(0),
+   fIon(NULL),  fQ(0)
 {
 //  cout << "-W- FairIonGenerator: "
 //      << " Please do not use the default constructor! " << endl;
@@ -37,10 +42,11 @@ FairIonGenerator::FairIonGenerator()
 FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
                                    Double_t px, Double_t py, Double_t pz,
                                    Double_t vx, Double_t vy, Double_t vz)
-  :fMult(0),
-   fPx(0), fPy(0), fPz(0),
-   fVx(0), fVy(0), fVz(0),
-   fIon(0),  fQ(0)
+  :FairGenerator(),
+   fMult(mult),
+   fPx(px), fPy(py), fPz(pz),
+   fVx(vx), fVy(vy), fVz(vz),
+   fIon(NULL),  fQ(0)
 
 {
 
@@ -87,13 +93,15 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
 FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
                                    Double_t px, Double_t py, Double_t pz,
                                    Double_t vx, Double_t vy, Double_t vz)
-  :fMult(0),
-   fPx(0), fPy(0), fPz(0),
-   fVx(0), fVy(0), fVz(0),
-   fIon(0),  fQ(0)
+  :FairGenerator(),
+   fMult(mult),
+   fPx(Double_t(a)*px), fPy(Double_t(a)*py), fPz(Double_t(a)*pz),
+   fVx(vx), fVy(vy), fVz(vz),
+   fIon(NULL),  fQ(0)
 
 {
   fgNIon++;
+  /*
   fMult = mult;
   fPx   = Double_t(a) * px;
   fPy   = Double_t(a) * py;
@@ -101,6 +109,7 @@ FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
   fVx   = vx;
   fVy   = vy;
   fVz   = vz;
+  */
   char buffer[20];
   sprintf(buffer, "FairIon%d", fgNIon);
   fIon= new FairIon(buffer, z, a, q);

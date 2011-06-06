@@ -69,6 +69,8 @@ class FairAsciiGenerator : public FairGenerator
      ** input file properly. Called from destructor and from ReadEvent. **/
     void CloseInput();
 
+    FairAsciiGenerator(const FairAsciiGenerator&);
+    FairAsciiGenerator& operator=(const FairAsciiGenerator&);
 
     /** PDG data base */
 

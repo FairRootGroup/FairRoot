@@ -12,11 +12,18 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairMCTrack::FairMCTrack()
+  : TObject(),
+    fPdgCode(0),
+    fMotherId(-1),
+    fPx(0.),
+    fPy(0.),
+    fPz(0.),
+    fStartX(0.),
+    fStartY(0.),
+    fStartZ(0.),
+    fStartT(0.),
+    fNPoints(0)
 {
-  fPdgCode  = fNPoints = 0;
-  fMotherId = -1;
-  fPx = fPy = fPz = 0.;
-  fStartX = fStartY  = fStartZ = fStartT = 0.;
 }
 // -------------------------------------------------------------------------
 
@@ -26,7 +33,19 @@ FairMCTrack::FairMCTrack()
 FairMCTrack::FairMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
                          Double_t py, Double_t pz, Double_t x, Double_t y,
                          Double_t z, Double_t t, Int_t nPoints = 0)
+  : TObject(),
+    fPdgCode(pdgCode),
+    fMotherId(motherId),
+    fPx(px),
+    fPy(py),
+    fPz(pz),
+    fStartX(x),
+    fStartY(y),
+    fStartZ(z),
+    fStartT(t),
+    fNPoints(nPoints)
 {
+  /*
   fPdgCode  = pdgCode;
   fMotherId = motherId;
   fPx = px;
@@ -38,6 +57,7 @@ FairMCTrack::FairMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
   fStartT = t;
   if (nPoints >= 0) { fNPoints = nPoints; }
   else { fNPoints = 0; }
+  */
 }
 // -------------------------------------------------------------------------
 
@@ -45,8 +65,19 @@ FairMCTrack::FairMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
 
 // -----   Copy constructor   ----------------------------------------------
 FairMCTrack::FairMCTrack(const FairMCTrack& track)
+  : TObject(track),
+    fPdgCode(track.fPdgCode),
+    fMotherId(track.fMotherId),
+    fPx(track.fPx),
+    fPy(track.fPy),
+    fPz(track.fPz),
+    fStartX(track.fStartX),
+    fStartY(track.fStartY),
+    fStartZ(track.fStartZ),
+    fStartT(track.fStartT),
+    fNPoints(track.fNPoints)
 {
-  *this = track;
+  //  *this = track;
 }
 // -------------------------------------------------------------------------
 
@@ -54,17 +85,18 @@ FairMCTrack::FairMCTrack(const FairMCTrack& track)
 
 // -----   Constructor from TParticle   ------------------------------------
 FairMCTrack::FairMCTrack(TParticle* part)
+  : TObject(),
+    fPdgCode(part->GetPdgCode()),
+    fMotherId(part->GetMother(0)),
+    fPx(part->Px()),
+    fPy(part->Py()),
+    fPz(part->Pz()),
+    fStartX(part->Vx()),
+    fStartY(part->Vy()),
+    fStartZ(part->Vz()),
+    fStartT(part->T()*1e09),
+    fNPoints(0)
 {
-  fPdgCode  = part->GetPdgCode();
-  fMotherId = part->GetMother(0);
-  fPx       = part->Px();
-  fPy       = part->Py();
-  fPz       = part->Pz();
-  fStartX   = part->Vx();
-  fStartY   = part->Vy();
-  fStartZ   = part->Vz();
-  fStartT   = part->T()*1e09;
-  fNPoints  = 0;
 }
 // -------------------------------------------------------------------------
 

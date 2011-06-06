@@ -20,8 +20,8 @@ class TList;
 class  FairGeoShapes : public TObject
 {
   private:
-    FairGeoShapes(const FairGeoShapes& L);
-    FairGeoShapes& operator= (const FairGeoShapes&) {return *this;}
+    FairGeoShapes(const FairGeoShapes&);
+    FairGeoShapes& operator=(const FairGeoShapes&);
   protected:
     TList* shapes;  // list of already created shape classes
   public :

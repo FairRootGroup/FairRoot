@@ -24,14 +24,14 @@ using std::cout;
 ClassImp(FairGeoBasicShape)
 
 FairGeoBasicShape::FairGeoBasicShape()
-  : nPoints(0),
+  : TNamed(),
+    nPoints(0),
     nParam(0),
     param(0),
     center(new FairGeoTransform()),
     position(new FairGeoTransform())
 {
   // default constructor
-
 }
 
 

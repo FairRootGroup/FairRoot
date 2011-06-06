@@ -16,6 +16,7 @@
 
 
 FairGeoMatrix::FairGeoMatrix(void)
+  :TObject()
 {
   // Initializes the matrix to 0
   for (int i=0; i<9; i++) { fM[i]=0.0; }

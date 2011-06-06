@@ -29,52 +29,61 @@ using std::setw;
 ClassImp(FairParVersion)
 ClassImp(FairRtdbRun)
 
-FairParVersion::FairParVersion(Text_t* name) : TNamed(name,"version info")
+FairParVersion::FairParVersion(Text_t* name)
+  :TNamed(name,"version info"),
+   rootVersion(0)
 {
   // constructor with the name of the container
-  rootVersion=0;
+  //  rootVersion=0;
   for(Int_t i=0; i<3; i++) {inputVersions[i]=-1;}
 }
 
 FairRtdbRun::FairRtdbRun(const Text_t* name,const Text_t* refName)
-  : TNamed(name,"run parameters")
+  : TNamed(name,"run parameters"),
+    parVersions(new TList()),
+    refRun(refName)
 {
   // constructor with the run id and reference run as strings
-  parVersions=new TList();
-  refRun=refName;
+  //  parVersions=new TList();
+  //  refRun=refName;
 }
 
 FairRtdbRun::FairRtdbRun(Int_t r,Int_t rr)
+//  :TNamed(r,""),
+  :TNamed(),
+   parVersions(new TList()),
+   refRun(rr)
 {
-  // constructor with the run id and reference run as numbers
-  parVersions=new TList();
   char name[255];
   sprintf(name,"%i",r);
   SetName(name);
-  setRefRun(rr);
+//    setRefRun(rr);
 }
 
 FairRtdbRun::FairRtdbRun(FairRtdbRun& run)
+  :TNamed(run),
+   parVersions(new TList()),
+   refRun(run.refRun)
 {
   // copy constructor
-  SetName(run.GetName());
-  parVersions=new TList();
   TList* lv=run.getParVersions();
   TIter next(lv);
   FairParVersion* pv;
   while ((pv=(FairParVersion*)next())) {
     parVersions->Add(pv);
   }
-  refRun=run.refRun;
 }
 
 FairRtdbRun::FairRtdbRun()
+  :TNamed(),
+   parVersions(NULL),
+   refRun("")
 {
   // default Constructor
   // parVersions has to be set to zero otherwise the
   // root file is not browsable
-  parVersions=0;
 }
+
 FairRtdbRun::~FairRtdbRun()
 {
   // destructor

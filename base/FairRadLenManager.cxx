@@ -42,7 +42,7 @@ FairRadLenManager::FairRadLenManager()
   /** radiation length default ctor */
   if(NULL == fgInstance) {
     fgInstance = this;
-    fPointCollection=new TClonesArray("FairRadLenPoint");
+    //    fPointCollection=new TClonesArray("FairRadLenPoint");
   }
 }
 

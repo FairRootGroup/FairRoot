@@ -26,18 +26,17 @@
 ClassImp(FairGeoRootBuilder)
 
 FairGeoRootBuilder::FairGeoRootBuilder()
-  : geoManager(0)
+  : FairGeoBuilder(),
+    geoManager(NULL)
 {
   // Default constructor
 }
 
 FairGeoRootBuilder::FairGeoRootBuilder(const char* name,const char* title)
   : FairGeoBuilder(name,title),
-    geoManager(0)
-
+    geoManager(NULL)
 {
   // Constructor
-
 }
 
 Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat)

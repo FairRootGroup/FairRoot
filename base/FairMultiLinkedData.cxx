@@ -13,21 +13,36 @@
 ClassImp(FairMultiLinkedData);
 
 FairMultiLinkedData::FairMultiLinkedData()
-  :fPersistanceCheck(kTRUE), fVerbose(0)
-{}
+  :FairLinkedData(),
+   fLinks(),
+   fPersistanceCheck(kTRUE),
+   fVerbose(0)
+{
+}
 
 FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persistanceCheck)
-  :fLinks(links), fPersistanceCheck(persistanceCheck), fVerbose(0) {}
+  :FairLinkedData(),
+   fLinks(links),
+   fPersistanceCheck(persistanceCheck),
+   fVerbose(0)
+{
+}
 
 FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
-  :fPersistanceCheck(persistanceCheck), fVerbose(0)
+  :FairLinkedData(),
+   fLinks(),
+   fPersistanceCheck(persistanceCheck),
+   fVerbose(0)
 {
   SimpleAddLinks(FairRootManager::Instance()->GetBranchId(dataType), links, bypass, mult);
 //  FairMultiLinkedData(ioman->GetBranchId(dataType), links, persistanceCheck, bypass, addup, mult);
 }
 
 FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
-  :FairLinkedData(), fPersistanceCheck(persistanceCheck), fVerbose(0)
+  :FairLinkedData(),
+   fLinks(),
+   fPersistanceCheck(persistanceCheck),
+   fVerbose(0)
 {
   SimpleAddLinks(dataType, links, bypass, mult);
 }

@@ -86,8 +86,8 @@ class FairModule:  public TNamed
     void    AddSensitiveVolume(TGeoVolume* v);
 
   private:
-    FairModule(const FairModule& M);
-    FairModule& operator= (const FairModule&) {return *this;}
+    FairModule(const FairModule&);
+    FairModule& operator=(const FairModule&);
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */
     void SetDefaultMatrixName(TGeoMatrix* matrix);
 

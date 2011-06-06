@@ -33,7 +33,11 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
 
  	# -- CLHEP and Pluto warnings
         "/include/CLHEP/"
+        "PDataBase.h"
+	"PMesh.h" 
         "PParticle.h"
+        "PStaticData.h"
+        "PUtils.h"
 
         # -- warnings from ubuntu systems which are a little to much
         # -- probably defined warn-unused-result. ignoring the result
@@ -50,8 +54,10 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         # -- Root warnings which should not show up in the test setup
         "/include/G__ci.h:"
         "/include/TAttImage.h:"
+        "/include/TBuffer.h:"
         "/include/TCollectionProxyInfo.h"
         "/include/TCut.h:"
+        "/include/TChainElement.h:"
         "/include/TEveBoxSet.h:"
         "/include/TEveTrackPropagator.h:"
         "/include/TEveTrackPropagator.h:"
@@ -64,6 +70,7 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "/include/TMap.h:"
         "/include/TMatrixT.h:"
         "/include/TMatrixTSym.h:"
+        "/include/TMemberInspector.h:"
         "/include/TObjArray.h:"
         "/include/TRefArray.h:"
         "/include/Minuit2/BasicFunctionGradient.h:"
@@ -88,6 +95,11 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "/geant3/TGeant3/TGeant3.h:"
         "/geant3/TGeant3/TGeant3TGeo.h:"
 
+        # -- Errors which are filtered for the time being
+        # -- MbsAPI is only a copy from elsewhere so don't know what to do
+        # -- FairTSBufferFunctional.h has to be fixed by Tobias
+	"MbsAPI"
+	"FairTSBufferFunctional.h"
   )
 
 # -----------------------------------------------------------

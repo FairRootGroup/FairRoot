@@ -29,9 +29,10 @@ using std::endl;
 ClassImp(FairGeoVolume)
 
 FairGeoVolume::FairGeoVolume(FairGeoVolume& r)
-  : shape(""),
+  : TNamed(r),
+    shape(""),
     mother(""),
-    points(0),
+    points(NULL),
     transform(FairGeoTransform()),
     fLabTransform(FairGeoTransform()),
     fMedium(0),
@@ -40,7 +41,7 @@ FairGeoVolume::FairGeoVolume(FairGeoVolume& r)
     fgMCid(0)
 {
   // copy constructor
-  fName=r.GetName();
+  //  fName=r.GetName();
   setVolumePar(r);
 }
 

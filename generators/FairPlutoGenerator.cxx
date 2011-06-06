@@ -18,10 +18,18 @@
 
 // -----   Default constructor   ------------------------------------------
 FairPlutoGenerator::FairPlutoGenerator()
+  :FairGenerator(),
+   iEvent(0),
+   fFileName(NULL),
+   fInputFile(NULL),
+   fInputTree(NULL),
+   fParticles(NULL)
 {
+  /*
   iEvent     = 0;
   fInputFile = NULL;
   fInputTree = NULL;
+  */
 }
 // ------------------------------------------------------------------------
 
@@ -29,12 +37,20 @@ FairPlutoGenerator::FairPlutoGenerator()
 
 // -----   Standard constructor   -----------------------------------------
 FairPlutoGenerator::FairPlutoGenerator(const Char_t* fileName)
+  :FairGenerator(),
+   iEvent(0),
+   fFileName(fileName),
+   fInputFile(new TFile(fileName)),
+   fInputTree(NULL),
+   fParticles(new TClonesArray("PParticle",100))
 {
+  /*
   iEvent     = 0;
   fFileName  = fileName;
   fInputFile = new TFile(fFileName);
+  */
   fInputTree = (TTree*) fInputFile->Get("data");
-  fParticles = new TClonesArray("PParticle",100);
+  //  fParticles = new TClonesArray("PParticle",100);
   fInputTree->SetBranchAddress("Particles", &fParticles);
 }
 // ------------------------------------------------------------------------

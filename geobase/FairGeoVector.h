@@ -15,8 +15,10 @@ class FairGeoVector : public TObject
     Double_t z;
     inline void round(Double_t d,Int_t n);
   public:
-    FairGeoVector(Double_t dx=0,Double_t dy=0,Double_t dz=0) : x(dx),y(dy),z(dz) {}
-    FairGeoVector(const FairGeoVector& v) : x(v.getX()), y(v.getY()), z(v.getZ()) {}
+    FairGeoVector(Double_t dx=0,Double_t dy=0,Double_t dz=0)
+      : TObject(),x(dx),y(dy),z(dz) {}
+    FairGeoVector(const FairGeoVector& v)
+      : TObject(v),x(v.getX()), y(v.getY()), z(v.getZ()) {}
     ~FairGeoVector() {}
     Double_t& X() {return x;}
     Double_t& Y() {return y;}

@@ -32,7 +32,8 @@
 ClassImp(FairGeoTrd1)
 
 FairGeoTrd1::FairGeoTrd1()
-  :intrinsicRot(FairGeoRotation())
+  :FairGeoBasicShape(),
+   intrinsicRot(FairGeoRotation())
 {
   // constructor
   fName="TRD1";

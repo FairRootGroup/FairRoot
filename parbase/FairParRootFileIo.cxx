@@ -40,21 +40,25 @@ ClassImp(FairParRootFileIo)
 
 FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option,
                                  const Text_t* ftitle, Int_t compress)
-  :TNamed(fname,  ftitle)
+  :TNamed(fname,  ftitle),
+   RootFile(new TFile(fname,option,ftitle,compress)),
+   run(NULL)
 {
 //              : TFile(fname,option,ftitle,compress) {
   // constructor opens a ROOT file
-  RootFile=new TFile(fname,option,ftitle,compress);
-  run=0;
+  //  RootFile=new TFile(fname,option,ftitle,compress);
+  //run=0;
 }
 FairParRootFile::FairParRootFile(TFile* f)
-  :TNamed(f->GetName(), f->GetTitle())
+  :TNamed(f->GetName(), f->GetTitle()),
+   RootFile(f),
+   run(NULL)
 {
 //  :TFile(f->GetName(),"UPDATE"){
   // constructor opens a ROOT file
   //RootFile=new TFile(f->GetName(),"UPDATE");
-  RootFile=f;
-  run=0;
+  //  RootFile=f;
+  //  run=0;
 }
 
 
@@ -63,6 +67,7 @@ FairParRootFile::~FairParRootFile()
   // destructor
   if (run) { delete run; }
   run=0;
+  //TODO: What about the file? Should it be closed or not
 }
 
 void FairParRootFile::readVersions(FairRtdbRun* currentRun)
@@ -75,18 +80,23 @@ void FairParRootFile::readVersions(FairRtdbRun* currentRun)
 
 
 FairParRootFileIo::FairParRootFileIo()
+  :FairParIo(),
+   file(NULL),
+   fMerging(kFALSE)
 {
   // constructor
-  file=0;
-  fMerging=kFALSE;
-
+  //  file=0;
+  //  fMerging=kFALSE;
 }
 
 FairParRootFileIo::FairParRootFileIo(Bool_t merged)
+  :FairParIo(),
+   file(NULL),
+   fMerging(merged)
 {
   // constructor
-  file=0;
-  fMerging=merged;
+  //  file=0;
+  //  fMerging=merged;
 
 }
 

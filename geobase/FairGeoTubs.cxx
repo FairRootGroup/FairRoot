@@ -35,6 +35,7 @@
 ClassImp(FairGeoTubs)
 
 FairGeoTubs::FairGeoTubs()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="TUBS";

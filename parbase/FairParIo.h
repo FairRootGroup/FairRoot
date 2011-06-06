@@ -43,6 +43,10 @@ class FairParIo : public TObject
     void setAutoWritable(Bool_t f=kTRUE) {autoWritable=f;}
     Bool_t isAutoWritable() {return autoWritable;}
 
+  private:
+    FairParIo(const FairParIo&);
+    FairParIo& operator=(const FairParIo&);
+
     ClassDef(FairParIo,0) // Base class for all parameter I/Os
 };
 

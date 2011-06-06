@@ -44,8 +44,8 @@ class FairRadGridManager
 
   private:
 
-    FairRadGridManager(const FairRadGridManager& L);
-    FairRadGridManager& operator= (const FairRadGridManager&) {return *this;}
+    FairRadGridManager(const FairRadGridManager&);
+    FairRadGridManager& operator=(const FairRadGridManager&);
 
     static FairRadGridManager* fgInstance;
 

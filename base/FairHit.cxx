@@ -9,7 +9,8 @@
 
 // -----   Default constructor   -------------------------------------------
 FairHit::FairHit()
-  : fDx(0),
+  : FairBasePoint(),
+    fDx(0),
     fDy(0),
     fDz(0),
     fRefIndex(-1)

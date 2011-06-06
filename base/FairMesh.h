@@ -98,8 +98,12 @@ class FairMesh : public TObject
     TH2D* fMeshFlu; // !mesh
     TH2D* fMeshSEU; // !mesh
     TString fhname; // !mesh
-    ClassDef(FairMesh,1);
 
+  private:
+    FairMesh(const FairMesh&);
+    FairMesh& operator=(const FairMesh&);
+
+    ClassDef(FairMesh,1);
 
 };
 

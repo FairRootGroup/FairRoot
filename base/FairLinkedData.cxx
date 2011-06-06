@@ -9,7 +9,7 @@
 
 ClassImp(FairLinkedData);
 
-FairLinkedData::FairLinkedData():fDefaultType(0)
+FairLinkedData::FairLinkedData():TObject(),fDefaultType(0)
 {
   // TODO Auto-generated constructor stub
 

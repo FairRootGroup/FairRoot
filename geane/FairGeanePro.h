@@ -17,8 +17,8 @@ class FairTrackParP;
 class FairTrackParH;
 class FairField;
 class FairGeaneApplication;
-class FairGeanePro : public TNamed
 
+class FairGeanePro : public TNamed
 {
 
   public:
@@ -108,6 +108,10 @@ class FairGeanePro : public TNamed
     Int_t flag;
     FairGeaneApplication* fApp;
     Double_t trpmat[5][5];
+
+    FairGeanePro(const FairGeanePro&);
+    FairGeanePro& operator=(const FairGeanePro&);
+
     ClassDef(FairGeanePro,1);
 };
 

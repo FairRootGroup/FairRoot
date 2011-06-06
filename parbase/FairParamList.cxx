@@ -2,6 +2,8 @@
 //*-- Last modified : 28/01/2009 by Ilse Koenig
 
 #include "FairParamList.h"
+#include "FairLogger.h"
+
 #include "TClass.h"
 #include "TStreamerInfo.h"
 #include "RVersion.h"
@@ -86,123 +88,177 @@ ClassImp(FairParamObj)
 ClassImp(FairParamList)
 
 FairParamObj::FairParamObj(const Text_t* name)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(0),
+   paramType("UChar_t"),
+   basicType(kFALSE),
+   bytesPerValue(1),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
-  // Default constructor with type "UChar_t"
-  SetName(name);
-  paramValue=0;
-  arraySize=0;
-  paramType="UChar_t";
-  basicType=kFALSE;
-  bytesPerValue=1;
-  classVersion=-1;
-  streamerInfo=0;
-  streamerInfoSize=0;
 }
 
 FairParamObj::FairParamObj(FairParamObj& o)
+  :TNamed(o),
+   paramValue(NULL),
+   arraySize(o.arraySize),
+   paramType(o.paramType),
+   basicType(o.basicType),
+   bytesPerValue(o.bytesPerValue),
+   classVersion(o.classVersion),
+   streamerInfo(NULL),
+   streamerInfoSize(o.streamerInfoSize)
 {
-  // Copy constructor
-  SetName(o.GetName());
-  arraySize=o.getLength();
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,o.getParamValue(),arraySize);
-  paramType=o.getParamType();
-  if (o.isBasicType()) { basicType=kTRUE; }
-  else { basicType=kFALSE; }
-  bytesPerValue=o.getBytesPerValue();
-  classVersion=o.getClassVersion();
-  streamerInfoSize=o.getStreamerInfoSize();
   if (streamerInfoSize>0) {
     memcpy(streamerInfo,o.getStreamerInfo(),streamerInfoSize);
   }
 }
 
 FairParamObj::FairParamObj(const Text_t* name,Int_t value)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(Int_t)),
+   paramType("Int_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Int_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
-  // Constructor for an Int_t value
-  SetName(name);
-  setParamType("Int_t");
-  arraySize=bytesPerValue;
+  // Constructor for a Int_t value
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,&value,arraySize);
 }
 
 FairParamObj::FairParamObj(const Text_t* name,Float_t value)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(Float_t)),
+   paramType("Float_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Float_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
   // Constructor for a Float_t value
-  SetName(name);
-  setParamType("Float_t");
-  arraySize=bytesPerValue;
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,&value,arraySize);
 }
 
 FairParamObj::FairParamObj(const Text_t* name,Double_t value)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(Double_t)),
+   paramType("Double_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Double_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
-  // Constructor for a Float_t value
-  SetName(name);
-  setParamType("Double_t");
-  arraySize=bytesPerValue;
+  // Constructor for a Double_t value
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,&value,arraySize);
 }
 
 FairParamObj::FairParamObj(const Text_t* name,const Int_t* value,const Int_t nValues)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(Int_t)*nValues),
+   paramType("Int_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Int_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
   // Constructor for an array with nValues elements of type Int_t
-  SetName(name);
-  setParamType("Int_t");
-  arraySize=bytesPerValue*nValues;
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,value,arraySize);
 }
 
+
 FairParamObj::FairParamObj(const Text_t* name,const Float_t* value,const Int_t nValues)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(Float_t)*nValues),
+   paramType("Float_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Float_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
   // Constructor for an array with nValues elements of type Float_t
-  SetName(name);
-  setParamType("Float_t");
-  arraySize=bytesPerValue*nValues;
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,value,arraySize);
 }
 
 FairParamObj::FairParamObj(const Text_t* name,const Double_t* value,const Int_t nValues)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(Double_t)*nValues),
+   paramType("Double_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Double_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
   // Constructor for an array with nValues elements of type Double_t
-  SetName(name);
-  setParamType("Double_t");
-  arraySize=bytesPerValue*nValues;
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,value,arraySize);
 }
 
 FairParamObj::FairParamObj(const Text_t* name,const Text_t* value)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(strlen(value)),
+   paramType("Text_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Char_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
   // Constructor for a string value
-  SetName(name);
-  setParamType("Text_t");
-  arraySize=strlen(value);
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,value,arraySize);
 }
 
+
 FairParamObj::FairParamObj(const Text_t* name,const Char_t* value,const Int_t nValues)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(Char_t)*nValues),
+   paramType("Char_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Char_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
   // Constructor for an array with nValues elements of type Char_t
-  SetName(name);
-  setParamType("Char_t");
-  arraySize=bytesPerValue*nValues;
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,value,arraySize);
 }
 
 FairParamObj::FairParamObj(const Text_t* name,const UChar_t* value,const Int_t nValues)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(UChar_t)*nValues),
+   paramType("UChar_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(UChar_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
 {
-  // Constructor for an array with nValues elements of type UChar_t
-  SetName(name);
-  setParamType("UChar_t");
-  arraySize=bytesPerValue*nValues;
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,value,arraySize);
 }
@@ -368,9 +424,12 @@ template <class type> void FairParamObj::printData(type* val, Int_t nParams)
 //-----------------------------------------------------------------------------------
 
 FairParamList::FairParamList()
+  :TObject(),
+   paramList(new TList()),
+   fLogger(FairLogger::GetLogger())
 {
   // Constructor
-  paramList=new TList;
+  //  paramList=new TList;
 }
 
 FairParamList::~FairParamList()
@@ -546,10 +605,12 @@ Bool_t FairParamList::fill(const Text_t* name,Text_t* value,const Int_t length)
       value[l]='\0';
       return kTRUE;
     } else {
-      Error("FairParamList::fill(const Text_t*,Text_t*)","char array too small");
+      fLogger->Error(MESSAGE_ORIGIN,"char array too small");
+      //      Error("FairParamList::fill(const Text_t*,Text_t*)","char array too small");
     }
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
 
@@ -566,11 +627,13 @@ Bool_t FairParamList::fill(const Text_t* name,UChar_t* values,const Int_t nValue
       memcpy(values,o->getParamValue(),n);
       return kTRUE;
     } else {
-      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
+      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
       return kFALSE;
     }
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
 
@@ -588,11 +651,13 @@ Bool_t FairParamList::fill(const Text_t* name,Int_t* values,const Int_t nValues)
       memcpy(values,o->getParamValue(),l);
       return kTRUE;
     } else {
-      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
+      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
       return kFALSE;
     }
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
 
@@ -610,11 +675,13 @@ Bool_t FairParamList::fill(const Text_t* name,Float_t* values,const Int_t nValue
       memcpy(values,o->getParamValue(),l);
       return kTRUE;
     } else {
-      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
+      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
       return kFALSE;
     }
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
 
@@ -632,11 +699,13 @@ Bool_t FairParamList::fill(const Text_t* name,Double_t* values,const Int_t nValu
       memcpy(values,o->getParamValue(),l);
       return kTRUE;
     } else {
-      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
+      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
       return kFALSE;
     }
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
 
@@ -653,7 +722,8 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayI* value)
     memcpy(value->GetArray(),o->getParamValue(),l);
     return kTRUE;
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
 
@@ -669,7 +739,8 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayC* value)
     memcpy(value->GetArray(),o->getParamValue(),l);
     return kTRUE;
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
 
@@ -686,7 +757,8 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayF* value)
     memcpy(value->GetArray(),o->getParamValue(),l);
     return kTRUE;
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
 
@@ -703,7 +775,8 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayD* value)
     memcpy(value->GetArray(),o->getParamValue(),l);
     return kTRUE;
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
 
@@ -719,7 +792,8 @@ Int_t FairParamList::replace(const Text_t* name,UChar_t* values)
     memcpy(values,o->getParamValue(),l);
     return l;
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return 0;
 }
 
@@ -736,7 +810,8 @@ Int_t FairParamList::replace(const Text_t* name,Int_t* values)
     memcpy(values,o->getParamValue(),l);
     return n;
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return 0;
 }
 
@@ -753,7 +828,8 @@ Int_t FairParamList::replace(const Text_t* name,Float_t* values)
     memcpy(values,o->getParamValue(),l);
     return n;
   }
-  Error("FairParamList::fill \nNot found: ",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: ",name);
   return 0;
 }
 
@@ -770,7 +846,8 @@ Int_t FairParamList::replace(const Text_t* name,Double_t* values)
     memcpy(values,o->getParamValue(),l);
     return n;
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return 0;
 }
 
@@ -782,10 +859,12 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
   if (!obj) { return 0; }
   FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
   if (o!=0 && strcmp(o->getParamType(),obj->IsA()->GetName())==0) {
-    if (o->getClassVersion()!=obj->IsA()->GetClassVersion())
-      Warning("FairParamList::fill",
-              "\n       Read Class Version = %i does not match actual version = %i",
-              o->getClassVersion(),obj->IsA()->GetClassVersion());
+    if (o->getClassVersion()!=obj->IsA()->GetClassVersion()) {
+      fLogger->Warning(MESSAGE_ORIGIN,"Read Class Version = %i does not match actual version = %i",o->getClassVersion(),obj->IsA()->GetClassVersion());
+    }
+    //      Warning("FairParamList::fill",
+    //              "\n       Read Class Version = %i does not match actual version = %i",
+    //              o->getClassVersion(),obj->IsA()->GetClassVersion());
     TFile* filesave=gFile;
     gFile=0;
 #if ROOT_VERSION_CODE  > ROOT_VERSION(4,4,2)
@@ -811,7 +890,8 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
       TIter next(&list);
       while ((info = (TStreamerInfo*)next())) {
         if (info->IsA() != TStreamerInfo::Class()) {
-          Warning("FairParamList::fill","not a TStreamerInfo object");
+          fLogger->Warning(MESSAGE_ORIGIN,"Not a TStreamerInfo object");
+          //          Warning("FairParamList::fill","not a TStreamerInfo object");
           continue;
         }
         info->BuildCheck();
@@ -832,6 +912,7 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
     gFile=filesave;
     return len;
   }
-  Error("FairParamList::fill \nNot found: %s",name);
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
   return 0;
 }

@@ -23,8 +23,8 @@ class FairVolumeList : public TObject
 {
   private:
     TObjArray* fData;
-    FairVolumeList(const FairVolumeList& L);
-    FairVolumeList& operator= (const FairVolumeList&) {return *this;}
+    FairVolumeList(const FairVolumeList&);
+    FairVolumeList& operator=(const FairVolumeList&);
 
   public:
     FairVolumeList();

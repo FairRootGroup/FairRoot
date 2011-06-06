@@ -16,11 +16,13 @@ ClassImp(FairMCTracksEditor)
 
 //______________________________________________________________________________
 FairMCTracksEditor::FairMCTracksEditor(const TGWindow* p, Int_t width, Int_t height,
-                                       UInt_t options, Pixel_t back) :
-  TGedFrame(p, width, height, options | kVerticalFrame, back)
+                                       UInt_t options, Pixel_t back)
+  : TGedFrame(p, width, height, options | kVerticalFrame, back),
+    fObject(NULL),
+    fManager(FairEventManager::Instance())
 {
   // Resize(width, height);
-  fManager= FairEventManager::Instance();
+  //  fManager= FairEventManager::Instance();
 
   MakeTitle("FairEventManager  Editor");
 

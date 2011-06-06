@@ -24,6 +24,7 @@
 ClassImp(FairGeoBrik)
 
 FairGeoBrik::FairGeoBrik()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="BOX ";

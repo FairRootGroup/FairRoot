@@ -28,16 +28,17 @@ FairGeoLoader* FairGeoLoader::Instance()
 }
 //_____________________________________________________________________________
 FairGeoLoader::FairGeoLoader()
-  :fInterface(0),
-   fGeoBuilder(0)
+  :TNamed(),
+   fInterface(NULL),
+   fGeoBuilder(NULL)
 {
   fgInstance=this;
 }
 //_____________________________________________________________________________
 FairGeoLoader::FairGeoLoader(const char* Name, const char* title)
   :TNamed(Name,title),
-   fInterface(0),
-   fGeoBuilder(0)
+   fInterface(NULL),
+   fGeoBuilder(NULL)
 {
   if (fgInstance) {
     Fatal("FairGeoLoader", "Singleton instance already exists.");

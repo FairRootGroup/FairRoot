@@ -15,7 +15,8 @@ using std::endl;
 
 // -----   Default constructor   ------------------------------------------
 FairAsciiGenerator::FairAsciiGenerator()
-  :fInputFile(0),
+  :FairGenerator(),
+   fInputFile(NULL),
    fFileName("")
 {
 }
@@ -25,10 +26,11 @@ FairAsciiGenerator::FairAsciiGenerator()
 
 // -----   Standard constructor   -----------------------------------------
 FairAsciiGenerator::FairAsciiGenerator(const char* fileName)
-  :fInputFile(0),
-   fFileName( fileName)
+  :FairGenerator(),
+   fInputFile(0),
+   fFileName(fileName)
 {
-  fFileName  = fileName;
+  //  fFileName  = fileName;
   cout << "-I FairAsciiGenerator: Opening input file " << fileName << endl;
   fInputFile = new ifstream(fFileName);
   if ( ! fInputFile->is_open() ) {

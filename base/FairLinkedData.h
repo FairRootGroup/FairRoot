@@ -36,7 +36,7 @@ class FairLinkedData : public TObject
      * Constructor
      * \param defaultType an Int_t which is used if no type argument is given in SetLink and Add Link
      */
-    FairLinkedData(Int_t defaultType):fDefaultType(defaultType) {}
+    FairLinkedData(Int_t defaultType):TObject(),fDefaultType(defaultType) {}
     virtual ~FairLinkedData();
 
 

@@ -24,16 +24,25 @@ using std::pair;
 
 // -----   Default constructor   -------------------------------------------
 FairStack::FairStack(Int_t size)
+  : FairGenericStack(),
+    fStack(),
+    fParticles(new TClonesArray("TParticle", size)),
+    fTracks(new TClonesArray("FairMCTrack", size)),
+    fStoreMap(),
+    fStoreIter(),
+    fIndexMap(),
+    fIndexIter(),
+    fPointsMap(),
+    fCurrentTrack(-1),
+    fNPrimaries(0),
+    fNParticles(0),
+    fNTracks(0),
+    fIndex(0),
+    fStoreSecondaries(kTRUE),
+    fMinPoints(1),
+    fEnergyCut(0.),
+    fStoreMothers(kTRUE)
 {
-  fParticles = new TClonesArray("TParticle", size);
-  fTracks    = new TClonesArray("FairMCTrack", size);
-  fCurrentTrack = -1;
-  fNPrimaries = fNParticles = fNTracks = 0;
-  fIndex = 0;
-  fStoreSecondaries = kTRUE;
-  fMinPoints        = 1;
-  fEnergyCut        = 0.;
-  fStoreMothers     = kTRUE;
 }
 
 // -------------------------------------------------------------------------

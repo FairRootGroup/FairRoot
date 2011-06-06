@@ -26,15 +26,25 @@ const Double_t kProtonMass = 0.938271998;
 
 
 // -----   Default constructor   ------------------------------------------
-FairUrqmdGenerator::FairUrqmdGenerator() { }
+FairUrqmdGenerator::FairUrqmdGenerator()
+  :FairGenerator(),
+   fInputFile(NULL),
+   fParticleTable(),
+   fFileName(NULL)
+{
+}
 // ------------------------------------------------------------------------
 
 
 
 // -----   Standard constructor   -----------------------------------------
 FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName)
+  :FairGenerator(),
+   fInputFile(NULL),
+   fParticleTable(),
+   fFileName(fileName)
 {
-  fFileName = fileName;
+  //  fFileName = fileName;
   cout << "-I FairUrqmdGenerator: Opening input file " << fileName << endl;
   fInputFile = fopen(fFileName, "r");
   if ( ! fInputFile ) { Fatal("FairUrqmdgenerator","Cannot open input file."); }

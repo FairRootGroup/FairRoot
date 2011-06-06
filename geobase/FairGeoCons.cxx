@@ -38,6 +38,7 @@
 ClassImp(FairGeoCons)
 
 FairGeoCons::FairGeoCons()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="CONS";

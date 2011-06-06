@@ -23,24 +23,27 @@ using std::endl;
 
 ClassImp(FairTrackParH)
 
-FairTrackParH::FairTrackParH() :
-  FairTrackPar(),
-  fLm (0.),
-  fPhi (0.),
-  fX_sc (0.),
-  fY_sc (0.),
-  fZ_sc (0.),
-  fDLm(0.),
-  fDPhi(0.),
-  fDX_sc(0.),
-  fDY_sc(0.),
-  fDZ_sc(0.)
+FairTrackParH::FairTrackParH()
+  : FairTrackPar(),
+    fLm (0.),
+    fPhi (0.),
+    fDLm(0.),
+    fDPhi(0.),
+    fX_sc (0.),
+    fY_sc (0.),
+    fZ_sc (0.),
+    fDX_sc(0.),
+    fDY_sc(0.),
+    fDZ_sc(0.),
+    cLm(0.),
+    sLm(0.),
+    cphi(0.),
+    sphi(0.)
 {
-
   for(Int_t i=0; i<15; i++)  {
     fCovMatrix[i]=0;
   }
-  for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) { fCovMatrix66[i][j] = 0; }
+  for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) { fCovMatrix66[i][j] = 0.; }
 
 }
 
@@ -48,11 +51,27 @@ FairTrackParH::FairTrackParH() :
 FairTrackParH::FairTrackParH(Double_t x, Double_t y, Double_t z,
                              Double_t lm, Double_t phi, Double_t qp,
                              Double_t CovMatrix[15])
-  : FairTrackPar()
+  : FairTrackPar(),
+    fLm (lm),
+    fPhi (phi),
+    fDLm(0.),
+    fDPhi(0.),
+    fX_sc (x),
+    fY_sc (y),
+    fZ_sc (z),
+    fDX_sc(0.),
+    fDY_sc(0.),
+    fDZ_sc(0.),
+    cLm(TMath::Cos(lm)),
+    sLm(TMath::Sin(lm)),
+    cphi(TMath::Cos(phi)),
+    sphi(TMath::Sin(phi))
 {
 
+  /*
   fLm = lm;
   fPhi = phi;
+  */
   fQp = qp;
   Double_t P  = TMath::Abs(1/fQp);
   //fq= int (P * fQp);
@@ -60,20 +79,22 @@ FairTrackParH::FairTrackParH(Double_t x, Double_t y, Double_t z,
   for(Int_t i=0; i<15; i++)  {
     fCovMatrix[i]=CovMatrix[i];
   }
-
+  /*
   cLm= TMath::Cos(fLm);
   sLm= TMath::Sin(fLm);
   cphi= TMath::Cos(fPhi);
   sphi= TMath::Sin(fPhi);
-
+  */
   fPx = P * cLm* cphi;
   fPy = P * cLm* sphi;
   fPz = P * sLm;
 
 
+  /*
   fX_sc   = x;
   fY_sc   = y;
   fZ_sc   = z;
+  */
 
   fX =fX_sc*cLm*cphi -fY_sc*sphi -fZ_sc*cphi*sLm;
   fY =fX_sc*cLm*sphi +fY_sc*cphi -fZ_sc*sphi*sLm;
@@ -82,7 +103,7 @@ FairTrackParH::FairTrackParH(Double_t x, Double_t y, Double_t z,
   fDQp  = TMath::Sqrt(fabs(fCovMatrix[0]));
   fDLm  = TMath::Sqrt(fabs(fCovMatrix[5]));
   fDPhi = TMath::Sqrt(fabs(fCovMatrix[9]));
-  fDX_sc   = 0;
+  fDX_sc   = 0.;
   fDY_sc   = TMath::Sqrt(fabs(fCovMatrix[12]));
   fDZ_sc   = TMath::Sqrt(fabs(fCovMatrix[14]));
 
@@ -122,7 +143,21 @@ FairTrackParH::FairTrackParH(Double_t x, Double_t y, Double_t z,
 
 //constructor in LAB
 FairTrackParH::FairTrackParH(TVector3 pos, TVector3 Mom, TVector3 posErr, TVector3 MomErr, Int_t q)
-  : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),q)
+  : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),q),
+    fLm (0.),
+    fPhi (0.),
+    fDLm(0.),
+    fDPhi(0.),
+    fX_sc (0.),
+    fY_sc (0.),
+    fZ_sc (0.),
+    fDX_sc(0.),
+    fDY_sc(0.),
+    fDZ_sc(0.),
+    cLm(0.),
+    sLm(0.),
+    cphi(0.),
+    sphi(0.)
 {
   Reset();
   SetPx(Mom.x());
@@ -201,7 +236,22 @@ FairTrackParH::FairTrackParH(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
 
 }
 
-FairTrackParH::FairTrackParH(FairTrackParP* parab, Int_t& ierr)   : FairTrackPar()
+FairTrackParH::FairTrackParH(FairTrackParP* parab, Int_t& ierr)
+  : FairTrackPar(),
+    fLm (0.),
+    fPhi (0.),
+    fDLm(0.),
+    fDPhi(0.),
+    fX_sc (0.),
+    fY_sc (0.),
+    fZ_sc (0.),
+    fDX_sc(0.),
+    fDY_sc(0.),
+    fDZ_sc(0.),
+    cLm(0.),
+    sLm(0.),
+    cphi(0.),
+    sphi(0.)
 {
 
   // q/p, v', w' --> q/p, lambda, phi
@@ -462,6 +512,21 @@ void FairTrackParH::CalCov()
 }
 
 FairTrackParH::FairTrackParH(FairTrackPar& Trkbase)
+  : FairTrackPar(Trkbase),
+    fLm (0.),
+    fPhi (0.),
+    fDLm(0.),
+    fDPhi(0.),
+    fX_sc (0.),
+    fY_sc (0.),
+    fZ_sc (0.),
+    fDX_sc(0.),
+    fDY_sc(0.),
+    fDZ_sc(0.),
+    cLm(0.),
+    sLm(0.),
+    cphi(0.),
+    sphi(0.)
 {
   cout << "FairTrackParH::FairTrackParH(FairTrackPar &Trkbase)"     << endl;
   Reset();

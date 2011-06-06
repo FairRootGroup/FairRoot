@@ -31,8 +31,8 @@ class FairGeoLoader : public TNamed
     static FairGeoLoader* Instance();
 
   private:
-    FairGeoLoader(const FairGeoLoader& L);
-    FairGeoLoader& operator= (const FairGeoLoader&) {return *this;}
+    FairGeoLoader(const FairGeoLoader&);
+    FairGeoLoader& operator=(const FairGeoLoader&);
     static FairGeoLoader*  fgInstance;//!  /**Singleton instance*/
     FairGeoInterface*    fInterface; //!  /** Hades Geometry Interface*/
     FairGeoBuilder*    fGeoBuilder; //!   /**Geometry builder*/

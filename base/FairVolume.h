@@ -27,8 +27,8 @@ class FairVolume : public TNamed
     FairVolume(TString name, Int_t id=0, Int_t detid=0,FairModule* fMod=0);
     virtual ~FairVolume();
 
-    const char*  GetName() { return fName.Data();}
-    TString getName() { return fName;}
+    //    const char*  GetName() { return fName.Data();}
+    //    TString getName() { return fName;}
 
     void setRealName( TString name ) { fRealName = name;}
     const char* getRealName() { return fRealName.Data();}
@@ -53,10 +53,10 @@ class FairVolume : public TNamed
 
 
   private:
-    FairVolume(const FairVolume& V);
-    FairVolume& operator= (const FairVolume&) {return *this;}
+    FairVolume(const FairVolume&);
+    FairVolume& operator=(const FairVolume&);
 
-    TString fName;   /**Volume Name in MC*/
+    //    TString fName;   /**Volume Name in MC*/
     TString fRealName; /**Volume Name in ASCII file*/
     Int_t fVolumeId;       /**Volume Id in GeoManager*/
     Int_t fModId;          /**Module Id in which this volume exist*/

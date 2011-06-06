@@ -37,6 +37,7 @@ class FairGeoMedium  : public TNamed
     Double_t* rindex;     //[npckov] /** Refraction index*/
   public:
     FairGeoMedium(const char* name="");
+    FairGeoMedium& operator=(const FairGeoMedium&) {return *this;}
     ~FairGeoMedium();
     void setMediumIndex(Int_t i) {medId=i;}
     Int_t getMediumIndex() {return medId;}
@@ -68,9 +69,11 @@ class FairGeoMedium  : public TNamed
     void print();
     void write (fstream&);
     Bool_t calcRadiationLength();
-//private:
-//  FairGeoMedium(const FairGeoMedium &L);
-//  FairGeoMedium& operator= (const FairGeoMedium&) {return *this;}
+  private:
+    FairGeoMedium(const FairGeoMedium&);
+    //TODO: correct copy constructor for FairGeoMedium
+    //    FairGeoMedium& operator=(const FairGeoMedium&);
+
     ClassDef(FairGeoMedium,1) //
 };
 

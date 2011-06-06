@@ -25,10 +25,11 @@ using std::ios;
 ClassImp(FairGeoOldAsciiIo)
 
 FairGeoOldAsciiIo::FairGeoOldAsciiIo()
-  : filename(""),
+  : FairGeoIo(),
+    filename(""),
     filedir(""),
     writable(kFALSE),
-    file(0)
+    file(NULL)
 {
   // Constructor
 }

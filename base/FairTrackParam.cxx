@@ -13,14 +13,15 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairTrackParam::FairTrackParam()
-  : fX(0),
+  : TObject(),
+    fX(0),
     fY(0),
     fZ(0),
     fTx(0),
     fTy(0),
     fQp(0)
 {
-  fX = fY = fZ = fTx = fTy = fQp = 0.;
+  //  fX = fY = fZ = fTx = fTy = fQp = 0.;
   for (int i=0; i<15; i++) { fCovMatrix[i] = 0; }
 }
 // -------------------------------------------------------------------------
@@ -31,7 +32,8 @@ FairTrackParam::FairTrackParam()
 FairTrackParam::FairTrackParam(Double_t x, Double_t y, Double_t z,
                                Double_t tx, Double_t ty, Double_t qp,
                                const TMatrixFSym& covMat)
-  : fX(x),
+  : TObject(),
+    fX(x),
     fY(y),
     fZ(z),
     fTx(tx),
@@ -46,7 +48,8 @@ FairTrackParam::FairTrackParam(Double_t x, Double_t y, Double_t z,
 // -------------------------------------------------------------------------
 // -----   Copy Constructor             -----------------------------------
 FairTrackParam::FairTrackParam(const FairTrackParam& param)
-  : fX(param.GetX()),
+  : TObject(param),
+    fX(param.GetX()),
     fY(param.GetY()),
     fZ(param.GetZ()),
     fTx(param.GetTx()),

@@ -35,6 +35,7 @@
 ClassImp(FairGeoCone)
 
 FairGeoCone::FairGeoCone()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="CONE";

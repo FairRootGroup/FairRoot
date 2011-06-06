@@ -26,43 +26,60 @@ using std::cout;
 using std::endl;
 
 // -----   Default constructor   -------------------------------------------
-FairGeanePro::FairGeanePro() : TNamed("Geane", "Propagate Tracks")
+FairGeanePro::FairGeanePro()
+  : TNamed("Geane", "Propagate Tracks"),
+    gMC3((TGeant3*) gMC),
+    fPropOption(""),
+    nepred(1),
+    fdbPDG(TDatabasePDG::Instance()),
+    afErtrio(gMC3->fErtrio),
+    GeantCode(0),
+    ProMode(0),
+    VName(""),
+    VCopyNo(0),
+    VEnter(kTRUE),
+    fpoint(TVector3(0., 0., 0.)),
+    fwire1(TVector3(0., 0., 0.)),
+    fwire2(TVector3(0., 0., 0.)),
+    fPCA(0),
+    fRad(0.),
+    fDi(0.),
+    fvpf(TVector3(0., 0., 0.)),
+    fvwi(TVector3(0., 0., 0.)),
+    ftrklength(0.),
+    flag(0),
+    fApp(FairGeaneApplication::Instance())
 {
-  gMC3 = (TGeant3*) gMC;
   if(gMC3==NULL) {
     std::cerr<<"FairGeanePro::TGeant3 has not been initialized! ABORTING!"<<std::endl;
     throw;
   }
-  nepred=1;
+  //  nepred=1;
   xlf[0] = 0.;
-  fdbPDG= TDatabasePDG::Instance();
+  //  fdbPDG= TDatabasePDG::Instance();
   //  fErrorMat= new TArrayD(15);
-  afErtrio=gMC3->fErtrio;
+  //  afErtrio=gMC3->fErtrio;
   // Pos=TVector3(0,  0 , 0);
   // PosErr = TVector3(0,0,0);
   // Mom=TVector3(0,0,0);
   // fTrkPar= new FairTrackPar();
-  ProMode=0;
+  //  ProMode=0;
   //   FairRunAna *fRun= FairRunAna::Instance();
   //   fField= fRun->GetField();
 
   // PCA stuff
-  fPCA = 0;
+  //  fPCA = 0;
+  /*
   fpoint = TVector3(0., 0., 0.);
   fwire1 = TVector3(0., 0., 0.);
   fwire2 = TVector3(0., 0., 0.);
-  fRad = 0;
-  fDi = 0;
-  ftrklength = 0;
-  flag = 0;
-  fvpf = TVector3(0., 0., 0.);
-  fvwi = TVector3(0., 0., 0.);
+  */
 
   for(int i = 0; i < 5; i++) for(int j = 0; j < 5; j++) { trpmat[i][j] = 0.; }
 
-  fApp = FairGeaneApplication::Instance();
+  //  fApp = FairGeaneApplication::Instance();
 
-  fPropOption = "";
+  //   fPropOption = "";
   for(int i = 0; i < 15; i++) {
     ein[i] = 0.;
     if(i < 3) {
@@ -93,10 +110,12 @@ FairGeanePro::FairGeanePro() : TNamed("Geane", "Propagate Tracks")
   plo[10] = 0.;
   plo[11] = 1.;
 
-  GeantCode = 0;
+  //  GeantCode = 0;
+  /*
   VName = "";
   VCopyNo = 0;
   VEnter = kTRUE;
+  */
 
 }
 

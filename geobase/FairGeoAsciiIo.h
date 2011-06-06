@@ -42,8 +42,8 @@ class FairGeoAsciiIo: public FairGeoIo
     Bool_t setSimulRefRun(const char*) {return kTRUE;}
     Bool_t setHistoryDate(const char*) {return kTRUE;}
   private:
-    FairGeoAsciiIo(const FairGeoAsciiIo& L);
-    FairGeoAsciiIo& operator= (const FairGeoAsciiIo&) {return *this;}
+    FairGeoAsciiIo(const FairGeoAsciiIo&);
+    FairGeoAsciiIo& operator=(const FairGeoAsciiIo&);
     ClassDef(FairGeoAsciiIo,0) // Class for geometry I/O from ASCII file
 };
 

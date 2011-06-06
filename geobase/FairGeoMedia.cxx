@@ -21,7 +21,8 @@ using std::endl;
 ClassImp(FairGeoMedia)
 
 FairGeoMedia::FairGeoMedia()
-  : media(new TList()),
+  : TNamed(),
+    media(new TList()),
     inputFile(""),
     author(""),
     description("")

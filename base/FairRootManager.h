@@ -128,8 +128,8 @@ class FairRootManager : public TObject
 
   private:
     /**private methods*/
-    FairRootManager(const FairRootManager& F);
-    FairRootManager& operator= (const FairRootManager&) {return *this;}
+    FairRootManager(const FairRootManager&);
+    FairRootManager& operator=(const FairRootManager&);
     /**  Set the branch address for a given branch name and return
         a TObject pointer, the user have to cast this pointer to the right type.*/
     TObject*            ActivateBranch(const char* BrName);

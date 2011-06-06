@@ -71,6 +71,9 @@ class FairUrqmdGenerator : public FairGenerator
         conversion map. Is called from the constructor. **/
     void ReadConversionTable();
 
+    FairUrqmdGenerator(const FairUrqmdGenerator&);
+    FairUrqmdGenerator& operator=(const FairUrqmdGenerator&);
+
     ClassDef(FairUrqmdGenerator,1);
 
 };

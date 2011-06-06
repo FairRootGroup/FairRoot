@@ -31,6 +31,10 @@ class FairParRootFile : public TNamed
   protected:
     TFile* RootFile;
 
+  private:
+    FairParRootFile(const FairParRootFile&);
+    FairParRootFile& operator=(const FairParRootFile&);
+
     ClassDef(FairParRootFile,0) // ROOT file for Parameter I/O
 
 };
@@ -66,6 +70,11 @@ class FairParRootFileIo : public FairParIo
     */
     Bool_t open(TFile* f);
     void setMerging( Bool_t io ) { fMerging=io;}
+
+  private:
+    FairParRootFileIo(const FairParRootFileIo&);
+    FairParRootFileIo& operator=(const FairParRootFileIo&);
+
     ClassDef(FairParRootFileIo,0) // Parameter I/O from ROOT files
 };
 

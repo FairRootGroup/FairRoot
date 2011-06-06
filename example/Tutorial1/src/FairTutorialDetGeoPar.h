@@ -26,6 +26,10 @@ class FairTutorialDetGeoPar       : public FairParGenericSet
     TObjArray* GetGeoSensitiveNodes() {return fGeoSensNodes;}
     TObjArray* GetGeoPassiveNodes()   {return fGeoPassNodes;}
 
+  private:
+    FairTutorialDetGeoPar(const FairTutorialDetGeoPar&);
+    FairTutorialDetGeoPar& operator=(const FairTutorialDetGeoPar&);
+
     ClassDef(FairTutorialDetGeoPar,1)
 };
 

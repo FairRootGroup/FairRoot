@@ -16,10 +16,13 @@
 ClassImp(FairParIo)
 
 FairParIo::FairParIo()
+  :TObject(),
+   detParIoList(new TList()),
+   autoWritable(kTRUE)
 {
   //default constructor creates an empty list of detector I/Os
-  detParIoList=new TList();
-  autoWritable=kTRUE;
+  //  detParIoList=new TList();
+  //  autoWritable=kTRUE;
 }
 
 FairParIo::~FairParIo()

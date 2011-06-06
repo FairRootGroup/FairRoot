@@ -35,8 +35,8 @@ enum EFairGeoNodeType {
 class FairGeoNode : public FairGeoVolume
 {
   private:
-    FairGeoNode(const FairGeoNode& L);
-    FairGeoNode& operator= (const FairGeoNode&) {return *this;}
+    FairGeoNode(const FairGeoNode&);
+    FairGeoNode& operator=(const FairGeoNode&);
   protected:
     Bool_t active;                /** in/out flag for creation */
     FairGeoTransform center;        /** position of the GEANT/ROOT center */

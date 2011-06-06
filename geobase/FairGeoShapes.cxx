@@ -48,7 +48,8 @@
 ClassImp(FairGeoShapes)
 
 FairGeoShapes::FairGeoShapes()
-  : shapes(new TList())
+  : TObject(),
+    shapes(new TList())
 {
   // constructor creates empty list of shapes
 

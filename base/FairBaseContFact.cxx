@@ -16,6 +16,7 @@ ClassImp(FairBaseContFact)
 static FairBaseContFact gFairBaseContFact;
 
 FairBaseContFact::FairBaseContFact()
+  :FairContFact()
 {
   // Constructor (called when the library is loaded)
   fName="FairBaseContFact";

@@ -22,7 +22,8 @@ class FairParGenericSet : public FairParSet
 
 
   protected:
-    FairParGenericSet() {}
+    FairParGenericSet()
+      : FairParSet() {}
     ClassDef(FairParGenericSet,1) // Base class for generic-style parameter containers
 };
 

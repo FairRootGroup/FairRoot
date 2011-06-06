@@ -21,34 +21,35 @@ ClassImp(FairParticle)
 const Double_t kProtonMass = 0.93827231;
 //_____________________________________________________________________________
 FairParticle::FairParticle(Int_t id, TParticle* particle)
-  : fpdg(id),
+  : TObject(),
+    fpdg(id),
     fParticle(particle),
     fMother(0),
     fDaughters(0),
     fname(particle->GetName()),
-    fmcType (kPTIon),
-    fmass  (0),
-    fcharge(0),
-    fDecayTime(0),
+    fmcType(kPTIon),
+    fmass(particle->GetMass()),
+    fcharge(particle->GetPDG()->Charge()),
+    fDecayTime(particle->GetPDG()->Lifetime()),
     fpType("Ion"),
-    fwidth(0),
-    fiSpin(0),
-    fiParity(0),
+    fwidth(particle->GetPDG()->Width()),
+    fiSpin((Int_t)particle->GetPDG()->Spin()),
+    fiParity(particle->GetPDG()->Parity()),
     fiConjugation(0),
-    fiIsospin(0),
+    fiIsospin((Int_t)particle->GetPDG()->Isospin()),
     fiIsospinZ(0),
     fgParity(0),
     flepton(0),
     fbaryon(0),
-    fstable(kTRUE)
+    fstable(particle->GetPDG()->Stable())
 {
-
-//  fname=particle->GetName();
+  /*
+  fname=particle->GetName();
   fmcType= kPTIon;
   fmass= particle->GetMass();
   fcharge= particle->GetPDG()->Charge();
   fDecayTime= particle->GetPDG()->Lifetime();
-//  fpType=   "Ion";
+  fpType=   "Ion";
   fwidth=   particle-> GetPDG()->Width();
   fiSpin= (Int_t)  particle->GetPDG()->Spin();
   fiParity=particle->GetPDG()->Parity();
@@ -59,21 +60,21 @@ FairParticle::FairParticle(Int_t id, TParticle* particle)
   flepton=  0;
   fbaryon=  0;
   fstable= particle->GetPDG()->Stable();
-
-//
+  */
 }
 //_____________________________________________________________________________
 
 FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Int_t s,Double_t mass ,Int_t q, Bool_t stable, Double_t decaytime)
-  :  fpdg(0),
+  :  TObject(),
+     fpdg(1000000000+10000000*s+10000* z +10 * a),
      fParticle(0),
      fMother(0),
      fDaughters(0),
      fname(name),
-     fmcType (kPTIon),
-     fmass  (0),
+     fmcType(kPTIon),
+     fmass(0),
      fcharge(0),
-     fDecayTime(0),
+     fDecayTime(decaytime),
      fpType("Ion"),
      fwidth(0),
      fiSpin(0),
@@ -84,14 +85,14 @@ FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Int_t s,Double_t 
      fgParity(0),
      flepton(0),
      fbaryon(0),
-     fstable(kTRUE)
+     fstable(stable)
 {
   //fpdg= 10000000+10000* z +10 * a;
-  fpdg= 1000000000+10000000*s+10000* z +10 * a;
-  fDecayTime= decaytime;
+  //  fpdg= 1000000000+10000000*s+10000* z +10 * a;
+  //  fDecayTime= decaytime;
 
   if (!TDatabasePDG::Instance()->GetParticle(fpdg)) {
-    if(mass ==0 ) { mass = a*kProtonMass; }
+    if(mass == 0 ) { mass = a*kProtonMass; }
     TDatabasePDG::Instance()
     ->AddParticle(name, name, mass, stable, 0, q, "kPTHadron", fpdg);
 
@@ -104,6 +105,7 @@ FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Int_t s,Double_t 
                             Int_t TrackingCode)
       */
   }
+
   fParticle = new TParticle();
   fParticle->SetPdgCode(fpdg);
 
@@ -127,15 +129,16 @@ FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Int_t s,Double_t 
 //_____________________________________________________________________________
 
 FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Double_t mass ,Int_t q, Bool_t stable, Double_t decaytime)
-  :  fpdg(0),
+  :  TObject(),
+     fpdg(10000000+10000* z +10 * a),
      fParticle(0),
      fMother(0),
      fDaughters(0),
      fname(name),
-     fmcType (kPTIon),
-     fmass  (0),
+     fmcType(kPTIon),
+     fmass(0),
      fcharge(0),
-     fDecayTime(0),
+     fDecayTime(decaytime),
      fpType("Ion"),
      fwidth(0),
      fiSpin(0),
@@ -146,14 +149,14 @@ FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Double_t mass ,In
      fgParity(0),
      flepton(0),
      fbaryon(0),
-     fstable(kTRUE)
+     fstable(stable)
 {
-  fpdg= 10000000+10000* z +10 * a;
+  //  fpdg= 10000000+10000* z +10 * a;
 
-  fDecayTime= decaytime;
+  //  fDecayTime= decaytime;
 
   if (!TDatabasePDG::Instance()->GetParticle(fpdg)) {
-    if(mass ==0 ) { mass = a*kProtonMass; }
+    if(mass == 0 ) { mass = a*kProtonMass; }
     TDatabasePDG::Instance()
     ->AddParticle(name, name, mass, stable, 0, q, "kPTHadron", fpdg);
 
@@ -189,7 +192,8 @@ FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Double_t mass ,In
 
 //_____________________________________________________________________________
 FairParticle::FairParticle(Int_t id, TParticle* particle, FairParticle* mother)
-  : fpdg(id),
+  : TObject(),
+    fpdg(id),
     fParticle(particle),
     fMother(mother),
     fDaughters(),
@@ -232,7 +236,8 @@ FairParticle::FairParticle( Int_t pdg,
                             Int_t lepton,
                             Int_t baryon,
                             Bool_t stable )
-  : fpdg  (pdg),
+  : TObject(),
+    fpdg  (pdg),
     fParticle( new TParticle()),
     fMother(0),
     fDaughters(0),
@@ -266,7 +271,8 @@ FairParticle::FairParticle( Int_t pdg,
 
 //_____________________________________________________________________________
 FairParticle::FairParticle()
-  : fpdg(0),
+  : TObject(),
+    fpdg(0),
     fParticle(0),
     fMother(0),
     fDaughters(),

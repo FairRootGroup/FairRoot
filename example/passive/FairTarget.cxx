@@ -16,6 +16,7 @@ FairTarget::~FairTarget()
 {
 }
 FairTarget::FairTarget()
+  : FairModule("FairTarget", "")
 {
 }
 

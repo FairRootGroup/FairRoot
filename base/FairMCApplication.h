@@ -244,8 +244,8 @@ class FairMCApplication : public TVirtualMCApplication
     ClassDef(FairMCApplication,2)  //Interface to MonteCarlo application
 
   private:
-    FairMCApplication(const FairMCApplication& M);
-    FairMCApplication& operator= (const FairMCApplication&) {return *this;}
+    FairMCApplication(const FairMCApplication&);
+    FairMCApplication& operator=(const FairMCApplication&);
 };
 
 // inline functions

@@ -45,6 +45,9 @@ class FairParAsciiFileIo : public FairParIo
     const char* getFilename() {return filename.Data();}
 
     fstream* getFile();
+  private:
+    FairParAsciiFileIo(const FairParAsciiFileIo&);
+    FairParAsciiFileIo& operator=(const FairParAsciiFileIo&);
 
     ClassDef(FairParAsciiFileIo,0) // Parameter I/O from ASCII files
 };

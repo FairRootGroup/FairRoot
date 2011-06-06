@@ -121,7 +121,7 @@ class FairEvtGenGenerator : public FairGenerator
 
     //ifstream* fInputFile;             //! Input file stream
     const Char_t* fFileName;            //! Input file Name
-    FILE* fInputFile;
+    FILE* fInputFile;                   //! Input file pointer
 
     /** Private method CloseInput. Just for convenience. Closes the
      ** input file properly. Called from destructor and from ReadEvent. **/
@@ -135,6 +135,10 @@ class FairEvtGenGenerator : public FairGenerator
 
 //  TDatabasePDG *fPDG; //!
     TF1* fDensityFunction;
+
+    FairEvtGenGenerator(const FairEvtGenGenerator&);
+    FairEvtGenGenerator& operator=(const FairEvtGenGenerator&);
+
     ClassDef(FairEvtGenGenerator,1);
 
 };

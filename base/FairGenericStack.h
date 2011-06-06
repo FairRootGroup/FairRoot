@@ -137,6 +137,10 @@ class FairGenericStack : public TVirtualMCStack
 
     Int_t fVerbose;
 
+  private:
+    FairGenericStack(const FairGenericStack&);
+    FairGenericStack& operator=(const FairGenericStack&);
+
     ClassDef(FairGenericStack,1)
 
 

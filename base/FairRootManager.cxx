@@ -73,14 +73,19 @@ FairRootManager::FairRootManager()
     fBranchNameList(new TList()),
     fDataContainer(),
     fActiveContainer(),
+    fTSBufferMap(),
     fCompressData(kFALSE),
     fFriendTypeList(),
     fTimeStamps(kFALSE),
     fBranchPerMap(kFALSE),
     fBrPerMap(),
+    fInputChainList(),
     fFriendFileList(),
     fBrPerMapIter(),
     fInputFileName(""),
+    fCheckInputBranches(),
+    fInputLevel(),
+    fRunIdInfoAll(),
     fLogger(FairLogger::GetLogger())
 {
   if (fgInstance) {

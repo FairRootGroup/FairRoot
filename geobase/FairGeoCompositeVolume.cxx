@@ -13,8 +13,7 @@ ClassImp(FairGeoCompositeVolume)
 
 FairGeoCompositeVolume::FairGeoCompositeVolume(Int_t nComp)
   : FairGeoVolume(),
-    components(0)
-
+    components(NULL)
 {
   if (nComp) {
     components=new TObjArray(nComp);

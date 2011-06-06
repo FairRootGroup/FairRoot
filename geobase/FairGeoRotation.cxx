@@ -73,6 +73,7 @@ ClassImp(FairGeoRotation)
 
 FairGeoRotation::FairGeoRotation(const Double_t a,const Double_t b,
                                  const Double_t c)
+  :TObject()
 {
   // constructor taking three Euler angles
   setEulerAngles(a,b,c);

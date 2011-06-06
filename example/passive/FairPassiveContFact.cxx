@@ -21,6 +21,7 @@ ClassImp(FairPassiveContFact)
 static FairPassiveContFact gFairPassiveContFact;
 
 FairPassiveContFact::FairPassiveContFact()
+  : FairContFact()
 {
   // Constructor (called when the library is loaded)
   fName="FairPassiveContFact";

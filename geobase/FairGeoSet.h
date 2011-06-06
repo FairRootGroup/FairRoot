@@ -33,14 +33,14 @@ class  FairGeoSet : public TNamed
       public:
         FairGeoNode* pNode;
         FairGeoCopyNode(const char* name,FairGeoNode* node)
-          : pNode(node) {
-          SetName(name);
-
-        }
+          : TNamed(name,""), pNode(node) {}
+        //          SetName(name);
+        //
+        //        }
         ~FairGeoCopyNode() {}
       private:
-        FairGeoCopyNode(const FairGeoCopyNode& L);
-        FairGeoCopyNode& operator= (const FairGeoCopyNode&) {return *this;}
+        FairGeoCopyNode(const FairGeoCopyNode&);
+        FairGeoCopyNode& operator=(const FairGeoCopyNode&);
 
     };
     TList* volumes;         /** list of volumes */
@@ -93,8 +93,8 @@ class  FairGeoSet : public TNamed
     void compare(FairGeoSet&);
     ClassDef(FairGeoSet,0) //
   private:
-    FairGeoSet(const FairGeoSet& L);
-    FairGeoSet& operator= (const FairGeoSet&) {return *this;}
+    FairGeoSet(const FairGeoSet&);
+    FairGeoSet& operator=(const FairGeoSet&);
 };
 
 

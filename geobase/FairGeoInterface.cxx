@@ -38,9 +38,10 @@ using std::endl;
 ClassImp(FairGeoInterface)
 
 FairGeoInterface::FairGeoInterface()
-  :fileInput(0),
-   oraInput(0),
-   output(0),
+  :TObject(),
+   fileInput(NULL),
+   oraInput(NULL),
+   output(NULL),
    nSets(0),
    nActualSets(0),
    sets(new TObjArray()),
@@ -48,8 +49,7 @@ FairGeoInterface::FairGeoInterface()
    shapes(new FairGeoShapes()),
    masterNodes(new TList()),
    setupFile(""),
-   geoBuilder(0)
-
+   geoBuilder(NULL)
 {
   // Constructor
 }

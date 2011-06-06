@@ -232,6 +232,8 @@ class FairStack : public FairGenericStack
     /** Mark tracks for output using selection criteria  **/
     void SelectTracks();
 
+    FairStack(const FairStack&);
+    FairStack& operator=(const FairStack&);
 
     ClassDef(FairStack,1)
 

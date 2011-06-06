@@ -5,6 +5,7 @@ ClassImp(FairTutorialDetGeo)
 
 // -----   Default constructor   -------------------------------------------
 FairTutorialDetGeo::FairTutorialDetGeo()
+  : FairGeoSet()
 {
   // Constructor
   fName="tutdet";

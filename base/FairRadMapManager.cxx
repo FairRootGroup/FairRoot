@@ -47,14 +47,13 @@ FairRadMapManager::FairRadMapManager()
     fDensity(0),
     fAbsl(0),
     fActVol(0),
-    fActMass(0)
-
-
+    fActMass(0),
+    fMassMap(NULL)
 {
   /** radiation length default ctor */
   if(NULL == fgInstance) {
     fgInstance = this;
-    fPointCollection=new TClonesArray("FairRadMapPoint");
+    //    fPointCollection=new TClonesArray("FairRadMapPoint");
   }
 
 }

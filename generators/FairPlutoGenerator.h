@@ -66,6 +66,8 @@ class FairPlutoGenerator : public FairGenerator
      ** input file properly. Called from destructor and from ReadEvent. **/
     void CloseInput();
 
+    FairPlutoGenerator(const FairPlutoGenerator&);
+    FairPlutoGenerator& operator=(const FairPlutoGenerator&);
 
     ClassDef(FairPlutoGenerator,1);
 

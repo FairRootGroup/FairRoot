@@ -16,6 +16,7 @@ FairMagnet::~FairMagnet()
 {
 }
 FairMagnet::FairMagnet()
+  : FairModule("FairMagnet", "")
 {
 }
 

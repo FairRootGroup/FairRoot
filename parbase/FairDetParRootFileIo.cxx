@@ -32,10 +32,12 @@ using std::endl;
 
 ClassImp(FairDetParRootFileIo)
 
-FairDetParRootFileIo::FairDetParRootFileIo(FairParRootFile* f) : FairDetParIo()
+FairDetParRootFileIo::FairDetParRootFileIo(FairParRootFile* f)
+  :FairDetParIo(),
+   pFile(f)
 {
   // Constructor takes a pointer to the parameter ROOT file
-  pFile=f;
+  //  pFile=f;
 }
 
 Bool_t FairDetParRootFileIo::read(FairParSet* pPar)

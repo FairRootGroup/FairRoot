@@ -62,6 +62,11 @@ class FairPointSetDraw : public FairTask
     TEvePointSet* fq;    //!
     Color_t fColor; //!
     Style_t fStyle; //!
+
+  private:
+    FairPointSetDraw(const FairPointSetDraw&);
+    FairPointSetDraw& operator=(const FairPointSetDraw&);
+
     ClassDef(FairPointSetDraw,1);
 
 };

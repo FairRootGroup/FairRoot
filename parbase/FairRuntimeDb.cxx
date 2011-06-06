@@ -43,20 +43,19 @@ FairRuntimeDb* FairRuntimeDb::instance(void)
 }
 
 FairRuntimeDb::FairRuntimeDb(void)
+  :TObject(),
+   containerList(new TList()),
+   runs(new TList()),
+   firstInput(NULL),
+   secondInput(NULL),
+   output(NULL),
+   currentRun(NULL),
+   currentFileName(""),
+   versionsChanged(kFALSE),
+   isRootFileOutput(kFALSE),
+   fLogger(FairLogger::GetLogger())
 {
-  // constructor creates an empty list for parameter containers
-  // and an empty list of runs for the version management
   gRtdb=this;
-  containerList=new TList();
-  runs=new TList();
-  firstInput=0;
-  secondInput=0;
-  output=0;
-  versionsChanged=kFALSE;
-  currentRun=0;
-  isRootFileOutput=kFALSE;
-  fLogger=FairLogger::GetLogger();
-
 }
 
 FairRuntimeDb::~FairRuntimeDb()

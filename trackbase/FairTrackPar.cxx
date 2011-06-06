@@ -12,21 +12,22 @@ using namespace std;
 
 // -----   Default constructor   -------------------------------------------
 FairTrackPar::FairTrackPar()
-  :fX (0),
-   fY (0),
-   fZ (0),
-   fDX (0),
-   fDY (0),
-   fDZ (0),
-   fPx (0),
-   fPy (0),
-   fPz (0),
-   fDPx (0),
-   fDPy (0),
-   fDPz (0),
-   fQp (0),
-   fDQp (0),
-   fq  (1)
+  : TObject(),
+    fX (0.),
+    fY (0.),
+    fZ (0.),
+    fDX (0.),
+    fDY (0.),
+    fDZ (0.),
+    fPx (0.),
+    fPy (0.),
+    fPz (0.),
+    fDPx (0.),
+    fDPy (0.),
+    fDPz (0.),
+    fQp (0.),
+    fDQp (0.),
+    fq  (1)
 {
 
 
@@ -37,7 +38,8 @@ FairTrackPar::FairTrackPar()
 FairTrackPar::FairTrackPar(Double_t x, Double_t y, Double_t z,
                            Double_t px, Double_t py, Double_t pz, Int_t q)
 
-  : fX (x),
+  : TObject(),
+    fX (x),
     fY (y),
     fZ (z),
     fDX (x),
@@ -49,8 +51,8 @@ FairTrackPar::FairTrackPar(Double_t x, Double_t y, Double_t z,
     fDPx (px),
     fDPy (py),
     fDPz (pz),
-    fQp (0),
-    fDQp (0),
+    fQp (0.),
+    fDQp (0.),
     fq  (q)
 {
 

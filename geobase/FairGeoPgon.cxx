@@ -33,6 +33,7 @@
 ClassImp(FairGeoPgon)
 
 FairGeoPgon::FairGeoPgon()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="PGON";

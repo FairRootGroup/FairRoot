@@ -56,6 +56,11 @@ class FairParSet : public TNamed
       description=r.getDescription();
     }
 
+  private:
+
+    FairParSet& operator=(const FairParSet&);
+    FairParSet(const FairParSet&);
+
     ClassDef(FairParSet,1) // Base class for all parameter containers
 };
 

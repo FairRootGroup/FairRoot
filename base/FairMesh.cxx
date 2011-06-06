@@ -14,7 +14,8 @@ using namespace std;
 
 // -----   Default constructor   -------------------------------------------
 FairMesh::FairMesh()
-  : fXmin (0.0),
+  : TObject(),
+    fXmin (0.0),
     fYmin(0.),
     fZmin (0.),
     fXmax(0.),
@@ -28,13 +29,14 @@ FairMesh::FairMesh()
     fMeshTid(NULL),
     fMeshFlu(NULL),
     fMeshSEU(NULL),
-    fhname(0)
+    fhname("")
 {
 
 }
 
 FairMesh::FairMesh(const char* fname)
-  : fXmin (0.0),
+  : TObject(),
+    fXmin (0.0),
     fYmin(0.),
     fZmin (0.),
     fXmax(0.),
@@ -48,10 +50,10 @@ FairMesh::FairMesh(const char* fname)
     fMeshTid(NULL),
     fMeshFlu(NULL),
     fMeshSEU(NULL),
-    fhname(0)
+    fhname(fname)
 {
 
-  fhname = fname;
+  //  fhname = fname;
 }
 
 void FairMesh::calculate()

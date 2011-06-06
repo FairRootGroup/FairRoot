@@ -30,7 +30,7 @@ class FairTutorialDetPoint : public FairMCPoint
 
 
     /** Copy constructor **/
-    FairTutorialDetPoint(const FairTutorialDetPoint& point) { *this = point; };
+    //    FairTutorialDetPoint(const FairTutorialDetPoint& point) { *this = point; };
 
 
     /** Destructor **/

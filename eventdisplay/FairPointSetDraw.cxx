@@ -20,10 +20,13 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairPointSetDraw::FairPointSetDraw()
-  :fVerbose(0),
-   fPointList(0),
-   fEventManager(0),
-   fq(0)
+  : FairTask("FairPointSetDraw", 0),
+    fVerbose(0),
+    fPointList(NULL),
+    fEventManager(NULL),
+    fq(NULL),
+    fColor(0),
+    fStyle(0)
 {
 }
 // -------------------------------------------------------------------------
@@ -34,9 +37,9 @@ FairPointSetDraw::FairPointSetDraw()
 FairPointSetDraw::FairPointSetDraw(const char* name, Color_t color ,Style_t mstyle,Int_t iVerbose)
   : FairTask(name, iVerbose),
     fVerbose(iVerbose),
-    fPointList(0),
-    fEventManager(0),
-    fq(0),
+    fPointList(NULL),
+    fEventManager(NULL),
+    fq(NULL),
     fColor(color),
     fStyle(mstyle)
 {

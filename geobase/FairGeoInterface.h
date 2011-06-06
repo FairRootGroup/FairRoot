@@ -79,8 +79,8 @@ class FairGeoInterface : public TObject
     void print();
     void SetNoOfSets(Int_t n) {nSets=n;} //
   private:
-    FairGeoInterface(const FairGeoInterface& L);
-    FairGeoInterface& operator= (const FairGeoInterface&) {return *this;}
+    FairGeoInterface(const FairGeoInterface&);
+    FairGeoInterface& operator=(const FairGeoInterface&);
 
     FairGeoIo* connectInput(const char*);
     Bool_t connectOutput(const char*);

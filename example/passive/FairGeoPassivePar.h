@@ -20,6 +20,10 @@ class FairGeoPassivePar : public FairParGenericSet
     TObjArray*             GetGeoSensitiveNodes() {return fGeoSensNodes;}
     TObjArray*             GetGeoPassiveNodes() {return fGeoPassNodes;}
 
+  private:
+    FairGeoPassivePar(const FairGeoPassivePar&);
+    FairGeoPassivePar& operator=(const FairGeoPassivePar&);
+
     ClassDef(FairGeoPassivePar,1)
 };
 

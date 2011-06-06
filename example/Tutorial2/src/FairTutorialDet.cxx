@@ -22,19 +22,30 @@
 using std::cout;
 using std::endl;
 
-FairTutorialDet::FairTutorialDet() :
-  FairDetector("TutorialDet", kTRUE, kTutDet)
+FairTutorialDet::FairTutorialDet()
+  : FairDetector("TutorialDet", kTRUE, kTutDet),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fELoss(-1),
+    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint"))
 {
-  /** create your collection for data points */
-  fFairTutorialDetPointCollection = new TClonesArray("FairTutorialDetPoint");
-
 }
 
 FairTutorialDet::FairTutorialDet(const char* name, Bool_t active)
-  : FairDetector(name, active, kTutDet)
+  : FairDetector(name, active, kTutDet),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fELoss(-1),
+    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint"))
 {
-  fFairTutorialDetPointCollection = new TClonesArray("FairTutorialDetPoint");
-
 }
 
 FairTutorialDet::~FairTutorialDet()

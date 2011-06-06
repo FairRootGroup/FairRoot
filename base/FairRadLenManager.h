@@ -41,8 +41,8 @@ class FairRadLenManager
 
   private:
 
-    FairRadLenManager(const FairRadLenManager& L);
-    FairRadLenManager& operator= (const FairRadLenManager&) {return *this;}
+    FairRadLenManager(const FairRadLenManager&);
+    FairRadLenManager& operator=(const FairRadLenManager&);
 
     static FairRadLenManager* fgInstance;
 

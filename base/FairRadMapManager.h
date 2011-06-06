@@ -39,8 +39,8 @@ class FairRadMapManager
 
   private:
 
-    FairRadMapManager(const FairRadMapManager& L);
-    FairRadMapManager& operator= (const FairRadMapManager&) {return *this;}
+    FairRadMapManager(const FairRadMapManager&);
+    FairRadMapManager& operator=(const FairRadMapManager&);
 
     static FairRadMapManager* fgInstance;
 

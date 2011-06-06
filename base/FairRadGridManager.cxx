@@ -26,7 +26,8 @@ FairRadGridManager* FairRadGridManager::Instance()
 }
 
 FairRadGridManager::FairRadGridManager()
-  : fTrackID(0),
+  : fPointCollection(NULL),
+    fTrackID(0),
     fVolumeID(0),
     fPosIn(TLorentzVector(0,0,0,0)),
     fPosOut(TLorentzVector(0,0,0,0)),

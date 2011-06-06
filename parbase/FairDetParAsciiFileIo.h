@@ -34,6 +34,12 @@ class FairDetParAsciiFileIo : public FairDetParIo
     virtual ~FairDetParAsciiFileIo() {}
 //  Bool_t read(HDetGeomPar*,Int_t*);
 //  Int_t writeFile(HDetGeomPar*);
+
+  private:
+
+    FairDetParAsciiFileIo& operator=(const FairDetParAsciiFileIo&);
+    FairDetParAsciiFileIo(const FairDetParAsciiFileIo&);
+
     ClassDef(FairDetParAsciiFileIo,0) // Class for detector parameter I/O from ascii file
 };
 

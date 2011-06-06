@@ -69,6 +69,11 @@ class FairMCTracks : public FairTask
     Double_t MinEnergyLimit;
     Double_t MaxEnergyLimit;
     Double_t PEnergy;
+
+  private:
+    FairMCTracks(const FairMCTracks&);
+    FairMCTracks& operator=(const FairMCTracks&);
+
     ClassDef(FairMCTracks,1);
 
 };

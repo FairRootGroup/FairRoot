@@ -17,16 +17,37 @@
 using std::cout;
 using std::endl;
 
+TEveBoxSet* fq;    //!
+Double_t fX, fY, fZ;
 
 // -----   Default constructor   -------------------------------------------
-FairBoxSetDraw::FairBoxSetDraw() : fVerbose(0), fq(0),fX(1), fY(1), fZ(1) { }
+FairBoxSetDraw::FairBoxSetDraw()
+  : FairTask("FairBoxSetDraw",0),
+    fVerbose(0),
+    fList(NULL),
+    fEventManager(NULL),
+    fManager(NULL),
+    fq(NULL),
+    fX(1.),
+    fY(1.),
+    fZ(1.)
+{
+}
 // -------------------------------------------------------------------------
 
 
 
 // -----   Standard constructor   ------------------------------------------
 FairBoxSetDraw::FairBoxSetDraw(const char* name, Int_t iVerbose)
-  : FairTask(name, iVerbose),  fVerbose(iVerbose), fq(0), fX(1), fY(1), fZ(1)
+  : FairTask(name, iVerbose),
+    fVerbose(iVerbose),
+    fList(NULL),
+    fEventManager(NULL),
+    fManager(NULL),
+    fq(NULL),
+    fX(1.),
+    fY(1.),
+    fZ(1.)
 {
 }
 // -------------------------------------------------------------------------

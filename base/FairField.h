@@ -72,6 +72,7 @@ class FairField : public TVirtualMagField
     /** Constructor with name and title **/
     FairField(const char* name, const char* title = "FAIR Magnetic Field");
 
+    FairField& operator=(const FairField&) {return *this;}
 
     /** Destructor **/
     virtual ~FairField();
@@ -140,6 +141,10 @@ class FairField : public TVirtualMagField
     /** Fair Logger */
     FairLogger*            fLogger;//!
 
+  private:
+    FairField(const FairField&);
+    //    FairField& operator=(const FairField&);
+    //TODO: Check why the htrack needs this
     ClassDef(FairField,3);
 
 };

@@ -1,4 +1,4 @@
-//*-- AUTHOR : Ilse Koenig
+#//*-- AUTHOR : Ilse Koenig
 //*-- Created : 21/10/2004
 
 /////////////////////////////////////////////////////////////
@@ -23,18 +23,18 @@ ClassImp(FairContainer)
 ClassImp(FairContFact)
 
 FairContainer::FairContainer()
-  :contexts(0),
+  :TNamed(),
+   contexts(NULL),
    actualContext(""),
    fLogger(FairLogger::GetLogger())
 {
-  //contexts=0;
 }
 // Default constructor
 
 FairContainer::FairContainer(const char* name, const char* title,
                              const char* defContext)
   : TNamed(name, title),
-    contexts(new TList),
+    contexts(new TList()),
     actualContext(""),
     fLogger(FairLogger::GetLogger())
 {
@@ -42,9 +42,7 @@ FairContainer::FairContainer(const char* name, const char* title,
   // Arguments:  name       = name of the corresponding parameter container
   //             title      = title of this parameter container
   //             defContext = default context of this parameter container
-  //contexts=new TList;
   addContext(defContext);
-  //actualContext="";
 }
 
 FairContainer::~FairContainer()

@@ -80,6 +80,8 @@ class FairShieldGenerator : public FairGenerator
     /** STL map from ion name to FairIon **/
     std::map<TString, FairIon*> fIonMap;       //!
 
+    FairShieldGenerator(const FairShieldGenerator&);
+    FairShieldGenerator& operator=(const FairShieldGenerator&);
 
     ClassDef(FairShieldGenerator,1);
 

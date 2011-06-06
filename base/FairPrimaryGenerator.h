@@ -108,7 +108,6 @@ class FairPrimaryGenerator : public TNamed
 
     /** Enable vertex smearing in z and/or xy direction **/
     void SmearVertexZ(Bool_t flag)  { fSmearVertexZ  = flag; };
-    void SmearGausVertexZ(Bool_t flag)  { fSmearGausVertexZ  = flag; };
     void SmearVertexXY(Bool_t flag) { fSmearVertexXY = flag; };
 
     TObjArray* GetListOfGenerators() { return fGenList;}
@@ -158,10 +157,8 @@ class FairPrimaryGenerator : public TNamed
     TVector3    fVertex;
     /** Number of primary tracks in current event*/
     Int_t       fNTracks;
-    /**  Flag for uniform vertex smearing in z*/
+    /**  Flag for vertex smearing in z*/
     Bool_t      fSmearVertexZ;
-    /**  Flag for gaus vertex smearing in z*/
-    Bool_t      fSmearGausVertexZ;
     /**  Flag for vertex smearing in xy*/
     Bool_t      fSmearVertexXY;
     /**  Pointer to MC stack*/
@@ -206,8 +203,9 @@ class FairPrimaryGenerator : public TNamed
     **/
     void MakeVertex();
 
-//  FairPrimaryGenerator(const FairPrimaryGenerator &P);
-    FairPrimaryGenerator& operator= (const  FairPrimaryGenerator&) {return *this;}
+  private:
+    FairPrimaryGenerator(const FairPrimaryGenerator&);
+    FairPrimaryGenerator& operator=(const  FairPrimaryGenerator&);
 
     ClassDef(FairPrimaryGenerator,4);
 

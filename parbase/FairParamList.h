@@ -11,6 +11,8 @@
 #include "TFile.h"
 #include "TROOT.h"
 
+class FairLogger;
+
 class FairParamObj : public TNamed
 {
   protected:
@@ -54,6 +56,9 @@ class FairParamObj : public TNamed
   protected:
     template <class type> void printData(type*,Int_t);
 
+  private:
+    FairParamObj& operator=(const FairParamObj&);
+
     ClassDef(FairParamObj,0) // Class for binary parameter object (name + binary array)
 };
 
@@ -62,6 +67,7 @@ class FairParamList : public TObject
 {
   protected:
     TList* paramList;      // List for parameters stored as string
+    FairLogger* fLogger;  // FairRoot logging mechanism
     class FairParamTFile : public TFile
     {
       public:
@@ -112,6 +118,10 @@ class FairParamList : public TObject
       return (FairParamObj*)paramList->FindObject(name);
     }
     TList* getList() { return paramList; }
+  private:
+    FairParamList(const FairParamList&);
+    FairParamList& operator=(const FairParamList&);
+
     ClassDef(FairParamList,2) // Class for lists of parameters (of type FairParamObj)
 };
 

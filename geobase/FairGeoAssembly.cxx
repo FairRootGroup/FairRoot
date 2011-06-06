@@ -17,6 +17,7 @@
 ClassImp(FairGeoAssembly)
 
 FairGeoAssembly::FairGeoAssembly()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="ASSEMBLY";

@@ -22,8 +22,17 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairMCTracks::FairMCTracks()
+  : FairTask("FairMCTracks", 0),
+    fTrackList(NULL),
+    fTrPr(NULL),
+    fEventManager(NULL),
+    fEveTrList(NULL),
+    fEvent(""),
+    fTrList(NULL),
+    MinEnergyLimit(-1.),
+    MaxEnergyLimit(-1.),
+    PEnergy(-1.)
 {
-
 }
 // -------------------------------------------------------------------------
 
@@ -31,9 +40,16 @@ FairMCTracks::FairMCTracks()
 // -----   Standard constructor   ------------------------------------------
 FairMCTracks::FairMCTracks(const char* name, Int_t iVerbose)
   : FairTask(name, iVerbose),
-    fEveTrList( new TObjArray(16))
+    fTrackList(NULL),
+    fTrPr(NULL),
+    fEventManager(NULL),
+    fEveTrList(new TObjArray(16)),
+    fEvent(""),
+    fTrList(NULL),
+    MinEnergyLimit(-1.),
+    MaxEnergyLimit(-1.),
+    PEnergy(-1.)
 {
-
 }
 // -------------------------------------------------------------------------
 InitStatus FairMCTracks::Init()

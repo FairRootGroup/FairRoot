@@ -40,8 +40,8 @@ class FairGeoOldAsciiIo: public FairGeoIo
     Bool_t setHistoryDate(const char*) {return kTRUE;}
   private:
     Bool_t calculateShapePoints(Double_t*,FairGeoNode*);
-    FairGeoOldAsciiIo(const FairGeoOldAsciiIo& L);
-    FairGeoOldAsciiIo& operator= (const FairGeoOldAsciiIo&) {return *this;}
+    FairGeoOldAsciiIo(const FairGeoOldAsciiIo&);
+    FairGeoOldAsciiIo& operator=(const FairGeoOldAsciiIo&);
 
     ClassDef(FairGeoOldAsciiIo,0) //
 };

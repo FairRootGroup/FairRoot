@@ -17,32 +17,33 @@ using std::pow;
 
 ClassImp(FairGeoMedium)
 
-FairGeoMedium::FairGeoMedium(const char* name) : TNamed(),
-  medId(0),
-  autoflag(1),
-  nComponents(0),
-  weightFac(0),
-  ca(0),
-  cz(0),
-  cw(0),
-  density(0),
-  radLen(0),
-  sensFlag(0),
-  fldFlag(0),
-  fld(0),
-  epsil(0),
-  madfld(-1),
-  maxstep(-1),
-  maxde(-1),
-  minstep(-1),
-  npckov(0),
-  ppckov(0),
-  absco(0),
-  effic(0),
-  rindex(0)
+FairGeoMedium::FairGeoMedium(const char* name)
+  : TNamed(name,""),
+    medId(0),
+    autoflag(1),
+    nComponents(0),
+    weightFac(0),
+    ca(NULL),
+    cz(NULL),
+    cw(NULL),
+    density(0),
+    radLen(0),
+    sensFlag(0),
+    fldFlag(0),
+    fld(0),
+    epsil(0),
+    madfld(-1),
+    maxstep(-1),
+    maxde(-1),
+    minstep(-1),
+    npckov(0),
+    ppckov(NULL),
+    absco(NULL),
+    effic(NULL),
+    rindex(NULL)
 {
   // Constructor for a medium with name and index id
-  SetName(name);
+//  SetName(name);
 };
 
 FairGeoMedium::~FairGeoMedium()

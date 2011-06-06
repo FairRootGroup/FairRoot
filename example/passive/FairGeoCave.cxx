@@ -18,6 +18,8 @@ using namespace std;
 ClassImp(FairGeoCave)
 
 FairGeoCave::FairGeoCave()
+  : FairGeoSet(),
+    name("cave")
 {
   // Constructor
   fName="cave";

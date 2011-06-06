@@ -56,6 +56,11 @@ class FairFileHeader : public TNamed
     /**list of TObjStrings presenting the input files used to produce this file*/
     TList* fFileList;
 
+  private:
+    FairFileHeader(const FairFileHeader&);
+    FairFileHeader& operator=(const FairFileHeader&);
+
+
     ClassDef(FairFileHeader,2)
 
 };

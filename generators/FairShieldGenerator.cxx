@@ -18,17 +18,29 @@ using std::endl;
 using std::map;
 
 // -----   Default constructor   ------------------------------------------
-FairShieldGenerator::FairShieldGenerator() {}
+FairShieldGenerator::FairShieldGenerator()
+  :FairGenerator(),
+   fInputFile(NULL),
+   fFileName(NULL),
+   fPDG(NULL),
+   fIonMap()
+{
+}
 // ------------------------------------------------------------------------
 
 
 
 // -----   Standard constructor   -----------------------------------------
 FairShieldGenerator::FairShieldGenerator(const char* fileName)
+  :FairGenerator(),
+   fInputFile(NULL),
+   fFileName(fileName),
+   fPDG(TDatabasePDG::Instance()),
+   fIonMap()
 {
 
-  fPDG=TDatabasePDG::Instance();
-  fFileName  = fileName;
+  //  fPDG=TDatabasePDG::Instance();
+  //  fFileName  = fileName;
   cout << "-I- FairShieldGenerator: Opening input file " << fileName << endl;
   fInputFile = new ifstream(fFileName);
   if ( ! fInputFile->is_open() ) {
@@ -42,7 +54,6 @@ FairShieldGenerator::FairShieldGenerator(const char* fileName)
   cout << "-I- FairShieldGenerator: Reopening input file " << fileName
        << endl;
   fInputFile = new ifstream(fFileName);
-
 }
 // ------------------------------------------------------------------------
 

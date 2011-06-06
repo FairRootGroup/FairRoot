@@ -59,6 +59,9 @@ class FairEventManager : public TEveEventManager
     Float_t fEvtMaxEnergy;         //!
 
     static FairEventManager*    fgRinstance; //!
+
+    FairEventManager(const FairEventManager&);
+    FairEventManager& operator=(const FairEventManager&);
 };
 
 #endif

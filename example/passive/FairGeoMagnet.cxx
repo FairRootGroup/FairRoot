@@ -13,6 +13,7 @@
 ClassImp(FairGeoMagnet)
 
 FairGeoMagnet::FairGeoMagnet()
+  : FairGeoSet()
 {
   // Constructor
   fName="magnet";

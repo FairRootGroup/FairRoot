@@ -60,6 +60,9 @@ class FairTutorialDetDigitizer : public FairTask
     //Double_t fDy;               //!
     //Int_t fNHits;
 
+    FairTutorialDetDigitizer(const FairTutorialDetDigitizer&);
+    FairTutorialDetDigitizer& operator=(const FairTutorialDetDigitizer&);
+
     ClassDef(FairTutorialDetDigitizer,1)
 
 };

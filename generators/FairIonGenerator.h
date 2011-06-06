@@ -84,6 +84,9 @@ class FairIonGenerator : public FairGenerator
     FairIon*   fIon;          // Pointer to the FairIon to be generated
     Int_t    fQ;    // Electric charge [e]
 
+    FairIonGenerator(const FairIonGenerator&);
+    FairIonGenerator& operator=(const FairIonGenerator&);
+
     ClassDef(FairIonGenerator,1)
 
 };

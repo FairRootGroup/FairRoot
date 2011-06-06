@@ -21,6 +21,7 @@ FairPipe::~FairPipe()
 }
 
 FairPipe::FairPipe()
+  : FairModule("FairPipe", "")
 {
 }
 

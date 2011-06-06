@@ -31,22 +31,20 @@ class FairGeoTransform;
 ClassImp(FairGeoSet)
 
 FairGeoSet::FairGeoSet()
-  : hadesGeo(0),
+  : TNamed(),
+    hadesGeo(0),
     volumes(new TList()),
-    masterNodes(0),
+    masterNodes(NULL),
     maxSectors(0),
     maxKeepinVolumes(0),
     maxModules(0),
-    modules(0),
-    pShapes(0),
+    modules(NULL),
+    pShapes(NULL),
     geoFile(""),
     author(""),
     description("")
-
 {
   // Constructor
-
-
 }
 
 FairGeoSet::~FairGeoSet()

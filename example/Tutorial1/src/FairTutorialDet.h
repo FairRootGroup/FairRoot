@@ -90,6 +90,9 @@ class FairTutorialDet: public FairDetector
 
     TClonesArray*  fFairTutorialDetPointCollection;
 
+    FairTutorialDet(const FairTutorialDet&);
+    FairTutorialDet& operator=(const FairTutorialDet&);
+
     ClassDef(FairTutorialDet,1)
 };
 

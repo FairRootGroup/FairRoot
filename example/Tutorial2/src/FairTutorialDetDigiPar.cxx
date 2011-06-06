@@ -21,10 +21,13 @@ using std::endl;
 FairTutorialDetDigiPar::FairTutorialDetDigiPar(const char* name,
     const char* title,
     const char* context)
-  : FairParGenericSet(name, title, context)
+  : FairParGenericSet(name, title, context),
+    ftutdetdigipar(new TArrayF(10)),
+    ftutdetdigiparsector(),
+    ftutdetdigiparstation(-1)
 {
   detName="TutorialDet";
-  ftutdetdigipar= new TArrayF(10);
+  //  ftutdetdigipar= new TArrayF(10);
   //ftutdetdigipar= new TArrayF(10);
 }
 // -------------------------------------------------------------------------

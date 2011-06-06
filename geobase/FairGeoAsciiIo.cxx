@@ -22,13 +22,13 @@ using std::ios;
 ClassImp(FairGeoAsciiIo)
 
 FairGeoAsciiIo::FairGeoAsciiIo()
-  :filename(""),
-   filedir(""),
-   writable(kFALSE),
-   file(0)
+  : FairGeoIo(),
+    filename(""),
+    filedir(""),
+    writable(kFALSE),
+    file(NULL)
 {
   // Constructor
-
 }
 
 FairGeoAsciiIo::~FairGeoAsciiIo()

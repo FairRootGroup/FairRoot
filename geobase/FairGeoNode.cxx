@@ -19,20 +19,19 @@ using std::endl;
 ClassImp(FairGeoNode)
 
 FairGeoNode::FairGeoNode()
-  : active(kFALSE),
-    center (FairGeoTransform()),
+  : FairGeoVolume(),
+    active(kFALSE),
+    center(FairGeoTransform()),
     volumeType(kFairGeoElement),
     created(kFALSE),
-    copyNode(0),
-    rootVolume(0),
+    copyNode(NULL),
+    rootVolume(NULL),
     pShape(0),
-    pMother(0),
-    medium(0),
-    labTransform(0),
+    pMother(NULL),
+    medium(NULL),
+    labTransform(NULL),
     fDaughterList(new TObjArray(5)),
     fTruncName("")
-
-
 {
   // Constructor
   clear();
@@ -40,19 +39,19 @@ FairGeoNode::FairGeoNode()
 }
 
 FairGeoNode::FairGeoNode(FairGeoNode& r)
-  :active(kFALSE),
-   center (r.getCenterPosition()),
+  :FairGeoVolume(r),
+   active(kFALSE),
+   center(r.getCenterPosition()),
    volumeType(r.getVolumeType()),
    created(kFALSE),
    copyNode(r.getCopyNode()),
    rootVolume(r.getRootVolume()),
-   pShape(0),
-   pMother(0),
-   medium(0),
+   pShape(NULL),
+   pMother(NULL),
+   medium(NULL),
    labTransform(new FairGeoTransform(*(r.getLabTransform()))),
    fDaughterList(new TObjArray(*(r.GetListOfDaughters()))),
    fTruncName(r.getTruncName())
-
 {
   // Copy constructor
   points=0;

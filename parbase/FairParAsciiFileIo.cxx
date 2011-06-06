@@ -33,9 +33,12 @@ using std::filebuf;
 ClassImp(FairParAsciiFileIo)
 
 FairParAsciiFileIo::FairParAsciiFileIo()
+  :FairParIo(),
+   file(NULL),
+   filename("")
 {
   // default destructor
-  file=0;
+  //  file=0;
 }
 
 FairParAsciiFileIo::~FairParAsciiFileIo()

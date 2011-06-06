@@ -13,7 +13,8 @@
 ClassImp(FairGeoBuilder)
 
 FairGeoBuilder::FairGeoBuilder()
-  :nRot(0),
+  :TNamed(),
+   nRot(0),
    nMed(0)
 {
   // Default constructor

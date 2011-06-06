@@ -123,6 +123,10 @@ class FairTask : public TTask
     /** Recursive FinishEvent of subtasks **/
     void FinishEvents();
 
+  private:
+    FairTask(const FairTask&);
+    FairTask& operator=(const FairTask&);
+
     ClassDef(FairTask,2);
 
 };

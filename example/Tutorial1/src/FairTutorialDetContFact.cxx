@@ -11,6 +11,7 @@ ClassImp(FairTutorialDetContFact)
 static FairTutorialDetContFact gFairTutorialDetContFact;
 
 FairTutorialDetContFact::FairTutorialDetContFact()
+  : FairContFact()
 {
   /** Constructor (called when the library is loaded) */
   fName="FairTutorialDetContFact";

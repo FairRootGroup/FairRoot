@@ -84,6 +84,9 @@ class FairTSBufferFunctional : public TObject
 
     Int_t fVerbose;
 
+    FairTSBufferFunctional(const FairTSBufferFunctional&);
+    FairTSBufferFunctional& operator=(const FairTSBufferFunctional&);
+
     ClassDef(FairTSBufferFunctional,0);
 
 };

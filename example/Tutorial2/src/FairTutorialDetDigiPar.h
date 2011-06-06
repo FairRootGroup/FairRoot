@@ -50,12 +50,14 @@ class FairTutorialDetDigiPar : public FairParGenericSet
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);
 
-    // private:
+  private:
 
     TArrayF* ftutdetdigipar;  //
     TArrayI ftutdetdigiparsector; //
     Int_t ftutdetdigiparstation; //
 
+    FairTutorialDetDigiPar(const FairTutorialDetDigiPar&);
+    FairTutorialDetDigiPar& operator=(const FairTutorialDetDigiPar&);
 
     ClassDef(FairTutorialDetDigiPar,1);
 

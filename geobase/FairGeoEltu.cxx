@@ -32,6 +32,7 @@
 ClassImp(FairGeoEltu)
 
 FairGeoEltu::FairGeoEltu()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="ELTU";

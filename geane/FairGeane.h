@@ -38,6 +38,9 @@ class FairGeane : public  FairTask
     TString fUserConfig;  //!
     TString fUserCuts; //!
 
+  private:
+    FairGeane(const FairGeane&);
+    FairGeane& operator=(const FairGeane&);
 
 };
 

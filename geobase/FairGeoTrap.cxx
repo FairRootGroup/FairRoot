@@ -36,7 +36,8 @@ using std::cout;
 ClassImp(FairGeoTrap)
 
 FairGeoTrap::FairGeoTrap()
-  : intrinsicRot(FairGeoRotation())
+  :FairGeoBasicShape(),
+   intrinsicRot(FairGeoRotation())
 {
   // constructor
   fName="TRAP";

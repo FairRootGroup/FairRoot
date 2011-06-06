@@ -19,7 +19,8 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairPrimaryGenerator::FairPrimaryGenerator()
-  :fBeamX0(0),
+  :TNamed(),
+   fBeamX0(0),
    fBeamY0(0),
    fBeamSigmaX(0),
    fBeamSigmaY(0),
@@ -29,7 +30,6 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fVertex(TVector3(0.,0.,0.)),
    fNTracks(0),
    fSmearVertexZ(kFALSE),
-   fSmearGausVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
    fStack(NULL),
    fGenList(new TObjArray()),
@@ -41,12 +41,11 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fEventTime(0),
    fEventMeanTime(0),
    fTimeProb(0),
+   fMCIndexOffset(0),
    fLogger(FairLogger::GetLogger()),
    fEventNr(0)
 {
-
   fTargetZ[0] = 0.;
-
 }
 // -------------------------------------------------------------------------
 
@@ -65,7 +64,6 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fVertex(TVector3(0.,0.,0.)),
    fNTracks(0),
    fSmearVertexZ(kFALSE),
-   fSmearGausVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
    fStack(NULL),
    fGenList(new TObjArray()),
@@ -77,11 +75,11 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fEventTime(0),
    fEventMeanTime(0),
    fTimeProb(NULL),
+   fMCIndexOffset(0),
    fLogger(FairLogger::GetLogger()),
    fEventNr(0)
 {
   fTargetZ[0] = 0.;
-
 }
 // -------------------------------------------------------------------------
 Bool_t FairPrimaryGenerator::Init()
@@ -301,7 +299,6 @@ void FairPrimaryGenerator::MakeVertex()
 
   if (fSmearVertexZ) vz = gRandom->Uniform(vz - fTargetDz/2.,
                             vz + fTargetDz/2.);
-  if (fSmearGausVertexZ) { vz = gRandom->Gaus(vz, fTargetDz); }
 
   if (fSmearVertexXY) {
     if (fBeamSigmaX != 0.) { vx = gRandom->Gaus(fBeamX0, fBeamSigmaX); }

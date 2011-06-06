@@ -14,7 +14,8 @@ using std::endl;
 //_____________________________________________________________________________
 
 FairVolumeList::FairVolumeList()
-  :fData(new TObjArray())
+  :TObject(),
+   fData(new TObjArray())
 {
   //
 
@@ -58,7 +59,7 @@ FairVolume* FairVolumeList::findObject(TString name)
     obj = (FairVolume*) fData->At(i);
     if (obj ) {
 
-      if (obj->getName() == name) { return (FairVolume*) obj; }
+      if (obj->GetName() == name) { return (FairVolume*) obj; }
     }
 
   }
@@ -69,10 +70,10 @@ FairVolume* FairVolumeList::findObject(TString name)
 void FairVolumeList::addVolume(FairVolume* elem)
 {
 
-  FairVolume* v= (FairVolume*)findObject(elem->getName());
+  FairVolume* v= (FairVolume*)findObject(elem->GetName());
 
   if (v) {
-    if(gDebug>0) { cerr << "-I FairVolumeList element: " << elem->getName() <<  " VolId : " << elem->getVolumeId() << " already defined " << v->getVolumeId()<< endl; }
+    if(gDebug>0) { cerr << "-I FairVolumeList element: " << elem->GetName() <<  " VolId : " << elem->getVolumeId() << " already defined " << v->getVolumeId()<< endl; }
   } else {
 
     fData->Add(elem);

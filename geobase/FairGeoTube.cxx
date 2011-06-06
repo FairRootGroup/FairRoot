@@ -32,6 +32,7 @@
 ClassImp(FairGeoTube)
 
 FairGeoTube::FairGeoTube()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="TUBE";

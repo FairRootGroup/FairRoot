@@ -10,7 +10,7 @@
 
 using namespace std;
 
-FairGeaneUtil::FairGeaneUtil() { }
+FairGeaneUtil::FairGeaneUtil() : TObject() { }
 
 FairGeaneUtil::~FairGeaneUtil() { }
 

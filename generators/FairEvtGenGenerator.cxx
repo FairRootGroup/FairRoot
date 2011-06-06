@@ -26,9 +26,10 @@ using std::max;
 FairEvtGenGenerator::FairEvtGenGenerator()
   : FairGenerator(),
     fFileName(""),
+    fInputFile(NULL),
     fGasmode(0.),
     fRsigma (0.),
-    fDensityFunction(0)
+    fDensityFunction(NULL)
 {
 }
 // ------------------------------------------------------------------------
@@ -37,6 +38,7 @@ FairEvtGenGenerator::FairEvtGenGenerator()
 FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName)
   :FairGenerator ("EvtGen", fileName),
    fFileName(fileName),
+   fInputFile(NULL),
    fGasmode(0.),
    fRsigma (0.),
    fDensityFunction(0)
@@ -58,6 +60,7 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName)
 FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, TF1* DensityFunction)
   :FairGenerator ("EvtGen", fileName),
    fFileName(fileName),
+   fInputFile(NULL),
    fGasmode(1),
    fRsigma (Rsigma),
    fDensityFunction(DensityFunction)

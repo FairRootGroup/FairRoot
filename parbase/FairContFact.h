@@ -14,8 +14,8 @@ class FairContainer : public TNamed
 {
   private:
     FairContainer();
-    FairContainer(const FairContainer& M);
-    FairContainer& operator= (const FairContainer&) {return *this;}
+    FairContainer(const FairContainer&);
+    FairContainer& operator=(const FairContainer&);
 
   protected:
     /** available contexts for this parameter container*/
@@ -57,8 +57,8 @@ class FairContFact : public TNamed
     FairLogger*  fLogger;//!
     ClassDef(FairContFact,0) // base class of all factories for parameter containers
   private:
-    FairContFact(const FairContFact& M);
-    FairContFact& operator= (const FairContFact&) {return *this;}
+    FairContFact(const FairContFact&);
+    FairContFact& operator=(const FairContFact&);
 
 
 };

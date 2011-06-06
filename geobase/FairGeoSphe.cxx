@@ -31,6 +31,7 @@
 ClassImp(FairGeoSphe)
 
 FairGeoSphe::FairGeoSphe()
+  :FairGeoBasicShape()
 {
   // constructor
   fName="SPHE";

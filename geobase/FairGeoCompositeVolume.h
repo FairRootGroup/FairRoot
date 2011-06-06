@@ -23,8 +23,8 @@ class FairGeoCompositeVolume : public FairGeoVolume
     void print();
     ClassDef(FairGeoCompositeVolume,1)
   private:
-    FairGeoCompositeVolume(const FairGeoCompositeVolume& L);
-    FairGeoCompositeVolume& operator= (const FairGeoCompositeVolume&) {return *this;}
+    FairGeoCompositeVolume(const FairGeoCompositeVolume& );
+    FairGeoCompositeVolume& operator=(const FairGeoCompositeVolume&);
 
 };
 

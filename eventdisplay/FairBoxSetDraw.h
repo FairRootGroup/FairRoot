@@ -77,6 +77,11 @@ class FairBoxSetDraw : public FairTask
     FairRootManager* fManager;
     TEveBoxSet* fq;    //!
     Double_t fX, fY, fZ;
+
+  private:
+    FairBoxSetDraw(const FairBoxSetDraw&);
+    FairBoxSetDraw& operator=(const FairBoxSetDraw&);
+
     ClassDef(FairBoxSetDraw,1);
 
 };

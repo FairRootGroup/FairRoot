@@ -55,8 +55,7 @@ FairTrajFilter::FairTrajFilter()
     fStoreSec ( kTRUE),
     fStepSizeMin ( 0.1), // 1mm by default
     fTrackCollection(new TClonesArray("TGeoTrack")),
-    fCurrentTrk(0)
-
+    fCurrentTrk(NULL)
 {
   if(NULL != fgInstance) {
     Fatal("FairTrajFilter", "Singleton class already exists.");
