@@ -175,11 +175,6 @@ void FairRunSim::Init()
     fApp->AddMeshList(fMeshList);
   }
 
-
-  /**Set the configuration for MC engine*/
-  SetMCConfig();
-  fRootManager->WriteFileHeader(fFileHeader);
-
   if(fField) { fField->Init(); }
   fApp->SetField(fField);
   SetFieldContainer();
@@ -196,6 +191,9 @@ void FairRunSim::Init()
   par->setChanged();
   par->setInputVersion(fRunId,1);
 
+  /**Set the configuration for MC engine*/
+  SetMCConfig();
+  fRootManager->WriteFileHeader(fFileHeader);
 
 }
 //_____________________________________________________________________________
