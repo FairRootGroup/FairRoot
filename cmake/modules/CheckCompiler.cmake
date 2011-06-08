@@ -21,7 +21,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Linux)
 
    # Select flags.
    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wshadow")
-   set(CMAKE_CXX_FLAGS_NIGHTLY        "-O0 -g -Wshadow -Weffc++ -ftest-coverage -fprofile-arcs")
+   set(CMAKE_CXX_FLAGS_NIGHTLY        "-O0 -g -Wshadow -Weffc++")
    set(CMAKE_CXX_FLAGS_TEST           "-O2 -g -Wshadow -Weffc++")
    set(CMAKE_CXX_FLAGS_RELEASE        "-O2 -Wshadow ")
 #   set(CMAKE_CXX_FLAGS_DEBUG          "-g -O2 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
