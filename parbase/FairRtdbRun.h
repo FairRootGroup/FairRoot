@@ -15,7 +15,7 @@ class FairParVersion : public TNamed
     Int_t inputVersions[3]; //! version of the parameter container in the 2 possible inputs
     Int_t rootVersion;      // version of the parameter container in the ROOT output file
   public:
-    FairParVersion() : TNamed(),rootVersion(0) {}
+    FairParVersion() {}
     FairParVersion(Text_t* name);
     ~FairParVersion() {}
     void setInputVersion(Int_t v=-1,Int_t i=0) {
@@ -55,9 +55,6 @@ class FairRtdbRun : public TNamed
     void resetOutputVersions();
     void print();
     void write(fstream&);
-
-  private:
-    FairRtdbRun& operator=(const FairRtdbRun&);
 
     ClassDef(FairRtdbRun,1) // Class for parameter version management of a run
 };
