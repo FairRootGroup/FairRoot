@@ -6,22 +6,9 @@
 # Start script with the following parameters
 # $1: The pid of the job which should be controlled
 # $2: The time in seconds between the action to be done
+# $3: Name of the file which is used for the output of the simulation
 
-pid=$1 
-sleeptime=$2
-
-check=true
-
-echo "Date  vmPeak vmSize vmLck vmHWM vmRSS vmData vmStk vmExe vmLib vmPTE" > memory_consumption_$pid.txt
-
-while $check; do
-
-
-# Do here some helpfull work
-datestring=$(date +%H:%M:%S) 
-
-#echo $datestring
-
+# Used system infrmation
 #VmSize: The size of the virtual memory allocated to the process
 #VmSize: Virtual memory size
 
@@ -41,51 +28,49 @@ datestring=$(date +%H:%M:%S)
 #       how much ram was actually devoted to your program
 #       peak of physical memory.
 
-result=$(cat /proc/$pid/status | grep ^Vm)
+pid=$1 
+sleeptime=$2
+filename=$3
 
-vmPeak=$(echo $result | cut -f 2-3 -d" ")
-vmSize=$(echo $result | cut -f 5-6 -d" ")
-vmLck=$(echo $result | cut -f 8-9 -d" ")
-vmHWM=$(echo $result | cut -f 11-12 -d" ")
-vmRSS=$(echo $result | cut -f 14-15 -d" ")
-vmData=$(echo $result | cut -f 17-18 -d" ")
-vmStk=$(echo $result | cut -f 20-21 -d" ")
-vmExe=$(echo $result | cut -f 23-24 -d" ")
-vmLib=$(echo $result | cut -f 26-27 -d" ")
-vmPTE=$(echo $result | cut -f 29-30 -d" ")
+check=true
 
-#echo "Peak: $vmPeak"
-#echo "Size: $vmSize"
-#echo "Lck: $vmLck"
-#echo "HWM: $vmHWM"
-#echo "RSS: $vmRSS"
-#echo "Data: $vmData"
-#echo "Stk: $vmStk"
-#echo "Lib: $vmLib"
-#echo "Exe: $vmExe"
-#echo "PTE: $vmPTE"
+echo -e "Date\t DateInSeconds\t vmPeak\t vmSize\t vmLck\t vmHWM\t vmRSS\t vmData\t vmStk\t vmExe\t vmLib\t vmPTE\t filesize\t CPU\t" > memory_consumption_$pid.txt
 
-#echo "$datestring  $vmPeak" >> vmPeak_$pid.txt
-#echo "$datestring  $vmSize" >> vmSize_$pid.txt
-#echo "$datestring  $vmLck" >> vmLck_$pid.txt
-#echo "$datestring  $vmHWM" >> vmHWM_$pid.txt
-#echo "$datestring  $vmRSS" >> vmRSS_$pid.txt
-#echo "$datestring  $vmData" >> vmData_$pid.txt
-#echo "$datestring  $vmStk" >> vmStk_$pid.txt
-#echo "$datestring  $vmExe" >> vmExe_$pid.txt
-#echo "$datestring  $vmLib" >> vmLib_$pid.txt
-#echo "$datestring  $vmPTE" >> vmPTE_$pid.txt
-echo "$datestring  $vmPeak $vmSize $vmLck $vmHWM $vmRSS $vmData $vmStk $vmExe $vmLib $vmPTE" >> memory_consumption_$pid.txt
+while $check; do
 
+  datestring=$(date +%H:%M:%S) 
+  dateseconds=$(date +%s)
+  
+  result=$(cat /proc/$pid/status | grep ^Vm)
 
-# if pid does not exist any longer (process ends) leave the loop
-if [ ! -e /proc/$pid/status ]; then
-  echo "There is no entry for pid $pid in /proc any longer."
-  echo "The program stops now."
-  check=false;
-fi
+  vmPeak=$(echo $result | cut -f 2-3 -d" ")
+  vmSize=$(echo $result | cut -f 5-6 -d" ")
+  vmLck=$(echo $result | cut -f 8-9 -d" ")
+  vmHWM=$(echo $result | cut -f 11-12 -d" ")
+  vmRSS=$(echo $result | cut -f 14-15 -d" ")
+  vmData=$(echo $result | cut -f 17-18 -d" ")
+  vmStk=$(echo $result | cut -f 20-21 -d" ")
+  vmExe=$(echo $result | cut -f 23-24 -d" ")
+  vmLib=$(echo $result | cut -f 26-27 -d" ")
+  vmPTE=$(echo $result | cut -f 29-30 -d" ")
 
-sleep $sleeptime
+  if [ -e $filename ]; then
+    filesize=$(ls -la $filename | cut -f 5 -d" ")
+  else
+    filesize=0
+  fi
+  cpu=$(ps -p $pid -o %cpu=)
+
+  echo "$datestring $dateseconds $vmPeak $vmSize $vmLck $vmHWM $vmRSS $vmData $vmStk $vmExe $vmLib $vmPTE $filesize $cpu" >> memory_consumption_$pid.txt
+
+  # if pid does not exist any longer (process ends) leave the loop
+  if [ ! -e /proc/$pid/status ]; then
+    echo "There is no entry for pid $pid in /proc any longer."
+    echo "The program stops now."
+    check=false;
+  fi
+
+  sleep $sleeptime
 
 done
 

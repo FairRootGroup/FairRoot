@@ -15,27 +15,41 @@ void Read_Memory_File(TString inputFile, Int_t Interval) {
    in.open(inputFile.Data());
 
    Int_t  vmPeak,vmSize,vmLck,vmHWM,vmRSS,vmData,vmStk,vmExe,vmLib,vmPTE;
-   Int_t time;
-   TString dummy[11];
+   Int_t time, timeZero, filesize;
+   Float_t cpu;
+   TString dummy[14];
    Int_t nlines = 0;
+   Bool_t firstTime=kTRUE;
 
    TString outputFile(inputFile);
    outputFile.ReplaceAll(".txt",".root");
    TFile *f = new TFile(outputFile,"RECREATE");
    TNtuple *ntuple = new TNtuple("ntuple","data from ascii file",
-         "time:vmPeak:vmSize:vmLck:vmHWM:vmRSS:vmData:vmStk:vmExe:vmLib:vmPTE");
+         "time:vmPeak:vmSize:vmLck:vmHWM:vmRSS:vmData:vmStk:vmExe:vmLib:vmPTE:filesize:cpu");
 
    // Read and skip the first colum which contains only the header
-      in >> dummy[0] >> dummy[1] >> dummy[2] >> dummy[3] >> dummy[4] >> dummy[5] >> dummy[6] >> dummy[7] 
-         >> dummy[8] >> dummy[9] >> dummy[10];
+      in >> dummy[0] >> dummy[1] >> dummy[2] >> dummy[3] >> dummy[4] 
+         >> dummy[5] >> dummy[6] >> dummy[7] >> dummy[8] >> dummy[9] 
+         >> dummy[10] >> dummy[11] >> dummy[12]
+	 >> dummy[13];
 
    while (1) {
-      in >> dummy[0] >> vmPeak >> dummy[1] >> vmSize >> dummy[2] >> vmLck >> dummy[3] >> vmHWM >> dummy[4] >> vmRSS >> 
-            dummy[5] >> vmData >> dummy[6] >> vmStk >> dummy[7] >> vmExe >> dummy[8] >> vmLib >>    dummy[9] >> vmPTE >> 
-            dummy[10];
-      time=nlines*Interval;
+     in >> dummy[0] >> time >> vmPeak >> dummy[1] >> vmSize >> dummy[2] 
+	>> vmLck >> dummy[3] >> vmHWM >> dummy[4] >> vmRSS >> dummy[5] 
+	>> vmData >> dummy[6] >> vmStk >> dummy[7] >> vmExe >> dummy[8] 
+	>> vmLib >>    dummy[9] >> vmPTE >> dummy[10] >> filesize
+	>> cpu;
+
+      if (firstTime) {
+	timeZero=time;
+        firstTime=kFALSE;
+      }
+      time-=timeZero;
+      // filesize in MB
+      filesize/=1024;
+//      time=nlines*Interval;
       if (!in.good()) break;
-      ntuple->Fill(time,vmPeak,vmSize,vmLck,vmHWM,vmRSS,vmData,vmStk,vmExe,vmLib,vmPTE);
+      ntuple->Fill(time,vmPeak,vmSize,vmLck,vmHWM,vmRSS,vmData,vmStk,vmExe,vmLib,vmPTE,filesize,cpu);
       nlines++;
    }
    printf(" found %d measurements\n",nlines);
