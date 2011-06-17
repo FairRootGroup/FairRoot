@@ -30,6 +30,7 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fVertex(TVector3(0.,0.,0.)),
    fNTracks(0),
    fSmearVertexZ(kFALSE),
+   fSmearGausVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
    fStack(NULL),
    fGenList(new TObjArray()),
@@ -64,6 +65,7 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fVertex(TVector3(0.,0.,0.)),
    fNTracks(0),
    fSmearVertexZ(kFALSE),
+   fSmearGausVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
    fStack(NULL),
    fGenList(new TObjArray()),
@@ -300,6 +302,7 @@ void FairPrimaryGenerator::MakeVertex()
   if (fSmearVertexZ) vz = gRandom->Uniform(vz - fTargetDz/2.,
                             vz + fTargetDz/2.);
 
+  if (fSmearGausVertexZ) { vz = gRandom->Gaus(vz, fTargetDz); }
   if (fSmearVertexXY) {
     if (fBeamSigmaX != 0.) { vx = gRandom->Gaus(fBeamX0, fBeamSigmaX); }
     if (fBeamSigmaY != 0.) { vy = gRandom->Gaus(fBeamY0, fBeamSigmaY); }
