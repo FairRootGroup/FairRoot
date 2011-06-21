@@ -304,3 +304,32 @@ ENDMACRO(REMOVE_FROM_LIST)
 
 
 
+MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME) 
+
+  get_filename_component(path_name ${CURRENT_SOURCE_DIR} PATH)
+  get_filename_component(file_extension ${SCRIPT_FULL_NAME} EXT)
+  get_filename_component(file_name ${SCRIPT_FULL_NAME} NAME_WE)
+  set(shell_script_name "${file_name}.sh")
+
+  string(REPLACE ${PROJECT_SOURCE_DIR}
+         ${PROJECT_BINARY_DIR} new_path ${path_name}
+        )
+
+#  file(MAKE_DIRECTORY ${new_path}/data)
+
+  CONVERT_LIST_TO_STRING(${LD_LIBRARY_PATH})
+  set(MY_LD_LIBRARY_PATH ${output})
+  set(my_script_name ${SCRIPT_FULL_NAME})
+
+  if(CMAKE_SYSTEM MATCHES Darwin)
+    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env_macos.sh.in
+                   ${new_path}/${shell_script_name}
+                  )
+  else(CMAKE_SYSTEM MATCHES Darwin)
+    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env.sh.in
+                   ${new_path}/${shell_script_name}
+                  )
+  endif(CMAKE_SYSTEM MATCHES Darwin)
+
+
+ENDMACRO (GENERATE_TEST_SCRIPT)
