@@ -306,7 +306,7 @@ ENDMACRO(REMOVE_FROM_LIST)
 
 MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME) 
 
-  get_filename_component(path_name ${CURRENT_SOURCE_DIR} PATH)
+  get_filename_component(path_name ${SCRIPT_FULL_NAME} PATH)
   get_filename_component(file_extension ${SCRIPT_FULL_NAME} EXT)
   get_filename_component(file_name ${SCRIPT_FULL_NAME} NAME_WE)
   set(shell_script_name "${file_name}.sh")
