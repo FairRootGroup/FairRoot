@@ -98,8 +98,8 @@ class FairModule:  public TNamed
     Bool_t              fActive;
     Int_t               fNbOfSensitiveVol; //!
     Int_t               fVerboseLevel;
-    TList* flGeoPar; //!  list of Detector Geometry parameters
-    Bool_t kGeoSaved; //! flag for initialisation
+    TList*              flGeoPar; //!  list of Detector Geometry parameters
+    Bool_t              kGeoSaved; //! flag for initialisation
     /** Fair Logger */
     FairLogger*            fLogger;//!
 

@@ -69,6 +69,7 @@ FairMesh.cxx
 FairRKPropagator.cxx
 FairTimeStamp.cxx
 FairTSBufferFunctional.cxx
+FairFileInfo.cxx
 )
 
 if(RULE_CHECKER_FOUND)

@@ -6,13 +6,14 @@
 ClassImp(FairTSBufferFunctional);
 
 
-FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* sourceTree)
+FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* sourceTree, BinaryFunctor* function)
   :TObject(),
    fOutputArray(NULL),
    fInputArray(NULL),
    fBufferArray(NULL),
    fBranch(NULL),
    fBranchIndex(-1),
+   fFunction (function),
    fVerbose(2)
 {
   fBranch = sourceTree->GetBranch(branchName.Data());
@@ -25,14 +26,14 @@ FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* source
   fOutputArray = new TClonesArray(fInputArray->GetClass()->GetName());
 }
 
-TClonesArray* FairTSBufferFunctional::GetData(BinaryFunctor* function, Double_t parameter)
+TClonesArray* FairTSBufferFunctional::GetData(Double_t parameter)
 {
 #if ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)
 
   Double_t actualTime = 0.;
-  int index = 0;
+  int posBuffer = 0;
 
-  if (function == 0) {
+  if (fFunction == 0) {                 //no function is given ==> read in data in traditional way event by event
     ReadInNextEntry();
     fOutputArray->AbsorbObjects((TClonesArray*)fInputArray, 0, fInputArray->GetEntriesFast() - 1);
     return fOutputArray;
@@ -56,29 +57,31 @@ TClonesArray* FairTSBufferFunctional::GetData(BinaryFunctor* function, Double_t 
 
   dataPoint = (FairTimeStamp*)fBufferArray->First();
 
-  while (!(*function)(dataPoint, parameter)) {
-    index++;
+  while (!(*fFunction)(dataPoint, parameter)) {     //check if you have reached end of requested data
+    posBuffer++;
     //if you have reached the end of the BufferArray fill it with new data from tree
-    if (index == fBufferArray->GetEntriesFast()) {
+    if (posBuffer == fBufferArray->GetEntriesFast()) {
       ReadInNextFilledEntry();
     }
     //if you are still at the end of the BufferArray than break (no new data in tree)
-    if (index == fBufferArray->GetEntriesFast()) {
+    if (posBuffer == fBufferArray->GetEntriesFast()) {
       break;
     }
-    dataPoint = (FairTimeStamp*)fBufferArray->At(index);
-    std::cout << index << " TimeStampData: " << dataPoint->GetTimeStamp() << std::endl;
+    dataPoint = (FairTimeStamp*)fBufferArray->At(posBuffer);
+    std::cout << posBuffer << " TimeStampData: " << dataPoint->GetTimeStamp() << std::endl;
   }
 
-  std::cout << "-I- FairTSBufferFunctional::GetData Index for Absorb: " << index << " BufferArray size: " << fBufferArray->GetEntriesFast() << std::endl;
-  if (index < fBufferArray->GetEntriesFast() && index > 0) {
-    std::cout << "-I- FairTSBufferFunctional::GetData absorb BufferArray up to index " << index << " into fOutputArray" << std::endl;
-    fOutputArray->AbsorbObjects(fBufferArray, 0, index - 1);
+  std::cout << "-I- FairTSBufferFunctional::GetData Index for Absorb: " << posBuffer << " BufferArray size: " << fBufferArray->GetEntriesFast() << std::endl;
+  if (posBuffer < fBufferArray->GetEntriesFast() && posBuffer > 0) {
+    std::cout << "-I- FairTSBufferFunctional::GetData absorb BufferArray up to posBuffer " << posBuffer << " into fOutputArray" << std::endl;
+    fOutputArray->AbsorbObjects(fBufferArray, 0, posBuffer - 1);
+    posBuffer = 0;
+    return fOutputArray;
   }
 
-  std::cout << "Index: " << index << " BranchIndex: " << fBranchIndex << " NBranch " << fBranch->GetEntries() << std::endl;
+  std::cout << "Index: " << posBuffer << " BranchIndex: " << fBranchIndex << " NBranch " << fBranch->GetEntries() << std::endl;
 
-  if (index >= fBufferArray->GetEntriesFast() && index != 0 && fBranchIndex + 1 >= fBranch->GetEntries()) {
+  if (posBuffer >= fBufferArray->GetEntriesFast() && posBuffer != 0 && fBranchIndex + 1 >= fBranch->GetEntries()) {
     std::cout << "-I- FairTSBufferFunctional::GetData end of data reached. Send the rest to the OutputArray!" << std::endl;
     fOutputArray->AbsorbObjects(fBufferArray, 0, fBufferArray->GetEntries() - 1);
   }

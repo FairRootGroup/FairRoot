@@ -57,7 +57,7 @@ FairRunSim::FairRunSim()
     Fatal("FairRun", "Singleton instance already exists.");
     return;
   }
-  Outfname="";
+  fOutname="";
   fginstance=this;
   fRunId=0;
   fAna=kFALSE;
@@ -122,7 +122,7 @@ void FairRunSim::Init()
 
   CheckFlukaExec();
 
-  fOutFile=fRootManager->OpenOutFile(Outfname);
+//  fOutFile=fRootManager->OpenOutFile(fOutname);
   fLogger->Info(MESSAGE_ORIGIN,"==============  FairRunSim: Initialising simulation run ==============");
 
   FairGeoLoader* loader=new FairGeoLoader(fLoaderName->Data(), "Geo Loader");
@@ -190,6 +190,7 @@ void FairRunSim::Init()
   par->SetContListStr(ContList);
   par->setChanged();
   par->setInputVersion(fRunId,1);
+
 
   /**Set the configuration for MC engine*/
   SetMCConfig();

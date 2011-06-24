@@ -18,7 +18,7 @@ class FairEventHeader;
 class FairField;
 class TFile;
 class FairLogger;
-
+class TF1;
 
 class FairRunAna : public FairRun
 {
@@ -38,28 +38,68 @@ class FairRunAna : public FairRun
     void        Run(Double_t delta_t);
     /**Run for the given single entry*/
     void        Run(Long64_t entry);
+    /**Run from event number NStart to event number NStop over mixed input files */
+    void        RunMixed(Int_t NStart, Int_t NStop);
     /**Run over all TSBuffers until the data is processed*/
     void        RunTSBuffers();
     /** the dummy run does not check the evt header or the parameters!! */
     void        DummyRun(Int_t NStart ,Int_t NStop);
+    /**Set the input signal file
+     *@param name :        signal file name
+     *@param identifier :  Unsigned integer which identify the signal file
+     */
+    void        SetSignalFile(TString name, UInt_t identifier );
+    /**Set the input background file by name*/
+    void        SetBackgroundFile(TString name);
+    /**Add input background file by name*/
+    void        AddBackgroundFile(TString name);
+    /**Add signal file to input
+     *@param name :        signal file name
+     *@param identifier :  Unsigned integer which identify the signal file to which this signal should be added
+     */
+    void        AddSignalFile(TString name, UInt_t identifier );
     /**Set the input file by name*/
     void        SetInputFile(TString fname);
+    /**Add a file to input chain */
     void        AddFile(TString name);
+
     void        Reinit(UInt_t runId);
     UInt_t      getRunId() {return fRunId;}
     /** Get the magnetic field **/
     FairField*  GetField() {return fField; }
-    void      SetField (FairField* ffield ) {fField=ffield ;}
+    /** Set the magnetic Field */
+    void        SetField (FairField* ffield ) {fField=ffield ;}
+    /** Set external geometry file */
     void        SetGeomFile(const char* GeoFileName);
+    /** Return a pointer to the geometry file */
     TFile*      GetGeoFile() {return fInputGeoFile;}
-    void        SetContainerStatic() {
-      fStatic=kTRUE;
-      std::cout << "-I- FairRunAna : Parameter Cont. initialisation is static"
-                << std::endl;
-    }
+    /** Initialization of parameter container is set to static, i.e: the run id is
+     *  is not checked anymore after initialization
+     */
+    void        SetContainerStatic();
     void        RunWithTimeStamps();
     Bool_t      IsTimeStamp() {return fTimeStamps;}
     void        CompressData();
+
+    /** Set the min and max limit for event time in ns */
+    void SetEventTimeInterval(Double_t min, Double_t max);
+
+    /** Set the mean time for the event in ns */
+    void SetEventMeanTime(Double_t mean);
+
+    /**Set the signal to background ratio in event units
+     *@param background :  Number of background Events for one signal
+     *@param Signalid :    Signal file Id, used when adding (setting) the signal file
+     * here we just forward the call to the FairRootManager
+     */
+    void BGWindowWidthNo(UInt_t background, UInt_t Signalid);
+    /**Set the signal to background rate in time units
+     *@param background :  Time of background Events before one signal
+     *@param Signalid :    Signal file Id, used when adding (setting) the signal file
+     * here we just forward the call to the FairRootManager
+     */
+    void BGWindowWidthTime(Double_t background, UInt_t Signalid);
+
 
 
   private:
@@ -67,6 +107,7 @@ class FairRunAna : public FairRun
     FairRunAna& operator= (const  FairRunAna&) {return *this;}
 
   protected:
+    /** This variable became true after Init is called*/
     Bool_t                                  fIsInitialized;
     TFile*                                  fInputGeoFile;
     static FairRunAna*                      fgRinstance;
@@ -77,6 +118,19 @@ class FairRunAna : public FairRun
     FairField*                              fField;
     Bool_t                                  fTimeStamps;
     Bool_t                                  fInFileIsOpen;//!
+    /**True if signal and background mixing is used*/
+    Bool_t                                  fMixedInput;//!
+    /** min time for one event (ns) */
+    Double_t                                fEventTimeMin;  //!
+    /** max time for one Event (ns) */
+    Double_t                                fEventTimeMax;  //!
+    /** Time of event since th start (ns) */
+    Double_t                                fEventTime;     //!
+    /** EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime) */
+    Double_t                                fEventMeanTime; //!
+    /** used to generate random numbers for event time; */
+    TF1*                                    fTimeProb;      //!
+
 
     ClassDef(FairRunAna ,3)
 

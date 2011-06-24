@@ -123,9 +123,8 @@ class FairRunSim : public FairRun
     /**Switch on/off Radiation length register */
     void SetRadLenRegister(Bool_t value) {fRadLength= value;}
 
-    void SetRadMapRegister(Bool_t value) {
-      fRadMap=value;
-    }
+    void SetRadMapRegister(Bool_t value) { fRadMap=value; }
+
     void SetRadGridRegister(Bool_t value) {fRadGrid= value;}
 
     void AddMesh (FairMesh* Mesh);

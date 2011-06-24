@@ -87,7 +87,7 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
 Bool_t FairPrimaryGenerator::Init()
 {
   /** Initialize list of generators*/
-  for(UInt_t i=0; i<fGenList->GetEntries(); i++ ) {
+  for(Int_t i=0; i<fGenList->GetEntries(); i++ ) {
     FairGenerator* gen= (FairGenerator*) fGenList->At(i);
     if(gen) { gen->Init(); }
   }

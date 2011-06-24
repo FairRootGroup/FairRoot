@@ -6,6 +6,8 @@
 
 #include "FairFileHeader.h"
 #include "FairRootManager.h"
+#include "FairFileInfo.h"
+
 
 // -----   Default constructor   -------------------------------------------
 FairFileHeader::FairFileHeader()
@@ -22,12 +24,24 @@ void FairFileHeader::AddTaskClassName(TString taskname)
   fTaskList->AddLast(new TObjString(taskname));
 }
 // -------------------------------------------------------------------------
-void FairFileHeader::AddInputFileName(TString filename)
+void FairFileHeader::AddInputFile(TFile* f, UInt_t id,  UInt_t ChId)
 {
-  printf("Add file name : %s \n", filename.Data());
-  fFileList->AddLast(new TObjString(filename));
+  fFileList->AddLast(new FairFileInfo(f,id, ChId));
 }
+// -------------------------------------------------------------------------
+FairFileInfo* FairFileHeader::GetFileInfo(UInt_t id, UInt_t ChId)
+{
+  TIterator* Iter=fFileList->MakeIterator();
+  Iter->Reset();
+  TObject* obj=0;
+  FairFileInfo* info=0;
+  while((obj=Iter->Next())) {
+    info=dynamic_cast <FairFileInfo*> (obj);
+    if(info->GetIdentifier() == id && info->GetOrderInChain()==ChId) {return info;}
+  }
+  return 0;
 
+}
 // -----   Destructor   ----------------------------------------------------
 FairFileHeader::~FairFileHeader()
 {

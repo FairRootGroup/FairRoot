@@ -11,8 +11,6 @@
 #include "FairEventHeader.h"
 #include "FairFileHeader.h"
 #include <iostream>
-
-
 //_____________________________________________________________________________
 FairRun* FairRun::fRunInstance= 0;
 //_____________________________________________________________________________
@@ -23,12 +21,11 @@ FairRun* FairRun::Instance()
 //_____________________________________________________________________________
 FairRun::FairRun()
   :TNamed(),
-   fLogger(FairLogger::GetLogger()),
    fNTasks(0),
+   fLogger(FairLogger::GetLogger()),
    fRtdb(FairRuntimeDb::instance()),
    fTask(new FairTask("FairTaskList")),
-   Outfname(""),
-   //   fRootManager(FairRootManager::Instance()),
+   fOutname(""),
    fRootManager(new FairRootManager()),
    fOutFile(0),
    fRunId(0),
@@ -42,6 +39,7 @@ FairRun::FairRun()
     return;
   }
   fRunInstance=this;
+  fRootManager->SetFileHeader(fFileHeader);
 }
 //_____________________________________________________________________________
 FairRun::~FairRun()
@@ -60,7 +58,9 @@ FairRun::~FairRun()
 
 void FairRun::SetOutputFile(const char* fname)
 {
-  Outfname=fname;
+  fOutname=fname;
+  fOutFile = fRootManager->OpenOutFile(fOutname);
+
 }
 //_____________________________________________________________________________
 

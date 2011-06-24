@@ -17,12 +17,8 @@ class FairEventHeader;
  * @since 12.01.04
  */
 
-
-
 class FairRun : public TNamed
 {
-
-
   public:
     /**
      * default ctor
@@ -39,7 +35,7 @@ class FairRun : public TNamed
     /**
      * Add a FAIRTask to the simulation or analysis
      */
-    virtual void        AddTask(FairTask* t);
+    virtual void       AddTask(FairTask* t);
     /**
      * Initialize the Simulation or analysis
      */
@@ -58,8 +54,6 @@ class FairRun : public TNamed
      *       for each run
      */
     void        SetEventHeader(FairEventHeader* EvHeader)  {fEvHead=EvHeader;}
-
-
     /**
      * return a pointer to the RuntimeDB
      */
@@ -74,9 +68,7 @@ class FairRun : public TNamed
     Int_t  GetRunId() { return ((Int_t) fRunId);}
 
     /**Get the detector specific run header*/
-
     FairEventHeader*  GetEventHeader();
-
     /**
     * return true for Anaylsis session
     */
@@ -107,7 +99,7 @@ class FairRun : public TNamed
 
   protected:
     /** Fair Logger */
-    FairLogger*            fLogger;//!
+    FairLogger*             fLogger;//!
     /** static pointer to this run*/
     static FairRun*          fRunInstance;
     /** RuntimeDb*/
@@ -115,19 +107,19 @@ class FairRun : public TNamed
     /** Tasks used*/
     FairTask*                fTask;
     /**Output file name*/
-    const char*              Outfname;
+    const char*              fOutname;
     /**IO manager */
     FairRootManager*         fRootManager;
     /**Output file*/
-    TFile*                 fOutFile;
+    TFile*                   fOutFile;
     /**Run Id*/
     UInt_t                   fRunId;//!
     /** true for Anaylsis session*/
-    Bool_t            fAna;  //!
+    Bool_t                   fAna;  //!
     /** MC Event Header */
-    FairEventHeader*       fEvHead; //!
+    FairEventHeader*         fEvHead; //!
     /** File  Header */
-    FairFileHeader* fFileHeader;
+    FairFileHeader*          fFileHeader;
 
     ClassDef(FairRun ,1)
 };

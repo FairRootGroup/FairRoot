@@ -10,6 +10,10 @@
 #include "TNamed.h"
 #include "TList.h"
 #include "TObjString.h"
+#include "TFile.h"
+
+
+class FairFileInfo;
 
 /**
  *  File Header Class
@@ -26,9 +30,6 @@ class FairFileHeader : public TNamed
     /**Add a class name of a task*/
     void AddTaskClassName(TString taskname);
 
-    /**Add file name */
-    void AddInputFileName(TString filename);
-
     /** Set the run ID for this run
        * @param runid : unique run id
        */
@@ -40,11 +41,18 @@ class FairFileHeader : public TNamed
     /** Return the list of tasks class names */
     TList* GetListOfTasks() {return fTaskList;}
 
+    void AddInputFile(TFile* f, UInt_t id, UInt_t ChId);
 
     /**
      * Destructor
      */
     virtual ~FairFileHeader();
+
+
+    FairFileInfo* GetFileInfo(UInt_t id, UInt_t ChId);
+
+
+
 
   protected:
     /** Run Id */
