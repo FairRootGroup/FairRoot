@@ -24,6 +24,8 @@ class FairVolume;
 class FairRadLenManager;
 class FairRadGridManager;
 class FairRadMapManager;
+class FairEventHeader;
+class FairMCEventHeader;
 
 class TChain;
 class TRefArray;
@@ -240,6 +242,10 @@ class FairMCApplication : public TVirtualMCApplication
     FairRadMapManager*  fRadMapMan; //!
     /**Radiation map Grid Manager*/
     FairRadGridManager* fRadGridMan; //!
+
+    FairEventHeader*    fEventHeader; //!
+
+    FairMCEventHeader*  fMCEventHeader; //!
 
     ClassDef(FairMCApplication,2)  //Interface to MonteCarlo application
 

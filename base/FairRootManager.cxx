@@ -833,10 +833,12 @@ void  FairRootManager::ReadEvent(Int_t i)
       Int_t totEnt = fInChain->GetEntries();
       fLogger->Info(MESSAGE_ORIGIN,"The number of entries in chain is %i",totEnt);
       fMCHeader = (FairMCEventHeader*)GetObject("MCEventHeader.");
+      fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
       SetEventTime();
     }
     fCurrentEntryNo=i;
     fInChain->GetEntry(i);
+    fEvtHeader->SetMCEntryNumber(i);
   } else {
     fLogger->Info(MESSAGE_ORIGIN,"Read mixed event number  %i", i);
     ReadMixedEvent(i);

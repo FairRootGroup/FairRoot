@@ -31,6 +31,9 @@ class FairEventHeader : public TNamed
     /** Get the MC input file Id for this event*/
     Double_t GetInputFileId() {return fInputFileId;}
 
+    /**The entry number in the original MC chain */
+    Int_t GetMCEntryNumber() {return fMCEntryNo;}
+
     /** Set the run ID for this run
     * @param runid : unique run id
     */
@@ -42,11 +45,9 @@ class FairEventHeader : public TNamed
     void SetEventTime(Double_t time) {fEventTime=time;}
 
     /** Set the Signal file Id for this event*/
-
     void SetInputFileId(Int_t id) {fInputFileId=id;}
 
     /**The entry number in the original MC chain */
-
     void SetMCEntryNumber(Int_t id) {fMCEntryNo=id;}
 
     /**
