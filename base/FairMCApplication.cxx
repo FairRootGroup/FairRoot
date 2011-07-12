@@ -197,6 +197,10 @@ void FairMCApplication::InitMC(const char* setup, const char* cuts)
 // ---
   fStack = (FairGenericStack*) gMC->GetStack();
 
+#if ROOT_VERSION_CODE >= 333824
+  gMC->SetMagField(fxField);
+#endif
+
   gMC->Init();
   gMC->BuildPhysics();
   TString MCName=gMC->GetName();
@@ -206,10 +210,6 @@ void FairMCApplication::InitMC(const char* setup, const char* cuts)
   else { fMcVersion = 3; }  //Geane
   fTrajFilter = FairTrajFilter::Instance();
 
-
-#if ROOT_VERSION_CODE >= 333824
-  gMC->SetMagField(fxField);
-#endif
   fLogger->Info(MESSAGE_ORIGIN, "Monte carlo Engine Initialisation  with : %s  ", MCName.Data());
 }
 //_____________________________________________________________________________
