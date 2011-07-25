@@ -75,11 +75,13 @@ MESSAGE(STATUS "Looking for GEANT3...")
 
 FIND_PATH(GEANT3_SYSTEM_DIR NAMES TGeant3 PATHS
   ${SIMPATH}/transport/geant3
+  ${SIMPATH}/include
   NO_DEFAULT_PATH
 )
 
 FIND_PATH(GEANT3_INCLUDE_DIR NAMES TGeant3.h PATHS
   ${SIMPATH}/transport/geant3/TGeant3
+  ${SIMPATH}/include/TGeant3
   NO_DEFAULT_PATH
 )
 
@@ -88,6 +90,7 @@ FIND_PATH(GEANT3_LIBRARY_DIR NAMES libgeant321.so PATHS
   ${SIMPATH}/transport/geant3/lib/tgt_linuxicc
   ${SIMPATH}/transport/geant3/lib/tgt_linuxx8664gcc
   ${SIMPATH}/transport/geant3/lib
+  ${SIMPATH}/lib
   NO_DEFAULT_PATH
 )
 
@@ -96,6 +99,7 @@ FIND_LIBRARY(GEANT3_LIB NAMES geant321 PATHS
   ${SIMPATH}/transport/geant3/lib/tgt_linuxicc
   ${SIMPATH}/transport/geant3/lib/tgt_linuxx8664gcc
   ${SIMPATH}/transport/geant3/lib
+  ${SIMPATH}/lib
   NO_DEFAULT_PATH
 )
 

@@ -17,11 +17,13 @@ MESSAGE(STATUS "Looking for CLHEP...")
 
 FIND_PATH(CLHEP_INCLUDE_DIR NAMES CLHEP PATHS
   ${SIMPATH}/cern/clhep/include
+  ${SIMPATH}/include
   NO_DEFAULT_PATH
 )
 
 FIND_PATH(CLHEP_LIBRARY_DIR NAMES libCLHEP.so libCLHEP.dylib PATHS
   ${SIMPATH}/cern/clhep/lib
+  ${SIMPATH}/lib
   NO_DEFAULT_PATH
 )
 

@@ -15,16 +15,18 @@ endif (PLUTO_INCLUDE_DIR AND PLUTO_LIBRARIES)
 
 MESSAGE(STATUS "Looking for Pluto...")
 
-FIND_PATH(PLUTO_INCLUDE_DIR NAMES PChannel.h PATHS
+FIND_PATH(PLUTO_INCLUDE_DIR NAMES PParticle.h PATHS
   ${SIMPATH}/generators/pluto/src
   ${SIMPATH}/generators/pluto
   ${SIMPATH}/generators/pluto/include
+  ${SIMPATH}/include/pluto
   NO_DEFAULT_PATH
 )
 
 FIND_PATH(PLUTO_LIBRARY_DIR NAMES libPluto.so PATHS
   ${SIMPATH}/generators/lib
   ${SIMPATH}/generators/pluto
+  ${SIMPATH}/lib
   NO_DEFAULT_PATH
 )
 

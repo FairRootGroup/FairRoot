@@ -17,33 +17,36 @@ MESSAGE(STATUS "Looking for GEANT4VMC...")
 
 FIND_PATH(GEANT4VMC_INCLUDE_DIR NAMES TG4G3Units.h PATHS
   ${SIMPATH}/transport/geant4_vmc/include
+  ${SIMPATH}/include/geant4vmc
    NO_DEFAULT_PATH
 )
 
-set(GEANT4VMC_INCLUDE_DIR
-${SIMPATH}/transport/geant4_vmc/source/global/include 
-${SIMPATH}/transport/geant4_vmc/source/geometry/include 
-${SIMPATH}/transport/geant4_vmc/source/digits+hits/include 
-${SIMPATH}/transport/geant4_vmc/source/physics/include 
-${SIMPATH}/transport/geant4_vmc/source/event/include 
-${SIMPATH}/transport/geant4_vmc/source/run/include 
-${SIMPATH}/transport/geant4_vmc/source/interfaces/include 
-${SIMPATH}/transport/geant4_vmc/source/visualization/include 
-${SIMPATH}/transport/geant4_vmc/include 
-${SIMPATH}/transport/geant4_vmc/include/geant4vmc 
-${SIMPATH}/transport/geant4_vmc/include/g4root 
-${SIMPATH}/transport/vgm/packages/BaseVGM/include 
-${SIMPATH}/transport/vgm/packages/ClhepVGM/include 
-${SIMPATH}/transport/vgm/packages/Geant4GM/include 
-${SIMPATH}/transport/vgm/packages/RootGM/include 
-${SIMPATH}/transport/vgm/packages/VGM/include 
-${SIMPATH}/transport/vgm/packages/XmlVGM/include
-)
+#set(GEANT4VMC_INCLUDE_DIR
+#${SIMPATH}/transport/geant4_vmc/source/global/include 
+#${SIMPATH}/transport/geant4_vmc/source/geometry/include 
+#${SIMPATH}/transport/geant4_vmc/source/digits+hits/include 
+#${SIMPATH}/transport/geant4_vmc/source/physics/include 
+#${SIMPATH}/transport/geant4_vmc/source/event/include 
+#${SIMPATH}/transport/geant4_vmc/source/run/include 
+#${SIMPATH}/transport/geant4_vmc/source/interfaces/include 
+#${SIMPATH}/transport/geant4_vmc/source/visualization/include 
+#${SIMPATH}/transport/geant4_vmc/include 
+#${SIMPATH}/transport/geant4_vmc/include/geant4vmc 
+#${SIMPATH}/transport/geant4_vmc/include/g4root 
+#${SIMPATH}/transport/vgm/packages/BaseVGM/include 
+#${SIMPATH}/transport/vgm/packages/ClhepVGM/include 
+#${SIMPATH}/transport/vgm/packages/Geant4GM/include 
+#${SIMPATH}/transport/vgm/packages/RootGM/include 
+#${SIMPATH}/transport/vgm/packages/VGM/include 
+#${SIMPATH}/transport/vgm/packages/XmlVGM/include
+#)
 
 
 FIND_PATH(GEANT4VMC_MACRO_DIR NAMES g4libs.C PATHS
   ${SIMPATH}/transport/macro
   ${SIMPATH}/transport/geant4_vmc/examples/macro/
+  ${SIMPATH}/transport/geant4_vmc/examples/macro/
+  ${SIMPATH}/share/geant4_vmc/macro/
   NO_DEFAULT_PATH
 )
 
@@ -52,6 +55,7 @@ FIND_PATH(GEANT4VMC_LIBRARY_DIR NAMES libgeant4vmc.so libgeant4vmc.dylib PATHS
   ${SIMPATH}/transport/geant4_vmc/lib/tgt_linuxicc
   ${SIMPATH}/transport/geant4_vmc/lib/tgt_linuxx8664gcc
   ${SIMPATH}/transport/geant4_vmc/lib
+  ${SIMPATH}/lib
   NO_DEFAULT_PATH
 )
 
@@ -80,6 +84,7 @@ FIND_PATH(VGM_LIBRARY_DIR NAMES libBaseVGM.so libBaseVGM.dylib PATHS
   ${SIMPATH}/transport/vgm.2.08.04/lib/Linux-g++
   ${SIMPATH}/transport/vgm/lib/Linux-icc
   ${SIMPATH}/transport/vgm/lib
+  ${SIMPATH}/lib
   NO_DEFAULT_PATH
 )
 
