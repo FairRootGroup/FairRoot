@@ -22,8 +22,6 @@ FIND_PATH(GEANT4VMC_INCLUDE_DIR NAMES TG4G3Units.h PATHS
    NO_DEFAULT_PATH
 )
 
-Message("GEANT4VMC_INCLUDE_DIR: ${GEANT4VMC_INCLUDE_DIR}")
-
 #set(GEANT4VMC_INCLUDE_DIR
 #${SIMPATH}/transport/geant4_vmc/source/global/include 
 #${SIMPATH}/transport/geant4_vmc/source/geometry/include 
@@ -52,7 +50,6 @@ FIND_PATH(GEANT4VMC_MACRO_DIR NAMES g4libs.C PATHS
   ${SIMPATH}/share/geant4_vmc/macro/
   NO_DEFAULT_PATH
 )
-Message("GEANT4VMC_MACRO_DIR: ${GEANT4VMC_MACRO_DIR}")
 
 FIND_PATH(GEANT4VMC_LIBRARY_DIR NAMES libgeant4vmc.so libgeant4vmc.dylib PATHS
   ${SIMPATH}/transport/geant4_vmc/lib/tgt_linux
@@ -62,7 +59,6 @@ FIND_PATH(GEANT4VMC_LIBRARY_DIR NAMES libgeant4vmc.so libgeant4vmc.dylib PATHS
   ${SIMPATH}/lib
   NO_DEFAULT_PATH
 )
-Message("GEANT4VMC_LIBRARY_DIR: ${GEANT4VMC_LIBRARY_DIR}")
 
 # check for existence of header file, which is needed in FairRunConfiguration
 # The file is only present in old versions of VMC
