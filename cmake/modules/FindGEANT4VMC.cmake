@@ -17,6 +17,7 @@ MESSAGE(STATUS "Looking for GEANT4VMC...")
 
 FIND_PATH(GEANT4VMC_INCLUDE_DIR NAMES TG4G3Units.h PATHS
   ${SIMPATH}/transport/geant4_vmc/include/geant4vmc
+  ${SIMPATH}/transport/geant4_vmc/include
   ${SIMPATH}/include/geant4vmc
    NO_DEFAULT_PATH
 )
