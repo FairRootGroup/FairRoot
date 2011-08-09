@@ -354,7 +354,7 @@ Bool_t FairRootManager::OpenInChain()
   // together with the filename and the number of events for each runid
   // this information is needed later to check if inconsitencies exist
   // between the main input chain and any of the friend chains.
-  GetRunIdInfo(fInFile->GetName(), chainName);
+//  GetRunIdInfo(fInFile->GetName(), chainName);
 
   // Add all additional input files to the input chain and do a
   // consitency check
@@ -378,7 +378,7 @@ Bool_t FairRootManager::OpenInChain()
     }
 
     // Add the runid information for all files in the chain.
-    GetRunIdInfo(inputFile->GetName(), chainName);
+//    GetRunIdInfo(inputFile->GetName(), chainName);
     // Add the file to the input chain
     fInChain->Add( (*iter) );
 
@@ -1350,7 +1350,7 @@ void FairRootManager::AddFriendsToChain()
       friendType++;
     }
 
-    GetRunIdInfo((*iter1), inputLevel);
+//    GetRunIdInfo((*iter1), inputLevel);
     TChain* chain = (TChain*) fFriendTypeList[inputLevel];
     chain->AddFile((*iter1), 1234567890, "cbmsim");
   }
