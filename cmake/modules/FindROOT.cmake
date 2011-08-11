@@ -218,10 +218,21 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   Format(Int_DEF "${Int_DEF}" "-D" "")
 
   set_source_files_properties(${Int_DICTIONARY} PROPERTIES GENERATED TRUE)
-  add_custom_command(OUTPUT  ${Int_DICTIONARY}
-                     COMMAND ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEFINITIONS} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
-                     DEPENDS ${Int_HDRS} ${Int_LINKDEF}
-                     )
+  If (CMAKE_SYSTEM_NAME MATCHES Linux)
+    add_custom_command(OUTPUT  ${Int_DICTIONARY}
+                       COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEFINITIONS} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
+                       DEPENDS ${Int_HDRS} ${Int_LINKDEF}
+                       )
+  Else (CMAKE_SYSTEM_NAME MATCHES Linux)
+    If (CMAKE_SYSTEM_NAME MATCHES Darwin)
+      add_custom_command(OUTPUT  ${Int_DICTIONARY}
+                         COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEFINITIONS} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
+                         DEPENDS ${Int_HDRS} ${Int_LINKDEF}
+                         )
+    EndIf (CMAKE_SYSTEM_NAME MATCHES Darwin)
+  EndIf (CMAKE_SYSTEM_NAME MATCHES Linux)
+
+
 endmacro(ROOT_GENERATE_DICTIONARY_NEW)
 
 
