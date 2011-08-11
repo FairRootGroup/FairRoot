@@ -100,6 +100,7 @@ FairRootManager::FairRootManager()
     fSBRatiobyT(kFALSE),
     fCurrentEntryNo(0),
     fTimeforEntryNo(0)
+
 {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
@@ -140,6 +141,7 @@ void FairRootManager::SetSignalFile(TString name, UInt_t identifier )
     if(fSignalTypeList[identifier]==0) {
       TChain* chain = new TChain("cbmsim", "/cbmroot");
       fSignalTypeList[identifier]=chain;
+      fCurrentEntry[identifier]=0;
       fNoOfSignals++;
       fActualSignalIdentifier= identifier;
       chain->AddFile(name.Data());
@@ -839,6 +841,7 @@ void  FairRootManager::ReadEvent(Int_t i)
     fCurrentEntryNo=i;
     fInChain->GetEntry(i);
     fEvtHeader->SetMCEntryNumber(i);
+    fEvtHeader->SetEventTime(GetEventTime());
   } else {
     fLogger->Info(MESSAGE_ORIGIN,"Read mixed event number  %i", i);
     ReadMixedEvent(i);
@@ -875,11 +878,14 @@ void  FairRootManager::ReadMixedEvent(Int_t i)
       fLogger->Debug(MESSAGE_ORIGIN,"---Check signal no. %i  SBratio %f  :  ratio %f ", iterN->first , SBratio, ratio);
       if(SBratio <=ratio) {
         TChain* chain = fSignalTypeList[iterN->first];
-        chain->GetEntry(i);
-        fEvtHeader->SetMCEntryNumber(i);
+        UInt_t entry=fCurrentEntry[iterN->first];
+        chain->GetEntry(entry);
+        fEvtHeader->SetMCEntryNumber(entry);
         fEvtHeader->SetInputFileId(iterN->first);
+        fEvtHeader->SetEventTime(GetEventTime());
         GetASignal=kTRUE;
-        fLogger->Debug(MESSAGE_ORIGIN,"---Get entry from signal chain number --- %i --- ",iterN->first);
+        fCurrentEntry[iterN->first]=entry+1;
+        fLogger->Debug(MESSAGE_ORIGIN,"---Get entry No. %i from signal chain number --- %i --- ",entry, iterN->first);
         break;
       }
     }
@@ -887,6 +893,7 @@ void  FairRootManager::ReadMixedEvent(Int_t i)
       fBackgroundChain->GetEntry(i);
       fEvtHeader->SetMCEntryNumber(i);
       fEvtHeader->SetInputFileId(0); //Background files has always 0 as Id
+      fEvtHeader->SetEventTime(GetEventTime());
       fLogger->Debug(MESSAGE_ORIGIN,"---Get entry from background chain  --- ");
     }
 
@@ -1546,17 +1553,22 @@ void FairRootManager::GetRunIdInfo(TString fileName, TString inputLevel)
 Double_t FairRootManager::GetEventTime()
 {
   fLogger->Debug2(MESSAGE_ORIGIN,"-- Get Event Time --");
+  if(fEvtHeader!=0) {
+    Double_t EvtTime=fEvtHeader->GetEventTime();
+    if( EvtTime!=0) { return   EvtTime; }
+  }
+
   if (fEventTimeInMCHeader && !fMCHeader) {
     fLogger->Info(MESSAGE_ORIGIN," No MCEventHeader, time is set to 0");
     return 0;
   } else if(fEventTimeInMCHeader && fMCHeader) {
     fEventTime=fMCHeader->GetT();
-    fLogger->Debug(MESSAGE_ORIGIN," Get event time from MCEventHeader : %f ns", fEventTime);
+    fLogger->Info(MESSAGE_ORIGIN," Get event time from MCEventHeader : %f ns", fEventTime);
     return fEventTime;
   } else {
 
     if(fTimeforEntryNo!=fCurrentEntryNo) { SetEventTime(); }
-    fLogger->Debug(MESSAGE_ORIGIN," Calculate event time from user input : %f ns", fEventTime);
+    fLogger->Info(MESSAGE_ORIGIN," Calculate event time from user input : %f ns", fEventTime);
     return fEventTime;
   }
 }

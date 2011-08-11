@@ -321,7 +321,8 @@ class FairRootManager : public TObject
     UInt_t                                  fTimeforEntryNo; //!
     /**No of entries in BG Chain*/
     UInt_t                                  fNoOfBGEntries; //!
-
+    /**Hold the current entry for each input chain*/
+    std::map<UInt_t, UInt_t>                fCurrentEntry; //!
 
 
     ClassDef(FairRootManager,5) // Root IO manager
