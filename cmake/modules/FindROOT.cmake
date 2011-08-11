@@ -145,58 +145,87 @@ ENDIF (ROOT_FOUND)
 
 
 
+function(Format _output input prefix suffix)
+
+# DevNotes - input should be put in quotes or the complete list does not get passed to the function
+  set(format)
+  foreach(arg ${input})
+    set(item ${arg})
+    if(prefix)
+      string(REGEX MATCH "^${prefix}" pre ${arg})
+    endif(prefix)
+    if(suffix)
+      string(REGEX MATCH "${suffix}$" suf ${arg})
+    endif(suffix)
+    if(NOT pre)
+      set(item "${prefix}${item}")
+    endif(NOT pre)
+    if(NOT suf)
+      set(item "${item}${suffix}")
+    endif(NOT suf)
+    list(APPEND format ${item})
+  endforeach(arg)
+  set(${_output} ${format} PARENT_SCOPE)
+
+endfunction(Format)
+
+
   ###########################################
   #
   #       Macros for building ROOT dictionary
   #
   ###########################################
+Macro(ROOT_GENERATE_DICTIONARY)
 
-MACRO (ROOT_GENERATE_DICTIONARY_OLD )
+  # Macro to switch between the old implementation with parameters
+  # and the new implementation without parameters.
+  # For the new implementation some CMake variables has to be defined
+  # before calling the macro.
+
+  If(${ARGC} EQUAL 0)
+#    Message("New Version")
+    ROOT_GENERATE_DICTIONARY_NEW()
+  Else(${ARGC} EQUAL 0)
+    If(${ARGC} EQUAL 4)
+#      Message("Old Version")
+      ROOT_GENERATE_DICTIONARY_OLD("${ARGV0}" "${ARGV1}" "${ARGV2}" "${ARGV3}")
+    Else(${ARGC} EQUAL 4)
+      Message(FATAL_ERROR "Has to be implemented")  
+    EndIf(${ARGC} EQUAL 4)
+  EndIf(${ARGC} EQUAL 0)
  
-   set(INFILES "")    
+EndMacro(ROOT_GENERATE_DICTIONARY)
 
-   foreach (_current_FILE ${ARGN})
+Macro(ROOT_GENERATE_DICTIONARY_NEW)
 
-     IF (${_current_FILE} MATCHES "^.*\\.h$")
-       IF (${_current_FILE} MATCHES "^.*Link.*$")
-         set(LINKDEF_FILE ${_current_FILE})
-       ELSE (${_current_FILE} MATCHES "^.*Link.*$")
-         set(INFILES ${INFILES} ${_current_FILE})
-       ENDIF (${_current_FILE} MATCHES "^.*Link.*$")
-     ELSE (${_current_FILE} MATCHES "^.*\\.h$")
-       IF (${_current_FILE} MATCHES "^.*\\.cxx$")
-         set(OUTFILE ${_current_FILE})
-       ELSE (${_current_FILE} MATCHES "^.*\\.cxx$")
-         set(INCLUDE_DIRS ${INCLUDE_DIRS} -I${_current_FILE})   
-       ENDIF (${_current_FILE} MATCHES "^.*\\.cxx$")
-     ENDIF (${_current_FILE} MATCHES "^.*\\.h$")
-     
-   endforeach (_current_FILE ${ARGN})
-   
-#  MESSAGE("INFILES: ${INFILES}")
-#  MESSAGE("OutFILE: ${OUTFILE}")
-#  MESSAGE("LINKDEF_FILE: ${LINKDEF_FILE}")
-#  MESSAGE("INCLUDE_DIRS: ${INCLUDE_DIRS}")
+  # All Arguments needed for this new version of the macro are defined
+  # in the parent scope, namely in the CMakeLists.txt of the submodule 
+  set(Int_LINKDEF ${LINKDEF})
+  set(Int_DICTIONARY ${DICTIONARY})
 
-   STRING(REGEX REPLACE "(^.*).cxx" "\\1.h" bla "${OUTFILE}")
-#   MESSAGE("BLA: ${bla}")
-   SET (OUTFILES ${OUTFILE} ${bla})
+  set(Int_INC ${INCLUDE_DIRECTORIES})
+  set(Int_HDRS ${HDRS})
+  set(Int_DEF ${DEFINITIONS})
 
-   ADD_CUSTOM_COMMAND(OUTPUT ${OUTFILES}
-      COMMAND ${ROOT_CINT_EXECUTABLE}
-      ARGS -f ${OUTFILE} -c -DHAVE_CONFIG_H ${INCLUDE_DIRS} ${INFILES} ${LINKDEF_FILE} DEPENDS ${INFILES})
+  # Convert the values of the variable to a semi-colon separated list
+  separate_arguments(Int_INC)
+  separate_arguments(Int_HDRS)
+  separate_arguments(Int_DEF)
 
-#   MESSAGE("ROOT_CINT_EXECUTABLE has created the dictionary ${OUTFILE}")
+  # Format neccesary arguments
+  # Add -I and -D to include directories and definitions
+  Format(Int_INC "${Int_INC}" "-I" "")
+  Format(Int_DEF "${Int_DEF}" "-D" "")
 
-ENDMACRO (ROOT_GENERATE_DICTIONARY_OLD)
+  set_source_files_properties(${Int_DICTIONARY} PROPERTIES GENERATED TRUE)
+  add_custom_command(OUTPUT  ${Int_DICTIONARY}
+                     COMMAND ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEFINITIONS} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
+                     DEPENDS ${Int_HDRS} ${Int_LINKDEF}
+                     )
+endmacro(ROOT_GENERATE_DICTIONARY_NEW)
 
-  ###########################################
-  #
-  #       Macros for building ROOT dictionary
-  #
-  ###########################################
 
-MACRO (ROOT_GENERATE_DICTIONARY INFILES LINKDEF_FILE OUTFILE INCLUDE_DIRS_IN)
+MACRO (ROOT_GENERATE_DICTIONARY_OLD INFILES LINKDEF_FILE OUTFILE INCLUDE_DIRS_IN)
  
   set(INCLUDE_DIRS)
 
@@ -204,7 +233,7 @@ MACRO (ROOT_GENERATE_DICTIONARY INFILES LINKDEF_FILE OUTFILE INCLUDE_DIRS_IN)
     set(INCLUDE_DIRS ${INCLUDE_DIRS} -I${_current_FILE})   
   endforeach (_current_FILE ${INCLUDE_DIRS_IN})
  
-
+#  Message("Definitions: ${DEFINITIONS}")
 #  MESSAGE("INFILES: ${INFILES}")
 #  MESSAGE("OutFILE: ${OUTFILE}")
 #  MESSAGE("LINKDEF_FILE: ${LINKDEF_FILE}")
@@ -227,7 +256,7 @@ MACRO (ROOT_GENERATE_DICTIONARY INFILES LINKDEF_FILE OUTFILE INCLUDE_DIRS_IN)
     endif (CMAKE_SYSTEM_NAME MATCHES Darwin)
   endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 
-ENDMACRO (ROOT_GENERATE_DICTIONARY)
+ENDMACRO (ROOT_GENERATE_DICTIONARY_OLD)
 
 MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
 
