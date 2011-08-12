@@ -15,7 +15,7 @@
 #include "FairRunIdGenerator.h"
 #include "FairLogger.h"
 #include "FairFileHeader.h"
-
+#include "FairMCEventHeader.h"
 
 #include "TROOT.h"
 #include "TTree.h"
@@ -182,16 +182,26 @@ void FairRunAna::Init()
   /**Set the IO Manager to run with time stamps*/
   if(fTimeStamps) { fRootManager->RunWithTimeStamps(); }
 
+
+
   // Assure that basic info is there for the run
   //  if(par && fInputFile) {
   if(par && fInFileIsOpen) {
+
+    fLogger->Info(MESSAGE_ORIGIN,"Parameter and input file are available, Assure that basic info is there for the run!");
     fRootManager->ReadEvent(0);
-    fEvtHeader = (FairEventHeader*)
-                 fRootManager->GetObject("EventHeader.");
+    fEvtHeader = (FairEventHeader*)fRootManager->GetObject("EventHeader.");
+    FairMCEventHeader* fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
+    if(fEvtHeader ==0) {
+      fEvtHeader=GetEventHeader();
+      fRunId = fMCHeader->GetRunID();
+      fEvtHeader->SetRunId(fRunId);
+    } else {
+      fRunId = fEvtHeader->GetRunId();
+    }
     //Copy the Event Header Info to Output
     fEvtHeader->Register();
 
-    fRunId = fEvtHeader->GetRunId();
     // Init the containers in Tasks
     fRtdb->initContainers(fRunId);
     fTask->SetParTask();
@@ -206,8 +216,13 @@ void FairRunAna::Init()
     //fRtdb->setContainersStatic(kTRUE);
 
     fEvtHeader = (FairEventHeader*) fRootManager->GetObject("EventHeader.");
-    if(fEvtHeader==0) { fEvtHeader=GetEventHeader(); }
-
+    FairMCEventHeader* fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
+    if(fEvtHeader ==0) {
+      fEvtHeader=GetEventHeader();
+      fRunId = fMCHeader->GetRunID();
+      fEvtHeader->SetRunId(fRunId);
+      fRootManager->SetEvtHeaderNew(kTRUE);
+    }
 
     fRootManager->ReadBKEvent(0);
 

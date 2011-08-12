@@ -477,7 +477,8 @@ void FairMCApplication::FinishEvent()
     detector = dynamic_cast<FairDetector*>(obj);
     if (detector) { detector->FinishEvent(); }
   }
-  fEventHeader->SetMCEntryNumber(fMCEventHeader->GetEventID());
+  // fEventHeader->SetMCEntryNumber(fMCEventHeader->GetEventID());
+
   fRootManager->Fill();
   fActDetIter->Reset();
   detector=NULL;
@@ -654,9 +655,9 @@ void FairMCApplication::InitGeometry()
   // Get and register EventHeader
   UInt_t runId = FairRunSim::Instance()->GetRunId();
 
-  fEventHeader = FairRunSim::Instance()->GetEventHeader();
-  fEventHeader->SetRunId(runId);
-  fEventHeader->Register();
+  //fEventHeader = FairRunSim::Instance()->GetEventHeader();
+  //fEventHeader->SetRunId(runId);
+  //fEventHeader->Register();
 
   fLogger->Info(MESSAGE_ORIGIN, "Simulation RunID: %i  ", runId);
 

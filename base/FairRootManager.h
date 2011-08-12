@@ -45,25 +45,15 @@ class FairRootManager : public TObject
     FairRootManager();
     /**dtor*/
     virtual ~FairRootManager();
-    /** static access method */
-    static FairRootManager* Instance();
-    /**Set the input signal file
-     *@param name :        signal file name
-     *@param identifier :  Unsigned integer which identify the signal file
-     */
-    void                SetSignalFile(TString name, UInt_t identifier );
-    /**Set the input background file by name*/
-    void                SetBackgroundFile(TString name);
-    /**Add signal file to input
-     *@param name :        signal file name
-     *@param identifier :  Unsigned integer which identify the signal file to which this signal should be added
-     */
     void                AddSignalFile(TString name, UInt_t identifier );
     /**Add input background file by name*/
     void                AddBackgroundFile(TString name);
     void                AddFile(TString name);
     void                AddFriend(TString Name);
     void                AddFriendsToChain();
+
+    Bool_t              AllDataProcessed();
+
     /**
     Check if Branch persistence or not (Memory branch)
     return value:
@@ -107,14 +97,16 @@ class FairRootManager : public TObject
     FairGeoNode*        GetGeoParameter(const char* detname, const char* gname);
     /** Return a pointer to the object (collection) saved in the branch named BrName*/
     TObject*            GetObject(const char* BrName);
-    Double_t      GetEventTime();
+    Double_t            GetEventTime();
     /** Get the data of the given branch name,
      *  this method runs over multiple entries
      *  of the tree and selects the data according
      *  to the function and the parameter given.
      */
-    TClonesArray*     GetData(TString branchName, BinaryFunctor* function, Double_t parameter);
-    Bool_t            AllDataProcessed();
+    TClonesArray*       GetData(TString branchName, BinaryFunctor* function, Double_t parameter);
+
+    /** static access method */
+    static FairRootManager* Instance();
 
     Bool_t            OpenInChain();
     Bool_t            OpenBackgroundChain();
@@ -142,6 +134,26 @@ class FairRootManager : public TObject
     TClonesArray*       Register(TString branchName, TString className, TString folderName, Bool_t toFile);
     /**Use time stamps to read data and not tree entries*/
     void                RunWithTimeStamps() {fTimeStamps = kTRUE;}
+
+    /**Set the input signal file
+     *@param name :        signal file name
+     *@param identifier :  Unsigned integer which identify the signal file
+     */
+    void                  SetSignalFile(TString name, UInt_t identifier );
+    /**Set the input background file by name*/
+    void                  SetBackgroundFile(TString name);
+    /**Add signal file to input
+     *@param name :        signal file name
+     *@param identifier :  Unsigned integer which identify the signal file to which this signal should be added
+     */
+
+    /**Set the status of the EvtHeader
+     *@param Status:  True: The header was creatged in this session and has to be filled
+                      FALSE: We use an existing header from previous data level
+     */
+    Bool_t            SetEvtHeaderNew(Bool_t Status) {fEvtHeaderIsNew = Status;}
+
+
     /**Set the branch name list*/
     void                SetBranchNameList(TList* list);
     void                SetCompressData(Bool_t val) {fCompressData = val;}
@@ -323,7 +335,11 @@ class FairRootManager : public TObject
     UInt_t                                  fNoOfBGEntries; //!
     /**Hold the current entry for each input chain*/
     std::map<UInt_t, UInt_t>                fCurrentEntry; //!
-
+    /**This flag is true if the event header was created in this session
+     * otherwise it is false which means the header was created in a previous data
+     * level and used here (e.g. in the digi)
+     */
+    Bool_t                                  fEvtHeaderIsNew; //!
 
     ClassDef(FairRootManager,5) // Root IO manager
 };

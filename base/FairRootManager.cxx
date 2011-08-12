@@ -99,7 +99,8 @@ FairRootManager::FairRootManager()
     fSBRatiobyN(kFALSE),
     fSBRatiobyT(kFALSE),
     fCurrentEntryNo(0),
-    fTimeforEntryNo(0)
+    fTimeforEntryNo(0),
+    fEvtHeaderIsNew(kFALSE)
 
 {
   if (fgInstance) {
@@ -834,14 +835,16 @@ void  FairRootManager::ReadEvent(Int_t i)
     if(0==fCurrentEntryNo) {
       Int_t totEnt = fInChain->GetEntries();
       fLogger->Info(MESSAGE_ORIGIN,"The number of entries in chain is %i",totEnt);
-      fMCHeader = (FairMCEventHeader*)GetObject("MCEventHeader.");
+      //   fMCHeader = (FairMCEventHeader*)GetObject("MCEventHeader.");
       fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
       SetEventTime();
     }
     fCurrentEntryNo=i;
     fInChain->GetEntry(i);
-    fEvtHeader->SetMCEntryNumber(i);
-    fEvtHeader->SetEventTime(GetEventTime());
+    if(fEvtHeader !=0) {
+      fEvtHeader->SetMCEntryNumber(i);
+      fEvtHeader->SetEventTime(GetEventTime());
+    } else { fLogger->Info(MESSAGE_ORIGIN," No event Header was found!!!"); }
   } else {
     fLogger->Info(MESSAGE_ORIGIN,"Read mixed event number  %i", i);
     ReadMixedEvent(i);
@@ -855,7 +858,7 @@ void  FairRootManager::ReadMixedEvent(Int_t i)
 
   /**Check for fCurrentEntryNo because it always starts from Zero, i could have any value! */
   if(0==fCurrentEntryNo) {
-    fMCHeader = (FairMCEventHeader*)GetObject("MCEventHeader.");
+    //   fMCHeader = (FairMCEventHeader*)GetObject("MCEventHeader.");
     fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
     SetEventTime();
   }
@@ -1553,7 +1556,7 @@ void FairRootManager::GetRunIdInfo(TString fileName, TString inputLevel)
 Double_t FairRootManager::GetEventTime()
 {
   fLogger->Debug2(MESSAGE_ORIGIN,"-- Get Event Time --");
-  if(fEvtHeader!=0) {
+  if(!fEvtHeaderIsNew && fEvtHeader!=0) {
     Double_t EvtTime=fEvtHeader->GetEventTime();
     if( EvtTime!=0) { return   EvtTime; }
   }
