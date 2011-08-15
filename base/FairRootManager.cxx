@@ -1555,23 +1555,23 @@ void FairRootManager::GetRunIdInfo(TString fileName, TString inputLevel)
 //_____________________________________________________________________________
 Double_t FairRootManager::GetEventTime()
 {
-  fLogger->Debug2(MESSAGE_ORIGIN,"-- Get Event Time --");
+  fLogger->Debug(MESSAGE_ORIGIN,"-- Get Event Time --");
   if(!fEvtHeaderIsNew && fEvtHeader!=0) {
     Double_t EvtTime=fEvtHeader->GetEventTime();
     if( EvtTime!=0) { return   EvtTime; }
   }
 
   if (fEventTimeInMCHeader && !fMCHeader) {
-    fLogger->Info(MESSAGE_ORIGIN," No MCEventHeader, time is set to 0");
+    fLogger->Debug(MESSAGE_ORIGIN," No MCEventHeader, time is set to 0");
     return 0;
   } else if(fEventTimeInMCHeader && fMCHeader) {
     fEventTime=fMCHeader->GetT();
-    fLogger->Info(MESSAGE_ORIGIN," Get event time from MCEventHeader : %f ns", fEventTime);
+    fLogger->Debug(MESSAGE_ORIGIN," Get event time from MCEventHeader : %f ns", fEventTime);
     return fEventTime;
   } else {
 
     if(fTimeforEntryNo!=fCurrentEntryNo) { SetEventTime(); }
-    fLogger->Info(MESSAGE_ORIGIN," Calculate event time from user input : %f ns", fEventTime);
+    fLogger->Debug(MESSAGE_ORIGIN," Calculate event time from user input : %f ns", fEventTime);
     return fEventTime;
   }
 }
