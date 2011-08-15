@@ -196,6 +196,7 @@ void FairRunAna::Init()
       fEvtHeader=GetEventHeader();
       fRunId = fMCHeader->GetRunID();
       fEvtHeader->SetRunId(fRunId);
+      fRootManager->SetEvtHeaderNew(kTRUE);
     } else {
       fRunId = fEvtHeader->GetRunId();
     }
