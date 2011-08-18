@@ -23,7 +23,7 @@
 #include "TGeoManager.h"
 #include "TKey.h"
 #include "TF1.h"
-
+#include "TSystem.h"
 
 #include <iostream>
 #include <list>
@@ -59,7 +59,8 @@ FairRunAna::FairRunAna()
    fEventTimeMax(0),
    fEventTime(0),
    fEventMeanTime(0),
-   fTimeProb(0)
+   fTimeProb(0),
+   fRunInfo()
 {
 
   fgRinstance=this;
@@ -352,6 +353,8 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 
     }
 
+    fRunInfo.Reset();
+
     for (int i=Ev_start; i< Ev_end; i++) {
       fRootManager->ReadEvent(i);
       tmpId = fEvtHeader->GetRunId();
@@ -370,10 +373,12 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
       fRootManager->Fill();
       fTask->FinishEvent();
 
+      fRunInfo.StoreInfo();
       if(NULL !=  FairTrajFilter::Instance()) { FairTrajFilter::Instance()->Reset(); }
 
     }
     fTask->FinishTask();
+    fRunInfo.WriteInfo();
     fRootManager->Fill();
     fRootManager->Write();
   }

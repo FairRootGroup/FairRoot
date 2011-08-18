@@ -36,29 +36,23 @@ void FairRunInfo::StoreInfo()
   //  gSystem->GetCpuInfo(&cpuInfo, 10);
   //  gSystem->GetMemInfo(&memInfo);
 
-
-  fLogger->Info(MESSAGE_ORIGIN,"Before GetInfo.");
-
   GetInfo();
 
-  fLogger->Info(MESSAGE_ORIGIN,"Before CalculateTimeDifference.");
-
   CalculateTimeDifference();
-
-  fLogger->Info(MESSAGE_ORIGIN,"Before PrintInfo.");
 
   PrintInfo();
 }
 
-void FairRunInfo::PrintInfo()
+void FairRunInfo::GetInfo()
 {
+  // Set the TimeStamp to the actual time and store it
+  fTimeStamp.Set();
+  //  fTime.push_back(fTimeStamp.GetSec());
+  fTime.push_back(fTimeStamp.AsDouble());
 
-  fLogger->Info(MESSAGE_ORIGIN,"Time to execute 1 event: %d s",
-                fTimeDiff.back());
-  fLogger->Info(MESSAGE_ORIGIN,"Used resident memory: %i MB",
-                fResidentMemory.back());
-  fLogger->Info(MESSAGE_ORIGIN,"Used virtual memory: %i MB",
-                fVirtualMemory.back());
+  gSystem->GetProcInfo(&fProcInfo);
+  fResidentMemory.push_back(fProcInfo.fMemResident/1024);
+  fVirtualMemory.push_back(fProcInfo.fMemVirtual/1024);
 }
 
 void FairRunInfo::CalculateTimeDifference()
@@ -70,6 +64,16 @@ void FairRunInfo::CalculateTimeDifference()
                        fTime.at(lastElement-1) );
 }
 
+void FairRunInfo::PrintInfo()
+{
+
+  fLogger->Info(MESSAGE_ORIGIN,"Time to execute 1 event: %f s",
+                fTimeDiff.back());
+  fLogger->Info(MESSAGE_ORIGIN,"Used resident memory: %i MB",
+                fResidentMemory.back());
+  fLogger->Info(MESSAGE_ORIGIN,"Used virtual memory: %i MB",
+                fVirtualMemory.back());
+}
 
 void FairRunInfo::WriteInfo()
 {
@@ -86,9 +90,9 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
 
   TH1F* ResidentMemoryVsEvent = new TH1F("ResidentMemoryVsEvent","Resident Memory as function of Eventnumber;Event;Memory [MB]",entries, 0, entries);
   TH1F* VirtualMemoryVsEvent = new TH1F("VirtualMemoryVsEvent","Virtual Memory as function of Eventnumber;Event;Memory [MB]",entries, 0, entries);
-  TH1F* ResidentMemoryVsTime = new TH1F("ResidentMemoryVsTime","Resident memory as function of Runtime;Time [s];Memory [MB]",timePeriod, 0, timePeriod);
-  TH1F* VirtualMemoryVsTime = new TH1F("VirtualMemoryVsTime","Virtual memory as function of Runtime;Time [s];Memory [MB]",timePeriod, 0, timePeriod);
-  TH1F* EventtimeVsEvent = new TH1F("EventtimeVsEvent","Runtime per Event as function of Event number;Event;Time [s]",(entries-1)*10, 1, entries);
+  TH1F* ResidentMemoryVsTime = new TH1F("ResidentMemoryVsTime","Resident memory as function of Runtime;Time [s];Memory [MB]",timePeriod*10, 0, timePeriod);
+  TH1F* VirtualMemoryVsTime = new TH1F("VirtualMemoryVsTime","Virtual memory as function of Runtime;Time [s];Memory [MB]",timePeriod*10, 0, timePeriod);
+  TH1F* EventtimeVsEvent = new TH1F("EventtimeVsEvent","Runtime per Event as function of Event number;Event;Time [s]",entries-1, 1, entries);
 
   std::vector<Double_t> timeDiffSorted(fTimeDiff);
   std::vector<Double_t>::iterator it;
@@ -102,10 +106,23 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
 
   Int_t counter = 0;
   std::vector<Long_t>::iterator lit;
+  Double_t timeOffset = fTime.front()+1.;
   for(lit=fResidentMemory.begin(); lit<fResidentMemory.end(); lit++) {
     ResidentMemoryVsEvent->Fill(counter, *lit);
+    ResidentMemoryVsTime->Fill(fTime.at(counter)-timeOffset, *lit);
     counter++;
   }
+  histoList->AddLast(ResidentMemoryVsEvent);
+  histoList->AddLast(ResidentMemoryVsTime);
+
+  counter = 0;
+  for(lit=fVirtualMemory.begin(); lit<fVirtualMemory.end(); lit++) {
+    VirtualMemoryVsEvent->Fill(counter, *lit);
+    VirtualMemoryVsTime->Fill(fTime.at(counter)-timeOffset, *lit);
+    counter++;
+  }
+  histoList->AddLast(VirtualMemoryVsEvent);
+  histoList->AddLast(VirtualMemoryVsTime);
 
   counter = 1;
   for(it=fTimeDiff.begin(); it<fTimeDiff.end(); it++) {
@@ -113,9 +130,6 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
     EventtimeVsEvent->Fill(counter, *it);
     counter++;
   }
-
-
-  histoList->AddLast(ResidentMemoryVsEvent);
   histoList->AddLast(TimePerEvent);
   histoList->AddLast(EventtimeVsEvent);
 }
@@ -145,14 +159,3 @@ void FairRunInfo::Reset()
   GetInfo();
 }
 
-void FairRunInfo::GetInfo()
-{
-  // Set the TimeStamp to the actual time and store it
-  fTimeStamp.Set();
-  //  fTime.push_back(fTimeStamp.GetSec());
-  fTime.push_back(fTimeStamp.AsDouble());
-
-  gSystem->GetProcInfo(&fProcInfo);
-  fResidentMemory.push_back(fProcInfo.fMemResident/1024);
-  fVirtualMemory.push_back(fProcInfo.fMemVirtual/1024);
-}

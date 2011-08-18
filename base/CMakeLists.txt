@@ -70,6 +70,7 @@ FairRKPropagator.cxx
 FairTimeStamp.cxx
 FairTSBufferFunctional.cxx
 FairFileInfo.cxx
+FairRunInfo.cxx
 )
 
 if(RULE_CHECKER_FOUND)

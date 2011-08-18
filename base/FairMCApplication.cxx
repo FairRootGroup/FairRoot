@@ -28,7 +28,7 @@
 #include "FairMesh.h"
 #include "FairRuntimeDb.h"
 #include "FairLogger.h"
-
+#include "FairRunInfo.h"
 
 #include "TObjArray.h"
 #include "TGeoTrack.h"
@@ -94,7 +94,8 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fRadMapMan(NULL),
    fRadGridMan(NULL),
    fEventHeader(NULL),
-   fMCEventHeader(NULL)
+   fMCEventHeader(NULL),
+   fRunInfo()
 {
 // Standard Simulation constructor
 // Check if the Fair root manager exist!
@@ -165,7 +166,8 @@ FairMCApplication::FairMCApplication()
    fRadLenMan(NULL),
    fRadMap(kFALSE),
    fRadMapMan(NULL),
-   fRadGridMan(NULL)
+   fRadGridMan(NULL),
+   fRunInfo()
 {
 // Default constructor
 }
@@ -215,10 +217,15 @@ void FairMCApplication::InitMC(const char* setup, const char* cuts)
 //_____________________________________________________________________________
 void FairMCApplication::RunMC(Int_t nofEvents)
 {
+  // Reset the time for FairRunInfo. Otherwise the time of the
+  // first event will include the time needed for initilization.
+  fRunInfo.Reset();
   // MC run.
   gMC->ProcessRun(nofEvents);
   // finish run
   FinishRun();
+  // Save histograms with memory and runtime information in the output file
+  fRunInfo.WriteInfo();
 }
 //____________________________________________________________________________
 void FairMCApplication::FinishRun()
@@ -496,6 +503,9 @@ void FairMCApplication::FinishEvent()
   if(NULL !=fRadLenMan) { fRadLenMan->Reset(); }
   if(NULL !=fRadMapMan) { fRadMapMan->Reset(); }
 
+  // Store information about runtime for one event and memory consuption
+  // for later usage.
+  fRunInfo.StoreInfo();
 }
 //_____________________________________________________________________________
 Double_t FairMCApplication::TrackingRmax() const

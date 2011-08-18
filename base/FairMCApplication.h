@@ -9,6 +9,7 @@
 #include "TVirtualMCApplication.h"
 #include "TLorentzVector.h"
 #include "FairTask.h"
+#include "FairRunInfo.h"
 
 #include <map>
 
@@ -252,6 +253,8 @@ class FairMCApplication : public TVirtualMCApplication
   private:
     FairMCApplication(const FairMCApplication&);
     FairMCApplication& operator=(const FairMCApplication&);
+
+    FairRunInfo fRunInfo;//!
 };
 
 // inline functions

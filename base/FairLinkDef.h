@@ -49,6 +49,7 @@
 #pragma link C++ class FairRadMapPoint+;
 #pragma link C++ class FairTSBufferFunctional+;
 #pragma link C++ class FairFileInfo+;
+#pragma link C++ class FairRunInfo+;
 
 #if ROOT_VERSION_CODE < 333824
 #pragma link C++ class TVirtualMagField+;

@@ -32,8 +32,8 @@ class FairRunInfo : public TObject
     CpuInfo_t   fCpuInfo;//!
     MemInfo_t   fMemInfo;//!
     ProcInfo_t  fProcInfo;//!
-    std::vector<Int_t> fTimeDiff;//!
-    std::vector<Int_t> fTime;//!
+    std::vector<Double_t> fTimeDiff;//!
+    std::vector<Double_t> fTime;//!
     std::vector<Long_t> fResidentMemory;//!
     std::vector<Long_t> fVirtualMemory;//!
     FairLogger* fLogger;
@@ -41,6 +41,8 @@ class FairRunInfo : public TObject
     void CalculateTimeDifference();
 
     void PrintInfo();
+
+    void GetInfo();
 
     void CreateAndFillHistograms(TList* histoList);
 

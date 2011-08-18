@@ -10,6 +10,8 @@
  */
 
 #include "FairRun.h"
+#include "FairRunInfo.h"
+
 #include "TString.h"
 #include <iostream>
 
@@ -105,6 +107,8 @@ class FairRunAna : public FairRun
   private:
     FairRunAna(const FairRunAna& M);
     FairRunAna& operator= (const  FairRunAna&) {return *this;}
+
+    FairRunInfo fRunInfo;//!
 
   protected:
     /** This variable became true after Init is called*/
