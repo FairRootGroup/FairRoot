@@ -7,6 +7,7 @@
 #include "TDirectory.h"
 
 #include <iostream>
+#include <algorithm>
 
 ClassImp(FairRunInfo)
 
