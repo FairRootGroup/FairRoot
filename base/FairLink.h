@@ -20,10 +20,27 @@ class FairLink : public TObject
     FairLink();
     FairLink(Int_t type, Int_t index, Float_t weight = 1.);
     FairLink(TString branchName, Int_t index, Float_t weight = 1.);
+    FairLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight = 1.);
+    FairLink(Int_t file, Int_t entry, TString branchName, Int_t index, Float_t weight = 1.);
     virtual ~FairLink();
 
-    void SetLink(Int_t type, Int_t index, Float_t weight = 1.) {fType = type; fIndex = index; fWeight = weight;}
+    void SetLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight = 1.) {
+      fFile = file;
+      fEntry = entry;
+      fType = type;
+      fIndex = index;
+      fWeight = weight;
+    };
+    void SetLink(Int_t type, Int_t index, Float_t weight = 1.) {
+      fFile = -1;
+      fEntry = -1;
+      fType = type;
+      fIndex = index;
+      fWeight = weight;
+    };
 
+    Int_t GetFile() const {return fFile;}
+    Int_t GetEntry() const {return fEntry;}
     Int_t GetType() const {return fType;}
     Int_t GetIndex() const {return fIndex;}
     Float_t GetWeight() const {return fWeight;}
@@ -32,7 +49,8 @@ class FairLink : public TObject
     void AddWeight(Float_t weight) {fWeight += weight;}
 
     virtual void Print(std::ostream& out = std::cout) {
-      out << "(" << GetType() << "/" << GetIndex() << "/" << GetWeight() << ")";
+      out << "(" << GetFile() << "/" << GetEntry() << "/";
+      out << GetType() << "/" << GetIndex() << "/" << GetWeight() << ")";
     }
 
     virtual bool operator==(const FairLink& link) const {
@@ -56,14 +74,15 @@ class FairLink : public TObject
       return out;
     }
 
-    ClassDef(FairLink, 1);
+    ClassDef(FairLink, 2);
 
 
   private:
+    Int_t fFile;
+    Int_t fEntry;
     Int_t fType;
     Int_t fIndex;
     Float_t fWeight;
-
 
 };
 

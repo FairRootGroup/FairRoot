@@ -19,6 +19,8 @@
 #include "FairFileHeader.h"
 #include "FairEventHeader.h"
 
+#include "FairWriteoutBufferAbsBasis.h"
+
 #include "TFriendElement.h"
 #include "TObjArray.h"
 #include "TFolder.h"
@@ -100,8 +102,8 @@ FairRootManager::FairRootManager()
     fSBRatiobyT(kFALSE),
     fCurrentEntryNo(0),
     fTimeforEntryNo(0),
-    fEvtHeaderIsNew(kFALSE)
-
+    fEvtHeaderIsNew(kFALSE),
+    fFillLastData(kFALSE)
 {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
@@ -142,7 +144,7 @@ void FairRootManager::SetSignalFile(TString name, UInt_t identifier )
     if(fSignalTypeList[identifier]==0) {
       TChain* chain = new TChain("cbmsim", "/cbmroot");
       fSignalTypeList[identifier]=chain;
-      fCurrentEntry[identifier]=0;
+      fCurrentEntry[identifier]= 0;
       fNoOfSignals++;
       fActualSignalIdentifier= identifier;
       chain->AddFile(name.Data());
@@ -357,7 +359,8 @@ Bool_t FairRootManager::OpenInChain()
   // together with the filename and the number of events for each runid
   // this information is needed later to check if inconsitencies exist
   // between the main input chain and any of the friend chains.
-//  GetRunIdInfo(fInFile->GetName(), chainName);
+
+  //  GetRunIdInfo(fInFile->GetName(), chainName);
 
   // Add all additional input files to the input chain and do a
   // consitency check
@@ -381,7 +384,7 @@ Bool_t FairRootManager::OpenInChain()
     }
 
     // Add the runid information for all files in the chain.
-//    GetRunIdInfo(inputFile->GetName(), chainName);
+    //GetRunIdInfo(inputFile->GetName(), chainName);
     // Add the file to the input chain
     fInChain->Add( (*iter) );
 
@@ -731,8 +734,20 @@ TClonesArray*    FairRootManager::GetData(TString branchName, BinaryFunctor* fun
   if (fTSBufferMap[branchName] == 0) {
     fTSBufferMap[branchName] = new FairTSBufferFunctional(branchName, GetInTree(), function);
   }
-  fTSBufferMap[branchName]->SetFunction(function);
+  fTSBufferMap[branchName]->SetStopFunction(function);
   return fTSBufferMap[branchName]->GetData(parameter);
+}
+
+//_____________________________________________________________________________
+
+TClonesArray* FairRootManager::GetData(TString branchName, BinaryFunctor* startFunction, Double_t startParameter, BinaryFunctor* stopFunction, Double_t stopParameter)
+{
+  if (fTSBufferMap[branchName] == 0) {
+    fTSBufferMap[branchName] = new FairTSBufferFunctional(branchName, GetInTree(), stopFunction, startFunction);
+  }
+  fTSBufferMap[branchName]->SetStopFunction(stopFunction);
+  fTSBufferMap[branchName]->SetStartFunction(startFunction);
+  return fTSBufferMap[branchName]->GetData(startParameter, stopParameter);
 }
 
 //_____________________________________________________________________________
@@ -757,12 +772,24 @@ void  FairRootManager::Fill()
     }
   } else { ForceFill(); }
 }
+//_____________________________________________________________________________
+
 void FairRootManager::ForceFill()
 {
   if (fOutTree != 0) {
     fOutTree->Fill();
   } else {
     fLogger->Info(MESSAGE_ORIGIN,  " No Output Tree");
+  }
+}
+
+//_____________________________________________________________________________
+
+void FairRootManager::LastFill()
+{
+  if (fFillLastData) {
+    std::cout << "LastFill called!" << std::endl;
+    Fill();
   }
 }
 //_____________________________________________________________________________
@@ -835,8 +862,8 @@ void  FairRootManager::ReadEvent(Int_t i)
     if(0==fCurrentEntryNo) {
       Int_t totEnt = fInChain->GetEntries();
       fLogger->Info(MESSAGE_ORIGIN,"The number of entries in chain is %i",totEnt);
-      //   fMCHeader = (FairMCEventHeader*)GetObject("MCEventHeader.");
       fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
+
       SetEventTime();
     }
     fCurrentEntryNo=i;
@@ -844,7 +871,9 @@ void  FairRootManager::ReadEvent(Int_t i)
     if(fEvtHeader !=0) {
       fEvtHeader->SetMCEntryNumber(i);
       fEvtHeader->SetEventTime(GetEventTime());
-    } else { fLogger->Info(MESSAGE_ORIGIN," No event Header was found!!!"); }
+      fEvtHeader->SetInputFileId(0);
+    } else { fLogger->Info(MESSAGE_ORIGIN, " No event Header was found!!!"); }
+
   } else {
     fLogger->Info(MESSAGE_ORIGIN,"Read mixed event number  %i", i);
     ReadMixedEvent(i);
@@ -858,7 +887,6 @@ void  FairRootManager::ReadMixedEvent(Int_t i)
 
   /**Check for fCurrentEntryNo because it always starts from Zero, i could have any value! */
   if(0==fCurrentEntryNo) {
-    //   fMCHeader = (FairMCEventHeader*)GetObject("MCEventHeader.");
     fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
     SetEventTime();
   }
@@ -881,7 +909,7 @@ void  FairRootManager::ReadMixedEvent(Int_t i)
       fLogger->Debug(MESSAGE_ORIGIN,"---Check signal no. %i  SBratio %f  :  ratio %f ", iterN->first , SBratio, ratio);
       if(SBratio <=ratio) {
         TChain* chain = fSignalTypeList[iterN->first];
-        UInt_t entry=fCurrentEntry[iterN->first];
+        UInt_t entry = fCurrentEntry[iterN->first];
         chain->GetEntry(entry);
         fEvtHeader->SetMCEntryNumber(entry);
         fEvtHeader->SetInputFileId(iterN->first);
@@ -1360,7 +1388,7 @@ void FairRootManager::AddFriendsToChain()
       friendType++;
     }
 
-//    GetRunIdInfo((*iter1), inputLevel);
+
     TChain* chain = (TChain*) fFriendTypeList[inputLevel];
     chain->AddFile((*iter1), 1234567890, "cbmsim");
   }
@@ -1558,7 +1586,7 @@ Double_t FairRootManager::GetEventTime()
   fLogger->Debug(MESSAGE_ORIGIN,"-- Get Event Time --");
   if(!fEvtHeaderIsNew && fEvtHeader!=0) {
     Double_t EvtTime=fEvtHeader->GetEventTime();
-    if( EvtTime!=0) { return   EvtTime; }
+    if( !(EvtTime<0)) { return   EvtTime; }
   }
 
   if (fEventTimeInMCHeader && !fMCHeader) {
@@ -1683,6 +1711,43 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
   return MaxEventNo;
 }
 
+FairWriteoutBufferAbsBasis* FairRootManager::RegisterWriteoutBuffer(TString branchName, FairWriteoutBufferAbsBasis* buffer)
+{
+  if (fWriteoutBufferMap[branchName] == 0) {
+    fWriteoutBufferMap[branchName] = buffer;
+  } else {
+    fLogger->Warning(MESSAGE_ORIGIN, "Branch %s is already registered in WriteoutBufferMap", branchName.Data());
+    delete buffer;
+  }
+  return fWriteoutBufferMap[branchName];
+}
+
+FairWriteoutBufferAbsBasis* FairRootManager::GetWriteoutBuffer(TString branchName)
+{
+  if (fWriteoutBufferMap.count(branchName) > 0) {
+    return fWriteoutBufferMap[branchName];
+  } else {
+    return 0;
+  }
+}
+
+
+void FairRootManager::StoreWriteoutBufferData(Double_t eventTime)
+{
+  for(std::map<TString, FairWriteoutBufferAbsBasis*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
+    iter->second->WriteOutData(eventTime);
+  }
+}
+
+void FairRootManager::StoreAllWriteoutBufferData()
+{
+  for(std::map<TString, FairWriteoutBufferAbsBasis*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
+    iter->second->WriteOutAllData();
+  }
+  if (fWriteoutBufferMap.size() > 0) {
+    fFillLastData = kTRUE;
+  }
+}
 
 ClassImp(FairRootManager)
 

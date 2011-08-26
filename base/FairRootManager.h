@@ -19,6 +19,7 @@ class FairFileHeader;
 class FairLogger;
 class FairTSBufferFunctional;
 class BinaryFunctor;
+class FairWriteoutBufferAbsBasis;
 class TCollection;
 class TClonesarray;
 class TFolder;
@@ -51,9 +52,7 @@ class FairRootManager : public TObject
     void                AddFile(TString name);
     void                AddFriend(TString Name);
     void                AddFriendsToChain();
-
-    Bool_t              AllDataProcessed();
-
+    Bool_t             AllDataProcessed();
     /**
     Check if Branch persistence or not (Memory branch)
     return value:
@@ -71,6 +70,7 @@ class FairRootManager : public TObject
     Bool_t              DataContainersFilled();
     void                Fill();
     void                ForceFill();
+    void        LastFill();
     TClonesArray*       ForceGetDataContainer(TString branchName);
     TClonesArray*       GetEmptyTClonesArray(TString branchName);
     TClonesArray*       GetTClonesArray(TString branchName);
@@ -103,10 +103,14 @@ class FairRootManager : public TObject
      *  of the tree and selects the data according
      *  to the function and the parameter given.
      */
-    TClonesArray*       GetData(TString branchName, BinaryFunctor* function, Double_t parameter);
-
+    TClonesArray*     GetData(TString branchName, BinaryFunctor* function, Double_t parameter);
+    TClonesArray*   GetData(TString branchName, BinaryFunctor* startFunction, Double_t startParameter, BinaryFunctor* stopFunction, Double_t stopParameter);
+    void RegisterTSBuffer(TString branchName, FairTSBufferFunctional* functionalBuffer) {fTSBufferMap[branchName] = functionalBuffer;}
+    FairTSBufferFunctional*   GetTSBuffer(TString branchName) {return fTSBufferMap[branchName];}
     /** static access method */
     static FairRootManager* Instance();
+
+    FairWriteoutBufferAbsBasis* GetWriteoutBuffer(TString branchName);
 
     Bool_t            OpenInChain();
     Bool_t            OpenBackgroundChain();
@@ -132,9 +136,11 @@ class FairRootManager : public TObject
     void                Register(const char* name,const char* Foldername ,TCollection* obj, Bool_t toFile);
 
     TClonesArray*       Register(TString branchName, TString className, TString folderName, Bool_t toFile);
+
+    /** Register a new PndWriteoutBuffer to the map. If a Buffer with the same map key already exists the given buffer will be deleted and the old will be returned!*/
+    FairWriteoutBufferAbsBasis* RegisterWriteoutBuffer(TString branchName, FairWriteoutBufferAbsBasis* buffer);
     /**Use time stamps to read data and not tree entries*/
     void                RunWithTimeStamps() {fTimeStamps = kTRUE;}
-
     /**Set the input signal file
      *@param name :        signal file name
      *@param identifier :  Unsigned integer which identify the signal file
@@ -149,9 +155,10 @@ class FairRootManager : public TObject
 
     /**Set the status of the EvtHeader
      *@param Status:  True: The header was creatged in this session and has to be filled
-                      FALSE: We use an existing header from previous data level
+              FALSE: We use an existing header from previous data level
      */
     Bool_t            SetEvtHeaderNew(Bool_t Status) {fEvtHeaderIsNew = Status;}
+
 
 
     /**Set the branch name list*/
@@ -161,6 +168,8 @@ class FairRootManager : public TObject
     void                SetInputFile(TString name);
     /**Set the output tree pointer*/
     void                SetOutTree(TTree* fTree) { fOutTree=fTree;}
+    /**Enables a last Fill command after all events are processed to store any data which is still in Buffers*/
+    void        SetLastFill(Bool_t val = kTRUE) { fFillLastData=val;}
     /**When creating TTree from TFolder the fullpath of the objects is used as branch names
      * this method truncate the full path from the branch names
     */
@@ -198,6 +207,8 @@ class FairRootManager : public TObject
     /**Check the maximum event number we can run to*/
     Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
 
+    void        StoreWriteoutBufferData(Double_t eventTime);
+    void        StoreAllWriteoutBufferData();
 
   private:
     /**private methods*/
@@ -265,6 +276,8 @@ class FairRootManager : public TObject
     std::map<TString, TClonesArray*> fActiveContainer;
     /** Internally used to read time ordered data from branches*/
     std::map<TString, FairTSBufferFunctional*> fTSBufferMap; //!
+
+    std::map<TString, FairWriteoutBufferAbsBasis* > fWriteoutBufferMap; //!
     /** if kTRUE the entries of a branch are filled from the beginning --> no empty entries*/
     Bool_t                              fCompressData;
     /**if kTRUE Read data according to time and not entries*/
@@ -333,13 +346,15 @@ class FairRootManager : public TObject
     UInt_t                                  fTimeforEntryNo; //!
     /**No of entries in BG Chain*/
     UInt_t                                  fNoOfBGEntries; //!
+
     /**Hold the current entry for each input chain*/
     std::map<UInt_t, UInt_t>                fCurrentEntry; //!
     /**This flag is true if the event header was created in this session
-     * otherwise it is false which means the header was created in a previous data
-     * level and used here (e.g. in the digi)
-     */
+    * otherwise it is false which means the header was created in a previous data
+    * level and used here (e.g. in the digi)
+    */
     Bool_t                                  fEvtHeaderIsNew; //!
+    Bool_t          fFillLastData; //!
 
     ClassDef(FairRootManager,5) // Root IO manager
 };

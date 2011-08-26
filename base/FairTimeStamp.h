@@ -21,9 +21,11 @@ class FairTimeStamp : public FairMultiLinkedData
     /** Accessors **/
     Double_t GetTimeStamp()             const { return fTimeStamp; };
     Double_t GetTimeStampError()     const { return fTimeStampError;};
+    FairLink GetEntryNr() const {return fEntryNr;}
     /** Modifiers **/
     void SetTimeStamp(Double_t t) { fTimeStamp = t; }
     void SetTimeStampError(Double_t t) {fTimeStampError = t;}
+    void SetEntryNr(FairLink entry) {fEntryNr = entry;}
 
     Int_t Compare(const TObject* obj) const {
       if (this == obj) { return 0; }
@@ -34,13 +36,16 @@ class FairTimeStamp : public FairMultiLinkedData
       else { return 1; }
     }
 
+    virtual void Print(std::ostream& out = std::cout) const;
+
     Bool_t IsSortable() const { return kTRUE;};
 
   protected:
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError;     /** Error on time stamp */
+    FairLink fEntryNr; //!  indicates where the data is stored in the branch
 
-    ClassDef(FairTimeStamp,1);
+    ClassDef(FairTimeStamp,2);
 };
 
 #endif

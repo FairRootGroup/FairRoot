@@ -19,8 +19,8 @@ class FairMultiLinkedData : public FairLinkedData
   public:
     FairMultiLinkedData();///< Default constructor
     FairMultiLinkedData(std::set<FairLink> links, Bool_t persistanceCheck = kTRUE);///< Constructor
-    FairMultiLinkedData(TString dataType, std::vector<Int_t> links,Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
-    FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
+    FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Int_t fileId = -1, Int_t evtId = -1,Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
+    FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Int_t fileId = -1, Int_t evtId = -1, Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
 
     virtual ~FairMultiLinkedData() {};
 
@@ -79,9 +79,9 @@ class FairMultiLinkedData : public FairLinkedData
     Bool_t fPersistanceCheck;
     Int_t fVerbose;
 
-    virtual void SimpleAddLinks(Int_t dataType, std::vector<Int_t> links, Bool_t bypass, Float_t mult) {
+    virtual void SimpleAddLinks(Int_t fileId, Int_t evtId, Int_t dataType, std::vector<Int_t> links, Bool_t bypass, Float_t mult) {
       for (UInt_t i = 0; i < links.size(); i++) {
-        AddLink(FairLink(dataType, links[i]), bypass, mult);
+        AddLink(FairLink(fileId, evtId, dataType, links[i]), bypass, mult);
       }
     }
 

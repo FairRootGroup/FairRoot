@@ -28,23 +28,23 @@ FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persis
 {
 }
 
-FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
+FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :FairLinkedData(),
    fLinks(),
    fPersistanceCheck(persistanceCheck),
    fVerbose(0)
 {
-  SimpleAddLinks(FairRootManager::Instance()->GetBranchId(dataType), links, bypass, mult);
+  SimpleAddLinks(fileId, evtId, FairRootManager::Instance()->GetBranchId(dataType), links, bypass, mult);
 //  FairMultiLinkedData(ioman->GetBranchId(dataType), links, persistanceCheck, bypass, addup, mult);
 }
 
-FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
+FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :FairLinkedData(),
    fLinks(),
    fPersistanceCheck(persistanceCheck),
    fVerbose(0)
 {
-  SimpleAddLinks(dataType, links, bypass, mult);
+  SimpleAddLinks(fileId, evtId, dataType, links, bypass, mult);
 }
 
 FairLink FairMultiLinkedData::GetLink(Int_t pos) const

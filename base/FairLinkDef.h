@@ -50,6 +50,7 @@
 #pragma link C++ class FairTSBufferFunctional+;
 #pragma link C++ class FairFileInfo+;
 #pragma link C++ class FairRunInfo+;
+#pragma link C++ class FairWriteoutBufferAbsBasis;
 
 #if ROOT_VERSION_CODE < 333824
 #pragma link C++ class TVirtualMagField+;

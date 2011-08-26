@@ -10,7 +10,7 @@
 // -----   Default constructor   -------------------------------------------
 FairEventHeader::FairEventHeader()
   :fRunId(0),
-   fEventTime(0),
+   fEventTime(-1.),
    fInputFileId(0),
    fMCEntryNo(0)
 {

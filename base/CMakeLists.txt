@@ -7,7 +7,7 @@ ${ROOT_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/fairtools
 ${CMAKE_SOURCE_DIR}/geobase 
 ${CMAKE_SOURCE_DIR}/parbase 
-${CMAKE_SOURCE_DIR}/base 
+${CMAKE_SOURCE_DIR}/base
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -80,7 +80,8 @@ endif(RULE_CHECKER_FOUND)
 # fill list of header files from list of source files
 # by exchanging the file extension
 CHANGE_FILE_EXTENSION(*.cxx *.h BASE_HEADERS "${BASE_SRCS}")
-
+#Add *.h without *.cxx
+SET(BASE_HEADERS "${BASE_HEADERS}" FairWriteoutBufferAbsBasis.h)
 # set everything needed for the root dictonary and create the
 # dictionary
 set(BASE_LINKDEF FairLinkDef.h )
