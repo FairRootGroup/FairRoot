@@ -1,7 +1,5 @@
-
-
-#ifndef FairTSBufferFunctionalFunctional_H_
-#define FairTSBufferFunctionalFunctional_H_
+#ifndef FairTSBufferFunctional_H_
+#define FairTSBufferFunctional_H_
 
 #include "FairTimeStamp.h"
 
@@ -172,7 +170,8 @@ class FairTSBufferFunctional : public TObject
   private:
     void ReadInNextFilledEntry();
     Int_t ReadInPreviousFilledEntry(Int_t startEntry);
-    void ReadInNextEntry();   //** used only if no function is given and input data is directly passed through to the OutputArray
+    /** used only if no function is given and input data is directly passed through to the OutputArray*/
+    void ReadInNextEntry();
     void ReadInEntry(Int_t number);
     void AbsorbDataBufferArray(); //< Absorbs the complete data from fInputArray to fBufferArray
 
@@ -192,7 +191,7 @@ class FairTSBufferFunctional : public TObject
     FairTSBufferFunctional(const FairTSBufferFunctional&);
     FairTSBufferFunctional& operator=(const FairTSBufferFunctional&);
 
-    ClassDef(FairTSBufferFunctional,0);
+    ClassDef(FairTSBufferFunctional,1);
 
 };
 
