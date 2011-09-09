@@ -40,6 +40,8 @@ class FairTimeStamp : public FairMultiLinkedData
 
     Bool_t IsSortable() const { return kTRUE;};
 
+    virtual bool equal(FairTimeStamp* data) {return false;}
+
   protected:
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError;     /** Error on time stamp */
