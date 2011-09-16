@@ -27,8 +27,9 @@ void FairRingSorter::AddElement(FairTimeStamp* digi, double timestamp)
     SetLowerBound(timestamp);
   } else if (timestamp >= fLowerBoundPointer.second + GetBufferSize()) {
     if (fVerbose > 0) {
-      std::cout << "-I- FairRingSorterT::AddElement :
-                Timestamp " << timestamp << " larger than bufferspace: " << fLowerBoundPointer.second + GetBufferSize() << " writing out " << index+1 << std::endl;
+      std::cout << "-I- FairRingSorterT::AddElement :Timestamp "
+                << timestamp << " larger than bufferspace: "
+                << fLowerBoundPointer.second + GetBufferSize() << " writing out " << index+1 << std::endl;
     }
     WriteOutElements(index+1);
     SetLowerBound(timestamp);
