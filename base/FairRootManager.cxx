@@ -18,9 +18,7 @@
 #include "FairEventHeader.h"
 #include "FairFileHeader.h"
 #include "FairEventHeader.h"
-
-#include "FairWriteoutBufferAbsBasis.h"
-
+#include "FairWriteoutBuffer.h"
 #include "TFriendElement.h"
 #include "TObjArray.h"
 #include "TFolder.h"
@@ -629,13 +627,15 @@ TClonesArray* FairRootManager::Register(TString branchName, TString className, T
 {
 
   TClonesArray* outputArray;
-  fActiveContainer[branchName] = new TClonesArray(className);
-  if (fCompressData) {
-    std::queue<TClonesArray*> myQueue;
-    fDataContainer[branchName] = myQueue;
-    outputArray = new TClonesArray(className);
-  } else { outputArray = fActiveContainer[branchName]; }
-  Register(branchName, folderName, outputArray, toFile);
+  if (fActiveContainer.find(branchName) == fActiveContainer.end()) {
+    fActiveContainer[branchName] = new TClonesArray(className);
+    if (fCompressData) {
+      std::queue<TClonesArray*> myQueue;
+      fDataContainer[branchName] = myQueue;
+      outputArray = new TClonesArray(className);
+    } else { outputArray = fActiveContainer[branchName]; }
+    Register(branchName, folderName, outputArray, toFile);
+  }
   return fActiveContainer[branchName];
 }
 //_____________________________________________________________________________
@@ -751,6 +751,7 @@ TClonesArray* FairRootManager::GetData(TString branchName, BinaryFunctor* startF
 }
 
 //_____________________________________________________________________________
+
 Bool_t FairRootManager::AllDataProcessed()
 {
   for(std::map<TString, FairTSBufferFunctional*>::iterator it = fTSBufferMap.begin(); it != fTSBufferMap.end(); it++) {
@@ -793,6 +794,7 @@ void FairRootManager::LastFill()
   }
 }
 //_____________________________________________________________________________
+
 void FairRootManager:: Write()
 {
   /** Writes the tree in the file.*/
@@ -862,12 +864,14 @@ void  FairRootManager::ReadEvent(Int_t i)
     if(0==fCurrentEntryNo) {
       Int_t totEnt = fInChain->GetEntries();
       fLogger->Info(MESSAGE_ORIGIN,"The number of entries in chain is %i",totEnt);
+
       fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
 
       SetEventTime();
     }
     fCurrentEntryNo=i;
     fInChain->GetEntry(i);
+
     if(fEvtHeader !=0) {
       fEvtHeader->SetMCEntryNumber(i);
       fEvtHeader->SetEventTime(GetEventTime());
@@ -1388,7 +1392,6 @@ void FairRootManager::AddFriendsToChain()
       friendType++;
     }
 
-
     TChain* chain = (TChain*) fFriendTypeList[inputLevel];
     chain->AddFile((*iter1), 1234567890, "cbmsim");
   }
@@ -1711,7 +1714,8 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
   return MaxEventNo;
 }
 
-FairWriteoutBufferAbsBasis* FairRootManager::RegisterWriteoutBuffer(TString branchName, FairWriteoutBufferAbsBasis* buffer)
+
+FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, FairWriteoutBuffer* buffer)
 {
   if (fWriteoutBufferMap[branchName] == 0) {
     fWriteoutBufferMap[branchName] = buffer;
@@ -1722,7 +1726,9 @@ FairWriteoutBufferAbsBasis* FairRootManager::RegisterWriteoutBuffer(TString bran
   return fWriteoutBufferMap[branchName];
 }
 
-FairWriteoutBufferAbsBasis* FairRootManager::GetWriteoutBuffer(TString branchName)
+
+
+FairWriteoutBuffer* FairRootManager::GetWriteoutBuffer(TString branchName)
 {
   if (fWriteoutBufferMap.count(branchName) > 0) {
     return fWriteoutBufferMap[branchName];
@@ -1734,18 +1740,27 @@ FairWriteoutBufferAbsBasis* FairRootManager::GetWriteoutBuffer(TString branchNam
 
 void FairRootManager::StoreWriteoutBufferData(Double_t eventTime)
 {
-  for(std::map<TString, FairWriteoutBufferAbsBasis*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
+  for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
     iter->second->WriteOutData(eventTime);
   }
 }
 
 void FairRootManager::StoreAllWriteoutBufferData()
 {
-  for(std::map<TString, FairWriteoutBufferAbsBasis*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
+  Bool_t dataInBuffer = kFALSE;
+  for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
+    if (iter->second->GetNData() > 0) {
+      dataInBuffer = kTRUE;
+    }
     iter->second->WriteOutAllData();
   }
-  if (fWriteoutBufferMap.size() > 0) {
-    fFillLastData = kTRUE;
+  fFillLastData = dataInBuffer;
+}
+
+void FairRootManager::DeleteOldWriteoutBufferData()
+{
+  for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
+    iter->second->DeleteOldData();
   }
 }
 

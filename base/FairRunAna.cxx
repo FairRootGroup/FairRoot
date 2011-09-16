@@ -188,8 +188,10 @@ void FairRunAna::Init()
   // Assure that basic info is there for the run
   //  if(par && fInputFile) {
   if(par && fInFileIsOpen) {
+
     fLogger->Info(MESSAGE_ORIGIN,"Parameter and input file are available, Assure that basic info is there for the run!");
     fRootManager->ReadEvent(0);
+
     fEvtHeader = (FairEventHeader*)fRootManager->GetObject("EventHeader.");
     FairMCEventHeader* fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
     if(fEvtHeader ==0) {
@@ -219,6 +221,7 @@ void FairRunAna::Init()
 
     fEvtHeader = (FairEventHeader*) fRootManager->GetObject("EventHeader.");
 
+
     FairMCEventHeader* fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
     if(fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
@@ -226,6 +229,7 @@ void FairRunAna::Init()
       fEvtHeader->SetRunId(fRunId);
       fRootManager->SetEvtHeaderNew(kTRUE);
     }
+
 
     fRootManager->ReadBKEvent(0);
 
@@ -308,6 +312,7 @@ void FairRunAna::RunMixed(Int_t Ev_start, Int_t Ev_end)
     fTask->ExecuteTask("");
     fLogger->Debug(MESSAGE_ORIGIN,"------ Tasks executed, now fill the tree  --------");
     fRootManager->Fill();
+    fRootManager->DeleteOldWriteoutBufferData();
     fTask->FinishEvent();
     if(NULL !=  FairTrajFilter::Instance()) { FairTrajFilter::Instance()->Reset(); }
   }
@@ -376,6 +381,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
       fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
       fTask->ExecuteTask("");
       fRootManager->Fill();
+      fRootManager->DeleteOldWriteoutBufferData();
       fTask->FinishEvent();
 
       fRunInfo.StoreInfo();
@@ -385,9 +391,8 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 
     fRootManager->StoreAllWriteoutBufferData();
     fTask->FinishTask();
-
     fRunInfo.WriteInfo();
-    fRootManager->Fill();
+    fRootManager->LastFill();
     fRootManager->Write();
   }
 }
@@ -398,6 +403,7 @@ void FairRunAna::Run(Double_t delta_t)
   while (fRootManager->ReadNextEvent(delta_t)==kTRUE) {
     fTask->ExecuteTask("");
     fRootManager->Fill();
+    fRootManager->DeleteOldWriteoutBufferData();
     fTask->FinishEvent();
     if(NULL !=  FairTrajFilter::Instance()) { FairTrajFilter::Instance()->Reset(); }
   }
@@ -432,6 +438,8 @@ void FairRunAna::Run(Long64_t entry)
     }
     fTask->ExecuteTask("");
     fTask->FinishTask();
+    fRootManager->Fill();
+    fRootManager->DeleteOldWriteoutBufferData();
     fRootManager->LastFill();
     fRootManager->Write();
   }
@@ -449,6 +457,7 @@ void FairRunAna::RunTSBuffers()
     }
     fTask->ExecuteTask("");
     fRootManager->Fill();
+    fRootManager->DeleteOldWriteoutBufferData();
     fTask->FinishEvent();
     if(NULL !=  FairTrajFilter::Instance()) { FairTrajFilter::Instance()->Reset(); }
   }

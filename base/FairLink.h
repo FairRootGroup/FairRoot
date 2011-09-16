@@ -38,7 +38,6 @@ class FairLink : public TObject
       fIndex = index;
       fWeight = weight;
     };
-
     Int_t GetFile() const {return fFile;}
     Int_t GetEntry() const {return fEntry;}
     Int_t GetType() const {return fType;}

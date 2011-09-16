@@ -71,6 +71,10 @@ FairTimeStamp.cxx
 FairTSBufferFunctional.cxx
 FairFileInfo.cxx
 FairRunInfo.cxx
+FairWriteoutBuffer.cxx
+FairRingSorter.cxx
+FairRingSorterTask.cxx
+
 )
 
 if(RULE_CHECKER_FOUND)
@@ -81,7 +85,7 @@ endif(RULE_CHECKER_FOUND)
 # by exchanging the file extension
 CHANGE_FILE_EXTENSION(*.cxx *.h BASE_HEADERS "${BASE_SRCS}")
 #Add *.h without *.cxx
-SET(BASE_HEADERS "${BASE_HEADERS}" FairWriteoutBufferAbsBasis.h)
+SET(BASE_HEADERS "${BASE_HEADERS}")
 # set everything needed for the root dictonary and create the
 # dictionary
 set(BASE_LINKDEF FairLinkDef.h )

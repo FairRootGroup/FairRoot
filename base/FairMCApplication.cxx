@@ -485,6 +485,7 @@ void FairMCApplication::FinishEvent()
     detector = dynamic_cast<FairDetector*>(obj);
     if (detector) { detector->FinishEvent(); }
   }
+
   fRootManager->Fill();
   fActDetIter->Reset();
   detector=NULL;
