@@ -5,6 +5,7 @@ export ROOTSYS=@ROOTSYS@
 export VMCWORKDIR=@PROJECT_SOURCE_DIR@
 export GEANT4VMC_MACRO_DIR=@GEANT4VMC_MACRO_DIR@
 export USE_VGM=1
+export BOOST=@Boost_Avail@
 . @GEANT4_DIR@/env.sh
 
 cd @new_path@
