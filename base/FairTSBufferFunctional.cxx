@@ -115,6 +115,7 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
 
 TClonesArray* FairTSBufferFunctional::GetData(Double_t startParameter, Double_t stopParameter)
 {
+#if ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)
   if (fStartFunction != 0) {
     fBufferArray->Clear();
     Int_t startIndex = FindStartIndex(startParameter);
@@ -124,6 +125,7 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t startParameter, Double_t 
       fBufferArray->AbsorbObjects(fInputArray, startIndex, fInputArray->GetEntries() -1);
     }
   }
+#endif
   return GetData(stopParameter);
 }
 
