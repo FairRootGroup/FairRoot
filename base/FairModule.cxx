@@ -95,15 +95,22 @@ FairModule::FairModule()
 //__________________________________________________________________________
 void FairModule::Streamer(TBuffer& b)
 {
-  TNamed::Streamer(b);
+  //TNamed::Streamer(b);
+  const char* Name= GetName();
+  const char* Title= GetTitle();
+
   if (b.IsReading()) {
     fgeoVer.Streamer(b);
     fgeoName.Streamer(b);
+    b >> Name;
+    b >> Title;
     b >> fActive;
     b >> fModId;
   } else {
     fgeoVer.Streamer(b);
     fgeoName.Streamer(b);
+    b << Name;
+    b << Title;
     b << fActive;
     b << fModId;
   }
