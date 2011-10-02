@@ -6,8 +6,8 @@
 #include "TString.h"
 #include "TNamed.h"
 #include "TRefArray.h"
-
-
+#include "TGeoMatrix.h"
+#include <map>
 
 class FairVolumeList;
 class FairVolume;
@@ -84,7 +84,14 @@ class FairModule:  public TNamed
     TString             fMotherVolumeName; //!
     FairVolume*   getFairVolume(FairGeoNode* fNode);
     void    AddSensitiveVolume(TGeoVolume* v);
-
+    /**construct geometry from GDML file*/
+    virtual void        ConstructGDMLGeometry(TGeoCombiTrans* posrot);
+    /**called from ConstructGDMLGeometry()*/
+    virtual void        ExpandNodeForGDML(TGeoNode* Node);
+    /**List of materials that DO NOT have to be replaces while reading GDML*/
+    static std::map<TString, Int_t> fixedMats;
+    /**Flag about the GMDL files input. 1 if it is the first file. 2 - if not the first*/
+    static Bool_t isFirstGDML;
   private:
     FairModule(const FairModule&);
     FairModule& operator=(const FairModule&);
