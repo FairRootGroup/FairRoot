@@ -22,8 +22,15 @@ if [ "$same_system" == "1" ]; then
   export USE_VGM="1"
   export PYTHIA8DATA="@PYTHIA8DATA@"
   export CLASSPATH="@MY_CLASSPATH@"
-  source @GEANT4_DIR@/env.sh
-  fi
+  export G4LEDATA="@G4LEDATA@"
+  export G4LEVELGAMMADATA="@G4LEVELGAMMADATA@"
+  export G4NeutronHPCrossSections="@G4NeutronHPCrossSections@"
+  export G4NEUTRONHPDATA="@G4NeutronHPCrossSections@"
+  export G4NEUTRONXSDATA="@G4NEUTRONXSDATA@"
+  export G4PIIDATA="@G4PIIDATA@"
+  export G4RADIOACTIVEDATA="@G4RADIOACTIVEDATA@"
+  export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
+ fi
   export ROOT_LIBRARY_DIR="@ROOT_LIBRARY_DIR@"
   export ROOT_LIBRARIES="@ROOT_LIBRARIES@"
   export ROOT_INCLUDE_DIR="@ROOT_INCLUDE_DIR@"

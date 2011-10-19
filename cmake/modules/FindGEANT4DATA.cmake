@@ -4,7 +4,7 @@
 
 MESSAGE(STATUS "Looking for GEANT4 DATA files...")
 
-FIND_PATH(GEANT4_DATA NAMES g4data.txt  PATHS
+FIND_PATH(GEANT4_DATA NAMES G4PII  PATHS
   ${SIMPATH}/transport/data/geant4/
   ${SIMPATH}/share/data/geant4
   NO_DEFAULT_PATH
