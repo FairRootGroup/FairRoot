@@ -16,12 +16,13 @@ endif (GEANT4_INCLUDE_DIR AND GEANT4_LIBRARY_DIR)
 
 MESSAGE(STATUS "Looking for GEANT4...")
 
-FIND_PATH(GEANT4_DIR NAMES env.sh PATHS
-  ${SIMPATH}/transport/geant4
-  ${SIMPATH}/transport/geant4/source
+FIND_PATH(GEANT4_DIR NAMES geant4-config PATHS
+  ${SIMPATH}/transport/geant4/bin
   ${SIMPATH}/bin
   NO_DEFAULT_PATH
 )
+
+SET (PATH ${PATH} ${GEANT4_DIR})
 
 FIND_PATH(GEANT4_INCLUDE_DIR NAMES G4Event.hh PATHS
   ${SIMPATH}/transport/geant4/include
