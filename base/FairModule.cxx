@@ -31,7 +31,7 @@
 #include "TGeoManager.h"
 #include "TGeoVoxelFinder.h"
 #include "TGeoMatrix.h"
-#include "TGDMLParse.h"
+
 
 #include "TSystem.h"
 #include <fstream>
@@ -46,8 +46,6 @@ Int_t FairModule::fNbOfVolumes=0;
 FairVolumeList*  FairModule::vList=0;
 TRefArray*    FairModule::svList=0;
 
-std::map<TString, Int_t> FairModule::fixedMats;
-Bool_t FairModule::isFirstGDML = kTRUE;
 
 
 //__________________________________________________________________________
@@ -404,102 +402,6 @@ void FairModule::SetDefaultMatrixName(TGeoMatrix* matrix)
   matrix->SetName(Form("%c%i", type, index));
 }
 
-
-//----------------------------------------------------------------------------------------------------------
-void FairModule::ConstructGDMLGeometry(TGeoCombiTrans* posrot)
-{
-  TGDMLParse parser;
-  TGeoVolume* gdmlTop;
-  gdmlTop = parser.GDMLReadFile(GetGeometryFileName());
-  gGeoManager->GetTopVolume()->AddNode(gdmlTop,1,posrot);
-  ExpandNodeForGDML(gGeoManager->GetTopVolume()->GetNode(gGeoManager->GetTopVolume()->GetNdaughters()-1));
-  isFirstGDML = 0;
-
-  //! CONTROL_DUMP_OF_MEDIA_STATE_IN_THE_MEMORY_AFTER_EACH_GDML_FILE
-  /*
-   for (Int_t sdf=0; sdf<gGeoManager->GetTopNode()->GetNdaughters(); sdf++)
-   {
-   cout << "[CONTROL_DUMP] " << gGeoManager->GetTopNode()->GetDaughter(sdf)->GetVolume()->GetName() << ":\t\t";
-   cout << gGeoManager->GetTopNode()->GetDaughter(sdf)->GetVolume()->GetMedium()->GetMaterial()->GetZ() << endl;
-   for (Int_t dfg=0; dfg<gGeoManager->GetTopNode()->GetDaughter(sdf)->GetNdaughters(); dfg++)
-   {
-   cout << "[CONTROL_DUMP] \t\t" <<gGeoManager->GetTopNode()->GetDaughter(sdf)->GetDaughter(dfg)->GetVolume()->GetName() << ":\t\t";
-   cout << gGeoManager->GetTopNode()->GetDaughter(sdf)->GetDaughter(dfg)->GetVolume()->GetMedium()->GetMaterial()->GetZ() << endl;
-   }
-   }
-   */
-  //! endof CONTROL_DUMP_OF_MEDIA_STATE_IN_THE_MEMORY_AFTER_EACH_GDML_FILE
-}
-
-void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
-{
-  //  cout << "[ExpandNodeForGDML] Expanding node " << curNode->GetName() << endl;
-  TGeoVolume* curVol = curNode->GetVolume();
-  TString curMedName = curNode->GetMedium()->GetName();
-  TGeoMedium* curMedInGeoManager = gGeoManager->GetMedium(curMedName);
-  Int_t matIndToDel = gGeoManager->GetMaterialIndex(curMedName);
-
-  if (curMedName.BeginsWith("G4_")) {
-    //    cout << "[ExpandNodeForGDML] Material in GDML begins with G4_" << endl;
-    curMedName.Remove(0, 3);
-  } else {
-    //    cout << "[ExpandNodeForGDML] Material in GDML does not start with G4_" << "\t\t" << curNode->GetName() << "\t\t" << curMedName << endl;
-    //    return;
-  }
-
-  Int_t nmed;
-
-  FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  FairGeoMedia* geoMediaBase =  geoFace->getMedia();
-  FairGeoBuilder* geobuild = geoLoad->getGeoBuilder();
-  FairGeoMedium* curMedInGeo;
-
-  if (curMedInGeoManager == 0) {
-    cout << "[ExpandNodeForGDML] New medium found in gmdl - it is not in gGeoManager list." << endl;
-    //! New medium found in gmdl - it is not in gGeoManager list.
-    //! This should not happen as GDML parser adds medium into the list
-  } else {
-    //! Medium is in the list in gGeoManager.
-    //! Trying to replace it with the one from the Geo file.
-    //    cout << "Medium is in the list in gGeoManager." << endl;
-
-    curMedInGeo = geoMediaBase->getMedium(curMedName);
-    if (curMedInGeo == 0) {
-      cout << "[ExpandNodeForGDML] Media not found in Geo file." << endl;
-    } else {
-      if (fixedMats.find(curMedName) == fixedMats.end()) {
-        nmed = geobuild->createMedium(curMedInGeo);
-        fixedMats[curMedName] = gGeoManager->GetListOfMedia()->GetEntries();
-        //        cout << "[ExpandNodeForGDML] " << curMedName << " added to list\t" << fixedMats[curMedName] << "\t" << nmed << endl;
-      } else {
-        //        cout << "[ExpandNodeForGDML] " << curMedName << " is already in the list.\t\t" << fixedMats[curMedName] << endl;
-      }
-
-      curNode->GetVolume()->SetMedium(gGeoManager->GetMedium(curMedName));
-      gGeoManager->SetAllIndex();
-    }
-  }
-
-  //! Making volume sensitive according to the media 0-th flag
-  if ((Int_t)(curVol->GetMedium()->GetParam(0)) == 1) {
-    //! The volume is sensitive => add it to the list
-    //    cout << "\t\t\tAdding sensitive volume: " << curVol->GetName() << endl;
-    AddSensitiveVolume(curVol);
-  }
-  //! endof Making volume sensitive according to the media 0-th flag
-
-  //! Recursevly go down the tree of nodes
-  if (curVol->GetNdaughters() != 0) {
-    TObjArray* NodeChildList = curVol->GetNodes();
-    TGeoNode* curNodeChild;
-    for (Int_t j=0; j<NodeChildList->GetEntriesFast(); j++) {
-      curNodeChild = (TGeoNode*)NodeChildList->At(j);
-      ExpandNodeForGDML(curNodeChild);
-    }
-  }
-}
-//----------------------------------------------------------------------------------------------------------
 
 //__________________________________________________________________________
 ClassImp(FairModule)
