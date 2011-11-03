@@ -42,7 +42,7 @@ If(CLHEP_CONFIG_EXE)
   EndForEach (token ${_all_tokens})
   Set(CLHEP_LIBRARY_DIR ${_directory_list})
 
-  String (REGEX MATCHALL "-I([^\" ]+|\"[^\"]+\")" _all_tokens "${COMPILE_LINE}")
+  String (REGEX MATCHALL "-I([^\" ]+|\"[^\"]+\")" _all_tokens "${CLHEP_CONFIG_INCLUDE_DIR}")
   Set (_incs_found)
   ForEach (token ${_all_tokens})
     String (REGEX REPLACE "^-I" "" token ${token})
