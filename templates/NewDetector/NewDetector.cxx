@@ -23,7 +23,7 @@ using std::cout;
 using std::endl;
 
 NewDetector::NewDetector()
-  : FairDetector("TutorialDet", kTRUE, kTutDet),
+  : FairDetector("NewDetector", kTRUE, kNewDetector),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -36,7 +36,7 @@ NewDetector::NewDetector()
 }
 
 NewDetector::NewDetector(const char* name, Bool_t active)
-  : FairDetector(name, active, kTutDet),
+  : FairDetector(name, active, kNewDetector),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -90,9 +90,9 @@ Bool_t  NewDetector::ProcessHits(FairVolume* vol)
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            fELoss);
 
-    // Increment number of tutorial det points in TParticle
+    // Increment number of NewDetector det points in TParticle
     FairStack* stack = (FairStack*) gMC->GetStack();
-    stack->AddPoint(kTutDet);
+    stack->AddPoint(kNewDetector);
   }
 
   return kTRUE;
@@ -116,7 +116,7 @@ void NewDetector::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
+  FairRootManager::Instance()->Register("NewDetectorPoint", "NewDetector",
                                         fNewDetectorPointCollection, kTRUE);
 
 }

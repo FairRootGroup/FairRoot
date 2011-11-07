@@ -1,4 +1,4 @@
-# Create a library called "libTutorial1" which includes the source files given in
+# Create a library called "libNewDetector" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
@@ -7,6 +7,7 @@ ${ROOT_INCLUDE_DIR}
 #put here all directories where header files are located
 ${FAIRROOT_SOURCE_DIR}/fairtools
 ${FAIRROOT_SOURCE_DIR}/base
+#${FAIRROOT_SOURCE_DIR}/<directory which contains the DetectorList>
 #${FAIRROOT_SOURCE_DIR}/<directory which contains the stack>
 ${FAIRROOT_SOURCE_DIR}/parbase
 ${FAIRROOT_SOURCE_DIR}/geobase

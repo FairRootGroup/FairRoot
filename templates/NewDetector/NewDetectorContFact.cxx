@@ -15,7 +15,7 @@ NewDetectorContFact::NewDetectorContFact()
 {
   /** Constructor (called when the library is loaded) */
   fName="NewDetectorContFact";
-  fTitle="Factory for parameter containers in libTutorial1";
+  fTitle="Factory for parameter containers in libNewDetector";
   setAllContainers();
   FairRuntimeDb::instance()->addContFactory(this);
 }
@@ -24,7 +24,7 @@ void NewDetectorContFact::setAllContainers()
 {
   /** Creates the Container objects with all accepted
       contexts and adds them to
-      the list of containers for the Tutorial1 library.
+      the list of containers for the NewDetector library.
   */
 
   FairContainer* p= new FairContainer("NewDetectorGeoPar",

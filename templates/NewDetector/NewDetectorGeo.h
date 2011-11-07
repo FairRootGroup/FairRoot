@@ -23,9 +23,9 @@ inline Int_t NewDetectorGeo::getModNumInMod(const TString& name)
   /** returns the module index from module name
    ?? in name[??] has to be the length of the detector name in the
    .geo file. For example if all nodes in this file starts with
-   newdetector ?? has to be 6.
+   newdetector ?? has to be 11.
   */
-  return (Int_t)(name[6]-'0')-1; //
+  return (Int_t)(name[11]-'0')-1; //
 }
 
 #endif

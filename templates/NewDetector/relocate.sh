@@ -31,22 +31,37 @@ for i in $(ls NewDetector*); do
   mv $oldfile $newfile
 done 
 
-find . -name "*.h" -exec sed -e "s/NewDetector/$DetectorName/g" -i "{}" ";"
-find . -name "*.h" -exec sed -e "s/NEWDETECTOR/$DetectorNameUpper/g" -i "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/NewDetector/$DetectorName/g" -i "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/NEWDETECTOR/$DetectorNameUpper/g" -i "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/FairDetectorList/${Prefix}DetectorList/g" -i "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/FairStack/${Prefix}Stack/g" -i "{}" ";"
-find . -name "*.h" -exec sed -e "s/FairDetectorList/${Prefix}DetectorList/g" -i "{}" ";"
-find . -name "*.h" -exec sed -e "s/FairStack/${Prefix}Stack/g" -i "{}" ";"
+arch=`uname -s | tr '[A-Z]' '[a-z]'`
+case "$arch" in
+    linux)
+        sedstring="-i "
+        ;;
+    darwin)
+        sedstring="-i ''"
+        ;;
+    *)
+        echo "Platform not supported"
+        exit 1
+        ;;
+esac
 
-sed -e "s#tutorial/NewDetector#$RelativeDir#g" -i CMakeLists.txt
-sed -e "s/NewDetector/$DetectorName/g" -i CMakeLists.txt
-sed -e "s/NEWDETECTOR/$DetectorNameUpper/g" -i CMakeLists.txt
-sed -e "s/FAIRROOT_SOURCE_DIR/$ProjectSourceDir/g" -i CMakeLists.txt
 
-if [ -d .svn ]; then
-  echo "Please remove the .svn directory"
+
+find . -name "*.h" -exec sed -e "s/NewDetector/$DetectorName/g" $sedstring "{}" ";"
+find . -name "*.h" -exec sed -e "s/NEWDETECTOR/$DetectorNameUpper/g" $sedstring "{}" ";"
+find . -name "*.cxx" -exec sed -e "s/NewDetector/$DetectorName/g" $sedstring "{}" ";"
+find . -name "*.cxx" -exec sed -e "s/NEWDETECTOR/$DetectorNameUpper/g" $sedstring "{}" ";"
+find . -name "*.cxx" -exec sed -e "s/FairDetectorList/${Prefix}DetectorList/g" $sedstring "{}" ";"
+find . -name "*.cxx" -exec sed -e "s/FairStack/${Prefix}Stack/g" $sedstring "{}" ";"
+find . -name "*.h" -exec sed -e "s/FairDetectorList/${Prefix}DetectorList/g" $sedstring "{}" ";"
+find . -name "*.h" -exec sed -e "s/FairStack/${Prefix}Stack/g" $sedstring "{}" ";"
+
+sed -e "s#tutorial/NewDetector#$RelativeDir#g" $sedstring CMakeLists.txt
+sed -e "s/NewDetector/$DetectorName/g" $sedstring CMakeLists.txt
+sed -e "s/NEWDETECTOR/$DetectorNameUpper/g" $sedstring CMakeLists.txt
+sed -e "s/FAIRROOT_SOURCE_DIR/$ProjectSourceDir/g" $sedstring CMakeLists.txt
+
+if [ -d .svn ]; then  echo "Please remove the .svn directory"
   echo "##"
 fi
 
@@ -59,7 +74,7 @@ echo "found in the DetectorList class. The name to be added is"
 echo "k${DetectorName}."
 
 echo "##"
-echo "edit ${DetectorName}}Geo::getModNumInMod according to the comment in"
-eche "the file."
+echo "edit ${DetectorName}Geo::getModNumInMod according to the comment in"
+echo "the file."
 
 #set +xvx

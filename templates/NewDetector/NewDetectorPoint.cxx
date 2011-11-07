@@ -29,7 +29,7 @@ NewDetectorPoint::~NewDetectorPoint() { }
 // -----   Public method Print   -------------------------------------------
 void NewDetectorPoint::Print(const Option_t* opt) const
 {
-  cout << "-I- NewDetectorPoint: TutorialDet point for track " << fTrackID
+  cout << "-I- NewDetectorPoint: NewDetector point for track " << fTrackID
        << " in detector " << fDetectorID << endl;
   cout << "    Position (" << fX << ", " << fY << ", " << fZ
        << ") cm" << endl;
