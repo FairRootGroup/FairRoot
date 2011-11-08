@@ -1,9 +1,11 @@
 #!/bin/bash
 
-# The relocate script exchange all occurence of NewDetector or NEWDETECTOR
+# The rename script exchange all occurence of NewDetector or NEWDETECTOR
 # by the name given by the first parameter. If the detector is for example 
 # the Trd of the Cbm experiment a good name is CbmTrd. Normaly one should
 # use the naming convention of the experiment.
+# Also the filenames any many more things are changed automatically. In the
+# end there are only some small changes which have to be done by hand.
 
 #set -xv
 
@@ -45,8 +47,6 @@ case "$arch" in
         ;;
 esac
 
-
-
 find . -name "*.h" -exec sed -e "s/NewDetector/$DetectorName/g" $sedstring "{}" ";"
 find . -name "*.h" -exec sed -e "s/NEWDETECTOR/$DetectorNameUpper/g" $sedstring "{}" ";"
 find . -name "*.cxx" -exec sed -e "s/NewDetector/$DetectorName/g" $sedstring "{}" ";"
@@ -61,7 +61,9 @@ sed -e "s/NewDetector/$DetectorName/g" $sedstring CMakeLists.txt
 sed -e "s/NEWDETECTOR/$DetectorNameUpper/g" $sedstring CMakeLists.txt
 sed -e "s/FAIRROOT_SOURCE_DIR/$ProjectSourceDir/g" $sedstring CMakeLists.txt
 
-if [ -d .svn ]; then  echo "Please remove the .svn directory"
+if [ -d .svn ]; then  
+  echo "Please remove the .svn directory."
+  echo " This directory was also copied from templates."
   echo "##"
 fi
 
@@ -74,7 +76,7 @@ echo "found in the DetectorList class. The name to be added is"
 echo "k${DetectorName}."
 
 echo "##"
-echo "edit ${DetectorName}Geo::getModNumInMod according to the comment in"
-echo "the file."
+echo "edit ${DetectorName}Geo.h and ${DetectorName}Geo.cxx  according to the"
+echo "comments in the files."
 
 #set +xvx
