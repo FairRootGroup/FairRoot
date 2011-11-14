@@ -2,6 +2,7 @@
 #include "FairLogger.h"
 
 #include "TSystem.h"
+#include "TFile.h"
 #include "TList.h"
 #include "TH1.h"
 #include "TDirectory.h"
@@ -137,6 +138,58 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
 
 void FairRunInfo::WriteHistosToFile(TList* histoList)
 {
+  // If the file size is larger then approx. 2GB then the histos
+  // can't be read any longer. Because of this problem the histos
+  // are written to a separate file instead
+
+
+  TFile* oldfile = gFile;
+
+  TString directory = gFile->GetName();
+  fLogger->Info(MESSAGE_ORIGIN,"Name %s:",
+                gFile->GetName());
+  Size_t posLastSlash = directory.Last('/');
+  directory.Remove(posLastSlash+1, directory.Length()-posLastSlash-1);
+  TString filename = "";
+  if ( directory.EndsWith("/") ) {
+    filename += directory;
+  }
+
+
+  directory = gFile->GetName();
+  fLogger->Info(MESSAGE_ORIGIN,"Name: %s",
+                directory.Data());
+  posLastSlash = directory.Last('/');
+  directory.Remove(0, posLastSlash+1);
+  directory.ReplaceAll(".root","");
+  fLogger->Info(MESSAGE_ORIGIN,"Name: %s",
+                directory.Data());
+
+
+
+  Int_t pid = gSystem->GetPid();
+  filename += "FairRunInfo_";
+  filename += directory;
+  filename += ".root";
+  fLogger->Info(MESSAGE_ORIGIN,"FileName: %s",
+                filename.Data());
+
+  TFile* f1 = new TFile(filename, "recreate");
+  f1->cd();
+
+  TIterator* listIter=histoList->MakeIterator();
+  listIter->Reset();
+  TObject* obj = NULL;
+  while((obj=listIter->Next())) {
+    obj->Write();
+  }
+
+  f1->Close();
+  f1->Delete();
+  gFile=oldfile;
+
+
+  /*
   // create a new subdirectory in the output file and
   // write all histograms
   TDirectory* currentDir = gDirectory;
@@ -153,6 +206,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   }
 
   gDirectory=currentDir;
+  */
 }
 
 void FairRunInfo::Reset()
