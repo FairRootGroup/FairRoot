@@ -69,12 +69,12 @@ void FairRunInfo::CalculateTimeDifference()
 void FairRunInfo::PrintInfo()
 {
 
-  fLogger->Info(MESSAGE_ORIGIN,"Time to execute 1 event: %f s",
-                fTimeDiff.back());
-  fLogger->Info(MESSAGE_ORIGIN,"Used resident memory: %i MB",
-                fResidentMemory.back());
-  fLogger->Info(MESSAGE_ORIGIN,"Used virtual memory: %i MB",
-                fVirtualMemory.back());
+  fLogger->Debug(MESSAGE_ORIGIN,"Time to execute 1 event: %f s",
+                 fTimeDiff.back());
+  fLogger->Debug(MESSAGE_ORIGIN,"Used resident memory: %i MB",
+                 fResidentMemory.back());
+  fLogger->Debug(MESSAGE_ORIGIN,"Used virtual memory: %i MB",
+                 fVirtualMemory.back());
 }
 
 void FairRunInfo::WriteInfo()
@@ -146,8 +146,8 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   TFile* oldfile = gFile;
 
   TString directory = gFile->GetName();
-  fLogger->Info(MESSAGE_ORIGIN,"Name %s:",
-                gFile->GetName());
+  fLogger->Debug(MESSAGE_ORIGIN,"Name %s:",
+                 gFile->GetName());
   Size_t posLastSlash = directory.Last('/');
   directory.Remove(posLastSlash+1, directory.Length()-posLastSlash-1);
   TString filename = "";
@@ -157,13 +157,13 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
 
 
   directory = gFile->GetName();
-  fLogger->Info(MESSAGE_ORIGIN,"Name: %s",
-                directory.Data());
+  fLogger->Debug(MESSAGE_ORIGIN,"Name: %s",
+                 directory.Data());
   posLastSlash = directory.Last('/');
   directory.Remove(0, posLastSlash+1);
   directory.ReplaceAll(".root","");
-  fLogger->Info(MESSAGE_ORIGIN,"Name: %s",
-                directory.Data());
+  fLogger->Debug(MESSAGE_ORIGIN,"Name: %s",
+                 directory.Data());
 
 
 
@@ -171,8 +171,8 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   filename += "FairRunInfo_";
   filename += directory;
   filename += ".root";
-  fLogger->Info(MESSAGE_ORIGIN,"FileName: %s",
-                filename.Data());
+  fLogger->Debug(MESSAGE_ORIGIN,"FileName: %s",
+                 filename.Data());
 
   TFile* f1 = new TFile(filename, "recreate");
   f1->cd();
