@@ -18,7 +18,7 @@ FairCaptureOutput::FairCaptureOutput(bool captureStdErr, bool captureStdOut)
 FairCaptureOutput::~FairCaptureOutput()
 {
   // close all files and remove the temporary file
-  //  remove(fFileName);
+  remove(fFileName);
 }
 
 void FairCaptureOutput::BeginCapture()
