@@ -9,27 +9,17 @@
 #include <fstream>
 #include <algorithm>
 
-class LogLevelTest : public testing::TestWithParam<const char*>
-{
-  protected:
-    virtual void SetUp() {
-      logLevelSettingToTest=GetParam();
-    }
-    std::string logLevelSettingToTest;
-};
-
-
 static const char* const LogString[] = { "FATAL  ", "ERROR  ", "WARNING",
                                        "INFO   ", "DEBUG  ", "DEBUG1 ",
                                        "DEBUG2 ", "DEBUG3 ", "DEBUG4 "
                                        };
 
-/*
-static const char* const LogString[] = { "FATAL", "ERROR", "WARNING",
-                                       "INFO", "DEBUG", "DEBUG1",
-                                       "DEBUG2", "DEBUG3", "DEBUG4"
-                                       };
-*/
+
+static const char* const TestLogs[] = { "ERROR", "WARNING",
+                                        "INFO", "DEBUG", "DEBUG1",
+                                        "DEBUG2", "DEBUG3", "DEBUG4"
+                                      };
+
 
 void LogNoArguments(FairLogger* fLogger, std::string OutputString)
 {
@@ -157,29 +147,24 @@ TEST(FairToolsTest, testScreenAndFileOutputWithoutArgument)
   CheckFileOutput(outputhandler, v);
 }
 
+class LogLevelTest : public testing::TestWithParam<const char*>
+{
+  protected:
+    virtual void SetUp() {
+      logLevelSettingToTest=GetParam();
+      OutputString = "I am here.";
+      fLogger = FairLogger::GetLogger();
+    }
+    std::string logLevelSettingToTest;
+    std::string OutputString;
+    FairLogger* fLogger;
+};
+
+
 TEST_P(LogLevelTest, testAllLogLevelsToScreenAndFile)
 {
-  std::string OutputString = "I am here.";
-
-  FairLogger* fLogger = FairLogger::GetLogger();
-
-  std::string bla = logLevelSettingToTest;
-  std::cout<<"Log level: "<<bla<<":"<<std::endl;
-
-  std::string::iterator iter;
-  std::string bla1;
-  for ( iter = bla.begin();
-        iter < bla.end();
-        iter++) {
-    bla1 = *iter;
-    if ( bla1.compare(" ") == 0) {
-      bla.erase(iter);
-    }
-  }
-  std::cout<<"Log level: "<<bla<<":"<<std::endl;
-
-  fLogger->SetLogFileLevel(bla.c_str());
-  fLogger->SetLogScreenLevel(bla.c_str());
+  fLogger->SetLogFileLevel(logLevelSettingToTest.c_str());
+  fLogger->SetLogScreenLevel(logLevelSettingToTest.c_str());
 
   char fileName[25];
   tmpnam(fileName);
@@ -193,13 +178,16 @@ TEST_P(LogLevelTest, testAllLogLevelsToScreenAndFile)
 
   //  std::string stringFileName(fileName);
   //  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString, fileName);
-  //  CheckScreenOutput(handler, v);
+  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
+  CheckScreenOutput(handler, v);
 
+  /*
   std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   FairTestOutputHandler outputhandler(fileName);
   CheckFileOutput(outputhandler, v);
+  */
 }
 
 INSTANTIATE_TEST_CASE_P(TestAllLogLevels,
                         LogLevelTest,
-                        ::testing::ValuesIn(LogString));
+                        ::testing::ValuesIn(TestLogs));
