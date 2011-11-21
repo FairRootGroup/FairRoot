@@ -64,20 +64,4 @@ std::string FairTestOutputHandler::GetCaptureLine(int line)
   return fFileContent[line];
 
 }
-std::string FairTestOutputHandler::GetCapture()
-{
-
-  ReadContentFromFile();
-
-  std::string retVal;
-
-  for ( fFileContentIterator = fFileContent.begin();
-        fFileContentIterator != fFileContent.end();
-        fFileContentIterator++) {
-    retVal += *fFileContentIterator;
-    retVal += "\n";
-  }
-
-  return retVal;
-}
 

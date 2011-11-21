@@ -12,7 +12,6 @@ class FairTestOutputHandler
     FairTestOutputHandler();
     ~FairTestOutputHandler();
 
-    std::string GetCapture();
     std::string GetCaptureLine(int line);
     int GetNumberOfLines();
 

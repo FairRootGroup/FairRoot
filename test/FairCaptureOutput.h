@@ -18,8 +18,6 @@ class FairCaptureOutput
     void BeginCapture();
     void EndCapture();
 
-    std::string GetCapture() const
-    { return fOutputHandler->GetCapture();}
     std::string GetCaptureLine(int line) const
     { return fOutputHandler->GetCaptureLine(line);}
     int GetNumberOfLines() const
