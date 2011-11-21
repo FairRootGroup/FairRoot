@@ -183,14 +183,21 @@ void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
 
   if (fLogToFile && level <= fLogFileLevel) {
     // Chek if the log file is open. If not open the logfile
-    if (fLogFile == NULL) {
-      OpenLogFile();
-    }
     LogTo(fLogFile, loglevel, s4);
   }
   if (fLogToScreen && level <= fLogScreenLevel) {
     LogTo(stderr, loglevel, s4);
   }
+}
+
+void FairLogger::SetLogFileName(const char* name)
+{
+  if (fLogFile != NULL) {
+    CloseLogFile();
+    remove(fLogFileName);
+  }
+  fLogFileName = name;
+  OpenLogFile();
 }
 
 void FairLogger::LogTo(FILE* out, const char* loglevel, const char* origin)
@@ -261,6 +268,7 @@ FairLogLevel FairLogger::ConvertToLogLevel(const char* levelc) const
   if (level == "DEBUG2") { return logDEBUG2; }
   if (level == "DEBUG3") { return logDEBUG3; }
   if (level == "DEBUG4") { return logDEBUG4; }
+  cerr<<"Log level \""<<level<<"\" not supported. Use default level \"INFO\"."<<endl;
   return logINFO;
 }
 
@@ -274,6 +282,7 @@ FairLogVerbosityLevel FairLogger::ConvertToLogVerbosityLevel(const char* vlevelc
   if (vlevel == "HIGH") { return verbosityHIGH; }
   if (vlevel == "MEDIUM") { return verbosityMEDIUM; }
   if (vlevel == "LOW") { return verbosityLOW; }
+  cerr<<"Verbosity level \""<<vlevel<<"\" not supported. Use default level \"LOW\"."<<endl;
   return verbosityLOW;
 }
 

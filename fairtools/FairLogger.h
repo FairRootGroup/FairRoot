@@ -41,7 +41,7 @@ class FairLogger : public TObject
   public:
     static FairLogger* GetLogger();
 
-    void SetLogFileName(const char* name) { fLogFileName = name; }
+    void SetLogFileName(const char* name);
 
     void SetLogToScreen(Bool_t log1) { fLogToScreen = log1; }
 
