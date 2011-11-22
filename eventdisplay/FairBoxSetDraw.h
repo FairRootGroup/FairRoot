@@ -47,7 +47,7 @@ class FairBoxSetDraw : public FairTask
     virtual ~FairBoxSetDraw();
 
     /** Set verbosity level. For this task and all of the subtasks. **/
-    void SetVerbose(Int_t iVerbose) {fVerbose = fVerbose;};
+    void SetVerbose(Int_t iVerbose) {fVerbose = iVerbose;};
     void SetBoxDimensions(Double_t x, Double_t y, Double_t z) {
       fX = x;
       fY = y;
