@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <algorithm>
+#include <boost/regex.hpp>
 
 static const char* const LogString[] = { "FATAL  ", "ERROR  ", "WARNING",
                                        "INFO   ", "DEBUG  ", "DEBUG1 ",
@@ -118,6 +119,15 @@ template <class T> class _TestFairLoggerBase : public T
       return retVal;
     }
 
+    std::vector<std::string> CreateExpectedLogLevels(std::string loglevel) {
+
+      std::vector<std::string> levelNames(TestLogs, TestLogs+8);
+      std::vector<std::string>::iterator position =
+        std::find(levelNames.begin(), levelNames.end(), loglevel);
+      levelNames.erase(position+1, levelNames.end());
+      return levelNames;
+    }
+
     void CheckScreenOutput(FairCaptureOutput handler, std::vector<std::string> v) {
       int noLines = handler.GetNumberOfLines();
       int expectedNumberOfLines = v.size();
@@ -140,6 +150,28 @@ template <class T> class _TestFairLoggerBase : public T
       for (int i = 0; i < minLines; ++i) {
         EXPECT_EQ( v[i], handler.GetCaptureLine(i) );
       }
+    }
+
+    bool CheckVerboseOutput(std::string logLevel, std::string outputString,
+                            std::string verboseLevel, std::string resultString
+                           ) {
+      // Example Output for logging level INFO and different verbosity levels
+      // verbosity Level:Output
+      // LOW    :[INFO   ] I am here.
+      // MEDIUM :[INFO   ] [_TestFairTools.cxx::LogNoArguments:78] I am here.
+      // HIGH   :[INFO   ] [05.12.2011 12:00:10] [_TestFairTools.cxx::LogNoArguments:78] I am here.
+      std::string regexString = "\\[" + logLevel + "[ ]*][ ]";
+      if (verboseLevel.compare("HIGH") == 0) {
+        regexString = regexString + "\\[\\d{2}\\.\\d{2}\\.\\d{4}[ ]\\d{2}:\\d{2}:\\d{2}][ ]";
+        regexString = regexString + "\\[.*::.*:\\d{2}][ ]";
+      }
+      if (verboseLevel.compare("MEDIUM") == 0) {
+        regexString = regexString + "\\[.*::.*:\\d{2}][ ]";
+      }
+      regexString = regexString + outputString + ".*";
+
+      const boost::regex e(regexString);
+      return regex_match(resultString, e);
     }
 };
 
@@ -180,7 +212,10 @@ TEST_F(FairToolsTest, CheckDefaultSettings)
   handler.EndCapture();
 
   std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  CheckScreenOutput(handler, v);
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    CheckScreenOutput(handler, v);
+  }
 }
 
 
@@ -199,7 +234,10 @@ TEST_F(FairToolsTest, CheckOutputOnlyToFile)
 
   std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   FairTestOutputHandler outputhandler(fileName);
-  CheckFileOutput(outputhandler, v);
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    CheckFileOutput(outputhandler, v);
+  }
 }
 
 
@@ -220,7 +258,10 @@ TEST_F(FairToolsTest, CheckWrongLogLevelSettings)
   it = v.begin();
   it = v.insert ( it , outString );
 
-  CheckScreenOutput(handler, v);
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    CheckScreenOutput(handler, v);
+  }
 }
 
 TEST_F(FairToolsTest, CheckVerbosityLevelSettings)
@@ -240,7 +281,11 @@ TEST_F(FairToolsTest, CheckVerbosityLevelSettings)
   it = v.begin();
   it = v.insert ( it , outString );
 
-  CheckScreenOutput(handler, v);
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    CheckScreenOutput(handler, v);
+  }
+
 }
 
 
@@ -258,11 +303,18 @@ TEST_F(FairToolsTest, testScreenAndFileOutputWithoutArgument)
   handler.EndCapture();
 
   std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString, fileName);
-  CheckScreenOutput(handler, v);
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    CheckScreenOutput(handler, v);
+  }
 
   v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   FairTestOutputHandler outputhandler(fileName);
-  CheckFileOutput(outputhandler, v);
+
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    CheckFileOutput(outputhandler, v);
+  }
 }
 
 
@@ -283,12 +335,17 @@ TEST_P(LogLevelTest, testAllLogLevelsToScreenAndFile)
   handler.EndCapture();
 
   std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString, fileName);
-  CheckScreenOutput(handler, v);
-
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    CheckScreenOutput(handler, v);
+  }
 
   v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   FairTestOutputHandler outputhandler(fileName);
-  CheckFileOutput(outputhandler, v);
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    CheckFileOutput(outputhandler, v);
+  }
 }
 
 INSTANTIATE_TEST_CASE_P(TestAllLogLevels,
@@ -301,31 +358,46 @@ TEST_P(VerbosityLevelTest, testAllVerbosityLevelsToScreenAndFile)
 
   handler.BeginCapture();
 
-  char fileName[25];
-  tmpnam(fileName);
-  fLogger->SetLogFileName(fileName);
+  //  char fileName[25];
+  //  tmpnam(fileName);
+  //  fLogger->SetLogFileName(fileName);
   fLogger->SetLogToScreen(true);
-  fLogger->SetLogToFile(true);
+  fLogger->SetLogToFile(false);
   LogNoArguments(fLogger, OutputString);
 
   handler.EndCapture();
 
-  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString, fileName);
-  CheckScreenOutput(handler, v);
+  //  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString, fileName);
+  //  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
+  std::vector<std::string> v = CreateExpectedLogLevels(logLevelSettingToTest);
 
 
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    int Lines = v.size();
+
+    for (int i = 0; i < Lines; ++i) {
+      EXPECT_TRUE( CheckVerboseOutput( v[i], OutputString, verbosityLevel, handler.GetCaptureLine(i) ) );
+    }
+  }
+
+  /*
   v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   FairTestOutputHandler outputhandler(fileName);
-  CheckFileOutput(outputhandler, v);
+  {
+    SCOPED_TRACE(logLevelSettingToTest);
+    CheckFileOutput(outputhandler, v);
+  }
+  */
 }
 
 // Switch this tests of for the time being, since they are not working
-/*
+
 
 INSTANTIATE_TEST_CASE_P(TestAllVerbosityLevels,
                         VerbosityLevelTest,
                         ::testing::ValuesIn(VerbosityLevelArray));
-*/
+
 
 
 

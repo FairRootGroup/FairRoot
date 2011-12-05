@@ -11,6 +11,16 @@ set(INCLUDE_DIRECTORIES
  ${CMAKE_SOURCE_DIR}/test
 )
 
+# Boost is needed for the regular expression handling
+find_package(Boost)
+
+If(Boost_FOUND)
+  Set(INCLUDE_DIRECTORIES
+      ${INCLUDE_DIRECTORIES}
+      ${Boost_INCLUDE_DIRS}
+     )
+EndIf(Boost_FOUND)
+
 include_directories( ${INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
@@ -18,18 +28,13 @@ set(LINK_DIRECTORIES
 )
 
 link_directories( ${LINK_DIRECTORIES})
-
-
-# add the dictionary to the list of source files
-#SET(FAIRTOOLS_SRCS ${FAIRTOOLS_SRCS} ${FAIRTOOLS_DICTIONARY})
-
-
 ############### build the library #####################
-add_executable(_TestFairTools _TestFairTools.cxx)
-target_link_libraries(_TestFairTools ${ROOT_LIBRARIES} ${GTEST_BOTH_LIBRARIES} FairTools FairTest)
-
-#file(GLOB TEST_SRC_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
-#add_executable(${PROJECT_TEST_NAME} ${TEST_SRC_FILES})
-#target_link_libraries(${PROJECT_TEST_NAME} ${GTEST_BOTH_LIBRARIES} pthread)
+If(Boost_FOUND)
+  add_executable(_TestFairTools _TestFairTools.cxx)
+  target_link_libraries(_TestFairTools ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${GTEST_BOTH_LIBRARIES} FairTools FairTest)
+  add_test(_TestFairTools ${FAIRROOT_BINARY_DIR}/bin/_TestFairTools)
+Else(Boost_FOUND)
+  Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
+EndIf(Boost_FOUND)
 
 add_test(_TestFairTools ${FAIRROOT_BINARY_DIR}/bin/_TestFairTools)
