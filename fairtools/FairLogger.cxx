@@ -85,73 +85,89 @@ void FairLogger::Fatal(const char* file, const char* line, const char* func,
 void FairLogger::Error(const char* file, const char* line, const char* func,
                        const char* format, ...)
 {
-  va_list ap;
-  va_start(ap, format);
-  Log(logERROR, file, line, func, format, ap);
-  va_end(ap);
+  if (IsLogNeeded(logERROR)) {
+    va_list ap;
+    va_start(ap, format);
+    Log(logERROR, file, line, func, format, ap);
+    va_end(ap);
+  }
 }
 
 void FairLogger::Warning(const char* file, const char* line, const char* func,
                          const char* format, ...)
 {
-  va_list ap;
-  va_start(ap, format);
-  Log(logWARNING, file, line, func, format, ap);
-  va_end(ap);
+  if (IsLogNeeded(logWARNING)) {
+    va_list ap;
+    va_start(ap, format);
+    Log(logWARNING, file, line, func, format, ap);
+    va_end(ap);
+  }
 }
 
 void FairLogger::Info(const char* file, const char* line, const char* func,
                       const char* format, ...)
 {
-  va_list ap;
-  va_start(ap, format);
-  Log(logINFO, file, line, func, format, ap);
-  va_end(ap);
+  if (IsLogNeeded(logINFO)) {
+    va_list ap;
+    va_start(ap, format);
+    Log(logINFO, file, line, func, format, ap);
+    va_end(ap);
+  }
 }
 
 void FairLogger::Debug(const char* file, const char* line, const char* func,
                        const char* format, ...)
 {
-  va_list ap;
-  va_start(ap, format);
-  Log(logDEBUG, file, line, func, format, ap);
-  va_end(ap);
+  if (IsLogNeeded(logDEBUG)) {
+    va_list ap;
+    va_start(ap, format);
+    Log(logDEBUG, file, line, func, format, ap);
+    va_end(ap);
+  }
 }
 
 void FairLogger::Debug1(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  va_list ap;
-  va_start(ap, format);
-  Log(logDEBUG1, file, line, func, format, ap);
-  va_end(ap);
+  if (IsLogNeeded(logDEBUG1)) {
+    va_list ap;
+    va_start(ap, format);
+    Log(logDEBUG1, file, line, func, format, ap);
+    va_end(ap);
+  }
 }
 
 void FairLogger::Debug2(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  va_list ap;
-  va_start(ap, format);
-  Log(logDEBUG2, file, line, func, format, ap);
-  va_end(ap);
+  if (IsLogNeeded(logDEBUG2)) {
+    va_list ap;
+    va_start(ap, format);
+    Log(logDEBUG2, file, line, func, format, ap);
+    va_end(ap);
+  }
 }
 
 void FairLogger::Debug3(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  va_list ap;
-  va_start(ap, format);
-  Log(logDEBUG3, file, line, func, format, ap);
-  va_end(ap);
+  if (IsLogNeeded(logDEBUG3)) {
+    va_list ap;
+    va_start(ap, format);
+    Log(logDEBUG3, file, line, func, format, ap);
+    va_end(ap);
+  }
 }
 
 void FairLogger::Debug4(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  va_list ap;
-  va_start(ap, format);
-  Log(logDEBUG4, file, line, func, format, ap);
-  va_end(ap);
+  if (IsLogNeeded(logDEBUG4)) {
+    va_list ap;
+    va_start(ap, format);
+    Log(logDEBUG4, file, line, func, format, ap);
+    va_end(ap);
+  }
 }
 
 void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
@@ -296,4 +312,19 @@ void FairLogger::GetTime()
 
   strftime(fTimeBuffer, 80, "[%d.%m.%Y %X] ", timeinfo);
 }
+
+void FairLogger::SetMinLogLevel()
+{
+  fMinLogLevel = (fLogScreenLevel <= fLogFileLevel) ? fLogFileLevel : fLogScreenLevel;
+}
+
+Bool_t FairLogger::IsLogNeeded(FairLogLevel logLevel)
+{
+  if (logLevel <= fMinLogLevel) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 ClassImp(FairLogger)

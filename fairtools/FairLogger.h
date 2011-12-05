@@ -49,16 +49,17 @@ class FairLogger : public TObject
 
     void SetLogFileLevel(const char* level) {
       fLogFileLevel = ConvertToLogLevel(level);
+      SetMinLogLevel();
     }
 
     void SetLogScreenLevel(const char* level) {
       fLogScreenLevel = ConvertToLogLevel(level);
+      SetMinLogLevel();
     }
 
     void SetLogVerbosityLevel(const char* vlevel) {
       fLogVerbosityLevel = ConvertToLogVerbosityLevel(vlevel);
     }
-
 
     void Fatal(const char* file, const char* line, const char* func,
                const char* format, ...);
@@ -105,6 +106,9 @@ class FairLogger : public TObject
 
     void GetTime();
 
+    Bool_t IsLogNeeded(FairLogLevel logLevel);
+
+    void SetMinLogLevel();
 
     const char* ConvertLogLevelToString(FairLogLevel level) const
     { return LogLevelString[level]; }
@@ -120,6 +124,7 @@ class FairLogger : public TObject
     char fBuffer[fgkBufferLength];
     static const int fgkTimeBufferLength = 80;
     char fTimeBuffer[fgkTimeBufferLength];
+    FairLogLevel fMinLogLevel;
 
     ClassDef(FairLogger, 1)
 };
