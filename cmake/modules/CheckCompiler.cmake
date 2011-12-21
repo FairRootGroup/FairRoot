@@ -59,6 +59,13 @@ if (CMAKE_SYSTEM_NAME MATCHES Linux)
 #   set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -ansi -Wpointer-arith -fno-common")
 #   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ansi -Wpointer-arith -fno-exceptions -fno-common")
 
+    # Get the directory where to find libimf. The only way I found is to get the install dir from icpc and
+    # from there one knows where the the libraries are installed
+   Execute_process(COMMAND which icpc OUTPUT_VARIABLE _bla)
+   String(REPLACE "bin" "compiler/lib" _intel_lib_dirs ${_bla})
+   String(REPLACE "/icpc" "" _intel_lib_dirs ${_intel_lib_dirs})
+   String(STRIP ${_intel_lib_dirs} _intel_lib_dirs)
+
    endif (CMAKE_C_COMPILER MATCHES "icc")
 endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 

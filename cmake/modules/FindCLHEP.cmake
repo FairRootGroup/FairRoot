@@ -17,6 +17,7 @@ MESSAGE(STATUS "Looking for CLHEP...")
 
 # If we find the new clhep-config executable use it, otherwise search in the path
 Find_Program(CLHEP_CONFIG_EXE NAMES clhep-config PATHS
+  ${SIMPATH}/cern/clhep/bin
   ${SIMPATH}/cern/clhep/
   ${SIMPATH}/bin
   NO_DEFAULT_PATH
