@@ -2,6 +2,7 @@
 
 export DYLD_LIBRARY_PATH=@MY_LD_LIBRARY_PATH@
 export ROOTSYS=@ROOTSYS@
+export ROOTEXE=@ROOT_INSTALL_DIR@/bin/root.exe
 export VMCWORKDIR=@PROJECT_SOURCE_DIR@
 export GEANT4VMC_MACRO_DIR=@GEANT4VMC_MACRO_DIR@
 export USE_VGM=1
@@ -18,4 +19,4 @@ export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
 
 cd @new_path@
 
-$ROOTSYS/bin/root.exe -q -b -l  @my_script_name@
+$ROOTEXE -q -b -l  @my_script_name@
