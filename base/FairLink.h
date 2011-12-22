@@ -53,7 +53,7 @@ class FairLink : public TObject
     }
 
     virtual bool operator==(const FairLink& link) const {
-      if (fType == link.GetType() && fIndex == link.GetIndex()) {
+      if (fFile == link.GetFile() && fEntry == link.GetEntry() && fType == link.GetType() && fIndex == link.GetIndex()) {
         return true;
       } else {
         return false;
@@ -61,11 +61,17 @@ class FairLink : public TObject
     }
 
     virtual bool operator<(const FairLink& link) const {
-      if(fType < link.GetType()) {
+      if (fFile < link.GetFile()) {
         return true;
-      } else if (fType == link.GetType() && fIndex < link.GetIndex()) {
+      } else if (fFile == link.GetFile() && fEntry < link.GetEntry()) {
         return true;
-      } else { return false; }
+      } else if (fFile == link.GetFile() && fEntry == link.GetEntry() && fType < link.GetType()) {
+        return true;
+      } else if (fFile == link.GetFile() && fEntry == link.GetEntry() && fType == link.GetType() && fIndex < link.GetIndex()) {
+        return true;
+      } else {
+        return false;
+      }
     }
 
     friend std::ostream& operator<< (std::ostream& out, FairLink& link) {
@@ -73,7 +79,7 @@ class FairLink : public TObject
       return out;
     }
 
-    ClassDef(FairLink, 2);
+    ClassDef(FairLink, 3);
 
 
   private:
