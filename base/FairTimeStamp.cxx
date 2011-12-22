@@ -3,13 +3,13 @@
 // -----   Default constructor   -------------------------------------------
 FairTimeStamp::FairTimeStamp()
   : FairMultiLinkedData(),
-    fTimeStamp(0), fTimeStampError(1)
+    fTimeStamp(-1), fTimeStampError(-1)
 {
 }
 // -----   Standard constructor   ------------------------------------------
 FairTimeStamp::FairTimeStamp(Double_t time)
   :FairMultiLinkedData(),
-   fTimeStamp(time), fTimeStampError(1)
+   fTimeStamp(time), fTimeStampError(-1)
 {
 }
 
