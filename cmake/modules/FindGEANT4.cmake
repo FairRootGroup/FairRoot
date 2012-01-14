@@ -27,7 +27,9 @@ SET (PATH ${PATH} ${GEANT4_DIR})
 FIND_PATH(GEANT4_INCLUDE_DIR NAMES G4Event.hh PATHS
   ${SIMPATH}/transport/geant4/include
   ${SIMPATH}/transport/geant4/include/geant4
+  ${SIMPATH}/transport/geant4/include/Geant4
   ${SIMPATH}/include/geant4
+  ${SIMPATH}/include/Geant4
   NO_DEFAULT_PATH
 )
 
@@ -38,7 +40,7 @@ ${SIMPATH}/transport/geant4/physics_lists/hadronic/Packaging/include
 ${SIMPATH}/transport/geant4/physics_lists/hadronic/QGSP/include
 )
 
-FIND_PATH(GEANT4_LIB_DIR NAMES libG3toG4.so libG3toG4.dylib PATHS
+FIND_PATH(GEANT4_LIB_DIR NAMES libG3toG4.so PATHS
   ${SIMPATH}/transport/geant4/lib/Linux-g++
   ${SIMPATH}/transport/geant4/lib/Linux-icc
   ${SIMPATH}/transport/geant4/lib
