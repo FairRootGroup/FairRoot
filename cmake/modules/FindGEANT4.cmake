@@ -22,7 +22,10 @@ FIND_PATH(GEANT4_DIR NAMES geant4-config PATHS
   NO_DEFAULT_PATH
 )
 
-SET (PATH ${PATH} ${GEANT4_DIR})
+If(GEANT4_DIR)
+  Set(PATH ${PATH} ${GEANT4_DIR})
+EndIf(GEANT4_DIR)
+
 
 FIND_PATH(GEANT4_INCLUDE_DIR NAMES G4Event.hh PATHS
   ${SIMPATH}/transport/geant4/include
@@ -34,10 +37,10 @@ FIND_PATH(GEANT4_INCLUDE_DIR NAMES G4Event.hh PATHS
 )
 
 SET(GEANT4_INCLUDE_DIR
-${GEANT4_INCLUDE_DIR}
-${SIMPATH}/transport/geant4/source/interfaces/common/include 
-${SIMPATH}/transport/geant4/physics_lists/hadronic/Packaging/include   
-${SIMPATH}/transport/geant4/physics_lists/hadronic/QGSP/include
+  ${GEANT4_INCLUDE_DIR}
+  ${SIMPATH}/transport/geant4/source/interfaces/common/include 
+  ${SIMPATH}/transport/geant4/physics_lists/hadronic/Packaging/include   
+  ${SIMPATH}/transport/geant4/physics_lists/hadronic/QGSP/include
 )
 
 FIND_PATH(GEANT4_LIB_DIR NAMES libG3toG4.so PATHS
@@ -55,6 +58,7 @@ ENDIF (GEANT4_LIB_DIR)
 if (GEANT4_INCLUDE_DIR AND GEANT4_LIBRARY_DIR)
    set(GEANT4_FOUND TRUE)
 endif (GEANT4_INCLUDE_DIR AND GEANT4_LIBRARY_DIR)
+
 
 if (GEANT4_FOUND)
   if (NOT GEANT4_FIND_QUIETLY)
