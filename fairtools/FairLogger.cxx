@@ -31,7 +31,8 @@ FairLogger::FairLogger()
   fLogFileLevel(logINFO),
   fLogScreenLevel(logINFO),
   fLogVerbosityLevel(verbosityLOW),
-  fBuffer()
+  fBuffer(),
+  fMinLogLevel(logINFO)
 {
 }
 
