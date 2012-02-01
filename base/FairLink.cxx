@@ -34,25 +34,32 @@ FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
 FairLink::FairLink(TString branchName, Int_t index, Float_t weight)
   :TObject(),
    fFile(-1),
-   fEntry(-1)
+   fEntry(-1),
+   fType(FairRootManager::Instance()->GetBranchId(branchName)),
+   fIndex(index),
+   fWeight(weight)
 {
-  //FairRootManager* ioman = FairRootManager::Instance();
-  //if (0==ioman) std::cout << "-E- FairLink: No iomanager" << std::endl;
-  SetLink(FairRootManager::Instance()->GetBranchId(branchName), index, weight);
 }
 
 
 FairLink::FairLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight)
+  :TObject(),
+   fFile(file),
+   fEntry(entry),
+   fType(type),
+   fIndex(index),
+   fWeight(weight)
 {
-  SetLink(file, entry, type, index, weight);
 }
 
 FairLink::FairLink(Int_t file, Int_t entry, TString branchName, Int_t index, Float_t weight)
-  :TObject()
+  :TObject(),
+   fFile(file),
+   fEntry(entry),
+   fType(FairRootManager::Instance()->GetBranchId(branchName)),
+   fIndex(index),
+   fWeight(weight)
 {
-  //FairRootManager* ioman = FairRootManager::Instance();
-  //if (0==ioman) std::cout << "-E- FairLink: No iomanager" << std::endl;
-  SetLink(file, entry, FairRootManager::Instance()->GetBranchId(branchName), index, weight);
 }
 
 
