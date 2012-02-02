@@ -184,6 +184,10 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
     obj->Write();
   }
 
+  delete listIter;
+  histoList->Delete();
+  delete histoList;
+
   f1->Close();
   f1->Delete();
   gFile=oldfile;
