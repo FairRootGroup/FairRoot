@@ -34,6 +34,7 @@ void FairBaseParSet::clear(void)
   if(fPriGen) { delete fPriGen; }
   if(fDetList) { delete fDetList; }
   if(fGeoNodes) { delete fGeoNodes; }
+  if(fContNameList) { delete fContNameList; }
 // if(fGeom ) delete fGeom;
 
 }
