@@ -4,7 +4,7 @@
 // -----          adapted april 2010               O.Hartmann          -----
 // -------------------------------------------------------------------------
 
-using namespace std;
+
 #include <iostream>
 #include "FairRadGridManager.h"
 #include "FairRootManager.h"
@@ -12,6 +12,8 @@ using namespace std;
 #include "TParticle.h"
 #include "TVirtualMC.h"
 #include "FairMesh.h"
+
+using namespace std;
 
 ClassImp(FairRadGridManager)
 

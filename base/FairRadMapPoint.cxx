@@ -9,20 +9,21 @@
 // -----   Default constructor   -------------------------------------------
 FairRadMapPoint::FairRadMapPoint()
   : FairMCPoint(),
-    fStep(0),
-    fDose(0),
-    fDoseSL(0),
+    fPdg(0),
     fA(0),
     fZmat(0),
     fDensity(0),
     fVolMass(0),
+    fStep(0),
+    fDose(0),
+    fDoseSL(0),
     fXOut(0),
     fYOut(0),
     fZOut(0),
     fPxOut(0),
     fPyOut(0),
-    fPzOut(0),
-    fPdg(0)
+    fPzOut(0)
+
 
 {
   /**default ctor*/
@@ -38,20 +39,21 @@ FairRadMapPoint::FairRadMapPoint(Int_t trackID, Int_t detID, TVector3 pos,
                                  Float_t  A, Float_t  Z, Float_t Density, Double_t VolMass,
                                  Double_t Step, Double_t Dose, Double_t DoseSL, Int_t Pdg)
   : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss),
+    fPdg(Pdg),
     fA(A),
     fZmat(Z),
     fDensity(Density),
     fVolMass(VolMass),
+    fStep(Step),
     fDose(Dose),
     fDoseSL(DoseSL),
-    fStep(Step),
     fXOut ( posOut.X()),
     fYOut ( posOut.Y()),
     fZOut ( posOut.Z()),
     fPxOut ( momOut.Px()),
     fPyOut ( momOut.Py()),
-    fPzOut ( momOut.Pz()),
-    fPdg(Pdg)
+    fPzOut ( momOut.Pz())
+
 {
   /**std ctor*/
 

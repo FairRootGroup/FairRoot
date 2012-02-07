@@ -64,6 +64,7 @@ FairModule::~FairModule()
 //__________________________________________________________________________
 FairModule::FairModule(const char* Name, const char* title ,Bool_t Active)
   :TNamed(Name, title),
+   fMotherVolumeName(""),
    fgeoVer("Not defined"),
    fgeoName("Not defined"),
    fModId(-1),
@@ -72,7 +73,6 @@ FairModule::FairModule(const char* Name, const char* title ,Bool_t Active)
    fVerboseLevel(0),
    flGeoPar(0),
    kGeoSaved(kFALSE),
-   fMotherVolumeName(""),
    fLogger(FairLogger::GetLogger())
 {
   if(!svList) { svList=new TRefArray(); }
@@ -84,6 +84,7 @@ FairModule::FairModule(const char* Name, const char* title ,Bool_t Active)
 
 FairModule::FairModule()
   : TNamed(),
+    fMotherVolumeName(""),
     fgeoVer("Not defined"),
     fgeoName("Not defined"),
     fModId(-1),
@@ -92,7 +93,6 @@ FairModule::FairModule()
     fVerboseLevel(0),
     flGeoPar(0),
     kGeoSaved(kFALSE),
-    fMotherVolumeName(""),
     fLogger(FairLogger::GetLogger())
 {
 

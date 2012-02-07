@@ -9,12 +9,13 @@ ClassImp(FairTSBufferFunctional);
 FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* sourceTree, BinaryFunctor* stopFunction, BinaryFunctor* startFunction)
   :TObject(),
    fOutputArray(NULL),
-   fInputArray(NULL),
    fBufferArray(NULL),
+   fInputArray(NULL),
+   fStartFunction(startFunction),
+   fStopFunction (stopFunction),
    fBranch(NULL),
    fBranchIndex(-1),
-   fStopFunction (stopFunction),
-   fStartFunction(startFunction),
+   fStartIndex(-1),
    fVerbose(0)
 {
   fBranch = sourceTree->GetBranch(branchName.Data());

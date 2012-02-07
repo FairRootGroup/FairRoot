@@ -44,9 +44,8 @@ FairRunAna* FairRunAna::Instance()
 //_____________________________________________________________________________
 FairRunAna::FairRunAna()
   :FairRun(),
-   //   fFriendFileList(new TObjArray()),
+   fRunInfo(),
    fIsInitialized(kFALSE),
-   //   fInputFile(0),
    fInputGeoFile(0),
    fLoadGeo( kFALSE),
    fEvtHeader(0),
@@ -59,8 +58,8 @@ FairRunAna::FairRunAna()
    fEventTimeMax(0),
    fEventTime(0),
    fEventMeanTime(0),
-   fTimeProb(0),
-   fRunInfo()
+   fTimeProb(0)
+
 {
 
   fgRinstance=this;

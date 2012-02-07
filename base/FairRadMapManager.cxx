@@ -2,7 +2,6 @@
 // -----               FairRadMapManager source file                   -----
 // -------------------------------------------------------------------------
 
-using namespace std;
 #include <iostream>
 #include "FairRadMapPoint.h"
 #include "FairRadMapManager.h"
@@ -14,6 +13,8 @@ using namespace std;
 #include "TGeoManager.h"
 #include "TGeoVolume.h"
 #include "TVectorD.h"
+
+using namespace std;
 
 
 ClassImp(FairRadMapManager)

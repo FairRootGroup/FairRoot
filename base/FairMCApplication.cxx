@@ -245,7 +245,7 @@ void FairMCApplication::FinishRun()
   //fRootManager->Fill();
 
   FairPrimaryGenerator* gen = FairRunSim::Instance()->GetPrimaryGenerator();
-  FairMCEventHeader* header = gen->GetEvent();
+  //FairMCEventHeader* header = gen->GetEvent();
   Int_t nprimary = gen->GetTotPrimary();
   TObjArray* meshlist  = NULL;
 

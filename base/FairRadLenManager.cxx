@@ -3,7 +3,7 @@
 // -----                  Created 14/01/08  by M. Al-Turany            -----
 // -------------------------------------------------------------------------
 
-using namespace std;
+
 #include <iostream>
 #include "FairRadLenPoint.h"
 #include "FairRadLenManager.h"
@@ -11,6 +11,8 @@ using namespace std;
 #include "TLorentzVector.h"
 #include "TParticle.h"
 #include "TVirtualMC.h"
+
+using namespace std;
 
 ClassImp(FairRadLenManager)
 
