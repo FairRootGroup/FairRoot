@@ -77,6 +77,7 @@ FairRootManager::FairRootManager()
     fDataContainer(),
     fActiveContainer(),
     fTSBufferMap(),
+    fWriteoutBufferMap(),
     fCompressData(kFALSE),
     fTimeStamps(kFALSE),
     fBranchPerMap(kFALSE),
@@ -84,9 +85,19 @@ FairRootManager::FairRootManager()
     fBrPerMapIter(),
     fFriendFileList(),
     fInputFileName(""),
+    fInputChainList(),
     fFriendTypeList(),
+    fCheckInputBranches(),
+    fInputLevel(),
+    fRunIdInfoAll(),
     fLogger(FairLogger::GetLogger()),
     fMixedInput(kFALSE),
+    fActualSignalIdentifier(0),
+    fNoOfSignals(0),
+    fSignalChainList(NULL),
+    fBackgroundChain(NULL),
+    fBackgroundFile(NULL),
+    fSignalTypeList(),
     fEventTimeMin(0.),
     fEventTimeMax(0.),
     fEventTime(0.),
@@ -95,11 +106,14 @@ FairRootManager::FairRootManager()
     fMCHeader(0),
     fEvtHeader(0),
     fFileHeader(0),
+    fSignalBGN(),
     fEventTimeInMCHeader(kTRUE),
     fSBRatiobyN(kFALSE),
     fSBRatiobyT(kFALSE),
     fCurrentEntryNo(0),
     fTimeforEntryNo(0),
+    fNoOfBGEntries(0),
+    fCurrentEntry(),
     fEvtHeaderIsNew(kFALSE),
     fFillLastData(kFALSE)
 {
@@ -116,9 +130,15 @@ FairRootManager::~FairRootManager()
   fLogger->Debug(MESSAGE_ORIGIN,"Enter Destructor of FairRootManager");
 // if(fCbmout) delete fCbmout;
 // if(fCbmroot) delete fCbmroot;
-  if(fInFile) { delete fInFile; }
-  if(fInChain) { delete fInChain; }
-  if(fOutTree) { delete fOutTree; }
+  if(fInFile) {
+    delete fInFile;
+  }
+  if(fInChain) {
+    delete fInChain;
+  }
+  if(fOutTree) {
+    delete fOutTree;
+  }
   if(fOutFile) {
     fOutFile->cd();
     delete fOutFile;
@@ -165,8 +185,9 @@ void FairRootManager::AddSignalFile(TString name, UInt_t identifier )
 //_____________________________________________________________________________
 TChain* FairRootManager::GetSignalChainNo(UInt_t i)
 {
-  if(i<<fNoOfSignals) { return fSignalTypeList[i]; }
-  else {
+  if(i<<fNoOfSignals) {
+    return fSignalTypeList[i];
+  } else {
     fLogger->Info(MESSAGE_ORIGIN, "Error signal identifier %i does not exist ", i);
     return 0;
   }
@@ -211,7 +232,9 @@ void FairRootManager::AddBackgroundFile(TString name)
 
 void FairRootManager::SetInputFile(TString name)
 {
-  if(!fMixedInput) { fInputFileName=name; }
+  if(!fMixedInput) {
+    fInputFileName=name;
+  }
 }
 //_____________________________________________________________________________
 
@@ -401,8 +424,11 @@ Bool_t FairRootManager::OpenInChain()
 
 void FairRootManager::AddFile(TString name)
 {
-  if(!fMixedInput) { fInputChainList.push_back(name); }
-  else { fLogger->Fatal(MESSAGE_ORIGIN, "You cannot use this method with mixed input!"); }
+  if(!fMixedInput) {
+    fInputChainList.push_back(name);
+  } else {
+    fLogger->Fatal(MESSAGE_ORIGIN, "You cannot use this method with mixed input!");
+  }
 
 }
 //_____________________________________________________________________________
@@ -562,7 +588,9 @@ TFile* FairRootManager::OpenOutFile(TFile* f)
 TFile* FairRootManager::OpenOutFile(const char* fname)
 {
   fLogger->Debug(MESSAGE_ORIGIN,"Opening output file, %s", fname);
-  if(fOutFile) { CloseOutFile(); }
+  if(fOutFile) {
+    CloseOutFile();
+  }
   fOutFile = new TFile(fname, "recreate");
   return OpenOutFile(fOutFile);
 }
@@ -574,12 +602,18 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
     TFolder* f=0;
     if(fCbmout==0) {
       f=(TFolder*)fCbmroot->FindObjectAny(folderName);
-      if(f==0) { folder= fCbmroot->AddFolder(folderName,folderName); }
-      else { folder=f; }
+      if(f==0) {
+        folder= fCbmroot->AddFolder(folderName,folderName);
+      } else {
+        folder=f;
+      }
     } else {
       f=(TFolder*)fCbmout->FindObjectAny(folderName);
-      if(f==0) { folder= fCbmout->AddFolder(folderName,folderName); }
-      else { folder=f; }
+      if(f==0) {
+        folder= fCbmout->AddFolder(folderName,folderName);
+      } else {
+        folder=f;
+      }
     }
     obj->SetName(name);
     folder->Add(obj);
@@ -604,12 +638,18 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
     TFolder* f=0;
     if(fCbmout==0) {
       f=(TFolder*)fCbmroot->FindObjectAny(Foldername);
-      if(f==0) { folder= fCbmroot->AddFolder(Foldername,Foldername); }
-      else { folder=f; }
+      if(f==0) {
+        folder= fCbmroot->AddFolder(Foldername,Foldername);
+      } else {
+        folder=f;
+      }
     } else {
       f=(TFolder*)fCbmout->FindObjectAny(Foldername);
-      if(f==0) { folder= fCbmout->AddFolder(Foldername,Foldername); }
-      else { folder=f; }
+      if(f==0) {
+        folder= fCbmout->AddFolder(Foldername,Foldername);
+      } else {
+        folder=f;
+      }
     }
     obj->SetName(name);
     folder->Add(obj);
@@ -633,7 +673,9 @@ TClonesArray* FairRootManager::Register(TString branchName, TString className, T
       std::queue<TClonesArray*> myQueue;
       fDataContainer[branchName] = myQueue;
       outputArray = new TClonesArray(className);
-    } else { outputArray = fActiveContainer[branchName]; }
+    } else {
+      outputArray = fActiveContainer[branchName];
+    }
     Register(branchName, folderName, outputArray, toFile);
   }
   return fActiveContainer[branchName];
@@ -656,7 +698,9 @@ TClonesArray* FairRootManager::GetEmptyTClonesArray(TString branchName)
                     branchName.Data(),fActiveContainer[branchName]  , fActiveContainer[branchName]->GetEntries());
     }
     return fActiveContainer[branchName];                        // return the container
-  } else { std::cout << "-E- Branch: " << branchName << " not registered!" << std::endl; }  // error if the branch is not registered
+  } else {
+    std::cout << "-E- Branch: " << branchName << " not registered!" << std::endl;  // error if the branch is not registered
+  }
   return 0;
 }
 //_____________________________________________________________________________
@@ -771,7 +815,9 @@ void  FairRootManager::Fill()
       AssignTClonesArrays();
       ForceFill();
     }
-  } else { ForceFill(); }
+  } else {
+    ForceFill();
+  }
 }
 //_____________________________________________________________________________
 
@@ -876,7 +922,9 @@ void  FairRootManager::ReadEvent(Int_t i)
       fEvtHeader->SetMCEntryNumber(i);
       fEvtHeader->SetEventTime(GetEventTime());
       fEvtHeader->SetInputFileId(0);
-    } else { fLogger->Info(MESSAGE_ORIGIN, " No event Header was found!!!"); }
+    } else {
+      fLogger->Info(MESSAGE_ORIGIN, " No event Header was found!!!");
+    }
 
   } else {
     fLogger->Info(MESSAGE_ORIGIN,"Read mixed event number  %i", i);
@@ -968,14 +1016,18 @@ TObject* FairRootManager::GetObject(const char* BrName)
   /**Try to find the object in the folder structure, object already activated by other task or call*/
   if(fCbmout) {
     Obj = fCbmout->FindObjectAny(BrName);
-    if (Obj) { fLogger->Debug2(MESSAGE_ORIGIN, "object %s was already activated by another task", BrName); }
+    if (Obj) {
+      fLogger->Debug2(MESSAGE_ORIGIN, "object %s was already activated by another task", BrName);
+    }
   }
 
   /**if the object does not exist then it could be a memory branch */
   if(!Obj) {
     fLogger->Debug2(MESSAGE_ORIGIN, " Try to find if the object %s  is a memory branch", BrName);
     Obj=GetMemoryBranch(BrName);
-    if (Obj) { fLogger->Debug2(MESSAGE_ORIGIN, "Object  %s  is a memory branch", BrName); }
+    if (Obj) {
+      fLogger->Debug2(MESSAGE_ORIGIN, "Object  %s  is a memory branch", BrName);
+    }
   }
   /**if the object does not exist then look in the input tree */
   if(fCbmroot && !Obj) {
@@ -984,7 +1036,9 @@ TObject* FairRootManager::GetObject(const char* BrName)
     Obj=fCbmroot->FindObjectAny(BrName);
     Obj=ActivateBranch(BrName);
   }
-  if(!Obj) {  Obj=ActivateBranch(BrName); }
+  if(!Obj) {
+    Obj=ActivateBranch(BrName);
+  }
   return Obj;
 }
 
@@ -997,12 +1051,21 @@ FairGeoNode*  FairRootManager::GetGeoParameter(const char* detname, const char* 
   TString lname(detname);
   lname+="GeoPar";
   TFolder* froot =  dynamic_cast<TFolder*> (gROOT->FindObject("cbmroot"));
-  if ( froot ) { detf = dynamic_cast<TFolder*> (froot->FindObjectAny( detname )); }
-  else { fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() Main Folder not found ! "); }
-  if ( detf    ) { lgeo = dynamic_cast<TList*> (detf->FindObjectAny( lname.Data() )); }
-  else { fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() GeoPar: %s " , lname.Data() ); }
-  if ( lgeo    ) { node = dynamic_cast<FairGeoNode*> (lgeo->FindObject(gname)); }
-  else { fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() GeoList not found " ); }
+  if ( froot ) {
+    detf = dynamic_cast<TFolder*> (froot->FindObjectAny( detname ));
+  } else {
+    fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() Main Folder not found ! ");
+  }
+  if ( detf    ) {
+    lgeo = dynamic_cast<TList*> (detf->FindObjectAny( lname.Data() ));
+  } else {
+    fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() GeoPar: %s " , lname.Data() );
+  }
+  if ( lgeo    ) {
+    node = dynamic_cast<FairGeoNode*> (lgeo->FindObject(gname));
+  } else {
+    fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() GeoList not found " );
+  }
   return node;
 }
 
@@ -1127,8 +1190,11 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
     return CheckBranchSt(BrName);
   } else {
     fBrPerMapIter=fBrPerMap.find(BrName);
-    if(fBrPerMapIter!=fBrPerMap.end()) { return fBrPerMapIter->second; }
-    else { return 0; }
+    if(fBrPerMapIter!=fBrPerMap.end()) {
+      return fBrPerMapIter->second;
+    } else {
+      return 0;
+    }
   }
 }
 
@@ -1257,21 +1323,33 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
 {
   Int_t returnvalue=0;
   TObject* Obj1 =NULL;
-  if (fCbmroot) { Obj1 = fCbmroot->FindObjectAny(BrName); }
-  if(fCbmout && !Obj1) { Obj1 = fCbmout->FindObjectAny(BrName); }  //Branch in output folder
+  if (fCbmroot) {
+    Obj1 = fCbmroot->FindObjectAny(BrName);
+  }
+  if(fCbmout && !Obj1) {
+    Obj1 = fCbmout->FindObjectAny(BrName);  //Branch in output folder
+  }
   if(!Obj1) {
     for(Int_t i=0; i<fListFolder.GetEntriesFast(); i++) {
 //      cout << "Search in Folder: " << i << "  " <<  listFolder.At(i) << endl;
       TFolder* fold = dynamic_cast<TFolder*> (fListFolder.At(i));
-      if(fold!=0) { Obj1= fold->FindObjectAny(BrName); }
-      if (Obj1) { break; }
+      if(fold!=0) {
+        Obj1= fold->FindObjectAny(BrName);
+      }
+      if (Obj1) {
+        break;
+      }
     }
   }
   TObject* Obj2 =NULL;
   Obj2=GetMemoryBranch(BrName);  // Branch in Memory
-  if (Obj1!=0) { returnvalue=1; }
-  else if(Obj2!=0) { returnvalue=2; }
-  else { returnvalue= 0; }
+  if (Obj1!=0) {
+    returnvalue=1;
+  } else if(Obj2!=0) {
+    returnvalue=2;
+  } else {
+    returnvalue= 0;
+  }
 
   /**  1 : Branch is Persistance
        2 : Memory Branch
@@ -1589,7 +1667,9 @@ Double_t FairRootManager::GetEventTime()
   fLogger->Debug(MESSAGE_ORIGIN,"-- Get Event Time --");
   if(!fEvtHeaderIsNew && fEvtHeader!=0) {
     Double_t EvtTime=fEvtHeader->GetEventTime();
-    if( !(EvtTime<0)) { return   EvtTime; }
+    if( !(EvtTime<0)) {
+      return   EvtTime;
+    }
   }
 
   if (fEventTimeInMCHeader && !fMCHeader) {
@@ -1601,7 +1681,9 @@ Double_t FairRootManager::GetEventTime()
     return fEventTime;
   } else {
 
-    if(fTimeforEntryNo!=fCurrentEntryNo) { SetEventTime(); }
+    if(fTimeforEntryNo!=fCurrentEntryNo) {
+      SetEventTime();
+    }
     fLogger->Debug(MESSAGE_ORIGIN," Calculate event time from user input : %f ns", fEventTime);
     return fEventTime;
   }
@@ -1658,24 +1740,36 @@ void  FairRootManager::BGWindowWidthNo(UInt_t background, UInt_t Signalid)
 {
   fLogger->Info(MESSAGE_ORIGIN, "SetSignal rate for signal %i  : %i ", Signalid , background );
   fSBRatiobyN=kTRUE;
-  if(fSBRatiobyT) { fLogger->Fatal(MESSAGE_ORIGIN, "Signal rate already set by TIME!!"); }
+  if(fSBRatiobyT) {
+    fLogger->Fatal(MESSAGE_ORIGIN, "Signal rate already set by TIME!!");
+  }
   Double_t value=1.0/background;
-  if(background!=0) { fSignalBGN[Signalid]=value; }
-  else { fLogger->Fatal(MESSAGE_ORIGIN, "Background cannot be Zero when setting the signal rate!!"); }
+  if(background!=0) {
+    fSignalBGN[Signalid]=value;
+  } else {
+    fLogger->Fatal(MESSAGE_ORIGIN, "Background cannot be Zero when setting the signal rate!!");
+  }
 }
 //_____________________________________________________________________________
 void  FairRootManager::BGWindowWidthTime(Double_t background, UInt_t Signalid)
 {
   fSBRatiobyT=kTRUE;
-  if(fSBRatiobyN) { fLogger->Fatal(MESSAGE_ORIGIN, "Signal rate already set by NUMBER!!"); }
+  if(fSBRatiobyN) {
+    fLogger->Fatal(MESSAGE_ORIGIN, "Signal rate already set by NUMBER!!");
+  }
   if(fEventTimeInMCHeader) {
     fLogger->Fatal(MESSAGE_ORIGIN, "You have to Set the Event mean time before using SetSignalRateTime!");
   }
-  if(fEventMeanTime==0) { fLogger->Fatal(MESSAGE_ORIGIN, "Event mean time cannot be zero when using signal rate with time "); }
+  if(fEventMeanTime==0) {
+    fLogger->Fatal(MESSAGE_ORIGIN, "Event mean time cannot be zero when using signal rate with time ");
+  }
   /**convert to number of event by dividing by the mean time */
   Double_t value=fEventMeanTime/background;
-  if(background!=0) { fSignalBGN[Signalid]=value; }
-  else { fLogger->Fatal(MESSAGE_ORIGIN, "Background cannot be Zero when setting the signal rate!!"); }
+  if(background!=0) {
+    fSignalBGN[Signalid]=value;
+  } else {
+    fLogger->Fatal(MESSAGE_ORIGIN, "Background cannot be Zero when setting the signal rate!!");
+  }
 
 }
 //_____________________________________________________________________________
@@ -1685,7 +1779,9 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
 
   fLogger->Info(MESSAGE_ORIGIN, "Maximum No of Event was set manually to :  %i , we will check if there is enough entries for this!! ", EvtEnd);
   Int_t MaxEventNo=0;
-  if(EvtEnd!=0) { MaxEventNo=EvtEnd; }
+  if(EvtEnd!=0) {
+    MaxEventNo=EvtEnd;
+  }
   Int_t localMax=0;
   if(!fMixedInput) {
     MaxEventNo=fInChain->GetEntries();
@@ -1707,7 +1803,9 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
         localMax=floor(MaxS/ratio);
         fLogger->Warning(MESSAGE_ORIGIN, "No of Event in signal chain %i is not enough, the maximum event number will be reduced to : %i ", iterN->first,localMax );
       }
-      if(MaxEventNo==0 || MaxEventNo > localMax) { MaxEventNo=localMax; }
+      if(MaxEventNo==0 || MaxEventNo > localMax) {
+        MaxEventNo=localMax;
+      }
     }
     fLogger->Info(MESSAGE_ORIGIN, "Maximum No of Event will be set to :  %i ", MaxEventNo);
   }

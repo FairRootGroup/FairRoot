@@ -113,7 +113,9 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
     if(obj->InheritsFrom("FairDetector")) {
       detector=(FairDetector*)obj;
       fDetectors->Add(detector);
-      if(detector->IsActive()) { fActiveDetectors->Add(detector); }
+      if(detector->IsActive()) {
+        fActiveDetectors->Add(detector);
+      }
     }
   }
   fDetIter=fDetectors->MakeIterator();
@@ -167,6 +169,8 @@ FairMCApplication::FairMCApplication()
    fRadMap(kFALSE),
    fRadMapMan(NULL),
    fRadGridMan(NULL),
+   fEventHeader(NULL),
+   fMCEventHeader(NULL),
    fRunInfo()
 {
 // Default constructor
@@ -190,7 +194,9 @@ void FairMCApplication::RegisterStack()
 {
 // Registers stack in Root manager.
 //  cout << "FairMCApplication::RegisterStack() " << endl;
-  if(fEvGen) { fStack->Register(); }
+  if(fEvGen) {
+    fStack->Register();
+  }
 }
 //_____________________________________________________________________________
 void FairMCApplication::InitMC(const char* setup, const char* cuts)
@@ -206,10 +212,15 @@ void FairMCApplication::InitMC(const char* setup, const char* cuts)
   gMC->Init();
   gMC->BuildPhysics();
   TString MCName=gMC->GetName();
-  if     (MCName == "TGeant3" || MCName == "TGeant3TGeo") { fMcVersion = 0 ; }
-  else if(MCName == "TGeant4") { fMcVersion = 1; }
-  else if(MCName == "TFluka") { fMcVersion = 2; }
-  else { fMcVersion = 3; }  //Geane
+  if     (MCName == "TGeant3" || MCName == "TGeant3TGeo") {
+    fMcVersion = 0 ;
+  } else if(MCName == "TGeant4") {
+    fMcVersion = 1;
+  } else if(MCName == "TFluka") {
+    fMcVersion = 2;
+  } else {
+    fMcVersion = 3;  //Geane
+  }
   fTrajFilter = FairTrajFilter::Instance();
 
   fLogger->Info(MESSAGE_ORIGIN, "Monte carlo Engine Initialisation  with : %s  ", MCName.Data());
@@ -238,7 +249,9 @@ void FairMCApplication::FinishRun()
     TObject* obj=0;
     while((obj=fActDetIter->Next())) {
       detector = dynamic_cast<FairDetector*>(obj);
-      if (detector) { detector->FinishRun(); }
+      if (detector) {
+        detector->FinishRun();
+      }
     }
   }
   fFairTaskList->FinishTask();
@@ -291,7 +304,9 @@ void FairMCApplication::FinishRun()
     }
   }
   gDirectory->cd("..");
-  if (!fRadGridMan) { fRootManager->Write(); }
+  if (!fRadGridMan) {
+    fRootManager->Write();
+  }
 
   //  fRootManager->Write();
 
@@ -307,7 +322,9 @@ void FairMCApplication::BeginEvent()
     TObject* obj=0;
     while((obj=fActDetIter->Next())) {
       detector = dynamic_cast<FairDetector*>(obj);
-      if (detector) { detector->BeginEvent(); }
+      if (detector) {
+        detector->BeginEvent();
+      }
     }
   }
 
@@ -324,7 +341,9 @@ void FairMCApplication::BeginPrimary()
     TObject* obj=0;
     while((obj=fActDetIter->Next())) {
       detector = dynamic_cast<FairDetector*>(obj);
-      if( detector ) { detector->BeginPrimary(); }
+      if( detector ) {
+        detector->BeginPrimary();
+      }
     }
   }
 }
@@ -341,7 +360,9 @@ void FairMCApplication::PreTrack()
     TObject* obj=0;
     while((obj=fActDetIter->Next())) {
       detector = dynamic_cast<FairDetector*>(obj);
-      if (detector) { detector->PreTrack(); }
+      if (detector) {
+        detector->PreTrack();
+      }
     }
   }
   fTrajAccepted=kFALSE;
@@ -386,7 +407,9 @@ void FairMCApplication::Stepping()
       fCopyNo=fDisVol->getCopyNo();
       if(copyNo==fCopyNo) {
         fDisDet=dynamic_cast<FairDetector*> (fDisVol->GetModule());
-        if (fDisDet) { fDisDet->ProcessHits(fDisVol); }
+        if (fDisDet) {
+          fDisDet->ProcessHits(fDisVol);
+        }
         InMap=kTRUE;
         break;
       }
@@ -400,7 +423,9 @@ void FairMCApplication::Stepping()
       fNewV->setCopyNo(copyNo);
       fVolMap.insert(pair<Int_t, FairVolume* >(id, fNewV));
       fDisDet=dynamic_cast<FairDetector*> (fDisVol->GetModule());
-      if ( fDisDet) { fDisDet->ProcessHits(fNewV); }
+      if ( fDisDet) {
+        fDisDet->ProcessHits(fNewV);
+      }
     }
   }
   if(fTrajAccepted) {
@@ -434,7 +459,9 @@ void FairMCApplication::PostTrack()
   TObject* obj=0;
   while((obj=fActDetIter->Next())) {
     detector = dynamic_cast<FairDetector*>(obj);
-    if (detector ) { detector->PostTrack(); }
+    if (detector ) {
+      detector->PostTrack();
+    }
   }
 }
 
@@ -449,7 +476,9 @@ void FairMCApplication::FinishPrimary()
     TObject* obj=0;
     while((obj=fActDetIter->Next())) {
       detector = dynamic_cast<FairDetector*>(obj);
-      if (detector) { detector->FinishPrimary(); }
+      if (detector) {
+        detector->FinishPrimary();
+      }
     }
   }
 }
@@ -483,7 +512,9 @@ void FairMCApplication::FinishEvent()
 
   while((obj=fActDetIter->Next())) {
     detector = dynamic_cast<FairDetector*>(obj);
-    if (detector) { detector->FinishEvent(); }
+    if (detector) {
+      detector->FinishEvent();
+    }
   }
 
   fRootManager->Fill();
@@ -492,7 +523,9 @@ void FairMCApplication::FinishEvent()
   obj=NULL;
   while((obj=fActDetIter->Next())) {
     detector = dynamic_cast<FairDetector*>(obj);
-    if (detector) { detector->EndOfEvent(); }
+    if (detector) {
+      detector->EndOfEvent();
+    }
   }
   fStack->Reset();
   if(NULL != fTrajFilter) {
@@ -500,8 +533,12 @@ void FairMCApplication::FinishEvent()
     TObjArray* fListOfTracks=gGeoManager->GetListOfTracks();
     fListOfTracks->Delete();
   }
-  if(NULL !=fRadLenMan) { fRadLenMan->Reset(); }
-  if(NULL !=fRadMapMan) { fRadMapMan->Reset(); }
+  if(NULL !=fRadLenMan) {
+    fRadLenMan->Reset();
+  }
+  if(NULL !=fRadMapMan) {
+    fRadMapMan->Reset();
+  }
 
   // Store information about runtime for one event and memory consuption
   // for later usage.
@@ -563,7 +600,9 @@ void FairMCApplication::ConstructOpGeometry()
         Mid=Med->GetId();
       } else {
         Mid=medium->getMediumIndex();
-        if(Mid<=0) { continue; }
+        if(Mid<=0) {
+          continue;
+        }
       }
       Double_t ppckov[NK], absco[NK], effic[NK],rindex[NK];
       for (Int_t i=0; i<NK; i++) {
@@ -597,10 +636,14 @@ void FairMCApplication::ConstructGeometry()
     Mod->ConstructGeometry();
     ModId=Mod->GetModId();
     NoOfVolumes=gGeoManager->GetListOfVolumes()->GetEntriesFast();
-    for (Int_t n=NoOfVolumesBefore; n <= NoOfVolumes; n++) { fModVolMap.insert(pair<Int_t, Int_t >(n,ModId)); }
+    for (Int_t n=NoOfVolumesBefore; n <= NoOfVolumes; n++) {
+      fModVolMap.insert(pair<Int_t, Int_t >(n,ModId));
+    }
   }
   fSenVolumes=FairModule::svList;
-  if(fSenVolumes) { fNoSenVolumes=fSenVolumes->GetEntries(); }
+  if(fSenVolumes) {
+    fNoSenVolumes=fSenVolumes->GetEntries();
+  }
   if (gGeoManager) {
     //  cout << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<<endl;
     gGeoManager->CloseGeometry();   // close geometry
@@ -645,8 +688,11 @@ void FairMCApplication::InitGeometry()
   Int_t id=0;
   fModIter->Reset();
   FairDetector* detector=NULL;
-  if(fEvGen!=0 && fStack!=0) { fStack->Register(); }
-  else { fLogger->Warning(MESSAGE_ORIGIN, "Stack is not registerd "); }
+  if(fEvGen!=0 && fStack!=0) {
+    fStack->Register();
+  } else {
+    fLogger->Warning(MESSAGE_ORIGIN, "Stack is not registerd ");
+  }
   /** Initialize the event generator */
   // if(fEvGen)fEvGen->Init();
   /** Initialize the detectors.    */
@@ -659,7 +705,9 @@ void FairMCApplication::InitGeometry()
   /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
   /// There is always a Main Task  !
   /// so .. always a InitTasks() is called <D.B>
-  if (fFairTaskList) { InitTasks(); }
+  if (fFairTaskList) {
+    InitTasks();
+  }
 
   // store the EventHeader Info
   // Get and register EventHeader
@@ -672,14 +720,26 @@ void FairMCApplication::InitGeometry()
   fMCEventHeader->SetRunID(runId);
   fMCEventHeader->Register();
 
-  if(NULL !=fRadGridMan) { fRadGridMan->Init(); }
+  if(NULL !=fRadGridMan) {
+    fRadGridMan->Init();
+  }
 
-  if(fEvGen) { fEvGen->SetEvent(fMCEventHeader); }
+  if(fEvGen) {
+    fEvGen->SetEvent(fMCEventHeader);
+  }
   fTrajFilter = FairTrajFilter::Instance();
-  if(NULL != fTrajFilter ) { fTrajFilter->Init(); }
-  if(NULL !=fRadLenMan) { fRadLenMan->Init(); }
-  if(NULL !=fRadMapMan) { fRadMapMan->Init(); }
-  if(NULL !=fRadGridMan) { fRadGridMan->Init(); }
+  if(NULL != fTrajFilter ) {
+    fTrajFilter->Init();
+  }
+  if(NULL !=fRadLenMan) {
+    fRadLenMan->Init();
+  }
+  if(NULL !=fRadMapMan) {
+    fRadMapMan->Init();
+  }
+  if(NULL !=fRadGridMan) {
+    fRadGridMan->Init();
+  }
 
 
   /// save Geo Params in Output file
@@ -695,7 +755,9 @@ void FairMCApplication::InitGeometry()
       TGeoNode* fN=0;
       TGeoVolume* v=gGeoManager->GetVolume(fv->GetName());
       TObjArray* fNs=0;
-      if(v) { fNs=v->GetNodes(); }
+      if(v) {
+        fNs=v->GetNodes();
+      }
       if(fNs) {
         for(Int_t k=0; k<fNs->GetEntriesFast(); k++) {
           fN=(TGeoNode*)fNs->At(k);
@@ -755,13 +817,17 @@ void  FairMCApplication::AddIons()
       gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
                      ion->GetExcEnergy(),ion->GetMass());
       //Add Ion to gGeoManager visualization
-      if(gGeoManager) { gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() ); }
+      if(gGeoManager) {
+        gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() );
+      }
       fLogger->Info(MESSAGE_ORIGIN, "Add Ion:  %s  with PDG  %i ", ion->GetName(), TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode());
     }
   }
   delete   Iter;
   /** Initialize the event generator */
-  if(fEvGen) { fEvGen->Init(); }
+  if(fEvGen) {
+    fEvGen->Init();
+  }
 }
 #else
 void  FairMCApplication::AddIons()
@@ -778,14 +844,18 @@ void  FairMCApplication::AddIons()
       gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
                      ion->GetExcEnergy(),ion->GetMass());
       //Add Ion to gGeoManager visualization
-      if(gGeoManager) { gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() ); }
+      if(gGeoManager) {
+        gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() );
+      }
       fLogger->Info(MESSAGE_ORIGIN, "Add Ion:  %s  with PDG  %i ", ion->GetName(), TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode());
     }
   }
   delete   Iter;
 
   /** Initialize the event generator */
-  if(fEvGen) { fEvGen->Init(); }
+  if(fEvGen) {
+    fEvGen->Init();
+  }
 }
 #endif
 
@@ -844,7 +914,9 @@ void  FairMCApplication::AddParticles()
                           particle->IsStable()             // Bool_t stable
                          );
       //Add Ion to gGeoManager visualization
-      if(gGeoManager) { gGeoManager->SetPdgName(particle->GetPDG(),particle->GetName() ); }
+      if(gGeoManager) {
+        gGeoManager->SetPdgName(particle->GetPDG(),particle->GetName() );
+      }
     }
   }
   delete   parIter;
@@ -863,7 +935,9 @@ void FairMCApplication::AddDecayModes()
   TString config_dir= getenv("CONFIG_DIR");
   Bool_t AbsPath=kFALSE;
 
-  if (!config_dir.EndsWith("/")) { config_dir+="/"; }
+  if (!config_dir.EndsWith("/")) {
+    config_dir+="/";
+  }
   // set Pythia as external decayer
 
   if(fPythiaDecayer) {
@@ -872,21 +946,28 @@ void FairMCApplication::AddDecayModes()
       decayConfig="DecayConfig.C";
       fPythiaDecayerConfig= decayConfig;
     } else {
-      if (fPythiaDecayerConfig.Contains("/")) { AbsPath=kTRUE; }
+      if (fPythiaDecayerConfig.Contains("/")) {
+        AbsPath=kTRUE;
+      }
       decayConfig=fPythiaDecayerConfig;
     }
 
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), decayConfig)) != TString("")) {
       cout << "---User path for Configuration (DecayConfig.C) is used : " <<  config_dir.Data() << endl;
     } else {
-      if(AbsPath) { decayConfig=   fPythiaDecayerConfig; }
-      else { decayConfig=work_config+ fPythiaDecayerConfig ; }
+      if(AbsPath) {
+        decayConfig=   fPythiaDecayerConfig;
+      } else {
+        decayConfig=work_config+ fPythiaDecayerConfig ;
+      }
     }
     // Add decay modes using an external configuration script
     cout << "External Decay Modes with script \n "<<  decayConfig.Data() << endl;
     // Load configuration script and execute it
     Int_t pyt= gROOT->LoadMacro(decayConfig.Data());
-    if(pyt==0) { gInterpreter->ProcessLine("DecayConfig()"); }
+    if(pyt==0) {
+      gInterpreter->ProcessLine("DecayConfig()");
+    }
   }
   // set user defined phase space decay for particles (ions)
   AbsPath=kFALSE;
@@ -896,7 +977,9 @@ void FairMCApplication::AddDecayModes()
       Userdecay="UserDecay.C";
       fUserDecayConfig =Userdecay;
     } else {
-      if(fUserDecayConfig.Contains("/")) { AbsPath=kTRUE; }
+      if(fUserDecayConfig.Contains("/")) {
+        AbsPath=kTRUE;
+      }
       Userdecay=  fUserDecayConfig;
     }
 
@@ -904,12 +987,17 @@ void FairMCApplication::AddDecayModes()
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), Userdecay)) != TString("")) {
       cout << "---User path for Configuration (UserDecay.C) is used : " <<  config_dir.Data() << endl;
     } else {
-      if(AbsPath) { Userdecay=fUserDecayConfig; }
-      else { Userdecay=work_config+fUserDecayConfig; }
+      if(AbsPath) {
+        Userdecay=fUserDecayConfig;
+      } else {
+        Userdecay=work_config+fUserDecayConfig;
+      }
     }
     cout << "User Decay Modes with script \n "<<  Userdecay.Data() << endl;
     Int_t dec= gROOT->LoadMacro(Userdecay.Data());
-    if(dec==0) { gInterpreter->ProcessLine("UserDecayConfig()"); }
+    if(dec==0) {
+      gInterpreter->ProcessLine("UserDecayConfig()");
+    }
   }
 }
 //_____________________________________________________________________________

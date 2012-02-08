@@ -48,6 +48,9 @@ class FairRunInfo : public TObject
 
     void WriteHistosToFile(TList* histoList);
 
+    FairRunInfo(const FairRunInfo&);
+    FairRunInfo& operator=(const FairRunInfo&);
+
     ClassDef(FairRunInfo,1)
 
 };

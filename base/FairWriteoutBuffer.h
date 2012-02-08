@@ -36,7 +36,8 @@
 class FairWriteoutBuffer: public TObject
 {
   public:
-    FairWriteoutBuffer():fTreeSave(false), fActivateBuffering(kFALSE), fVerbose(0) {};
+    FairWriteoutBuffer() : TObject(), fDeadTime_map(), fBranchName(), fClassName(),
+      fTreeSave(false), fActivateBuffering(kFALSE), fVerbose(0) {};
     FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance);
     virtual ~FairWriteoutBuffer() {};
 

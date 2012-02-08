@@ -20,6 +20,7 @@ FairRunInfo::FairRunInfo()
    fMemInfo(),
    fProcInfo(),
    fTimeDiff(),
+   fTime(),
    fResidentMemory(),
    fVirtualMemory(),
    fLogger(FairLogger::GetLogger())
