@@ -15,15 +15,12 @@
 #ifndef FAIRTASK_H
 #define FAIRTASK_H
 
-
-#include "TTask.h"
+#include "FairLogger.h"
 #include "FairRootManager.h"
 
-class FairLogger;
+#include "TTask.h"
 
 enum InitStatus {kSUCCESS, kERROR, kFATAL};
-
-
 
 class FairTask : public TTask
 {
