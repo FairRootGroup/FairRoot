@@ -15,6 +15,9 @@
 #include "TString.h"
 #include "TVirtualMCStack.h"
 #include "TLorentzVector.h"
+#include "TDatabasePDG.h"
+#include "TParticlePDG.h"
+
 
 #include <iostream>
 #include <cstring>
@@ -22,7 +25,7 @@
 using std::cout;
 using std::endl;
 
-const Double_t kProtonMass = 0.938271998;
+//const Double_t kProtonMass = 0.938271998;
 
 
 // -----   Default constructor   ------------------------------------------
@@ -131,6 +134,10 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   fgets(read, 200, fInputFile);
 
   // ---> Calculate beta and gamma for Lorentztransformation
+  TDatabasePDG* pdgDB = TDatabasePDG::Instance();
+  TParticlePDG* kProton = pdgDB->GetParticle(2212);
+  Double_t kProtonMass=kProton->Mass();
+
   Double_t eBeam   = ekin + kProtonMass;
   Double_t pBeam   = TMath::Sqrt(eBeam*eBeam - kProtonMass*kProtonMass);
   Double_t betaCM  = pBeam / (eBeam + kProtonMass);

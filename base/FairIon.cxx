@@ -4,11 +4,12 @@
 #include "FairIon.h"
 
 #include <iostream>
+#include "TDatabasePDG.h"
+#include "TParticlePDG.h"
 
 using std::cout;
 using std::endl;
 
-const Double_t kProtonMass = 0.92827231;
 
 
 // -----   Default constructor   -------------------------------------------
@@ -35,6 +36,11 @@ FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e,
     fExcEnergy(e),
     fMass(0)
 {
+
+  TDatabasePDG* pdgDB = TDatabasePDG::Instance();
+  TParticlePDG* kProton = pdgDB->GetParticle(2212);
+  Double_t kProtonMass=kProton->Mass();
+
   if (mass == 0.) { fMass = kProtonMass * Double_t(a); }
   else { fMass = mass; }
   cout << "-I- FairIon: New ion " << name << ", z = " <<  z << ", a = "
