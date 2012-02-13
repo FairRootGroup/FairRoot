@@ -41,7 +41,7 @@ void FairRingSorter::SetLowerBound(double timestampOfHitToWrite)
 {
   int index = CalcIndex(timestampOfHitToWrite + fCellWidth);
 
-  int cellValue = timestampOfHitToWrite / fCellWidth;
+  int cellValue = (int)(timestampOfHitToWrite / fCellWidth);
 
   fLowerBoundPointer.second = ((cellValue + 1) * fCellWidth) - GetBufferSize();
   fLowerBoundPointer.first = index;
@@ -90,7 +90,7 @@ void FairRingSorter::WriteOutElement(int index)
 
 int FairRingSorter::CalcIndex(double val)
 {
-  int index = val / fCellWidth;
+  int index = (int)(val / fCellWidth);
   while (index >= fRingBuffer.size()) {
     index -= fRingBuffer.size();
   }
