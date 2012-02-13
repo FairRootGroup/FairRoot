@@ -20,20 +20,23 @@ class FairRingSorterTask : public FairTask
   public:
 
     /** Default constructor **/
-    FairRingSorterTask():FairTask("SorterTask"), fNumberOfCells(1000), fWidthOfCells(10),fEntryNr(0) {
-      SetVerbose(3);
-      SetPersistance();
+    FairRingSorterTask():
+      FairTask("SorterTask"), fSorter(0), fPersistance(kTRUE), fInputBranch(), fOutputBranch(), fFolder(), fInputArray(0),
+      fOutputArray(0), fNumberOfCells(1000), fWidthOfCells(10), fEntryNr(0) {
+      SetVerbose(0);
     }
 
     /** Named constructor **/
     FairRingSorterTask(const char* name):
-      FairTask(name), fNumberOfCells(1000), fWidthOfCells(10), fEntryNr(0) {
-      SetPersistance();
-    };
+      FairTask(name), fSorter(0), fPersistance(kTRUE), fInputBranch(), fOutputBranch(), fFolder(), fInputArray(0),
+      fOutputArray(0), fNumberOfCells(1000), fWidthOfCells(10), fEntryNr(0) {
+      SetVerbose(0);
+    }
 
     FairRingSorterTask(Int_t numberOfCells, Double_t widthOfCells, TString inputBranch, TString outputBranch, TString folderName):
-      FairTask("Sorter"), fNumberOfCells(numberOfCells), fWidthOfCells(widthOfCells), fInputBranch(inputBranch), fOutputBranch(outputBranch), fFolder(folderName) {
-      SetPersistance();
+      FairTask("Sorter"), fSorter(0), fPersistance(kTRUE), fInputBranch(inputBranch), fOutputBranch(outputBranch), fFolder(folderName), fInputArray(0),
+      fOutputArray(0), fNumberOfCells(numberOfCells), fWidthOfCells(widthOfCells), fEntryNr(0) {
+      SetVerbose(0);
     }
 
     /** Destructor **/
@@ -41,6 +44,29 @@ class FairRingSorterTask : public FairTask
       if (fSorter!= 0) { delete fSorter; }
     }
 
+    /** Copy Concstructor **/
+    FairRingSorterTask(const FairRingSorterTask& right):
+      fPersistance(right.fPersistance), fNumberOfCells(right.fNumberOfCells), fWidthOfCells(right.fWidthOfCells), fInputBranch(right.fInputBranch),
+      fInputArray(right.fInputArray), fOutputBranch(right.fOutputBranch), fFolder(right.fFolder), fOutputArray(right.fOutputArray), fEntryNr(right.fEntryNr) {
+      fSorter = right.InitSorter(fNumberOfCells, fWidthOfCells);
+    }
+
+    /** Assignment operator **/
+    virtual FairRingSorterTask& operator= (const FairRingSorterTask& right) {
+      if (this != &right) {
+        fPersistance = right.fPersistance;
+        fNumberOfCells = right.fNumberOfCells;
+        fWidthOfCells = right.fWidthOfCells;
+        fInputBranch = right.fInputBranch;
+        fInputArray = right.fInputArray;
+        fOutputBranch = right.fOutputBranch;
+        fFolder = right.fFolder;
+        fOutputArray = right.fOutputArray;
+        fEntryNr = right.fEntryNr;
+
+        fSorter = right.InitSorter(fNumberOfCells, fWidthOfCells);
+      }
+    }
 
     /** Virtual method Init **/
     virtual InitStatus Init();
@@ -57,7 +83,7 @@ class FairRingSorterTask : public FairTask
     Bool_t GetPersistance() {return fPersistance;};
 
     virtual void AddNewDataToTClonesArray(FairTimeStamp* data) = 0;
-    virtual FairRingSorter* InitSorter(Int_t numberOfCells, Double_t widthOfCells) = 0;
+    virtual FairRingSorter* InitSorter(Int_t numberOfCells, Double_t widthOfCells) const  = 0;
 
   protected:
 
