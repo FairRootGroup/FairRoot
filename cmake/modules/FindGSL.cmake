@@ -60,9 +60,6 @@ if( WIN32 AND NOT CYGWIN AND NOT MSYS )
 else( WIN32 AND NOT CYGWIN AND NOT MSYS )
   if( UNIX OR MSYS )
     find_program( GSL_CONFIG_EXECUTABLE gsl-config
-      /usr/bin/
-      /usr/local/bin
-      $ENV{GSL_DIR}/bin
       ${GSL_DIR}/bin
     )
  
