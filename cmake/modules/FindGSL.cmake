@@ -16,8 +16,9 @@
 set( GSL_FOUND OFF )
 set( GSL_CBLAS_FOUND OFF )
 
-if(GSL_INCLUDE_DIR OR GSL_CONFIG_EXECUTABLE)
-  set(GSL_FIND_QUIETLY 1)
+if(GSL_INCLUDE_DIR OR  GSL_CONFIG_EXECUTABLE)
+  Unset(GSL_INCLUDE_DIR)
+  Unset(GSL_CONFIG_EXECUTABLE)
 endif()
 
 # Windows, but not for Cygwin and MSys where gsl-config is available
@@ -61,8 +62,9 @@ else( WIN32 AND NOT CYGWIN AND NOT MSYS )
   if( UNIX OR MSYS )
     find_program( GSL_CONFIG_EXECUTABLE gsl-config
       ${GSL_DIR}/bin
+      NO_DEFAULT_PATH
     )
- 
+
     if( GSL_CONFIG_EXECUTABLE )
       set( GSL_FOUND ON )
  
