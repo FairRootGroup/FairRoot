@@ -20,7 +20,9 @@
 class FairRingSorter : public TObject
 {
   public:
-    FairRingSorter(int size = 100, double width = 10):fRingBuffer(size), fOutputData(), fLowerBoundPointer(0,0), fCellWidth(width), fVerbose(0) {
+    FairRingSorter(int size = 100, double width = 10)
+      : TObject(), fRingBuffer(size), fOutputData(), fLowerBoundPointer(0,0),
+        fCellWidth(width), fVerbose(0) {
     }
 
     virtual ~FairRingSorter() {};

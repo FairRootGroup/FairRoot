@@ -3,19 +3,25 @@
 // -----   Default constructor   -------------------------------------------
 FairTimeStamp::FairTimeStamp()
   : FairMultiLinkedData(),
-    fTimeStamp(-1), fTimeStampError(-1)
+    fTimeStamp(-1),
+    fTimeStampError(-1),
+    fEntryNr()
 {
 }
 // -----   Standard constructor   ------------------------------------------
 FairTimeStamp::FairTimeStamp(Double_t time)
-  :FairMultiLinkedData(),
-   fTimeStamp(time), fTimeStampError(-1)
+  : FairMultiLinkedData(),
+    fTimeStamp(time),
+    fTimeStampError(-1),
+    fEntryNr()
 {
 }
 
 FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
-  :FairMultiLinkedData(),
-   fTimeStamp(time), fTimeStampError(timeerror)
+  : FairMultiLinkedData(),
+    fTimeStamp(time),
+    fTimeStampError(timeerror),
+    fEntryNr()
 {
 }
 // -----   Destructor   ----------------------------------------------------

@@ -158,7 +158,7 @@ class FairRootManager : public TObject
      *@param Status:  True: The header was creatged in this session and has to be filled
               FALSE: We use an existing header from previous data level
      */
-    Bool_t            SetEvtHeaderNew(Bool_t Status) {fEvtHeaderIsNew = Status;}
+    void                SetEvtHeaderNew(Bool_t Status) {fEvtHeaderIsNew = Status;}
 
 
     /**Set the branch name list*/
