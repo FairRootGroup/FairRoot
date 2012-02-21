@@ -1,0 +1,44 @@
+eventDisplay()
+{
+  // Load basic libraries
+  gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
+  basiclibs();
+  gSystem->Load("libGeoBase");
+  gSystem->Load("libParBase");
+  gSystem->Load("libBase");
+  gSystem->Load("libCbmBase");
+  gSystem->Load("libCbmData");
+  gSystem->Load("libGen");
+  gSystem->Load("libPassive");
+  gSystem->Load("libCbmRutherford");
+  gSystem->Load("libEve");
+  gSystem->Load("libEventDisplay");
+  gSystem->Load("libCbmDisplay");
+
+                                     
+  // -----   Reconstruction run   -------------------------------------------
+  FairRunAna *fRun= new FairRunAna();
+  fRun->SetInputFile("data/test.mc.root");
+  
+  fRun->SetOutputFile("data/test.root");
+
+  // -----  Parameter database   --------------------------------------------
+  FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
+
+  FairParRootFileIo* parIo1 = new FairParRootFileIo();
+  parIo1->open("data/params.root");
+  rtdb->setFirstInput(parIo1);
+  // ------------------------------------------------------------------------
+
+  FairEventManager   *fMan      = new FairEventManager   ();
+  FairMCTracks       *Track     = new FairMCTracks       ("Monte-Carlo Tracks");
+  FairMCPointDraw    *RutherfordPoints = new FairMCPointDraw    ("CbmRutherfordPoint",kBlue , kFullSquare);
+                                                     
+  fMan->AddTask(Track);
+  fMan->AddTask(RutherfordPoints);
+    
+  fMan->Init();                    
+
+  // Automatic visible depth is disabled
+  //  gGeoManager->SetVisLevel(3);
+}

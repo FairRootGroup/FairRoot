@@ -9,6 +9,7 @@
 #ifndef FAIRDETECTORLIST_H
 #define FAIRDETECTORLIST_H 1
 
-enum DetectorId {kREF, kMVD, kSTS, kRICH, kMUCH, kTRD, kTOF, kECAL, kZDC, kSTT,kTutDet};
+// kSTOPHERE is needed for iteration over the enum. All detectors have to be put before.
+enum DetectorId {kREF, kFairRutherford, kTutDet, kSTOPHERE};
 
 #endif

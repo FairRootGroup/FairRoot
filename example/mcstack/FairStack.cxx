@@ -219,7 +219,7 @@ void FairStack::FillTrackArray()
         new( (*fTracks)[fNTracks]) FairMCTrack(GetParticle(iPart));
       fIndexMap[iPart] = fNTracks;
       // --> Set the number of points in the detectors for this track
-      for (Int_t iDet=kREF; iDet<=kZDC; iDet++) {
+      for (Int_t iDet=kREF; iDet<kSTOPHERE; iDet++) {
         pair<Int_t, Int_t> a(iPart, iDet);
         track->SetNPoints(iDet, fPointsMap[a]);
       }
@@ -416,7 +416,7 @@ void FairStack::SelectTracks()
 
     // --> Calculate number of points
     Int_t nPoints = 0;
-    for (Int_t iDet=kMVD; iDet<=kZDC; iDet++) {
+    for (Int_t iDet=kREF; iDet<kSTOPHERE; iDet++) {
       pair<Int_t, Int_t> a(i, iDet);
       if ( fPointsMap.find(a) != fPointsMap.end() ) {
         nPoints += fPointsMap[a];
