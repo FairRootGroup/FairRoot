@@ -109,10 +109,7 @@ add_subdirectory (geane)
 add_subdirectory (trackbase)
 #add_subdirectory (cuda)
 add_subdirectory (eventdisplay)
-add_subdirectory (example/Tutorial1/src)
-add_subdirectory (example/Tutorial2/src)
-add_subdirectory (example/passive)
-add_subdirectory (example/mcstack)
+add_subdirectory (example)
 add_subdirectory (MbsAPI)
 
 
