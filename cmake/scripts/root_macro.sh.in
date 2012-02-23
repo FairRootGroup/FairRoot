@@ -15,7 +15,9 @@ export G4NEUTRONXSDATA="@G4NEUTRONXSDATA@"
 export G4PIIDATA="@G4PIIDATA@"
 export G4RADIOACTIVEDATA="@G4RADIOACTIVEDATA@"
 export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
-. @GEANT4_DIR@/env.sh
+if [ -e @GEANT4_DIR@/env.sh ]; then 
+  . @GEANT4_DIR@/env.sh
+fi
 
 cd @new_path@
 
