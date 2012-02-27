@@ -1,19 +1,18 @@
 eventDisplay()
 {
   // Load basic libraries
-  gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
+  gROOT->LoadMacro("gconfig/basiclibs.C");
   basiclibs();
+  gSystem->Load("libFairTools");
   gSystem->Load("libGeoBase");
   gSystem->Load("libParBase");
   gSystem->Load("libBase");
-  gSystem->Load("libCbmBase");
-  gSystem->Load("libCbmData");
   gSystem->Load("libGen");
   gSystem->Load("libPassive");
-  gSystem->Load("libCbmRutherford");
+  gSystem->Load("libFairRutherford");
   gSystem->Load("libEve");
   gSystem->Load("libEventDisplay");
-  gSystem->Load("libCbmDisplay");
+
 
                                      
   // -----   Reconstruction run   -------------------------------------------
@@ -32,7 +31,7 @@ eventDisplay()
 
   FairEventManager   *fMan      = new FairEventManager   ();
   FairMCTracks       *Track     = new FairMCTracks       ("Monte-Carlo Tracks");
-  FairMCPointDraw    *RutherfordPoints = new FairMCPointDraw    ("CbmRutherfordPoint",kBlue , kFullSquare);
+  FairMCPointDraw    *RutherfordPoints = new FairMCPointDraw    ("FairRutherfordPoint",kBlue , kFullSquare);
                                                      
   fMan->AddTask(Track);
   fMan->AddTask(RutherfordPoints);
