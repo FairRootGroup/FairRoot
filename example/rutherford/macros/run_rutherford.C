@@ -7,7 +7,7 @@ void run_rutherford(Int_t nEvents = 10)
   TString tut_geomdir = dir + "/example/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_configdir = tutdir + "/gconfig";
+  TString tut_configdir = dir + "/example/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   TString outDir  = "data";
@@ -72,23 +72,23 @@ void run_rutherford(Int_t nEvents = 10)
 
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-  run->SetGenerator(primGen);
+ // run->SetGenerator(primGen);
 
 
   // Ion Generator
-  FairIonGenerator *fIongen= new FairIonGenerator(2, 4, 2, 
-						  1, 0., 0., 1./20, 0., 0., -1.); 
+                                               
+  FairIonGenerator *fIongen= new FairIonGenerator(2, 4, 2, 1, 0., 0., 1./20., 0., 0., -1.); 
   primGen->AddGenerator(fIongen);
 
-/*
-  FairBoxGenerator* boxGen1 = new FairBoxGenerator(47, 1);
+
+  FairBoxGenerator* boxGen1 = new FairBoxGenerator(2212, 1);
   boxGen1->SetPRange(.005,.005);
   boxGen1->SetPhiRange(0.,0.);
   boxGen1->SetThetaRange(0.,0.);
   boxGen1->SetXYZ(0.,0.,-3.);
   boxGen1->Init();
   primGen->AddGenerator(boxGen1);
-*/
+
 
   // ------------------------------------------------------------------------
 
@@ -104,7 +104,7 @@ void run_rutherford(Int_t nEvents = 10)
   // that the file size of the output file depends on these cuts
 
   FairTrajFilter* trajFilter = FairTrajFilter::Instance();
-  trajFilter->SetStepSizeCut(0.01); // 1 cm
+ // trajFilter->SetStepSizeCut(0.01); // 1 cm
   // trajFilter->SetVertexCut(-2000., -2000., 4., 2000., 2000., 100.);
   // trajFilter->SetMomentumCutP(10e-3); // p_lab > 10 MeV
   // trajFilter->SetEnergyCut(0., 1.02); // 0 < Etot < 1.04 GeV

@@ -1,8 +1,12 @@
 eventDisplay()
 {
-  // Load basic libraries
-  gROOT->LoadMacro("gconfig/basiclibs.C");
+  // Load basic libraries 
+  TString dir = gSystem->Getenv("VMCWORKDIR");
+  TString tut_configdir = dir + "/example/gconfig";
+  gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
+  gROOT->LoadMacro("$CONFIG_DIR/basiclibs.C");
   basiclibs();
+  
   gSystem->Load("libFairTools");
   gSystem->Load("libGeoBase");
   gSystem->Load("libParBase");
