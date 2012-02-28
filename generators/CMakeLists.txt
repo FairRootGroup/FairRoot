@@ -62,7 +62,7 @@ set(GENERATORS_SRCS ${GENERATORS_SRCS}  ${GENERATORS_DICTIONARY})
 
 
 add_library(Gen SHARED ${GENERATORS_SRCS})
-target_link_libraries(Gen ${ROOT_LIBRARIES} Pluto)
+target_link_libraries(Gen ${ROOT_LIBRARIES})
 set_target_properties(Gen PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ################ install ###################
