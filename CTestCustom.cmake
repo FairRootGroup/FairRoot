@@ -75,6 +75,7 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "/include/TMemberInspector.h:"
         "/include/TObjArray.h:"
         "/include/TRefArray.h:"
+        "/include/TString.h:"
         "/include/Minuit2/BasicFunctionGradient.h:"
         "/include/Minuit2/MnUserParameterState.h:"
         "/include/Minuit2/StackAllocator.h:"
@@ -109,3 +110,8 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
 # -----------------------------------------------------------
 set(CTEST_CUSTOM_WARNING_MATCH	${CTEST_CUSTOM_WARNING_MATCH}
 	)
+
+Set (CTEST_CUSTOM_COVERAGE_EXCLUDE
+     "Dict.h"
+     "Dict.cxx"
+    )
