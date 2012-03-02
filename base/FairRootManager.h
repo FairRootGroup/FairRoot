@@ -159,7 +159,7 @@ class FairRootManager : public TObject
               FALSE: We use an existing header from previous data level
      */
     void                SetEvtHeaderNew(Bool_t Status) {fEvtHeaderIsNew = Status;}
-
+    Bool_t              IsEvtHeaderNew() {return fEvtHeaderIsNew;}
 
     /**Set the branch name list*/
     void                SetBranchNameList(TList* list);

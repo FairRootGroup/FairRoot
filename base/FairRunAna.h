@@ -17,6 +17,7 @@
 
 class FairRuntimeDb;
 class FairEventHeader;
+class FairMCEventHeader;
 class FairField;
 class TFile;
 class FairLogger;
@@ -117,6 +118,7 @@ class FairRunAna : public FairRun
     static FairRunAna*                      fgRinstance;
     Bool_t                                  fLoadGeo;
     FairEventHeader*                        fEvtHeader;//!
+    FairMCEventHeader*                      fMCHeader;//!
     /** true for static initialisation of parameters */
     Bool_t                                  fStatic;//!
     FairField*                              fField;

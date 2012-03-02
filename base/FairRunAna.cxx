@@ -49,6 +49,7 @@ FairRunAna::FairRunAna()
    fInputGeoFile(0),
    fLoadGeo( kFALSE),
    fEvtHeader(0),
+   fMCHeader(0),
    fStatic(kFALSE),
    fField(0),
    fTimeStamps(kFALSE),
@@ -192,7 +193,7 @@ void FairRunAna::Init()
     fRootManager->ReadEvent(0);
 
     fEvtHeader = (FairEventHeader*)fRootManager->GetObject("EventHeader.");
-    FairMCEventHeader* fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
+    fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
     if(fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
       fRunId = fMCHeader->GetRunID();
@@ -221,7 +222,7 @@ void FairRunAna::Init()
     fEvtHeader = (FairEventHeader*) fRootManager->GetObject("EventHeader.");
 
 
-    FairMCEventHeader* fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
+    fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
     if(fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
       fRunId = fMCHeader->GetRunID();
@@ -362,9 +363,18 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 
     fRunInfo.Reset();
 
+
     for (int i=Ev_start; i< Ev_end; i++) {
       fRootManager->ReadEvent(i);
-      tmpId = fEvtHeader->GetRunId();
+      /**
+       * if we have simulation files then they have MC Event Header and the Run Id is in it, any way it
+       * would be better to make FairMCEventHeader a subclass of FairEvtHeader.
+       */
+      if(fRootManager->IsEvtHeaderNew()) {
+        tmpId = fMCHeader->GetRunID();
+      } else {
+        tmpId = fEvtHeader->GetRunId();
+      }
       if ( tmpId != fRunId ) {
         fRunId = tmpId;
         if( !fStatic ) {
