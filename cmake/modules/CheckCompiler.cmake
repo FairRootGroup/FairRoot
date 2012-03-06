@@ -73,15 +73,16 @@ endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 if (CMAKE_SYSTEM_NAME MATCHES Darwin)
    EXEC_PROGRAM("sw_vers -productVersion | cut -d . -f 1-2" OUTPUT_VARIABLE MAC_OS_VERSION)
    MESSAGE("--- Found a Mac OS X System ${MAC_OS_VERSION}")
-   if (CMAKE_COMPILER_IS_GNUCXX)
+   if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
       MESSAGE("--- Found GNU compiler collection")
 
       STRING(COMPARE EQUAL "10.5" "${MAC_OS_VERSION}" MAC_OS_10_5)
       STRING(COMPARE EQUAL "10.6" "${MAC_OS_VERSION}" MAC_OS_10_6)
-      IF(MAC_OS_10_5 OR MAC_OS_10_6)
+      STRING(COMPARE EQUAL "10.7" "${MAC_OS_VERSION}" MAC_OS_10_7)
+      IF(MAC_OS_10_5 OR MAC_OS_10_6 OR MAC_OS_10_7)
         SET(CMAKE_CXX_FLAGS "-m64")
         SET(CMAKE_Fortran_FLAGS "-m64")
-      ENDIF(MAC_OS_10_5 OR MAC_OS_10_6)
+      ENDIF(MAC_OS_10_5 OR MAC_OS_10_6 OR MAC_OS_10_7)
 
       SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
       SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
@@ -102,8 +103,13 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
       set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
 
       
-      
-      endif (CMAKE_COMPILER_IS_GNUCXX)
+   else (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        Message("CXX Compiler: ${CMAKE_CXX_COMPILER}")
+        Message("CXX Compiler ABI: ${CMAKE_CXX_COMPILER_ABI}")
+        Message("CXX Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
+        MESSAGE(FATAL_ERROR "This compiler is not known.")   
+   endif (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+
 
 endif (CMAKE_SYSTEM_NAME MATCHES Darwin)
 
