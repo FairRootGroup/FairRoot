@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# The rename script exchange all occurence of My or My
+# The rename script exchange all occurence of My or MY and MyDataClass
 # by the name given by the first parameter. If the detector is for example 
 # the Trd of the Cbm experiment and the class should work on the Digi data level
 # a good name for the first parameter is CbmTrdDigi. 
@@ -11,24 +11,15 @@
 #set -xv
 
 if [ $# -ne 1 ]; then
-  echo "Please call the script with four parameters. The first one is the"
-  echo "name of the detector. The second is the name of the project. This"
-  echo "name can be found in the main CMakeLists.txt as argument for"
-  echo "Project(<ProjectName>)). The third parameter is the prefix in front"
-  echo "the class names. For CBM this is for example Cbm, for Panda Pnd."
-  echo "If you're not sure check in already existing detectors."
-  echo "The script will exchange all default names by the new name"
+  echo "Please call the script with one parameter. The parameter should be the"
+  echo "complete name of the data level the classes should work on."
+  echo "If the tasks should write to the Digi data level of the Trd detector of"
+  echo "the Cbm Experiment the correct parameter would be CbmTrdDigi."
   exit 1
 fi  
 
 DataLevelName=$1
 DataLevelNameUpper=$(echo $DataLevelName | tr [:lower:] [:upper:])
-
-for i in $(ls My*); do 
-  oldfile=$i
-  newfile=$(echo $oldfile | sed "s/My/$DataLevelName/")
-  cp $oldfile $newfile
-done 
 
 arch=`uname -s | tr '[A-Z]' '[a-z]'`
 case "$arch" in
@@ -44,17 +35,27 @@ case "$arch" in
         ;;
 esac
 
-find . -name "*.h" -exec sed -e "s/MyDataClass/$DataLevelName/g" $sedstring "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/MyDataClass/$DataLevelName/g" $sedstring "{}" ";"
-find . -name "*.h" -exec sed -e "s/My/$DataLevelName/g" $sedstring "{}" ";"
-find . -name "*.h" -exec sed -e "s/MY/$DataLevelNameUpper/g" $sedstring "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/My/$DataLevelName/g" $sedstring "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/MY/$DataLevelNameUpper/g" $sedstring "{}" ";"
+for i in $(ls My*.cxx); do 
+  oldfile=$i
+  newfile=$(echo $oldfile | sed "s/My/$DataLevelName/")
+  cp $oldfile $newfile
+  sed -e "s/MyDataClass/$DataLevelName/g" $sedstring $newfile
+  sed -e "s/My/$DataLevelName/g" $sedstring $newfile
+  sed -e "s/MY/$DataLevelNameUpper/g" $sedstring  $newfile
+done 
 
-#if [ -d .svn ]; then  
-  echo "Please copy the newly created files to your directory."
-  echo "Add the names of the new source files to the list of files in the CMakeLists.txt and the Linkdef file."
-  echo "##"
-#fi
+
+for i in $(ls My*.h); do 
+  oldfile=$i
+  newfile=$(echo $oldfile | sed "s/My/$DataLevelName/")
+  cp $oldfile $newfile
+  sed -e "s/MyDataClass/$DataLevelName/g" $sedstring $newfile
+  sed -e "s/My/$DataLevelName/g" $sedstring $newfile
+  sed -e "s/MY/$DataLevelNameUpper/g" $sedstring $newfile
+done
+
+echo "Please move the newly created files starting with $DataLevelName to your directory."
+echo "Add the names of the new source files to the list of files in the CMakeLists.txt and the Linkdef file."
+echo "##"
 
 #set +xvx
