@@ -95,14 +95,14 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "/include/TMVA/Types.h:"
 
         # -- Geant3 warnings
-        "/geant3/TGeant3/TGeant3.h:"
-        "/geant3/TGeant3/TGeant3TGeo.h:"
+        "TGeant3/TGeant3.h:"
+        "TGeant3/TGeant3TGeo.h:"
 
         # -- Errors which are filtered for the time being
         # -- MbsAPI is only a copy from elsewhere so don't know what to do
         # -- FairTSBufferFunctional.h has to be fixed by Tobias
 	"MbsAPI"
-	"FairTSBufferFunctional.h"
+#	"FairTSBufferFunctional.h"
   )
 
 # -----------------------------------------------------------
