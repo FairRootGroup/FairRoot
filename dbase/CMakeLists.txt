@@ -4,11 +4,14 @@
 
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR}
+${CMAKE_SOURCE_DIR}/fairtools
 ${CMAKE_SOURCE_DIR}/geobase
 ${CMAKE_SOURCE_DIR}/base
+${CMAKE_SOURCE_DIR}/parbase
 ${CMAKE_SOURCE_DIR}/dbase
 ${CMAKE_SOURCE_DIR}/dbase/dbValidation
 ${CMAKE_SOURCE_DIR}/dbase/dbInterface
+${CMAKE_SOURCE_DIR}/dbase/dbIO
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -67,6 +70,12 @@ dbInterface/FairDbExceptionLog.cxx
 dbInterface/FairDbServices.cxx
 dbInterface/FairDbValRecSet.cxx
 dbInterface/FairDbSimFlagAssociation.cxx 
+dbIO/FairDetParTSQLIo.cxx
+dbIO/FairDetParTSQLIo.h
+dbIO/FairGenericParTSQLIo.cxx
+dbIO/FairGenericParTSQLIo.h
+dbIO/FairParTSQLIo.cxx
+dbIO/FairParTSQLIo.h
 )
 
 

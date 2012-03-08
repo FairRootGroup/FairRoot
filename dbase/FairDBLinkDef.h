@@ -102,6 +102,5 @@
 #pragma link C++ function operator<<(ostream&, const FairRegistry&);
 
 
-
 #endif
 
