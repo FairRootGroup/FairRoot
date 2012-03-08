@@ -101,6 +101,9 @@
 #pragma link C++ class FairRegistryItemXxx<const char*>-;
 #pragma link C++ function operator<<(ostream&, const FairRegistry&);
 
-
+// dbIO
+#pragma link C++ class FairParTSQLIo+;
+#pragma link C++ class FairDetParTSQLIo+;
+#pragma link C++ class FairGenericParTSQLIo+;
 #endif
 

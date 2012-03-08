@@ -1,12 +1,12 @@
-# Create a library called "libR3BDB" which includes the source files given in
+# Create a library called "libFAIRDB" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/fairtools
-${CMAKE_SOURCE_DIR}/geobase
 ${CMAKE_SOURCE_DIR}/base
+${CMAKE_SOURCE_DIR}/geobase
 ${CMAKE_SOURCE_DIR}/parbase
 ${CMAKE_SOURCE_DIR}/dbase
 ${CMAKE_SOURCE_DIR}/dbase/dbValidation
@@ -31,6 +31,7 @@ dbValidation/ValContext.cxx
 dbValidation/ValRange.cxx
 dbValidation/ValTimeStamp.cxx
 dbValidation/ValValidate.cxx
+
 dbInterface/FairDb.cxx
 dbInterface/FairDbConnection.cxx 
 dbInterface/FairDbBinaryFile.cxx
@@ -70,6 +71,7 @@ dbInterface/FairDbExceptionLog.cxx
 dbInterface/FairDbServices.cxx
 dbInterface/FairDbValRecSet.cxx
 dbInterface/FairDbSimFlagAssociation.cxx 
+
 dbIO/FairDetParTSQLIo.cxx
 dbIO/FairDetParTSQLIo.h
 dbIO/FairGenericParTSQLIo.cxx
@@ -95,8 +97,8 @@ ROOT_GENERATE_DICTIONARY("${FAIRDB_HEADERS}" "${FAIRDB_LINKDEF}" "${FAIRDB_DICTI
 
 SET(FAIRDB_SRCS ${FAIRDB_SRCS} ${FAIRDB_DICTIONARY})
 
-add_library(FAIRDB SHARED ${FAIRDB_SRCS})
-target_link_libraries(FAIRDB ${ROOT_LIBRARIES})
-set_target_properties(FAIRDB PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
+add_library(FairDB SHARED ${FAIRDB_SRCS})
+target_link_libraries(FairDB ${ROOT_LIBRARIES})
+set_target_properties(FairDB PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 ################ install ###################
-install(TARGETS FAIRDB DESTINATION ${CMAKE_BINARY_DIR}/lib)
+install(TARGETS FairDB DESTINATION ${CMAKE_BINARY_DIR}/lib)
