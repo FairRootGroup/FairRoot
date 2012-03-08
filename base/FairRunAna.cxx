@@ -98,7 +98,7 @@ FairRunAna::FairRunAna(const char* type, const char* proofName)
    fTimeProb(0),
    fRunInfo(),
    fRunOnProofWorker(kFALSE),
-   fProofParName("libFairRoot.par"),
+   fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
    fProofOutputStatus("copy")
 {
