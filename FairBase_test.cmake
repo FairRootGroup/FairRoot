@@ -6,9 +6,9 @@ SET (CTEST_CMAKE_GENERATOR "Unix Makefiles")
 SET (CTEST_PROJECT_NAME "FAIRROOT")
 
 SET (CTEST_UPDATE_COMMAND "svn")
-#If($ENV{ctest_model} MATCHES Continuous)
-#  Set(CTEST_SVN_UPDATE_OPTIONS "$ENV{REVISION}")
-#EndIf($ENV{ctest_model} MATCHES Continuous)
+If($ENV{ctest_model} MATCHES Continuous)
+  Set(CTEST_SVN_UPDATE_OPTIONS "$ENV{REVISION}")
+EndIf($ENV{ctest_model} MATCHES Continuous)
 
 SET (BUILD_COMMAND "make")
 SET (CTEST_BUILD_COMMAND "${BUILD_COMMAND} -j$ENV{number_of_processors}")
