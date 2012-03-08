@@ -34,8 +34,7 @@ ClassImp(FairParAsciiFileIo)
 
 FairParAsciiFileIo::FairParAsciiFileIo()
   :FairParIo(),
-   file(NULL),
-   filename("")
+   file(NULL)
 {
   // default destructor
   //  file=0;

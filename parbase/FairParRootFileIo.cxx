@@ -133,6 +133,7 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
   file=new FairParRootFile(fname,option,ftitle,compress);
 
   if (file && file->IsOpen()) {
+    filename = fname;
     FairRuntimeDb::instance()->activateParIo(this);
     return kTRUE;
   }

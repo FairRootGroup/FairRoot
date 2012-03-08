@@ -11,7 +11,6 @@ class FairParAsciiFileIo : public FairParIo
 {
   protected:
     fstream* file;      // pointer to a file
-    TString  filename;  // name of the file
   public:
     FairParAsciiFileIo();
 
@@ -40,9 +39,6 @@ class FairParAsciiFileIo : public FairParIo
 
     // prints information about the file and the detector I/Os
     void print();
-
-    // returns the filename
-    const char* getFilename() {return filename.Data();}
 
     fstream* getFile();
   private:

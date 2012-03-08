@@ -97,8 +97,10 @@ class FairRootManager : public TObject
          analysis task, and not written in the tree yet.
          the user have to cast this pointer to the right type.*/
     FairGeoNode*        GetGeoParameter(const char* detname, const char* gname);
-    /** Return a pointer to the object (collection) saved in the branch named BrName*/
+    /** Return a pointer to the object (collection) saved in the fInChain branch named BrName*/
     TObject*            GetObject(const char* BrName);
+    /** Return a pointer to the object (collection) saved in the fInTree branch named BrName*/
+    TObject*            GetObjectFromInTree(const char* BrName);
     Double_t            GetEventTime();
     /** Get the data of the given branch name,
      *  this method runs over multiple entries
@@ -114,6 +116,10 @@ class FairRootManager : public TObject
     static FairRootManager* Instance();
 
     Bool_t            OpenInChain();
+
+    /** Open and prepare the input tree when running on PROOF worker*/
+    Bool_t            OpenInTree();
+
     Bool_t            OpenBackgroundChain();
     Bool_t            OpenSignalChain();
     TFile*            OpenOutFile(const char* fname="cbmsim.root");
@@ -166,6 +172,10 @@ class FairRootManager : public TObject
     void                SetCompressData(Bool_t val) {fCompressData = val;}
     /**Set the name of the input file*/
     void                SetInputFile(TString name);
+
+    /**Set the input tree when running on PROOF worker*/
+    void                SetInTree (TTree*  tempTree)  {fInTree = NULL; fInTree  = tempTree;}
+
     /**Set the output tree pointer*/
     void                SetOutTree(TTree* fTree) { fOutTree=fTree;}
 
@@ -220,6 +230,7 @@ class FairRootManager : public TObject
     /**  Set the branch address for a given branch name and return
         a TObject pointer, the user have to cast this pointer to the right type.*/
     TObject*            ActivateBranch(const char* BrName);
+    TObject*            ActivateBranchInInTree(const char* BrName);
     void                AddFriends( );
     /**Add a branch to memory, it will not be written to the output files*/
     void                AddMemoryBranch(const char*, TObject* );
@@ -254,8 +265,10 @@ class FairRootManager : public TObject
     Double_t                            fCurrentTime;
     /**Input file */
     TFile*                              fInFile;
-    /**Input Tree */
+    /**Input Chain */
     TChain*                             fInChain;
+    /**Input Tree */
+    TTree*                              fInTree;
     /**Output file */
     TFile*                              fOutFile;
     /**Output tree */
@@ -310,7 +323,7 @@ class FairRootManager : public TObject
     /** Total number of signals added (Types and not files!)*/
     UInt_t                              fNoOfSignals; //!
     /** list of chains which has to be created for the different signals*/
-    std::list<TString>                  *fSignalChainList; //!
+    std::list<TString>*                  fSignalChainList; //!
     /**Chain containing the background*/
     TChain*                              fBackgroundChain; //!
     TFile*                               fBackgroundFile; //!

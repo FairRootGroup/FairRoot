@@ -18,7 +18,8 @@ ClassImp(FairParIo)
 FairParIo::FairParIo()
   :TObject(),
    detParIoList(new TList()),
-   autoWritable(kTRUE)
+   autoWritable(kTRUE),
+   filename("")
 {
   //default constructor creates an empty list of detector I/Os
   //  detParIoList=new TList();

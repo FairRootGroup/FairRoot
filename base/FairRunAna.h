@@ -11,6 +11,7 @@
 
 #include "FairRun.h"
 #include "FairRunInfo.h"
+#include "FairRootManager.h"
 
 #include "TString.h"
 #include <iostream>
@@ -22,6 +23,7 @@ class FairField;
 class TFile;
 class FairLogger;
 class TF1;
+class TTree;
 
 class FairRunAna : public FairRun
 {
@@ -31,6 +33,7 @@ class FairRunAna : public FairRun
     static FairRunAna* Instance();
     virtual ~FairRunAna();
     FairRunAna();
+    FairRunAna(const char* type, const char* proofName="");
     /** Add a friend file (input) by name)*/
     void        AddFriend(TString fName);
     /**initialize the run manager*/
@@ -41,12 +44,18 @@ class FairRunAna : public FairRun
     void        Run(Double_t delta_t);
     /**Run for the given single entry*/
     void        Run(Long64_t entry);
+    /**Run for one event, used on PROOF nodes*/
+    void        RunOneEvent(Long64_t entry);
     /**Run from event number NStart to event number NStop over mixed input files */
     void        RunMixed(Int_t NStart, Int_t NStop);
     /**Run over all TSBuffers until the data is processed*/
     void        RunTSBuffers();
     /** the dummy run does not check the evt header or the parameters!! */
     void        DummyRun(Int_t NStart ,Int_t NStop);
+    /** run on proof from event NStart to event NStop*/
+    void        RunOnProof(Int_t NStart, Int_t NStop);
+    /** finish tasks, write output*/
+    void        TerminateRun();
     /**Set the input signal file
      *@param name :        signal file name
      *@param identifier :  Unsigned integer which identify the signal file
@@ -67,21 +76,40 @@ class FairRunAna : public FairRun
     void        AddFile(TString name);
 
     void        Reinit(UInt_t runId);
-    UInt_t      getRunId() {return fRunId;}
+    UInt_t      getRunId() {
+      return fRunId;
+    }
     /** Get the magnetic field **/
-    FairField*  GetField() {return fField; }
+    FairField*  GetField() {
+      return fField;
+    }
     /** Set the magnetic Field */
-    void        SetField (FairField* ffield ) {fField=ffield ;}
+    void        SetField (FairField* ffield ) {
+      fField=ffield ;
+    }
     /** Set external geometry file */
     void        SetGeomFile(const char* GeoFileName);
     /** Return a pointer to the geometry file */
-    TFile*      GetGeoFile() {return fInputGeoFile;}
+    TFile*      GetGeoFile() {
+      return fInputGeoFile;
+    }
     /** Initialization of parameter container is set to static, i.e: the run id is
      *  is not checked anymore after initialization
      */
+
+    /** Init containers executed on PROOF, which is part of Init when running locally*/
+    void        InitContainers();
+
+    /** set the input tree of fRootManager when running on PROOF worker*/
+    void        SetInTree (TTree* tempTree)   {
+      fRootManager->SetInTree (tempTree);
+    }
+
     void        SetContainerStatic();
     void        RunWithTimeStamps();
-    Bool_t      IsTimeStamp() {return fTimeStamps;}
+    Bool_t      IsTimeStamp() {
+      return fTimeStamps;
+    }
     void        CompressData();
 
     /** Set the min and max limit for event time in ns */
@@ -103,11 +131,29 @@ class FairRunAna : public FairRun
      */
     void BGWindowWidthTime(Double_t background, UInt_t Signalid);
 
-
+    /** To be set to kTRUE only when running on PROOF worker*/
+    void SetRunOnProofWorker(Bool_t tb = kTRUE) {
+      fRunOnProofWorker = tb;
+    }
+    /** Set PROOF ARchive (PAR) file name*/
+    void SetProofParName(TString parName) {
+      fProofParName = parName;
+    }
+    /** Set directory for storing output files*/
+    void SetOutputDirectory(TString dirName) {
+      fOutputDirectory = dirName;
+    }
+    /** Set PROOF output status, possibilities: "copy","merge","dataset"*/
+    void SetProofOutputStatus(TString outStat) {
+      fProofOutputStatus = outStat;
+    }
 
   private:
+
     FairRunAna(const FairRunAna& M);
-    FairRunAna& operator= (const  FairRunAna&) {return *this;}
+    FairRunAna& operator= (const  FairRunAna&) {
+      return *this;
+    }
 
     FairRunInfo fRunInfo;//!
 
@@ -136,7 +182,18 @@ class FairRunAna : public FairRun
     Double_t                                fEventMeanTime; //!
     /** used to generate random numbers for event time; */
     TF1*                                    fTimeProb;      //!
-
+    /** flag indicating running in PROOF mode*/
+    Bool_t                                  fProofAnalysis; //!
+    /** executing on PROOF worker*/
+    Bool_t                                  fRunOnProofWorker; //!
+    /** PROOF server name*/
+    TString                                 fProofServerName; //!
+    /** PROOF ARchive (PAR) file name*/
+    TString                                 fProofParName; //!
+    /** Output directory*/
+    TString                                 fOutputDirectory; //!
+    /** Output status indicator: "copy","merge","dataset"*/
+    TString                                  fProofOutputStatus;
 
     ClassDef(FairRunAna ,3)
 

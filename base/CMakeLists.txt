@@ -74,6 +74,7 @@ FairRunInfo.cxx
 FairWriteoutBuffer.cxx
 FairRingSorter.cxx
 FairRingSorterTask.cxx
+FairAnaSelector.cxx
 
 )
 

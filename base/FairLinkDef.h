@@ -53,6 +53,7 @@
 #pragma link C++ class FairWriteoutBuffer;
 #pragma link C++ class FairRingSorter;
 #pragma link C++ class FairRingSorterTask;
+#pragma link C++ class FairAnaSelector+;
 
 #if ROOT_VERSION_CODE < 333824
 #pragma link C++ class TVirtualMagField+;

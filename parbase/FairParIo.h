@@ -12,6 +12,7 @@ class FairParIo : public TObject
   protected:
     TList* detParIoList;  // list of detector I/Os
     Bool_t autoWritable;  // flag indicating if automatic write is possible
+    TString filename;
   public:
     FairParIo();
     virtual ~FairParIo();
@@ -20,6 +21,9 @@ class FairParIo : public TObject
     virtual void removeDetParIo(Text_t*);
     void setInputNumber(Int_t);
     virtual void close() {;}
+
+    // returns the filename
+    const char* getFilename() {return filename.Data();}
 
     // creates input/output class for a special detector and stores pointer
     // used only for Oracle input/output

@@ -45,17 +45,24 @@ FairRun::FairRun()
 FairRun::~FairRun()
 {
   fLogger->Debug(MESSAGE_ORIGIN," Enter Destructor of FairRun ");
-  if (fTask) { delete fTask; } // There is another tasklist in MCApplication,
+  if (fTask) {
+    delete fTask;  // There is another tasklist in MCApplication,
+  }
   // but this should be independent
-  if (fRtdb) { delete fRtdb; } // who is responsible for the RuntimeDataBase
+  if (fRtdb) {
+    delete fRtdb;  // who is responsible for the RuntimeDataBase
+  }
   if (fRootManager) {
     delete fRootManager; // who is responsible
     fRootManager=0;
   }
-  if (fEvHead) { delete fEvHead; }
+  if (fEvHead) {
+    delete fEvHead;
+  }
 }
 //_____________________________________________________________________________
 
+//_____________________________________________________________________________
 void FairRun::SetOutputFile(const char* fname)
 {
   fOutname=fname;
@@ -64,10 +71,28 @@ void FairRun::SetOutputFile(const char* fname)
 }
 //_____________________________________________________________________________
 
+//_____________________________________________________________________________
+void FairRun::SetOutputFile(TFile* f)
+{
+  fOutname=f->GetName();
+  fRootManager->OpenOutFile(f);
+  fOutFile = f;
+
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 void FairRun::AddTask(FairTask* t)
 {
   fTask->Add(t);
   fNTasks++;
+  fFileHeader->AddTaskClassName(t->ClassName());
+}
+//_____________________________________________________________________________
+void FairRun::SetTask(FairTask* t)
+{
+  if ( fTask ) { delete fTask; }
+  fTask = t;
   fFileHeader->AddTaskClassName(t->ClassName());
 }
 //_____________________________________________________________________________
@@ -85,7 +110,9 @@ FairTask* FairRun::GetTask(const char* taskName)
 //_____________________________________________________________________________
 FairEventHeader*  FairRun::GetEventHeader()
 {
-  if ( NULL == fEvHead ) { fEvHead = new FairEventHeader(); }
+  if ( NULL == fEvHead ) {
+    fEvHead = new FairEventHeader();
+  }
   return fEvHead;
 }
 //_____________________________________________________________________________
