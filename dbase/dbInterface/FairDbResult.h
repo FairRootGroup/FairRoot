@@ -6,6 +6,7 @@ using std::string;
 #include <list>
 #include <iosfwd>
 #include <vector>
+#include <algorithm>
 
 #include "TObject.h"
 #include "TString.h"

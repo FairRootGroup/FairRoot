@@ -7,6 +7,7 @@
 #ifndef REGISTRY_H
 # include "FairRegistry.h"
 #endif
+#include <cstdlib>
 
 class FairDbConf
 {

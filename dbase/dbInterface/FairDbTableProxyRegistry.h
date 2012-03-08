@@ -7,9 +7,12 @@
 #endif
 #include <map>
 #include <string>
+#include <cstdlib>
+
 #include "FairDbConfigurable.h"
 #include "FairDbSimFlagAssociation.h"
 #include "FairDbRollbackDates.h"
+
 
 class FairDbMultConnector;
 class FairDbTableProxy;
