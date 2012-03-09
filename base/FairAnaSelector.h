@@ -28,7 +28,7 @@ class FairAnaSelector : public TSelector
     TProofOutputFile*     fProofFile;
     TFile*          fFile;
 
-    FairAnaSelector(TTree* /*tree*/ =0) : fProofFile(0), fFile(0) { }
+    FairAnaSelector(TTree* /*tree*/ =0) : fProofFile(0), fFile(0), fChain(0), fRunAna(NULL) { }
     virtual ~FairAnaSelector() { }
     virtual Int_t   Version() const {
       return 1;
