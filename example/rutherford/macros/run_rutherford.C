@@ -42,7 +42,14 @@ void run_rutherford(Int_t nEvents = 10)
   gSystem->Load("libFairRutherford");
   // ------------------------------------------------------------------------
 
-   
+   FairLogger *logger = FairLogger::GetLogger();
+  // define log file name
+  logger->SetLogFileName("MyLog.log");
+  // log to screen and to file 
+  logger->SetLogToScreen(kTRUE);
+  logger->SetLogToFile(kTRUE);
+  // Print very accurate output. Levels are LOW, MEDIUM and HIGH
+  logger->SetLogVerbosityLevel("HIGH");
  
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
@@ -72,7 +79,7 @@ void run_rutherford(Int_t nEvents = 10)
 
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
- // run->SetGenerator(primGen);
+  run->SetGenerator(primGen);
 
 
   // Ion Generator
