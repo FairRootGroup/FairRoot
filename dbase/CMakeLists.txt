@@ -78,9 +78,9 @@ dbIO/FairParTSQLIo.h
 )
 
 
-if(RULE_CHECKER_FOUND)
-CHECK_RULES("${FAIRDB_SRCS}" "${INCLUDE_DIRECTORIES}" FAIRDB_RULES)
-endif(RULE_CHECKER_FOUND)
+# if(RULE_CHECKER_FOUND)
+# CHECK_RULES("${FAIRDB_SRCS}" "${INCLUDE_DIRECTORIES}" FAIRDB_RULES)
+# endif(RULE_CHECKER_FOUND)
 
 # fill list of header files from list of source files
 # by exchanging the file extension
