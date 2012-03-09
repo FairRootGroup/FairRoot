@@ -29,7 +29,7 @@ class FairEventHeader : public TNamed
     Double_t GetEventTime() {return fEventTime;}
 
     /** Get the MC input file Id for this event*/
-    Double_t GetInputFileId() {return fInputFileId;}
+    Int_t GetInputFileId() {return fInputFileId;}
 
     /**The entry number in the original MC chain */
     Int_t GetMCEntryNumber() {return fMCEntryNo;}
