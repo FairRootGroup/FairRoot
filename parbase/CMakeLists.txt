@@ -3,11 +3,13 @@
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR} 
+${ROOT_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/fairtools
-${CMAKE_SOURCE_DIR}/base 
-${CMAKE_SOURCE_DIR}/geobase 
-${CMAKE_SOURCE_DIR}/parbase 
+${CMAKE_SOURCE_DIR}/base
+${CMAKE_SOURCE_DIR}/geobase
+${CMAKE_SOURCE_DIR}/parbase
+${CMAKE_SOURCE_DIR}/dbase/
+${CMAKE_SOURCE_DIR}/dbase/dbIO/
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
