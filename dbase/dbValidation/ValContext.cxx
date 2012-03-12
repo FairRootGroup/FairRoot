@@ -1,4 +1,3 @@
-
 #include "ValContext.h"
 
 
@@ -20,7 +19,10 @@ std::ostream& operator<<(std::ostream& os, const ValContext& vldc)
 ValContext::ValContext(const Detector::Detector_t& detector,
                        const SimFlag::SimFlag_t mcFlag,
                        const ValTimeStamp& tstamp)
-  : fDetector(detector), fSimFlag(mcFlag), fTimeStamp(tstamp)
+  : TObject(),
+    fDetector(detector),
+    fSimFlag(mcFlag),
+    fTimeStamp(tstamp)
 {
   // normal constructor
 }
@@ -55,10 +57,7 @@ const char* ValContext::AsString(Option_t* option) const
 //_____________________________________________________________________________
 void ValContext::Print(Option_t* option) const
 {
-  // Print this object
-
   printf("%s\n",AsString(option));
-
 }
 
 //_____________________________________________________________________________

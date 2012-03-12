@@ -5,11 +5,11 @@
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/fairtools
+${CMAKE_SOURCE_DIR}/base
 ${CMAKE_SOURCE_DIR}/parbase
 ${CMAKE_SOURCE_DIR}/dbase
-${CMAKE_SOURCE_DIR}/dbase/dbValidation
 ${CMAKE_SOURCE_DIR}/dbase/dbInterface
-${CMAKE_SOURCE_DIR}/dbase/dbIO
+${CMAKE_SOURCE_DIR}/dbase/dbValidation
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -28,7 +28,6 @@ dbValidation/ValContext.cxx
 dbValidation/ValRange.cxx
 dbValidation/ValTimeStamp.cxx
 dbValidation/ValValidate.cxx
-
 dbInterface/FairDb.cxx
 dbInterface/FairDbConnection.cxx 
 dbInterface/FairDbBinaryFile.cxx
@@ -67,14 +66,7 @@ dbInterface/FairDbException.cxx
 dbInterface/FairDbExceptionLog.cxx
 dbInterface/FairDbServices.cxx
 dbInterface/FairDbValRecSet.cxx
-dbInterface/FairDbSimFlagAssociation.cxx 
-
-dbIO/FairDetParTSQLIo.cxx
-dbIO/FairDetParTSQLIo.h
-dbIO/FairGenericParTSQLIo.cxx
-dbIO/FairGenericParTSQLIo.h
-dbIO/FairParTSQLIo.cxx
-dbIO/FairParTSQLIo.h
+dbInterface/FairDbSimFlagAssociation.cxx
 )
 
 
