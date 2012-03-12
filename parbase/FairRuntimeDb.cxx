@@ -660,7 +660,6 @@ void FairRuntimeDb::closeOutput()
 void FairRuntimeDb::activateParIo(FairParIo* io)
 {
   // activates the detector I/O
-
   const char* ioName=io->IsA()->GetName();
   FairDetParIo* po=io->getDetParIo("FairGenericParIo");
   if (!po) {
@@ -672,6 +671,10 @@ void FairRuntimeDb::activateParIo(FairParIo* io)
       FairDetParAsciiFileIo* pn=
         new FairGenericParAsciiFileIo(((FairParAsciiFileIo*)io)->getFile());
       io->setDetParIo(pn);
+    } else if(strcmp(ioName,"FairParTSQLIo") == 0) {
+      std::cout << "\n\n\n\t TSQL versie is called en nu de rest \n\n";
+      //FairDetParTSQLIo* pn = new FairDetParTSQLIo();//FairGenericParTSQLIo();
+      //io->setDetParIo(pn);
     }
   }
   TIter next(&contFactories);

@@ -9,7 +9,8 @@ ${CMAKE_SOURCE_DIR}/base
 ${CMAKE_SOURCE_DIR}/geobase
 ${CMAKE_SOURCE_DIR}/parbase
 ${CMAKE_SOURCE_DIR}/dbase/
-${CMAKE_SOURCE_DIR}/dbase/dbIO/
+${CMAKE_SOURCE_DIR}/dbase/dbInterface
+${CMAKE_SOURCE_DIR}/dbase/dbValidation
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
