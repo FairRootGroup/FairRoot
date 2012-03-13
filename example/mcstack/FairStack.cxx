@@ -232,7 +232,7 @@ void FairStack::FillTrackArray()
   fIndexMap[-1] = -1;
 
   // --> Screen output
-  Print(0);
+  Print(1);
 
 }
 // -------------------------------------------------------------------------
@@ -287,6 +287,7 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
                 "Particle index not found in map");
         }
         point->SetTrackID((*fIndexIter).second);
+        point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
       }
 
     }   // Collections of this detector
@@ -346,6 +347,7 @@ void FairStack::Print(Int_t iVerbose) const
 void FairStack::AddPoint(DetectorId detId)
 {
   Int_t iDet = detId;
+  cout << "Add point for Detektor" << iDet << endl;
   pair<Int_t, Int_t> a(fCurrentTrack, iDet);
   if ( fPointsMap.find(a) == fPointsMap.end() ) { fPointsMap[a] = 1; }
   else { fPointsMap[a]++; }
@@ -411,7 +413,8 @@ void FairStack::SelectTracks()
     TLorentzVector p;
     thisPart->Momentum(p);
     Double_t energy = p.E();
-    Double_t mass   = thisPart->GetMass();
+    Double_t mass   = p.M();
+//    Double_t mass   = thisPart->GetMass();
     Double_t eKin = energy - mass;
 
     // --> Calculate number of points
