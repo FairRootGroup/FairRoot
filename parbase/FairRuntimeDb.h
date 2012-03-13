@@ -5,16 +5,14 @@
 #include "TList.h"
 #include "FairLogger.h"
 
-//#include "FairParTSQLIo.h"
-/*
-#include "FairDetParTSQLIo.h"
-#include "FairGenericParTSQLIo.h"
-*/
-
 class FairParIo;
 class FairParSet;
 class FairRtdbRun;
 class FairContFact;
+
+class FairParTSQLIo;
+class FairDetParTSQLIo;
+class FairGenericParTSQLIo;
 
 static TList contFactories;    //! list of container factories
 

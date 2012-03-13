@@ -18,6 +18,11 @@
 #include "FairGenericParRootFileIo.h"
 #include "FairGenericParAsciiFileIo.h"
 
+//______ DB_PARIO Headers. ________
+#include "FairParTSQLIo.h"
+#include "FairDetParTSQLIo.h"
+#include "FairGenericParTSQLIo.h"
+//_________________________________
 
 //#include "TKey.h"
 #include "TClass.h"
@@ -673,8 +678,8 @@ void FairRuntimeDb::activateParIo(FairParIo* io)
       io->setDetParIo(pn);
     } else if(strcmp(ioName,"FairParTSQLIo") == 0) {
       std::cout << "\n\n\n\t TSQL versie is called en nu de rest \n\n";
-      //FairDetParTSQLIo* pn = new FairDetParTSQLIo();//FairGenericParTSQLIo();
-      //io->setDetParIo(pn);
+      FairDetParTSQLIo* pn = new FairGenericParTSQLIo();
+      io->setDetParIo(pn);
     }
   }
   TIter next(&contFactories);

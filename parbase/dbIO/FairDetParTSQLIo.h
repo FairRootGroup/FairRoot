@@ -37,6 +37,7 @@ class FairDetParTSQLIo : public FairDetParIo
 
     ////////////////
     inline void print();
+    void Print() {};
     ///////////////
     //________ DB functions maybe later ____
     // commits changes.

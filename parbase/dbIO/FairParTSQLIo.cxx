@@ -105,7 +105,7 @@ bool FairParTSQLIo::activateDetIo()
 /**
  * Print some info. This function maybe removed in future.
  */
-void FairParTSQLIo::print()
+void FairParTSQLIo::print() const
 {
   if (fConnections) {
     std::cout << "<INFO> Number of available DBs = " << fConnections->GetNumDb()

@@ -62,7 +62,7 @@ class FairParTSQLIo: public FairParIo
     /**
      * Print some info. This function maybe removed in future.
      */
-    void print();
+    void print() const;
 
     /**
      * Set which database connection is going to be the default.

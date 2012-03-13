@@ -30,5 +30,7 @@
 #pragma link C++ class FairRuntimeDb+;
 
 
-
+#pragma link C++ class FairParTSQLIo+;
+#pragma link C++ class FairDetParTSQLIo+;
+#pragma link C++ class FairGenericParTSQLIo+;
 #endif
