@@ -14,12 +14,14 @@ class FairParTSQLIo;
 class FairDetParTSQLIo;
 class FairGenericParTSQLIo;
 
+
 static TList contFactories;    //! list of container factories
 
 class FairRuntimeDb : public TObject
 {
   private:
     static FairRuntimeDb* gRtdb; //!
+
   protected:
     FairRuntimeDb(void);
     TList* containerList;    // list of parameter containers
@@ -33,6 +35,18 @@ class FairRuntimeDb : public TObject
     Bool_t isRootFileOutput; // flag indicating that the output is a ROOT file
     /** Fair Logger */
     FairLogger*  fLogger;  //!
+
+    /**
+     * Select which IO type to use.
+     */
+    typedef enum {
+      UNKNOWN_Type    = 0,
+      AsciiFileOutput = 1,// Ascii in-out-put
+      RootFileOutput  = 2,// Root Files
+      RootTSQLOutput  = 3// Use a TSQL db
+    } ParamIOType;
+    ParamIOType ioType;//IO Type
+
   public:
     static FairRuntimeDb* instance(void);
     ~FairRuntimeDb(void);
