@@ -21,4 +21,4 @@ fi
 
 cd @new_path@
 
-$ROOTEXE -q -b -l  @my_script_name@
+$ROOTEXE -q -b  @my_script_name@
