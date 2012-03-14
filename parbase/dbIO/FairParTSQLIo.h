@@ -10,14 +10,14 @@
 // C & C++
 #include <iostream>
 
-// FairRoot
-#include "FairParIo.h"
-#include "FairGenericParTSQLIo.h"
-
-#include "FairDbMultConnector.h"
-
 // ROOT
 class TList;
+
+// FairRoot
+#include "FairParIo.h"
+
+class FairGenericParTSQLIo;
+class FairDbMultConnector;
 
 class FairParTSQLIo: public FairParIo
 {

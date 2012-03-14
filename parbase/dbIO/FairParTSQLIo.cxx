@@ -5,6 +5,10 @@
  ***************************************/
 #include "FairParTSQLIo.h"
 
+
+#include "FairGenericParTSQLIo.h"
+#include "FairDbMultConnector.h"
+
 ClassImp(FairParTSQLIo)
 
 /**
