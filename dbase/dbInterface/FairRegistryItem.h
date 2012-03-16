@@ -4,7 +4,7 @@
 
 #include <TObject.h>
 
-class type_info;
+//class type_info;
 class FairRegistryItem : public TObject
 {
 

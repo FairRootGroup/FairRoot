@@ -9,7 +9,7 @@
 #include <TNamed.h>
 
 class FairRegistryItem;
-class type_info;
+//class type_info;
 
 class FairRegistry : public TNamed
 {

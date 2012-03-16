@@ -6,8 +6,8 @@
 #include <TObject.h>
 
 #include <FairRegistryItem.h>
-
-#include <typeinfo>
+#include <FairRegistry.h>
+//#include <typeinfo>
 #include <iostream>
 
 template<class T> class FairRegistryItemXxx : public FairRegistryItem
