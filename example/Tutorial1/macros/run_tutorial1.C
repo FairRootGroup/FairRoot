@@ -7,8 +7,8 @@ void run_tutorial1(Int_t nEvents = 10)
   TString tut_geomdir = dir + "/example/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_geomdir = dir + "/example/gconfig";
-  gSystem->Setenv("CONFIG_DIR",tut_geomdir.Data());
+  TString tut_configdir = dir + "/example/gconfig";
+  gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   TString partName[] = {"pions","eplus","proton"};
   Int_t   partPdgC[] = {    211,     11,    2212};
@@ -60,6 +60,7 @@ void run_tutorial1(Int_t nEvents = 10)
   gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
   basiclibs();
   gSystem->Load("libFairTools");
+  gSystem->Load("libFairDB");
   gSystem->Load("libGeoBase");
   gSystem->Load("libParBase");
   gSystem->Load("libBase");
@@ -102,9 +103,11 @@ void run_tutorial1(Int_t nEvents = 10)
   boxGen->SetThetaRange (   theta,   theta+0.01);
   boxGen->SetPRange     (momentum,momentum+0.01);
   boxGen->SetPhiRange   (0.,360.);
+  boxGen->SetDebug(kTRUE);
 
   primGen->AddGenerator(boxGen);
 
+  
   run->SetGenerator(primGen);
   // ------------------------------------------------------------------------
 
@@ -125,6 +128,7 @@ void run_tutorial1(Int_t nEvents = 10)
    
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
+  run->CreateGeometryFile("geofile_full.root");
   // ------------------------------------------------------------------------
   
   // -----   Finish   -------------------------------------------------------

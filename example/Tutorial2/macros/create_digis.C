@@ -9,6 +9,7 @@ void create_digis(){
 
     // Load this example libraries
     gSystem->Load("libFairTools");
+    gSystem->Load("libFairDB");
     gSystem->Load("libGeoBase");
     gSystem->Load("libParBase");
     gSystem->Load("libBase");
@@ -59,7 +60,7 @@ void create_digis(){
     
 
 
-    fRun->LoadGeometry();
+//    fRun->LoadGeometry();
     fRun->Init();
 
     rtdb->getContainer("FairTutorialDetDigiPar")->print();

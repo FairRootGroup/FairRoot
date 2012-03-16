@@ -8,6 +8,7 @@ eventDisplay()
   basiclibs();
   
   gSystem->Load("libFairTools");
+  gSystem->Load("libFairDB");
   gSystem->Load("libGeoBase");
   gSystem->Load("libParBase");
   gSystem->Load("libBase");

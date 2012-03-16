@@ -67,6 +67,7 @@ Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
 
+  cout << "In FairTutorialDet::ProcessHits" << endl;
   //Set parameters at entrance of volume. Reset ELoss.
   if ( gMC->IsTrackEntering() ) {
     fELoss  = 0.;

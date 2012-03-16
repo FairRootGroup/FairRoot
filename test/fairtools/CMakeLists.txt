@@ -12,7 +12,7 @@ set(INCLUDE_DIRECTORIES
 )
 
 # Boost is needed for the regular expression handling
-find_package(Boost)
+find_package(Boost COMPONENTS regex)
 
 If(Boost_FOUND)
   Set(INCLUDE_DIRECTORIES
@@ -28,13 +28,22 @@ set(LINK_DIRECTORIES
 )
 
 link_directories( ${LINK_DIRECTORIES})
-############### build the library #####################
+############### build the test #####################
 If(Boost_FOUND)
-  add_executable(_TestFairTools _TestFairTools.cxx)
-  target_link_libraries(_TestFairTools ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${GTEST_BOTH_LIBRARIES} FairTools FairTest)
-  add_test(_TestFairTools ${FAIRROOT_BINARY_DIR}/bin/_TestFairTools)
+  add_executable(_GTestFairTools _GTestFairTools.cxx)
+  target_link_libraries(_GTestFairTools ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${GTEST_BOTH_LIBRARIES} FairTools FairTest)
+  add_test(_GTestFairTools ${FAIRROOT_BINARY_DIR}/bin/_GTestFairTools)
 Else(Boost_FOUND)
   Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
 EndIf(Boost_FOUND)
 
-add_test(_TestFairTools ${FAIRROOT_BINARY_DIR}/bin/_TestFairTools)
+If(Boost_FOUND)
+  add_executable(_BoostTestFairTools _BoostTestFairTools.cxx)
+  target_link_libraries(_BoostTestFairTools ${Boost_LIBRARIES} FairTools FairTest)
+  add_test(_BoostTestFairTools ${FAIRROOT_BINARY_DIR}/bin/_BoostTestFairTools)
+Else(Boost_FOUND)
+  Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
+EndIf(Boost_FOUND)
+
+
+

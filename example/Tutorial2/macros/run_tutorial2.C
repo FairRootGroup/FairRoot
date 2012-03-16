@@ -7,8 +7,8 @@ void run_tutorial2(Int_t nEvents = 10)
   TString tut_geomdir = dir + "/example/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_geomdir = dir + "/example/gconfig";
-  gSystem->Setenv("CONFIG_DIR",tut_geomdir.Data());
+  TString tut_configdir = dir + "/example/gconfig";
+  gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   TString partName[] = {"pions","eplus","proton"};
   Int_t   partPdgC[] = {    211,     11,    2212};
@@ -60,6 +60,7 @@ void run_tutorial2(Int_t nEvents = 10)
   gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
   basiclibs();
   gSystem->Load("libFairTools");
+  gSystem->Load("libFairDB");
   gSystem->Load("libGeoBase");
   gSystem->Load("libParBase");
   gSystem->Load("libBase");

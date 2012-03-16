@@ -9,6 +9,7 @@ void read_digis(){
 
     // Load this example libraries
     gSystem->Load("libFairTools");
+    gSystem->Load("libFairDB");
     gSystem->Load("libGeoBase");
     gSystem->Load("libParBase");
     gSystem->Load("libBase");

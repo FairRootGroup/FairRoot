@@ -33,6 +33,7 @@ void run_rutherford(Int_t nEvents = 10)
 //  gROOT->LoadMacro(basicLibs);
   basiclibs();
   gSystem->Load("libFairTools");
+  gSystem->Load("libFairDB");
   gSystem->Load("libGeoBase");
   gSystem->Load("libParBase");
   gSystem->Load("libBase");
