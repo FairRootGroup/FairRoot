@@ -3,7 +3,6 @@
 // ***        D.Kresan@gsi.de                *** //
 // ********************************************* //
 
-using namespace std;
 #include <iostream>
 
 #include "TParticle.h"
@@ -11,6 +10,9 @@ using namespace std;
 #include "FairTrajFilter.h"
 #include "FairRootManager.h"
 #include "TMath.h"
+
+using namespace std;
+
 
 ClassImp(FairTrajFilter)
 

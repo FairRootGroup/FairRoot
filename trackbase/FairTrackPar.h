@@ -20,8 +20,7 @@ class FairTrackPar : public TObject
     virtual ~FairTrackPar();
 
     /** Output to screen **/
-    virtual void Print();
-
+    virtual void  Print(Option_t* option = "") const;
     /** Accessors **/
     virtual TVector3 GetPosition() const {return TVector3(fX, fY, fZ); };
 

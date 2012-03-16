@@ -60,7 +60,7 @@ class FairTrackParP : public FairTrackPar
 
 
     /** Output to screen **/
-    void Print();
+    virtual void  Print(Option_t* option = "") const;
 
     //define track parameters in LAB
     void SetTrackPar(Double_t X,  Double_t Y,  Double_t Z, Double_t Px, Double_t Py, Double_t Pz, Int_t Q, Double_t  CovMatrix[15], TVector3 o, TVector3 di, TVector3 dj, TVector3 dk);

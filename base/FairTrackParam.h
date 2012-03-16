@@ -52,8 +52,7 @@ class FairTrackParam : public TObject
 
 
     /** Output to screen **/
-    void Print();
-
+    void  Print(Option_t* option = "") const;
 
     /** Accessors **/
     Double_t GetX()  const { return fX; };

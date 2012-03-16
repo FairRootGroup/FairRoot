@@ -77,7 +77,7 @@ void FairRadMapManager::Init()
 
   // compute once the masses of the volumes in this simulation and store them in a TMap object
 
-  Int_t volumeiterator,lastvolume;
+  Int_t volumeiterator=0,lastvolume=0;
   Double_t vmass;
   TObjArray* volumelist;
   TGeoVolume* myvolume;

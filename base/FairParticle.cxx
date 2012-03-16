@@ -297,7 +297,7 @@ void FairParticle::AddDaughter(FairParticle* particle)
 }
 
 //_____________________________________________________________________________
-void FairParticle::Print() const
+void FairParticle::Print(Option_t* option) const
 {
 // Prints particle properties.
 // ---

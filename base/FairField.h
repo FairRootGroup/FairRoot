@@ -124,8 +124,7 @@ class FairField : public TVirtualMagField
 
 
     /** Screen output. To be implemented in the concrete class. **/
-    virtual void Print() { };
-
+    virtual void  Print(Option_t* option = "") const {;}
     virtual void GetBxyz(const Double_t point[3], Double_t* bField) { std::cout << "GetBz Should be implimented" << std::endl;};
 
 

@@ -21,12 +21,10 @@ class FairRunAna;
 class FairAnaSelector : public TSelector
 {
   public :
-    TTree*          fChain;   //!pointer to the analyzed TTree or TChain
-
-    FairRunAna* fRunAna;
-
     TProofOutputFile*     fProofFile;
     TFile*          fFile;
+    TTree*          fChain;   //!pointer to the analyzed TTree or TChain
+    FairRunAna*     fRunAna;
 
     FairAnaSelector(TTree* /*tree*/ =0) : fProofFile(0), fFile(0), fChain(0), fRunAna(NULL) { }
     virtual ~FairAnaSelector() { }

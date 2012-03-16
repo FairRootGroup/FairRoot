@@ -50,7 +50,7 @@ class FairHit : public FairBasePoint
 
 
     /*** Output to screen */
-    virtual void Print(const Option_t* opt = 0) const {;}
+    virtual void Print(const Option_t* opt ="") const {;}
 
 
 

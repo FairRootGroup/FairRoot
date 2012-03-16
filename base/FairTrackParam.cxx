@@ -66,7 +66,7 @@ FairTrackParam::~FairTrackParam() {}
 
 
 // -----   Public method Print   -------------------------------------------
-void FairTrackParam::Print()
+void FairTrackParam::Print(Option_t* option) const
 {
   cout << "Position : (";
   cout.precision(2);

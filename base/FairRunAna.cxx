@@ -66,9 +66,9 @@ FairRunAna::FairRunAna()
    fTimeProb(0),
    fProofAnalysis(kFALSE),
    fRunOnProofWorker(kFALSE),
+   fProofServerName(""),
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
-   fProofServerName(""),
    fProofOutputStatus("copy")
 {
 
@@ -80,7 +80,7 @@ FairRunAna::FairRunAna()
 //_____________________________________________________________________________
 FairRunAna::FairRunAna(const char* type, const char* proofName)
   :FairRun(),
-   //   fFriendFileList(new TObjArray()),
+   fRunInfo(),
    fIsInitialized(kFALSE),
    //   fInputFile(0),
    fInputGeoFile(0),
@@ -96,7 +96,6 @@ FairRunAna::FairRunAna(const char* type, const char* proofName)
    fEventTime(0),
    fEventMeanTime(0),
    fTimeProb(0),
-   fRunInfo(),
    fRunOnProofWorker(kFALSE),
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),

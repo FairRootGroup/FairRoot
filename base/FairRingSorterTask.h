@@ -21,24 +21,51 @@ class FairRingSorterTask : public FairTask
 
     /** Default constructor **/
     FairRingSorterTask():
-      FairTask("SorterTask"), fSorter(0), fPersistance(kTRUE), fDigiPixelMCInfo(kFALSE),
-      fInputBranch(), fOutputBranch(), fFolder(), fInputArray(0),
-      fOutputArray(0), fNumberOfCells(1000), fWidthOfCells(10), fEntryNr(0) {
+      FairTask("SorterTask"),
+      fSorter(0),
+      fPersistance(kTRUE),
+      fDigiPixelMCInfo(kFALSE),
+      fNumberOfCells(1000),
+      fWidthOfCells(10),
+      fInputBranch(),
+      fInputArray(0),
+      fOutputBranch(),
+      fFolder(),
+      fOutputArray(0),
+      fEntryNr(0) {
       SetVerbose(0);
     }
 
     /** Named constructor **/
     FairRingSorterTask(const char* name):
-      FairTask(name), fSorter(0), fPersistance(kTRUE), fDigiPixelMCInfo(kFALSE),
-      fInputBranch(), fOutputBranch(), fFolder(), fInputArray(0),
-      fOutputArray(0), fNumberOfCells(1000), fWidthOfCells(10), fEntryNr(0) {
+      FairTask(name),
+      fSorter(0),
+      fPersistance(kTRUE),
+      fDigiPixelMCInfo(kFALSE),
+      fNumberOfCells(1000),
+      fWidthOfCells(10),
+      fInputBranch(),
+      fInputArray(0),
+      fOutputBranch(),
+      fFolder(),
+      fOutputArray(0),
+      fEntryNr(0) {
       SetVerbose(0);
     }
 
     FairRingSorterTask(Int_t numberOfCells, Double_t widthOfCells, TString inputBranch, TString outputBranch, TString folderName):
-      FairTask("Sorter"), fSorter(0), fPersistance(kTRUE), fDigiPixelMCInfo(kFALSE),
-      fInputBranch(inputBranch), fOutputBranch(outputBranch), fFolder(folderName), fInputArray(0),
-      fOutputArray(0), fNumberOfCells(numberOfCells), fWidthOfCells(widthOfCells), fEntryNr(0) {
+      FairTask("Sorter"),
+      fSorter(0),
+      fPersistance(kTRUE),
+      fDigiPixelMCInfo(kFALSE),
+      fNumberOfCells(numberOfCells),
+      fWidthOfCells(widthOfCells),
+      fInputBranch(inputBranch),
+      fInputArray(0),
+      fOutputBranch(outputBranch),
+      fFolder(folderName),
+      fOutputArray(0),
+      fEntryNr(0) {
       SetVerbose(0);
     }
 
@@ -67,25 +94,20 @@ class FairRingSorterTask : public FairTask
   protected:
 
     FairRingSorter* fSorter;
-
-    Bool_t fPersistance; // switch to turn on/off storing the arrays to a file
-    Bool_t fDigiPixelMCInfo; // switch to turn on/off storing additional MC Info of Digis
-
+    /** switch to turn on/off storing the arrays to a file*/
+    Bool_t fPersistance;
+    /** switch to turn on/off storing additional MC Info of Digis*/
+    Bool_t fDigiPixelMCInfo;
     Int_t fNumberOfCells;
     Double_t fWidthOfCells; // in ns
-
-
     /** Input array of PndSdsPixelDigis **/
     TString fInputBranch;
     TClonesArray* fInputArray;
-
     /** Output array of sorted PndSdsDigis **/
     TString fOutputBranch;
     TString fFolder;
     TClonesArray* fOutputArray;
-
     Int_t fEntryNr;
-
     FairRingSorterTask(const FairRingSorterTask&);
     FairRingSorterTask& operator=(const FairRingSorterTask&);
 

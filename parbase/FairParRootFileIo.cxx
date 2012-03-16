@@ -41,8 +41,8 @@ ClassImp(FairParRootFileIo)
 FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option,
                                  const Text_t* ftitle, Int_t compress)
   :TNamed(fname,  ftitle),
-   RootFile(new TFile(fname,option,ftitle,compress)),
-   run(NULL)
+   run(NULL),
+   RootFile(new TFile(fname,option,ftitle,compress))
 {
 //              : TFile(fname,option,ftitle,compress) {
   // constructor opens a ROOT file
@@ -51,8 +51,8 @@ FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option,
 }
 FairParRootFile::FairParRootFile(TFile* f)
   :TNamed(f->GetName(), f->GetTitle()),
-   RootFile(f),
-   run(NULL)
+   run(NULL),
+   RootFile(f)
 {
 //  :TFile(f->GetName(),"UPDATE"){
   // constructor opens a ROOT file

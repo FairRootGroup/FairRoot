@@ -34,7 +34,7 @@ class FairParticle : public TObject
     // methods
     void SetMother(FairParticle* particle);
     void AddDaughter(FairParticle* particle);
-    void Print() const;
+    virtual void  Print(Option_t* option = "") const;
     void PrintDaughters() const;
 
     // get methods
@@ -43,7 +43,7 @@ class FairParticle : public TObject
     FairParticle*     GetMother() const;
     Int_t            GetNofDaughters() const;
     FairParticle*     GetDaughter(Int_t i) const;
-    const TString&   GetName()          {return fname; }
+    virtual const char* GetName() const {return fname.Data();}
     TMCParticleType  GetMCType()  {return fmcType;}
     Double_t         GetMass()          {return fmass;}
     Double_t         GetCharge()        {return fcharge;}

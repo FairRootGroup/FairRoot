@@ -606,8 +606,7 @@ FairTrackParH::~FairTrackParH()
 {
 
 }
-
-void FairTrackParH::Print()
+void  FairTrackParH::Print(Option_t* option) const
 {
   cout << this<< endl;
   cout << "Position : (";

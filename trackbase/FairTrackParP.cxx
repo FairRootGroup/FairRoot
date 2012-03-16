@@ -705,7 +705,7 @@ FairTrackParP::~FairTrackParP() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void FairTrackParP::Print()
+void FairTrackParP::Print(Option_t* option) const
 {
   cout << "Position : (";
   cout.precision(2);

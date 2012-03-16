@@ -45,7 +45,8 @@ class FairTrackParH : public FairTrackPar
     virtual ~FairTrackParH();
 
     /** Output to screen **/
-    void Print();
+//   void Print();
+    virtual void  Print(Option_t* option = "") const;
 
     /** Accessors **/
     Double_t GetLambda() { return fLm; };
