@@ -63,6 +63,25 @@ FairStack::~FairStack()
 }
 // -------------------------------------------------------------------------
 
+void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
+                          Double_t px, Double_t py, Double_t pz,
+                          Double_t e, Double_t vx, Double_t vy, Double_t vz,
+                          Double_t time, Double_t polx, Double_t poly,
+                          Double_t polz, TMCProcess proc, Int_t& ntr,
+                          Double_t weight, Int_t is)
+{
+
+  PushTrack( toBeDone, parentId, pdgCode,
+             px,  py,  pz,
+             e,  vx,  vy,  vz,
+             time,  polx,  poly,
+             polz, proc, ntr,
+             weight, is, -1);
+}
+
+
+
+
 
 
 // -----   Virtual public method PushTrack   -------------------------------
@@ -71,7 +90,7 @@ void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t e, Double_t vx, Double_t vy, Double_t vz,
                           Double_t time, Double_t polx, Double_t poly,
                           Double_t polz, TMCProcess proc, Int_t& ntr,
-                          Double_t weight, Int_t is)
+                          Double_t weight, Int_t is, Int_t secondparentID)
 {
 
   // --> Get TParticle array
