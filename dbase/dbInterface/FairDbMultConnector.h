@@ -68,7 +68,7 @@ class FairDbMultConnector
     // Constructors and destructors.
     FairDbMultConnector();
     virtual ~FairDbMultConnector();
-    FairDbMultConnector(const FairDbMultConnector&);
+    FairDbMultConnector(const FairDbMultConnector& conn);
 
     void SetAuthorisingEntry(Int_t entry) {fGlobalSeqNoDbNo = entry;}
 
