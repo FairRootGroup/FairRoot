@@ -111,6 +111,13 @@ FairDbMultConnector::FairDbMultConnector():
 
 }
 
+
+FairDbMultConnector::FairDbMultConnector(const FairDbMultConnector& conn)
+{
+  fGlobalSeqNoDbNo=conn.fGlobalSeqNoDbNo;
+  fConnections=conn.fConnections;
+  fTemporaryTables=conn.fTemporaryTables;
+}
 //.....................................................................
 
 FairDbMultConnector::~FairDbMultConnector()
