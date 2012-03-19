@@ -45,7 +45,7 @@ void FairGeaneUtil::FromPtToSC(Double_t PC[3], Double_t RC[15],
   Double_t Vec[25];
 
   IERR = 0;
-  memset(RD,0,sizeof(RD));
+  memset(RD,0,sizeof(*RD));
 
   COSL  = cos(PC[1]);
 
@@ -254,7 +254,7 @@ void FairGeaneUtil::FromSCToPt(Double_t PC[3], Double_t RC[15],
   Double_t Vec[25];
 
   IERR = 0;
-  memset(RD,0,sizeof(RD));
+  memset(RD,0,sizeof(*RD));
 
   COSL  = cos(PC[1]);
   if(TMath::Abs(COSL) < 1.e-7) {
@@ -341,8 +341,8 @@ void FairGeaneUtil::FromSCToSD(Double_t PC[3], Double_t RC[15], Double_t H[3], I
   Double_t Q, UI, VI, UJ, UK, VJ, VK;
 
   IERR=0;
-  memset(RD,0,sizeof(RD));
-  memset(PD,0,sizeof(PD));
+  memset(RD,0,sizeof(*RD));
+  memset(PD,0,sizeof(*PD));
 
   COSL=TMath::Cos(PC[1]);
   SINP=TMath::Sin(PC[2]);
@@ -498,8 +498,8 @@ void FairGeaneUtil::FromSD1ToSD2(Double_t PD1[2], Double_t RD1[15],Double_t H[2]
   Double_t CFACT8= 2.997925e-04;
 
   IERR=0;
-  memset(PD2,0,sizeof(PD2));
-  memset(RD2,0,sizeof(RD2));
+  memset(PD2,0,sizeof(*PD2));
+  memset(RD2,0,sizeof(*RD2));
 
   PM=PD1[0];
   TVW1[0]=1./sqrt(1.+PD1[1]*PD1[1]+PD1[2]*PD1[2]);
@@ -808,8 +808,8 @@ void FairGeaneUtil::FromSDToSC(Double_t PD[3], Double_t RD[15], Double_t H[3], I
   Double_t PM;
 
   IERR=0;
-  memset(RC,0,sizeof(RC));
-  memset(PC,0,sizeof(PC));
+  memset(RC,0,sizeof(*RC));
+  memset(PC,0,sizeof(*PC));
 
   PM=PD[0];
   TVW[0]=1./TMath::Sqrt(1.+PD[1]*PD[1]+PD[2]*PD[2]);
@@ -1017,8 +1017,8 @@ void FairGeaneUtil::FromMarsToSC(Double_t PD[3], Double_t RD[6][6],  Double_t H[
   // reset
 
   IERR=0;
-  memset(RC,0,sizeof(RC));
-  memset(PC,0,sizeof(PC));
+  memset(RC,0,sizeof(*RC));
+  memset(PC,0,sizeof(*PC));
 
   PM  = TMath::Sqrt(PD[0]*PD[0]+PD[1]*PD[1]+PD[2]*PD[2]);
   PM3 = TMath::Power(PM,3);
@@ -1106,7 +1106,7 @@ void FairGeaneUtil::FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3],
   // -------------------------------------------------------------------------
 
   IERR=0;
-  memset(PD,0,sizeof(PD));
+  memset(PD,0,sizeof(*PD));
 
   // reset matrices
   for(Int_t I=0; I<6; I++) {
@@ -1213,8 +1213,8 @@ void FairGeaneUtil::FromMarsToSD(Double_t PD[3], Double_t RD[6][6],
   // reset
 
   IERR=0;
-  memset(RC,0,sizeof(RC));
-  memset(PC,0,sizeof(PC));
+  memset(RC,0,sizeof(*RC));
+  memset(PC,0,sizeof(*PC));
 
   for(Int_t I=0; I<5; I++) {
     for(Int_t K=0; K<6; K++) {
@@ -1456,7 +1456,7 @@ void FairGeaneUtil::FromSDToMars(Double_t PC[3], Double_t RC[15],
 
   // -------------------------------------------------------------------------
 
-  memset(PD,0,sizeof(PD));
+  memset(PD,0,sizeof(*PD));
 
   // reset matrices
   for(Int_t I=0; I<5; I++) {
