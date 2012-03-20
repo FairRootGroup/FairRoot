@@ -589,7 +589,7 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDGCode);
 
   // flags Rotondi's function
-  int flg;
+  int flg=0;
 
   // cl track length to the three last points of closest approach
   // dst assigned distance between initial point in ERTRAK and PFINAL along straight line (currently noy used)
@@ -602,7 +602,7 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   Float_t clen[3];
 
   // track length to add to GEANE computed one
-  Double_t Le;
+  Double_t Le=0.0;
   Double_t dist1,dist2;
 
   // initialization of some variables

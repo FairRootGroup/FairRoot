@@ -70,7 +70,7 @@ INTS4 f_his_swpbas(s_head* ps_head)
   s_spe*  ps_spe;
   s_win* ps_win;
   s_pol* ps_pol;
-  INTS4*  pl_mem,*pl;
+  INTS4*  *pl;
 
   /* swap first two LWs to get correct size */
   pl=(INTS4*)ps_head;
