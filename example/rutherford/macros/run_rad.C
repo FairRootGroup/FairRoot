@@ -1,4 +1,4 @@
-void run_rutherford(Int_t nEvents = 10)
+void run_rad(Int_t nEvents = 100)
 {
   
   TString dir = gSystem->Getenv("VMCWORKDIR");
@@ -63,6 +63,10 @@ void run_rutherford(Int_t nEvents = 10)
   run->SetMaterials("media.geo");       // Materials
   // ------------------------------------------------------------------------
   
+  //----Start the radiation length manager ----------------------------------
+  
+  run->SetRadLenRegister(kTRUE);
+
   // -----   Create geometry   ----------------------------------------------
 
   FairModule* cave= new FairCave("CAVE");
@@ -73,7 +77,7 @@ void run_rutherford(Int_t nEvents = 10)
   target->SetGeometryFileName("target_rutherford.geo"); 
   run->AddModule(target);
 
-  FairDetector* rutherford = new FairRutherford("RutherfordDetector", kTRUE);
+  FairDetector* rutherford = new FairRutherford("RutherfordDetector", kFALSE);
   rutherford->SetGeometryFileName("rutherford.geo"); 
   run->AddModule(rutherford);
   // ------------------------------------------------------------------------
@@ -85,14 +89,14 @@ void run_rutherford(Int_t nEvents = 10)
 
   // Ion Generator
                                                
-  FairIonGenerator *fIongen= new FairIonGenerator(2, 4, 2, 1, 0., 0., 1./20., 0., 0., -1.); 
+  /*FairIonGenerator *fIongen= new FairIonGenerator(2, 4, 2, 1, 0., 0., 1./20., 0., 0., -1.); 
   primGen->AddGenerator(fIongen);
+*/
 
-
-  FairBoxGenerator* boxGen1 = new FairBoxGenerator(2212, 1);
+  FairBoxGenerator* boxGen1 = new FairBoxGenerator(0, 1);
   boxGen1->SetPRange(.005,.005);
   boxGen1->SetPhiRange(0.,0.);
-  boxGen1->SetThetaRange(0.,0.);
+  boxGen1->SetThetaRange(-90.,90.);
   boxGen1->SetXYZ(0.,0.,-3.);
   primGen->AddGenerator(boxGen1);
 
