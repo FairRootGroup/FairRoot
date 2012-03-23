@@ -5,6 +5,8 @@
  ***************************************/
 #include "FairGenericParTSQLIo.h"
 
+#include "FairParSet.h"
+#include "FairParGenericSet.h"
 
 ClassImp(FairGenericParTSQLIo)
 
@@ -33,27 +35,42 @@ FairGenericParTSQLIo::FairGenericParTSQLIo(FairDbMultConnector const& cons,
 //! Destructor
 FairGenericParTSQLIo::~FairGenericParTSQLIo()
 {
-  std::cout << "~FairGenericParTSQLIo()\n";
+  std::cout << "\n\n\t<DEBUG>~FairGenericParTSQLIo() Destroy\n\n";
 }
 
-
-bool FairGenericParTSQLIo::read(FairParGenericSet& par)
+//bool FairGenericParTSQLIo::read(FairParGenericSet& par)
+Bool_t FairGenericParTSQLIo::read(FairParGenericSet& par)
 {
+  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::read(FairParGenericSet& par)\n\n";
   par.Print();
-  std::cout << "FairGenericParTSQLIo::read(FairParGenericSet& par)\n";
+  return false;
+}
+
+//bool FairGenericParTSQLIo::init(FairParSet* pPar, int* n)
+Bool_t FairGenericParTSQLIo::init(FairParSet* pPar, Int_t* n)
+{
+  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::init(FairParSet* pars, int* n)\n\n";
+
+  // calls read(FairParGenericSet*,Int_t*)
+  if (pPar->InheritsFrom("FairParGenericSet")) {
+    std::cout << "@@@@@@<Init From db>@@@@@@@\n\n";
+    return read((FairParGenericSet*)pPar);
+  }
+  Error("FairGenericParTSQLIo::init(FairParSet*, Int_t*)",
+        "%s does not inherit from FairParGenericSet", pPar->GetName());
   return false;
 }
 
 int FairGenericParTSQLIo::write(FairParSet& par)
 {
+  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::write(FairParSet& par)\n\n";
   par.Print();
-  std::cout << "FairGenericParTSQLIo::write(FairParSet& par)\n";
-  return 1;
+  return -1;
 }
 
 int FairGenericParTSQLIo::writeSet(FairParGenericSet& par)
 {
+  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::writeSet(FairParGenericSet& par)\n\n";
   par.Print();
-  std::cout << "FairGenericParTSQLIo::writeSet(FairParGenericSet& par)\n";
-  return 0;
+  return -1;
 }

@@ -11,11 +11,10 @@
 #include <iostream>
 
 // FairRoot
-#include "FairParSet.h"
-#include "FairParGenericSet.h"
 #include "FairDetParTSQLIo.h"
-
-// ROOT
+class FairParSet;
+class FairParGenericSet;
+class FairParamObj;
 
 class FairGenericParTSQLIo : public FairDetParTSQLIo
 {
@@ -36,7 +35,15 @@ class FairGenericParTSQLIo : public FairDetParTSQLIo
     //! Destructor.
     virtual ~FairGenericParTSQLIo();
 
+    //bool init(FairParSet* pars, int* n);
+    Bool_t init(FairParSet* pPar, Int_t* n);
+
+    //bool read(FairParGenericSet* pPar);
+    Bool_t read(FairParGenericSet* pPar);
+
+    //! Read and write functions.
     bool read(FairParGenericSet& pset);
+
     virtual int write(FairParSet& pars);
     virtual int writeSet(FairParGenericSet& pars);
 

@@ -59,10 +59,12 @@ class FairParTSQLIo: public FairParIo
      */
     bool check();
 
+    bool open();
+
     /**
      * Print some info. This function maybe removed in future.
      */
-    void print() const;
+    void print();
 
     /**
      * Set which database connection is going to be the default.
@@ -75,12 +77,13 @@ class FairParTSQLIo: public FairParIo
      */
     inline int  GetDefaultDBNum() const;
 
-  protected:
     /**
      * Get the connection object.
      *@return The actual FairDBConnection object.
      */
     inline FairDbMultConnector const& GetConnections() const;
+
+  protected:
 
     bool activateDetIo();
 

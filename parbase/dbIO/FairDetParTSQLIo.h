@@ -7,10 +7,17 @@
 #ifndef FAIRDET_PAR_TSQL_IO_H
 #define FAIRDET_PAR_TSQL_IO_H
 
+//C && C++
+#include <iostream>
+
+// FairRoot
 #include "FairDetParIo.h"
-#include "FairDbMultConnector.h"
-#include "FairRtdbRun.h"
-#include "FairParSet.h"
+
+class FairRun;
+class FairRuntimeDb;
+class FairDbMultConnector;
+class FairRtdbRun;
+class FairParSet;
 
 class FairDetParTSQLIo : public FairDetParIo
 {
@@ -32,19 +39,23 @@ class FairDetParTSQLIo : public FairDetParIo
     /// Destructor.
     virtual ~FairDetParTSQLIo();
 
-    virtual bool read (FairParSet* pars);
-    virtual int  write(FairParSet* pars);
 
-    ////////////////
-    inline void print();
-    void Print() {};
-    ///////////////
+    virtual bool read ( FairParSet* pars);
+
+    virtual int  write( FairParSet* pars);
+
+    int getRunStart( FairParSet* pPar = 0);
+
     //________ DB functions maybe later ____
     // commits changes.
     virtual void commit();
 
     // Undo the changes made since last commit.
     virtual void rollback();
+
+    ////////////////
+    inline void print();
+    ///////////////
 
     // ____________ protected Members ___________________
   protected:
@@ -53,8 +64,9 @@ class FairDetParTSQLIo : public FairDetParIo
     FairDbMultConnector* fConnections;//! FairDbConnection
     TList*               fcontainerList;//! List of parameter containers
     FairRtdbRun*         factContVers;  //! The actual list of container versions
+    int actRunId; // actual runId (can be -1 if there are no data in Oracle)
 
-    void setChanged(FairParSet*);
+    void setChanged(FairParSet* pars);
 
     // ____________ private Members ___________________
   private:

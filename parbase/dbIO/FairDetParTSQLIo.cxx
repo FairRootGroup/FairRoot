@@ -5,6 +5,12 @@
  ***************************************/
 #include "FairDetParTSQLIo.h"
 
+#include "FairRun.h"
+#include "FairRuntimeDb.h"
+#include "FairDbMultConnector.h"
+#include "FairRtdbRun.h"
+#include "FairParSet.h"
+
 ClassImp(FairDetParTSQLIo)
 
 /// Constructor
@@ -13,7 +19,8 @@ FairDetParTSQLIo::FairDetParTSQLIo()
     fDefaultDb(-1),
     fConnections(new FairDbMultConnector()),
     fcontainerList(0),
-    factContVers(0)
+    factContVers(0),
+    actRunId(-1)
 {}
 
 /**
@@ -29,12 +36,14 @@ FairDetParTSQLIo::FairDetParTSQLIo(FairDbMultConnector const& cons, int const db
     fDefaultDb(dbNum),
     fConnections(new FairDbMultConnector(cons)),
     fcontainerList(0),
-    factContVers(0)
+    factContVers(0),
+    actRunId(-1)
 {}
 
 /// Destructor.
 FairDetParTSQLIo::~FairDetParTSQLIo()
 {
+  std::cout << "\n\t<DEBUG> FairDetParTSQLIo::~FairDetParTSQLIo()\n\n";
   if( fConnections ) {
     delete fConnections;
   }
@@ -47,6 +56,48 @@ FairDetParTSQLIo::~FairDetParTSQLIo()
     fcontainerList->Delete();
     delete fcontainerList;
   }
+}
+
+int FairDetParTSQLIo::getRunStart(FairParSet* pPar)
+{
+  std::cout << "\n\n\n\n\t<DEBUG> FairDetParTSQLIo::getRunStart(FairParSet* pPar)\n\n\n\n";
+  actRunId=-1;
+  int runStart=-1;
+  factContVers=(FairRtdbRun*)FairRun::Instance()->GetRuntimeDb()->getCurrentRun();
+
+  if (!factContVers) {
+    Error("getRunStart()","current run not set in runtime database");
+    return -1;
+  }
+
+  const Text_t* refRun=factContVers->getRefRun();
+
+  if (strlen(refRun) > 0) {
+    sscanf(refRun,"%i",&actRunId);
+  } else {
+    actRunId=factContVers->getRunId();
+  }
+
+  if(pPar) {
+    Int_t contVers = 10;//getPredefVersion(pPar);
+    if (contVers>=0) {
+      actRunId = contVers;
+    }
+  }
+  //runStart=pConn->getRunStart(actRunId);
+  return runStart;
+}
+
+void FairDetParTSQLIo::setChanged(FairParSet* pPar)
+{
+  // sets the changed flag, the version (id of actual run) and the comment
+  pPar->setChanged();
+  //pPar->setInputVersion(getActRunId(), inputNumber);
+  TString s="Read from TSQL\n             Valid for Run Id ";
+  //s.Append(Form("%d",getActRunId()));
+  s.Append("\n             Status at ");
+  //s.Append(pConn->getHistoryDate());
+  pPar->setDescription(s.Data());
 }
 
 // commits changes.
@@ -64,16 +115,24 @@ void FairDetParTSQLIo::rollback()
             << std::endl;
 }
 
+
 bool FairDetParTSQLIo::read (FairParSet* pars)
 {
   pars->Print();
-  std::cout << "\n\tFairDetParTSQLIo::read (FairParSet* pars)\n\n";
+  std::cout << "\n\t<DEBUG>FairDetParTSQLIo::READ(FairParSet* pars)\n\n";
   return false;
 }
 
 int  FairDetParTSQLIo::write(FairParSet* pars)
 {
-  pars->Print();
-  std::cout << "\n\tFairDetParTSQLIo::write(FairParSet* pars)\n\n";
+  std::cout << "========================================================\n"
+            <<"\t<DEBUG> FairDetParTSQLIo::WRITE(FairParSet* pars)\n";
+  std::cout << pars->GetName() << " "
+            << pars->getDescription() << " "
+            << pars->getAuthor() << " "
+            << pars->getParamContext() << " "
+            << pars->getDetectorName()
+            << "\n========================================================\n";
   return 0;
 }
+

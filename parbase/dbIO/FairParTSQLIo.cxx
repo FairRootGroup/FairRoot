@@ -15,7 +15,8 @@ ClassImp(FairParTSQLIo)
  * Default constructor.
  */
 FairParTSQLIo::FairParTSQLIo()
-  : fDefaultDb (-1),
+  : FairParIo(),
+    fDefaultDb (-1),
     fConnections( new FairDbMultConnector() )
 {
   std::cout << "\t<DEBUG_INFO>FairParTSQLIo::FairParTSQLIo()\n";
@@ -28,7 +29,8 @@ FairParTSQLIo::FairParTSQLIo()
  * master for the current operations.
  */
 FairParTSQLIo::FairParTSQLIo(FairDbMultConnector const& cons, int const dbNum)
-  : fDefaultDb (dbNum),
+  : FairParIo(),
+    fDefaultDb (dbNum),
     fConnections(new FairDbMultConnector(cons))
 {
   std::cout << "\t<DEBUG_INFO>FairParTSQLIo::FairParTSQLIo()12\n";
@@ -91,6 +93,9 @@ void FairParTSQLIo::setDetParIo(Text_t* ioName)
 void FairParTSQLIo::disconnect()
 {
   if(fConnections) {
+    std::cout << "\n\t<DEBUG> Terminating connection and status = "
+              << fConnections->GetStatusAsString(0)
+              <<"\n\n";
     delete fConnections;
     fConnections = 0;
   }
@@ -98,6 +103,8 @@ void FairParTSQLIo::disconnect()
 
 bool FairParTSQLIo::activateDetIo()
 {
+  std::cout << "<DEBUG> FairParTSQLIo::activateDetIo()\n";
+
   if(!fConnections) { // FIXME FIXME
     return false;
   }
@@ -106,11 +113,18 @@ bool FairParTSQLIo::activateDetIo()
   return true;
 }
 
+bool FairParTSQLIo::open()
+{
+  std::cout << "<DEBUG> FairParTSQLIo::open()\n";
+  return activateDetIo();
+}
+
 /**
  * Print some info. This function maybe removed in future.
  */
-void FairParTSQLIo::print() const
+void FairParTSQLIo::print()
 {
+  std::cout << "<DEBUG> FairParTSQLIo::print()\n";
   if (fConnections) {
     std::cout << "<INFO> Number of available DBs = " << fConnections->GetNumDb()
               << std::endl;
