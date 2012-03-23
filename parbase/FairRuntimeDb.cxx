@@ -35,6 +35,7 @@ using std::ios;
 using std::setw;
 
 /// DEBUG DEBUG Temporary define
+// 0 = use original code; 1 = use new code
 #define USE_DB_METHOD 0
 /////////////////////////////////
 
@@ -377,6 +378,7 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
 #if (USE_DB_METHOD > 0)
 Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtdbRun* refRun)
 {
+  std::cout << "\n\t+++++++<DEBUG> Using modified code.+++++++\n";
   // writes a container to the output if the containers has changed
   // The output might be suppressed if the changes is due an initialisation from a
   //   ROOT file which serves also as output or if it was already written
@@ -386,43 +388,51 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
   Bool_t rc = kTRUE;
   Int_t cv = 0;
   if (getOutput() && output->check() && output->isAutoWritable()) {
-    if (ioType == RootFileOutput) {// RootFile
+    switch (ioType) {
+    case RootFileOutput: // RootFile
       if (cont->hasChanged()) {
-        cv=findOutputVersion(cont);
-        if (cv==0) {
-          cv=cont->write(output);
+        cv = findOutputVersion(cont);
+        if (cv == 0) {
+          cv = cont->write(output);
           if (cv>0) {
             fLogger->Info(MESSAGE_ORIGIN,"***  %s written to ROOT file   version: %i ", c, cv);
-          } else if (cv==-1) { return kFALSE; }
+          } else if (cv==-1) {
+            return kFALSE;
+          }
           // -1 indicates and error during write
           // 0 is allowed for all containers which have no write function
         }
         vers->setRootVersion(cv);
       } else {
-        if (vers->getRootVersion()==0) {
-          cv=findOutputVersion(cont);
+        if (vers->getRootVersion() == 0) {
+          cv = findOutputVersion(cont);
           vers->setRootVersion(cv);
         }
       }
-    } else if(ioType == RootTSQLOutput) { //TSQL
+      break;// End of rootfile IO
+    case RootTSQLOutput://TSQL
       if (cont->hasChanged()) {
-        cv=findOutputVersion(cont);
+        cv = findOutputVersion(cont);
         if(cv == 0) {
-          std::cout << "<DEBUG> Write TSQL here _"<< cv << "_ <++++++>\n";
+          std::cout << "<DEBUG> Write TSQL here cv = "<< cv << "_ <++++++>\n";
           cont->print();
+          cont->write();
         }
       }
-    } else if(ioType == AsciiFileOutput) { // might be Ascii I/O
-      if (cont->hasChanged()) {
+      break;//End of TSQL IO
+    case AsciiFileOutput:// might be Ascii I/O
+      if(cont->hasChanged()) {
         cv = cont->write(output);
-        if (cv<0) {
+        if(cv <0) {
           return kFALSE;
         }
-        cout<<"***  "<<c<<" written to output"<<'\n';
+        cout << "***  " << c << " written to output" << '\n';
         vers->setRootVersion(cv);
       }
-    } else { // Unknown IO
+      break;// End of Ascii IO
+    default: // Unknown IO
       Error("writeContainer()","Unknown output file type.");
+      break;
     }
   }
   vers->setInputVersion(cont->getInputVersion(1),1);
