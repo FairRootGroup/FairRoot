@@ -40,11 +40,11 @@ class FairDetParTSQLIo : public FairDetParIo
     virtual ~FairDetParTSQLIo();
 
 
-    virtual bool read ( FairParSet* pars);
+    Bool_t read ( FairParSet* pars);
 
-    virtual int  write( FairParSet* pars);
+    Int_t  write( FairParSet* pars);
 
-    int getRunStart( FairParSet* pPar = 0);
+    Int_t getRunStart( FairParSet* pPar = 0);
 
     //________ DB functions maybe later ____
     // commits changes.

@@ -116,23 +116,24 @@ void FairDetParTSQLIo::rollback()
 }
 
 
-bool FairDetParTSQLIo::read (FairParSet* pars)
+Bool_t FairDetParTSQLIo::read (FairParSet* pars)
 {
+  std::cout << "========================================================\n";
   pars->Print();
-  std::cout << "\n\t<DEBUG>FairDetParTSQLIo::READ(FairParSet* pars)\n\n";
+  std::cout << "\n\t<DEBUG>FairDetParTSQLIo::READ(FairParSet* pars)\n"
+            << "========================================================\n";
   return false;
 }
 
-int  FairDetParTSQLIo::write(FairParSet* pars)
+Int_t  FairDetParTSQLIo::write(FairParSet* pars)
 {
   std::cout << "========================================================\n"
-            <<"\t<DEBUG> FairDetParTSQLIo::WRITE(FairParSet* pars)\n";
-  std::cout << pars->GetName() << " "
-            << pars->getDescription() << " "
-            << pars->getAuthor() << " "
-            << pars->getParamContext() << " "
-            << pars->getDetectorName()
+            <<"\t<DEBUG> FairDetParTSQLIo::WRITE(FairParSet* pars)\n"
+            << "Name is = " << pars->GetName() << " "
+            << " Desc = " << pars->getDescription() << " "
+            << " Autho = " << pars->getAuthor() << " "
+            << " Context = " << pars->getParamContext() << " "
+            << " DetNAme = " << pars->getDetectorName()
             << "\n========================================================\n";
   return 0;
 }
-

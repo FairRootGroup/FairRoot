@@ -7,6 +7,10 @@
 
 #include "FairParSet.h"
 #include "FairParGenericSet.h"
+#include "FairParamList.h"
+
+#include "TList.h"
+
 
 ClassImp(FairGenericParTSQLIo)
 
@@ -38,15 +42,13 @@ FairGenericParTSQLIo::~FairGenericParTSQLIo()
   std::cout << "\n\n\t<DEBUG>~FairGenericParTSQLIo() Destroy\n\n";
 }
 
-//bool FairGenericParTSQLIo::read(FairParGenericSet& par)
-Bool_t FairGenericParTSQLIo::read(FairParGenericSet& par)
+Bool_t FairGenericParTSQLIo::read(FairParGenericSet* par)
 {
-  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::read(FairParGenericSet& par)\n\n";
-  par.Print();
+  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::read(FairParGenericSet* par)\n\n";
+  par->Print();
   return false;
 }
 
-//bool FairGenericParTSQLIo::init(FairParSet* pPar, int* n)
 Bool_t FairGenericParTSQLIo::init(FairParSet* pPar, Int_t* n)
 {
   std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::init(FairParSet* pars, int* n)\n\n";
@@ -61,16 +63,46 @@ Bool_t FairGenericParTSQLIo::init(FairParSet* pPar, Int_t* n)
   return false;
 }
 
-int FairGenericParTSQLIo::write(FairParSet& par)
+Int_t FairGenericParTSQLIo::write(FairParSet* par)
 {
-  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::write(FairParSet& par)\n\n";
-  par.Print();
+  std::cout << "\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"
+            << "\t<DEBUG>FairGenericParTSQLIo::Write(FairParSet* par)\n";
+  if (par->InheritsFrom("FairParGenericSet")) {
+    return writeSet((FairParGenericSet*)par);
+  }
+  std::cout << "\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
+  Error("FairGenericParOraIo::write(FairParSet*)",
+        "%s does not inherit from FairParGenericSet",par->GetName());
   return -1;
 }
 
-int FairGenericParTSQLIo::writeSet(FairParGenericSet& par)
+Int_t FairGenericParTSQLIo::writeSet(FairParGenericSet* par)
 {
-  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::writeSet(FairParGenericSet& par)\n\n";
-  par.Print();
+  if(!par) {
+    std::cout << "No par not initialized\n";
+    return -1;
+  }
+  std::cout << "\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"
+            << "\t<DEBUG>FairGenericParTSQLIo::writeSet(FairParGenericSet* par)\n";
+  std::cout << "Name is " << par->GetName()
+            << " Context = " << par->getParamContext();
+  std::cout << "\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
+
+  std::cout <<"---------------  Storage of "<< par->GetName()<<"  ---------------\n";
+  std::cout << "Class name = " << par->ClassName() << std::endl;
+
+  FairParamList* paramList = new FairParamList();
+  par->putParams(paramList);
+
+  TList* pList=paramList->getList();
+  TIter next(pList);
+  FairParamObj* po;
+
+  while ((po=(FairParamObj*)next())) {
+    std::cout << " po.Name =" << po->GetName() << '\n'
+              << " po.val = " << po->getParamValue()<< '\n'
+              << " po.Type =" << po->getParamType()
+              << "\n+++++\n";
+  }
   return -1;
 }
