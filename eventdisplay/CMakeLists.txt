@@ -26,7 +26,9 @@ FairEventManager.cxx
 FairMCTracks.cxx
 FairEventManagerEditor.cxx
 FairMCTracksEditor.cxx
+FairBoxSet.cxx
 FairBoxSetDraw.cxx
+FairBoxSetEditor.cxx
 FairPointSetDraw.cxx
 FairMCPointDraw.cxx
 FairHitDraw.cxx

@@ -6,10 +6,12 @@
 #define ROOT_FAIREVENTMANAGEREDITOR
 
 #include "TGedFrame.h"
+
+#include "TEveGValuators.h"
+
 class FairEventManager;
 class TGNumberEntry;
 class TGCheckButton;
-class TEveGValuator;
 class FairEventManagerEditor : public TGedFrame
 {
     FairEventManagerEditor(const FairEventManagerEditor&);            // Not implemented
@@ -21,6 +23,7 @@ class FairEventManagerEditor : public TGedFrame
     TGNumberEntry*  fCurrentEvent, *fCurrentPDG;
     TGCheckButton*  fVizPri;
     TEveGValuator* fMinEnergy ,*fMaxEnergy;
+    TGLabel* fEventTime;
   public:
     FairEventManagerEditor(const TGWindow* p=0, Int_t width=170, Int_t height=30,
                            UInt_t options = kChildFrame, Pixel_t back=GetDefaultFrameBackground());

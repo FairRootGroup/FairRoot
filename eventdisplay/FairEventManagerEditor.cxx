@@ -9,7 +9,6 @@
 #include "TGNumberEntry.h"
 #include "TGeoManager.h"
 #include "TChain.h"
-#include "TEveGValuators.h"
 
 #define MAXE 5000
 
@@ -84,6 +83,13 @@ void FairEventManagerEditor::Init()
   f->AddFrame(fCurrentEvent, new TGLayoutHints(kLHintsLeft, 1, 1, 1, 1));
   fCurrentEvent->Connect("ValueSet(Long_t)","FairEventManagerEditor", this, "SelectEvent()");
   title1->AddFrame(f);
+
+  TGHorizontalFrame* f2 = new TGHorizontalFrame(title1);
+  TGLabel* EventTimeLabel = new TGLabel(f2, "Event Time: ");
+  fEventTime = new TGLabel(f2,"");
+  f2->AddFrame(EventTimeLabel);
+  f2->AddFrame(fEventTime);
+  title1->AddFrame(f2);
 
   fVizPri = new TGCheckButton(title1, "Primary Only");
   AddFrame(fVizPri, new TGLayoutHints(kLHintsTop, 3, 1, 1, 0));
@@ -161,6 +167,12 @@ void FairEventManagerEditor::SelectPDG()
 void FairEventManagerEditor::SelectEvent()
 {
   fManager->GotoEvent(fCurrentEvent->GetIntNumber());
+
+  TString time;
+// time+=(FairRootManager::Instance()->GetEventTime());
+  time.Form("%.2f", FairRootManager::Instance()->GetEventTime());
+  time += " ns";
+  fEventTime->SetText(time.Data());
 
   fMinEnergy->SetLimits(fManager->GetEvtMinEnergy(), fManager->GetEvtMaxEnergy(), 100);
   fMinEnergy->SetValue(fManager->GetEvtMinEnergy());

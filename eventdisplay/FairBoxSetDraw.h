@@ -21,7 +21,9 @@
 
 #include "FairTask.h"
 
-class TEveBoxSet;
+#include "FairTSBufferFunctional.h"
+
+class FairBoxSet;
 class TObject;
 class TVector3;
 class TClonesArray;
@@ -46,17 +48,24 @@ class FairBoxSetDraw : public FairTask
     /** Destructor **/
     virtual ~FairBoxSetDraw();
 
+    virtual double GetTimeWindow() {return fTimeWindow;}
+
     /** Set verbosity level. For this task and all of the subtasks. **/
-    void SetVerbose(Int_t iVerbose) {fVerbose = iVerbose;};
-    void SetBoxDimensions(Double_t x, Double_t y, Double_t z) {
+    virtual void SetVerbose(Int_t iVerbose) {fVerbose = iVerbose;};
+    virtual void SetBoxDimensions(Double_t x, Double_t y, Double_t z) {
       fX = x;
       fY = y;
       fZ = z;
     }
+
+    virtual void SetTimeWindow(Double_t val) {fTimeWindow = val; std::cout << "FairBoxSetDraw::TimeWindow " << fTimeWindow << std::endl;}
+    virtual void SetStartTime(Double_t val) {fStartTime = val;}
+    virtual void UseEventTimeAsStartTime(Bool_t val = kTRUE) {fUseEventTime = val;}
+
     /** Executed task **/
     virtual void Exec(Option_t* option);
 
-    TEveBoxSet* CreateBoxSet();
+    FairBoxSet* CreateBoxSet();
 
     void Reset();
 
@@ -70,17 +79,24 @@ class FairBoxSetDraw : public FairTask
 
     virtual TVector3 GetVector(TObject* obj) = 0;
     virtual Int_t GetValue(TObject* obj,Int_t i);
-    virtual void AddBoxes(TEveBoxSet* set, TObject* obj, Int_t i = 0);
+    virtual void AddBoxes(FairBoxSet* set, TObject* obj, Int_t i = 0);
 
     TClonesArray* fList; //!
     FairEventManager* fEventManager;   //!
     FairRootManager* fManager;
-    TEveBoxSet* fq;    //!
+    FairBoxSet* fq;    //!
     Double_t fX, fY, fZ;
+
+    Double_t fTimeWindow;
+    Double_t fStartTime;
+    Bool_t fUseEventTime;
+
 
   private:
     FairBoxSetDraw(const FairBoxSetDraw&);
     FairBoxSetDraw& operator=(const FairBoxSetDraw&);
+    BinaryFunctor* fStartFunctor;
+    BinaryFunctor* fStopFunctor;
 
     ClassDef(FairBoxSetDraw,1);
 

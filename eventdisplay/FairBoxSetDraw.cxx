@@ -9,7 +9,7 @@
 #include "FairEventManager.h"
 
 #include "TEveManager.h"
-#include "TEveBoxSet.h"
+#include "FairBoxSet.h"
 #include "TClonesArray.h"
 #include "TVector3.h"
 
@@ -17,7 +17,7 @@
 using std::cout;
 using std::endl;
 
-TEveBoxSet* fq;    //!
+FairBoxSet* fq;    //!
 Double_t fX, fY, fZ;
 
 // -----   Default constructor   -------------------------------------------
@@ -30,7 +30,10 @@ FairBoxSetDraw::FairBoxSetDraw()
     fq(NULL),
     fX(1.),
     fY(1.),
-    fZ(1.)
+    fZ(1.),
+    fTimeWindow(0.),
+    fStartTime(0.),
+    fUseEventTime(kTRUE)
 {
 }
 // -------------------------------------------------------------------------
@@ -47,7 +50,10 @@ FairBoxSetDraw::FairBoxSetDraw(const char* name, Int_t iVerbose)
     fq(NULL),
     fX(1.),
     fY(1.),
-    fZ(1.)
+    fZ(1.),
+    fTimeWindow(0.),
+    fStartTime(0.),
+    fUseEventTime(kTRUE)
 {
 }
 // -------------------------------------------------------------------------
@@ -57,7 +63,8 @@ InitStatus FairBoxSetDraw::Init()
     cout<<  "FairBoxSetDraw::Init()" << endl;
   }
   fManager = FairRootManager::Instance();
-  fList = (TClonesArray*)fManager->GetObject(GetName());
+
+  fList = (TClonesArray*)FairRootManager::Instance()->GetObject(GetName());
   //std::cout << fList << std::endl;
   if (fList==0) {
     cout << "FairBoxSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< endl;
@@ -72,6 +79,10 @@ InitStatus FairBoxSetDraw::Init()
     cout<<  "FairBoxSetDraw::Init() get instance of FairEventManager " << endl;
   }
   fq=0;
+
+  fStartFunctor = new StopTime();
+  fStopFunctor = new StopTime();
+
   return kSUCCESS;
 }
 // -------------------------------------------------------------------------
@@ -82,11 +93,26 @@ void FairBoxSetDraw::Exec(Option_t* option)
     Reset();
     //  cout<<  "FairBoxSetDraw::Init() Exec! " << fList->GetEntriesFast() << endl;
     CreateBoxSet();
+    if (FairRunAna::Instance()->IsTimeStamp()) {
+      fList->Clear();
+      Double_t eventTime = FairRootManager::Instance()->GetEventTime();
+      if (fUseEventTime) { fStartTime = eventTime - 1; }
+      cout << "EventTime: " << eventTime << " TimeWindow: " << fStartTime << " + " << fTimeWindow << std::endl;
+
+      fList = FairRootManager::Instance()->GetData(GetName(), fStartFunctor, fStartTime, fStopFunctor, fStartTime + fTimeWindow); //FairRootManager::Instance()->GetEventTime() +
+
+    }
 
     //fList = (TClonesArray *)fManager->GetObject(GetName());
-    //std::cout << "fList: " << fList << " " << fList->GetEntries() << std::endl;
+    if (fVerbose > 1) {
+      std::cout << GetName() << " fList: " << fList->GetEntries() << std::endl;
+    }
     for (Int_t i=0; i<fList->GetEntriesFast(); ++i) {
       p=fList->At(i);
+      if (fVerbose > 2) {
+        FairTimeStamp* data = (FairTimeStamp*)p;
+        cout << "TimeStamp: " <<  data->GetTimeStamp() << std::endl;
+      }
       AddBoxes(fq, p, i);
     }
     gEve->AddElement(fq, fEventManager );
@@ -94,7 +120,7 @@ void FairBoxSetDraw::Exec(Option_t* option)
   }
 }
 
-void FairBoxSetDraw::AddBoxes(TEveBoxSet* set, TObject* obj, Int_t i)
+void FairBoxSetDraw::AddBoxes(FairBoxSet* set, TObject* obj, Int_t i)
 {
   TVector3 point = GetVector(obj);
   set->AddBox(point.X(),point.Y(),point.Z());
@@ -110,10 +136,10 @@ Int_t FairBoxSetDraw::GetValue(TObject* obj, Int_t i)
   return i;
 }
 
-TEveBoxSet* FairBoxSetDraw::CreateBoxSet()
+FairBoxSet* FairBoxSetDraw::CreateBoxSet()
 {
-  TEveBoxSet* aBoxSet = new TEveBoxSet(GetName());
-  aBoxSet->Reset(TEveBoxSet::kBT_AABoxFixedDim, kFALSE, 32);
+  FairBoxSet* aBoxSet = new FairBoxSet(this, GetName());
+  aBoxSet->Reset(FairBoxSet::kBT_AABoxFixedDim, kFALSE, 32);
   aBoxSet->SetDefWidth(1);
   aBoxSet->SetDefHeight(1);
   aBoxSet->SetDefDepth(1);
