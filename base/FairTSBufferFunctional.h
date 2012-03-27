@@ -37,7 +37,7 @@ class BinaryFunctor : public std::binary_function<FairTimeStamp* ,double, bool>
 /**
  * \class StopTime
  * Gives you all the data which is older than the given parameter StopTime.
- * It does not returne the data requested before.
+ * It does not return the data requested before.
  */
 
 class StopTime : public BinaryFunctor

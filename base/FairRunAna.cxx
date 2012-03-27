@@ -572,26 +572,26 @@ void FairRunAna::Run(Double_t delta_t)
 //_____________________________________________________________________________
 void FairRunAna::Run(Long64_t entry)
 {
-  if (fTimeStamps) {
-    RunTSBuffers();
-  } else {
-    UInt_t tmpId =0;
-    fRootManager->ReadEvent(entry);
-    tmpId = fEvtHeader->GetRunId();
-    if ( tmpId != fRunId ) {
-      fRunId = tmpId;
-      if ( !fStatic ) {
-        Reinit( fRunId );
-        fTask->ReInitTask();
-      }
+//  if (fTimeStamps) {
+//    RunTSBuffers();
+//  } else {
+  UInt_t tmpId =0;
+  fRootManager->ReadEvent(entry);
+  tmpId = fEvtHeader->GetRunId();
+  if ( tmpId != fRunId ) {
+    fRunId = tmpId;
+    if ( !fStatic ) {
+      Reinit( fRunId );
+      fTask->ReInitTask();
     }
-    fTask->ExecuteTask("");
-    fTask->FinishTask();
-    fRootManager->Fill();
-    fRootManager->DeleteOldWriteoutBufferData();
-    fRootManager->LastFill();
-    fRootManager->Write();
   }
+  fTask->ExecuteTask("");
+  fTask->FinishTask();
+  fRootManager->Fill();
+  fRootManager->DeleteOldWriteoutBufferData();
+  fRootManager->LastFill();
+  fRootManager->Write();
+//  }
 }
 //_____________________________________________________________________________
 

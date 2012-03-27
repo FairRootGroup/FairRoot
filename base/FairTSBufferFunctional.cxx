@@ -158,9 +158,9 @@ Int_t FairTSBufferFunctional::FindStartIndex(Double_t startParameter)
   //Now we have data or FindStartIndex already returned -1
 
   dataPoint = (FairTimeStamp*)fInputArray->Last();
-  std::cout << "DataPoint: " << *dataPoint << std::endl;
+  //std::cout << "DataPoint: " << *dataPoint << std::endl;
   while(!(*fStartFunction)(dataPoint, startParameter)) {
-    std::cout << "DataPoint Search Entry: " << fBranchIndex << ": " << *dataPoint << std::endl;
+    //std::cout << "DataPoint Search Entry: " << fBranchIndex << ": " << *dataPoint << std::endl;
     ReadInNextFilledEntry();
     if (fInputArray->GetEntries() != 0) {
       dataPoint = (FairTimeStamp*)fInputArray->Last();
@@ -172,7 +172,7 @@ Int_t FairTSBufferFunctional::FindStartIndex(Double_t startParameter)
   //Now you have data where the last element in the array does not fit to your request
   Int_t startPos = fInputArray->GetEntries() - 1;
   while ((*fStartFunction)(dataPoint, startParameter)) {
-    std::cout << "DataPoint Search in Entry: " << fBranchIndex << ": " << *dataPoint << std::endl;
+    //std::cout << "DataPoint Search in Entry: " << fBranchIndex << ": " << *dataPoint << std::endl;
     previousIndex = startPos;
     previousBranchIndex = fBranchIndex;
     startPos--;
