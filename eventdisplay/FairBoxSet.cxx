@@ -4,7 +4,7 @@
 // -------------------------------------------------------------------------
 
 #include "FairBoxSet.h"
-
+#include "FairBoxSetDraw.h"
 
 #include <iostream>
 using std::cout;
