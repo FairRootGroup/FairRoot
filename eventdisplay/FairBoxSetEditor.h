@@ -40,12 +40,17 @@ class FairBoxSetEditor : public TGedFrame
 
     virtual void Init();
 
-    virtual void SetModel(TObject* obj) {fM = dynamic_cast<FairBoxSet*>(obj); fTimeWindow->SetValue(fM->GetTimeWindow());}
+    virtual void SetModel(TObject* obj) {
+      fM = dynamic_cast<FairBoxSet*>(obj);
+      fTimeWindowPlus->SetNumber(fM->GetTimeWindowPlus());
+      fTimeWindowMinus->SetNumber(fM->GetTimeWindowMinus());
+    }
 
     virtual void TimeWindow();
 
     TGVerticalFrame* fInfoFrame;
-    TEveGValuator* fTimeWindow;
+    TGNumberEntry* fTimeWindowPlus;
+    TGNumberEntry* fTimeWindowMinus;
 
 
   protected:

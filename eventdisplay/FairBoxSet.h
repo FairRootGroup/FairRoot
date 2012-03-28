@@ -32,8 +32,11 @@ class FairBoxSet : public TEveBoxSet
        **/
     FairBoxSet(FairBoxSetDraw* drawer, const char* name = "FairBoxSet", const char* t = "");
 
-    void SetTimeWindow(double time) {fDraw->SetTimeWindow(time);}
-    double GetTimeWindow() {return fDraw->GetTimeWindow();}
+    void SetTimeWindowPlus(Double_t time) {fDraw->SetTimeWindowPlus(time);}
+    void SetTimeWindowMinus(Double_t time) {fDraw->SetTimeWindowMinus(time);}
+
+    Double_t GetTimeWindowPlus() {return fDraw->GetTimeWindowPlus();}
+    Double_t GetTimeWindowMinus() {return fDraw->GetTimeWindowMinus();}
 
 
     /** Destructor **/

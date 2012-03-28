@@ -48,7 +48,8 @@ class FairBoxSetDraw : public FairTask
     /** Destructor **/
     virtual ~FairBoxSetDraw();
 
-    virtual double GetTimeWindow() {return fTimeWindow;}
+    virtual Double_t GetTimeWindowPlus() {return fTimeWindowPlus;}
+    virtual Double_t GetTimeWindowMinus() {return fTimeWindowMinus;}
 
     /** Set verbosity level. For this task and all of the subtasks. **/
     virtual void SetVerbose(Int_t iVerbose) {fVerbose = iVerbose;};
@@ -58,7 +59,8 @@ class FairBoxSetDraw : public FairTask
       fZ = z;
     }
 
-    virtual void SetTimeWindow(Double_t val) {fTimeWindow = val; std::cout << "FairBoxSetDraw::TimeWindow " << fTimeWindow << std::endl;}
+    virtual void SetTimeWindowMinus(Double_t val);
+    virtual void SetTimeWindowPlus(Double_t val);
     virtual void SetStartTime(Double_t val) {fStartTime = val;}
     virtual void UseEventTimeAsStartTime(Bool_t val = kTRUE) {fUseEventTime = val;}
 
@@ -87,7 +89,8 @@ class FairBoxSetDraw : public FairTask
     FairBoxSet* fq;    //!
     Double_t fX, fY, fZ;
 
-    Double_t fTimeWindow;
+    Double_t fTimeWindowPlus;
+    Double_t fTimeWindowMinus;
     Double_t fStartTime;
     Bool_t fUseEventTime;
 

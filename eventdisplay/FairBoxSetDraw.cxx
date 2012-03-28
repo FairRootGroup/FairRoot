@@ -31,7 +31,8 @@ FairBoxSetDraw::FairBoxSetDraw()
     fX(1.),
     fY(1.),
     fZ(1.),
-    fTimeWindow(0.),
+    fTimeWindowPlus(0.),
+    fTimeWindowMinus(0.),
     fStartTime(0.),
     fUseEventTime(kTRUE)
 {
@@ -51,7 +52,8 @@ FairBoxSetDraw::FairBoxSetDraw(const char* name, Int_t iVerbose)
     fX(1.),
     fY(1.),
     fZ(1.),
-    fTimeWindow(0.),
+    fTimeWindowPlus(0.),
+    fTimeWindowMinus(0.),
     fStartTime(0.),
     fUseEventTime(kTRUE)
 {
@@ -96,10 +98,10 @@ void FairBoxSetDraw::Exec(Option_t* option)
     if (FairRunAna::Instance()->IsTimeStamp()) {
       fList->Clear();
       Double_t eventTime = FairRootManager::Instance()->GetEventTime();
-      if (fUseEventTime) { fStartTime = eventTime - 1; }
-      cout << "EventTime: " << eventTime << " TimeWindow: " << fStartTime << " + " << fTimeWindow << std::endl;
+      if (fUseEventTime) { fStartTime = eventTime - fTimeWindowMinus; }
+      cout << "EventTime: " << eventTime << " TimeWindow: " << fStartTime << " - " << eventTime + fTimeWindowPlus << std::endl;
 
-      fList = FairRootManager::Instance()->GetData(GetName(), fStartFunctor, fStartTime, fStopFunctor, fStartTime + fTimeWindow); //FairRootManager::Instance()->GetEventTime() +
+      fList = FairRootManager::Instance()->GetData(GetName(), fStartFunctor, fStartTime, fStopFunctor, eventTime + fTimeWindowPlus); //FairRootManager::Instance()->GetEventTime() +
 
     }
 
@@ -147,6 +149,17 @@ FairBoxSet* FairBoxSetDraw::CreateBoxSet()
 
   return aBoxSet;
 }
+
+void FairBoxSetDraw::SetTimeWindowMinus(Double_t val)
+{
+  fTimeWindowMinus = val;
+}
+
+void FairBoxSetDraw::SetTimeWindowPlus(Double_t val)
+{
+  fTimeWindowPlus = val;
+}
+
 // -----   Destructor   ----------------------------------------------------
 FairBoxSetDraw::~FairBoxSetDraw()
 {

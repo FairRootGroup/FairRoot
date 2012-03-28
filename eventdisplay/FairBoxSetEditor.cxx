@@ -41,41 +41,44 @@ void FairBoxSetEditor::Init()
 
   MakeTitle("FairBoxSet  Editor");
   fInfoFrame= CreateEditorTabSubFrame("Time");
+
   TGCompositeFrame* title1 = new TGCompositeFrame(fInfoFrame, 250, 10,
       kVerticalFrame | kLHintsExpandX |
       kFixedWidth    | kOwnBackground);
 
-  TString EventTime = "Event Time BoxSetEditor : ";
-//  TFile* file =FairRunAna::Instance()->GetInputFile();
-  EventTime+=FairRootManager::Instance()->GetEventTime();
-  TGLabel* TFName=new TGLabel(title1, EventTime.Data());
-  title1->AddFrame(TFName);
+  TGLabel* label1 = new TGLabel(title1,"Time window after event time [ns]: ");
+  title1->AddFrame(label1, new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 1, 2, 1, 1));
 
-  UInt_t RunId= FairRunAna::Instance()->getRunId();
-  TString run= "Run Id : ";
-  run += RunId;
-  TGLabel* TRunId=new TGLabel(title1, run.Data());
-  title1->AddFrame( TRunId);
-
-  fTimeWindow = new TEveGValuator(title1, "Time Window:", 90, 0);
-  fTimeWindow->SetNELength(5);
-  fTimeWindow->SetLabelWidth(80);
-  fTimeWindow->Build();
+  fTimeWindowPlus = new TGNumberEntry(title1);//, 0, 5, -1, TGNumberFormat::kNESRealTwo); //, TGNumberFormat::kNEANonNegative);
 // fTimeWindow->SetLimits(0, MAXE, 2501, TGNumberFormat::kNESRealOne);
-  fTimeWindow->SetToolTip("Time window in ns for which points are shown");
-  fTimeWindow->Connect("ValueSet(Double_t)", "FairBoxSetEditor",this, "TimeWindow()");
-  title1->AddFrame(fTimeWindow, new TGLayoutHints(kLHintsTop, 1, 1, 1, 0));
+  fTimeWindowPlus->GetNumberEntry()->SetToolTipText("Time window in ns for which points are shown");
+  fTimeWindowPlus->Connect("ValueSet(Long_t)", "FairBoxSetEditor",this, "TimeWindow()");
+  title1->AddFrame(fTimeWindowPlus, new TGLayoutHints(kLHintsTop, 1, 1, 1, 0));
 
   fInfoFrame->AddFrame(title1);
 
-  std::cout << EventTime.Data() << std::endl;
+  TGCompositeFrame* title2 = new TGCompositeFrame(fInfoFrame, 250, 10,
+      kVerticalFrame | kLHintsExpandX |
+      kFixedWidth    | kOwnBackground);
+
+  TGLabel* label2 = new TGLabel(title2, "Time window before event time [ns]: ");
+  title2->AddFrame(label2, new TGLayoutHints(kLHintsLeft | kLHintsCenterY, 1, 2, 1, 1));
+  fTimeWindowMinus = new TGNumberEntry(title2, 0., 6, -1, TGNumberFormat::kNESInteger, TGNumberFormat::kNEANonNegative);//, 1, 5, -1, TGNumberFormat::kNESRealTwo, TGNumberFormat::kNEANonNegative);
+// fTimeWindow->SetLimits(0, MAXE, 2501, TGNumberFormat::kNESRealOne);
+  fTimeWindowMinus->GetNumberEntry()->SetToolTipText("Time window in ns for which points are shown");
+  fTimeWindowMinus->Connect("ValueSet(Long_t)", "FairBoxSetEditor",this, "TimeWindow()");
+  title2->AddFrame(fTimeWindowMinus, new TGLayoutHints(kLHintsTop, 1, 1, 1, 0));
+
+  fInfoFrame->AddFrame(title2);
 
 }
 
 void FairBoxSetEditor::TimeWindow()
 {
-  std::cout << "FairBoxSetEditor::TimeWindow " << fTimeWindow->GetValue() << std::endl;
-  fM->SetTimeWindow(fTimeWindow->GetValue());
+  std::cout << "FairBoxSetEditor::TimeWindowPlus " << fTimeWindowPlus->GetNumber() << std::endl;
+  std::cout << "FairBoxSetEditor::TimeWindowMinus " << fTimeWindowMinus->GetNumber() << std::endl;
+  fM->SetTimeWindowPlus(fTimeWindowPlus->GetNumber());
+  fM->SetTimeWindowMinus(fTimeWindowMinus->GetNumber());
   FairEventManager* man = FairEventManager::Instance();
   man->GotoEvent(man->GetCurrentEvent());
   Update();
