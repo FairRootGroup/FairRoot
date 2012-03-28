@@ -24,6 +24,9 @@ class TArrayI;
  * @since 01.04.08 M.Al-Turany
  * Add methods to construct geometry via ROOT files
  * Add some documentation
+ *
+ * Changelog: 29.02.2012 [O.Merle] Fixed missing material assignment for top volume.
+ *                                 ... and please - add some documentation to your code.
  */
 class FairModule:  public TNamed
 {
@@ -89,6 +92,7 @@ class FairModule:  public TNamed
     FairModule& operator=(const FairModule&);
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */
     void SetDefaultMatrixName(TGeoMatrix* matrix);
+    void AssignMediumAtImport(TGeoVolume* v);  // O.Merle, 29.02.2012 - see impl.
 
   protected:
     TString             fgeoVer;

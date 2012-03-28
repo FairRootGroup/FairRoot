@@ -38,9 +38,6 @@
 #include <iostream>
 
 
-using std::cout;
-using std::endl;
-
 TArrayI* FairModule::volNumber=0;
 Int_t FairModule::fNbOfVolumes=0;
 FairVolumeList*  FairModule::vList=0;
@@ -51,10 +48,14 @@ TRefArray*    FairModule::svList=0;
 //__________________________________________________________________________
 void FairModule::ConstructGeometry()
 {
+  fLogger->Warning(MESSAGE_ORIGIN,"FairModule::ConstructGeometry() : this method has to be implimented in detector class");
+
 }
 //__________________________________________________________________________
 void FairModule::ConstructOpGeometry()
 {
+  fLogger->Debug2(MESSAGE_ORIGIN,"FairModule::ConstructOpGeometry : this method has to be implimented in detector class");
+
 }
 //__________________________________________________________________________
 FairModule::~FairModule()
@@ -102,21 +103,16 @@ FairModule::FairModule()
 void FairModule::Streamer(TBuffer& b)
 {
   TNamed::Streamer(b);
-//const char* Name= GetName();
-//const char* Title= GetTitle();
+
 
   if (b.IsReading()) {
     fgeoVer.Streamer(b);
     fgeoName.Streamer(b);
-    //  b >> Name;
-//   b >> Title;
     b >> fActive;
     b >> fModId;
   } else {
     fgeoVer.Streamer(b);
     fgeoName.Streamer(b);
-    //  b << Name;
-    //  b << Title;
     b << fActive;
     b << fModId;
   }
@@ -166,10 +162,6 @@ void FairModule::ProcessNodes(TList* aList)
   while( (node = (FairGeoNode*)iter.Next()) ) {
 
     node->calcLabTransform();
-//      cout << "-I ProcessNodes() Node: " << node->GetName() << " copyNo: " << node->getCopyNo()
-//       << " LabTransform: " << node->getLabTransform() <<  endl;
-//      node->Dump();
-//   GetListOfGeoPar()->Add( node );
     MotherNode=node->getMotherNode();
     volume = new FairVolume( node->getTruncName(), fNbOfVolumes++);
     volume->setRealName(node->GetName());
@@ -193,16 +185,12 @@ void FairModule::ProcessNodes(TList* aList)
     }
 
   }
-  /*  cout << " FairModule::ProcessNodes "<< endl;
-     svList->ls();
-    cout << " FairModule::ProcessNodes "<< endl;
-  */
 }
 //__________________________________________________________________________
 void  FairModule::AddSensitiveVolume(TGeoVolume* v)
 {
 
-//  cout <<"FairModule::AddSensitiveVolume  " << v->GetName() << endl;
+  fLogger->Debug2(MESSAGE_ORIGIN, "FairModule::AddSensitiveVolume", v->GetName());
   FairVolume*  volume = NULL;
   volume = new FairVolume(v->GetName(), fNbOfVolumes++);
   vList->addVolume(volume);
@@ -219,12 +207,9 @@ FairVolume* FairModule::getFairVolume(FairGeoNode* fN)
 {
   FairVolume* fv;
   FairVolume*  fvol=0;
-//  cout << " FairModule::getFairVolume " << fN <<  endl;
   for(Int_t i=0; i<vList->getEntries(); i++) {
     fv=vList->At(i);
-//    cout << "" << fv->getGeoNode() << " " << fN <<endl;
     if((fv->getGeoNode())==fN) {
-//      cout << "Inside " << fv->getGeoNode() << "  " << fN <<endl;
       fvol=fv;
       return fvol;
       break;
@@ -235,7 +220,14 @@ FairVolume* FairModule::getFairVolume(FairGeoNode* fN)
 //__________________________________________________________________________
 void FairModule::ConstructRootGeometry()
 {
-
+  /** Construct the detector geometry from ROOT files, possible inputs are:
+   * 1. A TGeoVolume as a mother (master) volume containing the detector geometry
+   * 2. A TGeoManager with the detector geometry
+   * 3. A TGeoVolume as a mother or Master volume which is the output of the CAD2ROOT geometry, in this case
+   *    the materials are not proprely defined and had to be reset
+   *  In all cases we have to check that the material properties are the same or is the materials defined in
+   *  the current simulation session
+   */
   TGeoManager* OldGeo=gGeoManager;
   TGeoManager* NewGeo=0;
   TGeoVolume* volume=0;;
@@ -246,26 +238,35 @@ void FairModule::ConstructRootGeometry()
   TGeoNode* n=0;
   TGeoVolume* v1=0;
   while ((key = (TKey*)next())) {
+    /**loop inside the delivered root file and try to fine a TGeoManager object
+     * the first TGeoManager found will be read
+     */
     if (strcmp(key->GetClassName(),"TGeoManager") != 0) { continue; }
     gGeoManager=0;
     NewGeo = (TGeoManager*)key->ReadObj();
     break;
   }
   if (NewGeo!=0) {
+    /** in case a TGeoManager was found get the top most volume and the node
+     */
+
     NewGeo->cd();
     volume=(TGeoVolume*)NewGeo->GetNode(0)->GetDaughter(0)->GetVolume();
     v1=volume->MakeCopyVolume(volume->GetShape());
     //n=NewGeo->GetTopNode();
     n=v1->GetNode(0);
     //  NewGeo=0;
-
     delete NewGeo;
 
   } else {
-    key=(TKey*) l->At(0);
-    volume=(TGeoVolume*)key->ReadObj();
-    n=volume->GetNode(0);
-    v1=n->GetVolume();
+    /** The file does not contain any TGeoManager, so we assume to have a file with a TGeoVolume
+     * try to look for a TGeoVolume inside the file
+     */
+
+    key=(TKey*) l->At(0);  //Get the first key in the list
+    volume=dynamic_cast<TGeoVolume*> (key->ReadObj());
+    if(volume!=0) { n=volume->GetNode(0); }
+    if(n!=0) { v1=n->GetVolume(); }
   }
 
   if(v1==0) {
@@ -287,37 +288,46 @@ void FairModule::ConstructRootGeometry()
       exit(0);
     }
   }
-
+  /**Every thing is OK, we have a TGeoVolume and now we add it to the simulation TGeoManager  */
   gGeoManager->AddVolume(v1);
+  /** force rebuilding of voxels */
   TGeoVoxelFinder* voxels = v1->GetVoxels();
   if (voxels) { voxels->SetNeedRebuild(); }
+  /**To avoid having different names of the default matrices because we could have get the volume from another
+   * TGeoManager, we reset the default matrix name
+   */
   TGeoMatrix* M = n->GetMatrix();
-  // M->SetDefaultName();
   SetDefaultMatrixName(M);
+
+  /** NOw we can remove the matrix so that the new geomanager will rebuild it properly*/
   gGeoManager->GetListOfMatrices()->Remove(M);
   TGeoHMatrix* global = gGeoManager->GetHMatrix();
   gGeoManager->GetListOfMatrices()->Remove(global); //Remove the Identity matrix
+  /**Now we can add the node to the existing cave */
   Cave->AddNode(v1,0, M);
+  /** correction from O. Merle: in case of a TGeoVolume (v1) set the material properly */
+  AssignMediumAtImport(v1);
+  /** now go through the herachy and set the materials properly, this is important becase the CAD converter
+   *  produce TGeoVolumes with materials that have only names and no properties
+   */
   ExpandNode(n);
-//  delete NewGeo;
   delete f;
 }
 //__________________________________________________________________________
 void FairModule::ConstructASCIIGeometry()
 {
-  cout << " FairModule::ConstructASCIIGeometry() : this method has to be implimented in detector class " << endl;
+  fLogger->Warning(MESSAGE_ORIGIN,"FairModule::ConstructASCIIGeometry() : this method has to be implimented in detector class");
+
 }
 //__________________________________________________________________________
 Bool_t FairModule::CheckIfSensitive(std::string name)
 {
-
-  cout << "\033[5m\033[31m FairModule::CheckIfSensitive(std::string name): this method has to be implimented in detector class  \033[0m\n" << endl;
+  fLogger->Warning(MESSAGE_ORIGIN,"FairModule::CheckIfSensitive(std::string name): this method has to be implimented in detector class");
   return kFALSE;
 }
 //__________________________________________________________________________
 void FairModule::ExpandNode(TGeoNode* fN)
 {
-
   FairGeoLoader* geoLoad = FairGeoLoader::Instance();
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
   FairGeoMedia* Media =  geoFace->getMedia();
@@ -333,44 +343,13 @@ void FairModule::ExpandNode(TGeoNode* fN)
     SetDefaultMatrixName(M);
     if(fNode->GetNdaughters()>0) { ExpandNode(fNode); }
     TGeoVolume* v= fNode->GetVolume();
-//      Int_t MatId=0;
-    TGeoMedium* med1=v->GetMedium();
-    if(med1) {
-      TGeoMaterial* mat1=v->GetMaterial();
-      TGeoMaterial* newMat = gGeoManager->GetMaterial(mat1->GetName());
-      if( newMat==0) {
-        //std::cout<< "Material " << mat1->GetName() << " is not defined " << std::endl;
-        FairGeoMedium* FairMedium=Media->getMedium(mat1->GetName());
-        if (!FairMedium) {
-          std::cout << "\033[5m\033[31m Material is not defined in ASCII file nor in Root file  \033[0m\n" << std::endl;
-          FairMedium=new FairGeoMedium(mat1->GetName());
-          Media->addMedium(FairMedium);
-        }
-        //std::cout << "Create Medium " << mat1->GetName() << std::endl;
-        Int_t nmed=geobuild->createMedium(FairMedium);
-        v->SetMedium(gGeoManager->GetMedium(nmed));
-        gGeoManager->SetAllIndex();
-      } else {
-        TGeoMedium* med2= gGeoManager->GetMedium(mat1->GetName());
-        v->SetMedium(med2);
-      }
-    } else {
-      if (strcmp(v->ClassName(),"TGeoVolumeAssembly") != 0) {
-        ;
-        //[R.K.-3.3.08]  // When there is NO material defined, set it to avoid conflicts in Geant
-        std::cout<<" -E- Error in FairModule::ExpandNode()!  "
-                 <<"\tThe volume "<<v->GetName()<<" Has no medium information."<<std::endl;
-        abort();
-      }
-    }
+    AssignMediumAtImport(v);
     if (!gGeoManager->FindVolumeFast(v->GetName())) {
-      if (fVerboseLevel>2) { std::cout << "Register Volume : " << v->GetName() << " id "  << std::endl; }
+      fLogger->Debug2(MESSAGE_ORIGIN,"Register Volume : %s ", v->GetName());
       v->RegisterYourself();
     }
     if (CheckIfSensitive(v->GetName())) {
-      if (fVerboseLevel>2) {
-        std::cout << "Sensitive Volume : " << v->GetName() << " id "  << std::endl;
-      }
+      fLogger->Debug2(MESSAGE_ORIGIN,"Sensitive Volume : %s ", v->GetName());
       AddSensitiveVolume(v);
     }
   }
@@ -402,6 +381,48 @@ void FairModule::SetDefaultMatrixName(TGeoMatrix* matrix)
   matrix->SetName(Form("%c%i", type, index));
 }
 
+//__________________________________________________________________________
+
+void FairModule::AssignMediumAtImport(TGeoVolume* v)
+{
+
+  /**
+   * Assign medium to the the volume v, this has to be done in all cases:
+   * case 1: For CAD converted volumes they have no mediums (only names)
+   * case 2: TGeoVolumes, we need to be sure that the material is defined in this session
+   */
+  FairGeoMedia* Media       = FairGeoLoader::Instance()->getGeoInterface()->getMedia();
+  FairGeoBuilder* geobuild  = FairGeoLoader::Instance()->getGeoBuilder();
+
+  TGeoMedium* med1=v->GetMedium();
+  if(med1) {
+    TGeoMaterial* mat1=v->GetMaterial();
+    TGeoMaterial* newMat = gGeoManager->GetMaterial(mat1->GetName());
+    if( newMat==0) {
+      /**The Material is not defined in the TGeoManager, we try to create one if we have enough information about it*/
+      FairGeoMedium* FairMedium=Media->getMedium(mat1->GetName());
+      if (!FairMedium) {
+        fLogger->Debug(MESSAGE_ORIGIN,"Material %s is not defined in ASCII file nor in Root file we try to create one", mat1->GetName());
+        FairMedium=new FairGeoMedium(mat1->GetName());
+        Media->addMedium(FairMedium);
+      }
+
+      Int_t nmed=geobuild->createMedium(FairMedium);
+      v->SetMedium(gGeoManager->GetMedium(nmed));
+      gGeoManager->SetAllIndex();
+    } else {
+      /**Material is already available in the TGeoManager and we can set it */
+      TGeoMedium* med2= gGeoManager->GetMedium(mat1->GetName());
+      v->SetMedium(med2);
+    }
+  } else {
+    if (strcmp(v->ClassName(),"TGeoVolumeAssembly") != 0) {
+      //[R.K.-3.3.08]  // When there is NO material defined, set it to avoid conflicts in Geant
+      fLogger->Error(MESSAGE_ORIGIN,"The volume  %s  Has no medium information and not an Assembly so we have to quit", v->GetName());
+      abort();
+    }
+  }
+}
 
 //__________________________________________________________________________
 ClassImp(FairModule)
