@@ -39,14 +39,19 @@ class FairDetParTSQLIo : public FairDetParIo
     /// Destructor.
     virtual ~FairDetParTSQLIo();
 
+    /**
+     * Read the parameter set from the DB.
+     */
+    Bool_t read (FairParSet* pars);
 
-    Bool_t read ( FairParSet* pars);
+    // Write to database
+    Int_t  write(FairParSet* pars);
 
-    Int_t  write( FairParSet* pars);
-
-    Int_t getRunStart( FairParSet* pPar = 0);
+    // Get start time for the current run
+    Int_t getRunStart(FairParSet* pPar = 0);
 
     //________ DB functions maybe later ____
+    // It depends on the used DBMS. We need to see if this is needed.
     // commits changes.
     virtual void commit();
 

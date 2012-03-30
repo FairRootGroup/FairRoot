@@ -55,10 +55,16 @@ class FairParTSQLIo: public FairParIo
     void setDetParIo(Text_t* io);
 
     /**
+     * Check if at least one connection is alive.
      *@return True if the connection is alive.
      */
     bool check();
 
+    /**
+     * If connection exist to at least on of the specified databases,
+     * then activate IO and return true.
+     *@return True if at least one connection is available.
+     */
     bool open();
 
     /**

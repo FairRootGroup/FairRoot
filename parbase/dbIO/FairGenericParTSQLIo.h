@@ -37,11 +37,16 @@ class FairGenericParTSQLIo : public FairDetParTSQLIo
     //! Destructor.
     virtual ~FairGenericParTSQLIo();
 
-    Bool_t init(FairParSet* pPar, Int_t* n);
+    // Initialize and read.
+    Bool_t init(FairParSet* pPar);
 
     //! Read and write functions.
-    Int_t write(FairParSet* pars);
     Bool_t read(FairParGenericSet* pPar);
+
+    // Fetch the starting of the current run and inser param set into the Database.
+    Int_t write(FairParSet* pars);
+
+    // Write parameter set to the Database.
     Int_t writeSet(FairParGenericSet* pars);
 
     //protected:

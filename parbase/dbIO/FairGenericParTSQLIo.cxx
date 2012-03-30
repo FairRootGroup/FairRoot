@@ -44,18 +44,22 @@ FairGenericParTSQLIo::~FairGenericParTSQLIo()
 
 Bool_t FairGenericParTSQLIo::read(FairParGenericSet* par)
 {
-  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::read(FairParGenericSet* par)\n\n";
+  /*
+   * Initialize paramter from the data base.
+   */
+  std::cout << "\t<DEBUG>FairGenericParTSQLIo::read(FairParGenericSet* par)"
+            << "\n Reading parameters form the database.\n";
   par->Print();
-  return false;
+  std::cout << "============= End of reading params ==========\n";
+  return kTRUE;
 }
 
-Bool_t FairGenericParTSQLIo::init(FairParSet* pPar, Int_t* n)
+Bool_t FairGenericParTSQLIo::init(FairParSet* pPar)
 {
   std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::init(FairParSet* pars, int* n)\n\n";
 
-  // calls read(FairParGenericSet*,Int_t*)
   if (pPar->InheritsFrom("FairParGenericSet")) {
-    std::cout << "@@@@@@<Init From db>@@@@@@@\n\n";
+    std::cout << "@@@@@@ <Init From db> @@@@@@@\n\n";
     return read((FairParGenericSet*)pPar);
   }
   Error("FairGenericParTSQLIo::init(FairParSet*, Int_t*)",
@@ -65,12 +69,11 @@ Bool_t FairGenericParTSQLIo::init(FairParSet* pPar, Int_t* n)
 
 Int_t FairGenericParTSQLIo::write(FairParSet* par)
 {
-  std::cout << "\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"
+  std::cout << "\n===================================================\n"
             << "\t<DEBUG>FairGenericParTSQLIo::Write(FairParSet* par)\n";
   if (par->InheritsFrom("FairParGenericSet")) {
     return writeSet((FairParGenericSet*)par);
   }
-  std::cout << "\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
   Error("FairGenericParOraIo::write(FairParSet*)",
         "%s does not inherit from FairParGenericSet",par->GetName());
   return -1;
@@ -79,30 +82,42 @@ Int_t FairGenericParTSQLIo::write(FairParSet* par)
 Int_t FairGenericParTSQLIo::writeSet(FairParGenericSet* par)
 {
   if(!par) {
-    std::cout << "No par not initialized\n";
+    std::cerr << "No par not initialized\n";
     return -1;
   }
-  std::cout << "\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n"
-            << "\t<DEBUG>FairGenericParTSQLIo::writeSet(FairParGenericSet* par)\n";
-  std::cout << "Name is " << par->GetName()
-            << " Context = " << par->getParamContext();
-  std::cout << "\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n";
 
-  std::cout <<"---------------  Storage of "<< par->GetName()<<"  ---------------\n";
-  std::cout << "Class name = " << par->ClassName() << std::endl;
+  std::cout << "\t<DEBUG>FairGenericParTSQLIo::writeSet(FairParGenericSet* par)\n"
+            << " Name is " << par->GetName()
+            << " Context = " << par->getParamContext()
+            <<"\n---------------  Storage of "<< par->GetName()<<"  ---------------\n"
+            << "Class name = " << par->ClassName() << std::endl;
 
+  // Initialize the par list object
   FairParamList* paramList = new FairParamList();
   par->putParams(paramList);
 
-  TList* pList=paramList->getList();
+  // Get the list to insert.
+  TList* pList = paramList->getList();
   TIter next(pList);
   FairParamObj* po;
 
+  /*
+   * Build a list of Insert queries and sumbit all in one go. Or build
+   * a query per paramobject and insert directly.
+   */
   while ((po=(FairParamObj*)next())) {
-    std::cout << " po.Name =" << po->GetName() << '\n'
-              << " po.val = " << po->getParamValue()<< '\n'
-              << " po.Type =" << po->getParamType()
-              << "\n+++++\n";
+    std::cout << " po.Name = " << po->GetName()      << '\n'
+              << " po.val = "  << po->getParamValue()<< '\n'
+              << " po.Type = " << po->getParamType() << '\n'
+              << " po.Basic = " << po->isBasicType()  << '\n'
+              << " po.Bytes = " << po->getBytesPerValue()<< '\n'
+              << " po.getClassVersion = " << po->getClassVersion() << '\n'
+              << " po.getLength = " << po->getLength() << '\n'
+              << " po.getNumParams = " << po->getNumParams()<<'\n'
+              << "____________________________\n";
+    po->print();
+    std::cout << "\n++++++++++++++++++++++++\n";
   }
-  return -1;
+  std::cout << "\n========== END OF STORAGE ========================\n";
+  return 1;
 }

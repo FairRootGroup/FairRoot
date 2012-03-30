@@ -104,8 +104,8 @@ void FairParTSQLIo::disconnect()
 bool FairParTSQLIo::activateDetIo()
 {
   std::cout << "<DEBUG> FairParTSQLIo::activateDetIo()\n";
-
-  if(!fConnections) { // FIXME FIXME
+  // FIXME FIXME Maybe better to call check first
+  if(!fConnections) {
     return false;
   }
   FairDetParIo* io=new FairGenericParTSQLIo();
@@ -113,6 +113,11 @@ bool FairParTSQLIo::activateDetIo()
   return true;
 }
 
+/**
+ * If connection exist to at least on of the specified databases,
+ * then activate IO and return true.
+ *@return True if at least one connection is available.
+ */
 bool FairParTSQLIo::open()
 {
   std::cout << "<DEBUG> FairParTSQLIo::open()\n";
@@ -135,7 +140,7 @@ void FairParTSQLIo::print()
               << "\nDetector IO list:\n";
 
     while ((io=(FairDetParIo*)next())) {
-      std::cout<<" "<<io->GetName();
+      std::cout<<" Name = " << io->GetName();
     }//while
     std::cout << std::endl;
   }//if
