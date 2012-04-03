@@ -19,6 +19,7 @@
 #include "FairFileHeader.h"
 #include "FairEventHeader.h"
 #include "FairWriteoutBuffer.h"
+#include "FairLink.h"
 #include "TFriendElement.h"
 #include "TObjArray.h"
 #include "TFolder.h"
@@ -1222,6 +1223,52 @@ TObject* FairRootManager::GetObjectFromInTree(const char* BrName)
   }
   return Obj;
 }
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+
+TObject* FairRootManager::GetLinkData(const FairLink link)
+{
+  Int_t fileId = link.GetFile();
+  Int_t entryNr = link.GetEntry();
+  Int_t type = link.GetType();
+  Int_t index = link.GetIndex();
+
+  TTree* dataTree;
+  if (fileId < 0) {
+    dataTree = GetInTree();
+  } else if (fileId == 0) {
+    dataTree = GetBGChain();
+  } else {
+    dataTree = GetSignalChainNo(fileId);
+  }
+
+  if (dataTree == 0) {
+    dataTree = GetInTree();
+  }
+
+  TBranch* dataBranch = dataTree->GetBranch(GetBranchName(type));
+
+  if (dataBranch == 0) {
+    return 0;
+  }
+
+  TClonesArray* dataArray = (TClonesArray*)GetObject(GetBranchName(type));
+
+  if (entryNr < 0) {
+
+  } else if (entryNr < dataBranch->GetEntries()) {
+    dataBranch->GetEntry(entryNr);
+  } else {
+    return 0;
+  }
+
+  if (index < dataArray->GetEntriesFast()) {
+    return dataArray->At(index);
+  }
+  return 0;
+}
+
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________

@@ -20,6 +20,7 @@ class FairLogger;
 class FairTSBufferFunctional;
 class BinaryFunctor;
 class FairWriteoutBuffer;
+class FairLink;
 class TCollection;
 class TClonesarray;
 class TFolder;
@@ -102,6 +103,7 @@ class FairRootManager : public TObject
     /** Return a pointer to the object (collection) saved in the fInTree branch named BrName*/
     TObject*            GetObjectFromInTree(const char* BrName);
     Double_t            GetEventTime();
+    TObject*      GetLinkData(const FairLink link);
     /** Get the data of the given branch name,
      *  this method runs over multiple entries
      *  of the tree and selects the data according
