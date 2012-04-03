@@ -719,6 +719,13 @@ void FairRunAna::RunOnProof(Int_t NStart,Int_t NStop)
   inChain->SetProof();
 
   Int_t nofEventsToAnalyze = NStop-NStart;
+
+  if ( nofEventsToAnalyze <= 0 ) {
+    cout << "You requested to analyze events from " << NStart << " to " << NStop << " that is " << nofEventsToAnalyze << " events!!!" << endl;
+    nofEventsToAnalyze = nofChainEntries-NStart;
+    cout << "It will be changed to analyze all events from " << NStart << " to the end of chain (" << nofChainEntries << "), that is to analyze " << nofEventsToAnalyze << " events." << endl;
+  }
+
   cout << "FairRunAna::RunOnProof(): Starting inChain->Process(\"FairAnaSelector\",\"\","
        << nofEventsToAnalyze << "," << NStart << ")" << endl;
   inChain->Process("FairAnaSelector","",nofEventsToAnalyze,NStart);
