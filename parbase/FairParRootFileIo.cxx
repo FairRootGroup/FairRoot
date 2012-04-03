@@ -171,15 +171,12 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
   TListIter myIter(fnamelist);
   TString newParFile = "";
 
-  TFile*  inFile;
 
   TFileMerger* merger = new TFileMerger();
 
   Int_t nofFiles = 0;
   while ((string = (TObjString*)myIter.Next())) {
-    inFile = TFile::Open(string->GetString().Data());
-
-    merger->AddFile(inFile);
+    merger->AddFile(string->GetString().Data());
 
     if ( nofFiles == 0 ) {
       newParFile = string->GetString();
