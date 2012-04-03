@@ -105,7 +105,7 @@ class FairBaseParSet : public FairParGenericSet
     /// Detectors used in the simulation
     TObjArray*              fDetList;
     /// List of FairGeoNodes for sensitive volumes
-    TObjArray*              fGeoNodes;
+    TObjArray*              fGeoNodes; //!
     ///Generator used for simulation
     FairPrimaryGenerator*   fPriGen;
     ///Beam momentum (GeV/c)

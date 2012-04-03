@@ -26,6 +26,9 @@
 //#include "TDirectory.h"
 //#include "TROOT.h"
 
+#include <TObjString.h>
+#include <TFileMerger.h>
+
 //#include <fstream>
 //#include "stdio.h"
 #include <iostream>
@@ -38,6 +41,7 @@ using std::endl;
 ClassImp(FairParRootFile)
 ClassImp(FairParRootFileIo)
 
+//--------------------------------------------------------------------
 FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option,
                                  const Text_t* ftitle, Int_t compress)
   :TNamed(fname,  ftitle),
@@ -49,6 +53,9 @@ FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option,
   //  RootFile=new TFile(fname,option,ftitle,compress);
   //run=0;
 }
+//--------------------------------------------------------------------
+
+//--------------------------------------------------------------------
 FairParRootFile::FairParRootFile(TFile* f)
   :TNamed(f->GetName(), f->GetTitle()),
    run(NULL),
@@ -60,25 +67,33 @@ FairParRootFile::FairParRootFile(TFile* f)
   //  RootFile=f;
   //  run=0;
 }
+//--------------------------------------------------------------------
 
-
+//--------------------------------------------------------------------
 FairParRootFile::~FairParRootFile()
 {
   // destructor
-  if (run) { delete run; }
+  if (run) {
+    delete run;
+  }
   run=0;
   //TODO: What about the file? Should it be closed or not
 }
+//--------------------------------------------------------------------
 
+//--------------------------------------------------------------------
 void FairParRootFile::readVersions(FairRtdbRun* currentRun)
 {
   // finds the current run containing the parameter container versions
   // in the ROOT file
-  if (run) { delete run; }
+  if (run) {
+    delete run;
+  }
   run=(FairRtdbRun*)RootFile->Get(((char*)currentRun->GetName()));
 }
+//--------------------------------------------------------------------
 
-
+//--------------------------------------------------------------------
 FairParRootFileIo::FairParRootFileIo()
   :FairParIo(),
    file(NULL),
@@ -88,7 +103,9 @@ FairParRootFileIo::FairParRootFileIo()
   //  file=0;
   //  fMerging=kFALSE;
 }
+//--------------------------------------------------------------------
 
+//--------------------------------------------------------------------
 FairParRootFileIo::FairParRootFileIo(Bool_t merged)
   :FairParIo(),
    file(NULL),
@@ -99,14 +116,17 @@ FairParRootFileIo::FairParRootFileIo(Bool_t merged)
   //  fMerging=merged;
 
 }
+//--------------------------------------------------------------------
 
-
+//--------------------------------------------------------------------
 FairParRootFileIo::~FairParRootFileIo()
 {
   // destructor closes an open file
   close();
 }
+//--------------------------------------------------------------------
 
+//--------------------------------------------------------------------
 Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
                                const Text_t* ftitle, Int_t compress)
 {
@@ -141,7 +161,47 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
   Fatal("open","Could not open input file");
   return kFALSE;
 }
+//--------------------------------------------------------------------
 
+//--------------------------------------------------------------------
+Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
+                               const Text_t* ftitle, Int_t compress)
+{
+  TObjString* string;
+  TListIter myIter(fnamelist);
+  TString newParFile = "";
+
+  TFile*  inFile;
+
+  TFileMerger* merger = new TFileMerger();
+
+  Int_t nofFiles = 0;
+  while ((string = (TObjString*)myIter.Next())) {
+    inFile = TFile::Open(string->GetString().Data());
+
+    merger->AddFile(inFile);
+
+    if ( nofFiles == 0 ) {
+      newParFile = string->GetString();
+      TDatime currentDate;
+      newParFile.Replace(newParFile.Last('/')+1,
+                         newParFile.Length(),"");
+      newParFile.Append(Form("allParams_%d_%d.root",
+                             currentDate.GetDate(),
+                             currentDate.GetTime()));
+      merger->OutputFile(newParFile.Data());
+    }
+    nofFiles++;
+  }
+  merger->Merge();
+
+  std::cout << "**** merged file = \"" << newParFile.Data() << "\"" << std::endl;
+
+  this->open(newParFile,option,ftitle,compress);
+}
+//--------------------------------------------------------------------
+
+//--------------------------------------------------------------------
 Bool_t FairParRootFileIo::open(TFile* f)
 {
   // It opens a ROOT file (default option "READ"). An open file will be closed.
@@ -149,12 +209,15 @@ Bool_t FairParRootFileIo::open(TFile* f)
 //  close();
   file=new FairParRootFile(f);
   if (file && file->IsOpen()) {
+    filename = file->GetName();
     FairRuntimeDb::instance()->activateParIo(this);
     return kTRUE;
   }
   return kFALSE;
 }
+//--------------------------------------------------------------------
 
+//--------------------------------------------------------------------
 void FairParRootFileIo::close()
 {
   // closes an open ROOT file and deletes the detector I/Os
@@ -163,9 +226,13 @@ void FairParRootFileIo::close()
     delete file;
     file=0;
   }
-  if (detParIoList) { detParIoList->Delete(); }
+  if (detParIoList) {
+    detParIoList->Delete();
+  }
 }
+//--------------------------------------------------------------------
 
+//--------------------------------------------------------------------
 void FairParRootFileIo::print()
 {
   // prints the content of a open ROOT file and the list of detector I/Os
@@ -179,25 +246,38 @@ void FairParRootFileIo::print()
       cout<<" "<<io->GetName();
     }
     cout<<'\n';
-  } else { cout<<"No ROOT file open\n"; }
+  } else {
+    cout<<"No ROOT file open\n";
+  }
 }
+//--------------------------------------------------------------------
 
+//--------------------------------------------------------------------
 FairParRootFile* FairParRootFileIo::getParRootFile()
 {
   // returns a pointer to the current ROOT file
   return file;
 }
+//--------------------------------------------------------------------
 
+//--------------------------------------------------------------------
 void FairParRootFileIo::readVersions(FairRtdbRun* currentRun)
 {
   // reads the parameter container versions for the current run from
   // the ROOT file
-  if (file) { file->readVersions(currentRun); }
+  if (file) {
+    file->readVersions(currentRun);
+  }
 }
+//--------------------------------------------------------------------
 
+//--------------------------------------------------------------------
 TList* FairParRootFileIo::getKeys()
 {
   // returns the list of keys found in the ROOT file
-  if (file) { return file->GetListOfKeys(); }
+  if (file) {
+    return file->GetListOfKeys();
+  }
   return 0;
 }
+//--------------------------------------------------------------------

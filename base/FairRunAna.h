@@ -105,7 +105,8 @@ class FairRunAna : public FairRun
       fRootManager->SetInTree (tempTree);
     }
 
-    void        SetContainerStatic();
+    void        SetContainerStatic(Bool_t tempBool=kTRUE);
+    Bool_t      GetContainerStatic() { return fStatic; };
     void        RunWithTimeStamps();
     Bool_t      IsTimeStamp() {
       return fTimeStamps;

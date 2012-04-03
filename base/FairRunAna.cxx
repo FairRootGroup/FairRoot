@@ -86,7 +86,6 @@ FairRunAna::FairRunAna(const char* type, const char* proofName)
    fInputGeoFile(0),
    fLoadGeo( kFALSE),
    fEvtHeader(0),
-   fStatic(kFALSE),
    fField(0),
    fTimeStamps(kFALSE),
    fInFileIsOpen(kFALSE),
@@ -104,12 +103,14 @@ FairRunAna::FairRunAna(const char* type, const char* proofName)
   TString anaType = type;
   anaType.ToLower();
 
-  if ( anaType.Contains("local") ) {
-    fProofAnalysis = kFALSE;
-    fProofServerName = proofName;
-  } else if ( anaType.Contains("proof") ) {
+  fProofAnalysis = kFALSE;
+  fProofServerName = proofName;
+  fStatic = kFALSE;
+
+  if ( anaType.Contains("proof") ) {
     fProofAnalysis = kTRUE;
     fProofServerName = proofName;
+    fStatic = kTRUE;
   }
 
   fgRinstance=this;
@@ -251,7 +252,9 @@ void FairRunAna::Init()
   //  fcurrent = fChainList.begin();
 // fOutFile = fRootManager->OpenOutFile(fOutname);
 
-  if ( fProofAnalysis ) { return; }
+  if ( fProofAnalysis ) {
+    return;
+  }
 
   gROOT->GetListOfBrowsables()->Add(fTask);
 
@@ -690,17 +693,22 @@ void FairRunAna::RunOnProof(Int_t NStart,Int_t NStop)
 
   proof->AddInput(fTask);
 
+  proof->AddInput(new TNamed("FAIRRUNANA_fContainerStatic",(fStatic?"kTRUE":"kFALSE")));
   proof->AddInput(new TNamed("FAIRRUNANA_fProofOutputStatus",fProofOutputStatus.Data()));
   proof->AddInput(new TNamed("FAIRRUNANA_fOutputDirectory",outDir.Data()));
   proof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",outFile.Data()));
   proof->AddInput(new TNamed("FAIRRUNANA_fParInput1FName",par1File.Data()));
   proof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
 
-
+  cout << "0309: ClearPackages" << endl;
   proof->ClearPackages();
+  cout << "0309: UploadPackages" << endl;
   proof->UploadPackage(fProofParName.Data());
+  cout << "0309: EnablePackages" << endl;
   proof->EnablePackage(fProofParName.Data());
+  cout << "0309: ShowPackages" << endl;
   proof->ShowPackages();
+  cout << "0309: Done" << endl;
 
   Int_t nofChainEntries = inChain->GetEntries();
   cout << "FairRunAna::RunOnProof(): The chain seems to have " << nofChainEntries << " entries." << endl;
@@ -836,10 +844,14 @@ void  FairRunAna::SetEventMeanTime(Double_t mean)
   fRootManager->SetEventMeanTime(mean);
 }
 //_____________________________________________________________________________
-void  FairRunAna::SetContainerStatic()
+void  FairRunAna::SetContainerStatic(Bool_t tempBool)
 {
-  fStatic=kTRUE;
-  fLogger->Info(MESSAGE_ORIGIN, "Parameter Cont. initialisation is static");
+  fStatic=tempBool;
+  if ( fStatic ) {
+    fLogger->Info(MESSAGE_ORIGIN, "Parameter Cont. initialisation is static");
+  } else {
+    fLogger->Info(MESSAGE_ORIGIN, "Parameter Cont. initialisation is NOT static");
+  }
 }
 //_____________________________________________________________________________
 void  FairRunAna::BGWindowWidthNo(UInt_t background, UInt_t Signalid)

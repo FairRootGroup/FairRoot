@@ -65,23 +65,27 @@ void FairAnaSelector::Init(TTree* tree)
     FairRootManager* ioman = FairRootManager::Instance();
     ioman->OpenInTree();
 
-    fRunAna->InitContainers();
+    cout << "Containers static? " << (fRunAna->GetContainerStatic()?"YES":"NO") << endl;
+    if ( !fRunAna->GetContainerStatic() ) {
+      fRunAna->InitContainers();
+    }
   } else {
     cout << "-I- FairAnaSelector::Init(): Have to create fRunAna." << endl;
 
     TString vmcPath = gSystem->Getenv("VMCWORKDIR");
 
+    TNamed* contStat    = (TNamed*) fInput->FindObject("FAIRRUNANA_fContainerStatic");
     TNamed* outStat     = (TNamed*) fInput->FindObject("FAIRRUNANA_fProofOutputStatus");
     TNamed* outFile     = (TNamed*) fInput->FindObject("FAIRRUNANA_fOutputFileName");
     TNamed* outDir      = (TNamed*) fInput->FindObject("FAIRRUNANA_fOutputDirectory");
     TNamed* par1Name    = (TNamed*) fInput->FindObject("FAIRRUNANA_fParInput1FName");
     TNamed* par2Name    = (TNamed*) fInput->FindObject("FAIRRUNANA_fParInput2FName");
+    TString containerS  = contStat->GetTitle();
     TString outputStat  = outStat->GetTitle();
     TString par1Str     = par1Name->GetTitle();
     TString par2Str     = par2Name->GetTitle();
     TString outFileName = outFile->GetTitle();
     TString outDirName  = outDir->GetTitle();
-
 
     cout << "-I- FairAnaSelector::Init(): out status   : \"" << outputStat.Data() << "\"" << endl;
     cout << "-I- FairAnaSelector::Init(): par1 file    : \"" << par1Str.Data() << "\"" << endl;
@@ -126,6 +130,11 @@ void FairAnaSelector::Init(TTree* tree)
     cout << "-I- FairAnaSelector::Init(): SetInTree done" << endl;
 
     fRunAna->SetOutputFile(fFile);
+    if ( containerS == "kTRUE" ) {
+      fRunAna->SetContainerStatic(kTRUE);
+    } else {
+      fRunAna->SetContainerStatic(kFALSE);
+    }
 
     // -----  Parameter database   --------------------------------------------
     FairRuntimeDb* rtdb = fRunAna->GetRuntimeDb();
@@ -250,6 +259,8 @@ void FairAnaSelector::SlaveTerminate()
   // The SlaveTerminate() function is called after all entries or objects
   // have been processed. When running with PROOF SlaveTerminate() is called
   // on each slave server.
+  if ( !fRunAna ) { return; }
+
   if ( !fProofFile ) {
     cout << "-I- FairAnaSelector::SlaveTerminate(): Calling fRunAna->TerminateRun()" << endl;
     fRunAna->TerminateRun();

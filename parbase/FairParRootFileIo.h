@@ -51,6 +51,8 @@ class FairParRootFileIo : public FairParIo
     ~FairParRootFileIo();
     Bool_t open(const Text_t* fname, Option_t* option="READ",
                 const Text_t* ftitle="",Int_t compress=1);
+    Bool_t open(const TList* fnamelist, Option_t* option="READ",
+                const Text_t* ftitle="",Int_t compress=1);
     void close();
     void print();
     FairParRootFile* getParRootFile();
