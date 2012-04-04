@@ -14,8 +14,8 @@ FairLink::FairLink()
   :TObject(),
    fFile(-1),
    fEntry(-1),
-   fType(0),
-   fIndex(0),
+   fType(-1),
+   fIndex(-1),
    fWeight(1.0)
 {
 }

@@ -1234,7 +1234,7 @@ TObject* FairRootManager::GetLinkData(const FairLink link)
   Int_t type = link.GetType();
   Int_t index = link.GetIndex();
 
-  TTree* dataTree;
+  TTree* dataTree;          //get the correct Tree
   if (fileId < 0) {
     dataTree = GetInTree();
   } else if (fileId == 0) {
@@ -1247,21 +1247,30 @@ TObject* FairRootManager::GetLinkData(const FairLink link)
     dataTree = GetInTree();
   }
 
+  if (type < 0) {
+    return 0;
+  }
+
   TBranch* dataBranch = dataTree->GetBranch(GetBranchName(type));
 
   if (dataBranch == 0) {
     return 0;
   }
 
+  if (entryNr > -1) {         //get the right entry (if entryNr < 0 then the current entry is taken
+    if (entryNr < dataBranch->GetEntries()) {
+      dataBranch->GetEntry(entryNr);
+    } else {
+      return 0;
+    }
+  }
+
+  if (index < 0) {                //if index is -1 then this is not a TClonesArray so only the Object is returned
+    return GetObject(GetBranchName(type));
+  }
+
   TClonesArray* dataArray = (TClonesArray*)GetObject(GetBranchName(type));
 
-  if (entryNr < 0) {
-
-  } else if (entryNr < dataBranch->GetEntries()) {
-    dataBranch->GetEntry(entryNr);
-  } else {
-    return 0;
-  }
 
   if (index < dataArray->GetEntriesFast()) {
     return dataArray->At(index);
