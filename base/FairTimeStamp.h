@@ -46,6 +46,11 @@ class FairTimeStamp : public FairMultiLinkedData
       return (fTimeStamp == data->GetTimeStamp() && fTimeStampError == data->GetTimeStampError());
     }
 
+    friend std::ostream& operator<< (std::ostream& out, const FairTimeStamp& link) {
+      link.Print(out);
+      return out;
+    }
+
 
   protected:
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */

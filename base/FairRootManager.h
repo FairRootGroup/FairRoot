@@ -225,6 +225,9 @@ class FairRootManager : public TObject
     void        StoreAllWriteoutBufferData();
     void    DeleteOldWriteoutBufferData();
 
+    Int_t GetEntryNr() {return fEntryNr;}
+    void SetEntryNr(Int_t val) {fEntryNr = val;}
+
   private:
     /**private methods*/
     FairRootManager(const FairRootManager&);
@@ -295,6 +298,7 @@ class FairRootManager : public TObject
     /** Internally used to read time ordered data from branches*/
     std::map<TString, FairTSBufferFunctional*> fTSBufferMap; //!
     std::map<TString, FairWriteoutBuffer* > fWriteoutBufferMap; //!
+    std::map<Int_t, TBranch*> fInputBranchMap; //!    //Map of input branch ID with TBranch pointer
 
     /** if kTRUE the entries of a branch are filled from the beginning --> no empty entries*/
     Bool_t                              fCompressData;
@@ -372,9 +376,10 @@ class FairRootManager : public TObject
     */
     Bool_t      fEvtHeaderIsNew; //!
     Bool_t  fFillLastData; //!
+    Int_t fEntryNr; //!
 
 
-    ClassDef(FairRootManager,5) // Root IO manager
+    ClassDef(FairRootManager,7) // Root IO manager
 };
 
 

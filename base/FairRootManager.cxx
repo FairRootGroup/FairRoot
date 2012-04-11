@@ -120,7 +120,8 @@ FairRootManager::FairRootManager()
     fNoOfBGEntries(0),
     fCurrentEntry(),
     fEvtHeaderIsNew(kFALSE),
-    fFillLastData(kFALSE)
+    fFillLastData(kFALSE),
+    fEntryNr(0)
 {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
@@ -1036,6 +1037,7 @@ void FairRootManager:: WriteFolder()
 //_____________________________________________________________________________
 void  FairRootManager::ReadEvent(Int_t i)
 {
+  SetEntryNr(i);
   if ( fInTree ) {
     cout << "FairRootManager::ReadEvent(" << i << "): FROM THE TREE " << fInTree << endl;
     if(0==fCurrentEntryNo) {
@@ -1234,6 +1236,8 @@ TObject* FairRootManager::GetLinkData(const FairLink link)
   Int_t type = link.GetType();
   Int_t index = link.GetIndex();
 
+//  std::cout << "GetLinkData: " << link << std::endl;
+
   TTree* dataTree;          //get the correct Tree
   if (fileId < 0) {
     dataTree = GetInTree();
@@ -1251,7 +1255,16 @@ TObject* FairRootManager::GetLinkData(const FairLink link)
     return 0;
   }
 
-  TBranch* dataBranch = dataTree->GetBranch(GetBranchName(type));
+  TBranch* dataBranch = 0;
+
+  if (fileId < 0 && fInputBranchMap[type] != 0) {
+    dataBranch = fInputBranchMap[type];
+  } else if (fileId < 0) {
+    fInputBranchMap[type] = dataTree->GetBranch(GetBranchName(type));
+    dataBranch = fInputBranchMap[type];
+  } else {
+    dataBranch = dataTree->GetBranch(GetBranchName(type));
+  }
 
   if (dataBranch == 0) {
     return 0;
@@ -1263,14 +1276,18 @@ TObject* FairRootManager::GetLinkData(const FairLink link)
     } else {
       return 0;
     }
+  } else {        //the link entry nr is negative --> take the actual one
+    std::cout << "EntryNr: " << GetEntryNr() << std::endl;
+    dataBranch->GetEntry(GetEntryNr());
   }
-
   if (index < 0) {                //if index is -1 then this is not a TClonesArray so only the Object is returned
     return GetObject(GetBranchName(type));
   }
 
   TClonesArray* dataArray = (TClonesArray*)GetObject(GetBranchName(type));
-
+//  std::cout << "BranchName: " << GetBranchName(type) << std::endl;
+//  std::cout << "DataBranch EntryNr: " << dataBranch->GetEntryNumber() << std::endl;
+//  std::cout << "DataArray size: " << dataArray->GetEntriesFast() << std::endl;
 
   if (index < dataArray->GetEntriesFast()) {
     return dataArray->At(index);

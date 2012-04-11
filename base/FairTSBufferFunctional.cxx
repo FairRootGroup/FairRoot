@@ -244,7 +244,7 @@ void FairTSBufferFunctional::ReadInEntry(Int_t number)
   if (number < fBranch->GetEntries()) {
     fBranch->GetEntry(number);
     for (int i = 0; i < fInputArray->GetEntriesFast(); i++) {
-      ((FairTimeStamp*) fInputArray->At(i))->SetEntryNr(FairLink(0, number, FairRootManager::Instance()->GetBranchId(fBranch->GetName()), i, 0));
+      ((FairTimeStamp*) fInputArray->At(i))->SetEntryNr(FairLink(0, number, FairRootManager::Instance()->GetBranchId(fBranch->GetName()), i, 1));
     }
     if (fVerbose > 1)
       std::cout
