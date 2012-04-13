@@ -219,6 +219,9 @@ void FairLogger::SetLogFileName(const char* name)
 
 void FairLogger::LogTo(FILE* out, const char* loglevel, const char* origin)
 {
+  if ( loglevel == "FATAL") {
+    fLogVerbosityLevel = verbosityHIGH;
+  }
   fprintf(out, "[%-7s] ", loglevel);
   if ( fLogVerbosityLevel == verbosityHIGH ) {
     GetTime();
