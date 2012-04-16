@@ -14,10 +14,10 @@
 #pragma link C++ class FairGeaneApplication+;
 #pragma link C++ class FairGenerator+;
 #pragma link C++ class FairLink+;
-#pragma link C++ class FairLinkedData+;
-#pragma link C++ class FairSingleLinkedData+;
+//#pragma link C++ class FairLinkedData+;
+//#pragma link C++ class FairSingleLinkedData+;
 #pragma link C++ class FairMultiLinkedData+;
-#pragma link C++ class FairBasePoint+;
+//#pragma link C++ class FairBasePoint+;
 #pragma link C++ class FairHit+;
 #pragma link C++ class FairIon+;
 #pragma link C++ class FairMCApplication+;

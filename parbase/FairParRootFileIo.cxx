@@ -194,7 +194,7 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
 
   std::cout << "**** merged file = \"" << newParFile.Data() << "\"" << std::endl;
 
-  this->open(newParFile,option,ftitle,compress);
+  return this->open(newParFile,option,ftitle,compress);
 }
 //--------------------------------------------------------------------
 

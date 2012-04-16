@@ -8,13 +8,15 @@
 #ifndef FAIRMULTILINKEDDATA_H_
 #define FAIRMULTILINKEDDATA_H_
 
-#include "FairLinkedData.h"
+//#include "FairLinkedData.h"
 #include "FairLink.h"
 #include "FairRootManager.h"
 #include "TClonesArray.h"
+#include "TObject.h"
+#include <set>
+#include <utility>
 
-
-class FairMultiLinkedData : public FairLinkedData
+class FairMultiLinkedData : public  TObject
 {
   public:
     FairMultiLinkedData();///< Default constructor
@@ -28,10 +30,11 @@ class FairMultiLinkedData : public FairLinkedData
     virtual Int_t           GetNLinks() const { return fLinks.size(); }       ///< returns the number of stored links
     virtual FairLink        GetLink(Int_t pos) const;                 ///< returns the FairLink at the given position
     virtual FairMultiLinkedData   GetLinksWithType(Int_t type) const;             ///< Gives you a list of links which contain the given type
-    TObject*            GetData(FairLink& myLink);                  ///< Get the TObject the Link is pointing to
+    TObject*         GetData(FairLink& myLink);                  ///< Get the TObject the Link is pointing to
+    virtual Int_t GetDefaultType() { return fDefaultType;}
     Bool_t              GetPersistanceCheck() {return fPersistanceCheck;}     ///< Returns the value of PersistanceCheck
     Int_t             GetVerbose() {return fVerbose;}             ///< Returns the verbosity level
-
+    virtual void SetDefaultType(Int_t type) {  fDefaultType = type;}
     virtual void SetPersistanceCheck(Bool_t check) {fPersistanceCheck = check;}       ///< Controls if a persistance check of a link is done or not
     virtual void SetVerbose(Int_t level) {fVerbose = level;}                ///< Sets the verbosity level
 
@@ -84,7 +87,7 @@ class FairMultiLinkedData : public FairLinkedData
         AddLink(FairLink(fileId, evtId, dataType, links[i]), bypass, mult);
       }
     }
-
+    Int_t fDefaultType;
 
 
     ClassDef(FairMultiLinkedData, 3);

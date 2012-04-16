@@ -28,10 +28,10 @@ set(BASE_SRCS
 FairBaseContFact.cxx 
 FairBaseParSet.cxx
 FairLink.cxx
-FairLinkedData.cxx
-FairSingleLinkedData.cxx
+#FairLinkedData.cxx
+#FairSingleLinkedData.cxxs
 FairMultiLinkedData.cxx 
-FairBasePoint.cxx
+#FairBasePoint.cxx
 FairDetector.cxx 
 FairEventHeader.cxx 
 FairFileHeader.cxx 

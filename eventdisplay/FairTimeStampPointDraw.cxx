@@ -6,7 +6,7 @@
  */
 
 #include "FairTimeStampPointDraw.h"
-#include "FairBasePoint.h"
+#include "FairMCPoint.h"
 #include "FairTimeStamp.h"
 
 ClassImp(FairTimeStampPointDraw);
@@ -29,7 +29,7 @@ FairTimeStampPointDraw::~FairTimeStampPointDraw()
 
 TVector3 FairTimeStampPointDraw::GetVector(TObject* obj)
 {
-  FairBasePoint* hit =(FairBasePoint*)obj;
+  FairMCPoint* hit =(FairMCPoint*)obj;
   return TVector3(hit->GetX(), hit->GetY(), hit->GetZ());
 }
 

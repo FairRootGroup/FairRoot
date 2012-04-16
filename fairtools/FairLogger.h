@@ -36,7 +36,7 @@ static const char* const LogLevelString[] = { "FATAL", "ERROR", "WARNING",
 enum FairLogVerbosityLevel {verbosityHIGH, verbosityMEDIUM, verbosityLOW};
 static const char* const LogVerbosityString[] = { "HIGH", "MEDIUM", "LOW" };
 
-class FairLogger : public TObject
+class FairLogger //: public TObject
 {
   public:
     static FairLogger* GetLogger();

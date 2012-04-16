@@ -8,10 +8,10 @@
 #ifndef FAIRMCPOINT_H
 #define FAIRMCPOINT_H
 
-#include "FairBasePoint.h"
+#include "FairMultiLinkedData.h"
 #include "TVector3.h"
 
-class FairMCPoint : public FairBasePoint
+class FairMCPoint : public FairMultiLinkedData
 {
 
   public:
@@ -48,6 +48,13 @@ class FairMCPoint : public FairBasePoint
     Double_t GetLength()     const { return fLength; }
     Double_t GetEnergyLoss() const { return fELoss; }
     void Momentum(TVector3& mom) { mom.SetXYZ(fPx, fPy, fPz); }
+    Int_t    GetDetectorID()   const { return fDetectorID;             };
+    Double_t GetX()             const { return fX;                      };
+    Double_t GetY()             const { return fY;                      };
+    Double_t GetZ()             const { return fZ;                      };
+    void Position(TVector3& pos)       const;
+
+
 
 
     /** Modifiers **/
@@ -57,6 +64,12 @@ class FairMCPoint : public FairBasePoint
     void SetLength(Double_t length)    { fLength = length; }
     void SetEnergyLoss(Double_t eLoss) { fELoss = eLoss; }
     void SetMomentum(const TVector3& mom);
+    void SetDetectorID(Int_t detID) { fDetectorID = detID; }
+    void SetX(Double_t x) { fX = x; }
+    void SetY(Double_t y) { fY = y; }
+    void SetZ(Double_t z) { fZ = z; }
+    void SetXYZ(Double_t x, Double_t y, Double_t z);
+    void SetPosition(const TVector3& pos);
 
 
     /** Output to screen **/
@@ -72,10 +85,11 @@ class FairMCPoint : public FairBasePoint
     Double32_t fTime;             /// Time since event start [ns]
     Double32_t fLength;           /// Track length since creation [cm]
     Double32_t fELoss;            /// Energy loss at this point [GeV]
+    Int_t      fDetectorID;       /// Detector unique identifier
+    Double32_t fX, fY, fZ;        /// Position of hit [cm]
 
 
-
-    ClassDef(FairMCPoint,3)
+    ClassDef(FairMCPoint,4)
 
 };
 
@@ -86,6 +100,27 @@ inline void FairMCPoint::SetMomentum(const TVector3& mom)
   fPy = mom.Py();
   fPz = mom.Pz();
 }
+inline void FairMCPoint::Position(TVector3& pos) const
+{
+  pos.SetXYZ(fX, fY, fZ);
+}
+
+
+inline void FairMCPoint::SetXYZ(Double_t x, Double_t y, Double_t z)
+{
+  fX = x;
+  fY = y;
+  fZ = z;
+}
+
+
+inline void FairMCPoint::SetPosition(const TVector3& pos)
+{
+  fX = pos.X();
+  fY = pos.Y();
+  fZ = pos.Z();
+}
+
 
 
 #endif

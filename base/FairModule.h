@@ -38,7 +38,7 @@ class FairModule:  public TNamed
     /**default dtor*/
     virtual  ~FairModule();
     /**Print method sould be implimented in detector or module*/
-    virtual void        Print() const {;}
+    virtual void        Print(Option_t* option="") const {;}
     /**Set the geometry file name o be used*/
     virtual void        SetGeometryFileName(TString fname, TString geoVer="0");
     /**Get the Geometry file name*/
