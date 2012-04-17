@@ -334,3 +334,31 @@ MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
   EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
 
 ENDMACRO (GENERATE_TEST_SCRIPT)
+
+Macro (Generate_Version_Info)
+
+  # Configure FairVersion.h
+  # ------------------------------
+  Find_Package(Subversion) 
+
+  If(EXISTS ${INCLUDE_OUTPUT_DIRECTORY}/FairVersion.h)
+    File(REMOVE ${INCLUDE_OUTPUT_DIRECTORY}/FairVersion.h)
+  EndIf(EXISTS ${INCLUDE_OUTPUT_DIRECTORY}/FairVersion.h)
+
+  if(Subversion_FOUND)
+    if(EXISTS ${PROJECT_SOURCE_DIR}/.svn/ )
+      Subversion_WC_INFO(${PROJECT_SOURCE_DIR} PROJECT)
+      set(FAIRROOT_SVN_REVISION ${PROJECT_WC_REVISION})
+      set(FAIRROOT_SVN_BRANCH ${PROJECT_WC_URL})
+      set(FAIRROOT_SVN_DATE ${PROJECT_WC_LAST_CHANGED_DATE})
+#    string(REGEX MATCH "[^/]+$" FAIRROOT_SVN_BRANCH ${FAIRROOT_SVN_BRANCH})
+      message(STATUS "FairRoot Revision - ${FAIRROOT_SVN_REVISION} Branch - ${FAIRROOT_SVN_BRANCH}") 
+      configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/FairVersion.h.tmp ${INCLUDE_OUTPUT_DIRECTORY}/FairVersion.h @ONLY)
+    endif(EXISTS ${PROJECT_SOURCE_DIR}/.svn/ )
+  endif(Subversion_FOUND)
+
+  If(NOT EXISTS ${INCLUDE_OUTPUT_DIRECTORY}/FairVersion.h)
+    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/FairVersion.h.default ${INCLUDE_OUTPUT_DIRECTORY}/FairVersion.h COPYONLY)
+  EndIf(NOT EXISTS ${INCLUDE_OUTPUT_DIRECTORY}/FairVersion.h)
+
+EndMacro (Generate_Version_Info)
