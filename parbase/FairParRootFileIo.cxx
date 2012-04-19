@@ -26,6 +26,7 @@
 //#include "TDirectory.h"
 //#include "TROOT.h"
 
+#include <TKey.h>
 #include <TObjString.h>
 #include <TFileMerger.h>
 
@@ -166,35 +167,45 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
 //--------------------------------------------------------------------
 Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
                                const Text_t* ftitle, Int_t compress)
+
 {
+  TDatime currentDate;
+  TString newParFileName = Form("/Users/konglaide/panda/pandaroot_15287/trunk/macro/global/allParams_%d_%d.root",
+                                currentDate.GetDate(),
+                                currentDate.GetTime());
+  TFile* newParFile = new TFile(newParFileName.Data(),"RECREATE");
+
+
   TObjString* string;
   TListIter myIter(fnamelist);
-  TString newParFile = "";
 
+  TKey* inpKey;
 
-  TFileMerger* merger = new TFileMerger();
+  TFile*  inFile;
 
-  Int_t nofFiles = 0;
-  while ((string = (TObjString*)myIter.Next())) {
-    merger->AddFile(string->GetString().Data());
-
-    if ( nofFiles == 0 ) {
-      newParFile = string->GetString();
-      TDatime currentDate;
-      newParFile.Replace(newParFile.Last('/')+1,
-                         newParFile.Length(),"");
-      newParFile.Append(Form("allParams_%d_%d.root",
-                             currentDate.GetDate(),
-                             currentDate.GetTime()));
-      merger->OutputFile(newParFile.Data());
+  while((string = (TObjString*)myIter.Next())) {
+    inFile = TFile::Open(string->GetString().Data());
+    if ( !inFile ) {
+      cout << "-W- File \"" << string->GetString().Data() << "\" does not exist" << endl;
+      continue;
     }
-    nofFiles++;
+
+    TList* inputKeys = (TList*)inFile->GetListOfKeys();
+
+    TListIter keyIter(inputKeys);
+    while((inpKey = (TKey*)keyIter.Next())) {
+      TObject* tempObj = inFile->Get(inpKey->GetName());
+
+      newParFile->cd();
+      tempObj->Write();
+    }
+    inFile->Close();
   }
-  merger->Merge();
+  newParFile->Close();
 
-  std::cout << "**** merged file = \"" << newParFile.Data() << "\"" << std::endl;
+  std::cout << "**** merged file = \"" << newParFileName.Data() << "\"" << std::endl;
 
-  return this->open(newParFile,option,ftitle,compress);
+  return this->open(newParFileName,option,ftitle,compress);
 }
 //--------------------------------------------------------------------
 

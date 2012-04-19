@@ -86,6 +86,8 @@ FairRunAna::FairRunAna(const char* type, const char* proofName)
    fInputGeoFile(0),
    fLoadGeo( kFALSE),
    fEvtHeader(0),
+   fMCHeader(0),
+   fStatic(kFALSE),
    fField(0),
    fTimeStamps(kFALSE),
    fInFileIsOpen(kFALSE),
@@ -105,12 +107,11 @@ FairRunAna::FairRunAna(const char* type, const char* proofName)
 
   fProofAnalysis = kFALSE;
   fProofServerName = proofName;
-  fStatic = kFALSE;
 
   if ( anaType.Contains("proof") ) {
     fProofAnalysis = kTRUE;
     fProofServerName = proofName;
-    fStatic = kTRUE;
+    //    fStatic = kTRUE;
   }
 
   fgRinstance=this;
