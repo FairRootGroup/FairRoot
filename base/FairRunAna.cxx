@@ -675,8 +675,14 @@ void FairRunAna::RunOnProof(Int_t NStart,Int_t NStop)
 
 
   TChain* inChain = (TChain*)fRootManager->GetInChain();
-  TString par1File = fRtdb->getFirstInput ()->getFilename();
-  TString par2File = fRtdb->getSecondInput()->getFilename();
+  TString par1File = "";
+  TString par2File = "";
+  if ( fRtdb->getFirstInput () ) {
+    par1File = fRtdb->getFirstInput ()->getFilename();
+  }
+  if ( fRtdb->getSecondInput() ) {
+    par2File = fRtdb->getSecondInput()->getFilename();
+  }
 
   TString outDir = (fOutputDirectory.Length()>1?fOutputDirectory.Data():gSystem->WorkingDirectory());
 
