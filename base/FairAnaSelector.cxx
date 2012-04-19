@@ -218,7 +218,7 @@ void FairAnaSelector::SlaveBegin(TTree* tree)
   cout << "-I- FairAnaSelector::SlaveBegin(): Tree address   : \"" << tree << "\"" << endl;
 
   // useless, because have no tree anyways in slavebegin, init will be anyways called whenever a new tree comes
-  Init(tree);
+  //  Init(tree);
 
   cout << "-I- FairAnaSelector::SlaveBegin(): finishing" << endl;
 }

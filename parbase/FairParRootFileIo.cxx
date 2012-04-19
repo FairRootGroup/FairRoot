@@ -170,11 +170,8 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
 
 {
   TDatime currentDate;
-  TString newParFileName = Form("/Users/konglaide/panda/pandaroot_15287/trunk/macro/global/allParams_%d_%d.root",
-                                currentDate.GetDate(),
-                                currentDate.GetTime());
-  TFile* newParFile = new TFile(newParFileName.Data(),"RECREATE");
-
+  TString newParFileName = "";
+  TFile*  newParFile;
 
   TObjString* string;
   TListIter myIter(fnamelist);
@@ -183,11 +180,23 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
 
   TFile*  inFile;
 
+  Int_t nofFiles = 0;
   while((string = (TObjString*)myIter.Next())) {
     inFile = TFile::Open(string->GetString().Data());
     if ( !inFile ) {
       cout << "-W- File \"" << string->GetString().Data() << "\" does not exist" << endl;
       continue;
+    }
+
+    if ( nofFiles == 0 ) {
+      newParFileName = string->GetString();
+      newParFileName.Replace(newParFileName.Last('/')+1,
+                             newParFileName.Length(),"");
+      newParFileName = Form("%sallParams_%d_%d.root",
+                            newParFileName.Data(),
+                            currentDate.GetDate(),
+                            currentDate.GetTime());
+      newParFile = new TFile(newParFileName.Data(),"RECREATE");
     }
 
     TList* inputKeys = (TList*)inFile->GetListOfKeys();
@@ -200,6 +209,8 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
       tempObj->Write();
     }
     inFile->Close();
+
+    nofFiles++;
   }
   newParFile->Close();
 
