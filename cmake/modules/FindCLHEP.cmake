@@ -57,26 +57,46 @@ If(CLHEP_CONFIG_EXE)
     List (REMOVE_DUPLICATES _incs_found)
   EndIf (_length GREATER 1)
   Set (CLHEP_INCLUDE_DIR ${_incs_found})
+  set(CLHEP_LIBRARIES "-L${CLHEP_LIBRARY_DIR} -lCLHEP")  
 
 Else(CLHEP_CONFIG_EXE)
 
-  FIND_PATH(CLHEP_INCLUDE_DIR NAMES CLHEP PATHS
-    ${SIMPATH}/cern/clhep/include
-    ${SIMPATH}/include
-    NO_DEFAULT_PATH
-  )
+  # check if clhep is available in Geant4
+  If (GEANT4_FOUND)
 
-  FIND_PATH(CLHEP_BASE_DIR NAMES ClhepVersion.h PATHS
-    ${SIMPATH}/cern/clhep
-    ${SIMPATH}/include
-    NO_DEFAULT_PATH
-  )
+    find_path(CLHEP_LIBRARY_DIR NAMES libG4clhep.so PATHS
+      ${GEANT4_LIBRARY_DIR}
+    )
+    set(CLHEP_LIBRARIES "-L${CLHEP_LIBRARY_DIR} -lG4clhep")  
 
-  FIND_PATH(CLHEP_LIBRARY_DIR NAMES libCLHEP.so libCLHEP.dylib PATHS
-    ${SIMPATH}/cern/clhep/lib
-    ${SIMPATH}/lib
-    NO_DEFAULT_PATH
-  )
+    FIND_PATH(CLHEP_INCLUDE_DIR NAMES CLHEP PATHS
+      ${GEANT4_INCLUDE_DIR}
+      ${SIMPATH}/cern/clhep/include
+      ${SIMPATH}/include
+      NO_DEFAULT_PATH
+    )
+
+  Else (GEANT4_FOUND)
+  
+    FIND_PATH(CLHEP_INCLUDE_DIR NAMES CLHEP PATHS
+      ${SIMPATH}/cern/clhep/include
+      ${SIMPATH}/include
+      NO_DEFAULT_PATH
+    )
+
+    FIND_PATH(CLHEP_BASE_DIR NAMES ClhepVersion.h PATHS
+      ${SIMPATH}/cern/clhep
+      ${SIMPATH}/include
+      NO_DEFAULT_PATH
+    )
+
+    FIND_PATH(CLHEP_LIBRARY_DIR NAMES libCLHEP.so libCLHEP.dylib PATHS
+      ${SIMPATH}/cern/clhep/lib
+      ${SIMPATH}/lib
+      NO_DEFAULT_PATH
+    )
+    set(CLHEP_LIBRARIES "-L${CLHEP_LIBRARY_DIR} -lCLHEP")  
+  EndIf (GEANT4_FOUND)
 
 EndIf(CLHEP_CONFIG_EXE)
 
