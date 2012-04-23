@@ -28,7 +28,6 @@ ADD_LIBRARY(cudaintrface SHARED
  )
 
 ############### build the library #####################
-add_library(cudaintrface SHARED ${INTERFACE_SRCS})
 
 target_link_libraries(cudaintrface ${ROOT_LIBRARIES} "${CMAKE_BINARY_DIR}/lib/libcuda_imp.a" "${CUDA_TARGET_LINK}" "${CUDA_CUT_TARGET_LINK}"  )
 

@@ -6,7 +6,7 @@
 # and PANDAROOT.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.4.3 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION  2.6.2 FATAL_ERROR)
 
 # Set name of our project to "FAIRROOT". Has to be done
 # after check of cmake version                        
@@ -15,13 +15,7 @@ project(FAIRROOT)
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ 
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
-
-
-
-#set(CUDA_BUILD_TYPE "Device")
-#set(CUDA_BUILD_TYPE "Emulation")
-# Load some basic macros which are needed later on
-#include(${CMAKE_SOURCE_DIR}/cmake/cuda/FindCuda.cmake)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
 
 
 
@@ -79,8 +73,8 @@ else(FAIRROOT_MINIMAL)
   find_package(GEANT4VMC)
   find_package(CLHEP)
   find_package(RuleChecker)
-  find_package(Oracle)
-
+#  find_package(Oracle)
+#  find_package(CUDA REQUIRED)
 endif(FAIRROOT_MINIMAL)
 
 
