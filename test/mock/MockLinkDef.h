@@ -5,6 +5,7 @@
 #pragma link off all functions;
 
 #pragma link C++ class  FairMockMCApplication;
+#pragma link C++ class  FairMockVirtualMC;
 
 #endif
 

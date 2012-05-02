@@ -16,7 +16,10 @@ set(LINK_DIRECTORIES
 
 link_directories( ${LINK_DIRECTORIES})
 
-Set(Sources FairMockMCApplication.cxx)
+Set(Sources 
+    FairMockMCApplication.cxx
+    FairMockVirtualMC.cxx
+)
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HDRS "${Sources}")
 set(LINKDEF MockLinkDef.h)
