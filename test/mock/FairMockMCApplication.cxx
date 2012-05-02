@@ -10,4 +10,11 @@ FairMockMCApplication::FairMockMCApplication()
 {
 }
 
+FairMockMCApplication::~FairMockMCApplication()
+{
+  delete gMC;
+  gMC=0;
+}
+
+
 ClassImp(FairMockMCApplication)
