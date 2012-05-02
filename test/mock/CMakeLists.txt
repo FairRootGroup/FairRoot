@@ -7,6 +7,7 @@
 set(INCLUDE_DIRECTORIES
   ${ROOT_INCLUDE_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_SOURCE_DIR}/fairtools
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})

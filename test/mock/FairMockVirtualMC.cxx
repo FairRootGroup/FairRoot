@@ -2,13 +2,15 @@
 
 FairMockVirtualMC::FairMockVirtualMC()
   : TVirtualMC(),
-    fMCGeo(new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry"))
+    fMCGeo(new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry")),
+    fLogger(FairLogger::GetLogger())
 {
 }
 
 FairMockVirtualMC::FairMockVirtualMC(const char* title, Int_t nwgeant)
   : TVirtualMC("FairMockVirtualMC",title, kFALSE),
-    fMCGeo(new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry"))
+    fMCGeo(new TGeoMCGeometry("MCGeo", "TGeo Implementation of VirtualMCGeometry")),
+    fLogger(FairLogger::GetLogger())
 {
 }
 
@@ -35,4 +37,51 @@ Int_t FairMockVirtualMC::VolId(const Text_t* name) const
   strncpy(sname, name, len);
   sname[len] = 0;
   return fMCGeo->VolId(sname);
+}
+
+void FairMockVirtualMC::StopExecution() const
+{
+  fLogger->Fatal(MESSAGE_ORIGIN,"This function is not yet implemented.");
+}
+
+const char* FairMockVirtualMC::VolName(Int_t) const
+{
+  StopExecution();
+  return "NULL";
+}
+
+Int_t FairMockVirtualMC::MediumId(const char*) const
+{
+  StopExecution();
+  return -1;
+}
+
+Int_t FairMockVirtualMC::NofVolumes() const
+{
+  StopExecution();
+  return -1;
+}
+
+Int_t FairMockVirtualMC::VolId2Mate(Int_t) const
+{
+  StopExecution();
+  return -1;
+}
+
+Int_t FairMockVirtualMC::NofVolDaughters(const char*) const
+{
+  StopExecution();
+  return -1;
+}
+
+const char* FairMockVirtualMC::VolDaughterName(const char*, Int_t) const
+{
+  StopExecution();
+  return "NULL";
+}
+
+Int_t FairMockVirtualMC::VolDaughterCopyNo(const char*, Int_t) const
+{
+  StopExecution();
+  return -1;
 }
