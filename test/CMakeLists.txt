@@ -3,6 +3,7 @@
 # The extension is already found.  Any number of sources could be listed
 # here.
 
-Include(CreateFairTestLib.cmake)
 
+Add_subdirectory(testlib)
+Add_Subdirectory(mock)
 Add_Subdirectory(fairtools)

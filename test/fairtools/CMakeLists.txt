@@ -8,7 +8,7 @@ set(INCLUDE_DIRECTORIES
  ${ROOT_INCLUDE_DIR}
  ${GTEST_INCLUDE_DIRS} 
  ${CMAKE_SOURCE_DIR}/fairtools
- ${CMAKE_SOURCE_DIR}/test
+ ${CMAKE_SOURCE_DIR}/test/testlib
 )
 
 # Boost is needed for the regular expression handling
@@ -37,13 +37,13 @@ Else(Boost_FOUND)
   Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
 EndIf(Boost_FOUND)
 
-If(Boost_FOUND)
-  add_executable(_BoostTestFairTools _BoostTestFairTools.cxx)
-  target_link_libraries(_BoostTestFairTools ${Boost_LIBRARIES} FairTools FairTest)
-  add_test(_BoostTestFairTools ${FAIRROOT_BINARY_DIR}/bin/_BoostTestFairTools)
-Else(Boost_FOUND)
-  Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
-EndIf(Boost_FOUND)
+#If(Boost_FOUND)
+#  add_executable(_BoostTestFairTools _BoostTestFairTools.cxx)
+#  target_link_libraries(_BoostTestFairTools ${Boost_LIBRARIES} FairTools FairTest)
+#  add_test(_BoostTestFairTools ${FAIRROOT_BINARY_DIR}/bin/_BoostTestFairTools)
+#Else(Boost_FOUND)
+#  Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
+#EndIf(Boost_FOUND)
 
 
 
