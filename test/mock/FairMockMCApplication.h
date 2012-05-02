@@ -74,7 +74,7 @@ class FairMockMCApplication : public TVirtualMCApplication
     virtual Double_t TrackingZmax() const { return DBL_MAX; }
 
     // Calculate user field \a b at point \a x
-    virtual void     Field(const Double_t* x, Double_t* b) const;
+    virtual void     Field(const Double_t* x, Double_t* b) const {;}
 
     // Define action at each step for Geane
     virtual void GeaneStepping() {;}
