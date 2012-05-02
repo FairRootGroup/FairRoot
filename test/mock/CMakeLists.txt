@@ -20,7 +20,6 @@ Set(Sources FairMockMCApplication.cxx)
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HDRS "${Sources}")
 set(LINKDEF MockLinkDef.h)
-#set(DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairMockDict.cxx)
 set(DICTIONARY FairMockDict.cxx)
 ROOT_GENERATE_DICTIONARY()
 

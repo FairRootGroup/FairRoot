@@ -9,3 +9,5 @@ FairMockMCApplication::FairMockMCApplication()
   :TVirtualMCApplication()
 {
 }
+
+ClassImp(FairMockMCApplication)
