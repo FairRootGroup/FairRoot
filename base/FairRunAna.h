@@ -13,6 +13,7 @@
 #include "FairRunInfo.h"
 #include "FairRootManager.h"
 
+#include "TProof.h"
 #include "TString.h"
 #include <iostream>
 
@@ -132,7 +133,10 @@ class FairRunAna : public FairRun
      */
     void BGWindowWidthTime(Double_t background, UInt_t Signalid);
 
-    /** To be set to kTRUE only when running on PROOF worker*/
+    /** GetProof */
+    TProof* GetProof() { return fProof;}
+
+    /** To be set to kTRUE only when running on PROOF worker, only by TSelector */
     void SetRunOnProofWorker(Bool_t tb = kTRUE) {
       fRunOnProofWorker = tb;
     }
@@ -183,6 +187,8 @@ class FairRunAna : public FairRun
     Double_t                                fEventMeanTime; //!
     /** used to generate random numbers for event time; */
     TF1*                                    fTimeProb;      //!
+    /** PROOF **/
+    TProof*                                 fProof;
     /** flag indicating running in PROOF mode*/
     Bool_t                                  fProofAnalysis; //!
     /** executing on PROOF worker*/

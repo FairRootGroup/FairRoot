@@ -64,6 +64,7 @@ FairRunAna::FairRunAna()
    fEventTime(0),
    fEventMeanTime(0),
    fTimeProb(0),
+   fProof(NULL),
    fProofAnalysis(kFALSE),
    fRunOnProofWorker(kFALSE),
    fProofServerName(""),
@@ -105,12 +106,21 @@ FairRunAna::FairRunAna(const char* type, const char* proofName)
   TString anaType = type;
   anaType.ToLower();
 
+  fProof = NULL;
   fProofAnalysis = kFALSE;
   fProofServerName = proofName;
 
   if ( anaType.Contains("proof") ) {
     fProofAnalysis = kTRUE;
     fProofServerName = proofName;
+
+    cout << "+++++++ T P R O O F +++++++++++++++++++++++++++++++++" << endl;
+    cout << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data()
+         << "\");" << endl;
+    TProof::AddEnvVar("LOCALDATASERVER","file://");
+    //    TProof* proof = TProof::Open("lite:///?workers=1");
+    fProof = TProof::Open(fProofServerName.Data());
+    cout << "+++++++ C R E A T E D +++++++++++++++++++++++++++++++" << endl;
     //    fStatic = kTRUE;
   }
 
@@ -687,34 +697,34 @@ void FairRunAna::RunOnProof(Int_t NStart,Int_t NStop)
 
   TString outDir = (fOutputDirectory.Length()>1?fOutputDirectory.Data():gSystem->WorkingDirectory());
 
-  cout << "+++++++ T P R O O F +++++++++++++++++++++++++++++++++" << endl;
-  cout << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data()
-       << "\");" << endl;
-  TProof::AddEnvVar("LOCALDATASERVER","file://");
-  //    TProof* proof = TProof::Open("lite:///?workers=1");
-  TProof* proof = TProof::Open(fProofServerName.Data());
-  cout << "+++++++ C R E A T E D +++++++++++++++++++++++++++++++" << endl;
+//   cout << "+++++++ T P R O O F +++++++++++++++++++++++++++++++++" << endl;
+//   cout << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data()
+//        << "\");" << endl;
+//   TProof::AddEnvVar("LOCALDATASERVER","file://");
+//   //    TProof* proof = TProof::Open("lite:///?workers=1");
+//   TProof* proof = TProof::Open(fProofServerName.Data());
+//   cout << "+++++++ C R E A T E D +++++++++++++++++++++++++++++++" << endl;
 
   TString outFile = fRootManager->GetOutFile()->GetName();
   fRootManager->CloseOutFile();
 
-  proof->AddInput(fTask);
+  fProof->AddInput(fTask);
 
-  proof->AddInput(new TNamed("FAIRRUNANA_fContainerStatic",(fStatic?"kTRUE":"kFALSE")));
-  proof->AddInput(new TNamed("FAIRRUNANA_fProofOutputStatus",fProofOutputStatus.Data()));
-  proof->AddInput(new TNamed("FAIRRUNANA_fOutputDirectory",outDir.Data()));
-  proof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",outFile.Data()));
-  proof->AddInput(new TNamed("FAIRRUNANA_fParInput1FName",par1File.Data()));
-  proof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
+  fProof->AddInput(new TNamed("FAIRRUNANA_fContainerStatic",(fStatic?"kTRUE":"kFALSE")));
+  fProof->AddInput(new TNamed("FAIRRUNANA_fProofOutputStatus",fProofOutputStatus.Data()));
+  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputDirectory",outDir.Data()));
+  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",outFile.Data()));
+  fProof->AddInput(new TNamed("FAIRRUNANA_fParInput1FName",par1File.Data()));
+  fProof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
 
   cout << "0309: ClearPackages" << endl;
-  proof->ClearPackages();
+  fProof->ClearPackages();
   cout << "0309: UploadPackages" << endl;
-  proof->UploadPackage(fProofParName.Data());
+  fProof->UploadPackage(fProofParName.Data());
   cout << "0309: EnablePackages" << endl;
-  proof->EnablePackage(fProofParName.Data());
+  fProof->EnablePackage(fProofParName.Data());
   cout << "0309: ShowPackages" << endl;
-  proof->ShowPackages();
+  fProof->ShowPackages();
   cout << "0309: Done" << endl;
 
   Int_t nofChainEntries = inChain->GetEntries();
