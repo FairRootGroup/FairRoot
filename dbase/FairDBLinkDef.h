@@ -9,7 +9,6 @@
 #pragma link C++ nestedclass;
 
 // Generic
-
 #pragma link C++ namespace     Experiment;
 #pragma link C++ enum          Experiment::EExperiment;
 #pragma link C++ nestedtypedef Experiment::Experiment_t;
@@ -23,7 +22,6 @@
 #pragma link C++ nestedtypedef SimFlag::SimFlag_t;
 
 // dbValidation
-
 #pragma link C++ class ValTimeStamp+;
 #pragma link C++ function operator<<(ostream&, const ValTimeStamp&);
 #pragma link C++ function operator==(const ValTimeStamp&, const ValTimeStamp&);
@@ -45,16 +43,12 @@
 
 #pragma link C++ class ValValidate;
 
-
 // dbInterface
-
-
 #pragma link C++ class FairDbResultPtr<FairDbLogEntry>+;
 #pragma link C++ class FairDbWriter<FairDbLogEntry>+;
 #pragma link C++ class FairDbResultPtr<FairDbConfigSet>+;
 #pragma link C++ class FairDbWriter<FairDbConfigSet>+;
 #pragma link C++ class FairDbResultPtr<FairDbValidityRec>+;
-
 
 #pragma link C++ class FairDb+;
 #pragma link C++ class FairDbCache+;
@@ -101,5 +95,9 @@
 #pragma link C++ class FairRegistryItemXxx<const char*>-;
 #pragma link C++ function operator<<(ostream&, const FairRegistry&);
 
+// #### SQL object
+#pragma link C++ class FairTSQLObject+;
+#pragma link C++ enum  FairDBObjectMemberTypes;
+#pragma link C++ union FairDBObjectMemberValues;
+#pragma link C++ class FairDBObjectMemberValue+;
 #endif
-

@@ -10,6 +10,7 @@ ${CMAKE_SOURCE_DIR}/parbase
 ${CMAKE_SOURCE_DIR}/dbase
 ${CMAKE_SOURCE_DIR}/dbase/dbInterface
 ${CMAKE_SOURCE_DIR}/dbase/dbValidation
+${CMAKE_SOURCE_DIR}/dbase/dbUtils
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -67,6 +68,8 @@ dbInterface/FairDbExceptionLog.cxx
 dbInterface/FairDbServices.cxx
 dbInterface/FairDbValRecSet.cxx
 dbInterface/FairDbSimFlagAssociation.cxx
+#### FairTSQLObject
+dbUtils/FairTSQLObject.cxx
 )
 
 
