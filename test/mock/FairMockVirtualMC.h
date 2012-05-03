@@ -1,5 +1,5 @@
-//#ifndef FairMockVirtualMC
-//#define FairMockVirtualMC
+#ifndef Fair_Mock_Virtual_MC
+#define Fair_Mock_Virtual_MC
 
 #include "TVirtualMC.h"
 #include "TGeoMCGeometry.h"
@@ -34,6 +34,9 @@ class FairMockVirtualMC : public TVirtualMC
     virtual void Gsdvn2(const char*, const char*, Int_t, Int_t, Double_t, Int_t) {StopExecution();}
     virtual void Gsdvt(const char*, const char*, Double_t, Int_t, Int_t, Int_t) {StopExecution();}
     virtual void Gsdvt2(const char*, const char*, Double_t, Int_t, Double_t, Int_t, Int_t) {StopExecution();}
+    virtual void Gfmate(Int_t, char*, Float_t&, Float_t&, Float_t&, Float_t&, Float_t&, Float_t*, Int_t&) {StopExecution();}
+    virtual void Gfmate(Int_t, char*, Double_t&, Double_t&, Double_t&, Double_t&, Double_t&, Double_t*, Int_t&) {StopExecution();}
+    virtual void Gckmat(Int_t, char*) {StopExecution();}
     virtual void Gsord(const char*, Int_t) {StopExecution();}
     virtual void Gspos(const char*, Int_t, const char*, Double_t, Double_t, Double_t, Int_t, const char*) {StopExecution();}
     virtual void Gsposp(const char*, Int_t, const char*, Double_t, Double_t, Double_t, Int_t, const char*, Float_t*, Int_t) {StopExecution();}
@@ -136,4 +139,4 @@ class FairMockVirtualMC : public TVirtualMC
     ClassDef(FairMockVirtualMC,1)  //C++ interface to Geant basic routines
 };
 
-//#endif
+#endif
