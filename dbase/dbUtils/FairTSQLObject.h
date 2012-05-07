@@ -15,8 +15,8 @@
 class TClass;
 class TList;
 class TDictionary;
-class TMethod;
 class TMethodCall;
+class TMethod;
 class TArrayC;
 class TArrayI;
 class TArrayF;
@@ -27,20 +27,28 @@ class TArrayD;
  * database interface.
  */
 typedef enum FairDBObjectMemberTypes {
-  UNKNOWN_TYPE = 0,//! Unknow data type
-  COMPLEX_TYPE = 1,//! Complex type (objects, pointers, ...)
-  CHAR         = 2,//! Char Type
-  INT          = 3,//! int or Int_t
-  FLOAT        = 4,//! float or Float_t
-  DOUBLE       = 5,//! double or Double_t
-  INT_ARRAY    = 31,//! TArrayI
-  FLOAT_ARRAY  = 41,//! TArrayF
-  DOUBLE_ARRAY = 51//! TArrayD
+  UNKNOWN_TYPE     = 0,//! Unknow data type
+  COMPLEX_TYPE     = 1,//! Complex type (objects, pointers, ...)
+  CHAR             = 2,//! Char Type
+  INT              = 3,//! int or Int_t
+  FLOAT            = 4,//! float or Float_t
+  DOUBLE           = 5,//! double or Double_t
+  UINT             = 6,//! Unsigned int or UInt_t
+  INT_ARRAY        = 31,//! TArrayI
+  INT_ARRAY_PTR    = 32,//! TArrayI*
+  FLOAT_ARRAY      = 41,//! TArrayF
+  FLOAT_ARRAY_PTR  = 42,//! TArrayF*
+  DOUBLE_ARRAY     = 51,//! TArrayD
+  DOUBLE_ARRAY_PTR = 52 //! TArrayD*
 } FairDBMemberTypes;
 
+/**
+ * Structure to hold the returned member value and its type.
+ */
 typedef union FairDBObjectMemberValues {
   FairDBMemberTypes type;
   char    c_val;
+  size_t  UiVal;
   int     i_val;
   float   f_val;
   double  d_val;
@@ -49,21 +57,25 @@ typedef union FairDBObjectMemberValues {
   TArrayD* D_Ar_val;
 } FairDBMemberValues;
 
+/**
+ * Structure to hold the returned member value and its type. Used for
+ * accessing class data members.
+ */
 struct FairDBObjectMemberValue {
-    // Constructor.
+    //________ Constructor.
     FairDBObjectMemberValue()
       : type(UNKNOWN_TYPE),
-        c_val('a'), i_val(0), f_val(0.0), d_val(0.0),
+        c_val('a'), UiVal(0), i_val(0), f_val(0.0), d_val(0.0),
         I_Ar_val(0), F_Ar_val(0), D_Ar_val(0)
     {};
 
-    // Copy Constructor.
-    FairDBObjectMemberValue(FairDBObjectMemberValue const& ot)
-    {}
+    //________ Destructor.
+    ~FairDBObjectMemberValue() {};
 
-    // Members.
+    //________ Members.
     FairDBObjectMemberTypes type;
     char    c_val;
+    size_t  UiVal;
     int     i_val;
     float   f_val;
     double  d_val;
@@ -72,11 +84,13 @@ struct FairDBObjectMemberValue {
     TArrayD* D_Ar_val;
 
   private:
+    // To avoid mistakes.
+    FairDBObjectMemberValue(FairDBObjectMemberValue const& ot);
     FairDBObjectMemberValue operator=(FairDBObjectMemberValue const& ot);
 };
 
 /// ====================================
-class FairTSQLObject: public TObject
+class FairTSQLObject: virtual public TObject
 {
   public:
     /**
@@ -117,11 +131,6 @@ class FairTSQLObject: public TObject
     TList& GetMethodList();
 
     /**
-     *@return The list of RealDataMembers.
-     */
-    TList& GetRealDataList();
-
-    /**
      * Find the true type of the member named "mName".
      *
      *@param mName The name of the member to search for.
@@ -140,6 +149,7 @@ class FairTSQLObject: public TObject
      * the string "UNKNOWN_OBJECT" is returned.
      */
     virtual std::string* GetMemberTypeName(std::string const& mName);
+    virtual std::string* GetMemberTypeName(char const* mName);
 
     /**
      *@param mName The name of the member to search.
@@ -183,6 +193,7 @@ class FairTSQLObject: public TObject
      * returns "UNKNOWN_METHOD"
      */
     std::string* GetMethodReturnTypeName(std::string const& methodName);
+    std::string* GetMethodReturnTypeName(char const* methodName);
 
 
   protected:
@@ -190,7 +201,6 @@ class FairTSQLObject: public TObject
     TDictionary* fcurDict;/**< Current Dictionary info*/
     TList*  fMemberList;/**< The list of members*/
     TList*  fMethodList;/**< The list of methods*/
-    TList*  fRealDataList;/**< The list of RealDataMembers*/
 
   private:
     // To avoid mistakes.
@@ -205,11 +215,6 @@ class FairTSQLObject: public TObject
 
     /**< Initialize the list of methods for the current object.*/
     void InitMethodList();
-
-    /**< Initialize the list of Real Data Members for the current
-     * object.
-     */
-    void InitRealDataList();
 
     ClassDef(FairTSQLObject, 0)
 };

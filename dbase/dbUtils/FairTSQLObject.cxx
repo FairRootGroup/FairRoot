@@ -23,12 +23,14 @@ FairTSQLObject::FairTSQLObject()
     fCurCls(0),
     fcurDict(0),
     fMemberList(0),
-    fMethodList(0),
-    fRealDataList(0)
+    fMethodList(0)
 {}
 
 /**
  * Destructor.
+ *
+ * It seems that ROOT owns the returned pointers. So deleting leads
+ * into a seg. fault. So we do not need to clean up, ;).
  */
 FairTSQLObject::~FairTSQLObject()
 {}
@@ -42,7 +44,6 @@ TClass& FairTSQLObject::GetCurCls()
 {
   InitCurClass();
   return ( *(this->fCurCls) );
-  //return (*(this->IsA()));
 }
 
 /**
@@ -54,7 +55,6 @@ TList& FairTSQLObject::GetMemberList()
 {
   InitMemList();
   return ( *(this->fMemberList) );
-  //return (*((this->IsA())->GetListOfDataMembers()));
 }
 
 /**
@@ -90,12 +90,25 @@ TDictionary& FairTSQLObject::GetcurDict()
  */
 std::string* FairTSQLObject::GetMemberTypeName(std::string const& mName)
 {
+  return (GetMemberTypeName(mName.c_str()));
+}
+
+/**
+ * Find the true type of the member named "mName".
+ *
+ *@param mName The name of the member to search for.
+ *
+ *@return The type of the member with the given name. If not found
+ * the string "UNKNOWN_OBJECT" is returned.
+ */
+std::string* FairTSQLObject::GetMemberTypeName(char const* mName)
+{
   std::string* out;
   // Init Member list.
   InitMemList();
 
   // Find the object with the given name in the list
-  TObject* tmpOb  = fMemberList->FindObject(mName.c_str());
+  TObject* tmpOb  = fMemberList->FindObject(mName);
 
   if(tmpOb) { //Found object, fetch type
     TDataMember* dm = fCurCls->GetDataMember(tmpOb->GetName());
@@ -103,7 +116,6 @@ std::string* FairTSQLObject::GetMemberTypeName(std::string const& mName)
   } else { // Did not find the object in the list
     out = new std::string("UNKNOWN_OBJECT");
   }
-
   return out;
 }
 
@@ -124,15 +136,17 @@ FairDBObjectMemberTypes FairTSQLObject::GetMemberType(std::string const& mName)
     curType = CHAR;
   } else if( (*tmpName) == "int") {
     curType = INT;
+  } else if((*tmpName) == "unsigned int") {
+    curType = UINT;
   } else if( (*tmpName) == "float") {
     curType = FLOAT;
   } else if( (*tmpName) == "double") {
     curType = DOUBLE;
-  } else if( (*tmpName) == "TArrayI" ) {
+  } else if( (*tmpName) == "TArrayI" || (*tmpName) == "TArrayI*") {
     curType = INT_ARRAY;
-  } else if( (*tmpName) == "TArrayF" ) {
+  } else if( (*tmpName) == "TArrayF" || (*tmpName) == "TArrayF*") {
     curType = FLOAT_ARRAY;
-  } else if( (*tmpName) == "TArrayD" ) {
+  } else if( (*tmpName) == "TArrayD" || (*tmpName) == "TArrayD*") {
     curType = DOUBLE_ARRAY;
   } else {
     curType = COMPLEX_TYPE;
@@ -148,7 +162,6 @@ void FairTSQLObject::InitCurClass()
 {
   if(!fCurCls) {
     fCurCls = this->IsA();
-    fCurCls->BuildRealData();
   }
 }
 
@@ -160,6 +173,7 @@ void FairTSQLObject::InitMemList()
     fMemberList = fCurCls->GetListOfDataMembers();
   }
 }
+
 /**< Initialize the list of methods for the current object.*/
 void FairTSQLObject::InitMethodList()
 {
@@ -167,26 +181,6 @@ void FairTSQLObject::InitMethodList()
   if(!fMethodList) {
     fMethodList = fCurCls->GetListOfMethods();
   }
-}
-
-/* Initialize the list of Real Data Members for the current
- * object.
- */
-void FairTSQLObject::InitRealDataList()
-{
-  InitCurClass();
-  if(!fRealDataList) {
-    fRealDataList = fCurCls->GetListOfRealData();
-  }
-}
-
-/**
- *@return The list of RealDataMembers.
- */
-TList& FairTSQLObject::GetRealDataList()
-{
-  InitRealDataList();
-  return (*fRealDataList);
 }
 
 /**
@@ -232,8 +226,19 @@ std::string* FairTSQLObject::GetMethodPrototype(std::string const& methodName)
  */
 std::string* FairTSQLObject::GetMethodReturnTypeName(std::string const& methodName)
 {
+  return GetMethodReturnTypeName(methodName.c_str());
+}
+
+/**
+ *@param methodName The name of the method.
+ *
+ *@return The name of the return type of given method. If not found
+ * returns "UNKNOWN_METHOD"
+ */
+std::string* FairTSQLObject::GetMethodReturnTypeName(char const* methodName)
+{
   InitMethodList();
-  TMethod* mt = (TMethod*) fMethodList->FindObject(methodName.c_str());
+  TMethod* mt = (TMethod*) fMethodList->FindObject(methodName);
 
   std::string* out;
 
@@ -288,56 +293,66 @@ FairDBObjectMemberValue* FairTSQLObject::GetMember(std::string const& mName)
   FairDBObjectMemberValue* returnVal = new FairDBObjectMemberValue();
   (*returnVal).type = type;
 
-  // Cast
+  std::string typeName = " type = ";
+// Cast the object
   char*  tmpChar = 0;
   long   tmpLong = 0;
   double tmpDouble = 0.00;
 
-  std::cout  << "Par Name = " << mName << " ";
   switch(type) {
   case CHAR:
-    std::cout << "Type = CHAR \n";
+    typeName += "CHAR \n";
     getMeth->Execute(this, "", &tmpChar);
     (*returnVal).c_val = (*tmpChar);
     break;
   case INT:
-    std::cout << "Type = INT \n";
+    typeName += "INT \n";
     getMeth->Execute(this, "", tmpLong);
-    (*returnVal).i_val = tmpLong;
+    (*returnVal).i_val = static_cast<int>(tmpLong);
+    break;
+  case UINT:
+    typeName += "UNSIGNED INT \n";
+    getMeth->Execute(this, "", tmpLong);
+    (*returnVal).UiVal = tmpLong;
     break;
   case FLOAT:
-    std::cout << "Type = FLOAT \n";
+    typeName += "FLOAT \n";
     getMeth->Execute(this, "", tmpDouble);
     (*returnVal).f_val = static_cast<float>(tmpDouble);
     break;
   case DOUBLE:
-    std::cout << "Type = DOUBLE \n";
+    typeName += "DOUBLE \n";
     getMeth->Execute(this, "", tmpDouble);
     (*returnVal).d_val = tmpDouble;
     break;
   case INT_ARRAY:
-    std::cout << "Type = INT_ARRAY \n";
+    typeName += "INT_ARRAY \n";
     getMeth->Execute(this, "", &tmpChar);
     //(*returnVal).I_Ar_val = (TArrayI*)(tmpChar);
     (*returnVal).I_Ar_val = reinterpret_cast<TArrayI*>(tmpChar);
     break;
   case FLOAT_ARRAY:
-    std::cout << "Type = FLOAT_ARRAY \n";
+    typeName += "FLOAT_ARRAY \n";
     getMeth->Execute(this, "", &tmpChar);
-    //(*returnVal).I_Ar_val = (TArrayF*)(tmpChar);
+    //(*returnVal).F_Ar_val = (TArrayF*)(tmpChar);
     (*returnVal).F_Ar_val = reinterpret_cast<TArrayF*>(tmpChar);
     break;
   case DOUBLE_ARRAY:
-    std::cout << "Type = DOUBLE_ARRAY \n";
+    typeName += "DOUBLE_ARRAY \n";
     getMeth->Execute(this, "", &tmpChar);
-    //(*returnVal).I_Ar_val = (TArrayF*)(tmpChar);
+    //(*returnVal).D_Ar_val = (TArrayD*)(tmpChar);
     (*returnVal).D_Ar_val = reinterpret_cast<TArrayD*>(tmpChar);
     break;
   case COMPLEX_TYPE:
     std::cerr << "<Warning> Type = COMPLEX_TYPE. Not implemented yet.\n";
-    break;
+    delete returnVal;
+    return 0;
+    //break;
   default:
     std::cerr << "<ERROR> Type = UNKNOWN_TYPE. Do not know how to deal with this one. \n";
+    delete returnVal;
+    return 0;
   }
+  std::cout  << "Par Name = " << mName << typeName;
   return returnVal;
 }
