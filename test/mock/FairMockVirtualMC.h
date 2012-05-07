@@ -56,13 +56,13 @@ class FairMockVirtualMC : public TVirtualMC
     virtual Bool_t GetMedium(const TString&, TString&, Int_t&, Int_t&, Int_t&, Int_t&, Double_t&, Double_t&, Double_t&, Double_t&, Double_t&, Double_t&, TArrayD&) {StopExecution();}
     virtual void WriteEuclid(const char*, const char*, Int_t, Int_t) {StopExecution();}
     virtual void SetUserParameters(Bool_t) {StopExecution();}
-    virtual const char* VolName(Int_t) const;
-    virtual Int_t MediumId(const char*) const;
-    virtual Int_t NofVolumes() const;
-    virtual Int_t VolId2Mate(Int_t) const;
-    virtual Int_t NofVolDaughters(const char*) const;
-    virtual const char* VolDaughterName(const char*, Int_t) const;
-    virtual Int_t VolDaughterCopyNo(const char*, Int_t) const;
+    virtual const char* VolName(Int_t) const {StopExecution();}
+    virtual Int_t MediumId(const char*) const {StopExecution();}
+    virtual Int_t NofVolumes() const {StopExecution();}
+    virtual Int_t VolId2Mate(Int_t) const {StopExecution();}
+    virtual Int_t NofVolDaughters(const char*) const {StopExecution();}
+    virtual const char* VolDaughterName(const char*, Int_t) const {StopExecution();}
+    virtual Int_t VolDaughterCopyNo(const char*, Int_t) const {StopExecution();}
     virtual Bool_t SetCut(const char*, Double_t) {StopExecution();}
     virtual Bool_t SetProcess(const char*, Int_t) {StopExecution();}
     virtual Bool_t DefineParticle(Int_t, const char*, TMCParticleType, Double_t, Double_t, Double_t) {StopExecution();}
@@ -84,8 +84,8 @@ class FairMockVirtualMC : public TVirtualMC
     virtual void SetMaxNStep(Int_t) {StopExecution();}
     virtual void SetUserDecay(Int_t) {StopExecution();}
     virtual void ForceDecayTime(Float_t) {StopExecution();}
-    virtual Int_t CurrentVolID(Int_t&) const {StopExecution();}
-    virtual Int_t CurrentVolOffID(Int_t, Int_t&) const {StopExecution();}
+    virtual Int_t CurrentVolID(Int_t&) const;
+    virtual Int_t CurrentVolOffID(Int_t, Int_t&) const;
     virtual const char* CurrentVolName() const {StopExecution();}
     virtual const char* CurrentVolOffName(Int_t) const {StopExecution();}
     virtual const char* CurrentVolPath() {StopExecution();}
