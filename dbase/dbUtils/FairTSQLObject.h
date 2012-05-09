@@ -87,6 +87,8 @@ struct FairDBObjectMemberValue {
     // To avoid mistakes.
     FairDBObjectMemberValue(FairDBObjectMemberValue const& ot);
     FairDBObjectMemberValue operator=(FairDBObjectMemberValue const& ot);
+
+    ClassDef(FairDBObjectMemberValue, 0)
 };
 
 /// ====================================
