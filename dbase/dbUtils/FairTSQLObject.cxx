@@ -112,7 +112,11 @@ std::string* FairTSQLObject::GetMemberTypeName(char const* mName)
 
   if(tmpOb) { //Found object, fetch type
     TDataMember* dm = fCurCls->GetDataMember(tmpOb->GetName());
-    out = new std::string(dm->GetTrueTypeName());
+    if(dm) {
+      out = new std::string(dm->GetTrueTypeName());
+    } else {
+      out = new std::string("UNKNOWN_OBJECT");
+    }
   } else { // Did not find the object in the list
     out = new std::string("UNKNOWN_OBJECT");
   }
@@ -282,13 +286,13 @@ FairDBObjectMemberValue* FairTSQLObject::GetMember(std::string const& mName)
   FairDBObjectMemberTypes type = GetMemberType(mName);
 
   // Create return value and set the type
-  FairDBObjectMemberValue* returnVal = new FairDBObjectMemberValue();
-  (*returnVal).type = type;
+  FairDBObjectMemberValue* returnVal = new FairDBObjectMemberValue(type);
+  //(*returnVal).type = type;
 
   // Get the getter method.
   TMethodCall* getMeth = GetDataMemberGetter(mName);
 
-  if(!getMeth->IsValid()) {
+  if( (!getMeth) || (!getMeth->IsValid()) ) {
     std::cerr << "<ERROR> Could not initialize getter method for "<< mName
               << " Type is set to UNKNOWN_TYPE;" << std::endl;
     (*returnVal).type = UNKNOWN_TYPE;
@@ -300,7 +304,7 @@ FairDBObjectMemberValue* FairTSQLObject::GetMember(std::string const& mName)
   long   tmpLong = 0;
   double tmpDouble = 0.00;
 
-  switch((*returnVal).type) {
+  switch( (*returnVal).type ) {
   case CHAR:
     typeName += "CHAR \n";
     getMeth->Execute(this, "", &tmpChar);

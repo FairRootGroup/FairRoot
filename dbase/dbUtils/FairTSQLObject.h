@@ -69,8 +69,14 @@ struct FairDBObjectMemberValue {
         I_Ar_val(0), F_Ar_val(0), D_Ar_val(0)
     {};
 
+    explicit FairDBObjectMemberValue(FairDBObjectMemberTypes tp)
+      : type(tp),
+        c_val('a'), UiVal(0), i_val(0), f_val(0.0), d_val(0.0),
+        I_Ar_val(0), F_Ar_val(0), D_Ar_val(0)
+    {};
+
     //________ Destructor.
-    ~FairDBObjectMemberValue() {};
+    virtual ~FairDBObjectMemberValue() {};
 
     //________ Members.
     FairDBObjectMemberTypes type;
