@@ -157,7 +157,7 @@ FairDBObjectMemberTypes FairTSQLObject::GetMemberType(std::string const& mName)
   }
   // Delete temporary string.
   delete tmpName;
-
+  tmpName = 0;
   return curType;
 }
 
@@ -318,7 +318,7 @@ FairDBObjectMemberValue* FairTSQLObject::GetMember(std::string const& mName)
   case UINT:
     typeName += "UNSIGNED INT \n";
     getMeth->Execute(this, "", tmpLong);
-    (*returnVal).UiVal = tmpLong;
+    (*returnVal).Ui_Val = tmpLong;
     break;
   case FLOAT:
     typeName += "FLOAT \n";
@@ -349,9 +349,11 @@ FairDBObjectMemberValue* FairTSQLObject::GetMember(std::string const& mName)
     (*returnVal).D_Ar_val = reinterpret_cast<TArrayD*>(tmpChar);
     break;
   case COMPLEX_TYPE:
+    typeName += "COMPLEX_TYPE \n";
     std::cerr << "<Warning> Type = COMPLEX_TYPE. Not implemented yet.\n";
     break;
   default:
+    typeName += "UNKNOWN_TYPE \n";
     std::cerr << "<ERROR> Type = UNKNOWN_TYPE. Do not know how to deal with this one. \n";
   }
   std::cout  << "Par Name = " << mName << typeName;

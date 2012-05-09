@@ -12,9 +12,9 @@
 // ROOT
 #include "TObject.h"
 
+class TDictionary;
 class TClass;
 class TList;
-class TDictionary;
 class TMethodCall;
 class TMethod;
 class TArrayC;
@@ -40,22 +40,22 @@ typedef enum FairDBObjectMemberTypes {
   FLOAT_ARRAY_PTR  = 42,//! TArrayF*
   DOUBLE_ARRAY     = 51,//! TArrayD
   DOUBLE_ARRAY_PTR = 52 //! TArrayD*
-} FairDBMemberTypes;
+} FairDBObjectMemberTypes;
 
 /**
  * Structure to hold the returned member value and its type.
  */
 typedef union FairDBObjectMemberValues {
-  FairDBMemberTypes type;
+  FairDBObjectMemberTypes type;
   char    c_val;
-  size_t  UiVal;
+  size_t  Ui_Val;
   int     i_val;
   float   f_val;
   double  d_val;
   TArrayI* I_Ar_val;
   TArrayF* F_Ar_val;
   TArrayD* D_Ar_val;
-} FairDBMemberValues;
+} FairDBObjectMemberValues;
 
 /**
  * Structure to hold the returned member value and its type. Used for
@@ -65,13 +65,13 @@ struct FairDBObjectMemberValue {
     //________ Constructor.
     FairDBObjectMemberValue()
       : type(UNKNOWN_TYPE),
-        c_val('a'), UiVal(0), i_val(0), f_val(0.0), d_val(0.0),
+        c_val('a'), Ui_Val(0), i_val(0), f_val(0.0), d_val(0.0),
         I_Ar_val(0), F_Ar_val(0), D_Ar_val(0)
     {};
 
     explicit FairDBObjectMemberValue(FairDBObjectMemberTypes tp)
       : type(tp),
-        c_val('a'), UiVal(0), i_val(0), f_val(0.0), d_val(0.0),
+        c_val('a'), Ui_Val(0), i_val(0), f_val(0.0), d_val(0.0),
         I_Ar_val(0), F_Ar_val(0), D_Ar_val(0)
     {};
 
@@ -81,7 +81,7 @@ struct FairDBObjectMemberValue {
     //________ Members.
     FairDBObjectMemberTypes type;
     char    c_val;
-    size_t  UiVal;
+    size_t  Ui_Val;
     int     i_val;
     float   f_val;
     double  d_val;
