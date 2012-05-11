@@ -133,8 +133,8 @@ std::string* FairTSQLObject::GetMemberTypeName(char const* mName)
  */
 FairDBObjectMemberTypes FairTSQLObject::GetMemberType(std::string const& mName)
 {
-  FairDBObjectMemberTypes curType = UNKNOWN_TYPE;
-  std::string*  tmpName = GetMemberTypeName(mName);
+  FairDBObjectMemberTypes curType;
+  std::string* tmpName = GetMemberTypeName(mName);
 
   if( (*tmpName) == "char") {
     curType = CHAR;
@@ -146,18 +146,27 @@ FairDBObjectMemberTypes FairTSQLObject::GetMemberType(std::string const& mName)
     curType = FLOAT;
   } else if( (*tmpName) == "double") {
     curType = DOUBLE;
-  } else if( (*tmpName) == "TArrayI" || (*tmpName) == "TArrayI*") {
+  } else if( (*tmpName) == "TArrayI") {
     curType = INT_ARRAY;
-  } else if( (*tmpName) == "TArrayF" || (*tmpName) == "TArrayF*") {
+  } else if( (*tmpName) == "TArrayI*" ) {
+    curType = INT_ARRAY_PTR;
+  } else if( (*tmpName) == "TArrayF" ) {
     curType = FLOAT_ARRAY;
-  } else if( (*tmpName) == "TArrayD" || (*tmpName) == "TArrayD*") {
+  } else if ((*tmpName) == "TArrayF*") {
+    curType = FLOAT_ARRAY_PTR;
+  } else if( (*tmpName) == "TArrayD" ) {
     curType = DOUBLE_ARRAY;
+  } else if ( (*tmpName) == "TArrayD*" ) {
+    curType = DOUBLE_ARRAY_PTR;
+  } else if ((*tmpName) == "UNKNOWN_OBJECT") {
+    curType = UNKNOWN_TYPE;
   } else {
     curType = COMPLEX_TYPE;
   }
   // Delete temporary string.
   delete tmpName;
   tmpName = 0;
+
   return curType;
 }
 
@@ -336,14 +345,32 @@ FairDBObjectMemberValue* FairTSQLObject::GetMember(std::string const& mName)
     //(*returnVal).I_Ar_val = (TArrayI*)(tmpChar);
     (*returnVal).I_Ar_val = reinterpret_cast<TArrayI*>(tmpChar);
     break;
+  case INT_ARRAY_PTR:
+    typeName += "INT_ARRAY* \n";
+    getMeth->Execute(this, "", &tmpChar);
+    //(*returnVal).I_Ar_val = (TArrayI*)(tmpChar);
+    (*returnVal).I_Ar_val = reinterpret_cast<TArrayI*>(tmpChar);
+    break;
   case FLOAT_ARRAY:
     typeName += "FLOAT_ARRAY \n";
     getMeth->Execute(this, "", &tmpChar);
     //(*returnVal).F_Ar_val = (TArrayF*)(tmpChar);
     (*returnVal).F_Ar_val = reinterpret_cast<TArrayF*>(tmpChar);
     break;
+  case FLOAT_ARRAY_PTR:
+    typeName += "FLOAT_ARRAY* \n";
+    getMeth->Execute(this, "", &tmpChar);
+    //(*returnVal).F_Ar_val = (TArrayF*)(tmpChar);
+    (*returnVal).F_Ar_val = reinterpret_cast<TArrayF*>(tmpChar);
+    break;
   case DOUBLE_ARRAY:
     typeName += "DOUBLE_ARRAY \n";
+    getMeth->Execute(this, "", &tmpChar);
+    //(*returnVal).D_Ar_val = (TArrayD*)(tmpChar);
+    (*returnVal).D_Ar_val = reinterpret_cast<TArrayD*>(tmpChar);
+    break;
+  case DOUBLE_ARRAY_PTR:
+    typeName += "DOUBLE_ARRAY* \n";
     getMeth->Execute(this, "", &tmpChar);
     //(*returnVal).D_Ar_val = (TArrayD*)(tmpChar);
     (*returnVal).D_Ar_val = reinterpret_cast<TArrayD*>(tmpChar);
