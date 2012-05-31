@@ -79,14 +79,14 @@ class FairMCPoint : public FairMultiLinkedData
 
   protected:
 
-    Int_t fTrackID;               /// Track index
-    UInt_t fEventId;              /// MC Event id
-    Double32_t fPx, fPy, fPz;     /// Momentum components [GeV]
-    Double32_t fTime;             /// Time since event start [ns]
-    Double32_t fLength;           /// Track length since creation [cm]
-    Double32_t fELoss;            /// Energy loss at this point [GeV]
-    Int_t      fDetectorID;       /// Detector unique identifier
-    Double32_t fX, fY, fZ;        /// Position of hit [cm]
+    Int_t fTrackID;               ///< Track index
+    UInt_t fEventId;              ///< MC Event id
+    Double32_t fPx, fPy, fPz;     ///< Momentum components [GeV]
+    Double32_t fTime;             ///< Time since event start [ns]
+    Double32_t fLength;           ///< Track length since creation [cm]
+    Double32_t fELoss;            ///< Energy loss at this point [GeV]
+    Int_t      fDetectorID;       ///< Detector unique identifier
+    Double32_t fX, fY, fZ;        ///< Position of hit [cm]
 
 
     ClassDef(FairMCPoint,4)
