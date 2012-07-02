@@ -3,6 +3,20 @@
 
 ClassImp(ValContext)
 
+
+ValContext::ValContext()
+  :  fDetector(Detector::kUnknown),
+     fSimFlag(SimFlag::kUnknown),
+     fTimeStamp()
+{
+  // Default constructor (unknown experiment, simflag, timestamp=now)
+}
+
+ValContext::~ValContext() { ; }
+
+
+
+
 //_____________________________________________________________________________
 std::ostream& operator<<(std::ostream& os, const ValContext& vldc)
 {
