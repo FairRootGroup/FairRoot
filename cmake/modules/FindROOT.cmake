@@ -145,6 +145,12 @@ IF (ROOT_FOUND)
     NO_DEFAULT_PATH
     )
 
+  FIND_PROGRAM(RLIBMAP_EXECUTABLE
+    NAMES rlibmap
+    PATHS ${ROOT_BINARY_DIR}
+    NO_DEFAULT_PATH
+    )
+
 ENDIF (ROOT_FOUND)
 
 
@@ -311,3 +317,96 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
   EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
 
 ENDMACRO (GENERATE_ROOT_TEST_SCRIPT)
+
+
+Macro(ROOT_GENERATE_ROOTMAP)
+
+  # All Arguments needed for this new version of the macro are defined
+  # in the parent scope, namely in the CMakeLists.txt of the submodule
+  If( IS_ABSOLUTE ${LINKDEF})
+    Set(Int_LINKDEF ${LINKDEF})
+  Else( IS_ABSOLUTE ${LINKDEF})
+    Set(Int_LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/${LINKDEF})
+  EndIf( IS_ABSOLUTE ${LINKDEF})
+
+  foreach(d ${DEPENDENCIES})
+    get_filename_component(_ext ${d} EXT)
+    if(_ext)
+      set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
+    else()
+      set(Int_DEPENDENCIES ${Int_DEPENDENCIES} lib${d}.so)
+    endif()
+  endforeach()
+
+  set(Int_LIB ${LIBRARY_NAME})
+  set(Int_OUTFILE ${LIBRARY_OUTPUT_PATH}/lib${Int_LIB}.rootmap)
+
+
+  add_custom_command(OUTPUT ${Int_OUTFILE}
+                     COMMAND ${RLIBMAP_EXECUTABLE} -o ${Int_OUTFILE} -l ${Int_LIB} 
+                             -d ${Int_DEPENDENCIES} -c ${Int_LINKDEF}
+                     DEPENDS ${Int_LINKDEF} ${RLIBMAP_EXECUTABLE} )
+  add_custom_target( lib${Int_LIB}.rootmap ALL DEPENDS  ${Int_OUTFILE})
+  set_target_properties(lib${Int_LIB}.rootmap PROPERTIES FOLDER RootMaps )
+  #---Install the rootmap file------------------------------------
+  install(FILES ${Int_OUTFILE} DESTINATION lib COMPONENT libraries)
+EndMacro(ROOT_GENERATE_ROOTMAP)
+
+#-----------------------------------------------------------------------------------------------
+#---GENERATE_LIBRARY(libname DEPENDENCIES lib1 lib2)
+#-----------------------------------------------------------------------------------------------
+Macro(GENERATE_LIBRARY)
+
+  set(Int_LIB ${LIBRARY_NAME})
+
+  Set(RuleName "${Int_LIB}_RULES")
+  Set(DictName "G__${Int_LIB}Dict.cxx")
+
+  If(NOT DICTIONARY)
+    Set(DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/${DictName})
+  EndIf(NOT DICTIONARY)
+
+  If( IS_ABSOLUTE ${DICTIONARY})
+    Set(DICTIONARY ${DICTIONARY})
+  Else( IS_ABSOLUTE ${DICTIONARY})
+    Set(Int_DICTIONARY ${CMAKE_CURRENT_SOURCE_DIR}/${DICTIONARY})
+  EndIf( IS_ABSOLUTE ${DICTIONARY})
+  
+  If( IS_ABSOLUTE ${LINKDEF})
+    Set(Int_LINKDEF ${LINKDEF})
+  Else( IS_ABSOLUTE ${LINKDEF})
+    Set(Int_LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/${LINKDEF})
+  EndIf( IS_ABSOLUTE ${LINKDEF})
+
+  Set(Int_SRCS ${SRCS})
+
+  If(HEADERS)
+    Set(HDRS ${HEADERS})
+  Else(HEADERS)
+    CHANGE_FILE_EXTENSION(*.cxx *.h HDRS "${SRCS}")
+#  Message("HEADERS: ${HEADERS}")  
+#  Message("HDRS: ${HDRS}")  
+#  Message("HDRS: ${HDRS}")  
+  EndIf(HEADERS)
+
+#  Message("RuleName: ${RuleName}")
+  If(RULE_CHECKER_FOUND)
+    CHECK_RULES("${Int_SRCS}" "${INCLUDE_DIRECTORIES}" ${RuleName})
+  EndIf(RULE_CHECKER_FOUND)
+
+  ROOT_GENERATE_DICTIONARY()
+  SET(Int_SRCS ${Int_SRCS} ${DICTIONARY})
+ 
+  ROOT_GENERATE_ROOTMAP()  
+ 
+  ############### build the library #####################
+  Add_Library(${Int_LIB} SHARED ${Int_SRCS})
+  target_link_libraries(${Int_LIB} ${ROOT_LIBRARIES})
+  set_target_properties(${Int_LIB} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
+
+  ############### install the library ###################
+  install(TARGETS ${Int_LIB} DESTINATION ${CMAKE_BINARY_DIR}/lib)
+
+EndMacro(GENERATE_LIBRARY)
+
+
