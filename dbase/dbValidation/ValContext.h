@@ -111,15 +111,6 @@ inline Bool_t operator>=(const ValContext& lhs, const ValContext& rhs)
   return !(lhs<rhs);
 }
 
-inline ValContext::ValContext()
-  :  fDetector(Detector::kUnknown),
-     fSimFlag(SimFlag::kUnknown),
-     fTimeStamp()
-{
-  // Default constructor (unknown experiment, simflag, timestamp=now)
-}
-
-inline ValContext::~ValContext() { ; }
 
 #endif /* __CINT__ */
 #endif // VALCONTEXT_H
