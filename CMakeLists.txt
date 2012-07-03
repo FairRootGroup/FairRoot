@@ -77,6 +77,13 @@ else(FAIRROOT_MINIMAL)
 #  find_package(CUDA REQUIRED)
 endif(FAIRROOT_MINIMAL)
 
+# Check the Root version for needed DB suport
+If(ROOT_Version LESS 53200)
+  Message(STATUS "FairDB library is not build, because the ROOTVERSION ${ROOTVERSION} deus not provide the neede functionality. At least version 5.32/00 is needed.")
+  Set(Build_FairDB FALSE)
+Else(ROOT_Version LESS 53200)
+  Set(Build_FairDB TRUE)
+EndIf(ROOT_Version LESS 53200)
 
 # Set the library version in the main CMakeLists.txt
 SET(FAIRROOT_MAJOR_VERSION 0)
@@ -97,7 +104,9 @@ SET(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
 # the project's entire directory structure.
 add_subdirectory (fairtools)
 add_subdirectory (base)
-add_subdirectory (dbase)
+If(Build_FairDB)
+  add_subdirectory (dbase)
+EndIf(Build_FairDB)
 add_subdirectory (geobase)
 add_subdirectory (parbase) 
 add_subdirectory (generators)

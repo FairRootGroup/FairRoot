@@ -21,7 +21,7 @@ ${ROOT_LIBRARY_DIR}
  
 link_directories( ${LINK_DIRECTORIES})
 
-set(FAIRDB_SRCS
+set(SRCS
 dbValidation/Experiment.cxx
 dbValidation/Detector.cxx
 dbValidation/SimFlag.cxx
@@ -73,24 +73,14 @@ dbUtils/FairTSQLObject.cxx
 )
 
 
-# if(RULE_CHECKER_FOUND)
-# CHECK_RULES("${FAIRDB_SRCS}" "${INCLUDE_DIRECTORIES}" FAIRDB_RULES)
-# endif(RULE_CHECKER_FOUND)
+CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
+SET( HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbResPtr.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h)
+Set(LINKDEF FairDBLinkDef.h)
+Set(LIBRARY_NAME FairDB)
+Set(DEPENDENCIES Net RIO Cint Core)
 
-# fill list of header files from list of source files
-# by exchanging the file extension
-CHANGE_FILE_EXTENSION(*.cxx *.h FAIRDB_HEADERS "${FAIRDB_SRCS}")
-SET( FAIRDB_HEADERS ${FAIRDB_HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbResPtr.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h)
+GENERATE_LIBRARY()
 
-set(FAIRDB_LINKDEF  FairDBLinkDef.h)
-set(FAIRDB_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FAIRDBDict.cxx)
 
-ROOT_GENERATE_DICTIONARY("${FAIRDB_HEADERS}" "${FAIRDB_LINKDEF}" "${FAIRDB_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
 
-SET(FAIRDB_SRCS ${FAIRDB_SRCS} ${FAIRDB_DICTIONARY})
 
-add_library(FairDB SHARED ${FAIRDB_SRCS})
-target_link_libraries(FairDB ${ROOT_LIBRARIES})
-set_target_properties(FairDB PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
-################ install ###################
-install(TARGETS FairDB DESTINATION ${CMAKE_BINARY_DIR}/lib)

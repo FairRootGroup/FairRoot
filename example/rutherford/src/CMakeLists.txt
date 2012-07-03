@@ -21,7 +21,7 @@ ${ROOT_LIBRARY_DIR}
 
 link_directories( ${LINK_DIRECTORIES})
 
-set(FAIRRUTHERFORD_SRCS
+set(SRCS
 #Put here your sourcefiles
 FairRutherford.cxx
 FairRutherfordContFact.cxx
@@ -30,20 +30,11 @@ FairRutherfordGeoPar.cxx
 FairRutherfordPoint.cxx
 )
 
-# fill list of header files from list of source files
-# by exchanging the file extension
-CHANGE_FILE_EXTENSION(*.cxx *.h FAIRRUTHERFORD_HEADERS "${FAIRRUTHERFORD_SRCS}")
 
-set(FAIRRUTHERFORD_LINKDEF FairRutherfordLinkDef.h)
-set(FAIRRUTHERFORD_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairRutherfordDict.cxx) 
+Set(HEADERS )
+Set(LINKDEF FairRutherfordLinkDef.h)
+Set(LIBRARY_NAME FairRutherford)
+Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Cint Core)
 
-ROOT_GENERATE_DICTIONARY("${FAIRRUTHERFORD_HEADERS}" "${FAIRRUTHERFORD_LINKDEF}" "${FAIRRUTHERFORD_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
+GENERATE_LIBRARY()
 
-set(FAIRRUTHERFORD_SRCS ${FAIRRUTHERFORD_SRCS} ${FAIRRUTHERFORD_DICTIONARY})
-
-add_library(FairRutherford SHARED ${FAIRRUTHERFORD_SRCS})
-target_link_libraries(FairRutherford ${ROOT_LIBRARIES})
-set_target_properties(FairRutherford PROPERTIES  ${FAIRROOT_LIBRARY_PROPERTIES})
-
-################ install ###################
-install(TARGETS FairRutherford DESTINATION ${CMAKE_BINARY_DIR}/lib)

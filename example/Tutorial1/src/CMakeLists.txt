@@ -22,7 +22,7 @@ ${ROOT_LIBRARY_DIR}
 
 link_directories( ${LINK_DIRECTORIES})
 
-set(TUTORIAL1_SRCS
+set(SRCS
 #Put here your sourcefiles
 FairTutorialDet.cxx
 FairTutorialDetContFact.cxx
@@ -31,20 +31,10 @@ FairTutorialDetGeoPar.cxx
 FairTutorialDetPoint.cxx
 )
 
-# fill list of header files from list of source files
-# by exchanging the file extension
-CHANGE_FILE_EXTENSION(*.cxx *.h TUTORIAL1_HEADERS "${TUTORIAL1_SRCS}")
+Set(HEADERS )
+Set(LINKDEF Tutorial1LinkDef.h)
+Set(LIBRARY_NAME Tutorial1)
+Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Cint Core)
 
-set(TUTORIAL1_LINKDEF Tutorial1LinkDef.h)
-set(TUTORIAL1_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairTutorial1Dict.cxx) 
+GENERATE_LIBRARY()
 
-ROOT_GENERATE_DICTIONARY("${TUTORIAL1_HEADERS}" "${TUTORIAL1_LINKDEF}" "${TUTORIAL1_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
-
-set(TUTORIAL1_SRCS ${TUTORIAL1_SRCS} ${TUTORIAL1_DICTIONARY})
-
-add_library(Tutorial1 SHARED ${TUTORIAL1_SRCS})
-target_link_libraries(Tutorial1 ${ROOT_LIBRARIES})
-set_target_properties(Tutorial1 PROPERTIES  ${FAIRROOT_LIBRARY_PROPERTIES})
-
-################ install ###################
-install(TARGETS Tutorial1 DESTINATION ${CMAKE_BINARY_DIR}/lib)

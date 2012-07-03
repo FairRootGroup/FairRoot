@@ -33,7 +33,7 @@ ${PLUTO_LIBRARY_DIR}
  
 link_directories( ${LINK_DIRECTORIES})
 
-set(GENERATORS_SRCS
+set(SRCS
 FairAsciiGenerator.cxx    
 FairBoxGenerator.cxx      
 FairIonGenerator.cxx      
@@ -44,26 +44,10 @@ FairUrqmdGenerator.cxx
 FairEvtGenGenerator.cxx
 )
 
-if(RULE_CHECKER_FOUND)
-  CHECK_RULES("${GENERATORS_SRCS}" "${INCLUDE_DIRECTORIES}" GENERATORS_RULES)
-endif(RULE_CHECKER_FOUND)
+Set(HEADERS )
+Set(LINKDEF GenLinkDef.h)
+Set(LIBRARY_NAME Gen)
+Set(DEPENDENCIES Base EG MathCore Physics RIO Cint Core)
 
-# fill list of header files from list of source files
-# by exchanging the file extension
-CHANGE_FILE_EXTENSION(*.cxx *.h GENERATORS_HEADERS "${GENERATORS_SRCS}")
+GENERATE_LIBRARY()
 
-set(GENERATORS_LINKDEF GenLinkDef.h)
-set(GENERATORS_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairGenDict.cxx) 
-
-ROOT_GENERATE_DICTIONARY("${GENERATORS_HEADERS}" "${GENERATORS_LINKDEF}" "${GENERATORS_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
-
-
-set(GENERATORS_SRCS ${GENERATORS_SRCS}  ${GENERATORS_DICTIONARY})
-
-
-add_library(Gen SHARED ${GENERATORS_SRCS})
-target_link_libraries(Gen ${ROOT_LIBRARIES})
-set_target_properties(Gen PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
-
-################ install ###################
-install(TARGETS Gen DESTINATION ${CMAKE_BINARY_DIR}/lib)

@@ -17,7 +17,7 @@ ${ROOT_LIBRARY_DIR}
 link_directories( ${LINK_DIRECTORIES})
 
 
-set(GEOBASE_SRCS
+set(SRCS
 
 FairGeoAssembly.cxx
 FairGeoCone.cxx	
@@ -54,27 +54,10 @@ FairGeoBasicShape.cxx
  
 )
 
-if(RULE_CHECKER_FOUND)
-  CHECK_RULES("${GEOBASE_SRCS}" "${INCLUDE_DIRECTORIES}" GEOBASE_RULES)
-endif(RULE_CHECKER_FOUND)
+Set(HEADERS )
+Set(LINKDEF GeoBaseLinkDef.h)
+Set(LIBRARY_NAME GeoBase)
+Set(DEPENDENCIES Geom Graf3d Cint Core)
 
-# fill list of header files from list of source files
-# by exchanging the file extension
-CHANGE_FILE_EXTENSION(*.cxx *.h GEOBASE_HEADERS "${GEOBASE_SRCS}")
+GENERATE_LIBRARY()
 
-
-set(GEOBASE_LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/GeoBaseLinkDef.h) 
-set(GEOBASE_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairGeoDict.cxx) 
-ROOT_GENERATE_DICTIONARY("${GEOBASE_HEADERS}" "${GEOBASE_LINKDEF}" "${GEOBASE_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
-
-
-# add the dictionary to the list of source files
-SET(GEOBASE_SRCS ${GEOBASE_SRCS} ${GEOBASE_DICTIONARY}) 
-
-
-add_library(GeoBase SHARED ${GEOBASE_SRCS})
-target_link_libraries(GeoBase ${ROOT_LIBRARIES})
-set_target_properties(GeoBase PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
-
-################ install ###################
-install(TARGETS GeoBase DESTINATION ${CMAKE_BINARY_DIR}/lib)

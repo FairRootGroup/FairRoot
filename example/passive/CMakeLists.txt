@@ -19,7 +19,7 @@ ${ROOT_LIBRARY_DIR}
  
 link_directories( ${LINK_DIRECTORIES})
 
-set(PASSIVE_SRCS
+set(SRCS
 FairCave.cxx            
 FairGeoCave.cxx        
 FairGeoMagnet.cxx      
@@ -32,23 +32,9 @@ FairPipe.cxx
 FairTarget.cxx 
 )
 
-if(RULE_CHECKER_FOUND)
-  CHECK_RULES("${PASSIVE_SRCS}" "${INCLUDE_DIRECTORIES}" PASSIVE_RULES)
-endif(RULE_CHECKER_FOUND)
+Set(HEADERS )
+Set(LINKDEF PassiveLinkDef.h)
+Set(LIBRARY_NAME Passive)
+Set(DEPENDENCIES Base GeoBase ParBase Geom Cint Core)
 
-# fill list of header files from list of source files
-# by exchanging the file extension
-CHANGE_FILE_EXTENSION(*.cxx *.h PASSIVE_HEADERS "${PASSIVE_SRCS}")
-
-set(PASSIVE_LINKDEF  PassiveLinkDef.h)
-set(PASSIVE_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairPassiveDict.cxx) 
-
-ROOT_GENERATE_DICTIONARY("${PASSIVE_HEADERS}" "${PASSIVE_LINKDEF}" "${PASSIVE_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
-
-SET(PASSIVE_SRCS ${PASSIVE_SRCS} ${PASSIVE_DICTIONARY})
-
-add_library(Passive SHARED ${PASSIVE_SRCS})
-target_link_libraries(Passive ${ROOT_LIBRARIES})
-set_target_properties(Passive PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
-################ install ###################
-install(TARGETS Passive DESTINATION ${CMAKE_BINARY_DIR}/lib)
+GENERATE_LIBRARY()

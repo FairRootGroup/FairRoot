@@ -21,7 +21,7 @@ ${ROOT_LIBRARY_DIR}
  
 link_directories( ${LINK_DIRECTORIES})
 
-set(EVEDISP_SRCS
+set(SRCS
 FairEventManager.cxx  
 FairMCTracks.cxx
 FairEventManagerEditor.cxx
@@ -36,24 +36,9 @@ FairHitPointSetDraw.cxx
 FairTimeStampPointDraw.cxx
 )
 
-if(RULE_CHECKER_FOUND)
-  CHECK_RULES("${EVEDISP_SRCS}" "${INCLUDE_DIRECTORIES}" EVEDISP_RULES)
-endif(RULE_CHECKER_FOUND)
+Set(HEADERS )
+Set(LINKDEF EventDisplayLinkDef.h)
+Set(LIBRARY_NAME EventDisplay)
+Set(DEPENDENCIES Base Eve Geom EG  Physics Ged Gui Graf3d Tree Cint Core)
 
-# fill list of header files from list of source files
-# by exchanging the file extension
-CHANGE_FILE_EXTENSION(*.cxx *.h EVEDISP_HEADERS "${EVEDISP_SRCS}")
-
-set(EVEDISP_LINKDEF EventDisplayLinkDef.h)
-set(EVEDISP_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/EventDisplayDict.cxx) 
-
-ROOT_GENERATE_DICTIONARY("${EVEDISP_HEADERS}" "${EVEDISP_LINKDEF}" "${EVEDISP_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
-
-
-set(EVEDISP_SRCS ${EVEDISP_SRCS} ${EVEDISP_DICTIONARY})
-
-add_library(EventDisplay SHARED ${EVEDISP_SRCS})
-target_link_libraries(EventDisplay ${ROOT_LIBRARIES})
-set_target_properties(EventDisplay PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
-################ install ###################
-install(TARGETS EventDisplay DESTINATION ${CMAKE_BINARY_DIR}/lib)
+GENERATE_LIBRARY()

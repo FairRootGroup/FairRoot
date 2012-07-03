@@ -18,20 +18,12 @@ ${ROOT_LIBRARY_DIR}
  
 link_directories( ${LINK_DIRECTORIES})
 
- 
-# Really lazy version to get the list of source files
-# Take all source file in the given source dir
-#FILE(GLOB BASE_SRCS ${CMAKE_CURRENT_SOURCE_DIR} *.cxx)
-
 # List of source files
-set(BASE_SRCS
+set(SRCS
 FairBaseContFact.cxx 
 FairBaseParSet.cxx
 FairLink.cxx
-#FairLinkedData.cxx
-#FairSingleLinkedData.cxxs
 FairMultiLinkedData.cxx 
-#FairBasePoint.cxx
 FairDetector.cxx 
 FairEventHeader.cxx 
 FairFileHeader.cxx 
@@ -58,8 +50,6 @@ FairVolume.cxx
 FairVolumeList.cxx 
 FairField.cxx
 FairFieldFactory.cxx
-#FairVPoint.cxx
-#FairVTrack.cxx
 FairRadLenPoint.cxx
 FairRadMapManager.cxx
 FairRadMapPoint.cxx
@@ -75,32 +65,17 @@ FairWriteoutBuffer.cxx
 FairRingSorter.cxx
 FairRingSorterTask.cxx
 FairAnaSelector.cxx
-
 )
 
-if(RULE_CHECKER_FOUND)
-  CHECK_RULES("${BASE_SRCS}" "${INCLUDE_DIRECTORIES}" BASE_RULES)
-endif(RULE_CHECKER_FOUND)
+Set(HEADERS )
+Set(LINKDEF FairLinkDef.h)
+Set(LIBRARY_NAME Base)
+Set(DEPENDENCIES 
+    FairTools ParBase GeoBase 
+    Proof GeomPainter Geom VMC EG MathCore Physics 
+    Matrix Tree Hist RIO Cint Core
+)
 
-# fill list of header files from list of source files
-# by exchanging the file extension
-CHANGE_FILE_EXTENSION(*.cxx *.h BASE_HEADERS "${BASE_SRCS}")
-#Add *.h without *.cxx
-SET(BASE_HEADERS "${BASE_HEADERS}")
-# set everything needed for the root dictonary and create the
-# dictionary
-set(BASE_LINKDEF FairLinkDef.h )
-set(BASE_DICTIONARY ${CMAKE_CURRENT_BINARY_DIR}/FairDict.cxx) 
-ROOT_GENERATE_DICTIONARY("${BASE_HEADERS}" "${BASE_LINKDEF}" "${BASE_DICTIONARY}" "${INCLUDE_DIRECTORIES}")
+GENERATE_LIBRARY()
 
-# add the dictionary to the list of source files
-SET(BASE_SRCS ${BASE_SRCS} ${BASE_DICTIONARY}) 
-
-
-############### build the library #####################
-add_library(Base SHARED ${BASE_SRCS})
-target_link_libraries(Base ${ROOT_LIBRARIES})
-set_target_properties(Base PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
-
-############### install the library ###################
-install(TARGETS Base DESTINATION ${CMAKE_BINARY_DIR}/lib)
+ 
