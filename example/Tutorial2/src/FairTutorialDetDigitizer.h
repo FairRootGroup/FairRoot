@@ -43,9 +43,11 @@ class FairTutorialDetDigitizer : public FairTask
     /** Finish task **/
     virtual void Finish();
 
+    /*
     void AddHit(TVector3& posHit, TVector3& posHitErr,
                 Int_t TrackID, Int_t PlaneID, Int_t ref, Double_t ELoss,
                 Double_t ELossTR, Double_t ELossdEdX);
+    */
     void Register();
 
   private:
