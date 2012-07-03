@@ -73,6 +73,8 @@ IF (ROOT_CONFIG_EXECUTABLE)
   MATH(EXPR req_vers "${req_root_major_vers}*10000 + ${req_root_minor_vers}*100 + ${req_root_patch_vers}")
   MATH(EXPR found_vers "${found_root_major_vers}*10000 + ${found_root_minor_vers}*100 + ${found_root_patch_vers}")
    
+  Set(ROOT_Version ${found_vers})
+
   IF (found_vers LESS req_vers)
     SET(ROOT_FOUND FALSE)
     SET(ROOT_INSTALLED_VERSION_TOO_OLD TRUE)
@@ -213,7 +215,7 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   set(Int_LINKDEF ${LINKDEF})
   set(Int_DICTIONARY ${DICTIONARY})
 
-  Message("DEFINITIONS: ${DEFINITIONS}")
+#  Message("DEFINITIONS: ${DEFINITIONS}")
   set(Int_INC ${INCLUDE_DIRECTORIES})
   set(Int_HDRS ${HDRS})
   set(Int_DEF ${DEFINITIONS})
@@ -352,9 +354,6 @@ Macro(ROOT_GENERATE_ROOTMAP)
   install(FILES ${Int_OUTFILE} DESTINATION lib COMPONENT libraries)
 EndMacro(ROOT_GENERATE_ROOTMAP)
 
-#-----------------------------------------------------------------------------------------------
-#---GENERATE_LIBRARY(libname DEPENDENCIES lib1 lib2)
-#-----------------------------------------------------------------------------------------------
 Macro(GENERATE_LIBRARY)
 
   set(Int_LIB ${LIBRARY_NAME})
@@ -401,7 +400,7 @@ Macro(GENERATE_LIBRARY)
  
   ############### build the library #####################
   Add_Library(${Int_LIB} SHARED ${Int_SRCS})
-  target_link_libraries(${Int_LIB} ${ROOT_LIBRARIES})
+  target_link_libraries(${Int_LIB})
   set_target_properties(${Int_LIB} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
   ############### install the library ###################
