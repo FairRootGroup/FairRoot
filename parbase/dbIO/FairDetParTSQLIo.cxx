@@ -63,7 +63,7 @@ int FairDetParTSQLIo::getRunStart(FairParSet* pPar)
   std::cout << "\n\n\n\n\t<DEBUG> FairDetParTSQLIo::getRunStart(FairParSet* pPar)\n\n\n\n";
   actRunId=-1;
   int runStart=-1;
-  factContVers=(FairRtdbRun*)FairRun::Instance()->GetRuntimeDb()->getCurrentRun();
+  factContVers=FairRuntimeDb::instance()->getCurrentRun();
 
   if (!factContVers) {
     Error("getRunStart()","current run not set in runtime database");
