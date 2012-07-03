@@ -13,11 +13,11 @@
 # export LINUX_FLAVOUR=Debian
 ##################################################################
 export PATH=/usr/lib/icecc/bin:$PATH
-export SIMPATH=/misc/cbmsoft/Etch64/jan10/fairsoft
+export SIMPATH=/misc/cbmsoft/Etch64/jan12
 export BUILDDIR=/misc/cbmsim/SVN/CONTINUOUS/build_fairbase
 export SOURCEDIR=/misc/cbmsim/SVN/CONTINUOUS/fairbase
 export LINUX_FLAVOUR=Etch64
-export FAIRSOFT_VERSION=jan10
+export FAIRSOFT_VERSION=jan12
 ###################################################################
 
 cd $SOURCEDIR
