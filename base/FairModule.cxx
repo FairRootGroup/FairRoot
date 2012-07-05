@@ -253,10 +253,10 @@ void FairModule::ConstructRootGeometry()
     NewGeo->cd();
     volume=(TGeoVolume*)NewGeo->GetNode(0)->GetDaughter(0)->GetVolume();
     v1=volume->MakeCopyVolume(volume->GetShape());
-    //n=NewGeo->GetTopNode();
+    // n=NewGeo->GetTopNode();
     n=v1->GetNode(0);
     //  NewGeo=0;
-    delete NewGeo;
+    // delete NewGeo; //move it to the end of the method
 
   } else {
     /** The file does not contain any TGeoManager, so we assume to have a file with a TGeoVolume
@@ -270,8 +270,7 @@ void FairModule::ConstructRootGeometry()
   }
 
   if(v1==0) {
-    fLogger->Info(MESSAGE_ORIGIN, "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find any geometry in File!!  \033[0m", GetGeometryFileName().Data());
-    exit(0);
+    fLogger->Fatal(MESSAGE_ORIGIN, "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find any geometry in File!!  \033[0m", GetGeometryFileName().Data());
   }
   gGeoManager=OldGeo;
   gGeoManager->cd();
@@ -284,8 +283,7 @@ void FairModule::ConstructRootGeometry()
   } else {
     Cave = gGeoManager->GetVolume(fMotherVolumeName);
     if ( NULL == Cave ) {
-      fLogger->Error(MESSAGE_ORIGIN,"\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find the given mother volume \033[0m   %s \033[5m\033[31m where the geomanger should be added. \033[0m", fMotherVolumeName.Data());
-      exit(0);
+      fLogger->Fatal(MESSAGE_ORIGIN,"\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find the given mother volume \033[0m   %s \033[5m\033[31m where the geomanger should be added. \033[0m", fMotherVolumeName.Data());
     }
   }
   /**Every thing is OK, we have a TGeoVolume and now we add it to the simulation TGeoManager  */
@@ -311,6 +309,7 @@ void FairModule::ConstructRootGeometry()
    *  produce TGeoVolumes with materials that have only names and no properties
    */
   ExpandNode(n);
+  if(NewGeo!=0) { delete NewGeo; }
   delete f;
 }
 //__________________________________________________________________________
@@ -402,9 +401,9 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
       /**The Material is not defined in the TGeoManager, we try to create one if we have enough information about it*/
       FairGeoMedium* FairMedium=Media->getMedium(mat1->GetName());
       if (!FairMedium) {
-        fLogger->Debug(MESSAGE_ORIGIN,"Material %s is not defined in ASCII file nor in Root file we try to create one", mat1->GetName());
-        FairMedium=new FairGeoMedium(mat1->GetName());
-        Media->addMedium(FairMedium);
+        fLogger->Fatal(MESSAGE_ORIGIN,"Material %s is not defined in ASCII file nor in Root file we Stop creating geometry", mat1->GetName());
+        //     FairMedium=new FairGeoMedium(mat1->GetName());
+        //      Media->addMedium(FairMedium);
       }
 
       Int_t nmed=geobuild->createMedium(FairMedium);
@@ -418,8 +417,7 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
   } else {
     if (strcmp(v->ClassName(),"TGeoVolumeAssembly") != 0) {
       //[R.K.-3.3.08]  // When there is NO material defined, set it to avoid conflicts in Geant
-      fLogger->Error(MESSAGE_ORIGIN,"The volume  %s  Has no medium information and not an Assembly so we have to quit", v->GetName());
-      abort();
+      fLogger->Fatal(MESSAGE_ORIGIN,"The volume  %s  Has no medium information and not an Assembly so we have to quit", v->GetName());
     }
   }
 }
