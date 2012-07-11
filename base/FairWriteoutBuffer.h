@@ -36,34 +36,41 @@
 class FairWriteoutBuffer: public TObject
 {
   public:
-    FairWriteoutBuffer() : TObject(), fDeadTime_map(), fBranchName(), fClassName(),
+    FairWriteoutBuffer() : TObject(), fStartTime_map(), fDeadTime_map(), fBranchName(), fClassName(),
       fTreeSave(false), fActivateBuffering(kFALSE), fVerbose(0) {};
     FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance);
     virtual ~FairWriteoutBuffer() {};
 
-    virtual void WriteOutData(double time);
-    virtual void WriteOutAllData();
-
     virtual void SaveDataToTree(Bool_t val = kTRUE) {fTreeSave = val;}    ///< If SaveDataToTree is set the data is stored at the end of the buffering into the given TClonesArray.
     virtual void ActivateBuffering(Bool_t val = kTRUE) {fActivateBuffering=val;} ///< fActivateBuffering has to be set to kTRUE to use the buffering. Otherwise the data is directly stored in the given TClonesArray.
 
+/// Fills a pointer to a data object into the buffer. StartTime gives the time when the data can influence later data, activeTime gives the time how long the data can influence later data.
+/// Both time data has to be given as an absolute time!
+    virtual void FillNewData(FairTimeStamp* data, double startTime, double activeTime);
+
+    virtual Int_t GetNData() {return fDeadTime_map.size();}
     virtual std::vector<FairTimeStamp*> GetRemoveOldData(double time);
     virtual std::vector<FairTimeStamp*> GetAllData();
-    virtual void FillNewData(FairTimeStamp* data, double activeTime);
-    virtual Int_t GetNData() {return fDeadTime_map.size();}
 
-    virtual void AddNewDataToTClonesArray(FairTimeStamp* data) = 0; ///< store the data from the FairTimeStamp pointer in a TClonesArray (you have to cast it to your type of data)
+
+    virtual void SetVerbose(Int_t val) {fVerbose = val;}
+
+    void PrintStartTimeMap();
+
     virtual void DeleteOldData() {
       TClonesArray* myArray = FairRootManager::Instance()->GetTClonesArray(fBranchName);
       myArray->Delete();
     }
 
+    virtual void WriteOutData(double time);
+    virtual void WriteOutAllData();
+
+  protected:
+
+    virtual void AddNewDataToTClonesArray(FairTimeStamp* data) = 0; ///< store the data from the FairTimeStamp pointer in a TClonesArray (you have to cast it to your type of data)
     virtual double FindTimeForData(FairTimeStamp* data) = 0;  ///< if the same data object (like a pad or a pixel) is already present in the buffer, the time of this object has to be returned otherwise -1
     virtual void FillDataMap(FairTimeStamp* data, double activeTime) = 0; ///< add a new element in the search buffer
     virtual void EraseDataFromDataMap(FairTimeStamp* data) = 0; ///< delete the element from the search buffer (see PndSdsDigiPixelWriteoutBuffer)
-
-    virtual void SetVerbose(Int_t val) {fVerbose = val;}
-  protected:
 
     ///Modify defines the behavior of the buffer if data should be stored which is already in the buffer. Parameters are the old data with the active time, the new data with an active time.
     ///Modify returns than a vector with the new data which should be stored.
@@ -73,6 +80,14 @@ class FairWriteoutBuffer: public TObject
       return result;
     }
 
+
+    virtual void WriteOutDataDeadTimeMap(double time);
+    virtual void FillDataToDeadTimeMap(FairTimeStamp* data, double activeTime);
+
+
+
+
+    std::multimap<double, std::pair<double, FairTimeStamp*> > fStartTime_map;
     std::multimap<double, FairTimeStamp*> fDeadTime_map;
 
     TString fBranchName;
