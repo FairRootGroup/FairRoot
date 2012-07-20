@@ -33,7 +33,7 @@ class NewTask : public FairTask
     /** Load the parameter container from the runtime database **/
     virtual void SetParContainers();
 
-    /** Finish task called at the end of each event **/
+    /** Finish task called at the end of the run **/
     virtual void Finish();
 
   private:

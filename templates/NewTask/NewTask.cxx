@@ -6,14 +6,12 @@ NewTask::NewTask()
 {
   fLogger->Debug(MESSAGE_ORIGIN,"Defaul Constructor of NewTask");
 }
-// --------------------------------------------------------------------
 
 // ---- Destructor ----------------------------------------------------
 NewTask::~NewTask()
 {
   fLogger->Debug(MESSAGE_ORIGIN,"Destructor of NewTask");
 }
-// --------------------------------------------------------------------
 
 // ----  Initialisation  ----------------------------------------------
 void NewTask::SetParContainers()
@@ -28,15 +26,6 @@ void NewTask::SetParContainers()
     (rtdb->getContainer("<ContainerName>"));
   */
 }
-// --------------------------------------------------------------------
-
-// ---- ReInit  -------------------------------------------------------
-InitStatus NewTask::ReInit()
-{
-  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of NewTask");
-  return kSUCCESS;
-}
-// --------------------------------------------------------------------
 
 // ---- Init ----------------------------------------------------------
 InitStatus NewTask::Init()
@@ -69,8 +58,13 @@ InitStatus NewTask::Init()
   return kSUCCESS;
 
 }
-// --------------------------------------------------------------------
 
+// ---- ReInit  -------------------------------------------------------
+InitStatus NewTask::ReInit()
+{
+  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of NewTask");
+  return kSUCCESS;
+}
 
 // ---- Exec ----------------------------------------------------------
 void NewTask::Exec(Option_t* option)
