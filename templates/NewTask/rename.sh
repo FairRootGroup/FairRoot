@@ -37,7 +37,7 @@ case "$arch" in
         sedstring="-i "
         ;;
     darwin)
-        sedstring="-i ''"
+        sedstring="-i .bak"
         ;;
     *)
         echo "Platform not supported"
