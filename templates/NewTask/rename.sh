@@ -50,12 +50,16 @@ find . -name "*.h" -exec sed -e "s/NEWTASK/$TaskNameUpper/g" $sedstring "{}" ";"
 find . -name "*.cxx" -exec sed -e "s/NewTask/$TaskName/g" $sedstring "{}" ";"
 find . -name "*.cxx" -exec sed -e "s/NEWTASK/$TaskNameUpper/g" $sedstring "{}" ";"
 
-if [ -d .svn ]; then  
-  echo "********"
-  echo "Please remove the .svn directory."
-  echo " This directory was also copied from templates."
-fi
-
+case "$arch" in
+    darwin)
+      rm *.bak           
+      ;;
+    *)
+      echo "Platform not supported"
+      exit 1  
+      ;;
+esac
+                                                
 echo "********"
 echo "Edit the CMakeLists.txt and the LinkDef file in the directory."
 echo "Add in both files the new task."
