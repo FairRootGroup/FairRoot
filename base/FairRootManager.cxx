@@ -712,6 +712,15 @@ TFile* FairRootManager::OpenOutFile(const char* fname)
 //_____________________________________________________________________________
 void  FairRootManager::Register(const char* name, const char* folderName , TNamed* obj, Bool_t toFile)
 {
+
+  // Security check. If the the name is equal the folder name there are problems with reading
+  // back the data. Instead of the object inside the folder the RootManger will return a pointer
+  // to the folder. To avoid such problems we check here if both strings are equal and stop the
+  // execution with some error message if this is the case.
+  if (strcmp (name, folderName) == 0 ) {
+    fLogger->Fatal(MESSAGE_ORIGIN,"The names for the object name %s and the folder name %s are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name.", name, folderName);
+  }
+
   if(toFile) { /**Write the Object to the Tree*/
     TFolder* folder=0;
     TFolder* f=0;
@@ -748,6 +757,14 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
   /**
   * This method do exactly the same as the one before but for TCollection which is a TObject and not a TNamed (MT)
   */
+  // Security check. If the the name is equal the folder name there are problems with reading
+  // back the data. Instead of the object inside the folder the RootManger will return a pointer
+  // to the folder. To avoid such problems we check here if both strings are equal and stop the
+  // execution with some error message if this is the case.
+  if (strcmp (name, Foldername) == 0 ) {
+    fLogger->Fatal(MESSAGE_ORIGIN,"The names for the object name %s and the folder name %s are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name.", name, Foldername);
+  }
+
   if(toFile) { /**Write the Object to the Tree*/
     TFolder* folder=0;
     TFolder* f=0;
