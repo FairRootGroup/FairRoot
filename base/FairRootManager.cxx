@@ -1294,7 +1294,6 @@ TObject* FairRootManager::GetLinkData(const FairLink link)
       return 0;
     }
   } else {        //the link entry nr is negative --> take the actual one
-    std::cout << "EntryNr: " << GetEntryNr() << std::endl;
     dataBranch->GetEntry(GetEntryNr());
   }
   if (index < 0) {                //if index is -1 then this is not a TClonesArray so only the Object is returned
