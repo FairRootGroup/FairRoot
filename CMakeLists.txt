@@ -31,6 +31,17 @@ Check_Compiler()
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 
+Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are
+used."OFF)
+If(USE_PATH_INFO)
+  Set(PATH $ENV{PATH})
+  If (APPLE)
+    Set(LD_LIBRARY_PATH $ENV{DYLD_LIBRARY_PATH})
+  Else (APPLE)
+    Set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
+  EndIf (APPLE)
+EndIf(USE_PATH_INFO)
+
 # Check if the user wants to build the project in the source
 # directory
 CHECK_OUT_OF_SOURCE_BUILD()
