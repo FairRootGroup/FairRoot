@@ -16,6 +16,7 @@ FairMultiLinkedData::FairMultiLinkedData()
   :TObject(),
    fLinks(),
    fPersistanceCheck(kTRUE),
+   fDefaultType(0),
    fVerbose(0)
 {
 }
@@ -24,6 +25,7 @@ FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persis
   :TObject(),
    fLinks(links),
    fPersistanceCheck(persistanceCheck),
+   fDefaultType(0),
    fVerbose(0)
 {
 }
@@ -32,6 +34,7 @@ FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> li
   :TObject(),
    fLinks(),
    fPersistanceCheck(persistanceCheck),
+   fDefaultType(0),
    fVerbose(0)
 {
   SimpleAddLinks(fileId, evtId, FairRootManager::Instance()->GetBranchId(dataType), links, bypass, mult);
@@ -42,6 +45,7 @@ FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> link
   :TObject(),
    fLinks(),
    fPersistanceCheck(persistanceCheck),
+   fDefaultType(0),
    fVerbose(0)
 {
   SimpleAddLinks(fileId, evtId, dataType, links, bypass, mult);
