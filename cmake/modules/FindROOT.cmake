@@ -399,7 +399,7 @@ Macro(GENERATE_LIBRARY)
 #  ROOT_GENERATE_ROOTMAP()  
  
   ############### build the library #####################
-  Add_Library(${Int_LIB} SHARED ${Int_SRCS})
+  Add_Library(${Int_LIB} SHARED ${Int_SRCS} ${NO_DICT_SRCS})
   target_link_libraries(${Int_LIB})
   set_target_properties(${Int_LIB} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
