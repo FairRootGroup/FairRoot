@@ -88,6 +88,31 @@ else(FAIRROOT_MINIMAL)
 #  find_package(CUDA REQUIRED)
 endif(FAIRROOT_MINIMAL)
 
+  Set(Boost_NO_SYSTEM_PATHS TRUE)
+  Set(Boost_NO_BOOST_CMAKE TRUE)
+#  set(Boost_DEBUG TRUE)
+  If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+    set(BOOST_ROOT ${SIMPATH})
+    set(GSL_DIR ${SIMPATH})
+  Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+    set(BOOST_ROOT ${SIMPATH}/basics/boost)
+    set(GSL_DIR ${SIMPATH}/basics/gsl)
+  EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+  Message("-- Looking for Boost ...")
+  # If an older version of boost is found both of the variables below are
+  # cached and in a second cmake run, a good boost version is found even
+  # if the version is to old.
+  # To overcome this problem both variables are cleared before checking
+  # for boost.
+  Unset(Boost_INCLUDE_DIR CACHE)
+  Unset(Boost_LIBRARY_DIRS CACHE)
+  find_package(Boost 1.41)
+  If (Boost_FOUND)
+    Set(Boost_Avail 1)
+  Else (Boost_FOUND)
+    Set(Boost_Avail 0)
+  EndIf (Boost_FOUND)
+
 # Check the Root version for needed DB suport
 If(ROOT_Version LESS 53200)
   Message(STATUS "FairDB library is not build, because the ROOTVERSION ${ROOTVERSION} deus not provide the neede functionality. At least version 5.32/00 is needed.")

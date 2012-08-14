@@ -25,6 +25,7 @@ include_directories( ${INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
  ${ROOT_LIBRARY_DIR}
+ ${Boost_LIBRARY_DIR}
 )
 
 link_directories( ${LINK_DIRECTORIES})
