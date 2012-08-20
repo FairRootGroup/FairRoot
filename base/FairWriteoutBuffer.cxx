@@ -143,6 +143,8 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
       }
       double currentdeadtime = timeOfOldData;
       FairTimeStamp* oldData;
+      bool dataFound = false;
+
       for (DTMapIter it = fDeadTime_map.lower_bound(currentdeadtime); it != fDeadTime_map.upper_bound(currentdeadtime); it++) {
         oldData = it->second;
         if (fVerbose > 1) {
@@ -157,19 +159,26 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
           }
           fDeadTime_map.erase(it);
           EraseDataFromDataMap(oldData);
+          dataFound = true;
           break;
         }
       }
-      std::vector<std::pair<double, FairTimeStamp*> > modifiedData = Modify(std::pair<double, FairTimeStamp*>(currentdeadtime, oldData), std::pair<double, FairTimeStamp*>(-1, data));
-      for (int i = 0; i < modifiedData.size(); i++) {
-        FillDataToDeadTimeMap(modifiedData[i].second, modifiedData[i].first);
-        if (fVerbose > 1) {
-          std::cout << i << " :Modified Data: " << modifiedData[i].first << " : " << modifiedData[i].second << std::endl;
+
+      if (dataFound == true) {
+        std::vector<std::pair<double, FairTimeStamp*> > modifiedData = Modify(std::pair<double, FairTimeStamp*>(currentdeadtime, oldData), std::pair<double, FairTimeStamp*>(-1, data));
+        for (int i = 0; i < modifiedData.size(); i++) {
+          FillDataToDeadTimeMap(modifiedData[i].second, modifiedData[i].first);
+          if (fVerbose > 1) {
+            std::cout << i << " :Modified Data: " << modifiedData[i].first << " : " << modifiedData[i].second << std::endl;
+          }
         }
+      } else {
+        std::cout << "-E- FairWriteoutBuffer::FillDataToDeadTimeMap: old data present in dataMap but not in deadTimeMap!" << std::endl;
       }
+
     } else {
       if (fVerbose > 1) {
-        std::cout << "-I- FairWriteoutBuffer::FillNewData Data Inserted: " << activeTime << " : ";
+        std::cout << "-I- FairWriteoutBuffer::FillDataToDeadTimeMap Data Inserted: " << activeTime << " : ";
         data->Print();
         std::cout << std::endl;
       }
