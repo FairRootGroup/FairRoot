@@ -28,8 +28,8 @@
 
 // Definiton of the different log levels
 // TODO(F.U): Find bettter names for DEBUG1..4
-enum FairLogLevel {FATAL, ERROR, WARNING, INFO,
-                   DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4
+enum FairLogLevel {FatalLog, ErrorLog, WarningLog, InfoLog,
+                   DebugLog, Debug1Log, Debug2Log, Debug3Log, Debug4Log
                   };
 
 static const char* const LogLevelString[] = { "FATAL", "ERROR", "WARNING",

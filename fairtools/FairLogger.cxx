@@ -33,15 +33,15 @@ FairLogger::FairLogger()
   fLogToFile(kFALSE),
   fLogColored(kFALSE),
   fLogFile(NULL),
-  fLogFileLevel(INFO),
-  fLogScreenLevel(INFO),
+  fLogFileLevel(InfoLog),
+  fLogScreenLevel(InfoLog),
   fLogVerbosityLevel(verbosityLOW),
   fBufferSize(1024),
   fBufferSizeNeeded(-1),
   fDynamicBuffer(fBufferSize),
   fBufferPointer(&fDynamicBuffer[0]),
   fBuffer(),
-  fMinLogLevel(INFO),
+  fMinLogLevel(InfoLog),
   fScreenStream(&std::cerr),
   fNullStream(new ostream(0)),
   fTeeStream(),
@@ -74,7 +74,7 @@ void FairLogger::Fatal(const char* file, const char* line, const char* func,
 {
   va_list ap;
   va_start(ap, format);
-  Log(FATAL, file, line, func, format, ap);
+  Log(FatalLog, file, line, func, format, ap);
   va_end(ap);
   // Since Fatal indicates a fatal error it is maybe usefull to have
   // system information from the incident. Since the output on the screen
@@ -102,10 +102,10 @@ void FairLogger::Fatal(const char* file, const char* line, const char* func,
 void FairLogger::Error(const char* file, const char* line, const char* func,
                        const char* format, ...)
 {
-  if (IsLogNeeded(ERROR)) {
+  if (IsLogNeeded(ErrorLog)) {
     va_list ap;
     va_start(ap, format);
-    Log(ERROR, file, line, func, format, ap);
+    Log(ErrorLog, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -113,10 +113,10 @@ void FairLogger::Error(const char* file, const char* line, const char* func,
 void FairLogger::Warning(const char* file, const char* line, const char* func,
                          const char* format, ...)
 {
-  if (IsLogNeeded(WARNING)) {
+  if (IsLogNeeded(WarningLog)) {
     va_list ap;
     va_start(ap, format);
-    Log(WARNING, file, line, func, format, ap);
+    Log(WarningLog, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -124,10 +124,10 @@ void FairLogger::Warning(const char* file, const char* line, const char* func,
 void FairLogger::Info(const char* file, const char* line, const char* func,
                       const char* format, ...)
 {
-  if (IsLogNeeded(INFO)) {
+  if (IsLogNeeded(InfoLog)) {
     va_list ap;
     va_start(ap, format);
-    Log(INFO, file, line, func, format, ap);
+    Log(InfoLog, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -135,10 +135,10 @@ void FairLogger::Info(const char* file, const char* line, const char* func,
 void FairLogger::Debug(const char* file, const char* line, const char* func,
                        const char* format, ...)
 {
-  if (IsLogNeeded(DEBUG)) {
+  if (IsLogNeeded(DebugLog)) {
     va_list ap;
     va_start(ap, format);
-    Log(DEBUG, file, line, func, format, ap);
+    Log(DebugLog, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -146,10 +146,10 @@ void FairLogger::Debug(const char* file, const char* line, const char* func,
 void FairLogger::Debug1(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  if (IsLogNeeded(DEBUG1)) {
+  if (IsLogNeeded(Debug1Log)) {
     va_list ap;
     va_start(ap, format);
-    Log(DEBUG1, file, line, func, format, ap);
+    Log(Debug1Log, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -157,10 +157,10 @@ void FairLogger::Debug1(const char* file, const char* line, const char* func,
 void FairLogger::Debug2(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  if (IsLogNeeded(DEBUG2)) {
+  if (IsLogNeeded(Debug2Log)) {
     va_list ap;
     va_start(ap, format);
-    Log(DEBUG2, file, line, func, format, ap);
+    Log(Debug2Log, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -168,10 +168,10 @@ void FairLogger::Debug2(const char* file, const char* line, const char* func,
 void FairLogger::Debug3(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  if (IsLogNeeded(DEBUG3)) {
+  if (IsLogNeeded(Debug3Log)) {
     va_list ap;
     va_start(ap, format);
-    Log(DEBUG3, file, line, func, format, ap);
+    Log(Debug3Log, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -179,10 +179,10 @@ void FairLogger::Debug3(const char* file, const char* line, const char* func,
 void FairLogger::Debug4(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  if (IsLogNeeded(DEBUG4)) {
+  if (IsLogNeeded(Debug4Log)) {
     va_list ap;
     va_start(ap, format);
-    Log(DEBUG4, file, line, func, format, ap);
+    Log(Debug4Log, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -348,17 +348,17 @@ FairLogLevel FairLogger::ConvertToLogLevel(const char* levelc) const
   // in case the level is not known return info level
   TString level = levelc;
   level.ToUpper();
-  if (level == "FATAL") { return FATAL; }
-  if (level == "ERROR") { return ERROR; }
-  if (level == "WARNING") { return WARNING; }
-  if (level == "INFO") { return INFO; }
-  if (level == "DEBUG") { return DEBUG; }
-  if (level == "DEBUG1") { return DEBUG1; }
-  if (level == "DEBUG2") { return DEBUG2; }
-  if (level == "DEBUG3") { return DEBUG3; }
-  if (level == "DEBUG4") { return DEBUG4; }
+  if (level == "FATAL") { return FatalLog; }
+  if (level == "ERROR") { return ErrorLog; }
+  if (level == "WARNING") { return WarningLog; }
+  if (level == "INFO") { return InfoLog; }
+  if (level == "DEBUG") { return DebugLog; }
+  if (level == "DEBUG1") { return Debug1Log; }
+  if (level == "DEBUG2") { return Debug2Log; }
+  if (level == "DEBUG3") { return Debug3Log; }
+  if (level == "DEBUG4") { return Debug4Log; }
   cerr<<"Log level \""<<level<<"\" not supported. Use default level \"INFO\"."<<endl;
-  return INFO;
+  return InfoLog;
 }
 
 FairLogVerbosityLevel FairLogger::ConvertToLogVerbosityLevel(const char* vlevelc) const
