@@ -2,6 +2,7 @@
 #define TEEBUF_H
 
 #include <streambuf>
+#include <stdio.h>
 
 class teebuf: public std::streambuf
 {
