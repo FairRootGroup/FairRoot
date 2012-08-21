@@ -2128,10 +2128,10 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
       ratio=iterN->second;
       cout<< " ratio = "<< ratio <<  "floor(MaxS/ratio) "<<floor(MaxS/ratio) << "  MaxBG = " << MaxBG  << endl;
       if(floor(MaxS/ratio) > MaxBG) {
-        localMax=MaxBG+floor(MaxBG*ratio);
+        localMax=MaxBG+(Int_t)floor(MaxBG*ratio);
         fLogger->Warning(MESSAGE_ORIGIN, "No of Event in Background chain is not enough for all signals in chain  %i ", iterN->first);
       } else {
-        localMax=floor(MaxS/ratio);
+        localMax=(Int_t)floor(MaxS/ratio);
         fLogger->Warning(MESSAGE_ORIGIN, "No of Event in signal chain %i is not enough, the maximum event number will be reduced to : %i ", iterN->first,localMax );
       }
       if(MaxEventNo==0 || MaxEventNo > localMax) {

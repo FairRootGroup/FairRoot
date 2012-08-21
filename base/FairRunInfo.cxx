@@ -89,23 +89,23 @@ void FairRunInfo::WriteInfo()
 void FairRunInfo::CreateAndFillHistograms(TList* histoList)
 {
   Int_t entries = fTime.size();
-  Int_t timePeriod = fTime.back()-fTime.front();
+  Double_t timePeriod = fTime.back()-fTime.front();
 
   TH1F* ResidentMemoryVsEvent = new TH1F("ResidentMemoryVsEvent","Resident Memory as function of Eventnumber;Event;Memory [MB]",entries, 0, entries);
   TH1F* VirtualMemoryVsEvent = new TH1F("VirtualMemoryVsEvent","Virtual Memory as function of Eventnumber;Event;Memory [MB]",entries, 0, entries);
-  TH1F* ResidentMemoryVsTime = new TH1F("ResidentMemoryVsTime","Resident memory as function of Runtime;Time [s];Memory [MB]",timePeriod*10, 0, timePeriod);
-  TH1F* VirtualMemoryVsTime = new TH1F("VirtualMemoryVsTime","Virtual memory as function of Runtime;Time [s];Memory [MB]",timePeriod*10, 0, timePeriod);
+  TH1F* ResidentMemoryVsTime = new TH1F("ResidentMemoryVsTime","Resident memory as function of Runtime;Time [s];Memory [MB]",(Int_t)(timePeriod*10), 0, (Int_t)timePeriod);
+  TH1F* VirtualMemoryVsTime = new TH1F("VirtualMemoryVsTime","Virtual memory as function of Runtime;Time [s];Memory [MB]",(Int_t)(timePeriod*10), 0, (Int_t)timePeriod);
   TH1F* EventtimeVsEvent = new TH1F("EventtimeVsEvent","Runtime per Event as function of Event number;Event;Time [s]",entries-1, 1, entries);
 
   std::vector<Double_t> timeDiffSorted(fTimeDiff);
   std::vector<Double_t>::iterator it;
   std::sort(timeDiffSorted.begin(), timeDiffSorted.end());
 
-  Int_t minTime = timeDiffSorted.front();
-  Int_t maxTime = timeDiffSorted.back();
+  Double_t minTime = timeDiffSorted.front();
+  Double_t maxTime = timeDiffSorted.back();
   timePeriod = maxTime - minTime;
 
-  TH1F* TimePerEvent = new TH1F("TimePerEvent","Runtime;Time [s];Events",(timePeriod+20)*10, minTime-10, maxTime+10);
+  TH1F* TimePerEvent = new TH1F("TimePerEvent","Runtime;Time [s];Events",(Int_t)((timePeriod+20)*10), (Int_t)minTime-10, (Int_t)maxTime+10);
 
   Int_t counter = 0;
   std::vector<Long_t>::iterator lit;
@@ -149,7 +149,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   TString directory = gFile->GetName();
   fLogger->Debug(MESSAGE_ORIGIN,"Name %s:",
                  gFile->GetName());
-  Size_t posLastSlash = directory.Last('/');
+  Ssiz_t posLastSlash = directory.Last('/');
   directory.Remove(posLastSlash+1, directory.Length()-posLastSlash-1);
   TString filename = "";
   if ( directory.EndsWith("/") ) {

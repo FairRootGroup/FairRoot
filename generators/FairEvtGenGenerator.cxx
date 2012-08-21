@@ -27,7 +27,7 @@ FairEvtGenGenerator::FairEvtGenGenerator()
   : FairGenerator(),
     fFileName(""),
     fInputFile(NULL),
-    fGasmode(0.),
+    fGasmode(0),
     fRsigma (0.),
     fDensityFunction(NULL)
 {
@@ -39,7 +39,7 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName)
   :FairGenerator ("EvtGen", fileName),
    fFileName(fileName),
    fInputFile(NULL),
-   fGasmode(0.),
+   fGasmode(0),
    fRsigma (0.),
    fDensityFunction(0)
 {
