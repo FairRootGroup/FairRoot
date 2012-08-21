@@ -22,4 +22,13 @@ void FairTeeStream::SetInput(std::ostream& _o1, const char* filename)
   tbuf.reopen(std::cerr.rdbuf(), log.rdbuf());
 }
 
+void FairTeeStream::SetInput(std::ostream& _o1, std::ofstream& _o2)
+{
+  tbuf.reopen(std::cerr.rdbuf(), _o2.rdbuf());
+}
+
+void  FairTeeStream::SetInputToCerr()
+{
+  tbuf.reopen(std::cerr.rdbuf(), std::cerr.rdbuf());
+}
 

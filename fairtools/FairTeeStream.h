@@ -15,6 +15,8 @@ class FairTeeStream : public std::ostream
     //    FairTeeStream(std::ostream & o1, const char* filename);
 
     void  SetInput(std::ostream& o1, const char* filename);
+    void  SetInput(std::ostream& o1, std::ofstream& o2);
+    void  SetInputToCerr();
     std::ostream* GetTeeStream() { return this; }
 
   private:

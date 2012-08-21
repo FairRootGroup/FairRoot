@@ -20,6 +20,10 @@ set(SRCS
    FairLogger.cxx
 )
 
+Set(NO_DICT_SRCS
+   FairTeeStream.cxx
+)
+
 Set(HEADERS )
 Set(LINKDEF FairToolsLinkDef.h)
 Set(LIBRARY_NAME FairTools)
