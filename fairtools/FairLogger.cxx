@@ -216,8 +216,11 @@ void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
 
       if (fBufferSizeNeeded <= (int)fBufferSize && fBufferSizeNeeded >= 0) {
         // It fit fine so we're done.
+        //        GetOutputStream(level, file, line, func) <<
+        //            std::string(fBufferPointer, (size_t) fBufferSizeNeeded)<<" "<<std::endl;
         GetOutputStream(level, file, line, func) <<
-            std::string(fBufferPointer, (size_t) fBufferSizeNeeded)<<" "<<std::endl;
+            std::string(fBufferPointer, (size_t) fBufferSizeNeeded)<<" ";
+        LineEnd();
         break;
       }
 
@@ -399,6 +402,18 @@ Bool_t FairLogger::IsLogNeeded(FairLogLevel logLevel)
   }
 }
 
+std::string FairLogger::GetLineEnd()
+{
+
+  if (fLogColored) {
+    fLineEndString = "\33[00;30m";
+  } else {
+    fLineEndString = "";
+  }
+
+  return fLineEndString;
+}
+
 std::ostream& FairLogger::GetOutputStream(FairLogLevel level, const char* file, const char* line, const char* func)
 {
 
@@ -408,6 +423,8 @@ std::ostream& FairLogger::GetOutputStream(FairLogLevel level, const char* file, 
   // level <= flogScreenLevel && level > fLogFileLevel : write Screen
   // level > flogScreenLevel && level <= fLogFileLevel : write File
   //  std::cout<<"Level: "<< ConvertLogLevelToString(level) <<std::endl;
+
+  fLevel = level;
 
   if( ( !fLogToFile && !fLogToScreen) || level > fMinLogLevel  ) {
     return *fNullStream;
@@ -424,6 +441,10 @@ std::ostream& FairLogger::GetOutputStream(FairLogLevel level, const char* file, 
     }
   }
 
+  if (fLogColored) {
+    *fReturnStream << LogLevelColor[level];
+  }
+
   *fReturnStream << "[" << setw(7) << left << LogLevelString[level] <<"] ";
 
   if ( fLogVerbosityLevel == verbosityHIGH ) {
@@ -438,6 +459,15 @@ std::ostream& FairLogger::GetOutputStream(FairLogLevel level, const char* file, 
     *fReturnStream << "[" << s3 <<"] ";
   }
   return *fReturnStream;
+}
+
+void FairLogger::LineEnd()
+{
+  if (fLogColored) {
+    *fReturnStream << "\33[00;30m" << std::endl;
+  } else {
+    *fReturnStream << std::endl;
+  }
 }
 
 ClassImp(FairLogger)

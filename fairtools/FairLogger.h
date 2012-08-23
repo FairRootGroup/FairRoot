@@ -16,7 +16,7 @@
   GetOutputStream(level, MESSAGE_ORIGIN)
 
 #define LEND() \
-  fLogger->LineEnd();
+  fLogger->GetLineEnd() << std::endl;
 
 #include "TObject.h"
 
@@ -36,6 +36,24 @@ static const char* const LogLevelString[] = { "FATAL", "ERROR", "WARNING",
     "INFO", "DEBUG", "DEBUG1",
     "DEBUG2", "DEBUG3", "DEBUG4"
                                             };
+
+
+enum FairLogColor {
+  /* Normal Text */
+  Fair_Color_Normal = 0,
+
+  /* Foreground Color */
+  Fair_Color_ForegroundBlack   = 0x1,
+  Fair_Color_ForegroundRed     = 0x2,
+  Fair_Color_ForegroundGreen   = 0x3,
+  Fair_Color_ForegroundYellow  = 0x4,
+  Fair_Color_ForegroundBlue    = 0x5,
+  Fair_Color_ForegroundMagenta = 0x6,
+  Fair_Color_ForegroundCyan    = 0x7,
+  Fair_Color_ForegroundWhite   = 0x8,
+  Fair_Color_ForegroundMask    = 0xF,
+};
+
 
 static const char* const LogLevelColor[] = { "\33[01;31m", "\33[01;33m",
     "\33[00;33m", "\33[01;33m",
@@ -119,6 +137,10 @@ class FairLogger //: public TObject
 
     std::ostream& GetOutputStream(FairLogLevel level, const char* file, const char* line, const char* func);
 
+    std::string GetLineEnd();
+
+    void LineEnd();
+
   private:
     static FairLogger* instance;
     FairLogger();
@@ -170,6 +192,7 @@ class FairLogger //: public TObject
     std::ostream* fNullStream;
     std::ostream* fTeeStream;
     std::ostream* fReturnStream;
+    std::string fLineEndString;
     std::ofstream fFileStream;
     FairTeeStream  fTee;
     Bool_t fNewStyle;
