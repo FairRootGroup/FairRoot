@@ -17,11 +17,10 @@
 #include <iostream>
 #include <iomanip>
 
-using std::cerr;
-using std::endl;
-using std::setw;
-using std::right;
-using std::left;
+//using std::setw;
+//using std::right;
+//using std::left;
+
 
 
 FairLogger* FairLogger::instance = NULL;
@@ -32,7 +31,7 @@ FairLogger::FairLogger()
   fLogToScreen(kTRUE),
   fLogToFile(kFALSE),
   fLogColored(kFALSE),
-  fLogFile(NULL),
+  //  fLogFile(NULL),
   fLogFileLevel(InfoLog),
   fLogScreenLevel(InfoLog),
   fLogVerbosityLevel(verbosityLOW),
@@ -40,25 +39,21 @@ FairLogger::FairLogger()
   fBufferSizeNeeded(-1),
   fDynamicBuffer(fBufferSize),
   fBufferPointer(&fDynamicBuffer[0]),
-  fBuffer(),
+  //  fBuffer(),
   fMinLogLevel(InfoLog),
   fScreenStream(&std::cerr),
-  fNullStream(new ostream(0)),
-  fTeeStream(),
-  fTee(),
-  fNewStyle(kTRUE),
-  fFileStream(),
+  //  fNullStream(new ostream(0)),
+  fNewFileStream(NULL),
+  //  fTeeStream(),
+  //  fFileStream(),
+  //  fNewStyle(kTRUE),
   fLogFileOpen(kFALSE)
 {
 }
 
 FairLogger::~FairLogger()
 {
-  cerr << "FairLooger::Destructor LogFileName" << fLogFileName << endl;
-  if (fLogFile) {
-    fclose(fLogFile);
-    delete fLogFile;
-  }
+  CloseLogFile();
 }
 
 FairLogger* FairLogger::GetLogger()
@@ -201,107 +196,53 @@ void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
     OpenLogFile();
   }
 
-  if (fNewStyle == kTRUE) {
+  fLevel = level;
+  while (1) {
+    fBufferSizeNeeded = vsnprintf(fBufferPointer, fBufferSize, format, arglist);
 
-    fLevel = level;
-    while (1) {
-      fBufferSizeNeeded = vsnprintf(fBufferPointer, fBufferSize, format, arglist);
+    // Try to vsnprintf into our buffer.
+    //    int needed = vsnprintf (buf, size, fmt, ap);
+    // NB. C99 (which modern Linux and OS X follow) says vsnprintf
+    // failure returns the length it would have needed.  But older
+    // glibc and current Windows return -1 for failure, i.e., not
+    // telling us how much was needed.
 
-      // Try to vsnprintf into our buffer.
-      //    int needed = vsnprintf (buf, size, fmt, ap);
-      // NB. C99 (which modern Linux and OS X follow) says vsnprintf
-      // failure returns the length it would have needed.  But older
-      // glibc and current Windows return -1 for failure, i.e., not
-      // telling us how much was needed.
+    if (fBufferSizeNeeded <= (int)fBufferSize && fBufferSizeNeeded >= 0) {
+      // It fit fine so we're done.
+      GetNewOutputStream(level, file, line, func) <<
+          std::string(fBufferPointer, (size_t) fBufferSizeNeeded)<<
+          " " << FairLogger::endl;
 
-      if (fBufferSizeNeeded <= (int)fBufferSize && fBufferSizeNeeded >= 0) {
-        // It fit fine so we're done.
-        //        GetOutputStream(level, file, line, func) <<
-        //            std::string(fBufferPointer, (size_t) fBufferSizeNeeded)<<" "<<std::endl;
-        GetOutputStream(level, file, line, func) <<
-            std::string(fBufferPointer, (size_t) fBufferSizeNeeded)<<" ";
-        LineEnd();
-        break;
-      }
-
-      // vsnprintf reported that it wanted to write more characters
-      // than we allotted.  So try again using a dynamic buffer.  This
-      // doesn't happen very often if we chose our initial size well.
-      fBufferSize = (fBufferSizeNeeded > 0)
-                    ? (fBufferSizeNeeded+1) : (fBufferSize*2);
-
-      fDynamicBuffer.resize (fBufferSize);
+      break;
     }
-  } else {
 
-    vsprintf(fBuffer, format, arglist);
+    // vsnprintf reported that it wanted to write more characters
+    // than we allotted.  So try again using a dynamic buffer.  This
+    // doesn't happen very often if we chose our initial size well.
+    fBufferSize = (fBufferSizeNeeded > 0)
+                  ? (fBufferSizeNeeded+1) : (fBufferSize*2);
 
-    // Don't print the full path to the source file but only the file name.
-    // Create a string containing the information about the file name, the
-    // function name and the line number from which the log message originates
-    TString bla(file);
-    Ssiz_t pos = bla.Last('/');
-    TString s2(bla(pos+1, bla.Length()));
-    TString s3 = s2 + "::" + func + ":" + line;
-
-    // Convert to const char*
-    const char* loglevel =  ConvertLogLevelToString(level);
-    const char* s4 = s3;
-
-    // Check if the log mesaage should go to the screen, the file or to
-    // both sinks.
-
-    if (fLogToFile && level <= fLogFileLevel) {
-      // Chek if the log file is open. If not open the logfile
-      LogTo(fLogFile, loglevel, s4);
-    }
-    if (fLogToScreen && level <= fLogScreenLevel) {
-      LogTo(stderr, loglevel, s4);
-    }
+    fDynamicBuffer.resize (fBufferSize);
   }
 }
 
 void FairLogger::SetLogFileName(const char* name)
 {
-  if (fLogFile != NULL) {
+  if (fNewFileStream) {
     CloseLogFile();
+    delete fNewFileStream;
+    fNewFileStream = NULL;
     remove(fLogFileName);
   }
+
   fLogFileName = name;
   OpenLogFile();
 
 }
 
-void FairLogger::LogTo(FILE* out, const char* loglevel, const char* origin)
-{
-  if ( loglevel == "FATAL") {
-    fLogVerbosityLevel = verbosityHIGH;
-  }
-  fprintf(out, "[%-7s] ", loglevel);
-  if ( fLogVerbosityLevel == verbosityHIGH ) {
-    GetTime();
-    fprintf(out, "%s", fTimeBuffer);
-  }
-  if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
-    fprintf(out, "[%s] ", origin);
-  }
-  fprintf(out, "%s ", fBuffer);
-  fprintf(out, "\n");
-  fflush(out);
-}
-
-
 void FairLogger::CloseLogFile()
 {
-
-  if (fNewStyle == kTRUE) {
-    fFileStream.close();
-    fTee.SetInputToCerr();
-    fTeeStream = fTee.GetTeeStream();
-  } else {
-    fclose(fLogFile);
-  }
-
+  dynamic_cast<ofstream*>(fNewFileStream)->close();
 }
 
 void FairLogger::OpenLogFile()
@@ -323,24 +264,15 @@ void FairLogger::OpenLogFile()
   if (!logfile.Contains('/')) {
     logfile = "./" + logfile;
   }
-  //  std::cout<<"LogFile: "<<logfile<<std::endl;
-  if (fNewStyle == kTRUE) {
-    fFileStream.close();
-    fFileStream.open(logfile.Data());
-    fTee.SetInput(std::cerr, fFileStream);
-    fTeeStream = fTee.GetTeeStream();
-  } else {
-    // Open the log file and check if it is open.
 
-    fLogFile = fopen(logfile, "w");
-    if (fLogFile == NULL) {
-      cerr << "Cannot open log file: " << logfile;
-    }
-    cerr << "[INFO   ] Openning log file: " << logfile << endl;
-    cerr << " " << endl;
-
-    assert(fLogFile != NULL);
+  if (fNewFileStream) {
+    CloseLogFile();
+    delete fNewFileStream;
+    fNewFileStream = NULL;
   }
+
+  fNewFileStream = new std::ofstream(logfile.Data());
+
   fLogFileOpen = kTRUE;
 }
 
@@ -360,7 +292,7 @@ FairLogLevel FairLogger::ConvertToLogLevel(const char* levelc) const
   if (level == "DEBUG2") { return Debug2Log; }
   if (level == "DEBUG3") { return Debug3Log; }
   if (level == "DEBUG4") { return Debug4Log; }
-  cerr<<"Log level \""<<level<<"\" not supported. Use default level \"INFO\"."<<endl;
+  std::cerr<<"Log level \""<<level<<"\" not supported. Use default level \"INFO\"."<<std::endl;
   return InfoLog;
 }
 
@@ -374,7 +306,7 @@ FairLogVerbosityLevel FairLogger::ConvertToLogVerbosityLevel(const char* vlevelc
   if (vlevel == "HIGH") { return verbosityHIGH; }
   if (vlevel == "MEDIUM") { return verbosityMEDIUM; }
   if (vlevel == "LOW") { return verbosityLOW; }
-  cerr<<"Verbosity level \""<<vlevel<<"\" not supported. Use default level \"LOW\"."<<endl;
+  std::cerr<<"Verbosity level \""<<vlevel<<"\" not supported. Use default level \"LOW\"."<<std::endl;
   return verbosityLOW;
 }
 
@@ -402,72 +334,113 @@ Bool_t FairLogger::IsLogNeeded(FairLogLevel logLevel)
   }
 }
 
-std::string FairLogger::GetLineEnd()
+FairLogger& FairLogger::GetNewOutputStream(FairLogLevel level, const char* file, const char* line, const char* func)
 {
+  fLevel =level;
 
-  if (fLogColored) {
-    fLineEndString = "\33[00;30m";
-  } else {
-    fLineEndString = "";
-  }
+  if ( fLogToScreen && level <= fLogScreenLevel ) {
+    if (fLogColored) {
+      *fScreenStream << LogLevelColor[level];
+    }
 
-  return fLineEndString;
-}
+    *fScreenStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
 
-std::ostream& FairLogger::GetOutputStream(FairLogLevel level, const char* file, const char* line, const char* func)
-{
+    if ( fLogVerbosityLevel == verbosityHIGH ) {
+      GetTime();
+      *fScreenStream << fTimeBuffer;
+    }
 
-  // here we need 4 cases
-  // level > flogScreenLevel && level > fLogFileLevel : don't write
-  // level <= flogScreenLevel && level <= fLogFileLevel : write both
-  // level <= flogScreenLevel && level > fLogFileLevel : write Screen
-  // level > flogScreenLevel && level <= fLogFileLevel : write File
-  //  std::cout<<"Level: "<< ConvertLogLevelToString(level) <<std::endl;
-
-  fLevel = level;
-
-  if( ( !fLogToFile && !fLogToScreen) || level > fMinLogLevel  ) {
-    return *fNullStream;
-  } else {
-    if ( (fLogToScreen && level <= fLogScreenLevel) &&
-         (fLogToFile && level <= fLogFileLevel) ) {
-      fReturnStream = fTeeStream;
-    } else if ( fLogToScreen && level <= fLogScreenLevel ) {
-      fReturnStream = fScreenStream;
-    } else if ( fLogToFile && level <= fLogFileLevel ) {
-      fReturnStream = &fFileStream;
-    } else {
-      return *fNullStream;
+    if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
+      TString bla(file);
+      Ssiz_t pos = bla.Last('/');
+      TString s2(bla(pos+1, bla.Length()));
+      TString s3 = s2 + "::" + func + ":" + line;
+      *fScreenStream << "[" << s3 <<"] ";
     }
   }
 
-  if (fLogColored) {
-    *fReturnStream << LogLevelColor[level];
+  if ( fLogToFile && level <= fLogFileLevel ) {
+    if(!fLogFileOpen) {
+      OpenLogFile();
+    }
+
+    *fNewFileStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
+
+    if ( fLogVerbosityLevel == verbosityHIGH ) {
+      GetTime();
+      *fNewFileStream << fTimeBuffer;
+    }
+
+    if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
+      TString bla(file);
+      Ssiz_t pos = bla.Last('/');
+      TString s2(bla(pos+1, bla.Length()));
+      TString s3 = s2 + "::" + func + ":" + line;
+      *fNewFileStream << "[" << s3 <<"] ";
+    }
   }
 
-  *fReturnStream << "[" << setw(7) << left << LogLevelString[level] <<"] ";
-
-  if ( fLogVerbosityLevel == verbosityHIGH ) {
-    GetTime();
-    *fReturnStream << fTimeBuffer;
-  }
-  if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
-    TString bla(file);
-    Ssiz_t pos = bla.Last('/');
-    TString s2(bla(pos+1, bla.Length()));
-    TString s3 = s2 + "::" + func + ":" + line;
-    *fReturnStream << "[" << s3 <<"] ";
-  }
-  return *fReturnStream;
+  return *this;
 }
 
-void FairLogger::LineEnd()
+
+#if (__GNUC__ >= 3)
+FairLogger& FairLogger::operator<<(std::ios_base& (*manip) (std::ios_base&))
 {
-  if (fLogColored) {
-    *fReturnStream << "\33[00;30m" << std::endl;
-  } else {
-    *fReturnStream << std::endl;
+  if (fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+    *(fScreenStream) << manip;
   }
+
+  if (fLogToFile && !fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+    *(fNewFileStream) << manip;
+  }
+
+  return *this;
 }
+#endif
+
+FairLogger& FairLogger::operator<<(std::ostream& (*manip) (std::ostream&))
+{
+  if (fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+    *(fScreenStream) << manip;
+  }
+
+  if (fLogToFile && !fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+    *(fNewFileStream) << manip;
+  }
+
+  return *this;
+}
+
+std::ostream&  FairLogger::endl(std::ostream& strm)
+{
+  if (FairLogger::instance->fLogToScreen &&
+      FairLogger::instance->fLevel <= FairLogger::instance->fLogScreenLevel) {
+    if (FairLogger::instance->fLogColored) {
+      *(FairLogger::instance->fScreenStream) << "\33[00;30m" << std::endl;
+    } else {
+      *(FairLogger::instance->fScreenStream) << std::endl;
+    }
+  }
+
+  if (FairLogger::instance->fLogToFile &&
+      FairLogger::instance->fLevel <= FairLogger::instance->fLogFileLevel) {
+    *(FairLogger::instance->fNewFileStream) << std::endl;
+  }
+
+  return strm;
+}
+
+std::ostream& FairLogger::flush(std::ostream& strm)
+{
+  if (FairLogger::instance->fLogToScreen) {
+    *(FairLogger::instance->fScreenStream) << std::flush;
+  }
+  if (FairLogger::instance->fLogToFile) {
+    *(FairLogger::instance->fNewFileStream) << std::flush;
+  }
+  return strm;
+}
+
 
 ClassImp(FairLogger)

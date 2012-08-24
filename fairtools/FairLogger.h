@@ -13,18 +13,15 @@
 #define CONVERTTOSTRING(s)      IMP_CONVERTTOSTRING(s)
 #define MESSAGE_ORIGIN          __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
 #define LOG(level)        \
-  GetOutputStream(level, MESSAGE_ORIGIN)
+  GetNewOutputStream(level, MESSAGE_ORIGIN)
 
 #define LEND() \
-  fLogger->GetLineEnd() << std::endl;
+  FairLogger::endl
 
-#include "TObject.h"
+#include "Rtypes.h"
 
-#include <cstdio>
-#include <iostream>
-#include <sstream>
+#include <ostream>
 #include <fstream>
-#include "FairTeeStream.h"
 
 // Definiton of the different log levels
 // TODO(F.U): Find bettter names for DEBUG1..4
@@ -71,26 +68,16 @@ static const char* const LogLevelColor[] = { "\33[01;31m", "\33[01;33m",
 enum FairLogVerbosityLevel {verbosityHIGH, verbosityMEDIUM, verbosityLOW};
 static const char* const LogVerbosityString[] = { "HIGH", "MEDIUM", "LOW" };
 
-class FairLogger //: public TObject
+class FairLogger : public std::ostream
 {
   public:
     static FairLogger* GetLogger();
 
     void SetLogFileName(const char* name);
 
-    void SetLogToScreen(Bool_t log1) {
-      fLogToScreen = log1;
-      if (!fLogToScreen) {
-        SetLogScreenLevel("FATAL");
-      }
-    }
+    void SetLogToScreen(Bool_t log1) { fLogToScreen = log1; }
 
-    void SetLogToFile(Bool_t log1) {
-      fLogToFile = log1;
-      if (!fLogToFile) {
-        SetLogFileLevel("FATAL");
-      }
-    }
+    void SetLogToFile(Bool_t log1) { fLogToFile = log1; }
 
     void SetColoredLog(Bool_t log1) { fLogColored = log1; }
 
@@ -107,9 +94,6 @@ class FairLogger //: public TObject
     void SetLogVerbosityLevel(const char* vlevel) {
       fLogVerbosityLevel = ConvertToLogVerbosityLevel(vlevel);
     }
-
-    void SetNewStyle(Bool_t newstyle) { fNewStyle = newstyle;}
-    Bool_t GetNewStyle() { return fNewStyle;}
 
     void Fatal(const char* file, const char* line, const char* func,
                const char* format, ...);
@@ -135,11 +119,34 @@ class FairLogger //: public TObject
     void Debug4(const char* file, const char* line, const char* func,
                 const char* format, ...);
 
-    std::ostream& GetOutputStream(FairLogLevel level, const char* file, const char* line, const char* func);
+    FairLogger& GetNewOutputStream(FairLogLevel level, const char* file, const char* line, const char* func);
 
-    std::string GetLineEnd();
+    /*! \brief Stream an object to the output stream
+     */
+    template <class T> FairLogger&   operator<<(const T& t) {
+      if (fLogToScreen && fLevel <= fLogScreenLevel) {
+        *(fScreenStream) << t;
+      }
+      if (fLogToFile && fLevel <= fLogFileLevel) {
+        *(fNewFileStream) << t;
+      }
+      return *this;
+    }
 
-    void LineEnd();
+    /*! \brief Pass the ios_base manipulators
+     */
+#if (__GNUC__ >= 3)
+    FairLogger&                      operator<<(std::ios_base & (*manip) (std::ios_base&));
+#endif
+    FairLogger&                      operator<<(std::ostream & (*manip) (std::ostream&));
+
+    /*! \brief End of the line
+     */
+    static std::ostream&        endl(std::ostream&);
+
+    /*! \brief Flush the streams
+     */
+    static std::ostream&        flush(std::ostream&);
 
   private:
     static FairLogger* instance;
@@ -154,8 +161,6 @@ class FairLogger //: public TObject
 
     void OpenLogFile();
     void CloseLogFile();
-
-    void LogTo(FILE* out, const char* loglevel, const char* origin);
 
     FairLogLevel ConvertToLogLevel(const char* level) const;
     FairLogVerbosityLevel ConvertToLogVerbosityLevel(const char* level) const;
@@ -173,29 +178,20 @@ class FairLogger //: public TObject
     Bool_t fLogToScreen;
     Bool_t fLogToFile;
     Bool_t fLogColored;
-    FILE*  fLogFile;
     FairLogLevel fLogFileLevel;
     FairLogLevel fLogScreenLevel;
     FairLogVerbosityLevel fLogVerbosityLevel;
-    static const int fgkBufferLength = 10024;
     Int_t fBufferSize;
     Int_t fBufferSizeNeeded;
     std::vector<char> fDynamicBuffer;
     char* fBufferPointer;
 
-    char fBuffer[fgkBufferLength];
     static const int fgkTimeBufferLength = 80;
     char fTimeBuffer[fgkTimeBufferLength];
     FairLogLevel fMinLogLevel;
     FairLogLevel fLevel;
     std::ostream* fScreenStream;
-    std::ostream* fNullStream;
-    std::ostream* fTeeStream;
-    std::ostream* fReturnStream;
-    std::string fLineEndString;
-    std::ofstream fFileStream;
-    FairTeeStream  fTee;
-    Bool_t fNewStyle;
+    std::ostream* fNewFileStream;
     Bool_t fLogFileOpen;
     ClassDef(FairLogger, 1)
 };
