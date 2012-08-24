@@ -17,12 +17,6 @@
 #include <iostream>
 #include <iomanip>
 
-//using std::setw;
-//using std::right;
-//using std::left;
-
-
-
 FairLogger* FairLogger::instance = NULL;
 
 FairLogger::FairLogger()
@@ -31,7 +25,6 @@ FairLogger::FairLogger()
   fLogToScreen(kTRUE),
   fLogToFile(kFALSE),
   fLogColored(kFALSE),
-  //  fLogFile(NULL),
   fLogFileLevel(InfoLog),
   fLogScreenLevel(InfoLog),
   fLogVerbosityLevel(verbosityLOW),
@@ -39,14 +32,9 @@ FairLogger::FairLogger()
   fBufferSizeNeeded(-1),
   fDynamicBuffer(fBufferSize),
   fBufferPointer(&fDynamicBuffer[0]),
-  //  fBuffer(),
   fMinLogLevel(InfoLog),
   fScreenStream(&std::cerr),
-  //  fNullStream(new ostream(0)),
   fNewFileStream(NULL),
-  //  fTeeStream(),
-  //  fFileStream(),
-  //  fNewStyle(kTRUE),
   fLogFileOpen(kFALSE)
 {
 }
@@ -71,20 +59,25 @@ void FairLogger::Fatal(const char* file, const char* line, const char* func,
   va_start(ap, format);
   Log(FatalLog, file, line, func, format, ap);
   va_end(ap);
+
   // Since Fatal indicates a fatal error it is maybe usefull to have
   // system information from the incident. Since the output on the screen
   // does not helt the noraml user, the stderr is redirected into a special
   // core dump file for later usage.
   // Fatal also indicates a problem which is so severe that the process should
   // not go on, so the process is aborted.
-  fprintf(stderr, "[FATAL  ] We stop the execution of the process at this point.\n");
+  GetNewOutputStream(FatalLog, file, line, func) <<
+      "[FATAL  ] We stop the execution of the process at this point." <<
+      " " << FairLogger::endl;
+
   if (gSystem) {
     TString corefile = "core_dump_";
     Int_t PID = gSystem->GetPid();
     corefile += PID;
 
-    fprintf(stderr, "[FATAL  ] For later analysis we write a core dump to %s\n",
-            (const char*)corefile);
+    GetNewOutputStream(FatalLog, file, line, func) <<
+        "[FATAL  ] For later analysis we write a core dump to" << corefile <<
+        " " << FairLogger::endl;
     freopen(corefile, "w", stderr);
     gSystem->StackTrace();
     fclose(stderr);
