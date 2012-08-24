@@ -38,6 +38,10 @@ Else(Boost_FOUND)
   Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
 EndIf(Boost_FOUND)
 
+add_executable(_test test.cxx)
+target_link_libraries(_test ${ROOT_LIBRARIES} FairTools)
+add_test(_test ${FAIRROOT_BINARY_DIR}/bin/_test)
+
 #If(Boost_FOUND)
 #  add_executable(_BoostTestFairTools _BoostTestFairTools.cxx)
 #  target_link_libraries(_BoostTestFairTools ${Boost_LIBRARIES} FairTools FairTest)
