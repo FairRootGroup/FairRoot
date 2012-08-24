@@ -13,10 +13,15 @@
 #define CONVERTTOSTRING(s)      IMP_CONVERTTOSTRING(s)
 #define MESSAGE_ORIGIN          __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
 #define LOG(level)        \
-  GetNewOutputStream(level, MESSAGE_ORIGIN)
+  FairLogger::GetLogger()->GetNewOutputStream(level, MESSAGE_ORIGIN)
 
-#define LEND() \
-  FairLogger::endl
+/*
+#define LOG_IF(level, condition)          \
+  !(condition) ? FairLogger::GetLogger()->GetNullStream(level) : FairLogger::GetLogger()->GetNewOutputStream(level, MESSAGE_ORIGIN)
+*/
+
+#define LOG_IF(level, condition) \
+  !(condition) ? FairLogger::GetLogger()->GetNullStream(level) : LOG(level)
 
 #include "Rtypes.h"
 
@@ -121,6 +126,11 @@ class FairLogger : public std::ostream
 
     FairLogger& GetNewOutputStream(FairLogLevel level, const char* file, const char* line, const char* func);
 
+    std::ostream& GetNullStream(FairLogLevel level) {
+      fLevel=level;
+      return *fNullStream;
+    }
+
     /*! \brief Stream an object to the output stream
      */
     template <class T> FairLogger&   operator<<(const T& t) {
@@ -192,6 +202,7 @@ class FairLogger : public std::ostream
     FairLogLevel fLevel;
     std::ostream* fScreenStream;
     std::ostream* fNewFileStream;
+    std::ostream* fNullStream;
     Bool_t fLogFileOpen;
     ClassDef(FairLogger, 1)
 };

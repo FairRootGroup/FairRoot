@@ -35,6 +35,7 @@ FairLogger::FairLogger()
   fMinLogLevel(InfoLog),
   fScreenStream(&std::cerr),
   fNewFileStream(NULL),
+  fNullStream(new ostream(0)),
   fLogFileOpen(kFALSE)
 {
 }
