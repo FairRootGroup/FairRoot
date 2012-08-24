@@ -31,8 +31,8 @@ FairRun::FairRun()
    fRunId(0),
    fAna(kFALSE),
    fEvHead(NULL),
-   fFileHeader(new FairFileHeader())
-
+   fFileHeader(new FairFileHeader()),
+   fWriteRunInfo(kTRUE)
 {
   if (fRunInstance) {
     Fatal("FairRun", "Singleton instance already exists.");

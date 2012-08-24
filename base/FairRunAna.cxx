@@ -555,7 +555,9 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 
     fRootManager->StoreAllWriteoutBufferData();
     fTask->FinishTask();
-    fRunInfo.WriteInfo();
+    if (fWriteRunInfo) {
+      fRunInfo.WriteInfo();
+    }
     fRootManager->LastFill();
     fRootManager->Write();
   }

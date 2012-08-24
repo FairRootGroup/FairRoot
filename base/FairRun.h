@@ -106,8 +106,13 @@ class FairRun : public TNamed
     }
 
     /**Create a new file and save the TGeoManager to it*/
-
     void CreateGeometryFile(const char* geofile);
+
+    //** Set if RunInfo file should be written */
+    void SetWriteRunInfoFile(Bool_t write) { fWriteRunInfo = write;}
+
+    //** Get info if RunInfo file is written */
+    Bool_t GetWriteRunInfoFile() { return fWriteRunInfo;}
 
   private:
     FairRun(const FairRun& M);
@@ -140,6 +145,8 @@ class FairRun : public TNamed
     FairEventHeader*         fEvHead; //!
     /** File  Header */
     FairFileHeader*          fFileHeader;
+    /** true if RunInfo file should be written*/
+    Bool_t                   fWriteRunInfo;  //!
 
     ClassDef(FairRun ,1)
 };
