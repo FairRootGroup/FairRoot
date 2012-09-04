@@ -40,6 +40,7 @@ FairIonGenerator.cxx
 FairParticleGenerator.cxx 
 FairShieldGenerator.cxx   
 FairPlutoGenerator.cxx    
+FairPlutoReactionGenerator.cxx    
 FairUrqmdGenerator.cxx    
 FairEvtGenGenerator.cxx
 )
