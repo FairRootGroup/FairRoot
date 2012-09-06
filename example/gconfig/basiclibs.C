@@ -29,4 +29,11 @@ void basiclibs()
   gSystem->Load("libTree"); 
   gSystem->Load("libMinuit");
   gSystem->Load("libMathMore");
+
+  gSystem->Load("libProof");
+  gSystem->Load("libProofPlayer");
+  gSystem->Load("libGX11TTF");
+  gSystem->Load("libGX11");
+
+
 }  
