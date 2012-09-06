@@ -93,10 +93,12 @@ class FairIon: public TNamed
     Double_t fExcEnergy;  /// Excitation energy [GeV]
     Double_t fMass;       /// Mass [GeV]
 
-    static const Double_t amu = .931494028 ; // Gev/c**2
+    static const Double_t amu; ///  .931494028 Gev/c**2
 
     ClassDef(FairIon,1);
 
 };
+
+
 
 #endif

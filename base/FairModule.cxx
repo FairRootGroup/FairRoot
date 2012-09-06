@@ -327,10 +327,10 @@ Bool_t FairModule::CheckIfSensitive(std::string name)
 //__________________________________________________________________________
 void FairModule::ExpandNode(TGeoNode* fN)
 {
-  FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-  FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  FairGeoMedia* Media =  geoFace->getMedia();
-  FairGeoBuilder* geobuild=geoLoad->getGeoBuilder();
+  //FairGeoLoader* geoLoad = FairGeoLoader::Instance();
+  //FairGeoInterface* geoFace = geoLoad->getGeoInterface();
+  //FairGeoMedia* Media =  geoFace->getMedia();
+  //FairGeoBuilder* geobuild=geoLoad->getGeoBuilder();
   TGeoMatrix* Matrix =fN->GetMatrix();
   if(gGeoManager->GetListOfMatrices()->FindObject(Matrix)) { gGeoManager->GetListOfMatrices()->Remove(Matrix); }
   TGeoVolume* v1=fN->GetVolume();
