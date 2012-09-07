@@ -29,19 +29,28 @@ FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TS
 
 void FairWriteoutBuffer::WriteOutData(double time)
 {
-  typedef std::multimap<double, std::pair<double, FairTimeStamp*> >::iterator startTimeMapIter;
   if (fActivateBuffering) {
-    std::cout << "Before removing: ";
-    PrintStartTimeMap();
-    startTimeMapIter stopTime = fStartTime_map.lower_bound(time);
-    for (startTimeMapIter iter = fStartTime_map.begin(); iter != stopTime; iter++) {
-      std::pair<double, FairTimeStamp*> data = iter->second;
-      FillDataToDeadTimeMap(data.second, data.first);
+    if (fVerbose > 0) {
+      std::cout << "Before removing: ";
+      PrintStartTimeMap();
+      PrintDeadTimeMap();
     }
-    fStartTime_map.erase(fStartTime_map.begin(), stopTime);
-    std::cout << "After removing: ";
-    PrintStartTimeMap();
+
+    MoveDataFromStartTimeMapToDeadTimeMap(time);
+
+    if (fVerbose > 0) {
+      std::cout << "After removing: ";
+      PrintStartTimeMap();
+      PrintDeadTimeMap();
+    }
+
     WriteOutDataDeadTimeMap(time);
+
+    if (fVerbose > 0) {
+      std::cout << "DeadTime map after readout time: " << time << std::endl;
+      PrintDeadTimeMap();
+    }
+
   } else {
     FairRootManager::Instance()->GetTClonesArray(fBranchName);
   }
@@ -82,14 +91,18 @@ void FairWriteoutBuffer::WriteOutDataDeadTimeMap(double time)
 void FairWriteoutBuffer::WriteOutAllData()
 {
   double ultimateTime = 0;
+
   if (fStartTime_map.size() > 0) {
     ultimateTime = fStartTime_map.rbegin()->first + 1;
+    MoveDataFromStartTimeMapToDeadTimeMap(ultimateTime);
   }
+
   if (fDeadTime_map.size() > 0) {
     if (fDeadTime_map.rbegin()->first > ultimateTime) {
       ultimateTime = fDeadTime_map.rbegin()->first + 1;
     }
   }
+
   if (ultimateTime > 0) {
     WriteOutData(ultimateTime);
   }
@@ -118,7 +131,9 @@ std::vector<FairTimeStamp*> FairWriteoutBuffer::GetAllData()
 void FairWriteoutBuffer::FillNewData(FairTimeStamp* data, double startTime, double activeTime)
 {
   if (fActivateBuffering) {
-    std::cout << "StartTime: " << startTime << std::endl;
+    if (fVerbose > 0) {
+      std::cout << "StartTime: " << startTime << std::endl;
+    }
     std::pair<double, FairTimeStamp*> timeData(activeTime, data);
     fStartTime_map.insert(std::pair<double, std::pair<double, FairTimeStamp*> >(startTime, timeData));
   } else {
@@ -134,9 +149,10 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
     typedef  std::map<FairTimeStamp, double>::iterator DataMapIter;
 
     double timeOfOldData = FindTimeForData(data);
+    // PrintDeadTimeMap();
     if(timeOfOldData > -1) {        //if an older active data object is already present
       if (fVerbose > 1) {
-        std::cout << " OldData found! " << std::endl;
+        std::cout << " OldData found! " << timeOfOldData << std::endl;
       }
       if (fVerbose > 1) {
         std::cout << "New Data: " << activeTime << " : " << data << std::endl;
@@ -145,6 +161,7 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
       FairTimeStamp* oldData;
       bool dataFound = false;
 
+      // PrintDeadTimeMap();
       for (DTMapIter it = fDeadTime_map.lower_bound(currentdeadtime); it != fDeadTime_map.upper_bound(currentdeadtime); it++) {
         oldData = it->second;
         if (fVerbose > 1) {
@@ -190,13 +207,39 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
   }
 }
 
+void FairWriteoutBuffer::MoveDataFromStartTimeMapToDeadTimeMap(double time)
+{
+  typedef std::multimap<double, std::pair<double, FairTimeStamp*> >::iterator startTimeMapIter;
+
+  startTimeMapIter stopTime = fStartTime_map.lower_bound(time);
+  for (startTimeMapIter iter = fStartTime_map.begin(); iter != stopTime; iter++) {
+    std::pair<double, FairTimeStamp*> data = iter->second;
+    FillDataToDeadTimeMap(data.second, data.first);
+  }
+  fStartTime_map.erase(fStartTime_map.begin(), stopTime);
+}
+
 void FairWriteoutBuffer::PrintStartTimeMap()
 {
   typedef std::multimap<double, std::pair<double, FairTimeStamp*> >::iterator startTimeMapIter;
+  std::cout << "StartTimeMap: " << std::endl;
   for (startTimeMapIter iter = fStartTime_map.begin(); iter != fStartTime_map.end(); iter++) {
-    std::cout << " | " << iter->first;
+    FairTimeStamp* data = iter->second.second;
+    std::cout << " | " << iter->first << "/" << data->GetTimeStamp();
   }
   std::cout << " |" << std::endl;
+}
+
+void FairWriteoutBuffer::PrintDeadTimeMap()
+{
+  typedef  std::multimap<double, FairTimeStamp*>::iterator DTMapIter;
+  std::cout << "DeadTimeMap: " << std::endl;
+  for (DTMapIter it = fDeadTime_map.begin(); it != fDeadTime_map.end(); it++) {
+    std::cout << it->first << " / ";
+    PrintData(it->second);
+    std::cout << std::endl;
+  }
+  std::cout << std::endl;
 }
 
 

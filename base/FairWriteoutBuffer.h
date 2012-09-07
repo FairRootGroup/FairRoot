@@ -55,8 +55,6 @@ class FairWriteoutBuffer: public TObject
 
     virtual void SetVerbose(Int_t val) {fVerbose = val;}
 
-    void PrintStartTimeMap();
-
     virtual void DeleteOldData() {
       TClonesArray* myArray = FairRootManager::Instance()->GetTClonesArray(fBranchName);
       myArray->Delete();
@@ -82,10 +80,12 @@ class FairWriteoutBuffer: public TObject
 
 
     virtual void WriteOutDataDeadTimeMap(double time);
+    virtual void MoveDataFromStartTimeMapToDeadTimeMap(double time);
     virtual void FillDataToDeadTimeMap(FairTimeStamp* data, double activeTime);
 
-
-
+    virtual void PrintData(FairTimeStamp* data) {std::cout << data->GetTimeStamp();}; ///< Method should be overwritten in derived classes to print the data of an object stored in the buffer
+    virtual void PrintDeadTimeMap();
+    virtual void PrintStartTimeMap();
 
     std::multimap<double, std::pair<double, FairTimeStamp*> > fStartTime_map;
     std::multimap<double, FairTimeStamp*> fDeadTime_map;
