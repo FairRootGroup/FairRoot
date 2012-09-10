@@ -27,50 +27,50 @@ class TClonesArray;
 
 class FairMCMatchCreatorTask : public FairTask
 {
- public:
+  public:
 
-  /** Default constructor **/
-  FairMCMatchCreatorTask();
+    /** Default constructor **/
+    FairMCMatchCreatorTask();
 
-  /** Destructor **/
-  virtual ~FairMCMatchCreatorTask();
-
-
-  /** Virtual method Init **/
-  virtual void SetParContainers();
-  void SetPersistance(Bool_t pers){fPersistance = pers;}
-  Bool_t GetPersistance(){return fPersistance;}
-
-  virtual InitStatus Init();
+    /** Destructor **/
+    virtual ~FairMCMatchCreatorTask();
 
 
-  /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt);
+    /** Virtual method Init **/
+    virtual void SetParContainers();
+    void SetPersistance(Bool_t pers) {fPersistance = pers;}
+    Bool_t GetPersistance() {return fPersistance;}
 
-  virtual void Finish();
-
-  virtual void InitDataStages() = 0;
-
- protected:
-  FairMCMatch* fMCMatch;
-
- private:
- 
-  std::map<std::string, TClonesArray*> fBranches;
-  Bool_t fPersistance;
-  TClonesArray* fMCLink;//->
-  Int_t fEventNr;
-
-  InitStatus InitBranches();
-
-  void Register();
-
-  void Reset();
-
-  void ProduceHits();
+    virtual InitStatus Init();
 
 
-  ClassDef(FairMCMatchCreatorTask,1);
+    /** Virtual method Exec **/
+    virtual void Exec(Option_t* opt);
+
+    virtual void Finish();
+
+    virtual void InitDataStages() = 0;
+
+  protected:
+    FairMCMatch* fMCMatch;
+
+  private:
+
+    std::map<std::string, TClonesArray*> fBranches;
+    Bool_t fPersistance;
+    TClonesArray* fMCLink;//->
+    Int_t fEventNr;
+
+    InitStatus InitBranches();
+
+    void Register();
+
+    void Reset();
+
+    void ProduceHits();
+
+
+    ClassDef(FairMCMatchCreatorTask,1);
 
 };
 

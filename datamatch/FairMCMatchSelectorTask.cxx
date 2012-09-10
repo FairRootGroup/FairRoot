@@ -23,29 +23,29 @@
 
 // -----   Default constructor   -------------------------------------------
 FairMCMatchSelectorTask::FairMCMatchSelectorTask()
-  : FairTask("Creates FairMCMatch"), 
-    fStart(-1), 
+  : FairTask("Creates FairMCMatch"),
+    fStart(-1),
     fStop(-1)
-    //    fStart(kUnknown), 
+    //    fStart(kUnknown),
     //    fStop(kUnknown)
 {
 }
 // -------------------------------------------------------------------------
 
 FairMCMatchSelectorTask::FairMCMatchSelectorTask(TString start, TString stop)
-  : FairTask("Creates FairMCMatch"), 
-    fStartString(start), 
-    fStopString(stop), 
-    fStart(-1), 
+  : FairTask("Creates FairMCMatch"),
+    fStartString(start),
+    fStopString(stop),
+    fStart(-1),
     fStop(-1)
 {
 }
 
 FairMCMatchSelectorTask::FairMCMatchSelectorTask(Int_t start, Int_t stop)
-  : FairTask("Creates FairMCMatch"), 
-    fStart(start), 
-    fStop(stop), 
-    fStartString(""), 
+  : FairTask("Creates FairMCMatch"),
+    fStart(start),
+    fStop(stop),
+    fStartString(""),
     fStopString("")
 {
 }
@@ -62,20 +62,20 @@ InitStatus FairMCMatchSelectorTask::Init()
   FairRootManager* ioman = FairRootManager::Instance();
   if (!ioman) {
     std::cout << "-E- FairMCMatchSelectorTask::Init: "
-	      << "RootManager not instantiated!" << std::endl;
+              << "RootManager not instantiated!" << std::endl;
     return kFATAL;
   }
-  
+
   fMCMatch = (FairMCMatch*)ioman->GetObject("MCMatch");
-  if (fStart < 0 && fStop < 0){
+  if (fStart < 0 && fStop < 0) {
     fStart = ioman->GetBranchId(fStartString);
     fStop = ioman->GetBranchId(fStopString);
     std::cout << fStartString << ": " << fStart << " / " << fStopString << ": " << fStop << std::endl;
   }
-  
+
   std::cout << "-I- FairMCMatchSelectorTask::Init: Initialization successfull" << std::endl;
-  
-  
+
+
   return kSUCCESS;
 }
 
@@ -99,7 +99,7 @@ void FairMCMatchSelectorTask::Exec(Option_t* opt)
 void FairMCMatchSelectorTask::SetWeights()
 {
   fMCMatch->SetCommonWeightStages(fCommonWeight);
-  for (int i = 0; i < fStageWeights.size();i++){
+  for (int i = 0; i < fStageWeights.size(); i++) {
     fMCMatch->GetMCStageType(fStageWeights[i].first)->SetWeight(fStageWeights[i].second);
   }
 }

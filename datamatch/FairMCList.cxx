@@ -9,7 +9,7 @@
 
 ClassImp(FairMCList);
 
-FairMCList::FairMCList() 
+FairMCList::FairMCList()
   : TObject(),
     fList(),
     fEntry(-1),
@@ -17,6 +17,6 @@ FairMCList::FairMCList()
 {
 }
 
-FairMCList::~FairMCList() 
+FairMCList::~FairMCList()
 {
 }

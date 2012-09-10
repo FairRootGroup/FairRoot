@@ -27,40 +27,40 @@ class TClonesArray;
 
 class FairMCMatchLoaderTask : public FairTask
 {
- public:
+  public:
 
-  /** Default constructor **/
-	FairMCMatchLoaderTask();
+    /** Default constructor **/
+    FairMCMatchLoaderTask();
 
-  /** Destructor **/
-  virtual ~FairMCMatchLoaderTask();
-
-
-  /** Virtual method Init **/
-  virtual void SetParContainers();
-  virtual InitStatus Init();
+    /** Destructor **/
+    virtual ~FairMCMatchLoaderTask();
 
 
-  /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt);
+    /** Virtual method Init **/
+    virtual void SetParContainers();
+    virtual InitStatus Init();
 
-  virtual void Finish();
 
-  virtual void InitDataStages() = 0;
+    /** Virtual method Exec **/
+    virtual void Exec(Option_t* opt);
 
- private:
+    virtual void Finish();
 
-  TClonesArray* fMCLink;
-  int fEventNr;
-  FairMCMatch* fMCMatch;
-  
-  void Register();
-  
-  void Reset();
-  
-  void ProduceHits();
-  
-  ClassDef(FairMCMatchLoaderTask,1);
+    virtual void InitDataStages() = 0;
+
+  private:
+
+    TClonesArray* fMCLink;
+    int fEventNr;
+    FairMCMatch* fMCMatch;
+
+    void Register();
+
+    void Reset();
+
+    void ProduceHits();
+
+    ClassDef(FairMCMatchLoaderTask,1);
 };
 
 #endif

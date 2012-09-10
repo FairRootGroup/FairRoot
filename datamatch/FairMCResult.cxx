@@ -9,20 +9,20 @@
 
 ClassImp(FairMCResult);
 
-FairMCResult::FairMCResult() 
+FairMCResult::FairMCResult()
   : FairMCObject(),
-    fStartType(-1), 
+    fStartType(-1),
     fStopType(-1)
 {
 }
 
-FairMCResult::~FairMCResult() 
+FairMCResult::~FairMCResult()
 {
 }
 
 FairMCResult::FairMCResult(Int_t start, Int_t stop)
   : FairMCObject(),
-    fStartType(start), 
+    fStartType(start),
     fStopType(stop)
 {
 }
