@@ -152,6 +152,7 @@ add_subdirectory (trackbase)
 add_subdirectory (eventdisplay)
 add_subdirectory (example)
 add_subdirectory (MbsAPI)
+add_subdirectory (datamatch)
 
 
 
