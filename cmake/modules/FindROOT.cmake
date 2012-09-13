@@ -306,15 +306,9 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
   set(MY_LD_LIBRARY_PATH ${output})
   set(my_script_name ${SCRIPT_FULL_NAME})
 
-  if(CMAKE_SYSTEM MATCHES Darwin)
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro_macos.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-  else(CMAKE_SYSTEM MATCHES Darwin)
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-  endif(CMAKE_SYSTEM MATCHES Darwin)
+  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro.sh.in
+                 ${new_path}/${shell_script_name}
+                )
 
   EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
 

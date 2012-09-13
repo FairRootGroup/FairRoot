@@ -1,6 +1,15 @@
 #!/bin/bash
 
+# This macro is needed to start the Root macros used for automatic testing
+# from inside CMake using the add_test functionality. Since the tests 
+# starts with a fresh environment on has to set first the correct environment
+# needed to run FairRoot.
+# Also parameters defined in add_test will be converted in the correct format
+# to be passed to root.
+
+# Setup the needed environment
 export LD_LIBRARY_PATH=@MY_LD_LIBRARY_PATH@
+export DYLD_LIBRARY_PATH=@MY_LD_LIBRARY_PATH@
 export PATH=$PATH:@GEANT4_DIR@
 export ROOTSYS=@ROOTSYS@
 export ROOTEXE=@ROOT_INSTALL_DIR@/bin/root.exe
@@ -20,6 +29,18 @@ if [ -e @GEANT4_DIR@/env.sh ]; then
   . @GEANT4_DIR@/env.sh
 fi
 
+# Concatenate all parameters given on the command line to one 
+# comma separated string 
+parameters=""
+for i in $*; do 
+  if [ -z $parameters ]; then
+    parameters=$i
+  else
+    parameters=$(echo "$parameters,$i")
+  fi 
+done
+
 cd @new_path@
 
-$ROOTEXE -q -b @my_script_name@
+# execute root with the defined macro and the command line parameters
+$ROOTEXE -q -b @my_script_name@\($parameters\)
