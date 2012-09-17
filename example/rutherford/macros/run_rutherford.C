@@ -58,7 +58,8 @@ void run_rutherford(Int_t nEvents = 10)
   run->SetOutputFile(outFile);          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
-  
+
+  run->SetWriteRunInfoFile(kFALSE);  
   // -----   Create media   -------------------------------------------------
   run->SetMaterials("media.geo");       // Materials
   // ------------------------------------------------------------------------
