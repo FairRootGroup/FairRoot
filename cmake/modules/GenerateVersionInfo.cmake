@@ -1,8 +1,6 @@
   # Configure FairVersion.h
   # ------------------------------
 
-  Message("I am here.")
-
   Find_Package(Subversion)
 
   If(Subversion_FOUND AND EXISTS ${SOURCE_DIR}/.svn/ )
