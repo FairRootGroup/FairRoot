@@ -154,8 +154,6 @@ add_subdirectory (example)
 add_subdirectory (MbsAPI)
 add_subdirectory (datamatch)
 
-
-
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
 if(BUILD_DOXYGEN)
   MESSAGE(STATUS "*** Building the Doxygen documentaion ***")
@@ -186,7 +184,7 @@ If(BUILD_UNITTESTS)
 
   Message("Build the unit tests.")
 
-  Set(GTEST_ROOT $ENV{GTEST_ROOT})
+  Set(GTEST_ROOT ${SIMPATH})
   Find_Package(GTest)
 
   If(GTEST_FOUND)
