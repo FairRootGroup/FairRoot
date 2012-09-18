@@ -7,15 +7,13 @@
 
 #include "FairLogger.h"
 
-#include "TString.h"
-#include "TSystem.h"
+#include "TString.h" // TString
+#include "TSystem.h" // gSystem
 
-#include <cassert>
-#include <cstdio>
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
-#include <iomanip>
+#include <iostream> //  std::cerr
+#include <iomanip> //   std::setw
+
+FairLogger* gLogger = FairLogger::GetLogger();
 
 FairLogger* FairLogger::instance = NULL;
 
@@ -25,16 +23,17 @@ FairLogger::FairLogger()
   fLogToScreen(kTRUE),
   fLogToFile(kFALSE),
   fLogColored(kFALSE),
-  fLogFileLevel(InfoLog),
-  fLogScreenLevel(InfoLog),
+  fLogFileLevel(INFO),
+  fLogScreenLevel(INFO),
   fLogVerbosityLevel(verbosityLOW),
   fBufferSize(1024),
   fBufferSizeNeeded(-1),
   fDynamicBuffer(fBufferSize),
   fBufferPointer(&fDynamicBuffer[0]),
-  fMinLogLevel(InfoLog),
-  fScreenStream(&std::cerr),
-  fNewFileStream(NULL),
+  fMinLogLevel(INFO),
+  fLevel(INFO),
+  fScreenStream(&std::cout),
+  fFileStream(NULL),
   fNullStream(new ostream(0)),
   fLogFileOpen(kFALSE)
 {
@@ -58,43 +57,17 @@ void FairLogger::Fatal(const char* file, const char* line, const char* func,
 {
   va_list ap;
   va_start(ap, format);
-  Log(FatalLog, file, line, func, format, ap);
+  Log(FATAL, file, line, func, format, ap);
   va_end(ap);
-
-  // Since Fatal indicates a fatal error it is maybe usefull to have
-  // system information from the incident. Since the output on the screen
-  // does not helt the noraml user, the stderr is redirected into a special
-  // core dump file for later usage.
-  // Fatal also indicates a problem which is so severe that the process should
-  // not go on, so the process is aborted.
-  GetNewOutputStream(FatalLog, file, line, func) <<
-      "[FATAL  ] We stop the execution of the process at this point." <<
-      " " << FairLogger::endl;
-
-  if (gSystem) {
-    TString corefile = "core_dump_";
-    Int_t PID = gSystem->GetPid();
-    corefile += PID;
-
-    GetNewOutputStream(FatalLog, file, line, func) <<
-        "[FATAL  ] For later analysis we write a core dump to" << corefile <<
-        " " << FairLogger::endl;
-    freopen(corefile, "w", stderr);
-    gSystem->StackTrace();
-    fclose(stderr);
-    gSystem->Abort(1);
-  } else {
-    abort();
-  }
 }
 
 void FairLogger::Error(const char* file, const char* line, const char* func,
                        const char* format, ...)
 {
-  if (IsLogNeeded(ErrorLog)) {
+  if (IsLogNeeded(ERROR)) {
     va_list ap;
     va_start(ap, format);
-    Log(ErrorLog, file, line, func, format, ap);
+    Log(ERROR, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -102,10 +75,10 @@ void FairLogger::Error(const char* file, const char* line, const char* func,
 void FairLogger::Warning(const char* file, const char* line, const char* func,
                          const char* format, ...)
 {
-  if (IsLogNeeded(WarningLog)) {
+  if (IsLogNeeded(WARNING)) {
     va_list ap;
     va_start(ap, format);
-    Log(WarningLog, file, line, func, format, ap);
+    Log(WARNING, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -113,10 +86,10 @@ void FairLogger::Warning(const char* file, const char* line, const char* func,
 void FairLogger::Info(const char* file, const char* line, const char* func,
                       const char* format, ...)
 {
-  if (IsLogNeeded(InfoLog)) {
+  if (IsLogNeeded(INFO)) {
     va_list ap;
     va_start(ap, format);
-    Log(InfoLog, file, line, func, format, ap);
+    Log(INFO, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -124,10 +97,10 @@ void FairLogger::Info(const char* file, const char* line, const char* func,
 void FairLogger::Debug(const char* file, const char* line, const char* func,
                        const char* format, ...)
 {
-  if (IsLogNeeded(DebugLog)) {
+  if (IsLogNeeded(DEBUG)) {
     va_list ap;
     va_start(ap, format);
-    Log(DebugLog, file, line, func, format, ap);
+    Log(DEBUG, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -135,10 +108,10 @@ void FairLogger::Debug(const char* file, const char* line, const char* func,
 void FairLogger::Debug1(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  if (IsLogNeeded(Debug1Log)) {
+  if (IsLogNeeded(DEBUG1)) {
     va_list ap;
     va_start(ap, format);
-    Log(Debug1Log, file, line, func, format, ap);
+    Log(DEBUG1, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -146,10 +119,10 @@ void FairLogger::Debug1(const char* file, const char* line, const char* func,
 void FairLogger::Debug2(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  if (IsLogNeeded(Debug2Log)) {
+  if (IsLogNeeded(DEBUG2)) {
     va_list ap;
     va_start(ap, format);
-    Log(Debug2Log, file, line, func, format, ap);
+    Log(DEBUG2, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -157,10 +130,10 @@ void FairLogger::Debug2(const char* file, const char* line, const char* func,
 void FairLogger::Debug3(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  if (IsLogNeeded(Debug3Log)) {
+  if (IsLogNeeded(DEBUG3)) {
     va_list ap;
     va_start(ap, format);
-    Log(Debug3Log, file, line, func, format, ap);
+    Log(DEBUG3, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -168,10 +141,10 @@ void FairLogger::Debug3(const char* file, const char* line, const char* func,
 void FairLogger::Debug4(const char* file, const char* line, const char* func,
                         const char* format, ...)
 {
-  if (IsLogNeeded(Debug4Log)) {
+  if (IsLogNeeded(DEBUG4)) {
     va_list ap;
     va_start(ap, format);
-    Log(Debug4Log, file, line, func, format, ap);
+    Log(DEBUG4, file, line, func, format, ap);
     va_end(ap);
   }
 }
@@ -203,7 +176,7 @@ void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
 
     if (fBufferSizeNeeded <= (int)fBufferSize && fBufferSizeNeeded >= 0) {
       // It fit fine so we're done.
-      GetNewOutputStream(level, file, line, func) <<
+      GetOutputStream(level, file, line, func) <<
           std::string(fBufferPointer, (size_t) fBufferSizeNeeded)<<
           " " << FairLogger::endl;
 
@@ -222,10 +195,10 @@ void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
 
 void FairLogger::SetLogFileName(const char* name)
 {
-  if (fNewFileStream) {
+  if (fFileStream) {
     CloseLogFile();
-    delete fNewFileStream;
-    fNewFileStream = NULL;
+    delete fFileStream;
+    fFileStream = NULL;
     remove(fLogFileName);
   }
 
@@ -236,7 +209,7 @@ void FairLogger::SetLogFileName(const char* name)
 
 void FairLogger::CloseLogFile()
 {
-  dynamic_cast<ofstream*>(fNewFileStream)->close();
+  dynamic_cast<ofstream*>(fFileStream)->close();
 }
 
 void FairLogger::OpenLogFile()
@@ -259,13 +232,13 @@ void FairLogger::OpenLogFile()
     logfile = "./" + logfile;
   }
 
-  if (fNewFileStream) {
+  if (fFileStream) {
     CloseLogFile();
-    delete fNewFileStream;
-    fNewFileStream = NULL;
+    delete fFileStream;
+    fFileStream = NULL;
   }
 
-  fNewFileStream = new std::ofstream(logfile.Data());
+  fFileStream = new std::ofstream(logfile.Data());
 
   fLogFileOpen = kTRUE;
 }
@@ -277,17 +250,17 @@ FairLogLevel FairLogger::ConvertToLogLevel(const char* levelc) const
   // in case the level is not known return info level
   TString level = levelc;
   level.ToUpper();
-  if (level == "FATAL") { return FatalLog; }
-  if (level == "ERROR") { return ErrorLog; }
-  if (level == "WARNING") { return WarningLog; }
-  if (level == "INFO") { return InfoLog; }
-  if (level == "DEBUG") { return DebugLog; }
-  if (level == "DEBUG1") { return Debug1Log; }
-  if (level == "DEBUG2") { return Debug2Log; }
-  if (level == "DEBUG3") { return Debug3Log; }
-  if (level == "DEBUG4") { return Debug4Log; }
-  std::cerr<<"Log level \""<<level<<"\" not supported. Use default level \"INFO\"."<<std::endl;
-  return InfoLog;
+  if (level == "FATAL") { return FATAL; }
+  if (level == "ERROR") { return ERROR; }
+  if (level == "WARNING") { return WARNING; }
+  if (level == "INFO") { return INFO; }
+  if (level == "DEBUG") { return DEBUG; }
+  if (level == "DEBUG1") { return DEBUG1; }
+  if (level == "DEBUG2") { return DEBUG2; }
+  if (level == "DEBUG3") { return DEBUG3; }
+  if (level == "DEBUG4") { return DEBUG4; }
+  LOG(ERROR)<<"Log level \""<<level<<"\" not supported. Use default level \"INFO\"."<<FairLogger::endl;
+  return INFO;
 }
 
 FairLogVerbosityLevel FairLogger::ConvertToLogVerbosityLevel(const char* vlevelc) const
@@ -300,7 +273,7 @@ FairLogVerbosityLevel FairLogger::ConvertToLogVerbosityLevel(const char* vlevelc
   if (vlevel == "HIGH") { return verbosityHIGH; }
   if (vlevel == "MEDIUM") { return verbosityMEDIUM; }
   if (vlevel == "LOW") { return verbosityLOW; }
-  std::cerr<<"Verbosity level \""<<vlevel<<"\" not supported. Use default level \"LOW\"."<<std::endl;
+  LOG(ERROR)<<"Verbosity level \""<<vlevel<<"\" not supported. Use default level \"LOW\"."<<FairLogger::endl;
   return verbosityLOW;
 }
 
@@ -328,12 +301,19 @@ Bool_t FairLogger::IsLogNeeded(FairLogLevel logLevel)
   }
 }
 
-FairLogger& FairLogger::GetNewOutputStream(FairLogLevel level, const char* file, const char* line, const char* func)
+FairLogger& FairLogger::GetOutputStream(FairLogLevel level, const char* file, const char* line, const char* func)
 {
-  fLevel =level;
 
-  if ( fLogToScreen && level <= fLogScreenLevel ) {
-    if (fLogColored) {
+  fLevel = level;
+
+  if (level == FATAL) {
+    fLogToScreen = true;
+    fLogVerbosityLevel = verbosityHIGH;
+    fLogColored = true;
+  }
+
+  if ( (fLogToScreen && level <= fLogScreenLevel) ) {
+    if ( fLogColored ) {
       *fScreenStream << LogLevelColor[level];
     }
 
@@ -358,11 +338,11 @@ FairLogger& FairLogger::GetNewOutputStream(FairLogLevel level, const char* file,
       OpenLogFile();
     }
 
-    *fNewFileStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
+    *fFileStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
 
     if ( fLogVerbosityLevel == verbosityHIGH ) {
       GetTime();
-      *fNewFileStream << fTimeBuffer;
+      *fFileStream << fTimeBuffer;
     }
 
     if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
@@ -370,7 +350,7 @@ FairLogger& FairLogger::GetNewOutputStream(FairLogLevel level, const char* file,
       Ssiz_t pos = bla.Last('/');
       TString s2(bla(pos+1, bla.Length()));
       TString s3 = s2 + "::" + func + ":" + line;
-      *fNewFileStream << "[" << s3 <<"] ";
+      *fFileStream << "[" << s3 <<"] ";
     }
   }
 
@@ -386,7 +366,7 @@ FairLogger& FairLogger::operator<<(std::ios_base& (*manip) (std::ios_base&))
   }
 
   if (fLogToFile && !fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
-    *(fNewFileStream) << manip;
+    *(fFileStream) << manip;
   }
 
   return *this;
@@ -400,7 +380,7 @@ FairLogger& FairLogger::operator<<(std::ostream& (*manip) (std::ostream&))
   }
 
   if (fLogToFile && !fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
-    *(fNewFileStream) << manip;
+    *(fFileStream) << manip;
   }
 
   return *this;
@@ -408,18 +388,23 @@ FairLogger& FairLogger::operator<<(std::ostream& (*manip) (std::ostream&))
 
 std::ostream&  FairLogger::endl(std::ostream& strm)
 {
-  if (FairLogger::instance->fLogToScreen &&
-      FairLogger::instance->fLevel <= FairLogger::instance->fLogScreenLevel) {
-    if (FairLogger::instance->fLogColored) {
-      *(FairLogger::instance->fScreenStream) << "\33[00;30m" << std::endl;
+
+  if ( (gLogger->fLogToScreen && gLogger->fLevel <= gLogger->fLogScreenLevel) ) {
+    if (gLogger->fLogColored) {
+      *(gLogger->fScreenStream) << "\33[00;30m" << std::endl;
     } else {
-      *(FairLogger::instance->fScreenStream) << std::endl;
+      *(gLogger->fScreenStream) << std::endl;
     }
   }
 
-  if (FairLogger::instance->fLogToFile &&
-      FairLogger::instance->fLevel <= FairLogger::instance->fLogFileLevel) {
-    *(FairLogger::instance->fNewFileStream) << std::endl;
+  if (gLogger->fLogToFile &&
+      gLogger->fLevel <= gLogger->fLogFileLevel) {
+    *(gLogger->fFileStream) << std::endl;
+  }
+
+  if (gLogger->fLevel == FATAL) {
+    flush(strm);
+    gLogger->LogFatalMessage(strm);
   }
 
   return strm;
@@ -427,13 +412,89 @@ std::ostream&  FairLogger::endl(std::ostream& strm)
 
 std::ostream& FairLogger::flush(std::ostream& strm)
 {
-  if (FairLogger::instance->fLogToScreen) {
-    *(FairLogger::instance->fScreenStream) << std::flush;
+  if (gLogger->fLogToScreen) {
+    *(gLogger->fScreenStream) << std::flush;
   }
-  if (FairLogger::instance->fLogToFile) {
-    *(FairLogger::instance->fNewFileStream) << std::flush;
+  if (gLogger->fLogToFile) {
+    *(gLogger->fFileStream) << std::flush;
   }
   return strm;
+}
+
+void FairLogger::LogFatalMessage(std::ostream& strm)
+{
+  // Since Fatal indicates a fatal error it is maybe usefull to have
+  // system information from the incident. Since the output on the screen
+  // does not help the noraml user, the stderr is redirected into a special
+  // core dump file for later usage.
+  // Fatal also indicates a problem which is so severe that the process should
+  // not go on, so the process is aborted.
+
+  *fScreenStream << LogLevelColor[FATAL];
+
+  *fScreenStream << "[" << std::setw(7) << std::left << LogLevelString[FATAL] <<"] ";
+
+  GetTime();
+  *fScreenStream << fTimeBuffer;
+
+  *fScreenStream <<  "We stop the execution of the process at this point.\n";
+
+  if ( fLogToFile ) {
+    *fFileStream << "[" << std::setw(7) << std::left << LogLevelString[FATAL] <<"] ";
+
+    *fFileStream << fTimeBuffer;
+    *fFileStream <<  "We stop the execution of the process at this point.\n";
+  }
+
+  if (gSystem) {
+    TString corefile = "core_dump_";
+    Int_t PID = gSystem->GetPid();
+    corefile += PID;
+
+
+    *fScreenStream << LogLevelColor[FATAL];
+
+    *fScreenStream << "[" << std::setw(7) << std::left << LogLevelString[FATAL] <<"] ";
+
+    GetTime();
+    *fScreenStream << fTimeBuffer;
+
+    *fScreenStream << "For later analysis we write a core dump to " <<
+                   corefile << " \n";
+
+
+    if ( fLogToFile ) {
+      *fFileStream << "[" << std::setw(7) << std::left << LogLevelString[FATAL] <<"] ";
+
+      *fFileStream << fTimeBuffer;
+      *fFileStream << "For later analysis we write a core dump to" <<
+                   corefile << "\n";
+    }
+
+    *(gLogger->fScreenStream) << "\33[00;30m" << std::endl;
+
+    flush(strm);
+    freopen(corefile, "w", stderr);
+    gSystem->StackTrace();
+    fclose(stderr);
+    gSystem->Abort(1);
+  } else {
+    abort();
+  }
+
+}
+
+// Needed for the time beeing, since the tests can't work with
+// output which goes to cout.
+// TODO: Change testst to be able to handle output which goes
+//       to cerr.
+void FairLogger::SetScreenStreamToCerr(bool errorStream)
+{
+  if(errorStream) {
+    fScreenStream = &std::cerr;
+  } else {
+    fScreenStream = &std::cout;
+  }
 }
 
 

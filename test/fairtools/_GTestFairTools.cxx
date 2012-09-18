@@ -28,6 +28,7 @@ TEST(FairToolsTestFatal, TestFatalError)
 {
   FairLogger* fLogger;
   fLogger = FairLogger::GetLogger();
+  fLogger->SetScreenStreamToCerr(true);
   EXPECT_DEATH(fLogger->Fatal(MESSAGE_ORIGIN, "This is a fatal problem"),
                "FATAL");
   // TODO: check if cored dump is written to file
@@ -51,6 +52,7 @@ template <class T> class _TestFairLoggerBase : public T
       OutputString = "I am here.";
       fLogger = FairLogger::GetLogger();
       SetFairLoggerDefaultValues();
+      handler.CaptureStdErr(true);
     }
 
     /*
@@ -68,6 +70,7 @@ template <class T> class _TestFairLoggerBase : public T
       fLogger->SetLogFileLevel("INFO");
       fLogger->SetLogScreenLevel("INFO");
       fLogger->SetLogVerbosityLevel("LOW");
+      fLogger->SetScreenStreamToCerr(true);
     }
 
     void LogNoArguments() {
@@ -245,7 +248,7 @@ TEST_F(FairToolsTest, CheckWrongLogLevelSettings)
   handler.EndCapture();
 
   std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  std::string outString="Log level \"BLA\" not supported. Use default level \"INFO\".";
+  std::string outString="[ERROR  ] Log level \"BLA\" not supported. Use default level \"INFO\".";
   std::vector<std::string>::iterator it;
   it = v.begin();
   it = v.insert ( it , outString );
@@ -268,7 +271,7 @@ TEST_F(FairToolsTest, CheckVerbosityLevelSettings)
   handler.EndCapture();
 
   std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  std::string outString="Verbosity level \"BLA\" not supported. Use default level \"LOW\".";
+  std::string outString="[ERROR  ] Verbosity level \"BLA\" not supported. Use default level \"LOW\".";
   std::vector<std::string>::iterator it;
   it = v.begin();
   it = v.insert ( it , outString );

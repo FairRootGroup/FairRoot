@@ -12,16 +12,12 @@
 #define IMP_CONVERTTOSTRING(s)  # s
 #define CONVERTTOSTRING(s)      IMP_CONVERTTOSTRING(s)
 #define MESSAGE_ORIGIN          __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
-#define LOG(level)        \
-  FairLogger::GetLogger()->GetNewOutputStream(level, MESSAGE_ORIGIN)
 
-/*
-#define LOG_IF(level, condition)          \
-  !(condition) ? FairLogger::GetLogger()->GetNullStream(level) : FairLogger::GetLogger()->GetNewOutputStream(level, MESSAGE_ORIGIN)
-*/
+#define LOG(level)        \
+  !(gLogger->IsLogNeeded(level)) ? gLogger->GetNullStream(level) : gLogger->GetOutputStream(level, MESSAGE_ORIGIN)
 
 #define LOG_IF(level, condition) \
-  !(condition) ? FairLogger::GetLogger()->GetNullStream(level) : LOG(level)
+  !(condition) ? gLogger->GetNullStream(level) : LOG(level)
 
 #include "Rtypes.h"
 
@@ -30,16 +26,14 @@
 
 // Definiton of the different log levels
 // TODO(F.U): Find bettter names for DEBUG1..4
-enum FairLogLevel {FatalLog, ErrorLog, WarningLog, InfoLog,
-                   DebugLog, Debug1Log, Debug2Log, Debug3Log, Debug4Log
+enum FairLogLevel {FATAL, ERROR, WARNING, INFO,
+                   DEBUG, DEBUG1, DEBUG2, DEBUG3, DEBUG4
                   };
 
 static const char* const LogLevelString[] = { "FATAL", "ERROR", "WARNING",
     "INFO", "DEBUG", "DEBUG1",
     "DEBUG2", "DEBUG3", "DEBUG4"
                                             };
-
-
 enum FairLogColor {
   /* Normal Text */
   Fair_Color_Normal = 0,
@@ -80,9 +74,19 @@ class FairLogger : public std::ostream
 
     void SetLogFileName(const char* name);
 
-    void SetLogToScreen(Bool_t log1) { fLogToScreen = log1; }
+    void SetLogToScreen(Bool_t log1) {
+      fLogToScreen = log1;
+      if (!fLogToScreen) {
+        SetLogScreenLevel("FATAL");
+      }
+    }
 
-    void SetLogToFile(Bool_t log1) { fLogToFile = log1; }
+    void SetLogToFile(Bool_t log1) {
+      fLogToFile = log1;
+      if (!fLogToFile) {
+        SetLogFileLevel("FATAL");
+      }
+    }
 
     void SetColoredLog(Bool_t log1) { fLogColored = log1; }
 
@@ -99,6 +103,8 @@ class FairLogger : public std::ostream
     void SetLogVerbosityLevel(const char* vlevel) {
       fLogVerbosityLevel = ConvertToLogVerbosityLevel(vlevel);
     }
+
+    Bool_t IsLogNeeded(FairLogLevel logLevel);
 
     void Fatal(const char* file, const char* line, const char* func,
                const char* format, ...);
@@ -124,12 +130,14 @@ class FairLogger : public std::ostream
     void Debug4(const char* file, const char* line, const char* func,
                 const char* format, ...);
 
-    FairLogger& GetNewOutputStream(FairLogLevel level, const char* file, const char* line, const char* func);
+    FairLogger& GetOutputStream(FairLogLevel level, const char* file, const char* line, const char* func);
 
     std::ostream& GetNullStream(FairLogLevel level) {
       fLevel=level;
       return *fNullStream;
     }
+
+    void SetScreenStreamToCerr(bool errorStream);
 
     /*! \brief Stream an object to the output stream
      */
@@ -138,7 +146,7 @@ class FairLogger : public std::ostream
         *(fScreenStream) << t;
       }
       if (fLogToFile && fLevel <= fLogFileLevel) {
-        *(fNewFileStream) << t;
+        *(fFileStream) << t;
       }
       return *this;
     }
@@ -169,6 +177,8 @@ class FairLogger : public std::ostream
     void Log(FairLogLevel level, const char* file, const char* line,
              const char*, const char* format, va_list  arglist);
 
+    void LogFatalMessage(std::ostream& strm);
+
     void OpenLogFile();
     void CloseLogFile();
 
@@ -176,8 +186,6 @@ class FairLogger : public std::ostream
     FairLogVerbosityLevel ConvertToLogVerbosityLevel(const char* level) const;
 
     void GetTime();
-
-    Bool_t IsLogNeeded(FairLogLevel logLevel);
 
     void SetMinLogLevel();
 
@@ -201,10 +209,12 @@ class FairLogger : public std::ostream
     FairLogLevel fMinLogLevel;
     FairLogLevel fLevel;
     std::ostream* fScreenStream;
-    std::ostream* fNewFileStream;
+    std::ostream* fFileStream;
     std::ostream* fNullStream;
     Bool_t fLogFileOpen;
-    ClassDef(FairLogger, 1)
+    ClassDef(FairLogger, 2)
 };
+
+extern FairLogger* gLogger;
 
 #endif  // BASE_FAIRLOGGER_H_
