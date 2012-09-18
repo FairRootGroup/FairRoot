@@ -179,8 +179,8 @@ else(NOT FAIRROOT_MINIMAL)
   WRITE_MINIMAL_CONFIG_FILE(config.sh)
 endif(NOT FAIRROOT_MINIMAL)
 
-Option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
-If(BUILD_UNITTESTS)
+#Option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
+#If(BUILD_UNITTESTS)
 
   Message("Build the unit tests.")
 
@@ -191,4 +191,4 @@ If(BUILD_UNITTESTS)
     Message("Add tests library and tests.")
     add_subdirectory(test)
   EndIf(GTEST_FOUND)
-EndIf(BUILD_UNITTESTS)
+#EndIf(BUILD_UNITTESTS)
