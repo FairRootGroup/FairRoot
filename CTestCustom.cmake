@@ -38,6 +38,7 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "PParticle.h"
         "PStaticData.h"
         "PUtils.h"
+        "include/pluto/"
 
         # -- warnings from ubuntu systems which are a little to much
         # -- probably defined warn-unused-result. ignoring the result
