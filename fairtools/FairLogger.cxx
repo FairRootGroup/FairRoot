@@ -10,8 +10,9 @@
 #include "TString.h" // TString
 #include "TSystem.h" // gSystem
 
-#include <iostream> //  std::cerr
-#include <iomanip> //   std::setw
+#include <iostream>  // std::cerr
+#include <iomanip>   // std::setw
+#include <cstdlib>   // abort
 
 FairLogger* gLogger = FairLogger::GetLogger();
 
