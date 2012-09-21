@@ -669,11 +669,13 @@ void FairRunAna::RunOnLmdFiles(UInt_t NStart, UInt_t NStop)
 {
   if(NStart==0 && NStop==0) {
     NStart=0;
-    NStop=4294967295;
+    NStop=1000000000;
+    fLogger->Info(MESSAGE_ORIGIN," Maximum number of event is set to 1E9");
   }
   for (UInt_t i=NStart; i< NStop; i++) {
     if ( fFinishProcessingLMDFile ) {
       i = NStop; ///Same result like break
+
     }
 
     fTask->ExecuteTask("");

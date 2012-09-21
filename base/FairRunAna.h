@@ -56,7 +56,7 @@ class FairRunAna : public FairRun
     /** run on proof from event NStart to event NStop*/
     void        RunOnProof(Int_t NStart, Int_t NStop);
     /** Run on a list of lmd files*/
-    void        RunOnLmdFiles(UInt_t NStart, UInt_t NStop);
+    void        RunOnLmdFiles(UInt_t NStart=0, UInt_t NStop=0);
     /** finish tasks, write output*/
     void        TerminateRun();
     /**Set the input signal file
