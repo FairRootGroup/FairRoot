@@ -70,7 +70,8 @@ FairRunAna::FairRunAna()
    fProofServerName(""),
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
-   fProofOutputStatus("copy")
+   fProofOutputStatus("copy"),
+   fFinishProcessingLMDFile(kFALSE)
 {
 
   fgRinstance=this;
@@ -101,7 +102,8 @@ FairRunAna::FairRunAna(const char* type, const char* proofName)
    fRunOnProofWorker(kFALSE),
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
-   fProofOutputStatus("copy")
+   fProofOutputStatus("copy"),
+   fFinishProcessingLMDFile(kFALSE)
 {
   TString anaType = type;
   anaType.ToLower();
@@ -659,6 +661,28 @@ void FairRunAna::RunTSBuffers()
   fTask->FinishTask();
   fRootManager->LastFill();
   fRootManager->Write();
+}
+//_____________________________________________________________________________
+//_____________________________________________________________________________
+
+void FairRunAna::RunOnLmdFiles(UInt_t NStart, UInt_t NStop)
+{
+  if(NStart==0 && NStop==0) {
+    NStart=0;
+    NStop=4294967295;
+  }
+  for (UInt_t i=NStart; i< NStop; i++) {
+    if ( fFinishProcessingLMDFile ) {
+      i = NStop; ///Same result like break
+    }
+
+    fTask->ExecuteTask("");
+    fRootManager->Fill();
+  }
+
+  fTask->FinishTask();
+  fRootManager->Write();
+
 }
 //_____________________________________________________________________________
 

@@ -55,6 +55,8 @@ class FairRunAna : public FairRun
     void        DummyRun(Int_t NStart ,Int_t NStop);
     /** run on proof from event NStart to event NStop*/
     void        RunOnProof(Int_t NStart, Int_t NStop);
+    /** Run on a list of lmd files*/
+    void        RunOnLmdFiles(UInt_t NStart, UInt_t NStop);
     /** finish tasks, write output*/
     void        TerminateRun();
     /**Set the input signal file
@@ -153,6 +155,16 @@ class FairRunAna : public FairRun
       fProofOutputStatus = outStat;
     }
 
+    /** Set the flag for proccessing lmd files */
+    void StopProcessingLMD( void ) {
+      fFinishProcessingLMDFile = kTRUE;
+    }
+    /** Get the status of lmd file proccessing */
+    Bool_t GetLMDProcessingStatus( void ) {
+      return fFinishProcessingLMDFile;
+    }
+
+
   private:
 
     FairRunAna(const FairRunAna& M);
@@ -201,8 +213,10 @@ class FairRunAna : public FairRun
     TString                                 fOutputDirectory; //!
     /** Output status indicator: "copy","merge","dataset"*/
     TString                                  fProofOutputStatus;
+    /** Flag for proccessing lmd-files*/
+    Bool_t                                   fFinishProcessingLMDFile;  //!
 
-    ClassDef(FairRunAna ,3)
+    ClassDef(FairRunAna ,4)
 
 };
 
