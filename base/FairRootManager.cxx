@@ -1244,14 +1244,15 @@ TObject* FairRootManager::GetObjectFromInTree(const char* BrName)
 }
 //_____________________________________________________________________________
 
-//_____________________________________________________________________________
-
-TObject* FairRootManager::GetLinkData(const FairLink link)
+TObject* FairRootManager::GetCloneOfLinkData(const FairLink link)
 {
+  TObject* result = 0;
   Int_t fileId = link.GetFile();
   Int_t entryNr = link.GetEntry();
   Int_t type = link.GetType();
   Int_t index = link.GetIndex();
+
+  Int_t oldEntryNr = GetEntryNr();
 
 //  std::cout << "GetLinkData: " << link << std::endl;
 
@@ -1296,19 +1297,17 @@ TObject* FairRootManager::GetLinkData(const FairLink link)
   } else {        //the link entry nr is negative --> take the actual one
     dataBranch->GetEntry(GetEntryNr());
   }
+
   if (index < 0) {                //if index is -1 then this is not a TClonesArray so only the Object is returned
-    return GetObject(GetBranchName(type));
+    result = GetObject(GetBranchName(type))->Clone();
+  } else {
+    TClonesArray* dataArray = (TClonesArray*)GetObject(GetBranchName(type));
+    if (index < dataArray->GetEntriesFast()) {
+      result = dataArray->At(index)->Clone();
+    }
   }
-
-  TClonesArray* dataArray = (TClonesArray*)GetObject(GetBranchName(type));
-//  std::cout << "BranchName: " << GetBranchName(type) << std::endl;
-//  std::cout << "DataBranch EntryNr: " << dataBranch->GetEntryNumber() << std::endl;
-//  std::cout << "DataArray size: " << dataArray->GetEntriesFast() << std::endl;
-
-  if (index < dataArray->GetEntriesFast()) {
-    return dataArray->At(index);
-  }
-  return 0;
+  dataBranch->GetEntry(oldEntryNr); //reset the dataBranch to the original entry
+  return result;
 }
 
 //_____________________________________________________________________________

@@ -103,7 +103,8 @@ class FairRootManager : public TObject
     /** Return a pointer to the object (collection) saved in the fInTree branch named BrName*/
     TObject*            GetObjectFromInTree(const char* BrName);
     Double_t            GetEventTime();
-    TObject*      GetLinkData(const FairLink link);
+    /** Returns a clone of the data object the link is pointing to. The clone has to be deleted in the calling code! */
+    TObject*      GetCloneOfLinkData(const FairLink link);
     /** Get the data of the given branch name,
      *  this method runs over multiple entries
      *  of the tree and selects the data according
@@ -260,6 +261,7 @@ class FairRootManager : public TObject
     /**Read a single entry*/
     void                ReadMixedEvent(Int_t i);
     FairWriteoutBuffer* GetWriteoutBuffer(TString branchName);
+    Int_t       fOldEntryNr;
 //_____________________________________________________________________
     /**private Members*/
     /**folder structure of output*/
