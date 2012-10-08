@@ -109,7 +109,7 @@ FairMultiLinkedData FairMCDataCrawler::GetInfo(FairMultiLinkedData startLink, In
 
 FairMultiLinkedData* FairMCDataCrawler::GetEntry(FairLink link)
 {
-  return (FairMultiLinkedData*)FairRootManager::Instance()->GetLinkData(link);
+  return (FairMultiLinkedData*)FairRootManager::Instance()->GetCloneOfLinkData(link);
 }
 
 FairMultiLinkedData* FairMCDataCrawler::GetEntry(Int_t fileId, Int_t eventNr, Int_t type, Int_t index)
