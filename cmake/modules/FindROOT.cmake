@@ -394,7 +394,7 @@ Macro(GENERATE_LIBRARY)
  
   ############### build the library #####################
   Add_Library(${Int_LIB} SHARED ${Int_SRCS} ${NO_DICT_SRCS})
-  target_link_libraries(${Int_LIB})
+  target_link_libraries(${Int_LIB} ${DEPENDENCIES})
   set_target_properties(${Int_LIB} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
   ############### install the library ###################
