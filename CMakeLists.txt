@@ -17,8 +17,6 @@ project(FAIRROOT)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
 
-
-
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(WriteConfigFile)
@@ -32,7 +30,7 @@ set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are
-used."OFF)
+used." OFF)
 If(USE_PATH_INFO)
   Set(PATH $ENV{PATH})
   If (APPLE)
@@ -54,72 +52,52 @@ ENDIF(NOT UNIX)
 
 #Check if necessary environment variables are set
 #If not stop execution
-if(NOT FAIRROOT_MINIMAL)
-  IF(NOT DEFINED ENV{SIMPATH})
-    MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
-  ENDIF(NOT DEFINED ENV{SIMPATH})
-  STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
-  SET(SIMPATH $ENV{SIMPATH})
-else(NOT FAIRROOT_MINIMAL)
-  if(NOT DEFINED ENV{ROOTSYS})
-    MESSAGE(FATAL_ERROR "You did not define the environment variable ROOTSYS which is nedded for the installation of the minimal version of FairRoot. Please set this variable and execute cmake again.")
-  endif(NOT DEFINED ENV{ROOTSYS})
-endif(NOT FAIRROOT_MINIMAL)
-
+IF(NOT DEFINED ENV{SIMPATH})
+  MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
+ENDIF(NOT DEFINED ENV{SIMPATH})
+STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
+SET(SIMPATH $ENV{SIMPATH})
 
 # searches for needed packages
 # REQUIRED means that cmake will stop if this packages are not found
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
-if(FAIRROOT_MINIMAL)
-  MESSAGE("******* Install minimal FairRoot Version ********")
-  find_package(ROOT REQUIRED)
-else(FAIRROOT_MINIMAL)
-  find_package(ROOT REQUIRED)
-  find_package(PLUTO REQUIRED)
-  find_package(GENERATORS REQUIRED)
-  find_package(GEANT3 REQUIRED)
-  find_package(GEANT4)
-  find_package(GEANT4DATA)
-  find_package(GEANT4VMC)
-  find_package(CLHEP)
-  find_package(RuleChecker)
+find_package(ROOT 5.32.00 REQUIRED)
+find_package(PLUTO REQUIRED)
+find_package(GENERATORS REQUIRED)
+find_package(GEANT3 REQUIRED)
+find_package(GEANT4)
+find_package(GEANT4DATA)
+find_package(GEANT4VMC)
+find_package(CLHEP)
+find_package(RuleChecker)
 #  find_package(Oracle)
 #  find_package(CUDA REQUIRED)
-endif(FAIRROOT_MINIMAL)
 
-  Set(Boost_NO_SYSTEM_PATHS TRUE)
-  Set(Boost_NO_BOOST_CMAKE TRUE)
-#  set(Boost_DEBUG TRUE)
-  If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-    set(BOOST_ROOT ${SIMPATH})
-    set(GSL_DIR ${SIMPATH})
-  Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-    set(BOOST_ROOT ${SIMPATH}/basics/boost)
-    set(GSL_DIR ${SIMPATH}/basics/gsl)
-  EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-  Message("-- Looking for Boost ...")
-  # If an older version of boost is found both of the variables below are
-  # cached and in a second cmake run, a good boost version is found even
-  # if the version is to old.
-  # To overcome this problem both variables are cleared before checking
-  # for boost.
-  Unset(Boost_INCLUDE_DIR CACHE)
-  Unset(Boost_LIBRARY_DIRS CACHE)
-  find_package(Boost 1.41)
-  If (Boost_FOUND)
-    Set(Boost_Avail 1)
-  Else (Boost_FOUND)
-    Set(Boost_Avail 0)
-  EndIf (Boost_FOUND)
 
-# Check the Root version for needed DB suport
-If(ROOT_Version LESS 53200)
-  Message(STATUS "FairDB library is not build, because the ROOTVERSION ${ROOTVERSION} deus not provide the neede functionality. At least version 5.32/00 is needed.")
-  Set(Build_FairDB FALSE)
-Else(ROOT_Version LESS 53200)
-  Set(Build_FairDB TRUE)
-EndIf(ROOT_Version LESS 53200)
+Set(Boost_NO_SYSTEM_PATHS TRUE)
+Set(Boost_NO_BOOST_CMAKE TRUE)
+If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+  set(BOOST_ROOT ${SIMPATH})
+  set(GSL_DIR ${SIMPATH})
+Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+  set(BOOST_ROOT ${SIMPATH}/basics/boost)
+  set(GSL_DIR ${SIMPATH}/basics/gsl)
+EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+Message("-- Looking for Boost ...")
+# If an older version of boost is found both of the variables below are
+# cached and in a second cmake run, a good boost version is found even
+# if the version is to old.
+# To overcome this problem both variables are cleared before checking
+# for boost.
+Unset(Boost_INCLUDE_DIR CACHE)
+Unset(Boost_LIBRARY_DIRS CACHE)
+find_package(Boost 1.41)
+If (Boost_FOUND)
+  Set(Boost_Avail 1)
+Else (Boost_FOUND)
+  Set(Boost_Avail 0)
+EndIf (Boost_FOUND)
 
 # Set the library version in the main CMakeLists.txt
 SET(FAIRROOT_MAJOR_VERSION 0)
@@ -140,19 +118,17 @@ SET(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
 # the project's entire directory structure.
 add_subdirectory (fairtools)
 add_subdirectory (base)
-If(Build_FairDB)
-  add_subdirectory (dbase)
-EndIf(Build_FairDB)
+add_subdirectory (dbase)
 add_subdirectory (geobase)
 add_subdirectory (parbase) 
 add_subdirectory (generators)
 add_subdirectory (geane)
 add_subdirectory (trackbase)
-#add_subdirectory (cuda)
 add_subdirectory (eventdisplay)
 add_subdirectory (example)
 add_subdirectory (MbsAPI)
 add_subdirectory (datamatch)
+#add_subdirectory (cuda)
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
 if(BUILD_DOXYGEN)
@@ -179,8 +155,8 @@ else(NOT FAIRROOT_MINIMAL)
   WRITE_MINIMAL_CONFIG_FILE(config.sh)
 endif(NOT FAIRROOT_MINIMAL)
 
-#Option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
-#If(BUILD_UNITTESTS)
+Option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
+If(BUILD_UNITTESTS)
 
   Message("Build the unit tests.")
 
@@ -191,4 +167,4 @@ endif(NOT FAIRROOT_MINIMAL)
     Message("Add tests library and tests.")
     add_subdirectory(test)
   EndIf(GTEST_FOUND)
-#EndIf(BUILD_UNITTESTS)
+EndIf(BUILD_UNITTESTS)
