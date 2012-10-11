@@ -6,7 +6,33 @@
 # If you need an other path you should add this path to this varaible.  
 # The root-config script is then used to detect basically everything else.
 # This module defines a number of key variables and macros.
-
+#
+# Variables defined by this module:
+#
+#   ROOT_FOUND               System has ROOT, this means the root-config 
+#                            executable was found.
+#
+#   ROOT_INCLUDE_DIR         ROOT include directories: not cached
+#
+#   ROOT_INCLUDES            Same as above,
+#
+#   ROOT_LIBRARIESS          Link to these to use the ROOT libraries, not cached
+#
+#   ROOT_LIBRARY_DIR         The path to where the ROOT library files are.
+#
+#   ROOT_VERSION_STRING      The version string of the ROOT libraries which
+#                            is reported by root-config
+#
+#   ROOT_VERSION_MAJOR       Major version number of ROOT
+#   ROOT_VERSION_MINOR       Minor version number of ROOT
+#   ROOT_VERSION_PATCH       Patch version number of ROOT
+#
+#   ROOT_VERSION_NUMBER      A unique version number which is calculated from 
+#                            major, minor and patch version found
+#
+#   ROOT_CINT_EXECUTABLE     The rootcint executable.
+#
+#   RLIBMAP_EXECUTABLE       The rlibmap executable.
 
 MESSAGE(STATUS "Looking for Root...")
 
@@ -41,25 +67,26 @@ ENDIF (${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
  
 IF (ROOT_CONFIG_EXECUTABLE)
    
-  EXECUTE_PROCESS(COMMAND ${ROOT_CONFIG_EXECUTABLE} --version OUTPUT_VARIABLE ROOTVERSION)
+  EXECUTE_PROCESS(COMMAND ${ROOT_CONFIG_EXECUTABLE} --version OUTPUT_VARIABLE ROOT_VERSION_STRING)
   EXECUTE_PROCESS( COMMAND ${ROOT_CONFIG_EXECUTABLE} --prefix
     OUTPUT_VARIABLE ROOT_INSTALL_DIR)
-  String(STRIP ${ROOTVERSION} ROOTVERSION)
+  String(STRIP ${ROOT_VERSION_STRING} ROOT_VERSION_STRING)
   String(STRIP ${ROOT_INSTALL_DIR} ROOT_INSTALL_DIR)
 
   MESSAGE(STATUS "Looking for Root... - Found ${ROOT_INSTALL_DIR}/bin/root")
-  MESSAGE(STATUS "Looking for Root... - Found version is ${ROOTVERSION} ")   
+  MESSAGE(STATUS "Looking for Root... - Found version is ${ROOT_VERSION_STRING} ")   
    
   # and now the version string given by root-config
-  STRING(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+.*" "\\1" found_root_major_vers "${ROOTVERSION}")
-  STRING(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" found_root_minor_vers "${ROOTVERSION}")
-  STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+).*" "\\1" found_root_patch_vers "${ROOTVERSION}")
+  STRING(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+.*" "\\1" ROOT_VERSION_MAJOR "${ROOT_VERSION_STRING}")
+  STRING(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_VERSION_MINOR "${ROOT_VERSION_STRING}")
+  STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+).*" "\\1" ROOT_VERSION_PATCH "${ROOT_VERSION_STRING}")
 
   # compute an overall version number which can be compared at once
   MATH(EXPR req_vers "${ROOT_FIND_VERSION_MAJOR}*10000 + ${ROOT_FIND_VERSION_MINOR}*100 + ${ROOT_FIND_VERSION_PATCH}")
-  MATH(EXPR found_vers "${found_root_major_vers}*10000 + ${found_root_minor_vers}*100 + ${found_root_patch_vers}")
+  MATH(EXPR found_vers "${ROOT_VERSION_MAJOR}*10000 + ${ROOT_VERSION_MINOR}*100 + ${ROOT_VERSION_PATCH}")
 
   Set(ROOT_Version ${found_vers})
+  Set(ROOT_VERSION_NUMBER ${found_vers})
 
   IF (found_vers LESS req_vers)
     SET(ROOT_FOUND FALSE)
