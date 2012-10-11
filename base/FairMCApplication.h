@@ -171,6 +171,9 @@ class FairMCApplication : public TVirtualMCApplication
   private:
     // methods
     void RegisterStack();
+
+    Int_t GetIonPdg(Int_t z, Int_t a) const;
+
     // data members
     /**Iterator for active detector list*/
     TIterator*           fActDetIter;//!

@@ -205,9 +205,7 @@ void FairMCApplication::InitMC(const char* setup, const char* cuts)
 // ---
   fStack = (FairGenericStack*) gMC->GetStack();
 
-#if ROOT_VERSION_CODE >= 333824
   gMC->SetMagField(fxField);
-#endif
 
   gMC->Init();
   gMC->BuildPhysics();
@@ -560,23 +558,6 @@ Double_t FairMCApplication::TrackingZmax() const
 // ---
   return DBL_MAX;
 }
-
-#if ROOT_VERSION_CODE < 333824
-//_____________________________________________________________________________
-void FairMCApplication::Field(const Double_t* x, Double_t* b) const
-{
-// put here a const magnetic field as 0th approx
-// ---
-// cout<< "FairMCApplication::Field" <<endl;
-  b[0]=0;
-  b[1]=0;
-  b[2]=0;
-  if(fxField) {
-    fxField->GetFieldValue(x,b);
-//     cout << " FairMCApplication::Field the old way of getting field " << endl;
-  }
-}
-#endif
 //_____________________________________________________________________________
 void FairMCApplication::SetField(FairField* field)
 {
@@ -803,10 +784,10 @@ FairDetector* FairMCApplication::GetDetector(const char* DetName)
 {
   return (FairDetector*)fModules->FindObject(DetName);
 }
-#if ROOT_VERSION_CODE >= ROOT_VERSION(5,17,4)
 //_____________________________________________________________________________
 void  FairMCApplication::AddIons()
 {
+  TDatabasePDG* pdgDatabase = TDatabasePDG::Instance();
   FairRunSim* fRun=FairRunSim::Instance();
   TObjArray* NewIons=fRun->GetUserDefIons();
   TIterator* Iter=NewIons->MakeIterator();
@@ -816,13 +797,25 @@ void  FairMCApplication::AddIons()
   while((obj=Iter->Next())) {
     ion=dynamic_cast <FairIon*> (obj);
     if(ion) {
-      gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
-                     ion->GetExcEnergy(),ion->GetMass());
+      // Check if an ion with the calculated pdg code already exists in the
+      // TDatabasePDG.
+      // If the ion already exist don't create a new one because this fails for
+      // Geant4. Instead modify the FairIon to use the already existing ion
+      // from the TDatabasePDG.
+      // The problem occured for example for Alphas which exist already.
+      Int_t ionPdg = GetIonPdg( ion->GetZ(), ion->GetA() );
+      if ( !pdgDatabase->GetParticle( ionPdg ) ) {
+        gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
+                       ion->GetExcEnergy(),ion->GetMass());
+
+      } else {
+        ion->SetName(pdgDatabase->GetParticle(ionPdg)->GetName());
+      }
       //Add Ion to gGeoManager visualization
       if(gGeoManager) {
-        gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() );
+        gGeoManager->SetPdgName(pdgDatabase->GetParticle(ion->GetName())->PdgCode(),ion->GetName() );
       }
-      fLogger->Info(MESSAGE_ORIGIN, "Add Ion:  %s  with PDG  %i ", ion->GetName(), TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode());
+      fLogger->Info(MESSAGE_ORIGIN, "Add Ion:  %s  with PDG  %i ", ion->GetName(), pdgDatabase->GetParticle(ion->GetName())->PdgCode());
     }
   }
   delete   Iter;
@@ -831,36 +824,6 @@ void  FairMCApplication::AddIons()
     fEvGen->Init();
   }
 }
-#else
-void  FairMCApplication::AddIons()
-{
-  FairRunSim* fRun=FairRunSim::Instance();
-  TObjArray* NewIons=fRun->GetUserDefIons();
-  TIterator* Iter=NewIons->MakeIterator();
-  Iter->Reset();
-  TObject* obj=0;
-  FairIon* ion=0;
-  while((obj=Iter->Next())) {
-    ion=dynamic_cast <FairIon*> (obj);
-    if(ion) {
-      gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
-                     ion->GetExcEnergy(),ion->GetMass());
-      //Add Ion to gGeoManager visualization
-      if(gGeoManager) {
-        gGeoManager->SetPdgName(TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode(),ion->GetName() );
-      }
-      fLogger->Info(MESSAGE_ORIGIN, "Add Ion:  %s  with PDG  %i ", ion->GetName(), TDatabasePDG::Instance()->GetParticle(ion->GetName())->PdgCode());
-    }
-  }
-  delete   Iter;
-
-  /** Initialize the event generator */
-  if(fEvGen) {
-    fEvGen->Init();
-  }
-}
-#endif
-
 //_____________________________________________________________________________
 void  FairMCApplication::AddParticles()
 {
@@ -870,7 +833,6 @@ void  FairMCApplication::AddParticles()
   TIterator* Iter=NewIons->MakeIterator();
   Iter->Reset();
   TObject* obj=0;
-#if ROOT_VERSION_CODE >= ROOT_VERSION(5,17,4)
   TObjArray* NewPart=fRun->GetUserDefParticles();
   TIterator* parIter=NewPart->MakeIterator();
   parIter->Reset();
@@ -923,9 +885,6 @@ void  FairMCApplication::AddParticles()
   }
   delete   parIter;
   AddDecayModes();
-#else
-  AddIons();
-#endif
   delete Iter;
 }
 
@@ -1092,6 +1051,14 @@ void  FairMCApplication::AddMeshList(TObjArray* meshList)
   fRadGridMan->AddMeshList (meshList);
 }
 //_____________________________________________________________________________
+
+Int_t FairMCApplication::GetIonPdg(Int_t z, Int_t a) const
+{
+  // Acording to
+  // http://pdg.lbl.gov/2012/reviews/rpp2012-rev-monte-carlo-numbering.pdf
+
+  return 1000000000 + 10*1000*z + 10*a;
+}
 
 ClassImp(FairMCApplication)
 
