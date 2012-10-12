@@ -51,11 +51,7 @@ FairDbConnection::FairDbConnection(
     }
 
     if ( fUrlValidated ) {
-#if ROOT_VERSION_CODE >= ROOT_VERSION(5,15,9)
       if ( ! fServer->HasStatement() ) {
-#else
-      if ( ! fServer->IsSupportStatement() ) {
-#endif
         cout << "-I- FairDbConnection : This client does not support prepared statements." << endl;
         fUrlValidated = kFALSE;
       }

@@ -1618,14 +1618,9 @@ void FairRootManager::AssignTClonesArray(TString branchName)
   TClonesArray* output = (TClonesArray*)GetObject(branchName);
   TClonesArray* input = ForceGetDataContainer(branchName);
   output->Clear();
-#if ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)
   if (input != 0) {
     output->AbsorbObjects(input, 0, input->GetEntries() - 1);
   }
-#else
-  fLogger->Info(MESSAGE_ORIGIN, "FairRootManager::AssignTClonesArray(TString branchName) ");
-  fLogger->Info(MESSAGE_ORIGIN, "Is only available in ROOT 5.27-04 ");
-#endif
 }
 //_____________________________________________________________________________
 Int_t FairRootManager::CheckBranchSt(const char* BrName)

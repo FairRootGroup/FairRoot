@@ -113,11 +113,9 @@ void FairMCTracks::Exec(Option_t* option)
           path->fP=Mom;
         }
         if(fVerbose>3) { cout << "Path marker added " << path << endl; }
-#if ROOT_VERSION_CODE <= ROOT_VERSION(5,18,0)
-        track->AddPathMark(path);
-#else
+
         track->AddPathMark(*path);
-#endif
+
         if(fVerbose>3) { cout << "Path marker added " << path << endl; }
       }
       fTrList->AddElement(track);

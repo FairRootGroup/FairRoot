@@ -37,25 +37,16 @@ FairParSet.cxx
 FairParamList.cxx  
 FairRtdbRun.cxx  
 FairRuntimeDb.cxx
+###### Fair DB IO #######
+dbIO/FairParTSQLIo.cxx
+dbIO/FairDetParTSQLIo.cxx
+dbIO/FairGenericParTSQLIo.cxx
 )
 
 Set(HEADERS )
 Set(LINKDEF ParBaseLinkDef.h)
 Set(LIBRARY_NAME ParBase)
-Set(DEPENDENCIES FairTools RIO Cint Core)
-
-If(Build_FairDB)
-  Set(SRCS
-      ${SRCS}
-      ###### Fair DB IO #######
-      dbIO/FairParTSQLIo.cxx
-      dbIO/FairDetParTSQLIo.cxx
-      dbIO/FairGenericParTSQLIo.cxx
-  )
-  Set(DEPENDENCIES FairDB ${DEPENDENCIES})
-  set(DEFINITIONS Build_FairDB)
-  ADD_DEFINITIONS(-DBuild_FairDB)
-EndIf(Build_FairDB)
+Set(DEPENDENCIES FairTools RIO Cint Core FairDB)
 
 GENERATE_LIBRARY()
 

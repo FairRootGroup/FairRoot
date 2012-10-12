@@ -782,12 +782,10 @@ void FairRuntimeDb::activateParIo(FairParIo* io)
       FairDetParAsciiFileIo* pn=
         new FairGenericParAsciiFileIo(((FairParAsciiFileIo*)io)->getFile());
       io->setDetParIo(pn);
-#ifdef Build_FairDB
     } else if(strcmp(ioName,"FairParTSQLIo") == 0) {
       std::cout << "\n\n\n\t TSQL versie is called en nu de rest \n\n";
       FairDetParTSQLIo* pn = new FairGenericParTSQLIo();
       io->setDetParIo(pn);
-#endif
     }
   }
   TIter next(&contFactories);

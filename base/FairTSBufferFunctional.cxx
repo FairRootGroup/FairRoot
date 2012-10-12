@@ -31,7 +31,6 @@ FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* source
 
 TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
 {
-#if ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)
 
   Double_t actualTime = 0.;
   int posBuffer = 0;
@@ -110,13 +109,12 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
   if (fVerbose > 1) {
     std::cout << "-I- FairTSBufferFunctional::GetData: Read in up to entry: " << fBranchIndex << " with actualTime " << actualTime << " and requested stopParameter " << stopParameter << std::endl;
   }
-#endif
+
   return fOutputArray;
 }
 
 TClonesArray* FairTSBufferFunctional::GetData(Double_t startParameter, Double_t stopParameter)
 {
-#if ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)
   if (fStartFunction != 0) {
     fBufferArray->Clear();
     Int_t startIndex = FindStartIndex(startParameter);
@@ -126,7 +124,6 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t startParameter, Double_t 
       fBufferArray->AbsorbObjects(fInputArray, startIndex, fInputArray->GetEntries() -1);
     }
   }
-#endif
   return GetData(stopParameter);
 }
 
@@ -220,14 +217,12 @@ Int_t FairTSBufferFunctional::ReadInPreviousFilledEntry(Int_t startEntry)
 
 void FairTSBufferFunctional::AbsorbDataBufferArray()
 {
-#if ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)
   if (fInputArray->GetEntriesFast() > 0) {
     if (fVerbose > 1) {
       std::cout << "-I- FairTSBufferFunctional::ReadInNextFilledEntry: Absorb InputArray into Buffer" << std::endl;
     }
     fBufferArray->AbsorbObjects(fInputArray, 0, fInputArray->GetEntries() - 1);
   }
-#endif
 }
 
 void FairTSBufferFunctional::ReadInNextEntry()

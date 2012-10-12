@@ -9,9 +9,7 @@
 #include "RVersion.h"
 #include "TBuffer.h"
 
-#if ROOT_VERSION_CODE  > ROOT_VERSION(4,4,2)
 #include "TBufferFile.h"
-#endif
 
 #include <iostream>
 #include <iomanip>
@@ -535,11 +533,7 @@ void FairParamList::addObject(const Text_t* name,TObject* obj)
   gFile=paramFile;
   const Int_t bufsize=10000;
 
-#if ROOT_VERSION_CODE  > ROOT_VERSION(4,4,2)
   TBufferFile* buffer=new TBufferFile(TBuffer::kWrite,bufsize);
-#else
-  TBuffer* buffer=new TBuffer(TBuffer::kWrite,bufsize);
-#endif
 
   buffer->SetParent(paramFile);
   buffer->MapObject(obj);
@@ -561,11 +555,7 @@ void FairParamList::addObject(const Text_t* name,TObject* obj)
       list.Sort();
       fClassIndex->fArray[0]=2; //to prevent adding classes in TStreamerInfo::TagFile
 
-#if ROOT_VERSION_CODE  > ROOT_VERSION(4,4,2)
       TBufferFile* infoBuffer=new TBufferFile(TBuffer::kWrite,bufsize);
-#else
-      TBuffer* infoBuffer=new TBuffer(TBuffer::kWrite,bufsize);
-#endif
 
       infoBuffer->MapObject(&list);
       list.Streamer(*infoBuffer);
@@ -867,19 +857,11 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
     //              o->getClassVersion(),obj->IsA()->GetClassVersion());
     TFile* filesave=gFile;
     gFile=0;
-#if ROOT_VERSION_CODE  > ROOT_VERSION(4,4,2)
     TBufferFile* buf=0;
-#else
-    TBuffer* buf=0;
-#endif
 
     Int_t len=o->getStreamerInfoSize();
     if (len>0&&o->getStreamerInfo()!=0) {
-#if ROOT_VERSION_CODE  > ROOT_VERSION(4,4,2)
       buf=new TBufferFile(TBuffer::kRead,len);
-#else
-      buf=new TBuffer(TBuffer::kRead,len);
-#endif
       memcpy(buf->Buffer(),(Char_t*)o->getStreamerInfo(),len);
       buf->SetBufferOffset(0);
       TList list;
@@ -899,11 +881,7 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
       list.Clear();  //this will delete all TStreamerInfo objects with kCanDelete
     }
     len=o->getLength();
-#if ROOT_VERSION_CODE  > ROOT_VERSION(4,4,2)
     buf=new TBufferFile(TBuffer::kRead,len);
-#else
-    buf=new TBuffer(TBuffer::kRead,len);
-#endif
     memcpy(buf->Buffer(),(Char_t*)o->getParamValue(),len);
     buf->SetBufferOffset(0);
     buf->MapObject(obj);

@@ -59,9 +59,7 @@ void FairGeaneApplication::InitMC(const char* setup, const char* cuts)
   gMC->BuildPhysics();
   fMcVersion = 3;  //Geane
 
-#if ROOT_VERSION_CODE >= 333824
   gMC->SetMagField(fxField);
-#endif
 }
 //_____________________________________________________________________________
 void FairGeaneApplication::GeaneStepping()
@@ -78,23 +76,6 @@ void FairGeaneApplication::GeaneStepping()
     printf(" Current Volume id = %i  , CopyNo = %i \n", id, copyNo);
   }
 }
-
-#if ROOT_VERSION_CODE < 333824
-//_____________________________________________________________________________
-void FairGeaneApplication::Field(const Double_t* x, Double_t* b) const
-{
-// put here a const magnetic field as 0th approx
-// ---
-// cout<< "FairGeaneApplication::Field" <<endl;
-  b[0]=0;
-  b[1]=0;
-  b[2]=0;
-  if(fxField) {
-    fxField->GetFieldValue(x,b);
-//     cout << " FairGeaneApplication::Field the old way of getting field " << endl;
-  }
-}
-#endif
 //_____________________________________________________________________________
 void FairGeaneApplication::SetField(FairField* field)
 {
