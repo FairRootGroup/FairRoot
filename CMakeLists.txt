@@ -58,6 +58,10 @@ ENDIF(NOT DEFINED ENV{SIMPATH})
 STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
 SET(SIMPATH $ENV{SIMPATH})
 
+# Check if the external packages are installed into a separate install
+# directory
+CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
+
 # searches for needed packages
 # REQUIRED means that cmake will stop if this packages are not found
 # For example the framework can run without GEANT4, but ROOT is
@@ -75,15 +79,16 @@ find_package(RuleChecker)
 #  find_package(CUDA REQUIRED)
 
 
-Set(Boost_NO_SYSTEM_PATHS TRUE)
-Set(Boost_NO_BOOST_CMAKE TRUE)
-If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+If(FAIRSOFT_EXTERN)
   set(BOOST_ROOT ${SIMPATH})
   set(GSL_DIR ${SIMPATH})
-Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+Else(FAIRSOFT_EXTERN)
   set(BOOST_ROOT ${SIMPATH}/basics/boost)
   set(GSL_DIR ${SIMPATH}/basics/gsl)
-EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
+EndIf(FAIRSOFT_EXTERN)
+
+Set(Boost_NO_SYSTEM_PATHS TRUE)
+Set(Boost_NO_BOOST_CMAKE TRUE)
 Message("-- Looking for Boost ...")
 # If an older version of boost is found both of the variables below are
 # cached and in a second cmake run, a good boost version is found even

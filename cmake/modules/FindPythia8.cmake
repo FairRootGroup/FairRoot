@@ -7,14 +7,14 @@
 MESSAGE(STATUS "Looking for PYTHIA8 ...")
 
 FIND_PATH(PYTHIA8_INCLUDE_DIR NAMES Pythia.h PATHS
+  ${SIMPATH}/include/pythia8  
   ${SIMPATH}/generators/pythia8/include  
-  ${SIMPATH}//include/pythia8  
   NO_DEFAULT_PATH
 )
 
 FIND_PATH(PYTHIA8_LIB_DIR  NAMES libpythia8.so PATHS
-  ${SIMPATH}/generators/lib
   ${SIMPATH}/lib
+  ${SIMPATH}/generators/lib
   NO_DEFAULT_PATH
 )
 
