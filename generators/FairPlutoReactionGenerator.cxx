@@ -21,12 +21,20 @@
 
 // -----   Default constructor   ------------------------------------------
 FairPlutoReactionGenerator::FairPlutoReactionGenerator()
+  : FairGenerator(),
+    iEvent(0),
+#ifdef PLUTOVERSION_FOR_FAIR
+    fPlutoFairGenerator(NULL),
+#endif
+    fReaction(NULL)
 {
+  /*
   iEvent     = 0;
   fReaction  = NULL;
-#ifdef PLUTOVERSION_FOR_FAIR
+  #ifdef PLUTOVERSION_FOR_FAIR
   fPlutoFairGenerator = NULL;
-#endif
+  #endif
+  */
 }
 // ------------------------------------------------------------------------
 
@@ -34,11 +42,17 @@ FairPlutoReactionGenerator::FairPlutoReactionGenerator()
 
 // -----   Standard constructor   -----------------------------------------
 FairPlutoReactionGenerator::FairPlutoReactionGenerator(PReaction* reaction)
-{
-  iEvent     = 0;
-  fReaction  = reaction;
+  : FairGenerator(),
+    iEvent(0),
 #ifdef PLUTOVERSION_FOR_FAIR
-  fPlutoFairGenerator = new PFairGenerator();
+    fPlutoFairGenerator(new PFairGenerator()),
+#endif
+    fReaction(reaction)
+{
+  //  iEvent     = 0;
+  //  fReaction  = reaction;
+#ifdef PLUTOVERSION_FOR_FAIR
+  //  fPlutoFairGenerator = new PFairGenerator();
   if (!reaction) {
     std::cout << "-E FairPlutoReactionGenerator: No PReaction!" << std::endl;
   } else {

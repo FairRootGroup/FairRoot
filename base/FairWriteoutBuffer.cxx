@@ -12,6 +12,7 @@
 
 FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance)
   : TObject(),
+    fStartTime_map(),
     fDeadTime_map(),
     fBranchName(branchName),
     fClassName(className),

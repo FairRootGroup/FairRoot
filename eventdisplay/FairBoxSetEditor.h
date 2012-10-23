@@ -60,8 +60,8 @@ class FairBoxSetEditor : public TGedFrame
 
 
   private:
-    FairBoxSetEditor(const FairBoxSetEditor&) {};
-    FairBoxSetEditor& operator=(const FairBoxSetEditor&) {};
+    FairBoxSetEditor(const FairBoxSetEditor&);
+    FairBoxSetEditor& operator=(const FairBoxSetEditor&);
 
 
     ClassDef(FairBoxSetEditor,2);

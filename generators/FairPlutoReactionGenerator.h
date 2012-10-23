@@ -64,11 +64,13 @@ class FairPlutoReactionGenerator : public FairGenerator
   private:
 
     Int_t iEvent;      //! Event number
-    PReaction* fReaction;     //! Pointer to the Pluto inline reaction
-
 #ifdef PLUTOVERSION_FOR_FAIR
     PFairGenerator* fPlutoFairGenerator; //!Pointer to interface
 #endif
+    PReaction* fReaction;     //! Pointer to the Pluto inline reaction
+
+    FairPlutoReactionGenerator(const FairPlutoReactionGenerator&);
+    FairPlutoReactionGenerator operator=(const FairPlutoReactionGenerator&);
 
     ClassDef(FairPlutoReactionGenerator,1);
 

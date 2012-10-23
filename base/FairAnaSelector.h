@@ -58,6 +58,11 @@ class FairAnaSelector : public TSelector
       fRunAna = runAna;
     }
 
+  private:
+
+    FairAnaSelector(const FairAnaSelector&);
+    FairAnaSelector operator=(const FairAnaSelector&);
+
     ClassDef(FairAnaSelector,0);
 };
 

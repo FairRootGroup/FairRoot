@@ -31,8 +31,8 @@ FairEventManagerEditor::FairEventManagerEditor(const TGWindow* p, Int_t width, I
    fCurrentPDG(0),
    fVizPri(0),
    fMinEnergy(0),
-   fMaxEnergy(0)
-
+   fMaxEnergy(0),
+   fEventTime(NULL)
 {
   Init();
 }

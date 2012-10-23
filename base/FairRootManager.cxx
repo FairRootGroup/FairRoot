@@ -63,6 +63,7 @@ FairRootManager* FairRootManager::Instance()
 //_____________________________________________________________________________
 FairRootManager::FairRootManager()
   : TObject(),
+    fOldEntryNr(-1),
     fCbmout(NULL),
     fCbmroot(NULL),
     fCurrentTime(0),
@@ -83,6 +84,7 @@ FairRootManager::FairRootManager()
     fActiveContainer(),
     fTSBufferMap(),
     fWriteoutBufferMap(),
+    fInputBranchMap(),
     fCompressData(kFALSE),
     fTimeStamps(kFALSE),
     fBranchPerMap(kFALSE),

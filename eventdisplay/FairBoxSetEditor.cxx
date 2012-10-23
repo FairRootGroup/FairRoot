@@ -25,8 +25,8 @@ ClassImp(FairBoxSetEditor)
 FairBoxSetEditor::FairBoxSetEditor(const TGWindow* p, Int_t width, Int_t height,
                                    UInt_t options, Pixel_t back)
   :TGedFrame(p, width, height, options | kVerticalFrame, back),
-   fObject(0), fInfoFrame(0), fM(0)
-
+   fInfoFrame(NULL), fTimeWindowPlus(NULL), fTimeWindowMinus(NULL),
+   fObject(NULL), fM(NULL)
 {
   std::cout << "FairBoxSetEditor called!" << std::endl;
   Init();

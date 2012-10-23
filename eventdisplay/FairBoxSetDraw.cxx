@@ -34,7 +34,9 @@ FairBoxSetDraw::FairBoxSetDraw()
     fTimeWindowPlus(0.),
     fTimeWindowMinus(0.),
     fStartTime(0.),
-    fUseEventTime(kTRUE)
+    fUseEventTime(kTRUE),
+    fStartFunctor(),
+    fStopFunctor()
 {
 }
 // -------------------------------------------------------------------------
@@ -55,7 +57,9 @@ FairBoxSetDraw::FairBoxSetDraw(const char* name, Int_t iVerbose)
     fTimeWindowPlus(0.),
     fTimeWindowMinus(0.),
     fStartTime(0.),
-    fUseEventTime(kTRUE)
+    fUseEventTime(kTRUE),
+    fStartFunctor(),
+    fStopFunctor()
 {
 }
 // -------------------------------------------------------------------------

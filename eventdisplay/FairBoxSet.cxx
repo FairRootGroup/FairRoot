@@ -12,7 +12,7 @@ using std::endl;
 
 // -----   Standard constructor   ------------------------------------------
 FairBoxSet::FairBoxSet(FairBoxSetDraw* drawer, const char* name, const char* t)
-  : fDraw(drawer), TEveBoxSet(name, t)
+  : TEveBoxSet(name, t), fDraw(drawer)
 {}
 
 ClassImp(FairBoxSet)

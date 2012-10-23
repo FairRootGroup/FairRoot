@@ -49,6 +49,9 @@ class FairBoxSet : public TEveBoxSet
   private:
     FairBoxSetDraw* fDraw;
 
+    FairBoxSet(const FairBoxSet&);
+    FairBoxSet operator=(const FairBoxSet&);
+
     ClassDef(FairBoxSet,1);
 
 };
