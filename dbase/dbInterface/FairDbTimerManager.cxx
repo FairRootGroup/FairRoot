@@ -8,7 +8,9 @@ ClassImp(FairDbTimerManager)
 FairDbTimerManager FairDbTimerManager::gTimerManager;
 
 FairDbTimerManager::FairDbTimerManager() :
-  fEnabled(kTRUE)
+  fEnabled(kTRUE),
+  fSubWatchEnabled(kFALSE),
+  fTimers()
 {
 }
 

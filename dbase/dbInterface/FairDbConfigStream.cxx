@@ -19,7 +19,12 @@ ValContext  FairDbConfigStream::fgDefaultContext(Detector::kCal,
 
 
 FairDbConfigStream::FairDbConfigStream() :
-  fCFSet(0)
+  fCFSet(0),
+  fCFSetTable(),
+  fCFSetModified(),
+  fVRec(),
+  fConfigName(),
+  fSoftwName()
 {
 }
 
@@ -32,6 +37,8 @@ FairDbConfigStream::FairDbConfigStream(const string& SoftName,
                                        const std::string& tableName) :
   fCFSet(0),
   fCFSetTable(tableName,vc,task),
+  fCFSetModified(),
+  fVRec(),
   fConfigName(ConfigName),
   fSoftwName(SoftName)
 {

@@ -12,7 +12,8 @@ ClassImp(FairDbValRecSet)
 
 FairDbValRecSet::FairDbValRecSet(const string& tableName,UInt_t dbNo,UInt_t seqNo) :
   fDbNo(dbNo),
-  fResult(0)
+  fResult(NULL),
+  fSeqNoToRec()
 {
 // Get Db proxy for the table.
   FairDbValidityRec pet;

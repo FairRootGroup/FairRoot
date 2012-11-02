@@ -27,6 +27,7 @@ ostream& operator<<(ostream& s, const FairDbSimFlagAssociation& simFlagAss)
 
 
 FairDbSimFlagAssociation::FairDbSimFlagAssociation()
+  : fAssociations()
 {
 
   // Connect to global pointer;

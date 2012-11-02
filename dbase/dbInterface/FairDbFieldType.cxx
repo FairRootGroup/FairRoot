@@ -10,6 +10,9 @@
 ClassImp(FairDbFieldType)
 
 FairDbFieldType::FairDbFieldType(Int_t type /* = FairDb::kInt */)
+  : fConcept(0),
+    fSize(0),
+    fType(0)
 {
 
   this->Init(type);
@@ -19,6 +22,9 @@ FairDbFieldType::FairDbFieldType(Int_t type /* = FairDb::kInt */)
 FairDbFieldType::FairDbFieldType(Int_t type,
                                  Int_t size,
                                  const char* typeName)
+  : fConcept(0),
+    fSize(0),
+    fType(0)
 {
 
 
@@ -76,6 +82,9 @@ FairDbFieldType::FairDbFieldType(Int_t type,
 //.....................................................................
 
 FairDbFieldType::FairDbFieldType(const FairDbFieldType& from)
+  : fConcept(from.fConcept),
+    fSize(from.fSize),
+    fType(from.fType)
 {
   *this = from;
 }
@@ -84,6 +93,9 @@ FairDbFieldType::FairDbFieldType(const FairDbFieldType& from)
 
 FairDbFieldType::FairDbFieldType(const string& sql,
                                  Int_t size )
+  : fConcept(0),
+    fSize(0),
+    fType(0)
 {
 
   if (         sql == "TINYINT" ) { this->Init(FairDb::kTiny); }

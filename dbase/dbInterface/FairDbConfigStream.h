@@ -50,6 +50,7 @@ class FairDbConfigStream
   private:
 
     FairDbConfigStream(const FairDbConfigStream&);  // Not implimented
+    FairDbConfigStream operator=(const FairDbConfigStream&);  // Not implimented
 
 // Data members
 

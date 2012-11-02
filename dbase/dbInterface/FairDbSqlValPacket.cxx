@@ -38,7 +38,12 @@ static bool compStringPtrs(const string* str1, const string* str2 )
 FairDbSqlValPacket::FairDbSqlValPacket() :
   fNumErrors(0),
   fSeqNo(0),
-  fNumStmts(0)
+  fSqlMySqlMetaMain(),
+  fSqlMySqlMetaVal(),
+  fSqlStmts(),
+  fNumStmts(0),
+  fTableName(),
+  fCreationDate()
 {
 }
 
@@ -47,7 +52,12 @@ FairDbSqlValPacket::FairDbSqlValPacket() :
 FairDbSqlValPacket::FairDbSqlValPacket(std::ifstream& is) :
   fNumErrors(0),
   fSeqNo(0),
-  fNumStmts(0)
+  fSqlMySqlMetaMain(),
+  fSqlMySqlMetaVal(),
+  fSqlStmts(),
+  fNumStmts(0),
+  fTableName(),
+  fCreationDate()
 {
 
   Fill(is);
@@ -58,6 +68,9 @@ FairDbSqlValPacket::FairDbSqlValPacket(std::ifstream& is) :
 FairDbSqlValPacket::FairDbSqlValPacket(const FairDbValidityRec& vrec) :
   fNumErrors(0),
   fSeqNo(vrec.GetSeqNo()),
+  fSqlMySqlMetaMain(),
+  fSqlMySqlMetaVal(),
+  fSqlStmts(),
   fNumStmts(0),
   fTableName(vrec.GetTableProxy()->GetTableName()),
   fCreationDate(vrec.GetCreationDate())

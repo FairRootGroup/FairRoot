@@ -7,7 +7,7 @@ ClassImp(FairDbConfigurable)
 
 //......................................................................
 
-FairDbConfigurable::FairDbConfigurable() : fConfig(false) { }
+FairDbConfigurable::FairDbConfigurable() : fDefConfig(), fConfig(false) { }
 
 //......................................................................
 

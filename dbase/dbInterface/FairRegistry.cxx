@@ -26,23 +26,32 @@ ClassImp(FairRegistry)
 //......................................................................
 
 FairRegistry::FairRegistry(bool readonly)
-  : fValuesLocked(readonly),
+  : TNamed(),
+    fValuesLocked(readonly),
     fKeysLocked(false),
-    fErrorHandler(0)
+    fErrorHandler(0),
+    fMap(),
+    fDirty(true)
 {
   this->SetDirty();
 }
 
 // Deep copy constructor
-FairRegistry::FairRegistry(const FairRegistry& rhs) : TNamed(rhs)
+FairRegistry::FairRegistry(const FairRegistry& rhs)
+  : TNamed(rhs),
+    fValuesLocked(rhs.fValuesLocked),
+    fKeysLocked(rhs.fKeysLocked),
+    fErrorHandler(0),
+    fMap(),
+    fDirty(true)
 {
   FairRegistryKey rk = rhs.Key();
   const char* s;
 
   while ( (s = rk()) ) { fMap[s] = rhs.fMap.find(s)->second->Dup(); }
 
-  fValuesLocked = rhs.fValuesLocked;
-  fKeysLocked   = rhs.fKeysLocked;
+  //  fValuesLocked = rhs.fValuesLocked;
+  //  fKeysLocked   = rhs.fKeysLocked;
   this->SetDirty();
   this->SetName(rhs.GetName());
 }
@@ -195,7 +204,8 @@ FairRegistry::~FairRegistry()
 }
 
 FairRegistry::FairRegistryKey::FairRegistryKey(const FairRegistry* r) :
-  fReg(r)
+  fReg(r),
+  fIt()
 {
   // FIXME!  Figure out how to correctly declare fIt to reflect
   // constness.
@@ -203,6 +213,8 @@ FairRegistry::FairRegistryKey::FairRegistryKey(const FairRegistry* r) :
 }
 
 FairRegistry::FairRegistryKey::FairRegistryKey()
+  : fReg(),
+    fIt()
 {
 }
 

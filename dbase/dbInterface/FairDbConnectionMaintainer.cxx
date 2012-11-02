@@ -5,11 +5,11 @@
 
 ClassImp(FairDbConnectionMaintainer)
 
-FairDbConnectionMaintainer::FairDbConnectionMaintainer(FairDbMultConnector* cascader)
+FairDbConnectionMaintainer::FairDbConnectionMaintainer(FairDbMultConnector* cascader) : fCascader(cascader)
 {
 
 
-  fCascader = cascader;
+  //  fCascader = cascader;
   if ( fCascader ) { fCascader->HoldConnections(); }
 
 }

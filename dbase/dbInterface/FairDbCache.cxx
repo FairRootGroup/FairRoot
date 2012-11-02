@@ -18,6 +18,7 @@ typedef ResultList_t::iterator SubCacheItr_t;
 FairDbCache::FairDbCache(FairDbTableProxy& qp,const string& tableName) :
   fTableProxy(qp),
   fTableName(tableName),
+  fCache(),
   fCurSize(0),
   fMaxSize(0),
   fNumAdopted(0),

@@ -23,7 +23,7 @@ class FairDbConfigSet : public FairDbTableRow
   public:
 
 // Constructors and destructors.
-    FairDbConfigSet() : fAggregateNo(-2) { ; }
+    FairDbConfigSet() : fParams(), fAggregateNo(-2) { ; }
     virtual ~FairDbConfigSet();
 
 // State testing member functions
@@ -58,8 +58,8 @@ class FairDbConfigSet : public FairDbTableRow
 // Internal structures.
 
     struct Param {
-      Param() { }
-      Param(const Param& that) {
+      Param() : Name(), Value(), Type() {}
+      Param(const Param& that) : Name(that.Name), Value(that.Value), Type(that.Type) {
         *this = that;
       }
       Param(const string& name,

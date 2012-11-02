@@ -16,16 +16,18 @@ ClassImp(FairDbConnection)
 FairDbConnection::FairDbConnection(
   const string& url,
   const string& user,
-  const string& password) :
-
-  fUrl(url.c_str()),
-  fUser(user),
-  fPassword(password),
-  fUrlValidated(kFALSE),
-  fNumConnectedStatements(0),
-  fIsTemporary(kTRUE),
-  fServer(NULL),
-  fDbType(FairDb::kUnknownDbType)
+  const string& password)
+  : fDbName(),
+    fUser(user),
+    fPassword(password),
+    fExistingTableList(),
+    fNumConnectedStatements(0),
+    fUrl(url.c_str()),
+    fUrlValidated(kFALSE),
+    fIsTemporary(kTRUE),
+    fDbType(FairDb::kUnknownDbType),
+    fServer(NULL),
+    fExceptionLog()
 {
 // Wrapper to a DB connection
   cout << "-I- FairDbConnection : Creating a DB connection" << endl;

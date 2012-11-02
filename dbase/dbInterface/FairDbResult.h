@@ -142,6 +142,9 @@ class FairDbResultSet : public FairDbRowStream
     mutable  string fValString;
     string fFillOpts;
 
+    FairDbResultSet(const FairDbResultSet&);
+    FairDbResultSet operator=(const FairDbResultSet&);
+
     ClassDef(FairDbResultSet,0)     //ResultSet from Query to database table
 
 };
@@ -179,6 +182,8 @@ class FairDbResult
     FairDbResult(FairDbResultSet* resultSet = 0,
                  const FairDbValidityRec* vrec = 0,
                  const string& sqlQualifiers = "");
+    //    FairDbResult& operator=(const FairDbResult&);
+    FairDbResult(const FairDbResult&);
     virtual ~FairDbResult();
 
     // State testing member functions
@@ -353,6 +358,9 @@ class FairDbResultNonAgg : public FairDbResult
 
     std::vector<FairDbTableRow*> fRows;
     Char_t* fBuffer;
+
+    FairDbResultNonAgg(const FairDbResultNonAgg&);
+    FairDbResultNonAgg operator=(const FairDbResultNonAgg&);
 
     ClassDef(FairDbResultNonAgg,0)     // Non-aggregated data
 

@@ -3,11 +3,13 @@
 
 ClassImp(FairDbTimer)
 
-
 FairDbTimer::FairDbTimer() :
   fCurSubWatch(0),
   fRowSize(0),
-  fQueryStage(kPassive)
+  fQueryStage(kPassive),
+  fSubWatches(),
+  fTableName(),
+  fWatch()
 {
   fWatch.Stop();
   for ( int subWatch = 0; subWatch <  kMaxSubWatch; ++subWatch) {

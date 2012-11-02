@@ -93,6 +93,9 @@ class FairDbBinaryFile
 
   private:
 
+    FairDbBinaryFile(const FairDbBinaryFile&);
+    FairDbBinaryFile operator=(const FairDbBinaryFile&);
+
 // The functions that do the low-level I/O.
 
     Bool_t CanRead();

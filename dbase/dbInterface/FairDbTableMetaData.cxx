@@ -15,6 +15,7 @@ ClassImp(FairDbTableMetaData)
 FairDbTableMetaData::ColumnAttributes FairDbTableMetaData::fgDummy;
 
 FairDbTableMetaData::FairDbTableMetaData(const string& tableName) :
+  fColAttr(),
   fNumCols(0),
   fTableName(tableName)
 {

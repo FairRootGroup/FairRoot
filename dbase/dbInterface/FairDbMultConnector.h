@@ -98,6 +98,9 @@ class FairDbMultConnector
 
       private:
 
+        BLock(const BLock&);
+        BLock operator=(const BLock&);
+
         void SetBLock(Bool_t setting = kTRUE);
 
         FairDbStatement* fStmt;            // Statement to be used to issue lock

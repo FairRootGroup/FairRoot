@@ -54,7 +54,8 @@ class FairDbTableMetaData
 
 /// Column attributes
     struct ColumnAttributes {
-      ColumnAttributes() { this->SetDefault(); }
+      ColumnAttributes() : Name("Unknown"), Concept(FairDb::kUnknown),
+        MustDelimit(false), IsNullable(false), Type(FairDb::kUnknown) { };
       void SetDefault() {
         Name        = "Unknown";
         Concept     = FairDb::kUnknown;

@@ -38,6 +38,7 @@ FairDbResultSet::FairDbResultSet(FairDbStatement* stmtDb,
   fTSQLStatement(0),
   fExhausted(true),
   fTableProxy(tableProxy),
+  fValString(),
   fFillOpts(fillOpts)
 {
 
@@ -372,6 +373,9 @@ std::ostream& operator<<(std::ostream& os, const FairDbResultKey& key)
 
 
 FairDbResultKey::FairDbResultKey(const FairDbResultKey* that) :
+  fTableName(),
+  fRowName(),
+  fVRecKeys(),
   fNumVRecKeys(0)
 {
   if ( that ) { *this = *that; }
@@ -385,6 +389,7 @@ FairDbResultKey::FairDbResultKey(std::string tableName,
                                  ValTimeStamp ts) :
   fTableName(tableName),
   fRowName(rowName),
+  fVRecKeys(),
   fNumVRecKeys(0)
 {
 
@@ -519,6 +524,8 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
                                  const FairDbProxy* proxy,
                                  const string& sqlQualifiers) :
   FairDbResult(0,0,sqlQualifiers),
+  fResults(),
+  fRowKeys(),
   fSize(0)
 {
   typedef map<UInt_t,UInt_t> seqToRow_t;
@@ -794,15 +801,33 @@ FairDbResult::FairDbResult(FairDbResultSet* resultSet,
   fID(++fgLastID),
   fCanReuse(kTRUE),
   fEffVRec(0),
+  fIndexKeys(),
   fKey(0),
   fResultsFromDb(kFALSE),
   fNumClients(0),
   fTableName("Unknown"),
-  fSqlQualifiers(sqlQualifiers)
+  fSqlQualifiers(sqlQualifiers),
+  fExceptionLog()
 {
 
   if ( vrec ) { fEffVRec = *vrec; }
   if ( resultSet ) { fTableName = resultSet->TableNameTc(); }
+
+}
+
+FairDbResult::FairDbResult(const FairDbResult& from)
+  : fID(from.fID),
+    fCanReuse(from.fCanReuse),
+    fEffVRec(from.fEffVRec),
+    fIndexKeys(from.fIndexKeys),
+    fKey(from.fKey),
+    fResultsFromDb(from.fResultsFromDb),
+    fNumClients(from.fNumClients),
+    fTableName(from.fTableName),
+    fSqlQualifiers(from.fSqlQualifiers),
+    fExceptionLog(from.fExceptionLog)
+{
+  //TODO: should fKey be a deep copy???
 
 }
 
@@ -998,9 +1023,10 @@ FairDbResultNonAgg::FairDbResultNonAgg(FairDbResultSet* resultSet,
                                        const FairDbTableRow* tableRow,
                                        const FairDbValidityRec* vrec,
                                        Bool_t dropSeqNo,
-                                       const string& sqlQualifiers) :
-  FairDbResult(resultSet,vrec,sqlQualifiers),
-  fBuffer(0)
+                                       const string& sqlQualifiers)
+  : FairDbResult(resultSet,vrec,sqlQualifiers),
+    fRows(),
+    fBuffer(NULL)
 {
   this->DebugCtor();
 

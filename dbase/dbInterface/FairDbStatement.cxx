@@ -11,10 +11,10 @@
 
 ClassImp(FairDbStatement)
 
-
 FairDbStatement::FairDbStatement(FairDbConnection& conDb) :
   fConDb(conDb),
-  fDbType(conDb.GetDbType())
+  fDbType(conDb.GetDbType()),
+  fExceptionLog()
 {
   fConDb.ConnectStatement();
 }

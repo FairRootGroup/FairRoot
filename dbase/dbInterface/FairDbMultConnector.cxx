@@ -14,9 +14,10 @@ using std::auto_ptr;
 
 ClassImp(FairDbMultConnector)
 
-
 FairDbMultConnector::FairDbMultConnector():
-  fGlobalSeqNoDbNo(-1)
+  fGlobalSeqNoDbNo(-1),
+  fConnections(),
+  fTemporaryTables()
 {
 //  Current cascader configuration comes from 3 environmental
 //  variables:-
@@ -113,10 +114,15 @@ FairDbMultConnector::FairDbMultConnector():
 
 
 FairDbMultConnector::FairDbMultConnector(const FairDbMultConnector& conn)
+  :   fGlobalSeqNoDbNo(conn.fGlobalSeqNoDbNo),
+      fConnections(conn.fConnections),
+      fTemporaryTables(conn.fTemporaryTables)
 {
+  /*
   fGlobalSeqNoDbNo=conn.fGlobalSeqNoDbNo;
   fConnections=conn.fConnections;
   fTemporaryTables=conn.fTemporaryTables;
+  */
 }
 //.....................................................................
 

@@ -10,6 +10,7 @@ using namespace std;
 ClassImp(FairDbString)
 
 FairDbString::FairDbString()
+  : fString()
 {
 
 }

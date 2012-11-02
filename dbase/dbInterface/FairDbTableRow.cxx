@@ -3,17 +3,17 @@
 
 ClassImp(FairDbTableRow)
 
-FairDbTableRow::FairDbTableRow():
-  fOwner(0)
+FairDbTableRow::FairDbTableRow()
+  : TObject(), fOwner(NULL)
 {
 }
 //.....................................................................
 
-FairDbTableRow::FairDbTableRow(const FairDbTableRow& from) : TObject(from)
+FairDbTableRow::FairDbTableRow(const FairDbTableRow& from)
+  : TObject(from), fOwner(from.fOwner)
 {
 
 }
-
 
 FairDbTableRow::~FairDbTableRow()
 {

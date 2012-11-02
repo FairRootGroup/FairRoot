@@ -42,6 +42,9 @@ template<class T> class FairRegistryItemXxx : public FairRegistryItem
 
     T* fData;
 
+    FairRegistryItemXxx(const FairRegistryItemXxx&);
+    FairRegistryItemXxx operator=(const FairRegistryItemXxx&);
+
     ClassDefT(FairRegistryItemXxx<T>,1)
 };
 ClassDefT2(FairRegistryItemXxx,T)

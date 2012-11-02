@@ -91,8 +91,8 @@ void FairDbConf::StringToRegistry(FairRegistry& r, const char* s)
       if ( isString ) {
         r.Set(cKey,cValue);
       } else if (FairUtilString::IsInt(cValue)) {
-        int i = atoi(cValue);
-        r.Set(cKey,i);
+        int val = atoi(cValue);
+        r.Set(cKey,val);
       } else if (FairUtilString::IsFloat(cValue)) {
         double d = atof(cValue);
         r.Set(cKey,d);

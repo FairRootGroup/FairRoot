@@ -55,19 +55,33 @@ void FairDbValidityRec::AndTimeWindow(const ValTimeStamp& startOther,
 
 //.....................................................................
 
-FairDbValidityRec::FairDbValidityRec(Int_t dbNo,Bool_t isGap) :
-
-  fAggregateNo(-2),
-  fDbNo(dbNo),
-  fIsGap(isGap),
-  fTask(0),
-  fSeqNo(0),
-  fTableProxy(0)
+FairDbValidityRec::FairDbValidityRec(Int_t dbNo,Bool_t isGap)
+  : FairDbTableRow(),
+    fAggregateNo(-2),
+    fCreationDate(),
+    fDbNo(dbNo),
+    fInsertDate(),
+    fIsGap(isGap),
+    fTask(0),
+    fSeqNo(0),
+    fTableProxy(0),
+    fValRange()
 {
 }
 //.....................................................................
 
-FairDbValidityRec::FairDbValidityRec(const FairDbValidityRec& from) : FairDbTableRow(from)
+FairDbValidityRec::FairDbValidityRec(const FairDbValidityRec& from)
+  : FairDbTableRow(from),
+    fAggregateNo(from.fAggregateNo),
+    fCreationDate(from.fCreationDate),
+    fDbNo(from.fDbNo),
+    fInsertDate(from.fInsertDate),
+    fIsGap(from.fIsGap),
+    fTask(from.fTask),
+    fSeqNo(from.fSeqNo),
+    fTableProxy(from.fTableProxy),
+    fValRange(from.fValRange)
+
 {
   *this = from;
 
@@ -84,6 +98,7 @@ FairDbValidityRec::FairDbValidityRec(const ValRange& range,
   fAggregateNo(aggNo),
   fCreationDate(time),
   fDbNo(dbNo),
+  fInsertDate(),
   fIsGap(isGap),
   fTask(task),
   fSeqNo(seqNo),

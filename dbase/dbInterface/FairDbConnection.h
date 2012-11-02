@@ -73,6 +73,9 @@ class FairDbConnection
     FairDbExceptionLog fExceptionLog;
     void CloseIdleConnection();
 
+    FairDbConnection(const FairDbConnection&);
+    FairDbConnection operator=(const FairDbConnection&);
+
     ClassDef(FairDbConnection,0)
 };
 

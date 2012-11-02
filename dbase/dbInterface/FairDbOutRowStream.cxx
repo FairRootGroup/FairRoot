@@ -34,7 +34,8 @@ ClassImp(FairDbOutRowStream)
 
 FairDbOutRowStream::FairDbOutRowStream(const FairDbTableMetaData* metaData) :
   FairDbRowStream(metaData),
-  fBadData(kFALSE)
+  fBadData(kFALSE),
+  fCSV()
 {
 
 

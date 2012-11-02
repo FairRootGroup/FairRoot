@@ -38,6 +38,7 @@ FairDbLogEntry::FairDbLogEntry(const string& tableName, /* = "" */
                                Int_t logSeqNoMin,       /* = 0  */
                                Int_t logSeqNoMax,       /* = 0  */
                                Int_t logNumSeqNo):      /* = 0  */
+  FairDbTableRow(),
   fDbNo(0),
   fSeqNo(0),
   fLogTableName(tableName),
@@ -47,9 +48,12 @@ FairDbLogEntry::FairDbLogEntry(const string& tableName, /* = "" */
   fLogSeqNoMin(logSeqNoMin),
   fLogSeqNoMax(logSeqNoMax),
   fLogNumSeqNo(logNumSeqNo),
+  fUpdateTime(),
   fUserName("unknown user"),
   fProcessName(gProgName),
-  fHostName(gSystem->HostName())
+  fHostName(gSystem->HostName()),
+  fServerName(),
+  fReason()
 {
 
   if ( fLogSeqNoMax == 0 ) { fLogSeqNoMax = logSeqNoMin; }

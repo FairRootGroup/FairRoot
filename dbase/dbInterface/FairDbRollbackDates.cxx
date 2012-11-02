@@ -12,6 +12,7 @@
 ClassImp(FairDbRollbackDates)
 
 FairDbRollbackDates::FairDbRollbackDates()
+  : fTableToDate(), fTableToType()
 {
 }
 

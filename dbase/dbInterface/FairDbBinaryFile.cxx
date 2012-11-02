@@ -33,16 +33,17 @@ string FairDbBinaryFile::fgWorkDir;
 Bool_t FairDbBinaryFile::fgReadAccess  = kTRUE;
 Bool_t FairDbBinaryFile::fgWriteAccess = kTRUE;
 
-
-FairDbBinaryFile::FairDbBinaryFile(const char* fileName, Bool_t input ) :
+FairDbBinaryFile::FairDbBinaryFile(const char* fileName, Bool_t input )
+  :
   fFile(0),
   fReading(input),
   fHasErrors(kFALSE),
-  fArrayBuffer(0)
+  fArrayBuffer(0),
+  fFileName(fileName)
 {
 
   // Complete the file name.
-  fFileName = fileName;
+  //  fFileName = fileName;
   if ( fFileName != "" ) {
     Bool_t access = input ? fgReadAccess : fgWriteAccess;
     if ( fgWorkDir == "" || ! access ) { fFileName = ""; }

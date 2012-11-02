@@ -48,6 +48,9 @@ class FairDbRowStream
     Bool_t fHasRowCounter;
     const FairDbTableMetaData* fMetaData;
 
+    FairDbRowStream(const FairDbRowStream&);
+    FairDbRowStream operator=(const FairDbRowStream&);
+
     ClassDef(FairDbRowStream,0)     // I/O of a table row.
 
 };

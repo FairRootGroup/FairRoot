@@ -130,6 +130,10 @@ class FairRegistry : public TNamed
 
         const FairRegistry* fReg;
         std::map<std::string,FairRegistryItem*>::iterator fIt;
+
+        //     FairRegistryKey(const FairRegistryKey&);
+        FairRegistryKey operator=(const FairRegistryKey&);
+
     };                              // end of class RegistryKey
 
     FairRegistryKey Key(void) const;

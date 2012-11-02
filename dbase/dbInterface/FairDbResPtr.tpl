@@ -106,7 +106,9 @@ FairDbResultPtr<T>::FairDbResultPtr(const string& tableName,
                               FairDb::AbortTest abortTest) :
 fAbortTest(abortTest),
 fTableProxy(FairDbResultPtr<T>::GetTableProxy(tableName)),
-fResult(0)
+fResult(0),
+fDetType(),
+fSimType()
 {
 
   this->SetContext(vrec);
@@ -122,7 +124,9 @@ FairDbResultPtr<T>::FairDbResultPtr(const string& tableName,
                               FairDb::AbortTest abortTest) :
 fAbortTest(abortTest),
 fTableProxy(FairDbResultPtr<T>::GetTableProxy(tableName)),
-fResult(0)
+fResult(0),
+fDetType(),
+fSimType()
 {
   
   T pet;

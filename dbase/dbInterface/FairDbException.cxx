@@ -48,6 +48,9 @@ FairDbException::FairDbException(const TSQLStatement& statement,
 
 
 FairDbException::FairDbException(const FairDbException& that)
+  : fMessage(that.fMessage),
+    fErrorCode(that.fErrorCode),
+    fDbType(that.fDbType)
 {
 
 

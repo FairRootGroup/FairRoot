@@ -4,14 +4,13 @@
 
 ClassImp(FairDbSqlContext)
 
-
-
-
-FairDbSqlContext::FairDbSqlContext(const std::string& ctxt) :
-  FairDbString(ctxt),
-  fIntervalType(kUndefined),
-  fDetType(Detector::kUnknown),
-  fSimType(SimFlag::kUnknown)
+FairDbSqlContext::FairDbSqlContext(const std::string& ctxt)
+  : FairDbString(ctxt),
+    fIntervalType(kUndefined),
+    fTimeStart(),
+    fTimeEnd(),
+    fDetType(Detector::kUnknown),
+    fSimType(SimFlag::kUnknown)
 {
 
 }
@@ -20,12 +19,13 @@ FairDbSqlContext::FairDbSqlContext(IntervalType interval,
                                    ValTimeStamp start,
                                    ValTimeStamp end,
                                    Detector::Detector_t det,
-                                   SimFlag::SimFlag_t sim) :
-  fIntervalType(interval),
-  fTimeStart(start),
-  fTimeEnd(end),
-  fDetType(det),
-  fSimType(sim)
+                                   SimFlag::SimFlag_t sim)
+  : FairDbString(),
+    fIntervalType(interval),
+    fTimeStart(start),
+    fTimeEnd(end),
+    fDetType(det),
+    fSimType(sim)
 {
 
   switch (interval) {

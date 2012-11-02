@@ -20,8 +20,13 @@ FairDbTableProxyRegistry* FairDbTableProxyRegistry::fgInstance       = 0;
 int                    FairDbTableProxyRegistry::Cleaner::fgCount = 0;
 
 
-FairDbTableProxyRegistry::FairDbTableProxyRegistry() :
-  fMultConnector(0)
+FairDbTableProxyRegistry::FairDbTableProxyRegistry()
+  : FairDbConfigurable(),
+    fMultConnector(NULL),
+    fSqlCondition(),
+    fTPmap(),
+    fRollbackDates(),
+    fSimFlagAss()
 {
 
 // Create cascader for database access.

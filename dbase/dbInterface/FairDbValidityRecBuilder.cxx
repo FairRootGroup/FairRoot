@@ -10,15 +10,17 @@
 
 ClassImp(FairDbValidityRecBuilder)
 
-
 FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
     const ValContext& vc,
     const FairDb::Task& task,
     Int_t selectDbNo     /* Default: -1 */,
     Bool_t findFullTimeWindow /* Default: true*/
-                                                  ):
-  fIsExtendedContext(kFALSE),
-  fTask(task)
+                                                  )
+  : fGap(),
+    fIsExtendedContext(kFALSE),
+    fTask(task),
+    fVRecs(),
+    fAggNoToIndex()
 {
 
   Detector::Detector_t     det(vc.GetDetector());
@@ -211,9 +213,12 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
 
 FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
     const string& context,
-    const FairDb::Task& task):
-  fIsExtendedContext(kTRUE),
-  fTask(task)
+    const FairDb::Task& task)
+  : fGap(),
+    fIsExtendedContext(kTRUE),
+    fTask(task),
+    fVRecs(),
+    fAggNoToIndex()
 {
 
   cout << "Creating FairDbValidityRecBuilder"
@@ -300,9 +305,12 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
 //.....................................................................
 
 FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbValidityRec& vr,
-    const std::string tableName):
-  fIsExtendedContext(kFALSE),
-  fTask(vr.GetTask())
+    const std::string tableName)
+  : fGap(),
+    fIsExtendedContext(kFALSE),
+    fTask(vr.GetTask()),
+    fVRecs(),
+    fAggNoToIndex()
 {
 
   const ValRange&          vrange(vr.GetValRange());

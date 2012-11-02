@@ -40,6 +40,9 @@ class FairDbValRecSet
 /// lazy creation - see GetTableRowBySeqNo
     mutable map<UInt_t,const FairDbValidityRec*>fSeqNoToRec;
 
+    FairDbValRecSet(const FairDbValRecSet&);
+    FairDbValRecSet operator=(const FairDbValRecSet&);
+
     ClassDef(FairDbValRecSet,0)     //  A set of FairDbValidityRecs
 
 };
