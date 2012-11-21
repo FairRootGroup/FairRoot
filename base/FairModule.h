@@ -73,7 +73,9 @@ class FairModule:  public TNamed
      **/
     void                SetMotherVolume(TString volName) {fMotherVolumeName=volName;}
     /**called from ConstuctASCIIGeometry*/
-    void                ProcessNodes ( TList* aList );
+    void   ProcessNodes ( TList* aList );
+    /**Set the parameter containers*/
+    virtual  void       SetPar() {;}
     /**return the geo parameter of this detector/module*/
     TList* GetListOfGeoPar() { return flGeoPar;}
     /**list of volumes in a simulation session*/

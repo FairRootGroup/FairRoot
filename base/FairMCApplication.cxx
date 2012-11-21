@@ -394,6 +394,7 @@ void FairMCApplication::Stepping()
     PreTrack();
     TrackId = gMC->GetStack()->GetCurrentTrackNumber();
   }
+
   Int_t copyNo;
   Int_t id = gMC->CurrentVolID(copyNo);
   Bool_t InMap =kFALSE;
@@ -998,10 +999,15 @@ void FairMCApplication::SetParTask()
   // Only RTDB init when more than Main Task list
   if(FairRun::Instance()->GetNTasks() >= 1 ) {
     fFairTaskList->SetParTask();
-    FairRuntimeDb* fRTdb=  FairRun::Instance()->GetRuntimeDb();
-    fRTdb->initContainers(FairRunSim::Instance()->GetRunId());
-
   }
+  fModIter->Reset();
+  FairModule* Mod=NULL;
+  while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+    Mod->SetPar();
+  }
+  FairRuntimeDb* fRTdb=  FairRun::Instance()->GetRuntimeDb();
+  fRTdb->initContainers(FairRunSim::Instance()->GetRunId());
+
 }
 //_____________________________________________________________________________
 void FairMCApplication::InitTasks()
