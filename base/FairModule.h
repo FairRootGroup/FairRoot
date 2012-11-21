@@ -75,7 +75,7 @@ class FairModule:  public TNamed
     /**called from ConstuctASCIIGeometry*/
     void   ProcessNodes ( TList* aList );
     /**Set the parameter containers*/
-    virtual  void       SetPar() {;}
+    virtual  void       SetParContainers() {;}
     /**return the geo parameter of this detector/module*/
     TList* GetListOfGeoPar() { return flGeoPar;}
     /**list of volumes in a simulation session*/

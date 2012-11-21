@@ -1003,7 +1003,7 @@ void FairMCApplication::SetParTask()
   fModIter->Reset();
   FairModule* Mod=NULL;
   while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
-    Mod->SetPar();
+    Mod->SetParContainers();
   }
   FairRuntimeDb* fRTdb=  FairRun::Instance()->GetRuntimeDb();
   fRTdb->initContainers(FairRunSim::Instance()->GetRunId());
