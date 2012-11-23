@@ -49,6 +49,7 @@
 #
 # generated_cubin_file:STRING=<> File to generate.  This argument must be passed
 #                                                   in if build_cubin is true.
+# generate_dependency_only:BOOL=<> Only generate the dependency file.
 
 if(NOT generated_file)
   message(FATAL_ERROR "You must specify generated_file on the command line")
@@ -62,6 +63,7 @@ set(cmake_dependency_file "@cmake_dependency_file@") # path
 set(CUDA_make2cmake "@CUDA_make2cmake@") # path
 set(CUDA_parse_cubin "@CUDA_parse_cubin@") # path
 set(build_cubin @build_cubin@) # bool
+set(CUDA_HOST_COMPILER "@CUDA_HOST_COMPILER@") # bool
 # We won't actually use these variables for now, but we need to set this, in
 # order to force this file to be run again if it changes.
 set(generated_file_path "@generated_file_path@") # path
@@ -102,8 +104,15 @@ endif()
 # Add the build specific configuration flags
 list(APPEND CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS_${build_configuration}})
 
-if(DEFINED CCBIN)
-  set(CCBIN -ccbin "${CCBIN}")
+# Any -ccbin existing in CUDA_NVCC_FLAGS gets highest priority
+list( FIND CUDA_NVCC_FLAGS "-ccbin" ccbin_found0 )
+list( FIND CUDA_NVCC_FLAGS "--compiler-bindir" ccbin_found1 )
+if( ccbin_found0 LESS 0 AND ccbin_found1 LESS 0 )
+  if (CUDA_HOST_COMPILER STREQUAL "$(VCInstallDir)bin" AND DEFINED CCBIN)
+    set(CCBIN -ccbin "${CCBIN}")
+  else()
+    set(CCBIN -ccbin "${CUDA_HOST_COMPILER}")
+  endif()
 endif()
 
 # cuda_execute_process - Executes a command with optional command echo and status message.
@@ -139,7 +148,7 @@ macro(cuda_execute_process status command)
     endforeach()
     # Echo the command
     execute_process(COMMAND ${CMAKE_COMMAND} -E echo ${cuda_execute_process_string})
-  endif(verbose)
+  endif()
   # Run the command
   execute_process(COMMAND ${ARGN} RESULT_VARIABLE CUDA_result )
 endmacro()
@@ -217,12 +226,16 @@ endif()
 
 # Delete the temporary file
 cuda_execute_process(
-  "Removing ${cmake_dependency_file}.tmp and ${NVCC_generated_dependency_file}"
-  COMMAND "${CMAKE_COMMAND}" -E remove "${cmake_dependency_file}.tmp" "${NVCC_generated_dependency_file}"
+  "Removing ${cmake_dependency_file}.tmp"
+  COMMAND "${CMAKE_COMMAND}" -E remove "${cmake_dependency_file}.tmp"
   )
 
 if(CUDA_result)
   message(FATAL_ERROR "Error generating ${generated_file}")
+endif()
+
+if (generate_dependency_only)
+  return()
 endif()
 
 # Generate the code
@@ -277,4 +290,4 @@ if( build_cubin )
     -P "${CUDA_parse_cubin}"
     )
 
-endif( build_cubin )
+endif()

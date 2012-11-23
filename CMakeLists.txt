@@ -66,6 +66,7 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # REQUIRED means that cmake will stop if this packages are not found
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
+find_package(CUDA)
 find_package(ROOT 5.32.00 REQUIRED)
 find_package(PLUTO REQUIRED)
 find_package(GENERATORS REQUIRED)
@@ -75,9 +76,6 @@ find_package(GEANT4DATA)
 find_package(GEANT4VMC)
 find_package(CLHEP)
 find_package(RuleChecker)
-#  find_package(Oracle)
-#  find_package(CUDA REQUIRED)
-
 
 If(FAIRSOFT_EXTERN)
   set(BOOST_ROOT ${SIMPATH})
