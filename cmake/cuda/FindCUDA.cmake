@@ -788,15 +788,17 @@ find_package_handle_standard_args(CUDA DEFAULT_MSG
   _cuda_version_acceptable
   )
 
-Message(STATUS "Looking for CUDA...                 - Found ${CUDA_TOOLKIT_ROOT_DIR}")
-Message(STATUS "Looking for CUDA...                 - Found CUDA Version ${CUDA_VERSION}")
-Message(STATUS "CUDA  Include directory             : ${CUDA_INCLUDE_DIRS}")
-Message(STATUS "CUDA  RT library                    : ${CUDA_LIBRARIES}")
-Message(STATUS "Cuda  FFT                           : ${CUDA_CUFFT_LIBRARIES}")
-Message(STATUS "CUDA  BLAS                          : ${CUDA_CUBLAS_LIBRARIES}")
-Message(STATUS "CUDA  RAND                          : ${CUDA_curand_LIBRARY}")
-Message(STATUS "CUDA  Performance Primitives library: ${CUDA_npp_LIBRARY}")
-
+If(CUDA_FOUND)
+  Message(STATUS "Looking for CUDA...                 - Found ${CUDA_TOOLKIT_ROOT_DIR}")
+  Message(STATUS "Looking for CUDA...                 - Found CUDA Version ${CUDA_VERSION}")
+  Message(STATUS "CUDA  Include directory             : ${CUDA_INCLUDE_DIRS}")
+  Message(STATUS "CUDA  RT library                    : ${CUDA_LIBRARIES}")
+  Message(STATUS "Cuda  FFT                           : ${CUDA_CUFFT_LIBRARIES}")
+  Message(STATUS "CUDA  BLAS                          : ${CUDA_CUBLAS_LIBRARIES}")
+  Message(STATUS "CUDA  RAND                          : ${CUDA_curand_LIBRARY}")
+  Message(STATUS "CUDA  Performance Primitives library: ${CUDA_npp_LIBRARY}")
+  
+EndIf(CUDA_FOUND)
 
 ###############################################################################
 ###############################################################################
