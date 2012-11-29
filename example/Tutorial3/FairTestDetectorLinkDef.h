@@ -17,5 +17,14 @@
 #pragma link C++ class FairConstField+;
 #pragma link C++ class FairConstPar+;
 #pragma link C++ class FairMapPar+;
+#pragma link C++ class FairTestDetectorDigiWriteoutBuffer+;
+#pragma link C++ class FairTestDetectorTimeDigiTask+;
+#pragma link C++ class FairTestDetectorTimeRecoTask+;
+#pragma link C++ class FairTestDetectorDigiRingSorter+;
+#pragma link C++ class FairTestDetectorDigiSorterTask+;
+
+
+
+
 
 #endif

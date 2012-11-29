@@ -15,6 +15,7 @@ ${FAIRROOT_SOURCE_DIR}/example/Tutorial3/data
 ${FAIRROOT_SOURCE_DIR}/example/Tutorial3/simulation
 ${FAIRROOT_SOURCE_DIR}/example/Tutorial3/digitization
 ${FAIRROOT_SOURCE_DIR}/example/Tutorial3/reconstruction
+${FAIRROOT_SOURCE_DIR}/example/Tutorial3/timeBasedSimulation
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -39,6 +40,11 @@ Set(SRCS
   digitization/FairTestDetectorHitProducerSmearing.cxx
   digitization/FairTestDetectorDigiTask.cxx
   reconstruction/FairTestDetectorRecoTask.cxx
+  timeBasedSimulation/FairTestDetectorDigiRingSorter.cxx
+  timeBasedSimulation/FairTestDetectorDigiSorterTask.cxx
+  timeBasedSimulation/FairTestDetectorDigiWriteoutBuffer.cxx
+  timeBasedSimulation/FairTestDetectorTimeDigiTask.cxx
+  timeBasedSimulation/FairTestDetectorTimeRecoTask.cxx
 )
 
 Set(HEADERS )

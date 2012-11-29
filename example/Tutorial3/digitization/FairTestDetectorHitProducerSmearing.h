@@ -12,13 +12,8 @@ class FairTestDetectorHitProducerSmearing : public FairTask
     /** Default constructor **/
     FairTestDetectorHitProducerSmearing();
 
-    /** Constructor with parameters (Optional)
-    //  FairTestDetectorHitProducerSmearing(Int_t verbose);
-
-
     /** Destructor **/
     ~FairTestDetectorHitProducerSmearing();
-
 
     /** Initiliazation of task at the beginning of a run **/
     virtual InitStatus Init();
