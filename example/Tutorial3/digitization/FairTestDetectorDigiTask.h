@@ -1,0 +1,47 @@
+#ifndef PNDTORINODETECTORDIGITASK_H
+#define PNDTORINODETECTORDIGITASK_H
+
+#include "FairTask.h"
+
+class TClonesArray;
+
+class FairTestDetectorPoint;
+
+
+class FairTestDetectorDigiTask : public FairTask
+{
+  public:
+
+    /** Default constructor **/
+    FairTestDetectorDigiTask();
+
+
+    /** Destructor **/
+    ~FairTestDetectorDigiTask();
+
+
+    /** Virtual method Init **/
+    virtual InitStatus Init();
+
+
+    /** Virtual method Exec **/
+    virtual void Exec(Option_t* opt);
+
+    void SetTimeResolution(Double_t timeInNs) { fTimeResolution = timeInNs; }
+    Double_t GetTimeResolution() { return fTimeResolution; }
+
+  private:
+
+    Int_t CalcPad(Double_t posIn, Double_t posOut);
+    Double_t CalcTimeStamp(Double_t timeOfFlight);
+
+    Double_t fTimeResolution;
+
+    TClonesArray* fPointArray;
+    TClonesArray* fDigiArray;
+
+    ClassDef(FairTestDetectorDigiTask,1);
+
+};
+
+#endif
