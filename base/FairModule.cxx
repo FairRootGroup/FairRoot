@@ -191,14 +191,17 @@ void  FairModule::AddSensitiveVolume(TGeoVolume* v)
 {
 
   fLogger->Debug2(MESSAGE_ORIGIN, "FairModule::AddSensitiveVolume", v->GetName());
-  FairVolume*  volume = NULL;
-  volume = new FairVolume(v->GetName(), fNbOfVolumes++);
-  vList->addVolume(volume);
-  volume->setModId(fModId);
-  volume->SetModule(this);
-  svList->Add(volume);
-  fNbOfSensitiveVol++;
-
+  // Only register volumes which are not already registered
+  // Otherwise the stepping will be slowed down
+  if( ! vList->findObject(v->GetName() ) ) {
+    FairVolume*  volume = NULL;
+    volume = new FairVolume(v->GetName(), fNbOfVolumes++);
+    vList->addVolume(volume);
+    volume->setModId(fModId);
+    volume->SetModule(this);
+    svList->Add(volume);
+    fNbOfSensitiveVol++;
+  }
 }
 
 
