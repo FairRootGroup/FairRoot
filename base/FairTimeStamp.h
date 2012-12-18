@@ -38,7 +38,7 @@ class FairTimeStamp : public FairMultiLinkedData
     }
 
 
-    virtual void Print(std::ostream& out = std::cout) const;
+    void Print(std::ostream& out = std::cout) const;
     virtual Bool_t IsSortable() const { return kTRUE;};
 
 

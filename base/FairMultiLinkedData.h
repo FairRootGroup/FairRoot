@@ -61,15 +61,17 @@ class FairMultiLinkedData : public  TObject
     virtual void DeleteLink(FairLink link)    {DeleteLink(link.GetType(), link.GetIndex());}          ///< Deletes a link ouf of fLinks
     virtual void DeleteLink(Int_t type, Int_t index);                               ///< Deletes a link ouf of fLinks
 
-    virtual void Reset() {fLinks.clear();}                                    ///< Clears fLinks
+    virtual void Reset() {ResetLinks();}
+    virtual void ResetLinks() {fLinks.clear();}                                    ///< Clears fLinks
 
 
-    virtual void Print(std::ostream& out = std::cout) const {
+    void Print(std::ostream& out = std::cout) const {
+      out << "[";
       for (Int_t i = 0; i < GetNLinks(); i++) {
         GetLink(i).Print(out);
         out << " ";
       }
-      out << std::endl;
+      out << "]";
     }                                                     ///< Output
 
     friend std::ostream& operator<< (std::ostream& out, const FairMultiLinkedData& data) {
