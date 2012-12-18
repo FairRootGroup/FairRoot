@@ -117,7 +117,7 @@ void FairBoxSetDraw::Exec(Option_t* option)
       p=fList->At(i);
       if (fVerbose > 2) {
         FairTimeStamp* data = (FairTimeStamp*)p;
-        cout << "TimeStamp: " <<  data->GetTimeStamp() << std::endl;
+//        cout << "TimeStamp: " <<  data->GetTimeStamp() << std::endl;
       }
       AddBoxes(fq, p, i);
     }
@@ -146,9 +146,9 @@ FairBoxSet* FairBoxSetDraw::CreateBoxSet()
 {
   FairBoxSet* aBoxSet = new FairBoxSet(this, GetName());
   aBoxSet->Reset(FairBoxSet::kBT_AABoxFixedDim, kFALSE, 32);
-  aBoxSet->SetDefWidth(1);
-  aBoxSet->SetDefHeight(1);
-  aBoxSet->SetDefDepth(1);
+  aBoxSet->SetDefWidth(0.3);
+  aBoxSet->SetDefHeight(0.3);
+  aBoxSet->SetDefDepth(0.3);
   fq = aBoxSet;
 
   return aBoxSet;
