@@ -4,11 +4,7 @@
 // -------------------------------------------------------------------------
 #include "FairMCTrack.h"
 
-#include <iostream>
-
-using std::cout;
-using std::endl;
-
+#include "FairLogger.h"
 
 // -----   Default constructor   -------------------------------------------
 FairMCTrack::FairMCTrack()
@@ -45,19 +41,6 @@ FairMCTrack::FairMCTrack(Int_t pdgCode, Int_t motherId, Double_t px,
     fStartT(t),
     fNPoints(nPoints)
 {
-  /*
-  fPdgCode  = pdgCode;
-  fMotherId = motherId;
-  fPx = px;
-  fPy = py;
-  fPz = pz;
-  fStartX = x;
-  fStartY = y;
-  fStartZ = z;
-  fStartT = t;
-  if (nPoints >= 0) { fNPoints = nPoints; }
-  else { fNPoints = 0; }
-  */
 }
 // -------------------------------------------------------------------------
 
@@ -77,7 +60,6 @@ FairMCTrack::FairMCTrack(const FairMCTrack& track)
     fStartT(track.fStartT),
     fNPoints(track.fNPoints)
 {
-  //  *this = track;
 }
 // -------------------------------------------------------------------------
 
@@ -111,11 +93,13 @@ FairMCTrack::~FairMCTrack() { }
 // -----   Public method Print   -------------------------------------------
 void FairMCTrack::Print(Int_t trackId) const
 {
-  cout << "Track " << trackId << ", mother : " << fMotherId << ", Type "
-       << fPdgCode << ", momentum (" << fPx << ", " << fPy << ", " << fPz
-       << ") GeV" << endl;
-  cout << "       Ref " << GetNPoints(kREF) << ", TutDet " << GetNPoints(kTutDet)
-       << ", Rutherford " << GetNPoints(kFairRutherford) << endl;
+  LOG(DEBUG) << "Track " << trackId << ", mother : " << fMotherId << ", Type "
+             << fPdgCode << ", momentum (" << fPx << ", " << fPy << ", "
+             << fPz << ") GeV" << FairLogger::endl;
+  LOG(DEBUG2) << "       Ref " << GetNPoints(kREF)
+              << ", TutDet " << GetNPoints(kTutDet)
+              << ", Rutherford " << GetNPoints(kFairRutherford)
+              << FairLogger::endl;
 }
 // -------------------------------------------------------------------------
 
@@ -156,8 +140,8 @@ Int_t FairMCTrack::GetNPoints(DetectorId detId) const
   else if ( detId == kTutDet  ) { return ( (fNPoints & ( 7 <<  1) ) >>  1); }
   else if ( detId == kFairRutherford ) { return ( (fNPoints & (31 <<  4) ) >>  4); }
   else {
-    cout << "-E- FairMCTrack::GetNPoints: Unknown detector ID "
-         << detId << endl;
+    LOG(ERROR) << "Unknown detector ID "
+               << detId << FairLogger::endl;
     return 0;
   }
 }
@@ -187,8 +171,8 @@ void FairMCTrack::SetNPoints(Int_t iDet, Int_t nPoints)
     fNPoints = ( fNPoints & ( ~ ( 31 <<  4 ) ) )  |  ( nPoints <<  4 );
   }
 
-  else cout << "-E- FairMCTrack::SetNPoints: Unknown detector ID "
-              << iDet << endl;
+  else LOG(ERROR) << "Unknown detector ID "
+                    << iDet << FairLogger::endl;
 
 }
 // -------------------------------------------------------------------------
