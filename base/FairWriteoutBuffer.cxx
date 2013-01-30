@@ -82,6 +82,7 @@ void FairWriteoutBuffer::WriteOutDataDeadTimeMap(double time)
           data[i]->Print();
           std::cout << std::endl;
         }
+        delete data[i];
       }
     }
   } else {
@@ -139,6 +140,7 @@ void FairWriteoutBuffer::FillNewData(FairTimeStamp* data, double startTime, doub
     fStartTime_map.insert(std::pair<double, std::pair<double, FairTimeStamp*> >(startTime, timeData));
   } else {
     AddNewDataToTClonesArray(data);
+    delete data;
   }
 
 }
@@ -205,6 +207,7 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
     }
   } else {
     AddNewDataToTClonesArray(data);
+    delete data;
   }
 }
 
