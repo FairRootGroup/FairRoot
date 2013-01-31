@@ -132,15 +132,17 @@ std::vector<FairTimeStamp*> FairWriteoutBuffer::GetAllData()
 
 void FairWriteoutBuffer::FillNewData(FairTimeStamp* data, double startTime, double activeTime)
 {
+  FairTimeStamp* dataClone = static_cast<FairTimeStamp*>(data->Clone());
+
   if (fActivateBuffering) {
     if (fVerbose > 0) {
       std::cout << "StartTime: " << startTime << std::endl;
     }
-    std::pair<double, FairTimeStamp*> timeData(activeTime, data);
+    std::pair<double, FairTimeStamp*> timeData(activeTime, dataClone);
     fStartTime_map.insert(std::pair<double, std::pair<double, FairTimeStamp*> >(startTime, timeData));
   } else {
-    AddNewDataToTClonesArray(data);
-    delete data;
+    AddNewDataToTClonesArray(dataClone);
+    delete dataClone;
   }
 
 }
