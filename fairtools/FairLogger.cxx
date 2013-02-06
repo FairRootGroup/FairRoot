@@ -36,7 +36,8 @@ FairLogger::FairLogger()
   fScreenStream(&std::cout),
   fFileStream(NULL),
   fNullStream(new ostream(0)),
-  fLogFileOpen(kFALSE)
+  fLogFileOpen(kFALSE),
+  fIsNewLine(kTRUE)
 {
 }
 
@@ -313,48 +314,52 @@ FairLogger& FairLogger::GetOutputStream(FairLogLevel level, const char* file, co
     fLogColored = true;
   }
 
-  if ( (fLogToScreen && level <= fLogScreenLevel) ) {
-    if ( fLogColored ) {
-      *fScreenStream << LogLevelColor[level];
+
+  if (fIsNewLine) {
+    if ( (fLogToScreen && level <= fLogScreenLevel) ) {
+
+      if ( fLogColored ) {
+        *fScreenStream << LogLevelColor[level];
+      }
+
+      *fScreenStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
+
+      if ( fLogVerbosityLevel == verbosityHIGH ) {
+        GetTime();
+        *fScreenStream << fTimeBuffer;
+      }
+
+      if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
+        TString bla(file);
+        Ssiz_t pos = bla.Last('/');
+        TString s2(bla(pos+1, bla.Length()));
+        TString s3 = s2 + "::" + func + ":" + line;
+        *fScreenStream << "[" << s3 <<"] ";
+      }
     }
 
-    *fScreenStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
+    if ( fLogToFile && level <= fLogFileLevel ) {
+      if(!fLogFileOpen) {
+        OpenLogFile();
+      }
 
-    if ( fLogVerbosityLevel == verbosityHIGH ) {
-      GetTime();
-      *fScreenStream << fTimeBuffer;
-    }
+      *fFileStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
 
-    if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
-      TString bla(file);
-      Ssiz_t pos = bla.Last('/');
-      TString s2(bla(pos+1, bla.Length()));
-      TString s3 = s2 + "::" + func + ":" + line;
-      *fScreenStream << "[" << s3 <<"] ";
+      if ( fLogVerbosityLevel == verbosityHIGH ) {
+        GetTime();
+        *fFileStream << fTimeBuffer;
+      }
+
+      if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
+        TString bla(file);
+        Ssiz_t pos = bla.Last('/');
+        TString s2(bla(pos+1, bla.Length()));
+        TString s3 = s2 + "::" + func + ":" + line;
+        *fFileStream << "[" << s3 <<"] ";
+      }
     }
+    fIsNewLine = kFALSE;
   }
-
-  if ( fLogToFile && level <= fLogFileLevel ) {
-    if(!fLogFileOpen) {
-      OpenLogFile();
-    }
-
-    *fFileStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
-
-    if ( fLogVerbosityLevel == verbosityHIGH ) {
-      GetTime();
-      *fFileStream << fTimeBuffer;
-    }
-
-    if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
-      TString bla(file);
-      Ssiz_t pos = bla.Last('/');
-      TString s2(bla(pos+1, bla.Length()));
-      TString s3 = s2 + "::" + func + ":" + line;
-      *fFileStream << "[" << s3 <<"] ";
-    }
-  }
-
   return *this;
 }
 
@@ -390,6 +395,7 @@ FairLogger& FairLogger::operator<<(std::ostream& (*manip) (std::ostream&))
 std::ostream&  FairLogger::endl(std::ostream& strm)
 {
 
+  gLogger->fIsNewLine = kTRUE;
   if ( (gLogger->fLogToScreen && gLogger->fLevel <= gLogger->fLogScreenLevel) ) {
     if (gLogger->fLogColored) {
       *(gLogger->fScreenStream) << "\33[00;30m" << std::endl;

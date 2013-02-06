@@ -23,6 +23,7 @@
 
 #include <ostream>
 #include <fstream>
+#include <iomanip>
 
 // Definiton of the different log levels
 // TODO(F.U): Find bettter names for DEBUG1..4
@@ -212,7 +213,8 @@ class FairLogger : public std::ostream
     std::ostream* fFileStream;
     std::ostream* fNullStream;
     Bool_t fLogFileOpen;
-    ClassDef(FairLogger, 2)
+    Bool_t fIsNewLine;
+    ClassDef(FairLogger, 3)
 };
 
 extern FairLogger* gLogger;
