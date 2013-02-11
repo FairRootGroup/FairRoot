@@ -1,6 +1,7 @@
 #include "FairTutorialDetContFact.h"
 
 #include "FairTutorialDetGeoPar.h"
+#include "FairTutorialDetMissallignPar.h"
 
 #include "FairRuntimeDb.h"
 
@@ -33,6 +34,13 @@ void FairTutorialDetContFact::setAllContainers()
   p->addContext("TestNonDefaultContext");
 
   containers->Add(p);
+
+  FairContainer* p1= new FairContainer("FairTutorialDetMissallignPar",
+                                       "FairTutorialDet Missallignment Parameters",
+                                       "TestDefaultContext");
+  p1->addContext("TestNonDefaultContext");
+
+  containers->Add(p1);
 }
 
 FairParSet* FairTutorialDetContFact::createContainer(FairContainer* c)
@@ -47,6 +55,10 @@ FairParSet* FairTutorialDetContFact::createContainer(FairContainer* c)
   if (strcmp(name,"FairTutorialDetGeoPar")==0) {
     p=new FairTutorialDetGeoPar(c->getConcatName().Data(),
                                 c->GetTitle(),c->getContext());
+  }
+  if (strcmp(name,"FairTutorialDetMissallignPar")==0) {
+    p=new FairTutorialDetMissallignPar(c->getConcatName().Data(),
+                                       c->GetTitle(),c->getContext());
   }
   return p;
 }
