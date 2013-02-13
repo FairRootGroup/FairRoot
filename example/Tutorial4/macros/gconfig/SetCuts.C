@@ -31,7 +31,7 @@ void SetCuts()
   gMC->SetProcess("MUNU",1); /**muon nuclear interaction*/
   gMC->SetProcess("DCAY",1); /**decay*/
   gMC->SetProcess("LOSS",1); /**energy loss*/
-  gMC->SetProcess("MULS",1); /**multiple scattering*/
+  gMC->SetProcess("MULS",0); /**multiple scattering*/
 
   Double_t cut1 = 1.0E-3;         // GeV --> 1 MeV
   Double_t cutb = 1.0E4;          // GeV --> 10 TeV

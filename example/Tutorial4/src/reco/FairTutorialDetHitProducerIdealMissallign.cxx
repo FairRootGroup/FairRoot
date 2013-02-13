@@ -6,8 +6,11 @@
 
 #include "FairTutorialDetHit.h"
 #include "FairTutorialDetPoint.h"
+#include "FairTutorialDetMissallignPar.h"
 
 #include "FairRootManager.h"
+#include "FairRunAna.h"
+#include "FairRuntimeDb.h"
 
 #include "TClonesArray.h"
 
@@ -15,12 +18,43 @@
 FairTutorialDetHitProducerIdealMissallign::FairTutorialDetHitProducerIdealMissallign()
   : FairTask("Missallign Hit Producer for the TutorialDet"),
     fPointArray(NULL),
-    fHitArray(NULL)
+    fHitArray(NULL),
+    fShiftX(),
+    fShiftY(),
+    fDigiPar(NULL)
 {
 }
 
 // -----   Destructor   ----------------------------------------------------
 FairTutorialDetHitProducerIdealMissallign::~FairTutorialDetHitProducerIdealMissallign() { }
+
+// --------------------------------------------------
+void FairTutorialDetHitProducerIdealMissallign::SetParContainers()
+{
+
+  LOG(INFO)<< "Set tutdet missallign parameters"<<FairLogger::endl;
+  // Get Base Container
+  FairRunAna* ana = FairRunAna::Instance();
+  FairRuntimeDb* rtdb=ana->GetRuntimeDb();
+
+  fDigiPar = (FairTutorialDetMissallignPar*)
+             (rtdb->getContainer("FairTutorialDetMissallignPar"));
+
+}
+// --------------------------------------------------------------------
+InitStatus FairTutorialDetHitProducerIdealMissallign::ReInit()
+{
+
+  // Get Base Container
+  FairRunAna* ana = FairRunAna::Instance();
+  FairRuntimeDb* rtdb=ana->GetRuntimeDb();
+
+  fDigiPar = (FairTutorialDetMissallignPar*)
+             (rtdb->getContainer("FairTutorialDetMissallignPar"));
+
+  fShiftX=fDigiPar->GetShiftX();
+  fShiftY=fDigiPar->GetShiftY();
+}
 
 // -----   Public method Init   --------------------------------------------
 InitStatus FairTutorialDetHitProducerIdealMissallign::Init()
@@ -44,9 +78,20 @@ InitStatus FairTutorialDetHitProducerIdealMissallign::Init()
   fHitArray = new TClonesArray("FairTutorialDetHit");
   ioman->Register("TutorialDetHit", "TutorialDet", fHitArray, kTRUE);
 
-  LOG(INFO)<< "HitProducerIdealMissallign: Intialisation successfull"
+  LOG(INFO)<< "HitProducerIdealMissallign: Initialisation successfull"
            << FairLogger::endl;
 
+
+  fShiftX=fDigiPar->GetShiftX();
+  fShiftY=fDigiPar->GetShiftY();
+  /*
+    Int_t num = fDigiPar->GetNrOfDetectors();
+    Int_t size = fShiftX.GetSize();
+    LOG(INFO)<<"Array has a size of "<< size << "elements"<<FairLogger::endl;
+    for (Int_t i=0; i< num; ++i) {
+      LOG(INFO)<< i <<": "<<fShiftX.At(i)<<FairLogger::endl;
+    }
+  */
   return kSUCCESS;
 
 }
@@ -82,9 +127,12 @@ void FairTutorialDetHitProducerIdealMissallign::Exec(Option_t* opt)
     trackID = point->GetTrackID();
 
     // Determine hit position
-    x  = point->GetX();
-    y  = point->GetY();
+    x  = point->GetX()-fShiftX.At(detID);
+    y  = point->GetY()-fShiftX.At(detID);
     z  = point->GetZ();
+
+    LOG(DEBUG2)<<"Missallign hit by "<<fShiftX.At(detID)<<" cm in x- and "
+               << fShiftY.At(detID)<<" cm in y-direction."<<FairLogger::endl;
 
     // Time of flight
     tof = point->GetTime();
@@ -97,7 +145,7 @@ void FairTutorialDetHitProducerIdealMissallign::Exec(Option_t* opt)
   }   // Loop over MCPoints
 
   // Event summary
-  LOG(INFO)<< "Create" << nHits << " TutorialDetHits out of "
+  LOG(INFO)<< "Create " << nHits << " TutorialDetHits out of "
            << nPoints << " TutorilaDetPoints created." << FairLogger::endl;
 
 }

@@ -3,6 +3,7 @@
 #include "FairTutorialDetPoint.h"
 #include "FairTutorialDetGeo.h"
 #include "FairTutorialDetGeoPar.h"
+#include "FairTutorialDetGeoHandler.h"
 
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
@@ -31,7 +32,8 @@ FairTutorialDet::FairTutorialDet()
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint"))
+    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint")),
+    fGeoHandler(new FairTutorialDetGeoHandler())
 {
 }
 
@@ -44,7 +46,8 @@ FairTutorialDet::FairTutorialDet(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint"))
+    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint")),
+    fGeoHandler(new FairTutorialDetGeoHandler())
 {
 }
 
@@ -61,6 +64,10 @@ void FairTutorialDet::Initialize()
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairTutorialDetGeoPar* par=(FairTutorialDetGeoPar*)(rtdb->getContainer("FairTutorialDetGeoPar"));
+
+  Bool_t isSimulation = kTRUE;
+  fGeoHandler->Init(isSimulation);
+
 }
 
 Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
@@ -84,7 +91,8 @@ Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-    fVolumeID = vol->getMCid();
+//    fVolumeID = vol->getMCid();
+    fVolumeID = fGeoHandler->GetUniqueDetectorId();
     if (fELoss == 0. ) { return kFALSE; }
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,

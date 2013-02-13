@@ -12,6 +12,7 @@ ${FAIRROOT_SOURCE_DIR}/example/Tutorial4/src/mc
 ${FAIRROOT_SOURCE_DIR}/example/Tutorial4/src/param
 ${FAIRROOT_SOURCE_DIR}/example/Tutorial4/src/data
 ${FAIRROOT_SOURCE_DIR}/example/Tutorial4/src/reco
+${FAIRROOT_SOURCE_DIR}/example/Tutorial4/src/tools
 ${FAIRROOT_SOURCE_DIR}/base
 ${FAIRROOT_SOURCE_DIR}/example/mcstack
 ${FAIRROOT_SOURCE_DIR}/parbase
@@ -39,8 +40,13 @@ data/FairTutorialDetPoint.cxx
 data/FairTutorialDetHit.cxx
 
 reco/FairTutorialDetHitProducerIdealMissallign.cxx
+reco/FairTutorialDetStraightLineFitter.cxx
+reco/FairTutorialDetMilleWriter.cxx
+
+tools/FairTutorialDetGeoHandler.cxx
 )
 
+set(NO_DICT_SRCS tools/Mille.cc)
 Set(HEADERS )
 Set(LINKDEF Tutorial4LinkDef.h)
 Set(LIBRARY_NAME Tutorial4)

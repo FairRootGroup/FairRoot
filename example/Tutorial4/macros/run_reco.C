@@ -14,12 +14,12 @@ void run_reco()
    gSystem->Load("libTutorial4.so");
 
   FairLogger *logger = FairLogger::GetLogger();
-  logger->SetLogFileName("MyLog.log");
+//  logger->SetLogFileName("MyLog.log");
   logger->SetLogToScreen(kTRUE);
 //  logger->SetLogToFile(kTRUE);
-  logger->SetLogVerbosityLevel("HIGH");
+//  logger->SetLogVerbosityLevel("HIGH");
 //  logger->SetLogFileLevel("DEBUG4");
-  logger->SetLogScreenLevel("DEBUG");
+  logger->SetLogScreenLevel("INFO");
   
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
@@ -37,7 +37,7 @@ void run_reco()
   TList *parFileList = new TList();
 
   TString workDir = gSystem->Getenv("VMCWORKDIR");
-  paramDir = workDir + "/example/Tutorial4/macros/";
+  paramDir = workDir + "/example/Tutorial4/macros/parameters/";
 
   TObjString tutDetDigiFile = paramDir + "TutorialDet.missallign.par";
   parFileList->Add(&tutDetDigiFile);
@@ -64,6 +64,12 @@ void run_reco()
   // -----   TorinoDetector hit  producers   ---------------------------------
   FairTutorialDetHitProducerIdealMissallign* hitProducer = new FairTutorialDetHitProducerIdealMissallign();
   fRun->AddTask(hitProducer);
+
+  FairTutorialDetStraightLineFitter* fitter = new FairTutorialDetStraightLineFitter();
+  fRun->AddTask(fitter);
+
+  FairTutorialDetMilleWriter* writer = new FairTutorialDetMilleWriter();
+  fRun->AddTask(writer);
   
 
   fRun->Init();

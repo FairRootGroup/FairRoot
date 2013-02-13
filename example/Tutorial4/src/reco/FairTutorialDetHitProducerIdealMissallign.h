@@ -22,6 +22,9 @@
 
 #include "FairTask.h"
 
+#include "TArrayD.h"
+
+class FairTutorialDetMissallignPar;
 class TClonesArray;
 
 class FairTutorialDetHitProducerIdealMissallign : public FairTask
@@ -40,6 +43,11 @@ class FairTutorialDetHitProducerIdealMissallign : public FairTask
     /** Virtual method Init **/
     virtual InitStatus Init();
 
+    /** Virtual method ReInit **/
+    virtual InitStatus ReInit();
+
+    virtual void SetParContainers();
+
 
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
@@ -52,6 +60,11 @@ class FairTutorialDetHitProducerIdealMissallign : public FairTask
 
     /** Output array of CbmTofHits **/
     TClonesArray* fHitArray;  //!
+
+    TArrayD fShiftX;
+    TArrayD fShiftY;
+
+    FairTutorialDetMissallignPar* fDigiPar;
 
   private:
 

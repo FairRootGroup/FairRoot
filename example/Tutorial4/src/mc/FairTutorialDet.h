@@ -7,6 +7,7 @@
 #include "TLorentzVector.h"
 
 class FairTutorialDetPoint;
+class FairTutorialDetGeoHandler;
 class FairVolume;
 class TClonesArray;
 
@@ -90,6 +91,7 @@ class FairTutorialDet: public FairDetector
 
     TClonesArray*  fFairTutorialDetPointCollection;
 
+    FairTutorialDetGeoHandler* fGeoHandler;
     /** Method to construct the ascii geometry
      **
      **/

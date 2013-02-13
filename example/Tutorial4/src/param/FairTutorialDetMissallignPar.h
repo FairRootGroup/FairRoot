@@ -19,6 +19,10 @@ class FairTutorialDetMissallignPar : public FairParGenericSet
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);
 
+    TArrayD GetShiftX() {return fShiftX;}
+    TArrayD GetShiftY() {return fShiftY;}
+    Int_t GetNrOfDetectors() {return fNrOfDetectors;}
+
   private:
 
     TArrayD fShiftX; // Array to hold the missallignment in x-direction

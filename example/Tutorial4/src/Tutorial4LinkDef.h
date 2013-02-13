@@ -12,4 +12,7 @@
 #pragma link C++ class FairTutorialDetPoint+;
 #pragma link C++ class FairTutorialDetHit+;
 #pragma link C++ class FairTutorialDetHitProducerIdealMissallign+;
+#pragma link C++ class FairTutorialDetGeoHandler+;
+#pragma link C++ class FairTutorialDetStraightLineFitter+;
+#pragma link C++ class FairTutorialDetMilleWriter+;
 #endif
