@@ -24,20 +24,20 @@
 
 #include "TArrayD.h"
 
-class FairTutorialDetMissallignPar;
+class FairTutorialDetMisalignPar;
 class TClonesArray;
 
-class FairTutorialDetHitProducerIdealMissallign : public FairTask
+class FairTutorialDetHitProducerIdealMisalign : public FairTask
 {
 
   public:
 
     /** Default constructor **/
-    FairTutorialDetHitProducerIdealMissallign();
+    FairTutorialDetHitProducerIdealMisalign();
 
 
     /** Destructor **/
-    ~FairTutorialDetHitProducerIdealMissallign();
+    ~FairTutorialDetHitProducerIdealMisalign();
 
 
     /** Virtual method Init **/
@@ -64,14 +64,16 @@ class FairTutorialDetHitProducerIdealMissallign : public FairTask
     TArrayD fShiftX;
     TArrayD fShiftY;
 
-    FairTutorialDetMissallignPar* fDigiPar;
+    FairTutorialDetMisalignPar* fDigiPar;
 
   private:
 
-    FairTutorialDetHitProducerIdealMissallign(const FairTutorialDetHitProducerIdealMissallign&);
-    FairTutorialDetHitProducerIdealMissallign& operator=(const FairTutorialDetHitProducerIdealMissallign&);
+    Double_t GetHitErr(Double_t sigma);
 
-    ClassDef(FairTutorialDetHitProducerIdealMissallign,1);
+    FairTutorialDetHitProducerIdealMisalign(const FairTutorialDetHitProducerIdealMisalign&);
+    FairTutorialDetHitProducerIdealMisalign& operator=(const FairTutorialDetHitProducerIdealMisalign&);
+
+    ClassDef(FairTutorialDetHitProducerIdealMisalign,1);
 
 };
 

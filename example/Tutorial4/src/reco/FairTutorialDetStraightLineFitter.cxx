@@ -13,7 +13,8 @@
 FairTutorialDetStraightLineFitter::FairTutorialDetStraightLineFitter()
   :FairTask("FairTutorialDetStraightLineFitter"),
    fHits(NULL),
-   fTracks(NULL)
+   fTracks(NULL),
+   fVersion(1)
 {
   fLogger->Debug(MESSAGE_ORIGIN,"Defaul Constructor of FairTutorialDetStraightLineFitter");
 }
@@ -122,29 +123,36 @@ void FairTutorialDetStraightLineFitter::Exec(Option_t* option)
     Double_t SlopeX = f1->GetParameter(0);
     Double_t OffX = f1->GetParameter(1);
     Double_t Chi2X = f1->GetChisquare();
+    Double_t SlopeY;
+    Double_t OffY;
+    Double_t Chi2Y;
 
-    LineGraph = new TGraphErrors(nHits, ZPos, YPos, 0, YPosErr);
-    LineGraph->Fit("f1", "Q");
-    Double_t SlopeY = f1->GetParameter(0);
-    Double_t OffY = f1->GetParameter(1);
-    Double_t Chi2Y = f1->GetChisquare();
+    if ( 1 == fVersion ) {
+      LineGraph = new TGraphErrors(nHits, ZPos, YPos, 0, YPosErr);
+      LineGraph->Fit("f1", "Q");
+      SlopeY = f1->GetParameter(0);
+      OffY = f1->GetParameter(1);
+      Chi2Y = f1->GetChisquare();
 
-    LOG(INFO)<<XPos[0]<<","<<XPos[nHits-1]<<","<<YPos[0]<<","<<YPos[nHits-1]<<","<<ZPos[0]<<","<<ZPos[nHits-1]<<FairLogger::endl;
-    Double_t XSlope = (XPos[nHits-1]-XPos[0])/(ZPos[nHits-1]-ZPos[0]);
-    Double_t YSlope = (YPos[nHits-1]-YPos[0])/(ZPos[nHits-1]-ZPos[0]);
+      LOG(INFO)<<XPos[0]<<","<<XPos[nHits-1]<<","<<YPos[0]<<","<<YPos[nHits-1]<<","<<ZPos[0]<<","<<ZPos[nHits-1]<<FairLogger::endl;
+      Double_t XSlope = (XPos[nHits-1]-XPos[0])/(ZPos[nHits-1]-ZPos[0]);
+      Double_t YSlope = (YPos[nHits-1]-YPos[0])/(ZPos[nHits-1]-ZPos[0]);
 
-    LOG(INFO)<<"Slope(x,y): "<<SlopeX<<" ,"<<SlopeY<<FairLogger::endl;
-    LOG(INFO)<<"Slope1(x,y): "<<XSlope<<" ,"<<YSlope<<FairLogger::endl;
-    LOG(INFO)<<"Offset(x,y): "<<OffX<<" ,"<<OffY<<FairLogger::endl;
-    LOG(INFO)<<"Chi2(x,y): "<<Chi2X<<" ,"<<Chi2Y<<FairLogger::endl;
+      LOG(INFO)<<"Slope(x,y): "<<SlopeX<<" ,"<<SlopeY<<FairLogger::endl;
+      LOG(INFO)<<"Slope1(x,y): "<<XSlope<<" ,"<<YSlope<<FairLogger::endl;
+      LOG(INFO)<<"Offset(x,y): "<<OffX<<" ,"<<OffY<<FairLogger::endl;
+      LOG(INFO)<<"Chi2(x,y): "<<Chi2X<<" ,"<<Chi2Y<<FairLogger::endl;
 
+    }
 
     FairTrackParam* track = new FairTrackParam();
     track->SetX(OffX);
-    track->SetY(OffY);
-    track->SetZ(0.);
     track->SetTx(SlopeX);
-    track->SetTy(SlopeY);
+    track->SetZ(0.);
+    if ( 1 == fVersion ) {
+      track->SetY(OffY);
+      track->SetTy(SlopeY);
+    }
     new ((*fTracks)[0]) FairTrackParam(*track);
 //  const TMatrixFSym matrix;
 //  Double_t Z = 0.;

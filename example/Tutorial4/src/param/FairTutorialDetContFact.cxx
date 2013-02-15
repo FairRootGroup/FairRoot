@@ -1,7 +1,7 @@
 #include "FairTutorialDetContFact.h"
 
 #include "FairTutorialDetGeoPar.h"
-#include "FairTutorialDetMissallignPar.h"
+#include "FairTutorialDetMisalignPar.h"
 
 #include "FairRuntimeDb.h"
 
@@ -57,8 +57,8 @@ FairParSet* FairTutorialDetContFact::createContainer(FairContainer* c)
                                 c->GetTitle(),c->getContext());
   }
   if (strcmp(name,"FairTutorialDetMissallignPar")==0) {
-    p=new FairTutorialDetMissallignPar(c->getConcatName().Data(),
-                                       c->GetTitle(),c->getContext());
+    p=new FairTutorialDetMisalignPar(c->getConcatName().Data(),
+                                     c->GetTitle(),c->getContext());
   }
   return p;
 }

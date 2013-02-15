@@ -38,7 +38,14 @@ class FairTutorialDetMilleWriter : public FairTask
     /** Finish task called at the end of the run **/
     virtual void Finish();
 
+    void SetWriteAscii(Bool_t val) {fWriteAscii = val;}
+
+    void SetVersion(Int_t val) {fVersion = val;}
+
   private:
+
+    void ExecVersion1(Option_t* opt);
+    void ExecVersion2(Option_t* opt);
 
     /** Input array from previous already existing data level **/
     TClonesArray* fTracks;
@@ -47,6 +54,10 @@ class FairTutorialDetMilleWriter : public FairTask
     TClonesArray* fHits;
 
     Mille* fMille;
+
+    Bool_t fWriteAscii;
+
+    Int_t fVersion;
 
     /** Output array to  new data level**/
     //  TClonesArray* <OutputDataLevel>;

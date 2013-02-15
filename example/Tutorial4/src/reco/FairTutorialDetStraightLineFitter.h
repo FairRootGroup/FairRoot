@@ -36,6 +36,8 @@ class FairTutorialDetStraightLineFitter : public FairTask
     /** Finish task called at the end of the run **/
     virtual void Finish();
 
+    void SetVersion(Int_t val) {fVersion = val;}
+
   private:
 
     /** Input array from previous already existing data level **/
@@ -43,6 +45,8 @@ class FairTutorialDetStraightLineFitter : public FairTask
 
     /** Output array to  new data level**/
     TClonesArray* fTracks;
+
+    Int_t fVersion;
 
     FairTutorialDetStraightLineFitter(const FairTutorialDetStraightLineFitter&);
     FairTutorialDetStraightLineFitter operator=(const FairTutorialDetStraightLineFitter&);

@@ -2,20 +2,21 @@
 // -----   FairTutorialDetHitProducerIdealMissallign source file       -----
 // -----                  Created 11.02.13  by F. Uhlig                -----
 // -------------------------------------------------------------------------
-#include "FairTutorialDetHitProducerIdealMissallign.h"
+#include "FairTutorialDetHitProducerIdealMisalign.h"
 
 #include "FairTutorialDetHit.h"
 #include "FairTutorialDetPoint.h"
-#include "FairTutorialDetMissallignPar.h"
+#include "FairTutorialDetMisalignPar.h"
 
 #include "FairRootManager.h"
 #include "FairRunAna.h"
 #include "FairRuntimeDb.h"
 
 #include "TClonesArray.h"
+#include "TRandom.h"
 
 // -----   Default constructor   -------------------------------------------
-FairTutorialDetHitProducerIdealMissallign::FairTutorialDetHitProducerIdealMissallign()
+FairTutorialDetHitProducerIdealMisalign::FairTutorialDetHitProducerIdealMisalign()
   : FairTask("Missallign Hit Producer for the TutorialDet"),
     fPointArray(NULL),
     fHitArray(NULL),
@@ -26,10 +27,10 @@ FairTutorialDetHitProducerIdealMissallign::FairTutorialDetHitProducerIdealMissal
 }
 
 // -----   Destructor   ----------------------------------------------------
-FairTutorialDetHitProducerIdealMissallign::~FairTutorialDetHitProducerIdealMissallign() { }
+FairTutorialDetHitProducerIdealMisalign::~FairTutorialDetHitProducerIdealMisalign() { }
 
 // --------------------------------------------------
-void FairTutorialDetHitProducerIdealMissallign::SetParContainers()
+void FairTutorialDetHitProducerIdealMisalign::SetParContainers()
 {
 
   LOG(INFO)<< "Set tutdet missallign parameters"<<FairLogger::endl;
@@ -37,19 +38,19 @@ void FairTutorialDetHitProducerIdealMissallign::SetParContainers()
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDetMissallignPar*)
+  fDigiPar = (FairTutorialDetMisalignPar*)
              (rtdb->getContainer("FairTutorialDetMissallignPar"));
 
 }
 // --------------------------------------------------------------------
-InitStatus FairTutorialDetHitProducerIdealMissallign::ReInit()
+InitStatus FairTutorialDetHitProducerIdealMisalign::ReInit()
 {
 
   // Get Base Container
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDetMissallignPar*)
+  fDigiPar = (FairTutorialDetMisalignPar*)
              (rtdb->getContainer("FairTutorialDetMissallignPar"));
 
   fShiftX=fDigiPar->GetShiftX();
@@ -57,7 +58,7 @@ InitStatus FairTutorialDetHitProducerIdealMissallign::ReInit()
 }
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FairTutorialDetHitProducerIdealMissallign::Init()
+InitStatus FairTutorialDetHitProducerIdealMisalign::Init()
 {
 
   // Get RootManager
@@ -96,7 +97,7 @@ InitStatus FairTutorialDetHitProducerIdealMissallign::Init()
 
 }
 // -----   Public method Exec   --------------------------------------------
-void FairTutorialDetHitProducerIdealMissallign::Exec(Option_t* opt)
+void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
 {
 
   // Reset output array
@@ -128,8 +129,11 @@ void FairTutorialDetHitProducerIdealMissallign::Exec(Option_t* opt)
 
     // Determine hit position
     x  = point->GetX()-fShiftX.At(detID);
-    y  = point->GetY()-fShiftX.At(detID);
+    y  = point->GetY()-fShiftY.At(detID);
     z  = point->GetZ();
+
+    x = x + GetHitErr(0.1);
+    y = y + GetHitErr(0.1);
 
     LOG(DEBUG2)<<"Missallign hit by "<<fShiftX.At(detID)<<" cm in x- and "
                << fShiftY.At(detID)<<" cm in y-direction."<<FairLogger::endl;
@@ -151,6 +155,12 @@ void FairTutorialDetHitProducerIdealMissallign::Exec(Option_t* opt)
 }
 // -------------------------------------------------------------------------
 
+Double_t FairTutorialDetHitProducerIdealMisalign::GetHitErr(Double_t sigma)
+{
+  Double_t err = gRandom->Gaus(0, sigma);
+  return (TMath::Abs(err) < 3 * sigma) ? err : (err > 0) ? 3 * sigma : -3 * sigma;
+}
 
 
-ClassImp(FairTutorialDetHitProducerIdealMissallign)
+
+ClassImp(FairTutorialDetHitProducerIdealMisalign)

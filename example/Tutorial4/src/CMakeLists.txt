@@ -34,12 +34,12 @@ mc/FairTutorialDetGeo.cxx
 
 param/FairTutorialDetContFact.cxx
 param/FairTutorialDetGeoPar.cxx
-param/FairTutorialDetMissallignPar.cxx
+param/FairTutorialDetMisalignPar.cxx
 
 data/FairTutorialDetPoint.cxx
 data/FairTutorialDetHit.cxx
 
-reco/FairTutorialDetHitProducerIdealMissallign.cxx
+reco/FairTutorialDetHitProducerIdealMisalign.cxx
 reco/FairTutorialDetStraightLineFitter.cxx
 reco/FairTutorialDetMilleWriter.cxx
 

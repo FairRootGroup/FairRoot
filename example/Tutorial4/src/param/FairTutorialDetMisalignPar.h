@@ -7,14 +7,14 @@
 
 class FairParamList;
 
-class FairTutorialDetMissallignPar : public FairParGenericSet
+class FairTutorialDetMisalignPar : public FairParGenericSet
 {
   public:
 
-    FairTutorialDetMissallignPar(const char* name="FairTutorialDetMissallignPar",
-                                 const char* title="Missalignment parameter for FairTutorialDetHitProducerIdealMissallign Parameters",
-                                 const char* context="TestDefaultContext");
-    ~FairTutorialDetMissallignPar(void);
+    FairTutorialDetMisalignPar(const char* name="FairTutorialDetMissallignPar",
+                               const char* title="Missalignment parameter for FairTutorialDetHitProducerIdealMissallign Parameters",
+                               const char* context="TestDefaultContext");
+    ~FairTutorialDetMisalignPar(void);
     void clear(void);
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);
@@ -29,10 +29,10 @@ class FairTutorialDetMissallignPar : public FairParGenericSet
     TArrayD fShiftY; // Array to hold the missallignment in x-direction
     Int_t fNrOfDetectors; // Total number of detectors
 
-    FairTutorialDetMissallignPar(const FairTutorialDetMissallignPar&);
-    FairTutorialDetMissallignPar& operator=(const FairTutorialDetMissallignPar&);
+    FairTutorialDetMisalignPar(const FairTutorialDetMisalignPar&);
+    FairTutorialDetMisalignPar& operator=(const FairTutorialDetMisalignPar&);
 
-    ClassDef(FairTutorialDetMissallignPar,1)
+    ClassDef(FairTutorialDetMisalignPar,1)
 };
 
 #endif

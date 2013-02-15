@@ -7,11 +7,11 @@
 #pragma link C++ class FairTutorialDetContFact;
 #pragma link C++ class FairTutorialDetGeo;
 #pragma link C++ class FairTutorialDetGeoPar;
-#pragma link C++ class FairTutorialDetMissallignPar;
+#pragma link C++ class FairTutorialDetMisalignPar;
 #pragma link C++ class FairTutorialDet+;
 #pragma link C++ class FairTutorialDetPoint+;
 #pragma link C++ class FairTutorialDetHit+;
-#pragma link C++ class FairTutorialDetHitProducerIdealMissallign+;
+#pragma link C++ class FairTutorialDetHitProducerIdealMisalign+;
 #pragma link C++ class FairTutorialDetGeoHandler+;
 #pragma link C++ class FairTutorialDetStraightLineFitter+;
 #pragma link C++ class FairTutorialDetMilleWriter+;

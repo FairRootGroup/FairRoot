@@ -1,12 +1,12 @@
-#include "FairTutorialDetMissallignPar.h"
+#include "FairTutorialDetMisalignPar.h"
 
 #include "FairParamList.h"
 
 //#include <iostream>
 
-ClassImp(FairTutorialDetMissallignPar)
+ClassImp(FairTutorialDetMisalignPar)
 
-FairTutorialDetMissallignPar ::FairTutorialDetMissallignPar(const char* name,
+FairTutorialDetMisalignPar ::FairTutorialDetMisalignPar(const char* name,
     const char* title,
     const char* context)
   : FairParGenericSet(name,title,context),
@@ -16,15 +16,15 @@ FairTutorialDetMissallignPar ::FairTutorialDetMissallignPar(const char* name,
 {
 }
 
-FairTutorialDetMissallignPar::~FairTutorialDetMissallignPar(void)
+FairTutorialDetMisalignPar::~FairTutorialDetMisalignPar(void)
 {
 }
 
-void FairTutorialDetMissallignPar::clear(void)
+void FairTutorialDetMisalignPar::clear(void)
 {
 }
 
-void FairTutorialDetMissallignPar::putParams(FairParamList* l)
+void FairTutorialDetMisalignPar::putParams(FairParamList* l)
 {
   if (!l) { return; }
 
@@ -34,7 +34,7 @@ void FairTutorialDetMissallignPar::putParams(FairParamList* l)
 
 }
 
-Bool_t FairTutorialDetMissallignPar::getParams(FairParamList* l)
+Bool_t FairTutorialDetMisalignPar::getParams(FairParamList* l)
 {
   if (!l) { return kFALSE; }
 
