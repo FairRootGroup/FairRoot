@@ -39,7 +39,8 @@ void run_reco()
   TString workDir = gSystem->Getenv("VMCWORKDIR");
   paramDir = workDir + "/example/Tutorial4/macros/parameters/";
 
-  TObjString tutDetDigiFile = paramDir + "TutorialDet.missallign.par";
+//  TObjString tutDetDigiFile = paramDir + "TutorialDet.missallign.par";
+  TObjString tutDetDigiFile = paramDir + "example.par";
   parFileList->Add(&tutDetDigiFile);
 
   // -----   Timer   --------------------------------------------------------
@@ -62,13 +63,16 @@ void run_reco()
   rtdb->saveOutput();
    
   // -----   TorinoDetector hit  producers   ---------------------------------
-  FairTutorialDetHitProducerIdealMissallign* hitProducer = new FairTutorialDetHitProducerIdealMissallign();
+  FairTutorialDetHitProducerIdealMisalign* hitProducer = new FairTutorialDetHitProducerIdealMisalign();
   fRun->AddTask(hitProducer);
 
   FairTutorialDetStraightLineFitter* fitter = new FairTutorialDetStraightLineFitter();
+  fitter->SetVersion(2);
   fRun->AddTask(fitter);
 
   FairTutorialDetMilleWriter* writer = new FairTutorialDetMilleWriter();
+//  writer->SetWriteAscii(kTRUE);
+  writer->SetVersion(2);
   fRun->AddTask(writer);
   
 

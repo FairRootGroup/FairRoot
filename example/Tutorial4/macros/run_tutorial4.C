@@ -12,7 +12,7 @@ void run_tutorial4(Int_t nEvents = 10)
 
   Double_t momentum = 2.;
 
-  Double_t theta    = 0.;
+  Double_t theta    = 2.;
 
   TString outDir = "./";
 

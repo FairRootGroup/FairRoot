@@ -1,0 +1,4 @@
+ Constraint  0.0
+      1     1.00000
+ Constraint  0.0
+      40    1.00000
