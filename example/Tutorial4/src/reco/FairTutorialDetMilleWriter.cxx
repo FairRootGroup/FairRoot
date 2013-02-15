@@ -82,7 +82,8 @@ InitStatus FairTutorialDetMilleWriter::ReInit()
 void FairTutorialDetMilleWriter::Exec(Option_t* option)
 {
   if (1 == fVersion) { ExecVersion1(option); }
-  if (2 == fVersion) { ExecVersion2(option); }
+  if (2 == fVersion) { StraightLine1Dim(option); }
+  if (3 == fVersion) { StraightLine2Dim(option); }
 
 }
 
@@ -197,18 +198,18 @@ void FairTutorialDetMilleWriter::ExecVersion1(Option_t* option)
 
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDetMilleWriter::ExecVersion2(Option_t* option)
+void FairTutorialDetMilleWriter::StraightLine2Dim(Option_t* option)
 {
   fLogger->Info(MESSAGE_ORIGIN,"Exec Version2");
 
-  const Int_t nLC = 2; // number of local parameters
+  const Int_t nLC = 4; // number of local parameters
   // two for track x-coordinate
   // x(z) = a1*z + a2
   // dx(z)/da1 = z
   // dx(z)/da2 = 1
 
 
-  const Int_t nGL = 1; // number of global parameters per point
+  const Int_t nGL = 2; // number of global parameters per point
   // taken from millepede 1 dim example
 
   Float_t sigma = 0.1;
@@ -232,6 +233,8 @@ void FairTutorialDetMilleWriter::ExecVersion2(Option_t* option)
   //Extract Track parameters
   Double_t OffX = track->GetX();
   Double_t SlopeX = track->GetTx();
+  Double_t OffY = track->GetY();
+  Double_t SlopeY = track->GetTy();
 
   Double_t residual;
 
@@ -245,16 +248,35 @@ void FairTutorialDetMilleWriter::ExecVersion2(Option_t* option)
       Float_t Z = hit->GetZ();
       Float_t hitX = hit->GetX();
       Float_t fitX = OffX + SlopeX * Z;
+      Float_t hitY = hit->GetY();
+      Float_t fitY = OffY + SlopeY * Z;
       LOG(INFO)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
 
       label[0] = iHit+1;
+      label[1] = iHit+101;
 
       derGL[0] = -1;
+      derGL[1] = 0;
 
       derLC[0] = 1;
       derLC[1] = Z;
+      derLC[2] = 0;
+      derLC[3] = 0;
 
       residual = fitX - hitX;
+      LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
+      //call to Mille Writer
+      fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
+
+      derGL[0] = 0;
+      derGL[1] = -1;
+
+      derLC[0] = 0;
+      derLC[1] = 0;
+      derLC[2] = 1;
+      derLC[3] = Z;
+
+      residual = fitY - hitY;
       LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
       //call to Mille Writer
       fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
