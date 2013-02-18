@@ -63,6 +63,10 @@ class FairTutorialDetHitProducerIdealMisalign : public FairTask
 
     TArrayD fShiftX;
     TArrayD fShiftY;
+    TArrayD fShiftZ;
+    TArrayD fRotX;
+    TArrayD fRotY;
+    TArrayD fRotZ;
 
     FairTutorialDetMisalignPar* fDigiPar;
 

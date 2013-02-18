@@ -14,7 +14,7 @@ FairTutorialDetStraightLineFitter::FairTutorialDetStraightLineFitter()
   :FairTask("FairTutorialDetStraightLineFitter"),
    fHits(NULL),
    fTracks(NULL),
-   fVersion(1)
+   fVersion(2)
 {
   fLogger->Debug(MESSAGE_ORIGIN,"Defaul Constructor of FairTutorialDetStraightLineFitter");
 }
@@ -86,6 +86,8 @@ void FairTutorialDetStraightLineFitter::Exec(Option_t* option)
 {
   fLogger->Debug(MESSAGE_ORIGIN,"Exec of FairTutorialDetStraightLineFitter");
 
+  if (!IsGoodEvent()) { return; }
+
   // Declare some variables
   FairTutorialDetHit* hit = NULL;
   Int_t detID   = 0;        // Detector ID
@@ -103,62 +105,89 @@ void FairTutorialDetStraightLineFitter::Exec(Option_t* option)
   Float_t* YPos = new Float_t[nHits];
   Float_t* YPosErr = new Float_t[nHits];
 
-  if(40 == nHits) {
-    for (Int_t iHit=0; iHit<nHits; iHit++) {
-      hit = (FairTutorialDetHit*) fHits->At(iHit);
-      if ( ! hit) { continue; }
+  for (Int_t iHit=0; iHit<nHits; iHit++) {
+    hit = (FairTutorialDetHit*) fHits->At(iHit);
+    if ( ! hit) { continue; }
 
-      XPos[iHit] = hit->GetX();
-      YPos[iHit] = hit->GetY();
-      ZPos[iHit] = hit->GetZ();
+    XPos[iHit] = hit->GetX();
+    YPos[iHit] = hit->GetY();
+    ZPos[iHit] = hit->GetZ();
 
-      XPosErr[iHit] = hit->GetDx();
-      YPosErr[iHit] = hit->GetDy();
-    }
-    TF1* f1 = new TF1("f1", "[0]*x + [1]");
-    TGraphErrors* LineGraph;
+    XPosErr[iHit] = hit->GetDx();
+    YPosErr[iHit] = hit->GetDy();
+  }
 
-    LineGraph = new TGraphErrors(nHits, ZPos, XPos, 0, XPosErr);
+  TF1* f1 = new TF1("f1", "[0]*x + [1]");
+  TGraphErrors* LineGraph;
+
+  LineGraph = new TGraphErrors(nHits, ZPos, XPos, 0, XPosErr);
+  LineGraph->Fit("f1", "Q");
+  Double_t SlopeX = f1->GetParameter(0);
+  Double_t OffX = f1->GetParameter(1);
+  Double_t Chi2X = f1->GetChisquare();
+  Double_t SlopeY;
+  Double_t OffY;
+  Double_t Chi2Y;
+
+  if ( 2 == fVersion ) {
+    LineGraph = new TGraphErrors(nHits, ZPos, YPos, 0, YPosErr);
     LineGraph->Fit("f1", "Q");
-    Double_t SlopeX = f1->GetParameter(0);
-    Double_t OffX = f1->GetParameter(1);
-    Double_t Chi2X = f1->GetChisquare();
-    Double_t SlopeY;
-    Double_t OffY;
-    Double_t Chi2Y;
+    SlopeY = f1->GetParameter(0);
+    OffY = f1->GetParameter(1);
+    Chi2Y = f1->GetChisquare();
 
-    if ( 1 == fVersion ) {
-      LineGraph = new TGraphErrors(nHits, ZPos, YPos, 0, YPosErr);
-      LineGraph->Fit("f1", "Q");
-      SlopeY = f1->GetParameter(0);
-      OffY = f1->GetParameter(1);
-      Chi2Y = f1->GetChisquare();
+    LOG(INFO)<<XPos[0]<<","<<XPos[nHits-1]<<","<<YPos[0]<<","<<YPos[nHits-1]<<","<<ZPos[0]<<","<<ZPos[nHits-1]<<FairLogger::endl;
+    Double_t XSlope = (XPos[nHits-1]-XPos[0])/(ZPos[nHits-1]-ZPos[0]);
+    Double_t YSlope = (YPos[nHits-1]-YPos[0])/(ZPos[nHits-1]-ZPos[0]);
 
-      LOG(INFO)<<XPos[0]<<","<<XPos[nHits-1]<<","<<YPos[0]<<","<<YPos[nHits-1]<<","<<ZPos[0]<<","<<ZPos[nHits-1]<<FairLogger::endl;
-      Double_t XSlope = (XPos[nHits-1]-XPos[0])/(ZPos[nHits-1]-ZPos[0]);
-      Double_t YSlope = (YPos[nHits-1]-YPos[0])/(ZPos[nHits-1]-ZPos[0]);
-
-      LOG(INFO)<<"Slope(x,y): "<<SlopeX<<" ,"<<SlopeY<<FairLogger::endl;
-      LOG(INFO)<<"Slope1(x,y): "<<XSlope<<" ,"<<YSlope<<FairLogger::endl;
-      LOG(INFO)<<"Offset(x,y): "<<OffX<<" ,"<<OffY<<FairLogger::endl;
-      LOG(INFO)<<"Chi2(x,y): "<<Chi2X<<" ,"<<Chi2Y<<FairLogger::endl;
-
-    }
-
-    FairTrackParam* track = new FairTrackParam();
-    track->SetX(OffX);
-    track->SetTx(SlopeX);
-    track->SetZ(0.);
-    if ( 1 == fVersion ) {
-      track->SetY(OffY);
-      track->SetTy(SlopeY);
-    }
-    new ((*fTracks)[0]) FairTrackParam(*track);
-//  const TMatrixFSym matrix;
-//  Double_t Z = 0.;
-//  new ((*fTracks)[0]) FairTrackParam(OffX, OffY, Z, SlopeX, SlopeY, matrix);
+    LOG(INFO)<<"Slope(x,y): "<<SlopeX<<" ,"<<SlopeY<<FairLogger::endl;
+    LOG(INFO)<<"Slope1(x,y): "<<XSlope<<" ,"<<YSlope<<FairLogger::endl;
+    LOG(INFO)<<"Offset(x,y): "<<OffX<<" ,"<<OffY<<FairLogger::endl;
+    LOG(INFO)<<"Chi2(x,y): "<<Chi2X<<" ,"<<Chi2Y<<FairLogger::endl;
 
   }
+
+  FairTrackParam* track = new FairTrackParam();
+  track->SetX(OffX);
+  track->SetTx(SlopeX);
+  track->SetZ(0.);
+  if ( 2 == fVersion ) {
+    track->SetY(OffY);
+    track->SetTy(SlopeY);
+  }
+  new ((*fTracks)[0]) FairTrackParam(*track);
+  //  const TMatrixFSym matrix;
+  //  Double_t Z = 0.;
+  //  new ((*fTracks)[0]) FairTrackParam(OffX, OffY, Z, SlopeX, SlopeY, matrix);
+
+
+}
+
+Bool_t FairTutorialDetStraightLineFitter::IsGoodEvent()
+{
+  // Check if each for the event there is maximum 1 hit per detector
+  // station. In the moment we create tracks with all hits in the
+  // event, so we have to check for this.
+  // In the end the algorithm should be able to work also with
+  // missing hits in some stations
+  FairTutorialDetHit* hit;
+  std::set<Int_t> detIdSet;
+  std::set<Int_t>::iterator it;
+
+  Int_t nHits = fHits->GetEntriesFast();
+  for (Int_t iHit=0; iHit<nHits; ++iHit) {
+    hit = (FairTutorialDetHit*) fHits->At(iHit);
+    Int_t detId = hit->GetDetectorID();
+    it = detIdSet.find(detId);
+    if ( it == detIdSet.end() ) {
+      detIdSet.insert(detId);
+    } else {
+      // find hit in already used detector station
+      // this is not a good event
+      return kFALSE;
+    }
+  }
+  return kTRUE;
 }
 
 // ---- Finish --------------------------------------------------------

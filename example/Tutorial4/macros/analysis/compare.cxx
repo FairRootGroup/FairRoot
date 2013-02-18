@@ -125,8 +125,8 @@ int main(int argc, char* argv[])
   int numBadValues = 0;
   for (int i=0; i<maxValue+1; ++i) {
     float diff = recoShifts[i]+origShifts[i];
-    float percent = fabs(diff/origShifts[i]);
-    if ( percent > 0.01) {
+    float percent = fabs(diff/origShifts[i])*100;
+    if ( percent > 1.) {
       cout<<i<<" : "<<recoShifts[i]<<", "<<origShifts[i]<<", "<<diff<<", "<<percent<<endl;
       numBadValues++;
     }

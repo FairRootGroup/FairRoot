@@ -22,6 +22,10 @@ FairTutorialDetHitProducerIdealMisalign::FairTutorialDetHitProducerIdealMisalign
     fHitArray(NULL),
     fShiftX(),
     fShiftY(),
+    fShiftZ(),
+    fRotX(),
+    fRotY(),
+    fRotZ(),
     fDigiPar(NULL)
 {
 }
@@ -55,6 +59,10 @@ InitStatus FairTutorialDetHitProducerIdealMisalign::ReInit()
 
   fShiftX=fDigiPar->GetShiftX();
   fShiftY=fDigiPar->GetShiftY();
+  fShiftZ=fDigiPar->GetShiftZ();
+  fRotX=fDigiPar->GetRotX();
+  fRotY=fDigiPar->GetRotY();
+  fRotZ=fDigiPar->GetRotZ();
 }
 
 // -----   Public method Init   --------------------------------------------
@@ -85,6 +93,10 @@ InitStatus FairTutorialDetHitProducerIdealMisalign::Init()
 
   fShiftX=fDigiPar->GetShiftX();
   fShiftY=fDigiPar->GetShiftY();
+  fShiftZ=fDigiPar->GetShiftZ();
+  fRotX=fDigiPar->GetRotX();
+  fRotY=fDigiPar->GetRotY();
+  fRotZ=fDigiPar->GetRotZ();
   /*
     Int_t num = fDigiPar->GetNrOfDetectors();
     Int_t size = fShiftX.GetSize();

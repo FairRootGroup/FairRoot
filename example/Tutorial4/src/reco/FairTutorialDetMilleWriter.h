@@ -45,8 +45,10 @@ class FairTutorialDetMilleWriter : public FairTask
   private:
 
     void ExecVersion1(Option_t* opt);
-    void StraightLine1Dim(Option_t* opt);
-    void StraightLine2Dim(Option_t* opt);
+    void StraightLineShiftX(Option_t* opt);
+    void StraightLineShiftXY(Option_t* opt);
+
+    Bool_t IsGoodEvent();
 
     /** Input array from previous already existing data level **/
     TClonesArray* fTracks;

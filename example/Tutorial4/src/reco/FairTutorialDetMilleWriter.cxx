@@ -81,26 +81,52 @@ InitStatus FairTutorialDetMilleWriter::ReInit()
 // ---- Exec ----------------------------------------------------------
 void FairTutorialDetMilleWriter::Exec(Option_t* option)
 {
-  if (1 == fVersion) { ExecVersion1(option); }
-  if (2 == fVersion) { StraightLine1Dim(option); }
-  if (3 == fVersion) { StraightLine2Dim(option); }
-
+  if (IsGoodEvent()) {
+    if (1 == fVersion) { StraightLineShiftX(option); }
+    if (2 == fVersion) { StraightLineShiftXY(option); }
+  }
 }
 
-// ---- Exec ----------------------------------------------------------
-void FairTutorialDetMilleWriter::ExecVersion1(Option_t* option)
+Bool_t FairTutorialDetMilleWriter::IsGoodEvent()
 {
-  fLogger->Info(MESSAGE_ORIGIN,"Exec Version1");
+  // Check if each for the event there is maximum 1 hit per detector
+  // station. In the moment we create tracks with all hits in the
+  // event, so we have to check for this.
+  // In the end the algorithm should be able to work also with
+  // missing hits in some stations
+  FairTutorialDetHit* hit;
+  std::set<Int_t> detIdSet;
+  std::set<Int_t>::iterator it;
 
-  const Int_t nLC = 4; // number of local parameters
-  // two for track x-coordinate, another two for the y-coordinate
+  Int_t nHits = fHits->GetEntriesFast();
+  for (Int_t iHit=0; iHit<nHits; ++iHit) {
+    hit = (FairTutorialDetHit*) fHits->At(iHit);
+    Int_t detId = hit->GetDetectorID();
+    it = detIdSet.find(detId);
+    if ( it == detIdSet.end() ) {
+      detIdSet.insert(detId);
+    } else {
+      // find hit in already used detector station
+      // this is not a good event
+      return kFALSE;
+    }
+  }
+  return kTRUE;
+}
+
+void FairTutorialDetMilleWriter::StraightLineShiftX(Option_t* option)
+{
+  fLogger->Info(MESSAGE_ORIGIN,"Exec Version2");
+
+  const Int_t nLC = 2; // number of local parameters
+  // two for track x-coordinate
   // x(z) = a1*z + a2
   // dx(z)/da1 = z
   // dx(z)/da2 = 1
 
 
-  const Int_t nGL = 40 * 2; // number of global parameters, 40 detector layers * 2 shifts
-//  const Int_t nGL = 2; // number of global parameters per one of the 40 detector layers = 2 shifts per layer
+  const Int_t nGL = 1; // number of global parameters per point
+  // taken from millepede 1 dim example
 
   Float_t sigma = 0.1;
 
@@ -109,14 +135,6 @@ void FairTutorialDetMilleWriter::ExecVersion1(Option_t* option)
 
   Int_t* label = new Int_t[nGL]; // array of labels
 
-
-  // create labels
-  // 1-40 for the x-coordinates of detector 1-40
-  // 101-140 for the y-coordinate of detector 1-40
-  for (Int_t help = 0; help < nGL; help++) {
-    if (help < 40) { label[help] = help + 1; }
-    else { label[help] = help + 61; }
-  }
 
   for (Int_t help = 0; help < nGL; help++) {
     derGL[help] = 0;
@@ -130,75 +148,40 @@ void FairTutorialDetMilleWriter::ExecVersion1(Option_t* option)
 
   //Extract Track parameters
   Double_t OffX = track->GetX();
-  Double_t OffY = track->GetY();
   Double_t SlopeX = track->GetTx();
-  Double_t SlopeY = track->GetTy();
 
   Double_t residual;
 
   FairTutorialDetHit* hit;
 
   Int_t nHits = fHits->GetEntriesFast();
-  if (40 == nHits) {
-    for (Int_t iHit=0; iHit<nHits; ++iHit) {
-      hit = (FairTutorialDetHit*) fHits->At(iHit);
+  for (Int_t iHit=0; iHit<nHits; ++iHit) {
+    hit = (FairTutorialDetHit*) fHits->At(iHit);
 
-      Float_t Z = hit->GetZ();
-      Float_t hitX = hit->GetX();
-      Float_t fitX = OffX + SlopeX * Z;
-      Float_t hitY = hit->GetY();
-      Float_t fitY = OffY + SlopeY * Z;
+    Float_t Z = hit->GetZ();
+    Float_t hitX = hit->GetX();
+    Float_t fitX = OffX + SlopeX * Z;
+    LOG(INFO)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
 
-      LOG(INFO)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
-      LOG(INFO)<<"hitY, fitY: "<< hitY<<" ,"<<fitY<<FairLogger::endl;
+    label[0] = iHit+1;
 
-//    label[0] = iHit+1;
-//    label[1] = iHit+101;
+    derGL[0] = -1;
 
-      derGL[(iHit*2)+0] = -1;
+    derLC[0] = 1;
+    derLC[1] = Z;
 
-      derLC[0] = 1;
-      derLC[2] = Z;
-
-      residual = fitX - hitX;
-      LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
-      //call to Mille Writer
-      LOG(INFO)<<"Hit Nr: "<<iHit<<FairLogger::endl;
-      fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
-
-      // set parameters for x to zero (don't know why)
-      derGL[(iHit*2)+0] = 0;
-
-      derLC[0] = 0;
-      derLC[2] = 0;
-
-
-      derGL[(iHit*2)+1] = -1;
-
-      derLC[1] = 1;
-      derLC[3] = Z;
-
-      residual = fitY - hitY;
-      LOG(INFO)<<"ResidualY: "<< residual<<FairLogger::endl;
-      //call to Mille Writer
-      fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
-
-      // set parameters for x to zero (don't know why)
-      derGL[(iHit*2)+1] = 0;
-
-      derLC[1] = 0;
-      derLC[3] = 0;
-
-
-    }
-    fMille->end();
+    residual = fitX - hitX;
+    LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
+    //call to Mille Writer
+    fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
 
   }
+  fMille->end();
+
 }
 
-
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDetMilleWriter::StraightLine2Dim(Option_t* option)
+void FairTutorialDetMilleWriter::StraightLineShiftXY(Option_t* option)
 {
   fLogger->Info(MESSAGE_ORIGIN,"Exec Version2");
 
@@ -241,51 +224,48 @@ void FairTutorialDetMilleWriter::StraightLine2Dim(Option_t* option)
   FairTutorialDetHit* hit;
 
   Int_t nHits = fHits->GetEntriesFast();
-  if (40 == nHits) {
-    for (Int_t iHit=0; iHit<nHits; ++iHit) {
-      hit = (FairTutorialDetHit*) fHits->At(iHit);
+  for (Int_t iHit=0; iHit<nHits; ++iHit) {
+    hit = (FairTutorialDetHit*) fHits->At(iHit);
 
-      Float_t Z = hit->GetZ();
-      Float_t hitX = hit->GetX();
-      Float_t fitX = OffX + SlopeX * Z;
-      Float_t hitY = hit->GetY();
-      Float_t fitY = OffY + SlopeY * Z;
-      LOG(INFO)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
+    Float_t Z = hit->GetZ();
+    Float_t hitX = hit->GetX();
+    Float_t fitX = OffX + SlopeX * Z;
+    Float_t hitY = hit->GetY();
+    Float_t fitY = OffY + SlopeY * Z;
+    LOG(INFO)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
 
-      label[0] = iHit+1;
-      label[1] = iHit+101;
+    label[0] = iHit+1;
+    label[1] = iHit+101;
 
-      derGL[0] = -1;
-      derGL[1] = 0;
+    derGL[0] = -1;
+    derGL[1] = 0;
 
-      derLC[0] = 1;
-      derLC[1] = Z;
-      derLC[2] = 0;
-      derLC[3] = 0;
+    derLC[0] = 1;
+    derLC[1] = Z;
+    derLC[2] = 0;
+    derLC[3] = 0;
 
-      residual = fitX - hitX;
-      LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
-      //call to Mille Writer
-      fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
+    residual = fitX - hitX;
+    LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
+    //call to Mille Writer
+    fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
 
-      derGL[0] = 0;
-      derGL[1] = -1;
+    derGL[0] = 0;
+    derGL[1] = -1;
 
-      derLC[0] = 0;
-      derLC[1] = 0;
-      derLC[2] = 1;
-      derLC[3] = Z;
+    derLC[0] = 0;
+    derLC[1] = 0;
+    derLC[2] = 1;
+    derLC[3] = Z;
 
-      residual = fitY - hitY;
-      LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
-      //call to Mille Writer
-      fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
+    residual = fitY - hitY;
+    LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
+    //call to Mille Writer
+    fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
 
-    }
-    fMille->end();
-  } else {
-    LOG(INFO) <<"Event has "<<nHits<<" which is to much."<<FairLogger::endl;
   }
+  fMille->end();
+
 }
 
 // ---- Finish --------------------------------------------------------

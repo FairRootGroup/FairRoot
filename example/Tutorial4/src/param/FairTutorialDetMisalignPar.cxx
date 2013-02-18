@@ -12,6 +12,10 @@ FairTutorialDetMisalignPar ::FairTutorialDetMisalignPar(const char* name,
   : FairParGenericSet(name,title,context),
     fShiftX(),
     fShiftY(),
+    fShiftZ(),
+    fRotX(),
+    fRotY(),
+    fRotZ(),
     fNrOfDetectors(0)
 {
 }
@@ -31,6 +35,10 @@ void FairTutorialDetMisalignPar::putParams(FairParamList* l)
   l->add("NrOfDetectors", fNrOfDetectors);
   l->add("ShiftX", fShiftX);
   l->add("ShiftY", fShiftY);
+  l->add("ShiftZ", fShiftZ);
+  l->add("RotationX", fRotX);
+  l->add("RotationY", fRotY);
+  l->add("RotationZ", fRotZ);
 
 }
 
@@ -45,6 +53,18 @@ Bool_t FairTutorialDetMisalignPar::getParams(FairParamList* l)
 
   fShiftY.Set(fNrOfDetectors);
   if ( ! l->fill("ShiftY", &fShiftY )) { return kFALSE; }
+
+  fShiftZ.Set(fNrOfDetectors);
+  if ( ! l->fill("ShiftZ", &fShiftZ )) { return kFALSE; }
+
+  fRotX.Set(fNrOfDetectors);
+  if ( ! l->fill("RotationX", &fRotX )) { return kFALSE; }
+
+  fRotY.Set(fNrOfDetectors);
+  if ( ! l->fill("RotationY", &fRotY )) { return kFALSE; }
+
+  fRotZ.Set(fNrOfDetectors);
+  if ( ! l->fill("RotationZ", &fRotZ )) { return kFALSE; }
 
   return kTRUE;
 }

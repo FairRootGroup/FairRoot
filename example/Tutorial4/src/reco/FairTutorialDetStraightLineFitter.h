@@ -48,6 +48,8 @@ class FairTutorialDetStraightLineFitter : public FairTask
 
     Int_t fVersion;
 
+    Bool_t IsGoodEvent();
+
     FairTutorialDetStraightLineFitter(const FairTutorialDetStraightLineFitter&);
     FairTutorialDetStraightLineFitter operator=(const FairTutorialDetStraightLineFitter&);
 
