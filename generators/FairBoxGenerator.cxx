@@ -83,12 +83,13 @@ Bool_t  FairBoxGenerator::Init()
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
   TParticlePDG* particle = pdgBase->GetParticle(fPDGType);
 
-  if (! particle) { Fatal("FairBoxGenerator","PDG code %d not defined.",fPDGType); }
-
-
-  fPDGMass = particle->Mass();
-// printf("particle->Mass() = %f \n", fPDGMass);
-  return kTRUE;
+  if (! particle) {
+    Fatal("FairBoxGenerator","PDG code %d not defined.",fPDGType);
+  } else {
+    fPDGMass = particle->Mass();
+    // printf("particle->Mass() = %f \n", fPDGMass);
+    return kTRUE;
+  }
 
 }
 

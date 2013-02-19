@@ -36,8 +36,8 @@ void FairBoxSetEditor::Init()
 {
 
   FairRootManager* fRootManager=FairRootManager::Instance();
-  TChain* chain =fRootManager->GetInChain();
-  Int_t Entries= chain->GetEntriesFast();
+//  TChain* chain =fRootManager->GetInChain();
+//  Int_t Entries= chain->GetEntriesFast();
 
   MakeTitle("FairBoxSet  Editor");
   fInfoFrame= CreateEditorTabSubFrame("Time");

@@ -117,8 +117,9 @@ FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
   if ( ! run ) {
     cout << "-E- FairIonGenerator: No FairRun instantised!" << endl;
     Fatal("FairIonGenerator", "No FairRun instantised!");
+  } else {
+    run->AddNewIon(fIon);
   }
-  run->AddNewIon(fIon);
 }
 //_________________________________________________________________________
 

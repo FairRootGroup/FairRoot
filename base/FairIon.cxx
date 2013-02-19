@@ -2,13 +2,10 @@
 // -----                         FairIon source file                    -----
 // -------------------------------------------------------------------------
 #include "FairIon.h"
+#include "FairLogger.h"
 
-#include <iostream>
 #include "TDatabasePDG.h"
 #include "TParticlePDG.h"
-
-using std::cout;
-using std::endl;
 
 const Double_t FairIon::amu=0.931494028 ; // Gev/c**2
 
@@ -20,7 +17,8 @@ FairIon::FairIon()
    fA(0),
    fQ(0),
    fExcEnergy(0),
-   fMass(0)
+   fMass(0),
+   fLogger(FairLogger::GetLogger())
 {
 
 }
@@ -35,7 +33,8 @@ FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e,
     fA(a),
     fQ(q),
     fExcEnergy(e),
-    fMass(0)
+    fMass(0),
+    fLogger(FairLogger::GetLogger())
 {
 
   TDatabasePDG* pdgDB = TDatabasePDG::Instance();
@@ -44,15 +43,16 @@ FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e,
 
   if (mass == 0.) { fMass = kProtonMass * Double_t(a); }
   else { fMass = mass; }
-  cout << "-I- FairIon: New ion " << name << ", z = " <<  z << ", a = "
-       << a << ", charge = " << q << ", mass = " << fMass << " GeV "
-       << endl;
+  fLogger->Info(MESSAGE_ORIGIN, "New Ion %s Z = %f  A =%f  Charge=%f  Mass=%f GeV ", name, z, a , q, fMass );
+
 }
 // -------------------------------------------------------------------------
 
 
 // -----   Destructor   ----------------------------------------------------
-FairIon::~FairIon() {};
+FairIon::~FairIon()
+{
+};
 // -------------------------------------------------------------------------
 
 

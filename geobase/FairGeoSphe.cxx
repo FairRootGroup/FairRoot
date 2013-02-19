@@ -82,14 +82,17 @@ Int_t FairGeoSphe::readPoints(fstream* pFile,FairGeoVolume* volu)
 Bool_t FairGeoSphe::writePoints(fstream* pFile,FairGeoVolume* volu)
 {
   // writes the 3 'points' decribed above to ascii file
-  if (!pFile) { return kFALSE; }
-  Text_t buf[155];
-  for(Int_t i=0; i<nPoints; i++) {
-    FairGeoVector& v=*(volu->getPoint(i));
-    sprintf(buf,"%9.3f%10.3f\n",v(0),v(1));
-    pFile->write(buf,strlen(buf));
+  if (!pFile) {
+    return kFALSE;
+  } else {
+    Text_t buf[155];
+    for(Int_t i=0; i<nPoints; i++) {
+      FairGeoVector& v=*(volu->getPoint(i));
+      sprintf(buf,"%9.3f%10.3f\n",v(0),v(1));
+      pFile->write(buf,strlen(buf));
+    }
+    return kTRUE;
   }
-  return kTRUE;
 }
 
 

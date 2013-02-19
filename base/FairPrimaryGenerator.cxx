@@ -198,20 +198,22 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
 
   // ---> Check whether particle type is in PDG Database
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  if ( ! pdgBase ) Fatal("FairPrimaryGenerator",
-                           "No TDatabasePDG instantiated");
-  TParticlePDG* pdgPart = pdgBase->GetParticle(pdgid);
-  if ( ! pdgPart ) {
-    if( e<0) {
-      cerr << "\033[5m\033[31m -E FairPrimaryGenerator: PDG code " << pdgid << " not found in database.\033[0m " << endl;
-      cerr << "\033[5m\033[31m -E FairPrimaryGenerator: Discarding particle \033[0m " << endl;
-      cerr << "\033[5m\033[31m -E FairPrimaryGenerator: now MC Index is corrupted \033[0m " << endl;
-      return;
-    } else {
-      cout << "\033[5m\033[31m -W FairPrimaryGenerator: PDG code " << pdgid << " not found in database. This warning can be savely ignored.\033[0m " << endl;
+  if ( ! pdgBase ) {
+    Fatal("FairPrimaryGenerator",
+          "No TDatabasePDG instantiated");
+  } else {
+    TParticlePDG* pdgPart = pdgBase->GetParticle(pdgid);
+    if ( ! pdgPart ) {
+      if( e<0) {
+        cerr << "\033[5m\033[31m -E FairPrimaryGenerator: PDG code " << pdgid << " not found in database.\033[0m " << endl;
+        cerr << "\033[5m\033[31m -E FairPrimaryGenerator: Discarding particle \033[0m " << endl;
+        cerr << "\033[5m\033[31m -E FairPrimaryGenerator: now MC Index is corrupted \033[0m " << endl;
+        return;
+      } else {
+        cout << "\033[5m\033[31m -W FairPrimaryGenerator: PDG code " << pdgid << " not found in database. This warning can be savely ignored.\033[0m " << endl;
+      }
     }
   }
-
   // ---> Get mass and calculate energy of particle
   if(e<0) {
     Double_t mass = pdgBase->GetParticle(pdgid)->Mass();

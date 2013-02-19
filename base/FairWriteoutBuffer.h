@@ -32,6 +32,7 @@
 #include "FairTimeStamp.h"
 #include <map>
 
+class  FairLogger;
 
 class FairWriteoutBuffer: public TObject
 {
@@ -95,6 +96,7 @@ class FairWriteoutBuffer: public TObject
     Bool_t fTreeSave;
     Bool_t fActivateBuffering;
     Int_t fVerbose;
+    FairLogger* fLogger;  //! /// FairLogger
     ClassDef(FairWriteoutBuffer, 1);
 };
 

@@ -16,7 +16,7 @@
 #define FAIRION_H
 
 #include "TNamed.h"
-
+class FairLogger;
 class FairIon: public TNamed
 {
   public:
@@ -92,10 +92,11 @@ class FairIon: public TNamed
     Int_t    fQ;          /// Electric charge
     Double_t fExcEnergy;  /// Excitation energy [GeV]
     Double_t fMass;       /// Mass [GeV]
-
+    FairLogger* fLogger;  //! /// FairLogger
     static const Double_t amu; ///  .931494028 Gev/c**2
 
-    ClassDef(FairIon,1);
+
+    ClassDef(FairIon,2);
 
 };
 

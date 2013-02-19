@@ -11,16 +11,19 @@
 #include "FairModule.h"
 #include "FairVolume.h"
 #include "FairGeoNode.h"
+#include "FairLogger.h"
 
 
 #include "TVirtualMC.h"
 #include "TString.h"
 #include "TFolder.h"
 #include "TROOT.h"
+// -------------------------------------------------------------------------
 
 FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId )
   :FairModule(Name, "FAIR Detector", Active),
-   fDetId(DetId)
+   fDetId(DetId),
+   fLogger(FairLogger::GetLogger())
 {
   flGeoPar = new TList();
   TString lname( GetName());
@@ -30,18 +33,22 @@ FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId )
 
 
 }
+// -------------------------------------------------------------------------
+
 FairDetector::~FairDetector()
 {
 
   if ( flGeoPar ) { delete flGeoPar; }
 
 }
+// -------------------------------------------------------------------------
 
 FairDetector::FairDetector()
   :fDetId(0)
 {
 
 }
+// -------------------------------------------------------------------------
 
 void   FairDetector::Initialize()
 {
@@ -57,7 +64,6 @@ void   FairDetector::Initialize()
     FairVolume* aVol = (FairVolume*) svList->At(i);
     cutName = aVol->GetName();
     Ssiz_t pos = cutName.Index (copysign, 1);
-//      std::cout << " Ssiz_t= cutName" << pos << " Name  " << cutName << std::endl;
     if(pos>1) { cutName.Resize(pos); }
     if ( aVol->getModId() == GetModId()  ) {
       fMCid=gMC->VolId(cutName.Data());
@@ -68,12 +74,13 @@ void   FairDetector::Initialize()
   }
 
 }
+// -------------------------------------------------------------------------
 
 void FairDetector::SaveGeoParams()
 {
 
   if ( ! kGeoSaved  ) {
-    std::cout << " -I FairDetector: " << GetName() << " Geometry parameters saved ... " << std::endl;
+    fLogger->Info(MESSAGE_ORIGIN,"Detector: %s Geometry parameters saved ... ", GetName());
     TFolder* mf = (TFolder*) gROOT->FindObjectAny("cbmroot");
     TFolder* stsf = NULL;
     if (mf ) { stsf = (TFolder*) mf->FindObjectAny(GetName()); }
@@ -84,6 +91,7 @@ void FairDetector::SaveGeoParams()
     kGeoSaved = kTRUE;
   }
 }
+// -------------------------------------------------------------------------
 
 
 ClassImp(FairDetector)

@@ -285,35 +285,38 @@ void FairModule::ConstructRootGeometry()
     Cave= gGeoManager->GetTopVolume();
   } else {
     Cave = gGeoManager->GetVolume(fMotherVolumeName);
-    if ( NULL == Cave ) {
-      fLogger->Fatal(MESSAGE_ORIGIN,"\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find the given mother volume \033[0m   %s \033[5m\033[31m where the geomanger should be added. \033[0m", fMotherVolumeName.Data());
-    }
   }
-  /**Every thing is OK, we have a TGeoVolume and now we add it to the simulation TGeoManager  */
-  gGeoManager->AddVolume(v1);
-  /** force rebuilding of voxels */
-  TGeoVoxelFinder* voxels = v1->GetVoxels();
-  if (voxels) { voxels->SetNeedRebuild(); }
-  /**To avoid having different names of the default matrices because we could have get the volume from another
-   * TGeoManager, we reset the default matrix name
-   */
-  TGeoMatrix* M = n->GetMatrix();
-  SetDefaultMatrixName(M);
+  if(Cave!=NULL) {
+    /**Every thing is OK, we have a TGeoVolume and now we add it to the simulation TGeoManager  */
+    gGeoManager->AddVolume(v1);
+    /** force rebuilding of voxels */
+    TGeoVoxelFinder* voxels = v1->GetVoxels();
+    if (voxels) { voxels->SetNeedRebuild(); }
+    else { fLogger->Fatal(MESSAGE_ORIGIN, "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find voxels  \033[0m"); }
 
-  /** NOw we can remove the matrix so that the new geomanager will rebuild it properly*/
-  gGeoManager->GetListOfMatrices()->Remove(M);
-  TGeoHMatrix* global = gGeoManager->GetHMatrix();
-  gGeoManager->GetListOfMatrices()->Remove(global); //Remove the Identity matrix
-  /**Now we can add the node to the existing cave */
-  Cave->AddNode(v1,0, M);
-  /** correction from O. Merle: in case of a TGeoVolume (v1) set the material properly */
-  AssignMediumAtImport(v1);
-  /** now go through the herachy and set the materials properly, this is important becase the CAD converter
-   *  produce TGeoVolumes with materials that have only names and no properties
-   */
-  ExpandNode(n);
-  if(NewGeo!=0) { delete NewGeo; }
-  delete f;
+    /**To avoid having different names of the default matrices because we could have get the volume from another
+     * TGeoManager, we reset the default matrix name
+     */
+    TGeoMatrix* M = n->GetMatrix();
+    SetDefaultMatrixName(M);
+
+    /** NOw we can remove the matrix so that the new geomanager will rebuild it properly*/
+    gGeoManager->GetListOfMatrices()->Remove(M);
+    TGeoHMatrix* global = gGeoManager->GetHMatrix();
+    gGeoManager->GetListOfMatrices()->Remove(global); //Remove the Identity matrix
+    /**Now we can add the node to the existing cave */
+    Cave->AddNode(v1,0, M);
+    /** correction from O. Merle: in case of a TGeoVolume (v1) set the material properly */
+    AssignMediumAtImport(v1);
+    /** now go through the herachy and set the materials properly, this is important becase the CAD converter
+     *  produce TGeoVolumes with materials that have only names and no properties
+     */
+    ExpandNode(n);
+    if(NewGeo!=0) { delete NewGeo; }
+    delete f;
+  } else {
+    fLogger->Fatal(MESSAGE_ORIGIN,"\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find the given mother volume \033[0m   %s \033[5m\033[31m where the geomanger should be added. \033[0m", fMotherVolumeName.Data());
+  }
 }
 //__________________________________________________________________________
 void FairModule::ConstructASCIIGeometry()

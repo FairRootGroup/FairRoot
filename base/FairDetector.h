@@ -3,7 +3,7 @@
 
 #include "FairModule.h"
 
-
+class FairLogger;
 class FairVolume;
 class TClonesArray;
 
@@ -15,7 +15,6 @@ class TClonesArray;
  */
 class FairDetector : public FairModule
 {
-
 
   public:
 
@@ -104,6 +103,7 @@ class FairDetector : public FairModule
   protected:
 
     Int_t fDetId; // Detector Id has to be set from ctr.
+    FairLogger* fLogger;  //! /// FairLogger
 
     ClassDef(FairDetector,1)
 

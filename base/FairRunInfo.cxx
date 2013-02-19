@@ -26,11 +26,11 @@ FairRunInfo::FairRunInfo()
    fLogger(FairLogger::GetLogger())
 {
 }
-
+//_____________________________________________________________________________
 FairRunInfo::~FairRunInfo()
 {
 }
-
+//_____________________________________________________________________________
 void FairRunInfo::StoreInfo()
 {
   // Extract the Information about the used memory from the system.
@@ -45,7 +45,7 @@ void FairRunInfo::StoreInfo()
 
   PrintInfo();
 }
-
+//_____________________________________________________________________________
 void FairRunInfo::GetInfo()
 {
   // Set the TimeStamp to the actual time and store it
@@ -57,7 +57,7 @@ void FairRunInfo::GetInfo()
   fResidentMemory.push_back(fProcInfo.fMemResident/1024);
   fVirtualMemory.push_back(fProcInfo.fMemVirtual/1024);
 }
-
+//_____________________________________________________________________________
 void FairRunInfo::CalculateTimeDifference()
 {
   // Calculates the time difference between now and the last call
@@ -66,7 +66,7 @@ void FairRunInfo::CalculateTimeDifference()
   fTimeDiff.push_back( fTime.at(lastElement) -
                        fTime.at(lastElement-1) );
 }
-
+//_____________________________________________________________________________
 void FairRunInfo::PrintInfo()
 {
 
@@ -77,7 +77,7 @@ void FairRunInfo::PrintInfo()
   fLogger->Debug(MESSAGE_ORIGIN,"Used virtual memory: %i MB",
                  fVirtualMemory.back());
 }
-
+//_____________________________________________________________________________
 void FairRunInfo::WriteInfo()
 {
   TList* histoList = new TList();
@@ -85,7 +85,7 @@ void FairRunInfo::WriteInfo()
   //  CreateAndFillHistograms(histoList);
   WriteHistosToFile(histoList);
 }
-
+//_____________________________________________________________________________
 void FairRunInfo::CreateAndFillHistograms(TList* histoList)
 {
   Int_t entries = fTime.size();
@@ -136,6 +136,7 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
   histoList->AddLast(TimePerEvent);
   histoList->AddLast(EventtimeVsEvent);
 }
+//_____________________________________________________________________________
 
 void FairRunInfo::WriteHistosToFile(TList* histoList)
 {
@@ -213,6 +214,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   gDirectory=currentDir;
   */
 }
+//_____________________________________________________________________________
 
 void FairRunInfo::Reset()
 {

@@ -7,9 +7,11 @@
 
 #include "FairWriteoutBuffer.h"
 #include "FairRootManager.h"
+#include "FairLogger.h"
 #include "TClonesArray.h"
-#include <iostream>
 
+#include <iostream>
+//_____________________________________________________________________________
 FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance)
   : TObject(),
     fStartTime_map(),
@@ -18,7 +20,8 @@ FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TS
     fClassName(className),
     fTreeSave(true),
     fActivateBuffering(kTRUE),
-    fVerbose(0)
+    fVerbose(0),
+    fLogger(FairLogger::GetLogger())
 {
   FairRootManager::Instance()->Register(branchName, className, folderName, persistance);
   if (fBranchName == "" || fClassName == "") {
@@ -27,6 +30,7 @@ FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TS
     fTreeSave = true;
   }
 }
+//_____________________________________________________________________________
 
 void FairWriteoutBuffer::WriteOutData(double time)
 {
@@ -57,6 +61,7 @@ void FairWriteoutBuffer::WriteOutData(double time)
   }
 
 }
+//_____________________________________________________________________________
 
 void FairWriteoutBuffer::WriteOutDataDeadTimeMap(double time)
 {
@@ -89,6 +94,7 @@ void FairWriteoutBuffer::WriteOutDataDeadTimeMap(double time)
     ioman->GetTClonesArray(fBranchName);
   }
 }
+//_____________________________________________________________________________
 
 void FairWriteoutBuffer::WriteOutAllData()
 {
@@ -109,6 +115,7 @@ void FairWriteoutBuffer::WriteOutAllData()
     WriteOutData(ultimateTime);
   }
 }
+//_____________________________________________________________________________
 
 std::vector<FairTimeStamp*> FairWriteoutBuffer::GetRemoveOldData(double time)
 {
@@ -124,6 +131,7 @@ std::vector<FairTimeStamp*> FairWriteoutBuffer::GetRemoveOldData(double time)
   fDeadTime_map.erase(fDeadTime_map.begin(), fDeadTime_map.lower_bound(time));
   return result;
 }
+//_____________________________________________________________________________
 
 std::vector<FairTimeStamp*> FairWriteoutBuffer::GetAllData()
 {
@@ -146,6 +154,7 @@ void FairWriteoutBuffer::FillNewData(FairTimeStamp* data, double startTime, doub
   }
 
 }
+//_____________________________________________________________________________
 
 void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activeTime)
 {
@@ -212,6 +221,7 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
     delete data;
   }
 }
+//_____________________________________________________________________________
 
 void FairWriteoutBuffer::MoveDataFromStartTimeMapToDeadTimeMap(double time)
 {
@@ -224,6 +234,7 @@ void FairWriteoutBuffer::MoveDataFromStartTimeMapToDeadTimeMap(double time)
   }
   fStartTime_map.erase(fStartTime_map.begin(), stopTime);
 }
+//_____________________________________________________________________________
 
 void FairWriteoutBuffer::PrintStartTimeMap()
 {
@@ -235,7 +246,7 @@ void FairWriteoutBuffer::PrintStartTimeMap()
   }
   std::cout << " |" << std::endl;
 }
-
+//_____________________________________________________________________________
 void FairWriteoutBuffer::PrintDeadTimeMap()
 {
   typedef  std::multimap<double, FairTimeStamp*>::iterator DTMapIter;
@@ -247,6 +258,7 @@ void FairWriteoutBuffer::PrintDeadTimeMap()
   }
   std::cout << std::endl;
 }
+//_____________________________________________________________________________
 
 
 ClassImp(FairWriteoutBuffer);
