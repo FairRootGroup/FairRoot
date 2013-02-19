@@ -14,6 +14,9 @@
 
 #include "TClonesArray.h"
 #include "TRandom.h"
+#include "TGeoMatrix.h"
+#include "TMath.h"
+//#include "TGeoCombiTrans.h"
 
 // -----   Default constructor   -------------------------------------------
 FairTutorialDetHitProducerIdealMisalign::FairTutorialDetHitProducerIdealMisalign()
@@ -139,10 +142,18 @@ void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
     // MCTrack ID
     trackID = point->GetTrackID();
 
+    Float_t cosAlpha = TMath::Cos(fRotZ.At(detID));
+    Float_t sinAlpha = TMath::Sin(fRotZ.At(detID));
+
     // Determine hit position
-    x  = point->GetX()-fShiftX.At(detID);
-    y  = point->GetY()-fShiftY.At(detID);
+    x  = (point->GetX()*cosAlpha + point->GetY()*sinAlpha)-fShiftX.At(detID);
+    y  = (-point->GetX()*sinAlpha + point->GetY()*cosAlpha)-fShiftY.At(detID);
     z  = point->GetZ();
+
+    LOG(DEBUG)<<"Pos before misalignment: "<< point->GetX() <<", "
+              << point->GetY() <<", "<< point->GetZ() <<FairLogger::endl;
+    LOG(DEBUG)<<"Pos after misalignment: "<< x <<", "
+              << y <<", "<< z <<FairLogger::endl;
 
     x = x + GetHitErr(0.1);
     y = y + GetHitErr(0.1);
@@ -161,8 +172,8 @@ void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
   }   // Loop over MCPoints
 
   // Event summary
-  LOG(INFO)<< "Create " << nHits << " TutorialDetHits out of "
-           << nPoints << " TutorilaDetPoints created." << FairLogger::endl;
+  LOG(DEBUG)<< "Create " << nHits << " TutorialDetHits out of "
+            << nPoints << " TutorilaDetPoints created." << FairLogger::endl;
 
 }
 // -------------------------------------------------------------------------

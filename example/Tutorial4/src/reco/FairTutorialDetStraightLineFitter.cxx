@@ -136,14 +136,14 @@ void FairTutorialDetStraightLineFitter::Exec(Option_t* option)
     OffY = f1->GetParameter(1);
     Chi2Y = f1->GetChisquare();
 
-    LOG(INFO)<<XPos[0]<<","<<XPos[nHits-1]<<","<<YPos[0]<<","<<YPos[nHits-1]<<","<<ZPos[0]<<","<<ZPos[nHits-1]<<FairLogger::endl;
+    LOG(DEBUG)<<XPos[0]<<","<<XPos[nHits-1]<<","<<YPos[0]<<","<<YPos[nHits-1]<<","<<ZPos[0]<<","<<ZPos[nHits-1]<<FairLogger::endl;
     Double_t XSlope = (XPos[nHits-1]-XPos[0])/(ZPos[nHits-1]-ZPos[0]);
     Double_t YSlope = (YPos[nHits-1]-YPos[0])/(ZPos[nHits-1]-ZPos[0]);
 
-    LOG(INFO)<<"Slope(x,y): "<<SlopeX<<" ,"<<SlopeY<<FairLogger::endl;
-    LOG(INFO)<<"Slope1(x,y): "<<XSlope<<" ,"<<YSlope<<FairLogger::endl;
-    LOG(INFO)<<"Offset(x,y): "<<OffX<<" ,"<<OffY<<FairLogger::endl;
-    LOG(INFO)<<"Chi2(x,y): "<<Chi2X<<" ,"<<Chi2Y<<FairLogger::endl;
+    LOG(DEBUG)<<"Slope(x,y): "<<SlopeX<<" ,"<<SlopeY<<FairLogger::endl;
+    LOG(DEBUG)<<"Slope1(x,y): "<<XSlope<<" ,"<<YSlope<<FairLogger::endl;
+    LOG(DEBUG)<<"Offset(x,y): "<<OffX<<" ,"<<OffY<<FairLogger::endl;
+    LOG(DEBUG)<<"Chi2(x,y): "<<Chi2X<<" ,"<<Chi2Y<<FairLogger::endl;
 
   }
 

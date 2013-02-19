@@ -116,7 +116,6 @@ Bool_t FairTutorialDetMilleWriter::IsGoodEvent()
 
 void FairTutorialDetMilleWriter::StraightLineShiftX(Option_t* option)
 {
-  fLogger->Info(MESSAGE_ORIGIN,"Exec Version2");
 
   const Int_t nLC = 2; // number of local parameters
   // two for track x-coordinate
@@ -161,7 +160,7 @@ void FairTutorialDetMilleWriter::StraightLineShiftX(Option_t* option)
     Float_t Z = hit->GetZ();
     Float_t hitX = hit->GetX();
     Float_t fitX = OffX + SlopeX * Z;
-    LOG(INFO)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
+    LOG(DEBUG)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
 
     label[0] = iHit+1;
 
@@ -171,7 +170,7 @@ void FairTutorialDetMilleWriter::StraightLineShiftX(Option_t* option)
     derLC[1] = Z;
 
     residual = fitX - hitX;
-    LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
+    LOG(DEBUG)<<"ResidualX: "<< residual<<FairLogger::endl;
     //call to Mille Writer
     fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
 
@@ -183,7 +182,6 @@ void FairTutorialDetMilleWriter::StraightLineShiftX(Option_t* option)
 // ---- Exec ----------------------------------------------------------
 void FairTutorialDetMilleWriter::StraightLineShiftXY(Option_t* option)
 {
-  fLogger->Info(MESSAGE_ORIGIN,"Exec Version2");
 
   const Int_t nLC = 4; // number of local parameters
   // two for track x-coordinate
@@ -232,7 +230,7 @@ void FairTutorialDetMilleWriter::StraightLineShiftXY(Option_t* option)
     Float_t fitX = OffX + SlopeX * Z;
     Float_t hitY = hit->GetY();
     Float_t fitY = OffY + SlopeY * Z;
-    LOG(INFO)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
+    LOG(DEBUG)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
 
     label[0] = iHit+1;
     label[1] = iHit+101;
@@ -246,7 +244,7 @@ void FairTutorialDetMilleWriter::StraightLineShiftXY(Option_t* option)
     derLC[3] = 0;
 
     residual = fitX - hitX;
-    LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
+    LOG(DEBUG)<<"ResidualX: "<< residual<<FairLogger::endl;
     //call to Mille Writer
     fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
 
@@ -259,7 +257,7 @@ void FairTutorialDetMilleWriter::StraightLineShiftXY(Option_t* option)
     derLC[3] = Z;
 
     residual = fitY - hitY;
-    LOG(INFO)<<"ResidualX: "<< residual<<FairLogger::endl;
+    LOG(DEBUG)<<"ResidualX: "<< residual<<FairLogger::endl;
     //call to Mille Writer
     fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
 

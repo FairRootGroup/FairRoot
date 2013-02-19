@@ -5,9 +5,11 @@
 
 #include "TVector3.h"
 #include "TLorentzVector.h"
+#include "TArrayD.h"
 
 class FairTutorialDetPoint;
 class FairTutorialDetGeoHandler;
+class FairTutorialDetMisalignPar;
 class FairVolume;
 class TClonesArray;
 
@@ -31,6 +33,9 @@ class FairTutorialDet: public FairDetector
     /**      Initialization of the detector is done here    */
     virtual void   Initialize();
 
+    /**      Init parameter containers    */
+    virtual void   InitParContainers();
+
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
     */
@@ -48,7 +53,10 @@ class FairTutorialDet: public FairDetector
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
+    /**      Misalign the detector geometry        */
+    void MisalignGeometry();
 
+    void SetParContainers();
 
     /**      This method is an example of how to add your own point
      *       of type FairTutorialDetPoint to the clones array
@@ -73,6 +81,8 @@ class FairTutorialDet: public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
+    void SetMisalignGeometry(Bool_t val) { fMisalignGeometry=val;}
+
 
   private:
 
@@ -92,6 +102,19 @@ class FairTutorialDet: public FairDetector
     TClonesArray*  fFairTutorialDetPointCollection;
 
     FairTutorialDetGeoHandler* fGeoHandler;
+
+    FairTutorialDetMisalignPar* fMisalignPar;
+
+    Int_t fNrOfDetectors;
+    TArrayD fShiftX;
+    TArrayD fShiftY;
+    TArrayD fShiftZ;
+    TArrayD fRotX;
+    TArrayD fRotY;
+    TArrayD fRotZ;
+
+    Bool_t fMisalignGeometry;
+
     /** Method to construct the ascii geometry
      **
      **/
