@@ -18,6 +18,7 @@
 // Name of geometry version and output file
 const TString geoVersion = "tutorial4";
 const TString FileName = geoVersion + ".root";
+const TString FileName1 = geoVersion + "_geomanager.root";
 
 // Names of the different used materials which are used to build the modules
 // The materials are defined in the global media.geo file 
@@ -41,7 +42,7 @@ TGeoVolume* gModules; // Global storage for module types
 void create_materials_from_media_file();
 TGeoVolume* create_detector();
 void position_detector();
-
+void add_alignable_volumes();
 
 void Create_Tutorial4_Geometry() {
   // Load the necessary FairRoot libraries 
@@ -69,16 +70,23 @@ void Create_Tutorial4_Geometry() {
   gModules = create_detector();
 
   position_detector();
-
+ 
   gGeoMan->CloseGeometry();
+
+  add_alignable_volumes();
+
   gGeoMan->CheckOverlaps(0.001);
   gGeoMan->PrintOverlaps();
   gGeoMan->Test();
 
   TFile* outfile = new TFile(FileName,"RECREATE");
   top->Write();
-  //gGeoMan->Write();
   outfile->Close();
+
+  TFile* outfile = new TFile(FileName1,"RECREATE");
+  gGeoMan->Write();
+  outfile->Close();
+
   //  top->Draw("ogl");
   //top->Raytrace();
 
@@ -125,6 +133,7 @@ TGeoVolume* create_detector()
   return det_plane_vol;
 
 }
+
 void position_detector()
 {
 
@@ -136,6 +145,64 @@ void position_detector()
       = new TGeoTranslation("", 0., 0., First_Z_Position+(numDets*Z_Distance));
     gGeoMan->GetVolume(geoVersion)->AddNode(gModules, numDets, det_trans);
     numDets++;
+
   }
 }
 
+void add_alignable_volumes()
+{
+
+/*
+  TString TopNode = gGeoManager->GetTopNode()->GetName();
+  cout<<"TopNode: "<<TopNode<<endl;
+
+
+  TObjArray* nodes = gGeoManager->GetTopNode()->GetNodes();
+  for (Int_t iNode = 0; iNode < nodes->GetEntriesFast(); iNode++) {
+    TGeoNode* node = (TGeoNode*) nodes->At(iNode);
+    TString StationNode = node->GetName();
+    cout<<"Node: "<<StationNode<<endl;
+    TGeoNode* station = node;
+
+     TObjArray* modules = station->GetNodes();
+     for (Int_t iLayerPart = 0; iLayerPart < modules->GetEntriesFast(); iLayerPart++) {
+        TGeoNode* module = (TGeoNode*) modules->At(iLayerPart);
+        TString ModuleNode = module->GetName();
+         cout<<"Node: "<<ModuleNode<<endl;
+
+     }
+  }
+
+  return;
+*/
+
+  TString volPath;
+  TString symName;
+  TString detStr   = "Tutorial4/det";
+  TString volStr   = "/TOP_1/tutorial4_1/tut4_det_";
+
+  for (Int_t detectorPlanes = 0; detectorPlanes < 40; detectorPlanes++) {
+
+    volPath  = volStr;
+    volPath += detectorPlanes;
+
+    symName  = detStr;
+    symName += Form("%02d",detectorPlanes);
+
+    cout<<"Path: "<<volPath<<", "<<symName<<endl;
+    gGeoMan->cd(volPath);  
+   
+/*
+    TGeoVolume* fCurrentVolume = gGeoMan->GetCurrentVolume();
+    TGeoBBox* fVolumeShape = (TGeoBBox*)fCurrentVolume->GetShape();
+    cout<<"In Volume "<< fCurrentVolume->GetName()<<endl;
+    Double_t local[3] = {0., 0., 0.};  // Local centre of volume
+    Double_t fGlobal[3];
+    gGeoManager->LocalToMaster(local, fGlobal);
+    cout<<"Pos: "<<fGlobal[0]<<" , "<<fGlobal[1]<<" , "<<fGlobal[2]<<" , "<<endl;
+    fGlobalMatrix = gGeoManager->GetCurrentMatrix();
+*/
+    gGeoMan->SetAlignableEntry(symName.Data(),volPath.Data());
+
+  }
+}

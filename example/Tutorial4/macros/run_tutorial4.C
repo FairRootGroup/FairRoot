@@ -20,6 +20,14 @@ void run_tutorial4(Int_t nEvents = 10)
   TString  outFile     ="data/testrun.root";
   TString  parFile     ="data/testparams.root";
   
+  TList *parFileList = new TList();
+
+  TString workDir = gSystem->Getenv("VMCWORKDIR");
+  paramDir = workDir + "/example/Tutorial4/macros/parameters/";
+
+  TObjString tutDetDigiFile = paramDir + "example.par";
+  parFileList->Add(&tutDetDigiFile);
+
 
   // In general, the following parts need not be touched
   // ========================================================================
@@ -67,6 +75,7 @@ void run_tutorial4(Int_t nEvents = 10)
 
   FairDetector* tutdet = new FairTutorialDet("TUTDET", kTRUE);
   tutdet->SetGeometryFileName("tutorial4.root"); 
+  tutdet->SetMisalignGeometry(kTRUE);
   run->AddModule(tutdet);
   // ------------------------------------------------------------------------
 
@@ -90,6 +99,17 @@ void run_tutorial4(Int_t nEvents = 10)
   // -----   Initialize simulation run   ------------------------------------
   run->SetStoreTraj(kTRUE);
 
+  // -----   Runtime database   ---------------------------------------------
+
+  Bool_t kParameterMerged = kTRUE;
+  FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
+  FairParAsciiFileIo* parIn = new FairParAsciiFileIo();
+  parOut->open(parFile.Data());
+  parIn->open(parFileList, "in");
+  rtdb->setFirstInput(parIn);
+  rtdb->setOutput(parOut);
+  // ------------------------------------------------------------------------
+
   run->Init();
 
 
@@ -108,22 +128,14 @@ void run_tutorial4(Int_t nEvents = 10)
 
   // ------------------------------------------------------------------------
 
-  // -----   Runtime database   ---------------------------------------------
-
-  Bool_t kParameterMerged = kTRUE;
-  FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
-//  FairParAsciiFileIo* parOut = new FairParAsciiFileIo();
-  parOut->open(parFile.Data());
-  rtdb->setOutput(parOut);
-  rtdb->saveOutput();
-  rtdb->print();
-  // ------------------------------------------------------------------------
    
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
-  run->CreateGeometryFile("geofile_full.root");
+  run->CreateGeometryFile("data/geofile_full.root");
   // ------------------------------------------------------------------------
   
+  rtdb->saveOutput();
+  rtdb->print();
   // -----   Finish   -------------------------------------------------------
   timer.Stop();
   Double_t rtime = timer.RealTime();
