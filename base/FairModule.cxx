@@ -292,7 +292,8 @@ void FairModule::ConstructRootGeometry()
     /** force rebuilding of voxels */
     TGeoVoxelFinder* voxels = v1->GetVoxels();
     if (voxels) { voxels->SetNeedRebuild(); }
-    else { fLogger->Fatal(MESSAGE_ORIGIN, "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find voxels  \033[0m"); }
+
+    // else { fLogger->Fatal(MESSAGE_ORIGIN, "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find voxels  \033[0m"); }
 
     /**To avoid having different names of the default matrices because we could have get the volume from another
      * TGeoManager, we reset the default matrix name
