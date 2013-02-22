@@ -661,6 +661,7 @@ void FairRunAna::RunTSBuffers()
       FairTrajFilter::Instance()->Reset();
     }
   }
+  fRootManager->StoreAllWriteoutBufferData();
   fTask->FinishTask();
   fRootManager->LastFill();
   fRootManager->Write();
