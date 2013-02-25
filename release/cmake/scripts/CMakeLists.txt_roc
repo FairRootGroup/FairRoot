@@ -1,0 +1,65 @@
+# copy files from source directory to build directory
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/roc
+                   COMMAND cmake -E copy_directory  ${CMAKE_CURRENT_SOURCE_DIR}                            ${CMAKE_CURRENT_BINARY_DIR}/roc
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                   )
+
+
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libRoc.so
+                   #COMMAND make > /dev/null 2>& 1
+                   COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}
+                           ROOTSYS=${ROOTSYS} make roclib 
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/roc
+                   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/roc
+                  )
+
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libDabcBase.so
+                   #COMMAND make > /dev/null 2>& 1
+                   COMMAND make dabccore 
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/roc
+                   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libRoc.so
+                  )
+
+add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libDabcRoc.so
+                          ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libDabcMbs.so
+                   #COMMAND make > /dev/null 2>& 1
+                   COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}
+                           ROOTSYS=${ROOTSYS} make rocdict
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/roc
+                   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libDabcBase.so
+                  )
+
+add_custom_command(OUTPUT 
+                          ${LIBRARY_OUTPUT_PATH}/libDabcRoc.so
+                          ${LIBRARY_OUTPUT_PATH}/libDabcBase.so
+                          ${LIBRARY_OUTPUT_PATH}/libRoc.so
+                   COMMAND cmake -E copy_if_different lib/libDabcRoc.so ${LIBRARY_OUTPUT_PATH}
+                   COMMAND cmake -E copy_if_different lib/libRoc.so ${LIBRARY_OUTPUT_PATH}
+                   COMMAND cmake -E copy_if_different lib/libDabcBase.so ${LIBRARY_OUTPUT_PATH}
+                   COMMAND cmake -E copy_if_different lib/libDabcMbs.so ${LIBRARY_OUTPUT_PATH}
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/roc
+                   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libRoc.so 
+                           ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libDabcBase.so 
+                           ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libDabcMbs.so 
+                           ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libDabcRoc.so 
+                  )
+
+# create a target which will always be build and does actually nothing. The target is only
+# needed that the dependencies are build, f they are not up to date. If everything is up to
+# dte nothing is done. This target depends on the libAfterImage.a in the library directory of the
+# build directory.
+add_custom_target(RocLib
+                  DEPENDS ${LIBRARY_OUTPUT_PATH}/libDabcRoc.so
+                  DEPENDS ${LIBRARY_OUTPUT_PATH}/libDabcBase.so
+                  DEPENDS ${LIBRARY_OUTPUT_PATH}/libDabcMbs.so
+                  DEPENDS ${LIBRARY_OUTPUT_PATH}/libRoc.so
+                 )
+
+# import libDabcRoc.so which is not in the scope of CMake. This step makes it possible that
+# make clean will remove the library
+add_library(DabcRoc SHARED IMPORTED)
+add_library(Roc SHARED IMPORTED)
+add_library(DabcBase SHARED IMPORTED)
+add_library(DabcMbs SHARED IMPORTED)
+#INSTALL(FILES ${LIBRARY_OUTPUT_PATH}/libAfterImage.a DESTINATION ${LIB_INSTALL_DIR})
+     

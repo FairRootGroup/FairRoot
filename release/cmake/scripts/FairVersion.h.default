@@ -1,0 +1,7 @@
+#ifndef FAIRROOT_VERSION
+#define FAIRROOT_VERSION 0.0.99
+#define FAIRROOT_SVN_REVISION 0
+#define FAIRROOT_SVN_BRANCH "Default"
+#define FAIRROOT_SVN_DATE "1.1.2000"
+#endif
+

@@ -1,0 +1,31 @@
+# setup of the default options used for the fairbase classes
+# to use this option "astyle --options=fair.astyle <infile>"
+
+# bracket-style is linux
+# Break brackets from namespace, class, and function definitions, 
+# but attach brackets to statements within a function 
+--brackets=linux
+
+# indent is 2 spaces
+--indent=spaces=2
+
+# convert all tabs into spaces
+--convert-tabs
+
+# Add brackets to unbracketed one line conditional statements
+--add-brackets
+
+# Don't break one-line blocks.
+--keep-one-line-blocks
+
+# Force use of the linux (LF) line end style. 
+--lineend=linux
+
+# Indent 'class' and 'struct' blocks so that the blocks 
+# 'public:', 'protected:' and 'private:' are indented. 
+# The struct blocks are indented only if an access modifier 
+# is declared somewhere in the struct. The entire block is indented.                           
+--indent-classes
+
+# Attach a pointer or reference operator (* or &) to the variable type.  
+--align-pointer=type

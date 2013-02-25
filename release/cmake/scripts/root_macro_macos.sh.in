@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# This macro is needed to start the Root macros used for automatic testing
+# from inside CMake using the add_test functionality. Since the tests 
+# starts with a fresh environment on has to set first the correct environment
+# needed to run FairRoot.
+# Also parameters defined in add_test will be converted in the correct format
+# to be passed to root.
+
+# Setup the needed environment
+export LD_LIBRARY_PATH=@MY_LD_LIBRARY_PATH@
+export DYLD_LIBRARY_PATH=@MY_LD_LIBRARY_PATH@
+export PATH=$PATH:@GEANT4_DIR@
+export ROOTSYS=@ROOTSYS@
+export ROOTEXE=@ROOT_INSTALL_DIR@/bin/root.exe
+export VMCWORKDIR=@PROJECT_SOURCE_DIR@
+export GEANT4VMC_MACRO_DIR=@GEANT4VMC_MACRO_DIR@
+export USE_VGM=1
+export BOOST=@Boost_Avail@
+export G4LEDATA="@G4LEDATA@"
+export G4LEVELGAMMADATA="@G4LEVELGAMMADATA@"
+export G4NeutronHPCrossSections="@G4NeutronHPCrossSections@"
+export G4NEUTRONHPDATA="@G4NeutronHPCrossSections@"
+export G4NEUTRONXSDATA="@G4NEUTRONXSDATA@"
+export G4PIIDATA="@G4PIIDATA@"
+export G4RADIOACTIVEDATA="@G4RADIOACTIVEDATA@"
+export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
+if [ -e @GEANT4_DIR@/env.sh ]; then
+  . @GEANT4_DIR@/env.sh
+fi
+
+# Concatenate all parameters given on the command line to one 
+# comma separated string 
+parameters=""
+for i in $*; do 
+  if [ -z $parameters ]; then
+    parameters=$i
+  else
+    parameters=$(echo "$parameters,$i")
+  fi 
+done
+
+cd @new_path@
+
+# execute root with the defined macro and the command line parameters
+$ROOTEXE -q -b @my_script_name@\($parameters\)

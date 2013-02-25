@@ -1,0 +1,28 @@
+# Create a library called "libFairTools" which includes the source files given in
+# the array .
+# The extension is already found.  Any number of sources could be listed here.
+
+set(INCLUDE_DIRECTORIES
+ ${ROOT_INCLUDE_DIR} 
+ ${CMAKE_SOURCE_DIR}/fairtools
+)
+
+include_directories( ${INCLUDE_DIRECTORIES})
+
+set(LINK_DIRECTORIES
+${ROOT_LIBRARY_DIR}
+)
+ 
+link_directories( ${LINK_DIRECTORIES})
+
+# List of source files
+set(SRCS
+   FairLogger.cxx
+)
+
+Set(HEADERS )
+Set(LINKDEF FairToolsLinkDef.h)
+Set(LIBRARY_NAME FairTools)
+Set(DEPENDENCIES Cint Core)
+
+GENERATE_LIBRARY()
