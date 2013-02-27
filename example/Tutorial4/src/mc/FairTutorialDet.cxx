@@ -74,10 +74,12 @@ FairTutorialDet::FairTutorialDet(const char* name, Bool_t active)
 
 FairTutorialDet::~FairTutorialDet()
 {
+  LOG(DEBUG4)<<"Entering Destructor of FairTutorialDet"<<FairLogger::endl;
   if (fFairTutorialDetPointCollection) {
     fFairTutorialDetPointCollection->Delete();
     delete fFairTutorialDetPointCollection;
   }
+  LOG(DEBUG4)<<"Leaving Destructor of FairTutorialDet"<<FairLogger::endl;
 }
 void FairTutorialDet::SetParContainers()
 {
@@ -141,7 +143,16 @@ Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
 //    fVolumeID = vol->getMCid();
     fVolumeID = fGeoHandler->GetUniqueDetectorId();
     if (fELoss == 0. ) { return kFALSE; }
-    AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
+
+    // Save positions in local coordinate system, so transform the
+    // global coordinates into local ones.
+    Double_t master[3] = {fPos.X(), fPos.Y(), fPos.Z()};
+    Double_t local[3];
+
+    gMC->Gmtod(master, local, 1);
+
+//    AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
+    AddHit(fTrackID, fVolumeID, TVector3(local[0], local[1], local[2]),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            fELoss);
 
@@ -255,61 +266,127 @@ void FairTutorialDet::ConstructASCIIGeometry()
 
 void FairTutorialDet::MisalignGeometry()
 {
-  LOG(INFO)<<"Misalign the geometry for the tutorial detector."<<FairLogger::endl;
+  // When saving the top volume of the geometry to a file the information
+  // about the TGeoPNEntries is not saved. So the misalign procedure
+  // which uses the TGeoPNEntry information can not be used.
+  // The code is here to demonstrate how to use this feature.
+
   if (fMisalignGeometry) {
+    LOG(INFO)<<"Misalign the geometry for the tutorial detector."<<FairLogger::endl;
 
-    TString volPath;
-    TString symName;
-    TString detStr   = "Tutorial4/det";
-    TString volStr   = "/cave_1/tutorial4_0/tut4_det_";
+    TString detStr   = "Tutorial4/det00";
 
-    for (Int_t iDet = 0; iDet < fNrOfDetectors; ++iDet) {
-      LOG(INFO)<<"Misalign detector nr "<<iDet<<FairLogger::endl;
-      volPath  = volStr;
-      volPath += iDet;
-
-//      symName  = detStr;
-//      symName += Form("%02d",detectorPlanes);
-
-      cout<<"Path: "<<volPath<<", "<<symName<<endl;
-      gGeoManager->cd(volPath);
-      TGeoHMatrix* g3 = gGeoManager->GetCurrentMatrix();
-      g3->Print();
-      TGeoNode* n3 = gGeoManager->GetCurrentNode();
-      TGeoMatrix* l3 = n3->GetMatrix();
-
-
-      //we have to express the displacements as regards the old local RS (non misaligned BTOF)
-      Double_t dx     = fShiftX[iDet];
-      Double_t dy     = fShiftY[iDet];
-      Double_t dz     = fShiftZ[iDet];
-      Double_t dphi   = fRotX[iDet];
-      Double_t dtheta = fRotY[iDet];
-      Double_t dpsi   = fRotZ[iDet];
-      LOG(INFO)<<"Psi: "<<dpsi<<FairLogger::endl;
-
-      TGeoRotation* rrot = new TGeoRotation("rot",dphi,dtheta,dpsi);
-      TGeoCombiTrans localdelta = *(new TGeoCombiTrans(dx,dy,dz, rrot));
-      localdelta.Print();
-      TGeoHMatrix nlocal = *l3 * localdelta;
-      TGeoHMatrix* nl3 = new TGeoHMatrix(nlocal); // new matrix, representing real position (from new local mis RS to the global one)
-
-      TGeoPhysicalNode* pn3 = gGeoManager->MakePhysicalNode(volPath);
-
-      pn3->Align(nl3);
-
-      TGeoHMatrix* ng3 = pn3->GetMatrix(); //"real" global matrix, what survey sees
-      printf("\n\n*************  The Misaligned Matrix in GRS **************\n");
-      ng3->Print();
-
-
+    TGeoPNEntry* entry = gGeoManager->GetAlignableEntry(detStr.Data());
+    TGeoPhysicalNode* node = entry->GetPhysicalNode();
+//    LOG(INFO)<<"Nr of alignable objects: "<<gGeoManager->GetNAlignable()<<FairLogger::endl;
+    if (entry) {
+      LOG(INFO)<<"Misalign using symlinks."<<FairLogger::endl;
+      MisalignGeometryBySymlink();
+    } else {
+      LOG(INFO)<<"Misalign using full path."<<FairLogger::endl;
+      MisalignGeometryByFullPath();
     }
-
-    //do something
-    LOG(INFO)<<"Total Nr of detectors: "<<fNrOfDetectors<<FairLogger::endl;
   }
 }
 
+void FairTutorialDet::MisalignGeometryByFullPath()
+{
+
+  TString volPath;
+  TString volStr   = "/cave_1/tutorial4_0/tut4_det_";
+
+  for (Int_t iDet = 0; iDet < fNrOfDetectors; ++iDet) {
+    LOG(DEBUG)<<"Misalign detector nr "<<iDet<<FairLogger::endl;
+    volPath  = volStr;
+    volPath += iDet;
+
+    cout<<"Path: "<<volPath<<endl;
+    gGeoManager->cd(volPath);
+    TGeoHMatrix* g3 = gGeoManager->GetCurrentMatrix();
+//      g3->Print();
+    TGeoNode* n3 = gGeoManager->GetCurrentNode();
+    TGeoMatrix* l3 = n3->GetMatrix();
+//      l3->Print();
+
+    //we have to express the displacements as regards the old local RS (non misaligned BTOF)
+    Double_t dx     = fShiftX[iDet];
+    Double_t dy     = fShiftY[iDet];
+    Double_t dz     = fShiftZ[iDet];
+    Double_t dphi   = fRotX[iDet];
+    Double_t dtheta = fRotY[iDet];
+    Double_t dpsi   = fRotZ[iDet];
+
+    TGeoRotation* rrot = new TGeoRotation("rot",dphi,dtheta,dpsi);
+    TGeoCombiTrans localdelta = *(new TGeoCombiTrans(dx,dy,dz, rrot));
+//      localdelta.Print();
+    TGeoHMatrix nlocal = *l3 * localdelta;
+    TGeoHMatrix* nl3 = new TGeoHMatrix(nlocal); // new matrix, representing real position (from new local mis RS to the global one)
+
+    TGeoPhysicalNode* pn3 = gGeoManager->MakePhysicalNode(volPath);
+
+    pn3->Align(nl3);
+
+    TGeoHMatrix* ng3 = pn3->GetMatrix(); //"real" global matrix, what survey sees
+    LOG(DEBUG)<<"*************  The Misaligned Matrix in GRS **************"<<FairLogger::endl;
+//      ng3->Print();
+
+
+  }
+  LOG(DEBUG)<<"Align in total "<<fNrOfDetectors<<" detectors."<<FairLogger::endl;
+
+}
+
+void FairTutorialDet::MisalignGeometryBySymlink()
+{
+  TString symName;
+  TString detStr   = "Tutorial4/det";
+
+  for (Int_t iDet = 0; iDet < fNrOfDetectors; ++iDet) {
+    LOG(INFO)<<"Misalign detector nr "<<iDet<<FairLogger::endl;
+
+    symName  = detStr;
+    symName += Form("%02d",iDet);
+
+    TGeoPhysicalNode* node;
+    TGeoPNEntry* entry = gGeoManager->GetAlignableEntry(detStr);
+    if(entry) {
+      node = gGeoManager->MakeAlignablePN(entry);
+    }
+
+    TGeoMatrix* l3 = node->GetMatrix();
+
+
+    //we have to express the displacements as regards the old local RS (non misaligned BTOF)
+    Double_t dx     = fShiftX[iDet];
+    Double_t dy     = fShiftY[iDet];
+    Double_t dz     = fShiftZ[iDet];
+    Double_t dphi   = fRotX[iDet];
+    Double_t dtheta = fRotY[iDet];
+    Double_t dpsi   = fRotZ[iDet];
+    LOG(INFO)<<"Psi: "<<dpsi<<FairLogger::endl;
+
+    TGeoRotation* rrot = new TGeoRotation("rot",dphi,dtheta,dpsi);
+    TGeoCombiTrans localdelta = *(new TGeoCombiTrans(dx,dy,dz, rrot));
+    localdelta.Print();
+    TGeoHMatrix nlocal = *l3 * localdelta;
+    TGeoHMatrix* nl3 = new TGeoHMatrix(nlocal); // new matrix, representing real position (from new local mis RS to the global one)
+
+    node->Align(nl3);
+
+    TGeoHMatrix* ng3 = node->GetMatrix(); //"real" global matrix, what survey sees
+    printf("\n\n*************  The Misaligned Matrix in GRS **************\n");
+    ng3->Print();
+
+
+  }
+  //do something
+  LOG(INFO)<<"Total Nr of detectors: "<<fNrOfDetectors<<FairLogger::endl;
+
+
+
+
+
+}
 FairTutorialDetPoint* FairTutorialDet::AddHit(Int_t trackID, Int_t detID,
     TVector3 pos, TVector3 mom,
     Double_t time, Double_t length,

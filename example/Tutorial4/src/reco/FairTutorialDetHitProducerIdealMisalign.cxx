@@ -7,6 +7,7 @@
 #include "FairTutorialDetHit.h"
 #include "FairTutorialDetPoint.h"
 #include "FairTutorialDetMisalignPar.h"
+#include "FairTutorialDetGeoHandler.h"
 
 #include "FairRootManager.h"
 #include "FairRunAna.h"
@@ -29,7 +30,9 @@ FairTutorialDetHitProducerIdealMisalign::FairTutorialDetHitProducerIdealMisalign
     fRotX(),
     fRotY(),
     fRotZ(),
-    fDigiPar(NULL)
+    fDigiPar(NULL),
+    fGeoHandler(new FairTutorialDetGeoHandler),
+    fDoMisalignment(kFALSE)
 {
 }
 
@@ -142,35 +145,66 @@ void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
     // MCTrack ID
     trackID = point->GetTrackID();
 
-    Float_t cosAlpha = TMath::Cos(fRotZ.At(detID));
-    Float_t sinAlpha = TMath::Sin(fRotZ.At(detID));
+    if(fDoMisalignment) {
 
-    // Determine hit position
-    x  = (point->GetX()*cosAlpha + point->GetY()*sinAlpha)-fShiftX.At(detID);
-    y  = (-point->GetX()*sinAlpha + point->GetY()*cosAlpha)-fShiftY.At(detID);
-    z  = point->GetZ();
+      Float_t cosAlpha = TMath::Cos(fRotZ.At(detID));
+      Float_t sinAlpha = TMath::Sin(fRotZ.At(detID));
 
-    LOG(DEBUG)<<"Pos before misalignment: "<< point->GetX() <<", "
-              << point->GetY() <<", "<< point->GetZ() <<FairLogger::endl;
-    LOG(DEBUG)<<"Pos after misalignment: "<< x <<", "
-              << y <<", "<< z <<FairLogger::endl;
+      // Determine hit position
+      x  = (point->GetX()*cosAlpha + point->GetY()*sinAlpha)-fShiftX.At(detID);
+      y  = (-point->GetX()*sinAlpha + point->GetY()*cosAlpha)-fShiftY.At(detID);
+      z  = point->GetZ();
 
-    x = x + GetHitErr(0.1);
-    y = y + GetHitErr(0.1);
+      LOG(DEBUG)<<"Pos before misalignment: "<< point->GetX() <<", "
+                << point->GetY() <<", "<< point->GetZ() <<FairLogger::endl;
+      LOG(DEBUG)<<"Pos after misalignment: "<< x <<", "
+                << y <<", "<< z <<FairLogger::endl;
 
-    LOG(DEBUG2)<<"Missallign hit by "<<fShiftX.At(detID)<<" cm in x- and "
-               << fShiftY.At(detID)<<" cm in y-direction."<<FairLogger::endl;
+      x = x + GetHitErr(0.1);
+      y = y + GetHitErr(0.1);
 
-    // Time of flight
-    tof = point->GetTime();
+      LOG(DEBUG2)<<"Missallign hit by "<<fShiftX.At(detID)<<" cm in x- and "
+                 << fShiftY.At(detID)<<" cm in y-direction."<<FairLogger::endl;
 
-    // Create new hit
-    pos.SetXYZ(x,y,z);
-    dpos.SetXYZ(dx, dx, 0.);
-    new ((*fHitArray)[nHits]) FairTutorialDetHit(detID, iPoint, pos, dpos);
-    nHits++;
-  }   // Loop over MCPoints
+      // Time of flight
+      tof = point->GetTime();
 
+      // Create new hit
+      pos.SetXYZ(x,y,z);
+      dpos.SetXYZ(dx, dx, 0.);
+      new ((*fHitArray)[nHits]) FairTutorialDetHit(detID, iPoint, pos, dpos);
+      nHits++;
+    }  else {
+
+      // Determine hit position
+      x  = point->GetX();
+      y  = point->GetY();
+      z  = point->GetZ();
+
+      LOG(INFO)<<"Position: "<<x<<", "<<y<<", "<<z<<FairLogger::endl;
+
+      Double_t local[3] = {x, y, z};
+      Double_t global[3];
+
+      fGeoHandler->LocalToGlobal(local, global, detID);
+
+      x = global[0] + GetHitErr(0.1);
+      y = global[1] + GetHitErr(0.1);
+      z = global[2];
+
+      LOG(INFO)<<"Position: "<<x<<", "<<y<<", "<<z<<FairLogger::endl;
+      LOG(INFO)<<"****"<<FairLogger::endl;
+      // Time of flight
+      tof = point->GetTime();
+
+      // Create new hit
+      pos.SetXYZ(x,y,z);
+      dpos.SetXYZ(dx, dx, 0.);
+      new ((*fHitArray)[nHits]) FairTutorialDetHit(detID, iPoint, pos, dpos);
+      nHits++;
+
+    }
+  }
   // Event summary
   LOG(DEBUG)<< "Create " << nHits << " TutorialDetHits out of "
             << nPoints << " TutorilaDetPoints created." << FairLogger::endl;

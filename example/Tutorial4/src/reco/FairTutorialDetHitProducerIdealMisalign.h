@@ -25,6 +25,7 @@
 #include "TArrayD.h"
 
 class FairTutorialDetMisalignPar;
+class FairTutorialDetGeoHandler;
 class TClonesArray;
 
 class FairTutorialDetHitProducerIdealMisalign : public FairTask
@@ -52,6 +53,7 @@ class FairTutorialDetHitProducerIdealMisalign : public FairTask
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
 
+    void DoMisalignment(Bool_t val) {fDoMisalignment=val;}
 
   private:
 
@@ -69,7 +71,9 @@ class FairTutorialDetHitProducerIdealMisalign : public FairTask
     TArrayD fRotZ;
 
     FairTutorialDetMisalignPar* fDigiPar;
+    FairTutorialDetGeoHandler* fGeoHandler;
 
+    Bool_t fDoMisalignment;
   private:
 
     Double_t GetHitErr(Double_t sigma);

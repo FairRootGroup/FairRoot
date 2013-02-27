@@ -122,6 +122,10 @@ class FairTutorialDet: public FairDetector
 
     Bool_t CheckIfSensitive(std::string name);
 
+    void MisalignGeometryBySymlink();
+    void MisalignGeometryByFullPath();
+
+
     FairTutorialDet(const FairTutorialDet&);
     FairTutorialDet& operator=(const FairTutorialDet&);
 

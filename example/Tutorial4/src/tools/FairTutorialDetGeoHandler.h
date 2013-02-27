@@ -53,6 +53,8 @@ class FairTutorialDetGeoHandler : public TObject
     const char* CurrentVolName() const;
     const char* CurrentVolOffName(Int_t off) const;
 
+    void LocalToGlobal(Double_t* local, Double_t* global, Int_t detID);
+
 //  Int_t CheckGeometryVersion();
 
   private:
@@ -66,6 +68,9 @@ class FairTutorialDetGeoHandler : public TObject
     TGeoBBox* fVolumeShape;     //!
     Double_t fGlobal[3];        //! Global centre of volume
     TGeoHMatrix* fGlobalMatrix; //!
+
+
+    TString ConstructFullPathFromDetID(Int_t detID);
 
     FairTutorialDetGeoHandler(const FairTutorialDetGeoHandler&);
     FairTutorialDetGeoHandler operator=(const FairTutorialDetGeoHandler&);

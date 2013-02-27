@@ -44,6 +44,21 @@ Int_t FairTutorialDetGeoHandler::Init(Bool_t isSimulation)
   return 1;
 }
 
+void FairTutorialDetGeoHandler::LocalToGlobal(Double_t* local, Double_t* global, Int_t detID)
+{
+  TString path=ConstructFullPathFromDetID(detID);
+  NavigateTo(path);
+  gGeoManager->LocalToMaster(local, global);
+}
+
+TString FairTutorialDetGeoHandler::ConstructFullPathFromDetID(Int_t detID)
+{
+  TString volStr   = "/cave_1/tutorial4_0/tut4_det_";
+  TString volPath = volStr;
+  volPath += detID;
+  return volPath;
+}
+
 Int_t FairTutorialDetGeoHandler::GetUniqueDetectorId(TString volName)
 {
   if (fGeoPathHash != volName.Hash()) {
