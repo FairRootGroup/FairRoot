@@ -64,6 +64,7 @@ void run_reco()
    
   // -----   TorinoDetector hit  producers   ---------------------------------
   FairTutorialDetHitProducerIdealMisalign* hitProducer = new FairTutorialDetHitProducerIdealMisalign();
+  hitProducer->DoMisalignment(kFALSE);
   fRun->AddTask(hitProducer);
 
   FairTutorialDetStraightLineFitter* fitter = new FairTutorialDetStraightLineFitter();

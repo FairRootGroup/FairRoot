@@ -84,9 +84,11 @@ void run_tutorial4(Int_t nEvents = 10)
   FairBoxGenerator* boxGen = new FairBoxGenerator(2212, 1);
 
   boxGen->SetThetaRange (   theta,   theta+0.1);
+//  boxGen->SetThetaRange (  0.,  0.);
   boxGen->SetPRange     (momentum,momentum+0.01);
   boxGen->SetPhiRange   (0.,360.);
   boxGen->SetBoxXYZ (-20.,-20.,20.,20., 0.);
+//  boxGen->SetBoxXYZ (0.,0.,0.,0., 0.);
 
 //  boxGen->SetDebug(kTRUE);
 
@@ -136,6 +138,8 @@ void run_tutorial4(Int_t nEvents = 10)
   
   rtdb->saveOutput();
   rtdb->print();
+
+  delete run;
   // -----   Finish   -------------------------------------------------------
   timer.Stop();
   Double_t rtime = timer.RealTime();

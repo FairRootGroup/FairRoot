@@ -71,6 +71,8 @@ void Create_Tutorial4_Geometry() {
 
   position_detector();
  
+  cout<<"Voxelizing."<<endl;
+  top->Voxelize("");
   gGeoMan->CloseGeometry();
 
   add_alignable_volumes();
@@ -152,30 +154,6 @@ void position_detector()
 void add_alignable_volumes()
 {
 
-/*
-  TString TopNode = gGeoManager->GetTopNode()->GetName();
-  cout<<"TopNode: "<<TopNode<<endl;
-
-
-  TObjArray* nodes = gGeoManager->GetTopNode()->GetNodes();
-  for (Int_t iNode = 0; iNode < nodes->GetEntriesFast(); iNode++) {
-    TGeoNode* node = (TGeoNode*) nodes->At(iNode);
-    TString StationNode = node->GetName();
-    cout<<"Node: "<<StationNode<<endl;
-    TGeoNode* station = node;
-
-     TObjArray* modules = station->GetNodes();
-     for (Int_t iLayerPart = 0; iLayerPart < modules->GetEntriesFast(); iLayerPart++) {
-        TGeoNode* module = (TGeoNode*) modules->At(iLayerPart);
-        TString ModuleNode = module->GetName();
-         cout<<"Node: "<<ModuleNode<<endl;
-
-     }
-  }
-
-  return;
-*/
-
   TString volPath;
   TString symName;
   TString detStr   = "Tutorial4/det";
@@ -190,19 +168,11 @@ void add_alignable_volumes()
     symName += Form("%02d",detectorPlanes);
 
     cout<<"Path: "<<volPath<<", "<<symName<<endl;
-    gGeoMan->cd(volPath);  
+//    gGeoMan->cd(volPath);  
    
-/*
-    TGeoVolume* fCurrentVolume = gGeoMan->GetCurrentVolume();
-    TGeoBBox* fVolumeShape = (TGeoBBox*)fCurrentVolume->GetShape();
-    cout<<"In Volume "<< fCurrentVolume->GetName()<<endl;
-    Double_t local[3] = {0., 0., 0.};  // Local centre of volume
-    Double_t fGlobal[3];
-    gGeoManager->LocalToMaster(local, fGlobal);
-    cout<<"Pos: "<<fGlobal[0]<<" , "<<fGlobal[1]<<" , "<<fGlobal[2]<<" , "<<endl;
-    fGlobalMatrix = gGeoManager->GetCurrentMatrix();
-*/
     gGeoMan->SetAlignableEntry(symName.Data(),volPath.Data());
 
   }
+    cout<<"Nr of alignable objects: "<<gGeoMan->GetNAlignable()<<endl;
+
 }
