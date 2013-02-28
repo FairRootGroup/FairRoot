@@ -74,6 +74,7 @@ FairModule::FairModule(const char* Name, const char* title ,Bool_t Active)
    fVerboseLevel(0),
    flGeoPar(0),
    kGeoSaved(kFALSE),
+   fMisalignGeometry(kFALSE),
    fLogger(FairLogger::GetLogger())
 {
   if(!svList) { svList=new TRefArray(); }
@@ -94,6 +95,7 @@ FairModule::FairModule()
     fVerboseLevel(0),
     flGeoPar(0),
     kGeoSaved(kFALSE),
+    fMisalignGeometry(kFALSE),
     fLogger(FairLogger::GetLogger())
 {
 

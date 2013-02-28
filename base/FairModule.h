@@ -3,20 +3,29 @@
 
 #include "FairLogger.h"
 
+#include "FairGeoLoader.h"
+#include "FairGeoInterface.h"
+#include "FairGeoVolume.h"
+#include "FairGeoNode.h"
+#include "FairRun.h"
+#include "FairRuntimeDb.h"
+
 #include "TString.h"
 #include "TNamed.h"
 #include "TRefArray.h"
 #include "TGeoMatrix.h"
+#include "TList.h"
+
 #include <map>
 
 class FairVolumeList;
 class FairVolume;
-class FairGeoNode;
 class TGeoNode;
 class TGeoMatrix;
 class TGeoVolume;
-class TList;
 class TArrayI;
+
+
 /**
  * Base class for constructing all detecors and passive volumes
  * @author M. Al-Turany, Denis Bertini
@@ -53,7 +62,14 @@ class FairModule:  public TNamed
     virtual void        ConstructRootGeometry();
     /**construct geometry from standard ASSCII files (Hades Format)*/
     virtual void        ConstructASCIIGeometry();
-    /**Set the sensitivity flag fro volumes, called from ConstructASCIIRootGeometry(), and has to be implimented for detectors
+    /** Misalign the geometry fot the simulation run using methods of the Root geometry package */
+    virtual void        MisalignGeometry() {;}
+
+    /**template function to construct geometry. to be used in derived classes.*/
+    template<class T, class U>
+    void ConstructASCIIGeometry(T dataType1, TString containerName="", U datatype2 = NULL);
+
+    /**Set the sensitivity flag for volumes, called from ConstructASCIIRootGeometry(), and has to be implimented for detectors
      * which use ConstructASCIIRootGeometry() to build the geometry */
     virtual Bool_t      CheckIfSensitive(std::string name);
     /**called from ConstructRootGeometry()*/
@@ -76,8 +92,15 @@ class FairModule:  public TNamed
     void   ProcessNodes ( TList* aList );
     /**Set the parameter containers*/
     virtual  void       SetParContainers() {;}
+    /** Initialize everything which has to be done before the construction and misalignment
+     ** of the geometry. Mostly this is needed to read data from the parameter containers.*/
+    virtual  void       InitParContainers() {;}
     /**return the geo parameter of this detector/module*/
     TList* GetListOfGeoPar() { return flGeoPar;}
+
+    /** Misalign the geometry for the simulation run */
+    virtual void SetMisalignGeometry(Bool_t val) {fMisalignGeometry=val;}
+
     /**list of volumes in a simulation session*/
     static              FairVolumeList*   vList; //!
     /**total number of volumes in a simulaion session*/
@@ -105,10 +128,59 @@ class FairModule:  public TNamed
     Int_t               fVerboseLevel;
     TList*              flGeoPar; //!  list of Detector Geometry parameters
     Bool_t              kGeoSaved; //! flag for initialisation
+    Bool_t              fMisalignGeometry; //! Misalign geometry or not
     /** Fair Logger */
     FairLogger*            fLogger;//!
 
-    ClassDef( FairModule,1)
+    ClassDef( FairModule,2)
 };
+
+template<class T, class U>
+void FairModule::ConstructASCIIGeometry(T dataType1, TString containerName, U dataType)
+{
+  FairGeoLoader* loader=FairGeoLoader::Instance();
+  FairGeoInterface* GeoInterface =loader->getGeoInterface();
+  T* MGeo=new T();
+  MGeo->print();
+  MGeo->setGeomFile(GetGeometryFileName());
+  GeoInterface->addGeoModule(MGeo);
+  Bool_t rc = GeoInterface->readSet(MGeo);
+  if ( rc ) { MGeo->create(loader->getGeoBuilder()); }
+
+  TList* volList = MGeo->getListOfVolumes();
+  // store geo parameter
+  FairRun* fRun = FairRun::Instance();
+  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
+
+  dataType1 = *MGeo;
+
+  if ( "" != containerName) {
+    LOG(INFO) << "Add GeoNodes for "<< MGeo->getDescription()
+              << " to container " << containerName << FairLogger::endl;
+
+    //    U par=(U)(rtdb->getContainer(containerName));
+    U*      par=(U*)(rtdb->getContainer(containerName));
+    TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
+    TObjArray* fPassNodes = par->GetGeoPassiveNodes();
+
+    TListIter iter(volList);
+    FairGeoNode* node   = NULL;
+    FairGeoVolume* aVol=NULL;
+
+    while( (node = (FairGeoNode*)iter.Next()) ) {
+      aVol = dynamic_cast<FairGeoVolume*> ( node );
+      if ( node->isSensitive()  ) {
+        fSensNodes->AddLast( aVol );
+      } else {
+        fPassNodes->AddLast( aVol );
+      }
+    }
+    ProcessNodes( volList );
+    par->setChanged();
+    par->setInputVersion(fRun->GetRunId(),1);
+
+  }
+}
+
 
 #endif //FAIRMODULE_H
