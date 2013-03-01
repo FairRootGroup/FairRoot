@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ##################################################################
 # set the source and the build directory for ctest
 # change this directories to your needs
@@ -13,11 +12,11 @@
 # export LINUX_FLAVOUR=Debian
 ##################################################################
 export PATH=/usr/lib/icecc/bin:$PATH
-export SIMPATH=/misc/cbmsoft/Etch64/jan12
+export SIMPATH=/data.local2/fairsoft/sep12
 export BUILDDIR=/misc/cbmsim/SVN/CONTINUOUS/build_fairbase
 export SOURCEDIR=/misc/cbmsim/SVN/CONTINUOUS/fairbase
-export LINUX_FLAVOUR=Etch64
-export FAIRSOFT_VERSION=jan12
+export LINUX_FLAVOUR=Squeeze64
+export FAIRSOFT_VERSION=sep12
 ###################################################################
 
 cd $SOURCEDIR
@@ -87,7 +86,8 @@ echo "************************"
 export number_of_processors=$(cat /proc/cpuinfo | grep processor | wc -l)
 #export number_of_processors=40
 
-/usr/bin/ctest -S $SOURCEDIR/FairBase_test.cmake -V --VV
+#/usr/bin/ctest -S $SOURCEDIR/FairBase_test.cmake -V --VV --debug #>> $HOME/FairBase_Continuous.log 2>&1
+/usr/bin/ctest -S $SOURCEDIR/FairBase_test.cmake -V --VV 
 
 
 #Remove process pid from Dispacher_queue.txt
