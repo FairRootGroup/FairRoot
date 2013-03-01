@@ -8,6 +8,7 @@ ${FAIRROOT_SOURCE_DIR}/fairtools
 ${CMAKE_SOURCE_DIR}/geobase 
 ${CMAKE_SOURCE_DIR}/parbase 
 ${CMAKE_SOURCE_DIR}/base 
+${CMAKE_SOURCE_DIR}/parbase 
 ${CMAKE_SOURCE_DIR}/example/mcstack 
 )
 
