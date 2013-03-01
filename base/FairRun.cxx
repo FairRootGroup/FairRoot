@@ -4,8 +4,6 @@
 // -------------------------------------------------------------------------
 
 
-
-
 #include "FairRun.h"
 #include "FairTask.h"
 #include "FairRootManager.h"
