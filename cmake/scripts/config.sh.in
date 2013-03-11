@@ -23,6 +23,7 @@ if [ "$same_system" == "1" ]; then
     export USE_VGM="1"
     export PYTHIA8DATA="@PYTHIA8DATA@"
     export CLASSPATH="@MY_CLASSPATH@"
+
     export G4LEDATA="@G4LEDATA@"
     export G4LEVELGAMMADATA="@G4LEVELGAMMADATA@"
     export G4NeutronHPCrossSections="@G4NeutronHPCrossSections@"
@@ -31,6 +32,7 @@ if [ "$same_system" == "1" ]; then
     export G4PIIDATA="@G4PIIDATA@"
     export G4RADIOACTIVEDATA="@G4RADIOACTIVEDATA@"
     export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
+    export G4SAIDXSDATA="@G4SAIDXSDATA@"
   fi
   export ROOT_LIBRARY_DIR="@ROOT_LIBRARY_DIR@"
   export ROOT_LIBRARIES="@ROOT_LIBRARIES@"
