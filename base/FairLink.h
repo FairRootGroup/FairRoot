@@ -50,7 +50,7 @@ class FairLink : public TObject
     virtual void Print(std::ostream& out = std::cout) const;
 
     virtual bool operator==(const FairLink& link) const {
-      if (fFile == link.GetFile() && fEntry == link.GetEntry() && fType == link.GetType() && fIndex == link.GetIndex()) {
+      if ((fFile == link.GetFile() || link.GetFile() == -1) && (fEntry == link.GetEntry() || link.GetEntry() == -1) && fType == link.GetType() && fIndex == link.GetIndex()) {
         return true;
       } else {
         return false;
@@ -60,11 +60,11 @@ class FairLink : public TObject
     virtual bool operator<(const FairLink& link) const {
       if (fFile < link.GetFile()) {
         return true;
-      } else if (fFile == link.GetFile() && fEntry < link.GetEntry()) {
+      } else if ((fFile == link.GetFile() || link.GetFile() == -1) && fEntry < link.GetEntry()) {
         return true;
-      } else if (fFile == link.GetFile() && fEntry == link.GetEntry() && fType < link.GetType()) {
+      } else if ((fFile == link.GetFile() || link.GetFile() == -1)  && (fEntry == link.GetEntry() || link.GetEntry() == -1) && fType < link.GetType()) {
         return true;
-      } else if (fFile == link.GetFile() && fEntry == link.GetEntry() && fType == link.GetType() && fIndex < link.GetIndex()) {
+      } else if ((fFile == link.GetFile() || link.GetFile() == -1)  && (fEntry == link.GetEntry() || link.GetEntry() == -1) && fType == link.GetType() && fIndex < link.GetIndex()) {
         return true;
       } else {
         return false;
