@@ -133,6 +133,8 @@ class FairRootManager : public TObject
     /**Read a single entry from background chain*/
     void                ReadBKEvent(Int_t i);
     void              ReadEvent(Int_t i);
+    /**Read the tree entry on one branch**/
+    void              ReadBranchEvent(const char* BrName);
     /**Read all entries from input tree(s) with time stamp from current time to dt (time in ns)*/
     Bool_t            ReadNextEvent(Double_t dt);
     /**create a new branch in the output tree
