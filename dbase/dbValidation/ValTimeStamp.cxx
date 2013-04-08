@@ -7,7 +7,35 @@
 
 #include "TString.h"
 
+
+
+// <DB> This could be a work arround to use the 32/64
+// implementation dependancy ...
+
+typedef int32_t my_time32;
+typedef int64_t my_time64;
+my_time32 get_mytime32()
+{
+  if (sizeof(time_t) == sizeof(my_time32)) {
+    return time(NULL);
+  } else {
+    return (my_time32)(time(NULL));
+  }
+}
+
+
+my_time64 get_mytime64()
+{
+  if (sizeof(time_t) == sizeof(my_time64)) {
+    return time(NULL);
+  } else {
+    return (my_time64)(time(NULL));
+  }
+}
+
+
 ClassImp(ValTimeStamp)
+
 
 const Int_t kNsPerSec = 1000000000;
 
@@ -30,11 +58,13 @@ ValTimeStamp ValTimeStamp::GetBOT()
 
 ValTimeStamp ValTimeStamp::GetEOT()
 {
+  // Unix End of Time
   return ValTimeStamp((time_t)INT_MAX,0);
 }
 
 ValTimeStamp ValTimeStamp::GetNBOT()
 {
+  // Unix Begin of Time
   return ValTimeStamp((time_t)INT_MIN,0);
 }
 
