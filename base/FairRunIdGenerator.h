@@ -16,6 +16,9 @@ class FairRunIdGenerator
       uint16_t clock_seq;
       uint8_t node[6];
     };
+
+    struct timespec fTimeSpec;
+
     int get_random_fd(void);
     void get_random_bytes(void*, int);
     int get_node_id(unsigned char*);
@@ -26,9 +29,17 @@ class FairRunIdGenerator
     void uuid_pack(const struct uuid*, uuid_t);
     void uuid_unpack(const uuid_t, struct uuid*);
   public:
+    struct timespec getTimeSpec() {return fTimeSpec;}
+    struct timespec getTimeSpecFromTID( unsigned  int ms);
+    unsigned  int getTID();
+
+  public:
     FairRunIdGenerator() {}
     ~FairRunIdGenerator() {}
     unsigned int generateId(void);
+
+
+
 };
 
 #endif
