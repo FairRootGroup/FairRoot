@@ -36,7 +36,7 @@ using std::setw;
 
 /// DEBUG DEBUG Temporary define
 // 0 = use original code; 1 = use new code
-#define USE_DB_METHOD 0
+#define USE_DB_METHOD 1
 /////////////////////////////////
 
 ClassImp(FairRuntimeDb)
@@ -133,8 +133,11 @@ void FairRuntimeDb::printParamContexts()
 
 Bool_t FairRuntimeDb::addContainer(FairParSet* container)
 {
+
   // adds a container to the list of containers
+  cout << "-I- name parset # " << container->GetName()<< endl;
   Text_t* name=(char*)container->GetName();
+
   if (!containerList->FindObject(name)) {
     containerList->Add(container);
     TIter next(runs);
@@ -146,8 +149,15 @@ Bool_t FairRuntimeDb::addContainer(FairParSet* container)
         run->addParVersion(vers);
       }
     }
+    cout << "-I- RTDB entries in list# " <<  containerList->GetEntries() <<"\n" ;
+
+
     return kTRUE;
   }
+
+
+
+
   Warning("addContainer(FairParSet*)","Container %s already exists!",name);
   return kFALSE;
 }
@@ -332,6 +342,7 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
   Bool_t rc=kTRUE;
   Int_t cv=0;
   if (getOutput() && output->check() && output->isAutoWritable()) {
+    cout << " CHECK OUTPUT DONE " << endl;
     if (isRootFileOutput) {
       if (cont->hasChanged()) {
         cv=findOutputVersion(cont);
@@ -358,6 +369,7 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
         vers->setRootVersion(cv);
       }
     }
+
   }
   vers->setInputVersion(cont->getInputVersion(1),1);
   vers->setInputVersion(cont->getInputVersion(2),2);
@@ -378,7 +390,7 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
 #if (USE_DB_METHOD > 0)
 Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtdbRun* refRun)
 {
-  std::cout << "\n\t+++++++<DEBUG> Using modified code.+++++++\n";
+  // std::cout << "\n -I FairRuntimeDB Using DB mode \n";
   // writes a container to the output if the containers has changed
   // The output might be suppressed if the changes is due an initialisation from a
   //   ROOT file which serves also as output or if it was already written
@@ -414,9 +426,10 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
       if (cont->hasChanged()) {
         cv = findOutputVersion(cont);
         if(cv == 0) {
-          std::cout << "<DEBUG> Write TSQL here cv = "<< cv << "_ <++++++>\n";
+          std::cout << "-I- FairRuntimeDB: SQL write() called 1 = "<< cont->GetName() << "\n";
           cont->print();
-          cont->write();
+          Int_t test = cont->write(output);
+          std::cout << "-I- FairRuntimeDB: SQL write() called 2 = "<< test << "\n";
         }
       }
       break;//End of TSQL IO
@@ -507,7 +520,7 @@ Bool_t FairRuntimeDb::initContainers(void)
   TIter next(containerList);
   FairParSet* cont;
   Bool_t rc=kTRUE;
-  cout<<'\n'<<"*************************************************************"<<'\n';
+  cout<<'\n'<<"************************************************************* 1"<<'\n';
   if (currentFileName.IsNull()) {
     cout<<"     initialisation for run id "<<currentRun->GetName();
   } else {
@@ -515,8 +528,9 @@ Bool_t FairRuntimeDb::initContainers(void)
     cout<<"     run id "<<currentRun->GetName();
   }
   if (len>0) { cout << " --> " << refRunName; }
-  cout<<'\n'<<"*************************************************************"<<'\n';
+  cout<<'\n'<<"************************************************************* 2"<<'\n';
   while ((cont=(FairParSet*)next())) {
+    cout << " -I- FairRunTimeDB::InitContainer() " << cont->GetName() << endl;
     if (!cont->isStatic()) { rc=cont->init() && rc; }
   }
   if (!rc) { Error("initContainers()","Error occured during initialization"); }
@@ -783,7 +797,7 @@ void FairRuntimeDb::activateParIo(FairParIo* io)
         new FairGenericParAsciiFileIo(((FairParAsciiFileIo*)io)->getFile());
       io->setDetParIo(pn);
     } else if(strcmp(ioName,"FairParTSQLIo") == 0) {
-      std::cout << "\n\n\n\t TSQL versie is called en nu de rest \n\n";
+      //std::cout << "\n\n\n\t TSQL versie is called en nu de rest \n\n";
       FairDetParTSQLIo* pn = new FairGenericParTSQLIo();
       io->setDetParIo(pn);
     }

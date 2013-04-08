@@ -40,11 +40,13 @@ Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name)
   Text_t buf[maxbuf];
   Text_t buf2[maxbuf];
   sprintf(buf2,"%s%s%s","[",name,"]");
+  //cout << " buf2 " <<  buf2 << endl;
   pFile->clear();
   pFile->seekg(0,ios::beg);
   while (!pFile->eof()) {
     pFile->getline(buf,maxbuf);
     if (buf[0]!='[') { continue; }
+    //cout << " buf: " <<  buf << endl;
     if (!strncmp(buf,buf2,strlen(buf2))) { break; }
   }
   if (pFile->eof()) { return kFALSE; }

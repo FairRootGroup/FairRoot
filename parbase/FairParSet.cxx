@@ -18,7 +18,7 @@ using std::cout;
 ClassImp(FairParSet)
 
 FairParSet::FairParSet(const char* name,const char* title,const char* context)
-  : TNamed(name,title),
+  : FairDbTableRow(),
     detName(""),
     status(kFALSE),
     changed(kFALSE),
@@ -27,6 +27,8 @@ FairParSet::FairParSet(const char* name,const char* title,const char* context)
     description(""),
     fLogger(FairLogger::GetLogger())
 {
+  fName = name;
+  fTitle = title;
   for(Int_t i=0; i<3; i++) {versions[i]=-1;}
 }
 
@@ -52,7 +54,7 @@ Bool_t FairParSet::init()
     } else { setInputVersion(-1,2); }
   }
   if (allFound) { return kTRUE; }
-  fLogger->Error(MESSAGE_ORIGIN, "init() %s  not initialized",GetName());
+  if (fLogger ) { fLogger->Error(MESSAGE_ORIGIN, "init() %s  not initialized",GetName()); }
   return kFALSE;
 }
 
@@ -64,7 +66,7 @@ Int_t FairParSet::write()
   // (calls internally the init function in the derived class)
   FairParIo* output=FairRuntimeDb::instance()->getOutput();
   if (output) { return write(output); }
-  fLogger->Error(MESSAGE_ORIGIN,"write() %s could not be written to output",GetName());
+  if (fLogger) { fLogger->Error(MESSAGE_ORIGIN,"write() %s could not be written to output",GetName()); }
   return -1;
 }
 
@@ -91,3 +93,6 @@ void FairParSet::resetInputVersions()
     changed=kFALSE;
   }
 }
+
+
+

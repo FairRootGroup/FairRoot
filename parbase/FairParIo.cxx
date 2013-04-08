@@ -10,8 +10,10 @@
 /////////////////////////////////////////////////////////////
 
 #include "FairParIo.h"
-
 #include "FairDetParIo.h"
+
+#include <iostream>
+using namespace std;
 
 ClassImp(FairParIo)
 
@@ -57,6 +59,7 @@ void FairParIo::setInputNumber(Int_t num)
 FairDetParIo* FairParIo::getDetParIo(const Text_t* detName)
 {
   // returns pointer to input/output class for a detector
+  //std::cout << " DetParIO # " << detName << detParIoList->GetEntries()  <<  std::endl;
   return ((FairDetParIo*)detParIoList->FindObject(detName));
 }
 

@@ -11,6 +11,7 @@
 
 #include "FairContFact.h"
 #include "FairRuntimeDb.h"
+#include "FairParSet.h"
 
 #include "TObjString.h"
 

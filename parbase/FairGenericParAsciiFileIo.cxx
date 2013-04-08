@@ -34,7 +34,7 @@ Bool_t FairGenericParAsciiFileIo::init(FairParSet* pPar)
   if (!pFile) { return kFALSE; }
 
   if (pPar->InheritsFrom("FairParGenericSet")) {
-//      std::cout << "airGenericParAsciiFileIo ##########calling read function " << std::endl;
+    //      std::cout << "FairGenericParAsciiFileIo ##########calling read function " << std::endl;
     return readGenericSet((FairParGenericSet*)pPar);
   }
 
@@ -126,7 +126,10 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet* pPar)
   pFile->clear();
   pFile->seekg(0,ios::beg);
   Text_t* name=(Char_t*)pPar->GetName();
+
   if (!findContainer(name)) { return kFALSE; }
+
+
   FairParamList* paramList = new FairParamList;
   const Int_t maxbuf=8000;
   Text_t buf[maxbuf];
