@@ -89,6 +89,9 @@ class FairParTSQLIo: public FairParIo
      */
     inline FairDbMultConnector const& GetConnections() const;
 
+    void readVersions(FairRtdbRun* aRun);
+    FairRtdbRun* getCurrentRun() {return fCurrentRun;}
+
   protected:
 
     bool activateDetIo();
@@ -98,8 +101,9 @@ class FairParTSQLIo: public FairParIo
     FairParTSQLIo(FairParTSQLIo const& ot);
     FairParTSQLIo& operator=(FairParTSQLIo const& ot);
 
-    int fDefaultDb; /**< The default Database connection.*/
-    FairDbMultConnector* fConnections;/**< Actual connection set*/
+    FairRtdbRun* fCurrentRun;
+    int fDefaultDb;
+    FairDbMultConnector* fConnections;
 
     ClassDef(FairParTSQLIo, 0) // Class for parameter I/O Using TSQL
 };

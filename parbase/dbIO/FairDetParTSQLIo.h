@@ -35,8 +35,6 @@ class FairDetParTSQLIo : public FairDetParIo
      * created (to keep the ownership).
      */
     FairDetParTSQLIo(FairDbMultConnector const& cons, int const dbNum = -1);
-
-    /// Destructor.
     virtual ~FairDetParTSQLIo();
 
     /**
@@ -58,9 +56,8 @@ class FairDetParTSQLIo : public FairDetParIo
     // Undo the changes made since last commit.
     virtual void rollback();
 
-    ////////////////
     inline void print();
-    ///////////////
+
 
     // ____________ protected Members ___________________
   protected:

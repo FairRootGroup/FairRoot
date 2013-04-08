@@ -1,8 +1,10 @@
-/***************************************
- * Author: M.Babai (M.Babai@rug.nl)    *
- * License:                            *
- * Version:                            *
- ***************************************/
+/*******************************************
+ * Author: M.Babai (M.Babai@rug.nl)        *
+ * Modified: D.Bertini (D.Bertini@gsi.de)  *
+ * License:                                *
+ * Version:                                *
+ *******************************************/
+
 #pragma once
 #ifndef FAIR_GENERIC_PAR_TSQL_Io_H
 #define FAIR_GENERIC_PAR_TSQL_Io_H
@@ -12,6 +14,8 @@
 
 // FairRoot
 #include "FairDetParTSQLIo.h"
+#include "FairRuntimeDb.h"
+
 class FairParSet;
 class FairParamList;
 class FairParGenericSet;
@@ -54,6 +58,9 @@ class FairGenericParTSQLIo : public FairDetParTSQLIo
     // To Avoid mistakes.
     FairGenericParTSQLIo(FairGenericParTSQLIo const& ot);
     FairGenericParTSQLIo& operator=(FairGenericParTSQLIo const& ot);
+
+    FairRuntimeDb* fRtdb;
+
 
     ClassDef(FairGenericParTSQLIo, 0)
 };
