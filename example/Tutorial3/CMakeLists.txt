@@ -3,12 +3,7 @@
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR} 
-#put here all directories where header files are located
-${FAIRROOT_SOURCE_DIR}/fairtools
-${FAIRROOT_SOURCE_DIR}/base
-${FAIRROOT_SOURCE_DIR}/parbase
-${FAIRROOT_SOURCE_DIR}/geobase
+${BASE_INCLUDE_DIRECTORIES}
 ${FAIRROOT_SOURCE_DIR}/example/mcstack
 ${FAIRROOT_SOURCE_DIR}/example/Tutorial3
 ${FAIRROOT_SOURCE_DIR}/example/Tutorial3/data

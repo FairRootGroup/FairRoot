@@ -113,8 +113,8 @@ SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
     SUFFIX ".so"
 )
 
-SET(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)  
-SET(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
+# Set some useful variables
+SetBasicVariables()
 
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through

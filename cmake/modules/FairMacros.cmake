@@ -225,3 +225,21 @@ Macro (Generate_Version_Info)
 		     )
 
 EndMacro (Generate_Version_Info)
+
+Macro (SetBasicVariables)
+  Set(BASE_INCLUDE_DIRECTORIES
+      ${ROOT_INCLUDE_DIR}
+      ${CMAKE_SOURCE_DIR}/fairtools
+      ${CMAKE_SOURCE_DIR}/geobase
+      ${CMAKE_SOURCE_DIR}/parbase
+      ${CMAKE_SOURCE_DIR}/base
+      ${CMAKE_SOURCE_DIR}/dbase
+      ${CMAKE_SOURCE_DIR}/dbase/dbInterface
+      ${CMAKE_SOURCE_DIR}/dbase/dbValidation
+      ${CMAKE_SOURCE_DIR}/dbase/dbUtils
+      ${CMAKE_SOURCE_DIR}/dbase/dbInput
+  )  
+  Set(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)
+  Set(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
+
+EndMacro (SetBasicVariables)

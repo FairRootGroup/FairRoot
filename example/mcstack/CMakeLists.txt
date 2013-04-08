@@ -3,13 +3,8 @@
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR} 
-${FAIRROOT_SOURCE_DIR}/fairtools
-${CMAKE_SOURCE_DIR}/geobase 
-${CMAKE_SOURCE_DIR}/parbase 
-${CMAKE_SOURCE_DIR}/base 
-${CMAKE_SOURCE_DIR}/parbase 
-${CMAKE_SOURCE_DIR}/example/mcstack 
+${BASE_INCLUDE_DIRECTORIES}
+${FAIRROOT_SOURCE_DIR}/example/mcstack
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
