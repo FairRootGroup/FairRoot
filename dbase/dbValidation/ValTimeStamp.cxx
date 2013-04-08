@@ -12,6 +12,7 @@
 // <DB> This could be a work arround to use the 32/64
 // implementation dependancy ...
 
+/*
 typedef int32_t my_time32;
 typedef int64_t my_time64;
 my_time32 get_mytime32()
@@ -32,6 +33,7 @@ my_time64 get_mytime64()
     return (my_time64)(time(NULL));
   }
 }
+*/
 
 
 ClassImp(ValTimeStamp)
