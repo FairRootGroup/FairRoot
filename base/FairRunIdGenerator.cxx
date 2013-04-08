@@ -32,6 +32,9 @@
 #define srand(x)  srandom(x)
 #define rand()    random()
 
+#include <iostream.h>
+using namespace std;
+
 //#include "genid32.h"    replaced by hrunidgenerator.h
 
 /*
@@ -233,6 +236,11 @@ try_again:
   *clock_high = clock_reg >> 32;
   *clock_low = clock_reg;
   *ret_clock_seq = clock_seq;
+
+  fTimeSpec.tv_sec = last.tv_sec;
+  //  fTimeSpec.tv_nsec = last.tv_usec*1000.;
+  fTimeSpec.tv_nsec = 0.;
+
   return 0;
 }
 
@@ -284,11 +292,15 @@ void FairRunIdGenerator::uuid_generate_random(uuid_t out)
  */
 void FairRunIdGenerator::uuid_generate(uuid_t out)
 {
+  /*
   if (get_random_fd() >= 0) {
     uuid_generate_random(out);
   } else {
     uuid_generate_time(out);
   }
+  */
+  uuid_generate_time(out);
+
 }
 
 /*
@@ -376,11 +388,31 @@ unsigned int FairRunIdGenerator::generateId(void)
 {
   uuid_t uu;
   unsigned int v;
-
+  struct timeval ret_tv;
   uuid_generate(uu);
+
+
   v = ((uu[0] ^ uu[4] ^ uu[8] ^ uu[12]) << 0)
       | ((uu[1] ^ uu[5] ^ uu[9] ^ uu[13]) << 8)
       | ((uu[2] ^ uu[6] ^ uu[10] ^ uu[14]) << 16)
       | ((uu[3] ^ uu[7] ^ uu[11] ^ uu[15]) << 24);
-  return v & 0x7fffffff;
+
+
+  //  return v & 0x7fffffff;
+  return getTID();
 }
+
+unsigned  int FairRunIdGenerator::getTID()
+{
+  return  (fTimeSpec.tv_sec );
+}
+
+struct timespec FairRunIdGenerator::getTimeSpecFromTID( unsigned  int ms) {
+  struct timespec ret_tv;
+  ret_tv.tv_sec  =  ms;
+  ret_tv.tv_nsec = 0. ; // truncate the ns resolution
+  return ret_tv;
+}
+
+
+
