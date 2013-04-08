@@ -3,13 +3,18 @@
 
 #include "FairLogger.h"
 #include "TNamed.h"
-//#include "TArrayI.h"
+#include "FairDbTableRow.h"
+
+#include <iostream>
+using namespace std;
 
 class FairParIo;
 
-class FairParSet : public TNamed
+class FairParSet : public FairDbTableRow
 {
   protected:
+    TString fName;         //
+    TString fTitle;        //
     TString detName;         //! name of the detector the container belongs to
     Int_t versions[3];       //! versions of container in the 2 possible inputs
     Bool_t status;           //! static flag
@@ -19,15 +24,21 @@ class FairParSet : public TNamed
     TString description ;    // Description of parameters
     /** Fair Logger */
     FairLogger*  fLogger;  //!
+
   public:
     FairParSet(const char* name="",const char* title="",const char* context="");
     virtual ~FairParSet() {}
+
+    virtual const char* GetName() const {return (char*)fName.Data();}
+    virtual const char* GetTitle() const {return (char*)fTitle.Data();}
+
     virtual Bool_t init();
     virtual Bool_t init(FairParIo* io) { return kFALSE; }
     virtual Int_t write();
     virtual Int_t write(FairParIo*) { return kFALSE; }
     virtual void clear() {}
     virtual void print();
+
     const char* getDetectorName() {return detName.Data();}
     void resetInputVersions();
 
@@ -56,7 +67,17 @@ class FairParSet : public TNamed
       description=r.getDescription();
     }
 
-  private:
+    // SQL addon I/O  member functions
+    virtual FairDbTableRow* CreateTableRow() const {
+      //cout << " -I- FairParSet():: CreateTableRow() returning a generic FairParSet class !!! " << endl;
+      return new FairParSet();
+    }
+
+
+    virtual void Fill(UInt_t rid=0) {};
+    virtual void Store(UInt_t rid=0) {};
+
+  public:
 
     FairParSet& operator=(const FairParSet&);
     FairParSet(const FairParSet&);

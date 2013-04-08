@@ -41,9 +41,9 @@ class FairRuntimeDb : public TObject
      */
     typedef enum {
       UNKNOWN_Type    = 0,
-      AsciiFileOutput = 1,// Ascii in-out-put
-      RootFileOutput  = 2,// Root Files
-      RootTSQLOutput  = 3// Use a TSQL db
+      AsciiFileOutput = 1, // Ascii in-out-put
+      RootFileOutput  = 2, // Root Files
+      RootTSQLOutput  = 3  // Use a TSQL db
     } ParamIOType;
     ParamIOType ioType;//IO Type
 

@@ -2,10 +2,13 @@
 #define FAIRPARGENERICSET_H
 
 #include "FairParSet.h"
+#include <iostream>
+using namespace std;
 
 class FairParamList;
 class FairDetParIo;
 class FairParIo;
+
 
 class FairParGenericSet : public FairParSet
 {
