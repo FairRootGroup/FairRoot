@@ -11,6 +11,8 @@ ${CMAKE_SOURCE_DIR}/dbase
 ${CMAKE_SOURCE_DIR}/dbase/dbInterface
 ${CMAKE_SOURCE_DIR}/dbase/dbValidation
 ${CMAKE_SOURCE_DIR}/dbase/dbUtils
+${CMAKE_SOURCE_DIR}/input/db
+${CMAKE_SOURCE_DIR}/dbase/dbInput
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
