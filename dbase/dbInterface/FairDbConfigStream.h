@@ -30,7 +30,7 @@ class FairDbConfigStream
     FairDbConfigStream(const std::string& SoftwName,
                        const std::string& ConfigName="default",
                        ValContext vc = FairDbConfigStream::fgDefaultContext,
-                       FairDb::Task task=0,
+                       FairDb::Version task=0,
                        const std::string& tableName="SOFTWARE_CONFIGURATION");
     virtual ~FairDbConfigStream();
 

@@ -15,6 +15,7 @@ class FairDbResultKey;
 class FairDbSqlContext;
 class FairDbTableProxy;
 
+
 template <class T> class FairDbResultPtr
 {
 
@@ -24,17 +25,17 @@ template <class T> class FairDbResultPtr
     FairDbResultPtr();
     FairDbResultPtr(const FairDbResultPtr& that);
     FairDbResultPtr(const ValContext& vc,
-                    FairDb::Task task = FairDb::kDefaultTask,
+                    FairDb::Version task = FairDb::kDefaultVersion,
                     FairDb::AbortTest abortTest = FairDb::kTableMissing,
                     Bool_t findFullTimeWindow = true);
     FairDbResultPtr(const string& tableName,
                     const ValContext& vc,
-                    FairDb::Task task = FairDb::kDefaultTask,
+                    FairDb::Version task = FairDb::kDefaultVersion,
                     FairDb::AbortTest abortTest = FairDb::kTableMissing,
                     Bool_t findFullTimeWindow = true);
     FairDbResultPtr(const string& tableName,
                     const FairDbSqlContext& context,
-                    const FairDb::Task& task = FairDb::kAnyTask,
+                    const FairDb::Version& task = FairDb::kAnyVersion,
                     const string& data = "",
                     const string& fillOpts = "",
                     FairDb::AbortTest abortTest = FairDb::kTableMissing);
@@ -65,10 +66,10 @@ template <class T> class FairDbResultPtr
 // State changing member functions
     UInt_t NextQuery(Bool_t forwards = kTRUE);
     UInt_t NewQuery(ValContext vc,
-                    FairDb::Task task=0,
+                    FairDb::Version task=0,
                     Bool_t findFullTimeWindow = true);
     UInt_t NewQuery(const FairDbSqlContext& context,
-                    const FairDb::Task& task = 0,
+                    const FairDb::Version& task = 0,
                     const string& data = "",
                     const string& fillOpts = "");
     UInt_t NewQuery(const FairDbValidityRec& vrec);

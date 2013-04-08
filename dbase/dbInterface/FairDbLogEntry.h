@@ -34,7 +34,7 @@ class FairDbLogEntry : public FairDbTableRow
                    const string& reason = "",
                    Int_t detMask = Detector::FullMask(),
                    Int_t simMask = SimFlag::FullMask(),
-                   FairDb::Task task = 0,
+                   FairDb::Version task = 0,
                    Int_t logSeqNoMin = 0,
                    Int_t logSeqNoMax = 0,
                    Int_t logNumSeqNo = 0);
@@ -55,7 +55,7 @@ class FairDbLogEntry : public FairDbTableRow
     Int_t GetLogSeqNoMax() const { return fLogSeqNoMax; }
     Int_t GetLogNumSeqNo() const { return fLogNumSeqNo; }
     Int_t GetSimMask() const { return fLogSimMask; }
-    FairDb::Task GetTask() const { return fLogTask; }
+    FairDb::Version GetVersion() const { return fLogVersion; }
     const string& GetUserName() const { return fUserName; }
     const string& GetProcessName() const { return fProcessName; }
     const string& GetHostName() const { return fHostName; }
@@ -69,7 +69,7 @@ class FairDbLogEntry : public FairDbTableRow
     void SetReason(const string& reason);
     void SetDetectorMask(Int_t detMask) { fLogDetMask = detMask; }
     void SetSimMask(Int_t simMask) { fLogSimMask = simMask; }
-    void SetTask(FairDb::Task task) { fLogTask = task; }
+    void SetVersion(FairDb::Version task) { fLogVersion = task; }
     void SetUpdateTime(const ValTimeStamp& updateTime) {
       fUpdateTime = updateTime;
     }
@@ -77,7 +77,7 @@ class FairDbLogEntry : public FairDbTableRow
                    const string& reason = "",
                    Int_t detMask = Detector::FullMask(),
                    Int_t simMask = SimFlag::FullMask(),
-                   FairDb::Task task = 0,
+                   FairDb::Version task = 0,
                    Int_t logSeqNoMin = 0,
                    Int_t logSeqNoMax = 0,
                    Int_t logNumSeqNo = 0);
@@ -112,8 +112,8 @@ class FairDbLogEntry : public FairDbTableRow
 /// SimFlag  mask of update.
     Int_t fLogSimMask;
 
-/// Task of update
-    FairDb::Task fLogTask;
+/// Version of update
+    FairDb::Version fLogVersion;
 
 /// Minimum Seq. No. being updated.
     Int_t fLogSeqNoMin;
@@ -143,7 +143,7 @@ class FairDbLogEntry : public FairDbTableRow
     string fReason;
 
 
-// Note: fLogDetMask,fLogSimMask,fLogTask,fUpdateTime are used to construct the FairDbValidityRec
+// Note: fLogDetMask,fLogSimMask,fLogVersion,fUpdateTime are used to construct the FairDbValidityRec
 //       of the update; they are not store in main table.
 
     ClassDef(FairDbLogEntry,0)    // Configuration data.

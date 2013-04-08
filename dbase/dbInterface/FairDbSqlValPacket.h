@@ -70,7 +70,7 @@ class FairDbSqlValPacket
     void Recreate(const string& tableName,
                   const ValRange& vr,
                   Int_t aggNo,
-                  FairDb::Task task = 0,
+                  FairDb::Version task = 0,
                   ValTimeStamp creationDate = ValTimeStamp());
     Bool_t AddDataRow(const FairDbTableProxy& tblProxy,
                       const FairDbValidityRec* vrec,

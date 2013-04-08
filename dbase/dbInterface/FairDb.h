@@ -19,11 +19,11 @@ namespace FairDb
 {
 
 
-typedef  Int_t Task;
+typedef  Int_t Version;
 
-enum TaskTypes {  kAnyTask     = -1,  // Use to disable task selection in context queries.
-                  kDefaultTask = 0
-               };
+enum VersionTypes {  kAnyVersion     = -1,  // Use to disable task selection in context queries.
+                     kDefaultVersion = 0
+                  };
 
 enum TypeRegimes { kRootRegime = 0,
                    kSQLRegime  = 1
@@ -53,7 +53,8 @@ enum DataTypes { kUnknown,
 
 enum DbTypes {  kUnknownDbType = -1,
                 kMySQL         = 0,
-                kOracle        = 1
+                kOracle        = 1,
+                kPostgreSQL    = 2
              };
 
 enum AbortTest { kDisabled,

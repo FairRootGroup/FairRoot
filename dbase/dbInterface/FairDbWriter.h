@@ -23,14 +23,14 @@ template <class T> class FairDbWriter
     FairDbWriter();
     FairDbWriter(const ValRange& vr,
                  Int_t aggNo,
-                 FairDb::Task task,
+                 FairDb::Version task,
                  ValTimeStamp creationDate,
                  const std::string& dbName,
                  const std::string& logComment = "",
                  const std::string& tableName = "");
     FairDbWriter(const ValRange& vr,
                  Int_t aggNo,
-                 FairDb::Task task = 0,
+                 FairDb::Version task = 0,
                  ValTimeStamp creationDate = ValTimeStamp(0,0),
                  UInt_t dbNo = 0,
                  const std::string& logComment = "",
@@ -67,13 +67,13 @@ template <class T> class FairDbWriter
     Bool_t Close(const char* fileSpec=0);
     Bool_t Open(const ValRange& vr,
                 Int_t aggNo,
-                FairDb::Task task,
+                FairDb::Version task,
                 ValTimeStamp creationDate,
                 const string& dbName,
                 const std::string& logComment = "");
     Bool_t Open(const ValRange& vr,
                 Int_t aggNo,
-                FairDb::Task task = 0,
+                FairDb::Version task = 0,
                 ValTimeStamp creationDate = ValTimeStamp(),
                 UInt_t dbNo = 0,
                 const std::string& logComment = "");

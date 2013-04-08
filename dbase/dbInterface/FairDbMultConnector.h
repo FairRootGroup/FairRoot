@@ -30,10 +30,8 @@ class FairDbMultConnector
     FairDbStatement* CreateStatement(UInt_t dbNo) const;
 
 /// Return associated FairDbConnection. FairDbMultConnector retains ownership.
-    const FairDbConnection*
-    GetConnection(UInt_t dbNo) const;
-    FairDbConnection*
-    GetConnection(UInt_t dbNo) ;
+    const FairDbConnection* GetConnection(UInt_t dbNo) const;
+    FairDbConnection* GetConnection(UInt_t dbNo) ;
 
     string GetDbName(UInt_t dbNo) const;
     Int_t GetDbNo(const string& dbName) const;

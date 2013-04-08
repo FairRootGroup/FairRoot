@@ -24,12 +24,12 @@ class FairDbValidityRecBuilder
 // Constructors and destructors
     FairDbValidityRecBuilder(const FairDbProxy& proxy,
                              const ValContext& vc,
-                             const FairDb::Task& task,
+                             const FairDb::Version& task,
                              Int_t selectDbNo = -1,
                              Bool_t findFullTimeWindow = true);
     FairDbValidityRecBuilder(const FairDbProxy& proxy,
                              const string& context,
-                             const FairDb::Task& task);
+                             const FairDb::Version& task);
     FairDbValidityRecBuilder(const FairDbValidityRec& vr,
                              const std::string tableName);
 
@@ -37,7 +37,7 @@ class FairDbValidityRecBuilder
 
 // State testing member functions
     std::string GetL2CacheName() const;
-    FairDb::Task GetTask() const { return fTask; }
+    FairDb::Version GetVersion() const { return fVersion; }
     UInt_t GetNumValidityRec() const {
       return fVRecs.size();
     }
@@ -73,7 +73,7 @@ class FairDbValidityRecBuilder
 
     FairDbValidityRec fGap;     // Default (gap) validity record
     Bool_t fIsExtendedContext;
-    FairDb::Task fTask;    // Query task
+    FairDb::Version fVersion;    // Query task
 
     std::vector<FairDbValidityRec> fVRecs;
     std::map<Int_t,UInt_t>  fAggNoToIndex;

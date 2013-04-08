@@ -25,7 +25,7 @@ class FairDbValidityRec : public FairDbTableRow
     FairDbValidityRec(Int_t dbNo = -1, Bool_t isGap = kTRUE);
     FairDbValidityRec(const FairDbValidityRec& from);
     FairDbValidityRec(const ValRange& range,
-                      FairDb::Task task,
+                      FairDb::Version task,
                       Int_t aggNo,
                       UInt_t seqNo,
                       Int_t dbNo = -1,
@@ -43,16 +43,16 @@ class FairDbValidityRec : public FairDbTableRow
     ValTimeStamp GetCreationDate() const { return fCreationDate; }
     UInt_t GetDbNo() const { return fDbNo; }
     ValTimeStamp GetInsertDate() const { return fInsertDate; }
-    FairDb::Task GetTask() const { return fTask; }
+    FairDb::Version GetVersion() const { return fVersion; }
     std::string GetL2CacheName() const;
     UInt_t GetSeqNo() const { return fSeqNo; }
     const FairDbTableProxy* GetTableProxy() const { return fTableProxy; }
     const ValRange& GetValRange() const { return fValRange;}
     Bool_t HasExpired(const FairDbValidityRec& other) const;
     Bool_t HasExpired(const ValContext& vc,
-                      const FairDb::Task& task) const;
+                      const FairDb::Version& task) const;
     Bool_t IsCompatible(const ValContext& vc,
-                        const FairDb::Task& task) const;
+                        const FairDb::Version& task) const;
     Bool_t IsGap() const { return fIsGap; }
 
     static     std::string GetL2CacheName(UInt_t seqLo, UInt_t seqHi, ValTimeStamp ts);
@@ -82,7 +82,7 @@ class FairDbValidityRec : public FairDbTableRow
     Int_t fDbNo;
     ValTimeStamp fInsertDate;
     Bool_t fIsGap;
-    FairDb::Task fTask;
+    FairDb::Version fVersion;
     Int_t fSeqNo;
     const FairDbTableProxy* fTableProxy;
     ValRange fValRange;

@@ -39,7 +39,7 @@ class FairDbProxy
     void StoreMetaData(FairDbTableMetaData& metaData) const;
     Bool_t TableExists(Int_t selectDbNo=-1) const;
     void FindTimeBoundaries(const ValContext& vc,
-                            const FairDb::Task& task,
+                            const FairDb::Version& task,
                             UInt_t dbNo,
                             ValTimeStamp earliestCreate,
                             ValTimeStamp& start,
@@ -54,10 +54,10 @@ class FairDbProxy
                                  const string& fillOpts = "") const;
 #endif
     FairDbResultSet* QueryValidity(const ValContext& vc,
-                                   const FairDb::Task& task,
+                                   const FairDb::Version& task,
                                    UInt_t dbNo) const;
     FairDbResultSet* QueryValidity(const string& context,
-                                   const FairDb::Task& task,
+                                   const FairDb::Version& task,
                                    UInt_t dbNo) const;
     FairDbResultSet* QueryValidity(UInt_t seqNo,
                                    UInt_t dbNo) const;

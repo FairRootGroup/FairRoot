@@ -220,7 +220,7 @@ class FairDbResult
     virtual Bool_t CanDelete(const FairDbResult* res = 0);
 
     virtual Bool_t Satisfies(const ValContext& vc,
-                             const FairDb::Task& task);
+                             const FairDb::Version& task);
     virtual  Bool_t Satisfies(const string&) {return kFALSE;}
     virtual  Bool_t Satisfies(const FairDbValidityRec&,
                               const string& = "") {return kFALSE;}

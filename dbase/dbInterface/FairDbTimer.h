@@ -30,7 +30,7 @@ class FairDbTimer
     void StartSubWatch(UInt_t subWatch);
     void Suspend();
 
-// Global timer used for all queries to the DBI.
+// Global timer used for all queries to the Fair DB.
 
   private:
 

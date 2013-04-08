@@ -39,10 +39,10 @@ class FairDbTableProxy
 // State changing member functions
     FairDbCache* GetCache() { return fCache;}
     const FairDbResult* Query(const ValContext& vc,
-                              const FairDb::Task& task,
+                              const FairDb::Version& task,
                               Bool_t findFullTimeWindow = true);
     const FairDbResult* Query(const string& context,
-                              const FairDb::Task& task,
+                              const FairDb::Version& task,
                               const string& data,
                               const string& fillOpts);
     const FairDbResult* Query(UInt_t seqNo,UInt_t dbNo);

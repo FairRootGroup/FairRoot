@@ -38,7 +38,7 @@ class FairDbCache
     UInt_t GetNumReused() const { return fNumReused; }
 /// Primary searches.
     const FairDbResult* Search(const ValContext& vc,
-                               const FairDb::Task& task) const;
+                               const FairDb::Version& task) const;
     const FairDbResult* Search(const string& sqlQualifiers) const;
 
 /// Secondary search.
