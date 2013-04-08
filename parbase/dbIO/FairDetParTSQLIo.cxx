@@ -1,12 +1,15 @@
-/***************************************
- * Author: M.Babai (M.Babai@rug.nl)    *
- * License:                            *
- * Version:                            *
- ***************************************/
+/********************************************
+ * Author:     M.Babai (M.Babai@rug.nl)     *
+ * Modified:   D.Bertini (D.Bertini@gsi.de) *
+ * License:                                 *
+ * Version:                                 *
+ *******************************************/
+
 #include "FairDetParTSQLIo.h"
 
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
+#include "FairDbTableProxyRegistry.h"
 #include "FairDbMultConnector.h"
 #include "FairRtdbRun.h"
 #include "FairParSet.h"
@@ -17,7 +20,7 @@ ClassImp(FairDetParTSQLIo)
 FairDetParTSQLIo::FairDetParTSQLIo()
   : FairDetParIo(),
     fDefaultDb(-1),
-    fConnections(new FairDbMultConnector()),
+    fConnections(FairDbTableProxyRegistry::Instance().fMultConnector),
     fcontainerList(0),
     factContVers(0),
     actRunId(-1)
@@ -31,6 +34,7 @@ FairDetParTSQLIo::FairDetParTSQLIo()
  * Note: A new FairDbMultConnector object is created (to keep the
  * ownership).
  */
+
 FairDetParTSQLIo::FairDetParTSQLIo(FairDbMultConnector const& cons, int const dbNum)
   : FairDetParIo(),
     fDefaultDb(dbNum),
@@ -40,7 +44,7 @@ FairDetParTSQLIo::FairDetParTSQLIo(FairDbMultConnector const& cons, int const db
     actRunId(-1)
 {}
 
-/// Destructor.
+
 FairDetParTSQLIo::~FairDetParTSQLIo()
 {
   std::cout << "\n\t<DEBUG> FairDetParTSQLIo::~FairDetParTSQLIo()\n\n";

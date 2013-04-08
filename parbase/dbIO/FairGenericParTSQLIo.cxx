@@ -8,6 +8,8 @@
 #include "FairParSet.h"
 #include "FairParGenericSet.h"
 #include "FairParamList.h"
+#include "FairRuntimeDb.h"
+#include "FairRtdbRun.h"
 
 #include "TList.h"
 
@@ -19,6 +21,7 @@ FairGenericParTSQLIo::FairGenericParTSQLIo()
   : FairDetParTSQLIo()
 {
   fName = "FairGenericParIo";
+  fRtdb = FairRuntimeDb::instance();
 }
 
 /**
@@ -34,6 +37,7 @@ FairGenericParTSQLIo::FairGenericParTSQLIo(FairDbMultConnector const& cons,
   : FairDetParTSQLIo(cons, dbNum)
 {
   fName = "FairGenericParIo";
+  fRtdb = FairRuntimeDb::instance();
 }
 
 //! Destructor
@@ -44,33 +48,30 @@ FairGenericParTSQLIo::~FairGenericParTSQLIo()
 
 Bool_t FairGenericParTSQLIo::read(FairParGenericSet* par)
 {
-  /*
-   * Initialize paramter from the data base.
-   */
-  std::cout << "\t<DEBUG>FairGenericParTSQLIo::read(FairParGenericSet* par)"
-            << "\n Reading parameters form the database.\n";
-  par->Print();
-  std::cout << "============= End of reading params ==========\n";
+  UInt_t rid = fRtdb->getCurrentRun()->getRunId();
+  par->Fill(rid);
+
+  std::cout << "-I- FairGenericParTSQLIo::read(FairParGenericSet* par) done for runId#  " <<  rid << std::endl;
+
   return kTRUE;
 }
 
 Bool_t FairGenericParTSQLIo::init(FairParSet* pPar)
 {
-  std::cout << "\n\n\t<DEBUG>FairGenericParTSQLIo::init(FairParSet* pars, int* n)\n\n";
 
+  std::cout << "-I- FairGenericParTSQLIo::init(FairParSet* par) called  " << std::endl;
   if (pPar->InheritsFrom("FairParGenericSet")) {
-    std::cout << "@@@@@@ <Init From db> @@@@@@@\n\n";
     return read((FairParGenericSet*)pPar);
   }
+
   Error("FairGenericParTSQLIo::init(FairParSet*, Int_t*)",
         "%s does not inherit from FairParGenericSet", pPar->GetName());
+
   return false;
 }
 
 Int_t FairGenericParTSQLIo::write(FairParSet* par)
 {
-  std::cout << "\n===================================================\n"
-            << "\t<DEBUG>FairGenericParTSQLIo::Write(FairParSet* par)\n";
   if (par->InheritsFrom("FairParGenericSet")) {
     return writeSet((FairParGenericSet*)par);
   }
@@ -82,42 +83,19 @@ Int_t FairGenericParTSQLIo::write(FairParSet* par)
 Int_t FairGenericParTSQLIo::writeSet(FairParGenericSet* par)
 {
   if(!par) {
-    std::cerr << "No par not initialized\n";
+    std::cerr << "-E FairGenericParTSQLIo::writeSet() : no Parameter container#\n" << std::endl;;
     return -1;
   }
 
-  std::cout << "\t<DEBUG>FairGenericParTSQLIo::writeSet(FairParGenericSet* par)\n"
+  std::cout << "-I- FairGenericParTSQLIo::writeSet(FairParGenericSet* par)\n"
             << " Name is " << par->GetName()
             << " Context = " << par->getParamContext()
             <<"\n---------------  Storage of "<< par->GetName()<<"  ---------------\n"
             << "Class name = " << par->ClassName() << std::endl;
 
-  // Initialize the par list object
-  FairParamList* paramList = new FairParamList();
-  par->putParams(paramList);
+  UInt_t rid = fRtdb->getCurrentRun()->getRunId();
+  par->Store(rid);
 
-  // Get the list to insert.
-  TList* pList = paramList->getList();
-  TIter next(pList);
-  FairParamObj* po;
-
-  /*
-   * Build a list of Insert queries and sumbit all in one go. Or build
-   * a query per paramobject and insert directly.
-   */
-  while ((po=(FairParamObj*)next())) {
-    std::cout << " po.Name = " << po->GetName()      << '\n'
-              << " po.val = "  << po->getParamValue()<< '\n'
-              << " po.Type = " << po->getParamType() << '\n'
-              << " po.Basic = " << po->isBasicType()  << '\n'
-              << " po.Bytes = " << po->getBytesPerValue()<< '\n'
-              << " po.getClassVersion = " << po->getClassVersion() << '\n'
-              << " po.getLength = " << po->getLength() << '\n'
-              << " po.getNumParams = " << po->getNumParams()<<'\n'
-              << "____________________________\n";
-    po->print();
-    std::cout << "\n++++++++++++++++++++++++\n";
-  }
-  std::cout << "\n========== END OF STORAGE ========================\n";
+  std::cout << "-I- FairGenericParTSQLIo::WriteSet() done  for runID# " <<  rid << std::endl;
   return 1;
 }
