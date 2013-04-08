@@ -84,10 +84,8 @@ FairDbSqlValPacket::FairDbSqlValPacket(const FairDbValidityRec& vrec) :
   this->AddRow(tableProxy,0,vrec);
 
   // Create the SQL for the rows.
-
   const FairDbProxy& dbProxy = tableProxy.GetDBProxy();
   FairDbResultSet* rset = dbProxy.QuerySeqNo(seqNo,dbNo);
-
 
   for(; ! rset->IsExhausted(); rset->FetchRow()) {
     string str;
@@ -116,7 +114,7 @@ Bool_t FairDbSqlValPacket::AddDataRow(const FairDbTableProxy& tblProxy,
 
   if ( this->GetNumSqlStmts() == 0 ) {
 
-    cout  << "Cannot add data row - packet does not have a VAL row"  << endl;
+    cout  << "-E FairDbSqlValPacket::AddDataRow () :Cannot add data row - packet does not have a VAL row"  << endl;
     ++fNumErrors;
     return kFALSE;
   }
@@ -129,6 +127,8 @@ Bool_t FairDbSqlValPacket::AddDataRow(const FairDbTableProxy& tblProxy,
 
 void FairDbSqlValPacket::AddRow(const string& row)
 {
+  // Problem with PostGres
+  cout << " FairDbSqlValPacket AddRow " << row << endl;
 
   string sql("INSERT INTO ");
   sql += this->GetTableName();
@@ -140,6 +140,7 @@ void FairDbSqlValPacket::AddRow(const string& row)
   fSqlStmts.push_back(sql);
   ++fNumStmts;
 
+  cout << "-I- FairDbSqlValPacket::AddRow() " << sql << endl;
 }
 
 //.....................................................................
@@ -164,13 +165,14 @@ Bool_t FairDbSqlValPacket::AddRow(const FairDbTableProxy& tblProxy,
   if ( ! outRow.HasGoodData() ) {
     if ( ! outRow.IsComplete() ) {
 
-      cout << "Incomplete data supplied for row " << this->GetNumSqlStmts()-1
+      cout << "-E-FairDbSqlValPacket::AddRow() Incomplete data supplied for row " << this->GetNumSqlStmts()-1
            << " of table "
            << tblProxy.GetTableName() << endl;
     }
     ++fNumErrors;
     return kFALSE;
   }
+
   this->AddRow(outRow.GetCSV());
   return kTRUE;
 }
@@ -359,8 +361,8 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
             date.erase(0,1);
             date.erase(date.size()-1,1);
             fCreationDate = FairDb::MakeTimeStamp(date);
-            // Temporary hack: set for Agg No = -1 for DBUSUBRUNSUMMARY
-            if ( fTableName  == "DBUSUBRUNSUMMARY" ) {
+            // Temporary hack: set for Agg No = -1 for FAIRDBSUBRUNSUMMARY
+            if ( fTableName  == "FAIRDBSUBRUNSUMMARY" ) {
               std::vector<std::string> ls;
               FairUtilString::StringTok(ls,*fSqlStmts.begin(),",");
               // Agg. no is element 6.
@@ -368,8 +370,8 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
                 static bool warnOnce = true;
                 if ( warnOnce ) {
 
-                  cout << "Setting aggregate number for DBUSUBRUNSUMMARY = -1\n"
-                       << "  Expect this message once.  DBUSUBRUNSUMMARY needs to be "
+                  cout << "Setting aggregate number for FAIRDBSUBRUNSUMMARY = -1\n"
+                       << "  Expect this message once.  FAIRDBSUBRUNSUMMARY needs to be "
                        << " fixed!" << endl;
                   warnOnce = false;
                 }
@@ -605,7 +607,7 @@ void FairDbSqlValPacket::Print(Option_t* /* option */) const
 void FairDbSqlValPacket::Recreate(const string& tableName,
                                   const ValRange& vr,
                                   Int_t aggNo,
-                                  FairDb::Task task,             /*  Default: 0 */
+                                  FairDb::Version task,             /*  Default: 0 */
                                   ValTimeStamp creationDate   /*  Default: now */
                                  )
 {
@@ -748,6 +750,7 @@ void FairDbSqlValPacket::SetSeqNoOnRow(string& row,const string& seqno)
 
 Bool_t FairDbSqlValPacket::Store(UInt_t dbNo, Bool_t replace) const
 {
+  cout << "-I- FairDbSqlValPacket::Store() " << endl;
 
   if ( ! CanBeStored() ) { return kFALSE; }
 
@@ -796,6 +799,7 @@ Bool_t FairDbSqlValPacket::Store(UInt_t dbNo, Bool_t replace) const
         ValTimeStamp now;
         sql.replace(locDate+2,19,FairDb::MakeDateTimeString(now));
       }
+      cout << "-I- FairDbSqlValPacket::Store() exxecute SQL:" << sql <<  endl;
       stmtDb->ExecuteUpdate(sql.c_str());
       if ( stmtDb->PrintExceptions() ) { return kFALSE; }
       first = kFALSE;
@@ -843,6 +847,7 @@ Bool_t FairDbSqlValPacket::Store(UInt_t dbNo, Bool_t replace) const
     if ( stmtDb->PrintExceptions() ) { return kFALSE; }
   }
 
+  cout << "-I- FairDbSqlValPacket::Store(): done ...  " << endl;
   return kTRUE;
 
 }

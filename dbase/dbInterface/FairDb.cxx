@@ -33,7 +33,7 @@ TString FairDb::GetValDescr(const char* tableName,
   sql += "  TIMEEND datetime not null,";
   sql += "  DETECTORMASK tinyint,";
   sql += "  SIMMASK tinyint,";
-  sql += "  TASK integer,";
+  sql += "  VERSION integer,";
   sql += "  AGGREGATENO integer,";
   sql += "  CREATIONDATE datetime not null,";
   sql += "  INSERTDATE datetime not null ) ";

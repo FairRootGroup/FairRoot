@@ -50,7 +50,7 @@ TSQLStatement* FairDbStatement::ExecuteQuery( const TString& sql)
   TSQLStatement* stmt = 0;
   while (itr != itrEnd) {
     const TString& sql = *itr++;
-    cout <<"-I- FairDbStatement SQL:" << fConDb.GetDbName() << ":" << sql << endl;
+    cout <<"-I- FairDbStatement Server:" << fConDb.GetDbName() << " SQL:" << sql << endl;
     delete stmt;
     stmt = this->CreateProcessedStatement(sql);
     if ( ! stmt ) { return 0; }

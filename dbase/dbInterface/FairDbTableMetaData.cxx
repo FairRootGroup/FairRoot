@@ -19,7 +19,7 @@ FairDbTableMetaData::FairDbTableMetaData(const string& tableName) :
   fNumCols(0),
   fTableName(tableName)
 {
-
+  cout << "-I- FairDbTableMetaData:: create for table # " << tableName << endl;
 }
 
 

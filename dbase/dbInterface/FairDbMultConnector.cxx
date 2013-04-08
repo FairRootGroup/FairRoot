@@ -90,7 +90,7 @@ FairDbMultConnector::FairDbMultConnector():
     }
 
 //  Check for presence of a DB_STATE_FLAG table
-    if ( this->GetTableDbNo("DBI_STATE_FLAGS",entry) != -1 ) {
+    if ( this->GetTableDbNo("FAIRDB_STATE_FLAGS",entry) != -1 ) {
       cout << " -E- FairDbMultConnector  POSSIBLE VERSION SHEAR DETECTED !!!\n"
            << "    The DB_STATE_FLAGS table is present on cascade entry " << entry << ".  This table will\n"
            << "    only be introduced to manage backward incompatible changes that could lead\n"
@@ -99,7 +99,8 @@ FairDbMultConnector::FairDbMultConnector():
            << "    so has to shut down. \n";
       fail = true;
     }
-  }
+
+  } //! DB entries
 
   cout << *this;
 

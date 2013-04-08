@@ -33,7 +33,7 @@ FairDbConfigStream::FairDbConfigStream() :
 FairDbConfigStream::FairDbConfigStream(const string& SoftName,
                                        const std::string& ConfigName,
                                        ValContext vc,
-                                       FairDb::Task task,
+                                       FairDb::Version task,
                                        const std::string& tableName) :
   fCFSet(0),
   fCFSetTable(tableName,vc,task),

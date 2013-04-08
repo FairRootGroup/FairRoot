@@ -146,18 +146,22 @@ void FairDbOutRowStream::Store(const string& str)
 
   UInt_t concept = CurColFieldType().GetConcept();
   string delim = "";
+  string snull = "NULL";
+
   if (    concept == FairDb::kString
           || concept == FairDb::kDate
           || concept == FairDb::kChar ) { delim = "\'"; }
 
+
   if ( CurColNum()> 1 ) { fCSV += ','; }
-  fCSV += delim;
+  fCSV += delim ;
   if ( concept != FairDb::kString ) { fCSV += str; }
 //  When exporting strings, take care of special characters.
   else {
     FairUtilString::MakePrintable(str.c_str(),fCSV);
   }
   fCSV += delim;
+  //cout << " FairDbOutRowStream :: FCSV ----> " << fCSV << endl;
   IncrementCurCol();
 }
 

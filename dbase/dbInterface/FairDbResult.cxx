@@ -960,7 +960,7 @@ void FairDbResult::RegisterKey()
 
 
 Bool_t FairDbResult::Satisfies(const ValContext& vc,
-                               const FairDb::Task& task)
+                               const FairDb::Version& task)
 {
 
   Bool_t isExtendedContext = this->IsExtendedContext();
@@ -1028,9 +1028,19 @@ FairDbResultNonAgg::FairDbResultNonAgg(FairDbResultSet* resultSet,
     fRows(),
     fBuffer(NULL)
 {
+
+
   this->DebugCtor();
 
-  if ( ! resultSet || resultSet->IsExhausted() || ! tableRow ) { return; }
+  // cout << " 1 " << endl;
+
+  if ( ! resultSet || resultSet->IsExhausted() || ! tableRow ) {
+    //cout << "-E- FairDbResultNonAgg incomplet IO -->  resultset: "
+    //   << resultSet << " exhausted " << resultSet->IsExhausted() << " tableRow " << tableRow <<  endl;
+    return;
+  }
+
+  // cout << " 2 " << endl;
 
   if ( vrec ) { FairDbTimerManager::gTimerManager.RecFillAgg(vrec->GetAggregateNo()); }
 
@@ -1038,6 +1048,8 @@ FairDbResultNonAgg::FairDbResultNonAgg(FairDbResultSet* resultSet,
   FairDbResultSet& rs = *resultSet;
   if ( rs.IsBeforeFirst() ) { rs.FetchRow(); }
   if ( rs.IsExhausted() ) { return; }
+
+  // cout << " 3 " << endl;
 
 //Check and load sequence number if necessary.
   Int_t seqNo = 0;
@@ -1069,7 +1081,11 @@ FairDbResultNonAgg::FairDbResultNonAgg(FairDbResultSet* resultSet,
     FairDbTableRow* row = tableRow->CreateTableRow();
     if ( vrec) { FairDbTimerManager::gTimerManager.StartSubWatch(3); }
     row->SetOwner(this);
+
+    //cout << " -I- FairDbResultNonAgg:: TableRow::Fill() called  " << endl;
     row->Fill(rs,vrec);
+    //cout << " -I- FairDbResultNonAgg:: TableRow::Fill() IO done ...  " << endl;
+
     if ( vrec) { FairDbTimerManager::gTimerManager.StartSubWatch(2); }
     fRows.push_back(row);
     rs.FetchRow();

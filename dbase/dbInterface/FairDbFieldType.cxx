@@ -28,6 +28,8 @@ FairDbFieldType::FairDbFieldType(Int_t type,
 {
 
 
+
+
   TString name(typeName);
   name.ToUpper();
 

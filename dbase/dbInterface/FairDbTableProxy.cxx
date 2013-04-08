@@ -35,13 +35,15 @@ FairDbTableProxy::FairDbTableProxy(FairDbMultConnector* cascader,
   fExists = fDBProxy.TableExists();
   fCanL2Cache = tableRow->CanL2Cache();
   if ( fCanL2Cache ) {
-    cout << "FairDbTableProxy: Can L2 cache " << this->GetRowName() << endl;
+    cout << "-I- FairDbTableProxy: Can L2 cache " << this->GetRowName() << endl;
   }
-  cout << "Creating FairDbTableProxy "
+  cout << "-I- FairDbTableProxy:  created "
        << fTableName.c_str() << " at " << this
        << ( fExists ? " (table exists)"
             : " (table missing)" )
        << endl;
+  cout << "-I- FairDbTableProxy: Connected Table Row  " << fTableRow << endl;
+
 }
 
 
@@ -63,10 +65,12 @@ Bool_t FairDbTableProxy::CanWriteL2Cache() const
 
 }
 const FairDbResult* FairDbTableProxy::Query(const ValContext& vc,
-    const FairDb::Task& task,
+    const FairDb::Version& task,
     Bool_t findFullTimeWindow)
 {
 
+  cout << " -I- FairDbTableProxy Query fulltimewindow " << findFullTimeWindow <<  endl;
+// Look first in cache
   if ( const FairDbResult* result = fCache->Search(vc,task)
      ) { return result; }
 
@@ -79,9 +83,8 @@ const FairDbResult* FairDbTableProxy::Query(const ValContext& vc,
   FairDbValidityRecBuilder builder(fDBProxy,vc,task,-1,findFullTimeWindow);
 
 // Deal with non-aggregated data.
-
   if ( builder.NonAggregated() ) {
-
+    cout << " -I- FairDbTableProxy non aggregated type  " << endl;
     FairDbValidityRec effVRec = builder.GetValidityRec(0);
 //  Force off const - we haven't finished with FairDbResult yet!
     FairDbResult* result = const_cast<FairDbResult*>(Query(effVRec));
@@ -92,8 +95,9 @@ const FairDbResult* FairDbTableProxy::Query(const ValContext& vc,
 
 // Deal with aggregated data.
 
-
+  cout << " -I- FairDbTableProxy Aggregated  type " << endl;
   if ( this->CanReadL2Cache() ) {
+    cout << " -I- FairDbTableProxy read cache ... " << endl;
     UInt_t numPresent  = 0;
     UInt_t numRequired = 0;
     Int_t maxRow = builder.GetNumValidityRec() - 1;
@@ -103,12 +107,13 @@ const FairDbResult* FairDbTableProxy::Query(const ValContext& vc,
       else if ( ! vrec.IsGap() ) { ++numRequired; }
     }
     if ( numRequired < numPresent )
-      cout << "Skipping search of L2 cache; already have "
+      cout << "-I- FairDbTableProxy:: Skipping search of L2 cache; already have "
            << numPresent << " aggregates, and only require a further "
            << numRequired << endl;
     else { this->RestoreFromL2Cache(builder); }
   }
 
+  cout << " -I- FairDbTableProxy  now do the results --->  " << endl;
   FairDbResult* result = new FairDbResultAgg(fTableName,
       fTableRow,
       fCache,
@@ -125,15 +130,17 @@ const FairDbResult* FairDbTableProxy::Query(const ValContext& vc,
 //.....................................................................
 
 const FairDbResult* FairDbTableProxy::Query(const string& context,
-    const FairDb::Task& task,
+    const FairDb::Version& task,
     const string& data,
     const string& fillOpts)
 {
 
+
+
   std::ostringstream os;
   os << context;
-  if ( task != FairDb::kAnyTask
-     ) { os << " and  Task = " << task; }
+  if ( task != FairDb::kAnyVersion
+     ) { os << " and  Version = " << task; }
   os <<  ';' << data << ';' << fillOpts;
   string sqlQualifiers = os.str();
 
@@ -173,6 +180,7 @@ const FairDbResult* FairDbTableProxy::Query(const string& context,
 const FairDbResult* FairDbTableProxy::Query(UInt_t seqNo,UInt_t dbNo)
 {
 
+  cout << " -I- FairDbTableProxy Query 2 " << endl;
   FairDbConnectionMaintainer cm(fMultConnector);  //Stack object to hold connections
 
 // Make Global Exception Log bookmark
@@ -211,6 +219,7 @@ const FairDbResult* FairDbTableProxy::Query(const FairDbValidityRec& vrec,
     Bool_t canReuse )
 {
 
+
   FairDbConnectionMaintainer cm(fMultConnector);  //Stack object to hold connections
 
 // Make Global Exception Log bookmark
@@ -247,9 +256,8 @@ const FairDbResult* FairDbTableProxy::Query(const FairDbValidityRec& vrec,
 
   else {
 
-
-// Apply query, and build DiResult from its FairDbResultSet.
-
+// Apply query, and build DbResult from its FairDbResultSet.
+    cout << "-I- FairDbTableProxy::Query(vc)  SEQNO" <<  seqNo << endl;
     FairDbResultSet* rs = fDBProxy.QuerySeqNo(seqNo,vrec.GetDbNo());
     result = new FairDbResultNonAgg(rs,fTableRow,&vrec);
     delete rs;
@@ -297,7 +305,7 @@ ValTimeStamp FairDbTableProxy::QueryOverlayCreationDate(const FairDbValidityRec&
 
   // Build a complete set of effective validity records from the
   // selected database.
-  FairDbValidityRecBuilder builder(fDBProxy,vc,vrec.GetTask(),dbNo);
+  FairDbValidityRecBuilder builder(fDBProxy,vc,vrec.GetVersion(),dbNo);
 
   // Pick up the validity record for the current aggregate.
   const FairDbValidityRec& vrecOvlay(builder.GetValidityRecFromAggNo(vrec.GetAggregateNo()));
@@ -322,7 +330,7 @@ Bool_t FairDbTableProxy::RestoreFromL2Cache(const FairDbValidityRecBuilder& buil
 {
 
   const string name(builder.GetL2CacheName());
-  cout << "Request to restore query result  " << name
+  cout << "-I- FairDbTableProxy::RestoreFromL2Cache() Request to restore query result  " << name
        << endl;
   if ( ! this->CanReadL2Cache() ) { return kFALSE; }
   string cacheFileName;

@@ -12,13 +12,13 @@ ClassImp(FairDbValidityRecBuilder)
 
 FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
     const ValContext& vc,
-    const FairDb::Task& task,
+    const FairDb::Version& task,
     Int_t selectDbNo     /* Default: -1 */,
     Bool_t findFullTimeWindow /* Default: true*/
                                                   )
   : fGap(),
     fIsExtendedContext(kFALSE),
-    fTask(task),
+    fVersion(task),
     fVRecs(),
     fAggNoToIndex()
 {
@@ -78,7 +78,7 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
 
 //      Apply validity query and build result set.
 
-        FairDbResultSet* rs = proxy.QueryValidity(vcTry,fTask,dbNo);
+        FairDbResultSet* rs = proxy.QueryValidity(vcTry,fVersion,dbNo);
 
 //      Build a result from the result set and drop result set.
 
@@ -141,7 +141,7 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
 //      and the default (gap) validity record.
         if ( findFullTimeWindow ) {
           ValTimeStamp start, end;
-          proxy.FindTimeBoundaries(vcTry,fTask,dbNo,earliestCreate,start,end);
+          proxy.FindTimeBoundaries(vcTry,fVersion,dbNo,earliestCreate,start,end);
           cout  << "Trimming validity records to "
                 << start << " .. " << end << endl;
           std::vector<FairDbValidityRec>::iterator itr(fVRecs.begin()), itrEnd(fVRecs.end());
@@ -213,10 +213,10 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
 
 FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
     const string& context,
-    const FairDb::Task& task)
+    const FairDb::Version& task)
   : fGap(),
     fIsExtendedContext(kTRUE),
-    fTask(task),
+    fVersion(task),
     fVRecs(),
     fAggNoToIndex()
 {
@@ -256,7 +256,7 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
 
 //    Apply validity query and build result set.
 
-      FairDbResultSet* rs = proxy.QueryValidity(context,fTask,dbNo);
+      FairDbResultSet* rs = proxy.QueryValidity(context,fVersion,dbNo);
 
 //    Build a result from the result set and drop result set.
 
@@ -308,7 +308,7 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbValidityRec& vr,
     const std::string tableName)
   : fGap(),
     fIsExtendedContext(kFALSE),
-    fTask(vr.GetTask()),
+    fVersion(vr.GetVersion()),
     fVRecs(),
     fAggNoToIndex()
 {
@@ -438,7 +438,7 @@ void FairDbValidityRecBuilder::MakeGapRec(const ValContext& vc,
     endGate   = ValTimeStamp(0x7FFFFFFF,0);
   }
   ValRange gapVR(vc.GetDetector(), vc.GetSimFlag(), startGate, endGate, "Gap");
-  fGap =  FairDbValidityRec(gapVR, fTask, -2, 0, 0, kTRUE);
+  fGap =  FairDbValidityRec(gapVR, fVersion, -2, 0, 0, kTRUE);
 
 }
 

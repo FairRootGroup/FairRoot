@@ -1,8 +1,10 @@
 
 #include <cctype>
 #include <cstdlib>
+#include <algorithm>
 #include <list>
 #include <sstream>
+#include <fstream>
 #include <string>
 
 #include "TList.h"
@@ -10,6 +12,11 @@
 #include "TSystem.h"
 
 #include "FairDbConnection.h"
+#include "FairDbStatement.h"
+
+#include <iostream>
+using namespace std;
+
 
 ClassImp(FairDbConnection)
 
@@ -33,17 +40,17 @@ FairDbConnection::FairDbConnection(
   cout << "-I- FairDbConnection : Creating a DB connection" << endl;
 
   if ( this->Open() ) {
-    cout << " -I- FairDbConnection: successfully opened connection to: "
+    cout << "-I- FairDbConnection: successfully opened connection to: "
          << this->GetUrl() << endl;
     fUrlValidated =  kTRUE;
 
-    // Initialise the list existing supported tables.
-    this->SetTableExists();
-    string productName(fServer->GetDBMS());
 
+    // First get which server do we use ...
+    string productName(fServer->GetDBMS());
     // Get the c_strbase type
     if( productName == "MySQL" ) { fDbType = FairDb::kMySQL; }
     else if ( productName == "Oracle" ) { fDbType = FairDb::kOracle; }
+    else if ( productName == "PgSQL" ) { fDbType = FairDb::kPostgreSQL; }
 
     else {
       cout<< "-E- FairDbConnection : Cannot determine DB type from name: "
@@ -52,6 +59,14 @@ FairDbConnection::FairDbConnection(
       fDbType = FairDb::kOracle;
     }
 
+
+    // Initialise the list existing supported tables.
+    // Here all existing tables from the database will be added to the
+    // central list of existing tables;
+
+    this->SetTableExists();
+
+    // Check if one can use prepared statement on the server
     if ( fUrlValidated ) {
       if ( ! fServer->HasStatement() ) {
         cout << "-I- FairDbConnection : This client does not support prepared statements." << endl;
@@ -77,12 +92,14 @@ FairDbConnection::FairDbConnection(
             << endl;
       }
 
-    }
+    }//! fUrlValidated
+
     if ( ! fUrlValidated ) {
       cout << "-E- FairDbConnection : Aborting due to above errors" << endl;
       exit(1);
     }
   }
+
   fDbName = fUrl.GetFile();
 }
 
@@ -120,7 +137,7 @@ Bool_t FairDbConnection::Open()
       }
       gSystem->Sleep(attempt*1000);
     } else {
-      fServer->EnableErrorOutput(false);
+      fServer->EnableErrorOutput(kTRUE);
       if ( attempt > 1 ) {
         cout << "-I- FairDbConnection Connection opened on attempt "
              << attempt << endl;
@@ -183,7 +200,7 @@ TSQLStatement* FairDbConnection::CreatePreparedStatement(const string& sql)
   if ( ! this->Open() ) { return stmt; }
   stmt = fServer->Statement(sql.c_str());
   if ( ! stmt ) {
-    cout<< "-E- FairDbConnection::CreatePreparedStatement "
+    cout<< "-I- FairDbConnection::CreatePreparedStatement "
         << " no Statement created " << endl;
   } else { stmt->EnableErrorOutput(kFALSE); }
 
@@ -208,17 +225,28 @@ const string& FairDbConnection::GetUrl() const
 void  FairDbConnection::SetTableExists(const string& tableName)
 {
 
-// Add name to list of existing tables
-// (necessary when creating tables)
-//  Note: If tableName is null refresh list from the database.
+  // cout << "-I- FairDbConnection::SetTableExists()  ... " <<  tableName << endl;
+
+  // Add name to list of existing tables
+  // (necessary when creating tables)
+  //  Note: If tableName is null refresh list from the database.
 
   if ( tableName == "" ) {
-    TSQLStatement* stmt =  CreatePreparedStatement("show tables");
+    TSQLStatement* stmt;
+    if ( fDbType == FairDb::kMySQL || fDbType == FairDb::kOracle ) {
+      // MYSQL or Oracle
+      stmt =  CreatePreparedStatement("show tables");
+    } else {
+      // POSTGRES
+      stmt =  CreatePreparedStatement("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
+    }
+
     if ( stmt ) {
       if (stmt->Process()) {
         stmt->StoreResult();
         while (stmt->NextResultRow()) {
           string tn(stmt->GetString(0));
+          std::transform(tn.begin(), tn.end(), tn.begin(), ::toupper);
           this->SetTableExists(tn);
         }
       }
@@ -230,8 +258,10 @@ void  FairDbConnection::SetTableExists(const string& tableName)
       fExistingTableList += ",'";
       fExistingTableList += tableName;
       fExistingTableList += "'";
+      // cout << "-I- FairDbConnection::Table Registered  ... " <<  tableName << endl;
     }
   }
+  //cout << "-I- FairDbConnection:: End of table exists ... " << endl;
 }
 
 //.....................................................................
@@ -244,7 +274,9 @@ Bool_t  FairDbConnection::TableExists(const string& tableName) const
   string test("'");
   test += tableName;
   test += "'";
-  return fExistingTableList.find(test) != std::string::npos;
+  Bool_t btest =  fExistingTableList.find(test) != std::string::npos;
+  //cout << " Table exists " << btest << endl;
+  return btest;
 }
 
 

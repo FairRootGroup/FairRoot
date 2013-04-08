@@ -153,7 +153,7 @@ const FairDbResult* FairDbCache::Search(const FairDbValidityRec& vrec,
 
 
 const FairDbResult* FairDbCache::Search(const ValContext& vc,
-                                        const FairDb::Task& task ) const
+                                        const FairDb::Version& task ) const
 {
 
   cout << "Primary cache search of table " << fTableName

@@ -30,21 +30,19 @@ FairDbTableProxyRegistry::FairDbTableProxyRegistry()
 {
 
 // Create cascader for database access.
-
   fMultConnector = new FairDbMultConnector;
 
 // Get any environment configuration.
-
   this->SetConfigFromEnvironment();
 
 // Create a FairDbRecord to record a summary of all FairDbResults in memory
 // and register it as a service.
 //  FairDbServices::SetRecord(new FairDbRecord);
 
-  cout << "Creating FairDbTableProxyRegistry"
-       << endl;
+  cout << "-I- Creating FairDbTableProxyRegistry done \n"<< endl;
 
-
+  // Set massive shutdown and clean up all caches
+  // Set("Shutdown = 1");
 }
 
 FairDbTableProxyRegistry::~FairDbTableProxyRegistry()
@@ -63,7 +61,7 @@ FairDbTableProxyRegistry::~FairDbTableProxyRegistry()
     return;
   }
 
-  cout << " shutting down..." << endl;
+  cout << "-I- FairDB::  shutting down..." << endl;
 
 // Destroy all owned objects.
 
@@ -81,9 +79,9 @@ FairDbTableProxyRegistry::~FairDbTableProxyRegistry()
   FairDbServices::SetRecord(0);
 
 
-  cout  << "Destroying FairDbTableProxyRegistry" << endl;
+  cout  << "-I- FairDbTableProxyRegistry:: Destroying FairDbTableProxyRegistry" << endl;
 
-  cout  << " shutdown complete." << endl;
+  cout  << "-I- FairDB:: shutdown complete." << endl;
   FairDbTableProxyRegistry::fgInstance = 0;
 
 }
@@ -150,7 +148,7 @@ void FairDbTableProxyRegistry::Config()
   if ( reg.Get("Level2Cache",dir) ) {
     // Expand any environmental variables.
     TString tmp(dir);
-    //  March 2004 ExpandPathName returns false even if it works, so test for failure
+    //  ExpandPathName returns false even if it works, so test for failure
     //  by looking for an unexpanded symbol.
     gSystem->ExpandPathName(tmp);
     if ( tmp.Contains("$" ) ) {
@@ -242,6 +240,7 @@ FairDbTableProxy& FairDbTableProxyRegistry::GetTableProxy
   proxyName.append(tableRow->ClassName());
   FairDbTableProxy* qpp = fTPmap[proxyName];
   if ( ! qpp ) {
+    cout <<"-I- FairDbTableProxyRegistry create FairDbTableProxy " <<  tableRow << " proxyname# " << proxyName <<   endl;
     qpp = new FairDbTableProxy(fMultConnector,tableName,vldSuffix,tableRow);
     this->ApplySqlCondition(qpp);
     fTPmap[proxyName] = qpp;

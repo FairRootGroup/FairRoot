@@ -26,7 +26,7 @@ ostream& operator<<(ostream& os, const FairDbValidityRec& vRec)
   const ValRange&           range(vRec.GetValRange());
 
   ostringstream os2;  //Use local to avoid manipulators from making permanent change to os.
-  os2 << "SeqNo: " << vRec.GetSeqNo()
+  os2 << "-I- FairDbValidityRec:: SeqNo: " << vRec.GetSeqNo()
       << "  AggNo: " << vRec.GetAggregateNo()
       << "  DbNo: " << vRec.GetDbNo();
   if ( vRec.IsGap() ) { os2 << " (gap)"; }
@@ -62,7 +62,7 @@ FairDbValidityRec::FairDbValidityRec(Int_t dbNo,Bool_t isGap)
     fDbNo(dbNo),
     fInsertDate(),
     fIsGap(isGap),
-    fTask(0),
+    fVersion(0),
     fSeqNo(0),
     fTableProxy(0),
     fValRange()
@@ -77,7 +77,7 @@ FairDbValidityRec::FairDbValidityRec(const FairDbValidityRec& from)
     fDbNo(from.fDbNo),
     fInsertDate(from.fInsertDate),
     fIsGap(from.fIsGap),
-    fTask(from.fTask),
+    fVersion(from.fVersion),
     fSeqNo(from.fSeqNo),
     fTableProxy(from.fTableProxy),
     fValRange(from.fValRange)
@@ -89,7 +89,7 @@ FairDbValidityRec::FairDbValidityRec(const FairDbValidityRec& from)
 //.....................................................................
 
 FairDbValidityRec::FairDbValidityRec(const ValRange& range,
-                                     FairDb::Task task,
+                                     FairDb::Version task,
                                      Int_t aggNo,
                                      UInt_t seqNo,
                                      Int_t dbNo,
@@ -100,7 +100,7 @@ FairDbValidityRec::FairDbValidityRec(const ValRange& range,
   fDbNo(dbNo),
   fInsertDate(),
   fIsGap(isGap),
-  fTask(task),
+  fVersion(task),
   fSeqNo(seqNo),
   fTableProxy(0),
   fValRange(range)
@@ -129,7 +129,7 @@ void FairDbValidityRec::Fill(FairDbResultSet& rs,
 
 //  Read data from row.
 
-  rs >> fSeqNo >> start >> end >> detMask >> simMask >> fTask
+  rs >> fSeqNo >> start >> end >> detMask >> simMask >> fVersion
      >> fAggregateNo    >> fCreationDate  >> fInsertDate;
 
   fIsGap = kFALSE;
@@ -142,7 +142,7 @@ void FairDbValidityRec::Fill(FairDbResultSet& rs,
       << ": " << fValRange.AsString()
       << " seq num: " << fSeqNo
       << " agg no: "  << fAggregateNo
-      << " task: " << endl;
+      << " version: " << fVersion <<  endl;
 }
 
 
@@ -178,7 +178,7 @@ Bool_t FairDbValidityRec::HasExpired(const FairDbValidityRec& other) const
   const ValRange& otherVR =other.GetValRange();
 
   return
-    (       other.GetTask() == fTask
+    (       other.GetVersion() == fVersion
             && ( otherVR.GetDetectorMask() & fValRange.GetDetectorMask() )
             && ( otherVR.GetSimMask()      & fValRange.GetSimMask() )
             && (    otherVR.GetTimeStart() >= fValRange.GetTimeEnd()
@@ -189,14 +189,14 @@ Bool_t FairDbValidityRec::HasExpired(const FairDbValidityRec& other) const
 
 
 Bool_t FairDbValidityRec::HasExpired(const ValContext& vc,
-                                     const FairDb::Task& task) const
+                                     const FairDb::Version& task) const
 {
 
   ValTimeStamp    ts = vc.GetTimeStamp();
   const ValRange& vr = this->GetValRange();
 
   return
-    (       task             == this->GetTask()
+    (       task             == this->GetVersion()
             && ( vc.GetDetector() &  vr.GetDetectorMask() )
             && ( vc.GetSimFlag()  &  vr.GetSimMask() )
             && (    ts            >= vr.GetTimeEnd()
@@ -208,16 +208,16 @@ Bool_t FairDbValidityRec::HasExpired(const ValContext& vc,
 
 
 Bool_t FairDbValidityRec::IsCompatible(const ValContext& vc,
-                                       const FairDb::Task& task) const
+                                       const FairDb::Version& task) const
 {
 
   cout  << " FairDbValidityRec::IsCompatible : tasks:"
-        << task << "," << fTask
+        << task << "," << fVersion
         << " is compat: " << fValRange.IsCompatible(vc) << endl
         << "   range " << fValRange.AsString() << endl
         << "   context " << vc.AsString() << endl;
 
-  return task == fTask  && fValRange.IsCompatible(vc);
+  return task == fVersion  && fValRange.IsCompatible(vc);
 
 }
 
@@ -243,7 +243,7 @@ void FairDbValidityRec::Store(FairDbOutRowStream& ors,
       << fValRange.GetTimeEnd()
       << fValRange.GetDetectorMask()
       << fValRange.GetSimMask()
-      << fTask
+      << fVersion
       << fAggregateNo
       << fCreationDate
       << fInsertDate;
@@ -258,7 +258,7 @@ void FairDbValidityRec::Streamer(FairDbBinaryFile& file)
          >> fDbNo
          >> fInsertDate
          >> fIsGap
-         >> fTask
+         >> fVersion
          >> fSeqNo
          >> fValRange;
     fTableProxy = 0;
@@ -268,7 +268,7 @@ void FairDbValidityRec::Streamer(FairDbBinaryFile& file)
          << fDbNo
          << fInsertDate
          << fIsGap
-         << fTask
+         << fVersion
          << fSeqNo
          << fValRange;
   }
