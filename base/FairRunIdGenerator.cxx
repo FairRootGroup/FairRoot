@@ -32,7 +32,7 @@
 #define srand(x)  srandom(x)
 #define rand()    random()
 
-#include <iostream.h>
+#include <iostream>
 using namespace std;
 
 //#include "genid32.h"    replaced by hrunidgenerator.h
