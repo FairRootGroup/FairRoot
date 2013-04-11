@@ -158,7 +158,7 @@ const FairDbResult* FairDbCache::Search(const ValContext& vc,
 
   cout << "Primary cache search of table " << fTableName
        << " for  " << vc
-       << " with task " << task << endl;
+       << " with Version " << task << endl;
   const ResultList_t* subCache = this->GetSubCache(-1);
   if ( ! subCache ) {
     cout << "Primary cache search failed - sub-cache -1 is empty" << endl;
