@@ -153,7 +153,7 @@ void FairDbTutPar::Store(UInt_t rid)
   TString atr(GetName());
   atr.ToUpper();
 
-  if (! fMultConn->GetConnection(dbEntry)->TableExists("FAIDBTUTPAR") ) {
+  if (! fMultConn->GetConnection(dbEntry)->TableExists("FAIRDBTUTPAR") ) {
     sql_cmds.push_back(FairDb::GetValDescr("FAIRDBTUTPAR").Data());
     sql_cmds.push_back(FairDbTutPar::GetTableDescr());
   }
