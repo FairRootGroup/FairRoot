@@ -72,7 +72,7 @@ class FairDbTutPar : public FairParGenericSet
 
 
   private:
-    // Strip Parameters
+    // Example Strip Parameters
     Double_t fTopPitch;     // Strip pitch on top wafer side
     Double_t fTopAnchor;    // Anchor point of top strip#0
     Int_t    fTopNrFE;      // Number of FE attached to top wafer side
