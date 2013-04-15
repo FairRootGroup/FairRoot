@@ -101,15 +101,12 @@ void FairDbTutPar::Store(FairDbOutRowStream& ors,
 
 void FairDbTutPar::Fill(UInt_t rid)
 {
-  cout << "-I-FairDbTutPar Fill() called with RID# " <<  rid << endl;
 
   ValTimeStamp ts(rid);
   ValContext context(Detector::kGfi,SimFlag::kData,ts);
   FairDbResultPtr<FairDbTutPar> rsCal(context, GetVersion());
   Int_t numRows = rsCal.GetNumRows();
 
-  cout << "-I-  FAIRDBTUTPAR Fill()  =====>  Reading object within the context: "
-       << context << " selected " << numRows << " rows found from the FAIRDBTUTPAR table" << endl;
 
   // Just use the latest row entry
   if ( numRows > 1 ) { numRows = 1; }
@@ -117,11 +114,11 @@ void FairDbTutPar::Fill(UInt_t rid)
   for (int i = 0; i < numRows; ++i) {
     FairDbTutPar* cgd = (FairDbTutPar*) rsCal.GetRow(i);
     if (!cgd) { continue; }
-    cout << "Top Pitch " << cgd->GetTopPitch()
-         << "Top Anchor: " << cgd->GetTopAnchor()
-         << "Nr TopFe: " << cgd->GetNrTopFE()
-         << "Fe Type: " << cgd->GetFeType()
-         << endl;
+    //cout << "Top Pitch " << cgd->GetTopPitch()
+    //     << "Top Anchor: " << cgd->GetTopAnchor()
+    //     << "Nr TopFe: " << cgd->GetNrTopFE()
+    //     << "Fe Type: " << cgd->GetFeType()
+    //     << endl;
     fTopPitch = cgd->GetTopPitch();
     fTopAnchor =  cgd->GetTopAnchor();
     fTopNrFE =  cgd->GetNrTopFE();
@@ -134,25 +131,27 @@ void FairDbTutPar::Fill(UInt_t rid)
 
 void FairDbTutPar::Store(UInt_t rid)
 {
+  // In this example we are fixing the database entry point. In the future
+  // a variable entry can be set via the runtime DB directly.
   Int_t dbEntry = 0;
   Bool_t fail= kFALSE;
 
   FairDbMultConnector* fMultConn = FairDbTableProxyRegistry::Instance().fMultConnector;
   auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(dbEntry));
   if ( ! stmtDbn.get() ) {
-    cout << "-E-  Cannot get a statement for cascade entry " << dbEntry
+    cout << "-E-  FairDbTutPar::Store()  Cannot get a statement for cascade entry " << dbEntry
          << "\n    Please check the ENV_TSQL_* environment.  Quitting ... " << endl;
     exit(1);
   }
 
-
   // The definition of FairDbTutPar is centralised in the FairDbTutPar class.
   // The corresponding SQL is executed as follows:
-
   std::vector<std::string> sql_cmds;
   TString atr(GetName());
   atr.ToUpper();
 
+  // Check if for this connection entry the table already exists.
+  // If not call the Class Table Descriptor function
   if (! fMultConn->GetConnection(dbEntry)->TableExists("FAIRDBTUTPAR") ) {
     sql_cmds.push_back(FairDb::GetValDescr("FAIRDBTUTPAR").Data());
     sql_cmds.push_back(FairDbTutPar::GetTableDescr());
@@ -162,11 +161,10 @@ void FairDbTutPar::Store(UInt_t rid)
   std::vector<std::string>::iterator itr(sql_cmds.begin()), itrEnd(sql_cmds.end());
   while( itr != itrEnd ) {
     std::string& sql_cmd(*itr++);
-    cout <<"-I- FairDbTutPar executing at DB#  " << dbEntry << "  SQL:" << sql_cmd << endl;
     stmtDbn->ExecuteUpdate(sql_cmd.c_str());
     if ( stmtDbn->PrintExceptions() ) {
       fail = true;
-      cout << "-E- FairDbTutPar: ******* Error Executing SQL commands ***********  " << endl;
+      cout << "-E- FairDbTutPar::Store() ******* Error Executing SQL commands ***********  " << endl;
     }
 
   }
@@ -177,15 +175,15 @@ void FairDbTutPar::Store(UInt_t rid)
   cout << "-I-FairDbTutPar ******* Store() called  ******** with RID#  " << rid <<  endl;
 
   FairDbWriter<FairDbTutPar>  aW(this->GetRangeDTF(rid),
-                                 GetAggregateNo(), // Agg
-                                 GetVersion(),  // Parameter version
+                                 GetAggregateNo(), // Composite or Simple IO
+                                 GetVersion(),  // Parameter version ( Set via the Container Factory)
                                  ValTimeStamp(0,0),0,"test parameter", "FAIRDBTUTPAR");
   aW.SetDbNo(dbEntry);
   aW.SetLogComment("Test Parameter");
   aW << (*this);
   if ( ! aW.Close() ) {
     fail = true;
-    cout << "-E- FairDbTutPar::  Cannot do IO on class# " << GetName() <<  endl;
+    cout << "-E- FairDbTutPar::Store()  Cannot do IO on class# " << GetName() <<  endl;
   }
 
 
