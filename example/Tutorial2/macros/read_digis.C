@@ -6,8 +6,8 @@ void read_digis(){
     TString dir = getenv("VMCWORKDIR");
     TString tutdir = dir + "/example/Tutorial2";
 
-    TString inFile = tutdir + "/macros/tutorial2_pions.mc_p2.000_t0_n10.root";
-    TString paramFile = tutdir + "/macros/tutorial2_pions.params_p2.000_t0_n10.root";
+    TString inFile = "./tutorial2_pions.mc_p2.000_t0_n10.root";
+    TString paramFile = "./tutorial2_pions.params_p2.000_t0_n10.root";
     TString outFile = "./digis.mc.root";
 
     cout << "******************************" << endl;
