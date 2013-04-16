@@ -5,10 +5,12 @@ SET_TESTS_PROPERTIES(run_tutorial2 PROPERTIES PASS_REGULAR_EXPRESSION "Macro fin
 
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial2/macros/create_digis.C)
 add_test(create_digis ${CMAKE_BINARY_DIR}/example/Tutorial2/macros/create_digis.sh)
+SET_TESTS_PROPERTIES(create_digis PROPERTIES DEPENDS run_tutorial2)
 SET_TESTS_PROPERTIES(create_digis PROPERTIES TIMEOUT "30")
 SET_TESTS_PROPERTIES(create_digis PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
 
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial2/macros/read_digis.C)
 add_test(read_digis ${CMAKE_BINARY_DIR}/example/Tutorial2/macros/read_digis.sh)
+SET_TESTS_PROPERTIES(read_digis PROPERTIES DEPENDS create_digis)
 SET_TESTS_PROPERTIES(read_digis PROPERTIES TIMEOUT "30")
 SET_TESTS_PROPERTIES(read_digis PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
