@@ -1,12 +1,12 @@
 // --------------------------------------------------------------------------
-// -----          Header for the FairTutorialDetDigitizer               ------
+// -----          Header for the FairTutorialDet2Digitizer               ------
 // -----              Created 06.06.08 by F.Uhlig                      ------
 // --------------------------------------------------------------------------
 
 
 
-#ifndef FAIRTUTORIALDETDIGITIZER_H
-#define FAIRTUTORIALDETDIGITIZER_H
+#ifndef FAIRTUTORIALDET2DIGITIZER_H
+#define FAIRTUTORIALDET2DIGITIZER_H
 
 
 #include "FairTask.h"
@@ -15,22 +15,22 @@
 
 class TClonesArray;
 
-class FairTutorialDetDigiPar;
+class FairTutorialDet2DigiPar;
 
-class FairTutorialDetDigitizer : public FairTask
+class FairTutorialDet2Digitizer : public FairTask
 {
   public:
 
 
 
     /** Default constructor **/
-    FairTutorialDetDigitizer();
+    FairTutorialDet2Digitizer();
 
     /** Standard constructor **/
-    FairTutorialDetDigitizer(const char* name, const char* title="FAIR Task");
+    FairTutorialDet2Digitizer(const char* name, const char* title="FAIR Task");
 
     /** Destructor **/
-    virtual ~FairTutorialDetDigitizer();
+    virtual ~FairTutorialDet2Digitizer();
 
     /** Initialisation **/
     virtual InitStatus ReInit();
@@ -56,16 +56,16 @@ class FairTutorialDetDigitizer : public FairTask
     //    TClonesArray *fDigiCollection; //! TRD hits
     //TClonesArray *fListStack;         //Tracks
 
-    FairTutorialDetDigiPar* fDigiPar;
+    FairTutorialDet2DigiPar* fDigiPar;
 
     //    Double_t fDx;               //!
     //Double_t fDy;               //!
     //Int_t fNHits;
 
-    FairTutorialDetDigitizer(const FairTutorialDetDigitizer&);
-    FairTutorialDetDigitizer& operator=(const FairTutorialDetDigitizer&);
+    FairTutorialDet2Digitizer(const FairTutorialDet2Digitizer&);
+    FairTutorialDet2Digitizer& operator=(const FairTutorialDet2Digitizer&);
 
-    ClassDef(FairTutorialDetDigitizer,1)
+    ClassDef(FairTutorialDet2Digitizer,1)
 
 };
 #endif //FAIRTUTORIALDETDIGITIZER_H

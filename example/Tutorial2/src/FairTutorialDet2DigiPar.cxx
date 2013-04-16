@@ -1,9 +1,9 @@
 // -------------------------------------------------------------------------
-// -----                FairTutorialDetDigiPar source file              -----
+// -----                FairTutorialDet2DigiPar source file              -----
 // -----                  Created 05/06/08  by F. Uhlig                -----
 // -------------------------------------------------------------------------
 
-#include "FairTutorialDetDigiPar.h"
+#include "FairTutorialDet2DigiPar.h"
 
 #include "FairParamList.h"
 #include "FairDetParIo.h"
@@ -18,7 +18,7 @@ using std::cout;
 using std::endl;
 
 // -----   Standard constructor   ------------------------------------------
-FairTutorialDetDigiPar::FairTutorialDetDigiPar(const char* name,
+FairTutorialDet2DigiPar::FairTutorialDet2DigiPar(const char* name,
     const char* title,
     const char* context)
   : FairParGenericSet(name, title, context),
@@ -35,7 +35,7 @@ FairTutorialDetDigiPar::FairTutorialDetDigiPar(const char* name,
 
 
 // -----   Destructor   ----------------------------------------------------
-FairTutorialDetDigiPar::~FairTutorialDetDigiPar()
+FairTutorialDet2DigiPar::~FairTutorialDet2DigiPar()
 {
   clear();
 
@@ -44,7 +44,7 @@ FairTutorialDetDigiPar::~FairTutorialDetDigiPar()
 
 
 // -----   Public method clear   -------------------------------------------
-void FairTutorialDetDigiPar::clear()
+void FairTutorialDet2DigiPar::clear()
 {
   status = kFALSE;
   resetInputVersions();
@@ -52,7 +52,7 @@ void FairTutorialDetDigiPar::clear()
 // -------------------------------------------------------------------------
 
 // -----   Public method printParams ---------------------------------------
-void FairTutorialDetDigiPar::printparams()
+void FairTutorialDet2DigiPar::printparams()
 {
 
   cout <<"Print"<<endl;
@@ -71,13 +71,13 @@ void FairTutorialDetDigiPar::printparams()
 }
 // -------------------------------------------------------------------------
 
-void FairTutorialDetDigiPar::putParams(FairParamList* l)
+void FairTutorialDet2DigiPar::putParams(FairParamList* l)
 {
   //   print();
-  cout << " I am in FairTutorialDetDigiPar::putParams " << endl;
+  cout << " I am in FairTutorialDet2DigiPar::putParams " << endl;
   if (!l) { return; }
-  l->add("FairTutorialDetDigiStations", ftutdetdigiparstation);
-  l->add("FairTutorialDetDigiSectorsPerStation", ftutdetdigiparsector);
+  l->add("FairTutorialDet2DigiStations", ftutdetdigiparstation);
+  l->add("FairTutorialDet2DigiSectorsPerStation", ftutdetdigiparsector);
   Int_t count_sectors = 0;
   for ( Int_t i=0; i< ftutdetdigiparstation; i++) {
     count_sectors+=ftutdetdigiparsector[i];
@@ -90,22 +90,22 @@ void FairTutorialDetDigiPar::putParams(FairParamList* l)
      }
    */
   ftutdetdigipar->Set(array_size);
-  l->add("FairTutorialDetDigiPar",*ftutdetdigipar);
+  l->add("FairTutorialDet2DigiPar",*ftutdetdigipar);
 }
 
 //------------------------------------------------------
 
-Bool_t FairTutorialDetDigiPar::getParams(FairParamList* l)
+Bool_t FairTutorialDet2DigiPar::getParams(FairParamList* l)
 {
   //print();
 
-  cout << " I am in FairTutorialDetDigiPar::getParams " << endl;
+  cout << " I am in FairTutorialDet2DigiPar::getParams " << endl;
 
   if (!l) { return kFALSE; }
-  if ( ! l->fill("FairTutorialDetDigiStations", &ftutdetdigiparstation) ) { return kFALSE; }
+  if ( ! l->fill("FairTutorialDet2DigiStations", &ftutdetdigiparstation) ) { return kFALSE; }
   ftutdetdigiparsector.Set(ftutdetdigiparstation);
 
-  if ( ! l->fill("FairTutorialDetDigiSectorsPerStation", &ftutdetdigiparsector) ) { return kFALSE; }
+  if ( ! l->fill("FairTutorialDet2DigiSectorsPerStation", &ftutdetdigiparsector) ) { return kFALSE; }
 
   Int_t count_sectors = 0;
   for ( Int_t i=0; i< ftutdetdigiparstation; i++) {
@@ -117,8 +117,8 @@ Bool_t FairTutorialDetDigiPar::getParams(FairParamList* l)
   cout << "Array Size: " << array_size << endl;
   ftutdetdigipar->Set(array_size);
   //Float_t zwischen[array_size];
-  if (!(l->fill("FairTutorialDetDigiPar",ftutdetdigipar))) {
-    cout << "--W-- Could not initialize FairTutorialDetDigiPar"<< endl;
+  if (!(l->fill("FairTutorialDet2DigiPar",ftutdetdigipar))) {
+    cout << "--W-- Could not initialize FairTutorialDet2DigiPar"<< endl;
     return kFALSE;
   }
   //ftutdetdigipar.Set(array_size, zwischen);
@@ -127,4 +127,4 @@ Bool_t FairTutorialDetDigiPar::getParams(FairParamList* l)
 
 
 
-ClassImp(FairTutorialDetDigiPar)
+ClassImp(FairTutorialDet2DigiPar)

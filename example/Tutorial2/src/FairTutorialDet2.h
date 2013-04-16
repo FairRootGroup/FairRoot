@@ -1,16 +1,16 @@
-#ifndef FAIRTUTORIALDET_H
-#define FAIRTUTORIALDET_H
+#ifndef FAIRTUTORIALDET2_H
+#define FAIRTUTORIALDET2_H
 
 #include "FairDetector.h"
 
 #include "TVector3.h"
 #include "TLorentzVector.h"
 
-class FairTutorialDetPoint;
+class FairTutorialDet2Point;
 class FairVolume;
 class TClonesArray;
 
-class FairTutorialDet: public FairDetector
+class FairTutorialDet2: public FairDetector
 {
 
   public:
@@ -19,13 +19,13 @@ class FairTutorialDet: public FairDetector
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
     */
-    FairTutorialDet(const char* Name, Bool_t Active);
+    FairTutorialDet2(const char* Name, Bool_t Active);
 
     /**      default constructor    */
-    FairTutorialDet();
+    FairTutorialDet2();
 
     /**       destructor     */
-    virtual ~FairTutorialDet();
+    virtual ~FairTutorialDet2();
 
     /**      Initialization of the detector is done here    */
     virtual void   Initialize();
@@ -50,12 +50,12 @@ class FairTutorialDet: public FairDetector
 
 
     /**      This method is an example of how to add your own point
-     *       of type FairTutorialDetPoint to the clones array
+     *       of type FairTutorialDet2Point to the clones array
     */
-    FairTutorialDetPoint* AddHit(Int_t trackID, Int_t detID,
-                                 TVector3 pos, TVector3 mom,
-                                 Double_t time, Double_t length,
-                                 Double_t eLoss);
+    FairTutorialDet2Point* AddHit(Int_t trackID, Int_t detID,
+                                  TVector3 pos, TVector3 mom,
+                                  Double_t time, Double_t length,
+                                  Double_t eLoss);
 
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
@@ -88,12 +88,12 @@ class FairTutorialDet: public FairDetector
 
     /** container for data points */
 
-    TClonesArray*  fFairTutorialDetPointCollection;
+    TClonesArray*  fFairTutorialDet2PointCollection;
 
-    FairTutorialDet(const FairTutorialDet&);
-    FairTutorialDet& operator=(const FairTutorialDet&);
+    FairTutorialDet2(const FairTutorialDet2&);
+    FairTutorialDet2& operator=(const FairTutorialDet2&);
 
-    ClassDef(FairTutorialDet,1)
+    ClassDef(FairTutorialDet2,1)
 };
 
 #endif //FAIRTUTORIALDET_H

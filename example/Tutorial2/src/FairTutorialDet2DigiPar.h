@@ -1,10 +1,10 @@
 // -------------------------------------------------------------------------
-// -----                    FairTrdDigiPar header file                  -----
+// -----               FairTutorialDetDigiPar header file              -----
 // -----                 Created 15/05/08  by F. Uhlig                 -----
 // -------------------------------------------------------------------------
 
-#ifndef FAIRTUTORIALDETDIGIPAR_H
-#define FAIRTUTORIALDETDIGIPAR_H
+#ifndef FAIRTUTORIALDET2DIGIPAR_H
+#define FAIRTUTORIALDET2DIGIPAR_H
 
 
 #include "FairParGenericSet.h"
@@ -18,19 +18,19 @@ class FairParIo;
 class FairParamList;
 
 
-class FairTutorialDetDigiPar : public FairParGenericSet
+class FairTutorialDet2DigiPar : public FairParGenericSet
 {
 
   public:
 
     /** Standard constructor **/
-    FairTutorialDetDigiPar(const char* name    = "FairTutorialDetDigiPar",
-                           const char* title   = "Tutorial Det digi parameters",
-                           const char* context = "Default");
+    FairTutorialDet2DigiPar(const char* name    = "FairTutorialDet2DigiPar",
+                            const char* title   = "Tutorial Det digi parameters",
+                            const char* context = "Default");
 
 
     /** Destructor **/
-    virtual ~FairTutorialDetDigiPar();
+    virtual ~FairTutorialDet2DigiPar();
 
 
     /** Initialisation from input device**/
@@ -56,10 +56,10 @@ class FairTutorialDetDigiPar : public FairParGenericSet
     TArrayI ftutdetdigiparsector; //
     Int_t ftutdetdigiparstation; //
 
-    FairTutorialDetDigiPar(const FairTutorialDetDigiPar&);
-    FairTutorialDetDigiPar& operator=(const FairTutorialDetDigiPar&);
+    FairTutorialDet2DigiPar(const FairTutorialDet2DigiPar&);
+    FairTutorialDet2DigiPar& operator=(const FairTutorialDet2DigiPar&);
 
-    ClassDef(FairTutorialDetDigiPar,1);
+    ClassDef(FairTutorialDet2DigiPar,1);
 
 
 };

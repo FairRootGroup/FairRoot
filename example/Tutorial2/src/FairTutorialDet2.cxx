@@ -1,8 +1,8 @@
-#include "FairTutorialDet.h"
+#include "FairTutorialDet2.h"
 
-#include "FairTutorialDetPoint.h"
-#include "FairTutorialDetGeo.h"
-#include "FairTutorialDetGeoPar.h"
+#include "FairTutorialDet2Point.h"
+#include "FairTutorialDet2Geo.h"
+#include "FairTutorialDet2GeoPar.h"
 
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
@@ -22,7 +22,7 @@
 using std::cout;
 using std::endl;
 
-FairTutorialDet::FairTutorialDet()
+FairTutorialDet2::FairTutorialDet2()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
     fTrackID(-1),
     fVolumeID(-1),
@@ -31,11 +31,11 @@ FairTutorialDet::FairTutorialDet()
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint"))
+    fFairTutorialDet2PointCollection(new TClonesArray("FairTutorialDet2Point"))
 {
 }
 
-FairTutorialDet::FairTutorialDet(const char* name, Bool_t active)
+FairTutorialDet2::FairTutorialDet2(const char* name, Bool_t active)
   : FairDetector(name, active, kTutDet),
     fTrackID(-1),
     fVolumeID(-1),
@@ -44,26 +44,26 @@ FairTutorialDet::FairTutorialDet(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint"))
+    fFairTutorialDet2PointCollection(new TClonesArray("FairTutorialDet2Point"))
 {
 }
 
-FairTutorialDet::~FairTutorialDet()
+FairTutorialDet2::~FairTutorialDet2()
 {
-  if (fFairTutorialDetPointCollection) {
-    fFairTutorialDetPointCollection->Delete();
-    delete fFairTutorialDetPointCollection;
+  if (fFairTutorialDet2PointCollection) {
+    fFairTutorialDet2PointCollection->Delete();
+    delete fFairTutorialDet2PointCollection;
   }
 }
 
-void FairTutorialDet::Initialize()
+void FairTutorialDet2::Initialize()
 {
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDetGeoPar* par=(FairTutorialDetGeoPar*)(rtdb->getContainer("FairTutorialDetGeoPar"));
+  FairTutorialDet2GeoPar* par=(FairTutorialDet2GeoPar*)(rtdb->getContainer("FairTutorialDet2GeoPar"));
 }
 
-Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
+Bool_t  FairTutorialDet2::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
 
@@ -79,7 +79,7 @@ Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
 
-  // Create FairTutorialDetPoint at exit of active volume
+  // Create FairTutorialDet2Point at exit of active volume
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
@@ -98,42 +98,42 @@ Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
   return kTRUE;
 }
 
-void FairTutorialDet::EndOfEvent()
+void FairTutorialDet2::EndOfEvent()
 {
 
-  fFairTutorialDetPointCollection->Clear();
+  fFairTutorialDet2PointCollection->Clear();
 
 }
 
 
 
-void FairTutorialDet::Register()
+void FairTutorialDet2::Register()
 {
 
   /** This will create a branch in the output tree called
-      FairTutorialDetPoint, setting the last parameter to kFALSE means:
+      FairTutorialDet2Point, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
       only during the simulation.
   */
 
   FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
-                                        fFairTutorialDetPointCollection, kTRUE);
+                                        fFairTutorialDet2PointCollection, kTRUE);
 
 }
 
 
-TClonesArray* FairTutorialDet::GetCollection(Int_t iColl) const
+TClonesArray* FairTutorialDet2::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fFairTutorialDetPointCollection; }
+  if (iColl == 0) { return fFairTutorialDet2PointCollection; }
   else { return NULL; }
 }
 
-void FairTutorialDet::Reset()
+void FairTutorialDet2::Reset()
 {
-  fFairTutorialDetPointCollection->Clear();
+  fFairTutorialDet2PointCollection->Clear();
 }
 
-void FairTutorialDet::ConstructGeometry()
+void FairTutorialDet2::ConstructGeometry()
 {
   /** If you are using the standard ASCII input for the geometry
       just copy this and use it for your detector, otherwise you can
@@ -141,7 +141,7 @@ void FairTutorialDet::ConstructGeometry()
 
   FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  FairTutorialDetGeo*  Geo  = new FairTutorialDetGeo();
+  FairTutorialDet2Geo*  Geo  = new FairTutorialDet2Geo();
   Geo->setGeomFile(GetGeometryFileName());
   geoFace->addGeoModule(Geo);
 
@@ -152,7 +152,7 @@ void FairTutorialDet::ConstructGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDetGeoPar* par=(FairTutorialDetGeoPar*)(rtdb->getContainer("FairTutorialDetGeoPar"));
+  FairTutorialDet2GeoPar* par=(FairTutorialDet2GeoPar*)(rtdb->getContainer("FairTutorialDet2GeoPar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -174,15 +174,15 @@ void FairTutorialDet::ConstructGeometry()
   ProcessNodes ( volList );
 }
 
-FairTutorialDetPoint* FairTutorialDet::AddHit(Int_t trackID, Int_t detID,
+FairTutorialDet2Point* FairTutorialDet2::AddHit(Int_t trackID, Int_t detID,
     TVector3 pos, TVector3 mom,
     Double_t time, Double_t length,
     Double_t eLoss)
 {
-  TClonesArray& clref = *fFairTutorialDetPointCollection;
+  TClonesArray& clref = *fFairTutorialDet2PointCollection;
   Int_t size = clref.GetEntriesFast();
-  return new(clref[size]) FairTutorialDetPoint(trackID, detID, pos, mom,
+  return new(clref[size]) FairTutorialDet2Point(trackID, detID, pos, mom,
          time, length, eLoss);
 }
 
-ClassImp(FairTutorialDet)
+ClassImp(FairTutorialDet2)

@@ -3,27 +3,11 @@ void read_digis(){
     TStopwatch timer;
     timer.Start();
 
-    gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
-    basiclibs();
-
-
-    // Load this example libraries
-    gSystem->Load("libFairTools");
-    gSystem->Load("libFairDB");
-    gSystem->Load("libGeoBase");
-    gSystem->Load("libParBase");
-    gSystem->Load("libBase");
-    gSystem->Load("libMCStack");
-    gSystem->Load("libPassive");
-    //    gSystem->Load("libField");
-    gSystem->Load("libGen");
-    gSystem->Load("libTutorial2");
-
     TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/example/Tutorial1";
+    TString tutdir = dir + "/example/Tutorial2";
 
-    TString inFile = tutdir + "/macros/tutorial1_pions.mc_p2.000_t0_n10.root";
-    TString paramFile = tutdir + "/macros/tutorial1_pions.params_p2.000_t0_n10.root";
+    TString inFile = tutdir + "/macros/tutorial2_pions.mc_p2.000_t0_n10.root";
+    TString paramFile = tutdir + "/macros/tutorial2_pions.params_p2.000_t0_n10.root";
     TString outFile = "./digis.mc.root";
 
     cout << "******************************" << endl;
@@ -52,14 +36,13 @@ void read_digis(){
 
     rtdb->print();
 
-  //  fRun->LoadGeometry();
     fRun->Init();
 
-    rtdb->getContainer("FairTutorialDetDigiPar")->print();
+    rtdb->getContainer("FairTutorialDet2DigiPar")->print();
     rtdb->saveOutput();
 
-    FairTutorialDetDigiPar* DigiPar = (FairTutorialDetDigiPar*) 
-                                      rtdb->getContainer("FairTutorialDetDigiPar");
+    FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*) 
+                                      rtdb->getContainer("FairTutorialDet2DigiPar");
 
     DigiPar->setChanged();
     DigiPar->setInputVersion(fRun->GetRunId(),1);
@@ -71,4 +54,6 @@ void read_digis(){
     Double_t rtime = timer.RealTime();
     Double_t ctime = timer.CpuTime();
     printf("RealTime=%f seconds, CpuTime=%f seconds\n",rtime,ctime);
+
+    cout << "Macro finished succesfully." << endl;
 }

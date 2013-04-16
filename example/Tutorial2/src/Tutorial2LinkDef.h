@@ -4,12 +4,12 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class FairTutorialDetContFact;
-#pragma link C++ class FairTutorialDetGeo;
-#pragma link C++ class FairTutorialDetGeoPar;
-#pragma link C++ class FairTutorialDet+;
-#pragma link C++ class FairTutorialDetPoint+;
-#pragma link C++ class FairTutorialDetDigiPar+;
-#pragma link C++ class FairTutorialDetDigitizer+;
+#pragma link C++ class FairTutorialDet2ContFact;
+#pragma link C++ class FairTutorialDet2Geo;
+#pragma link C++ class FairTutorialDet2GeoPar;
+#pragma link C++ class FairTutorialDet2+;
+#pragma link C++ class FairTutorialDet2Point+;
+#pragma link C++ class FairTutorialDet2DigiPar+;
+#pragma link C++ class FairTutorialDet2Digitizer+;
 
 #endif

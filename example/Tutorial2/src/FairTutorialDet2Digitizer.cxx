@@ -1,7 +1,7 @@
-#include "FairTutorialDetDigitizer.h"
+#include "FairTutorialDet2Digitizer.h"
 
-#include "FairTutorialDetDigiPar.h"
-#include "FairTutorialDetPoint.h"
+#include "FairTutorialDet2DigiPar.h"
+#include "FairTutorialDet2Point.h"
 
 #include "FairRootManager.h"
 #include "FairMCTrack.h"
@@ -25,7 +25,7 @@ using std::cout;
 using std::endl;
 
 // ---- Default constructor -------------------------------------------
-FairTutorialDetDigitizer::FairTutorialDetDigitizer()
+FairTutorialDet2Digitizer::FairTutorialDet2Digitizer()
   : FairTask("TutorialDetDigitizer", 0),
     fTutorialDetPoints(NULL),
     fDigiPar(NULL)
@@ -34,7 +34,7 @@ FairTutorialDetDigitizer::FairTutorialDetDigitizer()
 // --------------------------------------------------------------------
 
 // ---- Constructor ----------------------------------------------------
-FairTutorialDetDigitizer::FairTutorialDetDigitizer(const char* name, const char* title)
+FairTutorialDet2Digitizer::FairTutorialDet2Digitizer(const char* name, const char* title)
   : FairTask(name, 0),
     fTutorialDetPoints(NULL),
     fDigiPar(NULL)
@@ -43,7 +43,7 @@ FairTutorialDetDigitizer::FairTutorialDetDigitizer(const char* name, const char*
 // --------------------------------------------------------------------
 
 // ---- Destructor ----------------------------------------------------
-FairTutorialDetDigitizer::~FairTutorialDetDigitizer()
+FairTutorialDet2Digitizer::~FairTutorialDet2Digitizer()
 {
   //    FairRootManager *ioman =FairRootManager::Instance();
   //ioman->Write();
@@ -54,44 +54,44 @@ FairTutorialDetDigitizer::~FairTutorialDetDigitizer()
 // --------------------------------------------------------------------
 
 // ----  Initialisation  ----------------------------------------------
-void FairTutorialDetDigitizer::SetParContainers()
+void FairTutorialDet2Digitizer::SetParContainers()
 {
-  cout<<" * FairTutorialDetDigitizer * :: SetParContainers() "<<endl;
+  cout<<" * FairTutorialDet2Digitizer * :: SetParContainers() "<<endl;
 
 
   // Get Base Container
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDetDigiPar*)
-             (rtdb->getContainer("FairTutorialDetDigiPar"));
+  fDigiPar = (FairTutorialDet2DigiPar*)
+             (rtdb->getContainer("FairTutorialDet2DigiPar"));
 
   fDigiPar->printparams();
 }
 // --------------------------------------------------------------------
 
 // ---- ReInit  -------------------------------------------------------
-InitStatus FairTutorialDetDigitizer::ReInit()
+InitStatus FairTutorialDet2Digitizer::ReInit()
 {
 
-  cout<<" * FairTutorialDetDigitizer * :: ReInit() "<<endl;
+  cout<<" * FairTutorialDet2Digitizer * :: ReInit() "<<endl;
 
 
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDetDigiPar*)
-             (rtdb->getContainer("FairTutorialDetDigiPar"));
+  fDigiPar = (FairTutorialDet2DigiPar*)
+             (rtdb->getContainer("FairTutorialDet2DigiPar"));
 
   return kSUCCESS;
 }
 // --------------------------------------------------------------------
 
 // ---- Init ----------------------------------------------------------
-InitStatus FairTutorialDetDigitizer::Init()
+InitStatus FairTutorialDet2Digitizer::Init()
 {
 
-  cout<<" * FairTutorialDetDigitizer * :: Init() "<<endl;
+  cout<<" * FairTutorialDet2Digitizer * :: Init() "<<endl;
 
   FairRootManager* ioman = FairRootManager::Instance();
   if ( ! ioman ) { Fatal("Init", "No FairRootManager"); }
@@ -100,7 +100,7 @@ InitStatus FairTutorialDetDigitizer::Init()
                      ioman->GetObject("TutorialDetPoint");
 
   if ( ! fTutorialDetPoints ) {
-    cout << "-W FairTutorialDetDigitizer::Init: No TutorialDetPoints array!" << endl;
+    cout << "-W FairTutorialDet2Digitizer::Init: No TutorialDetPoints array!" << endl;
     cout << "                            Task will be inactive" << endl;
     return kERROR;
   }
@@ -116,17 +116,17 @@ InitStatus FairTutorialDetDigitizer::Init()
 
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDetDigitizer::Exec(Option_t* option)
+void FairTutorialDet2Digitizer::Exec(Option_t* option)
 {
 
   // Here we print something
 
-  cout <<" I am in FairTutorialDetDigitizer::Exec" << endl;
+  cout <<" I am in FairTutorialDet2Digitizer::Exec" << endl;
 
   /*
 
   fNHits = 0;
-  FairTutorialDetPoint *pt=NULL;
+  FairTutorialDet2Point *pt=NULL;
 
   Int_t nentries = fTutorialDetPoints->GetEntriesFast();
 
@@ -134,7 +134,7 @@ void FairTutorialDetDigitizer::Exec(Option_t* option)
 
   for (int j=0; j < nentries; j++ ) {
 
-    pt = (FairTutorialDetPoint*) fTutorialDetPoints->At(j);
+    pt = (FairTutorialDet2Point*) fTutorialDetPoints->At(j);
 
     if(NULL == pt) continue;
 
@@ -193,13 +193,13 @@ void FairTutorialDetDigitizer::Exec(Option_t* option)
 // --------------------------------------------------------------------
 
 // ---- Finish --------------------------------------------------------
-void FairTutorialDetDigitizer::Finish()
+void FairTutorialDet2Digitizer::Finish()
 {
 }
 // --------------------------------------------------------------------
 
 // ---- Register ------------------------------------------------------
-void FairTutorialDetDigitizer::Register()
+void FairTutorialDet2Digitizer::Register()
 {
 
   //FairRootManager::Instance()->Register("TrdDigi","Trd Digi", fDigiCollection, kTRUE);
@@ -207,4 +207,4 @@ void FairTutorialDetDigitizer::Register()
 }
 // --------------------------------------------------------------------
 
-ClassImp(FairTutorialDetDigitizer)
+ClassImp(FairTutorialDet2Digitizer)

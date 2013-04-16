@@ -18,18 +18,18 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 #Put here your sourcefiles
-FairTutorialDet.cxx
-FairTutorialDetContFact.cxx
-FairTutorialDetGeo.cxx
-FairTutorialDetGeoPar.cxx
-FairTutorialDetPoint.cxx
-FairTutorialDetDigiPar.cxx
-FairTutorialDetDigitizer.cxx
+FairTutorialDet2.cxx
+FairTutorialDet2ContFact.cxx
+FairTutorialDet2Geo.cxx
+FairTutorialDet2GeoPar.cxx
+FairTutorialDet2Point.cxx
+FairTutorialDet2DigiPar.cxx
+FairTutorialDet2Digitizer.cxx
 )
 
 Set(HEADERS )
 Set(LINKDEF Tutorial2LinkDef.h)
 Set(LIBRARY_NAME Tutorial2)
-Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Cint Core)
+Set(DEPENDENCIES MCStack Base)# GeoBase ParBase VMC Physics Cint Core)
 
 GENERATE_LIBRARY()
