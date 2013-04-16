@@ -1,5 +1,5 @@
-#ifndef FAIRTUTORIALDET_H
-#define FAIRTUTORIALDET_H
+#ifndef FAIRTUTORIALDET4_H
+#define FAIRTUTORIALDET4_H
 
 #include "FairDetector.h"
 
@@ -7,13 +7,13 @@
 #include "TLorentzVector.h"
 #include "TArrayD.h"
 
-class FairTutorialDetPoint;
-class FairTutorialDetGeoHandler;
-class FairTutorialDetMisalignPar;
+class FairTutorialDet4Point;
+class FairTutorialDet4GeoHandler;
+class FairTutorialDet4MisalignPar;
 class FairVolume;
 class TClonesArray;
 
-class FairTutorialDet: public FairDetector
+class FairTutorialDet4: public FairDetector
 {
 
   public:
@@ -22,13 +22,13 @@ class FairTutorialDet: public FairDetector
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
     */
-    FairTutorialDet(const char* Name, Bool_t Active);
+    FairTutorialDet4(const char* Name, Bool_t Active);
 
     /**      default constructor    */
-    FairTutorialDet();
+    FairTutorialDet4();
 
     /**       destructor     */
-    virtual ~FairTutorialDet();
+    virtual ~FairTutorialDet4();
 
     /**      Initialization of the detector is done here    */
     virtual void   Initialize();
@@ -59,12 +59,12 @@ class FairTutorialDet: public FairDetector
     void SetParContainers();
 
     /**      This method is an example of how to add your own point
-     *       of type FairTutorialDetPoint to the clones array
+     *       of type FairTutorialDet4Point to the clones array
     */
-    FairTutorialDetPoint* AddHit(Int_t trackID, Int_t detID,
-                                 TVector3 pos, TVector3 mom,
-                                 Double_t time, Double_t length,
-                                 Double_t eLoss);
+    FairTutorialDet4Point* AddHit(Int_t trackID, Int_t detID,
+                                  TVector3 pos, TVector3 mom,
+                                  Double_t time, Double_t length,
+                                  Double_t eLoss);
 
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
@@ -99,11 +99,11 @@ class FairTutorialDet: public FairDetector
 
     /** container for data points */
 
-    TClonesArray*  fFairTutorialDetPointCollection;
+    TClonesArray*  fFairTutorialDet4PointCollection;
 
-    FairTutorialDetGeoHandler* fGeoHandler;
+    FairTutorialDet4GeoHandler* fGeoHandler;
 
-    FairTutorialDetMisalignPar* fMisalignPar;
+    FairTutorialDet4MisalignPar* fMisalignPar;
 
     Int_t fNrOfDetectors;
     TArrayD fShiftX;
@@ -126,10 +126,10 @@ class FairTutorialDet: public FairDetector
     void MisalignGeometryByFullPath();
 
 
-    FairTutorialDet(const FairTutorialDet&);
-    FairTutorialDet& operator=(const FairTutorialDet&);
+    FairTutorialDet4(const FairTutorialDet4&);
+    FairTutorialDet4& operator=(const FairTutorialDet4&);
 
-    ClassDef(FairTutorialDet,1)
+    ClassDef(FairTutorialDet4,1)
 };
 
 #endif //FAIRTUTORIALDET_H

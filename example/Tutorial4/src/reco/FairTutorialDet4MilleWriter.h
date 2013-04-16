@@ -1,5 +1,5 @@
-#ifndef FAIRTUTORIALDETMILLEWRITER_H
-#define FAIRTUTORIALDETMILLEWRITER_H
+#ifndef FAIRTUTORIALDET4MILLEWRITER_H
+#define FAIRTUTORIALDET4MILLEWRITER_H
 
 #include "FairTask.h"
 
@@ -7,19 +7,19 @@ class Mille;
 
 class TClonesArray;
 
-class FairTutorialDetMilleWriter : public FairTask
+class FairTutorialDet4MilleWriter : public FairTask
 {
   public:
 
     /** Default constructor **/
-    FairTutorialDetMilleWriter();
+    FairTutorialDet4MilleWriter();
 
     /** Constructor with parameters (Optional)
-    //  FairTutorialDetMilleWriter(Int_t verbose);
+    //  FairTutorialDet4MilleWriter(Int_t verbose);
 
 
     /** Destructor **/
-    ~FairTutorialDetMilleWriter();
+    ~FairTutorialDet4MilleWriter();
 
 
     /** Initiliazation of task at the beginning of a run **/
@@ -65,10 +65,10 @@ class FairTutorialDetMilleWriter : public FairTask
     /** Output array to  new data level**/
     //  TClonesArray* <OutputDataLevel>;
 
-    FairTutorialDetMilleWriter(const FairTutorialDetMilleWriter&);
-    FairTutorialDetMilleWriter operator=(const FairTutorialDetMilleWriter&);
+    FairTutorialDet4MilleWriter(const FairTutorialDet4MilleWriter&);
+    FairTutorialDet4MilleWriter operator=(const FairTutorialDet4MilleWriter&);
 
-    ClassDef(FairTutorialDetMilleWriter,1);
+    ClassDef(FairTutorialDet4MilleWriter,1);
 };
 
 #endif

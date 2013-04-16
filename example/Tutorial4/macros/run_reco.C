@@ -1,18 +1,6 @@
 void run_reco()
 {
    // ----  Load libraries   -------------------------------------------------
-   gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
-   basiclibs();
-   gSystem->Load("libFairTools");
-   gSystem->Load("libFairDB");
-   gSystem->Load("libGeoBase");
-   gSystem->Load("libParBase");
-   gSystem->Load("libBase");
-   gSystem->Load("libMCStack");
-   gSystem->Load("libGen");
-   gSystem->Load("libPassive");
-   gSystem->Load("libTutorial4.so");
-
   FairLogger *logger = FairLogger::GetLogger();
 //  logger->SetLogFileName("MyLog.log");
   logger->SetLogToScreen(kTRUE);
@@ -63,15 +51,15 @@ void run_reco()
   rtdb->saveOutput();
    
   // -----   TorinoDetector hit  producers   ---------------------------------
-  FairTutorialDetHitProducerIdealMisalign* hitProducer = new FairTutorialDetHitProducerIdealMisalign();
+  FairTutorialDet4HitProducerIdealMisalign* hitProducer = new FairTutorialDet4HitProducerIdealMisalign();
   hitProducer->DoMisalignment(kFALSE);
   fRun->AddTask(hitProducer);
 
-  FairTutorialDetStraightLineFitter* fitter = new FairTutorialDetStraightLineFitter();
+  FairTutorialDet4StraightLineFitter* fitter = new FairTutorialDet4StraightLineFitter();
   fitter->SetVersion(2);
   fRun->AddTask(fitter);
 
-  FairTutorialDetMilleWriter* writer = new FairTutorialDetMilleWriter();
+  FairTutorialDet4MilleWriter* writer = new FairTutorialDet4MilleWriter();
 //  writer->SetWriteAscii(kTRUE);
   writer->SetVersion(2);
   fRun->AddTask(writer);

@@ -4,7 +4,7 @@
 // -------------------------------------------------------------------------
 
 
-#include "FairTutorialDetGeoHandler.h"
+#include "FairTutorialDet4GeoHandler.h"
 
 #include "FairLogger.h"
 
@@ -23,7 +23,7 @@ using std::pair;
 using std::cout;
 using std::endl;
 
-FairTutorialDetGeoHandler::FairTutorialDetGeoHandler()
+FairTutorialDet4GeoHandler::FairTutorialDet4GeoHandler()
   : TObject(),
     fIsSimulation(kFALSE),
     fLastUsedDetectorID(0),
@@ -35,7 +35,7 @@ FairTutorialDetGeoHandler::FairTutorialDetGeoHandler()
 {
 }
 
-Int_t FairTutorialDetGeoHandler::Init(Bool_t isSimulation)
+Int_t FairTutorialDet4GeoHandler::Init(Bool_t isSimulation)
 {
 //  Int_t geoVersion = CheckGeometryVersion();
 
@@ -44,14 +44,14 @@ Int_t FairTutorialDetGeoHandler::Init(Bool_t isSimulation)
   return 1;
 }
 
-void FairTutorialDetGeoHandler::LocalToGlobal(Double_t* local, Double_t* global, Int_t detID)
+void FairTutorialDet4GeoHandler::LocalToGlobal(Double_t* local, Double_t* global, Int_t detID)
 {
   TString path=ConstructFullPathFromDetID(detID);
   NavigateTo(path);
   gGeoManager->LocalToMaster(local, global);
 }
 
-TString FairTutorialDetGeoHandler::ConstructFullPathFromDetID(Int_t detID)
+TString FairTutorialDet4GeoHandler::ConstructFullPathFromDetID(Int_t detID)
 {
   TString volStr   = "/cave_1/tutorial4_0/tut4_det_";
   TString volPath = volStr;
@@ -59,7 +59,7 @@ TString FairTutorialDetGeoHandler::ConstructFullPathFromDetID(Int_t detID)
   return volPath;
 }
 
-Int_t FairTutorialDetGeoHandler::GetUniqueDetectorId(TString volName)
+Int_t FairTutorialDet4GeoHandler::GetUniqueDetectorId(TString volName)
 {
   if (fGeoPathHash != volName.Hash()) {
     NavigateTo(volName);
@@ -68,7 +68,7 @@ Int_t FairTutorialDetGeoHandler::GetUniqueDetectorId(TString volName)
 }
 
 
-Int_t FairTutorialDetGeoHandler::GetUniqueDetectorId()
+Int_t FairTutorialDet4GeoHandler::GetUniqueDetectorId()
 {
 
   Int_t detectorNr=0;
@@ -81,7 +81,7 @@ Int_t FairTutorialDetGeoHandler::GetUniqueDetectorId()
 }
 
 
-Int_t FairTutorialDetGeoHandler::VolIdGeo(const char* name) const
+Int_t FairTutorialDet4GeoHandler::VolIdGeo(const char* name) const
 {
   //
   // Return the unique numeric identifier for volume name
@@ -95,7 +95,7 @@ Int_t FairTutorialDetGeoHandler::VolIdGeo(const char* name) const
   return uid;
 }
 
-Int_t FairTutorialDetGeoHandler::VolId(const Text_t* name) const
+Int_t FairTutorialDet4GeoHandler::VolId(const Text_t* name) const
 {
   if (fIsSimulation) {
     return gMC->VolId(name);
@@ -112,7 +112,7 @@ Int_t FairTutorialDetGeoHandler::VolId(const Text_t* name) const
   }
 }
 
-Int_t FairTutorialDetGeoHandler::CurrentVolID(Int_t& copy) const
+Int_t FairTutorialDet4GeoHandler::CurrentVolID(Int_t& copy) const
 {
   if (fIsSimulation) {
     return gMC->CurrentVolID(copy);
@@ -129,7 +129,7 @@ Int_t FairTutorialDetGeoHandler::CurrentVolID(Int_t& copy) const
 }
 
 //_____________________________________________________________________________
-Int_t FairTutorialDetGeoHandler::CurrentVolOffID(Int_t off, Int_t& copy) const
+Int_t FairTutorialDet4GeoHandler::CurrentVolOffID(Int_t off, Int_t& copy) const
 {
   if (fIsSimulation) {
     return gMC->CurrentVolOffID(off, copy);
@@ -148,7 +148,7 @@ Int_t FairTutorialDetGeoHandler::CurrentVolOffID(Int_t off, Int_t& copy) const
 }
 
 //_____________________________________________________________________________
-const char* FairTutorialDetGeoHandler::CurrentVolName() const
+const char* FairTutorialDet4GeoHandler::CurrentVolName() const
 {
   if (fIsSimulation) {
     return gMC->CurrentVolName();
@@ -162,7 +162,7 @@ const char* FairTutorialDetGeoHandler::CurrentVolName() const
 }
 
 //_____________________________________________________________________________
-const char* FairTutorialDetGeoHandler::CurrentVolOffName(Int_t off) const
+const char* FairTutorialDet4GeoHandler::CurrentVolOffName(Int_t off) const
 {
   if (fIsSimulation) {
     return gMC->CurrentVolOffName(off);
@@ -181,7 +181,7 @@ const char* FairTutorialDetGeoHandler::CurrentVolOffName(Int_t off) const
 }
 
 
-void FairTutorialDetGeoHandler::NavigateTo(TString volName)
+void FairTutorialDet4GeoHandler::NavigateTo(TString volName)
 {
   if (fIsSimulation) {
     LOG(FATAL)<<"This methode is not supported in simulation mode"<<FairLogger::endl;
@@ -198,4 +198,4 @@ void FairTutorialDetGeoHandler::NavigateTo(TString volName)
 }
 
 
-ClassImp(FairTutorialDetGeoHandler)
+ClassImp(FairTutorialDet4GeoHandler)

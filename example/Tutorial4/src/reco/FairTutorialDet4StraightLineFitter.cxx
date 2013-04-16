@@ -1,5 +1,5 @@
-#include "FairTutorialDetStraightLineFitter.h"
-#include "FairTutorialDetHit.h"
+#include "FairTutorialDet4StraightLineFitter.h"
+#include "FairTutorialDet4Hit.h"
 
 #include "FairLogger.h"
 
@@ -10,19 +10,19 @@
 #include "TMatrixFSym.h"
 
 // ---- Default constructor -------------------------------------------
-FairTutorialDetStraightLineFitter::FairTutorialDetStraightLineFitter()
-  :FairTask("FairTutorialDetStraightLineFitter"),
+FairTutorialDet4StraightLineFitter::FairTutorialDet4StraightLineFitter()
+  :FairTask("FairTutorialDet4StraightLineFitter"),
    fHits(NULL),
    fTracks(NULL),
    fVersion(2)
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Defaul Constructor of FairTutorialDetStraightLineFitter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Defaul Constructor of FairTutorialDet4StraightLineFitter");
 }
 
 // ---- Destructor ----------------------------------------------------
-FairTutorialDetStraightLineFitter::~FairTutorialDetStraightLineFitter()
+FairTutorialDet4StraightLineFitter::~FairTutorialDet4StraightLineFitter()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Destructor of FairTutorialDetStraightLineFitter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Destructor of FairTutorialDet4StraightLineFitter");
   if (fTracks) {
     fTracks->Delete();
     delete fTracks;
@@ -30,23 +30,23 @@ FairTutorialDetStraightLineFitter::~FairTutorialDetStraightLineFitter()
 }
 
 // ----  Initialisation  ----------------------------------------------
-void FairTutorialDetStraightLineFitter::SetParContainers()
+void FairTutorialDet4StraightLineFitter::SetParContainers()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"SetParContainers of FairTutorialDetStraightLineFitter");
+  fLogger->Debug(MESSAGE_ORIGIN,"SetParContainers of FairTutorialDet4StraightLineFitter");
   // Load all necessary parameter containers from the runtime data base
   /*
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  <FairTutorialDetStraightLineFitterDataMember> = (<ClassPointer>*)
+  <FairTutorialDet4StraightLineFitterDataMember> = (<ClassPointer>*)
     (rtdb->getContainer("<ContainerName>"));
   */
 }
 
 // ---- Init ----------------------------------------------------------
-InitStatus FairTutorialDetStraightLineFitter::Init()
+InitStatus FairTutorialDet4StraightLineFitter::Init()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDetStraightLineFitter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDet4StraightLineFitter");
 
   // Get a handle from the IO manager
   FairRootManager* ioman = FairRootManager::Instance();
@@ -56,7 +56,7 @@ InitStatus FairTutorialDetStraightLineFitter::Init()
   fHits = (TClonesArray*) ioman->GetObject("TutorialDetHit");
   if ( ! fHits ) {
     LOG(ERROR)<<"No InputDataLevelName array!\n"
-              << "FairTutorialDetStraightLineFitter will be inactive"<<FairLogger::endl;
+              << "FairTutorialDet4StraightLineFitter will be inactive"<<FairLogger::endl;
     return kERROR;
   }
 
@@ -75,21 +75,21 @@ InitStatus FairTutorialDetStraightLineFitter::Init()
 }
 
 // ---- ReInit  -------------------------------------------------------
-InitStatus FairTutorialDetStraightLineFitter::ReInit()
+InitStatus FairTutorialDet4StraightLineFitter::ReInit()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDetStraightLineFitter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDet4StraightLineFitter");
   return kSUCCESS;
 }
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDetStraightLineFitter::Exec(Option_t* option)
+void FairTutorialDet4StraightLineFitter::Exec(Option_t* option)
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Exec of FairTutorialDetStraightLineFitter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Exec of FairTutorialDet4StraightLineFitter");
 
   if (!IsGoodEvent()) { return; }
 
   // Declare some variables
-  FairTutorialDetHit* hit = NULL;
+  FairTutorialDet4Hit* hit = NULL;
   Int_t detID   = 0;        // Detector ID
   Int_t trackID = 0;        // Track index
   Double_t x, y, z;         // Position
@@ -106,7 +106,7 @@ void FairTutorialDetStraightLineFitter::Exec(Option_t* option)
   Float_t* YPosErr = new Float_t[nHits];
 
   for (Int_t iHit=0; iHit<nHits; iHit++) {
-    hit = (FairTutorialDetHit*) fHits->At(iHit);
+    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
     if ( ! hit) { continue; }
 
     XPos[iHit] = hit->GetX();
@@ -163,20 +163,20 @@ void FairTutorialDetStraightLineFitter::Exec(Option_t* option)
 
 }
 
-Bool_t FairTutorialDetStraightLineFitter::IsGoodEvent()
+Bool_t FairTutorialDet4StraightLineFitter::IsGoodEvent()
 {
   // Check if each for the event there is maximum 1 hit per detector
   // station. In the moment we create tracks with all hits in the
   // event, so we have to check for this.
   // In the end the algorithm should be able to work also with
   // missing hits in some stations
-  FairTutorialDetHit* hit;
+  FairTutorialDet4Hit* hit;
   std::set<Int_t> detIdSet;
   std::set<Int_t>::iterator it;
 
   Int_t nHits = fHits->GetEntriesFast();
   for (Int_t iHit=0; iHit<nHits; ++iHit) {
-    hit = (FairTutorialDetHit*) fHits->At(iHit);
+    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
     Int_t detId = hit->GetDetectorID();
     it = detIdSet.find(detId);
     if ( it == detIdSet.end() ) {
@@ -191,9 +191,9 @@ Bool_t FairTutorialDetStraightLineFitter::IsGoodEvent()
 }
 
 // ---- Finish --------------------------------------------------------
-void FairTutorialDetStraightLineFitter::Finish()
+void FairTutorialDet4StraightLineFitter::Finish()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Finish of FairTutorialDetStraightLineFitter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Finish of FairTutorialDet4StraightLineFitter");
 }
 
-ClassImp(FairTutorialDetStraightLineFitter)
+ClassImp(FairTutorialDet4StraightLineFitter)

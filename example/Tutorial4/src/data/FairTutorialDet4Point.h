@@ -1,5 +1,5 @@
-#ifndef FAIRTUTORIALDETPOINT_H
-#define FAIRTUTORIALDETPOINT_H 1
+#ifndef FAIRTUTORIALDET4POINT_H
+#define FAIRTUTORIALDET4POINT_H 1
 
 
 #include "FairMCPoint.h"
@@ -7,13 +7,13 @@
 #include "TObject.h"
 #include "TVector3.h"
 
-class FairTutorialDetPoint : public FairMCPoint
+class FairTutorialDet4Point : public FairMCPoint
 {
 
   public:
 
     /** Default constructor **/
-    FairTutorialDetPoint();
+    FairTutorialDet4Point();
 
 
     /** Constructor with arguments
@@ -25,22 +25,22 @@ class FairTutorialDetPoint : public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    FairTutorialDetPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                         Double_t tof, Double_t length, Double_t eLoss);
+    FairTutorialDet4Point(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
+                          Double_t tof, Double_t length, Double_t eLoss);
 
 
     /** Copy constructor **/
-    //    FairTutorialDetPoint(const FairTutorialDetPoint& point) { *this = point; };
+    //    FairTutorialDet4Point(const FairTutorialDet4Point& point) { *this = point; };
 
 
     /** Destructor **/
-    virtual ~FairTutorialDetPoint();
+    virtual ~FairTutorialDet4Point();
 
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
 
 
-    ClassDef(FairTutorialDetPoint,1)
+    ClassDef(FairTutorialDet4Point,1)
 
 };
 

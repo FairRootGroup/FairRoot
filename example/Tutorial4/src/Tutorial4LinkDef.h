@@ -4,15 +4,15 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class FairTutorialDetContFact;
-#pragma link C++ class FairTutorialDetGeo;
-#pragma link C++ class FairTutorialDetGeoPar;
-#pragma link C++ class FairTutorialDetMisalignPar;
-#pragma link C++ class FairTutorialDet+;
-#pragma link C++ class FairTutorialDetPoint+;
-#pragma link C++ class FairTutorialDetHit+;
-#pragma link C++ class FairTutorialDetHitProducerIdealMisalign+;
-#pragma link C++ class FairTutorialDetGeoHandler+;
-#pragma link C++ class FairTutorialDetStraightLineFitter+;
-#pragma link C++ class FairTutorialDetMilleWriter+;
+#pragma link C++ class FairTutorialDet4ContFact;
+#pragma link C++ class FairTutorialDet4Geo;
+#pragma link C++ class FairTutorialDet4GeoPar;
+#pragma link C++ class FairTutorialDet4MisalignPar;
+#pragma link C++ class FairTutorialDet4+;
+#pragma link C++ class FairTutorialDet4Point+;
+#pragma link C++ class FairTutorialDet4Hit+;
+#pragma link C++ class FairTutorialDet4HitProducerIdealMisalign+;
+#pragma link C++ class FairTutorialDet4GeoHandler+;
+#pragma link C++ class FairTutorialDet4StraightLineFitter+;
+#pragma link C++ class FairTutorialDet4MilleWriter+;
 #endif

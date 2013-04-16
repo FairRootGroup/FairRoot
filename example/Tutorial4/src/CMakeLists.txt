@@ -23,21 +23,21 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 #Put here your sourcefiles
-mc/FairTutorialDet.cxx
-mc/FairTutorialDetGeo.cxx
+mc/FairTutorialDet4.cxx
+mc/FairTutorialDet4Geo.cxx
 
-param/FairTutorialDetContFact.cxx
-param/FairTutorialDetGeoPar.cxx
-param/FairTutorialDetMisalignPar.cxx
+param/FairTutorialDet4ContFact.cxx
+param/FairTutorialDet4GeoPar.cxx
+param/FairTutorialDet4MisalignPar.cxx
 
-data/FairTutorialDetPoint.cxx
-data/FairTutorialDetHit.cxx
+data/FairTutorialDet4Point.cxx
+data/FairTutorialDet4Hit.cxx
 
-reco/FairTutorialDetHitProducerIdealMisalign.cxx
-reco/FairTutorialDetStraightLineFitter.cxx
-reco/FairTutorialDetMilleWriter.cxx
+reco/FairTutorialDet4HitProducerIdealMisalign.cxx
+reco/FairTutorialDet4StraightLineFitter.cxx
+reco/FairTutorialDet4MilleWriter.cxx
 
-tools/FairTutorialDetGeoHandler.cxx
+tools/FairTutorialDet4GeoHandler.cxx
 )
 
 set(NO_DICT_SRCS tools/Mille.cc)

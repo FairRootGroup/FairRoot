@@ -1,18 +1,18 @@
 // -------------------------------------------------------------------------
-// -----                 FairTutorialDetGeoHandler header file                  -----
+// -----                 FairTutorialDet4GeoHandler header file                  -----
 // -----                 Created 20/11/12  by F. Uhlig                 -----
 // -------------------------------------------------------------------------
 
 
-/** FairTutorialDetGeoHandler.h
+/** FairTutorialDet4GeoHandler.h
  ** Helper class to extract information from the GeoManager which is
  ** needed in many other TOF classes. This helper class should be a
  ** single place to hold all these functions.
  ** @author F. Uhlig <f.uhlig@gsi.de>
  **/
 
-#ifndef FAIRTUTORIALDETGEOHANDLER_H
-#define FAIRTUTORIALDETGEOHANDLER_H 1
+#ifndef FAIRTUTORIALDET4GEOHANDLER_H
+#define FAIRTUTORIALDET4GEOHANDLER_H 1
 
 #include "TObject.h"
 
@@ -23,16 +23,16 @@ class TGeoBBox;
 class TGeoVolume;
 class TGeoHMatrix;
 
-class FairTutorialDetGeoHandler : public TObject
+class FairTutorialDet4GeoHandler : public TObject
 {
   public:
 
     /** Constructor **/
-    FairTutorialDetGeoHandler();
+    FairTutorialDet4GeoHandler();
 
 
     /** Destructor **/
-    ~FairTutorialDetGeoHandler() {};
+    ~FairTutorialDet4GeoHandler() {};
 
     Int_t GetUniqueDetectorId();
     Int_t GetUniqueDetectorId(TString volName);
@@ -72,10 +72,10 @@ class FairTutorialDetGeoHandler : public TObject
 
     TString ConstructFullPathFromDetID(Int_t detID);
 
-    FairTutorialDetGeoHandler(const FairTutorialDetGeoHandler&);
-    FairTutorialDetGeoHandler operator=(const FairTutorialDetGeoHandler&);
+    FairTutorialDet4GeoHandler(const FairTutorialDet4GeoHandler&);
+    FairTutorialDet4GeoHandler operator=(const FairTutorialDet4GeoHandler&);
 
-    ClassDef(FairTutorialDetGeoHandler,1)
+    ClassDef(FairTutorialDet4GeoHandler,1)
 
 };
 

@@ -1,10 +1,10 @@
-#include "FairTutorialDetGeo.h"
+#include "FairTutorialDet4Geo.h"
 #include "FairGeoNode.h"
 
-ClassImp(FairTutorialDetGeo)
+ClassImp(FairTutorialDet4Geo)
 
 // -----   Default constructor   -------------------------------------------
-FairTutorialDetGeo::FairTutorialDetGeo()
+FairTutorialDet4Geo::FairTutorialDet4Geo()
   : FairGeoSet()
 {
   // Constructor
@@ -15,7 +15,7 @@ FairTutorialDetGeo::FairTutorialDetGeo()
 
 // -------------------------------------------------------------------------
 
-const char* FairTutorialDetGeo::getModuleName(Int_t m)
+const char* FairTutorialDet4Geo::getModuleName(Int_t m)
 {
   /** Returns the module name of TutorialDet number m
       Setting MyDet here means that all modules names in the
@@ -26,7 +26,7 @@ const char* FairTutorialDetGeo::getModuleName(Int_t m)
   return modName;
 }
 
-const char* FairTutorialDetGeo::getEleName(Int_t m)
+const char* FairTutorialDet4Geo::getEleName(Int_t m)
 {
   /** Returns the element name of Det number m */
   sprintf(eleName,"tutdet%i",m+1);

@@ -1,10 +1,10 @@
-#include "FairTutorialDet.h"
+#include "FairTutorialDet4.h"
 
-#include "FairTutorialDetPoint.h"
-#include "FairTutorialDetGeo.h"
-#include "FairTutorialDetGeoPar.h"
-#include "FairTutorialDetMisalignPar.h"
-#include "FairTutorialDetGeoHandler.h"
+#include "FairTutorialDet4Point.h"
+#include "FairTutorialDet4Geo.h"
+#include "FairTutorialDet4GeoPar.h"
+#include "FairTutorialDet4MisalignPar.h"
+#include "FairTutorialDet4GeoHandler.h"
 
 #include "FairVolume.h"
 #include "FairGeoVolume.h"
@@ -26,7 +26,7 @@
 using std::cout;
 using std::endl;
 
-FairTutorialDet::FairTutorialDet()
+FairTutorialDet4::FairTutorialDet4()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
     fTrackID(-1),
     fVolumeID(-1),
@@ -35,8 +35,8 @@ FairTutorialDet::FairTutorialDet()
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint")),
-    fGeoHandler(new FairTutorialDetGeoHandler()),
+    fFairTutorialDet4PointCollection(new TClonesArray("FairTutorialDet4Point")),
+    fGeoHandler(new FairTutorialDet4GeoHandler()),
     fMisalignPar(NULL),
     fNrOfDetectors(-1),
     fShiftX(),
@@ -49,7 +49,7 @@ FairTutorialDet::FairTutorialDet()
 {
 }
 
-FairTutorialDet::FairTutorialDet(const char* name, Bool_t active)
+FairTutorialDet4::FairTutorialDet4(const char* name, Bool_t active)
   : FairDetector(name, active, kTutDet),
     fTrackID(-1),
     fVolumeID(-1),
@@ -58,8 +58,8 @@ FairTutorialDet::FairTutorialDet(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fFairTutorialDetPointCollection(new TClonesArray("FairTutorialDetPoint")),
-    fGeoHandler(new FairTutorialDetGeoHandler()),
+    fFairTutorialDet4PointCollection(new TClonesArray("FairTutorialDet4Point")),
+    fGeoHandler(new FairTutorialDet4GeoHandler()),
     fMisalignPar(NULL),
     fNrOfDetectors(-1),
     fShiftX(),
@@ -72,16 +72,16 @@ FairTutorialDet::FairTutorialDet(const char* name, Bool_t active)
 {
 }
 
-FairTutorialDet::~FairTutorialDet()
+FairTutorialDet4::~FairTutorialDet4()
 {
-  LOG(DEBUG4)<<"Entering Destructor of FairTutorialDet"<<FairLogger::endl;
-  if (fFairTutorialDetPointCollection) {
-    fFairTutorialDetPointCollection->Delete();
-    delete fFairTutorialDetPointCollection;
+  LOG(DEBUG4)<<"Entering Destructor of FairTutorialDet4"<<FairLogger::endl;
+  if (fFairTutorialDet4PointCollection) {
+    fFairTutorialDet4PointCollection->Delete();
+    delete fFairTutorialDet4PointCollection;
   }
-  LOG(DEBUG4)<<"Leaving Destructor of FairTutorialDet"<<FairLogger::endl;
+  LOG(DEBUG4)<<"Leaving Destructor of FairTutorialDet4"<<FairLogger::endl;
 }
-void FairTutorialDet::SetParContainers()
+void FairTutorialDet4::SetParContainers()
 {
 
   LOG(INFO)<< "Set tutdet missallign parameters"<<FairLogger::endl;
@@ -91,22 +91,22 @@ void FairTutorialDet::SetParContainers()
   FairRuntimeDb* rtdb=sim->GetRuntimeDb();
   LOG_IF(FATAL, !rtdb) << "No runtime database"<<FairLogger::endl;
 
-  fMisalignPar = (FairTutorialDetMisalignPar*)
-                 (rtdb->getContainer("FairTutorialDetMissallignPar"));
+  fMisalignPar = (FairTutorialDet4MisalignPar*)
+                 (rtdb->getContainer("FairTutorialDet4MissallignPar"));
 
 }
 
-void FairTutorialDet::Initialize()
+void FairTutorialDet4::Initialize()
 {
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDetGeoPar* par=(FairTutorialDetGeoPar*)(rtdb->getContainer("FairTutorialDetGeoPar"));
+  FairTutorialDet4GeoPar* par=(FairTutorialDet4GeoPar*)(rtdb->getContainer("FairTutorialDet4GeoPar"));
 
   Bool_t isSimulation = kTRUE;
   fGeoHandler->Init(isSimulation);
 }
 
-void FairTutorialDet::InitParContainers()
+void FairTutorialDet4::InitParContainers()
 {
   LOG(INFO)<< "Initialize tutdet missallign parameters"<<FairLogger::endl;
   fNrOfDetectors=fMisalignPar->GetNrOfDetectors();
@@ -119,7 +119,7 @@ void FairTutorialDet::InitParContainers()
 
 }
 
-Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
+Bool_t  FairTutorialDet4::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
 
@@ -135,7 +135,7 @@ Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
   // Sum energy loss for all steps in the active volume
   fELoss += gMC->Edep();
 
-  // Create FairTutorialDetPoint at exit of active volume
+  // Create FairTutorialDet4Point at exit of active volume
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
@@ -164,42 +164,42 @@ Bool_t  FairTutorialDet::ProcessHits(FairVolume* vol)
   return kTRUE;
 }
 
-void FairTutorialDet::EndOfEvent()
+void FairTutorialDet4::EndOfEvent()
 {
 
-  fFairTutorialDetPointCollection->Clear();
+  fFairTutorialDet4PointCollection->Clear();
 
 }
 
 
 
-void FairTutorialDet::Register()
+void FairTutorialDet4::Register()
 {
 
   /** This will create a branch in the output tree called
-      FairTutorialDetPoint, setting the last parameter to kFALSE means:
+      FairTutorialDet4Point, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
       only during the simulation.
   */
 
   FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
-                                        fFairTutorialDetPointCollection, kTRUE);
+                                        fFairTutorialDet4PointCollection, kTRUE);
 
 }
 
 
-TClonesArray* FairTutorialDet::GetCollection(Int_t iColl) const
+TClonesArray* FairTutorialDet4::GetCollection(Int_t iColl) const
 {
-  if (iColl == 0) { return fFairTutorialDetPointCollection; }
+  if (iColl == 0) { return fFairTutorialDet4PointCollection; }
   else { return NULL; }
 }
 
-void FairTutorialDet::Reset()
+void FairTutorialDet4::Reset()
 {
-  fFairTutorialDetPointCollection->Clear();
+  fFairTutorialDet4PointCollection->Clear();
 }
 
-void FairTutorialDet::ConstructGeometry()
+void FairTutorialDet4::ConstructGeometry()
 {
   TString fileName=GetGeometryFileName();
   if (fileName.EndsWith(".geo")) {
@@ -213,7 +213,7 @@ void FairTutorialDet::ConstructGeometry()
   }
 }
 
-Bool_t FairTutorialDet::CheckIfSensitive(std::string name)
+Bool_t FairTutorialDet4::CheckIfSensitive(std::string name)
 {
   TString tsname = name;
   if (tsname.Contains("tut4")) {
@@ -222,7 +222,7 @@ Bool_t FairTutorialDet::CheckIfSensitive(std::string name)
   return kFALSE;
 }
 
-void FairTutorialDet::ConstructASCIIGeometry()
+void FairTutorialDet4::ConstructASCIIGeometry()
 {
   /** If you are using the standard ASCII input for the geometry
       just copy this and use it for your detector, otherwise you can
@@ -230,7 +230,7 @@ void FairTutorialDet::ConstructASCIIGeometry()
 
   FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  FairTutorialDetGeo*  Geo  = new FairTutorialDetGeo();
+  FairTutorialDet4Geo*  Geo  = new FairTutorialDet4Geo();
   LOG(DEBUG)<<"Read Geo file "<<GetGeometryFileName()<<FairLogger::endl;
   Geo->setGeomFile(GetGeometryFileName());
   geoFace->addGeoModule(Geo);
@@ -242,7 +242,7 @@ void FairTutorialDet::ConstructASCIIGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDetGeoPar* par=(FairTutorialDetGeoPar*)(rtdb->getContainer("FairTutorialDetGeoPar"));
+  FairTutorialDet4GeoPar* par=(FairTutorialDet4GeoPar*)(rtdb->getContainer("FairTutorialDet4GeoPar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -264,7 +264,7 @@ void FairTutorialDet::ConstructASCIIGeometry()
   ProcessNodes ( volList );
 }
 
-void FairTutorialDet::MisalignGeometry()
+void FairTutorialDet4::MisalignGeometry()
 {
   // When saving the top volume of the geometry to a file the information
   // about the TGeoPNEntries is not saved. So the misalign procedure
@@ -289,7 +289,7 @@ void FairTutorialDet::MisalignGeometry()
   }
 }
 
-void FairTutorialDet::MisalignGeometryByFullPath()
+void FairTutorialDet4::MisalignGeometryByFullPath()
 {
 
   TString volPath;
@@ -336,7 +336,7 @@ void FairTutorialDet::MisalignGeometryByFullPath()
 
 }
 
-void FairTutorialDet::MisalignGeometryBySymlink()
+void FairTutorialDet4::MisalignGeometryBySymlink()
 {
   TString symName;
   TString detStr   = "Tutorial4/det";
@@ -387,18 +387,18 @@ void FairTutorialDet::MisalignGeometryBySymlink()
 
 
 }
-FairTutorialDetPoint* FairTutorialDet::AddHit(Int_t trackID, Int_t detID,
+FairTutorialDet4Point* FairTutorialDet4::AddHit(Int_t trackID, Int_t detID,
     TVector3 pos, TVector3 mom,
     Double_t time, Double_t length,
     Double_t eLoss)
 {
-  TClonesArray& clref = *fFairTutorialDetPointCollection;
+  TClonesArray& clref = *fFairTutorialDet4PointCollection;
   Int_t size = clref.GetEntriesFast();
-  return new(clref[size]) FairTutorialDetPoint(trackID, detID, pos, mom,
+  return new(clref[size]) FairTutorialDet4Point(trackID, detID, pos, mom,
          time, length, eLoss);
 }
 
 
 
 
-ClassImp(FairTutorialDet)
+ClassImp(FairTutorialDet4)

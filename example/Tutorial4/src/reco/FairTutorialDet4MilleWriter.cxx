@@ -1,46 +1,46 @@
-#include "FairTutorialDetMilleWriter.h"
-#include "FairTutorialDetHit.h"
+#include "FairTutorialDet4MilleWriter.h"
+#include "FairTutorialDet4Hit.h"
 
 #include "FairTrackParam.h"
 
 #include "Mille.h"
 
 // ---- Default constructor -------------------------------------------
-FairTutorialDetMilleWriter::FairTutorialDetMilleWriter()
-  :FairTask("FairTutorialDetMilleWriter"),
+FairTutorialDet4MilleWriter::FairTutorialDet4MilleWriter()
+  :FairTask("FairTutorialDet4MilleWriter"),
    fTracks(),
    fHits(),
    fMille(NULL),
    fWriteAscii(kFALSE),
    fVersion(1)
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Defaul Constructor of FairTutorialDetMilleWriter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Defaul Constructor of FairTutorialDet4MilleWriter");
 }
 
 // ---- Destructor ----------------------------------------------------
-FairTutorialDetMilleWriter::~FairTutorialDetMilleWriter()
+FairTutorialDet4MilleWriter::~FairTutorialDet4MilleWriter()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Destructor of FairTutorialDetMilleWriter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Destructor of FairTutorialDet4MilleWriter");
 }
 
 // ----  Initialisation  ----------------------------------------------
-void FairTutorialDetMilleWriter::SetParContainers()
+void FairTutorialDet4MilleWriter::SetParContainers()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"SetParContainers of FairTutorialDetMilleWriter");
+  fLogger->Debug(MESSAGE_ORIGIN,"SetParContainers of FairTutorialDet4MilleWriter");
   // Load all necessary parameter containers from the runtime data base
   /*
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  <FairTutorialDetMilleWriterDataMember> = (<ClassPointer>*)
+  <FairTutorialDet4MilleWriterDataMember> = (<ClassPointer>*)
     (rtdb->getContainer("<ContainerName>"));
   */
 }
 
 // ---- Init ----------------------------------------------------------
-InitStatus FairTutorialDetMilleWriter::Init()
+InitStatus FairTutorialDet4MilleWriter::Init()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDetMilleWriter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDet4MilleWriter");
 
   // Get a handle from the IO manager
   FairRootManager* ioman = FairRootManager::Instance();
@@ -48,14 +48,14 @@ InitStatus FairTutorialDetMilleWriter::Init()
   // Get a pointer to the previous already existing data level
   fTracks = (TClonesArray*) ioman->GetObject("TutorialDetTrack");
   if ( ! fTracks ) {
-    fLogger->Error(MESSAGE_ORIGIN,"No InputDataLevelName array!\n FairTutorialDetMilleWriter will be inactive");
+    fLogger->Error(MESSAGE_ORIGIN,"No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive");
     return kERROR;
   }
 
   // Get a pointer to the previous already existing data level
   fHits = (TClonesArray*) ioman->GetObject("TutorialDetHit");
   if ( ! fHits ) {
-    fLogger->Error(MESSAGE_ORIGIN,"No InputDataLevelName array!\n FairTutorialDetMilleWriter will be inactive");
+    fLogger->Error(MESSAGE_ORIGIN,"No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive");
     return kERROR;
   }
 
@@ -72,14 +72,14 @@ InitStatus FairTutorialDetMilleWriter::Init()
 }
 
 // ---- ReInit  -------------------------------------------------------
-InitStatus FairTutorialDetMilleWriter::ReInit()
+InitStatus FairTutorialDet4MilleWriter::ReInit()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDetMilleWriter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDet4MilleWriter");
   return kSUCCESS;
 }
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDetMilleWriter::Exec(Option_t* option)
+void FairTutorialDet4MilleWriter::Exec(Option_t* option)
 {
   if (IsGoodEvent()) {
     if (1 == fVersion) { StraightLineShiftX(option); }
@@ -87,20 +87,20 @@ void FairTutorialDetMilleWriter::Exec(Option_t* option)
   }
 }
 
-Bool_t FairTutorialDetMilleWriter::IsGoodEvent()
+Bool_t FairTutorialDet4MilleWriter::IsGoodEvent()
 {
   // Check if each for the event there is maximum 1 hit per detector
   // station. In the moment we create tracks with all hits in the
   // event, so we have to check for this.
   // In the end the algorithm should be able to work also with
   // missing hits in some stations
-  FairTutorialDetHit* hit;
+  FairTutorialDet4Hit* hit;
   std::set<Int_t> detIdSet;
   std::set<Int_t>::iterator it;
 
   Int_t nHits = fHits->GetEntriesFast();
   for (Int_t iHit=0; iHit<nHits; ++iHit) {
-    hit = (FairTutorialDetHit*) fHits->At(iHit);
+    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
     Int_t detId = hit->GetDetectorID();
     it = detIdSet.find(detId);
     if ( it == detIdSet.end() ) {
@@ -114,7 +114,7 @@ Bool_t FairTutorialDetMilleWriter::IsGoodEvent()
   return kTRUE;
 }
 
-void FairTutorialDetMilleWriter::StraightLineShiftX(Option_t* option)
+void FairTutorialDet4MilleWriter::StraightLineShiftX(Option_t* option)
 {
 
   const Int_t nLC = 2; // number of local parameters
@@ -151,11 +151,11 @@ void FairTutorialDetMilleWriter::StraightLineShiftX(Option_t* option)
 
   Double_t residual;
 
-  FairTutorialDetHit* hit;
+  FairTutorialDet4Hit* hit;
 
   Int_t nHits = fHits->GetEntriesFast();
   for (Int_t iHit=0; iHit<nHits; ++iHit) {
-    hit = (FairTutorialDetHit*) fHits->At(iHit);
+    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
 
     Float_t Z = hit->GetZ();
     Float_t hitX = hit->GetX();
@@ -180,7 +180,7 @@ void FairTutorialDetMilleWriter::StraightLineShiftX(Option_t* option)
 }
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDetMilleWriter::StraightLineShiftXY(Option_t* option)
+void FairTutorialDet4MilleWriter::StraightLineShiftXY(Option_t* option)
 {
 
   const Int_t nLC = 4; // number of local parameters
@@ -219,11 +219,11 @@ void FairTutorialDetMilleWriter::StraightLineShiftXY(Option_t* option)
 
   Double_t residual;
 
-  FairTutorialDetHit* hit;
+  FairTutorialDet4Hit* hit;
 
   Int_t nHits = fHits->GetEntriesFast();
   for (Int_t iHit=0; iHit<nHits; ++iHit) {
-    hit = (FairTutorialDetHit*) fHits->At(iHit);
+    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
 
     Float_t Z = hit->GetZ();
     Float_t hitX = hit->GetX();
@@ -267,9 +267,9 @@ void FairTutorialDetMilleWriter::StraightLineShiftXY(Option_t* option)
 }
 
 // ---- Finish --------------------------------------------------------
-void FairTutorialDetMilleWriter::Finish()
+void FairTutorialDet4MilleWriter::Finish()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Finish of FairTutorialDetMilleWriter");
+  fLogger->Debug(MESSAGE_ORIGIN,"Finish of FairTutorialDet4MilleWriter");
 }
 
-ClassImp(FairTutorialDetMilleWriter)
+ClassImp(FairTutorialDet4MilleWriter)

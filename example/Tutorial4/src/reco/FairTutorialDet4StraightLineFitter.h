@@ -1,23 +1,23 @@
-#ifndef FAIRTUTORIALDETSTRAIGHTLINEFITTER_H
-#define FAIRTUTORIALDETSTRAIGHTLINEFITTER_H
+#ifndef FAIRTUTORIALDET4STRAIGHTLINEFITTER_H
+#define FAIRTUTORIALDET4STRAIGHTLINEFITTER_H
 
 #include "FairTask.h"
 
 class TClonesArray;
 
-class FairTutorialDetStraightLineFitter : public FairTask
+class FairTutorialDet4StraightLineFitter : public FairTask
 {
   public:
 
     /** Default constructor **/
-    FairTutorialDetStraightLineFitter();
+    FairTutorialDet4StraightLineFitter();
 
     /** Constructor with parameters (Optional)
-    //  FairTutorialDetStraightLineFitter(Int_t verbose);
+    //  FairTutorialDet4StraightLineFitter(Int_t verbose);
 
 
     /** Destructor **/
-    ~FairTutorialDetStraightLineFitter();
+    ~FairTutorialDet4StraightLineFitter();
 
 
     /** Initiliazation of task at the beginning of a run **/
@@ -50,10 +50,10 @@ class FairTutorialDetStraightLineFitter : public FairTask
 
     Bool_t IsGoodEvent();
 
-    FairTutorialDetStraightLineFitter(const FairTutorialDetStraightLineFitter&);
-    FairTutorialDetStraightLineFitter operator=(const FairTutorialDetStraightLineFitter&);
+    FairTutorialDet4StraightLineFitter(const FairTutorialDet4StraightLineFitter&);
+    FairTutorialDet4StraightLineFitter operator=(const FairTutorialDet4StraightLineFitter&);
 
-    ClassDef(FairTutorialDetStraightLineFitter,1);
+    ClassDef(FairTutorialDet4StraightLineFitter,1);
 };
 
 #endif

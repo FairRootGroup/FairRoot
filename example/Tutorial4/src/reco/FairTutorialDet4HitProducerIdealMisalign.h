@@ -1,10 +1,10 @@
 // -------------------------------------------------------------------------
-// -----    FairTutorialDetHitProducerIdealMissallign header file      -----
+// -----    FairTutorialDet4HitProducerIdealMissallign header file      -----
 // -----                  Created 11.02.13 by F. Uhlig                 -----
 // -------------------------------------------------------------------------
 
 
-/** FairTutorialDetHitProducerIdealMissallign.h
+/** FairTutorialDet4HitProducerIdealMissallign.h
  *@author Florian Uhlig <f.uhlig@gsi.de>
  **
  ** The ideal hit producer produces hits of type CbmTutorialDetHit
@@ -16,29 +16,29 @@
  **/
 
 
-#ifndef FAIRTUTORIALDETHITPRODUCERIDEALMISSALLIGN_H
-#define FAIRTUTORIALDETHITPRODUCERIDEALMISSALLIGN_H 1
+#ifndef FAIRTUTORIALDET4HITPRODUCERIDEALMISSALLIGN_H
+#define FAIRTUTORIALDET4HITPRODUCERIDEALMISSALLIGN_H 1
 
 
 #include "FairTask.h"
 
 #include "TArrayD.h"
 
-class FairTutorialDetMisalignPar;
-class FairTutorialDetGeoHandler;
+class FairTutorialDet4MisalignPar;
+class FairTutorialDet4GeoHandler;
 class TClonesArray;
 
-class FairTutorialDetHitProducerIdealMisalign : public FairTask
+class FairTutorialDet4HitProducerIdealMisalign : public FairTask
 {
 
   public:
 
     /** Default constructor **/
-    FairTutorialDetHitProducerIdealMisalign();
+    FairTutorialDet4HitProducerIdealMisalign();
 
 
     /** Destructor **/
-    ~FairTutorialDetHitProducerIdealMisalign();
+    ~FairTutorialDet4HitProducerIdealMisalign();
 
 
     /** Virtual method Init **/
@@ -70,18 +70,18 @@ class FairTutorialDetHitProducerIdealMisalign : public FairTask
     TArrayD fRotY;
     TArrayD fRotZ;
 
-    FairTutorialDetMisalignPar* fDigiPar;
-    FairTutorialDetGeoHandler* fGeoHandler;
+    FairTutorialDet4MisalignPar* fDigiPar;
+    FairTutorialDet4GeoHandler* fGeoHandler;
 
     Bool_t fDoMisalignment;
   private:
 
     Double_t GetHitErr(Double_t sigma);
 
-    FairTutorialDetHitProducerIdealMisalign(const FairTutorialDetHitProducerIdealMisalign&);
-    FairTutorialDetHitProducerIdealMisalign& operator=(const FairTutorialDetHitProducerIdealMisalign&);
+    FairTutorialDet4HitProducerIdealMisalign(const FairTutorialDet4HitProducerIdealMisalign&);
+    FairTutorialDet4HitProducerIdealMisalign& operator=(const FairTutorialDet4HitProducerIdealMisalign&);
 
-    ClassDef(FairTutorialDetHitProducerIdealMisalign,1);
+    ClassDef(FairTutorialDet4HitProducerIdealMisalign,1);
 
 };
 

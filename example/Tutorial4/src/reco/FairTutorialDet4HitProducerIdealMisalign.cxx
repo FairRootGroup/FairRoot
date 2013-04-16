@@ -1,13 +1,13 @@
 // -------------------------------------------------------------------------
-// -----   FairTutorialDetHitProducerIdealMissallign source file       -----
+// -----   FairTutorialDet4HitProducerIdealMissallign source file       -----
 // -----                  Created 11.02.13  by F. Uhlig                -----
 // -------------------------------------------------------------------------
-#include "FairTutorialDetHitProducerIdealMisalign.h"
+#include "FairTutorialDet4HitProducerIdealMisalign.h"
 
-#include "FairTutorialDetHit.h"
-#include "FairTutorialDetPoint.h"
-#include "FairTutorialDetMisalignPar.h"
-#include "FairTutorialDetGeoHandler.h"
+#include "FairTutorialDet4Hit.h"
+#include "FairTutorialDet4Point.h"
+#include "FairTutorialDet4MisalignPar.h"
+#include "FairTutorialDet4GeoHandler.h"
 
 #include "FairRootManager.h"
 #include "FairRunAna.h"
@@ -20,7 +20,7 @@
 //#include "TGeoCombiTrans.h"
 
 // -----   Default constructor   -------------------------------------------
-FairTutorialDetHitProducerIdealMisalign::FairTutorialDetHitProducerIdealMisalign()
+FairTutorialDet4HitProducerIdealMisalign::FairTutorialDet4HitProducerIdealMisalign()
   : FairTask("Missallign Hit Producer for the TutorialDet"),
     fPointArray(NULL),
     fHitArray(NULL),
@@ -31,16 +31,16 @@ FairTutorialDetHitProducerIdealMisalign::FairTutorialDetHitProducerIdealMisalign
     fRotY(),
     fRotZ(),
     fDigiPar(NULL),
-    fGeoHandler(new FairTutorialDetGeoHandler),
+    fGeoHandler(new FairTutorialDet4GeoHandler),
     fDoMisalignment(kFALSE)
 {
 }
 
 // -----   Destructor   ----------------------------------------------------
-FairTutorialDetHitProducerIdealMisalign::~FairTutorialDetHitProducerIdealMisalign() { }
+FairTutorialDet4HitProducerIdealMisalign::~FairTutorialDet4HitProducerIdealMisalign() { }
 
 // --------------------------------------------------
-void FairTutorialDetHitProducerIdealMisalign::SetParContainers()
+void FairTutorialDet4HitProducerIdealMisalign::SetParContainers()
 {
 
   LOG(INFO)<< "Set tutdet missallign parameters"<<FairLogger::endl;
@@ -48,20 +48,20 @@ void FairTutorialDetHitProducerIdealMisalign::SetParContainers()
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDetMisalignPar*)
-             (rtdb->getContainer("FairTutorialDetMissallignPar"));
+  fDigiPar = (FairTutorialDet4MisalignPar*)
+             (rtdb->getContainer("FairTutorialDet4MissallignPar"));
 
 }
 // --------------------------------------------------------------------
-InitStatus FairTutorialDetHitProducerIdealMisalign::ReInit()
+InitStatus FairTutorialDet4HitProducerIdealMisalign::ReInit()
 {
 
   // Get Base Container
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDetMisalignPar*)
-             (rtdb->getContainer("FairTutorialDetMissallignPar"));
+  fDigiPar = (FairTutorialDet4MisalignPar*)
+             (rtdb->getContainer("FairTutorialDet4MissallignPar"));
 
   fShiftX=fDigiPar->GetShiftX();
   fShiftY=fDigiPar->GetShiftY();
@@ -72,7 +72,7 @@ InitStatus FairTutorialDetHitProducerIdealMisalign::ReInit()
 }
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FairTutorialDetHitProducerIdealMisalign::Init()
+InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
 {
 
   // Get RootManager
@@ -90,7 +90,7 @@ InitStatus FairTutorialDetHitProducerIdealMisalign::Init()
   }
 
   // Create and register output array
-  fHitArray = new TClonesArray("FairTutorialDetHit");
+  fHitArray = new TClonesArray("FairTutorialDet4Hit");
   ioman->Register("TutorialDetHit", "TutorialDet", fHitArray, kTRUE);
 
   LOG(INFO)<< "HitProducerIdealMissallign: Initialisation successfull"
@@ -115,7 +115,7 @@ InitStatus FairTutorialDetHitProducerIdealMisalign::Init()
 
 }
 // -----   Public method Exec   --------------------------------------------
-void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
+void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* opt)
 {
 
   // Reset output array
@@ -124,7 +124,7 @@ void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
   fHitArray->Clear();
 
   // Declare some variables
-  FairTutorialDetPoint* point = NULL;
+  FairTutorialDet4Point* point = NULL;
   Int_t detID   = 0;        // Detector ID
   Int_t trackID = 0;        // Track index
   Double_t x, y, z;         // Position
@@ -136,7 +136,7 @@ void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
   Int_t nHits = 0;
   Int_t nPoints = fPointArray->GetEntriesFast();
   for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
-    point = (FairTutorialDetPoint*) fPointArray->At(iPoint);
+    point = (FairTutorialDet4Point*) fPointArray->At(iPoint);
     if ( ! point) { continue; }
 
     // Detector ID
@@ -172,7 +172,7 @@ void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
       // Create new hit
       pos.SetXYZ(x,y,z);
       dpos.SetXYZ(dx, dx, 0.);
-      new ((*fHitArray)[nHits]) FairTutorialDetHit(detID, iPoint, pos, dpos);
+      new ((*fHitArray)[nHits]) FairTutorialDet4Hit(detID, iPoint, pos, dpos);
       nHits++;
     }  else {
 
@@ -200,7 +200,7 @@ void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
       // Create new hit
       pos.SetXYZ(x,y,z);
       dpos.SetXYZ(dx, dx, 0.);
-      new ((*fHitArray)[nHits]) FairTutorialDetHit(detID, iPoint, pos, dpos);
+      new ((*fHitArray)[nHits]) FairTutorialDet4Hit(detID, iPoint, pos, dpos);
       nHits++;
 
     }
@@ -212,7 +212,7 @@ void FairTutorialDetHitProducerIdealMisalign::Exec(Option_t* opt)
 }
 // -------------------------------------------------------------------------
 
-Double_t FairTutorialDetHitProducerIdealMisalign::GetHitErr(Double_t sigma)
+Double_t FairTutorialDet4HitProducerIdealMisalign::GetHitErr(Double_t sigma)
 {
   Double_t err = gRandom->Gaus(0, sigma);
   return (TMath::Abs(err) < 3 * sigma) ? err : (err > 0) ? 3 * sigma : -3 * sigma;
@@ -220,4 +220,4 @@ Double_t FairTutorialDetHitProducerIdealMisalign::GetHitErr(Double_t sigma)
 
 
 
-ClassImp(FairTutorialDetHitProducerIdealMisalign)
+ClassImp(FairTutorialDet4HitProducerIdealMisalign)

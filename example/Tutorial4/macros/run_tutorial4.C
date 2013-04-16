@@ -41,21 +41,8 @@ void run_tutorial4(Int_t nEvents = 10)
   timer.Start();
   // ------------------------------------------------------------------------
 
-  // ----  Load libraries   -------------------------------------------------
-  gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
-  basiclibs();
-  gSystem->Load("libFairTools");
-  gSystem->Load("libFairDB");
-  gSystem->Load("libGeoBase");
-  gSystem->Load("libParBase");
-  gSystem->Load("libBase");
-  gSystem->Load("libMCStack");
-  gSystem->Load("libGen");
-  gSystem->Load("libPassive");
-  gSystem->Load("libTutorial4");
-  // ------------------------------------------------------------------------
-
-  gLogger->SetLogScreenLevel("INFO");   
+  //Does not work with automatic loading pf libraries. The info is not in the rootmap file
+//  gLogger->SetLogScreenLevel("INFO");   
  
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
@@ -73,7 +60,7 @@ void run_tutorial4(Int_t nEvents = 10)
   cave->SetGeometryFileName("cave_vacuum.geo"); 
   run->AddModule(cave);
 
-  FairDetector* tutdet = new FairTutorialDet("TUTDET", kTRUE);
+  FairDetector* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
   tutdet->SetGeometryFileName("tutorial4.root"); 
   tutdet->SetMisalignGeometry(kTRUE);
   run->AddModule(tutdet);
@@ -151,6 +138,8 @@ void run_tutorial4(Int_t nEvents = 10)
   cout << "Real time " << rtime << " s, CPU time " << ctime 
        << "s" << endl << endl;
   // ------------------------------------------------------------------------
+  cout << " Test passed" << endl;
+  cout << " All ok " << endl;
 }
 
 

@@ -1,5 +1,5 @@
-#ifndef FAIRTUTORIALDETMISSALLIGNPAR_H
-#define FAIRTUTORIALDETMISSALLIGNPAR_H
+#ifndef FAIRTUTORIALDET4MISSALLIGNPAR_H
+#define FAIRTUTORIALDET4MISSALLIGNPAR_H
 
 #include "FairParGenericSet.h"
 
@@ -7,14 +7,14 @@
 
 class FairParamList;
 
-class FairTutorialDetMisalignPar : public FairParGenericSet
+class FairTutorialDet4MisalignPar : public FairParGenericSet
 {
   public:
 
-    FairTutorialDetMisalignPar(const char* name="FairTutorialDetMissallignPar",
-                               const char* title="Missalignment parameter for FairTutorialDetHitProducerIdealMissallign Parameters",
-                               const char* context="TestDefaultContext");
-    ~FairTutorialDetMisalignPar(void);
+    FairTutorialDet4MisalignPar(const char* name="FairTutorialDet4MissallignPar",
+                                const char* title="Missalignment parameter for FairTutorialDet4HitProducerIdealMissallign Parameters",
+                                const char* context="TestDefaultContext");
+    ~FairTutorialDet4MisalignPar(void);
     void clear(void);
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);
@@ -37,10 +37,10 @@ class FairTutorialDetMisalignPar : public FairParGenericSet
     TArrayD fRotZ; // Array to hold the rotation in z-direction
     Int_t fNrOfDetectors; // Total number of detectors
 
-    FairTutorialDetMisalignPar(const FairTutorialDetMisalignPar&);
-    FairTutorialDetMisalignPar& operator=(const FairTutorialDetMisalignPar&);
+    FairTutorialDet4MisalignPar(const FairTutorialDet4MisalignPar&);
+    FairTutorialDet4MisalignPar& operator=(const FairTutorialDet4MisalignPar&);
 
-    ClassDef(FairTutorialDetMisalignPar,1)
+    ClassDef(FairTutorialDet4MisalignPar,1)
 };
 
 #endif
