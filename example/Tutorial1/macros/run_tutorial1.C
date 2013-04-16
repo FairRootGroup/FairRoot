@@ -65,7 +65,7 @@ void run_tutorial1(Int_t nEvents = 10)
   cave->SetGeometryFileName("cave_vacuum.geo"); 
   run->AddModule(cave);
 
-  FairDetector* tutdet = new FairTutorialDet("TUTDET", kTRUE);
+  FairDetector* tutdet = new FairTutorialDet1("TUTDET", kTRUE);
   tutdet->SetGeometryFileName("double_sector.geo"); 
   run->AddModule(tutdet);
   // ------------------------------------------------------------------------
