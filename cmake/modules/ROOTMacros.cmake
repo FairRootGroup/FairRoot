@@ -231,7 +231,7 @@ Macro(GENERATE_LIBRARY)
   ROOT_GENERATE_DICTIONARY()
   SET(Int_SRCS ${Int_SRCS} ${DICTIONARY})
  
-#  ROOT_GENERATE_ROOTMAP()  
+  ROOT_GENERATE_ROOTMAP()  
  
   ############### build the library #####################
   Add_Library(${Int_LIB} SHARED ${Int_SRCS} ${NO_DICT_SRCS})

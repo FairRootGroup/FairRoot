@@ -1,4 +1,5 @@
 #include "FairMCPoint.h"
+#include "FairLogger.h"
 
 // -----   Default constructor   -------------------------------------------
 FairMCPoint::FairMCPoint()
@@ -50,6 +51,17 @@ FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
 // -----   Destructor   ----------------------------------------------------
 FairMCPoint::~FairMCPoint() { }
 // -------------------------------------------------------------------------
+void FairMCPoint::Print(const Option_t* opt) const
+{
+  LOG(DEBUG) << "FairMC point for track " << fTrackID
+             << " in detector " << fDetectorID << FairLogger::endl;
+  LOG(DEBUG) << "Position (" << fX << ", " << fY << ", " << fZ
+             << ") cm" << FairLogger::endl;
+  LOG(DEBUG) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
+             << ") GeV" << FairLogger::endl;
+  LOG(DEBUG) << "    Time " << fTime << " ns,  Length " << fLength
+             << " cm,  Energy loss " << fELoss*1.0e06 << " keV" << FairLogger::endl;
+}
 
 
 

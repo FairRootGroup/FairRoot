@@ -73,7 +73,7 @@ class FairMCPoint : public FairMultiLinkedData
 
 
     /** Output to screen **/
-    virtual void Print(const Option_t* opt = 0) const = 0;
+    virtual void Print(const Option_t* opt = 0) const;
 
 
 
