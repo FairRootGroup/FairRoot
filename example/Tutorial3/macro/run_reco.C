@@ -1,18 +1,5 @@
 void run_reco()
 {
-   // ----  Load libraries   -------------------------------------------------
-   gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
-   basiclibs();
-   gSystem->Load("libFairTools");
-   gSystem->Load("libFairDB");
-   gSystem->Load("libGeoBase");
-   gSystem->Load("libParBase");
-   gSystem->Load("libBase");
-   gSystem->Load("libMCStack");
-   gSystem->Load("libGen");
-   gSystem->Load("libPassive");
-   gSystem->Load("libFairTestDetector.so");
-
   FairLogger *logger = FairLogger::GetLogger();
   logger->SetLogFileName("MyLog.log");
   logger->SetLogToScreen(kTRUE);

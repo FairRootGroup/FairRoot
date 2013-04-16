@@ -49,4 +49,4 @@ Set(DEPENDENCIES Base)
 
 GENERATE_LIBRARY()
 
-
+Add_Subdirectory(macro)

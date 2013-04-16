@@ -14,30 +14,13 @@ void run_sim(Int_t nEvents=1000)
   TString tut_configdir = tutdir + "/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
- // ----  Load libraries   -------------------------------------------------
-   gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
-   basiclibs();
-   gSystem->Load("libFairTools");
-   gSystem->Load("libFairDB");
-   gSystem->Load("libGeoBase");
-   gSystem->Load("libParBase");
-   gSystem->Load("libBase");
-   gSystem->Load("libMCStack");
-   gSystem->Load("libGen");
-   gSystem->Load("libPassive");
-   gSystem->Load("libFairTestDetector.so");
-
   // create Instance of Run Manager class
   FairRunSim *fRun = new FairRunSim();
   
-
-
   // set the MC version used
   // ------------------------
 
   fRun->SetName("TGeant3");
-  // Choose the Geant Navigation System
-  // fRun->SetGeoModel("G3Native");
   
   fRun->SetOutputFile("data/testrun.root");
 
@@ -128,6 +111,9 @@ void run_sim(Int_t nEvents=1000)
   timer.Stop();
   Double_t rtime = timer.RealTime();
   Double_t ctime = timer.CpuTime();
- printf("RealTime=%f seconds, CpuTime=%f seconds\n",rtime,ctime);
+  printf("RealTime=%f seconds, CpuTime=%f seconds\n",rtime,ctime);
+
+  cout << "Macro finished succesfully." << endl;  
+
 }  
   
