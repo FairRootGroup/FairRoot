@@ -1,4 +1,4 @@
-#include "FairTutorialDetGeoPar.h"
+#include "FairTutorialDet1GeoPar.h"
 
 #include "FairParamList.h"
 
@@ -6,9 +6,9 @@
 
 #include <iostream>
 
-ClassImp(FairTutorialDetGeoPar)
+ClassImp(FairTutorialDet1GeoPar)
 
-FairTutorialDetGeoPar ::FairTutorialDetGeoPar(const char* name,
+FairTutorialDet1GeoPar ::FairTutorialDet1GeoPar(const char* name,
     const char* title,
     const char* context)
   : FairParGenericSet(name,title,context),
@@ -17,24 +17,24 @@ FairTutorialDetGeoPar ::FairTutorialDetGeoPar(const char* name,
 {
 }
 
-FairTutorialDetGeoPar::~FairTutorialDetGeoPar(void)
+FairTutorialDet1GeoPar::~FairTutorialDet1GeoPar(void)
 {
 }
 
-void FairTutorialDetGeoPar::clear(void)
+void FairTutorialDet1GeoPar::clear(void)
 {
   if(fGeoSensNodes) { delete fGeoSensNodes; }
   if(fGeoPassNodes) { delete fGeoPassNodes; }
 }
 
-void FairTutorialDetGeoPar::putParams(FairParamList* l)
+void FairTutorialDet1GeoPar::putParams(FairParamList* l)
 {
   if (!l) { return; }
   l->addObject("FairGeoNodes Sensitive List", fGeoSensNodes);
   l->addObject("FairGeoNodes Passive List", fGeoPassNodes);
 }
 
-Bool_t FairTutorialDetGeoPar::getParams(FairParamList* l)
+Bool_t FairTutorialDet1GeoPar::getParams(FairParamList* l)
 {
   if (!l) { return kFALSE; }
   if (!l->fillObject("FairGeoNodes Sensitive List", fGeoSensNodes)) { return kFALSE; }

@@ -1,4 +1,4 @@
-#include "FairTutorialDetPoint.h"
+#include "FairTutorialDet1Point.h"
 
 #include <iostream>
 using std::cout;
@@ -6,14 +6,14 @@ using std::endl;
 
 
 // -----   Default constructor   -------------------------------------------
-FairTutorialDetPoint::FairTutorialDetPoint()
+FairTutorialDet1Point::FairTutorialDet1Point()
   : FairMCPoint()
 {
 }
 // -------------------------------------------------------------------------
 
 // -----   Standard constructor   ------------------------------------------
-FairTutorialDetPoint::FairTutorialDetPoint(Int_t trackID, Int_t detID,
+FairTutorialDet1Point::FairTutorialDet1Point(Int_t trackID, Int_t detID,
     TVector3 pos, TVector3 mom,
     Double_t tof, Double_t length,
     Double_t eLoss)
@@ -23,13 +23,13 @@ FairTutorialDetPoint::FairTutorialDetPoint(Int_t trackID, Int_t detID,
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-FairTutorialDetPoint::~FairTutorialDetPoint() { }
+FairTutorialDet1Point::~FairTutorialDet1Point() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void FairTutorialDetPoint::Print(const Option_t* opt) const
+void FairTutorialDet1Point::Print(const Option_t* opt) const
 {
-  cout << "-I- FairTutorialDetPoint: TutorialDet point for track " << fTrackID
+  cout << "-I- FairTutorialDet1Point: TutorialDet point for track " << fTrackID
        << " in detector " << fDetectorID << endl;
   cout << "    Position (" << fX << ", " << fY << ", " << fZ
        << ") cm" << endl;
@@ -40,5 +40,5 @@ void FairTutorialDetPoint::Print(const Option_t* opt) const
 }
 // -------------------------------------------------------------------------
 
-ClassImp(FairTutorialDetPoint)
+ClassImp(FairTutorialDet1Point)
 

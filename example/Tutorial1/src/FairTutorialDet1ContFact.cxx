@@ -1,41 +1,41 @@
-#include "FairTutorialDetContFact.h"
+#include "FairTutorialDet1ContFact.h"
 
-#include "FairTutorialDetGeoPar.h"
+#include "FairTutorialDet1GeoPar.h"
 
 #include "FairRuntimeDb.h"
 
 #include <iostream>
 
-ClassImp(FairTutorialDetContFact)
+ClassImp(FairTutorialDet1ContFact)
 
-static FairTutorialDetContFact gFairTutorialDetContFact;
+static FairTutorialDet1ContFact gFairTutorialDet1ContFact;
 
-FairTutorialDetContFact::FairTutorialDetContFact()
+FairTutorialDet1ContFact::FairTutorialDet1ContFact()
   : FairContFact()
 {
   /** Constructor (called when the library is loaded) */
-  fName="FairTutorialDetContFact";
+  fName="FairTutorialDet1ContFact";
   fTitle="Factory for parameter containers in libTutorial1";
   setAllContainers();
   FairRuntimeDb::instance()->addContFactory(this);
 }
 
-void FairTutorialDetContFact::setAllContainers()
+void FairTutorialDet1ContFact::setAllContainers()
 {
   /** Creates the Container objects with all accepted
       contexts and adds them to
       the list of containers for the Tutorial1 library.
   */
 
-  FairContainer* p= new FairContainer("FairTutorialDetGeoPar",
-                                      "FairTutorialDet Geometry Parameters",
+  FairContainer* p= new FairContainer("FairTutorialDet1GeoPar",
+                                      "FairTutorialDet1 Geometry Parameters",
                                       "TestDefaultContext");
   p->addContext("TestNonDefaultContext");
 
   containers->Add(p);
 }
 
-FairParSet* FairTutorialDetContFact::createContainer(FairContainer* c)
+FairParSet* FairTutorialDet1ContFact::createContainer(FairContainer* c)
 {
   /** Calls the constructor of the corresponding parameter container.
       For an actual context, which is not an empty string and not
@@ -44,9 +44,9 @@ FairParSet* FairTutorialDetContFact::createContainer(FairContainer* c)
   */
   const char* name=c->GetName();
   FairParSet* p=NULL;
-  if (strcmp(name,"FairTutorialDetGeoPar")==0) {
-    p=new FairTutorialDetGeoPar(c->getConcatName().Data(),
-                                c->GetTitle(),c->getContext());
+  if (strcmp(name,"FairTutorialDet1GeoPar")==0) {
+    p=new FairTutorialDet1GeoPar(c->getConcatName().Data(),
+                                 c->GetTitle(),c->getContext());
   }
   return p;
 }
