@@ -76,7 +76,7 @@ Set(HEADERS )
 Set(LINKDEF FairLinkDef.h)
 Set(LIBRARY_NAME Base)
 Set(DEPENDENCIES 
-    FairTools ParBase GeoBase 
+    ParBase GeoBase FairTools 
     Proof GeomPainter Geom VMC EG MathCore Physics 
     Matrix Tree Hist RIO Cint Core
 )
