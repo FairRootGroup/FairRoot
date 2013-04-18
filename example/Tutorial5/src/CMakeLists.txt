@@ -6,21 +6,6 @@ ${FAIRROOT_SOURCE_DIR}/example/Tutorial5/src
 ${FAIRROOT_SOURCE_DIR}/example/mcstack
 )
 
-#set(INCLUDE_DIRECTORIES
-#${ROOT_INCLUDE_DIR} 
-#${CMAKE_SOURCE_DIR}/fairtools
-#${CMAKE_SOURCE_DIR}/geobase 
-#${CMAKE_SOURCE_DIR}/parbase 
-#${CMAKE_SOURCE_DIR}/base 
-#${CMAKE_SOURCE_DIR}/rtdb
-#${CMAKE_SOURCE_DIR}/dbase 
-#${CMAKE_SOURCE_DIR}/dbase/dbInterface
-#${CMAKE_SOURCE_DIR}/dbase/dbValidation
-#${CMAKE_SOURCE_DIR}/input/db
-#${CMAKE_SOURCE_DIR}/dbase/dbInput
-#${CMAKE_SOURCE_DIR}/example/Tutorial5/src
-#)
-
 include_directories( ${INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
