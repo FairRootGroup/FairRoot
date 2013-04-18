@@ -202,11 +202,11 @@ void FairRunAna::Init()
     if (fInputGeoFile!=0) { //First check if the user has a separate Geo file!
       TIter next(fInputGeoFile->GetListOfKeys());
       TKey* key;
-      while ((key = (TKey*)next())) {
+      while ((key =dynamic_cast< TKey*>(next()))) {
         if (strcmp(key->GetClassName(),"TGeoManager") != 0) {
           continue;
         }
-        gGeoManager = (TGeoManager*)key->ReadObj();
+        gGeoManager = dynamic_cast<TGeoManager*>(key->ReadObj());
         break;
       }
     }
@@ -233,7 +233,7 @@ void FairRunAna::Init()
         TFile* nextfile=0;
         TSeqCollection* fileList=gROOT->GetListOfFiles();
         for (Int_t k=0; k<fileList->GetEntries(); k++) {
-          nextfile=(TFile*)fileList->At(k);
+          nextfile=dynamic_cast<TFile*>(fileList->At(k));
           if (nextfile) {
             nextfile->Get("FAIRGeom");
           }
@@ -254,11 +254,11 @@ void FairRunAna::Init()
       if (fInputGeoFile!=0) { //First check if the user has a separate Geo file!
         TIter next(fInputGeoFile->GetListOfKeys());
         TKey* key;
-        while ((key = (TKey*)next())) {
+        while ((key = dynamic_cast<TKey*>(next()))) {
           if (strcmp(key->GetClassName(),"TGeoManager") != 0) {
             continue;
           }
-          gGeoManager = (TGeoManager*)key->ReadObj();
+          gGeoManager = dynamic_cast<TGeoManager*>(key->ReadObj());
           break;
         }
       }
@@ -276,8 +276,7 @@ void FairRunAna::Init()
 
   // Init the RTDB containers
   fRtdb= GetRuntimeDb();
-  FairBaseParSet* par=(FairBaseParSet*)
-                      (fRtdb->getContainer("FairBaseParSet"));
+  FairBaseParSet* par=dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
 
   /**Set the IO Manager to run with time stamps*/
   if (fTimeStamps) {
@@ -293,8 +292,8 @@ void FairRunAna::Init()
     fLogger->Info(MESSAGE_ORIGIN,"Parameter and input file are available, Assure that basic info is there for the run!");
     fRootManager->ReadEvent(0);
 
-    fEvtHeader = (FairEventHeader*)fRootManager->GetObject("EventHeader.");
-    fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
+    fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
+    fMCHeader = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObject("MCEventHeader."));
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
       fRunId = fMCHeader->GetRunID();
@@ -324,10 +323,10 @@ void FairRunAna::Init()
     //For mixed input we have to set containers to static becauser of the different run ids
     //fRtdb->setContainersStatic(kTRUE);
 
-    fEvtHeader = (FairEventHeader*) fRootManager->GetObject("EventHeader.");
+    fEvtHeader = dynamic_cast<FairEventHeader*> (fRootManager->GetObject("EventHeader."));
 
 
-    fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
+    fMCHeader = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObject("MCEventHeader."));
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
       fRunId = fMCHeader->GetRunID();
@@ -404,14 +403,14 @@ void FairRunAna::Init()
 void FairRunAna::InitContainers()
 {
   fRtdb= GetRuntimeDb();
-  FairBaseParSet* par=(FairBaseParSet*)
+  FairBaseParSet* par=dynamic_cast<FairBaseParSet*>
                       (fRtdb->getContainer("FairBaseParSet"));
 
   if (par && fInFileIsOpen) {
     fRootManager->ReadEvent(0);
 
-    fEvtHeader = (FairEventHeader*)fRootManager->GetObjectFromInTree("EventHeader.");
-    fMCHeader  = (FairMCEventHeader*)fRootManager->GetObjectFromInTree("MCEventHeader.");
+    fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObjectFromInTree("EventHeader."));
+    fMCHeader  = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObjectFromInTree("MCEventHeader."));
 
     if ( fMCHeader != 0 ) {
       fRunId = fMCHeader->GetRunID();
@@ -543,7 +542,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
           fTask->ReInitTask();
         }
       }
-      //FairMCEventHeader* header = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
+      //FairMCEventHeader* header = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObject("MCEventHeader."));
       //std::cout << "WriteoutBufferData with time: " << fRootManager->GetEventTime();
       fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
       fTask->ExecuteTask("");
@@ -717,7 +716,7 @@ void FairRunAna::RunOnProof(Int_t NStart,Int_t NStop)
   FairAnaSelector* proofSelector = new FairAnaSelector();
 
 
-  TChain* inChain = (TChain*)fRootManager->GetInChain();
+  TChain* inChain = dynamic_cast<TChain*>(fRootManager->GetInChain());
   TString par1File = "";
   TString par2File = "";
   if ( fRtdb->getFirstInput () ) {

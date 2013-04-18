@@ -146,7 +146,7 @@ void FairRunSim::Init()
   /** Add Tasks to simulation if any*/
   fApp->AddTask(fTask);
 
-  FairBaseParSet* par=(FairBaseParSet*)(fRtdb->getContainer("FairBaseParSet"));
+  FairBaseParSet* par=dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
   par->SetDetList(GetListOfModules());
   par->SetGen(GetPrimaryGenerator());
   par->SetBeamMom(fBeamMom);
@@ -183,7 +183,7 @@ void FairRunSim::Init()
   TIter next(containerList);
   FairParSet* cont;
   TObjArray* ContList= new TObjArray();
-  while ((cont=(FairParSet*)next())) {
+  while ((cont=dynamic_cast<FairParSet*>(next()))) {
     ContList->Add(new TObjString(cont->GetName()));
   }
 
