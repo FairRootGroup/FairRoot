@@ -6,5 +6,5 @@ add_subdirectory (Tutorial2)
 add_subdirectory (Tutorial3)
 
 add_subdirectory (Tutorial4)
-add_subdirectory (rutherford/src)
+add_subdirectory (rutherford)
 

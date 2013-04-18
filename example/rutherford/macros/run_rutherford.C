@@ -28,21 +28,6 @@ void run_rutherford(Int_t nEvents = 10)
   timer.Start();
   // ------------------------------------------------------------------------
 
-  // ----  Load libraries   -------------------------------------------------
-  gROOT->LoadMacro("$CONFIG_DIR/basiclibs.C");
-//  gROOT->LoadMacro(basicLibs);
-  basiclibs();
-  gSystem->Load("libFairTools");
-  gSystem->Load("libFairDB");
-  gSystem->Load("libGeoBase");
-  gSystem->Load("libParBase");
-  gSystem->Load("libBase");
-  gSystem->Load("libMCStack");
-  gSystem->Load("libGen");
-  gSystem->Load("libPassive");
-  gSystem->Load("libFairRutherford");
-  // ------------------------------------------------------------------------
-
    FairLogger *logger = FairLogger::GetLogger();
   // define log file name
   logger->SetLogFileName("MyLog.log");
@@ -124,7 +109,6 @@ void run_rutherford(Int_t nEvents = 10)
 
   Bool_t kParameterMerged = kTRUE;
   FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
-//  FairParAsciiFileIo* parOut = new FairParAsciiFileIo();
   parOut->open(parFile.Data());
   rtdb->setOutput(parOut);
   rtdb->saveOutput();
