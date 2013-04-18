@@ -81,9 +81,9 @@ void FairDetector::SaveGeoParams()
 
   if ( ! kGeoSaved  ) {
     fLogger->Info(MESSAGE_ORIGIN,"Detector: %s Geometry parameters saved ... ", GetName());
-    TFolder* mf = (TFolder*) gROOT->FindObjectAny("cbmroot");
+    TFolder* mf = dynamic_cast<TFolder*>(gROOT->FindObjectAny("cbmroot")) ;
     TFolder* stsf = NULL;
-    if (mf ) { stsf = (TFolder*) mf->FindObjectAny(GetName()); }
+    if (mf ) { stsf = dynamic_cast<TFolder*> (mf->FindObjectAny(GetName())); }
     if (stsf) {
       TFolder* newf = stsf->AddFolder("Parameters","Detector parameters",NULL);
       newf->Add( flGeoPar ) ;

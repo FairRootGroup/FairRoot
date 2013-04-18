@@ -111,7 +111,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
   TObject* obj;
   while((obj=fModIter->Next())) {
     if(obj->InheritsFrom("FairDetector")) {
-      detector=(FairDetector*)obj;
+      detector=dynamic_cast<FairDetector*>(obj);
       fDetectors->Add(detector);
       if(detector->IsActive()) {
         fActiveDetectors->Add(detector);
@@ -203,8 +203,8 @@ void FairMCApplication::InitMC(const char* setup, const char* cuts)
 {
 // Initialize MC.
 // ---
-  fStack = (FairGenericStack*) gMC->GetStack();
-
+  fStack = dynamic_cast<FairGenericStack*>(gMC->GetStack()) ;
+  if(fStack==NULL) { fLogger->Fatal(MESSAGE_ORIGIN, "NO Stack defined "); }
   gMC->SetMagField(fxField);
 
   gMC->Init();
@@ -267,7 +267,7 @@ void FairMCApplication::FinishRun()
     meshlist = fRadGridMan->GetMeshList();
     //      cout << " entries " << meshlist->GetEntriesFast() << endl;
     for(Int_t i=0; i<meshlist->GetEntriesFast(); i++ ) {
-      FairMesh* aMesh = (FairMesh*) meshlist->At(i);
+      FairMesh* aMesh = dynamic_cast<FairMesh*>(meshlist->At(i));
       aMesh->Scale(1./nprimary);
     }
   }
@@ -292,7 +292,7 @@ void FairMCApplication::FinishRun()
 
 
     for(Int_t i=0; i<meshlist->GetEntriesFast(); i++ ) {
-      FairMesh* aMesh = (FairMesh*) meshlist->At(i);
+      FairMesh* aMesh = dynamic_cast<FairMesh*> (meshlist->At(i));
       tid = aMesh->GetMeshTid();
       flu = aMesh->GetMeshFlu();
       seu = aMesh->GetMeshSEU();
@@ -575,7 +575,7 @@ void FairMCApplication::ConstructOpGeometry()
   FairGeoMedium* medium;
   Int_t NK=0;
   Double_t p[4];
-  while((medium=(FairGeoMedium*)iter.Next())) {
+  while((medium=dynamic_cast<FairGeoMedium*>(iter.Next()))) {
     NK=medium->getNpckov();
     if(NK>0) {
       Int_t Mid=0;
@@ -733,7 +733,7 @@ void FairMCApplication::InitGeometry()
   fRootManager->SetOutTree(outTree);
 
   for ( Int_t i = 0 ; i < fNoSenVolumes ; i++ ) {
-    fv= (FairVolume*)fSenVolumes->At(i);
+    fv= dynamic_cast<FairVolume*>(fSenVolumes->At(i));
     id=fv->getMCid();
     if(fv->getGeoNode()==0) {  //handel sensetive volumes created directly by user
       TGeoNode* fN=0;
@@ -744,7 +744,7 @@ void FairMCApplication::InitGeometry()
       }
       if(fNs) {
         for(Int_t k=0; k<fNs->GetEntriesFast(); k++) {
-          fN=(TGeoNode*)fNs->At(k);
+          fN=dynamic_cast<TGeoNode*>(fNs->At(k));
           FairVolume* fNewV=new FairVolume( fv->GetName(), id);
           fNewV->setModId(fv->getModId());
           fNewV->SetModule(fv->GetModule());
@@ -783,7 +783,7 @@ void FairMCApplication::GeneratePrimaries()
 //_____________________________________________________________________________
 FairDetector* FairMCApplication::GetDetector(const char* DetName)
 {
-  return (FairDetector*)fModules->FindObject(DetName);
+  return dynamic_cast<FairDetector*>(fModules->FindObject(DetName));
 }
 //_____________________________________________________________________________
 void  FairMCApplication::AddIons()
