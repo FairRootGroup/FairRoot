@@ -4,6 +4,7 @@
 #include "FairDbResult.h"
 #include "FairDbValidityRec.h"
 #include <iostream>
+#include <memory>
 using namespace std;
 
 ClassImp(FairDbTutPar);
