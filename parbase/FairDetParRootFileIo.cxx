@@ -45,12 +45,17 @@ Bool_t FairDetParRootFileIo::read(FairParSet* pPar)
   // generic read function for parameter containers
   Text_t* name=(char*)pPar->GetName();
   Int_t version=findInputVersion(name);
+
+  //cout << "-I- FairDetParRootFileIo#  " << name << " : " << version <<  endl;
+
   if (version<=0) {
     pPar->setInputVersion(-1,inputNumber);
     return kFALSE;
   }
+
   if (pPar->getInputVersion(inputNumber)==version
       && pPar->getInputVersion(inputNumber)!=-1) { return kTRUE; }
+
   TKey* key = (TKey*)gDirectory->GetKey(name,version);
   if(key) {
     pPar->clear();
@@ -100,6 +105,7 @@ Int_t FairDetParRootFileIo::findInputVersion(Text_t* name)
   Int_t v=currVers->getInputVersion(inputNumber);
   if (v>0) { return v; }      // predefined
   FairRtdbRun* r=pFile->getRun();
+  //cout << "-I- FairDetParRootFileIo::findInputVersion " << r << endl;
   if (!r) { return -1; }        // run not in ROOT file
   FairParVersion* vers=r->getParVersion(name);
   if (!vers) { return -1; }     // container not in ROOT file
