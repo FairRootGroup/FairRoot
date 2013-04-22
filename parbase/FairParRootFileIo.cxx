@@ -90,7 +90,9 @@ void FairParRootFile::readVersions(FairRtdbRun* currentRun)
   if (run) {
     delete run;
   }
+
   run=(FairRtdbRun*)RootFile->Get(((char*)currentRun->GetName()));
+  //cout << "-I- FairParRootFile :: readversions " << currentRun->GetName() << " : " << run << endl;
 }
 //--------------------------------------------------------------------
 
