@@ -21,10 +21,23 @@ class FairMCResult: public FairMCObject
   public:
     FairMCResult();
     FairMCResult(Int_t start, Int_t stop);
+
     FairMCResult(const FairMCResult& result)
       : FairMCObject(result.GetStartType(), result.GetEntryVector()),
         fStartType(result.GetStartType()),
         fStopType(result.GetStopType()) {
+    }
+
+
+    FairMCResult& operator=(const FairMCResult& result) {
+
+      if (this == &result) { return *this; }
+
+      FairMCObject::operator=(result);
+      fStartType = result.fStartType;
+      fStopType = result.fStopType;
+
+      return *this;
     }
 
     virtual ~FairMCResult();
@@ -34,12 +47,6 @@ class FairMCResult: public FairMCObject
 
     Int_t GetStartType(void) const {return fStartType;}
     Int_t GetStopType(void) const {return fStopType;}
-
-    void operator=(const FairMCResult& result) {
-      fStartType = result.GetStartType();
-      fStopType = result.GetStopType();
-      SetStage(result.GetEntryVector());
-    }
 
     virtual void Print(std::ostream& out = std::cout) { out << *this;}
 

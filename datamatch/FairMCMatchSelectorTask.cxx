@@ -20,33 +20,41 @@
 
 #include "FairMCEntry.h"
 
-
 // -----   Default constructor   -------------------------------------------
 FairMCMatchSelectorTask::FairMCMatchSelectorTask()
   : FairTask("Creates FairMCMatch"),
+    fMCMatch(NULL),
     fStart(-1),
-    fStop(-1)
-    //    fStart(kUnknown),
-    //    fStop(kUnknown)
+    fStop(-1),
+    fStartString(""),
+    fStopString(""),
+    fStageWeights(),
+    fCommonWeight(0)
 {
 }
 // -------------------------------------------------------------------------
 
 FairMCMatchSelectorTask::FairMCMatchSelectorTask(TString start, TString stop)
   : FairTask("Creates FairMCMatch"),
+    fMCMatch(NULL),
+    fStart(-1),
+    fStop(-1),
     fStartString(start),
     fStopString(stop),
-    fStart(-1),
-    fStop(-1)
+    fStageWeights(),
+    fCommonWeight(0)
 {
 }
 
 FairMCMatchSelectorTask::FairMCMatchSelectorTask(Int_t start, Int_t stop)
   : FairTask("Creates FairMCMatch"),
+    fMCMatch(NULL),
     fStart(start),
     fStop(stop),
     fStartString(""),
-    fStopString("")
+    fStopString(""),
+    fStageWeights(),
+    fCommonWeight(0)
 {
 }
 

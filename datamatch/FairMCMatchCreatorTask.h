@@ -69,6 +69,8 @@ class FairMCMatchCreatorTask : public FairTask
 
     void ProduceHits();
 
+    FairMCMatchCreatorTask(const FairMCMatchCreatorTask&);
+    FairMCMatchCreatorTask& operator=(const FairMCMatchCreatorTask&);
 
     ClassDef(FairMCMatchCreatorTask,1);
 

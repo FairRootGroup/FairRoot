@@ -16,6 +16,7 @@ ClassImp(FairMCMatch);
 FairMCMatch::FairMCMatch()
   : TNamed(),
     fUltimateStage(0),
+    fList(),
     fFinalStageML(),
     fVerbose(0)
 {

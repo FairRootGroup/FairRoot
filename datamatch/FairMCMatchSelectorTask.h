@@ -77,6 +77,8 @@ class FairMCMatchSelectorTask : public FairTask
 
     void ProduceHits();
 
+    FairMCMatchSelectorTask(const FairMCMatchSelectorTask&);
+    FairMCMatchSelectorTask& operator=(const FairMCMatchSelectorTask&);
 
     ClassDef(FairMCMatchSelectorTask,1);
 

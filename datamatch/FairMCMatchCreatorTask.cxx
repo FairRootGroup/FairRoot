@@ -20,12 +20,14 @@
 //#include "FairDetectorList.h"
 #include "FairMCEntry.h"
 
-
 // -----   Default constructor   -------------------------------------------
 FairMCMatchCreatorTask::FairMCMatchCreatorTask()
   : FairTask("Creates FairMCMatch"),
-    fEventNr(0),
-    fPersistance(kTRUE)
+    fMCMatch(NULL),
+    fBranches(),
+    fPersistance(kTRUE),
+    fMCLink(NULL),
+    fEventNr(0)
 {
 }
 // -------------------------------------------------------------------------

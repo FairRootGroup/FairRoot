@@ -10,6 +10,9 @@
 ClassImp(FairMCObject);
 
 FairMCObject::FairMCObject()
+  : TObject(),
+    fStage(0),
+    fStageId()
 {
 }
 

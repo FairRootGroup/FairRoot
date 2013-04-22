@@ -36,6 +36,16 @@ class FairMCObject: public TObject
         fStageId(type) {
     }
 
+    FairMCObject& operator=(const FairMCObject& from) {
+      if (this == &from) { return *this; }
+
+      TObject::operator=(from);
+      fStage=from.fStage;
+      fStageId=from.fStageId;
+
+      return *this;
+    }
+
     virtual ~FairMCObject();
 
     void SetStageId(Int_t type) {fStageId = type;}
@@ -78,10 +88,12 @@ class FairMCObject: public TObject
 
     virtual void Print(std::ostream& out = std::cout) {out << *this;}
 
-    void operator=(const FairMCObject& obj) {
-      fStageId = obj.GetStageId();
-      fStage = obj.GetEntryVector();
-    }
+    /*
+        void operator=(const FairMCObject& obj) {
+          fStageId = obj.GetStageId();
+          fStage = obj.GetEntryVector();
+        }
+    */
 
     friend std::ostream& operator<< (std::ostream& out, const FairMCObject& obj) {
       std::vector<FairMCEntry> stages = obj.GetEntryVector();

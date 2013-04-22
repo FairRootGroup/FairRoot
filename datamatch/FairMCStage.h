@@ -21,14 +21,31 @@ class FairMCStage: public FairMCObject
   public:
     FairMCStage();
     FairMCStage(Int_t id, std::string fileName, std::string branchName, Double_t weight = 1.0);
+
     FairMCStage(const FairMCStage& mcStage)
-      : FairMCObject((FairMCObject)mcStage),
-        fBranchName(mcStage.GetBranchName()),
-        fFileName(mcStage.GetFileName()),
-        fWeight(mcStage.GetWeight()),
-        fLoaded(mcStage.GetLoaded()),
-        fFill(mcStage.GetFill()) {
+      : FairMCObject(mcStage),
+        fBranchName(mcStage.fBranchName),
+        fFileName(mcStage.fFileName),
+        fWeight(mcStage.fWeight),
+        fLoaded(mcStage.fLoaded),
+        fFill(mcStage.fFill) {
     }
+
+    FairMCStage& operator=(const FairMCStage& result) {
+
+      if (this == &result) { return *this; }
+
+      FairMCObject::operator=(result);
+      fBranchName = result.fBranchName;
+      fFileName = result.fFileName;
+      fWeight = result.fWeight;
+      fLoaded = result.fLoaded;
+      fFill = result.fFill;
+
+      return *this;
+    }
+
+
 
     virtual ~FairMCStage();
 
@@ -43,14 +60,6 @@ class FairMCStage: public FairMCObject
     Double_t  GetWeight(void)     const {return fWeight;}
     Bool_t    GetLoaded(void)   const {return fLoaded;}
     Bool_t    GetFill(void)     const {return fFill;}
-
-    void operator=(const FairMCStage& result) {
-      FairMCObject::operator=(result);
-      fBranchName = result.GetBranchName();
-      fFileName = result.GetFileName();
-      fWeight = result.GetWeight();
-      SetStage(result.GetEntryVector());
-    }
 
     virtual void ClearEntries() {
       FairMCObject::ClearEntries();

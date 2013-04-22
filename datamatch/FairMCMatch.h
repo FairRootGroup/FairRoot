@@ -27,6 +27,7 @@ class FairMCMatch: public TNamed
     FairMCMatch(const char* name, const char* title)
       : TNamed(name, title),
         fUltimateStage(0),
+        fList(),
         fFinalStageML(),
         fVerbose(0) {
       fFinalStageML.SetPersistanceCheck(kFALSE);

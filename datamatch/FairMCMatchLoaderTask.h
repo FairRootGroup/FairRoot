@@ -60,6 +60,9 @@ class FairMCMatchLoaderTask : public FairTask
 
     void ProduceHits();
 
+    FairMCMatchLoaderTask(const FairMCMatchLoaderTask&);
+    FairMCMatchLoaderTask& operator=(const FairMCMatchLoaderTask&);
+
     ClassDef(FairMCMatchLoaderTask,1);
 };
 

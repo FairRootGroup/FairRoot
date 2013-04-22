@@ -44,6 +44,9 @@ class FairMCDataCrawler : public TObject
     void AddToFinalStage(FairLink link, Float_t mult);
     void ClearFinalStage();
 
+    FairMCDataCrawler(const FairMCDataCrawler&);
+    FairMCDataCrawler& operator=(const FairMCDataCrawler&);
+
     ClassDef(FairMCDataCrawler, 1);
 };
 
