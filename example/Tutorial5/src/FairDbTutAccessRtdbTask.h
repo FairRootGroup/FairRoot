@@ -15,7 +15,7 @@ class FairDbTutAccessRtdbTask : public FairTask
   public:
 
     /** Default constructor **/
-    FairDbTutAccessRtdbTask() {};
+    FairDbTutAccessRtdbTask() : FairTask(), fTutParDef(NULL), fTutParAlt(NULL) {};
 
     /** Destructor **/
     virtual ~FairDbTutAccessRtdbTask() {};
@@ -33,6 +33,9 @@ class FairDbTutAccessRtdbTask : public FairTask
 
     FairDbTutPar* fTutParDef;
     FairDbTutPar* fTutParAlt;
+
+    FairDbTutAccessRtdbTask(const FairDbTutAccessRtdbTask&);
+    FairDbTutAccessRtdbTask& operator=(const FairDbTutAccessRtdbTask&);
 
     ClassDef(FairDbTutAccessRtdbTask,0);
 };

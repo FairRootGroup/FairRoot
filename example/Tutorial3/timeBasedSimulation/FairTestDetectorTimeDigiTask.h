@@ -47,6 +47,9 @@ class FairTestDetectorTimeDigiTask : public FairTask
 
     Bool_t fTimeOrderedDigi;
 
+    FairTestDetectorTimeDigiTask(const FairTestDetectorTimeDigiTask&);
+    FairTestDetectorTimeDigiTask& operator=(const FairTestDetectorTimeDigiTask&);
+
     ClassDef(FairTestDetectorTimeDigiTask,1);
 
 };

@@ -16,8 +16,13 @@
 using namespace std;
 
 // -----   Default constructor   -------------------------------------------
-FairTestDetectorTimeDigiTask::FairTestDetectorTimeDigiTask():
-  fTimeResolution(100.), fTimeOrderedDigi(kFALSE), fPointArray(0), fDigiArray(0)
+FairTestDetectorTimeDigiTask::FairTestDetectorTimeDigiTask()
+  : FairTask(),
+    fTimeResolution(100.),
+    fPointArray(NULL),
+    fDigiArray(NULL),
+    fDataBuffer(NULL),
+    fTimeOrderedDigi(kFALSE)
 {
 }
 // -------------------------------------------------------------------------

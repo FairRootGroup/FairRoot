@@ -13,6 +13,9 @@ using namespace std;
 
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorRecoTask::FairTestDetectorRecoTask()
+  : FairTask(),
+    fDigiArray(NULL),
+    fHitArray(NULL)
 {
 }
 // -------------------------------------------------------------------------
@@ -21,7 +24,11 @@ FairTestDetectorRecoTask::FairTestDetectorRecoTask()
 
 // -----   Standard constructor   ------------------------------------------
 FairTestDetectorRecoTask::FairTestDetectorRecoTask(Int_t verbose)
+  : FairTask(),
+    fDigiArray(NULL),
+    fHitArray(NULL)
 {
+  fVerbose=verbose;
 }
 // -------------------------------------------------------------------------
 

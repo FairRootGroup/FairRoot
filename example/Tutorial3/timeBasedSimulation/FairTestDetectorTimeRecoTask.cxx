@@ -13,8 +13,11 @@
 using namespace std;
 
 // -----   Default constructor   -------------------------------------------
-FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask():
-  fFunctor(0)
+FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask()
+  : FairTask(),
+    fDigiArray(NULL),
+    fHitArray(NULL),
+    fFunctor(NULL)
 {
 }
 // -------------------------------------------------------------------------
@@ -23,7 +26,12 @@ FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask():
 
 // -----   Standard constructor   ------------------------------------------
 FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask(Int_t verbose)
+  : FairTask(),
+    fDigiArray(NULL),
+    fHitArray(NULL),
+    fFunctor(NULL)
 {
+  fVerbose=verbose;
 }
 // -------------------------------------------------------------------------
 

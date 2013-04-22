@@ -7,7 +7,10 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairRutherfordPoint::FairRutherfordPoint()
-  : FairMCPoint()
+  : FairMCPoint(),
+    fRadius(0.),
+    fPhi(0.),
+    fTheta(0.)
 {
 }
 // -------------------------------------------------------------------------
@@ -27,7 +30,9 @@ FairRutherfordPoint::FairRutherfordPoint(Int_t trackID, Int_t detID,
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-FairRutherfordPoint::~FairRutherfordPoint() { }
+FairRutherfordPoint::~FairRutherfordPoint()
+{
+}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------

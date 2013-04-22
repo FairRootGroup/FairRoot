@@ -13,7 +13,9 @@
 ClassImp(FairTestDetectorDigiWriteoutBuffer);
 
 
-FairTestDetectorDigiWriteoutBuffer::FairTestDetectorDigiWriteoutBuffer():FairWriteoutBuffer()
+FairTestDetectorDigiWriteoutBuffer::FairTestDetectorDigiWriteoutBuffer()
+  : FairWriteoutBuffer(),
+    fData_map()
 {
 
   // TODO Auto-generated constructor stub
@@ -21,7 +23,9 @@ FairTestDetectorDigiWriteoutBuffer::FairTestDetectorDigiWriteoutBuffer():FairWri
 }
 
 
-FairTestDetectorDigiWriteoutBuffer::FairTestDetectorDigiWriteoutBuffer(TString branchName, TString folderName, Bool_t persistance): FairWriteoutBuffer(branchName, "FairTestDetectorDigi", folderName, persistance)
+FairTestDetectorDigiWriteoutBuffer::FairTestDetectorDigiWriteoutBuffer(TString branchName, TString folderName, Bool_t persistance)
+  : FairWriteoutBuffer(branchName, "FairTestDetectorDigi", folderName, persistance),
+    fData_map()
 {
 }
 

@@ -17,9 +17,13 @@ template class  FairDbWriter<FairDbTutPar>;
 
 
 FairDbTutPar::FairDbTutPar(const char* name, const char* title, const char* context)
-  : FairParGenericSet(name,title,context)
+  : FairParGenericSet(name,title,context),
+    fTopPitch(0.),
+    fTopAnchor(0.),
+    fTopNrFE(0),
+    fFeType("")
 {
-  clear();
+//  clear();
 }
 
 

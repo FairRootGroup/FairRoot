@@ -40,6 +40,9 @@ class FairTestDetectorDigiTask : public FairTask
     TClonesArray* fPointArray;
     TClonesArray* fDigiArray;
 
+    FairTestDetectorDigiTask(const FairTestDetectorDigiTask&);
+    FairTestDetectorDigiTask& operator=(const FairTestDetectorDigiTask&);
+
     ClassDef(FairTestDetectorDigiTask,1);
 
 };

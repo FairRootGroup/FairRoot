@@ -7,7 +7,13 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorPoint::FairTestDetectorPoint()
-  : FairMCPoint()
+  : FairMCPoint(),
+    fX_out(0.),
+    fY_out(0.),
+    fZ_out(0.),
+    fPx_out(0.),
+    fPy_out(0.),
+    fPz_out(0.)
 {
 }
 // -------------------------------------------------------------------------

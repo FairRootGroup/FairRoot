@@ -34,6 +34,9 @@ class FairTestDetectorRecoTask : public FairTask
     TClonesArray* fDigiArray;
     TClonesArray* fHitArray;
 
+    FairTestDetectorRecoTask(const FairTestDetectorRecoTask&);
+    FairTestDetectorRecoTask& operator=(const FairTestDetectorRecoTask&);
+
     ClassDef(FairTestDetectorRecoTask,1);
 
 };

@@ -37,6 +37,9 @@ class FairTestDetectorTimeRecoTask : public FairTask
 
     BinaryFunctor* fFunctor; //!
 
+    FairTestDetectorTimeRecoTask(const FairTestDetectorTimeRecoTask&);
+    FairTestDetectorTimeRecoTask& operator=(const FairTestDetectorTimeRecoTask&);
+
     ClassDef(FairTestDetectorTimeRecoTask,1);
 
 };
