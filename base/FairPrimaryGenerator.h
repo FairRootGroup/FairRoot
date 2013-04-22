@@ -90,6 +90,14 @@ class FairPrimaryGenerator : public TNamed
     void SetBeam(Double_t beamX0, Double_t beamY0,
                  Double_t beamSigmaX, Double_t beamSigmaY);
 
+    /** Set nominal beam gradiant and gradiant widths.
+     *@param beamGradX0      mean x gradiant of beam at target
+     *@param beamGradY0      mean y gradiant of beam at target
+     *@param beamGradSigmaX  Gaussian beam gradiant width in x
+     *@param beamGradSigmaY  Gaussian beam gradiant width in y
+     **/
+    void SetBeamGrad(Double_t beamGradX0, Double_t beamGradY0,
+                     Double_t beamGradSigmaX, Double_t beamGradSigmaY);
 
     /** Set target position and thickness.
      *@param targetZ   z position of target center
@@ -148,6 +156,19 @@ class FairPrimaryGenerator : public TNamed
     Double_t    fBeamSigmaX;
     /**  Beam width (Gaussian) in y [cm]*/
     Double_t    fBeamSigmaY;
+    /**  Nominal beam gradiant at target in x [rad]
+      (WARNING: its actually an angle but we call it grad, as it is the same for small angles...)*/
+    Double_t    fBeamGradX0;
+    /**  Nominal beam gradiant at target in y [rad] */
+    Double_t    fBeamGradY0;
+    /**  Actual beam gradiant at target in x [rad] */
+    Double_t    fBeamGradX;
+    /**  Actual beam gradiant at target in y [rad] */
+    Double_t    fBeamGradY;
+    /** Beam gradiant width (Gaussian) in x [rad]*/
+    Double_t    fBeamGradSigmaX;
+    /** Beam gradiant width (Gaussian) in y [rad]*/
+    Double_t    fBeamGradSigmaY;
     /**  Nominal z position of center of targets [cm]*/
     Double_t*   fTargetZ;       //!
     /**  Number of targets;*/
@@ -205,6 +226,14 @@ class FairPrimaryGenerator : public TNamed
         GenerateEvent method.
     **/
     void MakeVertex();
+
+    /** Private method MakeBeamGradiant. If beam gradiant smearing in xy is switched on,
+        all tracks in an event are rotated by a Gaussianlike gradiant distribution around
+        the x and y axis according to the mean beam gradiant and gradiant widths set by the
+        SetBeamGrad method. To be called at the beginning of the event from the
+        GenerateEvent method.
+    **/
+    void MakeBeamGradiant();
 
   private:
     FairPrimaryGenerator(const FairPrimaryGenerator&);

@@ -24,6 +24,12 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fBeamY0(0),
    fBeamSigmaX(0),
    fBeamSigmaY(0),
+   fBeamGradX(0),
+   fBeamGradY(0),
+   fBeamGradX0(0),
+   fBeamGradY0(0),
+   fBeamGradSigmaX(0),
+   fBeamGradSigmaY(0),
    fTargetZ (new Double_t[1]),
    fNrTargets(1),
    fTargetDz(0),
@@ -59,6 +65,12 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fBeamY0(0),
    fBeamSigmaX(0),
    fBeamSigmaY(0),
+   fBeamGradX(0),
+   fBeamGradY(0),
+   fBeamGradX0(0),
+   fBeamGradY0(0),
+   fBeamGradSigmaX(0),
+   fBeamGradSigmaY(0),
    fTargetZ (new Double_t[1]),
    fNrTargets(1),
    fTargetDz(0),
@@ -134,6 +146,11 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
   MakeVertex();
   fEvent->SetVertex(fVertex);
 
+  // Create beam gradiant
+  // Here we only random generate two gradiants (gradx, grady) for the event and later on (in AddTrack())
+  // all our particles will be rotated accordingly.
+  MakeBeamGradiant();
+
   // Call the ReadEvent methods from all registered generators
   fListIter->Reset();
   TObject* obj = 0;
@@ -167,7 +184,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
     fEvent->SetEventID(fEventNr);
   }
 
-  fLogger->Info(MESSAGE_ORIGIN,"FairPrimaryGenerator: (Event %i) %i  primary tracks from vertex (%f, %f, %f )  Event Time = %f (ns)" ,fEvent->GetEventID(), fNTracks, fVertex.X(), fVertex.Y(), fVertex.Z(), fEventTime);
+  fLogger->Info(MESSAGE_ORIGIN,"FairPrimaryGenerator: (Event %i) %i  primary tracks from vertex (%f, %f, %f ) with beam gradiant (%f, %f) Event Time = %f (ns)" ,fEvent->GetEventID(), fNTracks, fVertex.X(), fVertex.Y(), fVertex.Z(), fBeamGradX, fBeamGradY, fEventTime);
 
   fEvent->SetNPrim(fNTracks);
 
@@ -179,8 +196,8 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
 
 
 // -----   Public method AddTrack   ----------------------------------------
-void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
-                                    Double_t pz, Double_t vx, Double_t vy,
+void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw, Double_t py_raw,
+                                    Double_t pz_raw, Double_t vx, Double_t vy,
                                     Double_t vz, Int_t parent,Bool_t wanttracking,Double_t e)
 {
 
@@ -188,6 +205,10 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
   vx += fVertex.X();
   vy += fVertex.Y();
   vz += fVertex.Z();
+
+  TVector3 mom(px_raw, py_raw, pz_raw);
+  mom.RotateX(-fBeamGradY);
+  mom.RotateY(fBeamGradX);
 
   // ---> Convert K0 and AntiK0 into K0s and K0L
   if ( pdgid == 311 || pdgid == -311 ) {
@@ -217,7 +238,7 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
   // ---> Get mass and calculate energy of particle
   if(e<0) {
     Double_t mass = pdgBase->GetParticle(pdgid)->Mass();
-    e = TMath::Sqrt( px*px + py*py + pz*pz + mass*mass );
+    e = TMath::Sqrt( mom.Mag2()+ mass*mass );
   }// else, use the value of e given to the function
 
   // ---> Set all other parameters required by PushTrack
@@ -234,7 +255,7 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px, Double_t py,
 
   if( parent!=-1) { parent+=fMCIndexOffset; }// correct for tracks which are in list before generator is called
   // Add track to stack
-  fStack->PushTrack(doTracking, dummyparent, pdgid, px, py, pz, e, vx, vy, vz,
+  fStack->PushTrack(doTracking, dummyparent, pdgid, mom.X(), mom.Y(), mom.Z(), e, vx, vy, vz,
                     tof, polx, poly, polz, kPPrimary, ntr, weight, status, parent);
   fNTracks++;
 
@@ -254,6 +275,16 @@ void FairPrimaryGenerator::SetBeam(Double_t x0, Double_t y0,
 }
 // -------------------------------------------------------------------------
 
+// -----   Public method SetBeamGrad   -------------------------------------
+void FairPrimaryGenerator::SetBeamGrad(Double_t beamGradX0, Double_t beamGradY0,
+                                       Double_t beamGradSigmaX, Double_t beamGradSigmaY)
+{
+  fBeamGradX0 = beamGradX0;
+  fBeamGradY0 = beamGradY0;
+  fBeamGradSigmaX = beamGradSigmaX;
+  fBeamGradSigmaY = beamGradSigmaY;
+}
+// -------------------------------------------------------------------------
 
 
 // -----   Public method SetTarget   ---------------------------------------
@@ -311,6 +342,14 @@ void FairPrimaryGenerator::MakeVertex()
   }
 
   fVertex = TVector3(vx,vy,vz);
+}
+// -------------------------------------------------------------------------
+
+// -----   Private method MakeBeamGradiant   -------------------------------
+void FairPrimaryGenerator::MakeBeamGradiant()
+{
+  if (fBeamGradSigmaX != 0.) { fBeamGradX = gRandom->Gaus(fBeamGradX0, fBeamGradSigmaX); }
+  if (fBeamGradSigmaY != 0.) { fBeamGradY = gRandom->Gaus(fBeamGradY0, fBeamGradSigmaY); }
 }
 // -------------------------------------------------------------------------
 
