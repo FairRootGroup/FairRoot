@@ -135,7 +135,7 @@ Bool_t FairRuntimeDb::addContainer(FairParSet* container)
 {
 
   // adds a container to the list of containers
-  cout << "-I- name parset # " << container->GetName()<< endl;
+  //cout << "-I- name parset # " << container->GetName()<< endl;
   Text_t* name=(char*)container->GetName();
 
   if (!containerList->FindObject(name)) {
@@ -149,7 +149,7 @@ Bool_t FairRuntimeDb::addContainer(FairParSet* container)
         run->addParVersion(vers);
       }
     }
-    cout << "-I- RTDB entries in list# " <<  containerList->GetEntries() <<"\n" ;
+    //cout << "-I- RTDB entries in list# " <<  containerList->GetEntries() <<"\n" ;
 
 
     return kTRUE;
@@ -266,7 +266,7 @@ void FairRuntimeDb::writeVersions()
   if (getOutput() && output->check()) {
     if (versionsChanged && isRootFileOutput) {
       output->cd();
-      if (gFile->IsWritable()) { runs->Write(); }
+      if (gFile->IsWritable()) { runs->Write();}
       versionsChanged=kFALSE;
     }
   }
@@ -426,10 +426,10 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
       if (cont->hasChanged()) {
         cv = findOutputVersion(cont);
         if(cv == 0) {
-          std::cout << "-I- FairRuntimeDB: SQL write() called 1 = "<< cont->GetName() << "\n";
+          //std::cout << "-I- FairRuntimeDB: SQL write() called 1 = "<< cont->GetName() << "\n";
           cont->print();
           Int_t test = cont->write(output);
-          std::cout << "-I- FairRuntimeDB: SQL write() called 2 = "<< test << "\n";
+          //std::cout << "-I- FairRuntimeDB: SQL write() called 2 = "<< test << "\n";
         }
       }
       break;//End of TSQL IO
@@ -520,7 +520,7 @@ Bool_t FairRuntimeDb::initContainers(void)
   TIter next(containerList);
   FairParSet* cont;
   Bool_t rc=kTRUE;
-  cout<<'\n'<<"************************************************************* 1"<<'\n';
+  cout<<'\n'<<"************************************************************* "<<'\n';
   if (currentFileName.IsNull()) {
     cout<<"     initialisation for run id "<<currentRun->GetName();
   } else {
@@ -528,9 +528,9 @@ Bool_t FairRuntimeDb::initContainers(void)
     cout<<"     run id "<<currentRun->GetName();
   }
   if (len>0) { cout << " --> " << refRunName; }
-  cout<<'\n'<<"************************************************************* 2"<<'\n';
+  cout<<'\n'<<"************************************************************* "<<'\n';
   while ((cont=(FairParSet*)next())) {
-    cout << " -I- FairRunTimeDB::InitContainer() " << cont->GetName() << endl;
+    cout << "-I- FairRunTimeDB::InitContainer() " << cont->GetName() << endl;
     if (!cont->isStatic()) { rc=cont->init() && rc; }
   }
   if (!rc) { Error("initContainers()","Error occured during initialization"); }
@@ -710,6 +710,7 @@ Bool_t FairRuntimeDb::setOutput(FairParIo* op)
     resetOutputVersions();
     if (strcmp(output->IsA()->GetName(), "FairParRootFileIo") == 0) {
       ioType = RootFileOutput;
+      isRootFileOutput=kTRUE;
     } else if (strcmp(output->IsA()->GetName(), "FairParTSQLIo") == 0) {
       ioType = RootTSQLOutput;
     } else { //ASCII
