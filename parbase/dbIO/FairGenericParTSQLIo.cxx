@@ -18,10 +18,11 @@ ClassImp(FairGenericParTSQLIo)
 
 //! Constructor
 FairGenericParTSQLIo::FairGenericParTSQLIo()
-  : FairDetParTSQLIo()
+  : FairDetParTSQLIo(),
+    fRtdb(FairRuntimeDb::instance())
 {
   fName = "FairGenericParIo";
-  fRtdb = FairRuntimeDb::instance();
+//  fRtdb = FairRuntimeDb::instance();
 }
 
 /**
@@ -34,10 +35,11 @@ FairGenericParTSQLIo::FairGenericParTSQLIo()
  */
 FairGenericParTSQLIo::FairGenericParTSQLIo(FairDbMultConnector const& cons,
     int const dbNum)
-  : FairDetParTSQLIo(cons, dbNum)
+  : FairDetParTSQLIo(cons, dbNum),
+    fRtdb(FairRuntimeDb::instance())
 {
   fName = "FairGenericParIo";
-  fRtdb = FairRuntimeDb::instance();
+//  fRtdb = FairRuntimeDb::instance();
 }
 
 //! Destructor

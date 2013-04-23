@@ -77,7 +77,7 @@ class FairParSet : public FairDbTableRow
     virtual void Fill(UInt_t rid=0) {};
     virtual void Store(UInt_t rid=0) {};
 
-  public:
+  private:
 
     FairParSet& operator=(const FairParSet&);
     FairParSet(const FairParSet&);

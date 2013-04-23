@@ -19,22 +19,23 @@ using namespace std;
 
 ClassImp(FairParTSQLIo)
 
-
 FairParTSQLIo::FairParTSQLIo()
   : FairParIo(),
+    fCurrentRun(NULL),
     fDefaultDb (-1),
     fConnections(FairDbTableProxyRegistry::Instance().fMultConnector)
 {
-  fCurrentRun=NULL;
+//  fCurrentRun=NULL;
 }
 
 
 FairParTSQLIo::FairParTSQLIo(FairDbMultConnector const& cons, int const dbNum)
   : FairParIo(),
+    fCurrentRun(NULL),
     fDefaultDb (dbNum),
     fConnections(FairDbTableProxyRegistry::Instance().fMultConnector)
 {
-  fCurrentRun=NULL;
+//  fCurrentRun=NULL;
 }
 
 

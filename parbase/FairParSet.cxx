@@ -19,7 +19,10 @@ ClassImp(FairParSet)
 
 FairParSet::FairParSet(const char* name,const char* title,const char* context)
   : FairDbTableRow(),
+    fName(name),
+    fTitle(title),
     detName(""),
+    versions(),
     status(kFALSE),
     changed(kFALSE),
     paramContext(context),
@@ -27,8 +30,8 @@ FairParSet::FairParSet(const char* name,const char* title,const char* context)
     description(""),
     fLogger(FairLogger::GetLogger())
 {
-  fName = name;
-  fTitle = title;
+//  fName = name;
+//  fTitle = title;
   for(Int_t i=0; i<3; i++) {versions[i]=-1;}
 }
 
