@@ -104,6 +104,8 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         # -- FairTSBufferFunctional.h has to be fixed by Tobias
 	"MbsAPI"
 #	"FairTSBufferFunctional.h"
+#        "FairMC"
+        "FairTSBufferFunctional.*std::binary_function"
   )
 
 # -----------------------------------------------------------
