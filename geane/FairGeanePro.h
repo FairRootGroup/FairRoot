@@ -70,6 +70,7 @@ class FairGeanePro : public TNamed
     // transport matrix
     void GetTransportMatrix(Double_t trm[5][5]);
 
+    void SetPrintErrors(bool printError = kTRUE) { fPrintErrors = printError; }
 
   private:
 
@@ -108,6 +109,9 @@ class FairGeanePro : public TNamed
     Int_t flag;
     FairGeaneApplication* fApp;
     Double_t trpmat[5][5];
+
+    // if kFALSE --> do not print the ABORT messages
+    Bool_t fPrintErrors;
 
     FairGeanePro(const FairGeanePro&);
     FairGeanePro& operator=(const FairGeanePro&);

@@ -48,6 +48,7 @@ FairGeanePro::FairGeanePro()
     fvwi(TVector3(0., 0., 0.)),
     ftrklength(0.),
     flag(0),
+    fPrintErrors(kTRUE),
     fApp(FairGeaneApplication::Instance())
 {
   if(gMC3==NULL) {
@@ -652,14 +653,23 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
         || (po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])) {
       Int_t quitFlag=0;
       Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
-      if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl; return 1;} //abort
+      if(quitFlag!=0) {
+        if(fPrintErrors) { std::cerr << "FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT" << std::endl; }
+        return 1;
+      } //abort
     } else {
       Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(pf),vpf,flg,Di,Le,Rad);
       if(flg==1) {
         Int_t quitFlag=0;
         Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
-        if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl; return 1;} //abort
-      } else if(flg==2) {std::cerr<<"ABORT"<<std::endl; return 1;} //abort
+        if(quitFlag!=0) {
+          if(fPrintErrors) { std::cerr << "FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT" << std::endl; }
+          return 1;
+        } //abort
+      } else if(flg==2) {
+        if(fPrintErrors) { std::cerr<<"FairGeanePro:FindPCA: Track3ToPoint flg " << flg << " ABORT"<< std::endl; }
+        return 1;
+      } //abort
     }
     // if the propagation to closest approach to a POINT  is performed
     // vwi is the point itself (with respect to which the PCA is calculated)
@@ -675,9 +685,12 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
         Int_t quitFlag=0;
         dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
         Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
-        if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl; return 1;} //abort
+        if(quitFlag!=0) {
+          if(fPrintErrors) { std::cerr<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"<< std::endl; }
+          return 1;
+        } //abort
       } else if(flg==2) {
-        std::cerr<<"ABORT"<<std::endl;
+        if(fPrintErrors) { std::cerr<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"<< std::endl; }
         return 1;
       }
     } else {
@@ -692,9 +705,12 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
           Int_t quitFlag=0;
           dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
           Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
-          if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl; return 1;} //abort
+          if(quitFlag!=0) {
+            if(fPrintErrors) { std::cerr<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"<< std::endl; }
+            return 1;
+          } //abort
         } else if(flg==2) {
-          std::cerr<<"ABORT"<<std::endl;
+          if(fPrintErrors) { std::cerr<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"<< std::endl; }
           return 1;
         }
       } else if(flg==2) {
@@ -703,19 +719,25 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
 
         dist1<dist2?Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w1),vpf,flg,Di,Le,Rad):
         Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w2),vpf,flg,Di,Le,Rad);
-        if(flg==2) {std::cerr<<"ABORT"<<std::endl; return 1;} //abort
+        if(flg==2) {
+          if(fPrintErrors) { std::cerr<<"FairGeanePro:FindPCA: Track3ToLine flg " << flg << " ABORT"<< std::endl; }
+          return 1;
+        } //abort
       } else if(flg==3) {
         dist1 = (vwi-TVector3(w1)).Mag();
         dist2 = (vwi-TVector3(w2)).Mag();
         Int_t quitFlag=0;
         dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
         Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
-        if(quitFlag!=0) {std::cerr<<"ABORT"<<std::endl; return 1;} //abort
+        if(quitFlag!=0) {
+          if(fPrintErrors) { std::cerr<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"<< std::endl; }
+          return 1;
+        } //abort
       } else if(flg==4) {
         Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
                      TVector3(w2),vpf,vwi,flg,Di,Le);
         if(flg==2) {
-          std::cerr<<"ABORT"<<std::endl;
+          if(fPrintErrors) { std::cerr<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"<< std::endl; }
           return 1;
         }
       }
