@@ -44,7 +44,8 @@ FairDetector::~FairDetector()
 // -------------------------------------------------------------------------
 
 FairDetector::FairDetector()
-  :fDetId(0)
+  :fDetId(0),
+   fLogger(FairLogger::GetLogger())
 {
 
 }

@@ -95,6 +95,8 @@ class FairIon: public TNamed
     FairLogger* fLogger;  //! /// FairLogger
     static const Double_t amu; ///  .931494028 Gev/c**2
 
+    FairIon(const FairIon&);
+    FairIon& operator=(const FairIon&);
 
     ClassDef(FairIon,2);
 

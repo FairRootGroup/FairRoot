@@ -32,6 +32,8 @@ class BinaryFunctor : public std::binary_function<FairTimeStamp* ,double, bool>
     virtual bool TimeOut() {return false;}
     virtual void ResetTimeOut() {};
 
+    virtual ~BinaryFunctor() {};
+
 };
 
 /**

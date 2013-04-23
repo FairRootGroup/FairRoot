@@ -34,7 +34,7 @@ class FairRunIdGenerator
     unsigned  int getTID();
 
   public:
-    FairRunIdGenerator() {}
+    FairRunIdGenerator() : fTimeSpec() {}
     ~FairRunIdGenerator() {}
     unsigned int generateId(void);
 

@@ -30,15 +30,16 @@
 #include "TString.h"
 //#include "FairWriteoutBufferAbsBasis.h"
 #include "FairTimeStamp.h"
+#include "FairLogger.h"
 #include <map>
 
-class  FairLogger;
+//class  FairLogger;
 
 class FairWriteoutBuffer: public TObject
 {
   public:
     FairWriteoutBuffer() : TObject(), fStartTime_map(), fDeadTime_map(), fBranchName(), fClassName(),
-      fTreeSave(false), fActivateBuffering(kFALSE), fVerbose(0) {};
+      fTreeSave(false), fActivateBuffering(kFALSE), fVerbose(0), fLogger(FairLogger::GetLogger()) {};
     FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance);
     virtual ~FairWriteoutBuffer() {};
 
@@ -97,6 +98,11 @@ class FairWriteoutBuffer: public TObject
     Bool_t fActivateBuffering;
     Int_t fVerbose;
     FairLogger* fLogger;  //! /// FairLogger
+
+  private:
+    FairWriteoutBuffer(const FairWriteoutBuffer&);
+    FairWriteoutBuffer& operator=(const FairWriteoutBuffer&);
+
     ClassDef(FairWriteoutBuffer, 1);
 };
 
