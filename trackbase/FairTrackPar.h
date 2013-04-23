@@ -93,6 +93,8 @@ class FairTrackPar : public TObject
 
     FairLogger* fLogger;  //! /// FairLogger
 
+    FairTrackPar(const FairTrackPar&);
+    FairTrackPar& operator=(const FairTrackPar&);
 
     ClassDef(FairTrackPar,1);
 
