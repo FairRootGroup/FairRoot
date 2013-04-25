@@ -237,11 +237,14 @@ Macro (SetBasicVariables)
       ${CMAKE_SOURCE_DIR}/base/event
       ${CMAKE_SOURCE_DIR}/base/field
       ${CMAKE_SOURCE_DIR}/base/sim
+      ${CMAKE_SOURCE_DIR}/base/source
       ${CMAKE_SOURCE_DIR}/dbase
       ${CMAKE_SOURCE_DIR}/dbase/dbInterface
       ${CMAKE_SOURCE_DIR}/dbase/dbValidation
       ${CMAKE_SOURCE_DIR}/dbase/dbUtils
+      ${CMAKE_SOURCE_DIR}/input/db
       ${CMAKE_SOURCE_DIR}/dbase/dbInput
+      
   )  
   Set(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)
   Set(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
