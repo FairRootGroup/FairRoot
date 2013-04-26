@@ -123,6 +123,9 @@ int main(int argc, char* argv[])
   }
 
   int numBadValues = 0;
+  int percent2 = 0;
+  int percent3 = 0;
+  int percent4 = 0;
   for (int i=0; i<maxValue+1; ++i) {
     float diff = recoShifts[i]+origShifts[i];
     float percent = fabs(diff/origShifts[i])*100;
@@ -130,6 +133,18 @@ int main(int argc, char* argv[])
       cout<<i<<" : "<<recoShifts[i]<<", "<<origShifts[i]<<", "<<diff<<", "<<percent<<endl;
       numBadValues++;
     }
+    if ( percent > 2.) {
+      percent2++;
+    }
+    if ( percent > 3.) {
+      percent3++;
+    }
+    if ( percent > 4.) {
+      percent4++;
+    }
   }
   cout<<numBadValues<<" corrections with a deviation > 1%"<<endl;
+  cout<<percent2<<" corrections with a deviation > 2%"<<endl;
+  cout<<percent3<<" corrections with a deviation > 3%"<<endl;
+  cout<<percent4<<" corrections with a deviation > 4%"<<endl;
 }
