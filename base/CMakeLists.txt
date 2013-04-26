@@ -88,7 +88,6 @@ source/FairRemoteSource.cxx
 source/FairSource.cxx
 source/FairUnpack.cxx
 source/MRevBuffer.cxx
-source/FairLmdSource.cxx
 source/exitCli.c
 source/rclose.c
 source/swaplw.c
@@ -151,7 +150,7 @@ source/FairRemoteSource.h
 source/FairSource.h
 source/FairUnpack.h
 source/MRevBuffer.h
-source/FairLmdSource.h
+
 
 )
 
