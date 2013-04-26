@@ -89,16 +89,16 @@ void FairDbTutPar::Print()
 void FairDbTutPar::Fill(FairDbResultSet& rs,
                         const FairDbValidityRec* vrec)
 {
-  cout << " -I- FairDbTutPar::Fill(xxx) called " << endl;
+  //  cout << " -I- FairDbTutPar::Fill(xxx) called " << endl;
   rs >> fTopPitch  >> fTopAnchor   >> fTopNrFE  >> fFeType;
-  cout << " -I- FairDbTutPar::Filled(xxx) called values===> " << fTopPitch << " : " << fTopAnchor << " : " << fTopNrFE << " : " << fFeType << endl;
+  // cout << " -I- FairDbTutPar::Filled(xxx) called values===> " << fTopPitch << " : " << fTopAnchor << " : " << fTopNrFE << " : " << fFeType << endl;
 }
 
 void FairDbTutPar::Store(FairDbOutRowStream& ors,
                          const FairDbValidityRec* vrec) const
 {
 
-  cout << " -I- FairDbTutPar::Store(xxx) called  " << fTopPitch << " : " << fTopAnchor << " : " << fTopNrFE << " : " << fFeType << endl;
+  // cout << " -I- FairDbTutPar::Store(xxx) called  " << fTopPitch << " : " << fTopAnchor << " : " << fTopNrFE << " : " << fFeType << endl;
   ors << fTopPitch  << fTopAnchor   << fTopNrFE  << fFeType;
 
 }
@@ -177,7 +177,7 @@ void FairDbTutPar::Store(UInt_t rid)
   // Refresh list of tables in connected database
   // for the choosen DB entry
   fMultConn->GetConnection(dbEntry)->SetTableExists();
-  cout << "-I-FairDbTutPar ******* Store() called  ******** with RID#  " << rid <<  endl;
+  //cout << "-I-FairDbTutPar ******* Store() called  ******** with RID#  " << rid <<  endl;
 
   FairDbWriter<FairDbTutPar>  aW(this->GetRangeDTF(rid),
                                  GetAggregateNo(), // Composite or Simple IO
