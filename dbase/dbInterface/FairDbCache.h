@@ -44,7 +44,7 @@ class FairDbCache
 /// Secondary search.
     const FairDbResult* Search(const FairDbValidityRec& vr,
                                const string& sqlQualifiers = "") const;
-//      MsgStream& ShowStatistics(MsgStream& msg) const;
+//  MsgStream& ShowStatistics(MsgStream& msg) const;
 
 // State changing member functions
     void Adopt(FairDbResult* res,bool registerKey = true);
@@ -63,11 +63,11 @@ class FairDbCache
     void Purge(ResultList_t& subCache, const FairDbResult* res=0);
 
 
-
     FairDbTableProxy&  fTableProxy;
 
     const string& fTableName;
     std::map<Int_t,ResultList_t> fCache;
+
     mutable UInt_t fCurSize;
     mutable UInt_t fMaxSize;
     mutable UInt_t fNumAdopted;
