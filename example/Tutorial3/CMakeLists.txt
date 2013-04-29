@@ -4,13 +4,13 @@
 
 set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
-${FAIRROOT_SOURCE_DIR}/example/mcstack
-${FAIRROOT_SOURCE_DIR}/example/Tutorial3
-${FAIRROOT_SOURCE_DIR}/example/Tutorial3/data
-${FAIRROOT_SOURCE_DIR}/example/Tutorial3/simulation
-${FAIRROOT_SOURCE_DIR}/example/Tutorial3/digitization
-${FAIRROOT_SOURCE_DIR}/example/Tutorial3/reconstruction
-${FAIRROOT_SOURCE_DIR}/example/Tutorial3/timeBasedSimulation
+${CMAKE_SOURCE_DIR}/example/mcstack
+${CMAKE_SOURCE_DIR}/example/Tutorial3
+${CMAKE_SOURCE_DIR}/example/Tutorial3/data
+${CMAKE_SOURCE_DIR}/example/Tutorial3/simulation
+${CMAKE_SOURCE_DIR}/example/Tutorial3/digitization
+${CMAKE_SOURCE_DIR}/example/Tutorial3/reconstruction
+${CMAKE_SOURCE_DIR}/example/Tutorial3/timeBasedSimulation
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})

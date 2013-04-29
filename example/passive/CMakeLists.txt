@@ -4,7 +4,7 @@
 
 set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
-${FAIRROOT_SOURCE_DIR}/example/passive
+${CMAKE_SOURCE_DIR}/example/passive
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})

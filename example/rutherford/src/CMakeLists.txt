@@ -4,8 +4,8 @@
 
 set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
-${FAIRROOT_SOURCE_DIR}/example/rutherford/src
-${FAIRROOT_SOURCE_DIR}/example/mcstack
+${CMAKE_SOURCE_DIR}/example/rutherford/src
+${CMAKE_SOURCE_DIR}/example/mcstack
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
