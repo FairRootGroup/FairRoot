@@ -1,17 +1,5 @@
 Int_t  sql_params_write()
 {
-  // ----  Load libraries   -------------------------------------------------
-  gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
-  basiclibs();
-  gSystem->Load("libGenVector");
-  gSystem->Load("libGeoBase");
-  gSystem->Load("libFairDB");
-  gSystem->Load("libParBase");
-  gSystem->Load("libBase");
-  gSystem->Load("libMCStack");
-  gSystem->Load("libField");
-  gSystem->Load("libTutorial5");
-
   // Generate a unique RunID
   FairRunIdGenerator runID;
   UInt_t runId =  runID.generateId();
