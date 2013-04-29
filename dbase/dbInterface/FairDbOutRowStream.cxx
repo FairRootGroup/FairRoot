@@ -161,7 +161,7 @@ void FairDbOutRowStream::Store(const string& str)
     FairUtilString::MakePrintable(str.c_str(),fCSV);
   }
   fCSV += delim;
-  //cout << " FairDbOutRowStream :: FCSV ----> " << fCSV << endl;
+  //cout << " FairDbOutRowStream  IO :: FCSV   ----> " << fCSV << endl;
   IncrementCurCol();
 }
 
