@@ -47,7 +47,8 @@ enum DataTypes { kUnknown,
                  kDouble,
                  kString,    // concept
                  kTString,
-                 kDate       // concept
+                 kDate,       // concept
+                 kBinary
                };
 
 
