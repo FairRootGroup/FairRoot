@@ -84,7 +84,6 @@ FairDbValidityRec::FairDbValidityRec(const FairDbValidityRec& from)
 
 {
   *this = from;
-
 }
 //.....................................................................
 
@@ -106,6 +105,25 @@ FairDbValidityRec::FairDbValidityRec(const ValRange& range,
   fValRange(range)
 {
 
+}
+
+//.....................................................................
+FairDbValidityRec& FairDbValidityRec::operator=(const FairDbValidityRec& from)
+{
+  if (this == &from) { return *this; }
+
+  FairDbTableRow::operator=(from);
+  fAggregateNo=from.fAggregateNo;
+  fCreationDate=from.fCreationDate;
+  fDbNo=from.fDbNo;
+  fInsertDate=from.fInsertDate;
+  fIsGap=from.fIsGap;
+  fVersion=from.fVersion;
+  fSeqNo=from.fSeqNo;
+  fTableProxy=from.fTableProxy;
+  fValRange=from.fValRange;
+
+  return *this;
 }
 
 //.....................................................................

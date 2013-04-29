@@ -122,6 +122,7 @@ class FairRegistry : public TNamed
       public:
         FairRegistryKey();
         FairRegistryKey(const FairRegistry* r);
+        FairRegistryKey(const FairRegistryKey&);
         virtual ~FairRegistryKey();
 
         const char* operator()(void);

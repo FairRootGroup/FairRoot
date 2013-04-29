@@ -20,6 +20,7 @@ class FairDbTableRow : public TObject
     // Constructors and destructors.
     FairDbTableRow();
     FairDbTableRow(const FairDbTableRow& from);
+    FairDbTableRow& operator=(const FairDbTableRow&);
     virtual ~FairDbTableRow();
 
     // State testing member functions
@@ -79,6 +80,7 @@ class FairDbTableRow : public TObject
   private:
 /// The owning FairDbResult, if any.
     FairDbResult* fOwner;
+
 
     ClassDef(FairDbTableRow,0)   // FairDbTableRow for a specific database table.
 

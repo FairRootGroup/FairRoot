@@ -32,6 +32,8 @@ class FairDbValidityRec : public FairDbTableRow
                       Bool_t isGap = kFALSE,
                       ValTimeStamp time = ValTimeStamp());
 
+    FairDbValidityRec& operator=(const FairDbValidityRec& from);
+
     virtual ~FairDbValidityRec();
 
 // State testing member functions
@@ -87,7 +89,7 @@ class FairDbValidityRec : public FairDbTableRow
     const FairDbTableProxy* fTableProxy;
     ValRange fValRange;
 
-    //    FairDbValidityRec& operator=(const FairDbValidityRec& from);
+
 
     ClassDef(FairDbValidityRec,0)  // Validity range table row.
 

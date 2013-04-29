@@ -259,6 +259,8 @@ class FairDbResult
     static  Int_t fgLastID;
     FairDbExceptionLog fExceptionLog;
 
+    FairDbResult& operator=(const FairDbResult&);
+
     ClassDef(FairDbResult,0)     //Abstract base representing query result
 
 };

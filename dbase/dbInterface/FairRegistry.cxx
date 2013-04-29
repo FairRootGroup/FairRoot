@@ -218,6 +218,12 @@ FairRegistry::FairRegistryKey::FairRegistryKey()
 {
 }
 
+FairRegistry::FairRegistryKey::FairRegistryKey(const FairRegistryKey& rhs)
+  : fReg(rhs.fReg),
+    fIt(rhs.fIt)
+{
+}
+
 FairRegistry::FairRegistryKey::~FairRegistryKey()
 {
 }
