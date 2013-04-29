@@ -161,6 +161,8 @@ Bool_t FairDbSqlValPacket::AddRow(const FairDbTableProxy& tblProxy,
     outRow << 0;  // dummy SEQNO
     if ( outRow.HasRowCounter() ) { outRow <<  fNumStmts; } // ROW_COUNTER
   }
+  // The virtual Store() function is called which in turns will call an
+  // explicit IO store from the explicit container.
   row.Store(outRow,vrec);
   if ( ! outRow.HasGoodData() ) {
     if ( ! outRow.IsComplete() ) {
@@ -172,6 +174,7 @@ Bool_t FairDbSqlValPacket::AddRow(const FairDbTableProxy& tblProxy,
     ++fNumErrors;
     return kFALSE;
   }
+
 
   this->AddRow(outRow.GetCSV());
   return kTRUE;
