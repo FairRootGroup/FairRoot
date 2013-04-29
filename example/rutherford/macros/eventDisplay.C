@@ -1,25 +1,5 @@
 eventDisplay()
 {
-  // Load basic libraries 
-  TString dir = gSystem->Getenv("VMCWORKDIR");
-  TString tut_configdir = dir + "/example/gconfig";
-  gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
-  gROOT->LoadMacro("$CONFIG_DIR/basiclibs.C");
-  basiclibs();
-  
-  gSystem->Load("libFairTools");
-  gSystem->Load("libFairDB");
-  gSystem->Load("libGeoBase");
-  gSystem->Load("libParBase");
-  gSystem->Load("libBase");
-  gSystem->Load("libGen");
-  gSystem->Load("libPassive");
-  gSystem->Load("libFairRutherford");
-  gSystem->Load("libEve");
-  gSystem->Load("libEventDisplay");
-
-
-                                     
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
   fRun->SetInputFile("data/test.mc.root");
@@ -42,7 +22,4 @@ eventDisplay()
   fMan->AddTask(RutherfordPoints);
     
   fMan->Init();                    
-
-  // Automatic visible depth is disabled
-  //  gGeoManager->SetVisLevel(3);
 }
