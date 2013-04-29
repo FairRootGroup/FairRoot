@@ -42,13 +42,13 @@ FairEventManager::FairEventManager()
   AddParticlesToPdgDataBase();
 }
 //______________________________________________________________________________
-void FairEventManager::Init()
+void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
 {
   TEveManager::Create();
   fRunAna->Init();
   if(gGeoManager) {
     TGeoNode* N=  gGeoManager->GetTopNode();
-    TEveGeoTopNode* TNod=new  TEveGeoTopNode(gGeoManager, N);
+    TEveGeoTopNode* TNod=new  TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
     gEve->AddGlobalElement(TNod);
     gEve->FullRedraw3D(kTRUE);
     fEvent= gEve->AddEvent(this);
