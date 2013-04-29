@@ -1,0 +1,57 @@
+#ifndef FairTestDetectorTimeDigiTask_H
+#define FairTestDetectorTimeDigiTask_H
+
+#include "FairTask.h"
+
+class TClonesArray;
+
+class FairTestDetectorPoint;
+class FairTestDetectorDigiWriteoutBuffer;
+
+
+class FairTestDetectorTimeDigiTask : public FairTask
+{
+  public:
+
+    /** Default constructor **/
+    FairTestDetectorTimeDigiTask();
+
+
+    /** Destructor **/
+    ~FairTestDetectorTimeDigiTask();
+
+
+    /** Virtual method Init **/
+    virtual InitStatus Init();
+
+
+    /** Virtual method Exec **/
+    virtual void Exec(Option_t* opt);
+
+    void SetTimeResolution(Double_t timeInNs) { fTimeResolution = timeInNs; }
+    Double_t GetTimeResolution() { return fTimeResolution; }
+
+    void RunTimeBased() {fTimeOrderedDigi = kTRUE;}
+
+  private:
+
+    Int_t CalcPad(Double_t posIn, Double_t posOut);
+    Double_t CalcTimeStamp(Double_t timeOfFlight);
+
+    Double_t fTimeResolution;
+
+    TClonesArray* fPointArray;
+    TClonesArray* fDigiArray;
+
+    FairTestDetectorDigiWriteoutBuffer* fDataBuffer;
+
+    Bool_t fTimeOrderedDigi;
+
+    FairTestDetectorTimeDigiTask(const FairTestDetectorTimeDigiTask&);
+    FairTestDetectorTimeDigiTask& operator=(const FairTestDetectorTimeDigiTask&);
+
+    ClassDef(FairTestDetectorTimeDigiTask,1);
+
+};
+
+#endif

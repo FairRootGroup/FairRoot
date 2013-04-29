@@ -1,0 +1,39 @@
+/*
+ * MySorterTask.cxx
+ *
+ *  Created on: Mar 7, 2012
+ *      Author: uhlig
+ */
+
+#include "MySorterTask.h"
+
+#include "MyDataClass.h"
+#include "MyRingSorter.h"
+
+MySorterTask::MySorterTask()
+  : FairRingSorterTask()
+{
+}
+
+MySorterTask::~MySorterTask()
+{
+}
+
+void MySorterTask::AddNewDataToTClonesArray(FairTimeStamp* data)
+{
+  FairRootManager* ioman = FairRootManager::Instance();
+  TClonesArray* myArray = ioman->GetTClonesArray(fOutputBranch);
+  if (fVerbose > 1) {
+    std::cout << "-I- MySorterTask::AddNewDataToTClonesArray Data: " ;
+    std::cout <<  *(MyDataClass*)(data) << std::endl;
+  }
+  new ((*myArray)[myArray->GetEntries()]) MyDataClass(*(MyDataClass*)(data));
+}
+
+FairRingSorter* MySorterTask::InitSorter(Int_t numberOfCells, Double_t widthOfCells) const
+{
+  return new MyRingSorter(numberOfCells, widthOfCells);
+}
+
+ClassImp(MySorterTask);
+

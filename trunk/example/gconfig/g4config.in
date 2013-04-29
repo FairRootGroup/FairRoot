@@ -1,0 +1,47 @@
+# $Id: g4config.in,v 1.4 2006/03/30 12:26:13 turany Exp $
+#
+# Geant4 configuration macro for Example02
+# (called from Root macro Config.C)
+
+# specs
+
+#/process/eLoss/subsec  false
+#/process/eLoss/minsubsec 2 cm
+  
+
+# B field -> 0
+#/mcDet/fieldType None
+
+# don't store secondaries
+#/mcTracking/saveSecondaries true
+
+
+
+#/mcPhysics/setSpecialCuts true
+#/mcPhysics/printGeneralCuts true
+
+
+#/cuts/setLowEdge 100 eV
+/cuts/setHighEdge 100 GeV
+
+#/mcPhysics/rangeCut 1.
+
+#/mcPhysics/rangeCutForGamma  1.
+#/mcPhysics/printGlobalCuts
+
+
+#/mcVerbose/all 2
+#/mcVerbose/geometryManager 1
+#/mcVerbose/physicsList 2
+/tracking/verbose 0
+
+#/control/manual   
+#/control/createHTML  
+
+/run/particle/dumpCutValues
+
+# Limit max number of Cerenkov photons per step
+# (Needed as Cerenkov process does not limit step itself)
+#
+
+

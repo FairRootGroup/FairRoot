@@ -1,0 +1,63 @@
+#include "FairTutorialDet2ContFact.h"
+
+#include "FairTutorialDet2GeoPar.h"
+#include "FairTutorialDet2DigiPar.h"
+
+#include "FairRuntimeDb.h"
+
+#include <iostream>
+
+ClassImp(FairTutorialDet2ContFact)
+
+static FairTutorialDet2ContFact gFairTutorialDet2ContFact;
+
+FairTutorialDet2ContFact::FairTutorialDet2ContFact()
+{
+  /** Constructor (called when the library is loaded) */
+  fName="FairTutorialDet2ContFact";
+  fTitle="Factory for parameter containers in libTutorial1";
+  setAllContainers();
+  FairRuntimeDb::instance()->addContFactory(this);
+}
+
+void FairTutorialDet2ContFact::setAllContainers()
+{
+  /** Creates the Container objects with all accepted
+      contexts and adds them to
+      the list of containers for the Tutorial1 library.
+  */
+
+  FairContainer* p1= new FairContainer("FairTutorialDet2GeoPar",
+                                       "FairTutorialDet2 Geometry Parameters",
+                                       "TestDefaultContext");
+  p1->addContext("TestNonDefaultContext");
+
+  containers->Add(p1);
+
+  FairContainer* p2= new FairContainer("FairTutorialDet2DigiPar",
+                                       "Tutorial Det Digi Parameters",
+                                       "TestDefaultContext");
+  p2->addContext("TestNonDefaultContext");
+
+  containers->Add(p2);
+}
+
+FairParSet* FairTutorialDet2ContFact::createContainer(FairContainer* c)
+{
+  /** Calls the constructor of the corresponding parameter container.
+      For an actual context, which is not an empty string and not
+      the default context
+      of this container, the name is concatinated with the context.
+  */
+  const char* name=c->GetName();
+  FairParSet* p=NULL;
+  if (strcmp(name,"FairTutorialDet2GeoPar")==0) {
+    p=new FairTutorialDet2GeoPar(c->getConcatName().Data(),
+                                 c->GetTitle(),c->getContext());
+  }
+  if (strcmp(name,"FairTutorialDet2DigiPar")==0) {
+    p=new FairTutorialDet2DigiPar(c->getConcatName().Data(),
+                                  c->GetTitle(),c->getContext());
+  }
+  return p;
+}
