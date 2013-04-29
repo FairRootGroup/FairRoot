@@ -14,8 +14,6 @@ void run_rutherford(Int_t nEvents = 10)
   TString outFile = outDir + "/test.mc.root";
   TString parFile = outDir + "/params.root";
 
-  TString basicLibs = tut_configdir +"/basiclibs.C";
-
   // In general, the following parts need not be touched
   // ========================================================================
 

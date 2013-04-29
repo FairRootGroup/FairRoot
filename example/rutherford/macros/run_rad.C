@@ -11,10 +11,8 @@ void run_rad(Int_t nEvents = 100)
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   TString outDir  = "data";
-  TString outFile = outDir + "/test.mc.root";
+  TString outFile = outDir + "/test1.mc.root";
   TString parFile = outDir + "/params.root";
-
-  TString basicLibs = tut_configdir +"/basiclibs.C";
 
   // In general, the following parts need not be touched
   // ========================================================================
