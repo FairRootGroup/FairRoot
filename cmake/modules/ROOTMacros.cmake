@@ -194,6 +194,7 @@ Macro(GENERATE_LIBRARY)
   set(Int_LIB ${LIBRARY_NAME})
 
   Set(RuleName "${Int_LIB}_RULES")
+  Set(HeaderRuleName "${Int_LIB}_HEADER_RULES")
   Set(DictName "G__${Int_LIB}Dict.cxx")
 
   If(NOT DICTIONARY)
@@ -227,6 +228,10 @@ Macro(GENERATE_LIBRARY)
   If(RULE_CHECKER_FOUND)
     CHECK_RULES("${Int_SRCS}" "${INCLUDE_DIRECTORIES}" ${RuleName})
   EndIf(RULE_CHECKER_FOUND)
+
+  If(IWYU_FOUND)
+    CHECK_HEADERS("${Int_SRCS}" "${INCLUDE_DIRECTORIES}" ${HeaderRuleName})
+  EndIf(IWYU_FOUND)
 
   ROOT_GENERATE_DICTIONARY()
   SET(Int_SRCS ${Int_SRCS} ${DICTIONARY})

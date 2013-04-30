@@ -76,6 +76,7 @@ find_package(GEANT4DATA)
 find_package(GEANT4VMC)
 find_package(CLHEP)
 find_package(RuleChecker)
+find_package(IWYU)
 
 If(FAIRSOFT_EXTERN)
   set(BOOST_ROOT ${SIMPATH})
@@ -147,6 +148,14 @@ if(RULE_CHECKER_FOUND)
      DEPENDS $ENV{ALL_RULES})
 
 endif(RULE_CHECKER_FOUND)
+
+if(IWYU_FOUND)
+
+  ADD_CUSTOM_TARGET(checkHEADERS 
+     DEPENDS $ENV{ALL_HEADER_RULES}
+  )
+
+endif(IWYU_FOUND)
 
 if(NOT FAIRROOT_MINIMAL)
   WRITE_CONFIG_FILE(config.sh)
