@@ -30,6 +30,10 @@
 #include "TSystem.h"
 #include "TProof.h"
 #include "TProofOutputFile.h"
+#include "TFolder.h"
+#include "TCanvas.h"
+#include "TH1F.h"
+#include "TH2F.h"
 
 #include <iostream>
 #include <list>
@@ -80,6 +84,8 @@ FairRunOnline::FairRunOnline(FairSource* source)
   fAna=kTRUE;
 
   fSource = source;
+
+  fFolder = new TFolder("HISTO", "HISTO");
 }
 //_____________________________________________________________________________
 
@@ -151,6 +157,10 @@ FairRunOnline::~FairRunOnline()
 
   if(fSource) {
     delete fSource;
+  }
+
+  if(fFolder) {
+    delete fFolder;
   }
 }
 
@@ -537,9 +547,12 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
 
 
   if(Ev_start < 0) {
+    return;
   } else {
     for (Int_t i = 0; i < Ev_start; i++) {
-      fSource->Read();
+      if(! fSource->Read()) {
+        continue;
+      }
       /**
        * if we have simulation files then they have MC Event Header and the Run Id is in it, any way it
        * would be better to make FairMCEventHeader a subclass of FairEvtHeader.
@@ -575,8 +588,71 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
   fRootManager->Write();
 
   fSource->Close();
+
+  TString path = TString("./") + fFolder->GetName();
+  ProcessFolder(fFolder, path);
 }
 //_____________________________________________________________________________
+
+
+
+//_____________________________________________________________________________
+void FairRunOnline::ProcessFolder(TFolder* folder, TString path)
+{
+  // Create iterator with the folder content
+  TIter iter(folder->GetListOfFolders());
+
+  // Pointer to an object
+  TObject* object;
+
+  // Class name of the object
+  TString className;
+
+  // Subfolder
+  TFolder* subFolder;
+
+  // Histogram pointers
+  TH1F* h1;
+  TH2F* h2;
+
+  // Create folder with current path
+  char strCmd[1000];
+  sprintf(strCmd, "mkdir -p %s", path.Data());
+  system(strCmd);
+
+  // Loop over objects in the folder
+  while((object = iter())) {
+
+    // Get class name
+    className = object->ClassName();
+
+    // Recognise objects
+    if(0 == className.CompareTo("TFolder")) {
+      // If a subfolder - recursive call
+      subFolder = (TFolder*) object;
+      ProcessFolder(subFolder, path + "/" + subFolder->GetName());
+    } else if(0 == className.CompareTo("TH1F")) {
+      // If a histogram - plot it and save canvas
+      h1 = (TH1F*) object;
+      TCanvas* c1 = new TCanvas("c1", "", 10, 10, 450, 450);
+      h1->Draw();
+      sprintf(strCmd, "%s/%s.jpg", path.Data(), h1->GetName());
+      c1->SaveAs(strCmd);
+      delete c1;
+    } else if(0 == className.CompareTo("TH2F")) {
+      // If a histogram - plot it and save canvas
+      h2 = (TH2F*) object;
+      TCanvas* c1 = new TCanvas("c1", "", 10, 10, 450, 450);
+      h2->Draw("col");
+      sprintf(strCmd, "%s/%s.jpg", path.Data(), h2->GetName());
+      c1->SaveAs(strCmd);
+      delete c1;
+    }
+  }
+}
+//_____________________________________________________________________________
+
+
 
 //_____________________________________________________________________________
 void FairRunOnline::Run(Double_t delta_t)
@@ -929,6 +1005,16 @@ void  FairRunOnline::BGWindowWidthTime(Double_t background, UInt_t Signalid)
   fRootManager->BGWindowWidthTime(background, Signalid);
 }
 //_____________________________________________________________________________
+
+
+void FairRunOnline::AddObject(TObject* object)
+{
+  if(! fFolder) {
+    return;
+  }
+  fFolder->Add(object);
+}
+
 
 ClassImp(FairRunOnline)
 

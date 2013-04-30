@@ -26,6 +26,7 @@ class FairLogger;
 class TF1;
 class TTree;
 class FairSource;
+class TFolder;
 
 class FairRunOnline : public FairRun
 {
@@ -165,6 +166,8 @@ class FairRunOnline : public FairRun
       return fFinishProcessingLMDFile;
     }
 
+    void AddObject(TObject* object);
+
 
   private:
 
@@ -218,6 +221,10 @@ class FairRunOnline : public FairRun
     Bool_t                                   fFinishProcessingLMDFile;  //!
 
     FairSource* fSource;
+
+    TFolder* fFolder;
+
+    void ProcessFolder(TFolder* folder, TString path);
 
     ClassDef(FairRunOnline, 0)
 
