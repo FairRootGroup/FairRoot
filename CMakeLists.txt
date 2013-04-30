@@ -139,9 +139,6 @@ if(BUILD_DOXYGEN)
   ADD_SUBDIRECTORY(doxygen)
 endif(BUILD_DOXYGEN)
 
-if(ORACLE_FOUND)  
-  add_subdirectory (ora)
-endif(ORACLE_FOUND)  
 
 if(RULE_CHECKER_FOUND)
 
