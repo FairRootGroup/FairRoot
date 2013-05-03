@@ -8,9 +8,7 @@
 // IWYU pragma: no_include <architecture/i386/math.h>
 #include <stdio.h>                      // for printf, sprintf
 #include <string.h>                     // for strrchr
-#include <sys/_structs.h>               // for timeval
 #include <time.h>                       // for tm, localtime, gmtime, time, etc
-#include <sys/time.h>                   // for gettimeofday
 
 using std::cout;
 using std::endl;
