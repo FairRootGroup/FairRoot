@@ -1,10 +1,27 @@
 #include "FairDbTutPar.h"
-#include "TMath.h"
-#include "FairDbOutRowStream.h"
-#include "FairDbResult.h"
-#include "FairDbValidityRec.h"
-#include <iostream>
-#include <memory>
+
+#include "FairDb.h"                     // for GetValDescr
+#include "FairDbConnection.h"           // for FairDbConnection
+#include "FairDbExceptionLog.h"         // for FairDbExceptionLog
+#include "FairDbMultConnector.h"        // for FairDbMultConnector
+#include "FairDbOutRowStream.h"         // for FairDbOutRowStream
+#include "FairDbResPtr.h"               // for FairDbResultPtr
+#include "FairDbResult.h"               // for FairDbResultSet
+#include "FairDbStatement.h"            // for FairDbStatement
+#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairDbWriter.h"               // for FairDbWriter
+#include "FairParamList.h"              // for FairParamList
+
+#include "Riosfwd.h"                    // for ostream
+#include "TString.h"                    // for TString
+
+#include <stdlib.h>                     // for exit
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <memory>                       // for auto_ptr, etc
+#include <vector>                       // for vector, vector<>::iterator
+
+class FairDbValidityRec;
+
 using namespace std;
 
 ClassImp(FairDbTutPar);

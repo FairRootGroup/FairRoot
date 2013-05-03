@@ -2,18 +2,24 @@
 // -----                        FairBoxSetDraw source file                  -----
 // -----                  Created 03/01/08  by M. Al-Turany            -----
 // -------------------------------------------------------------------------
-
 #include "FairBoxSetDraw.h"
 
-#include "FairRootManager.h"
-#include "FairEventManager.h"
+#include "FairBoxSet.h"                 // for FairBoxSet
+#include "FairEventManager.h"           // for FairEventManager
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRunAna.h"                 // for FairRunAna
+#include "FairTSBufferFunctional.h"     // for StopTime
+#include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "TEveManager.h"
-#include "FairBoxSet.h"
-#include "TClonesArray.h"
-#include "TVector3.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TEveBoxSet.h"
+#include "TEveManager.h"                // for TEveManager, gEve
+#include "TVector3.h"                   // for TVector3
 
-#include <iostream>
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
 using std::cout;
 using std::endl;
 

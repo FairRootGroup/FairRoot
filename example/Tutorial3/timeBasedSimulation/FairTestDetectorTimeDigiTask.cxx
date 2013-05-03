@@ -1,17 +1,19 @@
 #include "FairTestDetectorTimeDigiTask.h"
 
-#include "FairTestDetectorPoint.h"
-#include "FairTestDetectorDigi.h"
-
+#include "FairLink.h"                   // for FairLink
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairTestDetectorDigi.h"       // for FairTestDetectorDigi
 #include "FairTestDetectorDigiWriteoutBuffer.h"
+#include "FairTestDetectorPoint.h"      // for FairTestDetectorPoint
 
-#include "FairHit.h"
-#include "FairRootManager.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TMath.h"                      // for Sqrt
+#include "TRandom.h"                    // for TRandom, gRandom
+#include "TString.h"                    // for TString
 
-#include "TRandom.h"
-#include "TMath.h"
-
-#include <iostream>
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using namespace std;
 

@@ -5,14 +5,17 @@
  ***************************************/
 #include "FairGenericParTSQLIo.h"
 
-#include "FairParSet.h"
-#include "FairParGenericSet.h"
-#include "FairParamList.h"
-#include "FairRuntimeDb.h"
-#include "FairRtdbRun.h"
+#include "FairParGenericSet.h"          // for FairParGenericSet
+#include "FairParSet.h"                 // for FairParSet
+#include "FairRtdbRun.h"                // for FairRtdbRun
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "TList.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TString.h"                    // for TString
 
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
+class FairDbMultConnector;
 
 ClassImp(FairGenericParTSQLIo)
 

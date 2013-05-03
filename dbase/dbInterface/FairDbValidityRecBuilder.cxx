@@ -1,12 +1,26 @@
-
-#include "Detector.h"
-#include "SimFlag.h"
-#include "FairDbProxy.h"
-#include "FairDbResult.h"
-#include "FairDbSimFlagAssociation.h"
-#include "FairDbValidityRec.h"
 #include "FairDbValidityRecBuilder.h"
-#include "ValContext.h"
+
+#include "FairDbProxy.h"                // for FairDbProxy
+#include "FairDbResult.h"               // for FairDbResultNonAgg, etc
+#include "FairDbSimFlagAssociation.h"   // for FairDbSimFlagAssociation, etc
+#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "FairDbValidityRec.h"          // for FairDbValidityRec, etc
+#include "SimFlag.h"                    // for AsString, SimFlag_t
+#include "ValContext.h"                 // for ValContext, operator<<
+#include "ValRange.h"                   // for ValRange
+#include "ValTimeStamp.h"               // for ValTimeStamp, operator<<, etc
+#include "db_detector_def.h"            // for Detector, etc
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <sys/select.h>                 // for time_t
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <list>                         // for _List_iterator, etc
+#include <utility>                      // for pair
+
+using std::cout;
+using std::endl;
+using std::string;
 
 ClassImp(FairDbValidityRecBuilder)
 

@@ -4,12 +4,20 @@
 // -------------------------------------------------------------------------
 
 #include "FairRun.h"
-#include "FairTask.h"
-#include "FairRootManager.h"
-#include "FairRuntimeDb.h"
-#include "FairEventHeader.h"
-#include "FairFileHeader.h"
-#include <iostream>
+
+#include "FairEventHeader.h"            // for FairEventHeader
+#include "FairFileHeader.h"             // for FairFileHeader
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairTask.h"                   // for FairTask
+
+#include "TFile.h"                      // for TFile
+#include "TList.h"                      // for TList
+#include "TObject.h"                    // for TObject
+
+#include <stddef.h>                     // for NULL
+
 //_____________________________________________________________________________
 FairRun* FairRun::fRunInstance= 0;
 //_____________________________________________________________________________

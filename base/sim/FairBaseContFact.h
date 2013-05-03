@@ -1,11 +1,11 @@
 #ifndef FAIRBASECONTFACT_H
 #define FAIRBASECONTFACT_H
 
+#include "FairContFact.h"               // for FairContFact, etc
 
+#include "Rtypes.h"                     // for FairBaseContFact::Class, etc
 
-#include "FairContFact.h"
-
-class FairContainer;
+class FairParSet;
 
 class FairBaseContFact : public FairContFact
 {

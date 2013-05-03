@@ -4,20 +4,7 @@
 // -------------------------------------------------------------------------
 #include "FairGenericStack.h"
 
-#include "FairDetector.h"
-#include "FairRootManager.h"
-#include "FairMCPoint.h"
-
-#include "TError.h"
-#include "TLorentzVector.h"
-#include "TParticle.h"
-#include "TRefArray.h"
-//#include "TClonesArray.h"
-
-//#include <map>
-//#include <stack>
-//#include <iostream>
-
+#include "FairLogger.h"                 // for FairLogger
 
 // -----   Default constructor   -------------------------------------------
 FairGenericStack::FairGenericStack()

@@ -1,14 +1,23 @@
 #include "FairEventManagerEditor.h"
 
-#include "FairRootManager.h"
-#include "FairEventManager.h"
-#include "FairRunAna.h"
+#include "FairEventManager.h"           // for FairEventManager
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRunAna.h"                 // for FairRunAna
 
-#include "TGLabel.h"
-#include "TGButton.h"
-#include "TGNumberEntry.h"
-#include "TGeoManager.h"
-#include "TChain.h"
+#include "TChain.h"                     // for TChain
+#include "TEveGValuators.h"             // for TEveGValuator
+#include "TFile.h"                      // for TFile
+#include "TGButton.h"                   // for TGCheckButton, TGTextButton
+#include "TGLabel.h"                    // for TGLabel
+#include "TGLayout.h"                   // for TGLayoutHints, etc
+#include "TGNumberEntry.h"              // for TGNumberEntry, etc
+#include "TGeoManager.h"                // for TGeoManager, gGeoManager
+#include "TString.h"                    // for TString
+
+#include <stddef.h>                     // for NULL
+
+class TGWindow;
+class TObject;
 
 #define MAXE 5000
 

@@ -1,11 +1,15 @@
 #include "FairTutorialDet4ContFact.h"
 
-#include "FairTutorialDet4GeoPar.h"
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairTutorialDet4GeoPar.h"     // for FairTutorialDet4GeoPar
 #include "FairTutorialDet4MisalignPar.h"
 
-#include "FairRuntimeDb.h"
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
 
-#include <iostream>
+#include <string.h>                     // for strcmp, NULL
+
+class FairParSet;
 
 ClassImp(FairTutorialDet4ContFact)
 

@@ -1,7 +1,11 @@
 #ifndef PNDGEOPIPE_H
 #define PNDGEOPIPE_H
 
-#include "FairGeoSet.h"
+#include "FairGeoSet.h"                 // for FairGeoSet
+
+#include "Rtypes.h"                     // for FairGeoPipe::Class, Int_t, etc
+
+class FairGeoBuilder;
 
 class  FairGeoPipe : public FairGeoSet
 {

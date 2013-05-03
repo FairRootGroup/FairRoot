@@ -1,9 +1,11 @@
 #ifndef PNDPASSIVECONTFACT_H
 #define PNDPASSIVECONTFACT_H
 
-#include "FairContFact.h"
+#include "FairContFact.h"               // for FairContFact, etc
 
-class FairContainer;
+#include "Rtypes.h"                     // for FairPassiveContFact::Class, etc
+
+class FairParSet;
 
 class FairPassiveContFact : public FairContFact
 {

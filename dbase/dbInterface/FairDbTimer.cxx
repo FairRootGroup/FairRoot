@@ -1,5 +1,12 @@
-
 #include "FairDbTimer.h"
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
+using std::cout;
+using std::endl;
+using std::string;
 
 ClassImp(FairDbTimer)
 

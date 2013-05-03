@@ -1,20 +1,18 @@
 #ifndef FAIRDBEXCEPTIONLOG
 #define FAIRDBEXCEPTIONLOG
 
+#include "FairDbException.h"            // for FairDbException
 
-#include <iosfwd>
-#include <string>
-#include <vector>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, etc
 
-#include "Rtypes.h"
-
-#include "FairDbException.h"
+#include <iosfwd>                       // for ostream
+#include <string>                       // for string
+#include <vector>                       // for vector
 
 class TSQLServer;
 class TSQLStatement;
-class FairDbExceptionLog;
 
-std::ostream& operator<<(std::ostream& s, const FairDbExceptionLog& el);
 
 class FairDbExceptionLog
 
@@ -70,6 +68,8 @@ class FairDbExceptionLog
     ClassDef(FairDbExceptionLog,0) // Object to hold database exceptions
 
 };
+
+std::ostream& operator<<(std::ostream& s, const FairDbExceptionLog& el);
 
 #endif // FAIRDBEXCEPTIONLOG
 

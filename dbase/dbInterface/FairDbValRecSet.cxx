@@ -1,10 +1,17 @@
-
-#include "FairDbProxy.h"
-#include "FairDbResult.h"
-#include "FairDbTableProxy.h"
-#include "FairDbTableProxyRegistry.h"
-#include "FairDbValidityRec.h"
 #include "FairDbValRecSet.h"
+
+#include "FairDbProxy.h"                // for FairDbProxy
+#include "FairDbResult.h"               // for FairDbResult, etc
+#include "FairDbTableProxy.h"           // for FairDbTableProxy
+#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "FairDbValidityRec.h"          // for FairDbValidityRec
+
+#include <stddef.h>                     // for NULL
+#include <utility>                      // for pair
+
+using std::string;
+using std::map;
 
 ClassImp(FairDbValRecSet)
 

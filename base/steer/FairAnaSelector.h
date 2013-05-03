@@ -7,16 +7,21 @@
 #ifndef FAIRANASELECTOR_H
 #define FAIRANASELECTOR_H
 
-#include "TROOT.h"
-#include "TChain.h"
-#include "TFile.h"
-#include "TProofOutputFile.h"
-#include "TSelector.h"
-#include "TH1F.h"
-#include "TVector3.h"
-#include "TClonesArray.h"
+#include "TSelector.h"                  // for TSelector
+
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include "TSelectorList.h"              // for TSelectorList
+#include "TString.h"                    // for TString
+#include "TTree.h"                      // for TTree
+
+#include <stddef.h>                     // for NULL
 
 class FairRunAna;
+
+class TFile;
+class TList;
+class TObject;
+class TProofOutputFile;
 
 class FairAnaSelector : public TSelector
 {

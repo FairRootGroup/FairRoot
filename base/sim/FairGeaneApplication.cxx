@@ -3,14 +3,14 @@
 // -----                   Created 10/11/10  by M. Al-Turany           -----
 // -------------------------------------------------------------------------
 
-
 #include "FairGeaneApplication.h"
-#include "FairField.h"
 
-#include "TVirtualMC.h"
-#include "TGeoManager.h"
+#include "FairField.h"                  // for FairField
 
-#include <iostream>
+#include "TVirtualMC.h"                 // for gMC, TVirtualMC
+
+#include <stdio.h>                      // for printf
+#include <iostream>                     // for cout, endl
 
 using std::cout;
 using std::endl;

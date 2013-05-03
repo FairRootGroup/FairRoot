@@ -1,9 +1,16 @@
 #include "FairTutorialDet4MilleWriter.h"
-#include "FairTutorialDet4Hit.h"
 
-#include "FairTrackParam.h"
+#include "FairLogger.h"                 // for FairLogger, etc
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairTrackParam.h"             // for FairTrackParam
+#include "FairTutorialDet4Hit.h"        // for FairTutorialDet4Hit
 
-#include "Mille.h"
+#include "Mille.h"                      // for Mille
+
+#include "TClonesArray.h"               // for TClonesArray
+
+#include <stddef.h>                     // for NULL
+#include <set>                          // for set, set<>::iterator, etc
 
 // ---- Default constructor -------------------------------------------
 FairTutorialDet4MilleWriter::FairTutorialDet4MilleWriter()

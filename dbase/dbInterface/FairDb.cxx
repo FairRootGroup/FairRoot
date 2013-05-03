@@ -1,5 +1,16 @@
 #include "FairDb.h"
-#include <sstream>
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <map>                          // for map, _Rb_tree_iterator, etc
+#include <sstream>                      // IWYU pragma: keep
+// for ostringstream, istringstream
+
+using std::cout;
+using std::endl;
+using std::string;
+using std::istringstream;
 
 static std::map<std::string,Int_t> fgTimegateTable;
 

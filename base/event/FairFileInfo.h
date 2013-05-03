@@ -4,10 +4,12 @@
 #ifndef FAIRFILEINFO_H
 #define FAIRFILEINFO_H
 
-#include "TNamed.h"
-#include "TString.h"
-#include "TFile.h"
+#include "TNamed.h"                     // for TNamed
 
+#include "Rtypes.h"                     // for UInt_t, FairFileInfo::Class, etc
+#include "TString.h"                    // for TString
+
+class TFile;
 
 class FairFileInfo : public TNamed
 {

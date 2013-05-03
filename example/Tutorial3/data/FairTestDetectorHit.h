@@ -1,9 +1,9 @@
 #ifndef PNDTORINODETECTORHIT_H
 #define PNDTORINODETECTORHIT_H 1
 
+#include "FairHit.h"                    // for FairHit
 
-//#include "TVector3.h"
-#include "FairHit.h"
+#include "Rtypes.h"                     // for FairTestDetectorHit::Class, etc
 
 class TVector3;
 

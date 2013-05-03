@@ -1,9 +1,10 @@
 #ifndef FAIRDBVALRECSET
 #define FAIRDBVALRECSET
 
+#include "Rtypes.h"                     // for UInt_t, etc
 
-#include <map>
-#include <string>
+#include <map>                          // for map
+#include <string>                       // for string
 
 class FairDbResult;
 class FairDbValidityRec;
@@ -14,13 +15,13 @@ class FairDbValRecSet
   public:
 
 // Constructors and destructors.
-    FairDbValRecSet(const string& tableName,UInt_t dbNo,UInt_t seqNo=0);
+    FairDbValRecSet(const std::string& tableName,UInt_t dbNo,UInt_t seqNo=0);
     virtual ~FairDbValRecSet();
 
 // State testing member functions
     UInt_t GetDbNo() const { return fDbNo; }
     UInt_t GetNumRows() const;
-    const string GetTableName() const;
+    const std::string GetTableName() const;
     const FairDbValidityRec* GetTableRow(UInt_t rowNum) const;
     const FairDbValidityRec* GetTableRowBySeqNo(UInt_t seqNo) const;
 
@@ -38,7 +39,7 @@ class FairDbValRecSet
 
 /// Lookup SeqNo -> FairDbValidityRec
 /// lazy creation - see GetTableRowBySeqNo
-    mutable map<UInt_t,const FairDbValidityRec*>fSeqNoToRec;
+    mutable std::map<UInt_t,const FairDbValidityRec*>fSeqNoToRec;
 
     FairDbValRecSet(const FairDbValRecSet&);
     FairDbValRecSet operator=(const FairDbValRecSet&);

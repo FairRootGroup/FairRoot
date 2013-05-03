@@ -3,13 +3,20 @@
 // ***        D.Kresan@gsi.de                *** //
 // ********************************************* //
 
-#include <iostream>
-
-#include "TParticle.h"
-
 #include "FairTrajFilter.h"
-#include "FairRootManager.h"
-#include "TMath.h"
+
+#include "FairRootManager.h"            // for FairRootManager
+
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TError.h"                     // for Fatal
+#include "TGeoTrack.h"                  // for TGeoTrack
+#include "TMath.h"                      // for Pi, TwoPi, Log
+#include "TMathBase.h"                  // for Abs
+#include "TParticle.h"                  // for TParticle
+
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using namespace std;
 

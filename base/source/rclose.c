@@ -10,11 +10,10 @@
  * created 23. 4.1999 by Horst Goeringer
  ********************************************************************
  */
-#include <ctype.h>
-#include "sys/socket.h"
-#include <signal.h>
-#include <stdio.h>
-#include <unistd.h>
+// IWYU pragma: no_include <secure/_stdio.h>              
+#include <stdio.h>                      // for printf, perror
+#include <unistd.h>                     // for close
+#include <sys/socket.h>                 // for shutdown
 
 int rclose(int *piSocket, int iMode)
 {

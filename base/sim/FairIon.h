@@ -15,8 +15,12 @@
 #ifndef FAIRION_H
 #define FAIRION_H
 
-#include "TNamed.h"
+#include "TNamed.h"                     // for TNamed
+
+#include "Rtypes.h"                     // for Int_t, Double_t, etc
+
 class FairLogger;
+
 class FairIon: public TNamed
 {
   public:

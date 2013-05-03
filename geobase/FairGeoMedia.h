@@ -1,11 +1,13 @@
 #ifndef FAIRGEOMEDIA_H
 #define FAIRGEOMEDIA_H
 
+#include "TNamed.h"                     // for TNamed
 
-#include "TNamed.h"
-#include "TString.h"
-//#include "TList.h"
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for FairGeoMedia::Class, etc
+#include "TString.h"                    // for TString
 
+#include <iosfwd>                       // for fstream
 
 class FairGeoMedium;
 class TList;

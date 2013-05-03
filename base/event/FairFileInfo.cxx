@@ -1,9 +1,12 @@
 //  FairFileInfo.cxx
 //  Created by Mohammad Al-Turany on 6/21/11.
 //
-
 #include "FairFileInfo.h"
-#include "TSystem.h"
+
+#include "TFile.h"                      // for TFile
+#include "TSystem.h"                    // for TSystem, gSystem
+
+#include <stdio.h>                      // for printf
 
 //__________________________________________________________________________
 FairFileInfo::FairFileInfo()

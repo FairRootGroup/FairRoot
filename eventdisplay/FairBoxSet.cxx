@@ -4,11 +4,6 @@
 // -------------------------------------------------------------------------
 
 #include "FairBoxSet.h"
-#include "FairBoxSetDraw.h"
-
-#include <iostream>
-using std::cout;
-using std::endl;
 
 // -----   Standard constructor   ------------------------------------------
 FairBoxSet::FairBoxSet(FairBoxSetDraw* drawer, const char* name, const char* t)

@@ -10,6 +10,10 @@
 
 #include "FairGeoMagnet.h"
 
+#include "TString.h"                    // for TString
+
+#include <string.h>                     // for strcpy
+
 ClassImp(FairGeoMagnet)
 
 FairGeoMagnet::FairGeoMagnet()

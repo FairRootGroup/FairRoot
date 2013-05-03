@@ -1,23 +1,34 @@
-#include <sstream>
-
-#include "FairDbBinaryFile.h"
 #include "FairDbResult.h"
-#include "FairDbServices.h"
-#include "FairDbTableRow.h"
-#include "FairDbFieldType.h"
-#include "FairDbString.h"
-#include "FairDbStatement.h"
-#include "FairDbTableMetaData.h"
-#include "FairDbProxy.h"
-#include "FairDbCache.h"
-#include "FairDbTimerManager.h"
-#include "FairDbValidityRecBuilder.h"
-#include "FairDbExceptionLog.h"
 
+#include "FairDbBinaryFile.h"           // for string, FairDbBinaryFile
+#include "FairDbCache.h"                // for FairDbCache
+#include "FairDbExceptionLog.h"         // for FairDbExceptionLog
+#include "FairDbFieldType.h"            // for FairDbFieldType
+#include "FairDbProxy.h"                // for FairDbProxy
+#include "FairDbStatement.h"            // for FairDbStatement
+#include "FairDbString.h"               // for FairDbString, MakePrintable
+#include "FairDbTableMetaData.h"        // for FairDbTableMetaData
+#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "FairDbTimerManager.h"         // for FairDbTimerManager, etc
+#include "FairDbValidityRecBuilder.h"   // for FairDbValidityRecBuilder
+#include "ValRange.h"                   // for ValRange
+#include "ValTimeStamp.h"               // for ValTimeStamp, operator==, etc
 
-#include "ValTimeStamp.h"
+#include "TSQLStatement.h"              // for TSQLStatement
 
+#include <stddef.h>                     // for NULL
+#include <algorithm>                    // for sort
+#include <iostream>                     // for cout
+#include <sstream>                      // for operator<<, basic_ostream, etc
+#include <utility>                      // for pair
 
+using std::cout;
+using std::endl;
+using std::map;
+using std::vector;
+using std::ostringstream;
+using std::istringstream;
+using std::string;
 
 // ------------------------- Result Set  Implementation ---------------------------------\\
 

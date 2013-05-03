@@ -11,9 +11,10 @@
 #ifndef FAIRRADMAPPOINT_H
 #define FAIRRADMAPPOINT_H
 
-#include "TObject.h"
-#include "TVector3.h"
-#include "FairMCPoint.h"
+#include "FairMCPoint.h"                // for FairMCPoint
+
+#include "Rtypes.h"                     // for Double_t, Float_t, Int_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairRadMapPoint : public FairMCPoint
 {

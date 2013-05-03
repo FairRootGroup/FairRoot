@@ -2,19 +2,17 @@
 // -----                    FairConstField source file                  -----
 // -----                Created 30/01/07  by M. Al/Turany              -----
 // -------------------------------------------------------------------------
-
 #include "FairConstField.h"
-#include "FairConstPar.h"
 
+#include "FairConstPar.h"               // for FairConstPar
+#include "FairRun.h"                    // for FairRun
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TString.h"                    // for operator<<, TString
 
-
-
-#include <iomanip>
-#include <iostream>
-
+#include <iomanip>                      // for operator<<, setw
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using namespace std;
 

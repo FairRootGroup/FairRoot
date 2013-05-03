@@ -1,8 +1,12 @@
 #ifndef FAIRGEOTRANSFORM_H
 #define FAIRGEOTRANSFORM_H
 
-#include "FairGeoVector.h"
-#include "FairGeoRotation.h"
+#include "TObject.h"                    // for TObject
+
+#include "FairGeoRotation.h"            // for FairGeoRotation
+#include "FairGeoVector.h"              // for FairGeoVector
+
+#include "Rtypes.h"                     // for Double_t, etc
 
 /**
  * basic geometry transformation class

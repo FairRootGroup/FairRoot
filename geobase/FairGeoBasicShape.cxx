@@ -9,15 +9,17 @@
 // Base class of the all shapes
 //
 ///////////////////////////////////////////////////////////////////////////////
-
 #include "FairGeoBasicShape.h"
 
-#include "FairGeoVolume.h"
-#include "FairGeoVector.h"
+#include "FairGeoTransform.h"           // for FairGeoTransform
+#include "FairGeoVector.h"              // for FairGeoVector
+#include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "TArrayD.h"
+#include "TArrayD.h"                    // for TArrayD
 
-#include <iostream>
+#include <stdio.h>                      // for printf, sprintf, sscanf
+#include <string.h>                     // for strlen
+#include <iostream>                     // for cout
 
 using std::cout;
 

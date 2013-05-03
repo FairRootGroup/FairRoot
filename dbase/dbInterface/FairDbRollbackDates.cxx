@@ -1,13 +1,20 @@
-
-#include <cstring>
-
-#include "TString.h"
-
-#include "FairDb.h"
 #include "FairDbRollbackDates.h"
-#include "FairRegistry.h"
-#include "FairDbString.h"
-#include "ValTimeStamp.h"
+
+#include "FairDb.h"                     // for MakeDateTimeString, etc
+#include "FairDbString.h"               // for cmp_wildcard
+#include "FairRegistry.h"               // for FairRegistry, etc
+#include "ValTimeStamp.h"               // for ValTimeStamp
+
+#include "Riosfwd.h"                    // for ostream
+#include "TString.h"                    // for TString, etc
+
+#include <cstring>                      // for strncmp
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <iterator>                     // for reverse_iterator, etc
+#include <utility>                      // for pair
+
+using std::cout;
+using std::endl;
 
 ClassImp(FairDbRollbackDates)
 

@@ -1,16 +1,19 @@
 #ifndef FAIRDBCONFIGURABLE_H
 #define FAIRDBCONFIGURABLE_H
-#ifndef REGISTRY_H
-# include "FairRegistry.h"
-#endif
 
-class FairDbConfDialog;
+#ifndef REGISTRY_H
+#include "FairRegistry.h"               // for FairRegistry
+#endif
 
 #ifndef ROOT_Rtypes
 #if !defined(__CINT__) || defined(__MAKECINT__)
-#include "Rtypes.h"
+#include "Rtypes.h"                     // for FairDbConfigurable::Class, etc
 #endif
 #endif
+
+// IWYU pragma: no_include "Rtypes.h"
+
+class FairDbConfDialog;
 
 class FairDbConfigurable
 {

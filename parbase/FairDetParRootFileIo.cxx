@@ -13,19 +13,22 @@
 // implemeted without knowing the exact type of the detector or of the detector
 // dependend parameter containers using only the base class types.
 ///////////////////////////////////////////////////////////////////////////////
-
-
 #include "FairDetParRootFileIo.h"
 
-#include "FairParRootFileIo.h"
-#include "FairRtdbRun.h"
-#include "FairRuntimeDb.h"
-#include "FairParSet.h"
+#include "FairParRootFileIo.h"          // for FairParRootFile
+#include "FairParSet.h"                 // for FairParSet
+#include "FairRtdbRun.h"                // for FairParVersion, FairRtdbRun
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "TKey.h"
-#include "TROOT.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TDirectory.h"                 // for TDirectory, gDirectory
+#include "TKey.h"                       // for TKey
+#include "TROOT.h"                      // for TROOT, gROOT
 
-#include <iostream>
+#include <stdio.h>                      // for sprintf
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
+class TObject;
 
 using std::cout;
 using std::endl;

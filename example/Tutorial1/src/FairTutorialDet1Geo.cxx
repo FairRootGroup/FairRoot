@@ -1,5 +1,6 @@
 #include "FairTutorialDet1Geo.h"
-#include "FairGeoNode.h"
+
+#include <stdio.h>                      // for sprintf
 
 ClassImp(FairTutorialDet1Geo)
 

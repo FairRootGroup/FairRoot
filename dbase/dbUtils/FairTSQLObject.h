@@ -7,20 +7,20 @@
 #ifndef FAIR_TSQL_OBJECT_H
 #define FAIR_TSQL_OBJECT_H
 
-#include <iostream>
+#include "Rtypes.h"                     // for ClassDef, etc
+#include "TObject.h"                    // for TObject
 
-// ROOT
-#include "TObject.h"
+#include <stddef.h>                     // for size_t
+#include <string>                       // for string
 
-class TDictionary;
-class TClass;
-class TList;
-class TMethodCall;
-class TMethod;
-class TArrayC;
-class TArrayI;
-class TArrayF;
 class TArrayD;
+class TArrayF;
+class TArrayI;
+class TClass;
+class TDictionary;
+class TList;
+class TMethod;
+class TMethodCall;
 
 /**
  * Enumeration type to indicate the supported data types by the fair

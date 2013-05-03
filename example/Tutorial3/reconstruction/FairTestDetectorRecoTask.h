@@ -1,12 +1,11 @@
 #ifndef PNDTORINODETECTORRECOTASK_H
 #define PNDTORINODETECTORRECOTASK_H
 
-#include "FairTask.h"
+#include "FairTask.h"                   // for FairTask, InitStatus
+
+#include "Rtypes.h"                     // for ClassDef
 
 class TClonesArray;
-
-class FairTestDetectorPoint;
-
 
 class FairTestDetectorRecoTask : public FairTask
 {

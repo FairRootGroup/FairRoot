@@ -4,19 +4,20 @@
 // -------------------------------------------------------------------------
 #include "FairIonGenerator.h"
 
-#include "FairPrimaryGenerator.h"
+#include "FairIon.h"                    // for FairIon
+#include "FairParticle.h"               // for FairParticle
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+#include "FairRunSim.h"                 // for FairRunSim
 
-#include "FairIon.h"
-#include "FairRunSim.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TObjArray.h"                  // for TObjArray
+#include "TParticle.h"                  // for TParticle
+#include "TParticlePDG.h"               // for TParticlePDG
 
-#include "TDatabasePDG.h"
-#include "TParticlePDG.h"
-#include "TObjArray.h"
+#include <stdio.h>                      // for NULL, sprintf
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
-#include "FairRunSim.h"
-#include "FairIon.h"
-#include <iostream>
-#include "TParticle.h"
 using std::cout;
 using std::endl;
 

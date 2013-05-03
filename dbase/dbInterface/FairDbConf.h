@@ -4,10 +4,7 @@
 # include <string>
 # define STRING
 #endif
-#ifndef REGISTRY_H
-# include "FairRegistry.h"
-#endif
-#include <cstdlib>
+class FairRegistry;
 
 class FairDbConf
 {

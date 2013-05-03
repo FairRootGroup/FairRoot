@@ -4,9 +4,15 @@
 // -------------------------------------------------------------------------
 
 #include "FairTask.h"
-#include "FairLogger.h"
 
-#include <iostream>
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+
+#include "TCollection.h"                // for TIter
+#include "TList.h"                      // for TList
+#include "TObject.h"                    // for TObject
+
+#include <iostream>                     // for cout, endl
+
 using std::cout;
 using std::endl;
 

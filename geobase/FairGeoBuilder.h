@@ -1,9 +1,10 @@
 #ifndef FAIRGEOBUILDER_H
 #define FAIRGEOBUILDER_H
 
-#include "TNamed.h"
+#include "TNamed.h"                     // for TNamed
 
-//class FairGeoSet;
+#include "Rtypes.h"                     // for Int_t, etc
+
 class FairGeoNode;
 class FairGeoMedium;
 

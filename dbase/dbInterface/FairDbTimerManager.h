@@ -1,15 +1,11 @@
-
 #ifndef FAIRDBTIMERMANAGER
 #define FAIRDBTIMERMANAGER
 
+#include "Rtypes.h"                     // for Bool_t, UInt_t, etc
 
 #include <string>
 #include <list>
 
-using std::string;
-using std::list;
-
-class FairDbTableMetaData;
 class FairDbTimer;
 
 class FairDbTimerManager
@@ -29,7 +25,7 @@ class FairDbTimerManager
       fEnabled = flag;
       fSubWatchEnabled = enableSubWatch;
     }
-    void RecBegin(string tableName, UInt_t rowSize);
+    void RecBegin(std::string tableName, UInt_t rowSize);
     void RecEnd(UInt_t numRows);
     void RecFillAgg(Int_t aggNo);
     void RecMainQuery();
@@ -50,7 +46,7 @@ class FairDbTimerManager
     Bool_t fEnabled;     // Enable/disable
     Bool_t fSubWatchEnabled;
     // SubWatch Enable/disable (not used now).
-    list<FairDbTimer*> fTimers;      // Push-down stack of timers.
+    std::list<FairDbTimer*> fTimers;      // Push-down stack of timers.
 
     ClassDef(FairDbTimerManager,0)    // Simple query timer
 

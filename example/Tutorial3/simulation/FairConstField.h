@@ -9,12 +9,11 @@
 #ifndef FairConstFIELD_H
 #define FairConstFIELD_H 1
 
+#include "FairField.h"                  // for FairField
 
-#include "FairField.h"
-
+#include "Rtypes.h"                     // for Double_t, etc
 
 class FairConstPar;
-
 
 class FairConstField : public FairField
 {

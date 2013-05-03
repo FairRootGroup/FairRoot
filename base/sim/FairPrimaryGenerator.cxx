@@ -1,21 +1,28 @@
 #include "FairPrimaryGenerator.h"
-#include "FairGenerator.h"
-#include "FairMCEventHeader.h"
-#include "FairGenericStack.h"
 
-#include "TDatabasePDG.h"
-#include "TParticlePDG.h"
-#include "TRandom.h"
-#include "TMath.h"
-#include "TF1.h"
+#include "FairGenerator.h"              // for FairGenerator
+#include "FairGenericStack.h"           // for FairGenericStack
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairMCEventHeader.h"          // for FairMCEventHeader
 
-#include <iostream>
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TF1.h"                        // for TF1
+#include "TIterator.h"                  // for TIterator
+#include "TMCProcess.h"                 // for TMCProcess::kPPrimary
+#include "TMath.h"                      // for Sqrt
+#include "TObject.h"                    // for TObject
+#include "TParticlePDG.h"               // for TParticlePDG
+#include "TRandom.h"                    // for TRandom, gRandom
+#include "TString.h"                    // for TString
 
-Int_t FairPrimaryGenerator::fTotPrim=0;
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
 using std::cout;
 using std::cerr;
 using std::endl;
 
+Int_t FairPrimaryGenerator::fTotPrim=0;
 
 // -----   Default constructor   -------------------------------------------
 FairPrimaryGenerator::FairPrimaryGenerator()

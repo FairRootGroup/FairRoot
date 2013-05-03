@@ -2,22 +2,17 @@
 // -----             FairPlutoReactionGenerator header file            -----
 // -----          Created 05/07/08  by I. Froehlich                    -----
 // -------------------------------------------------------------------------
-
-
-
 #include "FairPlutoReactionGenerator.h"
 
-#include "FairPrimaryGenerator.h"
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
-#include "TClonesArray.h"
-#include "TDatabasePDG.h"
-#include "TFile.h"
-#include "TLorentzVector.h"
-#include "TTree.h"
-#include "TVector3.h"
+#include "PFairGenerator.h"             // for PFairGenerator
+#include "PReaction.h"                  // for PReaction
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
 
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 // -----   Default constructor   ------------------------------------------
 FairPlutoReactionGenerator::FairPlutoReactionGenerator()

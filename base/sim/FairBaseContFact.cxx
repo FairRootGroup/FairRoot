@@ -6,9 +6,15 @@
 
 //  Factory for the parameter containers in Base
 
+#include <string.h>
+
 #include "FairBaseContFact.h"
 #include "FairBaseParSet.h"
 #include "FairRuntimeDb.h"
+#include "TList.h"
+#include "TString.h"
+
+class FairParSet;
 
 
 ClassImp(FairBaseContFact)

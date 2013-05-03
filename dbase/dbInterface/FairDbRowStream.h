@@ -1,10 +1,11 @@
 #ifndef FAIRDBROWSTREAM_H
 #define FAIRDBROWSTREAM_H
 
-#include <string>
+#include "Rtypes.h"                     // for UInt_t, Bool_t, etc
 
-#include "FairDbFieldType.h"
+#include <string>                       // for string
 
+class FairDbFieldType;
 class FairDbTableMetaData;
 
 class FairDbRowStream
@@ -18,15 +19,15 @@ class FairDbRowStream
 
     virtual
     const FairDbFieldType& ColFieldType(UInt_t col) const;
-    virtual       string ColName(UInt_t col) const;
+    virtual       std::string ColName(UInt_t col) const;
     virtual
     const FairDbFieldType& CurColFieldType() const;
-    virtual       string CurColName() const;
+    virtual       std::string CurColName() const;
     virtual       UInt_t CurColNum() const { return fCurCol;}
     Bool_t HasRowCounter() const { return fHasRowCounter; }
     virtual       UInt_t NumCols() const;
-    virtual       string TableName() const;
-    virtual       string TableNameTc() const;
+    virtual       std::string TableName() const;
+    virtual       std::string TableNameTc() const;
     virtual const FairDbTableMetaData*
     MetaData() const { return fMetaData; }
     // State changing member functions

@@ -2,54 +2,61 @@
 // -----                    FairDetector source file                   -----
 // -----            Created 06/01/04  by M. Al-Turany                  -----
 // -------------------------------------------------------------------------
-
-
 #include "FairMCApplication.h"
-#include "FairGenericStack.h"
-#include "FairField.h"
-#include "FairModule.h"
-#include "FairDetector.h"
-#include "FairRunSim.h"
-#include "FairIon.h"
-#include "FairMCEventHeader.h"
-#include "FairEventHeader.h"
-#include "FairPrimaryGenerator.h"
-#include "FairTrajFilter.h"
-#include "FairRootManager.h"
-#include "FairTask.h"
-#include "FairVolume.h"
-#include "FairGeoLoader.h"
-#include "FairGeoInterface.h"
-#include "FairGeoMedia.h"
-#include "FairGeoMedium.h"
-#include "FairRadLenManager.h"
-#include "FairRadGridManager.h"
-#include "FairRadMapManager.h"
-#include "FairMesh.h"
-#include "FairRuntimeDb.h"
-#include "FairLogger.h"
-#include "FairRunInfo.h"
 
-#include "TObjArray.h"
-#include "TGeoTrack.h"
-#include "TGeoVolume.h"
-#include "TParticle.h"
-#include "TGeoManager.h"
-#include "TRefArray.h"
-#include "TROOT.h"
-#include "TInterpreter.h"
-#include "TVirtualMC.h"
-#include "TDatabasePDG.h"
-#include "TGeoTrack.h"
-#include "TGeoVolume.h"
-#include "TParticle.h"
-#include "TGeoManager.h"
-#include "TParticlePDG.h"
-#include "TMCParticleType.h"
-#include "THashList.h"
-#include "TSystem.h"
+#include "FairDetector.h"               // for FairDetector
+#include "FairField.h"                  // for FairField
+#include "FairGenericStack.h"           // for FairGenericStack
+#include "FairGeoInterface.h"           // for FairGeoInterface
+#include "FairGeoLoader.h"              // for FairGeoLoader
+#include "FairGeoMedia.h"               // for FairGeoMedia
+#include "FairGeoMedium.h"              // for FairGeoMedium
+#include "FairIon.h"                    // for FairIon
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairMCEventHeader.h"          // for FairMCEventHeader
+#include "FairMesh.h"                   // for FairMesh
+#include "FairModule.h"                 // for FairModule, etc
+#include "FairParticle.h"               // for FairParticle
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+#include "FairRadGridManager.h"         // for FairRadGridManager
+#include "FairRadLenManager.h"          // for FairRadLenManager
+#include "FairRadMapManager.h"          // for FairRadMapManager
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRun.h"                    // for FairRun
+#include "FairRunInfo.h"                // for FairRunInfo
+#include "FairRunSim.h"                 // for FairRunSim
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairTask.h"                   // for FairTask
+#include "FairTrajFilter.h"             // for FairTrajFilter
+#include "FairVolume.h"                 // for FairVolume
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TDirectory.h"                 // for TDirectory, gDirectory
+#include "TGeoManager.h"                // for gGeoManager, TGeoManager
+#include "TGeoMedium.h"                 // for TGeoMedium
+#include "TGeoNode.h"                   // for TGeoNode
+#include "TGeoTrack.h"                  // for TGeoTrack
+#include "TGeoVolume.h"                 // for TGeoVolume
+#include "TH2.h"                        // for TH2D
+#include "TInterpreter.h"               // for TInterpreter, gInterpreter
+#include "TIterator.h"                  // for TIterator
+#include "TList.h"                      // for TList, TListIter
+#include "TObjArray.h"                  // for TObjArray
+#include "TObject.h"                    // for TObject
+#include "TParticlePDG.h"               // for TParticlePDG
+#include "TROOT.h"                      // for TROOT, gROOT
+#include "TRefArray.h"                  // for TRefArray
+#include "TSystem.h"                    // for TSystem, gSystem
+#include "TTree.h"                      // for TTree
+#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMCStack.h"            // for TVirtualMCStack
+class TParticle;
+
+#include <float.h>                      // for DBL_MAX
+#include <stdlib.h>                     // for NULL, getenv, exit
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <utility>                      // for pair
 
 using std::cout;
 using std::endl;

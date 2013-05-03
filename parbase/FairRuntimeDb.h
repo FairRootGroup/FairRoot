@@ -1,19 +1,17 @@
 #ifndef FAIRRUNTIMEDB_H
 #define FAIRRUNTIMEDB_H
 
-#include "TObject.h"
-#include "TList.h"
-#include "FairLogger.h"
+#include "TObject.h"                    // for TObject
 
+#include "Rtypes.h"                     // for Bool_t, Int_t, Text_t, etc
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
+
+class FairContFact;
+class FairLogger;
 class FairParIo;
 class FairParSet;
 class FairRtdbRun;
-class FairContFact;
-
-class FairParTSQLIo;
-class FairDetParTSQLIo;
-class FairGenericParTSQLIo;
-
 
 static TList contFactories;    //! list of container factories
 

@@ -6,14 +6,14 @@
 #ifndef FAIRFILEHEADER_H
 #define FAIRFILEHEADER_H
 
+#include "TNamed.h"                     // for TNamed
 
-#include "TNamed.h"
-#include "TList.h"
-#include "TObjString.h"
-#include "TFile.h"
-
+#include "Rtypes.h"                     // for UInt_t, etc
+#include "TString.h"                    // for TString
 
 class FairFileInfo;
+class TFile;
+class TList;
 
 /**
  *  File Header Class

@@ -1,8 +1,10 @@
 #ifndef FAIRHIT_H
 #define FAIRHIT_H
 
-#include "FairTimeStamp.h"
-#include "TVector3.h"
+#include "FairTimeStamp.h"              // for FairTimeStamp
+
+#include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
+#include "TVector3.h"                   // for TVector3
 
 /**
  * Abstract base class for reconstructed hits in the FAIR detectors.

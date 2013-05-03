@@ -1,18 +1,16 @@
 #ifndef VALCONTEXT_H
 #define VALCONTEXT_H
 
-#include "TObject.h"
-#include "Experiment.h"
-#include "Detector.h"
-#include "SimFlag.h"
-#include "ValTimeStamp.h"
+#include "TObject.h"                    // for TObject
 
-#include <iostream>
-using namespace std;
+#include "SimFlag.h"                    // for SimFlag_t
+#include "ValTimeStamp.h"               // for ValTimeStamp, operator==, etc
+#include "db_detector_def.h"            // for Detector, etc
 
-class ValContext;
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Bool_t, Option_t, etc
 
-std::ostream& operator<<(std::ostream& os, const ValContext& vldc);
+#include <iostream>                     // for ostream
 
 class ValContext : public TObject
 {
@@ -60,6 +58,8 @@ class ValContext : public TObject
     ClassDef(ValContext,1)  // ValTimeStamp+Detector+SimFlag
 
 };
+
+std::ostream& operator<<(std::ostream& os, const ValContext& vldc);
 
 #ifndef __CINT__
 

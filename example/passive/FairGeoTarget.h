@@ -1,7 +1,9 @@
 #ifndef PNDGEOTARGET_H
 #define PNDGEOTARGET_H
 
-#include "FairGeoSet.h"
+#include "FairGeoSet.h"                 // for FairGeoSet
+
+#include "Rtypes.h"                     // for FairGeoTarget::Class, Int_t, etc
 
 class  FairGeoTarget : public FairGeoSet
 {

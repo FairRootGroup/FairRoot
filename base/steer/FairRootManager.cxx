@@ -7,40 +7,45 @@
 // ------------------
 // Class that takes care of Root IO.
 #include "FairRootManager.h"
-#include "FairDetector.h"
-#include "FairRunAna.h"
-#include "FairRun.h"
-#include "FairMCApplication.h"
-#include "FairGeoNode.h"
-#include "FairTSBufferFunctional.h"
-#include "FairLogger.h"
-#include "FairMCEventHeader.h"
-#include "FairEventHeader.h"
-#include "FairFileHeader.h"
-#include "FairEventHeader.h"
-#include "FairWriteoutBuffer.h"
-#include "FairLink.h"
-#include "TFriendElement.h"
-#include "TObjArray.h"
-#include "TFolder.h"
-#include "TCollection.h"
-#include "TParticle.h"
-#include "TList.h"
-#include "TGeoManager.h"
-#include "TROOT.h"
-#include "TClonesArray.h"
-#include "TList.h"
-#include "TChainElement.h"
-#include "TPRegexp.h"
-#include "TArray.h"
-#include "TF1.h"
-#include "TRandom.h"
 
-#include <iostream>
-#include <map>
-#include <list>
-#include <set>
-#include <vector>
+#include "FairEventHeader.h"            // for FairEventHeader
+#include "FairFileHeader.h"             // for FairFileHeader
+#include "FairGeoNode.h"                // for FairGeoNode
+#include "FairLink.h"                   // for FairLink
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairMCEventHeader.h"          // for FairMCEventHeader
+#include "FairRun.h"                    // for FairRun
+#include "FairTSBufferFunctional.h"     // for FairTSBufferFunctional, etc
+#include "FairWriteoutBuffer.h"         // for FairWriteoutBuffer
+#include "Riosfwd.h"                    // for ostream
+#include "TArrayI.h"                    // for TArrayI
+#include "TBranch.h"                    // for TBranch
+#include "TChainElement.h"              // for TChainElement
+#include "TClass.h"                     // for TClass
+#include "TClonesArray.h"               // for TClonesArray
+#include "TCollection.h"                // for TCollection, TIter
+#include "TF1.h"                        // for TF1
+#include "TFolder.h"                    // for TFolder
+#include "TGeoManager.h"                // for TGeoManager, gGeoManager
+#include "TIterator.h"                  // for TIterator
+#include "TList.h"                      // for TList
+#include "TMath.h"                      // for floor
+#include "TNamed.h"                     // for TNamed
+#include "TObjArray.h"                  // for TObjArray
+#include "TObjString.h"                 // for TObjString
+#include "TROOT.h"                      // for TROOT, gROOT
+#include "TRandom.h"                    // for TRandom, gRandom
+#include "TTree.h"                      // for TTree
+
+#include <stdlib.h>                     // for exit
+#include <string.h>                     // for NULL, strcmp
+#include <algorithm>                    // for find
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <list>                         // for _List_iterator, list, etc
+#include <map>                          // for map, _Rb_tree_iterator, etc
+#include <set>                          // for set, set<>::iterator
+#include <utility>                      // for pair
+#include <vector>                       // for vector
 
 using std::flush;
 using std::cout;

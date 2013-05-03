@@ -1,13 +1,12 @@
 #ifndef FairTestDetectorTimeDigiTask_H
 #define FairTestDetectorTimeDigiTask_H
 
-#include "FairTask.h"
+#include "FairTask.h"                   // for FairTask, InitStatus
+
+#include "Rtypes.h"                     // for Double_t, etc
 
 class TClonesArray;
-
-class FairTestDetectorPoint;
 class FairTestDetectorDigiWriteoutBuffer;
-
 
 class FairTestDetectorTimeDigiTask : public FairTask
 {

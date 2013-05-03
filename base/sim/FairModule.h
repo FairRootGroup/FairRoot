@@ -1,30 +1,31 @@
 #ifndef FAIRMODULE_H
 #define FAIRMODULE_H
 
-#include "FairLogger.h"
+#include "TNamed.h"                     // for TNamed
 
-#include "FairGeoLoader.h"
-#include "FairGeoInterface.h"
-#include "FairGeoVolume.h"
-#include "FairGeoNode.h"
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
+#include "FairGeoInterface.h"           // for FairGeoInterface
+#include "FairGeoLoader.h"              // for FairGeoLoader
+#include "FairGeoNode.h"                // for FairGeoNode
+#include "FairGeoVolume.h"              // for FairGeoVolume
+#include "FairLogger.h"                 // for FairLogLevel::INFO, etc
+#include "FairRun.h"                    // for FairRun
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "TString.h"
-#include "TNamed.h"
-#include "TRefArray.h"
-#include "TGeoMatrix.h"
-#include "TList.h"
+#include "Rtypes.h"                     // for Bool_t, Int_t, etc
+#include "TList.h"                      // for TList (ptr only), TListIter
+#include "TObjArray.h"                  // for TObjArray
+#include "TString.h"                    // for TString, operator!=
 
-#include <map>
+#include <stddef.h>                     // for NULL
+#include <string>                       // for string
 
 class FairVolumeList;
 class FairVolume;
-class TGeoNode;
-class TGeoMatrix;
-class TGeoVolume;
 class TArrayI;
-
+class TGeoMatrix;
+class TGeoNode;
+class TGeoVolume;
+class TRefArray;
 
 /**
  * Base class for constructing all detecors and passive volumes

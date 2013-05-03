@@ -3,15 +3,18 @@
  * License:                            *
  * Version:                            *
  ***************************************/
+
 #include "FairTSQLObject.h"
 
-// ROOT
-#include "TClass.h"
-#include "TList.h"
-#include "TDataMember.h"
-#include "TDictionary.h"
-#include "TMethod.h"
-#include "TMethodCall.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TClass.h"                     // for TClass
+#include "TDataMember.h"                // for TDataMember
+#include "TDictionary.h"                // for TDictionary
+#include "TList.h"                      // for TList
+#include "TMethod.h"                    // for TMethod
+#include "TMethodCall.h"                // for TMethodCall
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 ClassImp(FairTSQLObject)
 

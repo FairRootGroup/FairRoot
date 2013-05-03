@@ -6,23 +6,25 @@
 
 #include "FairAnaSelector.h"
 
+#include "FairParAsciiFileIo.h"         // for FairParAsciiFileIo
+#include "FairParRootFileIo.h"          // for FairParRootFileIo
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRunAna.h"                 // for FairRunAna
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairTask.h"                   // for FairTask
 
-#include "TFile.h"
-#include "TProofOutputFile.h"
-#include "TH2.h"
-#include "TSystem.h"
-#include "TStyle.h"
-#include "TCanvas.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TFile.h"                      // for TFile
+#include "TList.h"                      // for TList
+#include "TNamed.h"                     // for TNamed
+#include "TObject.h"                    // for TObject
+#include "TProofOutputFile.h"           // for TProofOutputFile
+#include "TSystem.h"                    // for TSystem, gSystem
 
-#include "FairTask.h"
-#include "FairRunAna.h"
-#include "FairRuntimeDb.h"
-#include "FairParRootFileIo.h"
-#include "FairParAsciiFileIo.h"
-
-#include <iostream>
-#include <iomanip>
-#include <map>
+#include <iomanip>                      // for setprecision, setw
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <map>                          // for map
+#include <utility>                      // for pair
 
 using std::cout;
 using std::cerr;

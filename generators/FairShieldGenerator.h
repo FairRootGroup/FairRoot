@@ -22,11 +22,14 @@
 #ifndef FAIRSHIELDGENERATOR_H
 #define FAIRSHIELDGENERATOR_H 1
 
+#include "FairGenerator.h"              // for FairGenerator
 
-#include "FairGenerator.h"
+#include "Riosfwd.h"                    // for ifstream
+#include "Rtypes.h"                     // for FairShieldGenerator::Class, etc
+#include "TString.h"                    // for TString
 
-#include <fstream>
-#include <map>
+#include <fstream>                      // for ifstream
+#include <map>                          // for map
 
 class TDatabasePDG;
 class FairPrimaryGenerator;

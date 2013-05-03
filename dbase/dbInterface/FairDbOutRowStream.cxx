@@ -1,11 +1,19 @@
 
-#include <sstream>
-
-#include "FairDbFieldType.h"
 #include "FairDbOutRowStream.h"
-#include "FairDbTableMetaData.h"
-#include "FairDbString.h"
-#include "ValTimeStamp.h"
+
+#include "FairDbFieldType.h"            // for FairDbFieldType, string
+#include "FairDbString.h"               // for MakePrintable
+#include "ValTimeStamp.h"               // for ValTimeStamp
+
+#include "Riosfwd.h"                    // for ostream
+#include "TString.h"                    // for TString
+
+#include <iostream>                     // for ostringstream, etc
+
+using std::cout;
+using std::endl;
+using std::ostringstream;
+using std::string;
 
 ClassImp(FairDbOutRowStream)
 

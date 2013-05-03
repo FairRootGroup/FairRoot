@@ -6,7 +6,7 @@
 
 #include"FairField.h"
 
-
+#include "FairLogger.h"                 // for FairLogger
 
 // -----   Default constructor   -------------------------------------------
 FairField::FairField()

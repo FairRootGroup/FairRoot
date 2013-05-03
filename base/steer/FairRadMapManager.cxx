@@ -2,17 +2,27 @@
 // -----               FairRadMapManager source file                   -----
 // -------------------------------------------------------------------------
 
-#include <iostream>
-#include "FairRadMapPoint.h"
 #include "FairRadMapManager.h"
-#include "FairRootManager.h"
-#include "TLorentzVector.h"
-#include "TParticle.h"
-#include "TVirtualMC.h"
-#include "TROOT.h"
-#include "TGeoManager.h"
-#include "TGeoVolume.h"
-#include "TVectorD.h"
+
+#include "FairRadMapPoint.h"            // for FairRadMapPoint
+#include "FairRootManager.h"            // for FairRootManager
+
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TGeoManager.h"                // for TGeoManager, gGeoManager
+#include "TGeoVolume.h"                 // for TGeoVolume
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TMap.h"                       // for TMap
+#include "TObjArray.h"                  // for TObjArray
+#include "TObject.h"                    // for TObject
+#include "TVector3.h"                   // for TVector3
+#include "TVectorDfwd.h"                // for TVectorD
+#include "TVectorT.h"                   // for TVectorT
+#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMCStack.h"            // for TVirtualMCStack
+
+#include <stdio.h>                      // for NULL, printf
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using namespace std;
 

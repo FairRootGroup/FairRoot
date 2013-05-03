@@ -2,11 +2,16 @@
 // Version of June 10th
 // modified to work properly in q/p variables  instead of 1/p
 // ------------------------------------------------------------------
-
-#include <iostream>
 #include "FairGeaneUtil.h"
-#include "TGeoTorus.h"
-#include "TMath.h"
+
+#include "TMath.h"                      // for Sqrt, Cos, Sin, Power, sqrt, etc
+#include "TMathBase.h"                  // for Abs, Sign
+#include "TMatrixT.h"                   // for TMatrixT, etc
+#include "TMatrixTBase.h"               // for TMatrixTBase
+#include "TMatrixTUtils.h"              // for TMatrixTRow
+
+#include <string.h>                     // for memset
+#include <cmath>                        // for pow
 
 using namespace std;
 

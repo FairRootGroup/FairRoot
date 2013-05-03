@@ -10,13 +10,16 @@
 /////////////////////////////////////////////////////////////
 
 #include "FairContFact.h"
-#include "FairRuntimeDb.h"
-#include "FairParSet.h"
 
-#include "TObjString.h"
+#include "FairLogger.h"                 // for FairLogger
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
 
+#include "Riosfwd.h"                    // for ostream
+#include "TCollection.h"                // for TIter
+#include "TObjString.h"                 // for TObjString
 
-#include <iostream>
+#include <string.h>                     // for strlen, NULL
+#include <iostream>                     // for operator<<, ostream, cout, etc
 
 using std::cout;
 

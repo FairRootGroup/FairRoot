@@ -10,6 +10,12 @@
 
 #include <cstdlib>
 
+using std::cout;
+using std::endl;
+using std::string;
+using std::ios_base;
+using std::map;
+
 ClassImpT(FairDbResultPtr,T)
 
 

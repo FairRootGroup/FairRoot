@@ -1,10 +1,12 @@
 #ifndef FAIRGEOMEDIUM_H
 #define FAIRGEOMEDIUM_H
 
-#include "TNamed.h"
+#include "TNamed.h"                     // for TNamed
 
-#include <fstream>
-//#include <iomanip>
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Double_t, Int_t, Bool_t, etc
+
+#include <fstream>                      // for fstream
 
 /**
  * Class for tracking medium

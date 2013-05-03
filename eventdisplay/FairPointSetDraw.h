@@ -14,14 +14,14 @@
 #ifndef FAIRPOINTSETDRAW_H
 #define FAIRPOINTSETDRAW_H
 
+#include "FairTask.h"                   // for FairTask, InitStatus
 
-#include "FairTask.h"
-//#include "TVector3.h"
+#include "Rtypes.h"                     // for Int_t, Color_t, etc
 
 class FairEventManager;
-
 class TClonesArray;
 class TEvePointSet;
+class TObject;
 class TVector3;
 
 class FairPointSetDraw : public FairTask

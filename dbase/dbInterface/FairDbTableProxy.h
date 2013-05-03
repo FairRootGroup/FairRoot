@@ -1,24 +1,23 @@
 #ifndef FAIRDBTABLEPROXY_H
 #define FAIRDBTABLEPROXY_H
 
-#include <string>
-#include <sstream>
-using std::string;
+#include "FairDb.h"                     // for Version
+#include "FairDbProxy.h"                // for FairDbProxy
+#include "FairDbTableMetaData.h"        // for FairDbTableMetaData
+#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "ValTimeStamp.h"               // for ValTimeStamp
 
-#include "FairDb.h"
-#include "FairDbProxy.h"
-#include "FairDbTableMetaData.h"
-#include "FairDbValidityRec.h"
-#include "ValContext.h"
-#include "ValTimeStamp.h"
+#include "Rtypes.h"                     // for Bool_t, UInt_t, etc
+
+#include <string>                       // for string
 
 class FairDbCache;
 class FairDbMultConnector;
 class FairDbResult;
-class FairDbTableProxyRegistry;
-class FairDbTableRow;
 class FairDbValidityRec;
 class FairDbValidityRecBuilder;
+class ValContext;
+
 
 class FairDbTableProxy
 {
@@ -32,34 +31,34 @@ class FairDbTableProxy
     FairDbMultConnector& GetMultConnector() { return *fMultConnector; }
     const FairDbTableMetaData& GetMetaData() const { return fMetaData; }
     const FairDbTableMetaData& GetMetaValid() const { return fMetaValid; }
-    string GetRowName() const {
+    std::string GetRowName() const {
       return fTableRow ? fTableRow->ClassName() : "Unknown";
     }
-    string GetTableName() const { return fTableName;}
+    std::string GetTableName() const { return fTableName;}
 // State changing member functions
     FairDbCache* GetCache() { return fCache;}
     const FairDbResult* Query(const ValContext& vc,
                               const FairDb::Version& task,
                               Bool_t findFullTimeWindow = true);
-    const FairDbResult* Query(const string& context,
+    const FairDbResult* Query(const std::string& context,
                               const FairDb::Version& task,
-                              const string& data,
-                              const string& fillOpts);
+                              const std::string& data,
+                              const std::string& fillOpts);
     const FairDbResult* Query(UInt_t seqNo,UInt_t dbNo);
     const FairDbResult* Query(const FairDbValidityRec& vrec,
                               Bool_t canReuse = kTRUE);
     ValTimeStamp QueryOverlayCreationDate(const FairDbValidityRec& vrec,
                                           UInt_t dbNo);
     void RefreshMetaData();
-    void SetSqlCondition(const string& sql);
+    void SetSqlCondition(const std::string& sql);
     Bool_t TableExists() const { return fExists; }
 
   protected:
 
 // Constructors (protected because created and owned by FairDbTableProxyRegistry).
     FairDbTableProxy(FairDbMultConnector* cascader,
-                     const string& tableName,
-                     const string& vldSuffix,
+                     const std::string& tableName,
+                     const std::string& vldSuffix,
                      const FairDbTableRow* tableRow);
     virtual ~FairDbTableProxy();
 
@@ -74,7 +73,7 @@ class FairDbTableProxy
     Bool_t CanReadL2Cache() const;
     Bool_t CanWriteL2Cache() const;
     Bool_t RestoreFromL2Cache(const FairDbValidityRecBuilder& builder);
-    Bool_t SaveToL2Cache(const string& name, FairDbResult& res);
+    Bool_t SaveToL2Cache(const std::string& name, FairDbResult& res);
 
 
     FairDbMultConnector* fMultConnector;
@@ -84,7 +83,7 @@ class FairDbTableProxy
     FairDbCache* fCache;
     FairDbProxy fDBProxy;
     Bool_t fExists;
-    string  fTableName;
+    std::string  fTableName;
     FairDbTableRow* fTableRow;
 
     ClassDef(FairDbTableProxy,0)        // Object to query a specific table.

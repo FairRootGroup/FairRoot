@@ -1,16 +1,26 @@
-#include <cstdlib>
-#include <memory>
-using std::auto_ptr;
-#include <sstream>
-
-#include "TList.h"
-#include "TROOT.h"
-#include "TSQLStatement.h"
-#include "TSystem.h"
-
 #include "FairDbMultConnector.h"
-#include "FairDb.h"
-#include "FairDbString.h"
+
+#include "FairDb.h"                     // for GetValDescr, etc
+#include "FairDbExceptionLog.h"         // for FairDbExceptionLog
+#include "FairDbStatement.h"            // for FairDbStatement
+#include "FairDbString.h"               // for FairDbString, StringTok, etc
+
+#include "TSQLStatement.h"              // for TSQLStatement
+#include "TString.h"                    // for TString
+#include "TSystem.h"                    // for TSystem, gSystem
+
+#include <ctype.h>                      // for islower
+#include <cstdlib>                      // for exit
+#include <iostream>                     // for cout
+#include <memory>                       // for auto_ptr, etc
+#include <utility>                      // for pair
+
+using std::cout;
+using std::endl;
+using std::ostringstream;
+using std::map;
+using std::auto_ptr;
+using std::string;
 
 ClassImp(FairDbMultConnector)
 

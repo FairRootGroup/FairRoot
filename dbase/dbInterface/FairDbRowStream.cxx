@@ -1,7 +1,11 @@
-
-#include "FairDbTableMetaData.h"
 #include "FairDbRowStream.h"
-#include "FairDbString.h"
+
+#include "FairDbString.h"               // for ToUpper
+#include "FairDbTableMetaData.h"        // for FairDbTableMetaData, string
+
+class FairDbFieldType;
+
+using std::string;
 
 ClassImp(FairDbRowStream)
 

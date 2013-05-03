@@ -6,9 +6,13 @@
  */
 
 #include "FairMultiLinkedData.h"
-#include "TClonesArray.h"
 
-#include<algorithm>
+#include "FairRootManager.h"            // for FairRootManager
+
+#include "TClonesArray.h"               // for TClonesArray
+
+#include <algorithm>                    // for find
+#include <iterator>                     // for distance
 
 ClassImp(FairMultiLinkedData);
 

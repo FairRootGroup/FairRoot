@@ -4,14 +4,16 @@
 // -----          adapted april 2010               O.Hartmann          -----
 // -------------------------------------------------------------------------
 
-
-#include <iostream>
 #include "FairRadGridManager.h"
-#include "FairRootManager.h"
-#include "TLorentzVector.h"
-#include "TParticle.h"
-#include "TVirtualMC.h"
-#include "FairMesh.h"
+
+#include "FairMesh.h"                   // for FairMesh
+
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TParticle.h"                  // for TParticle
+#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMCStack.h"            // for TVirtualMCStack
+
+#include <stddef.h>                     // for NULL
 
 using namespace std;
 

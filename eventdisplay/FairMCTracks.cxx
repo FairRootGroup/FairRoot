@@ -2,21 +2,26 @@
 // -----                        FairMCTracks source file                  -----
 // -----                  Created 10/12/07  by M. Al-Turany            -----
 // -------------------------------------------------------------------------
-
 #include "FairMCTracks.h"
 
-#include "FairEventManager.h"
-#include "FairRootManager.h"
+#include "FairEventManager.h"           // for FairEventManager
+#include "FairRootManager.h"            // for FairRootManager
 
-#include "TEveTrack.h"
-#include "TEveTrackPropagator.h"
-#include "TGeoTrack.h"
-#include "TClonesArray.h"
-#include "TObjArray.h"
-#include "TEveManager.h"
-#include "TParticle.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TEveManager.h"                // for TEveManager, gEve
+#include "TEvePathMark.h"               // for TEvePathMark
+#include "TEveTrack.h"                  // for TEveTrackList, TEveTrack
+#include "TEveTrackPropagator.h"        // for TEveTrackPropagator
+#include "TEveVector.h"                 // for TEveVector, TEveVectorT
+#include "TGeoTrack.h"                  // for TGeoTrack
+#include "TMathBase.h"                  // for Max, Min
+#include "TObjArray.h"                  // for TObjArray
+#include "TParticle.h"                  // for TParticle
 
-#include <iostream>
+#include <string.h>                     // for NULL, strcmp
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
 using std::cout;
 using std::endl;
 

@@ -1,8 +1,11 @@
 #include "FairRKPropagator.h"
 
+#include "FairField.h"                  // for FairField
 
-#include "TMath.h"
-#include "TVector3.h"
+#include "TMath.h"                      // for Sqrt
+#include "TMathBase.h"                  // for Abs
+
+#include <stdio.h>                      // for printf
 
 ClassImp(FairRKPropagator);
 

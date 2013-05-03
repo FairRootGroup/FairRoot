@@ -1,21 +1,19 @@
 #ifndef FAIRDBCONFIGSTREAM_H
 #define FAIRDBCONFIGSTREAM_H
 
+#include "FairDb.h"                     // for Version
+#include "FairDbConfigSet.h"            // for FairDbConfigSet
+#include "FairDbResPtr.h"               // for FairDbResultPtr
+#include "FairDbValidityRec.h"          // for FairDbValidityRec
+#include "ValContext.h"                 // for ValContext
 
-#include <string>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Bool_t, etc
 
-#include "FairDb.h"
-#include "FairDbConfigSet.h"
-#include "FairDbResPtr.h"
-#include "FairRegistry.h"
-#include "ValContext.h"
+#include <iosfwd>                       // for ostream
+#include <string>                       // for string
 
-class FairDbConfigStream;
-class FairDbFieldType;
 class FairRegistry;
-#include <iosfwd>
-
-ostream& operator<<(ostream& s, const FairDbConfigStream& cfStream);
 
 class FairDbConfigStream
 {
@@ -78,5 +76,7 @@ class FairDbConfigStream
     ClassDef(FairDbConfigStream,0)  // Input/output stream of configuration data
 
 };
+
+ostream& operator<<(ostream& s, const FairDbConfigStream& cfStream);
 
 #endif  // DBICONFIGSTREAM_H

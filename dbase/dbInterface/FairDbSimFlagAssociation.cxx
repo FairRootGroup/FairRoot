@@ -1,18 +1,21 @@
-
-#include <iostream>
-#include <sstream>
-using std::ostringstream;
-#include <iostream>
-using namespace std;
-#include <string>
-using std::string;
-#include <vector>
-using std::vector;
-
-
 #include "FairDbSimFlagAssociation.h"
-#include "FairRegistry.h"
-#include "FairDbString.h"
+
+#include "FairDbString.h"               // for StringTok
+#include "FairRegistry.h"               // for FairRegistry, etc
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <string.h>                     // for strncmp
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <string>                       // for string, char_traits, etc
+#include <utility>                      // for pair
+#include <vector>                       // for vector, vector<>::iterator
+
+using std::ostringstream;
+using std::cout;
+using std::endl;
+using std::string;
+using std::vector;
 
 ClassImp(FairDbSimFlagAssociation)
 

@@ -5,15 +5,20 @@
 //  Factory for the parameter containers
 //
 /////////////////////////////////////////////////////////////
+#include "FairDbTutContFact.h"
+
+#include "FairDbTutPar.h"               // for FairDbTutPar
+#include "FairParSet.h"                 // for FairParSet
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+
+#include "Riosfwd.h"                    // for ostream
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
+
+#include <string.h>                     // for strcmp, NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using namespace std;
-#include "FairDbTutContFact.h"
-#include "FairRuntimeDb.h"
-#include "FairDbTutPar.h"
-#include "FairParRootFileIo.h"
-#include "FairParAsciiFileIo.h"
-#include <iostream>
-#include <iomanip>
 
 ClassImp(FairDbTutContFact);
 

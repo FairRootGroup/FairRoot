@@ -10,7 +10,12 @@
 #ifndef FAIRHITDRAW_H_
 #define FAIRHITDRAW_H_
 
-#include "FairBoxSetDraw.h"
+#include "FairBoxSetDraw.h"             // for FairBoxSetDraw
+
+#include "Rtypes.h"                     // for FairHitDraw::Class, etc
+#include "TVector3.h"                   // for TVector3
+
+class TObject;
 
 class FairHitDraw: public FairBoxSetDraw
 {

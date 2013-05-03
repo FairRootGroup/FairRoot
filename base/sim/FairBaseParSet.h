@@ -7,11 +7,12 @@
  * @version 1
  * @since 12.10.04
  */
+#include "FairParGenericSet.h"          // for FairParGenericSet
 
+#include "Rtypes.h"                     // for Double_t, etc
+#include "TGeoManager.h"                // IWYU pragma: keep needed by cint
 
-#include "FairParGenericSet.h"
-#include "TGeoManager.h"
-#include "TObjString.h"
+class FairParamList;
 class FairPrimaryGenerator;
 class TObjArray;
 

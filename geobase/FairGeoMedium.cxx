@@ -8,9 +8,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "FairGeoMedium.h"
 
-#include <iostream>
-#include <cmath>
-#include "stdlib.h"
+#include "TString.h"                    // for TString
+
+#include <stddef.h>                     // for NULL
+#include <cmath>                        // for pow, log
+// IWYU pragma: no_include <architecture/i386/math.h>
+#include <iostream>                     // for cout
+#include <stdlib.h>                     // for abs
+
 using std::cout;
 using std::log;
 using std::pow;

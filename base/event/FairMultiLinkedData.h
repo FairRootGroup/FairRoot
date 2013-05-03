@@ -8,13 +8,17 @@
 #ifndef FAIRMULTILINKEDDATA_H_
 #define FAIRMULTILINKEDDATA_H_
 
-//#include "FairLinkedData.h"
-#include "FairLink.h"
-#include "FairRootManager.h"
-#include "TClonesArray.h"
-#include "TObject.h"
-#include <set>
-#include <utility>
+#include "TObject.h"                    // for TObject
+
+#include "FairLink.h"                   // for FairLink
+
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, Bool_t, kFALSE, etc
+#include "TString.h"                    // for TString
+
+#include <iostream>                     // for operator<<, ostream, cout
+#include <set>                          // for set
+#include <vector>                       // for vector
 
 class FairMultiLinkedData : public  TObject
 {

@@ -76,15 +76,14 @@
 #define FAIR_EVTGENGENERATOR_H
 
 
-#include "FairGenerator.h"
-#include "TF1.h"
+#include "FairGenerator.h"              // for FairGenerator
 
-#include <fstream>
+#include "Rtypes.h"                     // for FairEvtGenGenerator::Class, etc
 
-class TDatabasePDG;
+#include <stdio.h>                      // for FILE
+
 class FairPrimaryGenerator;
-
-
+class TF1;
 
 class FairEvtGenGenerator : public FairGenerator
 {

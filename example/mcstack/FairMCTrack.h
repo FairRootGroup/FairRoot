@@ -18,21 +18,16 @@
 #ifndef FAIRMCTRACK_H
 #define FAIRMCTRACK_H 1
 
+#include "TObject.h"                    // for TObject
 
-#include "FairDetectorList.h"
+#include "FairDetectorList.h"           // for DetectorId
 
-#include "TLorentzVector.h"
-#include "TObject.h"
-#include "TParticle.h"
-#include "TVector3.h"
+#include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TMath.h"                      // for Sqrt
+#include "TVector3.h"                   // for TVector3
 
-#ifndef ROOT_TParticlePDG
-#include "TParticlePDG.h"
-#endif
-#ifndef ROOT_TDatabasePDG
-#include "TDatabasePDG.h"
-#endif
-
+class TParticle;
 
 class FairMCTrack : public TObject
 {

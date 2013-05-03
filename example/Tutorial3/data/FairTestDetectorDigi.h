@@ -8,9 +8,12 @@
 #ifndef PNDTORINODETECTORDIGI_H_
 #define PNDTORINODETECTORDIGI_H_
 
-#include "FairTimeStamp.h"
+#include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, etc
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 class FairTestDetectorDigi : public FairTimeStamp
 {

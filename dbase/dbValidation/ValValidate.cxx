@@ -1,12 +1,27 @@
 #include "ValValidate.h"
 
-#include "ValContext.h"
-#include "ValRange.h"
-#include "TFile.h"
-#include "TSystem.h"
+#include "ValContext.h"                 // for ValContext, operator<<, etc
+#include "ValRange.h"                   // for ValRange
+#include "ValTimeStamp.h"               // for ValTimeStamp, operator==
+#include "db_detector_def.h"            // for Detector, etc
+#include "SimFlag.h"                    // for SimFlag_t
 
-#include <iomanip>
-#include <map>
+#include "Riosfwd.h"                    // for ostream
+#include "TFile.h"                      // for TFile
+#include "TString.h"                    // for TString, operator!=
+
+#include <sys/_structs.h>               // for timespec
+#include <sys/select.h>                 // for time_t
+#include <time.h>                       // for time
+#include <iomanip>                      // for operator<<, setw
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <map>                          // for map, etc
+#include <utility>                      // for pair
+
+using std::cout;
+using std::endl;
+using std::map;
+using std::setw;
 
 ClassImp(ValValidate)
 

@@ -17,9 +17,11 @@
 #ifndef MRevBuffer_H
 #define MRevBuffer_H
 
-#include <iostream>
-#include "TObject.h"
-#include "TSocket.h"
+#include "TObject.h"                    // for TObject
+
+#include "Rtypes.h"                     // for Int_t, ClassDef, etc
+
+class TSocket;
 
 class REvent : public TObject
 {

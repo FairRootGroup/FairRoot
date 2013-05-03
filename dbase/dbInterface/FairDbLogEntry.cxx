@@ -1,23 +1,21 @@
-
-#include <iostream>
-#include <sstream>
-
-#include "TString.h"
-#include "TSystem.h"
-#include "TUrl.h"
-
 #include "FairDbLogEntry.h"
 
-#include "FairDb.h"
-#include "FairDbMultConnector.h"
-#include "FairDbOutRowStream.h"
-#include "FairDbResPtr.h"
-#include "FairDbWriter.h"
-#include "FairDbResult.h"
-#include "FairDbTableProxy.h"
-#include "FairDbTableProxyRegistry.h"
-#include "FairDbValidityRec.h"
+#include "FairDb.h"                     // for Version
+#include "FairDbMultConnector.h"        // for FairDbMultConnector
+#include "FairDbOutRowStream.h"         // for FairDbOutRowStream
+#include "FairDbResPtr.h"               // for FairDbResultPtr
+#include "FairDbResult.h"               // for FairDbResultSet
+#include "FairDbSqlValPacket.h"         // for FairDbSqlValPacket
+#include "FairDbTableProxy.h"           // for FairDbTableProxy
+#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairDbValidityRec.h"          // for FairDbValidityRec
+#include "FairDbWriter.h"               // for FairDbWriter
+#include "ValRange.h"                   // for ValRange
 
+#include "TSystem.h"                    // for TSystem, gSystem, gProgName
+#include "TUrl.h"                       // for TUrl
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 ClassImp(FairDbLogEntry)
 
@@ -26,7 +24,7 @@ ClassImp(FairDbLogEntry)
 #include "FairDbResPtr.tpl"
 template class  FairDbResultPtr<FairDbLogEntry>;
 
-#include "FairDbWriter.tpl"
+#include "FairDbWriter.tpl"   // IWYU pragma: keep
 template  class  FairDbWriter<FairDbLogEntry>;
 
 

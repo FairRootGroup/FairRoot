@@ -1,7 +1,9 @@
 #ifndef PNDTORINODETECTORGEOPAR_H
 #define PNDTORINODETECTORGEOPAR_H
 
-#include "FairParGenericSet.h"
+#include "FairParGenericSet.h"          // for FairParGenericSet
+
+#include "Rtypes.h"                     // for Class Def
 
 class TObjArray;
 class FairParamList;

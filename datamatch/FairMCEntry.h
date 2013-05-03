@@ -8,13 +8,15 @@
 #ifndef FAIRMCENTRY_H_
 #define FAIRMCENTRY_H_
 
-#include "FairMCList.h"
-//#include "FairDetectorList.h"
-#include "FairLink.h"
-#include "FairMultiLinkedData.h"
+#include "FairMultiLinkedData.h"        // for FairMultiLinkedData
 
-#include <utility>
-#include <iostream>
+#include "FairLink.h"                   // for FairLink
+
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, FairMCEntry::Class, etc
+
+#include <iostream>                     // for ostream
+#include <set>                          // for set
 
 class FairMCEntry : public FairMultiLinkedData
 {

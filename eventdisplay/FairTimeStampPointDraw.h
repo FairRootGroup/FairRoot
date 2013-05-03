@@ -8,7 +8,12 @@
 #ifndef FAIRTIMESTAMPPOINTDRAW_H_
 #define FAIRTIMESTAMPPOINTDRAW_H_
 
-#include "FairBoxSetDraw.h"
+#include "FairBoxSetDraw.h"             // for FairBoxSetDraw
+
+#include "Rtypes.h"                     // for Int_t, etc
+#include "TVector3.h"                   // for TVector3
+
+class TObject;
 
 class FairTimeStampPointDraw : public FairBoxSetDraw
 {

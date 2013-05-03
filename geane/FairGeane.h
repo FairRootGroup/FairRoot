@@ -5,8 +5,10 @@
 #ifndef FAIRGeane_H
 #define FAIRGeane_H
 
-#include "FairTask.h"
-#include "TString.h"
+#include "FairTask.h"                   // for FairTask, InitStatus
+
+#include "Rtypes.h"                     // for FairGeane::Class, ClassDef, etc
+#include "TString.h"                    // for TString
 
 class FairGeaneApplication;
 class FairField;

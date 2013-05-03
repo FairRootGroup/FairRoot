@@ -10,10 +10,10 @@
 #ifndef FAIRSTSTRACKPARH
 #define FAIRSTSTRACKPARH 1
 
-#include "FairTrackPar.h"
-#include "FairTrackParP.h"
+#include "FairTrackPar.h"               // for FairTrackPar
 
-#include "TVector3.h"
+#include "Rtypes.h"                     // for Double_t, Int_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairTrackParP;
 

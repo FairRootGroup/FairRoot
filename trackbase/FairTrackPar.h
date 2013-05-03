@@ -1,8 +1,10 @@
 #ifndef FAIRSTSTRACKPAR
 #define FAIRSTSTRACKPAR 1
 
-#include "TObject.h"
-#include "TVector3.h"
+#include "TObject.h"                    // for TObject
+
+#include "Rtypes.h"                     // for Double_t, Int_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairLogger;
 

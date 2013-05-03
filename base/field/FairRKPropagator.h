@@ -8,7 +8,11 @@
 #ifndef RKPropagator
 #define RKPropagator
 
-#include "FairField.h"
+#include "TObject.h"                    // for TObject
+
+#include "Rtypes.h"                     // for Double_t, etc
+
+class FairField;
 
 class FairRKPropagator : public TObject
 {

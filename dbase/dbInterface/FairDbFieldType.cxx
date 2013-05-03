@@ -1,11 +1,17 @@
-
-#include <iostream>
-#include <sstream>
-
-#include "TSQLServer.h"
-#include "TString.h"
-
 #include "FairDbFieldType.h"
+
+#include "Riosfwd.h"                    // for ostream
+#include "TSQLServer.h"                 // for TSQLServer, etc
+#include "TString.h"                    // for operator==, TString
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <sstream>                      // IWYU pragma: keep
+// for ostringstream
+
+using std::cout;
+using std::endl;
+using std::ostringstream;
+using std::string;
 
 ClassImp(FairDbFieldType)
 

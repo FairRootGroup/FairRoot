@@ -7,17 +7,12 @@
 #ifndef FAIR_PAR_TSQL_IO_h
 #define FAIR_PAR_TSQL_IO_h
 
-// C & C++
-#include <iostream>
+#include "FairParIo.h"                  // for FairParIo
 
-// ROOT
-class TList;
+#include "Rtypes.h"                     // for FairParTSQLIo::Class, etc
 
-// FairRoot
-#include "FairParIo.h"
-
-class FairGenericParTSQLIo;
 class FairDbMultConnector;
+class FairRtdbRun;
 
 class FairParTSQLIo: public FairParIo
 {

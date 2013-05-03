@@ -1,9 +1,19 @@
 #include "FairMCTracksEditor.h"
 
-#include "FairEventManager.h"
-#include "FairRunAna.h"
+#include "FairEventManager.h"           // for FairEventManager
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRunAna.h"                 // for FairRunAna
 
-#include "TGLabel.h"
+#include "TChain.h"                     // for TChain
+#include "TFile.h"                      // for TFile
+#include "TGLabel.h"                    // for TGLabel
+#include "TGLayout.h"
+#include "TString.h"                    // for TString
+
+#include <stddef.h>                     // for NULL
+
+class TGWindow;
+class TObject;
 
 //______________________________________________________________________________
 // FairMCTracksEditor

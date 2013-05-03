@@ -27,9 +27,9 @@
 #ifndef FAIR_BOXGENERATOR_H
 #define FAIR_BOXGENERATOR_H
 
-#include "FairGenerator.h"
+#include "FairGenerator.h"              // for FairGenerator
 
-#include <iostream>
+#include "Rtypes.h"                     // for Double32_t, Bool_t, kTRUE, etc
 
 class FairPrimaryGenerator;
 

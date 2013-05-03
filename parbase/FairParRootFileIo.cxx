@@ -15,25 +15,21 @@
 // It contains also a list of detector interface classes all having the common
 // base type FairDetParRootFileIo. Every detector has its own interface class.
 //////////////////////////////////////////////////////////////////////////////
-
-
 #include "FairParRootFileIo.h"
+#include "FairDetParIo.h"               // for FairDetParIo
+#include "FairRtdbRun.h"                // for FairRtdbRun
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "Riosfwd.h"                    // for ostream, fstream
+#include "TCollection.h"                // for TIter
+#include "TDatime.h"                    // for TDatime
+#include "TKey.h"                       // for TKey
+#include "TList.h"                      // for TListIter, TList
+#include "TObject.h"                    // for TObject
+#include "TObjString.h"                 // for TObjString
+#include "TString.h"                    // for TString, Form
 
-#include "FairDetParIo.h"
-#include "FairRuntimeDb.h"
-#include "FairRtdbRun.h"
-
-//#include "TDirectory.h"
-//#include "TROOT.h"
-
-#include <TKey.h>
-#include <TObjString.h>
-#include <TFileMerger.h>
-
-//#include <fstream>
-//#include "stdio.h"
-#include <iostream>
-//#include <iomanip>
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using std::cout;
 using std::cerr;

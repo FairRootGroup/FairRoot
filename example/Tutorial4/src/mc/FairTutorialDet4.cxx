@@ -1,28 +1,36 @@
 #include "FairTutorialDet4.h"
 
-#include "FairTutorialDet4Point.h"
-#include "FairTutorialDet4Geo.h"
-#include "FairTutorialDet4GeoPar.h"
+#include "FairDetectorList.h"           // for DetectorId::kTutDet
+#include "FairGeoInterface.h"           // for FairGeoInterface
+#include "FairGeoLoader.h"              // for FairGeoLoader
+#include "FairGeoNode.h"                // for FairGeoNode
+#include "FairGeoVolume.h"              // for FairGeoVolume
+#include "FairLogger.h"                 // for FairLogger, etc
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRun.h"                    // for FairRun
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairStack.h"                  // for FairStack
+#include "FairTutorialDet4Geo.h"        // for FairTutorialDet4Geo
+#include "FairTutorialDet4GeoHandler.h"  // for FairTutorialDet4GeoHandler
+#include "FairTutorialDet4GeoPar.h"     // for FairTutorialDet4GeoPar
 #include "FairTutorialDet4MisalignPar.h"
-#include "FairTutorialDet4GeoHandler.h"
+#include "FairTutorialDet4Point.h"      // for FairTutorialDet4Point
 
-#include "FairVolume.h"
-#include "FairGeoVolume.h"
-#include "FairGeoNode.h"
-#include "FairRootManager.h"
-#include "FairGeoLoader.h"
-#include "FairGeoInterface.h"
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
-#include "FairDetectorList.h"
-#include "FairStack.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TGeoManager.h"                // for TGeoManager, gGeoManager
+#include "TGeoMatrix.h"                 // for TGeoHMatrix, TGeoCombiTrans, etc
+#include "TGeoNode.h"                   // for TGeoNode
+#include "TGeoPhysicalNode.h"           // for TGeoPhysicalNode, etc
+#include "TList.h"                      // for TListIter, TList (ptr only)
+#include "TObjArray.h"                  // for TObjArray
+#include "TString.h"                    // for TString, operator<<, Form
+#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMCStack.h"            // for TVirtualMCStack
 
-#include "TClonesArray.h"
-#include "TVirtualMC.h"
-#include "TGeoManager.h"
-#include "TGeoPhysicalNode.h"
+#include <stdio.h>                      // for NULL, printf
+#include <iostream>                     // for operator<<, cout, endl, etc
 
-#include <iostream>
 using std::cout;
 using std::endl;
 

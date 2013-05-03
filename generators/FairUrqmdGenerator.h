@@ -19,15 +19,14 @@
 #ifndef FAIRURQMDGENERATOR_H
 #define FAIRURQMDGENERATOR_H
 
+#include "FairGenerator.h"              // for FairGenerator
 
-#include "FairGenerator.h"
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
 
-#include <fstream>
-#include <map>
+#include <stdio.h>                      // for FILE
+#include <map>                          // for map
 
-class TVirtualMCStack;
 class FairPrimaryGenerator;
-
 
 class FairUrqmdGenerator : public FairGenerator
 {

@@ -2,7 +2,10 @@
 // Body for Experiment namespace so that CINT recognizes its existence
 //
 #include "Experiment.h"
-#include "TString.h"
+
+#include "TString.h"                    // for TString
+
+#include <string.h>                     // for strcpy, strlen
 
 //_____________________________________________________________________________
 Int_t Experiment::FullMask()

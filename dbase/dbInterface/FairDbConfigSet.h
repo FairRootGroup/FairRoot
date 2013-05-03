@@ -1,21 +1,20 @@
 #ifndef FAIRDBCONFIGSET_H
 #define FAIRDBCONFIGSET_H
 
+#include "FairDbTableRow.h"             // for FairDbTableRow
 
-#include <string>
-using std::string;
+#include "FairDbFieldType.h"            // for FairDbFieldType
 
-#include <vector>
-using std::vector;
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for UInt_t, Int_t, etc
 
-#include "FairDbTableRow.h"
-#include "FairDbFieldType.h"
-#include <iosfwd>
+#include <iosfwd>                       // for ostream
+#include <string>                       // for string, basic_string
+#include <vector>                       // for vector
 
-class FairDbConfigSet;
+class FairDbOutRowStream;
+class FairDbResultSet;
 class FairDbValidityRec;
-
-std::ostream& operator<<(std::ostream& s, const FairDbConfigSet& cfSet);
 
 class FairDbConfigSet : public FairDbTableRow
 {
@@ -33,14 +32,14 @@ class FairDbConfigSet : public FairDbTableRow
     }
     Int_t GetAggregateNo() const { return fAggregateNo; }
     UInt_t GetNumParams() const { return fParams.size(); }
-    string GetParamName(UInt_t parNo) const;
+    std::string GetParamName(UInt_t parNo) const;
     FairDbFieldType GetParamType(UInt_t parNo) const;
-    string GetParamValue(UInt_t parNo) const;
+    std::string GetParamValue(UInt_t parNo) const;
 
 // State changing member functions
     void Clear(const Option_t* = "") { fParams.clear(); }
-    void PushBack(const string& name,
-                  const string& value,
+    void PushBack(const std::string& name,
+                  const std::string& value,
                   const FairDbFieldType& type);
     void SetAggregateNo(Int_t aggNo) { fAggregateNo = aggNo; }
 
@@ -62,18 +61,18 @@ class FairDbConfigSet : public FairDbTableRow
       Param(const Param& that) : Name(that.Name), Value(that.Value), Type(that.Type) {
         *this = that;
       }
-      Param(const string& name,
-            const string& value,
+      Param(const std::string& name,
+            const std::string& value,
             const FairDbFieldType& type) : Name(name), Value(value), Type(type) {
       }
       ~Param() { }
 
-      string Name;
-      string Value;
+      std::string Name;
+      std::string Value;
       FairDbFieldType Type;
     };
 
-    vector<Param*> fParams;
+    std::vector<Param*> fParams;
 
     Int_t fAggregateNo;
 
@@ -81,5 +80,6 @@ class FairDbConfigSet : public FairDbTableRow
 
 };
 
+std::ostream& operator<<(std::ostream& s, const FairDbConfigSet& cfSet);
 
 #endif  // FAIRDBCONFIGSET_H

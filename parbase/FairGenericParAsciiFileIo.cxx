@@ -11,11 +11,17 @@
 
 #include "FairGenericParAsciiFileIo.h"
 
-#include "FairParGenericSet.h"
-#include "FairParamList.h"
-#include "FairParGenericSet.h"
-//#include "TClass.h"
-#include <iostream>
+#include "FairParGenericSet.h"          // for FairParGenericSet
+#include "FairParSet.h"                 // for FairParSet
+#include "FairParamList.h"              // for FairParamObj, FairParamList
+
+#include "TCollection.h"                // for TIter
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString, operator<<
+
+#include <stdio.h>                      // for printf, sscanf
+#include <string.h>                     // for strcmp, memcpy, strtok, etc
+
 using std::ios;
 
 ClassImp(FairGenericParAsciiFileIo)

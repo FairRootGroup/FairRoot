@@ -6,7 +6,7 @@
 
 #include "FairRingSorter.h"
 
-
+#include "FairTimeStamp.h"              // for FairTimeStamp
 
 void FairRingSorter::AddElement(FairTimeStamp* digi, double timestamp)
 {

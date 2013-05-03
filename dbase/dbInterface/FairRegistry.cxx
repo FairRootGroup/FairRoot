@@ -1,22 +1,23 @@
-#include <map>
-#include <iomanip>
-
-#include "TBuffer.h"
-#include "TObject.h"
-
 #include "FairRegistry.h"
-#include "FairRegistryItem.h"
 
-#include <FairUtilStream.h>
+#include "FairUtilStream.h"             // for read_quoted_string
+
+#include "FairRegistryItem.h"           // for FairRegistryItem
+#include "FairRegistryItemXxx.h"        // for FairRegistryItemXxx
+
+#include "TBuffer.h"                    // for TBuffer, operator<<, etc
+#include "TNamed.h"                     // for TNamed
+
+#include <ctype.h>                      // for isspace
+#include <string.h>                     // for strcpy, strlen
+#include <cassert>                      // for assert
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <map>                          // for _Rb_tree_const_iterator, etc
+#include <utility>                      // for pair
+#include <sstream>                      // IWYU pragma: keep
+// for ostringstream, istringstream
 
 using namespace Util;
-
-
-//#include <typeinfo>
-#include <iostream>
-#include <sstream>
-#include <cassert>
-
 using namespace std;
 
 ClassImp(FairRegistry)

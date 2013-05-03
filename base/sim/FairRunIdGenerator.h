@@ -1,6 +1,8 @@
 #ifndef FAIRRUNIDGENERATOR_H
 #define FAIRRUNIDGENERATOR_H
 
+#include <time.h>               // IWYU pragma: keep for timespec
+// IWYU pragma: no_include <sys/_structs.h>
 
 typedef unsigned char      uint8_t;
 typedef unsigned short int uint16_t;

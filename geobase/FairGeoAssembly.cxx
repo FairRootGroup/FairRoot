@@ -6,13 +6,18 @@
 //
 // class for the shape Assembly
 /////////////////////////////////////////////////////////////
-
 #include "FairGeoAssembly.h"
 
-#include "FairGeoVolume.h"
-#include "FairGeoVector.h"
+#include "FairGeoTransform.h"           // for FairGeoTransform
+#include "FairGeoVector.h"              // for FairGeoVector
+#include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "TArrayD.h"
+#include "TArrayD.h"                    // for TArrayD
+#include "TString.h"                    // for TString
+
+#include <stdio.h>                      // for printf, sprintf
+#include <string.h>                     // for strlen
+#include <ostream>                      // for fstream, etc
 
 ClassImp(FairGeoAssembly)
 

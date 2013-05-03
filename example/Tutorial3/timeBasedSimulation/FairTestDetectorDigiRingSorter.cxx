@@ -6,8 +6,10 @@
  */
 
 #include "FairTestDetectorDigiRingSorter.h"
-#include "FairTestDetectorDigi.h"
 
+#include "FairTestDetectorDigi.h"       // for FairTestDetectorDigi
+
+class FairTimeStamp;
 
 ClassImp(FairTestDetectorDigiRingSorter);
 

@@ -5,18 +5,18 @@
 #ifndef FAIRGEANEPRO_H
 #define FAIRGEANEPRO_H 1
 
-#include "TNamed.h"
-#include "TVector3.h"
-#include "TGeant3.h"
+#include "TNamed.h"                     // for TNamed
 
-//class TGeant3;
-class TDatabasePDG;
-class TArrayD;
+#include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
+#include "TGeant3.h"                    // for Ertrio_t, etc
+#include "TString.h"                    // for TString
+#include "TVector3.h"                   // for TVector3
+
 class FairTrackPar;
 class FairTrackParP;
 class FairTrackParH;
-class FairField;
 class FairGeaneApplication;
+class TDatabasePDG;
 
 class FairGeanePro : public TNamed
 {

@@ -1,22 +1,26 @@
-
-#include "FairDb.h"
 #include "FairDbConfigSet.h"
-#include "FairDbOutRowStream.h"
-#include "FairDbResult.h"
 
-//#include "FairDbResPtr.h"
-//#include "FairDbWriter.h"
+#include "FairDb.h"                     // for DataTypes::kUnknown
+#include "FairDbOutRowStream.h"         // for FairDbOutRowStream
+#include "FairDbResPtr.h"               // for FairDbResultPtr
+#include "FairDbResult.h"               // for FairDbResultSet
+#include "FairDbValidityRec.h"          // for FairDbValidityRec
+#include "FairDbWriter.h"               // for FairDbWriter
 
-#include <iostream>
+#include <map>                          // for map
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
+using std::vector;
+using std::map;
 
 ClassImp(FairDbConfigSet)
 
 
 
-#include "FairDbResPtr.tpl"
+#include "FairDbResPtr.tpl"            // IWYU pragma: keep
 template class  FairDbResultPtr<FairDbConfigSet>;
 
-#include "FairDbWriter.tpl"
+#include "FairDbWriter.tpl"           // IWYU pragma: keep
 template class  FairDbWriter<FairDbConfigSet>;
 
 

@@ -7,7 +7,9 @@
 #ifndef FAIRFIELDFACTORY_H
 #define FAIRFIELDFACTORY_H
 
-#include "FairField.h"
+#include "Rtypes.h"                     // for FairFieldFactory::Class, etc
+
+class FairField;
 
 class FairFieldFactory
 {

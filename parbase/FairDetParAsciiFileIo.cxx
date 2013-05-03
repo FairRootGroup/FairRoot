@@ -9,15 +9,14 @@
 //
 /////////////////////////////////////////////////////////////
 
-
 #include "FairDetParAsciiFileIo.h"
-#include "FairParSet.h"
+
+#include "FairParSet.h"                 // for FairParSet
+
+#include <stdio.h>                      // for printf, sprintf
+#include <string.h>                     // for strlen, strncmp
 
 using std::ios;
-
-
-
-
 
 FairDetParAsciiFileIo::FairDetParAsciiFileIo(fstream* f)
   :FairDetParIo(),

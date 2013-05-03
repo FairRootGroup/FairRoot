@@ -1,9 +1,12 @@
 #ifndef FAIRGENERICPARROOTFILEIO_H
 #define FAIRGENERICPARROOTFILEIO_H
 
-#include "FairDetParRootFileIo.h"
+#include "FairDetParRootFileIo.h"       // for FairDetParRootFileIo
+
+#include "Rtypes.h"                    // for ClassDef macro
 
 class FairParRootFile;
+class FairParSet;
 
 class FairGenericParRootFileIo : public FairDetParRootFileIo
 {

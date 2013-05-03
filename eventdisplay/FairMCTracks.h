@@ -14,13 +14,14 @@
 #ifndef FAIRMCTRACKS_H
 #define FAIRMCTRACKS_H
 
-#include "FairTask.h"
-#include "TEveTrackPropagator.h"
-#include "TString.h"
+#include "FairTask.h"                   // for FairTask, InitStatus
+
+#include "Rtypes.h"                     // for Double_t, etc
+#include "TEveTrackPropagator.h"        // IWYU pragma: keep needed by cint
+#include "TString.h"                    // for TString
 
 class FairEventManager;
-
-//class TEveTrackPropagator;
+class TClonesArray;
 class TEveTrackList;
 class TObjArray;
 class TParticle;

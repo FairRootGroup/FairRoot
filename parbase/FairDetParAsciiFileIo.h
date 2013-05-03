@@ -1,13 +1,15 @@
 #ifndef FAIRDETPARASCIIFILEIO_H
 #define FAIRDETPARASCIIFILEIO_H
 
-#include <fstream>
-#include "FairDetParIo.h"
-#include "TArrayI.h"
-//#include "hgeomtransform.h"
-#include "FairParGenericSet.h"
-class FairDetGeomPar;
-class FairGeomShapes;
+#include "FairDetParIo.h"               // for FairDetParIo
+
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Text_t, Bool_t, etc
+#include "TString.h"                    // for TString
+
+#include <fstream>                      // for fstream
+
+class FairParSet;
 
 class FairDetParAsciiFileIo : public FairDetParIo
 {

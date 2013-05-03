@@ -7,13 +7,13 @@
 #ifndef FAIRREMOTESOURCE_H
 #define FAIRREMOTESOURCE_H
 
-#include "FairSource.h"
+#include "FairSource.h"                 // for FairSource
 
+#include "Rtypes.h"                     // for Bool_t, etc
 
-class TSocket;
 class MRevBuffer;
 class REvent;
-
+class TSocket;
 
 class FairRemoteSource : public FairSource
 {

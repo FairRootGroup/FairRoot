@@ -30,15 +30,20 @@
 #ifndef FAIRSTACK_H
 #define FAIRSTACK_H
 
+#include "FairGenericStack.h"           // for FairGenericStack
 
-#include "FairDetectorList.h"
-#include "FairGenericStack.h"
+#include "FairDetectorList.h"           // for DetectorId
 
-#include "TClonesArray.h"
-#include "TVirtualMCStack.h"
+#include "Rtypes.h"                     // for Int_t, Double_t, Bool_t, etc
+#include "TMCProcess.h"                 // for TMCProcess
 
-#include <map>
-#include <stack>
+#include <map>                          // for map, map<>::iterator
+#include <stack>                        // for stack
+#include <utility>                      // for pair
+
+class TClonesArray;
+class TParticle;
+class TRefArray;
 
 class FairStack : public FairGenericStack
 {

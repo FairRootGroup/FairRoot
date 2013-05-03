@@ -8,11 +8,13 @@
 #ifndef FAIRLINK_H_
 #define FAIRLINK_H_
 
-#include "TObject.h"
-#include "TString.h"
+#include "TObject.h"                    // for TObject
 
-#include <utility>
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, Float_t, etc
+#include "TString.h"                    // for TString
+
+#include <iostream>                     // for ostream, cout
 
 class FairLink : public TObject
 {

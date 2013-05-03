@@ -1,11 +1,14 @@
 #ifndef FAIRPARIO_H
 #define FAIRPARIO_H
 
-#include "TObject.h"
-#include "TList.h"
+#include "TObject.h"                    // for TObject
+
+#include "Rtypes.h"                     // for Bool_t, Text_t, etc
+#include "TString.h"                    // for TString
 
 class FairDetParIo;
 class FairRtdbRun;
+class TList;
 
 class FairParIo : public TObject
 {

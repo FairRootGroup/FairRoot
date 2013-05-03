@@ -1,29 +1,37 @@
 #ifndef FAIRDBRESULT_H
 #define FAIRDBRESULT_H
-#include <map>
-#include <string>
-using std::string;
-#include <list>
-#include <iosfwd>
-#include <vector>
-#include <algorithm>
 
-#include "TObject.h"
-#include "TString.h"
+#include "TObject.h"                    // for TObject
 
-#include "FairDb.h"
-#include "FairDbValidityRec.h"
-#include "FairDbRowStream.h"
-#include "ValTimeStamp.h"
-#include "FairDbExceptionLog.h"
+#include "FairDb.h"                     // for DbTypes, DataTypes, Version
+#include "FairDbExceptionLog.h"         // for FairDbExceptionLog
+#include "FairDbRowStream.h"            // for FairDbRowStream
+#include "FairDbValidityRec.h"          // for FairDbValidityRec
+#include "ValTimeStamp.h"               // for ValTimeStamp
 
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for UInt_t, Bool_t, Int_t, etc
+#include "TString.h"                    // for TString
 
+#include <iosfwd>                       // for ostream
+#include <list>                         // for list
+#include <map>                          // for map, map<>::value_compare
+#include <string>                       // for string, basic_string, etc
+#include <vector>                       // for vector
+
+class FairDbBinaryFile;
+class FairDbCache;
+class FairDbProxy;
+class FairDbStatement;
+class FairDbString;
+class FairDbTableMetaData;
+class FairDbTableProxy;
+class FairDbTableRow;
+class FairDbValidityRecBuilder;
+class TSQLStatement;
+class ValContext;
 
 //------------------------- Result Key --------------------------------//
-
-class FairDbResultKey;
-std::ostream& operator<<(std::ostream& os, const FairDbResultKey& key);
-
 class FairDbResultKey : public TObject
 {
 
@@ -73,15 +81,9 @@ class FairDbResultKey : public TObject
 
 };
 
+std::ostream& operator<<(std::ostream& os, const FairDbResultKey& key);
+
 //---------------------- Result Set-------------------------------------//
-class FairDbString;
-class FairDbStatement;
-class FairDbTableMetaData;
-class FairDbTableProxy;
-class TSQLStatement;
-class ValTimeStamp;
-
-
 class FairDbResultSet : public FairDbRowStream
 {
   public:
@@ -92,23 +94,23 @@ class FairDbResultSet : public FairDbRowStream
                     const FairDbTableMetaData* metaData,
                     const FairDbTableProxy* tableProxy,
                     UInt_t dbNo,
-                    const string& fillOpts = "");
+                    const std::string& fillOpts = "");
     virtual ~FairDbResultSet();
 
 // State testing member functions
     Bool_t CurColExists() const;
-    string CurColString() const;
-    string CurColValue() const { LoadCurValue(); return fValString;}
+    std::string CurColString() const;
+    std::string CurColValue() const { LoadCurValue(); return fValString;}
     UInt_t CurRowNum() const { return fCurRow;}
     UInt_t GetDbNo() const { return fDbNo; }
     FairDb::DbTypes GetDBType() const { return fDbType; }
-    string GetFillOpts() const { return fFillOpts;}
+    std::string GetFillOpts() const { return fFillOpts;}
     const FairDbTableProxy* GetTableProxy() const { return fTableProxy; }
 /// IsBeforeFirst not needed for ROOT API, but leave a dummy
 /// for now so as not to disturb FairDbResultSet API.
     Bool_t IsBeforeFirst() const { return false; };
     Bool_t IsExhausted() const { return fExhausted; }
-    void RowAsCsv(string& row) const;
+    void RowAsCsv(std::string& row) const;
 
 // State changing member functions
 
@@ -122,14 +124,14 @@ class FairDbResultSet : public FairDbRowStream
     FairDbResultSet& operator>>(ULong_t& dest);
     FairDbResultSet& operator>>(Float_t& dest);
     FairDbResultSet& operator>>(Double_t& dest);
-    FairDbResultSet& operator>>(string& dest);
+    FairDbResultSet& operator>>(std::string& dest);
     FairDbResultSet& operator>>(ValTimeStamp& dest);
 
     Bool_t FetchRow();
 
   private:
 
-    string& AsString(FairDb::DataTypes type);
+    std::string& AsString(FairDb::DataTypes type);
     Bool_t LoadCurValue() const;
     TString GetStringFromTSQL(Int_t col) const;
     Int_t fCurRow;
@@ -139,8 +141,8 @@ class FairDbResultSet : public FairDbRowStream
     TSQLStatement* fTSQLStatement;
     Bool_t fExhausted;
     const FairDbTableProxy* fTableProxy;
-    mutable  string fValString;
-    string fFillOpts;
+    mutable  std::string fValString;
+    std::string fFillOpts;
 
     FairDbResultSet(const FairDbResultSet&);
     FairDbResultSet operator=(const FairDbResultSet&);
@@ -149,29 +151,9 @@ class FairDbResultSet : public FairDbRowStream
 
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
 //------------------------- Main Result class ---------------------------//
 
 typedef std::map<UInt_t,const FairDbTableRow*> IndexToRow_t;
-
-class DbBinaryFile;
-class DbTableRow;
-class ValContext;
-
-class FairDbResult;
-FairDbBinaryFile& operator<<(FairDbBinaryFile& bf, const FairDbResult& res);
-FairDbBinaryFile& operator>>(FairDbBinaryFile& bf, FairDbResult& res);
 
 class FairDbResult
 {
@@ -181,7 +163,7 @@ class FairDbResult
     // Constructors and destructors.
     FairDbResult(FairDbResultSet* resultSet = 0,
                  const FairDbValidityRec* vrec = 0,
-                 const string& sqlQualifiers = "");
+                 const std::string& sqlQualifiers = "");
     //    FairDbResult& operator=(const FairDbResult&);
     FairDbResult(const FairDbResult&);
     virtual ~FairDbResult();
@@ -200,7 +182,7 @@ class FairDbResult
       return fNumClients;
     }
     virtual                UInt_t GetNumRows() const =0;
-    const string& GetSqlQualifiers() const { return fSqlQualifiers; }
+    const std::string& GetSqlQualifiers() const { return fSqlQualifiers; }
     virtual    const FairDbTableRow* GetTableRow(UInt_t rowNum) const =0;
     virtual    const FairDbTableRow* GetTableRowByIndex(UInt_t index) const;
     virtual const FairDbValidityRec& GetValidityRec(
@@ -215,15 +197,15 @@ class FairDbResult
     }
     virtual  Bool_t Owns(const FairDbTableRow* table) const { return kFALSE; }
     Bool_t ResultsFromDb() const { return fResultsFromDb; }
-    virtual const string& TableName() const { return fTableName; }
+    virtual const std::string& TableName() const { return fTableName; }
 
     virtual Bool_t CanDelete(const FairDbResult* res = 0);
 
     virtual Bool_t Satisfies(const ValContext& vc,
                              const FairDb::Version& task);
-    virtual  Bool_t Satisfies(const string&) {return kFALSE;}
+    virtual  Bool_t Satisfies(const std::string&) {return kFALSE;}
     virtual  Bool_t Satisfies(const FairDbValidityRec&,
-                              const string& = "") {return kFALSE;}
+                              const std::string& = "") {return kFALSE;}
 
     virtual void DeRegisterKey();
     virtual void RegisterKey();
@@ -235,7 +217,7 @@ class FairDbResult
     void SetResultsFromDb() { fResultsFromDb = kTRUE; }
     void BuildLookUpTable() const;
     Bool_t LookUpBuilt() const { return fIndexKeys.size() > 0; }
-    virtual void SetTableName(const string& tableName)  {
+    virtual void SetTableName(const std::string& tableName)  {
       fTableName = tableName;
     }
     virtual void SetValidityRec(const FairDbValidityRec& vRec)  {
@@ -254,8 +236,8 @@ class FairDbResult
     const FairDbResultKey* fKey;
     Bool_t fResultsFromDb;
     mutable Int_t fNumClients;
-    string fTableName;
-    string fSqlQualifiers;
+    std::string fTableName;
+    std::string fSqlQualifiers;
     static  Int_t fgLastID;
     FairDbExceptionLog fExceptionLog;
 
@@ -264,17 +246,13 @@ class FairDbResult
     ClassDef(FairDbResult,0)     //Abstract base representing query result
 
 };
+FairDbBinaryFile& operator<<(FairDbBinaryFile& bf, const FairDbResult& res);
+FairDbBinaryFile& operator>>(FairDbBinaryFile& bf, FairDbResult& res);
+
 
 
 
 //------------------------------- Result Aggregat ---------------------//
-
-class FairDbCache;
-class FairDbBinaryFile;
-class FairDbProxy;
-class FairDbTableRow;
-class FairDbValidityRecBuilder;
-
 class FairDbResultAgg : public FairDbResult
 {
   public:
@@ -282,12 +260,12 @@ class FairDbResultAgg : public FairDbResult
     using FairDbResult::Satisfies;
 
 // Constructors and destructors.
-    FairDbResultAgg(const string& tableName = "Unknown",
+    FairDbResultAgg(const std::string& tableName = "Unknown",
                     const FairDbTableRow* tableRow = 0,
                     FairDbCache* cache = 0,
                     const FairDbValidityRecBuilder* vrecBuilder = 0,
                     const FairDbProxy* proxy=0,
-                    const string& sqlQualifiers = "" );
+                    const std::string& sqlQualifiers = "" );
     virtual ~FairDbResultAgg();
 
 // State testing member functions
@@ -304,7 +282,7 @@ class FairDbResultAgg : public FairDbResult
       const FairDbTableRow* row=0) const;
 
 //  State changing member functions.
-    virtual     Bool_t Satisfies(const string& sqlQualifiers);
+    virtual     Bool_t Satisfies(const std::string& sqlQualifiers);
     virtual void Streamer(FairDbBinaryFile& bf);
 
 
@@ -336,7 +314,7 @@ class FairDbResultNonAgg : public FairDbResult
                        const FairDbTableRow* tableRow = 0,
                        const FairDbValidityRec* vrec = 0,
                        Bool_t dropSeqNo = kTRUE,
-                       const string& sqlQualifiers = "");
+                       const std::string& sqlQualifiers = "");
     virtual ~FairDbResultNonAgg();
 
 
@@ -351,7 +329,7 @@ class FairDbResultNonAgg : public FairDbResult
 
     virtual Bool_t Owns(const FairDbTableRow* row ) const;
     Bool_t Satisfies(const FairDbValidityRec& vrec,
-                     const string& sqlQualifiers = "");
+                     const std::string& sqlQualifiers = "");
     virtual void   Streamer(FairDbBinaryFile& file);
 
   private:

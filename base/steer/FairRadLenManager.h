@@ -6,11 +6,10 @@
 #define FAIRRADLENMANAGER_H 1
 
 
-#include "Rtypes.h"
-#include "TClonesArray.h"
-#include "TLorentzVector.h"
+#include "Rtypes.h"                     // for Float_t, Double_t, Int_t, etc
+#include "TLorentzVector.h"             // for TLorentzVector
 
-
+class TClonesArray;
 
 /**
  * @class FairRadLenManager

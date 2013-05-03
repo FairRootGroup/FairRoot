@@ -2,23 +2,17 @@
 // -----                FairMCMatchSelectorTask source file             -----
 // -----                  Created 18/07/08  by T.Stockmanns        -----
 // -------------------------------------------------------------------------
-// libc includes
-#include <iostream>
-
-// Root includes
-#include "TROOT.h"
-#include "TClonesArray.h"
-
-// framework includes
-#include "FairRootManager.h"
 #include "FairMCMatchSelectorTask.h"
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
-#include "FairHit.h"
-#include "FairMultiLinkedData.h"
-#include "FairRootManager.h"
 
-#include "FairMCEntry.h"
+#include "FairMCMatch.h"                // for FairMCMatch
+#include "FairMCResult.h"               // for operator<<
+#include "FairMCStage.h"                // for FairMCStage
+#include "FairRootManager.h"            // for FairRootManager
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, ostream, etc
 
 // -----   Default constructor   -------------------------------------------
 FairMCMatchSelectorTask::FairMCMatchSelectorTask()

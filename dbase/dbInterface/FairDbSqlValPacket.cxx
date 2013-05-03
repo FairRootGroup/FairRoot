@@ -1,25 +1,36 @@
-
-#include <algorithm>
-#include <memory>
-using std::auto_ptr;
-#include <sstream>
-#include <vector>
-
-#include "FairDb.h"
-#include "FairDbMultConnector.h"
-#include "FairDbConfigSet.h"
-#include "FairDbOutRowStream.h"
-#include "FairDbResPtr.h"
-#include "FairDbResult.h"
 #include "FairDbSqlValPacket.h"
-#include "FairDbStatement.h"
-#include "FairDbTableProxy.h"
-#include "FairDbTableRow.h"
-#include "FairDbTableProxyRegistry.h"
-#include "FairDbValidityRec.h"
-#include "FairDbValRecSet.h"
-#include "FairDbString.h"
-#include "ValRange.h"
+
+#include "FairDb.h"                     // for MakeDateTimeString, etc
+#include "FairDbConfigSet.h"            // for FairDbConfigSet
+#include "FairDbMultConnector.h"        // for string, FairDbMultConnector
+#include "FairDbOutRowStream.h"         // for FairDbOutRowStream
+#include "FairDbProxy.h"                // for FairDbProxy
+#include "FairDbResult.h"               // for cout, FairDbResultSet
+#include "FairDbStatement.h"            // for FairDbStatement
+#include "FairDbString.h"               // for StringTok
+#include "FairDbTableMetaData.h"        // for FairDbTableMetaData
+#include "FairDbTableProxy.h"           // for FairDbTableProxy
+#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "FairDbValidityRec.h"          // for FairDbValidityRec
+
+#include "TString.h"                    // for TString
+
+#include <algorithm>                    // for sort
+#include <iostream>                     // for cout
+#include <memory>                       // for auto_ptr, etc
+#include <vector>                       // for vector
+
+class ValRange;
+
+using std::cout;
+using std::endl;
+using std::string;
+using std::list;
+using std::vector;
+using std::ostringstream;
+using std::istringstream;
+using std::auto_ptr;
 
 ClassImp(FairDbSqlValPacket)
 

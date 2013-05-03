@@ -6,8 +6,9 @@
 #ifndef FAIREVENTHEADER_H
 #define FAIREVENTHEADER_H
 
+#include "TNamed.h"                     // for TNamed
 
-#include "TNamed.h"
+#include "Rtypes.h"                     // for Int_t, Double_t, UInt_t, etc
 
 /**
  *  Event Header Class

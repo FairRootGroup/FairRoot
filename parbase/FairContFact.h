@@ -1,14 +1,15 @@
 #ifndef FAIRCONTFACT_H
 #define FAIRCONTFACT_H
 
-#include "FairLogger.h"
+#include "TNamed.h"                     // for TNamed
 
-#include "TList.h"
-#include "TNamed.h"
+#include "Rtypes.h"                     // for Bool_t, ClassDef, etc
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
 
-class FairParSet;
+class FairLogger;
 class FairParIo;
-//class TList;
+class FairParSet;
 
 class FairContainer : public TNamed
 {

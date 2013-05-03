@@ -7,13 +7,16 @@
 // Class for geometry I/O from ASCII file
 //
 ///////////////////////////////////////////////////////////////////////////////
-
 #include "FairGeoAsciiIo.h"
 
-#include "FairGeoSet.h"
-#include "FairGeoMedia.h"
-#include "FairGeoIo.h"
-#include "FairGeoInterface.h"
+#include "FairGeoInterface.h"           // for FairGeoInterface
+#include "FairGeoIo.h"                  // for FairGeoIo
+#include "FairGeoMedia.h"               // for FairGeoMedia
+#include "FairGeoSet.h"                 // for FairGeoSet
+
+#include <stdio.h>                      // for sscanf
+#include <string.h>                     // for strcmp, strlen, strtok, etc
+#include <iostream>                     // for cout
 
 using std::cout;
 using std::endl;

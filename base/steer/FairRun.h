@@ -1,14 +1,17 @@
 #ifndef FAIRRUN_H
 #define FAIRRUN_H
 
-#include "TNamed.h"
-#include "FairLogger.h"
+#include "TNamed.h"                     // for TNamed
+
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+
+class FairEventHeader;
+class FairFileHeader;
+class FairLogger;
+class FairRootManager;
+class FairRuntimeDb;
 class FairTask;
 class TFile;
-class FairFileHeader;
-class FairRuntimeDb;
-class FairRootManager;
-class FairEventHeader;
 
 /**
  * Configure the Simuation or Analysis

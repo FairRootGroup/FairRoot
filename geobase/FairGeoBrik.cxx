@@ -13,13 +13,14 @@
 // in the technical coordinate system
 //
 /////////////////////////////////////////////////////////////
-
 #include "FairGeoBrik.h"
 
-#include "FairGeoVolume.h"
-#include "FairGeoVector.h"
+#include "FairGeoTransform.h"           // for FairGeoTransform
+#include "FairGeoVector.h"              // for FairGeoVector
+#include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "TArrayD.h"
+#include "TArrayD.h"                    // for TArrayD
+#include "TString.h"                    // for TString
 
 ClassImp(FairGeoBrik)
 

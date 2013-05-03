@@ -7,10 +7,18 @@
 // Class for geometry of support structure
 //
 /////////////////////////////////////////////////////////////
-
 #include "FairGeoPipe.h"
-#include "FairGeoLoader.h"
-#include "FairGeoInterface.h"
+
+#include "FairGeoInterface.h"           // for FairGeoInterface
+#include "FairGeoLoader.h"              // for FairGeoLoader
+
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
+
+#include <string.h>                     // for strcpy
+
+class FairGeoBuilder;
+class TObject;
 
 ClassImp(FairGeoPipe)
 

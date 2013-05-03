@@ -1,22 +1,19 @@
 #ifndef FAIRDBMULTCONNECTOR_H
 #define FAIRDBMULTCONNECTOR_H
 
-#include <map>
-#include <ostream>
-using std::ostream;
-#include <string>
-using std::string;
-#include <vector>
-using std::vector;
+#include "FairDbConnection.h"           // for FairDbConnection
 
+#include "Riosfwd.h"                    // for ostream
 #if !defined(__CINT__) || defined(__MAKECINT__)
-#include "Rtypes.h"
+#include "Rtypes.h"                     // for Int_t, UInt_t, Bool_t, etc
 #endif
 
-#include "FairDbConnection.h"
-#include "FairDbStatement.h"
+#include <map>                          // for map
+#include <ostream>                      // for ostream
+#include <string>                       // for string
+#include <vector>                       // for vector
 
-class TSQL_Statement;
+class FairDbStatement;
 
 class FairDbMultConnector
 {
@@ -33,33 +30,33 @@ class FairDbMultConnector
     const FairDbConnection* GetConnection(UInt_t dbNo) const;
     FairDbConnection* GetConnection(UInt_t dbNo) ;
 
-    string GetDbName(UInt_t dbNo) const;
-    Int_t GetDbNo(const string& dbName) const;
+    std::string GetDbName(UInt_t dbNo) const;
+    Int_t GetDbNo(const std::string& dbName) const;
     Int_t GetStatus(UInt_t dbNo) const {
       if ( dbNo >= GetNumDb() || ! fConnections[dbNo]  ) { return kFailed; }
       return fConnections[dbNo]->IsClosed() ? kClosed : kOpen;
     }
-    string GetStatusAsString(UInt_t dbNo) const ;
-    string GetURL(UInt_t dbNo) const {
+    std::string GetStatusAsString(UInt_t dbNo) const ;
+    std::string GetURL(UInt_t dbNo) const {
       return ( dbNo < GetNumDb() ) ? fConnections[dbNo]-> GetUrl(): "";
     }
-    Bool_t IsTemporaryTable(const string& tableName,
+    Bool_t IsTemporaryTable(const std::string& tableName,
                             Int_t dbNo) const;
 // Cascade-wide getters.
 
-    Int_t AllocateSeqNo(const string& tableName,
+    Int_t AllocateSeqNo(const std::string& tableName,
                         Int_t requireGlobal = 0,
                         Int_t dbNo = 0) const;
     Int_t GetAuthorisingDbNo() const { return fGlobalSeqNoDbNo; }
     UInt_t GetNumDb() const {return fConnections.size();}
-    Int_t  GetTableDbNo(const string& tableName, Int_t selectDbNo = -1) const;
-    Bool_t TableExists(const string& tableName, Int_t selectDbNo = -1) const {
+    Int_t  GetTableDbNo(const std::string& tableName, Int_t selectDbNo = -1) const;
+    Bool_t TableExists(const std::string& tableName, Int_t selectDbNo = -1) const {
       return this->GetTableDbNo(tableName,selectDbNo) >= 0;
     }
 
 
-    Int_t CreateTemporaryTable(const string& tableName,
-                               const string& tableDescr);
+    Int_t CreateTemporaryTable(const std::string& tableName,
+                               const std::string& tableDescr);
     void HoldConnections();
     void ReleaseConnections();
     void SetPermanent(UInt_t dbNo, Bool_t permanent = true);
@@ -74,14 +71,14 @@ class FairDbMultConnector
 
   private:
 
-    Int_t ReserveNextSeqNo(const string& tableName,
+    Int_t ReserveNextSeqNo(const std::string& tableName,
                            Bool_t isGlobal,
                            UInt_t dbNo) const;
 
 
     Int_t fGlobalSeqNoDbNo;
-    vector<FairDbConnection*> fConnections;
-    std::map<string,Int_t> fTemporaryTables;
+    std::vector<FairDbConnection*> fConnections;
+    std::map<std::string,Int_t> fTemporaryTables;
 
 
 
@@ -89,7 +86,7 @@ class FairDbMultConnector
     {
 
       public:
-        BLock(FairDbStatement* stmtDB, const string& seqnoTable, const string& dataTable);
+        BLock(FairDbStatement* stmtDB, const std::string& seqnoTable, const std::string& dataTable);
         ~BLock();
 
         Bool_t IsBLocked() const { return fLocked; }
@@ -102,8 +99,8 @@ class FairDbMultConnector
         void SetBLock(Bool_t setting = kTRUE);
 
         FairDbStatement* fStmt;            // Statement to be used to issue lock
-        string fSeqnoTableName;  // The SEQNO table that is locked
-        string fDataTableName;   // The data table that is locked
+        std::string fSeqnoTableName;  // The SEQNO table that is locked
+        std::string fDataTableName;   // The data table that is locked
         Bool_t fLocked;          // Lock status
 
     };

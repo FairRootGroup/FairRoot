@@ -1,17 +1,30 @@
-#include <vector>
-
-#include "TSystem.h"
-#include "TString.h"
-
-#include "FairDbExceptionLog.h"
-#include "FairDbBinaryFile.h"
-#include "FairDbCache.h"
-#include "FairDbMultConnector.h"
-#include "FairDbConfigSet.h"
-#include "FairDbServices.h"
 #include "FairDbTableProxyRegistry.h"
-#include "FairDbTableProxy.h"
-#include "FairDbString.h"
+
+#include "FairDbBinaryFile.h"           // for FairDbBinaryFile
+#include "FairDbCache.h"                // for string, FairDbCache
+#include "FairDbConfigSet.h"            // for FairDbConfigSet
+#include "FairDbExceptionLog.h"         // for FairDbExceptionLog
+#include "FairDbMultConnector.h"        // for FairDbMultConnector, etc
+#include "FairDbServices.h"             // for FairDbServices, etc
+#include "FairDbString.h"               // for StringTok, ToUpper
+#include "FairDbTableMetaData.h"        // for FairDbTableMetaData
+#include "FairDbTableProxy.h"           // for FairDbTableProxy
+#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "FairRegistry.h"               // for FairRegistry, etc
+
+#include "Riosfwd.h"                    // for ostream
+#include "TString.h"                    // for TString
+#include "TSystem.h"                    // for TSystem, gSystem
+
+#include <string.h>                     // for strcmp, strlen
+#include <cstdlib>                      // for abort, NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <utility>                      // for pair
+#include <vector>                       // for vector
+
+using std::cout;
+using std::endl;
+using std::string;
 
 ClassImp(FairDbTableProxyRegistry)
 

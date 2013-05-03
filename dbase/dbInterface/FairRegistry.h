@@ -2,14 +2,19 @@
 #ifndef FAIRREGISTRY_H
 #define FAIRREGISTRY_H
 
-#include <iostream>
-#include <map>
-#include <string>
+#include <TNamed.h>                     // for TNamed
 
-#include <TNamed.h>
+#include "Riosfwd.h"                    // for ostream, istream
+#include "Rtypeinfo.h"                  // for type_info
+#include "Rtypes.h"                     // for FairRegistry::Class, etc
+
+#include <iostream>                     // for ostream, istream
+#include <map>                          // for map, map<>::iterator, etc
+#include <string>                       // for string, operator<
+#include <typeinfo>                     // for type_info
 
 class FairRegistryItem;
-//class type_info;
+class TBrowser;
 
 class FairRegistry : public TNamed
 {
@@ -153,8 +158,5 @@ class FairRegistry : public TNamed
 };                              // end of class Registry
 
 inline std::ostream& operator<<(std::ostream& os, const FairRegistry& r) { return r.PrintStream(os); }
-
-
-#include "FairRegistryItemXxx.h"
 
 #endif  // FAIRREGISTRY_H

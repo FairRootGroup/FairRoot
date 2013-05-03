@@ -1,22 +1,23 @@
 #ifndef FAIRDBSTRING
 #define FAIRDBSTRING
-#include <string>
+
+
 
 #ifndef ROOT_Rtypes
 #if !defined(__CINT__) || defined(__MAKECINT__)
-#include "Rtypes.h"
+#include "Rtypes.h"                     // for Char_t, Bool_t, Int_t, etc
 #endif
 #endif
 
 #ifndef VECTOR
-#include <vector>
+#include <vector>                       // for vector
 #define VECTOR
 #endif
 #ifndef STRING
-#include <string>
+#include <string>                       // for string
 #define STRING
 #endif
-#include <sstream>
+#include <sstream>                      // for ostringstream, dec, etc
 
 
 namespace FairUtilString

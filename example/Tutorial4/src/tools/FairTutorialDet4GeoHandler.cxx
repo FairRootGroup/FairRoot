@@ -3,21 +3,22 @@
 // -----                 Created 13/08/10  by F. Uhlig                 -----
 // -------------------------------------------------------------------------
 
-
 #include "FairTutorialDet4GeoHandler.h"
 
-#include "FairLogger.h"
+#include "FairLogger.h"                 // for FairLogger, etc
 
-#include "TGeoVolume.h"
-#include "TGeoBBox.h"
-#include "TGeoNode.h"
-#include "TGeoManager.h"
-#include "TGeoMatrix.h"
-#include "TVirtualMC.h"
+#include "TGeoBBox.h"                   // for TGeoBBox
+#include "TGeoManager.h"                // for TGeoManager, gGeoManager
+#include "TGeoNode.h"                   // for TGeoNode
+#include "TGeoVolume.h"                 // for TGeoVolume
+#include "TVirtualMC.h"                 // for TVirtualMC, gMC
 
-#include <iostream>
-#include <vector>
-#include <map>
+#include <stdio.h>                      // for printf
+#include <string.h>                     // for NULL, strlen, strncpy
+#include <iostream>                     // for cout, endl
+#include <map>                          // for map
+#include <utility>                      // for pair
+
 using std::map;
 using std::pair;
 using std::cout;

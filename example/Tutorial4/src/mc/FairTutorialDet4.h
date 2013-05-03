@@ -1,11 +1,14 @@
 #ifndef FAIRTUTORIALDET4_H
 #define FAIRTUTORIALDET4_H
 
-#include "FairDetector.h"
+#include "FairDetector.h"               // for FairDetector
 
-#include "TVector3.h"
-#include "TLorentzVector.h"
-#include "TArrayD.h"
+#include "Rtypes.h"                     // for Int_t, Bool_t, Double32_t, etc
+#include "TArrayD.h"                    // for TArrayD
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TVector3.h"                   // for TVector3
+
+#include <string>                       // for string
 
 class FairTutorialDet4Point;
 class FairTutorialDet4GeoHandler;

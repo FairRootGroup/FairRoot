@@ -1,18 +1,17 @@
 #ifndef FAIRDBTABLEPROXYREGISTRY_H
 #define FAIRDBTABLEPROXYREGISTRY_H
 
+#include "FairDbConfigurable.h"         // for FairDbConfigurable
+
+#include "FairDbRollbackDates.h"        // for FairDbRollbackDates
+#include "FairDbSimFlagAssociation.h"   // for FairDbSimFlagAssociation
 
 #if !defined(__CINT__) || defined(__MAKECINT__)
-#include "Rtypes.h"
+#include "Rtypes.h"                     // for Bool_t, etc
 #endif
-#include <map>
-#include <string>
-#include <cstdlib>
 
-#include "FairDbConfigurable.h"
-#include "FairDbSimFlagAssociation.h"
-#include "FairDbRollbackDates.h"
-
+#include <map>                          // for map
+#include <string>                       // for string
 
 class FairDbMultConnector;
 class FairDbTableProxy;

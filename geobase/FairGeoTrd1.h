@@ -1,11 +1,15 @@
 #ifndef FAIRGEOTRD1_H
 #define FAIRGEOTRD1_H
 
-#include "FairGeoBasicShape.h"
-#include "FairGeoRotation.h"
+#include "FairGeoBasicShape.h"          // for FairGeoBasicShape
+
+#include "FairGeoRotation.h"            // for FairGeoRotation
+
+#include "Rtypes.h"                     // for FairGeoPcon::Class, Bool_t, etc
 
 class FairGeoTransform;
 class FairGeoVolume;
+class TArrayD;
 
 class FairGeoTrd1 : public FairGeoBasicShape
 {

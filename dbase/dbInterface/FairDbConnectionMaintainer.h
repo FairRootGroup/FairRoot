@@ -1,11 +1,11 @@
 #ifndef FAIRDBCONNECTIONMAINTAINER
 #define FAIRDBCONNECTIONMAINTAINER
 
+#include "Rtypes.h"                // for ClassDef
 
 class FairDbMultConnector;
 
 class FairDbConnectionMaintainer
-
 {
 
   public:

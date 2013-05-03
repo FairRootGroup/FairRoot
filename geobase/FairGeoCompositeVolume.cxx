@@ -6,8 +6,11 @@
 //
 //
 /////////////////////////////////////////////////////////////
-
 #include "FairGeoCompositeVolume.h"
+
+#include "TObjArray.h"                  // for TObjArray
+
+#include <stddef.h>                     // for NULL
 
 ClassImp(FairGeoCompositeVolume)
 

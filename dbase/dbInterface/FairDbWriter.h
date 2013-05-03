@@ -56,7 +56,7 @@ template <class T> class FairDbWriter
 // State changing member functions
 
     void SetDbNo(UInt_t dbNo) { fDbNo = dbNo;}
-    void SetDbName(const string& dbName);
+    void SetDbName(const std::string& dbName);
     void SetLogComment(const std::string& reason);
     // For setting of requireGlobal see FairDbCascader::AllocateSeqNo
     void SetRequireGlobalSeqno(Int_t requireGlobal) {fRequireGlobalSeqno = requireGlobal;}
@@ -69,7 +69,7 @@ template <class T> class FairDbWriter
                 Int_t aggNo,
                 FairDb::Version task,
                 ValTimeStamp creationDate,
-                const string& dbName,
+                const std::string& dbName,
                 const std::string& logComment = "");
     Bool_t Open(const ValRange& vr,
                 Int_t aggNo,
@@ -78,7 +78,7 @@ template <class T> class FairDbWriter
                 UInt_t dbNo = 0,
                 const std::string& logComment = "");
     Bool_t Open(const FairDbValidityRec& vrec,
-                const string& dbName,
+                const std::string& dbName,
                 const std::string& logComment = "");
     Bool_t Open(const FairDbValidityRec& vrec,
                 UInt_t dbNo = 0,

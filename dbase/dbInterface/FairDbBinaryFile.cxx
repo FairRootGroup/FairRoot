@@ -1,15 +1,24 @@
 
-#include <iostream>
-
-#include "TClass.h"
-#include "TObject.h"
-#include "TSystem.h"
-
-
 #include "FairDbBinaryFile.h"
-#include "FairDbTableRow.h"
-#include "ValRange.h"
-#include "ValTimeStamp.h"
+
+#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "ValRange.h"                   // for ValRange
+#include "ValTimeStamp.h"               // for ValTimeStamp
+
+#include "TClass.h"                     // for TClass
+#include "TString.h"                    // for TString
+#include "TSystem.h"                    // for TSystem, gSystem
+
+#include <string.h>                     // for memcpy
+#include <iostream>                     // for cout
+
+using std::cout;
+using std::endl;
+using std::hex;
+using std::dec;
+using std::string;
+using std::ios_base;
+using std::vector;
 
 enum Markers { StartMarker = 0xaabbccdd,
                EndMarker   = 0xddbbccaa

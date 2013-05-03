@@ -7,15 +7,23 @@
 #ifndef FAIRLMDSOURCE_H
 #define FAIRLMDSOURCE_H
 
+/*
 extern "C"
 {
 #include "f_evt.h"
 #include "s_filhe_swap.h"
 #include "s_bufhe_swap.h"
 }
+*/
 
-#include "FairSource.h"
+#include "FairSource.h"                 // for FairSource
 
+#include "Rtypes.h"                     // for Bool_t, etc
+
+#include "f_evt.h"                      // for s_evt_channel
+#include "s_bufhe.h"                    // for s_bufhe
+#include "s_ve10_1.h"                   // for s_ve10_1
+#include "s_ves10_1.h"                  // for s_ves10_1
 
 class FairLmdSource : public FairSource
 {

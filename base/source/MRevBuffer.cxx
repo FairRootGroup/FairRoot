@@ -17,22 +17,33 @@
 // 19.11.2001, H.G.: increase data buffer dynamically
 //////////////////////////////////////////////////////////////////////
 
-#include <signal.h>
-#include <unistd.h>
-#include <time.h>
-#include <netinet/in.h>
+#include "MRevBuffer.h"            // class definition
+
+#include "Riosfwd.h"                    // for ostream
+#include "TSocket.h"                    // for TSocket, etc
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
+#include <signal.h>                     // IWYU pragma: keep
+#include <unistd.h>                     // IWYU pragma: keep
+#include <time.h>                     // IWYU pragma: keep
+#include <netinet/in.h>                     // IWYU pragma: keep
+
 #ifdef Linux
-#include <socket.h>
-#include <select.h>
+#include <socket.h>                     // IWYU pragma: keep
+#include <select.h>                     // IWYU pragma: keep
 #else                             // AIX
-#include <strings.h>
-#include <sys/socket.h>
-#include <sys/select.h>
+#include <strings.h>                     // IWYU pragma: keep
+#include <sys/socket.h>                     // IWYU pragma: keep
+#include <sys/select.h>                     // IWYU pragma: keep
 #endif
 
-#include "MRevBuffer.h"            // class definition
 #include "ptrevcomm.h"            // communication structure
 #include "ptrevmbsdef.h"          // MBS data definitions
+
+// IWYU pragma: no_include <stdio.h>
+// IWYU pragma: no_include <sys/_endian.h>
+// IWYU pragma: no_include <sys/signal.h>
 
 using namespace std;
 

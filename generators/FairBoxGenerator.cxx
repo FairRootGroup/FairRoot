@@ -18,15 +18,16 @@
  * New functionality added
  *
  */
-
 #include "FairBoxGenerator.h"
 
-#include "FairPrimaryGenerator.h"
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
-#include "TRandom.h"
-#include "TParticlePDG.h"
-#include "TDatabasePDG.h"
-#include "TMath.h"
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TMath.h"                      // for DegToRad, Cos, Sin, cos, etc
+#include "TParticlePDG.h"               // for TParticlePDG
+#include "TRandom.h"                    // for TRandom, gRandom
+
+#include <stdio.h>                      // for printf
 
 // ------------------------------------------------------------------------
 FairBoxGenerator::FairBoxGenerator() :

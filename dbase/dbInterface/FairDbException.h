@@ -1,16 +1,15 @@
 #ifndef FAIRDBEXCEPTION
 #define FAIRDBEXCEPTION
 
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, etc
 
-#include <iosfwd>
-#include <string>
-#include "Rtypes.h"
+#include <iosfwd>                       // for ostream
+#include <string>                       // for string, basic_string
 
 class FairDbException;
 class TSQLServer;
 class TSQLStatement;
-
-class ostreamx;
 
 std::ostream& operator<<(std::ostream& s, const FairDbException& e);
 

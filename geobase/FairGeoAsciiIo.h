@@ -1,12 +1,13 @@
 #ifndef FAIRGEOASCIIIO_H
 #define FAIRGEOASCIIIO_H
 
-#include "FairGeoIo.h"
+#include "FairGeoIo.h"                  // for FairGeoIo
 
-#include "TString.h"
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Bool_t, etc
+#include "TString.h"                    // for TString
 
-#include <fstream>
-//#include <iomanip>
+#include <fstream>                      // for fstream
 
 class FairGeoSet;
 class FairGeoMedia;

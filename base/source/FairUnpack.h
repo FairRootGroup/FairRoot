@@ -7,6 +7,7 @@
 #ifndef FAIRUNPACK_H
 #define FAIRUNPACK_H
 
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
 #include "TObject.h"
 
 

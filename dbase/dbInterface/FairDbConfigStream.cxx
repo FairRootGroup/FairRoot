@@ -1,14 +1,24 @@
-
-#include <sstream>
-
-#include "FairDbConf.h"
-#include "FairDbMultConnector.h"
 #include "FairDbConfigStream.h"
-#include "FairDbFieldType.h"
-#include "FairDbTableProxy.h"
-#include "FairDbTableProxyRegistry.h"
-#include "FairDbWriter.h"
-#include "FairRegistry.h"
+
+#include "FairDbFieldType.h"            // for FairDbFieldType
+#include "FairDbMultConnector.h"        // for FairDbMultConnector
+#include "FairDbTableProxy.h"           // for FairDbTableProxy
+#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairDbWriter.h"               // for FairDbWriter
+#include "FairRegistry.h"               // for FairRegistry
+#include "SimFlag.h"                    // for ESimFlag::kData
+#include "ValRange.h"                   // for ValRange
+#include "ValTimeStamp.h"               // for ValTimeStamp
+#include "db_detector_def.h"            // for Detector, etc
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <sstream>                      // IWYU pragma: keep 
+// for ostringstream, istringstream
+using std::cout;
+using std::endl;
+using std::string;
+using std::ostringstream;
+using std::istringstream;
 
 ClassImp(FairDbConfigStream)
 

@@ -6,10 +6,13 @@
  */
 
 #include "FairMCMatch.h"
-#include "FairRootManager.h"
 
-#include "TClonesArray.h"
-#include <iostream>
+#include "FairLink.h"                   // for FairLink
+#include "FairRootManager.h"            // for FairRootManager
+
+#include "TClonesArray.h"               // for TClonesArray
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 ClassImp(FairMCMatch);
 

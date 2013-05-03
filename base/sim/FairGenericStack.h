@@ -13,18 +13,16 @@
 #ifndef FAIRGENERICSTACK_H
 #define FAIRGENERICSTACK_H
 
+#include "TVirtualMCStack.h"            // for TVirtualMCStack
 
-//#include <map>
-//#include <stack>
-//#include <iostream>
-//#include "TClonesArray.h"
-#include "TVirtualMCStack.h"
-#include "FairLogger.h"
+#include "Rtypes.h"                     // for Double_t, Int_t, etc
+#include "TMCProcess.h"                 // for TMCProcess
 
+#include <stddef.h>                     // for NULL
 
+class FairLogger;
 class TParticle;
 class TRefArray;
-
 
 class FairGenericStack : public TVirtualMCStack
 {

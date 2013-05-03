@@ -1,13 +1,16 @@
 #ifndef FAIRRTDBRUN_H
 #define FAIRRTDBRUN_H
 
-#include "TNamed.h"
-#include "TList.h"
-#include "TString.h"
+#include "TNamed.h"                     // for TNamed
 
-//#include <iostream>
-//#include <iomanip>
-#include <fstream>
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Int_t, Text_t, UInt_t, etc
+#include "TString.h"                    // for TString
+
+#include <stdio.h>                      // for sprintf, sscanf
+#include <fstream>                      // for fstream
+
+class TList;
 
 class FairParVersion : public TNamed
 {

@@ -1,9 +1,11 @@
 #ifndef FAIRTUTORIALDET1CONTFACT_H
 #define FAIRTUTORIALDET1CONTFACT_H
 
-#include "FairContFact.h"
+#include "FairContFact.h"               // for FairContFact, etc
 
-class FairContainer;
+#include "Rtypes.h"
+
+class FairParSet;
 
 class FairTutorialDet1ContFact : public FairContFact
 {

@@ -1,10 +1,8 @@
 #include "FairTestDetectorGeoPar.h"
 
-#include "FairParamList.h"
+#include "FairParamList.h"              // for FairParamList
 
-#include "TObjArray.h"
-
-#include <iostream>
+#include "TObjArray.h"                  // for TObjArray
 
 ClassImp(FairTestDetectorGeoPar)
 

@@ -4,26 +4,21 @@
 #ifndef FAIRDBTUTPAR_H
 #define FAIRDBTUTPAR_H
 
+#include "FairParGenericSet.h"          // for FairParGenericSet
+#include "SimFlag.h"                    // for ESimFlag::kData
+#include "ValContext.h"                 // for ValContext
+#include "ValTimeStamp.h"               // for ValTimeStamp
+#include "db_detector_def.h"            // for Detector, etc
 
-#include "TObject.h"
-#include "Rtypes.h"
-#include <TVector3.h>
-#include <TObjString.h>
+#include "Rtypes.h"                     // for Double_t, Int_t, UInt_t, etc
 
-#include "Detector.h"
-#include "SimFlag.h"
-#include "FairDbTableRow.h"
-#include "ValContext.h"
-#include "ValRange.h"
-#include "ValTimeStamp.h"
+#include <string>                       // for string
 
-#include "FairParGenericSet.h"
-#include "FairParamList.h"
-#include <string>
-using std::string;
-
-
-
+class FairDbOutRowStream;
+class FairDbResultSet;
+class FairDbTableRow;
+class FairDbValidityRec;
+class FairParamList;
 
 class FairDbTutPar : public FairParGenericSet
 {
@@ -41,16 +36,16 @@ class FairDbTutPar : public FairParGenericSet
     Double_t GetTopPitch()        const {return fTopPitch;}
     Double_t GetTopAnchor()       const {return fTopAnchor;}
     Int_t    GetNrTopFE()         const {return fTopNrFE;}
-    string   GetFeType()           const {return fFeType;}
+    std::string   GetFeType()           const {return fFeType;}
 
     void SetTopPitch(Double_t x)  {fTopPitch = x;}
     void SetTopAnchor(Double_t x) {fTopAnchor = x;}
     void SetNrTopFE(Int_t x)      {fTopNrFE = x;}
-    void SetFeType(string x)     {fFeType = x;}
+    void SetFeType(std::string x)     {fFeType = x;}
 
 
     // SQL descriptors
-    virtual string GetTableDescr(const char* alternateName = 0);
+    virtual std::string GetTableDescr(const char* alternateName = 0);
     virtual FairDbTableRow* CreateTableRow() const {
       return new FairDbTutPar();
     }
@@ -76,7 +71,7 @@ class FairDbTutPar : public FairParGenericSet
     Double_t fTopPitch;     // Strip pitch on top wafer side
     Double_t fTopAnchor;    // Anchor point of top strip#0
     Int_t    fTopNrFE;      // Number of FE attached to top wafer side
-    string    fFeType;       // Frontend type name
+    std::string    fFeType;       // Frontend type name
 
     ClassDef(FairDbTutPar,1); //
 };

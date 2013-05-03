@@ -1,5 +1,7 @@
 #include "FairUtilStream.h"
 
+#include <ctype.h>                      // for isspace
+
 using namespace std;
 
 void Util::eat_whitespace(std::istream& is)

@@ -4,12 +4,14 @@
  *  Created on: Jul 5, 2011
  *      Author: stockman
  */
+#include "FairMCDataCrawler.h"
 
-#include <FairMCDataCrawler.h>
+#include "FairLink.h"                   // for FairLink, operator<<
+#include "FairRootManager.h"            // for FairRootManager
 
-#include "TTree.h"
-#include "TBranch.h"
-#include "TClonesArray.h"
+#include "Riosfwd.h"                    // for ostream
+
+#include <iostream>                     // for operator<<, ostream, cout, etc
 
 ClassImp(FairMCDataCrawler);
 

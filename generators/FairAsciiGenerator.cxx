@@ -4,11 +4,10 @@
 // -------------------------------------------------------------------------
 #include "FairAsciiGenerator.h"
 
-#include "FairPrimaryGenerator.h"
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
-#include "TDatabasePDG.h"
-
-#include <iostream>
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for cout
 
 using std::cout;
 using std::endl;

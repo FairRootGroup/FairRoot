@@ -2,13 +2,12 @@
 #ifndef FAIRDBPROXY_H
 #define FAIRDBPROXY_H
 
+#include "FairDb.h"                     // for Version
 
-#include <string>
-using std::string;
-#include <list>
-#include <vector>
+#include "Rtypes.h"                     // for UInt_t, Bool_t, etc
 
-#include "FairDb.h"
+#include <string>                       // for string
+#include <vector>                       // for vector
 
 class FairDbMultConnector;
 class FairDbResultSet;
@@ -28,13 +27,13 @@ class FairDbProxy
 
 // Constructors.
     FairDbProxy(FairDbMultConnector& cascader,
-                const string& tableName,
+                const std::string& tableName,
                 const FairDbTableMetaData* metaData,
                 const FairDbTableMetaData* metaValid,
                 const FairDbTableProxy* tableProxy);
     virtual ~FairDbProxy();
     UInt_t GetNumDb() const;
-    const string& GetTableName() const { return fTableNameUc; }
+    const std::string& GetTableName() const { return fTableNameUc; }
     const FairDbTableProxy* GetTableProxy() const { return fTableProxy; }
     void StoreMetaData(FairDbTableMetaData& metaData) const;
     Bool_t TableExists(Int_t selectDbNo=-1) const;
@@ -50,13 +49,13 @@ class FairDbProxy
     /// Secondary query for aggregate and extended context queries.
     FairDbResultSet* QuerySeqNos(SeqList_t& seqNos,
                                  UInt_t dbNo,
-                                 const string& sqlData = "",
-                                 const string& fillOpts = "") const;
+                                 const std::string& sqlData = "",
+                                 const std::string& fillOpts = "") const;
 #endif
     FairDbResultSet* QueryValidity(const ValContext& vc,
                                    const FairDb::Version& task,
                                    UInt_t dbNo) const;
-    FairDbResultSet* QueryValidity(const string& context,
+    FairDbResultSet* QueryValidity(const std::string& context,
                                    const FairDb::Version& task,
                                    UInt_t dbNo) const;
     FairDbResultSet* QueryValidity(UInt_t seqNo,
@@ -73,7 +72,7 @@ class FairDbProxy
                         UInt_t dbNo) const;
 
     // State changing member functions
-    void SetSqlCondition(const string& sql) {
+    void SetSqlCondition(const std::string& sql) {
       fSqlCondition = sql;
     }
 
@@ -89,11 +88,11 @@ class FairDbProxy
     FairDbMultConnector& fMultConnector;
     const FairDbTableMetaData* fMetaData;
     const FairDbTableMetaData* fMetaValid;
-    string fSqlCondition;
-    string fTableName;
-    string fTableNameUc;
+    std::string fSqlCondition;
+    std::string fTableName;
+    std::string fTableNameUc;
     const FairDbTableProxy* fTableProxy;
-    string fValSuffix;
+    std::string fValSuffix;
 
     ClassDef(FairDbProxy,0)     //  Proxy for physical database.
 

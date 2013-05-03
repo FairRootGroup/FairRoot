@@ -21,7 +21,9 @@
 /////////////////////////////////////////////////////////////
 #include "FairGeoVolume.h"
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using std::cout;
 using std::endl;

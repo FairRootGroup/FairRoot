@@ -6,14 +6,16 @@
 
 // Extended TParticle with pointers to mother and daughters
 // particles
-
 #include "FairParticle.h"
 
-#include "TParticle.h"
-#include "TMCParticleType.h"
-#include <iostream>
-#include "TParticlePDG.h"
-#include "TDatabasePDG.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TMCParticleType.h"            // for TMCParticleType::kPTIon, etc
+#include "TParticle.h"                  // for TParticle
+#include "TParticlePDG.h"               // for TParticlePDG
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
 using std::cout;
 using std::endl;
 

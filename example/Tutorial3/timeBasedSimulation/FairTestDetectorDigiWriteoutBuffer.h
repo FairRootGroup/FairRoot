@@ -8,8 +8,14 @@
 #ifndef FairTestDetectorDigiWriteoutBufferR_H_
 #define FairTestDetectorDigiWriteoutBuffer_H_
 
-#include "FairWriteoutBuffer.h"
-#include "FairTestDetectorDigi.h"
+#include "FairWriteoutBuffer.h"         // for FairWriteoutBuffer
+
+#include "FairTestDetectorDigi.h"       // for FairTestDetectorDigi
+
+#include "Rtypes.h"
+#include "TString.h"                    // for TString
+
+#include <map>                          // for map
 
 class FairTimeStamp;
 

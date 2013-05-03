@@ -1,7 +1,11 @@
 #ifndef FAIRTUTORIALDET1GEO_H
 #define FAIRTUTORIALDET1GEO_H
 
-#include "FairGeoSet.h"
+#include "FairGeoSet.h"                 // for FairGeoSet
+
+#include "Rtypes.h"                     // for Int_t, etc
+
+#include "TString.h"                    // for TString
 
 class  FairTutorialDet1Geo : public FairGeoSet
 {

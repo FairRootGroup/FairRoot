@@ -1,16 +1,23 @@
 #ifndef FAIRDBTABLEROW_H
 #define FAIRDBTABLEROW_H
 
-#include <string>
-#include <cassert>
-#include "TObject.h"
-#include "ValContext.h"
-#include "ValRange.h"
+#include "TObject.h"                    // for TObject
+
+#include "SimFlag.h"                    // for SimFlag_t
+#include "ValContext.h"                 // for ValContext
+#include "ValRange.h"                   // for ValRange
+#include "ValTimeStamp.h"               // for ValTimeStamp
+#include "db_detector_def.h"            // for Detector, etc
+
+#include "Rtypes.h"                     // for UInt_t, Int_t, etc
+
+#include <stddef.h>                     // for NULL
+#include <cassert>                      // for assert
+#include <string>                       // for string
 
 class FairDbOutRowStream;
 class FairDbResult;
 class FairDbResultSet;
-class FairDbTableProxy;
 class FairDbValidityRec;
 
 class FairDbTableRow : public TObject
@@ -46,7 +53,7 @@ class FairDbTableRow : public TObject
 
     // Getters that support Data Transmission Fidelity tests.
     virtual ValContext GetContextDTF(UInt_t rid) { return ValContext();}
-    virtual string GetTableDescr(const char* alternateName = 0) {return NULL;}
+    virtual std::string GetTableDescr(const char* alternateName = 0) {return NULL;}
     // <DB> add ons GlobalSeqNo
     virtual UInt_t GetSeqNoDTF() { return 999999990; }
 

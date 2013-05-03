@@ -5,14 +5,15 @@
 #ifndef FairEventManager_H
 #define FairEventManager_H
 
-#include "TEveEventManager.h"
+#include "TEveEventManager.h"           // for TEveEventManager
 
-#include "FairRunAna.h"
-#include "FairRootManager.h"
+#include "FairRunAna.h"                 // for FairRunAna
+
+#include "Rtypes.h"                     // for Float_t, Int_t, Bool_t, etc
 
 class FairRootManager; //does not work with streamer, reason unclear
 class FairTask;
-class TList;
+class TGListTreeItem;
 
 class FairEventManager : public TEveEventManager
 {

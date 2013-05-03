@@ -1,13 +1,12 @@
 #ifndef FairTestDetectorTimeRecoTask_H
 #define FairTestDetectorTimeRecoTask_H
 
-#include "FairTask.h"
-#include "FairTSBufferFunctional.h"
+#include "FairTask.h"                   // for FairTask, InitStatus
 
+#include "Rtypes.h"                     // for ClassDef
+
+class BinaryFunctor;
 class TClonesArray;
-
-class FairTestDetectorPoint;
-
 
 class FairTestDetectorTimeRecoTask : public FairTask
 {

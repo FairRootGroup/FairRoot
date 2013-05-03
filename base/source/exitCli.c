@@ -13,11 +13,8 @@
  * 10. 6.1999, H.G.: call sleep only if required
  ********************************************************************
  */
-#include <ctype.h>
-#include "sys/socket.h"
-#include <signal.h>
-#include <stdio.h>
-#include <unistd.h>
+#include <stdio.h>                      // for printf
+#include <unistd.h>                     // for sleep
 
 extern int imySig;
 extern int iTimeOut;

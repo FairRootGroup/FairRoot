@@ -1,9 +1,9 @@
 #ifndef FAIRDETPARIO_H
 #define FAIRDETPARIO_H
 
+#include "TNamed.h"                     // for TNamed
 
-//#include "Rtypes.h"
-#include "TNamed.h"
+#include "Rtypes.h"                     // for Int_t, FairDetParIo::Class, etc
 
 class FairParSet;
 

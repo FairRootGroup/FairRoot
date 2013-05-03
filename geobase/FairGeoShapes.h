@@ -1,14 +1,13 @@
 #ifndef FAIRGEOSHAPES_H
 #define FAIRGEOSHAPES_H
 
+#include "TObject.h"                    // for TObject
 
-//#include "FairGeoTransform.h"
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for FairGeoShapes::Class, etc
+#include "TString.h"                    // for TString
 
-#include "TObject.h"
-#include "TString.h"
-//#include "TList.h"
-
-#include <fstream>
+#include <fstream>                      // for fstream
 
 class FairGeoVolume;
 class FairGeoBasicShape;

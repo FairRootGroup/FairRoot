@@ -7,26 +7,27 @@
 // Base class for geometry of detector parts
 //
 /////////////////////////////////////////////////////////////
-
 #include "FairGeoSet.h"
 
-#include "FairGeoNode.h"
-#include "FairGeoShapes.h"
-#include "FairGeoBasicShape.h"
-#include "FairGeoMedium.h"
-#include "FairGeoBuilder.h"
-#include "FairGeoMedia.h"
+#include "FairGeoBasicShape.h"          // for FairGeoBasicShape
+#include "FairGeoBuilder.h"             // for FairGeoBuilder
+#include "FairGeoMedia.h"               // for FairGeoMedia
+#include "FairGeoNode.h"                // for FairGeoNode, etc
+#include "FairGeoShapes.h"              // for FairGeoShapes
+#include "FairGeoTransform.h"           // for FairGeoTransform
 
-#include "TString.h"
-#include "TArrayI.h"
+#include "TArrayI.h"                    // for TArrayI
+#include "TString.h"                    // for TString, operator<<
 
-//#include "ctype.h"
+#include <ctype.h>                      // for isalpha
+#include <string.h>                     // for NULL, strcmp
+#include <iostream>                     // for cout
+
+class FairGeoMedium;
+
 using std::cout;
 using std::endl;
 using std::ios;
-
-
-class FairGeoTransform;
 
 ClassImp(FairGeoSet)
 

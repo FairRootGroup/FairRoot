@@ -4,20 +4,22 @@
 // -------------------------------------------------------------------------
 #include "FairTutorialDet4HitProducerIdealMisalign.h"
 
-#include "FairTutorialDet4Hit.h"
-#include "FairTutorialDet4Point.h"
+#include "FairLogger.h"                 // for FairLogger, etc
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRunAna.h"                 // for FairRunAna
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairTutorialDet4GeoHandler.h"  // for FairTutorialDet4GeoHandler
+#include "FairTutorialDet4Hit.h"        // for FairTutorialDet4Hit
 #include "FairTutorialDet4MisalignPar.h"
-#include "FairTutorialDet4GeoHandler.h"
+#include "FairTutorialDet4Point.h"      // for FairTutorialDet4Point
 
-#include "FairRootManager.h"
-#include "FairRunAna.h"
-#include "FairRuntimeDb.h"
+#include "TClonesArray.h"               // for TClonesArray
+#include "TMath.h"                      // for Cos, Sin
+#include "TMathBase.h"                  // for Abs
+#include "TRandom.h"                    // for TRandom, gRandom
+#include "TVector3.h"                   // for TVector3
 
-#include "TClonesArray.h"
-#include "TRandom.h"
-#include "TGeoMatrix.h"
-#include "TMath.h"
-//#include "TGeoCombiTrans.h"
+#include <stddef.h>                     // for NULL
 
 // -----   Default constructor   -------------------------------------------
 FairTutorialDet4HitProducerIdealMisalign::FairTutorialDet4HitProducerIdealMisalign()

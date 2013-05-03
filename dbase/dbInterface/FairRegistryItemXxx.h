@@ -2,13 +2,16 @@
 #ifndef FAIRREGISTRYITEMXXX_H
 #define FAIRREGISTRYITEMXXX_H
 
-#include <TBuffer.h>
-#include <TObject.h>
+#include "FairRegistryItem.h"           // for FairRegistryItem
 
-#include <FairRegistryItem.h>
-#include <FairRegistry.h>
-//#include <typeinfo>
-#include <iostream>
+#include "TBuffer.h"                    // for TBuffer
+#include "Riosfwd.h"                    // for ostream, istream
+#include "Rtypeinfo.h"                  // for type_info
+#include "Rtypes.h"                     // for FairRegistryItem::Streamer, etc
+
+#include <iostream>                     // IWYU pragma: keep
+#include <typeinfo>                     // for type_info
+class FairRegistry;
 
 template<class T> class FairRegistryItemXxx : public FairRegistryItem
 {
@@ -61,7 +64,6 @@ TBuffer& operator<<(TBuffer& buf, double*& xptr);
 TBuffer& operator<<(TBuffer& buf, float*& xptr);
 
 #ifndef __CINT__
-#include <iostream>
 
 ClassImpT(FairRegistryItemXxx,T)
 
@@ -165,8 +167,6 @@ void FairRegistryItemXxx<T>::Streamer(TBuffer& buf)
   }
 }
 
-
-#include <FairRegistry.h>
 
 template<>
 std::ostream& FairRegistryItemXxx<FairRegistry>::PrintStream(std::ostream& os) const;

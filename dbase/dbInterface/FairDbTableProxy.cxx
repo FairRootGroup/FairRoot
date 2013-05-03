@@ -1,16 +1,30 @@
-
-#include "Detector.h"
-#include "SimFlag.h"
-#include "FairDbBinaryFile.h"
-#include "FairDbCache.h"
-#include "FairDbConnectionMaintainer.h"
-#include "FairDbResult.h"
 #include "FairDbTableProxy.h"
-#include "FairDbTableRow.h"
-#include "FairDbTimerManager.h"
-#include "FairDbValidityRec.h"
-#include "FairDbValidityRecBuilder.h"
-#include "FairDbExceptionLog.h"
+
+#include "FairDbBinaryFile.h"           // for string, FairDbBinaryFile
+#include "FairDbCache.h"                // for FairDbCache
+#include "FairDbConnectionMaintainer.h"  // for FairDbConnectionMaintainer
+#include "FairDbExceptionLog.h"         // for FairDbExceptionLog
+#include "FairDbResult.h"               // for FairDbResultNonAgg, etc
+#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "FairDbTimerManager.h"         // for FairDbTimerManager, etc
+#include "FairDbValidityRec.h"          // for FairDbValidityRec, etc
+#include "FairDbValidityRecBuilder.h"   // for FairDbValidityRecBuilder
+#include "SimFlag.h"                    // for SimFlag_t
+#include "ValContext.h"                 // for ValContext
+#include "ValRange.h"                   // for ValRange
+#include "db_detector_def.h"            // for Detector, etc
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <sys/select.h>                 // for time_t
+#include <iostream>                     // for cout
+#include <sstream>                      // IWYU pragma: keep
+// for operator<<, basic_ostream, etc
+
+using std::cout;
+using std::endl;
+using std::string;
+
 
 ClassImp(FairDbTableProxy)
 

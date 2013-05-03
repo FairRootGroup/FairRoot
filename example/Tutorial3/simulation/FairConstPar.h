@@ -6,10 +6,14 @@
  ** Parameter set for the region between Solenoid and dipole. For the runtime database.
  **/
 
-
 #ifndef FairConstPAR_H
 #define FairConstPAR_H 1
-#include "FairMapPar.h"
+
+#include "FairMapPar.h"                 // for FairMapPar
+
+#include "Rtypes.h"                     // for Double_t, etc
+
+class FairField;
 class FairParamList;
 
 class FairConstPar : public FairMapPar

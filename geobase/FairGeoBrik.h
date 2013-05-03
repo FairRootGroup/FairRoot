@@ -1,10 +1,14 @@
 #ifndef FAIRGEOBRIK_H
 #define FAIRGEOBRIK_H
 
-#include "FairGeoBasicShape.h"
+#include "FairGeoBasicShape.h"          // for FairGeoBasicShape
+
+#include "Rtypes.h"                     // for FairGeoBrik::Class, etc
+
 
 class FairGeoTransform;
 class FairGeoVolume;
+class TArrayD;
 
 class FairGeoBrik : public FairGeoBasicShape
 {

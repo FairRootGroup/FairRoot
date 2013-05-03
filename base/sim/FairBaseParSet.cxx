@@ -4,10 +4,12 @@
 // -------------------------------------------------------------------------
 
 #include "FairBaseParSet.h"
-#include "FairPrimaryGenerator.h"
-#include "FairParamList.h"
-#include "TObjArray.h"
 
+#include "FairParamList.h"              // for FairParamList
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+
+#include "TGeoManager.h"                // for TGeoManager
+#include "TObjArray.h"                  // for TObjArray
 
 ClassImp(FairBaseParSet)
 

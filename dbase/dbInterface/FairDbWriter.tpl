@@ -9,6 +9,8 @@
 #include "FairDbSqlValPacket.h"
 #include "FairDbTableProxy.h"
 
+using std::cout;
+using std::endl;
 
 //templateClassImpUnique(FairDbWriter,T)
 ClassImpT(FairDbWriter,T)

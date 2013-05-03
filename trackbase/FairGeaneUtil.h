@@ -1,9 +1,10 @@
 #ifndef FAIRGEANEUTIL_H
 #define FAIRGEANEUTIL_H
 
-#include "FairTrackPar.h"
-#include "TVector3.h"
+#include "TObject.h"                    // for TObject
 
+#include "Rtypes.h"                     // for Double_t, Int_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairGeaneUtil : public TObject
 {

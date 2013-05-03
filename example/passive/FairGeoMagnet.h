@@ -1,8 +1,9 @@
 #ifndef PNDGEOMAGNET_H
 #define PNDGEOMAGNET_H
 
-#include "FairGeoSet.h"
-#include "TString.h"
+#include "FairGeoSet.h"                 // for FairGeoSet
+
+#include "Rtypes.h"                     // for FairGeoMagnet::Class, Int_t, etc
 
 class  FairGeoMagnet : public FairGeoSet
 {

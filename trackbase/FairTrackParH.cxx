@@ -7,16 +7,18 @@
 // The Helix can be constructed using the Helix parameter (1/p, lambda, phi,y_perp,z_perp) in SC reference
 // and the covariance matrix. Or using position and momentum in LAB referance.
 
-
 #include "FairTrackParH.h"
+#include "FairField.h"                  // for FairField
+#include "FairGeaneUtil.h"              // for FairGeaneUtil
+#include "FairRunAna.h"                 // for FairRunAna
+#include "FairTrackParP.h"              // for FairTrackParP
+#include "Riosfwd.h"                    // for ostream
+#include "TMath.h"                      // for pow, Sqrt, sqrt, Sin, Cos, etc
+#include "TMathBase.h"                  // for Abs, Sign
 
-#include "FairGeaneUtil.h"
-#include "FairRunAna.h"
-#include "FairField.h"
-
-#include "TMath.h"
-#include <cmath>
-#include <iostream>
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <cmath>                        // IWYU pragma: keep for fabs
+// IWYU pragma: no_include <architecture/i386/math.h>
 
 using std::cout;
 using std::endl;

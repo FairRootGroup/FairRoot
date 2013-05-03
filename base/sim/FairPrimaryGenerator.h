@@ -16,19 +16,22 @@ the tracking from the macro (M. Al-Turany)
 #ifndef FAIRPRIMARYGENERATOR_H
 #define FAIRPRIMARYGENERATOR_H
 
-#include "FairGenerator.h"
-#include "FairLogger.h"
+#include "TNamed.h"                     // for TNamed
 
-#include "TNamed.h"
-#include "TObjArray.h"
-#include "TVector3.h"
+#include "FairGenerator.h"              // for FairGenerator
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Double_t, Bool_t, Int_t, etc
+#include "TObjArray.h"                  // for TObjArray
+#include "TVector3.h"                   // for TVector3
 
-class TF1;
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
 class FairGenericStack;
+class FairLogger;
 class FairMCEventHeader;
-//class FairGenerator;
+class TF1;
+class TIterator;
 
 class FairPrimaryGenerator : public TNamed
 

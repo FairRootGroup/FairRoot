@@ -1,19 +1,23 @@
 #ifndef FAIRDBVALIDITYREC_H
 #define FAIRDBVALIDITYREC_H
 
-#include "FairDb.h"
 #include "FairDbTableRow.h"
-#include "ValRange.h"
-#include "ValTimeStamp.h"
 
-#include <iosfwd>
-#include <string>
+#include "FairDb.h"                      // for Version
+#include "ValRange.h"                    // for ValRange
+#include "ValTimeStamp.h"                // for ValTimeStamp
+
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, Bool_t, UInt_t, etc
+
+#include <iosfwd>                       // for ostream
+#include <string>                       // for string
 
 class FairDbBinaryFile;
 class FairDbTableProxy;
-class FairDbValidityRec;
-
-ostream& operator<<(ostream& s, const FairDbValidityRec& vRec);
+class FairDbOutRowStream;
+class FairDbResultSet;
+class ValContext;
 
 class FairDbValidityRec : public FairDbTableRow
 {
@@ -94,6 +98,8 @@ class FairDbValidityRec : public FairDbTableRow
     ClassDef(FairDbValidityRec,0)  // Validity range table row.
 
 };
+
+ostream& operator<<(ostream& s, const FairDbValidityRec& vRec);
 
 
 #endif  // DBIVALIDITYREC_H

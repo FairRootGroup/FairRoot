@@ -3,16 +3,17 @@
 *  class for event management and navigation.
 *  M. Al-Turany 06.12.2007
 **/
-
 #include "FairEventManager.h"
 
-#include "FairRootManager.h"
-#include "FairRunAna.h"
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRunAna.h"                 // for FairRunAna
 
-#include "TEveManager.h"
-#include "TEveGeoNode.h"
-#include "TGeoManager.h"
-#include "TDatabasePDG.h"
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TEveGeoNode.h"                // for TEveGeoTopNode
+#include "TEveManager.h"                // for TEveManager, gEve
+#include "TGeoManager.h"                // for gGeoManager, TGeoManager
+
+class TGeoNode;
 
 ClassImp(FairEventManager)
 

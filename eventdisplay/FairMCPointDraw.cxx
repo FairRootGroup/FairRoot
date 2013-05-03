@@ -6,7 +6,12 @@
  */
 
 #include "FairMCPointDraw.h"
-#include "FairMCPoint.h"
+
+#include "FairMCPoint.h"                // for FairMCPoint
+
+#include "TVector3.h"                   // for TVector3
+
+class TObject;
 
 FairMCPointDraw::FairMCPointDraw()
 {

@@ -14,16 +14,15 @@
 #ifndef FAIRMCMATCHSELECTORTASK_H
 #define FAIRMCMATCHSELECTORTASK_H
 
+#include "FairTask.h"                   // for FairTask, InitStatus
 
-// framework includes
-#include "FairTask.h"
-#include "FairMCMatch.h"
+#include "Rtypes.h"                     // for Int_t, Float_t, etc
+#include "TString.h"                    // for TString
 
+#include <utility>                      // for pair
+#include <vector>                       // for vector
 
-#include <vector>
-#include <map>
-
-class TClonesArray;
+class FairMCMatch;
 
 class FairMCMatchSelectorTask : public FairTask
 {

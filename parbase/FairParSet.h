@@ -1,13 +1,12 @@
 #ifndef FAIRPARSET_H
 #define FAIRPARSET_H
 
-#include "FairLogger.h"
-#include "TNamed.h"
-#include "FairDbTableRow.h"
+#include "FairDbTableRow.h"             // for FairDbTableRow
 
-#include <iostream>
-using namespace std;
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include "TString.h"                    // for TString
 
+class FairLogger;
 class FairParIo;
 
 class FairParSet : public FairDbTableRow

@@ -1,13 +1,17 @@
 #include "FairTutorialDet4StraightLineFitter.h"
-#include "FairTutorialDet4Hit.h"
 
-#include "FairLogger.h"
+#include "FairLogger.h"                 // for FairLogger, etc
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairTrackParam.h"             // for FairTrackParam
+#include "FairTutorialDet4Hit.h"        // for FairTutorialDet4Hit
 
-#include "FairTrackParam.h"
+#include "TClonesArray.h"               // for TClonesArray
+#include "TF1.h"                        // for TF1
+#include "TGraphErrors.h"               // for TGraphErrors
+#include "TVector3.h"                   // for TVector3
 
-#include "TF1.h"
-#include "TGraphErrors.h"
-#include "TMatrixFSym.h"
+#include <stddef.h>                     // for NULL
+#include <set>                          // for set, set<>::iterator, etc
 
 // ---- Default constructor -------------------------------------------
 FairTutorialDet4StraightLineFitter::FairTutorialDet4StraightLineFitter()

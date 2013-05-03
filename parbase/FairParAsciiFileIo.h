@@ -1,9 +1,12 @@
 #ifndef FAIRPARASCIFILEIIO_H
 #define FAIRPARASCIFILEIIO_H
 
-#include "FairParIo.h"
+#include "FairParIo.h"                  // for FairParIo
 
-#include <fstream>
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Bool_t, Text_t, etc
+
+#include <fstream>                      // for fstream, etc
 
 class TList;
 

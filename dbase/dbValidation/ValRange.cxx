@@ -1,7 +1,10 @@
-
 #include "ValRange.h"
-#include "ValContext.h"
 
+#include "SimFlag.h"                    // for ESimFlag::kUnknown, etc
+#include "ValContext.h"                 // for ValContext
+#include "db_detector_def.h"            // for Detector, etc
+
+#include <stdio.h>                      // for sprintf, printf
 
 ClassImp(ValRange)
 

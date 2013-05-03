@@ -1,12 +1,13 @@
 #ifndef FAIRRUNINFO_H
 #define FAIRRUNINFO_H
 
+#include "TObject.h"                    // for TObject
 
-#include "TObject.h"
-#include "TSystem.h"
-#include "TTimeStamp.h"
+#include "Rtypes.h"                     // for Double_t, Long_t, etc
+#include "TSystem.h"                    // for CpuInfo_t, MemInfo_t, etc
+#include "TTimeStamp.h"                 // for TTimeStamp
 
-#include <vector>
+#include <vector>                       // for vector
 
 class FairLogger;
 class TList;

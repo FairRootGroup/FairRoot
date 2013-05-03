@@ -10,19 +10,19 @@
 // It contains pointers to the ascii file and to the interface classes for all
 // detectors defined in the actual setup.
 ///////////////////////////////////////////////////////////////////////////////
-
 #include "FairParAsciiFileIo.h"
 
-#include "FairDetParIo.h"
-#include "FairRuntimeDb.h"
+#include "FairDetParIo.h"               // for FairDetParIo
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "TString.h"
-#include "TObjString.h"
-#include "TList.h"
-#include "TSystem.h"
+#include "TCollection.h"                // for TIter
+#include "TList.h"                      // for TList, TListIter
+#include "TObjString.h"                 // for TObjString
+#include "TString.h"                    // for TString, operator<<
+#include "TSystem.h"                    // for TSystem, gSystem
 
-//#include <cstring>
-#include <iostream>
+#include <string.h>                     // for strcmp, NULL
+#include <iostream>                     // for cout, cerr
 
 using std::cout;
 using std::cerr;

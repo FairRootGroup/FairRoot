@@ -6,8 +6,11 @@
  */
 
 #include "FairTimeStampPointDraw.h"
-#include "FairMCPoint.h"
-#include "FairTimeStamp.h"
+
+#include "FairMCPoint.h"                // for FairMCPoint
+#include "FairTimeStamp.h"              // for FairTimeStamp
+
+class TObject;
 
 ClassImp(FairTimeStampPointDraw);
 

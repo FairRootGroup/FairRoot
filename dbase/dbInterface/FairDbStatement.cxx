@@ -1,13 +1,23 @@
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-
-#include "TString.h"
-
 #include "FairDbStatement.h"
-#include "FairDbTableMetaData.h"
-#include "FairDbString.h"
+
+#include "FairDbString.h"               // for StringTok
+#include "FairDbTableMetaData.h"        // for string, FairDbTableMetaData
+
+#include "Riosfwd.h"                    // for ostream
+#include "TSQLServer.h"                 // for TSQLServer
+#include "TSQLStatement.h"              // for TSQLStatement
+#include "TString.h"                    // for TString, operator<<, etc
+
+#include <ctype.h>                      // for isalnum, isspace
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <sstream>
+#include <string>                       // for string, allocator, etc
+#include <vector>                       // for vector, etc
+
+using std::cout;
+using std::endl;
+using std::ostringstream;
+using std::string;
 
 ClassImp(FairDbStatement)
 

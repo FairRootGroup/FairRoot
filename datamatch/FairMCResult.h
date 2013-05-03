@@ -8,13 +8,14 @@
 #ifndef FAIRMCRESULT_H_
 #define FAIRMCRESULT_H_
 
-#include "FairMCObject.h"
+#include "FairMCObject.h"               // for FairMCObject
 
-//#include <TObject.h>
-//#include <vector>
-//#include <string>
+#include "FairMCEntry.h"                // for FairMCEntry
 
-#include<iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, FairMCResult::Class, etc
+
+#include <iostream>                     // for operator<<, ostream, etc
 
 class FairMCResult: public FairMCObject
 {

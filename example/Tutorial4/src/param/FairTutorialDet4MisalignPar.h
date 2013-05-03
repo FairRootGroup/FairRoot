@@ -1,9 +1,11 @@
 #ifndef FAIRTUTORIALDET4MISSALLIGNPAR_H
 #define FAIRTUTORIALDET4MISSALLIGNPAR_H
 
-#include "FairParGenericSet.h"
+#include "FairParGenericSet.h"          // for FairParGenericSet
 
-#include "TArrayD.h"
+#include "Rtypes.h"                     // for ClassDef
+
+#include "TArrayD.h"                    // for TArrayD
 
 class FairParamList;
 

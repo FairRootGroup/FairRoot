@@ -8,7 +8,11 @@
 #ifndef FairTestDetectorDigiRingSorter_H_
 #define FairTestDetectorDigiRingSorter_H_
 
-#include <FairRingSorter.h>
+#include <FairRingSorter.h>             // for FairRingSorter
+
+#include "Rtypes.h"                     // for ClassDef
+
+class FairTimeStamp;
 
 class FairTestDetectorDigiRingSorter: public FairRingSorter
 {

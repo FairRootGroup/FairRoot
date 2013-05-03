@@ -18,10 +18,11 @@ which has to use the method FairPrimaryGenerator::AddTrack.
 #ifndef FAIRGENERATOR_H
 #define FAIRGENERATOR_H
 
-#include "TNamed.h"
+#include "TNamed.h"                     // for TNamed
+
+#include "Rtypes.h"                     // for Bool_t, etc
 
 class FairPrimaryGenerator;
-
 
 class FairGenerator : public TNamed
 {

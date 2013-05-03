@@ -65,8 +65,10 @@
 //   2. angle:  rotation around y1-axis  --> x2, y2=y1, z2
 //   3. angle:  rotation around z2-axis  --> x3, y3, z3=z2
 ///////////////////////////////////////////////////////////////////////////////
-
 #include "FairGeoRotation.h"
+
+#include "TMath.h"                      // for Cos, Sin
+#include "TRotMatrix.h"                 // for TRotMatrix
 
 ClassImp(FairGeoRotation)
 

@@ -4,11 +4,14 @@
 #define FAIRDBSQLCONTEXT
 
 
-#include "string"
+#include "FairDbString.h"               // for FairDbString
+#include "SimFlag.h"                    // for SimFlag_t
+#include "ValTimeStamp.h"               // for ValTimeStamp
+#include "db_detector_def.h"            // for Detector, etc
 
-#include "FairDbString.h"
-#include "ValContext.h"
+#include "Rtypes.h"                     // for FairDbSqlContext::Class, etc
 
+#include <string>                       // for string
 
 class FairDbSqlContext : public FairDbString
 {

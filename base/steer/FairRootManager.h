@@ -1,35 +1,37 @@
 #ifndef FAIR_ROOT_MANAGER_H
 #define FAIR_ROOT_MANAGER_H
 
-#include "TObject.h"
-#include "TString.h"
-#include "TArrayI.h"
-#include "TObjArray.h"
-#include "TFile.h"
-#include "TChain.h"
-#include <map>
-#include <list>
-#include <queue>
+#include "TObject.h"                    // for TObject
 
-class FairGeoNode;
-class FairFileHeader;
-class FairMCEventHeader;
+#include "Rtypes.h"                     // for Bool_t, Int_t, UInt_t, etc
+#include "TChain.h"                     // for TChain
+#include "TFile.h"                      // for TFile
+#include "TObjArray.h"                  // for TObjArray
+#include "TString.h"                    // for TString, operator<
+
+#include <stddef.h>                     // for NULL
+#include <list>                         // for list
+#include <map>                          // for map, multimap, etc
+#include <queue>                        // for queue
+
+class BinaryFunctor;
 class FairEventHeader;
 class FairFileHeader;
-class FairLogger;
-class FairTSBufferFunctional;
-class BinaryFunctor;
-class FairWriteoutBuffer;
+class FairGeoNode;
 class FairLink;
-class TCollection;
-class TClonesarray;
-class TFolder;
-class TTree;
-class TNamed;
+class FairLogger;
+class FairMCEventHeader;
+class FairTSBufferFunctional;
+class FairWriteoutBuffer;
+class TArrayI;
 class TBranch;
-class TList;
+class TClonesArray;
+class TCollection;
 class TF1;
-
+class TFolder;
+class TList;
+class TNamed;
+class TTree;
 
 /**
  * I/O Manager class

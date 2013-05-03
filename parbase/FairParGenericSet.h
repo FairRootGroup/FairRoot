@@ -1,14 +1,12 @@
 #ifndef FAIRPARGENERICSET_H
 #define FAIRPARGENERICSET_H
 
-#include "FairParSet.h"
-#include <iostream>
-using namespace std;
+#include "FairParSet.h"                 // for FairParSet
 
-class FairParamList;
-class FairDetParIo;
+#include "Rtypes.h"                     // for Bool_t, etc
+
 class FairParIo;
-
+class FairParamList;
 
 class FairParGenericSet : public FairParSet
 {

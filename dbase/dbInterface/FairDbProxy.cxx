@@ -1,27 +1,37 @@
-#include <memory>
-#include <cassert>
-
-#include "TCollection.h"
-#include "TList.h"
-#include "TSQLColumnInfo.h"
-#include "TSQLStatement.h"
-#include "TSQLServer.h"
-#include "TSQLTableInfo.h"
-#include "TString.h"
-
-#include "Detector.h"
-#include "SimFlag.h"
 #include "FairDbProxy.h"
-#include "FairDbMultConnector.h"
-#include "FairDbFieldType.h"
-#include "FairDbResult.h"
-#include "FairDbServices.h"
-#include "FairDbString.h"
-#include "FairDbStatement.h"
-#include "FairDbTableMetaData.h"
-#include "FairDbTimerManager.h"
-#include "ValContext.h"
-#include "FairDbString.h"
+
+#include "FairDbConnection.h"           // for FairDbConnection
+#include "FairDbFieldType.h"            // for FairDbFieldType
+#include "FairDbMultConnector.h"        // for FairDbMultConnector
+#include "FairDbResult.h"               // for cout, FairDbResultSet, endl
+#include "FairDbServices.h"             // for FairDbServices
+#include "FairDbStatement.h"            // for FairDbStatement
+#include "FairDbString.h"               // for FairDbString, ToUpper
+#include "FairDbTableMetaData.h"        // for FairDbTableMetaData
+#include "FairDbTimerManager.h"         // for FairDbTimerManager, etc
+#include "SimFlag.h"                    // for SimFlag_t
+#include "ValContext.h"                 // for ValContext, operator<<
+#include "ValTimeStamp.h"               // for ValTimeStamp, operator<<, etc
+#include "db_detector_def.h"            // for Detector, etc
+
+#include "Riosfwd.h"                    // for ostream
+#include "TCollection.h"                // for TIter
+#include "TList.h"                      // for TList
+#include "TObject.h"                    // for TObject
+#include "TSQLColumnInfo.h"             // for TSQLColumnInfo
+#include "TSQLServer.h"                 // for TSQLServer
+#include "TSQLStatement.h"              // for TSQLStatement
+#include "TSQLTableInfo.h"              // for TSQLTableInfo
+#include "TString.h"                    // for TString
+
+#include <sys/select.h>                 // for time_t
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <memory>                       // for auto_ptr, etc
+
+using std::cout;
+using std::endl;
+using std::auto_ptr;
+using std::string;
 
 ClassImp(FairDbProxy)
 

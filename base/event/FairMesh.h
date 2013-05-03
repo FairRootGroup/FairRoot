@@ -7,11 +7,12 @@
 #ifndef FAIRMESH_H
 #define FAIRMESH_H
 
+#include "TObject.h"                    // for TObject
 
-#include "TObject.h"
-#include "TVector3.h"
-#include "TH2D.h"
-#include "TString.h"
+#include "Rtypes.h"                     // for Double_t, Int_t, etc
+#include "TH2.h"                        // for TH2D
+#include "TString.h"                    // for TString
+
 /**
  * Abstract base class for Mesh Objects.
   **@author D.Bertini <d.bertini@gsi.de>

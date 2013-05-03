@@ -18,10 +18,11 @@
 #ifndef FAIRBOXSETDRAW_H
 #define FAIRBOXSETDRAW_H
 
+#include "FairTask.h"                   // for FairTask, InitStatus
 
-#include "FairTask.h"
+#include "FairTSBufferFunctional.h"     // IWYU pragma: keep needed for cint
 
-#include "FairTSBufferFunctional.h"
+#include "Rtypes.h"                     // for Double_t, Int_t, Bool_t, etc
 
 class FairBoxSet;
 class TObject;

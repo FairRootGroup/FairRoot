@@ -3,9 +3,14 @@
 // -----          Created 12/01/04  by M. Al-Turany                    -----
 // -------------------------------------------------------------------------
 
-
 #include "FairVolumeList.h"
-#include "FairVolume.h"
+
+#include "FairVolume.h"                 // for FairVolume
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using std::cout;
 using std::cerr;

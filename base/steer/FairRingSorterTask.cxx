@@ -3,10 +3,17 @@
 // -------------------------------------------------------------------------
 
 #include "FairRingSorterTask.h"
-#include "FairRootManager.h"
 
+#include "FairLink.h"                   // for FairLink
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairTimeStamp.h"              // for FairTimeStamp
 
+#include "Riosfwd.h"                    // for ostream
+#include "TClass.h"                     // for TClass
+#include "TClonesArray.h"               // for TClonesArray
 
+#include <iostream>                     // for operator<<, cout, ostream, etc
+#include <vector>                       // for vector
 
 InitStatus FairRingSorterTask::ReInit()
 {

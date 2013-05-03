@@ -1,8 +1,9 @@
 #ifndef Target_H
 #define Target_H
 
-#include "FairDetector.h"
-#include "FairModule.h"
+#include "FairModule.h"                 // for FairModule
+
+#include "Rtypes.h"                     // for FairTarget::Class, ClassDef, etc
 
 class FairTarget : public FairModule
 {

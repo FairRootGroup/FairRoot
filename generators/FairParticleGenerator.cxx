@@ -4,9 +4,7 @@
 // -------------------------------------------------------------------------
 #include "FairParticleGenerator.h"
 
-#include "FairPrimaryGenerator.h"
-
-#include <iostream>
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
 // -----   Default constructor   ------------------------------------------
 FairParticleGenerator::FairParticleGenerator()

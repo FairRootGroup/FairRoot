@@ -10,9 +10,12 @@
 /////////////////////////////////////////////////////////////
 
 #include "FairParIo.h"
-#include "FairDetParIo.h"
 
-#include <iostream>
+#include "FairDetParIo.h"               // for FairDetParIo
+
+#include "TCollection.h"                // for TIter
+#include "TList.h"                      // for TList
+
 using namespace std;
 
 ClassImp(FairParIo)

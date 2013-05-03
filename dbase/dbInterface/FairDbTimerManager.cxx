@@ -1,6 +1,8 @@
+#include "FairDbTimerManager.h"
 
 #include "FairDbTimer.h"
-#include "FairDbTimerManager.h"
+
+using std::string;
 
 ClassImp(FairDbTimerManager)
 

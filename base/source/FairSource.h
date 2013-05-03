@@ -7,11 +7,12 @@
 #ifndef FAIRSOURCE_H
 #define FAIRSOURCE_H
 
-#include "TObject.h"
-#include "TObjArray.h"
+#include "TObject.h"                    // for TObject
 
-#include "FairUnpack.h"
+#include "FairUnpack.h"                 // for FairUnpack
 
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include "TObjArray.h"                  // for TObjArray
 
 class FairSource : public TObject
 {

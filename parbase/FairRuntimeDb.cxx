@@ -6,28 +6,33 @@
 //
 //  Administration class for parameter input/output
 /////////////////////////////////////////////////////////////
-
 #include "FairRuntimeDb.h"
 
-#include "FairContFact.h"
-#include "FairParSet.h"
-#include "FairRtdbRun.h"
-#include "FairParIo.h"
-#include "FairParRootFileIo.h"
-#include "FairParAsciiFileIo.h"
-#include "FairGenericParRootFileIo.h"
-#include "FairGenericParAsciiFileIo.h"
+#include "FairContFact.h"               // for FairContFact
+#include "FairDetParAsciiFileIo.h"      // for FairDetParAsciiFileIo
+#include "FairDetParRootFileIo.h"       // for FairDetParRootFileIo
+#include "FairDetParTSQLIo.h"           // for FairDetParTSQLIo
+#include "FairGenericParAsciiFileIo.h"  // for FairGenericParAsciiFileIo
+#include "FairGenericParRootFileIo.h"   // for FairGenericParRootFileIo
+#include "FairGenericParTSQLIo.h"       // for FairGenericParTSQLIo
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairParAsciiFileIo.h"         // for FairParAsciiFileIo
+#include "FairParIo.h"                  // for FairParIo
+#include "FairParRootFileIo.h"          // for FairParRootFileIo
+#include "FairParSet.h"                 // for FairParSet
+#include "FairRtdbRun.h"                // for FairRtdbRun, FairParVersion
 
-#include "FairParTSQLIo.h"
-#include "FairDetParTSQLIo.h"
-#include "FairGenericParTSQLIo.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TClass.h"                     // for TClass
+#include "TCollection.h"                // for TIter
+#include "TFile.h"                      // for TFile, gFile
 
-//#include "TKey.h"
-#include "TClass.h"
+#include <stdio.h>                      // for sprintf
+#include <string.h>                     // for strcmp, NULL, strlen
+#include <iomanip>                      // for setw, operator<<
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
-
-#include <iostream>
-#include <iomanip>
+class FairDetParIo;
 
 using std::cout;
 using std::endl;

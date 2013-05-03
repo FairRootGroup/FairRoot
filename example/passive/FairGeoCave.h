@@ -1,10 +1,16 @@
 #ifndef PNDGEOCAVE_H
 #define PNDGEOCAVE_H
 
-#include "FairGeoSet.h"
-#include "TString.h"
-#include "FairGeoMedia.h"
-#include <fstream>
+#include "FairGeoSet.h"                 // for FairGeoSet
+
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for FairGeoCave::Class, Bool_t, etc
+#include "TString.h"                    // for TString
+
+#include <fstream>                      // for fstream
+
+class FairGeoMedia;
+
 class  FairGeoCave : public FairGeoSet
 {
   protected:

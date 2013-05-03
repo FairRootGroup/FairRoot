@@ -1,6 +1,17 @@
 #ifndef FAIRTIMESTAMP_H
 #define FAIRTIMESTAMP_H
-#include "FairMultiLinkedData.h"
+
+#include "FairMultiLinkedData.h"        // for FairMultiLinkedData
+
+#include "FairLink.h"                   // for FairLink
+
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Double_t, etc
+
+#include <iostream>                     // for ostream, cout
+
+class TObject;
+
 /**
  * Base class for Time stamp information
  ** Aug. 2010

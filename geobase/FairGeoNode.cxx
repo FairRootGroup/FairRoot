@@ -8,11 +8,18 @@
 // Class to hold the basic geometry properties of a GEANT volume
 //
 ////////////////////////////////////////////////////////////////
-
 #include "FairGeoNode.h"
 
-#include "TList.h"
-#include <cmath>
+#include "FairGeoRotation.h"            // for FairGeoRotation
+#include "FairGeoVector.h"              // for FairGeoVector
+
+#include "TList.h"                      // for TList
+
+#include <cmath>                       // IWYU pragma: keep for abs
+// IWYU pragma: no_include <architecture/i386/math.h>
+#include <stdio.h>                      // for NULL, sscanf
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
 using std::cout;
 using std::endl;
 

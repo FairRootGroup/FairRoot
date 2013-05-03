@@ -18,16 +18,17 @@
 #ifndef FairBoxSetEditor_H
 #define FairBoxSetEditor_H
 
-#include "FairBoxSet.h"
+#include "TGedFrame.h"                  // for TGedFrame
 
-#include "TGedFrame.h"
-#include "TEveDigitSetEditor.h"
-#include "TGFrame.h"
-#include "TEveGValuators.h"
+#include "FairBoxSet.h"                 // for FairBoxSet
 
-class TGNumberEntry;
-//class TGVerticalFrame;
-//class TEveGValuator;
+#include "GuiTypes.h"                   // for Pixel_t
+#include "Rtypes.h"                     // for FairBoxSetEditor::Class, etc
+#include "TGFrame.h"                    // for EFrameType::kChildFrame, etc
+#include "TGNumberEntry.h"              // for TGNumberEntry
+#include "TObject.h"                    // for TObject
+
+class TGWindow;
 
 class FairBoxSetEditor : public TGedFrame
 {

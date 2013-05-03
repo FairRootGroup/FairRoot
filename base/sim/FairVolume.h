@@ -1,15 +1,14 @@
 #ifndef FAIR_VOLUME_H
 #define FAIR_VOLUME_H
 
-#include "TNamed.h"
+#include "TNamed.h"                     // for TNamed
 
-//#include "TObject.h"
-//#include "TObjArray.h"
-
-#include <iostream>
+#include "Rtypes.h"                     // for Int_t, FairVolume::Class, etc
+#include "TString.h"                    // for TString
 
 class FairGeoNode;
 class FairModule;
+
 /**
  * This Object is only used for internal book keeping!
  * @author M. Al-Turany, D. Bertini

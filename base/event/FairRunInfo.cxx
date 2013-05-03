@@ -1,14 +1,16 @@
 #include "FairRunInfo.h"
-#include "FairLogger.h"
 
-#include "TSystem.h"
-#include "TFile.h"
-#include "TList.h"
-#include "TH1.h"
-#include "TDirectory.h"
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
-#include <iostream>
-#include <algorithm>
+#include "TFile.h"                      // for TFile, gFile
+#include "TH1.h"                        // for TH1F
+#include "TIterator.h"                  // for TIterator
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
+#include "TSystem.h"                    // for ProcInfo_t, TSystem, etc
+
+#include <stddef.h>                     // for NULL
+#include <algorithm>                    // for sort
 
 ClassImp(FairRunInfo)
 

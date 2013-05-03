@@ -1,13 +1,19 @@
-
 #include "ValTimeStamp.h"
-#include <climits>
-#include <math.h>
-#include <unistd.h>
-#include <sys/time.h>
 
+#include "RConfig.h"                    // for R__MACOSX
 #include "TString.h"
 
+#include <climits>
+#include <math.h> // IWYU pragma: keep 
+// IWYU pragma: no_include <architecture/i386/math.h>
+#include <stdio.h>                      // for printf, sprintf
+#include <string.h>                     // for strrchr
+#include <sys/_structs.h>               // for timeval
+#include <time.h>                       // for tm, localtime, gmtime, time, etc
+#include <sys/time.h>                   // for gettimeofday
 
+using std::cout;
+using std::endl;
 
 // <DB> This could be a work arround to use the 32/64
 // implementation dependancy ...

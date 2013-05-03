@@ -8,10 +8,15 @@
 #ifndef FAIRMCDATACRAWLER_H_
 #define FAIRMCDATACRAWLER_H_
 
-#include "FairMultiLinkedData.h"
-#include "FairRootManager.h"
+#include "TObject.h"                    // for TObject
 
-#include "TObject.h"
+#include "FairMultiLinkedData.h"        // for FairMultiLinkedData
+
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include "TString.h"                    // for TString
+
+class FairLink;
+class FairRootManager;
 
 class FairMCDataCrawler : public TObject
 {

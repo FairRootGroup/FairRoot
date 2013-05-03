@@ -8,10 +8,10 @@
 #ifndef FAIRMCEVENTHEADER_H
 #define FAIRMCEVENTHEADER_H 1
 
+#include "TNamed.h"                     // for TNamed
 
-#include "TNamed.h"
-#include "TVector3.h"
-
+#include "Rtypes.h"                     // for Double_t, UInt_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairMCEventHeader : public TNamed
 {

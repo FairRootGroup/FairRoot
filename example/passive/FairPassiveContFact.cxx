@@ -8,13 +8,19 @@
 //  Factory for the parameter containers in libPassive
 //
 /////////////////////////////////////////////////////////////
+#include "FairPassiveContFact.h"
+
+#include "FairGeoPassivePar.h"          // for FairGeoPassivePar
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
+
+#include <string.h>                     // for strcmp, NULL
+
+class FairParSet;
 
 using namespace std;
-#include "FairPassiveContFact.h"
-#include "FairRuntimeDb.h"
-#include "FairGeoPassivePar.h"
-#include <iostream>
-#include <iomanip>
 
 ClassImp(FairPassiveContFact)
 

@@ -9,10 +9,17 @@
 /////////////////////////////////////////////////////////////
 
 #include "FairGeoCave.h"
-#include "FairGeoNode.h"
-#include "FairGeoShapes.h"
-#include "FairGeoBasicShape.h"
-#include "FairGeoMedium.h"
+
+#include "FairGeoBasicShape.h"          // for FairGeoBasicShape
+#include "FairGeoMedia.h"               // for FairGeoMedia
+#include "FairGeoMedium.h"              // for FairGeoMedium
+#include "FairGeoNode.h"                // for FairGeoNode, etc
+#include "FairGeoShapes.h"              // for FairGeoShapes
+
+#include "TList.h"                      // for TList
+
+#include <string.h>                     // for strcmp
+#include <iostream>                     // for cout
 
 using namespace std;
 ClassImp(FairGeoCave)

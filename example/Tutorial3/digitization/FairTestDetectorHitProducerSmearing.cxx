@@ -1,10 +1,15 @@
 #include "FairTestDetectorHitProducerSmearing.h"
 
-#include "FairTestDetectorPoint.h"
-#include "FairTestDetectorHit.h"
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairTestDetectorHit.h"        // for FairTestDetectorHit
+#include "FairTestDetectorPoint.h"      // for FairTestDetectorPoint
 
-#include "TClonesArray.h"
-#include "TRandom.h"
+#include "TClonesArray.h"               // for TClonesArray
+#include "TRandom.h"                    // for TRandom, gRandom
+#include "TVector3.h"                   // for TVector3
+
+#include <stddef.h>                     // for NULL
 
 // ---- Default constructor -------------------------------------------
 FairTestDetectorHitProducerSmearing::FairTestDetectorHitProducerSmearing()

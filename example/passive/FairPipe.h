@@ -1,12 +1,9 @@
 #ifndef PIPE_H
 #define PIPE_H
 
-#include "TNamed.h"
-#include "TArrayI.h"
-#include "TClonesArray.h"
-#include "FairDetector.h"
-#include "FairModule.h"
+#include "FairModule.h"                 // for FairModule
 
+#include "Rtypes.h"                     // for FairPipe::Class, ClassDef, etc
 
 class FairPipe : public FairModule
 {

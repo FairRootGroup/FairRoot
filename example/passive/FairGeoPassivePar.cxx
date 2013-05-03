@@ -1,12 +1,13 @@
 //*-- AUTHOR : Denis Bertini
 //*-- Created : 21/06/2005
 
-using namespace std;
 #include "FairGeoPassivePar.h"
-#include "FairParamList.h"
-#include <iostream>
-#include <iomanip>
-#include "TObjArray.h"
+
+#include "FairParamList.h"              // for FairParamList
+
+#include "TObjArray.h"                  // for TObjArray
+
+using namespace std;
 
 ClassImp(FairGeoPassivePar)
 

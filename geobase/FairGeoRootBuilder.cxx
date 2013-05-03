@@ -7,21 +7,23 @@
 // Class to create the geometry in ROOT
 //
 ///////////////////////////////////////////////////////////////////////////////
-
 #include "FairGeoRootBuilder.h"
 
-#include "FairGeoMedium.h"
-#include "FairGeoNode.h"
-#include "FairGeoTransform.h"
+#include "FairGeoMedium.h"              // for FairGeoMedium
+#include "FairGeoNode.h"                // for FairGeoNode
+#include "FairGeoRotation.h"            // for FairGeoRotation
+#include "FairGeoTransform.h"           // for FairGeoTransform
+#include "FairGeoVector.h"              // for FairGeoVector
 
-#include "TGeoManager.h"
-#include "TGeoMedium.h"
-#include "TGeoMaterial.h"
-#include "TGeoVolume.h"
-#include "TGeoMatrix.h"
-//#include "TGeoPgon.h"
-//#include "TGeoPcon.h"
-#include "TArrayD.h"
+#include "TArrayD.h"                    // for TArrayD
+#include "TGeoManager.h"                // for TGeoManager
+#include "TGeoMaterial.h"               // for TGeoMixture, TGeoMaterial
+#include "TGeoMatrix.h"                 // for TGeoCombiTrans, etc
+#include "TGeoMedium.h"                 // for TGeoMedium
+#include "TGeoVolume.h"                 // for TGeoVolume, etc
+#include "TString.h"                    // for TString
+
+#include <stdio.h>                      // for NULL, sprintf
 
 ClassImp(FairGeoRootBuilder)
 

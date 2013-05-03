@@ -1,11 +1,16 @@
-#include <map>
-#include <sstream>
-#include <cassert>
-#include <cmath>
-#include "FairRegistry.h"
 #include "FairDbConf.h"
-#include "FairDbString.h"
 
+#include "FairDbString.h"               // for IsBool, IsFloat, IsInt, etc
+#include "FairRegistry.h"               // for FairRegistry, etc
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <cmath>                        // IWYU pragma: keep for rint
+// IWYU pragma: no_include <architecture/i386/math.h>
+#include <string.h>                     // for strlen, strcpy
+#include <cassert>                      // for assert
+#include <cstdlib>                      // for atof, atoi
+#include <sstream>                      // for operator<<, basic_ostream, etc
 
 void FairDbConf::RegistryToString(std::string& x, const FairRegistry& r)
 {

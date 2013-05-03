@@ -7,17 +7,17 @@
 #ifndef FAIRDET_PAR_TSQL_IO_H
 #define FAIRDET_PAR_TSQL_IO_H
 
-//C && C++
-#include <iostream>
+#include "FairDetParIo.h"               // for FairDetParIo
 
-// FairRoot
-#include "FairDetParIo.h"
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for FairDetParTSQLIo::Class, etc
 
-class FairRun;
-class FairRuntimeDb;
+#include <iostream>                     // for operator<<, cout, ostream
+
 class FairDbMultConnector;
-class FairRtdbRun;
 class FairParSet;
+class FairRtdbRun;
+class TList;
 
 class FairDetParTSQLIo : public FairDetParIo
 {

@@ -24,13 +24,19 @@
 // not rotated, is identical with the laboratory system.
 //
 ///////////////////////////////////////////////////////////////////////////////
-
 #include "FairGeoTubs.h"
 
-#include "FairGeoVolume.h"
-#include "FairGeoVector.h"
+#include "FairGeoTransform.h"           // for FairGeoTransform
+#include "FairGeoVector.h"              // for FairGeoVector
+#include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "TArrayD.h"
+#include "TArrayD.h"                    // for TArrayD
+#include "TMathBase.h"                  // for Abs
+#include "TString.h"                    // for TString
+
+#include <stdio.h>                      // for printf, sprintf, sscanf
+#include <string.h>                     // for strlen
+#include <ostream>                      // for basic_ostream::write
 
 ClassImp(FairGeoTubs)
 

@@ -1,13 +1,17 @@
 #include "FairTestDetectorRecoTask.h"
 
-#include "FairTestDetectorHit.h"
-#include "FairTestDetectorDigi.h"
+#include "FairLink.h"                   // for FairLink
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairTestDetectorDigi.h"       // for FairTestDetectorDigi
+#include "FairTestDetectorHit.h"        // for FairTestDetectorHit
 
-#include "FairRootManager.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TMath.h"                      // for Sqrt
+#include "TVector3.h"                   // for TVector3
 
-#include "TMath.h"
-
-#include <iostream>
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using namespace std;
 

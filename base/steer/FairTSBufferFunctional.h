@@ -1,16 +1,20 @@
-
-
 #ifndef FairTSBufferFunctionalFunctional_H_
 #define FairTSBufferFunctionalFunctional_H_
 
-#include "FairTimeStamp.h"
+#include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "TObject.h"
-#include "TTree.h"
-#include "TBranch.h"
-#include "TClonesArray.h"
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
+#include "TObject.h"                    // for TObject
+#include "TString.h"                    // for TString
 
-#include <functional>
+#include <functional>                   // for binary_function
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
+class TBranch;
+class TClonesArray;
+class TTree;
+
 
 /**
  * \class BinaryFunctor

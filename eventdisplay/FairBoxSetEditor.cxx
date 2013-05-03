@@ -1,16 +1,17 @@
 #include "FairBoxSetEditor.h"
 
-#include "FairRootManager.h"
-#include "FairEventManager.h"
-#include "FairRunAna.h"
+#include "FairEventManager.h"           // for FairEventManager
+#include "FairRootManager.h"            // for FairRootManager
 
-#include "TGLabel.h"
-#include "TGButton.h"
-#include "TGNumberEntry.h"
-#include "TGeoManager.h"
-#include "TChain.h"
-#include "TEveGValuators.h"
-#include "FairEventManager.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TGLabel.h"                    // for TGLabel
+#include "TGLayout.h"                   // for TGLayoutHints, etc
+#include "TGNumberEntry.h"              // for TGNumberEntry, etc
+
+class TGWindow;
+
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 //______________________________________________________________________________
 // FairBoxSetEditor

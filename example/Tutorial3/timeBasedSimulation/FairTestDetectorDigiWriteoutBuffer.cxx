@@ -5,10 +5,16 @@
  *      Author: stockman
  */
 
-#include <FairTestDetectorDigiWriteoutBuffer.h>
+#include "FairTestDetectorDigiWriteoutBuffer.h"
 
-#include "FairTestDetectorDigi.h"
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairTestDetectorDigi.h"       // for FairTestDetectorDigi, etc
 
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+
+#include <iostream>                     // for operator<<, ostream, etc
+#include <utility>                      // for pair
 
 ClassImp(FairTestDetectorDigiWriteoutBuffer);
 

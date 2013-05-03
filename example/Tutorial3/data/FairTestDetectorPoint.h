@@ -1,11 +1,10 @@
 #ifndef PNDTORINODETECTORPOINT_H
 #define PNDTORINODETECTORPOINT_H 1
 
+#include "FairMCPoint.h"                // for FairMCPoint
 
-#include "FairMCPoint.h"
-
-#include "TObject.h"
-#include "TVector3.h"
+#include "Rtypes.h"                     // for Double_t, Double32_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairTestDetectorPoint : public FairMCPoint
 {

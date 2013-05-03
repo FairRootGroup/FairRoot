@@ -8,13 +8,19 @@
 // and the covariance matrix. Or using position and momentum in LAB referance.
 
 #include "FairTrackParP.h"
-#include "FairGeaneUtil.h"
-#include "FairRunAna.h"
-#include "FairField.h"
-#include <cmath>
-#include "TMath.h"
 
-#include <iostream>
+#include "FairField.h"                  // for FairField
+#include "FairGeaneUtil.h"              // for FairGeaneUtil
+#include "FairRunAna.h"                 // for FairRunAna
+#include "FairTrackParH.h"              // for FairTrackParH
+
+#include "Riosfwd.h"                    // for ostream
+#include "TMath.h"                      // for Sqrt
+#include "TMathBase.h"                  // for Abs, Sign
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <cmath>                        // IWYU pragma: keep for fabs
+// IWYU pragma: no_include <architecture/i386/math.h>
 
 using std::cout;
 using std::endl;

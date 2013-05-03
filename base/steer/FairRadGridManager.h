@@ -7,15 +7,17 @@
 #define FAIRRADGRIDMANAGER_H 1
 
 
-#include "Rtypes.h"
-#include "TClonesArray.h"
-#include "TLorentzVector.h"
-#include "TObjArray.h"
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Float_t, Double_t, Int_t, etc
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TObjArray.h"                  // for TObjArray
 
-using namespace std;
+#include <iostream>                     // for basic_ostream::operator<<, etc
 
 class FairMesh;
+class TClonesArray;
+
+
 /**
  * @class FairRadGridManager
  */
@@ -91,7 +93,7 @@ class FairRadGridManager
 
     TObjArray* GetMeshList() { return fMeshList; }
     void AddMeshList ( TObjArray* list ) {
-      cout << " grid manag " << list->GetEntriesFast() << endl;
+      std::cout << " grid manag " << list->GetEntriesFast() << std::endl;
       fMeshList = list;
     }
     Bool_t  IsTrackInside(TLorentzVector& vec, FairMesh* aMesh);

@@ -1,17 +1,19 @@
-
-#include "Detector.h"
-#include "SimFlag.h"
-#include "FairDbBinaryFile.h"
-#include "FairDbResult.h"
-#include "FairDbOutRowStream.h"
 #include "FairDbValidityRec.h"
-#include "ValRange.h"
-#include "ValTimeStamp.h"
 
-#include "TString.h"
+#include "FairDbBinaryFile.h"           // for FairDbBinaryFile
+#include "FairDbOutRowStream.h"         // for FairDbOutRowStream
+#include "FairDbResPtr.h"               // for string, FairDbResultPtr
+#include "FairDbResult.h"               // for FairDbResultSet
+#include "ValContext.h"                 // for ValContext
+#include "ValRange.h"                   // for ValRange
+#include "ValTimeStamp.h"               // for ValTimeStamp, operator>, etc
 
-#include <sstream>
-#include <iostream>
+#include "TString.h"                    // for operator<<
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
+using std::ostringstream;
+using std::hex;
 
 ClassImp(FairDbValidityRec)
 

@@ -10,6 +10,10 @@
 
 #include "FairGeoTarget.h"
 
+#include "TString.h"                    // for TString
+
+#include <string.h>                     // for strcpy
+
 ClassImp(FairGeoTarget)
 
 FairGeoTarget::FairGeoTarget()

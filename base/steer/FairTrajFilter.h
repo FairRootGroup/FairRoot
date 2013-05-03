@@ -6,14 +6,13 @@
 #ifndef FAIR_TRAJ_FILTER_H
 #define FAIR_TRAJ_FILTER_H 1
 
+#include "Rtypes.h"                     // for Double_t, Bool_t, Int_t, etc
+#include "TGeoTrack.h"                  // IWYU pragma: keep needed by cint
+#include "TMath.h"                      // for Pi, TwoPi
+#include "TString.h"                    // for TString
 
-#include "Rtypes.h"
-#include "TClonesArray.h"
-#include "TGeoTrack.h"
-#include "TMath.h"
-
+class TClonesArray;
 class TParticle;
-
 
 /**
  * @class FairTrajFilter

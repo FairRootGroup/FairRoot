@@ -4,17 +4,20 @@
 // -------------------------------------------------------------------------
 #include "FairPlutoGenerator.h"
 
-#include "FairPrimaryGenerator.h"
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
-#include "TClonesArray.h"
-#include "TDatabasePDG.h"
-#include "TFile.h"
-#include "TLorentzVector.h"
-#include "TTree.h"
-#include "TVector3.h"
-#include "PParticle.h"
+#include "PParticle.h"                  // for PParticle
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TFile.h"                      // for TFile, gFile
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TTree.h"                      // for TTree
+#include "TVector3.h"                   // for TVector3
+
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 // -----   Default constructor   ------------------------------------------
 FairPlutoGenerator::FairPlutoGenerator()

@@ -4,15 +4,17 @@
 /// particles  (Ivana Hrivnacova, 5.4.2002)
 /// Used to define particles which will be added to Geant3/4 (M. Al-Turany)
 
-
 #ifndef FAIR_PARTICLE_H
 #define FAIR_PARTICLE_H
 
-#include "TObject.h"
-#include "TRef.h"
-#include "TRefArray.h"
+#include "TObject.h"                    // for TObject
 
-#include "TMCParticleType.h"
+#include "Rtypes.h"                     // for Int_t, Double_t, Bool_t, etc
+#include "TMCParticleType.h"            // for TMCParticleType
+#include "TRef.h"                       // for TRef
+#include "TRefArray.h"                  // for TRefArray
+#include "TString.h"                    // for TString
+
 class TParticle;
 
 class FairParticle : public TObject

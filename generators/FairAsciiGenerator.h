@@ -22,15 +22,14 @@
 #ifndef FAIR_ASCIIGENERATOR_H
 #define FAIR_ASCIIGENERATOR_H
 
+#include "FairGenerator.h"              // for FairGenerator
 
-#include "FairGenerator.h"
+#include "Riosfwd.h"                    // for ifstream
+#include "Rtypes.h"                     // for FairAsciiGenerator::Class, etc
 
-#include <fstream>
+#include <fstream>                      // for ifstream
 
-class TDatabasePDG;
 class FairPrimaryGenerator;
-
-
 
 class FairAsciiGenerator : public FairGenerator
 {

@@ -1,11 +1,16 @@
 #ifndef FAIRGENERICPARASCIIFILEIO_H
 #define FAIRGENERICPARASCIIFILEIO_H
 
-#include "FairDetParAsciiFileIo.h"
+#include "FairDetParAsciiFileIo.h"      // for FairDetParAsciiFileIo
 
-#include <fstream>
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+
+#include <fstream>                      // for fstream
 
 class FairParGenericSet;
+class FairParSet;
+class TString;
 
 class FairGenericParAsciiFileIo : public FairDetParAsciiFileIo
 {

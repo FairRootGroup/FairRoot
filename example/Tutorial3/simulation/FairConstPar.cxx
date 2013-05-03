@@ -1,6 +1,12 @@
 #include "FairConstPar.h"
-#include "FairConstField.h"
-#include "FairParamList.h"
+
+#include "FairConstField.h"             // for FairConstField
+#include "FairParamList.h"              // for FairParamList
+
+#include "TString.h"                    // for TString
+
+class FairField;
+
 // ------   Constructor   --------------------------------------------------
 FairConstPar::FairConstPar(const char* name, const char* title, const char* context)
   : FairMapPar(name, title, context), fBx(0), fBy(0), fBz(0)

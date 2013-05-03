@@ -21,15 +21,19 @@
 // created in the function calcVoluPosition(...)
 //
 /////////////////////////////////////////////////////////////
-
 #include "FairGeoTrap.h"
 
-#include "FairGeoVolume.h"
-#include "FairGeoVector.h"
+#include "FairGeoTransform.h"           // for FairGeoTransform
+#include "FairGeoVector.h"              // for FairGeoVector
+#include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "TArrayD.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TArrayD.h"                    // for TArrayD
+#include "TMath.h"                      // for ATan, Pi, Sqrt, atan
+#include "TMathBase.h"                  // for Abs
+#include "TString.h"                    // for TString
 
-#include <iostream>
+#include <iostream>                     // for operator<<, cout, etc
 
 using std::cout;
 

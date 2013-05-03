@@ -1,9 +1,22 @@
-
 #include "FairDbCache.h"
-#include "FairDbResult.h"
-#include "FairDbValidityRec.h"
-#include "FairDbSimFlagAssociation.h"
-#include "ValContext.h"
+
+#include "FairDbResult.h"               // for FairDbResult, operator<<
+#include "FairDbSimFlagAssociation.h"   // for FairDbSimFlagAssociation, etc
+#include "FairDbValidityRec.h"          // for operator<<, etc
+#include "SimFlag.h"                    // for AsString, SimFlag_t
+#include "ValContext.h"                 // for ValContext, operator<<
+#include "ValTimeStamp.h"               // for ValTimeStamp
+#include "db_detector_def.h"            // for Detector, etc
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <utility>                      // for pair
+
+using std::cout;
+using std::endl;
+using std::map;
+using std::string;
 
 ClassImp(FairDbCache)
 

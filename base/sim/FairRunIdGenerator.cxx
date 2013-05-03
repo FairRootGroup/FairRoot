@@ -15,25 +15,18 @@
  */
 #define _SVID_SOURCE
 
-#include "unistd.h"
-#include "stdlib.h"
-#include "string.h"
-#include "fcntl.h"
-#include "errno.h"
-#include "sys/types.h"
-#include "sys/time.h"
-#include "sys/stat.h"
-#include "sys/file.h"
-#include "sys/ioctl.h"
-#include "sys/socket.h"
-#include "net/if.h"
-#include "netinet/in.h"
+#include "FairRunIdGenerator.h"
+#include <sys/errno.h>                  // for errno, EAGAIN, EINTR
+#include <sys/fcntl.h>                  // for open, O_RDONLY, O_NONBLOCK
+#include <stdlib.h>                     // for rand, srand
+#include <string.h>                     // for memcpy
+#include <sys/time.h>                   // for gettimeofday
+#include <unistd.h>                     // for getpid, getuid, read
 
 #define srand(x)  srandom(x)
 #define rand()    random()
 
-#include <iostream>
-using namespace std;
+//using namespace std;
 
 //#include "genid32.h"    replaced by hrunidgenerator.h
 
@@ -48,7 +41,6 @@ using namespace std;
  * %End-Header%
  */
 
-#include "FairRunIdGenerator.h"
 
 /*
  * Offset between 15-Oct-1582 and 1-Jan-70

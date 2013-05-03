@@ -1,7 +1,9 @@
 #ifndef PNDTORINODETECTORHITPRODUCERSMEARING_H
 #define PNDTORINODETECTORHITPRODUCERSMEARING_H
 
-#include "FairTask.h"
+#include "FairTask.h"                   // for InitStatus, FairTask
+
+#include "Rtypes.h"                     // for ClassDef
 
 class TClonesArray;
 

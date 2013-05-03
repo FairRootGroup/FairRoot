@@ -6,13 +6,14 @@
 #ifndef FairRingSorterTask_H
 #define FairRingSorterTask_H
 
-#include "FairTask.h"
+#include "FairTask.h"                   // for FairTask, InitStatus
 
-#include "TClonesArray.h"
+#include "FairRingSorter.h"             // for FairRingSorter
 
-#include "FairRingSorter.h"
+#include "Rtypes.h"                     // for Bool_t, Int_t, kTRUE, etc
+#include "TString.h"                    // for TString
 
-
+class FairTimeStamp;
 class TClonesArray;
 
 class FairRingSorterTask : public FairTask

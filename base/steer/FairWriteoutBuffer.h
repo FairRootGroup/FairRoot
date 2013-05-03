@@ -24,16 +24,21 @@
 #ifndef FairWriteoutBuffer_H_
 #define FairWriteoutBuffer_H_
 
+#include "TObject.h"                    // for TObject
 
+#include "FairLogger.h"                 // for FairLogger
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "TObject.h"
-#include "TString.h"
-//#include "FairWriteoutBufferAbsBasis.h"
-#include "FairTimeStamp.h"
-#include "FairLogger.h"
-#include <map>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Bool_t, Int_t, etc
+#include "TClonesArray.h"               // for TClonesArray
+#include "TString.h"                    // for TString
 
-//class  FairLogger;
+#include <iostream>                     // for cout, ostream
+#include <map>                          // for multimap
+#include <utility>                      // for pair
+#include <vector>                       // for vector
 
 class FairWriteoutBuffer: public TObject
 {

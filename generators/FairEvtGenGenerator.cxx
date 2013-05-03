@@ -4,23 +4,18 @@
 // -------------------------------------------------------------------------
 #include "FairEvtGenGenerator.h"
 
-#include "FairPrimaryGenerator.h"
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
-#include <iostream>
-#include <cstdio>
+#include "Riosfwd.h"                    // for ostream
+#include "TF1.h"                        // for TF1
+#include "TRandom.h"                    // for TRandom, gRandom
 
-// New includes here:
-
-#include "TMath.h"
-#include "TRandom.h"
+#include <algorithm>                    // for max
+#include <iostream>                     // for cout
 
 using std::cout;
 using std::endl;
 using std::max;
-
-
-
-
 
 // -----   Default constructor   ------------------------------------------
 FairEvtGenGenerator::FairEvtGenGenerator()

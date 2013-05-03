@@ -14,15 +14,11 @@
 #ifndef FAIRMCMATCHLOADERTASK_H
 #define FAIRMCMATCHLOADERTASK_H
 
+#include "FairTask.h"                   // for FairTask, InitStatus
 
-// framework includes
-#include "FairTask.h"
-#include "FairMCMatch.h"
+#include "Rtypes.h"                     // for ClassDef
 
-
-#include <vector>
-#include <map>
-
+class FairMCMatch;
 class TClonesArray;
 
 class FairMCMatchLoaderTask : public FairTask

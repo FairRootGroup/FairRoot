@@ -4,11 +4,14 @@
 // -----          adapted april 2010               O.Hartmann          -----
 // -------------------------------------------------------------------------
 
-
 #include "FairMesh.h"
-#include "TString.h"
-#include "TMath.h"
-#include <iostream>
+
+#include "Riosfwd.h"                    // for ostream
+#include "TMath.h"                      // for Sqrt
+#include "TString.h"                    // for TString, operator+
+
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
 using namespace std;
 

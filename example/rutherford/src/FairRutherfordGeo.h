@@ -1,7 +1,11 @@
 #ifndef CBMRUTHERFORDGEO_H
 #define CBMRUTHERFORDGEO_H
 
-#include "FairGeoSet.h"
+#include "FairGeoSet.h"                 // for FairGeoSet
+
+#include "Rtypes.h"                     // for Int_t, etc
+
+#include "TString.h"                    // for TString
 
 class  FairRutherfordGeo : public FairGeoSet
 {

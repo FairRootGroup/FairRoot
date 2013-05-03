@@ -8,13 +8,18 @@
 #ifndef FAIRMCOBJECT_H_
 #define FAIRMCOBJECT_H_
 
-#include "FairMCEntry.h"
+#include "TObject.h"                    // for TObject
 
-#include "TObject.h"
-#include <vector>
-#include <string>
+#include "FairLink.h"                   // for FairLink
+#include "FairMCEntry.h"                // for FairMCEntry
+#include "FairMultiLinkedData.h"        // for FairMultiLinkedData
 
-#include<iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, FairMCObject::Class, etc
+
+#include <iostream>                     // for ostream, etc
+#include <utility>                      // for pair
+#include <vector>                       // for vector
 
 class FairMCObject: public TObject
 {

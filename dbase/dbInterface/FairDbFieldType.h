@@ -1,12 +1,11 @@
-
 #ifndef FAIRDBFIELDTYPE_H
 #define FAIRDBFIELDTYPE_H
 
+#include "FairDb.h"                     // for DataTypes::kInt, etc
 
-#include <string>
-using std::string;
+#include "Rtypes.h"                     // for Int_t, Bool_t, UInt_t, etc
 
-#include "FairDb.h"
+#include <string>                       // for string
 
 class FairDbFieldType
 {
@@ -28,14 +27,14 @@ class FairDbFieldType
                     Int_t size,
                     const char* typeName);
     FairDbFieldType(const FairDbFieldType& from);
-    FairDbFieldType(const string& sql,
+    FairDbFieldType(const std::string& sql,
                     Int_t size);
     virtual ~FairDbFieldType();
 
 
-    string AsString() const;
-    string AsSQLString(FairDb::DbTypes dbType = FairDb::kMySQL) const;
-    string UndefinedValue() const;
+    std::string AsString() const;
+    std::string AsSQLString(FairDb::DbTypes dbType = FairDb::kMySQL) const;
+    std::string UndefinedValue() const;
     UInt_t GetConcept() const { return fConcept; }
     UInt_t GetSize() const { return fSize; }
     UInt_t GetType() const { return fType; }

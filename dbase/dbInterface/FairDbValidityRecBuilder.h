@@ -1,15 +1,18 @@
 #ifndef FAIRDBVALIDITYRECBUILDER_H
 #define FAIRDBVALIDITYRECBUILDER_H
-#include <string>
-#include <map>
-#include <vector>
 
-#include "FairDb.h"
-#include "FairDbValidityRec.h"
-#include "ValContext.h"
+#include "FairDb.h"                     // for Version
+#include "FairDbValidityRec.h"          // for FairDbValidityRec
 
+#include "Rtypes.h"                     // for Int_t, UInt_t, Bool_t, etc
+
+#include <map>                          // for map
+#include <string>                       // for string
+#include <vector>                       // for vector
 
 class FairDbProxy;
+class ValContext;
+
 
 class FairDbValidityRecBuilder
 {
@@ -28,7 +31,7 @@ class FairDbValidityRecBuilder
                              Int_t selectDbNo = -1,
                              Bool_t findFullTimeWindow = true);
     FairDbValidityRecBuilder(const FairDbProxy& proxy,
-                             const string& context,
+                             const std::string& context,
                              const FairDb::Version& task);
     FairDbValidityRecBuilder(const FairDbValidityRec& vr,
                              const std::string tableName);
@@ -67,7 +70,7 @@ class FairDbValidityRecBuilder
     UInt_t AddNewGap(Int_t aggNo);
 
     void MakeGapRec(const ValContext& vc,
-                    const string& tableName,
+                    const std::string& tableName,
                     Bool_t findFullTimeWindow = true);
 
 

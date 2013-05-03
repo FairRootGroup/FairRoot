@@ -1,5 +1,6 @@
 #include "ValContext.h"
 
+#include <stdio.h>                      // for sprintf, printf
 
 ClassImp(ValContext)
 

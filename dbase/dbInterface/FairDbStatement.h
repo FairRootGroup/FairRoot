@@ -1,18 +1,17 @@
 #ifndef FAIRDBSTATEMENT
 #define FAIRDBSTATEMENT
 
+#include "FairDb.h"                     // for DbTypes
+#include "FairDbConnection.h"           // for FairDbConnection
+#include "FairDbExceptionLog.h"         // for FairDbExceptionLog
 
+#include "Rtypes.h"                     // for Bool_t, etc
+#include "TString.h"                    // for TString
 
-#include <list>
+#include <list>                         // for list
 
-#include "TList.h"
-#include "TString.h"
-#include "TSQLStatement.h"
-
-#include "FairDb.h"
-#include "FairDbConnection.h"
-#include "FairDbExceptionLog.h"
-
+class FairDbException;
+class TSQLStatement;
 class FairDbStatement
 {
   public:

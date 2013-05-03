@@ -2,20 +2,16 @@
 #ifndef FAIRDBSIMFLAGASSOCIATION
 #define FAIRDBSIMFLAGASSOCIATION
 
+#include "SimFlag.h"                    // for SimFlag_t
 
-#include <iosfwd>
-using std::ostream;
-#include <list>
-using std::list;
-#include <map>
-using std::map;
+#include "Rtypes.h"
 
-#include "SimFlag.h"
+#include <iosfwd>                       // for ostream
+#include <list>                         // for list
+#include <map>                          // for map, map<>::mapped_type, etc
 
-class FairDbSimFlagAssociation;
 class FairRegistry;
 
-ostream& operator<<(ostream& s, const FairDbSimFlagAssociation& simFlagAss);
 
 class FairDbSimFlagAssociation
 {
@@ -24,8 +20,8 @@ class FairDbSimFlagAssociation
   public:
 
 // Typedefs for tired fingers.
-    typedef list<SimFlag::SimFlag_t>           SimList_t;
-    typedef map<SimFlag::SimFlag_t,SimList_t > SimMap_t;
+    typedef std::list<SimFlag::SimFlag_t>           SimList_t;
+    typedef std::map<SimFlag::SimFlag_t,SimList_t > SimMap_t;
 
 // Constructors and destructors.
     FairDbSimFlagAssociation();
@@ -34,7 +30,7 @@ class FairDbSimFlagAssociation
 // State testing member functions
 
     SimList_t Get(const SimFlag::SimFlag_t value)const;
-    void Print(ostream& s)const;
+    void Print(std::ostream& s)const;
     void Show();
 
 ///  Get access to the one and only instance.
@@ -61,5 +57,6 @@ class FairDbSimFlagAssociation
 
 };
 
+std::ostream& operator<<(std::ostream& s, const FairDbSimFlagAssociation& simFlagAss);
 
 #endif // FAIRDBSIMFLAGASSOCIATION

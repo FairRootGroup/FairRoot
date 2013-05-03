@@ -16,12 +16,11 @@
 #ifndef FAIR_PARTICLEGENERATOR_H
 #define FAIR_PARTICLEGENERATOR_H
 
+#include "FairGenerator.h"              // for FairGenerator
 
-#include "FairGenerator.h"
+#include "Rtypes.h"                     // for Double32_t, Int_t, etc
 
 class FairPrimaryGenerator;
-
-
 
 class FairParticleGenerator : public FairGenerator
 {

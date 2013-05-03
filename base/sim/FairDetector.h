@@ -1,7 +1,9 @@
 #ifndef FAIRDETECTOR_H
 #define FAIRDETECTOR_H
 
-#include "FairModule.h"
+#include "FairModule.h"                 // for FairModule
+
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
 
 class FairLogger;
 class FairVolume;

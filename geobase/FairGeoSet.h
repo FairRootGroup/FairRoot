@@ -1,22 +1,21 @@
 #ifndef FAIRGEOSET_H
 #define FAIRGEOSET_H
 
+#include "TNamed.h"                     // for TNamed
 
-#include "FairGeoTransform.h"
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
 
-#include "TNamed.h"
-//#include "TArrayI.h"
-#include "TList.h"
-
-#include <fstream>
-//#include <iomanip>
+#include <fstream>                      // for fstream
 
 class FairGeoNode;
 class FairGeoShapes;
 class FairGeoMedia;
 class FairGeoBuilder;
+class FairGeoTransform;
 class TArrayI;
-//class TList;
 
 /**
  * Base class for geometry of detector parts

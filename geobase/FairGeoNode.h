@@ -1,23 +1,23 @@
 #ifndef FAIRGEONODE_H
 #define FAIRGEONODE_H
 
-#include "FairGeoVolume.h"
-#include "FairGeoBasicShape.h"
-//#include "FairGeoMedium.h"
-#include "FairGeoTransform.h"
+#include "FairGeoVolume.h"              // for FairGeoVolume
 
-//#include "TArrayD.h"
-//#include "TObjArray.h"
-#include "TGeoVolume.h"
+#include "FairGeoBasicShape.h"          // for FairGeoBasicShape
+#include "FairGeoMedium.h"              // for FairGeoMedium
+#include "FairGeoTransform.h"           // for FairGeoTransform
 
-//#include <fstream>
-//#include <iomanip>
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Bool_t, FairGeoNode::Class, etc
+#include "TObjArray.h"                  // for TObjArray
+#include "TString.h"                    // for TString
 
-class FairGeoMedium;
+#include <iosfwd>                       // for fstream
+
 class FairGeoVector;
 class TArrayD;
-class TObjArray;
-//class TGeoVolume;
+class TGeoVolume;
+class TList;
 
 enum EFairGeoNodeType {
   kFairGeoElement = 0,

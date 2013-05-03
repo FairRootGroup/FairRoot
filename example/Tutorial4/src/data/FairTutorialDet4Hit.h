@@ -1,8 +1,9 @@
 #ifndef FAIRTUTORIALDERT4HIT_H
 #define FAIRTUTORIALDET4HIT_H 1
 
+#include "FairHit.h"                    // for FairHit
 
-#include "FairHit.h"
+#include "Rtypes.h"                     // for FairTutorialDet4Hit::Class, etc
 
 class TVector3;
 

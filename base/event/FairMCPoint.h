@@ -8,8 +8,10 @@
 #ifndef FAIRMCPOINT_H
 #define FAIRMCPOINT_H
 
-#include "FairMultiLinkedData.h"
-#include "TVector3.h"
+#include "FairMultiLinkedData.h"        // for FairMultiLinkedData
+
+#include "Rtypes.h"                     // for Double_t, Double32_t, Int_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairMCPoint : public FairMultiLinkedData
 {

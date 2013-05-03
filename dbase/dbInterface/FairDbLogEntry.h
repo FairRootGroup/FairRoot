@@ -1,26 +1,23 @@
 #ifndef FAIRDBLOGENTRY_H
 #define FAIRDBLOGENTRY_H
 
+#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "ValTimeStamp.h"               // for ValTimeStamp
+#include "db_detector_def.h"            // for Detector
 
-#include <string>
-using std::string;
-#include <iosfwd>
+#include "FairDb.h"                     // for Version
 
-#include "TObject.h"
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include "SimFlag.h"                    // for FullMask
+#include "TObject.h"                    // for TObject
 
-#include "FairDb.h"
-#include "Detector.h"
-#include "SimFlag.h"
-#include "FairDbTableRow.h"
-#include "ValTimeStamp.h"
+#include <iosfwd>                       // for ostream
+#include <string>                       // for string
 
-class FairDbLogEntry;
 class FairDbOutRowStream;
 class FairDbResultSet;
-class FairDbTableProxy;
 class FairDbValidityRec;
-
-std::ostream& operator<<(std::ostream& s, const FairDbLogEntry& logEntry);
 
 class FairDbLogEntry : public FairDbTableRow
 {
@@ -30,8 +27,8 @@ class FairDbLogEntry : public FairDbTableRow
     using TObject::Write;
 
 // Constructors and destructors.
-    FairDbLogEntry(const string& tableName = "",
-                   const string& reason = "",
+    FairDbLogEntry(const std::string& tableName = "",
+                   const std::string& reason = "",
                    Int_t detMask = Detector::FullMask(),
                    Int_t simMask = SimFlag::FullMask(),
                    FairDb::Version task = 0,
@@ -49,32 +46,32 @@ class FairDbLogEntry : public FairDbTableRow
     Int_t GetAggregateNo() const { return -1; }
 
 // New member functions.
-    const string& GetLogTableName() const { return fLogTableName; }
+    const std::string& GetLogTableName() const { return fLogTableName; }
     Int_t GetDetectorMask() const { return fLogDetMask; }
     Int_t GetLogSeqNoMin() const { return fLogSeqNoMin; }
     Int_t GetLogSeqNoMax() const { return fLogSeqNoMax; }
     Int_t GetLogNumSeqNo() const { return fLogNumSeqNo; }
     Int_t GetSimMask() const { return fLogSimMask; }
     FairDb::Version GetVersion() const { return fLogVersion; }
-    const string& GetUserName() const { return fUserName; }
-    const string& GetProcessName() const { return fProcessName; }
-    const string& GetHostName() const { return fHostName; }
-    const string& GetServerName() const { return fServerName; }
-    const string& GetReason() const { return fReason; }
+    const std::string& GetUserName() const { return fUserName; }
+    const std::string& GetProcessName() const { return fProcessName; }
+    const std::string& GetHostName() const { return fHostName; }
+    const std::string& GetServerName() const { return fServerName; }
+    const std::string& GetReason() const { return fReason; }
     ValTimeStamp GetUpdateTime() const { return fUpdateTime; }
 
     Bool_t HasReason() const { return fReason.size() > 0; }
 
 // State changing member functions
-    void SetReason(const string& reason);
+    void SetReason(const std::string& reason);
     void SetDetectorMask(Int_t detMask) { fLogDetMask = detMask; }
     void SetSimMask(Int_t simMask) { fLogSimMask = simMask; }
     void SetVersion(FairDb::Version task) { fLogVersion = task; }
     void SetUpdateTime(const ValTimeStamp& updateTime) {
       fUpdateTime = updateTime;
     }
-    void Recreate (const string& tableName = "",
-                   const string& reason = "",
+    void Recreate (const std::string& tableName = "",
+                   const std::string& reason = "",
                    Int_t detMask = Detector::FullMask(),
                    Int_t simMask = SimFlag::FullMask(),
                    FairDb::Version task = 0,
@@ -104,7 +101,7 @@ class FairDbLogEntry : public FairDbTableRow
     Int_t fSeqNo;
 
 /// Table being updated.
-    string fLogTableName;
+    std::string fLogTableName;
 
 /// Detector type mask of update.
     Int_t fLogDetMask;
@@ -128,19 +125,19 @@ class FairDbLogEntry : public FairDbTableRow
     ValTimeStamp fUpdateTime;
 
 /// User performing update.
-    string fUserName;
+    std::string fUserName;
 
 /// Process performing update.
-    string fProcessName;
+    std::string fProcessName;
 
 /// Host performing update.
-    string fHostName;
+    std::string fHostName;
 
 /// Db server being updated.
-    string fServerName;
+    std::string fServerName;
 
 /// Reason for update.
-    string fReason;
+    std::string fReason;
 
 
 // Note: fLogDetMask,fLogSimMask,fLogVersion,fUpdateTime are used to construct the FairDbValidityRec
@@ -150,5 +147,6 @@ class FairDbLogEntry : public FairDbTableRow
 
 };
 
+std::ostream& operator<<(std::ostream& s, const FairDbLogEntry& logEntry);
 
 #endif  // FAIRDBLOGENTRY_H

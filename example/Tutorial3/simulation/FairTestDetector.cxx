@@ -1,24 +1,29 @@
 #include "FairTestDetector.h"
 
-#include "FairTestDetectorPoint.h"
-#include "FairTestDetectorGeo.h"
-#include "FairTestDetectorGeoPar.h"
+#include "FairDetectorList.h"           // for DetectorId::kTutDet
+#include "FairGeoInterface.h"           // for FairGeoInterface
+#include "FairGeoLoader.h"              // for FairGeoLoader
+#include "FairGeoNode.h"                // for FairGeoNode
+#include "FairGeoVolume.h"              // for FairGeoVolume
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRun.h"                    // for FairRun
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairStack.h"                  // for FairStack
+#include "FairTestDetectorGeo.h"        // for FairTestDetectorGeo
+#include "FairTestDetectorGeoPar.h"     // for FairTestDetectorGeoPar
+#include "FairTestDetectorPoint.h"      // for FairTestDetectorPoint
+#include "FairVolume.h"                 // for FairVolume
 
-#include "FairVolume.h"
-#include "FairGeoVolume.h"
-#include "FairGeoNode.h"
-#include "FairRootManager.h"
-#include "FairGeoLoader.h"
-#include "FairGeoInterface.h"
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
-#include "FairDetectorList.h"
-#include "FairStack.h"
+#include "TClonesArray.h"               // for TClonesArray
+#include "TList.h"                      // for TListIter, TList (ptr only)
+#include "TObjArray.h"                  // for TObjArray
+#include "TString.h"                    // for TString
+#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMCStack.h"            // for TVirtualMCStack
 
-#include "TClonesArray.h"
-#include "TVirtualMC.h"
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for cout, endl
 
-#include <iostream>
 using std::cout;
 using std::endl;
 

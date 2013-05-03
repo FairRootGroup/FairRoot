@@ -20,13 +20,11 @@
 #ifndef FAIRSTSTRACKPARAM
 #define FAIRSTSTRACKPARAM 1
 
+#include "TObject.h"                    // for TObject
 
-# include "TObject.h"
-
-#include "TMatrixFSym.h"
-#include "TVector3.h"
-
-
+#include "Rtypes.h"                     // for Double_t, Double32_t, Int_t, etc
+#include "TMatrixFSymfwd.h"             // for TMatrixFSym
+#include "TVector3.h"                   // for TVector3
 
 class FairTrackParam : public TObject
 {

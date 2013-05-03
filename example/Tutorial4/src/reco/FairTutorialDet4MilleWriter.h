@@ -1,10 +1,11 @@
 #ifndef FAIRTUTORIALDET4MILLEWRITER_H
 #define FAIRTUTORIALDET4MILLEWRITER_H
 
-#include "FairTask.h"
+#include "FairTask.h"                   // for InitStatus, FairTask
+
+#include "Rtypes.h"                     // for Option_t, Bool_t, etc
 
 class Mille;
-
 class TClonesArray;
 
 class FairTutorialDet4MilleWriter : public FairTask
@@ -14,7 +15,7 @@ class FairTutorialDet4MilleWriter : public FairTask
     /** Default constructor **/
     FairTutorialDet4MilleWriter();
 
-    /** Constructor with parameters (Optional)
+    /** Constructor with parameters (Optional) **/
     //  FairTutorialDet4MilleWriter(Int_t verbose);
 
 

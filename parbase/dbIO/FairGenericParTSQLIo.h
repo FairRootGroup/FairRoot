@@ -9,18 +9,14 @@
 #ifndef FAIR_GENERIC_PAR_TSQL_Io_H
 #define FAIR_GENERIC_PAR_TSQL_Io_H
 
-// C & C++
-#include <iostream>
+#include "FairDetParTSQLIo.h"           // for FairDetParTSQLIo
 
-// FairRoot
-#include "FairDetParTSQLIo.h"
-#include "FairRuntimeDb.h"
+#include "Rtypes.h"                     // for Bool_t, etc
 
-class FairParSet;
-class FairParamList;
+class FairDbMultConnector;
 class FairParGenericSet;
-class FairParamObj;
-class TList;
+class FairParSet;
+class FairRuntimeDb;
 
 class FairGenericParTSQLIo : public FairDetParTSQLIo
 {

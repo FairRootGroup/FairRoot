@@ -1,22 +1,17 @@
-
-#include <cctype>
-#include <cstdlib>
-#include <algorithm>
-#include <list>
-#include <sstream>
-#include <fstream>
-#include <string>
-
-#include "TList.h"
-#include "string.h"
-#include "TSystem.h"
-
 #include "FairDbConnection.h"
-#include "FairDbStatement.h"
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "TSQLServer.h"                 // for TSQLServer
+#include "TSQLStatement.h"              // for TSQLStatement
+#include "TSystem.h"                    // for TSystem, gSystem
+
+#include <algorithm>                    // for transform
+#include <cctype>                       // for toupper
+#include <cstdlib>                      // for NULL, exit
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <string>                       // for string, basic_string, etc
+
 using namespace std;
-
 
 ClassImp(FairDbConnection)
 

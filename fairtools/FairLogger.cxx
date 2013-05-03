@@ -7,12 +7,17 @@
 
 #include "FairLogger.h"
 
-#include "TString.h" // TString
-#include "TSystem.h" // gSystem
+#include "Riosfwd.h"                    // for ostream, ofstream
+#include "TString.h"                    // for TString, operator==, etc
+#include "TSystem.h"                    // for gSystem, TSystem
 
-#include <iostream>  // std::cerr
-#include <iomanip>   // std::setw
-#include <cstdlib>   // abort
+#include <stddef.h>                     // for size_t
+#include <stdio.h>                      // for fclose, freopen, remove, etc
+#include <sys/select.h>                 // for time_t
+#include <time.h>                       // for localtime, strftime, time
+#include <cstdlib>                      // for NULL, abort
+#include <iomanip>                      // for operator<<, setw
+#include <iostream>                     // for cout, cerr
 
 FairLogger* gLogger = FairLogger::GetLogger();
 

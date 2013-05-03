@@ -1,19 +1,18 @@
 #ifndef FAIRDBCACHE_H
 #define FAIRDBCACHE_H
 
-#include <list>
-#include <map>
-#include <string>
-using std::string;
+#include "FairDb.h"                     // for Version
 
-#include "FairDb.h"
+#include "Rtypes.h"                     // for UInt_t, Int_t, etc
 
-class ValContext;
+#include <list>                         // for list
+#include <map>                          // for map
+#include <string>                       // for string
+
 class FairDbResult;
-class FairDbTableProxyRegistry;
 class FairDbTableProxy;
 class FairDbValidityRec;
-//class MsgStream;
+class ValContext;
 
 class FairDbCache
 {
@@ -27,7 +26,7 @@ class FairDbCache
 // Constructors and destructors.
 
     FairDbCache(FairDbTableProxy& qp,
-                const string& tableName);
+                const std::string& tableName);
     virtual ~FairDbCache();
 
 
@@ -39,11 +38,11 @@ class FairDbCache
 /// Primary searches.
     const FairDbResult* Search(const ValContext& vc,
                                const FairDb::Version& task) const;
-    const FairDbResult* Search(const string& sqlQualifiers) const;
+    const FairDbResult* Search(const std::string& sqlQualifiers) const;
 
 /// Secondary search.
     const FairDbResult* Search(const FairDbValidityRec& vr,
-                               const string& sqlQualifiers = "") const;
+                               const std::string& sqlQualifiers = "") const;
 //  MsgStream& ShowStatistics(MsgStream& msg) const;
 
 // State changing member functions
@@ -65,7 +64,7 @@ class FairDbCache
 
     FairDbTableProxy&  fTableProxy;
 
-    const string& fTableName;
+    const std::string& fTableName;
     std::map<Int_t,ResultList_t> fCache;
 
     mutable UInt_t fCurSize;

@@ -15,24 +15,21 @@
 #ifndef FAIR_PLUTOREACTIONGENERATOR_H
 #define FAIR_PLUTOREACTIONGENERATOR_H
 
+#include "FairGenerator.h"              // for FairGenerator
 
-#include "FairGenerator.h"
-
-class TClonesArray;
-class TFile;
-class TTree;
-class TVirtualMCStack;
-class FairPrimaryGenerator;
-
-#include "PUtils.h"
+#include "PUtils.h"                     // for PLUTOVERSION_FOR_FAIR
 /** Backward compatibility **/
 #ifdef PLUTOVERSION_FOR_FAIR
-#include "PFairGenerator.h"
-#include "PReaction.h"
+#include "PFairGenerator.h"             // IWYU pragma: keep
+#include "PReaction.h"                  // IWYU pragma: keep 
 #else
 class PReaction;
+class PFairGenerator;
 #endif
 
+#include "Rtypes.h"
+
+class FairPrimaryGenerator;
 
 class FairPlutoReactionGenerator : public FairGenerator
 {

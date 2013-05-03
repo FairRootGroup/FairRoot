@@ -11,13 +11,10 @@
 #ifndef FairMAPPAR_H
 #define FairMAPPAR_H 1
 
+#include "FairParGenericSet.h"          // for FairParGenericSet
 
-#include "FairField.h"
-#include "FairParGenericSet.h"
-
-
-class FairParamList;
-
+#include "Rtypes.h"                     // for Double_t, FairMapPar::Class, etc
+#include "TString.h"                    // for TString
 
 class FairMapPar : public FairParGenericSet
 {

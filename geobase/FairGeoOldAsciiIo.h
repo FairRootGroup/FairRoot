@@ -1,13 +1,18 @@
 #ifndef FAIRGEOOLDASCIIIO_H
 #define FAIRGEOOLDASCIIIO_H
 
-#include "FairGeoIo.h"
+#include "FairGeoIo.h"                  // for FairGeoIo
 
-#include "TString.h"
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Bool_t, kFALSE, etc
+#include "TString.h"                    // for TString
 
-#include <fstream>
+#include <fstream>                      // for fstream
 
+class FairGeoInterface;
+class FairGeoMedia;
 class FairGeoNode;
+class FairGeoSet;
 
 /**
  * Class for geometry I/O from ASCII file in FAIR format

@@ -1,9 +1,4 @@
-#include <iostream>
 #include "FairMapPar.h"
-#include "FairParamList.h"
-
-
-using namespace std;
 
 // ------   Constructor   --------------------------------------------------
 FairMapPar::FairMapPar(const char* name, const char* title,

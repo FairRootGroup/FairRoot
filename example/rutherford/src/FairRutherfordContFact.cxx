@@ -1,10 +1,15 @@
 #include "FairRutherfordContFact.h"
 
-#include "FairRutherfordGeoPar.h"
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairRutherfordGeoPar.h"       // for FairRutherfordGeoPar
 
-#include "FairRuntimeDb.h"
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
 
-#include <iostream>
+#include <string.h>                     // for strcmp, NULL
+
+class FairParSet;
+
 
 ClassImp(FairRutherfordContFact)
 

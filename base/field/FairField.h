@@ -19,17 +19,12 @@
  ** Note: Field values should be returned in kG (thanks to GEANT3)
  **/
 
-#include "FairLogger.h"
-
-
 #ifndef FAIRFIELD_H
 #define FAIRFIELD_H 1
-#include "RVersion.h"
 
-
-//#ifndef ROOT_TVirtualMagField
-//#include "TVirtualMagField.h"
-//#endif
+#include "RVersion.h"                   // for ROOT_VERSION_CODE
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Double_t, Bool_t, etc
 
 #if ROOT_VERSION_CODE < 333824
 
@@ -57,8 +52,11 @@ ClassImp(TVirtualMagField)
 
 #endif
 
+#include <stdio.h>                      // for printf
+#include <iostream>                     // for operator<<, basic_ostream, etc
 
-#include <iostream>
+class FairLogger;
+
 
 class FairField : public TVirtualMagField
 {

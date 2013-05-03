@@ -3,11 +3,13 @@
 // -----                           FairLmdSource                           -----
 // -----                    Created 12.04.2013 by D.Kresan                 -----
 // -----------------------------------------------------------------------------
-#include <iostream>
-using namespace std;
-
 #include "FairLmdSource.h"
 
+#include <stddef.h>                     // for NULL
+#include "s_filhe.h"                    // for s_filhe
+#include "typedefs.h"                   // for INTS4
+
+using namespace std;
 
 FairLmdSource::FairLmdSource(char* fileName)
   : FairSource()

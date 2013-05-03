@@ -8,8 +8,11 @@
 #ifndef FAIRHITPOINTSETDRAW_H_
 #define FAIRHITPOINTSETDRAW_H_
 
-#include "FairPointSetDraw.h"
+#include "FairPointSetDraw.h"           // for FairPointSetDraw
 
+#include "Rtypes.h"                     // for FairHitPointSetDraw::Class, etc
+
+class TObject;
 class TVector3;
 
 class FairHitPointSetDraw: public FairPointSetDraw

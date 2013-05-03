@@ -1,11 +1,12 @@
-#include <sstream>
-#include <cstring>
-#include <cstdlib>
-#include <iostream>
+#include "FairDbString.h"
+
+#include <ctype.h>                      // for toupper, tolower
+#include <cstdlib>                      // for strtod
+#include <cstring>                      // for strchr, strncmp
+#include <iostream>                     // for cout
+#include <sstream>                      // for ostringstream, etc
 
 using namespace std;
-
-#include "FairDbString.h"
 
 ClassImp(FairDbString)
 

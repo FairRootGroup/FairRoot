@@ -10,12 +10,11 @@
 #ifndef FAIRIONGENERATOR_H
 #define FAIRIONGENERATOR_H
 
+#include "FairGenerator.h"              // for FairGenerator
 
-#include "FairGenerator.h"
-#include "FairIon.h"
+#include "Rtypes.h"                     // for Double_t, Int_t, etc
 
-#include <iostream>
-
+class FairIon;
 class FairPrimaryGenerator;
 
 class FairIonGenerator : public FairGenerator

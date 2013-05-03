@@ -1,9 +1,12 @@
 #ifndef FAIRGEOROOTBUILDER_H
 #define FAIRGEOROOTBUILDER_H
 
-#include "FairGeoBuilder.h"
+#include "FairGeoBuilder.h"             // for FairGeoBuilder
 
+#include "Rtypes.h"                     // for FairGeoRootBuilder::Class, etc
 
+class FairGeoMedium;
+class FairGeoNode;
 class TGeoManager;
 
 /**

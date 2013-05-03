@@ -1,7 +1,7 @@
 #include "FairDbConfigurable.h"
-#include "FairDbConf.h"
-#include "FairDbConfDialog.h"
-#include "FairDb.h"
+
+#include "FairDbConf.h"                 // for FairDbConf
+#include "FairDbConfDialog.h"           // for FairDbConfDialog
 
 ClassImp(FairDbConfigurable)
 

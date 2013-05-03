@@ -7,9 +7,13 @@
 
 #include "FairHitPointSetDraw.h"
 
-#include "FairHit.h"
+#include "FairHit.h"                    // for FairHit
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "TVector3.h"                   // for TVector3
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
 using std::cout;
 using std::endl;
 

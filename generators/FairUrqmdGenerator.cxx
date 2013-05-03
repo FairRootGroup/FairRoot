@@ -4,23 +4,20 @@
 // -------------------------------------------------------------------------
 #include "FairUrqmdGenerator.h"
 
-#include "FairPrimaryGenerator.h"
-#include "FairMCEventHeader.h"
+#include "FairMCEventHeader.h"          // for FairMCEventHeader
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
-#include "TMCProcess.h"
-#include "TObjArray.h"
-#include "TPDGCode.h"
-#include "TParticle.h"
-#include "TRandom.h"
-#include "TString.h"
-#include "TVirtualMCStack.h"
-#include "TLorentzVector.h"
-#include "TDatabasePDG.h"
-#include "TParticlePDG.h"
+#include "Riosfwd.h"                    // for ostream, ifstream
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TMath.h"                      // for Sqrt, sqrt
+#include "TParticlePDG.h"               // for TParticlePDG
+#include "TString.h"                    // for TString, operator+
+#include "TVector3.h"                   // for TVector3
 
-
-#include <iostream>
-#include <cstring>
+#include <stdlib.h>                     // for getenv
+#include <iostream>                     // for cout
+#include <fstream>                      // IWYU pragma: keep for ifstream
 
 using std::cout;
 using std::endl;

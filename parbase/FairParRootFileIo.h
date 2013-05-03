@@ -1,13 +1,15 @@
 #ifndef FAIRPARROOTFILEIO_H
 #define FAIRPARROOTFILEIO_H
 
-#include "FairParIo.h"
+#include "FairParIo.h"                  // for FairParIo
 
-#include "TNamed.h"
-#include "TFile.h"
-#include "TList.h"
+#include "Rtypes.h"                     // for Bool_t, Text_t, Int_t, etc
+#include "TFile.h"                      // for TFile
+#include "TNamed.h"                     // for TNamed
 
 class FairRtdbRun;
+class TKey;
+class TList;
 
 class FairParRootFile : public TNamed
 {

@@ -4,15 +4,19 @@
  * License:                                 *
  * Version:                                 *
  *******************************************/
-
 #include "FairDetParTSQLIo.h"
 
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
-#include "FairDbTableProxyRegistry.h"
-#include "FairDbMultConnector.h"
-#include "FairRtdbRun.h"
-#include "FairParSet.h"
+#include "FairDbMultConnector.h"        // for FairDbMultConnector
+#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairParSet.h"                 // for FairParSet
+#include "FairRtdbRun.h"                // for FairRtdbRun
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+
+#include "TList.h"                      // for TList
+#include "TString.h"                    // for TString
+
+#include <stdio.h>                      // for sscanf
+#include <string.h>                     // for strlen
 
 ClassImp(FairDetParTSQLIo)
 

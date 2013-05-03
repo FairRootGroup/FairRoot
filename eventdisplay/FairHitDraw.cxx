@@ -6,7 +6,10 @@
  */
 
 #include "FairHitDraw.h"
-#include "FairHit.h"
+
+#include "FairHit.h"                    // for FairHit
+
+class TObject;
 
 FairHitDraw::FairHitDraw()
 {

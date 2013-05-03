@@ -1,16 +1,13 @@
 #ifndef FAIR_VOLUMELIST_H
 #define FAIR_VOLUMELIST_H
 
-//#include "FairVolume.h"
+#include "TObject.h"                    // for TObject
 
-#include "TObject.h"
-#include "TObjArray.h"
-#include "TString.h"
-
-#include <iostream>
+#include "Rtypes.h"                     // for Int_t, etc
+#include "TObjArray.h"                  // for TObjArray
+#include "TString.h"                    // for TString
 
 class FairVolume;
-//class TObjArray;
 
 /**
 * This Object is only used for internal book keeping!

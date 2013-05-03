@@ -1,14 +1,14 @@
 #ifndef FAIRDBROLLBACKDATES_H
 #define FAIRDBROLLBACKDATES_H
 
-#include <map>
-#include <string>
-
 #ifndef ROOT_Rtypes
 #if !defined(__CINT__) || defined(__MAKECINT__)
-#include "Rtypes.h"
+#include "Rtypes.h"                     // for FairDbRollbackDates::Class, etc
 #endif
 #endif
+
+#include <map>                          // for map, map<>::value_compare
+#include <string>                       // for string, operator<
 
 class FairRegistry;
 

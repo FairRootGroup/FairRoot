@@ -9,6 +9,15 @@
 #ifndef BASE_FAIRLOGGER_H_
 #define BASE_FAIRLOGGER_H_
 
+#include "Rtypes.h"                     // for Bool_t, FairLogger::Class, etc
+
+#include <stdarg.h>                     // for va_list
+#include <fstream>                      // for ostream, operator<<, etc
+#include <string>                       // for operator<<
+#include <vector>                       // for vector
+
+class FairLogger;
+
 #define IMP_CONVERTTOSTRING(s)  # s
 #define CONVERTTOSTRING(s)      IMP_CONVERTTOSTRING(s)
 #define MESSAGE_ORIGIN          __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
@@ -18,12 +27,6 @@
 
 #define LOG_IF(level, condition) \
   !(condition) ? gLogger->GetNullStream(level) : LOG(level)
-
-#include "Rtypes.h"
-
-#include <ostream>
-#include <fstream>
-#include <iomanip>
 
 // Definiton of the different log levels
 // TODO(F.U): Find bettter names for DEBUG1..4

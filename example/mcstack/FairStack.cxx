@@ -4,18 +4,21 @@
 // -------------------------------------------------------------------------
 #include "FairStack.h"
 
-#include "FairDetector.h"
-#include "FairMCPoint.h"
-#include "FairMCTrack.h"
-#include "FairRootManager.h"
+#include "FairDetector.h"               // for FairDetector
+#include "FairLink.h"                   // for FairLink
+#include "FairMCPoint.h"                // for FairMCPoint
+#include "FairMCTrack.h"                // for FairMCTrack
+#include "FairRootManager.h"            // for FairRootManager
 
-#include "TError.h"
-#include "TLorentzVector.h"
-#include "TParticle.h"
-#include "TRefArray.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TIterator.h"                  // for TIterator
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TParticle.h"                  // for TParticle
+#include "TRefArray.h"                  // for TRefArray
 
-#include <list>
-#include <iostream>
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, etc
 
 using std::cout;
 using std::endl;

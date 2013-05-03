@@ -1,7 +1,9 @@
 #ifndef FAIRTUTORIALDET4STRAIGHTLINEFITTER_H
 #define FAIRTUTORIALDET4STRAIGHTLINEFITTER_H
 
-#include "FairTask.h"
+#include "FairTask.h"                   // for InitStatus, FairTask
+
+#include "Rtypes.h"                     // for ClassDef
 
 class TClonesArray;
 
@@ -12,7 +14,7 @@ class FairTutorialDet4StraightLineFitter : public FairTask
     /** Default constructor **/
     FairTutorialDet4StraightLineFitter();
 
-    /** Constructor with parameters (Optional)
+    /** Constructor with parameters (Optional) **/
     //  FairTutorialDet4StraightLineFitter(Int_t verbose);
 
 

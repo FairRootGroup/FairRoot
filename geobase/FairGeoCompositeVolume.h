@@ -1,7 +1,9 @@
 #ifndef FAIRGEOCOMPOSITEVOLUME_H
 #define FAIRGEOCOMPOSITEVOLUME_H
 
-#include "FairGeoVolume.h"
+#include "FairGeoVolume.h"              // for FairGeoVolume
+
+#include "Rtypes.h"                     // for Int_t, etc
 
 class TObjArray;
 /**

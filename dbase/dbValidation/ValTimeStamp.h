@@ -1,18 +1,12 @@
 #ifndef VALTIMESTAMP_H
 #define VALTIMESTAMP_H
 
-#include "TTimeStamp.h"
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, Bool_t, UInt_t, etc
+#include "TTimeStamp.h"                 // for timespec_t, tm_t
 
-#include <iosfwd>
-#include <iostream>
-using namespace std;
-
-
-
-class ValTimeStamp;
-
-std::ostream& operator<<(std::ostream& os, const ValTimeStamp& vldts);
-
+#include <iostream>                     // IWYU pragma: keep
+// IWYU pragma: no_include <sys/select.h>
 class ValTimeStamp
 {
 
@@ -214,6 +208,8 @@ class ValTimeStamp
 
     ClassDef(ValTimeStamp,2)
 };
+
+std::ostream& operator<<(std::ostream& os, const ValTimeStamp& vldts);
 
 #ifndef __CINT__
 

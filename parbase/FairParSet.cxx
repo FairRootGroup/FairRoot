@@ -6,12 +6,14 @@
 //
 //  Base class for all parameter containers
 /////////////////////////////////////////////////////////////
-
 #include "FairParSet.h"
 
-#include "FairRuntimeDb.h"
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+
+#include <iostream>                     // for operator<<, ostream, etc
 
 using std::cout;
 

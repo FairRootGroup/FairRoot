@@ -1,7 +1,9 @@
 #ifndef FAIRTUTORIALDET1GEOPAR_H
 #define FAIRTUTORIALDET1GEOPAR_H
 
-#include "FairParGenericSet.h"
+#include "FairParGenericSet.h"          // for FairParGenericSet
+
+#include "Rtypes.h"                     // for ClassDef
 
 class TObjArray;
 class FairParamList;

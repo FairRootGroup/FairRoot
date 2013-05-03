@@ -1,7 +1,10 @@
 #ifndef PNDTORINODETECTORGEO_H
 #define PNDTORINODETECTORGEO_H
 
-#include "FairGeoSet.h"
+#include "FairGeoSet.h"                 // for FairGeoSet
+
+#include "Rtypes.h"                     // for Int_t, etc
+#include "TString.h"                    // for TString
 
 class  FairTestDetectorGeo : public FairGeoSet
 {

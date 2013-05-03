@@ -14,11 +14,11 @@
 #ifndef FAIRTUTORIALDET4GEOHANDLER_H
 #define FAIRTUTORIALDET4GEOHANDLER_H 1
 
-#include "TObject.h"
+#include "TObject.h"                    // for TObject
 
-#include <map>
+#include "Rtypes.h"                     // for Int_t, Double_t, Bool_t, etc
+#include "TString.h"                    // for TString
 
-class FairLogger;
 class TGeoBBox;
 class TGeoVolume;
 class TGeoHMatrix;

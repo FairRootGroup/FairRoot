@@ -1,19 +1,18 @@
 #ifndef FAIRDB_H
 #define FAIRDB_H
 
-#include <map>
-#include <string>
-#include <iostream>
+#include "ValTimeStamp.h"               // for ValTimeStamp
+
 #ifndef ROOT_Rtypes
 #if !defined(__CINT__) || defined(__MAKECINT__)
-#include "Rtypes.h"
+#include "Rtypes.h"                     // for Bool_t, Int_t, kFALSE, etc
 #endif
 #endif
-#include "TString.h"
-#include "ValContext.h"
-#include "ValTimeStamp.h"
+#include "TString.h"                    // for TString
 
-using namespace std;
+#include <string>                       // for string
+
+// IWYU pragma: no_include "Rtypes.h"
 
 namespace FairDb
 {

@@ -1,7 +1,9 @@
 #ifndef CBMRUTHERFORDGEOPAR_H
 #define CBMRUTHERFORDGEOPAR_H
 
-#include "FairParGenericSet.h"
+#include "FairParGenericSet.h"          // for FairParGenericSet
+
+#include "Rtypes.h"                     // for FairRutherfordGeoPar::Class, etc
 
 class TObjArray;
 class FairParamList;

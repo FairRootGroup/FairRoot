@@ -3,21 +3,22 @@
 // -----            Created 06/01/04  by M. Al-Turany/ D. Bertini      -----
 // -------------------------------------------------------------------------
 
-
-
 #include "FairDetector.h"
 
+#include "FairGeoNode.h"                // for FairGeoNode
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairModule.h"                 // for FairModule::svList, etc
+#include "FairVolume.h"                 // for FairVolume
 
-#include "FairModule.h"
-#include "FairVolume.h"
-#include "FairGeoNode.h"
-#include "FairLogger.h"
+#include "TFolder.h"                    // for TFolder
+#include "TList.h"                      // for TList
+#include "TObject.h"                    // for TObject
+#include "TROOT.h"                      // for TROOT, gROOT
+#include "TRefArray.h"                  // for TRefArray
+#include "TString.h"                    // for TString
+#include "TVirtualMC.h"                 // for TVirtualMC, gMC
 
-
-#include "TVirtualMC.h"
-#include "TString.h"
-#include "TFolder.h"
-#include "TROOT.h"
+#include <stddef.h>                     // for NULL
 // -------------------------------------------------------------------------
 
 FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId )

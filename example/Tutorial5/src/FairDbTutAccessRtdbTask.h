@@ -1,14 +1,13 @@
 #ifndef FAIRDBTUTACCESSRTDBTASK_H
 #define FAIRDBTUTACCESSRTDBTASK_H
 
+#include "FairTask.h"                   // for FairTask, InitStatus
 
-#include "FairTask.h"
-#include "FairDbTutPar.h"
+#include "Rtypes.h"                     // for ClassDef
 
-#include <string>
-#include <vector>
+#include <stddef.h>                     // for NULL
 
-class TClonesArray;
+class FairDbTutPar;
 
 class FairDbTutAccessRtdbTask : public FairTask
 {

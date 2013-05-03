@@ -2,25 +2,27 @@
 //
 // Authors: M. Al-Turany, A. Fontana, L. Lavezzi and A. Rotondi
 //
-
 #include "FairGeanePro.h"
-#include "FairTrackParP.h"
-#include "FairTrackParH.h"
-#include "FairRunAna.h"
-#include "FairField.h"
-#include "FairGeaneUtil.h"
 
-#include "TGeant3TGeo.h"
-#include "TVector3.h"
-#include "TArrayD.h"
-#include "TDatabasePDG.h"
-#include "TGeoTorus.h"
-#include "TMatrixFSym.h"
-#include "TVirtualMC.h"
-#include "TGeant3.h"
-#include "FairGeaneApplication.h"
-#include <iostream>
-#include <cmath>
+#include "FairGeaneApplication.h"       // for FairGeaneApplication
+#include "FairGeaneUtil.h"              // for FairGeaneUtil
+#include "FairTrackPar.h"               // for FairTrackPar
+#include "FairTrackParH.h"              // for FairTrackParH
+#include "FairTrackParP.h"              // for FairTrackParP
+
+#include "Riosfwd.h"                    // for ostream
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TGeant3.h"                    // for TGeant3, Ertrio_t
+#include "TGeoTorus.h"                  // for TGeoTorus
+#include "TMath.h"                      // for pow, ACos, Cos, sqrt
+#include "TMathBase.h"                  // for Abs
+#include "TVector3.h"                   // for TVector3, operator-, etc
+#include "TVirtualMC.h"                 // for gMC
+
+#include <stddef.h>                     // for NULL
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <cmath>                        // IWYU pragma: keep for fabs
+// IWYU pragma: no_include <architecture/i386/math.h>
 
 using std::cout;
 using std::endl;

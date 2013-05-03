@@ -1,7 +1,15 @@
 #include "FairDbTutAccessRtdbTask.h"
 
-#include "FairRuntimeDb.h"
-#include "FairRunAna.h"
+#include "FairDbTutPar.h"               // for FairDbTutPar
+#include "FairRunAna.h"                 // for FairRunAna
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+
+#include "Riosfwd.h"                    // for ostream
+
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
+using std::cout;
+using std::endl;
 
 ClassImp(FairDbTutAccessRtdbTask);
 

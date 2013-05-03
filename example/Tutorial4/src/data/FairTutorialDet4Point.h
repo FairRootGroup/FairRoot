@@ -1,11 +1,10 @@
 #ifndef FAIRTUTORIALDET4POINT_H
 #define FAIRTUTORIALDET4POINT_H 1
 
+#include "FairMCPoint.h"                // for FairMCPoint
 
-#include "FairMCPoint.h"
-
-#include "TObject.h"
-#include "TVector3.h"
+#include "Rtypes.h"                     // for Double_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairTutorialDet4Point : public FairMCPoint
 {

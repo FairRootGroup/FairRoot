@@ -1,14 +1,12 @@
 #ifndef FAIRGEOBASICSHAPE_H
 #define FAIRGEOBASICSHAPE_H
 
-//#include "FairGeoTransform.h"
+#include "TNamed.h"                     // for TNamed
 
-#include "TNamed.h"
-//#include "TString.h"
-//#include "TArrayD.h"
-//#include "TShape.h"
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for Int_t, etc
 
-#include <fstream>
+#include <fstream>                      // for fstream
 
 class FairGeoTransform;
 class FairGeoVolume;

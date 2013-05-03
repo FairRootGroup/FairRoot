@@ -1,14 +1,16 @@
 #ifndef FAIRDBOUTROWSTREAM_H
 #define FAIRDBOUTROWSTREAM_H
 
-#include <string>
+#include "FairDbRowStream.h"            // for FairDbRowStream
 
-#include "FairDb.h"
-#include "FairDbRowStream.h"
+#include "FairDb.h"                     // for DataTypes
+
+#include "Rtypes.h"                     // for Bool_t, Char_t, etc
+
+#include <string>
 
 class FairDbTableMetaData;
 class ValTimeStamp;
-class FairDbValidityRec;
 
 class FairDbOutRowStream : public FairDbRowStream
 {
@@ -21,7 +23,7 @@ class FairDbOutRowStream : public FairDbRowStream
     virtual ~FairDbOutRowStream();
 
     Bool_t HasGoodData() const { return ! fBadData && IsComplete(); }
-    const string& GetCSV() const { return fCSV; }
+    const std::string& GetCSV() const { return fCSV; }
     Bool_t IsComplete() const { return CurColNum() == NumCols()+1; }
 
     FairDbOutRowStream& operator<<(Bool_t src);
@@ -33,17 +35,17 @@ class FairDbOutRowStream : public FairDbRowStream
     FairDbOutRowStream& operator<<(UInt_t src);
     FairDbOutRowStream& operator<<(Float_t src);
     FairDbOutRowStream& operator<<(Double_t src);
-    FairDbOutRowStream& operator<<(const string& src);
+    FairDbOutRowStream& operator<<(const std::string& src);
     FairDbOutRowStream& operator<<(const ValTimeStamp& src);
 
     void Clear() { fBadData = kFALSE; fCSV.erase(); ClearCurCol();}
-    void Store(const string& str);
+    void Store(const std::string& str);
     Bool_t StoreDefaultIfInvalid(FairDb::DataTypes type);
 
   private:
 
     Bool_t fBadData;
-    string fCSV;
+    std::string fCSV;
 
     ClassDef(FairDbOutRowStream,0)  //Output stream for single table row
 

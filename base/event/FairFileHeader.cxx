@@ -3,11 +3,15 @@
 // -----            Created 20/04/11                 M.Al-Turany        -----
 // -------------------------------------------------------------------------
 
-
 #include "FairFileHeader.h"
-#include "FairRootManager.h"
-#include "FairFileInfo.h"
 
+#include "FairFileInfo.h"               // for FairFileInfo
+
+#include "TIterator.h"                  // for TIterator
+#include "TList.h"                      // for TList
+#include "TObjString.h"                 // for TObjString
+#include "TObject.h"                    // for TObject
+class TFile;
 
 // -----   Default constructor   -------------------------------------------
 FairFileHeader::FairFileHeader()

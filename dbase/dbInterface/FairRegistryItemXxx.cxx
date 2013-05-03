@@ -1,14 +1,14 @@
-
-
-#include <TBuffer.h>
-#include <TObject.h>
-
-#include "FairRegistryItem.h"
 #include "FairRegistryItemXxx.h"
 
-#include <FairUtilStream.h>
+#include "FairRegistry.h"               // for FairRegistry
+#include "FairRegistryItem.h"           // for FairRegistryItem
+#include "FairUtilStream.h"             // for read_quoted_string
 
-#include <string>
+#include "TBuffer.h"                    // for TBuffer, operator<<, etc
+
+#include <string.h>                     // for strcpy, strlen
+#include <string>                       // for string
+
 using namespace std;
 
 #if (__GNUC__ == 3 && __GNUC_MINOR__ >= 3) || (__GNUC__ >=4 )
@@ -104,7 +104,6 @@ TBuffer& operator<<(TBuffer& buf, const char*& xptr)
   return buf;
 }
 #endif
-#include <string>
 
 template<>
 void FairRegistryItemXxx<const char*>::Streamer(TBuffer& buf)

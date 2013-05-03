@@ -1,11 +1,17 @@
 #ifndef FAIRGEOCONE_H
 #define FAIRGEOCONE_H
 
-#include "FairGeoBasicShape.h"
+#include "FairGeoBasicShape.h"          // for FairGeoBasicShape
+
+#include "Riosfwd.h"                    // for fstream
+#include "Rtypes.h"                     // for FairGeoCone::Class, Bool_t, etc
+
+#include <iosfwd>                       // for fstream
+
 
 class FairGeoTransform;
 class FairGeoVolume;
-
+class TArrayD;
 /**
  * class for geometry shape CONE
  * @author ilse koenig

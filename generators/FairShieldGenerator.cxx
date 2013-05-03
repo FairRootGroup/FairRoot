@@ -4,14 +4,16 @@
 // -------------------------------------------------------------------------
 #include "FairShieldGenerator.h"
 
-#include "FairPrimaryGenerator.h"
-#include "FairIon.h"
-#include "FairRunSim.h"
+#include "FairIon.h"                    // for FairIon
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+#include "FairRunSim.h"                 // for FairRunSim
 
-#include "TDatabasePDG.h"
-#include "TParticlePDG.h"
+#include "TDatabasePDG.h"               // for TDatabasePDG
+#include "TParticlePDG.h"               // for TParticlePDG
 
-#include <iostream>
+#include <stdio.h>                      // for NULL, sprintf
+#include <iostream>                     // for cout
+#include <utility>                      // for pair
 
 using std::cout;
 using std::endl;

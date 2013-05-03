@@ -6,31 +6,35 @@
 #ifndef FAIR_MC_APPLICATION_H
 #define FAIR_MC_APPLICATION_H
 
-#include "TVirtualMCApplication.h"
-#include "TLorentzVector.h"
-#include "FairTask.h"
-#include "FairRunInfo.h"
+#include "TVirtualMCApplication.h"      // for TVirtualMCApplication
 
-#include <map>
+#include "FairRunInfo.h"                // for FairRunInfo
 
-class FairRootManager;
-class FairGenericStack;
-class FairModule;
-class FairLogger;
+#include "RVersion.h"                   // for ROOT_VERSION_CODE
+#include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TString.h"                    // for TString
+
+#include <map>                          // for map, multimap, etc
+
 class FairDetector;
+class FairEventHeader;
 class FairField;
+class FairGenericStack;
+class FairLogger;
+class FairMCEventHeader;
 class FairPrimaryGenerator;
+class FairRadGridManager;
+class FairRadLenManager;
+class FairRadMapManager;
+class FairRootManager;
+class FairTask;
 class FairTrajFilter;
 class FairVolume;
-class FairRadLenManager;
-class FairRadGridManager;
-class FairRadMapManager;
-class FairEventHeader;
-class FairMCEventHeader;
-
 class TChain;
-class TRefArray;
+class TIterator;
 class TObjArray;
+class TRefArray;
 class TTask;
 
 /**

@@ -10,6 +10,10 @@
 
 #include "FairGenericParRootFileIo.h"
 
+#include "TString.h"                    // for TString
+
+class FairParSet;
+
 ClassImp(FairGenericParRootFileIo)
 
 FairGenericParRootFileIo::FairGenericParRootFileIo(FairParRootFile* f) : FairDetParRootFileIo(f)

@@ -3,22 +3,36 @@
 // -----            Created 06/01/04  by M. Al-Turany                  -----
 //_____________________________________________________________________________
 #include "FairRunSim.h"
-#include "FairRootManager.h"
-#include "FairTrajFilter.h"
-#include "FairBaseParSet.h"
-#include "FairRunIdGenerator.h"
-#include "FairModule.h"
-#include "FairField.h"
-#include "FairRuntimeDb.h"
-#include "FairGeoLoader.h"
-#include "FairGeoInterface.h"
-#include "FairMCEventHeader.h"
-#include "FairPrimaryGenerator.h"
-#include "FairMesh.h"
-#include "TROOT.h"
-#include "TSystem.h"
-#include <iostream>
-#include "FairFileHeader.h"
+
+#include "FairBaseParSet.h"             // for FairBaseParSet
+#include "FairField.h"                  // for FairField
+#include "FairFileHeader.h"             // for FairFileHeader
+#include "FairGeoInterface.h"           // for FairGeoInterface
+#include "FairGeoLoader.h"              // for FairGeoLoader
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairMCEventHeader.h"          // for FairMCEventHeader
+#include "FairMesh.h"                   // for FairMesh
+#include "FairModule.h"                 // for FairModule
+#include "FairParSet.h"                 // for FairParSet
+#include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRunIdGenerator.h"         // for FairRunIdGenerator
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairTask.h"                   // for FairTask
+#include "FairTrajFilter.h"             // for FairTrajFilter
+
+#include "Riosfwd.h"                    // for ostream
+#include "TCollection.h"                // for TIter
+#include "TGeoManager.h"                // for gGeoManager
+#include "TList.h"                      // for TList
+#include "TObjString.h"                 // for TObjString
+#include "TObject.h"                    // for TObject
+#include "TROOT.h"                      // for TROOT, gROOT
+#include "TSystem.h"                    // for TSystem, gSystem
+
+#include <stdlib.h>                     // for getenv, NULL
+#include <string.h>                     // for strcmp, strncmp
+#include <iostream>                     // for cout, endl, ostream
 
 using std::cout;
 using std::endl;

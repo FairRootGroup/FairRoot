@@ -1,11 +1,10 @@
 #ifndef CBMRUTHERFORDPOINT_H
 #define CBMRUTHERFORDPOINT_H 1
 
+#include "FairMCPoint.h"                // for FairMCPoint
 
-#include "FairMCPoint.h"
-
-#include "TObject.h"
-#include "TVector3.h"
+#include "Rtypes.h"                     // for Double_t, Double32_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairRutherfordPoint : public FairMCPoint
 {

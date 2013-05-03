@@ -5,13 +5,20 @@
 #ifndef ROOT_FAIREVENTMANAGEREDITOR
 #define ROOT_FAIREVENTMANAGEREDITOR
 
-#include "TGedFrame.h"
+#include "TGedFrame.h"                  // for TGedFrame
 
-#include "TEveGValuators.h"
+#include "GuiTypes.h"                   // for Pixel_t
+#include "Rtypes.h"                     // for ClassDef
+#include "TGFrame.h"                    // for EFrameType::kChildFrame
 
 class FairEventManager;
-class TGNumberEntry;
+class TEveGValuator;
 class TGCheckButton;
+class TGLabel;
+class TGNumberEntry;
+class TGWindow;
+class TObject;
+
 class FairEventManagerEditor : public TGedFrame
 {
     FairEventManagerEditor(const FairEventManagerEditor&);            // Not implemented

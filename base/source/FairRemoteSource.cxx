@@ -3,14 +3,11 @@
 // -----                          FairRemoteSource                         -----
 // -----                    Created 12.04.2013 by D.Kresan                 -----
 // -----------------------------------------------------------------------------
-#include <iostream>
-using namespace std;
-
-#include "TSocket.h"
-
-#include "MRevBuffer.h"
 #include "FairRemoteSource.h"
 
+#include "MRevBuffer.h"                 // for MRevBuffer, REvent
+
+using namespace std;
 
 FairRemoteSource::FairRemoteSource(char* node)
   : FairSource()

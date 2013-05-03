@@ -6,15 +6,13 @@
 #ifndef FAIR_GEANE_APPLICATION_H
 #define FAIR_GEANE_APPLICATION_H
 
+#include "TVirtualMCApplication.h"      // for TVirtualMCApplication
 
-#include "TVirtualMCApplication.h"
-#include "TLorentzVector.h"
-#include "FairTask.h"
+#include "RVersion.h"                   // for ROOT_VERSION_CODE
+#include "Rtypes.h"                     // for Bool_t, etc
+#include "TLorentzVector.h"             // for TLorentzVector
 
 class FairField;
-class FairPrimaryGenerator;
-class TTask;
-
 
 /**
  * The Main Application for GEANE

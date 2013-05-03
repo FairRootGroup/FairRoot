@@ -19,16 +19,18 @@
 //                                   not in the list.
 //
 ///////////////////////////////////////////////////////////////////////////
-
 #include "FairParGenericSet.h"
-#include "FairParamList.h"
-#include <iostream>
-#include <iomanip>
-#include "FairDetParIo.h"
-#include "FairParIo.h"
+
+#include "FairDetParIo.h"               // for FairDetParIo
+#include "FairParIo.h"                  // for FairParIo
+#include "FairParamList.h"              // for FairParamList
+
+#include "Riosfwd.h"                    // for ostream
+#include "TString.h"                    // for operator<<, TString
+
+#include <iostream>                     // for operator<<, ostream, cout, etc
+
 ClassImp(FairParGenericSet)
-
-
 
 Bool_t FairParGenericSet::init(FairParIo* inp)
 {

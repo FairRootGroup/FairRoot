@@ -2,19 +2,17 @@
 #ifndef VALRANGE_H
 #define VALRANGE_H
 
-#include "TObject.h"
-#include "TString.h"
-#include "Detector.h"
-#include "ValTimeStamp.h"
-#include <iostream>
+#include "TObject.h"                    // for TObject
 
-using namespace std;
+#include "ValTimeStamp.h"               // for ValTimeStamp
+
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for Int_t, Bool_t, Option_t, etc
+#include "TString.h"                    // for TString
+
+#include <iostream>                     // for ostream
 
 class ValContext;
-
-class ValRange;
-std::ostream& operator<<(std::ostream& os, const ValRange& vldr);
-
 
 class ValRange : public TObject
 {
@@ -75,5 +73,7 @@ class ValRange : public TObject
 
     ClassDef(ValRange,1)  // ValRange version 1
 };
+
+std::ostream& operator<<(std::ostream& os, const ValRange& vldr);
 
 #endif // VALRANGE_H

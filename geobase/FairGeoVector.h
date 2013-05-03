@@ -1,11 +1,15 @@
 #ifndef FAIRGEOVECTOR_H
 #define FAIRGEOVECTOR_H
 
-#include "TObject.h"
-#include "TMath.h"
+#include "TObject.h"                    // for TObject
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream, istream
+#include "Rtypes.h"                     // for Double_t, Bool_t, Int_t, etc
+#include "TMath.h"                      // for pow, floor, sqrt
+#include "TMathBase.h"                  // for Abs
 
+#include <stdio.h>                      // for printf
+#include <iostream>                     // for operator<<, ostream, etc
 
 class FairGeoVector : public TObject
 {

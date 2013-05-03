@@ -8,14 +8,18 @@
 #ifndef FairRingSorter_H_
 #define FairRingSorter_H_
 
-#include "TObject.h"
-#include "FairTimeStamp.h"
 
-#include <vector>
-#include <stack>
-#include <map>
+#include "TObject.h"                    // for TObject
 
-#include <iostream>
+#include "Riosfwd.h"                    // for ostream
+#include "Rtypes.h"                     // for FairRingSorter::Class, etc
+
+#include <iostream>                     // for operator<<, ostream, etc
+#include <map>                          // for multimap
+#include <utility>                      // for pair
+#include <vector>                       // for vector
+
+class FairTimeStamp;
 
 class FairRingSorter : public TObject
 {

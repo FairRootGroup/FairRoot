@@ -7,8 +7,17 @@
 
 #include <FairTestDetectorDigiSorterTask.h>
 
-#include "FairTestDetectorDigi.h"
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairTestDetectorDigi.h"       // for FairTestDetectorDigi, etc
 #include "FairTestDetectorDigiRingSorter.h"
+
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+
+#include <iostream>                     // for ostream, cout, operator<<, etc
+
+class FairRingSorter;
+class FairTimeStamp;
 
 ClassImp(FairTestDetectorDigiSorterTask);
 

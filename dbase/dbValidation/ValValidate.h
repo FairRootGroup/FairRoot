@@ -2,8 +2,12 @@
 #ifndef VALVALIDATE_H
 #define VALVALIDATE_H
 
+#include "TObject.h"                    // for TObject
+
+#include "Rtypes.h"                     // for Bool_t, ValValidate::Class, etc
+
 class ValTimeStamp;
-#include "TObject.h"
+
 
 class ValValidate : public TObject
 {

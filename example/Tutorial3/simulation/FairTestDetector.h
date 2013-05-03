@@ -3,8 +3,9 @@
 
 #include "FairDetector.h"
 
-#include "TVector3.h"
-#include "TLorentzVector.h"
+#include "Rtypes.h"                     // for Int_t, Double32_t, Double_t, etc
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TVector3.h"                   // for TVector3
 
 class FairTestDetectorPoint;
 class FairVolume;

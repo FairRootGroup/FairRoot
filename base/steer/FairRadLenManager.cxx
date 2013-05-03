@@ -3,14 +3,18 @@
 // -----                  Created 14/01/08  by M. Al-Turany            -----
 // -------------------------------------------------------------------------
 
-
-#include <iostream>
-#include "FairRadLenPoint.h"
 #include "FairRadLenManager.h"
-#include "FairRootManager.h"
-#include "TLorentzVector.h"
-#include "TParticle.h"
-#include "TVirtualMC.h"
+
+#include "FairRadLenPoint.h"            // for FairRadLenPoint
+#include "FairRootManager.h"            // for FairRootManager
+
+#include "TClonesArray.h"               // for TClonesArray
+#include "TLorentzVector.h"             // for TLorentzVector
+#include "TVector3.h"                   // for TVector3
+#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMCStack.h"            // for TVirtualMCStack
+
+#include <stddef.h>                     // for NULL
 
 using namespace std;
 

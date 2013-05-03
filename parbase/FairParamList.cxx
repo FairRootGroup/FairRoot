@@ -2,18 +2,22 @@
 //*-- Last modified : 28/01/2009 by Ilse Koenig
 
 #include "FairParamList.h"
-#include "FairLogger.h"
 
-#include "TClass.h"
-#include "TStreamerInfo.h"
-#include "RVersion.h"
-#include "TBuffer.h"
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
-#include "TBufferFile.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TArrayD.h"                    // for TArrayD
+#include "TArrayF.h"                    // for TArrayF
+#include "TArrayI.h"                    // for TArrayI
+#include "TBuffer.h"                    // for TBuffer, etc
+#include "TBufferFile.h"                // for TBufferFile
+#include "TClass.h"                     // for TClass
+#include "TCollection.h"                // for TIter
+#include "TStreamerInfo.h"              // for TStreamerInfo
 
-#include <iostream>
-#include <iomanip>
-#include <stdlib.h>
+#include <stdlib.h>                     // for NULL
+#include <string.h>                     // for memcpy, strcmp, strlen
+#include <iostream>                     // for operator<<, ostream, cout, etc
 
 //_HADES_CLASS_DESCRIPTION
 /////////////////////////////////////////////////////////////////////////////////////////

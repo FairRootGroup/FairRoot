@@ -1,6 +1,8 @@
 #include "SimFlag.h"
-#include "TMath.h"
+
 #include "TString.h"
+
+#include <string.h>                     // for strcpy, strlen
 
 //_____________________________________________________________________________
 

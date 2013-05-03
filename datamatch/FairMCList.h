@@ -8,9 +8,11 @@
 #ifndef FAIRMCLIST_H_
 #define FAIRMCLIST_H_
 
-#include "TObject.h"
+#include "TObject.h"                    // for TObject
 
-#include <vector>
+#include "Rtypes.h"                     // for Int_t, FairMCList::Class, etc
+
+#include <vector>                       // for vector
 
 class FairMCList : public TObject
 {

@@ -16,16 +16,14 @@
 #ifndef FAIR_PLUTOGENERATOR_H
 #define FAIR_PLUTOGENERATOR_H
 
+#include "FairGenerator.h"              // for FairGenerator
 
-#include "FairGenerator.h"
+#include "Rtypes.h"                     // for Char_t, etc
 
+class FairPrimaryGenerator;
 class TClonesArray;
 class TFile;
 class TTree;
-class TVirtualMCStack;
-class FairPrimaryGenerator;
-
-
 
 class FairPlutoGenerator : public FairGenerator
 {

@@ -5,38 +5,49 @@
 
 #include "FairRunOnline.h"
 
-#include "FairRootManager.h"
-#include "FairTask.h"
-#include "FairBaseParSet.h"
-#include "FairEventHeader.h"
-#include "FairFieldFactory.h"
-#include "FairRuntimeDb.h"
-#include "FairTrajFilter.h"
-#include "FairRunIdGenerator.h"
-#include "FairLogger.h"
-#include "FairFileHeader.h"
-#include "FairMCEventHeader.h"
-#include "FairParIo.h"
-#include "FairAnaSelector.h"
+#include "FairAnaSelector.h"            // for FairAnaSelector
+#include "FairBaseParSet.h"             // for FairBaseParSet
+#include "FairEventHeader.h"            // for FairEventHeader
+#include "FairField.h"                  // for FairField
+#include "FairFieldFactory.h"           // for FairFieldFactory
+#include "FairFileHeader.h"             // for FairFileHeader
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairMCEventHeader.h"          // for FairMCEventHeader
+#include "FairParIo.h"                  // for FairParIo
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRunIdGenerator.h"         // for FairRunIdGenerator
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairSource.h"                 // for FairSource
+#include "FairTask.h"                   // for FairTask
+#include "FairTrajFilter.h"             // for FairTrajFilter
 
-#include "FairSource.h"
+#include "RVersion.h"                   // for ROOT_VERSION, etc
+#include "Riosfwd.h"                    // for ostream
+#include "TCanvas.h"                    // for TCanvas
+#include "TChain.h"                     // for TChain
+#include "TCollection.h"                // for TIter
+#include "TDirectory.h"                 // for TDirectory, gDirectory
+#include "TFile.h"                      // for TFile, gFile
+#include "TFolder.h"                    // for TFolder
+#include "TGeoManager.h"                // for gGeoManager, TGeoManager
+#include "TH1.h"                        // for TH1F
+#include "TH2.h"                        // for TH2F
+#include "TKey.h"                       // for TKey
+#include "TList.h"                      // for TList
+#include "TNamed.h"                     // for TNamed
+#include "TObjArray.h"                  // for TObjArray
+#include "TObject.h"                    // for TObject
+#include "TProof.h"                     // for TProof
+#include "TROOT.h"                      // for TROOT, gROOT
+#include "TSeqCollection.h"             // for TSeqCollection
+#include "TSystem.h"                    // for TSystem, gSystem
+#include "TTree.h"                      // for TTree
 
-#include "TROOT.h"
-#include "TTree.h"
-#include "TSeqCollection.h"
-#include "TGeoManager.h"
-#include "TKey.h"
-#include "TF1.h"
-#include "TSystem.h"
-#include "TProof.h"
-#include "TProofOutputFile.h"
-#include "TFolder.h"
-#include "TCanvas.h"
-#include "TH1F.h"
-#include "TH2F.h"
-
-#include <iostream>
-#include <list>
+#include <stdio.h>                      // for sprintf
+#include <stdlib.h>                     // for NULL, exit, system
+#include <string.h>                     // for strcmp
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <list>                         // for list
 
 using std::cout;
 using std::endl;

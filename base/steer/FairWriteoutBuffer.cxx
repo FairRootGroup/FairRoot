@@ -6,11 +6,13 @@
  */
 
 #include "FairWriteoutBuffer.h"
-#include "FairRootManager.h"
-#include "FairLogger.h"
-#include "TClonesArray.h"
 
-#include <iostream>
+#include "FairLogger.h"                 // for FairLogger
+#include "FairRootManager.h"            // for FairRootManager
+
+#include <iostream>                     // for operator<<, ostream, cout, etc
+#include <iterator>                     // for reverse_iterator
+
 //_____________________________________________________________________________
 FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance)
   : TObject(),

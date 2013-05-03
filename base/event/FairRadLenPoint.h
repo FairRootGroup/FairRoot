@@ -12,9 +12,10 @@
 #ifndef FAIRRADLENPOINT_H
 #define FAIRRADLENPOINT_H
 
-#include "TObject.h"
-#include "TVector3.h"
-#include "FairMCPoint.h"
+#include "FairMCPoint.h"                // for FairMCPoint
+
+#include "Rtypes.h"                     // for Double_t, Float_t, etc
+#include "TVector3.h"                   // for TVector3
 
 class FairRadLenPoint : public FairMCPoint
 {

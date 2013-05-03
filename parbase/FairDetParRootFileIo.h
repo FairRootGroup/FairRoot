@@ -1,10 +1,13 @@
 #ifndef FAIRDETPARROOTFILEIO_H
 #define FAIRDETPARROOTFILEIO_H
 
-#include "FairDetParIo.h"
+#include "FairDetParIo.h"               // for FairDetParIo
+
+#include "Rtypes.h"                     // for Int_t, Text_t, etc
 
 class FairParRootFile;
 class FairParSet;
+class TObject;
 
 class FairDetParRootFileIo : public FairDetParIo
 {

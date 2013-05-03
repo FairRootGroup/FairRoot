@@ -4,18 +4,37 @@
  * License:                                *
  * Version:                                *
  ******************************************/
-
 #include "FairParTSQLIo.h"
-#include "FairGenericParTSQLIo.h"
-#include "FairDbMultConnector.h"
-#include "FairDbStatement.h"
-#include "FairDbTableProxyRegistry.h"
-#include "FairRuntimeDb.h"
 
-#include <iostream>
-#include <sstream>
-#include <memory>
+#include "FairDbConnection.h"           // for FairDbConnection
+#include "FairDbMultConnector.h"        // for FairDbMultConnector, etc
+#include "FairDbStatement.h"            // for FairDbStatement
+#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairDetParIo.h"               // for FairDetParIo
+#include "FairGenericParTSQLIo.h"       // for FairGenericParTSQLIo
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+
+#include "Riosfwd.h"                    // for ostream, ifstream
+#include "TCollection.h"                // for TIter
+#include "TList.h"                      // for TList
+#include "TSQLStatement.h"              // for TSQLStatement
+#include "TString.h"                    // for TString, operator==, etc
+
+#include <stddef.h>                     // for size_t
+#include <stdlib.h>                     // for NULL, exit, getenv
+#include <string.h>                     // for strcmp
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <memory>                       // for auto_ptr, etc
+#include <string>                       // for string, basic_string, etc
+#include <vector>                       // for vector, vector<>::iterator
+#include <sstream>                      // IWYU pragma: keep
+#include <fstream>                      // IWYU pragma: keep
+
+class FairRtdbRun;
+class TObject;
+
 using namespace std;
+
 
 ClassImp(FairParTSQLIo)
 

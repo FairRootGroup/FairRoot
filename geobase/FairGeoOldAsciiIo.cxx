@@ -8,14 +8,20 @@
 // This class is only used for conversion to the new format!
 //
 ///////////////////////////////////////////////////////////////////////////////
-
 #include "FairGeoOldAsciiIo.h"
 
-#include "FairGeoSet.h"
-#include "FairGeoNode.h"
-#include "FairGeoMedium.h"
-#include "FairGeoMedia.h"
-#include "FairGeoShapes.h"
+#include "FairGeoBasicShape.h"          // for FairGeoBasicShape
+#include "FairGeoMedia.h"               // for FairGeoMedia
+#include "FairGeoMedium.h"              // for FairGeoMedium
+#include "FairGeoNode.h"                // for FairGeoNode
+#include "FairGeoSet.h"                 // for FairGeoSet
+#include "FairGeoShapes.h"              // for FairGeoShapes
+#include "FairGeoTransform.h"           // for FairGeoTransform
+
+#include "TList.h"                      // for TList
+
+#include <string.h>                     // for strcmp, NULL
+#include <iostream>                     // for cerr, cout
 
 using std::cout;
 using std::cerr;

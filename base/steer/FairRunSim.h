@@ -1,20 +1,21 @@
 #ifndef FAIRRUNSIM_H
 #define FAIRRUNSIM_H
 
-#include "FairRun.h"
+#include "FairRun.h"                    // for FairRun
 
-#include "FairMCApplication.h"
-#include "FairIon.h"
-#include "FairParticle.h"
-#include "TObjArray.h"
-#include "TString.h"
-#include <iostream>
+#include "FairIon.h"                    // for FairIon
+#include "FairMCApplication.h"          // for FairMCApplication
+#include "FairParticle.h"               // for FairParticle
 
-class FairModule;
+#include "Rtypes.h"                     // for Bool_t, Double_t, Int_t, etc
+#include "TObjArray.h"                  // for TObjArray
+#include "TString.h"                    // for TString
+
 class FairField;
-class FairPrimaryGenerator;
 class FairMCEventHeader;
 class FairMesh;
+class FairModule;
+class FairPrimaryGenerator;
 
 /**
  * Configure the Simulation session
