@@ -9,6 +9,8 @@
 #include <stdio.h>                      // for printf, sprintf
 #include <string.h>                     // for strrchr
 #include <time.h>                       // for tm, localtime, gmtime, time, etc
+#include <sys/time.h>                   // for gettimeofday 
+// IWYU pragma: no_include <sys/_structs.h>
 
 using std::cout;
 using std::endl;

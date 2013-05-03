@@ -10,13 +10,13 @@
 #include "TFile.h"                      // for TFile
 #include "TString.h"                    // for TString, operator!=
 
-#include <sys/_structs.h>               // for timespec
 #include <sys/select.h>                 // for time_t
 #include <time.h>                       // for time
 #include <iomanip>                      // for operator<<, setw
 #include <iostream>                     // for operator<<, basic_ostream, etc
 #include <map>                          // for map, etc
 #include <utility>                      // for pair
+// IWYU pragma: no_include <sys/_structs.h>
 
 using std::cout;
 using std::endl;
