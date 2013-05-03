@@ -12,9 +12,14 @@
 using namespace std;
 
 FairLmdSource::FairLmdSource(char* fileName)
-  : FairSource()
+  : FairSource(),
+    fFileName(fileName),
+    fxInputChannel(NULL),
+    fxEvent(NULL),
+    fxBuffer(NULL),
+    fxEventData(NULL),
+    fxSubEvent(NULL)
 {
-  fFileName = fileName;
 }
 
 

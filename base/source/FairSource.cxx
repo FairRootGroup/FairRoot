@@ -8,8 +8,9 @@
 
 
 FairSource::FairSource()
+  : TObject(),
+    fUnpackers(new TObjArray())
 {
-  fUnpackers = new TObjArray();
 }
 
 

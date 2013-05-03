@@ -43,6 +43,8 @@ class FairLmdSource : public FairSource
     Int_t* fxEventData;
     s_ves10_1* fxSubEvent;
 
+    FairLmdSource(const FairLmdSource&);
+    FairLmdSource& operator=(const FairLmdSource&);
 
   public:
     ClassDef(FairLmdSource, 0)

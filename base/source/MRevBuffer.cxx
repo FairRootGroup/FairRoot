@@ -69,18 +69,43 @@ int imySig = 0;      // needed in exitCli to handle CTL C
 int iOutMode = 0;    // needed in exitCli to handle CTL C
 
 MRevBuffer::MRevBuffer(Int_t iMode)
+  : TObject(),
+    pTSocket(NULL),
+    iSocket(0),
+    iBufNo1(0),
+    iBufNo2(0),
+    iDebug(iMode),
+    iSwap(0),
+    iStatus(1),
+    iBufSizeAlloc(16384),
+    iBufSize(0),
+    iBufNo(0),
+    iFragBegin(0),
+    iFragConc(0),
+    iFragBeginIgn(0),
+    iFragEndIgn(0),
+    iHeadPar(0),
+    iEvtMax(0),
+    iEvtNo(0),
+    iEvtRel(0),
+    iEvtBuf(0),
+    iEvtPar(0),
+    piBuf(new int [iBufSizeAlloc/sizeof(int)+1]),
+    piNextEvt(NULL),
+    pEvt(new REvent())
 {
-  iStatus = 1;                         // server not yet connected
-  iSwap = 0;
-  iSocket = 0;
-  iEvtRel = 0;
-  iEvtPar = 0;
-  iBufSize = 0;
-
+//  iStatus = 1;                         // server not yet connected
+  /*
+    iSwap = 0;
+    iSocket = 0;
+    iEvtRel = 0;
+    iEvtPar = 0;
+    iBufSize = 0;
+  */
 
   signal(SIGINT, exitCli);                 // from now catch CTL C
 
-  iDebug = iMode;
+//  iDebug = iMode;
   iOutMode = iMode;
   if (iDebug == 1) {
     cout << "-I- client runs in debug mode (1)" << endl;
@@ -109,14 +134,14 @@ MRevBuffer::MRevBuffer(Int_t iMode)
 #endif
   }
 
-  iBufSizeAlloc = 16384;
-  piBuf = new int [iBufSizeAlloc/sizeof(int)+1]; // 16k buffer + len
+  //  iBufSizeAlloc = 16384;
+  //  piBuf = new int [iBufSizeAlloc/sizeof(int)+1]; // 16k buffer + len
   if (iDebug == 1)
     cout << "-D- buffer allocated (" << iBufSizeAlloc+sizeof(int)
          << " byte)" << endl;
 
-  REvent* pev = new REvent();    // create event (once)
-  pEvt = pev;                    // keep pointer in class MRevBuffer
+  //  REvent* pev = new REvent();    // create event (once)
+  //  pEvt = pev;                    // keep pointer in class MRevBuffer
 
   // cout << "    MRevBuffer() executed" << endl;
 
@@ -871,10 +896,19 @@ void  MRevBuffer::RevClose( TSocket* pSocket )
 /////////////////////////////////////////////////////////////////////
 
 REvent::REvent()
+  : TObject(),
+    iSize(0),
+    iNumb(0),
+    piData(NULL),
+    nSubEvt(0),
+    subEvtSize(),
+    subEvtType(),
+    subEvtSubType(),
+    pSubEvt()
 {
   // cout << "    REvent() ..." << endl;
-  iNumb = 0;
-  piData = 0;
+//  iNumb = 0;
+//  piData = 0;
 }
 
 REvent::~REvent()

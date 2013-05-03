@@ -30,6 +30,9 @@ class REvent : public TObject
     Int_t  iNumb;              // event number
     Int_t*  piData;            // event parameter
 
+    REvent(const REvent&);
+    REvent& operator=(const REvent&);
+
   public:
     REvent();                  // constructor
     ~REvent();                 // destructor
@@ -81,6 +84,9 @@ class MRevBuffer : public TObject
     Int_t*  piBuf;         // ptr event buffer
     Int_t*  piNextEvt;     // ptr first element next event
     REvent* pEvt;          // ptr event class
+
+    MRevBuffer(const MRevBuffer&);
+    MRevBuffer& operator=(const MRevBuffer&);
 
   public:
     MRevBuffer( Int_t iMode); // constructor

@@ -88,15 +88,17 @@ FairRunOnline::FairRunOnline(FairSource* source)
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
    fProofOutputStatus("copy"),
-   fFinishProcessingLMDFile(kFALSE)
+   fFinishProcessingLMDFile(kFALSE),
+   fSource(source),
+   fFolder(new TFolder("HISTO", "HISTO"))
 {
 
   fgRinstance=this;
   fAna=kTRUE;
 
-  fSource = source;
+//  fSource = source;
 
-  fFolder = new TFolder("HISTO", "HISTO");
+//  fFolder = new TFolder("HISTO", "HISTO");
 }
 //_____________________________________________________________________________
 
@@ -127,7 +129,9 @@ FairRunOnline::FairRunOnline(const char* type, const char* proofName)
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
    fProofOutputStatus("copy"),
-   fFinishProcessingLMDFile(kFALSE)
+   fFinishProcessingLMDFile(kFALSE),
+   fSource(NULL),
+   fFolder(NULL)
 {
   TString anaType = type;
   anaType.ToLower();

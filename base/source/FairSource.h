@@ -34,6 +34,9 @@ class FairSource : public TObject
   private:
     TObjArray* fUnpackers;
 
+    FairSource(const FairSource&);
+    FairSource& operator=(const FairSource&);
+
   public:
     ClassDef(FairSource, 0)
 };

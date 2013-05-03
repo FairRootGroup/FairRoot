@@ -8,9 +8,10 @@
 
 
 FairUnpack::FairUnpack(Int_t type, Int_t subType)
+  : TObject(),
+    fType(type),
+    fSubType(subType)
 {
-  fType = type;
-  fSubType = subType;
 }
 
 
