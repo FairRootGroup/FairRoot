@@ -7,6 +7,8 @@
 
 #include "MRevBuffer.h"                 // for MRevBuffer, REvent
 
+#include <stddef.h>                     // for NULL
+
 using namespace std;
 
 FairRemoteSource::FairRemoteSource(char* node)
