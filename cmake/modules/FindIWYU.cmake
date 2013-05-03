@@ -39,15 +39,23 @@ Macro(CHECK_HEADERS INFILES INCLUDE_DIRS_IN HEADER_RULE_NAME)
   ForEach (_current_FILE ${INFILES})
 
     Get_Filename_Component(file_name ${_current_FILE} NAME_WE)
+    Get_Filename_Component(path ${_current_FILE} PATH)
     
     Set(_current_FILE "${CMAKE_CURRENT_SOURCE_DIR}/${_current_FILE}")
+    Set(headerfile "${CMAKE_CURRENT_SOURCE_DIR}/${path}/${file_name}.h")
+   
+    If(NOT EXISTS ${headerfile})
+      Set(headerfile)
+    EndIf(NOT EXISTS ${headerfile})
+  
     Set(outfile "${CMAKE_CURRENT_BINARY_DIR}/${file_name}.iwyu")
 
     ADD_CUSTOM_COMMAND(OUTPUT ${outfile} 
       COMMAND ${IWYU_BINARY} ${_current_FILE} ${_INCLUDE_DIRS} 2> ${outfile}
-      DEPENDS  ${_current_FILE}
+ #     COMMAND /bin/bash ${CMAKE_CURRENT_SOURCE_DIR}/cmake/scripts/iwyu.sh ${outfile} ${_current_FILE} ${headerfile} 
+      DEPENDS  ${_current_FILE} ${headerfile}
    )
- 
+
     set(_all_files ${_all_files}  ${outfile})
 
   endforeach (_current_FILE ${INFILES})
