@@ -17,7 +17,6 @@
 #include "FairFileHeader.h"
 #include "FairMCEventHeader.h"
 #include "FairParIo.h"
-#include "FairAnaSelector.h"
 
 #include "TROOT.h"
 #include "TTree.h"
@@ -26,8 +25,6 @@
 #include "TKey.h"
 #include "TF1.h"
 #include "TSystem.h"
-#include "TProof.h"
-#include "TProofOutputFile.h"
 
 #include <iostream>
 #include <list>
@@ -64,70 +61,8 @@ FairRunAna::FairRunAna()
    fEventTime(0),
    fEventMeanTime(0),
    fTimeProb(0),
-   fProof(NULL),
-   fProofAnalysis(kFALSE),
-   fRunOnProofWorker(kFALSE),
-   fProofServerName(""),
-   fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
-   fOutputDirectory(""),
-   fProofOutputStatus("copy"),
    fFinishProcessingLMDFile(kFALSE)
 {
-
-  fgRinstance=this;
-  fAna=kTRUE;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-FairRunAna::FairRunAna(const char* type, const char* proofName)
-  :FairRun(),
-   fRunInfo(),
-   fIsInitialized(kFALSE),
-   //   fInputFile(0),
-   fInputGeoFile(0),
-   fLoadGeo( kFALSE),
-   fEvtHeader(0),
-   fMCHeader(0),
-   fStatic(kFALSE),
-   fField(0),
-   fTimeStamps(kFALSE),
-   fInFileIsOpen(kFALSE),
-   fMixedInput(kFALSE),
-   fEventTimeMin(0),
-   fEventTimeMax(0),
-   fEventTime(0),
-   fEventMeanTime(0),
-   fTimeProb(0),
-   fProof(NULL),
-   fProofAnalysis(kFALSE),
-   fRunOnProofWorker(kFALSE),
-   fProofServerName(proofName),
-   fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
-   fOutputDirectory(""),
-   fProofOutputStatus("copy"),
-   fFinishProcessingLMDFile(kFALSE)
-{
-  TString anaType = type;
-  anaType.ToLower();
-
-  fProof = NULL;
-  fProofAnalysis = kFALSE;
-  fProofServerName = proofName;
-
-  if ( anaType.Contains("proof") ) {
-    fProofAnalysis = kTRUE;
-    fProofServerName = proofName;
-
-    cout << "+++++++ T P R O O F +++++++++++++++++++++++++++++++++" << endl;
-    cout << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data()
-         << "\");" << endl;
-    TProof::AddEnvVar("LOCALDATASERVER","file://");
-    //    TProof* proof = TProof::Open("lite:///?workers=1");
-    fProof = TProof::Open(fProofServerName.Data());
-    cout << "+++++++ C R E A T E D +++++++++++++++++++++++++++++++" << endl;
-    //    fStatic = kTRUE;
-  }
 
   fgRinstance=this;
   fAna=kTRUE;
@@ -145,9 +80,9 @@ FairRunAna::~FairRunAna()
     delete gGeoManager;
   }
 }
-
 //_____________________________________________________________________________
 
+//_____________________________________________________________________________
 void  FairRunAna::SetGeomFile(const char* GeoFileName)
 {
   if (fIsInitialized) {
@@ -179,25 +114,21 @@ void FairRunAna::Init()
     fIsInitialized=kTRUE;
   }
 
-  if ( fRunOnProofWorker ) {
-    fInFileIsOpen = fRootManager->OpenInTree();
+  // Open the input file and add other input files added by AddFile to the
+  // input chain. Do a check if the added files are of the same type
+  // as the the input file. Same type means check if they contain the
+  // same branch.
+  if (!fMixedInput) {
+    fInFileIsOpen = fRootManager->OpenInChain();
   } else {
-    // Open the input file and add other input files added by AddFile to the
-    // input chain. Do a check if the added files are of the same type
-    // as the the input file. Same type means check if they contain the
-    // same branch.
-    if (!fMixedInput) {
-      fInFileIsOpen = fRootManager->OpenInChain();
-    } else {
-      Bool_t openBKChain = fRootManager->OpenBackgroundChain();
-      if (!openBKChain) {
-        fLogger->Fatal(MESSAGE_ORIGIN, "Could not open background Chain!");
-      }
-      fRootManager->OpenSignalChain();
+    Bool_t openBKChain = fRootManager->OpenBackgroundChain();
+    if (!openBKChain) {
+      fLogger->Fatal(MESSAGE_ORIGIN, "Could not open background Chain!");
     }
+    fRootManager->OpenSignalChain();
   }
   //Load Geometry from user file
-
+  
   if (fLoadGeo) {
     if (fInputGeoFile!=0) { //First check if the user has a separate Geo file!
       TIter next(fInputGeoFile->GetListOfKeys());
@@ -212,42 +143,33 @@ void FairRunAna::Init()
     }
   }
   if (fInFileIsOpen) {
-    if ( fRunOnProofWorker ) {
-      if (fLoadGeo && gGeoManager==0) {
-        fRootManager->GetInFile()->Get("FAIRGeom");
+    // Add all friend files defined by AddFriend to the correct chain
+    fRootManager->AddFriendsToChain();
+    if (fLoadGeo && gGeoManager==0) {
+      // Check if the geometry in the first file of the Chain
+      fRootManager->GetInChain()->GetFile()->Get("FAIRGeom");
+    }
+    //check that the geometry was loaded if not try all connected files!
+    if (fLoadGeo && gGeoManager==0) {
+      fLogger->Info(MESSAGE_ORIGIN, "Geometry was not found in the input file we will look in the friends if any!" );
+      TFile* currentfile= gFile;
+      TFile* nextfile=0;
+      TSeqCollection* fileList=gROOT->GetListOfFiles();
+      for (Int_t k=0; k<fileList->GetEntries(); k++) {
+	nextfile=dynamic_cast<TFile*>(fileList->At(k));
+	if (nextfile) {
+	  nextfile->Get("FAIRGeom");
+	}
+	if (gGeoManager) {
+	  break;
+	}
       }
-      if (fLoadGeo && gGeoManager==0) {
-      }
-    } else {
-
-      // Add all friend files defined by AddFriend to the correct chain
-      fRootManager->AddFriendsToChain();
-      if (fLoadGeo && gGeoManager==0) {
-        // Check if the geometry in the first file of the Chain
-        fRootManager->GetInChain()->GetFile()->Get("FAIRGeom");
-      }
-      //check that the geometry was loaded if not try all connected files!
-      if (fLoadGeo && gGeoManager==0) {
-        fLogger->Info(MESSAGE_ORIGIN, "Geometry was not found in the input file we will look in the friends if any!" );
-        TFile* currentfile= gFile;
-        TFile* nextfile=0;
-        TSeqCollection* fileList=gROOT->GetListOfFiles();
-        for (Int_t k=0; k<fileList->GetEntries(); k++) {
-          nextfile=dynamic_cast<TFile*>(fileList->At(k));
-          if (nextfile) {
-            nextfile->Get("FAIRGeom");
-          }
-          if (gGeoManager) {
-            break;
-          }
-        }
-        gFile=currentfile;
-      }
+      gFile=currentfile;
     }
   } else if (fMixedInput) {
+    
 
-
-
+    
   } else { //  if(fInputFile )
     // NO input file but there is a geometry file
     if (fLoadGeo) {
@@ -267,10 +189,6 @@ void FairRunAna::Init()
   //Init the Chain ptr
   //  fcurrent = fChainList.begin();
 // fOutFile = fRootManager->OpenOutFile(fOutname);
-
-  if ( fProofAnalysis ) {
-    return;
-  }
 
   gROOT->GetListOfBrowsables()->Add(fTask);
 
@@ -481,11 +399,6 @@ void FairRunAna::RunMixed(Int_t Ev_start, Int_t Ev_end)
 //_____________________________________________________________________________
 void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 {
-  if ( fProofAnalysis ) {
-    RunOnProof(Ev_start,Ev_end);
-    return;
-  }
-
   if (fTimeStamps) {
     RunTSBuffers();
   } else if (fMixedInput) {
@@ -616,32 +529,6 @@ void FairRunAna::Run(Long64_t entry)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRunAna::RunOneEvent(Long64_t entry)
-{
-  if (fTimeStamps) {
-    RunTSBuffers();
-  } else {
-    UInt_t tmpId =0;
-    fRootManager->ReadEvent(entry);
-    tmpId = fEvtHeader->GetRunId();
-    if ( tmpId != fRunId ) {
-      fRunId = tmpId;
-      if ( !fStatic ) {
-        Reinit( fRunId );
-        fTask->ReInitTask();
-      }
-    }
-    fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
-
-    fTask->ExecuteTask("");
-    fRootManager->Fill();
-    fRootManager->DeleteOldWriteoutBufferData();
-    fTask->FinishEvent();
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
 void FairRunAna::RunTSBuffers()
 {
   Int_t globalEvent = 0;
@@ -703,83 +590,6 @@ void FairRunAna::DummyRun(Int_t Ev_start, Int_t Ev_end)
   fTask->FinishTask();
   fRootManager->Write();
 
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRunAna::RunOnProof(Int_t NStart,Int_t NStop)
-{
-  cout << "FairRunAna::RunOnProof(" << NStart << "," << NStop << "): "
-       << "running FairAnaSelector on proof server: \"" << fProofServerName.Data() << "\" "
-       << "with PAR file name = \"" << fProofParName.Data() << "\"." << endl;
-
-  FairAnaSelector* proofSelector = new FairAnaSelector();
-
-
-  TChain* inChain = dynamic_cast<TChain*>(fRootManager->GetInChain());
-  TString par1File = "";
-  TString par2File = "";
-  if ( fRtdb->getFirstInput () ) {
-    par1File = fRtdb->getFirstInput ()->getFilename();
-  }
-  if ( fRtdb->getSecondInput() ) {
-    par2File = fRtdb->getSecondInput()->getFilename();
-  }
-
-  TString outDir = (fOutputDirectory.Length()>1?fOutputDirectory.Data():gSystem->WorkingDirectory());
-
-//   cout << "+++++++ T P R O O F +++++++++++++++++++++++++++++++++" << endl;
-//   cout << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data()
-//        << "\");" << endl;
-//   TProof::AddEnvVar("LOCALDATASERVER","file://");
-//   //    TProof* proof = TProof::Open("lite:///?workers=1");
-//   TProof* proof = TProof::Open(fProofServerName.Data());
-//   cout << "+++++++ C R E A T E D +++++++++++++++++++++++++++++++" << endl;
-
-  TString outFile = fRootManager->GetOutFile()->GetName();
-  fRootManager->CloseOutFile();
-
-  fProof->AddInput(fTask);
-
-  fProof->AddInput(new TNamed("FAIRRUNANA_fContainerStatic",(fStatic?"kTRUE":"kFALSE")));
-  fProof->AddInput(new TNamed("FAIRRUNANA_fProofOutputStatus",fProofOutputStatus.Data()));
-  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputDirectory",outDir.Data()));
-  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",outFile.Data()));
-  fProof->AddInput(new TNamed("FAIRRUNANA_fParInput1FName",par1File.Data()));
-  fProof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
-
-  cout << "0309: ClearPackages" << endl;
-  fProof->ClearPackages();
-  cout << "0309: UploadPackages" << endl;
-  fProof->UploadPackage(fProofParName.Data());
-  cout << "0309: EnablePackages" << endl;
-  fProof->EnablePackage(fProofParName.Data());
-  cout << "0309: ShowPackages" << endl;
-  fProof->ShowPackages();
-  cout << "0309: Done" << endl;
-
-  Int_t nofChainEntries = inChain->GetEntries();
-  cout << "FairRunAna::RunOnProof(): The chain seems to have " << nofChainEntries << " entries." << endl;
-
-  TObjArray* listOfFiles = inChain->GetListOfFiles();
-  cout << "FairRunAna::RunOnProof(): There are " << listOfFiles->GetEntries() << " files in the chain." << endl;
-
-  inChain->SetProof();
-
-  Int_t nofEventsToAnalyze = NStop-NStart;
-
-  if ( nofEventsToAnalyze <= 0 ) {
-    cout << "You requested to analyze events from " << NStart << " to " << NStop << " that is " << nofEventsToAnalyze << " events!!!" << endl;
-    nofEventsToAnalyze = nofChainEntries-NStart;
-    cout << "It will be changed to analyze all events from " << NStart << " to the end of chain (" << nofChainEntries << "), that is to analyze " << nofEventsToAnalyze << " events." << endl;
-  }
-
-  cout << "FairRunAna::RunOnProof(): Starting inChain->Process(\"FairAnaSelector\",\"\","
-       << nofEventsToAnalyze << "," << NStart << ")" << endl;
-  inChain->Process("FairAnaSelector","",nofEventsToAnalyze,NStart);
-  cout << "FairRunAna::RunOnProof(): inChain->Process DONE" << endl;
-
-  return;
 }
 //_____________________________________________________________________________
 

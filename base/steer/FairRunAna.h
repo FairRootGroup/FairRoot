@@ -13,7 +13,6 @@
 #include "FairRunInfo.h"
 #include "FairRootManager.h"
 
-#include "TProof.h"
 #include "TString.h"
 #include <iostream>
 
@@ -34,7 +33,6 @@ class FairRunAna : public FairRun
     static FairRunAna* Instance();
     virtual ~FairRunAna();
     FairRunAna();
-    FairRunAna(const char* type, const char* proofName="");
     /** Add a friend file (input) by name)*/
     void        AddFriend(TString fName);
     /**initialize the run manager*/
@@ -45,16 +43,12 @@ class FairRunAna : public FairRun
     void        Run(Double_t delta_t);
     /**Run for the given single entry*/
     void        Run(Long64_t entry);
-    /**Run for one event, used on PROOF nodes*/
-    void        RunOneEvent(Long64_t entry);
     /**Run from event number NStart to event number NStop over mixed input files */
     void        RunMixed(Int_t NStart, Int_t NStop);
     /**Run over all TSBuffers until the data is processed*/
     void        RunTSBuffers();
     /** the dummy run does not check the evt header or the parameters!! */
     void        DummyRun(Int_t NStart ,Int_t NStop);
-    /** run on proof from event NStart to event NStop*/
-    void        RunOnProof(Int_t NStart, Int_t NStop);
     /** Run on a list of lmd files*/
     void        RunOnLmdFiles(UInt_t NStart=0, UInt_t NStop=0);
     /** finish tasks, write output*/
@@ -103,11 +97,6 @@ class FairRunAna : public FairRun
     /** Init containers executed on PROOF, which is part of Init when running locally*/
     void        InitContainers();
 
-    /** set the input tree of fRootManager when running on PROOF worker*/
-    void        SetInTree (TTree* tempTree)   {
-      fRootManager->SetInTree (tempTree);
-    }
-
     void        SetContainerStatic(Bool_t tempBool=kTRUE);
     Bool_t      GetContainerStatic() { return fStatic; };
     void        RunWithTimeStamps();
@@ -134,26 +123,6 @@ class FairRunAna : public FairRun
      * here we just forward the call to the FairRootManager
      */
     void BGWindowWidthTime(Double_t background, UInt_t Signalid);
-
-    /** GetProof */
-    TProof* GetProof() { return fProof;}
-
-    /** To be set to kTRUE only when running on PROOF worker, only by TSelector */
-    void SetRunOnProofWorker(Bool_t tb = kTRUE) {
-      fRunOnProofWorker = tb;
-    }
-    /** Set PROOF ARchive (PAR) file name*/
-    void SetProofParName(TString parName) {
-      fProofParName = parName;
-    }
-    /** Set directory for storing output files*/
-    void SetOutputDirectory(TString dirName) {
-      fOutputDirectory = dirName;
-    }
-    /** Set PROOF output status, possibilities: "copy","merge","dataset"*/
-    void SetProofOutputStatus(TString outStat) {
-      fProofOutputStatus = outStat;
-    }
 
     /** Set the flag for proccessing lmd files */
     void StopProcessingLMD( void ) {
@@ -199,24 +168,10 @@ class FairRunAna : public FairRun
     Double_t                                fEventMeanTime; //!
     /** used to generate random numbers for event time; */
     TF1*                                    fTimeProb;      //!
-    /** PROOF **/
-    TProof*                                 fProof;
-    /** flag indicating running in PROOF mode*/
-    Bool_t                                  fProofAnalysis; //!
-    /** executing on PROOF worker*/
-    Bool_t                                  fRunOnProofWorker; //!
-    /** PROOF server name*/
-    TString                                 fProofServerName; //!
-    /** PROOF ARchive (PAR) file name*/
-    TString                                 fProofParName; //!
-    /** Output directory*/
-    TString                                 fOutputDirectory; //!
-    /** Output status indicator: "copy","merge","dataset"*/
-    TString                                  fProofOutputStatus;
     /** Flag for proccessing lmd-files*/
     Bool_t                                   fFinishProcessingLMDFile;  //!
 
-    ClassDef(FairRunAna ,4)
+    ClassDef(FairRunAna ,5)
 
 };
 
