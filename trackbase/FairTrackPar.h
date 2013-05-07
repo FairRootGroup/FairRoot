@@ -6,8 +6,6 @@
 #include "Rtypes.h"                     // for Double_t, Int_t, etc
 #include "TVector3.h"                   // for TVector3
 
-class FairLogger;
-
 class FairTrackPar : public TObject
 {
 
@@ -153,14 +151,11 @@ class FairTrackPar : public TObject
     /** charge*/
     Int_t fq;
 
-    FairLogger* fLogger;  //! /// FairLogger
-
   private:
 
-    FairTrackPar(const FairTrackPar&);
     FairTrackPar& operator=(const FairTrackPar&);
 
-    ClassDef(FairTrackPar,1);
+    ClassDef(FairTrackPar,2);
 
 };
 #endif
