@@ -4,8 +4,6 @@
 #include "TObject.h"
 #include "TVector3.h"
 
-class FairLogger;
-
 class FairTrackPar : public TObject
 {
 
@@ -91,12 +89,11 @@ class FairTrackPar : public TObject
     /** charge*/
     Int_t fq;
 
-    FairLogger* fLogger;  //! /// FairLogger
-
-    FairTrackPar(const FairTrackPar&);
+  private:
+  
     FairTrackPar& operator=(const FairTrackPar&);
 
-    ClassDef(FairTrackPar,1);
+    ClassDef(FairTrackPar,2);
 
 };
 #endif
