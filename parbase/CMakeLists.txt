@@ -52,7 +52,7 @@ dbIO/FairGenericParTSQLIo.cxx
 Set(HEADERS )
 Set(LINKDEF ParBaseLinkDef.h)
 Set(LIBRARY_NAME ParBase)
-Set(DEPENDENCIES FairTools RIO Cint Core FairDB)
+Set(DEPENDENCIES FairTools FairDB RIO Cint Core )
 
 GENERATE_LIBRARY()
 

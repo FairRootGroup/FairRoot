@@ -43,6 +43,6 @@ FairTimeStampPointDraw.cxx
 Set(HEADERS )
 Set(LINKDEF EventDisplayLinkDef.h)
 Set(LIBRARY_NAME EventDisplay)
-Set(DEPENDENCIES Base Eve Geom EG  Physics Ged Gui Graf3d Tree Cint Core)
+Set(DEPENDENCIES Base Eve)
 
 GENERATE_LIBRARY()

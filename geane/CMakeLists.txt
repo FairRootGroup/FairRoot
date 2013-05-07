@@ -34,7 +34,8 @@ FairGeanePro.cxx
 Set(HEADERS )
 Set(LINKDEF GeaneLinkDef.h)
 Set(LIBRARY_NAME Geane)
-Set(DEPENDENCIES Base TrkBase Geom VMC EG Physics Cint Core)
+Set(DEPENDENCIES Base TrkBase VMC)
+#Set(DEPENDENCIES Base TrkBase Geom VMC EG Physics Cint Core)
 
 GENERATE_LIBRARY()
 
