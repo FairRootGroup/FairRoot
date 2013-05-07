@@ -151,10 +151,6 @@ class FairTrackPar : public TObject
     /** charge*/
     Int_t fq;
 
-  private:
-
-    FairTrackPar& operator=(const FairTrackPar&);
-
     ClassDef(FairTrackPar,2);
 
 };
