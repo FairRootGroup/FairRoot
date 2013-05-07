@@ -29,6 +29,7 @@
 #pragma link C++ class FairRootManager+;
 #pragma link C++ class FairRun+;
 #pragma link C++ class FairRunAna;
+#pragma link C++ class FairRunAnaProof;
 #pragma link C++ class FairRunIdGenerator;
 #pragma link C++ class FairRunSim;
 #pragma link C++ class FairTrackParam+;

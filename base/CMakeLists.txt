@@ -42,6 +42,7 @@ steer/FairRingSorterTask.cxx
 steer/FairRootManager.cxx
 steer/FairRun.cxx
 steer/FairRunAna.cxx
+steer/FairRunAnaProof.cxx
 steer/FairRunSim.cxx
 steer/FairTSBufferFunctional.cxx
 steer/FairTask.cxx
