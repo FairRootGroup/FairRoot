@@ -1,5 +1,6 @@
-int main()
+int main(void)
 {
-	int* test = nullptr;
-	return test ? 1 : 0;
+	void *v = nullptr;
+
+	return v ? 1 : 0;
 }

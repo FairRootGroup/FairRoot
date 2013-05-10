@@ -1,7 +1,8 @@
 #include <cstdint>
+
 int main()
 {
-	bool test = 
+	bool test =
 		(sizeof(int8_t) == 1) &&
 		(sizeof(int16_t) == 2) &&
 		(sizeof(int32_t) == 4) &&

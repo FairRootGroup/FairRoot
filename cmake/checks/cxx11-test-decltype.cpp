@@ -1,4 +1,3 @@
-
 bool check_size(int i)
 {
 	return sizeof(int) == sizeof(decltype(i));

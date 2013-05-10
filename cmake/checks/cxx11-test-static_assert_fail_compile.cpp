@@ -1,5 +1,5 @@
-int main()
+int main(void)
 {
-	static_assert(1 < 0, "this should fail");
+	static_assert(1 < 0, "your ordering of integers is screwed");
 	return 0;
 }
