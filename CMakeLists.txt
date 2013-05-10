@@ -6,7 +6,7 @@
 # and PANDAROOT.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION  2.6.2 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION  2.8.2 FATAL_ERROR)
 
 # Set name of our project to "FAIRROOT". Has to be done
 # after check of cmake version                        
@@ -16,6 +16,12 @@ project(FAIRROOT)
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
+
+# Check if the compiler support specific C++11 features
+# Up to now this is only a check since the code does not use
+# any of the features of the new standard
+Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
+include(CheckCXX11Features)
 
 # Load some basic macros which are needed later on
 include(FairMacros)

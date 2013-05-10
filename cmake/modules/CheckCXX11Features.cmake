@@ -1,109 +1,143 @@
-# Checks for C++11 features
-#  CXX11_FEATURE_LIST - a list containing all supported features
-#  HAS_CXX11_AUTO                   - auto keyword
-#  HAS_CXX11_NULLPTR                - nullptr
-#  HAS_CXX11_LAMBDA                 - lambdas
-#  HAS_CXX11_STATIC_ASSERT          - static_assert()
-#  HAS_CXX11_RVALUE_REFERENCES      - rvalue references
-#  HAS_CXX11_DECLTYPE               - decltype keyword
-#  HAS_CXX11_CSTDINT_H              - cstdint header
-#  HAS_CXX11_LONG_LONG              - long long signed & unsigned types
-#  HAS_CXX11_VARIADIC_TEMPLATES     - variadic templates
-#  HAS_CXX11_CONSTEXPR              - constexpr keyword
-#  HAS_CXX11_SIZEOF_MEMBER          - sizeof() non-static members
-#  HAS_CXX11_FUNC                   - __func__ preprocessor constant
-#  HAS_CXX11_CONSTRUCTOR_DELEGATION - constructor delegation
+# - Check which parts of the C++11 standard the compiler supports
 #
-# Original script by Rolf Eike Beer
-# Modifications by Andreas Weis
-# More tests added by Florian Uhlig
+# When found it will set the following variables
 #
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2)
+#  CXX11_COMPILER_FLAGS         - the compiler flags needed to get C++11 features
+#
+#  HAS_CXX11_AUTO               - auto keyword
+#  HAS_CXX11_AUTO_RET_TYPE      - function declaration with deduced return types
+#  HAS_CXX11_CLASS_OVERRIDE     - override and final keywords for classes and methods
+#  HAS_CXX11_CONSTEXPR          - constexpr keyword
+#  HAS_CXX11_CSTDINT_H          - cstdint header
+#  HAS_CXX11_DECLTYPE           - decltype keyword
+#  HAS_CXX11_FUNC               - __func__ preprocessor constant
+#  HAS_CXX11_INITIALIZER_LIST   - initializer list
+#  HAS_CXX11_LAMBDA             - lambdas
+#  HAS_CXX11_LIB_REGEX          - regex library
+#  HAS_CXX11_LONG_LONG          - long long signed & unsigned types
+#  HAS_CXX11_NULLPTR            - nullptr
+#  HAS_CXX11_RVALUE_REFERENCES  - rvalue references
+#  HAS_CXX11_SIZEOF_MEMBER      - sizeof() non-static members
+#  HAS_CXX11_STATIC_ASSERT      - static_assert()
+#  HAS_CXX11_VARIADIC_TEMPLATES - variadic templates
 
-SET(CHECK_CXX11_OLD_CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
-IF(CMAKE_COMPILER_IS_GNUCXX)
-	SET(CMAKE_CXX_FLAGS "-std=c++0x")
-endif()
-If(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  set(CMAKE_CXX_FLAGS "-std=c++11")
-EndIf()
+#=============================================================================
+# Copyright 2011,2012 Rolf Eike Beer <eike@sf-mail.de>
+# Copyright 2012 Andreas Weis
+#
+# Distributed under the OSI-approved BSD License (the "License");
+# see accompanying file Copyright.txt for details.
+#
+# This software is distributed WITHOUT ANY WARRANTY; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the License for more information.
+#=============================================================================
+# (To distribute this file outside of CMake, substitute the full
+#  License text for the above reference.)
 
-MACRO(CXX11_CHECK_FEATURE FEATURE_NAME FEATURE_NUMBER RESULT_VAR)
-	IF (NOT DEFINED ${RESULT_VAR})
-		SET(_bindir "${CMAKE_CURRENT_BINARY_DIR}/cxx11/cxx11_${FEATURE_NAME}")
+#
+# Each feature may have up to 3 checks, every one of them in it's own file
+# FEATURE.cpp              - example that must build and return 0 when run
+# FEATURE_fail.cpp         - example that must build, but may not return 0 when run
+# FEATURE_fail_compile.cpp - example that must fail compilation
+#
+# The first one is mandatory, the latter 2 are optional and do not depend on
+# each other (i.e. only one may be present).
+#
 
-		IF (${FEATURE_NUMBER})
-			SET(_SRCFILE_BASE ${CheckSrcDir}/c++11-test-${FEATURE_NAME}-N${FEATURE_NUMBER})
-			SET(_LOG_NAME "\"${FEATURE_NAME}\" (N${FEATURE_NUMBER})")
-		ELSE (${FEATURE_NUMBER})
-			SET(_SRCFILE_BASE ${CheckSrcDir}/c++11-test-${FEATURE_NAME})
-			SET(_LOG_NAME "\"${FEATURE_NAME}\"")
-		ENDIF (${FEATURE_NUMBER})
-		MESSAGE(STATUS "Checking C++11 support for ${_LOG_NAME}")
+if (NOT CMAKE_CXX_COMPILER_LOADED)
+    message(FATAL_ERROR "CheckCXX11Features modules only works if language CXX is enabled")
+endif ()
 
-		SET(_SRCFILE "${_SRCFILE_BASE}.cpp")
-		SET(_SRCFILE_FAIL "${_SRCFILE_BASE}_fail.cpp")
-		SET(_SRCFILE_FAIL_COMPILE "${_SRCFILE_BASE}_fail_compile.cpp")
+cmake_minimum_required(VERSION 2.8.3)
 
-		IF (CROSS_COMPILING)
-			try_compile(${RESULT_VAR} "${_bindir}" "${_SRCFILE}")
-			IF (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
-				try_compile(${RESULT_VAR} "${_bindir}_fail" "${_SRCFILE_FAIL}")
-			ENDIF (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
-		ELSE (CROSS_COMPILING)
-			try_run(_RUN_RESULT_VAR _COMPILE_RESULT_VAR
-					"${_bindir}" "${_SRCFILE}")
-			IF (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
-				SET(${RESULT_VAR} TRUE)
-			ELSE (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
-				SET(${RESULT_VAR} FALSE)
-			ENDIF (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
-			IF (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
-				try_run(_RUN_RESULT_VAR _COMPILE_RESULT_VAR
-						"${_bindir}_fail" "${_SRCFILE_FAIL}")
-				IF (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
-					SET(${RESULT_VAR} TRUE)
-				ELSE (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
-					SET(${RESULT_VAR} FALSE)
-				ENDIF (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
-			ENDIF (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
-		ENDIF (CROSS_COMPILING)
-		IF (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL_COMPILE})
-			try_compile(_TMP_RESULT "${_bindir}_fail_compile" "${_SRCFILE_FAIL_COMPILE}")
-			IF (_TMP_RESULT)
-				SET(${RESULT_VAR} FALSE)
-			ELSE (_TMP_RESULT)
-				SET(${RESULT_VAR} TRUE)
-			ENDIF (_TMP_RESULT)
-		ENDIF (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL_COMPILE})
+#
+### Check for needed compiler flags
+#
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-std=c++11" _HAS_CXX11_FLAG)
+if (NOT _HAS_CXX11_FLAG)
+    check_cxx_compiler_flag("-std=c++0x" _HAS_CXX0X_FLAG)
+endif ()
 
-		IF (${RESULT_VAR})
-			MESSAGE(STATUS "Checking C++11 support for ${_LOG_NAME} -- works")
-			LIST(APPEND CXX11_FEATURE_LIST ${RESULT_VAR})
-		ELSE (${RESULT_VAR})
-			MESSAGE(STATUS "Checking C++11 support for ${_LOG_NAME} -- not supported")
-		ENDIF (${RESULT_VAR})
-		SET(${RESULT_VAR} ${${RESULT_VAR}} CACHE INTERNAL "C++11 support for ${_LOG_NAME}")
-	ENDIF (NOT DEFINED ${RESULT_VAR})
-ENDMACRO(CXX11_CHECK_FEATURE)
+if (_HAS_CXX11_FLAG)
+    set(CXX11_COMPILER_FLAGS "-std=c++11")
+elseif (_HAS_CXX0X_FLAG)
+    set(CXX11_COMPILER_FLAGS "-std=c++0x")
+endif ()
 
-CXX11_CHECK_FEATURE("auto"               "" HAS_CXX11_AUTO)
-CXX11_CHECK_FEATURE("nullptr"            "" HAS_CXX11_NULLPTR)
-CXX11_CHECK_FEATURE("lambda"             "" HAS_CXX11_LAMBDA)
-CXX11_CHECK_FEATURE("static_assert"      "" HAS_CXX11_STATIC_ASSERT)
-CXX11_CHECK_FEATURE("rvalue_references"  "" HAS_CXX11_RVALUE_REFERENCES)
-CXX11_CHECK_FEATURE("decltype"           "" HAS_CXX11_DECLTYPE)
-CXX11_CHECK_FEATURE("cstdint"            ""   HAS_CXX11_CSTDINT_H)
-CXX11_CHECK_FEATURE("long_long"          "" HAS_CXX11_LONG_LONG)
-CXX11_CHECK_FEATURE("variadic_templates" "" HAS_CXX11_VARIADIC_TEMPLATES)
-CXX11_CHECK_FEATURE("constexpr"          "" HAS_CXX11_CONSTEXPR)
-CXX11_CHECK_FEATURE("sizeof_member"      "" HAS_CXX11_SIZEOF_MEMBER)
-CXX11_CHECK_FEATURE("__func__"           "" HAS_CXX11_FUNC)
-CXX11_CHECK_FEATURE("constructor-delegation" "" HAS_CXX11_CONSTRUCTOR_DELEGATION)
+function(cxx11_check_feature FEATURE_NAME RESULT_VAR)
+    if (NOT DEFINED ${RESULT_VAR})
+        set(_bindir "${CMAKE_CURRENT_BINARY_DIR}/cxx11/cxx11_${FEATURE_NAME}")
 
-SET(CXX11_FEATURE_LIST ${CXX11_FEATURE_LIST} CACHE STRING "C++11 feature support list")
-MARK_AS_ADVANCED(FORCE CXX11_FEATURE_LIST)
+        set(_SRCFILE_BASE ${CheckSrcDir}/cxx11-test-${FEATURE_NAME})
+        set(_LOG_NAME "\"${FEATURE_NAME}\"")
+        message(STATUS "Checking C++11 support for ${_LOG_NAME}")
 
-SET(CMAKE_CXX_FLAGS ${CHECK_CXX11_OLD_CMAKE_CXX_FLAGS})
-UNSET(CHECK_CXX11_OLD_CMAKE_CXX_FLAGS)
+        set(_SRCFILE "${_SRCFILE_BASE}.cpp")
+        set(_SRCFILE_FAIL "${_SRCFILE_BASE}_fail.cpp")
+        set(_SRCFILE_FAIL_COMPILE "${_SRCFILE_BASE}_fail_compile.cpp")
 
+        if (CROSS_COMPILING)
+            try_compile(${RESULT_VAR} "${_bindir}" "${_SRCFILE}"
+                        COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
+            if (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
+                try_compile(${RESULT_VAR} "${_bindir}_fail" "${_SRCFILE_FAIL}"
+                            COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
+            endif (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
+        else (CROSS_COMPILING)
+            try_run(_RUN_RESULT_VAR _COMPILE_RESULT_VAR
+                    "${_bindir}" "${_SRCFILE}"
+                    COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
+            if (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
+                set(${RESULT_VAR} TRUE)
+            else (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
+                set(${RESULT_VAR} FALSE)
+            endif (_COMPILE_RESULT_VAR AND NOT _RUN_RESULT_VAR)
+            if (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
+                try_run(_RUN_RESULT_VAR _COMPILE_RESULT_VAR
+                        "${_bindir}_fail" "${_SRCFILE_FAIL}"
+                         COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
+                if (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
+                    set(${RESULT_VAR} TRUE)
+                else (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
+                    set(${RESULT_VAR} FALSE)
+                endif (_COMPILE_RESULT_VAR AND _RUN_RESULT_VAR)
+            endif (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL})
+        endif (CROSS_COMPILING)
+        if (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL_COMPILE})
+            try_compile(_TMP_RESULT "${_bindir}_fail_compile" "${_SRCFILE_FAIL_COMPILE}"
+                        COMPILE_DEFINITIONS "${CXX11_COMPILER_FLAGS}")
+            if (_TMP_RESULT)
+                set(${RESULT_VAR} FALSE)
+            else (_TMP_RESULT)
+                set(${RESULT_VAR} TRUE)
+            endif (_TMP_RESULT)
+        endif (${RESULT_VAR} AND EXISTS ${_SRCFILE_FAIL_COMPILE})
+
+        if (${RESULT_VAR})
+            message(STATUS "Checking C++11 support for ${_LOG_NAME}: works")
+        else (${RESULT_VAR})
+            message(STATUS "Checking C++11 support for ${_LOG_NAME}: not supported")
+        endif (${RESULT_VAR})
+        set(${RESULT_VAR} ${${RESULT_VAR}} CACHE INTERNAL "C++11 support for ${_LOG_NAME}")
+    endif (NOT DEFINED ${RESULT_VAR})
+endfunction(cxx11_check_feature)
+
+cxx11_check_feature("__func__" HAS_CXX11_FUNC)
+cxx11_check_feature("auto" HAS_CXX11_AUTO)
+cxx11_check_feature("auto_ret_type" HAS_CXX11_AUTO_RET_TYPE)
+cxx11_check_feature("class_override_final" HAS_CXX11_CLASS_OVERRIDE)
+cxx11_check_feature("constexpr" HAS_CXX11_CONSTEXPR)
+cxx11_check_feature("constructor-delegation" HAS_CXX11_CONSTRUCTOR_DELEGATION)
+cxx11_check_feature("cstdint" HAS_CXX11_CSTDINT_H)
+cxx11_check_feature("decltype" HAS_CXX11_DECLTYPE)
+cxx11_check_feature("initializer_list" HAS_CXX11_INITIALIZER_LIST)
+cxx11_check_feature("lambda" HAS_CXX11_LAMBDA)
+cxx11_check_feature("long_long" HAS_CXX11_LONG_LONG)
+cxx11_check_feature("nullptr" HAS_CXX11_NULLPTR)
+cxx11_check_feature("regex" HAS_CXX11_LIB_REGEX)
+cxx11_check_feature("rvalue-references" HAS_CXX11_RVALUE_REFERENCES)
+cxx11_check_feature("sizeof_member" HAS_CXX11_SIZEOF_MEMBER)
+cxx11_check_feature("static_assert" HAS_CXX11_STATIC_ASSERT)
+cxx11_check_feature("variadic_templates" HAS_CXX11_VARIADIC_TEMPLATES)
