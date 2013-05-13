@@ -219,9 +219,6 @@ Macro(GENERATE_LIBRARY)
     Set(HDRS ${HEADERS})
   Else(HEADERS)
     CHANGE_FILE_EXTENSION(*.cxx *.h HDRS "${SRCS}")
-#  Message("HEADERS: ${HEADERS}")  
-#  Message("HDRS: ${HDRS}")  
-#  Message("HDRS: ${HDRS}")  
   EndIf(HEADERS)
 
 #  Message("RuleName: ${RuleName}")
@@ -245,6 +242,14 @@ Macro(GENERATE_LIBRARY)
 
   ############### install the library ###################
   install(TARGETS ${Int_LIB} DESTINATION ${CMAKE_BINARY_DIR}/lib)
+
+  Set(LIBRARY_NAME)
+  Set(DICTIONARY)
+  Set(LINKDEF)
+  Set(SRCS)
+  Set(HEADERS)
+  Set(NO_DICT_SRCS)
+  Set(DEPENDENCIES)  
 
 EndMacro(GENERATE_LIBRARY)
 
