@@ -100,10 +100,14 @@ FairMultiLinkedData FairMCDataCrawler::GetInfo(FairMultiLinkedData startLink, TS
 
 FairMultiLinkedData FairMCDataCrawler::GetInfo(FairMultiLinkedData startLink, Int_t stopStageId)
 {
-  fFinalStage.Reset();
-  if (fVerbose > 1) { std::cout << "StartLink: " << startLink << std::endl; }
+  fFinalStage.ResetLinks();
+  if (fVerbose > 1) { 
+    std::cout << "-------------------------------------" << std::endl;
+    std::cout << "StartLink: " << startLink; 
+  }
   if (fVerbose > 1) { std::cout << "StopStageLink: " << fIoman->GetBranchName(stopStageId) << std::endl; }
   GetNextStage(startLink, stopStageId);
+  if (fVerbose > 1) { std::cout << "FinalStage: " << fFinalStage << std::endl; }
   return fFinalStage;
 }
 
@@ -122,63 +126,80 @@ void FairMCDataCrawler::GetNextStage(FairMultiLinkedData& startStage, Int_t stop
   FairMultiLinkedData* tempStage;
   for (int i = 0; i < startStage.GetNLinks(); i++) {
     FairLink actualLink = startStage.GetLink(i);
-    if (fVerbose > 0) { std::cout << "Actual Link: " << actualLink << std::endl; }
+//    if (fVerbose > 0) { std::cout << "Actual Link: " << actualLink << std::endl; }
     if (actualLink.GetType() < 0) {
-      if (fStoreIntermediate) { AddToFinalStage(actualLink, 1); }
-      if (fVerbose > 0) {
+      if (fStoreAllEndpoints) { AddToFinalStage(actualLink, 1); }
+      if (fVerbose > 2) {
         std::cout << "ActualLink.Type < 0" << std::endl;
         std::cout << "FinalStage: " << fFinalStage << std::endl;
         std::cout << "---------------------" << std::endl;
       }
+      if (fVerbose > 1) {
+        std::cout << std::endl;
+      }
     } else if (actualLink.GetType() == stopStage) {
       AddToFinalStage(actualLink, 1);
-      if (fVerbose > 0) {
+      if (fVerbose > 2) {
         std::cout << "ActualLink.Type == stopStage" << std::endl;
         std::cout << "FinalStage: " << fFinalStage << std::endl;
         std::cout << "---------------------" << std::endl;
       }
+      if (fVerbose > 1) {
+        std::cout << std::endl;
+      }
     } else if (actualLink.GetType() == fUltimateStage) {
-      if (fStoreIntermediate) { AddToFinalStage(actualLink, 1); }
-      if (fVerbose > 0) {
+      if (fStoreAllEndpoints) { AddToFinalStage(actualLink, 1); }
+      if (fVerbose > 2) {
         std::cout << "ActualLink.Type == UltimateStage" << std::endl;
         std::cout << "FinalStage: " << fFinalStage << std::endl;
         std::cout << "---------------------" << std::endl;
       }
+      if (fVerbose > 1) {
+        std::cout << std::endl;
+      }
     } else if (actualLink.GetType() == FairRootManager::Instance()->GetBranchId("EventHeader.")) {
-      if (fStoreIntermediate) { AddToFinalStage(actualLink, 1); }
-      if (fVerbose > 0) {
+      if (fStoreAllEndpoints) { AddToFinalStage(actualLink, 1); }
+      if (fVerbose > 2) {
         std::cout << "ActualLink.Type == EventHeader" << std::endl;
         std::cout << "FinalStage: " << fFinalStage << std::endl;
         std::cout << "---------------------" << std::endl;
       }
+      if (fVerbose > 1) {
+        std::cout << std::endl;
+      }
     } else {
       tempStage = GetEntry(actualLink);
       if (tempStage == 0) {
-        if (fStoreIntermediate) { AddToFinalStage(actualLink, 1); }
-        if (fVerbose > 0) {
+        if (fStoreAllEndpoints) { AddToFinalStage(actualLink, 1); }
+        if (fVerbose > 2) {
           std::cout << "TempStage == 0" << std::endl;
           std::cout << "FinalStage: " << fFinalStage << std::endl;
           std::cout << "---------------------" << std::endl;
         }
+      if (fVerbose > 1) {
+        std::cout << std::endl;
+      }
         continue;
       }
       if (fVerbose > 0) {
-        std::cout << "TempStage Start";
-        actualLink.Print();
-        std::cout << " --> " << *tempStage << std::endl;
+//        std::cout << "TempStage Start";
+       std::cout << " // ";
+         actualLink.Print();
+        std::cout << " --> " << *tempStage;
       }
       if (tempStage->GetNLinks() == 0) {
-        if (fStoreIntermediate) { AddToFinalStage(actualLink,1); }
+        if (fStoreAllEndpoints) { AddToFinalStage(actualLink,1); }
         if (fVerbose > 0) {
           std::cout << "tempStage->GetNLinks == 0" << std::endl;
           std::cout << "FinalStage: " << fFinalStage << std::endl;
           std::cout << "---------------------" << std::endl;
         }
       } else {
+        if(fStoreIntermediate) { AddToFinalStage(actualLink, 1); }
         double tempStageWeight = 1;
         double startLinkWeight = startStage.GetLink(i).GetWeight();
 
-        if (fVerbose > 0) {
+        if (fVerbose > 2) {
           //std::cout << "Tempstage " << tempStage.GetSource() << ": weight " << tempStageWeight << std::endl;
           std::cout << "StartLinkWeight " << startLinkWeight << std::endl;
         }
@@ -188,13 +209,13 @@ void FairMCDataCrawler::GetNextStage(FairMultiLinkedData& startStage, Int_t stop
         if ((tempStageWeight * startLinkWeight) == 0) {
           tempStage->MultiplyAllWeights(tempStageWeight);
           tempStage->AddAllWeights(startLinkWeight/startStage.GetNLinks());
-          if (fVerbose > 0) {
+          if (fVerbose > 2) {
             std::cout << " NLinks: " << tempStage->GetNLinks() << " ";
             std::cout << "AddAllWeights: " << startLinkWeight/startStage.GetNLinks() << std::endl;
           }
         } else {
           tempStage->MultiplyAllWeights(startLinkWeight);
-          if (fVerbose > 0) {
+          if (fVerbose > 2) {
             std::cout << "MultiplyAllWeights: " << startLinkWeight << std::endl;
           }
         }
