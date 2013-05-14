@@ -33,8 +33,12 @@ class FairMCDataCrawler : public TObject
     void SetVerbose(Int_t val) {fVerbose = val;};
 
     virtual void InitDataObjects() = 0;
-  private:
+
+  protected:
+
     FairRootManager* fIoman;
+
+  private:
     FairMultiLinkedData fFinalStage;
     Int_t fUltimateStage; ///< last stage in link chain. Here all recursive operations must stop.
 
