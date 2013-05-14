@@ -100,7 +100,7 @@ InitStatus FairMCMatchLoaderTask::Init()
   }
 
   fMCLink = (TClonesArray*)ioman->GetObject("MCLink");
-  ioman->Register("MCMatch", "MCMatch", fMCMatch, kFALSE);
+  ioman->Register("MCMatch", "MCInfo", fMCMatch, kFALSE);
 
   return kSUCCESS;
 }

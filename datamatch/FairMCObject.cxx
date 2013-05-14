@@ -50,7 +50,7 @@ void FairMCObject::SetEntry(FairMultiLinkedData* data, int index)
 void FairMCObject::SetLink(FairLink link, int index)
 {
   if (index < fStage.size()) {
-    fStage[index].Reset();
+    fStage[index].ResetLinks();
   }
   AddLink(link, index);
 }

@@ -44,11 +44,14 @@ class FairMCMatchLoaderTask : public FairTask
 
     virtual void InitDataStages() = 0;
 
+  protected:
+
+    FairMCMatch* fMCMatch;
+
   private:
 
     TClonesArray* fMCLink;
     int fEventNr;
-    FairMCMatch* fMCMatch;
 
     void Register();
 

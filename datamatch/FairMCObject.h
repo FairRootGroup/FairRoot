@@ -106,6 +106,7 @@ class FairMCObject: public TObject
         if (stages[i].GetNLinks() > 0) {
           out << i << ": ";
           stages[i].Print(out);
+          out << std::endl;
         }
       }
       return out;
