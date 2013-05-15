@@ -67,6 +67,15 @@ if (CMAKE_SYSTEM_NAME MATCHES Linux)
    String(STRIP ${_intel_lib_dirs} _intel_lib_dirs)
 
    endif (CMAKE_C_COMPILER MATCHES "icc")
+   if (CMAKE_C_COMPILER MATCHES "clang")
+      MESSAGE("--- Clang compiler")
+
+   # Select flags.
+
+   set(CMAKE_C_FLAGS_PROFILE          "--coverage -g3")
+   set(CMAKE_CXX_FLAGS_PROFILE          "--coverage -g3")
+
+   endif (CMAKE_C_COMPILER MATCHES "clang")
 endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 
 
