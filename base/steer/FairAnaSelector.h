@@ -16,7 +16,7 @@
 
 #include <stddef.h>                     // for NULL
 
-class FairRunAna;
+class FairRunAnaProof;
 
 class TFile;
 class TList;
@@ -27,9 +27,9 @@ class FairAnaSelector : public TSelector
 {
   public :
     TProofOutputFile*     fProofFile;
-    TFile*          fFile;
-    TTree*          fChain;   //!pointer to the analyzed TTree or TChain
-    FairRunAna*     fRunAna;
+    TFile*                fFile;
+    TTree*                fChain;   //!pointer to the analyzed TTree or TChain
+    FairRunAnaProof*      fRunAna;
 
     FairAnaSelector(TTree* /*tree*/ =0) : fProofFile(0), fFile(0), fChain(0), fRunAna(NULL) { }
     virtual ~FairAnaSelector() { }
@@ -59,7 +59,7 @@ class FairAnaSelector : public TSelector
     virtual void    SlaveTerminate();
     virtual void    Terminate();
 
-    void SetFairRunAna(FairRunAna* runAna) {
+    void SetFairRunAnaProof(FairRunAnaProof* runAna) {
       fRunAna = runAna;
     }
 

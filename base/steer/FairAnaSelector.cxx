@@ -9,7 +9,7 @@
 #include "FairParAsciiFileIo.h"         // for FairParAsciiFileIo
 #include "FairParRootFileIo.h"          // for FairParRootFileIo
 #include "FairRootManager.h"            // for FairRootManager
-#include "FairRunAna.h"                 // for FairRunAna
+#include "FairRunAnaProof.h"            // for FairRunAnaProof
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairTask.h"                   // for FairTask
 
@@ -19,6 +19,7 @@
 #include "TNamed.h"                     // for TNamed
 #include "TObject.h"                    // for TObject
 #include "TProofOutputFile.h"           // for TProofOutputFile
+#include "TProofServ.h"                 // for TProofServ
 #include "TSystem.h"                    // for TSystem, gSystem
 
 #include <iomanip>                      // for setprecision, setw
@@ -93,38 +94,15 @@ void FairAnaSelector::Init(TTree* tree)
     cout << "-I- FairAnaSelector::Init(): par1 file    : \"" << par1Str.Data() << "\"" << endl;
     cout << "-I- FairAnaSelector::Init(): par2 file    : \"" << par2Str.Data() << "\"" << endl;
 
-    if ( outputStat != "copy" ) {
-      cout << "-I- FairAnaSelector::Init(): OutputFile option \"" << outputStat.Data() << "\" not yet supported, will \"copy\" anyways" << endl;
-    }
-
     cout << "-I- FairAnaSelector::Init(): OutputFile option \"" << outputStat.Data() << "\" RECOGNIZED" << endl;
 
-    cout << "-I- FairAnaSelector::Init(): gSystem->WorkingDirectory() = \""
-         << gSystem->WorkingDirectory() << "\"" << endl;
-    TString workDir = gSystem->WorkingDirectory();
-
-    Int_t workerNumber = -1; // is there better way to get it?
-
-    for ( Int_t iposWork = 0 ; iposWork < 100 ; iposWork++ ) {
-      TString tempStr = Form("-0.%d",iposWork);
-      if ( workDir.Contains(tempStr.Data()) ) {
-        workerNumber = iposWork;
-        break;
-      }
-    }
-    if ( workerNumber == -1 ) {
-      cout << "-E- FairAnaSelector::Init(): Did not recognize worker number." << endl;
-    } else {
-      cout << "-I- FairAnaSelector::Init(): worker number = " << workerNumber << endl;
-    }
-
     outFileName.Remove(outFileName.Length()-5);
-    TString outputFileName = Form("%s/%s_worker_0.%d.root",outDirName.Data(),outFileName.Data(),workerNumber);
+    TString outputFileName = Form("%s/%s_worker_%s.root",outDirName.Data(),outFileName.Data(),gProofServ->GetOrdinal());
 
     cout << "-I- FairAnaSelector::Init(): output will go to file: \"" << outputFileName.Data() << "\"" << endl;
     fFile = TFile::Open(outputFileName.Data(),"RECREATE");
 
-    fRunAna = new FairRunAna();
+    fRunAna = new FairRunAnaProof();
     fRunAna->SetRunOnProofWorker();
 
     cout << "-I- FairAnaSelector::Init(): SetInTree(" << tree << ")" << endl;
@@ -261,7 +239,9 @@ void FairAnaSelector::SlaveTerminate()
   // The SlaveTerminate() function is called after all entries or objects
   // have been processed. When running with PROOF SlaveTerminate() is called
   // on each slave server.
-  if ( !fRunAna ) { return; }
+  if ( !fRunAna ) {
+    return;
+  }
 
   if ( !fProofFile ) {
     cout << "-I- FairAnaSelector::SlaveTerminate(): Calling fRunAna->TerminateRun()" << endl;
