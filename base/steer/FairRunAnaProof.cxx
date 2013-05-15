@@ -369,15 +369,17 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput1FName",par1File.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
 
-  if ( 1==0 )  cout << "+++++++ ClearPackages" << endl;
-  fProof->ClearPackages();
-  if ( 1==0 )  cout << "+++++++ UploadPackages" << endl;
-  fProof->UploadPackage(fProofParName.Data());
-  if ( 1==0 )  cout << "+++++++ EnablePackages" << endl;
-  fProof->EnablePackage(fProofParName.Data());
-  if ( 1==0 )  cout << "+++++++ ShowPackages" << endl;
-  if ( 1==0 )  fProof->ShowPackages();
-  if ( 1==0 )  cout << "+++++++ Done" << endl;
+  if ( 1 == 0 ) { // uploading packages not needed, as the libraries are in the rootmap now
+    if ( 1==0 )  cout << "+++++++ ClearPackages" << endl;
+    fProof->ClearPackages();
+    if ( 1==0 )  cout << "+++++++ UploadPackages" << endl;
+    fProof->UploadPackage(fProofParName.Data());
+    if ( 1==0 )  cout << "+++++++ EnablePackages" << endl;
+    fProof->EnablePackage(fProofParName.Data());
+    if ( 1==0 )  cout << "+++++++ ShowPackages" << endl;
+    if ( 1==0 )  fProof->ShowPackages();
+    if ( 1==0 )  cout << "+++++++ Done" << endl;
+  }
 
   Int_t nofChainEntries = inChain->GetEntries();
   cout << "FairRunAnaProof::RunOnProof(): The chain seems to have " << nofChainEntries << " entries." << endl;
