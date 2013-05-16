@@ -19,7 +19,7 @@
 #include "FairParIo.h"
 #include "FairAnaSelector.h"
 
-// #include "TROOT.h"
+#include "TROOT.h"
 // #include "TTree.h"
 // #include "TSeqCollection.h"
 #include "TGeoManager.h"
