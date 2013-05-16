@@ -74,13 +74,13 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   set_source_files_properties(${Int_DICTIONARY} PROPERTIES GENERATED TRUE)
   If (CMAKE_SYSTEM_NAME MATCHES Linux)
     add_custom_command(OUTPUT  ${Int_DICTIONARY}
-                       COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:${_intel_lib_dirs} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
+                       COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:${_intel_lib_dirs}:$ENV{LD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
                        DEPENDS ${Int_HDRS} ${Int_LINKDEF}
                        )
   Else (CMAKE_SYSTEM_NAME MATCHES Linux)
     If (CMAKE_SYSTEM_NAME MATCHES Darwin)
       add_custom_command(OUTPUT  ${Int_DICTIONARY}
-                         COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
+                         COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:$ENV{DYLD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
                          DEPENDS ${Int_HDRS} ${Int_LINKDEF}
                          )
     EndIf (CMAKE_SYSTEM_NAME MATCHES Darwin)
@@ -194,6 +194,7 @@ Macro(GENERATE_LIBRARY)
   set(Int_LIB ${LIBRARY_NAME})
 
   Set(RuleName "${Int_LIB}_RULES")
+  Set(HeaderRuleName "${Int_LIB}_HEADER_RULES")
   Set(DictName "G__${Int_LIB}Dict.cxx")
 
   If(NOT DICTIONARY)
@@ -224,6 +225,10 @@ Macro(GENERATE_LIBRARY)
   If(RULE_CHECKER_FOUND)
     CHECK_RULES("${Int_SRCS}" "${INCLUDE_DIRECTORIES}" ${RuleName})
   EndIf(RULE_CHECKER_FOUND)
+
+  If(IWYU_FOUND)
+    CHECK_HEADERS("${Int_SRCS}" "${INCLUDE_DIRECTORIES}" ${HeaderRuleName})
+  EndIf(IWYU_FOUND)
 
   ROOT_GENERATE_DICTIONARY()
   SET(Int_SRCS ${Int_SRCS} ${DICTIONARY})
