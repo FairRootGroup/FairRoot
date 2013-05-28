@@ -12,6 +12,7 @@ class FairRootManager;
 class FairRuntimeDb;
 class FairTask;
 class TFile;
+class FairField;
 
 /**
  * Configure the Simuation or Analysis
@@ -44,9 +45,13 @@ class FairRun : public TNamed
      * Initialize the Simulation or analysis
      */
     virtual void    Init()=0;
+    /*
+     * Get the magnetic field *
+     */
+    virtual FairField*  GetField()=0;
     /**
-     * run the analysis or simulation
-    */
+      * run the analysis or simulation
+     */
     virtual void    Run(Int_t NStart =0,Int_t NStop=0)=0;
     /**
      * Set the output file name for analysis or simulation
