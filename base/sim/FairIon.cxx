@@ -43,7 +43,8 @@ FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e,
 
   if (mass == 0.) { fMass = kProtonMass * Double_t(a); }
   else { fMass = mass; }
-  fLogger->Info(MESSAGE_ORIGIN, "New Ion %s Z = %f  A =%f  Charge=%f  Mass=%f GeV ", name, z, a , q, fMass );
+  //fLogger->Info(MESSAGE_ORIGIN, "New Ion %s Z = %f  A =%f  Charge=%f  Mass=%f GeV ", name, z, a , q, fMass );
+  fLogger->Info(MESSAGE_ORIGIN, "New Ion %s Z = %d  A =%d  Charge=%d  Mass=%f GeV/c^2 ", name, z, a, q, fMass);
 
 }
 // -------------------------------------------------------------------------
