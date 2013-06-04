@@ -57,7 +57,7 @@ class FairTutorialDet4: public FairDetector
     void ConstructGeometry();
 
     /**      Misalign the detector geometry        */
-    void MisalignGeometry();
+    void ModifyGeometry();
 
     void SetParContainers();
 
@@ -84,7 +84,7 @@ class FairTutorialDet4: public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
-    void SetMisalignGeometry(Bool_t val) { fMisalignGeometry=val;}
+    void SetModifyGeometry(Bool_t val) { fModifyGeometry=val;}
 
 
   private:
@@ -116,7 +116,7 @@ class FairTutorialDet4: public FairDetector
     TArrayD fRotY;
     TArrayD fRotZ;
 
-    Bool_t fMisalignGeometry;
+    Bool_t fModifyGeometry;
 
     /** Method to construct the ascii geometry
      **
@@ -125,8 +125,8 @@ class FairTutorialDet4: public FairDetector
 
     Bool_t CheckIfSensitive(std::string name);
 
-    void MisalignGeometryBySymlink();
-    void MisalignGeometryByFullPath();
+    void ModifyGeometryBySymlink();
+    void ModifyGeometryByFullPath();
 
 
     FairTutorialDet4(const FairTutorialDet4&);

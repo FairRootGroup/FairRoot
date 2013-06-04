@@ -53,7 +53,7 @@ FairTutorialDet4::FairTutorialDet4()
     fRotX(),
     fRotY(),
     fRotZ(),
-    fMisalignGeometry(kFALSE)
+    fModifyGeometry(kFALSE)
 {
 }
 
@@ -76,7 +76,7 @@ FairTutorialDet4::FairTutorialDet4(const char* name, Bool_t active)
     fRotX(),
     fRotY(),
     fRotZ(),
-    fMisalignGeometry(kFALSE)
+    fModifyGeometry(kFALSE)
 {
 }
 
@@ -272,14 +272,14 @@ void FairTutorialDet4::ConstructASCIIGeometry()
   ProcessNodes ( volList );
 }
 
-void FairTutorialDet4::MisalignGeometry()
+void FairTutorialDet4::ModifyGeometry()
 {
   // When saving the top volume of the geometry to a file the information
   // about the TGeoPNEntries is not saved. So the misalign procedure
   // which uses the TGeoPNEntry information can not be used.
   // The code is here to demonstrate how to use this feature.
 
-  if (fMisalignGeometry) {
+  if (fModifyGeometry) {
     LOG(INFO)<<"Misalign the geometry for the tutorial detector."<<FairLogger::endl;
 
     TString detStr   = "Tutorial4/det00";
@@ -289,15 +289,15 @@ void FairTutorialDet4::MisalignGeometry()
 //    LOG(INFO)<<"Nr of alignable objects: "<<gGeoManager->GetNAlignable()<<FairLogger::endl;
     if (entry) {
       LOG(INFO)<<"Misalign using symlinks."<<FairLogger::endl;
-      MisalignGeometryBySymlink();
+      ModifyGeometryBySymlink();
     } else {
       LOG(INFO)<<"Misalign using full path."<<FairLogger::endl;
-      MisalignGeometryByFullPath();
+      ModifyGeometryByFullPath();
     }
   }
 }
 
-void FairTutorialDet4::MisalignGeometryByFullPath()
+void FairTutorialDet4::ModifyGeometryByFullPath()
 {
 
   TString volPath;
@@ -344,7 +344,7 @@ void FairTutorialDet4::MisalignGeometryByFullPath()
 
 }
 
-void FairTutorialDet4::MisalignGeometryBySymlink()
+void FairTutorialDet4::ModifyGeometryBySymlink()
 {
   TString symName;
   TString detStr   = "Tutorial4/det";

@@ -63,8 +63,8 @@ class FairModule:  public TNamed
     virtual void        ConstructRootGeometry();
     /**construct geometry from standard ASSCII files (Hades Format)*/
     virtual void        ConstructASCIIGeometry();
-    /** Misalign the geometry fot the simulation run using methods of the Root geometry package */
-    virtual void        MisalignGeometry() {;}
+    /** Modify the geometry for the simulation run using methods of the Root geometry package */
+    virtual void        ModifyGeometry() {;}
 
     /**template function to construct geometry. to be used in derived classes.*/
     template<class T, class U>
@@ -93,14 +93,11 @@ class FairModule:  public TNamed
     void   ProcessNodes ( TList* aList );
     /**Set the parameter containers*/
     virtual  void       SetParContainers() {;}
-    /** Initialize everything which has to be done before the construction and misalignment
+    /** Initialize everything which has to be done before the construction and modification
      ** of the geometry. Mostly this is needed to read data from the parameter containers.*/
     virtual  void       InitParContainers() {;}
     /**return the geo parameter of this detector/module*/
     TList* GetListOfGeoPar() { return flGeoPar;}
-
-    /** Misalign the geometry for the simulation run */
-    virtual void SetMisalignGeometry(Bool_t val) {fMisalignGeometry=val;}
 
     /**list of volumes in a simulation session*/
     static              FairVolumeList*   vList; //!
@@ -129,11 +126,10 @@ class FairModule:  public TNamed
     Int_t               fVerboseLevel;
     TList*              flGeoPar; //!  list of Detector Geometry parameters
     Bool_t              kGeoSaved; //! flag for initialisation
-    Bool_t              fMisalignGeometry; //! Misalign geometry or not
     /** Fair Logger */
     FairLogger*            fLogger;//!
 
-    ClassDef( FairModule,2)
+    ClassDef( FairModule,3)
 };
 
 template<class T, class U>
