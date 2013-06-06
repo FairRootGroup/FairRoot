@@ -8,6 +8,7 @@
 // #include "FairRootManager.h"
 #include "FairTask.h"
 #include "FairBaseParSet.h"
+#include "FairGeoParSet.h"
 #include "FairEventHeader.h"
 #include "FairFieldFactory.h"
 #include "FairRuntimeDb.h"
@@ -117,7 +118,10 @@ void FairRunAnaProof::Init()
         break;
       }
     }
+  } else {
+    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
   }
+
   if (fInFileIsOpen) {
     if ( fRunOnProofWorker ) {
       if (fLoadGeo && gGeoManager==0) {
@@ -220,7 +224,9 @@ void FairRunAnaProof::Init()
 
     fRtdb->initContainers( fRunId );
     if (gGeoManager==0) {
-      par->GetGeometry();
+
+
+
     }
     //  fRootManager->SetBranchNameList(par->GetBranchNameList());
 
@@ -250,14 +256,16 @@ void FairRunAnaProof::Init()
     // Init the containers in Tasks
     fRtdb->initContainers(fRunId);
 
-    if (gGeoManager==0) {
-      fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
-      par->GetGeometry();
+    /*   if (gGeoManager==0) {
+         fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
+          FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
 
-    }
-    if (gGeoManager==0) {
-      fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
-    }
+       }
+       if (gGeoManager==0) {
+         fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
+       }
+
+     */
     fTask->SetParTask();
     fRtdb->initContainers( fRunId );
 

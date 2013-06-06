@@ -8,6 +8,7 @@
 
 #pragma link C++ class FairBaseContFact;
 #pragma link C++ class FairBaseParSet;
+#pragma link C++ class FairGeoParSet;
 #pragma link C++ class FairDetector+;
 #pragma link C++ class FairEventHeader;
 #pragma link C++ class FairFileHeader+;

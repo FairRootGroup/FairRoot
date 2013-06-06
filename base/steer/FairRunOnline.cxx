@@ -7,6 +7,7 @@
 
 #include "FairAnaSelector.h"            // for FairAnaSelector
 #include "FairBaseParSet.h"             // for FairBaseParSet
+#include "FairGeoParSet.h"              // for FairGeoParSet
 #include "FairEventHeader.h"            // for FairEventHeader
 #include "FairField.h"                  // for FairField
 #include "FairFieldFactory.h"           // for FairFieldFactory
@@ -211,7 +212,7 @@ void FairRunOnline::Init()
   } else {
     fIsInitialized=kTRUE;
   }
-
+  fRtdb= GetRuntimeDb();
   if ( fRunOnProofWorker ) {
     fInFileIsOpen = fRootManager->OpenInTree();
   } else {
@@ -243,7 +244,12 @@ void FairRunOnline::Init()
         break;
       }
     }
+  } else {
+    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
   }
+
+
+
   if (fInFileIsOpen) {
     if ( fRunOnProofWorker ) {
       if (fLoadGeo && gGeoManager==0) {
@@ -345,10 +351,10 @@ void FairRunOnline::Init()
     fRtdb->initContainers(fRunId);
     fTask->SetParTask();
 
-    fRtdb->initContainers( fRunId );
-    if (gGeoManager==0) {
-      par->GetGeometry();
-    }
+//    fRtdb->initContainers( fRunId );
+//    if (gGeoManager==0) {
+//      par->GetGeometry();
+//    }
     //  fRootManager->SetBranchNameList(par->GetBranchNameList());
 
   } else if (fMixedInput) {
@@ -378,14 +384,14 @@ void FairRunOnline::Init()
     // Init the containers in Tasks
     fRtdb->initContainers(fRunId);
 
-    if (gGeoManager==0) {
-      fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
-      par->GetGeometry();
+    // if (gGeoManager==0) {
+    //  fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
+    //  FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
 
-    }
-    if (gGeoManager==0) {
-      fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
-    }
+    // }
+    // if (gGeoManager==0) {
+    //   fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
+    // }
     fTask->SetParTask();
     fRtdb->initContainers( fRunId );
 
@@ -466,7 +472,7 @@ void FairRunOnline::InitContainers()
     //    fTask->SetParTask();
     fRtdb->initContainers( fRunId );
     if (gGeoManager==0) {
-      par->GetGeometry();
+      //   par->GetGeometry();
     }
   }
 }

@@ -52,11 +52,6 @@ class FairBaseParSet : public FairParGenericSet
      */
     void SetDetList(TObjArray* array) {fDetList=array;}
     /**
-     * Set the Geometry node list used in the simulation
-     * @param array: TObjArray of Geometry nodes
-     */
-    void SetGeoNodes(TObjArray* array) {fGeoNodes=array;}
-    /**
      * Set the Generator used in the simulation
      * @param gen: Primary generator used in simulation
      */
@@ -67,11 +62,6 @@ class FairBaseParSet : public FairParGenericSet
      */
     void SetBeamMom(Double_t  BMom) {fBeamMom = BMom;}
     /**
-     * Set the Geometry (TGeoManager) used in the simulation
-     * @param Geom: TGeoManager of the full geometry
-     */
-    void SetGeometry(TGeoManager* Geom) {fGeom=Geom;}
-    /**
      * Set the list of parameter containers used in a run
      * @param array: TObjArray of containers
      */
@@ -81,10 +71,6 @@ class FairBaseParSet : public FairParGenericSet
      */
     TObjArray*             GetDetList() {return fDetList;}
     /**
-    *  Get the Geometry Nodes list used in the simulation
-    */
-    TObjArray*             GetGeoNodes() {return fGeoNodes;}
-    /**
      *  Get the Primery generator used in the simulation
      */
     FairPrimaryGenerator*   GetPriGen() {return fPriGen; }
@@ -92,10 +78,6 @@ class FairBaseParSet : public FairParGenericSet
      *  Get the Beam Momentum used in the simulation (GeV/c)
      */
     Double_t          GetBeamMom() {return fBeamMom; }
-    /**
-     *  Get the geometry (TGeoManager) used in the simulation
-     */
-    TGeoManager*           GetGeometry() {return fGeom;}
     /**
      *  Get the parameter container list used in this run
      */
@@ -105,18 +87,14 @@ class FairBaseParSet : public FairParGenericSet
 
     /// Detectors used in the simulation
     TObjArray*              fDetList;
-    /// List of FairGeoNodes for sensitive volumes
-    TObjArray*              fGeoNodes; //!
     ///Generator used for simulation
     FairPrimaryGenerator*   fPriGen;
     ///Beam momentum (GeV/c)
     Double_t              fBeamMom;
-    /// Full Geometry
-    TGeoManager*            fGeom;
     /// List of parameter container names in the RUN
     TObjArray*              fContNameList;
 
-    ClassDef(FairBaseParSet,4)
+    ClassDef(FairBaseParSet,5)
 
   private:
     FairBaseParSet(const FairBaseParSet& L);

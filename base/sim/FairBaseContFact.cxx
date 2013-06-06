@@ -10,6 +10,7 @@
 
 #include "FairBaseContFact.h"
 #include "FairBaseParSet.h"
+#include "FairGeoParSet.h"
 #include "FairRuntimeDb.h"
 #include "TList.h"
 #include "TString.h"
@@ -40,6 +41,15 @@ void FairBaseContFact::setAllContainers()
                                           "DefaultContext");
   pTest->addContext("TestNonDefaultContext");
   containers->Add(pTest);
+
+  FairContainer* pGeo= new FairContainer("FairGeoParSet",
+                                         "class for Geo parameter",
+                                         "DefaultContext");
+  pTest->addContext("TestNonDefaultContext");
+  containers->Add(pGeo);
+
+
+
 }
 
 FairParSet* FairBaseContFact::createContainer(FairContainer* c)
@@ -51,7 +61,10 @@ FairParSet* FairBaseContFact::createContainer(FairContainer* c)
   FairParSet* p=0;
   if (strcmp(name,"FairBaseParSet")==0) {
     p=new FairBaseParSet(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+  } else if (strcmp(name,"FairGeoParSet")==0) {
+    p=new FairGeoParSet(c->getConcatName().Data(),c->GetTitle(),c->getContext());
   }
+
   return p;
 }
 

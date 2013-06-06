@@ -52,6 +52,7 @@ steer/FairRunOnline.cxx
 
 sim/FairBaseContFact.cxx
 sim/FairBaseParSet.cxx
+sim/FairGeoParSet.cxx
 sim/FairDetector.cxx
 sim/FairGeaneApplication.cxx
 sim/FairGenerator.cxx

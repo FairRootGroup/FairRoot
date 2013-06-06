@@ -6,6 +6,7 @@
 #include "FairRunAna.h"
 
 #include "FairBaseParSet.h"             // for FairBaseParSet
+#include "FairGeoParSet.h"              // for FairGeoParSet
 #include "FairEventHeader.h"            // for FairEventHeader
 #include "FairField.h"                  // for FairField
 #include "FairFieldFactory.h"           // for FairFieldFactory
@@ -126,6 +127,7 @@ void FairRunAna::Init()
   } else {
     fIsInitialized=kTRUE;
   }
+  fRtdb= GetRuntimeDb();
 
   // Open the input file and add other input files added by AddFile to the
   // input chain. Do a check if the added files are of the same type
@@ -140,6 +142,7 @@ void FairRunAna::Init()
     }
     fRootManager->OpenSignalChain();
   }
+
   //Load Geometry from user file
 
   if (fLoadGeo) {
@@ -154,7 +157,10 @@ void FairRunAna::Init()
         break;
       }
     }
+  } else {
+    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
   }
+
   if (fInFileIsOpen) {
     // Add all friend files defined by AddFriend to the correct chain
     fRootManager->AddFriendsToChain();
@@ -206,8 +212,9 @@ void FairRunAna::Init()
   gROOT->GetListOfBrowsables()->Add(fTask);
 
   // Init the RTDB containers
-  fRtdb= GetRuntimeDb();
+
   FairBaseParSet* par=dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
+
 
   /**Set the IO Manager to run with time stamps*/
   if (fTimeStamps) {
@@ -243,10 +250,6 @@ void FairRunAna::Init()
     fTask->SetParTask();
 
     fRtdb->initContainers( fRunId );
-    if (gGeoManager==0) {
-      par->GetGeometry();
-    }
-    //  fRootManager->SetBranchNameList(par->GetBranchNameList());
 
   } else if (fMixedInput) {
     fLogger->Info(MESSAGE_ORIGIN,"Initializing for Mixed input");
@@ -275,11 +278,12 @@ void FairRunAna::Init()
     // Init the containers in Tasks
     fRtdb->initContainers(fRunId);
 
-    if (gGeoManager==0) {
-      fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
-      par->GetGeometry();
+    /*  if (gGeoManager==0) {
+        fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
+         FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
 
-    }
+      }
+     */
     if (gGeoManager==0) {
       fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
     }
@@ -360,7 +364,7 @@ void FairRunAna::InitContainers()
     //    fTask->SetParTask();
     fRtdb->initContainers( fRunId );
     if (gGeoManager==0) {
-      par->GetGeometry();
+      //   par->GetGeometry();
     }
   }
 }

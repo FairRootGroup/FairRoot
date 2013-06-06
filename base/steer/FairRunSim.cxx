@@ -5,6 +5,7 @@
 #include "FairRunSim.h"
 
 #include "FairBaseParSet.h"             // for FairBaseParSet
+#include "FairGeoParSet.h"              // for FairGeoParSet
 #include "FairField.h"                  // for FairField
 #include "FairFileHeader.h"             // for FairFileHeader
 #include "FairGeoInterface.h"           // for FairGeoInterface
@@ -164,7 +165,9 @@ void FairRunSim::Init()
   par->SetDetList(GetListOfModules());
   par->SetGen(GetPrimaryGenerator());
   par->SetBeamMom(fBeamMom);
-  par->SetGeometry(gGeoManager);
+
+  FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+  geopar->SetGeometry(gGeoManager);
 
   // Set global Parameter Info
 
@@ -204,6 +207,10 @@ void FairRunSim::Init()
   par->SetContListStr(ContList);
   par->setChanged();
   par->setInputVersion(fRunId,1);
+
+  geopar->setChanged();
+  geopar->setInputVersion(fRunId,1);
+
 
 
   /**Set the configuration for MC engine*/
