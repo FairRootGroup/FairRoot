@@ -191,7 +191,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
     fEvent->SetEventID(fEventNr);
   }
 
-  fLogger->Info(MESSAGE_ORIGIN,"FairPrimaryGenerator: (Event %i) %i  primary tracks from vertex (%f, %f, %f ) with beam gradiant (%f, %f) Event Time = %f (ns)" ,fEvent->GetEventID(), fNTracks, fVertex.X(), fVertex.Y(), fVertex.Z(), fBeamGradX, fBeamGradY, fEventTime);
+  fLogger->Debug(MESSAGE_ORIGIN,"FairPrimaryGenerator: (Event %i) %i  primary tracks from vertex (%f, %f, %f ) with beam gradiant (%f, %f) Event Time = %f (ns)" ,fEvent->GetEventID(), fNTracks, fVertex.X(), fVertex.Y(), fVertex.Z(), fBeamGradX, fBeamGradY, fEventTime);
 
   fEvent->SetNPrim(fNTracks);
 
