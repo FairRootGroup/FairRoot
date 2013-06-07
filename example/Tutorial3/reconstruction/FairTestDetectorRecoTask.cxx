@@ -4,14 +4,15 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairTestDetectorDigi.h"       // for FairTestDetectorDigi
 #include "FairTestDetectorHit.h"        // for FairTestDetectorHit
-
 #include "Riosfwd.h"                    // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 #include "TMath.h"                      // for Sqrt
 #include "TVector3.h"                   // for TVector3
-
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
+
+
+
 
 using namespace std;
 
@@ -20,7 +21,9 @@ FairTestDetectorRecoTask::FairTestDetectorRecoTask()
   : FairTask(),
     fDigiArray(NULL),
     fHitArray(NULL)
+
 {
+
 }
 // -------------------------------------------------------------------------
 
@@ -90,7 +93,7 @@ void FairTestDetectorRecoTask::Exec(Option_t* opt)
     FairTestDetectorHit* hit = new ((*fHitArray)[ipnt]) FairTestDetectorHit(-1, -1, pos, dpos);
     hit->SetTimeStamp(digi->GetTimeStamp());
     hit->SetTimeStampError(digi->GetTimeStampError());
-    hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
+    //hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
   }
 }
 // -------------------------------------------------------------------------

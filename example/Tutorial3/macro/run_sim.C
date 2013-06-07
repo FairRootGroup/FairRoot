@@ -1,4 +1,4 @@
-void run_sim(Int_t nEvents=1000)
+void run_sim(Int_t nEvents=100000)
 {
   TStopwatch timer;
   timer.Start();
@@ -59,7 +59,7 @@ void run_sim(Int_t nEvents=1000)
   fRun->SetGenerator(primGen);
   
   // Box Generator
-  FairBoxGenerator* boxGen = new FairBoxGenerator(2212, 3); // 13 = muon; 1 = multipl.
+  FairBoxGenerator* boxGen = new FairBoxGenerator(2212, 10); // 13 = muon; 1 = multipl.
   boxGen->SetPRange(2., 2.); // GeV/c //setPRange vs setPtRange
   boxGen->SetPhiRange(0, 360); // Azimuth angle range [degree]
   boxGen->SetThetaRange(3, 10); // Polar angle in lab system range [degree]

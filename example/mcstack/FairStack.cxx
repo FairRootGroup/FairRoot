@@ -9,6 +9,7 @@
 #include "FairMCPoint.h"                // for FairMCPoint
 #include "FairMCTrack.h"                // for FairMCTrack
 #include "FairRootManager.h"            // for FairRootManager
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
 #include "Riosfwd.h"                    // for ostream
 #include "TClonesArray.h"               // for TClonesArray
@@ -44,7 +45,8 @@ FairStack::FairStack(Int_t size)
     fStoreSecondaries(kTRUE),
     fMinPoints(1),
     fEnergyCut(0.),
-    fStoreMothers(kTRUE)
+    fStoreMothers(kTRUE),
+    fLogger(FairLogger::GetLogger())
 {
 }
 
@@ -165,7 +167,7 @@ TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim)
 
   // Test for index
   if (iPrim < 0 || iPrim >= fNPrimaries) {
-    cout << "-E- FairStack: Primary index out of range! " << iPrim << endl;
+    fLogger->Fatal(MESSAGE_ORIGIN, "FairStack: Primary index out of range! %i ", iPrim );
     Fatal("FairStack::PopPrimaryForTracking", "Index out of range");
   }
 
@@ -173,7 +175,7 @@ TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim)
   // a primary.
   TParticle* part = (TParticle*)fParticles->At(iPrim);
   if ( ! (part->GetMother(0) < 0) ) {
-    cout << "-E- FairStack:: Not a primary track! " << iPrim << endl;
+    fLogger->Fatal(MESSAGE_ORIGIN, "FairStack:: Not a primary track! %i ",iPrim);
     Fatal("FairStack::PopPrimaryForTracking", "Not a primary track");
   }
 
@@ -189,7 +191,7 @@ TParticle* FairStack::GetCurrentTrack() const
 {
   TParticle* currentPart = GetParticle(fCurrentTrack);
   if ( ! currentPart) {
-    cout << "-W- FairStack: Current track not found in stack!" << endl;
+    fLogger->Warning(MESSAGE_ORIGIN,"FairStack: Current track not found in stack!");
     Warning("FairStack::GetCurrentTrack", "Track not found in stack");
   }
   return currentPart;
@@ -215,7 +217,7 @@ void FairStack::AddParticle(TParticle* oldPart)
 void FairStack::FillTrackArray()
 {
 
-  cout << "-I- FairStack: Filling MCTrack array..." << endl;
+  fLogger->Debug(MESSAGE_ORIGIN, "FairStack: Filling MCTrack array...");
 
   // --> Reset index map and number of output tracks
   fIndexMap.clear();
@@ -229,8 +231,7 @@ void FairStack::FillTrackArray()
 
     fStoreIter = fStoreMap.find(iPart);
     if (fStoreIter == fStoreMap.end() ) {
-      cout << "-E- FairStack: Particle " << iPart
-           << " not found in storage map!" << endl;
+      fLogger->Fatal(MESSAGE_ORIGIN, "FairStack: Particle %i not found in storage map! ", iPart);
       Fatal("FairStack::FillTrackArray",
             "Particle not found in storage map.");
     }
@@ -254,7 +255,7 @@ void FairStack::FillTrackArray()
   fIndexMap[-1] = -1;
 
   // --> Screen output
-  Print(1);
+  //Print(1);
 
 }
 // -------------------------------------------------------------------------
@@ -265,7 +266,7 @@ void FairStack::FillTrackArray()
 void FairStack::UpdateTrackIndex(TRefArray* detList)
 {
 
-  cout << "-I- FairStack: Updating track indizes...";
+  fLogger->Debug(MESSAGE_ORIGIN, "FairStack: Updating track indizes...");
   Int_t nColl = 0;
 
   // First update mother ID in MCTracks
@@ -274,10 +275,8 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
     Int_t iMotherOld = track->GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
-      cout << "-E- FairStack: Particle index " << iMotherOld
-           << " not found in dex map! " << endl;
-      Fatal("FairStack::UpdateTrackIndex",
-            "Particle index not found in map");
+      fLogger->Fatal(MESSAGE_ORIGIN, "FairStack: Particle index %i not found in dex map! ", iMotherOld);
+      Fatal("FairStack::UpdateTrackIndex", "Particle index not found in map");
     }
     track->SetMotherId( (*fIndexIter).second );
   }
@@ -303,10 +302,8 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
 
         fIndexIter = fIndexMap.find(iTrack);
         if (fIndexIter == fIndexMap.end()) {
-          cout << "-E- FairStack: Particle index " << iTrack
-               << " not found in index map! " << endl;
-          Fatal("FairStack::UpdateTrackIndex",
-                "Particle index not found in map");
+          fLogger->Fatal(MESSAGE_ORIGIN, "FairStack: Particle index %i not found in index map! ", iTrack);
+          Fatal("FairStack::UpdateTrackIndex", "Particle index not found in map");
         }
         point->SetTrackID((*fIndexIter).second);
         point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
@@ -314,9 +311,9 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
 
     }   // Collections of this detector
   }     // List of active detectors
+  delete detIter;
 
-  cout << "...stack and " << nColl << " collections updated." << endl;
-
+  fLogger->Debug(MESSAGE_ORIGIN, "...stack and  %i collections updated.", nColl);
 }
 // -------------------------------------------------------------------------
 
@@ -369,7 +366,7 @@ void FairStack::Print(Int_t iVerbose) const
 void FairStack::AddPoint(DetectorId detId)
 {
   Int_t iDet = detId;
-  cout << "Add point for Detektor" << iDet << endl;
+// cout << "Add point for Detektor" << iDet << endl;
   pair<Int_t, Int_t> a(fCurrentTrack, iDet);
   if ( fPointsMap.find(a) == fPointsMap.end() ) { fPointsMap[a] = 1; }
   else { fPointsMap[a]++; }
@@ -407,8 +404,7 @@ Int_t FairStack::GetCurrentParentTrackNumber() const
 TParticle* FairStack::GetParticle(Int_t trackID) const
 {
   if (trackID < 0 || trackID >= fNParticles) {
-    cout << "-E- FairStack: Particle index " << trackID
-         << " out of range." << endl;
+    fLogger->Debug(MESSAGE_ORIGIN, "FairStack: Particle index %i out of range.",trackID);
     Fatal("FairStack::GetParticle", "Index out of range");
   }
   return (TParticle*)fParticles->At(trackID);

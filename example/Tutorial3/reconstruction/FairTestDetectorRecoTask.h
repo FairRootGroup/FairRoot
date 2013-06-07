@@ -1,11 +1,12 @@
-#ifndef PNDTORINODETECTORRECOTASK_H
-#define PNDTORINODETECTORRECOTASK_H
+#ifndef FAIRTESTDETECTORRECOTASK_H
+#define FAIRTESTDETECTORRECOTASK_H
 
 #include "FairTask.h"                   // for FairTask, InitStatus
 
-#include "Rtypes.h"                     // for ClassDef
-
 class TClonesArray;
+
+class FairTestDetectorPoint;
+
 
 class FairTestDetectorRecoTask : public FairTask
 {
@@ -17,7 +18,7 @@ class FairTestDetectorRecoTask : public FairTask
 
 
     /** Destructor **/
-    ~FairTestDetectorRecoTask();
+    virtual ~FairTestDetectorRecoTask();
 
 
     /** Virtual method Init **/
@@ -27,17 +28,17 @@ class FairTestDetectorRecoTask : public FairTask
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
 
-  private:
-
 
     TClonesArray* fDigiArray;
     TClonesArray* fHitArray;
 
+  private:
     FairTestDetectorRecoTask(const FairTestDetectorRecoTask&);
     FairTestDetectorRecoTask& operator=(const FairTestDetectorRecoTask&);
+
 
     ClassDef(FairTestDetectorRecoTask,1);
 
 };
 
-#endif
+#endif //FAIRTESTDETECTORRECOTASK_H
