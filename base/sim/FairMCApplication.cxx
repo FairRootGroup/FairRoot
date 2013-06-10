@@ -538,8 +538,9 @@ void FairMCApplication::FinishEvent()
   fStack->Reset();
   if(NULL != fTrajFilter) {
     fTrajFilter->Reset();
-    TObjArray* fListOfTracks=gGeoManager->GetListOfTracks();
-    fListOfTracks->Delete();
+//    TObjArray* fListOfTracks=gGeoManager->GetListOfTracks();
+//    fListOfTracks->Delete();
+    gGeoManager->GetListOfTracks()->Delete();
   }
   if(NULL !=fRadLenMan) {
     fRadLenMan->Reset();
