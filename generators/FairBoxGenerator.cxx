@@ -91,6 +91,7 @@ Bool_t  FairBoxGenerator::Init()
     return kTRUE;
   }
 
+  return kTRUE;
 }
 
 // ------------------------------------------------------------------------
