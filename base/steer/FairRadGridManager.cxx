@@ -138,6 +138,8 @@ Bool_t FairRadGridManager::IsTrackEntering(TLorentzVector& pos ,
   //      ) return kTRUE;
   //   else
   //     return kFALSE;
+
+  return kFALSE;
 }
 
 Bool_t FairRadGridManager::IsTrackInside(TLorentzVector& pos , FairMesh* aMesh)
