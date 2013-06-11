@@ -33,6 +33,7 @@
 #include "s_set_ml.h"
 #include "s_set_mo.h"
 #include "f_stccomm.h"
+#include "f_swaplw.h"
 
 #define VERSION__DAQST  2
 #define VERSION__SETUP  1
@@ -162,7 +163,7 @@ INTS4 f_ut_status_r(s_daqst* ps_daqst, INTS4 l_tcp)
   l_status = f_stc_read (&ps_daqst->l_endian,28,l_tcp,-1);
   if (l_status != STC__SUCCESS) { return(-1); }
   if(ps_daqst->l_endian != 1) { l_swap = 1; }
-  if(l_swap == 1) { l_status = f_swaplw(&ps_daqst->l_endian,7,NULL); }
+  if(l_swap == 1) { l_status = f_swaplw((int*)&ps_daqst->l_endian,7,NULL); }
   len_64=ps_daqst->l_sbs__str_len_64;
   n_trg=ps_daqst->l_sbs__n_trg_typ;
   max_proc=ps_daqst->l_sys__n_max_procs;
@@ -181,14 +182,14 @@ INTS4 f_ut_status_r(s_daqst* ps_daqst, INTS4 l_tcp)
     l_status = f_stc_read (&ps_daqst->c_out_chan[0], len_64 , l_tcp,-1);
     ps_daqst->l_fix_lw += n_trg*3 + 212 + len_64/4*3;
     if(l_swap == 1) {
-      l_status = f_swaplw(&ps_daqst->bh_daqst_initalized, (ps_daqst->l_fix_lw-7) - (19 * len_64/4),NULL);
+      l_status = f_swaplw((int*)&ps_daqst->bh_daqst_initalized, (ps_daqst->l_fix_lw-7) - (19 * len_64/4),NULL);
     }
   }
   // MBS v51
   if(ps_daqst->l_version == 51) {
     l_status = f_stc_read (&ps_daqst->bh_daqst_initalized, (ps_daqst->l_fix_lw-7)*4 , l_tcp,-1);
     if(l_swap == 1) {
-      l_status = f_swaplw(&ps_daqst->bh_daqst_initalized, (ps_daqst->l_fix_lw-7) - (19 * len_64/4),NULL);
+      l_status = f_swaplw((int*)&ps_daqst->bh_daqst_initalized, (ps_daqst->l_fix_lw-7) - (19 * len_64/4),NULL);
     }
   }
 
@@ -393,14 +394,14 @@ INTS4 f_ut_setup_r(s_setup* ps_setup, INTS4 l_tcp)
   l_status = f_stc_read (&ps_setup->l_endian,16,l_tcp,-1);
   if (l_status != STC__SUCCESS) { return(-1); }
   if(ps_setup->l_endian != 1) { l_swap = 1; }
-  if(l_swap == 1) { l_status = f_swaplw(&ps_setup->l_endian,4,NULL); }
+  if(l_swap == 1) { l_status = f_swaplw((int*)&ps_setup->l_endian,4,NULL); }
   if(ps_setup->l_version != VERSION__SETUP) { return -1; }
   l_status = f_stc_read (&ps_setup->bl_sbs__n_cr, (ps_setup->l_fix_lw-4)*4 , l_tcp,-1);
   l_status = f_stc_read (&l_items,4 , l_tcp,-1);
   l_status = f_stc_read (&l_size,4 , l_tcp,-1);
-  if(l_swap == 1) { l_status = f_swaplw(&ps_setup->bl_sbs__n_cr, (ps_setup->l_fix_lw-4),NULL); }
-  if(l_swap == 1) { l_status = f_swaplw(&l_items,1,NULL); }
-  if(l_swap == 1) { l_status = f_swaplw(&l_size,1,NULL); }
+  if(l_swap == 1) { l_status = f_swaplw((int*)&ps_setup->bl_sbs__n_cr, (ps_setup->l_fix_lw-4),NULL); }
+  if(l_swap == 1) { l_status = f_swaplw((int*)&l_items,1,NULL); }
+  if(l_swap == 1) { l_status = f_swaplw((int*)&l_size,1,NULL); }
   pl_b = (INTS4*) malloc(l_size * l_items * 4);
   l_status = f_stc_read (pl_b,l_size * l_items * 4, l_tcp,-1);
   if(l_swap == 1) { l_status = f_swaplw(pl_b,l_size * l_items,NULL); }
@@ -573,10 +574,10 @@ INTS4 f_ut_set_ml_r(s_set_ml* ps_set_ml, INTS4 l_tcp)
   l_status = f_stc_read (&ps_set_ml->l_endian,16,l_tcp,-1);
   if (l_status != STC__SUCCESS) { return(-1); }
   if(ps_set_ml->l_endian != 1) { l_swap = 1; }
-  if(l_swap == 1) { l_status = f_swaplw(&ps_set_ml->l_endian,4,NULL); }
+  if(l_swap == 1) { l_status = f_swaplw((int*)&ps_set_ml->l_endian,4,NULL); }
   if(ps_set_ml->l_version != VERSION__SET_ML) { return -1; }
   l_status = f_stc_read (&ps_set_ml->l_ml__n_rd_pipe,(ps_set_ml->l_fix_lw-4)*4 , l_tcp,-1);
-  if(l_swap == 1) { l_status = f_swaplw(&ps_set_ml->l_ml__n_rd_pipe,(ps_set_ml->l_fix_lw-4)-4,NULL); } /* last 16 byte are char */
+  if(l_swap == 1) { l_status = f_swaplw((int*)&ps_set_ml->l_ml__n_rd_pipe,(ps_set_ml->l_fix_lw-4)-4,NULL); } /* last 16 byte are char */
   for(i=0; i<ps_set_ml->l_n_rd_pipe; i++) {
     l_status = f_stc_read (&ps_set_ml->c_rd_hostname[i],   ps_set_ml->l_short_len, l_tcp,-1);
     l_status = f_stc_read (&ps_set_ml->c_sbs_setup_path[i],ps_set_ml->l_long_len,  l_tcp,-1);
@@ -692,10 +693,10 @@ INTS4 f_ut_set_mo_r(s_set_mo* ps_set_mo, INTS4 l_tcp)
   l_status = f_stc_read (ps_set_mo,16,l_tcp,-1);
   if (l_status != STC__SUCCESS) { return(-1); }
   if(ps_set_mo->l_endian != 1) { l_swap=1; }
-  if(l_swap) { l_status = f_swaplw(ps_set_mo,4,NULL); }
+  if(l_swap) { l_status = f_swaplw((int*)ps_set_mo,4,NULL); }
 
   l_status = f_stc_read (&ps_set_mo->l_max_nodes,(ps_set_mo->l_set_mo_lw-4)*4,  l_tcp,-1);
-  if(l_swap) { l_status = f_swaplw(&ps_set_mo->l_max_nodes,ps_set_mo->l_swap_lw-4,NULL); }
+  if(l_swap) { l_status = f_swaplw((int*)&ps_set_mo->l_max_nodes,ps_set_mo->l_swap_lw-4,NULL); }
 
   return 0;
 }

@@ -85,7 +85,7 @@ INTS4 f_ut_compr_size(INTU1* pc_input,INTS4 l_inlen)
   INTU1* *pc_in;
 //  s_compress*  ps_compress;
 
-  pc_in =pc_input;
+  pc_in = &pc_input;
   l_bytes=0;
   pl_mask=(INTU4*)pc_input;
   pl_end=pl_mask+l_inlen/4;
@@ -139,7 +139,7 @@ INTS4 f_ut_compr_zeros(INTU1* pc_input,INTS4 l_inlen)
   INTU4 l_bytes;
   INTU1* *pc_in;
 
-  pc_in =pc_input;
+  pc_in = &pc_input;
   l_bytes=0;
   for(I=1; I<=l_inlen; I++) if(*pc_in++ == 0) { l_bytes++; }
   return (l_bytes*100/l_inlen);

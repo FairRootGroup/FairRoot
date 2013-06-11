@@ -49,6 +49,10 @@
 #define PRINT 0
 #include "f_find_peaks.h"
 
+
+int f_position(int l_len,double* pa_data,double* pr_pos,double* pr_sig, double* pr_sum);
+
+
 void f_find_peaks(
   void*   pfData,     // pointer to data
   int     lType,      // data type: 0=w 1=l 2=f 3=d

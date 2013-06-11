@@ -21,7 +21,7 @@
 #include "f_his_hist.h"
 #include "f_radware.h"
 /**************************************************************************/
-main(argc,argv)
+int main(argc,argv)
 int argc;
 char* argv[];
 {
@@ -54,9 +54,9 @@ char* argv[];
            c_histo,c_server,l_port,c_base);
     ps_his_head_dir=NULL;
     pl_dir=NULL;
-    l_status = f_his_getdir(c_server,l_port,c_base,c_access,c_histo,(INTS4**)&pl_dir,(INTS4**)&l_histos);
+    l_status = f_his_getdir(c_server,l_port,c_base,c_access,c_histo,(INTS4**)&pl_dir,(INTS4*)&l_histos);
     if(l_status == COMM__SUCCESS) {
-      printf("Histograms: %d, slot size: %d b, Total: %d b\n",
+      printf("Histograms: %d, slot size: %lx b, Total: %lx b\n",
              l_histos,sizeof(s_his_head),l_histos*sizeof(s_his_head));
       ps_his_head_dir = (s_his_head*)pl_dir;
       for(i_j=0; i_j<l_histos; i_j++) {
@@ -73,7 +73,7 @@ char* argv[];
          c_histo,c_server,l_port,c_base);
   ps_his_head_dir=NULL;
   pl_dir=NULL;
-  l_status = f_his_getdir(c_server,l_port,c_base,c_access,c_histo,(INTS4**)&pl_dir,(INTS4**)&l_histos);
+  l_status = f_his_getdir(c_server,l_port,c_base,c_access,c_histo,(INTS4**)&pl_dir,(INTS4*)&l_histos);
   if(l_status != COMM__SUCCESS) {
     printf("Error %d getting histograms %s\n",l_status,c_histo);
     exit(0);
@@ -84,7 +84,7 @@ char* argv[];
       ps_his_head=NULL;
       pl_all=NULL;
       l_status = f_his_gethis(c_server,l_port,c_base,c_access,ps_his_head_dir->c_name,
-                              (s_his_head**)&ps_his_head,(INTS4**)&pl_all,(INTS4**)&l_size);
+                              (s_his_head**)&ps_his_head,(INTS4**)&pl_all,(INTS4*)&l_size);
       if(l_status != COMM__SUCCESS) {
         printf("Error %d getting histogram %s\n",l_status,ps_his_head_dir->c_name);
         exit(0);
@@ -93,7 +93,7 @@ char* argv[];
       /* process histogram ******************************************************/
       pl_l =         pl_all;
       pr_l =(REAL4*)pl_all;
-      if(ps_his_head->c_dtype == 'i') { l_int=1; }
+      if((*ps_his_head->c_dtype) == 'i') { l_int=1; }
       else { l_int=0; }
 
       /* print histogram ******************************************************/

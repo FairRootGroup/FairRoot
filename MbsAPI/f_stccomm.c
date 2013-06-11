@@ -714,7 +714,7 @@ INTS4* pi_channel;
 #else
   *pi_channel = accept( ps_server->sock_rw,
                         ( struct sockaddr*) &ps_server->sock_name,
-                        &ps_server->namelength);
+                        (uint*)&ps_server->namelength);
 #endif
   if( *pi_channel == -1) {
     switch( errno ) {

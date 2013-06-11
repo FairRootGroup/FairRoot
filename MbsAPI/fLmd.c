@@ -478,7 +478,7 @@ uint32_t fLmdGetMbsBuffer(
     return(LMD__FAILURE);
   }
   if(leftBytes < sizeof(sMbsBufferHeader)) {
-    printf("fLmdGetMbsBuffer: %s buffer size %d too small for %d bytes\n",
+    printf("fLmdGetMbsBuffer: %s buffer size %d too small for %lx bytes\n",
            pLmdControl->cFile,leftBytes,sizeof(sMbsBufferHeader));
     return(LMD__FAILURE);
   }
@@ -491,7 +491,7 @@ uint32_t fLmdGetMbsBuffer(
   if(iReturn != STC__SUCCESS) { return(LMD__FAILURE); }
   if(pLmdControl->iSwap) { fLmdSwap4((uint32_t*)pBuf,sizeof(sMbsBufferHeader)/4); }
   if(leftBytes < (sizeof(sMbsBufferHeader)+2*pBuf->iUsedWords)) {
-    printf("fLmdGetMbsBuffer: %s buffer size %d too small for %d bytes\n",
+    printf("fLmdGetMbsBuffer: %s buffer size %d too small for %lx bytes\n",
            pLmdControl->cFile,leftBytes,sizeof(sMbsBufferHeader)+2*pBuf->iMaxWords);
     return(LMD__FAILURE);
   }
@@ -538,7 +538,7 @@ uint32_t fLmdGetOpen(
   // copy file name to control structure
   strcpy(pLmdControl->cFile,Filename);
   if((pLmdControl->fFile=(FILE*)fopen64(Filename,"r"))== NULL) {
-    printf("fLmdGetOpen: File not found: %d\n",Filename);
+    printf("fLmdGetOpen: File not found: %s\n",Filename);
     fLmdCleanup(pLmdControl);
     return(GETLMD__NOFILE);
   }
