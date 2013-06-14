@@ -18,6 +18,7 @@ namespace TestDetectorBranch
 
 // branch names
 const TString TestDetectorDigis = "FairTestDetectorDigi";
+const TString TestDetectorHits = "FairTestDetectorHit";
 
 } /* namespace TestDetectorBranch */
 

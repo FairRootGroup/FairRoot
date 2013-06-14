@@ -49,7 +49,7 @@ InitStatus FairTestDetectorMQRecoTask::Init()
   fHitA = new TClonesArray("FairTestDetectorHit");
   fRecoTask->fHitArray = fHitA;
 
-  fOutFile= new TFile("tree1.root","recreate");
+  fOutFile = new TFile("tree1.root","recreate");
   fTree = new TTree("MQOut", "Test output");
   fTree->Branch("Hits","TClonesArray", &fHitA, 64000, 99);
   return kSUCCESS;

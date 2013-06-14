@@ -35,6 +35,7 @@ Set(SRCS
   data/FairTestDetectorPoint.cxx
   data/FairTestDetectorHit.cxx
   data/FairTestDetectorDigi.cxx
+  data/FairMQFileSink.cxx
   digitization/FairTestDetectorHitProducerSmearing.cxx
   digitization/FairTestDetectorDigiTask.cxx
   digitization/TestDetectorMQSampler.cxx
@@ -66,3 +67,7 @@ TARGET_LINK_LIBRARIES(RunTestDetectorProcessor FairMQ FairTestDetector )
 ADD_EXECUTABLE(RunTestDetectorSampler digitization/runTestDetectorSampler.cxx)
 SET_TARGET_PROPERTIES(RunTestDetectorSampler PROPERTIES OUTPUT_NAME testDetectorSampler )
 TARGET_LINK_LIBRARIES(RunTestDetectorSampler FairMQ FairTestDetector )
+
+ADD_EXECUTABLE(RunFileSink reconstruction/runFileSink.cxx)
+SET_TARGET_PROPERTIES(RunFileSink PROPERTIES OUTPUT_NAME fileSink )
+TARGET_LINK_LIBRARIES(RunFileSink FairMQ FairTestDetector )

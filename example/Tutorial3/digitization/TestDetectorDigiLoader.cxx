@@ -27,7 +27,7 @@ void TestDetectorDigiLoader::Exec(Option_t* opt)
 
 
   for (Int_t i = 0; i < nTestDetectorDigis; ++i) {
-    FairTestDetectorDigi* testDigi = (FairTestDetectorDigi*) fInput->At(i);
+    FairTestDetectorDigi* testDigi = dynamic_cast<FairTestDetectorDigi*>(fInput->At(i));
     if (testDigi != NULL) {
       new(&ptr[i]) TestDetectorPayload::TestDetectorDigi();
       ptr[i] = TestDetectorPayload::TestDetectorDigi();
