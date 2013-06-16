@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------
-// -----                    FairDetector source file                   -----
+// -----               FairMCApplication source file                   -----
 // -----            Created 06/01/04  by M. Al-Turany                  -----
 // -------------------------------------------------------------------------
 #include "FairMCApplication.h"
@@ -236,6 +236,10 @@ void FairMCApplication::RunMC(Int_t nofEvents)
   // Reset the time for FairRunInfo. Otherwise the time of the
   // first event will include the time needed for initilization.
   fRunInfo.Reset();
+
+  /** Set the list of active detectors to the stack*/
+  fStack->SetDetArrayList(fActiveDetectors);
+
   // MC run.
   gMC->ProcessRun(nofEvents);
   // finish run

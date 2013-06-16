@@ -155,7 +155,7 @@ class FairStack : public FairGenericStack
 
 
     /** Update the track index in the MCTracks and MCPoints **/
-    virtual void UpdateTrackIndex(TRefArray* detArray);
+    virtual void UpdateTrackIndex(TRefArray* detArray=0);
 
 
     /** Resets arrays and stack and deletes particles and tracks **/

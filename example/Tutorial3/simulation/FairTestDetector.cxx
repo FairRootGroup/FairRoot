@@ -69,7 +69,7 @@ void FairTestDetector::Initialize()
 {
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTestDetectorGeoPar* par=(FairTestDetectorGeoPar*)(rtdb->getContainer("FairTestDetectorGeoPar"));
+  rtdb->getContainer("FairTestDetectorGeoPar");
 }
 
 Bool_t  FairTestDetector::ProcessHits(FairVolume* vol)

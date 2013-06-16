@@ -23,6 +23,8 @@
 class FairLogger;
 class TParticle;
 class TRefArray;
+class TIterator;
+
 
 class FairGenericStack : public TVirtualMCStack
 {
@@ -62,6 +64,23 @@ class FairGenericStack : public TVirtualMCStack
                            Double_t poly, Double_t polz, TMCProcess proc,
                            Int_t& ntr, Double_t weight, Int_t is);
 
+    /** Virtual method PushTrack.
+     ** Add a TParticle to the stack.
+     *@param toBeDone         Flag for tracking
+     *@param parentID         Index of mother particle
+     *@param pdgCode          Particle type (PDG encoding)
+     *@param px,py,pz         Momentum components at start vertex [GeV]
+     *@param e                Total energy at start vertex [GeV]
+     *@param vx,vy,vz         Coordinates of start vertex [cm]
+     *@param time             Start time of track [s]
+     *@param polx,poly,polz   Polarisation vector
+     *@param proc             Production mechanism (VMC encoding)
+     *@param ntr              Track number (filled by the stack)
+     *@param weight           Particle weight
+     *@param is               Generation status code (whatever that means)
+     *@param secondparentID   used fot the index of mother of primery in the list
+     **/
+
     virtual void PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode,
                            Double_t px, Double_t py, Double_t pz,
                            Double_t e, Double_t vx, Double_t vy,
@@ -95,8 +114,11 @@ class FairGenericStack : public TVirtualMCStack
 
 
     /** Update the track index in the MCTracks and MCPoints **/
-    virtual void UpdateTrackIndex(TRefArray* detArray);
+    virtual void UpdateTrackIndex(TRefArray* detArray=0);
 
+
+    /** Set the list of detectors to be used for filltering the stack*/
+    void SetDetArrayList(TRefArray* detArray);
 
     /** Resets arrays and stack and deletes particles and tracks **/
     virtual void Reset();
@@ -114,11 +136,6 @@ class FairGenericStack : public TVirtualMCStack
 
     /** Modifiers  **/
     virtual void SetCurrentTrack(Int_t iTrack);
-    /*  void StoreSecondaries(Bool_t choice = kTRUE) { fStoreSecondaries = choice; }
-      void SetMinPoints(Int_t min)                 { fMinPoints        = min;    }
-      void SetEnergyCut(Double_t eMin)             { fEnergyCut        = eMin;   }
-      void StoreMothers(Bool_t choice = kTRUE)     { fStoreMothers     = choice; }
-    */
 
     /** Accessors **/
     virtual Int_t GetNtrack() const;   // Total number of tracks
@@ -133,6 +150,13 @@ class FairGenericStack : public TVirtualMCStack
     /** Fair Logger */
     FairLogger*            fLogger;//!
 
+    /** List of detectors registering hits in the simulation */
+    TRefArray*  fDetList;  //!
+
+    /** Iterator for the detector list*/
+    TIterator* fDetIter;
+
+    /**Verbosity level*/
     Int_t fVerbose;
 
   private:

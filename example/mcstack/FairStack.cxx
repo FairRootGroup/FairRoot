@@ -281,11 +281,17 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
     track->SetMotherId( (*fIndexIter).second );
   }
 
-  // Now iterate through all active detectors
-  TIterator* detIter = detList->MakeIterator();
-  detIter->Reset();
+
+  if(fDetList==0) {
+    // Now iterate through all active detectors
+    fDetIter = detList->MakeIterator();
+    fDetIter->Reset();
+  } else {
+    fDetIter->Reset();
+  }
+
   FairDetector* det = NULL;
-  while( (det = (FairDetector*)detIter->Next() ) ) {
+  while( (det = (FairDetector*)fDetIter->Next() ) ) {
 
 
     // --> Get hit collections from detector
@@ -311,8 +317,6 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
 
     }   // Collections of this detector
   }     // List of active detectors
-  delete detIter;
-
   fLogger->Debug(MESSAGE_ORIGIN, "...stack and  %i collections updated.", nColl);
 }
 // -------------------------------------------------------------------------
