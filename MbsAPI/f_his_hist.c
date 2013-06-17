@@ -629,7 +629,7 @@ INTS4 f_his_sendhis(s_his_head* ps_head, INTS4 l_histos, CHARS* pc_histo, INTS4*
       l_status = f_stc_write (&s_his_comm_serv,sizeof(s_his_comm), l_gl_serv_chan);
       if(l_status != STC__SUCCESS)
         { printf("error writing comm to client\n"); f_stc_discclient(l_gl_serv_chan); return(COMM__ERROR);}
-      if(l_gl_serv_verb == 1) {printf("%-32s %8d\n",ps_his_head->c_name,s_his_comm_serv.lu_size-sizeof(s_his_head));}
+      if(l_gl_serv_verb == 1) {printf("%-32s %8ld\n",ps_his_head->c_name,s_his_comm_serv.lu_size-sizeof(s_his_head));}
       l_status = f_stc_write (ps_his_head,sizeof(s_his_head), l_gl_serv_chan);
       if(l_status != STC__SUCCESS)
         { printf("error writing header to client\n"); f_stc_discclient(l_gl_serv_chan); return(COMM__ERROR); }

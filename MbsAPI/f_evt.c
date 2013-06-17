@@ -1172,7 +1172,7 @@ INTS4 f_evt_put_open(CHARS* pc_file, INTS4 l_size, INTS4 l_stream,
         memcpy(ps_file_head, ps_filhe,ps_chan->l_buf_size );
       } else {
         memset( ps_file_head, '\0', ps_chan->l_buf_size);
-        sprintf(ps_file_head->filhe_run, "Pid %d\0", getpid());
+        sprintf(ps_file_head->filhe_run, "Pid %d", getpid());
         ps_file_head->filhe_run_l=strlen(ps_file_head->filhe_run);
       }
       ps_file_head->filhe_dlen=ps_chan->l_buf_size/2;

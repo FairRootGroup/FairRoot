@@ -55,6 +55,8 @@
 /* ++++++++++++++ !!!! IMPLEMENTATION !!!! +++++++++++++++++++++++++++++++ */
 #include "typedefs.h"
 
+#include <ctype.h>
+
 
 #define F__SWAP(ps,l,pd) f_swaplw((int *)ps,(int)l,(int *)pd)
 #ifdef VMS        /* ++++++++++++++ VMS ++++++++++++++++++++++++++++ */
@@ -563,7 +565,7 @@ struct s_clnt_filter* p_clnt_filter;
 
   /* +++ action +++ */
   if (i_debug == 2) {
-    printf("--->D-%s: addr_filter p:%d\n", c_modnam, p_clnt_filter);
+    printf("--->D-%s: addr_filter p:%d\n", c_modnam, (int)p_clnt_filter);
   }
 
   /* init pointer */
@@ -1013,7 +1015,7 @@ m_read_nxtline:
 
       }
 
-      l_scan = sscanf(c_line,"%hd %hd %hd %hd %hd %hd %hd %ld %ld",
+      l_scan = sscanf(c_line,"%hd %hd %hd %hd %hd %hd %hd %d %d",
                       &i_evtsev,
                       &i_selflt,
                       &i_selwrt,
@@ -1035,7 +1037,7 @@ m_read_nxtline:
         *p_minus = ' ';  /* replace minus with blank  */
       }
 
-      l_scan = sscanf(c_line,"%hd %hd %hd %hd %hd %hd %hd %lx %lx",
+      l_scan = sscanf(c_line,"%hd %hd %hd %hd %hd %hd %hd %d %d",
                       &i_evtsev,
                       &i_selflt,
                       &i_selwrt,
@@ -1483,8 +1485,8 @@ int              i_chan;
     printf(
       "D-%s: **Rd 1st Buf: at %8x to %8x = %d bytes\n",
       c_modnam,
-      (char*) p_clntbuf,
-      ((char*) p_clntbuf) + (CLNT__SMALLBUF - 1),
+      (int)(char*) p_clntbuf,
+      (int)(((char*) p_clntbuf) + (CLNT__SMALLBUF - 1)),
       CLNT__SMALLBUF);
 
 
@@ -1550,20 +1552,20 @@ int              i_chan;
     printf("D-%s: begin of c_buffer[148] in LW (all hex)\n", c_modnam);
     pl = (int*) &p_clntbuf->c_buffer[148];
     for (j=0; j<5; j++) {
-      printf("%8x:%8x ",pl,*(pl));
+      printf("%8x:%8x ",(int)pl,*(pl));
       pl++;
-      printf("%8x:%8x ",pl,*(pl));
+      printf("%8x:%8x ",(int)pl,*(pl));
       pl++;
-      printf("%8x:%8x ",pl,*(pl));
+      printf("%8x:%8x ",(int)pl,*(pl));
       pl++;
 
       printf("\n");
     }
     printf("D-%s: **Rd 2nd Buf: at %8x (buf[%d]) to %8x = %d b\n",
            c_modnam,
-           (char*) &p_clntbuf->c_buffer[CLNT__RESTBUF],
+           (int)(char*) &p_clntbuf->c_buffer[CLNT__RESTBUF],
            CLNT__RESTBUF,
-           ((char*) &p_clntbuf->c_buffer[CLNT__RESTBUF]) + (l_2ndbuf_byt - 1),
+           (int)(((char*) &p_clntbuf->c_buffer[CLNT__RESTBUF]) + (l_2ndbuf_byt - 1)),
            l_2ndbuf_byt);
   }
   *p_bytrd += l_2ndbuf_byt;
@@ -1609,11 +1611,11 @@ int              i_chan;
     printf("D-%s: begin of c_buffer[148] in LW (all hex)\n", c_modnam);
     pl = (int*) &p_clntbuf->c_buffer[148];
     for (j=0; j<5; j++) {
-      printf("%8x:%8x ",pl,*(pl));
+      printf("%8x:%8x ",(int)pl,*(pl));
       pl++;
-      printf("%8x:%8x ",pl,*(pl));
+      printf("%8x:%8x ",(int)pl,*(pl));
       pl++;
-      printf("%8x:%8x ",pl,*(pl));
+      printf("%8x:%8x ",(int)pl,*(pl));
       pl++;
 
       printf("\n");
@@ -1753,7 +1755,7 @@ void f_strtoupper(u, l)
 char* u, *l;
 {
   for ( ; *l != '\0'; ++l, ++u) {
-    *u = toupper(*l);
+    *u = (char)toupper((int)*l);
   }
 
   *u = '\0';

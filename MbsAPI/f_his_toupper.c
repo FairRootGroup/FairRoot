@@ -58,6 +58,8 @@
 /*-               11-Oct-94 : changes/RSM                             */
 /*1- C Procedure *************+****************************************/
 
+#include <ctype.h>
+
 #include "f_his_toupper.h"
 
 void f_his_toupper(CHARS* c, INTS4 i)
