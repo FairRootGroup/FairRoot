@@ -8,6 +8,7 @@
 #include "Rtypes.h"                     // for Bool_t, Int_t, kFALSE, etc
 #endif
 #endif
+
 #include "TString.h"                    // for TString
 
 #include <string>                       // for string
@@ -78,15 +79,20 @@ Int_t GetTimeGate(const std::string& tableName);
 void SetTimeGate(const  std::string& tableName, Int_t timeGate);
 
 
-// DateTime conversion utilities.
-TString MakeDateTimeString(const ValTimeStamp& timeStamp);
-ValTimeStamp MakeTimeStamp(const std::string& sqlDateTime,
-                           Bool_t* ok =0);
+
 
 TString GetValDescr(const char* tableName,
                     Bool_t isTemporary = kFALSE);
 
 Bool_t NotGlobalSeqNo(UInt_t seqNo);
+
+
+// Complex type  conversion utility functions
+TString MakeDateTimeString(const ValTimeStamp& timeStamp);
+ValTimeStamp MakeTimeStamp(const std::string& sqlDateTime,Bool_t* ok =0);
+
+TString StreamAsString(const Int_t* arr, Int_t size);
+TString StreamAsString(const TObject* obj, Int_t& size);
 }
 
 #endif  // FAIRDB_H
