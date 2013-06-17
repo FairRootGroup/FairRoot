@@ -4,6 +4,7 @@
 #include "FairDbFieldType.h"            // for FairDbFieldType, string
 #include "FairDbString.h"               // for MakePrintable
 #include "ValTimeStamp.h"               // for ValTimeStamp
+#include "FairDbStreamer.h"
 
 #include "Riosfwd.h"                    // for ostream
 #include "TString.h"                    // for TString
@@ -124,6 +125,13 @@ FairDbOutRowStream& FairDbOutRowStream::operator<<(const ValTimeStamp& src)
   if ( ! StoreDefaultIfInvalid(FairDb::kDate) ) {
     Store(FairDb::MakeDateTimeString(src).Data());
   }
+  return *this;
+}
+
+
+FairDbOutRowStream& FairDbOutRowStream::operator<<(const FairDbStreamer& src)
+{
+  OUT(FairDb::kString,src.AsString());
   return *this;
 }
 

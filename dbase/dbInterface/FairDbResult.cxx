@@ -14,6 +14,10 @@
 #include "ValRange.h"                   // for ValRange
 #include "ValTimeStamp.h"               // for ValTimeStamp, operator==, etc
 
+#include "FairDbStreamer.h"               // 
+#include "TBufferFile.h"
+#include "FairUtilStream.h"
+
 #include "TSQLStatement.h"              // for TSQLStatement
 
 #include <stddef.h>                     // for NULL
@@ -170,6 +174,14 @@ FairDbResultSet& FairDbResultSet::operator>>(string& dest)
 FairDbResultSet& FairDbResultSet::operator>>(ValTimeStamp& dest)
 {
   dest=FairDb::MakeTimeStamp(AsString(FairDb::kDate));
+  return *this;
+}
+
+FairDbResultSet& FairDbResultSet::operator>>(FairDbStreamer& dest)
+{
+  // Streamer operator for DB basic types
+  string db_str =  AsString(FairDb::kString);
+  dest.SetString(db_str);
   return *this;
 }
 

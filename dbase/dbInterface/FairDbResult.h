@@ -30,6 +30,7 @@ class FairDbTableRow;
 class FairDbValidityRecBuilder;
 class TSQLStatement;
 class ValContext;
+class FairDbStreamer;
 
 //------------------------- Result Key --------------------------------//
 class FairDbResultKey : public TObject
@@ -126,6 +127,7 @@ class FairDbResultSet : public FairDbRowStream
     FairDbResultSet& operator>>(Double_t& dest);
     FairDbResultSet& operator>>(std::string& dest);
     FairDbResultSet& operator>>(ValTimeStamp& dest);
+    FairDbResultSet& operator>>(FairDbStreamer& dest);
 
     Bool_t FetchRow();
 
