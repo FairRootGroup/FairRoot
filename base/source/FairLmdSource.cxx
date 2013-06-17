@@ -3,28 +3,34 @@
 // -----                           FairLmdSource                           -----
 // -----                    Created 12.04.2013 by D.Kresan                 -----
 // -----------------------------------------------------------------------------
-#include "FairLmdSource.h"
-
-#include <stddef.h>                     // for NULL
-#include "s_filhe.h"                    // for s_filhe
-#include "typedefs.h"                   // for INTS4
-
+#include <iostream>
 using namespace std;
 
-FairLmdSource::FairLmdSource(char* fileName)
-  : FairSource(),
-    fFileName(fileName),
-    fxInputChannel(NULL),
-    fxEvent(NULL),
-    fxBuffer(NULL),
-    fxEventData(NULL),
-    fxSubEvent(NULL)
+#include "TList.h"
+#include "TObjString.h"
+
+#include "FairLmdSource.h"
+
+
+FairLmdSource::FairLmdSource()
+  : FairSource()
 {
+  fCurrentFile = 0;
+  fFileNames = new TList();
 }
 
 
 FairLmdSource::~FairLmdSource()
 {
+  fFileNames->Delete();
+  delete fFileNames;
+}
+
+
+void FairLmdSource::AddFile(TString fileName)
+{
+  TObjString* str = new TObjString(fileName);
+  fFileNames->Add(str);
 }
 
 
@@ -34,13 +40,30 @@ Bool_t FairLmdSource::Init()
     return kFALSE;
   }
 
+  if(fFileNames->GetSize() == 0) {
+    return kFALSE;
+  }
+
+  TString name = ((TObjString*)fFileNames->At(fCurrentFile))->GetString();
+  if(! OpenNextFile(name)) {
+    return kFALSE;
+  }
+
+  fCurrentFile += 1;
+
+  return kTRUE;
+}
+
+
+Bool_t FairLmdSource::OpenNextFile(TString fileName)
+{
   Int_t inputMode = 1;
   fxInputChannel = new s_evt_channel;
   s_filhe fxInfoHeader;
   void* headptr = &fxInfoHeader;
   INTS4 status;
   status = f_evt_get_open(inputMode,
-                          const_cast<char*>(fFileName),
+                          const_cast<char*>(fileName.Data()),
                           fxInputChannel,
                           (Char_t**)headptr,
                           1,
@@ -49,6 +72,9 @@ Bool_t FairLmdSource::Init()
   if(status) {
     return kFALSE;
   }
+
+  cout << "-I- FairLmdSource::OpenNextFile : file "
+       << fileName << " opened." << endl;
 
   return kTRUE;
 }
@@ -63,7 +89,19 @@ Bool_t FairLmdSource::Read()
   Int_t fuEventCounter = fxEvent->l_count;
   Int_t fCurrentMbsEventNo = fuEventCounter;
 
-  if(0 != status && 3 != status) {
+  if(0 != status) {
+    if(fCurrentFile >= fFileNames->GetSize()) {
+      return kFALSE;
+    }
+
+    TString name = ((TObjString*)fFileNames->At(fCurrentFile))->GetString();
+    if(! OpenNextFile(name)) {
+      return kFALSE;
+    } else {
+      fCurrentFile += 1;
+      return Read();
+    }
+
     return kFALSE;
   }
 
