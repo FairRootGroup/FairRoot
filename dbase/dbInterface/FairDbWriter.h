@@ -21,6 +21,7 @@ template <class T> class FairDbWriter
 
 // Constructors and destructors.
     FairDbWriter();
+
     FairDbWriter(const ValRange& vr,
                  Int_t aggNo,
                  FairDb::Version task,
@@ -28,6 +29,7 @@ template <class T> class FairDbWriter
                  const std::string& dbName,
                  const std::string& logComment = "",
                  const std::string& tableName = "");
+
     FairDbWriter(const ValRange& vr,
                  Int_t aggNo,
                  FairDb::Version task = 0,
@@ -35,12 +37,15 @@ template <class T> class FairDbWriter
                  UInt_t dbNo = 0,
                  const std::string& logComment = "",
                  const std::string& tableName = "");
+
     FairDbWriter(const FairDbValidityRec& vrec,
                  const std::string& dbName,
                  const std::string& logComment = "");
+
     FairDbWriter(const FairDbValidityRec& vrec,
                  UInt_t dbNo = 0,
                  const std::string& logComment = "");
+
 
     virtual ~FairDbWriter();
 
@@ -58,6 +63,8 @@ template <class T> class FairDbWriter
     void SetDbNo(UInt_t dbNo) { fDbNo = dbNo;}
     void SetDbName(const std::string& dbName);
     void SetLogComment(const std::string& reason);
+    void SetContObj(T* cont_obj) { fContObj = cont_obj;}
+
     // For setting of requireGlobal see FairDbCascader::AllocateSeqNo
     void SetRequireGlobalSeqno(Int_t requireGlobal) {fRequireGlobalSeqno = requireGlobal;}
     void SetOverlayCreationDate() {fUseOverlayCreationDate = kTRUE;}
@@ -133,6 +140,10 @@ template <class T> class FairDbWriter
 
 /// Associated log entry (if any) for update
     FairDbLogEntry fLogEntry;
+
+
+//  New Memory mapping system
+    T* fContObj;  ///
 
     ClassDefT(FairDbWriter<T>,0)          // Writer for specific database table.
 
