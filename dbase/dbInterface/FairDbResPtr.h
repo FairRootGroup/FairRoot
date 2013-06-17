@@ -2,6 +2,7 @@
 #define FAIRDBRESULTPTR_H
 
 #include <map>
+#include <vector>
 #include <string>
 
 #include "FairDb.h"
@@ -14,6 +15,7 @@ class FairDbResultKey;
 class FairDbSqlContext;
 class FairDbTableProxy;
 
+using std::vector;
 
 template <class T> class FairDbResultPtr
 {
@@ -93,7 +95,11 @@ template <class T> class FairDbResultPtr
 #endif  // __CINT__      
     static             FairDbTableProxy* fgTableProxy;
 
+    // First add-on for memory management
+    static std::vector<T*>   fListOfT;
+
     ClassDefT(FairDbResultPtr<T>,0)  // ResultPtr for specific database table.
+
 
 };
 ClassDefT2(FairDbResultPtr,T)
