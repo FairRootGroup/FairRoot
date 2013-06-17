@@ -8,6 +8,7 @@
 #include "FairDbTutContFact.h"
 
 #include "FairDbTutPar.h"               // for FairDbTutPar
+#include "FairDbTutParBin.h"            // for FairDbTutParBin
 #include "FairParSet.h"                 // for FairParSet
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
@@ -47,6 +48,10 @@ void FairDbTutContFact::setAllContainers()
   p2->addContext("TestNonDefaultContext");
   containers->Add(p2);
 
+  FairContainer* p3 = new FairContainer("TUTParBin", "Binary tutorial parameters", "TestDefaultContext");
+  p3->addContext("TestNonDefaultContext");
+  containers->Add(p3);
+
 }
 
 FairParSet* FairDbTutContFact::createContainer(FairContainer* c)
@@ -54,6 +59,7 @@ FairParSet* FairDbTutContFact::createContainer(FairContainer* c)
   /** Calls the constructor of the corresponding parameter container.
    * For an actual context, which is not an empty string and not the default context
    * of this container, the name is concatinated with the context. */
+
   const char* name=c->GetName();
   cout << " -I-FairDbTutContFact::createContainer " << name << endl;
   FairParSet* p=NULL;
@@ -65,6 +71,11 @@ FairParSet* FairDbTutContFact::createContainer(FairContainer* c)
   if (strcmp(name,"TUTParAlternative")==0) {
     p=new FairDbTutPar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
     p->SetVersion(1);
+  }
+
+  if (strcmp(name,"TUTParBin")==0) {
+    p=new FairDbTutParBin(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+    p->SetVersion(0);
   }
 
   return p;
