@@ -51,12 +51,12 @@ FairDbWriter<T>::FairDbWriter(const ValRange& vr,
   fValidRec(0),
   fLogEntry(fTableName,logComment,vr.GetDetectorMask(),vr.GetSimMask(),task)
 {
-  cout << " -I- FairDbWriter Open() called " << endl;
+  //cout << " -I- FairDbWriter Open() called " << endl;
   Open(vr,aggNo,task,creationDate,dbNo,logComment);
 }
 
-//.....................................................................
 
+//.....................................................................
 template<class T>
 FairDbWriter<T>::FairDbWriter(const ValRange& vr,
                               Int_t aggNo,
@@ -170,7 +170,7 @@ FairDbWriter<T>& FairDbWriter<T>::operator<<(const T& row)
     this->Abort();
   }
 
-// cout << "Writer ---> 3" << endl;
+//cout << "Writer ---> 3" << endl;
   return *this;
 
 }
@@ -336,9 +336,7 @@ template<class T>
 FairDbTableProxy& FairDbWriter<T>::GetTableProxy(
   const std::string& tableName)
 {
-
   return FairDbResultPtr<T>::GetTableProxy(tableName);
-
 }
 //.....................................................................
 
