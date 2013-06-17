@@ -1,13 +1,23 @@
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
-
-#include "TString.h"
-
 #include "FairDbStatement.h"
-#include "FairDbTableMetaData.h"
-#include "FairDbString.h"
+
+#include "FairDbString.h"               // for StringTok
+#include "FairDbTableMetaData.h"        // for string, FairDbTableMetaData
+
+#include "Riosfwd.h"                    // for ostream
+#include "TSQLServer.h"                 // for TSQLServer
+#include "TSQLStatement.h"              // for TSQLStatement
+#include "TString.h"                    // for TString, operator<<, etc
+
+#include <ctype.h>                      // for isalnum, isspace
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <sstream>
+#include <string>                       // for string, allocator, etc
+#include <vector>                       // for vector, etc
+
+using std::cout;
+using std::endl;
+using std::ostringstream;
+using std::string;
 
 ClassImp(FairDbStatement)
 
@@ -49,10 +59,10 @@ TSQLStatement* FairDbStatement::ExecuteQuery( const TString& sql)
 
   TSQLStatement* stmt = 0;
   while (itr != itrEnd) {
-    const TString& sql = *itr++;
-    cout <<"-I- FairDbStatement Server:" << fConDb.GetDbName() << " SQL:" << sql << endl;
+    const TString& sql1 = *itr++;
+    cout <<"-I- FairDbStatement Server:" << fConDb.GetDbName() << " SQL:" << sql1 << endl;
     delete stmt;
-    stmt = this->CreateProcessedStatement(sql);
+    stmt = this->CreateProcessedStatement(sql1);
     if ( ! stmt ) { return 0; }
   }
   // Store results from last SQL command (when multiple commands are generated
@@ -91,9 +101,9 @@ Bool_t FairDbStatement::ExecuteUpdate( const TString& sql)
   std::list<TString>::const_iterator itr(sqlList.begin()), itrEnd(sqlList.end());
 
   while (itr != itrEnd) {
-    const TString& sql = *itr++;
-    cout << "-I- FairDbStatement::ExecuteUpdate SQL:" << fConDb.GetDbName() << ":" << sql << endl;
-    bool ok = fConDb.GetServer()->Exec(sql.Data());
+    const TString& sql1 = *itr++;
+    cout << "-I- FairDbStatement::ExecuteUpdate SQL:" << fConDb.GetDbName() << ":" << sql1 << endl;
+    bool ok = fConDb.GetServer()->Exec(sql1.Data());
     if ( ! ok ) {
 
       fConDb.RecordException();
@@ -228,9 +238,9 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
 
     // Add extra ORACLE incantations required when dropping a table with
     // a public synonym
-    TString sqlIncant("DROP PUBLIC SYNONYM ");
-    sqlIncant  += name ;
-    sqlTransList.push_back(sqlIncant);
+    TString sqlIncant1("DROP PUBLIC SYNONYM ");
+    sqlIncant1  += name ;
+    sqlTransList.push_back(sqlIncant1);
   }
 
 // Translate commands with a WHERE keyword, but take care if this is
