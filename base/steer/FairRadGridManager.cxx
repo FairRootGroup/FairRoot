@@ -4,16 +4,14 @@
 // -----          adapted april 2010               O.Hartmann          -----
 // -------------------------------------------------------------------------
 
+
+#include <iostream>
 #include "FairRadGridManager.h"
-
-#include "FairMesh.h"                   // for FairMesh
-
-#include "TLorentzVector.h"             // for TLorentzVector
-#include "TParticle.h"                  // for TParticle
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
-#include "TVirtualMCStack.h"            // for TVirtualMCStack
-
-#include <stddef.h>                     // for NULL
+#include "FairRootManager.h"
+#include "TLorentzVector.h"
+#include "TParticle.h"
+#include "TVirtualMC.h"
+#include "FairMesh.h"
 
 using namespace std;
 
@@ -140,6 +138,8 @@ Bool_t FairRadGridManager::IsTrackEntering(TLorentzVector& pos ,
   //      ) return kTRUE;
   //   else
   //     return kFALSE;
+
+  return kFALSE;
 }
 
 Bool_t FairRadGridManager::IsTrackInside(TLorentzVector& pos , FairMesh* aMesh)
