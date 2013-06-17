@@ -25,6 +25,8 @@ map<string,FairDbTableProxy*>  FairDbResultPtr<T>::fgNameToProxy;
 template<class T>
 FairDbTableProxy* FairDbResultPtr<T>::fgTableProxy = 0;
 
+template<class T>
+std::vector<T*>  FairDbResultPtr<T>::fListOfT;
 
 template<class T>
 FairDbResultPtr<T>::FairDbResultPtr() :
@@ -51,6 +53,7 @@ FairDbResultPtr<T>::FairDbResultPtr(const FairDbResultPtr& that) :
   if ( fResult ) { fResult->Connect(); }
 
 }
+
 
 //.....................................................................
 
@@ -144,8 +147,8 @@ template<class T>
 FairDbResultPtr<T>::~FairDbResultPtr()
 {
   Disconnect();
-
 }
+
 template<class T>
 Bool_t FairDbResultPtr<T>::ApplyAbortTest()
 {
@@ -213,7 +216,13 @@ template<class T>
 FairDbTableProxy& FairDbResultPtr<T>::GetTableProxy(const string& tableName)
 {
 
-  cout << "-I- FairDbResultPtr:: GetTableProxy tablename: " <<  tableName << endl;
+// CHECK ME <DB> here is an issue with memory management of heap
+// base instanciated container ... to be further studied.
+
+//  cout <<"-I- FairDbResultPtr:: BEGIN GET TABLE PROXY **************** " << endl;
+//  cout << "-I- FairDbResultPtr:: GetTableProxy tablename: " <<  tableName << endl;
+
+  fListOfT.clear();
 
 // Check for request for default table.
   if ( tableName == "" ) { return  FairDbResultPtr::GetTableProxy(); }
@@ -224,10 +233,17 @@ FairDbTableProxy& FairDbResultPtr<T>::GetTableProxy(const string& tableName)
   if ( itr != fgNameToProxy.end() ) { return *( (*itr).second ); }
 
 // No, so ask the Registry for it and save it for next time.
-  T pet;
+
+  //cout << "-I- FairDbResultPtr (+) object ************  " << endl;
+  T* pet = new T();
+  fListOfT.push_back(pet);
+  //cout << "-I- FairDbResultPtr (-) object ************* " << endl;
+
   FairDbTableProxy* proxy = &FairDbTableProxyRegistry::Instance()
-                            .GetTableProxy(tableName,&pet);
+                            .GetTableProxy(tableName,pet);
   fgNameToProxy[tableName] = proxy;
+
+  //cout << "-I- FairDbResultPtr****************** end of GETTABLEPROXY ****** " <<endl;
   return *proxy;
 }
 
