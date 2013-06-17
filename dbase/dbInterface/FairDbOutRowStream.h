@@ -11,6 +11,7 @@
 
 class FairDbTableMetaData;
 class ValTimeStamp;
+class FairDbStreamer;
 
 class FairDbOutRowStream : public FairDbRowStream
 {
@@ -37,6 +38,7 @@ class FairDbOutRowStream : public FairDbRowStream
     FairDbOutRowStream& operator<<(Double_t src);
     FairDbOutRowStream& operator<<(const std::string& src);
     FairDbOutRowStream& operator<<(const ValTimeStamp& src);
+    FairDbOutRowStream& operator<<(const FairDbStreamer& src);
 
     void Clear() { fBadData = kFALSE; fCSV.erase(); ClearCurCol();}
     void Store(const std::string& str);
