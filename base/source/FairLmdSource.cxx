@@ -6,43 +6,76 @@
 #include <iostream>
 using namespace std;
 
+#include "TList.h"
+#include "TObjString.h"
+
 #include "FairLmdSource.h"
 
 
-FairLmdSource::FairLmdSource(char* fileName)
+FairLmdSource::FairLmdSource()
   : FairSource()
 {
-  fFileName = fileName;
+  fCurrentFile = 0;
+  fFileNames = new TList();
 }
 
 
 FairLmdSource::~FairLmdSource()
 {
+  fFileNames->Delete();
+  delete fFileNames;
+}
+
+
+void FairLmdSource::AddFile(TString fileName)
+{
+  TObjString *str = new TObjString(fileName);
+  fFileNames->Add(str);
 }
 
 
 Bool_t FairLmdSource::Init()
 {
   if(! FairSource::Init()) {
-    return kFALSE;
+      return kFALSE;
+  }
+    
+  if(fFileNames->GetSize() == 0) {
+      return kFALSE;
   }
 
+  TString name = ((TObjString*)fFileNames->At(fCurrentFile))->GetString();
+  if(! OpenNextFile(name)) {
+    return kFALSE;
+  }
+    
+  fCurrentFile += 1;
+    
+  return kTRUE;
+}
+
+
+Bool_t FairLmdSource::OpenNextFile(TString fileName)
+{
   Int_t inputMode = 1;
   fxInputChannel = new s_evt_channel;
   s_filhe fxInfoHeader;
   void* headptr = &fxInfoHeader;
   INTS4 status;
   status = f_evt_get_open(inputMode,
-                          const_cast<char*>(fFileName),
+                          const_cast<char*>(fileName.Data()),
                           fxInputChannel,
                           (Char_t**)headptr,
                           1,
                           1);
-
+  
   if(status) {
     return kFALSE;
   }
-
+  
+  cout << "-I- FairLmdSource::OpenNextFile : file "
+  << fileName << " opened." << endl;
+  
   return kTRUE;
 }
 
@@ -51,15 +84,27 @@ Bool_t FairLmdSource::Read()
 {
   void* evtptr = &fxEvent;
   void* buffptr = &fxBuffer;
-
+  
   Int_t status = f_evt_get_event(fxInputChannel, (Int_t**)evtptr,(Int_t**) buffptr);
   Int_t fuEventCounter = fxEvent->l_count;
   Int_t fCurrentMbsEventNo = fuEventCounter;
-
-  if(0 != status && 3 != status) {
+  
+  if(0 != status) {
+    if(fCurrentFile >= fFileNames->GetSize()) {
+      return kFALSE;
+    }
+    
+    TString name = ((TObjString*)fFileNames->At(fCurrentFile))->GetString();
+    if(! OpenNextFile(name)) {
+      return kFALSE;
+    } else {
+      fCurrentFile += 1;
+      return Read();
+    }
+    
     return kFALSE;
   }
-
+  
   Int_t nrSubEvts = f_evt_get_subevent(fxEvent, 0, NULL, NULL, NULL);
   Int_t sebuflength;
   Short_t setype;
@@ -79,14 +124,14 @@ Bool_t FairLmdSource::Read()
     sesubtype = fxSubEvent->i_subtype;
     sesubcrate = fxSubEvent->h_subcrate;
     delete nrlongwords;
-
-
+    
+    
     if(! Unpack(fxEventData, sebuflength,
                 setype, sesubtype)) {
       return kFALSE;
     }
   }
-
+  
   return kTRUE;
 }
 
