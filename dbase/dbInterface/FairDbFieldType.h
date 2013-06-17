@@ -2,9 +2,7 @@
 #define FAIRDBFIELDTYPE_H
 
 #include "FairDb.h"                     // for DataTypes::kInt, etc
-
 #include "Rtypes.h"                     // for Int_t, Bool_t, UInt_t, etc
-
 #include <string>                       // for string
 
 class FairDbFieldType
