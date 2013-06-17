@@ -2,14 +2,24 @@
 
 #include "Riosfwd.h"                    // for ostream
 
-#include <iostream>                     // for operator<<, basic_ostream, etc
-#include <map>                          // for map, _Rb_tree_iterator, etc
-#include <sstream>                      // IWYU pragma: keep
-// for ostringstream, istringstream
+#include "TBufferFile.h"
+#include "TVirtualStreamerInfo.h"
+#include "FairUtilStream.h"
+#include "TH1F.h"
 
-using std::cout;
-using std::endl;
+
+#include <map>                          // for map, _Rb_tree_iterator, etc
+
+// for ostringstream, istringstream
+#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <sstream>                      // IWYU pragma: keep
+#include <fstream>
+#include <string>
 using std::string;
+using std::cout;
+using std::hex;
+using std::map;
+using std::endl;
 using std::istringstream;
 
 static std::map<std::string,Int_t> fgTimegateTable;
@@ -51,13 +61,6 @@ TString FairDb::GetValDescr(const char* tableName,
   return sql;
 }
 
-//.....................................................................
-
-TString FairDb::MakeDateTimeString(const ValTimeStamp& timeStamp)
-{
-  return timeStamp.AsString("s");
-
-}
 //.....................................................................
 
 ValTimeStamp FairDb::MakeTimeStamp(const std::string& sqlDateTime,
@@ -134,4 +137,53 @@ Bool_t FairDb::NotGlobalSeqNo(UInt_t seqNo)
 {
   return seqNo <= kMAXLOCALSEQNO;
 }
+
+
+
+
+//.....................................................................
+TString FairDb::MakeDateTimeString(const ValTimeStamp& timeStamp)
+{
+  return timeStamp.AsString("s");
+
+}
+
+//.....................................................................
+TString FairDb::StreamAsString(const Int_t* arr, Int_t size)
+{
+  // ROOT IO is used to create a packed
+  // hexadecimal string out of the object
+
+  TBufferFile b_write(TBuffer::kWrite);
+  b_write.WriteFastArray(arr,size);
+  Char_t* buff =  b_write.Buffer();
+  Int_t   ll   = b_write.Length();
+
+  static std::string astr;
+  //Util::binary_to_string(buff, ll, astr);
+  Util::BinToHex(buff,ll,astr);
+  return astr.c_str();
+}
+
+TString FairDb::StreamAsString(const TObject* obj, Int_t& size)
+{
+  // ROOT IO is used to create a packed
+  // hexadecimal string out of the object
+
+  TObject* cobj = obj->Clone();
+  TBufferFile b_write(TBuffer::kWrite);
+  cobj->Streamer(b_write);
+
+  Char_t* buff =  b_write.Buffer();
+  Int_t   ll   = b_write.Length();
+
+  // Generate Hex from bin
+  static std::string str_hex;
+  Util::BinToHex(buff,ll,str_hex);
+
+  // Compute the size
+  size = ll;
+  return str_hex.c_str();
+}
+
 
