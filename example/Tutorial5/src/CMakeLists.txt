@@ -16,12 +16,14 @@ link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
 FairDbTutPar.cxx
+FairDbTutParBin.cxx
 FairDbTutContFact.cxx
 FairDbTutAccessRtdbTask.cxx
 )
 
 set(HEADERS
 FairDbTutPar.h
+FairDbTutParBin.h
 FairDbTutContFact.h
 FairDbTutAccessRtdbTask.h
 ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbResPtr.h
