@@ -72,6 +72,7 @@
 #pragma link C++ class FairDbSqlContext+;
 #pragma link C++ class FairDbSqlValPacket+;
 #pragma link C++ class FairDbString+;
+#pragma link C++ class FairDbStreamer+;
 #pragma link C++ class FairDbStatement+;
 #pragma link C++ class FairDbTableMetaData+;
 #pragma link C++ class FairDbTableProxyRegistry+;
