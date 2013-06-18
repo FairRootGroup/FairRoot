@@ -160,10 +160,114 @@ TString FairDb::StreamAsString(const Int_t* arr, Int_t size)
   Int_t   ll   = b_write.Length();
 
   static std::string astr;
-  //Util::binary_to_string(buff, ll, astr);
   Util::BinToHex(buff,ll,astr);
   return astr.c_str();
 }
+
+
+//.....................................................................
+TString FairDb::StreamAsString(const UInt_t* arr, Int_t size)
+{
+  // ROOT IO is used to create a packed
+  // hexadecimal string out of the object
+
+  TBufferFile b_write(TBuffer::kWrite);
+  b_write.WriteFastArray(arr,size);
+  Char_t* buff =  b_write.Buffer();
+  Int_t   ll   = b_write.Length();
+
+  static std::string astr;
+  Util::BinToHex(buff,ll,astr);
+  return astr.c_str();
+}
+
+
+//.....................................................................
+TString FairDb::StreamAsString(const Short_t* arr, Int_t size)
+{
+  // ROOT IO is used to create a packed
+  // hexadecimal string out of the object
+
+  TBufferFile b_write(TBuffer::kWrite);
+  b_write.WriteFastArray(arr,size);
+  Char_t* buff =  b_write.Buffer();
+  Int_t   ll   = b_write.Length();
+
+  static std::string astr;
+  Util::BinToHex(buff,ll,astr);
+  return astr.c_str();
+}
+
+
+//.....................................................................
+TString FairDb::StreamAsString(const UShort_t* arr, Int_t size)
+{
+  // ROOT IO is used to create a packed
+  // hexadecimal string out of the object
+
+  TBufferFile b_write(TBuffer::kWrite);
+  b_write.WriteFastArray(arr,size);
+  Char_t* buff =  b_write.Buffer();
+  Int_t   ll   = b_write.Length();
+
+  static std::string astr;
+  Util::BinToHex(buff,ll,astr);
+  return astr.c_str();
+}
+
+
+//.....................................................................
+TString FairDb::StreamAsString(const Bool_t* arr, Int_t size)
+{
+  // ROOT IO is used to create a packed
+  // hexadecimal string out of the object
+
+  TBufferFile b_write(TBuffer::kWrite);
+  b_write.WriteFastArray(arr,size);
+  Char_t* buff =  b_write.Buffer();
+  Int_t   ll   = b_write.Length();
+
+  static std::string astr;
+  Util::BinToHex(buff,ll,astr);
+  return astr.c_str();
+}
+
+
+//.....................................................................
+TString FairDb::StreamAsString(const Float_t* arr, Int_t size)
+{
+  // ROOT IO is used to create a packed
+  // hexadecimal string out of the object
+
+  TBufferFile b_write(TBuffer::kWrite);
+  b_write.WriteFastArray(arr,size);
+  Char_t* buff =  b_write.Buffer();
+  Int_t   ll   = b_write.Length();
+
+  static std::string astr;
+  Util::BinToHex(buff,ll,astr);
+  return astr.c_str();
+}
+
+
+//.....................................................................
+TString FairDb::StreamAsString(const Double_t* arr, Int_t size)
+{
+  // ROOT IO is used to create a packed
+  // hexadecimal string out of the object
+
+  TBufferFile b_write(TBuffer::kWrite);
+  b_write.WriteFastArray(arr,size);
+  Char_t* buff =  b_write.Buffer();
+  Int_t   ll   = b_write.Length();
+
+  static std::string astr;
+  Util::BinToHex(buff,ll,astr);
+  return astr.c_str();
+}
+
+
+
 
 TString FairDb::StreamAsString(const TObject* obj, Int_t& size)
 {
