@@ -92,6 +92,12 @@ TString MakeDateTimeString(const ValTimeStamp& timeStamp);
 ValTimeStamp MakeTimeStamp(const std::string& sqlDateTime,Bool_t* ok =0);
 
 TString StreamAsString(const Int_t* arr, Int_t size);
+TString StreamAsString(const UInt_t* arr, Int_t size);
+TString StreamAsString(const Short_t* arr, Int_t size);
+TString StreamAsString(const UShort_t* arr, Int_t size);
+TString StreamAsString(const Bool_t* arr, Int_t size);
+TString StreamAsString(const Float_t* arr, Int_t size);
+TString StreamAsString(const Double_t* arr, Int_t size);
 TString StreamAsString(const TObject* obj, Int_t& size);
 }
 
