@@ -19,7 +19,15 @@ class FairDbStreamer : public TObject
     // Constructors and destructors.
     FairDbStreamer();
     FairDbStreamer(const TObject* obj,  FairDb::DataTypes type=FairDb::kBinary);
+
     FairDbStreamer(const Int_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
+    FairDbStreamer(const UInt_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
+    FairDbStreamer(const Short_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
+    FairDbStreamer(const UShort_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
+    FairDbStreamer(const Bool_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
+    FairDbStreamer(const Float_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
+    FairDbStreamer(const Double_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
+
     FairDbStreamer(const FairDbStreamer& from);
     FairDbStreamer& operator=(const FairDbStreamer&);
     virtual ~FairDbStreamer();
@@ -32,6 +40,12 @@ class FairDbStreamer : public TObject
 
     // Fill functions for arrays & objects
     void Fill(Int_t* arr);
+    void Fill(UInt_t* arr);
+    void Fill(Short_t* arr);
+    void Fill(UShort_t* arr);
+    void Fill(Bool_t* arr);
+    void Fill(Float_t* arr);
+    void Fill(Double_t* arr);
     void Fill(TObject* obj);
 
 
