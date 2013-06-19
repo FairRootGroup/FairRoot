@@ -34,6 +34,57 @@ FairDbStreamer::FairDbStreamer(const Int_t* iarr, Int_t size, FairDb::DataTypes 
   fType=type;
 }
 
+FairDbStreamer::FairDbStreamer(const UInt_t* iarr, Int_t size, FairDb::DataTypes type)
+  : TObject()
+{
+  fString = FairDb::StreamAsString(iarr,size);
+  fSize=size;
+  fType=type;
+}
+
+
+FairDbStreamer::FairDbStreamer(const Short_t* iarr, Int_t size, FairDb::DataTypes type)
+  : TObject()
+{
+  fString = FairDb::StreamAsString(iarr,size);
+  fSize=size;
+  fType=type;
+}
+
+FairDbStreamer::FairDbStreamer(const UShort_t* iarr, Int_t size, FairDb::DataTypes type)
+  : TObject()
+{
+  fString = FairDb::StreamAsString(iarr,size);
+  fSize=size;
+  fType=type;
+}
+
+FairDbStreamer::FairDbStreamer(const Bool_t* iarr, Int_t size, FairDb::DataTypes type)
+  : TObject()
+{
+  fString = FairDb::StreamAsString(iarr,size);
+  fSize=size;
+  fType=type;
+}
+
+
+FairDbStreamer::FairDbStreamer(const Float_t* iarr, Int_t size, FairDb::DataTypes type)
+  : TObject()
+{
+  fString = FairDb::StreamAsString(iarr,size);
+  fSize=size;
+  fType=type;
+}
+
+FairDbStreamer::FairDbStreamer(const Double_t* iarr, Int_t size, FairDb::DataTypes type)
+  : TObject()
+{
+  fString = FairDb::StreamAsString(iarr,size);
+  fSize=size;
+  fType=type;
+}
+
+
 
 FairDbStreamer::FairDbStreamer(const FairDbStreamer& from)
   : TObject(from),fString(from.fString)
@@ -69,6 +120,113 @@ void FairDbStreamer::Fill(Int_t* arr)
   b_read.ReadFastArray(r_array,arr_size);
   for(Int_t i=0; i<arr_size; i++) { arr[i]=r_array[i]; }
 }
+
+
+void FairDbStreamer::Fill(UInt_t* arr)
+{
+  // Decrypt str
+  Int_t arr_size = GetSize();
+  Int_t ll = arr_size * sizeof(Int_t);
+  Char_t data[ll];
+  // Decryption str
+  std::string str_hex(fString.Data());
+  Util::BinFromHex(str_hex,data);
+  // Map to array
+  UInt_t r_array[arr_size];
+  for(int i=0; i<arr_size; i++) { r_array[i]=0; }
+  TBufferFile b_read(TBuffer::kRead,ll,data,kFALSE);
+  b_read.ReadFastArray(r_array,arr_size);
+  for(Int_t i=0; i<arr_size; i++) { arr[i]=r_array[i]; }
+}
+
+
+void FairDbStreamer::Fill(Short_t* arr)
+{
+  // Decrypt str
+  Int_t arr_size = GetSize();
+  Int_t ll = arr_size * sizeof(Int_t);
+  Char_t data[ll];
+  // Decryption str
+  std::string str_hex(fString.Data());
+  Util::BinFromHex(str_hex,data);
+  // Map to array
+  Short_t r_array[arr_size];
+  for(int i=0; i<arr_size; i++) { r_array[i]=0; }
+  TBufferFile b_read(TBuffer::kRead,ll,data,kFALSE);
+  b_read.ReadFastArray(r_array,arr_size);
+  for(Int_t i=0; i<arr_size; i++) { arr[i]=r_array[i]; }
+}
+
+void FairDbStreamer::Fill(UShort_t* arr)
+{
+  // Decrypt str
+  Int_t arr_size = GetSize();
+  Int_t ll = arr_size * sizeof(Int_t);
+  Char_t data[ll];
+  // Decryption str
+  std::string str_hex(fString.Data());
+  Util::BinFromHex(str_hex,data);
+  // Map to array
+  UShort_t r_array[arr_size];
+  for(int i=0; i<arr_size; i++) { r_array[i]=0; }
+  TBufferFile b_read(TBuffer::kRead,ll,data,kFALSE);
+  b_read.ReadFastArray(r_array,arr_size);
+  for(Int_t i=0; i<arr_size; i++) { arr[i]=r_array[i]; }
+}
+
+
+void FairDbStreamer::Fill(Bool_t* arr)
+{
+  // Decrypt str
+  Int_t arr_size = GetSize();
+  Int_t ll = arr_size * sizeof(Int_t);
+  Char_t data[ll];
+  // Decryption str
+  std::string str_hex(fString.Data());
+  Util::BinFromHex(str_hex,data);
+  // Map to array
+  Bool_t r_array[arr_size];
+  for(int i=0; i<arr_size; i++) { r_array[i]=0; }
+  TBufferFile b_read(TBuffer::kRead,ll,data,kFALSE);
+  b_read.ReadFastArray(r_array,arr_size);
+  for(Int_t i=0; i<arr_size; i++) { arr[i]=r_array[i]; }
+}
+
+void FairDbStreamer::Fill(Float_t* arr)
+{
+  // Decrypt str
+  Int_t arr_size = GetSize();
+  Int_t ll = arr_size * sizeof(Int_t);
+  Char_t data[ll];
+  // Decryption str
+  std::string str_hex(fString.Data());
+  Util::BinFromHex(str_hex,data);
+  // Map to array
+  Float_t r_array[arr_size];
+  for(int i=0; i<arr_size; i++) { r_array[i]=0; }
+  TBufferFile b_read(TBuffer::kRead,ll,data,kFALSE);
+  b_read.ReadFastArray(r_array,arr_size);
+  for(Int_t i=0; i<arr_size; i++) { arr[i]=r_array[i]; }
+}
+
+void FairDbStreamer::Fill(Double_t* arr)
+{
+  // Decrypt str
+  Int_t arr_size = GetSize();
+  Int_t ll = arr_size * sizeof(Int_t);
+  Char_t data[ll];
+  // Decryption str
+  std::string str_hex(fString.Data());
+  Util::BinFromHex(str_hex,data);
+  // Map to array
+  Double_t r_array[arr_size];
+  for(int i=0; i<arr_size; i++) { r_array[i]=0; }
+  TBufferFile b_read(TBuffer::kRead,ll,data,kFALSE);
+  b_read.ReadFastArray(r_array,arr_size);
+  for(Int_t i=0; i<arr_size; i++) { arr[i]=r_array[i]; }
+}
+
+
 
 void FairDbStreamer::Fill(TObject* obj)
 {
