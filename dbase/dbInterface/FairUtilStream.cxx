@@ -35,27 +35,6 @@ std::string Util::read_quoted_string(std::istream& is)
   }
 }
 
-/*
-void Util::string_to_binary(const std::string source,  char* destination,  int length)
-{
-  int effective_length = min(length, ( int) source.length() / 2);
-  for( int b = 0; b < effective_length; b++) {
-    sscanf(source.data() + (b * 2), "%02x", ( int*) &destination[b]);
-  }
-}
-
-void Util::binary_to_string(const  char* source,  int length, std::string& destination)
-{
-  destination.clear();
-  for( int i = 0; i < length; i++) {
-    char digit[3];
-    sprintf(digit, "%02x", source[i]);
-    destination.append(digit);
-  }
-}
-*/
-
-
 
 // ------------------------------------------------------------------
 /*!
