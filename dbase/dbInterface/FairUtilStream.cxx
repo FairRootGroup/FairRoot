@@ -35,7 +35,7 @@ std::string Util::read_quoted_string(std::istream& is)
   }
 }
 
-
+/*
 void Util::string_to_binary(const std::string source,  char* destination,  int length)
 {
   int effective_length = min(length, ( int) source.length() / 2);
@@ -53,7 +53,7 @@ void Util::binary_to_string(const  char* source,  int length, std::string& desti
     destination.append(digit);
   }
 }
-
+*/
 
 
 
