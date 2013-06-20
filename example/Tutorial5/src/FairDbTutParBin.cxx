@@ -36,13 +36,12 @@ FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char
   // values
   fMyHisto = new TH1F("test","test",10,0,10);
 
-  // Reset all values
+  clear();
 }
 
 FairDbTutParBin::~FairDbTutParBin()
 {
-  if (fMyHisto) { delete fMyHisto; }
-  fMyHisto=0;
+  if (fMyHisto) { delete fMyHisto; fMyHisto=0; }
 }
 
 
@@ -57,7 +56,8 @@ string FairDbTutParBin::GetTableDescr(const char* alternateName)
   sql += "  TOPANCHOR      DOUBLE,";
   sql += "  TOPNRFE        INT,";
   sql += "  FETYPE         TEXT,";
-  sql += "  MYARRAY        TEXT,";
+  sql += "  MYIARRAY       TEXT,";
+  sql += "  MYDARRAY       TEXT,";
   sql += "  MYHISTO        TEXT,";
   sql += "  primary key(SEQNO,ROW_COUNTER))";
   return sql;
@@ -90,7 +90,8 @@ void FairDbTutParBin::clear()
   fTopPitch=fTopAnchor=0.0;
   fTopNrFE=0;
   fFeType="";
-  for(Int_t i=0; i<3; i++) { fMyArray[i]=0; }
+  for(Int_t i=0; i<3; i++) { fMyIArray[i]=0; }
+  for(Int_t i=0; i<10; i++) { fMyDArray[i]=0.1; }
   fMyHisto->Reset();
 }
 
@@ -98,9 +99,8 @@ void FairDbTutParBin::clear()
 void FairDbTutParBin::FillDummy()
 {
   // Initializing array
-  fMyArray[0]=11.;
-  fMyArray[1]=22.;
-  fMyArray[2]=44.;
+  for(Int_t i=0; i<3; i++) { fMyIArray[i]=(i+1)*10.; }
+  for(Int_t i=0; i<10; i++) { fMyDArray[i]=0.1*(i+1); }
 
   fMyHisto->Fill(1);
   fMyHisto->Fill(2);
@@ -116,10 +116,18 @@ void FairDbTutParBin::Print()
   std::cout<<"    Top Anchor   = "<<fTopAnchor<< std::endl;
   std::cout<<"    Nr of Frontends (Top Side)   = "<<fTopNrFE<<std::endl;
   std::cout<<"    Frontend type name is        = "<<fFeType<<std::endl;
+
   std::cout<<"    Array of <Int>               : "<<std::endl;
   for(Int_t i=0; i<3; i++) {
-    std::cout<<"                   arr[ "<< i <<  " ] = " << fMyArray[i]<< std::endl;
+    std::cout<<"                   arr[ "<< i <<  " ] = " << fMyIArray[i]<< std::endl;
   }
+
+  std::cout<<"    Array of <Double>               : "<<std::endl;
+  for(Int_t i=0; i<10; i++) {
+    std::cout<<"                   arr[ "<< i <<  " ] = " << fMyDArray[i]<< std::endl;
+  }
+
+
   cout << "      TH1F  histogram ptr# : "  << fMyHisto << endl;
   if (fMyHisto) { fMyHisto->Print(); }
 }
@@ -134,25 +142,26 @@ void FairDbTutParBin::Fill(FairDbResultSet& rs,
   // Instanciate  & clear() the Data Contents
   clear();
 
-  FairDbStreamer dbArray(fMyArray,3);
+  FairDbStreamer dbIArray(fMyIArray,3);
+  FairDbStreamer dbDArray(fMyDArray,10);
   FairDbStreamer dbHisto(fMyHisto);
 
-  rs >> fTopPitch  >> fTopAnchor   >> fTopNrFE  >> fFeType >> dbArray >> dbHisto;
+  rs >> fTopPitch  >> fTopAnchor   >> fTopNrFE  >> fFeType >> dbIArray >> dbDArray>> dbHisto;
 
   // Update data members
-  dbArray.Fill(fMyArray);
+  dbIArray.Fill(fMyIArray);
+  dbDArray.Fill(fMyDArray);
   dbHisto.Fill(fMyHisto);
 
-
-  fMyHisto->Print();
 }
 
 void FairDbTutParBin::Store(FairDbOutRowStream& ors,
                             const FairDbValidityRec* vrec) const
 {
-  FairDbStreamer dbArray(fMyArray,3);
+  FairDbStreamer dbIArray(fMyIArray,3);
+  FairDbStreamer dbDArray(fMyDArray,10);
   FairDbStreamer dbHisto(fMyHisto);
-  ors << fTopPitch  << fTopAnchor   << fTopNrFE  << fFeType << dbArray << dbHisto;
+  ors << fTopPitch  << fTopAnchor   << fTopNrFE  << fFeType << dbIArray << dbDArray << dbHisto;
 }
 
 
@@ -167,8 +176,8 @@ void FairDbTutParBin::Fill(UInt_t rid)
   // Just use the latest row entry
   if ( numRows > 1 ) { numRows = 1; }
 
-  for (int i = 0; i < numRows; ++i) {
-    FairDbTutParBin* cgd = (FairDbTutParBin*) rsCal.GetRow(i);
+  for (Int_t j = 0; j < numRows; ++j) {
+    FairDbTutParBin* cgd = (FairDbTutParBin*) rsCal.GetRow(j);
     if (!cgd) { continue; }
 
     //cout << "Top Pitch " << cgd->GetTopPitch()
@@ -181,8 +190,10 @@ void FairDbTutParBin::Fill(UInt_t rid)
     fTopAnchor =  cgd->GetTopAnchor();
     fTopNrFE =  cgd->GetNrTopFE();
     fFeType = cgd->GetFeType();
-    Int_t* arr = cgd->GetMyArray();
-    for(Int_t i=0; i<3; i++) { fMyArray[i]=arr[i]; }
+    Int_t* i_arr = cgd->GetMyIArray();
+    Double_t* d_arr = cgd->GetMyDArray();
+    for(Int_t i=0; i<3; i++) { fMyIArray[i]=i_arr[i]; }
+    for(Int_t i=0; i<10; i++) { fMyDArray[i]=d_arr[i];}
     fMyHisto = cgd->GetMyHisto();
   }
 
@@ -238,7 +249,6 @@ void FairDbTutParBin::Store(UInt_t rid)
                                     ValTimeStamp(0,0),0,"test parameter binary", "FAIRDBTUTPARBIN");
   aW.SetDbNo(dbEntry);
   aW.SetLogComment("Test Parameter");
-  //  aW.SetContObj(this);
   aW << (*this);
   if ( ! aW.Close() ) {
     fail = true;
