@@ -46,7 +46,8 @@ class FairDbTutParBin : public FairParGenericSet
     Double_t GetTopAnchor()       const {return fTopAnchor;}
     Int_t    GetNrTopFE()         const {return fTopNrFE;}
     string   GetFeType()          const {return fFeType;}
-    Int_t*   GetMyArray()         {return fMyArray;}
+    Int_t*   GetMyIArray()         {return fMyIArray;}
+    Double_t*   GetMyDArray()         {return fMyDArray;}
     TH1F*    GetMyHisto()         {return fMyHisto;}
 
 
@@ -54,7 +55,8 @@ class FairDbTutParBin : public FairParGenericSet
     void SetTopAnchor(Double_t x) {fTopAnchor = x;}
     void SetNrTopFE(Int_t x)      {fTopNrFE = x;}
     void SetFeType(string x)     {fFeType = x;}
-    void SetMyArray(Int_t val, Int_t i) {fMyArray[i]= val;}
+    void SetMyIArray(Int_t val, Int_t i) {fMyIArray[i]= val;}
+    void SetMyDArray(Double_t val, Int_t i) {fMyDArray[i]= val;}
 
 
     // SQL descriptors
@@ -88,7 +90,8 @@ class FairDbTutParBin : public FairParGenericSet
     Double_t fTopAnchor;    // Anchor point of top strip#0
     Int_t    fTopNrFE;      // Number of FE attached to top wafer side
     string   fFeType;       // Frontend type name
-    Int_t    fMyArray[3];   // Array of fixed values
+    Int_t    fMyIArray[3];   // Array of Int_t fixed values
+    Double_t fMyDArray[10];  // Array of Double_t fixed values
     TH1F*   fMyHisto;      // An Histogram
     ClassDef(FairDbTutParBin,1); //
 };
