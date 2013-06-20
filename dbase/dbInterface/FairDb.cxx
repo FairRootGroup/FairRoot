@@ -263,6 +263,7 @@ TString FairDb::StreamAsString(const Double_t* arr, Int_t size)
 
   static std::string astr;
   Util::BinToHex(buff,ll,astr);
+
   return astr.c_str();
 }
 
