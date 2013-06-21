@@ -22,7 +22,7 @@ class FairSource : public TObject
     inline void AddUnpacker(FairUnpack* unpacker) { fUnpackers->Add(unpacker); }
 
     virtual Bool_t Init();
-    virtual Bool_t Read() = 0;
+    virtual Bool_t ReadEvent() = 0;
     virtual void Close() = 0;
 
   protected:

@@ -22,7 +22,7 @@ class FairRemoteSource : public FairSource
     virtual ~FairRemoteSource();
 
     virtual Bool_t Init();
-    virtual Bool_t Read();
+    virtual Bool_t ReadEvent();
     virtual void Close();
 
   private:
