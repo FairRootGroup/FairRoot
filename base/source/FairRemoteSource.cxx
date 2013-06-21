@@ -3,21 +3,20 @@
 // -----                          FairRemoteSource                         -----
 // -----                    Created 12.04.2013 by D.Kresan                 -----
 // -----------------------------------------------------------------------------
-#include "FairRemoteSource.h"
-
-#include "MRevBuffer.h"                 // for MRevBuffer, REvent
-
-#include <stddef.h>                     // for NULL
-
+#include <iostream>
 using namespace std;
 
+#include "TSocket.h"
+
+#include "MRevBuffer.h"
+#include "FairRemoteSource.h"
+
+
 FairRemoteSource::FairRemoteSource(char* node)
-  : FairSource(),
-    fNode(node),
-    fSocket(NULL),
-    fBuffer(new MRevBuffer(1)),
-    fREvent(NULL)
+  : FairSource()
 {
+  fBuffer = new MRevBuffer(1);
+  fNode = node;
 }
 
 
@@ -43,7 +42,7 @@ Bool_t FairRemoteSource::Init()
 }
 
 
-Bool_t FairRemoteSource::Read()
+Bool_t FairRemoteSource::ReadEvent()
 {
   fREvent = fBuffer->RevGet(fSocket, 0, 0);
   fBuffer->RevStatus(0);

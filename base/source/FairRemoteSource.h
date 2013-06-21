@@ -7,13 +7,13 @@
 #ifndef FAIRREMOTESOURCE_H
 #define FAIRREMOTESOURCE_H
 
-#include "FairSource.h"                 // for FairSource
+#include "FairSource.h"
 
-#include "Rtypes.h"                     // for Bool_t, etc
 
+class TSocket;
 class MRevBuffer;
 class REvent;
-class TSocket;
+
 
 class FairRemoteSource : public FairSource
 {
@@ -22,7 +22,7 @@ class FairRemoteSource : public FairSource
     virtual ~FairRemoteSource();
 
     virtual Bool_t Init();
-    virtual Bool_t Read();
+    virtual Bool_t ReadEvent();
     virtual void Close();
 
   private:
@@ -30,9 +30,6 @@ class FairRemoteSource : public FairSource
     TSocket* fSocket;
     MRevBuffer* fBuffer;
     REvent* fREvent;
-
-    FairRemoteSource(const FairRemoteSource&);
-    FairRemoteSource& operator=(const FairRemoteSource&);
 
   public:
     ClassDef(FairRemoteSource, 0)

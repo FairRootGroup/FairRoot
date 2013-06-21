@@ -7,12 +7,11 @@
 #ifndef FAIRSOURCE_H
 #define FAIRSOURCE_H
 
-#include "TObject.h"                    // for TObject
+#include "TObject.h"
+#include "TObjArray.h"
 
-#include "FairUnpack.h"                 // for FairUnpack
+#include "FairUnpack.h"
 
-#include "Rtypes.h"                     // for Int_t, Bool_t, etc
-#include "TObjArray.h"                  // for TObjArray
 
 class FairSource : public TObject
 {
@@ -23,7 +22,7 @@ class FairSource : public TObject
     inline void AddUnpacker(FairUnpack* unpacker) { fUnpackers->Add(unpacker); }
 
     virtual Bool_t Init();
-    virtual Bool_t Read() = 0;
+    virtual Bool_t ReadEvent() = 0;
     virtual void Close() = 0;
 
   protected:
@@ -33,9 +32,6 @@ class FairSource : public TObject
 
   private:
     TObjArray* fUnpackers;
-
-    FairSource(const FairSource&);
-    FairSource& operator=(const FairSource&);
 
   public:
     ClassDef(FairSource, 0)

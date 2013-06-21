@@ -80,14 +80,14 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
 }
 
 
-Bool_t FairLmdSource::Read()
+Bool_t FairLmdSource::ReadEvent()
 {
   void* evtptr = &fxEvent;
   void* buffptr = &fxBuffer;
 
   Int_t status = f_evt_get_event(fxInputChannel, (Int_t**)evtptr,(Int_t**) buffptr);
-  Int_t fuEventCounter = fxEvent->l_count;
-  Int_t fCurrentMbsEventNo = fuEventCounter;
+  //Int_t fuEventCounter = fxEvent->l_count;
+  //Int_t fCurrentMbsEventNo = fuEventCounter;
 
   if(0 != status) {
     if(fCurrentFile >= fFileNames->GetSize()) {
@@ -99,7 +99,7 @@ Bool_t FairLmdSource::Read()
       return kFALSE;
     } else {
       fCurrentFile += 1;
-      return Read();
+      return ReadEvent();
     }
 
     return kFALSE;
@@ -110,7 +110,7 @@ Bool_t FairLmdSource::Read()
   Short_t setype;
   Short_t sesubtype;
   Char_t sesubcrate;
-  Int_t* SubEventDataPtr = new Int_t;
+  //Int_t* SubEventDataPtr = new Int_t;
   for(Int_t i = 1; i <= nrSubEvts; i++) {
     void* SubEvtptr = &fxSubEvent;
     void* EvtDataptr = &fxEventData;
