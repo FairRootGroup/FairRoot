@@ -86,6 +86,8 @@ FairRunOnline::FairRunOnline(FairSource* source)
   fSource = source;
 
   fFolder = new TFolder("HISTO", "HISTO");
+  
+  fGenerateHtml = kFALSE;
 }
 //_____________________________________________________________________________
 
@@ -550,7 +552,7 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
     return;
   } else {
     for (Int_t i = 0; i < Ev_start; i++) {
-      if(! fSource->Read()) {
+      if(! fSource->ReadEvent()) {
         continue;
       }
       /**
@@ -588,37 +590,77 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
   fRootManager->Write();
 
   fSource->Close();
-
-  TString path = TString("./") + fFolder->GetName();
-  ProcessFolder(fFolder, path);
+  
+  WriteObjects();
+  
+  if(fGenerateHtml) {
+    GenerateHtml();
+  }
 }
 //_____________________________________________________________________________
 
 
 
 //_____________________________________________________________________________
-void FairRunOnline::ProcessFolder(TFolder* folder, TString path)
+void FairRunOnline::SetGenerateHtml(Bool_t flag)
+{
+  fGenerateHtml = flag;
+}
+//_____________________________________________________________________________
+
+
+
+//_____________________________________________________________________________
+void FairRunOnline::GenerateHtml()
+{
+  TString htmlName = TString(fOutname);
+  TString rootName = TString(fOutname);
+  Int_t last = htmlName.Last('/');
+  if(-1 == last) {
+    htmlName = "index.html";
+  } else {
+    htmlName.Remove(last+1, htmlName.Length()-last-1);
+    htmlName += TString("index.html");
+    rootName.Remove(0, last+1);
+  }
+  
+  ofstream *ofile = new ofstream(htmlName);
+  (*ofile) << "<?xml version=\"1.0\" encoding=\"utf-8\"?>" << endl
+  << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"" << endl
+  << "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1transitional.dtd\">" << endl
+  << "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">" << endl
+  << "<head>" << endl
+  << "<title>Read a ROOT file in Javascript (Demonstration)</title>" << endl
+  << "<meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\" />" << endl
+  << "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://root.cern.ch/js/style/JSRootInterface.css\" />" << endl
+  << "<script type=\"text/javascript\" src=\"http://root.cern.ch/js/scripts/JSRootInterface.js\"></script>" << endl
+  << "</head>" << endl
+  << "<body onload=\"BuildSimpleGUI()\">" << endl
+  << "<div id=\"simpleGUI\"" << endl
+  << "files=\"" << rootName << "\"></div>" << endl
+  << "</body>" << endl
+  << "</html>" << endl;
+  ofile->close();
+}
+//_____________________________________________________________________________
+
+
+
+//_____________________________________________________________________________
+void FairRunOnline::WriteObjects()
 {
   // Create iterator with the folder content
-  TIter iter(folder->GetListOfFolders());
+  TIter iter(fFolder->GetListOfFolders());
 
   // Pointer to an object
   TObject* object;
 
   // Class name of the object
   TString className;
-
-  // Subfolder
-  TFolder* subFolder;
-
+  
   // Histogram pointers
-  TH1F* h1;
-  TH2F* h2;
-
-  // Create folder with current path
-  char strCmd[1000];
-  sprintf(strCmd, "mkdir -p %s", path.Data());
-  system(strCmd);
+  TH1* h1;
+  TH2* h2;
 
   // Loop over objects in the folder
   while((object = iter())) {
@@ -627,26 +669,14 @@ void FairRunOnline::ProcessFolder(TFolder* folder, TString path)
     className = object->ClassName();
 
     // Recognise objects
-    if(0 == className.CompareTo("TFolder")) {
-      // If a subfolder - recursive call
-      subFolder = (TFolder*) object;
-      ProcessFolder(subFolder, path + "/" + subFolder->GetName());
-    } else if(0 == className.CompareTo("TH1F")) {
+    if(0 == className.CompareTo("TH1F")) {
       // If a histogram - plot it and save canvas
       h1 = (TH1F*) object;
-      TCanvas* c1 = new TCanvas("c1", "", 10, 10, 450, 450);
-      h1->Draw();
-      sprintf(strCmd, "%s/%s.jpg", path.Data(), h1->GetName());
-      c1->SaveAs(strCmd);
-      delete c1;
+      h1->Write();
     } else if(0 == className.CompareTo("TH2F")) {
       // If a histogram - plot it and save canvas
       h2 = (TH2F*) object;
-      TCanvas* c1 = new TCanvas("c1", "", 10, 10, 450, 450);
-      h2->Draw("col");
-      sprintf(strCmd, "%s/%s.jpg", path.Data(), h2->GetName());
-      c1->SaveAs(strCmd);
-      delete c1;
+      h2->Write();
     }
   }
 }

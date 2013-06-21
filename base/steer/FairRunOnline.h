@@ -167,6 +167,8 @@ class FairRunOnline : public FairRun
     }
 
     void AddObject(TObject* object);
+  
+    void SetGenerateHtml(Bool_t flag = kTRUE);
 
 
   private:
@@ -223,8 +225,12 @@ class FairRunOnline : public FairRun
     FairSource* fSource;
 
     TFolder* fFolder;
+  
+    Bool_t fGenerateHtml;
 
-    void ProcessFolder(TFolder* folder, TString path);
+    void WriteObjects();
+  
+    void GenerateHtml();
 
     ClassDef(FairRunOnline, 0)
 
