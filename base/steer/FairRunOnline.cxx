@@ -18,6 +18,7 @@
 #include "FairMCEventHeader.h"
 #include "FairParIo.h"
 #include "FairAnaSelector.h"
+#include "FairField.h"
 
 #include "FairSource.h"
 
@@ -333,9 +334,9 @@ void FairRunOnline::Init()
     fTask->SetParTask();
 
     fRtdb->initContainers( fRunId );
-    if (gGeoManager==0) {
-      par->GetGeometry();
-    }
+//     if (gGeoManager==0) {
+//       par->GetGeometry();
+//     }
     //  fRootManager->SetBranchNameList(par->GetBranchNameList());
 
   } else if (fMixedInput) {
@@ -365,11 +366,11 @@ void FairRunOnline::Init()
     // Init the containers in Tasks
     fRtdb->initContainers(fRunId);
 
-    if (gGeoManager==0) {
-      fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
-      par->GetGeometry();
+//     if (gGeoManager==0) {
+//       fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
+//       par->GetGeometry();
 
-    }
+//     }
     if (gGeoManager==0) {
       fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
     }
@@ -452,9 +453,9 @@ void FairRunOnline::InitContainers()
     fTask->ReInitTask();
     //    fTask->SetParTask();
     fRtdb->initContainers( fRunId );
-    if (gGeoManager==0) {
-      par->GetGeometry();
-    }
+//     if (gGeoManager==0) {
+//       par->GetGeometry();
+//     }
   }
 }
 //_____________________________________________________________________________
