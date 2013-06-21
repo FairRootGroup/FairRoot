@@ -5,50 +5,38 @@
 
 #include "FairRunOnline.h"
 
-#include "FairAnaSelector.h"            // for FairAnaSelector
-#include "FairBaseParSet.h"             // for FairBaseParSet
-#include "FairGeoParSet.h"              // for FairGeoParSet
-#include "FairEventHeader.h"            // for FairEventHeader
-#include "FairField.h"                  // for FairField
-#include "FairFieldFactory.h"           // for FairFieldFactory
-#include "FairFileHeader.h"             // for FairFileHeader
-#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
-#include "FairMCEventHeader.h"          // for FairMCEventHeader
-#include "FairParIo.h"                  // for FairParIo
-#include "FairRootManager.h"            // for FairRootManager
-#include "FairRunIdGenerator.h"         // for FairRunIdGenerator
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include "FairSource.h"                 // for FairSource
-#include "FairTask.h"                   // for FairTask
-#include "FairTrajFilter.h"             // for FairTrajFilter
+#include "FairRootManager.h"
+#include "FairTask.h"
+#include "FairBaseParSet.h"
+#include "FairEventHeader.h"
+#include "FairFieldFactory.h"
+#include "FairRuntimeDb.h"
+#include "FairTrajFilter.h"
+#include "FairRunIdGenerator.h"
+#include "FairLogger.h"
+#include "FairFileHeader.h"
+#include "FairMCEventHeader.h"
+#include "FairParIo.h"
+#include "FairAnaSelector.h"
 
-#include "RVersion.h"                   // for ROOT_VERSION, etc
-#include "Riosfwd.h"                    // for ostream
-#include "TCanvas.h"                    // for TCanvas
-#include "TChain.h"                     // for TChain
-#include "TCollection.h"                // for TIter
-#include "TDirectory.h"                 // for TDirectory, gDirectory
-#include "TFile.h"                      // for TFile, gFile
-#include "TFolder.h"                    // for TFolder
-#include "TGeoManager.h"                // for gGeoManager, TGeoManager
-#include "TH1.h"                        // for TH1F
-#include "TH2.h"                        // for TH2F
-#include "TKey.h"                       // for TKey
-#include "TList.h"                      // for TList
-#include "TNamed.h"                     // for TNamed
-#include "TObjArray.h"                  // for TObjArray
-#include "TObject.h"                    // for TObject
-#include "TProof.h"                     // for TProof
-#include "TROOT.h"                      // for TROOT, gROOT
-#include "TSeqCollection.h"             // for TSeqCollection
-#include "TSystem.h"                    // for TSystem, gSystem
-#include "TTree.h"                      // for TTree
+#include "FairSource.h"
 
-#include <stdio.h>                      // for sprintf
-#include <stdlib.h>                     // for NULL, exit, system
-#include <string.h>                     // for strcmp
-#include <iostream>                     // for operator<<, basic_ostream, etc
-#include <list>                         // for list
+#include "TROOT.h"
+#include "TTree.h"
+#include "TSeqCollection.h"
+#include "TGeoManager.h"
+#include "TKey.h"
+#include "TF1.h"
+#include "TSystem.h"
+#include "TProof.h"
+#include "TProofOutputFile.h"
+#include "TFolder.h"
+#include "TCanvas.h"
+#include "TH1F.h"
+#include "TH2F.h"
+
+#include <iostream>
+#include <list>
 
 using std::cout;
 using std::endl;
@@ -89,17 +77,17 @@ FairRunOnline::FairRunOnline(FairSource* source)
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
    fProofOutputStatus("copy"),
-   fFinishProcessingLMDFile(kFALSE),
-   fSource(source),
-   fFolder(new TFolder("HISTO", "HISTO"))
+   fFinishProcessingLMDFile(kFALSE)
 {
 
   fgRinstance=this;
   fAna=kTRUE;
 
-//  fSource = source;
+  fSource = source;
 
-//  fFolder = new TFolder("HISTO", "HISTO");
+  fFolder = new TFolder("HISTO", "HISTO");
+
+  fGenerateHtml = kFALSE;
 }
 //_____________________________________________________________________________
 
@@ -130,9 +118,7 @@ FairRunOnline::FairRunOnline(const char* type, const char* proofName)
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
    fProofOutputStatus("copy"),
-   fFinishProcessingLMDFile(kFALSE),
-   fSource(NULL),
-   fFolder(NULL)
+   fFinishProcessingLMDFile(kFALSE)
 {
   TString anaType = type;
   anaType.ToLower();
@@ -212,7 +198,7 @@ void FairRunOnline::Init()
   } else {
     fIsInitialized=kTRUE;
   }
-  fRtdb= GetRuntimeDb();
+
   if ( fRunOnProofWorker ) {
     fInFileIsOpen = fRootManager->OpenInTree();
   } else {
@@ -244,12 +230,7 @@ void FairRunOnline::Init()
         break;
       }
     }
-  } else {
-    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
   }
-
-
-
   if (fInFileIsOpen) {
     if ( fRunOnProofWorker ) {
       if (fLoadGeo && gGeoManager==0) {
@@ -351,10 +332,10 @@ void FairRunOnline::Init()
     fRtdb->initContainers(fRunId);
     fTask->SetParTask();
 
-//    fRtdb->initContainers( fRunId );
-//    if (gGeoManager==0) {
-//      par->GetGeometry();
-//    }
+    fRtdb->initContainers( fRunId );
+    if (gGeoManager==0) {
+      par->GetGeometry();
+    }
     //  fRootManager->SetBranchNameList(par->GetBranchNameList());
 
   } else if (fMixedInput) {
@@ -384,14 +365,14 @@ void FairRunOnline::Init()
     // Init the containers in Tasks
     fRtdb->initContainers(fRunId);
 
-    // if (gGeoManager==0) {
-    //  fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
-    //  FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+    if (gGeoManager==0) {
+      fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
+      par->GetGeometry();
 
-    // }
-    // if (gGeoManager==0) {
-    //   fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
-    // }
+    }
+    if (gGeoManager==0) {
+      fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
+    }
     fTask->SetParTask();
     fRtdb->initContainers( fRunId );
 
@@ -472,7 +453,7 @@ void FairRunOnline::InitContainers()
     //    fTask->SetParTask();
     fRtdb->initContainers( fRunId );
     if (gGeoManager==0) {
-      //   par->GetGeometry();
+      par->GetGeometry();
     }
   }
 }
@@ -610,18 +591,66 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
 
   fSource->Close();
 
-  TString path = TString("./") + fFolder->GetName();
-  ProcessFolder(fFolder, path);
+  WriteObjects();
+
+  if(fGenerateHtml) {
+    GenerateHtml();
+  }
 }
 //_____________________________________________________________________________
 
 
 
 //_____________________________________________________________________________
-void FairRunOnline::ProcessFolder(TFolder* folder, TString path)
+void FairRunOnline::SetGenerateHtml(Bool_t flag)
+{
+  fGenerateHtml = flag;
+}
+//_____________________________________________________________________________
+
+
+
+//_____________________________________________________________________________
+void FairRunOnline::GenerateHtml()
+{
+  TString htmlName = TString(fOutname);
+  TString rootName = TString(fOutname);
+  Int_t last = htmlName.Last('/');
+  if(-1 == last) {
+    htmlName = "index.html";
+  } else {
+    htmlName.Remove(last+1, htmlName.Length()-last-1);
+    htmlName += TString("index.html");
+    rootName.Remove(0, last+1);
+  }
+
+  ofstream* ofile = new ofstream(htmlName);
+  (*ofile) << "<?xml version=\"1.0\" encoding=\"utf-8\"?>" << endl
+           << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"" << endl
+           << "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1transitional.dtd\">" << endl
+           << "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">" << endl
+           << "<head>" << endl
+           << "<title>Read a ROOT file in Javascript (Demonstration)</title>" << endl
+           << "<meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\" />" << endl
+           << "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://root.cern.ch/js/style/JSRootInterface.css\" />" << endl
+           << "<script type=\"text/javascript\" src=\"http://root.cern.ch/js/scripts/JSRootInterface.js\"></script>" << endl
+           << "</head>" << endl
+           << "<body onload=\"BuildSimpleGUI()\">" << endl
+           << "<div id=\"simpleGUI\"" << endl
+           << "files=\"" << rootName << "\"></div>" << endl
+           << "</body>" << endl
+           << "</html>" << endl;
+  ofile->close();
+}
+//_____________________________________________________________________________
+
+
+
+//_____________________________________________________________________________
+void FairRunOnline::WriteObjects()
 {
   // Create iterator with the folder content
-  TIter iter(folder->GetListOfFolders());
+  TIter iter(fFolder->GetListOfFolders());
 
   // Pointer to an object
   TObject* object;
@@ -629,17 +658,9 @@ void FairRunOnline::ProcessFolder(TFolder* folder, TString path)
   // Class name of the object
   TString className;
 
-  // Subfolder
-  TFolder* subFolder;
-
   // Histogram pointers
-  TH1F* h1;
-  TH2F* h2;
-
-  // Create folder with current path
-  char strCmd[1000];
-  sprintf(strCmd, "mkdir -p %s", path.Data());
-  system(strCmd);
+  TH1* h1;
+  TH2* h2;
 
   // Loop over objects in the folder
   while((object = iter())) {
@@ -648,26 +669,14 @@ void FairRunOnline::ProcessFolder(TFolder* folder, TString path)
     className = object->ClassName();
 
     // Recognise objects
-    if(0 == className.CompareTo("TFolder")) {
-      // If a subfolder - recursive call
-      subFolder = (TFolder*) object;
-      ProcessFolder(subFolder, path + "/" + subFolder->GetName());
-    } else if(0 == className.CompareTo("TH1F")) {
+    if(0 == className.CompareTo("TH1F")) {
       // If a histogram - plot it and save canvas
       h1 = (TH1F*) object;
-      TCanvas* c1 = new TCanvas("c1", "", 10, 10, 450, 450);
-      h1->Draw();
-      sprintf(strCmd, "%s/%s.jpg", path.Data(), h1->GetName());
-      c1->SaveAs(strCmd);
-      delete c1;
+      h1->Write();
     } else if(0 == className.CompareTo("TH2F")) {
       // If a histogram - plot it and save canvas
       h2 = (TH2F*) object;
-      TCanvas* c1 = new TCanvas("c1", "", 10, 10, 450, 450);
-      h2->Draw("col");
-      sprintf(strCmd, "%s/%s.jpg", path.Data(), h2->GetName());
-      c1->SaveAs(strCmd);
-      delete c1;
+      h2->Write();
     }
   }
 }
