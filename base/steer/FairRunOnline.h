@@ -9,24 +9,24 @@
  * @since 28.02.05
  */
 
-#include "FairRun.h"
-#include "FairRunInfo.h"
-#include "FairRootManager.h"
+#include "FairRun.h"                    // for FairRun
 
-#include "TProof.h"
-#include "TString.h"
-#include <iostream>
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRunInfo.h"                // for FairRunInfo
 
-class FairRuntimeDb;
+#include "Rtypes.h"                     // for Bool_t, Double_t, UInt_t, etc
+#include "TString.h"                    // for TString
+
 class FairEventHeader;
-class FairMCEventHeader;
 class FairField;
-class TFile;
-class FairLogger;
-class TF1;
-class TTree;
+class FairMCEventHeader;
 class FairSource;
+class TF1;
+class TFile;
 class TFolder;
+class TObject;
+class TProof;
+class TTree;
 
 class FairRunOnline : public FairRun
 {
@@ -168,8 +168,6 @@ class FairRunOnline : public FairRun
 
     void AddObject(TObject* object);
 
-    void SetGenerateHtml(Bool_t flag = kTRUE);
-
 
   private:
 
@@ -226,11 +224,7 @@ class FairRunOnline : public FairRun
 
     TFolder* fFolder;
 
-    Bool_t fGenerateHtml;
-
-    void WriteObjects();
-
-    void GenerateHtml();
+    void ProcessFolder(TFolder* folder, TString path);
 
     ClassDef(FairRunOnline, 0)
 
