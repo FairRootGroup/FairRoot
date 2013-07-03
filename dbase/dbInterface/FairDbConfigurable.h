@@ -11,7 +11,6 @@
 #endif
 #endif
 
-// IWYU pragma: no_include "Rtypes.h"
 
 class FairDbConfDialog;
 

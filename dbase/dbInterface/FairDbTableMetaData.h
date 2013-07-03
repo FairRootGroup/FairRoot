@@ -26,7 +26,6 @@ class FairDbTableMetaData
     Bool_t HasRowCounter() const {return  this->NumCols() >=2 && this->ColName(2) == "ROW_COUNTER"; }
     UInt_t NumCols() const { return fNumCols;}
 
-    // Column attribute getters (columns number starts from 1 NOT zero)
 
     const FairDbFieldType& ColFieldType(Int_t colNum) const    { return GetAttributes(colNum).Type;}
     UInt_t ColFieldConcept(Int_t colNum) const { return GetAttributes(colNum).Concept;}
@@ -34,7 +33,6 @@ class FairDbTableMetaData
     Bool_t ColMustDelimit(Int_t colNum) const  { return GetAttributes(colNum).MustDelimit;}
     std::string ColName(Int_t colNum) const         { return GetAttributes(colNum).Name;}
 
-    // Recreate from SQL used to create table.
     void SetFromSql(const std::string& sql);
 
   protected:

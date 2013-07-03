@@ -19,15 +19,13 @@ class FairDbSqlContext : public FairDbString
   public:
 
 
-// Types and enum
-
     enum  IntervalType { kBefore,      kAfter,    kMisses,
                          kThroughout,  kWithin,   kOverlaps,
                          kStarts,      kEnds,
                          kUndefined
                        };
 
-// Constructors and destructors.
+
     FairDbSqlContext(const std::string& ctxt = "");
     FairDbSqlContext(IntervalType interval,
                      ValTimeStamp start,
@@ -37,7 +35,6 @@ class FairDbSqlContext : public FairDbString
 
     virtual ~FairDbSqlContext();
 
-// State testing member functions
 
     ValTimeStamp             GetTimeStart() const { return fTimeStart; }
     ValTimeStamp             GetTimeEnd()   const { return fTimeEnd; }
@@ -45,7 +42,6 @@ class FairDbSqlContext : public FairDbString
     SimFlag::SimFlag_t       GetSimFlag()   const { return fSimType; }
 
 
-// State changing member functions
 
   private:
 

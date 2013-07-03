@@ -47,36 +47,28 @@ class FairDbConfigStream
 
   private:
 
-    FairDbConfigStream(const FairDbConfigStream&);  // Not implimented
-    FairDbConfigStream operator=(const FairDbConfigStream&);  // Not implimented
+    FairDbConfigStream(const FairDbConfigStream&);
+    FairDbConfigStream operator=(const FairDbConfigStream&);
 
-// Data members
-
-    ///  Pointer to the associated configuration set.  May point either
-    ///  to a row of fCFSetTable (or 0) or, after operator <<, to fCFSetModified
+    // Data members
     const FairDbConfigSet*
     fCFSet;
 
-    /// Pointer to ConfigSet table
-    FairDbResultPtr<FairDbConfigSet>
-    fCFSetTable;
-
-    /// Local FairDbConfigSet (empty until/unless filled using operator <<).
+    //  Pointer to ConfigSet table
+    FairDbResultPtr<FairDbConfigSet> fCFSetTable;
+    //  Local FairDbConfigSet
     FairDbConfigSet fCFSetModified;
-
-    /// Associated validity rec (used when writing back to the database).
+    //  Associated validity rec
     FairDbValidityRec fVRec;
-
-    /// Name of the configuration set
+    //  Name of the configuration set
     std::string    fConfigName;
-
-    /// Name of the software system to be configured
+    //  Name of the software system to be configured
     std::string    fSoftwName;
 
-    ClassDef(FairDbConfigStream,0)  // Input/output stream of configuration data
+    ClassDef(FairDbConfigStream,0)
 
 };
 
 ostream& operator<<(ostream& s, const FairDbConfigStream& cfStream);
 
-#endif  // DBICONFIGSTREAM_H
+#endif  // FAIRDBCONFIGSTREAM_H

@@ -13,13 +13,9 @@ class FairDbTimerManager
 
   public:
 
-// Constructors and destructors.
     FairDbTimerManager();
     virtual ~FairDbTimerManager();
 
-// State testing member functions
-
-// State changing member functions
     void Enable(Bool_t flag=kTRUE,
                 Bool_t enableSubWatch = kFALSE) {
       fEnabled = flag;
@@ -31,7 +27,6 @@ class FairDbTimerManager
     void RecMainQuery();
     void StartSubWatch(UInt_t subWatch);
 
-// Global timer manager used for all queries to the DB.
 
     static FairDbTimerManager gTimerManager;
 
@@ -42,11 +37,10 @@ class FairDbTimerManager
     FairDbTimer* Push();
 
 // Data members
-
     Bool_t fEnabled;     // Enable/disable
     Bool_t fSubWatchEnabled;
-    // SubWatch Enable/disable (not used now).
-    std::list<FairDbTimer*> fTimers;      // Push-down stack of timers.
+// Push-down stack of timers.
+    std::list<FairDbTimer*> fTimers;
 
     ClassDef(FairDbTimerManager,0)    // Simple query timer
 

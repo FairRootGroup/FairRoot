@@ -13,6 +13,7 @@ class FairDbResult;
 class FairDbTableProxy;
 class FairDbValidityRec;
 class ValContext;
+class FairDbLogStream;
 
 class FairDbCache
 {
@@ -43,7 +44,8 @@ class FairDbCache
 /// Secondary search.
     const FairDbResult* Search(const FairDbValidityRec& vr,
                                const std::string& sqlQualifiers = "") const;
-//  MsgStream& ShowStatistics(MsgStream& msg) const;
+
+    FairDbLogStream& ShowStatistics(FairDbLogStream& msg) const;
 
 // State changing member functions
     void Adopt(FairDbResult* res,bool registerKey = true);

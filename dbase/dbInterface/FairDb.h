@@ -71,21 +71,14 @@ enum {
 };
 
 
-
-
 // Time gates for each table in secs.
 // Used to trim validity searches.
 Int_t GetTimeGate(const std::string& tableName);
 void SetTimeGate(const  std::string& tableName, Int_t timeGate);
 
-
-
-
 TString GetValDescr(const char* tableName,
                     Bool_t isTemporary = kFALSE);
-
 Bool_t NotGlobalSeqNo(UInt_t seqNo);
-
 
 // Complex type  conversion utility functions
 TString MakeDateTimeString(const ValTimeStamp& timeStamp);
@@ -99,6 +92,9 @@ TString StreamAsString(const Bool_t* arr, Int_t size);
 TString StreamAsString(const Float_t* arr, Int_t size);
 TString StreamAsString(const Double_t* arr, Int_t size);
 TString StreamAsString(const TObject* obj, Int_t& size);
+
+// Logging System
+void SetLogLevel(Int_t level);
 }
 
 #endif  // FAIRDB_H

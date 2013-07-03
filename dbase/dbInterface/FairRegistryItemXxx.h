@@ -16,7 +16,7 @@ class FairRegistry;
 template<class T> class FairRegistryItemXxx : public FairRegistryItem
 {
   public:
-    // Only Want FairRegistry to call Get/Set/etc methods
+
     friend class FairRegistry;
 
     FairRegistryItemXxx();
@@ -39,8 +39,8 @@ template<class T> class FairRegistryItemXxx : public FairRegistryItem
   private:
 
     FairRegistryItemXxx(T* data);
-    T* Get(void);               // Only let FairRegistry call
-    void Set(T* data);          // these methods.
+    T* Get(void);               //
+    void Set(T* data);          //
     FairRegistryItem* Dup(void) const;
 
     T* fData;
@@ -53,8 +53,6 @@ template<class T> class FairRegistryItemXxx : public FairRegistryItem
 ClassDefT2(FairRegistryItemXxx,T)
 
 
-// Provide these so C++ base types act like ROOT types inside
-// a ROOT Streamer function.  This lets the same template to be used.
 TBuffer& operator>>(TBuffer& buf, int*& xptr);
 TBuffer& operator>>(TBuffer& buf, double*& xptr);
 TBuffer& operator>>(TBuffer& buf, float*& xptr);
@@ -107,8 +105,7 @@ void FairRegistryItemXxx<T>::Set(T* data)
 }
 
 
-// These specialized templates are in FairRegistryItemXxx.cxx
-//
+
 template<>
 void FairRegistryItemXxx<const char*>::Streamer(TBuffer& buf);
 template<>
@@ -150,7 +147,7 @@ template<> std::istream& FairRegistryItemXxx<FairRegistry>::ReadStream(std::istr
 { if (!fData) { fData = new FairRegistry(); } return fData->ReadStream(is); }
 #endif
 
-// This assumes that objects spring forth (like ROOT objects)
+
 template<class T>
 void FairRegistryItemXxx<T>::Streamer(TBuffer& buf)
 {

@@ -16,7 +16,7 @@ class FairDbStreamer;
 class FairDbOutRowStream : public FairDbRowStream
 {
 
-//  friend class FairDbConfigSet; //To allow it to use private Store method
+//  friend class FairDbConfigSet;
 
   public:
 
@@ -49,7 +49,7 @@ class FairDbOutRowStream : public FairDbRowStream
     Bool_t fBadData;
     std::string fCSV;
 
-    ClassDef(FairDbOutRowStream,0)  //Output stream for single table row
+    ClassDef(FairDbOutRowStream,0)  //Output stream as single T-row
 
 };
 

@@ -87,63 +87,43 @@ class FairDbLogEntry : public FairDbTableRow
     Bool_t Write(UInt_t dbNo,Int_t logSeqNo=0);
 
   private:
-// Constructors and destructors.
-    FairDbLogEntry(const FairDbLogEntry& from); // No!
+    FairDbLogEntry(const FairDbLogEntry& from);
 
     void SetServerName();
 
 // Data members
-
-/// Database no. written to. =0 if not output
+// Database no. written to. =0 if not output
     UInt_t fDbNo;
-
-/// Seq. No. used to write this object. =0 if not output
+// Seq. No. used to write this object. =0 if not output
     Int_t fSeqNo;
-
-/// Table being updated.
+// Table being updated.
     std::string fLogTableName;
-
-/// Detector type mask of update.
+// Detector type mask of update.
     Int_t fLogDetMask;
-
-/// SimFlag  mask of update.
+// SimFlag  mask of update.
     Int_t fLogSimMask;
-
-/// Version of update
+// Version of update
     FairDb::Version fLogVersion;
-
-/// Minimum Seq. No. being updated.
+// Minimum Seq. No. being updated.
     Int_t fLogSeqNoMin;
-
-/// Maximum Seq. No. being updated.
+// Maximum Seq. No. being updated.
     Int_t fLogSeqNoMax;
-
-/// Number of Seq. Nos. being updated.
+// Number of Seq. Nos. being updated.
     Int_t fLogNumSeqNo;
-
-/// Time of update.
+// Time of update.
     ValTimeStamp fUpdateTime;
-
-/// User performing update.
+// User performing update.
     std::string fUserName;
-
-/// Process performing update.
+// Process performing update.
     std::string fProcessName;
-
-/// Host performing update.
+// Host performing update.
     std::string fHostName;
-
-/// Db server being updated.
+// Db server being updated.
     std::string fServerName;
-
-/// Reason for update.
+// Reason for update.
     std::string fReason;
 
-
-// Note: fLogDetMask,fLogSimMask,fLogVersion,fUpdateTime are used to construct the FairDbValidityRec
-//       of the update; they are not store in main table.
-
-    ClassDef(FairDbLogEntry,0)    // Configuration data.
+    ClassDef(FairDbLogEntry,0)    // Log Entry
 
 };
 

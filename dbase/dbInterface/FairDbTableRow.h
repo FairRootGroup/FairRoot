@@ -24,20 +24,18 @@ class FairDbTableRow : public TObject
 {
   public:
 
-    // Constructors and destructors.
     FairDbTableRow();
     FairDbTableRow(const FairDbTableRow& from);
     FairDbTableRow& operator=(const FairDbTableRow&);
     virtual ~FairDbTableRow();
 
-    // State testing member functions
     virtual       Bool_t CanL2Cache() const { return kFALSE; }
 
     FairDbResult* GetOwner() const { return fOwner; }
     virtual FairDbTableRow* CreateTableRow() const {return NULL;};
     virtual       UInt_t GetIndex(UInt_t defIndex) const {return defIndex;}
 
-    // State modifying member functions
+
     void SetOwner(FairDbResult* owner) {fOwner = owner;}
 
     // I/O  member functions
@@ -51,7 +49,7 @@ class FairDbTableRow : public TObject
     virtual  Int_t GetVersion() const { return  fVersion; }
     void  SetVersion(Int_t vers) { fVersion=vers; }
 
-    // Getters that support Data Transmission Fidelity tests.
+    // Data Transmission Fidelity
     virtual ValContext GetContextDTF(UInt_t rid) { return ValContext();}
     virtual std::string GetTableDescr(const char* alternateName = 0) {return NULL;}
     // <DB> add ons GlobalSeqNo
@@ -85,9 +83,7 @@ class FairDbTableRow : public TObject
 
 
   private:
-/// The owning FairDbResult, if any.
     FairDbResult* fOwner;
-
 
     ClassDef(FairDbTableRow,0)   // FairDbTableRow for a specific database table.
 

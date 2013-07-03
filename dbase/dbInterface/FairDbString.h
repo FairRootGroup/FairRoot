@@ -37,7 +37,7 @@ Bool_t IsFloat(const Char_t* s);
 
 std::string ToLower(const std::string& str);
 std::string ToUpper(const std::string& str);
-//Has to be inline, won't work otherwise
+
 template <class T>
 std::string ToString(const T& t, std::ios_base & (*f)(std::ios_base&) = std::dec)
 {
@@ -71,17 +71,11 @@ class FairDbString
     void Clear() { fString.clear(); }
     std::string& GetString() { return fString; }
 
-
-
   private:
-
     std::string fString;
-
-    ClassDef(FairDbString,0)     // output string stream
+    ClassDef(FairDbString,0)     // output stringstream
 
 };
-
-
 
 #endif // FairDbString
 

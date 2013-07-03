@@ -24,6 +24,7 @@ class FairDbConnection
     FairDbConnection(const std::string& url = "",
                      const std::string& user = "",
                      const std::string& password = "");
+
     virtual ~FairDbConnection();
 
 

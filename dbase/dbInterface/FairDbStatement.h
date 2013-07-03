@@ -16,10 +16,8 @@ class FairDbStatement
 {
   public:
 
-// Constructors and destructors.
     FairDbStatement(FairDbConnection& conDb);
     virtual ~FairDbStatement();
-
 
     FairDb::DbTypes GetDBType() const { return fDbType; }
     std::list<TString> TestTranslateSQL(const TString& sql, FairDb::DbTypes type);
@@ -42,7 +40,7 @@ class FairDbStatement
     FairDb::DbTypes fDbType;
     FairDbExceptionLog fExceptionLog;
 
-    ClassDef(FairDbStatement,0)     // Managed TSQL_Statement
+    ClassDef(FairDbStatement,0)     // Customized TSQL_Statement
 
 };
 

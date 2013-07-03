@@ -15,28 +15,19 @@ class FairRegistry;
 
 class FairDbSimFlagAssociation
 {
-
-
   public:
 
-// Typedefs for tired fingers.
     typedef std::list<SimFlag::SimFlag_t>           SimList_t;
     typedef std::map<SimFlag::SimFlag_t,SimList_t > SimMap_t;
 
-// Constructors and destructors.
     FairDbSimFlagAssociation();
     virtual ~FairDbSimFlagAssociation();
-
-// State testing member functions
 
     SimList_t Get(const SimFlag::SimFlag_t value)const;
     void Print(std::ostream& s)const;
     void Show();
 
-///  Get access to the one and only instance.
     static const FairDbSimFlagAssociation& Instance();
-
-// State changing member functions.
 
     void Clear() { fAssociations.clear(); }
     void Set(const SimFlag::SimFlag_t value, SimList_t list) {
@@ -46,7 +37,6 @@ class FairDbSimFlagAssociation
 
   private:
 
-///  The one and only instance (owned by FairDbTableProxyFairRegistry).
     static const FairDbSimFlagAssociation* fgInstance;
 
 // Data members
