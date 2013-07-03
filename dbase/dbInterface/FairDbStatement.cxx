@@ -1,5 +1,5 @@
 #include "FairDbStatement.h"
-
+#include "FairDbLogService.h"
 #include "FairDbString.h"               // for StringTok
 #include "FairDbTableMetaData.h"        // for string, FairDbTableMetaData
 
@@ -60,7 +60,7 @@ TSQLStatement* FairDbStatement::ExecuteQuery( const TString& sql)
   TSQLStatement* stmt = 0;
   while (itr != itrEnd) {
     const TString& sql1 = *itr++;
-    cout <<"-I- FairDbStatement Server:" << fConDb.GetDbName() << " SQL:" << sql1 << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) <<"Server:" << fConDb.GetDbName() << " SQL:" << sql1 << endl;
     delete stmt;
     stmt = this->CreateProcessedStatement(sql1);
     if ( ! stmt ) { return 0; }
@@ -102,10 +102,9 @@ Bool_t FairDbStatement::ExecuteUpdate( const TString& sql)
 
   while (itr != itrEnd) {
     const TString& sql1 = *itr++;
-    cout << "-I- FairDbStatement::ExecuteUpdate SQL:" << fConDb.GetDbName() << ":" << sql1 << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "ExecuteUpdate SQL:" << fConDb.GetDbName() << ":" << sql1 << endl;
     bool ok = fConDb.GetServer()->Exec(sql1.Data());
     if ( ! ok ) {
-
       fConDb.RecordException();
       this->AppendExceptionLog(fConDb);
       return kFALSE;
@@ -321,11 +320,11 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
   }
 
   if ( translated ) {
-    cout << "-I- FairDbStatement::TranslateSQL  sql: " << sql  << endl
-         << "translates to " << sqlTransList.size()
-         << " statements:- \n";
+    DBLOG("FairDb",FairDbLog::kInfo)<< "TranslateSQL  sql: " << sql  << endl
+                                    << "translates to " << sqlTransList.size()
+                                    << " statements:- \n";
     std::list<TString>::const_iterator itr(sqlTransList.begin()), itrEnd(sqlTransList.end());
-    while (itr != itrEnd) { cout <<"-I- FairDbStatement::TranslateSQL " << "   " << *itr << endl; ++itr;}
+    while (itr != itrEnd) { DBLOG("FairDb",FairDbLog::kInfo) <<"TranslateSQL " << "   " << *itr << endl; ++itr;}
   } else {
     sqlTransList.push_back(sql);
   }
