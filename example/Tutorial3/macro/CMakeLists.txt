@@ -1,6 +1,6 @@
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_sim.C)
 add_test(run_sim ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_sim.sh)
-SET_TESTS_PROPERTIES(run_sim PROPERTIES TIMEOUT "60")
+SET_TESTS_PROPERTIES(run_sim PROPERTIES TIMEOUT "180")
 SET_TESTS_PROPERTIES(run_sim PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
 
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_digi.C)
