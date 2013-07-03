@@ -10,6 +10,7 @@
 namespace Util
 {
 
+// Some string functions
 void eat_whitespace(std::istream& is);
 std::string read_quoted_string(std::istream& is);
 

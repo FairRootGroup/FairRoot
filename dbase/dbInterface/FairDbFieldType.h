@@ -19,7 +19,6 @@ class FairDbFieldType
                            kMaxMySQLText     = 65535
                          };
 
-// Constructors and destructors.
     FairDbFieldType(Int_t type = FairDb::kInt);
     FairDbFieldType(Int_t type,
                     Int_t size,
@@ -54,7 +53,7 @@ class FairDbFieldType
     unsigned int fSize;
     unsigned int fType;
 
-    ClassDef(FairDbFieldType,0)        // Table column field types.
+    ClassDef(FairDbFieldType,0)        // Column field types.
 
 };
 

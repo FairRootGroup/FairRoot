@@ -13,12 +13,8 @@ class FairDbConnectionMaintainer
     FairDbConnectionMaintainer(FairDbMultConnector* cascader = 0);
     virtual ~FairDbConnectionMaintainer();
 
-// Data members
-
   private:
 
-
-/// May be null if made by (useless) default ctor.
     FairDbMultConnector* fCascader;
 
     FairDbConnectionMaintainer(const FairDbConnectionMaintainer&);

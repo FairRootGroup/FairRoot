@@ -18,9 +18,9 @@ class FairDbConfDialog
     void SetDefault(const FairRegistry& r);
 
   protected:
-    FairRegistry fCurrent; // Current values for configuration
-    FairRegistry fDefault; // Default settings for configuration
-    FairRegistry fResult;  // User inputs
+    FairRegistry fCurrent;
+    FairRegistry fDefault;
+    FairRegistry fResult;
 };
 
 

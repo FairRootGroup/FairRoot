@@ -19,12 +19,8 @@ class FairDbValidityRecBuilder
 
 
   public:
-
-// Typedefs and enums
-
     enum { kMAX_AGGREGATE_NO = 1000 };
 
-// Constructors and destructors
     FairDbValidityRecBuilder(const FairDbProxy& proxy,
                              const ValContext& vc,
                              const FairDb::Version& task,
@@ -38,13 +34,12 @@ class FairDbValidityRecBuilder
 
     virtual ~FairDbValidityRecBuilder();
 
-// State testing member functions
     std::string GetL2CacheName() const;
     FairDb::Version GetVersion() const { return fVersion; }
     UInt_t GetNumValidityRec() const {
       return fVRecs.size();
     }
-///             Get index of AggNo or -1 if missing.
+
     Int_t IndexOfAggno(Int_t aggNo) const;
     Bool_t IsExtendedContext() const {
       return fIsExtendedContext;
@@ -59,12 +54,8 @@ class FairDbValidityRecBuilder
               && this->GetNumValidityRec() == 1;
     }
 
-// State changing member functions
-
 
   private:
-
-// State changing member functions
 
     UInt_t AddNewAgg(const FairDbValidityRec& vrec,Int_t aggNo);
     UInt_t AddNewGap(Int_t aggNo);
@@ -74,15 +65,15 @@ class FairDbValidityRecBuilder
                     Bool_t findFullTimeWindow = true);
 
 
-    FairDbValidityRec fGap;     // Default (gap) validity record
+    FairDbValidityRec fGap;
     Bool_t fIsExtendedContext;
-    FairDb::Version fVersion;    // Query task
+    FairDb::Version fVersion;
 
     std::vector<FairDbValidityRec> fVRecs;
     std::map<Int_t,UInt_t>  fAggNoToIndex;
 
 
-    ClassDef(FairDbValidityRecBuilder,0) // Creator of eff. ValidityRecs
+    ClassDef(FairDbValidityRecBuilder,0) // Builder for eff. ValidityRecs
 
 };
 

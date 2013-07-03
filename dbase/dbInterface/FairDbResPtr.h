@@ -22,7 +22,6 @@ template <class T> class FairDbResultPtr
 
   public:
 
-// Constructors and destructors.
     FairDbResultPtr();
     FairDbResultPtr(const FairDbResultPtr& that);
     FairDbResultPtr(const ValContext& vc,
@@ -50,7 +49,7 @@ template <class T> class FairDbResultPtr
     virtual ~FairDbResultPtr();
 
 
-// State testing member functions
+
     const FairDbResultKey* GetKey() const;
     UInt_t GetNumRows() const;
     const FairDbResult* GetResult() const { return fResult; }
@@ -64,7 +63,7 @@ template <class T> class FairDbResultPtr
     static FairDbTableProxy& GetTableProxy();
     static FairDbTableProxy& GetTableProxy(const std::string& tableName);
 
-// State changing member functions
+
     UInt_t NextQuery(Bool_t forwards = kTRUE);
     UInt_t NewQuery(ValContext vc,
                     FairDb::Version task=0,
@@ -90,7 +89,7 @@ template <class T> class FairDbResultPtr
     Detector::Detector_t fDetType;
     SimFlag::SimFlag_t fSimType;
 
-#ifndef __CINT__ //  Hide map from CINT; it complains about missing Streamer() etc.
+#ifndef __CINT__
     static std::map<std::string,FairDbTableProxy*> fgNameToProxy;
 #endif  // __CINT__      
     static             FairDbTableProxy* fgTableProxy;

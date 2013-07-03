@@ -25,13 +25,13 @@ class FairDbProxy
     typedef const std::vector<UInt_t> SeqList_t;
 #endif
 
-// Constructors.
     FairDbProxy(FairDbMultConnector& cascader,
                 const std::string& tableName,
                 const FairDbTableMetaData* metaData,
                 const FairDbTableMetaData* metaValid,
                 const FairDbTableProxy* tableProxy);
     virtual ~FairDbProxy();
+
     UInt_t GetNumDb() const;
     const std::string& GetTableName() const { return fTableNameUc; }
     const FairDbTableProxy* GetTableProxy() const { return fTableProxy; }
@@ -46,7 +46,6 @@ class FairDbProxy
     FairDbResultSet* QueryAllValidities(UInt_t dbNo,UInt_t seqNo=0) const;
     FairDbResultSet* QuerySeqNo(UInt_t seqNo,UInt_t dbNo) const;
 #ifndef __CINT__
-    /// Secondary query for aggregate and extended context queries.
     FairDbResultSet* QuerySeqNos(SeqList_t& seqNos,
                                  UInt_t dbNo,
                                  const std::string& sqlData = "",
@@ -61,7 +60,7 @@ class FairDbProxy
     FairDbResultSet* QueryValidity(UInt_t seqNo,
                                    UInt_t dbNo) const;
 
-    // Store (output) member functions
+
     Bool_t ReplaceInsertDate(const ValTimeStamp& ts,
                              UInt_t SeqNo,
                              UInt_t dbNo) const;
@@ -71,7 +70,7 @@ class FairDbProxy
                         UInt_t newSeqNo,
                         UInt_t dbNo) const;
 
-    // State changing member functions
+
     void SetSqlCondition(const std::string& sql) {
       fSqlCondition = sql;
     }

@@ -28,8 +28,8 @@ class FairRegistryItem : public TObject
     virtual const char* GetTypeAsString() const = 0;
 
 
-    ClassDef(FairRegistryItem,1)
-};                              // end of class FairRegistryItem
+    ClassDef(FairRegistryItem,1)  // class FairRegistryItem
+};
 
 
 #endif  // FAIRREGISTRYITEM_H

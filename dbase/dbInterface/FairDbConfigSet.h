@@ -21,11 +21,11 @@ class FairDbConfigSet : public FairDbTableRow
 
   public:
 
-// Constructors and destructors.
+
     FairDbConfigSet() : fParams(), fAggregateNo(-2) { ; }
     virtual ~FairDbConfigSet();
 
-// State testing member functions
+
 
     virtual FairDbTableRow* CreateTableRow() const {
       return new FairDbConfigSet;
@@ -36,7 +36,7 @@ class FairDbConfigSet : public FairDbTableRow
     FairDbFieldType GetParamType(UInt_t parNo) const;
     std::string GetParamValue(UInt_t parNo) const;
 
-// State changing member functions
+
     void Clear(const Option_t* = "") { fParams.clear(); }
     void PushBack(const std::string& name,
                   const std::string& value,
@@ -50,11 +50,8 @@ class FairDbConfigSet : public FairDbTableRow
                        const FairDbValidityRec* vrec) const;
 
   private:
-// Constructors and destructors.
-    FairDbConfigSet(const FairDbConfigSet& from); // No! { LEA_CTOR; *this = from; }
 
-
-// Internal structures.
+    FairDbConfigSet(const FairDbConfigSet& from);
 
     struct Param {
       Param() : Name(), Value(), Type() {}
@@ -73,7 +70,6 @@ class FairDbConfigSet : public FairDbTableRow
     };
 
     std::vector<Param*> fParams;
-
     Int_t fAggregateNo;
 
     ClassDef(FairDbConfigSet,0)    // Configuration data.

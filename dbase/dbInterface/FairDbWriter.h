@@ -100,7 +100,7 @@ template <class T> class FairDbWriter
     static FairDbTableProxy& GetTableProxy();
     static FairDbTableProxy& GetTableProxy(const std::string& tableName);
 
-// Data members
+
     Int_t fAggregateNo;
     UInt_t fDbNo;
     FairDbSqlValPacket* fPacket;

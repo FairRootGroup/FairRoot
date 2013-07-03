@@ -25,7 +25,6 @@ class FairDbValidityRec : public FairDbTableRow
 
   public:
 
-// Constructors and destructors.
     FairDbValidityRec(Int_t dbNo = -1, Bool_t isGap = kTRUE);
     FairDbValidityRec(const FairDbValidityRec& from);
     FairDbValidityRec(const ValRange& range,
@@ -39,8 +38,6 @@ class FairDbValidityRec : public FairDbTableRow
     FairDbValidityRec& operator=(const FairDbValidityRec& from);
 
     virtual ~FairDbValidityRec();
-
-// State testing member functions
 
     virtual FairDbTableRow* CreateTableRow() const {
       return new FairDbValidityRec;
@@ -63,7 +60,7 @@ class FairDbValidityRec : public FairDbTableRow
 
     static     std::string GetL2CacheName(UInt_t seqLo, UInt_t seqHi, ValTimeStamp ts);
 
-// State changing member functions
+
     void AndTimeWindow(const ValTimeStamp& start,
                        const ValTimeStamp& end);
     void SetAggregateNo(Int_t aggNo) { fAggregateNo = aggNo; }
@@ -102,4 +99,4 @@ class FairDbValidityRec : public FairDbTableRow
 ostream& operator<<(ostream& s, const FairDbValidityRec& vRec);
 
 
-#endif  // DBIVALIDITYREC_H
+#endif  // FAIRDBVALIDITYREC_H

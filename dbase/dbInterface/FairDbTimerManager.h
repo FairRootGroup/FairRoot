@@ -36,13 +36,12 @@ class FairDbTimerManager
     FairDbTimer* Pop();
     FairDbTimer* Push();
 
-// Data members
-    Bool_t fEnabled;     // Enable/disable
+
+    Bool_t fEnabled;
     Bool_t fSubWatchEnabled;
-// Push-down stack of timers.
     std::list<FairDbTimer*> fTimers;
 
-    ClassDef(FairDbTimerManager,0)    // Simple query timer
+    ClassDef(FairDbTimerManager,0)    // Query timer
 
 };
 

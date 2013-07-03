@@ -23,7 +23,6 @@ class FairDbConfigStream
 
     static      ValContext fgDefaultContext;
 
-// Constructors and destructors.
     FairDbConfigStream();
     FairDbConfigStream(const std::string& SoftwName,
                        const std::string& ConfigName="default",
@@ -32,11 +31,9 @@ class FairDbConfigStream
                        const std::string& tableName="SOFTWARE_CONFIGURATION");
     virtual ~FairDbConfigStream();
 
-// State testing member functions
     const FairDbConfigStream& operator>>(FairRegistry* reg);
     const FairDbConfigSet* GetConfigSet() const { return fCFSet; }
 
-// State changing member functions
 
     FairDbConfigStream& operator<<(const FairRegistry* reg);
     Bool_t IsEmpty() { return fCFSet == 0; }
@@ -50,19 +47,13 @@ class FairDbConfigStream
     FairDbConfigStream(const FairDbConfigStream&);
     FairDbConfigStream operator=(const FairDbConfigStream&);
 
-    // Data members
+
     const FairDbConfigSet*
     fCFSet;
-
-    //  Pointer to ConfigSet table
     FairDbResultPtr<FairDbConfigSet> fCFSetTable;
-    //  Local FairDbConfigSet
     FairDbConfigSet fCFSetModified;
-    //  Associated validity rec
     FairDbValidityRec fVRec;
-    //  Name of the configuration set
     std::string    fConfigName;
-    //  Name of the software system to be configured
     std::string    fSoftwName;
 
     ClassDef(FairDbConfigStream,0)

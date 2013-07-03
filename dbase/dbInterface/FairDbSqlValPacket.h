@@ -25,8 +25,6 @@ class FairDbSqlValPacket
 
   public:
 
-// Types and enum
-
     typedef enum ECompResult {
       kIdentical,
       kUpdate,
@@ -34,13 +32,11 @@ class FairDbSqlValPacket
       kConflict
     } CompResult_t;
 
-// Constructors and destructors.
     FairDbSqlValPacket();
     FairDbSqlValPacket(std::ifstream& is);
     FairDbSqlValPacket(const FairDbValidityRec& vrec);
     virtual ~FairDbSqlValPacket();
 
-// State testing member functions
     Bool_t CanBeStored() const {
       return (fSeqNo > 0 && fNumErrors == 0 && this->GetNumSqlStmts()> 0)
              ? kTRUE : kFALSE;
@@ -68,7 +64,6 @@ class FairDbSqlValPacket
     Bool_t Write(std::ofstream& ios,
                  Bool_t addMetadata = kFALSE) const;
 
-//  Reconstruct.
     void Recreate(const std::string& tableName,
                   const ValRange& vr,
                   Int_t aggNo,
@@ -78,7 +73,6 @@ class FairDbSqlValPacket
                       const FairDbValidityRec* vrec,
                       const FairDbTableRow& row);
 
-//  State changing member functions
     void Clear() { this->Reset(); fNumErrors = 0; }
     void SetCreationDate(ValTimeStamp ts);
     void SetSeqNo(UInt_t seqno);
@@ -103,30 +97,13 @@ class FairDbSqlValPacket
     FairDbSqlValPacket(const FairDbSqlValPacket& );  // Not allowed.
 
 
-// Data members
-
-/// Number of error encountered while filling.
     UInt_t fNumErrors;
-
-/// Sequence number or 0 if not filled.
     UInt_t fSeqNo;
-
-/// MySQL SQL to create main table. May be empty until needed.
     mutable std::string fSqlMySqlMetaMain;
-
-/// As fSqlMySqlMetaMain but for aux. table.
     mutable std::string fSqlMySqlMetaVal;
-
-/// Set of SQL statements to generate packet.
     std::list<std::string>  fSqlStmts;
-
-/// Number of statements
     UInt_t fNumStmts;
-
-/// Table name or null if not filled.
     std::string fTableName;
-
-/// Creation date, or object creation date if unfilled.
     ValTimeStamp fCreationDate;
 
     ClassDef(FairDbSqlValPacket,0)           // SQL to generate Validity Packet.

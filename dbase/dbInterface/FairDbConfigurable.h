@@ -22,22 +22,14 @@ class FairDbConfigurable
     FairDbConfigurable();
     virtual ~FairDbConfigurable();
 
-    // Subclass should implement this method:
     virtual void            Config() = 0;
 
-    // Access default and main configuration
     virtual const FairRegistry& DefaultConfig() const;
     FairRegistry&               GetConfig();
     const FairRegistry&         GetConfig() const;
 
-    // Call anytime.  Triggers Config() only iff it has been modifed
-    // since last calling.
     int  Update();
-
-    // Set config via interactive dialog
     void Set(FairDbConfDialog* d=0);
-
-    // Set config via string
     void Set(const char* s);
 
   protected:

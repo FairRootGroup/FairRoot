@@ -26,7 +26,6 @@ class FairDbMultConnector
 
     FairDbStatement* CreateStatement(UInt_t dbNo) const;
 
-/// Return associated FairDbConnection. FairDbMultConnector retains ownership.
     const FairDbConnection* GetConnection(UInt_t dbNo) const;
     FairDbConnection* GetConnection(UInt_t dbNo) ;
 
@@ -42,7 +41,6 @@ class FairDbMultConnector
     }
     Bool_t IsTemporaryTable(const std::string& tableName,
                             Int_t dbNo) const;
-// Cascade-wide getters.
 
     Int_t AllocateSeqNo(const std::string& tableName,
                         Int_t requireGlobal = 0,

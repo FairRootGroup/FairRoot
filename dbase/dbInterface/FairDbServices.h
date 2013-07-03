@@ -16,7 +16,7 @@ class FairDbServices
   private:
     static void SetRecord( int rec ) {;}
 
-// Data members
+
     static bool fAsciiDBConectionsTemporary;
     static bool fOrderContextQuery;
 

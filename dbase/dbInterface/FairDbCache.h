@@ -24,30 +24,26 @@ class FairDbCache
 
     typedef std::list<FairDbResult*> ResultList_t;
 
-// Constructors and destructors.
-
     FairDbCache(FairDbTableProxy& qp,
                 const std::string& tableName);
     virtual ~FairDbCache();
 
-
-// State testing member functions
     UInt_t GetMaxSize() const { return fMaxSize; }
     UInt_t GetCurSize() const { return fCurSize; }
     UInt_t GetNumAdopted() const { return fNumAdopted; }
     UInt_t GetNumReused() const { return fNumReused; }
-/// Primary searches.
+
     const FairDbResult* Search(const ValContext& vc,
                                const FairDb::Version& task) const;
     const FairDbResult* Search(const std::string& sqlQualifiers) const;
 
-/// Secondary search.
+
     const FairDbResult* Search(const FairDbValidityRec& vr,
                                const std::string& sqlQualifiers = "") const;
 
     FairDbLogStream& ShowStatistics(FairDbLogStream& msg) const;
 
-// State changing member functions
+
     void Adopt(FairDbResult* res,bool registerKey = true);
     void Purge();
     void SetStale();
@@ -75,7 +71,7 @@ class FairDbCache
     mutable UInt_t fNumReused;
 
 
-    ClassDef(FairDbCache,0)  //Query result cache for specific database table.
+    ClassDef(FairDbCache,0)  //Query result cache
 
 };
 

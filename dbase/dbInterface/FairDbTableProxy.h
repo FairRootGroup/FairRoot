@@ -25,8 +25,6 @@ class FairDbTableProxy
     friend class FairDbTableProxyRegistry;
 
   public:
-
-// State testing member functions
     const FairDbProxy& GetDBProxy() const { return fDBProxy; }
     FairDbMultConnector& GetMultConnector() { return *fMultConnector; }
     const FairDbTableMetaData& GetMetaData() const { return fMetaData; }
@@ -35,7 +33,7 @@ class FairDbTableProxy
       return fTableRow ? fTableRow->ClassName() : "Unknown";
     }
     std::string GetTableName() const { return fTableName;}
-// State changing member functions
+
     FairDbCache* GetCache() { return fCache;}
     const FairDbResult* Query(const ValContext& vc,
                               const FairDb::Version& task,
@@ -55,7 +53,6 @@ class FairDbTableProxy
 
   protected:
 
-// Constructors (protected because created and owned by FairDbTableProxyRegistry).
     FairDbTableProxy(FairDbMultConnector* cascader,
                      const std::string& tableName,
                      const std::string& vldSuffix,

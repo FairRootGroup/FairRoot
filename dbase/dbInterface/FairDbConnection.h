@@ -27,16 +27,12 @@ class FairDbConnection
 
     virtual ~FairDbConnection();
 
-
-    // Standard connectivity functions
     FairDb::DbTypes GetDbType() const { return fDbType; }
     const std::string& GetDbName() const { return fDbName; }
     const std::string& GetPassword() const { return fPassword; }
     const std::string& GetUrl() const;
     const std::string& GetUser() const { return fUser; }
 
-
-    // connection itself
     Bool_t Close(Bool_t force = kFALSE);
     Bool_t Open();
     TSQLServer* GetServer();
@@ -57,7 +53,6 @@ class FairDbConnection
     Bool_t IsClosed() const { return ! (fServer); }
     const FairDbExceptionLog& GetExceptionLog() const { return fExceptionLog; }
     void ClearExceptionLog() { fExceptionLog.Clear(); }
-/// Print exceptions at level of above and return true if any
     Bool_t PrintExceptionLog(Int_t level = 3) const;
     void RecordException();
   protected:

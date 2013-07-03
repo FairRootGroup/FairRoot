@@ -27,18 +27,14 @@ class FairDbBinaryFile
                      Bool_t input = kTRUE);
     ~FairDbBinaryFile();
 
-// State testing.
-
     std::string  GetFileName() const { return fFileName; }
     Bool_t  IsOK() const { return ! fHasErrors;}
     Bool_t  IsReading() const { return this->IsOK() && fReading; }
     Bool_t  IsWriting() const { return this->IsOK() && ! fReading; }
 
-// State changing.
-
     void Close();
 
-// Builtin data type I/O.
+// I/O built-in functions
 
     FairDbBinaryFile& operator >> (Bool_t& num);
     FairDbBinaryFile& operator << (const Bool_t& num);
@@ -49,36 +45,31 @@ class FairDbBinaryFile
     FairDbBinaryFile& operator >> (Double_t& num);
     FairDbBinaryFile& operator << (const Double_t& num);
 
-// Simple Virtual object I/O.
-// (i.e. object with vptr but only built-in data types)
+// Virtual object I/O.
 
     FairDbBinaryFile& operator >> (ValTimeStamp& ts);
     FairDbBinaryFile& operator << (const ValTimeStamp& ts);
 
-// String I/O.
-// Warning: Implimentation assumes that string does not contain
-//          a null character.
-
     FairDbBinaryFile& operator >> (std::string& str);
     FairDbBinaryFile& operator << (const std::string& str);
 
-// Compound object I/O.
+// Validity object I/O.
 
     FairDbBinaryFile& operator >> (ValRange& vr);
     FairDbBinaryFile& operator << (const ValRange& vr);
 
-// Vector I/O.
+// Vector object  I/O used for composite
 
     FairDbBinaryFile& operator >>  (std::vector<FairDbTableRow*>& arr);
     FairDbBinaryFile& operator <<  (std::vector<FairDbTableRow*>& arr);
+
     char* ReleaseArrayBuffer() {
       char* buff = fArrayBuffer;
       fArrayBuffer = 0;
       return buff;
     }
 
-// Global control of all created FairDbBinaryFile objects.
-
+// Control Cache Storage engine
     static Bool_t CanReadL2Cache()  { return fgWorkDir.size() && fgReadAccess; }
     static Bool_t CanWriteL2Cache() { return fgWorkDir.size() && fgWriteAccess; }
     static   void SetWorkDir(const std::string& dir) {
@@ -93,7 +84,7 @@ class FairDbBinaryFile
     FairDbBinaryFile(const FairDbBinaryFile&);
     FairDbBinaryFile operator=(const FairDbBinaryFile&);
 
-// The functions that do the low-level I/O.
+// Low-level I/O.
 
     Bool_t CanRead();
     Bool_t CanWrite();
@@ -102,10 +93,8 @@ class FairDbBinaryFile
     Bool_t Read(char* bytes, UInt_t numBytes);
     Bool_t Write(const char* bytes, UInt_t numBytes);
 
-// CINT does not recognise fstream; only ifstream and ofstream.
-#if !defined(__CINT__)
 
-/// Associated file, may be null.
+#if !defined(__CINT__)
     fstream*  fFile;
 #endif
 
@@ -114,9 +103,9 @@ class FairDbBinaryFile
     char*    fArrayBuffer;
     std::string   fFileName;
 
-    static std::string fgWorkDir;    //Level 2 Cache directory or null if none.
-    static Bool_t fgReadAccess; //Have read access if true.
-    static Bool_t fgWriteAccess;//Have write access if true.
+    static std::string fgWorkDir;
+    static Bool_t fgReadAccess;
+    static Bool_t fgWriteAccess;
 
 };
 

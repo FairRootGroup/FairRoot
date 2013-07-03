@@ -13,7 +13,6 @@ class FairDbRowStream
 
   public:
 
-// Constructors and destructors.
     FairDbRowStream(const FairDbTableMetaData* metaData);
     virtual ~FairDbRowStream();
 
@@ -30,13 +29,12 @@ class FairDbRowStream
     virtual       std::string TableNameTc() const;
     virtual const FairDbTableMetaData*
     MetaData() const { return fMetaData; }
-    // State changing member functions
+
 
     virtual    void DecrementCurCol() {
       fCurCol = (fCurCol <= 1) ? 1 : fCurCol -1;
     }
-    // Allow IncrementCurCol to step off end (to catch attempt to read
-    // too much data)
+
     virtual    void IncrementCurCol() { ++fCurCol; }
 
   protected:

@@ -45,8 +45,6 @@ class FairDbSqlContext : public FairDbString
 
   private:
 
-// Data members
-
     IntervalType             fIntervalType;
     ValTimeStamp             fTimeStart;
     ValTimeStamp             fTimeEnd;

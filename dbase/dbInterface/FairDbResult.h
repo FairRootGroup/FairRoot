@@ -40,7 +40,6 @@ class FairDbResultKey : public TObject
 
     using TObject::Compare;
 
-    // Constructors and destructors.
     FairDbResultKey(const FairDbResultKey* that = 0);
     FairDbResultKey(std::string tableName,
                     std::string rowName,
@@ -58,11 +57,11 @@ class FairDbResultKey : public TObject
       return this->Compare(that) == 1.;
     }
 
-    // State changing member functions
+
 
     void AddVRecKey(UInt_t seqno, ValTimeStamp ts);
 
-    // push this put to the public: portion so that rootcint dict compiles
+
     struct VRecKey {
       VRecKey() : SeqNo(0), CreationDate() {}
       VRecKey(UInt_t seqno, ValTimeStamp ts) : SeqNo(seqno), CreationDate(ts) {}
@@ -89,7 +88,7 @@ class FairDbResultSet : public FairDbRowStream
 {
   public:
 
-// Constructors and destructors.
+
     FairDbResultSet(FairDbStatement* stmtDb,
                     const FairDbString& sql,
                     const FairDbTableMetaData* metaData,
@@ -98,7 +97,7 @@ class FairDbResultSet : public FairDbRowStream
                     const std::string& fillOpts = "");
     virtual ~FairDbResultSet();
 
-// State testing member functions
+
     Bool_t CurColExists() const;
     std::string CurColString() const;
     std::string CurColValue() const { LoadCurValue(); return fValString;}
@@ -107,13 +106,12 @@ class FairDbResultSet : public FairDbRowStream
     FairDb::DbTypes GetDBType() const { return fDbType; }
     std::string GetFillOpts() const { return fFillOpts;}
     const FairDbTableProxy* GetTableProxy() const { return fTableProxy; }
-/// IsBeforeFirst not needed for ROOT API, but leave a dummy
-/// for now so as not to disturb FairDbResultSet API.
+
     Bool_t IsBeforeFirst() const { return false; };
     Bool_t IsExhausted() const { return fExhausted; }
     void RowAsCsv(std::string& row) const;
 
-// State changing member functions
+
 
     FairDbResultSet& operator>>(Bool_t& dest);
     FairDbResultSet& operator>>(Char_t& dest);
@@ -170,7 +168,6 @@ class FairDbResult
     FairDbResult(const FairDbResult&);
     virtual ~FairDbResult();
 
-    // State testing member functions
 
     virtual                Bool_t CanReuse() const  { return fCanReuse; }
     virtual                Bool_t CanSave() const  { return kTRUE; }
@@ -227,8 +224,6 @@ class FairDbResult
     }
 
 
-
-
   private:
 
     Int_t fID;
@@ -258,10 +253,8 @@ FairDbBinaryFile& operator>>(FairDbBinaryFile& bf, FairDbResult& res);
 class FairDbResultAgg : public FairDbResult
 {
   public:
-// Only some Satisfies methods are overriden so include base class ones.
     using FairDbResult::Satisfies;
 
-// Constructors and destructors.
     FairDbResultAgg(const std::string& tableName = "Unknown",
                     const FairDbTableRow* tableRow = 0,
                     FairDbCache* cache = 0,
@@ -270,7 +263,6 @@ class FairDbResultAgg : public FairDbResult
                     const std::string& sqlQualifiers = "" );
     virtual ~FairDbResultAgg();
 
-// State testing member functions
 
     virtual   FairDbResultKey* CreateKey() const;
     virtual   UInt_t GetNumAggregates() const {
@@ -283,7 +275,6 @@ class FairDbResultAgg : public FairDbResult
     virtual const FairDbValidityRec& GetValidityRec(
       const FairDbTableRow* row=0) const;
 
-//  State changing member functions.
     virtual     Bool_t Satisfies(const std::string& sqlQualifiers);
     virtual void Streamer(FairDbBinaryFile& bf);
 
@@ -307,11 +298,9 @@ class FairDbResultNonAgg : public FairDbResult
 {
   public:
 
-// Only some Satisfies methods are overriden so include base class ones.
     using FairDbResult::Satisfies;
 
 
-// Constructors and destructors.
     FairDbResultNonAgg(FairDbResultSet* resultSet = 0,
                        const FairDbTableRow* tableRow = 0,
                        const FairDbValidityRec* vrec = 0,

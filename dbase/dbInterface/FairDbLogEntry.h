@@ -26,7 +26,6 @@ class FairDbLogEntry : public FairDbTableRow
 
     using TObject::Write;
 
-// Constructors and destructors.
     FairDbLogEntry(const std::string& tableName = "",
                    const std::string& reason = "",
                    Int_t detMask = Detector::FullMask(),
@@ -37,15 +36,12 @@ class FairDbLogEntry : public FairDbTableRow
                    Int_t logNumSeqNo = 0);
     virtual ~FairDbLogEntry();
 
-// State testing member functions.
-
-// Inherited responsibilities.
     virtual FairDbTableRow* CreateTableRow() const {
       return new FairDbLogEntry;
     }
     Int_t GetAggregateNo() const { return -1; }
 
-// New member functions.
+
     const std::string& GetLogTableName() const { return fLogTableName; }
     Int_t GetDetectorMask() const { return fLogDetMask; }
     Int_t GetLogSeqNoMin() const { return fLogSeqNoMin; }
@@ -62,7 +58,6 @@ class FairDbLogEntry : public FairDbTableRow
 
     Bool_t HasReason() const { return fReason.size() > 0; }
 
-// State changing member functions
     void SetReason(const std::string& reason);
     void SetDetectorMask(Int_t detMask) { fLogDetMask = detMask; }
     void SetSimMask(Int_t simMask) { fLogSimMask = simMask; }
@@ -91,39 +86,24 @@ class FairDbLogEntry : public FairDbTableRow
 
     void SetServerName();
 
-// Data members
-// Database no. written to. =0 if not output
     UInt_t fDbNo;
-// Seq. No. used to write this object. =0 if not output
+
     Int_t fSeqNo;
-// Table being updated.
     std::string fLogTableName;
-// Detector type mask of update.
     Int_t fLogDetMask;
-// SimFlag  mask of update.
     Int_t fLogSimMask;
-// Version of update
     FairDb::Version fLogVersion;
-// Minimum Seq. No. being updated.
     Int_t fLogSeqNoMin;
-// Maximum Seq. No. being updated.
     Int_t fLogSeqNoMax;
-// Number of Seq. Nos. being updated.
     Int_t fLogNumSeqNo;
-// Time of update.
     ValTimeStamp fUpdateTime;
-// User performing update.
     std::string fUserName;
-// Process performing update.
     std::string fProcessName;
-// Host performing update.
     std::string fHostName;
-// Db server being updated.
     std::string fServerName;
-// Reason for update.
     std::string fReason;
 
-    ClassDef(FairDbLogEntry,0)    // Log Entry
+    ClassDef(FairDbLogEntry,0)    // A Log Entry
 
 };
 

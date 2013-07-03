@@ -39,11 +39,11 @@ class FairDbSimFlagAssociation
 
     static const FairDbSimFlagAssociation* fgInstance;
 
-// Data members
+
 
     SimMap_t fAssociations;
 
-    ClassDef(FairDbSimFlagAssociation,0)  // Association between SimFlag types.
+    ClassDef(FairDbSimFlagAssociation,0)  // SimFlag types Assoc.
 
 };
 
