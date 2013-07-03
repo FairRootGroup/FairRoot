@@ -65,8 +65,7 @@ TSQLStatement* FairDbStatement::ExecuteQuery( const TString& sql)
     stmt = this->CreateProcessedStatement(sql1);
     if ( ! stmt ) { return 0; }
   }
-  // Store results from last SQL command (when multiple commands are generated
-  // the last will be the one that performs the query).
+
   if ( stmt && ! stmt->StoreResult() ) {
     this->AppendExceptionLog(stmt);
     delete stmt;
@@ -92,7 +91,7 @@ TSQLStatement* FairDbStatement::ExecuteQuery( const TString& sql)
 
 }
 
-//.....................................................................
+
 
 Bool_t FairDbStatement::ExecuteUpdate( const TString& sql)
 {
@@ -133,39 +132,11 @@ std::list<TString>  FairDbStatement::TestTranslateSQL(const TString& sql, FairDb
 
 }
 
-//.....................................................................
+
 
 std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
 {
 //  Translate  MySQL specific to other dialects of SQL.
-
-//  This is NOT meant to be a general purpose SQL translator, but rather a very
-//  simple translater of the SQL that the DBI employs which is dialect specific.
-
-//  The only translations supported are as follows:-
-
-//  1)  MySQL -> Oracle:-
-//      Set date format to be compatible with MySQL.
-//
-//  2)  MySQL -> Oracle:-
-//      Convert WHERE expressions of the form A & B to bitand(A,B) != 0
-//
-//  3)  MySQL -> Oracle:-
-//      In CREATE TABLE
-//
-//      Conversion is achieved by creating a FairDbTableMetaData object
-//      from the SQL and then asking it to generate the Oracle equivalent.
-//      See FairDbTableMetaData for details.
-//
-//  4)  MySQL -> Oracle:-
-//      SHOW TABLES        ->  SELECT TABLE_NAME FROM ALL_TABLES
-//
-//  5)  MySQL -> Oracle:-
-//      \' -> '' (in general ORACLE doesn't respect escape sequences
-//                except single quotes and only then as '' not \').
-//
-//  6)  MySQL -> Oracle:-
-//      Convert now() into sysdate
 
   std::list<TString> sqlTransList;
 
@@ -173,15 +144,15 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
     sqlTransList.push_back(sql);
     return sqlTransList;
   }
-// Once kTRUE,  sqlTransList contains the translation. No further translation possible.
+
   Bool_t translated = kFALSE;
-// sqlTrans has been modified, but  further translation possible.
+
   Bool_t modified  = kFALSE;
 
   TString sqlTrans(sql);
   sqlTrans.ToUpper();
 
-// Set date format  to be compatible with MySQL.
+// Format Date compatible with MySQL.
   sqlTransList.push_back("ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD hh24:mi:ss'");
 
 // Translate NOW()
@@ -218,7 +189,7 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
   // Translate DROP TABLE commands.
   Ssiz_t dropTableIndex = sqlTrans.Index("DROP TABLE",0,TString::kIgnoreCase );
   if ( ! translated && dropTableIndex != kNPOS ) {
-    // Remove any "IF EXISTS"
+    // Remove added  "IF EXISTS"
     sqlTrans.ReplaceAll(" IF EXISTS ",    " ");
 
     //add the drop table command, then work on the synonym
@@ -242,15 +213,11 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
     sqlTransList.push_back(sqlIncant1);
   }
 
-// Translate commands with a WHERE keyword, but take care if this is
-// an INSERT INTO command - it could include "where" as part of a character value!
+
   Ssiz_t whereStart = sqlTrans.Index("INSERT INTO",0,TString::kIgnoreCase );
   if ( whereStart == kNPOS ) { whereStart = 0; }
   else {
-    // Skip to end of INSERT by looking for the trailing ")" at level 0
-    // Yes, I know this can be defeated by mismatched "(" and ")" within
-    // character values, but it's better than giving up on a possible WHERE clause
-    // altogether.
+
     Ssiz_t whereStartMax = sqlTrans.Length();
     whereStart = sqlTrans.Index("(",whereStart,TString::kIgnoreCase );
     if ( whereStart == kNPOS ) { whereStart = whereStartMax; }
@@ -262,12 +229,10 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
       if ( chr == ')' ) { --level; }
     }
   }
-  // Look for space separated WHERE (so not fooled by e.g. FABWHERE!)
+
   Ssiz_t whereIndex = sqlTrans.Index(" WHERE ",whereStart,TString::kIgnoreCase );
   if ( ! translated && whereIndex != kNPOS ) {
-
-    // Set limit of WHERE clause
-    ++whereIndex; // Step over leading space
+    ++whereIndex;
     Ssiz_t whereEnd = sqlTrans.Length();
     std::string whereDelim[] = { "GROUP BY", "HAVING", "ORDER BY", "LIMIT" };
     int numDelims = sizeof(whereDelim)/sizeof(string);
@@ -278,7 +243,6 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
     }
 
     // Translate all bitwise and expressions within the WHERE clause.
-
     TString whereClause(sql.Data()+whereIndex,whereEnd-whereIndex);
     // Convert \n to space so that tokenising works.
     whereClause.ReplaceAll("\n"," ");
@@ -305,10 +269,8 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
     modified = kTRUE;
   }
 
-// Translate \' to ''
   if ( ! translated && sqlTrans.Index("\\\'") != kNPOS ) {
-//  Bit of a kludge, if not yet modified, undo upper case conversion
-//  as quoted data is likely to contain characters.
+
     if ( not modified ) { sqlTrans = sql; }
     sqlTrans.ReplaceAll("\\\'","\'\'");
     modified = kTRUE;
