@@ -7,7 +7,6 @@
 #include"FairField.h"
 
 
-
 // -----   Default constructor   -------------------------------------------
 FairField::FairField()
   : TVirtualMagField("FAIR Magnetic Field"), fType(0), fLogger(FairLogger::GetLogger())

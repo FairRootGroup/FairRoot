@@ -57,8 +57,7 @@ ClassImp(TVirtualMagField)
 
 #endif
 
-
-#include <iostream>
+#include "FairLogger.h"
 
 class FairField : public TVirtualMagField
 {
@@ -98,19 +97,18 @@ class FairField : public TVirtualMagField
     /** Get x component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBx(Double_t x, Double_t y, Double_t z) {std::cout << "GetBx Should be implimented" << std::endl; return 0;}
+    virtual Double_t GetBx(Double_t x, Double_t y, Double_t z) {fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBx Should be implemented in User class"); return 0;}
 
 
     /** Get y component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBy(Double_t x, Double_t y, Double_t z) {std::cout << "GetBy Should be implimented" << std::endl; return 0;}
-
+    virtual Double_t GetBy(Double_t x, Double_t y, Double_t z) {fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBy Should be implemented in User class"); return 0;}
 
     /** Get z component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBz(Double_t x, Double_t y, Double_t z) {std::cout << "GetBz Should be implimented" << std::endl; return 0;}
+    virtual Double_t GetBz(Double_t x, Double_t y, Double_t z) {fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBz Should be implemented in User class"); return 0;}
 
 
     /** Get magnetic field. For use of GEANT3
@@ -125,13 +123,13 @@ class FairField : public TVirtualMagField
 
     /** Screen output. To be implemented in the concrete class. **/
     virtual void  Print(Option_t* option = "") const {;}
-    virtual void GetBxyz(const Double_t point[3], Double_t* bField) { std::cout << "GetBz Should be implimented" << std::endl;};
+    virtual void GetBxyz(const Double_t point[3], Double_t* bField) { fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBx Should be implemented in User class");}
 
 
 
     /**Fill Paramater*/
 
-    virtual void FillParContainer() {printf("This should implimented in the exp. part \n");}
+    virtual void FillParContainer() {fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBx Should be implemented in User class");}
   protected:
 
     /** Field type. 1 = constant field, 2 = field map. **/
