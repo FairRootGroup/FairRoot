@@ -98,6 +98,14 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
       SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
 #      MESSAGE("C_FLAGS: ${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS}")
 #      MESSAGE("CXX_FLAGS: ${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}")
+      Execute_Process(COMMAND gfortran -print-file-name=libgfortran.dylib
+                      OUTPUT_VARIABLE FORTRAN_LIBDIR
+                     )
+      Get_Filename_Component(FORTRAN_LIBDIR ${FORTRAN_LIBDIR}
+                             PATH
+                            )
+      Message("Fortran libraries found in ${FORTRAN_LIBDIR}")
+      SET(CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
 
       # Select flags.
       set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wshadow ")
