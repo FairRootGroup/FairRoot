@@ -2,12 +2,17 @@
 
 #include "TMath.h"
 
+#include "FairDbLogFormat.h"
+#include "FairDbLogService.h"
+
 #include "FairUtilStream.h"
 #include "FairDbOutRowStream.h"
 #include "FairDbResult.h"
 #include "FairDbStatement.h"
 #include "FairDbValidityRec.h"
 #include "FairDbStreamer.h"
+
+
 #include <iostream>
 
 using std::cout;
@@ -22,7 +27,8 @@ template class  FairDbResultPtr<FairDbTutParBin>;
 #include "FairDbWriter.tpl"
 template class  FairDbWriter<FairDbTutParBin>;
 
-//TH1F* FairDbTutParBin::fMyHisto=0;
+
+SVNID("$Id$");
 
 FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char* context)
   : FairParGenericSet(name,title,context),
@@ -33,10 +39,12 @@ FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char
 {
   // Constructor
   // Create heap based TH1 object and fill with dummy
-  // values
+  // value
+
   fMyHisto = new TH1F("test","test",10,0,10);
 
   clear();
+
 }
 
 FairDbTutParBin::~FairDbTutParBin()
@@ -202,6 +210,13 @@ void FairDbTutParBin::Fill(UInt_t rid)
 
 void FairDbTutParBin::Store(UInt_t rid)
 {
+
+
+
+  DBLOG("FairDb", FairDbLog::kWarning) << "FairDbTutParBin Store() " << endl;
+
+
+
   // In this example we are fixing the database entry point. In the future
   // a variable entry can be set via the runtime DB directly.
   Int_t dbEntry = 0;
