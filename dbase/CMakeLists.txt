@@ -75,8 +75,13 @@ dbInterface/FairDbServices.cxx
 dbInterface/FairDbValRecSet.cxx
 dbInterface/FairDbSimFlagAssociation.cxx
 dbInterface/FairDbStreamer.cxx
-#### FairTSQLObject
 dbUtils/FairTSQLObject.cxx
+dbUtils/FairDbLog.cxx
+dbUtils/FairDbLogFormat.cxx
+dbUtils/FairDbLogOSStream.cxx
+dbUtils/FairDbLogService.cxx
+dbUtils/FairDbLogStat.cxx
+dbUtils/FairDbLogStream.cxx
 )
 
 
