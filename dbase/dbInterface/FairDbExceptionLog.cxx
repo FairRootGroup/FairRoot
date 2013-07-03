@@ -13,9 +13,7 @@ FairDbExceptionLog FairDbExceptionLog::fgGELog;
 FairDbExceptionLog::FairDbExceptionLog(const FairDbException* e)
   : fEntries()
 {
-
   if ( e ) { this->AddEntry(*e); }
-
 }
 
 
