@@ -4,17 +4,16 @@
 
 #include "TBufferFile.h"
 #include "TVirtualStreamerInfo.h"
-#include "FairUtilStream.h"
-#include "TH1F.h"
 
+#include "FairUtilStream.h"
+#include "FairDbLogService.h"
 
 #include <map>                          // for map, _Rb_tree_iterator, etc
-
-// for ostringstream, istringstream
 #include <iostream>                     // for operator<<, basic_ostream, etc
 #include <sstream>                      // IWYU pragma: keep
 #include <fstream>
 #include <string>
+
 using std::string;
 using std::cout;
 using std::hex;
@@ -33,8 +32,9 @@ Int_t FairDb::GetTimeGate(const std::string& tableName)
   if ( tablePtr == fgTimegateTable.end()
      ) { FairDb::SetTimeGate(tableName,10*24*60*60); }
 
-  cout << "-I- FairDb:: Returning time gate " << fgTimegateTable[tableName]
-       << " for " << tableName << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << " Returning time gate " << fgTimegateTable[tableName]
+                                   << " for " << tableName << endl;
+
   return fgTimegateTable[tableName];
 
 }
@@ -98,16 +98,16 @@ ValTimeStamp FairDb::MakeTimeStamp(const std::string& sqlDateTime,
       if ( ++bad_date_count <= 20 ) {
         const char* last = (bad_date_count == 20) ? "..Last Message.. " : "";
 
-        cout<< "-I- FairDB:: Bad date string: " << sqlDateTime
-            << " parsed as "
-            << input.year  << " "
-            << input.month << " "
-            << input.day   << " "
-            << input.hour  << " "
-            << input.min   << " "
-            << input.sec
-            << "\n    Outside range " << lo
-            << " to " << hi << last << endl;
+        DBLOG("FairDb",FairDbLog::kError)   << "Bad date string: " << sqlDateTime
+                                            << " parsed as "
+                                            << input.year  << " "
+                                            << input.month << " "
+                                            << input.day   << " "
+                                            << input.hour  << " "
+                                            << input.min   << " "
+                                            << input.sec
+                                            << "\n    Outside range " << lo
+                                            << " to " << hi << last << endl;
       }
     }
 
@@ -119,17 +119,22 @@ ValTimeStamp FairDb::MakeTimeStamp(const std::string& sqlDateTime,
 
 }
 
+void FairDb::SetLogLevel(Int_t level)
+{
+  FairDbLogService::Instance()->GetStream("FairDb")->SetLogLevel(level);
+}
+
 void FairDb::SetTimeGate(const std::string& tableName, Int_t timeGate)
 {
 
   if ( timeGate > 15 && timeGate <= 100*24*60*60 ) {
     fgTimegateTable[tableName] = timeGate;
-    cout << "-I- FairDb:: Setting time gate " << timeGate
-         << " for " << tableName << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "Setting time gate " << timeGate
+                                     << " for " << tableName << endl;
   } else {
-    cout << "-I- FairDb:: Ignoring  invalid time gate setting "
-         << timeGate
-         << " for " << tableName << endl;
+    DBLOG("FairDb",FairDbLog::kWarning) << "Ignoring  invalid time gate setting "
+                                        << timeGate
+                                        << " for " << tableName << endl;
   }
 }
 

@@ -117,7 +117,7 @@ void FairRegistryItemXxx<const char*>::Streamer(TBuffer& buf)
     char x[2];
     x[1] = '\0';
 
-    do {                    // read out string one byte at a time
+    do {
       buf >> x[0];
       str += x;
     } while (x[0]);
@@ -125,7 +125,7 @@ void FairRegistryItemXxx<const char*>::Streamer(TBuffer& buf)
     char** ppchar = new char*;
     *ppchar = new char[str.length() + 1];
     strcpy(*ppchar,str.c_str());
-    (*ppchar)[str.length()] = '\0'; // paranoia
+    (*ppchar)[str.length()] = '\0';
     fData = const_cast<const char**>(ppchar);
   } else {
     buf.WriteVersion(IsA());
@@ -136,7 +136,7 @@ void FairRegistryItemXxx<const char*>::Streamer(TBuffer& buf)
 
 
 
-// Must do this special because ROOT treats char and char* asymmetric
+
 template<>
 void FairRegistryItemXxx<char>::Streamer(TBuffer& buf)
 {

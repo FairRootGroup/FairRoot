@@ -1,6 +1,6 @@
 
 #include "FairDbOutRowStream.h"
-
+#include "FairDbLogService.h"
 #include "FairDbFieldType.h"            // for FairDbFieldType, string
 #include "FairDbString.h"               // for MakePrintable
 #include "ValTimeStamp.h"               // for ValTimeStamp
@@ -25,10 +25,7 @@ ClassImp(FairDbOutRowStream)
     Store(out.str());                    \
   }                                      \
  
-// If writing unsigned dat as signed, convert bit pattern to signed,
-// extending sign bit if necessary.
-// For BIGINT (size 8) make an exception.  It's used only as
-// an alternative to unsigned int so can written without conversion.
+
 #define OUT2(t,v)                         \
   const FairDbFieldType& fType = this->ColFieldType(this->CurColNum());             \
   if ( fType.IsSigned() && fType.GetSize() != 8 ) {                              \
@@ -46,19 +43,12 @@ FairDbOutRowStream::FairDbOutRowStream(const FairDbTableMetaData* metaData) :
   fBadData(kFALSE),
   fCSV()
 {
-
-
 }
-
-
-//.....................................................................
 
 FairDbOutRowStream::~FairDbOutRowStream()
 {
-
 }
 
-//.....................................................................
 
 FairDbOutRowStream& FairDbOutRowStream::operator<<(Bool_t src)
 {
@@ -144,7 +134,7 @@ Bool_t FairDbOutRowStream::StoreDefaultIfInvalid(FairDb::DataTypes type)
   if ( typeSupplied.IsCompatible(typeRequired) ) { return kFALSE; }
 
   string udef = typeRequired.UndefinedValue();
-  cout
+  MAXDBLOG("FairDb",FairDbLog::kError,20)
       << "In table " << TableNameTc()
       << " column "<< CurColNum()
       << " (" << CurColName() << ")"
@@ -172,7 +162,6 @@ void FairDbOutRowStream::Store(const string& str)
   if ( CurColNum()> 1 ) { fCSV += ','; }
   fCSV += delim ;
   if ( concept != FairDb::kString ) { fCSV += str; }
-//  When exporting strings, take care of special characters.
   else {
     FairUtilString::MakePrintable(str.c_str(),fCSV);
   }

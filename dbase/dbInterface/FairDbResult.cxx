@@ -1,5 +1,5 @@
 #include "FairDbResult.h"
-
+#include "FairDbLogService.h"
 #include "FairDbBinaryFile.h"           // for string, FairDbBinaryFile
 #include "FairDbCache.h"                // for FairDbCache
 #include "FairDbExceptionLog.h"         // for FairDbExceptionLog
@@ -75,9 +75,7 @@ FairDbResultSet::~FairDbResultSet()
 }
 
 #define IN(t) istringstream in(AsString(t)); in
-// On first row use AsString to force type checking.
-// On subsequent rows use binary interface for speed.
-// Caution: Column numbering in TSQLStatement starts at 0.
+
 #define IN2(t,m)                            \
   int col = CurColNum()-1;                  \
   if ( CurRowNum() == 0 ) {                 \
@@ -89,15 +87,6 @@ FairDbResultSet::~FairDbResultSet()
     IncrementCurCol();                      \
   }                                         \
  
-// Handling reading of unsigned application data stored as signed database data.
-// Both GetInt(int) and GetString(int) return the signed data correctly.
-// So first read into signed equivalent, then copy and finally
-// trim off leading extended sign bits beyond the capacity of
-// the database column.
-// For BIGINT (size 8) make an exception.  It's used only as
-// an alternative to unsigned int and getUInt(int) (but not GetInt(int))
-// returns it correctly so can load directly into destination
-// Caution: Column numbering in TSQLStatement starts at 0.
 #define IN3(t)                                                      \
 int col = this->CurColNum()-1;                                      \
 const FairDbFieldType& fType = this->ColFieldType(col+1);              \
@@ -164,8 +153,7 @@ FairDbResultSet& FairDbResultSet::operator>>(Double_t& dest)
   return *this;
 }
 
-// Also use AsString() for string and ValTimeStamp; conversion to string
-// is needed in any case.
+
 FairDbResultSet& FairDbResultSet::operator>>(string& dest)
 {
   dest = AsString(FairDb::kString);
@@ -198,9 +186,9 @@ string& FairDbResultSet::AsString(FairDb::DataTypes type)
 
   if ( fail ) {
     string udef = reqdt.UndefinedValue();
-    cout << "-I- FairDbResultSet "
-         << "... value \"" << udef
-         << "\" will be substitued." <<  endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)
+        << "... value \"" << udef
+        << "\" will be substitued." <<  endl;
     fValString = udef;
     return fValString;
   }
@@ -216,28 +204,28 @@ string& FairDbResultSet::AsString(FairDb::DataTypes type)
        ) { smaller = kFALSE; }
     if ( smaller  ) {
 
-      cout << "-I- FairDbResultSet "
-           << "In table " << TableNameTc()
-           << " row " << fCurRow
-           << " column "<< col
-           << " (" << MetaData()->ColName(col) << ")"
-           << " value \"" << fValString
-           << "\" of type " << actdt.AsString()
-           << " may be truncated before storing in " << reqdt.AsString()
-           <<  endl;
+      MAXDBLOG("FairDb",FairDbLog::kWarning,20)
+          << "In table " << TableNameTc()
+          << " row " << fCurRow
+          << " column "<< col
+          << " (" << MetaData()->ColName(col) << ")"
+          << " value \"" << fValString
+          << "\" of type " << actdt.AsString()
+          << " may be truncated before storing in " << reqdt.AsString()
+          <<  endl;
     }
   } else {
     string udef = reqdt.UndefinedValue();
-    cout << "-I- FairDbResultSet "
-         << "In table " << TableNameTc()
-         << " row " << fCurRow
-         << " column "<< col
-         << " (" << MetaData()->ColName(col) << ")"
-         << " value \"" << fValString
-         << "\" of type " << actdt.AsString()
-         << " is incompatible with user type " << reqdt.AsString()
-         << ", value \"" << udef
-         << "\" will be substituted." <<  endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)
+        << "In table " << TableNameTc()
+        << " row " << fCurRow
+        << " column "<< col
+        << " (" << MetaData()->ColName(col) << ")"
+        << " value \"" << fValString
+        << "\" of type " << actdt.AsString()
+        << " is incompatible with user type " << reqdt.AsString()
+        << ", value \"" << udef
+        << "\" will be substituted." <<  endl;
     fValString = udef;
   }
 
@@ -250,21 +238,21 @@ Bool_t FairDbResultSet::CurColExists() const
   Int_t col = CurColNum();
 
   if ( IsExhausted() ) {
-    cout << "-I- FairDbResultSet "
-         << "In table " << TableNameTc()
-         << " attempting to access row " << fCurRow
-         << " column " << col
-         << " but only " << fCurRow << " rows in table."  << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)
+        << "In table " << TableNameTc()
+        << " attempting to access row " << fCurRow
+        << " column " << col
+        << " but only " << fCurRow << " rows in table."  << endl;
     return kFALSE;
   }
 
   int numCols = NumCols();
   if ( col > numCols ) {
-    cout << "-I- FairDbResultSet "
-         << "In table " << TableNameTc()
-         << " row " << fCurRow
-         << " attempting to access column "<< col
-         << " but only " << NumCols() << " in table ."  << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)
+        << "In table " << TableNameTc()
+        << " row " << fCurRow
+        << " attempting to access column "<< col
+        << " but only " << NumCols() << " in table ."  << endl;
     return kFALSE;
   }
 
@@ -295,14 +283,14 @@ TString FairDbResultSet::GetStringFromTSQL(Int_t col) const
   TString valStr = fTSQLStatement->GetString(col-1);
   if (    this->GetDBType() == FairDb::kOracle
           && this->ColFieldType(col).GetConcept() == FairDb::kString ) {
-    cout << "-I- FairDbResultSet" <<
-         "ORACLE string conversion from: " << valStr << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  <<
+                                      "ORACLE string conversion from: " << valStr << endl;
     valStr.ReplaceAll("\\n", "\n");
     valStr.ReplaceAll("\\t", "\t");
     valStr.ReplaceAll("\\\'","\'");
     valStr.ReplaceAll("\\\"","\"");
     valStr.ReplaceAll("\\\\","\\");
-    cout << "                           to: " << valStr <<endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "                           to: " << valStr <<endl;
   }
   return valStr;
 }
@@ -316,22 +304,16 @@ Bool_t FairDbResultSet::LoadCurValue() const
   Int_t col = CurColNum();
   TString valStr = this->GetStringFromTSQL(col);
 
-  // For floating point, use binary interface to preserve precision
-  // e.g.-1.234567890123457e-100 as string is -0.000000
   if ( CurColFieldType().GetConcept() == FairDb::kFloat ) {
     ostringstream out;
-//    out << ;
     if ( CurColFieldType().GetType() == FairDb::kDouble ) { ; }
-//  Caution: Column numbering in TSQLStatement starts at 0.
     out << fTSQLStatement->GetDouble(col-1);
     valStr = out.str().c_str();
   }
   int len = valStr.Length();
 
-
-
   const char* pVal = valStr.Data();
-  // Remove leading and trailing quotes if dealing with a string.
+  // trailing removal
   if (    len >= 2
           && ( *pVal == *(pVal+len-1) )
           && ( *pVal == '\'' || *pVal == '"' ) ) {
@@ -349,7 +331,7 @@ void FairDbResultSet::RowAsCsv(string& row) const
 
   Int_t maxCol = this->NumCols();
   for (Int_t col = 1; col <= maxCol; ++col) {
-    // Deal with NULL values.  Caution: Column numbering in TSQLStatement starts at 0.
+    // Deal with NULL values.
     if ( fTSQLStatement->IsNull(col-1) ) {
       row += "NULL";
       if ( col < maxCol ) { row += ','; }
@@ -361,20 +343,15 @@ void FairDbResultSet::RowAsCsv(string& row) const
     TString str = this->GetStringFromTSQL(col);
     const char* value = str.Data();
 
-    // Make strings printable.
     if ( concept == FairDb::kString ) { FairUtilString::MakePrintable(value,row); }
 
-    // For floating point, use binary interface to preserve precision
-    // e.g.-1.234567890123457e-100 as string is -0.000000
     else if ( concept == FairDb::kFloat ) {
       ostringstream out;
-      //out << setprecision(8);
-      if ( md->ColFieldType(col).GetType() == FairDb::kDouble ) { ; } //out << setprecision(16);
+      if ( md->ColFieldType(col).GetType() == FairDb::kDouble ) { ; }
       out << fTSQLStatement->GetDouble(col-1);
       row += out.str();
     }
-
-    // Everything else (!) is O.K.
+    // OK
     else { row += value; }
 
     if ( mustDelimit ) { row += '\''; }
@@ -382,7 +359,6 @@ void FairDbResultSet::RowAsCsv(string& row) const
   }
 }
 
-//----------------------------- Result Key Implementation  ------------------------------------//
 
 ClassImp(FairDbResultKey)
 
@@ -404,7 +380,6 @@ FairDbResultKey::FairDbResultKey(const FairDbResultKey* that) :
   if ( that ) { *this = *that; }
 }
 
-///.....................................................................
 
 FairDbResultKey::FairDbResultKey(std::string tableName,
                                  std::string rowName,
@@ -419,14 +394,11 @@ FairDbResultKey::FairDbResultKey(std::string tableName,
   this->AddVRecKey(seqno,ts);
 }
 
-//.....................................................................
 
 FairDbResultKey::~FairDbResultKey()
 {
-
 }
 
-//.....................................................................
 
 void FairDbResultKey::AddVRecKey(UInt_t seqno, ValTimeStamp ts)
 {
@@ -436,18 +408,10 @@ void FairDbResultKey::AddVRecKey(UInt_t seqno, ValTimeStamp ts)
 
 }
 
-//.....................................................................
+
 
 std::string FairDbResultKey::AsString() const
 {
-//
-//
-//   Return a string that summarises this key giving:-
-//            1)  The table and row names.
-//            2)  The number of validity records (aggregates)
-//            3)  The range of SEQNOs
-//            4)  The range of CREATIONDATEs.
-
   ostringstream os;
   os << "Table:" << fTableName << " row:" << fRowName;
   if ( fVRecKeys.empty() ) { os << " No vrecs"; }
@@ -480,7 +444,6 @@ std::string FairDbResultKey::AsString() const
   return string(os.str());
 
 }
-//.....................................................................
 
 Float_t FairDbResultKey::Compare(const FairDbResultKey* that) const
 {
@@ -489,10 +452,9 @@ Float_t FairDbResultKey::Compare(const FairDbResultKey* that) const
   if ( fTableName != that->fTableName ) { return -2.; }
   if ( fRowName   != that->fRowName   ) { return -1.; }
 
-  // Pick the key with the most entries and compare the other to it.
 
-  cout << "Comparing " << *this << " to "
-       << *that << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "Comparing " << *this << " to "
+                                  << *that << endl;
 
   const FairDbResultKey* keyBig   = this;
   const FairDbResultKey* keySmall = that;
@@ -513,11 +475,12 @@ Float_t FairDbResultKey::Compare(const FairDbResultKey* that) const
   for (  std::list<FairDbResultKey::VRecKey>::const_iterator itr = keySmall->fVRecKeys.begin();
          itr != itrEnd;
          ++itr ) {
-    cout << "Comparing seqno " << itr->SeqNo << " with creation date " << itr->CreationDate
-         << " to " <<  seqnoToCreationDate[itr->SeqNo] << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "Comparing seqno " << itr->SeqNo << " with creation date " << itr->CreationDate
+                                     << " to " <<  seqnoToCreationDate[itr->SeqNo] << endl;
     if ( seqnoToCreationDate[itr->SeqNo] == itr->CreationDate ) { ++match; }
   }
-  cout << "Match results: " << match << " out of " << numVrecs << endl;
+
+  DBLOG("FairDb",FairDbLog::kInfo) << "Match results: " << match << " out of " << numVrecs << endl;
 
   return match/numVrecs;
 
@@ -533,8 +496,6 @@ std::string FairDbResultKey::GetTableRowName() const
 }
 
 //--------------------------------- Result Aggregat Implementation --------------------------//
-
-
 
 ClassImp(FairDbResultAgg)
 
@@ -556,44 +517,34 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
   SetTableName(tableName);
   if ( ! tableRow || ! cache || ! vrecBuilder || ! proxy ) { return; }
 
-// Unpack the extended context SQL qualifiers.
-// Don't use StringTok - it eats null strings
-// e.g. abc;;def gives 2 substrings.
+// Caution: StringTok - removes null strings
 
   string::size_type loc  = sqlQualifiers.find(';');
   string::size_type loc2 = sqlQualifiers.find(';',loc+1);
   string sqlData  = string(sqlQualifiers,loc+1,loc2-loc-1);
   string fillOpts = string(sqlQualifiers,loc2+1);
 
-//Loop over all rows looking to see if they are already in
-//the cache, and if not, recording their associated sequence numbers
 
   vector<UInt_t> reqSeqNos;  // Sequence numbers required from DB.
   seqToRow_t seqToRow;       // Map SeqNo - > RowNo.
-//  Set up a Default database number, it will be updated if anything
-//  needs to be read from the database.
   UInt_t dbNo = 0;
   Int_t maxRowNo = vrecBuilder->GetNumValidityRec() - 1;
 
-//Ignore the first entry from the validity rec builder, it will be
-//for Agg No = -1, which should not be present for aggregated data.
+
   for ( Int_t rowNo = 1; rowNo <= maxRowNo; ++rowNo ) {
     const FairDbValidityRec& vrecRow = vrecBuilder->GetValidityRec(rowNo);
 
-//  If its already in the cache, then just connect it in.
     const FairDbResult* res = cache->Search(vrecRow,sqlQualifiers);
-    cout << "Checking validity rec " << rowNo
-         << " " << vrecRow
-         << "SQL qual: " << sqlQualifiers
-         << " cache search: " << (void*) res << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "Checking validity rec " << rowNo
+                                     << " " << vrecRow
+                                     << "SQL qual: " << sqlQualifiers
+                                     << " cache search: " << (void*) res << endl;
     if ( res ) {
       fResults.push_back(res);
       res->Connect();
       fSize += res->GetNumRows();
     }
 
-//  If its not in the cache, but represents a gap, then create an empty
-//  FairDbResult and add it to the cache.
     else if ( vrecRow.IsGap() ) {
       FairDbResult* newRes = new FairDbResultNonAgg(0, tableRow, &vrecRow);
       cache->Adopt(newRes,false);
@@ -601,27 +552,19 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
       newRes->Connect();
     }
 
-//  Neither in cache, nor a gap, so record its sequence number.
     else {
       UInt_t seqNo = vrecRow.GetSeqNo();
       reqSeqNos.push_back(seqNo);
       seqToRow[seqNo] = rowNo;
       fResults.push_back(0);
-//    All data must come from a single database, so any vrec will
-//    do to define which one.
       dbNo = vrecRow.GetDbNo();
     }
   }
 
-//If there are required sequence numbers, then read them from the
-//database and build FairDbResults for each.
 
   if ( reqSeqNos.size() ) {
-//  Sort into ascending order; it may simplify the query which will
-//  block ranges of sequence numbers together.
     sort(reqSeqNos.begin(),reqSeqNos.end());
     FairDbResultSet* rs = proxy->QuerySeqNos(reqSeqNos,dbNo,sqlData,fillOpts);
-//  Flag that data was read from Database.
     this->SetResultsFromDb();
     FairDbTimerManager::gTimerManager.StartSubWatch(1);
     while ( ! rs->IsExhausted() ) {
@@ -631,27 +574,26 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
       Int_t rowNo = -2;
       if ( seqToRow.find(seqNo) == seqToRow.end() ) {
 
-        cout  << "Unexpected SeqNo: " << seqNo << endl;
+        DBLOG("FairDb",FairDbLog::kWarning)   << "Unexpected SeqNo: " << seqNo << endl;
 
       } else {
         rowNo = seqToRow[seqNo];
-        cout
+        DBLOG("FairDb",FairDbLog::kInfo)
             << "Procesing SeqNo: " << seqNo
             << " for row " << rowNo << endl;
       }
 
       const FairDbValidityRec& vrecRow = vrecBuilder->GetValidityRec(rowNo);
       FairDbResultNonAgg* newRes = new FairDbResultNonAgg(rs,tableRow,&vrecRow);
-//    Don't allow results from Extended Context queries to be reused.
+
       if ( this->IsExtendedContext() ) { newRes->SetCanReuse(false); }
       if ( rowNo == -2 ) {
         delete newRes;
       } else {
-        cout
+        DBLOG("FairDb",FairDbLog::kInfo)
             << "SeqNo: " << seqNo
             << " produced " << newRes->GetNumRows() << " rows" << endl;
-//      Adopt but don't register key for this component, only the overall FairDbResultAgg
-//      will have a registered key.
+
         cache->Adopt(newRes,false);
         fResults[rowNo-1] = newRes;
         newRes->Connect();
@@ -659,13 +601,9 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
       }
     }
 
-//  FairDbResultSet fully processed, so delete it.
     delete rs;
   }
 
-//All component FairDbResultNonAgg objects have now been located and
-//connected in, so set up their access keys and determine the validty
-//range by ANDing the time windows together.
 
   fRowKeys.reserve(fSize);
 
@@ -685,20 +623,18 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
     }
   }
 
-// Now that the row look-up table has been built the natural index
-// look-up table can be filled in.
+
   this->BuildLookUpTable();
 
-// Set aggregate number to -1 to show that it has multiple aggregates
   vRec.SetAggregateNo(-1);
   SetValidityRec(vRec);
 
-  cout
+  DBLOG("FairDb",FairDbLog::kInfo)
       << "Aggregate contains " << fSize  << " entries.  vRec:-" << endl
       << vRec << endl;
 
-  cout << "Created aggregated result set no. of rows: "
-       << this->GetNumRows() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  << "Created aggregated result set no. of rows: "
+                                    << this->GetNumRows() << endl;
 
 }
 FairDbResultAgg::~FairDbResultAgg()
@@ -713,10 +649,6 @@ FairDbResultAgg::~FairDbResultAgg()
 
 FairDbResultKey* FairDbResultAgg::CreateKey() const
 {
-//
-//
-//  Purpose:  Create a key that corresponds to this result.
-//            Caller must take ownership.
 
   FairDbResultKey* key = 0;
   for ( ConstResultItr_t itr = fResults.begin();
@@ -724,9 +656,9 @@ FairDbResultKey* FairDbResultAgg::CreateKey() const
         ++itr ) {
     const FairDbResult* result = *itr;
     if ( result ) {
-      // Create key from first result.
+
       if ( ! key ) { key = result->CreateKey(); }
-      // Extend key from the remainder.
+
       else {
         const FairDbValidityRec& vrec = result->GetValidityRec();
         key->AddVRecKey(vrec.GetSeqNo(),vrec.GetCreationDate());
@@ -734,7 +666,7 @@ FairDbResultKey* FairDbResultAgg::CreateKey() const
     }
   }
 
-// Should not have an empty set, but just in case.
+
   if ( ! key ) { key = new FairDbResultKey(); }
 
   return key;
@@ -761,7 +693,7 @@ const FairDbValidityRec& FairDbResultAgg::GetValidityRec(
 
 Bool_t FairDbResultAgg::Satisfies(const string& sqlQualifiers)
 {
-  cout
+  DBLOG("FairDb",FairDbLog::kInfo)
       << "Trying to satisfy: SQL: " << sqlQualifiers
       << "\n with CanReuse: " << this->CanReuse()
       << " sqlQualifiers: " << this->GetSqlQualifiers()
@@ -857,8 +789,8 @@ FairDbResult::FairDbResult(const FairDbResult& from)
 FairDbResult::~FairDbResult()
 {
   if ( fNumClients ) {
-    cout << "Warning: Destroying FairDbResult with " << fNumClients
-         << " clients " << endl;
+    DBLOG("FairDb",FairDbLog::kWarning)   << "Destroying FairDbResult with " << fNumClients
+                                          << " clients " << endl;
   }
 
   this->DeRegisterKey();
@@ -882,21 +814,17 @@ void FairDbResult::BuildLookUpTable() const
 {
   Bool_t duplicatesOK = this->IsExtendedContext();
 
-  cout << "Building look-uptable. Allow duplicates: "
-       << duplicatesOK << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)   << "Building look-uptable. Allow duplicates: "
+                                     << duplicatesOK << endl;
 
   for ( Int_t rowNo = this->GetNumRows()-1;
         rowNo >= 0;
         --rowNo ) {
     const FairDbTableRow* row  = this->GetTableRow(rowNo);
     UInt_t index            = row->GetIndex(rowNo);
-//  Ensure we use this class's GetTableRowByIndex, the method is
-//  virtual but if the subclass has called this method then it must
-//  be the right one to use. [Actually FairDbResultAgg overrides
-//  GetTableRowByIndex, but only to make building lazy].
     const FairDbTableRow* row2 = this->FairDbResult::GetTableRowByIndex(index);
 
-    cout
+    DBLOG("FairDb",FairDbLog::kInfo)
         << "Look-up. Row no " << rowNo
         << " index " << index
         << " row,row2 " << (void*) row << "," << (void*) row2 << endl;
@@ -910,7 +838,7 @@ void FairDbResult::BuildLookUpTable() const
       if ( row->GetOwner() ) { msg << "(SEQNO " << row->GetOwner()->GetValidityRec(row).GetSeqNo() << ")"; }
       msg << " matches agg " <<  row2->GetAggregateNo();
       if ( row2->GetOwner() ) { msg << "(SEQNO " << row2->GetOwner()->GetValidityRec(row2).GetSeqNo() << ")"; }
-      cout << msg.str() << endl;
+      MAXDBLOG("FairDb",FairDbLog::kError,20) << msg.str() << endl;
     }
 
     else { fIndexKeys[index] = row; }
@@ -931,25 +859,12 @@ Bool_t FairDbResult::CanDelete(const FairDbResult* res)
 
 void FairDbResult::DeRegisterKey()
 {
-
   if ( ! fKey ) { return; }
-
-// FairDbRecord* record = FairDbServices::GetRecord();
-//  if ( ! record ) {
-//    cout << "Attempting to deregister FairDbResultKey at " << (void*) fKey
-//          << " but owning FairDbRecord cannot be found." << endl;
-//  }
-//  else {
-//    record->DeleteKey(fKey);
-//    fKey = 0;
-//  }
-
 }
+
 const FairDbResultKey* FairDbResult::GetKey() const
 {
-
   return fKey ? fKey : FairDbResultKey::GetEmptyKey();
-
 }
 
 const FairDbTableRow* FairDbResult::GetTableRowByIndex(UInt_t index) const
@@ -963,23 +878,10 @@ void FairDbResult::RegisterKey()
 {
   if ( fKey || this->GetNumRows() == 0) { return; }
 
-//  FairDbRecord* record = FairDbServices::GetRecord();
-//  if ( ! record ) {
-//    cout << "cannot create and register key"
-//           << ", owning FairDbRecord cannot be found." << endl;
-//  }
-//  else {
   FairDbResultKey* key = this->CreateKey();
-//    record->AdoptKey(key);
   fKey = key;
-//  }
 
 }
-
-
-
-
-
 
 
 Bool_t FairDbResult::Satisfies(const ValContext& vc,
@@ -991,7 +893,8 @@ Bool_t FairDbResult::Satisfies(const ValContext& vc,
   Bool_t isCompatible      = this->GetValidityRec().IsCompatible(vc,task);
   Bool_t hasExpired        = this->GetValidityRec().HasExpired(vc,task);
   UInt_t numClients        = this->GetNumClients();
-  cout
+
+  DBLOG("FairDb",FairDbLog::kInfo)
       << "    Checking result with FairDbValidityRec:- \n      " << this->GetValidityRec()
       << "  With extended context: " << isExtendedContext
       << " CanReuse: " << canReuse
@@ -1004,12 +907,10 @@ Bool_t FairDbResult::Satisfies(const ValContext& vc,
 
   if ( canReuse && isCompatible ) { return kTRUE; }
 
-//  If the query would be satisfied apart from the date, then
-//  assume we have moved out of the validity window, never
-//  to return!
+
 
   if ( canReuse && hasExpired && numClients == 0 )  {
-    cout << "    Marking result as not reusable" << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Marking result as not reusable" << endl;
     this-> SetCanReuse(kFALSE);
   }
 
@@ -1021,20 +922,20 @@ void FairDbResult::Streamer(FairDbBinaryFile& file)
 {
 
   if ( file.IsReading() ) {
-    cout << "    Restoring FairDbResult ..." << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Restoring FairDbResult ..." << endl;
     file >> fCanReuse;
     fEffVRec.Streamer(file);
-    cout << "    Restored " << fEffVRec << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Restored " << fEffVRec << endl;
     fResultsFromDb = kFALSE;
     fNumClients    = 0;
     file >> fTableName;
-    cout << "    Restored string " << fTableName << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Restored string " << fTableName << endl;
   } else if ( file.IsWriting() ) {
-    cout << "    Saving FairDbResult ..." << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Saving FairDbResult ..." << endl;
     file << fCanReuse;
-    cout << "    Saving " << fEffVRec << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Saving " << fEffVRec << endl;
     fEffVRec.Streamer(file);
-    cout << "    Saving string " << fTableName << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Saving string " << fTableName << endl;
     file << fTableName;
   }
 }
@@ -1118,10 +1019,10 @@ FairDbResultNonAgg::FairDbResultNonAgg(FairDbResultSet* resultSet,
   //Flag that data was read from Database.
   this->SetResultsFromDb();
   if ( seqNo  == 0 )
-    cout << "Created unaggregated VAL result set no. of rows: "
-         << this->GetNumRows() << endl;
-  else  cout << "Created unaggregated result set for SeqNo: " << seqNo
-               << " no. of rows: " << this->GetNumRows() << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "Created unaggregated VAL result set no. of rows: "
+                                      << this->GetNumRows() << endl;
+  else   DBLOG("FairDb",FairDbLog::kInfo)  << "Created unaggregated result set for SeqNo: " << seqNo
+        << " no. of rows: " << this->GetNumRows() << endl;
 
 }
 
@@ -1155,7 +1056,7 @@ void FairDbResultNonAgg::DebugCtor() const
 {
   static const FairDbResultNonAgg* that = 0;
   if ( this == that ) {
-    cout << "debug " << (void*) this << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "debug " << (void*) this << endl;
   }
 }
 //.....................................................................
@@ -1188,11 +1089,11 @@ Bool_t FairDbResultNonAgg::Owns(const FairDbTableRow* row ) const
 Bool_t FairDbResultNonAgg::Satisfies(const FairDbValidityRec& vrec,
                                      const string& sqlQualifiers)
 {
-  cout  << "Trying to satisfy: Vrec " << vrec << " SQL: " << sqlQualifiers
-        << "\n with CanReuse: " << this->CanReuse()
-        << " vrec: " << this->GetValidityRec()
-        << " sqlQualifiers: " << this->GetSqlQualifiers()
-        << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)   << "Trying to satisfy: Vrec " << vrec << " SQL: " << sqlQualifiers
+                                     << "\n with CanReuse: " << this->CanReuse()
+                                     << " vrec: " << this->GetValidityRec()
+                                     << " sqlQualifiers: " << this->GetSqlQualifiers()
+                                     << endl;
 
   if ( this->CanReuse() ) {
     const FairDbValidityRec& this_vrec = this->GetValidityRec();
@@ -1210,17 +1111,16 @@ void FairDbResultNonAgg::Streamer(FairDbBinaryFile& file)
 
   if ( file.IsReading() ) {
     this->FairDbResult::Streamer(file);
-    cout << "    Restoring FairDbResultNonAgg ..." << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Restoring FairDbResultNonAgg ..." << endl;
     file >> fRows;
-//  Take ownership of the memory holding the array.
     fBuffer = file.ReleaseArrayBuffer();
     this->BuildLookUpTable();
-    cout << "    Restored FairDbResultNonAgg. Size:"
-         << fRows.size() << " rows" << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Restored FairDbResultNonAgg. Size:"
+                                      << fRows.size() << " rows" << endl;
   } else if ( file.IsWriting() ) {
     this->FairDbResult::Streamer(file);
-    cout << "    Saving FairDbResultNonAgg. Size:"
-         << fRows.size() << " rows" << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Saving FairDbResultNonAgg. Size:"
+                                      << fRows.size() << " rows" << endl;
     file << fRows;
   }
 }

@@ -69,7 +69,7 @@ FairDbSqlContext::FairDbSqlContext(IntervalType interval,
     break;
 
   default:
-    (*this) << " 1 = 0 "; //An impossible condition (hopefully)
+    (*this) << " 1 = 0 ";
   }
 
   (*this) << " and DetectorMask & " << static_cast<unsigned int>(fDetType)

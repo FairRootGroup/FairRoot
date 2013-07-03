@@ -4,33 +4,31 @@
 
 #include "TSQLServer.h"
 #include "TSQLStatement.h"
-
 #include "FairDbException.h"
+#include "FairDbLogService.h"
 
 using namespace std;
 
 ClassImp(FairDbException)
 
 
-FairDbException::FairDbException(const char* msg /*= 0*/,
-                                 Int_t code      /* = -1 */,
-                                 Int_t dbType    /*= -1 */ ):
+FairDbException::FairDbException(const char* msg,
+                                 Int_t code,
+                                 Int_t dbType):
   fMessage(msg),
   fErrorCode(code),
   fDbType(dbType)
 {
 
-
 }
 
 
 FairDbException::FairDbException(const TSQLServer& server,
-                                 Int_t dbType    /*= -1 */ ):
+                                 Int_t dbType):
   fMessage(server.GetErrorMsg()),
   fErrorCode(server.GetErrorCode()),
   fDbType(dbType)
 {
-
 
 }
 
@@ -41,7 +39,6 @@ FairDbException::FairDbException(const TSQLStatement& statement,
   fErrorCode(statement.GetErrorCode()),
   fDbType(dbType)
 {
-
 
 }
 

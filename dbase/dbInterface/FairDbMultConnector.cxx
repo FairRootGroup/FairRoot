@@ -1,6 +1,7 @@
 #include "FairDbMultConnector.h"
 
 #include "FairDb.h"                     // for GetValDescr, etc
+#include "FairDbLogService.h"
 #include "FairDbExceptionLog.h"         // for FairDbExceptionLog
 #include "FairDbStatement.h"            // for FairDbStatement
 #include "FairDbString.h"               // for FairDbString, StringTok, etc
@@ -29,17 +30,11 @@ FairDbMultConnector::FairDbMultConnector():
   fConnections(),
   fTemporaryTables()
 {
-//  Current cascader configuration comes from 3 environmental
 //  variables:-
 //
 //    ENV_DB_URL             a semi-colon separated list of URLs
 //    ENV_DB_USER            user name (one or a semi-colon separated list)
 //    ENV_DB_PSWD            password (one or a semi-colon separated list)
-//
-//    or the _UPDATE alternatives e.g. ENV_DB_UPDATE_USER
-//
-// The _UPDATE versions take priority.
-
 
 // Extract args from  ENV_DB environmental variables
   const char*      strUser = gSystem->Getenv("ENV_TSQL_UPDATE_USER");
@@ -53,15 +48,15 @@ FairDbMultConnector::FairDbMultConnector():
   string urlList      = ( strUrl  ) ? strUrl  : "";
 
   if ( urlList == "" || userList == "" || pswdList == "" ) {
-    cout << "-E- FairDbMultConnector() "
-         << "Cannnot open a Database cascade;\n"
-         << "   the environmental variables ENV_DB_*:-" << endl
-         << "USER: \"" << userList << "\" PSWD:\"" << pswdList
-         << "\" URL:\"" << urlList << endl
-         << " are either not defined or empty.\n"
-         << "   Please check your settings of ENV_DB_USER,"
-         << " ENV_DB_PSWD and ENV_DB_URL\n"
-         << "Aborting due to above errors " << endl;
+    DBLOG("FairDbLog",FairDbLog::kFatal)
+        << "Cannnot open a Database cascade;\n"
+        << "   the environmental variables ENV_DB_*:-" << endl
+        << "USER: \"" << userList << "\" PSWD:\"" << pswdList
+        << "\" URL:\"" << urlList << endl
+        << " are either not defined or empty.\n"
+        << "   Please check your settings of ENV_DB_USER,"
+        << " ENV_DB_PSWD and ENV_DB_URL\n"
+        << "Aborting due to above errors ... " << endl;
     exit(1);
   }
 
@@ -101,23 +96,22 @@ FairDbMultConnector::FairDbMultConnector():
 
 //  Check for presence of a DB_STATE_FLAG table
     if ( this->GetTableDbNo("FAIRDB_STATE_FLAGS",entry) != -1 ) {
-      cout << " -E- FairDbMultConnector  POSSIBLE VERSION SHEAR DETECTED !!!\n"
-           << "    The DB_STATE_FLAGS table is present on cascade entry " << entry << ".  This table will\n"
-           << "    only be introduced to manage backward incompatible changes that could lead\n"
-           << "    to version shear between the code and the database.  This version of the\n"
-           << "    code does not support the change the presence of that table indicates\n"
-           << "    so has to shut down. \n";
+      DBLOG("FairDbLog",FairDbLog::kFatal)  << " POSSIBLE MIXED/CUT VERSION DETECTED !!!\n"
+                                            << "    The DB_STATE_FLAGS table is present on DB entry " << entry << ".  This table will\n"
+                                            << "    only be introduced to manage backward incompatible changes that could lead\n"
+                                            << "    to version shear between the code and the database.  This version of the\n"
+                                            << "    code does not support the change the presence of that table indicates\n"
+                                            << "    so has to shut down. \n";
       fail = true;
     }
 
   } //! DB entries
 
-  cout << *this;
+  DBLOG("FairDb",FairDbLog::kInfo) << *this;
 
-//  Abort, if there have been any failures.
+//  Abort if failures
   if ( fail ) {
-
-    cout << " -E- FairDbMultConnector() Aborting due to above errors" << endl;
+    DBLOG("FairDb",FairDbLog::kFatal) << "Aborting due to above errors" << endl;
     exit(1);
   }
 
@@ -135,26 +129,26 @@ FairDbMultConnector::FairDbMultConnector(const FairDbMultConnector& conn)
   fTemporaryTables=conn.fTemporaryTables;
   */
 }
-//.....................................................................
+
 
 FairDbMultConnector::~FairDbMultConnector()
 {
 
-  cout << "-I- FairDbMultConnector : Destroying FairDbMultConnector"
-       << endl;
+  DBLOG("FairDb",FairDbLog::kDebug)  << " Destroying FairDbMultConnector"
+                                     << endl;
   for (Int_t dbNo = this->GetNumDb()-1; dbNo >= 0; --dbNo) {
     delete fConnections[dbNo];
   }
 
 }
 
-//.....................................................................
+
 
 ostream& operator<<(ostream& os, const FairDbMultConnector& cascader)
 {
-
-  os << "-I- FairDbMultConnector() Status:- " << endl
-     << "Status   URL" << endl << endl;
+  os << endl;
+  os << endl << "                                   FairDbMultConnector::  Status:- "     << endl
+     << "                                                          Status   URL: " ;
 
   int maxDb = cascader.GetNumDb();
   for (Int_t dbNo = 0; dbNo < maxDb; ++dbNo)
@@ -166,47 +160,33 @@ ostream& operator<<(ostream& os, const FairDbMultConnector& cascader)
 
 }
 
-//.....................................................................
+
 
 Int_t FairDbMultConnector::AllocateSeqNo(const string& tableName,
-    Int_t requireGlobal, /* =0 */
-    Int_t dbNo  /* = 0 */) const
+    Int_t requireGlobal,
+    Int_t dbNo ) const
 {
   bool isTemporary = IsTemporaryTable(tableName,dbNo);
 
-  //  Deal with global requests.
-
+  // Global requests.
   if (     requireGlobal > 0
            || ( requireGlobal == 0 && dbNo == fGlobalSeqNoDbNo && ! isTemporary ) ) {
     if ( fGlobalSeqNoDbNo < 0 ) {
-      cout << " -I- FairDbMultConnector: Unable to issue global SEQNO - no authorising DB in cascade\n"
-           << "  will issue local one instead" << endl;
+      DBLOG("FairDb",FairDbLog::kWarning) << "Unable to issue global SEQNO - no authorising DB in cascade\n"
+                                          << "  will issue local one instead" << endl;
     } else if ( isTemporary ) {
-      cout << " -I- FairDbMultConnector: Unable to issue global SEQNO - " << tableName << " is temporary\n"
-           << "  will issue local one instead" << endl;
+      DBLOG("FairDb",FairDbLog::kWarning) << "Unable to issue global SEQNO - " << tableName << " is temporary\n"
+                                          << "  will issue local one instead" << endl;
     } else { return this->ReserveNextSeqNo(tableName,true,fGlobalSeqNoDbNo); }
   }
 
-  // Deal with local requests
+  // Local requests
   return this->ReserveNextSeqNo(tableName,false,dbNo);
 
 }
 
-//.....................................................................
-
 FairDbStatement* FairDbMultConnector::CreateStatement(UInt_t dbNo) const
 {
-//  <NB>
-//  As the caller is responsible for destroying the statement after use
-//  consider:-
-//
-//  #include <memory>
-//  using std::auto_ptr;
-//
-//  ...
-//
-//  auto_ptr<FairDbStatement> stmt(cascader.CreateStatement(dbNo));
-
 
   if ( this->GetStatus(dbNo) == kFailed ) { return 0; }
   FairDbConnection& conDb = *fConnections[dbNo];
@@ -215,7 +195,6 @@ FairDbStatement* FairDbMultConnector::CreateStatement(UInt_t dbNo) const
   return stmtDb;
 
 }
-//.....................................................................
 
 Int_t FairDbMultConnector::CreateTemporaryTable(const string& tableNameMc,
     const string& tableDescr)
@@ -225,10 +204,10 @@ Int_t FairDbMultConnector::CreateTemporaryTable(const string& tableNameMc,
   if (    tableName == ""
           || tableDescr[0] != '('
           || tableDescr[tableDescr.size()-1] != ')' ) {
-    cout << "-I- FairDbMultConnector:: Illegal input args:-" << endl
-         << "     Table Name: " << tableName
-         << "  Table Description: " << tableDescr
-         <<endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "Illegal input args:-" << endl
+                                            << "     Table Name: " << tableName
+                                            << "  Table Description: " << tableDescr
+                                            <<endl;
     return -1;
   }
 
@@ -251,8 +230,8 @@ Int_t FairDbMultConnector::CreateTemporaryTable(const string& tableNameMc,
         this->GetConnection(dbNoAcc)->SetTableExists(tableName);
         break;
       }
-      // print exceptions
-
+      // Print exceptions if needed
+      if (FairDbLogService::Instance()->IsActive("FairDb",FairDbLog::kWarning)) { stmtDb->PrintExceptions(); }
     }
   }
 
@@ -265,16 +244,16 @@ Int_t FairDbMultConnector::CreateTemporaryTable(const string& tableNameMc,
   FairDbConnection& conDb = *fConnections[dbNoAcc];
   if ( conDb.IsTemporary() ) {
     conDb.SetPermanent();
-    cout << "-I- FairDbMultConnector:  Making connection: " << conDb.GetUrl()
-         << " permanent to preserve temporary tables." << endl;
+    DBLOG("FairDb",FairDbLog::kWarning) << "Making connection: " << conDb.GetUrl()
+                                        << " permanent to preserve temporary tables." << endl;
   }
 
 // Create SQL to create auxillary validity table and write to same Db.
   sqlMakeTable = FairDb::GetValDescr(tableName.c_str(),true);
 
-  cout << "-I- FairDbMultConnector:  Validity Table creation: "
-       << " Database: " << dbNoAcc << " "
-       << sqlMakeTable << endl;
+  DBLOG("FairDb",FairDbLog::kWarning) << "Validity Table creation: "
+                                      << " Database: " << dbNoAcc << " "
+                                      << sqlMakeTable << endl;
   stmtDb->ExecuteUpdate(sqlMakeTable.c_str());
   if ( stmtDb->PrintExceptions() ) { return -1; }
   this->GetConnection(dbNoAcc)->SetTableExists(tableName+"VAL");
@@ -307,7 +286,7 @@ string FairDbMultConnector::GetDbName(UInt_t dbNo) const
   string dbName;
 
   if ( dbNo < this->GetNumDb() ) { dbName = fConnections[dbNo]->GetDbName(); }
-  else { cout << "-I- FairDbMultConnector: Database does not contain entry " << dbNo << endl; }
+  else {  DBLOG("FairDb",FairDbLog::kInfo)  << "Database does not contain entry " << dbNo << endl; }
   return dbName;
 
 }
@@ -319,7 +298,7 @@ Int_t FairDbMultConnector::GetDbNo(const string& dbName) const
     if ( dbName == fConnections[dbNo]->GetDbName() ) { return dbNo; }
   }
 
-  cout << "-I- FairDbMultConnector:Database does not contain entry " << dbName << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  << "Database does not contain entry " << dbName << endl;
   return -1;
 
 }
@@ -347,7 +326,7 @@ Int_t FairDbMultConnector::GetTableDbNo(const string& tableName,
   string::const_iterator itrEnd = tableName.end();
   while ( itr != itrEnd ) if ( islower(*itr++) ) { return -1; }
 
-// Loop over cascade looking for table.
+// Loop over databases list
   for (UInt_t dbNoTry = 0; dbNoTry < fConnections.size(); ++dbNoTry ) {
     if ( selectDbNo >= 0 && (UInt_t) selectDbNo != dbNoTry ) { continue; }
     const FairDbConnection* con =  this->GetConnection(dbNoTry);
@@ -387,7 +366,7 @@ FairDbMultConnector::BLock::BLock(FairDbStatement* stmtDB, const string& seqnoTa
   fLocked(kFALSE)
 {
   if ( ! fStmt ) {
-    cout << "-E FairDbMultConnector::Block  Cannot obtain statment to set lock" << endl;
+    DBLOG("FairDb",FairDbLog::kError)<< "Block  Cannot obtain statment to set lock" << endl;
     return;
   }
 
@@ -422,8 +401,8 @@ void FairDbMultConnector::BLock::SetBLock(Bool_t setting)
   } else {
     sql = "UNLOCK TABLES;";
   }
-  cout << "Lock requested: " << setting
-       << " issuing lock command: " << sql << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Lock requested: " << setting
+                                   << " issuing lock command: " << sql << endl;
   fStmt->ExecuteUpdate(sql.c_str());
   if ( fStmt->GetExceptionLog().IsEmpty() ) { fLocked = setting; }
   fStmt->PrintExceptions();
@@ -456,8 +435,8 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
 
   if ( isGlobal ) {
     if ( ! seqnoTableNameExists ) {
-      cout<< "-I- FairDbMultConnector: Unable to issue global SEQNO - " << dbNo
-          << " is not an authorising DB" << endl;
+      DBLOG("FairDb",FairDbLog::kInfo)<< "Unable to issue global SEQNO - " << dbNo
+                                      << " is not an authorising DB" << endl;
       return 0;
     }
   } else {
@@ -467,14 +446,14 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
           << "(TABLENAME      CHAR(64) NOT NULL PRIMARY KEY,\n"
           << " LASTUSEDSEQNO  INT )";
 
-      cout<< "-I- FairDbMultConnector: Database: " << dbNo
-          << " create local SEQNO table query: " << sql.c_str() << endl;
+      DBLOG("FairDb",FairDbLog::kInfo)<< "Database: " << dbNo
+                                      << " create local SEQNO table query: " << sql.c_str() << endl;
       stmtDb->ExecuteUpdate(sql.c_str());
       if ( stmtDb->PrintExceptions() ) { return 0; }
       sql.Clear();
       sql << "INSERT INTO " <<  seqnoTableName << " VALUES ('*',0)";
-      cout<< "-I- FairDbMultConnector: Database: " << dbNo
-          << " prime local SEQNO table query: " << sql.c_str() << endl;
+      DBLOG("FairDb",FairDbLog::kInfo)<< "Database: " << dbNo
+                                      << " prime local SEQNO table query: " << sql.c_str() << endl;
       stmtDb->ExecuteUpdate(sql.c_str());
       if ( stmtDb->PrintExceptions() ) { return 0; }
     }
@@ -490,7 +469,7 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
         && tableNameExists ) { dataTable = tableName; }
   BLock Block(this->CreateStatement(dbNo),seqnoTableName,dataTable);
   if ( ! Block.IsBLocked() ) {
-    cout<< "-I- FairDbMultConnector: Unable to lock " << seqnoTableName << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)<< "Unable to lock " << seqnoTableName << endl;
     return 0;
   }
 
@@ -499,15 +478,15 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
   sql.Clear();
   sql << "select * from " << seqnoTableName << " where TABLENAME = '*' or TABLENAME = '";
   sql << tableName + "' order by TABLENAME";
-  cout<< "-I- FairDbMultConnector: "<< seqnoTableName << " query: " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< " tablename: "<< seqnoTableName << " query: " << sql.c_str() << endl;
   TSQLStatement* stmt = stmtDb->ExecuteQuery(sql.c_str());
-  stmtDb->PrintExceptions(0);
+  stmtDb->PrintExceptions(FairDbLog::kDebug);
   Int_t seqNoDefault = 0;
   if ( stmt && stmt->NextResultRow() ) {
     seqNoDefault = stmt->GetInt(1);
   } else {
-    cout<< "-I- FairDbMultConnector: Unable to find default SeqNo"
-        << " due to above error" << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)<< "Unable to find default SeqNo"
+                                    << " due to above error" << endl;
     delete stmt;
     stmt = 0;
     return 0;
@@ -518,7 +497,7 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
   }
   delete stmt;
   stmt = 0;
-  cout<< "-I- FairDbMultConnector: query returned last used seqno: " << seqNoTable << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "query returned last used seqno: " << seqNoTable << endl;
 
 //  If the table exists, make sure that the seqNo hasn't already been used.
 //  This is paranoia code and expensive, so only do the check once for
@@ -535,8 +514,8 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
     sql.Clear();
     sql << "select max(SEQNO) from " << tableName << "VAL"
         << " where SEQNO between " << seqNoMin << " and " << seqNoMax;
-    cout<< "-I- FairDbMultConnector: Database: " << dbNo
-        << " max  SEQNO query: " << sql.c_str() << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)<< "Database: " << dbNo
+                                    << " max  SEQNO query: " << sql.c_str() << endl;
     stmt  =  stmtDb->ExecuteQuery(sql.c_str());
     if ( stmtDb->PrintExceptions() ) { return 0; }
     Int_t  minValue = 0;
@@ -549,7 +528,7 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
     stmt = 0;
 
     if ( minValue > seqNoTable ) {
-      cout<< "-I- FairDbMultConnector: "
+      DBLOG("FairDb",FairDbLog::kInfo)
           << "Database: " << dbNo << " "
           << seqnoTableName << " has last used SEQNO of "
           << seqNoTable << " for table " << tableName
@@ -565,8 +544,8 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
   sql.Clear();
   sql << "delete from " << seqnoTableName << " where TABLENAME='";
   sql << tableName + "'";
-  cout<< "-I- FairDbMultConnector: SEQNO entry removal: "
-      << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "SEQNO entry removal: "
+                                  << sql.c_str() << endl;
   stmtDb->ExecuteUpdate(sql.c_str());
   if ( stmtDb->PrintExceptions() ) { return 0; }
 
@@ -575,8 +554,8 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
   sql.Clear();
   sql << "insert into  " << seqnoTableName << " values('";
   sql << tableName + "'," << seqNoTable << ")";
-  cout<< "-I- FairDbMultConnector: SEQNO entry add: "
-      << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "SEQNO entry add: "
+                                  << sql.c_str() << endl;
   stmtDb->ExecuteUpdate(sql.c_str());
   if ( stmtDb->PrintExceptions() ) { return 0; }
 
@@ -587,9 +566,7 @@ Int_t FairDbMultConnector::ReserveNextSeqNo(const string& tableName,
 void FairDbMultConnector::SetPermanent(UInt_t dbNo,
                                        Bool_t permanent  )
 {
-
   if ( dbNo < fConnections.size() ) {
     fConnections[dbNo]->SetPermanent(permanent);
   }
-
 }

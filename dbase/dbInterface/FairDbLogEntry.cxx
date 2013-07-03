@@ -1,6 +1,7 @@
 #include "FairDbLogEntry.h"
 
 #include "FairDb.h"                     // for Version
+#include "FairDbLogService.h"
 #include "FairDbMultConnector.h"        // for FairDbMultConnector
 #include "FairDbOutRowStream.h"         // for FairDbOutRowStream
 #include "FairDbResPtr.h"               // for FairDbResultPtr
@@ -28,14 +29,14 @@ template class  FairDbResultPtr<FairDbLogEntry>;
 template  class  FairDbWriter<FairDbLogEntry>;
 
 
-FairDbLogEntry::FairDbLogEntry(const string& tableName, /* = "" */
-                               const string& reason,    /* = "" */
-                               Int_t detMask,           /* = full mask */
-                               Int_t simMask,           /* = full mask */
-                               FairDb::Version task,          /* = 0  */
-                               Int_t logSeqNoMin,       /* = 0  */
-                               Int_t logSeqNoMax,       /* = 0  */
-                               Int_t logNumSeqNo):      /* = 0  */
+FairDbLogEntry::FairDbLogEntry(const string& tableName,
+                               const string& reason,
+                               Int_t detMask,
+                               Int_t simMask,
+                               FairDb::Version task,
+                               Int_t logSeqNoMin,
+                               Int_t logSeqNoMax,
+                               Int_t logNumSeqNo):
   FairDbTableRow(),
   fDbNo(0),
   fSeqNo(0),
@@ -79,7 +80,7 @@ FairDbLogEntry::~FairDbLogEntry()
 std::ostream& operator<<(ostream& s, const FairDbLogEntry& logEntry)
 {
 
-  s << "FairDbLogEntry: Table  " << logEntry.GetLogTableName();
+  s << "-I- FairDbLogEntry: Table  " << logEntry.GetLogTableName();
   if ( logEntry.GetLogSeqNoMin() ==  logEntry.GetLogSeqNoMax() ) {
     s << " SEQNO: " << logEntry.GetLogSeqNoMin();
   } else
@@ -122,14 +123,14 @@ void FairDbLogEntry::Fill(FairDbResultSet& rs,
 }
 
 
-void FairDbLogEntry::Recreate(const string& tableName, /* = "" */
-                              const string& reason,    /* = "" */
-                              Int_t detMask,           /* = full mask */
-                              Int_t simMask,           /* = full mask */
-                              FairDb::Version task,          /* = 0  */
-                              Int_t logSeqNoMin,       /* = 0  */
-                              Int_t logSeqNoMax,       /* = 0  */
-                              Int_t logNumSeqNo)       /* = 0  */
+void FairDbLogEntry::Recreate(const string& tableName,
+                              const string& reason,
+                              Int_t detMask,
+                              Int_t simMask,
+                              FairDb::Version task,
+                              Int_t logSeqNoMin,
+                              Int_t logSeqNoMax,
+                              Int_t logNumSeqNo)
 {
   if (    fSeqNo > 0
           && ( tableName    == ""                       || tableName   == fLogTableName )
@@ -162,16 +163,17 @@ void FairDbLogEntry::Recreate(const string& tableName, /* = "" */
 void FairDbLogEntry::SetReason(const string& reason)
 {
 
-  fReason = reason;
-
   // If fReason starts '@' treat remainder as file name
   // to be read into fReason.
+
+  fReason = reason;
+
   if ( fReason.size() && fReason[0] == '@' ) {
     string fileName(fReason,1);
     fReason.clear();
     ifstream reasonFile(fileName.c_str());
     if ( ! reasonFile.is_open() ) {
-      cout << "Cannot read \"Reason File\" " << fileName << endl;
+      DBLOG("FairDb",FairDbLog::kError)  << "Cannot read \"Reason File\" " << fileName << endl;
     } else {
       string line;
       while ( ! reasonFile.eof() ) {
@@ -197,10 +199,8 @@ void FairDbLogEntry::SetServerName()
   fServerName = url.GetHost();
 
 }
-//.....................................................................
-
 void FairDbLogEntry::Store(FairDbOutRowStream& ors,
-                           const FairDbValidityRec* /* vrec */) const
+                           const FairDbValidityRec* ) const
 {
 
   ors << fLogTableName
@@ -214,10 +214,9 @@ void FairDbLogEntry::Store(FairDbOutRowStream& ors,
       << fReason;
 }
 
-//.....................................................................
 
 Bool_t FairDbLogEntry::Write(UInt_t dbNo,
-                             Int_t logSeqNo)     /* =0 */
+                             Int_t logSeqNo)
 {
 
   if ( logSeqNo > 0 ) {
@@ -231,14 +230,14 @@ Bool_t FairDbLogEntry::Write(UInt_t dbNo,
   }
 
   if ( ! this->HasReason() || fLogNumSeqNo == 0) {
-    cout << "Cannot write LogEntry - no reason and/or no SEQNOs defined "
-         << endl;
+    DBLOG("FairDb",FairDbLog::kError) << "Cannot write LogEntry - no reason and/or no SEQNOs defined "
+                                      << endl;
     return kFALSE;
   }
 
   if ( fSeqNo != 0 && dbNo != fDbNo ) {
-    cout << "Cannot write LogEntry - attempting to switch from database"
-         << fDbNo << " to " << dbNo << endl;
+    DBLOG("FairDb",FairDbLog::kError)  << "Cannot write LogEntry - attempting to switch from database"
+                                       << fDbNo << " to " << dbNo << endl;
     return kFALSE;
   }
 
@@ -252,7 +251,7 @@ Bool_t FairDbLogEntry::Write(UInt_t dbNo,
     replace = false;
     int seqNo = tblProxy.GetMultConnector().AllocateSeqNo("FAIRDBLOGENTRY",0,fDbNo);
     if ( seqNo <= 0 ) {
-      cout    << "Cannot get sequence number for table FAIRDBLOGENTRY" << endl;
+      DBLOG("FairDb",FairDbLog::kError)  << "Cannot get sequence number for table FAIRDBLOGENTRY" << endl;
       return kFALSE;
     }
     fSeqNo = seqNo;

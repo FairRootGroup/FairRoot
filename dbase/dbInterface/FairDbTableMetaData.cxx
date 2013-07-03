@@ -1,5 +1,5 @@
 #include "FairDbTableMetaData.h"
-
+#include "FairDbLogService.h"
 #include "FairDb.h"                     // for DbTypes::kMySQL, etc
 #include "FairDbString.h"               // for FairDbString
 
@@ -25,7 +25,7 @@ FairDbTableMetaData::FairDbTableMetaData(const string& tableName) :
   fNumCols(0),
   fTableName(tableName)
 {
-  cout << "-I- FairDbTableMetaData:: create for table # " << tableName << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "create for table # " << tableName << endl;
 }
 
 
@@ -37,16 +37,13 @@ FairDbTableMetaData::~FairDbTableMetaData()
 
 void FairDbTableMetaData::Clear()
 {
-
   fColAttr.clear();
   fNumCols = 0;
-
 }
 
 
 void FairDbTableMetaData::ExpandTo(UInt_t colNum)
 {
-
   assert ( colNum < MAXCOL );
   while ( fNumCols < colNum ) {
     fColAttr.push_back(ColumnAttributes());
@@ -57,41 +54,30 @@ void FairDbTableMetaData::ExpandTo(UInt_t colNum)
 
 const  FairDbTableMetaData::ColumnAttributes&  FairDbTableMetaData::GetAttributes(Int_t colNum) const
 {
-
   if ( colNum > 0 && colNum <= (signed) fNumCols ) { return fColAttr[colNum-1]; }
   fgDummy.SetDefault();
   return fgDummy;
-
 }
 
 
 string FairDbTableMetaData::GetToken(const char*& strPtr)
 {
   string token;
-
-// Skip white space and quit if at EOS.
   while ( isspace(*strPtr) ) { ++strPtr; }
   if ( *strPtr == 0 ) { return token; }
 
-// Collect the first character whatever it is.
   char firstChar = *strPtr++;
   token = firstChar;
   if ( ! isalnum(firstChar) && firstChar != '_' ) { return token; }
 
-// Collect more if collecting alphanumeric + underscore string
   while ( isalnum(*strPtr) || *strPtr == '_' ) { token += *strPtr++; }
   return token;
 
 }
 FairDbTableMetaData::ColumnAttributes& FairDbTableMetaData::SetAttributes(Int_t colNum)
 {
-
-  // Return a column attributes
-  //(will be dummy entry if requesting invalid column)
   this->ExpandTo(colNum);
-  // Using const metho so must cast away constness.
   return const_cast<FairDbTableMetaData::ColumnAttributes&>(this->GetAttributes(colNum));
-
 }
 
 void FairDbTableMetaData::SetColFieldType(const FairDbFieldType& fieldType,
@@ -119,23 +105,23 @@ void FairDbTableMetaData::SetFromSql(const string& sql)
   string token4(FairDbTableMetaData::GetToken(strPtr));
 
   if ( token1 != "CREATE" || token2 != "TABLE" || token4 != "(" ) {
-    cout << "Cannot recreate: SQL " << SqlUpper
-         << " does not start CREATE TABLE ... (" << endl;
+
+    DBLOG("FairDb",FairDbLog::kError)  << "Cannot recreate: SQL " << SqlUpper
+                                       << " does not start CREATE TABLE ... (" << endl;
     return;
   }
 
   this->Clear();
   fTableName = token3;
-  cout << "Recreating  FairDbTableMetaData for table " << fTableName << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  << "Recreating  FairDbTableMetaData for table " << fTableName << endl;
 
-// Loop processing column specifications.
+// Loop over column specs.
   Int_t col = 0;
-
   string delim;
   while ( delim != ")" ) {
     string name = FairDbTableMetaData::GetToken(strPtr);
 
-//  Deal with INDEX and PRIMARY KEY
+    // INDEX and PRIMARY KEY
     if ( name == "INDEX" ||  name == "KEY" || name == "PRIMARY" ) {
       if ( name == "PRIMARY" || name == "KEY" ) { delim = FairDbTableMetaData::GetToken(strPtr); }
       delim = FairDbTableMetaData::GetToken(strPtr);
@@ -144,7 +130,7 @@ void FairDbTableMetaData::SetFromSql(const string& sql)
       continue;
     }
 
-//  Collect name and type.
+    // Name and type.
     ++col;
     this->SetColName(name,col);
     this->SetColIsNullable(col);
@@ -161,9 +147,9 @@ void FairDbTableMetaData::SetFromSql(const string& sql)
     }
     FairDbFieldType ft(type,precision);
     this->SetColFieldType(ft,col);
-    cout << "  Column: " << col << " name " << this->ColName(col)
-         << " type " << this->ColFieldType(col).AsString()
-         << " precision " << precision << endl;
+    DBLOG("FairDb",FairDbLog::kWarning) << "  Column: " << col << " name " << this->ColName(col)
+                                        << " type " << this->ColFieldType(col).AsString()
+                                        << " precision " << precision << endl;
 
 //  Collect optional qualifiers.
 
@@ -179,8 +165,8 @@ void FairDbTableMetaData::SetFromSql(const string& sql)
       } else if ( delim == "UNSIGNED") {
         delim = opt2;
       } else {
-        cout <<"Column: " << col << " name " << name << " type " << ft.AsString()
-             << " ignoring unknown option: " << delim << endl;
+        DBLOG("FairDb",FairDbLog::kWarning) <<"Column: " << col << " name " << name << " type " << ft.AsString()
+                                            << " ignoring unknown option: " << delim << endl;
         delim = opt2;
       }
     }
@@ -222,13 +208,12 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
   }
 
 // Deal with key/index/constraint.
-
-// Nothing to do for the special xxxSEQNO tables.
+// nothing here done
   if ( fTableName == "GLOBALSEQNO" ||  fTableName == "LOCALSEQNO" ) {
     sql << ")";
   }
 
-// Deal with MySQL
+// MySQL specs
   else if (dbType_target == FairDb::kMySQL ) {
     if ( mainTable ) {
       if ( hasRowCounter ) { sql << ", primary key (SEQNO,ROW_COUNTER)"; }
@@ -239,7 +224,7 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
     sql << ")";
   }
 
-// Deal with ORACLE
+// ORACLE specs
   else {
     if ( mainTable ) {
       sql << ", constraint FK_" << fTableName << " foreign key(SEQNO) references "
@@ -266,15 +251,12 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
     }
   }
 
-// For ORACLE, create public synonym and grant access.
-
+// ORACLE specs: create public synonym and grant access.
   if ( dbType_target == FairDb::kOracle ) {
     sql << "; create public synonym " << tableName << " for " << tableName;
     sql << "; grant  select on " << tableName << " to r3b_reader";
     sql << "; grant  select,insert,update on " << tableName << " to r3b_writer";
   }
-
   return sql.GetString();
-
 }
 

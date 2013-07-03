@@ -1,5 +1,8 @@
 #include "FairDbCache.h"
 
+#include "FairDbLogFormat.h"
+#include "FairDbLogService.h"
+
 #include "FairDbResult.h"               // for FairDbResult, operator<<
 #include "FairDbSimFlagAssociation.h"   // for FairDbSimFlagAssociation, etc
 #include "FairDbValidityRec.h"          // for operator<<, etc
@@ -37,10 +40,8 @@ FairDbCache::FairDbCache(FairDbTableProxy& qp,const string& tableName) :
   fNumAdopted(0),
   fNumReused(0)
 {
-
+  DBLOG("FairDb", FairDbLog::kVerbose) << "Creating FairDbCache" << endl;
 }
-
-//.....................................................................
 
 FairDbCache::~FairDbCache()
 {
@@ -78,14 +79,14 @@ void FairDbCache::Adopt(FairDbResult* res,bool registerKey)
   subCache.push_back(res);
   ++fCurSize;
   ++fNumAdopted;
-  cout << "Adopting result for " << res->TableName()
-       << "  " <<   res->GetValidityRecGlobal()
-       << "\nCache size now " << fCurSize << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Adopting result for " << res->TableName()
+                                   << "  " <<   res->GetValidityRecGlobal()
+                                   << "\nCache size now " << fCurSize << endl;
   if ( fCurSize > fMaxSize ) { fMaxSize = fCurSize; }
   // If required register key with FairDbRecord
   if ( registerKey ) {
     res->RegisterKey();
-    cout << "Caching new results: ResultKey: " <<  *res->GetKey();
+    DBLOG("FairDb",FairDbLog::kInfo) << "Caching new results: ResultKey: " <<  *res->GetKey();
   }
 }
 
@@ -116,10 +117,10 @@ void FairDbCache::Purge(ResultList_t& subCache, const FairDbResult* res)
               && (    ! res
                       || pRes->CanDelete(res)  ) ) {
 
-      cout << "Purging " << pRes->GetValidityRec()
-           << " from " << pRes->TableName()
-           << " cache. Cache size now "
-           << fCurSize-1 << endl;
+      DBLOG("FairDb",FairDbLog::kInfo) << "Purging " << pRes->GetValidityRec()
+                                       << " from " << pRes->TableName()
+                                       << " cache. Cache size now "
+                                       << fCurSize-1 << endl;
       delete pRes;
 //    Erasing increments iterator.
       itr = subCache.erase(itr);
@@ -138,12 +139,12 @@ const FairDbResult* FairDbCache::Search(const FairDbValidityRec& vrec,
 
   Int_t aggNo = vrec.GetAggregateNo();
 
-  cout << "Secondary cache search of table " << fTableName
-       << " for  " << vrec
-       << (sqlQualifiers != "" ? sqlQualifiers : "" ) << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Secondary cache search of table " << fTableName
+                                   << " for  " << vrec
+                                   << (sqlQualifiers != "" ? sqlQualifiers : "" ) << endl;
   const ResultList_t* subCache = this->GetSubCache(aggNo);
   if ( ! subCache ) {
-    cout << "Secondary cache search failed." << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "Secondary cache search failed." << endl;
     return 0;
   }
 
@@ -154,13 +155,13 @@ const FairDbResult* FairDbCache::Search(const FairDbValidityRec& vrec,
     FairDbResult* res = *itr;
     if ( res->Satisfies(vrec,sqlQualifiers) ) {
       fNumReused += res->GetNumAggregates();
-      cout << "Secondary cache search succeeded.  Result set no. of rows: "
-           << res->GetNumRows() << endl;
+      DBLOG("FairDb",FairDbLog::kInfo) << "Secondary cache search succeeded.  Result set no. of rows: "
+                                       << res->GetNumRows() << endl;
       return res;
     }
   }
 
-  cout << "Secondary cache search failed." << endl;
+  DBLOG("FairDb",FairDbLog::kWarning) << "Secondary cache search failed." << endl;
   return 0;
 }
 
@@ -169,12 +170,12 @@ const FairDbResult* FairDbCache::Search(const ValContext& vc,
                                         const FairDb::Version& task ) const
 {
 
-  cout << "Primary cache search of table " << fTableName
-       << " for  " << vc
-       << " with Version " << task << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search of table " << fTableName
+                                   << " for  " << vc
+                                   << " with Version " << task << endl;
   const ResultList_t* subCache = this->GetSubCache(-1);
   if ( ! subCache ) {
-    cout << "Primary cache search failed - sub-cache -1 is empty" << endl;
+    DBLOG("FairDb",FairDbLog::kWarning) << "Primary cache search failed - sub-cache -1 is empty" << endl;
     return 0;
   }
 
@@ -194,21 +195,21 @@ const FairDbResult* FairDbCache::Search(const ValContext& vc,
     SimFlag::SimFlag_t simTry = *listItr;
     ValContext vcTry(det,simTry,ts);
 
-    cout << "  Searching cache with SimFlag: "
-         << SimFlag::AsString(simTry) << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "  Searching cache with SimFlag: "
+                                     << SimFlag::AsString(simTry) << endl;
     for ( ConstSubCacheItr_t itr = subCache->begin();
           itr != subCache->end();
           ++itr) {
       FairDbResult* res = *itr;
       if ( res->Satisfies(vcTry,task) ) {
         fNumReused += res->GetNumAggregates();
-        cout << "Primary cache search succeeded. Result set no. of rows: "
-             << res->GetNumRows() << endl;
+        DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search succeeded. Result set no. of rows: "
+                                         << res->GetNumRows() << endl;
         return res;
       }
     }
 
-    cout << "Primary cache search failed." << endl;
+    DBLOG("FairDb",FairDbLog::kWarning) << "Primary cache search failed." << endl;
     ++listItr;
   }
 
@@ -218,11 +219,11 @@ const FairDbResult* FairDbCache::Search(const ValContext& vc,
 const FairDbResult* FairDbCache::Search(const string& sqlQualifiers) const
 {
 
-  cout << "Primary cache search of table " << fTableName
-       << " for  SQL " << sqlQualifiers << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search of table " << fTableName
+                                   << " for  SQL " << sqlQualifiers << endl;
   const ResultList_t* subCache = this->GetSubCache(-1);
   if ( ! subCache ) {
-    cout << "Primary cache search failed" << endl;
+    DBLOG("FairDb",FairDbLog::kWarning) << "Primary cache search failed" << endl;
     return 0;
   }
   for ( ConstSubCacheItr_t itr = subCache->begin();
@@ -231,12 +232,12 @@ const FairDbResult* FairDbCache::Search(const string& sqlQualifiers) const
     FairDbResult* res = *itr;
     if ( res->Satisfies(sqlQualifiers) ) {
       fNumReused += res->GetNumAggregates();
-      cout << "Primary cache search succeeded Result set no. of rows: "
-           << res->GetNumRows() << endl;
+      DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search succeeded Result set no. of rows: "
+                                       << res->GetNumRows() << endl;
       return res;
     }
   }
-  cout << "Primary cache search failed" << endl;
+  DBLOG("FairDb",FairDbLog::kWarning) << "Primary cache search failed" << endl;
   return 0;
 }
 
@@ -257,6 +258,13 @@ void FairDbCache::SetStale()
 }
 
 
-//MsgStream& FairDbCache::ShowStatistics(MsgStream& msg) const {
-//
-//}
+FairDbLogStream& FairDbCache::ShowStatistics(FairDbLogStream& msg) const
+{
+
+  FairDbLogFormat ifmt("%10i");
+
+  msg << ifmt(fCurSize) << ifmt(fMaxSize)
+      << ifmt(fNumAdopted) << ifmt(fNumReused);
+  return msg;
+
+}

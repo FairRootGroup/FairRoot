@@ -1,5 +1,5 @@
 #include "FairDbFieldType.h"
-
+#include "FairDbLogService.h"
 #include "Riosfwd.h"                    // for ostream
 #include "TSQLServer.h"                 // for TSQLServer, etc
 #include "TString.h"                    // for operator==, TString
@@ -79,10 +79,8 @@ FairDbFieldType::FairDbFieldType(Int_t type,
     return;
   }
 
-  // Anything else is bad news!
-
-  cout
-      << "Unable to form SQL FairDbFieldType from: " << type << endl;
+  MAXDBLOG("FairDb",FairDbLog::kError,20)
+      << "Unable to define a SQL FairDbFieldType from: " << type << endl;
   this->Init(FairDb::kUnknown);
 
 }
@@ -97,7 +95,6 @@ FairDbFieldType::FairDbFieldType(const FairDbFieldType& from)
   *this = from;
 }
 
-//.....................................................................
 
 FairDbFieldType::FairDbFieldType(const string& sql,
                                  Int_t size )
@@ -143,7 +140,7 @@ FairDbFieldType::FairDbFieldType(const string& sql,
 
   else {
 
-    cout  << "Unable to type from SQL: " << sql << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "Unable to do typing from SQL: " << sql << endl;
     this->Init(FairDb::kUnknown);
   }
 
@@ -152,8 +149,6 @@ FairDbFieldType::FairDbFieldType(const string& sql,
 
 FairDbFieldType::~FairDbFieldType()
 {
-
-
 }
 
 
@@ -200,14 +195,10 @@ string FairDbFieldType::AsString() const
 
 string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
 {
-//
-//
-//  Purpose:  Return field type as a string suitable for MySQL/ORACLE column.
 
   ostringstream os;
 
-//  Deal with MySQL ddl
-
+//  Deal with MySQL format DDL
   if ( dbType != FairDb::kOracle ) {
     switch ( fType ) {
 
@@ -266,9 +257,7 @@ string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
 
   else {
 
-//  Deal with ORACLE ddl
-
-
+//  Deal with ORACLE format DDL
     int size = fSize;
     if ( fSize < kMaxOracleVarchar ) { size = kMaxOracleVarchar; }
 
@@ -334,10 +323,6 @@ string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
 void FairDbFieldType::Init(Int_t type,
                            Int_t size  )
 {
-//
-//
-//  Purpose:  Initialise object.
-//
 
   switch ( type ) {
 
@@ -443,7 +428,7 @@ void FairDbFieldType::Init(Int_t type,
     break;
 
   default :
-    cout  << "Unable to form Root FairDbFieldType from: " << type << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "Unable to form Root FairDbFieldType from: " << type << endl;
     fType      = FairDb::kUnknown;
     fConcept   = FairDb::kUnknown;
     fSize      = 0;
@@ -460,29 +445,26 @@ Bool_t FairDbFieldType::IsCompatible(const FairDbFieldType& other) const
 #define MATCHES(x,y)  \
      (fConcept == x) && (concept == y) \
   || (fConcept == y) && (concept == x)
+
   UInt_t concept = other.GetConcept();
   if ( fConcept == concept ) { return kTRUE; }
   if ( MATCHES(FairDb::kBool,  FairDb::kChar)  ) { return kTRUE; }
   if ( MATCHES(FairDb::kBool,  FairDb::kUChar) ) { return kTRUE; }
   if ( MATCHES(FairDb::kInt,   FairDb::kChar)  ) { return kTRUE; }
   if ( MATCHES(FairDb::kUInt,  FairDb::kUChar) ) { return kTRUE; }
-//  Allow unsigned to match signed because the TSQLResultSetL interface
+//  Unsigned matches signed : the TSQLResultSetL interface
 //  does not support unsigned types but its GetShort and GetInt
-//  methods will return unsigned data intact so we must trust
-//  that the user knows what they are doing!
+//  methods will return unsigned data integer
   if ( MATCHES(FairDb::kUInt,  FairDb::kInt)   ) { return kTRUE; }
-//  Allow char to be input to string.
+//  Char to string.
   if ( concept == FairDb::kChar && fConcept == FairDb::kString ) { return kTRUE; }
 
   return kFALSE;
 
 }
 
-//.....................................................................
-
 string FairDbFieldType::UndefinedValue() const
 {
-
   switch ( fConcept ) {
   case FairDb::kBool   :
     return "0";
@@ -502,8 +484,8 @@ string FairDbFieldType::UndefinedValue() const
     return "1980-00-00 00:00:00";
 
   default :
-    cout  << "Unable to define undefined type for: "
-          << fConcept << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)<< "Unable to define undefined type for: "
+                                           << fConcept << endl;
     return "";
   }
 }

@@ -1,5 +1,5 @@
 #include "FairDbString.h"
-
+#include "FairDbLogService.h"
 #include <ctype.h>                      // for toupper, tolower
 #include <cstdlib>                      // for strtod
 #include <cstring>                      // for strchr, strncmp
@@ -13,18 +13,18 @@ ClassImp(FairDbString)
 FairDbString::FairDbString()
   : fString()
 {
-
 }
+
 FairDbString::FairDbString(const Char_t* str) :
   fString(str)
 {
-
 }
 
 FairDbString::FairDbString(const std::string& str) :
   fString(str)
 {
 }
+
 FairDbString::~FairDbString()
 {
 }
@@ -163,10 +163,9 @@ Bool_t FairUtilString::atob(const Char_t* s)
   Bool_t isvalid;
   Bool_t value = atob(s,isvalid);
   if (isvalid) { return value; }
-
-  // Oops, what have we here?
-  cout << "-I- FairUtilString Attempt to convert string "
-       << value << " to Bool_t. Result is false \n";
+  // Conversion Problem
+  DBLOG("FairDb",FairDbLog::kWarning) << "Attempt to convert string "
+                                      << value << " to Bool_t. Result is false \n";
   return false;
 
 }
@@ -176,11 +175,11 @@ Bool_t FairUtilString::atob(const Char_t* s, Bool_t& isvalid)
   isvalid = true;
 
   std::string v(s);
-  if (v == "true") { return true; } // C++ style
+  if (v == "true") { return true; }
   if (v == "false") { return false; }
-  if (v == "kTRUE") { return true; } // ROOT style
+  if (v == "kTRUE") { return true; }
   if (v == "kFALSE") { return false; }
-  if (v == "TRUE") { return true; } // Some other reasonable variations...
+  if (v == "TRUE") { return true; }
   if (v == "FALSE") { return false; }
   if (v == "True") { return true; }
   if (v == "False") { return false; }
@@ -192,7 +191,7 @@ Bool_t FairUtilString::atob(const Char_t* s, Bool_t& isvalid)
   if (v == "OFF") { return false; }
 
   isvalid = false;
-  return false;  // by default invalid strings are false
+  return false;
 }
 
 

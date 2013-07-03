@@ -1,5 +1,5 @@
 #include "FairDbConnection.h"
-
+#include "FairDbLogService.h"
 #include "Riosfwd.h"                    // for ostream
 #include "TSQLServer.h"                 // for TSQLServer
 #include "TSQLStatement.h"              // for TSQLStatement
@@ -9,6 +9,7 @@
 #include <cctype>                       // for toupper
 #include <cstdlib>                      // for NULL, exit
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <sstream>
 #include <string>                       // for string, basic_string, etc
 
 using namespace std;
@@ -31,12 +32,13 @@ FairDbConnection::FairDbConnection(
     fServer(NULL),
     fExceptionLog()
 {
+
 // Wrapper to a DB connection
-  cout << "-I- FairDbConnection : Creating a DB connection" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Creating a DB connection" << endl;
 
   if ( this->Open() ) {
-    cout << "-I- FairDbConnection: successfully opened connection to: "
-         << this->GetUrl() << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "successfully opened connection to: "
+                                      << this->GetUrl() << endl;
     fUrlValidated =  kTRUE;
 
 
@@ -48,12 +50,11 @@ FairDbConnection::FairDbConnection(
     else if ( productName == "PgSQL" ) { fDbType = FairDb::kPostgreSQL; }
 
     else {
-      cout<< "-E- FairDbConnection : Cannot determine DB type from name: "
-          <<  productName
-          << "\nWill assuming Oracle database " << endl;
-      fDbType = FairDb::kOracle;
+      MAXDBLOG("FairDb",FairDbLog::kError,20) << " Cannot determine DB type from name: "
+                                              <<  productName
+                                              << "\nWill assuming MySql database " << endl;
+      fDbType = FairDb::kMySQL;
     }
-
 
     // Initialise the list existing supported tables.
     // Here all existing tables from the database will be added to the
@@ -64,33 +65,33 @@ FairDbConnection::FairDbConnection(
     // Check if one can use prepared statement on the server
     if ( fUrlValidated ) {
       if ( ! fServer->HasStatement() ) {
-        cout << "-I- FairDbConnection : This client does not support prepared statements." << endl;
+        DBLOG("FairDb",FairDbLog::kError)  << " This client does not support prepared statements." << endl;
         fUrlValidated = kFALSE;
       }
       string serverInfo(fServer->ServerInfo());
       if ( fDbType == FairDb::kMySQL &&  serverInfo < "4.1" ) {
-        cout << "-I- FairDbConnection: this MySQL server (" << serverInfo
-             << ") does not support prepared statements." << endl;
+        DBLOG("FairDb",FairDbLog::kInfo)  << " this MySQL server (" << serverInfo
+                                          << ") does not support prepared statements." << endl;
         fUrlValidated = kFALSE;
       }
       if ( fUrlValidated ) {
-        cout << "-I- FairDbConnection: this client, and MySQL server ("
-             << serverInfo
-             << ") does support prepared statements." << endl;
+        DBLOG("FairDb",FairDbLog::kInfo)  << " this client, and MySQL server ("
+                                          << serverInfo
+                                          << ") does support prepared statements." << endl;
       } else {
 
-        cout<< "-I- FairDbConnection "<< endl;
-        cout<< "This version of MySQL does not support prepared statements.\n"
-            << "\n"
-            << "Please upgrade to MySQL (client and server) version 4.1 or greater \n"
-            << "\n"
-            << endl;
+        DBLOG("FairDb",FairDbLog::kError) << "\n"
+                                          << "This version of MySQL does not support prepared statements.\n"
+                                          << "\n"
+                                          << "Please upgrade to MySQL (client and server) version 4.1 or greater \n"
+                                          << "\n"
+                                          << endl;
       }
 
     }//! fUrlValidated
 
     if ( ! fUrlValidated ) {
-      cout << "-E- FairDbConnection : Aborting due to above errors" << endl;
+      DBLOG("FairDb",FairDbLog::kFatal) << "Aborting due to above errors" << endl;
       exit(1);
     }
   }
@@ -101,17 +102,25 @@ FairDbConnection::FairDbConnection(
 
 FairDbConnection::~FairDbConnection()
 {
-
-  cout <<"-I- FairDBConnection::~FairDbConnection() : Droping Connection"
-       <<endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  <<" Droping Connection" << endl;
   this->Close(kTRUE);
-
 }
 
 Bool_t FairDbConnection::Open()
 {
 
+  this->ClearExceptionLog();
+
   if ( !this->IsClosed() ) { return kTRUE;}
+
+
+  if ( ! fUrl.IsValid() ) {
+    ostringstream oss;
+    oss << "Unable to open connection: URL '" << fUrl.GetUrl() << "' is invalid";
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << oss.str() << endl;
+    fExceptionLog.AddEntry(oss.str());
+    return kFALSE;
+  }
 
   Int_t maxAttempt = fUrlValidated ? 100 : 20;
   for (Int_t attempt = 1; attempt <= maxAttempt; ++attempt) {
@@ -121,24 +130,27 @@ Bool_t FairDbConnection::Open()
                 fUser.c_str(),
                 fPassword.c_str());
     if ( ! fServer ) {
-      cout << "-E- Failing to open: " <<
+      ostringstream oss;
+      oss  << "-I- FairDbConnection::Open() Failing to open: " <<
            fUrl.GetUrl() << " for user "
            << fUser << " and password "
            << fPassword << " (attempt "
            << attempt << ")";
 
+      fExceptionLog.AddEntry(oss.str());
+
       if ( attempt == 1 ) {
-        cout <<"-I- FairDBConnection: Retrying ... " << endl;
+        MAXDBLOG("FairDb",FairDbLog::kError,20) << oss.str() <<"retrying ..." << endl;
       }
       gSystem->Sleep(attempt*1000);
     } else {
       fServer->EnableErrorOutput(kTRUE);
       if ( attempt > 1 ) {
-        cout << "-I- FairDbConnection Connection opened on attempt "
-             << attempt << endl;
+        DBLOG("FairDb",FairDbLog::kInfo) << "Connection opened on attempt "
+                                         << attempt << endl;
       }
-      cout << "-I- Successfully opened connection to: "
-           << fUrl.GetUrl() << endl;
+      DBLOG("FairDb",FairDbLog::kInfo)  << "Successfully opened connection to: "
+                                        << fUrl.GetUrl() << endl;
 
       // <DB> Check me about !!!
       // ASCII database, populate it and make the connection permanent
@@ -147,9 +159,9 @@ Bool_t FairDbConnection::Open()
     }
   }//! for on attempt
 
-  cout  <<  " -E- FairDbConnection: Failed to open a connection to: "
-        << fUrl.GetUrl()
-        << " for user " << fUser << " and pwd " << fPassword << endl;
+  MAXDBLOG("FairDb",FairDbLog::kError,20)   <<  "Failed to open a connection to: "
+      << fUrl.GetUrl()
+      << " for user " << fUser << " and pwd " << fPassword << endl;
 
   return kFALSE;
 }
@@ -157,26 +169,28 @@ Bool_t FairDbConnection::Open()
 Bool_t FairDbConnection::Close(Bool_t force)
 {
 
+  this->ClearExceptionLog();
+
   if ( this->IsClosed() ) { return kTRUE; }
 
   if ( fNumConnectedStatements ) {
     if ( ! force ) {
-      cout<< "-I- FairDbConnection Unable to close connection: "
-          << this->GetUrl()
-          << "; it still has  "
-          << fNumConnectedStatements << "active statements. " << endl;
+      DBLOG("FairDb",FairDbLog::kInfo)<< "Unable to close connection: "
+                                      << this->GetUrl()
+                                      << "; it still has  "
+                                      << fNumConnectedStatements << "active statements. " << endl;
       return kFALSE;
     }
-    cout << "-I- FairDbConnection : closing connection: "
-         << this->GetUrl()
-         << "; even though it still has "
-         << fNumConnectedStatements << " active statements. " << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)<< "closing connection: "
+                                    << this->GetUrl()
+                                    << "; even though it still has "
+                                    << fNumConnectedStatements << "active statements. " << endl;
   }
 
   delete fServer;
   fServer = NULL;
-  cout << "-I- FairDbConnection: closed connection: "
-       << this->GetUrl() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "closed connection: "
+                                  << this->GetUrl() << endl;
   return kTRUE;
 }
 
@@ -186,7 +200,6 @@ void FairDbConnection::CloseIdleConnection()
 }
 
 
-//.....................................................................
 
 TSQLStatement* FairDbConnection::CreatePreparedStatement(const string& sql)
 {
@@ -195,8 +208,9 @@ TSQLStatement* FairDbConnection::CreatePreparedStatement(const string& sql)
   if ( ! this->Open() ) { return stmt; }
   stmt = fServer->Statement(sql.c_str());
   if ( ! stmt ) {
-    cout<< "-I- FairDbConnection::CreatePreparedStatement "
-        << " no Statement created " << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)<< "CreatePreparedStatement "
+                                    << " no Statement created " << endl;
+    fExceptionLog.AddEntry(*fServer);
   } else { stmt->EnableErrorOutput(kFALSE); }
 
   return stmt;
@@ -259,7 +273,6 @@ void  FairDbConnection::SetTableExists(const string& tableName)
   //cout << "-I- FairDbConnection:: End of table exists ... " << endl;
 }
 
-//.....................................................................
 
 Bool_t  FairDbConnection::TableExists(const string& tableName) const
 {
@@ -279,6 +292,8 @@ Bool_t  FairDbConnection::TableExists(const string& tableName) const
 
 Bool_t FairDbConnection::PrintExceptionLog(Int_t level) const
 {
+
+  DBLOG("FairDb",level) << fExceptionLog;
   return fExceptionLog.Size() != 0;
 }
 

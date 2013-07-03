@@ -1,5 +1,5 @@
 #include "FairDbSqlValPacket.h"
-
+#include "FairDbLogService.h"
 #include "FairDb.h"                     // for MakeDateTimeString, etc
 #include "FairDbConfigSet.h"            // for FairDbConfigSet
 #include "FairDbMultConnector.h"        // for string, FairDbMultConnector
@@ -70,9 +70,7 @@ FairDbSqlValPacket::FairDbSqlValPacket(std::ifstream& is) :
   fTableName(),
   fCreationDate()
 {
-
   Fill(is);
-
 }
 
 
@@ -91,10 +89,8 @@ FairDbSqlValPacket::FairDbSqlValPacket(const FairDbValidityRec& vrec) :
   Int_t seqNo  = vrec.GetSeqNo();
   UInt_t dbNo  = vrec.GetDbNo();
 
-  // Create the SQL for the FairDbValidityRec itself.
   this->AddRow(tableProxy,0,vrec);
 
-  // Create the SQL for the rows.
   const FairDbProxy& dbProxy = tableProxy.GetDBProxy();
   FairDbResultSet* rset = dbProxy.QuerySeqNo(seqNo,dbNo);
 
@@ -107,16 +103,14 @@ FairDbSqlValPacket::FairDbSqlValPacket(const FairDbValidityRec& vrec) :
   rset = 0;
 }
 
-//.....................................................................
+
 
 FairDbSqlValPacket::~FairDbSqlValPacket()
 {
-
   Clear();
-
 }
 
-//.....................................................................
+
 
 Bool_t FairDbSqlValPacket::AddDataRow(const FairDbTableProxy& tblProxy,
                                       const FairDbValidityRec* vrec,
@@ -125,7 +119,8 @@ Bool_t FairDbSqlValPacket::AddDataRow(const FairDbTableProxy& tblProxy,
 
   if ( this->GetNumSqlStmts() == 0 ) {
 
-    cout  << "-E FairDbSqlValPacket::AddDataRow () :Cannot add data row - packet does not have a VAL row"  << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)
+        << "Cannot add Data Row - packet does not have a corresponding VALIDITY Row !"  << endl;
     ++fNumErrors;
     return kFALSE;
   }
@@ -134,12 +129,11 @@ Bool_t FairDbSqlValPacket::AddDataRow(const FairDbTableProxy& tblProxy,
 
 }
 
-//.....................................................................
 
 void FairDbSqlValPacket::AddRow(const string& row)
 {
   // Problem with PostGres
-  cout << " FairDbSqlValPacket AddRow " << row << endl;
+  //cout << " FairDbSqlValPacket AddRow " << row << endl;
 
   string sql("INSERT INTO ");
   sql += this->GetTableName();
@@ -151,36 +145,34 @@ void FairDbSqlValPacket::AddRow(const string& row)
   fSqlStmts.push_back(sql);
   ++fNumStmts;
 
-  cout << "-I- FairDbSqlValPacket::AddRow() " << sql << endl;
+  //cout << "-I- FairDbSqlValPacket::AddRow() " << sql << endl;
 }
 
-//.....................................................................
+
 
 Bool_t FairDbSqlValPacket::AddRow(const FairDbTableProxy& tblProxy,
                                   const FairDbValidityRec* vrec,
                                   const FairDbTableRow& row)
 {
 
-
-
   bool isVal = this->GetNumSqlStmts() == 0;
   const FairDbTableMetaData& meta = isVal ? tblProxy.GetMetaValid() : tblProxy.GetMetaData();
   FairDbOutRowStream outRow(&meta);
 
-// Store dummy SEQNO, and, if necessary ROW_COUNTER, for data rows.
+// Store a dummy SEQNO, and, if necessary ROW_COUNTER, for data rows.
   if ( ! isVal ) {
-    outRow << 0;  // dummy SEQNO
-    if ( outRow.HasRowCounter() ) { outRow <<  fNumStmts; } // ROW_COUNTER
+    // define a dummy SEQNO
+    outRow << 0;
+    if ( outRow.HasRowCounter() ) { outRow <<  fNumStmts; }
   }
-  // The virtual Store() function is called which in turns will call an
-  // explicit IO store from the explicit container.
+
   row.Store(outRow,vrec);
   if ( ! outRow.HasGoodData() ) {
     if ( ! outRow.IsComplete() ) {
-
-      cout << "-E-FairDbSqlValPacket::AddRow() Incomplete data supplied for row " << this->GetNumSqlStmts()-1
-           << " of table "
-           << tblProxy.GetTableName() << endl;
+      MAXDBLOG("FairDb",FairDbLog::kError,20)
+          << "Incomplete data supplied for row " << this->GetNumSqlStmts()-1
+          << " of table "
+          << tblProxy.GetTableName() << endl;
     }
     ++fNumErrors;
     return kFALSE;
@@ -207,17 +199,18 @@ FairDbSqlValPacket::CompResult_t FairDbSqlValPacket::Compare(
   std::vector<std::string> valuesThis = this->GetStmtValues(0);
   std::vector<std::string> valuesThat = that.GetStmtValues(0);
 
-  // Assume CreationDate is the 7th element (counting from 0).
+  // Assume CreationDate is the 7th element
+  // (counting begin from 0).
   int comp = valuesThis[7].compare(valuesThat[7]);
 
   if ( comp < 0 ) {
     if ( log ) {
-      cout << "  Difference classified as Update" << endl;
+      DBLOG("FairDb",FairDbLog::kInfo) << "Difference classified as Update" << endl;
     };
     return kUpdate;
   } else if ( comp > 0 ) {
     if ( log ) {
-      cout  << "  Difference classified as OutOfDate" << endl;
+      DBLOG("FairDb",FairDbLog::kInfo) << "Difference classified as OutOfDate" << endl;
     }
     return kOutOfDate;
   }
@@ -226,27 +219,27 @@ FairDbSqlValPacket::CompResult_t FairDbSqlValPacket::Compare(
 }
 
 
-//.....................................................................
-
 Bool_t FairDbSqlValPacket::CreateTable(UInt_t dbNo) const
 {
-
   if ( ! CanBeStored() ) { return kFALSE; }
 
-  // Locate required FairDbStatement.
+
   auto_ptr<FairDbStatement> stmtDb(FairDbTableProxyRegistry::Instance()
                                    .GetMultConnector()
                                    .CreateStatement(dbNo));
   if ( ! stmtDb.get() ) {
 
-    cout  << "Attempting to write to non-existant cascade entry " << dbNo
-          << endl;
+    DBLOG("FairDb",FairDbLog::kWarning)
+        << "Attempting to write to non-existant cascade entry " << dbNo
+        << endl;
+
     return kFALSE;
   }
   if ( fSqlMySqlMetaMain == "" || fSqlMySqlMetaVal  == "" ) {
 
-    cout  << "No SQL available to create table " << fTableName
-          << " in cascade entry: " << dbNo << endl;
+    DBLOG("FairDb",FairDbLog::kWarning) << "No SQL available to create table " << fTableName
+                                        << " in cascade entry: " << dbNo << endl;
+
     return kFALSE;
   }
 
@@ -261,7 +254,7 @@ Bool_t FairDbSqlValPacket::CreateTable(UInt_t dbNo) const
 
 }
 
-//.....................................................................
+
 
 Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
 {
@@ -286,13 +279,11 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
 
   this->Reset();
   //  Loop until EOF reading lines.
-
   while ( ! is.eof() ) {
     getline(is,line);
     ++lineNum;
     // Skip null lines.
     if (line.size() == 0 ) { continue; }
-
     // Look for header line
     if ( state == kLOOKING_FOR_HEADER ) {
       if ( line.substr(0,5) == ">>>>>" ) {
@@ -300,7 +291,6 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
           Report("Bad header",lineNum,line);
           continue;
         }
-
         // Look for optional metadata.
         if ( line.find("Metadata") != string::npos ) {
           getline(is,fSqlMySqlMetaVal);
@@ -324,7 +314,6 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
             continue;
           }
         }
-
         //  Collect table name and SeqNo.
         istringstream istr(line.substr(5));
         istr.width(kMAXTABLENAMELEN);
@@ -333,8 +322,7 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
           Report("Input error",lineNum,line);
           continue;
         }
-
-        // Header looks good, start to collect SQL.
+        //if  Header OK,  start to collect SQL.
         state = kLOOKING_FOR_TRAILER;
         sql = "";
       } else {
@@ -343,14 +331,12 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
     }
 
     //Look for trailer line.
-
     else {
       if ( line.substr(0,5) == "<<<<<" ) {
         if ( line.size() >= kHEADER_TRAILER_MAX_LEN
            ) { msg = "Bad trailer"; }
 
         else {
-
           //  Collect table name and SeqNo.
           istringstream istr(line.substr(5));
           istr.width(kMAXTABLENAMELEN);
@@ -368,7 +354,6 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
             // Trailer looks good return with object filled.
             fSeqNo     = seqNoHead;
             fTableName = nameHead;
-
             //Dig out the creation date from the first record.
             string date = this->GetStmtValues(0)[7];
             //Remove the quotes.
@@ -384,9 +369,9 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
                 static bool warnOnce = true;
                 if ( warnOnce ) {
 
-                  cout << "Setting aggregate number for FAIRDBSUBRUNSUMMARY = -1\n"
-                       << "  Expect this message once.  FAIRDBSUBRUNSUMMARY needs to be "
-                       << " fixed!" << endl;
+                  DBLOG("FairDb",FairDbLog::kWarning)  << "Setting aggregate number for FAIRDBSUBRUNSUMMARY = -1\n"
+                                                       << "  Expect this message once.  FAIRDBSUBRUNSUMMARY needs to be "
+                                                       << " fixed!" << endl;
                   warnOnce = false;
                 }
                 ls[6] = "-1";
@@ -426,43 +411,31 @@ Bool_t FairDbSqlValPacket::Fill(std::ifstream& is)
   return kFALSE;
 
 }
-//.....................................................................
+
 
 string FairDbSqlValPacket::GetStmt(UInt_t stmtNo) const
 {
-
-
   if ( stmtNo >= this->GetNumSqlStmts() ) { return ""; }
-
-  // Locate statement
   std::list<std::string>::const_iterator itr = fSqlStmts.begin();
   while ( stmtNo ) { ++itr; --stmtNo; }
-
   return *itr;
-
 }
-//.....................................................................
 
 std::vector<std::string> FairDbSqlValPacket::GetStmtValues(UInt_t stmtNo) const
 {
-
   std::vector<std::string> vec;
   if ( stmtNo >= this->GetNumSqlStmts() ) { return vec; }
 
-  // Locate statement
   std::string str = this->GetStmt(stmtNo);
-
-  // Extract ...(list-of-values)... and parse it into tokens.
   std::string::size_type pos = str.find('(');
   ++pos;
   std::string::size_type n = str.find(')') - pos;
   FairUtilString::StringTok(vec,str.substr(pos,n),",");
 
   return vec;
-
 }
 
-//.....................................................................
+
 
 Bool_t FairDbSqlValPacket::IsEqual(const FairDbSqlValPacket& that,
                                    Bool_t log,
@@ -473,12 +446,12 @@ Bool_t FairDbSqlValPacket::IsEqual(const FairDbSqlValPacket& that,
   if (    fSeqNo           != that.fSeqNo
           || fTableName       != that.fTableName
           || fNumStmts != that.fNumStmts ) {
-    if ( log ) cout << "Conflict found:"
-                      << " for : " << thisName << " , " << thatName << " :-\n"
-                      << "  SeqNo " << fSeqNo << "," << that.fSeqNo
-                      << "\n  TableName " << fTableName << "," << that.fTableName
-                      << "\n  Size " << fNumStmts << ","
-                      << that.fNumStmts << endl;
+    if ( log )   DBLOG("FairDb",FairDbLog::kInfo) << "Conflict found:"
+          << " for : " << thisName << " , " << thatName << " :-\n"
+          << "  SeqNo " << fSeqNo << "," << that.fSeqNo
+          << "\n  TableName " << fTableName << "," << that.fTableName
+          << "\n  Size " << fNumStmts << ","
+          << that.fNumStmts << endl;
     return kFALSE;
   }
 
@@ -501,9 +474,9 @@ Bool_t FairDbSqlValPacket::IsEqual(const FairDbSqlValPacket& that,
     if ( ! log ) { return kFALSE; }
     isEqual = kFALSE;
 
-    cout    << "Difference on VAL record " << ":-\n"
-            << "  " << thisName << ": " << strThis  << endl
-            << "  " << thatName << ": " << strThat  << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)    << "Difference on VAL record " << ":-\n"
+                                        << "  " << thisName << ": " << strThis  << endl
+                                        << "  " << thatName << ": " << strThat  << endl;
   }
 
   // Rows can come in any order (after the first) so we have
@@ -568,10 +541,10 @@ Bool_t FairDbSqlValPacket::IsEqual(const FairDbSqlValPacket& that,
     if ( (**shadowThisItr) != (**shadowThatItr) ) {
       if ( ! log ) { return kFALSE; }
       isEqual = kFALSE;
-      cout << "Difference on data record "
-           << ":-\n"
-           << "  " << thisName << ": " << **shadowThisItr  << endl
-           << "  " << thatName << ": " << **shadowThatItr  << endl;
+      DBLOG("FairDb",FairDbLog::kInfo) << "Difference on data record "
+                                       << ":-\n"
+                                       << "  " << thisName << ": " << **shadowThisItr  << endl
+                                       << "  " << thatName << ": " << **shadowThatItr  << endl;
     }
     ++shadowThisItr;
     ++shadowThatItr;
@@ -587,19 +560,19 @@ void FairDbSqlValPacket::Print(Option_t* /* option */) const
 {
 
 
-  cout  << "FairDbSQLValPacket:"
-        << " table \"" << fTableName << "\" "
-        << " SeqNo " << fSeqNo
-        << " NumErrors " << fNumErrors
-        << endl
-        << "   CreationDate " << fCreationDate
-        << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "FairDbSQLValPacket:"
+                                   << " table \"" << fTableName << "\" "
+                                   << " SeqNo " << fSeqNo
+                                   << " NumErrors " << fNumErrors
+                                   << endl
+                                   << "   CreationDate " << fCreationDate
+                                   << endl;
 
 
-  cout  << "   MySQL Main table creation: \"" << fSqlMySqlMetaMain << "\"" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "   MySQL Main table creation: \"" << fSqlMySqlMetaMain << "\"" << endl;
 
 
-  cout  << "   MySQL VAL table creation: \"" << fSqlMySqlMetaVal << "\"" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  << "   MySQL VAL table creation: \"" << fSqlMySqlMetaVal << "\"" << endl;
 
   if ( GetNumSqlStmts() > 0 ) {
     std::list<string>::const_iterator itr    = fSqlStmts.begin();
@@ -607,10 +580,10 @@ void FairDbSqlValPacket::Print(Option_t* /* option */) const
     for (; itr != itrEnd; ++itr)
 
     {
-      cout  << "   SqlStmt \"" << *itr << "\"" << endl;
+      DBLOG("FairDb",FairDbLog::kInfo)  << "   SqlStmt \"" << *itr << "\"" << endl;
     }
   } else {
-    cout << "   No SqlStmts." << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "   No SqlStmts." << endl;
   }
 
 }
@@ -631,8 +604,9 @@ void FairDbSqlValPacket::Recreate(const string& tableName,
 
   FairDbTableProxyRegistry& tablePR = FairDbTableProxyRegistry::Instance();
   if ( ! tablePR.GetMultConnector().TableExists(tableName) ) {
-    cout << "Cannot create packet - table " << tableName
-         << " does not exist." << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)
+        << "Cannot create packet - table " << tableName
+        << " does not exist." << endl;
     fNumErrors = 1;
     return;
   }
@@ -655,24 +629,20 @@ void FairDbSqlValPacket::Recreate(const string& tableName,
 
 }
 
-//.....................................................................
 
 void FairDbSqlValPacket::Report(const char* msg,
                                 UInt_t lineNum,
                                 const string& line)
 {
-  cout << msg << " on line " << lineNum
-       <<":- \n  " << line << endl;
+  MAXDBLOG("FairDb",FairDbLog::kError,20)  << msg << " on line " << lineNum
+      <<":- \n  " << line << endl;
   this->Reset();
   ++fNumErrors;
-
 }
-//.....................................................................
+
 
 void FairDbSqlValPacket::Reset()
 {
-
-
   fSeqNo       = 0;
   fSqlMySqlMetaMain = "";
   fSqlMySqlMetaVal  = "";
@@ -681,16 +651,12 @@ void FairDbSqlValPacket::Reset()
   fTableName   = "";
 
 }
-//.....................................................................
 
 void FairDbSqlValPacket::SetCreationDate(ValTimeStamp ts)
 {
 
   fCreationDate = ts;
-
-  //  Update the validity row assuming:  "...,'creationdate',insertdate);"
   if ( this->GetNumSqlStmts() == 0 ) { return; }
-
   string& vldRow = *fSqlStmts.begin();
   string::size_type locEnd = vldRow.rfind(',');
   if ( locEnd == string::npos ) { return; }
@@ -699,23 +665,15 @@ void FairDbSqlValPacket::SetCreationDate(ValTimeStamp ts)
   if ( locStart == string::npos ) { return; }
   locStart+=2;
   vldRow.replace(locStart,locEnd-locStart+1,ts.AsString("s"));
-
 }
-
-//.....................................................................
 
 void FairDbSqlValPacket::SetMetaData() const
 {
-
   FairDbTableProxyRegistry& tbprxreg = FairDbTableProxyRegistry::Instance();
-
-  //  Locate the table in the cascade.
+  //  Locate the table in the connected list.
   FairDbMultConnector& cas = tbprxreg.GetMultConnector();
   Int_t dbNo = cas.GetTableDbNo(this->GetTableName());
   if ( dbNo < 0 ) { return; }
-
-  //  Any table proxy will do to get the meta-data so use the one for a
-  //  FairDbConfigSet;
   FairDbConfigSet dummy;
   const FairDbTableMetaData& metaVal =  tbprxreg.GetTableProxy(this->GetTableName(),&dummy)
                                         .GetMetaValid();
@@ -723,17 +681,12 @@ void FairDbSqlValPacket::SetMetaData() const
                                         .GetMetaData();
   fSqlMySqlMetaVal   = metaVal.Sql();
   fSqlMySqlMetaMain  = metaMain.Sql();
-
 }
 
-//.....................................................................
 
 void FairDbSqlValPacket::SetSeqNo(UInt_t seqno)
 {
-
   fSeqNo = seqno;
-
-  //  Update all rows
   if ( this->GetNumSqlStmts() == 0 ) { return; }
 
   ostringstream tmp;
@@ -746,7 +699,6 @@ void FairDbSqlValPacket::SetSeqNo(UInt_t seqno)
 
 }
 
-//.....................................................................
 
 void FairDbSqlValPacket::SetSeqNoOnRow(string& row,const string& seqno)
 {
@@ -760,15 +712,13 @@ void FairDbSqlValPacket::SetSeqNoOnRow(string& row,const string& seqno)
 
 }
 
-//.....................................................................
 
 Bool_t FairDbSqlValPacket::Store(UInt_t dbNo, Bool_t replace) const
 {
-  cout << "-I- FairDbSqlValPacket::Store() " << endl;
+  //cout << "-I- FairDbSqlValPacket::Store() " << endl;
 
   if ( ! CanBeStored() ) { return kFALSE; }
 
-  //Just use any old table row object just to get a FairDbDBProxy.
   FairDbConfigSet pet;
   FairDbTableProxy& tp =  FairDbTableProxyRegistry::Instance()
                           .GetTableProxy(this->GetTableName(),&pet);
@@ -777,14 +727,15 @@ Bool_t FairDbSqlValPacket::Store(UInt_t dbNo, Bool_t replace) const
     if ( ! proxy.RemoveSeqNo(this->GetSeqNo(),dbNo) ) { return kFALSE; }
   }
 
-  // Locate required FairDbStatement.
+
   auto_ptr<FairDbStatement> stmtDb(FairDbTableProxyRegistry::Instance()
                                    .GetMultConnector()
                                    .CreateStatement(dbNo));
   if ( ! stmtDb.get() ) {
 
-    cout  << "Attempting to write to non-existant cascade entry " << dbNo
-          << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)
+        << "Attempting to write to non-existant cascade entry " << dbNo
+        << endl;
     return kFALSE;
   }
 
@@ -813,7 +764,7 @@ Bool_t FairDbSqlValPacket::Store(UInt_t dbNo, Bool_t replace) const
         ValTimeStamp now;
         sql.replace(locDate+2,19,FairDb::MakeDateTimeString(now));
       }
-      cout << "-I- FairDbSqlValPacket::Store() exxecute SQL:" << sql <<  endl;
+      //cout << "-I- FairDbSqlValPacket::Store() exxecute SQL:" << sql <<  endl;
       stmtDb->ExecuteUpdate(sql.c_str());
       if ( stmtDb->PrintExceptions() ) { return kFALSE; }
       first = kFALSE;
@@ -822,7 +773,7 @@ Bool_t FairDbSqlValPacket::Store(UInt_t dbNo, Bool_t replace) const
 
     string sql = *itr;
 
-//  On other statements remove the second (ROW_COUNTER) column if required.
+
     if (removeRowCounter) {
       list<string>::size_type locStart  = sql.find(',');
       ++locStart;
@@ -837,8 +788,8 @@ Bool_t FairDbSqlValPacket::Store(UInt_t dbNo, Bool_t replace) const
 
     string::size_type insertIndex = sql.find("VALUES (");
     if ( insertIndex == string::npos) {
-      cout << "Unexpected SQL : " << sql
-           << "\n  should be of form INSERT INTO ... VALUES (...);" << endl;
+      MAXDBLOG("FairDb",FairDbLog::kError,20)  << "Unexpected SQL : " << sql
+          << "\n  should be of form INSERT INTO ... VALUES (...);" << endl;
       return kFALSE;
     }
     ++combineInserts;
@@ -861,7 +812,7 @@ Bool_t FairDbSqlValPacket::Store(UInt_t dbNo, Bool_t replace) const
     if ( stmtDb->PrintExceptions() ) { return kFALSE; }
   }
 
-  cout << "-I- FairDbSqlValPacket::Store(): done ...  " << endl;
+  //cout << "-I- FairDbSqlValPacket::Store(): done ...  " << endl;
   return kTRUE;
 
 }
@@ -876,11 +827,9 @@ Bool_t FairDbSqlValPacket::Write(std::ofstream& ios,
     if ( fSqlMySqlMetaMain.size() == 0 ) { this->SetMetaData(); }
     if ( fSqlMySqlMetaMain.size() == 0 ) {
 
-      cout<< "Cannot write metadata; no associated FairDbTableProxy "
-          << endl;
+      DBLOG("FairDb",FairDbLog::kWarning)<< "Cannot write metadata; no associated FairDbTableProxy "
+                                         << endl;
     } else {
-
-
       ios << ">>>>>" << GetTableName() << " Metadata [MySQL]" << endl;
       ios << fSqlMySqlMetaVal   << endl;
       ios << fSqlMySqlMetaMain  << endl;

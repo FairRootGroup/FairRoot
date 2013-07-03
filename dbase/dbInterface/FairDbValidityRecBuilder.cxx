@@ -1,5 +1,5 @@
 #include "FairDbValidityRecBuilder.h"
-
+#include "FairDbLogService.h"
 #include "FairDbProxy.h"                // for FairDbProxy
 #include "FairDbResult.h"               // for FairDbResultNonAgg, etc
 #include "FairDbSimFlagAssociation.h"   // for FairDbSimFlagAssociation, etc
@@ -27,8 +27,8 @@ ClassImp(FairDbValidityRecBuilder)
 FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
     const ValContext& vc,
     const FairDb::Version& task,
-    Int_t selectDbNo     /* Default: -1 */,
-    Bool_t findFullTimeWindow /* Default: true*/
+    Int_t selectDbNo,
+    Bool_t findFullTimeWindow
                                                   )
   : fGap(),
     fIsExtendedContext(kFALSE),
@@ -48,36 +48,30 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
 
   this->MakeGapRec(vc, tableName, findFullTimeWindow);
 
-//  Force aggregate -1 into first slot.
   this->AddNewGap(-1);
 
   const ValTimeStamp curVTS = vc.GetTimeStamp();
 
-// Check to see if table exists.
 
   unsigned int numVRecIn = 0;
 
   if ( ! proxy.TableExists() ) {
 
-    cout     << "FairDbValidityRecBuilder::Query for table:"
-             << proxy.GetTableName()
-             << ", table does not exist!" << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "FairDbValidityRecBuilder::Query for table:"
+                                     << proxy.GetTableName()
+                                     << ", table does not exist!" << endl;
   }
 
   else {
 
-//  Loop over all databases in cascade until valid data found.
-
+//  Loop over all databases
     UInt_t numDb     = proxy.GetNumDb();
     Bool_t foundData = kFALSE;
 
     for ( UInt_t dbNo = 0; dbNo < numDb && ! foundData; ++dbNo ) {
 
-      // Skip if cascade entry does not have this table or selection in force and not the required one.
       if ( ! proxy.TableExists(dbNo) ) { continue; }
       if ( selectDbNo >= 0 && selectDbNo != (int) dbNo ) { continue; }
-
-//    Loop over all associated SimFlags.
 
       FairDbSimFlagAssociation::SimList_t simList
       = FairDbSimFlagAssociation::Instance().Get(sim);
@@ -90,20 +84,13 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
         ++listItr;
         ValContext vcTry(det,simTry,ts);
 
-//      Apply validity query and build result set.
 
         FairDbResultSet* rs = proxy.QueryValidity(vcTry,fVersion,dbNo);
-
-//      Build a result from the result set and drop result set.
 
         FairDbValidityRec tr;
         FairDbResultNonAgg result(rs,&tr,0,kFALSE);
         delete rs;
 
-//      Loop over all entries in FairDbResult and, for each Aggregate,
-//      find effective validity range of best, or of gap if none.
-
-//      Set earliest creation date to infinite past - the right value if in a gap.
         ValTimeStamp earliestCreate(0);
         UInt_t numRows = result.GetNumRows();
         for (UInt_t row = 0; row < numRows; ++row) {
@@ -111,53 +98,40 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
                                           result.GetTableRow(row));
 
           Int_t aggNo = vr->GetAggregateNo();
-
-//        If starting a new aggregate prime it as a gap.
           Int_t index = this->IndexOfAggno(aggNo);
           if ( index < 0 ) { index = this->AddNewGap(aggNo); }
 
-//        Trim the validity record for the current aggregate
-//        number by this record and see if we have found valid
-//        data yet.
 
           FairDbValidityRec& curRec = fVRecs[index];
           curRec.Trim(curVTS, *vr);
           if ( ! curRec.IsGap() ) {
             foundData = kTRUE;
-
-//          Fill in entry's database number - its not stored in the
-//          database table!
             curRec.SetDbNo(dbNo);
           }
 
-//        Find the earliest non-gap creation date that is used
           if (     curRec.GetSeqNo() ==   vr->GetSeqNo()
                    &&  (    earliestCreate > vr->GetCreationDate()
                             || earliestCreate.GetSec() == 0 )
              ) { earliestCreate = vr->GetCreationDate(); }
 
-//        Count the number used and sum the time windows
           ++numVRecIn;
           const ValRange range = vr->GetValRange();
           Int_t timeInterval =   range.GetTimeEnd().GetSec()
                                  - range.GetTimeStart().GetSec();
           if ( timeInterval < 5 ) {
 
-            cout  << "Detected suspiciously small validity time interval in \n"
-                  << "table " << tableName << " validity rec " << *vr << endl;
+            DBLOG("FairDb",FairDbLog::kWarning) << "Detected suspiciously small validity time interval in \n"
+                                                << "table " << tableName << " validity rec " << *vr << endl;
           }
           sumTimeWindows += timeInterval;
           ++numTimeWindows;
         }
 
-//      If finding findFullTimeWindow then find bounding limits
-//      for the cascade and sim flag and trim all validity records
-//      and the default (gap) validity record.
         if ( findFullTimeWindow ) {
           ValTimeStamp start, end;
           proxy.FindTimeBoundaries(vcTry,fVersion,dbNo,earliestCreate,start,end);
-          cout  << "Trimming validity records to "
-                << start << " .. " << end << endl;
+          DBLOG("FairDb",FairDbLog::kInfo) << "Trimming validity records to "
+                                           << start << " .. " << end << endl;
           std::vector<FairDbValidityRec>::iterator itr(fVRecs.begin()), itrEnd(fVRecs.end());
           for( ; itr != itrEnd; ++itr ) { itr->AndTimeWindow(start,end); }
           fGap.AndTimeWindow(start,end);
@@ -167,13 +141,8 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
     }
   }
 
-//  If the query found no records in any database then
-//  the tables will still have something - the aggno = -1 gap
-
-// If the associated SimFlag is different to the original request make
-// sure that all the FairDbValidityRec are valid for the request.
   if ( sim != simTry ) {
-    cout << "Imposing SimFlag of " << sim << " on FairDbValidityRecs which matched " << simTry << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "Imposing SimFlag of " << sim << " on FairDbValidityRecs which matched " << simTry << endl;
     for ( unsigned int irec = 0; irec < GetNumValidityRec(); ++irec ) {
       FairDbValidityRec& vrec = const_cast<FairDbValidityRec&>(GetValidityRec(irec));
       const ValRange& vr(vrec.GetValRange());
@@ -182,27 +151,24 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
     }
   }
 
-  cout << "FairDbValidityRecBuilder:" << endl
-       << " Query: " << vc.AsString() << endl
-       << " using associated SimFlag: " << SimFlag::AsString(simTry)
-       << " for " << SimFlag::AsString(sim)
-       << " found " << numVRecIn
-       << " vrecs in database, for " << fVRecs.size()
-       << " aggregates:-." << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  << "FairDbValidityRecBuilder:" << endl
+                                    << " Query: " << vc.AsString() << endl
+                                    << " using associated SimFlag: " << SimFlag::AsString(simTry)
+                                    << " for " << SimFlag::AsString(sim)
+                                    << " found " << numVRecIn
+                                    << " vrecs in database, for " << fVRecs.size()
+                                    << " composites:-." << endl;
 
   for ( unsigned int irec = 0; irec < GetNumValidityRec(); ++irec ) {
     const FairDbValidityRec& vrec = GetValidityRec(irec);
     if ( vrec.GetAggregateNo() != -2 ) {
-      cout << " " << irec << " " << GetValidityRec(irec) << endl;
+      DBLOG("FairDb",FairDbLog::kInfo) << " " << irec << " " << GetValidityRec(irec) << endl;
     }
   }
 
 
-
-// Adjust the time gate if grossly wrong.
   if ( numTimeWindows > 0 ) {
     Int_t timeGateCalc = 3 * fVRecs.size() * sumTimeWindows/numTimeWindows;
-    // Limit to 100 days and allow for overflow.
     if ( timeGateCalc > 100*24*60*60 || timeGateCalc < 0
        ) { timeGateCalc = 100*24*60*60; }
     Int_t timeGateCurr = FairDb::GetTimeGate(tableName);
@@ -212,11 +178,11 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
       FairDb::SetTimeGate(tableName,timeGateCalc);
       if ( timeGateCalc != FairDb::GetTimeGate(tableName) ) {
 
-        cout << "The ignored time gate setting was calculated with the following data:-"
-             << "\n   Context: " << vc << " task " << task  << " findFullTimeWindow " << findFullTimeWindow
-             << "\n   Number of vrecs " << numTimeWindows
-             << " total time (secs) of all vrecs " << sumTimeWindows
-             << " Number of aggregates " << fVRecs.size() << endl;
+        DBLOG("FairDb",FairDbLog::kInfo) << "The ignored time gate setting was calculated with the following data:-"
+                                         << "\n   Context: " << vc << " task " << task  << " findFullTimeWindow " << findFullTimeWindow
+                                         << "\n   Number of vrecs " << numTimeWindows
+                                         << " total time (secs) of all vrecs " << sumTimeWindows
+                                         << " Number of composites " << fVRecs.size() << endl;
       }
     }
   }
@@ -235,80 +201,63 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbProxy& proxy,
     fAggNoToIndex()
 {
 
-  cout << "Creating FairDbValidityRecBuilder"
-       << " for extended context " << context << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Creating FairDbValidityRecBuilder"
+                                   << " for extended context " << context << endl;
 
-// Prime fVRecs with a gap that will not be used but makes the result
-// look like an aggregated result.
-
-  cout<< "Initialising with gap record " << fGap << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Initialising with gap record " << fGap << endl;
   this->AddNewGap(-1);
-
-// Check to see if table exists.
 
   unsigned int numVRecIn = 0;
 
   if ( ! proxy.TableExists() ) {
-    cout << "FairDbValidityRecBuilder::Query for table:"
-         << proxy.GetTableName()
-         << ", table does not exist!" << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)
+        << "FairDbValidityRecBuilder::Query for table:"
+        << proxy.GetTableName()
+        << ", table does not exist!" << endl;
   }
 
   else if ( context == "" ) {
-    cout     << "FairDbValidityRecBuilder::Null query for table:"
-             << proxy.GetTableName() << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)      << "FairDbValidityRecBuilder::Null query for table:"
+                                          << proxy.GetTableName() << endl;
   }
 
   else {
 
-//  Loop over all databases in cascade until valid data found.
-
+//  Loop over all databases
     UInt_t numDb     = proxy.GetNumDb();
     Bool_t foundData = kFALSE;
 
     for ( UInt_t dbNo = 0; dbNo < numDb && ! foundData; ++dbNo ) {
-
-//    Apply validity query and build result set.
-
       FairDbResultSet* rs = proxy.QueryValidity(context,fVersion,dbNo);
-
-//    Build a result from the result set and drop result set.
 
       FairDbValidityRec tr;
       FairDbResultNonAgg result(rs,&tr,0,kFALSE);
       delete rs;
 
-//    Loop over all entries in FairDbResult and add them all to set.
-
       UInt_t numRows = result.GetNumRows();
       for (UInt_t row = 0; row < numRows; ++row) {
         const FairDbValidityRec* vr = dynamic_cast<const FairDbValidityRec*>(
                                         result.GetTableRow(row));
-
-//      Cannot use AddNewAgg - aggregate numbers may be duplicated.
         Int_t index = fVRecs.size();
         fVRecs.push_back(FairDbValidityRec(*vr));
         fAggNoToIndex[vr->GetAggregateNo()] = index;
         foundData = kTRUE;
 
-//      Fill in entry's database number - its not stored in the
-//      database table!
         fVRecs[index].SetDbNo(dbNo);
 
-//      Count the number used.
         ++numVRecIn;
       }
     }
   }
 
-  cout << "FairDbValidityRecBuilder:" << endl
-       << " Extended context query: " << context << endl
-       << " found " << numVRecIn
-       << " vrecs in database, for " << fVRecs.size()
-       << " records:-." << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "FairDbValidityRecBuilder:" << endl
+                                   << " Extended context query: " << context << endl
+                                   << " found " << numVRecIn
+                                   << " vrecs in database, for " << fVRecs.size()
+                                   << " records:-." << endl;
 
   for ( unsigned int irec = 0; irec < GetNumValidityRec(); ++irec ) {
-    cout << " " << irec << " " << GetValidityRec(irec) << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << " " << irec << " " << GetValidityRec(irec) << endl;
   }
   return;
 
@@ -328,7 +277,7 @@ FairDbValidityRecBuilder::FairDbValidityRecBuilder(const FairDbValidityRec& vr,
 {
 
   const ValRange&          vrange(vr.GetValRange());
-  // This is the only way I can find to handle Detector and SimFlag!
+
   ValContext vc( (Detector::Detector_t) vrange.GetDetectorMask(),
                  (SimFlag::SimFlag_t) vrange.GetSimMask(),
                  vrange.GetTimeStart());
@@ -375,16 +324,14 @@ std::string FairDbValidityRecBuilder::GetL2CacheName() const
 
 }
 
-//.....................................................................
+
 
 UInt_t FairDbValidityRecBuilder::AddNewAgg(const FairDbValidityRec& vrec,Int_t aggNo)
 {
 
-  //  Make sure it really doesn't exist.
   int index = this->IndexOfAggno(aggNo);
   if ( index >=0 ) { return index; }
 
-  // It doesn't so add it.
   index = fVRecs.size();
   fVRecs.push_back(vrec);
   fAggNoToIndex[aggNo] = index;
@@ -392,18 +339,16 @@ UInt_t FairDbValidityRecBuilder::AddNewAgg(const FairDbValidityRec& vrec,Int_t a
 
 }
 
-//.....................................................................
+
 
 UInt_t FairDbValidityRecBuilder::AddNewGap(Int_t aggNo)
 {
-
   UInt_t index = this->AddNewAgg(fGap,aggNo);
   fVRecs[index].SetAggregateNo(aggNo);
   return index;
-
 }
 
-//.....................................................................
+
 
 const FairDbValidityRec&
 FairDbValidityRecBuilder::GetValidityRec(Int_t rowNo) const
@@ -412,7 +357,7 @@ FairDbValidityRecBuilder::GetValidityRec(Int_t rowNo) const
   return (rowNo < 0 || rowNo >= (int) fVRecs.size()) ? fGap : fVRecs[rowNo];
 }
 
-//.....................................................................
+
 
 const FairDbValidityRec&
 FairDbValidityRecBuilder::GetValidityRecFromSeqNo(UInt_t SeqNo) const
@@ -425,7 +370,6 @@ FairDbValidityRecBuilder::GetValidityRecFromSeqNo(UInt_t SeqNo) const
   return fGap;
 }
 
-//.....................................................................
 
 Int_t FairDbValidityRecBuilder::IndexOfAggno(Int_t aggNo) const
 {
@@ -435,7 +379,6 @@ Int_t FairDbValidityRecBuilder::IndexOfAggno(Int_t aggNo) const
 
 }
 
-//.....................................................................
 
 void FairDbValidityRecBuilder::MakeGapRec(const ValContext& vc,
     const string& tableName,

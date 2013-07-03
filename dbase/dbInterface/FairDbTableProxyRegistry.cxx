@@ -1,5 +1,5 @@
 #include "FairDbTableProxyRegistry.h"
-
+#include "FairDbLogService.h"
 #include "FairDbBinaryFile.h"           // for FairDbBinaryFile
 #include "FairDbCache.h"                // for string, FairDbCache
 #include "FairDbConfigSet.h"            // for FairDbConfigSet
@@ -11,6 +11,9 @@
 #include "FairDbTableProxy.h"           // for FairDbTableProxy
 #include "FairDbTableRow.h"             // for FairDbTableRow
 #include "FairRegistry.h"               // for FairRegistry, etc
+
+#include "FairDbLogFormat.h"
+#include "FairDbLogService.h"
 
 #include "Riosfwd.h"                    // for ostream
 #include "TString.h"                    // for TString
@@ -42,41 +45,35 @@ FairDbTableProxyRegistry::FairDbTableProxyRegistry()
     fSimFlagAss()
 {
 
-// Create cascader for database access.
+  this->SetConfigFromEnvironment();
+  this->SetLoggingStreams();
+
+  DBLOG("FairDb",FairDbLog::kDebug) << "FairDbTableProxyRegistry singleton is created  \n"<< endl;
+
   fMultConnector = new FairDbMultConnector;
 
-// Get any environment configuration.
-  this->SetConfigFromEnvironment();
 
-// Create a FairDbRecord to record a summary of all FairDbResults in memory
-// and register it as a service.
-//  FairDbServices::SetRecord(new FairDbRecord);
-
-  cout << "-I- Creating FairDbTableProxyRegistry done \n"<< endl;
-
-  // Set massive shutdown and clean up all caches
+  // Shutdown modus
   // Set("Shutdown = 1");
 }
 
 FairDbTableProxyRegistry::~FairDbTableProxyRegistry()
 {
-
   if (  FairDbExceptionLog::GetGELog().Size() ) {
-    cout << "Database Global Exception Log contains "
-         << FairDbExceptionLog::GetGELog().Size() << " entries:-" << endl;;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "Database Global Exception Log contains "
+                                      << FairDbExceptionLog::GetGELog().Size() << " entries:-" << endl;;
     FairDbExceptionLog::GetGELog().Print();
   }
 
   int shutdown = 0;
   if (    ! this->GetConfig().Get("Shutdown",shutdown)
           || shutdown == 0 ) {
-    cout << " shutdown not requested" << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << " shutdown not requested" << endl;
     return;
   }
 
-  cout << "-I- FairDB::  shutting down..." << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  << " ... shutting down ..." << endl;
 
-// Destroy all owned objects.
 
   for ( std::map<std::string,FairDbTableProxy*>::iterator itr = fTPmap.begin();
         itr != fTPmap.end();
@@ -88,13 +85,12 @@ FairDbTableProxyRegistry::~FairDbTableProxyRegistry()
   delete fMultConnector;
   fMultConnector = 0;
 
-  //delete FairDbServices::GetRecord();
   FairDbServices::SetRecord(0);
 
 
-  cout  << "-I- FairDbTableProxyRegistry:: Destroying FairDbTableProxyRegistry" << endl;
+  DBLOG("FairDb",FairDbLog::kDebug) << " ~ Destroying ~ FairDbTableProxyRegistry" << endl;
 
-  cout  << "-I- FairDB:: shutdown complete." << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << " Shutdown completed. " << endl;
   FairDbTableProxyRegistry::fgInstance = 0;
 
 }
@@ -102,7 +98,6 @@ FairDbTableProxyRegistry::~FairDbTableProxyRegistry()
 
 void FairDbTableProxyRegistry::ApplySqlCondition() const
 {
-
   std::map<std::string,FairDbTableProxy*>::const_iterator itr = fTPmap.begin();
   std::map<std::string,FairDbTableProxy*>::const_iterator itrEnd = fTPmap.end();
   for ( ; itr != itrEnd; ++itr) { this->ApplySqlCondition(itr->second); }
@@ -111,7 +106,6 @@ void FairDbTableProxyRegistry::ApplySqlCondition() const
 
 void FairDbTableProxyRegistry::ApplySqlCondition(FairDbTableProxy* proxy) const
 {
-
   string sqlFull = fSqlCondition;
   const string tableName(proxy->GetTableName());
   const string& date = fRollbackDates.GetDate(tableName);
@@ -129,15 +123,12 @@ void FairDbTableProxyRegistry::ApplySqlCondition(FairDbTableProxy* proxy) const
 
 void FairDbTableProxyRegistry::ClearRollbackDates()
 {
-
   fRollbackDates.Clear();
   this->ApplySqlCondition();
 }
 
-
 void FairDbTableProxyRegistry::ClearSimFlagAssociation()
 {
-
   fSimFlagAss.Clear();
 }
 
@@ -146,38 +137,27 @@ void FairDbTableProxyRegistry::Config()
 
   FairRegistry& reg = this->GetConfig();
 
-  //Load up SimFlag Associations and remove them from the FairRegistry.
   fSimFlagAss.Set(reg);
 
-  //Load up Rollback dates and remove them from the FairRegistry.
   fRollbackDates.Set(reg);
 
-  //Apply any rollback now in force.
   this->ApplySqlCondition();
 
-  // If Level 2 cache enabled establish working directory
-  // for FairDbBinaryFile.
   const char*  dir;
   if ( reg.Get("Level2Cache",dir) ) {
-    // Expand any environmental variables.
     TString tmp(dir);
-    //  ExpandPathName returns false even if it works, so test for failure
-    //  by looking for an unexpanded symbol.
     gSystem->ExpandPathName(tmp);
     if ( tmp.Contains("$" ) ) {
       dir = "./";
-      cout << "Directory name expansion failed, using "
-           << dir << " instead" << endl;
+      DBLOG("FairDb",FairDbLog::kWarning)<< "Directory name expansion failed, using "
+                                         << dir << " instead" << endl;
     } else {
       dir = tmp.Data();
     }
 
     FairDbBinaryFile::SetWorkDir(dir);
-    cout << "FairDbTableProxyRegistry: Setting L2 Cache to: " << dir << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "FairDbTableProxyRegistry: Setting L2 Cache to: " << dir << endl;
   }
-
-  // Check for request to make all cascade connections permanent
-  // and remove from the Registry.
 
   int connectionsPermanent = 0;
   if ( reg.Get("MakeConnectionsPermanent",connectionsPermanent) ) {
@@ -185,30 +165,26 @@ void FairDbTableProxyRegistry::Config()
     Int_t dbNo =fMultConnector->GetNumDb();
     if ( connectionsPermanent > 0 ) {
       while ( --dbNo >= 0 ) { fMultConnector->SetPermanent(dbNo); }
-      cout << "Making all database connections permanent" << endl;
-      // Inform FairDbServices so that FairDbConnection can check when opening new connections.
+      DBLOG("FairDb",FairDbLog::kInfo) << "Making all database connections permanent" << endl;
       FairDbServices::fAsciiDBConectionsTemporary = false;
     } else {
       while ( --dbNo >= 0 ) { fMultConnector->SetPermanent(dbNo,false); }
-      cout << "Forcing all connections, including ASCII DB, to be temporary" << endl;
-      // Inform FairDbServices so that FairDbConnection can check when opening new connections.
+      DBLOG("FairDb",FairDbLog::kInfo) << "Forcing all connections, including ASCII DB, to be temporary" << endl;
       FairDbServices::fAsciiDBConectionsTemporary = true;
     }
   }
 
   // Check for request to order context queries and remove from the Registry.
-
   int OrderContextQuery = 0;
   if ( reg.Get("OrderContextQuery",OrderContextQuery) ) {
     reg.RemoveKey("OrderContextQuery");
     if ( OrderContextQuery ) {
       FairDbServices::fOrderContextQuery = true;
-      cout << "Forcing ordering of all context queries" << endl;
+      DBLOG("FairDb",FairDbLog::kInfo) << "Forcing ordering of all context queries" << endl;
     }
   }
 
   // Abort if Registry contains any unknown keys
-
   const char* knownKeys[]   = { "Level2Cache",
                                 "Shutdown"
                               };
@@ -222,14 +198,13 @@ void FairDbTableProxyRegistry::Config()
       if ( ! strcmp(foundKey,knownKeys[keyNum]) ) { keyUnknown = false; }
     }
     if ( keyUnknown ) {
-
-      cout  << "Illegal registry item: " << foundKey << endl;
+      DBLOG("FairDb",FairDbLog::kInfo)  << "Illegal registry item: " << foundKey << endl;
       hasUnknownKeys = true;
     }
   }
 
   if ( hasUnknownKeys ) {
-    cout << "Aborting due to illegal registry items." << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "Aborting due to illegal registry items." << endl;
     abort();
   }
 }
@@ -253,7 +228,7 @@ FairDbTableProxy& FairDbTableProxyRegistry::GetTableProxy
   proxyName.append(tableRow->ClassName());
   FairDbTableProxy* qpp = fTPmap[proxyName];
   if ( ! qpp ) {
-    cout <<"-I- FairDbTableProxyRegistry create FairDbTableProxy " <<  tableRow << " proxyname# " << proxyName <<   endl;
+    DBLOG("FairDb",FairDbLog::kInfo) <<" create a FairDbTableProxy " <<  tableRow << " proxyname# " << proxyName <<   endl;
     qpp = new FairDbTableProxy(fMultConnector,tableName,vldSuffix,tableRow);
     this->ApplySqlCondition(qpp);
     fTPmap[proxyName] = qpp;
@@ -266,83 +241,88 @@ FairDbTableProxy& FairDbTableProxyRegistry::GetTableProxy
 
 Bool_t FairDbTableProxyRegistry::HasRowCounter(const std::string& tableName)
 {
-
   FairDbConfigSet cfs;
   FairDbTableProxy& tp = this->GetTableProxy(tableName,&cfs);
   return tp.GetMetaData().HasRowCounter();
-
 }
 
 FairDbTableProxyRegistry& FairDbTableProxyRegistry::Instance()
 {
-
   if ( ! fgInstance ) {
-// Delete is handled by Cleaner class based on #include count
     fgInstance = new FairDbTableProxyRegistry();
   }
   return *fgInstance;
-
 }
 
 
 void FairDbTableProxyRegistry::PurgeCaches()
 {
-
   for ( std::map<std::string,FairDbTableProxy*>::iterator itr = fTPmap.begin();
         itr != fTPmap.end();
         ++itr) {
     FairDbTableProxy* tp = (*itr).second;
     tp->GetCache()->Purge();
   }
-
 }
 
 
 void FairDbTableProxyRegistry::RefreshMetaData(const std::string& tableName)
 {
-
   std::map<std::string,FairDbTableProxy*>::iterator itr = fTPmap.begin();
   std::map<std::string,FairDbTableProxy*>::iterator itrEnd = fTPmap.end();
   for ( ; itr != itrEnd; ++itr) {
     FairDbTableProxy* table = (*itr).second;
     if ( table && table->GetTableName() == tableName ) { table->RefreshMetaData(); }
   }
-
 }
 
 void FairDbTableProxyRegistry::SetConfigFromEnvironment()
 {
-  const char* strENV_DBI = gSystem->Getenv("ENV_DB");
-  if ( strENV_DBI == 0  || strlen(strENV_DBI) == 0 ) { return; }
 
-  cout << "\nConfiguring  from the environmental "
-       << "variable ENV_DB:-\n  " << strENV_DBI << endl;
+  fLogName = gSystem->Getenv("ENV_LOGFILE_DB");
+
+
+  if (fLogName.IsNull() || (fLogName.Length() == 0)) {
+    const char* apwd =  gSystem->Getenv("PWD");
+    TString aPwd(apwd);
+    TString aLogName("/fairdbinfo.log");
+    fLogName = aPwd+aLogName;
+  }
+
+  const char* strENV_DB = gSystem->Getenv("ENV_DB");
+  if ( strENV_DB == 0  || strlen(strENV_DB) == 0 ) { return; }
+
+
+  DBLOG("FairDb",FairDbLog::kInfo) << "\nConfiguring  from the environmental "
+                                   << "variable ENV_DB:-\n  " << strENV_DB << endl;
   std::vector<std::string> configRequests;
-  FairUtilString::StringTok(configRequests, strENV_DBI, ";");
+  FairUtilString::StringTok(configRequests, strENV_DB, ";");
 
   for (unsigned entry = 0; entry < configRequests.size(); ++entry ) {
     this->Set(configRequests[entry].c_str());
   }
+
+
   this->Update();
+
+
 }
 
 void FairDbTableProxyRegistry::SetSqlCondition(const std::string& sql)
 {
-
   fSqlCondition = sql;
   this->ApplySqlCondition();
 }
 
 void FairDbTableProxyRegistry::ShowStatistics() const
 {
+  FairDbLogStream msg = DBLOGSTREAM("FairDb",FairDbLog::kInfo);
+  msg << "\n\nCache statistics:-\n\n"
+      << "Table Name                             "
+      << "    Current   Maximum     Total     Total\n"
+      << "                                       "
+      << "       Size      Size   Adopted    Reused" << endl;
 
-  cout << "\n\nCache statistics:-\n\n"
-       << "Table Name                             "
-       << "    Current   Maximum     Total     Total\n"
-       << "                                       "
-       << "       Size      Size   Adopted    Reused" << endl;
-
-// Loop over all owned objects.
 
   for ( std::map<std::string,FairDbTableProxy*>::const_iterator itr = fTPmap.begin();
         itr != fTPmap.end();
@@ -350,16 +330,43 @@ void FairDbTableProxyRegistry::ShowStatistics() const
     const FairDbTableProxy* tp = (*itr).second;
     std::string name = (*itr).first;
     if ( name.size() < 40 ) { name.append(40-name.size(),' '); }
-    cout << name;
-//  Only want to look at cache so by-pass constness.
-    // const_cast<FairDbTableProxy*>(tp)->GetCache()->ShowStatistics();
-    cout << endl;
+    msg << name;
+    const_cast<FairDbTableProxy*>(tp)->GetCache()->ShowStatistics(msg);
+    msg   << endl;
   }
-  cout << "\n" << endl;
+  msg << "\n" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  << const_cast<FairDbTableProxyRegistry*>(this)->GetMultConnector();
+}
 
-//  Only want to look at cascader so by-pass constness.
 
-  cout << const_cast<FairDbTableProxyRegistry*>(this)->GetMultConnector();
+void FairDbTableProxyRegistry::SetLoggingStreams()
+{
+  // Set Logging mechanism
+  FairDbLogService::Instance()->GetStream("FairDb")->SetLogLevel(FairDbLog::kInfo);
+  FairDbLogService::Instance()->GetStream("FairDb")->DetachOStream(FairDbLog::kInfo,"cerr");
+  FairDbLogService::Instance()->GetStream("FairDb")->DetachOStream(FairDbLog::kWarning,"cerr");
+  FairDbLogService::Instance()->GetStream("FairDb")->DetachOStream(FairDbLog::kError,"cerr");
+  FairDbLogService::Instance()->GetStream("FairDb")->DetachOStream(FairDbLog::kInfo,"cout");
+  FairDbLogService::Instance()->GetStream("FairDb")->DetachOStream(FairDbLog::kWarning,"cout");
+  FairDbLogService::Instance()->GetStream("FairDb")->DetachOStream(FairDbLog::kError,"cout");
 
+  FairDbLogService::Instance()->GetStream("FairDb")->AttachOStream(FairDbLog::kWarning,fLogName.Data());
+  FairDbLogService::Instance()->GetStream("FairDb")->AttachOStream(FairDbLog::kInfo,fLogName.Data());
+  FairDbLogService::Instance()->GetStream("FairDb")->AttachOStream(FairDbLog::kError,fLogName.Data());
+
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->SetLogLevel(FairDbLog::kInfo);
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DetachOStream(FairDbLog::kInfo,"cerr");
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DetachOStream(FairDbLog::kWarning,"cerr");
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DetachOStream(FairDbLog::kError,"cerr");
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DetachOStream(FairDbLog::kInfo,"cout");
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DetachOStream(FairDbLog::kWarning,"cout");
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DetachOStream(FairDbLog::kError,"cout");
+
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->AttachOStream(FairDbLog::kWarning,fLogName.Data());
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->AttachOStream(FairDbLog::kInfo,fLogName.Data());
+  FairDbLogService::Instance()->GetStream("FairDb:Validation")->AttachOStream(FairDbLog::kError,fLogName.Data());
+
+  DBLOG("FairDb",FairDbLog::kInfo) << "FairDb Logging service: opened. "<< endl;
 
 }
+

@@ -1,7 +1,7 @@
 #include "FairDbTimer.h"
-
+#include "FairDbLogService.h"
+#include "FairDbLogFormat.h"
 #include "Riosfwd.h"                    // for ostream
-
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 using std::cout;
@@ -22,13 +22,11 @@ FairDbTimer::FairDbTimer() :
   for ( int subWatch = 0; subWatch <  kMaxSubWatch; ++subWatch) {
     fSubWatches[subWatch].Stop();
   }
-
 }
 
 
 FairDbTimer::~FairDbTimer()
 {
-
 }
 
 
@@ -40,7 +38,6 @@ void FairDbTimer::RecBegin(string tableName, UInt_t rowSize)
   fRowSize = rowSize;
   fWatch.Start();
   for ( int subWatch = 0; subWatch <  kMaxSubWatch; ++subWatch) {
-    // Use Start to reset the counter (Reset doesn't do this).
     fSubWatches[subWatch].Start();
     fSubWatches[subWatch].Stop();
   }
@@ -60,12 +57,15 @@ void FairDbTimer::RecEnd(UInt_t numRows)
     units = "Mb";
   }
 
-  cout << "FairDbTimer:" <<  fTableName
-       << ": Query done. "  << numRows
-       << "rows, " <<  tableSize << units
-       << " Cpu" <<  fWatch.CpuTime()
-       << " , elapse" << fWatch.RealTime()
-       << endl;
+  FairDbLogFormat ffmt("%6.1f");
+
+  DBLOG("FairDb",FairDbLog::kInfo)
+      << "FairDbTimer:" <<  fTableName
+      << ": Query done. "  << numRows
+      << "rows, " <<  ffmt(tableSize) << units
+      << " Cpu" <<  ffmt(fWatch.CpuTime())
+      << " , elapsed" << ffmt(fWatch.RealTime())
+      << endl;
 
   fWatch.Stop();
   fQueryStage = kPassive;
@@ -78,32 +78,27 @@ void FairDbTimer::RecEnd(UInt_t numRows)
           "Retrieve TSQL rows ",
           "Fill row objects   "
         };
-
-      cout << "      SubWatch " <<  subWatchNames[subWatch]
-           << ": Cpu" <<  fSubWatches[subWatch].CpuTime()
-           << " , elapse" << fSubWatches[subWatch].RealTime()
-           << " , Starts " << fSubWatches[subWatch].Counter()
-           << endl;
+      DBLOG("FairDb",FairDbLog::kInfo)
+          << "      Watcher # " <<  subWatchNames[subWatch]
+          << ": Cpu" <<  ffmt(fSubWatches[subWatch].CpuTime())
+          << " , elapse" << ffmt(fSubWatches[subWatch].RealTime())
+          << " , Starts " << ffmt(fSubWatches[subWatch].Counter())
+          << endl;
     }
   }
 }
-//.....................................................................
 
 void FairDbTimer::RecMainQuery()
 {
-
   fQueryStage = kMainQuery;
-
 }
 
-void FairDbTimer::RecFillAgg(Int_t /* aggNo */)
+void FairDbTimer::RecFillAgg(Int_t /* compNo */)
 {
-
 }
 
 void FairDbTimer::Resume()
 {
-
   if ( fCurSubWatch >= 0 ) { fSubWatches[fCurSubWatch].Start(kFALSE); }
   fWatch.Start(kFALSE);
 }
@@ -111,7 +106,6 @@ void FairDbTimer::Resume()
 
 void FairDbTimer::StartSubWatch(UInt_t subWatch)
 {
-
   if (     fCurSubWatch < 0
            || subWatch >= kMaxSubWatch ) { return; }
 
@@ -123,7 +117,6 @@ void FairDbTimer::StartSubWatch(UInt_t subWatch)
 
 void FairDbTimer::Suspend()
 {
-
   if ( fCurSubWatch >= 0 ) { fSubWatches[fCurSubWatch].Stop(); }
   fWatch.Stop();
 }

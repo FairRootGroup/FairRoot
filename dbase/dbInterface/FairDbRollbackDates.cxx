@@ -1,5 +1,5 @@
 #include "FairDbRollbackDates.h"
-
+#include "FairDbLogService.h"
 #include "FairDb.h"                     // for MakeDateTimeString, etc
 #include "FairDbString.h"               // for cmp_wildcard
 #include "FairRegistry.h"               // for FairRegistry, etc
@@ -66,7 +66,6 @@ void FairDbRollbackDates::Set(FairRegistry& reg)
     const char* nextKey =  keyItr();
 
     // Process Rollback keys
-
     if ( ! strncmp("Rollback:",key,9) ) {
       std::string tableName = key+9;
       std::string date;
@@ -79,8 +78,8 @@ void FairDbRollbackDates::Set(FairRegistry& reg)
       }
       if ( ok ) {
 
-        // Prune away any trailing spaces - they cause SQL
-        // to fail expressions involving the date.
+        // trailing spaces out otherwise SQL
+        // will fail expressions involving the date.
         int loc = date.size()-1;
         while ( loc && date[loc] == ' ' ) { date.erase(loc--); }
 
@@ -88,8 +87,8 @@ void FairDbRollbackDates::Set(FairRegistry& reg)
         hasChanged = kTRUE;
 
       } else
-        cout << "Illegal Rollback registry item: " << key
-             << " = " << dateChars << endl;
+        DBLOG("FairDb",FairDbLog::kWarning) << "Illegal Rollback registry item: " << key
+                                            << " = " << dateChars << endl;
       reg.RemoveKey(key);
     }
 
@@ -111,8 +110,8 @@ void FairDbRollbackDates::Set(FairRegistry& reg)
         fTableToType[tableName] = type.Data();
         hasChanged = kTRUE;
       } else
-        cout << "Illegal RollbackType registry item: " << key
-             << " = " << typeChars << endl;
+        DBLOG("FairDb",FairDbLog::kWarning) << "Illegal RollbackType registry item: " << key
+                                            << " = " << typeChars << endl;
       reg.RemoveKey(key);
     }
     key = nextKey;
@@ -123,30 +122,30 @@ void FairDbRollbackDates::Set(FairRegistry& reg)
 
 void FairDbRollbackDates::Show() const
 {
-
-  cout << "\n\nRollback Status:  ";
-  if ( fTableToDate.size() == 0 ) { cout <<"Not enabled" << endl; }
+  FairDbLogStream logm = DBLOGSTREAM("FairDb",FairDbLog::kInfo);
+  logm << "\n\nRollback Status:  ";
+  if ( fTableToDate.size() == 0 ) {  logm <<"Not enabled" << endl; }
   else {
-    cout << "\n\n  Dates:- " << endl;
+    logm << "\n\n  Dates:- " << endl;
     name_map_t::const_reverse_iterator itr    = fTableToDate.rbegin();
     name_map_t::const_reverse_iterator itrEnd = fTableToDate.rend();
     for (; itr != itrEnd; ++itr) {
       std::string name = itr->first;
       if ( name.size() < 30 ) { name.append(30-name.size(),' '); }
-      cout <<"    " << name << "  " << itr->second << endl;
+      logm <<"    " << name << "  " << itr->second << endl;
     }
-    cout << "\n  Rollback Type is 'INSERTDATE'";
+    logm << "\n  Rollback Type is 'INSERTDATE'";
     if ( fTableToType.size() ) {
-      cout << " except as follows:- " << endl;
+      logm << " except as follows:- " << endl;
       itr    = fTableToType.rbegin();
       itrEnd = fTableToType.rend();
       for (; itr != itrEnd; ++itr) {
         std::string name = itr->first;
         if ( name.size() < 30 ) { name.append(30-name.size(),' '); }
-        cout <<"    " << name << "  " << itr->second << endl;
+        logm <<"    " << name << "  " << itr->second << endl;
       }
     }
-    cout << endl;
+    logm << endl;
   }
 }
 

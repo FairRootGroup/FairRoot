@@ -1,5 +1,5 @@
 #include "FairDbValidityRec.h"
-
+#include "FairDbLogService.h"
 #include "FairDbBinaryFile.h"           // for FairDbBinaryFile
 #include "FairDbOutRowStream.h"         // for FairDbOutRowStream
 #include "FairDbResPtr.h"               // for string, FairDbResultPtr
@@ -157,8 +157,8 @@ void FairDbValidityRec::Fill(FairDbResultSet& rs,
   ValRange vr(detMask, simMask, start, end, "From Database");
   fValRange = vr;
 
-  cout
-      << "FairDbValidityRec for row " << rs.CurRowNum()
+  DBLOG("FairDb",FairDbLog::kInfo)
+      << "FairDbValidityRecord for row: " << rs.CurRowNum()
       << ": " << fValRange.AsString()
       << " seq num: " << fSeqNo
       << " agg no: "  << fAggregateNo
@@ -184,7 +184,6 @@ std::string FairDbValidityRec::GetL2CacheName(UInt_t seqLo,
   if ( seqLo != seqHi ) { oss << seqHi << "_"; }
   oss << ts.AsString("s");
   std::string str(oss.str());
-  // Convert white space to underscore.
   int i = str.size();
   while ( i-- ) if ( str[i] == ' ' ) { str[i] = '_'; }
   return str;
@@ -231,11 +230,11 @@ Bool_t FairDbValidityRec::IsCompatible(const ValContext& vc,
                                        const FairDb::Version& task) const
 {
 
-  cout  << " FairDbValidityRec::IsCompatible : tasks:"
-        << task << "," << fVersion
-        << " is compat: " << fValRange.IsCompatible(vc) << endl
-        << "   range " << fValRange.AsString() << endl
-        << "   context " << vc.AsString() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << " FairDbValidityRec::IsCompatible : tasks:"
+                                   << task << "," << fVersion
+                                   << " is compat: " << fValRange.IsCompatible(vc) << endl
+                                   << "   range " << fValRange.AsString() << endl
+                                   << "   context " << vc.AsString() << endl;
 
   return task == fVersion  && fValRange.IsCompatible(vc);
 
@@ -301,9 +300,6 @@ void FairDbValidityRec::Trim(const ValTimeStamp& queryTime,
 
   if ( fAggregateNo != other.fAggregateNo || other.IsGap() ) { return; }
 
-//  If this record is not a gap then the other record can be ignore
-//  as it is of lower priority.
-
   if ( ! IsGap() ) { return; }
 
   ValTimeStamp start      = fValRange.GetTimeStart();
@@ -311,17 +307,12 @@ void FairDbValidityRec::Trim(const ValTimeStamp& queryTime,
   ValTimeStamp startOther = other.GetValRange().GetTimeStart();
   ValTimeStamp endOther   = other.GetValRange().GetTimeEnd();
 
-// If entry brackets query date, then use it but with a validity that
-// is trimmed by the current record.
-
   if ( startOther <= queryTime && endOther > queryTime ) {
     if ( start < startOther ) { start = startOther; }
     if ( end   > endOther   ) { end   = endOther; }
     *this = other;
     SetTimeWindow(start,end);
   }
-
-// It doesn't bracket, so use it to trim the window
 
   else {
 

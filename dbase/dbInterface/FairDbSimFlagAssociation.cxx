@@ -2,7 +2,7 @@
 
 #include "FairDbString.h"               // for StringTok
 #include "FairRegistry.h"               // for FairRegistry, etc
-
+#include "FairDbLogService.h"
 #include "Riosfwd.h"                    // for ostream
 
 #include <string.h>                     // for strncmp
@@ -32,42 +32,32 @@ ostream& operator<<(ostream& s, const FairDbSimFlagAssociation& simFlagAss)
 FairDbSimFlagAssociation::FairDbSimFlagAssociation()
   : fAssociations()
 {
-
-  // Connect to global pointer;
   fgInstance = this;
-
 }
 
 
 
 FairDbSimFlagAssociation::~FairDbSimFlagAssociation()
 {
-  // Disconnect from global pointer;
   if ( fgInstance == this ) { fgInstance = 0; }
-
 }
-//.....................................................................
+
 
 FairDbSimFlagAssociation::SimList_t
 FairDbSimFlagAssociation::Get(const SimFlag::SimFlag_t value)const
 {
-
   SimMap_t::const_iterator itr = fAssociations.find(value);
   if ( itr != fAssociations.end() ) { return itr->second; }
   SimList_t l;
   l.push_back(value);
   return l;
-
 }
 
 
 const FairDbSimFlagAssociation& FairDbSimFlagAssociation::Instance()
 {
-
   if ( ! fgInstance ) { new FairDbSimFlagAssociation; }
-  // The act of creation will set fgInstance.
   return *fgInstance;
-
 }
 
 void FairDbSimFlagAssociation::Print(ostream& s)const
@@ -143,8 +133,8 @@ void FairDbSimFlagAssociation::Set(FairRegistry& reg)
       if ( ok ) {
         this->Set(value,lv);
         hasChanged = true;
-      } else cout << "Illegal SimFlagAssociation registry item: " << key
-                    << " = " << listChars << endl;
+      } else  DBLOG("FairDb",FairDbLog::kWarning) << "Illegal SimFlagAssociation registry item: " << key
+            << " = " << listChars << endl;
 
       reg.RemoveKey(key);
     }
@@ -154,10 +144,8 @@ void FairDbSimFlagAssociation::Set(FairRegistry& reg)
   if ( hasChanged ) { this->Show(); }
 }
 
-//.....................................................................
 
 void FairDbSimFlagAssociation::Show()
 {
-
 }
 

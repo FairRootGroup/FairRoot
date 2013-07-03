@@ -1,5 +1,5 @@
 #include "FairDbProxy.h"
-
+#include "FairDbLogService.h"
 #include "FairDbConnection.h"           // for FairDbConnection
 #include "FairDbFieldType.h"            // for FairDbFieldType
 #include "FairDbMultConnector.h"        // for FairDbMultConnector
@@ -66,11 +66,11 @@ void FairDbProxy::FindTimeBoundaries(const ValContext& vc,
                                      ValTimeStamp& start,
                                      ValTimeStamp& end) const
 {
-  cout << "-I- FairDbProxy:: FindTimeBoundaries for table " <<  fTableName
-       << " context " << vc
-       << " version " << task
-       << " Earliest creation date " <<  earliestCreate
-       << " database " << dbNo << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "FindTimeBoundaries for table " <<  fTableName
+                                   << " context " << vc
+                                   << " version " << task
+                                   << " Earliest creation date " <<  earliestCreate
+                                   << " database " << dbNo << endl;
 
 //  Set the limits wide open
   start = ValTimeStamp(0,0);
@@ -110,8 +110,8 @@ void FairDbProxy::FindTimeBoundaries(const ValContext& vc,
         << " and SimMask & " << static_cast<unsigned int>(simFlg)
         << " and CREATIONDATE >= '" << earliestCreateString << "'"
         << " and  Version = " << task;
-    cout << "  FindTimeBoundaries query no. " << i_limit
-         << " SQL:" <<sql.c_str() << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "  FindTimeBoundaries query no. " << i_limit
+                                     << " SQL:" <<sql.c_str() << endl;
 
     auto_ptr<TSQLStatement> stmt(stmtDb->ExecuteQuery(sql.c_str()));
     stmtDb->PrintExceptions(0);
@@ -122,14 +122,14 @@ void FairDbProxy::FindTimeBoundaries(const ValContext& vc,
     date = stmt->GetString(0);
     if ( date.IsNull() ) { continue; }
     ValTimeStamp ts(FairDb::MakeTimeStamp(date.Data()));
-    cout << "  FindTimeBoundaries query result: " << ts << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "  FindTimeBoundaries query result: " << ts << endl;
     if ( i_limit <= 2 && ts < end   ) { end   = ts; }
     if ( i_limit >= 3 && ts > start ) { start = ts; }
 
   }
 
-  cout << "-I- FairDbProxy:: FindTimeBoundaries for table " <<  fTableName
-       << " found " << start << " .. " << end << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "FindTimeBoundaries for table " <<  fTableName
+                                  << " found " << start << " .. " << end << endl;
 
 }
 
@@ -152,10 +152,9 @@ FairDbResultSet*  FairDbProxy::QueryAllValidities (UInt_t dbNo,UInt_t seqNo) con
   }
   sql  << ";" << '\0';
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " query: " << sql.GetString() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
+                                   << " query: " << sql.GetString() << endl;
 
-//  Apply query and return result..
   FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
   return new FairDbResultSet(stmtDb,sql,fMetaValid,fTableProxy,dbNo);
 
@@ -175,8 +174,8 @@ FairDbResultSet*  FairDbProxy::QuerySeqNo(UInt_t seqNo, UInt_t dbNo) const
     sql << " order by ROW_COUNTER";
   }
 
-  cout  << "Database: " << dbNo
-        << " SeqNo query: " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)   << "Database: " << dbNo
+                                     << " SeqNo query: " << sql.c_str() << endl;
 
 //  Apply query and return result..
   FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
@@ -229,8 +228,8 @@ FairDbResultSet*  FairDbProxy::QuerySeqNos(SeqList_t& seqNos,
     sql << ",ROW_COUNTER";
   }
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " SeqNos query: " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  << "Database: " << dbNo
+                                    << " SeqNos query: " << sql.c_str() << endl;
 
 //  Apply query and return result..
   FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
@@ -264,7 +263,6 @@ FairDbResultSet*  FairDbProxy::QueryValidity (const ValContext& vc,
           << "and DetectorMask & " << static_cast<unsigned int>(detType)
           << " and SimMask & " << static_cast<unsigned int>(simFlg);
 
-//  Apply query and return result..
 
   return this->QueryValidity(context.GetString(),task,dbNo);
 
@@ -279,15 +277,8 @@ FairDbResultSet*  FairDbProxy::QueryValidity (const string& context,
 
   FairDbString sql;
 
-// Queries are normally ordered by creation date (the later the better)
-// but make an exception for FAIRDBUSUBRUNSUMMARY which has open-ended
-// end date and an unreliable creation date so the latest start date is
-// best.
-// Same for FAIRDBURUNSUMMARY.  Bogus entries with wrong validity are stomping
-// real values for the same reason.  These should be cleaned +up in the DB
-// but TIMESTART should be always more valid than CREATIONDATE for such info
   string orderByName("CREATIONDATE");
-  if ((fTableName == "FAIRDBUSUBRUNSUMMARY") || (fTableName == "FAIRDBURUNSUMMARY")) {
+  if ((fTableName == "FAIRDRUNSUMMARY") ) {
     orderByName = "TIMESTART";
   }
   sql << "select * from " << fTableName << fValSuffix
@@ -299,16 +290,14 @@ FairDbResultSet*  FairDbProxy::QueryValidity (const string& context,
      ) sql << " and  Version = " << task
              << " order by " << orderByName << " desc;" << '\0';
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " query: " << sql.c_str() << endl;
-
-//  Apply query and return result..
+  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
+                                   << " query: " << sql.c_str() << endl;
 
   FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
   return new FairDbResultSet(stmtDb,sql,fMetaValid,fTableProxy,dbNo);
 
 }
-//.....................................................................
+
 
 FairDbResultSet*  FairDbProxy::QueryValidity (UInt_t seqNo,
     UInt_t dbNo) const
@@ -320,10 +309,8 @@ FairDbResultSet*  FairDbProxy::QueryValidity (UInt_t seqNo,
   if ( fSqlCondition != "" ) { sql << fSqlCondition << " and "; }
   sql << "SEQNO = " << seqNo << ";";
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " SEQNO query: " << sql.c_str() << endl;
-
-//  Apply query and return result..
+  DBLOG("FairDb",FairDbLog::kInfo)  << "Database: " << dbNo
+                                    << " SEQNO query: " << sql.c_str() << endl;
 
   FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
   return new FairDbResultSet(stmtDb,sql,fMetaValid,fTableProxy,dbNo);
@@ -339,15 +326,15 @@ Bool_t FairDbProxy::RemoveSeqNo(UInt_t seqNo,
        << " where SEQNO = " << seqNo << ";"
        << '\0';
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " RemoveSeqNo SQL: " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "Database: " << dbNo
+                                  << " RemoveSeqNo SQL: " << sql.c_str() << endl;
 
 //  Apply query.
   auto_ptr<FairDbStatement> stmtDb(fMultConnector.CreateStatement(dbNo));
   if ( ! stmtDb.get() ) { return false; }
   if ( ! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
-    cout << "-E- FairDbProxy:: SQL: " << sql.c_str()
-         << " Failed. " << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
+                                            << " Failed. " << endl;
     return false;
   }
 
@@ -357,13 +344,13 @@ Bool_t FairDbProxy::RemoveSeqNo(UInt_t seqNo,
       << " where SEQNO = " << seqNo << ";"
       << '\0';
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " RemoveSeqNo SQL: " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
+                                   << " RemoveSeqNo SQL: " << sql.c_str() << endl;
 
 //  Apply query.
   if (  ! stmtDb->ExecuteUpdate(sql.c_str()) ||  stmtDb->PrintExceptions() ) {
-    cout << "-E- FairDbProxy:: SQL: " << sql.c_str()
-         << " Failed. " << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
+                                            << " Failed. " << endl;
     return false;
   }
 
@@ -383,16 +370,16 @@ Bool_t FairDbProxy::ReplaceInsertDate(const ValTimeStamp& ts,
       << "\' where SEQNO = " << SeqNo << ";"
       << '\0';
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " ReplaceInsertDate SQL: "
-       << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
+                                   << " ReplaceInsertDate SQL: "
+                                   << sql.c_str() << endl;
 
 //  Apply query.
   auto_ptr<FairDbStatement> stmtDb(fMultConnector.CreateStatement(dbNo));
   if ( ! stmtDb.get() ) { return false; }
   if (! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
-    cout << "-E- FairDbProxy:: SQL: " << sql.c_str()
-         << " Failed. " << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
+                                            << " Failed. " << endl;
     return false;
   }
 
@@ -407,32 +394,32 @@ Bool_t FairDbProxy::ReplaceSeqNo(UInt_t oldSeqNo,
 {
 
   if ( ! fMultConnector.GetConnection(dbNo) ) {
-    cout
-        << "-E- FairDbProxy:: Cannot renumber " << oldSeqNo
-        << " no connection to cascade entry " << dbNo << endl;
+    DBLOG("FairDb",FairDbLog::kWarning)
+        << "Cannot renumber " << oldSeqNo
+        << " no connection to DB entry# " << dbNo << endl;
     return false;
   }
-// Deal with Oracle separately - it's best.
+  // Specs for Oracle
   if ( fMultConnector.GetConnection(dbNo)->GetDbType () == FairDb::kOracle ) {
     return this->ReplaceSeqNoOracle(oldSeqNo,newSeqNo,dbNo);
   }
 
-// Generate SQL to replace SeqNo in validity table.
+  // Generate SQL to replace SeqNo in validity table.
   FairDbString sql;
   sql << "update  " << fTableName << fValSuffix
       << " set SEQNO = " << newSeqNo
       << " where SEQNO = " << oldSeqNo << ";"
       << '\0';
 
-  cout << "Database: " << dbNo
-       << " ReplaceSeqNo SQL: " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
+                                   << " ReplaceSeqNo SQL: " << sql.c_str() << endl;
 
 //  Apply query.
   auto_ptr<FairDbStatement> stmtDb(fMultConnector.CreateStatement(dbNo));
   if ( ! stmtDb.get() ) { return false; }
   if ( ! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
-    cout << "-E- FairDbProxy:: SQL: " << sql.c_str()
-         << " Failed. " << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
+                                            << " Failed. " << endl;
     return false;
   }
 
@@ -443,13 +430,13 @@ Bool_t FairDbProxy::ReplaceSeqNo(UInt_t oldSeqNo,
        << " where SEQNO = " << oldSeqNo << ";"
        << '\0';
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " ReplaceSeqNo SQL: " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
+                                   << " ReplaceSeqNo SQL: " << sql.c_str() << endl;
 
 //  Apply query.
   if ( ! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
-    cout << "-E- FairDbProxy:: SQL: " << sql.c_str()
-         << " Failed. " << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
+                                            << " Failed. " << endl;
     return false;
   }
 
@@ -465,8 +452,8 @@ Bool_t FairDbProxy::ReplaceSeqNoOracle(UInt_t oldSeqNo,
   FairDbResultSet* rsOld = QueryValidity(oldSeqNo,dbNo);
   if ( rsOld && rsOld->IsBeforeFirst() ) { rsOld->FetchRow(); }
   if ( ! rsOld || rsOld->IsExhausted() ) {
-    cout << "-E- FairDbProxy:: Cannot renumber " << oldSeqNo
-         << " it does not exist" << endl;
+    DBLOG("FairDb",FairDbLog::kWarning) << "Cannot renumber " << oldSeqNo
+                                        << " it does not exist" << endl;
     delete rsOld;
     return false;
   }
@@ -489,16 +476,16 @@ Bool_t FairDbProxy::ReplaceSeqNoOracle(UInt_t oldSeqNo,
     rsOld->IncrementCurCol();
   }
   sql << ")";
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " ReplaceSeqNo SQL (insert new VAL): " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
+                                   << " ReplaceSeqNo SQL (insert new VAL): " << sql.c_str() << endl;
   delete rsOld;
 
 //  Apply query.
   auto_ptr<FairDbStatement> stmtDb(fMultConnector.CreateStatement(dbNo));
   if ( ! stmtDb.get() ) { return false; }
   if ( ! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
-    cout << "-E- FairDbProxy:: SQL: " << sql.c_str()
-         << " Failed. " << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)<< "SQL: " << sql.c_str()
+                                           << " Failed. " << endl;
     return false;
   }
 
@@ -508,13 +495,13 @@ Bool_t FairDbProxy::ReplaceSeqNoOracle(UInt_t oldSeqNo,
        << " set SEQNO = " << newSeqNo
        << " where SEQNO = " << oldSeqNo << ";";
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " ReplaceSeqNo SQL (rename main entry): " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
+                                   << " ReplaceSeqNo SQL (rename main entry): " << sql.c_str() << endl;
 
 //  Apply query.
   if ( ! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
-    cout << "-E- FairDbProxy:: SQL: " << sql.c_str()
-         << " Failed. " << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
+                                            << " Failed. " << endl;
     return false;
   }
 
@@ -523,13 +510,13 @@ Bool_t FairDbProxy::ReplaceSeqNoOracle(UInt_t oldSeqNo,
   sql  << "delete from  " << fTableName << fValSuffix
        << " where SEQNO = " << oldSeqNo << ";";
 
-  cout << "-I- FairDbProxy:: Database: " << dbNo
-       << " ReplaceSeqNo SQL (delete old VAL): " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
+                                   << " ReplaceSeqNo SQL (delete old VAL): " << sql.c_str() << endl;
 
 //  Apply query.
   if ( ! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
-    cout << "-E- FairDbProxy:: SQL: " << sql.c_str()
-         << " Failed. " << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
+                                            << " Failed. " << endl;
     return false;
   }
 
@@ -540,12 +527,10 @@ Bool_t FairDbProxy::ReplaceSeqNoOracle(UInt_t oldSeqNo,
 void  FairDbProxy::StoreMetaData(FairDbTableMetaData& metaData) const
 {
 
-
   const char* tableName = metaData.TableName().c_str();
-  cout << "-I- FairDbProxy:: Get meta-data for table: " << tableName << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Get meta-data for table: " << tableName << endl;
 
-//  Check each Db in turn until table found and store table meta data.
-
+  // Checking meta-data
   for ( UInt_t dbNo = 0; dbNo < fMultConnector.GetNumDb(); dbNo++ ) {
     FairDbConnection* connection = fMultConnector.GetConnection(dbNo);
     TSQLServer* server = connection->GetServer();
@@ -556,9 +541,9 @@ void  FairDbProxy::StoreMetaData(FairDbTableMetaData& metaData) const
       connection->DisConnect();
       continue;
     }
-    cout << "-I- FairDbProxy:: Meta-data query succeeded on DB entry# " << dbNo << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "Meta-data query succeeded on DB entry# " << dbNo << endl;
 
-    // Clear out any existing data, although there should not be any.
+    // Clear out possible existing data
     metaData.Clear();
 
     const TList* cols =  meta->GetColumns();
@@ -575,21 +560,21 @@ void  FairDbProxy::StoreMetaData(FairDbTableMetaData& metaData) const
                               colInfo->GetLength(),
                               colInfo->GetTypeName());
 
-      // For now continue to check for unsigned (even though not supported)
+      // For now continue to check for unsigned
       if ( !colInfo->IsSigned() ) { fldType.SetUnsigned(); }
       metaData.SetColFieldType(fldType,col);
 
       metaData.SetColIsNullable(col,colInfo->IsNullable());
 
 
-      cout     << "Column "         << col << " " << name
-               << " SQL type "      << colInfo->GetSQLType()
-               << " SQL type name " << colInfo->GetTypeName()
-               << " DB  type "      << fldType.AsString()
-               << " data size: "    << fldType.GetSize()
-               << " col size: "     << colInfo->GetLength() << endl;
-
+      DBLOG("FairDb",FairDbLog::kInfo) << "Column "         << col << " " << name
+                                       << " SQL type "      << colInfo->GetSQLType()
+                                       << " SQL type name " << colInfo->GetTypeName()
+                                       << " DB  type "      << fldType.AsString()
+                                       << " data size: "    << fldType.GetSize()
+                                       << " col size: "     << colInfo->GetLength() << endl;
     }
+
     delete meta;
     connection->DisConnect();
     return;
@@ -599,8 +584,6 @@ void  FairDbProxy::StoreMetaData(FairDbTableMetaData& metaData) const
 
 Bool_t FairDbProxy::TableExists(Int_t selectDbNo) const
 {
-
   return fMultConnector.TableExists(fTableName,selectDbNo);
-
 }
 

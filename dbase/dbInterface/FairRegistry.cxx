@@ -1,7 +1,7 @@
 #include "FairRegistry.h"
 
 #include "FairUtilStream.h"             // for read_quoted_string
-
+#include "FairDbLogService.h"
 #include "FairRegistryItem.h"           // for FairRegistryItem
 #include "FairRegistryItemXxx.h"        // for FairRegistryItemXxx
 
@@ -24,7 +24,7 @@ ClassImp(FairRegistry)
 
 
 
-//......................................................................
+
 
 FairRegistry::FairRegistry(bool readonly)
   : TNamed(),
@@ -64,7 +64,6 @@ FairRegistry& FairRegistry::operator=(const FairRegistry& rhs)
   UnLockValues();
   UnLockKeys();
 
-  // If we are already holding something - clear it.
   if (Size() != 0) { Clear(); }
 
   FairRegistryKey rk = rhs.Key();
@@ -77,7 +76,6 @@ FairRegistry& FairRegistry::operator=(const FairRegistry& rhs)
   this->SetDirty();
   this->SetName(rhs.GetName());
 
-  // Do like copy ctor.
   return *this;
 }
 
@@ -93,16 +91,16 @@ void FairRegistry::Merge(const FairRegistry& rhs)
 
     if (fKeysLocked && !exists) {
 
-      cout    << "Merge: can't, add new key " << s <<", keys locked."
-              << "  merger=" << this->GetName()
-              << ", mergie=" << rhs.GetName() << endl;
+      DBLOG("FairDb",FairDbLog::kWarning)   << "Merge: can't, add new key " << s <<", keys locked."
+                                            << "  merger=" << this->GetName()
+                                            << ", mergie=" << rhs.GetName() << endl;
       continue;
     }
     if (exists && fValuesLocked) {
 
-      cout<< "Merge: can't, merge key " << s <<", values locked."
-          << "  merger=" << this->GetName()
-          << ", mergie=" << rhs.GetName() << endl;
+      DBLOG("FairDb",FairDbLog::kWarning)<< "Merge: can't, merge key " << s <<", values locked."
+                                         << "  merger=" << this->GetName()
+                                         << ", mergie=" << rhs.GetName() << endl;
       continue;
     }
     if (exists) { delete mit->second; }
@@ -129,8 +127,8 @@ void FairRegistry::Clear(Option_t* /* option */)
 {
   if (fValuesLocked || fKeysLocked) {
 
-    cout << "Clear: can't, there are locks in \""
-         << this->GetName() << "\"\n";
+    DBLOG("FairDb",FairDbLog::kWarning) << "Clear: can't, there are locks in \""
+                                        << this->GetName() << "\"\n";
     return;
   }
 
@@ -148,16 +146,16 @@ void FairRegistry::Dump(void) const
   this->TNamed::Dump();
   tRegMap::const_iterator mit = fMap.begin();
 
-  cout<< "FairRegistry: `" << this->GetName() << "', "
-      << this->Size() << " entries."
-      << " (Locks: [Keys|Values] `key', `value'):\n";
+  DBLOG("FairDb",FairDbLog::kInfo)<< "FairRegistry: `" << this->GetName() << "', "
+                                  << this->Size() << " entries."
+                                  << " (Locks: [Keys|Values] `key', `value'):\n";
   while (mit != fMap.end()) {
 
-    cout<< " [" << (fKeysLocked ? 'L' : 'U') << "|"
-        << (fValuesLocked ? 'L' : 'U') << "] "
-        << "`" << mit->first << "', `";
+    DBLOG("FairDb",FairDbLog::kInfo)<< " [" << (fKeysLocked ? 'L' : 'U') << "|"
+                                    << (fValuesLocked ? 'L' : 'U') << "] "
+                                    << "`" << mit->first << "', `";
     mit->second->Dump();
-    cout << "'\n";
+    DBLOG("FairDb",FairDbLog::kInfo) << "'\n";
     ++mit;
   }
 
@@ -167,7 +165,7 @@ ostream& FairRegistry::PrettyPrint(ostream& os) const
 {
   static int print_depth = 0;
 
-  // print (to cout) the registry
+
   tRegMap::const_iterator mit = this->fMap.begin();
   for(int i=0; i<print_depth; ++i) { os << " "; }
   os << "\"" << this->GetName() << "\", "
@@ -189,9 +187,9 @@ ostream& FairRegistry::PrettyPrint(ostream& os) const
   return os;
 }
 
-void FairRegistry::Print(Option_t* /* option */) const
+void FairRegistry::Print(Option_t* ) const
 {
-  this->PrettyPrint(cout);
+  this->PrettyPrint( cout );
 }
 
 
@@ -208,8 +206,7 @@ FairRegistry::FairRegistryKey::FairRegistryKey(const FairRegistry* r) :
   fReg(r),
   fIt()
 {
-  // FIXME!  Figure out how to correctly declare fIt to reflect
-  // constness.
+  // FIXME!
   fIt = const_cast<FairRegistry*>(fReg)->fMap.begin();
 }
 
@@ -248,13 +245,13 @@ bool FairRegistry::Set(const char* key, TYPE val)                           \
     tRegMap::iterator mit = fMap.find(key);                             \
     if (mit != fMap.end()) {                                            \
         if (fValuesLocked) {                                            \
-               cout                             \
+                DBLOG("FairDb",FairDbLog::kInfo)                           \
                << "Set: Values are locked - not overwriting \""         \
                << key << "\" with \"" << val << "\" in registry \"" << this->GetName() << "\"\n";\
             return false;                                               \
         }                                                               \
         if (!dynamic_cast<FairRegistryItemXxx<TYPE>*>(mit->second)) {       \
-               cout                               \
+               DBLOG("FairDb",FairDbLog::kInfo)                               \
                 << "Set: attempt to overwrite old value for key \""     \
                 << key << "\" with different type value "               \
                 << val << " in registry \"" << this->GetName() << "\"\n";\
@@ -265,7 +262,7 @@ bool FairRegistry::Set(const char* key, TYPE val)                           \
     }                                                                   \
     else {                                                              \
         if (fKeysLocked) {                                              \
-            cout                               \
+            DBLOG("FairDb",FairDbLog::kWarning)                               \
                  << "Set: Keys are locked - not adding `"               \
                  << key << "' to registry \"" << this->GetName() << "\"\n";\
             return false;                                               \
@@ -290,15 +287,15 @@ bool FairRegistry::Set(const char* key, const char* val)
   if (mit != fMap.end()) {    // Found it
     if (fValuesLocked) {
 
-      cout    << "Set: Values are locked - not overwriting `"
-              << key << "\" with \"" << val << "\" in registry \"" << this->GetName() << "\"\n";
+      DBLOG("FairDb",FairDbLog::kInfo)    << "Set: Values are locked - not overwriting `"
+                                          << key << "\" with \"" << val << "\" in registry \"" << this->GetName() << "\"\n";
       return false;
     }
     if (! dynamic_cast<FairRegistryItemXxx<const char*>*>(mit->second) ) {
 
-      cout    << "Set: attempt to overwrite old value for key \""
-              << key << "\" with different type value "
-              << val << " in registry \"" << this->GetName() << "\"\n";
+      DBLOG("FairDb",FairDbLog::kInfo)   << "Set: attempt to overwrite old value for key \""
+                                         << key << "\" with different type value "
+                                         << val << " in registry \"" << this->GetName() << "\"\n";
       return false;
     }
     delete mit->second;
@@ -306,8 +303,8 @@ bool FairRegistry::Set(const char* key, const char* val)
   } else {                    // didn't find it
     if (fKeysLocked) {
 
-      cout    << "FairRegistry::Set: Keys are locked - not adding `"
-              << key << "' in registry \"" << this->GetName() << "\"\n";
+      DBLOG("FairDb",FairDbLog::kWarning)    << "FairRegistry::Set: Keys are locked - not adding `"
+                                             << key << "' in registry \"" << this->GetName() << "\"\n";
       return false;
     }
   }
@@ -331,7 +328,7 @@ bool FairRegistry::Get(const char* key, TYPE & val) const           \
     FairRegistryItemXxx<TYPE>* rix =                                \
         dynamic_cast<FairRegistryItemXxx<TYPE>*>(mit->second);      \
     if (rix == 0){                                              \
-      cout << "Key " << key             \
+      DBLOG("FairDb",FairDbLog::kInfo) << "Key " << key             \
     << " does not have type "    \
     << #TYPE << " as required"   \
     << endl;                     \
@@ -363,9 +360,9 @@ bool FairRegistry::Get(const char* key, double& val) const
     val = *(rixi->Get());
     return true;
   }
-  cout << "Key " << key
-       << " does not have type double or int"
-       << " as required" << endl;
+  DBLOG("FairDb",FairDbLog::kWarning) << "Key " << key
+                                      << " does not have type double or int"
+                                      << " as required" << endl;
   return false;
 }
 
@@ -376,7 +373,7 @@ RETTYPE FairRegistry::Get##NAME(const char* key) const                        \
     if (Get(key,retval)) return retval;                                   \
     if (fErrorHandler) { fErrorHandler(); return 0; }                     \
     else {                                                                \
-        cout                                    \
+        DBLOG("FairDb",FairDbLog::kWarning)                                    \
             << "\nFairRegistry::GetTYPE: failed to get value for key \""      \
             << key << "\" from FairRegistry \"" << this->GetName()            \
             << "\".  Aborting\n\n";                                       \
@@ -398,9 +395,9 @@ FairRegistry FairRegistry::GetFairRegistry(const char* key) const
   if (fErrorHandler) { fErrorHandler(); return retval; }
   else {
 
-    cout<< "\nFairRegistry::GetTYPE: failed to get value for key \""
-        << key << "\" from FairRegistry \"" << this->GetName()
-        << "\".  Aborting\n\n";
+    DBLOG("FairDb",FairDbLog::kError)<< "\nFairRegistry::GetTYPE: failed to get value for key \""
+                                     << key << "\" from FairRegistry \"" << this->GetName()
+                                     << "\".  Aborting\n\n";
     bool must_get_a_value = false;
     assert(must_get_a_value);
     return retval;
@@ -467,14 +464,14 @@ void FairRegistry::Streamer(TBuffer& b)
     b << nobjects;
 
 
-    cout << "Streamer, Writing "<< nobjects <<" objects\n";
+    DBLOG("FairDb",FairDbLog::kInfo) << "Streamer, Writing "<< nobjects <<" objects\n";
 
     tRegMap::iterator mit = fMap.begin();
     while (mit != fMap.end()) {
       b << mit->first.c_str();
 
 
-      cout    << mit->first.c_str() << endl;
+      DBLOG("FairDb",FairDbLog::kInfo)   << mit->first.c_str() << endl;
 
       b << mit->second;
 
@@ -504,7 +501,7 @@ std::ostream& FairRegistry::PrintStream(std::ostream& os) const
 static std::istream& bail(std::istream& is)
 {
 
-  cout << "FairRegistry::Read(istream&) stream corrupted\n";
+  DBLOG("FairDb",FairDbLog::kWarning) << "FairRegistry::Read(istream&) stream corrupted\n";
   return is;
 }
 
@@ -529,27 +526,27 @@ std::istream& FairRegistry::ReadStream(std::istream& is)
     }
     is.putback(c);
 
-    // get the key
+
     string key = read_quoted_string(is);
     if (key == "") { return bail(is); }
 
-    // skip the "="
+
     if (!is.get(c)) { return bail(is); }
 
-    // get the "("
+
     if (!is.get(c) || c != '(') {
       is.putback(c);
       return bail(is);
     }
 
-    // get the type
+
     string type;
     while (is.get(c)) {
       if (c == ')') { break; }
       type += c;
     }
 
-    // factory:
+
     FairRegistryItem* ri = 0;
     if (type == "char") {
       ri = new FairRegistryItemXxx<char>();

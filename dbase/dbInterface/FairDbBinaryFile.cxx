@@ -1,6 +1,6 @@
 
 #include "FairDbBinaryFile.h"
-
+#include "FairDbLogService.h"
 #include "FairDbTableRow.h"             // for FairDbTableRow
 #include "ValRange.h"                   // for ValRange
 #include "ValTimeStamp.h"               // for ValTimeStamp
@@ -67,8 +67,8 @@ FairDbBinaryFile::FairDbBinaryFile(const char* fileName, Bool_t input )
   else {
     fFile = new fstream(fFileName.c_str(),mode);
     if ( ! fFile->is_open() || ! fFile->good() ) {
-      cout << "Cannot open " << fFileName
-           << "; all I/O will fail." << endl;
+      DBLOG("FairDb",FairDbLog::kWarning) << "Cannot open the file# " << fFileName
+                                          << "; all I/O will then fail. !!!" << endl;
       fHasErrors = kTRUE;
     }
   }
@@ -201,7 +201,7 @@ FairDbBinaryFile& FairDbBinaryFile::operator >> (vector<FairDbTableRow*>& arr)
   if ( ! this->CanRead() ) { return *this; }
 
   if ( arr.size() ) {
-    cout << "Attempting to read into non-empty array" << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)  << "Attempting to read into non-empty array" << endl;
     return *this;
   }
 
@@ -210,7 +210,7 @@ FairDbBinaryFile& FairDbBinaryFile::operator >> (vector<FairDbTableRow*>& arr)
   UInt_t marker = 0;
   (*this) >> marker;
   if ( marker != StartMarker ) {
-    cout << "Cannot find start of array marker" << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)  << "Cannot find start of array marker" << endl;
     this->Close();
     this->CheckFileStatus();
     return *this;
@@ -239,7 +239,7 @@ FairDbBinaryFile& FairDbBinaryFile::operator >> (vector<FairDbTableRow*>& arr)
     FairDbTableRow* tr = reinterpret_cast<FairDbTableRow*>(obj);
     delete tr;
 
-    cout
+    DBLOG("FairDb",FairDbLog::kInfo)
         << "Restoring array of " << arrSize << " "
         << objName << " objects"
         << "  VTaddr " << hex << vt << dec
@@ -248,9 +248,9 @@ FairDbBinaryFile& FairDbBinaryFile::operator >> (vector<FairDbTableRow*>& arr)
         << endl;
 
     if ( arrSize < 0 || objSize != objSizefromRoot ) {
-      cout << "Illegal  array size ("<< arrSize
-           << ") or object size(" << objSize
-           << "," << objSizefromRoot << ")" << endl;
+      MAXDBLOG("FairDb",FairDbLog::kError,20) << "Illegal  array size ("<< arrSize
+                                              << ") or object size(" << objSize
+                                              << "," << objSizefromRoot << ")" << endl;
       this->Close();
       this->CheckFileStatus();
       return *this;
@@ -275,10 +275,9 @@ FairDbBinaryFile& FairDbBinaryFile::operator >> (vector<FairDbTableRow*>& arr)
   }
 
 //  Check for end of array marker.
-
   (*this) >> marker;
   if ( marker != EndMarker ) {
-    cout << "Cannot find end of array marker" << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "Cannot find end of array marker" << endl;
     this->Close();
     this->CheckFileStatus();
   }
@@ -323,7 +322,7 @@ Bool_t FairDbBinaryFile::CanRead()
 {
 
   if ( ! fReading ) {
-    cout << "Attempting to read from a write-only file" << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20) << "Attempting to read from a write-only file" << endl;
     return kFALSE;
   }
   return this->IsOK();
@@ -334,7 +333,7 @@ Bool_t FairDbBinaryFile::CanWrite()
 {
 
   if ( fReading ) {
-    cout << "Attempting to write to a read-only file" << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)  << "Attempting to write to a read-only file" << endl;
     return kFALSE;
   }
   return this->IsOK();
@@ -350,14 +349,14 @@ void FairDbBinaryFile::CheckFileStatus()
   if (    fFile
           && ! fHasErrors
           && ( ! fFile->is_open() || ! fFile->good() ) ) {
-    cout << "File not open or has gone bad,"
-         << " all further I/O will fail." << endl;
+    MAXDBLOG("FairDb",FairDbLog::kError,20)  << "File not open or has gone bad,"
+        << " all further I/O will fail." << endl;
     fHasErrors = kTRUE;
     this->Close();
 
     //Delete file if writing.
     if ( ! fReading ) {
-      cout << "Erasing " << fFileName << endl;
+      MAXDBLOG("FairDb",FairDbLog::kError,20)  << "Erasing " << fFileName << endl;
       gSystem->Unlink(fFileName.c_str());
     }
 

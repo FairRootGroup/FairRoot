@@ -1,7 +1,7 @@
 
 #include <iostream>
-
 #include "FairDbExceptionLog.h"
+#include "FairDbLogService.h"
 
 using namespace std;
 
@@ -21,9 +21,6 @@ FairDbExceptionLog::FairDbExceptionLog(const FairDbException* e)
 
 FairDbExceptionLog::~FairDbExceptionLog()
 {
-
-
-
 }
 
 
@@ -31,9 +28,9 @@ std::ostream& operator<<(std::ostream& os, const FairDbExceptionLog& el)
 {
 
   if ( el.IsEmpty() ) {
-    os << "The database exception log is empty" << endl;
+    os << "-I- The FairDb Exception Log is empty" << endl;
   } else {
-    os << "Database exception log:-" << endl;
+    os << "-I- FairDb Database Exception Log:-" << endl;
     std::vector<FairDbException>::const_iterator itr(el.GetEntries().begin()),
         itrEnd(el.GetEntries().end());
     while ( itr != itrEnd ) {
@@ -49,7 +46,6 @@ std::ostream& operator<<(std::ostream& os, const FairDbExceptionLog& el)
 
 void FairDbExceptionLog::AddLog(const FairDbExceptionLog& el)
 {
-
   const std::vector<FairDbException>& ve = el.GetEntries();
   std::vector<FairDbException>::const_iterator itr(ve.begin()), itrEnd(ve.end());
   while ( itr != itrEnd ) { this->AddEntry(*itr++); }
@@ -59,16 +55,14 @@ void FairDbExceptionLog::AddLog(const FairDbExceptionLog& el)
 
 void FairDbExceptionLog::Copy(FairDbExceptionLog& that, UInt_t start) const
 {
-
   UInt_t maxEntry = fEntries.size();
   while (start <= maxEntry ) { that.AddEntry(fEntries[start++]); }
-
 }
 
 void FairDbExceptionLog::Print () const
 {
-  return;
   std::cout << *this << std::endl;
+  return;
 
 }
 
