@@ -1,10 +1,10 @@
 #include <cassert>
-
+#include "FairDbLogService.h"
 #include "FairDbResult.h"
 #include "FairDbResPtr.h"
 #include "FairDbSqlContext.h"
-#include "FairDbTableProxy.h" //!!registry!!
-#include "FairDbTableProxyRegistry.h" //!!registry!!
+#include "FairDbTableProxy.h"
+#include "FairDbTableProxyRegistry.h"
 #include "FairDbTimerManager.h"
 #include "ValTimeStamp.h"
 
@@ -38,7 +38,7 @@ FairDbResultPtr<T>::FairDbResultPtr() :
 {
   T pet;
 }
-//.....................................................................
+
 
 template<class T>
 FairDbResultPtr<T>::FairDbResultPtr(const FairDbResultPtr& that) :
@@ -54,8 +54,6 @@ FairDbResultPtr<T>::FairDbResultPtr(const FairDbResultPtr& that) :
 
 }
 
-
-//.....................................................................
 
 template<class T>
 FairDbResultPtr<T>::FairDbResultPtr(const ValContext& vc,
@@ -159,14 +157,14 @@ Bool_t FairDbResultPtr<T>::ApplyAbortTest()
   bool tableExists = fTableProxy.TableExists();
 
   if ( ! tableExists ) {
-    cout << "Fatal error: table "
-         << fTableProxy.GetTableName() << " does not exist"
-         << endl;
+    DBLOG("FairDb",FairDbLog::kFatal)  << "Fatal Error: Table "
+                                       << fTableProxy.GetTableName() << " does not exist"
+                                       << endl;
     return kTRUE;
   }
   if ( fAbortTest == FairDb::kDataMissing) {
-    cout << "Fatal error: no data found in existing table  "
-         << fTableProxy.GetTableName() << endl;
+    DBLOG("FairDb",FairDbLog::kFatal)  << "Fatal Error: no data found in existing Table  "
+                                       << fTableProxy.GetTableName() << endl;
     return kTRUE;
   }
 
@@ -296,8 +294,8 @@ UInt_t FairDbResultPtr<T>::NextQuery(Bool_t forwards)
 
   if ( ! fResult ) { return 0; }
 
-  cout  << "\n\nStarting next query: direction "
-        << ( forwards ?  "forwards" : "backwards" ) << "\n" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)   << "\n\nStarting next query: direction "
+                                     << ( forwards ?  "forwards" : "backwards" ) << "\n" << endl;
 
   const FairDbValidityRec& vrec = fResult->GetValidityRec();
   const ValRange& vrnge      = vrec.GetValRange();
@@ -330,8 +328,8 @@ UInt_t FairDbResultPtr<T>::NewQuery(ValContext vc,
   fDetType = vc.GetDetector();
   fSimType = vc.GetSimFlag();
 
-  cout << "\n\nStarting context query: "
-       << vc  << " task " << task << "\n" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "\n\nStarting context query: "
+                                  << vc  << " task " << task << "\n" << endl;
 
   FairDbTimerManager::gTimerManager.RecBegin(fTableProxy.GetTableName(), sizeof(T));
   Disconnect();
@@ -340,17 +338,17 @@ UInt_t FairDbResultPtr<T>::NewQuery(ValContext vc,
   FairDbTimerManager::gTimerManager.RecEnd(fResult->GetNumRows());
 
   if ( this->ApplyAbortTest() ) {
-    cout << "while applying validity context query for "
-         << vc.AsString() << " with task " << task << endl;
+    DBLOG("FairDb",FairDbLog::kFatal) << "while applying validity context query for "
+                                      << vc.AsString() << " with task " << task << endl;
     abort();
   }
-  cout  << "\nCompleted context query: "
-        << vc  << " task " << task
-        << " Found:  " << fResult->GetNumRows() << " rows\n" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)  << "\nCompleted context query: "
+                                    << vc  << " task " << task
+                                    << " Found:  " << fResult->GetNumRows() << " rows\n" << endl;
   return fResult->GetNumRows();
 
 }
-//.....................................................................
+
 
 template<class T>
 UInt_t FairDbResultPtr<T>::NewQuery(const FairDbSqlContext& context,
@@ -366,9 +364,9 @@ UInt_t FairDbResultPtr<T>::NewQuery(const FairDbSqlContext& context,
   fDetType = context.GetDetector();
   fSimType = context.GetSimFlag();
 
-  cout << "\n\nStarting extended context query: "
-       << context.GetString()  << " task " << task
-       << " data " << data << " fillOpts " << fillOpts << "\n" <<endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "\n\nStarting extended context query: "
+                                   << context.GetString()  << " task " << task
+                                   << " data " << data << " fillOpts " << fillOpts << "\n" <<endl;
 
   FairDbTimerManager::gTimerManager.RecBegin(fTableProxy.GetTableName(), sizeof(T));
   Disconnect();
@@ -376,17 +374,17 @@ UInt_t FairDbResultPtr<T>::NewQuery(const FairDbSqlContext& context,
   fResult->Connect();
   FairDbTimerManager::gTimerManager.RecEnd(fResult->GetNumRows());
   if ( this->ApplyAbortTest() ) {
-    cout << "while applying extended context query for "
-         <<  context.c_str()<< " with task " << task
-         << " secondary query SQL: " << data
-         << "  and fill options: " << fillOpts << endl;
+    DBLOG("FairDb",FairDbLog::kFatal) << "while applying extended context query for "
+                                      <<  context.c_str()<< " with task " << task
+                                      << " secondary query SQL: " << data
+                                      << "  and fill options: " << fillOpts << endl;
     abort();
   }
 
-  cout  << "\n\nCompleted extended context query: "
-        << context.GetString()  << " task " << task
-        << " data " << data << " fillOpts" << fillOpts
-        << " Found:  " << fResult->GetNumRows() << " rows\n" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "\n\nCompleted extended context query: "
+                                   << context.GetString()  << " task " << task
+                                   << " data " << data << " fillOpts" << fillOpts
+                                   << " Found:  " << fResult->GetNumRows() << " rows\n" << endl;
 
   return fResult->GetNumRows();
 
@@ -400,8 +398,8 @@ UInt_t FairDbResultPtr<T>::NewQuery(const FairDbValidityRec& vrec)
     fResult = 0;
     return 0;
   }
-  cout << "\n\nStarting FairDbValidityRec query: "
-       << vrec << "\n" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "\n\nStarting FairDbValidityRec query: "
+                                   << vrec << "\n" << endl;
 
   this->SetContext(vrec);
   FairDbTimerManager::gTimerManager.RecBegin(fTableProxy.GetTableName(), sizeof(T));
@@ -413,17 +411,19 @@ UInt_t FairDbResultPtr<T>::NewQuery(const FairDbValidityRec& vrec)
   fResult->Connect();
   FairDbTimerManager::gTimerManager.RecEnd(fResult->GetNumRows());
   if ( this->ApplyAbortTest() ) {
-    cout << "while applying validity rec query for "
-         << vrec << endl;
+    DBLOG("FairDb",FairDbLog::kFatal) << "while applying validity rec query for "
+                                      << vrec << endl;
     abort();
   }
-  cout << "\n\nCompletedFairDbValidityRec query: "
-       << vrec
-       << " Found:  " << fResult->GetNumRows() << " rows\n"  << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "\n\nCompletedFairDbValidityRec query: "
+                                   << vrec
+                                   << " Found:  " << fResult->GetNumRows() << " rows\n"  << endl;
+
   return fResult->GetNumRows();
 
 }
-//.....................................................................
+
+
 
 template<class T>
 UInt_t FairDbResultPtr<T>::NewQuery(UInt_t seqNo,UInt_t dbNo)
@@ -433,34 +433,36 @@ UInt_t FairDbResultPtr<T>::NewQuery(UInt_t seqNo,UInt_t dbNo)
     fResult = 0;
     return 0;
   }
-  cout << "\n\nStarting SeqNo query: "
-       << seqNo << "\n" << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "\n\nStarting SeqNo query: "
+                                   << seqNo << "\n" << endl;
+
   FairDbTimerManager::gTimerManager.RecBegin(fTableProxy.GetTableName(), sizeof(T));
   Disconnect();
   fResult = fTableProxy.Query(seqNo,dbNo);
   fResult->Connect();
   FairDbTimerManager::gTimerManager.RecEnd(fResult->GetNumRows());
   if ( this->ApplyAbortTest() ) {
-    cout << "while applying SEQNO query for "
-         << seqNo << " on database " << dbNo << endl;
+
+    DBLOG("FairDb",FairDbLog::kFatal) << "while applying SEQNO query for "
+                                      << seqNo << " on database " << dbNo << endl;
+
     abort();
   }
   this->SetContext(fResult->GetValidityRec());
-  cout << "\n\nCompleted SeqNo query: "
-       << seqNo
-       << " Found:  " << fResult->GetNumRows() << " rows\n" << endl;
-  return fResult->GetNumRows();
 
+  DBLOG("FairDb",FairDbLog::kInfo) << "\n\nCompleted SeqNo query: "
+                                   << seqNo
+                                   << " Found:  " << fResult->GetNumRows() << " rows\n" << endl;
+
+  return fResult->GetNumRows();
 }
 
-//.....................................................................
+
 
 template<class T>
 Bool_t FairDbResultPtr<T>::ResultsFromDb() const
 {
-
   return fResult ? fResult->ResultsFromDb() : kFALSE;
-
 }
 
 template<class T>
@@ -487,12 +489,9 @@ void FairDbResultPtr<T>::SetContext(const FairDbValidityRec& vrec)
 
 }
 
-//.....................................................................
-
 template<class T>
 FairDbTableProxy& FairDbResultPtr<T>::TableProxy() const
 {
-
   assert( FairDbTableProxyRegistry::IsActive() );
   return fTableProxy;
 }
