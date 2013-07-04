@@ -52,6 +52,9 @@ ClassImp(TVirtualMagField)
 
 #endif
 
+#include <stdio.h>                      // for printf
+#include <iostream>                     // for operator<<, basic_ostream, etc
+
 #include "FairLogger.h"
 
 
@@ -93,18 +96,18 @@ class FairField : public TVirtualMagField
     /** Get x component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBx(Double_t x, Double_t y, Double_t z) {fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBx Should be implemented in User class"); return 0;}
+    virtual Double_t GetBx(Double_t x, Double_t y, Double_t z) {LOG(WARNING)<<"FairField::GetBx Should be implemented in User class"<<FairLogger::endl; return 0;}
 
 
     /** Get y component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBy(Double_t x, Double_t y, Double_t z) {fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBy Should be implemented in User class"); return 0;}
+    virtual Double_t GetBy(Double_t x, Double_t y, Double_t z) {LOG(WARNING)<<"FairField::GetBy Should be implemented in User class"<<FairLogger::endl; return 0;}
 
     /** Get z component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBz(Double_t x, Double_t y, Double_t z) {fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBz Should be implemented in User class"); return 0;}
+    virtual Double_t GetBz(Double_t x, Double_t y, Double_t z) {LOG(WARNING)<<"FairField::GetBz Should be implemented in User class"<<FairLogger::endl; return 0;}
 
 
     /** Get magnetic field. For use of GEANT3
@@ -119,26 +122,23 @@ class FairField : public TVirtualMagField
 
     /** Screen output. To be implemented in the concrete class. **/
     virtual void  Print(Option_t* option = "") const {;}
-    virtual void GetBxyz(const Double_t point[3], Double_t* bField) { fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBx Should be implemented in User class");}
+    virtual void GetBxyz(const Double_t point[3], Double_t* bField) {LOG(WARNING)<<"FairField::GetBxyz Should be implemented in User class"<<FairLogger::endl;}
 
 
 
     /**Fill Paramater*/
 
-    virtual void FillParContainer() {fLogger->Warning(MESSAGE_ORIGIN,"FairField :GetBx Should be implemented in User class");}
+    virtual void FillParContainer() {LOG(WARNING)<<"FairField::FillParContainer Should be implemented in User class"<<FairLogger::endl;}
   protected:
 
     /** Field type. 1 = constant field, 2 = field map. **/
     Int_t fType;
 
-    /** Fair Logger */
-    FairLogger*            fLogger;//!
-
   private:
     FairField(const FairField&);
     //    FairField& operator=(const FairField&);
     //TODO: Check why the htrack needs this
-    ClassDef(FairField,3);
+    ClassDef(FairField,4);
 
 };
 

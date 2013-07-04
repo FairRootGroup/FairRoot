@@ -8,7 +8,8 @@
 
 // -----   Default constructor   -------------------------------------------
 FairField::FairField()
-  : TVirtualMagField("FAIR Magnetic Field"), fType(0), fLogger(FairLogger::GetLogger())
+  : TVirtualMagField("FAIR Magnetic Field"),
+    fType(0)
 {
 }
 // -------------------------------------------------------------------------
@@ -17,7 +18,8 @@ FairField::FairField()
 
 // -----   Constructor with name and title   -------------------------------
 FairField::FairField(const char* name, const char* title)
-  :TVirtualMagField(name), fType(0) , fLogger(FairLogger::GetLogger())
+  : TVirtualMagField(name),
+    fType(0)
 {
 
 }
