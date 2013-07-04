@@ -50,7 +50,8 @@ class FairGeoTransform : public TObject
 };
 
 inline FairGeoTransform::FairGeoTransform(const FairGeoTransform& t)
-  : rot(t.getRotMatrix()),
+  : TObject(t),
+    rot(t.getRotMatrix()),
     trans(t.getTransVector()),
     trans_cm(FairGeoVector(0,0,0))
 {
