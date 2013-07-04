@@ -60,9 +60,9 @@ void run_tutorial4(Int_t nEvents = 10)
   cave->SetGeometryFileName("cave_vacuum.geo"); 
   run->AddModule(cave);
 
-  FairDetector* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
+  FairTutorialDet4* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
   tutdet->SetGeometryFileName("tutorial4.root"); 
-  tutdet->SetMisalignGeometry(kTRUE);
+  tutdet->SetModifyGeometry(kTRUE);
   run->AddModule(tutdet);
   // ------------------------------------------------------------------------
 
