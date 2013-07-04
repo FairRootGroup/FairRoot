@@ -49,7 +49,7 @@ if (NOT CMAKE_CXX_COMPILER_LOADED)
     message(FATAL_ERROR "CheckCXX11Features modules only works if language CXX is enabled")
 endif ()
 
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 2.8.2)
 
 #
 ### Check for needed compiler flags
