@@ -167,6 +167,8 @@ endif(IWYU_FOUND)
 if(NOT FAIRROOT_MINIMAL)
   WRITE_CONFIG_FILE(config.sh)
   WRITE_CONFIG_FILE(config.csh)
+  WRITE_CONFIG_FILE(config.sh_install)
+  WRITE_CONFIG_FILE(config.csh_install)
 else(NOT FAIRROOT_MINIMAL)
   WRITE_MINIMAL_CONFIG_FILE(config.sh)
 endif(NOT FAIRROOT_MINIMAL)
@@ -184,3 +186,22 @@ If(BUILD_UNITTESTS)
     add_subdirectory(test)
   EndIf(GTEST_FOUND)
 EndIf(BUILD_UNITTESTS)
+
+Install(DIRECTORY example/gconfig example/geometry
+        DESTINATION share/fairbase/example
+        PATTERN ".svn" EXCLUDE)
+
+Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
+        DESTINATION bin
+        RENAME config.sh
+       )
+
+Install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
+        DESTINATION bin
+       )
+
+Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
+        DESTINATION bin
+        RENAME config.csh
+       )
+

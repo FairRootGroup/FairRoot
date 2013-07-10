@@ -14,3 +14,7 @@ add_test(read_digis ${CMAKE_BINARY_DIR}/example/Tutorial2/macros/read_digis.sh)
 SET_TESTS_PROPERTIES(read_digis PROPERTIES DEPENDS create_digis)
 SET_TESTS_PROPERTIES(read_digis PROPERTIES TIMEOUT "30")
 SET_TESTS_PROPERTIES(read_digis PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
+
+Install(FILES run_tutorial2.C create_digis.C read_digis.C
+        DESTINATION share/fairbase/example/Tutorial2
+       )

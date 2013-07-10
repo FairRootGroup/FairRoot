@@ -186,7 +186,8 @@ Macro(ROOT_GENERATE_ROOTMAP)
   add_custom_target( lib${Int_LIB}.rootmap ALL DEPENDS  ${Int_OUTFILE})
   set_target_properties(lib${Int_LIB}.rootmap PROPERTIES FOLDER RootMaps )
   #---Install the rootmap file------------------------------------
-  install(FILES ${Int_OUTFILE} DESTINATION lib COMPONENT libraries)
+#  install(FILES ${Int_OUTFILE} DESTINATION lib COMPONENT libraries)
+  install(FILES ${Int_OUTFILE} DESTINATION lib)
 EndMacro(ROOT_GENERATE_ROOTMAP)
 
 Macro(GENERATE_LIBRARY)
@@ -230,6 +231,8 @@ Macro(GENERATE_LIBRARY)
     CHECK_HEADERS("${Int_SRCS}" "${INCLUDE_DIRECTORIES}" ${HeaderRuleName})
   EndIf(IWYU_FOUND)
 
+  install(FILES ${HDRS} DESTINATION include)
+
   ROOT_GENERATE_DICTIONARY()
   SET(Int_SRCS ${Int_SRCS} ${DICTIONARY})
  
@@ -241,7 +244,7 @@ Macro(GENERATE_LIBRARY)
   set_target_properties(${Int_LIB} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
   ############### install the library ###################
-  install(TARGETS ${Int_LIB} DESTINATION ${CMAKE_BINARY_DIR}/lib)
+  install(TARGETS ${Int_LIB} DESTINATION lib)
 
   Set(LIBRARY_NAME)
   Set(DICTIONARY)

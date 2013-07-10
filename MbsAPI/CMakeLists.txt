@@ -112,4 +112,4 @@ target_link_libraries(MbsAPI ${ROOT_LIBRARIES})
 set_target_properties(MbsAPI PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ############### install the library ###################
-install(TARGETS MbsAPI DESTINATION ${CMAKE_BINARY_DIR}/lib)
+install(TARGETS MbsAPI DESTINATION lib)
