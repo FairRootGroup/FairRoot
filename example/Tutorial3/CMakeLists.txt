@@ -71,3 +71,9 @@ TARGET_LINK_LIBRARIES(RunTestDetectorSampler FairMQ FairTestDetector )
 ADD_EXECUTABLE(RunFileSink reconstruction/runFileSink.cxx)
 SET_TARGET_PROPERTIES(RunFileSink PROPERTIES OUTPUT_NAME fileSink )
 TARGET_LINK_LIBRARIES(RunFileSink FairMQ FairTestDetector )
+
+Install(TARGETS RunTestDetectorProcessor RunTestDetectorSampler RunFileSink
+         RUNTIME DESTINATION bin
+         LIBRARY DESTINATION lib
+         ARCHIVE DESTINATION lib
+        )

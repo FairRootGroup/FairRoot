@@ -8,3 +8,6 @@ add_test(run_rad ${CMAKE_BINARY_DIR}/example/rutherford/macros/run_rad.sh)
 SET_TESTS_PROPERTIES(run_rad PROPERTIES TIMEOUT "30")
 SET_TESTS_PROPERTIES(run_rad PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
 
+Install(FILES run_rutherford.C run_rad.C eventDisplay.C
+        DESTINATION share/fairbase/example/rutherford
+       )

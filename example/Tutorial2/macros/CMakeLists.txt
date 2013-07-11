@@ -15,6 +15,6 @@ SET_TESTS_PROPERTIES(read_digis PROPERTIES DEPENDS create_digis)
 SET_TESTS_PROPERTIES(read_digis PROPERTIES TIMEOUT "30")
 SET_TESTS_PROPERTIES(read_digis PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
 
-Install(FILES run_tutorial2.C create_digis.C read_digis.C
-        DESTINATION share/fairbase/example/Tutorial2
+Install(FILES run_tutorial2.C create_digis.C read_digis.C tutdet.digi.par
+        DESTINATION share/fairbase/example/Tutorial2/macros
        )

@@ -1,6 +1,6 @@
 export Linux_Flavour_="@_linux_flavour@"
 export System_="@_system@"
-source @_INSTALLDIR@/bin/check_system.sh                               
+source @_BINDIR@/check_system.sh                               
 if [ "$same_system" == "1" ]; then 
   export SIMPATH="@SIMPATH@"
   export ROOTSYS="@ROOTSYS@"

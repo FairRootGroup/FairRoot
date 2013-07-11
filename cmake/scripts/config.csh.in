@@ -1,6 +1,6 @@
 setenv Linux_Flavour_ "@_linux_flavour@"
 setenv System_ "@_system@"
-source @_INSTALLDIR@/bin/check_system.sh                               
+source @_BINDIR@/bin/check_system.sh                               
 if [ "$same_system" == "1" ]; then 
   setenv SIMPATH "@SIMPATH@"
   setenv ROOTSYS "@ROOTSYS@"

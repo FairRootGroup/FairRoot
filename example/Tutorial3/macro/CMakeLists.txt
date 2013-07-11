@@ -27,7 +27,7 @@ SET_TESTS_PROPERTIES(run_reco_timebased PROPERTIES DEPENDS run_digi_timebased)
 SET_TESTS_PROPERTIES(run_reco_timebased PROPERTIES TIMEOUT "30")
 SET_TESTS_PROPERTIES(run_reco_timebased PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
 
-Install(FILES run_sim.C run_digi.C run_reco.C 
+Install(FILES run_sim.C run_digi.C run_reco.C eventDisplay.C
               run_digi_timebased.C run_reco_timebased.C
         DESTINATION share/fairbase/example/Tutorial3
        )
