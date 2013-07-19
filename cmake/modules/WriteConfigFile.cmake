@@ -45,7 +45,7 @@ MACRO (WRITE_CONFIG_FILE filename)
    
   ElseIf(CMAKE_SYSTEM_NAME MATCHES Darwin)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system_mac.sh.in
-                   ${_INSTALLDIR}/check_system.sh
+                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
                   )
     EXECUTE_PROCESS(COMMAND uname -sr 
                     OUTPUT_VARIABLE _linux_flavour
