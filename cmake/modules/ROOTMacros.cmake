@@ -257,3 +257,24 @@ Macro(GENERATE_LIBRARY)
 
 EndMacro(GENERATE_LIBRARY)
 
+
+Macro(GENERATE_EXECUTABLE)
+
+#  If(IWYU_FOUND)
+#    Set(HeaderRuleName "${EXE_NAME}_HEADER_RULES")
+#    CHECK_HEADERS("${SRCS}" "${INCLUDE_DIRECTORIES}" ${HeaderRuleName})
+#  EndIf(IWYU_FOUND)
+
+  ############### build the library #####################
+  Add_Executable(${EXE_NAME} ${SRCS})
+  target_link_libraries(${EXE_NAME} ${DEPENDENCIES})
+
+  ############### install the library ###################
+  install(TARGETS ${EXE_NAME} DESTINATION bin)
+
+  Set(EXE_NAME)
+  Set(SRCS)
+  Set(DEPENDENCIES)  
+
+EndMacro(GENERATE_EXECUTABLE)
+

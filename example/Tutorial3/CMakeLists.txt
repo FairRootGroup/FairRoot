@@ -60,20 +60,18 @@ GENERATE_LIBRARY()
 
 Add_Subdirectory(macro)
 
-ADD_EXECUTABLE(RunTestDetectorProcessor reconstruction/runTestDetectorProcessor.cxx)
-SET_TARGET_PROPERTIES(RunTestDetectorProcessor PROPERTIES OUTPUT_NAME testDetectorProcessor )
-TARGET_LINK_LIBRARIES(RunTestDetectorProcessor FairMQ FairTestDetector )
 
-ADD_EXECUTABLE(RunTestDetectorSampler digitization/runTestDetectorSampler.cxx)
-SET_TARGET_PROPERTIES(RunTestDetectorSampler PROPERTIES OUTPUT_NAME testDetectorSampler )
-TARGET_LINK_LIBRARIES(RunTestDetectorSampler FairMQ FairTestDetector )
+Set(Exe_Names testDetectorProcessor testDetectorSampler fileSink)
+Set(Exe_Source reconstruction/runTestDetectorProcessor.cxx digitization/runTestDetectorSampler.cxx reconstruction/runFileSink.cxx)
 
-ADD_EXECUTABLE(RunFileSink reconstruction/runFileSink.cxx)
-SET_TARGET_PROPERTIES(RunFileSink PROPERTIES OUTPUT_NAME fileSink )
-TARGET_LINK_LIBRARIES(RunFileSink FairMQ FairTestDetector )
+List(LENGTH Exe_Names _length)
+Math(EXPR _length ${_length}-1)
 
-Install(TARGETS RunTestDetectorProcessor RunTestDetectorSampler RunFileSink
-         RUNTIME DESTINATION bin
-         LIBRARY DESTINATION lib
-         ARCHIVE DESTINATION lib
-        )
+ForEach(_file RANGE 0 ${_length})
+  List(GET Exe_Names ${_file} _name)
+  List(GET Exe_Source ${_file} _src)
+  Set(EXE_NAME ${_name})
+  Set(SRCS ${_src})
+  Set(DEPENDENCIES FairMQ FairTestDetector)
+  GENERATE_EXECUTABLE()
+EndForEach(_file RANGE 0 ${_length})
