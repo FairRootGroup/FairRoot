@@ -82,9 +82,9 @@ s_his_comm s_his_comm_serv;
 INTS4 f_his_getbas(CHARS* pc_server, INTS4 l_port, CHARS* pc_base, CHARS* pc_access,INTS4** p_buffer)
 {
   s_his_comm s_his_comm_cli;
-  s_his_head* ps_his_head;
-  INTS4 i_j,i_l,l_status,l_chan,l_swap,l_buffer,l_histos,l_size;
-  INTS4* pl_all,*pl_l;
+//  s_his_head* ps_his_head;
+  INTS4 i_j,i_l,l_status,l_chan,l_swap,l_buffer;//,l_histos,l_size;
+  INTS4* pl_all=NULL,*pl_l;
   s_compress*               ps_compress;
   struct s_tcpcomm* ps_tcpcli;
 
@@ -308,8 +308,8 @@ INTS4 f_his_gethis(CHARS* pc_server, INTS4 l_port, CHARS* pc_base, CHARS* pc_acc
 {
   s_his_comm s_his_comm_cli;
   s_his_head* ps_his_head;
-  INTS4 i_j,i_l,l_status,l_chan,l_swap,l_buffer,l_histos,l_size;
-  INTS4* pl_all,*pl_head,*pl_l;
+  INTS4 i_j,i_l,l_status,l_chan,l_swap,l_buffer,/*l_histos,*/l_size;
+  INTS4* pl_all/*,*pl_head*/,*pl_l;
   struct s_tcpcomm* ps_tcpcli;
 
   ps_tcpcli = (struct s_tcpcomm*) malloc (sizeof( struct s_tcpcomm));
@@ -407,7 +407,7 @@ g_return:
 /*1- C Main ****************+******************************************/
 INTS4 f_his_server(CHARS* pc_base, CHARS* pc_access, INTS4* pl_port)
 {
-  INTS4* pl_l,i_j,i_l,ll,l_buffer,l_status;
+  INTS4 /**pl_l,i_j,i_l,ll,l_buffer,*/l_status;
 
   ps_tcpserv  = (struct s_tcpcomm*) malloc (sizeof( struct s_tcpcomm));
   l_gl_serv_port=PORT__HIST_SERV;
@@ -465,7 +465,7 @@ INTS4 f_his_server(CHARS* pc_base, CHARS* pc_access, INTS4* pl_port)
 /*1- C Main ****************+******************************************/
 INTS4 f_his_wait(INTS4* pl_action, CHARS* pc_histo)
 {
-  INTS4* pl_l,i_j,i_l,ll,l_buffer,l_status;
+  INTS4 /**pl_l,i_j,i_l,ll,l_buffer,*/l_status;
   /* Wait for client to connect */
   if(l_gl_serv_verb == 1) {printf("Waiting for client on port %d [%s] \n",l_gl_serv_port,c_gl_serv_access);}
   l_status = f_stc_acceptclient (ps_tcpserv, &l_gl_serv_chan);
@@ -550,7 +550,7 @@ INTS4 f_his_wait(INTS4* pl_action, CHARS* pc_histo)
 /*1- C Main ****************+******************************************/
 INTS4 f_his_senddir(s_his_head* ps_head, INTS4 l_histos)
 {
-  INTS4* pl_l,i_j,i_l,ll,l_buffer,l_status;
+  INTS4* pl_l,i_j,i_l,/*ll,*/l_buffer,l_status;
 
   if(l_gl_serv_verb == 1) {printf("Send directory %s. \n",s_his_comm_serv.c_histo);}
   s_his_comm_serv.lu_histos=l_histos;

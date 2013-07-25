@@ -152,9 +152,9 @@ INTS4 f_ut_status_r(s_daqst* ps_daqst, INTS4 l_tcp)
 {
   INTS4 l_swap=0, len_64, n_trg, max_proc;
   INTS4 l_cmd;
-  INTS4 i,k;
+  INTS4 /*i,*/k;
   INTS4 l_status;
-  INTU4* pc;
+//  INTU4* pc;
 
   memset((void*)ps_daqst,0,sizeof(s_daqst));
   l_cmd=1;
@@ -270,7 +270,7 @@ INTS4 f_ut_setup_ini(s_setup* ps_setup)
 INTS4 f_ut_setup(s_setup* ps_setup, INTU4* pl_o, INTS4 l_tcp)
 {
   INTS4 i,l,k,n=0,l_status;
-  INTU4* pl_count,*pl_s,*pl_size;
+  INTU4* pl_count/*,*pl_s*/,*pl_size;
 
   l_status = f_ut_setup_ini(ps_setup);
 
@@ -511,8 +511,8 @@ INTS4 f_ut_set_ml_ini(s_set_ml* ps_set_ml)
 /*1- C Procedure *************+****************************************/
 INTS4 f_ut_set_ml(s_set_ml* ps_set_ml, INTU4* pl_o, INTS4 l_tcp)
 {
-  INTS4 i,l,k,n=0,l_status;
-  INTU4* pl_count,*pl_s,*pl_size;
+  INTS4 i,l,k/*,n=0*/,l_status;
+  INTU4* pl_count,*pl_s;//,*pl_size;
 
   l_status = f_ut_set_ml_ini(ps_set_ml);
 
@@ -650,7 +650,7 @@ INTS4 f_ut_set_mo_ini(s_set_mo* ps_set_mo)
 /*1- C Procedure *************+****************************************/
 INTS4 f_ut_set_mo(s_set_mo* ps_set_mo, INTS4 l_tcp)
 {
-  INTS4 l,l_status;
+  INTS4 l_status;//, l;
 
   l_status=f_ut_set_mo_ini(ps_set_mo);
   if(l_status != 0) { return l_status; }

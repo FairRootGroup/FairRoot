@@ -302,8 +302,8 @@ uint32_t fLmdPutBuffer(
 uint32_t fLmdPutClose(
   sLmdControl* pLmdControl)
 {
-  int32_t iReturn,i;
-  lmdoff_t current,c;
+  int32_t iReturn;//,i;
+//  lmdoff_t current,c;
 
   if(pLmdControl->iBufferWords > pLmdControl->iLeftWords) { // write last buffer
     iReturn=fLmdWriteBuffer(pLmdControl, (char*)pLmdControl->pBuffer,
@@ -399,7 +399,7 @@ uint32_t fLmdInitMbs(
   uint32_t iTimeout)
 {
 
-  int32_t stat;
+//  int32_t stat;
 
   if(iBuffers > 1) {printf("fLmdInitMbs: Event spanning not supported!\n"); return(LMD__FAILURE);}
   if(iStreams > 0) {printf("fLmdInitMbs: MBS not in DABC mode!\n"); return(LMD__FAILURE);}
@@ -461,9 +461,9 @@ uint32_t fLmdGetMbsBuffer(
   uint32_t* iBytesUsed)
 {
 
-  sMbsHeader* pm;
+//  sMbsHeader* pm;
   sMbsBufferHeader* pBuf;
-  uint32_t* ps, *pd, i,ii, elem=0, size=0, usedBytes=0,leftBytes=0;
+  uint32_t usedBytes=0,leftBytes=0;//, *ps, *pd, i,ii, elem=0, size=0;
   int32_t iReturn;
   const char cRequest[12] = "GETEVT";
 
@@ -522,8 +522,8 @@ uint32_t fLmdGetOpen(
 {
 
   int32_t iReturn;
-  uint32_t l=0,i,bufferBytes=0,h[12];
-  lmdoff_t to;
+  uint32_t bufferBytes=0;//,l=0,i,h[12];
+//  lmdoff_t to;
 
   memset(pLmdControl,0,sizeof(sLmdControl));
   if(pBuffHead == LMD__INTERNAL_HEADER) {
@@ -615,7 +615,7 @@ uint32_t fLmdGetBuffer(
 {
 
   sMbsHeader* pm;
-  uint32_t* ps, *pd, i,ii, elem=0, size=0, leftBytes=0, used, elem_sz;
+  uint32_t elem=0,leftBytes=0, used, elem_sz;//, *ps, *pd, i,ii, size=0;
   int32_t iReturn;
 
   if(iBytes < pLmdControl->pMbsFileHeader->iMaxWords) {
@@ -724,7 +724,7 @@ uint32_t fLmdGetBuffer(
 uint32_t fLmdGetElement(sLmdControl* pLmdControl, uint32_t iEvent, sMbsHeader** event)
 {
   sMbsHeader* pM;
-  uint32_t* ps, *pd, i, evsz;
+  uint32_t i, evsz;//, *ps, *pd;
   int32_t iReturn;
   *event=NULL;
 
@@ -1021,7 +1021,7 @@ uint32_t fLmdOffsetWrite(sLmdControl* pLmdControl)
 //===============================================================
 uint32_t fLmdOffsetSet(sLmdControl* pLmdControl, uint32_t lwords)
 {
-  int32_t iReturn;
+//  int32_t iReturn;
   if(pLmdControl->iElements >= pLmdControl->iOffsetEntries) { fLmdOffsetResize(pLmdControl,0); }
   if(pLmdControl->pOffset8) {
     *(pLmdControl->pOffset8+pLmdControl->iElements)=
@@ -1172,7 +1172,7 @@ void fLmdSwap4(uint32_t* array, uint32_t items)
 void fLmdSwap8(uint64_t* array, uint32_t items)
 {
   uint64_t* pp;
-  uint32_t i,x;
+  uint32_t i;//,x;
   pp=array;
   for(i=0; i<items; i++) {
     //printf("Swap 8 %016llx ",*pp);

@@ -177,7 +177,7 @@ struct s_opc1*         p_opc1;
 
 static int unsigned  lf_swap = 0;                  /* save swap on RX     */
 static int unsigned  l_endian_serv;                /* save endian server  */
-static int           l_len_lw1 = CLNT__BUFH_LW;    /* len for first swap  */
+//static int           l_len_lw1 = CLNT__BUFH_LW;    /* len for first swap  */
 int                  l_len_lw2;                    /* len for 2nd   swap  */
 int                   i_channel;                    /* TCP/IP channel      */
 int unsigned         l_clnt_sts;                   /* status for ackn.    */
@@ -199,10 +199,10 @@ long          v_mem_clnup[8];
 int f_evcli_con(s_evt_channel* ps_chan, char* pc_node, int l_aport, int l_aevents, int l_asample)
 /***************************************************************************/
 {
-  short                 i, i_h, i_m, i_s;
-  char                  arg[80], c_hms[16], c_help[4];
-  int                  l_evtecho,*pl;
-  char                  c_node[32], c_name[32], c_retmsg[256];
+  short                 /*i,*/ i_h, i_m, i_s;
+//  char                  arg[80], c_hms[16], c_help[4];
+//  int                  l_evtecho,*pl;
+  char                  c_node[32]/*, c_name[32]*/, c_retmsg[256];
   int                  l_port;
 
   v_mem_clnup[0] = 0;
@@ -376,7 +376,7 @@ int f_evcli_buf(s_evt_channel* ps_chan)
 /***************************************************************************/
 {
   s_ve10_1* ps_ve10_1;
-  int ii;
+//  int ii;
   char* ps_buf;
   /* ++++++++++++++++++++++++++++++ */
   /* +++ send acknowledge buffer +++ */
@@ -545,9 +545,9 @@ struct s_clnt_filter* p_clnt_filter;
   struct s_filter*    p_filter;
   struct s_opc1*      p_opc1;
   struct s_flt_descr* p_flt_descr;
-  struct s_pat1*      p_pat1;
-  struct s_pat2*      p_pat2;
-  struct s_pat3*      p_pat3;
+//  struct s_pat1*      p_pat1;
+//  struct s_pat2*      p_pat2;
+//  struct s_pat3*      p_pat3;
 
   short              i_fltdescnt = 0;
   short              i_fltcnt = 0;
@@ -560,7 +560,7 @@ struct s_clnt_filter* p_clnt_filter;
   int               l_evtdescr, *pl_evtdescr, *pl_sev1descr, *pl_sev2descr;
   short              i_lasevtflt, i_1stsevflt;
 
-  int unsigned      l_status, l_sts;
+//  int unsigned      l_status, l_sts;
   int unsigned      l_retsts = 0;
 
   /* +++ action +++ */
@@ -786,7 +786,7 @@ m_sort_descr:;                      /* sort event and subevent filter  */
     for (i = 1; i < i_fltdescnt; i++) {
       p_flt_descr = (struct s_flt_descr*) &p_clnt_filter->flt_descr[i];
       p_filter    = (struct s_filter*)
-                    &p_clnt_filter->filter[p_flt_descr->h_fltblkbeg];
+                    &p_clnt_filter->filter[(int)p_flt_descr->h_fltblkbeg];
       p_opc1      = (struct s_opc1*)      &p_filter->l_opcode;
 
       if ( (p_opc1->b1_selflt == 1) && (p_opc1->b1_evtsev == 1) ) {
@@ -835,7 +835,7 @@ m_sort_descr:;                      /* sort event and subevent filter  */
       p_flt_descr = (struct s_flt_descr*) &p_clnt_filter->flt_descr[i];
       /* ++ addr of the first filter in the flt blk ++ */
       p_filter    = (struct s_filter*)
-                    &p_clnt_filter->filter[p_flt_descr->h_fltblkbeg];
+                    &p_clnt_filter->filter[(int)p_flt_descr->h_fltblkbeg];
       p_opc1      = (struct s_opc1*)      &p_filter->l_opcode;
 
     } /* for */
@@ -898,17 +898,17 @@ char*                 c_file;                     /* ptr to file name        */
   static char        c_modnam[] = "f_fltrd";
   struct s_filter*    p_filter;
   struct s_opc1*      p_opc1;
-  struct s_flt_descr* p_flt_descr;
-  struct s_pat1*      p_pat1;
-  struct s_pat2*      p_pat2;
-  struct s_pat3*      p_pat3;
+//  struct s_flt_descr* p_flt_descr;
+//  struct s_pat1*      p_pat1;
+//  struct s_pat2*      p_pat2;
+//  struct s_pat3*      p_pat3;
 
   char               c_retmsg[256];
   char               c_line[80], c_comment[80], *c_fsts, *p_com, *p_minus;
   short              i_fltblklen = 0;
   short         i_currflt = 0;
-  short              i, j;
-  int               l, l_scan=0;
+  short              i;//, j;
+  int               /*l, */l_scan=0;
 
   int unsigned      l_pattern;
   int               l_offset;
@@ -1180,7 +1180,7 @@ struct s_clnt_filter* p_clnt_filter;
   for (i = 0; i < i_fltdescnt; i++) {
     p_flt_descr = (struct s_flt_descr*) &p_clnt_filter->flt_descr[i];
     p_filter    = (struct s_filter*)
-                  &p_clnt_filter->filter[p_flt_descr->h_fltblkbeg];
+                  &p_clnt_filter->filter[(int)p_flt_descr->h_fltblkbeg];
     p_opc1      = (struct s_opc1*)      &p_filter->l_opcode;
 
     if ( (i_debug == 1) || (i_debug == 2) ) {
@@ -1199,7 +1199,7 @@ struct s_clnt_filter* p_clnt_filter;
     /* +++ subevt flt blk id +++ */
     if (p_opc1->b1_evtsev == 0 && p_opc1->b1_selflt == 1) {
       p_filter = (struct s_filter*)
-                 &p_clnt_filter->filter[p_flt_descr->h_fltblkbeg];
+                 &p_clnt_filter->filter[(int)p_flt_descr->h_fltblkbeg];
       if ( (i_debug == 1) || (i_debug == 2) )
         printf(
           "   Filter set id is fltspec:%d == mask:H%x  (see 1st filt. below)\n",
@@ -1472,7 +1472,7 @@ int              i_chan;
   char           c_retmsg[256];
   char* pc;
   int* pl_d,*pl_s;
-  s_ve10_1* ps_ve10_1;
+//  s_ve10_1* ps_ve10_1;
 
   /* ++++ action       ++++ */
 
@@ -1811,9 +1811,9 @@ int* p_keyb;
 /* cleanup: free allocated memory and dealloc allocated device(s) */
 {
   /* ++++ declaration ++++ */
-  static char     c_modnam[] = "f_clnup";
+//  static char     c_modnam[] = "f_clnup";
   short    i;
-  int     l_status;
+//  int     l_status;
 
   for (i = 1; i <= v_mem[0]; i++) {
     /*    printf("free %d of %d: %8x",i,v_mem[0],v_mem[i]);fflush(stdout);*/
@@ -1830,9 +1830,9 @@ int* p_keyb;
 /* cleanup: free allocated memory and dealloc allocated device(s) */
 {
   /* ++++ declaration ++++ */
-  static char     c_modnam[] = "f_clnup";
-  short    i;
-  int     l_status;
+//  static char     c_modnam[] = "f_clnup";
+//  short    i;
+//  int     l_status;
 
   /*  printf("all  %d:",v_mem[0]);fflush(stdout);*/
   v_mem[++v_mem[0]] = (long) p_keyb; /* was (int) before JA */

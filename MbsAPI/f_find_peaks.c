@@ -301,9 +301,9 @@ int f_position(int l_len,double* pa_data,double* pr_pos,double* pr_sig, double* 
 #define WIDTH  8
 
   double r_sig_f     ;
-  int I,J,K,L     ;
+  int J;//,I,K,L     ;
   double d_sum_prod  ;
-  double l_max_chan  ;
+//  double l_max_chan  ;
   double* pl_data,d_max    ;
 
   /* 2.0E2*SQRT(2.0E0*LOG(2.0E0))/100. */;
