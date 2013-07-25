@@ -992,7 +992,7 @@ void FairRootManager::LastFill()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRootManager:: Write()
+Int_t FairRootManager::Write(const char* name, Int_t option, Int_t bufsize)
 {
   /** Writes the tree in the file.*/
   if (fCompressData) {
@@ -1010,6 +1010,7 @@ void FairRootManager:: Write()
   } else {
     fLogger->Info(MESSAGE_ORIGIN, "No Output Tree" );
   }
+  return 0;
 }
 //_____________________________________________________________________________
 

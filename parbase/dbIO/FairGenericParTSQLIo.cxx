@@ -54,7 +54,7 @@ FairGenericParTSQLIo::~FairGenericParTSQLIo()
 Bool_t FairGenericParTSQLIo::read(FairParGenericSet* par)
 {
   UInt_t rid = fRtdb->getCurrentRun()->getRunId();
-  par->Fill(rid);
+  par->fill(rid);
 
   std::cout << "-I- FairGenericParTSQLIo::read(FairParGenericSet* par) done for runId#  " <<  rid << std::endl;
 
@@ -99,7 +99,7 @@ Int_t FairGenericParTSQLIo::writeSet(FairParGenericSet* par)
             << "Class name = " << par->ClassName() << std::endl;
 
   UInt_t rid = fRtdb->getCurrentRun()->getRunId();
-  par->Store(rid);
+  par->store(rid);
 
   std::cout << "-I- FairGenericParTSQLIo::WriteSet() done  for runID# " <<  rid << std::endl;
   return 1;

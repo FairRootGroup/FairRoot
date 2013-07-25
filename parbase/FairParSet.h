@@ -73,8 +73,8 @@ class FairParSet : public FairDbTableRow
     }
 
 
-    virtual void Fill(UInt_t rid=0) {};
-    virtual void Store(UInt_t rid=0) {};
+    virtual void fill(UInt_t rid=0) {};
+    virtual void store(UInt_t rid=0) {};
 
   private:
 

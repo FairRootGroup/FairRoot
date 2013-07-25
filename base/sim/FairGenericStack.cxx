@@ -96,7 +96,7 @@ void FairGenericStack::Register()
 }
 // -------------------------------------------------------------------------
 // -----   Public method Print  --------------------------------------------
-void FairGenericStack::Print(Int_t iVerbose) const
+void FairGenericStack::Print(Option_t* option) const
 {
 }
 // -------------------------------------------------------------------------

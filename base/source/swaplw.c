@@ -16,7 +16,7 @@ long         l_len;
 {
 
    char unsigned     *p_source, *p_dest, *p_s, *p_d;
-   char              c_modnam[] = "f_swaplw";
+//   char              c_modnam[] = "f_swaplw";
    long unsigned     lu_save;
 
    /* +++ action +++ */

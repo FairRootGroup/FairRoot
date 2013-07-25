@@ -212,7 +212,7 @@ Int_t FairEventManager::Color( int pdg)
 }
 //______________________________________________________________________________
 
-void FairEventManager::AddParticlesToPdgDataBase()
+void FairEventManager::AddParticlesToPdgDataBase(Int_t pdg)
 {
 
 //

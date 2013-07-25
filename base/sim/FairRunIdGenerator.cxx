@@ -380,7 +380,7 @@ unsigned int FairRunIdGenerator::generateId(void)
 {
   uuid_t uu;
   unsigned int v;
-  struct timeval ret_tv;
+//  struct timeval ret_tv;
   uuid_generate(uu);
 
 

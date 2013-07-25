@@ -122,7 +122,7 @@ void FairBoxSetDraw::Exec(Option_t* option)
     for (Int_t i=0; i<fList->GetEntriesFast(); ++i) {
       p=fList->At(i);
       if (fVerbose > 2) {
-        FairTimeStamp* data = (FairTimeStamp*)p;
+//        FairTimeStamp* data = (FairTimeStamp*)p;
 //        cout << "TimeStamp: " <<  data->GetTimeStamp() << std::endl;
       }
       AddBoxes(fq, p, i);

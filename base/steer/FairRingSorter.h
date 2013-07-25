@@ -47,7 +47,7 @@ class FairRingSorter : public TObject
     virtual void DeleteOutputData() {fOutputData.clear(); }
     virtual void SetLowerBound(double timestampOfHitToWrite);
 
-    virtual void Print(std::ostream& out = std::cout) {
+    virtual void print(std::ostream& out = std::cout) {
       out << "RingSorter: Size " << fRingBuffer.size() << " CellWidth: " << fCellWidth << std::endl;
       out << "LowerBoundPointer at index: " << fLowerBoundPointer.first << " Time: " << fLowerBoundPointer.second << std::endl;
       out << "| ";

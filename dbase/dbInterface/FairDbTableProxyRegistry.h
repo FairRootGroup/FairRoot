@@ -60,7 +60,7 @@ class FairDbTableProxyRegistry : public FairDbConfigurable
       }
       void Increment() { ++fgCount; };
     };
-    friend class Cleaner;
+    friend struct Cleaner;
 
     FairDbMultConnector* fMultConnector;
 

@@ -44,7 +44,7 @@ class FairEventManager : public TEveEventManager
     virtual Float_t GetMaxEnergy() {return fMaxEnergy;}
     virtual Float_t GetMinEnergy() {return fMinEnergy;}
     void UpdateEditor();
-    virtual void AddParticlesToPdgDataBase();
+    virtual void AddParticlesToPdgDataBase(Int_t pdg=0);
 
     ClassDef(FairEventManager,1);
   private:

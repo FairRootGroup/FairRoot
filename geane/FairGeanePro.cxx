@@ -50,8 +50,8 @@ FairGeanePro::FairGeanePro()
     fvwi(TVector3(0., 0., 0.)),
     ftrklength(0.),
     flag(0),
-    fPrintErrors(kTRUE),
-    fApp(FairGeaneApplication::Instance())
+    fApp(FairGeaneApplication::Instance()),
+    fPrintErrors(kTRUE)
 {
   if(gMC3==NULL) {
     std::cerr<<"FairGeanePro::TGeant3 has not been initialized! ABORTING!"<<std::endl;

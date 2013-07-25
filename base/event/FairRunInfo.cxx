@@ -171,7 +171,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
 
 
 
-  Int_t pid = gSystem->GetPid();
+//  Int_t pid = gSystem->GetPid();
   filename += "FairRunInfo_";
   filename += directory;
   filename += ".root";

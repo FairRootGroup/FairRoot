@@ -200,7 +200,7 @@ class FairRootManager : public TObject
     */
     void                TruncateBranchNames(TTree* fTree, const char* folderName);
 
-    void                Write();
+    Int_t               Write(const char* name=0, Int_t option=0, Int_t bufsize=0);
     /** Write the current TGeoManager to file*/
     void                WriteGeometry();
     /**Write the file header object to the output file*/

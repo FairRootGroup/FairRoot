@@ -158,7 +158,8 @@ void FairRunAna::Init()
       }
     }
   } else {
-    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+//    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+    fRtdb->getContainer("FairGeoParSet");
   }
 
   if (fInFileIsOpen) {

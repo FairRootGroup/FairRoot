@@ -10,6 +10,7 @@
 
 #include "FairGeoMedia.h"
 #include "FairGeoMedium.h"
+#include "FairLogger.h"
 
 #include "TList.h"
 
@@ -93,7 +94,7 @@ void FairGeoMedia::print()
 void FairGeoMedia::read(fstream& fin)
 {
   // Reads the media from file
-  cout<<"-I- FairGeoMedia  Read media"<<endl;
+  LOG(INFO) << "FairGeoMedia: Read media " << FairLogger::endl;
   const Int_t maxBuf=256;
   char buf[maxBuf];
   Int_t autoflag=1;

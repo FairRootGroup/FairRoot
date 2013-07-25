@@ -34,7 +34,7 @@ using std::ostringstream;
 using std::istringstream;
 using std::string;
 
-// ------------------------- Result Set  Implementation ---------------------------------\\
+// ------------------------- Result Set  Implementation ---------------------------------
 
 ClassImp(FairDbResultSet)
 

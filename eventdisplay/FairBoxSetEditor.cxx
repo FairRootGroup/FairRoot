@@ -36,7 +36,7 @@ FairBoxSetEditor::FairBoxSetEditor(const TGWindow* p, Int_t width, Int_t height,
 void FairBoxSetEditor::Init()
 {
 
-  FairRootManager* fRootManager=FairRootManager::Instance();
+//  FairRootManager* fRootManager=FairRootManager::Instance();
 //  TChain* chain =fRootManager->GetInChain();
 //  Int_t Entries= chain->GetEntriesFast();
 

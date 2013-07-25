@@ -327,7 +327,7 @@ void FairDbTableProxyRegistry::ShowStatistics() const
   for ( std::map<std::string,FairDbTableProxy*>::const_iterator itr = fTPmap.begin();
         itr != fTPmap.end();
         ++itr) {
-    const FairDbTableProxy* tp = (*itr).second;
+//    const FairDbTableProxy* tp = (*itr).second;
     std::string name = (*itr).first;
     if ( name.size() < 40 ) { name.append(40-name.size(),' '); }
     msg << name;

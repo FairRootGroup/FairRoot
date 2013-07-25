@@ -119,7 +119,8 @@ void FairRunAnaProof::Init()
       }
     }
   } else {
-    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+//    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+    fRtdb->getContainer("FairGeoParSet");
   }
 
   if (fInFileIsOpen) {
@@ -350,7 +351,7 @@ void FairRunAnaProof::RunOneEvent(Long64_t entry)
 //_____________________________________________________________________________
 void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 {
-  FairAnaSelector* proofSelector = new FairAnaSelector();
+//  FairAnaSelector* proofSelector = new FairAnaSelector();
 
 
   TChain* inChain = (TChain*)fRootManager->GetInChain();

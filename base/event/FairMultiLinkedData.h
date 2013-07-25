@@ -69,17 +69,17 @@ class FairMultiLinkedData : public  TObject
     virtual void ResetLinks() {fLinks.clear();}                                    ///< Clears fLinks
 
 
-    void Print(std::ostream& out = std::cout) const {
+    void print(std::ostream& out = std::cout) const {
       out << "[";
       for (Int_t i = 0; i < GetNLinks(); i++) {
-        GetLink(i).Print(out);
+        GetLink(i).print(out);
         out << " ";
       }
       out << "]";
     }                                                     ///< Output
 
     friend std::ostream& operator<< (std::ostream& out, const FairMultiLinkedData& data) {
-      data.Print(out);
+      data.print(out);
       return out;
     }                                                     ///< Output
 
