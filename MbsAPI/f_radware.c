@@ -31,10 +31,10 @@
 //*************************************************************
 int f_radware_out1d(char* pc_file, char* pc_name, float* pr_data, int l_chan, int l_over)
 {
-  char c_retmsg[128];
+//  char c_retmsg[128];
   int  i32_fd, i32_bytes, i32_hislen;
-  int  l_status,ll,l_head[6],l_bytes;
-  char* pc,c_str[128];
+  int  l_status,/*ll,*/l_head[6];//,l_bytes;
+  char /**pc,*/c_str[128];
 
   if(l_over) { // delete old file
     strcpy(c_str,"rm ");
@@ -83,9 +83,9 @@ int f_radware_out1d(char* pc_file, char* pc_name, float* pr_data, int l_chan, in
 //*************************************************************
 int f_radware_out2d(char* pc_file, char* pc_name, int* pl_data, int l_chan, int l_over)
 {
-  int   i32_fd, i32_bytes, i32_hislen;
-  int   l_status,ll,l_head[6],l_bytes;
-  char*  pc,c_str[128];
+  int   i32_fd, i32_bytes;//, i32_hislen;
+  int   l_status;//,ll,l_head[6],l_bytes;
+  char /**pc,*/c_str[128];
 
   if(l_over) {
     strcpy(c_str,"rm ");

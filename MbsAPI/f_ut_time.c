@@ -63,7 +63,7 @@
 CHARS*     f_ut_time (CHARS* pc_time)
 {
 
-  time_t    t_time;
+//  time_t    t_time;
   struct timeb tp;
   struct tm st_time;
 

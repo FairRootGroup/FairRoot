@@ -497,8 +497,8 @@ struct s_tcpcomm* ps_client;
 {
 
 
-  INTS4 shut , retval ;
-  INTS4 thirty = 30;
+  INTS4 /*shut,*/ retval ;
+//  INTS4 thirty = 30;
   struct s_tcpcomm s_client;
 
 
@@ -704,8 +704,8 @@ INTS4 f_stc_acceptclient( ps_server , pi_channel)
 struct s_tcpcomm* ps_server;
 INTS4* pi_channel;
 {
-  INTS4 i_socket;
-  struct hostent*  he;
+//  INTS4 i_socket;
+//  struct hostent*  he;
 
 #ifdef GSI__AIX
   *pi_channel = accept( ps_server->sock_rw,
@@ -871,8 +871,8 @@ struct s_tcpcomm* ps_server;
 
 {
 
-  INTS4 retval , i , retry , on ;
-  struct protoent* p;
+  INTS4 retval, /*i,*/ retry, on ;
+//  struct protoent* p;
   struct s_tcpcomm s_server;
 
 
