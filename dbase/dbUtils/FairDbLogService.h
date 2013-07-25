@@ -96,7 +96,7 @@ class SetFairDbLogSVNID
 
 
 
-static struct FairDbLogService::Init __loginit;
+static class FairDbLogService::Init __loginit;
 
 // Utility macros:
 // Macro to concatenate two symbols:

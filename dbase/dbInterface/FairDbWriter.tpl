@@ -179,11 +179,12 @@ Bool_t FairDbWriter<T>::CanOutput(Bool_t reportErrors) const
   if ( ! this->IsOpen(reportErrors) ) { return kFALSE; }
 
   if ( this->NeedsLogEntry() && ! fLogEntry.HasReason() ) {
-    if ( reportErrors )
+    if ( reportErrors ) {
       DBLOG("FairDb",FairDbLog::kError)
           << "Cannot output validity set for table "
           << fTableName
           << ", writing to Master DB but no log comment has been supplied." << endl;
+    }
     return kFALSE;
   }
 
@@ -191,10 +192,11 @@ Bool_t FairDbWriter<T>::CanOutput(Bool_t reportErrors) const
 
   if ( nstmts == 0 ) {
     // not even a VLD insert
-    if ( reportErrors )
+    if ( reportErrors ) {
       DBLOG("FairDb",FairDbLog::kError) << "Cannot output validity set for table "
                                         << fTableName
                                         << ", no data has been written." << endl;
+    }
     return kFALSE;
   }
 
@@ -206,9 +208,10 @@ Bool_t FairDbWriter<T>::CanOutput(Bool_t reportErrors) const
       (stmt.find("INSERT INTO") != string::npos ) &&
       (stmt.find("VLD VALUES")  != string::npos);
     if ( isvldentry ) {
-      if ( reportErrors )
+      if ( reportErrors ) {
         DBLOG("FairDb",FairDbLog::kWarning) << "VAL entry but no data for "
                                             << fTableName << endl;
+      }
     } else {
       // this should never, ever happen ... but let's be paranoid
       if ( reportErrors ) {
@@ -334,10 +337,11 @@ Bool_t FairDbWriter<T>::IsOpen(Bool_t reportErrors) const
     }
   } else if (    !fValidRec
                  ||  fPacket->GetNumSqlStmts() < 1 ) {
-    if ( reportErrors )
+    if ( reportErrors ) {
       DBLOG("FairDb",FairDbLog::kError)   << "Cannot do I/O on FairDbWriter for "
                                           << fTableName
                                           <<", it is currently closed." << endl;
+    }
   } else { return kTRUE; }
 
   return kFALSE;

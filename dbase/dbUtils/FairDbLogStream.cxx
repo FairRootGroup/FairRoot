@@ -232,7 +232,7 @@ FairDbLogStream& FairDbLogStream::operator()(FairDbLog::LogLevel_t priority,
         }
       }
 
-      if ((fmt && FairDbLog::kRunId )) {
+      if ((fmt && (Bool_t)FairDbLog::kRunId )) {
         //UInt_t rid = 0;  FairRuntimeDb::instance()->getCurrentRun()->getRunId();
         this->SetCurrentDateString();
         (*this) << " [" << fCurrentDate << "]";

@@ -446,12 +446,14 @@ Bool_t FairDbSqlValPacket::IsEqual(const FairDbSqlValPacket& that,
   if (    fSeqNo           != that.fSeqNo
           || fTableName       != that.fTableName
           || fNumStmts != that.fNumStmts ) {
-    if ( log )   DBLOG("FairDb",FairDbLog::kInfo) << "Conflict found:"
-          << " for : " << thisName << " , " << thatName << " :-\n"
-          << "  SeqNo " << fSeqNo << "," << that.fSeqNo
-          << "\n  TableName " << fTableName << "," << that.fTableName
-          << "\n  Size " << fNumStmts << ","
-          << that.fNumStmts << endl;
+    if ( log ) {
+      DBLOG("FairDb",FairDbLog::kInfo) << "Conflict found:"
+                                       << " for : " << thisName << " , " << thatName << " :-\n"
+                                       << "  SeqNo " << fSeqNo << "," << that.fSeqNo
+                                       << "\n  TableName " << fTableName << "," << that.fTableName
+                                       << "\n  Size " << fNumStmts << ","
+                                       << that.fNumStmts << endl;
+    }
     return kFALSE;
   }
 
