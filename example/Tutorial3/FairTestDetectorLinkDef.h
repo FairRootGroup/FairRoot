@@ -22,7 +22,7 @@
 #pragma link C++ class FairTestDetectorTimeRecoTask+;
 #pragma link C++ class FairTestDetectorDigiRingSorter+;
 #pragma link C++ class FairTestDetectorDigiSorterTask+;
-#pragma link C++ class TestDetectorDigiLoader;
+//#pragma link C++ class TestDetectorDigiLoader;
 
 
 
