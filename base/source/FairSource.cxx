@@ -4,6 +4,8 @@
 // -----                    Created 12.04.2013 by D.Kresan                 -----
 // -----------------------------------------------------------------------------
 
+#include <iostream>
+
 #include "FairSource.h"
 
 
@@ -41,7 +43,8 @@ void FairSource::Reset()
 
 
 Bool_t FairSource::Unpack(Int_t* data, Int_t size,
-                          Int_t type, Int_t subType)
+                          Short_t type, Short_t subType,
+                          Short_t procId, Short_t subCrate, Short_t control)
 {
   Reset();
 
@@ -49,8 +52,18 @@ Bool_t FairSource::Unpack(Int_t* data, Int_t size,
   for(Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
     unpack = (FairUnpack*)fUnpackers->At(i);
 
-    if(type != unpack->GetType() || subType != unpack->GetSubType()) {
-      continue;
+    if(unpack->GetSubCrate() < 0) { // All sub-crates
+      if(type != unpack->GetType() || subType != unpack->GetSubType() ||
+          procId != unpack->GetProcId() ||
+          control != unpack->GetControl()) {
+        continue;
+      }
+    } else { // specified sub-crate
+      if(type != unpack->GetType() || subType != unpack->GetSubType() ||
+          procId != unpack->GetProcId() || subCrate != unpack->GetSubCrate() ||
+          control != unpack->GetControl()) {
+        continue;
+      }
     }
 
     if(! unpack->DoUnpack(data, size)) {
@@ -62,4 +75,3 @@ Bool_t FairSource::Unpack(Int_t* data, Int_t size,
 
 
 ClassImp(FairSource)
-

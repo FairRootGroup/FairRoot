@@ -27,7 +27,8 @@ class FairSource : public TObject
 
   protected:
     Bool_t Unpack(Int_t* data, Int_t size,
-                  Int_t type, Int_t subType);
+                  Short_t type, Short_t subType,
+                  Short_t procId, Short_t subCrate, Short_t control);
     void Reset();
 
   private:
@@ -39,4 +40,3 @@ class FairSource : public TObject
 
 
 #endif
-

@@ -711,6 +711,9 @@ gNextRecvD:
     pEvt->subEvtSize[0] = pSEvtHead->iMbsSev101_dlen;
     pEvt->subEvtType[0] = pSEvtHead->sMbsSev101_type;
     pEvt->subEvtSubType[0] = pSEvtHead->sMbsSev101_subtype;
+    pEvt->subEvtProcId[0] = pSEvtHead->sMbsSev101_procid;
+    pEvt->subEvtSubCrate[0] = pSEvtHead->cMbsSev101_subcrate;
+    pEvt->subEvtControl[0] = pSEvtHead->cMbsSev101_control;
     pEvt->pSubEvt[0] = (Int_t*) pshort;
 
 
@@ -742,6 +745,9 @@ gNextRecvD:
       pEvt->subEvtSize[ii-1] = pSEvtHead->iMbsSev101_dlen;
       pEvt->subEvtType[ii-1] = pSEvtHead->sMbsSev101_type;
       pEvt->subEvtSubType[ii-1] = pSEvtHead->sMbsSev101_subtype;
+      pEvt->subEvtProcId[ii-1] = pSEvtHead->sMbsSev101_procid;
+      pEvt->subEvtSubCrate[ii-1] = pSEvtHead->cMbsSev101_subcrate;
+      pEvt->subEvtControl[ii-1] = pSEvtHead->cMbsSev101_control;
       pEvt->pSubEvt[ii-1] = (Int_t*) pshort;
 
 

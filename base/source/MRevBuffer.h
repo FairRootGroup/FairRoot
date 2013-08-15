@@ -47,8 +47,11 @@ class REvent : public TObject
 
     Int_t nSubEvt;
     Int_t subEvtSize[100];
-    Int_t subEvtType[100];
-    Int_t subEvtSubType[100];
+    Short_t subEvtType[100];
+    Short_t subEvtSubType[100];
+    Short_t subEvtProcId[100];
+    Short_t subEvtSubCrate[100];
+    Short_t subEvtControl[100];
     Int_t* pSubEvt[100];
 
     ClassDef(REvent, 0)           // prototype for event

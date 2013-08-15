@@ -52,7 +52,9 @@ Bool_t FairRemoteSource::ReadEvent()
 
   for(Int_t i = 0; i < fREvent->nSubEvt; i++) {
     if(! Unpack(fREvent->pSubEvt[i], fREvent->subEvtSize[i],
-                fREvent->subEvtType[i], fREvent->subEvtSubType[i])) {
+                fREvent->subEvtType[i], fREvent->subEvtSubType[i],
+                fREvent->subEvtProcId[i], fREvent->subEvtSubCrate[i],
+                fREvent->subEvtControl[i])) {
       return kFALSE;
     }
   }

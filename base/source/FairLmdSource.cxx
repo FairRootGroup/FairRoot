@@ -109,7 +109,9 @@ Bool_t FairLmdSource::ReadEvent()
   Int_t sebuflength;
   Short_t setype;
   Short_t sesubtype;
-  Char_t sesubcrate;
+  Short_t seprocid;
+  Short_t sesubcrate;
+  Short_t secontrol;
   //Int_t* SubEventDataPtr = new Int_t;
   for(Int_t i = 1; i <= nrSubEvts; i++) {
     void* SubEvtptr = &fxSubEvent;
@@ -122,12 +124,14 @@ Bool_t FairLmdSource::ReadEvent()
     sebuflength = fxSubEvent->l_dlen;
     setype = fxSubEvent->i_type;
     sesubtype = fxSubEvent->i_subtype;
+    seprocid = fxSubEvent->i_procid;
     sesubcrate = fxSubEvent->h_subcrate;
+    secontrol = fxSubEvent->h_control;
     delete nrlongwords;
 
-
     if(! Unpack(fxEventData, sebuflength,
-                setype, sesubtype)) {
+                setype, sesubtype,
+                seprocid, sesubcrate, secontrol)) {
       return kFALSE;
     }
   }

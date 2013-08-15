@@ -14,19 +14,26 @@
 class FairUnpack : public TObject
 {
   public:
-    FairUnpack(Int_t type, Int_t subType);
+    FairUnpack(Short_t type, Short_t subType,
+               Short_t procId, Short_t subCrate, Short_t control);
     virtual ~FairUnpack();
 
     virtual Bool_t Init() = 0;
     virtual Bool_t DoUnpack(Int_t* data, Int_t size) = 0;
     virtual void   Reset() = 0;
 
-    inline Int_t GetType()    const { return fType;    }
-    inline Int_t GetSubType() const { return fSubType; }
+    inline Short_t GetType()    const { return fType;     }
+    inline Short_t GetSubType() const { return fSubType;  }
+    inline Short_t GetProcId()  const { return fProcId;   }
+    inline Short_t GetSubCrate() const { return fSubCrate; }
+    inline Short_t GetControl()  const { return fControl;  }
 
   private:
-    Int_t fType;
-    Int_t fSubType;
+    Short_t fType;
+    Short_t fSubType;
+    Short_t fProcId;
+    Short_t fSubCrate;
+    Short_t fControl;
 
   protected:
     virtual void Register() = 0;
