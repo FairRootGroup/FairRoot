@@ -16,6 +16,12 @@ FairSource::FairSource()
 }
 
 
+FairSource::FairSource(const FairSource& source)
+  :fUnpackers(new TObjArray(*(source.GetUnpackers())))
+{
+}
+
+
 FairSource::~FairSource()
 {
   fUnpackers->Delete();

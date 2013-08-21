@@ -63,13 +63,13 @@ FairRunOnline::FairRunOnline(FairSource* source)
    fIsInitialized(kFALSE),
    fEvtHeader(0),
    fStatic(kFALSE),
-   fField(0)
+   fField(0),
+   fSource(source),
+   fFolder(new TFolder("HISTO", "HISTO")),
+   fGenerateHtml(kFALSE)
 {
   fgRinstance = this;
   fAna = kTRUE;
-  fSource = source;
-  fFolder = new TFolder("HISTO", "HISTO");
-  fGenerateHtml = kFALSE;
 }
 //_____________________________________________________________________________
 
@@ -106,11 +106,11 @@ void FairRunOnline::Init()
     fIsInitialized = kTRUE;
   }
 
-//  FairGeoLoader* loader = new FairGeoLoader("TGeo", "Geo Loader");
-//  FairGeoInterface* GeoInterFace = loader->getGeoInterface();
-//  GeoInterFace->SetNoOfSets(ListOfModules->GetEntries());
-//  GeoInterFace->setMediaFile(MatFname.Data());
-//  GeoInterFace->readMedia();
+  //  FairGeoLoader* loader = new FairGeoLoader("TGeo", "Geo Loader");
+  //  FairGeoInterface* GeoInterFace = loader->getGeoInterface();
+  //  GeoInterFace->SetNoOfSets(ListOfModules->GetEntries());
+  //  GeoInterFace->setMediaFile(MatFname.Data());
+  //  GeoInterFace->readMedia();
 
   // Add a Generated run ID to the FairRunTimeDb
   FairRunIdGenerator genid;
@@ -177,9 +177,9 @@ void FairRunOnline::InitContainers()
     fTask->ReInitTask();
     //    fTask->SetParTask();
     fRtdb->initContainers( fRunId );
-//     if (gGeoManager==0) {
-//       par->GetGeometry();
-//     }
+    //     if (gGeoManager==0) {
+    //       par->GetGeometry();
+    //     }
   }
 }
 //_____________________________________________________________________________

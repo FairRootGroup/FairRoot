@@ -26,9 +26,12 @@ class FairLmdSource : public FairSource
 {
   public:
     FairLmdSource();
+    FairLmdSource(const FairLmdSource& source);
     virtual ~FairLmdSource();
 
     void AddFile(TString fileName);
+    inline const Int_t GetCurrentFile() const { return fCurrentFile; }
+    inline const TList* GetFileNames() const { return fFileNames; }
 
     virtual Bool_t Init();
     virtual Bool_t ReadEvent();

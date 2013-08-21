@@ -17,9 +17,11 @@ class FairSource : public TObject
 {
   public:
     FairSource();
+    FairSource(const FairSource& source);
     virtual ~FairSource();
 
     inline void AddUnpacker(FairUnpack* unpacker) { fUnpackers->Add(unpacker); }
+    inline const TObjArray* GetUnpackers() const { return fUnpackers; }
 
     virtual Bool_t Init();
     virtual Bool_t ReadEvent() = 0;

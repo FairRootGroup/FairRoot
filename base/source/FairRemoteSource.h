@@ -19,11 +19,14 @@ class FairRemoteSource : public FairSource
 {
   public:
     FairRemoteSource(char* node);
+    FairRemoteSource(const FairRemoteSource& source);
     virtual ~FairRemoteSource();
 
     virtual Bool_t Init();
     virtual Bool_t ReadEvent();
     virtual void Close();
+
+    inline const char* GetNode() const { return fNode; }
 
   private:
     char* fNode;

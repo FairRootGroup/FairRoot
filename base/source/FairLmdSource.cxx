@@ -13,10 +13,28 @@ using namespace std;
 
 
 FairLmdSource::FairLmdSource()
-  : FairSource()
+  : FairSource(),
+    fCurrentFile(0),
+    fFileNames(new TList()),
+    fxInputChannel(NULL),
+    fxEvent(NULL),
+    fxBuffer(NULL),
+    fxEventData(NULL),
+    fxSubEvent(NULL)
 {
-  fCurrentFile = 0;
-  fFileNames = new TList();
+}
+
+
+FairLmdSource::FairLmdSource(const FairLmdSource& source)
+  : FairSource(source),
+    fCurrentFile(source.GetCurrentFile()),
+    fFileNames(new TList()),
+    fxInputChannel(NULL),
+    fxEvent(NULL),
+    fxBuffer(NULL),
+    fxEventData(NULL),
+    fxSubEvent(NULL)
+{
 }
 
 
