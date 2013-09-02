@@ -27,16 +27,20 @@ Int_t FairPrimaryGenerator::fTotPrim=0;
 // -----   Default constructor   -------------------------------------------
 FairPrimaryGenerator::FairPrimaryGenerator()
   :TNamed(),
-   fBeamX0(0),
-   fBeamY0(0),
-   fBeamSigmaX(0),
-   fBeamSigmaY(0),
-   fBeamGradX0(0),
-   fBeamGradY0(0),
-   fBeamGradX(0),
-   fBeamGradY(0),
-   fBeamGradSigmaX(0),
-   fBeamGradSigmaY(0),
+   fBeamX0(0.),
+   fBeamY0(0.),
+   fBeamSigmaX(0.),
+   fBeamSigmaY(0.),
+   fBeamAngleX0(0.),
+   fBeamAngleY0(0.),
+   fBeamAngleX(0.),
+   fBeamAngleY(0.),
+   fBeamAngleSigmaX(0.),
+   fBeamAngleSigmaY(0.),
+   fBeamDirection(TVector3(0.,0.,1.)),
+   fPhiMin(0.),
+   fPhiMax(0.),
+   fPhi(0.),
    fTargetZ (new Double_t[1]),
    fNrTargets(1),
    fTargetDz(0),
@@ -45,6 +49,8 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fSmearVertexZ(kFALSE),
    fSmearGausVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
+   fBeamAngle(kFALSE),
+   fEventPlane(kFALSE),
    fStack(NULL),
    fGenList(new TObjArray()),
    fListIter(fGenList->MakeIterator()),
@@ -56,7 +62,6 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fEventMeanTime(0),
    fTimeProb(0),
    fMCIndexOffset(0),
-   fLogger(FairLogger::GetLogger()),
    fEventNr(0)
 {
   fTargetZ[0] = 0.;
@@ -72,12 +77,16 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fBeamY0(0),
    fBeamSigmaX(0),
    fBeamSigmaY(0),
-   fBeamGradX0(0),
-   fBeamGradY0(0),
-   fBeamGradX(0),
-   fBeamGradY(0),
-   fBeamGradSigmaX(0),
-   fBeamGradSigmaY(0),
+   fBeamAngleX0(0),
+   fBeamAngleY0(0),
+   fBeamAngleX(0),
+   fBeamAngleY(0),
+   fBeamAngleSigmaX(0),
+   fBeamAngleSigmaY(0),
+   fBeamDirection(TVector3(0.,0.,1.)),
+   fPhiMin(0.),
+   fPhiMax(0.),
+   fPhi(0.),
    fTargetZ (new Double_t[1]),
    fNrTargets(1),
    fTargetDz(0),
@@ -86,6 +95,8 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fSmearVertexZ(kFALSE),
    fSmearGausVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
+   fBeamAngle(kFALSE),
+   fEventPlane(kFALSE),
    fStack(NULL),
    fGenList(new TObjArray()),
    fListIter(fGenList->MakeIterator()),
@@ -97,7 +108,6 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fEventMeanTime(0),
    fTimeProb(NULL),
    fMCIndexOffset(0),
-   fLogger(FairLogger::GetLogger()),
    fEventNr(0)
 {
   fTargetZ[0] = 0.;
@@ -140,8 +150,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
 {
   // Check for MCEventHeader
   if ( ! fEvent) {
-    fLogger->Fatal(MESSAGE_ORIGIN,"FairPrimaryGenerator::GenerateEvent: No MCEventHeader branch!");
-    Fatal("GenerateEvent", "No MCEventHeader branch");
+    LOG(FATAL)<<"No MCEventHeader branch!"<<FairLogger::endl;
   }
 
   // Initialise
@@ -153,10 +162,20 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
   MakeVertex();
   fEvent->SetVertex(fVertex);
 
-  // Create beam gradiant
-  // Here we only random generate two gradiants (gradx, grady) for the event and later on (in AddTrack())
+  // Create beam angle
+  // Here we only randomly generate two angles (anglex, angley)
+  // for the event and later on (in AddTrack())
   // all our particles will be rotated accordingly.
-  MakeBeamGradiant();
+  if (fBeamAngle) {
+    MakeBeamAngle();
+  }
+
+  // Create event plane
+  // Randomly generate an angle by which each track added (in AddTrack())
+  // to the event is rotated around the z-axis
+  if (fEventPlane) {
+    MakeEventPlane();
+  }
 
   // Call the ReadEvent methods from all registered generators
   fListIter->Reset();
@@ -169,7 +188,8 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
     fMCIndexOffset = fNTracks;// number tracks before generator is called
     Bool_t test = gen->ReadEvent(this);
     if ( ! test ) {
-      fLogger->Error(MESSAGE_ORIGIN,"FairPrimaryGenerator: ReadEvent failed for generator ", genName );
+      LOG(ERROR)<<"ReadEvent failed for generator "<< genName
+                << FairLogger::endl;
       return kFALSE;
     }
   }
@@ -190,8 +210,12 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
     fEventNr++;
     fEvent->SetEventID(fEventNr);
   }
-
-  fLogger->Debug(MESSAGE_ORIGIN,"FairPrimaryGenerator: (Event %i) %i  primary tracks from vertex (%f, %f, %f ) with beam gradiant (%f, %f) Event Time = %f (ns)" ,fEvent->GetEventID(), fNTracks, fVertex.X(), fVertex.Y(), fVertex.Z(), fBeamGradX, fBeamGradY, fEventTime);
+  LOG(DEBUG)<<"(Event " << fEvent->GetEventID()<<") " << fNTracks
+            << " primary tracks from vertex (" << fVertex.X() <<", "
+            << fVertex.Y() << ", " << fVertex.Z()
+            << ") with beam angle (" << fBeamAngleX << ", "
+            << fBeamAngleY <<") Event Time = " << fEventTime <<" (ns)"
+            << FairLogger::endl;
 
   fEvent->SetNPrim(fNTracks);
 
@@ -203,9 +227,11 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
 
 
 // -----   Public method AddTrack   ----------------------------------------
-void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw, Double_t py_raw,
+void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw,
+                                    Double_t py_raw,
                                     Double_t pz_raw, Double_t vx, Double_t vy,
-                                    Double_t vz, Int_t parent,Bool_t wanttracking,Double_t e)
+                                    Double_t vz, Int_t parent,
+                                    Bool_t wanttracking, Double_t e)
 {
 
   // ---> Add event vertex to track vertex
@@ -214,8 +240,21 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw, Double_t py_ra
   vz += fVertex.Z();
 
   TVector3 mom(px_raw, py_raw, pz_raw);
-  mom.RotateX(-fBeamGradY);
-  mom.RotateY(fBeamGradX);
+
+  if (fEventPlane) {
+    // Rotate the track (event) by the randomly generated angle which is fixed
+    // for the complete event.
+    // The coordinate system is not changed by this rotation.
+    mom.RotateZ(fPhi);
+  }
+
+
+
+  if (fBeamAngle) {
+    // Rotate the track (event) from the rotated beam direction system into
+    // the fixed global experiment coordinate system
+    mom.RotateUz(fBeamDirection.Unit());
+  }
 
   // ---> Convert K0 and AntiK0 into K0s and K0L
   if ( pdgid == 311 || pdgid == -311 ) {
@@ -282,17 +321,28 @@ void FairPrimaryGenerator::SetBeam(Double_t x0, Double_t y0,
 }
 // -------------------------------------------------------------------------
 
-// -----   Public method SetBeamGrad   -------------------------------------
-void FairPrimaryGenerator::SetBeamGrad(Double_t beamGradX0, Double_t beamGradY0,
-                                       Double_t beamGradSigmaX, Double_t beamGradSigmaY)
+// -----   Public method SetBeamAngle   -------------------------------------
+void FairPrimaryGenerator::SetBeamAngle(Double_t beamAngleX0,
+                                        Double_t beamAngleY0,
+                                        Double_t beamAngleSigmaX,
+                                        Double_t beamAngleSigmaY)
 {
-  fBeamGradX0 = beamGradX0;
-  fBeamGradY0 = beamGradY0;
-  fBeamGradSigmaX = beamGradSigmaX;
-  fBeamGradSigmaY = beamGradSigmaY;
+  fBeamAngleX0 = beamAngleX0;
+  fBeamAngleY0 = beamAngleY0;
+  fBeamAngleSigmaX = beamAngleSigmaX;
+  fBeamAngleSigmaY = beamAngleSigmaY;
+  fBeamAngle = kTRUE;
 }
-// -------------------------------------------------------------------------
+// ------------------------------------------------------------------------
 
+// -----   Public method SetEventPlane   ----------------------------------
+void FairPrimaryGenerator::SetEventPlane(Double_t phiMin, Double_t phiMax)
+{
+  fPhiMin = phiMin;
+  fPhiMax = phiMax;
+  fEventPlane = kTRUE;
+}
+// ------------------------------------------------------------------------
 
 // -----   Public method SetTarget   ---------------------------------------
 void FairPrimaryGenerator::SetTarget(Double_t z, Double_t dz)
@@ -352,11 +402,19 @@ void FairPrimaryGenerator::MakeVertex()
 }
 // -------------------------------------------------------------------------
 
-// -----   Private method MakeBeamGradiant   -------------------------------
-void FairPrimaryGenerator::MakeBeamGradiant()
+// -----   Private method MakeBeamAngle   -------------------------------
+void FairPrimaryGenerator::MakeBeamAngle()
 {
-  if (fBeamGradSigmaX != 0.) { fBeamGradX = gRandom->Gaus(fBeamGradX0, fBeamGradSigmaX); }
-  if (fBeamGradSigmaY != 0.) { fBeamGradY = gRandom->Gaus(fBeamGradY0, fBeamGradSigmaY); }
+  fBeamAngleX = gRandom->Gaus(fBeamAngleX0, fBeamAngleSigmaX);
+  fBeamAngleY = gRandom->Gaus(fBeamAngleY0, fBeamAngleSigmaY);
+  fBeamDirection.SetXYZ(TMath::Tan(fBeamAngleX),TMath::Tan(fBeamAngleY), 1.);
+}
+// -------------------------------------------------------------------------
+
+// -----   Private method MakeEventPlane   -------------------------------
+void FairPrimaryGenerator::MakeEventPlane()
+{
+  fPhi = gRandom->Uniform(fPhiMin, fPhiMax);
 }
 // -------------------------------------------------------------------------
 

@@ -28,7 +28,6 @@ the tracking from the macro (M. Al-Turany)
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 class FairGenericStack;
-class FairLogger;
 class FairMCEventHeader;
 class TF1;
 class TIterator;
@@ -69,7 +68,7 @@ class FairPrimaryGenerator : public TNamed
         registered generators.
         *@param pStack The particle stack
         *@return kTRUE if successful, kFALSE if not
-    **/
+        **/
     virtual Bool_t GenerateEvent(FairGenericStack* pStack);
 
 
@@ -79,7 +78,7 @@ class FairPrimaryGenerator : public TNamed
         *@param pdgid Particle ID (PDG code)
         *@param px,py,pz Momentum coordinates [GeV]
         *@param vx,vy,vz Track origin relative to event vertex
-    **/
+        **/
     virtual void AddTrack(Int_t pdgid, Double_t px, Double_t py, Double_t pz,
                           Double_t vx, Double_t vy, Double_t vz, Int_t parent=-1,Bool_t wanttracking=true,Double_t e=-9e9);
 
@@ -93,14 +92,22 @@ class FairPrimaryGenerator : public TNamed
     void SetBeam(Double_t beamX0, Double_t beamY0,
                  Double_t beamSigmaX, Double_t beamSigmaY);
 
-    /** Set nominal beam gradiant and gradiant widths.
-     *@param beamGradX0      mean x gradiant of beam at target
-     *@param beamGradY0      mean y gradiant of beam at target
-     *@param beamGradSigmaX  Gaussian beam gradiant width in x
-     *@param beamGradSigmaY  Gaussian beam gradiant width in y
+    /** Set nominal beam angle and angle widths.
+     *@param beamAngleX0      mean x angle of beam at target
+     *@param beamAngleY0      mean y angle of beam at target
+     *@param beamAngleSigmaX  Gaussian beam angle width in x
+     *@param beamAngleSigmaY  Gaussian beam angle width in y
      **/
-    void SetBeamGrad(Double_t beamGradX0, Double_t beamGradY0,
-                     Double_t beamGradSigmaX, Double_t beamGradSigmaY);
+    void SetBeamAngle(Double_t beamAngleX0, Double_t beamAngleY0,
+                      Double_t beamAngleSigmaX, Double_t beamAngleSigmaY);
+
+    /** Public method SetEventPlane
+     **@param phiMin   Lower limit for event plane angle [rad]
+     **@param phiMax   Upper limit for event plane angle [rad]
+     **If set, an event plane angle will be generated with flat
+     **distrtibution between phiMin and phiMax.
+     **/
+    void SetEventPlane(Double_t phiMin, Double_t phiMax);
 
     /** Set target position and thickness.
      *@param targetZ   z position of target center
@@ -159,35 +166,53 @@ class FairPrimaryGenerator : public TNamed
     Double_t    fBeamSigmaX;
     /**  Beam width (Gaussian) in y [cm]*/
     Double_t    fBeamSigmaY;
-    /**  Nominal beam gradiant at target in x [rad]
-      (WARNING: its actually an angle but we call it grad, as it is the same for small angles...)*/
-    Double_t    fBeamGradX0;
-    /**  Nominal beam gradiant at target in y [rad] */
-    Double_t    fBeamGradY0;
-    /**  Actual beam gradiant at target in x [rad] */
-    Double_t    fBeamGradX;
-    /**  Actual beam gradiant at target in y [rad] */
-    Double_t    fBeamGradY;
-    /** Beam gradiant width (Gaussian) in x [rad]*/
-    Double_t    fBeamGradSigmaX;
-    /** Beam gradiant width (Gaussian) in y [rad]*/
-    Double_t    fBeamGradSigmaY;
+
+    /**  Nominal beam angle at target in x [rad] */
+    Double_t    fBeamAngleX0;
+    /**  Nominal beam angle at target in y [rad] */
+    Double_t    fBeamAngleY0;
+    /**  Actual beam angle at target in x [rad] */
+    Double_t    fBeamAngleX;
+    /**  Actual beam angle at target in y [rad] */
+    Double_t    fBeamAngleY;
+    /** Beam angle width (Gaussian) in x [rad]*/
+    Double_t    fBeamAngleSigmaX;
+    /** Beam angle width (Gaussian) in y [rad]*/
+    Double_t    fBeamAngleSigmaY;
+    /** Actual beam direction at the vertex */
+    TVector3    fBeamDirection;
+
+    /** Lower limit for the event plane rotation angle [rad] */
+    Double_t fPhiMin;
+    /** Upper limit for the event plane rotation angle [rad] */
+    Double_t fPhiMax;
+    /** Actual event plane rotation angle [rad] */
+    Double_t fPhi;
+
     /**  Nominal z position of center of targets [cm]*/
     Double_t*   fTargetZ;       //!
     /**  Number of targets;*/
     Int_t       fNrTargets;
     /**  Full target thickness [cm]*/
     Double_t    fTargetDz;
+
     /** Vertex position of current event [cm]*/
     TVector3    fVertex;
+
     /** Number of primary tracks in current event*/
     Int_t       fNTracks;
+
     /**  Flag for uniform vertex smearing in z*/
     Bool_t      fSmearVertexZ;
     /**  Flag for gaus vertex smearing in z*/
     Bool_t      fSmearGausVertexZ;
     /**  Flag for vertex smearing in xy*/
     Bool_t      fSmearVertexXY;
+    /**  Flag for beam gradient calculation*/
+    Bool_t      fBeamAngle;
+    /**  Flag for event plane rotation*/
+    Bool_t      fEventPlane;
+
     /**  Pointer to MC stack*/
     FairGenericStack*   fStack; //!
     /**  List of registered generators */
@@ -210,8 +235,6 @@ class FairPrimaryGenerator : public TNamed
     TF1*        fTimeProb;      //!
     /** Number of MC tracks before a Generator is called, needed for MC index update */
     Int_t       fMCIndexOffset; //!
-    /** Fair Logger */
-    FairLogger*            fLogger;//!
     /** Number of all primaries of this run*/
     static Int_t fTotPrim; //!
     /** Event number (Set by the primary generator if not set already by one of
@@ -230,19 +253,31 @@ class FairPrimaryGenerator : public TNamed
     **/
     void MakeVertex();
 
-    /** Private method MakeBeamGradiant. If beam gradiant smearing in xy is switched on,
-        all tracks in an event are rotated by a Gaussianlike gradiant distribution around
-        the x and y axis according to the mean beam gradiant and gradiant widths set by the
-        SetBeamGrad method. To be called at the beginning of the event from the
-        GenerateEvent method.
+    /** Private method MakeBeamAngle. If beam angle smearing in xy
+    is switched on, all tracks in an event are rotated by a Gaussianlike
+    angle distribution around the x and y axis according to the mean
+    beam angle and angle widths set by the SetBeamAngle method.
+    To be called at the beginning of the event from the GenerateEvent
+    method.
     **/
-    void MakeBeamGradiant();
+    void MakeBeamAngle();
+
+    /** Private method MakeEventPlane. If the rotation of the event around the
+        z-axis by a random angle is switched on, the complete event is rotated
+        by the chosen angle. This function is called at the beginning of the
+        event from the GenerateEvent method. The function pick a random
+        rotation angle between fPhiMin and fPhiMax which are set using the
+        function SetEventPlane.
+    **/
+    void MakeEventPlane();
+
+
 
   private:
     FairPrimaryGenerator(const FairPrimaryGenerator&);
     FairPrimaryGenerator& operator=(const  FairPrimaryGenerator&);
 
-    ClassDef(FairPrimaryGenerator,4);
+    ClassDef(FairPrimaryGenerator,5);
 
 };
 
