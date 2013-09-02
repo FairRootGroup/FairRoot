@@ -47,7 +47,7 @@ class FairModule:  public TNamed
     FairModule(const char* Name, const char* title, Bool_t Active=kFALSE);
     /**default dtor*/
     virtual  ~FairModule();
-    /**Print method sould be implimented in detector or module*/
+    /**Print method should be implemented in detector or module*/
     virtual void        Print(Option_t* option="") const {;}
     /**Set the geometry file name o be used*/
     virtual void        SetGeometryFileName(TString fname, TString geoVer="0");
@@ -126,10 +126,8 @@ class FairModule:  public TNamed
     Int_t               fVerboseLevel;
     TList*              flGeoPar; //!  list of Detector Geometry parameters
     Bool_t              kGeoSaved; //! flag for initialisation
-    /** Fair Logger */
-    FairLogger*            fLogger;//!
 
-    ClassDef( FairModule,3)
+    ClassDef( FairModule,4)
 };
 
 template<class T, class U>
