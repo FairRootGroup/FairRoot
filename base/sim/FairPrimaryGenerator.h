@@ -143,15 +143,6 @@ class FairPrimaryGenerator : public TNamed
 
     void DoTracking(Bool_t doTracking= kTRUE) {fdoTracking=doTracking ;}
 
-    /** Set the min and max limit for event time in ns */
-    void SetEventTimeInterval(Double_t min, Double_t max);
-
-    /** Set the mean time for the event in ns */
-    void SetEventMeanTime(Double_t mean);
-
-    /** Set the time function for event */
-    void SetEventTime(TF1* timeProb);
-
     Int_t GetTotPrimary() { return fTotPrim;}
 
 
@@ -223,16 +214,6 @@ class FairPrimaryGenerator : public TNamed
     FairMCEventHeader* fEvent;  //!
     /** go to tracking  */
     Bool_t      fdoTracking;    //!
-    /** min time for one event (ns) */
-    Double_t    fEventTimeMin;  //!
-    /** max time for one Event (ns) */
-    Double_t    fEventTimeMax;  //!
-    /** Time of event since th start (ns) */
-    Double_t    fEventTime;     //!
-    /** EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime) */
-    Double_t    fEventMeanTime; //!
-    /** used to generate random numbers for event time; */
-    TF1*        fTimeProb;      //!
     /** Number of MC tracks before a Generator is called, needed for MC index update */
     Int_t       fMCIndexOffset; //!
     /** Number of all primaries of this run*/

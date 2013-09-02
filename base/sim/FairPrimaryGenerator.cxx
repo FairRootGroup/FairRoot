@@ -56,11 +56,6 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fListIter(fGenList->MakeIterator()),
    fEvent(NULL),
    fdoTracking(kTRUE),
-   fEventTimeMin(0),
-   fEventTimeMax(0),
-   fEventTime(0),
-   fEventMeanTime(0),
-   fTimeProb(0),
    fMCIndexOffset(0),
    fEventNr(0)
 {
@@ -102,11 +97,6 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fListIter(fGenList->MakeIterator()),
    fEvent(NULL),
    fdoTracking(kTRUE),
-   fEventTimeMin(0),
-   fEventTimeMax(0),
-   fEventTime(0),
-   fEventMeanTime(0),
-   fTimeProb(NULL),
    fMCIndexOffset(0),
    fEventNr(0)
 {
@@ -138,7 +128,6 @@ FairPrimaryGenerator::~FairPrimaryGenerator()
   delete fGenList;
   delete fListIter;
 
-  delete fTimeProb;
   //  cout<<"Leave Destructor of FairPrimaryGenerator"<<endl;
 }
 // -------------------------------------------------------------------------
@@ -194,14 +183,6 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
     }
   }
 
-  if(fTimeProb!=0) {
-    fEventTime = fEventTime + fTimeProb->GetRandom();
-  } else {
-    fEventTime = fEventTime + gRandom->Uniform( fEventTimeMin,  fEventTimeMax);
-  }
-
-  fEvent->SetTime(fEventTime);
-
   fTotPrim += fNTracks;
   // Screen output
 
@@ -214,8 +195,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack* pStack)
             << " primary tracks from vertex (" << fVertex.X() <<", "
             << fVertex.Y() << ", " << fVertex.Z()
             << ") with beam angle (" << fBeamAngleX << ", "
-            << fBeamAngleY <<") Event Time = " << fEventTime <<" (ns)"
-            << FairLogger::endl;
+            << fBeamAngleY <<") " << FairLogger::endl;
 
   fEvent->SetNPrim(fNTracks);
 
@@ -417,42 +397,6 @@ void FairPrimaryGenerator::MakeEventPlane()
   fPhi = gRandom->Uniform(fPhiMin, fPhiMax);
 }
 // -------------------------------------------------------------------------
-
-void FairPrimaryGenerator::SetEventTimeInterval(Double_t min, Double_t max)
-{
-  fEventTimeMin=min;
-  fEventTimeMax=max;
-
-}
-// -------------------------------------------------------------------------
-
-void  FairPrimaryGenerator::SetEventMeanTime(Double_t mean)
-{
-  fEventMeanTime =mean;
-  TString form="(1/";
-  form+= mean;
-  form+=")*exp(-x/";
-  form+=mean;
-  form+=")";
-  fTimeProb= new TF1("TimeProb.", form.Data(), 0., mean*10);
-
-}
-// -------------------------------------------------------------------------
-
-
-void  FairPrimaryGenerator::SetEventTime(TF1* timeProb)
-{
-  if (timeProb!=0) {
-    fTimeProb= timeProb;
-  } else {
-    cout << " \033[5m\033[31m -E FairPrimaryGenerator: invalid time function, Event time is not SET \033[0m " << endl;
-  }
-}
-
-
-
-
-
 
 ClassImp(FairPrimaryGenerator)
 
