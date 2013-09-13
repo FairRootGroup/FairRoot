@@ -5,10 +5,8 @@
 
 
 FairTestNewOutputHandler::FairTestNewOutputHandler( bool captureStdErr, bool captureStdOut )
-  : old_cout(std::cout.rdbuf()),
-    old_cerr(std::cerr.rdbuf()),
-    //    fCout(),
-    //    fCerr(),
+  : old_cout(std::cout.rdbuf()),  // backup orig cout streambuf in any case
+    old_cerr(std::cerr.rdbuf()),  // backup orig cout streambuf in any case
     output(),
     fLineVector(),
     fCaptureEnded(false),
@@ -16,20 +14,18 @@ FairTestNewOutputHandler::FairTestNewOutputHandler( bool captureStdErr, bool cap
     fCaptureStdErr(captureStdErr)
 {
   if (fCaptureStdOut) {
-    //    fCout.Set(output.rdbuf());
-    std::cout.rdbuf(output.rdbuf());         // assign streambuf to cerr
+    std::cout.rdbuf(output.rdbuf());  // assign boost test streambuf to cout
   }
   if (fCaptureStdErr) {
-    //    fCerr.Set(output.rdbuf());
-    std::cerr.rdbuf(output.rdbuf());         // assign streambuf to cerr
+    std::cerr.rdbuf(output.rdbuf());  // assign boost test streambuf to cout
   }
 
 }
 
 FairTestNewOutputHandler::~FairTestNewOutputHandler()
 {
-  std::cout.rdbuf(old_cout);         // assign streambuf to cerr
-  std::cerr.rdbuf(old_cerr);         // assign streambuf to cerr
+  std::cout.rdbuf(old_cout);         // reset original cout streambuf
+  std::cerr.rdbuf(old_cerr);         // reset original cerr streambuf
 }
 
 std::string FairTestNewOutputHandler::GetCaptureLine(int line)
@@ -47,12 +43,11 @@ int FairTestNewOutputHandler::GetNumberOfLines()
 void FairTestNewOutputHandler::Split()
 {
   if (!fCaptureEnded) {
-    //   fCout.Reset();
-    //    fCerr.Reset();
-    std::cout.rdbuf(old_cout);         // assign streambuf to cerr
-    std::cerr.rdbuf(old_cerr);         // assign streambuf to cerr
-    std::string s = output.str();
+    std::cout.rdbuf(old_cout); // when capturing cout and cerr is finished
+    std::cerr.rdbuf(old_cerr); // reset original setting
 
+    // split the string buffer on new lines
+    std::string s = output.str();
     boost::split(fLineVector, s, boost::algorithm::is_any_of("\n"));
     fCaptureEnded=true;
   }
