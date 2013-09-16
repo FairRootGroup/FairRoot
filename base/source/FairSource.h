@@ -24,7 +24,7 @@ class FairSource : public TObject
     inline const TObjArray* GetUnpackers() const { return fUnpackers; }
 
     virtual Bool_t Init();
-    virtual Bool_t ReadEvent() = 0;
+    virtual Int_t ReadEvent() = 0;
     virtual void Close() = 0;
 
   protected:

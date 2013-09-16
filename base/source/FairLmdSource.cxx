@@ -98,29 +98,31 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
 }
 
 
-Bool_t FairLmdSource::ReadEvent()
+Int_t FairLmdSource::ReadEvent()
 {
   void* evtptr = &fxEvent;
   void* buffptr = &fxBuffer;
 
-  Int_t status = f_evt_get_event(fxInputChannel, (Int_t**)evtptr,(Int_t**) buffptr);
+  Int_t status = f_evt_get_event(fxInputChannel, (INTS4**)evtptr,(INTS4**) buffptr);
   //Int_t fuEventCounter = fxEvent->l_count;
   //Int_t fCurrentMbsEventNo = fuEventCounter;
 
   if(0 != status) {
+    if(3 == status) {
+      Close();
+    }
+
     if(fCurrentFile >= fFileNames->GetSize()) {
-      return kFALSE;
+      return 1;
     }
 
     TString name = ((TObjString*)fFileNames->At(fCurrentFile))->GetString();
     if(! OpenNextFile(name)) {
-      return kFALSE;
+      return 1;
     } else {
       fCurrentFile += 1;
       return ReadEvent();
     }
-
-    return kFALSE;
   }
 
   Int_t nrSubEvts = f_evt_get_subevent(fxEvent, 0, NULL, NULL, NULL);
@@ -130,14 +132,14 @@ Bool_t FairLmdSource::ReadEvent()
   Short_t seprocid;
   Short_t sesubcrate;
   Short_t secontrol;
-  //Int_t* SubEventDataPtr = new Int_t;
+//  Int_t* SubEventDataPtr = new Int_t;
   for(Int_t i = 1; i <= nrSubEvts; i++) {
     void* SubEvtptr = &fxSubEvent;
     void* EvtDataptr = &fxEventData;
     Int_t* nrlongwords = new Int_t;
     status = f_evt_get_subevent(fxEvent, i, (Int_t**)SubEvtptr, (Int_t**)EvtDataptr, nrlongwords);
     if(status) {
-      return kFALSE;
+      return 1;
     }
     sebuflength = fxSubEvent->l_dlen;
     setype = fxSubEvent->i_type;
@@ -150,11 +152,11 @@ Bool_t FairLmdSource::ReadEvent()
     if(! Unpack(fxEventData, sebuflength,
                 setype, sesubtype,
                 seprocid, sesubcrate, secontrol)) {
-      return kFALSE;
+      return 2;
     }
   }
 
-  return kTRUE;
+  return 0;
 }
 
 

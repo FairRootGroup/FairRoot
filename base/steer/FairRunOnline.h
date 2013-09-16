@@ -10,7 +10,6 @@
  */
 
 #include "FairRun.h"
-#include "FairRunInfo.h"
 #include "FairRootManager.h"
 
 #include "TString.h"
@@ -63,7 +62,6 @@ class FairRunOnline : public FairRun
   private:
     FairRunOnline(const FairRunOnline& M);
     FairRunOnline& operator= (const  FairRunOnline&) { return *this; }
-    FairRunInfo fRunInfo;//!
 
   protected:
     /** This variable became true after Init is called*/

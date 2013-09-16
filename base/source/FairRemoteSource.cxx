@@ -54,12 +54,12 @@ Bool_t FairRemoteSource::Init()
 }
 
 
-Bool_t FairRemoteSource::ReadEvent()
+Int_t FairRemoteSource::ReadEvent()
 {
   fREvent = fBuffer->RevGet(fSocket, 0, 0);
   fBuffer->RevStatus(0);
   if(! fREvent) {
-    return kFALSE;
+    return 1;
   }
 
   for(Int_t i = 0; i < fREvent->nSubEvt; i++) {
@@ -67,11 +67,11 @@ Bool_t FairRemoteSource::ReadEvent()
                 fREvent->subEvtType[i], fREvent->subEvtSubType[i],
                 fREvent->subEvtProcId[i], fREvent->subEvtSubCrate[i],
                 fREvent->subEvtControl[i])) {
-      return kFALSE;
+      return 2;
     }
   }
 
-  return kTRUE;
+  return 0;
 }
 
 

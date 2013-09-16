@@ -59,7 +59,6 @@ FairRunOnline* FairRunOnline::Instance()
 //_____________________________________________________________________________
 FairRunOnline::FairRunOnline(FairSource* source)
   :FairRun(),
-   fRunInfo(),
    fIsInitialized(kFALSE),
    fEvtHeader(0),
    fStatic(kFALSE),
@@ -89,6 +88,7 @@ FairRunOnline::~FairRunOnline()
     delete fSource;
   }
   if(fFolder) {
+    fFolder->Delete();
     delete fFolder;
   }
 }
@@ -191,29 +191,35 @@ void FairRunOnline::Run(Int_t nev, Int_t dummy)
 {
   fOutFile->cd();
 
-  fRunInfo.Reset();
-
+  Int_t status;
   if(nev < 0) {
-    return;
-  } else {
-    for (Int_t i = 0; i < nev; i++) {
-      if(! fSource->ReadEvent()) {
-        continue;
+    while(kTRUE) {
+      status = fSource->ReadEvent();
+      if(1 == status) {
+        break;
       }
       fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
       fTask->ExecuteTask("");
       fRootManager->Fill();
       fRootManager->DeleteOldWriteoutBufferData();
       fTask->FinishEvent();
-      fRunInfo.StoreInfo();
+    }
+  } else {
+    for (Int_t i = 0; i < nev; i++) {
+      status = fSource->ReadEvent();
+      if(1 == status) {
+        break;
+      }
+      fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
+      fTask->ExecuteTask("");
+      fRootManager->Fill();
+      fRootManager->DeleteOldWriteoutBufferData();
+      fTask->FinishEvent();
     }
   }
 
   fRootManager->StoreAllWriteoutBufferData();
   fTask->FinishTask();
-  if (fWriteRunInfo) {
-    fRunInfo.WriteInfo();
-  }
   fRootManager->LastFill();
   fRootManager->Write();
 
@@ -269,6 +275,7 @@ void FairRunOnline::GenerateHtml()
            << "</body>" << endl
            << "</html>" << endl;
   ofile->close();
+  delete ofile;
 }
 //_____________________________________________________________________________
 
