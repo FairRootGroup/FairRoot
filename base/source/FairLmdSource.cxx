@@ -107,13 +107,13 @@ Int_t FairLmdSource::ReadEvent()
   //Int_t fuEventCounter = fxEvent->l_count;
   //Int_t fCurrentMbsEventNo = fuEventCounter;
 
-  if(0 != status) {
-    if(3 == status) {
-      Close();
-    }
-
+  if(GETEVT__SUCCESS != status) {
     if(fCurrentFile >= fFileNames->GetSize()) {
       return 1;
+    }
+
+    if(GETEVT__NOMORE == status) {
+      Close();
     }
 
     TString name = ((TObjString*)fFileNames->At(fCurrentFile))->GetString();
