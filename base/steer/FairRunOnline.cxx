@@ -139,6 +139,7 @@ void FairRunOnline::Init()
 
   fRootManager->WriteFileHeader(fFileHeader);
 
+  fTask->SetParTask();
   fRtdb->initContainers(fRunId);
 
   // Initialize the source
