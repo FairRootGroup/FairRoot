@@ -73,7 +73,8 @@ void Util::BinFromHex(
   hexStringStream >> std::hex;
   for(size_t strIndex = 0, dataIndex = 0; strIndex < length; ++dataIndex) {
     // Read out and convert the string two characters at a time
-    const char tmpStr[3] = { in[strIndex++], in[strIndex++], 0 };
+    const char tmpStr[3] = { in[strIndex], in[strIndex+1], 0 };
+    strIndex += 2;
 
     // Reset and fill the string stream
     hexStringStream.clear();
