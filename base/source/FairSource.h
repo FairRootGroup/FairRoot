@@ -27,11 +27,12 @@ class FairSource : public TObject
     virtual Int_t ReadEvent() = 0;
     virtual void Close() = 0;
 
+    void Reset();
+
   protected:
     Bool_t Unpack(Int_t* data, Int_t size,
                   Short_t type, Short_t subType,
                   Short_t procId, Short_t subCrate, Short_t control);
-    void Reset();
 
   private:
     TObjArray* fUnpackers;

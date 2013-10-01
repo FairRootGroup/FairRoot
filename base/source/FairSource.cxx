@@ -52,8 +52,6 @@ Bool_t FairSource::Unpack(Int_t* data, Int_t size,
                           Short_t type, Short_t subType,
                           Short_t procId, Short_t subCrate, Short_t control)
 {
-  Reset();
-
   FairUnpack* unpack;
   for(Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
     unpack = (FairUnpack*)fUnpackers->At(i);

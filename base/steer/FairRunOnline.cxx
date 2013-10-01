@@ -196,6 +196,7 @@ void FairRunOnline::Run(Int_t nev, Int_t dummy)
   Int_t status;
   if(nev < 0) {
     while(kTRUE) {
+      fSource->Reset();
       status = fSource->ReadEvent();
       if(1 == status) {
         break;
@@ -208,6 +209,7 @@ void FairRunOnline::Run(Int_t nev, Int_t dummy)
     }
   } else {
     for (Int_t i = 0; i < nev; i++) {
+      fSource->Reset();
       status = fSource->ReadEvent();
       if(1 == status) {
         break;
