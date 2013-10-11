@@ -29,7 +29,7 @@ TEST(FairToolsTestFatal, TestFatalError)
 {
   FairLogger* fLogger;
   fLogger = FairLogger::GetLogger();
-  fLogger->SetScreenStreamToCerr(true);
+  //  fLogger->SetScreenStreamToCerr(true);
   EXPECT_DEATH(fLogger->Fatal(MESSAGE_ORIGIN, "This is a fatal problem"),
                "FATAL");
   // TODO: check if cored dump is written to file
@@ -71,7 +71,7 @@ template <class T> class _TestFairLoggerBase : public T
       fLogger->SetLogFileLevel("INFO");
       fLogger->SetLogScreenLevel("INFO");
       fLogger->SetLogVerbosityLevel("LOW");
-      fLogger->SetScreenStreamToCerr(true);
+      //      fLogger->SetScreenStreamToCerr(true);
     }
 
     void LogNoArguments() {
