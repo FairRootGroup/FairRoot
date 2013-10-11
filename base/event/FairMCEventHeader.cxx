@@ -20,7 +20,10 @@ FairMCEventHeader::FairMCEventHeader()
     fT (0.),
     fB (0.),
     fNPrim(0),
-    fIsSet(kFALSE)
+    fIsSet(kFALSE),
+    fRotX (0.),
+    fRotY (0.),
+    fRotZ (0.)
 
 {
 }
@@ -39,7 +42,10 @@ FairMCEventHeader::FairMCEventHeader(UInt_t runId)
     fT (0.),
     fB (0.),
     fNPrim(0),
-    fIsSet(kFALSE)
+    fIsSet(kFALSE),
+    fRotX (0.),
+    fRotY (0.),
+    fRotZ (0.)
 
 {
 }
@@ -60,7 +66,10 @@ FairMCEventHeader::FairMCEventHeader(Int_t iEvent, Double_t x, Double_t y,
     fT (t),
     fB (b),
     fNPrim(nPrim),
-    fIsSet(kFALSE)
+    fIsSet(kFALSE),
+    fRotX (0.),
+    fRotY (0.),
+    fRotZ (0.)
 
 {
 }
@@ -83,6 +92,7 @@ void FairMCEventHeader::Reset()
   fNPrim = 0;
   fX = fY = fZ = fT = fB = 0.;
   fIsSet = kFALSE;
+  fRotX = fRotY = fRotZ = 0.;
 }
 // ------------------------------------------------------------------------
 

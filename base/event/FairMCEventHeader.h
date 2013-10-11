@@ -52,6 +52,9 @@ class FairMCEventHeader : public TNamed
     Double_t GetB()     const { return fB; }         /// impact parameter [fm]
     Int_t GetNPrim()    const { return fNPrim; }     /// number of input tracks
     Bool_t IsSet()      const { return fIsSet; }     /// Flag
+    Double_t GetRotX()     const { return fRotX; } /// rot. around x-axis [rad]
+    Double_t GetRotY()     const { return fRotY; } /// rot. around y-axis [rad]
+    Double_t GetRotZ()     const { return fRotZ; } /// rot. around z-axis [rad]
 
     void GetVertex(TVector3& vertex) { vertex.SetXYZ(fX, fY, fZ); }
 
@@ -65,7 +68,9 @@ class FairMCEventHeader : public TNamed
     void MarkSet(Bool_t isSet)     { fIsSet = isSet; }
     void SetVertex(Double_t x, Double_t y, Double_t z);
     void SetVertex(const TVector3& vertex);
-
+    void SetRotX(Double_t rotx) { fRotX = rotx; }
+    void SetRotY(Double_t roty) { fRotY = roty; }
+    void SetRotZ(Double_t rotz) { fRotZ = rotz; }
 
     /** Reset all members **/
     void Reset();
@@ -85,9 +90,12 @@ class FairMCEventHeader : public TNamed
     Double32_t fB;           ///  Impact parameter [fm] (if relevant)
     Int_t      fNPrim;       ///  Number of input tracks
     Bool_t     fIsSet;       ///  Flag whether variables are filled
+    Double32_t fRotX;        ///  Rotation around x-axis (beam tilt) [rad]
+    Double32_t fRotY;        ///  Rotation around y-axis (beam tilt) [rad]
+    Double32_t fRotZ;        ///  Rotation around z-axis (event plane) [rad]
 
 
-    ClassDef(FairMCEventHeader,1);
+    ClassDef(FairMCEventHeader,2);
 
 };
 

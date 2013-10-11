@@ -388,6 +388,8 @@ void FairPrimaryGenerator::MakeBeamAngle()
   fBeamAngleX = gRandom->Gaus(fBeamAngleX0, fBeamAngleSigmaX);
   fBeamAngleY = gRandom->Gaus(fBeamAngleY0, fBeamAngleSigmaY);
   fBeamDirection.SetXYZ(TMath::Tan(fBeamAngleX),TMath::Tan(fBeamAngleY), 1.);
+  fEvent->SetRotX(fBeamAngleX);
+  fEvent->SetRotY(fBeamAngleY);
 }
 // -------------------------------------------------------------------------
 
@@ -395,6 +397,7 @@ void FairPrimaryGenerator::MakeBeamAngle()
 void FairPrimaryGenerator::MakeEventPlane()
 {
   fPhi = gRandom->Uniform(fPhiMin, fPhiMax);
+  fEvent->SetRotZ(fPhi);
 }
 // -------------------------------------------------------------------------
 
