@@ -17,7 +17,7 @@ using namespace std;
 
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorDigiTask::FairTestDetectorDigiTask():
-  FairTask(),
+  FairTask("TestDetectorDigTask"),
   fTimeResolution(0.),
   fPointArray(NULL),
   fDigiArray(NULL)
