@@ -17,6 +17,8 @@ project(FAIRROOT)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
 
+SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/example)
+
 # Check if the compiler support specific C++11 features
 # Up to now this is only a check since the code does not use
 # any of the features of the new standard
@@ -164,14 +166,6 @@ if(IWYU_FOUND)
 
 endif(IWYU_FOUND)
 
-if(NOT FAIRROOT_MINIMAL)
-  WRITE_CONFIG_FILE(config.sh)
-  WRITE_CONFIG_FILE(config.csh)
-  WRITE_CONFIG_FILE(config.sh_install)
-  WRITE_CONFIG_FILE(config.csh_install)
-else(NOT FAIRROOT_MINIMAL)
-  WRITE_MINIMAL_CONFIG_FILE(config.sh)
-endif(NOT FAIRROOT_MINIMAL)
 
 Option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
 If(BUILD_UNITTESTS)
@@ -205,3 +199,15 @@ Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
         RENAME config.csh
        )
 
+if(NOT FAIRROOT_MINIMAL)
+
+  WRITE_CONFIG_FILE(config.sh)
+  WRITE_CONFIG_FILE(config.csh)
+
+  SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase)
+  WRITE_CONFIG_FILE(config.sh_install)
+  WRITE_CONFIG_FILE(config.csh_install)
+
+else(NOT FAIRROOT_MINIMAL)
+  WRITE_MINIMAL_CONFIG_FILE(config.sh)
+endif(NOT FAIRROOT_MINIMAL)
