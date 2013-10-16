@@ -209,7 +209,7 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
 
 // Deal with key/index/constraint.
 // nothing here done
-  if ( fTableName == "GLOBALSEQNO" ||  fTableName == "LOCALSEQNO" ) {
+  if ( fTableName == "FAIRDBGLOBALSEQNO" ||  fTableName == "FAIRDBLOCALSEQNO" ) {
     sql << ")";
   }
 
