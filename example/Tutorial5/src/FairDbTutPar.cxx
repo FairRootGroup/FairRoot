@@ -3,12 +3,13 @@
 #include "FairDb.h"                     // for GetValDescr
 #include "FairDbConnection.h"           // for FairDbConnection
 #include "FairDbExceptionLog.h"         // for FairDbExceptionLog
-#include "FairDbMultConnector.h"        // for FairDbMultConnector
-#include "FairDbOutRowStream.h"         // for FairDbOutRowStream
-#include "FairDbResPtr.h"               // for FairDbResultPtr
+#include "FairDbConnectionPool.h"        // for FairDbConnectionPool
+#include "FairDbOutTableBuffer.h"         // for FairDbOutRowStream
+#include "FairDbReader.h"               // for FairDbReader
 #include "FairDbResult.h"               // for FairDbResultSet
 #include "FairDbStatement.h"            // for FairDbStatement
-#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairDbTableInterfaceStore.h"   // for FairDbTableInterfaceStore
+#include "FairDbValRecord.h"
 #include "FairDbWriter.h"               // for FairDbWriter
 #include "FairParamList.h"              // for FairParamList
 
@@ -20,14 +21,13 @@
 #include <memory>                       // for auto_ptr, etc
 #include <vector>                       // for vector, vector<>::iterator
 
-class FairDbValidityRec;
 
 using namespace std;
 
 ClassImp(FairDbTutPar);
 
-#include "FairDbResPtr.tpl"
-template class  FairDbResultPtr<FairDbTutPar>;
+#include "FairDbReader.tpl"
+template class  FairDbReader<FairDbTutPar>;
 
 #include "FairDbWriter.tpl"
 template class  FairDbWriter<FairDbTutPar>;
@@ -103,16 +103,16 @@ void FairDbTutPar::Print()
 
 
 
-void FairDbTutPar::Fill(FairDbResultSet& rs,
-                        const FairDbValidityRec* vrec)
+void FairDbTutPar::Fill(FairDbResultPool& rs,
+                        const FairDbValRecord* vrec)
 {
-  //  cout << " -I- FairDbTutPar::Fill(xxx) called " << endl;
+  // cout << " -I- FairDbTutPar::Fill(xxx) called " << endl;
   rs >> fTopPitch  >> fTopAnchor   >> fTopNrFE  >> fFeType;
   // cout << " -I- FairDbTutPar::Filled(xxx) called values===> " << fTopPitch << " : " << fTopAnchor << " : " << fTopNrFE << " : " << fFeType << endl;
 }
 
-void FairDbTutPar::Store(FairDbOutRowStream& ors,
-                         const FairDbValidityRec* vrec) const
+void FairDbTutPar::Store(FairDbOutTableBuffer& ors,
+                         const FairDbValRecord* vrec) const
 {
 
   // cout << " -I- FairDbTutPar::Store(xxx) called  " << fTopPitch << " : " << fTopAnchor << " : " << fTopNrFE << " : " << fFeType << endl;
@@ -121,12 +121,12 @@ void FairDbTutPar::Store(FairDbOutRowStream& ors,
 }
 
 
-void FairDbTutPar::Fill(UInt_t rid)
+void FairDbTutPar::fill(UInt_t rid)
 {
 
   ValTimeStamp ts(rid);
-  ValContext context(Detector::kGfi,SimFlag::kData,ts);
-  FairDbResultPtr<FairDbTutPar> rsCal(context, GetVersion());
+  ValCondition context(Detector::kGfi,DataType::kData,ts);
+  FairDbReader<FairDbTutPar> rsCal(context, GetVersion());
   Int_t numRows = rsCal.GetNumRows();
 
 
@@ -151,14 +151,14 @@ void FairDbTutPar::Fill(UInt_t rid)
 }
 
 
-void FairDbTutPar::Store(UInt_t rid)
+void FairDbTutPar::store(UInt_t rid)
 {
   // In this example we are fixing the database entry point. In the future
   // a variable entry can be set via the runtime DB directly.
   Int_t dbEntry = 0;
   Bool_t fail= kFALSE;
 
-  FairDbMultConnector* fMultConn = FairDbTableProxyRegistry::Instance().fMultConnector;
+  FairDbConnectionPool* fMultConn = FairDbTableInterfaceStore::Instance().fConnectionPool;
   auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(dbEntry));
   if ( ! stmtDbn.get() ) {
     cout << "-E-  FairDbTutPar::Store()  Cannot get a statement for cascade entry " << dbEntry
@@ -207,10 +207,6 @@ void FairDbTutPar::Store(UInt_t rid)
     fail = true;
     cout << "-E- FairDbTutPar::Store()  Cannot do IO on class# " << GetName() <<  endl;
   }
-
-
-  // Print Info on the Central Log
-  FairDbExceptionLog::GetGELog().Print();
 
   // end of store()
 }
