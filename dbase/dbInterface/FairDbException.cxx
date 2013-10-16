@@ -49,17 +49,13 @@ FairDbException::FairDbException(const FairDbException& that)
     fErrorCode(that.fErrorCode),
     fDbType(that.fDbType)
 {
-
-
   *this = that;
-
 }
 
 
 
 FairDbException::~FairDbException()
 {
-
 
 }
 
@@ -68,7 +64,7 @@ std::ostream& operator<<(std::ostream& os, const FairDbException& e)
 {
 
   os << "Error " << e.GetErrorCode()
-     << " (" << e.GetMessage() << ") from DB type " << e.GetDbType() << endl;
+     << " (" << e.GetMessage() << ") from DB index# " << e.GetDbType() << endl;
   return os;
 
 }
