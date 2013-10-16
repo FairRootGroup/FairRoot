@@ -5,16 +5,16 @@
 #include <iomanip>
 #include <cstdlib>
 
-#include "FairDbLogBoundFormat.h"
+#include "FairDbLogBFormat.h"
 
 using namespace std;
 
 // declare operator function
-ostream& operator<<(ostream&, const FairDbLogBoundFormat&);
+ostream& operator<<(ostream&, const FairDbLogBFormat&);
 
 class FairDbLogFormat
 {
-    friend ostream& operator<<(ostream&, const FairDbLogBoundFormat&);
+    friend ostream& operator<<(ostream&, const FairDbLogBFormat&);
   public:
 
 #if __GNUC__ == 3 && __GNUC_MINOR__ >= 4
@@ -35,8 +35,8 @@ class FairDbLogFormat
       prc(p), wdt(w), fmt(static_cast<fmtflags>(0)), flc(' ') { }
     FairDbLogFormat(const char* f);
 
-    FairDbLogBoundFormat operator()(double d) const {
-      return FairDbLogBoundFormat(*this,d);
+    FairDbLogBFormat operator()(double d) const {
+      return FairDbLogBFormat(*this,d);
     }
 
     FairDbLogFormat& fixed()      { fmt=ios::fixed;      return *this;}
