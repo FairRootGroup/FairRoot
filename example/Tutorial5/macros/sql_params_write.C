@@ -44,10 +44,13 @@ Int_t  sql_params_write()
   db->setOutput(inp2);
   db->writeContainers();
 
+
+
   cout << endl;
   cout << "-I-  FAIRDB: RuntimeDB Parameters succesfully written to DB with RunID# " << runId << endl;
   cout << endl;
 
 
+  if (db) delete db;
   return 0;
 }
