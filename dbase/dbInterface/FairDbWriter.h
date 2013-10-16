@@ -6,13 +6,13 @@
 
 #include "FairDb.h"
 #include "FairDbLogEntry.h"
-#include "FairDbTableProxyRegistry.h"
-#include "ValRange.h"
+#include "FairDbTableInterfaceStore.h"
+#include "ValInterval.h"
 #include "ValTimeStamp.h"
 
-class FairDbSqlValPacket;
-class FairDbTableProxy;
-class FairDbValidityRec;
+class FairDbSqlValidityData;
+class FairDbTableInterface;
+class FairDbValRecord;
 
 template <class T> class FairDbWriter
 {
@@ -21,7 +21,7 @@ template <class T> class FairDbWriter
 
     FairDbWriter();
 
-    FairDbWriter(const ValRange& vr,
+    FairDbWriter(const ValInterval& vr,
                  Int_t aggNo,
                  FairDb::Version task,
                  ValTimeStamp creationDate,
@@ -29,7 +29,7 @@ template <class T> class FairDbWriter
                  const std::string& logComment = "",
                  const std::string& tableName = "");
 
-    FairDbWriter(const ValRange& vr,
+    FairDbWriter(const ValInterval& vr,
                  Int_t aggNo,
                  FairDb::Version task = 0,
                  ValTimeStamp creationDate = ValTimeStamp(0,0),
@@ -37,18 +37,18 @@ template <class T> class FairDbWriter
                  const std::string& logComment = "",
                  const std::string& tableName = "");
 
-    FairDbWriter(const FairDbValidityRec& vrec,
+    FairDbWriter(const FairDbValRecord& vrec,
                  const std::string& dbName,
                  const std::string& logComment = "");
 
-    FairDbWriter(const FairDbValidityRec& vrec,
+    FairDbWriter(const FairDbValRecord& vrec,
                  UInt_t dbNo = 0,
                  const std::string& logComment = "");
 
 
     virtual ~FairDbWriter();
 
-    FairDbTableProxy& TableProxy() const;
+    FairDbTableInterface& TableInterface() const;
 
     Bool_t IsOpen(Bool_t reportErrors = kTRUE) const;
     Bool_t CanOutput(Bool_t reportErrors = kTRUE) const;
@@ -64,22 +64,22 @@ template <class T> class FairDbWriter
 //  I/O functions
     void Abort() { Reset(); }
     Bool_t Close(const char* fileSpec=0);
-    Bool_t Open(const ValRange& vr,
+    Bool_t Open(const ValInterval& vr,
                 Int_t aggNo,
                 FairDb::Version task,
                 ValTimeStamp creationDate,
                 const std::string& dbName,
                 const std::string& logComment = "");
-    Bool_t Open(const ValRange& vr,
+    Bool_t Open(const ValInterval& vr,
                 Int_t aggNo,
                 FairDb::Version task = 0,
                 ValTimeStamp creationDate = ValTimeStamp(),
                 UInt_t dbNo = 0,
                 const std::string& logComment = "");
-    Bool_t Open(const FairDbValidityRec& vrec,
+    Bool_t Open(const FairDbValRecord& vrec,
                 const std::string& dbName,
                 const std::string& logComment = "");
-    Bool_t Open(const FairDbValidityRec& vrec,
+    Bool_t Open(const FairDbValRecord& vrec,
                 UInt_t dbNo = 0,
                 const std::string& logComment = "");
 
@@ -97,22 +97,22 @@ template <class T> class FairDbWriter
                       const std::string& logComment = "");
     void Reset();
 
-    static FairDbTableProxy& GetTableProxy();
-    static FairDbTableProxy& GetTableProxy(const std::string& tableName);
+    static FairDbTableInterface& GetTableInterface();
+    static FairDbTableInterface& GetTableInterface(const std::string& tableName);
 
 
     Int_t fAggregateNo;
     UInt_t fDbNo;
-    FairDbSqlValPacket* fPacket;
+    FairDbSqlValidityData* fPacket;
     Int_t fRequireGlobalSeqno;
-    FairDbTableProxy* fTableProxy;
+    FairDbTableInterface* fTableInterface;
     std::string fTableName;
     Bool_t fUseOverlayCreationDate;
-    FairDbValidityRec* fValidRec;
+    FairDbValRecord* fValidRec;
     FairDbLogEntry fLogEntry;
     T* fContObj;  ///
 
-    ClassDefT(FairDbWriter<T>,0)          // Writer for specific database table.
+    ClassDefT(FairDbWriter<T>,0)          // Generic Writer to  database payload table.
 
 };
 ClassDefT2(FairDbWriter,T)
