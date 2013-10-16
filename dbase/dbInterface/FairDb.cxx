@@ -23,16 +23,16 @@ using std::istringstream;
 
 static std::map<std::string,Int_t> fgTimegateTable;
 
-Int_t FairDb::GetTimeGate(const std::string& tableName)
+Int_t FairDb::GetTimeWindow(const std::string& tableName)
 {
 
   // Set default if looking up table for the first time.
   std::map<std::string,Int_t>::iterator
   tablePtr = fgTimegateTable.find(tableName);
   if ( tablePtr == fgTimegateTable.end()
-     ) { FairDb::SetTimeGate(tableName,10*24*60*60); }
+     ) { FairDb::SetTimeWindow(tableName,10*24*60*60); }
 
-  DBLOG("FairDb",FairDbLog::kInfo) << " Returning time gate " << fgTimegateTable[tableName]
+  DBLOG("FairDb",FairDbLog::kInfo) << " Return time window " << fgTimegateTable[tableName]
                                    << " for " << tableName << endl;
 
   return fgTimegateTable[tableName];
@@ -52,12 +52,12 @@ TString FairDb::GetValDescr(const char* tableName,
   sql += "  SEQNO integer not null primary key,";
   sql += "  TIMESTART datetime not null,";
   sql += "  TIMEEND datetime not null,";
-  sql += "  DETECTORMASK tinyint,";
-  sql += "  SIMMASK tinyint,";
+  sql += "  DETID tinyint,";
+  sql += "  DATAID tinyint,";
   sql += "  VERSION integer,";
-  sql += "  AGGREGATENO integer,";
-  sql += "  CREATIONDATE datetime not null,";
-  sql += "  INSERTDATE datetime not null ) ";
+  sql += "  COMPOSITEID integer,";
+  sql += "  TIMEINCR datetime not null,";
+  sql += "  TIMETRANS datetime not null ) ";
   return sql;
 }
 
@@ -124,17 +124,17 @@ void FairDb::SetLogLevel(Int_t level)
   FairDbLogService::Instance()->GetStream("FairDb")->SetLogLevel(level);
 }
 
-void FairDb::SetTimeGate(const std::string& tableName, Int_t timeGate)
+void FairDb::SetTimeWindow(const std::string& tableName, Int_t timeGate)
 {
 
   if ( timeGate > 15 && timeGate <= 100*24*60*60 ) {
     fgTimegateTable[tableName] = timeGate;
-    DBLOG("FairDb",FairDbLog::kInfo) << "Setting time gate " << timeGate
-                                     << " for " << tableName << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "Set time window: " << timeGate
+                                     << " for: " << tableName << endl;
   } else {
-    DBLOG("FairDb",FairDbLog::kWarning) << "Ignoring  invalid time gate setting "
+    DBLOG("FairDb",FairDbLog::kWarning) << "Ignore  invalid time window setting "
                                         << timeGate
-                                        << " for " << tableName << endl;
+                                        << " for:" << tableName << endl;
   }
 }
 
@@ -144,16 +144,12 @@ Bool_t FairDb::NotGlobalSeqNo(UInt_t seqNo)
 }
 
 
-
-
-//.....................................................................
 TString FairDb::MakeDateTimeString(const ValTimeStamp& timeStamp)
 {
   return timeStamp.AsString("s");
 
 }
 
-//.....................................................................
 TString FairDb::StreamAsString(const Int_t* arr, Int_t size)
 {
   // ROOT IO is used to create a packed
@@ -170,7 +166,6 @@ TString FairDb::StreamAsString(const Int_t* arr, Int_t size)
 }
 
 
-//.....................................................................
 TString FairDb::StreamAsString(const UInt_t* arr, Int_t size)
 {
   // ROOT IO is used to create a packed
@@ -187,7 +182,6 @@ TString FairDb::StreamAsString(const UInt_t* arr, Int_t size)
 }
 
 
-//.....................................................................
 TString FairDb::StreamAsString(const Short_t* arr, Int_t size)
 {
   // ROOT IO is used to create a packed
@@ -204,7 +198,7 @@ TString FairDb::StreamAsString(const Short_t* arr, Int_t size)
 }
 
 
-//.....................................................................
+
 TString FairDb::StreamAsString(const UShort_t* arr, Int_t size)
 {
   // ROOT IO is used to create a packed
@@ -221,7 +215,7 @@ TString FairDb::StreamAsString(const UShort_t* arr, Int_t size)
 }
 
 
-//.....................................................................
+
 TString FairDb::StreamAsString(const Bool_t* arr, Int_t size)
 {
   // ROOT IO is used to create a packed
@@ -238,7 +232,6 @@ TString FairDb::StreamAsString(const Bool_t* arr, Int_t size)
 }
 
 
-//.....................................................................
 TString FairDb::StreamAsString(const Float_t* arr, Int_t size)
 {
   // ROOT IO is used to create a packed
@@ -255,7 +248,6 @@ TString FairDb::StreamAsString(const Float_t* arr, Int_t size)
 }
 
 
-//.....................................................................
 TString FairDb::StreamAsString(const Double_t* arr, Int_t size)
 {
   // ROOT IO is used to create a packed
@@ -271,7 +263,6 @@ TString FairDb::StreamAsString(const Double_t* arr, Int_t size)
 
   return astr.c_str();
 }
-
 
 
 
