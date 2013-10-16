@@ -10,9 +10,9 @@
 #include <string>                       // for string
 
 class FairDbResult;
-class FairDbTableProxy;
-class FairDbValidityRec;
-class ValContext;
+class FairDbTableInterface;
+class FairDbValRecord;
+class ValCondition;
 class FairDbLogStream;
 
 class FairDbCache
@@ -24,27 +24,27 @@ class FairDbCache
 
     typedef std::list<FairDbResult*> ResultList_t;
 
-    FairDbCache(FairDbTableProxy& qp,
+    FairDbCache(FairDbTableInterface& qp,
                 const std::string& tableName);
     virtual ~FairDbCache();
 
     UInt_t GetMaxSize() const { return fMaxSize; }
     UInt_t GetCurSize() const { return fCurSize; }
-    UInt_t GetNumAdopted() const { return fNumAdopted; }
+    UInt_t GetNumAccepted() const { return fNumAccepted; }
     UInt_t GetNumReused() const { return fNumReused; }
 
-    const FairDbResult* Search(const ValContext& vc,
+    const FairDbResult* Search(const ValCondition& vc,
                                const FairDb::Version& task) const;
     const FairDbResult* Search(const std::string& sqlQualifiers) const;
 
 
-    const FairDbResult* Search(const FairDbValidityRec& vr,
+    const FairDbResult* Search(const FairDbValRecord& vr,
                                const std::string& sqlQualifiers = "") const;
 
     FairDbLogStream& ShowStatistics(FairDbLogStream& msg) const;
 
 
-    void Adopt(FairDbResult* res,bool registerKey = true);
+    void Accept(FairDbResult* res,bool registerKey = true);
     void Purge();
     void SetStale();
 
@@ -60,14 +60,14 @@ class FairDbCache
     void Purge(ResultList_t& subCache, const FairDbResult* res=0);
 
 
-    FairDbTableProxy&  fTableProxy;
+    FairDbTableInterface&  fTableInterface;
 
     const std::string& fTableName;
     std::map<Int_t,ResultList_t> fCache;
 
     mutable UInt_t fCurSize;
     mutable UInt_t fMaxSize;
-    mutable UInt_t fNumAdopted;
+    mutable UInt_t fNumAccepted;
     mutable UInt_t fNumReused;
 
 
