@@ -40,7 +40,7 @@ class Detector
       return kCal|kCalCrystal|kDch|kGfi|kLand|kMtof|kTof|kTracker;
     }
 
-// Translation enum to/from character strings
+
     static const Char_t*  AsString(Detector_t detector) {
       switch (detector) {
       case kUnknown:
@@ -116,16 +116,9 @@ class Detector
     }
 
     static Char_t*  MaskToString(Int_t mask) {
-      // Return a mask of Detector as a string
-      //
-      // Result is a pointer to a statically allocated string.
-      // User should copy this into their own buffer before calling
-      // this method again.
 
       static Char_t newstring[255] = "";
-
-      Char_t* ptr = newstring;  // start at the beginning
-
+      Char_t* ptr = newstring;
       *ptr = 0; // start with nothing
       Int_t fullmask = Detector::FullMask();
 
@@ -138,16 +131,13 @@ class Detector
           ptr += strlen(toadd);
         }
       }
-      *ptr++ = 0; // ensure trailing 0
+      *ptr++ = 0;
 
       return newstring;
     }
 
 
     static Int_t  StringToMask(const Char_t* chars, Int_t maxChar=0) {
-      // convert a set of chars to a mask of enum's
-      // simple tests for unique characters: {n,f,c,t,m}
-
       Int_t mask  = 0;
 
       TString thestring(chars);
@@ -168,7 +158,6 @@ class Detector
 
 
     static Detector::Detector_t  StringToEnum(const Char_t* chars, Int_t maxChar=0) {
-      // convert a set of chars to a valid enum
 
       Int_t mask = Detector::StringToMask(chars,maxChar);
 
