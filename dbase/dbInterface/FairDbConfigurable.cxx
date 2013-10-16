@@ -1,7 +1,7 @@
 #include "FairDbConfigurable.h"
 
-#include "FairDbConf.h"                 // for FairDbConf
-#include "FairDbConfDialog.h"           // for FairDbConfDialog
+#include "FairDbConfig.h"                 // for FairDbConfig
+#include "FairDbConfigNotice.h"           // for FairDbConfigNotice
 
 ClassImp(FairDbConfigurable)
 
@@ -40,12 +40,12 @@ int FairDbConfigurable::Update()
   return 1;
 }
 
-void FairDbConfigurable::Set(FairDbConfDialog* d)
+void FairDbConfigurable::Set(FairDbConfigNotice* d)
 {
-  bool deleteDialog = false;
+  bool deleteNotice = false;
   if (d==0) {
-    d = new FairDbConfDialog();
-    deleteDialog = true;
+    d = new FairDbConfigNotice();
+    deleteNotice = true;
   }
 
   // Set up d with the default configuration parameters
@@ -59,13 +59,13 @@ void FairDbConfigurable::Set(FairDbConfDialog* d)
   this->GetConfig().LockValues();
 
   // Clean up the dialog
-  if (deleteDialog) { delete d; d = 0; }
+  if (deleteNotice) { delete d; d = 0; }
 }
 
 void FairDbConfigurable::Set(const char* s)
 {
   FairRegistry r;
-  FairDbConf::StringToRegistry(r,s);
+  FairDbConfig::StringToRegistry(r,s);
   this->GetConfig().UnLockValues();
   this->GetConfig().Merge(r);
   this->GetConfig().LockValues();
