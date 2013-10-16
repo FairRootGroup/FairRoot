@@ -1,7 +1,7 @@
 #ifndef FAIRDBLOGENTRY_H
 #define FAIRDBLOGENTRY_H
 
-#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "FairDbObjTableMap.h"             // for FairDbObjTableMap
 #include "ValTimeStamp.h"               // for ValTimeStamp
 #include "db_detector_def.h"            // for Detector
 
@@ -9,17 +9,17 @@
 
 #include "Riosfwd.h"                    // for ostream
 #include "Rtypes.h"                     // for Int_t, Bool_t, etc
-#include "SimFlag.h"                    // for FullMask
+#include "DataType.h"                    // for FullMask
 #include "TObject.h"                    // for TObject
 
 #include <iosfwd>                       // for ostream
 #include <string>                       // for string
 
-class FairDbOutRowStream;
-class FairDbResultSet;
-class FairDbValidityRec;
+class FairDbOutTableBuffer;
+class FairDbResultPool;
+class FairDbValRecord;
 
-class FairDbLogEntry : public FairDbTableRow
+class FairDbLogEntry : public FairDbObjTableMap
 {
 
   public:
@@ -29,14 +29,14 @@ class FairDbLogEntry : public FairDbTableRow
     FairDbLogEntry(const std::string& tableName = "",
                    const std::string& reason = "",
                    Int_t detMask = Detector::FullMask(),
-                   Int_t simMask = SimFlag::FullMask(),
+                   Int_t simMask = DataType::FullMask(),
                    FairDb::Version task = 0,
                    Int_t logSeqNoMin = 0,
                    Int_t logSeqNoMax = 0,
                    Int_t logNumSeqNo = 0);
     virtual ~FairDbLogEntry();
 
-    virtual FairDbTableRow* CreateTableRow() const {
+    virtual FairDbObjTableMap* CreateObjTableMap() const {
       return new FairDbLogEntry;
     }
     Int_t GetAggregateNo() const { return -1; }
@@ -68,17 +68,17 @@ class FairDbLogEntry : public FairDbTableRow
     void Recreate (const std::string& tableName = "",
                    const std::string& reason = "",
                    Int_t detMask = Detector::FullMask(),
-                   Int_t simMask = SimFlag::FullMask(),
+                   Int_t simMask = DataType::FullMask(),
                    FairDb::Version task = 0,
                    Int_t logSeqNoMin = 0,
                    Int_t logSeqNoMax = 0,
                    Int_t logNumSeqNo = 0);
 
 // I/O  member functions
-    virtual void Fill(FairDbResultSet& rs,
-                      const FairDbValidityRec* vrec);
-    virtual void Store(FairDbOutRowStream& ors,
-                       const FairDbValidityRec* vrec) const;
+    virtual void Fill(FairDbResultPool& rs,
+                      const FairDbValRecord* vrec);
+    virtual void Store(FairDbOutTableBuffer& ors,
+                       const FairDbValRecord* vrec) const;
     Bool_t Write(UInt_t dbNo,Int_t logSeqNo=0);
 
   private:
