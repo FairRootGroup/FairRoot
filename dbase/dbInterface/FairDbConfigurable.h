@@ -12,7 +12,7 @@
 #endif
 
 
-class FairDbConfDialog;
+class FairDbConfigNotice;
 
 class FairDbConfigurable
 {
@@ -29,7 +29,7 @@ class FairDbConfigurable
     const FairRegistry&         GetConfig() const;
 
     int  Update();
-    void Set(FairDbConfDialog* d=0);
+    void Set(FairDbConfigNotice* d=0);
     void Set(const char* s);
 
   protected:
