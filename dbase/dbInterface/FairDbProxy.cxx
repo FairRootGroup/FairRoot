@@ -2,15 +2,15 @@
 #include "FairDbLogService.h"
 #include "FairDbConnection.h"           // for FairDbConnection
 #include "FairDbFieldType.h"            // for FairDbFieldType
-#include "FairDbMultConnector.h"        // for FairDbMultConnector
-#include "FairDbResult.h"               // for cout, FairDbResultSet, endl
-#include "FairDbServices.h"             // for FairDbServices
+#include "FairDbConnectionPool.h"        // for FairDbConnectionPool
+#include "FairDbResult.h"               // for cout, FairDbResultPool, endl
+#include "FairDbUtils.h"             // for FairDbUtils
 #include "FairDbStatement.h"            // for FairDbStatement
 #include "FairDbString.h"               // for FairDbString, ToUpper
 #include "FairDbTableMetaData.h"        // for FairDbTableMetaData
-#include "FairDbTimerManager.h"         // for FairDbTimerManager, etc
-#include "SimFlag.h"                    // for SimFlag_t
-#include "ValContext.h"                 // for ValContext, operator<<
+#include "FairDbStopWatchManager.h"         // for FairDbStopWatchManager, etc
+#include "DataType.h"                    // for DataType_t
+#include "ValCondition.h"                 // for ValCondition, operator<<
 #include "ValTimeStamp.h"               // for ValTimeStamp, operator<<, etc
 #include "db_detector_def.h"            // for Detector, etc
 
@@ -36,18 +36,18 @@ using std::string;
 ClassImp(FairDbProxy)
 
 
-FairDbProxy::FairDbProxy(FairDbMultConnector& cascader,
+FairDbProxy::FairDbProxy(FairDbConnectionPool& cascader,
                          const string& tableName,
                          const FairDbTableMetaData* metaData,
                          const FairDbTableMetaData* metaValid,
-                         const FairDbTableProxy* tableProxy) :
-  fMultConnector(cascader),
+                         const FairDbTableInterface* tableProxy) :
+  fConnectionPool(cascader),
   fMetaData(metaData),
   fMetaValid(metaValid),
   fSqlCondition(),
   fTableName(tableName),
   fTableNameUc(FairUtilString::ToUpper(tableName)),
-  fTableProxy(tableProxy),
+  fTableInterface(tableProxy),
   fValSuffix("VAL")
 {
   if ( fTableName != fTableNameUc ) { fValSuffix = "Validity"; }
@@ -59,18 +59,18 @@ FairDbProxy::~FairDbProxy()
 
 }
 
-void FairDbProxy::FindTimeBoundaries(const ValContext& vc,
-                                     const FairDb::Version& task,
-                                     UInt_t dbNo,
-                                     ValTimeStamp earliestCreate,
-                                     ValTimeStamp& start,
-                                     ValTimeStamp& end) const
+void FairDbProxy::FindTimeLimits(const ValCondition& vc,
+                                 const FairDb::Version& task,
+                                 UInt_t dbNo,
+                                 ValTimeStamp earliestCreate,
+                                 ValTimeStamp& start,
+                                 ValTimeStamp& end) const
 {
-  DBLOG("FairDb",FairDbLog::kInfo) << "FindTimeBoundaries for table " <<  fTableName
-                                   << " context " << vc
-                                   << " version " << task
-                                   << " Earliest creation date " <<  earliestCreate
-                                   << " database " << dbNo << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "FindTimeLimits for table: " <<  fTableName
+                                   << " context: " << vc
+                                   << " version: " << task
+                                   << " Earliest transaction date: " <<  earliestCreate
+                                   << " database: " << dbNo << endl;
 
 //  Set the limits wide open
   start = ValTimeStamp(0,0);
@@ -79,7 +79,7 @@ void FairDbProxy::FindTimeBoundaries(const ValContext& vc,
 //  Construct a Time Gate on the current date.
 
   const ValTimeStamp curVTS = vc.GetTimeStamp();
-  Int_t timeGate = FairDb::GetTimeGate(this->GetTableName());
+  Int_t timeGate = FairDb::GetTimeWindow(this->GetTableName());
   time_t vcSec = curVTS.GetSec() - timeGate;
   ValTimeStamp startGate(vcSec,0);
   vcSec += 2*timeGate;
@@ -88,13 +88,13 @@ void FairDbProxy::FindTimeBoundaries(const ValContext& vc,
   string startGateString(FairDb::MakeDateTimeString(startGate));
   string endGateString(FairDb::MakeDateTimeString(endGate));
 
-// Extract information for ValContext.
+// Extract information for ValCondition.
 
   Detector::Detector_t    detType(vc.GetDetector());
-  SimFlag::SimFlag_t       simFlg(vc.GetSimFlag());
+  DataType::DataType_t       simFlg(vc.GetDataType());
 
 // Use an auto_ptr to manage ownership of FairDbStatement and TSQLStatement
-  auto_ptr<FairDbStatement> stmtDb(fMultConnector.CreateStatement(dbNo));
+  auto_ptr<FairDbStatement> stmtDb(fConnectionPool.CreateStatement(dbNo));
 
   for (int i_limit =1; i_limit <= 4; ++i_limit ) {
     FairDbString sql("select ");
@@ -106,11 +106,11 @@ void FairDbProxy::FindTimeBoundaries(const ValContext& vc,
                                << "VAL where TIMESTART < '" << startGateString << "' ";
     if ( i_limit == 4 ) sql  << "max(TIMEEND) from " << fTableName
                                << "VAL where TIMEEND < '" << startGateString  << "' ";
-    sql << " and DetectorMask & " << static_cast<unsigned int>(detType)
-        << " and SimMask & " << static_cast<unsigned int>(simFlg)
-        << " and CREATIONDATE >= '" << earliestCreateString << "'"
-        << " and  Version = " << task;
-    DBLOG("FairDb",FairDbLog::kInfo) << "  FindTimeBoundaries query no. " << i_limit
+    sql << " and DETID & " << static_cast<unsigned int>(detType)
+        << " and DATAID & " << static_cast<unsigned int>(simFlg)
+        << " and TIMEINCR >= '" << earliestCreateString << "'"
+        << " and  VERSION = " << task;
+    DBLOG("FairDb",FairDbLog::kInfo) << "  FindTimeLimits query id: " << i_limit
                                      << " SQL:" <<sql.c_str() << endl;
 
     auto_ptr<TSQLStatement> stmt(stmtDb->ExecuteQuery(sql.c_str()));
@@ -122,23 +122,23 @@ void FairDbProxy::FindTimeBoundaries(const ValContext& vc,
     date = stmt->GetString(0);
     if ( date.IsNull() ) { continue; }
     ValTimeStamp ts(FairDb::MakeTimeStamp(date.Data()));
-    DBLOG("FairDb",FairDbLog::kInfo) << "  FindTimeBoundaries query result: " << ts << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "  FindTimeLimits query result: " << ts << endl;
     if ( i_limit <= 2 && ts < end   ) { end   = ts; }
     if ( i_limit >= 3 && ts > start ) { start = ts; }
 
   }
 
-  DBLOG("FairDb",FairDbLog::kInfo)<< "FindTimeBoundaries for table " <<  fTableName
-                                  << " found " << start << " .. " << end << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "FindTimeLimits for table: " <<  fTableName
+                                  << " found: " << start << " .. " << end << endl;
 
 }
 
 UInt_t FairDbProxy::GetNumDb() const
 {
-  return fMultConnector.GetNumDb();
+  return fConnectionPool.GetNumDb();
 }
 
-FairDbResultSet*  FairDbProxy::QueryAllValidities (UInt_t dbNo,UInt_t seqNo) const
+FairDbResultPool*  FairDbProxy::QueryAllValidities (UInt_t dbNo,UInt_t seqNo) const
 {
 
   FairDbString sql;
@@ -155,22 +155,22 @@ FairDbResultSet*  FairDbProxy::QueryAllValidities (UInt_t dbNo,UInt_t seqNo) con
   DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
                                    << " query: " << sql.GetString() << endl;
 
-  FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
-  return new FairDbResultSet(stmtDb,sql,fMetaValid,fTableProxy,dbNo);
+  FairDbStatement* stmtDb = fConnectionPool.CreateStatement(dbNo);
+  return new FairDbResultPool(stmtDb,sql,fMetaValid,fTableInterface,dbNo);
 
 }
 
 
 
-FairDbResultSet*  FairDbProxy::QuerySeqNo(UInt_t seqNo, UInt_t dbNo) const
+FairDbResultPool*  FairDbProxy::QuerySeqNo(UInt_t seqNo, UInt_t dbNo) const
 {
 
-  FairDbTimerManager::gTimerManager.RecMainQuery();
+  FairDbStopWatchManager::gStopWatchManager.RecMainQuery();
   FairDbString sql;
   sql << "select * from " << fTableName << " where "
       << "    SEQNO= " << seqNo;
 
-  if ( FairDbServices::OrderContextQuery() && fMetaData->HasRowCounter() ) {
+  if ( FairDbUtils::OrderContextQuery() && fMetaData->HasRowCounter() ) {
     sql << " order by ROW_COUNTER";
   }
 
@@ -178,19 +178,19 @@ FairDbResultSet*  FairDbProxy::QuerySeqNo(UInt_t seqNo, UInt_t dbNo) const
                                      << " SeqNo query: " << sql.c_str() << endl;
 
 //  Apply query and return result..
-  FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
-  return new FairDbResultSet(stmtDb,sql,fMetaData,fTableProxy,dbNo);
+  FairDbStatement* stmtDb = fConnectionPool.CreateStatement(dbNo);
+  return new FairDbResultPool(stmtDb,sql,fMetaData,fTableInterface,dbNo);
 
 }
 
-FairDbResultSet*  FairDbProxy::QuerySeqNos(SeqList_t& seqNos,
+FairDbResultPool*  FairDbProxy::QuerySeqNos(SeqList_t& seqNos,
     UInt_t dbNo,
     const string& sqlData,
     const string& fillOpts) const
 {
   if ( seqNos.size() == 0 ) { return 0; }
 
-  FairDbTimerManager::gTimerManager.RecMainQuery();
+  FairDbStopWatchManager::gStopWatchManager.RecMainQuery();
   FairDbString sql;
   sql << "select * from " << fTableName << " where ";
 
@@ -224,60 +224,60 @@ FairDbResultSet*  FairDbProxy::QuerySeqNos(SeqList_t& seqNos,
 
   sql << "order by SEQNO";
 
-  if ( FairDbServices::OrderContextQuery() && fMetaData->HasRowCounter() ) {
+  if ( FairDbUtils::OrderContextQuery() && fMetaData->HasRowCounter() ) {
     sql << ",ROW_COUNTER";
   }
 
   DBLOG("FairDb",FairDbLog::kInfo)  << "Database: " << dbNo
-                                    << " SeqNos query: " << sql.c_str() << endl;
+                                    << " SeqIds query: " << sql.c_str() << endl;
 
 //  Apply query and return result..
-  FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
-  return new FairDbResultSet(stmtDb,sql,fMetaData,fTableProxy,dbNo,fillOpts);
+  FairDbStatement* stmtDb = fConnectionPool.CreateStatement(dbNo);
+  return new FairDbResultPool(stmtDb,sql,fMetaData,fTableInterface,dbNo,fillOpts);
 
 }
-FairDbResultSet*  FairDbProxy::QueryValidity (const ValContext& vc,
+FairDbResultPool*  FairDbProxy::QueryValidity (const ValCondition& vc,
     const FairDb::Version& task,
     UInt_t dbNo) const
 {
 
   const ValTimeStamp curVTS = vc.GetTimeStamp();
-  Int_t timeGate = FairDb::GetTimeGate(this->GetTableName());
+  Int_t timeGate = FairDb::GetTimeWindow(this->GetTableName());
   time_t vcSec = curVTS.GetSec() - timeGate;
   ValTimeStamp startGate(vcSec,0);
   vcSec += 2*timeGate;
   ValTimeStamp endGate(vcSec,0);
 
-// Extract information for ValContext.
+// Get info  for ValCondition.
 
   string startGateString(FairDb::MakeDateTimeString(startGate));
   string endGateString(FairDb::MakeDateTimeString(endGate));
   Detector::Detector_t    detType(vc.GetDetector());
-  SimFlag::SimFlag_t       simFlg(vc.GetSimFlag());
+  DataType::DataType_t       simFlg(vc.GetDataType());
 
 // Generate SQL for context.
 
   FairDbString context;
   context << "    TimeStart <= '" << endGateString << "' "
           << "and TimeEnd    > '" << startGateString << "' "
-          << "and DetectorMask & " << static_cast<unsigned int>(detType)
-          << " and SimMask & " << static_cast<unsigned int>(simFlg);
+          << "and DETID & " << static_cast<unsigned int>(detType)
+          << " and DATAID & " << static_cast<unsigned int>(simFlg);
 
 
   return this->QueryValidity(context.GetString(),task,dbNo);
 
 }
 
-FairDbResultSet*  FairDbProxy::QueryValidity (const string& context,
+FairDbResultPool*  FairDbProxy::QueryValidity (const string& context,
     const FairDb::Version& task,
     UInt_t dbNo) const
 {
 
-// Generate SQL for validity table.
+// Create SQL statement for the validation table.
 
   FairDbString sql;
 
-  string orderByName("CREATIONDATE");
+  string orderByName("TIMEINCR");
   if ((fTableName == "FAIRDRUNSUMMARY") ) {
     orderByName = "TIMESTART";
   }
@@ -293,13 +293,13 @@ FairDbResultSet*  FairDbProxy::QueryValidity (const string& context,
   DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
                                    << " query: " << sql.c_str() << endl;
 
-  FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
-  return new FairDbResultSet(stmtDb,sql,fMetaValid,fTableProxy,dbNo);
+  FairDbStatement* stmtDb = fConnectionPool.CreateStatement(dbNo);
+  return new FairDbResultPool(stmtDb,sql,fMetaValid,fTableInterface,dbNo);
 
 }
 
 
-FairDbResultSet*  FairDbProxy::QueryValidity (UInt_t seqNo,
+FairDbResultPool*  FairDbProxy::QueryValidity (UInt_t seqNo,
     UInt_t dbNo) const
 {
 // Generate SQL for validity table.
@@ -312,8 +312,8 @@ FairDbResultSet*  FairDbProxy::QueryValidity (UInt_t seqNo,
   DBLOG("FairDb",FairDbLog::kInfo)  << "Database: " << dbNo
                                     << " SEQNO query: " << sql.c_str() << endl;
 
-  FairDbStatement* stmtDb = fMultConnector.CreateStatement(dbNo);
-  return new FairDbResultSet(stmtDb,sql,fMetaValid,fTableProxy,dbNo);
+  FairDbStatement* stmtDb = fConnectionPool.CreateStatement(dbNo);
+  return new FairDbResultPool(stmtDb,sql,fMetaValid,fTableInterface,dbNo);
 
 }
 
@@ -330,7 +330,7 @@ Bool_t FairDbProxy::RemoveSeqNo(UInt_t seqNo,
                                   << " RemoveSeqNo SQL: " << sql.c_str() << endl;
 
 //  Apply query.
-  auto_ptr<FairDbStatement> stmtDb(fMultConnector.CreateStatement(dbNo));
+  auto_ptr<FairDbStatement> stmtDb(fConnectionPool.CreateStatement(dbNo));
   if ( ! stmtDb.get() ) { return false; }
   if ( ! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
     MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
@@ -366,7 +366,7 @@ Bool_t FairDbProxy::ReplaceInsertDate(const ValTimeStamp& ts,
 // Generate SQL.
   FairDbString sql;
   sql << "update  " << fTableName << fValSuffix
-      << " set INSERTDATE = \'" << ts.AsString("s")
+      << " set TIMETRANS = \'" << ts.AsString("s")
       << "\' where SEQNO = " << SeqNo << ";"
       << '\0';
 
@@ -375,7 +375,7 @@ Bool_t FairDbProxy::ReplaceInsertDate(const ValTimeStamp& ts,
                                    << sql.c_str() << endl;
 
 //  Apply query.
-  auto_ptr<FairDbStatement> stmtDb(fMultConnector.CreateStatement(dbNo));
+  auto_ptr<FairDbStatement> stmtDb(fConnectionPool.CreateStatement(dbNo));
   if ( ! stmtDb.get() ) { return false; }
   if (! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
     MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
@@ -386,21 +386,21 @@ Bool_t FairDbProxy::ReplaceInsertDate(const ValTimeStamp& ts,
   return true;
 
 }
-//.....................................................................
+
 
 Bool_t FairDbProxy::ReplaceSeqNo(UInt_t oldSeqNo,
                                  UInt_t newSeqNo,
                                  UInt_t dbNo) const
 {
 
-  if ( ! fMultConnector.GetConnection(dbNo) ) {
+  if ( ! fConnectionPool.GetConnection(dbNo) ) {
     DBLOG("FairDb",FairDbLog::kWarning)
         << "Cannot renumber " << oldSeqNo
         << " no connection to DB entry# " << dbNo << endl;
     return false;
   }
   // Specs for Oracle
-  if ( fMultConnector.GetConnection(dbNo)->GetDbType () == FairDb::kOracle ) {
+  if ( fConnectionPool.GetConnection(dbNo)->GetDbType () == FairDb::kOracle ) {
     return this->ReplaceSeqNoOracle(oldSeqNo,newSeqNo,dbNo);
   }
 
@@ -415,7 +415,7 @@ Bool_t FairDbProxy::ReplaceSeqNo(UInt_t oldSeqNo,
                                    << " ReplaceSeqNo SQL: " << sql.c_str() << endl;
 
 //  Apply query.
-  auto_ptr<FairDbStatement> stmtDb(fMultConnector.CreateStatement(dbNo));
+  auto_ptr<FairDbStatement> stmtDb(fConnectionPool.CreateStatement(dbNo));
   if ( ! stmtDb.get() ) { return false; }
   if ( ! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
     MAXDBLOG("FairDb",FairDbLog::kError,20) << "SQL: " << sql.c_str()
@@ -449,7 +449,7 @@ Bool_t FairDbProxy::ReplaceSeqNoOracle(UInt_t oldSeqNo,
                                        UInt_t dbNo) const
 {
 
-  FairDbResultSet* rsOld = QueryValidity(oldSeqNo,dbNo);
+  FairDbResultPool* rsOld = QueryValidity(oldSeqNo,dbNo);
   if ( rsOld && rsOld->IsBeforeFirst() ) { rsOld->FetchRow(); }
   if ( ! rsOld || rsOld->IsExhausted() ) {
     DBLOG("FairDb",FairDbLog::kWarning) << "Cannot renumber " << oldSeqNo
@@ -481,7 +481,7 @@ Bool_t FairDbProxy::ReplaceSeqNoOracle(UInt_t oldSeqNo,
   delete rsOld;
 
 //  Apply query.
-  auto_ptr<FairDbStatement> stmtDb(fMultConnector.CreateStatement(dbNo));
+  auto_ptr<FairDbStatement> stmtDb(fConnectionPool.CreateStatement(dbNo));
   if ( ! stmtDb.get() ) { return false; }
   if ( ! stmtDb->ExecuteUpdate(sql.c_str()) || stmtDb->PrintExceptions() ) {
     MAXDBLOG("FairDb",FairDbLog::kError,20)<< "SQL: " << sql.c_str()
@@ -524,15 +524,15 @@ Bool_t FairDbProxy::ReplaceSeqNoOracle(UInt_t oldSeqNo,
 
 }
 
-void  FairDbProxy::StoreMetaData(FairDbTableMetaData& metaData) const
+void  FairDbProxy::CreateMetaData(FairDbTableMetaData& metaData) const
 {
 
   const char* tableName = metaData.TableName().c_str();
-  DBLOG("FairDb",FairDbLog::kInfo) << "Get meta-data for table: " << tableName << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Create meta-data for table: " << tableName << endl;
 
   // Checking meta-data
-  for ( UInt_t dbNo = 0; dbNo < fMultConnector.GetNumDb(); dbNo++ ) {
-    FairDbConnection* connection = fMultConnector.GetConnection(dbNo);
+  for ( UInt_t dbNo = 0; dbNo < fConnectionPool.GetNumDb(); dbNo++ ) {
+    FairDbConnection* connection = fConnectionPool.GetConnection(dbNo);
     TSQLServer* server = connection->GetServer();
     if ( ! server ) { continue; }
     connection->Connect();
@@ -541,7 +541,7 @@ void  FairDbProxy::StoreMetaData(FairDbTableMetaData& metaData) const
       connection->DisConnect();
       continue;
     }
-    DBLOG("FairDb",FairDbLog::kInfo) << "Meta-data query succeeded on DB entry# " << dbNo << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "Meta-data query succeeded on db_id: " << dbNo << endl;
 
     // Clear out possible existing data
     metaData.Clear();
@@ -567,12 +567,12 @@ void  FairDbProxy::StoreMetaData(FairDbTableMetaData& metaData) const
       metaData.SetColIsNullable(col,colInfo->IsNullable());
 
 
-      DBLOG("FairDb",FairDbLog::kInfo) << "Column "         << col << " " << name
-                                       << " SQL type "      << colInfo->GetSQLType()
-                                       << " SQL type name " << colInfo->GetTypeName()
-                                       << " DB  type "      << fldType.AsString()
-                                       << " data size: "    << fldType.GetSize()
-                                       << " col size: "     << colInfo->GetLength() << endl;
+      DBLOG("FairDb",FairDbLog::kInfo) << "Column: "         << col << " | " <<  name  << " | "
+                                       << " SQL_type: "      << colInfo->GetSQLType()  << " | "
+                                       << " SQL_type_def: " << colInfo->GetTypeName()  << " | "
+                                       << " DB_data_type: "      << fldType.AsString()  << " | "
+                                       << " data_size: "    << fldType.GetSize() << " | "
+                                       << " col_length: "     << colInfo->GetLength() << endl;
     }
 
     delete meta;
@@ -584,6 +584,6 @@ void  FairDbProxy::StoreMetaData(FairDbTableMetaData& metaData) const
 
 Bool_t FairDbProxy::TableExists(Int_t selectDbNo) const
 {
-  return fMultConnector.TableExists(fTableName,selectDbNo);
+  return fConnectionPool.TableExists(fTableName,selectDbNo);
 }
 
