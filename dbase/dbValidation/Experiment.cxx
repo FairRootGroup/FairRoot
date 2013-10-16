@@ -1,18 +1,15 @@
-//
-// Body for Experiment namespace so that CINT recognizes its existence
-//
 #include "Experiment.h"
 
 #include "TString.h"                    // for TString
 
 #include <string.h>                     // for strcpy, strlen
 
-//_____________________________________________________________________________
+
 Int_t Experiment::FullMask()
 {
   return kS001|kS002|kS003|kS004|kS005|kS006;
 }
-//_____________________________________________________________________________
+
 const Char_t* Experiment::AsString(Experiment_t exp)
 {
   switch (exp) {
@@ -40,7 +37,7 @@ const Char_t* Experiment::AsString(Experiment_t exp)
   }
 }
 
-//_____________________________________________________________________________
+
 Experiment::Experiment_t Experiment::CharToEnum(Char_t c)
 {
   switch(c) {
@@ -73,20 +70,12 @@ Experiment::Experiment_t Experiment::CharToEnum(Char_t c)
   }
 }
 
-//_____________________________________________________________________________
+
 Char_t* Experiment::MaskToString(Int_t mask)
 {
-  // Return a mask of Experiment as a string
-  //
-  // Result is a pointer to a statically allocated string.
-  // User should copy this into their own buffer before calling
-  // this method again.
-
   static Char_t newstring[255] = "";
-
-  Char_t* ptr = newstring;  // start at the beginning
-
-  *ptr = 0; // start with nothing
+  Char_t* ptr = newstring;
+  *ptr = 0;
   Int_t fullmask = Experiment::FullMask();
 
   for (Int_t i=0; i<32; i++) {
@@ -98,16 +87,14 @@ Char_t* Experiment::MaskToString(Int_t mask)
       ptr += strlen(toadd);
     }
   }
-  *ptr++ = 0; // ensure trailing 0
+  *ptr++ = 0;
 
   return newstring;
 }
 
-//_____________________________________________________________________________
+
 Experiment::Experiment_t Experiment::StringToEnum(const Char_t* chars, Int_t maxChar)
 {
-  // convert a set of chars to a valid enum
-
   Int_t mask = Experiment::StringToMask(chars,maxChar);
 
   switch (mask) {
@@ -136,12 +123,9 @@ Experiment::Experiment_t Experiment::StringToEnum(const Char_t* chars, Int_t max
 
 }
 
-//_____________________________________________________________________________
+
 Int_t Experiment::StringToMask(const Char_t* chars, Int_t maxChar)
 {
-  // convert a set of chars to a mask of enum's
-  // simple tests for unique characters: {n,f,c,t,m}
-
   Int_t mask  = 0;
 
   TString thestring(chars);
@@ -158,6 +142,4 @@ Int_t Experiment::StringToMask(const Char_t* chars, Int_t maxChar)
 
   return mask;
 }
-
-//_____________________________________________________________________________
 
