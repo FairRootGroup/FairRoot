@@ -2,16 +2,16 @@
 
 #include "FairDb.h"                     // for Version
 #include "FairDbLogService.h"
-#include "FairDbMultConnector.h"        // for FairDbMultConnector
-#include "FairDbOutRowStream.h"         // for FairDbOutRowStream
-#include "FairDbResPtr.h"               // for FairDbResultPtr
-#include "FairDbResult.h"               // for FairDbResultSet
-#include "FairDbSqlValPacket.h"         // for FairDbSqlValPacket
-#include "FairDbTableProxy.h"           // for FairDbTableProxy
-#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
-#include "FairDbValidityRec.h"          // for FairDbValidityRec
+#include "FairDbConnectionPool.h"        // for FairDbConnectionPool
+#include "FairDbOutTableBuffer.h"         // for FairDbOutTableBuffer
+#include "FairDbReader.h"               // for FairDbReader
+#include "FairDbResult.h"               // for FairDbResultPool
+#include "FairDbSqlValidityData.h"         // for FairDbSqlValidityData
+#include "FairDbTableInterface.h"           // for FairDbTableInterface
+#include "FairDbTableInterfaceStore.h"   // for FairDbTableInterfaceStore
+#include "FairDbValRecord.h"          // for FairDbValRecord
 #include "FairDbWriter.h"               // for FairDbWriter
-#include "ValRange.h"                   // for ValRange
+#include "ValInterval.h"                   // for ValInterval
 
 #include "TSystem.h"                    // for TSystem, gSystem, gProgName
 #include "TUrl.h"                       // for TUrl
@@ -22,8 +22,8 @@ ClassImp(FairDbLogEntry)
 
 
 
-#include "FairDbResPtr.tpl"
-template class  FairDbResultPtr<FairDbLogEntry>;
+#include "FairDbReader.tpl"
+template class  FairDbReader<FairDbLogEntry>;
 
 #include "FairDbWriter.tpl"   // IWYU pragma: keep
 template  class  FairDbWriter<FairDbLogEntry>;
@@ -37,7 +37,7 @@ FairDbLogEntry::FairDbLogEntry(const string& tableName,
                                Int_t logSeqNoMin,
                                Int_t logSeqNoMax,
                                Int_t logNumSeqNo):
-  FairDbTableRow(),
+  FairDbObjTableMap(),
   fDbNo(0),
   fSeqNo(0),
   fLogTableName(tableName),
@@ -69,13 +69,12 @@ FairDbLogEntry::FairDbLogEntry(const string& tableName,
   if ( userName ) { fUserName = userName; }
 
 }
-//.....................................................................
 
 FairDbLogEntry::~FairDbLogEntry()
 {
 
 }
-//.....................................................................
+
 
 std::ostream& operator<<(ostream& s, const FairDbLogEntry& logEntry)
 {
@@ -87,22 +86,22 @@ std::ostream& operator<<(ostream& s, const FairDbLogEntry& logEntry)
     s << " SEQNO min: " << logEntry.GetLogSeqNoMin()
       << " SEQNO max: " << logEntry.GetLogSeqNoMax()
       << " No. SEQNOs: " << logEntry.GetLogNumSeqNo();
-  s << " DetectorMask: " << logEntry.GetDetectorMask()
-    << " SimMask: " << logEntry.GetSimMask()
+  s << " DetectorID: " << logEntry.GetDetectorMask()
+    << " DataID: " << logEntry.GetSimMask()
     << " Version: " << logEntry.GetVersion()
-    << "\n Updated on " << logEntry.GetUpdateTime().AsString("s")
-    << " by " << logEntry.GetUserName()
-    << " running " << logEntry.GetProcessName()
-    << " on " << logEntry.GetHostName()
-    << " connected to " << logEntry.GetServerName()
-    << "\n Reason for update:-\n " << logEntry.GetReason() << endl;
+    << "\n Updated on: " << logEntry.GetUpdateTime().AsString("s")
+    << " by: " << logEntry.GetUserName()
+    << " running process: " << logEntry.GetProcessName()
+    << " on host: " << logEntry.GetHostName()
+    << " connected to server: " << logEntry.GetServerName()
+    << "\n Reason for update:\n " << logEntry.GetReason() << endl;
 
   return s;
 
 }
 
-void FairDbLogEntry::Fill(FairDbResultSet& rs,
-                          const FairDbValidityRec* vrec)
+void FairDbLogEntry::Fill(FairDbResultPool& rs,
+                          const FairDbValRecord* vrec)
 {
   rs >> fLogTableName
      >> fLogSeqNoMin
@@ -115,10 +114,10 @@ void FairDbLogEntry::Fill(FairDbResultSet& rs,
      >> fReason;
   fLogDetMask = fLogSimMask = fLogVersion = 0;
   if ( vrec ) {
-    fLogDetMask = vrec->GetValRange().GetDetectorMask();
-    fLogSimMask = vrec->GetValRange().GetSimMask();
+    fLogDetMask = vrec->GetValInterval().GetDetectorMask();
+    fLogSimMask = vrec->GetValInterval().GetSimMask();
     fLogVersion    = vrec->GetVersion();
-    fUpdateTime = vrec->GetValRange().GetTimeStart();
+    fUpdateTime = vrec->GetValInterval().GetTimeStart();
   }
 }
 
@@ -135,7 +134,7 @@ void FairDbLogEntry::Recreate(const string& tableName,
   if (    fSeqNo > 0
           && ( tableName    == ""                       || tableName   == fLogTableName )
           && ( detMask      == Detector::FullMask()     || detMask     == fLogDetMask )
-          && ( simMask      == SimFlag::FullMask()      || simMask     == fLogSimMask )
+          && ( simMask      == DataType::FullMask()      || simMask     == fLogSimMask )
           && ( task         == 0                        || task        == fLogVersion )
           && ( logSeqNoMin  == 0                        || logSeqNoMin ==  fLogSeqNoMin)
           && ( logSeqNoMax  == 0                        || logSeqNoMax == fLogSeqNoMax )
@@ -194,13 +193,13 @@ void FairDbLogEntry::SetReason(const string& reason)
 void FairDbLogEntry::SetServerName()
 {
 
-  string urlStr = FairDbTableProxyRegistry::Instance().GetMultConnector().GetURL(fDbNo);
+  string urlStr = FairDbTableInterfaceStore::Instance().GetConnectionPool().GetURL(fDbNo);
   TUrl url(urlStr.c_str());
   fServerName = url.GetHost();
 
 }
-void FairDbLogEntry::Store(FairDbOutRowStream& ors,
-                           const FairDbValidityRec* ) const
+void FairDbLogEntry::Store(FairDbOutTableBuffer& ors,
+                           const FairDbValRecord* ) const
 {
 
   ors << fLogTableName
@@ -242,14 +241,14 @@ Bool_t FairDbLogEntry::Write(UInt_t dbNo,
   }
 
   fDbNo = dbNo;
-  FairDbTableProxy& tblProxy = FairDbTableProxyRegistry::Instance()
-                               .GetTableProxy("FAIRDBLOGENTRY",this);
+  FairDbTableInterface& tblProxy = FairDbTableInterfaceStore::Instance()
+                                   .GetTableInterface("FAIRDBLOGENTRY",this);
   bool replace = true;
 
   // Allocate SEQNO before first write.
   if ( fSeqNo == 0 ) {
     replace = false;
-    int seqNo = tblProxy.GetMultConnector().AllocateSeqNo("FAIRDBLOGENTRY",0,fDbNo);
+    int seqNo = tblProxy.GetConnectionPool().AllocateSeqNo("FAIRDBLOGENTRY",0,fDbNo);
     if ( seqNo <= 0 ) {
       DBLOG("FairDb",FairDbLog::kError)  << "Cannot get sequence number for table FAIRDBLOGENTRY" << endl;
       return kFALSE;
@@ -257,14 +256,14 @@ Bool_t FairDbLogEntry::Write(UInt_t dbNo,
     fSeqNo = seqNo;
   }
 
-  // Construct a FairDbValidityRec.
-  ValRange     vr(fLogDetMask,fLogSimMask,fUpdateTime,fUpdateTime,"FairDbLogEntry");
-  FairDbValidityRec vrec(vr,fLogVersion,-1,0);
+  // Construct a FairDbValRecord.
+  ValInterval     vr(fLogDetMask,fLogSimMask,fUpdateTime,fUpdateTime,"FairDbLogEntry");
+  FairDbValRecord vrec(vr,fLogVersion,-1,0);
 
-  // Now build and output FairDbSqlValPacket.
-  FairDbSqlValPacket packet;
+  // Now build and output FairDbSqlValidityData.
+  FairDbSqlValidityData packet;
   packet.Recreate("FAIRDBLOGENTRY",
-                  vrec.GetValRange(),
+                  vrec.GetValInterval(),
                   -1,
                   vrec.GetVersion(),
                   vrec.GetCreationDate());
