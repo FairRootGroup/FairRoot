@@ -14,10 +14,10 @@
 
 
 #include "Detector.h"
-#include "SimFlag.h"
-#include "FairDbTableRow.h"
-#include "ValContext.h"
-#include "ValRange.h"
+#include "DataType.h"
+#include "FairDbObjTableMap.h"
+#include "ValCondition.h"
+#include "ValInterval.h"
 #include "ValTimeStamp.h"
 
 #include "FairParGenericSet.h"
@@ -28,6 +28,7 @@
 using std::string;
 using std::auto_ptr;
 
+class FairDbValRecord;
 
 class FairDbTutParBin : public FairParGenericSet
 {
@@ -61,23 +62,24 @@ class FairDbTutParBin : public FairParGenericSet
 
     // SQL descriptors
     virtual string GetTableDescr(const char* alternateName = 0);
-    virtual FairDbTableRow* CreateTableRow() const {
+    virtual FairDbObjTableMap* CreateObjTableMap() const {
       return new FairDbTutParBin();
     }
 
     // I/O  member functions
-    virtual void Fill(FairDbResultSet& rs,
-                      const FairDbValidityRec* vrec);
-    virtual void Store(FairDbOutRowStream& ors,
-                       const FairDbValidityRec* vrec) const;
-    virtual void Fill(UInt_t rid);
-    virtual void Store(UInt_t rid);
+    virtual void Fill(FairDbResultPool& rs,
+                      const FairDbValRecord* vrec);
+    virtual void Store(FairDbOutTableBuffer& ors,
+                       const FairDbValRecord* vrec) const;
+
+    virtual void fill(UInt_t rid);
+    virtual void store(UInt_t rid);
 
     // Validity frame definition
-    virtual ValContext GetContextDTF(UInt_t rid) {
-      return ValContext(Detector::kGfi,
-                        SimFlag::kData,
-                        ValTimeStamp(rid));
+    virtual ValCondition GetContextDTF(UInt_t rid) {
+      return ValCondition(Detector::kGfi,
+                          DataType::kData,
+                          ValTimeStamp(rid));
     }
 
     virtual void print() {Print();}
@@ -93,6 +95,7 @@ class FairDbTutParBin : public FairParGenericSet
     Int_t    fMyIArray[3];   // Array of Int_t fixed values
     Double_t fMyDArray[10];  // Array of Double_t fixed values
     TH1F*   fMyHisto;      // An Histogram
+
     ClassDef(FairDbTutParBin,1); //
 };
 
