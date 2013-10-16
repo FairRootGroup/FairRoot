@@ -14,7 +14,7 @@
 
 #include <iostream>                     // for operator<<, cout, ostream
 
-class FairDbMultConnector;
+class FairDbConnectionPool;
 class FairParSet;
 class FairRtdbRun;
 class TList;
@@ -27,14 +27,14 @@ class FairDetParTSQLIo : public FairDetParIo
     FairDetParTSQLIo();
 
     /**
-     *@param cons FairDbMultConnector which holds a number of
+     *@param cons FairDbConnectionPool which holds a number of
      * initialized db connections.
      *@param dbNum The db which is selected to act as the master for the
      * current operations.
-     * Note: A new FairDbMultConnector object is
+     * Note: A new FairDbConnectionPool object is
      * created (to keep the ownership).
      */
-    FairDetParTSQLIo(FairDbMultConnector const& cons, int const dbNum = -1);
+    FairDetParTSQLIo(FairDbConnectionPool const& cons, int const dbNum = -1);
     virtual ~FairDetParTSQLIo();
 
     /**
@@ -59,18 +59,18 @@ class FairDetParTSQLIo : public FairDetParIo
     inline void print();
 
 
-    // ____________ protected Members ___________________
+
   protected:
 
-    int fDefaultDb;/**< The default Database connection.*/
-    FairDbMultConnector* fConnections;//! FairDbConnection
+    int fDefaultDb; /**< The default Database connection.*/
+    FairDbConnectionPool* fConnections;//! FairDbConnection
     TList*               fcontainerList;//! List of parameter containers
     FairRtdbRun*         factContVers;  //! The actual list of container versions
     int actRunId; // actual runId (can be -1 if there are no data in Oracle)
 
     void setChanged(FairParSet* pars);
 
-    // ____________ private Members ___________________
+
   private:
     //To avoid mistakes.
     FairDetParTSQLIo(FairDetParTSQLIo const& ot);
