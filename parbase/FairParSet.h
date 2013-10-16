@@ -1,7 +1,7 @@
 #ifndef FAIRPARSET_H
 #define FAIRPARSET_H
 
-#include "FairDbTableRow.h"             // for FairDbTableRow
+#include "FairDbObjTableMap.h"             // for FairDbObjTableMap
 
 #include "Rtypes.h"                     // for Int_t, Bool_t, etc
 #include "TString.h"                    // for TString
@@ -9,7 +9,7 @@
 class FairLogger;
 class FairParIo;
 
-class FairParSet : public FairDbTableRow
+class FairParSet : public FairDbObjTableMap
 {
   protected:
     TString fName;         //
@@ -67,8 +67,7 @@ class FairParSet : public FairDbTableRow
     }
 
     // SQL addon I/O  member functions
-    virtual FairDbTableRow* CreateTableRow() const {
-      //cout << " -I- FairParSet():: CreateTableRow() returning a generic FairParSet class !!! " << endl;
+    virtual FairDbObjTableMap* CreateObjTableMap() const {
       return new FairParSet();
     }
 
