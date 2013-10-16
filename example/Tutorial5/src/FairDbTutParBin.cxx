@@ -6,10 +6,11 @@
 #include "FairDbLogService.h"
 
 #include "FairUtilStream.h"
-#include "FairDbOutRowStream.h"
+#include "FairDbOutTableBuffer.h"
+#include "FairDbReader.h"
 #include "FairDbResult.h"
 #include "FairDbStatement.h"
-#include "FairDbValidityRec.h"
+#include "FairDbValRecord.h"
 #include "FairDbStreamer.h"
 
 
@@ -21,8 +22,8 @@ using std::endl;
 
 ClassImp(FairDbTutParBin);
 
-#include "FairDbResPtr.tpl"
-template class  FairDbResultPtr<FairDbTutParBin>;
+#include "FairDbReader.tpl"
+template class  FairDbReader<FairDbTutParBin>;
 
 #include "FairDbWriter.tpl"
 template class  FairDbWriter<FairDbTutParBin>;
@@ -143,8 +144,8 @@ void FairDbTutParBin::Print()
 
 
 
-void FairDbTutParBin::Fill(FairDbResultSet& rs,
-                           const FairDbValidityRec* vrec)
+void FairDbTutParBin::Fill(FairDbResultPool& rs,
+                           const FairDbValRecord* vrec)
 {
 
   // Instanciate  & clear() the Data Contents
@@ -163,8 +164,8 @@ void FairDbTutParBin::Fill(FairDbResultSet& rs,
 
 }
 
-void FairDbTutParBin::Store(FairDbOutRowStream& ors,
-                            const FairDbValidityRec* vrec) const
+void FairDbTutParBin::Store(FairDbOutTableBuffer& ors,
+                            const FairDbValRecord* vrec) const
 {
   FairDbStreamer dbIArray(fMyIArray,3);
   FairDbStreamer dbDArray(fMyDArray,10);
@@ -173,12 +174,11 @@ void FairDbTutParBin::Store(FairDbOutRowStream& ors,
 }
 
 
-void FairDbTutParBin::Fill(UInt_t rid)
+void FairDbTutParBin::fill(UInt_t rid)
 {
-
   ValTimeStamp ts(rid);
-  ValContext context(Detector::kGfi,SimFlag::kData,ts);
-  FairDbResultPtr<FairDbTutParBin> rsCal(context, GetVersion());
+  ValCondition context(Detector::kGfi,DataType::kData,ts);
+  FairDbReader<FairDbTutParBin> rsCal(context, GetVersion());
   Int_t numRows = rsCal.GetNumRows();
 
   // Just use the latest row entry
@@ -208,21 +208,17 @@ void FairDbTutParBin::Fill(UInt_t rid)
 }
 
 
-void FairDbTutParBin::Store(UInt_t rid)
+void FairDbTutParBin::store(UInt_t rid)
 {
 
-
-
   DBLOG("FairDb", FairDbLog::kWarning) << "FairDbTutParBin Store() " << endl;
-
-
 
   // In this example we are fixing the database entry point. In the future
   // a variable entry can be set via the runtime DB directly.
   Int_t dbEntry = 0;
   Bool_t fail= kFALSE;
 
-  FairDbMultConnector* fMultConn = FairDbTableProxyRegistry::Instance().fMultConnector;
+  FairDbConnectionPool* fMultConn = FairDbTableInterfaceStore::Instance().fConnectionPool;
   auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(dbEntry));
   if ( ! stmtDbn.get() ) {
     cout << "-E-  FairDbTutParBin::Store()  Cannot get a statement for cascade entry " << dbEntry
@@ -270,6 +266,5 @@ void FairDbTutParBin::Store(UInt_t rid)
     cout << "-E- FairDbTutParBin::Store()  Cannot do IO on class# " << GetName() <<  endl;
   }
 
-  // Print Info on the Central Log
-  FairDbExceptionLog::GetGELog().Print();
+
 }
