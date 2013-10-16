@@ -16,19 +16,21 @@ FairDbExceptionLog::FairDbExceptionLog(const FairDbException* e)
   if ( e ) { this->AddEntry(*e); }
 }
 
-
 FairDbExceptionLog::~FairDbExceptionLog()
 {
 }
-
 
 std::ostream& operator<<(std::ostream& os, const FairDbExceptionLog& el)
 {
 
   if ( el.IsEmpty() ) {
-    os << "-I- The FairDb Exception Log is empty" << endl;
+    os << endl;
+    os << "-I- FairDbExceptionLog:: FairDB ExceptionLog is empty. " << endl;
+    os << endl;
   } else {
-    os << "-I- FairDb Database Exception Log:-" << endl;
+    os << "**************************************************************************** " << endl;
+    os << "-W- FairDbExceptionLog:: FairDB caught the following Exceptions:             " << endl;
+    os << "**************************************************************************** " << endl;
     std::vector<FairDbException>::const_iterator itr(el.GetEntries().begin()),
         itrEnd(el.GetEntries().end());
     while ( itr != itrEnd ) {
@@ -38,7 +40,6 @@ std::ostream& operator<<(std::ostream& os, const FairDbExceptionLog& el)
   }
 
   return os;
-
 }
 
 
@@ -59,7 +60,7 @@ void FairDbExceptionLog::Copy(FairDbExceptionLog& that, UInt_t start) const
 
 void FairDbExceptionLog::Print () const
 {
-  std::cout << *this << std::endl;
+  std::cout  << *this << std::endl;
   return;
 
 }
