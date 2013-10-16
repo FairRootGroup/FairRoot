@@ -21,7 +21,7 @@ namespace FairDb
 
 typedef  Int_t Version;
 
-enum VersionTypes {  kAnyVersion     = -1,  // Use to disable task selection in context queries.
+enum VersionTypes {  kAnyVersion     = -1,  // Use to disable versioning select in ext. context queries.
                      kDefaultVersion = 0
                   };
 
@@ -32,22 +32,22 @@ enum TypeRegimes { kRootRegime = 0,
 
 
 enum DataTypes { kUnknown,
-                 kBool,      // concept
-                 kChar,      // concept
-                 kUChar,     // concept
+                 kBool,
+                 kChar,
+                 kUChar,
                  kTiny,
                  kUTiny,
                  kShort,
                  kUShort,
-                 kInt,       // concept
-                 kUInt,      // concept
+                 kInt,
+                 kUInt,
                  kLong,
                  kULong,
-                 kFloat,     // concept
+                 kFloat,
                  kDouble,
-                 kString,    // concept
+                 kString,
                  kTString,
-                 kDate,       // concept
+                 kDate,
                  kBinary
                };
 
@@ -64,17 +64,14 @@ enum AbortTest { kDisabled,
                };
 
 enum {
-  // Max local Sequence No
   kMAXLOCALSEQNO   = 99999999,
-  // Max. length of a table name
   kMAXTABLENAMELEN = 80
 };
 
 
-// Time gates for each table in secs.
-// Used to trim validity searches.
-Int_t GetTimeGate(const std::string& tableName);
-void SetTimeGate(const  std::string& tableName, Int_t timeGate);
+// Time intervals for  table in secs.
+Int_t GetTimeWindow(const std::string& tableName);
+void SetTimeWindow(const  std::string& tableName, Int_t timeGate);
 
 TString GetValDescr(const char* tableName,
                     Bool_t isTemporary = kFALSE);
