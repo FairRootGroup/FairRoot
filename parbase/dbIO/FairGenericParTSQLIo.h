@@ -13,7 +13,7 @@
 
 #include "Rtypes.h"                     // for Bool_t, etc
 
-class FairDbMultConnector;
+class FairDbConnectionPool;
 class FairParGenericSet;
 class FairParSet;
 class FairRuntimeDb;
@@ -25,14 +25,14 @@ class FairGenericParTSQLIo : public FairDetParTSQLIo
     FairGenericParTSQLIo();
 
     /**
-     *@param cons FairDbMultConnector which holds a number of
+     *@param cons FairDbConnectionPool which holds a number of
      * initialized db connections.
      *@param dbNum The db which is selected to act as the master for the
      * current operations.
-     * Note: A new FairDbMultConnector object is
+     * Note: A new FairDbConnectionPool object is
      * created (to keep the ownership).
      */
-    FairGenericParTSQLIo(FairDbMultConnector const& cons, int const dbNum = -1);
+    FairGenericParTSQLIo(FairDbConnectionPool const& cons, int const dbNum = -1);
 
     //! Destructor.
     virtual ~FairGenericParTSQLIo();
