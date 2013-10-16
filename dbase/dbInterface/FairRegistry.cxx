@@ -2,8 +2,8 @@
 
 #include "FairUtilStream.h"             // for read_quoted_string
 #include "FairDbLogService.h"
-#include "FairRegistryItem.h"           // for FairRegistryItem
-#include "FairRegistryItemXxx.h"        // for FairRegistryItemXxx
+#include "FairRegistryElement.h"           // for FairRegistryElement
+#include "FairRegistryElementGeneric.h"        // for FairRegistryElementGeneric
 
 #include "TBuffer.h"                    // for TBuffer, operator<<, etc
 #include "TNamed.h"                     // for TNamed
@@ -21,9 +21,6 @@ using namespace Util;
 using namespace std;
 
 ClassImp(FairRegistry)
-
-
-
 
 
 FairRegistry::FairRegistry(bool readonly)
@@ -250,7 +247,7 @@ bool FairRegistry::Set(const char* key, TYPE val)                           \
                << key << "\" with \"" << val << "\" in registry \"" << this->GetName() << "\"\n";\
             return false;                                               \
         }                                                               \
-        if (!dynamic_cast<FairRegistryItemXxx<TYPE>*>(mit->second)) {       \
+        if (!dynamic_cast<FairRegistryElementGeneric<TYPE>*>(mit->second)) {       \
                DBLOG("FairDb",FairDbLog::kInfo)                               \
                 << "Set: attempt to overwrite old value for key \""     \
                 << key << "\" with different type value "               \
@@ -268,7 +265,7 @@ bool FairRegistry::Set(const char* key, TYPE val)                           \
             return false;                                               \
         }                                                               \
     }                                                                   \
-    FairRegistryItem* ri = new FairRegistryItemXxx< TYPE >(new TYPE (val));     \
+    FairRegistryElement* ri = new FairRegistryElementGeneric< TYPE >(new TYPE (val));     \
     fMap[key] = ri;                                                     \
     this->SetDirty();                                                   \
     return true;                                                        \
@@ -291,7 +288,7 @@ bool FairRegistry::Set(const char* key, const char* val)
                                           << key << "\" with \"" << val << "\" in registry \"" << this->GetName() << "\"\n";
       return false;
     }
-    if (! dynamic_cast<FairRegistryItemXxx<const char*>*>(mit->second) ) {
+    if (! dynamic_cast<FairRegistryElementGeneric<const char*>*>(mit->second) ) {
 
       DBLOG("FairDb",FairDbLog::kInfo)   << "Set: attempt to overwrite old value for key \""
                                          << key << "\" with different type value "
@@ -313,7 +310,7 @@ bool FairRegistry::Set(const char* key, const char* val)
   (*cpp) = new char [strlen(val)+1];
   strcpy(*cpp,val);
   const char** ccpp = const_cast<const char**>(cpp);
-  FairRegistryItem* ri = new FairRegistryItemXxx< const char* >(ccpp);
+  FairRegistryElement* ri = new FairRegistryElementGeneric< const char* >(ccpp);
   fMap[key] = ri;
   this->SetDirty();
   return true;
@@ -325,8 +322,8 @@ bool FairRegistry::Get(const char* key, TYPE & val) const           \
 {                                                               \
     tRegMap::const_iterator mit = fMap.find(key);               \
     if (mit == fMap.end()) return false;                        \
-    FairRegistryItemXxx<TYPE>* rix =                                \
-        dynamic_cast<FairRegistryItemXxx<TYPE>*>(mit->second);      \
+    FairRegistryElementGeneric<TYPE>* rix =                                \
+        dynamic_cast<FairRegistryElementGeneric<TYPE>*>(mit->second);      \
     if (rix == 0){                                              \
       DBLOG("FairDb",FairDbLog::kInfo) << "Key " << key             \
     << " does not have type "    \
@@ -347,15 +344,15 @@ bool FairRegistry::Get(const char* key, double& val) const
   tRegMap::const_iterator mit = fMap.find(key);
   if (mit == fMap.end()) { return false; }
   // try correct type
-  FairRegistryItemXxx<double>* rixd =
-    dynamic_cast<FairRegistryItemXxx<double>*>(mit->second);
+  FairRegistryElementGeneric<double>* rixd =
+    dynamic_cast<FairRegistryElementGeneric<double>*>(mit->second);
   if (rixd) {
     val = *(rixd->Get());
     return true;
   }
   // try int
-  FairRegistryItemXxx<int>* rixi =
-    dynamic_cast<FairRegistryItemXxx<int>*>(mit->second);
+  FairRegistryElementGeneric<int>* rixi =
+    dynamic_cast<FairRegistryElementGeneric<int>*>(mit->second);
   if (rixi) {
     val = *(rixi->Get());
     return true;
@@ -443,7 +440,7 @@ void FairRegistry::Streamer(TBuffer& b)
       b >> tmp;
       string key(tmp);
 
-      FairRegistryItem* ri;
+      FairRegistryElement* ri;
       b >> ri;
 
       // This is copied from Set(), bad programmer!
@@ -454,7 +451,7 @@ void FairRegistry::Streamer(TBuffer& b)
       }
       fMap[key] = ri;
 
-    } // end reading in all FairRegistryItems
+    } // end reading in all FairRegistryElements
   } // isReading
   else {
     b.WriteVersion(FairRegistry::IsA());
@@ -547,17 +544,17 @@ std::istream& FairRegistry::ReadStream(std::istream& is)
     }
 
 
-    FairRegistryItem* ri = 0;
+    FairRegistryElement* ri = 0;
     if (type == "char") {
-      ri = new FairRegistryItemXxx<char>();
+      ri = new FairRegistryElementGeneric<char>();
     } else if (type == "int") {
-      ri = new FairRegistryItemXxx<int>();
+      ri = new FairRegistryElementGeneric<int>();
     } else if (type == "double") {
-      ri = new FairRegistryItemXxx<double>();
+      ri = new FairRegistryElementGeneric<double>();
     } else if (type == "string") {
-      ri = new FairRegistryItemXxx<const char*>();
+      ri = new FairRegistryElementGeneric<const char*>();
     } else if (type == "FairRegistry") {
-      ri = new FairRegistryItemXxx<FairRegistry>();
+      ri = new FairRegistryElementGeneric<FairRegistry>();
     } else { return bail(is); }
 
     ri->ReadStream(is);
