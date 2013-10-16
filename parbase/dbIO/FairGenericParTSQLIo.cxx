@@ -15,7 +15,7 @@
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
-class FairDbMultConnector;
+class FairDbConnectionPool;
 
 ClassImp(FairGenericParTSQLIo)
 
@@ -29,14 +29,14 @@ FairGenericParTSQLIo::FairGenericParTSQLIo()
 }
 
 /**
- *@param cons FairDbMultConnector which holds a number of
+ *@param cons FairDbConnectionPool which holds a number of
  * initialized db connections.
  *@param dbNum The db which is selected to act as the master for the
  * current operations.
- * Note: A new FairDbMultConnector object is
+ * Note: A new FairDbConnectionPool object is
  * created (to keep the ownership).
  */
-FairGenericParTSQLIo::FairGenericParTSQLIo(FairDbMultConnector const& cons,
+FairGenericParTSQLIo::FairGenericParTSQLIo(FairDbConnectionPool const& cons,
     int const dbNum)
   : FairDetParTSQLIo(cons, dbNum),
     fRtdb(FairRuntimeDb::instance())
