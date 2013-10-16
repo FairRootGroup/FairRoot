@@ -13,13 +13,13 @@
 #include <string>                       // for string, operator<
 #include <typeinfo>                     // for type_info
 
-class FairRegistryItem;
+class FairRegistryElement;
 class TBrowser;
 
 class FairRegistry : public TNamed
 {
   public:
-    typedef std::map<std::string,FairRegistryItem*> tRegMap;
+    typedef std::map<std::string,FairRegistryElement*> tRegMap;
     typedef void (*ErrorHandler)(void);
 
     explicit FairRegistry(bool readonly = true);
@@ -105,7 +105,7 @@ class FairRegistry : public TNamed
       private:
 
         const FairRegistry* fReg;
-        std::map<std::string,FairRegistryItem*>::iterator fIt;
+        std::map<std::string,FairRegistryElement*>::iterator fIt;
 
         //     FairRegistryKey(const FairRegistryKey&);
         FairRegistryKey operator=(const FairRegistryKey&);
