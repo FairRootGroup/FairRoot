@@ -6,8 +6,8 @@
  *******************************************/
 #include "FairDetParTSQLIo.h"
 
-#include "FairDbMultConnector.h"        // for FairDbMultConnector
-#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairDbConnectionPool.h"        // for FairDbConnectionPool
+#include "FairDbTableInterfaceStore.h"   // for FairDbTableInterfaceStore
 #include "FairParSet.h"                 // for FairParSet
 #include "FairRtdbRun.h"                // for FairRtdbRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
@@ -24,25 +24,25 @@ ClassImp(FairDetParTSQLIo)
 FairDetParTSQLIo::FairDetParTSQLIo()
   : FairDetParIo(),
     fDefaultDb(-1),
-    fConnections(FairDbTableProxyRegistry::Instance().fMultConnector),
+    fConnections(FairDbTableInterfaceStore::Instance().fConnectionPool),
     fcontainerList(0),
     factContVers(0),
     actRunId(-1)
 {}
 
 /**
- *@param cons FairDbMultConnector which holds a number of
+ *@param cons FairDbConnectionPool which holds a number of
  * initialized db connections.
  *@param dbNum The number of the db which is selected to act as the
  * master for the current operations.
- * Note: A new FairDbMultConnector object is created (to keep the
+ * Note: A new FairDbConnectionPool object is created (to keep the
  * ownership).
  */
 
-FairDetParTSQLIo::FairDetParTSQLIo(FairDbMultConnector const& cons, int const dbNum)
+FairDetParTSQLIo::FairDetParTSQLIo(FairDbConnectionPool const& cons, int const dbNum)
   : FairDetParIo(),
     fDefaultDb(dbNum),
-    fConnections(new FairDbMultConnector(cons)),
+    fConnections(new FairDbConnectionPool(cons)),
     fcontainerList(0),
     factContVers(0),
     actRunId(-1)
