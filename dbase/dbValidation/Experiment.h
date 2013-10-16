@@ -29,11 +29,8 @@ typedef enum EExperiment {
   kS006         = 0x11
 } Experiment_t;
 
-// no ctor or dtor's - this class consists of only static members
 
 Int_t       FullMask();
-
-// Translation enum to/from character strings
 
 const Char_t*          AsString(Experiment_t detector);
 Experiment::Experiment_t   CharToEnum(Char_t c);
