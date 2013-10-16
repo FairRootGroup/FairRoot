@@ -11,7 +11,7 @@
 
 #include "Rtypes.h"                     // for FairParTSQLIo::Class, etc
 
-class FairDbMultConnector;
+class FairDbConnectionPool;
 class FairRtdbRun;
 
 class FairParTSQLIo: public FairParIo
@@ -24,14 +24,14 @@ class FairParTSQLIo: public FairParIo
     FairParTSQLIo();
 
     /**
-     *@param cons FairDbMultConnector which holds a number of
+     *@param cons FairDbConnectionPool which holds a number of
      * initialized db connections.
      *@param dbNum The db which is selected to act as the master for the
      * current operations.
      * Note: A new FairDbConnection object is
      * created (to keep the ownership).
      */
-    FairParTSQLIo(FairDbMultConnector const& cons, int const dbNum = -1);
+    FairParTSQLIo(FairDbConnectionPool const& cons, int const dbNum = -1);
 
     /**
      * Destructor
@@ -62,9 +62,11 @@ class FairParTSQLIo: public FairParIo
      */
     bool open();
 
+    void close() {disconnect();}
+
     /**
-     * Print some info. This function maybe removed in future.
-     */
+       * Print some info. This function maybe removed in future.
+       */
     void print();
 
     /**
@@ -82,7 +84,7 @@ class FairParTSQLIo: public FairParIo
      * Get the connection object.
      *@return The actual FairDBConnection object.
      */
-    inline FairDbMultConnector const& GetConnections() const;
+    inline FairDbConnectionPool const& GetConnections() const;
 
     void readVersions(FairRtdbRun* aRun);
     FairRtdbRun* getCurrentRun() {return fCurrentRun;}
@@ -98,14 +100,14 @@ class FairParTSQLIo: public FairParIo
 
     FairRtdbRun* fCurrentRun;
     int fDefaultDb;
-    FairDbMultConnector* fConnections;
+    FairDbConnectionPool* fConnections;
 
     ClassDef(FairParTSQLIo, 0) // Class for parameter I/O Using TSQL
 };
 // ______________________ Inline functions ______________
 
 #ifndef __CINT__
-inline FairDbMultConnector const& FairParTSQLIo::GetConnections() const
+inline FairDbConnectionPool const& FairParTSQLIo::GetConnections() const
 {
   return (*(this->fConnections));
 };
