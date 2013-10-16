@@ -23,8 +23,7 @@ class FairDbExceptionLog
     virtual ~FairDbExceptionLog();
 
     Bool_t IsEmpty() const { return fEntries.size() == 0; }
-    const std::vector<FairDbException>&
-    GetEntries() const { return fEntries; }
+    const std::vector<FairDbException>& GetEntries() const { return fEntries; }
     void Print() const;
     UInt_t Size() const { return fEntries.size(); }
     void Copy(FairDbExceptionLog& that, UInt_t start=0) const;
