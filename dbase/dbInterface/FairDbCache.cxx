@@ -4,10 +4,10 @@
 #include "FairDbLogService.h"
 
 #include "FairDbResult.h"               // for FairDbResult, operator<<
-#include "FairDbSimFlagAssociation.h"   // for FairDbSimFlagAssociation, etc
-#include "FairDbValidityRec.h"          // for operator<<, etc
-#include "SimFlag.h"                    // for AsString, SimFlag_t
-#include "ValContext.h"                 // for ValContext, operator<<
+#include "FairDbDataTypeUnion.h"         // for FairDbDataTypeUnion, etc
+#include "FairDbValRecord.h"          // for operator<<, etc
+#include "DataType.h"                    // for AsString, DataType_t
+#include "ValCondition.h"                 // for ValCondition, operator<<
 #include "ValTimeStamp.h"               // for ValTimeStamp
 #include "db_detector_def.h"            // for Detector, etc
 
@@ -31,13 +31,13 @@ typedef ResultList_t::const_iterator ConstSubCacheItr_t;
 typedef ResultList_t::iterator SubCacheItr_t;
 
 
-FairDbCache::FairDbCache(FairDbTableProxy& qp,const string& tableName) :
-  fTableProxy(qp),
+FairDbCache::FairDbCache(FairDbTableInterface& qp,const string& tableName) :
+  fTableInterface(qp),
   fTableName(tableName),
   fCache(),
   fCurSize(0),
   fMaxSize(0),
-  fNumAdopted(0),
+  fNumAccepted(0),
   fNumReused(0)
 {
   DBLOG("FairDb", FairDbLog::kVerbose) << "Creating FairDbCache" << endl;
@@ -46,11 +46,6 @@ FairDbCache::FairDbCache(FairDbTableProxy& qp,const string& tableName) :
 FairDbCache::~FairDbCache()
 {
 
-  // Purge the AggNo == -1 cache before deleting.  For extended
-  // context queries it can have FairDbResultAggs that are clients of
-  // FairDbResultNonAggs in the same cache, so purging will remove clientless
-  // FairDbResultAggs which should in turn make their FairDbResultNonAggs
-  // clientless.
   if ( this->GetSubCache(-1) ) { this->Purge(fCache[-1]); }
 
   for ( CacheItr_t itr = fCache.begin(); itr != fCache.end(); ++itr) {
@@ -62,35 +57,32 @@ FairDbCache::~FairDbCache()
 
 }
 
-void FairDbCache::Adopt(FairDbResult* res,bool registerKey)
+void FairDbCache::Accept(FairDbResult* res,bool registerKey)
 {
   if ( ! res ) { return; }
   int aggNo = res->GetValidityRec().GetAggregateNo();
 
-//  Prime sub-cache if necessary.
   if ( ! this->GetSubCache(aggNo) ) {
     ResultList_t emptyList;
     fCache[aggNo] = emptyList;
   }
 
-//  Purge expired entries and add new result to cache.
   ResultList_t& subCache = fCache[aggNo];
   Purge(subCache, res);
   subCache.push_back(res);
   ++fCurSize;
-  ++fNumAdopted;
-  DBLOG("FairDb",FairDbLog::kInfo) << "Adopting result for " << res->TableName()
+  ++fNumAccepted;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Accepting result for: " << res->TableName()
                                    << "  " <<   res->GetValidityRecGlobal()
-                                   << "\nCache size now " << fCurSize << endl;
+                                   << "\nCache size updated: " << fCurSize << endl;
   if ( fCurSize > fMaxSize ) { fMaxSize = fCurSize; }
-  // If required register key with FairDbRecord
+
   if ( registerKey ) {
     res->RegisterKey();
-    DBLOG("FairDb",FairDbLog::kInfo) << "Caching new results: ResultKey: " <<  *res->GetKey();
+    DBLOG("FairDb",FairDbLog::kInfo) << "Caching results @ <ResKey># " <<  *res->GetKey();
   }
 }
 
-//.....................................................................
 
 const ResultList_t* FairDbCache::GetSubCache(Int_t aggNo) const
 {
@@ -117,12 +109,12 @@ void FairDbCache::Purge(ResultList_t& subCache, const FairDbResult* res)
               && (    ! res
                       || pRes->CanDelete(res)  ) ) {
 
-      DBLOG("FairDb",FairDbLog::kInfo) << "Purging " << pRes->GetValidityRec()
-                                       << " from " << pRes->TableName()
-                                       << " cache. Cache size now "
+      DBLOG("FairDb",FairDbLog::kInfo) << "Purging: " << pRes->GetValidityRec()
+                                       << " from: " << pRes->TableName()
+                                       << " cache. Cache size updated: "
                                        << fCurSize-1 << endl;
       delete pRes;
-//    Erasing increments iterator.
+//    Removing increments iterator.
       itr = subCache.erase(itr);
       --fCurSize;
 
@@ -133,14 +125,14 @@ void FairDbCache::Purge(ResultList_t& subCache, const FairDbResult* res)
 
 }
 
-const FairDbResult* FairDbCache::Search(const FairDbValidityRec& vrec,
+const FairDbResult* FairDbCache::Search(const FairDbValRecord& vrec,
                                         const string& sqlQualifiers) const
 {
 
   Int_t aggNo = vrec.GetAggregateNo();
 
-  DBLOG("FairDb",FairDbLog::kInfo) << "Secondary cache search of table " << fTableName
-                                   << " for  " << vrec
+  DBLOG("FairDb",FairDbLog::kInfo) << "Secondary cache search of table: " << fTableName
+                                   << " for:  " << vrec
                                    << (sqlQualifiers != "" ? sqlQualifiers : "" ) << endl;
   const ResultList_t* subCache = this->GetSubCache(aggNo);
   if ( ! subCache ) {
@@ -166,44 +158,44 @@ const FairDbResult* FairDbCache::Search(const FairDbValidityRec& vrec,
 }
 
 
-const FairDbResult* FairDbCache::Search(const ValContext& vc,
+const FairDbResult* FairDbCache::Search(const ValCondition& vc,
                                         const FairDb::Version& task ) const
 {
 
-  DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search of table " << fTableName
-                                   << " for  " << vc
-                                   << " with Version " << task << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search of table: " << fTableName
+                                   << " for:  " << vc
+                                   << " with Version: " << task << endl;
   const ResultList_t* subCache = this->GetSubCache(-1);
   if ( ! subCache ) {
-    DBLOG("FairDb",FairDbLog::kWarning) << "Primary cache search failed - sub-cache -1 is empty" << endl;
+    DBLOG("FairDb",FairDbLog::kWarning) << "Primary cache search failed :: (derived-cache-1) is empty" << endl;
     return 0;
   }
 
-  // Loop over all possible SimFlag associations.
+  // Loop over all possible DataType associations.
 
   Detector::Detector_t     det(vc.GetDetector());
-  SimFlag::SimFlag_t       sim(vc.GetSimFlag());
+  DataType::DataType_t       sim(vc.GetDataType());
   ValTimeStamp              ts(vc.GetTimeStamp());
 
-  FairDbSimFlagAssociation::SimList_t simList
-  = FairDbSimFlagAssociation::Instance().Get(sim);
+  FairDbDataTypeUnion::SimList_t simList
+  = FairDbDataTypeUnion::Instance().Get(sim);
 
-  FairDbSimFlagAssociation::SimList_t::iterator listItr    = simList.begin();
-  FairDbSimFlagAssociation::SimList_t::iterator listItrEnd = simList.end();
+  FairDbDataTypeUnion::SimList_t::iterator listItr    = simList.begin();
+  FairDbDataTypeUnion::SimList_t::iterator listItrEnd = simList.end();
   while ( listItr !=  listItrEnd ) {
 
-    SimFlag::SimFlag_t simTry = *listItr;
-    ValContext vcTry(det,simTry,ts);
+    DataType::DataType_t simTry = *listItr;
+    ValCondition vcTry(det,simTry,ts);
 
-    DBLOG("FairDb",FairDbLog::kInfo) << "  Searching cache with SimFlag: "
-                                     << SimFlag::AsString(simTry) << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "  Searching cache with DataType: "
+                                     << DataType::AsString(simTry) << endl;
     for ( ConstSubCacheItr_t itr = subCache->begin();
           itr != subCache->end();
           ++itr) {
       FairDbResult* res = *itr;
       if ( res->Satisfies(vcTry,task) ) {
         fNumReused += res->GetNumAggregates();
-        DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search succeeded. Result set no. of rows: "
+        DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search succeeded. Result set nb# of rows: "
                                          << res->GetNumRows() << endl;
         return res;
       }
@@ -232,7 +224,7 @@ const FairDbResult* FairDbCache::Search(const string& sqlQualifiers) const
     FairDbResult* res = *itr;
     if ( res->Satisfies(sqlQualifiers) ) {
       fNumReused += res->GetNumAggregates();
-      DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search succeeded Result set no. of rows: "
+      DBLOG("FairDb",FairDbLog::kInfo) << "Primary cache search succeeded Result set nb# of rows: "
                                        << res->GetNumRows() << endl;
       return res;
     }
@@ -264,7 +256,7 @@ FairDbLogStream& FairDbCache::ShowStatistics(FairDbLogStream& msg) const
   FairDbLogFormat ifmt("%10i");
 
   msg << ifmt(fCurSize) << ifmt(fMaxSize)
-      << ifmt(fNumAdopted) << ifmt(fNumReused);
+      << ifmt(fNumAccepted) << ifmt(fNumReused);
   return msg;
 
 }
