@@ -1,8 +1,8 @@
 #include "FairDbLogFormat.h"
-#include "FairDbLogBoundFormat.h"
+#include "FairDbLogBFormat.h"
 
 
-ostream& operator<<(ostream& os, const FairDbLogBoundFormat& bf)
+ostream& operator<<(ostream& os, const FairDbLogBFormat& bf)
 {
   int p = os.precision();
   FairDbLogFormat::fmtflags f =
