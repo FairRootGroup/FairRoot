@@ -15,7 +15,7 @@
 
 using namespace std;
 
-class FairDbLogBoundFormat;
+class FairDbLogBFormat;
 class FairDbLogOStream;
 
 class FairDbLogStream
@@ -31,6 +31,9 @@ class FairDbLogStream
 
     void AttachOStream(FairDbLog::LogLevel_t lvl, const char* name);
     void DetachOStream(FairDbLog::LogLevel_t lvl, const char* name);
+    void ConnectOStream(FairDbLog::LogLevel_t lvl, const char* name) {AttachOStream(lvl,name);}
+    void DisconnectOStream(FairDbLog::LogLevel_t lvl, const char* name) {DetachOStream(lvl,name);}
+
     void Close();
     void Flush();
     void AddFormat(FairDbLog::LogLevel_t lvl, int fmt);
