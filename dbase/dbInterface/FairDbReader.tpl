@@ -405,8 +405,6 @@ UInt_t FairDbReader<T>::NewQuery(const FairDbValRecord& vrec)
   FairDbStopWatchManager::gStopWatchManager.RecBegin(fTableInterface.GetTableName(), sizeof(T));
   Disconnect();
 
-// Play safe and don't allow result to be used; it's validity may not
-// have been trimmed by neighbouring records.
   fResult = fTableInterface.Query(vrec,kFALSE);
   fResult->Connect();
   FairDbStopWatchManager::gStopWatchManager.RecEnd(fResult->GetNumRows());
@@ -474,14 +472,7 @@ void FairDbReader<T>::SetContext(const FairDbValRecord& vrec)
   Int_t simMask        = vrng.GetSimMask();
 
   fDetType = Detector::kUnknown;
-  if      ( detMask & Detector::kCal ) { fDetType = Detector::kCal; }
-  else if ( detMask & Detector::kCalCrystal) { fDetType = Detector::kCalCrystal; }
-  else if ( detMask & Detector::kDch) { fDetType = Detector::kDch; }
-  else if ( detMask & Detector::kGfi) { fDetType = Detector::kGfi; }
-  else if ( detMask & Detector::kLand) { fDetType = Detector::kLand; }
-  else if ( detMask & Detector::kMtof) { fDetType = Detector::kMtof; }
-  else if ( detMask & Detector::kTof) { fDetType = Detector::kTof; }
-  else if ( detMask & Detector::kTracker) { fDetType = Detector::kTracker; }
+  fDetType = Detector::GetDetType(detMask);
 
   fSimType = DataType::kUnknown;
   if      ( simMask & DataType::kData) { fSimType = DataType::kData; }
