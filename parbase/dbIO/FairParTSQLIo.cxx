@@ -6,13 +6,17 @@
  ******************************************/
 #include "FairParTSQLIo.h"
 
+#include "FairDbLogService.h"
+
 #include "FairDbConnection.h"           // for FairDbConnection
-#include "FairDbMultConnector.h"        // for FairDbMultConnector, etc
+#include "FairDbConnectionPool.h"        // for FairDbConnectionPool, etc
 #include "FairDbStatement.h"            // for FairDbStatement
-#include "FairDbTableProxyRegistry.h"   // for FairDbTableProxyRegistry
+#include "FairDbTableInterfaceStore.h"   // for FairDbTableProxyRegistry
 #include "FairDetParIo.h"               // for FairDetParIo
 #include "FairGenericParTSQLIo.h"       // for FairGenericParTSQLIo
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
+
+
 
 #include "Riosfwd.h"                    // for ostream, ifstream
 #include "TCollection.h"                // for TIter
@@ -42,17 +46,17 @@ FairParTSQLIo::FairParTSQLIo()
   : FairParIo(),
     fCurrentRun(NULL),
     fDefaultDb (-1),
-    fConnections(FairDbTableProxyRegistry::Instance().fMultConnector)
+    fConnections(FairDbTableInterfaceStore::Instance().fConnectionPool)
 {
 //  fCurrentRun=NULL;
 }
 
 
-FairParTSQLIo::FairParTSQLIo(FairDbMultConnector const& cons, int const dbNum)
+FairParTSQLIo::FairParTSQLIo(FairDbConnectionPool const& cons, int const dbNum)
   : FairParIo(),
     fCurrentRun(NULL),
     fDefaultDb (dbNum),
-    fConnections(FairDbTableProxyRegistry::Instance().fMultConnector)
+    fConnections(FairDbTableInterfaceStore::Instance().fConnectionPool)
 {
 //  fCurrentRun=NULL;
 }
@@ -66,13 +70,13 @@ FairParTSQLIo::~FairParTSQLIo()
 
 bool FairParTSQLIo::check()
 {
-  //FairDbMultConnector::Status s;
+  //FairDbConnectionPool::Status s;
   int stat = -100;
   // Check if at least one DB is connected.
   if(fDefaultDb != -1) { // Has been specified.
     stat = fConnections->GetStatus(fDefaultDb);
-    if(stat == FairDbMultConnector::kFailed ||
-        stat == FairDbMultConnector::kClosed)
+    if(stat == FairDbConnectionPool::kFailed ||
+        stat == FairDbConnectionPool::kClosed)
       std::cerr << "<Error> The connection to specified default Database"
                 << " is not alive.\n";
   } else { // No selection
@@ -103,8 +107,16 @@ void FairParTSQLIo::setDetParIo(Text_t* ioName)
 void FairParTSQLIo::disconnect()
 {
   if(fConnections) {
-    std::cout << "\n\t<DEBUG> Terminating connection and status = "
-              << fConnections->GetStatusAsString(0)
+    Int_t nexceptions = FairDbExceptionLog::GetGELog().Size();
+    if (  nexceptions ) {
+      DBLOG("FairDb",FairDbLog::kInfo)  << "Database Global Exception Log contains "
+                                        << nexceptions << " entries:" << endl;;
+      FairDbExceptionLog::GetGELog().Print();
+    }
+
+    std::cout << "-I- FairParTSQLIO:: Terminating connection: status = "
+              << fConnections->GetStatusAsString(0) << " with n_exceptions# "
+              << nexceptions
               <<"\n\n";
     delete fConnections;
     fConnections = 0;
@@ -113,8 +125,8 @@ void FairParTSQLIo::disconnect()
 
 bool FairParTSQLIo::activateDetIo()
 {
-  std::cout << "<DEBUG> FairParTSQLIo::activateDetIo()\n";
-  // FIXME FIXME Maybe better to call check first
+  std::cout << "-I- FairParTSQLIo::activateDetIo()\n";
+
   if(!fConnections) {
     return false;
   }
@@ -135,14 +147,15 @@ bool FairParTSQLIo::open()
     stmtDb(fConnections->CreateStatement(iEntry));
     if ( ! stmtDb.get() ) {
       cout << "-E- FairParTSQLIo::open() Cannot get a statement for DB entry# " << iEntry
-           << "\n  --->  Please check the ENV_TSQL_* environment.  Transaction Failed  ... " << endl;
+           << "\n  --->  Please check the FAIRDB_TSQL_* environment.  Transaction Failed  ... " << endl;
       return kFALSE;
     }
 
-    // Now prepare Database for each DB entry
+
+    // Now prepare Database Infrastructure for each DB entry
     cout << "-I- FairParTSQLIo:.open() checking DB entry# " << iEntry  << endl;
 
-    if (!fConnections->GetConnection(iEntry)->TableExists("GLOBALSEQNO") ) {
+    if (!fConnections->GetConnection(iEntry)->TableExists("FAIRDBGLOBALSEQNO") ) {
       TString work = getenv("VMCWORKDIR");
       work = work + "/dbase/dbInput/prepare_db.sql";
       ostringstream os;
@@ -193,20 +206,20 @@ bool FairParTSQLIo::open()
 
     } else {
       // Some Meta-Structure in DB is already existing ... check that !
-      TSQLStatement* stmtTSQL = stmtDb->ExecuteQuery("select * from GLOBALSEQNO;");
+      TSQLStatement* stmtTSQL = stmtDb->ExecuteQuery("select * from FAIRDBGLOBALSEQNO;");
 
       if ( stmtTSQL ) {
         while ( stmtTSQL->NextResultRow() ) {
           TString tableName = stmtTSQL->GetString(0);
           int lastUsedSeqNo = stmtTSQL->GetInt(1);
           if ( tableName == "*" && lastUsedSeqNo != 900000000 )  {
-            cout << "-E- FairParTSQLIo:: GLOBALSEQNO table error. Entry * = " <<   lastUsedSeqNo
+            cout << "-E- FairParTSQLIo:: FAIRDBGLOBALSEQNO table error. Entry * = " <<   lastUsedSeqNo
                  << " but should be 900000000" << endl;
             fail = kTRUE;
           } else if  ( tableName != "*" ) {
             string tn3(tableName.Data(),3);
             if ( lastUsedSeqNo < 900000000 || lastUsedSeqNo > 999999999 ) {
-              cout << "-E- FaiParTSQLIo :GLOBALSEQNO table error. Entry " <<  tableName
+              cout << "-E- FaiParTSQLIo : FAIRDBGLOBALSEQNO table error. Entry " <<  tableName
                    << " but should start with FAIRDB \n"
                    << "     and last used SEQNO: " << lastUsedSeqNo
                    << " should be in range 900000000..999999999" << endl;
@@ -217,7 +230,7 @@ bool FairParTSQLIo::open()
       }
 
       if ( fail ) {
-        cout << "-I- FairParTSQLIo::open() The GLOBALSEQNO table at DB entry# " << iEntry << " is already\n"
+        cout << "-I- FairParTSQLIo::open() The FAIRDBGLOBALSEQNO table at DB entry# " << iEntry << " is already\n"
              << " existing but not aligned in sequence nr. range 900000000..999999999"
              << " quit rather than risk damage to this table ... \n" << endl;
         return kFALSE;
