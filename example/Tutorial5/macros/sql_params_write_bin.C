@@ -60,6 +60,6 @@ Int_t  sql_params_write_bin()
   cout << "-I-  FAIRDB: RuntimeDB Parameters succesfully written to DB with RunID# " << runId << endl;
   cout << endl;
 
-
+  if (db) delete db;
   return 0;
 }
