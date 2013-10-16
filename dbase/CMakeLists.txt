@@ -30,50 +30,49 @@ link_directories( ${LINK_DIRECTORIES})
 set(SRCS
 dbValidation/Experiment.cxx
 dbValidation/Detector.cxx
-dbValidation/SimFlag.cxx
-dbValidation/ValContext.cxx
-dbValidation/ValRange.cxx
+dbValidation/DataType.cxx
+dbValidation/ValCondition.cxx
+dbValidation/ValInterval.cxx
 dbValidation/ValTimeStamp.cxx
-dbValidation/ValValidate.cxx
 dbInterface/FairDb.cxx
 dbInterface/FairDbConnection.cxx 
-dbInterface/FairDbBinaryFile.cxx
+dbInterface/FairDbBufferFile.cxx
 dbInterface/FairDbCache.cxx
-dbInterface/FairDbConf.cxx
-dbInterface/FairDbConfDialog.cxx
+dbInterface/FairDbConfig.cxx
+dbInterface/FairDbConfigNotice.cxx
 dbInterface/FairDbConfigurable.cxx
-dbInterface/FairDbConfigSet.cxx
+dbInterface/FairDbConfigData.cxx
 dbInterface/FairDbFieldType.cxx
 dbInterface/FairDbTableMetaData.cxx
-dbInterface/FairDbMultConnector.cxx
-dbInterface/FairDbOutRowStream.cxx
+dbInterface/FairDbConnectionPool.cxx
+dbInterface/FairDbOutTableBuffer.cxx
 dbInterface/FairDbProxy.cxx
 dbInterface/FairDbResult.cxx
-dbInterface/FairDbRollbackDates.cxx
-dbInterface/FairDbRowStream.cxx
+dbInterface/FairDbRollbackTimes.cxx
+dbInterface/FairDbTableBuffer.cxx
 dbInterface/FairDbStatement.cxx
 dbInterface/FairDbString.cxx
-dbInterface/FairDbTableProxy.cxx
-dbInterface/FairDbTableProxyRegistry.cxx
-dbInterface/FairDbTableRow.cxx
-dbInterface/FairDbTimer.cxx 
-dbInterface/FairDbTimerManager.cxx  
-dbInterface/FairDbValidityRec.cxx
-dbInterface/FairDbValidityRecBuilder.cxx
+dbInterface/FairDbTableInterface.cxx
+dbInterface/FairDbTableInterfaceStore.cxx
+dbInterface/FairDbObjTableMap.cxx
+dbInterface/FairDbStopWatch.cxx 
+dbInterface/FairDbStopWatchManager.cxx  
+dbInterface/FairDbValRecord.cxx
+dbInterface/FairDbValRecordFactory.cxx
 dbInterface/FairRegistry.cxx
-dbInterface/FairRegistryItem.cxx
-dbInterface/FairRegistryItemXxx.cxx
+dbInterface/FairRegistryElement.cxx
+dbInterface/FairRegistryElementGeneric.cxx
 dbInterface/FairUtilStream.cxx
 dbInterface/FairDbLogEntry.cxx
-dbInterface/FairDbConfigStream.cxx
-dbInterface/FairDbConnectionMaintainer.cxx
-dbInterface/FairDbSqlContext.cxx
-dbInterface/FairDbSqlValPacket.cxx
+dbInterface/FairDbConfigBuffer.cxx
+dbInterface/FairDbConnectionManager.cxx
+dbInterface/FairDbExtSqlContent.cxx
+dbInterface/FairDbSqlValidityData.cxx
 dbInterface/FairDbException.cxx
 dbInterface/FairDbExceptionLog.cxx
-dbInterface/FairDbServices.cxx
-dbInterface/FairDbValRecSet.cxx
-dbInterface/FairDbSimFlagAssociation.cxx
+dbInterface/FairDbUtils.cxx
+dbInterface/FairDbValRecordMap.cxx
+dbInterface/FairDbDataTypeUnion.cxx
 dbInterface/FairDbStreamer.cxx
 dbUtils/FairTSQLObject.cxx
 dbUtils/FairDbLog.cxx
@@ -86,7 +85,7 @@ dbUtils/FairDbLogStream.cxx
 
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
-SET( HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbResPtr.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h)
+SET( HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbReader.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h)
 Set(LINKDEF FairDBLinkDef.h)
 Set(LIBRARY_NAME FairDB)
 Set(DEPENDENCIES Net RIO Cint Core)
