@@ -20,7 +20,7 @@ using std::cout;
 ClassImp(FairParSet)
 
 FairParSet::FairParSet(const char* name,const char* title,const char* context)
-  : FairDbTableRow(),
+  : FairDbObjTableMap(),
     fName(name),
     fTitle(title),
     detName(""),
