@@ -5,8 +5,8 @@
 #define FAIRDBTUTPAR_H
 
 #include "FairParGenericSet.h"          // for FairParGenericSet
-#include "SimFlag.h"                    // for ESimFlag::kData
-#include "ValContext.h"                 // for ValContext
+#include "DataType.h"                    // for EDataType::kData
+#include "ValCondition.h"                 // for ValCondition
 #include "ValTimeStamp.h"               // for ValTimeStamp
 #include "db_detector_def.h"            // for Detector, etc
 
@@ -14,10 +14,10 @@
 
 #include <string>                       // for string
 
-class FairDbOutRowStream;
-class FairDbResultSet;
-class FairDbTableRow;
-class FairDbValidityRec;
+class FairDbOutTableBuffer;
+class FairDbResultPool;
+class FairDbObjTableMap;
+class FairDbValRecord;
 class FairParamList;
 
 class FairDbTutPar : public FairParGenericSet
@@ -46,23 +46,23 @@ class FairDbTutPar : public FairParGenericSet
 
     // SQL descriptors
     virtual std::string GetTableDescr(const char* alternateName = 0);
-    virtual FairDbTableRow* CreateTableRow() const {
+    virtual FairDbObjTableMap* CreateObjTableMap() const {
       return new FairDbTutPar();
     }
 
     // I/O  member functions
-    virtual void Fill(FairDbResultSet& rs,
-                      const FairDbValidityRec* vrec);
-    virtual void Store(FairDbOutRowStream& ors,
-                       const FairDbValidityRec* vrec) const;
-    virtual void Fill(UInt_t rid);
-    virtual void Store(UInt_t rid);
+    virtual void Fill(FairDbResultPool& rs,
+                      const FairDbValRecord* vrec);
+    virtual void Store(FairDbOutTableBuffer& ors,
+                       const FairDbValRecord* vrec) const;
+    virtual void fill(UInt_t rid);
+    virtual void store(UInt_t rid);
 
     // Validity frame definition
-    virtual ValContext GetContextDTF(UInt_t rid) {
-      return ValContext(Detector::kGfi,
-                        SimFlag::kData,
-                        ValTimeStamp(rid));
+    virtual ValCondition GetContextDTF(UInt_t rid) {
+      return ValCondition(Detector::kGfi,
+                          DataType::kData,
+                          ValTimeStamp(rid));
     }
 
 
