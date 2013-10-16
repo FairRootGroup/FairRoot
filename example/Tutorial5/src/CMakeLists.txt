@@ -26,7 +26,7 @@ FairDbTutPar.h
 FairDbTutParBin.h
 FairDbTutContFact.h
 FairDbTutAccessRtdbTask.h
-${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbResPtr.h
+${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbReader.h
 ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h
 )
 
