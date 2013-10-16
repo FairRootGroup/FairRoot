@@ -4,7 +4,7 @@
 
 #include "FairDbWriter.h"
 #include "FairDbConnectionPool.h"
-#include "FairDbOutRowStream.h"
+#include "FairDbOutTableBuffer.h"
 #include "FairDbReader.h"
 #include "FairDbSqlValidityData.h"
 #include "FairDbTableInterface.h"
