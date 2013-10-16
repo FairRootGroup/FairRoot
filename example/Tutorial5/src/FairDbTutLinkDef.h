@@ -4,9 +4,9 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class FairDbResultPtr<FairDbTutPar>+;
+#pragma link C++ class FairDbReader<FairDbTutPar>+;
 #pragma link C++ class FairDbWriter<FairDbTutPar>+;
-#pragma link C++ class FairDbResultPtr<FairDbTutParBin>+;
+#pragma link C++ class FairDbReader<FairDbTutParBin>+;
 #pragma link C++ class FairDbWriter<FairDbTutParBin>+;
 #pragma link C++ class  FairDbTutPar+;
 #pragma link C++ class  FairDbTutParBin+;
