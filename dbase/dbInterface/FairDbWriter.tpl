@@ -3,11 +3,11 @@
 #include <fstream>
 
 #include "FairDbWriter.h"
-#include "FairDbMultConnector.h"
+#include "FairDbConnectionPool.h"
 #include "FairDbOutRowStream.h"
-#include "FairDbResPtr.h"
-#include "FairDbSqlValPacket.h"
-#include "FairDbTableProxy.h"
+#include "FairDbReader.h"
+#include "FairDbSqlValidityData.h"
+#include "FairDbTableInterface.h"
 #include "FairDbLogService.h"
 
 using std::cout;
@@ -21,10 +21,10 @@ template<class T>
 FairDbWriter<T>::FairDbWriter() :
   fAggregateNo(-2),
   fDbNo(0),
-  fPacket(new FairDbSqlValPacket),
+  fPacket(new FairDbSqlValidityData),
   fRequireGlobalSeqno(0),
-  fTableProxy(&FairDbWriter<T>::GetTableProxy()),
-  fTableName(fTableProxy->GetTableName()),
+  fTableInterface(&FairDbWriter<T>::GetTableInterface()),
+  fTableName(fTableInterface->GetTableName()),
   fUseOverlayCreationDate(kFALSE),
   fValidRec(0),
   fLogEntry(fTableName)
@@ -34,7 +34,7 @@ FairDbWriter<T>::FairDbWriter() :
 
 
 template<class T>
-FairDbWriter<T>::FairDbWriter(const ValRange& vr,
+FairDbWriter<T>::FairDbWriter(const ValInterval& vr,
                               Int_t aggNo,
                               FairDb::Version task,
                               ValTimeStamp creationDate,
@@ -43,10 +43,10 @@ FairDbWriter<T>::FairDbWriter(const ValRange& vr,
                               const std::string& tableName) :
   fAggregateNo(aggNo),
   fDbNo(dbNo),
-  fPacket(new FairDbSqlValPacket),
+  fPacket(new FairDbSqlValidityData),
   fRequireGlobalSeqno(0),
-  fTableProxy(&FairDbWriter<T>::GetTableProxy(tableName)),
-  fTableName(fTableProxy->GetTableName()),
+  fTableInterface(&FairDbWriter<T>::GetTableInterface(tableName)),
+  fTableName(fTableInterface->GetTableName()),
   fUseOverlayCreationDate(creationDate == ValTimeStamp(0,0)),
   fValidRec(0),
   fLogEntry(fTableName,logComment,vr.GetDetectorMask(),vr.GetSimMask(),task)
@@ -57,7 +57,7 @@ FairDbWriter<T>::FairDbWriter(const ValRange& vr,
 
 
 template<class T>
-FairDbWriter<T>::FairDbWriter(const ValRange& vr,
+FairDbWriter<T>::FairDbWriter(const ValInterval& vr,
                               Int_t aggNo,
                               FairDb::Version task,
                               ValTimeStamp creationDate,
@@ -66,10 +66,10 @@ FairDbWriter<T>::FairDbWriter(const ValRange& vr,
                               const std::string& tableName) :
   fAggregateNo(aggNo),
   fDbNo(),
-  fPacket(new FairDbSqlValPacket),
+  fPacket(new FairDbSqlValidityData),
   fRequireGlobalSeqno(0),
-  fTableProxy(&FairDbWriter<T>::GetTableProxy(tableName)),
-  fTableName(fTableProxy->GetTableName()),
+  fTableInterface(&FairDbWriter<T>::GetTableInterface(tableName)),
+  fTableName(fTableInterface->GetTableName()),
   fUseOverlayCreationDate(creationDate == ValTimeStamp(0,0)),
   fValidRec(0),
   fLogEntry(fTableName,logComment,vr.GetDetectorMask(),vr.GetSimMask(),task)
@@ -81,19 +81,19 @@ FairDbWriter<T>::FairDbWriter(const ValRange& vr,
 
 
 template<class T>
-FairDbWriter<T>::FairDbWriter(const FairDbValidityRec& vrec,
+FairDbWriter<T>::FairDbWriter(const FairDbValRecord& vrec,
                               UInt_t dbNo,
                               const std::string& logComment) :
   fAggregateNo(0),
   fDbNo(dbNo),
-  fPacket(new FairDbSqlValPacket),
+  fPacket(new FairDbSqlValidityData),
   fRequireGlobalSeqno(0),
-  fTableProxy(0),
+  fTableInterface(0),
   fTableName(),
   fUseOverlayCreationDate(kFALSE),
-  fValidRec(new FairDbValidityRec(vrec)),
-  fLogEntry(fTableName,logComment,vrec.GetValRange().GetDetectorMask(),
-            vrec.GetValRange().GetSimMask(),vrec.GetVersion())
+  fValidRec(new FairDbValRecord(vrec)),
+  fLogEntry(fTableName,logComment,vrec.GetValInterval().GetDetectorMask(),
+            vrec.GetValInterval().GetSimMask(),vrec.GetVersion())
 {
 
   T pet;
@@ -103,19 +103,19 @@ FairDbWriter<T>::FairDbWriter(const FairDbValidityRec& vrec,
 
 
 template<class T>
-FairDbWriter<T>::FairDbWriter(const FairDbValidityRec& vrec,
+FairDbWriter<T>::FairDbWriter(const FairDbValRecord& vrec,
                               const std::string& dbName,
                               const std::string& logComment) :
   fAggregateNo(0),
   fDbNo(),
-  fPacket(new FairDbSqlValPacket),
+  fPacket(new FairDbSqlValidityData),
   fRequireGlobalSeqno(0),
-  fTableProxy(0),
+  fTableInterface(0),
   fTableName(),
   fUseOverlayCreationDate(kFALSE),
-  fValidRec(new FairDbValidityRec(vrec)),
-  fLogEntry(fTableName,logComment,vrec.GetValRange().GetDetectorMask(),
-            vrec.GetValRange().GetSimMask(),vrec.GetVersion())
+  fValidRec(new FairDbValRecord(vrec)),
+  fLogEntry(fTableName,logComment,vrec.GetValInterval().GetDetectorMask(),
+            vrec.GetValInterval().GetSimMask(),vrec.GetVersion())
 {
   T pet;
 
@@ -160,7 +160,7 @@ FairDbWriter<T>& FairDbWriter<T>::operator<<(const T& row)
 
 //cout << "Writer ---> 2" << endl;
 
-  if ( ! fPacket->AddDataRow(*fTableProxy,fValidRec,row) ) {
+  if ( ! fPacket->AddDataRow(*fTableInterface,fValidRec,row) ) {
     DBLOG("FairDb",FairDbLog::kError)  << "Closing FairDbWriter due to above error." << endl;
     this->Abort();
   }
@@ -241,7 +241,7 @@ Bool_t FairDbWriter<T>::Close(const char* fileSpec)
 
 
     int seqNoType = fileSpec ? 1 : fRequireGlobalSeqno;
-    Int_t seqNo = fTableProxy->GetMultConnector().AllocateSeqNo(fTableName,seqNoType,fDbNo);
+    Int_t seqNo = fTableInterface->GetConnectionPool().AllocateSeqNo(fTableName,seqNoType,fDbNo);
     if ( seqNo <= 0 ) {
 
       DBLOG("FairDb",FairDbLog::kError)   << "Cannot get sequence number for table "
@@ -251,7 +251,7 @@ Bool_t FairDbWriter<T>::Close(const char* fileSpec)
     else {
 
       if ( fUseOverlayCreationDate &&  fValidRec
-         ) { fPacket->SetCreationDate(fTableProxy->QueryOverlayCreationDate(*fValidRec,fDbNo)); }
+         ) { fPacket->SetCreationDate(fTableInterface->QueryOverlayCreationDate(*fValidRec,fDbNo)); }
 
       fPacket->SetSeqNo(seqNo);
       if ( fileSpec ) {
@@ -289,17 +289,17 @@ void FairDbWriter<T>::CompleteOpen(UInt_t dbNo,
   }
 
   fAggregateNo = fValidRec->GetAggregateNo();
-  fTableName   = fTableProxy->GetTableName(),
+  fTableName   = fTableInterface->GetTableName(),
 
 // Recreate validity packet.
   fPacket->Recreate(fTableName,
-                    fValidRec->GetValRange(),
+                    fValidRec->GetValInterval(),
                     fAggregateNo,
                     fValidRec->GetVersion(),
                     fValidRec->GetCreationDate());
 
 // Recreate log entry.
-  const ValRange&  vr = fValidRec->GetValRange();
+  const ValInterval&  vr = fValidRec->GetValInterval();
   fLogEntry.Recreate(fTableName,
                      logComment,
                      vr.GetDetectorMask(),
@@ -311,19 +311,19 @@ void FairDbWriter<T>::CompleteOpen(UInt_t dbNo,
 
 
 template<class T>
-FairDbTableProxy& FairDbWriter<T>::GetTableProxy()
+FairDbTableInterface& FairDbWriter<T>::GetTableInterface()
 {
 
-  return FairDbResultPtr<T>::GetTableProxy();
+  return FairDbReader<T>::GetTableInterface();
 }
 
 
 
 template<class T>
-FairDbTableProxy& FairDbWriter<T>::GetTableProxy(
+FairDbTableInterface& FairDbWriter<T>::GetTableInterface(
   const std::string& tableName)
 {
-  return FairDbResultPtr<T>::GetTableProxy(tableName);
+  return FairDbReader<T>::GetTableInterface(tableName);
 }
 
 
@@ -331,7 +331,7 @@ template<class T>
 Bool_t FairDbWriter<T>::IsOpen(Bool_t reportErrors) const
 {
 
-  if ( ! FairDbTableProxyRegistry::IsActive()  ) {
+  if ( ! FairDbTableInterfaceStore::IsActive()  ) {
     if ( reportErrors ) {
       DBLOG("FairDb",FairDbLog::kError)   << "Cannot use FairDbWriter, the DB has been shutdown." << endl;
     }
@@ -368,7 +368,7 @@ Bool_t FairDbWriter<T>::NeedsLogEntry() const
 
 
 template<class T>
-Bool_t FairDbWriter<T>::Open (const ValRange& vr,
+Bool_t FairDbWriter<T>::Open (const ValInterval& vr,
                               Int_t aggNo,
                               FairDb::Version task,
                               ValTimeStamp creationDate,
@@ -378,7 +378,7 @@ Bool_t FairDbWriter<T>::Open (const ValRange& vr,
 
   bool ok = true;
 
-  if ( ! FairDbTableProxyRegistry::IsActive() ) { return kFALSE; }
+  if ( ! FairDbTableInterfaceStore::IsActive() ) { return kFALSE; }
   if ( this->CanOutput(kFALSE) ) { ok = Close(); }
 
 
@@ -386,10 +386,10 @@ Bool_t FairDbWriter<T>::Open (const ValRange& vr,
 
 
   delete fValidRec;
-  fValidRec = new FairDbValidityRec(vr,task,aggNo,0,0,kFALSE,creationDate);
+  fValidRec = new FairDbValRecord(vr,task,aggNo,0,0,kFALSE,creationDate);
 
 
-  fTableProxy = &FairDbWriter<T>::GetTableProxy(fTableName);
+  fTableInterface = &FairDbWriter<T>::GetTableInterface(fTableName);
 
 
   this->CompleteOpen(dbNo,logComment);
@@ -399,7 +399,7 @@ Bool_t FairDbWriter<T>::Open (const ValRange& vr,
 
 
 template<class T>
-Bool_t FairDbWriter<T>::Open (const ValRange& vr,
+Bool_t FairDbWriter<T>::Open (const ValInterval& vr,
                               Int_t aggNo,
                               FairDb::Version task,
                               ValTimeStamp creationDate,
@@ -420,7 +420,7 @@ Bool_t FairDbWriter<T>::Open (const ValRange& vr,
 
 
 template<class T>
-Bool_t FairDbWriter<T>::Open(const FairDbValidityRec& vrec,
+Bool_t FairDbWriter<T>::Open(const FairDbValRecord& vrec,
                              UInt_t dbNo,
                              const std::string& logComment)
 {
@@ -428,13 +428,13 @@ Bool_t FairDbWriter<T>::Open(const FairDbValidityRec& vrec,
 
   bool ok = true;
 
-  if ( ! FairDbTableProxyRegistry::IsActive() ) { return kFALSE; }
+  if ( ! FairDbTableInterfaceStore::IsActive() ) { return kFALSE; }
   if ( this->CanOutput(kFALSE) ) { ok = Close(); }
 
 
-  const FairDbTableProxy& proxyDefault = FairDbWriter<T>::GetTableProxy();
-  const FairDbTableProxy& proxyVrec    = *vrec.GetTableProxy();
-  if (    proxyDefault.GetTableName() != "FAIRDBCONFIGSET"
+  const FairDbTableInterface& proxyDefault = FairDbWriter<T>::GetTableInterface();
+  const FairDbTableInterface& proxyVrec    = *vrec.GetTableInterface();
+  if (    proxyDefault.GetTableName() != "FAIRDBCONFIGDATA"
           &&    proxyVrec.GetTableName() != proxyDefault.GetTableName() ) {
 
     DBLOG("FairDb",FairDbLog::kError)     << "Unable to create FairDbWriter from query:" << endl
@@ -445,13 +445,13 @@ Bool_t FairDbWriter<T>::Open(const FairDbValidityRec& vrec,
     return false;
   } else {
 
-    fTableProxy = const_cast<FairDbTableProxy*>(&proxyVrec);
+    fTableInterface = const_cast<FairDbTableInterface*>(&proxyVrec);
   }
 
   fUseOverlayCreationDate = vrec.GetCreationDate() == ValTimeStamp(0,0);
 
   delete fValidRec;
-  fValidRec = new FairDbValidityRec(vrec);
+  fValidRec = new FairDbValRecord(vrec);
 
 
   this->CompleteOpen(dbNo,logComment);
@@ -462,7 +462,7 @@ Bool_t FairDbWriter<T>::Open(const FairDbValidityRec& vrec,
 
 
 template<class T>
-Bool_t FairDbWriter<T>::Open(const FairDbValidityRec& vrec,
+Bool_t FairDbWriter<T>::Open(const FairDbValRecord& vrec,
                              const string& dbName,
                              const std::string& logComment)
 {
@@ -484,8 +484,8 @@ void FairDbWriter<T>::Reset()
   fAggregateNo = 0;
   fDbNo        = 0;
   fPacket->Clear();
-  fTableProxy  = &FairDbWriter<T>::GetTableProxy();
-  fTableName   = fTableProxy->GetTableName();
+  fTableInterface  = &FairDbWriter<T>::GetTableInterface();
+  fTableName   = fTableInterface->GetTableName();
 
   delete fValidRec;
   fValidRec    = 0;
@@ -501,7 +501,7 @@ void FairDbWriter<T>::SetDbName(const string& dbName)
   if ( dbName == "" ) {
     fDbNo = 0;
   } else {
-    fDbNo =  FairDbTableProxyRegistry::Instance().GetMultConnector().GetDbNo(dbName);
+    fDbNo =  FairDbTableInterfaceStore::Instance().GetConnectionPool().GetDbNo(dbName);
   }
 }
 
@@ -517,11 +517,11 @@ void FairDbWriter<T>::SetLogComment(const std::string& reason)
 
 
 template<class T>
-FairDbTableProxy& FairDbWriter<T>::TableProxy() const
+FairDbTableInterface& FairDbWriter<T>::TableInterface() const
 {
 
-  assert( FairDbTableProxyRegistry::IsActive() );
-  return *fTableProxy;
+  assert( FairDbTableInterfaceStore::IsActive() );
+  return *fTableInterface;
 }
 
 
@@ -529,7 +529,7 @@ template<class T>
 Bool_t FairDbWriter<T>::WritingToMaster() const
 {
 
-  FairDbMultConnector& cascader = FairDbTableProxyRegistry::Instance().GetMultConnector();
+  FairDbConnectionPool& cascader = FairDbTableInterfaceStore::Instance().GetConnectionPool();
   return  (    fDbNo == (UInt_t) cascader.GetAuthorisingDbNo()
                && ! cascader.IsTemporaryTable(fTableName,fDbNo));
 
