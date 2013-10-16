@@ -9,11 +9,11 @@
 #include <string>                       // for string
 #include <vector>                       // for vector
 
-class FairDbMultConnector;
-class FairDbResultSet;
+class FairDbConnectionPool;
+class FairDbResultPool;
 class FairDbTableMetaData;
-class FairDbTableProxy;
-class ValContext;
+class FairDbTableInterface;
+class ValCondition;
 class ValTimeStamp;
 
 class FairDbProxy
@@ -25,40 +25,40 @@ class FairDbProxy
     typedef const std::vector<UInt_t> SeqList_t;
 #endif
 
-    FairDbProxy(FairDbMultConnector& cascader,
+    FairDbProxy(FairDbConnectionPool& cascader,
                 const std::string& tableName,
                 const FairDbTableMetaData* metaData,
                 const FairDbTableMetaData* metaValid,
-                const FairDbTableProxy* tableProxy);
+                const FairDbTableInterface* tableProxy);
     virtual ~FairDbProxy();
 
     UInt_t GetNumDb() const;
     const std::string& GetTableName() const { return fTableNameUc; }
-    const FairDbTableProxy* GetTableProxy() const { return fTableProxy; }
-    void StoreMetaData(FairDbTableMetaData& metaData) const;
+    const FairDbTableInterface* GetTableInterface() const { return fTableInterface; }
+    void CreateMetaData(FairDbTableMetaData& metaData) const;
     Bool_t TableExists(Int_t selectDbNo=-1) const;
-    void FindTimeBoundaries(const ValContext& vc,
-                            const FairDb::Version& task,
-                            UInt_t dbNo,
-                            ValTimeStamp earliestCreate,
-                            ValTimeStamp& start,
-                            ValTimeStamp& end) const;
-    FairDbResultSet* QueryAllValidities(UInt_t dbNo,UInt_t seqNo=0) const;
-    FairDbResultSet* QuerySeqNo(UInt_t seqNo,UInt_t dbNo) const;
+    void FindTimeLimits(const ValCondition& vc,
+                        const FairDb::Version& task,
+                        UInt_t dbNo,
+                        ValTimeStamp earliestCreate,
+                        ValTimeStamp& start,
+                        ValTimeStamp& end) const;
+    FairDbResultPool* QueryAllValidities(UInt_t dbNo,UInt_t seqNo=0) const;
+    FairDbResultPool* QuerySeqNo(UInt_t seqNo,UInt_t dbNo) const;
 #ifndef __CINT__
-    FairDbResultSet* QuerySeqNos(SeqList_t& seqNos,
-                                 UInt_t dbNo,
-                                 const std::string& sqlData = "",
-                                 const std::string& fillOpts = "") const;
+    FairDbResultPool* QuerySeqNos(SeqList_t& seqNos,
+                                  UInt_t dbNo,
+                                  const std::string& sqlData = "",
+                                  const std::string& fillOpts = "") const;
 #endif
-    FairDbResultSet* QueryValidity(const ValContext& vc,
-                                   const FairDb::Version& task,
-                                   UInt_t dbNo) const;
-    FairDbResultSet* QueryValidity(const std::string& context,
-                                   const FairDb::Version& task,
-                                   UInt_t dbNo) const;
-    FairDbResultSet* QueryValidity(UInt_t seqNo,
-                                   UInt_t dbNo) const;
+    FairDbResultPool* QueryValidity(const ValCondition& vc,
+                                    const FairDb::Version& task,
+                                    UInt_t dbNo) const;
+    FairDbResultPool* QueryValidity(const std::string& context,
+                                    const FairDb::Version& task,
+                                    UInt_t dbNo) const;
+    FairDbResultPool* QueryValidity(UInt_t seqNo,
+                                    UInt_t dbNo) const;
 
 
     Bool_t ReplaceInsertDate(const ValTimeStamp& ts,
@@ -84,13 +84,13 @@ class FairDbProxy
     FairDbProxy& operator=(const FairDbProxy&);
 
 
-    FairDbMultConnector& fMultConnector;
+    FairDbConnectionPool& fConnectionPool;
     const FairDbTableMetaData* fMetaData;
     const FairDbTableMetaData* fMetaValid;
     std::string fSqlCondition;
     std::string fTableName;
     std::string fTableNameUc;
-    const FairDbTableProxy* fTableProxy;
+    const FairDbTableInterface* fTableInterface;
     std::string fValSuffix;
 
     ClassDef(FairDbProxy,0)     //  Proxy for physical database.
