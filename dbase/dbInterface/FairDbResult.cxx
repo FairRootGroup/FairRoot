@@ -1,6 +1,6 @@
 #include "FairDbResult.h"
 #include "FairDbLogService.h"
-#include "FairDbBinaryFile.h"           // for string, FairDbBinaryFile
+#include "FairDbBufferFile.h"           // for string, FairDbBufferFile
 #include "FairDbCache.h"                // for FairDbCache
 #include "FairDbExceptionLog.h"         // for FairDbExceptionLog
 #include "FairDbFieldType.h"            // for FairDbFieldType
@@ -8,10 +8,10 @@
 #include "FairDbStatement.h"            // for FairDbStatement
 #include "FairDbString.h"               // for FairDbString, MakePrintable
 #include "FairDbTableMetaData.h"        // for FairDbTableMetaData
-#include "FairDbTableRow.h"             // for FairDbTableRow
-#include "FairDbTimerManager.h"         // for FairDbTimerManager, etc
-#include "FairDbValidityRecBuilder.h"   // for FairDbValidityRecBuilder
-#include "ValRange.h"                   // for ValRange
+#include "FairDbObjTableMap.h"             // for FairDbObjTableMap
+#include "FairDbStopWatchManager.h"         // for FairDbStopWatchManager, etc
+#include "FairDbValRecordFactory.h"   // for FairDbValRecordFactory
+#include "ValInterval.h"                   // for ValInterval
 #include "ValTimeStamp.h"               // for ValTimeStamp, operator==, etc
 
 #include "FairDbStreamer.h"               // 
@@ -34,25 +34,25 @@ using std::ostringstream;
 using std::istringstream;
 using std::string;
 
-// ------------------------- Result Set  Implementation ---------------------------------
+// ------------------------- Result Pool  Implementation ---------------------------------
 
-ClassImp(FairDbResultSet)
+ClassImp(FairDbResultPool)
 
 
-FairDbResultSet::FairDbResultSet(FairDbStatement* stmtDb,
-                                 const FairDbString& sql,
-                                 const FairDbTableMetaData* metaData,
-                                 const FairDbTableProxy* tableProxy,
-                                 UInt_t dbNo,
-                                 const string& fillOpts) :
-  FairDbRowStream(metaData),
+FairDbResultPool::FairDbResultPool(FairDbStatement* stmtDb,
+                                   const FairDbString& sql,
+                                   const FairDbTableMetaData* metaData,
+                                   const FairDbTableInterface* tableProxy,
+                                   UInt_t dbNo,
+                                   const string& fillOpts) :
+  FairDbTableBuffer(metaData),
   fCurRow(0),
   fDbNo(dbNo),
   fDbType(FairDb::kMySQL),
   fStatement(stmtDb),
   fTSQLStatement(0),
   fExhausted(true),
-  fTableProxy(tableProxy),
+  fTableInterface(tableProxy),
   fValString(),
   fFillOpts(fillOpts)
 {
@@ -65,7 +65,7 @@ FairDbResultSet::FairDbResultSet(FairDbStatement* stmtDb,
 
 }
 
-FairDbResultSet::~FairDbResultSet()
+FairDbResultPool::~FairDbResultPool()
 {
   delete fTSQLStatement;
   fTSQLStatement = 0;
@@ -74,9 +74,9 @@ FairDbResultSet::~FairDbResultSet()
 
 }
 
-#define IN(t) istringstream in(AsString(t)); in
+#define INSTREAMER(t) istringstream in(AsString(t)); in
 
-#define IN2(t,m)                            \
+#define INSTREAMER2(t,m)                            \
   int col = CurColNum()-1;                  \
   if ( CurRowNum() == 0 ) {                 \
     istringstream in(AsString(t));          \
@@ -87,7 +87,7 @@ FairDbResultSet::~FairDbResultSet()
     IncrementCurCol();                      \
   }                                         \
  
-#define IN3(t)                                                      \
+#define INSTREAMER3(t)                                                      \
 int col = this->CurColNum()-1;                                      \
 const FairDbFieldType& fType = this->ColFieldType(col+1);              \
 if ( fType.GetSize() == 8 ) {                                       \
@@ -102,70 +102,70 @@ else {                                                              \
   if ( fType.GetSize() == 4 ) dest &= 0xffffffff;                   \
 }\
  
-FairDbResultSet& FairDbResultSet::operator>>(Bool_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(Bool_t& dest)
 {
-  IN(FairDb::kBool) >> dest;
+  INSTREAMER(FairDb::kBool) >> dest;
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(Char_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(Char_t& dest)
 {
-  IN(FairDb::kChar) >> dest;
+  INSTREAMER(FairDb::kChar) >> dest;
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(Short_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(Short_t& dest)
 {
-  IN2(FairDb::kInt,GetInt);
+  INSTREAMER2(FairDb::kInt,GetInt);
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(UShort_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(UShort_t& dest)
 {
-  IN3(Short_t);
+  INSTREAMER3(Short_t);
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(Int_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(Int_t& dest)
 {
-  IN2(FairDb::kInt,GetInt);
+  INSTREAMER2(FairDb::kInt,GetInt);
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(UInt_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(UInt_t& dest)
 {
-  IN3(Int_t);
+  INSTREAMER3(Int_t);
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(Long_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(Long_t& dest)
 {
-  IN2(FairDb::kLong, GetLong);
+  INSTREAMER2(FairDb::kLong, GetLong);
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(ULong_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(ULong_t& dest)
 {
-  IN3(Long_t);
+  INSTREAMER3(Long_t);
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(Float_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(Float_t& dest)
 {
-  IN2(FairDb::kFloat,GetDouble);
+  INSTREAMER2(FairDb::kFloat,GetDouble);
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(Double_t& dest)
+FairDbResultPool& FairDbResultPool::operator>>(Double_t& dest)
 {
-  IN2(FairDb::kDouble,GetDouble);
+  INSTREAMER2(FairDb::kDouble,GetDouble);
   return *this;
 }
 
 
-FairDbResultSet& FairDbResultSet::operator>>(string& dest)
+FairDbResultPool& FairDbResultPool::operator>>(string& dest)
 {
   dest = AsString(FairDb::kString);
   return *this;
 }
-FairDbResultSet& FairDbResultSet::operator>>(ValTimeStamp& dest)
+FairDbResultPool& FairDbResultPool::operator>>(ValTimeStamp& dest)
 {
   dest=FairDb::MakeTimeStamp(AsString(FairDb::kDate));
   return *this;
 }
 
-FairDbResultSet& FairDbResultSet::operator>>(FairDbStreamer& dest)
+FairDbResultPool& FairDbResultPool::operator>>(FairDbStreamer& dest)
 {
   // Streamer operator for DB basic types
   string db_str =  AsString(FairDb::kString);
@@ -173,7 +173,7 @@ FairDbResultSet& FairDbResultSet::operator>>(FairDbStreamer& dest)
   return *this;
 }
 
-string& FairDbResultSet::AsString(FairDb::DataTypes type)
+string& FairDbResultPool::AsString(FairDb::DataTypes type)
 {
 
   FairDbFieldType  reqdt(type);
@@ -232,7 +232,7 @@ string& FairDbResultSet::AsString(FairDb::DataTypes type)
   return fValString;
 }
 
-Bool_t FairDbResultSet::CurColExists() const
+Bool_t FairDbResultPool::CurColExists() const
 {
 
   Int_t col = CurColNum();
@@ -259,7 +259,7 @@ Bool_t FairDbResultSet::CurColExists() const
   return kTRUE;
 
 }
-string FairDbResultSet::CurColString() const
+string FairDbResultPool::CurColString() const
 {
 
   if ( ! CurColExists() ) { return ""; }
@@ -269,7 +269,7 @@ string FairDbResultSet::CurColString() const
 
 }
 
-Bool_t FairDbResultSet::FetchRow()
+Bool_t FairDbResultPool::FetchRow()
 {
   ClearCurCol();
   if ( IsExhausted() ) { return kFALSE; }
@@ -278,7 +278,7 @@ Bool_t FairDbResultSet::FetchRow()
   return ! fExhausted;
 
 }
-TString FairDbResultSet::GetStringFromTSQL(Int_t col) const
+TString FairDbResultPool::GetStringFromTSQL(Int_t col) const
 {
   TString valStr = fTSQLStatement->GetString(col-1);
   if (    this->GetDBType() == FairDb::kOracle
@@ -294,7 +294,7 @@ TString FairDbResultSet::GetStringFromTSQL(Int_t col) const
   }
   return valStr;
 }
-Bool_t FairDbResultSet::LoadCurValue() const
+Bool_t FairDbResultPool::LoadCurValue() const
 {
 
   fValString.clear();
@@ -325,7 +325,7 @@ Bool_t FairDbResultSet::LoadCurValue() const
   return kTRUE;
 
 }
-void FairDbResultSet::RowAsCsv(string& row) const
+void FairDbResultPool::RowAsCsv(string& row) const
 {
   const FairDbTableMetaData* md = this->MetaData();
 
@@ -418,7 +418,7 @@ std::string FairDbResultKey::AsString() const
   else {
     os << ".  " << fNumVRecKeys << " vrec";
     if ( fNumVRecKeys > 1 ) { os << "s (seqno min..max;creationdate min..max):"; }
-    else { os << " (seqno;creationdate):"; }
+    else { os << " (seq_id;transaction_time):"; }
     os << " ";
     std::list<VRecKey>::const_iterator itr    = fVRecKeys.begin();
     std::list<VRecKey>::const_iterator itrEnd = fVRecKeys.end();
@@ -475,19 +475,19 @@ Float_t FairDbResultKey::Compare(const FairDbResultKey* that) const
   for (  std::list<FairDbResultKey::VRecKey>::const_iterator itr = keySmall->fVRecKeys.begin();
          itr != itrEnd;
          ++itr ) {
-    DBLOG("FairDb",FairDbLog::kInfo) << "Comparing seqno " << itr->SeqNo << " with creation date " << itr->CreationDate
+    DBLOG("FairDb",FairDbLog::kInfo) << "Comparing seq_id " << itr->SeqNo << " with transaction date " << itr->CreationDate
                                      << " to " <<  seqnoToCreationDate[itr->SeqNo] << endl;
     if ( seqnoToCreationDate[itr->SeqNo] == itr->CreationDate ) { ++match; }
   }
 
-  DBLOG("FairDb",FairDbLog::kInfo) << "Match results: " << match << " out of " << numVrecs << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "Matching results: " << match << " out of " << numVrecs << endl;
 
   return match/numVrecs;
 
 }
 
 
-std::string FairDbResultKey::GetTableRowName() const
+std::string FairDbResultKey::GetObjTableMapName() const
 {
   ostringstream os;
   os << fTableName << "::" << fRowName;
@@ -495,18 +495,18 @@ std::string FairDbResultKey::GetTableRowName() const
 
 }
 
-//--------------------------------- Result Aggregat Implementation --------------------------//
+//--------------------------------- Result Composite Implementation --------------------------//
 
-ClassImp(FairDbResultAgg)
+ClassImp(FairDbResultCombo)
 
 typedef vector<const FairDbResult*>::const_iterator ConstResultItr_t;
 
-FairDbResultAgg::FairDbResultAgg(const string& tableName,
-                                 const FairDbTableRow* tableRow,
-                                 FairDbCache* cache,
-                                 const FairDbValidityRecBuilder* vrecBuilder,
-                                 const FairDbProxy* proxy,
-                                 const string& sqlQualifiers) :
+FairDbResultCombo::FairDbResultCombo(const string& tableName,
+                                     const FairDbObjTableMap* tableRow,
+                                     FairDbCache* cache,
+                                     const FairDbValRecordFactory* vrecFactory,
+                                     const FairDbProxy* proxy,
+                                     const string& sqlQualifiers) :
   FairDbResult(0,0,sqlQualifiers),
   fResults(),
   fRowKeys(),
@@ -515,7 +515,7 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
   typedef map<UInt_t,UInt_t> seqToRow_t;
 
   SetTableName(tableName);
-  if ( ! tableRow || ! cache || ! vrecBuilder || ! proxy ) { return; }
+  if ( ! tableRow || ! cache || ! vrecFactory || ! proxy ) { return; }
 
 // Caution: StringTok - removes null strings
 
@@ -528,14 +528,14 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
   vector<UInt_t> reqSeqNos;  // Sequence numbers required from DB.
   seqToRow_t seqToRow;       // Map SeqNo - > RowNo.
   UInt_t dbNo = 0;
-  Int_t maxRowNo = vrecBuilder->GetNumValidityRec() - 1;
+  Int_t maxRowNo = vrecFactory->GetNumValidityRec() - 1;
 
 
   for ( Int_t rowNo = 1; rowNo <= maxRowNo; ++rowNo ) {
-    const FairDbValidityRec& vrecRow = vrecBuilder->GetValidityRec(rowNo);
+    const FairDbValRecord& vrecRow = vrecFactory->GetValidityRec(rowNo);
 
     const FairDbResult* res = cache->Search(vrecRow,sqlQualifiers);
-    DBLOG("FairDb",FairDbLog::kInfo) << "Checking validity rec " << rowNo
+    DBLOG("FairDb",FairDbLog::kInfo) << "Checking validity record " << rowNo
                                      << " " << vrecRow
                                      << "SQL qual: " << sqlQualifiers
                                      << " cache search: " << (void*) res << endl;
@@ -546,8 +546,8 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
     }
 
     else if ( vrecRow.IsGap() ) {
-      FairDbResult* newRes = new FairDbResultNonAgg(0, tableRow, &vrecRow);
-      cache->Adopt(newRes,false);
+      FairDbResult* newRes = new FairDbResultNonCombo(0, tableRow, &vrecRow);
+      cache->Accept(newRes,false);
       fResults.push_back(newRes);
       newRes->Connect();
     }
@@ -564,9 +564,9 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
 
   if ( reqSeqNos.size() ) {
     sort(reqSeqNos.begin(),reqSeqNos.end());
-    FairDbResultSet* rs = proxy->QuerySeqNos(reqSeqNos,dbNo,sqlData,fillOpts);
+    FairDbResultPool* rs = proxy->QuerySeqNos(reqSeqNos,dbNo,sqlData,fillOpts);
     this->SetResultsFromDb();
-    FairDbTimerManager::gTimerManager.StartSubWatch(1);
+    FairDbStopWatchManager::gStopWatchManager.StartSubWatch(1);
     while ( ! rs->IsExhausted() ) {
       Int_t seqNo;
       *rs >> seqNo;
@@ -574,7 +574,7 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
       Int_t rowNo = -2;
       if ( seqToRow.find(seqNo) == seqToRow.end() ) {
 
-        DBLOG("FairDb",FairDbLog::kWarning)   << "Unexpected SeqNo: " << seqNo << endl;
+        DBLOG("FairDb",FairDbLog::kWarning)   << "Unexpected Seq_Id: " << seqNo << endl;
 
       } else {
         rowNo = seqToRow[seqNo];
@@ -583,18 +583,18 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
             << " for row " << rowNo << endl;
       }
 
-      const FairDbValidityRec& vrecRow = vrecBuilder->GetValidityRec(rowNo);
-      FairDbResultNonAgg* newRes = new FairDbResultNonAgg(rs,tableRow,&vrecRow);
+      const FairDbValRecord& vrecRow = vrecFactory->GetValidityRec(rowNo);
+      FairDbResultNonCombo* newRes = new FairDbResultNonCombo(rs,tableRow,&vrecRow);
 
       if ( this->IsExtendedContext() ) { newRes->SetCanReuse(false); }
       if ( rowNo == -2 ) {
         delete newRes;
       } else {
         DBLOG("FairDb",FairDbLog::kInfo)
-            << "SeqNo: " << seqNo
+            << "Seq_Id: " << seqNo
             << " produced " << newRes->GetNumRows() << " rows" << endl;
 
-        cache->Adopt(newRes,false);
+        cache->Accept(newRes,false);
         fResults[rowNo-1] = newRes;
         newRes->Connect();
         fSize += newRes->GetNumRows();
@@ -607,18 +607,18 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
 
   fRowKeys.reserve(fSize);
 
-  FairDbValidityRec vRec = vrecBuilder->GetValidityRec(1);
+  FairDbValRecord vRec = vrecFactory->GetValidityRec(1);
   for ( Int_t rowNo = 1; rowNo <= maxRowNo; ++rowNo ) {
 
-    const FairDbValidityRec& vrecRow = vrecBuilder->GetValidityRec(rowNo);
-    ValRange r = vrecRow.GetValRange();
+    const FairDbValRecord& vrecRow = vrecFactory->GetValidityRec(rowNo);
+    ValInterval r = vrecRow.GetValInterval();
     vRec.AndTimeWindow(r.GetTimeStart(),r.GetTimeEnd());
 
     const FairDbResult* res = fResults[rowNo-1];
     if ( res ) {
       UInt_t numEnt = res->GetNumRows();
       for (UInt_t entNo = 0; entNo < numEnt; ++entNo ) {
-        fRowKeys.push_back(res->GetTableRow(entNo));
+        fRowKeys.push_back(res->GetObjTableMap(entNo));
       }
     }
   }
@@ -630,14 +630,14 @@ FairDbResultAgg::FairDbResultAgg(const string& tableName,
   SetValidityRec(vRec);
 
   DBLOG("FairDb",FairDbLog::kInfo)
-      << "Aggregate contains " << fSize  << " entries.  vRec:-" << endl
+      << "Composite Data contains " << fSize  << " entries.  ValRecord:" << endl
       << vRec << endl;
 
-  DBLOG("FairDb",FairDbLog::kInfo)  << "Created aggregated result set no. of rows: "
+  DBLOG("FairDb",FairDbLog::kInfo)  << "Created composite result set no. of rows: "
                                     << this->GetNumRows() << endl;
 
 }
-FairDbResultAgg::~FairDbResultAgg()
+FairDbResultCombo::~FairDbResultCombo()
 {
 
   for ( ConstResultItr_t itr = fResults.begin();
@@ -645,9 +645,9 @@ FairDbResultAgg::~FairDbResultAgg()
         ++itr) if ( *itr ) { (*itr)->Disconnect(); }
 
 }
-//.....................................................................
 
-FairDbResultKey* FairDbResultAgg::CreateKey() const
+
+FairDbResultKey* FairDbResultCombo::CreateKey() const
 {
 
   FairDbResultKey* key = 0;
@@ -660,7 +660,7 @@ FairDbResultKey* FairDbResultAgg::CreateKey() const
       if ( ! key ) { key = result->CreateKey(); }
 
       else {
-        const FairDbValidityRec& vrec = result->GetValidityRec();
+        const FairDbValRecord& vrec = result->GetValidityRec();
         key->AddVRecKey(vrec.GetSeqNo(),vrec.GetCreationDate());
       }
     }
@@ -673,7 +673,7 @@ FairDbResultKey* FairDbResultAgg::CreateKey() const
 
 }
 
-const FairDbTableRow* FairDbResultAgg::GetTableRow(UInt_t row) const
+const FairDbObjTableMap* FairDbResultCombo::GetObjTableMap(UInt_t row) const
 {
 
   return  ( row >= fRowKeys.size() ) ? 0 : fRowKeys[row];
@@ -681,8 +681,8 @@ const FairDbTableRow* FairDbResultAgg::GetTableRow(UInt_t row) const
 }
 
 
-const FairDbValidityRec& FairDbResultAgg::GetValidityRec(
-  const FairDbTableRow* row) const
+const FairDbValRecord& FairDbResultCombo::GetValidityRec(
+  const FairDbObjTableMap* row) const
 {
 
   if ( ! row ) { return this->GetValidityRecGlobal(); }
@@ -691,7 +691,7 @@ const FairDbValidityRec& FairDbResultAgg::GetValidityRec(
 
 }
 
-Bool_t FairDbResultAgg::Satisfies(const string& sqlQualifiers)
+Bool_t FairDbResultCombo::Satisfies(const string& sqlQualifiers)
 {
   DBLOG("FairDb",FairDbLog::kInfo)
       << "Trying to satisfy: SQL: " << sqlQualifiers
@@ -702,7 +702,7 @@ Bool_t FairDbResultAgg::Satisfies(const string& sqlQualifiers)
             && this->GetSqlQualifiers() == sqlQualifiers;
 }
 
-void FairDbResultAgg::Streamer(FairDbBinaryFile& bf)
+void FairDbResultCombo::Streamer(FairDbBufferFile& bf)
 {
 
   vector<const FairDbResult*>::const_iterator itr = fResults.begin();
@@ -710,20 +710,17 @@ void FairDbResultAgg::Streamer(FairDbBinaryFile& bf)
 
   UInt_t numNonAgg = 0;
   for (; itr != end; ++itr) {
-    const FairDbResultNonAgg* rna = dynamic_cast<const FairDbResultNonAgg*>(*itr);
+    const FairDbResultNonCombo* rna = dynamic_cast<const FairDbResultNonCombo*>(*itr);
     if ( rna && ! rna->GetValidityRecGlobal().IsGap() ) { ++numNonAgg; }
   }
   bf << numNonAgg;
 
 
   for (itr = fResults.begin(); itr != end; ++itr) {
-    const FairDbResultNonAgg* rna = dynamic_cast<const FairDbResultNonAgg*>(*itr);
+    const FairDbResultNonCombo* rna = dynamic_cast<const FairDbResultNonCombo*>(*itr);
     if ( rna && ! rna->GetValidityRecGlobal().IsGap() ) { bf << *rna; }
   }
 }
-
-
-
 
 
 //------------------------------------- FairDbResult Generic Implemenation --------------//
@@ -733,7 +730,7 @@ ClassImp(FairDbResult)
 
 Int_t FairDbResult::fgLastID(0);
 
-FairDbBinaryFile& operator<<(FairDbBinaryFile& bf, const FairDbResult& res)
+FairDbBufferFile& operator<<(FairDbBufferFile& bf, const FairDbResult& res)
 {
 // Writing is a const operation, but uses a non-const method, so cast away const.
   FairDbResult& res_tmp = const_cast< FairDbResult&>(res);
@@ -742,7 +739,7 @@ FairDbBinaryFile& operator<<(FairDbBinaryFile& bf, const FairDbResult& res)
 }
 
 
-FairDbBinaryFile& operator>>(FairDbBinaryFile& bf, FairDbResult& res)
+FairDbBufferFile& operator>>(FairDbBufferFile& bf, FairDbResult& res)
 {
 
   res.Streamer(bf);
@@ -750,8 +747,8 @@ FairDbBinaryFile& operator>>(FairDbBinaryFile& bf, FairDbResult& res)
 }
 
 
-FairDbResult::FairDbResult(FairDbResultSet* resultSet,
-                           const FairDbValidityRec* vrec,
+FairDbResult::FairDbResult(FairDbResultPool* resultSet,
+                           const FairDbValRecord* vrec,
                            const string& sqlQualifiers) :
   fID(++fgLastID),
   fCanReuse(kTRUE),
@@ -807,22 +804,19 @@ void FairDbResult::CaptureExceptionLog(UInt_t startFrom)
 
 
 
-
-
-
 void FairDbResult::BuildLookUpTable() const
 {
   Bool_t duplicatesOK = this->IsExtendedContext();
 
-  DBLOG("FairDb",FairDbLog::kInfo)   << "Building look-uptable. Allow duplicates: "
+  DBLOG("FairDb",FairDbLog::kInfo)   << "Building lookup Table. Duplication Allowed: "
                                      << duplicatesOK << endl;
 
   for ( Int_t rowNo = this->GetNumRows()-1;
         rowNo >= 0;
         --rowNo ) {
-    const FairDbTableRow* row  = this->GetTableRow(rowNo);
+    const FairDbObjTableMap* row  = this->GetObjTableMap(rowNo);
     UInt_t index            = row->GetIndex(rowNo);
-    const FairDbTableRow* row2 = this->FairDbResult::GetTableRowByIndex(index);
+    const FairDbObjTableMap* row2 = this->FairDbResult::GetObjTableMapByIndex(index);
 
     DBLOG("FairDb",FairDbLog::kInfo)
         << "Look-up. Row no " << rowNo
@@ -834,9 +828,9 @@ void FairDbResult::BuildLookUpTable() const
       msg << "Duplicated row natural index: " << index
           << " Found at row " <<  rowNo
           << " of table " <<  this->TableName()
-          << ":-\n     index of agg " <<  row->GetAggregateNo();
+          << ":\n     index of combo# " <<  row->GetAggregateNo();
       if ( row->GetOwner() ) { msg << "(SEQNO " << row->GetOwner()->GetValidityRec(row).GetSeqNo() << ")"; }
-      msg << " matches agg " <<  row2->GetAggregateNo();
+      msg << " matches combo# " <<  row2->GetAggregateNo();
       if ( row2->GetOwner() ) { msg << "(SEQNO " << row2->GetOwner()->GetValidityRec(row2).GetSeqNo() << ")"; }
       MAXDBLOG("FairDb",FairDbLog::kError,20) << msg.str() << endl;
     }
@@ -867,7 +861,7 @@ const FairDbResultKey* FairDbResult::GetKey() const
   return fKey ? fKey : FairDbResultKey::GetEmptyKey();
 }
 
-const FairDbTableRow* FairDbResult::GetTableRowByIndex(UInt_t index) const
+const FairDbObjTableMap* FairDbResult::GetObjTableMapByIndex(UInt_t index) const
 {
   IndexToRow_t::const_iterator idx = fIndexKeys.find(index);
   return ( idx == fIndexKeys.end() ) ? 0 : (*idx).second;
@@ -884,7 +878,7 @@ void FairDbResult::RegisterKey()
 }
 
 
-Bool_t FairDbResult::Satisfies(const ValContext& vc,
+Bool_t FairDbResult::Satisfies(const ValCondition& vc,
                                const FairDb::Version& task)
 {
 
@@ -895,7 +889,7 @@ Bool_t FairDbResult::Satisfies(const ValContext& vc,
   UInt_t numClients        = this->GetNumClients();
 
   DBLOG("FairDb",FairDbLog::kInfo)
-      << "    Checking result with FairDbValidityRec:- \n      " << this->GetValidityRec()
+      << "    Checking result with FairDbValRecord:- \n      " << this->GetValidityRec()
       << "  With extended context: " << isExtendedContext
       << " CanReuse: " << canReuse
       << " Is Compatible: " << isCompatible
@@ -918,7 +912,7 @@ Bool_t FairDbResult::Satisfies(const ValContext& vc,
 
 }
 
-void FairDbResult::Streamer(FairDbBinaryFile& file)
+void FairDbResult::Streamer(FairDbBufferFile& file)
 {
 
   if ( file.IsReading() ) {
@@ -941,13 +935,13 @@ void FairDbResult::Streamer(FairDbBinaryFile& file)
 }
 
 
-ClassImp(FairDbResultNonAgg)
+ClassImp(FairDbResultNonCombo)
 
-FairDbResultNonAgg::FairDbResultNonAgg(FairDbResultSet* resultSet,
-                                       const FairDbTableRow* tableRow,
-                                       const FairDbValidityRec* vrec,
-                                       Bool_t dropSeqNo,
-                                       const string& sqlQualifiers)
+FairDbResultNonCombo::FairDbResultNonCombo(FairDbResultPool* resultSet,
+    const FairDbObjTableMap* tableRow,
+    const FairDbValRecord* vrec,
+    Bool_t dropSeqNo,
+    const string& sqlQualifiers)
   : FairDbResult(resultSet,vrec,sqlQualifiers),
     fRows(),
     fBuffer(NULL)
@@ -959,17 +953,17 @@ FairDbResultNonAgg::FairDbResultNonAgg(FairDbResultSet* resultSet,
   // cout << " 1 " << endl;
 
   if ( ! resultSet || resultSet->IsExhausted() || ! tableRow ) {
-    //cout << "-E- FairDbResultNonAgg incomplet IO -->  resultset: "
+    //cout << "-E- FairDbResultNonCombo incomplet IO -->  resultset: "
     //   << resultSet << " exhausted " << resultSet->IsExhausted() << " tableRow " << tableRow <<  endl;
     return;
   }
 
   // cout << " 2 " << endl;
 
-  if ( vrec ) { FairDbTimerManager::gTimerManager.RecFillAgg(vrec->GetAggregateNo()); }
+  if ( vrec ) { FairDbStopWatchManager::gStopWatchManager.RecFillAgg(vrec->GetAggregateNo()); }
 
 //Move to first row if result set not yet started.
-  FairDbResultSet& rs = *resultSet;
+  FairDbResultPool& rs = *resultSet;
   if ( rs.IsBeforeFirst() ) { rs.FetchRow(); }
   if ( rs.IsExhausted() ) { return; }
 
@@ -1002,35 +996,35 @@ FairDbResultNonAgg::FairDbResultNonAgg(FairDbResultSet* resultSet,
 
 // Strip off ROW_COUNTER if present.
     if ( hasRowCounter ) { rs.IncrementCurCol(); }
-    FairDbTableRow* row = tableRow->CreateTableRow();
-    if ( vrec) { FairDbTimerManager::gTimerManager.StartSubWatch(3); }
+    FairDbObjTableMap* row = tableRow->CreateObjTableMap();
+    if ( vrec) { FairDbStopWatchManager::gStopWatchManager.StartSubWatch(3); }
     row->SetOwner(this);
 
-    //cout << " -I- FairDbResultNonAgg:: TableRow::Fill() called  " << endl;
+    //cout << " -I- FairDbResultNonCombo:: ObjTableMap::Fill() called  " << endl;
     row->Fill(rs,vrec);
-    //cout << " -I- FairDbResultNonAgg:: TableRow::Fill() IO done ...  " << endl;
+    //cout << " -I- FairDbResultNonCombo:: ObjTableMap::Fill() IO done ...  " << endl;
 
-    if ( vrec) { FairDbTimerManager::gTimerManager.StartSubWatch(2); }
+    if ( vrec) { FairDbStopWatchManager::gStopWatchManager.StartSubWatch(2); }
     fRows.push_back(row);
     rs.FetchRow();
-    if ( vrec) { FairDbTimerManager::gTimerManager.StartSubWatch(1); }
+    if ( vrec) { FairDbStopWatchManager::gStopWatchManager.StartSubWatch(1); }
   }
 
   //Flag that data was read from Database.
   this->SetResultsFromDb();
   if ( seqNo  == 0 )
-    DBLOG("FairDb",FairDbLog::kInfo)  << "Created unaggregated VAL result set no. of rows: "
+    DBLOG("FairDb",FairDbLog::kInfo)  << "Created non composite Validity result set no. of rows: "
                                       << this->GetNumRows() << endl;
-  else   DBLOG("FairDb",FairDbLog::kInfo)  << "Created unaggregated result set for SeqNo: " << seqNo
+  else   DBLOG("FairDb",FairDbLog::kInfo)  << "Created non composite result set for SeqNo: " << seqNo
         << " no. of rows: " << this->GetNumRows() << endl;
 
 }
 
 
-FairDbResultNonAgg::~FairDbResultNonAgg()
+FairDbResultNonCombo::~FairDbResultNonCombo()
 {
 
-  if ( ! fBuffer ) for ( vector<FairDbTableRow*>::iterator itr = fRows.begin();
+  if ( ! fBuffer ) for ( vector<FairDbObjTableMap*>::iterator itr = fRows.begin();
                            itr != fRows.end();
                            ++itr) { delete *itr; }
   else {
@@ -1039,45 +1033,46 @@ FairDbResultNonAgg::~FairDbResultNonAgg()
   }
 }
 
-FairDbResultKey* FairDbResultNonAgg::CreateKey() const
+FairDbResultKey* FairDbResultNonCombo::CreateKey() const
 {
 
   string rowName("empty_table");
-  const FairDbTableRow* row = this->GetTableRow(0);
+  const FairDbObjTableMap* row = this->GetObjTableMap(0);
   if ( row ) { rowName = row->GetName(); }
-  const FairDbValidityRec& vrec = this->GetValidityRec();
+  const FairDbValRecord& vrec = this->GetValidityRec();
   return new FairDbResultKey(this->TableName(),
                              rowName,
                              vrec.GetSeqNo(),
                              vrec.GetCreationDate() );
 
 }
-void FairDbResultNonAgg::DebugCtor() const
+
+void FairDbResultNonCombo::DebugCtor() const
 {
-  static const FairDbResultNonAgg* that = 0;
+  static const FairDbResultNonCombo* that = 0;
   if ( this == that ) {
     DBLOG("FairDb",FairDbLog::kInfo) << "debug " << (void*) this << endl;
   }
 }
-//.....................................................................
 
-const FairDbTableRow* FairDbResultNonAgg::GetTableRow(UInt_t rowNum) const
+
+const FairDbObjTableMap* FairDbResultNonCombo::GetObjTableMap(UInt_t rowNum) const
 {
   if ( rowNum >= fRows.size() ) { return 0; }
   return fRows[rowNum];
 }
-const FairDbTableRow* FairDbResultNonAgg::GetTableRowByIndex(UInt_t index) const
+const FairDbObjTableMap* FairDbResultNonCombo::GetObjTableMapByIndex(UInt_t index) const
 {
 
   if ( ! this->LookUpBuilt() ) { this->BuildLookUpTable(); }
 
-  return this->FairDbResult::GetTableRowByIndex(index);
+  return this->FairDbResult::GetObjTableMapByIndex(index);
 
 }
-Bool_t FairDbResultNonAgg::Owns(const FairDbTableRow* row ) const
+Bool_t FairDbResultNonCombo::Owns(const FairDbObjTableMap* row ) const
 {
-  vector<FairDbTableRow*>::const_iterator itr    = fRows.begin();
-  vector<FairDbTableRow*>::const_iterator itrEnd = fRows.end();
+  vector<FairDbObjTableMap*>::const_iterator itr    = fRows.begin();
+  vector<FairDbObjTableMap*>::const_iterator itrEnd = fRows.end();
 
   for (; itr != itrEnd; ++itr) if ( *itr == row ) { return kTRUE; }
 
@@ -1086,8 +1081,8 @@ Bool_t FairDbResultNonAgg::Owns(const FairDbTableRow* row ) const
 
 }
 
-Bool_t FairDbResultNonAgg::Satisfies(const FairDbValidityRec& vrec,
-                                     const string& sqlQualifiers)
+Bool_t FairDbResultNonCombo::Satisfies(const FairDbValRecord& vrec,
+                                       const string& sqlQualifiers)
 {
   DBLOG("FairDb",FairDbLog::kInfo)   << "Trying to satisfy: Vrec " << vrec << " SQL: " << sqlQualifiers
                                      << "\n with CanReuse: " << this->CanReuse()
@@ -1096,7 +1091,7 @@ Bool_t FairDbResultNonAgg::Satisfies(const FairDbValidityRec& vrec,
                                      << endl;
 
   if ( this->CanReuse() ) {
-    const FairDbValidityRec& this_vrec = this->GetValidityRec();
+    const FairDbValRecord& this_vrec = this->GetValidityRec();
     if (    sqlQualifiers           == this->GetSqlQualifiers()
             && vrec.GetSeqNo()         == this_vrec.GetSeqNo()
             && vrec.GetCreationDate()  == this_vrec.GetCreationDate()
@@ -1106,20 +1101,21 @@ Bool_t FairDbResultNonAgg::Satisfies(const FairDbValidityRec& vrec,
   return kFALSE;
 
 }
-void FairDbResultNonAgg::Streamer(FairDbBinaryFile& file)
+
+void FairDbResultNonCombo::Streamer(FairDbBufferFile& file)
 {
 
   if ( file.IsReading() ) {
     this->FairDbResult::Streamer(file);
-    DBLOG("FairDb",FairDbLog::kInfo)  << "    Restoring FairDbResultNonAgg ..." << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Restoring FairDbResultNonCombo ..." << endl;
     file >> fRows;
     fBuffer = file.ReleaseArrayBuffer();
     this->BuildLookUpTable();
-    DBLOG("FairDb",FairDbLog::kInfo)  << "    Restored FairDbResultNonAgg. Size:"
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Restored FairDbResultNonCombo. Size:"
                                       << fRows.size() << " rows" << endl;
   } else if ( file.IsWriting() ) {
     this->FairDbResult::Streamer(file);
-    DBLOG("FairDb",FairDbLog::kInfo)  << "    Saving FairDbResultNonAgg. Size:"
+    DBLOG("FairDb",FairDbLog::kInfo)  << "    Saving FairDbResultNonCombo. Size:"
                                       << fRows.size() << " rows" << endl;
     file << fRows;
   }
