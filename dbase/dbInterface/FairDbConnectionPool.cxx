@@ -1,6 +1,6 @@
 #include "FairDbConnectionPool.h"
 
-#include "FairDb.h"                     // for GetValDescr, etc
+#include "FairDb.h"                     // for GetValDefinition, etc
 #include "FairDbLogService.h"
 #include "FairDbExceptionLog.h"         // for FairDbExceptionLog
 #include "FairDbStatement.h"            // for FairDbStatement
@@ -251,7 +251,7 @@ Int_t FairDbConnectionPool::CreateTemporaryTable(const string& tableNameMc,
   }
 
 // Create SQL to create auxillary validity table and write to same Db.
-  sqlMakeTable = FairDb::GetValDescr(tableName.c_str(),true);
+  sqlMakeTable = FairDb::GetValDefinition(tableName.c_str(),true);
 
   DBLOG("FairDb",FairDbLog::kWarning) << "Validity Table creation: "
                                       << " Database: " << dbNoAcc << " "
