@@ -171,7 +171,7 @@ FairDbResultPool*  FairDbProxy::QuerySeqNo(UInt_t seqNo, UInt_t dbNo) const
       << "    SEQNO= " << seqNo;
 
   if ( FairDbUtils::OrderContextQuery() && fMetaData->HasRowCounter() ) {
-    sql << " order by ROW_COUNTER";
+    sql << " order by ROW_ID";
   }
 
   DBLOG("FairDb",FairDbLog::kInfo)   << "Database: " << dbNo
@@ -225,7 +225,7 @@ FairDbResultPool*  FairDbProxy::QuerySeqNos(SeqList_t& seqNos,
   sql << "order by SEQNO";
 
   if ( FairDbUtils::OrderContextQuery() && fMetaData->HasRowCounter() ) {
-    sql << ",ROW_COUNTER";
+    sql << ",ROW_ID";
   }
 
   DBLOG("FairDb",FairDbLog::kInfo)  << "Database: " << dbNo
@@ -290,8 +290,8 @@ FairDbResultPool*  FairDbProxy::QueryValidity (const string& context,
      ) sql << " and  Version = " << task
              << " order by " << orderByName << " desc;" << '\0';
 
-  DBLOG("FairDb",FairDbLog::kInfo) << "Database: " << dbNo
-                                   << " query: " << sql.c_str() << endl;
+  DBLOG("FairDb",FairDbLog::kInfo) << "db_id: " << dbNo
+                                   << " SQL query: " << sql.c_str() << endl;
 
   FairDbStatement* stmtDb = fConnectionPool.CreateStatement(dbNo);
   return new FairDbResultPool(stmtDb,sql,fMetaValid,fTableInterface,dbNo);
@@ -309,7 +309,7 @@ FairDbResultPool*  FairDbProxy::QueryValidity (UInt_t seqNo,
   if ( fSqlCondition != "" ) { sql << fSqlCondition << " and "; }
   sql << "SEQNO = " << seqNo << ";";
 
-  DBLOG("FairDb",FairDbLog::kInfo)  << "Database: " << dbNo
+  DBLOG("FairDb",FairDbLog::kInfo)  << "db_id: " << dbNo
                                     << " SEQNO query: " << sql.c_str() << endl;
 
   FairDbStatement* stmtDb = fConnectionPool.CreateStatement(dbNo);
