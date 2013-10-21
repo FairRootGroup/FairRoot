@@ -290,7 +290,7 @@ Bool_t FairDbSqlValidityData::Fill(std::ifstream& is)
           getline(is,fSqlMySqlMetaMain);
 
           fgLastMetaHadRowCounter =
-            fSqlMySqlMetaMain.find("ROW_COUNTER",fSqlMySqlMetaMain.find("(")) != string::npos;
+            fSqlMySqlMetaMain.find("ROW_ID",fSqlMySqlMetaMain.find("(")) != string::npos;
           ++lineNum;
           getline(is,line);
           ++lineNum;
