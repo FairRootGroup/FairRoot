@@ -23,7 +23,7 @@ class FairDbTableMetaData
     std::string Sql(FairDb::DbTypes dbType = FairDb::kMySQL) const;
 
     std::string TableName() const { return fTableName; }
-    Bool_t HasRowCounter() const {return  this->NumCols() >=2 && this->ColName(2) == "ROW_COUNTER"; }
+    Bool_t HasRowCounter() const {return  this->NumCols() >=2 && this->ColName(2) == "ROW_ID"; }
     UInt_t NumCols() const { return fNumCols;}
 
 
