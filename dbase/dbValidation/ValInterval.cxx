@@ -79,7 +79,7 @@ const char* ValInterval::AsString(Option_t* option) const
 
   TString source;
   if ( ! opt.Contains("-")) {
-    source +=  (opt_c) ? " '" : "\n\t from source: ";
+    source +=  (opt_c) ? " '" : "\n\t origin: ";
     source += fDataSource;
     source +=  (opt_c) ? "'" : "";
   }
