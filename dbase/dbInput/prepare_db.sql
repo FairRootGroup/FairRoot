@@ -12,17 +12,17 @@ CREATE TABLE FAIRDBLOGENTRYVAL(
 );
 
 CREATE TABLE FAIRDBLOGENTRY(
-    SEQNO        INT,
-    ROW_COUNTER  INT,
-    TABLENAME    TEXT,
-    SEQNOMIN     INT NOT NULL,
-    SEQNOMAX     INT NOT NULL,
-    NUMSEQNO     INT NOT NULL,
-    USERNAME     TEXT,
-    PROCESSNAME  TEXT,
-    HOSTNAME     TEXT,
-    SERVERNAME   TEXT,
-    LOG_REASON   TEXT
+    SEQNO             INT,
+    ROW_ID            INT,
+    TABLENAME         TEXT,
+    MIN_SEQNO         INT NOT NULL,
+    MAX_SEQNO         INT NOT NULL,
+    N_SEQNO           INT NOT NULL,
+    USERNAME          TEXT,
+    PROCESS_ID        TEXT,
+    HOSTNAME          TEXT,
+    SERVERNAME        TEXT,
+    LOG_TITLE         TEXT
  );
 
 
