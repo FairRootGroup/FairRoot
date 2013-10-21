@@ -976,7 +976,7 @@ FairDbResultNonCombo::FairDbResultNonCombo(FairDbResultPool* resultSet,
     rs.DecrementCurCol();
   }
 
-// Check for ROW_COUNTER (which has to be ignored when reading).
+// Check for ROW_ID (which has to be ignored when reading).
   bool hasRowCounter = rs.HasRowCounter();
 
 // Create and fill table row object and move result set onto next row.
@@ -994,7 +994,7 @@ FairDbResultNonCombo::FairDbResultNonCombo(FairDbResultPool* resultSet,
       }
     }
 
-// Strip off ROW_COUNTER if present.
+// Strip off ROW_ID if present.
     if ( hasRowCounter ) { rs.IncrementCurCol(); }
     FairDbObjTableMap* row = tableRow->CreateObjTableMap();
     if ( vrec) { FairDbStopWatchManager::gStopWatchManager.StartSubWatch(3); }
