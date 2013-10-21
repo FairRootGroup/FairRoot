@@ -103,7 +103,7 @@ class FairDbLogEntry : public FairDbObjTableMap
     std::string fServerName;
     std::string fReason;
 
-    ClassDef(FairDbLogEntry,0)    // A Log Entry
+    ClassDef(FairDbLogEntry,0)    // Global Log Entry
 
 };
 
