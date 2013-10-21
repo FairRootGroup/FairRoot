@@ -59,7 +59,7 @@ void FairDbConfigData::Fill(FairDbResultPool& rs,
 
 // Don't count leading SeqNo, its already been skipped.
   UInt_t numParams = rs.NumCols()-1;
-// Skip the ROW_COUNTER if present
+// Skip the ROW_ID if present
   if (  rs.HasRowCounter() ) { --numParams; }
 
   for (UInt_t iParam = 0; iParam < numParams; ++iParam ) {
