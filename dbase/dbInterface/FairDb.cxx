@@ -39,8 +39,8 @@ Int_t FairDb::GetTimeWindow(const std::string& tableName)
 
 }
 
-TString FairDb::GetValDescr(const char* tableName,
-                            Bool_t isTemporary)
+TString FairDb::GetValDefinition(const char* tableName,
+                                 Bool_t isTemporary)
 {
 
   TString sql;
@@ -61,7 +61,6 @@ TString FairDb::GetValDescr(const char* tableName,
   return sql;
 }
 
-//.....................................................................
 
 ValTimeStamp FairDb::MakeTimeStamp(const std::string& sqlDateTime,
                                    Bool_t* ok)
