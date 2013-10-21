@@ -45,21 +45,21 @@ class FairDbTutPar : public FairParGenericSet
 
 
     // SQL descriptors
-    virtual std::string GetTableDescr(const char* alternateName = 0);
+    virtual std::string GetTableDefinition(const char* Name = 0);
     virtual FairDbObjTableMap* CreateObjTableMap() const {
       return new FairDbTutPar();
     }
 
     // I/O  member functions
-    virtual void Fill(FairDbResultPool& rs,
-                      const FairDbValRecord* vrec);
-    virtual void Store(FairDbOutTableBuffer& ors,
-                       const FairDbValRecord* vrec) const;
+    virtual void Fill(FairDbResultPool& res_in,
+                      const FairDbValRecord* valrec);
+    virtual void Store(FairDbOutTableBuffer& res_out,
+                       const FairDbValRecord* valrec) const;
     virtual void fill(UInt_t rid);
     virtual void store(UInt_t rid);
 
     // Validity frame definition
-    virtual ValCondition GetContextDTF(UInt_t rid) {
+    virtual ValCondition GetContext(UInt_t rid) {
       return ValCondition(Detector::kGfi,
                           DataType::kData,
                           ValTimeStamp(rid));
