@@ -230,13 +230,13 @@ Bool_t FairDbLogEntry::Write(UInt_t dbNo,
   }
 
   if ( ! this->HasReason() || fLogNumSeqNo == 0) {
-    DBLOG("FairDb",FairDbLog::kError) << "Cannot write LogEntry - no reason and/or no SEQNOs defined "
+    DBLOG("FairDb",FairDbLog::kError) << "Cannot write LogEntry: no reason and/or no SEQNOs defined "
                                       << endl;
     return kFALSE;
   }
 
   if ( fSeqNo != 0 && dbNo != fDbNo ) {
-    DBLOG("FairDb",FairDbLog::kError)  << "Cannot write LogEntry - attempting to switch from database"
+    DBLOG("FairDb",FairDbLog::kError)  << "Cannot write LogEntry: attempting to switch from database"
                                        << fDbNo << " to " << dbNo << endl;
     return kFALSE;
   }
@@ -251,7 +251,7 @@ Bool_t FairDbLogEntry::Write(UInt_t dbNo,
     replace = false;
     int seqNo = tblProxy.GetConnectionPool().AllocateSeqNo("FAIRDBLOGENTRY",0,fDbNo);
     if ( seqNo <= 0 ) {
-      DBLOG("FairDb",FairDbLog::kError)  << "Cannot get sequence number for table FAIRDBLOGENTRY" << endl;
+      DBLOG("FairDb",FairDbLog::kError)  << "Cannot get Seq_Id for table FAIRDBLOGENTRY" << endl;
       return kFALSE;
     }
     fSeqNo = seqNo;
