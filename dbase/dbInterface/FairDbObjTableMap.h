@@ -49,21 +49,21 @@ class FairDbObjTableMap : public TObject
     virtual  Int_t GetVersion() const { return  fVersion; }
     void  SetVersion(Int_t vers) { fVersion=vers; }
 
-    // Data Transmission Fidelity
-    virtual ValCondition GetContextDTF(UInt_t rid) { return ValCondition();}
-    virtual std::string GetTableDescr(const char* alternateName = 0) {return NULL;}
+    // Condition definition
+    virtual ValCondition GetContext(UInt_t rid) { return ValCondition();}
+    virtual std::string GetTableDefinition(const char* alternateName = 0) {return NULL;}
     // <DB> add ons GlobalSeqNo
-    virtual UInt_t GetSeqNoDTF() { return 999999990; }
+    virtual UInt_t GetSeqNo() { return 999999990; }
 
-    virtual ValInterval GetRangeDTF(UInt_t rid) {
-      ValCondition context = GetContextDTF(rid);
+    virtual ValInterval GetValInterval(UInt_t rid) {
+      ValCondition context = GetContext(rid);
       ValTimeStamp tsStart = context.GetTimeStamp();
 
       return ValInterval(context.GetDetector(),
                          context.GetDataType(),
                          tsStart,
                          ValTimeStamp::GetEOT(),
-                         "Data Transmission Fidelity.");
+                         "Condition Meta Data");
     }
 
     //
