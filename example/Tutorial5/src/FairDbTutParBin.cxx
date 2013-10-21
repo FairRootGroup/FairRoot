@@ -54,13 +54,13 @@ FairDbTutParBin::~FairDbTutParBin()
 }
 
 
-string FairDbTutParBin::GetTableDescr(const char* alternateName)
+string FairDbTutParBin::GetTableDefinition(const char* Name)
 {
   string sql("create table ");
-  if ( alternateName ) { sql += alternateName; }
+  if ( Name ) { sql += Name; }
   else { sql += "FAIRDBTUTPARBIN"; }
   sql += "( SEQNO          INT NOT NULL,";
-  sql += "  ROW_COUNTER    INT NOT NULL,";
+  sql += "  ROW_ID         INT NOT NULL,";
   sql += "  TOPPITCH       DOUBLE,";
   sql += "  TOPANCHOR      DOUBLE,";
   sql += "  TOPNRFE        INT,";
@@ -68,7 +68,7 @@ string FairDbTutParBin::GetTableDescr(const char* alternateName)
   sql += "  MYIARRAY       TEXT,";
   sql += "  MYDARRAY       TEXT,";
   sql += "  MYHISTO        TEXT,";
-  sql += "  primary key(SEQNO,ROW_COUNTER))";
+  sql += "  primary key(SEQNO,ROW_ID))";
   return sql;
 }
 
@@ -144,8 +144,8 @@ void FairDbTutParBin::Print()
 
 
 
-void FairDbTutParBin::Fill(FairDbResultPool& rs,
-                           const FairDbValRecord* vrec)
+void FairDbTutParBin::Fill(FairDbResultPool& res_in,
+                           const FairDbValRecord* valrec)
 {
 
   // Instanciate  & clear() the Data Contents
@@ -155,7 +155,7 @@ void FairDbTutParBin::Fill(FairDbResultPool& rs,
   FairDbStreamer dbDArray(fMyDArray,10);
   FairDbStreamer dbHisto(fMyHisto);
 
-  rs >> fTopPitch  >> fTopAnchor   >> fTopNrFE  >> fFeType >> dbIArray >> dbDArray>> dbHisto;
+  res_in >> fTopPitch  >> fTopAnchor   >> fTopNrFE  >> fFeType >> dbIArray >> dbDArray>> dbHisto;
 
   // Update data members
   dbIArray.Fill(fMyIArray);
@@ -164,13 +164,13 @@ void FairDbTutParBin::Fill(FairDbResultPool& rs,
 
 }
 
-void FairDbTutParBin::Store(FairDbOutTableBuffer& ors,
-                            const FairDbValRecord* vrec) const
+void FairDbTutParBin::Store(FairDbOutTableBuffer& res_out,
+                            const FairDbValRecord* valrec) const
 {
   FairDbStreamer dbIArray(fMyIArray,3);
   FairDbStreamer dbDArray(fMyDArray,10);
   FairDbStreamer dbHisto(fMyHisto);
-  ors << fTopPitch  << fTopAnchor   << fTopNrFE  << fFeType << dbIArray << dbDArray << dbHisto;
+  res_out << fTopPitch  << fTopAnchor   << fTopNrFE  << fFeType << dbIArray << dbDArray << dbHisto;
 }
 
 
@@ -187,13 +187,6 @@ void FairDbTutParBin::fill(UInt_t rid)
   for (Int_t j = 0; j < numRows; ++j) {
     FairDbTutParBin* cgd = (FairDbTutParBin*) rsCal.GetRow(j);
     if (!cgd) { continue; }
-
-    //cout << "Top Pitch " << cgd->GetTopPitch()
-    //     << "Top Anchor: " << cgd->GetTopAnchor()
-    //     << "Nr TopFe: " << cgd->GetNrTopFE()
-    //     << "Fe Type: " << cgd->GetFeType()
-    //     << endl;
-
     fTopPitch = cgd->GetTopPitch();
     fTopAnchor =  cgd->GetTopAnchor();
     fTopNrFE =  cgd->GetNrTopFE();
@@ -221,8 +214,8 @@ void FairDbTutParBin::store(UInt_t rid)
   FairDbConnectionPool* fMultConn = FairDbTableInterfaceStore::Instance().fConnectionPool;
   auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(dbEntry));
   if ( ! stmtDbn.get() ) {
-    cout << "-E-  FairDbTutParBin::Store()  Cannot get a statement for cascade entry " << dbEntry
-         << "\n    Please check the ENV_TSQL_* environment.  Quitting ... " << endl;
+    cout << "-E-  FairDbTutParBin::Store()  Cannot create a statement for Database_id: " << dbEntry
+         << "\n    Please check the FAIRDB_TSQL_* environment.  Quitting ... " << endl;
     exit(1);
   }
 
@@ -233,10 +226,10 @@ void FairDbTutParBin::store(UInt_t rid)
   atr.ToUpper();
 
   // Check if for this connection entry the table already exists.
-  // If not call the Class Table Descriptor function
+  // If not call the Class Table Definition function
   if (! fMultConn->GetConnection(dbEntry)->TableExists("FAIRDBTUTPARBIN") ) {
-    sql_cmds.push_back(FairDb::GetValDescr("FAIRDBTUTPARBIN").Data());
-    sql_cmds.push_back(FairDbTutParBin::GetTableDescr());
+    sql_cmds.push_back(FairDb::GetValDefinition("FAIRDBTUTPARBIN").Data());
+    sql_cmds.push_back(FairDbTutParBin::GetTableDefinition());
   }
 
   // Now execute the assemble list of SQL commands.
@@ -254,7 +247,7 @@ void FairDbTutParBin::store(UInt_t rid)
   // Refresh list of tables in connected database
   // for the choosen DB entry
   fMultConn->GetConnection(dbEntry)->SetTableExists();
-  FairDbWriter<FairDbTutParBin>  aW(GetRangeDTF(rid),
+  FairDbWriter<FairDbTutParBin>  aW(GetValInterval(rid),
                                     GetAggregateNo(), // Composite or Simple IO
                                     GetVersion(),  // Parameter version ( Set via the Container Factory)
                                     ValTimeStamp(0,0),0,"test parameter binary", "FAIRDBTUTPARBIN");
@@ -263,7 +256,7 @@ void FairDbTutParBin::store(UInt_t rid)
   aW << (*this);
   if ( ! aW.Close() ) {
     fail = true;
-    cout << "-E- FairDbTutParBin::Store()  Cannot do IO on class# " << GetName() <<  endl;
+    cout << "-E- FairDbTutParBin::Store() *****  Cannot do IO on class# " << GetName() <<  endl;
   }
 
 
