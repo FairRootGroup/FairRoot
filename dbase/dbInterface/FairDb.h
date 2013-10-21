@@ -73,8 +73,8 @@ enum {
 Int_t GetTimeWindow(const std::string& tableName);
 void SetTimeWindow(const  std::string& tableName, Int_t timeGate);
 
-TString GetValDescr(const char* tableName,
-                    Bool_t isTemporary = kFALSE);
+TString GetValDefinition(const char* tableName,
+                         Bool_t isTemporary = kFALSE);
 Bool_t NotGlobalSeqNo(UInt_t seqNo);
 
 // Complex type  conversion utility functions
