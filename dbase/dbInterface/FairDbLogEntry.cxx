@@ -68,6 +68,10 @@ FairDbLogEntry::FairDbLogEntry(const string& tableName,
   if ( ! userName ) { userName =  gSystem->Getenv("LOGNAME"); }
   if ( userName ) { fUserName = userName; }
 
+  // Add process id to unique identifier
+  char buff[50];
+  sprintf(buff,"%s_%i",fProcessName.c_str(),getpid());
+  fProcessName=buff;
 }
 
 FairDbLogEntry::~FairDbLogEntry()
@@ -162,9 +166,6 @@ void FairDbLogEntry::Recreate(const string& tableName,
 void FairDbLogEntry::SetReason(const string& reason)
 {
 
-  // If fReason starts '@' treat remainder as file name
-  // to be read into fReason.
-
   fReason = reason;
 
   if ( fReason.size() && fReason[0] == '@' ) {
@@ -172,7 +173,7 @@ void FairDbLogEntry::SetReason(const string& reason)
     fReason.clear();
     ifstream reasonFile(fileName.c_str());
     if ( ! reasonFile.is_open() ) {
-      DBLOG("FairDb",FairDbLog::kError)  << "Cannot read \"Reason File\" " << fileName << endl;
+      DBLOG("FairDb",FairDbLog::kError)  << "Cannot read \"Reason from File\" " << fileName << endl;
     } else {
       string line;
       while ( ! reasonFile.eof() ) {
