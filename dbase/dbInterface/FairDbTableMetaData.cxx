@@ -190,7 +190,7 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
   int numCols = this->NumCols();
   for(int i=1; i<= numCols; i++) {
 
-    if ( this->ColName(i) == "ROW_COUNTER" ) { hasRowCounter = true; }
+    if ( this->ColName(i) == "ROW_ID" ) { hasRowCounter = true; }
     sql << this->ColName(i) << " " ;
     sql << this->ColFieldType(i).AsSQLString(dbType_target);
 
@@ -200,7 +200,7 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
 
     else if( ! this->ColIsNullable(i)
              || this->ColName(i) == "SEQNO"
-             || this->ColName(i) == "ROW_COUNTER"
+             || this->ColName(i) == "ROW_ID"
            ) { sql << " not null" ; }
 
     if (i < numCols) { sql << ", "; }
@@ -216,7 +216,7 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
 // MySQL specs
   else if (dbType_target == FairDb::kMySQL ) {
     if ( mainTable ) {
-      if ( hasRowCounter ) { sql << ", primary key (SEQNO,ROW_COUNTER)"; }
+      if ( hasRowCounter ) { sql << ", primary key (SEQNO,ROW_ID)"; }
       else { sql << ", index (SEQNO)"; }
     } else {
       sql << ", key TIMESTART (TIMESTART), key TIMEEND (TIMEEND)";
@@ -231,7 +231,7 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
           << fTableName << "VAL(SEQNO)";
       if ( hasRowCounter )
         sql << ", constraint PK_" << fTableName
-            << "VAL primary key(SEQNO,ROW_COUNTER) using index tablespace R3B_DEV_IDX";
+            << "VAL primary key(SEQNO,ROW_ID) using index tablespace R3B_DEV_IDX";
     } else {
       sql << ", constraint PK_" << fTableName
           << "VAL primary key(SEQNO) using index tablespace R3B_DEV_IDX";
