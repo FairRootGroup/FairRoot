@@ -153,7 +153,7 @@ void FairDbValRecord::Fill(FairDbResultPool& rs,
 
   fIsGap = kFALSE;
 
-  ValInterval vr(detMask, simMask, start, end, "From Database");
+  ValInterval vr(detMask, simMask, start, end, "Added Conditions:");
   fValInterval = vr;
 
   DBLOG("FairDb",FairDbLog::kInfo)
