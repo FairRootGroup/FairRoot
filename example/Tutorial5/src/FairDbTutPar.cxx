@@ -1,6 +1,6 @@
 #include "FairDbTutPar.h"
 
-#include "FairDb.h"                     // for GetValDescr
+#include "FairDb.h"                     // for GetValDefinition
 #include "FairDbConnection.h"           // for FairDbConnection
 #include "FairDbExceptionLog.h"         // for FairDbExceptionLog
 #include "FairDbConnectionPool.h"        // for FairDbConnectionPool
@@ -44,19 +44,19 @@ FairDbTutPar::FairDbTutPar(const char* name, const char* title, const char* cont
 }
 
 
-string FairDbTutPar::GetTableDescr(const char* alternateName)
+string FairDbTutPar::GetTableDefinition(const char* Name)
 {
 
   string sql("create table ");
-  if ( alternateName ) { sql += alternateName; }
+  if ( Name ) { sql += Name; }
   else { sql += "FAIRDBTUTPAR"; }
   sql += "( SEQNO          INT NOT NULL,";
-  sql += "  ROW_COUNTER    INT NOT NULL,";
+  sql += "  ROW_ID         INT NOT NULL,";
   sql += "  TOPPITCH       DOUBLE,";
   sql += "  TOPANCHOR      DOUBLE,";
   sql += "  TOPNRFE        INT,";
   sql += "  FETYPE         TEXT,";
-  sql += "  primary key(SEQNO,ROW_COUNTER))";
+  sql += "  primary key(SEQNO,ROW_ID))";
   return sql;
 }
 
@@ -103,21 +103,16 @@ void FairDbTutPar::Print()
 
 
 
-void FairDbTutPar::Fill(FairDbResultPool& rs,
-                        const FairDbValRecord* vrec)
+void FairDbTutPar::Fill(FairDbResultPool& res_in,
+                        const FairDbValRecord* valrec)
 {
-  // cout << " -I- FairDbTutPar::Fill(xxx) called " << endl;
-  rs >> fTopPitch  >> fTopAnchor   >> fTopNrFE  >> fFeType;
-  // cout << " -I- FairDbTutPar::Filled(xxx) called values===> " << fTopPitch << " : " << fTopAnchor << " : " << fTopNrFE << " : " << fFeType << endl;
+  res_in >> fTopPitch  >> fTopAnchor   >> fTopNrFE  >> fFeType;
 }
 
-void FairDbTutPar::Store(FairDbOutTableBuffer& ors,
-                         const FairDbValRecord* vrec) const
+void FairDbTutPar::Store(FairDbOutTableBuffer& res_out,
+                         const FairDbValRecord* valrec) const
 {
-
-  // cout << " -I- FairDbTutPar::Store(xxx) called  " << fTopPitch << " : " << fTopAnchor << " : " << fTopNrFE << " : " << fFeType << endl;
-  ors << fTopPitch  << fTopAnchor   << fTopNrFE  << fFeType;
-
+  res_out << fTopPitch  << fTopAnchor   << fTopNrFE  << fFeType;
 }
 
 
@@ -130,22 +125,17 @@ void FairDbTutPar::fill(UInt_t rid)
   Int_t numRows = rsCal.GetNumRows();
 
 
-  // Just use the latest row entry
+  // By default use the latest row entry
+  // (Other rows would correspond to outdated versions)
   if ( numRows > 1 ) { numRows = 1; }
 
   for (int i = 0; i < numRows; ++i) {
     FairDbTutPar* cgd = (FairDbTutPar*) rsCal.GetRow(i);
     if (!cgd) { continue; }
-    //cout << "Top Pitch " << cgd->GetTopPitch()
-    //     << "Top Anchor: " << cgd->GetTopAnchor()
-    //     << "Nr TopFe: " << cgd->GetNrTopFE()
-    //     << "Fe Type: " << cgd->GetFeType()
-    //     << endl;
     fTopPitch = cgd->GetTopPitch();
     fTopAnchor =  cgd->GetTopAnchor();
     fTopNrFE =  cgd->GetNrTopFE();
     fFeType = cgd->GetFeType();
-
   }
 
 }
@@ -161,8 +151,8 @@ void FairDbTutPar::store(UInt_t rid)
   FairDbConnectionPool* fMultConn = FairDbTableInterfaceStore::Instance().fConnectionPool;
   auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(dbEntry));
   if ( ! stmtDbn.get() ) {
-    cout << "-E-  FairDbTutPar::Store()  Cannot get a statement for cascade entry " << dbEntry
-         << "\n    Please check the ENV_TSQL_* environment.  Quitting ... " << endl;
+    cout << "-E-  FairDbTutPar::Store()  Cannot create statement for Database_id: " << dbEntry
+         << "\n    Please check the FAIRDB_TSQL_* environment.  Quitting ... " << endl;
     exit(1);
   }
 
@@ -173,10 +163,10 @@ void FairDbTutPar::store(UInt_t rid)
   atr.ToUpper();
 
   // Check if for this connection entry the table already exists.
-  // If not call the Class Table Descriptor function
+  // If not call the Class Table Definition function
   if (! fMultConn->GetConnection(dbEntry)->TableExists("FAIRDBTUTPAR") ) {
-    sql_cmds.push_back(FairDb::GetValDescr("FAIRDBTUTPAR").Data());
-    sql_cmds.push_back(FairDbTutPar::GetTableDescr());
+    sql_cmds.push_back(FairDb::GetValDefinition("FAIRDBTUTPAR").Data());
+    sql_cmds.push_back(FairDbTutPar::GetTableDefinition());
   }
 
   // Now execute the assemble list of SQL commands.
@@ -194,9 +184,8 @@ void FairDbTutPar::store(UInt_t rid)
   // Refresh list of tables in connected database
   // for the choosen DB entry
   fMultConn->GetConnection(dbEntry)->SetTableExists();
-  //cout << "-I-FairDbTutPar ******* Store() called  ******** with RID#  " << rid <<  endl;
 
-  FairDbWriter<FairDbTutPar>  aW(this->GetRangeDTF(rid),
+  FairDbWriter<FairDbTutPar>  aW(this->GetValInterval(rid),
                                  GetAggregateNo(), // Composite or Simple IO
                                  GetVersion(),  // Parameter version ( Set via the Container Factory)
                                  ValTimeStamp(0,0),0,"test parameter", "FAIRDBTUTPAR");
@@ -205,8 +194,6 @@ void FairDbTutPar::store(UInt_t rid)
   aW << (*this);
   if ( ! aW.Close() ) {
     fail = true;
-    cout << "-E- FairDbTutPar::Store()  Cannot do IO on class# " << GetName() <<  endl;
+    cout << "-E- FairDbTutPar::Store() ******** Cannot do IO on class: " << GetName() <<  endl;
   }
-
-  // end of store()
 }
