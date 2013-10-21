@@ -54,7 +54,7 @@ const char* ValCondition::AsString(Option_t* option) const
             fTimeStamp.AsString("c"));
     break;
   default:
-    sprintf(newstring,"[%6.6s|%6.6s|%s}",
+    sprintf(newstring,"[%6.6s|%6.6s|%s]",
             Detector::AsString(GetDetector()),
             DataType::AsString(GetDataType()),
             fTimeStamp.AsString("c"));
