@@ -21,11 +21,8 @@ class FairDbConfigData : public FairDbObjTableMap
 
   public:
 
-
     FairDbConfigData() : fParams(), fAggregateNo(-2) { ; }
     virtual ~FairDbConfigData();
-
-
 
     virtual FairDbObjTableMap* CreateObjTableMap() const {
       return new FairDbConfigData;
