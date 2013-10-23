@@ -12,7 +12,6 @@
 #include <TH1F.h>
 #include "TBufferFile.h"
 
-
 #include "Detector.h"
 #include "DataType.h"
 #include "FairDbObjTableMap.h"
@@ -21,13 +20,20 @@
 #include "ValTimeStamp.h"
 
 #include "FairParGenericSet.h"
-#include "FairParamList.h"
 #include <string>
 #include <memory>
 
-using std::string;
-using std::auto_ptr;
+#include "FairDbWriter.h"
+#include "FairDbReader.h"
 
+
+using namespace std;
+
+class FairDbOutTableBuffer;
+class FairDbResultPool;
+class FairDbObjTableMap;
+class FairDbValRecord;
+class FairParamList;
 class FairDbValRecord;
 
 class FairDbTutParBin : public FairParGenericSet
@@ -60,19 +66,22 @@ class FairDbTutParBin : public FairParGenericSet
     void SetMyIArray(Int_t val, Int_t i) {fMyIArray[i]= val;}
     void SetMyDArray(Double_t val, Int_t i) {fMyDArray[i]= val;}
 
+    virtual void print() {Print();}
+    void FillDummy();
 
-    // SQL descriptors
+    // Add-ons: SQL descriptors for the parameter class
     virtual string GetTableDefinition(const char* Name = 0);
     virtual FairDbObjTableMap* CreateObjTableMap() const {
       return new FairDbTutParBin();
     }
 
-    // I/O  member functions
+    // Atomic IO (intrinsic)
     virtual void Fill(FairDbResultPool& res_in,
                       const FairDbValRecord* valrec);
     virtual void Store(FairDbOutTableBuffer& res_out,
                        const FairDbValRecord* valrec) const;
 
+    // Global IO using run_id
     virtual void fill(UInt_t rid);
     virtual void store(UInt_t rid);
 
@@ -83,9 +92,10 @@ class FairDbTutParBin : public FairParGenericSet
                           ValTimeStamp(rid));
     }
 
-    virtual void print() {Print();}
+    // SQL-IO Meta-Class Getters
+    FairDbReader<FairDbTutParBin>* GetParamReader();
+    FairDbWriter<FairDbTutParBin>* GetParamWriter();
 
-    void FillDummy();
 
   private:
     // Example Strip Parameters
@@ -97,8 +107,36 @@ class FairDbTutParBin : public FairParGenericSet
     Double_t fMyDArray[10];  // Array of Double_t fixed values
     TH1F*   fMyHisto;      // An Histogram
 
-    ClassDef(FairDbTutParBin,1); //
+    // Database Pool Index
+    Int_t fDbEntry; //!
+    // Parameter Container SQL Writer Meta-Class
+    FairDbWriter<FairDbTutParBin>* fParam_Writer; //!
+    // Parameter Container SQL Writer Meta-Class
+    FairDbReader<FairDbTutParBin>* fParam_Reader; //!
+    // Connection Pool
+    FairDbConnectionPool* fMultConn;  //!
+
+
+    ClassDef(FairDbTutParBin,1); //  Tutorial5 FairDbTutParBin Parameter Container example
 };
 
 #endif /* !FAIRDBTUTPARBIN_H*/
+
+inline  FairDbReader<FairDbTutParBin>* FairDbTutParBin::GetParamReader()
+{
+  if (fParam_Reader) { return fParam_Reader; }
+  else {
+    fParam_Reader = new  FairDbReader<FairDbTutParBin>();
+    return fParam_Reader;
+  }
+}
+
+inline FairDbWriter<FairDbTutParBin>* FairDbTutParBin::GetParamWriter()
+{
+  if (fParam_Writer) { return fParam_Writer; }
+  else {
+    fParam_Writer = new  FairDbWriter<FairDbTutParBin>();
+    return fParam_Writer;
+  }
+}
 
