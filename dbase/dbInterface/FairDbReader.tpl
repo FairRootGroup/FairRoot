@@ -25,8 +25,9 @@ map<string,FairDbTableInterface*>  FairDbReader<T>::fgNameToProxy;
 template<class T>
 FairDbTableInterface* FairDbReader<T>::fgTableInterface = 0;
 
-template<class T>
-std::vector<T*>  FairDbReader<T>::fListOfT;
+// CHECK ME (NEMORY)
+//template<class T>
+//std::vector<T*>  FairDbReader<T>::fListOfT;
 
 template<class T>
 FairDbReader<T>::FairDbReader() :
@@ -141,11 +142,31 @@ FairDbReader<T>::FairDbReader(const string& tableName,
   NewQuery(seqNo,dbNo);
 
 }
+
 template<class T>
 FairDbReader<T>::~FairDbReader()
 {
   Disconnect();
 }
+
+
+
+template<class T>
+UInt_t FairDbReader<T>::Activate(const ValCondition& vc,
+                                 FairDb::Version task,
+                                 FairDb::AbortTest abortTest,
+                                 Bool_t findFullTimeWindow)
+
+{
+  fAbortTest=abortTest;
+  fDetType=vc.GetDetector();
+  fSimType=vc.GetDataType();
+
+  T pet;
+  return NewQuery(vc, task, findFullTimeWindow);
+}
+
+
 
 template<class T>
 Bool_t FairDbReader<T>::ApplyAbortTest()
@@ -220,7 +241,9 @@ FairDbTableInterface& FairDbReader<T>::GetTableInterface(const string& tableName
 //  cout <<"-I- FairDbReader:: BEGIN GET TABLE PROXY **************** " << endl;
 //  cout << "-I- FairDbReader:: GetTableInterface tablename: " <<  tableName << endl;
 
-  fListOfT.clear();
+// CHECK ME !
+//cout << "-I- FairDbReader (-) object ************* " << endl;
+//  fListOfT.clear();
 
 // Check for request for default table.
   if ( tableName == "" ) { return  FairDbReader::GetTableInterface(); }
@@ -232,10 +255,12 @@ FairDbTableInterface& FairDbReader<T>::GetTableInterface(const string& tableName
 
 // No, so ask the Registry for it and save it for next time.
 
-  //cout << "-I- FairDbReader (+) object ************  " << endl;
+//  cout << "-I- FairDbReader (+) object ************  " << endl;
   T* pet = new T();
-  fListOfT.push_back(pet);
-  //cout << "-I- FairDbReader (-) object ************* " << endl;
+
+// CHECK ME !
+//  fListOfT.push_back(pet);
+
 
   FairDbTableInterface* proxy = &FairDbTableInterfaceStore::Instance()
                                 .GetTableInterface(tableName,pet);
