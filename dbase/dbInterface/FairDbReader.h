@@ -47,6 +47,10 @@ template <class T> class FairDbReader
                  FairDb::AbortTest abortTest = FairDb::kTableMissing);
     virtual ~FairDbReader();
 
+    UInt_t Activate(const ValCondition& vc,
+                    FairDb::Version task = FairDb::kDefaultVersion,
+                    FairDb::AbortTest abortTest = FairDb::kTableMissing,
+                    Bool_t findFullTimeWindow = true);
 
 
     const FairDbResultKey* GetKey() const;
@@ -73,7 +77,7 @@ template <class T> class FairDbReader
                     const std::string& fillOpts = "");
     UInt_t NewQuery(const FairDbValRecord& vrec);
     UInt_t NewQuery(UInt_t seqNo,UInt_t dbNo);
-
+    void   Reset() {;}
 
   private:
     void Disconnect();
@@ -94,7 +98,7 @@ template <class T> class FairDbReader
     static             FairDbTableInterface* fgTableInterface;
 
     // First add-on for memory management
-    static std::vector<T*>   fListOfT;
+    //static std::vector<T*>   fListOfT;
 
     ClassDefT(FairDbReader<T>,0)  // Reader pointer to specific database table.
 
