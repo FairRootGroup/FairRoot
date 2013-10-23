@@ -53,15 +53,20 @@ template <class T> class FairDbWriter
     Bool_t IsOpen(Bool_t reportErrors = kTRUE) const;
     Bool_t CanOutput(Bool_t reportErrors = kTRUE) const;
 
+    void SetDbEntry(UInt_t dbNo) { fDbNo = dbNo;}
     void SetDbNo(UInt_t dbNo) { fDbNo = dbNo;}
     void SetDbName(const std::string& dbName);
     void SetLogComment(const std::string& reason);
-    void SetContObj(T* cont_obj) { fContObj = cont_obj;}
+
+    // Setters
+    void SetComboNo(Int_t combo) {fAggregateNo = combo;}
+    void SetVersion(FairDb::Version vers) {fVersion = vers;}
+    void SetLogTitle(std::string logTitle) {fLogTitle=logTitle;}
 
     void SetRequireGlobalSeqno(Int_t requireGlobal) {fRequireGlobalSeqno = requireGlobal;}
     void SetOverlayCreationDate() {fUseOverlayCreationDate = kTRUE;}
 
-//  I/O functions
+    //  I/O functions
     void Abort() { Reset(); }
     Bool_t Close(const char* fileSpec=0);
     Bool_t Open(const ValInterval& vr,
@@ -83,6 +88,15 @@ template <class T> class FairDbWriter
                 UInt_t dbNo = 0,
                 const std::string& logComment = "");
 
+    Bool_t Activate(const ValInterval& vr,
+                    Int_t aggNo = -2,
+                    FairDb::Version vers = 0,
+                    Int_t dbEntry = 0,
+                    const std::string& logTitle = "",
+                    ValTimeStamp creationDate = ValTimeStamp(0,0));
+
+    void Reset();
+
     FairDbWriter<T>& operator<<(const T& row);
 
   private:
@@ -90,12 +104,12 @@ template <class T> class FairDbWriter
     Bool_t NeedsLogEntry() const;
     Bool_t WritingToMaster() const;
 
-    FairDbWriter(const FairDbWriter&); // Forbidden
-    FairDbWriter& operator=(const FairDbWriter&); // Forbidden
+    FairDbWriter(const FairDbWriter&); // Do not use
+    FairDbWriter& operator=(const FairDbWriter&); // Do not use
 
     void CompleteOpen(UInt_t dbNo = 0,
                       const std::string& logComment = "");
-    void Reset();
+
 
     static FairDbTableInterface& GetTableInterface();
     static FairDbTableInterface& GetTableInterface(const std::string& tableName);
@@ -110,7 +124,9 @@ template <class T> class FairDbWriter
     Bool_t fUseOverlayCreationDate;
     FairDbValRecord* fValidRec;
     FairDbLogEntry fLogEntry;
-    T* fContObj;  ///
+    FairDb::Version fVersion;
+    std::string fLogTitle;
+
 
     ClassDefT(FairDbWriter<T>,0)          // Generic Writer to  database payload table.
 
