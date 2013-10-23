@@ -139,7 +139,7 @@ FairDbConnectionPool::~FairDbConnectionPool()
   DBLOG("FairDb",FairDbLog::kDebug)  << " Destroying FairDbConnectionPool"
                                      << endl;
   for (Int_t dbNo = this->GetNumDb()-1; dbNo >= 0; --dbNo) {
-    delete fConnections[dbNo];
+    if (fConnections[dbNo]) {delete fConnections[dbNo]; fConnections[dbNo]=NULL;}
   }
 
 }
