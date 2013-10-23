@@ -8,9 +8,7 @@
 #include "FairDbLogService.h"
 #include "FairUtilStream.h"
 #include "FairDbOutTableBuffer.h"
-//#include "FairDbResult.h"
 #include "FairDbStatement.h"
-//#include "FairDbValRecord.h"
 #include "FairDbStreamer.h"
 
 
