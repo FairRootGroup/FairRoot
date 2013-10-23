@@ -1,20 +1,10 @@
 #include "FairDbTutPar.h"
 
-//#include "FairDb.h"                     // for GetValDefinition
-//#include "FairDbConnection.h"           // for FairDbConnection
-//#include "FairDbExceptionLog.h"         // for FairDbExceptionLog
-//#include "FairDbConnectionPool.h"        // for FairDbConnectionPool
-
-
 #include "FairDbLogFormat.h"
 #include "FairDbLogService.h"
-
 #include "FairDbOutTableBuffer.h"         // for FairDbOutRowStream
-//#include "FairDbResult.h"               // for FairDbResultSet
 #include "FairDbStatement.h"            // for FairDbStatement
-//#include "FairDbTableInterfaceStore.h"   // for FairDbTableInterfaceStore
-//#include "FairDbValRecord.h"
-//#include "FairDbWriter.h"               // for FairDbWriter
+
 #include "FairParamList.h"              // for FairParamList
 
 #include "Riosfwd.h"                    // for ostream
