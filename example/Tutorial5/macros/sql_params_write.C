@@ -4,8 +4,8 @@ Int_t  sql_params_write()
   FairRunIdGenerator runID;
   UInt_t runId =  runID.generateId();
 
+  // Create the Runtime Database ( parameter manager class )
   FairRuntimeDb* db = FairRuntimeDb::instance();
-  cout << "-I- FairRuntimeDb created ----> " << db << endl;
 
   // Create in memory the relevant container
   FairDbTutPar* p1 = (FairDbTutPar*)(db->getContainer("TUTParDefault"));
@@ -30,7 +30,7 @@ Int_t  sql_params_write()
   db->initContainers(runId);
 
   cout << endl;
-  cout << "\n  -I- FAIRDB: RuntimeDB::init from Ascii File done using RunID# " <<  runId << endl;
+  cout << "\n  -I- Initialisation from Ascii File done using RunID# " <<  runId << endl;
   cout << endl;
 
   p1->Print();
@@ -47,10 +47,10 @@ Int_t  sql_params_write()
 
 
   cout << endl;
-  cout << "-I-  FAIRDB: RuntimeDB Parameters succesfully written to DB with RunID# " << runId << endl;
+  cout << "-I-  Parameters succesfully written to DB with RunID# " << runId << endl;
   cout << endl;
 
-
+  cout << "-I- Delete FairRuntimeDb " << endl; 
   if (db) delete db;
   return 0;
 }
