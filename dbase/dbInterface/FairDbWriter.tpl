@@ -25,11 +25,13 @@ FairDbWriter<T>::FairDbWriter() :
   fRequireGlobalSeqno(0),
   fTableInterface(&FairDbWriter<T>::GetTableInterface()),
   fTableName(fTableInterface->GetTableName()),
-  fUseOverlayCreationDate(kFALSE),
+  fUseOverlayCreationDate(kTRUE), // kFALSE->origin
   fValidRec(0),
-  fLogEntry(fTableName)
+  fLogEntry(fTableName),
+  fVersion(0),
+  fLogTitle("")
 {
-
+//cout << "-I ****** FairDbWriter ctor ******* " << endl;
 }
 
 
@@ -49,7 +51,9 @@ FairDbWriter<T>::FairDbWriter(const ValInterval& vr,
   fTableName(fTableInterface->GetTableName()),
   fUseOverlayCreationDate(creationDate == ValTimeStamp(0,0)),
   fValidRec(0),
-  fLogEntry(fTableName,logComment,vr.GetDetectorMask(),vr.GetSimMask(),task)
+  fLogEntry(fTableName,logComment,vr.GetDetectorMask(),vr.GetSimMask(),task),
+  fVersion(0),
+  fLogTitle("")
 {
   //cout << " -I- FairDbWriter Open() called " << endl;
   Open(vr,aggNo,task,creationDate,dbNo,logComment);
@@ -72,7 +76,9 @@ FairDbWriter<T>::FairDbWriter(const ValInterval& vr,
   fTableName(fTableInterface->GetTableName()),
   fUseOverlayCreationDate(creationDate == ValTimeStamp(0,0)),
   fValidRec(0),
-  fLogEntry(fTableName,logComment,vr.GetDetectorMask(),vr.GetSimMask(),task)
+  fLogEntry(fTableName,logComment,vr.GetDetectorMask(),vr.GetSimMask(),task),
+  fVersion(0),
+  fLogTitle("")
 {
 
   Open(vr,aggNo,task,creationDate,dbName,logComment);
@@ -93,7 +99,9 @@ FairDbWriter<T>::FairDbWriter(const FairDbValRecord& vrec,
   fUseOverlayCreationDate(kFALSE),
   fValidRec(new FairDbValRecord(vrec)),
   fLogEntry(fTableName,logComment,vrec.GetValInterval().GetDetectorMask(),
-            vrec.GetValInterval().GetSimMask(),vrec.GetVersion())
+            vrec.GetValInterval().GetSimMask(),vrec.GetVersion()),
+  fVersion(0),
+  fLogTitle("")
 {
 
   T pet;
@@ -115,7 +123,9 @@ FairDbWriter<T>::FairDbWriter(const FairDbValRecord& vrec,
   fUseOverlayCreationDate(kFALSE),
   fValidRec(new FairDbValRecord(vrec)),
   fLogEntry(fTableName,logComment,vrec.GetValInterval().GetDetectorMask(),
-            vrec.GetValInterval().GetSimMask(),vrec.GetVersion())
+            vrec.GetValInterval().GetSimMask(),vrec.GetVersion()),
+  fVersion(0),
+  fLogTitle("")
 {
   T pet;
 
@@ -125,13 +135,40 @@ FairDbWriter<T>::FairDbWriter(const FairDbValRecord& vrec,
 
 
 template<class T>
+Bool_t FairDbWriter<T>::Activate(const ValInterval& vr,
+                                 Int_t aggNo,
+                                 Int_t vers,
+                                 Int_t dbEntry,
+                                 const std::string& logTitle,
+                                 ValTimeStamp creationDate
+                                )
+{
+
+// Use with specific settings only
+
+  fLogEntry.SetDetectorMask(vr.GetDetectorMask());
+  fLogEntry.SetSimMask(vr.GetSimMask());
+  fLogEntry.SetVersion(vers);
+  fLogEntry.SetReason(logTitle);
+  fVersion = vers;
+  fLogTitle=logTitle;
+  fAggregateNo=aggNo;
+  fDbNo=dbEntry;
+
+  this->Open(vr,fAggregateNo,fVersion,creationDate,fDbNo,fLogTitle);
+
+}
+
+
+
+template<class T>
 FairDbWriter<T>::~FairDbWriter()
 {
 
   Reset();
   delete fPacket;
   fPacket = 0;
-  delete fValidRec;
+  if (fValidRec) { delete fValidRec; }
   fValidRec = 0;
 
 }
@@ -318,7 +355,6 @@ FairDbTableInterface& FairDbWriter<T>::GetTableInterface()
 }
 
 
-
 template<class T>
 FairDbTableInterface& FairDbWriter<T>::GetTableInterface(
   const std::string& tableName)
@@ -355,9 +391,9 @@ Bool_t FairDbWriter<T>::NeedsLogEntry() const
 
   // Some tables are created automatically so don't require entries.
   string tableName(fTableName);
-  if (    tableName.substr(0,7)  == "BEAMMON"
+  if (    tableName.substr(0,7)  == "BEAM"
           || tableName.substr(0,3)  == "CAL"
-          || tableName.substr(0,9)  == "DBU" ) { return kFALSE; }
+          || tableName.substr(0,9)  == "RUNINFO" ) { return kFALSE; }
 
   // All other tables need entries if writing to a Master database.
 
@@ -385,7 +421,7 @@ Bool_t FairDbWriter<T>::Open (const ValInterval& vr,
   fUseOverlayCreationDate = creationDate == ValTimeStamp(0,0);
 
 
-  delete fValidRec;
+  if (fValidRec) { delete fValidRec; }
   fValidRec = new FairDbValRecord(vr,task,aggNo,0,0,kFALSE,creationDate);
 
 
@@ -450,7 +486,7 @@ Bool_t FairDbWriter<T>::Open(const FairDbValRecord& vrec,
 
   fUseOverlayCreationDate = vrec.GetCreationDate() == ValTimeStamp(0,0);
 
-  delete fValidRec;
+  if (fValidRec) { delete fValidRec; }
   fValidRec = new FairDbValRecord(vrec);
 
 
@@ -487,7 +523,7 @@ void FairDbWriter<T>::Reset()
   fTableInterface  = &FairDbWriter<T>::GetTableInterface();
   fTableName   = fTableInterface->GetTableName();
 
-  delete fValidRec;
+  if( fValidRec) { delete fValidRec; }
   fValidRec    = 0;
 
 }
