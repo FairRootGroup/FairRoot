@@ -52,20 +52,12 @@ FairDbTableInterfaceStore::FairDbTableInterfaceStore()
 
   fConnectionPool = new FairDbConnectionPool;
 
-
   // Shutdown modus
-  // Set("Shutdown = 1");
+  Set("Shutdown = 1");
 }
 
 FairDbTableInterfaceStore::~FairDbTableInterfaceStore()
 {
-  /*
-  if (  FairDbExceptionLog::GetGELog().Size() ) {
-    DBLOG("FairDb",FairDbLog::kInfo)  << "Database Global Exception Log contains "
-                                      << FairDbExceptionLog::GetGELog().Size() << " entries:" << endl;;
-  FairDbExceptionLog::GetGELog().Print();
-  }
-  */
 
   int shutdown = 0;
   if (    ! this->GetConfig().Get("Shutdown",shutdown)
@@ -81,11 +73,14 @@ FairDbTableInterfaceStore::~FairDbTableInterfaceStore()
         itr != fTPmap.end();
         ++itr) {
     FairDbTableInterface* tp = (*itr).second;
-    delete tp;
+    if (tp) { delete tp; }
   }
 
-  delete fConnectionPool;
-  fConnectionPool = 0;
+  if (fConnectionPool) {
+    // <DB> CHECK ME !
+    //  delete fConnectionPool;
+    //     fConnectionPool = 0;
+  }
 
   FairDbUtils::SetRecord(0);
 
