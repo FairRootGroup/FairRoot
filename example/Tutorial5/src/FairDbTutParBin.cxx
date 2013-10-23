@@ -58,6 +58,7 @@ FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char
 
 }
 
+
 FairDbTutParBin::~FairDbTutParBin()
 {
   if (fMyHisto) { delete fMyHisto; fMyHisto=0; }
@@ -74,7 +75,6 @@ FairDbTutParBin::~FairDbTutParBin()
 
 
 }
-
 
 string FairDbTutParBin::GetTableDefinition(const char* Name)
 {
@@ -93,6 +93,7 @@ string FairDbTutParBin::GetTableDefinition(const char* Name)
   sql += "  primary key(SEQNO,ROW_ID))";
   return sql;
 }
+
 
 void FairDbTutParBin::putParams(FairParamList* list)
 {
@@ -125,44 +126,6 @@ void FairDbTutParBin::clear()
   for(Int_t i=0; i<10; i++) { fMyDArray[i]=0.1; }
   fMyHisto->Reset();
 }
-
-
-void FairDbTutParBin::FillDummy()
-{
-  // Initializing array
-  for(Int_t i=0; i<3; i++) { fMyIArray[i]=(i+1)*10.; }
-  for(Int_t i=0; i<10; i++) { fMyDArray[i]=0.1*(i+1); }
-
-  fMyHisto->Fill(1);
-  fMyHisto->Fill(2);
-  fMyHisto->Fill(3);
-
-}
-
-
-void FairDbTutParBin::Print()
-{
-  std::cout<<"-I- Tutorial SQL Parameters streamed:"<<std::endl;
-  std::cout<<"    Top Pitch    = "<<fTopPitch<<std::endl;
-  std::cout<<"    Top Anchor   = "<<fTopAnchor<< std::endl;
-  std::cout<<"    Nr of Frontends (Top Side)   = "<<fTopNrFE<<std::endl;
-  std::cout<<"    Frontend type name is        = "<<fFeType<<std::endl;
-
-  std::cout<<"    Array of <Int>               : "<<std::endl;
-  for(Int_t i=0; i<3; i++) {
-    std::cout<<"                   arr[ "<< i <<  " ] = " << fMyIArray[i]<< std::endl;
-  }
-
-  std::cout<<"    Array of <Double>               : "<<std::endl;
-  for(Int_t i=0; i<10; i++) {
-    std::cout<<"                   arr[ "<< i <<  " ] = " << fMyDArray[i]<< std::endl;
-  }
-
-
-  cout << "      TH1F  histogram ptr# : "  << fMyHisto << endl;
-  if (fMyHisto) { fMyHisto->Print(); }
-}
-
 
 
 
@@ -236,10 +199,10 @@ void FairDbTutParBin::store(UInt_t rid)
 
   DBLOG("FairDb", FairDbLog::kWarning) << "FairDbTutParBin Store() " << endl;
 
-// Boolean IO test variable
+  // Boolean IO test variable
   Bool_t fail= kFALSE;
 
-// Create a unique statement on choosen DB entry
+  // Create a unique statement on choosen DB entry
   auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(GetDbEntry()));
   if ( ! stmtDbn.get() ) {
     cout << "-E-  FairDbTutParBin::Store()  Cannot create a statement for Database_id: " << GetDbEntry()
@@ -274,7 +237,7 @@ void FairDbTutParBin::store(UInt_t rid)
   // for the choosen DB entry
   fMultConn->GetConnection(GetDbEntry())->SetTableExists();
 
-// Writer Meta-Class Instance
+  // Writer Meta-Class Instance
   fParam_Writer = GetParamWriter();
 
 
@@ -303,3 +266,46 @@ void FairDbTutParBin::store(UInt_t rid)
 
 
 }
+
+
+
+void FairDbTutParBin::FillDummy()
+{
+  // Initializing array
+  for(Int_t i=0; i<3; i++) { fMyIArray[i]=(i+1)*10.; }
+  for(Int_t i=0; i<10; i++) { fMyDArray[i]=0.1*(i+1); }
+
+  fMyHisto->Fill(1);
+  fMyHisto->Fill(2);
+  fMyHisto->Fill(3);
+
+}
+
+
+void FairDbTutParBin::Print()
+{
+  std::cout<<"-I- Tutorial SQL Parameters streamed:"<<std::endl;
+  std::cout<<"    Top Pitch    = "<<fTopPitch<<std::endl;
+  std::cout<<"    Top Anchor   = "<<fTopAnchor<< std::endl;
+  std::cout<<"    Nr of Frontends (Top Side)   = "<<fTopNrFE<<std::endl;
+  std::cout<<"    Frontend type name is        = "<<fFeType<<std::endl;
+
+  std::cout<<"    Array of <Int>               : "<<std::endl;
+  for(Int_t i=0; i<3; i++) {
+    std::cout<<"                   arr[ "<< i <<  " ] = " << fMyIArray[i]<< std::endl;
+  }
+
+  std::cout<<"    Array of <Double>               : "<<std::endl;
+  for(Int_t i=0; i<10; i++) {
+    std::cout<<"                   arr[ "<< i <<  " ] = " << fMyDArray[i]<< std::endl;
+  }
+
+
+  cout << "      TH1F  histogram ptr# : "  << fMyHisto << endl;
+  if (fMyHisto) { fMyHisto->Print(); }
+}
+
+
+
+
+
