@@ -51,8 +51,8 @@ class FairDbTableInterface
     void SetSqlCondition(const std::string& sql);
     Bool_t TableExists() const { return fExists; }
 
-  protected:
 
+  protected:
     FairDbTableInterface(FairDbConnectionPool* cascader,
                          const std::string& tableName,
                          const std::string& vldSuffix,
@@ -60,7 +60,6 @@ class FairDbTableInterface
     virtual ~FairDbTableInterface();
 
   private:
-
 
     FairDbTableInterface(const FairDbTableInterface&);
     FairDbTableInterface& operator=(const FairDbTableInterface&);
