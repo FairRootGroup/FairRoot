@@ -5,6 +5,9 @@ ClassImp(FairDbObjTableMap)
 FairDbObjTableMap::FairDbObjTableMap()
   : TObject(),
     fVersion(0),
+    fDbEntry(0),
+    fLogTitle(""),
+    fCombo(-2),
     fTimeStart(),
     fTimeEnd(),
     fDetType(),
@@ -16,6 +19,9 @@ FairDbObjTableMap::FairDbObjTableMap()
 FairDbObjTableMap::FairDbObjTableMap(const FairDbObjTableMap& from)
   : TObject(from),
     fVersion(from.fVersion),
+    fDbEntry(from.fDbEntry),
+    fLogTitle(from.fLogTitle),
+    fCombo(from.fCombo),
     fTimeStart(from.fTimeStart),
     fTimeEnd(from.fTimeEnd),
     fDetType(from.fDetType),
@@ -30,6 +36,9 @@ FairDbObjTableMap& FairDbObjTableMap::operator=(const FairDbObjTableMap& from)
 
   TObject::operator=(from);
   fVersion=from.fVersion;
+  fDbEntry=from.fDbEntry;
+  fLogTitle=from.fLogTitle;
+  fCombo=from.fCombo;
   fTimeStart=from.fTimeStart;
   fTimeEnd=from.fTimeEnd;
   fDetType=from.fDetType;
