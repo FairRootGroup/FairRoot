@@ -61,21 +61,33 @@ FairParSet* FairDbTutContFact::createContainer(FairContainer* c)
    * of this container, the name is concatinated with the context. */
 
   const char* name=c->GetName();
-  cout << " -I-FairDbTutContFact::createContainer " << name << endl;
+  cout << "-I-FairDbTutContFact::createContainer " << name << endl;
   FairParSet* p=NULL;
   if (strcmp(name,"TUTParDefault")==0) {
     p=new FairDbTutPar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+    // Set Arguments needed for SQL versioning managment
     p->SetVersion(0);
+    p->SetComboNo(-1);
+    p->SetDbEntry(0);
+    p->SetLogTitle(name);
   }
 
   if (strcmp(name,"TUTParAlternative")==0) {
     p=new FairDbTutPar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+    // Set Arguments needed for SQL versioning managment
     p->SetVersion(1);
+    p->SetComboNo(-1);
+    p->SetDbEntry(0);
+    p->SetLogTitle(name);
   }
 
   if (strcmp(name,"TUTParBin")==0) {
     p=new FairDbTutParBin(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+    // Set Arguments needed for SQL versioning managment
     p->SetVersion(0);
+    p->SetComboNo(-1);
+    p->SetDbEntry(0);
+    p->SetLogTitle(name);
   }
 
   return p;
