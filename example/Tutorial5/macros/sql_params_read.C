@@ -16,7 +16,7 @@ Int_t  sql_params_read()
   // Create a dummy runID using date in UTC from which
   // corresponding  parameters will be initialised
 
-  ValTimeStamp tStamp(2013,10,21,09,30,00);
+  ValTimeStamp tStamp(2013,10,22,15,00,00);
   UInt_t runId = tStamp.GetSec();
   cout << "-I- looking for parameters at runID# " << runId << endl;
   cout << "-I- corresponding  time in runID (UTC) " << tStamp.AsString("c") << endl;
