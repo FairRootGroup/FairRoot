@@ -63,9 +63,8 @@ FairDbTableInterface::FairDbTableInterface(FairDbConnectionPool* cascader,
 
 FairDbTableInterface::~FairDbTableInterface()
 {
-  delete fCache;
-  delete fObjTableMap;
-
+  if (fCache) {delete fCache; fCache=NULL;}
+  if (fObjTableMap) {delete fObjTableMap; fObjTableMap=NULL;}
 }
 
 Bool_t FairDbTableInterface::CanReadCache() const
