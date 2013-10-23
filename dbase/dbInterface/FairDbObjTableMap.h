@@ -2,7 +2,7 @@
 #define FAIRDBOBJTABLEMAP_H
 
 #include "TObject.h"                    // for TObject
-
+#include "FairDb.h"
 #include "DataType.h"                    // for DataType_t
 #include "ValCondition.h"                 // for ValCondition
 #include "ValInterval.h"                   // for ValInterval
@@ -41,13 +41,23 @@ class FairDbObjTableMap : public TObject
     // I/O  member functions
     virtual void Fill(FairDbResultPool& rs,
                       const FairDbValRecord* vrec) {assert(0);};
-    virtual void Store(FairDbOutTableBuffer& /* ors */,
-                       const FairDbValRecord* /* vrec */) const { assert(0); }
+    virtual void Store(FairDbOutTableBuffer& /* res_out */,
+                       const FairDbValRecord* /* valrec */) const { assert(0); }
 
     // Validity frame functions
     virtual  Int_t GetAggregateNo() const { return -1; }
-    virtual  Int_t GetVersion() const { return  fVersion; }
-    void  SetVersion(Int_t vers) { fVersion=vers; }
+    virtual  Int_t GetComboNo() const { GetAggregateNo(); }
+    void    SetComboNo(Int_t combo) { fCombo=combo; }
+
+    virtual  FairDb::Version GetVersion() const { return  fVersion; }
+    void  SetVersion(FairDb::Version vers) { fVersion=vers; }
+
+    virtual  FairDb::Version GetDbEntry() const { return  fDbEntry; }
+    void  SetDbEntry(Int_t db) { fDbEntry=db; }
+
+    virtual std::string GetLogTitle() const {return fLogTitle;}
+    void SetLogTitle(std::string logTitle) {fLogTitle = logTitle;}
+
 
     // Condition definition
     virtual ValCondition GetContext(UInt_t rid) { return ValCondition();}
@@ -70,16 +80,21 @@ class FairDbObjTableMap : public TObject
     ValTimeStamp             GetTimeStart() const { return fTimeStart; }
     ValTimeStamp             GetTimeEnd()   const { return fTimeEnd; }
     Detector::Detector_t     GetDetector()  const { return fDetType; }
-    DataType::DataType_t       GetDataType()   const { return fSimType; }
+    DataType::DataType_t     GetDataType()   const { return fSimType; }
 
 
   protected:
-    Int_t fVersion;
     //
-    ValTimeStamp             fTimeStart;
-    ValTimeStamp             fTimeEnd;
-    Detector::Detector_t     fDetType;
+    FairDb::Version fVersion;
+    Int_t fDbEntry;
+    std::string fLogTitle;
+    Int_t fCombo;
+    //
+    ValTimeStamp               fTimeStart;
+    ValTimeStamp               fTimeEnd;
+    Detector::Detector_t       fDetType;
     DataType::DataType_t       fSimType;
+    //
 
 
   private:
