@@ -2,15 +2,15 @@
 
 #include "TMath.h"
 
+#include "FairParamList.h"
+
 #include "FairDbLogFormat.h"
 #include "FairDbLogService.h"
-
 #include "FairUtilStream.h"
 #include "FairDbOutTableBuffer.h"
-#include "FairDbReader.h"
-#include "FairDbResult.h"
+//#include "FairDbResult.h"
 #include "FairDbStatement.h"
-#include "FairDbValRecord.h"
+//#include "FairDbValRecord.h"
 #include "FairDbStreamer.h"
 
 
@@ -44,13 +44,35 @@ FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char
 
   fMyHisto = new TH1F("test","test",10,0,10);
 
+  // Reset all parameters
   clear();
+
+  // Set the default Db Entry to the first slot
+  fDbEntry=0;
+  //  Writer Meta-Class for SQL IO
+  fParam_Writer=NULL;
+  //  Reader Meta-Class for SQL IO
+  fParam_Reader=NULL;
+  // ConnectionPool
+  fMultConn=FairDbTableInterfaceStore::Instance().fConnectionPool;
 
 }
 
 FairDbTutParBin::~FairDbTutParBin()
 {
   if (fMyHisto) { delete fMyHisto; fMyHisto=0; }
+
+  if (fParam_Writer) {
+    delete fParam_Writer;
+    fParam_Writer=NULL;
+  }
+
+  if (fParam_Reader) {
+    delete fParam_Reader;
+    fParam_Reader=NULL;
+  }
+
+
 }
 
 
@@ -176,16 +198,24 @@ void FairDbTutParBin::Store(FairDbOutTableBuffer& res_out,
 
 void FairDbTutParBin::fill(UInt_t rid)
 {
+  // Get Reader Meta Class
+  fParam_Reader=GetParamReader();
+
+  // Define a Context
   ValTimeStamp ts(rid);
   ValCondition context(Detector::kGfi,DataType::kData,ts);
-  FairDbReader<FairDbTutParBin> rsCal(context, GetVersion());
-  Int_t numRows = rsCal.GetNumRows();
 
+  // Activate reading for this Context
+  fParam_Reader->Activate(context, GetVersion());
+
+  // By default use the latest row entry
+  // (Other rows would correspond to outdated versions)
+  Int_t numRows = fParam_Reader->GetNumRows();
   // Just use the latest row entry
   if ( numRows > 1 ) { numRows = 1; }
 
   for (Int_t j = 0; j < numRows; ++j) {
-    FairDbTutParBin* cgd = (FairDbTutParBin*) rsCal.GetRow(j);
+    FairDbTutParBin* cgd = (FairDbTutParBin*) fParam_Reader->GetRow(j);
     if (!cgd) { continue; }
     fTopPitch = cgd->GetTopPitch();
     fTopAnchor =  cgd->GetTopAnchor();
@@ -206,33 +236,29 @@ void FairDbTutParBin::store(UInt_t rid)
 
   DBLOG("FairDb", FairDbLog::kWarning) << "FairDbTutParBin Store() " << endl;
 
-  // In this example we are fixing the database entry point. In the future
-  // a variable entry can be set via the runtime DB directly.
-  Int_t dbEntry = 0;
+// Boolean IO test variable
   Bool_t fail= kFALSE;
 
-  FairDbConnectionPool* fMultConn = FairDbTableInterfaceStore::Instance().fConnectionPool;
-  auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(dbEntry));
+// Create a unique statement on choosen DB entry
+  auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(GetDbEntry()));
   if ( ! stmtDbn.get() ) {
-    cout << "-E-  FairDbTutParBin::Store()  Cannot create a statement for Database_id: " << dbEntry
+    cout << "-E-  FairDbTutParBin::Store()  Cannot create a statement for Database_id: " << GetDbEntry()
          << "\n    Please check the FAIRDB_TSQL_* environment.  Quitting ... " << endl;
     exit(1);
   }
 
-  // The definition of FairDbTutParBin is centralised in the FairDbTutParBin class.
-  // The corresponding SQL is executed as follows:
+  // Check if for this DB entry the table already exists.
+  // If not call the corresponding Table Definition Function
   std::vector<std::string> sql_cmds;
   TString atr(GetName());
   atr.ToUpper();
 
-  // Check if for this connection entry the table already exists.
-  // If not call the Class Table Definition function
-  if (! fMultConn->GetConnection(dbEntry)->TableExists("FAIRDBTUTPARBIN") ) {
+  if (! fMultConn->GetConnection(GetDbEntry())->TableExists("FAIRDBTUTPARBIN") ) {
     sql_cmds.push_back(FairDb::GetValDefinition("FAIRDBTUTPARBIN").Data());
     sql_cmds.push_back(FairDbTutParBin::GetTableDefinition());
   }
 
-  // Now execute the assemble list of SQL commands.
+  // Packed SQL commands executed internally via SQL processor
   std::vector<std::string>::iterator itr(sql_cmds.begin()), itrEnd(sql_cmds.end());
   while( itr != itrEnd ) {
     std::string& sql_cmd(*itr++);
@@ -246,17 +272,33 @@ void FairDbTutParBin::store(UInt_t rid)
 
   // Refresh list of tables in connected database
   // for the choosen DB entry
-  fMultConn->GetConnection(dbEntry)->SetTableExists();
-  FairDbWriter<FairDbTutParBin>  aW(GetValInterval(rid),
-                                    GetAggregateNo(), // Composite or Simple IO
-                                    GetVersion(),  // Parameter version ( Set via the Container Factory)
-                                    ValTimeStamp(0,0),0,"test parameter binary", "FAIRDBTUTPARBIN");
-  aW.SetDbNo(dbEntry);
-  aW.SetLogComment("Test Parameter");
-  aW << (*this);
-  if ( ! aW.Close() ) {
+  fMultConn->GetConnection(GetDbEntry())->SetTableExists();
+
+// Writer Meta-Class Instance
+  fParam_Writer = GetParamWriter();
+
+
+  // Activate Writer Meta-Class with the proper
+  // Validity Time Interval (run_id encapsulated)
+
+  // Writer Activate() arguments list
+  //                      <Arguments>                   <Type>                  <Comments>
+  //
+  //                      Validity Interval,            ValInterval
+  //                      Composition      ,            Int_t                   set via cont. factory
+  //                      Version          ,            Int_t                   set via cont. factory
+  //                      DbEntry          ,            Int_t                   set via cont. factory
+  //                      LogTitle         ,            std::string             set via cont. factory
+
+  fParam_Writer->Activate(GetValInterval(rid),GetComboNo(), GetVersion(),GetDbEntry(),GetLogTitle());
+
+  // Object to Table mapping
+  *fParam_Writer<< (*this);
+
+  // Check for eventual IO problems
+  if ( !fParam_Writer->Close() ) {
     fail = true;
-    cout << "-E- FairDbTutParBin::Store() *****  Cannot do IO on class# " << GetName() <<  endl;
+    cout << "-E- FairDbTutPar::Store() ******** Cannot do IO on class: " << GetName() <<  endl;
   }
 
 
