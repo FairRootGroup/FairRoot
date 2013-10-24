@@ -12,12 +12,17 @@ If(CMAKE_SYSTEM_NAME MATCHES Darwin)
                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/roc/dabc
                    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/roc/
                    )
-Message("System: ${CMAKE_SYSTEM_NAME}")
   Add_Custom_Command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/roc/patch_okay
                    COMMAND patch -p0 < roclib_macos.patch
                    COMMAND touch patch_okay
                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/roc
                    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/roc/dabc/Makefile
+                   )
+Else(CMAKE_SYSTEM_NAME MATCHES Darwin)
+  Add_Custom_Command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/roc/patch_okay
+                   COMMAND touch patch_okay
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/roc
+                   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/roc
                    )
 EndIf(CMAKE_SYSTEM_NAME MATCHES Darwin)
 
