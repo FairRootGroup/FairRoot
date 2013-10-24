@@ -456,8 +456,7 @@ Bool_t FairDbSqlValidityData::IsEqual(const FairDbSqlValidityData& that,
 
   Bool_t isEqual = kTRUE;
 
-  // Strip off InsertDate from first statement (assume its
-  // the last parameter in list).
+
 
   string strThis = (*itrThis).substr(0,(*itrThis).rfind(','));
   string strThat = (*itrThat).substr(0,(*itrThat).rfind(','));
@@ -465,42 +464,31 @@ Bool_t FairDbSqlValidityData::IsEqual(const FairDbSqlValidityData& that,
     if ( ! log ) { return kFALSE; }
     isEqual = kFALSE;
 
-    DBLOG("FairDb",FairDbLog::kInfo)    << "Difference on VAL record " << ":-\n"
+    DBLOG("FairDb",FairDbLog::kInfo)    << "Difference on VALIDITY Record " << ":\n"
                                         << "  " << thisName << ": " << strThis  << endl
                                         << "  " << thatName << ": " << strThat  << endl;
   }
 
-  // Rows can come in any order (after the first) so we have
-  // to sort before comparing.  However, if we are lucky, they
-  // may be in the same order or inverse order so do a quick
-  // test to see if there are no conflicts assuming these
-  // relative orderings.
 
   ++itrThis;
   ++itrThat;
   while ( itrThis != itrThisEnd && (*itrThis) == (*itrThat) ) {
-//     cout << "Debug: trying forward compare ..." << *itrThis
-//   << "::" << *itrThat << endl;
     ++itrThis;
     ++itrThat;
   }
-  if ( itrThis == itrThisEnd ) { return isEqual; }
 
+  if ( itrThis == itrThisEnd ) { return isEqual; }
   itrThis = itrThisBegin;
   itrThat = itrThatEnd;
   ++itrThis;
   --itrThat;
 
   while ( itrThis != itrThisEnd &&  (*itrThis) == (*itrThat) ) {
-//   cout << "Debug: trying reverse compare ..." << *itrThis
-//   << "::" << *itrThat << endl;
     ++itrThis;
     --itrThat;
   }
   if ( itrThis == itrThisEnd ) { return isEqual; }
 
-  // O.K., we are out of luck so set up pointers to both sets
-  // and sort these.
 
   typedef vector<const string*>      shadow_list_t;
   typedef shadow_list_t::iterator  shadow_list_itr_t;
@@ -603,8 +591,8 @@ void FairDbSqlValidityData::Recreate(const string& tableName,
 
   FairDbValRecord vrec(vr,task,aggNo,0);
 
-  //  Create a FairDbOutTableBuffer that can serialise this validity record
-  FairDbConfigData dummy;     // For validity row any FairDbObjTableMap will do.
+  // Create a FairDbOutTableBuffer serialising the validity record
+  FairDbConfigData dummy;     //
   const FairDbTableMetaData&  metaValid = tablePR.GetTableInterface(tableName,&dummy)
                                           .GetMetaValid();
   FairDbOutTableBuffer buff(&metaValid);
