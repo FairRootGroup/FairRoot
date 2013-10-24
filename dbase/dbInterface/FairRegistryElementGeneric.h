@@ -23,7 +23,7 @@ template<class T> class FairRegistryElementGeneric : public FairRegistryElement
     ~FairRegistryElementGeneric();
 
     void Dump() const { std::cerr << *fData; }
-    void Print(Option_t* /* option */ ="") const { std::cout << *fData; }
+    void Print(Option_t* opt ="") const { std::cout << *fData; }
 
     virtual std::ostream& PrintStream(std::ostream& os) const {
       return os << *fData;
