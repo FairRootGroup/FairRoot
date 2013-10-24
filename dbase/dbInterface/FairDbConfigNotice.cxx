@@ -38,7 +38,6 @@ FairRegistry& FairDbConfigNotice::Query()
 {
   FairRegistry::FairRegistryKey rk = fCurrent.Key();
 
-  // Setup result registry
   fResult = fCurrent;
   fResult.UnLockValues();
 
@@ -87,6 +86,6 @@ FairRegistry& FairDbConfigNotice::Query()
       fResult.Set(k, d_in);
     } else if (isFairRegistry) {
     }
-  } // loop over keys
+  }
   return fResult;
 }
