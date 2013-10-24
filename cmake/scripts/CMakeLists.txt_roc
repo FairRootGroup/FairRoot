@@ -19,6 +19,12 @@ Message("System: ${CMAKE_SYSTEM_NAME}")
                    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/roc
                    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/roc/dabc/Makefile
                    )
+Else(CMAKE_SYSTEM_NAME MATCHES Darwin)
+  Add_Custom_Command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/roc/patch_okay
+                   COMMAND touch patch_okay
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/roc
+                   DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/roc
+                   )
 EndIf(CMAKE_SYSTEM_NAME MATCHES Darwin)
 
 add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/roc/lib/libRoc.so
