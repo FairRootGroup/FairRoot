@@ -34,7 +34,7 @@ FairRegistry::FairRegistry(bool readonly)
   this->SetDirty();
 }
 
-// Deep copy constructor
+
 FairRegistry::FairRegistry(const FairRegistry& rhs)
   : TNamed(rhs),
     fValuesLocked(rhs.fValuesLocked),
@@ -203,7 +203,7 @@ FairRegistry::FairRegistryKey::FairRegistryKey(const FairRegistry* r) :
   fReg(r),
   fIt()
 {
-  // FIXME!
+  // CHECKME!
   fIt = const_cast<FairRegistry*>(fReg)->fMap.begin();
 }
 
@@ -443,7 +443,7 @@ void FairRegistry::Streamer(TBuffer& b)
       FairRegistryElement* ri;
       b >> ri;
 
-      // This is copied from Set(), bad programmer!
+      //Set()
       tRegMap::iterator mit = fMap.find(key);
       if (mit != fMap.end()) {
         delete mit->second;
@@ -451,8 +451,8 @@ void FairRegistry::Streamer(TBuffer& b)
       }
       fMap[key] = ri;
 
-    } // end reading in all FairRegistryElements
-  } // isReading
+    } //
+  } //
   else {
     b.WriteVersion(FairRegistry::IsA());
     TNamed::Streamer(b);
@@ -498,7 +498,7 @@ std::ostream& FairRegistry::PrintStream(std::ostream& os) const
 static std::istream& bail(std::istream& is)
 {
 
-  DBLOG("FairDb",FairDbLog::kWarning) << "FairRegistry::Read(istream&) stream corrupted\n";
+  DBLOG("FairDb",FairDbLog::kWarning) << "FairRegistry::Read(istream&) stream is corrupted !\n";
   return is;
 }
 
