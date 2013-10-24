@@ -779,7 +779,6 @@ FairDbResult::FairDbResult(const FairDbResult& from)
     fSqlQualifiers(from.fSqlQualifiers),
     fExceptionLog(from.fExceptionLog)
 {
-  //TODO: should fKey be a deep copy???
 
 }
 
@@ -1023,10 +1022,9 @@ FairDbResultNonCombo::FairDbResultNonCombo(FairDbResultPool* resultSet,
 
 FairDbResultNonCombo::~FairDbResultNonCombo()
 {
-
-  if ( ! fBuffer ) for ( vector<FairDbObjTableMap*>::iterator itr = fRows.begin();
-                           itr != fRows.end();
-                           ++itr) { delete *itr; }
+  if ( !fBuffer ) for ( vector<FairDbObjTableMap*>::iterator itr = fRows.begin();
+                          itr != fRows.end();
+                          ++itr) { if(*itr) {delete *itr; *itr=NULL;} }
   else {
     delete [] fBuffer;
     fBuffer = 0;
@@ -1069,6 +1067,7 @@ const FairDbObjTableMap* FairDbResultNonCombo::GetObjTableMapByIndex(UInt_t inde
   return this->FairDbResult::GetObjTableMapByIndex(index);
 
 }
+
 Bool_t FairDbResultNonCombo::Owns(const FairDbObjTableMap* row ) const
 {
   vector<FairDbObjTableMap*>::const_iterator itr    = fRows.begin();
