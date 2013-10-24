@@ -48,17 +48,17 @@ void FairDbConfigurable::Set(FairDbConfigNotice* d)
     deleteNotice = true;
   }
 
-  // Set up d with the default configuration parameters
+
   d->SetDefault(this->DefaultConfig());
   d->SetCurrent(this->GetConfig());
 
-  // Do the querry
+  // Query
   FairRegistry r = d->Query();
   this->GetConfig().UnLockValues();
   this->GetConfig().Merge(r);
   this->GetConfig().LockValues();
 
-  // Clean up the dialog
+  // Clean up the notice
   if (deleteNotice) { delete d; d = 0; }
 }
 
