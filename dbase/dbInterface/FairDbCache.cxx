@@ -72,7 +72,7 @@ void FairDbCache::Accept(FairDbResult* res,bool registerKey)
   subCache.push_back(res);
   ++fCurSize;
   ++fNumAccepted;
-  DBLOG("FairDb",FairDbLog::kInfo) << "Accepting result for: " << res->TableName()
+  DBLOG("FairDb",FairDbLog::kInfo) << "Registering result for: " << res->TableName()
                                    << "  " <<   res->GetValidityRecGlobal()
                                    << "\nCache size updated: " << fCurSize << endl;
   if ( fCurSize > fMaxSize ) { fMaxSize = fCurSize; }
@@ -114,7 +114,7 @@ void FairDbCache::Purge(ResultList_t& subCache, const FairDbResult* res)
                                        << " cache. Cache size updated: "
                                        << fCurSize-1 << endl;
       delete pRes;
-//    Removing increments iterator.
+      // Erase Iterators
       itr = subCache.erase(itr);
       --fCurSize;
 
