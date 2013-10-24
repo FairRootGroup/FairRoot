@@ -11,8 +11,8 @@ class FairParamList;
 class FairParGenericSet : public FairParSet
 {
   public:
-    FairParGenericSet(const char* name,const char* title,const char* context)
-      : FairParSet(name,title,context) {}
+    FairParGenericSet(const char* name,const char* title,const char* context, Bool_t ownership=kFALSE)
+      : FairParSet(name,title,context,ownership) {}
     virtual ~FairParGenericSet() {}
     virtual void putParams(FairParamList*)=0;
     virtual Bool_t getParams(FairParamList*)=0;
