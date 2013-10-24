@@ -77,9 +77,9 @@ FairDbTableInterfaceStore::~FairDbTableInterfaceStore()
   }
 
   if (fConnectionPool) {
-    // <DB> CHECK ME !
-    //  delete fConnectionPool;
-    //     fConnectionPool = 0;
+    // Deletion is done by TSQLIO interface
+    //delete fConnectionPool;
+    //       fConnectionPool = 0;
   }
 
   FairDbUtils::SetRecord(0);
