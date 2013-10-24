@@ -31,13 +31,18 @@ Int_t  sql_params_read()
   FairDbTutPar* pp1 = (FairDbTutPar*)(db->getContainer("TUTParDefault"));
   FairDbTutPar* pp2 = (FairDbTutPar*)(db->getContainer("TUTParAlternative"));
 
+
+  cout << endl;
+  cout << "-I- Reading Parameter data from SQL Database: \n" << endl;
+  cout << endl;
+
   pp1->Print();
   pp2->Print();
 
   cout << endl;
-  cout << "\n  -I- SQLDB: RuntimeDB::init from SQL Database done.... \n" << endl;
-  cout << endl;
+ 
 
 
+  if (db) delete db;
   return 0;
 }
