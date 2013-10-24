@@ -19,7 +19,7 @@ using std::cout;
 
 ClassImp(FairParSet)
 
-FairParSet::FairParSet(const char* name,const char* title,const char* context)
+FairParSet::FairParSet(const char* name,const char* title,const char* context, Bool_t owner)
   : FairDbObjTableMap(),
     fName(name),
     fTitle(title),
@@ -27,6 +27,7 @@ FairParSet::FairParSet(const char* name,const char* title,const char* context)
     versions(),
     status(kFALSE),
     changed(kFALSE),
+    owned(owner),
     paramContext(context),
     author(""),
     description(""),
