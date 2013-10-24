@@ -43,8 +43,8 @@ FairDbFieldType::FairDbFieldType(Int_t type,
 
   if ( type == TSQLServer::kSQL_INTEGER || type == TSQLServer::kSQL_NUMERIC ) {
 
-    // TSQLServer reports e.g. int(32) as size 32, (even though maximum display is 11)
-    // so treat any type starting int or INT as size kMaxInt (i.e. standard 4 byte int)
+    // TSQLServer reports int(32) as size 32, (but maximum display is 11)
+    // So: any type starting int or INT as size kMaxInt (standard 4 byte int)
     if ( name.BeginsWith("INT") ) { size = kMaxInt; }
     if      ( size <= kMaxTinyInt  ) { this->Init(FairDb::kTiny);  return; }
     else if ( size <= kMaxSmallInt ) { this->Init(FairDb::kShort); return; }
@@ -85,7 +85,6 @@ FairDbFieldType::FairDbFieldType(Int_t type,
 
 }
 
-//.....................................................................
 
 FairDbFieldType::FairDbFieldType(const FairDbFieldType& from)
   : fConcept(from.fConcept),
@@ -198,7 +197,7 @@ string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
 
   ostringstream os;
 
-//  Deal with MySQL format DDL
+  //MySQL semantics
   if ( dbType != FairDb::kOracle ) {
     switch ( fType ) {
 
@@ -257,7 +256,7 @@ string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
 
   else {
 
-//  Deal with ORACLE format DDL
+//  Deal with ORACLE format
     int size = fSize;
     if ( fSize < kMaxOracleVarchar ) { size = kMaxOracleVarchar; }
 
@@ -452,11 +451,12 @@ Bool_t FairDbFieldType::IsCompatible(const FairDbFieldType& other) const
   if ( MATCHES(FairDb::kBool,  FairDb::kUChar) ) { return kTRUE; }
   if ( MATCHES(FairDb::kInt,   FairDb::kChar)  ) { return kTRUE; }
   if ( MATCHES(FairDb::kUInt,  FairDb::kUChar) ) { return kTRUE; }
-//  Unsigned matches signed : the TSQLResultSetL interface
-//  does not support unsigned types but its GetShort and GetInt
+//  Unsigned matches signed : TSQLResultSetL interface
+//  does not support unsigned types nervertheless function
+//  GetShort() and GetInt()
 //  methods will return unsigned data integer
   if ( MATCHES(FairDb::kUInt,  FairDb::kInt)   ) { return kTRUE; }
-//  Char to string.
+//  Char to string convertion
   if ( concept == FairDb::kChar && fConcept == FairDb::kString ) { return kTRUE; }
 
   return kFALSE;
