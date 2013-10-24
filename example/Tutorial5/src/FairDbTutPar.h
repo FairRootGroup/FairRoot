@@ -33,7 +33,8 @@ class FairDbTutPar : public FairParGenericSet
   public :
     FairDbTutPar (const char* name="FairDbTutPar",
                   const char* title="Tutorial  parameter",
-                  const char* context="TestDefaultContext");
+                  const char* context="TestDefaultContext",
+                  Bool_t own=kTRUE);
     virtual ~FairDbTutPar(void);
     void clear(void);
     void   putParams(FairParamList* list);
