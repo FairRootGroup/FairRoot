@@ -22,13 +22,13 @@ FairDbValRecordMap::FairDbValRecordMap(const string& tableName,UInt_t dbNo,UInt_
   fResult(NULL),
   fSeqNoToRec()
 {
-// Get Db proxy for the table.
+
   FairDbValRecord pet;
   const FairDbProxy& proxy = FairDbTableInterfaceStore::Instance()
                              .GetTableInterface(tableName,&pet)
                              .GetDBProxy();
 
-// Collect up all validity records.
+
   FairDbResultPool* rset = proxy.QueryAllValidities(dbNo,seqNo);
   fResult = new FairDbResultNonCombo(rset,&pet,0,kFALSE);
   delete rset;
@@ -76,8 +76,7 @@ const FairDbValRecord* FairDbValRecordMap::GetObjTableMapBySeqNo(UInt_t seqNo
   UInt_t numRows = GetNumRows();
   if ( numRows == 0 ) { return 0; }
 
-// Create look-up table if not yet built.
-
+// Create look-up table if not already done
   if ( fSeqNoToRec.size() == 0 ) {
     for ( UInt_t irow = 0; irow < numRows; ++irow) {
       const FairDbValRecord* vrec = GetObjTableMap(irow);
