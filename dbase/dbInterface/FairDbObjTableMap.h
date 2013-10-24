@@ -31,12 +31,11 @@ class FairDbObjTableMap : public TObject
 
     virtual       Bool_t CanCache() const { return kFALSE; }
 
+    void SetOwner(FairDbResult* owner) {fOwner = owner;}
     FairDbResult* GetOwner() const { return fOwner; }
+
     virtual FairDbObjTableMap* CreateObjTableMap() const {return NULL;};
     virtual       UInt_t GetIndex(UInt_t defIndex) const {return defIndex;}
-
-
-    void SetOwner(FairDbResult* owner) {fOwner = owner;}
 
     // I/O  member functions
     virtual void Fill(FairDbResultPool& rs,
@@ -95,7 +94,6 @@ class FairDbObjTableMap : public TObject
     Detector::Detector_t       fDetType;
     DataType::DataType_t       fSimType;
     //
-
 
   private:
     FairDbResult* fOwner;
