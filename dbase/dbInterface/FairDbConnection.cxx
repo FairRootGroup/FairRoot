@@ -215,7 +215,7 @@ TSQLStatement* FairDbConnection::CreatePreparedStatement(const string& sql)
 
   return stmt;
 }
-//.....................................................................
+
 
 TSQLServer* FairDbConnection::GetServer()
 {
