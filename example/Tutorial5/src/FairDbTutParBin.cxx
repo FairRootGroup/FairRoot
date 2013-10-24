@@ -27,10 +27,11 @@ template class  FairDbReader<FairDbTutParBin>;
 template class  FairDbWriter<FairDbTutParBin>;
 
 
+
 SVNID("$Id$");
 
-FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char* context)
-  : FairParGenericSet(name,title,context),
+FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char* context,Bool_t own)
+  : FairParGenericSet(name,title,context,own),
     fTopPitch(0.),
     fTopAnchor(0.),
     fTopNrFE(0),
@@ -40,8 +41,7 @@ FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char
   // Create heap based TH1 object and fill with dummy
   // value
 
-  fMyHisto = new TH1F("test","test",10,0,10);
-
+  fMyHisto = new TH1F("test_histo","test_histo",10,0,10);
   // Reset all parameters
   clear();
 
@@ -59,7 +59,8 @@ FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char
 
 FairDbTutParBin::~FairDbTutParBin()
 {
-  if (fMyHisto) { delete fMyHisto; fMyHisto=0; }
+
+  if (fMyHisto) { delete fMyHisto; fMyHisto=NULL; }
 
   if (fParam_Writer) {
     delete fParam_Writer;
@@ -122,7 +123,7 @@ void FairDbTutParBin::clear()
   fFeType="";
   for(Int_t i=0; i<3; i++) { fMyIArray[i]=0; }
   for(Int_t i=0; i<10; i++) { fMyDArray[i]=0.1; }
-  fMyHisto->Reset();
+  if(fMyHisto) { (fMyHisto)->Reset(); }
 }
 
 
@@ -132,6 +133,7 @@ void FairDbTutParBin::Fill(FairDbResultPool& res_in,
 {
 
   // Instanciate  & clear() the Data Contents
+
   clear();
 
   FairDbStreamer dbIArray(fMyIArray,3);
@@ -189,11 +191,13 @@ void FairDbTutParBin::fill(UInt_t rid)
     fMyHisto = cgd->GetMyHisto();
   }
 
+
 }
 
 
 void FairDbTutParBin::store(UInt_t rid)
 {
+
 
   DBLOG("FairDb", FairDbLog::kWarning) << "FairDbTutParBin Store() " << endl;
 
@@ -282,7 +286,7 @@ void FairDbTutParBin::FillDummy()
 
 void FairDbTutParBin::Print()
 {
-  std::cout<<"-I- Tutorial SQL Parameters streamed:"<<std::endl;
+  std::cout<<""<<std::endl;
   std::cout<<"    Top Pitch    = "<<fTopPitch<<std::endl;
   std::cout<<"    Top Anchor   = "<<fTopAnchor<< std::endl;
   std::cout<<"    Nr of Frontends (Top Side)   = "<<fTopNrFE<<std::endl;
