@@ -18,6 +18,7 @@ class FairParSet : public FairDbObjTableMap
     Int_t versions[3];       //! versions of container in the 2 possible inputs
     Bool_t status;           //! static flag
     Bool_t changed;          //! flag is kTRUE if parameters have changed
+    Bool_t  owned;          //! if flag is KTRUE FairDB has the par. class ownership
     TString paramContext;    // Context/purpose for parameters and conditions
     TString author;          // Author of parameters
     TString description ;    // Description of parameters
@@ -25,7 +26,7 @@ class FairParSet : public FairDbObjTableMap
     FairLogger*  fLogger;  //!
 
   public:
-    FairParSet(const char* name="",const char* title="",const char* context="");
+    FairParSet(const char* name="",const char* title="",const char* context="", Bool_t owner=kFALSE);
     virtual ~FairParSet() {}
 
     virtual const char* GetName() const {return (char*)fName.Data();}
@@ -48,8 +49,13 @@ class FairParSet : public FairDbObjTableMap
       if (i>=0 && i<3) { return versions[i]; }
       else { return 0; }
     }
+
     void setStatic(Bool_t flag=kTRUE) {status=flag;}
     Bool_t isStatic() {return status;}
+
+    void setOwnership(Bool_t flag=kTRUE) {owned=flag;}
+    Bool_t isOwned() {return owned;}
+
     void setChanged(Bool_t flag=kTRUE) {changed=flag;}
     Bool_t hasChanged() {return changed;}
 
