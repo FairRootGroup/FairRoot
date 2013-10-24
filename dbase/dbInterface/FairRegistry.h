@@ -36,8 +36,8 @@ class FairRegistry : public TNamed
     bool KeyExists(const char* key) const;
     void RemoveKey(const char* key);
 
-    void Clear(Option_t* option=""); //*MENU*
-    void Dump(void) const;      //*MENU*
+    void Clear(Option_t* option="");
+    void Dump(void) const;
 
 
     virtual std::ostream& PrintStream(std::ostream& os) const;
@@ -51,12 +51,12 @@ class FairRegistry : public TNamed
 
 
     virtual bool ValuesLocked(void) const { return fValuesLocked; }
-    virtual void LockValues(void) { fValuesLocked = true; } //*MENU*
-    virtual void UnLockValues(void) { fValuesLocked = false; } //*MENU*
+    virtual void LockValues(void) { fValuesLocked = true; }
+    virtual void UnLockValues(void) { fValuesLocked = false; }
 
     virtual bool KeysLocked(void) const { return fKeysLocked; }
-    virtual void LockKeys(void) { fKeysLocked = true; } //*MENU*
-    virtual void UnLockKeys(void) { fKeysLocked = false; } //*MENU*
+    virtual void LockKeys(void) { fKeysLocked = true; }
+    virtual void UnLockKeys(void) { fKeysLocked = false; }
 
     void SetDirty(bool is_dirty = true) { fDirty = is_dirty; }
     bool IsDirty() { return fDirty; }
@@ -110,14 +110,14 @@ class FairRegistry : public TNamed
         //     FairRegistryKey(const FairRegistryKey&);
         FairRegistryKey operator=(const FairRegistryKey&);
 
-    };                              // class RegistryKey
+    };                              // class FairRegistryKey
 
     FairRegistryKey Key(void) const;
 
   private:
     bool fValuesLocked;
     bool fKeysLocked;
-    ErrorHandler fErrorHandler;  //! not written out
+    ErrorHandler fErrorHandler;  //!
 #ifndef __CINT__
     friend class FairRegistryKey;
     tRegMap fMap;
@@ -125,7 +125,7 @@ class FairRegistry : public TNamed
     bool fDirty;
 
     ClassDef(FairRegistry,1)
-};                              // class Registry
+};                              // class FairRegistry
 
 inline std::ostream& operator<<(std::ostream& os, const FairRegistry& r) { return r.PrintStream(os); }
 
