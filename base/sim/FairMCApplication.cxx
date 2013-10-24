@@ -193,6 +193,8 @@ FairMCApplication::~FairMCApplication()
   delete fActDetIter;
   delete fDetectors;
   delete gMC;
+  delete fModIter;
+  delete fDetIter;
   gMC=0;
   //   cout<<"Leave Destructor of FairMCApplication"<<endl;
 }

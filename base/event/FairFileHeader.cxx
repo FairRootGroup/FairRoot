@@ -43,6 +43,7 @@ FairFileInfo* FairFileHeader::GetFileInfo(UInt_t id, UInt_t ChId)
     info=dynamic_cast <FairFileInfo*> (obj);
     if(info->GetIdentifier() == id && info->GetOrderInChain()==ChId) {return info;}
   }
+  delete Iter;
   return 0;
 
 }
