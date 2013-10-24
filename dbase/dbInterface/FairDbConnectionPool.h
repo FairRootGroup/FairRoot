@@ -96,10 +96,10 @@ class FairDbConnectionPool
 
         void SetBLock(Bool_t setting = kTRUE);
 
-        FairDbStatement* fStmt;            // Statement to be used to issue lock
-        std::string fSeqnoTableName;  // The SEQNO table that is locked
-        std::string fDataTableName;   // The data table that is locked
-        Bool_t fLocked;          // Lock status
+        FairDbStatement* fStmt;            // Statement issuing the lock
+        std::string fSeqnoTableName;  // The SEQNO locked table
+        std::string fDataTableName;   // The data od locked table
+        Bool_t fLocked;          // Locking Status
 
     };
 
