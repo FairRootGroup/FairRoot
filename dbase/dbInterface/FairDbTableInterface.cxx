@@ -313,7 +313,7 @@ Bool_t FairDbTableInterface::RestoreFromCache(const FairDbValRecordFactory& fact
   if ( warnOnce ) {
     DBLOG("FairDb",FairDbLog::kWarning)   << "\n\n\n"
                                           << " WARNING:  Reading from the Level 2 cache has been activated.\n"
-                                          << " *******   This should only be used for development and never for production !!!\n\n\n";
+                                          << " *******   This mode should be used only for development and not for production !!!\n\n\n";
     warnOnce = false;
   }
 
