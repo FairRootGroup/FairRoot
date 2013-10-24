@@ -56,7 +56,7 @@ ostream& operator<<(ostream& s, const FairDbConfigData& cfSet)
 void FairDbConfigData::Fill(FairDbResultPool& rs,
                             const FairDbValRecord* vrec)
 {
-  // Skip First slot SeqNo field.
+  // Skip First slot SeqNo in column.
   UInt_t numParams = rs.NumCols()-1;
   // Skip  also ROW_ID if existing
   if (  rs.HasRowCounter() ) { --numParams; }
