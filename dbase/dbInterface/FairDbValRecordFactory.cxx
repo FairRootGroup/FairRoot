@@ -179,9 +179,9 @@ FairDbValRecordFactory::FairDbValRecordFactory(const FairDbProxy& proxy,
       if ( timeGateCalc != FairDb::GetTimeWindow(tableName) ) {
 
         DBLOG("FairDb",FairDbLog::kInfo) << "The ignored time gate setting was calculated with the following data:"
-                                         << "\n   Context: " << vc << " task " << task  << " findFullTimeWindow " << findFullTimeWindow
-                                         << "\n   Number of vrecs " << numTimeWindows
-                                         << " total time (secs) of all vrecs " << sumTimeWindows
+                                         << "\n   Context: " << vc << " Data_id " << task  << " findFullTimeWindow " << findFullTimeWindow
+                                         << "\n   Number of val_recs " << numTimeWindows
+                                         << " total time (secs) of all val_recs " << sumTimeWindows
                                          << " Number of composites " << fVRecs.size() << endl;
       }
     }
@@ -253,7 +253,7 @@ FairDbValRecordFactory::FairDbValRecordFactory(const FairDbProxy& proxy,
   DBLOG("FairDb",FairDbLog::kInfo) << "FairDbValRecordFactory:" << endl
                                    << " Extended context query: " << context << endl
                                    << " found " << numVRecIn
-                                   << " vrecs in database, for " << fVRecs.size()
+                                   << " val_recs in database, for " << fVRecs.size()
                                    << " records:." << endl;
 
   for ( unsigned int irec = 0; irec < GetNumValidityRec(); ++irec ) {
