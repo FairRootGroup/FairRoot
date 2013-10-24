@@ -35,8 +35,6 @@ void SetVTptr(void* obj, const void* vt)
 {
   memcpy(obj,&vt,4);
 }
-//   Definition of static data members
-//   *********************************
 
 string FairDbBufferFile::fgWorkDir;
 Bool_t FairDbBufferFile::fgReadAccess  = kTRUE;
@@ -74,6 +72,7 @@ FairDbBufferFile::FairDbBufferFile(const char* fileName, Bool_t input )
   }
 
 }
+
 FairDbBufferFile::~FairDbBufferFile()
 {
   delete[] fArrayBuffer;
@@ -83,7 +82,7 @@ FairDbBufferFile::~FairDbBufferFile()
   fFile = 0;
 
 }
-//.....................................................................
+
 
 void FairDbBufferFile::Close()
 {
