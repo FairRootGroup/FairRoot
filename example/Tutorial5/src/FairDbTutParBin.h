@@ -41,7 +41,8 @@ class FairDbTutParBin : public FairParGenericSet
   public :
     FairDbTutParBin (const char* name="FairDbTutParBin",
                      const char* title="Tutorial  parameter",
-                     const char* context="TestDefaultContext");
+                     const char* context="TestDefaultContext",
+                     Bool_t own=kTRUE);
     virtual ~FairDbTutParBin(void);
     void clear(void);
     void   putParams(FairParamList* list);
@@ -55,8 +56,8 @@ class FairDbTutParBin : public FairParGenericSet
     Int_t    GetNrTopFE()         const {return fTopNrFE;}
     string   GetFeType()          const {return fFeType;}
     Int_t*   GetMyIArray()         {return fMyIArray;}
-    Double_t*   GetMyDArray()         {return fMyDArray;}
-    TH1F*    GetMyHisto()         {return fMyHisto;}
+    Double_t* GetMyDArray()        {return fMyDArray;}
+    TH1F*      GetMyHisto()         {return fMyHisto;}
 
 
     void SetTopPitch(Double_t x)  {fTopPitch = x;}
@@ -105,7 +106,7 @@ class FairDbTutParBin : public FairParGenericSet
     string   fFeType;       // Frontend type name
     Int_t    fMyIArray[3];   // Array of Int_t fixed values
     Double_t fMyDArray[10];  // Array of Double_t fixed values
-    TH1F*   fMyHisto;      // An Histogram
+    TH1F*    fMyHisto;  // data histo
 
     // Database Pool Index
     Int_t fDbEntry; //!
