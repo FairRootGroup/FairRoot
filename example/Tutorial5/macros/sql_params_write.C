@@ -50,7 +50,6 @@ Int_t  sql_params_write()
   cout << "-I-  Parameters succesfully written to DB with RunID# " << runId << endl;
   cout << endl;
 
-  cout << "-I- Delete FairRuntimeDb " << endl; 
   if (db) delete db;
   return 0;
 }
