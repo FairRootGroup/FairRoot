@@ -72,10 +72,9 @@ FairDbExtSqlContent::FairDbExtSqlContent(IntervalType interval,
     (*this) << " 1 = 0 ";
   }
 
-  (*this) << " and DetectorMask & " << static_cast<unsigned int>(fDetType)
-          << " and SimMask & "      << static_cast<unsigned int>(fSimType);
+  (*this) << " and DETID & " << static_cast<unsigned int>(fDetType)
+          << " and DATAID & "      << static_cast<unsigned int>(fSimType);
 }
-
 
 
 FairDbExtSqlContent::~FairDbExtSqlContent()
