@@ -26,7 +26,6 @@ static std::map<std::string,Int_t> fgTimegateTable;
 Int_t FairDb::GetTimeWindow(const std::string& tableName)
 {
 
-  // Set default if looking up table for the first time.
   std::map<std::string,Int_t>::iterator
   tablePtr = fgTimegateTable.find(tableName);
   if ( tablePtr == fgTimegateTable.end()
