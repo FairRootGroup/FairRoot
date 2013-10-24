@@ -114,18 +114,15 @@ void FairUtilString::StringTok(std::vector<std::string>& ls,
     while ( (i<S) && (tok.find(str[i])<=toksz) ) {
       ++i;
     }
-    if (i == S) { return; } // nothing left but WS
+    if (i == S) { return; }
 
-    // find end of word
     string::size_type  j = i+1;
     while ( (j<S) && !(tok.find(str[j])<=toksz) ) {
       ++j;
     }
 
-    // add word
     ls.push_back(str.substr(i,j-i));
 
-    // set up for next loop
     i = j+1;
   }
 }
@@ -133,14 +130,12 @@ Bool_t FairUtilString::IsInt(const Char_t* s)
 {
   Char_t* endptr;
   Double_t d = strtod(s, &endptr);
-  if (endptr==s && d==0.0) { return false; } // Conversion to Double_t failed...
+  if (endptr==s && d==0.0) { return false; }
 
-  // Check if this number is Int_t or Float_t
   if (strchr(s,'.')) { return false; }
   if (strchr(s,'E')) { return false; }
   if (strchr(s,'e')) { return false; }
 
-  // All checks for "Int_tness" passed
   return true;
 }
 Bool_t FairUtilString::IsFloat(const Char_t* s)
@@ -149,7 +144,6 @@ Bool_t FairUtilString::IsFloat(const Char_t* s)
   Double_t d = strtod(s, &endptr);
   if (endptr==s && d==0.0) { return false; }
 
-  // All checks for "Float_tness" passed
   return true;
 }
 Bool_t FairUtilString::IsBool(const Char_t* s)
@@ -163,7 +157,7 @@ Bool_t FairUtilString::atob(const Char_t* s)
   Bool_t isvalid;
   Bool_t value = atob(s,isvalid);
   if (isvalid) { return value; }
-  // Conversion Problem
+  // tell if conversion problem
   DBLOG("FairDb",FairDbLog::kWarning) << "Attempt to convert string "
                                       << value << " to Bool_t. Result is false \n";
   return false;
