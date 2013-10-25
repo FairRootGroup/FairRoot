@@ -9,10 +9,9 @@
 #define FAIRMQFILESINK_H_
 
 #include "Rtypes.h"
-#include <pthread.h>
 
 #include "FairMQDevice.h"
-#include "TestDetectorPayload.h"
+#include "FairTestDetectorPayload.h"
 
 class TVector3;
 class TFile;
@@ -24,9 +23,9 @@ class FairMQFileSink: public FairMQDevice
   public:
     FairMQFileSink();
     virtual ~FairMQFileSink();
-    virtual void InitOutput();
+    virtual void InitOutputFile(TString defaultId = "100");
+  protected:
     virtual void Run();
-
   private:
     TFile* fOutFile;
     TTree* fTree;

@@ -1,92 +1,98 @@
 /*
  * runFileSink.cxx
  *
- *  Created on: Jan 21, 2013
- *      Author: dklein
+ * @since: Jan 21, 2013
+ * @author: A. Rybalchenko
  */
 
-#include "FairMQFileSink.h"
-#include <sys/types.h>
-#include <unistd.h>
-#include "FairMQLogger.h"
-#include <zmq.hpp>
-#include <stdio.h>
 #include <iostream>
 #include <csignal>
 
-FairMQFileSink* filesink;
+#include "FairMQLogger.h"
+#include "FairMQFileSink.h"
 
-void signal_handler(int s)
+
+FairMQFileSink filesink;
+
+static void s_signal_handler (int signal)
 {
+  std::cout << std::endl << "Caught signal " << signal << std::endl;
 
-  delete filesink;
+  filesink.ChangeState(FairMQFileSink::STOP);
+  filesink.ChangeState(FairMQFileSink::END);
 
-  std::cout << "Caught signal " << s << std::endl;
+  std::cout << "Shutdown complete. Bye!" << std::endl;
   exit(1);
+}
 
+static void s_catch_signals (void)
+{
+  struct sigaction action;
+  action.sa_handler = s_signal_handler;
+  action.sa_flags = 0;
+  sigemptyset(&action.sa_mask);
+  sigaction(SIGINT, &action, NULL);
+  sigaction(SIGTERM, &action, NULL);
 }
 
 int main(int argc, char** argv)
 {
-  if( argc != 6 ) {
-    std::cout << "Usage: fileSink \tID numIoTreads\n" <<
-              "\t\tconnectSocketType connectRcvBufferSize ConnectAddress\n" << std::endl;
+  if ( argc != 7 ) {
+    std::cout << "Usage: fileSink \tID numIoTreads\n"
+              << "\t\tinputSocketType inputRcvBufHSize inputMethod inputAddress\n"
+              << std::endl;
     return 1;
   }
 
-  struct sigaction sigIntHandler;
+  s_catch_signals();
 
-  sigIntHandler.sa_handler = signal_handler;
-  sigemptyset(&sigIntHandler.sa_mask);
-  sigIntHandler.sa_flags = 0;
-
-  sigaction(SIGINT, &sigIntHandler, NULL);
-
-  pid_t pid = getpid();
   std::stringstream logmsg;
-  logmsg << "PID: " << pid;
+  logmsg << "PID: " << getpid();
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, logmsg.str());
 
   int i = 1;
 
-  filesink = new FairMQFileSink();
-  filesink->SetProperty(FairMQFileSink::Id, argv[i]);
+  filesink.SetProperty(FairMQFileSink::Id, argv[i]);
   ++i;
 
   int numIoThreads;
   std::stringstream(argv[i]) >> numIoThreads;
-  filesink->SetProperty(FairMQFileSink::NumIoThreads, numIoThreads);
+  filesink.SetProperty(FairMQFileSink::NumIoThreads, numIoThreads);
   ++i;
 
-  int numInputs = 1;
-  filesink->SetProperty(FairMQFileSink::NumInputs, numInputs);
+  filesink.SetProperty(FairMQFileSink::NumInputs, 1);
+  filesink.SetProperty(FairMQFileSink::NumOutputs, 0);
 
-  int numOutputs = 0;
-  filesink->SetProperty(FairMQFileSink::NumOutputs, numOutputs);
+  filesink.ChangeState(FairMQFileSink::INIT);
+  filesink.InitOutputFile(argv[1]);
 
-  filesink->Init();
-  filesink->InitOutput();
 
-  int connectSocketType = ZMQ_SUB;
+  int inputSocketType = ZMQ_SUB;
   if (strcmp(argv[i], "pull") == 0) {
-    connectSocketType = ZMQ_PULL;
+    inputSocketType = ZMQ_PULL;
   }
-  filesink->SetProperty(FairMQFileSink::ConnectSocketType, connectSocketType, 0);
+  filesink.SetProperty(FairMQFileSink::InputSocketType, inputSocketType, 0);
+  ++i;
+  int inputRcvBufSize;
+  std::stringstream(argv[i]) >> inputRcvBufSize;
+  filesink.SetProperty(FairMQFileSink::InputRcvBufSize, inputRcvBufSize, 0);
+  ++i;
+  filesink.SetProperty(FairMQFileSink::InputMethod, argv[i], 0);
+  ++i;
+  filesink.SetProperty(FairMQFileSink::InputAddress, argv[i], 0);
   ++i;
 
-  int connectRcvBufferSize;
-  std::stringstream(argv[i]) >> connectRcvBufferSize;
-  filesink->SetProperty(FairMQFileSink::ConnectRcvBufferSize, connectRcvBufferSize, 0);
-  ++i;
 
-  filesink->SetProperty(FairMQFileSink::ConnectAddress, argv[i], 0);
-  ++i;
+  filesink.ChangeState(FairMQFileSink::SETOUTPUT);
+  filesink.ChangeState(FairMQFileSink::SETINPUT);
+  filesink.ChangeState(FairMQFileSink::RUN);
 
+  char ch;
+  std::cin.get(ch);
 
-  filesink->Bind();
-  filesink->Connect();
-  filesink->Run();
+  filesink.ChangeState(FairMQFileSink::STOP);
+  filesink.ChangeState(FairMQFileSink::END);
 
-  exit(0);
+  return 0;
 }
 

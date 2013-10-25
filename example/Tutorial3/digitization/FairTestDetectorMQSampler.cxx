@@ -5,9 +5,9 @@
  *  @authors A. Rybalchenko
  */
 
-#include "TestDetectorMQSampler.h"
+#include "FairTestDetectorMQSampler.h"
 
-#include "TestDetectorDigiLoader.h"
+#include "FairTestDetectorDigiLoader.h"
 
 
 TestDetectorMQSampler::TestDetectorMQSampler()
@@ -26,5 +26,3 @@ void TestDetectorMQSampler::Init()
 
   FairMQSampler::Init();
 }
-
-//ClassImp(TestDetectorMQSampler)

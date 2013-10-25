@@ -1,0 +1,19 @@
+ID="310"
+processorTask="FairTestDetectorMQRecoTask"
+numIoThreads="1"
+inputSocketType="pull"
+inputRcvBufSize="1000"
+inputMethod="connect"
+inputAddress="tcp://localhost:5566"
+outputSocketType="push"
+outputSndBufSize="1000"
+outputMethod="connect"
+outputAddress="tcp://localhost:5567"
+
+counter=0
+
+while [ $counter -lt $1 ]
+do
+    xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor $((ID+counter)) $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
+    counter=$(( $counter + 1 ))
+done

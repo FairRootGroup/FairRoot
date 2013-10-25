@@ -5,84 +5,117 @@
  *  @author: A. Rybalchenko
  */
 
-#include "TestDetectorMQSampler.h"
-#include <sstream>
-#include <sys/types.h>
-#include <unistd.h>
-#include "FairMQLogger.h"
-#include <zmq.hpp>
-#include <stdio.h>
 #include <iostream>
+#include <csignal>
 
+#include "FairMQLogger.h"
+#include "FairTestDetectorMQSampler.h"
+
+
+TestDetectorMQSampler sampler;
+
+static void s_signal_handler (int signal)
+{
+  std::cout << std::endl << "Caught signal " << signal << std::endl;
+
+  sampler.ChangeState(TestDetectorMQSampler::STOP);
+  sampler.ChangeState(TestDetectorMQSampler::END);
+
+  std::cout << "Shutdown complete. Bye!" << std::endl;
+  exit(1);
+}
+
+static void s_catch_signals (void)
+{
+  struct sigaction action;
+  action.sa_handler = s_signal_handler;
+  action.sa_flags = 0;
+  sigemptyset(&action.sa_mask);
+  sigaction(SIGINT, &action, NULL);
+  sigaction(SIGTERM, &action, NULL);
+}
 
 int main(int argc, char** argv)
 {
-  if( argc != 10 ) {
-    std::cout << "Usage: testDetectorSampler \tID inputFile parameterFile\n" <<
-              "\t\tbranch eventRate numIoTreads\n" <<
-              "\t\tbindSocketType bindSndBufferSize BindAddress\n" << std::endl;
+  if ( argc != 11 ) {
+    std::cout << "Usage: testDetectorSampler \tID inputFile parameterFile\n"
+              << "\t\tbranch eventRate numIoTreads\n"
+              << "\t\toutputSocketType outputSndBufSize outputMethod outputAddress\n" << std::endl;
     return 1;
   }
 
-  pid_t pid = getpid();
+  s_catch_signals();
+
   std::stringstream logmsg;
-  logmsg << "PID: " << pid;
+  logmsg << "PID: " << getpid();
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, logmsg.str());
 
   int i = 1;
 
-  TestDetectorMQSampler* sampler = new TestDetectorMQSampler();
-
-  sampler->SetProperty(TestDetectorMQSampler::Id, argv[i]);
+  sampler.SetProperty(TestDetectorMQSampler::Id, argv[i]);
   ++i;
 
-  sampler->SetProperty(TestDetectorMQSampler::InputFile, argv[i]);
+  sampler.SetProperty(TestDetectorMQSampler::InputFile, argv[i]);
   ++i;
 
-  sampler->SetProperty(TestDetectorMQSampler::ParFile, argv[i]);
+  sampler.SetProperty(TestDetectorMQSampler::ParFile, argv[i]);
   ++i;
 
-  sampler->SetProperty(TestDetectorMQSampler::Branch, argv[i]);
+  sampler.SetProperty(TestDetectorMQSampler::Branch, argv[i]);
   ++i;
 
   int eventRate;
   std::stringstream(argv[i]) >> eventRate;
-  sampler->SetProperty(TestDetectorMQSampler::EventRate, eventRate);
+  sampler.SetProperty(TestDetectorMQSampler::EventRate, eventRate);
   ++i;
 
   int numIoThreads;
   std::stringstream(argv[i]) >> numIoThreads;
-  sampler->SetProperty(TestDetectorMQSampler::NumIoThreads, numIoThreads);
+  sampler.SetProperty(TestDetectorMQSampler::NumIoThreads, numIoThreads);
   ++i;
 
-  int numInputs = 0;
-  sampler->SetProperty(TestDetectorMQSampler::NumInputs, numInputs);
+  sampler.SetProperty(TestDetectorMQSampler::NumInputs, 0);
+  sampler.SetProperty(TestDetectorMQSampler::NumOutputs, 1);
 
-  int numOutputs = 1;
-  sampler->SetProperty(TestDetectorMQSampler::NumOutputs, numOutputs);
+  sampler.ChangeState(TestDetectorMQSampler::INIT);
 
-  sampler->Init();
+  // INPUT: 0 - command
+  //sampler.SetProperty(TestDetectorMQSampler::InputSocketType, ZMQ_SUB, 0);
+  //sampler.SetProperty(TestDetectorMQSampler::InputRcvBufSize, 1000, 0);
+  //sampler.SetProperty(TestDetectorMQSampler::InputAddress, "tcp://localhost:5560", 0);
 
-  int bindSocketType = ZMQ_PUB;
+  // OUTPUT: 0 - data
+  int outputSocketType = ZMQ_PUB;
   if (strcmp(argv[i], "push") == 0) {
-    bindSocketType = ZMQ_PUSH;
+    outputSocketType = ZMQ_PUSH;
   }
-  sampler->SetProperty(TestDetectorMQSampler::BindSocketType, bindSocketType, 0);
+  sampler.SetProperty(TestDetectorMQSampler::OutputSocketType, outputSocketType, 0);
+  ++i;
+  int outputSndBufSize;
+  std::stringstream(argv[i]) >> outputSndBufSize;
+  sampler.SetProperty(TestDetectorMQSampler::OutputSndBufSize, outputSndBufSize, 0);
+  ++i;
+  sampler.SetProperty(TestDetectorMQSampler::OutputMethod, argv[i], 0);
+  ++i;
+  sampler.SetProperty(TestDetectorMQSampler::OutputAddress, argv[i], 0);
   ++i;
 
-  int bindSndBufferSize;
-  std::stringstream(argv[i]) >> bindSndBufferSize;
-  sampler->SetProperty(TestDetectorMQSampler::BindSndBufferSize, bindSndBufferSize, 0);
-  ++i;
+  // OUTPUT: 1 - logger
+  //sampler.SetProperty(TestDetectorMQSampler::OutputSocketType, ZMQ_PUB, 1);
+  //sampler.SetProperty(TestDetectorMQSampler::OutputSndBufSize, 1000, 1);
+  //sampler.SetProperty(TestDetectorMQSampler::OutputAddress, "tcp://*:5561", 1);
 
-  sampler->SetProperty(TestDetectorMQSampler::BindAddress, argv[i], 0);
-  ++i;
+  sampler.ChangeState(TestDetectorMQSampler::SETOUTPUT);
+  sampler.ChangeState(TestDetectorMQSampler::SETINPUT);
+  sampler.ChangeState(TestDetectorMQSampler::RUN);
 
+  //TODO: get rid of this hack!
+  char ch;
+  std::cin.get(ch);
 
-  sampler->Bind();
-  sampler->Connect();
-  sampler->Run();
+  sampler.ChangeState(TestDetectorMQSampler::STOP);
+  sampler.ChangeState(TestDetectorMQSampler::END);
 
-  exit(0);
+  return 0;
 }
 

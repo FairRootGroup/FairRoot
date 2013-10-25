@@ -1,0 +1,16 @@
+#!/bin/bash
+
+ID="101"
+inputFile="@CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi.root"
+parameterFile="@CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams.root"
+branch="FairTestDetectorDigi"
+eventRate="0"
+numIoThreads="1"
+outputSocketType="push"
+outputBufSize="1000"
+outputMethod="bind"
+outputAddress="tcp://*:5565"
+
+@CMAKE_BINARY_DIR@/bin/testDetectorSampler $ID $inputFile $parameterFile $branch $eventRate $numIoThreads $outputSocketType $outputBufSize $outputMethod $outputAddress
+
+#101 ~/fairroot/fairbase_zmq/example/Tutorial3/macro/data/testdigi.root ~/fairroot/fairbase_zmq/example/Tutorial3/macro/data/testparams.root FairTestDetectorDigi 1000 1 pub 1000 tcp://*:5565

@@ -9,8 +9,7 @@
 #define TESTDETECTORDIGILOADER_H_
 
 #include "FairMQSamplerTask.h"
-#include <vector>
-#include "TestDetectorPayload.h"
+#include "FairTestDetectorPayload.h"
 
 
 class TestDetectorDigiLoader: public FairMQSamplerTask
@@ -19,8 +18,6 @@ class TestDetectorDigiLoader: public FairMQSamplerTask
     TestDetectorDigiLoader();
     virtual ~TestDetectorDigiLoader();
     void Exec(Option_t* opt);
-
-    //ClassDef(TestDetectorDigiLoader,1);
 };
 
 #endif /* TESTDETECTORDIGILOADER_H_ */

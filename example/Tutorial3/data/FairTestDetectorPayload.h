@@ -20,7 +20,8 @@ namespace TestDetectorBranch
 const TString TestDetectorDigis = "FairTestDetectorDigi";
 const TString TestDetectorHits = "FairTestDetectorHit";
 
-} /* namespace TestDetectorBranch */
+}
+
 
 namespace TestDetectorPayload
 {
@@ -55,7 +56,6 @@ class TestDetectorHit : public TimeStamp
     Double_t dposZ;
 };
 
-
-} /* namespace TestDetectorPayload */
+}
 
 #endif /* TESTDETECTORPAYLOAD_H_ */

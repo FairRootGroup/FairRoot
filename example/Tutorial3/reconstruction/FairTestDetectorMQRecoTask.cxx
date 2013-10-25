@@ -1,17 +1,13 @@
+#include <iostream>
+
 #include "FairTestDetectorMQRecoTask.h"
 
 #include "FairTestDetectorHit.h"
 #include "FairTestDetectorDigi.h"
 
 #include "FairRootManager.h"
-
 #include "TMath.h"
-#include "TFile.h"
-#include "TTree.h"
-#include <iostream>
 #include "TClonesArray.h"
-
-using namespace std;
 
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorMQRecoTask::FairTestDetectorMQRecoTask() :
@@ -33,9 +29,8 @@ FairTestDetectorMQRecoTask::FairTestDetectorMQRecoTask(Int_t verbose) :
 // -----   Destructor   ----------------------------------------------------
 FairTestDetectorMQRecoTask::~FairTestDetectorMQRecoTask()
 {
-
-  fTree->Write();
-  fOutFile->Close();
+  fRecoTask->fDigiArray->Delete();
+  fRecoTask->fHitArray->Delete();
   delete fRecoTask;
 }
 // -------------------------------------------------------------------------
@@ -46,12 +41,8 @@ InitStatus FairTestDetectorMQRecoTask::Init()
 {
   fRecoTask = new FairTestDetectorRecoTask();
   fRecoTask->fDigiArray = new TClonesArray("FairTestDetectorDigi");
-  fHitA = new TClonesArray("FairTestDetectorHit");
-  fRecoTask->fHitArray = fHitA;
+  fRecoTask->fHitArray = new TClonesArray("FairTestDetectorHit");
 
-  fOutFile = new TFile("tree1.root","recreate");
-  fTree = new TTree("MQOut", "Test output");
-  fTree->Branch("Hits","TClonesArray", &fHitA, 64000, 99);
   return kSUCCESS;
 
 }
@@ -66,19 +57,15 @@ void FairTestDetectorMQRecoTask::Exec(FairMQMessage* msg, Option_t* opt)
   fRecoTask->fDigiArray->Delete();
 
   for (Int_t i = 0; i < numInput; ++i) {
-    FairTestDetectorDigi* digi = new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(input[i].fX,input[i].fY,input[i].fZ, input[i].fTimeStamp);
+    new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(input[i].fX, input[i].fY ,input[i].fZ, input[i].fTimeStamp);
+    //std::cout << "Digi: " << input[i].fX << "|" << input[i].fY << "|" << input[i].fZ << "|" << input[i].fTimeStamp << ";" << std::endl;
   }
 
   if (!fRecoTask->fDigiArray) {
-    cout << "-W- FairTestDetectorMQRecoTask::Init: " << "No Point array!" << endl;
+    std::cout << "-W- FairTestDetectorMQRecoTask::Init: " << "No Point array!" << std::endl;
   }
 
-  // Create and register output array
-  //fRecoTask->fHitArray->Delete();
-
   fRecoTask->Exec(opt);
-
-  fTree->Fill();
 
   Int_t numOutput = numInput;
   Int_t outputSize = numOutput * sizeof(TestDetectorPayload::TestDetectorHit);
@@ -101,11 +88,7 @@ void FairTestDetectorMQRecoTask::Exec(FairMQMessage* msg, Option_t* opt)
 
   }
 
-  msg->GetMessage()->rebuild(buffer, outputSize, 0);
-
-
-
-
+  msg->GetMessage()->rebuild(buffer, outputSize, &FairMQProcessorTask::ClearOutput);
+  //delete[] output;
 }
 
-//ClassImp(FairTestDetectorMQRecoTask)
