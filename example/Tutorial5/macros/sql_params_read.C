@@ -5,6 +5,10 @@ Int_t  sql_params_read()
 
   // Set the SQL IO as first input
   FairParTSQLIo* inp = new FairParTSQLIo();
+
+  // Verbosity level
+  inp->SetVerbosity(1);
+
   inp->open();
   db->setFirstInput(inp);
 
