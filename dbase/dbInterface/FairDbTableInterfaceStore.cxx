@@ -53,7 +53,7 @@ FairDbTableInterfaceStore::FairDbTableInterfaceStore()
   fConnectionPool = new FairDbConnectionPool;
 
   // Shutdown modus
-  Set("Shutdown = 1");
+  // Set("Shutdown = 1");
 }
 
 FairDbTableInterfaceStore::~FairDbTableInterfaceStore()
@@ -77,7 +77,7 @@ FairDbTableInterfaceStore::~FairDbTableInterfaceStore()
   }
 
   if (fConnectionPool) {
-    // Deletion is done by TSQLIO interface
+    // Deletion is done primarily by TSQLIO interface
     //delete fConnectionPool;
     //       fConnectionPool = 0;
   }
@@ -182,7 +182,7 @@ void FairDbTableInterfaceStore::Config()
 
   // Abort if Registry contains any unknown keys
   const char* knownKeys[]   = { "Level2Cache",
-                                "Shutdown"
+                                "Shutdown",
                               };
   int numKnownKeys          = sizeof(knownKeys)/sizeof(char*);
   bool hasUnknownKeys       = false;
