@@ -376,3 +376,9 @@ void FairParTSQLIo::CombineDataType(TString input_type, TString other_type)
                                    << input_type.Data() << " is combined with DataTypes: " << other_type.Data() << endl;
 
 }
+
+
+void FairParTSQLIo::SetVerbosity(Int_t level)
+{
+  FairDbTableInterfaceStore::Instance().SetVerbosity(level);
+}
