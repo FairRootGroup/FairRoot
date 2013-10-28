@@ -14,7 +14,7 @@ namespace DataType
 typedef enum EDataType {
   kUnknown      = 0x00,
   kData         = 0x01,
-  kDaqData   = 0x02,
+  kDaqData      = 0x02,
   kMC           = 0x04,
 } DataType_t;
 
