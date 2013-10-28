@@ -21,6 +21,43 @@ Int_t  sql_params_write()
 
   // Set the SQL based IO as second input
   FairParTSQLIo* inp2 = new FairParTSQLIo();
+
+  //
+  // FairParTSQLIo global settings section
+  // 
+  // 
+  // Verbosity level 
+  //               Level       Active Streams
+  //
+  //                 0         Warning+Errors(logged), 
+  //                 1         All Info (logged), 
+  //                 3         All Info (logged+standard output) 
+  inp2->SetVerbosity(1);
+
+  // Shutdown Mode ( True, False )
+  inp2->SetShutdown(kTRUE);
+
+  // <Comment: D.Bertini@gsi.de Date: 28.10.2013>
+  // Following features are "advanced features" and
+  // the user should know what he/she is doing !
+  // (Otherwise see the FairDb documentation ) 
+
+  // Rollback Activation
+  //inp2->SetRollback("2013-10-25","CAL*");
+  // Selective Rollback Using  
+  //                          0 (Transaction Time)
+  //                          1 (Incremental Time) 
+  // inp2->SetRollbackMode(1,"CAL*");
+
+  // Holding Connections
+  ///inp2->SetHoldConnection();
+
+  // Query Ordering
+  ///inp2->SetQueryOrdering();
+
+  // Caching Activation
+  ///inp2->SetCache("test.fairdb_cache");
+
   inp2->open();
   db->setSecondInput(inp2);
 
