@@ -30,8 +30,9 @@ Int_t  sql_params_write()
   //               Level       Active Streams
   //
   //                 0         Warning+Errors(logged), 
-  //                 1         All Info (logged), 
-  //                 3         All Info (logged+standard output) 
+  //                 1         Info (logged), 
+  //                 2         Debug+Info (logged)
+  //                 3         Debug+Info (logged+standard output) 
   inp2->SetVerbosity(1);
 
   // Shutdown Mode ( True, False )
