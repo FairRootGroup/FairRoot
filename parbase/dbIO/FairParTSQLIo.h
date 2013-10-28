@@ -9,8 +9,8 @@
 #define FAIR_PAR_TSQL_IO_h
 
 #include "FairParIo.h"                  // for FairParIo
-
 #include "Rtypes.h"                     // for FairParTSQLIo::Class, etc
+
 
 class FairDbConnectionPool;
 class FairRtdbRun;
@@ -96,8 +96,8 @@ class FairParTSQLIo: public FairParIo
        *
      **/
 
-    void SetShutdown(Bool_t shutdown=kFALSE);
 
+    void SetShutdown(Bool_t shutdown=kFALSE);
     void SetRollback(TString rollbackdate, TString tablename="*");
     void SetRollbackMode(Int_t mode=0, TString tablename="*");
     void SetHoldConnection(Int_t mode=1);
@@ -105,8 +105,11 @@ class FairParTSQLIo: public FairParIo
     void SetCache(TString cache_file="");
     void CombineDataType(TString input_type, TString other_type);
 
+    /**
+     *  Verbosity Control
+     **/
 
-
+    void SetVerbosity(Int_t level=1);
 
   protected:
 
