@@ -1,5 +1,6 @@
 /***************************************
  * Author: M.Babai (M.Babai@rug.nl)    *
+ * Modified by: D.Bertini@gsi.de       *
  * License:                            *
  * Version:                            *
  ***************************************/
@@ -88,6 +89,24 @@ class FairParTSQLIo: public FairParIo
 
     void readVersions(FairRtdbRun* aRun);
     FairRtdbRun* getCurrentRun() {return fCurrentRun;}
+
+
+    /**
+     * SQL IO Configuration functions
+       *
+     **/
+
+    void SetShutdown(Bool_t shutdown=kFALSE);
+
+    void SetRollback(TString rollbackdate, TString tablename="*");
+    void SetRollbackMode(Int_t mode=0, TString tablename="*");
+    void SetHoldConnection(Int_t mode=1);
+    void SetQueryOrdering();
+    void SetCache(TString cache_file="");
+    void CombineDataType(TString input_type, TString other_type);
+
+
+
 
   protected:
 
