@@ -275,3 +275,104 @@ void FairParTSQLIo::readVersions(FairRtdbRun* aRun)
   fCurrentRun = aRun;
 
 }
+
+
+void FairParTSQLIo::SetShutdown(Bool_t shutdown)
+{
+  // Shutdowm setting
+  FairDbTableInterfaceStore::Instance().Set("Shutdown = 1");
+  FairDbTableInterfaceStore::Instance().Update();
+
+  DBLOG("FairDb",FairDbLog::kInfo) << " Complete Shutdown is set."<< endl;
+}
+
+void FairParTSQLIo::SetRollback(TString rollbackdate, TString tablename)
+{
+  // Rollback settings
+
+  TString rb_cmd = "Rollback:" + tablename + " = '" + rollbackdate + "'";
+
+  FairDbTableInterfaceStore::Instance().Set(rb_cmd.Data());
+  FairDbTableInterfaceStore::Instance().Update();
+
+  DBLOG("FairDb",FairDbLog::kInfo) << " Rollback for table: "
+                                   << tablename.Data() << " At Date : " << rollbackdate.Data() << " is set "<< endl;
+}
+
+void FairParTSQLIo::SetRollbackMode(Int_t mode, TString tablename)
+{
+  // Rollback Modus settings
+
+  TString modus;
+
+  if ( mode == 0 ) {
+    modus="TIMETRANS";
+  } else {
+    modus="TIMEINCR";
+  }
+
+  TString rb_cmd = "RollbackType:" + tablename + " = '" + modus+"'";
+
+  FairDbTableInterfaceStore::Instance().Set(rb_cmd.Data());
+  FairDbTableInterfaceStore::Instance().Update();
+
+  DBLOG("FairDb",FairDbLog::kInfo) << " Rollback for table: "
+                                   << tablename.Data() << " Using Field: " << modus.Data() << " is set "<< endl;
+}
+
+
+void FairParTSQLIo::SetHoldConnection(Int_t mode)
+{
+
+  TString hold_cmd;
+
+  if ( mode == 0 ) { hold_cmd="MakeConnectionsPermanent = 0"; }
+  if ( mode == 1 ) { hold_cmd="MakeConnectionsPermanent = 1"; }
+  if ( mode == -1 ) { hold_cmd="MakeConnectionsPermanent = -1"; }
+
+  FairDbTableInterfaceStore::Instance().Set(hold_cmd.Data());
+  FairDbTableInterfaceStore::Instance().Update();
+
+  DBLOG("FairDb",FairDbLog::kInfo) << " Server Connections set to modus: "  <<  mode << endl;
+
+}
+
+
+void FairParTSQLIo::SetQueryOrdering()
+{
+  TString q_order = "OrderContextQuery = 1";
+  FairDbTableInterfaceStore::Instance().Set(q_order.Data());
+  FairDbTableInterfaceStore::Instance().Update();
+  DBLOG("FairDb",FairDbLog::kInfo) << " Set Query Ordering: 1" << endl;
+}
+
+void FairParTSQLIo::SetCache(TString cache_file)
+{
+  TString cache_cmd = "Level2Cache ";
+  TString add_on = "'./'";
+  TString cache_def;
+  if ( cache_file.IsNull() ) { cache_def = cache_cmd + " = " + add_on; }
+  else { cache_def = cache_cmd + " = " + "'"+ cache_file + "'"; }
+
+  FairDbTableInterfaceStore::Instance().Set(cache_def.Data());
+  FairDbTableInterfaceStore::Instance().Update();
+
+  DBLOG("FairDb",FairDbLog::kInfo) << " Caching is set: "
+                                   << cache_def.Data() << endl;
+
+}
+
+
+void FairParTSQLIo::CombineDataType(TString input_type, TString other_type)
+{
+  // Data type combination
+
+  TString comb_cmd = "DataTypeUnion:" + input_type + " = '" + other_type+"'";
+
+  FairDbTableInterfaceStore::Instance().Set(comb_cmd.Data());
+  FairDbTableInterfaceStore::Instance().Update();
+
+  DBLOG("FairDb",FairDbLog::kInfo) << " Data Type: "
+                                   << input_type.Data() << " is combined with DataTypes: " << other_type.Data() << endl;
+
+}
