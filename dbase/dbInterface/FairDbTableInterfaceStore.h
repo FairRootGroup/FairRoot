@@ -38,6 +38,7 @@ class FairDbTableInterfaceStore : public FairDbConfigurable
     void RefreshMetaData(const std::string& tableName);
     void SetSqlCondition(const std::string& sql="");
 
+    void SetVerbosity(Int_t level ) {fVerbosity = level; SetLoggingStreams();}
   protected:
 
     FairDbTableInterfaceStore();
@@ -86,6 +87,7 @@ class FairDbTableInterfaceStore : public FairDbConfigurable
     FairDbRollbackTimes fRollbackTimes;
     FairDbDataTypeUnion fDataTypeAss;
     TString fLogName;
+    Int_t   fVerbosity;
     static FairDbTableInterfaceStore* fgInstance;
 
     ClassDef(FairDbTableInterfaceStore,0)   // Singleton storing FairDbTableInterface.
