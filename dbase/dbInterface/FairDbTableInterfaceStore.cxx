@@ -45,15 +45,17 @@ FairDbTableInterfaceStore::FairDbTableInterfaceStore()
     fDataTypeAss()
 {
 
+  fVerbosity = 1;
   this->SetConfigFromEnvironment();
   this->SetLoggingStreams();
+
 
   DBLOG("FairDb",FairDbLog::kDebug) << "FairDbTableInterfaceStore singleton is created  \n"<< endl;
 
   fConnectionPool = new FairDbConnectionPool;
 
-  // Shutdown modus
-  // Set("Shutdown = 1");
+  fVerbosity = 0;
+  this->SetLoggingStreams();
 }
 
 FairDbTableInterfaceStore::~FairDbTableInterfaceStore()
@@ -337,30 +339,102 @@ void FairDbTableInterfaceStore::ShowStatistics() const
 
 void FairDbTableInterfaceStore::SetLoggingStreams()
 {
-  // Set Logging mechanism
-  FairDbLogService::Instance()->GetStream("FairDb")->SetLogLevel(FairDbLog::kInfo);
-  FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kInfo,"cerr");
-  FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kWarning,"cerr");
-  FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kError,"cerr");
-  FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kInfo,"cout");
-  FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kWarning,"cout");
-  FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kError,"cout");
+// Set Logging mechanism
+  if (fVerbosity == 0 ) {
 
-  FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
-  FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kInfo,fLogName.Data());
-  FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kError,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb")->SetLogLevel(FairDbLog::kWarning);
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kInfo,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kWarning,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kError,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kInfo,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kWarning,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kError,"cout");
 
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->SetLogLevel(FairDbLog::kInfo);
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kInfo,"cerr");
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kWarning,"cerr");
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kError,"cerr");
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kInfo,"cout");
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kWarning,"cout");
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kError,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kError,fLogName.Data());
 
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kInfo,fLogName.Data());
-  FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kError,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->SetLogLevel(FairDbLog::kWarning);
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kInfo,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kWarning,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kError,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kInfo,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kWarning,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kError,"cout");
+
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kError,fLogName.Data());
+
+  } else if ( fVerbosity == 1 ) {
+
+    FairDbLogService::Instance()->GetStream("FairDb")->SetLogLevel(FairDbLog::kInfo);
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kInfo,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kWarning,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kError,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kInfo,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kWarning,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kError,"cout");
+
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kInfo,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kError,fLogName.Data());
+
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->SetLogLevel(FairDbLog::kInfo);
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kInfo,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kWarning,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kError,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kInfo,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kWarning,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kError,"cout");
+
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kInfo,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kError,fLogName.Data());
+
+  } else if ( fVerbosity == 2 ) {
+    FairDbLogService::Instance()->GetStream("FairDb")->SetLogLevel(FairDbLog::kDebug);
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kDebug,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kInfo,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kWarning,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kError,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kDebug,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kInfo,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kWarning,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb")->DisconnectOStream(FairDbLog::kError,"cout");
+
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kDebug,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kInfo,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kError,fLogName.Data());
+
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->SetLogLevel(FairDbLog::kDebug);
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kDebug,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kInfo,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kWarning,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kError,"cerr");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kDebug,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kInfo,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kWarning,"cout");
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->DisconnectOStream(FairDbLog::kError,"cout");
+
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kDebug,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kInfo,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kError,fLogName.Data());
+
+  } else if ( fVerbosity == 3 ) {
+    FairDbLogService::Instance()->GetStream("FairDb")->SetLogLevel(FairDbLog::kInfo);
+
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kInfo,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb")->ConnectOStream(FairDbLog::kError,fLogName.Data());
+
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->SetLogLevel(FairDbLog::kInfo);
+
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kWarning,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kInfo,fLogName.Data());
+    FairDbLogService::Instance()->GetStream("FairDb:Validation")->ConnectOStream(FairDbLog::kError,fLogName.Data());
+
+  }
 
   DBLOG("FairDb",FairDbLog::kInfo) << "FairDb Logging service: opened. "<< endl;
 
