@@ -4,15 +4,12 @@
 #include "FairTestDetectorRecoTask.h"
 #include "FairMQProcessorTask.h"
 #include "FairMQMessage.h"
-#include "TestDetectorPayload.h"
-class TFile;
-class TTree;
+#include "FairTestDetectorPayload.h"
 class TClonesArray;
 
 class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 {
   public:
-
     /** Default constructor **/
     FairTestDetectorMQRecoTask();
     FairTestDetectorMQRecoTask(Int_t verbose);
@@ -30,14 +27,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     virtual void Exec(FairMQMessage* msg, Option_t* opt);
 
   private:
-
     FairTestDetectorRecoTask* fRecoTask;
-
-    TFile* fOutFile;
-    TTree* fTree;
-    TClonesArray* fHitA;
-
-    //ClassDef(FairTestDetectorMQRecoTask,1);
 };
 
 #endif //FAIRTESTDETECTORMQRECOTASK_H

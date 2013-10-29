@@ -13,7 +13,6 @@
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
-using namespace std;
 
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorDigiTask::FairTestDetectorDigiTask():

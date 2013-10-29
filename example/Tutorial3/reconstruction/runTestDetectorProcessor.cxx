@@ -5,62 +5,59 @@
  *      Author: dklein
  */
 
-#include "FairMQProcessor.h"
-#include "FairTestDetectorMQRecoTask.h"
-#include "FairMQLogger.h"
-#include <string>
-#include <sys/types.h>
-#include <unistd.h>
-#include <zmq.hpp>
-#include <stdio.h>
 #include <iostream>
 #include <csignal>
 
-FairMQProcessor* processor;
+#include "FairMQLogger.h"
+#include "FairMQProcessor.h"
+#include "FairTestDetectorMQRecoTask.h"
 
-void signal_handler(int s)
+FairMQProcessor processor;
+
+static void s_signal_handler (int signal)
 {
+  std::cout << std::endl << "Caught signal " << signal << std::endl;
 
-  delete processor;
+  processor.ChangeState(FairMQProcessor::STOP);
+  processor.ChangeState(FairMQProcessor::END);
 
-  std::cout << "Caught signal " << s << std::endl;
+  std::cout << "Shutdown complete. Bye!" << std::endl;
   exit(1);
-
 }
 
+static void s_catch_signals (void)
+{
+  struct sigaction action;
+  action.sa_handler = s_signal_handler;
+  action.sa_flags = 0;
+  sigemptyset(&action.sa_mask);
+  sigaction(SIGINT, &action, NULL);
+  sigaction(SIGTERM, &action, NULL);
+}
 
 int main(int argc, char** argv)
 {
-  if( argc != 10 ) {
-    std::cout << "Usage: testDetectorProcessor \tID processorTask numIoTreads\n" <<
-              "\t\tconnectSocketType connectRcvBufferSize ConnectAddress\n" <<
-              "\t\tbindSocketType bindSndBufferSize BindAddress\n" << std::endl;
+  if ( argc != 12 ) {
+    std::cout << "Usage: testDetectorProcessor \tID processorTask numIoTreads\n"
+              << "\t\tinputSocketType inputRcvBufSize inputMethod inputAddress\n"
+              << "\t\toutputSocketType outputSndBufSize outputMethod outputAddress\n" << std::endl;
     return 1;
   }
 
-  struct sigaction sigIntHandler;
+  s_catch_signals();
 
-  sigIntHandler.sa_handler = signal_handler;
-  sigemptyset(&sigIntHandler.sa_mask);
-  sigIntHandler.sa_flags = 0;
-
-  sigaction(SIGINT, &sigIntHandler, NULL);
-
-
-  pid_t pid = getpid();
   std::stringstream logmsg;
-  logmsg << "PID: " << pid;
+  logmsg << "PID: " << getpid();
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, logmsg.str());
 
   int i = 1;
 
-  processor = new FairMQProcessor();
-  processor->SetProperty(FairMQProcessor::Id, argv[i]);
+  processor.SetProperty(FairMQProcessor::Id, argv[i]);
   ++i;
 
-  if (std::string(argv[i]) == "FairTestDetectorMQRecoTask") {
+  if (strcmp(argv[i], "FairTestDetectorMQRecoTask") == 0) {
     FairMQProcessorTask* task = new FairTestDetectorMQRecoTask();
-    processor->SetTask(task);
+    processor.SetTask(task);
   } else {
     FairMQLogger::GetInstance()->Log(FairMQLogger::ERROR, "task not supported.");
     exit(1);
@@ -69,53 +66,58 @@ int main(int argc, char** argv)
 
   int numIoThreads;
   std::stringstream(argv[i]) >> numIoThreads;
-  processor->SetProperty(FairMQProcessor::NumIoThreads, numIoThreads);
+  processor.SetProperty(FairMQProcessor::NumIoThreads, numIoThreads);
   ++i;
 
-  int numInputs = 1;
-  processor->SetProperty(FairMQProcessor::NumInputs, numInputs);
+  processor.SetProperty(FairMQProcessor::NumInputs, 1);
+  processor.SetProperty(FairMQProcessor::NumOutputs, 1);
 
-  int numOutputs = 1;
-  processor->SetProperty(FairMQProcessor::NumOutputs, numOutputs);
 
-  processor->Init();
+  processor.ChangeState(FairMQProcessor::INIT);
 
-  int connectSocketType = ZMQ_SUB;
+
+  int inputSocketType = ZMQ_SUB;
   if (strcmp(argv[i], "pull") == 0) {
-    connectSocketType = ZMQ_PULL;
+    inputSocketType = ZMQ_PULL;
   }
-  processor->SetProperty(FairMQProcessor::ConnectSocketType, connectSocketType, 0);
+  processor.SetProperty(FairMQProcessor::InputSocketType, inputSocketType, 0);
+  ++i;
+  int inputRcvBufSize;
+  std::stringstream(argv[i]) >> inputRcvBufSize;
+  processor.SetProperty(FairMQProcessor::InputRcvBufSize, inputRcvBufSize, 0);
+  ++i;
+  processor.SetProperty(FairMQProcessor::InputMethod, argv[i], 0);
+  ++i;
+  processor.SetProperty(FairMQProcessor::InputAddress, argv[i], 0);
   ++i;
 
-  int connectRcvBufferSize;
-  std::stringstream(argv[i]) >> connectRcvBufferSize;
-  processor->SetProperty(FairMQProcessor::ConnectRcvBufferSize, connectRcvBufferSize, 0);
-  ++i;
-
-  processor->SetProperty(FairMQProcessor::ConnectAddress, argv[i], 0);
-  ++i;
-
-  int bindSocketType = ZMQ_PUB;
+  int outputSocketType = ZMQ_PUB;
   if (strcmp(argv[i], "push") == 0) {
-    bindSocketType = ZMQ_PUSH;
+    outputSocketType = ZMQ_PUSH;
   }
-  processor->SetProperty(FairMQProcessor::BindSocketType, bindSocketType, 0);
+  processor.SetProperty(FairMQProcessor::OutputSocketType, outputSocketType, 0);
+  ++i;
+  int outputSndBufSize;
+  std::stringstream(argv[i]) >> outputSndBufSize;
+  processor.SetProperty(FairMQProcessor::OutputSndBufSize, outputSndBufSize, 0);
+  ++i;
+  processor.SetProperty(FairMQProcessor::OutputMethod, argv[i], 0);
+  ++i;
+  processor.SetProperty(FairMQProcessor::OutputAddress, argv[i], 0);
   ++i;
 
-  int bindSndBufferSize;
-  std::stringstream(argv[i]) >> bindSndBufferSize;
-  processor->SetProperty(FairMQProcessor::BindSndBufferSize, bindSndBufferSize, 0);
-  ++i;
 
-  processor->SetProperty(FairMQProcessor::BindAddress, argv[i], 0);
-  ++i;
+  processor.ChangeState(FairMQProcessor::SETOUTPUT);
+  processor.ChangeState(FairMQProcessor::SETINPUT);
+  processor.ChangeState(FairMQProcessor::RUN);
 
 
-  processor->Bind();
-  processor->Connect();
-  processor->Run();
+  char ch;
+  std::cin.get(ch);
 
+  processor.ChangeState(FairMQProcessor::STOP);
+  processor.ChangeState(FairMQProcessor::END);
 
-  exit(0);
+  return 0;
 }
 

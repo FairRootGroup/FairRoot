@@ -13,9 +13,6 @@
 
 
 
-
-using namespace std;
-
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorRecoTask::FairTestDetectorRecoTask()
   : FairTask(),

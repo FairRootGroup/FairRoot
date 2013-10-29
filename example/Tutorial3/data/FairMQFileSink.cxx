@@ -5,6 +5,10 @@
  *      Author: A. Rybalchenko
  */
 
+#include <iostream>
+#include <boost/thread.hpp>
+#include <boost/bind.hpp>
+
 #include "FairTestDetectorHit.h"
 
 #include "FairMQFileSink.h"
@@ -12,7 +16,6 @@
 
 #include "TFile.h"
 #include "TTree.h"
-#include <iostream>
 #include "TClonesArray.h"
 #include "TVector3.h"
 
@@ -26,36 +29,40 @@ FairMQFileSink::~FairMQFileSink()
   fOutFile->Close();
 }
 
-void FairMQFileSink::InitOutput()
+void FairMQFileSink::InitOutputFile(TString defaultId)
 {
   fOutput = new TClonesArray("FairTestDetectorHit");
 
-  fOutFile = new TFile("filesink.root","recreate");
+  char out[256];
+  sprintf(out, "filesink%s.root", defaultId.Data());
+
+  fOutFile = new TFile(out,"recreate");
   fTree = new TTree("MQOut", "Test output");
   fTree->Branch("Output","TClonesArray", &fOutput, 64000, 99);
 }
 
 void FairMQFileSink::Run()
 {
-  void* status; //necessary for pthread_join
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, ">>>>>>> Run <<<<<<<");
 
-  pthread_t logger;
-  pthread_create(&logger, NULL, &FairMQDevice::callLogSocketRates, this);
+  boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
   // Initialize poll set
   zmq_pollitem_t items[] = {
     { *(fPayloadInputs->at(0)->GetSocket()), 0, ZMQ_POLLIN, 0 }
   };
 
+  int receivedMsgs = 0;
   Bool_t received = false;
-  while (true) {
+
+  while ( fState == RUNNING ) {
     FairMQMessage msg;
 
-    zmq_poll(items, 1, -1);
+    zmq_poll(items, 1, 100); // TODO: can timeout be avoided?
 
     if (items[0].revents & ZMQ_POLLIN) {
       received = fPayloadInputs->at(0)->Receive(&msg);
+      receivedMsgs++;
     }
 
     if (received) {
@@ -68,7 +75,7 @@ void FairMQFileSink::Run()
       for (Int_t i = 0; i < numInput; ++i) {
         TVector3 pos(input[i].posX,input[i].posY,input[i].posZ);
         TVector3 dpos(input[i].dposX,input[i].dposY,input[i].dposZ);
-        FairTestDetectorHit* hit = new ((*fOutput)[i]) FairTestDetectorHit(input[i].detID, input[i].mcindex, pos, dpos);
+        new ((*fOutput)[i]) FairTestDetectorHit(input[i].detID, input[i].mcindex, pos, dpos);
       }
 
       if (!fOutput) {
@@ -76,8 +83,14 @@ void FairMQFileSink::Run()
       }
 
       fTree->Fill();
+      received = false;
     } //if received
   } //while true
 
-  pthread_join(logger, &status);
+  std::cout << "I've received " << receivedMsgs << " messages!" << std::endl;
+
+  boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
+
+  rateLogger.interrupt();
+  rateLogger.join();
 }

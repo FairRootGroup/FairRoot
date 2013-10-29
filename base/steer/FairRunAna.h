@@ -48,6 +48,11 @@ class FairRunAna : public FairRun
     void        RunTSBuffers();
     /** the dummy run does not check the evt header or the parameters!! */
     void        DummyRun(Int_t NStart ,Int_t NStop);
+    /** This methode is only needed and used with ZeroMQ
+      * it read a certain event and call the task exec, but no output is written
+      * @param entry : entry number in the tree
+      */
+    void RunMQ(Long64_t entry);
     /** Run on a list of lmd files*/
     void        RunOnLmdFiles(UInt_t NStart=0, UInt_t NStop=0);
     /** finish tasks, write output*/

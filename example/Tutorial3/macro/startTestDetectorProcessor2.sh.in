@@ -1,0 +1,15 @@
+#!/bin/bash
+
+ID="401"
+processorTask="FairTestDetectorMQRecoTask"
+numIoThreads="1"
+inputSocketType="pull"
+inputRcvBufSize="1000"
+inputMethod="connect"
+inputAddress="tcp://localhost:5566"
+outputSocketType="push"
+outputSndBufSize="1000"
+outputMethod="bind"
+outputAddress="tcp://*:5569"
+
+@CMAKE_BINARY_DIR@/bin/testDetectorProcessor $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress

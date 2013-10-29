@@ -1,4 +1,4 @@
-void run_sim(Int_t nEvents=1000)
+void run_sim(Int_t nEvents=1024)
 {
   TStopwatch timer;
   timer.Start();

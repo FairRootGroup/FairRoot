@@ -10,16 +10,15 @@
 
 #include "FairMQSampler.h"
 
-#include "TestDetectorPayload.h"
+#include "FairTestDetectorPayload.h"
 
 class TestDetectorMQSampler: public FairMQSampler
 {
   public:
     TestDetectorMQSampler();
     virtual ~TestDetectorMQSampler();
+  protected:
     virtual void Init();
-
-    //ClassDef(TestDetectorMQSampler,1);
 };
 
 #endif /* TESTDETECTORMQSAMPLER_H_ */

@@ -520,6 +520,30 @@ void FairRunAna::Run(Double_t delta_t)
 }
 //_____________________________________________________________________________
 
+
+//_____________________________________________________________________________
+void FairRunAna::RunMQ(Long64_t entry)
+{
+  /**
+   This methode is only needed and used with ZeroMQ
+   it read a certain event and call the task exec, but no output is written
+   */
+  UInt_t tmpId =0;
+  fRootManager->ReadEvent(entry);
+  tmpId = fEvtHeader->GetRunId();
+  if ( tmpId != fRunId ) {
+    fRunId = tmpId;
+    if ( !fStatic ) {
+      Reinit( fRunId );
+      fTask->ReInitTask();
+    }
+  }
+  fTask->ExecuteTask("");
+  fTask->FinishTask();
+}
+//_____________________________________________________________________________
+
+
 //_____________________________________________________________________________
 void FairRunAna::Run(Long64_t entry)
 {

@@ -4,9 +4,9 @@ void run_reco()
   logger->SetLogFileName("MyLog.log");
   logger->SetLogToScreen(kTRUE);
 //  logger->SetLogToFile(kTRUE);
-  logger->SetLogVerbosityLevel("HIGH");
+  logger->SetLogVerbosityLevel("LOW");
 //  logger->SetLogFileLevel("DEBUG4");
-  logger->SetLogScreenLevel("DEBUG");
+  logger->SetLogScreenLevel("INFO");
   
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
