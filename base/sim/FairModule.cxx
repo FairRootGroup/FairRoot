@@ -374,7 +374,7 @@ void FairModule::ExpandNode(TGeoNode* fN)
       LOG(DEBUG2)<<"Register Volume " << v->GetName()<<FairLogger::endl;
       v->RegisterYourself();
     }
-    if (CheckIfSensitive(v->GetName())) {
+    if ( (this->InheritsFrom("FairDetector")) && CheckIfSensitive(v->GetName())) {
       LOG(DEBUG2)<<"Sensitive Volume "<< v->GetName() << FairLogger::endl;
       AddSensitiveVolume(v);
     }
