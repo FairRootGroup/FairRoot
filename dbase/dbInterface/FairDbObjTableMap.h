@@ -45,7 +45,7 @@ class FairDbObjTableMap : public TObject
 
     // Validity frame functions
     virtual  Int_t GetAggregateNo() const { return -1; }
-    virtual  Int_t GetComboNo() const { GetAggregateNo(); }
+    virtual  Int_t GetComboNo() const { return GetAggregateNo(); }
     void    SetComboNo(Int_t combo) { fCombo=combo; }
 
     virtual  FairDb::Version GetVersion() const { return  fVersion; }
