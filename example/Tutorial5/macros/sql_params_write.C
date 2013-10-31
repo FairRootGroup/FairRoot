@@ -15,7 +15,7 @@ Int_t  sql_params_write()
   FairParAsciiFileIo* inp1 = new FairParAsciiFileIo();
 
   TString work = getenv("VMCWORKDIR");
-  TString filename = work + "/example/Tutorial5/macros/ascii-example.par";
+  TString filename = work + "/Tutorial5/macros/ascii-example.par";
   inp1->open(filename.Data(),"in");
   db->setFirstInput(inp1);
 

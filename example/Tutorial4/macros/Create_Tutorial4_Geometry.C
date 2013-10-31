@@ -46,7 +46,7 @@ void add_alignable_volumes();
 
 void Create_Tutorial4_Geometry() {
   // Load the necessary FairRoot libraries 
-  gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
+  gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
   basiclibs();
   gSystem->Load("libGeoBase");
   gSystem->Load("libParBase");
@@ -100,7 +100,7 @@ void create_materials_from_media_file()
   FairGeoLoader* geoLoad = new FairGeoLoader("TGeo", "FairGeoLoader");
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
   TString geoPath = gSystem->Getenv("VMCWORKDIR");
-  TString geoFile = geoPath + "/example/geometry/media.geo";
+  TString geoFile = geoPath + "/geometry/media.geo";
   geoFace->setMediaFile(geoFile);
   geoFace->readMedia();
 

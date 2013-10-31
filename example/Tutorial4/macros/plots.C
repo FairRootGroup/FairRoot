@@ -1,7 +1,7 @@
 plots(Int_t nEvents = 1000, Int_t iout=1)
 {
 
-  gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
+  gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
   basiclibs();
   gSystem->Load("libFairTools");
   gSystem->Load("libFairDB");

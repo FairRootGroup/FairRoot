@@ -1,12 +1,12 @@
 {
 
   TString dir = getenv("VMCWORKDIR");
-  TString tutdir = dir + "/example/Tutorial5";
+  TString tutdir = dir + "/Tutorial5";
 
-  TString tut_geomdir = dir + "/example/geometry";
+  TString tut_geomdir = dir + "/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_configdir = dir + "/example/gconfig";
+  TString tut_configdir = dir + "/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   FairRunSim* fRun = new FairRunSim();
