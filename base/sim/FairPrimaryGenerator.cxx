@@ -49,6 +49,7 @@ FairPrimaryGenerator::FairPrimaryGenerator()
    fSmearVertexZ(kFALSE),
    fSmearGausVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
+   fSmearGausVertexXY(kFALSE),
    fBeamAngle(kFALSE),
    fEventPlane(kFALSE),
    fStack(NULL),
@@ -90,6 +91,7 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char* name, const char* title)
    fSmearVertexZ(kFALSE),
    fSmearGausVertexZ(kFALSE),
    fSmearVertexXY(kFALSE),
+   fSmearGausVertexXY(kFALSE),
    fBeamAngle(kFALSE),
    fEventPlane(kFALSE),
    fStack(NULL),
@@ -373,9 +375,21 @@ void FairPrimaryGenerator::MakeVertex()
                             vz + fTargetDz/2.);
 
   if (fSmearGausVertexZ) { vz = gRandom->Gaus(vz, fTargetDz); }
-  if (fSmearVertexXY) {
+
+  if (fSmearGausVertexXY) {
     if (fBeamSigmaX != 0.) { vx = gRandom->Gaus(fBeamX0, fBeamSigmaX); }
     if (fBeamSigmaY != 0.) { vy = gRandom->Gaus(fBeamY0, fBeamSigmaY); }
+  }
+
+  if (fSmearVertexXY) {
+    if (fBeamSigmaX != 0.) {
+      vx = gRandom->Uniform(vx - fBeamSigmaX/2.,
+                            vx + fBeamSigmaX/2.);
+    }
+    if (fBeamSigmaY != 0.) {
+      vy = gRandom->Uniform(vy - fBeamSigmaY/2.,
+                            vy + fBeamSigmaY/2.);
+    }
   }
 
   fVertex = TVector3(vx,vy,vz);
@@ -400,6 +414,37 @@ void FairPrimaryGenerator::MakeEventPlane()
   fEvent->SetRotZ(fPhi);
 }
 // -------------------------------------------------------------------------
+
+void FairPrimaryGenerator::SmearVertexZ(Bool_t flag)
+{
+  fSmearVertexZ  = flag;
+  if (fSmearVertexZ && fSmearGausVertexZ) {
+    fSmearGausVertexZ = kFALSE;
+  }
+}
+
+void FairPrimaryGenerator::SmearGausVertexZ(Bool_t flag)
+{
+  fSmearGausVertexZ  = flag;
+  if (fSmearGausVertexZ && fSmearVertexZ) {
+    fSmearVertexZ = kFALSE;
+  }
+}
+void FairPrimaryGenerator::SmearVertexXY(Bool_t flag)
+{
+  fSmearVertexXY  = flag;
+  if (fSmearVertexXY && fSmearGausVertexXY) {
+    fSmearGausVertexXY = kFALSE;
+  }
+}
+void FairPrimaryGenerator::SmearGausVertexXY(Bool_t flag)
+{
+  fSmearGausVertexXY  = flag;
+  if (fSmearGausVertexXY && fSmearVertexXY) {
+    fSmearVertexXY = kFALSE;
+  }
+}
+
 
 ClassImp(FairPrimaryGenerator)
 

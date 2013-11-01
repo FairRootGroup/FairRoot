@@ -25,7 +25,7 @@ void run_reco()
   TList *parFileList = new TList();
 
   TString workDir = gSystem->Getenv("VMCWORKDIR");
-  paramDir = workDir + "/example/Tutorial4/macros/parameters/";
+  paramDir = workDir + "/Tutorial4/macros/parameters/";
 
 //  TObjString tutDetDigiFile = paramDir + "TutorialDet.missallign.par";
   TObjString tutDetDigiFile = paramDir + "example.par";

@@ -6,7 +6,7 @@ void run_sim(Int_t nEvents=1024)
 
   // Use non default gconfig and geometry directories
   TString dir = getenv("VMCWORKDIR");
-  TString tutdir = dir + "/example";
+  TString tutdir = dir + "/";
 
   TString tut_geomdir = tutdir + "/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());

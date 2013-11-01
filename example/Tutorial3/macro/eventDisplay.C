@@ -9,6 +9,7 @@ eventDisplay()
 
 
   // Load basic libraries
+/*
   gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
   basiclibs();
   gSystem->Load("libFairTools");
@@ -22,7 +23,7 @@ eventDisplay()
   gSystem->Load("libFairTestDetector.so");
   gSystem->Load("libEve");
   gSystem->Load("libEventDisplay");
-
+*/
                                      
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
