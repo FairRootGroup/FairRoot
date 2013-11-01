@@ -125,9 +125,10 @@ class FairPrimaryGenerator : public TNamed
 
 
     /** Enable vertex smearing in z and/or xy direction **/
-    void SmearVertexZ(Bool_t flag)  { fSmearVertexZ  = flag; };
-    void SmearGausVertexZ(Bool_t flag)  { fSmearGausVertexZ  = flag; };
-    void SmearVertexXY(Bool_t flag) { fSmearVertexXY = flag; };
+    void SmearVertexZ(Bool_t flag);
+    void SmearGausVertexZ(Bool_t flag);
+    void SmearVertexXY(Bool_t flag);
+    void SmearGausVertexXY(Bool_t flag);
 
     TObjArray* GetListOfGenerators() { return fGenList;}
 
@@ -199,6 +200,8 @@ class FairPrimaryGenerator : public TNamed
     Bool_t      fSmearGausVertexZ;
     /**  Flag for vertex smearing in xy*/
     Bool_t      fSmearVertexXY;
+    /**  Flag for gaus vertex smearing in xy*/
+    Bool_t      fSmearGausVertexXY;
     /**  Flag for beam gradient calculation*/
     Bool_t      fBeamAngle;
     /**  Flag for event plane rotation*/
