@@ -58,6 +58,8 @@ class FairDbConnectionPool
     void HoldConnections();
     void ReleaseConnections();
     void SetPermanent(UInt_t dbNo, Bool_t permanent = true);
+    void HoldConnectionAt(UInt_t dbNo, Bool_t permanent = true) {return SetPermanent(dbNo,permanent);}
+
     // Constructors and destructors.
     FairDbConnectionPool();
     virtual ~FairDbConnectionPool();
