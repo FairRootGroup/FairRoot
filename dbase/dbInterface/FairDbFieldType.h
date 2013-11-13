@@ -36,6 +36,7 @@ class FairDbFieldType
     UInt_t GetSize() const { return fSize; }
     UInt_t GetType() const { return fType; }
     Bool_t IsCompatible(const FairDbFieldType& other) const;
+    Bool_t IsEquivalent(const FairDbFieldType& other) const {return IsCompatible(other);}
     Bool_t IsEqual(const FairDbFieldType& other) const
     { return fType == other.fType; }
     Bool_t IsSmaller(const FairDbFieldType& other) const
