@@ -51,7 +51,7 @@ class FairMCEntry : public FairMultiLinkedData
     }
 
     friend std::ostream& operator<< (std::ostream& out, const FairMCEntry& link) {
-      ((FairMultiLinkedData)link).print(out);
+      ((FairMultiLinkedData)link).Print(out);
       return out;
     }
 
