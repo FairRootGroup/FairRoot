@@ -106,7 +106,7 @@ class FairDbResultPool : public FairDbTableBuffer
 
     Bool_t IsBeforeFirst() const { return false; };
     Bool_t IsExhausted() const { return fExhausted; }
-    Bool_t IsStale() const {return fExhausted;}
+    Bool_t IsCompleted() const {return fExhausted;}
     void RowAsCsv(std::string& row) const;
 
 
