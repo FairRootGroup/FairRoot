@@ -49,7 +49,7 @@ class FairTimeStamp : public FairMultiLinkedData
     }
 
 
-    void print(std::ostream& out = std::cout) const;
+    void Print(std::ostream& out = std::cout) const;
     virtual Bool_t IsSortable() const { return kTRUE;};
 
 
@@ -58,7 +58,7 @@ class FairTimeStamp : public FairMultiLinkedData
     }
 
     friend std::ostream& operator<< (std::ostream& out, const FairTimeStamp& link) {
-      link.print(out);
+      link.Print(out);
       return out;
     }
 

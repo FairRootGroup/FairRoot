@@ -31,9 +31,9 @@ FairTimeStamp::~FairTimeStamp()
 
 // -------------------------------------------------------------------------
 
-void FairTimeStamp::print(std::ostream& out) const
+void FairTimeStamp::Print(std::ostream& out) const
 {
   out << "EntryNr of Data: " << fEntryNr << " TimeStamp: " << GetTimeStamp() << " +/- " << GetTimeStampError() << std::endl;
-  FairMultiLinkedData::print(out);
+  FairMultiLinkedData::Print(out);
 }
 ClassImp(FairTimeStamp)
