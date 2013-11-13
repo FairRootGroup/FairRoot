@@ -98,6 +98,7 @@ class FairDbResultPool : public FairDbTableBuffer
     std::string CurColString() const;
     std::string CurColValue() const { LoadCurValue(); return fValString;}
     UInt_t CurRowNum() const { return fCurRow;}
+    UInt_t GetCurrentRowNo() const {return fCurRow;}
     UInt_t GetDbNo() const { return fDbNo; }
     FairDb::DbTypes GetDBType() const { return fDbType; }
     std::string GetFillOpts() const { return fFillOpts;}
@@ -105,6 +106,7 @@ class FairDbResultPool : public FairDbTableBuffer
 
     Bool_t IsBeforeFirst() const { return false; };
     Bool_t IsExhausted() const { return fExhausted; }
+    Bool_t IsStale() const {return fExhausted;}
     void RowAsCsv(std::string& row) const;
 
 
