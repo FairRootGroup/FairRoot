@@ -5,6 +5,7 @@
 MESSAGE(STATUS "Looking for PYTHIA8 ...")
 
 FIND_PATH(PYTHIA8_INCLUDE_DIR NAMES Pythia.h PATHS
+  ${SIMPATH}/include/Pythia8
   ${SIMPATH}/include/pythia8  
   ${SIMPATH}/generators/include/pythia8  
   ${SIMPATH}/generators/pythia8/include  
