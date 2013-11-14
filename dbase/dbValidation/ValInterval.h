@@ -34,6 +34,8 @@ class ValInterval : public TObject
     ValTimeStamp GetTimeStart() const { return fTimeStart; }
     ValTimeStamp GetTimeEnd()   const { return fTimeEnd; }
     TString GetDataSource()     const { return fDataSource; }
+    Int_t  GetDetectorId()    const { return fDetectorMask; }
+    Int_t  GetDataId()       const { return fSimMask; }
 
     void Print(Option_t* option = "") const;
 
