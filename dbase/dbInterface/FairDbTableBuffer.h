@@ -41,12 +41,15 @@ class FairDbTableBuffer
     virtual    void DecrementCurCol() {
       fCurCol = (fCurCol <= 1) ? 1 : fCurCol -1;
     }
+    virtual    void GetPreviousCurrentColumn() {return DecrementCurCol();}
 
     virtual    void IncrementCurCol() { ++fCurCol; }
+    virtual    void GetNextCurrentColumn() {return IncrementCurCol();}
 
   protected:
 
     virtual    void ClearCurCol() { fCurCol = 1; }
+    virtual    void ResetCurrentColumn() { fCurCol = 1; }
 
   private:
 
