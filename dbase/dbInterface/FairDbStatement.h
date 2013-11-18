@@ -24,6 +24,7 @@ class FairDbStatement
 
     TSQLStatement* ExecuteQuery(const TString& sql="");
     Bool_t ExecuteUpdate( const TString& sql="");
+    Bool_t Commit(const TString& sql) {return ExecuteUpdate(sql);}
     Bool_t PrintExceptions(Int_t level = 3) const;
     const FairDbExceptionLog& GetExceptionLog() const { return fExceptionLog; }
   private:
