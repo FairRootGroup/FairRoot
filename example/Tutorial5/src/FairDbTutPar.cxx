@@ -177,7 +177,7 @@ void FairDbTutPar::store(UInt_t rid)
   std::vector<std::string>::iterator itr(sql_cmds.begin()), itrEnd(sql_cmds.end());
   while( itr != itrEnd ) {
     std::string& sql_cmd(*itr++);
-    stmtDbn->ExecuteUpdate(sql_cmd.c_str());
+    stmtDbn->Commit(sql_cmd.c_str());
     if ( stmtDbn->PrintExceptions() ) {
       fail = true;
       cout << "-E- FairDbTutPar::Store() ******* Error Executing SQL commands ***********  " << endl;
