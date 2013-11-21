@@ -564,3 +564,10 @@ void FairDbConnectionPool::SetPermanent(UInt_t dbNo,
     fConnections[dbNo]->SetPermanent(permanent);
   }
 }
+
+Int_t FairDbConnectionPool::CreateTransientTable(const std::string& tableName,
+    const std::string& tableDescr)
+{
+  // create transient table
+  return  CreateTemporaryTable(tableName,tableDescr);
+}
