@@ -71,6 +71,7 @@ class ValTimeStamp
     Int_t          GetNanoSec(void) const { return fNanoSec; }
     Double_t GetSeconds(void) const { return fSec+(fNanoSec/1.0e9); }
     const char*    AsString(Option_t* option="") const;
+    const char*    Format(Option_t* option="") const;
     void           Copy(ValTimeStamp& vldts) const;
     Int_t          GetDate(Bool_t inUTC=kTRUE, Int_t secOffset=0,
                            UInt_t* year=0, UInt_t* month=0,
