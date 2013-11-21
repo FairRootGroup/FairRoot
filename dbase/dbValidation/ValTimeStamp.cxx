@@ -97,6 +97,59 @@ ValTimeStamp::ValTimeStamp(UInt_t date, UInt_t time, UInt_t nsec,
   Set(date, time, nsec, isUTC, secOffset);
 }
 
+const char* ValTimeStamp::Format(Option_t* option) const
+{
+  const int nbuffers = 8;
+  static char formatted[nbuffers][64];
+  static char formatted2[nbuffers][64];
+  static int ibuffer = nbuffers;
+  ibuffer = (ibuffer+1)%nbuffers;
+
+  TString opt = option;
+  opt.ToLower();
+
+  if (opt.Contains("sec")) {
+    sprintf(formatted[ibuffer], "{%d,%d}", fSec, fNanoSec);
+    return formatted[ibuffer];
+  }
+
+#ifdef linux
+  const char* RFC822   = "%a, %d %b %Y %H:%M:%S %z (%Z) +#9ld nsec";
+  const char* ISO8601  = "%Y-%m-%d %H:%M:%S.#9.9ld%z";
+  const char* ISO8601Z = "%Y-%m-%d %H:%M:%S.#9.9ldZ";
+#else
+  const char* RFC822   = "%a, %d %b %Y %H:%M:%S %Z +#9ld nsec";
+  const char* ISO8601  = "%Y-%m-%d %H:%M:%S.#9.9ld%Z";
+  const char* ISO8601Z = "%Y-%m-%d %H:%M:%S.#9.9ldZ";
+#endif
+  const char* SQL = "%Y-%m-%d %H:%M:%S";
+
+  Bool_t asLocal = opt.Contains("l");
+  Bool_t asSQL   = opt.Contains("z");
+  if (asSQL) { asLocal = kFALSE; }
+
+  const char* format = RFC822;
+  if (opt.Contains("iso")) {
+    format = ISO8601;
+    if (!asLocal) { format = ISO8601Z; }
+  }
+  if (asSQL) { format = SQL; }
+
+  struct tm* ptm;
+  time_t seconds = (time_t) fSec;
+  ptm = (asLocal) ? localtime(&seconds) : gmtime(&seconds);
+
+  strftime(formatted[ibuffer], sizeof(formatted[ibuffer]), format, ptm);
+
+  if (asSQL) { return formatted[ibuffer]; }
+
+  char* ptr = strrchr(formatted[ibuffer], '#');
+  if (ptr) { *ptr = '%'; }    // substitute % for #
+  sprintf(formatted2[ibuffer], formatted[ibuffer], fNanoSec);
+
+  return formatted2[ibuffer];
+}
+
 
 const char* ValTimeStamp::AsString(Option_t* option) const
 {
