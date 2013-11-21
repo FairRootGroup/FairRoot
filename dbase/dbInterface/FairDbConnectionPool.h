@@ -52,9 +52,12 @@ class FairDbConnectionPool
       return this->GetTableDbNo(tableName,selectDbNo) >= 0;
     }
 
-
     Int_t CreateTemporaryTable(const std::string& tableName,
                                const std::string& tableDescr);
+
+    Int_t CreateTransientTable(const std::string& tableName,
+                               const std::string& tableDescr);
+
     void HoldConnections();
     void ReleaseConnections();
     void SetPermanent(UInt_t dbNo, Bool_t permanent = true);
