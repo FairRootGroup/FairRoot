@@ -47,6 +47,7 @@ class FairDbCache
     void Accept(FairDbResult* res,bool registerKey = true);
     void Purge();
     void SetStale();
+    void SetStatic(){ return SetStale();}
 
   protected:
 
