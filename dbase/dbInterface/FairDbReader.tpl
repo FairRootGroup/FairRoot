@@ -354,7 +354,7 @@ UInt_t FairDbReader<T>::NewQuery(ValCondition vc,
   fSimType = vc.GetDataType();
 
   DBLOG("FairDb",FairDbLog::kInfo)<< "\n\nStarting context query: "
-                                  << vc  << " task " << task << "\n" << endl;
+                                  << vc  << " data_id: " << task << "\n" << endl;
 
   FairDbStopWatchManager::gStopWatchManager.RecBegin(fTableInterface.GetTableName(), sizeof(T));
   Disconnect();
@@ -364,7 +364,7 @@ UInt_t FairDbReader<T>::NewQuery(ValCondition vc,
 
   if ( this->ApplyAbortTest() ) {
     DBLOG("FairDb",FairDbLog::kFatal) << "while applying validity context query for "
-                                      << vc.AsString() << " with task " << task << endl;
+                                      << vc.AsString() << " with data_id: " << task << endl;
     abort();
   }
   DBLOG("FairDb",FairDbLog::kInfo)  << "\nContext Query completed: "
@@ -390,7 +390,7 @@ UInt_t FairDbReader<T>::NewQuery(const FairDbExtSqlContent& context,
   fSimType = context.GetDataType();
 
   DBLOG("FairDb",FairDbLog::kInfo) << "\n\nStarting extended context query: "
-                                   << context.GetString()  << " task " << task
+                                   << context.GetString()  << " data_id: " << task
                                    << " data " << data << " fillOpts " << fillOpts << "\n" <<endl;
 
   FairDbStopWatchManager::gStopWatchManager.RecBegin(fTableInterface.GetTableName(), sizeof(T));
@@ -400,14 +400,14 @@ UInt_t FairDbReader<T>::NewQuery(const FairDbExtSqlContent& context,
   FairDbStopWatchManager::gStopWatchManager.RecEnd(fResult->GetNumRows());
   if ( this->ApplyAbortTest() ) {
     DBLOG("FairDb",FairDbLog::kFatal) << "while applying extended context query for "
-                                      <<  context.c_str()<< " with task " << task
+                                      <<  context.c_str()<< " with data_id: " << task
                                       << " secondary query SQL: " << data
                                       << "  and fill options: " << fillOpts << endl;
     abort();
   }
 
   DBLOG("FairDb",FairDbLog::kInfo) << "\n\nCompleted extended context query: "
-                                   << context.GetString()  << " task " << task
+                                   << context.GetString()  << " data_id " << task
                                    << " data " << data << " fillOpts" << fillOpts
                                    << " Found:  " << fResult->GetNumRows() << " rows\n" << endl;
 
