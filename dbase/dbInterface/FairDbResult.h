@@ -205,6 +205,8 @@ class FairDbResult
 
     virtual void Streamer(FairDbBufferFile& file);
     virtual void SetCanReuse(Bool_t reuse)  { fCanReuse = reuse ; }
+	// ELog
+    const FairDbExceptionLog& GetErrorLog() const { return fExceptionLog; }
     void CaptureExceptionLog(UInt_t startFrom);
   protected:
     void SetResultsFromDb() { fResultsFromDb = kTRUE; }
