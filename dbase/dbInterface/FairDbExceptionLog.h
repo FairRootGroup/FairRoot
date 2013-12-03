@@ -45,6 +45,7 @@ class FairDbExceptionLog
     void Clear() { fEntries.clear(); }
 
     static FairDbExceptionLog& GetGELog() { return fgGELog;}
+    static FairDbExceptionLog& GetGlobalErrorLog() { return fgGELog;}
 
   private:
 
