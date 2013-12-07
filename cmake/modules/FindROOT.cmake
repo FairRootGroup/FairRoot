@@ -159,7 +159,7 @@ Else(ROOT_FOUND)
   If(ROOT_FIND_REQUIRED)
     Message(STATUS "Looking for ROOT... - Found version to old.")
     Message(STATUS "Looking for ROOT... - Minimum required version is ${ROOT_FIND_VERSION}")
-    Message(FATAL_ERROR "Stop here becaus of a wrong Root version.")
+    Message(FATAL_ERROR "Stop here because of a wrong Root version.")
   EndIf(ROOT_FIND_REQUIRED)
 
 Endif(ROOT_FOUND)
