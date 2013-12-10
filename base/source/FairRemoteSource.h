@@ -7,7 +7,7 @@
 #ifndef FAIRREMOTESOURCE_H
 #define FAIRREMOTESOURCE_H
 
-#include "FairSource.h"
+#include "FairMbsSource.h"
 
 
 class TSocket;
@@ -15,7 +15,7 @@ class MRevBuffer;
 class REvent;
 
 
-class FairRemoteSource : public FairSource
+class FairRemoteSource : public FairMbsSource
 {
   public:
     FairRemoteSource(char* node);

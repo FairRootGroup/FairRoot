@@ -2,6 +2,11 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
+
+If(NOT DEFINED BUILD_MBS)
+  Set(BUILD_MBS TRUE)
+EndIf(NOT DEFINED BUILD_MBS)
+
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR} 
 ${CMAKE_SOURCE_DIR}/fairtools
@@ -18,9 +23,14 @@ ${CMAKE_SOURCE_DIR}/dbase/dbValidation
 ${CMAKE_SOURCE_DIR}/dbase/dbUtils
 ${CMAKE_SOURCE_DIR}/input/db
 ${CMAKE_SOURCE_DIR}/dbase/dbInput
-${CMAKE_SOURCE_DIR}/MbsAPI
-
 )
+
+If(BUILD_MBS)
+  set(INCLUDE_DIRECTORIES
+     ${INCLUDE_DIRECTORIES} 
+     ${CMAKE_SOURCE_DIR}/MbsAPI
+  )
+EndIf(BUILD_MBS)
 
 include_directories( ${INCLUDE_DIRECTORIES})
 
@@ -85,28 +95,43 @@ field/FairField.cxx
 field/FairFieldFactory.cxx
 field/FairRKPropagator.cxx
 
-source/FairLmdSource.cxx
-source/FairRemoteSource.cxx
 source/FairSource.cxx
-source/FairUnpack.cxx
-source/MRevBuffer.cxx
 )
 
-Set(NO_DICT_SRCS 
-source/exitCli.c
-source/rclose.c
-source/swaplw.c
+If(BUILD_MBS)
+  Set(SRCS
+      ${SRCS}
+      source/FairLmdSource.cxx
+      source/FairRemoteSource.cxx
+      source/FairMbsSource.cxx
+      source/FairUnpack.cxx
+      source/MRevBuffer.cxx
+   )
 
-)
+  Set(NO_DICT_SRCS 
+      source/exitCli.c
+      source/rclose.c
+      source/swaplw.c
+  )
+
+  Set(DEPENDENCIES 
+      ParBase GeoBase FairTools MbsAPI
+      Proof GeomPainter Geom VMC EG MathCore Physics 
+      Matrix Tree Hist RIO Cint Core
+  )
+
+  Set(DEFINITIONS BUILD_MBS)
+Else(BUILD_MBS)
+  Set(DEPENDENCIES 
+      ParBase GeoBase FairTools 
+      Proof GeomPainter Geom VMC EG MathCore Physics 
+      Matrix Tree Hist RIO Cint Core
+  )
+EndIf(BUILD_MBS)
 
 
 Set(LINKDEF FairLinkDef.h)
 Set(LIBRARY_NAME Base)
-Set(DEPENDENCIES 
-    ParBase GeoBase FairTools MbsAPI
-    Proof GeomPainter Geom VMC EG MathCore Physics 
-    Matrix Tree Hist RIO Cint Core
-)
 
 GENERATE_LIBRARY()
 
