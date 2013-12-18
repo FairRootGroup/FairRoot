@@ -58,8 +58,10 @@ class FairWriteoutBuffer: public TObject
     virtual void SetVerbose(Int_t val) {fVerbose = val;}
 
     virtual void DeleteOldData() {
-      TClonesArray* myArray = FairRootManager::Instance()->GetTClonesArray(fBranchName);
-      myArray->Delete();
+      if ( fBranchName.Length() > 0 ) {
+	TClonesArray* myArray = FairRootManager::Instance()->GetTClonesArray(fBranchName);
+	myArray->Delete();
+      }
     }
 
     virtual void WriteOutData(double time);

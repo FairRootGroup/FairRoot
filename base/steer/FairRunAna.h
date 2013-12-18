@@ -37,6 +37,8 @@ class FairRunAna : public FairRun
     void        AddFriend(TString fName);
     /**initialize the run manager*/
     void        Init();
+    /**Run event reconstruction from event number NStart to event number NStop */
+    void        RunEventReco(Int_t NStart ,Int_t NStop);
     /**Run from event number NStart to event number NStop */
     void        Run(Int_t NStart ,Int_t NStop);
     /**Run over the whole input file with timpe window delta_t as unit (entry)*/
