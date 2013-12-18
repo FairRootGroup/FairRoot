@@ -316,6 +316,14 @@ void FairRunOnline::WriteObjects()
       // If a histogram - plot it and save canvas
       h2 = (TH2F*) object;
       h2->Write();
+    } else if(0 == className.CompareTo("TH1D")) {
+      // If a histogram - plot it and save canvas
+      h1 = (TH1D*) object;
+      h1->Write();
+    } else if(0 == className.CompareTo("TH2D")) {
+      // If a histogram - plot it and save canvas
+      h2 = (TH2D*) object;
+      h2->Write();
     }
   }
 }
