@@ -10,6 +10,8 @@
 #pragma link C++ class FairBaseParSet;
 #pragma link C++ class FairGeoParSet;
 #pragma link C++ class FairDetector+;
+#pragma link C++ class FairEventBuilder+;
+#pragma link C++ class FairEventBuilderManager+;
 #pragma link C++ class FairEventHeader;
 #pragma link C++ class FairFileHeader+;
 #pragma link C++ class FairGeaneApplication+;
@@ -27,6 +29,7 @@
 #pragma link C++ class FairModule-;
 #pragma link C++ class FairParticle+;
 #pragma link C++ class FairPrimaryGenerator+;
+#pragma link C++ class FairRecoEventHeader+;
 #pragma link C++ class FairRootManager+;
 #pragma link C++ class FairRun+;
 #pragma link C++ class FairRunAna;

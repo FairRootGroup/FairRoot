@@ -500,6 +500,79 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
+{
+  UInt_t tmpId =0;
+
+  if (Ev_end==0) {
+    if (Ev_start==0) {
+      Ev_end=Int_t((fRootManager->GetInChain())->GetEntries());
+    } else {
+      Ev_end =  Ev_start;
+      if ( Ev_end > ((fRootManager->GetInChain())->GetEntries()) ) {
+        Ev_end = (Int_t) (fRootManager->GetInChain())->GetEntries();
+      }
+      Ev_start=0;
+    }
+  } else {
+    Int_t fileEnd=(fRootManager->GetInChain())->GetEntries();
+    if (Ev_end > fileEnd) {
+      cout << "-------------------Warning---------------------------" << endl;
+      cout << " -W FairRunAna : File has less events than requested!!" << endl;
+      cout << " File contains : " << fileEnd  << " Events" << endl;
+      cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
+      cout << " The number of events is set to " << fileEnd << " Events"<< endl;
+      cout << "-----------------------------------------------------" << endl;
+      Ev_end = fileEnd;
+    }
+
+  }
+
+  fRunInfo.Reset();
+
+
+  for (int i=Ev_start; i< Ev_end; i++) {
+    fRootManager->ReadEvent(i);
+    /**
+     * if we have simulation files then they have MC Event Header and the Run Id is in it, any way it
+     * would be better to make FairMCEventHeader a subclass of FairEvtHeader.
+     */
+    if (fRootManager->IsEvtHeaderNew()) {
+      tmpId = fMCHeader->GetRunID();
+    } else {
+      tmpId = fEvtHeader->GetRunId();
+    }
+    if ( tmpId != fRunId ) {
+      fRunId = tmpId;
+      if ( !fStatic ) {
+        Reinit( fRunId );
+        fTask->ReInitTask();
+      }
+    }
+    //FairMCEventHeader* header = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObject("MCEventHeader.");
+    //    std::cout << "WriteoutBufferData with time: " << fRootManager->GetEventTime();
+    fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
+    fTask->ExecuteTask("");
+    // fRootManager->Fill();
+    fTask->FinishEvent();
+
+    fRunInfo.StoreInfo();
+    if (NULL !=  FairTrajFilter::Instance()) {
+      FairTrajFilter::Instance()->Reset();
+    }
+
+  }
+
+  fTask->FinishTask();
+  if (fWriteRunInfo) {
+    fRunInfo.WriteInfo();
+  }
+  fRootManager->LastFill();
+  fRootManager->Write();
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 void FairRunAna::Run(Double_t delta_t)
 {
   while (fRootManager->ReadNextEvent(delta_t)==kTRUE) {

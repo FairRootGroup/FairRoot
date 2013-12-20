@@ -48,23 +48,33 @@ class FairWriteoutBuffer: public TObject
     FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance);
     virtual ~FairWriteoutBuffer() {};
 
-    virtual void SaveDataToTree(Bool_t val = kTRUE) {fTreeSave = val;}    ///< If SaveDataToTree is set the data is stored at the end of the buffering into the given TClonesArray.
-    virtual void ActivateBuffering(Bool_t val = kTRUE) {fActivateBuffering=val;} ///< fActivateBuffering has to be set to kTRUE to use the buffering. Otherwise the data is directly stored in the given TClonesArray.
+    virtual void SaveDataToTree(Bool_t val = kTRUE) {
+      fTreeSave = val;   ///< If SaveDataToTree is set the data is stored at the end of the buffering into the given TClonesArray.
+    }
+    virtual void ActivateBuffering(Bool_t val = kTRUE) {
+      fActivateBuffering=val;   ///< fActivateBuffering has to be set to kTRUE to use the buffering. Otherwise the data is directly stored in the given TClonesArray.
+    }
 
 /// Fills a pointer to a data object into the buffer. StartTime gives the time when the data can influence later data, activeTime gives the time how long the data can influence later data.
 /// Both time data has to be given as an absolute time!
     virtual void FillNewData(FairTimeStamp* data, double startTime, double activeTime);
 
-    virtual Int_t GetNData() {return fDeadTime_map.size();}
+    virtual Int_t GetNData() {
+      return fDeadTime_map.size();
+    }
     virtual std::vector<FairTimeStamp*> GetRemoveOldData(double time);
     virtual std::vector<FairTimeStamp*> GetAllData();
 
 
-    virtual void SetVerbose(Int_t val) {fVerbose = val;}
+    virtual void SetVerbose(Int_t val) {
+      fVerbose = val;
+    }
 
     virtual void DeleteOldData() {
-      TClonesArray* myArray = FairRootManager::Instance()->GetTClonesArray(fBranchName);
-      myArray->Delete();
+      if ( fBranchName.Length() > 0 ) {
+        TClonesArray* myArray = FairRootManager::Instance()->GetTClonesArray(fBranchName);
+        myArray->Delete();
+      }
     }
 
     virtual void WriteOutData(double time);
@@ -90,7 +100,9 @@ class FairWriteoutBuffer: public TObject
     virtual void MoveDataFromStartTimeMapToDeadTimeMap(double time);
     virtual void FillDataToDeadTimeMap(FairTimeStamp* data, double activeTime);
 
-    virtual void PrintData(FairTimeStamp* data) {std::cout << data->GetTimeStamp();}; ///< Method should be overwritten in derived classes to print the data of an object stored in the buffer
+    virtual void PrintData(FairTimeStamp* data) {
+      std::cout << data->GetTimeStamp();
+    }; ///< Method should be overwritten in derived classes to print the data of an object stored in the buffer
     virtual void PrintDeadTimeMap();
     virtual void PrintStartTimeMap();
 

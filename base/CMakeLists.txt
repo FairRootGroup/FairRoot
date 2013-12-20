@@ -76,6 +76,8 @@ sim/FairRunIdGenerator.cxx
 sim/FairVolume.cxx
 sim/FairVolumeList.cxx
 
+event/FairEventBuilder.cxx
+event/FairEventBuilderManager.cxx
 event/FairEventHeader.cxx
 event/FairFileHeader.cxx
 event/FairFileInfo.cxx
@@ -87,6 +89,7 @@ event/FairMesh.cxx
 event/FairMultiLinkedData.cxx
 event/FairRadLenPoint.cxx
 event/FairRadMapPoint.cxx
+event/FairRecoEventHeader.cxx
 event/FairRunInfo.cxx
 event/FairTimeStamp.cxx
 event/FairTrackParam.cxx
