@@ -59,11 +59,15 @@
 
 #pragma link C++ class FairRunOnline;
 #pragma link C++ class FairSource;
+
+#ifdef BUILD_MBS
+#pragma link C++ class FairMbsSource;
 #pragma link C++ class FairRemoteSource;
 #pragma link C++ class FairLmdSource;
 #pragma link C++ class FairUnpack;
 #pragma link C++ class MRevBuffer;
 #pragma link C++ class REvent;
+#endif
 
 #if ROOT_VERSION_CODE < 333824
 #pragma link C++ class TVirtualMagField+;

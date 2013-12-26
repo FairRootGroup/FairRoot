@@ -13,7 +13,7 @@ using namespace std;
 
 
 FairRemoteSource::FairRemoteSource(char* node)
-  : FairSource(),
+  : FairMbsSource(),
     fNode(node),
     fSocket(NULL),
     fBuffer(new MRevBuffer(1)),
@@ -23,7 +23,7 @@ FairRemoteSource::FairRemoteSource(char* node)
 
 
 FairRemoteSource::FairRemoteSource(const FairRemoteSource& source)
-  : FairSource(source),
+  : FairMbsSource(source),
     fNode((char*)source.GetNode()),
     fSocket(NULL),
     fBuffer(new MRevBuffer(1)),
@@ -40,7 +40,7 @@ FairRemoteSource::~FairRemoteSource()
 
 Bool_t FairRemoteSource::Init()
 {
-  if(! FairSource::Init()) {
+  if(! FairMbsSource::Init()) {
     return kFALSE;
   }
 

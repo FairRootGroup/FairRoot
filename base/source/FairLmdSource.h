@@ -16,13 +16,13 @@ extern "C"
 
 #include "TString.h"
 
-#include "FairSource.h"
+#include "FairMbsSource.h"
 
 
 class TList;
 
 
-class FairLmdSource : public FairSource
+class FairLmdSource : public FairMbsSource
 {
   public:
     FairLmdSource();

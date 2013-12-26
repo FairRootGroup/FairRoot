@@ -13,7 +13,7 @@ using namespace std;
 
 
 FairLmdSource::FairLmdSource()
-  : FairSource(),
+  : FairMbsSource(),
     fCurrentFile(0),
     fFileNames(new TList()),
     fxInputChannel(NULL),
@@ -26,7 +26,7 @@ FairLmdSource::FairLmdSource()
 
 
 FairLmdSource::FairLmdSource(const FairLmdSource& source)
-  : FairSource(source),
+  : FairMbsSource(source),
     fCurrentFile(source.GetCurrentFile()),
     fFileNames(new TList()),
     fxInputChannel(NULL),
@@ -54,7 +54,7 @@ void FairLmdSource::AddFile(TString fileName)
 
 Bool_t FairLmdSource::Init()
 {
-  if(! FairSource::Init()) {
+  if(! FairMbsSource::Init()) {
     return kFALSE;
   }
 
