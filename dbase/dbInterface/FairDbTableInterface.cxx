@@ -56,7 +56,7 @@ FairDbTableInterface::FairDbTableInterface(FairDbConnectionPool* cascader,
                                     << ( fExists ? " (table exists)"
                                          : " (table missing)" )
                                     << endl;
-  DBLOG("FairDb",FairDbLog::kInfo)<< "Connected Table Row  " << fObjTableMap << endl;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "Connected Table Row: " << fObjTableMap << endl;
 
 }
 
