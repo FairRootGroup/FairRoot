@@ -4,6 +4,8 @@
 #include "TSQLServer.h"                 // for TSQLServer
 #include "TSQLStatement.h"              // for TSQLStatement
 #include "TSystem.h"                    // for TSystem, gSystem
+#include "TObjArray.h"
+#include "TObjString.h"
 
 #include <algorithm>                    // for transform
 #include <cctype>                       // for toupper
@@ -36,6 +38,14 @@ FairDbConnection::FairDbConnection(
 // Wrapper to a DB connection
   DBLOG("FairDb",FairDbLog::kInfo) << "Creating a DB connection" << endl;
 
+  // Get Eventually a Schema (PgSQL)
+  TString aUrl(this->GetUrl());
+  TObjArray* ll = aUrl.Tokenize("/");
+  Int_t n_tok = ll->GetEntries();
+  TObjString* o_str = (TObjString*) ll->At(n_tok-1);
+  fSchema = o_str->GetString();
+
+
   if ( this->Open() ) {
     DBLOG("FairDb",FairDbLog::kInfo)  << "successfully opened connection to: "
                                       << this->GetUrl() << endl;
@@ -47,7 +57,7 @@ FairDbConnection::FairDbConnection(
     // Get the c_strbase type
     if( productName == "MySQL" ) { fDbType = FairDb::kMySQL; }
     else if ( productName == "Oracle" ) { fDbType = FairDb::kOracle; }
-    else if ( productName == "PgSQL" ) { fDbType = FairDb::kPostgreSQL; }
+    else if ( productName == "PgSQL" ) { fDbType = FairDb::kPostgreSQL;}
 
     else {
       MAXDBLOG("FairDb",FairDbLog::kError,20) << " Cannot determine DB type from name: "
@@ -74,18 +84,35 @@ FairDbConnection::FairDbConnection(
                                           << ") does not support prepared statements." << endl;
         fUrlValidated = kFALSE;
       }
+
       if ( fUrlValidated ) {
-        DBLOG("FairDb",FairDbLog::kInfo)  << " this client, and MySQL server ("
-                                          << serverInfo
-                                          << ") does support prepared statements." << endl;
+        if (fDbType == FairDb::kMySQL)
+          DBLOG("FairDb",FairDbLog::kInfo)  << " this client, and MySQL server ("
+                                            << serverInfo
+                                            << ") does support prepared statements." << endl;
+        else if (fDbType == FairDb::kPostgreSQL)
+          DBLOG("FairDb",FairDbLog::kInfo)  << " this client, and PostgreSQL server ("
+                                            << serverInfo
+                                            << ") does support prepared statements." << endl;
+
       } else {
 
-        DBLOG("FairDb",FairDbLog::kError) << "\n"
-                                          << "This version of MySQL does not support prepared statements.\n"
-                                          << "\n"
-                                          << "Please upgrade to MySQL (client and server) version 4.1 or greater \n"
-                                          << "\n"
-                                          << endl;
+        if (fDbType == FairDb::kMySQL)
+          DBLOG("FairDb",FairDbLog::kError) << "\n"
+                                            << "This version of MySQL does not support prepared statements.\n"
+                                            << "\n"
+                                            << "Please upgrade to MySQL (client and server) version 4.1 or greater \n"
+                                            << "\n"
+                                            << endl;
+        else if (fDbType == FairDb::kPostgreSQL)
+          DBLOG("FairDb",FairDbLog::kError) << "\n"
+                                            << "This version of PostgreSQL does not support prepared statements.\n"
+                                            << "\n"
+                                            << "Please upgrade to PostgreSQL (client and server) version 9.2 or greater \n"
+                                            << "\n"
+                                            << endl;
+
+
       }
 
     }//! fUrlValidated
@@ -96,7 +123,10 @@ FairDbConnection::FairDbConnection(
     }
   }
 
+  // Get Db Name
   fDbName = fUrl.GetFile();
+
+
 }
 
 
@@ -246,8 +276,10 @@ void  FairDbConnection::SetTableExists(const string& tableName)
       // MYSQL or Oracle
       stmt =  CreatePreparedStatement("show tables");
     } else {
-      // POSTGRES
-      stmt =  CreatePreparedStatement("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public'");
+      // PostGres using public only as schema
+      TString sql_cmd = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' or table_schema = '" + fSchema + "';";
+      //cout << " sql_cmd -->" << sql_cmd << endl;
+      stmt =  CreatePreparedStatement(sql_cmd.Data());
     }
 
     if ( stmt ) {
@@ -256,6 +288,7 @@ void  FairDbConnection::SetTableExists(const string& tableName)
         while (stmt->NextResultRow()) {
           string tn(stmt->GetString(0));
           std::transform(tn.begin(), tn.end(), tn.begin(), ::toupper);
+          //cout << " -I FairDbConnection::SetTableExists table name: " << tn << endl;
           this->SetTableExists(tn);
         }
       }
@@ -267,7 +300,7 @@ void  FairDbConnection::SetTableExists(const string& tableName)
       fExistingTableList += ",'";
       fExistingTableList += tableName;
       fExistingTableList += "'";
-      // cout << "-I- FairDbConnection::Table Registered  ... " <<  tableName << endl;
+      //cout << "-I- FairDbConnection::Table Registered  ... " <<  tableName << endl;
     }
   }
   //cout << "-I- FairDbConnection:: End of table exists ... " << endl;
@@ -283,7 +316,7 @@ Bool_t  FairDbConnection::TableExists(const string& tableName) const
   test += tableName;
   test += "'";
   Bool_t btest =  fExistingTableList.find(test) != std::string::npos;
-  //cout << " Table exists " << btest << endl;
+  //cout << "-I- FairDbConnection: Table exists " << btest << endl;
   return btest;
 }
 
