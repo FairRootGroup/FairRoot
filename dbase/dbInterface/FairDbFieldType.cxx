@@ -20,9 +20,7 @@ FairDbFieldType::FairDbFieldType(Int_t type /* = FairDb::kInt */)
     fSize(0),
     fType(0)
 {
-
   this->Init(type);
-
 }
 
 FairDbFieldType::FairDbFieldType(Int_t type,
@@ -33,18 +31,12 @@ FairDbFieldType::FairDbFieldType(Int_t type,
     fType(0)
 {
 
-
-
-
   TString name(typeName);
   name.ToUpper();
 
-  // Handle integer types.
-
+  // Integer types.
   if ( type == TSQLServer::kSQL_INTEGER || type == TSQLServer::kSQL_NUMERIC ) {
 
-    // TSQLServer reports int(32) as size 32, (but maximum display is 11)
-    // So: any type starting int or INT as size kMaxInt (standard 4 byte int)
     if ( name.BeginsWith("INT") ) { size = kMaxInt; }
     if      ( size <= kMaxTinyInt  ) { this->Init(FairDb::kTiny);  return; }
     else if ( size <= kMaxSmallInt ) { this->Init(FairDb::kShort); return; }
@@ -53,22 +45,20 @@ FairDbFieldType::FairDbFieldType(Int_t type,
 
   }
 
-  // Handle floating point types
-
+  // Floating point types
   if ( type == TSQLServer::kSQL_FLOAT  ) { this->Init(FairDb::kFloat);  return; }
   if ( type == TSQLServer::kSQL_DOUBLE ) { this->Init(FairDb::kDouble);  return; }
 
-  // Handle cases where type is determined uniquely by type name.
-
+  // Cases where type is determined uniquely by type name.
   if ( name == "BINARY_FLOAT" )  { this->Init(FairDb::kFloat);  return; }
   if ( name == "BINARY_DOUBLE" ) { this->Init(FairDb::kDouble); return; }
   if ( name == "TINYTEXT" )      { this->Init(FairDb::kString,kMaxMySQLVarchar);   return; }
   if ( name == "TEXT" )          { this->Init(FairDb::kString,kMaxMySQLText);   return; }
   if ( name == "DATE" )          { this->Init(FairDb::kDate);   return; }
   if ( name == "DATETIME" )      { this->Init(FairDb::kDate);   return; }
+  if ( name == "TIMESTAMP" )      { this->Init(FairDb::kDate);   return; }
 
-  // Handle character types
-
+  // Character types
   if ( type == TSQLServer::kSQL_CHAR && size <= kMaxChar ) {
     this->Init(FairDb::kChar,size);
     return;
@@ -101,6 +91,7 @@ FairDbFieldType::FairDbFieldType(const string& sql,
     fSize(0),
     fType(0)
 {
+
 
   if (         sql == "TINYINT" ) { this->Init(FairDb::kTiny); }
 
@@ -135,10 +126,11 @@ FairDbFieldType::FairDbFieldType(const string& sql,
 
   }
 
-  else if ( sql == "DATETIME" ) { this->Init(FairDb::kDate); }
+  else if ( sql == "DATETIME" )  { this->Init(FairDb::kDate); }
+  else if ( sql == "TIMESTAMP" ) { this->Init(FairDb::kDate); }
+
 
   else {
-
     MAXDBLOG("FairDb",FairDbLog::kError,20) << "Unable to do typing from SQL: " << sql << endl;
     this->Init(FairDb::kUnknown);
   }
@@ -197,8 +189,9 @@ string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
 
   ostringstream os;
 
-  //MySQL semantics
-  if ( dbType != FairDb::kOracle ) {
+//  Deal with MySQL ddl
+
+  if ( dbType == FairDb::kMySQL ) {
     switch ( fType ) {
 
     case  FairDb::kBool    :
@@ -254,9 +247,68 @@ string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
     }
   }
 
-  else {
+//  Deal with PostgreSQL
+  else if ( dbType == FairDb::kPostgreSQL) {
 
-//  Deal with ORACLE format
+    int size = fSize;
+    if ( fSize < kMaxOracleVarchar ) { size = kMaxOracleVarchar; }
+
+    switch ( fType ) {
+
+    case  FairDb::kBool    :
+      os << "CHAR";
+      break;
+
+    case  FairDb::kUTiny   :
+    case  FairDb::kTiny    :
+      os << "SMALLINT";
+      break;
+
+    case  FairDb::kShort   :
+    case  FairDb::kUShort  :
+      os << "SMALLINT";
+      break;
+
+    case  FairDb::kInt     :
+    case  FairDb::kUInt    :
+      os << "INT";
+      break;
+
+    case  FairDb::kLong    :
+    case  FairDb::kULong   :
+      os << "BIGINT";
+      break;
+
+    case  FairDb::kFloat   :
+      os << "REAL";
+      break;
+
+    case  FairDb::kDouble  :
+      os << "DOUBLE PRECISION";
+      break;
+
+    case  FairDb::kChar    :
+    case  FairDb::kUChar   :
+    case  FairDb::kString  :
+    case  FairDb::kTString :
+      if      ( size == 1) { os << "CHAR"; }
+      else if ( size <= kMaxChar) { os << "CHAR("    << size << ')'; }
+      else { os << "VARCHAR(" << size << ')'; }
+      break;
+
+    case  FairDb::kDate    :
+      os << "TIMESTAMP WITHOUT TIME ZONE";
+      break;
+
+    default :
+      os << "Unknown";
+
+    }
+  }
+
+//  Deal with ORACLE ddl
+  else if ( dbType == FairDb::kOracle) {
+
     int size = fSize;
     if ( fSize < kMaxOracleVarchar ) { size = kMaxOracleVarchar; }
 
@@ -314,7 +366,6 @@ string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
   }
 
   return os.str();
-
 }
 
 
@@ -370,7 +421,7 @@ void FairDbFieldType::Init(Int_t type,
   case FairDb::kInt :
     fType      = FairDb::kInt;
     fConcept   = FairDb::kInt;
-    fSize      = 4;
+    fSize      =  size = 4;
     break;
 
   case FairDb::kUInt :
@@ -451,16 +502,12 @@ Bool_t FairDbFieldType::IsCompatible(const FairDbFieldType& other) const
   if ( MATCHES(FairDb::kBool,  FairDb::kUChar) ) { return kTRUE; }
   if ( MATCHES(FairDb::kInt,   FairDb::kChar)  ) { return kTRUE; }
   if ( MATCHES(FairDb::kUInt,  FairDb::kUChar) ) { return kTRUE; }
-//  Unsigned matches signed : TSQLResultSetL interface
-//  does not support unsigned types nervertheless function
-//  GetShort() and GetInt()
-//  methods will return unsigned data integer
   if ( MATCHES(FairDb::kUInt,  FairDb::kInt)   ) { return kTRUE; }
-//  Char to string convertion
   if ( concept == FairDb::kChar && fConcept == FairDb::kString ) { return kTRUE; }
 
-  return kFALSE;
+  //  cout << " -I- FairDbFieldType compatibility: " << fConcept << " : " << concept << endl;
 
+  return kFALSE;
 }
 
 string FairDbFieldType::UndefinedValue() const
