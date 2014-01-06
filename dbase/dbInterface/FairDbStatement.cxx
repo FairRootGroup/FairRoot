@@ -72,7 +72,6 @@ TSQLStatement* FairDbStatement::ExecuteQuery( const TString& sql)
     stmt = 0;
   }
 
-
   // <DB> here should be some checks
   // implemented
 
@@ -83,7 +82,7 @@ TSQLStatement* FairDbStatement::ExecuteQuery( const TString& sql)
     }
   } else if ( fExceptionLog.IsEmpty() ) {
     ostringstream oss;
-    oss << "Unknown failure (no execption but no TSQLStatement either executing " << sql;
+    oss << "Unknown failure (no exception but no TSQLStatement either executing " << sql;
     fExceptionLog.AddEntry(oss.str().c_str());
   }
 
@@ -101,7 +100,7 @@ Bool_t FairDbStatement::ExecuteUpdate( const TString& sql)
 
   while (itr != itrEnd) {
     const TString& sql1 = *itr++;
-    DBLOG("FairDb",FairDbLog::kInfo) << "ExecuteUpdate SQL:" << fConDb.GetDbName() << ":" << sql1 << endl;
+    DBLOG("FairDb",FairDbLog::kInfo) << "ExecuteUpdate: executing  SQL stmts:" << fConDb.GetDbName() << ":" << sql1 << endl;
     bool ok = fConDb.GetServer()->Exec(sql1.Data());
     if ( ! ok ) {
       fConDb.RecordException();
@@ -137,160 +136,237 @@ std::list<TString>  FairDbStatement::TestTranslateSQL(const TString& sql, FairDb
 std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
 {
 //  Translate  MySQL specific to other dialects of SQL.
+//  cout << "-I-  FairDbStatement::TranslateSQL called with SQL:" << sql <<  endl;
 
   std::list<TString> sqlTransList;
 
-  if ( fDbType != FairDb::kOracle ) {
+  if ( fDbType == FairDb::kMySQL ) {
     sqlTransList.push_back(sql);
     return sqlTransList;
-  }
 
-  Bool_t translated = kFALSE;
-
-  Bool_t modified  = kFALSE;
-
-  TString sqlTrans(sql);
-  sqlTrans.ToUpper();
-
-// Format Date compatible with MySQL.
-  sqlTransList.push_back("ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD hh24:mi:ss'");
-
-// Translate NOW()
-  if ( sqlTrans.Index("NOW()") != kNPOS ) {
-    sqlTrans.ReplaceAll("NOW()","SYSDATE");
-    modified = kTRUE;
-  }
-
-// Translate SHOW TABLES
-  if (sqlTrans == "SHOW TABLES" ) {
-    sqlTrans = "SELECT TABLE_NAME FROM ALL_TABLES";
-    sqlTransList.push_back(sqlTrans);
-    translated = kTRUE;
-  }
-
-  TString sqlIncant;
-
-// Translate CREATE TABLE commands using FairDbTableMetaData.
-  Ssiz_t createTableIndex = sqlTrans.Index("CREATE TABLE",0,TString::kIgnoreCase );
-  if ( ! translated && createTableIndex != kNPOS ) {
-    FairDbTableMetaData tmd;
-    tmd.SetFromSql(sql.Data());
-    std::vector<std::string> sql_list;
-    FairUtilString::StringTok(sql_list,tmd.Sql(FairDb::kOracle),";");
-    std::vector<std::string>::const_iterator itr(sql_list.begin()), itrEnd(sql_list.end());
-    while ( itr != itrEnd ) {
-      sqlTransList.push_back(*itr);
-      ++itr;
-    }
-    translated = kTRUE;
-  }
-
-
-  // Translate DROP TABLE commands.
-  Ssiz_t dropTableIndex = sqlTrans.Index("DROP TABLE",0,TString::kIgnoreCase );
-  if ( ! translated && dropTableIndex != kNPOS ) {
-    // Remove added  "IF EXISTS"
-    sqlTrans.ReplaceAll(" IF EXISTS ",    " ");
-
-    //add the drop table command, then work on the synonym
-    sqlTransList.push_back(sqlTrans);
-
-    // Extract the table name
-    Ssiz_t startIndex = dropTableIndex + 10;
-    while ( isspace(sqlTrans[startIndex]) ) { ++startIndex; }
-    Ssiz_t endIndex = startIndex + 1;
-    Ssiz_t endIndexMax = sqlTrans.Length();
-    while (     endIndex < endIndexMax
-                && (isalnum(sqlTrans[endIndex]) || sqlTrans[endIndex] == '_')
-          ) { ++endIndex; }
-    TString name(sqlTrans.Data()+startIndex,endIndex-startIndex);
-    translated = kTRUE;
-
-    // Add extra ORACLE incantations required when dropping a table with
-    // a public synonym
-    TString sqlIncant1("DROP PUBLIC SYNONYM ");
-    sqlIncant1  += name ;
-    sqlTransList.push_back(sqlIncant1);
-  }
-
-
-  Ssiz_t whereStart = sqlTrans.Index("INSERT INTO",0,TString::kIgnoreCase );
-  if ( whereStart == kNPOS ) { whereStart = 0; }
-  else {
-
-    Ssiz_t whereStartMax = sqlTrans.Length();
-    whereStart = sqlTrans.Index("(",whereStart,TString::kIgnoreCase );
-    if ( whereStart == kNPOS ) { whereStart = whereStartMax; }
-    else { ++whereStart; }
-    int level = 1;
-    while ( whereStart < whereStartMax && level ) {
-      char chr = sqlTrans[whereStart++];
-      if ( chr == '(' ) { ++level; }
-      if ( chr == ')' ) { --level; }
-    }
-  }
-
-  Ssiz_t whereIndex = sqlTrans.Index(" WHERE ",whereStart,TString::kIgnoreCase );
-  if ( ! translated && whereIndex != kNPOS ) {
-    ++whereIndex;
-    Ssiz_t whereEnd = sqlTrans.Length();
-    std::string whereDelim[] = { "GROUP BY", "HAVING", "ORDER BY", "LIMIT" };
-    int numDelims = sizeof(whereDelim)/sizeof(string);
-    for (int iDelim = 0; iDelim < numDelims; ++iDelim ) {
-      const string& delimName = whereDelim[iDelim];
-      Ssiz_t delimIndex = sqlTrans.Index(delimName.c_str(), delimName.size(), whereIndex + 5, TString::kIgnoreCase );
-      if (delimIndex != kNPOS && delimIndex < whereEnd) { whereEnd = delimIndex; }
-    }
-
-    // Translate all bitwise and expressions within the WHERE clause.
-    TString whereClause(sql.Data()+whereIndex,whereEnd-whereIndex);
-    // Convert \n to space so that tokenising works.
-    whereClause.ReplaceAll("\n"," ");
-
-    std::vector<std::string> tokens;
-    FairUtilString::StringTok(tokens,whereClause.Data()," ");
-    int numTokens = tokens.size();
-    for (int ithToken = 1; ithToken < numTokens-1; ++ithToken ) {
-      if ( tokens[ithToken] == "&" ) {
-        string tmp("bitand(");
-        tmp += tokens[ithToken-1] + "," +  tokens[ithToken+1] + ") != 0";
-        tokens[ithToken] = tmp;
-        tokens[ithToken-1] = "";
-        tokens[ithToken+1] = "";
-      }
-    }
-
-    sqlTrans = sql(0,whereIndex);
-    for (int ithToken = 0; ithToken < numTokens; ++ithToken ) {
-      sqlTrans += " ";
-      sqlTrans += tokens[ithToken].c_str();
-    }
-    sqlTrans += " " + sql(whereEnd,999999);
-    modified = kTRUE;
-  }
-
-  if ( ! translated && sqlTrans.Index("\\\'") != kNPOS ) {
-
-    if ( not modified ) { sqlTrans = sql; }
-    sqlTrans.ReplaceAll("\\\'","\'\'");
-    modified = kTRUE;
-  }
-
-  if ( modified && ! translated ) {
-    sqlTransList.push_back(sqlTrans);
-    translated = kTRUE;
-  }
-
-  if ( translated ) {
-    DBLOG("FairDb",FairDbLog::kInfo)<< "TranslateSQL  sql: " << sql  << endl
-                                    << "translates to " << sqlTransList.size()
-                                    << " statements:- \n";
-    std::list<TString>::const_iterator itr(sqlTransList.begin()), itrEnd(sqlTransList.end());
-    while (itr != itrEnd) { DBLOG("FairDb",FairDbLog::kInfo) <<"TranslateSQL " << "   " << *itr << endl; ++itr;}
   } else {
-    sqlTransList.push_back(sql);
+
+    // Translation completion flag
+    Bool_t translated = kFALSE;
+    // Sql modification flag , further translation ongoing.
+    Bool_t modified  = kFALSE;
+
+    TString sqlTrans(sql);
+    sqlTrans.ToUpper();
+
+
+    if ( fDbType == FairDb::kOracle ) {
+
+      // Format Date compatible with MySQL.
+      sqlTransList.push_back("ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD hh24:mi:ss'");
+
+      // Translate NOW()
+      if ( sqlTrans.Index("NOW()") != kNPOS ) {
+        sqlTrans.ReplaceAll("NOW()","SYSDATE");
+        modified = kTRUE;
+      }
+
+      // Translate SHOW TABLES
+      if (sqlTrans == "SHOW TABLES" ) {
+        sqlTrans = "SELECT TABLE_NAME FROM ALL_TABLES";
+        sqlTransList.push_back(sqlTrans);
+        translated = kTRUE;
+      }
+
+      TString sqlIncant;
+
+      // Translate DROP TABLE commands.
+      Ssiz_t dropTableIndex = sqlTrans.Index("DROP TABLE",0,TString::kIgnoreCase );
+      if ( ! translated && dropTableIndex != kNPOS ) {
+        // Remove added  "IF EXISTS"
+        sqlTrans.ReplaceAll(" IF EXISTS ",    " ");
+
+        //add the drop table command, then work on the synonym
+        sqlTransList.push_back(sqlTrans);
+
+        // Extract the table name
+        Ssiz_t startIndex = dropTableIndex + 10;
+        while ( isspace(sqlTrans[startIndex]) ) { ++startIndex; }
+        Ssiz_t endIndex = startIndex + 1;
+        Ssiz_t endIndexMax = sqlTrans.Length();
+        while (     endIndex < endIndexMax
+                    && (isalnum(sqlTrans[endIndex]) || sqlTrans[endIndex] == '_')
+              ) { ++endIndex; }
+        TString name(sqlTrans.Data()+startIndex,endIndex-startIndex);
+        translated = kTRUE;
+
+        // Add extra ORACLE statmenent for a public synonym
+        TString sqlIncant1("DROP PUBLIC SYNONYM ");
+        sqlIncant1  += name ;
+        sqlTransList.push_back(sqlIncant1);
+      }
+
+      Ssiz_t whereStart = sqlTrans.Index("INSERT INTO",0,TString::kIgnoreCase );
+      if ( whereStart == kNPOS ) { whereStart = 0; }
+      else {
+        Ssiz_t whereStartMax = sqlTrans.Length();
+        whereStart = sqlTrans.Index("(",whereStart,TString::kIgnoreCase );
+        if ( whereStart == kNPOS ) { whereStart = whereStartMax; }
+        else { ++whereStart; }
+        int level = 1;
+        while ( whereStart < whereStartMax && level ) {
+          char chr = sqlTrans[whereStart++];
+          if ( chr == '(' ) { ++level; }
+          if ( chr == ')' ) { --level; }
+        }
+      }
+
+      Ssiz_t whereIndex = sqlTrans.Index(" WHERE ",whereStart,TString::kIgnoreCase );
+      if ( ! translated && whereIndex != kNPOS ) {
+        ++whereIndex;
+        Ssiz_t whereEnd = sqlTrans.Length();
+        std::string whereDelim[] = { "GROUP BY", "HAVING", "ORDER BY", "LIMIT" };
+        int numDelims = sizeof(whereDelim)/sizeof(string);
+        for (int iDelim = 0; iDelim < numDelims; ++iDelim ) {
+          const string& delimName = whereDelim[iDelim];
+          Ssiz_t delimIndex = sqlTrans.Index(delimName.c_str(), delimName.size(), whereIndex + 5, TString::kIgnoreCase );
+          if (delimIndex != kNPOS && delimIndex < whereEnd) { whereEnd = delimIndex; }
+        }
+
+        // Translate all bitwise and expressions within the WHERE clause.
+        TString whereClause(sql.Data()+whereIndex,whereEnd-whereIndex);
+        // Convert \n to space so that tokenising works.
+        whereClause.ReplaceAll("\n"," ");
+
+        std::vector<std::string> tokens;
+        FairUtilString::StringTok(tokens,whereClause.Data()," ");
+        int numTokens = tokens.size();
+        for (int ithToken = 1; ithToken < numTokens-1; ++ithToken ) {
+          if ( tokens[ithToken] == "&" ) {
+            string tmp("bitand(");
+            tmp += tokens[ithToken-1] + "," +  tokens[ithToken+1] + ") != 0";
+            tokens[ithToken] = tmp;
+            tokens[ithToken-1] = "";
+            tokens[ithToken+1] = "";
+          }
+        }
+
+        sqlTrans = sql(0,whereIndex);
+        for (int ithToken = 0; ithToken < numTokens; ++ithToken ) {
+          sqlTrans += " ";
+          sqlTrans += tokens[ithToken].c_str();
+        }
+        sqlTrans += " " + sql(whereEnd,999999);
+        modified = kTRUE;
+      }
+
+      if ( ! translated && sqlTrans.Index("\\\'") != kNPOS ) {
+
+        if ( not modified ) { sqlTrans = sql; }
+        sqlTrans.ReplaceAll("\\\'","\'\'");
+        modified = kTRUE;
+      }
+
+      // PGSQL ------------------------------------------------------
+    } else if (  fDbType == FairDb::kPostgreSQL  ) {
+      // Translate SHOW TABLES
+      if (sqlTrans == "SHOW TABLES" ) {
+        sqlTrans = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'PUBLIC'";
+        sqlTransList.push_back(sqlTrans);
+        translated = kTRUE;
+      }
+
+      // Boolean types
+
+      Ssiz_t whereStart = sqlTrans.Index("INSERT INTO",0,TString::kIgnoreCase );
+      if ( whereStart == kNPOS ) { whereStart = 0; }
+      else {
+        Ssiz_t whereStartMax = sqlTrans.Length();
+        whereStart = sqlTrans.Index("(",whereStart,TString::kIgnoreCase );
+        if ( whereStart == kNPOS ) { whereStart = whereStartMax; }
+        else { ++whereStart; }
+        int level = 1;
+        while ( whereStart < whereStartMax && level ) {
+          char chr = sqlTrans[whereStart++];
+          if ( chr == '(' ) { ++level; }
+          if ( chr == ')' ) { --level; }
+        }
+      }
+
+      Ssiz_t whereIndex = sqlTrans.Index(" WHERE ",whereStart,TString::kIgnoreCase );
+      if ( ! translated && whereIndex != kNPOS ) {
+        ++whereIndex;
+        Ssiz_t whereEnd = sqlTrans.Length();
+        std::string whereDelim[] = { "GROUP BY", "HAVING", "ORDER BY", "LIMIT" };
+        int numDelims = sizeof(whereDelim)/sizeof(string);
+        for (int iDelim = 0; iDelim < numDelims; ++iDelim ) {
+          const string& delimName = whereDelim[iDelim];
+          Ssiz_t delimIndex = sqlTrans.Index(delimName.c_str(), delimName.size(),
+                                             whereIndex + 5, TString::kIgnoreCase );
+          if (delimIndex != kNPOS && delimIndex < whereEnd) { whereEnd = delimIndex; }
+        }
+
+        // Translate all bitwise and expressions within the WHERE clause.
+        TString whereClause(sql.Data()+whereIndex,whereEnd-whereIndex);
+        // Convert \n to space so that tokenising works.
+        whereClause.ReplaceAll("\n"," ");
+
+        std::vector<std::string> tokens;
+        FairUtilString::StringTok(tokens,whereClause.Data()," ");
+        int numTokens = tokens.size();
+        for (int ithToken = 1; ithToken < numTokens-1; ++ithToken ) {
+          if ( tokens[ithToken] == "&" ) {
+            string tmp("cast((");
+            tmp += tokens[ithToken-1] + " & " +  tokens[ithToken+1] + ") As Boolean)";
+            tokens[ithToken] = tmp;
+            tokens[ithToken-1] = "";
+            tokens[ithToken+1] = "";
+          }
+        }
+
+        sqlTrans = sql(0,whereIndex);
+        for (int ithToken = 0; ithToken < numTokens; ++ithToken ) {
+          sqlTrans += " ";
+          sqlTrans += tokens[ithToken].c_str();
+        }
+        sqlTrans += " " + sql(whereEnd,999999);
+        modified = kTRUE;
+
+        // cout << " SQL Translated !!!! : " << sqlTrans << endl;
+
+      }
+
+    } //! PGSQL
+
+
+    // Translate CREATE TABLE commands using FairDbTableMetaData.
+    Ssiz_t createTableIndex = sqlTrans.Index("CREATE TABLE",0,TString::kIgnoreCase );
+    //cout << "-I- FairDbStatement::TranslateSQL() translated: "
+    //       << translated << " sql: " << sqlTrans << endl;
+    if ( ! translated && createTableIndex != kNPOS ) {
+      FairDbTableMetaData tmd;
+      tmd.SetFromSql(sql.Data(), fDbType);
+      std::vector<std::string> sql_list;
+      FairUtilString::StringTok(sql_list,tmd.Sql(fDbType),";");
+      std::vector<std::string>::const_iterator itr(sql_list.begin()), itrEnd(sql_list.end());
+      while ( itr != itrEnd ) {
+        sqlTransList.push_back(*itr);
+        ++itr;
+      }
+      translated = kTRUE;
+    }
+
+    // Finalizing translation
+    if ( modified && ! translated ) {
+      sqlTransList.push_back(sqlTrans);
+      translated = kTRUE;
+    }
+
+    if ( translated ) {
+      DBLOG("FairDb",FairDbLog::kInfo)<< "TranslateSQL  sql: " << sql  << endl
+                                      << "translates to " << sqlTransList.size()
+                                      << " statements:- \n";
+      std::list<TString>::const_iterator itr(sqlTransList.begin()), itrEnd(sqlTransList.end());
+      while (itr != itrEnd) { DBLOG("FairDb",FairDbLog::kInfo) <<"TranslateSQL " << "   " << *itr << endl; ++itr;}
+    } else {
+      sqlTransList.push_back(sql);
+    }
+
+    return sqlTransList;
   }
-
-  return sqlTransList;
-
 }
