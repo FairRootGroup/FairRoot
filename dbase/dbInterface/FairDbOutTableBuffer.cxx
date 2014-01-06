@@ -128,10 +128,12 @@ FairDbOutTableBuffer& FairDbOutTableBuffer::operator<<(const FairDbStreamer& src
 
 Bool_t FairDbOutTableBuffer::StoreDefaultIfInvalid(FairDb::DataTypes type)
 {
-
   FairDbFieldType typeSupplied(type);
   FairDbFieldType typeRequired(CurColFieldType());
-  if ( typeSupplied.IsCompatible(typeRequired) ) { return kFALSE; }
+
+  if ( typeSupplied.IsCompatible(typeRequired) ) {
+    return kFALSE;
+  }
 
   string udef = typeRequired.UndefinedValue();
   MAXDBLOG("FairDb",FairDbLog::kError,20)
@@ -145,8 +147,8 @@ Bool_t FairDbOutTableBuffer::StoreDefaultIfInvalid(FairDb::DataTypes type)
   Store(udef.c_str());
   fBadData = kTRUE;
   return kTRUE;
-
 }
+
 void FairDbOutTableBuffer::Store(const string& str)
 {
 
