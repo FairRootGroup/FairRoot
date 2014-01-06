@@ -60,6 +60,10 @@ class FairDbConnection
     std::string fUser;
     std::string fPassword;
     std::string fExistingTableList;
+
+    // Add Info about Schema
+    TString fSchema;
+
     Int_t fNumConnectedStatements;
     TUrl fUrl;
     Bool_t fUrlValidated;
