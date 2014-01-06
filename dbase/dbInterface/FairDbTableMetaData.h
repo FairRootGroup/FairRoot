@@ -33,7 +33,7 @@ class FairDbTableMetaData
     Bool_t ColMustDelimit(Int_t colNum) const  { return GetAttributes(colNum).MustDelimit;}
     std::string ColName(Int_t colNum) const         { return GetAttributes(colNum).Name;}
 
-    void SetFromSql(const std::string& sql);
+    void SetFromSql(const std::string& sql, FairDb::DbTypes dbtype);
 
   protected:
 
