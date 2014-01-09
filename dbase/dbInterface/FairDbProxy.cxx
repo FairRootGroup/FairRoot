@@ -293,9 +293,9 @@ FairDbResultPool*  FairDbProxy::QueryValidity (const string& context,
   DBLOG("FairDb",FairDbLog::kInfo) << "db_id: " << dbNo
                                    << " SQL query: " << sql.c_str() << endl;
 
+
   FairDbStatement* stmtDb = fConnectionPool.CreateStatement(dbNo);
   return new FairDbResultPool(stmtDb,sql,fMetaValid,fTableInterface,dbNo);
-
 }
 
 
