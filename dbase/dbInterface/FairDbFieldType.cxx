@@ -50,13 +50,18 @@ FairDbFieldType::FairDbFieldType(Int_t type,
   if ( type == TSQLServer::kSQL_DOUBLE ) { this->Init(FairDb::kDouble);  return; }
 
   // Cases where type is determined uniquely by type name.
+
   if ( name == "BINARY_FLOAT" )  { this->Init(FairDb::kFloat);  return; }
   if ( name == "BINARY_DOUBLE" ) { this->Init(FairDb::kDouble); return; }
   if ( name == "TINYTEXT" )      { this->Init(FairDb::kString,kMaxMySQLVarchar);   return; }
   if ( name == "TEXT" )          { this->Init(FairDb::kString,kMaxMySQLText);   return; }
   if ( name == "DATE" )          { this->Init(FairDb::kDate);   return; }
   if ( name == "DATETIME" )      { this->Init(FairDb::kDate);   return; }
-  if ( name == "TIMESTAMP" )      { this->Init(FairDb::kDate);   return; }
+  if ( name == "TIMESTAMP" )     { this->Init(FairDb::kDate);   return; }
+
+  //SQLite add on specs
+  if ( name == "INTEGER" )       { this->Init(FairDb::kInt);  return; }
+  if ( name == "REAL" )       { this->Init(FairDb::kFloat);  return; }
 
   // Character types
   if ( type == TSQLServer::kSQL_CHAR && size <= kMaxChar ) {
@@ -235,6 +240,62 @@ string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
       else if ( fSize <  kMaxMySQLVarchar) { os << "VARCHAR(" << fSize << ')'; }
       else if ( fSize == kMaxMySQLVarchar) { os << "TINYTEXT"; }
       else { os << "TEXT"; }
+      break;
+
+    case  FairDb::kDate    :
+      os << "DATETIME";
+      break;
+
+    default :
+      os << "Unknown";
+
+    }
+  }
+
+//  Deal with PostgreSQL
+  else if ( dbType == FairDb::kSQLite) {
+
+    int size = fSize;
+
+    switch ( fType ) {
+
+    case  FairDb::kBool    :
+      os << "NUMERIC";
+      break;
+
+    case  FairDb::kUTiny   :
+    case  FairDb::kTiny    :
+      os << "INTEGER";
+      break;
+
+    case  FairDb::kShort   :
+    case  FairDb::kUShort  :
+      os << "INTEGER";
+      break;
+
+    case  FairDb::kInt     :
+    case  FairDb::kUInt    :
+      os << "INTEGER";
+      break;
+
+    case  FairDb::kLong    :
+    case  FairDb::kULong   :
+      os << "INTEGER";
+      break;
+
+    case  FairDb::kFloat   :
+      os << "REAL";
+      break;
+
+    case  FairDb::kDouble  :
+      os << "REAL";
+      break;
+
+    case  FairDb::kChar    :
+    case  FairDb::kUChar   :
+    case  FairDb::kString  :
+    case  FairDb::kTString :
+      os << "TEXT";
       break;
 
     case  FairDb::kDate    :
