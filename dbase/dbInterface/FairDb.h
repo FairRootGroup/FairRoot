@@ -55,7 +55,8 @@ enum DataTypes { kUnknown,
 enum DbTypes {  kUnknownDbType = -1,
                 kMySQL         = 0,
                 kOracle        = 1,
-                kPostgreSQL    = 2
+                kPostgreSQL    = 2,
+                kSQLite        = 3
              };
 
 enum AbortTest { kDisabled,
