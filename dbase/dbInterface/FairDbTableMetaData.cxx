@@ -209,11 +209,16 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
 
     if ( this->ColName(i) == "ROW_ID" ) { hasRowCounter = true; }
     sql << this->ColName(i) << " " ;
+
     // Change Primary key definition in PgSQL
     if(   dbType_target == FairDb::kPostgreSQL
           && this->ColName(i) == "SEQNO"
           && ! mainTable ) {
       sql << " bigserial primary key" ;
+    } else if(dbType_target == FairDb::kSQLite
+              && this->ColName(i) == "SEQNO"
+              && ! mainTable ) {
+      sql << " integer primary key autoincrement" ;
     } else {
       sql << this->ColFieldType(i).AsSQLString(dbType_target);
       if(    dbType_target == FairDb::kMySQL
@@ -249,6 +254,27 @@ string FairDbTableMetaData::Sql(FairDb::DbTypes dbType_target) const
 
 // Deal with PostgreSQL
   else if (dbType_target == FairDb::kPostgreSQL) {
+    if ( mainTable ) {
+      if ( hasRowCounter ) { sql << ", primary key (SEQNO,ROW_ID)"; }
+    }
+
+    sql << ") ";
+
+    if ( mainTable) {
+      if ( ! hasRowCounter )
+        sql << "; create index " << tableName << "_idx  on "
+            << tableName << "(seqno)";
+    } else {
+      sql << "; create index " << tableName << "VAL_idx2 on "
+          << tableName << "(TIMESTART);";
+      sql << "; create index " << tableName << "VAL_idx3 on "
+          << tableName << "(TIMEEND);";
+    }
+  }
+
+
+// Deal with SQLite
+  else if (dbType_target == FairDb::kSQLite) {
     if ( mainTable ) {
       if ( hasRowCounter ) { sql << ", primary key (SEQNO,ROW_ID)"; }
     }
