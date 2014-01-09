@@ -69,6 +69,7 @@ class FairDbConnectionPool
     FairDbConnectionPool(const FairDbConnectionPool& conn);
 
     void SetAuthorisingEntry(Int_t entry) {fGlobalSeqNoDbNo = entry;}
+    Int_t GetAuthorisingEntry() {return fGlobalSeqNoDbNo;}
 
   protected:
 
