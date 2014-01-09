@@ -38,12 +38,14 @@ FairDbStatement::~FairDbStatement()
 TSQLStatement* FairDbStatement::CreateProcessedStatement(const TString& sql)
 {
   TSQLStatement* stmt = fConDb.CreatePreparedStatement(sql.Data());
-  if ( ! stmt ) {
+  if ( !stmt ) {
     this->AppendExceptionLog(fConDb);
     return 0;
   }
   if ( stmt->Process() ) { return stmt; }
-  this->AppendExceptionLog(stmt);
+  //<DB> Check me
+  if ( fDbType != FairDb::kSQLite ) { this->AppendExceptionLog(stmt); }
+
   delete stmt;
   stmt = 0;
   return 0;
@@ -61,9 +63,11 @@ TSQLStatement* FairDbStatement::ExecuteQuery( const TString& sql)
   while (itr != itrEnd) {
     const TString& sql1 = *itr++;
     DBLOG("FairDb",FairDbLog::kInfo) <<"Server:" << fConDb.GetDbName() << " SQL:" << sql1 << endl;
+
     delete stmt;
     stmt = this->CreateProcessedStatement(sql1);
-    if ( ! stmt ) { return 0; }
+
+    if ( !stmt ) { return 0; }
   }
 
   if ( stmt && ! stmt->StoreResult() ) {
@@ -136,7 +140,7 @@ std::list<TString>  FairDbStatement::TestTranslateSQL(const TString& sql, FairDb
 std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
 {
 //  Translate  MySQL specific to other dialects of SQL.
-//  cout << "-I-  FairDbStatement::TranslateSQL called with SQL:" << sql <<  endl;
+
 
   std::list<TString> sqlTransList;
 
@@ -272,7 +276,6 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
       }
 
       // Boolean types
-
       Ssiz_t whereStart = sqlTrans.Index("INSERT INTO",0,TString::kIgnoreCase );
       if ( whereStart == kNPOS ) { whereStart = 0; }
       else {
@@ -327,17 +330,18 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
         sqlTrans += " " + sql(whereEnd,999999);
         modified = kTRUE;
 
-        // cout << " SQL Translated !!!! : " << sqlTrans << endl;
-
       }
 
     } //! PGSQL
 
+    else if (  fDbType == FairDb::kSQLite  ) {
+      //cout << "-I-  FairDbStatement::TranslateSQL called for SQLite:" << sql <<  endl;
+    }
+
 
     // Translate CREATE TABLE commands using FairDbTableMetaData.
     Ssiz_t createTableIndex = sqlTrans.Index("CREATE TABLE",0,TString::kIgnoreCase );
-    //cout << "-I- FairDbStatement::TranslateSQL() translated: "
-    //       << translated << " sql: " << sqlTrans << endl;
+
     if ( ! translated && createTableIndex != kNPOS ) {
       FairDbTableMetaData tmd;
       tmd.SetFromSql(sql.Data(), fDbType);
