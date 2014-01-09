@@ -85,14 +85,26 @@ FairDbConnectionPool::FairDbConnectionPool():
 
     // Try locate first Global Seq. No. in FAIRDBGLOBALSEQNO table.
     if ( fGlobalSeqNoDbNo != -1 ) { continue; }
+
     auto_ptr<FairDbStatement>  stmtDb(new FairDbStatement(*con));
+    // First check
     if ( ! stmtDb.get() ) { continue; }
-    TSQLStatement* stmt = stmtDb->ExecuteQuery("Select * from FAIRDBGLOBALSEQNO where 1=0");
+
+    // Apply
+    TSQLStatement* stmt = NULL;
+    size_t found = url.find("sqlite://");
+    if (found!=string::npos) {
+      stmt=stmtDb->ExecuteQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='FAIRDBGLOBALSEQNO'");
+    } else {
+      stmt=stmtDb->ExecuteQuery("select * from FAIRDBGLOBALSEQNO where 1=0");
+    }
+
     if ( stmt ) {
       fGlobalSeqNoDbNo = fConnections.size()-1;
       delete stmt;
       stmt = 0;
     }
+    cout << "-I- FAIRDbConnectionPool  fGlobalSeqNoDbNo  " <<  fGlobalSeqNoDbNo << endl;
 
     //  Check for presence of a DB_STATE_FLAGS table
     if ( this->GetTableDbNo("FAIRDB_STATE_FLAGS",entry) != -1 ) {
@@ -174,7 +186,7 @@ Int_t FairDbConnectionPool::AllocateSeqNo(const string& tableName,
   if (     requireGlobal > 0
            || ( requireGlobal == 0 && dbNo == fGlobalSeqNoDbNo && ! isTemporary ) ) {
     if ( fGlobalSeqNoDbNo < 0 ) {
-      DBLOG("FairDb",FairDbLog::kWarning) << "Unable to issue global SEQNO - no authorising DB in cascade\n"
+      DBLOG("FairDb",FairDbLog::kWarning) << "Unable to issue global SEQNO - no authorising DB in the Db list\n"
                                           << "  will issue local one instead" << endl;
     } else if ( isTemporary ) {
       DBLOG("FairDb",FairDbLog::kWarning) << "Unable to issue global SEQNO - " << tableName << " is temporary\n"
@@ -182,9 +194,7 @@ Int_t FairDbConnectionPool::AllocateSeqNo(const string& tableName,
     } else { return this->ReserveNextSeqNo(tableName,true,fGlobalSeqNoDbNo); }
   }
 
-  // Local requests
   return this->ReserveNextSeqNo(tableName,false,dbNo);
-
 }
 
 FairDbStatement* FairDbConnectionPool::CreateStatement(UInt_t dbNo) const
@@ -495,7 +505,6 @@ Int_t FairDbConnectionPool::ReserveNextSeqNo(const string& tableName,
   delete stmt;
   stmt = 0;
   DBLOG("FairDb",FairDbLog::kInfo)<< "query returned last generated seqno: " << seqNoTable << endl;
-
 
 
   static std::string checkedCombinations;
