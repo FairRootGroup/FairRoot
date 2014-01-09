@@ -47,10 +47,10 @@ FairDbConnection::FairDbConnection(
 
 
   if ( this->Open() ) {
+
     DBLOG("FairDb",FairDbLog::kInfo)  << "successfully opened connection to: "
                                       << this->GetUrl() << endl;
     fUrlValidated =  kTRUE;
-
 
     // First get which server do we use ...
     string productName(fServer->GetDBMS());
@@ -58,6 +58,7 @@ FairDbConnection::FairDbConnection(
     if( productName == "MySQL" ) { fDbType = FairDb::kMySQL; }
     else if ( productName == "Oracle" ) { fDbType = FairDb::kOracle; }
     else if ( productName == "PgSQL" ) { fDbType = FairDb::kPostgreSQL;}
+    else if ( productName == "SQLite" ) { fDbType = FairDb::kSQLite;}
 
     else {
       MAXDBLOG("FairDb",FairDbLog::kError,20) << " Cannot determine DB type from name: "
@@ -65,6 +66,7 @@ FairDbConnection::FairDbConnection(
                                               << "\nWill assuming MySql database " << endl;
       fDbType = FairDb::kMySQL;
     }
+
 
     // Initialise the list existing supported tables.
     // Here all existing tables from the database will be added to the
@@ -94,6 +96,10 @@ FairDbConnection::FairDbConnection(
           DBLOG("FairDb",FairDbLog::kInfo)  << " this client, and PostgreSQL server ("
                                             << serverInfo
                                             << ") does support prepared statements." << endl;
+        else if (fDbType == FairDb::kSQLite)
+          DBLOG("FairDb",FairDbLog::kInfo)  << " this client, and SQLite server ("
+                                            << serverInfo
+                                            << ") does support prepared statements." << endl;
 
       } else {
 
@@ -109,6 +115,14 @@ FairDbConnection::FairDbConnection(
                                             << "This version of PostgreSQL does not support prepared statements.\n"
                                             << "\n"
                                             << "Please upgrade to PostgreSQL (client and server) version 9.2 or greater \n"
+                                            << "\n"
+                                            << endl;
+
+        else if (fDbType == FairDb::kSQLite)
+          DBLOG("FairDb",FairDbLog::kError) << "\n"
+                                            << "This version of SQLite does not support prepared statements.\n"
+                                            << "\n"
+                                            << "Please upgrade to SQLite (client and server) version 3.8 or greater \n"
                                             << "\n"
                                             << endl;
 
@@ -154,11 +168,29 @@ Bool_t FairDbConnection::Open()
 
   Int_t maxAttempt = fUrlValidated ? 100 : 20;
   for (Int_t attempt = 1; attempt <= maxAttempt; ++attempt) {
+
+    TString url_cstr = fUrl.GetUrl();
     // Main Connection call
-    fServer = TSQLServer::Connect(
-                fUrl.GetUrl(),
-                fUser.c_str(),
-                fPassword.c_str());
+    if (url_cstr.Contains("sqlite://")) {
+
+      // Remove the tail from Url string
+      TString aFile(this->GetUrl());
+      aFile.Resize(aFile.Length()-1);
+      //cout << " SQLite file " << aFile << endl;
+
+      fServer = TSQLServer::Connect(
+                  aFile.Data(),
+                  fUser.c_str(),
+                  fPassword.c_str());
+
+
+    } else {
+      fServer = TSQLServer::Connect(
+                  fUrl.GetUrl(),
+                  fUser.c_str(),
+                  fPassword.c_str());
+    }
+
     if ( ! fServer ) {
       ostringstream oss;
       oss  << "-I- FairDbConnection::Open() Failing to open: " <<
@@ -237,10 +269,13 @@ TSQLStatement* FairDbConnection::CreatePreparedStatement(const string& sql)
   TSQLStatement* stmt = 0;
   if ( ! this->Open() ) { return stmt; }
   stmt = fServer->Statement(sql.c_str());
+
   if ( ! stmt ) {
     DBLOG("FairDb",FairDbLog::kInfo)<< "CreatePreparedStatement "
                                     << " no Statement created " << endl;
-    fExceptionLog.AddEntry(*fServer);
+    //<DB> check me !! SQLite ptr fServer not valid
+    if(fDbType != FairDb::kSQLite) { fExceptionLog.AddEntry(*fServer); }
+
   } else { stmt->EnableErrorOutput(kFALSE); }
 
   return stmt;
@@ -275,11 +310,16 @@ void  FairDbConnection::SetTableExists(const string& tableName)
     if ( fDbType == FairDb::kMySQL || fDbType == FairDb::kOracle ) {
       // MYSQL or Oracle
       stmt =  CreatePreparedStatement("show tables");
-    } else {
+    } else if ( fDbType == FairDb::kPostgreSQL ) {
       // PostGres using public only as schema
       TString sql_cmd = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' or table_schema = '" + fSchema + "';";
       //cout << " sql_cmd -->" << sql_cmd << endl;
       stmt =  CreatePreparedStatement(sql_cmd.Data());
+    } else if ( fDbType == FairDb::kSQLite ) {
+      //SQLite
+      stmt =  CreatePreparedStatement("SELECT name FROM sqlite_master WHERE type = 'table'");
+    } else {
+      DBLOG("FairDb",FairDbLog::kFatal)<< "Unknown SQL Server type:"<< fDbType << endl;
     }
 
     if ( stmt ) {
@@ -303,7 +343,7 @@ void  FairDbConnection::SetTableExists(const string& tableName)
       //cout << "-I- FairDbConnection::Table Registered  ... " <<  tableName << endl;
     }
   }
-  //cout << "-I- FairDbConnection:: End of table exists ... " << endl;
+  //  cout << "-I- FairDbConnection:: End of table exists ... " << endl;
 }
 
 
