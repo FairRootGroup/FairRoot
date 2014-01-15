@@ -14,9 +14,8 @@
 #include <iostream> 
  /// Template header
 template <typename T1, typename T2> class FairMQDigiLoader : public FairMQSamplerTask
-{ 
-    public : 
-
+{
+    public :
         FairMQDigiLoader();
         virtual ~FairMQDigiLoader();
         virtual void Exec(Option_t* opt);
@@ -26,10 +25,9 @@ template <typename T1, typename T2> class FairMQDigiLoader : public FairMQSample
         void LoadXYZTDigi();
         T2* fPayloadPtr;
         int fNDigis;
-}; 
+};
 
 /// Template implementation is in FairMQDigiLoader.tpl :
 #include "FairMQDigiLoader.tpl"
 
 #endif	/* FAIRMQDIGILOADER_H */
-
