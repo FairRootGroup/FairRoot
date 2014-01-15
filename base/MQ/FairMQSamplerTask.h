@@ -14,7 +14,6 @@
 #include <string>
 #include "FairMQMessage.h"
 #include "FairMQTransportFactory.h"
-#include "TString.h"
 
 
 class FairMQSamplerTask: public FairTask
@@ -24,14 +23,14 @@ class FairMQSamplerTask: public FairTask
     FairMQSamplerTask(const Text_t* name, int iVerbose=1);
     virtual ~FairMQSamplerTask();
     virtual InitStatus Init();
-    virtual void Exec(Option_t* opt) = 0;
-    void SetBranch(TString branch);
+    virtual void Exec(Option_t* opt);
+    void SetBranch(string branch);
     FairMQMessage* GetOutput();
     void SetTransport(FairMQTransportFactory* factory);
 
   protected:
     TClonesArray* fInput;
-    TString fBranch;
+    string fBranch;
     FairMQMessage* fOutput;
     FairMQTransportFactory* fTransportFactory;
 };

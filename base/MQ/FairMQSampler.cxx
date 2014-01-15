@@ -21,11 +21,11 @@
 
 #include "FairMQSampler.h"
 #include "FairMQLogger.h"
-
+#include "FairMQDigiLoader.h"
 
 FairMQSampler::FairMQSampler() :
   fFairRunAna(new FairRunAna()),
-  fSamplerTask(NULL),
+  fSamplerTask(new FairMQDigiLoader()),
   fInputFile(""),
   fParFile(""),
   fBranch(""),
@@ -38,12 +38,14 @@ FairMQSampler::~FairMQSampler()
   if(fFairRunAna) {
     fFairRunAna->TerminateRun();
   }
+  delete fSamplerTask;
 }
 
 void FairMQSampler::Init()
 {
   FairMQDevice::Init();
 
+  
   fSamplerTask->SetBranch(fBranch);
   fSamplerTask->SetTransport(fTransportFactory);
 
