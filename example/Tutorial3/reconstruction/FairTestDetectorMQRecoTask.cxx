@@ -50,9 +50,9 @@ InitStatus FairTestDetectorMQRecoTask::Init()
 // -----   Public method Exec FairMQ interface  --------------------------------------------
 void FairTestDetectorMQRecoTask::Exec(FairMQMessage* msg, Option_t* opt)
 {
-  Int_t inputSize = msg->Size();
+  Int_t inputSize = msg->GetSize();
   Int_t numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorDigi);
-  TestDetectorPayload::TestDetectorDigi* input = static_cast<TestDetectorPayload::TestDetectorDigi*>(msg->GetMessage()->data());
+  TestDetectorPayload::TestDetectorDigi* input = static_cast<TestDetectorPayload::TestDetectorDigi*>(msg->GetData());
 
   fRecoTask->fDigiArray->Delete();
 
@@ -88,7 +88,6 @@ void FairTestDetectorMQRecoTask::Exec(FairMQMessage* msg, Option_t* opt)
 
   }
 
-  msg->GetMessage()->rebuild(buffer, outputSize, &FairMQProcessorTask::ClearOutput);
-  //delete[] output;
+  msg->Rebuild(buffer, outputSize);
 }
 

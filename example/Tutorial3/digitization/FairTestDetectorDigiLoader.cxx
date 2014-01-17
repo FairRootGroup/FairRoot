@@ -1,8 +1,8 @@
 /**
  * TestDetectorDigiLoader.cxx
  *
- *  @since 2012-04-22
- *  @author A. Rybalchenko
+ * @since 2012-04-22
+ * @author A. Rybalchenko
  */
 
 #include "FairTestDetectorDigiLoader.h"
@@ -42,7 +42,7 @@ void TestDetectorDigiLoader::Exec(Option_t* opt)
     }
   }
 
-  fOutput->GetMessage()->rebuild(buffer, size, &FairMQSamplerTask::ClearOutput);
+  fOutput->Rebuild(buffer, size);
 
   //std::cout << "Loaded " << fOutput->Size() << " bytes (" << nTestDetectorDigis << " entries)." << std::endl;
 }
