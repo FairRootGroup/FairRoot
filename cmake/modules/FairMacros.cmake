@@ -98,6 +98,10 @@ ENDMACRO (CLEAN_PATH_LIST)
 
 MACRO (CHECK_OUT_OF_SOURCE_BUILD)
 
+IF(FAIRROOTPATH)
+  SET(CMAKE_SOURCE_DIR $ENV{FAIRROOTPATH})
+ENDIF(FAIRROOTPATH)
+
    STRING(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" insource)
    IF(insource)
       FILE(REMOVE_RECURSE ${CMAKE_SOURCE_DIR}/Testing)
@@ -179,20 +183,38 @@ MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
   set(my_script_name ${SCRIPT_FULL_NAME})
 
   if(CMAKE_SYSTEM MATCHES Darwin)
+    IF(FAIRROOTPATH)
+    configure_file(${FAIRROOTPATH}/cmake/scripts/set_env_macos.sh.in
+                   ${new_path}/${shell_script_name}
+                  )
+    ELSE(FAIRROOTPATH)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env_macos.sh.in
                    ${new_path}/${shell_script_name}
                   )
+    ENDIF(FAIRROOTPATH)
   else(CMAKE_SYSTEM MATCHES Darwin)
+    IF(FAIRROOTPATH)
+    configure_file(${FAIRROOTPATH}/cmake/scripts/set_env.sh.in
+                   ${new_path}/${shell_script_name}
+                  )
+    ELSE(FAIRROOTPATH)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env.sh.in
                    ${new_path}/${shell_script_name}
                   )
+    ENDIF(FAIRROOTPATH)
+
   endif(CMAKE_SYSTEM MATCHES Darwin)
 
-  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
+  
+EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
 
 ENDMACRO (GENERATE_TEST_SCRIPT)
 
 Macro(Generate_Exe_Script _Path _ExeName) 
+
+IF(FAIRROOTPATH)
+  SET(CMAKE_SOURCE_DIR $ENV{FAIRROOTPATH})
+ENDIF(FAIRROOTPATH)
 
   Message("PATH: ${_Path}")
   Message("ExeName: ${_ExeName}")
@@ -214,6 +236,9 @@ Macro(Generate_Exe_Script _Path _ExeName)
 EndMacro(Generate_Exe_Script)
 
 Macro (Generate_Version_Info)
+IF(FAIRROOTPATH)
+  SET(CMAKE_SOURCE_DIR $ENV{FAIRROOTPATH})
+ENDIF(FAIRROOTPATH)
 
   Add_Custom_Target(svnheader ALL)
 
@@ -227,6 +252,11 @@ Macro (Generate_Version_Info)
 EndMacro (Generate_Version_Info)
 
 Macro (SetBasicVariables)
+
+IF(FAIRROOTPATH)
+  SET(CMAKE_SOURCE_DIR $ENV{FAIRROOTPATH})
+ENDIF(FAIRROOTPATH)
+
   Set(BASE_INCLUDE_DIRECTORIES
       ${ROOT_INCLUDE_DIR}
       ${CMAKE_SOURCE_DIR}/fairtools
