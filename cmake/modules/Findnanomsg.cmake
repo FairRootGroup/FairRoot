@@ -12,7 +12,12 @@ set(REQREP_H reqrep.h)
 set(SURVEY_H survey.h)
 set(TCP_H tcp.h)
 
-set(LIBNANOMSG_SHARED libnanomsg.so)
+If (APPLE)
+  set(LIBNANOMSG_SHARED libnanomsg.dylib)
+Else (APPLE)
+  set(LIBNANOMSG_SHARED libnanomsg.so)
+EndIf (APPLE)
+
 set(LIBNANOMSG_STATIC libnanomsg.a)
 
 find_path(NANOMSG_INCLUDE_DIR NAMES ${BUS_H} ${INPROC_H} ${IPC_H} ${NN_H} ${PAIR_H} ${PIPELINE_H} ${PROTOCOL_H} ${PUBSUB_H} ${REQREP_H} ${SURVEY_H} ${TCP_H}
