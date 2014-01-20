@@ -1,5 +1,5 @@
-#ifndef PNDTORINODETECTORGEOPAR_H
-#define PNDTORINODETECTORGEOPAR_H
+#ifndef FAIRTESTDETECTORGEOPAR_H_
+#define FAIRTESTDETECTORGEOPAR_H_
 
 #include "FairParGenericSet.h"          // for FairParGenericSet
 
@@ -35,4 +35,4 @@ class FairTestDetectorGeoPar       : public FairParGenericSet
     ClassDef(FairTestDetectorGeoPar,1)
 };
 
-#endif
+#endif /* FAIRTESTDETECTORGEOPAR_H_ */

@@ -1,5 +1,5 @@
-#ifndef PNDTORINODETECTORHIT_H
-#define PNDTORINODETECTORHIT_H 1
+#ifndef FAIRTESTDETECTORHIT_H_
+#define FAIRTESTDETECTORHIT_H_
 
 #include "FairHit.h"                    // for FairHit
 
@@ -27,4 +27,5 @@ class FairTestDetectorHit : public FairHit
     ClassDef(FairTestDetectorHit,1);
 
 };
-#endif
+
+#endif /* FAIRTESTDETECTORHIT_H_ */

@@ -1,5 +1,5 @@
-#ifndef PNDTORINODETECTORDIGITASK_H
-#define PNDTORINODETECTORDIGITASK_H
+#ifndef FAIRTESTDETECTORDIGITASK_H_
+#define FAIRTESTDETECTORDIGITASK_H_
 
 #include "FairTask.h"                   // for FairTask, InitStatus
 
@@ -46,4 +46,4 @@ class FairTestDetectorDigiTask : public FairTask
 
 };
 
-#endif
+#endif /* FAIRTESTDETECTORDIGITASK_H_ */

@@ -1,5 +1,5 @@
-#ifndef PNDTORINODETECTORGEO_H
-#define PNDTORINODETECTORGEO_H
+#ifndef FAIRTESTDETECTORGEO_H_
+#define FAIRTESTDETECTORGEO_H_
 
 #include "FairGeoSet.h"                 // for FairGeoSet
 
@@ -31,4 +31,4 @@ inline Int_t FairTestDetectorGeo::getModNumInMod(const TString& name)
   return (Int_t)(name[6]-'0')-1; //
 }
 
-#endif
+#endif /* FAIRTESTDETECTORGEO_H_ */
