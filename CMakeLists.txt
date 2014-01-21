@@ -145,7 +145,7 @@ add_subdirectory (datamatch)
 If (Boost_FOUND)
   add_subdirectory (fairmq)
 Else (Boost_FOUND)
-  Message(STATUS " Building of the FairMQ library is switched of since the neccessary boost libraries couldn't be found on the system ")
+  Message(STATUS " Building of the FairMQ library is switched off since the necessary boost libraries couldn't be found on the system ")
 EndIf (Boost_FOUND)
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
