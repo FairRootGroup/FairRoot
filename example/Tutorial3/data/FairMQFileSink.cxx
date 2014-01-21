@@ -52,14 +52,14 @@ void FairMQFileSink::Run()
   bool received = false;
 
   while ( fState == RUNNING ) {
-    FairMQMessage msg;
+    FairMQMessage* msg = new FairMQMessageZMQ();
 
-    received = fPayloadInputs->at(0)->Receive(&msg);
+    received = fPayloadInputs->at(0)->Receive(msg);
 
     if (received) {
-      Int_t inputSize = msg.GetSize();
+      Int_t inputSize = msg->GetSize();
       Int_t numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorHit);
-      TestDetectorPayload::TestDetectorHit* input = static_cast<TestDetectorPayload::TestDetectorHit*>(msg.GetData());
+      TestDetectorPayload::TestDetectorHit* input = static_cast<TestDetectorPayload::TestDetectorHit*>(msg->GetData());
 
       fOutput->Delete();
 
@@ -76,6 +76,8 @@ void FairMQFileSink::Run()
       fTree->Fill();
       received = false;
     }
+
+    delete msg;
   }
 
   std::cout << "I've received " << receivedMsgs << " messages!" << std::endl;

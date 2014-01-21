@@ -11,6 +11,7 @@
 #include "FairMQLogger.h"
 #include "FairMQProcessor.h"
 #include "FairTestDetectorMQRecoTask.h"
+#include "FairMQTransportFactoryZMQ.h"
 
 FairMQProcessor processor;
 
@@ -49,6 +50,9 @@ int main(int argc, char** argv)
   std::stringstream logmsg;
   logmsg << "PID: " << getpid();
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, logmsg.str());
+
+  FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
+  processor.SetTransport(transportFactory);
 
   int i = 1;
 

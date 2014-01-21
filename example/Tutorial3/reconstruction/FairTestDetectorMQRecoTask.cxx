@@ -52,7 +52,7 @@ void FairTestDetectorMQRecoTask::Exec(FairMQMessage* msg, Option_t* opt)
 {
   Int_t inputSize = msg->GetSize();
   Int_t numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorDigi);
-  TestDetectorPayload::TestDetectorDigi* input = static_cast<TestDetectorPayload::TestDetectorDigi*>(msg->GetData());
+  TestDetectorPayload::TestDetectorDigi* input = reinterpret_cast<TestDetectorPayload::TestDetectorDigi*>(msg->GetData());
 
   fRecoTask->fDigiArray->Delete();
 
@@ -70,7 +70,7 @@ void FairTestDetectorMQRecoTask::Exec(FairMQMessage* msg, Option_t* opt)
   Int_t numOutput = numInput;
   Int_t outputSize = numOutput * sizeof(TestDetectorPayload::TestDetectorHit);
   void* buffer = operator new[](outputSize);
-  TestDetectorPayload::TestDetectorHit* output = static_cast<TestDetectorPayload::TestDetectorHit*>(buffer);
+  TestDetectorPayload::TestDetectorHit* output = reinterpret_cast<TestDetectorPayload::TestDetectorHit*>(buffer);
 
   if (inputSize > 0) {
 

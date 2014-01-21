@@ -83,14 +83,14 @@ void FairTestDetectorRecoTask::Exec(Option_t* opt)
     if(!digi) { continue; }
 
 
-    Double_t timestamp = digi->GetTimeStamp();
+    // Double_t timestamp = digi->GetTimeStamp();
     TVector3 pos(digi->GetX()+0.5, digi->GetY()+0.5, digi->GetZ()+0.5);
     TVector3 dpos(1/TMath::Sqrt(12), 1/TMath::Sqrt(12), 1/TMath::Sqrt(12));
 
     FairTestDetectorHit* hit = new ((*fHitArray)[ipnt]) FairTestDetectorHit(-1, -1, pos, dpos);
     hit->SetTimeStamp(digi->GetTimeStamp());
     hit->SetTimeStampError(digi->GetTimeStampError());
-    //hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
+    // hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
   }
 }
 // -------------------------------------------------------------------------

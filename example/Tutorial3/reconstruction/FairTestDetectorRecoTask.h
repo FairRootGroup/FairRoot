@@ -1,5 +1,5 @@
-#ifndef FAIRTESTDETECTORRECOTASK_H
-#define FAIRTESTDETECTORRECOTASK_H
+#ifndef FAIRTESTDETECTORRECOTASK_H_
+#define FAIRTESTDETECTORRECOTASK_H_
 
 #include "FairTask.h"                   // for FairTask, InitStatus
 
@@ -41,4 +41,4 @@ class FairTestDetectorRecoTask : public FairTask
 
 };
 
-#endif //FAIRTESTDETECTORRECOTASK_H
+#endif /* FAIRTESTDETECTORRECOTASK_H_ */

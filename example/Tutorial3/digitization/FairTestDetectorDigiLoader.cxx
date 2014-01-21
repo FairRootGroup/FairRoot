@@ -25,10 +25,10 @@ void TestDetectorDigiLoader::Exec(Option_t* opt)
   Int_t size = nTestDetectorDigis * sizeof(TestDetectorPayload::TestDetectorDigi);
 
   void* buffer = operator new[](size);
-  TestDetectorPayload::TestDetectorDigi* ptr = static_cast<TestDetectorPayload::TestDetectorDigi*>(buffer);
+  TestDetectorPayload::TestDetectorDigi* ptr = reinterpret_cast<TestDetectorPayload::TestDetectorDigi*>(buffer);
 
   for (Int_t i = 0; i < nTestDetectorDigis; ++i) {
-    FairTestDetectorDigi* testDigi = dynamic_cast<FairTestDetectorDigi*>(fInput->At(i));
+    FairTestDetectorDigi* testDigi = reinterpret_cast<FairTestDetectorDigi*>(fInput->At(i));
     if (testDigi != NULL) {
       new(&ptr[i]) TestDetectorPayload::TestDetectorDigi();
       ptr[i] = TestDetectorPayload::TestDetectorDigi();
