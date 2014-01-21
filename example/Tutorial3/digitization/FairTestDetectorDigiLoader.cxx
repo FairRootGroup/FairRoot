@@ -42,7 +42,7 @@ void TestDetectorDigiLoader::Exec(Option_t* opt)
     }
   }
 
-  fOutput->Rebuild(buffer, size);
+  fOutput = fTransportFactory->CreateMessage(buffer, size);
 
   //std::cout << "Loaded " << fOutput->Size() << " bytes (" << nTestDetectorDigis << " entries)." << std::endl;
 }
