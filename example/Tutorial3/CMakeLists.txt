@@ -16,6 +16,8 @@ ${CMAKE_SOURCE_DIR}/example/Tutorial3/reconstruction
 ${CMAKE_SOURCE_DIR}/example/Tutorial3/timeBasedSimulation
 )
 
+include_directories(${INCLUDE_DIRECTORIES})
+
 If (Boost_FOUND)
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh )
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAllProxy.sh.in ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh )
@@ -29,14 +31,12 @@ If (Boost_FOUND)
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startTestDetectorSampler.sh.in ${CMAKE_BINARY_DIR}/bin/startTestDetectorSampler.sh )
 EndIf (Boost_FOUND)
 
-include_directories( ${INCLUDE_DIRECTORIES})
-
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${Boost_LIBRARY_DIRS}
 ) 
 
-link_directories( ${LINK_DIRECTORIES})
+link_directories(${LINK_DIRECTORIES})
 
 Set(SRCS
   simulation/FairTestDetector.cxx
