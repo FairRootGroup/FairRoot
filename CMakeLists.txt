@@ -203,6 +203,12 @@ Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
         RENAME config.csh
        )
 
+Install(DIRECTORY cmake 
+        DESTINATION share/fairbase
+        PATTERN ".svn" EXCLUDE)
+
+
+
 if(NOT FAIRROOT_MINIMAL)
 
   WRITE_CONFIG_FILE(config.sh)

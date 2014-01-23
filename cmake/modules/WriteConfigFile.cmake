@@ -26,7 +26,7 @@ MACRO (WRITE_CONFIG_FILE filename)
   
   IF(CMAKE_SYSTEM_NAME MATCHES Linux)
     IF(FAIRROOTPATH)
-    configure_file(${FAIRROOTPATH}/cmake/scripts/check_system.sh.in
+    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system.sh.in
                    ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
                   )
     ELSE(FAIRROOTPATH)
@@ -52,7 +52,7 @@ MACRO (WRITE_CONFIG_FILE filename)
    
   ElseIf(CMAKE_SYSTEM_NAME MATCHES Darwin)
     IF(FAIRROOTPATH)
-    configure_file(${FAIRROOTPATH}/cmake/scripts/check_system_mac.sh.in
+    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system_mac.sh.in
                    ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
                   )
     ELSE(FAIRROOTPATH)
@@ -182,7 +182,7 @@ MACRO (WRITE_CONFIG_FILE filename)
 
   IF(${filename} MATCHES "[.]csh.*$")
     IF(FAIRROOTPATH)
-    configure_file(${FAIRROOTPATH}/cmake/scripts/config.csh.in
+    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/config.csh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
     ELSE(FAIRROOTPATH)    
@@ -194,7 +194,7 @@ MACRO (WRITE_CONFIG_FILE filename)
 
   ELSE(${filename} MATCHES "[.]csh.*$")
     IF(FAIRROOTPATH)
-    configure_file(${FAIRROOTPATH}/cmake/scripts/config.sh.in
+    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/config.sh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
     ELSE(FAIRROOTPATH) 

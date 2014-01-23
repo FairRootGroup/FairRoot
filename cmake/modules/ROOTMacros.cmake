@@ -149,7 +149,7 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
 
   
   IF(FAIRROOTPATH)
-   configure_file(${FAIRROOTPATH}/cmake/scripts/root_macro.sh.in
+   configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/root_macro.sh.in
                  ${new_path}/${shell_script_name}
                 )
   ELSE(FAIRROOTPATH)
