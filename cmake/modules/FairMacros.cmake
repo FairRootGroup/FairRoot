@@ -98,9 +98,6 @@ ENDMACRO (CLEAN_PATH_LIST)
 
 MACRO (CHECK_OUT_OF_SOURCE_BUILD)
 
-IF(FAIRROOTPATH)
-  SET(CMAKE_SOURCE_DIR $ENV{FAIRROOTPATH})
-ENDIF(FAIRROOTPATH)
 
    STRING(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" insource)
    IF(insource)
@@ -184,25 +181,25 @@ MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
 
   if(CMAKE_SYSTEM MATCHES Darwin)
     
-    IF(FAIRROOT_CMAKEMOD_DIR)
+    IF(FAIRROOT_FOUND)
     configure_file(${FAIRROOT_CMAKEMOD_DIR}/scripts/set_env_macos.sh.in
                    ${new_path}/${shell_script_name}
                   )
-    ELSE(FAIRROOT_CMAKEMOD_DIR)
+    ELSE(FAIRROOT_FOUND)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env_macos.sh.in
                    ${new_path}/${shell_script_name}
                   )
-    ENDIF(FAIRROOT_CMAKEMOD_DIR)
+    ENDIF(FAIRROOT_FOUND)
   else(CMAKE_SYSTEM MATCHES Darwin)
-    IF(FAIRROOT_CMAKEMOD_DIR)
+    IF(FAIRROOT_FOUND)
     configure_file(${FAIRROOT_CMAKEMOD_DIR}/scripts/set_env.sh.in
                    ${new_path}/${shell_script_name}
                   )
-    ELSE(FAIRROOT_CMAKEMOD_DIR)
+    ELSE(FAIRROOT_FOUND)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env.sh.in
                    ${new_path}/${shell_script_name}
                   )
-    ENDIF(FAIRROOT_CMAKEMOD_DIR)
+    ENDIF(FAIRROOT_FOUND)
 
   endif(CMAKE_SYSTEM MATCHES Darwin)
 
@@ -213,9 +210,6 @@ ENDMACRO (GENERATE_TEST_SCRIPT)
 
 Macro(Generate_Exe_Script _Path _ExeName) 
 
-IF(FAIRROOTPATH)
-  SET(CMAKE_SOURCE_DIR $ENV{FAIRROOTPATH})
-ENDIF(FAIRROOTPATH)
 
   Message("PATH: ${_Path}")
   Message("ExeName: ${_ExeName}")
@@ -237,17 +231,18 @@ ENDIF(FAIRROOTPATH)
 EndMacro(Generate_Exe_Script)
 
 Macro (Generate_Version_Info)
-IF(FAIRROOT_CMAKEMOD_DIR)
+IF(FAIRROOT_FOUND)
   
   Add_Custom_Target(svnheader ALL)
 
   Add_Custom_Command(TARGET svnheader 
-                     COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_SOURCE_DIR}
+                     COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${PROJECT_SOURCE_DIR}
 		     -DBINARY_DIR=${CMAKE_BINARY_DIR}	      
                      -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
+                     -DFAIRROOT=${FAIRROOT_CMAKEMOD_DIR}
                      -P ${FAIRROOT_CMAKEMOD_DIR}/modules/GenerateVersionInfo.cmake
                       )
-ELSE(FAIRROOT_CMAKEMOD_DIR)
+ELSE(FAIRROOT_FOUND)
   Add_Custom_Target(svnheader ALL)
 
   Add_Custom_Command(TARGET svnheader 
@@ -256,19 +251,19 @@ ELSE(FAIRROOT_CMAKEMOD_DIR)
                      -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
                      -P ${CMAKE_SOURCE_DIR}/cmake/modules/GenerateVersionInfo.cmake
 		     )
-ENDIF(FAIRROOT_CMAKEMOD_DIR)
+ENDIF(FAIRROOT_FOUND)
 
 EndMacro (Generate_Version_Info)
 
 Macro (SetBasicVariables)
 
-IF(FAIRROOT_INCLUDE_DIR)
+IF(FAIRROOT_FOUND)
  
   Set(BASE_INCLUDE_DIRECTORIES 
       ${ROOT_INCLUDE_DIR}
       ${FAIRROOT_INCLUDE_DIR})
 
-ELSE(FAIRROOT_INCLUDE_DIR)
+ELSE(FAIRROOT_FOUND)
 
   Set(BASE_INCLUDE_DIRECTORIES
       ${ROOT_INCLUDE_DIR}
@@ -288,18 +283,18 @@ ELSE(FAIRROOT_INCLUDE_DIR)
       ${CMAKE_SOURCE_DIR}/input/db
       ${CMAKE_SOURCE_DIR}/dbase/dbInput
   )  
-ENDIF(FAIRROOT_INCLUDE_DIR)
+ENDIF(FAIRROOT_FOUND)
 
 
-IF(FAIRROOT_LIBRARY_DIR)
+IF(FAIRROOT_FOUND)
 
   Set(FAIRLIBDIR ${FAIRROOT_LIBRARY_DIR})
 
-ELSE(FAIRROOT_LIBRARY_DIR)
+ELSE(FAIRROOT_FOUND)
 
   Set(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)
   
-ENDIF(FAIRROOT_LIBRARY_DIR)
+ENDIF(FAIRROOT_FOUND)
 
 Set(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
 
