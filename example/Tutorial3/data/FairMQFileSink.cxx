@@ -70,7 +70,7 @@ void FairMQFileSink::Run()
       }
 
       if (!fOutput) {
-        std::cout << "-W- FairMQFileSink::Run: " << "No Output array!" << std::endl;
+        cout << "-W- FairMQFileSink::Run: " << "No Output array!" << endl;
       }
 
       fTree->Fill();
@@ -80,7 +80,7 @@ void FairMQFileSink::Run()
     delete msg;
   }
 
-  std::cout << "I've received " << receivedMsgs << " messages!" << std::endl;
+  cout << "I've received " << receivedMsgs << " messages!" << endl;
 
   boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 

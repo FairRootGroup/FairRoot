@@ -21,28 +21,23 @@ TestDetectorDigiLoader::~TestDetectorDigiLoader()
 
 void TestDetectorDigiLoader::Exec(Option_t* opt)
 {
-  Int_t nTestDetectorDigis = fInput->GetEntriesFast();
-  Int_t size = nTestDetectorDigis * sizeof(TestDetectorPayload::TestDetectorDigi);
+  int nTestDetectorDigis = fInput->GetEntriesFast();
+  int size = nTestDetectorDigis * sizeof(TestDetectorPayload::TestDetectorDigi);
 
-  void* buffer = operator new[](size);
-  TestDetectorPayload::TestDetectorDigi* ptr = reinterpret_cast<TestDetectorPayload::TestDetectorDigi*>(buffer);
+  fOutput = fTransportFactory->CreateMessage(size);
+  TestDetectorPayload::TestDetectorDigi* ptr = reinterpret_cast<TestDetectorPayload::TestDetectorDigi*>(fOutput->GetData());
 
-  for (Int_t i = 0; i < nTestDetectorDigis; ++i) {
+  for (int i = 0; i < nTestDetectorDigis; ++i) {
     FairTestDetectorDigi* testDigi = reinterpret_cast<FairTestDetectorDigi*>(fInput->At(i));
-    if (testDigi != NULL) {
-      new(&ptr[i]) TestDetectorPayload::TestDetectorDigi();
-      ptr[i] = TestDetectorPayload::TestDetectorDigi();
-      ptr[i].fX = testDigi->GetX();
-      ptr[i].fY = testDigi->GetY();
-      ptr[i].fZ = testDigi->GetZ();
-      ptr[i].fTimeStamp = testDigi->GetTimeStamp();
-      //std::cout << "Digi: " << ptr[i].fX << "|" << ptr[i].fY << "|" << ptr[i].fZ << "|" << ptr[i].fTimeStamp << ";" << std::endl;
-    } else {
-      continue;
-    }
+    if (!testDigi) continue;
+
+    new(&ptr[i]) TestDetectorPayload::TestDetectorDigi();
+    ptr[i] = TestDetectorPayload::TestDetectorDigi();
+    ptr[i].fX = testDigi->GetX();
+    ptr[i].fY = testDigi->GetY();
+    ptr[i].fZ = testDigi->GetZ();
+    ptr[i].fTimeStamp = testDigi->GetTimeStamp();
   }
 
-  fOutput = fTransportFactory->CreateMessage(buffer, size);
-
-  //std::cout << "Loaded " << fOutput->Size() << " bytes (" << nTestDetectorDigis << " entries)." << std::endl;
+  //cout << "Loaded " << fOutput->GetSize() << " bytes (" << nTestDetectorDigis << " entries)." << endl;
 }

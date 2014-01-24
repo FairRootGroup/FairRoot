@@ -9,6 +9,9 @@
 #include "TMath.h"
 #include "TClonesArray.h"
 
+using std::cout;
+using std::endl;
+
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorMQRecoTask::FairTestDetectorMQRecoTask() :
   fRecoTask(NULL)
@@ -44,37 +47,35 @@ InitStatus FairTestDetectorMQRecoTask::Init()
   fRecoTask->fHitArray = new TClonesArray("FairTestDetectorHit");
 
   return kSUCCESS;
-
 }
 
 // -----   Public method Exec FairMQ interface  --------------------------------------------
 void FairTestDetectorMQRecoTask::Exec(FairMQMessage* msg, Option_t* opt)
 {
-  Int_t inputSize = msg->GetSize();
-  Int_t numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorDigi);
+  int inputSize = msg->GetSize();
+  int numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorDigi);
   TestDetectorPayload::TestDetectorDigi* input = reinterpret_cast<TestDetectorPayload::TestDetectorDigi*>(msg->GetData());
 
   fRecoTask->fDigiArray->Delete();
 
-  for (Int_t i = 0; i < numInput; ++i) {
+  for (int i = 0; i < numInput; ++i) {
     new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(input[i].fX, input[i].fY ,input[i].fZ, input[i].fTimeStamp);
-    //std::cout << "Digi: " << input[i].fX << "|" << input[i].fY << "|" << input[i].fZ << "|" << input[i].fTimeStamp << ";" << std::endl;
   }
 
   if (!fRecoTask->fDigiArray) {
-    std::cout << "-W- FairTestDetectorMQRecoTask::Init: " << "No Point array!" << std::endl;
+    cout << "-W- FairTestDetectorMQRecoTask::Init: " << "No Point array!" << endl;
   }
 
   fRecoTask->Exec(opt);
 
-  Int_t numOutput = numInput;
-  Int_t outputSize = numOutput * sizeof(TestDetectorPayload::TestDetectorHit);
-  void* buffer = operator new[](outputSize);
-  TestDetectorPayload::TestDetectorHit* output = reinterpret_cast<TestDetectorPayload::TestDetectorHit*>(buffer);
+  int numOutput = numInput;
+  int outputSize = numOutput * sizeof(TestDetectorPayload::TestDetectorHit);
+
+  msg->Rebuild(outputSize);
+  TestDetectorPayload::TestDetectorHit* output = reinterpret_cast<TestDetectorPayload::TestDetectorHit*>(msg->GetData());
 
   if (inputSize > 0) {
-
-    for (Int_t i = 0; i < numOutput; ++i) {
+    for (int i = 0; i < numOutput; ++i) {
       FairTestDetectorHit* hit = (FairTestDetectorHit*) fRecoTask->fHitArray->At(i);
 
       output[i].detID = hit->GetDetectorID();
@@ -85,9 +86,6 @@ void FairTestDetectorMQRecoTask::Exec(FairMQMessage* msg, Option_t* opt)
       output[i].dposY = hit->GetDy();
       output[i].dposZ = hit->GetDz();
     }
-
   }
-
-  msg->Rebuild(buffer, outputSize);
 }
 
