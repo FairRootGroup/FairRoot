@@ -147,9 +147,17 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
   set(MY_LD_LIBRARY_PATH ${output})
   set(my_script_name ${SCRIPT_FULL_NAME})
 
+  
+  IF(FAIRROOTPATH)
+   configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/root_macro.sh.in
+                 ${new_path}/${shell_script_name}
+                )
+  ELSE(FAIRROOTPATH)
+  
   configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro.sh.in
                  ${new_path}/${shell_script_name}
                 )
+  ENDIF(FAIRROOTPATH)
 
   EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
 

@@ -25,9 +25,16 @@ MACRO (WRITE_CONFIG_FILE filename)
 
   
   IF(CMAKE_SYSTEM_NAME MATCHES Linux)
+    IF(FAIRROOTPATH)
+    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system.sh.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
+                  )
+    ELSE(FAIRROOTPATH)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system.sh.in
                    ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
                   )
+    ENDIF(FAIRROOTPATH)
+    
     FILE(READ /etc/issue _linux_flavour)
     STRING(REGEX REPLACE "[\\]" " " _result1 "${_linux_flavour}")
     STRING(REGEX REPLACE "\n" ";" _result "${_result1}")
@@ -44,9 +51,15 @@ MACRO (WRITE_CONFIG_FILE filename)
                    )
    
   ElseIf(CMAKE_SYSTEM_NAME MATCHES Darwin)
+    IF(FAIRROOTPATH)
+    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system_mac.sh.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
+                  )
+    ELSE(FAIRROOTPATH)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system_mac.sh.in
                    ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
                   )
+    ENDIF(FAIRROOTPATH)
     EXECUTE_PROCESS(COMMAND uname -sr 
                     OUTPUT_VARIABLE _linux_flavour
                     OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -168,13 +181,28 @@ MACRO (WRITE_CONFIG_FILE filename)
   Set(MY_CLASSPATH ${output})
 
   IF(${filename} MATCHES "[.]csh.*$")
+    IF(FAIRROOTPATH)
+    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/config.csh.in
+	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
+                  )
+    ELSE(FAIRROOTPATH)    
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/config.csh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
+    ENDIF(FAIRROOTPATH)
+
+
   ELSE(${filename} MATCHES "[.]csh.*$")
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/config.sh.in
+    IF(FAIRROOTPATH)
+    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/config.sh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
+    ELSE(FAIRROOTPATH) 
+    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/config.csh.in
+	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
+                  )
+    ENDIF(FAIRROOTPATH)
+
   ENDIF(${filename} MATCHES "[.]csh.*$")
 
 

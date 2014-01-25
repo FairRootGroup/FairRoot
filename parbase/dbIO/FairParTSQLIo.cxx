@@ -156,8 +156,14 @@ bool FairParTSQLIo::open()
     cout << "-I- FairParTSQLIo:.open() checking DB entry# " << iEntry  << endl;
 
     if (!fConnections->GetConnection(iEntry)->TableExists("FAIRDBGLOBALSEQNO") ) {
-      TString work = getenv("VMCWORKDIR");
-      work = work + "/dbase/dbInput/prepare_db.sql";
+      TString work="";
+      work = getenv("FAIRROOTPATH");
+      if(work.IsNull()){
+        work = getenv("VMCWORKDIR");
+        work = work + "/dbase/dbInput/prepare_db.sql";
+      }else{
+         work = work + "/share/dbInput/prepare_db.sql";
+      }
       ostringstream os;
       os << work.Data();
       string fileName = os.str();

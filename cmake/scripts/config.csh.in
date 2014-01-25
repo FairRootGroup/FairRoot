@@ -4,6 +4,7 @@ source @_BINDIR@/bin/check_system.sh
 if [ "$same_system" == "1" ]; then 
   setenv SIMPATH "@SIMPATH@"
   setenv ROOTSYS "@ROOTSYS@"
+  setenv FAIRROOTPATH "@FAIRROOTPATH@"
   setenv GEANT4_LIBRARY_DIR "@GEANT4_LIBRARY_DIR@"
   setenv GEANT4_INCLUDE_DIR "@GEANT4_INCLUDE_DIR@"
   setenv GEANT4VMC_INCLUDE_DIR "@GEANT4VMC_INCLUDE_DIR@"
