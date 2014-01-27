@@ -86,7 +86,10 @@ find_package(CLHEP)
 find_package(RuleChecker)
 find_package(IWYU)
 find_package(ZeroMQ)
+
+IF(USE_NANOMSG)
 find_package(nanomsg)
+ENDIF(USE_NANOMSG)
 
 If(FAIRSOFT_EXTERN)
   set(BOOST_ROOT ${SIMPATH})
