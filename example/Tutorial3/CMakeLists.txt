@@ -88,7 +88,20 @@ Add_Subdirectory(macro)
 
 If (Boost_FOUND)
   Set(Exe_Names testDetectorProcessor testDetectorSampler fileSink)
-  Set(Exe_Source reconstruction/runTestDetectorProcessor.cxx digitization/runTestDetectorSampler.cxx reconstruction/runFileSink.cxx)
+
+if(NANOMSG_FOUND)
+  set(Exe_Source
+    reconstruction/runTestDetectorProcessorNN.cxx
+    digitization/runTestDetectorSamplerNN.cxx
+    reconstruction/runFileSinkNN.cxx
+    )
+else(NANOMSG_FOUND)
+  set(Exe_Source
+    reconstruction/runTestDetectorProcessorZMQ.cxx
+    digitization/runTestDetectorSamplerZMQ.cxx
+    reconstruction/runFileSinkZMQ.cxx
+    )
+endif(NANOMSG_FOUND)
 
   List(LENGTH Exe_Names _length)
   Math(EXPR _length ${_length}-1)
