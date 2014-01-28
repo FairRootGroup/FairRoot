@@ -198,7 +198,7 @@ MACRO (WRITE_CONFIG_FILE filename)
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
     ELSE(FAIRROOTPATH) 
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/config.csh.in
+    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/config.sh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
     ENDIF(FAIRROOTPATH)
