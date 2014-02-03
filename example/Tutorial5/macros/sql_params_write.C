@@ -14,8 +14,8 @@ Int_t  sql_params_write()
   // Set the Ascii IO as first input
   FairParAsciiFileIo* inp1 = new FairParAsciiFileIo();
 
-  TString work = getenv("VMCWORKDIR");
-  TString filename = work + "/example/Tutorial5/macros/ascii-example.par";
+  //TString work = getenv("VMCWORKDIR");
+  TString filename ="ascii-example.par";
   inp1->open(filename.Data(),"in");
   db->setFirstInput(inp1);
 
@@ -34,6 +34,9 @@ Int_t  sql_params_write()
   //                 2         Debug+Info (logged)
   //                 3         Debug+Info (logged+standard output) 
   inp2->SetVerbosity(1);
+
+  // Set Global SeqNo ( Replication Global Index Base )
+  //inp2->SetGlobalSeqNoIn();
 
   // Shutdown Mode ( True, False )
   inp2->SetShutdown(kTRUE);

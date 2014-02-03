@@ -12,6 +12,12 @@
 #include "Rtypes.h"                     // for FairParTSQLIo::Class, etc
 
 
+#define MIN_SEQNO 0
+#define MAX_SEQNO 999999999
+#define BAS_SEQNO 100000000
+#define INC_SEQNO  99999999
+
+
 class FairDbConnectionPool;
 class FairRtdbRun;
 
@@ -105,6 +111,14 @@ class FairParTSQLIo: public FairParIo
     void SetCache(TString cache_file="");
     void CombineDataType(TString input_type, TString other_type);
 
+	/** 
+      Define the SeqNo boundaries
+	*/ 
+
+    void  SetGlobalSeqNoIn(Int_t seqno);
+    Int_t GetGlobalSeqNoIn()  {return  fGlobalSeqNoIn;}
+    Int_t GetGlobalSeqNoOut() {return  fGlobalSeqNoOut;}
+
     /**
      *  Verbosity Control
      **/
@@ -123,6 +137,8 @@ class FairParTSQLIo: public FairParIo
     FairRtdbRun* fCurrentRun;
     int fDefaultDb;
     FairDbConnectionPool* fConnections;
+    Int_t fGlobalSeqNoIn;
+    Int_t fGlobalSeqNoOut;    
 
     ClassDef(FairParTSQLIo, 0) // Class for parameter I/O Using TSQL
 };

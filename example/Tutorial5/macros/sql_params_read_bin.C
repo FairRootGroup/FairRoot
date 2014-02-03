@@ -18,6 +18,9 @@ Int_t  sql_params_read_bin()
 
   // Set the SQL IO as first input
   FairParTSQLIo* inp = new FairParTSQLIo();
+  // Verbosity level
+  inp->SetVerbosity(1);
+
   inp->open();
   db->setFirstInput(inp);
 
@@ -29,7 +32,7 @@ Int_t  sql_params_read_bin()
   // Create a dummy runID using date in UTC from which
   // corresponding  parameters will be initialised
 
-  ValTimeStamp tStamp(2013,10,24,09,55,00);
+  ValTimeStamp tStamp(2014,02,03,10,07,48);
   UInt_t runId = tStamp.GetSec();
   cout << "-I- looking for parameters at runID# " << runId << endl;
   cout << "-I- corresponding  time in runID (UTC) " << tStamp.AsString("c") << endl;
