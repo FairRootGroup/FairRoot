@@ -1,16 +1,14 @@
-/*
+/**
  * FairMQProxy.h
  *
- *  Created on: Oct 2, 2013
- *      Author: A. Rybalchenko
+ * @since 2013-10-02
+ * @author A. Rybalchenko
  */
 
 #ifndef FAIRMQPROXY_H_
 #define FAIRMQPROXY_H_
 
 #include "FairMQDevice.h"
-#include "Rtypes.h"
-#include "TString.h"
 
 
 class FairMQProxy: public FairMQDevice

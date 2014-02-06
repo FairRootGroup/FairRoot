@@ -1,8 +1,8 @@
-/*
+/**
  * FairMQProcessor.cxx
  *
- *  Created on: Dec 6, 2012
- *      Author: dklein
+ * @since 2012-12-06
+ * @author D. Klein, A. Rybalchenko
  */
 
 #include <boost/thread.hpp>
@@ -12,25 +12,25 @@
 #include "FairMQLogger.h"
 
 FairMQProcessor::FairMQProcessor() :
-  fTask(NULL)
+  fProcessorTask(NULL)
 {
 }
 
 FairMQProcessor::~FairMQProcessor()
 {
-  delete fTask;
+  delete fProcessorTask;
 }
 
 void FairMQProcessor::SetTask(FairMQProcessorTask* task)
 {
-  fTask = task;
+  fProcessorTask = task;
 }
 
 void FairMQProcessor::Init()
 {
   FairMQDevice::Init();
 
-  fTask->InitTask();
+  fProcessorTask->InitTask();
 }
 
 void FairMQProcessor::Run()
@@ -39,36 +39,29 @@ void FairMQProcessor::Run()
 
   boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
-  // Initialize poll set
-  zmq_pollitem_t items[] = {
-    { *(fPayloadInputs->at(0)->GetSocket()), 0, ZMQ_POLLIN, 0 }
-  };
-
   int receivedMsgs = 0;
   int sentMsgs = 0;
 
-  Bool_t received = false;
+  bool received = false;
 
   while ( fState == RUNNING ) {
-    FairMQMessage msg;
+    FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-    zmq_poll(items, 1, 100);
-
-    if (items[0].revents & ZMQ_POLLIN) {
-      received = fPayloadInputs->at(0)->Receive(&msg);
-      receivedMsgs++;
-    }
+    received = fPayloadInputs->at(0)->Receive(msg);
+    receivedMsgs++;
 
     if (received) {
-      fTask->Exec(&msg, NULL);
+      fProcessorTask->Exec(msg, NULL);
 
-      fPayloadOutputs->at(0)->Send(&msg);
+      fPayloadOutputs->at(0)->Send(msg);
       sentMsgs++;
       received = false;
     }
+
+    delete msg;
   }
 
-  std::cout << "I've received " << receivedMsgs << " and sent " << sentMsgs << " messages!" << std::endl;
+  cout << "I've received " << receivedMsgs << " and sent " << sentMsgs << " messages!" << endl;
 
   boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 

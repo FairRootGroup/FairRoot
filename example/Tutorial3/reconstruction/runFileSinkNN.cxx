@@ -10,18 +10,24 @@
 
 #include "FairMQLogger.h"
 #include "FairMQFileSink.h"
+#include "nanomsg/FairMQTransportFactoryNN.h"
+
+using std::cout;
+using std::cin;
+using std::endl;
+using std::stringstream;
 
 
 FairMQFileSink filesink;
 
 static void s_signal_handler (int signal)
 {
-  std::cout << std::endl << "Caught signal " << signal << std::endl;
+  cout << endl << "Caught signal " << signal << endl;
 
   filesink.ChangeState(FairMQFileSink::STOP);
   filesink.ChangeState(FairMQFileSink::END);
 
-  std::cout << "Shutdown complete. Bye!" << std::endl;
+  cout << "Shutdown complete. Bye!" << endl;
   exit(1);
 }
 
@@ -38,17 +44,20 @@ static void s_catch_signals (void)
 int main(int argc, char** argv)
 {
   if ( argc != 7 ) {
-    std::cout << "Usage: fileSink \tID numIoTreads\n"
+    cout << "Usage: fileSink \tID numIoTreads\n"
               << "\t\tinputSocketType inputRcvBufHSize inputMethod inputAddress\n"
-              << std::endl;
+              << endl;
     return 1;
   }
 
   s_catch_signals();
 
-  std::stringstream logmsg;
+  stringstream logmsg;
   logmsg << "PID: " << getpid();
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, logmsg.str());
+
+  FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
+  filesink.SetTransport(transportFactory);
 
   int i = 1;
 
@@ -56,7 +65,7 @@ int main(int argc, char** argv)
   ++i;
 
   int numIoThreads;
-  std::stringstream(argv[i]) >> numIoThreads;
+  stringstream(argv[i]) >> numIoThreads;
   filesink.SetProperty(FairMQFileSink::NumIoThreads, numIoThreads);
   ++i;
 
@@ -67,14 +76,10 @@ int main(int argc, char** argv)
   filesink.InitOutputFile(argv[1]);
 
 
-  int inputSocketType = ZMQ_SUB;
-  if (strcmp(argv[i], "pull") == 0) {
-    inputSocketType = ZMQ_PULL;
-  }
-  filesink.SetProperty(FairMQFileSink::InputSocketType, inputSocketType, 0);
+  filesink.SetProperty(FairMQFileSink::InputSocketType, argv[i], 0);
   ++i;
   int inputRcvBufSize;
-  std::stringstream(argv[i]) >> inputRcvBufSize;
+  stringstream(argv[i]) >> inputRcvBufSize;
   filesink.SetProperty(FairMQFileSink::InputRcvBufSize, inputRcvBufSize, 0);
   ++i;
   filesink.SetProperty(FairMQFileSink::InputMethod, argv[i], 0);
@@ -88,7 +93,7 @@ int main(int argc, char** argv)
   filesink.ChangeState(FairMQFileSink::RUN);
 
   char ch;
-  std::cin.get(ch);
+  cin.get(ch);
 
   filesink.ChangeState(FairMQFileSink::STOP);
   filesink.ChangeState(FairMQFileSink::END);

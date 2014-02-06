@@ -5,6 +5,7 @@
 #include "FairMQProcessorTask.h"
 #include "FairMQMessage.h"
 #include "FairTestDetectorPayload.h"
+
 class TClonesArray;
 
 class FairTestDetectorMQRecoTask : public FairMQProcessorTask

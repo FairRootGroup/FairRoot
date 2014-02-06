@@ -1,5 +1,5 @@
-#ifndef PNDTORINODETECTORHITPRODUCERSMEARING_H
-#define PNDTORINODETECTORHITPRODUCERSMEARING_H
+#ifndef FAIRTESTDETECTORHITPRODUCERSMEARING_H_
+#define FAIRTESTDETECTORHITPRODUCERSMEARING_H_
 
 #include "FairTask.h"                   // for InitStatus, FairTask
 
@@ -47,4 +47,4 @@ class FairTestDetectorHitProducerSmearing : public FairTask
     ClassDef(FairTestDetectorHitProducerSmearing,1);
 };
 
-#endif
+#endif /* FAIRTESTDETECTORHITPRODUCERSMEARING_H_ */

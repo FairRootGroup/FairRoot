@@ -1,18 +1,18 @@
-/*
+/**
  * FairMQSamplerTask.cxx
  *
- *  Created on: Nov 22, 2012
- *      Author: dklein
+ * @since 2012-11-22
+ * @author D. Klein, A. Rybalchenko
  */
 
 #include "FairMQSamplerTask.h"
 
 
-FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, Int_t iVerbose) :
+FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose) :
   FairTask(name, iVerbose),
   fInput(NULL),
   fBranch(""),
-  fOutput(new FairMQMessage)
+  fOutput(NULL)
 {
 }
 
@@ -20,7 +20,7 @@ FairMQSamplerTask::FairMQSamplerTask() :
   FairTask( "Abstract base task used for loading a branch from a root file into memory"),
   fInput(NULL),
   fBranch(""),
-  fOutput(new FairMQMessage)
+  fOutput(NULL)
 {
 }
 
@@ -48,8 +48,7 @@ FairMQMessage* FairMQSamplerTask::GetOutput()
   return fOutput;
 }
 
-void FairMQSamplerTask::ClearOutput(void* data, void* hint)
+void FairMQSamplerTask::SetTransport(FairMQTransportFactory* factory)
 {
-  free (data);
+  fTransportFactory = factory;
 }
-

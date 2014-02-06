@@ -1,5 +1,5 @@
-#ifndef PNDTORINODETECTORCONTFACT_H
-#define PNDTORINODETECTORCONTFACT_H
+#ifndef FAIRTESTDETECTORCONTFACT_H_
+#define FAIRTESTDETECTORCONTFACT_H_
 
 #include "FairContFact.h"               // for FairContFact, etc
 
@@ -18,4 +18,4 @@ class FairTestDetectorContFact : public FairContFact
     ClassDef( FairTestDetectorContFact,0) // Factory for all FairTestDetector parameter containers
 };
 
-#endif
+#endif /* FAIRTESTDETECTORCONTFACT_H_ */

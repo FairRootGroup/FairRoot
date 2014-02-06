@@ -1,5 +1,5 @@
-#ifndef PNDTORINODETECTOR_H
-#define PNDTORINODETECTOR_H
+#ifndef FAIRTESTDETECTOR_H_
+#define FAIRTESTDETECTOR_H_
 
 #include "FairDetector.h"
 
@@ -100,4 +100,4 @@ class FairTestDetector: public FairDetector
     ClassDef(FairTestDetector,1)
 };
 
-#endif //PNDTORINODETECTOR_H
+#endif /* FAIRTESTDETECTOR_H_ */

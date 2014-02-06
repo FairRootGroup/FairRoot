@@ -1,8 +1,8 @@
-/*
+/**
  * FairMQSamplerTask.h
  *
- *  Created on: Nov 22, 2012
- *      Author: dklein
+ * @since 2012-11-22
+ * @author D. Klein, A. Rybalchenko
  */
 
 #ifndef FAIRMQSAMPLERTASK_H_
@@ -13,6 +13,7 @@
 #include "TClonesArray.h"
 #include <string>
 #include "FairMQMessage.h"
+#include "FairMQTransportFactory.h"
 #include "TString.h"
 
 
@@ -20,17 +21,19 @@ class FairMQSamplerTask: public FairTask
 {
   public:
     FairMQSamplerTask();
-    FairMQSamplerTask(const Text_t* name, Int_t iVerbose=1);
+    FairMQSamplerTask(const Text_t* name, int iVerbose=1);
     virtual ~FairMQSamplerTask();
     virtual InitStatus Init();
     virtual void Exec(Option_t* opt) = 0;
     void SetBranch(TString branch);
     FairMQMessage* GetOutput();
-    static void ClearOutput(void* data, void* hint);
+    void SetTransport(FairMQTransportFactory* factory);
+
   protected:
     TClonesArray* fInput;
     TString fBranch;
     FairMQMessage* fOutput;
+    FairMQTransportFactory* fTransportFactory;
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */

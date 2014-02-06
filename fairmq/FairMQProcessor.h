@@ -1,8 +1,8 @@
-/*
+/**
  * FairMQProcessor.h
  *
- *  Created on: Dec 6, 2012
- *      Author: dklein
+ * @since 2012-12-06
+ * @author D. Klein, A. Rybalchenko
  */
 
 #ifndef FAIRMQPROCESSOR_H_
@@ -10,7 +10,6 @@
 
 #include "FairMQDevice.h"
 #include "FairMQProcessorTask.h"
-#include "Rtypes.h"
 
 
 class FairMQProcessor: public FairMQDevice
@@ -23,7 +22,7 @@ class FairMQProcessor: public FairMQDevice
     virtual void Init();
     virtual void Run();
   private:
-    FairMQProcessorTask* fTask;
+    FairMQProcessorTask* fProcessorTask;
 };
 
 #endif /* FAIRMQPROCESSOR_H_ */

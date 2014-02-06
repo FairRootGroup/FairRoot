@@ -16,27 +16,27 @@ ${CMAKE_SOURCE_DIR}/example/Tutorial3/reconstruction
 ${CMAKE_SOURCE_DIR}/example/Tutorial3/timeBasedSimulation
 )
 
-If (Boost_FOUND)
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh ) 
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAllProxy.sh.in ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh ) 
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startPushPull.sh.in ${CMAKE_BINARY_DIR}/bin/startPushPull.sh ) 
+include_directories(${INCLUDE_DIRECTORIES})
 
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startFileSink.sh.in ${CMAKE_BINARY_DIR}/bin/startFileSink.sh ) 
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startSink.sh.in ${CMAKE_BINARY_DIR}/bin/startSink.sh ) 
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startTestDetectorProcessor1.sh.in ${CMAKE_BINARY_DIR}/bin/startTestDetectorProcessor1.sh ) 
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startTestDetectorProcessor2.sh.in ${CMAKE_BINARY_DIR}/bin/startTestDetectorProcessor2.sh ) 
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh ) 
+If (Boost_FOUND)
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAllProxy.sh.in ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startPushPull.sh.in ${CMAKE_BINARY_DIR}/bin/startPushPull.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startThree.sh.in ${CMAKE_BINARY_DIR}/bin/startThree.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startFileSink.sh.in ${CMAKE_BINARY_DIR}/bin/startFileSink.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startSink.sh.in ${CMAKE_BINARY_DIR}/bin/startSink.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startTestDetectorProcessor1.sh.in ${CMAKE_BINARY_DIR}/bin/startTestDetectorProcessor1.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startTestDetectorProcessor2.sh.in ${CMAKE_BINARY_DIR}/bin/startTestDetectorProcessor2.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh )
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startTestDetectorSampler.sh.in ${CMAKE_BINARY_DIR}/bin/startTestDetectorSampler.sh )
 EndIf (Boost_FOUND)
-
-include_directories( ${INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${Boost_LIBRARY_DIRS}
 ) 
 
-link_directories( ${LINK_DIRECTORIES})
+link_directories(${LINK_DIRECTORIES})
 
 Set(SRCS
   simulation/FairTestDetector.cxx
@@ -72,8 +72,6 @@ If (Boost_FOUND)
   )
 EndIf (Boost_FOUND)
 
-Set(HEADERS)
-Set(${HEADERS} data/FairTestDetectorPayload.h ) 
 Set(LINKDEF FairTestDetectorLinkDef.h)
 Set(LIBRARY_NAME FairTestDetector)
 
@@ -90,7 +88,20 @@ Add_Subdirectory(macro)
 
 If (Boost_FOUND)
   Set(Exe_Names testDetectorProcessor testDetectorSampler fileSink)
-  Set(Exe_Source reconstruction/runTestDetectorProcessor.cxx digitization/runTestDetectorSampler.cxx reconstruction/runFileSink.cxx)
+
+if(NANOMSG_FOUND)
+  set(Exe_Source
+    reconstruction/runTestDetectorProcessorNN.cxx
+    digitization/runTestDetectorSamplerNN.cxx
+    reconstruction/runFileSinkNN.cxx
+    )
+else(NANOMSG_FOUND)
+  set(Exe_Source
+    reconstruction/runTestDetectorProcessorZMQ.cxx
+    digitization/runTestDetectorSamplerZMQ.cxx
+    reconstruction/runFileSinkZMQ.cxx
+    )
+endif(NANOMSG_FOUND)
 
   List(LENGTH Exe_Names _length)
   Math(EXPR _length ${_length}-1)

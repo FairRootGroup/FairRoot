@@ -1,43 +1,39 @@
-/*
+/**
  * FairMQLogger.h
  *
- *  Created on: Dec 4, 2012
- *      Author: dklein
+ * @since 2012-12-04
+ * @author D. Klein, A. Rybalchenko
  */
 
 #ifndef FAIRMQLOGGER_H_
 #define FAIRMQLOGGER_H_
+
 #include <string>
 #include <sstream>
 #include <sys/time.h>
-#include "Rtypes.h"
-#include "TString.h"
 
+using std::string;
+using std::stringstream;
 
 class FairMQLogger
 {
   private:
     static FairMQLogger* instance;
-    TString fBindAddress;
+    string fBindAddress;
   public:
     enum {
       DEBUG, INFO, ERROR, STATE
     };
     FairMQLogger();
-    FairMQLogger(TString bindAdress);
+    FairMQLogger(const string& bindAdress); // TODO: check this for const ref
     virtual ~FairMQLogger();
-    void Log(Int_t type, TString logmsg);
+    void Log(int type, const string& logmsg);
     static FairMQLogger* GetInstance();
-    static FairMQLogger* InitInstance(TString bindAddress);
+    static FairMQLogger* InitInstance(const string& bindAddress); // TODO: check this for const ref
 };
 
 typedef unsigned long long timestamp_t;
 
-static timestamp_t get_timestamp ()
-{
-  struct timeval now;
-  gettimeofday (&now, NULL);
-  return now.tv_usec + (timestamp_t)now.tv_sec * 1000000;
-}
+timestamp_t get_timestamp ();
 
 #endif /* FAIRMQLOGGER_H_ */

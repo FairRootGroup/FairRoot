@@ -1,8 +1,8 @@
-/*
+/**
  * FairMQFileSink.cxx
  *
- *  Created on: 2013-06-05
- *      Author: A. Rybalchenko
+ * @since 2013-06-05
+ * @author A. Rybalchenko
  */
 
 #include <iostream>
@@ -18,6 +18,7 @@
 #include "TTree.h"
 #include "TClonesArray.h"
 #include "TVector3.h"
+
 
 FairMQFileSink::FairMQFileSink()
 {
@@ -47,28 +48,18 @@ void FairMQFileSink::Run()
 
   boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
-  // Initialize poll set
-  zmq_pollitem_t items[] = {
-    { *(fPayloadInputs->at(0)->GetSocket()), 0, ZMQ_POLLIN, 0 }
-  };
-
   int receivedMsgs = 0;
-  Bool_t received = false;
+  bool received = false;
 
   while ( fState == RUNNING ) {
-    FairMQMessage msg;
+    FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-    zmq_poll(items, 1, 100); // TODO: can timeout be avoided?
-
-    if (items[0].revents & ZMQ_POLLIN) {
-      received = fPayloadInputs->at(0)->Receive(&msg);
-      receivedMsgs++;
-    }
+    received = fPayloadInputs->at(0)->Receive(msg);
 
     if (received) {
-      Int_t inputSize = msg.Size();
+      Int_t inputSize = msg->GetSize();
       Int_t numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorHit);
-      TestDetectorPayload::TestDetectorHit* input = static_cast<TestDetectorPayload::TestDetectorHit*>(msg.GetMessage()->data());
+      TestDetectorPayload::TestDetectorHit* input = static_cast<TestDetectorPayload::TestDetectorHit*>(msg->GetData());
 
       fOutput->Delete();
 
@@ -79,15 +70,17 @@ void FairMQFileSink::Run()
       }
 
       if (!fOutput) {
-        std::cout << "-W- FairMQFileSink::Run: " << "No Output array!" << std::endl;
+        cout << "-W- FairMQFileSink::Run: " << "No Output array!" << endl;
       }
 
       fTree->Fill();
       received = false;
-    } //if received
-  } //while true
+    }
 
-  std::cout << "I've received " << receivedMsgs << " messages!" << std::endl;
+    delete msg;
+  }
+
+  cout << "I've received " << receivedMsgs << " messages!" << endl;
 
   boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 

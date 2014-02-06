@@ -5,7 +5,7 @@
  *      Author: stockman
  */
 
-#ifndef FairTestDetectorDigiWriteoutBufferR_H_
+#ifndef FairTestDetectorDigiWriteoutBuffer_H_
 #define FairTestDetectorDigiWriteoutBuffer_H_
 
 #include "FairWriteoutBuffer.h"         // for FairWriteoutBuffer

@@ -1,8 +1,8 @@
 /**
  * TestDetectorMQSampler.h
  *
- *  @since 2012-04-22
- *  @authors A. Rybalchenko
+ * @since 2012-04-22
+ * @authors A. Rybalchenko
  */
 
 #ifndef TESTDETECTORMQSAMPLER_H_

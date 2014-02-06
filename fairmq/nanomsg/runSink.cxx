@@ -1,8 +1,8 @@
-/*
+/**
  * runSink.cxx
  *
- *  @since: Jan 21, 2013
- *  @author: dklein
+ * @since 2013-01-21
+ * @author D. Klein, A. Rybalchenko
  */
 
 #include <iostream>
@@ -10,18 +10,24 @@
 
 #include "FairMQLogger.h"
 #include "FairMQSink.h"
+#include "FairMQTransportFactoryNN.h"
+
+using std::cout;
+using std::cin;
+using std::endl;
+using std::stringstream;
 
 
 FairMQSink sink;
 
 static void s_signal_handler (int signal)
 {
-  std::cout << std::endl << "Caught signal " << signal << std::endl;
+  cout << endl << "Caught signal " << signal << endl;
 
   sink.ChangeState(FairMQSink::STOP);
   sink.ChangeState(FairMQSink::END);
 
-  std::cout << "Shutdown complete. Bye!" << std::endl;
+  cout << "Shutdown complete. Bye!" << endl;
   exit(1);
 }
 
@@ -38,17 +44,20 @@ static void s_catch_signals (void)
 int main(int argc, char** argv)
 {
   if ( argc != 7 ) {
-    std::cout << "Usage: sink \tID numIoTreads\n"
+    cout << "Usage: sink \tID numIoTreads\n"
               << "\t\tinputSocketType inputRcvBufSize inputMethod inputAddress\n"
-              << std::endl;
+              << endl;
     return 1;
   }
 
   s_catch_signals();
 
-  std::stringstream logmsg;
+  stringstream logmsg;
   logmsg << "PID: " << getpid();
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, logmsg.str());
+
+  FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
+  sink.SetTransport(transportFactory);
 
   int i = 1;
 
@@ -56,7 +65,7 @@ int main(int argc, char** argv)
   ++i;
 
   int numIoThreads;
-  std::stringstream(argv[i]) >> numIoThreads;
+  stringstream(argv[i]) >> numIoThreads;
   sink.SetProperty(FairMQSink::NumIoThreads, numIoThreads);
   ++i;
 
@@ -67,14 +76,10 @@ int main(int argc, char** argv)
   sink.ChangeState(FairMQSink::INIT);
 
 
-  int inputSocketType = ZMQ_SUB;
-  if (strcmp(argv[i], "pull") == 0) {
-    inputSocketType = ZMQ_PULL;
-  }
-  sink.SetProperty(FairMQSink::InputSocketType, inputSocketType, 0);
+  sink.SetProperty(FairMQSink::InputSocketType, argv[i], 0);
   ++i;
   int inputRcvBufSize;
-  std::stringstream(argv[i]) >> inputRcvBufSize;
+  stringstream(argv[i]) >> inputRcvBufSize;
   sink.SetProperty(FairMQSink::InputRcvBufSize, inputRcvBufSize, 0);
   ++i;
   sink.SetProperty(FairMQSink::InputMethod, argv[i], 0);
@@ -89,7 +94,7 @@ int main(int argc, char** argv)
 
 
   char ch;
-  std::cin.get(ch);
+  cin.get(ch);
 
   sink.ChangeState(FairMQSink::STOP);
   sink.ChangeState(FairMQSink::END);

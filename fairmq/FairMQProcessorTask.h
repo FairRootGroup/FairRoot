@@ -1,14 +1,15 @@
-/*
+/**
  * FairMQProcessorTask.h
  *
- *  Created on: Dec 6, 2012
- *      Author: dklein
+ * @since Dec 6, 2012-12-06
+ * @author: D. Klein, A. Rybalchenko
  */
 
 #ifndef FAIRMQPROCESSORTASK_H_
 #define FAIRMQPROCESSORTASK_H_
 
 #include <vector>
+
 #include "FairMQMessage.h"
 #include "FairTask.h"
 
@@ -19,7 +20,6 @@ class FairMQProcessorTask : public FairTask
     FairMQProcessorTask();
     virtual ~FairMQProcessorTask();
     virtual void Exec(FairMQMessage* msg, Option_t* opt) = 0;
-    static void ClearOutput(void* data, void* hint);
 };
 
 #endif /* FAIRMQPROCESSORTASK_H_ */

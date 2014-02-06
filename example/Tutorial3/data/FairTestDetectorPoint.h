@@ -1,5 +1,5 @@
-#ifndef PNDTORINODETECTORPOINT_H
-#define PNDTORINODETECTORPOINT_H 1
+#ifndef FAIRTESTDETECTORPOINT_H_
+#define FAIRTESTDETECTORPOINT_H_
 
 #include "FairMCPoint.h"                // for FairMCPoint
 
@@ -69,4 +69,4 @@ class FairTestDetectorPoint : public FairMCPoint
 
 };
 
-#endif
+#endif /* FAIRTESTDETECTORPOINT_H_ */

@@ -5,8 +5,8 @@
  *      Author: stockman
  */
 
-#ifndef PNDTORINODETECTORDIGI_H_
-#define PNDTORINODETECTORDIGI_H_
+#ifndef FAIRTESTDETECTORDIGI_H_
+#define FAIRTESTDETECTORDIGI_H_
 
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
@@ -70,4 +70,4 @@ class FairTestDetectorDigi : public FairTimeStamp
     ClassDef(FairTestDetectorDigi,1);
 };
 
-#endif /* PNDTORINODETECTORDIGI_H_ */
+#endif /* FAIRTESTDETECTORDIGI_H_ */

@@ -1,8 +1,8 @@
-/*
+/**
  * FairMQFileSink.h
  *
- *  Created on: 2013-06-05
- *      Author: A. Rybalchenko
+ * @since 2013-06-05
+ * @author A. Rybalchenko
  */
 
 #ifndef FAIRMQFILESINK_H_
@@ -12,6 +12,7 @@
 
 #include "FairMQDevice.h"
 #include "FairTestDetectorPayload.h"
+
 
 class TVector3;
 class TFile;
