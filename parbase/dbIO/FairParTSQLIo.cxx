@@ -28,11 +28,13 @@
 #include <stdlib.h>                     // for NULL, exit, getenv
 #include <string.h>                     // for strcmp
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <sstream>
 #include <memory>                       // for auto_ptr, etc
 #include <string>                       // for string, basic_string, etc
 #include <vector>                       // for vector, vector<>::iterator
 #include <sstream>                      // IWYU pragma: keep
 #include <fstream>                      // IWYU pragma: keep
+#include <limits.h>
 
 class FairRtdbRun;
 class TObject;
@@ -46,7 +48,9 @@ FairParTSQLIo::FairParTSQLIo()
   : FairParIo(),
     fCurrentRun(NULL),
     fDefaultDb (-1),
-    fConnections(FairDbTableInterfaceStore::Instance().fConnectionPool)
+  fConnections(FairDbTableInterfaceStore::Instance().fConnectionPool),
+  fGlobalSeqNoIn(MIN_SEQNO),
+  fGlobalSeqNoOut(INT_MAX)
 {
 //  fCurrentRun=NULL;
 }
@@ -56,7 +60,9 @@ FairParTSQLIo::FairParTSQLIo(FairDbConnectionPool const& cons, int const dbNum)
   : FairParIo(),
     fCurrentRun(NULL),
     fDefaultDb (dbNum),
-    fConnections(FairDbTableInterfaceStore::Instance().fConnectionPool)
+    fConnections(FairDbTableInterfaceStore::Instance().fConnectionPool),
+	fGlobalSeqNoIn(MIN_SEQNO),
+    fGlobalSeqNoOut(INT_MAX)
 {
 //  fCurrentRun=NULL;
 }
@@ -146,50 +152,57 @@ bool FairParTSQLIo::open()
     auto_ptr<FairDbStatement>
     stmtDb(fConnections->CreateStatement(iEntry));
     if ( ! stmtDb.get() ) {
-      cout << "-E- FairParTSQLIo::open() Cannot get a statement for DB entry# " << iEntry
+      	DBLOG("FairDb",FairDbLog::kWarning) << "Cannot get a statement for DB entry# " << iEntry
            << "\n  --->  Please check the FAIRDB_TSQL_* environment.  Transaction Failed  ... " << endl;
       return kFALSE;
     }
 
 
     // Now prepare Database Infrastructure for each DB entry
-    cout << "-I- FairParTSQLIo:.open() checking DB entry# " << iEntry  << endl;
+	DBLOG("FairDb",FairDbLog::kInfo) << "-I- FairParTSQLIo:.open() checking DB entry# " << iEntry  << endl;
 
     if (!fConnections->GetConnection(iEntry)->TableExists("FAIRDBGLOBALSEQNO") ) {
-      TString work="";
-      work = getenv("FAIRROOTPATH");
-      if(work.IsNull()){
-        work = getenv("VMCWORKDIR");
-        work = work + "/dbase/dbInput/prepare_db.sql";
-      }else{
-         work = work + "/share/dbInput/prepare_db.sql";
-      }
-      ostringstream os;
-      os << work.Data();
-      string fileName = os.str();
-      ifstream inp(fileName.c_str());
-      if ( ! inp.is_open() ) {
-        cout << "-E-  FairParTSQLIo cannot read prepared sql commands in  input file#  " << fileName << endl;
-        exit(1);
-      }
 
-      // Add sql for prepare
-      std::vector<std::string> sql_cmds;
-      string sql;
-      while ( ! inp.eof() ) {
-        string line;
-        getline(inp,line);
-        // Remove trailing spaces.
-        while ( line.size() > 0 && *(line.rbegin()) == ' ' ) { line.erase(line.size()-1); }
-        // Ignore empty lines and comments
-        if ( line.size() == 0 || line[0] == '#' ) { continue; }
-        sql += line;
-        // If terminating semicolon found execute command.
-        if ( *(line.rbegin()) == ';' ) {
-          sql_cmds.push_back(sql);
-          sql = "";
-        }
-      }
+     std::vector<std::string> sql_cmds;
+     string sql1("CREATE TABLE ");
+     sql1 += "FAIRDBLOGENTRYVAL";
+     sql1 += "( SEQNO          INT NOT NULL PRIMARY KEY AUTO_INCREMENT,";
+     sql1 += "  TIMESTART      DATETIME NOT NULL,";
+     sql1 += "  TIMEEND        DATETIME NOT NULL,";
+     sql1 += "  DETID          TINYINT,";
+     sql1 += "  DATAID         TINYINT,";
+     sql1 += "  VERSION        INT,";
+     sql1 += "  COMPOSITEID    INT,";
+     sql1 += "  TIMEINCR       DATETIME NOT NULL,";
+     sql1 += "  TIMETRANS      DATETIME NOT NULL);";
+
+     string sql2("CREATE TABLE ");
+     sql2 += "FAIRDBLOGENTRY";
+     sql2 += "( SEQNO           INT,";
+     sql2 += "  ROW_ID          INT,";
+     sql2 += "  TABLENAME       TEXT,";
+     sql2 += "  MIN_SEQNO       INT NOT NULL,";
+     sql2 += "  MAX_SEQNO       INT NOT NULL,";
+     sql2 += "  N_SEQNO         INT NOT NULL,";
+     sql2 += "  USERNAME        TEXT,";
+     sql2 += "  PROCESS_ID      TEXT,";
+     sql2 += "  HOSTNAME        TEXT,";
+     sql2 += "  SERVERNAME      TEXT,";
+     sql2 += "  LOG_TITLE       TEXT);";
+     
+     string sql3("CREATE TABLE ");
+     sql3 += "FAIRDBGLOBALSEQNO";
+     sql3 += "( TABLENAME      CHAR(64) NOT NULL PRIMARY KEY,";
+     sql3 += "  LASTUSEDSEQNO  INT );";
+
+     stringstream insert_sql;
+     insert_sql << "INSERT INTO FAIRDBGLOBALSEQNO VALUES ('*'," << GetGlobalSeqNoIn() << ");";
+  
+     sql_cmds.push_back(sql1);
+     sql_cmds.push_back(sql2);
+     sql_cmds.push_back(sql3);
+     sql_cmds.push_back(insert_sql.str());
+          
 
       // Now execute the assemble list of SQL commands.
       auto_ptr<FairDbStatement> stmtDbn(fConnections->CreateStatement(iEntry));
@@ -197,18 +210,20 @@ bool FairParTSQLIo::open()
       std::vector<std::string>::iterator itr(sql_cmds.begin()), itrEnd(sql_cmds.end());
       while( itr != itrEnd ) {
         std::string& sql_cmd(*itr++);
-        cout <<"-I- FairParTSQLIo executing at DB entry#  " << iEntry << "  SQL:" << sql_cmd << endl;
-        stmtDbn->ExecuteUpdate(sql_cmd.c_str());
+		DBLOG("FairDb",FairDbLog::kInfo)  << " Creating Global Meta Data  at DB entry#  " 
+										  << iEntry << "  SQL:" << sql_cmd << endl;
+	    stmtDbn->ExecuteUpdate(sql_cmd.c_str());
         if ( stmtDbn->PrintExceptions() ) {
           fail = true;
-          cout << "-E- FairParTSQLIo ******* Error Executing SQL commands ***********  " << endl;
+          DBLOG("FairDb",FairDbLog::kFatal) << " ******* Error Creating Meta Data for DB Entry#" 
+                                            <<  iEntry << endl;
         }
-      }
+      }//! (sql_cmds)
 
       fConnections->SetAuthorisingEntry(iEntry);
       fConnections->GetConnection(iEntry)->SetTableExists();
 
-      cout << "-I- FairParTSQLIo:.open() Meta-structure has been implemented ... continuing " << endl;
+	  DBLOG("FairDb",FairDbLog::kInfo) << " Meta-structure has been implemented ... continuing " << endl;
 
     } else {
       // Some Meta-Structure in DB is already existing ... check that !
@@ -218,17 +233,19 @@ bool FairParTSQLIo::open()
         while ( stmtTSQL->NextResultRow() ) {
           TString tableName = stmtTSQL->GetString(0);
           int lastUsedSeqNo = stmtTSQL->GetInt(1);
-          if ( tableName == "*" && lastUsedSeqNo != 900000000 )  {
-            cout << "-E- FairParTSQLIo:: FAIRDBGLOBALSEQNO table error. Entry * = " <<   lastUsedSeqNo
-                 << " but should be 900000000" << endl;
+          int abase =  lastUsedSeqNo /  BAS_SEQNO;
+          SetGlobalSeqNoIn(abase);
+         if ( tableName == "*" && lastUsedSeqNo != GetGlobalSeqNoIn() )  {
+              DBLOG("FairDb",FairDbLog::kInfo) << "FAIRDBGLOBALSEQNO table error. Entry * = " <<   lastUsedSeqNo
+                 << " but should be: " <<  GetGlobalSeqNoIn() << endl;
             fail = kTRUE;
           } else if  ( tableName != "*" ) {
             string tn3(tableName.Data(),3);
-            if ( lastUsedSeqNo < 900000000 || lastUsedSeqNo > 999999999 ) {
-              cout << "-E- FaiParTSQLIo : FAIRDBGLOBALSEQNO table error. Entry " <<  tableName
+            if ( lastUsedSeqNo < GetGlobalSeqNoIn() || lastUsedSeqNo > GetGlobalSeqNoOut() ) {
+                DBLOG("FairDb",FairDbLog::kInfo) << " FAIRDBGLOBALSEQNO table error. Entry " <<  tableName
                    << " but should start with FAIRDB \n"
                    << "     and last used SEQNO: " << lastUsedSeqNo
-                   << " should be in range 900000000..999999999" << endl;
+                   << " should be in range [ " <<  GetGlobalSeqNoIn() << " .. " << GetGlobalSeqNoOut() <<  " ]" << endl;
               fail = kTRUE;
             }
           }
@@ -236,20 +253,23 @@ bool FairParTSQLIo::open()
       }
 
       if ( fail ) {
-        cout << "-I- FairParTSQLIo::open() The FAIRDBGLOBALSEQNO table at DB entry# " << iEntry << " is already\n"
-             << " existing but not aligned in sequence nr. range 900000000..999999999"
+         DBLOG("FairDb",FairDbLog::kFatal)  
+		     << "-I- FairParTSQLIo::open() The FAIRDBGLOBALSEQNO table at DB entry# " << iEntry << " is already\n"
+             << " existing but not aligned in sequence nr. range [ " <<  GetGlobalSeqNoIn() << " .. " << GetGlobalSeqNoOut() << " ]"
              << " quit rather than risk damage to this table ... \n" << endl;
         return kFALSE;
       }
 
-      cout << "-I- FairParTSQLIo:open() Meta-structure for DB entry# " << iEntry << " looks OK ... continuing" << endl;
+       DBLOG("FairDb",FairDbLog::kInfo)  << " Meta-structure for DB entry# " << iEntry 
+                                         << " looks OK ... continuing" << endl;
     }
 
   }//! entries
 
   // Activate SQL Io
   FairRuntimeDb::instance()->activateParIo(this);
-  cout << "-I- FairParTSQLIo::open() connected with DB Entries# " << fConnections->GetNumDb() << endl;
+   DBLOG("FairDb",FairDbLog::kInfo) << " connected with DB Entries# " 
+                                    << fConnections->GetNumDb() << endl;
   return kTRUE;
 }
 
@@ -387,4 +407,19 @@ void FairParTSQLIo::CombineDataType(TString input_type, TString other_type)
 void FairParTSQLIo::SetVerbosity(Int_t level)
 {
   FairDbTableInterfaceStore::Instance().SetVerbosity(level);
+}
+
+
+void FairParTSQLIo::SetGlobalSeqNoIn(Int_t seqno){
+  // DB check for the SEQNO range calculation
+  if ( (seqno <0) || (seqno>9) ) {
+	DBLOG("FairDb", FairDbLog::kWarning) << "seqno basis: "<< seqno 
+										 << "out of range [0..9], seqno will be reset to 0." << endl;
+	seqno=0;
+  }
+  
+  fGlobalSeqNoIn = seqno*BAS_SEQNO;
+  fGlobalSeqNoOut = fGlobalSeqNoIn + INC_SEQNO;
+
+  //cout << " SEQNO_IN -------> " << fGlobalSeqNoIn <<  " : " << fGlobalSeqNoOut << endl;
 }
