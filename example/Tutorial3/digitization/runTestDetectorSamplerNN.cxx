@@ -8,6 +8,7 @@
 #include <iostream>
 #include <csignal>
 
+#include "FairMQPayload.h"
 #include "FairMQLogger.h"
 #include "FairMQSampler.h"
 #include "nanomsg/FairMQTransportFactoryNN.h"
@@ -18,14 +19,17 @@ using std::endl;
 using std::stringstream;
 
 
-FairMQSampler sampler;
+typedef FairMQPayload::TestDetectorDigi TPayload;
+typedef FairMQDigi TDigi;
+
+FairMQSampler<TDigi,TPayload> sampler;
 
 static void s_signal_handler (int signal)
 {
   cout << endl << "Caught signal " << signal << endl;
 
-  sampler.ChangeState(FairMQSampler::STOP);
-  sampler.ChangeState(FairMQSampler::END);
+  sampler.ChangeState(FairMQSampler<TDigi,TPayload>::STOP);
+  sampler.ChangeState(FairMQSampler<TDigi,TPayload>::END);
 
   cout << "Shutdown complete. Bye!" << endl;
   exit(1);
@@ -62,32 +66,32 @@ int main(int argc, char** argv)
 
   int i = 1;
 
-  sampler.SetProperty(FairMQSampler::Id, argv[i]);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::Id, argv[i]);
   ++i;
 
-  sampler.SetProperty(FairMQSampler::InputFile, argv[i]);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::InputFile, argv[i]);
   ++i;
 
-  sampler.SetProperty(FairMQSampler::ParFile, argv[i]);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::ParFile, argv[i]);
   ++i;
 
-  sampler.SetProperty(FairMQSampler::Branch, argv[i]);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::Branch, argv[i]);
   ++i;
 
   int eventRate;
   stringstream(argv[i]) >> eventRate;
-  sampler.SetProperty(FairMQSampler::EventRate, eventRate);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::EventRate, eventRate);
   ++i;
 
   int numIoThreads;
   stringstream(argv[i]) >> numIoThreads;
-  sampler.SetProperty(FairMQSampler::NumIoThreads, numIoThreads);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::NumIoThreads, numIoThreads);
   ++i;
 
-  sampler.SetProperty(FairMQSampler::NumInputs, 0);
-  sampler.SetProperty(FairMQSampler::NumOutputs, 1);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::NumInputs, 0);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::NumOutputs, 1);
 
-  sampler.ChangeState(FairMQSampler::INIT);
+  sampler.ChangeState(FairMQSampler<TDigi,TPayload>::INIT);
 
   // INPUT: 0 - command
   //sampler.SetProperty(FairMQSampler::InputSocketType, ZMQ_SUB, 0);
@@ -95,15 +99,15 @@ int main(int argc, char** argv)
   //sampler.SetProperty(FairMQSampler::InputAddress, "tcp://localhost:5560", 0);
 
   // OUTPUT: 0 - data
-  sampler.SetProperty(FairMQSampler::OutputSocketType, argv[i], 0);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::OutputSocketType, argv[i], 0);
   ++i;
   int outputSndBufSize;
   stringstream(argv[i]) >> outputSndBufSize;
-  sampler.SetProperty(FairMQSampler::OutputSndBufSize, outputSndBufSize, 0);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::OutputSndBufSize, outputSndBufSize, 0);
   ++i;
-  sampler.SetProperty(FairMQSampler::OutputMethod, argv[i], 0);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::OutputMethod, argv[i], 0);
   ++i;
-  sampler.SetProperty(FairMQSampler::OutputAddress, argv[i], 0);
+  sampler.SetProperty(FairMQSampler<TDigi,TPayload>::OutputAddress, argv[i], 0);
   ++i;
 
   // OUTPUT: 1 - logger
@@ -111,16 +115,16 @@ int main(int argc, char** argv)
   //sampler.SetProperty(FairMQSampler::OutputSndBufSize, 1000, 1);
   //sampler.SetProperty(FairMQSampler::OutputAddress, "tcp://*:5561", 1);
 
-  sampler.ChangeState(FairMQSampler::SETOUTPUT);
-  sampler.ChangeState(FairMQSampler::SETINPUT);
-  sampler.ChangeState(FairMQSampler::RUN);
+  sampler.ChangeState(FairMQSampler<TDigi,TPayload>::SETOUTPUT);
+  sampler.ChangeState(FairMQSampler<TDigi,TPayload>::SETINPUT);
+  sampler.ChangeState(FairMQSampler<TDigi,TPayload>::RUN);
 
   //TODO: get rid of this hack!
   char ch;
   cin.get(ch);
 
-  sampler.ChangeState(FairMQSampler::STOP);
-  sampler.ChangeState(FairMQSampler::END);
+  sampler.ChangeState(FairMQSampler<TDigi,TPayload>::STOP);
+  sampler.ChangeState(FairMQSampler<TDigi,TPayload>::END);
 
   return 0;
 }
