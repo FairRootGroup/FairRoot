@@ -5,6 +5,8 @@
  *  @author A. Rybalchenko
  */
 
+
+/*
 #include "FairMQDigiLoader.h"
 #include "FairMQLogger.h"
 #include <iostream>
@@ -43,3 +45,6 @@ void FairMQDigiLoader::Exec(Option_t* opt)
   //std::cout << "Loaded " << fOutput->Size() << " bytes (" << NDigis << " entries)." << std::endl;
 }
 
+
+ */
+ 
