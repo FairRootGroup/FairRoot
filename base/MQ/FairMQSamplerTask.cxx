@@ -27,18 +27,27 @@ FairMQSamplerTask::FairMQSamplerTask() :
 FairMQSamplerTask::~FairMQSamplerTask()
 {
   delete fInput;
+  fOutput->CloseMessage();
   //delete fOutput; // leave fOutput in memory, because it is needed even after FairMQSamplerTask is terminated. ClearOutput will clean it when it is no longer needed.
 }
 
 InitStatus FairMQSamplerTask::Init()
 {
   FairRootManager* ioman = FairRootManager::Instance();
-  fInput = (TClonesArray*) ioman->GetObject(fBranch.Data());
+  fInput = (TClonesArray*) ioman->GetObject(fBranch.c_str());
 
   return kSUCCESS;
 }
 
-void FairMQSamplerTask::SetBranch(TString branch)
+
+
+void FairMQSamplerTask::Exec(Option_t* opt)
+{
+  
+}
+
+
+void FairMQSamplerTask::SetBranch(string branch)
 {
   fBranch = branch;
 }

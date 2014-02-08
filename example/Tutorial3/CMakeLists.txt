@@ -7,6 +7,7 @@ ${BASE_INCLUDE_DIRECTORIES}
 ${ROOT_INCLUDE_DIR}
 ${ZMQ_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/fairmq
+${CMAKE_SOURCE_DIR}/base/MQ
 ${CMAKE_SOURCE_DIR}/example/mcstack
 ${CMAKE_SOURCE_DIR}/example/Tutorial3
 ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
@@ -63,12 +64,12 @@ If (Boost_FOUND)
   Set(SRCS 
       ${SRCS} 
       reconstruction/FairTestDetectorMQRecoTask.cxx
-      digitization/FairTestDetectorDigiLoader.cxx
+      #digitization/FairTestDetectorDigiLoader.cxx
   )
 
   Set(NO_DICT_SRCS
     data/FairMQFileSink.cxx
-    digitization/FairTestDetectorMQSampler.cxx
+    #digitization/FairTestDetectorMQSampler.cxx
   )
 EndIf (Boost_FOUND)
 
@@ -76,7 +77,8 @@ Set(LINKDEF FairTestDetectorLinkDef.h)
 Set(LIBRARY_NAME FairTestDetector)
 
 If (Boost_FOUND)
-  Set(DEPENDENCIES Base MCStack FairMQ boost_thread boost_system)
+  Set(DEPENDENCIES 
+    Base MCStack FairMQ FairMQSampler boost_thread boost_system)
 Else (Boost_FOUND)
   Set(DEPENDENCIES Base MCStack)
 EndIf (Boost_FOUND)

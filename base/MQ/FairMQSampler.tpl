@@ -1,31 +1,15 @@
-/**
- * FairMQSampler.cpp
+/* 
+ * File:   FairMQSampler.tpl
+ * Author: winckler
  *
- * @since 2012-09-27
- * @author D. Klein, A. Rybalchenko
+ * Created on February 7, 2014, 6:21 PM
  */
 
-#include <vector>
-#include <iostream>
-
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/timer/timer.hpp>
-
-#include "TList.h"
-#include "TObjString.h"
-#include "TClonesArray.h"
-#include "FairParRootFileIo.h"
-#include "FairRuntimeDb.h"
-#include "TROOT.h"
-
-#include "FairMQSampler.h"
-#include "FairMQLogger.h"
 
 
-FairMQSampler::FairMQSampler() :
+template <typename T1, typename T2> FairMQSampler<T1,T2>::FairMQSampler() :
   fFairRunAna(new FairRunAna()),
-  fSamplerTask(NULL),
+  fSamplerTask(new FairMQDigiLoader<T1,T2>()),
   fInputFile(""),
   fParFile(""),
   fBranch(""),
@@ -33,14 +17,15 @@ FairMQSampler::FairMQSampler() :
 {
 }
 
-FairMQSampler::~FairMQSampler()
+template <typename T1, typename T2> FairMQSampler<T1,T2>::~FairMQSampler()
 {
-  if(fFairRunAna) {
-    fFairRunAna->TerminateRun();
-  }
+  if(fFairRunAna) fFairRunAna->TerminateRun();
+  delete fSamplerTask;
 }
 
-void FairMQSampler::Init()
+/// Methods
+
+template <typename T1, typename T2> void FairMQSampler<T1,T2>::Init()
 {
   FairMQDevice::Init();
 
@@ -66,7 +51,7 @@ void FairMQSampler::Init()
   fNumEvents = int((ioman->GetInChain())->GetEntries());
 }
 
-void FairMQSampler::Run()
+template <typename T1, typename T2> void FairMQSampler<T1,T2>::Run()
 {
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, ">>>>>>> Run <<<<<<<");
   boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
@@ -118,7 +103,7 @@ void FairMQSampler::Run()
   //commandListener.join();
 }
 
-void FairMQSampler::ResetEventCounter()
+template <typename T1, typename T2> void FairMQSampler<T1,T2>::ResetEventCounter()
 {
   while ( true ) {
     try {
@@ -132,7 +117,7 @@ void FairMQSampler::ResetEventCounter()
   FairMQLogger::GetInstance()->Log(FairMQLogger::DEBUG, ">>>>>>> stopping resetEventCounter <<<<<<<");
 }
 
-void FairMQSampler::ListenToCommands()
+template <typename T1, typename T2> void FairMQSampler<T1,T2>::ListenToCommands()
 {
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, ">>>>>>> ListenToCommands <<<<<<<");
 
@@ -161,7 +146,8 @@ void FairMQSampler::ListenToCommands()
   FairMQLogger::GetInstance()->Log(FairMQLogger::DEBUG, ">>>>>>> stopping commandListener <<<<<<<");
 }
 
-void FairMQSampler::SetProperty(const int key, const string& value, const int slot/*= 0*/)
+template <typename T1, typename T2>
+void FairMQSampler<T1,T2>::SetProperty(const int key, const string& value, const int slot/*= 0*/)
 {
   switch (key) {
   case InputFile:
@@ -179,7 +165,8 @@ void FairMQSampler::SetProperty(const int key, const string& value, const int sl
   }
 }
 
-string FairMQSampler::GetProperty(const int key, const string& default_/*= ""*/, const int slot/*= 0*/)
+template <typename T1, typename T2>
+string FairMQSampler<T1,T2>::GetProperty(const int key, const string& default_/*= ""*/, const int slot/*= 0*/)
 {
   switch (key) {
   case InputFile:
@@ -193,7 +180,8 @@ string FairMQSampler::GetProperty(const int key, const string& default_/*= ""*/,
   }
 }
 
-void FairMQSampler::SetProperty(const int key, const int value, const int slot/*= 0*/)
+template <typename T1, typename T2>
+void FairMQSampler<T1,T2>::SetProperty(const int key, const int value, const int slot/*= 0*/)
 {
   switch (key) {
   case EventRate:
@@ -205,7 +193,8 @@ void FairMQSampler::SetProperty(const int key, const int value, const int slot/*
   }
 }
 
-int FairMQSampler::GetProperty(const int key, const int default_/*= 0*/, const int slot/*= 0*/)
+template <typename T1, typename T2>
+int FairMQSampler<T1,T2>::GetProperty(const int key, const int default_/*= 0*/, const int slot/*= 0*/)
 {
   switch (key) {
   case EventRate:
@@ -214,4 +203,5 @@ int FairMQSampler::GetProperty(const int key, const int default_/*= 0*/, const i
     return FairMQDevice::GetProperty(key, default_, slot);
   }
 }
+
 

@@ -2,17 +2,34 @@
  * FairMQSampler.h
  *
  * @since 2012-09-27
- * @author D. Klein, A. Rybalchenko
+ * @author D. Klein, A. Rybalchenko, N. Winckler
  */
 
 #ifndef FAIRMQSAMPLER_H_
 #define FAIRMQSAMPLER_H_
 
+#include <vector>
+#include <iostream>
+
+#include <boost/thread.hpp>
+#include <boost/bind.hpp>
+#include <boost/timer/timer.hpp>
+
+#include "TList.h"
+#include "TObjString.h"
+#include "TClonesArray.h"
+#include "TROOT.h"
+
+#include "FairParRootFileIo.h"
+#include "FairRuntimeDb.h"
 #include "FairRunAna.h"
 #include "FairTask.h"
+
 #include "FairMQDevice.h"
 #include "FairMQSamplerTask.h"
-
+#include "FairMQLogger.h"
+#include "FairMQDigiLoader.h"
+#include "FairMQPayload.h"
 
 /**
  * Reads simulated digis from a root file and samples the digi as a time-series UDP stream.
@@ -25,7 +42,8 @@
  * to simulate the future detector output as realistic as possible to evaluate the
  * feasibility and quality of the various possible online analysis features.
  */
-class FairMQSampler: public FairMQDevice
+
+template <typename T1, typename T2> class FairMQSampler: public FairMQDevice
 {
   public:
     enum {
@@ -56,5 +74,8 @@ class FairMQSampler: public FairMQDevice
     virtual void Run();
 
 };
+
+/// Template implementation is in FairMQSampler.tpl :
+#include "FairMQSampler.tpl"
 
 #endif /* FAIRMQSAMPLER_H_ */
