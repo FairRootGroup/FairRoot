@@ -62,12 +62,8 @@ int main(int argc, char** argv)
   }
 
   s_catch_signals();
-
   
-  stringstream logmsg;
-  logmsg << "PID: " << getpid();
-  FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, logmsg.str());
-
+  LOG(INFO) << "PID: " << getpid();
   
   FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
   sampler.SetTransport(transportFactory);

@@ -8,7 +8,6 @@
 
 /*
 #include "FairMQDigiLoader.h"
-#include "FairMQLogger.h"
 #include <iostream>
 
 
