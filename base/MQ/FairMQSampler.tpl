@@ -7,9 +7,9 @@
 
 
 
-template <typename T1, typename T2> FairMQSampler<T1,T2>::FairMQSampler() :
+template <typename Loader> FairMQSampler<Loader>::FairMQSampler() :
   fFairRunAna(new FairRunAna()),
-  fSamplerTask(new FairMQDigiLoader<T1,T2>()),
+  fSamplerTask(new Loader()),
   fInputFile(""),
   fParFile(""),
   fBranch(""),
@@ -17,7 +17,7 @@ template <typename T1, typename T2> FairMQSampler<T1,T2>::FairMQSampler() :
 {
 }
 
-template <typename T1, typename T2> FairMQSampler<T1,T2>::~FairMQSampler()
+template <typename Loader> FairMQSampler<Loader>::~FairMQSampler()
 {
   if(fFairRunAna) fFairRunAna->TerminateRun();
   delete fSamplerTask;
@@ -25,7 +25,7 @@ template <typename T1, typename T2> FairMQSampler<T1,T2>::~FairMQSampler()
 
 /// Methods
 
-template <typename T1, typename T2> void FairMQSampler<T1,T2>::Init()
+template <typename Loader> void FairMQSampler<Loader>::Init()
 {
   FairMQDevice::Init();
 
@@ -51,7 +51,7 @@ template <typename T1, typename T2> void FairMQSampler<T1,T2>::Init()
   fNumEvents = int((ioman->GetInChain())->GetEntries());
 }
 
-template <typename T1, typename T2> void FairMQSampler<T1,T2>::Run()
+template <typename Loader> void FairMQSampler<Loader>::Run()
 {
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, ">>>>>>> Run <<<<<<<");
   boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
@@ -103,7 +103,7 @@ template <typename T1, typename T2> void FairMQSampler<T1,T2>::Run()
   //commandListener.join();
 }
 
-template <typename T1, typename T2> void FairMQSampler<T1,T2>::ResetEventCounter()
+template <typename Loader> void FairMQSampler<Loader>::ResetEventCounter()
 {
   while ( true ) {
     try {
@@ -117,7 +117,7 @@ template <typename T1, typename T2> void FairMQSampler<T1,T2>::ResetEventCounter
   FairMQLogger::GetInstance()->Log(FairMQLogger::DEBUG, ">>>>>>> stopping resetEventCounter <<<<<<<");
 }
 
-template <typename T1, typename T2> void FairMQSampler<T1,T2>::ListenToCommands()
+template <typename Loader> void FairMQSampler<Loader>::ListenToCommands()
 {
   FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, ">>>>>>> ListenToCommands <<<<<<<");
 
@@ -146,8 +146,8 @@ template <typename T1, typename T2> void FairMQSampler<T1,T2>::ListenToCommands(
   FairMQLogger::GetInstance()->Log(FairMQLogger::DEBUG, ">>>>>>> stopping commandListener <<<<<<<");
 }
 
-template <typename T1, typename T2>
-void FairMQSampler<T1,T2>::SetProperty(const int key, const string& value, const int slot/*= 0*/)
+template <typename Loader>
+void FairMQSampler<Loader>::SetProperty(const int key, const string& value, const int slot/*= 0*/)
 {
   switch (key) {
   case InputFile:
@@ -165,8 +165,8 @@ void FairMQSampler<T1,T2>::SetProperty(const int key, const string& value, const
   }
 }
 
-template <typename T1, typename T2>
-string FairMQSampler<T1,T2>::GetProperty(const int key, const string& default_/*= ""*/, const int slot/*= 0*/)
+template <typename Loader>
+string FairMQSampler<Loader>::GetProperty(const int key, const string& default_/*= ""*/, const int slot/*= 0*/)
 {
   switch (key) {
   case InputFile:
@@ -180,8 +180,8 @@ string FairMQSampler<T1,T2>::GetProperty(const int key, const string& default_/*
   }
 }
 
-template <typename T1, typename T2>
-void FairMQSampler<T1,T2>::SetProperty(const int key, const int value, const int slot/*= 0*/)
+template <typename Loader>
+void FairMQSampler<Loader>::SetProperty(const int key, const int value, const int slot/*= 0*/)
 {
   switch (key) {
   case EventRate:
@@ -193,8 +193,8 @@ void FairMQSampler<T1,T2>::SetProperty(const int key, const int value, const int
   }
 }
 
-template <typename T1, typename T2>
-int FairMQSampler<T1,T2>::GetProperty(const int key, const int default_/*= 0*/, const int slot/*= 0*/)
+template <typename Loader>
+int FairMQSampler<Loader>::GetProperty(const int key, const int default_/*= 0*/, const int slot/*= 0*/)
 {
   switch (key) {
   case EventRate:

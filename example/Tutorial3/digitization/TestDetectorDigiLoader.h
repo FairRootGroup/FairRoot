@@ -9,12 +9,14 @@
 #ifndef TESTDETECTORDIGILOADER_H
 #define	TESTDETECTORDIGILOADER_H
 
-#include "FairMQPayload.h"
-#include "FairTestDetectorPayload.h"
+//#include "FairMQPayload.h"
+//#include "FairTestDetectorPayload.h"
 #include "FairMQSamplerTask.h"
+#include "FairMQDigiLoader.h"
 #include <iostream> 
  /// Template header
-template <typename T1, typename T2> class TestDetectorDigiLoader : public FairMQSamplerTask
+template <typename T1, typename T2> class TestDetectorDigiLoader : public FairMQDigiLoader<T1,T2>
+//: public FairMQSamplerTask
 { 
 public : 
  

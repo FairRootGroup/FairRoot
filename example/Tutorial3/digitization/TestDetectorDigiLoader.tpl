@@ -8,7 +8,7 @@
 /// Implementation of the template class
 
 template <typename T1, typename T2> TestDetectorDigiLoader<T1,T2>::TestDetectorDigiLoader() : 
-FairMQSamplerTask("Load Data described by class T1 into the Payload class T2")
+FairMQDigiLoader<T1,T2>() //FairMQSamplerTask("Load Data described by class T1 into the Payload class T2")
 { 
 }
  
@@ -18,28 +18,12 @@ template <typename T1, typename T2> TestDetectorDigiLoader<T1,T2>::~TestDetector
 
 template <typename T1, typename T2> void TestDetectorDigiLoader<T1,T2>::Exec(Option_t* opt) 
 { 
-    /*
-    int nDigis = fInput->GetEntriesFast();
-    int size = nDigis * sizeof(T2);
+    //this->LoadXYZTDigi();
 
-    fOutput = fTransportFactory->CreateMessage(size);
-    T2* ptr = reinterpret_cast<T2*>(fOutput->GetData());
-
-    for (Int_t i = 0; i < nDigis; ++i) 
-    {
-        T1* digi = reinterpret_cast<T1*>(fInput->At(i));
-        if (!digi) continue;
-        // TO DO : make the part below generic.
-        new(&ptr[i]) T2();
-        ptr[i] = T2();
-        ptr[i].fX = digi->GetX();
-        ptr[i].fY = digi->GetY();
-        ptr[i].fZ = digi->GetZ();
-        ptr[i].fTimeStamp = digi->GetTimeStamp();
-    }
-    // */
 }
-
+//*
+#include "FairMQPayload.h"
+#include "FairTestDetectorPayload.h"
 ////////// Specialization <FairMQDigi, FairMQPayload::TestDetectorDigi>
 template <> 
 void TestDetectorDigiLoader<FairMQDigi, FairMQPayload::TestDetectorDigi>::Exec(Option_t* opt) 
@@ -71,6 +55,7 @@ void TestDetectorDigiLoader<FairMQDigi, FairMQPayload::TestDetectorDigi>::Exec(O
 template <> 
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetectorDigi>::Exec(Option_t* opt) 
 { 
+    /*
     int nDigis = fInput->GetEntriesFast();
     int size = nDigis * sizeof(TestDetectorPayload::TestDetectorDigi);
 
@@ -88,6 +73,11 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetec
         ptr[i].fZ = digi->GetZ();
         ptr[i].fTimeStamp = digi->GetTimeStamp();
     }
+    //*/
+    
+    this->LoadXYZTDigi();
+    
     
 }
 
+// */
