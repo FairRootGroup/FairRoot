@@ -28,8 +28,6 @@
 #include "FairMQDevice.h"
 #include "FairMQSamplerTask.h"
 #include "FairMQLogger.h"
-#include "FairMQDigiLoader.h"
-#include "FairMQPayload.h"
 
 /**
  * Reads simulated digis from a root file and samples the digi as a time-series UDP stream.
@@ -43,7 +41,7 @@
  * feasibility and quality of the various possible online analysis features.
  */
 
-template <typename T1, typename T2> class FairMQSampler: public FairMQDevice
+template <typename Loader> class FairMQSampler: public FairMQDevice
 {
   public:
     enum {

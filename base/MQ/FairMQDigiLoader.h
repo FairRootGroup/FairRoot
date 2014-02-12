@@ -15,11 +15,17 @@
  /// Template header
 template <typename T1, typename T2> class FairMQDigiLoader : public FairMQSamplerTask
 { 
-public : 
- 
-    FairMQDigiLoader();
-    virtual ~FairMQDigiLoader();
-    virtual void Exec(Option_t* opt);
+    public : 
+
+        FairMQDigiLoader();
+        virtual ~FairMQDigiLoader();
+        virtual void Exec(Option_t* opt);
+        
+    protected :
+        void AllocateMsgStorage();
+        void LoadXYZTDigi();
+        T2* fPayloadPtr;
+        int fNDigis;
 }; 
 
 /// Template implementation is in FairMQDigiLoader.tpl :
