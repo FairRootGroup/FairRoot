@@ -8,22 +8,32 @@
 #include <iostream>
 #include <csignal>
 
+#include "FairMQLogger.h"
+#include "FairMQSampler.h"
+
 #include "TestDetectorDigiLoader.h"
 #include "FairTestDetectorPayload.h"
 
-#include "FairMQLogger.h"
-#include "FairMQSampler.h"
-#include "zeromq/FairMQTransportFactoryZMQ.h"
+#ifdef PROTOBUF
+  #include "FairTestDetectorPayload.pb.h"
+#endif
+
+#ifdef NANOMSG
+  #include "nanomsg/FairMQTransportFactoryNN.h"
+#else
+  #include "zeromq/FairMQTransportFactoryZMQ.h"
+#endif
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
 
-
-typedef TestDetectorPayload::TestDetectorDigi TPayload;
-typedef FairTestDetectorDigi TDigi;
-typedef TestDetectorDigiLoader<TDigi,TPayload> TLoader;
+#ifdef PROTOBUF
+  typedef TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload> TLoader;
+#else
+  typedef TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetectorDigi> TLoader;
+#endif
 
 FairMQSampler<TLoader> sampler;
 
@@ -59,10 +69,15 @@ int main(int argc, char** argv)
   }
 
   s_catch_signals();
-  
+
   LOG(INFO) << "PID: " << getpid();
   
+#ifdef NANOMSG
+  FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
+#else
   FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
+#endif
+
   sampler.SetTransport(transportFactory);
 
   int i = 1;

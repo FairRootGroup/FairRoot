@@ -1,9 +1,15 @@
 #!/bin/bash
 
+if(@NANOMSG_FOUND@); then
+    buffSize="50000000" # nanomsg buffer size is in bytes
+else
+    buffSize="1000" # zeromq high-water mark is in messages
+fi
+
 ID="601"
 numIoThreads="1"
 inputSocketType="pull"
-inputRcvBufSize="1000"
+inputRcvBufSize=$buffSize
 inputMethod="connect"
 inputAddress="tcp://localhost:5570"
 

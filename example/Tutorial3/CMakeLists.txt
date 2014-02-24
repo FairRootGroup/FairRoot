@@ -30,6 +30,9 @@ If (Boost_FOUND)
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startTestDetectorProcessor2.sh.in ${CMAKE_BINARY_DIR}/bin/startTestDetectorProcessor2.sh )
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh )
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startTestDetectorSampler.sh.in ${CMAKE_BINARY_DIR}/bin/startTestDetectorSampler.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBenchmark.sh.in ${CMAKE_BINARY_DIR}/bin/startBenchmark.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBin.sh.in ${CMAKE_BINARY_DIR}/bin/startBin.sh )
+  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh )
 EndIf (Boost_FOUND)
 
 set(LINK_DIRECTORIES
@@ -61,16 +64,19 @@ Set(SRCS
 )
 
 If (Boost_FOUND)
-  Set(SRCS 
-      ${SRCS} 
-      reconstruction/FairTestDetectorMQRecoTask.cxx
-      #digitization/FairTestDetectorDigiLoader.cxx
-  )
-
+  # Set(SRCS
+  #     ${SRCS}
+  #     reconstruction/FairTestDetectorMQRecoTask.cxx
+  # )
   Set(NO_DICT_SRCS
     data/FairMQFileSink.cxx
-    #digitization/FairTestDetectorMQSampler.cxx
   )
+  If(PROTOBUF_FOUND)
+    Set(NO_DICT_SRCS
+      ${NO_DICT_SRCS}
+      data/FairTestDetectorPayload.pb.cc
+    )
+  Endif(PROTOBUF_FOUND)
 EndIf (Boost_FOUND)
 
 Set(LINKDEF FairTestDetectorLinkDef.h)
@@ -91,19 +97,11 @@ Add_Subdirectory(macro)
 If (Boost_FOUND)
   Set(Exe_Names testDetectorProcessor testDetectorSampler fileSink)
 
-if(NANOMSG_FOUND)
   set(Exe_Source
-    reconstruction/runTestDetectorProcessorNN.cxx
-    digitization/runTestDetectorSamplerNN.cxx
-    reconstruction/runFileSinkNN.cxx
+    reconstruction/runTestDetectorProcessor.cxx
+    digitization/runTestDetectorSampler.cxx
+    reconstruction/runFileSink.cxx
     )
-else(NANOMSG_FOUND)
-  set(Exe_Source
-    reconstruction/runTestDetectorProcessorZMQ.cxx
-    digitization/runTestDetectorSamplerZMQ.cxx
-    reconstruction/runFileSinkZMQ.cxx
-    )
-endif(NANOMSG_FOUND)
 
   List(LENGTH Exe_Names _length)
   Math(EXPR _length ${_length}-1)

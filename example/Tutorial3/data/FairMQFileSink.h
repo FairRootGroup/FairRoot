@@ -9,16 +9,16 @@
 #define FAIRMQFILESINK_H_
 
 #include "Rtypes.h"
+#include "TString.h"
 
 #include "FairMQDevice.h"
-#include "FairTestDetectorPayload.h"
-
 
 class TVector3;
 class TFile;
 class TTree;
 class TClonesArray;
 
+template <typename T1, typename T2>
 class FairMQFileSink: public FairMQDevice
 {
   public:
@@ -32,5 +32,7 @@ class FairMQFileSink: public FairMQDevice
     TTree* fTree;
     TClonesArray* fOutput;
 };
+
+#include "FairMQFileSink.tpl"
 
 #endif /* FAIRMQFILESINK_H_ */

@@ -87,9 +87,19 @@ find_package(RuleChecker)
 find_package(IWYU)
 find_package(ZeroMQ)
 
-IF(USE_NANOMSG)
-find_package(nanomsg)
-ENDIF(USE_NANOMSG)
+if(USE_NANOMSG)
+  find_package(nanomsg)
+else(USE_NANOMSG)
+  set(NANOMSG_FOUND false) # lower case false value is needed for bash scripts
+endif(USE_NANOMSG)
+
+if(USE_PROTOBUF)
+  include(FindProtobuf)
+  find_package(Protobuf)
+  if(PROTOBUF_FOUND)
+    add_definitions(-DPROTOBUF)
+  endif(PROTOBUF_FOUND)
+endif(USE_PROTOBUF)
 
 If(FAIRSOFT_EXTERN)
   set(BOOST_ROOT ${SIMPATH})

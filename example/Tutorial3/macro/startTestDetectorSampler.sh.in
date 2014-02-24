@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if(@NANOMSG_FOUND@); then
+    buffSize="50000000" # nanomsg buffer size is in bytes
+else
+    buffSize="1000" # zeromq high-water mark is in messages
+fi
+
 ID="101"
 inputFile="@CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi.root"
 parameterFile="@CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams.root"
@@ -7,7 +13,7 @@ branch="FairTestDetectorDigi"
 eventRate="0"
 numIoThreads="1"
 outputSocketType="push"
-outputBufSize="1000"
+outputBufSize=$buffSize
 outputMethod="bind"
 outputAddress="tcp://*:5565"
 
