@@ -38,8 +38,8 @@ plots(Int_t nEvents = 1000, Int_t iout=1)
 	
   FairMCEventHeader *MCEventHeader  = new FairMCEventHeader();
   TClonesArray *MCTracks   = new TClonesArray("FairMCTrack");
-  TClonesArray *TutorialDetPoints  = new TClonesArray("FairTutorialDetPoint");
-  TClonesArray *TutorialDetHits    = new TClonesArray("FairTutorialDetHit");
+  TClonesArray *TutorialDetPoints  = new TClonesArray("FairTutorialDet4Point");
+  TClonesArray *TutorialDetHits    = new TClonesArray("FairTutorialDet4Hit");
 
   t1->SetBranchAddress("MCEventHeader.",&MCEventHeader);
   t1->SetBranchAddress("MCTrack",       &MCTracks);
@@ -47,8 +47,8 @@ plots(Int_t nEvents = 1000, Int_t iout=1)
   t2->SetBranchAddress("TutorialDetHit",        &TutorialDetHits);
 
   FairMCTrack     *MCTrack;
-  FairTutorialDetPoint    *Point;
-  FairTutorialDetHit      *Hit;
+  FairTutorialDet4Point    *Point;
+  FairTutorialDet4Hit      *Hit;
 
   //histograms 
   fRun->SetOutputFile("data/test.ana.root");
@@ -97,9 +97,9 @@ for (Int_t iev=0; iev< nevent; iev++) {
     
   // Hit loop					
   for (Int_t j =0; j<nHits; j++) {
-    Hit   = (FairTutorialDetHit*) TutorialDetHits->At(j);
+    Hit   = (FairTutorialDet4Hit*) TutorialDetHits->At(j);
     Int_t l = Hit->GetRefIndex();
-    Point = (FairTutorialDetPoint*) TutorialDetPoints->At(l);
+    Point = (FairTutorialDet4Point*) TutorialDetPoints->At(l);
 
     // Point info
     x_poi	= Point -> GetX();

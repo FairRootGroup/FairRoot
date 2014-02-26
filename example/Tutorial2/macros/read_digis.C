@@ -28,7 +28,7 @@ void read_digis(){
  
     FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
     TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
-    tutDetDigiFile += "/Tutorial2/macros/tutdet.digi.par";
+    tutDetDigiFile += "/Tutorial2/parameters/tutdet.digi.par";
     parInput2->open(tutDetDigiFile.Data(),"in");
 
     rtdb->setFirstInput(io1);
