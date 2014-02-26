@@ -1,4 +1,4 @@
-void run_rad(Int_t nEvents = 100)
+void run_rad(Int_t nEvents = 100, TString mcEngine="TGeant3")
 {
   
   TString dir = gSystem->Getenv("VMCWORKDIR");
@@ -37,7 +37,7 @@ void run_rad(Int_t nEvents = 100)
  
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
-  run->SetName("TGeant3");              // Transport engine
+  run->SetName(mcEngine);              // Transport engine
   run->SetOutputFile(outFile);          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------

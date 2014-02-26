@@ -1,31 +1,39 @@
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_sim.C)
-add_test(run_sim ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_sim.sh)
-SET_TESTS_PROPERTIES(run_sim PROPERTIES TIMEOUT "180")
-SET_TESTS_PROPERTIES(run_sim PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
-
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_digi.C)
-add_test(run_digi ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_digi.sh)
-SET_TESTS_PROPERTIES(run_digi PROPERTIES DEPENDS run_sim)
-SET_TESTS_PROPERTIES(run_digi PROPERTIES TIMEOUT "30")
-SET_TESTS_PROPERTIES(run_digi PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
-
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_reco.C)
-add_test(run_reco ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_reco.sh)
-SET_TESTS_PROPERTIES(run_reco PROPERTIES DEPENDS run_digi)
-SET_TESTS_PROPERTIES(run_reco PROPERTIES TIMEOUT "30")
-SET_TESTS_PROPERTIES(run_reco PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
-
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_digi_timebased.C)
-add_test(run_digi_timebased ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_digi_timebased.sh)
-SET_TESTS_PROPERTIES(run_digi_timebased PROPERTIES DEPENDS run_sim)
-SET_TESTS_PROPERTIES(run_digi_timebased PROPERTIES TIMEOUT "30")
-SET_TESTS_PROPERTIES(run_digi_timebased PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
-
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_reco_timebased.C)
-add_test(run_reco_timebased ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_reco_timebased.sh)
-SET_TESTS_PROPERTIES(run_reco_timebased PROPERTIES DEPENDS run_digi_timebased)
-SET_TESTS_PROPERTIES(run_reco_timebased PROPERTIES TIMEOUT "30")
-SET_TESTS_PROPERTIES(run_reco_timebased PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
+
+ForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
+  Add_Test(run_sim_${_mcEngine} 
+           ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_sim.sh 1024 \"${_mcEngine}\")
+  Set_Tests_Properties(run_sim_${_mcEngine} PROPERTIES TIMEOUT "180")
+  Set_Tests_Properties(run_sim_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
+
+  Add_Test(run_digi_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_digi.sh)
+  Set_Tests_Properties(run_digi_${_mcEngine} PROPERTIES DEPENDS run_sim_${_mcEngine})
+  Set_Tests_Properties(run_digi_${_mcEngine} PROPERTIES TIMEOUT "30")
+  Set_Tests_Properties(run_digi_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
+
+
+  Add_Test(run_reco_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_reco.sh)
+  Set_Tests_Properties(run_reco_${_mcEngine} PROPERTIES DEPENDS run_digi_${_mcEngine})
+  Set_Tests_Properties(run_reco_${_mcEngine} PROPERTIES TIMEOUT "30")
+  Set_Tests_Properties(run_reco_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
+
+
+  Add_Test(run_digi_timebased_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_digi_timebased.sh)
+  Set_Tests_Properties(run_digi_timebased_${_mcEngine} PROPERTIES DEPENDS run_sim_${_mcEngine})
+  Set_Tests_Properties(run_digi_timebased_${_mcEngine} PROPERTIES TIMEOUT "30")
+  Set_Tests_Properties(run_digi_timebased_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
+
+
+  Add_Test(run_reco_timebased_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_reco_timebased.sh)
+  Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES DEPENDS run_digi_timebased_${_mcEngine})
+  Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES TIMEOUT "30")
+  Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
+EndForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
+
 
 Install(FILES run_sim.C run_digi.C run_reco.C eventDisplay.C
               run_digi_timebased.C run_reco_timebased.C

@@ -1,4 +1,4 @@
-void run_sim(Int_t nEvents=1024)
+void run_sim(Int_t nEvents=1024, TString mcEngine="TGeant3")
 {
   TStopwatch timer;
   timer.Start();
@@ -20,7 +20,7 @@ void run_sim(Int_t nEvents=1024)
   // set the MC version used
   // ------------------------
 
-  fRun->SetName("TGeant3");
+  fRun->SetName(mcEngine);
   
   fRun->SetOutputFile("data/testrun.root");
 

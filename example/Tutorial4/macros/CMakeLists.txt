@@ -1,11 +1,23 @@
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial4/macros/run_tutorial4.C)
-add_test(run_tutorial4 ${CMAKE_BINARY_DIR}/example/Tutorial4/macros/run_tutorial4.sh)
-SET_TESTS_PROPERTIES(run_tutorial4 PROPERTIES TIMEOUT "30")
-SET_TESTS_PROPERTIES(run_tutorial4 PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
-
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial4/macros/run_reco.C)
-add_test(run_reco_tut4 ${CMAKE_BINARY_DIR}/example/Tutorial4/macros/run_reco.sh)
-SET_TESTS_PROPERTIES(run_reco_tut4 PROPERTIES DEPENDS run_tutorial4)
-SET_TESTS_PROPERTIES(run_reco_tut4 PROPERTIES TIMEOUT "30")
-SET_TESTS_PROPERTIES(run_reco_tut4 PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+
+
+ForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
+  Add_Test(run_tutorial4_${_mcEngine} 
+           ${CMAKE_BINARY_DIR}/example/Tutorial4/macros/run_tutorial4.sh 10 \"${_mcEngine}\")
+  Set_Tests_Properties(run_tutorial4_${_mcEngine} PROPERTIES TIMEOUT "30")
+  Set_Tests_Properties(run_tutorial4_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
+
+
+  Add_Test(run_reco_tut4_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial4/macros/run_reco.sh)
+  Set_Tests_Properties(run_reco_tut4_${_mcEngine} PROPERTIES DEPENDS run_tutorial4_${_mcEngine})
+  Set_Tests_Properties(run_reco_tut4_${_mcEngine} PROPERTIES TIMEOUT "30")
+  Set_Tests_Properties(run_reco_tut4_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+EndForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
+
+Install(FILES eventDisplay.C run_reco.C Create_Tutorial4_Geometry.C
+              run_tutorial4.C plots.C
+        DESTINATION share/fairbase/example/Tutorial4
+       )
+
 

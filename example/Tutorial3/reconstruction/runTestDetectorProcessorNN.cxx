@@ -53,9 +53,7 @@ int main(int argc, char** argv)
 
   s_catch_signals();
 
-  stringstream logmsg;
-  logmsg << "PID: " << getpid();
-  FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, logmsg.str());
+  LOG(INFO) << "PID: " << getpid();
 
   FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
   processor.SetTransport(transportFactory);
@@ -69,7 +67,7 @@ int main(int argc, char** argv)
     FairMQProcessorTask* task = new FairTestDetectorMQRecoTask();
     processor.SetTask(task);
   } else {
-    FairMQLogger::GetInstance()->Log(FairMQLogger::ERROR, "task not supported.");
+    LOG(ERROR) << "task not supported.";
     exit(1);
   }
   ++i;

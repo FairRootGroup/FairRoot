@@ -196,7 +196,7 @@ Install(DIRECTORY example/gconfig example/geometry
 
 Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
         DESTINATION bin
-        RENAME config.sh
+        RENAME FairRootConfig.sh
        )
 
 Install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
@@ -205,7 +205,7 @@ Install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
 
 Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
         DESTINATION bin
-        RENAME config.csh
+        RENAME FairRootConfig.csh
        )
 
 Install(DIRECTORY cmake 
@@ -219,7 +219,7 @@ if(NOT FAIRROOT_MINIMAL)
   WRITE_CONFIG_FILE(config.sh)
   WRITE_CONFIG_FILE(config.csh)
 
-  SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase)
+  SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase/example)
   WRITE_CONFIG_FILE(config.sh_install)
   WRITE_CONFIG_FILE(config.csh_install)
 

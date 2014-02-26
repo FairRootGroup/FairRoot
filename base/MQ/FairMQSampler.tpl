@@ -53,7 +53,7 @@ template <typename Loader> void FairMQSampler<Loader>::Init()
 
 template <typename Loader> void FairMQSampler<Loader>::Run()
 {
-  FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, ">>>>>>> Run <<<<<<<");
+  LOG(INFO) << ">>>>>>> Run <<<<<<<";
   boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
 
   boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
@@ -114,12 +114,12 @@ template <typename Loader> void FairMQSampler<Loader>::ResetEventCounter()
       break;
     }
   }
-  FairMQLogger::GetInstance()->Log(FairMQLogger::DEBUG, ">>>>>>> stopping resetEventCounter <<<<<<<");
+  LOG(DEBUG) << ">>>>>>> stopping resetEventCounter <<<<<<<";
 }
 
 template <typename Loader> void FairMQSampler<Loader>::ListenToCommands()
 {
-  FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, ">>>>>>> ListenToCommands <<<<<<<");
+  LOG(INFO) << ">>>>>>> ListenToCommands <<<<<<<";
 
   bool received = false;
 
@@ -131,7 +131,7 @@ template <typename Loader> void FairMQSampler<Loader>::ListenToCommands()
 
       if (received) {
         //command handling goes here.
-        FairMQLogger::GetInstance()->Log(FairMQLogger::INFO, "> received command <");
+        LOG(INFO) << "> received command <";
         received = false;
       }
 
@@ -143,7 +143,7 @@ template <typename Loader> void FairMQSampler<Loader>::ListenToCommands()
       break;
     }
   }
-  FairMQLogger::GetInstance()->Log(FairMQLogger::DEBUG, ">>>>>>> stopping commandListener <<<<<<<");
+  LOG(DEBUG) << ">>>>>>> stopping commandListener <<<<<<<";
 }
 
 template <typename Loader>
