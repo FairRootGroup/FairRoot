@@ -15,3 +15,9 @@ ForEach(_mcEngine IN ITEMS TGeant3 TGeant4)
   Set_Tests_Properties(run_reco_tut4_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 EndForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
 
+Install(FILES eventDisplay.C run_reco.C Create_Tutorial4_Geometry.C
+              run_tutorial4.C plots.C
+        DESTINATION share/fairbase/example/Tutorial4
+       )
+
+
