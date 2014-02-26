@@ -20,8 +20,6 @@ set(SRCS
   "FairMQSamplerTask.cxx"
   "FairMQProcessor.cxx"
   "FairMQProcessorTask.cxx"
-  "FairMQDigiLoader.cxx"
-  "FairMQDigi.cxx"
 )
 
 set(DEPENDENCIES
