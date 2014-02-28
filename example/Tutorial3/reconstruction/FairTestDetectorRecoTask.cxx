@@ -12,6 +12,7 @@
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 
+#include "FairMQLogger.h"
 
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorRecoTask::FairTestDetectorRecoTask()
@@ -78,19 +79,25 @@ void FairTestDetectorRecoTask::Exec(Option_t* opt)
 
   // fill the map
 
-  for(int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++) {
-    FairTestDetectorDigi* digi = (FairTestDetectorDigi*) fDigiArray->At(ipnt);
-    if(!digi) { continue; }
+  for(int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++) 
+  {
+        FairTestDetectorDigi* digi = (FairTestDetectorDigi*) fDigiArray->At(ipnt);
+        if(!digi) continue;
 
+        /*
+        LOG(DEBUG) << " x= "  << digi->GetX() 
+                   << " y= " << digi->GetY()
+                   << " z= " << digi->GetZ()
+                   << " t= " << digi->GetTimeStamp();
+         // */
 
-    // Double_t timestamp = digi->GetTimeStamp();
-    TVector3 pos(digi->GetX()+0.5, digi->GetY()+0.5, digi->GetZ()+0.5);
-    TVector3 dpos(1/TMath::Sqrt(12), 1/TMath::Sqrt(12), 1/TMath::Sqrt(12));
+        TVector3 pos(digi->GetX()+0.5, digi->GetY()+0.5, digi->GetZ()+0.5);
+        TVector3 dpos(1/TMath::Sqrt(12), 1/TMath::Sqrt(12), 1/TMath::Sqrt(12));
 
-    FairTestDetectorHit* hit = new ((*fHitArray)[ipnt]) FairTestDetectorHit(-1, -1, pos, dpos);
-    hit->SetTimeStamp(digi->GetTimeStamp());
-    hit->SetTimeStampError(digi->GetTimeStampError());
-    // hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
+        FairTestDetectorHit* hit = new ((*fHitArray)[ipnt]) FairTestDetectorHit(-1, -1, pos, dpos);
+        hit->SetTimeStamp(digi->GetTimeStamp());
+        hit->SetTimeStampError(digi->GetTimeStampError());
+        // hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
   }
 }
 // -------------------------------------------------------------------------

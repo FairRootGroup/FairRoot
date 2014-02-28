@@ -18,6 +18,9 @@
   #include "FairTestDetectorPayload.pb.h"
 #endif
 
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
 #ifdef NANOMSG
   #include "nanomsg/FairMQTransportFactoryNN.h"
 #else
@@ -29,11 +32,26 @@ using std::cin;
 using std::endl;
 using std::stringstream;
 
+
+  // class to serialize/deserialize
+  typedef FairTestDetectorDigi TDigi;
+  // ProtoBuff payload
+#ifdef PROTOBUF  
+  typedef TestDetectorProto::DigiPayload TProtoDigiPayload;
+#endif  
+  // Binary payload
+  typedef TestDetectorPayload::TestDetectorDigi TBinPayloadIn;   // binary
+  // Boost payload
+  typedef boost::archive::binary_oarchive TBoostBinPayloadOut;   // boost binary format
+  typedef boost::archive::text_oarchive TBoostTextPayloadOut;     // boost text format
+  
+
 #ifdef PROTOBUF
-  typedef TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload> TLoader;
+  typedef TestDetectorDigiLoader<TDigi, TProtoDigiPayload> TLoader;
 #else
-  typedef TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetectorDigi> TLoader;
+  typedef TestDetectorDigiLoader<TDigi,TBoostBinPayloadOut> TLoader;
 #endif
+
 
 FairMQSampler<TLoader> sampler;
 
@@ -133,8 +151,16 @@ int main(int argc, char** argv)
 
   sampler.ChangeState(FairMQSampler<TLoader>::SETOUTPUT);
   sampler.ChangeState(FairMQSampler<TLoader>::SETINPUT);
-  sampler.ChangeState(FairMQSampler<TLoader>::RUN);
+  //sampler.ChangeState(FairMQSampler<TLoader>::RUN);
 
+  try
+     {
+         sampler.ChangeState(FairMQSampler<TLoader>::RUN);
+     }
+     catch (boost::archive::archive_exception e)
+     {
+         LOG(ERROR) << e.what();
+     }
   //TODO: get rid of this hack!
   char ch;
   cin.get(ch);
