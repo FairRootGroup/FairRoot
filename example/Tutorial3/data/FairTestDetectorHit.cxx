@@ -10,6 +10,14 @@ FairTestDetectorHit::FairTestDetectorHit(Int_t detID, Int_t mcindex, TVector3& p
 {
 }
 
+
+
+FairTestDetectorHit::FairTestDetectorHit(const FairTestDetectorHit &Hit) :
+  FairHit(Hit)
+{
+    
+}
+
 FairTestDetectorHit::~FairTestDetectorHit()
 {
 }
