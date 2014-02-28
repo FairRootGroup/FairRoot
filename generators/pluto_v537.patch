@@ -1,0 +1,234 @@
+--- plugins/scatter_mod/PSaidLowEnergy.cc_orig	2011-12-17 22:53:57.000000000 +0100
++++ plugins/scatter_mod/PSaidLowEnergy.cc	2011-12-17 22:55:13.000000000 +0100
+@@ -93,101 +93,102 @@
+ //mita end
+ 
+ 
+-double PSaidLowEnergy::dsdw(double th, double tlab) {
++double PSaidLowEnergy::dsdw(double thd, double tlab) {
+     // normalized pp elastic differential cross sections (mb/sr)
+     // arguments: scattering angle (deg), lab beam kinetic energy (GeV)
+ 
+-    double Tlab = tlab*1000;    
++    long double Tlab = tlab*1000;    
++    long double th = thd;
+ 
+-    double a0=825.770315997777;
+-    double a1=-36.1806390269961;
+-    double a2=0.736508337604257;
+-    double a3=-0.00245475650713848;
+-    double a4=-9.46167840068291e-05;
+-    double a5=1.18647782825118e-06;
+-    double a6=-4.23920644982741e-09;
+-    
+-    double a01=158509949.824459;
+-    double a11=-1.05462493339422;
+-    double a21=0.999464445523888;
+-    double a31=-0.331696205972712;
+-    double a41=-1.9817093971156;
+-    double a51=339.459572120675;
+-    
+-    double a02=7013162.6023937;
+-    double a12=-2.60581893459221;
+-    double a22=-1.17622988844922 ;
+-    double a32=-0.0572294874172003;
+-    double a42=-242.76957186148;
+-    double a52=4972.40753398661;
+-    
+-    double a03=7363793.10073931;
+-    double a13=-2.78666712844778;
+-    double a23=-1.19175331577741;
+-    //    double a33=-0.0168240994020085;
+-    double a43=2919.73115823142;
+-    double a53=-11247.1848613229;
+-    
+-    double b0=-1.11987335717749;
+-    double b1=0.0375681831247435;
+-    double b2=-0.000806720177542215;
+-    double b3=7.31226869503504e-06;
+-    double b4=-2.40772264489991e-08 ;
+-    
+-    double b01=5.49631512561751;
+-    double b11=-1.41153243358003;
+-    double b21=0.0873325395997571;
+-    double b31=-0.00210915057288232;
+-    double b41=1.78555710528402e-05;
+-    
+-    double b02=-2.01651356175559;
+-    double b12=0.00952134681173633;
+-    double b22=-0.00424259230244138;
+-    double b32=0.000815075673344715;
+-    double b42=-6.09637287432679e-05;
+-    double b52=1.5439817446594e-06;
+-    
+-    double c0=-0.0899947020336036;
+-    double c1=0.0165457502998486;
+-    double c2=-0.00035225623300735;
+-    double c3=3.18377219079531e-06;
+-    double c4=-1.04867548784599e-08;
+-    
+-    double c01=4.02283676522501;
+-    double c11=-0.571280456418181;
+-    double c21=0.0286964703485152;
+-    double c31=-0.000606564121973199;
+-    double c41=4.6543463351715e-06;
+-    
+-    double c02=0.000449138526079407;
+-    double c12=-0.00323470722989942;
+-    double c22=0.00101229269064745;
+-    double c32=-8.04320221005051e-05;
+-    double c42=1.38972236339651e-06;
+-    double c52=1.51442646510768e-08;
+-    
+-    double d0=0.14637558766108;
+-    double d1=0.242429384264589;
+-    double d2=-0.00515619107849952;
+-    double d3=4.5272537785055e-05;
+-    double d4=-1.42514150093272e-07;
+-    
+-    double d01=90.5702938678518;
+-    double d11=-12.623103132398;
+-    double d21=0.63864747288047;
+-    double d31=-0.0137296412910617;
+-    double d41=0.000107543327455007;
+-    
+-    double d03=95.4776480269654;
+-    double d13=-2.46798492423323;
+-    double d23=-1.27436869909584;
+-    double d33=-0.478148940786103;
+-    double d43=11.6930721555554;
+-    double d53=-64.5772975461858;
+-    double d63=-0.702778910136937;
+-    double d73=0.014105237506306;
+-    
+-    double as, bs, cs,ds;
++    long double a0=825.770315997777;
++    long double a1=-36.1806390269961;
++    long double a2=0.736508337604257;
++    long double a3=-0.00245475650713848;
++    long double a4=-9.46167840068291e-05;
++    long double a5=1.18647782825118e-06;
++    long double a6=-4.23920644982741e-09;
++
++    long double a01=158509949.824459;
++    long double a11=-1.05462493339422;
++    long double a21=0.999464445523888;
++    long double a31=-0.331696205972712;
++    long double a41=-1.9817093971156;
++    long double a51=339.459572120675;
++
++    long double a02=7013162.6023937;
++    long double a12=-2.60581893459221;
++    long double a22=-1.17622988844922 ;
++    long double a32=-0.0572294874172003;
++    long double a42=-242.76957186148;
++    long double a52=4972.40753398661;
++
++    long double a03=7363793.10073931;
++    long double a13=-2.78666712844778;
++    long double a23=-1.19175331577741;
++    //  long  double a33=-0.0168240994020085;
++    long double a43=2919.73115823142;
++    long double a53=-11247.1848613229;
++
++    long double b0=-1.11987335717749;
++    long double b1=0.0375681831247435;
++    long double b2=-0.000806720177542215;
++    long double b3=7.31226869503504e-06;
++    long double b4=-2.40772264489991e-08 ;
++
++    long double b01=5.49631512561751;
++    long double b11=-1.41153243358003;
++    long double b21=0.0873325395997571;
++    long double b31=-0.00210915057288232;
++    long double b41=1.78555710528402e-05;
++
++    long double b02=-2.01651356175559;
++    long double b12=0.00952134681173633;
++    long double b22=-0.00424259230244138;
++    long double b32=0.000815075673344715;
++    long double b42=-6.09637287432679e-05;
++    long double b52=1.5439817446594e-06;
++
++    long double c0=-0.0899947020336036;
++    long double c1=0.0165457502998486;
++    long double c2=-0.00035225623300735;
++    long double c3=3.18377219079531e-06;
++    long double c4=-1.04867548784599e-08;
++
++    long double c01=4.02283676522501;
++    long double c11=-0.571280456418181;
++    long double c21=0.0286964703485152;
++    long double c31=-0.000606564121973199;
++    long double c41=4.6543463351715e-06;
++
++    long double c02=0.000449138526079407;
++    long double c12=-0.00323470722989942;
++    long double c22=0.00101229269064745;
++    long double c32=-8.04320221005051e-05;
++    long double c42=1.38972236339651e-06;
++    long double c52=1.51442646510768e-08;
++
++    long double d0=0.14637558766108;
++    long double d1=0.242429384264589;
++    long double d2=-0.00515619107849952;
++    long double d3=4.5272537785055e-05;
++    long double d4=-1.42514150093272e-07;
++
++    long double d01=90.5702938678518;
++    long double d11=-12.623103132398;
++    long double d21=0.63864747288047;
++    long double d31=-0.0137296412910617;
++    long double d41=0.000107543327455007;
++
++    long double d03=95.4776480269654;
++    long double d13=-2.46798492423323;
++    long double d23=-1.27436869909584;
++    long double d33=-0.478148940786103;
++    long double d43=11.6930721555554;
++    long double d53=-64.5772975461858;
++    long double d63=-0.702778910136937;
++    long double d73=0.014105237506306;
++
++    long double as, bs, cs,ds;
+     
+     if(th>40) {
+       as=a0+a1*th+a2*pow(th,2)+a3*pow(th,3)+a4*pow(th,4)+a5*pow(th,5)+a6*pow(th,6);
+--- src/PStdData.cc_orig	2011-01-04 22:54:56.000000000 +0100
++++ src/PStdData.cc	2014-02-20 15:38:11.000000000 +0100
+@@ -344,21 +344,21 @@
+ double PStdData::WIDTH[mnpar]={
+   /* 0: dummy     */  0.0,             /* 1: Photon    */  0.0,
+   /* 2: Positron  */  0.0,             /* 3: Electron  */  0.0,
+-  /* 4: Neutrino  */  0.0,             /* 5: mu+       */  hbar/2.19703e-6,
+-  /* 6: mu-       */  PStdData::hbar/2.19703e-6, /* 7: pi0       */  PStdData::hbar/8.4e-17,
+-  /* 8: pi+       */  PStdData::hbar/2.6033e-8,  /* 9: pi-       */  PStdData::hbar/2.6033e-8,
+-  /*10: K0 long   */  PStdData::hbar/5.17e-8,    /*11: K+        */  PStdData::hbar/1.2386e-8,
+-  /*12: K-        */  PStdData::hbar/1.23861e-8, /*13: Neutron   */  PStdData::hbar/887.,
++  /* 4: Neutrino  */  0.0,             /* 5: mu+       */  double(PStdData::hbar/2.19703e-6),
++  /* 6: mu-       */  double(PStdData::hbar/2.19703e-6), /* 7: pi0       */  double(PStdData::hbar/8.4e-17),
++  /* 8: pi+       */  double(PStdData::hbar/2.6033e-8),  /* 9: pi-       */  double(PStdData::hbar/2.6033e-8),
++  /*10: K0 long   */  double(PStdData::hbar/5.17e-8),    /*11: K+        */  double(PStdData::hbar/1.2386e-8),
++  /*12: K-        */  double(PStdData::hbar/1.23861e-8), /*13: Neutron   */  double(PStdData::hbar/887.),
+   /*14: Proton    */  0.0,             /*15: Antiproton*/  0.0,
+-  /*16: K0 short  */  PStdData::hbar/8.927e-11,  /*17: eta       */  1.29e-6,
+-  /*18: Lambda    */  PStdData::hbar/2.632e-10,  /*19: Sigma+    */  PStdData::hbar/7.99e-11,
+-  /*20: Sigma0    */  PStdData::hbar/7.4e-20,    /*21: Sigma-    */  PStdData::hbar/1.479e-10,
+-  /*22: Xi0       */  PStdData::hbar/2.9e-10,    /*23: Xi-       */  PStdData::hbar/1.639e-10,
+-  /*24: Omega-    */  PStdData::hbar/8.22e-11,   /*25: Antineutrn*/  PStdData::hbar/887.,
+-  /*26: Antilambda*/  PStdData::hbar/2.632e-10,  /*27: Antisigma-*/  PStdData::hbar/7.99e-11,
+-  /*28: Antisigma0*/  PStdData::hbar/7.4e-20,    /*29: Antisigma+*/  PStdData::hbar/1.479e-10,
+-  /*30: Antixi0   */  PStdData::hbar/2.9e-10,    /*31: Antixi+   */  PStdData::hbar/1.639e-10,
+-  /*32: Antiomega+*/  PStdData::hbar/8.22e-11,   /*33: File      */  0.0,
++  /*16: K0 short  */  double(PStdData::hbar/8.927e-11),  /*17: eta       */  1.29e-6,
++  /*18: Lambda    */  double(PStdData::hbar/2.632e-10),  /*19: Sigma+    */  double(PStdData::hbar/7.99e-11),
++  /*20: Sigma0    */  double(PStdData::hbar/7.4e-20),    /*21: Sigma-    */  double(PStdData::hbar/1.479e-10),
++  /*22: Xi0       */  double(PStdData::hbar/2.9e-10),    /*23: Xi-       */  double(PStdData::hbar/1.639e-10),
++  /*24: Omega-    */  double(PStdData::hbar/8.22e-11),   /*25: Antineutrn*/  double(PStdData::hbar/887.),
++  /*26: Antilambda*/  double(PStdData::hbar/2.632e-10),  /*27: Antisigma-*/  double(PStdData::hbar/7.99e-11),
++  /*28: Antisigma0*/  double(PStdData::hbar/7.4e-20),    /*29: Antisigma+*/  double(PStdData::hbar/1.479e-10),
++  /*30: Antixi0   */  double(PStdData::hbar/2.9e-10),    /*31: Antixi+   */  double(PStdData::hbar/1.639e-10),
++  /*32: Antiomega+*/  double(PStdData::hbar/8.22e-11),   /*33: File      */  0.0,
+   /*34: Delta0    */  0.12,            /*35: Delta++   */  0.12,
+   /*36: Delta+    */  0.12,            /*37: Delta-    */  0.12,
+   /*38: NP11+     */  0.35,            /*39: ND13+     */  0.12,

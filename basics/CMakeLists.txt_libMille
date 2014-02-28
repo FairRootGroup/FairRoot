@@ -1,0 +1,15 @@
+# Check if cmake has the required version
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8 FATAL_ERROR)
+Enable_Language(Fortran)
+
+# Set name of our project to "CBMROOT". Has to be done
+# after check of cmake version                        
+project(MillePede)
+
+Set(LibMille_SRCS
+Mille.cc
+)
+
+add_library(Mille SHARED ${LibMille_SRCS})
+Install(TARGETS Mille LIBRARY DESTINATION lib)
+Install(FILES Mille.h DESTINATION ${CMAKE_INSTALL_PREFIX}/include) 

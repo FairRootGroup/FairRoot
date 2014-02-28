@@ -1,0 +1,12 @@
+--- Makefile_old	2011-12-15 12:39:43.606586695 +0100
++++ Makefile	2011-12-15 12:40:16.438643247 +0100
+@@ -93,6 +93,9 @@
+ ifeq ($(PLATFORM),linuxx8664gcc)
+ 	  CSRC += minicern/lnxgs/ishftr.c
+ endif
++ifeq ($(PLATFORM),linuxx8664icc)
++	  CSRC += minicern/lnxgs/ishftr.c
++endif
+ ifeq ($(PLATFORM),linuxia64gcc)
+           CSRC += minicern/lnxgs/ishftr.c
+ endif

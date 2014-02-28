@@ -1,0 +1,126 @@
+# Small Cmake script to test for the support of the new c++11 standard
+# and the existence of the new standard template library libc++
+
+# The script is working with cmake 2.6.4 and 2.8.10,
+# so it should work also with all versions in between 
+CMake_Minimum_Required(VERSION 2.6 FATAL_ERROR)
+
+Project(TestEnvironment C CXX Fortran)
+
+
+#--- Check for compilers
+If(NOT CMAKE_CXX_COMPILER)
+  Message(FATAL_ERROR "Could not find a C++ compiler. Was checking for ENV{CXX}. Either choose a differnt one or install it.")
+EndIf()
+
+If(NOT CMAKE_C_COMPILER)
+  Message(FATAL_ERROR "Could not find a C compiler. Was checking for ENV{CXX}. Either choose a differnt one or install it.")
+EndIf()
+
+If(NOT CMAKE_Fortran_COMPILER)
+  Message(FATAL_ERROR "Could not find any Fortran compiler. Please set the correct PATH or install one.")
+Else()
+  get_filename_component(_FC ${CMAKE_Fortran_COMPILER} NAME)
+EndIf()
+
+Include(CheckCXXCompilerFlag)
+
+#---Check for cxx11
+CHECK_CXX_COMPILER_FLAG("-std=c++11" HAS_CXX11)
+If(HAS_CXX11)
+  Message(STATUS "Current compiler does suppport -std=c++11 option.")
+Else()
+  Message(STATUS "Current compiler does not suppport -std=c++11 option.")
+EndIf()
+
+#---Check for libc++
+CHECK_CXX_COMPILER_FLAG("-std=c++11 -stdlib=libc++" HAS_LIBCXX)
+If(HAS_LIBCXX)
+  Message(STATUS "Current compiler does suppport -stdlib=libc++")
+Else()
+  Message(STATUS "Current compiler does not suppport -stdlib=libc++")
+EndIf()
+
+  Configure_File($ENV{SIMPATH}/test/configure.in $ENV{SIMPATH}/test/configure @ONLY)
+
+#---Check for X11 which is mandatory for building ROOT
+
+find_package(X11 REQUIRED)
+
+If(NOT X11_FOUND)
+  Message(STATUS "X11_INCLUDE_DIR: ${X11_INCLUDE_DIR}")
+  Message(STATUS "X11_LIBRARIES: ${X11_LIBRARIES}")
+  Message(FATAL_ERROR "libX11 and X11 headers must be installed.")
+EndIf()
+
+If(NOT X11_Xpm_FOUND)
+  Message(STATUS "X11_Xpm_INCLUDE_PATH: ${X11_Xpm_INCLUDE_PATH}")
+  Message(STATUS "X11_Xpm_LIB: ${X11_Xpm_LIB}")
+ Message(FATAL_ERROR "libXpm and Xpm headers must be installed.")
+EndIf()
+
+If(NOT X11_Xft_FOUND)
+  Message(STATUS "X11_Xft_INCLUDE_PATH: ${X11_Xft_INCLUDE_PATH}")
+  Message(STATUS "X11_Xft_LIB: ${X11_Xft_LIB}")
+  Message(FATAL_ERROR "libXft and Xft headers must be installed.")
+EndIf()
+
+If(NOT X11_Xext_FOUND)
+  Message(STATUS "X11_Xext_INCLUDE_PATH: ${X11_Xext_INCLUDE_PATH}")
+  Message(STATUS "X11_Xext_LIB: ${X11_Xext_LIB}")
+  Message(FATAL_ERROR "libXext and Xext headers must be installed.")
+EndIf()
+
+If (X11_FOUND AND X11_Xpm_FOUND AND X11_Xft_FOUND AND X11_Xext_FOUND)
+  Message(STATUS "Found all necessary X11 features.")
+EndIf()
+
+#---Check for OpenGL installation
+
+find_package(OpenGL)
+
+If(NOT OPENGL_FOUND OR NOT OPENGL_GLU_FOUND)
+  Message(FATAL_ERROR "OpenGL and Mesa must be installed ")
+Else()
+  Message(STATUS "Found all necessary OpenGL features.")
+EndIf()
+
+#---Check for needed programs
+
+Find_Program(WGET_FOUND NAMES wget) 
+Find_Program(CURL_FOUND NAMES curl)
+If(WGET_FOUND OR CURL_FOUND)
+  Set(DOWNLOADER_FOUND TRUE)
+EndIf()
+If(NOT DOWNLOADER_FOUND)
+  Message(FATAL_ERROR "Neither wget nor curl found in PATH. You need to install one of them")
+EndIf()
+
+Find_Program(SVN_FOUND NAMES svn) 
+If(NOT SVN_FOUND)
+  Message(FATAL_ERROR "svn is not found in PATH. You need to install it")
+EndIf()
+
+Find_Program(MAKE_FOUND NAMES make) 
+If(NOT MAKE_FOUND)
+  Message(FATAL_ERROR "make is not found in PATH. You need to install it")
+EndIf()
+
+Find_Program(GIT_FOUND NAMES git) 
+If(NOT GIT_FOUND)
+  Message(FATAL_ERROR "git is not found in PATH. You need to install it")
+EndIf()
+
+Find_Program(PATCH_FOUND NAMES patch) 
+If(NOT PATCH_FOUND)
+  Message(FATAL_ERROR "patch is not found in PATH. You need to install it")
+EndIf()
+
+If(DOWNLOADER_FOUND AND SVN_FOUND AND GIT_FOUND AND PATCH_FOUND AND MAKE_FOUND)
+  Message(STATUS "Found all necessary programs in PATH.")
+EndIf()
+
+
+#---Create the file with version info
+set(CMAKE_MODULE_PATH "$ENV{SIMPATH}/test")
+include(GenerateVersionInfo)

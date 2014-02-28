@@ -1,0 +1,82 @@
+--- ../pluto/plugins/brems/PBremsstrahlung.cc	2009-10-26 11:37:42.000000000 +0100
++++ plugins/brems/PBremsstrahlung.cc	2009-10-29 13:25:23.000000000 +0100
+@@ -9,6 +9,7 @@
+ 
+ 
+ #include "PBremsstrahlung.h"
++#include <cmath>
+ 
+ Double_t PBremsstrahlung::Pol1(Double_t z, Double_t par1, Double_t par2) const
+ {
+--- ../pluto/plugins/hades/PHadesParticleSmearer.cc	2009-10-26 11:37:42.000000000 +0100
++++ plugins/hades/PHadesParticleSmearer.cc	2009-10-29 13:25:39.000000000 +0100
+@@ -8,6 +8,7 @@
+ 
+ #include "PHadesParticleSmearer.h"
+ #include <iostream>
++#include <cmath>
+ 
+ using namespace std;
+ 
+--- ../pluto/src/PAdaptiveMesh.cc	2009-10-26 11:37:42.000000000 +0100
++++ ./src/PAdaptiveMesh.cc	2009-10-29 13:23:31.000000000 +0100
+@@ -24,7 +24,7 @@
+ #include "PUtils.h"
+ #include <iostream>
+ #include "TH1.h"
+-
++#include <cmath>
+ 
+ 
+ using namespace std;
+--- ../pluto/src/PAdaptiveMeshN.cc	2009-10-26 11:37:42.000000000 +0100
++++ ./src/PAdaptiveMeshN.cc	2009-10-29 13:23:46.000000000 +0100
+@@ -25,7 +25,7 @@
+ 
+ #include "PUtils.h"
+ #include <iostream>
+-
++#include <cmath>
+ 
+ 
+ 
+--- ../pluto/src/PBatch.cc	2009-10-26 11:37:42.000000000 +0100
++++ ./src/PBatch.cc	2009-10-29 13:24:12.000000000 +0100
+@@ -101,6 +101,7 @@
+ #include "TClass.h"
+ #include "TMethod.h"
+ 
++#include <cmath>
+ 
+ PBatch::PBatch() {
+ 
+--- ../pluto/src/PChannel.cc	2009-10-26 11:37:42.000000000 +0100
++++ ./src/PChannel.cc	2009-10-29 13:24:28.000000000 +0100
+@@ -28,6 +28,7 @@
+ #include <iostream>
+ #include <iomanip>
+ #include <cstdlib>
++#include <cmath>
+ 
+ #include "Pdefines.h"
+ 
+--- ../pluto/src/PDeltaAngularDistribution.cc	2009-10-26 11:37:42.000000000 +0100
++++ ./src/PDeltaAngularDistribution.cc	2009-10-29 13:24:48.000000000 +0100
+@@ -11,6 +11,7 @@
+ #include <sstream>
+ #include <iostream>
+ #include <iomanip>
++#include <cmath>
+ 
+ #include "PDeltaAngularDistribution.h"
+ 
+--- ../pluto/src/PHadronDecayM1.cc	2009-10-26 11:37:42.000000000 +0100
++++ ./src/PHadronDecayM1.cc	2009-10-29 13:25:06.000000000 +0100
+@@ -9,6 +9,7 @@
+ #include <sstream>
+ #include <iostream>
+ #include <iomanip>
++#include <cmath>
+ 
+ #include "PHadronDecayM1.h"
+ 

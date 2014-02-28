@@ -1,0 +1,24 @@
+--- Makefile_old	2013-10-07 11:23:29.142866782 +0200
++++ Makefile	2013-10-07 11:25:51.787284113 +0200
+@@ -53,10 +53,10 @@
+ #
+ # #################################################################
+ #
+-FCOMP = $(OMPP) $(GCC)
++FCOMP = $(OMPP) $(FC)
+ F_FLAGS = -Wall -fautomatic -fno-backslash -O3 -cpp
+ #
+-CCOMP = $(OMPP) $(GCC) 
++CCOMP = $(OMPP) $(CC) 
+ C_FLAGS = -Wall -O3 -Df2cFortran
+ C_INCLUDEDIRS =  # e.g. -I
+ #.
+@@ -76,7 +76,7 @@
+   F_FLAGS += -fopenmp
+ endif
+ #
+-LOADER = $(OMPP) $(GCC)
++LOADER = $(OMPP) $(CC)
+ L_FLAGS = -Wall -O3
+ #
+ # objects for this project

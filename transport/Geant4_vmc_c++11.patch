@@ -1,0 +1,26 @@
+Index: source/digits+hits/src/TG4SDConstruction.cxx
+===================================================================
+--- source/digits+hits/src/TG4SDConstruction.cxx	(revision 669)
++++ source/digits+hits/src/TG4SDConstruction.cxx	(working copy)
+@@ -181,7 +181,7 @@
+   G4String token;
+   while ( is >> token ) {
+     if (VerboseLevel() > 1) {
+-      G4cout << "Adding volume " << token <<  " in SD selection." << G4cout;
++      G4cout << "Adding volume " << token <<  " in SD selection." << G4endl;
+     }  
+     fSelection.insert(token);
+   }  
+Index: source/geometry/src/TG4Medium.cxx
+===================================================================
+--- source/geometry/src/TG4Medium.cxx	(revision 669)
++++ source/geometry/src/TG4Medium.cxx	(working copy)
+@@ -74,7 +74,7 @@
+ /// give a warning if medium material has been already defined
+ 
+   if ( fMaterial && fMaterial != material ) {
+-    G4cout << fMaterial->GetName() << " " << material->GetName() << G4cout;
++    G4cout << fMaterial->GetName() << " " << material->GetName() << G4endl;
+     TG4Globals::Warning(
+       "TG4Medium", "SetMaterial",
+       "Reseting material " + TString(fMaterial->GetName()) + 

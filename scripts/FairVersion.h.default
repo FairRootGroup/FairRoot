@@ -1,0 +1,7 @@
+#ifndef FAIRSOFT_VERSION
+#define FAIRSOFT_VERSION 0.0.99
+#define FAIRSOFT_SVN_REVISION 0
+#define FAIRSOFT_SVN_BRANCH "Default"
+#define FAIRSOFT_SVN_DATE "1.1.2000"
+#endif
+

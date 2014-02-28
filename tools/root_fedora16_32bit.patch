@@ -1,0 +1,52 @@
+--- math/mathcore/inc/Fit/Chi2FCN.h_orig	2011-12-20 10:03:10.736581903 +0100
++++ math/mathcore/inc/Fit/Chi2FCN.h	2011-12-20 10:04:28.092581817 +0100
+@@ -67,11 +67,13 @@
+ 
+ 
+ 
+-   typedef  ::ROOT::Math::BasicFitMethodFunction<FunType> BaseObjFunction; 
++   typedef  ROOT::Math::BasicFitMethodFunction<FunType> BaseObjFunction; 
++//   typedef  ::ROOT::Math::BasicFitMethodFunction<FunType> BaseObjFunction; 
+    typedef typename  BaseObjFunction::BaseFunction BaseFunction; 
+ 
+    //typedef  typename ::ROOT::Math::ParamFunctionTrait<FunType>::PFType IModelFunction;
+-   typedef  ::ROOT::Math::IParamMultiFunction IModelFunction;
++   typedef  ROOT::Math::IParamMultiFunction IModelFunction;
++//   typedef  ::ROOT::Math::IParamMultiFunction IModelFunction;
+    typedef typename BaseObjFunction::Type_t Type_t;
+ 
+    /** 
+--- math/mathcore/inc/Fit/PoissonLikelihoodFCN.h_orig	2011-12-20 10:05:41.025581655 +0100
++++ math/mathcore/inc/Fit/PoissonLikelihoodFCN.h	2011-12-20 10:06:58.532578860 +0100
+@@ -55,10 +55,12 @@
+ public:
+ 
+ 
+-   typedef  ::ROOT::Math::BasicFitMethodFunction<FunType> BaseObjFunction;
++   typedef  ROOT::Math::BasicFitMethodFunction<FunType> BaseObjFunction;
++//   typedef  ::ROOT::Math::BasicFitMethodFunction<FunType> BaseObjFunction;
+    typedef typename  BaseObjFunction::BaseFunction BaseFunction;
+ 
+-   typedef  ::ROOT::Math::IParamMultiFunction IModelFunction;
++   typedef  ROOT::Math::IParamMultiFunction IModelFunction;
++//   typedef  ::ROOT::Math::IParamMultiFunction IModelFunction;
+ 
+ 
+    /**
+--- math/mathcore/inc/Fit/LogLikelihoodFCN.h_orig	2011-12-20 10:05:27.681581711 +0100
++++ math/mathcore/inc/Fit/LogLikelihoodFCN.h	2011-12-20 10:06:31.678580413 +0100
+@@ -56,10 +56,12 @@
+ 
+ 
+ 
+-   typedef  ::ROOT::Math::BasicFitMethodFunction<FunType> BaseObjFunction; 
++   typedef  ROOT::Math::BasicFitMethodFunction<FunType> BaseObjFunction; 
++//   typedef  ::ROOT::Math::BasicFitMethodFunction<FunType> BaseObjFunction; 
+    typedef typename  BaseObjFunction::BaseFunction BaseFunction; 
+ 
+-   typedef  ::ROOT::Math::IParamMultiFunction IModelFunction;
++   typedef  ROOT::Math::IParamMultiFunction IModelFunction;
++//   typedef  ::ROOT::Math::IParamMultiFunction IModelFunction;
+ 
+ 
+    /** 

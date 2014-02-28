@@ -1,0 +1,104 @@
+--- src/PSaid.h~	2003-08-19 13:09:15.000000000 +0200
++++ src/PSaid.h	2007-08-15 07:00:42.000000000 +0200
+@@ -11,7 +11,7 @@
+ #include <TROOT.h>
+ #include <TRandom3.h>
+ #include <TArrayD.h>
+-
++#include "TMath.h"
+ 
+ class PSaid;
+ R__EXTERN PSaid *gSaid;
+--- src/PUtils.h~	2004-08-05 15:05:39.000000000 +0200
++++ src/PUtils.h	2007-08-15 06:59:47.000000000 +0200
+@@ -7,6 +7,7 @@
+ #define _PUTILS_H_
+ 
+ #include "TRandom3.h"
++#include "TMath.h"
+ using namespace std;
+ #include <cstdlib>
+ 
+--- src/PUtils.cc~	2004-08-05 15:05:39.000000000 +0200
++++ src/PUtils.cc	2007-08-15 06:56:26.000000000 +0200
+@@ -22,6 +22,7 @@
+ 		       8.8417619937e30,2.6525285981e32,8.2228386542e33,
+ 		       2.6313083693e35,8.6833176188e36}; // factorials to 33!
+ 
++#include "TMath.h"
+ #include "PUtils.h"
+ ClassImp(PUtils)
+ 
+--- src/PParticle.cc~	2005-04-22 10:24:55.000000000 +0200
++++ src/PParticle.cc	2007-08-15 06:58:58.000000000 +0200
+@@ -16,6 +16,7 @@
+ ////////////////////////////////////////////////////////
+ 
+ #include "TF1.h"
++#include "TMath.h"
+ #include "PUtils.h"
+ #include "PParticle.h"
+ #include "PKinematics.h"
+--- src/PData.h~	2006-09-05 16:37:07.000000000 +0200
++++ src/PData.h	2007-08-15 06:58:15.000000000 +0200
+@@ -7,6 +7,7 @@
+ #define _PDATA_H_
+ 
+ #include "TROOT.h"
++#include "TMath.h"
+ #include <iostream>
+ 
+ using namespace std;
+--- src/PChannel.cc~	2006-09-05 16:37:07.000000000 +0200
++++ src/PChannel.cc	2008-01-14 10:41:38.000000000 +0100
+@@ -42,6 +42,7 @@
+ #include <iostream>
+ #include <iomanip>
+ #include <cstdlib>
++#include <cmath>
+ 
+ const long double pi=3.14159265358979323846;
+ 
+ --- src/PData.cc~	2006-09-05 16:37:07.000000000 +0200
++++ src/PData.cc	2008-01-14 10:41:04.000000000 +0100
+@@ -1309,6 +1309,8 @@
+ FILE * file;
+ char ** filename=NULL;                            // array of names of loaded data files
+ 
++#include <cmath>
++
+ // static members
+ int PData::maxnumpar=mnpar;                       // number of particles
+ int PData::maxnummodes=mnmodes;                   // number of decay modes
+--- ana/PHADES.cc~	2004-09-06 15:54:45.000000000 +0200
++++ ana/PHADES.cc	2008-01-14 10:42:24.000000000 +0100
+@@ -14,6 +14,7 @@
+ #include "PHADES.h"
+ #include "PUtils.h"
+ #include "PParticle.h"
++#include <cmath>
+ ClassImp(PHADES)
+ 
+ void PHADES:: smear(PParticle * p, double gamma) {
+--- ana/PTrackH.cc~	2003-05-14 11:04:26.000000000 +0200
++++ ana/PTrackH.cc	2008-01-14 10:42:53.000000000 +0100
+@@ -26,7 +26,7 @@
+ #include "PUtils.h"
+ #include "PParticle.h"
+ #include "PTrackH.h"
+-
++#include <cmath>
+ ClassImp(PTrackH)
+ 
+ PTrackH:: PTrackH() : PParticle()  {}
+--- src/PParticle.h_old	2005-03-23 11:50:48.000000000 +0100
++++ src/PParticle.h	2008-07-29 15:03:38.000000000 +0200
+@@ -47,7 +47,7 @@
+ 
+   virtual ~PParticle() {}
+ 
+-  int is(char * id) { return (pid==PData::ID(id)); }
++  int is(const char * id) { return (pid==PData::ID(id)); }
+   int size() { return (pid<1000)?1:2; }
+   int isNucleon() { return (is("p")||is("n")); }
+   int isDelta() { return (is("D0")||is("D-")||is("D+")||is("D++")); }

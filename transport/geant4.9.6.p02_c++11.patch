@@ -1,0 +1,190 @@
+--- source/processes/hadronic/models/de_excitation/fermi_breakup/src/G4FermiFragmentsPool.cc_orig	2014-02-20 12:52:06.000000000 +0100
++++ source/processes/hadronic/models/de_excitation/fermi_breakup/src/G4FermiFragmentsPool.cc	2014-02-20 12:52:15.000000000 +0100
+@@ -610,7 +610,7 @@
+     v->push_back(conf);
+     ++nconf;
+     if(verbose > 0) { 
+-      G4cout<<"Total number of configurations = "<<nconf<<G4cout;
++      G4cout<<"Total number of configurations = "<<nconf<<G4endl;
+       G4double ExEn= mass -G4NucleiProperties::GetNuclearMass(A,Z);
+       G4cout<<"Total number of configurations = "<<nconf<<" for A= "
+ 	    <<A<<"   Z= "<<Z<<"   E*= "<< ExEn<<" MeV"<<G4endl;
+--- source/processes/hadronic/models/low_energy/src/G4LElastic.cc_orig	2014-02-20 13:12:33.000000000 +0100
++++ source/processes/hadronic/models/low_energy/src/G4LElastic.cc	2014-02-20 13:12:48.000000000 +0100
+@@ -290,7 +290,7 @@
+      }
+      catch(G4HadronicException)
+      {
+-       std::cerr << "GHADException originating from components of G4LElastic"<<std::cout;
++       std::cerr << "GHADException originating from components of G4LElastic"<<std::endl;
+        throw;
+      }
+      G4ParticleDefinition * theDef = G4ParticleTable::GetParticleTable()->FindIon(Z,A,0,Z);
+--- source/processes/hadronic/models/de_excitation/photon_evaporation/src/G4LevelReader.cc_orig	2014-02-20 12:55:52.000000000 +0100
++++ source/processes/hadronic/models/de_excitation/photon_evaporation/src/G4LevelReader.cc	2014-02-20 13:10:40.000000000 +0100
+@@ -132,9 +132,15 @@
+ G4bool 
+ G4LevelReader::ReadDataItem(std::istream& dataFile, G4double& x) 
+ {
+-  G4bool okay = (dataFile >> buffer);		// Get next token
++/*
++  G4bool okay = (dataFile >> buffer);           // Get next token
+   if (okay) x = strtod(buffer, NULL);
+-
++*/
++  G4bool okay = false;
++  dataFile >> buffer;   // Get next token
++  if (dataFile.gcount() > 0) okay = true;       
++  if (okay) x = strtod(buffer, NULL);
++            
+   return okay;
+ }
+ 
+--- source/processes/hadronic/models/de_excitation/photon_evaporation/src/G4NuclearLevelManager.cc_orig	2014-02-20 12:56:03.000000000 +0100
++++ source/processes/hadronic/models/de_excitation/photon_evaporation/src/G4NuclearLevelManager.cc	2014-02-20 13:10:30.000000000 +0100
+@@ -196,8 +196,14 @@
+ G4bool 
+ G4NuclearLevelManager::ReadDataItem(std::istream& dataFile, G4double& x) 
+ {
++/*
+   G4bool okay = (dataFile >> buffer);		// Get next token
+   if (okay) x = strtod(buffer, NULL);
++*/
++  G4bool okay = false;
++  dataFile >> buffer; 	// Get next token
++  if (dataFile.gcount() > 0) okay = true;	
++  if (okay) x = strtod(buffer, NULL);
+ 
+   return okay;
+ }
+--- source/visualization/gMocren/src/G4GMocrenIO.cc_orig	2014-02-20 13:16:20.000000000 +0100
++++ source/visualization/gMocren/src/G4GMocrenIO.cc	2014-02-20 13:19:26.000000000 +0100
+@@ -470,9 +470,13 @@
+   // output file open
+   std::ofstream ofile(kFileName.c_str(),
+ 		      std::ios_base::out|std::ios_base::binary);
+-  if(DEBUG || kVerbose > 0)
+-    G4cout << "         file open status: " << ofile << G4endl;
+-  
++  if(DEBUG || kVerbose > 0) {
++    if (ofile.is_open()) {
++      G4cout << "         file open status: open"<< G4endl;
++    } else {
++      G4cout << "         file open status: not open"<< G4endl;
++    }
++  }
+   // file identifier
+   ofile.write("gMocren ", 8);
+ 
+--- cmake/Modules/Geant4MakeRules_cxx.cmake_orig	2014-02-20 15:47:06.000000000 +0100
++++ cmake/Modules/Geant4MakeRules_cxx.cmake	2014-02-20 15:50:47.000000000 +0100
+@@ -73,6 +73,14 @@
+     ERROR_STRIP_TRAILING_WHITESPACE
+     )
+   string(REGEX REPLACE ".*clang version ([0-9]\\.[0-9]+).*" "\\1" _clangcxx_version ${_clangcxx_dumpedversion})
++
++  # The version string returned by clang on Mac OSX is different, so we
++  # have to catch this case extra
++  String(LENGTH ${_clangcxx_version} _length_version_string)
++  If(${_length_version_string} GREATER 3)
++    string(REGEX REPLACE ".*based on LLVM ([0-9]\\.[0-9]+).*" "\\1" _clangcxx_version ${_clangcxx_dumpedversion})
++  EndIf(${_length_version_string} GREATER 3)
++
+   message(STATUS "Clang version : ${_clangcxx_version}")
+ 
+   if(_clangcxx_version VERSION_LESS 2.9)
+--- source/processes/electromagnetic/dna/molecules/management/include/G4MolecularConfiguration.hh_orig	2014-02-20 15:56:48.000000000 +0100
++++ source/processes/electromagnetic/dna/molecules/management/include/G4MolecularConfiguration.hh	2014-02-20 15:57:50.000000000 +0100
+@@ -43,7 +43,45 @@
+ #include <vector>
+ #include <CLHEP/Utility/memory.h>
+ 
+-struct comparator;
++struct comparator
++{
++    bool operator() (const G4ElectronOccupancy& occ1, const G4ElectronOccupancy& occ2) const
++    {
++        // Since this method is called a lot of time,
++        // we retrieve only once the totOcc
++        G4int totalOcc1 = occ1.GetTotalOccupancy() ;
++        G4int totalOcc2 = occ2.GetTotalOccupancy() ;
++        if ( totalOcc1!= totalOcc2)
++        {
++            return totalOcc1<totalOcc2;
++        }
++        else
++        {
++            G4int occupancy1 = -1 ;
++            G4int occupancy2 = -1 ;
++            const G4int sizeOrbit = occ1.GetSizeOfOrbit() ;
++            for (G4int i=0; i<occ1.GetSizeOfOrbit();)
++            {
++                // Since this method is called a lot of time,
++                // we retrieve only once the Occ
++
++                occupancy1 = occ1.GetOccupancy(i);
++                occupancy2 = occ2.GetOccupancy(i);
++
++                if (occupancy1 != occupancy2)
++                {
++                    return occupancy1 < occupancy2;
++                }
++                else
++                {
++                    i++;
++                    if (i >= sizeOrbit) return false;
++                }
++            }
++        }
++        return false;
++    }
++};
+ 
+ class G4MolecularConfiguration;
+ class G4MoleculeDefinition;
+@@ -191,45 +229,6 @@
+     mutable G4String fName; // mutable allowed this member to be changed in const methods
+ };
+ 
+-struct comparator
+-{
+-    bool operator() (const G4ElectronOccupancy& occ1, const G4ElectronOccupancy& occ2) const
+-    {
+-        // Since this method is called a lot of time,
+-        // we retrieve only once the totOcc
+-        G4int totalOcc1 = occ1.GetTotalOccupancy() ;
+-        G4int totalOcc2 = occ2.GetTotalOccupancy() ;
+-        if ( totalOcc1!= totalOcc2)
+-        {
+-            return totalOcc1<totalOcc2;
+-        }
+-        else
+-        {
+-            G4int occupancy1 = -1 ;
+-            G4int occupancy2 = -1 ;
+-            const G4int sizeOrbit = occ1.GetSizeOfOrbit() ;
+-            for (G4int i=0; i<occ1.GetSizeOfOrbit();)
+-            {
+-                // Since this method is called a lot of time,
+-                // we retrieve only once the Occ
+-
+-                occupancy1 = occ1.GetOccupancy(i);
+-                occupancy2 = occ2.GetOccupancy(i);
+-
+-                if (occupancy1 != occupancy2)
+-                {
+-                    return occupancy1 < occupancy2;
+-                }
+-                else
+-                {
+-                    i++;
+-                    if (i >= sizeOrbit) return false;
+-                }
+-            }
+-        }
+-        return false;
+-    }
+-};
+ 
+ 
+ inline const G4MoleculeDefinition* G4MolecularConfiguration::GetDefinition() const
