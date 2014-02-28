@@ -8,10 +8,18 @@
 #include <iostream>
 #include <csignal>
 
+
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
 #include "FairMQLogger.h"
 #include "FairMQProcessor.h"
 
 #include "FairTestDetectorMQRecoTask.h"
+#include "FairTestDetectorHit.h"
+#include "FairTestDetectorDigi.h"
 #include "FairTestDetectorPayload.h"
 
 #ifdef PROTOBUF
@@ -28,11 +36,27 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
-
+  // class to serialize/deserialize
+  typedef FairTestDetectorDigi TDigi;
+  typedef FairTestDetectorHit THit;
+  // ProtoBuff payload
 #ifdef PROTOBUF
-  typedef FairTestDetectorMQRecoTask<TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload> TProcessorTask;
-#else
-  typedef FairTestDetectorMQRecoTask<TestDetectorPayload::TestDetectorDigi, TestDetectorPayload::TestDetectorHit> TProcessorTask;
+  typedef TestDetectorProto::DigiPayload TProtoDigiPayload;
+  typedef TestDetectorProto::HitPayload TProtoHitPayload;
+#endif
+  // Binary payload
+  typedef TestDetectorPayload::TestDetectorDigi TBinPayloadIn;   // binary
+  typedef TestDetectorPayload::TestDetectorHit TBinPayloadOut;   // binary
+  // Boost payload
+  typedef boost::archive::binary_iarchive TBoostBinPayloadIn;     // boost binary format
+  typedef boost::archive::text_iarchive TBoostTextPayloadIn;      // boost text format
+  typedef boost::archive::binary_oarchive TBoostBinPayloadOut;   // boost binary format
+  typedef boost::archive::text_oarchive TBoostTextPayloadOut;     // boost text format
+  
+#ifdef PROTOBUF
+  typedef FairTestDetectorMQRecoTask<TDigi,THit,TProtoDigiPayload, TProtoHitPayload> TProcessorTask;
+#else  
+  typedef FairTestDetectorMQRecoTask<TDigi,THit,TBoostBinPayloadIn,TBoostBinPayloadOut> TProcessorTask;
 #endif
 
 FairMQProcessor processor;

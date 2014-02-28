@@ -12,6 +12,9 @@
 #include "FairMQFileSink.h"
 
 #include "FairTestDetectorHit.h"
+
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
 #include "FairTestDetectorPayload.h"
 
 #ifdef PROTOBUF
@@ -28,15 +31,21 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
-
 #ifdef PROTOBUF
-  typedef FairMQFileSink<TestDetectorProto::HitPayload, FairTestDetectorHit> TSink;
+  typedef TestDetectorProto::HitPayload TProtoPayload;
+#endif
+  typedef TestDetectorPayload::TestDetectorHit TBinPayloadIn;   // binary
+  typedef boost::archive::binary_iarchive TBoostBinPayload;     // boost binary format
+  typedef boost::archive::text_iarchive TBoostTextPayload;      // boost text format
+  typedef FairTestDetectorHit THit;
+#ifdef PROTOBUF
+  typedef FairMQFileSink<THit,TProtoPayload> TSink;
 #else
-  typedef FairMQFileSink<TestDetectorPayload::TestDetectorHit, FairTestDetectorHit> TSink;
+  typedef FairMQFileSink<THit,TBoostBinPayload> TSink;
 #endif
 
-TSink filesink;
 
+TSink filesink;
 
 static void s_signal_handler (int signal)
 {

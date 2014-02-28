@@ -24,6 +24,18 @@ FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
     fEntryNr()
 {
 }
+
+
+
+FairTimeStamp::FairTimeStamp(const FairTimeStamp &TimeStamp) :
+  FairMultiLinkedData(), fTimeStamp(TimeStamp.fTimeStamp), fTimeStampError(TimeStamp.fTimeStampError), fEntryNr(TimeStamp.fEntryNr)
+//  fTimeStamp(TimeStamp.fTimeStamp), fTimeStampError(TimeStamp.fTimeStampError), fEntryNr(TimeStamp.fEntryNr)
+
+{
+    
+}
+
+
 // -----   Destructor   ----------------------------------------------------
 FairTimeStamp::~FairTimeStamp()
 {
