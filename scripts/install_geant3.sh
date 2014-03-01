@@ -27,7 +27,12 @@ then
   patch -p0 < ../Makefile_geant3.patch | tee -a $logfile
   patch -p0 < ../geant3_geane.patch | tee -a $logfile
   	
-  # install gcalor only on 32bit and 64bit machines
+  if [ "$platform" = "macosx" ];
+  then
+    patch -p0 < ../Makefile_geant3_macos.patch | tee -a $logfile
+  fi
+          
+            # install gcalor only on 32bit and 64bit machines
   # The probem is fixed in the new version of gcalor which comes with fairsoft
   mkdir gcalor
   cp ../gcalor.F gcalor
