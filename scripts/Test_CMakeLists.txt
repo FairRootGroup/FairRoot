@@ -106,9 +106,28 @@ If(NOT MAKE_FOUND)
   Message(FATAL_ERROR "make is not found in PATH. You need to install it")
 EndIf()
 
-Find_Program(GIT_FOUND NAMES git) 
-If(NOT GIT_FOUND)
-  Message(FATAL_ERROR "git is not found in PATH. You need to install it")
+Find_Program(BZIP2_FOUND NAMES bzip2) 
+If(NOT BZIP2_FOUND)
+  Message(FATAL_ERROR "bzip2 is not found in PATH. You need to install it")
+EndIf()
+
+Find_Program(GZIP_FOUND NAMES gzip) 
+If(NOT GZIP_FOUND)
+  Message(FATAL_ERROR "gzip is not found in PATH. You need to install it")
+EndIf()
+
+Find_Program(UNZIP_FOUND NAMES unzip) 
+If(NOT UNZIP_FOUND)
+  Message(FATAL_ERROR "unzip is not found in PATH. You need to install it")
+EndIf()
+
+Find_Program(TAR_FOUND NAMES tar)     
+If(NOT TAR_FOUND)  
+  Message(FATAL_ERROR "tar is not found in PATH. You need to install it")  
+EndIf()
+
+If(TAR_FOUND AND UNZIP_FOUND AND GZIP_FOUND AND BZIP2_FOUND)
+  Set(UNPACKER_FOUND TRUE)  
 EndIf()
 
 Find_Program(PATCH_FOUND NAMES patch) 
@@ -116,7 +135,8 @@ If(NOT PATCH_FOUND)
   Message(FATAL_ERROR "patch is not found in PATH. You need to install it")
 EndIf()
 
-If(DOWNLOADER_FOUND AND SVN_FOUND AND GIT_FOUND AND PATCH_FOUND AND MAKE_FOUND)
+If(DOWNLOADER_FOUND AND SVN_FOUND AND GIT_FOUND AND PATCH_FOUND AND MAKE_FOUND
+   AND UNPACKER_FOUND)
   Message(STATUS "Found all necessary programs in PATH.")
 EndIf()
 
