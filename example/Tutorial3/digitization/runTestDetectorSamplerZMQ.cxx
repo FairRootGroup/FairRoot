@@ -8,9 +8,6 @@
 #include <iostream>
 #include <csignal>
 
-#include "FairMQDigiLoader.h"
-#include "FairMQPayload.h"
-
 #include "TestDetectorDigiLoader.h"
 #include "FairTestDetectorPayload.h"
 

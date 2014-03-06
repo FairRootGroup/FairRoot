@@ -26,13 +26,19 @@ MACRO (WRITE_CONFIG_FILE filename)
   
   IF(CMAKE_SYSTEM_NAME MATCHES Linux)
     IF(FAIRROOTPATH)
-    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system.sh.in
-                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
-                  )
+      configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system.sh.in
+                     ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
+                    )
+      configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system.csh.in
+                     ${CMAKE_CURRENT_BINARY_DIR}/check_system.csh
+                    )
     ELSE(FAIRROOTPATH)
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system.sh.in
-                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
-                  )
+      configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system.sh.in
+                     ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
+                    )
+      configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system.csh.in
+                     ${CMAKE_CURRENT_BINARY_DIR}/check_system.csh
+                    )
     ENDIF(FAIRROOTPATH)
     
     FILE(READ /etc/issue _linux_flavour)
@@ -45,6 +51,10 @@ MACRO (WRITE_CONFIG_FILE filename)
         set(_linux_flavour ${_line})
       endif (_counter EQUAL 0)
     ENDFOREACH(_line ${_result})
+    # Replace multiple space by just one
+    String(REGEX REPLACE "[ ]+" " " _linux_flavour "${_linux_flavour}")    
+    # Replace leading and trailing spaces
+    String(STRIP ${_linux_flavour} _linux_flavour)
     EXECUTE_PROCESS(COMMAND uname -m 
                     OUTPUT_VARIABLE _system 
                     OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -52,13 +62,19 @@ MACRO (WRITE_CONFIG_FILE filename)
    
   ElseIf(CMAKE_SYSTEM_NAME MATCHES Darwin)
     IF(FAIRROOTPATH)
-    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system_mac.sh.in
-                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
-                  )
+      configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system_mac.sh.in
+                     ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
+                    )
+      configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system_mac.csh.in
+                     ${CMAKE_CURRENT_BINARY_DIR}/check_system.csh
+                    )
     ELSE(FAIRROOTPATH)
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system_mac.sh.in
-                   ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
-                  )
+      configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system_mac.sh.in
+                     ${CMAKE_CURRENT_BINARY_DIR}/check_system.sh
+                    )
+      configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/check_system_mac.csh.in
+                     ${CMAKE_CURRENT_BINARY_DIR}/check_system.csh
+                    )
     ENDIF(FAIRROOTPATH)
     EXECUTE_PROCESS(COMMAND uname -sr 
                     OUTPUT_VARIABLE _linux_flavour
