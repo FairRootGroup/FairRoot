@@ -1,4 +1,4 @@
-void run_tutorial1(Int_t nEvents = 10)
+void run_tutorial1(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 {
   
   TString dir = getenv("VMCWORKDIR");
@@ -50,7 +50,7 @@ void run_tutorial1(Int_t nEvents = 10)
 
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
-  run->SetName("TGeant3");              // Transport engine
+  run->SetName(mcEngine);              // Transport engine
   run->SetOutputFile(outFile);          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------

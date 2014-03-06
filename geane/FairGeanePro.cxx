@@ -585,9 +585,9 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   // .. Di : distance between track and wire in the PCA
   // .. trklength : track length to add to the GEANE one
 
-  Float_t pf[3] = {point.X(), point.Y(), point.Z()};
-  Float_t w1[3] = {wire1.X(), wire1.Y(), wire1.Z()};
-  Float_t w2[3] = {wire2.X(), wire2.Y(), wire2.Z()};
+  Float_t pf[3] = {static_cast<Float_t>(point.X()), static_cast<Float_t>(point.Y()), static_cast<Float_t>(point.Z())};
+  Float_t w1[3] = {static_cast<Float_t>(wire1.X()), static_cast<Float_t>(wire1.Y()), static_cast<Float_t>(wire1.Z())};
+  Float_t w2[3] = {static_cast<Float_t>(wire2.X()), static_cast<Float_t>(wire2.Y()), static_cast<Float_t>(wire2.Z())};
 
   GeantCode=fdbPDG->ConvertPdgToGeant3(PDGCode);
 
@@ -630,7 +630,7 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   // maximum distance calculated 2 * geometric distance
   // start point - end point (the point to which we want
   // to find the PCA)
-  Float_t stdlength[1] = {maxdistance};
+  Float_t stdlength[1] = {static_cast<Float_t>(maxdistance)};
 
   gMC3->Eufill(1, ein, stdlength);
 
