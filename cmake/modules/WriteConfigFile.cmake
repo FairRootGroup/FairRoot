@@ -51,6 +51,10 @@ MACRO (WRITE_CONFIG_FILE filename)
         set(_linux_flavour ${_line})
       endif (_counter EQUAL 0)
     ENDFOREACH(_line ${_result})
+    # Replace multiple space by just one
+    String(REGEX REPLACE "[ ]+" " " _linux_flavour "${_linux_flavour}")    
+    # Replace leading and trailing spaces
+    String(STRIP ${_linux_flavour} _linux_flavour)
     EXECUTE_PROCESS(COMMAND uname -m 
                     OUTPUT_VARIABLE _system 
                     OUTPUT_STRIP_TRAILING_WHITESPACE
