@@ -152,6 +152,19 @@ Else()
   Message(STATUS "Current compiler does not suppport -stdlib=libc++")
 EndIf()
 
+Set(Build_Python $ENV{BUILD_PYTHON})
+
+If(Build_Python)
+  Find_Package(PythonInterp)
+  Find_Package(PythonLibs)
+  If(NOT PYTHONLIBS_FOUND OR  NOT PYTHONINTERP_FOUND)
+    Message(STATUS "PythonInterpreter: ${PYTHON_EXECUTABLE}")
+    Message(STATUS "PythonLibraries: ${PYTHON_LIBRARIES}")
+    Message(STATUS "PythonIncludes: ${PYTHON_INCLUDE_DIRS}")
+    Message(FATAL_ERROR "You request to build the python bindings but you one of the above dependencies couldn't be found")
+  EndIf()
+EndIf()
+
 Configure_File($ENV{SIMPATH}/test/configure.in $ENV{SIMPATH}/test/configure @ONLY)
 
 #---Create the file with version info

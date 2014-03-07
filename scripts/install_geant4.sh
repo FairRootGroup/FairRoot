@@ -50,17 +50,27 @@ then
   else
     install_data=""
   fi
+
   if [ "$build_cpp11" = "yes" ];
   then
     geant4_cpp="-DGEANT4_BUILD_CXXSTD=c++11"
   else
     geant4_cpp=""
   fi
+
+  if [ "$build_python" = "yes" ];
+  then
+    geant4_opengl="-DGEANT4_USE_OPENGL_X11=ON -DGEANT4_USE_GDML=ON"
+  else   
+    geant4_opengl=""
+  fi
+
   cmake -DCMAKE_INSTALL_PREFIX=$install_prefix \
         -DCMAKE_INSTALL_LIBDIR=$install_prefix/lib \
         -DGEANT4_USE_G3TOG4=ON \
         -DGEANT4_BUILD_STORE_TRAJECTORY=OFF \
-        -DGEANT4_BUILD_VERBOSE_CODE=OFF \
+        -DGEANT4_BUILD_VERBOSE_CODE=ON \
+        $geant4_opengl \
         $install_data  $geant4_cpp ../
 
   $MAKE_command -j$number_of_processes  install

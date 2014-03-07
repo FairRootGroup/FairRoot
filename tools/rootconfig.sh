@@ -41,6 +41,14 @@
    else
       ROOFIT="--enable-roofit"
     fi
+
+   if [ "$build_python" = "yes" ];
+   then
+      PYTHONBUILD="--enable-python"
+   else   
+      PYTHONBUILD=" "
+   fi
+   
    #######################################################
       
      pythia6_libdir=$SIMPATH_INSTALL/lib
@@ -50,7 +58,7 @@
      etc_string="--etcdir=$SIMPATH_INSTALL/share/root/etc"
      prefix_string="--prefix=$install_prefix"
  
-   ./configure $arch  --enable-soversion   $XROOTD  $ROOFIT \
+   ./configure $arch  --enable-soversion $PYTHONBUILD $XROOTD  $ROOFIT \
                     --enable-minuit2  --enable-gdml --enable-xml \
 		    --enable-builtin-ftgl --enable-builtin-glew \
                     --enable-builtin-freetype \

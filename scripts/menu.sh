@@ -124,6 +124,30 @@ echo geant4_download_install_data_automatic=$geant4_download_install_data_automa
 echo geant4_install_data_from_dir=$geant4_install_data_from_dir >> $cache
 
 clear
+echo
+echo "Would you like to install the python bindings for Geant4 and Root"
+PS3='Please enter a choice from the above menu: '
+
+select CHOICE in "Yes" "No" Quit
+do
+  case "$CHOICE" in
+              Quit) exit			
+                    ;;
+             "Yes") build_python=yes 
+                    break
+                    ;;
+             "No") build_python=no 
+                    break
+                    ;;
+               "") echo This value is not valid. Hit Enter to see menu again!
+                   continue
+                   ;;
+   esac
+done
+
+echo build_python=$build_python >> $cache
+
+clear
 
 question=true
 writable_dir=true
@@ -169,4 +193,6 @@ done
      
 
 echo SIMPATH_INSTALL=$SIMPATH_INSTALL >> $cache
+echo export SIMPATH_INSTALL >> $cache
 
+export SIMPATH_INSTALL

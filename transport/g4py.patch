@@ -1,0 +1,41 @@
+--- source/geometry/pyG4Polycone.cc_orig	2014-04-02 13:24:49.000000000 +0200
++++ source/geometry/pyG4Polycone.cc	2014-04-02 13:23:04.000000000 +0200
+@@ -96,7 +96,7 @@
+     .def("GetStartPhi",    &G4Polycone::GetStartPhi)
+     .def("GetEndPhi",      &G4Polycone::GetEndPhi)
+     .def("IsOpen",         &G4Polycone::IsOpen)
+-    .def("IsGeneric",      &G4Polycone::IsGeneric)
++//    .def("IsGeneric",      &G4Polycone::IsGeneric)
+     .def("GetNumRZCorner", &G4Polycone::GetNumRZCorner)
+ 
+     // operators
+--- CMakeLists.txt_orig	2014-02-27 18:12:19.000000000 +0100
++++ CMakeLists.txt	2014-04-02 14:14:09.000000000 +0200
+@@ -6,7 +6,7 @@
+ project(Geant4Py)
+ #------------------------------------------------------------------------------
+ # installation prefixes for libraries
+-set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
++set(CMAKE_INSTALL_PREFIX $ENV{SIMPATH_INSTALL})
+ 
+ # debug mode
+ set(DEBUG FALSE CACHE BOOL "Debug Mode (Debug On)")
+@@ -25,10 +25,17 @@
+ find_package(Geant4 REQUIRED)
+ find_package(PythonInterp REQUIRED)
+ find_package(PythonLibs REQUIRED)
+-find_package(Boost 1.36.0)
++find_package(Boost 1.54.0)
+ find_package(XercesC)
+ find_package(ROOT)
+ 
++set(BOOST_INCLUDE_DIRS ${Boost_INCLUDE_DIR})
++
++if (CMAKE_SYSTEM_NAME MATCHES Darwin)
++      SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
++      SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
++endif()
++
+ #------------------------------------------------------------------------------
+ # parameters for building
+ message(STATUS "--------------------------------------------------------")

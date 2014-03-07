@@ -86,6 +86,7 @@ else
     optimize=no
     geant4_download_install_data_automatic=yes
     geant4_install_data_from_dir=no
+    build_python=no
     export SIMPATH_INSTALL=$PWD/installation
   elif [ $1 = "grid" ];
   then
@@ -94,6 +95,7 @@ else
     optimize=no
     geant4_download_install_data_automatic=no
     geant4_install_data_from_dir=yes
+    build_python=no
     SIMPATH_INSTALL=$PWD/installation
     build_for_grid=yes
   else
@@ -103,6 +105,13 @@ else
     exit 42
   fi   
 fi  
+
+if [ "$build_python" = "yes" ]; 
+then
+  export BUILD_PYTHON=TRUE
+else
+  export BUILD_PYTHON=FALSE
+fi
 
 # check the architecture automatically
 # set the compiler options according to architecture, compiler
@@ -208,6 +217,20 @@ fi
 if [ "$check" = "1" ];
 then
   source scripts/install_root.sh
+fi
+
+##################### G4Py #############################################
+
+if [ "$build_python" = "yes" ]; 
+then
+  if [ "$check" = "1" ];
+  then
+    source scripts/install_xercesc.sh
+  fi
+  if [ "$check" = "1" ];
+  then
+    source scripts/install_g4py.sh
+  fi
 fi
 
 ##################### Pluto #############################################
