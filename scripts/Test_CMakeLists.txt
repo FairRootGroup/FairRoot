@@ -96,11 +96,6 @@ If(NOT DOWNLOADER_FOUND)
   Message(FATAL_ERROR "Neither wget nor curl found in PATH. You need to install one of them")
 EndIf()
 
-Find_Program(SVN_FOUND NAMES svn) 
-If(NOT SVN_FOUND)
-  Message(FATAL_ERROR "svn is not found in PATH. You need to install it")
-EndIf()
-
 Find_Program(MAKE_FOUND NAMES make) 
 If(NOT MAKE_FOUND)
   Message(FATAL_ERROR "make is not found in PATH. You need to install it")
@@ -128,6 +123,16 @@ EndIf()
 
 If(TAR_FOUND AND UNZIP_FOUND AND GZIP_FOUND AND BZIP2_FOUND)
   Set(UNPACKER_FOUND TRUE)  
+Endif()
+
+Find_Program(SVN_FOUND NAMES svn) 
+If(NOT SVN_FOUND)
+  Message(FATAL_ERROR "svn is not found in PATH. You need to install it")
+EndIf()
+
+Find_Program(GIT_FOUND NAMES git) 
+If(NOT GIT_FOUND)
+  Message(FATAL_ERROR "git is not found in PATH. You need to install it")
 EndIf()
 
 Find_Program(PATCH_FOUND NAMES patch) 
@@ -139,7 +144,6 @@ If(DOWNLOADER_FOUND AND SVN_FOUND AND GIT_FOUND AND PATCH_FOUND AND MAKE_FOUND
    AND UNPACKER_FOUND)
   Message(STATUS "Found all necessary programs in PATH.")
 EndIf()
-
 
 #---Create the file with version info
 set(CMAKE_MODULE_PATH "$ENV{SIMPATH}/test")
