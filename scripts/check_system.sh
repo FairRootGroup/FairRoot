@@ -376,6 +376,17 @@ cp $SIMPATH/scripts/configure.in .
 
 cd build
 cmake ..
+ret_val=$?
+
+if [ $ret_val -ne 0 ]; 
+then
+  echo ""
+  echo "There have been problems found. Please check the output above."
+  echo ""
+  cd $SIMPATH
+  rm -rf test
+  exit
+fi  
 
 hascxx11=$(grep HasCxx11 $SIMPATH/test/configure | cut -f2 -d:)
 haslibcxx=$(grep HasLibCxx $SIMPATH/test/configure | cut -f2 -d:)
