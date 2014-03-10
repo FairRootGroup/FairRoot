@@ -1,14 +1,10 @@
 #!/bin/bash
 
-if [ ! -d  $SIMPATH/tools/geant4_vmc ];
+if [ ! -d  $SIMPATH/transport/geant4_vmc ];
 then
   cd $SIMPATH/transport
-  if [ ! -e geant4_vmc.$GEANT4VMC_VERSION.tar.gz ];
-  then
-    echo "*** Downloading geant4_vmc sources ***"
-    download_file $GEANT4VMC_LOCATION/geant4_vmc.$GEANT4VMC_VERSION.tar.gz
-  fi
-  untar geant4_vmc geant4_vmc.$GEANT4VMC_VERSION.tar.gz
+  git clone http://root.cern.ch/git/geant4_vmc.git
+  git checkout master 
 fi
                  
 install_prefix=$SIMPATH_INSTALL
