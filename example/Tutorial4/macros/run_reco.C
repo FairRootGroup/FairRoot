@@ -1,4 +1,4 @@
-void run_reco()
+void run_reco( TString mcEngine="TGeant3" )
 {
    // ----  Load libraries   -------------------------------------------------
   FairLogger *logger = FairLogger::GetLogger();
@@ -12,15 +12,17 @@ void run_reco()
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
   
-  // Input file (MC events)
-  TString inFile = "data/testrun.root";
-  
-  // Parameter file
-  TString parFile = "data/testparams.root"; 
+  // Input file (MC Events)
+  TString  inFile     ="data/testrun_";
+  inFile = inFile + mcEngine + ".root";
 
-  // Output file
-  TString outFile = "data/testreco.root";
-  
+  // Output file name
+  TString  outFile     ="data/testreco_";
+  outFile = outFile + mcEngine + ".root";
+
+  // Parameter file
+  TString  parFile     ="data/testparams_";    
+  parFile = parFile + mcEngine + ".root";
 
   TList *parFileList = new TList();
 

@@ -11,8 +11,11 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant3")
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   TString outDir  = "data";
-  TString outFile = outDir + "/test.mc.root";
-  TString parFile = outDir + "/params.root";
+  TString outFile = outDir + "/test_";
+  outFile = outFile + mcEngine + ".mc.root";
+
+  TString parFile = outDir + "/params_";
+  parFile = parFile + mcEngine + ".root";
 
   // In general, the following parts need not be touched
   // ========================================================================

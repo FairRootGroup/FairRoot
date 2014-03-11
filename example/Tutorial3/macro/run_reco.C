@@ -1,4 +1,4 @@
-void run_reco()
+void run_reco( TString mcEngine="TGeant3" )
 {
   FairLogger *logger = FairLogger::GetLogger();
   logger->SetLogFileName("MyLog.log");
@@ -12,13 +12,16 @@ void run_reco()
   Int_t iVerbose = 0; // just forget about it, for the moment
   
   // Input file (MC events)
-  TString inFile = "data/testdigi.root";
-  
+  TString inFile = "data/testdigi_";
+  inFile = inFile + mcEngine + ".root";
+
   // Parameter file
-  TString parFile = "data/testparams.root"; 
+  TString parFile = "data/testparams_"; 
+  parFile = parFile + mcEngine + ".root";
 
   // Output file
-  TString outFile = "data/testreco.root";
+  TString outFile = "data/testreco_";
+  outFile = outFile + mcEngine + ".root";
   
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;

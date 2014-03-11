@@ -21,16 +21,18 @@ void run_tutorial1(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   TString outDir = "./";
 
   // Output file name
-  TString outFile = Form("%s/tutorial1_%s.mc_p%1.3f_t%1.0f_n%d.root",
-			 outDir.Data(),
+  TString outFile = Form("%s/tutorial1_%s_%s.mc_p%1.3f_t%1.0f_n%d.root",
+                         outDir.Data(),
+			 mcEngine.Data(),
 			 partName[chosenPart].Data(),
 			 momentum,
 			 theta,
 			 nEvents);
   
   // Parameter file name
-  TString parFile = Form("%s/tutorial1_%s.params_p%1.3f_t%1.0f_n%d.root",
+  TString parFile = Form("%s/tutorial1_%s_%s.params_p%1.3f_t%1.0f_n%d.root",
 			 outDir.Data(),
+			 mcEngine.Data(),
 			 partName[chosenPart].Data(),
 			 momentum,
 			 theta,
