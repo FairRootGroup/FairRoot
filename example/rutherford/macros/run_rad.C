@@ -11,8 +11,11 @@ void run_rad(Int_t nEvents = 100, TString mcEngine="TGeant3")
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   TString outDir  = "data";
-  TString outFile = outDir + "/test1.mc.root";
-  TString parFile = outDir + "/params.root";
+  TString outFile = outDir + "/test1_";
+  outFile = outFile + mcEngine + ".mc.root";
+
+  TString parFile = outDir + "/params1_";    
+  parFile = parFile + mcEngine + ".root";   
 
   // In general, the following parts need not be touched
   // ========================================================================

@@ -9,7 +9,8 @@ ForEach(_mcEngine IN ITEMS TGeant3 TGeant4)
   Set_Tests_Properties(run_tutorial4_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
 
 
-  Add_Test(run_reco_tut4_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial4/macros/run_reco.sh)
+  Add_Test(run_reco_tut4_${_mcEngine} 
+           ${CMAKE_BINARY_DIR}/example/Tutorial4/macros/run_reco.sh \"${_mcEngine}\")
   Set_Tests_Properties(run_reco_tut4_${_mcEngine} PROPERTIES DEPENDS run_tutorial4_${_mcEngine})
   Set_Tests_Properties(run_reco_tut4_${_mcEngine} PROPERTIES TIMEOUT "30")
   Set_Tests_Properties(run_reco_tut4_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")

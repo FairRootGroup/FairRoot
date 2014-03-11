@@ -21,8 +21,15 @@ void run_sim(Int_t nEvents=1024, TString mcEngine="TGeant3")
   // ------------------------
 
   fRun->SetName(mcEngine);
+
+  TString outfile = "data/testrun_";
+  outfile = outfile + mcEngine + ".root";
+
+  TString outparam = "data/testparams_";
+  outparam = outparam + mcEngine + ".root";
+
   
-  fRun->SetOutputFile("data/testrun.root");
+  fRun->SetOutputFile(outfile);
 
 
   // -----   Magnetic field   -------------------------------------------
@@ -93,7 +100,7 @@ void run_sim(Int_t nEvents=1024, TString mcEngine="TGeant3")
   FairRuntimeDb *rtdb=fRun->GetRuntimeDb();
   Bool_t kParameterMerged=kTRUE;
   FairParRootFileIo* output=new FairParRootFileIo(kParameterMerged);
-  output->open("data/testparams.root");
+  output->open(outparam);
   rtdb->setOutput(output);
 
   rtdb->saveOutput();

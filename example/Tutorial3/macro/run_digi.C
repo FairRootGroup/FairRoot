@@ -1,4 +1,4 @@
-void run_digi()
+void run_digi( TString mcEngine="TGeant3" )
 {
   FairLogger *logger = FairLogger::GetLogger();
  // logger->SetLogFileName("MyLog.log");
@@ -12,13 +12,16 @@ void run_digi()
   Int_t iVerbose = 0; // just forget about it, for the moment
   
   // Input file (MC events)
-  TString inFile = "data/testrun.root";
+  TString inFile = "data/testrun_";
+  inFile = inFile + mcEngine + ".root";
   
   // Parameter file
-  TString parFile = "data/testparams.root"; 
+  TString parFile = "data/testparams_"; 
+  parFile = parFile + mcEngine + ".root";
 
   // Output file
-  TString outFile = "data/testdigi.root";
+  TString outFile = "data/testdigi_";
+  outFile = outFile + mcEngine + ".root";
   
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
