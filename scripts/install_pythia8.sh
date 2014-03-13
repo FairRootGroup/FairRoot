@@ -27,6 +27,9 @@ if (not_there pythia8 $checkfile)
 then
 
   cd $SIMPATH/generators/pythia8
+
+  # needed to compile with Apple LLVM 5.1, shouldn't hurt on other systems
+  patch -p0 < ../pythia8_friend.patch | tee -a $logfile
   
   ./configure  --enable-shared --with-hepmc=$HEPINSTALLDIR --with-hepmcversion=$HEPMCVERSION
 

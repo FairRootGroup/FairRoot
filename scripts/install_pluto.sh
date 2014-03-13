@@ -57,6 +57,8 @@ then
 	*5.37*)  echo Compiling v5.37 Pluto Version
             cp Makefile.fairsoft Makefile
 	    patch -p0 < ../pluto_v537.patch | tee -a $logfile
+            # needed to compile with Apple LLVM 5.1, shouldn't hurt on other systems
+            patch -p0 < ../pluto_friend.patch | tee -a $logfile
             ;;
 	*5.4*)  echo Compiling v5.4x Pluto Version
             cp Makefile.fairsoft Makefile

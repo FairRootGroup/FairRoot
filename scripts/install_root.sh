@@ -98,7 +98,10 @@ then
     mysed 'DEBUGFLAGS    = -g$(DWARF2)' 'DEBUGFLAGS    =' config/Makefile.macosx64	  	  
     mysed 'LDFLAGS       = $(OPT) -m64 -mmacosx-version-min=$(MACOSXVERS)' 'LDFLAGS       = -m64 -mmacosx-version-min=$(MACOSXVERS)' config/Makefile.macosx64	  	  
   fi
-        
+
+  # needed to compile with Apple LLVM 5.1, shouldn't hurt on other systems
+  patch -p0 < ../root5_34_17_LLVM51.patch | tee -a $logfile 
+
   . rootconfig.sh
 
   #This workaround  to run make in a loop is

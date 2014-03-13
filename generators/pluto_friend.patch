@@ -1,0 +1,40 @@
+--- src/PStaticData.h_orig	2011-01-04 20:34:00.000000000 +0100
++++ src/PStaticData.h	2014-03-13 10:18:27.000000000 +0100
+@@ -224,7 +224,7 @@
+     // global friend functions
+     //Keeping for backward compatibility
+   
+-    friend void listParticle(int id=-1);
++    friend void listParticle(int id);
+     // list particles in data base and their properties, by particle pid
+ 
+     friend void listParticle(const char * id) {
+@@ -232,7 +232,7 @@
+     };
+     // list particles in data base and their properties, by particle code name
+     
+-    friend void listModes(int id=-1);
++    friend void listModes(int id);
+     // list decay modes in data base, by particle pid
+     
+     friend void listModes(const char * id){
+--- src/PStaticData.cc_orig	2011-01-04 20:34:00.000000000 +0100
++++ src/PStaticData.cc	2014-03-13 10:17:10.000000000 +0100
+@@ -1711,7 +1711,7 @@
+ }
+ 
+ 
+-void listParticle(int id) {
++void listParticle(int id = -1) {
+    
+     if (id<0) {
+         makeStaticData(); //this fill data base
+@@ -1721,7 +1721,7 @@
+         makeStaticData()->PrintParticle(id);
+ }
+ 
+-void listModes(int id) {
++void listModes(int id = -1) {
+    makeStaticData()->PrintParticle(id);
+ }
+  

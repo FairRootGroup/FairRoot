@@ -1,0 +1,43 @@
+--- include/Pythia8/Basics.h_orig	2014-01-23 17:19:45.000000000 +0100
++++ include/Pythia8/Basics.h	2014-03-13 09:35:21.000000000 +0100
+@@ -390,9 +390,9 @@
+ 
+   // Print a table out of two histograms with same x axis.
+   friend void table(const Hist& h1, const Hist& h2, ostream& os,
+-    bool printOverUnder = false) ;
++    bool printOverUnder) ;
+   friend void table(const Hist& h1, const Hist& h2, string fileName,
+-    bool printOverUnder = false) ;
++    bool printOverUnder) ;
+ 
+   // Return content of specific bin: 0 gives underflow and nBin+1 overflow.
+   double getBinContent(int iBin) const;
+@@ -456,7 +456,7 @@
+ ostream& operator<<(ostream& os, const Hist& h) ;
+ 
+ // Print a table out of two histograms with same x axis.
+-void table(const Hist& h1, const Hist& h2, ostream& os = cout,
++void table(const Hist& h1, const Hist& h2, ostream& os,
+   bool printOverUnder) ;
+ void table(const Hist& h1, const Hist& h2, string fileName,
+   bool printOverUnder) ;
+--- src/Basics.cc_orig	2014-01-23 17:19:58.000000000 +0100
++++ src/Basics.cc	2014-03-13 09:38:55.000000000 +0100
+@@ -1029,7 +1029,7 @@
+ 
+ // Print a table out of two histograms with same x axis  (e.g. for Gnuplot).
+ 
+-void table(const Hist& h1, const Hist& h2, ostream& os, bool printOverUnder) {
++void table(const Hist& h1, const Hist& h2, ostream& os = cout, bool printOverUnder = false) {
+ 
+   // Require histogram x axes to agree.
+   if (h1.nBin != h2.nBin || abs(h1.xMin - h2.xMin) > Hist::TOLERANCE * h1.dx
+@@ -1050,7 +1050,7 @@
+ }
+ 
+ void table(const Hist& h1, const Hist& h2, string fileName,
+-  bool printOverUnder) {
++  bool printOverUnder = false) {
+   
+   ofstream streamName(fileName.c_str());
+   table( h1, h2, streamName, printOverUnder);

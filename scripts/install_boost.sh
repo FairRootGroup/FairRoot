@@ -2,7 +2,6 @@
 
 if [ ! -d  $SIMPATH/basics/boost ];
 then 
-  set -xv
   cd $SIMPATH/basics
   if [ ! -e $BOOSTVERSION.tar.bz2 ];
   then
@@ -14,7 +13,6 @@ then
   then
     ln -s $BOOSTVERSION boost
   fi
-  set +xv
 fi 
 
 
