@@ -18,8 +18,6 @@
 namespace TestDetectorPayload
 {
 
-// common base classes
-
 class TimeStamp
 {
   public:

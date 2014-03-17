@@ -10,14 +10,30 @@
 
 #include "FairMQLogger.h"
 #include "FairMQProcessor.h"
+
 #include "FairTestDetectorMQRecoTask.h"
-#include "nanomsg/FairMQTransportFactoryNN.h"
+#include "FairTestDetectorPayload.h"
+
+#ifdef PROTOBUF
+  #include "FairTestDetectorPayload.pb.h"
+#endif
+
+#ifdef NANOMSG
+  #include "nanomsg/FairMQTransportFactoryNN.h"
+#else
+  #include "zeromq/FairMQTransportFactoryZMQ.h"
+#endif
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
 
+#ifdef PROTOBUF
+  typedef FairTestDetectorMQRecoTask<TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload> TProcessorTask;
+#else
+  typedef FairTestDetectorMQRecoTask<TestDetectorPayload::TestDetectorDigi, TestDetectorPayload::TestDetectorHit> TProcessorTask;
+#endif
 
 FairMQProcessor processor;
 
@@ -55,7 +71,12 @@ int main(int argc, char** argv)
 
   LOG(INFO) << "PID: " << getpid();
 
+#ifdef NANOMSG
   FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
+#else
+  FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
+#endif
+
   processor.SetTransport(transportFactory);
 
   int i = 1;
@@ -64,7 +85,7 @@ int main(int argc, char** argv)
   ++i;
 
   if (strcmp(argv[i], "FairTestDetectorMQRecoTask") == 0) {
-    FairMQProcessorTask* task = new FairTestDetectorMQRecoTask();
+    TProcessorTask* task = new TProcessorTask();
     processor.SetTask(task);
   } else {
     LOG(ERROR) << "task not supported.";

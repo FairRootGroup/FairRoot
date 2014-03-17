@@ -7,7 +7,8 @@
 
 
 
-template <typename Loader> FairMQSampler<Loader>::FairMQSampler() :
+template <typename Loader>
+FairMQSampler<Loader>::FairMQSampler() :
   fFairRunAna(new FairRunAna()),
   fSamplerTask(new Loader()),
   fInputFile(""),
@@ -17,15 +18,15 @@ template <typename Loader> FairMQSampler<Loader>::FairMQSampler() :
 {
 }
 
-template <typename Loader> FairMQSampler<Loader>::~FairMQSampler()
+template <typename Loader>
+FairMQSampler<Loader>::~FairMQSampler()
 {
   if(fFairRunAna) fFairRunAna->TerminateRun();
   delete fSamplerTask;
 }
 
-/// Methods
-
-template <typename Loader> void FairMQSampler<Loader>::Init()
+template <typename Loader>
+void FairMQSampler<Loader>::Init()
 {
   FairMQDevice::Init();
 
@@ -51,7 +52,8 @@ template <typename Loader> void FairMQSampler<Loader>::Init()
   fNumEvents = int((ioman->GetInChain())->GetEntries());
 }
 
-template <typename Loader> void FairMQSampler<Loader>::Run()
+template <typename Loader>
+void FairMQSampler<Loader>::Run()
 {
   LOG(INFO) << ">>>>>>> Run <<<<<<<";
   boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
@@ -103,7 +105,8 @@ template <typename Loader> void FairMQSampler<Loader>::Run()
   //commandListener.join();
 }
 
-template <typename Loader> void FairMQSampler<Loader>::ResetEventCounter()
+template <typename Loader>
+void FairMQSampler<Loader>::ResetEventCounter()
 {
   while ( true ) {
     try {
@@ -117,7 +120,8 @@ template <typename Loader> void FairMQSampler<Loader>::ResetEventCounter()
   LOG(DEBUG) << ">>>>>>> stopping resetEventCounter <<<<<<<";
 }
 
-template <typename Loader> void FairMQSampler<Loader>::ListenToCommands()
+template <typename Loader>
+void FairMQSampler<Loader>::ListenToCommands()
 {
   LOG(INFO) << ">>>>>>> ListenToCommands <<<<<<<";
 

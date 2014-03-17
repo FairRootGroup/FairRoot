@@ -4,10 +4,10 @@
 #include "FairTestDetectorRecoTask.h"
 #include "FairMQProcessorTask.h"
 #include "FairMQMessage.h"
-#include "FairTestDetectorPayload.h"
 
 class TClonesArray;
 
+template <typename T1, typename T2>
 class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 {
   public:
@@ -31,4 +31,6 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     FairTestDetectorRecoTask* fRecoTask;
 };
 
-#endif //FAIRTESTDETECTORMQRECOTASK_H
+#include "FairTestDetectorMQRecoTask.tpl"
+
+#endif /* FAIRTESTDETECTORMQRECOTASK_H */
