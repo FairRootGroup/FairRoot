@@ -26,6 +26,17 @@ then
   then
     cd $SIMPATH/basics/boost
 	
+    cxxflags=""
+    if [ $hascxx11 ];
+    then
+       cxxflags="$cxxflags -std=c++11"
+    fi   
+
+    if [ $haslibcxx ];
+    then
+       cxxflags="$cxxflags -stdlib=libc++"
+    fi   
+
 	if [ "$compiler" = "intel" ];
 	then
             ./bootstrap.sh --with-toolset=intel-linux
@@ -37,7 +48,12 @@ then
 	elif [ "$compiler" = "Clang" ];
 	then
             ./bootstrap.sh --with-toolset=clang
-           ./b2 --build-dir=$PWD/tmp --build-type=minimal --toolset=clang --prefix=$install_prefix --layout=system -j $number_of_processes install
+           if [ $hascxx11 ];
+           then
+             ./b2 cxxflags="$cxxflags" linkflags="$cxxflags" --build-dir=$PWD/tmp --build-type=minimal --toolset=clang --prefix=$install_prefix --layout=system -j $number_of_processes install
+           else
+             ./b2 --build-dir=$PWD/tmp --build-type=minimal --toolset=clang --prefix=$install_prefix --layout=system -j $number_of_processes install
+           fi
 	elif [ "$arch" = "macosx64" ];
         then
             ./bootstrap.sh --with-toolset=darwin

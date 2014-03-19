@@ -10,8 +10,8 @@ export GTESTVERSION=gtest-1.7.0
 export GSL_LOCATION="ftp://ftp.gnu.org/gnu/gsl/"
 export GSLVERSION=gsl-1.16
 
-export BOOST_LOCATION="http://sourceforge.net/projects/boost/files/boost/1.55.0/"
-export BOOSTVERSION=boost_1_55_0
+export BOOST_LOCATION="http://sourceforge.net/projects/boost/files/boost/1.54.0/"
+export BOOSTVERSION=boost_1_54_0
 
 export PYTHIA6_LOCATION="ftp://root.cern.ch/root/"
 export PYTHIA6VERSION=pythia6
