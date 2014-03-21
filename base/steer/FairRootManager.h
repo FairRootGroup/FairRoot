@@ -21,7 +21,7 @@
 #include <list>                         // for list
 #include <map>                          // for map, multimap, etc
 #include <queue>                        // for queue
-
+#include "FairFileSource.h"
 class BinaryFunctor;
 class FairEventHeader;
 class FairFileHeader;
@@ -60,11 +60,7 @@ class FairRootManager : public TObject
     void                AddSignalFile(TString name, UInt_t identifier );
     /**Add input background file by name*/
     void                AddBackgroundFile(TString name);
-    void                AddFile(TString name);
-    void                AddFriend(TString Name);
-    void                AddFriendsToChain();
-
-    Bool_t             AllDataProcessed();
+     Bool_t             AllDataProcessed();
 
     /**
     Check if Branch persistence or not (Memory branch)
@@ -74,7 +70,6 @@ class FairRootManager : public TObject
     0 : Branch does not exist   */
     Int_t               CheckBranch(const char* BrName);
 
-    void                CloseInFile() { if(fInFile) { fInFile->Close(); }}
 
     void                CloseOutFile() { if(fOutFile) { fOutFile->Close(); }}
     /**Create a new file and save the current TGeoManager object to it*/
@@ -95,12 +90,9 @@ class FairRootManager : public TObject
     /**Return a TList of TObjString of branch names */
     TList*              GetBranchNameList() {return fBranchNameList;}
 
-    TTree*              GetInTree() {return fInChain->GetTree();}
-    TChain*             GetInChain() {return fInChain;}
     TChain*             GetBGChain() { return  fBackgroundChain;}
     TChain*             GetSignalChainNo(UInt_t i);
     TTree*              GetOutTree() {return fOutTree;}
-    TFile*              GetInFile() {return  fInFile;}
     TFile*              GetOutFile() {return  fOutFile;}
     /**  Get the Object (container) for the given branch name,
          this method can be used to access the data of
@@ -191,9 +183,7 @@ class FairRootManager : public TObject
     /**Set the name of the input file*/
     void                SetInputFile(TString name);
 
-    /**Set the input tree when running on PROOF worker*/
-    void                SetInTree (TTree*  tempTree)  {fInTree = NULL; fInTree  = tempTree;}
-
+   
     /**Set the output tree pointer*/
     void                SetOutTree(TTree* fTree) { fOutTree=fTree;}
 
@@ -249,6 +239,39 @@ class FairRootManager : public TObject
     void SetUseFairLinks(Bool_t val) {fUseFairLinks = val;};
     Bool_t GetUseFairLinks() const {return fUseFairLinks;};
 
+    /**
+     * @param Status : if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
+     * them in one big event and send it to the next step
+     */
+    void SetMixAllInputs(Bool_t Status) {
+       fMixAllInputs=kTRUE;
+    }
+   
+    
+    /** These methods have been moved to the FairFileSource */
+    const TFile* GetRootFile(){return fRootFileSource->GetRootFile();}
+     /** Add a friend file (input) by name)*/
+    void   AddFriend(TString FileName){fRootFileSource->AddFriend(FileName);}
+    /**Add ROOT file to input, the file will be chained to already added files*/
+    void  AddFile(TString FileName){fRootFileSource->AddFile(FileName);}
+    void  AddFriendsToChain(){fRootFileSource->AddFriendsToChain();}
+    void  PrintFriendList(){fRootFileSource->PrintFriendList();}
+    Bool_t  CompareBranchList(TFile* fileHandle, TString inputLevel){return fRootFileSource->CompareBranchList(fileHandle, inputLevel);}
+    void    CheckFriendChains(){fRootFileSource->CheckFriendChains();}
+    void CreateNewFriendChain(TString inputFile, TString inputLevel){fRootFileSource->CreateNewFriendChain(inputFile, inputLevel);}
+    
+    TTree*              GetInTree() {return fRootFileSource->GetInTree();}
+    TChain*             GetInChain() {return fRootFileSource->GetInChain();}
+    TFile*              GetInFile() {return  fRootFileSource->GetInFile();}
+    void                CloseInFile() {fRootFileSource->CloseInFile(); }
+    /**Set the input tree when running on PROOF worker*/
+    void                SetInTree (TTree*  tempTree)  {fRootFileSource->SetInTree(tempTree);}
+    /**
+     * @param Status : if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
+     * them in one big event and send it to the next step
+     */
+       
+   
   private:
     /**private methods*/
     FairRootManager(const FairRootManager&);
@@ -269,15 +292,11 @@ class FairRootManager : public TObject
     0 : Branch does not exist
     */
     Int_t               CheckBranchSt(const char* BrName);
-    void                CheckFriendChains();
-    Bool_t              CompareBranchList(TFile* fileHandle, TString inputLevel);
-    void                CreateNewFriendChain(TString inputFile, TString inputLevel);
-    /**Create the Map for the branch persistency status  */
+        /**Create the Map for the branch persistency status  */
     void                CreatePerMap();
     TObject*            GetMemoryBranch( const char* );
-    void                GetRunIdInfo(TString fileName, TString inputLevel);
-    void                PrintFriendList();
-    void                SaveAllContainers();
+ //   void                GetRunIdInfo(TString fileName, TString inputLevel);
+     void                SaveAllContainers();
     /**Read a single entry*/
     void                ReadMixedEvent(Int_t i);
 
@@ -294,17 +313,17 @@ class FairRootManager : public TObject
     /** current time in ns*/
     Double_t                            fCurrentTime;
     /**Input file */
-    TFile*                              fInFile;
+//    TFile*                              fInFile;
     /**Input Chain */
-    TChain*                             fInChain;
+//    TChain*                             fInChain;
     /**Input Tree */
-    TTree*                              fInTree;
+//    TTree*                              fInTree;
     /**Output file */
     TFile*                              fOutFile;
     /**Output tree */
     TTree*                              fOutTree;
     /** list of folders from all input (and friends) files*/
-    TObjArray                           fListFolder; //!
+//    TObjArray                           fListFolder; //!
     TObject**                           fObj2; //!
     Int_t                               fNObj;//!
     std::map < TString , TObject* >     fMap;  //!
@@ -343,15 +362,17 @@ class FairRootManager : public TObject
     /** List of all files added with AddFriend */
     std::list<TString>                      fFriendFileList; //!
 
-    TString                             fInputFileName; //!
-    std::list<TString>                  fInputChainList;//!
-    std::map<TString, TChain*>          fFriendTypeList;//!
+ //   TString                             fInputFileName; //!
+//    std::list<TString>                  fInputChainList;//!
+//    std::map<TString, TChain*>          fFriendTypeList;//!
 
-    std::map<TString, std::list<TString>* > fCheckInputBranches; //!
-    std::list<TString>                      fInputLevel; //!
-    std::map<TString, std::multimap<TString, TArrayI> > fRunIdInfoAll; //!
+//    std::map<TString, std::list<TString>* > fCheckInputBranches; //!
+//    std::list<TString>                      fInputLevel; //!
+//    std::map<TString, std::multimap<TString, TArrayI> > fRunIdInfoAll; //!
 
     FairLogger*                         fLogger;//!
+    /** Mix all inputs, i.e: read one entry from each input and add them together*/
+    Bool_t                              fMixAllInputs;
     /**True if signal and background mixing is used*/
     Bool_t                              fMixedInput;//!
     /**Actual identifier of the added signals, this is used to identify how many signals are added*/
@@ -363,7 +384,7 @@ class FairRootManager : public TObject
     /**Chain containing the background*/
     TChain*                              fBackgroundChain; //!
     TFile*                               fBackgroundFile; //!
-    std::map<UInt_t, TChain*>            fSignalTypeList;//!
+    std::map<UInt_t, FairFileSource*>            fSignalTypeList;//!
 
     /** min time for one event (ns) */
     Double_t                                fEventTimeMin;  //!
@@ -382,7 +403,7 @@ class FairRootManager : public TObject
     FairEventHeader*                        fEvtHeader; //!
 
     /**File Header*/
-    FairFileHeader*                        fFileHeader; //!
+    FairFileHeader*                          fFileHeader; //!
 
     /**holds the SB ratio by number*/
     std::map<UInt_t, Double_t>              fSignalBGN;//!
@@ -407,6 +428,9 @@ class FairRootManager : public TObject
     Bool_t      fEvtHeaderIsNew; //!
     Bool_t  fFillLastData; //!
     Int_t fEntryNr; //!
+    FairFileSource                      *fRootFileSource;
+    FairFileSource                      *fRootFileSourceSignal;
+    FairFileSource                      *fRootFileSourceBKG;
 
     Bool_t fUseFairLinks; //!
     Bool_t fInitFairLinksOnce; //!

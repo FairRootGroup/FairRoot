@@ -145,7 +145,12 @@ class FairRunAna : public FairRun
     Bool_t GetLMDProcessingStatus( void ) {
       return fFinishProcessingLMDFile;
     }
-
+    /**
+     * This method will simply forward the call to the FairRootManager, 
+     * if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
+     * them in one big event and send it to the next step
+    */
+    void SetMixAllInputs(Bool_t Status);
 
   private:
 
