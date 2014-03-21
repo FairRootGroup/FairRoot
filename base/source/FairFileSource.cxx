@@ -27,7 +27,9 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
  fLogger(FairLogger::GetLogger()),
  fInChain(0),
  fInTree(0),
- fListFolder(0),
+ fListFolder(new TObjArray(16)),
+ fBranchSeqId(0),
+ fBranchNameList(new TList()),
  fRtdb(FairRuntimeDb::instance()),
  fCbmout(0),
  fCbmroot(0),
@@ -36,6 +38,8 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
    if (fRootFile->IsZombie()) {
       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
    }
+  fLogger->Info(MESSAGE_ORIGIN, "FairFileSource created------------");
+ 
 }
 FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, UInt_t identifier)
 :FairSource(),
@@ -46,8 +50,12 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
  fLogger(FairLogger::GetLogger()),
  fInChain(0),
  fInTree(0),
- fListFolder(0),
+ fListFolder(new TObjArray(16)),
+ fBranchSeqId(0),
+ fBranchNameList(new TList()),
  fRtdb(FairRuntimeDb::instance()),
+ fCbmout(0),
+ fCbmroot(0),
  fSourceIdentifier(0)
 
 {
@@ -55,6 +63,7 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
     if (fRootFile->IsZombie()) {
        fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
     }
+  fLogger->Info(MESSAGE_ORIGIN, "FairFileSource created------------");
 
 }
 FairFileSource::~FairFileSource()
@@ -64,6 +73,7 @@ Bool_t FairFileSource::Init()
 {
     if (!fInChain ) {
         fInChain = new TChain("cbmsim", "/cbmroot");
+        fLogger->Info(MESSAGE_ORIGIN, "FairFileSource::Init() chain created");
     }
     fInChain->Add( fRootFile->GetName() );
     
@@ -91,17 +101,25 @@ Bool_t FairFileSource::Init()
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
     TList* list= dynamic_cast <TList*> (fRootFile->Get("BranchList"));
+    if(list==0)fLogger->Fatal(MESSAGE_ORIGIN, "No Branch list in input file");
     TString chainName = fInputTitle;
+    TString ObjName;
     fInputLevel.push_back(chainName);
     fCheckInputBranches[chainName] = new std::list<TString>;
     if(list) {
         TObjString* Obj=0;
+        fLogger->Info(MESSAGE_ORIGIN, "Enteries in the list  %i", list->GetEntries());
         for(Int_t i =0; i< list->GetEntries(); i++) {
             Obj=dynamic_cast <TObjString*> (list->At(i));
-            fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
-            if(fBranchNameList->FindObject(Obj->GetString().Data())==0) {
-                fBranchNameList->AddLast(Obj);
-                fBranchSeqId++;
+            if(Obj!=0){
+                ObjName=Obj->GetString();
+                fLogger->Info(MESSAGE_ORIGIN, "Branch name %s", ObjName.Data());
+                fCheckInputBranches[chainName]->push_back(ObjName.Data());
+                
+                if(fBranchNameList->FindObject(ObjName.Data())==0) {
+                    fBranchNameList->AddLast(Obj);
+                    fBranchSeqId++;
+                 }
             }
         }
     }
