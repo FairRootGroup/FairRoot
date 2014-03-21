@@ -140,15 +140,15 @@ void FairRunAna::Init()
   // input chain. Do a check if the added files are of the same type
   // as the the input file. Same type means check if they contain the
   // same branch.
-  if (!fMixedInput) {
-    fInFileIsOpen = fRootManager->OpenInChain();
-  } else {
-    Bool_t openBKChain = fRootManager->OpenBackgroundChain();
-    if (!openBKChain) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "Could not open background Chain!");
-    }
-    fRootManager->OpenSignalChain();
-  }
+//  if (!fMixedInput) {
+//    fInFileIsOpen = fRootManager->OpenInChain();
+//  } else {
+//    Bool_t openBKChain = fRootManager->OpenBackgroundChain();
+//    if (!openBKChain) {
+//      fLogger->Fatal(MESSAGE_ORIGIN, "Could not open background Chain!");
+//    }
+//    fRootManager->OpenSignalChain();
+//  }
 
   //Load Geometry from user file
 
@@ -638,9 +638,6 @@ void FairRunAna::RunMQ(Long64_t entry)
 //_____________________________________________________________________________
 void FairRunAna::Run(Long64_t entry)
 {
-//  if (fTimeStamps) {
-//    RunTSBuffers();
-//  } else {
   UInt_t tmpId =0;
   fRootManager->ReadEvent(entry);
   tmpId = fEvtHeader->GetRunId();
@@ -657,7 +654,6 @@ void FairRunAna::Run(Long64_t entry)
   fRootManager->DeleteOldWriteoutBufferData();
   fRootManager->LastFill();
   fRootManager->Write();
-//  }
 }
 //_____________________________________________________________________________
 
@@ -860,6 +856,13 @@ void  FairRunAna::BGWindowWidthNo(UInt_t background, UInt_t Signalid)
 void  FairRunAna::BGWindowWidthTime(Double_t background, UInt_t Signalid)
 {
   fRootManager->BGWindowWidthTime(background, Signalid);
+}
+//_____________________________________________________________________________
+//_____________________________________________________________________________
+void  FairRunAna::SetMixAllInputs(Bool_t Status)
+{
+   fLogger->Info(MESSAGE_ORIGIN, "Mixing for all input is choosed, in this mode one event per input file is read per step");
+   fRootManager->SetMixAllInputs(Status);
 }
 //_____________________________________________________________________________
 

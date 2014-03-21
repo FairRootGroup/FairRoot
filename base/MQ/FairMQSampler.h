@@ -48,8 +48,7 @@
  * feasibility and quality of the various possible online analysis features.
  */
 
-template <typename Loader>
-class FairMQSampler: public FairMQDevice
+template <typename Loader> class FairMQSampler: public FairMQDevice
 {
   public:
     enum {
