@@ -721,8 +721,9 @@ Bool_t FairDbSqlValidityData::Store(UInt_t dbNo, Bool_t replace) const
 
   Bool_t first = kTRUE;
   int combineInserts = 0;
-  // Cannot group ORACLE inserts.
-  int maxInserts = stmtDb->GetDBType() == FairDb::kOracle ? 1 : 20;
+  // Cannot group ORACLE , SQLITE inserts.
+  int maxInserts = (stmtDb->GetDBType() == FairDb::kOracle || stmtDb->GetDBType() == FairDb::kSQLite) ? 1 : 20;
+
   string sqlInserts;
 
   for (list<string>::const_iterator itr = fSqlStmts.begin();
