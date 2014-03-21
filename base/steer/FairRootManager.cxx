@@ -1609,14 +1609,24 @@ void FairRootManager::AssignTClonesArray(TString branchName)
 //_____________________________________________________________________________
 Int_t FairRootManager::CheckBranchSt(const char* BrName)
 {
+  cout <<"FairRootManager::CheckBranchSt  :  " << BrName << endl;
   Int_t returnvalue=0;
   TObject* Obj1 =NULL;
-  TObjArray *fListFolder=fRootFileSource->GetListOfFolders();
-
+  TObjArray *fListFolder=0;
+    
+  if(fRootFileSource!=0){
+    fListFolder=fRootFileSource->GetListOfFolders();
+  }else{
+    fListFolder = new TObjArray(16);
+  }
+    
+  cout <<"FairRootManager::CheckBranchSt  :  " <<fCbmroot << endl;
   if (fCbmroot) {
+    fListFolder->Add(fCbmroot);
     Obj1 = fCbmroot->FindObjectAny(BrName);
   }
   if(fCbmout && !Obj1) {
+    fListFolder->Add(fCbmout);
     Obj1 = fCbmout->FindObjectAny(BrName);  //Branch in output folder
   }
   if(!Obj1) {

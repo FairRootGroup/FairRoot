@@ -266,12 +266,7 @@ class FairRootManager : public TObject
     void                CloseInFile() {fRootFileSource->CloseInFile(); }
     /**Set the input tree when running on PROOF worker*/
     void                SetInTree (TTree*  tempTree)  {fRootFileSource->SetInTree(tempTree);}
-    /**
-     * @param Status : if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
-     * them in one big event and send it to the next step
-     */
-       
-   
+    
   private:
     /**private methods*/
     FairRootManager(const FairRootManager&);
