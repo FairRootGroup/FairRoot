@@ -335,8 +335,9 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
     } //! PGSQL
 
     else if (  fDbType == FairDb::kSQLite  ) {
-      //cout << "-I-  FairDbStatement::TranslateSQL called for SQLite:" << sql <<  endl;
-    }
+	  // cout << "-I-  FairDbStatement::TranslateSQL called for SQLite:" << sql <<  endl;
+	  
+    }//! (SQLite)
 
 
     // Translate CREATE TABLE commands using FairDbTableMetaData.
