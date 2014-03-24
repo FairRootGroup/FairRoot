@@ -143,7 +143,10 @@ void FairRunOnline::Init()
   fRtdb->initContainers(fRunId);
 
   // Initialize the source
-  fSource->Init();
+  if(! fSource->Init()) {
+    fLogger->Fatal(MESSAGE_ORIGIN, "Init of the source failed...");
+    exit(-1);
+  }
 
   // Now call the User initialize for Tasks
   fTask->InitTask();
