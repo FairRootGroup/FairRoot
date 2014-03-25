@@ -726,6 +726,8 @@ Bool_t FairDbSqlValidityData::Store(UInt_t dbNo, Bool_t replace) const
 
   string sqlInserts;
 
+  if ( stmtDb->GetDBType() == FairDb::kSQLite )  stmtDb->ExecuteUpdate("BEGIN TRANSACTION;");  
+
   for (list<string>::const_iterator itr = fSqlStmts.begin();
        itr != fSqlStmts.end();
        ++itr) {
@@ -778,13 +780,16 @@ Bool_t FairDbSqlValidityData::Store(UInt_t dbNo, Bool_t replace) const
     }
   }
 
+
 // Deal with last group of inserts.
   if ( combineInserts ) {
     stmtDb->ExecuteUpdate(sqlInserts.c_str());
     combineInserts = 0;
     if ( stmtDb->PrintExceptions() ) { return kFALSE; }
   }
-
+  
+  if ( stmtDb->GetDBType() == FairDb::kSQLite )  stmtDb->ExecuteUpdate("END TRANSACTION;");  
+	
   //cout << "-I- FairDbSqlValidityData::Store(): done ...  " << endl;
   return kTRUE;
 
