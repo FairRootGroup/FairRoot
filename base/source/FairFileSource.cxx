@@ -33,7 +33,8 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
  fRtdb(FairRuntimeDb::instance()),
  fCbmout(0),
  fCbmroot(0),
- fSourceIdentifier(0)
+ fSourceIdentifier(0),
+ fNoOfEntries(-1)
 {
    if (fRootFile->IsZombie()) {
       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
@@ -56,7 +57,8 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
  fRtdb(FairRuntimeDb::instance()),
  fCbmout(0),
  fCbmroot(0),
- fSourceIdentifier(0)
+ fSourceIdentifier(0),
+ fNoOfEntries(-1)
 
 {
     fRootFile = new TFile(RootFileName->Data());
@@ -165,7 +167,10 @@ Bool_t FairFileSource::Init()
         gFile = temp;
 
     }
-    
+    fNoOfEntries = fInChain->GetEntries();
+    fLogger->Info(MESSAGE_ORIGIN, "Entries in this Source %i------------",  fNoOfEntries);
+
+  
 }
 Int_t FairFileSource::ReadEvent()
 {
