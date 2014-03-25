@@ -665,7 +665,8 @@ void FairRunAna::RunTSBuffers()
   bool firstRun = true;
   while (firstRun || fRootManager->AllDataProcessed() == kFALSE) {
     firstRun = false;
-    if (globalEvent < fRootManager->GetInTree()->GetEntriesFast()) { //this step is necessary to load in all data which is not read in via TSBuffers
+    TTree *InTree= fRootManager->GetInTree();
+    if (globalEvent < InTree->GetEntriesFast()) { //this step is necessary to load in all data which is not read in via TSBuffers
       fRootManager->ReadEvent(globalEvent++);
     }
     fTask->ExecuteTask("");

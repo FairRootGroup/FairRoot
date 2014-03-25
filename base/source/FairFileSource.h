@@ -49,6 +49,7 @@ public:
     void                SetInTree (TTree*  tempTree)  {fInTree = NULL; fInTree  = tempTree;}
     TObjArray*          GetListOfFolders(){return fListFolder;}
     TFolder*            GetBranchDescriptionFolder(){return fCbmroot;}
+    UInt_t              GetEntries(){return fNoOfEntries; }
 
 private:
     /** Title of input source, could be input, background or signal*/
@@ -86,8 +87,9 @@ private:
     TFolder*                            fCbmroot;
     /***/
     UInt_t                              fSourceIdentifier;
-
-    
+    /**No of Entries in this source*/
+    UInt_t                              fNoOfEntries;
+  
 public:
     ClassDef(FairFileSource, 0)
 };
