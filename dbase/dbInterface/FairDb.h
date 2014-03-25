@@ -22,7 +22,8 @@ namespace FairDb
 typedef  Int_t Version;
 
 enum VersionTypes {  kAnyVersion     = -1,  // Use to disable versioning select in ext. context queries.
-                     kDefaultVersion = 0
+                     kDefaultVersion = 0,
+                     kOtherVersion = 1      
                   };
 
 enum TypeRegimes { kRootRegime = 0,
