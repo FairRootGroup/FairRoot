@@ -15,10 +15,17 @@
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
+
+#ifndef __CINT__
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/base_object.hpp>
+#endif //__CINT__
+
 class FairTestDetectorDigi : public FairTimeStamp
 {
   public:
     FairTestDetectorDigi();
+    FairTestDetectorDigi(const FairTestDetectorDigi &Digi);
     FairTestDetectorDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp);
     virtual ~FairTestDetectorDigi();
 
@@ -31,6 +38,7 @@ class FairTestDetectorDigi : public FairTimeStamp
     Int_t GetY() const  {return fY;}
     Int_t GetZ() const  {return fZ;}
 
+    // temporary to avoid serialisation of the parent class
     virtual bool equal(FairTimeStamp* data) {
       FairTestDetectorDigi* myDigi = dynamic_cast <FairTestDetectorDigi*> (data);
       if (myDigi != 0) {
@@ -62,10 +70,23 @@ class FairTestDetectorDigi : public FairTimeStamp
     }
 
   private:
+      
+   #ifndef __CINT__ // for BOOST serialization
+   friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version) 
+    {
+        ar & boost::serialization::base_object<FairTimeStamp>(*this);
+        ar & fX;
+        ar & fY;
+        ar & fZ;
+    }
+    #endif // for BOOST serialization
+
     Int_t fX;
     Int_t fY;
     Int_t fZ;
-
 
     ClassDef(FairTestDetectorDigi,1);
 };

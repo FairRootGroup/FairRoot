@@ -1,27 +1,61 @@
-/**
+/* 
  * File:   TestDetectorDigiLoader.tpl
  * @since 2014-02-08
  * @author: A. Rybalchenko, N. Winckler
+ *
  */
 
-#include <iostream>
+////////// Base template class <T1,T2>
 
-#include "FairTestDetectorPayload.h"
 
-#ifdef PROTOBUF
-  #include "FairTestDetectorPayload.pb.h"
-#endif
+template <typename T1, typename T2> 
+void TestDetectorDigiLoader<T1,T2>::Exec(Option_t* opt) 
+{ 
+    std::ostringstream buffer;
+    T2 OutputArchive(buffer);
+    for (Int_t i = 0; i < fInput->GetEntriesFast(); ++i) 
+    {
+        T1* digi = reinterpret_cast<T1*>(fInput->At(i));
+        if (!digi) continue;
+        fDigiVector.push_back(*digi); 
+    }
+    
+    OutputArchive << fDigiVector;
+    int size=buffer.str().length();
+    fOutput = fTransportFactory->CreateMessage(size);
+    std::memcpy(fOutput->GetData(), buffer.str().c_str(), size);
+    
+    // delete the vector content
+    if(fDigiVector.size()>0) fDigiVector.clear();
 
-template <typename T1, typename T2>
-TestDetectorDigiLoader<T1,T2>::TestDetectorDigiLoader() :
-FairMQSamplerTask("Load Data described by class T1 into the Payload class T2")
-{
 }
 
-template <typename T1, typename T2>
-TestDetectorDigiLoader<T1,T2>::~TestDetectorDigiLoader()
-{
+
+
+////////// Partial Specialization <T1,boost::archive::text_oarchive>
+
+template <typename T1> void TestDetectorDigiLoader<T1,boost::archive::text_oarchive>::Exec(Option_t* opt) 
+{ 
+    std::ostringstream buffer;
+    boost::archive::text_oarchive OutputArchive(buffer);
+    for (Int_t i = 0; i < fInput->GetEntriesFast(); ++i) 
+    {
+        T1* digi = reinterpret_cast<T1*>(fInput->At(i));
+        if (!digi) continue;
+        fDigiVector.push_back(*digi);
+        
+    }
+    
+    OutputArchive << fDigiVector;
+    int size=buffer.str().length();
+    fOutput = fTransportFactory->CreateMessage(size);
+    std::memcpy(fOutput->GetData(), buffer.str().c_str(), size);
+    
+    if(fDigiVector.size()>0) fDigiVector.clear();
+    
 }
+
+////////// FULL Specialization 
 
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetectorDigi>::Exec(Option_t* opt)
@@ -32,11 +66,10 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetec
     fOutput = fTransportFactory->CreateMessage(size);
     TestDetectorPayload::TestDetectorDigi* ptr = reinterpret_cast<TestDetectorPayload::TestDetectorDigi*>(fOutput->GetData());
 
-    for (Int_t i = 0; i < nDigis; ++i) {
+    for (Int_t i = 0; i < nDigis; ++i) 
+    {
         FairTestDetectorDigi* digi = reinterpret_cast<FairTestDetectorDigi*>(fInput->At(i));
-        if (!digi) {
-            continue;
-        }
+        if (!digi) continue;
         new(&ptr[i]) TestDetectorPayload::TestDetectorDigi();
         ptr[i] = TestDetectorPayload::TestDetectorDigi();
         ptr[i].fX = digi->GetX();
@@ -47,7 +80,7 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetec
 }
 
 #ifdef PROTOBUF
-
+#include "FairTestDetectorPayload.pb.h"
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* opt)
 {
@@ -76,3 +109,4 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload
 }
 
 #endif /* PROTOBUF */
+

@@ -52,7 +52,6 @@ Set(SRCS
   simulation/FairMapPar.cxx
   data/FairTestDetectorPoint.cxx
   data/FairTestDetectorHit.cxx
-  data/FairTestDetectorDigi.cxx
   digitization/FairTestDetectorHitProducerSmearing.cxx
   digitization/FairTestDetectorDigiTask.cxx
   reconstruction/FairTestDetectorRecoTask.cxx
@@ -64,16 +63,23 @@ Set(SRCS
 )
 
 If (Boost_FOUND)
-  # Set(SRCS
-  #     ${SRCS}
-  #     reconstruction/FairTestDetectorMQRecoTask.cxx
-  # )
+  Set(SRCS 
+      ${SRCS} 
+      data/FairTestDetectorDigi.cxx
+      #reconstruction/FairTestDetectorMQRecoTask.cxx
+  )
+
+
   Set(NO_DICT_SRCS
     data/FairMQFileSink.cxx
   )
   If(PROTOBUF_FOUND)
+    Set(SRCS 
+        ${SRCS} 
+    )
     Set(NO_DICT_SRCS
       ${NO_DICT_SRCS}
+      reconstruction/FairTestDetectorMQRecoTask.cxx
       data/FairTestDetectorPayload.pb.cc
     )
   Endif(PROTOBUF_FOUND)
@@ -84,7 +90,7 @@ Set(LIBRARY_NAME FairTestDetector)
 
 If (Boost_FOUND)
   Set(DEPENDENCIES 
-    Base MCStack FairMQ FairMQSampler boost_thread boost_system)
+    Base MCStack FairMQ FairMQSampler boost_thread boost_system boost_serialization)
 Else (Boost_FOUND)
   Set(DEPENDENCIES Base MCStack)
 EndIf (Boost_FOUND)
