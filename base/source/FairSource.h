@@ -25,7 +25,7 @@ class FairSource : public TObject
     virtual ~FairSource();
 
     virtual Bool_t Init() = 0;
-    virtual Int_t ReadEvent() = 0;
+    virtual Int_t ReadEvent(UInt_t=0) = 0;
     virtual void Close() = 0;
 
     virtual void Reset() = 0;

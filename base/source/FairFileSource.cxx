@@ -155,6 +155,7 @@ Bool_t FairFileSource::Init()
         Bool_t isOk = CompareBranchList(inputFile, chainName);
         if ( !isOk ) {
             fLogger->Fatal(MESSAGE_ORIGIN, "Branch structure of the input file %s and the file to be added %s are different.", fRootFile->GetName(), (*iter).Data());
+            return kFALSE;
         }
         
         // Add the runid information for all files in the chain.
@@ -169,11 +170,13 @@ Bool_t FairFileSource::Init()
     }
     fNoOfEntries = fInChain->GetEntries();
     fLogger->Info(MESSAGE_ORIGIN, "Entries in this Source %i------------",  fNoOfEntries);
+    return kTRUE;
 
   
 }
-Int_t FairFileSource::ReadEvent()
+Int_t FairFileSource::ReadEvent(UInt_t i)
 {
+   return fInChain->GetEntry(i);
 }
 void FairFileSource::Close()
 {

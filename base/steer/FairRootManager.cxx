@@ -944,12 +944,9 @@ void FairRootManager:: WriteFolder()
 void  FairRootManager::ReadEvent(Int_t i)
 {
   SetEntryNr(i);
-  TTree *fInTree =fRootFileSource->GetInTree();
-  TChain *fInChain=fRootFileSource->GetInChain();
-  if ( fInTree ) {
-    LOG(DEBUG) << "FairRootManager::ReadEvent(" << i << "): FROM THE TREE " << fInTree << FairLogger::endl;
+  if ( fRootFileSource ) {
     if(0==fCurrentEntryNo) {
-      Int_t totEnt = fInTree->GetEntries();
+      Int_t totEnt =  fRootFileSource->GetEntries();
       fLogger->Info(MESSAGE_ORIGIN,"The number of entries in the tree is %i",totEnt);
       LOG(INFO) << "FairRootManager::ReadEvent(" << i << "): The tree has " << totEnt << " entries" << FairLogger::endl;
 
@@ -958,7 +955,7 @@ void  FairRootManager::ReadEvent(Int_t i)
       SetEventTime();
     }
     fCurrentEntryNo=i;
-    fInTree->GetEntry(i);
+    fRootFileSource->ReadEvent(i);
 
     if(fEvtHeader !=0) {
       fEvtHeader->SetMCEntryNumber(i);
@@ -971,7 +968,7 @@ void  FairRootManager::ReadEvent(Int_t i)
   if(!fMixedInput) {
     /**Check for fCurrentEntryNo because it always starts from Zero, i could have any value! */
     if(0==fCurrentEntryNo) {
-      Int_t totEnt = fInChain->GetEntries();
+      Int_t totEnt = fRootFileSource->GetEntries();
       fLogger->Info(MESSAGE_ORIGIN,"The number of entries in chain is %i",totEnt);
 
       fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
@@ -979,8 +976,8 @@ void  FairRootManager::ReadEvent(Int_t i)
       SetEventTime();
     }
     fCurrentEntryNo=i;
-    fInChain->GetEntry(i);
-
+    fRootFileSource->ReadEvent(i);
+      
     if(fEvtHeader !=0) {
       fEvtHeader->SetMCEntryNumber(i);
       fEvtHeader->SetEventTime(GetEventTime());
@@ -1701,81 +1698,6 @@ void FairRootManager::SaveAllContainers()
 }
 //_____________________________________________________________________________
 
-//_____________________________________________________________________________
-//void FairRootManager::GetRunIdInfo(TFile* fileHandle, TString inputLevel)
-/*void FairRootManager::GetRunIdInfo(TString fileName, TString inputLevel)
-{
-  TFile* temp=gFile;
-  TFile* fileHandle = new TFile(fileName);
-
-  TTree* testTree = dynamic_cast<TTree*>(fileHandle->Get("cbmsim"));
-  TFolder* folder = dynamic_cast<TFolder*>(fileHandle->Get("cbmroot"));
-  if (!folder) {
-    folder = dynamic_cast<TFolder*>(fileHandle->Get("cbmout"));
-  }
-
-  // Get the information about runid and start and stop event number
-  // If there is a branch with this information use this information
-  // directly. If not loop over all events and read the MCEventHeader
-  // information to extract all different runids and start/stop event
-  // numbers.
-
-  FairEventHeader* header =
-    (FairEventHeader*)folder->FindObjectAny("EventHeader.");
-  // With the follwing two lines the MCEventHeader is not filled
-  // correctely. The runid is correct but the event numbers are
-  // zero all the time. This must be a bug.
-  // TODO: Create example and submit a bug report to the ROOT team
-  //   testTree->SetBranchStatus("*",0); //disable all branches
-  //   testTree->SetBranchStatus("MCEventHeader.",1);
-  testTree->SetBranchAddress("EventHeader.", &header);
-
-  Int_t entries =  (Int_t) testTree->GetEntriesFast();
-
-
-  TArrayI runidInfo(2);
-
-  testTree->GetEntry(0);
-
-  Int_t runid;
-  Int_t counter = 1;
-  runid = header->GetRunId();
-  runidInfo.AddAt(runid,0);
-
-  std::map<TString, std::multimap<TString,TArrayI> >::iterator it;
-
-  std::multimap<TString, TArrayI>  myRunIdInfo;
-  it=fRunIdInfoAll.find(inputLevel);
-  if ( it != fRunIdInfoAll.end()) {
-    myRunIdInfo=it->second;
-  }
-
-  for (Int_t i=1; i<entries ; i++) {
-    testTree->GetEntry(i);
-    runid = header->GetRunId();
-    if ( runid != runidInfo[0] ) {
-      runidInfo.AddAt(counter,1);
-      // Fill info to structure
-      myRunIdInfo.insert(pair<TString,TArrayI>(fileName,runidInfo));
-      runidInfo.Reset();
-      runid = header->GetRunId();
-      runidInfo.AddAt(runid,0);
-      counter = 0;
-    }
-    counter++;
-  }
-
-  runidInfo.AddAt(counter,1);
-  myRunIdInfo.insert(pair<TString,TArrayI>(fileName,runidInfo));
-  fRunIdInfoAll.erase(inputLevel);
-  fRunIdInfoAll.insert(pair<TString, std::multimap<TString,TArrayI> >
-                       (inputLevel, myRunIdInfo));
-
-  fileHandle->Close();
-  gFile=temp;
-}
-//_____________________________________________________________________________
-*/
 //_____________________________________________________________________________
 Double_t FairRootManager::GetEventTime()
 {
