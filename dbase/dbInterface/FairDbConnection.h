@@ -55,6 +55,7 @@ class FairDbConnection
     void ClearExceptionLog() { fExceptionLog.Clear(); }
     Bool_t PrintExceptionLog(Int_t level = 3) const;
     void RecordException();
+    void RefreshExistingTables(){fExistingTableList.clear();SetTableExists();}
   protected:
     std::string fDbName;
     std::string fUser;
