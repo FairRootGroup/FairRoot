@@ -28,7 +28,7 @@ public:
     virtual ~FairFileSource();
     
     Bool_t              Init();
-    Int_t               ReadEvent();
+    Int_t               ReadEvent(UInt_t i=0);
     void                Close();
     void                Reset();
     const TFile*        GetRootFile(){return fRootFile;}

@@ -136,21 +136,7 @@ void FairRunAna::Init()
   }
   fRtdb= GetRuntimeDb();
 
-  // Open the input file and add other input files added by AddFile to the
-  // input chain. Do a check if the added files are of the same type
-  // as the the input file. Same type means check if they contain the
-  // same branch.
-//  if (!fMixedInput) {
-//    fInFileIsOpen = fRootManager->OpenInChain();
-//  } else {
-//    Bool_t openBKChain = fRootManager->OpenBackgroundChain();
-//    if (!openBKChain) {
-//      fLogger->Fatal(MESSAGE_ORIGIN, "Could not open background Chain!");
-//    }
-//    fRootManager->OpenSignalChain();
-//  }
-
-  //Load Geometry from user file
+ //Load Geometry from user file
 
   if (fLoadGeo) {
     if (fInputGeoFile!=0) { //First check if the user has a separate Geo file!
@@ -267,7 +253,7 @@ void FairRunAna::Init()
   } else if (fMixedInput) {
     fLogger->Info(MESSAGE_ORIGIN,"Initializing for Mixed input");
 
-    //For mixed input we have to set containers to static becauser of the different run ids
+    //For mixed input we have to set containers to static because of the different run ids
     //fRtdb->setContainersStatic(kTRUE);
 
     fEvtHeader = dynamic_cast<FairEventHeader*> (fRootManager->GetObject("EventHeader."));
