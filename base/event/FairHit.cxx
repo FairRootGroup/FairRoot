@@ -42,8 +42,9 @@ FairHit::FairHit(const FairHit &Hit) :
   fDx(Hit.fDx), fDy(Hit.fDy), fDz(Hit.fDz),
   fRefIndex(Hit.fRefIndex), fDetectorID(Hit.fDetectorID)
 {
-    
 }
+// -------------------------------------------------------------------------
+
 
 // -----   Destructor   ----------------------------------------------------
 FairHit::~FairHit() { }

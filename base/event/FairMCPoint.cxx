@@ -46,7 +46,15 @@ FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
 }
 // -------------------------------------------------------------------------
 
-
+FairMCPoint::FairMCPoint(const FairMCPoint &MCPoint) :
+  FairMultiLinkedData(), 
+  fTrackID(MCPoint.fTrackID), fEventId(MCPoint.fEventId), fDetectorID(MCPoint.fDetectorID),
+  fTime(MCPoint.fTime), fLength(MCPoint.fLength), fELoss(MCPoint.fELoss), 
+  fPx(MCPoint.fPx), fPy(MCPoint.fPy), fPz(MCPoint.fPz),
+  fX(MCPoint.fX), fY(MCPoint.fY), fZ(MCPoint.fZ)
+{
+}
+// -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
 FairMCPoint::~FairMCPoint() { }

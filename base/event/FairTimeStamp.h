@@ -78,6 +78,7 @@ class FairTimeStamp : public FairMultiLinkedData
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) 
     {
+        //ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
         ar & fTimeStamp;
         ar & fTimeStampError;
     } 
@@ -86,7 +87,7 @@ class FairTimeStamp : public FairMultiLinkedData
     Double_t fTimeStampError;     /** Error on time stamp */
     FairLink fEntryNr; //!  indicates where the data is stored in the branch
 
-    ClassDef(FairTimeStamp,2);
+    ClassDef(FairTimeStamp,3);
 };
 
 #endif
