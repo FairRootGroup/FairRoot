@@ -79,8 +79,9 @@ class FairHit : public FairTimeStamp
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) 
     {
-        //ar & boost::serialization::base_object<FairTimeStamp>(*this);
+        ar & boost::serialization::base_object<FairTimeStamp>(*this);
         ar & fDetectorID;
+        ar & fRefIndex;
         ar & fX;
         ar & fY;
         ar & fZ;
@@ -97,7 +98,7 @@ class FairHit : public FairTimeStamp
     Double32_t fX, fY, fZ;      ///< Position of hit [cm]
 
 
-    ClassDef(FairHit,2);
+    ClassDef(FairHit,3);
 
 
 };
