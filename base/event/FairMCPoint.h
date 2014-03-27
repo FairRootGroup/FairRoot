@@ -13,6 +13,12 @@
 #include "Rtypes.h"                     // for Double_t, Double32_t, Int_t, etc
 #include "TVector3.h"                   // for TVector3
 
+
+#ifndef __CINT__
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/base_object.hpp>
+#endif //__CINT__
+
 class FairMCPoint : public FairMultiLinkedData
 {
 
@@ -35,7 +41,8 @@ class FairMCPoint : public FairMultiLinkedData
     FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                 Double_t tof, Double_t length, Double_t eLoss, UInt_t EventId=0);
 
-
+    FairMCPoint(const FairMCPoint &MCPoint) ;
+    
     /** Destructor **/
     virtual ~FairMCPoint();
 
@@ -81,6 +88,28 @@ class FairMCPoint : public FairMultiLinkedData
 
   protected:
 
+    #ifndef __CINT__ // for BOOST serialization
+    friend class boost::serialization::access;
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version) 
+    {
+        //ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
+        ar & fTrackID;
+        ar & fEventId;
+        ar & fDetectorID; 
+        ar & fX;
+        ar & fY;
+        ar & fZ;
+        ar & fPx;
+        ar & fPy;
+        ar & fPz; 
+        ar & fTime; 
+        ar & fLength; 
+        ar & fELoss; 
+    }
+    #endif // for BOOST serialization
+    
     Int_t fTrackID;               ///< Track index
     UInt_t fEventId;              ///< MC Event id
     Double32_t fPx, fPy, fPz;     ///< Momentum components [GeV]
@@ -91,7 +120,7 @@ class FairMCPoint : public FairMultiLinkedData
     Double32_t fX, fY, fZ;        ///< Position of hit [cm]
 
 
-    ClassDef(FairMCPoint,4)
+    ClassDef(FairMCPoint,5)
 
 };
 
