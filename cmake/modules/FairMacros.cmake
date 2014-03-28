@@ -258,13 +258,12 @@ EndMacro (Generate_Version_Info)
 Macro (SetBasicVariables)
 
 IF(FAIRROOT_FOUND)
- 
   Set(BASE_INCLUDE_DIRECTORIES 
       ${ROOT_INCLUDE_DIR}
-      ${FAIRROOT_INCLUDE_DIR})
-
+      ${FAIRROOT_INCLUDE_DIR}
+      ${Boost_INCLUDE_DIRS}
+  )
 ELSE(FAIRROOT_FOUND)
-
   Set(BASE_INCLUDE_DIRECTORIES
       ${ROOT_INCLUDE_DIR}
       ${CMAKE_SOURCE_DIR}/fairtools
@@ -282,9 +281,14 @@ ELSE(FAIRROOT_FOUND)
       ${CMAKE_SOURCE_DIR}/dbase/dbUtils
       ${CMAKE_SOURCE_DIR}/input/db
       ${CMAKE_SOURCE_DIR}/dbase/dbInput
+      ${Boost_INCLUDE_DIRS}
   )  
 ENDIF(FAIRROOT_FOUND)
 
+Set(BASE_LINK_DIRECTORIES
+    ${ROOT_LIBRARY_DIR}
+    ${Boost_LIBRARY_DIRS}
+)  
 
 IF(FAIRROOT_FOUND)
 
