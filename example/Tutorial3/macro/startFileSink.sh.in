@@ -6,6 +6,21 @@ else
     buffSize="1000" # zeromq high-water mark is in messages
 fi
 
+dataFormat="Bin"
+if [ "$1" = "bin" ]; then
+    echo "attempting to use pure binary data format"
+elif [ "$1" = "boost" ]; then
+    dataFormat="Boost"
+    echo "attempting to use Boost serialized data format"
+elif [ "$1" = "proto" ]; then
+    dataFormat="Proto"
+    echo "attempting to use Google Protocol Buffers data format"
+else
+    echo "none or incorrect data formats provided."
+    echo "(available data formats options are: bin, boost, proto.)"
+    echo "binary data format will be used."
+fi
+
 ID="601"
 numIoThreads="1"
 inputSocketType="pull"
@@ -13,5 +28,4 @@ inputRcvBufSize=$buffSize
 inputMethod="connect"
 inputAddress="tcp://localhost:5570"
 
-@CMAKE_BINARY_DIR@/bin/fileSink $ID $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress
-
+@CMAKE_BINARY_DIR@/bin/fileSink$dataFormat $ID $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress

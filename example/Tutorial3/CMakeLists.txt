@@ -63,10 +63,9 @@ Set(SRCS
 )
 
 If (Boost_FOUND)
-  Set(SRCS 
-      ${SRCS} 
-      data/FairTestDetectorDigi.cxx
-      #reconstruction/FairTestDetectorMQRecoTask.cxx
+  Set(SRCS
+    ${SRCS}
+    data/FairTestDetectorDigi.cxx
   )
 
 
@@ -74,12 +73,8 @@ If (Boost_FOUND)
     data/FairMQFileSink.cxx
   )
   If(PROTOBUF_FOUND)
-    Set(SRCS 
-        ${SRCS} 
-    )
     Set(NO_DICT_SRCS
       ${NO_DICT_SRCS}
-      reconstruction/FairTestDetectorMQRecoTask.cxx
       data/FairTestDetectorPayload.pb.cc
     )
   Endif(PROTOBUF_FOUND)
@@ -89,7 +84,7 @@ Set(LINKDEF FairTestDetectorLinkDef.h)
 Set(LIBRARY_NAME FairTestDetector)
 
 If (Boost_FOUND)
-  Set(DEPENDENCIES 
+  Set(DEPENDENCIES
     Base MCStack FairMQ FairMQSampler boost_thread boost_system boost_serialization)
 Else (Boost_FOUND)
   Set(DEPENDENCIES Base MCStack)
@@ -101,13 +96,41 @@ Add_Subdirectory(macro)
 
 
 If (Boost_FOUND)
-  Set(Exe_Names testDetectorProcessor testDetectorSampler fileSink)
+  Set(Exe_Names
+    testDetectorSamplerBin
+    testDetectorProcessorBin
+    fileSinkBin # todo: make this consistent with the others
+    testDetectorSamplerBoost
+    testDetectorProcessorBoost
+    fileSinkBoost # todo: make this consistent with the others
+  )
+
+  If(PROTOBUF_FOUND)
+    Set(Exe_Names
+      ${Exe_Names}
+      testDetectorSamplerProto
+      testDetectorProcessorProto
+      fileSinkProto # todo: make this consistent with the others
+    )
+  EndIf(PROTOBUF_FOUND)
 
   set(Exe_Source
-    reconstruction/runTestDetectorProcessor.cxx
-    digitization/runTestDetectorSampler.cxx
-    reconstruction/runFileSink.cxx
+    run/runTestDetectorSamplerBin.cxx
+    run/runTestDetectorProcessorBin.cxx
+    run/runFileSinkBin.cxx
+    run/runTestDetectorSamplerBoost.cxx
+    run/runTestDetectorProcessorBoost.cxx
+    run/runFileSinkBoost.cxx
     )
+
+  If(PROTOBUF_FOUND)
+    Set(Exe_Source
+      ${Exe_Source}
+      run/runTestDetectorSamplerProto.cxx
+      run/runTestDetectorProcessorProto.cxx
+      run/runFileSinkProto.cxx
+    )
+  EndIf(PROTOBUF_FOUND)
 
   List(LENGTH Exe_Names _length)
   Math(EXPR _length ${_length}-1)

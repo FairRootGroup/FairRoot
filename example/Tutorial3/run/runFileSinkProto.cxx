@@ -1,8 +1,8 @@
-/*
- * runFileSink.cxx
+/**
+ * runFileSinkProto.cxx
  *
- * @since: Jan 21, 2013
- * @author: A. Rybalchenko
+ * @since 2013-01-21
+ * @author A. Rybalchenko
  */
 
 #include <iostream>
@@ -11,39 +11,23 @@
 #include "FairMQLogger.h"
 #include "FairMQFileSink.h"
 
-#include "FairTestDetectorHit.h"
-
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include "FairTestDetectorPayload.h"
-
-#ifdef PROTOBUF
-  #include "FairTestDetectorPayload.pb.h"
-#endif
-
 #ifdef NANOMSG
   #include "nanomsg/FairMQTransportFactoryNN.h"
 #else
   #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
+#include "FairTestDetectorHit.h"
+#include "FairTestDetectorPayload.pb.h"
+
 using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
-#ifdef PROTOBUF
-  typedef TestDetectorProto::HitPayload TProtoPayload;
-#endif
-  typedef TestDetectorPayload::TestDetectorHit TBinPayloadIn;   // binary
-  typedef boost::archive::binary_iarchive TBoostBinPayload;     // boost binary format
-  typedef boost::archive::text_iarchive TBoostTextPayload;      // boost text format
-  typedef FairTestDetectorHit THit;
-#ifdef PROTOBUF
-  typedef FairMQFileSink<THit,TProtoPayload> TSink;
-#else
-  typedef FairMQFileSink<THit,TBoostBinPayload> TSink;
-#endif
 
+typedef FairTestDetectorHit THit; // class to serialize/deserialize
+typedef TestDetectorProto::HitPayload TProtoPayload; // protobuf payload
+typedef FairMQFileSink<THit, TProtoPayload> TSink;
 
 TSink filesink;
 
