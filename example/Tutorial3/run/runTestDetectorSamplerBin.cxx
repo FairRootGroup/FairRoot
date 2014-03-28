@@ -1,8 +1,8 @@
 /**
- * runTestDetectorSampler.cxx
+ * runTestDetectorSamplerBin.cxx
  *
- *  @since 2013-04-29
- *  @author: A. Rybalchenko, N. Winckler
+ * @since 2013-04-29
+ * @author A. Rybalchenko, N. Winckler
  */
 
 #include <iostream>
@@ -11,50 +11,27 @@
 #include "FairMQLogger.h"
 #include "FairMQSampler.h"
 
-#include "TestDetectorDigiLoader.h"
-#include "FairTestDetectorPayload.h"
-
-#ifdef PROTOBUF
-  #include "FairTestDetectorPayload.pb.h"
-#endif
-
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-
 #ifdef NANOMSG
   #include "nanomsg/FairMQTransportFactoryNN.h"
 #else
   #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
+#include "TestDetectorDigiLoader.h"
+
+#include "FairTestDetectorPayload.h"
+#include "FairTestDetectorDigi.h"
+
 using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
 
-
-  // class to serialize/deserialize
-  typedef FairTestDetectorDigi TDigi;
-  // ProtoBuff payload
-#ifdef PROTOBUF  
-  typedef TestDetectorProto::DigiPayload TProtoDigiPayload;
-#endif  
-  // Binary payload
-  typedef TestDetectorPayload::TestDetectorDigi TBinPayloadIn;   // binary
-  // Boost payload
-  typedef boost::archive::binary_oarchive TBoostBinPayloadOut;   // boost binary format
-  typedef boost::archive::text_oarchive TBoostTextPayloadOut;     // boost text format
-  
-
-#ifdef PROTOBUF
-  typedef TestDetectorDigiLoader<TDigi, TProtoDigiPayload> TLoader;
-#else
-  typedef TestDetectorDigiLoader<TDigi,TBoostBinPayloadOut> TLoader;
-#endif
-
+typedef FairTestDetectorDigi TDigi; // class to serialize/deserialize
+typedef TestDetectorPayload::TestDetectorDigi TPayloadOut; // binary payload
+typedef TestDetectorDigiLoader<TDigi, TPayloadOut> TLoader;
 
 FairMQSampler<TLoader> sampler;
-
 
 static void s_signal_handler (int signal)
 {
@@ -89,7 +66,7 @@ int main(int argc, char** argv)
   s_catch_signals();
 
   LOG(INFO) << "PID: " << getpid();
-  
+
 #ifdef NANOMSG
   FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
 #else

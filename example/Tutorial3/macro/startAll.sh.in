@@ -6,6 +6,21 @@ else
     buffSize="1000" # zeromq high-water mark is in messages
 fi
 
+dataFormat="Bin"
+if [ "$1" = "bin" ]; then
+    echo "attempting to use pure binary data format"
+elif [ "$1" = "boost" ]; then
+    dataFormat="Boost"
+    echo "attempting to use Boost serialized data format"
+elif [ "$1" = "proto" ]; then
+    dataFormat="Proto"
+    echo "attempting to use Google Protocol Buffers data format"
+else
+    echo "none or incorrect data formats provided."
+    echo "(available data formats options are: bin, boost, proto.)"
+    echo "binary data format will be used."
+fi
+
 ID="101"
 inputFile="@CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi.root"
 parameterFile="@CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams.root"
@@ -16,7 +31,7 @@ outputSocketType="push"
 outputBufSize=$buffSize
 outputMethod="connect"
 outputAddress="tcp://localhost:5565"
-xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorSampler $ID $inputFile $parameterFile $branch $eventRate $numIoThreads $outputSocketType $outputBufSize $outputMethod $outputAddress &
+xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorSampler$dataFormat $ID $inputFile $parameterFile $branch $eventRate $numIoThreads $outputSocketType $outputBufSize $outputMethod $outputAddress &
 
 
 ID="201"
@@ -52,7 +67,7 @@ outputSocketType="push"
 outputSndBufSize=$buffSize
 outputMethod="connect"
 outputAddress="tcp://localhost:5569"
-xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
+xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
 
 
 ID="401"
@@ -66,7 +81,7 @@ outputSocketType="push"
 outputSndBufSize=$buffSize
 outputMethod="connect"
 outputAddress="tcp://localhost:5570"
-xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
+xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
 
 ID="401"
 processorTask="FairTestDetectorMQRecoTask"
@@ -79,7 +94,7 @@ outputSocketType="push"
 outputSndBufSize=$buffSize
 outputMethod="connect"
 outputAddress="tcp://localhost:5571"
-xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
+xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
 
 
 ID="501"
@@ -110,7 +125,7 @@ inputSocketType="pull"
 inputRcvBufSize=$buffSize
 inputMethod="connect"
 inputAddress="tcp://localhost:5572"
-xterm -e @CMAKE_BINARY_DIR@/bin/fileSink $ID $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress &
+xterm -e @CMAKE_BINARY_DIR@/bin/fileSink$dataFormat $ID $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress &
 #alternative for regular sink:
 #xterm -e @CMAKE_BINARY_DIR@/bin/sink $ID $numIoThreads $inputSocketType $inputRcvBufSize $inputAddress &
 

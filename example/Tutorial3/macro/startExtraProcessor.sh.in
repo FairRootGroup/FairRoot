@@ -6,6 +6,21 @@ else
     buffSize="1000" # zeromq high-water mark is in messages
 fi
 
+dataFormat="Bin"
+if [ "$1" = "bin" ]; then
+    echo "attempting to use pure binary data format"
+elif [ "$1" = "boost" ]; then
+    dataFormat="Boost"
+    echo "attempting to use Boost serialized data format"
+elif [ "$1" = "proto" ]; then
+    dataFormat="Proto"
+    echo "attempting to use Google Protocol Buffers data format"
+else
+    echo "none or incorrect data formats provided."
+    echo "(available data formats options are: bin, boost, proto.)"
+    echo "binary data format will be used."
+fi
+
 ID="310"
 processorTask="FairTestDetectorMQRecoTask"
 numIoThreads="1"
@@ -20,8 +35,8 @@ outputAddress="tcp://localhost:5567"
 
 counter=0
 
-while [ $counter -lt $1 ]
+while [ $counter -lt $2 ]
 do
-    xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor $((ID+counter)) $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
+    xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat $((ID+counter)) $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
     counter=$(( $counter + 1 ))
 done
