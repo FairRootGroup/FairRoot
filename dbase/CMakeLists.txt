@@ -83,6 +83,10 @@ dbUtils/FairDbLogStat.cxx
 dbUtils/FairDbLogStream.cxx
 )
 
+
+install(FILES "dbUtils/FairDbLogBFormat.h" DESTINATION include)
+install(FILES "dbInterface/FairDbReader.tpl" DESTINATION include)
+install(FILES "dbInterface/FairDbWriter.tpl" DESTINATION include)
 install(FILES "dbInput/db_detector_def.h" DESTINATION include)
 install(FILES "dbInput/prepare_db.sql" DESTINATION share/dbInput)
 
