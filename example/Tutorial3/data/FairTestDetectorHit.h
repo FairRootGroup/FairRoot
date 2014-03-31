@@ -23,7 +23,7 @@ class FairTestDetectorHit : public FairHit
     FairTestDetectorHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos);
 
     FairTestDetectorHit(const FairTestDetectorHit&);
-    FairTestDetectorHit operator=(const FairTestDetectorHit&);
+    // FairTestDetectorHit operator=(const FairTestDetectorHit&);
     
     /** Destructor **/
     virtual ~FairTestDetectorHit();
