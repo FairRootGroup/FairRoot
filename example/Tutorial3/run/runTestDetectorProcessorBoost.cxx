@@ -1,5 +1,5 @@
-/*
- * runTestDetectorProcessor.cxx
+/**
+ * runTestDetectorProcessorBoost.cxx
  *
  *  Created on: Oct 26, 2012
  *      Author: dklein
@@ -8,23 +8,8 @@
 #include <iostream>
 #include <csignal>
 
-
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-
 #include "FairMQLogger.h"
 #include "FairMQProcessor.h"
-
-#include "FairTestDetectorMQRecoTask.h"
-#include "FairTestDetectorHit.h"
-#include "FairTestDetectorDigi.h"
-#include "FairTestDetectorPayload.h"
-
-#ifdef PROTOBUF
-  #include "FairTestDetectorPayload.pb.h"
-#endif
 
 #ifdef NANOMSG
   #include "nanomsg/FairMQTransportFactoryNN.h"
@@ -32,32 +17,27 @@
   #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
+#include "FairTestDetectorMQRecoTask.h"
+
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include "FairTestDetectorHit.h"
+#include "FairTestDetectorDigi.h"
+
 using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
-  // class to serialize/deserialize
-  typedef FairTestDetectorDigi TDigi;
-  typedef FairTestDetectorHit THit;
-  // ProtoBuff payload
-#ifdef PROTOBUF
-  typedef TestDetectorProto::DigiPayload TProtoDigiPayload;
-  typedef TestDetectorProto::HitPayload TProtoHitPayload;
-#endif
-  // Binary payload
-  typedef TestDetectorPayload::TestDetectorDigi TBinPayloadIn;   // binary
-  typedef TestDetectorPayload::TestDetectorHit TBinPayloadOut;   // binary
-  // Boost payload
-  typedef boost::archive::binary_iarchive TBoostBinPayloadIn;     // boost binary format
-  typedef boost::archive::text_iarchive TBoostTextPayloadIn;      // boost text format
-  typedef boost::archive::binary_oarchive TBoostBinPayloadOut;   // boost binary format
-  typedef boost::archive::text_oarchive TBoostTextPayloadOut;     // boost text format
-  
-#ifdef PROTOBUF
-  typedef FairTestDetectorMQRecoTask<TDigi,THit,TProtoDigiPayload, TProtoHitPayload> TProcessorTask;
-#else  
-  typedef FairTestDetectorMQRecoTask<TDigi,THit,TBoostBinPayloadIn,TBoostBinPayloadOut> TProcessorTask;
-#endif
+
+typedef FairTestDetectorDigi TDigi; // class to serialize/deserialize
+typedef FairTestDetectorHit THit; // class to serialize/deserialize
+typedef boost::archive::binary_iarchive TBoostBinPayloadIn; // boost binary format
+typedef boost::archive::text_iarchive TBoostTextPayloadIn; // boost text format
+typedef boost::archive::binary_oarchive TBoostBinPayloadOut; // boost binary format
+typedef boost::archive::text_oarchive TBoostTextPayloadOut; // boost text format
+typedef FairTestDetectorMQRecoTask<TDigi, THit, TBoostBinPayloadIn, TBoostBinPayloadOut> TProcessorTask;
 
 FairMQProcessor processor;
 
