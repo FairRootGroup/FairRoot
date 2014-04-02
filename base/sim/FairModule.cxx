@@ -585,6 +585,28 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
 
   TGeoMedium* med1=v->GetMedium();
   if(med1) {
+      // In newer ROOT version also a TGeoVolumeAssembly has a material and medium.
+      // This medium is called dummy and is automatically set when the geometry is constructed.
+      // Since this material and medium is neither in the TGeoManager (at this point) nor in our
+      // ASCII file we have to create it the same way it is done in TGeoVolume::CreateDummyMedium()
+      // In the end the new medium and material has to be added to the TGeomanager, because this is
+      // not done automatically when using the default constructor. For all other constructors the
+      // newly created medium or material is added to the TGeomanger.
+      // Create the medium and material only the first time.
+      TString medName = (TString)(med1->GetName());
+      if ( medName.EqualTo("dummy") && NULL == gGeoManager->GetMedium(medName) ) {
+          
+          TGeoMaterial *dummyMaterial = new TGeoMaterial();
+          dummyMaterial->SetName("dummy");
+          
+          TGeoMedium* dummyMedium = new TGeoMedium();
+          dummyMedium->SetName("dummy");
+          dummyMedium->SetMaterial(dummyMaterial);
+          
+          gGeoManager->GetListOfMedia()->Add(dummyMedium);
+          gGeoManager->AddMaterial(dummyMaterial);
+      }
+  
     TGeoMaterial* mat1=v->GetMaterial();
     TGeoMaterial* newMat = gGeoManager->GetMaterial(mat1->GetName());
     if( newMat==0) {
