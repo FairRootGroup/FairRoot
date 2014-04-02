@@ -51,6 +51,7 @@
 #include "TTree.h"                      // for TTree
 #include "TVirtualMC.h"                 // for TVirtualMC, gMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
+#include "THashList.h"
 class TParticle;
 
 #include <float.h>                      // for DBL_MAX
@@ -646,34 +647,18 @@ void FairMCApplication::ConstructGeometry()
     //  cout << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<<endl;
     gGeoManager->CloseGeometry();   // close geometry
     gMC->SetRootGeometry();         // notify VMC about Root geometry
-    gGeoManager->SetPdgName(22, "gamma");
-    gGeoManager->SetPdgName(211, "pi+");
-    gGeoManager->SetPdgName(321, "K+");
-    gGeoManager->SetPdgName(2212, "proton");
-    gGeoManager->SetPdgName(-211, "pi-");
-    gGeoManager->SetPdgName(-321, "K-");
-    gGeoManager->SetPdgName(111, "pi0");
-    gGeoManager->SetPdgName(310, "K0");
-    gGeoManager->SetPdgName(130, "K0");
-    gGeoManager->SetPdgName(2112, "neutron");
-    gGeoManager->SetPdgName(11, "e-");
-    gGeoManager->SetPdgName(13, "mu-");
-    gGeoManager->SetPdgName(-11, "e+");
-    gGeoManager->SetPdgName(-13, "mu+");
-    gGeoManager->SetPdgName(3312, "Xsi");
-    gGeoManager->SetPdgName(3334, "Omega");
-    gGeoManager->SetPdgName(50000050, "Ckov");
-    gGeoManager->SetPdgName(-421, "D0bar");
-    gGeoManager->SetPdgName(421, "D0");
-    gGeoManager->SetPdgName(-411, "D-");
-    gGeoManager->SetPdgName(411, "D+");
-    gGeoManager->SetPdgName(-213, "rho-");
-    gGeoManager->SetPdgName(213, "rho+");
-    gGeoManager->SetPdgName(113, "rho0");
-    gGeoManager->SetPdgName(1000010020, "Deuteron");
-    gGeoManager->SetPdgName(1000010030, "Triton");
-    gGeoManager->SetPdgName(1000020030, "HE3");
-    gGeoManager->SetPdgName(1000020040, "Alpha");
+      
+    TDatabasePDG* pdgDatabase = TDatabasePDG::Instance();
+    const THashList *list=pdgDatabase->ParticleList();
+    if(list==0)pdgDatabase->ReadPDGTable();
+    list =pdgDatabase->ParticleList();
+    if(list!=0){
+      TIterator *particleIter = list->MakeIterator();
+      TParticlePDG *Particle=0;
+      while((Particle=dynamic_cast<TParticlePDG*> (particleIter->Next()))) {
+         gGeoManager->SetPdgName(Particle->PdgCode(), Particle->GetName());
+      }
+    }
   }
 }
 //_____________________________________________________________________________
