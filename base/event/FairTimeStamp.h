@@ -10,6 +10,13 @@
 
 #include <iostream>                     // for ostream, cout
 
+
+
+#ifndef __CINT__ // for BOOST serialization
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/base_object.hpp>
+#endif //__CINT__
+
 class TObject;
 
 /**
@@ -27,6 +34,7 @@ class FairTimeStamp : public FairMultiLinkedData
     /** Constructor with time and time error **/
     FairTimeStamp(Double_t time, Double_t timeerror);
 
+    FairTimeStamp(const FairTimeStamp &TimeStamp);
     /** Destructor **/
     virtual ~FairTimeStamp();
     /** Accessors **/
@@ -64,11 +72,22 @@ class FairTimeStamp : public FairMultiLinkedData
 
 
   protected:
+
+    #ifndef __CINT__ // for BOOST serialization
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version) 
+    {
+        //ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
+        ar & fTimeStamp;
+        ar & fTimeStampError;
+    } 
+    #endif // for BOOST serialization
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError;     /** Error on time stamp */
     FairLink fEntryNr; //!  indicates where the data is stored in the branch
 
-    ClassDef(FairTimeStamp,2);
+    ClassDef(FairTimeStamp,3);
 };
 
 #endif

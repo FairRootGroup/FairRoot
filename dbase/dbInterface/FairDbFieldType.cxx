@@ -252,7 +252,7 @@ string FairDbFieldType::AsSQLString(FairDb::DbTypes dbType) const
     }
   }
 
-//  Deal with PostgreSQL
+//  Deal with SQLLite
   else if ( dbType == FairDb::kSQLite) {
 
     int size = fSize;

@@ -36,6 +36,15 @@ FairHit::FairHit(Int_t detID, TVector3& pos, TVector3& dpos, Int_t index)
 // -------------------------------------------------------------------------
 
 
+FairHit::FairHit(const FairHit &Hit) :
+  FairTimeStamp(Hit), 
+  fX(Hit.fX), fY(Hit.fY), fZ(Hit.fZ),
+  fDx(Hit.fDx), fDy(Hit.fDy), fDz(Hit.fDz),
+  fRefIndex(Hit.fRefIndex), fDetectorID(Hit.fDetectorID)
+{
+}
+// -------------------------------------------------------------------------
+
 
 // -----   Destructor   ----------------------------------------------------
 FairHit::~FairHit() { }

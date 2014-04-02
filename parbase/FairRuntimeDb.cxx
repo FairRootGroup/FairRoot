@@ -431,7 +431,7 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
           cont->print();
           /*Int_t test = */
           cont->write(output);
-          //std::cout << "-I- FairRuntimeDB: SQL write() called 2 = "<< test << "\n";
+          //std::cout << "-I- FairRuntimeDB: SQL write() called 2 =  \n";
         }
       }
       break;//End of TSQL IO

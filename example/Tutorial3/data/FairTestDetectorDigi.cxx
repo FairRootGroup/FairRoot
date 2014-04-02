@@ -6,7 +6,6 @@
  */
 
 #include "FairTestDetectorDigi.h"
-
 ClassImp(FairTestDetectorDigi);
 
 FairTestDetectorDigi::FairTestDetectorDigi():
@@ -18,6 +17,14 @@ FairTestDetectorDigi::FairTestDetectorDigi():
 FairTestDetectorDigi::FairTestDetectorDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp):
   FairTimeStamp(timeStamp), fX(x), fY(y), fZ(z)
 {
+ 
+}
+
+
+FairTestDetectorDigi::FairTestDetectorDigi(const FairTestDetectorDigi &Digi) :
+  FairTimeStamp(Digi), fX(Digi.fX), fY(Digi.fY), fZ(Digi.fZ)
+{
+    
 }
 
 FairTestDetectorDigi::~FairTestDetectorDigi()

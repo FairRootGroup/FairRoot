@@ -1,8 +1,8 @@
 /**
- * runTestDetectorSampler.cxx
+ * runTestDetectorSamplerBin.cxx
  *
- *  @since 2013-04-29
- *  @author: A. Rybalchenko, N. Winckler
+ * @since 2013-04-29
+ * @author A. Rybalchenko, N. Winckler
  */
 
 #include <iostream>
@@ -11,32 +11,27 @@
 #include "FairMQLogger.h"
 #include "FairMQSampler.h"
 
-#include "TestDetectorDigiLoader.h"
-#include "FairTestDetectorPayload.h"
-
-#ifdef PROTOBUF
-  #include "FairTestDetectorPayload.pb.h"
-#endif
-
 #ifdef NANOMSG
   #include "nanomsg/FairMQTransportFactoryNN.h"
 #else
   #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
+#include "TestDetectorDigiLoader.h"
+
+#include "FairTestDetectorPayload.h"
+#include "FairTestDetectorDigi.h"
+
 using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
 
-#ifdef PROTOBUF
-  typedef TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload> TLoader;
-#else
-  typedef TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetectorDigi> TLoader;
-#endif
+typedef FairTestDetectorDigi TDigi; // class to serialize/deserialize
+typedef TestDetectorPayload::TestDetectorDigi TPayloadOut; // binary payload
+typedef TestDetectorDigiLoader<TDigi, TPayloadOut> TLoader;
 
 FairMQSampler<TLoader> sampler;
-
 
 static void s_signal_handler (int signal)
 {
@@ -71,7 +66,7 @@ int main(int argc, char** argv)
   s_catch_signals();
 
   LOG(INFO) << "PID: " << getpid();
-  
+
 #ifdef NANOMSG
   FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
 #else
@@ -133,8 +128,16 @@ int main(int argc, char** argv)
 
   sampler.ChangeState(FairMQSampler<TLoader>::SETOUTPUT);
   sampler.ChangeState(FairMQSampler<TLoader>::SETINPUT);
-  sampler.ChangeState(FairMQSampler<TLoader>::RUN);
+  //sampler.ChangeState(FairMQSampler<TLoader>::RUN);
 
+  try
+     {
+         sampler.ChangeState(FairMQSampler<TLoader>::RUN);
+     }
+     catch (boost::archive::archive_exception e)
+     {
+         LOG(ERROR) << e.what();
+     }
   //TODO: get rid of this hack!
   char ch;
   cin.get(ch);

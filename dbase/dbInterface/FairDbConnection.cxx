@@ -356,7 +356,7 @@ Bool_t  FairDbConnection::TableExists(const string& tableName) const
   test += tableName;
   test += "'";
   Bool_t btest =  fExistingTableList.find(test) != std::string::npos;
-  //cout << "-I- FairDbConnection: Table exists " << btest << endl;
+  //cout << "-I- FairDbConnection: Table exists " << fExistingTableList << endl;
   return btest;
 }
 

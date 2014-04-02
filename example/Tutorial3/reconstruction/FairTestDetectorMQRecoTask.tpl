@@ -1,66 +1,70 @@
-#include <iostream>
+/* 
+ * File:   FairTestDetectorMQRecoTask.tpl
+ * Author: winckler
+ *
+ * Created on March 11, 2014, 11:07 AM
+ */
 
-#include "FairTestDetectorMQRecoTask.h"
 
-#include "FairTestDetectorHit.h"
-#include "FairTestDetectorDigi.h"
+////////// Base template class <T1,T2>
 
-#include "FairTestDetectorPayload.h"
+template <typename TIn, typename TOut, typename TBoostPayloadIn, typename TBoostPayloadOut> 
+void FairTestDetectorMQRecoTask<TIn,TOut,TBoostPayloadIn,TBoostPayloadOut>::Exec(FairMQMessage* msg, Option_t* opt)
+{ 
+    
+    int inputSize = msg->GetSize();
+    
+    //prepare boost input archive
+    std::string msgStr( static_cast<char*>(msg->GetData()), msg->GetSize() );
+    std::istringstream ibuffer(msgStr);
+    TBoostPayloadIn InputArchive(ibuffer);
+    try
+     {
+         InputArchive >> fDigiVector;// get input Archive
+     }
+     catch (boost::archive::archive_exception e)
+     {
+         LOG(ERROR) << e.what();
+     }
+    fRecoTask->fDigiArray->Delete();
+    int numInput=fDigiVector.size();
 
-#ifdef PROTOBUF
-  #include "FairTestDetectorPayload.pb.h"
-#endif
+    for (int i = 0; i < numInput; ++i) 
+    {
+      new ((*fRecoTask->fDigiArray)[i]) TIn(fDigiVector.at(i));
+    }
 
-#include "FairRootManager.h"
-#include "TMath.h"
-#include "TClonesArray.h"
+    if (!fRecoTask->fDigiArray) {
+      cout << "-W- FairTestDetectorMQRecoTask::Init: " << "No Point array!" << endl;
+    }
 
-using std::cout;
-using std::endl;
+    fRecoTask->Exec(opt);
+    int numOutput = numInput;
 
-// -----   Default constructor   -------------------------------------------
-template <typename T1, typename T2>
-FairTestDetectorMQRecoTask<T1,T2>::FairTestDetectorMQRecoTask() :
-  fRecoTask(NULL)
-{
+    if (inputSize > 0) 
+    {
+      for (int i = 0; i < numOutput; ++i) 
+      {
+        TOut* hit = (TOut*) fRecoTask->fHitArray->At(i);
+        fHitVector.push_back(*hit);
+      }
+    }
+    
+    //prepare boost output archive
+    std::ostringstream obuffer;
+    TBoostPayloadOut OutputArchive(obuffer); 
+    OutputArchive << fHitVector;
+    int outputSize=obuffer.str().length();
+    msg->Rebuild(outputSize);
+    std::memcpy(msg->GetData(), obuffer.str().c_str(), outputSize);
+    if(fDigiVector.size()>0) fDigiVector.clear();
+    if(fHitVector.size()>0) fHitVector.clear();
+   
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   ------------------------------------------
-template <typename T1, typename T2>
-FairTestDetectorMQRecoTask<T1,T2>::FairTestDetectorMQRecoTask(Int_t verbose) :
-  fRecoTask(NULL)
-{
-}
-// -------------------------------------------------------------------------
-
-
-// -----   Destructor   ----------------------------------------------------
-template <typename T1, typename T2>
-FairTestDetectorMQRecoTask<T1,T2>::~FairTestDetectorMQRecoTask()
-{
-  fRecoTask->fDigiArray->Delete();
-  fRecoTask->fHitArray->Delete();
-  delete fRecoTask;
-}
-// -------------------------------------------------------------------------
-
-
-// -----   Public method Init (abstract in base class)  --------------------
-template <typename T1, typename T2>
-InitStatus FairTestDetectorMQRecoTask<T1, T2>::Init()
-{
-  fRecoTask = new FairTestDetectorRecoTask();
-  fRecoTask->fDigiArray = new TClonesArray("FairTestDetectorDigi");
-  fRecoTask->fHitArray = new TClonesArray("FairTestDetectorHit");
-
-  return kSUCCESS;
-}
 
 template <>
-void FairTestDetectorMQRecoTask<TestDetectorPayload::TestDetectorDigi, TestDetectorPayload::TestDetectorHit>::Exec(FairMQMessage* msg, Option_t* opt)
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi,FairTestDetectorHit,TestDetectorPayload::TestDetectorDigi, TestDetectorPayload::TestDetectorHit>::Exec(FairMQMessage* msg, Option_t* opt)
 {
   int inputSize = msg->GetSize();
   int numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorDigi);
@@ -100,9 +104,9 @@ void FairTestDetectorMQRecoTask<TestDetectorPayload::TestDetectorDigi, TestDetec
 }
 
 #ifdef PROTOBUF
-
+#include "FairTestDetectorPayload.pb.h"
 template <>
-void FairTestDetectorMQRecoTask<TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(FairMQMessage* msg, Option_t* opt)
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi,FairTestDetectorHit,TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(FairMQMessage* msg, Option_t* opt)
 {
 
   fRecoTask->fDigiArray->Delete();
@@ -149,3 +153,7 @@ void FairTestDetectorMQRecoTask<TestDetectorProto::DigiPayload, TestDetectorProt
 }
 
 #endif /* PROTOBUF */
+
+
+
+
