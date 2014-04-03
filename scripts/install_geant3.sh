@@ -36,11 +36,11 @@ then
   # The probem is fixed in the new version of gcalor which comes with fairsoft
   mkdir gcalor
   cp ../gcalor.F gcalor
-  if [ ! -f ../xsneut.dat ]; 
+  if [ ! -f data/xsneut.dat ];
   then
-    bunzip2 ../xsneut.dat.bz2          
+    cp ../xsneut.dat.bz2 data
+    bunzip2 data/xsneut.dat.bz2
   fi
-  cp ../xsneut.dat data
   cp ../chetc.dat data
   mysed 'minicern gdraw' 'minicern gdraw gcalor' Makefile
 
