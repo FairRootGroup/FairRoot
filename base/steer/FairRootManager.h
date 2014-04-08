@@ -307,18 +307,10 @@ class FairRootManager : public TObject
     TFolder*                            fCbmroot;
     /** current time in ns*/
     Double_t                            fCurrentTime;
-    /**Input file */
-//    TFile*                              fInFile;
-    /**Input Chain */
-//    TChain*                             fInChain;
-    /**Input Tree */
-//    TTree*                              fInTree;
     /**Output file */
     TFile*                              fOutFile;
     /**Output tree */
     TTree*                              fOutTree;
-    /** list of folders from all input (and friends) files*/
-//    TObjArray                           fListFolder; //!
     TObject**                           fObj2; //!
     Int_t                               fNObj;//!
     std::map < TString , TObject* >     fMap;  //!
@@ -356,15 +348,6 @@ class FairRootManager : public TObject
     std::map < TString, Int_t>::iterator     fBrPerMapIter;
     /** List of all files added with AddFriend */
     std::list<TString>                      fFriendFileList; //!
-
- //   TString                             fInputFileName; //!
-//    std::list<TString>                  fInputChainList;//!
-//    std::map<TString, TChain*>          fFriendTypeList;//!
-
-//    std::map<TString, std::list<TString>* > fCheckInputBranches; //!
-//    std::list<TString>                      fInputLevel; //!
-//    std::map<TString, std::multimap<TString, TArrayI> > fRunIdInfoAll; //!
-
     FairLogger*                         fLogger;//!
     /** Mix all inputs, i.e: read one entry from each input and add them together*/
     Bool_t                              fMixAllInputs;
