@@ -31,7 +31,7 @@ class FairRingSorter : public TObject
 
     virtual ~FairRingSorter() {};
 
-    virtual FairTimeStamp* CreateElement(FairTimeStamp* data) = 0;
+    virtual FairTimeStamp* CreateElement(FairTimeStamp* data);
 
     virtual void AddElement(FairTimeStamp* digi, double timestamp);
     virtual void WriteOutElements(int index);       ///< writes out the entries from LowerBoundPointer up to index
