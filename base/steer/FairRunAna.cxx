@@ -257,9 +257,13 @@ void FairRunAna::Init()
     //fRtdb->setContainersStatic(kTRUE);
 
     fEvtHeader = dynamic_cast<FairEventHeader*> (fRootManager->GetObject("EventHeader."));
-
+    if(fEvtHeader)fLogger->Info(MESSAGE_ORIGIN,"Event Header found $s",fEvtHeader->GetName() );
 
     fMCHeader = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObject("MCEventHeader."));
+    
+    if(fMCHeader)fLogger->Info(MESSAGE_ORIGIN,"MC Event Header found $s",fMCHeader->GetName() );
+  
+      
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
       fRunId = fMCHeader->GetRunID();
@@ -276,13 +280,6 @@ void FairRunAna::Init()
     fRunId = fEvtHeader->GetRunId();
     // Init the containers in Tasks
     fRtdb->initContainers(fRunId);
-
-    /*  if (gGeoManager==0) {
-        fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
-         FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
-
-      }
-     */
     if (gGeoManager==0) {
       fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
     }
