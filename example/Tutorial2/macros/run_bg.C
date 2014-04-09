@@ -1,4 +1,4 @@
-void run_bg(Int_t nEvents = 100)
+void run_bg(Int_t nEvents = 130)
 {
   
   TString dir = getenv("VMCWORKDIR");

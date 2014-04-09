@@ -8,11 +8,11 @@ void create_digis_mixed(){
     TString dir = getenv("VMCWORKDIR");
     TString tutdir = dir + "/Tutorial2";
 
-    TString BGinFile = "./tutorial2_pions.mc_p2.000_t0_n100.bg.root";
+    TString BGinFile = "./tutorial2_pions.mc_p2.000_t0_n130.bg.root";
     TString SGinFile = "./tutorial2_pions.mc_p2.000_t0_n10.sg.root";
     TString SG1inFile = "./tutorial2_pions.mc_p2.000_t0_n20.sg1.root";
     
-    TString paramFile = "./tutorial2_pions.params_p2.000_t0_n100.bg.root";
+    TString paramFile = "./tutorial2_pions.params_p2.000_t0_n130.bg.root";
     TString outFile = "./digis.mix.mc.root";
 
     cout << "******************************" << endl;
