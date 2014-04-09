@@ -171,18 +171,24 @@ void FairRootManager::SetSignalFile(TString name, UInt_t identifier )
    */
     
     if(fSignalTypeList[identifier]==0) {
+      /** The first file create a new source for signal*/
       fRootFileSourceSignal = new FairFileSource(&name, "SignalSource", identifier);
+      /** we have to inialize it to check the file and get/ create the chain from the input tree(s)*/
       fRootFileSourceSignal->Init();
       fCurrentEntry[identifier]= 0;
       fNoOfSignals++;
       fActualSignalIdentifier= identifier;
+      fSignalTypeList[identifier]=fRootFileSourceSignal;
       fFileHeader->AddInputFile(fRootFileSourceSignal->GetInFile(), identifier, 0);
+      fLogger->Info(MESSAGE_ORIGIN, "Add new signal from file %s  with identifier %i and file number %i", name.Data(), identifier,fNoOfSignals);
     }else{
       FairFileSource *fRootFileSourceS=fSignalTypeList[identifier];
       fRootFileSourceS->AddFile(name);
       TChain* CurrentChain=fRootFileSourceS->GetInChain();
       TObjArray* fileElements=CurrentChain->GetListOfFiles();
       fFileHeader->AddInputFile(fRootFileSourceSignal->GetInFile(), identifier, fileElements->GetEntries());
+      fLogger->Info(MESSAGE_ORIGIN, "Add existing signal from file %s  with identifier %i and file number %i", name.Data(), identifier,fNoOfSignals);
+    
     }
     fMixedInput=kTRUE;
     
@@ -1035,7 +1041,7 @@ void  FairRootManager::ReadMixedEvent(Int_t i)
       }
     }
     if(!GetASignal) {
-      fBackgroundChain->GetEntry(i);
+      fRootFileSourceBKG->ReadEvent(i);
       fEvtHeader->SetMCEntryNumber(i);
       fEvtHeader->SetInputFileId(0); //Background files has always 0 as Id
       fEvtHeader->SetEventTime(GetEventTime());
@@ -1054,10 +1060,10 @@ void  FairRootManager::ReadBKEvent(Int_t i)
 {
   if(fMixedInput) {
     if(0==i) {
-      Int_t totEnt = fBackgroundChain->GetEntries();
+      Int_t totEnt = fRootFileSourceBKG->GetInChain()->GetEntries();
       fLogger->Info(MESSAGE_ORIGIN,"The number of entries in background chain is %i",totEnt);
     }
-    fBackgroundChain->GetEntry(i);
+    fRootFileSourceBKG->ReadEvent(i);
   }
 }
 //_____________________________________________________________________________
@@ -1472,9 +1478,12 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
    calls to activate branch is done , and then just forward the pointer.
    <DB>
    **/
-   TTree *fInTree =fRootFileSource->GetInTree();
-   TChain *fInChain=fRootFileSource->GetInChain();
-   TObjArray *fListFolder = fRootFileSource->GetListOfFolders();
+  TObjArray *fListFolder;
+  if(fRootFileSource){
+      fListFolder = fRootFileSource->GetListOfFolders();
+  }else{
+      fListFolder = fRootFileSourceBKG->GetListOfFolders();
+  }
   fNObj++;
   fObj2[fNObj]  =  GetMemoryBranch ( BrName );
   if ( fObj2[fNObj]   ) {
@@ -1501,7 +1510,7 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
   } else {
     if(fMixedInput) {
       /** All branches has the same types in background and signal chains, thus
-       * we can set the branch address to aal of them with one TClonesarray and then we call the proper
+       * we can set the branch address to al of them with one TClonesarray and then we call the proper
        * fill in the read (event) entry
        */
 
@@ -1511,16 +1520,21 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
 
       std::map<UInt_t, FairFileSource*>::const_iterator iter;
       Int_t no=0;
+    
       for(iter = fSignalTypeList.begin(); iter != fSignalTypeList.end(); iter++) {
-        TChain* currentChain=iter->second->GetInChain();
         fLogger->Debug2(MESSAGE_ORIGIN, "Set the Branch address for signal file number %i  and  branch %s ", no++ , BrName);
+        FairFileSource *signal=iter->second;
+        cout << "------------------------------" << signal<< endl;
+        TChain* currentChain=signal->GetInChain();
         currentChain->SetBranchStatus(BrName,1);
         currentChain->SetBranchAddress(BrName,&fObj2[fNObj]);
       }
 
 
     } else {
-
+        
+      TTree *fInTree =fRootFileSource->GetInTree();
+      TChain *fInChain=fRootFileSource->GetInChain();
       if ( fInTree ) {
         fInTree->SetBranchStatus (BrName,1);
         fInTree->SetBranchAddress(BrName,&fObj2[fNObj]);
@@ -1823,8 +1837,6 @@ void  FairRootManager::BGWindowWidthTime(Double_t background, UInt_t Signalid)
 //_____________________________________________________________________________
 Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
 {
-    TTree *fInTree =fRootFileSource->GetInTree();
-    TChain *fInChain =fRootFileSource->GetInChain();
   fLogger->Info(MESSAGE_ORIGIN, "Maximum No of Event was set manually to :  %i , we will check if there is enough entries for this!! ", EvtEnd);
   Int_t MaxEventNo=0;
   if(EvtEnd!=0) {
@@ -1832,9 +1844,10 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
   }
   Int_t localMax=0;
   if(!fMixedInput) {
+    TChain *fInChain =fRootFileSource->GetInChain();
     MaxEventNo=fInChain->GetEntries();
   } else {
-    Int_t MaxBG=fBackgroundChain->GetEntries();
+    Int_t MaxBG=fRootFileSourceBKG->GetInChain()->GetEntries();
     Int_t MaxS=0;
     Double_t ratio=0.;
     std::map<UInt_t, Double_t>::const_iterator iterN;

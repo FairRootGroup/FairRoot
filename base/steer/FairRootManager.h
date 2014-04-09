@@ -362,7 +362,7 @@ class FairRootManager : public TObject
     /**Chain containing the background*/
     TChain*                              fBackgroundChain; //!
     TFile*                               fBackgroundFile; //!
-    std::map<UInt_t, FairFileSource*>            fSignalTypeList;//!
+    std::map<UInt_t, FairFileSource*>    fSignalTypeList;//!
 
     /** min time for one event (ns) */
     Double_t                                fEventTimeMin;  //!

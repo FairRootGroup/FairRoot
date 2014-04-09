@@ -286,7 +286,7 @@ void FairRunAna::Init()
     fTask->SetParTask();
     fRtdb->initContainers( fRunId );
 
-  } else {
+  } else {  //end----- if(fMixedInput)
     fLogger->Info(MESSAGE_ORIGIN,"Initializing without input file or Mixed input");
     FairEventHeader* evt = GetEventHeader();
     evt->Register();
