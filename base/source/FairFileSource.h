@@ -89,7 +89,9 @@ private:
     UInt_t                              fSourceIdentifier;
     /**No of Entries in this source*/
     UInt_t                              fNoOfEntries;
-  
+    /**Initialization flag, true if initialized*/
+    Bool_t                              IsInitialized;
+    
 public:
     ClassDef(FairFileSource, 0)
 };

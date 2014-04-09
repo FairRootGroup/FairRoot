@@ -34,7 +34,8 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
  fCbmout(0),
  fCbmroot(0),
  fSourceIdentifier(0),
- fNoOfEntries(-1)
+ fNoOfEntries(-1),
+ IsInitialized(kFALSE)
 {
    if (fRootFile->IsZombie()) {
       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
@@ -58,8 +59,8 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
  fCbmout(0),
  fCbmroot(0),
  fSourceIdentifier(0),
- fNoOfEntries(-1)
-
+ fNoOfEntries(-1),
+ IsInitialized(kFALSE)
 {
     fRootFile = new TFile(RootFileName->Data());
     if (fRootFile->IsZombie()) {
@@ -73,6 +74,10 @@ FairFileSource::~FairFileSource()
 }
 Bool_t FairFileSource::Init()
 {
+    if(IsInitialized){
+       fLogger->Info(MESSAGE_ORIGIN, "FairFileSource already initialized");
+       return kTRUE;
+    }
     if (!fInChain ) {
         fInChain = new TChain("cbmsim", "/cbmroot");
         fLogger->Info(MESSAGE_ORIGIN, "FairFileSource::Init() chain created");
