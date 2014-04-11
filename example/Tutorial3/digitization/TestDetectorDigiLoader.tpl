@@ -91,6 +91,19 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetec
     }
 }
 
+// template <>
+// void TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
+// {
+//     TMessage *tm = new TMessage(kMESS_OBJECT);
+
+//     tm->WriteObject(fInput);
+
+//     char *buffer = tm->Buffer();
+//     int size = tm->Length();
+
+//     fOutput = fTransportFactory->CreateMessage(buffer, size);
+// }
+
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
 template <>
