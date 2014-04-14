@@ -31,10 +31,11 @@ class Detector
       kMtof             = 0x12,
       kTof              = 0x14,
       kTracker          = 0x16,
+      kLos              = 0x18,
     } Detector_t;
 
     static Int_t       FullMask() {
-      return kCal|kCalCrystal|kDch|kGfi|kLand|kMtof|kTof|kTracker;
+      return kCal|kCalCrystal|kDch|kGfi|kLand|kMtof|kTof|kTracker|kLos;
     }
 
 
@@ -66,6 +67,9 @@ class Detector
         break;
       case kTracker:
         return "Tracker";
+        break;
+      case kLos:
+        return "Los";
         break;
       default:
         return "?Unknown?";
@@ -107,6 +111,9 @@ class Detector
       case 'T':
       case 0x16:
         return kTracker;
+      case 'O':
+      case 0x18:
+        return kLos;
       default:
         return kUnknown;
       }
@@ -147,6 +154,7 @@ class Detector
       if (thestring.Contains("M")) { mask |= kMtof; }
       if (thestring.Contains("t")) { mask |= kTof; }
       if (thestring.Contains("T")) { mask |= kTracker; }
+      if (thestring.Contains("O")) { mask |= kLos; }
 
       return mask;
     }
@@ -184,6 +192,9 @@ class Detector
       case kTracker:
         return kTracker;
         break;
+      case kLos:
+        return kLos;
+        break;
       default:
         return kUnknown;
         break;
@@ -203,6 +214,7 @@ class Detector
       else if ( detMask & Detector::kMtof) { fDetType = Detector::kMtof; }
       else if ( detMask & Detector::kTof) { fDetType = Detector::kTof; }
       else if ( detMask & Detector::kTracker) { fDetType = Detector::kTracker; }
+      else if ( detMask & Detector::kLos) { fDetType = Detector::kLos; }
 
       return fDetType;
     }

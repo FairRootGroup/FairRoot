@@ -77,7 +77,7 @@ MRevBuffer::MRevBuffer(Int_t iMode)
     iDebug(iMode),
     iSwap(0),
     iStatus(1),
-    iBufSizeAlloc(16384),
+    iBufSizeAlloc(512000),
     iBufSize(0),
     iBufNo(0),
     iFragBegin(0),
@@ -716,7 +716,7 @@ gNextRecvD:
     pEvt->subEvtControl[0] = pSEvtHead->cMbsSev101_control;
     pEvt->pSubEvt[0] = (Int_t*) &pshort[6];
 
-
+/*
     cout << "    evt " << iEvtNo << " (" << piNextEvt[3]
          << "), len " << pEvtHead->iMbsEv101_dlen
          << ", type " << pEvtHead->sMbsEv101_type
@@ -724,7 +724,7 @@ gNextRecvD:
          << ", trigger " << pEvtHead->sMbsEv101_trigger;
     cout << ", SE1 len " << iselen1
          << " procid " << pSEvtHead->sMbsSev101_procid;
-
+*/
     ielen -= (iselen1 + 8);
 
     ii = 1;
@@ -735,8 +735,8 @@ gNextRecvD:
       pshort += iselen + 4;
       pSEvtHead = (sMbsSev101*) pshort;
       iselen = pSEvtHead->iMbsSev101_dlen;
-      cout << ", SE" << ii << " " << iselen
-           << " " << pSEvtHead->sMbsSev101_procid;
+//      cout << ", SE" << ii << " " << iselen
+//           << " " << pSEvtHead->sMbsSev101_procid;
       ielen -= (iselen + 4);
 
 
@@ -752,7 +752,7 @@ gNextRecvD:
 
 
     }
-    cout << endl;
+//    cout << endl;
   }
 
   // fill event header

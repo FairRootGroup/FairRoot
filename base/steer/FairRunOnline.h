@@ -32,6 +32,7 @@ class FairRunOnline : public FairRun
   public:
     static FairRunOnline* Instance();
     virtual ~FairRunOnline();
+    FairRunOnline();
     FairRunOnline(FairSource* source);
 
     /**initialize the run manager*/
@@ -46,6 +47,13 @@ class FairRunOnline : public FairRun
     /** Set the magnetic Field */
     void        SetField (FairField* ffield) { fField = ffield; }
 
+    /** Set if the run should be closed automatically after executing the
+        run functuion
+    **/
+    void        SetAutoFinish(Bool_t val) { fAutomaticFinish = val; }
+    /** Set the source which should be used **/
+    void        SetSource(FairSource* source) { fSource = source; }
+
     /** Initialization of parameter container is set to static, i.e: the run id is
      *  is not checked anymore after initialization
      */
@@ -57,11 +65,20 @@ class FairRunOnline : public FairRun
 
     void AddObject(TObject* object);
 
-    void SetGenerateHtml(Bool_t flag = kTRUE);
+    void SetGenerateHtml(Bool_t flag, const char* histFileName, Int_t refreshRate);
+
+    /** Write last data to file, close input and output **/
+    void Finish();
 
   private:
+
+    Bool_t fAutomaticFinish;
+
     FairRunOnline(const FairRunOnline& M);
     FairRunOnline& operator= (const  FairRunOnline&) { return *this; }
+
+    /** Main Event loop **/
+    Int_t EventLoop();
 
   protected:
     /** This variable became true after Init is called*/
@@ -75,6 +92,9 @@ class FairRunOnline : public FairRun
     FairSource* fSource;       //!
     TFolder*    fFolder;       //!
     Bool_t      fGenerateHtml; //!
+    TString     fHistFileName; //!
+    Int_t       fRefreshRate;  //!
+    Int_t       fNevents;      //!
 
     void WriteObjects();
     void GenerateHtml();

@@ -1969,6 +1969,10 @@ Bool_t FairRootManager::CompareBranchList(TFile* fileHandle, TString inputLevel)
   // the list. If in the end no branch is left in the list everything is
   // fine.
   set<TString>::iterator iter1;
+  if(! fileHandle->Get("BranchList"))
+  {
+    return kTRUE;
+  }
   TList* list= dynamic_cast <TList*> (fileHandle->Get("BranchList"));
   if(list) {
     TObjString* Obj=0;

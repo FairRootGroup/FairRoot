@@ -23,6 +23,7 @@
 #include "FairGeoParSet.h"
 
 #include "TROOT.h"
+#include "TSystem.h"
 #include "TTree.h"
 #include "TSeqCollection.h"
 #include "TGeoManager.h"
@@ -33,6 +34,7 @@
 #include "TH1F.h"
 #include "TH2F.h"
 
+#include <signal.h>
 #include <stdlib.h>
 #include <iostream>
 #include <list>
@@ -55,24 +57,42 @@ FairRunOnline* FairRunOnline::Instance()
 }
 
 
-
+FairRunOnline::FairRunOnline()
+  :FairRun(),
+   fAutomaticFinish(kTRUE),
+   fIsInitialized(kFALSE),
+   fEvtHeader(0),
+   fStatic(kFALSE),
+   fField(0),
+   fSource(NULL),
+   fFolder(new TFolder("HISTO", "HISTO")),
+   fGenerateHtml(kFALSE),
+   fHistFileName(""),
+   fRefreshRate(1000)
+{
+  fgRinstance = this;
+  fAna = kTRUE;
+  LOG(INFO)<<Form("FairRunOnline constructed at 0x%08x",this)<<FairLogger::endl;
+}
 //_____________________________________________________________________________
 FairRunOnline::FairRunOnline(FairSource* source)
   :FairRun(),
+   fAutomaticFinish(kTRUE),
    fIsInitialized(kFALSE),
    fEvtHeader(0),
    fStatic(kFALSE),
    fField(0),
    fSource(source),
    fFolder(new TFolder("HISTO", "HISTO")),
-   fGenerateHtml(kFALSE)
+   fGenerateHtml(kFALSE),
+   fHistFileName(""),
+   fRefreshRate(1000)
 {
   fgRinstance = this;
   fAna = kTRUE;
+  LOG(INFO)<<Form("FairRunOnline (source) constructed at 0x%08x",this)<<FairLogger::endl;
 }
 //_____________________________________________________________________________
-
-
 
 //_____________________________________________________________________________
 FairRunOnline::~FairRunOnline()
@@ -96,9 +116,19 @@ FairRunOnline::~FairRunOnline()
 
 
 
+Bool_t gIsInterrupted;
+
+void handler_ctrlc(int s)
+{
+  gIsInterrupted = kTRUE;
+}
+
+
+
 //_____________________________________________________________________________
 void FairRunOnline::Init()
 {
+  LOG(INFO)<<"FairRunOnline::Init"<<FairLogger::endl;
   if (fIsInitialized) {
     fLogger->Fatal(MESSAGE_ORIGIN,"Error Init is already called before!");
     exit(-1);
@@ -142,6 +172,16 @@ void FairRunOnline::Init()
   fTask->SetParTask();
   fRtdb->initContainers(fRunId);
 
+  //  InitContainers();
+  // --- Get event header from Run
+  fEvtHeader = dynamic_cast<FairEventHeader*> (FairRunOnline::Instance()->GetEventHeader());
+  if ( ! fEvtHeader ) {
+    LOG(FATAL) << "FairRunOnline::InitContainers:No event header in run!" << FairLogger::endl;
+    return;
+  }
+  LOG(INFO) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
+  fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
+
   // Initialize the source
   if(! fSource->Init()) {
     fLogger->Fatal(MESSAGE_ORIGIN, "Init of the source failed...");
@@ -161,13 +201,16 @@ void FairRunOnline::Init()
 //_____________________________________________________________________________
 
 
-
 //_____________________________________________________________________________
 void FairRunOnline::InitContainers()
 {
+
   fRtdb = GetRuntimeDb();
   FairBaseParSet* par=(FairBaseParSet*)
                       (fRtdb->getContainer("FairBaseParSet"));
+  LOG(INFO)<<Form("FairRunOnline::InitContainers: par = 0x%08x",par)<<FairLogger::endl;
+  if (NULL == par)
+    LOG(WARNING)<<"FairRunOnline::InitContainers: no  'FairBaseParSet' container !"<<FairLogger::endl;
 
   if (par) {
     fEvtHeader = (FairEventHeader*)fRootManager->GetObjectFromInTree("EventHeader.");
@@ -185,67 +228,128 @@ void FairRunOnline::InitContainers()
     //     if (gGeoManager==0) {
     //       par->GetGeometry();
     //     }
+  } else
+  {
+  // --- Get event header from Run
+  fEvtHeader = dynamic_cast<FairEventHeader*> (FairRunOnline::Instance()->GetEventHeader());
+  if ( ! fEvtHeader ) {
+    LOG(FATAL) << "FairRunOnline::InitContainers:No event header in run!" << FairLogger::endl;
+    return;
+  }
+  LOG(INFO) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
+  fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
   }
 }
 //_____________________________________________________________________________
+Int_t FairRunOnline::EventLoop()
+{
+  gSystem->IgnoreInterrupt();
+  gIsInterrupted = kFALSE;
+  signal(SIGINT, handler_ctrlc);
 
+  fSource->Reset();
+  Int_t status = fSource->ReadEvent();
+  if(1 == status || 2 == status) {
+    return status;
+  }
+
+
+  Int_t tmpId = GetEventHeader()->GetRunId();
+  
+  if ( tmpId != fRunId ) {
+//    LOG(INFO) << "Call Reinit due to changed RunID" << FairLogger::endl;
+//    fRunId = tmpId;
+//    Reinit( fRunId );
+//    fTask->ReInitTask();
+  }
+
+
+  fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
+  fTask->ExecuteTask("");
+  fRootManager->Fill();
+  fRootManager->DeleteOldWriteoutBufferData();
+  fTask->FinishEvent();
+  fNevents += 1;
+  if(fGenerateHtml && 0 == (fNevents%fRefreshRate))
+  {
+    WriteObjects();
+    GenerateHtml();
+  }
+    
+  if(gIsInterrupted)
+  {
+    return 1;
+  }
+
+  return 0;
+}
 
 
 //_____________________________________________________________________________
 void FairRunOnline::Run(Int_t nev, Int_t dummy)
 {
   fOutFile->cd();
+    
+  fNevents = 0;
 
   Int_t status;
   if(nev < 0) {
     while(kTRUE) {
-      fSource->Reset();
-      status = fSource->ReadEvent();
+      status = EventLoop();
       if(1 == status) {
         break;
+      } else if(2 == status) {
+        continue;
       }
-      fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
-      fTask->ExecuteTask("");
-      fRootManager->Fill();
-      fRootManager->DeleteOldWriteoutBufferData();
-      fTask->FinishEvent();
+      if(gIsInterrupted)
+      {
+        break;
+      }
     }
   } else {
     for (Int_t i = 0; i < nev; i++) {
-      fSource->Reset();
-      status = fSource->ReadEvent();
+      status = EventLoop();
       if(1 == status) {
         break;
+      } else if(2 == status) {
+        i -= 1;
+        continue;
       }
-      fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
-      fTask->ExecuteTask("");
-      fRootManager->Fill();
-      fRootManager->DeleteOldWriteoutBufferData();
-      fTask->FinishEvent();
+      if(gIsInterrupted)
+      {
+        break;
+      }
     }
   }
-
+ 
   fRootManager->StoreAllWriteoutBufferData();
+  if (fAutomaticFinish) {
+    Finish();
+  }
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairRunOnline::Finish()
+{
   fTask->FinishTask();
   fRootManager->LastFill();
   fRootManager->Write();
 
   fSource->Close();
 
-  WriteObjects();
-
   if(fGenerateHtml) {
+    WriteObjects();
     GenerateHtml();
   }
 }
-//_____________________________________________________________________________
-
-
 
 //_____________________________________________________________________________
-void FairRunOnline::SetGenerateHtml(Bool_t flag)
+void FairRunOnline::SetGenerateHtml(Bool_t flag, const char* histFileName, Int_t refreshRate)
 {
   fGenerateHtml = flag;
+  fHistFileName = TString(histFileName);
+  fRefreshRate = refreshRate;
 }
 //_____________________________________________________________________________
 
@@ -254,16 +358,14 @@ void FairRunOnline::SetGenerateHtml(Bool_t flag)
 //_____________________________________________________________________________
 void FairRunOnline::GenerateHtml()
 {
-  TString htmlName = TString(fOutname);
-  TString rootName = TString(fOutname);
+  TString htmlName = TString(fHistFileName);
+  TString rootName = TString(fHistFileName);
   Int_t last = htmlName.Last('/');
-  if(-1 == last) {
-    htmlName = "index.html";
-  } else {
-    htmlName.Remove(last+1, htmlName.Length()-last-1);
-    htmlName += TString("index.html");
+  if(-1 != last) {
     rootName.Remove(0, last+1);
   }
+  htmlName.Remove(htmlName.Length()-4, htmlName.Length()-1);
+  htmlName += TString("html");
 
   ofstream* ofile = new ofstream(htmlName);
   (*ofile) << "<?xml version=\"1.0\" encoding=\"utf-8\"?>" << endl
@@ -291,6 +393,10 @@ void FairRunOnline::GenerateHtml()
 //_____________________________________________________________________________
 void FairRunOnline::WriteObjects()
 {
+  TDirectory *oldDir = gDirectory;
+
+  TFile *file = new TFile(fHistFileName, "RECREATE");
+
   // Create iterator with the folder content
   TIter iter(fFolder->GetListOfFolders());
 
@@ -329,6 +435,10 @@ void FairRunOnline::WriteObjects()
       h2->Write();
     }
   }
+
+  file->Close();
+
+  oldDir->cd();
 }
 //_____________________________________________________________________________
 

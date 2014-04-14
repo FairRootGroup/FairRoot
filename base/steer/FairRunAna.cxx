@@ -250,7 +250,7 @@ void FairRunAna::Init()
     fRtdb->initContainers(fRunId);
     fTask->SetParTask();
 
-    fRtdb->initContainers( fRunId );
+    //fRtdb->initContainers( fRunId );
 
   } else if (fMixedInput) {
     fLogger->Info(MESSAGE_ORIGIN,"Initializing for Mixed input");

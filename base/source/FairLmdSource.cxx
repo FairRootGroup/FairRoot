@@ -126,6 +126,9 @@ Int_t FairLmdSource::ReadEvent()
     }
   }
 
+  // Decode event header
+  Bool_t result = Unpack((Int_t*)fxEvent, sizeof(s_ve10_1), -2, -2, -2, -2, -2);
+
   Int_t nrSubEvts = f_evt_get_subevent(fxEvent, 0, NULL, NULL, NULL);
   Int_t sebuflength;
   Short_t setype;
@@ -149,11 +152,16 @@ Int_t FairLmdSource::ReadEvent()
     sesubcrate = fxSubEvent->h_subcrate;
     secontrol = fxSubEvent->h_control;
 
-    if(! Unpack(fxEventData, sebuflength,
-                setype, sesubtype,
-                seprocid, sesubcrate, secontrol)) {
-      return 2;
+    if(Unpack(fxEventData, sebuflength,
+              setype, sesubtype,
+              seprocid, sesubcrate, secontrol)) {
+      result = kTRUE;
     }
+  }
+
+  if(! result)
+  {
+    return 2;
   }
 
   return 0;
