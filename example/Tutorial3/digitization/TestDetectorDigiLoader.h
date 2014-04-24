@@ -19,56 +19,38 @@
 #include "FairTestDetectorPayload.h"
 #include <iostream> 
 
+#if __cplusplus >= 201103L
+#include "has_BoostSerialization.h"
+#include <type_traits>
+#endif
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////
+
+
 ////////// Base template header <T1,T2>
-template <typename T1, typename T2>//=boost::archive::text_oarchive>
+template <typename T1, typename T2>
 class TestDetectorDigiLoader : public FairMQSamplerTask
 { 
 public : 
  
-    TestDetectorDigiLoader() : FairMQSamplerTask("Load Digi class T1") {}
-    virtual ~TestDetectorDigiLoader()
-    {
-        if(fDigiVector.size()>0) fDigiVector.clear();
-    }
+    TestDetectorDigiLoader();
+    virtual ~TestDetectorDigiLoader();
     virtual void Exec(Option_t* opt);
+    
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & fDigiVector;
+    }
     
 private :
         
     friend class boost::serialization::access;
     std::vector<T1> fDigiVector;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
-    {
-        ar & fDigiVector;
-    }
+    bool fHasBoostSerialization;
     
 }; 
 
-
-////////// Partial specialisation header <T1,boost::archive::text_oarchive>
-template <typename T1>
-class TestDetectorDigiLoader<T1, boost::archive::text_oarchive> : public FairMQSamplerTask
-{ 
-public : 
- 
-    TestDetectorDigiLoader() : FairMQSamplerTask("Load Digi class T1") {}
-    virtual ~TestDetectorDigiLoader()
-    {
-        fDigiVector.clear();
-    }
-    virtual void Exec(Option_t* opt);
-    
-private :
-        
-    friend class boost::serialization::access;
-    std:: vector<T1> fDigiVector;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
-    {
-        ar & fDigiVector;
-    }
-    
-}; 
 
 ////////// Template implementation is in TestDetectorDigiLoader.tpl :
 #include "TestDetectorDigiLoader.tpl"

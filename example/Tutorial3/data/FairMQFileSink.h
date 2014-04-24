@@ -24,11 +24,18 @@
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorHit.h"
 
+
+#if __cplusplus >= 201103L
+#include "has_BoostSerialization.h"
+#endif
+
+
 #ifndef __CINT__
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 #include <boost/serialization/access.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #endif //__CINT__
 
@@ -38,28 +45,20 @@ class TFile;
 class TTree;
 class TClonesArray;
 
-template <typename TIn, typename TBoostIArchive>
+template <typename TIn, typename TPayloadIn>
 class FairMQFileSink: public FairMQDevice
 {
   public:
-    FairMQFileSink(){}
-    virtual ~FairMQFileSink()
+    FairMQFileSink();
+    virtual ~FairMQFileSink();
+    virtual void InitOutputFile(TString defaultId = "100");
+    
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
     {
-        fTree->Write();
-        fOutFile->Close();
-        if(fHitVector.size()>0) fHitVector.clear();
+        ar & fHitVector;
     }
-    virtual void InitOutputFile(TString defaultId = "100")
-    {
-        fOutput = new TClonesArray("FairTestDetectorHit");
-
-        char out[256];
-        sprintf(out, "filesink%s.root", defaultId.Data());
-
-        fOutFile = new TFile(out,"recreate");
-        fTree = new TTree("MQOut", "Test output");
-        fTree->Branch("Output","TClonesArray", &fOutput, 64000, 99);
-    }
+    
   protected:
     virtual void Run();
   private:
@@ -69,11 +68,7 @@ class FairMQFileSink: public FairMQDevice
     #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
     std:: vector<TIn> fHitVector;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
-    {
-        ar & fHitVector;
-    }
+    bool fHasBoostSerialization;
     #endif // for BOOST serialization
 };
 

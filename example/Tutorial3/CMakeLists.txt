@@ -50,6 +50,7 @@ Set(SRCS
   simulation/FairConstField.cxx
   simulation/FairConstPar.cxx
   simulation/FairMapPar.cxx
+  
   data/FairTestDetectorPoint.cxx
   data/FairTestDetectorHit.cxx
   digitization/FairTestDetectorHitProducerSmearing.cxx
@@ -66,12 +67,23 @@ If (Boost_FOUND)
   Set(SRCS
     ${SRCS}
     data/FairTestDetectorDigi.cxx
+    
   )
 
 
   Set(NO_DICT_SRCS
     data/FairMQFileSink.cxx
+    #data/has_BoostSerialization.cxx
   )
+
+  If(HAS_CXX11_AUTO AND HAS_CXX11_AUTO_RET_TYPE AND HAS_CXX11_CONSTEXPR AND HAS_CXX11_LAMBDA AND HAS_CXX11_DECLTYPE)
+    Set(NO_DICT_SRCS
+    ${NO_DICT_SRCS} data/has_BoostSerialization.cxx
+    )
+  Endif(HAS_CXX11_AUTO AND HAS_CXX11_AUTO_RET_TYPE AND HAS_CXX11_CONSTEXPR AND HAS_CXX11_LAMBDA AND HAS_CXX11_DECLTYPE)
+
+
+
   If(PROTOBUF_FOUND)
     Set(NO_DICT_SRCS
       ${NO_DICT_SRCS}

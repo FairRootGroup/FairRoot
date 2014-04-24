@@ -34,7 +34,6 @@ class FairTimeStamp : public FairMultiLinkedData
     /** Constructor with time and time error **/
     FairTimeStamp(Double_t time, Double_t timeerror);
 
-    FairTimeStamp(const FairTimeStamp &TimeStamp);
     /** Destructor **/
     virtual ~FairTimeStamp();
     /** Accessors **/
@@ -78,10 +77,6 @@ class FairTimeStamp : public FairMultiLinkedData
     }
 
 
-  protected:
-
-    #ifndef __CINT__ // for BOOST serialization
-    friend class boost::serialization::access;
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) 
     {
@@ -89,6 +84,13 @@ class FairTimeStamp : public FairMultiLinkedData
         ar & fTimeStamp;
         ar & fTimeStampError;
     } 
+    
+    
+  protected:
+
+    #ifndef __CINT__ // for BOOST serialization
+    friend class boost::serialization::access;
+    
     #endif // for BOOST serialization
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError;     /** Error on time stamp */

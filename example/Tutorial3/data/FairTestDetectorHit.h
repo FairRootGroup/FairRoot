@@ -23,22 +23,22 @@ class FairTestDetectorHit : public FairHit
     /** Constructor **/
     FairTestDetectorHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos);
 
-    /** Copy Constructor **/
-    FairTestDetectorHit(const FairTestDetectorHit&);
-
     /** Destructor **/
     virtual ~FairTestDetectorHit();
 
-  private:
-
-#ifndef __CINT__ // for BOOST serialization
-    friend class boost::serialization::access;
-
+    
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) 
     {
         ar & boost::serialization::base_object<FairHit>(*this);
     }
+    
+  private:
+
+#ifndef __CINT__ // for BOOST serialization
+    friend class boost::serialization::access;
+
+    
 #endif // for BOOST serialization
 
     ClassDef(FairTestDetectorHit,1);
