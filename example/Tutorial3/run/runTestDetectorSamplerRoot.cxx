@@ -19,7 +19,7 @@
 
 #include "TestDetectorDigiLoader.h"
 
-#include "FairTestDetectorPayload.h"
+#include "TMessage.h"
 #include "FairTestDetectorDigi.h"
 
 using std::cout;
@@ -27,9 +27,7 @@ using std::cin;
 using std::endl;
 using std::stringstream;
 
-typedef FairTestDetectorDigi TDigi; // class to serialize/deserialize
-typedef TestDetectorPayload::Digi TPayloadOut; // binary payload
-typedef TestDetectorDigiLoader<TDigi, TPayloadOut> TLoader;
+typedef TestDetectorDigiLoader<FairTestDetectorDigi, TMessage> TLoader;
 
 FairMQSampler<TLoader> sampler;
 

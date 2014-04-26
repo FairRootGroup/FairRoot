@@ -17,17 +17,15 @@
   #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
+#include "TMessage.h"
 #include "FairTestDetectorHit.h"
-#include "FairTestDetectorPayload.h"
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
 
-typedef FairTestDetectorHit THit; // class to serialize/deserialize
-typedef TestDetectorPayload::Hit TPayloadIn; // binary payload
-typedef FairMQFileSink<THit, TPayloadIn> TSink;
+typedef FairMQFileSink<FairTestDetectorHit, TMessage> TSink;
 
 TSink filesink;
 

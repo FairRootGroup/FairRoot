@@ -12,9 +12,6 @@
 #include "FairTestDetectorDigi.h"
 #include "TString.h"
 
-
-
-
 namespace TestDetectorPayload
 {
 
@@ -25,7 +22,7 @@ class TimeStamp
     Double_t fTimeStampError;
 };
 
-class TestDetectorDigi : public TimeStamp
+class Digi : public TimeStamp
 {
   public:
     Int_t fX;
@@ -33,7 +30,7 @@ class TestDetectorDigi : public TimeStamp
     Int_t fZ;
 };
 
-class TestDetectorHit : public TimeStamp
+class Hit : public TimeStamp
 {
   public:
     Int_t detID;

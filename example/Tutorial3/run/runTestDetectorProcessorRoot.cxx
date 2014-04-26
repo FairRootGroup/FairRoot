@@ -19,20 +19,16 @@
 
 #include "FairTestDetectorMQRecoTask.h"
 
+#include "TMessage.h"
 #include "FairTestDetectorHit.h"
 #include "FairTestDetectorDigi.h"
-#include "FairTestDetectorPayload.h"
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::stringstream;
 
-typedef FairTestDetectorDigi TDigi; // class to serialize/deserialize
-typedef FairTestDetectorHit THit; // class to serialize/deserialize
-typedef TestDetectorPayload::Digi TPayloadIn; // binary payload
-typedef TestDetectorPayload::Hit TPayloadOut; // binary payload
-typedef FairTestDetectorMQRecoTask<TDigi, THit, TPayloadIn, TPayloadOut> TProcessorTask;
+typedef FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage> TProcessorTask;
 
 FairMQProcessor processor;
 

@@ -6,8 +6,6 @@
  */
 
 
-
-
 template <typename TIn, typename TPayloadIn>
 FairMQFileSink<TIn,TPayloadIn>::FairMQFileSink()
 {
@@ -116,7 +114,7 @@ void FairMQFileSink<TIn,TPayloadIn>::Run()
 
 
 template <>
-void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::TestDetectorHit>::Run()
+void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
 {
   LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
@@ -132,8 +130,8 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::TestDetectorHit>::
 
     if (received) {
       Int_t inputSize = msg->GetSize();
-      Int_t numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorHit);
-      TestDetectorPayload::TestDetectorHit* input = static_cast<TestDetectorPayload::TestDetectorHit*>(msg->GetData());
+      Int_t numInput = inputSize / sizeof(TestDetectorPayload::Hit);
+      TestDetectorPayload::Hit* input = static_cast<TestDetectorPayload::Hit*>(msg->GetData());
 
       fOutput->Delete();
 
@@ -145,6 +143,114 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::TestDetectorHit>::
 
       if (!fOutput) {
         cout << "-W- FairMQFileSink::Run: " << "No Output array!" << endl;
+      }
+
+      fTree->Fill();
+      // delete tm;
+      received = false;
+    }
+
+    delete msg;
+  }
+
+  cout << "I've received " << receivedMsgs << " messages!" << endl;
+
+  boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
+
+  rateLogger.interrupt();
+  rateLogger.join();
+}
+
+
+// ----- Implementation of FairMQFileSink with Root TBufferFile transport data format -----
+
+// template <>
+// void FairMQFileSink<FairTestDetectorHit, TBufferFile>::Run()
+// {
+//   LOG(INFO) << ">>>>>>> Run <<<<<<<";
+
+//   boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
+
+//   int receivedMsgs = 0;
+//   bool received = false;
+
+//   while ( fState == RUNNING ) {
+//     FairMQMessage* msg = fTransportFactory->CreateMessage();
+
+//     received = fPayloadInputs->at(0)->Receive(msg);
+
+//     if (received) {
+//       fOutput->Delete();
+
+//       TBufferFile tbf(TBuffer::kRead, msg->GetSize(), msg->GetData(), kFALSE);
+
+//       fOutput = (TClonesArray*)tbf.ReadObject(TClonesArray::Class());
+
+//       if (!fOutput) {
+//         LOG(ERROR) << "FairMQFileSink::Run: No Output array!";
+//       }
+
+//       // int nHits = fOutput->GetEntriesFast();
+//       // for (int i = 0; i < nHits; ++i) {
+//       //     FairTestDetectorHit* hit = reinterpret_cast<FairTestDetectorHit*>(fOutput->At(i));
+//       //     if (!hit) {
+//       //         continue;
+//       //     }
+//       //     LOG(ERROR) << hit->GetDetectorID() << " " << hit->GetX() << " " << hit->GetY() << " " << hit->GetZ() << " " << hit->GetDx() << " " << hit->GetDy() << " " << hit->GetDz() << " ";
+//       // }
+
+//       fTree->Fill();
+//       received = false;
+//     }
+
+//     delete msg;
+//   }
+
+//   cout << "I've received " << receivedMsgs << " messages!" << endl;
+
+//   boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
+
+//   rateLogger.interrupt();
+//   rateLogger.join();
+// }
+
+
+// ----- Implementation of FairMQFileSink with Root TMessage transport data format -----
+
+// special class needed to expose protected TMessage constructor
+class TestDetectorTMessage : public TMessage
+{
+public:
+  TestDetectorTMessage(void *buf, Int_t len) : TMessage(buf, len) { }
+  virtual ~TestDetectorTMessage() { };
+};
+
+template <>
+void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
+{
+  LOG(INFO) << ">>>>>>> Run <<<<<<<";
+
+  boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
+
+  int receivedMsgs = 0;
+  bool received = false;
+
+  while ( fState == RUNNING ) {
+    FairMQMessage* msg = fTransportFactory->CreateMessage();
+
+    received = fPayloadInputs->at(0)->Receive(msg);
+
+    if (received) {
+      fOutput->Delete();
+
+      TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
+
+      //TestDetectorTMessage *tm = new TestDetectorTMessage(msg->GetData(), msg->GetSize());
+
+      fOutput = (TClonesArray*)tm.ReadObject(tm.GetClass());
+
+      if (!fOutput) {
+        LOG(ERROR) << "FairMQFileSink::Run: No Output array!";
       }
 
       fTree->Fill();
@@ -164,7 +270,6 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::TestDetectorHit>::
 
 
 #ifdef PROTOBUF
-
 #include "FairTestDetectorPayload.pb.h"
 
 template <>

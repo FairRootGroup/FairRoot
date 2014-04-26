@@ -24,11 +24,12 @@
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorHit.h"
 
-
 #if __cplusplus >= 201103L
 #include "has_BoostSerialization.h"
 #endif
 
+#include "TBufferFile.h"
+#include "TMessage.h"
 
 #ifndef __CINT__
 #include <boost/thread.hpp>

@@ -172,11 +172,11 @@ void FairTestDetectorMQRecoTask<TIn,TOut,TPayloadIn,TPayloadOut>::Exec(FairMQMes
 
 
 template <>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi,FairTestDetectorHit,TestDetectorPayload::TestDetectorDigi, TestDetectorPayload::TestDetectorHit>::Exec(FairMQMessage* msg, Option_t* opt)
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi,FairTestDetectorHit,TestDetectorPayload::Digi, TestDetectorPayload::Hit>::Exec(FairMQMessage* msg, Option_t* opt)
 {
   int inputSize = msg->GetSize();
-  int numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorDigi);
-  TestDetectorPayload::TestDetectorDigi* input = reinterpret_cast<TestDetectorPayload::TestDetectorDigi*>(msg->GetData());
+  int numInput = inputSize / sizeof(TestDetectorPayload::Digi);
+  TestDetectorPayload::Digi* input = reinterpret_cast<TestDetectorPayload::Digi*>(msg->GetData());
 
   fRecoTask->fDigiArray->Delete();
 
@@ -191,10 +191,10 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi,FairTestDetectorHit,TestDet
   fRecoTask->Exec(opt);
 
   int numOutput = numInput;
-  int outputSize = numOutput * sizeof(TestDetectorPayload::TestDetectorHit);
+  int outputSize = numOutput * sizeof(TestDetectorPayload::Hit);
 
   msg->Rebuild(outputSize);
-  TestDetectorPayload::TestDetectorHit* output = reinterpret_cast<TestDetectorPayload::TestDetectorHit*>(msg->GetData());
+  TestDetectorPayload::Hit* output = reinterpret_cast<TestDetectorPayload::Hit*>(msg->GetData());
 
   if (inputSize > 0) {
     for (int i = 0; i < numOutput; ++i) {
@@ -211,10 +211,101 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi,FairTestDetectorHit,TestDet
   }
 }
 
+
+// ----- Implementation of FairTestDetectorMQRecoTask with Root TBufferFile transport data format -----
+
+// template <>
+// void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TBufferFile, TBufferFile>::Exec(FairMQMessage* msg, Option_t* opt)
+// {
+// // Int_t abuff[4];
+// // Int_t size = msg->GetSize();
+// // TBufferFile tt(TBuffer::kRead, size, msg->GetData(), kFALSE);
+// // tt.ReadFastArray(abuff, 4);
+// // LOG (ERROR) << "buffer size: " << msg->GetSize() << " bytes";
+
+// // LOG (ERROR) << abuff[0] << " " << abuff[1] << " " << abuff[2] << " " << abuff[3] << " ";
+
+
+//     TBufferFile tbf(TBuffer::kRead, msg->GetSize(), msg->GetData(), kFALSE);
+//     LOG (ERROR) << "buffer size: " << msg->GetSize() << " bytes";
+
+//     fRecoTask->fDigiArray = (TClonesArray*)tbf.ReadObject(TClonesArray::Class());
+
+//     if (!fRecoTask->fDigiArray) {
+//         LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec: No Point array!";
+//     }
+
+//     // // int nDigis = fRecoTask->fDigiArray->GetEntriesFast();
+//     // // for (int i = 0; i < nDigis; ++i) {
+//     // //     FairTestDetectorDigi* digi = reinterpret_cast<FairTestDetectorDigi*>(fRecoTask->fDigiArray->At(i));
+//     // //     if (!digi) {
+//     // //         continue;
+//     // //     }
+//     // //     LOG(ERROR) << digi->GetX() << " " << digi->GetY() << " " << digi->GetZ() << " " << digi->GetTimeStamp() << " ";
+//     // // }
+
+//     fRecoTask->Exec(opt);
+
+//     fRecoTask->fDigiArray->Delete();
+
+//     TBufferFile *tbf_out = new TBufferFile(TBuffer::kWrite, 0);
+
+//     tbf_out->WriteObject(fRecoTask->fHitArray);
+
+//     // // int nHits = fRecoTask->fHitArray->GetEntriesFast();
+//     // // for (int i = 0; i < nHits; ++i) {
+//     // //     FairTestDetectorHit* hit = reinterpret_cast<FairTestDetectorHit*>(fRecoTask->fHitArray->At(i));
+//     // //     if (!hit) {
+//     // //         continue;
+//     // //     }
+//     // //     LOG(ERROR) << hit->GetDetectorID() << " " << hit->GetX() << " " << hit->GetY() << " " << hit->GetZ() << " " << hit->GetDx() << " " << hit->GetDy() << " " << hit->GetDz() << " ";
+//     // // }
+
+//     msg->Rebuild(tbf_out->Buffer(), tbf_out->BufferSize());
+// }
+
+
+// ----- Implementation of FairTestDetectorMQRecoTask with Root TMessage transport data format -----
+
+// special class needed to expose protected TMessage constructor
+class TestDetectorTMessage : public TMessage
+{
+public:
+  TestDetectorTMessage(void *buf, Int_t len) : TMessage(buf, len) { }
+};
+
+template <>
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>::Exec(FairMQMessage* msg, Option_t* opt)
+{
+  fRecoTask->fDigiArray->Delete();
+
+  TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
+
+  // TestDetectorTMessage *tm = new TestDetectorTMessage(msg->GetData(), msg->GetSize());
+
+  fRecoTask->fDigiArray = dynamic_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
+
+  if (!fRecoTask->fDigiArray) {
+    LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec: No Point array!";
+  }
+
+  fRecoTask->Exec(opt);
+
+  tm.Reset();
+
+  TMessage *out = new TMessage(kMESS_OBJECT);
+
+  out->WriteObject(fRecoTask->fHitArray);
+
+  msg->Rebuild(out->Buffer(), out->Length());
+}
+
+
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
+
 template <>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi,FairTestDetectorHit,TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(FairMQMessage* msg, Option_t* opt)
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(FairMQMessage* msg, Option_t* opt)
 {
 
   fRecoTask->fDigiArray->Delete();

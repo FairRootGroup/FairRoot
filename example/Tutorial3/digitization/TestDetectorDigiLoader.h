@@ -16,6 +16,9 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
+#include "TBufferFile.h"
+#include "TMessage.h"
+
 #include "FairTestDetectorPayload.h"
 #include <iostream> 
 

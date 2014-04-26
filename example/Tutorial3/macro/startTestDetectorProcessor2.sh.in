@@ -15,9 +15,12 @@ elif [ "$1" = "boost" ]; then
 elif [ "$1" = "proto" ]; then
     dataFormat="Proto"
     echo "attempting to use Google Protocol Buffers data format"
+elif [ "$1" = "root" ]; then
+    dataFormat="Root"
+    echo "attempting to use Root TMessage data format"
 else
     echo "none or incorrect data formats provided."
-    echo "(available data formats options are: bin, boost, proto.)"
+    echo "(available data formats options are: bin, boost, proto, root)"
     echo "binary data format will be used."
 fi
 

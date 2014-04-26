@@ -115,6 +115,9 @@ If (Boost_FOUND)
     testDetectorSamplerBoost
     testDetectorProcessorBoost
     fileSinkBoost # todo: make this consistent with the others
+    testDetectorSamplerRoot
+    testDetectorProcessorRoot
+    fileSinkRoot # todo: make this consistent with the others
   )
 
   If(PROTOBUF_FOUND)
@@ -133,6 +136,9 @@ If (Boost_FOUND)
     run/runTestDetectorSamplerBoost.cxx
     run/runTestDetectorProcessorBoost.cxx
     run/runFileSinkBoost.cxx
+    run/runTestDetectorSamplerRoot.cxx
+    run/runTestDetectorProcessorRoot.cxx
+    run/runFileSinkRoot.cxx
     )
 
   If(PROTOBUF_FOUND)

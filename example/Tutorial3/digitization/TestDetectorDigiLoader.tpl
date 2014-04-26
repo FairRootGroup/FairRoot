@@ -70,20 +70,20 @@ void TestDetectorDigiLoader<T1,T2>::Exec(Option_t* opt)
 
 
 template <>
-void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetectorDigi>::Exec(Option_t* opt)
+void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* opt)
 { 
     int nDigis = fInput->GetEntriesFast();
-    int size = nDigis * sizeof(TestDetectorPayload::TestDetectorDigi);
+    int size = nDigis * sizeof(TestDetectorPayload::Digi);
 
     fOutput = fTransportFactory->CreateMessage(size);
-    TestDetectorPayload::TestDetectorDigi* ptr = reinterpret_cast<TestDetectorPayload::TestDetectorDigi*>(fOutput->GetData());
+    TestDetectorPayload::Digi* ptr = reinterpret_cast<TestDetectorPayload::Digi*>(fOutput->GetData());
 
     for (Int_t i = 0; i < nDigis; ++i) 
     {
         FairTestDetectorDigi* digi = reinterpret_cast<FairTestDetectorDigi*>(fInput->At(i));
         if (!digi) continue;
-        new(&ptr[i]) TestDetectorPayload::TestDetectorDigi();
-        ptr[i] = TestDetectorPayload::TestDetectorDigi();
+        new(&ptr[i]) TestDetectorPayload::Digi();
+        ptr[i] = TestDetectorPayload::Digi();
         ptr[i].fX = digi->GetX();
         ptr[i].fY = digi->GetY();
         ptr[i].fZ = digi->GetZ();
@@ -91,21 +91,57 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetec
     }
 }
 
+
+// // ----- Implementation of TestDetectorDigiLoader with Root TBufferFile transport data format -----
+
 // template <>
-// void TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
+// void TestDetectorDigiLoader<FairTestDetectorDigi, TBufferFile>::Exec(Option_t* opt)
 // {
-//     TMessage *tm = new TMessage(kMESS_OBJECT);
+//     // int nDigis = fInput->GetEntriesFast();
+//     // for (int i = 0; i < nDigis; ++i) {
+//     //     FairTestDetectorDigi* digi = reinterpret_cast<FairTestDetectorDigi*>(fInput->At(i));
+//     //     if (!digi) {
+//     //         continue;
+//     //     }
+//     //     LOG(ERROR) << digi->GetX() << " " << digi->GetY() << " " << digi->GetZ() << " " << digi->GetTimeStamp() << " ";
+//     // }
 
-//     tm->WriteObject(fInput);
+// // Int_t abuff[4] = { 1, 2, 3, 4 };
+// // TBufferFile *tbf = new TBufferFile(TBuffer::kWrite, 0);
+// // tbf->WriteArray(abuff, 4);
+// // LOG (ERROR) << abuff[0] << " " << abuff[1] << " " << abuff[2] << " " << abuff[3] << " ";
+// // LOG (ERROR) << "buffer size: " << tbf->BufferSize() << " bytes.";
 
-//     char *buffer = tm->Buffer();
-//     int size = tm->Length();
+//     TBufferFile *tbf = new TBufferFile(TBuffer::kWrite, 0);
 
-//     fOutput = fTransportFactory->CreateMessage(buffer, size);
+//     tbf->WriteObject(fInput);
+//     LOG (ERROR) << "buffer size: " << tbf->BufferSize() << " bytes.";
+
+//     fOutput = fTransportFactory->CreateMessage(tbf->Buffer(), tbf->BufferSize());
 // }
+
+
+// ----- Implementation of TestDetectorDigiLoader with Root TMessage transport data format -----
+
+template <>
+void TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
+{
+    TMessage tm(kMESS_OBJECT);
+    tm.Reset();
+    tm.WriteObject(fInput);
+    TMessage::EnableSchemaEvolutionForAll(kTRUE);
+
+    int size = tm.Length();
+    char* buf = (char*) malloc(size * sizeof(char));
+    memcpy(buf, tm.Buffer(), size);
+
+    fOutput = fTransportFactory->CreateMessage((void*)buf, size);
+}
+
 
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
+
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* opt)
 {
