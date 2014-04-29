@@ -103,7 +103,8 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fRadGridMan(NULL),
    fEventHeader(NULL),
    fMCEventHeader(NULL),
-   fRunInfo()
+   fRunInfo(),
+   fGeometryIsInitialized(kFALSE)
 {
 // Standard Simulation constructor
 // Check if the Fair root manager exist!
@@ -179,7 +180,8 @@ FairMCApplication::FairMCApplication()
    fRadGridMan(NULL),
    fEventHeader(NULL),
    fMCEventHeader(NULL),
-   fRunInfo()
+   fRunInfo(),
+   fGeometryIsInitialized(kFALSE)
 {
 // Default constructor
 }
@@ -665,6 +667,11 @@ void FairMCApplication::ConstructGeometry()
 
 void FairMCApplication::InitGeometry()
 {
+  
+  //ToBeDone
+  // Recently the InitGeometry is called twice from the G4VMC, This is a work around tell the problem get fixed in G4VMC
+  if (fGeometryIsInitialized) return;
+    
   /// Initialize geometry
   /** Register stack and detector collections*/
   FairVolume* fv=0;
@@ -763,7 +770,7 @@ void FairMCApplication::InitGeometry()
       fVolMap.insert(pair<Int_t, FairVolume* >(id, fv));
     }
   }
-
+  fGeometryIsInitialized=kTRUE;
 
 }
 
