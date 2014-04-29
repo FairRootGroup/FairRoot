@@ -262,6 +262,7 @@ class FairMCApplication : public TVirtualMCApplication
     FairMCApplication& operator=(const FairMCApplication&);
 
     FairRunInfo fRunInfo;//!
+    Bool_t      fGeometryIsInitialized;
 };
 
 // inline functions
