@@ -23,6 +23,7 @@
 #include "FairGeoParSet.h"
 
 #include "TROOT.h"
+#include "TSystem.h"
 #include "TTree.h"
 #include "TSeqCollection.h"
 #include "TGeoManager.h"
@@ -33,6 +34,7 @@
 #include "TH1F.h"
 #include "TH2F.h"
 
+#include <signal.h>
 #include <stdlib.h>
 #include <iostream>
 #include <list>
@@ -96,6 +98,15 @@ FairRunOnline::~FairRunOnline()
 
 
 
+Bool_t gIsInterrupted;
+
+void handler_ctrlc(int s)
+{
+  gIsInterrupted = kTRUE;
+}
+
+
+
 //_____________________________________________________________________________
 void FairRunOnline::Init()
 {
@@ -106,6 +117,10 @@ void FairRunOnline::Init()
     fIsInitialized = kTRUE;
   }
 
+  gSystem->IgnoreInterrupt();
+  gIsInterrupted = kFALSE;
+  signal(SIGINT, handler_ctrlc);
+
   //  FairGeoLoader* loader = new FairGeoLoader("TGeo", "Geo Loader");
   //  FairGeoInterface* GeoInterFace = loader->getGeoInterface();
   //  GeoInterFace->SetNoOfSets(ListOfModules->GetEntries());
@@ -114,7 +129,18 @@ void FairRunOnline::Init()
 
   // Add a Generated run ID to the FairRunTimeDb
   FairRunIdGenerator genid;
-  fRunId = genid.generateId();
+  //fRunId = genid.generateId();
+  if(0 == fRunId)
+  {
+    fLogger->Fatal(MESSAGE_ORIGIN, "RunId is not set!");
+    exit(-1);
+  }
+
+  fEvtHeader = new FairEventHeader();
+  fEvtHeader->SetRunId(fRunId);
+  
+  fEvtHeader->Register();
+
   fRtdb->addRun(fRunId);
   fFileHeader->SetRunId(fRunId);
   FairBaseParSet* par = dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
@@ -144,7 +170,7 @@ void FairRunOnline::Init()
 
   // Initialize the source
   if(! fSource->Init()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Init of the source failed...");
+    fLogger->Fatal(MESSAGE_ORIGIN, "Init of the source failed!");
     exit(-1);
   }
 
@@ -209,6 +235,10 @@ void FairRunOnline::Run(Int_t nev, Int_t dummy)
       fRootManager->Fill();
       fRootManager->DeleteOldWriteoutBufferData();
       fTask->FinishEvent();
+      if(gIsInterrupted)
+      {
+        break;
+      }
     }
   } else {
     for (Int_t i = 0; i < nev; i++) {
