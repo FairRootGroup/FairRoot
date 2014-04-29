@@ -112,4 +112,9 @@ target_link_libraries(MbsAPI ${ROOT_LIBRARIES})
 set_target_properties(MbsAPI PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ############### install the library ###################
+
+install(FILES ${MBSAPI_HEADERS}
+        DESTINATION include
+       )
+
 install(TARGETS MbsAPI DESTINATION lib)
