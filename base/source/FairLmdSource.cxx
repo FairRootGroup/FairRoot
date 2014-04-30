@@ -20,7 +20,8 @@ FairLmdSource::FairLmdSource()
     fxEvent(NULL),
     fxBuffer(NULL),
     fxEventData(NULL),
-    fxSubEvent(NULL)
+    fxSubEvent(NULL),
+    fxInfoHeader(NULL)
 {
 }
 
@@ -33,7 +34,8 @@ FairLmdSource::FairLmdSource(const FairLmdSource& source)
     fxEvent(NULL),
     fxBuffer(NULL),
     fxEventData(NULL),
-    fxSubEvent(NULL)
+    fxSubEvent(NULL),
+    fxInfoHeader(NULL)
 {
 }
 
@@ -76,8 +78,7 @@ Bool_t FairLmdSource::Init()
 Bool_t FairLmdSource::OpenNextFile(TString fileName)
 {
   Int_t inputMode = 1;
-  fxInputChannel = new s_evt_channel;
-  s_filhe fxInfoHeader;
+  fxInputChannel = new s_evt_channel;  
   void* headptr = &fxInfoHeader;
   INTS4 status;
   status = f_evt_get_open(inputMode,
