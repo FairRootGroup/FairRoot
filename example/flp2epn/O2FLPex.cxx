@@ -11,10 +11,11 @@
 
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
+#include <iostream>
+#include <sstream>
 
 #include "O2FLPex.h"
 #include "FairMQLogger.h"
-
 
 O2FLPex::O2FLPex() :
   fEventSize(10000),
@@ -43,20 +44,27 @@ void O2FLPex::Run()
   srand(time(NULL));
 
   LOG(DEBUG) << "Message size: " << fEventSize * sizeof(Content) << " bytes.";
+ 
+  stringstream ss(fId);
+    
+  int Flp_id;
+  ss >> Flp_id;
+    
+    
+  Content* payload = new Content[fEventSize];
+  for (int i = 0; i < fEventSize; ++i) {
+        (&payload[i])->id = Flp_id;
+        (&payload[i])->x = rand() % 100 + 1;
+        (&payload[i])->y = rand() % 100 + 1;
+        (&payload[i])->z = rand() % 100 + 1;
+        (&payload[i])->a = (rand() % 100 + 1) / (rand() % 100 + 1);
+        (&payload[i])->b = (rand() % 100 + 1) / (rand() % 100 + 1);
+        //LOG(INFO) << (&payload[i])->id << " " << (&payload[i])->x << " " << (&payload[i])->y << " " << (&payload[i])->z << " " << (&payload[i])->a << " " << (&payload[i])->b;
+  }
+    
 
+    
   while ( fState == RUNNING ) {
-
-    Content* payload = new Content[fEventSize];
-
-    for (int i = 0; i < fEventSize; ++i) {
-      (&payload[i])->x = rand() % 100 + 1;
-      (&payload[i])->y = rand() % 100 + 1;
-      (&payload[i])->z = rand() % 100 + 1;
-      (&payload[i])->a = (rand() % 100 + 1) / (rand() % 100 + 1);
-      (&payload[i])->b = (rand() % 100 + 1) / (rand() % 100 + 1);
-      // LOG(INFO) << (&payload[i])->x << " " << (&payload[i])->y << " " << (&payload[i])->z << " " << (&payload[i])->a << " " << (&payload[i])->b;
-    }
-
     FairMQMessage* msg = fTransportFactory->CreateMessage(fEventSize * sizeof(Content));
     memcpy(msg->GetData(), payload, fEventSize * sizeof(Content));
 
@@ -68,10 +76,9 @@ void O2FLPex::Run()
       boost::this_thread::sleep(boost::posix_time::milliseconds(1));
     }
 
-    delete[] payload;
     delete msg;
   }
-
+  delete[] payload;
   rateLogger.interrupt();
   resetEventCounter.interrupt();
 

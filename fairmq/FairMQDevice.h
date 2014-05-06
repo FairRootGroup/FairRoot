@@ -27,6 +27,7 @@
 using std::vector;
 using std::cin;
 using std::cout;
+
 using std::endl;
 
 class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable

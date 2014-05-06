@@ -21,6 +21,7 @@ set(SRCS
   O2FLPex.cxx
   O2EPNex.cxx
   O2Proxy.cxx
+  O2Merger.cxx
 )
 
 set(DEPENDENCIES
@@ -43,6 +44,7 @@ Set(Exe_Names
    testFLP
    testEPN
    testProxy
+   testMerger
 )
 
 
@@ -50,6 +52,7 @@ set(Exe_Source
   run/runFLP.cxx
   run/runEPN.cxx
   run/runProxy.cxx
+  run/runMerger.cxx
 )
 
 list(LENGTH Exe_Names _length)
