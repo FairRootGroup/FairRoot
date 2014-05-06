@@ -51,6 +51,7 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "/include/boost/exception/exception.hpp:"
         "/include/boost/smart_ptr/detail/sp_convertible.hpp:"
         "/include/boost/smart_ptr/shared_ptr.hpp:"  
+        "/include/boost/"
 
         # -- Root warnings when installed in installation dir
         "/include/root/"
@@ -118,7 +119,12 @@ Set (CTEST_CUSTOM_COVERAGE_EXCLUDE
      ".*GTest.*"
     )
 
-#Set (CTEST_CUSTOM_COVERAGE_EXCLUDE
-#     "Dict.h"
-#     "Dict.cxx"
-#    )
+# -----------------------------------------------------------
+# -- Error execptions
+# -- Get rid of boost warnings which are misinterpreted as errors
+# -----------------------------------------------------------
+
+Set(CTEST_CUSTOM_ERROR_EXCEPTION
+	${CTEST_CUSTOM_ERROR_EXCEPTION}
+        "/include/boost/"
+)
