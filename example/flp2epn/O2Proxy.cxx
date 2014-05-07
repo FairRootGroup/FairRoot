@@ -10,6 +10,7 @@
 
 #include "FairMQLogger.h"
 #include "O2Proxy.h"
+#include "zmq.h"
 
 O2Proxy::O2Proxy()
 {
@@ -32,9 +33,13 @@ void O2Proxy::Run()
     
   while ( fState == RUNNING ) {
     
-      
-    fPayloadInputs->at(0)->Receive(msg);
-      
+    while(1){
+      fPayloadInputs->at(0)->Receive(msg);
+      if ( !zmq_msg_more(((zmq_msg_t *)(msg->GetMessage()))));
+      break;
+    }
+          
+          
     fPayloadOutputs->at(0)->Send(msg);
   
   }

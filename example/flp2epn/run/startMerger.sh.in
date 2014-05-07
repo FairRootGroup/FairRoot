@@ -62,7 +62,7 @@ outputSocketType="push"
 outputSndBufSize=$buffSize
 outputMethod="bind"
 outputAddress="tcp://*:5581"
-xterm -e @CMAKE_BINARY_DIR@/bin/merger $ID $numIoThreads $numInputs $inputSocketType1 $inputRcvBufSize1 $inputMethod1 $inputAddress1 $inputSocketType2 $inputRcvBufSize2 $inputMethod2 $inputAddress2  $inputSocketType3 $inputRcvBufSize3 $inputMethod3 $inputAddress3 $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
+xterm -e @CMAKE_BINARY_DIR@/bin/testMerger $ID $numIoThreads $numInputs $inputSocketType1 $inputRcvBufSize1 $inputMethod1 $inputAddress1 $inputSocketType2 $inputRcvBufSize2 $inputMethod2 $inputAddress2  $inputSocketType3 $inputRcvBufSize3 $inputMethod3 $inputAddress3 $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
 
 
 

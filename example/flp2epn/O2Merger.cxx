@@ -11,7 +11,7 @@
 #include "FairMQLogger.h"
 #include "O2Merger.h"
 #include "FairMQPoller.h"
-
+#include "zmq.h"
 
 O2Merger::O2Merger()
 {
@@ -30,18 +30,26 @@ void O2Merger::Run()
   FairMQPoller* poller = fTransportFactory->CreatePoller(*fPayloadInputs);
 
   bool received = false;
+  int NoOfMsgParts=fNumInputs-1;
 
   while ( fState == RUNNING ) {
     FairMQMessage* msg = fTransportFactory->CreateMessage();
 
     poller->Poll(100);
-
+    
     for(int i = 0; i < fNumInputs; i++) {
       if (poller->CheckInput(i)){
         received = fPayloadInputs->at(i)->Receive(msg);
+        //  LOG(INFO) << "------ recieve Msg from " << i ;
       }
       if (received) {
-        fPayloadOutputs->at(0)->Send(msg);
+          if(i<NoOfMsgParts){
+              fPayloadOutputs->at(0)->Send(msg, ZMQ_SNDMORE);
+           //   LOG(INFO) << "------ Send  Msg Part " << i ;
+          }else{
+              fPayloadOutputs->at(0)->Send(msg);
+          //    LOG(INFO) << "------ Send  last Msg Part " << i ;
+          }
         received = false;
       }
     }
