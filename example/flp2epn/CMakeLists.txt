@@ -8,6 +8,7 @@ set(INCLUDE_DIRECTORIES
 include_directories(${INCLUDE_DIRECTORIES})
 
 configure_file( ${CMAKE_SOURCE_DIR}/example/flp2epn/run/startFLP2EPN.sh.in ${CMAKE_BINARY_DIR}/bin/startFLP2EPN.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/example/flp2epn/run/startMerger.sh.in ${CMAKE_BINARY_DIR}/bin/startMerger.sh )
 
 
 
