@@ -11,7 +11,6 @@
 #include "FairMQLogger.h"
 #include "O2Merger.h"
 #include "FairMQPoller.h"
-
 O2Merger::O2Merger()
 {
 }

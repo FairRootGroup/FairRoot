@@ -99,6 +99,7 @@ size_t FairMQSocketZMQ::Send(FairMQMessage* msg, const string& flag)
     return nbytes;
 }
 
+
 size_t FairMQSocketZMQ::Receive(FairMQMessage* msg, const string& flag)
 {
     int nbytes = zmq_msg_recv(static_cast<zmq_msg_t*>(msg->GetMessage()), fSocket, GetConstant(flag));

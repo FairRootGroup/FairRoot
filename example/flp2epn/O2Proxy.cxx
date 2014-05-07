@@ -10,6 +10,7 @@
 
 #include "FairMQLogger.h"
 #include "O2Proxy.h"
+#include "zmq.h"
 
 
 O2Proxy::O2Proxy()
@@ -25,8 +26,6 @@ void O2Proxy::Run()
   LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
   boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
-
-    
   
   while ( fState == RUNNING ) {
    //   int i=0;
