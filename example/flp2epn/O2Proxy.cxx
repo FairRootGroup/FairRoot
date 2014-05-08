@@ -29,7 +29,7 @@ void O2Proxy::Run()
     
   
   while ( fState == RUNNING ) {
-      int i=0;
+   //   int i=0;
       int64_t more=0;
       size_t more_size = sizeof more;
       do {
@@ -39,7 +39,7 @@ void O2Proxy::Run()
           fPayloadInputs->at(0)->Receive(msgpart);
           /* Determine if more message parts are to follow */
           fPayloadInputs->at(0)->GetOption("rcvmore", &more, &more_size);
-          LOG(INFO) << "------ Get Msg Part "<< " more = " << more << " counter " << i++ ;
+     //     LOG(INFO) << "------ Get Msg Part "<< " more = " << more << " counter " << i++ ;
           if(more){
               fPayloadOutputs->at(0)->Send(msgpart, ZMQ_SNDMORE);
           }else{
@@ -47,7 +47,7 @@ void O2Proxy::Run()
           }
           delete msgpart;
       } while (more);
-      i=0;
+   //   i=0;
      
   }
 
