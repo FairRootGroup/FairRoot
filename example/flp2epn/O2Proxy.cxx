@@ -26,7 +26,7 @@ void O2Proxy::Run()
   LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
   boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
-  
+
   while ( fState == RUNNING ) {
    //   int i=0;
       int64_t more=0;
