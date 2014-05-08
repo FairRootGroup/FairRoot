@@ -40,8 +40,6 @@ class FairMCPoint : public FairMultiLinkedData
      **/
     FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                 Double_t tof, Double_t length, Double_t eLoss, UInt_t EventId=0);
-
-    FairMCPoint(const FairMCPoint &MCPoint) ;
     
     /** Destructor **/
     virtual ~FairMCPoint();
@@ -85,12 +83,7 @@ class FairMCPoint : public FairMultiLinkedData
     virtual void Print(const Option_t* opt = 0) const;
 
 
-
-  protected:
-
-    #ifndef __CINT__ // for BOOST serialization
-    friend class boost::serialization::access;
-
+    
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) 
     {
@@ -108,6 +101,12 @@ class FairMCPoint : public FairMultiLinkedData
         ar & fLength; 
         ar & fELoss; 
     }
+
+  protected:
+
+    #ifndef __CINT__ // for BOOST serialization
+    friend class boost::serialization::access;
+
     #endif // for BOOST serialization
     
     Int_t fTrackID;               ///< Track index

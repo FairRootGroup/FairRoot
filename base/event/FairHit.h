@@ -31,8 +31,6 @@ class FairHit : public FairTimeStamp
     /** Constructor with hit parameters **/
     FairHit(Int_t detID, TVector3& pos, TVector3& dpos, Int_t index);
 
-    FairHit(const FairHit &Hit);
-
     /** Destructor **/
     virtual ~FairHit();
 
@@ -70,12 +68,7 @@ class FairHit : public FairTimeStamp
     virtual void Print(const Option_t* opt ="") const {;}
 
 
-
-  protected:
     
-   #ifndef __CINT__ // for BOOST serialization
-   friend class boost::serialization::access;
-
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) 
     {
@@ -89,6 +82,12 @@ class FairHit : public FairTimeStamp
         ar & fDy; 
         ar & fDz;
     }
+
+  protected:
+    
+   #ifndef __CINT__ // for BOOST serialization
+   friend class boost::serialization::access;
+
     #endif // for BOOST serialization
     
     

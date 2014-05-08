@@ -25,7 +25,6 @@ class FairTestDetectorDigi : public FairTimeStamp
 {
   public:
     FairTestDetectorDigi();
-    FairTestDetectorDigi(const FairTestDetectorDigi &Digi);
     FairTestDetectorDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp);
     virtual ~FairTestDetectorDigi();
 
@@ -69,11 +68,7 @@ class FairTestDetectorDigi : public FairTimeStamp
       return out;
     }
 
-  private:
-      
-   #ifndef __CINT__ // for BOOST serialization
-   friend class boost::serialization::access;
-
+    
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version) 
     {
@@ -82,6 +77,11 @@ class FairTestDetectorDigi : public FairTimeStamp
         ar & fY;
         ar & fZ;
     }
+  private:
+      
+   #ifndef __CINT__ // for BOOST serialization
+   friend class boost::serialization::access;
+    
     #endif // for BOOST serialization
 
     Int_t fX;

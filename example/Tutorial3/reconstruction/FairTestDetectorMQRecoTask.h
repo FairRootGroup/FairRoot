@@ -3,8 +3,7 @@
 
 #include <iostream>
 #include <sstream>
-//#include <memory>
-//#include <chrono>
+
 
 #ifndef __CINT__ // Boost serialization 
 #include <boost/serialization/access.hpp>
@@ -28,47 +27,41 @@
 #include "FairTestDetectorHit.h"
 #include "FairTestDetectorDigi.h"
 
-
-
+#if __cplusplus >= 201103L
+//#include <memory>
+//#include <chrono>
+#include "has_BoostSerialization.h"
+#endif
 
 using std::cout;
 using std::endl;
 
 
 class TClonesArray;
-template <typename TIn, typename TOut, typename TBoostIArchive, typename TBoostOArchive>
+template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 {
   public:
     /** Default constructor **/
-    FairTestDetectorMQRecoTask(): fRecoTask(NULL){}
-    FairTestDetectorMQRecoTask(Int_t verbose): fRecoTask(NULL){}
-
+    FairTestDetectorMQRecoTask();
+    FairTestDetectorMQRecoTask(Int_t verbose);
 
     /** Destructor **/
-    virtual ~FairTestDetectorMQRecoTask()
-    {
-        fRecoTask->fDigiArray->Delete();
-        fRecoTask->fHitArray->Delete();
-        delete fRecoTask;
-        if(fDigiVector.size()>0) fDigiVector.clear();
-        if(fHitVector.size()>0) fHitVector.clear();
-    }
-
+    virtual ~FairTestDetectorMQRecoTask();
 
     /** Virtual method Init **/
-    virtual InitStatus Init()
-    {
-        fRecoTask = new FairTestDetectorRecoTask();
-        fRecoTask->fDigiArray = new TClonesArray("FairTestDetectorDigi");
-        fRecoTask->fHitArray = new TClonesArray("FairTestDetectorHit");
-
-        return kSUCCESS;
-    }
-
+    virtual InitStatus Init();
 
     /** Virtual method Exec **/
     virtual void Exec(FairMQMessage* msg, Option_t* opt);
+    
+    // boost serialize function
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version)
+    {
+        ar & fDigiVector;
+        ar & fHitVector;
+    }
 
   private:
     FairTestDetectorRecoTask* fRecoTask;
@@ -76,12 +69,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     friend class boost::serialization::access;
     std:: vector<TIn >  fDigiVector;
     std:: vector<TOut>  fHitVector;
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
-    {
-        ar & fDigiVector;
-        ar & fHitVector;
-    }
+    bool fHasBoostSerialization;
     #endif // for BOOST serialization
 };
 
