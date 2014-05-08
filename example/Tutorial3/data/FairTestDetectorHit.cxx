@@ -5,6 +5,7 @@ FairTestDetectorHit::FairTestDetectorHit()
 {
 }
 
+
 FairTestDetectorHit::FairTestDetectorHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos)
   : FairHit(detID, pos, dpos, mcindex)
 {

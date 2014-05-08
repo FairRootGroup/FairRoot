@@ -87,6 +87,14 @@ class FairRun : public TNamed
       return ((Int_t) fRunId);
     }
 
+	/** 
+     * Set the Run ID
+	 */
+    void SetRunId(UInt_t runId)
+	{
+	  fRunId = runId; 
+    }    
+
     /**Get the detector specific run header*/
     FairEventHeader*  GetEventHeader();
     /**

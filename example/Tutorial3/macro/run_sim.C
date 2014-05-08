@@ -1,4 +1,4 @@
-void run_sim(Int_t nEvents=1024, TString mcEngine="TGeant3")
+void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
 {
   TStopwatch timer;
   timer.Start();

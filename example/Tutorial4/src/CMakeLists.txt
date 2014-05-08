@@ -4,6 +4,7 @@
 
 set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
+${Boost_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/example/Tutorial4/src
 ${CMAKE_SOURCE_DIR}/example/Tutorial4/src/mc
 ${CMAKE_SOURCE_DIR}/example/Tutorial4/src/param

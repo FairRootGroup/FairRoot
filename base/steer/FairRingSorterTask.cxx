@@ -20,6 +20,11 @@ InitStatus FairRingSorterTask::ReInit()
   return kSUCCESS;
 }
 
+FairRingSorter* FairRingSorterTask::InitSorter(Int_t numberOfCells, Double_t widthOfCells) const
+{
+	return new FairRingSorter(numberOfCells, widthOfCells);
+}
+
 // -----   Public method Init   --------------------------------------------
 InitStatus FairRingSorterTask::Init()
 {
@@ -75,6 +80,14 @@ void FairRingSorterTask::Exec(Option_t* opt)
   }
   fSorter->DeleteOutputData();
   fEntryNr++;
+}
+
+
+void FairRingSorterTask::AddNewDataToTClonesArray(FairTimeStamp* data)
+{
+	FairRootManager* ioman = FairRootManager::Instance();
+	TClonesArray* myArray = ioman->GetTClonesArray(fOutputBranch);
+	(*myArray)[myArray->GetEntries()] = data;
 }
 
 // -------------------------------------------------------------------------

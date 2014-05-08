@@ -89,8 +89,8 @@ class FairRingSorterTask : public FairTask
     void SetPersistance(Bool_t p = kTRUE) {fPersistance=p;};
     Bool_t GetPersistance() {return fPersistance;};
 
-    virtual void AddNewDataToTClonesArray(FairTimeStamp* data) = 0;
-    virtual FairRingSorter* InitSorter(Int_t numberOfCells, Double_t widthOfCells) const  = 0;
+    virtual void AddNewDataToTClonesArray(FairTimeStamp* data);
+    virtual FairRingSorter* InitSorter(Int_t numberOfCells, Double_t widthOfCells) const;
 
   protected:
 

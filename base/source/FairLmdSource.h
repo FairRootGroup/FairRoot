@@ -37,7 +37,7 @@ class FairLmdSource : public FairMbsSource
     virtual Int_t ReadEvent();
     virtual void Close();
 
-  private:
+  protected:
     Bool_t OpenNextFile(TString fileName);
 
     Int_t fCurrentFile;
@@ -47,7 +47,7 @@ class FairLmdSource : public FairMbsSource
     s_bufhe* fxBuffer;
     Int_t* fxEventData;
     s_ves10_1* fxSubEvent;
-
+	s_filhe* fxInfoHeader;
 
   public:
     ClassDef(FairLmdSource, 0)
