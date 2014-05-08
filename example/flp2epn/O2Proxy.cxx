@@ -27,24 +27,29 @@ void O2Proxy::Run()
   boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
     
-  FairMQMessage* msg = fTransportFactory->CreateMessage();
-
-    
-    
-  while ( fState == RUNNING ) {
-    
-    while(1){
-      fPayloadInputs->at(0)->Receive(msg);
-      if ( !zmq_msg_more(((zmq_msg_t *)(msg->GetMessage()))));
-      break;
-    }
-          
-          
-    fPayloadOutputs->at(0)->Send(msg);
   
+  while ( fState == RUNNING ) {
+      int i=0;
+      int64_t more=0;
+      size_t more_size = sizeof more;
+      do {
+          /* Create an empty ØMQ message to hold the message part */
+          FairMQMessage* msgpart = fTransportFactory->CreateMessage();
+          /* Block until a message is available to be received from socket */
+          fPayloadInputs->at(0)->Receive(msgpart);
+          /* Determine if more message parts are to follow */
+          fPayloadInputs->at(0)->GetOption("rcvmore", &more, &more_size);
+          LOG(INFO) << "------ Get Msg Part "<< " more = " << more << " counter " << i++ ;
+          if(more){
+              fPayloadOutputs->at(0)->Send(msgpart, ZMQ_SNDMORE);
+          }else{
+              fPayloadOutputs->at(0)->Send(msgpart);
+          }
+          delete msgpart;
+      } while (more);
+      i=0;
+     
   }
-
-  delete msg;
 
   rateLogger.interrupt();
   rateLogger.join();

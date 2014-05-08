@@ -40,12 +40,12 @@ void O2Merger::Run()
     for(int i = 0; i < fNumInputs; i++) {
       if (poller->CheckInput(i)){
         received = fPayloadInputs->at(i)->Receive(msg);
-        //  LOG(INFO) << "------ recieve Msg from " << i ;
+          // LOG(INFO) << "------ recieve Msg from " << i ;
       }
       if (received) {
           if(i<NoOfMsgParts){
               fPayloadOutputs->at(0)->Send(msg, ZMQ_SNDMORE);
-           //   LOG(INFO) << "------ Send  Msg Part " << i ;
+          //    LOG(INFO) << "------ Send  Msg Part " << i ;
           }else{
               fPayloadOutputs->at(0)->Send(msg);
           //    LOG(INFO) << "------ Send  last Msg Part " << i ;
