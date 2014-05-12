@@ -11,7 +11,6 @@
 #include "FairMQLogger.h"
 #include "O2Merger.h"
 #include "FairMQPoller.h"
-#include "zmq.h"
 
 O2Merger::O2Merger()
 {
@@ -44,7 +43,7 @@ void O2Merger::Run()
       }
       if (received) {
           if(i<NoOfMsgParts){
-              fPayloadOutputs->at(0)->Send(msg, ZMQ_SNDMORE);
+              fPayloadOutputs->at(0)->Send(msg, "snd-more");
           //    LOG(INFO) << "------ Send  Msg Part " << i ;
           }else{
               fPayloadOutputs->at(0)->Send(msg);

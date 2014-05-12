@@ -1,6 +1,7 @@
 set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairmq
   ${CMAKE_SOURCE_DIR}/fairmq/zeromq
+  ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
   ${Boost_INCLUDE_DIR}
   ${CMAKE_SOURCE_DIR}/example/flp2epn
 )
@@ -9,8 +10,6 @@ include_directories(${INCLUDE_DIRECTORIES})
 
 configure_file( ${CMAKE_SOURCE_DIR}/example/flp2epn/run/startFLP2EPN.sh.in ${CMAKE_BINARY_DIR}/bin/startFLP2EPN.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/example/flp2epn/run/startMerger.sh.in ${CMAKE_BINARY_DIR}/bin/startMerger.sh )
-
-
 
 set(LINK_DIRECTORIES
   ${Boost_LIBRARY_DIRS}
@@ -26,11 +25,6 @@ set(SRCS
 )
 
 set(DEPENDENCIES
-    ${DEPENDENCIES}
-    ${ZMQ_LIBRARY_SHARED}
-  )
-
-set(DEPENDENCIES
   ${DEPENDENCIES}
   ${CMAKE_THREAD_LIBS_INIT}
   boost_thread boost_timer boost_system FairMQ
@@ -42,12 +36,11 @@ GENERATE_LIBRARY()
 
 Set(Exe_Names
   ${Exe_Names}
-   testFLP
-   testEPN
-   testProxy
-   testMerger
+  testFLP
+  testEPN
+  testProxy
+  testMerger
 )
-
 
 set(Exe_Source 
   run/runFLP.cxx

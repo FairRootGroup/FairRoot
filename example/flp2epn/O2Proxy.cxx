@@ -10,7 +10,7 @@
 
 #include "FairMQLogger.h"
 #include "O2Proxy.h"
-#include "zmq.h"
+
 
 O2Proxy::O2Proxy()
 {
@@ -38,17 +38,16 @@ void O2Proxy::Run()
           /* Block until a message is available to be received from socket */
           fPayloadInputs->at(0)->Receive(msgpart);
           /* Determine if more message parts are to follow */
-          fPayloadInputs->at(0)->GetOption("rcvmore", &more, &more_size);
-     //     LOG(INFO) << "------ Get Msg Part "<< " more = " << more << " counter " << i++ ;
+          fPayloadInputs->at(0)->GetOption("rcv-more", &more, &more_size);
+          // LOG(INFO) << "------ Get Msg Part "<< " more = " << more << " counter " << i++ ;
           if(more){
-              fPayloadOutputs->at(0)->Send(msgpart, ZMQ_SNDMORE);
+              fPayloadOutputs->at(0)->Send(msgpart, "snd-more");
           }else{
               fPayloadOutputs->at(0)->Send(msgpart);
           }
           delete msgpart;
       } while (more);
    //   i=0;
-     
   }
 
   rateLogger.interrupt();
