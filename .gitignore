@@ -31,5 +31,10 @@ install_manifest.txt
 # build directory & data directory
 
 build/
+build_*
+xbuild
 example/Tutorial3/macro/data/*
 !example/Tutorial3/macro/data/dummy.txt
+core_dump*
+gphysi.dat
+FairRunInfo_*
