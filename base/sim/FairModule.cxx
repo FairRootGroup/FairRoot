@@ -412,7 +412,9 @@ void FairModule::ConstructRootGeometry()
     }
   }
 }
+
 #ifdef ROOT_HAS_GDML
+
 void FairModule::ConstructGDMLGeometry(TGeoMatrix* posrot)
 {
     // Parse the GDML file
@@ -454,7 +456,9 @@ void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
 		}
 	}
 }
+
 #else
+
 void FairModule::ConstructGDMLGeometry(TGeoMatrix* posrot)
 {
     gLogger->Error(MESSAGE_ORIGIN," Could not construct magnet geometry from gdml file. ");
@@ -466,7 +470,9 @@ void FairModule::ConstructGDMLGeometry(TGeoMatrix* posrot)
 void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
 {
 }
+
 #endif
+
 void FairModule::ReAssignMediaId()
 {
     // Initialise pointer to GeoBuilder
@@ -503,17 +509,20 @@ void FairModule::ReAssignMediaId()
         }
     }
 }
+
 //__________________________________________________________________________
 void FairModule::ConstructASCIIGeometry()
 {
   LOG(WARNING)<<"The method ConstructASCIIGeometry has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;
 }
+
 //__________________________________________________________________________
 Bool_t FairModule::CheckIfSensitive(std::string name)
 {
   LOG(WARNING)<<"The method CheckIfSensitive has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;
   return kFALSE;
 }
+
 //__________________________________________________________________________
 void FairModule::ExpandNode(TGeoNode* fN)
 {
@@ -543,6 +552,7 @@ void FairModule::ExpandNode(TGeoNode* fN)
     }
   }
 }
+
 //__________________________________________________________________________
 void FairModule::SetDefaultMatrixName(TGeoMatrix* matrix)
 {
@@ -584,29 +594,31 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
   FairGeoBuilder* geobuild  = FairGeoLoader::Instance()->getGeoBuilder();
 
   TGeoMedium* med1=v->GetMedium();
+
+
   if(med1) {
-      // In newer ROOT version also a TGeoVolumeAssembly has a material and medium.
-      // This medium is called dummy and is automatically set when the geometry is constructed.
-      // Since this material and medium is neither in the TGeoManager (at this point) nor in our
-      // ASCII file we have to create it the same way it is done in TGeoVolume::CreateDummyMedium()
-      // In the end the new medium and material has to be added to the TGeomanager, because this is
-      // not done automatically when using the default constructor. For all other constructors the
-      // newly created medium or material is added to the TGeomanger.
-      // Create the medium and material only the first time.
-      TString medName = (TString)(med1->GetName());
-      if ( medName.EqualTo("dummy") && NULL == gGeoManager->GetMedium(medName) ) {
-          
-          TGeoMaterial *dummyMaterial = new TGeoMaterial();
-          dummyMaterial->SetName("dummy");
-          
-          TGeoMedium* dummyMedium = new TGeoMedium();
-          dummyMedium->SetName("dummy");
-          dummyMedium->SetMaterial(dummyMaterial);
-          
-          gGeoManager->GetListOfMedia()->Add(dummyMedium);
-          gGeoManager->AddMaterial(dummyMaterial);
-      }
-  
+    // In newer ROOT version also a TGeoVolumeAssembly has a material and medium.
+    // This medium is called dummy and is automatically set when the geometry is constructed.
+    // Since this material and medium is neither in the TGeoManager (at this point) nor in our
+    // ASCII file we have to create it the same way it is done in TGeoVolume::CreateDummyMedium()
+    // In the end the new medium and material has to be added to the TGeomanager, because this is
+    // not done automatically when using the default constructor. For all other constructors the
+    // newly created medium or material is added to the TGeomanger.
+    // Create the medium and material only the first time.
+    TString medName = (TString)(med1->GetName());
+    if ( medName.EqualTo("dummy") && NULL == gGeoManager->GetMedium(medName) ) {
+
+      TGeoMaterial *dummyMaterial = new TGeoMaterial();
+      dummyMaterial->SetName("dummy");
+
+      TGeoMedium* dummyMedium = new TGeoMedium();
+      dummyMedium->SetName("dummy");
+      dummyMedium->SetMaterial(dummyMaterial);
+
+      gGeoManager->GetListOfMedia()->Add(dummyMedium);
+      gGeoManager->AddMaterial(dummyMaterial);
+    }
+
     TGeoMaterial* mat1=v->GetMaterial();
     TGeoMaterial* newMat = gGeoManager->GetMaterial(mat1->GetName());
     if( newMat==0) {
