@@ -390,6 +390,12 @@ fi
 
 hascxx11=$(grep HasCxx11 $SIMPATH/test/configure | cut -f2 -d:)
 haslibcxx=$(grep HasLibCxx $SIMPATH/test/configure | cut -f2 -d:)
+_hascurl=$(grep HasCurl $SIMPATH/test/configure | cut -f2 -d:)
+
+if [ ${_hascurl} ];
+then
+  install_curl=no
+fi
 
 export CXXFLAGS="${CFLAGS}"
 
