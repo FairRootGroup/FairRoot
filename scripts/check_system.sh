@@ -395,6 +395,8 @@ _hascurl=$(grep HasCurl $SIMPATH/test/configure | cut -f2 -d:)
 if [ ${_hascurl} ];
 then
   install_curl=no
+else
+  install_curl=yes
 fi
 
 export CXXFLAGS="${CFLAGS}"
