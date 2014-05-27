@@ -1,0 +1,11 @@
+--- CMakeLists.txt_orig	2013-12-05 10:41:41.000000000 +0100
++++ CMakeLists.txt	2014-06-03 13:55:20.623401050 +0200
+@@ -34,7 +34,7 @@
+ #
+ project(Geant4)
+ 
+-
++set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+ #----------------------------------------------------------------------------
+ # - Prepend our own CMake Modules to the search path
+ # This allows us to customize, add, and factor out functionality

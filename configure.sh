@@ -81,7 +81,7 @@ then
 else
   if [ $1 = "automatic" ];
   then
-    compiler=gcc
+    compiler=
     debug=yes
     optimize=no
     geant4_download_install_data_automatic=yes
@@ -170,6 +170,13 @@ then
   source scripts/install_gsl.sh 
 fi
 
+############ ICU libraries ###############################
+
+if [ "$check" = "1" -a "$compiler" = "Clang" -a "$platform" = "linux" ];
+then
+  source scripts/install_icu.sh 
+fi
+
 ############ Boost libraries ###############################
 
 if [ "$check" = "1" ];
@@ -208,6 +215,13 @@ then
   fi
 fi
   
+############ Mesa libraries ###############################
+
+if [ "$check" = "1" -a "$compiler" = "Clang" -a "$platform" = "linux" ];
+then
+  source scripts/install_mesa.sh 
+fi
+
 ##################### GEANT 4 #############################################
 
 if [ "$check" = "1" ];

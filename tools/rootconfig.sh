@@ -4,7 +4,11 @@
 
    if [ "$debug" = "yes" ];
    then
-     debugstring="--build=debug"
+     if [ "$compiler" = "Clang" -a "$arch" = "linux" ]; then
+       debugstring=""
+     else
+       debugstring="--build=debug"
+     fi
    else
      debugstring=""
    fi   
@@ -19,12 +23,14 @@
     fi
    #######################################################
 
+   OPENGL=" "
    if [ "$compiler" = "Clang" ]; then
      root_comp_flag="--with-clang"
-     mac_minor=$(sw_vers | sed -n 's/ProductVersion://p' | cut -d . -f 2)
-     if [ $mac_minor -eq 9 ]; 
-     then
+     if [ $haslibcxx ]; then
        root_comp_flag="--with-clang --enable-cxx11 --enable-libcxx"
+     fi
+     if [ "$platform" = "linux" ]; then
+       OPENGL="--with-opengl-incdir=$SIMPATH_INSTALL/include --with-opengl-libdir=$SIMPATH_INSTALL/lib"
      fi
    else
      root_comp_flag="--with-cc=$CC --with-cxx=$CXX --with-ld=$CXX"   
@@ -61,11 +67,11 @@
    ./configure $arch  --enable-soversion $PYTHONBUILD $XROOTD  $ROOFIT \
                     --enable-minuit2  --enable-gdml --enable-xml \
 		    --enable-builtin-ftgl --enable-builtin-glew \
-                    --enable-builtin-freetype \
+                    --enable-builtin-freetype $OPENGL \
 		    --with-pythia6-libdir=$pythia6_libdir \
 		    --with-pythia8-libdir=$pythia8_libdir \
 		    --with-pythia8-incdir=$pythia8_incdir \
-		    --enable-mysql --enable-pgsql\
+		    --enable-mysql --enable-pgsql \
                     --disable-globus \
                     --disable-reflex \
                     --disable-cintex \

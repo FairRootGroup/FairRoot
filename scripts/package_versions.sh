@@ -10,6 +10,9 @@ export GTESTVERSION=gtest-1.7.0
 export GSL_LOCATION="ftp://ftp.gnu.org/gnu/gsl/"
 export GSLVERSION=gsl-1.16
 
+export ICU_LOCATION="http://download.icu-project.org/files/icu4c/53.1/"
+export ICUVERSION=icu4c-53_1
+
 export BOOST_LOCATION="http://sourceforge.net/projects/boost/files/boost/1.54.0/"
 export BOOSTVERSION=boost_1_54_0
 
@@ -29,8 +32,16 @@ export GEANT4VERSIONp=Geant4-10.0.1
 export XERCESC_LOCATION="http://mirror.serversupportforum.de/apache//xerces/c/3/sources/"
 export XERCESCVERSION=3.1.1
 
-export ROOT_LOCATION="ftp://root.cern.ch/root/"
-export ROOTVERSION=v5.34.17
+export MESA_LOCATION="ftp://ftp.freedesktop.org/pub/mesa/older-versions/7.x/7.10.3/"
+export MESAVERSION=MesaLib-7.10.3
+
+#export ROOT_LOCATION="ftp://root.cern.ch/root/"
+#export ROOTVERSION=v5.34.17
+
+export ROOT_LOCATION="http://root.cern.ch/git/root.git"
+export ROOTBRANCH=v5-34-00-patches
+#export ROOTVERSION=2beb7b254ecfb65aedfb87b6cfa50de0c93490a3
+export ROOTVERSION=ce8829a4efe5faad51b5b5d771db827f79d3ca32
 
 export PLUTO_LOCATION="http://web-docs.gsi.de/%7Ehadeshyp/pluto/v5.37/"
 export PLUTOVERSION=pluto_v5.37

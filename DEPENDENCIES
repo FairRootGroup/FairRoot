@@ -1,0 +1,30 @@
+In this file the dependencies of FairSoft are listed for different Linux
+flavors. This dependencies are needed to be able to install FairSoft.
+
+The following programs/compiler are needed:
+
+cmake gcc g++ gfortran make patch sed curl 
+bzip2 gzip unzip tar subversion git
+
+
+The following development packages are needed
+
+x11-dev xft-dev xext-dev xpm-dev xmu-dev opengl-dev ncurses-dev
+
+If FairSoft is installed on Linu using the clang compiler suite on
+needs additionaly the following programs
+
+makedepend, flex, bison
+
+These packages for programs, libraries or header files are named differntly
+for the different package managers. In the following we will list the
+command lines which are needed to install all packages for the differnt
+Linux flavors
+
+Debian, Ubuntu and other Debian based systems.
+
+apt-get install  cmake cmake-data g++ gcc gfortran \
+  build-essential make patch sed libx11-dev libxft-dev \
+  libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev \
+  libgl1-mesa-dev ncurses-dev curl bzip2 gzip unzip tar \
+  subversion git xutils-dev flex bison

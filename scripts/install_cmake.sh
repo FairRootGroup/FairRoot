@@ -6,23 +6,27 @@ cmake_required_minor_version=$(echo $CMAKEVERSION_REQUIRED  | cut -d- -f2 |cut -
 cmake_required_patch_version=$(echo $CMAKEVERSION_REQUIRED  | cut -d- -f2 |cut -d. -f3)
 cmake_required_version=$(echo $CMAKEVERSION_REQUIRED  | cut -d- -f2)
 
-cmake_installed_major_version=$(cmake --version | cut -d' '  -f3 | cut -d. -f1)
-cmake_installed_minor_version=$(cmake --version | cut -d. -f2)
-cmake_installed_patch_version=$(cmake --version | cut -d. -f3)
-cmake_version=$(cmake --version | cut -c15-)
+cmake_version_string=$(cmake --version | sed -n 1p)
+cmake_installed_major_version=$(echo $cmake_version_string | cut -d' '  -f3 | cut -d. -f1)
+cmake_installed_minor_version=$(echo $cmake_version_string | cut -d. -f2)
+cmake_installed_patch_version=$(echo $cmake_version_string | cut -d. -f3)
+cmake_version=$(echo $cmake_version_string | cut -c15-)
 
 if [ "$cmake_installed_patch_version" == "" ]; then
   # output of cmake 2.8 is 'cmake version 2.8.2'
   # output of cmake 2.6 is 'cmake version 2.6-patch 0'
   cmake_installed_patch_version=$(cmake --version | cut -c19)
 fi
-   
-if [ $cmake_installed_major_version -eq $cmake_required_major_version -a  \
-    $cmake_installed_minor_version -ge $cmake_required_minor_version ];
-then
-  if [ $cmake_installed_patch_version -ge $cmake_required_patch_version -o \
-      $cmake_installed_minor_version -gt $cmake_required_minor_version ];
-  then
+
+if [ $cmake_installed_major_version -gt $cmake_required_major_version ]; then
+  install_cmake=no       
+  echo "Found cmake version $cmake_version which is newer than the"| tee -a $logfile
+  echo "required version $cmake_required_version in PATH"| tee -a $logfile
+  echo "This version is okay. Don't install cmake as external package."| tee -a $logfile
+elif [ "$cmake_installed_major_version" -eq "$cmake_required_major_version" -a  \
+    "$cmake_installed_minor_version" -ge "$cmake_required_minor_version" ]; then
+  if [ "$cmake_installed_patch_version" -ge "$cmake_required_patch_version" -o \
+      "$cmake_installed_minor_version" -gt "$cmake_required_minor_version" ]; then
     install_cmake=no       
     echo "Found cmake version $cmake_version which is newer than the"| tee -a $logfile
     echo "required version $cmake_required_version in PATH"| tee -a $logfile

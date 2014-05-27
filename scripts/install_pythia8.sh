@@ -31,7 +31,7 @@ then
   # needed to compile with Apple LLVM 5.1, shouldn't hurt on other systems
   patch -p0 < ../pythia8_friend.patch | tee -a $logfile
   
-  ./configure  --enable-shared --with-hepmc=$HEPINSTALLDIR --with-hepmcversion=$HEPMCVERSION
+  USRLDFLAGSSHARED="$CXXFLAGS" ./configure  --enable-shared --with-hepmc=$HEPINSTALLDIR --with-hepmcversion=$HEPMCVERSION
 
   if [ "$compiler" = "PGI" ];
   then
@@ -47,9 +47,9 @@ then
 
   if [ "$system" = "64bit" ];
   then
-   $MAKE_command -j$number_of_processes    CFLAGS="$CFLAGS -m64" CXXFLAGS="$CXXFLAGS -m64"  
+   $MAKE_command -j$number_of_processes CFLAGS="$CFLAGS -m64" CXXFLAGS="$CXXFLAGS -m64"  
   else 
-   $MAKE_command -j$number_of_processes     
+   $MAKE_command -j$number_of_processes CFLAGS="$CFLAGS" CXXFLAGS="$CXXFLAGS"    
   fi
   
   mkdir -p $install_prefix/include

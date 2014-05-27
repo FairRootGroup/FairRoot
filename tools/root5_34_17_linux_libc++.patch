@@ -1,0 +1,23 @@
+--- config/Makefile.linuxx8664gcc_orig	2014-02-24 09:37:53.000000000 +0100
++++ config/Makefile.linuxx8664gcc	2014-05-28 11:32:56.475398834 +0200
+@@ -19,6 +19,10 @@
+ ifeq ($(CXX11),yes)
+ CXX11FLAGS    = -std=c++11 -Wno-deprecated-declarations
+ endif
++ifeq ($(LIBCXX),yes)
++CXX11FLAGS   += -stdlib=libc++
++CXX11LDFLAGS  = -stdlib=libc++
++endif
+ 
+ # Compiler:
+ CXX           = g++
+@@ -39,7 +43,8 @@
+ 
+ # Linker:
+ LD            = g++
+-LDFLAGS       = -m64 $(OPT) $(EXTRA_LDFLAGS) -Wl,--no-undefined -Wl,--as-needed
++LDFLAGS       = -m64 $(OPT) $(EXTRA_LDFLAGS) $(CXX11LDFLAGS) -Wl,--no-undefined -Wl,--as-needed
++F77LDFLAGS    = -m64 $(OPT) $(EXTRA_LDFLAGS) -Wl,--no-undefined -Wl,--as-needed
+ SOFLAGS       = -shared -Wl,-soname,
+ SOEXT         = so
+ 

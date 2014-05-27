@@ -1,0 +1,11 @@
+--- geom/geom/src/TGeoShape.cxx_orig	2014-06-09 19:09:15.785114038 +0200
++++ geom/geom/src/TGeoShape.cxx	2014-06-09 19:10:20.843413773 +0200
+@@ -191,7 +191,7 @@
+ TGeoShape::~TGeoShape()
+ {
+ // Destructor
+-   if (gGeoManager && !gGeoManager->IsCleaning()) gGeoManager->GetListOfShapes()->Remove(this);
++   if (gGeoManager && gGeoManager->IsCleaning()) gGeoManager->GetListOfShapes()->Remove(this);
+ }
+ 
+ //_____________________________________________________________________________

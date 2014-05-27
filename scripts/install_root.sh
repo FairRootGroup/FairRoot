@@ -10,17 +10,27 @@ then
   CXXFLAGS="$CFLAGS"
   export CXXFLAGS
 fi
-            
+
 if [ ! -d  $SIMPATH/tools/root ];
-then 
+then
   cd $SIMPATH/tools
-  if [ ! -e root_$ROOTVERSION.source.tar.gz ];
-  then
-    echo "*** Downloading root sources ***"
-    download_file $ROOT_LOCATION/root_$ROOTVERSION.source.tar.gz
-  fi
-  untar root root_$ROOTVERSION.source.tar.gz
-fi 
+  git clone $ROOT_LOCATION
+fi
+cd $SIMPATH/tools/root
+git checkout $ROOTBRANCH
+git reset $ROOTVERSION
+                    
+#if [ ! -d  $SIMPATH/tools/root ];
+#then 
+#  cd $SIMPATH/tools
+#  if [ ! -e root_$ROOTVERSION.source.tar.gz ];
+#  then
+#    echo "*** Downloading root sources ***"
+#    download_file $ROOT_LOCATION/root_$ROOTVERSION.source.tar.gz
+#  fi
+#  untar root root_$ROOTVERSION.source.tar.gz
+#fi 
+
 
 install_prefix=$SIMPATH_INSTALL
 libdir=$install_prefix/lib/root
@@ -100,8 +110,12 @@ then
   fi
 
   # needed to compile with Apple LLVM 5.1, shouldn't hurt on other systems
-  patch -p0 < ../root5_34_17_LLVM51.patch | tee -a $logfile 
+#  patch -p0 < ../root5_34_17_LLVM51.patch | tee -a $logfile 
+  patch -p0 < ../root5_34_17_linux_libc++.patch | tee -a $logfile 
 
+  # needed to solve problem with the TGeoManger for some CBM and Panda geometries
+  patch -p0 < ../root_TGeoShape.patch
+    
   . rootconfig.sh
 
   #This workaround  to run make in a loop is
@@ -126,10 +140,10 @@ then
         echo "Stop the script now"  | tee -a $logfile
         exit 1
       fi
-      $MAKE_command install -j$number_of_processes
+      $MAKE_command -j$number_of_processes
     done
   else
-    $MAKE_command install -j$number_of_processes
+    $MAKE_command -j$number_of_processes
   fi
 
   cd $SIMPATH/tools/root/etc/vmc
@@ -147,22 +161,24 @@ then
   if [ "$FC" = "gfortran" ];
   then
     if [ "$arch" = "linuxx8664gcc" ];
-    then 
-      cp Makefile.linux Makefile.linuxx8664gcc
-      mysed "OPT   = -O2" "OPT   =" Makefile.linuxx8664gcc
-      mysed "-Woverloaded-virtual" "" Makefile.linuxx8664gcc
-      mysed "-DCERNLIB_LINUX" "-DCERNLIB_LXIA64" Makefile.linuxx8664gcc
+    then     
+      mysed "OPT   = -O2 -g" "OPT   = ${CXXFLAGS}" Makefile.$arch
+      mysed 'LDFLAGS       = $(OPT)' "LDFLAGS       = ${CXXFLAGS_BAK}" Makefile.$arch
+      if [ "$compiler" = "Clang" ]; then
+        mysed 'CXXOPTS       = $(OPT)' "CXXOPTS       = ${CXXFLAGS_BAK}" Makefile.$arch
+        cd $SIMPATH/tools/root
+        patch -p0 < ../root_vmc_MakeMacros.diff
+      fi   
     elif [ "$arch" = "linuxia64gcc" ];
     then 
       cp Makefile.linux Makefile.linuxia64gcc
-      mysed "OPT   = -O2" "OPT   =" Makefile.linuxia64gcc
+#      mysed "OPT   = -O2" "OPT   =" Makefile.linuxia64gcc
       mysed "-Woverloaded-virtual" "" Makefile.linuxia64gcc
       mysed "-DCERNLIB_LINUX" "-DCERNLIB_LXIA64" Makefile.linuxia64gcc
+      mysed "OPT   = -O2" "OPT   =" Makefile.$arch
+      mysed "OPT   = -g" "OPT   = ${CXXFLAGS} -fPIC" Makefile.$arch
     fi
   fi
-
-  mysed "OPT   = -O2" "OPT   =" Makefile.$arch
-  mysed "OPT   = -g" "OPT   = ${CXXFLAGS} -fPIC" Makefile.$arch
 
   cd $SIMPATH/tools/root
 

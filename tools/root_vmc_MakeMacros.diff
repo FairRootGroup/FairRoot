@@ -1,0 +1,23 @@
+--- etc/vmc/MakeMacros.orig	2014-06-02 10:10:54.859402477 +0200
++++ etc/vmc/MakeMacros	2014-06-02 11:09:58.095298036 +0200
+@@ -2,15 +2,18 @@
+ 
+ ############################   MACROS   #######################################
+ 
++CXXFLAGS1 = $(filter-out -I/usr/include,$(CXXFLAGS))
++CXXFLAGS2 = $(filter-out -std=c++11,$(CXXFLAGS1))
++CXXFLAGS3 = $(filter-out -stdlib=libc++,$(CXXFLAGS2))
+ 
+ $(DICT):
+ 		@echo "Generating $@"
+ 		@[ -d $(dir $@) ] || mkdir -p $(dir $@)
+ ifeq ($(CXXVERBOSE),)
+-		@rootcint -f $@ -c $(filter-out -I/usr/include,$(CXXFLAGS)) $^
++		@rootcint -f $@ -c $(CXXFLAGS3) $^
+ #		@rootcint -f $@ -c $(filter -I%,$(CXXFLAGS)) $(filter -D%,$(CXXFLAGS)) $^
+ else
+-		rootcint -f $@ -c $(filter-out -I/usr/include,$(CXXFLAGS)) $^
++		rootcint -f $@ -c $(CXXFLAGS3) $^
+ endif
+ 
+ $(SLIBRARY):

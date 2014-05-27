@@ -1,0 +1,10 @@
+--- tests/test_connect_delay.cpp_orig	2014-06-02 12:27:22.095597116 +0200
++++ tests/test_connect_delay.cpp	2014-06-02 12:29:52.771597203 +0200
+@@ -23,6 +23,7 @@
+ #include <string.h>
+ #include <unistd.h>
+ #include <string>
++#include <ctime>
+ 
+ #undef NDEBUG
+ #include <assert.h>

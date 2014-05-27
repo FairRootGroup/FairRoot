@@ -31,9 +31,21 @@ then
 
   patch -p0 < ../xerces-c-3.1.1_fixcast.patch
   
-  ./configure --prefix=$install_prefix
-  
+  LDFLAGS_BAK=$LDFLAGS
+  if [ "$compiler" = "Clang" -a "$platform" = "linux" ]; then
+    LDFLAGS=$CXXFLAGS
+    LIBS=$CXXFLAGS
+
+    ./configure --prefix=$install_prefix --with-icu=$install_prefix
+
+    mysed "-lstdc++" "-lc++" libtool
+  else
+    ./configure --prefix=$install_prefix 
+  fi
+    
   $MAKE_command -j$number_of_processes  install
+
+
 
   if [ "$platform" = "macosx" ];
   then
@@ -44,6 +56,8 @@ then
   check_success XercesC $checkfile
   check=$?
       
+  LDFLAGS=$LDFLAGS_BAK   
+        
 fi
 
 cd  $SIMPATH

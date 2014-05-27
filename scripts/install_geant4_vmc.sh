@@ -15,6 +15,8 @@ if (not_there Geant4_VMC $checkfile);
 then
 
   cd $SIMPATH/transport/geant4_vmc
+
+  patch -p0 < ../Geant4_vmc_c++11.patch
   
   cd $SIMPATH/transport/geant4_vmc/g4root
   make -j$number_of_processes

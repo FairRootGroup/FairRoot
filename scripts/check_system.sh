@@ -133,8 +133,11 @@ case "$arch:$chip:$compiler" in
         MAKE_command=make
         ;;
     *)
-        echo "$arch:$chip:$compiler"
-        echo "This architecture is not supported up to now"
+        echo "Architecture: $arch"
+        echo "Hardware    : $chip"
+        echo "Compiler    : $compiler"
+        echo "Please check that all above variables are set."
+        echo "This architecture, hardware or compiler is not supported up to now."
         echo "Please contact the FairRoot team at GSI"
         echo "http://fairroot.gsi.de"
         exit 1

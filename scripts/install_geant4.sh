@@ -38,6 +38,10 @@ then
     patch -p0 < ../${GEANT4VERSION}_c++11.patch | tee -a $logfile
   fi
 
+  if [ "$platform" = "linux" -a "$compiler" = "Clang" ]; then
+    patch -p0 < ../geant4.10.00_clang_linux.patch
+  fi
+  
   if (not_there Geant4-build  $G4WORKDIR/build);
   then 
     mkdir build
@@ -60,7 +64,7 @@ then
 
   if [ "$build_python" = "yes" ];
   then
-    geant4_opengl="-DGEANT4_USE_OPENGL_X11=ON -DGEANT4_USE_GDML=ON"
+    geant4_opengl="-DGEANT4_USE_OPENGL_X11=ON -DGEANT4_USE_GDML=ON -DXERCESC_ROOT_DIR=$install_prefix" 
   else   
     geant4_opengl=""
   fi

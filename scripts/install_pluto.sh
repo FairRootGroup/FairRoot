@@ -75,8 +75,10 @@ then
     if [ "$compiler" = "Clang" ];
     then
       mysed 'g++' 'clang++' Makefile 
+      mysed '-rdynamic' '' Makefile 
     fi
     mysed "CXXFLAGS      = -Wall" "CXXFLAGS      = -Wall ${CXXFLAGS}"  Makefile
+    mysed "SOFLAGS       =" "SOFLAGS       = ${CXXFLAGS}" Makefile
     if [ "$platform" = "macosx" ];
     then
       mysed  '-g -shared -Wl,-soname,$@' ' -dynamiclib -flat_namespace -single_module -undefined dynamic_lookup' Makefile
