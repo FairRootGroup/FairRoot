@@ -1,66 +1,178 @@
-#include <iostream>
+/* 
+ * File:   FairTestDetectorMQRecoTask.tpl
+ * Author: winckler
+ *
+ * Created on March 11, 2014, 11:07 AM
+ */
 
-#include "FairTestDetectorMQRecoTask.h"
 
-#include "FairTestDetectorHit.h"
-#include "FairTestDetectorDigi.h"
+////////// Base template class <T1,T2>
 
-#include "FairTestDetectorPayload.h"
-
-#ifdef PROTOBUF
-  #include "FairTestDetectorPayload.pb.h"
-#endif
-
-#include "FairRootManager.h"
-#include "TMath.h"
-#include "TClonesArray.h"
-
-using std::cout;
-using std::endl;
-
-// -----   Default constructor   -------------------------------------------
-template <typename T1, typename T2>
-FairTestDetectorMQRecoTask<T1,T2>::FairTestDetectorMQRecoTask() :
-  fRecoTask(NULL)
+template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut> 
+FairTestDetectorMQRecoTask<TIn,TOut,TPayloadIn,TPayloadOut>::FairTestDetectorMQRecoTask() :  fRecoTask(NULL)
 {
+    fHasBoostSerialization=true;
+    
+    #if __cplusplus >= 201103L
+
+    bool checkInputClass=false;
+    bool checkOutputClass=false;
+    fHasBoostSerialization=false;
+    
+    
+    if(std::is_same<TPayloadIn,boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn,boost::archive::text_iarchive>::value)
+    {
+        if(has_BoostSerialization<TIn, void(TPayloadIn &, const unsigned int)>::value ==1) 
+                checkInputClass=true;
+    }
+   
+    
+    
+    if(std::is_same<TPayloadOut,boost::archive::binary_oarchive>::value || std::is_same<TPayloadOut,boost::archive::text_oarchive>::value)
+    {
+        if(has_BoostSerialization<TOut, void(TPayloadOut &, const unsigned int)>::value ==1) 
+                checkOutputClass=true;
+    }
+   
+    
+    
+    if(checkInputClass && checkOutputClass) 
+        fHasBoostSerialization=true;
+    #endif
+    
 }
-// -------------------------------------------------------------------------
 
 
-
-// -----   Standard constructor   ------------------------------------------
-template <typename T1, typename T2>
-FairTestDetectorMQRecoTask<T1,T2>::FairTestDetectorMQRecoTask(Int_t verbose) :
-  fRecoTask(NULL)
+template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut> 
+FairTestDetectorMQRecoTask<TIn,TOut,TPayloadIn,TPayloadOut>::FairTestDetectorMQRecoTask(Int_t verbose) :  fRecoTask(NULL)
 {
+    fHasBoostSerialization=true;
+    #if __cplusplus >= 201103L
+    bool checkInputClass=false;
+    bool checkOutputClass=false;
+    fHasBoostSerialization=false;
+    
+    
+    if(std::is_same<TPayloadIn,boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn,boost::archive::text_iarchive>::value)
+    {
+        if(has_BoostSerialization<TIn, void(TPayloadIn &, const unsigned int)>::value ==1) 
+                checkInputClass=true;
+        else
+            LOG(ERROR) <<"Method 'void serialize(TIn & ar, const unsigned int version)' was not found in input class";
+    }
+    else
+    {
+        LOG(ERROR) <<"Output payload is not of supported boost archive type";
+        LOG(ERROR) <<"Boost inpput archive type supported : ";
+        LOG(ERROR) <<"boost::archive::binary_iarchive and boost::archive::text_iarchive";
+    }
+    
+    
+    if(std::is_same<TPayloadOut,boost::archive::binary_oarchive>::value || std::is_same<TPayloadOut,boost::archive::text_oarchive>::value)
+    {
+        if(has_BoostSerialization<TOut, void(TPayloadOut &, const unsigned int)>::value ==1) 
+                checkOutputClass=true;
+        else
+            LOG(ERROR) <<"Method 'void serialize(TOut & ar, const unsigned int version)' was not found in input class";
+    }
+    else
+    {
+        LOG(ERROR) <<"Output payload is not of supported boost archive type";
+        LOG(ERROR) <<"Boost output archive type supported : ";
+        LOG(ERROR) <<"boost::archive::binary_oarchive and boost::archive::text_oarchive";
+    }
+    
+    
+    
+    if(checkInputClass && checkOutputClass) 
+        fHasBoostSerialization=true;
+    
+    #endif
 }
-// -------------------------------------------------------------------------
 
 
-// -----   Destructor   ----------------------------------------------------
-template <typename T1, typename T2>
-FairTestDetectorMQRecoTask<T1,T2>::~FairTestDetectorMQRecoTask()
+template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut> 
+FairTestDetectorMQRecoTask<TIn,TOut,TPayloadIn,TPayloadOut>::~FairTestDetectorMQRecoTask()
 {
-  fRecoTask->fDigiArray->Delete();
-  fRecoTask->fHitArray->Delete();
-  delete fRecoTask;
+        fRecoTask->fDigiArray->Delete();
+        fRecoTask->fHitArray->Delete();
+        delete fRecoTask;
+        if(fDigiVector.size()>0) fDigiVector.clear();
+        if(fHitVector.size()>0) fHitVector.clear();
 }
-// -------------------------------------------------------------------------
 
-
-// -----   Public method Init (abstract in base class)  --------------------
-template <typename T1, typename T2>
-InitStatus FairTestDetectorMQRecoTask<T1, T2>::Init()
+template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut> 
+InitStatus FairTestDetectorMQRecoTask<TIn,TOut,TPayloadIn,TPayloadOut>::Init()
 {
-  fRecoTask = new FairTestDetectorRecoTask();
-  fRecoTask->fDigiArray = new TClonesArray("FairTestDetectorDigi");
-  fRecoTask->fHitArray = new TClonesArray("FairTestDetectorHit");
+        fRecoTask = new FairTestDetectorRecoTask();
+        fRecoTask->fDigiArray = new TClonesArray("FairTestDetectorDigi");
+        fRecoTask->fHitArray = new TClonesArray("FairTestDetectorHit");
 
-  return kSUCCESS;
+        return kSUCCESS;
 }
+
+template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut> 
+void FairTestDetectorMQRecoTask<TIn,TOut,TPayloadIn,TPayloadOut>::Exec(FairMQMessage* msg, Option_t* opt)
+{ 
+    if(fHasBoostSerialization)
+    {
+        int inputSize = msg->GetSize();
+
+        //prepare boost input archive
+        std::string msgStr( static_cast<char*>(msg->GetData()), msg->GetSize() );
+        std::istringstream ibuffer(msgStr);
+        TPayloadIn InputArchive(ibuffer);
+        try
+        {
+             InputArchive >> fDigiVector;// get input Archive
+        }
+        catch (boost::archive::archive_exception e)
+        {
+             LOG(ERROR) << e.what();
+        }
+        fRecoTask->fDigiArray->Delete();
+        int numInput=fDigiVector.size();
+
+        for (int i = 0; i < numInput; ++i) 
+        {
+          new ((*fRecoTask->fDigiArray)[i]) TIn(fDigiVector.at(i));
+        }
+
+        if (!fRecoTask->fDigiArray) {
+          cout << "-W- FairTestDetectorMQRecoTask::Init: " << "No Point array!" << endl;
+        }
+
+        fRecoTask->Exec(opt);
+        int numOutput = numInput;
+
+        if (inputSize > 0) 
+        {
+            for (int i = 0; i < numOutput; ++i) 
+            {
+              TOut* hit = (TOut*) fRecoTask->fHitArray->At(i);
+              fHitVector.push_back(*hit);
+            }
+        }
+
+        //prepare boost output archive
+        std::ostringstream obuffer;
+        TPayloadOut OutputArchive(obuffer); 
+        OutputArchive << fHitVector;
+        int outputSize=obuffer.str().length();
+        msg->Rebuild(outputSize);
+        std::memcpy(msg->GetData(), obuffer.str().c_str(), outputSize);
+        if(fDigiVector.size()>0) fDigiVector.clear();
+        if(fHitVector.size()>0) fHitVector.clear();
+    }
+    else
+    {
+        LOG(ERROR) <<" Boost Serialization not ok";
+    }
+}
+
 
 template <>
-void FairTestDetectorMQRecoTask<TestDetectorPayload::TestDetectorDigi, TestDetectorPayload::TestDetectorHit>::Exec(FairMQMessage* msg, Option_t* opt)
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi,FairTestDetectorHit,TestDetectorPayload::TestDetectorDigi, TestDetectorPayload::TestDetectorHit>::Exec(FairMQMessage* msg, Option_t* opt)
 {
   int inputSize = msg->GetSize();
   int numInput = inputSize / sizeof(TestDetectorPayload::TestDetectorDigi);
@@ -100,9 +212,9 @@ void FairTestDetectorMQRecoTask<TestDetectorPayload::TestDetectorDigi, TestDetec
 }
 
 #ifdef PROTOBUF
-
+#include "FairTestDetectorPayload.pb.h"
 template <>
-void FairTestDetectorMQRecoTask<TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(FairMQMessage* msg, Option_t* opt)
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi,FairTestDetectorHit,TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(FairMQMessage* msg, Option_t* opt)
 {
 
   fRecoTask->fDigiArray->Delete();
@@ -149,3 +261,7 @@ void FairTestDetectorMQRecoTask<TestDetectorProto::DigiPayload, TestDetectorProt
 }
 
 #endif /* PROTOBUF */
+
+
+
+

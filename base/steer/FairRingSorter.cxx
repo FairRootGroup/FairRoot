@@ -8,6 +8,11 @@
 
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
+FairTimeStamp* FairRingSorter::CreateElement(FairTimeStamp* data)
+{
+	return (FairTimeStamp*)data->Clone();
+}
+
 void FairRingSorter::AddElement(FairTimeStamp* digi, double timestamp)
 {
   FairTimeStamp* newElement = CreateElement(digi);

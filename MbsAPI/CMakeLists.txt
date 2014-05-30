@@ -26,12 +26,10 @@ link_directories( ${LINK_DIRECTORIES})
 set(MBSAPI_SRCS
     f_evcli.c
     f_evt.c
-    f_find_peaks.c
     fLmd.c
     f_radware.c
     f_ut_utime.c
     f_ut_wild.c
-    m_histo_conv.c
     f_his_hist.c
     f_his_swpbas.c
     f_his_toupper.c
@@ -72,7 +70,6 @@ set(MBSAPI_HEADERS
     s_flt_descr_swap.h
     s_pat.h
     s_ve10_1_swap.h
-    f_find_peaks.h
     f_ut_wild.h
     s_bufhe_swap.h
     s_errstat.h
@@ -112,4 +109,9 @@ target_link_libraries(MbsAPI ${ROOT_LIBRARIES})
 set_target_properties(MbsAPI PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 ############### install the library ###################
+
+install(FILES ${MBSAPI_HEADERS}
+        DESTINATION include
+       )
+
 install(TARGETS MbsAPI DESTINATION lib)

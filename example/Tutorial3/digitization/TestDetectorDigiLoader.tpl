@@ -1,27 +1,73 @@
-/**
+/* 
  * File:   TestDetectorDigiLoader.tpl
  * @since 2014-02-08
  * @author: A. Rybalchenko, N. Winckler
+ *
  */
 
-#include <iostream>
+////////// Base template class <T1,T2>
 
-#include "FairTestDetectorPayload.h"
 
-#ifdef PROTOBUF
-  #include "FairTestDetectorPayload.pb.h"
-#endif
 
-template <typename T1, typename T2>
-TestDetectorDigiLoader<T1,T2>::TestDetectorDigiLoader() :
-FairMQSamplerTask("Load Data described by class T1 into the Payload class T2")
+template <typename T1, typename T2> 
+TestDetectorDigiLoader<T1,T2>::TestDetectorDigiLoader() : FairMQSamplerTask("Load class T1")
 {
+    fHasBoostSerialization=true;
+    #if __cplusplus >= 201103L
+    fHasBoostSerialization=false;
+    if(   std::is_same<T2,boost::archive::binary_oarchive>::value || std::is_same<T2,boost::archive::text_oarchive>::value)
+    {
+        if(has_BoostSerialization<T1, void(T2 &, const unsigned int)>::value ==1) 
+                fHasBoostSerialization=true;
+    }
+    #endif
+    
 }
 
-template <typename T1, typename T2>
-TestDetectorDigiLoader<T1,T2>::~TestDetectorDigiLoader()
+
+template <typename T1, typename T2> 
+TestDetectorDigiLoader<T1,T2>::~TestDetectorDigiLoader() 
 {
+    if(fDigiVector.size()>0) fDigiVector.clear();
 }
+
+
+
+template <typename T1, typename T2> 
+void TestDetectorDigiLoader<T1,T2>::Exec(Option_t* opt) 
+{ 
+    
+    //Default implementation of the base template Exec function using boost
+    //the condition check if the input class has a function member with name
+    // void serialize(T2 & ar, const unsigned int version) and if the payload are of boost type
+    
+    if(fHasBoostSerialization)
+    {
+        //LOG(INFO) <<" Boost Serialization ok ";
+        
+        std::ostringstream buffer;
+        T2 OutputArchive(buffer);
+        for (Int_t i = 0; i < fInput->GetEntriesFast(); ++i) 
+        {
+            T1* digi = reinterpret_cast<T1*>(fInput->At(i));
+            if (!digi) continue;
+            fDigiVector.push_back(*digi); 
+        }
+
+        OutputArchive << fDigiVector;
+        int size=buffer.str().length();
+        fOutput = fTransportFactory->CreateMessage(size);
+        std::memcpy(fOutput->GetData(), buffer.str().c_str(), size);
+
+        // delete the vector content
+        if(fDigiVector.size()>0) fDigiVector.clear();
+    }
+    else
+    {
+        LOG(ERROR) <<" Boost Serialization not ok";
+    }
+}
+
 
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetectorDigi>::Exec(Option_t* opt)
@@ -32,11 +78,10 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetec
     fOutput = fTransportFactory->CreateMessage(size);
     TestDetectorPayload::TestDetectorDigi* ptr = reinterpret_cast<TestDetectorPayload::TestDetectorDigi*>(fOutput->GetData());
 
-    for (Int_t i = 0; i < nDigis; ++i) {
+    for (Int_t i = 0; i < nDigis; ++i) 
+    {
         FairTestDetectorDigi* digi = reinterpret_cast<FairTestDetectorDigi*>(fInput->At(i));
-        if (!digi) {
-            continue;
-        }
+        if (!digi) continue;
         new(&ptr[i]) TestDetectorPayload::TestDetectorDigi();
         ptr[i] = TestDetectorPayload::TestDetectorDigi();
         ptr[i].fX = digi->GetX();
@@ -47,7 +92,7 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::TestDetec
 }
 
 #ifdef PROTOBUF
-
+#include "FairTestDetectorPayload.pb.h"
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* opt)
 {
@@ -76,3 +121,4 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload
 }
 
 #endif /* PROTOBUF */
+

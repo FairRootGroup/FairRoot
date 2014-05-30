@@ -1,56 +1,122 @@
-/**
- * FairMQFileSink.cxx
+/* 
+ * File:   FairMQFileSink.tpl
+ * Author: winckler, A. Rybalchenko
  *
- * @since 2013-06-05
- * @author A. Rybalchenko
+ * Created on March 11, 2014, 12:12 PM
  */
 
-#include <iostream>
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
 
-#include "FairTestDetectorHit.h"
-#include "FairTestDetectorPayload.h"
 
-#ifdef PROTOBUF
-  #include "FairTestDetectorPayload.pb.h"
-#endif
 
-#include "FairMQFileSink.h"
-#include "FairMQLogger.h"
-
-#include "TFile.h"
-#include "TTree.h"
-#include "TClonesArray.h"
-#include "TVector3.h"
-
-template <typename T1, typename T2>
-FairMQFileSink<T1,T2>::FairMQFileSink()
+template <typename TIn, typename TPayloadIn>
+FairMQFileSink<TIn,TPayloadIn>::FairMQFileSink()
 {
+    
+    fHasBoostSerialization=true;
+    #if __cplusplus >= 201103L
+    fHasBoostSerialization=false;
+    if(   std::is_same<TPayloadIn,boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn,boost::archive::text_iarchive>::value)
+    {
+        if(has_BoostSerialization<TIn, void(TPayloadIn &, const unsigned int)>::value ==1) 
+                fHasBoostSerialization=true;
+    }
+    #endif
+    
 }
 
-template <typename T1, typename T2>
-FairMQFileSink<T1,T2>::~FairMQFileSink()
+
+template <typename TIn, typename TPayloadIn>
+FairMQFileSink<TIn,TPayloadIn>::~FairMQFileSink()
 {
-  fTree->Write();
-  fOutFile->Close();
+    fTree->Write();
+    fOutFile->Close();
+    if(fHitVector.size()>0) fHitVector.clear();
 }
 
-template <typename T1, typename T2>
-void FairMQFileSink<T1,T2>::InitOutputFile(TString defaultId)
+
+template <typename TIn, typename TPayloadIn>
+void FairMQFileSink<TIn,TPayloadIn>::InitOutputFile(TString defaultId)
 {
-  fOutput = new TClonesArray("FairTestDetectorHit");
+    fOutput = new TClonesArray("FairTestDetectorHit");
+    char out[256];
+    sprintf(out, "filesink%s.root", defaultId.Data());
 
-  char out[256];
-  sprintf(out, "filesink%s.root", defaultId.Data());
-
-  fOutFile = new TFile(out,"recreate");
-  fTree = new TTree("MQOut", "Test output");
-  fTree->Branch("Output","TClonesArray", &fOutput, 64000, 99);
+    fOutFile = new TFile(out,"recreate");
+    fTree = new TTree("MQOut", "Test output");
+    fTree->Branch("Output","TClonesArray", &fOutput, 64000, 99);
 }
+
+
+
+template <typename TIn, typename TPayloadIn>
+void FairMQFileSink<TIn,TPayloadIn>::Run()
+{
+  
+    if(fHasBoostSerialization)
+    {
+        LOG(INFO) << ">>>>>>> Run <<<<<<<";
+
+        boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
+        int receivedMsgs = 0;
+        bool received = false;
+
+
+        while ( fState == RUNNING ) 
+        {
+            FairMQMessage* msg = fTransportFactory->CreateMessage();
+            received = fPayloadInputs->at(0)->Receive(msg);
+
+            if (received) 
+            {
+                receivedMsgs++;
+                std::string msgStr( static_cast<char*>(msg->GetData()), msg->GetSize() );
+                std::istringstream ibuffer(msgStr);
+                TPayloadIn InputArchive(ibuffer);
+
+                try
+                {
+                    InputArchive >> fHitVector;
+                }
+                catch (boost::archive::archive_exception e)
+                {
+                    LOG(ERROR) << e.what();
+                }
+
+                int numInput=fHitVector.size();
+                fOutput->Delete();
+
+                for (Int_t i = 0; i < numInput; ++i) 
+                {
+                  new ((*fOutput)[i]) TIn(fHitVector.at(i));
+                }
+
+                if (!fOutput) 
+                {
+                  cout << "-W- FairMQFileSink::Run: " << "No Output array!" << endl;
+                }
+                
+                fTree->Fill();
+                received = false;
+            }
+            delete msg;
+            if(fHitVector.size()>0) 
+                fHitVector.clear();
+        }
+        
+        cout << "I've received " << receivedMsgs << " messages!" << endl;
+        boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
+        rateLogger.interrupt();
+        rateLogger.join();
+    }
+    else
+    {
+        LOG(ERROR) <<" Boost Serialization not ok";
+    }
+}
+
 
 template <>
-void FairMQFileSink<TestDetectorPayload::TestDetectorHit, FairTestDetectorHit>::Run()
+void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::TestDetectorHit>::Run()
 {
   LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
@@ -99,8 +165,10 @@ void FairMQFileSink<TestDetectorPayload::TestDetectorHit, FairTestDetectorHit>::
 
 #ifdef PROTOBUF
 
+#include "FairTestDetectorPayload.pb.h"
+
 template <>
-void FairMQFileSink<TestDetectorProto::HitPayload, FairTestDetectorHit>::Run()
+void FairMQFileSink<FairTestDetectorHit,TestDetectorProto::HitPayload>::Run()
 {
   LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
@@ -150,3 +218,5 @@ void FairMQFileSink<TestDetectorProto::HitPayload, FairTestDetectorHit>::Run()
 }
 
 #endif /* PROTOBUF */
+
+

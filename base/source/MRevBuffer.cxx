@@ -708,13 +708,13 @@ gNextRecvD:
 
 
     pEvt->nSubEvt += 1;
-    pEvt->subEvtSize[0] = pSEvtHead->iMbsSev101_dlen;
+    pEvt->subEvtSize[0] = pSEvtHead->iMbsSev101_dlen/2 - 1;
     pEvt->subEvtType[0] = pSEvtHead->sMbsSev101_type;
     pEvt->subEvtSubType[0] = pSEvtHead->sMbsSev101_subtype;
     pEvt->subEvtProcId[0] = pSEvtHead->sMbsSev101_procid;
     pEvt->subEvtSubCrate[0] = pSEvtHead->cMbsSev101_subcrate;
     pEvt->subEvtControl[0] = pSEvtHead->cMbsSev101_control;
-    pEvt->pSubEvt[0] = (Int_t*) pshort;
+    pEvt->pSubEvt[0] = (Int_t*) &pshort[6];
 
 
     cout << "    evt " << iEvtNo << " (" << piNextEvt[3]
@@ -742,13 +742,13 @@ gNextRecvD:
 
 
       pEvt->nSubEvt += 1;
-      pEvt->subEvtSize[ii-1] = pSEvtHead->iMbsSev101_dlen;
+      pEvt->subEvtSize[ii-1] = pSEvtHead->iMbsSev101_dlen/2 - 1;
       pEvt->subEvtType[ii-1] = pSEvtHead->sMbsSev101_type;
       pEvt->subEvtSubType[ii-1] = pSEvtHead->sMbsSev101_subtype;
       pEvt->subEvtProcId[ii-1] = pSEvtHead->sMbsSev101_procid;
       pEvt->subEvtSubCrate[ii-1] = pSEvtHead->cMbsSev101_subcrate;
       pEvt->subEvtControl[ii-1] = pSEvtHead->cMbsSev101_control;
-      pEvt->pSubEvt[ii-1] = (Int_t*) pshort;
+      pEvt->pSubEvt[ii-1] = (Int_t*) &pshort[6];
 
 
     }

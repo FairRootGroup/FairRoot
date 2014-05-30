@@ -3,6 +3,7 @@
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
+${Boost_INCLUDE_DIRS}
 ${BASE_INCLUDE_DIRECTORIES}
 ${CMAKE_SOURCE_DIR}/example/rutherford/src
 ${CMAKE_SOURCE_DIR}/example/mcstack
