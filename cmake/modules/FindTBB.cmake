@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 # Locate Intel Threading Building Blocks include paths and libraries
 # TBB can be found at http://www.threadingbuildingblocks.org/ 
 # Written by Hannes Hofmann, hannes.hofmann _at_ informatik.uni-erlangen.de
