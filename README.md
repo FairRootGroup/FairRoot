@@ -26,7 +26,7 @@ scripts/check_system.sh, even if there are some default settings.
 If unsure don't use this option.
 
 In the third menu one has to define how to handle the geant4 data files. These files
-have a file size of approximately 450GB. If you don't intent to use Geant4 at all
+have a file size of approximately 450 MB. If you don't intent to use Geant4 at all
 you must not need to download the files. 
 
 If the data files should be installed it is normally save to choose the
@@ -47,6 +47,25 @@ name (e.g. <install_dir>/fairsoft_dec13)
 After answering all the questions above the installation process starts which can take a 
 long time. If there are errors one can start the script safely again. It will check which 
 parts have been already compilled and installed and will skip this parts.
+
+Packages included:
+boost_1_54_0
+cmake 2.8.12.2
+G4VMC 2.15
+Geant321+_vmc.1.15a
+Geant4.10.00
+gsl-1.16
+gtest  1.7.0
+HepMC  2.06.09
+MILLEPEDE  V04-01-01
+pythia6
+Pythia8 183
+ROOT  v5.34.17
+Pluto v5.37
+VGM  v3-06
+ZeroMQ 3.2.4
+
+
 
 
 
