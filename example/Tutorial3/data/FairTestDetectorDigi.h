@@ -8,13 +8,12 @@
 #ifndef FAIRTESTDETECTORDIGI_H_
 #define FAIRTESTDETECTORDIGI_H_
 
-#include "FairTimeStamp.h"              // for FairTimeStamp
+#include "FairTimeStamp.h" // for FairTimeStamp
 
-#include "Riosfwd.h"                    // for ostream
-#include "Rtypes.h"                     // for Int_t, etc
+#include "Riosfwd.h" // for ostream
+#include "Rtypes.h"  // for Int_t, etc
 
-#include <iostream>                     // for operator<<, basic_ostream, etc
-
+#include <iostream> // for operator<<, basic_ostream, etc
 
 #ifndef __CINT__
 #include <boost/serialization/access.hpp>
@@ -28,67 +27,111 @@ class FairTestDetectorDigi : public FairTimeStamp
     FairTestDetectorDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp);
     virtual ~FairTestDetectorDigi();
 
-    void SetXYZ(Int_t x, Int_t y, Int_t z) { SetX(x); SetY(y); SetZ(z);}
-    void SetX(Int_t x)  { fX=x; }
-    void SetY(Int_t y)  { fY=y; }
-    void SetZ(Int_t z)  { fZ=z; }
+    void SetXYZ(Int_t x, Int_t y, Int_t z)
+    {
+        SetX(x);
+        SetY(y);
+        SetZ(z);
+    }
+    void SetX(Int_t x)
+    {
+        fX = x;
+    }
+    void SetY(Int_t y)
+    {
+        fY = y;
+    }
+    void SetZ(Int_t z)
+    {
+        fZ = z;
+    }
 
-    Int_t GetX() const  {return fX;}
-    Int_t GetY() const  {return fY;}
-    Int_t GetZ() const  {return fZ;}
+    Int_t GetX() const
+    {
+        return fX;
+    }
+    Int_t GetY() const
+    {
+        return fY;
+    }
+    Int_t GetZ() const
+    {
+        return fZ;
+    }
 
     // temporary to avoid serialisation of the parent class
-    virtual bool equal(FairTimeStamp* data) {
-      FairTestDetectorDigi* myDigi = dynamic_cast <FairTestDetectorDigi*> (data);
-      if (myDigi != 0) {
-        if (fX == myDigi->GetX())
-          if (fY == myDigi->GetY())
-            if (fZ == myDigi->GetZ()) {
-              return true;
-            }
-      }
-      return false;
-    }
-
-    virtual bool operator<(const FairTestDetectorDigi& myDigi) const {
-      if (fX < myDigi.GetX()) { return true; }
-      else if (fX > myDigi.GetX()) { return false; }
-      if (fY < myDigi.GetY()) { return true; }
-      else if (fY > myDigi.GetY()) { return false; }
-      if (fZ < myDigi.GetZ()) { return true; }
-      else if (fZ > myDigi.GetZ()) { return false; }
-      return false;
-    }
-
-    friend std::ostream& operator<<(std::ostream& out, FairTestDetectorDigi& digi) {
-      out << "FairTestDetectorDigi at:"
-          << " (" << digi.GetX() << "/" << digi.GetY() << "/" << digi.GetZ() << ") "
-          << " with TimeStamp: " << digi.GetTimeStamp()
-          << std::endl;
-      return out;
-    }
-
-    
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) 
+    virtual bool equal(FairTimeStamp* data)
     {
-        ar & boost::serialization::base_object<FairTimeStamp>(*this);
-        ar & fX;
-        ar & fY;
-        ar & fZ;
+        FairTestDetectorDigi* myDigi = dynamic_cast<FairTestDetectorDigi*>(data);
+        if (myDigi != 0)
+        {
+            if (fX == myDigi->GetX())
+                if (fY == myDigi->GetY())
+                    if (fZ == myDigi->GetZ())
+                    {
+                        return true;
+                    }
+        }
+        return false;
     }
+
+    virtual bool operator<(const FairTestDetectorDigi& myDigi) const
+    {
+        if (fX < myDigi.GetX())
+        {
+            return true;
+        }
+        else if (fX > myDigi.GetX())
+        {
+            return false;
+        }
+        if (fY < myDigi.GetY())
+        {
+            return true;
+        }
+        else if (fY > myDigi.GetY())
+        {
+            return false;
+        }
+        if (fZ < myDigi.GetZ())
+        {
+            return true;
+        }
+        else if (fZ > myDigi.GetZ())
+        {
+            return false;
+        }
+        return false;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, FairTestDetectorDigi& digi)
+    {
+        out << "FairTestDetectorDigi at:"
+            << " (" << digi.GetX() << "/" << digi.GetY() << "/" << digi.GetZ() << ") "
+            << " with TimeStamp: " << digi.GetTimeStamp() << std::endl;
+        return out;
+    }
+
+    template <class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar& boost::serialization::base_object<FairTimeStamp>(*this);
+        ar& fX;
+        ar& fY;
+        ar& fZ;
+    }
+
   private:
-      
-   #ifndef __CINT__ // for BOOST serialization
-   friend class boost::serialization::access;
-    
-    #endif // for BOOST serialization
+#ifndef __CINT__ // for BOOST serialization
+    friend class boost::serialization::access;
+
+#endif // for BOOST serialization
 
     Int_t fX;
     Int_t fY;
     Int_t fZ;
 
-    ClassDef(FairTestDetectorDigi,1);
+    ClassDef(FairTestDetectorDigi, 1);
 };
 
 #endif /* FAIRTESTDETECTORDIGI_H_ */

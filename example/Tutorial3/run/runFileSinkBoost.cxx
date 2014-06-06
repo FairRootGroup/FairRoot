@@ -12,9 +12,9 @@
 #include "FairMQFileSink.h"
 
 #ifdef NANOMSG
-  #include "nanomsg/FairMQTransportFactoryNN.h"
+#include "nanomsg/FairMQTransportFactoryNN.h"
 #else
-  #include "zeromq/FairMQTransportFactoryZMQ.h"
+#include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
 #include "FairTestDetectorHit.h"
@@ -26,94 +26,91 @@ using std::cin;
 using std::endl;
 using std::stringstream;
 
-typedef FairTestDetectorHit THit; // class to serialize/deserialize
+typedef FairTestDetectorHit THit;                         // class to serialize/deserialize
 typedef boost::archive::binary_iarchive TBoostBinPayload; // boost binary format
-typedef boost::archive::text_iarchive TBoostTextPayload; // boost text format
+typedef boost::archive::text_iarchive TBoostTextPayload;  // boost text format
 typedef FairMQFileSink<THit, TBoostBinPayload> TSink;
 
 TSink filesink;
 
-static void s_signal_handler (int signal)
+static void s_signal_handler(int signal)
 {
-  cout << endl << "Caught signal " << signal << endl;
+    cout << endl << "Caught signal " << signal << endl;
 
-  filesink.ChangeState(TSink::STOP);
-  filesink.ChangeState(TSink::END);
+    filesink.ChangeState(TSink::STOP);
+    filesink.ChangeState(TSink::END);
 
-  cout << "Shutdown complete. Bye!" << endl;
-  exit(1);
+    cout << "Shutdown complete. Bye!" << endl;
+    exit(1);
 }
 
-static void s_catch_signals (void)
+static void s_catch_signals(void)
 {
-  struct sigaction action;
-  action.sa_handler = s_signal_handler;
-  action.sa_flags = 0;
-  sigemptyset(&action.sa_mask);
-  sigaction(SIGINT, &action, NULL);
-  sigaction(SIGTERM, &action, NULL);
+    struct sigaction action;
+    action.sa_handler = s_signal_handler;
+    action.sa_flags = 0;
+    sigemptyset(&action.sa_mask);
+    sigaction(SIGINT, &action, NULL);
+    sigaction(SIGTERM, &action, NULL);
 }
 
 int main(int argc, char** argv)
 {
-  if ( argc != 7 ) {
-    cout << "Usage: fileSink \tID numIoTreads\n"
-              << "\t\tinputSocketType inputRcvBufHSize inputMethod inputAddress\n"
-              << endl;
-    return 1;
-  }
+    if (argc != 7)
+    {
+        cout << "Usage: fileSink \tID numIoTreads\n"
+             << "\t\tinputSocketType inputRcvBufHSize inputMethod inputAddress\n" << endl;
+        return 1;
+    }
 
-  s_catch_signals();
+    s_catch_signals();
 
-  LOG(INFO) << "PID: " << getpid();
+    LOG(INFO) << "PID: " << getpid();
 
 #ifdef NANOMSG
-  FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
+    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
 #else
-  FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
+    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
 #endif
 
-  filesink.SetTransport(transportFactory);
+    filesink.SetTransport(transportFactory);
 
-  int i = 1;
+    int i = 1;
 
-  filesink.SetProperty(TSink::Id, argv[i]);
-  ++i;
+    filesink.SetProperty(TSink::Id, argv[i]);
+    ++i;
 
-  int numIoThreads;
-  stringstream(argv[i]) >> numIoThreads;
-  filesink.SetProperty(TSink::NumIoThreads, numIoThreads);
-  ++i;
+    int numIoThreads;
+    stringstream(argv[i]) >> numIoThreads;
+    filesink.SetProperty(TSink::NumIoThreads, numIoThreads);
+    ++i;
 
-  filesink.SetProperty(TSink::NumInputs, 1);
-  filesink.SetProperty(TSink::NumOutputs, 0);
+    filesink.SetProperty(TSink::NumInputs, 1);
+    filesink.SetProperty(TSink::NumOutputs, 0);
 
-  filesink.ChangeState(TSink::INIT);
-  filesink.InitOutputFile(argv[1]);
+    filesink.ChangeState(TSink::INIT);
+    filesink.InitOutputFile(argv[1]);
 
+    filesink.SetProperty(TSink::InputSocketType, argv[i], 0);
+    ++i;
+    int inputRcvBufSize;
+    stringstream(argv[i]) >> inputRcvBufSize;
+    filesink.SetProperty(TSink::InputRcvBufSize, inputRcvBufSize, 0);
+    ++i;
+    filesink.SetProperty(TSink::InputMethod, argv[i], 0);
+    ++i;
+    filesink.SetProperty(TSink::InputAddress, argv[i], 0);
+    ++i;
 
-  filesink.SetProperty(TSink::InputSocketType, argv[i], 0);
-  ++i;
-  int inputRcvBufSize;
-  stringstream(argv[i]) >> inputRcvBufSize;
-  filesink.SetProperty(TSink::InputRcvBufSize, inputRcvBufSize, 0);
-  ++i;
-  filesink.SetProperty(TSink::InputMethod, argv[i], 0);
-  ++i;
-  filesink.SetProperty(TSink::InputAddress, argv[i], 0);
-  ++i;
+    filesink.ChangeState(TSink::SETOUTPUT);
+    filesink.ChangeState(TSink::SETINPUT);
+    filesink.ChangeState(TSink::RUN);
 
+    char ch;
+    cin.get(ch);
 
-  filesink.ChangeState(TSink::SETOUTPUT);
-  filesink.ChangeState(TSink::SETINPUT);
-  filesink.ChangeState(TSink::RUN);
+    filesink.ChangeState(TSink::STOP);
+    filesink.ChangeState(TSink::END);
 
-  char ch;
-  cin.get(ch);
-
-  filesink.ChangeState(TSink::STOP);
-  filesink.ChangeState(TSink::END);
-
-  return 0;
+    return 0;
 }
-

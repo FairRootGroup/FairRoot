@@ -39,39 +39,38 @@
 #include <boost/serialization/vector.hpp>
 #endif //__CINT__
 
-
 class TVector3;
 class TFile;
 class TTree;
 class TClonesArray;
 
 template <typename TIn, typename TPayloadIn>
-class FairMQFileSink: public FairMQDevice
+class FairMQFileSink : public FairMQDevice
 {
   public:
     FairMQFileSink();
     virtual ~FairMQFileSink();
     virtual void InitOutputFile(TString defaultId = "100");
-    
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
+
+    template <class Archive>
+    void serialize(Archive& ar, const unsigned int version)
     {
-        ar & fHitVector;
+        ar& fHitVector;
     }
-    
+
   protected:
     virtual void Run();
+
   private:
     TFile* fOutFile;
     TTree* fTree;
     TClonesArray* fOutput;
-    #ifndef __CINT__ // for BOOST serialization
+#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-    std:: vector<TIn> fHitVector;
+    std::vector<TIn> fHitVector;
     bool fHasBoostSerialization;
-    #endif // for BOOST serialization
+#endif // for BOOST serialization
 };
-
 
 ////////// Template implementation of Run() in FairMQFileSink.tpl :
 #include "FairMQFileSink.tpl"

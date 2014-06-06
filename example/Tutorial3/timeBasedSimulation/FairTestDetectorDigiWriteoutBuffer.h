@@ -8,14 +8,14 @@
 #ifndef FairTestDetectorDigiWriteoutBuffer_H_
 #define FairTestDetectorDigiWriteoutBuffer_H_
 
-#include "FairWriteoutBuffer.h"         // for FairWriteoutBuffer
+#include "FairWriteoutBuffer.h" // for FairWriteoutBuffer
 
-#include "FairTestDetectorDigi.h"       // for FairTestDetectorDigi
+#include "FairTestDetectorDigi.h" // for FairTestDetectorDigi
 
 #include "Rtypes.h"
-#include "TString.h"                    // for TString
+#include "TString.h" // for TString
 
-#include <map>                          // for map
+#include <map> // for map
 
 class FairTimeStamp;
 
@@ -30,11 +30,11 @@ class FairTestDetectorDigiWriteoutBuffer : public FairWriteoutBuffer
 
     void AddNewDataToTClonesArray(FairTimeStamp*);
 
-    virtual double FindTimeForData(FairTimeStamp* data) ;
-    virtual void FillDataMap(FairTimeStamp* data, double activeTime) ;
+    virtual double FindTimeForData(FairTimeStamp* data);
+    virtual void FillDataMap(FairTimeStamp* data, double activeTime);
     virtual void EraseDataFromDataMap(FairTimeStamp* data);
-  protected:
 
+  protected:
     std::map<FairTestDetectorDigi, double> fData_map;
 
     ClassDef(FairTestDetectorDigiWriteoutBuffer, 1);

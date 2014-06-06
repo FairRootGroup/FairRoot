@@ -5,4 +5,3 @@
  * @author A. Rybalchenko
  */
 // must be empty. Template function members defined in .h and .tpl
-

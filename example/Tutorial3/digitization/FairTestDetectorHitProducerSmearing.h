@@ -1,16 +1,15 @@
 #ifndef FAIRTESTDETECTORHITPRODUCERSMEARING_H_
 #define FAIRTESTDETECTORHITPRODUCERSMEARING_H_
 
-#include "FairTask.h"                   // for InitStatus, FairTask
+#include "FairTask.h" // for InitStatus, FairTask
 
-#include "Rtypes.h"                     // for ClassDef
+#include "Rtypes.h" // for ClassDef
 
 class TClonesArray;
 
 class FairTestDetectorHitProducerSmearing : public FairTask
 {
   public:
-
     /** Default constructor **/
     FairTestDetectorHitProducerSmearing();
 
@@ -23,7 +22,6 @@ class FairTestDetectorHitProducerSmearing : public FairTask
     /** ReInitiliazation of task when the runID changes **/
     virtual InitStatus ReInit();
 
-
     /** Executed for each event. **/
     virtual void Exec(Option_t* opt);
 
@@ -34,7 +32,6 @@ class FairTestDetectorHitProducerSmearing : public FairTask
     virtual void Finish();
 
   private:
-
     /** Input array from previous already existing data level **/
     TClonesArray* fPointsArray;
 
@@ -44,7 +41,7 @@ class FairTestDetectorHitProducerSmearing : public FairTask
     FairTestDetectorHitProducerSmearing(const FairTestDetectorHitProducerSmearing&);
     FairTestDetectorHitProducerSmearing operator=(const FairTestDetectorHitProducerSmearing&);
 
-    ClassDef(FairTestDetectorHitProducerSmearing,1);
+    ClassDef(FairTestDetectorHitProducerSmearing, 1);
 };
 
 #endif /* FAIRTESTDETECTORHITPRODUCERSMEARING_H_ */

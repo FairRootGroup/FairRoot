@@ -5,7 +5,7 @@
  */
 
 #ifndef TESTDETECTORDIGILOADER_H
-#define	TESTDETECTORDIGILOADER_H
+#define TESTDETECTORDIGILOADER_H
 
 #include "FairMQSamplerTask.h"
 
@@ -19,7 +19,7 @@
 #include "TMessage.h"
 
 #include "FairTestDetectorPayload.h"
-#include <iostream> 
+#include <iostream>
 
 #if __cplusplus >= 201103L
 #include "has_BoostSerialization.h"
@@ -28,34 +28,28 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////
 
-
 ////////// Base template header <T1,T2>
 template <typename T1, typename T2>
 class TestDetectorDigiLoader : public FairMQSamplerTask
-{ 
-public : 
- 
+{
+  public:
     TestDetectorDigiLoader();
     virtual ~TestDetectorDigiLoader();
     virtual void Exec(Option_t* opt);
-    
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
+
+    template <class Archive>
+    void serialize(Archive& ar, const unsigned int version)
     {
-        ar & fDigiVector;
+        ar& fDigiVector;
     }
-    
-private :
-        
+
+  private:
     friend class boost::serialization::access;
     std::vector<T1> fDigiVector;
     bool fHasBoostSerialization;
-    
-}; 
-
+};
 
 ////////// Template implementation is in TestDetectorDigiLoader.tpl :
 #include "TestDetectorDigiLoader.tpl"
 
 #endif /* TESTDETECTORDIGILOADER_H */
-

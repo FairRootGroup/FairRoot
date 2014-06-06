@@ -7,19 +7,18 @@
 
 #include "FairTestDetectorDigiRingSorter.h"
 
-#include "FairTestDetectorDigi.h"       // for FairTestDetectorDigi
+#include "FairTestDetectorDigi.h" // for FairTestDetectorDigi
 
 class FairTimeStamp;
 
 ClassImp(FairTestDetectorDigiRingSorter);
 
-
 FairTestDetectorDigiRingSorter::~FairTestDetectorDigiRingSorter()
 {
-  // TODO Auto-generated destructor stub
+    // TODO Auto-generated destructor stub
 }
 
 FairTimeStamp* FairTestDetectorDigiRingSorter::CreateElement(FairTimeStamp* data)
 {
-  return new FairTestDetectorDigi(*(FairTestDetectorDigi*)data);
+    return new FairTestDetectorDigi(*(FairTestDetectorDigi*)data);
 }

@@ -9,9 +9,9 @@
 #ifndef FairConstPAR_H
 #define FairConstPAR_H 1
 
-#include "FairMapPar.h"                 // for FairMapPar
+#include "FairMapPar.h" // for FairMapPar
 
-#include "Rtypes.h"                     // for Double_t, etc
+#include "Rtypes.h" // for Double_t, etc
 
 class FairField;
 class FairParamList;
@@ -20,8 +20,6 @@ class FairConstPar : public FairMapPar
 {
 
   public:
-
-
     /** Standard constructor  **/
     FairConstPar(const char* name, const char* title, const char* context);
 
@@ -33,27 +31,30 @@ class FairConstPar : public FairMapPar
 
     void putParams(FairParamList* list);
 
-
     /** Get parameters **/
     Bool_t getParams(FairParamList* list);
-
 
     /** Set parameters from FairField  **/
     void SetParameters(FairField* field);
 
-
-    Double_t GetBx()        const { return fBx; }
-    Double_t GetBy()        const { return fBy; }
-    Double_t GetBz()        const { return fBz; }
+    Double_t GetBx() const
+    {
+        return fBx;
+    }
+    Double_t GetBy() const
+    {
+        return fBy;
+    }
+    Double_t GetBz() const
+    {
+        return fBz;
+    }
 
   protected:
-
     /** Field values in [kG] **/
     Double_t fBx, fBy, fBz;
 
-    ClassDef(FairConstPar,1);
-
+    ClassDef(FairConstPar, 1);
 };
-
 
 #endif

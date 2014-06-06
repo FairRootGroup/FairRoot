@@ -1,56 +1,51 @@
-/* 
+/*
  * File:   FairMQFileSink.tpl
  * Author: winckler, A. Rybalchenko
  *
  * Created on March 11, 2014, 12:12 PM
  */
 
-
 template <typename TIn, typename TPayloadIn>
-FairMQFileSink<TIn,TPayloadIn>::FairMQFileSink()
+FairMQFileSink<TIn, TPayloadIn>::FairMQFileSink()
 {
-    
-    fHasBoostSerialization=true;
-    #if __cplusplus >= 201103L
-    fHasBoostSerialization=false;
-    if(   std::is_same<TPayloadIn,boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn,boost::archive::text_iarchive>::value)
+
+    fHasBoostSerialization = true;
+#if __cplusplus >= 201103L
+    fHasBoostSerialization = false;
+    if (std::is_same<TPayloadIn, boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn, boost::archive::text_iarchive>::value)
     {
-        if(has_BoostSerialization<TIn, void(TPayloadIn &, const unsigned int)>::value ==1) 
-                fHasBoostSerialization=true;
+        if (has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 1)
+            fHasBoostSerialization = true;
     }
-    #endif
-    
+#endif
 }
 
-
 template <typename TIn, typename TPayloadIn>
-FairMQFileSink<TIn,TPayloadIn>::~FairMQFileSink()
+FairMQFileSink<TIn, TPayloadIn>::~FairMQFileSink()
 {
     fTree->Write();
     fOutFile->Close();
-    if(fHitVector.size()>0) fHitVector.clear();
+    if (fHitVector.size() > 0)
+        fHitVector.clear();
 }
 
-
 template <typename TIn, typename TPayloadIn>
-void FairMQFileSink<TIn,TPayloadIn>::InitOutputFile(TString defaultId)
+void FairMQFileSink<TIn, TPayloadIn>::InitOutputFile(TString defaultId)
 {
     fOutput = new TClonesArray("FairTestDetectorHit");
     char out[256];
     sprintf(out, "filesink%s.root", defaultId.Data());
 
-    fOutFile = new TFile(out,"recreate");
+    fOutFile = new TFile(out, "recreate");
     fTree = new TTree("MQOut", "Test output");
-    fTree->Branch("Output","TClonesArray", &fOutput, 64000, 99);
+    fTree->Branch("Output", "TClonesArray", &fOutput, 64000, 99);
 }
 
-
-
 template <typename TIn, typename TPayloadIn>
-void FairMQFileSink<TIn,TPayloadIn>::Run()
+void FairMQFileSink<TIn, TPayloadIn>::Run()
 {
-  
-    if(fHasBoostSerialization)
+
+    if (fHasBoostSerialization)
     {
         LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
@@ -58,16 +53,15 @@ void FairMQFileSink<TIn,TPayloadIn>::Run()
         int receivedMsgs = 0;
         bool received = false;
 
-
-        while ( fState == RUNNING ) 
+        while (fState == RUNNING)
         {
             FairMQMessage* msg = fTransportFactory->CreateMessage();
             received = fPayloadInputs->at(0)->Receive(msg);
 
-            if (received) 
+            if (received)
             {
                 receivedMsgs++;
-                std::string msgStr( static_cast<char*>(msg->GetData()), msg->GetSize() );
+                std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
                 std::istringstream ibuffer(msgStr);
                 TPayloadIn InputArchive(ibuffer);
 
@@ -80,27 +74,27 @@ void FairMQFileSink<TIn,TPayloadIn>::Run()
                     LOG(ERROR) << e.what();
                 }
 
-                int numInput=fHitVector.size();
+                int numInput = fHitVector.size();
                 fOutput->Delete();
 
-                for (Int_t i = 0; i < numInput; ++i) 
+                for (Int_t i = 0; i < numInput; ++i)
                 {
-                  new ((*fOutput)[i]) TIn(fHitVector.at(i));
+                    new ((*fOutput)[i]) TIn(fHitVector.at(i));
                 }
 
-                if (!fOutput) 
+                if (!fOutput)
                 {
                     LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
                 }
-                
+
                 fTree->Fill();
                 received = false;
             }
             delete msg;
-            if(fHitVector.size()>0) 
+            if (fHitVector.size() > 0)
                 fHitVector.clear();
         }
-        
+
         cout << "I've received " << receivedMsgs << " messages!" << endl;
         boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
         rateLogger.interrupt();
@@ -108,167 +102,175 @@ void FairMQFileSink<TIn,TPayloadIn>::Run()
     }
     else
     {
-        LOG(ERROR) <<" Boost Serialization not ok";
+        LOG(ERROR) << " Boost Serialization not ok";
     }
 }
-
 
 template <>
 void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
 {
-  LOG(INFO) << ">>>>>>> Run <<<<<<<";
+    LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
-  boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
+    boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
-  int receivedMsgs = 0;
-  bool received = false;
+    int receivedMsgs = 0;
+    bool received = false;
 
-  while ( fState == RUNNING ) {
-    FairMQMessage* msg = fTransportFactory->CreateMessage();
+    while (fState == RUNNING)
+    {
+        FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-    received = fPayloadInputs->at(0)->Receive(msg);
+        received = fPayloadInputs->at(0)->Receive(msg);
 
-    if (received) {
-      Int_t inputSize = msg->GetSize();
-      Int_t numInput = inputSize / sizeof(TestDetectorPayload::Hit);
-      TestDetectorPayload::Hit* input = static_cast<TestDetectorPayload::Hit*>(msg->GetData());
+        if (received)
+        {
+            Int_t inputSize = msg->GetSize();
+            Int_t numInput = inputSize / sizeof(TestDetectorPayload::Hit);
+            TestDetectorPayload::Hit* input = static_cast<TestDetectorPayload::Hit*>(msg->GetData());
 
-      fOutput->Delete();
+            fOutput->Delete();
 
-      for (Int_t i = 0; i < numInput; ++i) {
-        TVector3 pos(input[i].posX,input[i].posY,input[i].posZ);
-        TVector3 dpos(input[i].dposX,input[i].dposY,input[i].dposZ);
-        new ((*fOutput)[i]) FairTestDetectorHit(input[i].detID, input[i].mcindex, pos, dpos);
-      }
+            for (Int_t i = 0; i < numInput; ++i)
+            {
+                TVector3 pos(input[i].posX, input[i].posY, input[i].posZ);
+                TVector3 dpos(input[i].dposX, input[i].dposY, input[i].dposZ);
+                new ((*fOutput)[i]) FairTestDetectorHit(input[i].detID, input[i].mcindex, pos, dpos);
+            }
 
-      if (!fOutput) {
-        LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
-      }
+            if (!fOutput)
+            {
+                LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
+            }
 
-      fTree->Fill();
-      received = false;
+            fTree->Fill();
+            received = false;
+        }
+
+        delete msg;
     }
 
-    delete msg;
-  }
+    cout << "I've received " << receivedMsgs << " messages!" << endl;
 
-  cout << "I've received " << receivedMsgs << " messages!" << endl;
+    boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 
-  boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
-
-  rateLogger.interrupt();
-  rateLogger.join();
+    rateLogger.interrupt();
+    rateLogger.join();
 }
-
 
 // ----- Implementation of FairMQFileSink with Root TMessage transport data format -----
 
 // special class to expose protected TMessage constructor
 class TestDetectorTMessage : public TMessage
 {
-public:
-  TestDetectorTMessage(void *buf, Int_t len) : TMessage(buf, len) { 
-    ResetBit(kIsOwner);
-  }
+  public:
+    TestDetectorTMessage(void* buf, Int_t len)
+        : TMessage(buf, len)
+    {
+        ResetBit(kIsOwner);
+    }
 };
 
 template <>
 void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
 {
-  LOG(INFO) << ">>>>>>> Run <<<<<<<";
+    LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
-  boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
+    boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
-  int receivedMsgs = 0;
-  bool received = false;
+    int receivedMsgs = 0;
+    bool received = false;
 
-  while ( fState == RUNNING ) {
-    FairMQMessage* msg = fTransportFactory->CreateMessage();
+    while (fState == RUNNING)
+    {
+        FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-    received = fPayloadInputs->at(0)->Receive(msg);
+        received = fPayloadInputs->at(0)->Receive(msg);
 
-    if (received) {
+        if (received)
+        {
 
-      TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
+            TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
 
-      fOutput = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
+            fOutput = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
 
-      if (!fOutput) {
-        LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
-      }
+            if (!fOutput)
+            {
+                LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
+            }
 
-      fTree->Fill();
+            fTree->Fill();
 
-      delete fOutput;
+            delete fOutput;
 
-      received = false;
+            received = false;
+        }
+
+        delete msg;
     }
 
-    delete msg;
-  }
+    cout << "I've received " << receivedMsgs << " messages!" << endl;
 
-  cout << "I've received " << receivedMsgs << " messages!" << endl;
+    boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 
-  boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
-
-  rateLogger.interrupt();
-  rateLogger.join();
+    rateLogger.interrupt();
+    rateLogger.join();
 }
-
 
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
 
 template <>
-void FairMQFileSink<FairTestDetectorHit,TestDetectorProto::HitPayload>::Run()
+void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
 {
-  LOG(INFO) << ">>>>>>> Run <<<<<<<";
+    LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
-  boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
+    boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
-  int receivedMsgs = 0;
-  bool received = false;
+    int receivedMsgs = 0;
+    bool received = false;
 
-  while ( fState == RUNNING ) {
-    FairMQMessage* msg = fTransportFactory->CreateMessage();
+    while (fState == RUNNING)
+    {
+        FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-    received = fPayloadInputs->at(0)->Receive(msg);
+        received = fPayloadInputs->at(0)->Receive(msg);
 
-    if (received) {
+        if (received)
+        {
 
-      fOutput->Delete();
+            fOutput->Delete();
 
-      TestDetectorProto::HitPayload hp;
-      hp.ParseFromArray(msg->GetData(), msg->GetSize());
+            TestDetectorProto::HitPayload hp;
+            hp.ParseFromArray(msg->GetData(), msg->GetSize());
 
-      int numEntries = hp.hit_size();
+            int numEntries = hp.hit_size();
 
-      for (int i = 0; i < numEntries; ++i) {
-        const TestDetectorProto::Hit& hit = hp.hit(i);
-        TVector3 pos(hit.posx(), hit.posy(), hit.posz());
-        TVector3 dpos(hit.dposx(), hit.dposy(), hit.dposz());
-        new ((*fOutput)[i]) FairTestDetectorHit(hit.detid(), hit.mcindex(), pos, dpos);
-      }
+            for (int i = 0; i < numEntries; ++i)
+            {
+                const TestDetectorProto::Hit& hit = hp.hit(i);
+                TVector3 pos(hit.posx(), hit.posy(), hit.posz());
+                TVector3 dpos(hit.dposx(), hit.dposy(), hit.dposz());
+                new ((*fOutput)[i]) FairTestDetectorHit(hit.detid(), hit.mcindex(), pos, dpos);
+            }
 
-      if (!fOutput) {
-        LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
-      }
+            if (!fOutput)
+            {
+                LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
+            }
 
-      fTree->Fill();
-      received = false;
+            fTree->Fill();
+            received = false;
+        }
+
+        delete msg;
     }
 
-    delete msg;
-  }
+    cout << "I've received " << receivedMsgs << " messages!" << endl;
 
-  cout << "I've received " << receivedMsgs << " messages!" << endl;
+    boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 
-  boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
-
-  rateLogger.interrupt();
-  rateLogger.join();
+    rateLogger.interrupt();
+    rateLogger.join();
 }
 
 #endif /* PROTOBUF */
-
-

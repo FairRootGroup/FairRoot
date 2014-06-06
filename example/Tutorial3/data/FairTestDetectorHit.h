@@ -1,10 +1,9 @@
 #ifndef FAIRTESTDETECTORHIT_H_
 #define FAIRTESTDETECTORHIT_H_
 
-#include "FairHit.h"                    // for FairHit
+#include "FairHit.h" // for FairHit
 
-#include "Rtypes.h"                     // for FairTestDetectorHit::Class, etc
-
+#include "Rtypes.h" // for FairTestDetectorHit::Class, etc
 
 #ifndef __CINT__
 #include <boost/serialization/access.hpp>
@@ -16,7 +15,6 @@ class TVector3;
 class FairTestDetectorHit : public FairHit
 {
   public:
-
     /** Default constructor **/
     FairTestDetectorHit();
 
@@ -26,22 +24,19 @@ class FairTestDetectorHit : public FairHit
     /** Destructor **/
     virtual ~FairTestDetectorHit();
 
-    
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) 
+    template <class Archive>
+    void serialize(Archive& ar, const unsigned int version)
     {
-        ar & boost::serialization::base_object<FairHit>(*this);
+        ar& boost::serialization::base_object<FairHit>(*this);
     }
-    
-  private:
 
+  private:
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
 
-    
 #endif // for BOOST serialization
 
-    ClassDef(FairTestDetectorHit,1);
+    ClassDef(FairTestDetectorHit, 1);
 };
 
 #endif /* FAIRTESTDETECTORHIT_H_ */

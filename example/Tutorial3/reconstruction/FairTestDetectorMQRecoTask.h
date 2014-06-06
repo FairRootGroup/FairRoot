@@ -4,8 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-
-#ifndef __CINT__ // Boost serialization 
+#ifndef __CINT__ // Boost serialization
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/text_iarchive.hpp>
@@ -38,7 +37,6 @@
 using std::cout;
 using std::endl;
 
-
 class TClonesArray;
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 class FairTestDetectorMQRecoTask : public FairMQProcessorTask
@@ -56,25 +54,24 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 
     /** Virtual method Exec **/
     virtual void Exec(FairMQMessage* msg, Option_t* opt);
-    
+
     // boost serialize function
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version)
+    template <class Archive>
+    void serialize(Archive& ar, const unsigned int version)
     {
-        ar & fDigiVector;
-        ar & fHitVector;
+        ar& fDigiVector;
+        ar& fHitVector;
     }
 
   private:
     FairTestDetectorRecoTask* fRecoTask;
-    #ifndef __CINT__ // for BOOST serialization
+#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-    std:: vector<TIn >  fDigiVector;
-    std:: vector<TOut>  fHitVector;
+    std::vector<TIn> fDigiVector;
+    std::vector<TOut> fHitVector;
     bool fHasBoostSerialization;
-    #endif // for BOOST serialization
+#endif // for BOOST serialization
 };
-
 
 ////////// Template implementation of exec in FairTestDetectorMQRecoTask.tpl :
 #include "FairTestDetectorMQRecoTask.tpl"
