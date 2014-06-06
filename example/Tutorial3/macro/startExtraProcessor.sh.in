@@ -20,7 +20,7 @@ elif [ "$1" = "root" ]; then
     echo "attempting to use Root TMessage data format"
 else
     echo "none or incorrect data formats provided."
-    echo "(available data formats options are: bin, boost, proto, root)"
+    echo "(available data format options are: bin, boost, proto, root)"
     echo "binary data format will be used."
 fi
 
