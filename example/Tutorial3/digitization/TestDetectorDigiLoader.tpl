@@ -29,6 +29,8 @@ TestDetectorDigiLoader<T1, T2>::~TestDetectorDigiLoader()
         fDigiVector.clear();
 }
 
+// ----- Default implementation of TestDetectorDigiLoader::Exec() with Boost transport data format -----
+
 template <typename T1, typename T2>
 void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
 {
@@ -66,6 +68,8 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
     }
 }
 
+// ----- Implementation of TestDetectorDigiLoader::Exec() with pure binary transport data format -----
+
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* opt)
 {
@@ -89,18 +93,32 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Ex
     }
 }
 
-// ----- Implementation of TestDetectorDigiLoader with Root TMessage transport data format -----
+// ----- Implementation of TestDetectorDigiLoader::Exec() with Root TMessage transport data format -----
+
+// helper function to clean up the object holding the data after it is transported.
+void free_tmessage (void *data, void *hint)
+{
+    delete (TMessage*)hint;
+}
 
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
 {
     TMessage* tm = new TMessage(kMESS_OBJECT);
     tm->WriteObject(fInput);
-    fOutput = fTransportFactory->CreateMessage(tm->Buffer(), tm->BufferSize());
+    fOutput = fTransportFactory->CreateMessage(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
 }
+
+// ----- Implementation of TestDetectorDigiLoader::Exec() with Google Protocol Buffers transport data format -----
 
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
+
+// helper function to clean up the object holding the data after it is transported.
+void free_string (void *data, void *hint)
+{
+    delete (std::string*)hint;
+}
 
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* opt)
@@ -123,12 +141,13 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload
         d->set_ftimestamp(digi->GetTimeStamp());
     }
 
-    std::string str;
-    dp.SerializeToString(&str);
-    size_t size = str.length();
+    std::string* str = new std::string();
+    dp.SerializeToString(str);
+    size_t size = str->length();
 
-    fOutput = fTransportFactory->CreateMessage(size);
-    memcpy(fOutput->GetData(), str.c_str(), size);
+    fOutput = fTransportFactory->CreateMessage(const_cast<char*>(str->c_str()), size, free_string, str);
+    // fOutput = fTransportFactory->CreateMessage(size);
+    // memcpy(fOutput->GetData(), str.c_str(), size);
 }
 
 #endif /* PROTOBUF */

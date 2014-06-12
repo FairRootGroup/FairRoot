@@ -102,6 +102,8 @@ InitStatus FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Init(
     return kSUCCESS;
 }
 
+// ----- Implementation of FairTestDetectorMQRecoTask::Exec() with Boost transport data format -----
+
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(FairMQMessage* msg, Option_t* opt)
 {
@@ -164,6 +166,8 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(FairMQ
     }
 }
 
+// ----- Implementation of FairTestDetectorMQRecoTask::Exec() with pure binary transport data format -----
+
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi, TestDetectorPayload::Hit>::Exec(FairMQMessage* msg,
                                                                                                                                       Option_t* opt)
@@ -209,7 +213,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     }
 }
 
-// ----- Implementation of FairTestDetectorMQRecoTask with Root TMessage transport data format -----
+// ----- Implementation of FairTestDetectorMQRecoTask::Exec() with Root TMessage transport data format -----
 
 // special class to expose protected TMessage constructor
 class TestDetectorTMessage : public TMessage
@@ -221,6 +225,12 @@ class TestDetectorTMessage : public TMessage
         ResetBit(kIsOwner);
     }
 };
+
+// helper function to clean up the object holding the data after it is transported.
+void free_tmessage (void *data, void *hint)
+{
+    delete (TMessage*)hint;
+}
 
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>::Exec(FairMQMessage* msg, Option_t* opt)
@@ -241,11 +251,19 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMess
     TMessage* out = new TMessage(kMESS_OBJECT);
     out->WriteObject(fRecoTask->fHitArray);
 
-    msg->Rebuild(out->Buffer(), out->BufferSize());
+    msg->Rebuild(out->Buffer(), out->BufferSize(), free_tmessage, out);
 }
+
+// ----- Implementation of FairTestDetectorMQRecoTask::Exec() with Google Protocol Buffers transport data format -----
 
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
+
+// helper function to clean up the object holding the data after it is transported.
+void free_string (void *data, void *hint)
+{
+    delete (std::string*)hint;
+}
 
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(
@@ -292,12 +310,13 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
         h->set_dposz(hit->GetDz());
     }
 
-    std::string str;
-    hp.SerializeToString(&str);
-    size_t size = str.length();
+    std::string* str = new std::string();
+    hp.SerializeToString(str);
+    size_t size = str->length();
 
-    msg->Rebuild(size);
-    memcpy(msg->GetData(), str.c_str(), size);
+    msg->Rebuild(const_cast<char*>(str->c_str()), size, free_string, str);
+    // msg->Rebuild(size);
+    // memcpy(msg->GetData(), str.c_str(), size);
 }
 
 #endif /* PROTOBUF */
