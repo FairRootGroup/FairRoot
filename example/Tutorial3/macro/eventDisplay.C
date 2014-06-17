@@ -5,33 +5,14 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-eventDisplay()
+eventDisplay(TString mcEngine="TGeant3")
 {
   //-----User Settings:-----------------------------------------------
-  TString  SimEngine     ="TGeant3"; 
-  TString  InputFile     ="data/testrun.root";
-  TString  ParFile       ="data/testparams.root";
+  TString  InputFile     ="data/testrun_" + mcEngine + ".root";
+  TString  ParFile       ="data/testparams_" + mcEngine + ".root";
   TString  OutFile	 ="data/tst.root";
   //------------------------------------------------------------------
 
-
-  // Load basic libraries
-/*
-  gROOT->LoadMacro("$VMCWORKDIR/example/gconfig/basiclibs.C");
-  basiclibs();
-  gSystem->Load("libFairTools");
-  gSystem->Load("libFairDB");
-  gSystem->Load("libGeoBase");
-  gSystem->Load("libParBase");
-  gSystem->Load("libBase");
-  gSystem->Load("libMCStack");
-  gSystem->Load("libGen");
-  gSystem->Load("libPassive");
-  gSystem->Load("libFairTestDetector.so");
-  gSystem->Load("libEve");
-  gSystem->Load("libEventDisplay");
-*/
-                                     
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
   fRun->SetInputFile(InputFile.Data());
