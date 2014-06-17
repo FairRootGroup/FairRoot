@@ -161,15 +161,6 @@ void FairMQSocketZMQ::GetOption(const string& option, void* value, size_t* value
     }
 }
 
-void FairMQSocketZMQ::GetOption(const string& option,  void* value, size_t *valueSize)
-{
-    int rc = zmq_getsockopt(fSocket, GetConstant(option), value, valueSize);
-    if (rc < 0) {
-        LOG(ERROR) << "failed Getting socket option, reason: " << zmq_strerror(errno);
-    }
-}
-
-
 
 unsigned long FairMQSocketZMQ::GetBytesTx()
 {
