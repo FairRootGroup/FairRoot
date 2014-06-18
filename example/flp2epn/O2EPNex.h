@@ -11,6 +11,7 @@
 #include "FairMQDevice.h"
 
 struct Content {
+  int id;
   double a;
   double b;
   int x;
