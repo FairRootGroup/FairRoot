@@ -48,6 +48,8 @@ class FairLmdSource : public FairMbsSource
     Bool_t OpenNextFile(TString fileName);
 
     Int_t fCurrentFile;
+	Int_t fNEvent;
+	Int_t fCurrentEvent;
     TList* fFileNames;
     s_evt_channel* fxInputChannel;
     s_ve10_1* fxEvent;
