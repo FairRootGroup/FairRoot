@@ -31,5 +31,6 @@ install_manifest.txt
 # build directory & data directory
 
 build/
+build*
 example/Tutorial3/macro/data/*
 !example/Tutorial3/macro/data/dummy.txt
