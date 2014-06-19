@@ -37,5 +37,7 @@ set(DEPENDENCIES
 
 set(LIBRARY_NAME FairMQSampler)
 
+install(FILES "FairMQSampler.tpl" DESTINATION include)
+
 GENERATE_LIBRARY()
 
