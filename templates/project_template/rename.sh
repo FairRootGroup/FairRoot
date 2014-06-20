@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# The rename script exchange all occurence of Ship or Ship
+# The rename script exchange all occurence of MyProj or myroj
 # by the name given by the first parameter. If the detector is for example 
 # the Trd of the Cbm experiment a good name is CbmTrd. Normaly one should
 # use the naming convention of the experiment.
@@ -27,9 +27,9 @@ ProjectName=$(echo $2 | tr [:lower:] [:upper:])
 ProjectSourceDir=${ProjectName}_SOURCE_DIR
 RelativeDir=$(basename $PWD)
 Prefix=$3
-for i in $(ls Ship*); do 
+for i in $(ls MyProj*); do 
   oldfile=$i
-  newfile=$(echo $oldfile | sed "s/Ship/$DetectorName/")
+  newfile=$(echo $oldfile | sed "s/MyProj/$DetectorName/")
   mv $oldfile $newfile
 done 
 
@@ -47,18 +47,18 @@ case "$arch" in
         ;;
 esac
 
-find . -name "*.h" -exec sed -e "s/Ship/$DetectorName/g" $sedstring "{}" ";"
-find . -name "*.h" -exec sed -e "s/Ship/$DetectorNameUpper/g" $sedstring "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/Ship/$DetectorName/g" $sedstring "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/Ship/$DetectorNameUpper/g" $sedstring "{}" ";"
+find . -name "*.h" -exec sed -e "s/MyProj/$DetectorName/g" $sedstring "{}" ";"
+find . -name "*.h" -exec sed -e "s/MyProj/$DetectorNameUpper/g" $sedstring "{}" ";"
+find . -name "*.cxx" -exec sed -e "s/MyProj/$DetectorName/g" $sedstring "{}" ";"
+find . -name "*.cxx" -exec sed -e "s/MyProj/$DetectorNameUpper/g" $sedstring "{}" ";"
 find . -name "*.cxx" -exec sed -e "s/FairDetectorList/${Prefix}DetectorList/g" $sedstring "{}" ";"
 find . -name "*.cxx" -exec sed -e "s/FairStack/${Prefix}Stack/g" $sedstring "{}" ";"
 find . -name "*.h" -exec sed -e "s/FairDetectorList/${Prefix}DetectorList/g" $sedstring "{}" ";"
 find . -name "*.h" -exec sed -e "s/FairStack/${Prefix}Stack/g" $sedstring "{}" ";"
 
-sed -e "s#tutorial/Ship#$RelativeDir#g" $sedstring CMakeLists.txt
-sed -e "s/Ship/$DetectorName/g" $sedstring CMakeLists.txt
-sed -e "s/Ship/$DetectorNameUpper/g" $sedstring CMakeLists.txt
+sed -e "s#tutorial/MyProj#$RelativeDir#g" $sedstring CMakeLists.txt
+sed -e "s/MyProj/$DetectorName/g" $sedstring CMakeLists.txt
+sed -e "s/MyProj/$DetectorNameUpper/g" $sedstring CMakeLists.txt
 sed -e "s/FAIRROOT_SOURCE_DIR/$ProjectSourceDir/g" $sedstring CMakeLists.txt
 
 if [ -d .svn ]; then  
