@@ -51,7 +51,7 @@ void MyPipe::ConstructGeometry()
    
     
     Int_t nSects=2;
-    Double_t z[] = { -10, 100};    // in cm
+    Double_t z[] = { -100, 300};    // in cm
     Double_t r[] = { 2.5, 2.5};    // in cm
     Double_t Thickness = 0.05;     // thickness of beam pipe [cm]
     TGeoPcon* shape = new TGeoPcon(0., 360., nSects);

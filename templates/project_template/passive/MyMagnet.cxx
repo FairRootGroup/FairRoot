@@ -47,16 +47,16 @@ MyMagnet::MyMagnet(const char* name, const char* Title)
 void MyMagnet::ConstructGeometry()
 {
    
-  //  TGeoVolume *top=gGeoManager->GetTopVolume();
+    TGeoVolume *top=gGeoManager->GetTopVolume();
     
     // define some materials
- ///TGeoMaterial *matFe     = new TGeoMaterial("Fe", 55.84, 26, 7.9);
+    TGeoMaterial *matFe     = new TGeoMaterial("Fe", 55.84, 26, 7.9);
 
     // define some media
-//    TGeoMedium *Fe     = new TGeoMedium("Fe", 3, matFe);
+    TGeoMedium *Fe     = new TGeoMedium("Fe", 3, matFe);
     
 
-  /*  // magnet yoke
+    // magnet yoke
     TGeoBBox *magyoke1 = new TGeoBBox("magyoke1", 350, 350, 125);
     TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", 250, 250, 126);
     
@@ -64,7 +64,7 @@ void MyMagnet::ConstructGeometry()
     TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
     magyoke->SetLineColor(kBlue);
     //magyoke->SetTransparency(50);
-    top->AddNode(magyoke, 1, new TGeoTranslation(0, 0, 1940));
+    top->AddNode(magyoke, 1, new TGeoTranslation(0, 0, 0));
     
     // magnet
     TGeoTubeSeg *magnet1a = new TGeoTubeSeg("magnet1a", 250, 300, 35, 45, 135);
@@ -83,15 +83,15 @@ void MyMagnet::ConstructGeometry()
     TGeoCompositeShape *magcomp1 = new TGeoCompositeShape("magcomp1", "magnet1a:m1+magnet1b:m2+magnet1c+magnet1d");
     TGeoVolume *magnet1 = new TGeoVolume("magnet1", magcomp1, Fe);
     magnet1->SetLineColor(kYellow);
-    top->AddNode(magnet1, 1, new TGeoTranslation(0, 0, 1940));
+    top->AddNode(magnet1, 1, new TGeoTranslation(0, 0, 0));
     
     TGeoRotation m3;
     m3.SetAngles(180, 0, 0);
-    TGeoTranslation m4(0, 0, 1940);
+    TGeoTranslation m4(0, 0, 0);
     TGeoCombiTrans m5(m4, m3);
     TGeoHMatrix *m6 = new TGeoHMatrix(m5);
     top->AddNode(magnet1, 2, m6);
-    */
+    
     
 }
 

@@ -163,42 +163,42 @@ void NewDetector::ConstructGeometry()
     }
 
     
-    TGeoVolume *det1= gGeoManager->MakeTubs("Det1",Si,5,30,0.1,0,360);
+    TGeoVolume *det1= gGeoManager->MakeTubs("Det1",Si,5,80,0.1,0,360);
     AddSensitiveVolume(det1);
     TGeoRotation r1;
     r1.SetAngles(0,0,0);
-    TGeoTranslation t1(0, 0, 5);
+    TGeoTranslation t1(0, 0, 0);
     TGeoCombiTrans c1(t1, r1);
     TGeoHMatrix *h1 = new TGeoHMatrix(c1);
     top->AddNode(det1,1,h1);
     det1->SetLineColor(kGreen);
     
-    TGeoVolume *passive1= gGeoManager->MakeTubs("Pass1",Si,5,40,10,0,360);
+    TGeoVolume *passive1= gGeoManager->MakeTubs("Pass1",Si,5,120,10,0,360);
     TGeoRotation rp1;
     rp1.SetAngles(0,0,0);
     TGeoTranslation tp1(0, 0, 20);
     TGeoCombiTrans cp1(tp1, rp1);
     TGeoHMatrix *hp1 = new TGeoHMatrix(cp1);
     top->AddNode(passive1,1,hp1);
-    passive1->SetLineColor(kBlue);
+    passive1->SetLineColor(kRed);
     
     
     
-    TGeoVolume *det2= gGeoManager->MakeTubs("Det2",Si,5,50,0.1,0,360);
+    TGeoVolume *det2= gGeoManager->MakeTubs("Det2",Si,5,150,0.1,0,360);
     AddSensitiveVolume(det2);
     TGeoRotation r2;
     r2.SetAngles(0,0,0);
-    TGeoTranslation t2(0, 0, 50);
+    TGeoTranslation t2(0, 0, 70);
     TGeoCombiTrans c2(t2, r2);
     TGeoHMatrix *h2 = new TGeoHMatrix(c2);
     top->AddNode(det2,1,h2);
     det2->SetLineColor(kGreen);
     
-    TGeoVolume *det3= gGeoManager->MakeTubs("Det3",Si,5,50,0.1,0,360);
+    TGeoVolume *det3= gGeoManager->MakeTubs("Det3",Si,5,150,0.1,0,360);
     AddSensitiveVolume(det3);
     TGeoRotation r3;
     r3.SetAngles(0,0,0);
-    TGeoTranslation t3(0, 0, 80);
+    TGeoTranslation t3(0, 0, 150);
     TGeoCombiTrans c3(t3, r3);
     TGeoHMatrix *h3 = new TGeoHMatrix(c3);
     top->AddNode(det3,1,h3);

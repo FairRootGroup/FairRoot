@@ -44,8 +44,8 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant4")
     // -----   Magnetic field   -------------------------------------------
     // Constant Field
     MyConstField  *fMagField = new MyConstField();
-    fMagField->SetField(0., 2. ,0. ); // values are in kG
-    fMagField->SetFieldRegion(-50, 50,-50, 50, 0, 100); // values are in cm
+    fMagField->SetField(0., 20. ,0. ); // values are in kG
+    fMagField->SetFieldRegion(-200, 200,-200, 200, -200, 200); // values are in cm
                           //  (xmin,xmax,ymin,ymax,zmin,zmax)
     run->SetField(fMagField);
     // --------------------------------------------------------------------
@@ -67,7 +67,7 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant4")
     primGen->AddGenerator(P8gen);
 
  
-
+    // Add a box generator also to the run
     FairBoxGenerator* boxGen = new FairBoxGenerator(13, 5); // 13 = muon; 1 = multipl.
     boxGen->SetPRange(20,25); // GeV/c
     boxGen->SetPhiRange(0., 360.); // Azimuth angle range [degree]
