@@ -108,7 +108,7 @@ class MyProjMCTrack : public TObject
     Double32_t fStartX, fStartY, fStartZ, fStartT;
 
     /**  Bitvector representing the number of MCPoints for this track in
-     **  each subdetector. The detectors are represented by
+     **  each subdetector. The detectors can be represented by (example from CBM)
      **  REF:         Bit  0      (1 bit,  max. value  1)
      **  MVD:         Bit  1 -  3 (3 bits, max. value  7)
      **  STS:         Bit  4 -  8 (5 bits, max. value 31)
@@ -125,7 +125,7 @@ class MyProjMCTrack : public TObject
     Int_t fNPoints;
 
 
-    ClassDef(MyProjMCTrack,2);
+    ClassDef(MyProjMCTrack,1);
 
 };
 
