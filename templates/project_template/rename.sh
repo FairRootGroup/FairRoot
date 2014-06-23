@@ -1,40 +1,32 @@
 #!/bin/bash
 
-# The script will first rename all files according to the project name. The
-# classes wil also be renamed according to the 
-
-# The rename script exchange all occurence of MyProj or myroj
-# by the name given by the first parameter. If the detector is for example 
-# the Trd of the Cbm experiment a good name is CbmTrd. Normaly one should
-# use the naming convention of the experiment.
-# Also the filenames any many more things are changed automatically. In the
-# end there are only some small changes which have to be done by hand.
-
-set -xv
+# The script will rename all files and the code accoringly to the given
+# parameters. 
 
 if [ $# -ne 3 ]; then
   echo "Please call the script with three parameters. The first one is the"
-  echo "name of the detector. The second is the name of the project. This"
-  echo "name can be found in the main CMakeLists.txt as argument for"
-  echo "Project(<ProjectName>)). The third parameter is the prefix in front"
-  echo "the class names. For CBM this is for example Cbm, for Panda Pnd."
-  echo "If you're not sure check in already existing detectors."
-  echo "The script will exchange all default names by the new name"
+  echo "name of the project. The second one is the prefix in front of"
+  echo "the class names. and some directories. So this second parameter"
+  echo "shouldn't be to long. The third parameter is the name of the"
+  echo "detector you want to implement."
+  echo "As an example the if you want to create a project for the Panda"
+  echo "experiment and you want to implement a Straw Tube Tracker (stt)"
+  echo "you would call the script in the following way."
+  echo "./rename.sh Panda Pnd stt" 
   exit 1
 fi  
 
+ProjectName=$1
+ProjectNameUpper=$(echo $ProjectName | tr [:lower:] [:upper:])
 
+Prefix=$2
+PrefixLower=$(echo $Prefix | tr [:upper:] [:lower:])
+Prefix=$(echo ${PrefixLower:0:1} | tr  '[a-z]' '[A-Z]')${PrefixLower:1}
 
-DetectorName=$1 
+DetectorName=$3
 DetectorNameUpper=$(echo $DetectorName | tr [:lower:] [:upper:])
-
-ProjectName=$2
-ProjectNameUpper=$(echo $2 | tr [:lower:] [:upper:])
-
-
-#ProjectSourceDir=${ProjectName}_SOURCE_DIR
-#RelativeDir=$(basename $PWD)
-Prefix=$3
+DetectorNameLower=$(echo $DetectorName | tr [:upper:] [:lower:])
+DetectorName=$(echo ${DetectorNameLower:0:1} | tr  '[a-z]' '[A-Z]')${DetectorNameLower:1}
 
 arch=`uname -s | tr '[A-Z]' '[a-z]'`
 case "$arch" in
@@ -53,90 +45,55 @@ esac
 # Rename directories
 for i in $(find . -type d -name "MyProj*"); do
    olddir=$i
-   newdir=$(echo $olddir | sed "s/MyProj/$ProjectName/")
+   newdir=$(echo $olddir | sed "s/MyProj/$Prefix/")
    mv $olddir $newdir
 done
 
 for i in $(find . -type d -name NewDetector); do
   olddir=$i
-  newdir=$(echo $olddir | sed "s/NewDetector/$DetectorName/")
+  newdir=$(echo $olddir | sed "s/NewDetector/$DetectorNameLower/")
   mv $olddir $newdir
 done
 
 # Change CMakeLists.txt accordingly
+sed -e "s/MyProj/$Prefix/g" $sedstring CMakeLists.txt
+sed -e "s/MYPROJ/$ProjectNameUpper/g" $sedstring CMakeLists.txt
+sed -e "s/NewDetector/$DetectorNameLower/g" $sedstring CMakeLists.txt
+
 for i in $(find . -type f -name CMakeLists.txt); do
-  sed -e "s/MyProj/$ProjectName/g" $sedstring $i
+  sed -e "s/MyProj/$Prefix/g" $sedstring $i
   sed -e "s/MYPROJ/$ProjectNameUpper/g" $sedstring $i
-  sed -e "s/NewDetector/$DetectorName/g" $sedstring $i
+  sed -e "s#/NewDetector#/$DetectorNameLower#g" $sedstring $i
+  sed -e "s/NewDetector/$Prefix$DetectorName/g" $sedstring $i
+  sed -e "s/My/$Prefix/g" $sedstring $i
 done
 
 # Change file names
 for i in $(find . -type f -name "MyProj*"); do
   oldfile=$i
-  newfile=$(echo $oldfile | sed "s/MyProj/$ProjectName/")
+  newfile=$(echo $oldfile | sed "s/MyProj/$Prefix/")
   mv $oldfile $newfile
-  sed -e "s/MyProj/$ProjectName/g" $sedstring $newfile
-  sed -e "s/NewDetector/$DetectorName/g" $sedstring $newfile
+  sed -e "s/MyProj/$Prefix/g" $sedstring $newfile
+  sed -e "s/NewDetector/$Prefix$DetectorName/g" $sedstring $newfile
 done
 
 for i in $(find . -type f -name "NewDetector*"); do
   oldfile=$i
-  newfile=$(echo $oldfile | sed "s/NewDetector/$DetectorName/")
+  newfile=$(echo $oldfile | sed "s/NewDetector/$Prefix$DetectorName/")
   mv $oldfile $newfile
-  sed -e "s/NewDetector/$DetectorName/g" $sedstring $newfile
-  sed -e "s/MyProj/$ProjectName/g" $sedstring $newfile
+  sed -e "s/NewDetector/$Prefix$DetectorName/g" $sedstring $newfile
+  sed -e "s/MyProj/$Prefix/g" $sedstring $newfile
 done
 
-
-set +xv
-exit
-
-for i in $(ls MyProj*); do 
+for i in $(find . -type f -name "My*"); do
   oldfile=$i
-  newfile=$(echo $oldfile | sed "s/MyProj/$DetectorName/")
+  newfile=$(echo $oldfile | sed "s/My/$Prefix/")
   mv $oldfile $newfile
-done 
+  sed -e "s/My/$Prefix/g" $sedstring $newfile
+done
 
-for i in $(ls M*); do 
-  oldfile=$i
-  newfile=$(echo $oldfile | sed "s/MyProj/$DetectorName/")
-  mv $oldfile $newfile
-  sed -e "s/MyProj/$ProjectName/g" $sedstring $newfile
-done 
+sed -e "s/MyProj/$Prefix/g" $sedstring ${Prefix}Data/MCStackLinkDef.h
+sed -e "s/My/$Prefix/g" $sedstring passive/PassiveLinkDef.h
+sed -e "s/My/$Prefix/g" $sedstring field/FieldLinkDef.h
 
-exit
-
-
-find . -name "*.h" -exec sed -e "s/MyProj/$DetectorName/g" $Sedstring "{}" ";"
-find . -name "*.h" -exec sed -e "s/MyProj/$DetectorNameUpper/g" $sedstring "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/MyProj/$DetectorName/g" $sedstring "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/MyProj/$DetectorNameUpper/g" $sedstring "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/FairDetectorList/${Prefix}DetectorList/g" $sedstring "{}" ";"
-find . -name "*.cxx" -exec sed -e "s/FairStack/${Prefix}Stack/g" $sedstring "{}" ";"
-find . -name "*.h" -exec sed -e "s/FairDetectorList/${Prefix}DetectorList/g" $sedstring "{}" ";"
-find . -name "*.h" -exec sed -e "s/FairStack/${Prefix}Stack/g" $sedstring "{}" ";"
-
-sed -e "s#tutorial/MyProj#$RelativeDir#g" $sedstring CMakeLists.txt
-sed -e "s/MyProj/$DetectorName/g" $sedstring CMakeLists.txt
-sed -e "s/MyProj/$DetectorNameUpper/g" $sedstring CMakeLists.txt
-sed -e "s/FAIRROOT_SOURCE_DIR/$ProjectSourceDir/g" $sedstring CMakeLists.txt
-
-if [ -d .svn ]; then  
-  echo "Please remove the .svn directory."
-  echo " This directory was also copied from templates."
-  echo "##"
-fi
-
-echo "Please add the directories which contain the Stack and"
-echo "DetectorList classes to the include directories in CMakeLists.txt"
-echo "##"
-
-echo "Please add the new detector to the detector list. This iist can be"
-echo "found in the DetectorList class. The name to be added is"
-echo "k${DetectorName}."
-
-echo "##"
-echo "edit ${DetectorName}Geo.h and ${DetectorName}Geo.cxx  according to the"
-echo "comments in the files."
-
-#set +xvx
+find . -name "*.bak" -delete
