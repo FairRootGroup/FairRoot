@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# The script will first rename all files according to the project name. The
+# classes wil also be renamed according to the 
+
 # The rename script exchange all occurence of MyProj or myroj
 # by the name given by the first parameter. If the detector is for example 
 # the Trd of the Cbm experiment a good name is CbmTrd. Normaly one should
@@ -7,7 +10,7 @@
 # Also the filenames any many more things are changed automatically. In the
 # end there are only some small changes which have to be done by hand.
 
-#set -xv
+set -xv
 
 if [ $# -ne 3 ]; then
   echo "Please call the script with three parameters. The first one is the"
@@ -20,18 +23,18 @@ if [ $# -ne 3 ]; then
   exit 1
 fi  
 
+
+
 DetectorName=$1 
 DetectorNameUpper=$(echo $DetectorName | tr [:lower:] [:upper:])
 
-ProjectName=$(echo $2 | tr [:lower:] [:upper:])
-ProjectSourceDir=${ProjectName}_SOURCE_DIR
-RelativeDir=$(basename $PWD)
+ProjectName=$2
+ProjectNameUpper=$(echo $2 | tr [:lower:] [:upper:])
+
+
+#ProjectSourceDir=${ProjectName}_SOURCE_DIR
+#RelativeDir=$(basename $PWD)
 Prefix=$3
-for i in $(ls MyProj*); do 
-  oldfile=$i
-  newfile=$(echo $oldfile | sed "s/MyProj/$DetectorName/")
-  mv $oldfile $newfile
-done 
 
 arch=`uname -s | tr '[A-Z]' '[a-z]'`
 case "$arch" in
@@ -39,7 +42,7 @@ case "$arch" in
         sedstring="-i "
         ;;
     darwin)
-        sedstring="-i .bak"
+        sedstring="-i.bak"
         ;;
     *)
         echo "Platform not supported"
@@ -47,7 +50,64 @@ case "$arch" in
         ;;
 esac
 
-find . -name "*.h" -exec sed -e "s/MyProj/$DetectorName/g" $sedstring "{}" ";"
+# Rename directories
+for i in $(find . -type d -name "MyProj*"); do
+   olddir=$i
+   newdir=$(echo $olddir | sed "s/MyProj/$ProjectName/")
+   mv $olddir $newdir
+done
+
+for i in $(find . -type d -name NewDetector); do
+  olddir=$i
+  newdir=$(echo $olddir | sed "s/NewDetector/$DetectorName/")
+  mv $olddir $newdir
+done
+
+# Change CMakeLists.txt accordingly
+for i in $(find . -type f -name CMakeLists.txt); do
+  sed -e "s/MyProj/$ProjectName/g" $sedstring $i
+  sed -e "s/MYPROJ/$ProjectNameUpper/g" $sedstring $i
+  sed -e "s/NewDetector/$DetectorName/g" $sedstring $i
+done
+
+# Change file names
+for i in $(find . -type f -name "MyProj*"); do
+  oldfile=$i
+  newfile=$(echo $oldfile | sed "s/MyProj/$ProjectName/")
+  mv $oldfile $newfile
+  sed -e "s/MyProj/$ProjectName/g" $sedstring $newfile
+  sed -e "s/NewDetector/$DetectorName/g" $sedstring $newfile
+done
+
+for i in $(find . -type f -name "NewDetector*"); do
+  oldfile=$i
+  newfile=$(echo $oldfile | sed "s/NewDetector/$DetectorName/")
+  mv $oldfile $newfile
+  sed -e "s/NewDetector/$DetectorName/g" $sedstring $newfile
+  sed -e "s/MyProj/$ProjectName/g" $sedstring $newfile
+done
+
+
+set +xv
+exit
+
+for i in $(ls MyProj*); do 
+  oldfile=$i
+  newfile=$(echo $oldfile | sed "s/MyProj/$DetectorName/")
+  mv $oldfile $newfile
+done 
+
+for i in $(ls M*); do 
+  oldfile=$i
+  newfile=$(echo $oldfile | sed "s/MyProj/$DetectorName/")
+  mv $oldfile $newfile
+  sed -e "s/MyProj/$ProjectName/g" $sedstring $newfile
+done 
+
+exit
+
+
+find . -name "*.h" -exec sed -e "s/MyProj/$DetectorName/g" $Sedstring "{}" ";"
 find . -name "*.h" -exec sed -e "s/MyProj/$DetectorNameUpper/g" $sedstring "{}" ";"
 find . -name "*.cxx" -exec sed -e "s/MyProj/$DetectorName/g" $sedstring "{}" ";"
 find . -name "*.cxx" -exec sed -e "s/MyProj/$DetectorNameUpper/g" $sedstring "{}" ";"
