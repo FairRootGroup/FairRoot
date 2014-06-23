@@ -96,4 +96,10 @@ sed -e "s/MyProj/$Prefix/g" $sedstring ${Prefix}Data/MCStackLinkDef.h
 sed -e "s/My/$Prefix/g" $sedstring passive/PassiveLinkDef.h
 sed -e "s/My/$Prefix/g" $sedstring field/FieldLinkDef.h
 
+sed -e "s/My/$Prefix/g" $sedstring macro/run_sim.C
+sed -e "s/NewDetector/$Prefix$DetectorName/g" $sedstring macro/run_sim.C
+
+sed -e "s/MyProj/$Prefix/g" $sedstring gconfig/g3Config.C
+sed -e "s/MyProj/$Prefix/g" $sedstring gconfig/g4Config.C
+
 find . -name "*.bak" -delete
