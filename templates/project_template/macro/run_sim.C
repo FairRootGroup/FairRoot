@@ -1,4 +1,4 @@
-void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
+void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant4")
 {
     
   // Output file name
@@ -45,7 +45,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
     // Constant Field
     MyConstField  *fMagField = new MyConstField();
     fMagField->SetField(0., 2. ,0. ); // values are in kG
-    fMagField->SetFieldRegion(-160, 160,-160, 160, 1940, 2125); // values are in cm
+    fMagField->SetFieldRegion(-50, 50,-50, 50, 0, 100); // values are in cm
                           //  (xmin,xmax,ymin,ymax,zmin,zmax)
     run->SetField(fMagField);
     // --------------------------------------------------------------------
@@ -57,17 +57,17 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant4")
   
 
     // Pythia8
-/*   Pythia8Generator* P8gen = new Pythia8Generator();
-    P8gen->UseRandom3(); # TRandom1 or TRandom3 ?
+    Pythia8Generator* P8gen = new Pythia8Generator();
+    P8gen->UseRandom3(); //# TRandom1 or TRandom3 ?
     P8gen->SetParameters("SoftQCD:inelastic = on");
     P8gen->SetParameters("PhotonCollision:gmgm2mumu = on");
     P8gen->SetParameters("PromptPhoton:all = on");
     P8gen->SetParameters("WeakBosonExchange:all = on");
-    P8gen->SetMom(400);  # beam momentum in GeV
+    P8gen->SetMom(40);  //# beam momentum in GeV
     primGen->AddGenerator(P8gen);
 
  
-*/
+
     FairBoxGenerator* boxGen = new FairBoxGenerator(13, 5); // 13 = muon; 1 = multipl.
     boxGen->SetPRange(20,25); // GeV/c
     boxGen->SetPhiRange(0., 360.); // Azimuth angle range [degree]

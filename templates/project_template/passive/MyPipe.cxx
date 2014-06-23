@@ -47,11 +47,11 @@ void MyPipe::ConstructGeometry()
     
     // define some media
      TGeoMedium *Carbon     = new TGeoMedium("C", 3, matCarbon);
-     TGeoMedium *Vacuum     = new TGeoMedium("Vacuum", 3, matVacuum);
+     TGeoMedium *Vacuum     = new TGeoMedium("Vacuum", 4, matVacuum);
    
     
     Int_t nSects=2;
-    Double_t z[] = { -100, 1000};    // in cm
+    Double_t z[] = { -10, 100};    // in cm
     Double_t r[] = { 2.5, 2.5};    // in cm
     Double_t Thickness = 0.05;     // thickness of beam pipe [cm]
     TGeoPcon* shape = new TGeoPcon(0., 360., nSects);
