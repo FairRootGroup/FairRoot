@@ -60,10 +60,6 @@ sed -e "s/MyProj/$Prefix/g" $sedstring CMakeLists.txt
 sed -e "s/MYPROJ/$ProjectNameUpper/g" $sedstring CMakeLists.txt
 sed -e "s/NewDetector/$DetectorNameLower/g" $sedstring CMakeLists.txt
 
-#Change the detector name in macro
-sed -e "s/NewDetector/$Prefix$DetectorNameLower/g" $sedstring macro/run_sim.C
-
-
 for i in $(find . -type f -name CMakeLists.txt); do
   sed -e "s/MyProj/$Prefix/g" $sedstring $i
   sed -e "s/MYPROJ/$ProjectNameUpper/g" $sedstring $i
@@ -99,9 +95,6 @@ done
 sed -e "s/MyProj/$Prefix/g" $sedstring ${Prefix}Data/MCStackLinkDef.h
 sed -e "s/My/$Prefix/g" $sedstring passive/PassiveLinkDef.h
 sed -e "s/My/$Prefix/g" $sedstring field/FieldLinkDef.h
-sed -e "s/My/$Prefix/g" $sedstring macro/run_sim.C
-
-
 
 sed -e "s/My/$Prefix/g" $sedstring macro/run_sim.C
 sed -e "s/NewDetector/$Prefix$DetectorName/g" $sedstring macro/run_sim.C
