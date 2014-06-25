@@ -19,7 +19,8 @@ FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose) :
   FairTask(name, iVerbose),
   fInput(NULL),
   fBranch(""),
-  fOutput(NULL)
+  fOutput(NULL),
+  fEventIndex(0)
 {
 }
 
@@ -27,7 +28,8 @@ FairMQSamplerTask::FairMQSamplerTask() :
   FairTask( "Abstract base task used for loading a branch from a root file into memory"),
   fInput(NULL),
   fBranch(""),
-  fOutput(NULL)
+  fOutput(NULL),
+  fEventIndex(0)
 {
 }
 
@@ -58,6 +60,13 @@ void FairMQSamplerTask::SetBranch(string branch)
 {
   fBranch = branch;
 }
+
+
+void FairMQSamplerTask::SetEventIndex(Long64_t EventIndex) 
+{
+    fEventIndex=EventIndex;
+}
+
 
 FairMQMessage* FairMQSamplerTask::GetOutput()
 {

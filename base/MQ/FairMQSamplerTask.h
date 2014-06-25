@@ -31,6 +31,7 @@ class FairMQSamplerTask: public FairTask
     virtual ~FairMQSamplerTask();
     virtual InitStatus Init();
     virtual void Exec(Option_t* opt);
+    void SetEventIndex(Long64_t EventIndex);
     void SetBranch(string branch);
     FairMQMessage* GetOutput();
     void SetTransport(FairMQTransportFactory* factory);
@@ -40,6 +41,7 @@ class FairMQSamplerTask: public FairTask
     string fBranch;
     FairMQMessage* fOutput;
     FairMQTransportFactory* fTransportFactory;
+    Long64_t fEventIndex;
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */
