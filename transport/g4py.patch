@@ -1,26 +1,16 @@
---- source/geometry/pyG4Polycone.cc_orig	2014-04-02 13:24:49.000000000 +0200
-+++ source/geometry/pyG4Polycone.cc	2014-04-02 13:23:04.000000000 +0200
-@@ -96,7 +96,7 @@
-     .def("GetStartPhi",    &G4Polycone::GetStartPhi)
-     .def("GetEndPhi",      &G4Polycone::GetEndPhi)
-     .def("IsOpen",         &G4Polycone::IsOpen)
--    .def("IsGeneric",      &G4Polycone::IsGeneric)
-+//    .def("IsGeneric",      &G4Polycone::IsGeneric)
-     .def("GetNumRZCorner", &G4Polycone::GetNumRZCorner)
- 
-     // operators
 --- CMakeLists.txt_orig	2014-02-27 18:12:19.000000000 +0100
-+++ CMakeLists.txt	2014-04-02 14:14:09.000000000 +0200
-@@ -6,7 +6,7 @@
++++ CMakeLists.txt	2014-05-06 16:46:20.000000000 +0200
+@@ -6,8 +6,7 @@
  project(Geant4Py)
  #------------------------------------------------------------------------------
  # installation prefixes for libraries
 -set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR})
+-
 +set(CMAKE_INSTALL_PREFIX $ENV{SIMPATH_INSTALL})
- 
  # debug mode
  set(DEBUG FALSE CACHE BOOL "Debug Mode (Debug On)")
-@@ -25,10 +25,17 @@
+ 
+@@ -25,10 +24,17 @@
  find_package(Geant4 REQUIRED)
  find_package(PythonInterp REQUIRED)
  find_package(PythonLibs REQUIRED)
@@ -39,3 +29,242 @@
  #------------------------------------------------------------------------------
  # parameters for building
  message(STATUS "--------------------------------------------------------")
+--- source/gdml/pyG4GDMLParser.cc_orig	2014-02-27 18:12:18.000000000 +0100
++++ source/gdml/pyG4GDMLParser.cc	2014-05-06 16:26:53.000000000 +0200
+@@ -81,6 +81,7 @@
+     .def("GetWorldVolume",   &G4GDMLParser::GetWorldVolume,
+          f_GetWorldVolume()
+          [return_value_policy<reference_existing_object>()])
++    .def("GetVolumeAuxiliaryInformation",   &G4GDMLParser::GetVolumeAuxiliaryInformation, return_value_policy<return_by_value>())
+     ;
+ }
+ 
+--- source/geometry/pyG4LogicalVolume.cc_orig	2014-02-27 18:12:19.000000000 +0100
++++ source/geometry/pyG4LogicalVolume.cc	2014-05-06 16:28:40.000000000 +0200
+@@ -147,5 +147,6 @@
+     // ---
+     .def("SetBiasWeight",  &G4LogicalVolume::SetBiasWeight)
+     .def("GetBiasWeight",  &G4LogicalVolume::GetBiasWeight)
++    .def("SetSensitiveDetector", &G4LogicalVolume::SetSensitiveDetector)
+     ;
+ }
+--- source/geometry/pyG4Polycone.cc_orig	2014-02-27 18:12:19.000000000 +0100
++++ source/geometry/pyG4Polycone.cc	2014-05-06 16:28:40.000000000 +0200
+@@ -96,7 +96,7 @@
+     .def("GetStartPhi",    &G4Polycone::GetStartPhi)
+     .def("GetEndPhi",      &G4Polycone::GetEndPhi)
+     .def("IsOpen",         &G4Polycone::IsOpen)
+-    .def("IsGeneric",      &G4Polycone::IsGeneric)
++    //.def("IsGeneric",      &G4Polycone::IsGeneric)
+     .def("GetNumRZCorner", &G4Polycone::GetNumRZCorner)
+ 
+     // operators
+--- source/geometry/pyG4VSolid.cc_orig	2014-02-27 18:12:19.000000000 +0100
++++ source/geometry/pyG4VSolid.cc	2014-05-06 16:28:40.000000000 +0200
+@@ -32,7 +32,7 @@
+ #include <boost/python.hpp>
+ #include "G4Version.hh"
+ #include "G4VSolid.hh"
+-
++#include "G4String.hh"
+ using namespace boost::python;
+ 
+ // ====================================================================
+--- source/particles/pyG4PrimaryParticle.cc_orig	2014-02-27 18:12:19.000000000 +0100
++++ source/particles/pyG4PrimaryParticle.cc	2014-05-06 16:29:47.000000000 +0200
+@@ -42,6 +42,8 @@
+ {
+   class_<G4PrimaryParticle, G4PrimaryParticle*>
+     ("G4PrimaryParticle", "primary particle")
++    // constructors
++    .def(init<const G4int&>())
+     // ---
+     .add_property("Px", &G4PrimaryParticle::GetPx)
+     .add_property("Py", &G4PrimaryParticle::GetPy)
+@@ -71,6 +73,10 @@
+     .def("GetWeight",   &G4PrimaryParticle::GetWeight)
+     .def("SetWeight",   &G4PrimaryParticle::SetWeight)
+     .def("GetProperTime", &G4PrimaryParticle::GetProperTime)
++    .def("Set4Momentum",   &G4PrimaryParticle::Set4Momentum)
++    .def("SetMass",   &G4PrimaryParticle::SetMass)
++    .def("SetMomentumDirection",   &G4PrimaryParticle::SetMomentumDirection)
++    .def("SetCharge",   &G4PrimaryParticle::SetCharge)
+     ;
+ }
+ 
+--- source/particles/pyG4PrimaryVertex.cc_orig	2014-02-27 18:12:19.000000000 +0100
++++ source/particles/pyG4PrimaryVertex.cc	2014-05-06 16:29:47.000000000 +0200
+@@ -52,6 +52,8 @@
+ {
+   class_<G4PrimaryVertex, G4PrimaryVertex*>
+     ("G4PrimaryVertex", "primary vertex")
++    // constructors
++    .def(init<const G4ThreeVector&, const G4float&>())
+     // ---
+     .add_property("X0", &G4PrimaryVertex::GetX0)
+     .add_property("Y0", &G4PrimaryVertex::GetY0)
+@@ -69,6 +71,7 @@
+ 	 return_internal_reference<>(), f_GetPrimary())
+     .def("GetWeight",   &G4PrimaryVertex::GetWeight)
+     .def("SetWeight",   &G4PrimaryVertex::SetWeight)
++    .def("SetPrimary",   &G4PrimaryVertex::SetPrimary)
+     .def("Print", &G4PrimaryVertex::Print)
+      ;
+ }
+--- source/physics_lists/pyPhysicsLists.cc_orig	2014-02-27 18:12:19.000000000 +0100
++++ source/physics_lists/pyPhysicsLists.cc	2014-05-06 16:30:46.000000000 +0200
+@@ -49,6 +49,7 @@
+ #include "QGSP_INCLXX.hh"
+ #include "QGSP_INCLXX_HP.hh"
+ #include "Shielding.hh"
++#include "G4PhysListFactory.hh"
+ 
+ // macro for adding physics lists
+ #define ADD_PHYSICS_LIST(plname) \
+@@ -76,8 +77,13 @@
+   }
+ }
+ 
++G4VModularPhysicsList* GetReferencePhysList(const G4String& name) {
++   G4PhysListFactory factory;
++   G4VModularPhysicsList* test = factory.GetReferencePhysList(name);
++   return test;
+ }
+ 
++}
+ using namespace pyPhysicsLists;
+ 
+ // ====================================================================
+@@ -85,8 +91,10 @@
+ // ====================================================================
+ void export_PhysicsLists()
+ {
++  def("GetReferencePhysList", GetReferencePhysList,
++         return_internal_reference<>());	 
+   def("ListPhysicsList",   ListPhysicsList);
+-
++  def("AddPhysicsList",    AddPhysicsList);     
+   ADD_PHYSICS_LIST(FTF_BIC);
+   ADD_PHYSICS_LIST(FTFP_BERT);
+   ADD_PHYSICS_LIST(FTFP_BERT_HP);
+--- source/physics_lists/pymodG4physicslists.cc_orig	2014-02-27 18:12:19.000000000 +0100
++++ source/physics_lists/pymodG4physicslists.cc	2014-05-06 16:30:46.000000000 +0200
+@@ -37,7 +37,6 @@
+ // module definition
+ // ====================================================================
+ void export_PhysicsLists();
+-
+ BOOST_PYTHON_MODULE(G4physicslists)
+ {
+   export_PhysicsLists();
+--- source/track/pyG4StepPoint.cc_orig	2014-02-27 18:12:19.000000000 +0100
++++ source/track/pyG4StepPoint.cc	2014-05-06 16:32:37.000000000 +0200
+@@ -31,7 +31,7 @@
+ // ====================================================================
+ #include <boost/python.hpp>
+ #include "G4StepPoint.hh"
+-
++#include "G4VProcess.hh"
+ using namespace boost::python;
+ 
+ // ====================================================================
+@@ -64,5 +64,10 @@
+     .def("GetMass",               &G4StepPoint::GetMass)
+     .def("GetCharge",             &G4StepPoint::GetCharge)
+     .def("GetWeight",             &G4StepPoint::GetWeight)
++    .def("GetTouchableHandle",    &G4StepPoint::GetTouchable,  return_value_policy<reference_existing_object>())
++    .def("GetMaterial",           &G4StepPoint::GetMaterial,
++           return_value_policy<return_by_value>())
++                 .def("GetProcessDefinedStep", &G4StepPoint::GetProcessDefinedStep,
++             return_internal_reference<>())
+     ;
+ }
+--- source/track/pyG4Track.cc_orig	2014-02-27 18:12:19.000000000 +0100
++++ source/track/pyG4Track.cc	2014-05-06 16:32:37.000000000 +0200
+@@ -85,5 +85,6 @@
+     	 return_value_policy<reference_existing_object>())
+     .def("GetWeight",              &G4Track::GetWeight)
+     .def("SetWeight",              &G4Track::SetWeight)
++    .def("SetTrackStatus",         &G4Track::SetTrackStatus)
+     ;
+ }
+--- site-modules/geometries/ezgeom/pyEzgeom.cc_orig	2014-02-27 18:12:18.000000000 +0100
++++ site-modules/geometries/ezgeom/pyEzgeom.cc	2014-06-25 16:05:52.000000000 +0200
+@@ -126,6 +126,8 @@
+     .def("CreateShpereVolume",  &G4EzVolume::CreateSphereVolume,
+ 	                        f_CreateSphereVolume())
+     .def("CreateOrbVolume",     &G4EzVolume::CreateOrbVolume)
++    .def("CreateTrapVolume",    &G4EzVolume::CreateTrapVolume)
++    .def("CreateTrdVolume",     &G4EzVolume::CreateTrdVolume)
+     // ---
+     .def("SetSold",             &G4EzVolume::SetSolid)
+     .def("GetSold",             &G4EzVolume::GetSolid,
+--- site-modules/geometries/ezgeom/G4EzVolume.hh_orig	2014-02-27 18:12:18.000000000 +0100
++++ site-modules/geometries/ezgeom/G4EzVolume.hh	2014-06-25 16:05:43.000000000 +0200
+@@ -68,6 +68,12 @@
+   void CreateBoxVolume(G4Material* amaterial,
+ 		       G4double dx, G4double dy, G4double dz);
+ 
++  void CreateTrapVolume(G4Material* amaterial, 
++			G4double pZ, G4double pY, G4double pX, G4double pLTX);
++
++  void CreateTrdVolume(G4Material* amaterial, 
++		 G4double dx1, G4double dx2, G4double dy1, G4double dy2, G4double dz);  
++
+   void CreateTubeVolume(G4Material* amaterial,
+ 			G4double rmin, G4double rmax, 
+ 			G4double dz,
+--- site-modules/geometries/ezgeom/G4EzVolume.cc_orig	2014-02-27 18:12:18.000000000 +0100
++++ site-modules/geometries/ezgeom/G4EzVolume.cc	2014-06-25 16:05:43.000000000 +0200
+@@ -31,6 +31,8 @@
+ // ====================================================================
+ #include "G4Material.hh"
+ #include "G4Box.hh"
++#include "G4Trd.hh"
++#include "G4Trap.hh"
+ #include "G4Tubs.hh"
+ #include "G4Cons.hh"
+ #include "G4Sphere.hh"
+@@ -95,7 +97,42 @@
+   va= new G4VisAttributes();
+   lv-> SetVisAttributes(va);
+ }
++///////////////////////////////////////////////////////////////////////
++void G4EzVolume::CreateTrdVolume(G4Material* amaterial, 
++		 G4double dx1, G4double dx2, G4double dy1, G4double dy2, G4double dz)
++///////////////////////////////////////////////////////////////////////
++{
++  if(lv !=0 ) {
++    G4cout << "%%% Warning (G4EzVolume): volume is already created."
++	   << G4endl;
++    return;
++  }
+ 
++  solid= new G4Trd(name, dx1, dx2, dy1, dy2, dz);
++  lv= new G4LogicalVolume(solid, amaterial, name);
++
++  // vis. attributes
++  va= new G4VisAttributes();
++  lv-> SetVisAttributes(va);
++}
++///////////////////////////////////////////////////////////////////////
++void G4EzVolume::CreateTrapVolume(G4Material* amaterial, 
++				 G4double pZ, G4double pY, G4double pX, G4double pLTX)
++///////////////////////////////////////////////////////////////////////
++{
++  if(lv !=0 ) {
++    G4cout << "%%% Warning (G4EzVolume): volume is already created."
++	   << G4endl;
++    return;
++  }
++
++  solid= new G4Trap(name, pZ, pY, pX, pLTX);
++  lv= new G4LogicalVolume(solid, amaterial, name);
++
++  // vis. attributes
++  va= new G4VisAttributes();
++  lv-> SetVisAttributes(va);
++}
+ 
+ ////////////////////////////////////////////////////////////////////////////
+ void G4EzVolume::CreateTubeVolume(G4Material* amaterial,
