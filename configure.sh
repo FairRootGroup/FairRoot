@@ -198,6 +198,16 @@ then
   source scripts/install_pythia8.sh 
 fi
 
+##################### XercesC #############################################
+
+if [ "$build_python" = "yes" ]; 
+then
+  if [ "$check" = "1" ];
+  then
+    source scripts/install_xercesc.sh
+  fi
+fi
+  
 ##################### GEANT 4 #############################################
 
 if [ "$check" = "1" ];
@@ -223,10 +233,6 @@ fi
 
 if [ "$build_python" = "yes" ]; 
 then
-  if [ "$check" = "1" ];
-  then
-    source scripts/install_xercesc.sh
-  fi
   if [ "$check" = "1" ];
   then
     source scripts/install_g4py.sh
