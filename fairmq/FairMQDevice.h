@@ -49,6 +49,9 @@ class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable
         OutputSocketType,
         OutputSndBufSize,
         OutputRcvBufSize,
+        OutputHeartbeat,
+        HeartbeatTimeoutInMs,
+        HeartbeatIntervalInMs,
         LogIntervalInMs,
         Last
     };
@@ -62,6 +65,8 @@ class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable
     virtual string GetProperty(const int key, const string& default_ = "", const int slot = 0);
     virtual void SetProperty(const int key, const int value, const int slot = 0);
     virtual int GetProperty(const int key, const int default_ = 0, const int slot = 0);
+    virtual void SetProperty(const int key, const boost::posix_time::ptime value, const int slot = 0);
+    virtual boost::posix_time::ptime GetProperty(const int key, const boost::posix_time::ptime default_, const int slot = 0);
 
     virtual void SetTransport(FairMQTransportFactory* factory);
 
@@ -85,10 +90,13 @@ class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable
     vector<string> fOutputSocketType;
     vector<int> fOutputSndBufSize;
     vector<int> fOutputRcvBufSize;
+    vector<boost::posix_time::ptime> fOutputHeartbeat;
 
     vector<FairMQSocket*>* fPayloadInputs;
     vector<FairMQSocket*>* fPayloadOutputs;
 
+    int fHeartbeatTimeoutInMs;
+    int fHeartbeatIntervalInMs;
     int fLogIntervalInMs;
 
     FairMQTransportFactory* fTransportFactory;

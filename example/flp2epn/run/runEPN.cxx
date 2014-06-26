@@ -48,9 +48,11 @@ static void s_catch_signals (void)
 
 int main(int argc, char** argv)
 {
-  if ( argc != 7 ) {
-    cout << "Usage: testEPN \tID numIoTreads\n"
+  if ( argc < 13 ) {
+    cout << "Usage: testEPN \tID numIoTreads numOutputs heartbeatIntervalInMs\n"
               << "\t\tinputSocketType inputRcvBufSize inputMethod inputAddress\n"
+              << "\t\toutputSocketType outputSndBufSize outputMethod outputAddress\n"
+              << "\t\t...\n"
               << endl;
     return 1;
   }
@@ -78,11 +80,18 @@ int main(int argc, char** argv)
   ++i;
 
   epn.SetProperty(O2EPNex::NumInputs, 1);
-  epn.SetProperty(O2EPNex::NumOutputs, 0);
 
+  int numOutputs;
+  stringstream(argv[i]) >> numOutputs;
+  epn.SetProperty(O2EPNex::NumOutputs, numOutputs);
+  ++i;
+  
+  int heartbeatIntervalInMs;
+  stringstream(argv[i]) >> heartbeatIntervalInMs;
+  epn.SetProperty(O2EPNex::HeartbeatIntervalInMs, heartbeatIntervalInMs);
+  ++i;
 
   epn.ChangeState(O2EPNex::INIT);
-
 
   epn.SetProperty(O2EPNex::InputSocketType, argv[i], 0);
   ++i;
@@ -95,11 +104,22 @@ int main(int argc, char** argv)
   epn.SetProperty(O2EPNex::InputAddress, argv[i], 0);
   ++i;
 
+  for (int iOutput = 0; iOutput < numOutputs; iOutput++ ) {
+    epn.SetProperty(O2EPNex::OutputSocketType, argv[i], iOutput);
+    ++i;
+    int outputSndBufSize;
+    stringstream(argv[i]) >> outputSndBufSize;
+    epn.SetProperty(O2EPNex::OutputSndBufSize, outputSndBufSize, iOutput);
+    ++i;
+    epn.SetProperty(O2EPNex::OutputMethod, argv[i], iOutput);
+    ++i;
+    epn.SetProperty(O2EPNex::OutputAddress, argv[i], iOutput);
+    ++i;
+  }
 
   epn.ChangeState(O2EPNex::SETOUTPUT);
   epn.ChangeState(O2EPNex::SETINPUT);
   epn.ChangeState(O2EPNex::RUN);
-
 
   char ch;
   cin.get(ch);
@@ -109,4 +129,3 @@ int main(int argc, char** argv)
 
   return 0;
 }
-

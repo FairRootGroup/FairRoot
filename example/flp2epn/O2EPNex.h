@@ -26,6 +26,9 @@ class O2EPNex: public FairMQDevice
     virtual ~O2EPNex();
   protected:
     virtual void Run();
+  private:
+    void ReceivePayload();
+    void SendHeartbeat();
 };
 
 #endif /* FAIRMQPROTOSINK_H_ */

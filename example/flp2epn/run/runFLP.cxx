@@ -48,9 +48,13 @@ static void s_catch_signals (void)
 
 int main(int argc, char** argv)
 {
-  if ( argc != 9 ) {
-    cout << "Usage: testFLP ID eventSize eventRate numIoTreads\n"
+  LOG(INFO) << "-> " << argc;
+  
+  if ( argc < 15 ) {
+    cout << "Usage: testFLP ID eventSize eventRate numIoTreads numOutputs heartbeatTimeoutInMs\n"
+              << "\t\tinputSocketType inputSndBufSize inputMethod inputAddress\n"
               << "\t\toutputSocketType outputSndBufSize outputMethod outputAddress\n"
+              << "\t\t...\n"
               << endl;
     return 1;
   }
@@ -86,31 +90,48 @@ int main(int argc, char** argv)
   stringstream(argv[i]) >> numIoThreads;
   flp.SetProperty(O2FLPex::NumIoThreads, numIoThreads);
   ++i;
+  
+  flp.SetProperty(O2FLPex::NumInputs, 1);
+  
+  int numOutputs;
+  stringstream(argv[i]) >> numOutputs;
+  flp.SetProperty(O2FLPex::NumOutputs, numOutputs);
+  ++i;
 
-  flp.SetProperty(O2FLPex::NumInputs, 0);
-  flp.SetProperty(O2FLPex::NumOutputs, 1);
-
+  int heartbeatTimeoutInMs;
+  stringstream(argv[i]) >> heartbeatTimeoutInMs;
+  flp.SetProperty(O2FLPex::HeartbeatTimeoutInMs, heartbeatTimeoutInMs);
+  ++i;
 
   flp.ChangeState(O2FLPex::INIT);
+  
+  flp.SetProperty(O2FLPex::InputSocketType, argv[i], 0);
+  ++i;
+  int inputSndBufSize;
+  stringstream(argv[i]) >> inputSndBufSize;
+  flp.SetProperty(O2FLPex::InputSndBufSize, inputSndBufSize, 0);
+  ++i;
+  flp.SetProperty(O2FLPex::InputMethod, argv[i], 0);
+  ++i;
+  flp.SetProperty(O2FLPex::InputAddress, argv[i], 0);
+  ++i;
 
-
-  flp.SetProperty(O2FLPex::OutputSocketType, argv[i], 0);
-  ++i;
-  int outputSndBufSize;
-  stringstream(argv[i]) >> outputSndBufSize;
-  flp.SetProperty(O2FLPex::OutputSndBufSize, outputSndBufSize, 0);
-  ++i;
-  flp.SetProperty(O2FLPex::OutputMethod, argv[i], 0);
-  ++i;
-  flp.SetProperty(O2FLPex::OutputAddress, argv[i], 0);
-  ++i;
-
+  for (int iOutput = 0; iOutput < numOutputs; iOutput++ ) {
+    flp.SetProperty(O2FLPex::OutputSocketType, argv[i], iOutput);
+    ++i;
+    int outputSndBufSize;
+    stringstream(argv[i]) >> outputSndBufSize;
+    flp.SetProperty(O2FLPex::OutputSndBufSize, outputSndBufSize, iOutput);
+    ++i;
+    flp.SetProperty(O2FLPex::OutputMethod, argv[i], iOutput);
+    ++i;
+    flp.SetProperty(O2FLPex::OutputAddress, argv[i], iOutput);
+    ++i;
+  }
 
   flp.ChangeState(O2FLPex::SETOUTPUT);
   flp.ChangeState(O2FLPex::SETINPUT);
   flp.ChangeState(O2FLPex::RUN);
-
-
 
   char ch;
   cin.get(ch);
@@ -120,4 +141,3 @@ int main(int argc, char** argv)
 
   return 0;
 }
-

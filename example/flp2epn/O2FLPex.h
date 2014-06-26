@@ -38,6 +38,8 @@ class O2FLPex: public FairMQDevice
     virtual string GetProperty(const int key, const string& default_ = "", const int slot = 0);
     virtual void SetProperty(const int key, const int value, const int slot = 0);
     virtual int GetProperty(const int key, const int default_ = 0, const int slot = 0);
+    virtual void SetProperty(const int key, const boost::posix_time::ptime value, const int slot = 0);
+    virtual boost::posix_time::ptime GetProperty(const int key, const boost::posix_time::ptime value, const int slot = 0);
 
   protected:
     int fEventSize;
@@ -45,6 +47,14 @@ class O2FLPex: public FairMQDevice
     int fEventCounter;
     virtual void Init();
     virtual void Run();
+    
+  private:
+    void ReceiveHeartbeat ();
+    void SendPayload (Content* payload);
+    
+    bool updateIPHeartbeat (string str);
+    
+    boost::mutex mtx_;
 };
 
 #endif /* O2FLPex_H_ */

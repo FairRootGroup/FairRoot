@@ -12,6 +12,7 @@
  * @author D. Klein, A. Rybalchenko
  */
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/thread.hpp>
 
 #include "FairMQSocket.h"
@@ -24,6 +25,8 @@ FairMQDevice::FairMQDevice()
     , fNumOutputs(0)
     , fPayloadInputs(new vector<FairMQSocket*>())
     , fPayloadOutputs(new vector<FairMQSocket*>())
+    , fHeartbeatTimeoutInMs(20000)
+    , fHeartbeatIntervalInMs(5000)
     , fLogIntervalInMs(1000)
     , fTransportFactory(NULL)
 {
@@ -33,6 +36,7 @@ void FairMQDevice::Init()
 {
     LOG(INFO) << ">>>>>>> Init <<<<<<<";
     LOG(INFO) << "numIoThreads: " << fNumIoThreads;
+    LOG(INFO) << "numOutputs: " << fNumOutputs;
 
     for (int i = 0; i < fNumInputs; ++i)
     {
@@ -50,6 +54,9 @@ void FairMQDevice::Init()
         fOutputSocketType.push_back("pub"); // default value, can be overwritten in configuration
         fOutputSndBufSize.push_back(10000); // default value, can be overwritten in configuration
         fOutputRcvBufSize.push_back(10000); // default value, can be overwritten in configuration
+        
+        boost::posix_time::ptime nullTime;
+        fOutputHeartbeat.push_back(nullTime);
     }
 }
 
@@ -175,6 +182,12 @@ void FairMQDevice::SetProperty(const int key, const int value, const int slot /*
         case NumOutputs:
             fNumOutputs = value;
             break;
+        case HeartbeatTimeoutInMs:
+            fHeartbeatTimeoutInMs = value;
+            break;
+        case HeartbeatIntervalInMs:
+            fHeartbeatIntervalInMs = value;
+            break;
         case LogIntervalInMs:
             fLogIntervalInMs = value;
             break;
@@ -198,6 +211,18 @@ void FairMQDevice::SetProperty(const int key, const int value, const int slot /*
             FairMQConfigurable::SetProperty(key, value, slot);
             break;
     }
+}
+
+// Method for setting properties represented as a heartbeat.
+void FairMQDevice::SetProperty(const int key, const boost::posix_time::ptime value, const int slot /*= 0*/)
+{
+  switch (key)
+  {
+    case OutputHeartbeat:
+      fOutputHeartbeat.erase(fOutputHeartbeat.begin() + slot);
+      fOutputHeartbeat.insert(fOutputHeartbeat.begin() + slot, value);
+      break;
+  }
 }
 
 // Method for getting properties represented as an string.
@@ -231,6 +256,10 @@ int FairMQDevice::GetProperty(const int key, const int default_ /*= 0*/, const i
     {
         case NumIoThreads:
             return fNumIoThreads;
+        case HeartbeatTimeoutInMs:
+            return fHeartbeatTimeoutInMs;
+        case HeartbeatIntervalInMs:
+            return fHeartbeatIntervalInMs;
         case LogIntervalInMs:
             return fLogIntervalInMs;
         case InputSndBufSize:
@@ -244,6 +273,16 @@ int FairMQDevice::GetProperty(const int key, const int default_ /*= 0*/, const i
         default:
             return FairMQConfigurable::GetProperty(key, default_, slot);
     }
+}
+
+// Method for getting properties represented as a heartbeat.
+boost::posix_time::ptime FairMQDevice::GetProperty(const int key, const boost::posix_time::ptime default_, const int slot /*= 0*/)
+{
+  switch (key)
+  {
+    case OutputHeartbeat:
+      return fOutputHeartbeat.at(slot);
+  }
 }
 
 void FairMQDevice::SetTransport(FairMQTransportFactory* factory)
