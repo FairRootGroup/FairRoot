@@ -1,13 +1,15 @@
 #!/bin/bash
 
-if [ ! -d  $SIMPATH/transport/geant4_vmc ];
-then
+
+if [ ! -d  $SIMPATH/transport/geant4_vmc ]; then
   cd $SIMPATH/transport
-  git clone http://root.cern.ch/git/geant4_vmc.git
-  cd geant4_vmc
-  git checkout master 
+  git clone $GEANT4VMC_LOCATION
 fi
-                 
+
+cd $SIMPATH/transport/geant4_vmc
+git checkout $GEANT4VMCBRANCH
+git reset $GEANT4VMCVERSION
+    
 install_prefix=$SIMPATH_INSTALL
 checkfile=$install_prefix/lib/libgeant4vmc.so
 

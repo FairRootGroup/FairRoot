@@ -416,6 +416,11 @@ then
 fi
 
 export FC=$(grep FortranCompiler $SIMPATH/test/configure | cut -f2 -d:)
+# On Linux systems f95 in many cases is only a link to gfortran
+# If there are many links 'readlink -f' returns the link to the final source 
+if [ "$FC" = "f95" ]; then
+  export FC=$(readlink -f `which f95`)
+fi
 export F77=$FC
 
 # actualy one should check for mac os x 10.8 

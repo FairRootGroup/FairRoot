@@ -35,13 +35,9 @@ export XERCESCVERSION=3.1.1
 export MESA_LOCATION="ftp://ftp.freedesktop.org/pub/mesa/older-versions/7.x/7.10.3/"
 export MESAVERSION=MesaLib-7.10.3
 
-#export ROOT_LOCATION="ftp://root.cern.ch/root/"
-#export ROOTVERSION=v5.34.17
-
 export ROOT_LOCATION="http://root.cern.ch/git/root.git"
 export ROOTBRANCH=v5-34-00-patches
-#export ROOTVERSION=2beb7b254ecfb65aedfb87b6cfa50de0c93490a3
-export ROOTVERSION=ce8829a4efe5faad51b5b5d771db827f79d3ca32
+export ROOTVERSION=2beb7b254ecfb65aedfb87b6cfa50de0c93490a3
 
 export PLUTO_LOCATION="http://web-docs.gsi.de/%7Ehadeshyp/pluto/v5.37/"
 export PLUTOVERSION=pluto_v5.37
@@ -52,8 +48,9 @@ export GEANT3VERSION=geant321+_vmc.1.15a
 export VGM_LOCATION="https://svn.code.sf.net/p/vgm/code/tags/"
 export VGMVERSION=v3-06
 
-export GEANT4VMC_LOCATION="ftp://root.cern.ch/root/vmc/"
-export GEANT4VMC_VERSION=2.15
+export GEANT4VMC_LOCATION="http://root.cern.ch/git/geant4_vmc.git"
+export GEANT4VMCBRANCH=v2-15-patches
+export GEANT4VMCVERSION=8ca9af5ff6c8d6a0a080f958d483ec07be2bf5f8
 
 export MILLEPEDE_LOCATION="http://svnsrv.desy.de/public/MillepedeII/tags/"
 export MILLEPEDE_VERSION=V04-01-01
