@@ -236,7 +236,7 @@ FairParamObj::FairParamObj(const Text_t* name,const Text_t* value)
    streamerInfoSize(0)
 {
   // Constructor for a string value
-  paramValue=new UChar_t[arraySize];
+  paramValue=new UChar_t[arraySize+1];
   memcpy(paramValue,value,arraySize);
 }
 
