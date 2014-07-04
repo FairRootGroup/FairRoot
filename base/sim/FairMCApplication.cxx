@@ -656,7 +656,7 @@ void FairMCApplication::ConstructGeometry()
     //  cout << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<<endl;
     gGeoManager->CloseGeometry();   // close geometry
     gMC->SetRootGeometry();         // notify VMC about Root geometry
-      
+    Int_t Counter=0;
     TDatabasePDG* pdgDatabase = TDatabasePDG::Instance();
     const THashList *list=pdgDatabase->ParticleList();
     if(list==0)pdgDatabase->ReadPDGTable();
@@ -664,8 +664,11 @@ void FairMCApplication::ConstructGeometry()
     if(list!=0){
       TIterator *particleIter = list->MakeIterator();
       TParticlePDG *Particle=0;
-      while((Particle=dynamic_cast<TParticlePDG*> (particleIter->Next()))) {
-         gGeoManager->SetPdgName(Particle->PdgCode(), Particle->GetName());
+      while((Particle=dynamic_cast<TParticlePDG*> (particleIter->Next())) && (Counter <= 256)) {
+         TString Name= gGeoManager->GetPdgName(Particle->PdgCode());
+     //    fLogger->Info(MESSAGE_ORIGIN, "%i : Particle name: %s PDG  %i  ", Counter , Name.Data() ,Particle->PdgCode());
+         if(Name=="XXX") gGeoManager->SetPdgName(Particle->PdgCode(), Particle->GetName());
+         Counter++;
       }
     }
   }

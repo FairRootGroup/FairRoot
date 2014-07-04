@@ -42,6 +42,8 @@ void FairRKPropagator::PropagatToPlane(Double_t Charge, Double_t* vecRKIn, Doubl
   Double_t distance[3];
   Double_t vecRKoutT[7];
 
+  for (Int_t i=0; i< 7; i++) {vecRKoutT[i]=0;}
+    
   Norm[0]=vec1[1]*vec2[2] - vec2[2] * vec2[1]; // a2b3 − a3b2,
   Norm[1]=vec1[2]*vec2[0] - vec1[0] * vec2[2]; // a3b1 − a1b3;
   Norm[2]=vec1[0]*vec2[1] - vec1[1] * vec2[0];

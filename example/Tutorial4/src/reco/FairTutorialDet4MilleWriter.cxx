@@ -190,7 +190,9 @@ void FairTutorialDet4MilleWriter::StraightLineShiftX(Option_t* option)
 
   }
   fMille->end();
-
+  delete derLC;
+  delete derGL;
+  delete label;
 }
 
 // ---- Exec ----------------------------------------------------------
