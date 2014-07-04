@@ -25,7 +25,6 @@
 #include "TString.h"
 
 #include "FairMQDevice.h"
-#include "FairMQFileSink.h"
 #include "FairMQLogger.h"
 
 #include "FairTestDetectorPayload.h"

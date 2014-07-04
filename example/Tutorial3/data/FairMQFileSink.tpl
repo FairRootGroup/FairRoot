@@ -69,7 +69,7 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
                 {
                     InputArchive >> fHitVector;
                 }
-                catch (boost::archive::archive_exception e)
+                catch (boost::archive::archive_exception& e)
                 {
                     LOG(ERROR) << e.what();
                 }
@@ -82,7 +82,7 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
                     new ((*fOutput)[i]) TIn(fHitVector.at(i));
                 }
 
-                if (!fOutput)
+                if (fOutput->IsEmpty())
                 {
                     LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
                 }
@@ -137,7 +137,7 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
                 new ((*fOutput)[i]) FairTestDetectorHit(input[i].detID, input[i].mcindex, pos, dpos);
             }
 
-            if (!fOutput)
+            if (fOutput->IsEmpty())
             {
                 LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
             }
@@ -193,7 +193,7 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
 
             fOutput = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
 
-            if (!fOutput)
+            if (fOutput->IsEmpty())
             {
                 LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
             }
@@ -253,7 +253,7 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
                 new ((*fOutput)[i]) FairTestDetectorHit(hit.detid(), hit.mcindex(), pos, dpos);
             }
 
-            if (!fOutput)
+            if (fOutput->IsEmpty())
             {
                 LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
             }

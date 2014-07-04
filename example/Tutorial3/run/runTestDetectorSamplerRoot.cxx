@@ -133,7 +133,7 @@ int main(int argc, char** argv)
     {
         sampler.ChangeState(FairMQSampler<TLoader>::RUN);
     }
-    catch (boost::archive::archive_exception e)
+    catch (boost::archive::archive_exception& e)
     {
         LOG(ERROR) << e.what();
     }

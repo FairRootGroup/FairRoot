@@ -20,7 +20,8 @@ FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose) :
   fInput(NULL),
   fBranch(""),
   fOutput(NULL),
-  fEventIndex(0)
+  fEventIndex(0),
+  fTransportFactory(NULL)
 {
 }
 
@@ -29,7 +30,8 @@ FairMQSamplerTask::FairMQSamplerTask() :
   fInput(NULL),
   fBranch(""),
   fOutput(NULL),
-  fEventIndex(0)
+  fEventIndex(0),
+  fTransportFactory(NULL)
 {
 }
 

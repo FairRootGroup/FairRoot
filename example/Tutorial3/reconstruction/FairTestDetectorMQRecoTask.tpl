@@ -119,7 +119,7 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(FairMQ
         {
             InputArchive >> fDigiVector; // get input Archive
         }
-        catch (boost::archive::archive_exception e)
+        catch (boost::archive::archive_exception& e)
         {
             LOG(ERROR) << e.what();
         }
