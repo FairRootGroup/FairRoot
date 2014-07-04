@@ -1,10 +1,3 @@
-/********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
- *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
- *                  copied verbatim in the file "LICENSE"                       *
- ********************************************************************************/
 #include "FairPrimaryGenerator.h"
 
 #include "FairGenerator.h"              // for FairGenerator
@@ -220,13 +213,16 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw,
                                     Double_t py_raw,
                                     Double_t pz_raw, Double_t vx, Double_t vy,
                                     Double_t vz, Int_t parent,
-                                    Bool_t wanttracking, Double_t e)
+                                    Bool_t wanttracking, Double_t e,Double_t tof, Double_t weight)
 {
 
   // ---> Add event vertex to track vertex
   vx += fVertex.X();
   vy += fVertex.Y();
   vz += fVertex.Z();
+
+  // cout << "FairPrimaryGenerator::AddTrack +Z" <<  fVertex.Z() << " pdgid " << pdgid << "?"<< wanttracking << endl;
+
 
   TVector3 mom(px_raw, py_raw, pz_raw);
 
@@ -280,16 +276,17 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw,
   Int_t    doTracking =  0;   // Go to tracking
   if(fdoTracking && wanttracking) { doTracking = 1 ; }
   Int_t    dummyparent     = -1;   // Primary particle (now the value is -1 by default)
-  Double_t tof        =  0.;  // Time of flight
+  // Double_t tof        =  0.;  // Time of flight
   Double_t polx       =  0.;  // Polarisation
   Double_t poly       =  0.;
   Double_t polz       =  0.;
   Int_t    ntr        =  0;   // Track number; to be filled by the stack
-  Double_t weight     =  1.;  // Weight
+  // Double_t weight     =  1.;  // Weight
   Int_t    status     =  0;   // Generation status
 
   if( parent!=-1) { parent+=fMCIndexOffset; }// correct for tracks which are in list before generator is called
   // Add track to stack
+  cout << "Call ShipStack:  " << mom.Z() << " " << dummyparent << " " << parent << " "<< fMCIndexOffset << endl;
   fStack->PushTrack(doTracking, dummyparent, pdgid, mom.X(), mom.Y(), mom.Z(), e, vx, vy, vz,
                     tof, polx, poly, polz, kPPrimary, ntr, weight, status, parent);
   fNTracks++;
