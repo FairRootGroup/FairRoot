@@ -1,10 +1,3 @@
-/********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
- *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
- *                  copied verbatim in the file "LICENSE"                       *
- ********************************************************************************/
 /** FairPrimaryGenerator.h
  *@author V.Friese  <v.friese@gsi.de>
  *
@@ -87,7 +80,8 @@ class FairPrimaryGenerator : public TNamed
         *@param vx,vy,vz Track origin relative to event vertex
         **/
     virtual void AddTrack(Int_t pdgid, Double_t px, Double_t py, Double_t pz,
-                          Double_t vx, Double_t vy, Double_t vz, Int_t parent=-1,Bool_t wanttracking=true,Double_t e=-9e9);
+                          Double_t vx, Double_t vy, Double_t vz, Int_t parent=-1,Bool_t wanttracking=true,Double_t e=-9e9,
+                          Double_t tof=0., Double_t weight=0.);
 
 
     /** Set beam position and widths.
