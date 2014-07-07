@@ -30,9 +30,9 @@ FairMQSamplerTask::FairMQSamplerTask() :
   fInput(NULL),
   fBranch(""),
   fOutput(NULL),
-  fEventIndex(0),
-  fTransportFactory(NULL)
-{
+  fTransportFactory(NULL),
+  fEventIndex(0)
+  {
 }
 
 FairMQSamplerTask::~FairMQSamplerTask()
