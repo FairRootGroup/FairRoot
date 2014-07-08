@@ -158,7 +158,7 @@ then
     mysed '-fno-f2c -fPIC' '-fPIC' Makefile.linuxx8664icc
     mysed '-fno-second-underscore' '' Makefile.linuxx8664icc
   fi
-  if [ "$FC" = "gfortran" ];
+  if [[ $FC =~ .*gfortran.* ]];
   then
     if [ "$arch" = "linuxx8664gcc" ];
     then     
