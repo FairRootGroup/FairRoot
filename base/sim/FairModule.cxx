@@ -302,50 +302,51 @@ void FairModule::ConstructRootGeometry()
 
   if(v1==0) {
     LOG(FATAL)<<"Could not find any geometry in file " << GetGeometryFileName().Data() << FairLogger::endl;
-  }
-  gGeoManager=OldGeo;
-  gGeoManager->cd();
-  // If AddToVolume is empty add the volume to the top volume Cave
-  // If it is defined check i´f the volume exists and if it exists add the volume from the root file
-  // to the already existing volume
-  TGeoVolume* Cave=NULL;
-  if ( 0 == fMotherVolumeName.Length() ) {
-    Cave= gGeoManager->GetTopVolume();
   } else {
-    Cave = gGeoManager->GetVolume(fMotherVolumeName);
-  }
-  if(Cave!=NULL) {
-    /**Every thing is OK, we have a TGeoVolume and now we add it to the simulation TGeoManager  */
-    gGeoManager->AddVolume(v1);
-    /** force rebuilding of voxels */
-    TGeoVoxelFinder* voxels = v1->GetVoxels();
-    if (voxels) { voxels->SetNeedRebuild(); }
+    gGeoManager=OldGeo;
+    gGeoManager->cd();
+    // If AddToVolume is empty add the volume to the top volume Cave
+    // If it is defined check i´f the volume exists and if it exists add the volume from the root file
+    // to the already existing volume
+    TGeoVolume* Cave=NULL;
+    if ( 0 == fMotherVolumeName.Length() ) {
+      Cave= gGeoManager->GetTopVolume();
+    } else {
+      Cave = gGeoManager->GetVolume(fMotherVolumeName);
+    }
+    if(Cave!=NULL) {
+      /**Every thing is OK, we have a TGeoVolume and now we add it to the simulation TGeoManager  */
+      gGeoManager->AddVolume(v1);
+      /** force rebuilding of voxels */
+      TGeoVoxelFinder* voxels = v1->GetVoxels();
+      if (voxels) { voxels->SetNeedRebuild(); }
 
-    // else { fLogger->Fatal(MESSAGE_ORIGIN, "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find voxels  \033[0m"); }
+      // else { fLogger->Fatal(MESSAGE_ORIGIN, "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find voxels  \033[0m"); }
 
-    /**To avoid having different names of the default matrices because we could have get the volume from another
-     * TGeoManager, we reset the default matrix name
-     */
-    TGeoMatrix* M = n->GetMatrix();
-    SetDefaultMatrixName(M);
+      /**To avoid having different names of the default matrices because we could have get the volume from another
+       * TGeoManager, we reset the default matrix name
+       */
+      TGeoMatrix* M = n->GetMatrix();
+      SetDefaultMatrixName(M);
 
-    /** NOw we can remove the matrix so that the new geomanager will rebuild it properly*/
-    gGeoManager->GetListOfMatrices()->Remove(M);
-    TGeoHMatrix* global = gGeoManager->GetHMatrix();
-    gGeoManager->GetListOfMatrices()->Remove(global); //Remove the Identity matrix
-    /**Now we can add the node to the existing cave */
-    Cave->AddNode(v1,0, M);
-    /** correction from O. Merle: in case of a TGeoVolume (v1) set the material properly */
+      /** NOw we can remove the matrix so that the new geomanager will rebuild it properly*/
+      gGeoManager->GetListOfMatrices()->Remove(M);
+      TGeoHMatrix* global = gGeoManager->GetHMatrix();
+      gGeoManager->GetListOfMatrices()->Remove(global); //Remove the Identity matrix
+      /**Now we can add the node to the existing cave */
+      Cave->AddNode(v1,0, M);
+      /** correction from O. Merle: in case of a TGeoVolume (v1) set the material properly */
 
-    AssignMediumAtImport(v1);
-    /** now go through the herachy and set the materials properly, this is important becase the CAD converter
-     *  produce TGeoVolumes with materials that have only names and no properties
-     */
-    ExpandNode(n);
-    if(NewGeo!=0) { delete NewGeo; }
-    delete f;
-  } else {
-    LOG(FATAL)<<"Could not find the given mother volume "<< fMotherVolumeName.Data() << " where the geomanger should be added."<<FairLogger::endl;
+      AssignMediumAtImport(v1);
+      /** now go through the herachy and set the materials properly, this is important becase the CAD converter
+       *  produce TGeoVolumes with materials that have only names and no properties
+       */
+      ExpandNode(n);
+      if(NewGeo!=0) { delete NewGeo; }
+      delete f;
+    } else {
+      LOG(FATAL)<<"Could not find the given mother volume "<< fMotherVolumeName.Data() << " where the geomanger should be added."<<FairLogger::endl;
+    }
   }
 }
 //__________________________________________________________________________
@@ -463,11 +464,12 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
         LOG(FATAL)<<"Material "<< mat1->GetName() << "is not defined in ASCII file nor in Root file." << FairLogger::endl;
         //     FairMedium=new FairGeoMedium(mat1->GetName());
         //      Media->addMedium(FairMedium);
-      }
+      } else {
 
-      Int_t nmed=geobuild->createMedium(FairMedium);
-      v->SetMedium(gGeoManager->GetMedium(nmed));
-      gGeoManager->SetAllIndex();
+        Int_t nmed=geobuild->createMedium(FairMedium);
+        v->SetMedium(gGeoManager->GetMedium(nmed));
+        gGeoManager->SetAllIndex();
+      }
     } else {
       /**Material is already available in the TGeoManager and we can set it */
       TGeoMedium* med2= gGeoManager->GetMedium(mat1->GetName());

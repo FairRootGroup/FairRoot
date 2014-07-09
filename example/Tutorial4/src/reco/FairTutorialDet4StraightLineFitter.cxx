@@ -171,7 +171,11 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* option)
   //  Double_t Z = 0.;
   //  new ((*fTracks)[0]) FairTrackParam(OffX, OffY, Z, SlopeX, SlopeY, matrix);
 
-
+  delete[] ZPos;
+  delete[] XPos;
+  delete[] XPosErr;
+  delete[] YPos;
+  delete[] YPosErr;
 }
 
 Bool_t FairTutorialDet4StraightLineFitter::IsGoodEvent()

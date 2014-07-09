@@ -98,67 +98,70 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
   // Check for MCEventHeader
   if (!fEvent) {
     LOG(FATAL) << "No MCEventHeader branch!" << FairLogger::endl;
-  }
+    return kFALSE;
+  } else {
 
-  // Initialise
-  fStack = pStack;
-  fNTracks = 0;
-  fEvent->Reset();
+    // Initialise
+    fStack = pStack;
+    fNTracks = 0;
+    fEvent->Reset();
 
-  // Create event vertex
-  MakeVertex();
-  fEvent->SetVertex(fVertex);
+    // Create event vertex
+    MakeVertex();
+    fEvent->SetVertex(fVertex);
 
-  // Create beam angle
-  // Here we only randomly generate two angles (anglex, angley)
-  // for the event and later on (in AddTrack())
-  // all our particles will be rotated accordingly.
-  if (fBeamAngle) {
-    MakeBeamAngle();
-  }
-
-  // Create event plane
-  // Randomly generate an angle by which each track added (in AddTrack())
-  // to the event is rotated around the z-axis
-  if (fEventPlane) {
-    MakeEventPlane();
-  }
-
-  // Call the ReadEvent methods from all registered generators
-  fListIter->Reset();
-  TObject *obj = 0;
-  FairGenerator *gen = 0;
-  while ((obj = fListIter->Next())) {
-    gen = dynamic_cast<FairGenerator *>(obj);
-    if (!gen) {
-      return kFALSE;
+    // Create beam angle
+    // Here we only randomly generate two angles (anglex, angley)
+    // for the event and later on (in AddTrack())
+    // all our particles will be rotated accordingly.
+    if (fBeamAngle) {
+      MakeBeamAngle();
     }
-    const char *genName = gen->GetName();
-    fMCIndexOffset = fNTracks; // number tracks before generator is called
-    Bool_t test = gen->ReadEvent(this);
-    if (!test) {
-      LOG(ERROR) << "ReadEvent failed for generator " << genName
-                 << FairLogger::endl;
-      return kFALSE;
+
+    // Create event plane
+    // Randomly generate an angle by which each track added (in AddTrack())
+    // to the event is rotated around the z-axis
+    if (fEventPlane) {
+      MakeEventPlane();
     }
+
+    // Call the ReadEvent methods from all registered generators
+    fListIter->Reset();
+    TObject *obj = 0;
+    FairGenerator *gen = 0;
+    while ((obj = fListIter->Next())) {
+      gen = dynamic_cast<FairGenerator *>(obj);
+      if (!gen) {
+        return kFALSE;
+      }
+      const char *genName = gen->GetName();
+      fMCIndexOffset = fNTracks; // number tracks before generator is called
+      Bool_t test = gen->ReadEvent(this);
+      if (!test) {
+        LOG(ERROR) << "ReadEvent failed for generator " << genName
+                   << FairLogger::endl;
+        return kFALSE;
+      }
+    }
+
+  
+    fTotPrim += fNTracks;
+    // Screen output
+
+    // Set the event number if not set already by one of the dedicated generators
+    if (-1 == fEvent->GetEventID()) {
+      fEventNr++;
+      fEvent->SetEventID(fEventNr);
+    }
+    LOG(DEBUG) << "(Event " << fEvent->GetEventID() << ") " << fNTracks
+               << " primary tracks from vertex (" << fVertex.X() << ", "
+               << fVertex.Y() << ", " << fVertex.Z() << ") with beam angle ("
+               << fBeamAngleX << ", " << fBeamAngleY << ") " << FairLogger::endl;
+
+    fEvent->SetNPrim(fNTracks);
+
+    return kTRUE;
   }
-
-  fTotPrim += fNTracks;
-  // Screen output
-
-  // Set the event number if not set already by one of the dedicated generators
-  if (-1 == fEvent->GetEventID()) {
-    fEventNr++;
-    fEvent->SetEventID(fEventNr);
-  }
-  LOG(DEBUG) << "(Event " << fEvent->GetEventID() << ") " << fNTracks
-             << " primary tracks from vertex (" << fVertex.X() << ", "
-             << fVertex.Y() << ", " << fVertex.Z() << ") with beam angle ("
-             << fBeamAngleX << ", " << fBeamAngleY << ") " << FairLogger::endl;
-
-  fEvent->SetNPrim(fNTracks);
-
-  return kTRUE;
 }
 // -------------------------------------------------------------------------
 

@@ -28,6 +28,7 @@ FairMCDataCrawler::FairMCDataCrawler()
     fFinalStage(),
     fUltimateStage(0),
     fVerbose(0),
+    fStoreAllEndpoints(kTRUE),
     fStoreIntermediate(kTRUE)
 {
 }

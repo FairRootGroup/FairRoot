@@ -15,6 +15,7 @@
 #include "FairRunAna.h"
 #include "FairRuntimeDb.h"
 #include "FairBaseParSet.h"
+#include "FairLogger.h"
 
 #include "TRandom.h"
 #include "TMath.h"
@@ -63,7 +64,7 @@ FairTutorialDet2Digitizer::~FairTutorialDet2Digitizer()
 // ----  Initialisation  ----------------------------------------------
 void FairTutorialDet2Digitizer::SetParContainers()
 {
-  cout<<" * FairTutorialDet2Digitizer * :: SetParContainers() "<<endl;
+  LOG(INFO) << "FairTutorialDet2Digitizer :: SetParContainers() " << FairLogger::endl;
 
 
   // Get Base Container
@@ -81,7 +82,7 @@ void FairTutorialDet2Digitizer::SetParContainers()
 InitStatus FairTutorialDet2Digitizer::ReInit()
 {
 
-  cout<<" * FairTutorialDet2Digitizer * :: ReInit() "<<endl;
+  LOG(INFO) << " FairTutorialDet2Digitizer :: ReInit() " << FairLogger::endl;
 
 
   FairRunAna* ana = FairRunAna::Instance();
@@ -98,26 +99,30 @@ InitStatus FairTutorialDet2Digitizer::ReInit()
 InitStatus FairTutorialDet2Digitizer::Init()
 {
 
-  cout<<" * FairTutorialDet2Digitizer * :: Init() "<<endl;
+  LOG(INFO) << " FairTutorialDet2Digitizer :: Init() " << FairLogger::endl;
 
   FairRootManager* ioman = FairRootManager::Instance();
-  if ( ! ioman ) { Fatal("Init", "No FairRootManager"); }
-
-  fTutorialDetPoints=(TClonesArray*)
-                     ioman->GetObject("TutorialDetPoint");
-
-  if ( ! fTutorialDetPoints ) {
-    cout << "-W FairTutorialDet2Digitizer::Init: No TutorialDetPoints array!" << endl;
-    cout << "                            Task will be inactive" << endl;
+  if ( ! ioman ) { 
+    LOG(FATAL) << "No FairRootManager" << FairLogger::endl; 
     return kERROR;
+  } else { 
+
+    fTutorialDetPoints=(TClonesArray*)
+                       ioman->GetObject("TutorialDetPoint");
+
+    if ( ! fTutorialDetPoints ) {
+      LOG(ERROR) << "No TutorialDetPoints array!" << FairLogger::endl;
+      LOG(ERROR) << "Task will be inactive" << FairLogger::endl;
+      return kERROR;
+    }
+
+    //fListStack = (TClonesArray*)ioman->GetObject("MCTrack");
+    //fDigiCollection = new TClonesArray("FairTrdDigi", 100);
+    //ioman->Register("TRDDigi","TRD Digis",fDigiCollection,kTRUE);
+
+    return kSUCCESS;
+
   }
-
-  //fListStack = (TClonesArray*)ioman->GetObject("MCTrack");
-  //fDigiCollection = new TClonesArray("FairTrdDigi", 100);
-  //ioman->Register("TRDDigi","TRD Digis",fDigiCollection,kTRUE);
-
-  return kSUCCESS;
-
 }
 // --------------------------------------------------------------------
 

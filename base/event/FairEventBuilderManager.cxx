@@ -174,10 +174,12 @@ void FairEventBuilderManager::SetParContainers()
 
   // Get run and runtime database
   FairRunAna* run = FairRunAna::Instance();
-  if ( ! run ) { Fatal("SetParContainers", "No analysis run"); }
-
-  FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) { Fatal("SetParContainers", "No runtime database"); }
+  if ( ! run ) { 
+    Fatal("SetParContainers", "No analysis run"); 
+  } else {
+    FairRuntimeDb* db = run->GetRuntimeDb();
+    if ( ! db ) { Fatal("SetParContainers", "No runtime database"); }
+  }
 }
 // -------------------------------------------------------------------------
 

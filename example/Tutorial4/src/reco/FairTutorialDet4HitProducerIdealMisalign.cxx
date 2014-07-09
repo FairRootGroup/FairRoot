@@ -78,6 +78,8 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::ReInit()
   fRotX=fDigiPar->GetRotX();
   fRotY=fDigiPar->GetRotY();
   fRotZ=fDigiPar->GetRotZ();
+
+  return kSUCCESS;
 }
 
 // -----   Public method Init   --------------------------------------------
