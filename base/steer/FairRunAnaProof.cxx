@@ -84,6 +84,7 @@ FairRunAnaProof::~FairRunAnaProof()
 //_____________________________________________________________________________
 void FairRunAnaProof::Init()
 {
+  fInFileIsOpen = fRootManager->InitSource();
 
   if (fIsInitialized) {
     fLogger->Fatal(MESSAGE_ORIGIN,"Error Init is already called before!");
@@ -92,16 +93,12 @@ void FairRunAnaProof::Init()
     fIsInitialized=kTRUE;
   }
 
-  if ( fRunOnProofWorker ) {
-    fInFileIsOpen = fRootManager->OpenInTree();
-  } else {
+  if ( !fRunOnProofWorker ) {
     // Open the input file and add other input files added by AddFile to the
     // input chain. Do a check if the added files are of the same type
     // as the the input file. Same type means check if they contain the
     // same branch.
-    if (!fMixedInput) {
-      fInFileIsOpen = fRootManager->OpenInChain();
-    } else {
+    if ( fMixedInput) {
       Bool_t openBKChain = fRootManager->OpenBackgroundChain();
       if (!openBKChain) {
         fLogger->Fatal(MESSAGE_ORIGIN, "Could not open background Chain!");
