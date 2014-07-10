@@ -123,11 +123,6 @@ class FairRootManager : public TObject
     /** static access method */
     static FairRootManager* Instance();
 
-    Bool_t            OpenInChain();
-
-    /** Open and prepare the input tree when running on PROOF worker*/
-    Bool_t            OpenInTree();
-
     Bool_t            OpenBackgroundChain();
     Bool_t            OpenSignalChain();
     TFile*            OpenOutFile(const char* fname="cbmsim.root");
@@ -260,9 +255,10 @@ class FairRootManager : public TObject
     void    CheckFriendChains(){fRootFileSource->CheckFriendChains();}
     void CreateNewFriendChain(TString inputFile, TString inputLevel){fRootFileSource->CreateNewFriendChain(inputFile, inputLevel);}
     
-    void InitSource() {
-      fRootFileSource->Init();
+    Bool_t InitSource() {
+      Bool_t retBool = fRootFileSource->Init();
       fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
+      return retBool;
     }
 
     TTree*              GetInTree() {return fRootFileSource->GetInTree();}
@@ -270,7 +266,14 @@ class FairRootManager : public TObject
     TFile*              GetInFile() {return  fRootFileSource->GetInFile();}
     void                CloseInFile() {fRootFileSource->CloseInFile(); }
     /**Set the input tree when running on PROOF worker*/
-    void                SetInTree (TTree*  tempTree)  {fRootFileSource->SetInTree(tempTree);}
+    void                SetInTree (TTree*  tempTree)  {
+      if ( fRootFileSource ) {
+	fRootFileSource->SetInTree(tempTree);
+      }
+      else {
+	fRootFileSource = new FairFileSource(tempTree->GetCurrentFile());
+      }
+    }
     
   private:
     /**private methods*/
