@@ -251,8 +251,8 @@ void FairRootManager::SetInputFile(TString name)
   if(!fMixedInput) {
     //fInputFileName=name;
     fRootFileSource = new FairFileSource(&name);
-    fRootFileSource->Init();
-    fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
+    // fRootFileSource->Init();
+    // fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
     
   }
 }
@@ -1532,22 +1532,16 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
 
 
     } else {
-        
-      TTree *fInTree =fRootFileSource->GetInTree();
+      
       TChain *fInChain=fRootFileSource->GetInChain();
-      if ( fInTree ) {
-        fInTree->SetBranchStatus (BrName,1);
-        fInTree->SetBranchAddress(BrName,&fObj2[fNObj]);
-      } else {
-        fInChain->SetBranchStatus(BrName,1);
-        fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
-      }
+      fInChain->SetBranchStatus(BrName,1);
+      fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
     }
   }
-
+  
   AddMemoryBranch( BrName , fObj2[fNObj] );
   return  fObj2[fNObj];
-
+  
 }
 
 //_____________________________________________________________________________

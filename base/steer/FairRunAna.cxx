@@ -136,6 +136,11 @@ void FairRunAna::Init()
   }
   fRtdb= GetRuntimeDb();
 
+  if ( fRootManager->GetRootFile() ) {
+    fRootManager->InitSource();
+    fInFileIsOpen = kTRUE;
+  }
+
  //Load Geometry from user file
 
   if (fLoadGeo) {
