@@ -23,10 +23,10 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   TString outDir = "./";
 
   // Output file name
-  TString  outFile     ="data/testrun_";
+  TString  outFile     ="testrun_";
   outFile = outFile + mcEngine + ".root";
 
-  TString  parFile     ="data/testparams_";
+  TString  parFile     ="testparams_";
   parFile = parFile + mcEngine + ".root";
   
   TList *parFileList = new TList();
