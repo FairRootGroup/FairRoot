@@ -81,7 +81,7 @@
      // ---
      .add_property("Px", &G4PrimaryParticle::GetPx)
      .add_property("Py", &G4PrimaryParticle::GetPy)
-@@ -71,6 +73,10 @@
+@@ -71,6 +73,12 @@
      .def("GetWeight",   &G4PrimaryParticle::GetWeight)
      .def("SetWeight",   &G4PrimaryParticle::SetWeight)
      .def("GetProperTime", &G4PrimaryParticle::GetProperTime)
@@ -89,7 +89,8 @@
 +    .def("SetMass",   &G4PrimaryParticle::SetMass)
 +    .def("SetMomentumDirection",   &G4PrimaryParticle::SetMomentumDirection)
 +    .def("SetCharge",   &G4PrimaryParticle::SetCharge)
-     ;
++    .def("GetParticleDefinition",   &G4PrimaryParticle::GetParticleDefinition,
++          return_internal_reference<>())     ;
  }
  
 --- source/particles/pyG4PrimaryVertex.cc_orig	2014-02-27 18:12:19.000000000 +0100
