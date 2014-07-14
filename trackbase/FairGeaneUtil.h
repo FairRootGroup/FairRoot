@@ -5,7 +5,6 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-s
 #ifndef FAIRGEANEUTIL_H
 #define FAIRGEANEUTIL_H
 

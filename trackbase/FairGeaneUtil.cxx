@@ -5,7 +5,6 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-
 // ------------------------------------------------------------------
 // Version of June 10th
 // modified to work properly in q/p variables  instead of 1/p
