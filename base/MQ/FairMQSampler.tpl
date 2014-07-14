@@ -73,6 +73,7 @@ void FairMQSampler<Loader>::Run()
 //  while ( fState == RUNNING ) {
 
   for ( /* eventNr */ ; eventNr < fNumEvents; eventNr++ ) {
+    fSamplerTask->SetEventIndex(eventNr);
     fFairRunAna->RunMQ(eventNr);
 
     fPayloadOutputs->at(0)->Send(fSamplerTask->GetOutput());
