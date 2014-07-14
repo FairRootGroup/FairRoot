@@ -1,10 +1,3 @@
-/********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
- *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
- *                  copied verbatim in the file "LICENSE"                       *
- ********************************************************************************/
 #ifndef FAIRGEANEUTIL_H
 #define FAIRGEANEUTIL_H
 
@@ -25,7 +18,7 @@ class FairGeaneUtil : public TObject
                     Double_t* PD, Double_t* RD, Int_t& IERR);
 
     void FromPtToSD(Double_t PD[3], Double_t RD[15], Double_t H[3],Int_t CH,
-                    Double_t SPU, Double_t DJ[2], Double_t DK[2],
+                    Double_t SPU, Double_t DJ[3], Double_t DK[3],
                     Int_t& IERR, Double_t* PC, Double_t* RC);
 
     void FromSCToPt(Double_t PC[3], Double_t RC[15],
@@ -36,10 +29,10 @@ class FairGeaneUtil : public TObject
                     Int_t& IERR, Double_t& SPU,
                     Double_t* PD, Double_t* RD);
 
-    void FromSD1ToSD2(Double_t PD1[2], Double_t RD1[15],Double_t H[2],
+    void FromSD1ToSD2(Double_t PD1[3], Double_t RD1[15],Double_t H[3],
                       Int_t CH, Double_t SP1,
-                      Double_t DJ1[2], Double_t DK1[2],
-                      Double_t DJ2[2], Double_t DK2[2],
+                      Double_t DJ1[3], Double_t DK1[3],
+                      Double_t DJ2[3], Double_t DK2[3],
                       Int_t& IERR, Double_t& SP2,
                       Double_t* PD2, Double_t* RD2);
 
