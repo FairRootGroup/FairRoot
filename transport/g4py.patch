@@ -70,29 +70,6 @@
  using namespace boost::python;
  
  // ====================================================================
---- source/particles/pyG4PrimaryParticle.cc_orig	2014-02-27 18:12:19.000000000 +0100
-+++ source/particles/pyG4PrimaryParticle.cc	2014-05-06 16:29:47.000000000 +0200
-@@ -42,6 +42,8 @@
- {
-   class_<G4PrimaryParticle, G4PrimaryParticle*>
-     ("G4PrimaryParticle", "primary particle")
-+    // constructors
-+    .def(init<const G4int&>())
-     // ---
-     .add_property("Px", &G4PrimaryParticle::GetPx)
-     .add_property("Py", &G4PrimaryParticle::GetPy)
-@@ -71,6 +73,12 @@
-     .def("GetWeight",   &G4PrimaryParticle::GetWeight)
-     .def("SetWeight",   &G4PrimaryParticle::SetWeight)
-     .def("GetProperTime", &G4PrimaryParticle::GetProperTime)
-+    .def("Set4Momentum",   &G4PrimaryParticle::Set4Momentum)
-+    .def("SetMass",   &G4PrimaryParticle::SetMass)
-+    .def("SetMomentumDirection",   &G4PrimaryParticle::SetMomentumDirection)
-+    .def("SetCharge",   &G4PrimaryParticle::SetCharge)
-+    .def("GetParticleDefinition",   &G4PrimaryParticle::GetParticleDefinition,
-+          return_internal_reference<>())     ;
- }
- 
 --- source/particles/pyG4PrimaryVertex.cc_orig	2014-02-27 18:12:19.000000000 +0100
 +++ source/particles/pyG4PrimaryVertex.cc	2014-05-06 16:29:47.000000000 +0200
 @@ -52,6 +52,8 @@
@@ -189,23 +166,26 @@
 +    .def("SetTrackStatus",         &G4Track::SetTrackStatus)
      ;
  }
---- site-modules/geometries/ezgeom/pyEzgeom.cc_orig	2014-02-27 18:12:18.000000000 +0100
-+++ site-modules/geometries/ezgeom/pyEzgeom.cc	2014-06-25 16:05:52.000000000 +0200
-@@ -126,6 +126,8 @@
-     .def("CreateShpereVolume",  &G4EzVolume::CreateSphereVolume,
- 	                        f_CreateSphereVolume())
-     .def("CreateOrbVolume",     &G4EzVolume::CreateOrbVolume)
-+    .def("CreateTrapVolume",    &G4EzVolume::CreateTrapVolume)
-+    .def("CreateTrdVolume",     &G4EzVolume::CreateTrdVolume)
-     // ---
-     .def("SetSold",             &G4EzVolume::SetSolid)
-     .def("GetSold",             &G4EzVolume::GetSolid,
---- site-modules/geometries/ezgeom/G4EzVolume.hh_orig	2014-02-27 18:12:18.000000000 +0100
-+++ site-modules/geometries/ezgeom/G4EzVolume.hh	2014-06-25 16:05:43.000000000 +0200
-@@ -68,6 +68,12 @@
+--- site-modules/geometries/ezgeom/G4EzVolume.hh_orig	2014-07-15 12:28:53.000000000 +0200
++++ site-modules/geometries/ezgeom/G4EzVolume.hh	2014-07-15 12:37:24.000000000 +0200
+@@ -65,9 +65,26 @@
+   ~G4EzVolume();
+ 
+   // createing volume
++  void Subtract(G4Material* amaterial,G4EzVolume* A, G4EzVolume* B);
++  void Add(G4Material* amaterial,G4EzVolume* A, G4EzVolume* B);
++  void Intersect(G4Material* amaterial,G4EzVolume* A, G4EzVolume* B);
    void CreateBoxVolume(G4Material* amaterial,
  		       G4double dx, G4double dy, G4double dz);
  
++  void CreateTrapezoidVolume(G4Material* amaterial, 
++            G4double  pDz,   G4double  pTheta,
++             G4double  pPhi,  G4double  pDy1,
++             G4double  pDx1,  G4double  pDx2,
++             G4double  pAlp1, G4double  pDy2,
++             G4double  pDx3,  G4double  pDx4,
++             G4double  pAlp2);
++
 +  void CreateTrapVolume(G4Material* amaterial, 
 +			G4double pZ, G4double pY, G4double pX, G4double pLTX);
 +
@@ -215,8 +195,8 @@
    void CreateTubeVolume(G4Material* amaterial,
  			G4double rmin, G4double rmax, 
  			G4double dz,
---- site-modules/geometries/ezgeom/G4EzVolume.cc_orig	2014-02-27 18:12:18.000000000 +0100
-+++ site-modules/geometries/ezgeom/G4EzVolume.cc	2014-06-25 16:05:43.000000000 +0200
+--- site-modules/geometries/ezgeom/G4EzVolume.cc_orig	2014-07-15 12:28:43.000000000 +0200
++++ site-modules/geometries/ezgeom/G4EzVolume.cc	2014-07-15 12:42:32.000000000 +0200
 @@ -31,6 +31,8 @@
  // ====================================================================
  #include "G4Material.hh"
@@ -226,10 +206,88 @@
  #include "G4Tubs.hh"
  #include "G4Cons.hh"
  #include "G4Sphere.hh"
-@@ -95,7 +97,42 @@
-   va= new G4VisAttributes();
+@@ -76,6 +78,53 @@
+ {
+ }
+ 
++///////////////////////////////////////////////////////////////////////
++void G4EzVolume::Subtract(G4Material* amaterial,G4EzVolume* A, G4EzVolume* B)
++///////////////////////////////////////////////////////////////////////
++{
++  if(lv !=0 ) {
++    G4cout << "%%% Warning (G4EzVolume): volume is already created."
++	   << G4endl;
++    return;
++  }
++    solid = new G4SubtractionSolid(name,A->GetSolid(), B->GetSolid());
++    lv    = new G4LogicalVolume (solid,amaterial,name);
++  // vis. attributes
++    va= new G4VisAttributes();
++    lv-> SetVisAttributes(va);
++}
++
++///////////////////////////////////////////////////////////////////////
++void G4EzVolume::Add(G4Material* amaterial,G4EzVolume* A, G4EzVolume* B)
++///////////////////////////////////////////////////////////////////////
++{
++  if(lv !=0 ) {
++    G4cout << "%%% Warning (G4EzVolume): volume is already created."
++	   << G4endl;
++    return;
++  }
++   solid = new G4UnionSolid(name, A->GetSolid(), B->GetSolid());
++   lv    = new G4LogicalVolume (solid,amaterial,name);
++  // vis. attributes
++    va= new G4VisAttributes();
++    lv-> SetVisAttributes(va);
++}
++
++///////////////////////////////////////////////////////////////////////
++void G4EzVolume::Intersect(G4Material* amaterial,G4EzVolume* A, G4EzVolume* B)
++///////////////////////////////////////////////////////////////////////
++{
++  if(lv !=0 ) {
++    G4cout << "%%% Warning (G4EzVolume): volume is already created."
++	   << G4endl;
++    return;
++  }
++    solid = new G4IntersectionSolid(name, A->GetSolid(), B->GetSolid());
++    lv    = new G4LogicalVolume (solid,amaterial,name);
++  // vis. attributes
++    va= new G4VisAttributes();
++    lv-> SetVisAttributes(va);
++}
+ 
+ ///////////////////////////////////////////////////////////////////////
+ void G4EzVolume::CreateBoxVolume(G4Material* amaterial, 
+@@ -96,6 +145,66 @@
    lv-> SetVisAttributes(va);
  }
+ 
++///////////////////////////////////////////////////////////////////////
++void G4EzVolume::CreateTrapezoidVolume(G4Material* amaterial, 
++	     G4double  pDz,   G4double  pTheta,
++             G4double  pPhi,  G4double  pDy1,
++             G4double  pDx1,  G4double  pDx2,
++             G4double  pAlp1, G4double  pDy2,
++             G4double  pDx3,  G4double  pDx4,
++             G4double  pAlp2)
++///////////////////////////////////////////////////////////////////////
++{
++  if(lv !=0 ) {
++    G4cout << "%%% Warning (G4EzVolume): volume is already created."
++	   << G4endl;
++    return;
++  }
++
++  solid= new G4Trap(name,pDz,pTheta,pPhi,pDy1,pDx1,pDx2,pAlp1,pDy2,pDx3,pDx4,pAlp2);
++  lv= new G4LogicalVolume(solid, amaterial, name);
++
++  // vis. attributes
++  va= new G4VisAttributes();
++  lv-> SetVisAttributes(va);
++}
++
 +///////////////////////////////////////////////////////////////////////
 +void G4EzVolume::CreateTrdVolume(G4Material* amaterial, 
 +		 G4double dx1, G4double dx2, G4double dy1, G4double dy2, G4double dz)
@@ -240,7 +298,7 @@
 +	   << G4endl;
 +    return;
 +  }
- 
++
 +  solid= new G4Trd(name, dx1, dx2, dy1, dy2, dz);
 +  lv= new G4LogicalVolume(solid, amaterial, name);
 +
@@ -269,3 +327,49 @@
  
  ////////////////////////////////////////////////////////////////////////////
  void G4EzVolume::CreateTubeVolume(G4Material* amaterial,
+--- site-modules/geometries/ezgeom/pyEzgeom.cc_orig	2014-07-15 12:29:10.000000000 +0200
++++ site-modules/geometries/ezgeom/pyEzgeom.cc	2014-07-15 12:43:50.000000000 +0200
+@@ -118,6 +118,9 @@
+   class_<G4EzVolume>("G4EzVolume", "an easy way of geometry configuration")
+     .def(init<const G4String&>())
+     // ---
++    .def("Subtract",      &G4EzVolume::Subtract)
++    .def("Add",      &G4EzVolume::Add)
++    .def("Intersect",      &G4EzVolume::Intersect)
+     .def("CreateBoxVolume",     &G4EzVolume::CreateBoxVolume)
+     .def("CreateTubeVolume",    &G4EzVolume::CreateTubeVolume,
+ 	                        f_CreateTubeVolume())
+@@ -126,6 +129,9 @@
+     .def("CreateShpereVolume",  &G4EzVolume::CreateSphereVolume,
+ 	                        f_CreateSphereVolume())
+     .def("CreateOrbVolume",     &G4EzVolume::CreateOrbVolume)
++    .def("CreateTrapezoidVolume",    &G4EzVolume::CreateTrapezoidVolume)
++    .def("CreateTrapVolume",    &G4EzVolume::CreateTrapVolume)
++    .def("CreateTrdVolume",     &G4EzVolume::CreateTrdVolume)
+     // ---
+     .def("SetSold",             &G4EzVolume::SetSolid)
+     .def("GetSold",             &G4EzVolume::GetSolid,
+--- source/particles/pyG4PrimaryParticle.cc_orig	2014-07-15 12:54:54.000000000 +0200
++++ source/particles/pyG4PrimaryParticle.cc	2014-07-15 12:56:21.000000000 +0200
+@@ -42,6 +42,8 @@
+ {
+   class_<G4PrimaryParticle, G4PrimaryParticle*>
+     ("G4PrimaryParticle", "primary particle")
++    // constructors
++    .def(init<const G4int&>())
+     // ---
+     .add_property("Px", &G4PrimaryParticle::GetPx)
+     .add_property("Py", &G4PrimaryParticle::GetPy)
+@@ -71,6 +73,12 @@
+     .def("GetWeight",   &G4PrimaryParticle::GetWeight)
+     .def("SetWeight",   &G4PrimaryParticle::SetWeight)
+     .def("GetProperTime", &G4PrimaryParticle::GetProperTime)
++    .def("Set4Momentum",   &G4PrimaryParticle::Set4Momentum)
++    .def("SetMass",   &G4PrimaryParticle::SetMass)
++    .def("SetMomentumDirection",   &G4PrimaryParticle::SetMomentumDirection)
++    .def("SetCharge",   &G4PrimaryParticle::SetCharge)
++    .def("GetParticleDefinition",   &G4PrimaryParticle::GetParticleDefinition,
++          return_internal_reference<>())     ;
+     ;
+ }
+ 
