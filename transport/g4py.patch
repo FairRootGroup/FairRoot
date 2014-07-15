@@ -195,9 +195,55 @@
    void CreateTubeVolume(G4Material* amaterial,
  			G4double rmin, G4double rmax, 
  			G4double dz,
---- site-modules/geometries/ezgeom/G4EzVolume.cc_orig	2014-07-15 12:28:43.000000000 +0200
-+++ site-modules/geometries/ezgeom/G4EzVolume.cc	2014-07-15 12:42:32.000000000 +0200
-@@ -31,6 +31,8 @@
+--- site-modules/geometries/ezgeom/pyEzgeom.cc_orig	2014-07-15 12:29:10.000000000 +0200
++++ site-modules/geometries/ezgeom/pyEzgeom.cc	2014-07-15 12:43:50.000000000 +0200
+@@ -118,6 +118,9 @@
+   class_<G4EzVolume>("G4EzVolume", "an easy way of geometry configuration")
+     .def(init<const G4String&>())
+     // ---
++    .def("Subtract",      &G4EzVolume::Subtract)
++    .def("Add",      &G4EzVolume::Add)
++    .def("Intersect",      &G4EzVolume::Intersect)
+     .def("CreateBoxVolume",     &G4EzVolume::CreateBoxVolume)
+     .def("CreateTubeVolume",    &G4EzVolume::CreateTubeVolume,
+ 	                        f_CreateTubeVolume())
+@@ -126,6 +129,9 @@
+     .def("CreateShpereVolume",  &G4EzVolume::CreateSphereVolume,
+ 	                        f_CreateSphereVolume())
+     .def("CreateOrbVolume",     &G4EzVolume::CreateOrbVolume)
++    .def("CreateTrapezoidVolume",    &G4EzVolume::CreateTrapezoidVolume)
++    .def("CreateTrapVolume",    &G4EzVolume::CreateTrapVolume)
++    .def("CreateTrdVolume",     &G4EzVolume::CreateTrdVolume)
+     // ---
+     .def("SetSold",             &G4EzVolume::SetSolid)
+     .def("GetSold",             &G4EzVolume::GetSolid,
+--- source/particles/pyG4PrimaryParticle.cc_orig	2014-07-15 12:54:54.000000000 +0200
++++ source/particles/pyG4PrimaryParticle.cc	2014-07-15 12:56:21.000000000 +0200
+@@ -42,6 +42,8 @@
+ {
+   class_<G4PrimaryParticle, G4PrimaryParticle*>
+     ("G4PrimaryParticle", "primary particle")
++    // constructors
++    .def(init<const G4int&>())
+     // ---
+     .add_property("Px", &G4PrimaryParticle::GetPx)
+     .add_property("Py", &G4PrimaryParticle::GetPy)
+@@ -71,6 +73,12 @@
+     .def("GetWeight",   &G4PrimaryParticle::GetWeight)
+     .def("SetWeight",   &G4PrimaryParticle::SetWeight)
+     .def("GetProperTime", &G4PrimaryParticle::GetProperTime)
++    .def("Set4Momentum",   &G4PrimaryParticle::Set4Momentum)
++    .def("SetMass",   &G4PrimaryParticle::SetMass)
++    .def("SetMomentumDirection",   &G4PrimaryParticle::SetMomentumDirection)
++    .def("SetCharge",   &G4PrimaryParticle::SetCharge)
++    .def("GetParticleDefinition",   &G4PrimaryParticle::GetParticleDefinition,
++          return_internal_reference<>())     ;
+     ;
+ }
+ 
+--- site-modules/geometries/ezgeom/G4EzVolume.cc_orig	2014-07-15 14:05:45.000000000 +0200
++++ site-modules/geometries/ezgeom/G4EzVolume.cc	2014-07-15 14:06:39.000000000 +0200
+@@ -31,11 +31,16 @@
  // ====================================================================
  #include "G4Material.hh"
  #include "G4Box.hh"
@@ -206,7 +252,15 @@
  #include "G4Tubs.hh"
  #include "G4Cons.hh"
  #include "G4Sphere.hh"
-@@ -76,6 +78,53 @@
+ #include "G4Orb.hh"
+ #include "G4PVPlacement.hh"
++#include "G4SubtractionSolid.hh"
++#include "G4IntersectionSolid.hh"
++#include "G4UnionSolid.hh"
+ #include "G4PVReplica.hh"
+ #include "G4PVParameterised.hh"
+ #include "G4VisAttributes.hh"
+@@ -76,6 +81,53 @@
  {
  }
  
@@ -260,7 +314,7 @@
  
  ///////////////////////////////////////////////////////////////////////
  void G4EzVolume::CreateBoxVolume(G4Material* amaterial, 
-@@ -96,6 +145,66 @@
+@@ -96,6 +148,66 @@
    lv-> SetVisAttributes(va);
  }
  
@@ -327,49 +381,3 @@
  
  ////////////////////////////////////////////////////////////////////////////
  void G4EzVolume::CreateTubeVolume(G4Material* amaterial,
---- site-modules/geometries/ezgeom/pyEzgeom.cc_orig	2014-07-15 12:29:10.000000000 +0200
-+++ site-modules/geometries/ezgeom/pyEzgeom.cc	2014-07-15 12:43:50.000000000 +0200
-@@ -118,6 +118,9 @@
-   class_<G4EzVolume>("G4EzVolume", "an easy way of geometry configuration")
-     .def(init<const G4String&>())
-     // ---
-+    .def("Subtract",      &G4EzVolume::Subtract)
-+    .def("Add",      &G4EzVolume::Add)
-+    .def("Intersect",      &G4EzVolume::Intersect)
-     .def("CreateBoxVolume",     &G4EzVolume::CreateBoxVolume)
-     .def("CreateTubeVolume",    &G4EzVolume::CreateTubeVolume,
- 	                        f_CreateTubeVolume())
-@@ -126,6 +129,9 @@
-     .def("CreateShpereVolume",  &G4EzVolume::CreateSphereVolume,
- 	                        f_CreateSphereVolume())
-     .def("CreateOrbVolume",     &G4EzVolume::CreateOrbVolume)
-+    .def("CreateTrapezoidVolume",    &G4EzVolume::CreateTrapezoidVolume)
-+    .def("CreateTrapVolume",    &G4EzVolume::CreateTrapVolume)
-+    .def("CreateTrdVolume",     &G4EzVolume::CreateTrdVolume)
-     // ---
-     .def("SetSold",             &G4EzVolume::SetSolid)
-     .def("GetSold",             &G4EzVolume::GetSolid,
---- source/particles/pyG4PrimaryParticle.cc_orig	2014-07-15 12:54:54.000000000 +0200
-+++ source/particles/pyG4PrimaryParticle.cc	2014-07-15 12:56:21.000000000 +0200
-@@ -42,6 +42,8 @@
- {
-   class_<G4PrimaryParticle, G4PrimaryParticle*>
-     ("G4PrimaryParticle", "primary particle")
-+    // constructors
-+    .def(init<const G4int&>())
-     // ---
-     .add_property("Px", &G4PrimaryParticle::GetPx)
-     .add_property("Py", &G4PrimaryParticle::GetPy)
-@@ -71,6 +73,12 @@
-     .def("GetWeight",   &G4PrimaryParticle::GetWeight)
-     .def("SetWeight",   &G4PrimaryParticle::SetWeight)
-     .def("GetProperTime", &G4PrimaryParticle::GetProperTime)
-+    .def("Set4Momentum",   &G4PrimaryParticle::Set4Momentum)
-+    .def("SetMass",   &G4PrimaryParticle::SetMass)
-+    .def("SetMomentumDirection",   &G4PrimaryParticle::SetMomentumDirection)
-+    .def("SetCharge",   &G4PrimaryParticle::SetCharge)
-+    .def("GetParticleDefinition",   &G4PrimaryParticle::GetParticleDefinition,
-+          return_internal_reference<>())     ;
-     ;
- }
- 
