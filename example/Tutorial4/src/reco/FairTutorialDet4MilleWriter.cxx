@@ -26,21 +26,22 @@ FairTutorialDet4MilleWriter::FairTutorialDet4MilleWriter()
    fHits(),
    fMille(NULL),
    fWriteAscii(kFALSE),
-   fVersion(1)
+   fVersion(1),
+   fFileName("mp2tst")
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Defaul Constructor of FairTutorialDet4MilleWriter");
+  LOG(DEBUG) << "Default Constructor of FairTutorialDet4MilleWriter" << FairLogger::endl;
 }
 
 // ---- Destructor ----------------------------------------------------
 FairTutorialDet4MilleWriter::~FairTutorialDet4MilleWriter()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Destructor of FairTutorialDet4MilleWriter");
+  LOG(DEBUG) << "Destructor of FairTutorialDet4MilleWriter" << FairLogger::endl;
 }
 
 // ----  Initialisation  ----------------------------------------------
 void FairTutorialDet4MilleWriter::SetParContainers()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"SetParContainers of FairTutorialDet4MilleWriter");
+  LOG(DEBUG) << "SetParContainers of FairTutorialDet4MilleWriter" << FairLogger::endl;
   // Load all necessary parameter containers from the runtime data base
   /*
   FairRunAna* ana = FairRunAna::Instance();
@@ -54,7 +55,7 @@ void FairTutorialDet4MilleWriter::SetParContainers()
 // ---- Init ----------------------------------------------------------
 InitStatus FairTutorialDet4MilleWriter::Init()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDet4MilleWriter");
+  LOG(DEBUG) << "Initilization of FairTutorialDet4MilleWriter" << FairLogger::endl;
 
   // Get a handle from the IO manager
   FairRootManager* ioman = FairRootManager::Instance();
@@ -62,22 +63,24 @@ InitStatus FairTutorialDet4MilleWriter::Init()
   // Get a pointer to the previous already existing data level
   fTracks = (TClonesArray*) ioman->GetObject("TutorialDetTrack");
   if ( ! fTracks ) {
-    fLogger->Error(MESSAGE_ORIGIN,"No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive");
+    LOG(ERROR) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive" << FairLogger::endl;
     return kERROR;
   }
 
   // Get a pointer to the previous already existing data level
   fHits = (TClonesArray*) ioman->GetObject("TutorialDetHit");
   if ( ! fHits ) {
-    fLogger->Error(MESSAGE_ORIGIN,"No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive");
+    LOG(ERROR) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive" << FairLogger::endl;
     return kERROR;
   }
 
   //Open MillePede Output file
   if (fWriteAscii) {
-    fMille = new Mille("mp2tst.ascii", false, true); // write human readable ascii file
+    fFileName += ".ascii";
+    fMille = new Mille(fFileName, false, true); // write human readable ascii file
   } else {
-    fMille = new Mille("mp2tst.bin", true, false); // write binary file needed by pede
+    fFileName += ".bin";
+    fMille = new Mille(fFileName, true, false); // write binary file needed by pede
   }
 
 
@@ -88,7 +91,7 @@ InitStatus FairTutorialDet4MilleWriter::Init()
 // ---- ReInit  -------------------------------------------------------
 InitStatus FairTutorialDet4MilleWriter::ReInit()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Initilization of FairTutorialDet4MilleWriter");
+  LOG(DEBUG) << "Initilization of FairTutorialDet4MilleWriter" << FairLogger::endl;
   return kSUCCESS;
 }
 
@@ -285,7 +288,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftXY(Option_t* option)
 // ---- Finish --------------------------------------------------------
 void FairTutorialDet4MilleWriter::Finish()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Finish of FairTutorialDet4MilleWriter");
+  LOG(DEBUG) << "Finish of FairTutorialDet4MilleWriter" << FairLogger::endl;
 }
 
 ClassImp(FairTutorialDet4MilleWriter)

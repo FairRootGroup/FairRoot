@@ -31,6 +31,10 @@ void run_reco( TString mcEngine="TGeant3" )
   TString  parFile     ="testparams_";
   parFile = parFile + mcEngine + ".root";
 
+  // Millepede file name
+  TString  milleFile     ="testmille_";
+  milleFile = milleFile + mcEngine;
+
   TList *parFileList = new TList();
 
   TString workDir = gSystem->Getenv("VMCWORKDIR");
@@ -71,6 +75,7 @@ void run_reco( TString mcEngine="TGeant3" )
   FairTutorialDet4MilleWriter* writer = new FairTutorialDet4MilleWriter();
 //  writer->SetWriteAscii(kTRUE);
   writer->SetVersion(2);
+  writer->SetFileName(milleFile);
   fRun->AddTask(writer);
   
 

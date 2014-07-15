@@ -10,6 +10,7 @@
 
 #include "FairTask.h"                   // for InitStatus, FairTask
 
+#include "TString.h"
 #include "Rtypes.h"                     // for Option_t, Bool_t, etc
 
 class Mille;
@@ -50,6 +51,8 @@ class FairTutorialDet4MilleWriter : public FairTask
 
     void SetVersion(Int_t val) {fVersion = val;}
 
+    void SetFileName(TString val) {fFileName = val;}
+
   private:
 
     void ExecVersion1(Option_t* opt);
@@ -70,6 +73,8 @@ class FairTutorialDet4MilleWriter : public FairTask
 
     Int_t fVersion;
 
+    TString fFileName;
+    
     /** Output array to  new data level**/
     //  TClonesArray* <OutputDataLevel>;
 
