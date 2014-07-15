@@ -8,9 +8,9 @@
 eventDisplay(TString mcEngine="TGeant3")
 {
   //-----User Settings:-----------------------------------------------
-  TString  InputFile     ="data/testrun_" + mcEngine + ".root";
-  TString  ParFile       ="data/testparams_" + mcEngine + ".root";
-  TString  OutFile       ="data/tst.root";
+  TString  InputFile     ="testrun_" + mcEngine + ".root";
+  TString  ParFile       ="testparams_" + mcEngine + ".root";
+  TString  OutFile       ="tst.root";
   //------------------------------------------------------------------
 
 

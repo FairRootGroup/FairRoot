@@ -20,15 +20,15 @@ void run_reco( TString mcEngine="TGeant3" )
   Int_t iVerbose = 0; // just forget about it, for the moment
   
   // Input file (MC Events)
-  TString  inFile     ="data/testrun_";
+  TString  inFile     ="testrun_";
   inFile = inFile + mcEngine + ".root";
 
   // Output file name
-  TString  outFile     ="data/testreco_";
+  TString  outFile     ="testreco_";
   outFile = outFile + mcEngine + ".root";
 
   // Parameter file
-  TString  parFile     ="data/testparams_";    
+  TString  parFile     ="testparams_";
   parFile = parFile + mcEngine + ".root";
 
   TList *parFileList = new TList();
