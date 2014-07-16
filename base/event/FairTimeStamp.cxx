@@ -9,7 +9,7 @@
 
 // -----   Default constructor   -------------------------------------------
 FairTimeStamp::FairTimeStamp()
-  : FairMultiLinkedData(),
+  : FairMultiLinkedData_Interface(),
     fTimeStamp(-1),
     fTimeStampError(-1),
     fEntryNr()
@@ -17,7 +17,7 @@ FairTimeStamp::FairTimeStamp()
 }
 // -----   Standard constructor   ------------------------------------------
 FairTimeStamp::FairTimeStamp(Double_t time)
-  : FairMultiLinkedData(),
+  : FairMultiLinkedData_Interface(),
     fTimeStamp(time),
     fTimeStampError(-1),
     fEntryNr()
@@ -25,7 +25,7 @@ FairTimeStamp::FairTimeStamp(Double_t time)
 }
 
 FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
-  : FairMultiLinkedData(),
+  : FairMultiLinkedData_Interface(),
     fTimeStamp(time),
     fTimeStampError(timeerror),
     fEntryNr()
@@ -42,7 +42,7 @@ FairTimeStamp::~FairTimeStamp()
 std::ostream& FairTimeStamp::Print(std::ostream& out) const
 {
   out << "EntryNr of Data: " << fEntryNr << " TimeStamp: " << GetTimeStamp() << " +/- " << GetTimeStampError() << std::endl;
-  FairMultiLinkedData::Print(out);
+  FairMultiLinkedData_Interface::Print(out);
 
   return out;
 }

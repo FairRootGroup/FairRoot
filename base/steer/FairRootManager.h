@@ -243,6 +243,11 @@ class FairRootManager : public TObject
     Int_t GetEntryNr() {return fEntryNr;}
     void SetEntryNr(Int_t val) {fEntryNr = val;}
 
+    TString GetFairLinksBranchName() const {return fFairLinksBranchName;};
+
+    void SetUseFairLinks(Bool_t val) {fUseFairLinks = val;};
+    Bool_t GetUseFairLinks() const {return fUseFairLinks;};
+
   private:
     /**private methods*/
     FairRootManager(const FairRootManager&);
@@ -274,7 +279,10 @@ class FairRootManager : public TObject
     void                SaveAllContainers();
     /**Read a single entry*/
     void                ReadMixedEvent(Int_t i);
+
     FairWriteoutBuffer* GetWriteoutBuffer(TString branchName);
+
+
     Int_t       fOldEntryNr;
 //_____________________________________________________________________
     /**private Members*/
@@ -393,6 +401,10 @@ class FairRootManager : public TObject
     Bool_t      fEvtHeaderIsNew; //!
     Bool_t  fFillLastData; //!
     Int_t fEntryNr; //!
+
+    Bool_t fUseFairLinks; //!
+    Bool_t fInitFairLinksOnce; //!
+    TString fFairLinksBranchName; //!
 
 
     ClassDef(FairRootManager,7) // Root IO manager

@@ -27,6 +27,7 @@
 //#pragma link C++ class FairLinkedData+;
 //#pragma link C++ class FairSingleLinkedData+;
 #pragma link C++ class FairMultiLinkedData+;
+#pragma link C++ class FairMultiLinkedData_Interface+;
 //#pragma link C++ class FairBasePoint+;
 #pragma link C++ class FairHit+;
 #pragma link C++ class FairIon+;
@@ -66,6 +67,8 @@
 #pragma link C++ class FairRingSorter;
 #pragma link C++ class FairRingSorterTask;
 #pragma link C++ class FairAnaSelector+;
+#pragma link C++ class FairLinkManager+;
+
 
 #pragma link C++ class FairRunOnline;
 #pragma link C++ class FairSource;

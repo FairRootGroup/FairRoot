@@ -15,7 +15,7 @@
 #ifndef FAIRMCPOINT_H
 #define FAIRMCPOINT_H
 
-#include "FairMultiLinkedData.h"        // for FairMultiLinkedData
+#include "FairMultiLinkedData_Interface.h"        // for FairMultiLinkedData
 
 #include "Rtypes.h"                     // for Double_t, Double32_t, Int_t, etc
 #include "TVector3.h"                   // for TVector3
@@ -26,7 +26,7 @@
 #include <boost/serialization/base_object.hpp>
 #endif //__CINT__
 
-class FairMCPoint : public FairMultiLinkedData
+class FairMCPoint : public FairMultiLinkedData_Interface
 {
 
   public:

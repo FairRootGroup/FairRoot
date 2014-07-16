@@ -137,6 +137,9 @@ class FairRun : public TNamed
     //** Get info if RunInfo file is written */
     Bool_t GetWriteRunInfoFile() { return fWriteRunInfo;}
 
+    //** Switches the use of FairLinks */
+    void SetUseFairLinks(Bool_t val);
+
   private:
     FairRun(const FairRun& M);
     FairRun& operator= (const  FairRun&) {

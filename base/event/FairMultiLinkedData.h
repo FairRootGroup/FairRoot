@@ -56,7 +56,7 @@ class FairMultiLinkedData : public  TObject
     virtual void AddLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0);      ///< Adds a FairLink link at the end of fLinks. If multi is kTRUE a link is allowed more than once otherwise it is stored only once
 
     virtual void InsertLink(FairLink link);                         ///< Inserts a link into the list of links without persistance checking
-
+    virtual void InsertHistory(FairLink link);                      ///< Adds the FairLinks of the inserted link to the set of links of this object
 
 
     virtual void AddAllWeights(Double_t weight);                        ///< Adds weight to all Links
@@ -76,13 +76,15 @@ class FairMultiLinkedData : public  TObject
     virtual void ResetLinks() {fLinks.clear();}                                    ///< Clears fLinks
 
 
-    void Print(std::ostream& out = std::cout) const {
+    std::ostream& Print(std::ostream& out = std::cout) const
+    {
       out << "[";
       for (Int_t i = 0; i < GetNLinks(); i++) {
         GetLink(i).Print(out);
         out << " ";
       }
       out << "]";
+      return out;
     }                                                     ///< Output
 
     friend std::ostream& operator<< (std::ostream& out, const FairMultiLinkedData& data) {
@@ -97,7 +99,7 @@ class FairMultiLinkedData : public  TObject
 
     virtual void SimpleAddLinks(Int_t fileId, Int_t evtId, Int_t dataType, std::vector<Int_t> links, Bool_t bypass, Float_t mult) {
       for (UInt_t i = 0; i < links.size(); i++) {
-        AddLink(FairLink(fileId, evtId, dataType, links[i]), bypass, mult);
+        fLinks.insert(FairLink(fileId, evtId, dataType, links[i]));
       }
     }
     Int_t fDefaultType;

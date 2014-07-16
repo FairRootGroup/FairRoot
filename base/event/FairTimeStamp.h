@@ -8,7 +8,7 @@
 #ifndef FAIRTIMESTAMP_H
 #define FAIRTIMESTAMP_H
 
-#include "FairMultiLinkedData.h"        // for FairMultiLinkedData
+#include "FairMultiLinkedData_Interface.h"        // for FairMultiLinkedData
 
 #include "FairLink.h"                   // for FairLink
 
@@ -31,7 +31,7 @@ class TObject;
  ** Aug. 2010
  **@author M.Al-Turany <m.al-turany@gsi.de>
  */
-class FairTimeStamp : public FairMultiLinkedData
+class FairTimeStamp : public FairMultiLinkedData_Interface
 {
   public:
     /** Default constructor **/
