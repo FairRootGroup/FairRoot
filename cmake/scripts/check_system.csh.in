@@ -1,5 +1,5 @@
 #!/bin/csh
-set linux_flavour=`sed '/^$/d' /etc/issue | head -n 1 | sed 's/\\//g' |awk '{gsub("\"","",$0);print $0}'`
+set linux_flavour=`lsb_release -d`
 set system=`uname -m`
 setenv same_system 1
 
