@@ -58,6 +58,12 @@ export MILLEPEDE_VERSION=V04-01-01
 export ZEROMQ_LOCATION="http://download.zeromq.org/"
 export ZEROMQVERSION=3.2.4
 
+export PROTOBUF_LOCATION="https://protobuf.googlecode.com/files/"
+export PROTOBUF_VERSION=protobuf-2.5.0
+
+export NANOMSG_LOCATION="http://download.nanomsg.org/"
+export NANOMSG_VERSION=nanomsg-0.4-beta
+
 export G4ABLA_VERSION=G4ABLA3.0
 export G4ABLA_TAR=G4ABLA3.0.tar.gz
 

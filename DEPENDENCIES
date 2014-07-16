@@ -28,3 +28,11 @@ apt-get install  cmake cmake-data g++ gcc gfortran \
   libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev \
   libgl1-mesa-dev ncurses-dev curl bzip2 gzip unzip tar \
   subversion git xutils-dev flex bison
+
+Suse, OpenSuse and other Suse based systems
+
+zypper install cmake gcc gcc-c++ gcc-fortran make patch sed \
+  libX11-devel libXft-devel libXpm-devel libXext-devel \
+  libXmu-devel Mesa-libGL-devel freeglut-devel ncurses-devel \
+  curl bzip2 gzip unzip tar libexpat-devel subversion git \
+  flex bison makedepend 

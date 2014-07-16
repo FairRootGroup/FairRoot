@@ -295,6 +295,20 @@ then
   source scripts/install_zeromq.sh
 fi
 
+##################### Protocoll Buffers #######################################
+
+if [ "$check" = "1" ];
+then
+  source scripts/install_protobuf.sh
+fi
+
+##################### NanoMSG ##################################################
+
+if [ "$check" = "1" ];
+then
+  source scripts/install_nanomsg.sh
+fi
+
 if [ "$check" = "1" ];
 then
     echo "*** End installation of external packages without Errors***"  | tee -a $logfile

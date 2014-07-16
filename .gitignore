@@ -42,4 +42,10 @@ basics/xercesc
 basics/Mesa-7.10.3/
 basics/MesaLib-7.10.3.tar.bz2
 basics/mesa
+basics/nanomsg
+basics/nanomsg-0.4-beta.tar.gz
+basics/nanomsg-0.4-beta/
+basics/protobuf
+basics/protobuf-2.5.0.tar.gz
+basics/protobuf-2.5.0/
 
