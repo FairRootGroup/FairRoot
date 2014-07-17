@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #ifndef FAIRDB_H
 #define FAIRDB_H
 
@@ -22,7 +29,8 @@ namespace FairDb
 typedef  Int_t Version;
 
 enum VersionTypes {  kAnyVersion     = -1,  // Use to disable versioning select in ext. context queries.
-                     kDefaultVersion = 0
+                     kDefaultVersion = 0,
+                     kOtherVersion = 1      
                   };
 
 enum TypeRegimes { kRootRegime = 0,

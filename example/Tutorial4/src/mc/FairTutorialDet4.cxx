@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #include "FairTutorialDet4.h"
 
 #include "FairDetectorList.h"           // for DetectorId::kTutDet
@@ -285,10 +292,10 @@ void FairTutorialDet4::ModifyGeometry()
     TString detStr   = "Tutorial4/det00";
 
     TGeoPNEntry* entry = gGeoManager->GetAlignableEntry(detStr.Data());
-    TGeoPhysicalNode* node = entry->GetPhysicalNode();
-//    LOG(INFO)<<"Nr of alignable objects: "<<gGeoManager->GetNAlignable()<<FairLogger::endl;
     if (entry) {
       LOG(INFO)<<"Misalign using symlinks."<<FairLogger::endl;
+      TGeoPhysicalNode* node = entry->GetPhysicalNode();
+//    LOG(INFO)<<"Nr of alignable objects: "<<gGeoManager->GetNAlignable()<<FairLogger::endl;
       ModifyGeometryBySymlink();
     } else {
       LOG(INFO)<<"Misalign using full path."<<FairLogger::endl;
@@ -355,14 +362,18 @@ void FairTutorialDet4::ModifyGeometryBySymlink()
     symName  = detStr;
     symName += Form("%02d",iDet);
 
-    TGeoPhysicalNode* node;
+    TGeoPhysicalNode* node = NULL;
     TGeoPNEntry* entry = gGeoManager->GetAlignableEntry(detStr);
-    if(entry) {
+    if (entry) {
       node = gGeoManager->MakeAlignablePN(entry);
     }
-
-    TGeoMatrix* l3 = node->GetMatrix();
-
+ 
+    TGeoMatrix* l3 = NULL;
+    if (node) {
+      l3 = node->GetMatrix();
+    } else {
+      continue;
+    }
 
     //we have to express the displacements as regards the old local RS (non misaligned BTOF)
     Double_t dx     = fShiftX[iDet];

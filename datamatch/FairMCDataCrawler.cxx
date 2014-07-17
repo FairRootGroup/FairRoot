@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
  * FairMCDataCrawler.cpp
  *
@@ -21,6 +28,7 @@ FairMCDataCrawler::FairMCDataCrawler()
     fFinalStage(),
     fUltimateStage(0),
     fVerbose(0),
+    fStoreAllEndpoints(kTRUE),
     fStoreIntermediate(kTRUE)
 {
 }

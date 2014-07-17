@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #include "FairDbConnection.h"
 #include "FairDbLogService.h"
 #include "Riosfwd.h"                    // for ostream
@@ -356,7 +363,7 @@ Bool_t  FairDbConnection::TableExists(const string& tableName) const
   test += tableName;
   test += "'";
   Bool_t btest =  fExistingTableList.find(test) != std::string::npos;
-  //cout << "-I- FairDbConnection: Table exists " << btest << endl;
+  //cout << "-I- FairDbConnection: Table exists " << fExistingTableList << endl;
   return btest;
 }
 

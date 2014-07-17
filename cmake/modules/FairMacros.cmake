@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
   ###########################################
   #
   #       Usefull macros
@@ -258,13 +265,12 @@ EndMacro (Generate_Version_Info)
 Macro (SetBasicVariables)
 
 IF(FAIRROOT_FOUND)
- 
   Set(BASE_INCLUDE_DIRECTORIES 
       ${ROOT_INCLUDE_DIR}
-      ${FAIRROOT_INCLUDE_DIR})
-
+      ${FAIRROOT_INCLUDE_DIR}
+      ${Boost_INCLUDE_DIRS}
+  )
 ELSE(FAIRROOT_FOUND)
-
   Set(BASE_INCLUDE_DIRECTORIES
       ${ROOT_INCLUDE_DIR}
       ${CMAKE_SOURCE_DIR}/fairtools
@@ -282,9 +288,15 @@ ELSE(FAIRROOT_FOUND)
       ${CMAKE_SOURCE_DIR}/dbase/dbUtils
       ${CMAKE_SOURCE_DIR}/input/db
       ${CMAKE_SOURCE_DIR}/dbase/dbInput
+      ${CMAKE_SOURCE_DIR}/dbase/dbIO
+      ${Boost_INCLUDE_DIRS}
   )  
 ENDIF(FAIRROOT_FOUND)
 
+Set(BASE_LINK_DIRECTORIES
+    ${ROOT_LIBRARY_DIR}
+    ${Boost_LIBRARY_DIRS}
+)  
 
 IF(FAIRROOT_FOUND)
 

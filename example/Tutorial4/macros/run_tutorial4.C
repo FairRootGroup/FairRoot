@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
 {
   
@@ -16,10 +23,10 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   TString outDir = "./";
 
   // Output file name
-  TString  outFile     ="data/testrun_";
+  TString  outFile     ="testrun_";
   outFile = outFile + mcEngine + ".root";
 
-  TString  parFile     ="data/testparams_";
+  TString  parFile     ="testparams_";
   parFile = parFile + mcEngine + ".root";
   
   TList *parFileList = new TList();

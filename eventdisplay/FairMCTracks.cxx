@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----                        FairMCTracks source file                  -----
 // -----                  Created 10/12/07  by M. Al-Turany            -----
@@ -122,9 +129,12 @@ void FairMCTracks::Exec(Option_t* option)
         track->AddPathMark(*path);
 
         if(fVerbose>3) { cout << "Path marker added " << path << endl; }
+
+        delete path;
       }
       fTrList->AddElement(track);
       if(fVerbose>3) { cout << "track added " << track->GetName() << endl; }
+
     }
     for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++) {
       // TEveTrackList *TrListIn=( TEveTrackList *) fEveTrList->At(i);

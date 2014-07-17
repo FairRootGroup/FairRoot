@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQBinSink.h
  *
@@ -10,19 +17,21 @@
 
 #include "FairMQDevice.h"
 
-struct Content {
-  double a;
-  double b;
-  int x;
-  int y;
-  int z;
+struct Content
+{
+    double a;
+    double b;
+    int x;
+    int y;
+    int z;
 };
 
-class FairMQBinSink: public FairMQDevice
+class FairMQBinSink : public FairMQDevice
 {
   public:
     FairMQBinSink();
     virtual ~FairMQBinSink();
+
   protected:
     virtual void Run();
 };

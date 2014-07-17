@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // $Id: FairLinkDef.h,v 1.4 2006/09/15 12:43:35 turany Exp $
 
 #ifdef __CINT__
@@ -20,6 +27,7 @@
 //#pragma link C++ class FairLinkedData+;
 //#pragma link C++ class FairSingleLinkedData+;
 #pragma link C++ class FairMultiLinkedData+;
+#pragma link C++ class FairMultiLinkedData_Interface+;
 //#pragma link C++ class FairBasePoint+;
 #pragma link C++ class FairHit+;
 #pragma link C++ class FairIon+;
@@ -59,6 +67,8 @@
 #pragma link C++ class FairRingSorter;
 #pragma link C++ class FairRingSorterTask;
 #pragma link C++ class FairAnaSelector+;
+#pragma link C++ class FairLinkManager+;
+
 
 #pragma link C++ class FairRunOnline;
 #pragma link C++ class FairSource;

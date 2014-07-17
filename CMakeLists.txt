@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 # The name of our project is "FairBase".  CMakeLists files in this project can
 # refer to the root source directory of the project as ${FAIRROOT_SOURCE_DIR} or
 # as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as 
@@ -86,20 +93,17 @@ find_package(CLHEP)
 find_package(RuleChecker)
 find_package(IWYU)
 find_package(ZeroMQ)
+find_package(Protobuf)
+if(PROTOBUF_FOUND)
+  Message("-- Protobuf found --")
+  add_definitions(-DPROTOBUF)
+endif(PROTOBUF_FOUND)
 
 if(USE_NANOMSG)
   find_package(nanomsg)
 else(USE_NANOMSG)
   set(NANOMSG_FOUND false) # lower case false value is needed for bash scripts
 endif(USE_NANOMSG)
-
-if(USE_PROTOBUF)
-  include(FindProtobuf)
-  find_package(Protobuf)
-  if(PROTOBUF_FOUND)
-    add_definitions(-DPROTOBUF)
-  endif(PROTOBUF_FOUND)
-endif(USE_PROTOBUF)
 
 If(FAIRSOFT_EXTERN)
   set(BOOST_ROOT ${SIMPATH})

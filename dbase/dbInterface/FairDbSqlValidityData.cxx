@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #include "FairDbSqlValidityData.h"
 #include "FairDbLogService.h"
 #include "FairDb.h"                     // for MakeDateTimeString, etc
@@ -721,9 +728,12 @@ Bool_t FairDbSqlValidityData::Store(UInt_t dbNo, Bool_t replace) const
 
   Bool_t first = kTRUE;
   int combineInserts = 0;
-  // Cannot group ORACLE inserts.
-  int maxInserts = stmtDb->GetDBType() == FairDb::kOracle ? 1 : 20;
+  // Cannot group ORACLE , SQLITE inserts.
+  int maxInserts = (stmtDb->GetDBType() == FairDb::kOracle || stmtDb->GetDBType() == FairDb::kSQLite) ? 1 : 20;
+
   string sqlInserts;
+
+  if ( stmtDb->GetDBType() == FairDb::kSQLite )  stmtDb->ExecuteUpdate("BEGIN TRANSACTION;");  
 
   for (list<string>::const_iterator itr = fSqlStmts.begin();
        itr != fSqlStmts.end();
@@ -777,13 +787,16 @@ Bool_t FairDbSqlValidityData::Store(UInt_t dbNo, Bool_t replace) const
     }
   }
 
+
 // Deal with last group of inserts.
   if ( combineInserts ) {
     stmtDb->ExecuteUpdate(sqlInserts.c_str());
     combineInserts = 0;
     if ( stmtDb->PrintExceptions() ) { return kFALSE; }
   }
-
+  
+  if ( stmtDb->GetDBType() == FairDb::kSQLite )  stmtDb->ExecuteUpdate("END TRANSACTION;");  
+	
   //cout << "-I- FairDbSqlValidityData::Store(): done ...  " << endl;
   return kTRUE;
 

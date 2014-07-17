@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----   FairTutorialDet4HitProducerIdealMissallign source file       -----
 // -----                  Created 11.02.13  by F. Uhlig                -----
@@ -71,6 +78,8 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::ReInit()
   fRotX=fDigiPar->GetRotX();
   fRotY=fDigiPar->GetRotY();
   fRotZ=fDigiPar->GetRotZ();
+
+  return kSUCCESS;
 }
 
 // -----   Public method Init   --------------------------------------------

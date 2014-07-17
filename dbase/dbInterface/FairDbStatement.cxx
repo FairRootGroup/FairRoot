@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #include "FairDbStatement.h"
 #include "FairDbLogService.h"
 #include "FairDbString.h"               // for StringTok
@@ -335,8 +342,9 @@ std::list<TString>  FairDbStatement::TranslateSQL(const TString& sql)
     } //! PGSQL
 
     else if (  fDbType == FairDb::kSQLite  ) {
-      //cout << "-I-  FairDbStatement::TranslateSQL called for SQLite:" << sql <<  endl;
-    }
+	  // cout << "-I-  FairDbStatement::TranslateSQL called for SQLite:" << sql <<  endl;
+	  
+    }//! (SQLite)
 
 
     // Translate CREATE TABLE commands using FairDbTableMetaData.

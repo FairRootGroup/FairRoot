@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #ifndef FAIRRUN_H
 #define FAIRRUN_H
 
@@ -87,6 +94,14 @@ class FairRun : public TNamed
       return ((Int_t) fRunId);
     }
 
+	/** 
+     * Set the Run ID
+	 */
+    void SetRunId(UInt_t runId)
+	{
+	  fRunId = runId; 
+    }    
+
     /**Get the detector specific run header*/
     FairEventHeader*  GetEventHeader();
     /**
@@ -121,6 +136,9 @@ class FairRun : public TNamed
 
     //** Get info if RunInfo file is written */
     Bool_t GetWriteRunInfoFile() { return fWriteRunInfo;}
+
+    //** Switches the use of FairLinks */
+    void SetUseFairLinks(Bool_t val);
 
   private:
     FairRun(const FairRun& M);

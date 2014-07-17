@@ -1,9 +1,17 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 # Create a library called "libTutorial2" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
+${Boost_INCLUDE_DIRS}
 ${CMAKE_SOURCE_DIR}/example/Tutorial2/src
 ${CMAKE_SOURCE_DIR}/example/mcstack
 )

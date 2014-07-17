@@ -1,8 +1,15 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #include "FairTimeStamp.h"
 
 // -----   Default constructor   -------------------------------------------
 FairTimeStamp::FairTimeStamp()
-  : FairMultiLinkedData(),
+  : FairMultiLinkedData_Interface(),
     fTimeStamp(-1),
     fTimeStampError(-1),
     fEntryNr()
@@ -10,7 +17,7 @@ FairTimeStamp::FairTimeStamp()
 }
 // -----   Standard constructor   ------------------------------------------
 FairTimeStamp::FairTimeStamp(Double_t time)
-  : FairMultiLinkedData(),
+  : FairMultiLinkedData_Interface(),
     fTimeStamp(time),
     fTimeStampError(-1),
     fEntryNr()
@@ -18,12 +25,13 @@ FairTimeStamp::FairTimeStamp(Double_t time)
 }
 
 FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
-  : FairMultiLinkedData(),
+  : FairMultiLinkedData_Interface(),
     fTimeStamp(time),
     fTimeStampError(timeerror),
     fEntryNr()
 {
 }
+
 // -----   Destructor   ----------------------------------------------------
 FairTimeStamp::~FairTimeStamp()
 {
@@ -31,9 +39,11 @@ FairTimeStamp::~FairTimeStamp()
 
 // -------------------------------------------------------------------------
 
-void FairTimeStamp::Print(std::ostream& out) const
+std::ostream& FairTimeStamp::Print(std::ostream& out) const
 {
   out << "EntryNr of Data: " << fEntryNr << " TimeStamp: " << GetTimeStamp() << " +/- " << GetTimeStampError() << std::endl;
-  FairMultiLinkedData::Print(out);
+  FairMultiLinkedData_Interface::Print(out);
+
+  return out;
 }
 ClassImp(FairTimeStamp)

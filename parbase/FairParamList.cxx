@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
 //*-- Last modified : 28/01/2009 by Ilse Koenig
 
@@ -229,7 +236,7 @@ FairParamObj::FairParamObj(const Text_t* name,const Text_t* value)
    streamerInfoSize(0)
 {
   // Constructor for a string value
-  paramValue=new UChar_t[arraySize];
+  paramValue=new UChar_t[arraySize+1];
   memcpy(paramValue,value,arraySize);
 }
 
@@ -772,77 +779,6 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayD* value)
   fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
-}
-
-Int_t FairParamList::replace(const Text_t* name,UChar_t* values)
-{
-  // Copies the data from the list object into the parameter array of type UChar_t.
-  // Recreates the array, if existing, and returns the number of array elements.
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
-  if (o!=0 && strcmp(o->getParamType(),"UChar_t")==0) {
-    Int_t l=o->getLength();
-    if (values) { delete values; }
-    values=new UChar_t[l];
-    memcpy(values,o->getParamValue(),l);
-    return l;
-  }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
-  //  Error("FairParamList::fill \nNot found: %s",name);
-  return 0;
-}
-
-Int_t FairParamList::replace(const Text_t* name,Int_t* values)
-{
-  // Copies the data from the list object into the parameter array of type Int_t.
-  // Recreates the array, if existing, and returns the number of array elements.
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
-  if (o!=0 && strcmp(o->getParamType(),"Int_t")==0) {
-    Int_t l=o->getLength();
-    Int_t n=o->getNumParams();
-    if (values) { delete values; }
-    values=new Int_t[n];
-    memcpy(values,o->getParamValue(),l);
-    return n;
-  }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
-  //  Error("FairParamList::fill \nNot found: %s",name);
-  return 0;
-}
-
-Int_t FairParamList::replace(const Text_t* name,Float_t* values)
-{
-  // Copies the data from the list object into the parameter array of type Float_t.
-  // Recreates the array, if existing, and returns the number of array elements.
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
-  if (o!=0 && strcmp(o->getParamType(),"Float_t")==0) {
-    Int_t l=o->getLength();
-    Int_t n=o->getNumParams();
-    if (values) { delete values; }
-    values=new Float_t[n];
-    memcpy(values,o->getParamValue(),l);
-    return n;
-  }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
-  //  Error("FairParamList::fill \nNot found: ",name);
-  return 0;
-}
-
-Int_t FairParamList::replace(const Text_t* name,Double_t* values)
-{
-  // Copies the data from the list object into the parameter array of type Double_t.
-  // Recreates the array, if existing, and returns the number of array elements.
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
-  if (o!=0 && strcmp(o->getParamType(),"Double_t")==0) {
-    Int_t l=o->getLength();
-    Int_t n=o->getNumParams();
-    if (values) { delete values; }
-    values=new Double_t[n];
-    memcpy(values,o->getParamValue(),l);
-    return n;
-  }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
-  //  Error("FairParamList::fill \nNot found: %s",name);
-  return 0;
 }
 
 Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)

@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
 //*-- Created : 10/11/2003
 
@@ -126,7 +133,6 @@ Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set,FairGeoMedia* media)
   fin.seekg(0,ios::beg);
   FairGeoNode* volu=0;
   Int_t sensitivity=0, na=0;
-  Double_t par[20];
   TList* volumes=set->getListOfVolumes();
   FairGeoShapes* pShapes=set->getShapes();
   while(!fin.eof()) {
@@ -174,10 +180,12 @@ Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set,FairGeoMedia* media)
       return kFALSE;
     }
     Int_t npar = sh->getNumParam();
+    Double_t* par = new Double_t[npar];
     for (Int_t ik=0; ik<npar; ik++) {
       fin >> par[ik];
     }
     Bool_t rc=calculateShapePoints(par,volu);
+    delete[] par;
     if (!rc) {
       cerr << "Conversion for shape "<<type<<" not implemented."<<endl;
       return kFALSE;

@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 //////////////////////////////////////////////////////////////////////
 // Copyright:
 //   GSI, Gesellschaft fuer Schwerionenforschung mbH
@@ -77,7 +84,7 @@ MRevBuffer::MRevBuffer(Int_t iMode)
     iDebug(iMode),
     iSwap(0),
     iStatus(1),
-    iBufSizeAlloc(16384),
+    iBufSizeAlloc(512000),
     iBufSize(0),
     iBufNo(0),
     iFragBegin(0),
@@ -708,15 +715,15 @@ gNextRecvD:
 
 
     pEvt->nSubEvt += 1;
-    pEvt->subEvtSize[0] = pSEvtHead->iMbsSev101_dlen;
+    pEvt->subEvtSize[0] = pSEvtHead->iMbsSev101_dlen/2 - 1;
     pEvt->subEvtType[0] = pSEvtHead->sMbsSev101_type;
     pEvt->subEvtSubType[0] = pSEvtHead->sMbsSev101_subtype;
     pEvt->subEvtProcId[0] = pSEvtHead->sMbsSev101_procid;
     pEvt->subEvtSubCrate[0] = pSEvtHead->cMbsSev101_subcrate;
     pEvt->subEvtControl[0] = pSEvtHead->cMbsSev101_control;
-    pEvt->pSubEvt[0] = (Int_t*) pshort;
+    pEvt->pSubEvt[0] = (Int_t*) &pshort[6];
 
-
+/*
     cout << "    evt " << iEvtNo << " (" << piNextEvt[3]
          << "), len " << pEvtHead->iMbsEv101_dlen
          << ", type " << pEvtHead->sMbsEv101_type
@@ -724,7 +731,7 @@ gNextRecvD:
          << ", trigger " << pEvtHead->sMbsEv101_trigger;
     cout << ", SE1 len " << iselen1
          << " procid " << pSEvtHead->sMbsSev101_procid;
-
+*/
     ielen -= (iselen1 + 8);
 
     ii = 1;
@@ -735,24 +742,24 @@ gNextRecvD:
       pshort += iselen + 4;
       pSEvtHead = (sMbsSev101*) pshort;
       iselen = pSEvtHead->iMbsSev101_dlen;
-      cout << ", SE" << ii << " " << iselen
-           << " " << pSEvtHead->sMbsSev101_procid;
+//      cout << ", SE" << ii << " " << iselen
+//           << " " << pSEvtHead->sMbsSev101_procid;
       ielen -= (iselen + 4);
 
 
 
       pEvt->nSubEvt += 1;
-      pEvt->subEvtSize[ii-1] = pSEvtHead->iMbsSev101_dlen;
+      pEvt->subEvtSize[ii-1] = pSEvtHead->iMbsSev101_dlen/2 - 1;
       pEvt->subEvtType[ii-1] = pSEvtHead->sMbsSev101_type;
       pEvt->subEvtSubType[ii-1] = pSEvtHead->sMbsSev101_subtype;
       pEvt->subEvtProcId[ii-1] = pSEvtHead->sMbsSev101_procid;
       pEvt->subEvtSubCrate[ii-1] = pSEvtHead->cMbsSev101_subcrate;
       pEvt->subEvtControl[ii-1] = pSEvtHead->cMbsSev101_control;
-      pEvt->pSubEvt[ii-1] = (Int_t*) pshort;
+      pEvt->pSubEvt[ii-1] = (Int_t*) &pshort[6];
 
 
     }
-    cout << endl;
+//    cout << endl;
   }
 
   // fill event header

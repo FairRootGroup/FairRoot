@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 # Create a library called "libBase" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
@@ -9,6 +16,7 @@ EndIf(NOT DEFINED BUILD_MBS)
 
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR} 
+${Boost_INCLUDE_DIRS}
 ${CMAKE_SOURCE_DIR}/fairtools
 ${CMAKE_SOURCE_DIR}/geobase 
 ${CMAKE_SOURCE_DIR}/parbase 
@@ -24,7 +32,6 @@ ${CMAKE_SOURCE_DIR}/dbase/dbUtils
 ${CMAKE_SOURCE_DIR}/input/db
 ${CMAKE_SOURCE_DIR}/dbase/dbInput
 )
-
 If(BUILD_MBS)
   set(INCLUDE_DIRECTORIES
      ${INCLUDE_DIRECTORIES} 
@@ -59,6 +66,7 @@ steer/FairTask.cxx
 steer/FairTrajFilter.cxx
 steer/FairWriteoutBuffer.cxx
 steer/FairRunOnline.cxx
+steer/FairLinkManager.cxx
 
 sim/FairBaseContFact.cxx
 sim/FairBaseParSet.cxx
@@ -87,6 +95,7 @@ event/FairMCEventHeader.cxx
 event/FairMCPoint.cxx
 event/FairMesh.cxx
 event/FairMultiLinkedData.cxx
+event/FairMultiLinkedData_Interface.cxx
 event/FairRadLenPoint.cxx
 event/FairRadMapPoint.cxx
 event/FairRecoEventHeader.cxx

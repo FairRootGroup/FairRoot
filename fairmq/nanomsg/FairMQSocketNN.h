@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQSocketNN.h
  *
@@ -14,11 +21,10 @@
 
 #include "FairMQSocket.h"
 
-
 class FairMQSocketNN : public FairMQSocket
 {
   public:
-    FairMQSocketNN(const string& type, int num);
+    FairMQSocketNN(const string& type, int num, int numIoThreads); // numIoThreads is not used in nanomsg.
 
     virtual string GetId();
 

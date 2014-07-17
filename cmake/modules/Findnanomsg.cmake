@@ -1,16 +1,11 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 message(STATUS "Looking for nanomsg...")
-
-set(BUS_H bus.h)
-set(INPROC_H inproc.h)
-set(IPC_H ipc.h)
-set(NN_H nn.h)
-set(PAIR_H pair.h)
-set(PIPELINE_H pipeline.h)
-set(PROTOCOL_H protocol.h)
-set(PUBSUB_H pubsub.h)
-set(REQREP_H reqrep.h)
-set(SURVEY_H survey.h)
-set(TCP_H tcp.h)
 
 if (APPLE)
   set(LIBNANOMSG_SHARED libnanomsg.dylib)
@@ -20,7 +15,7 @@ endIf (APPLE)
 
 set(LIBNANOMSG_STATIC libnanomsg.a)
 
-find_path(NANOMSG_INCLUDE_DIR NAMES ${BUS_H} ${INPROC_H} ${IPC_H} ${NN_H} ${PAIR_H} ${PIPELINE_H} ${PROTOCOL_H} ${PUBSUB_H} ${REQREP_H} ${SURVEY_H} ${TCP_H}
+find_path(NANOMSG_INCLUDE_DIR NAMES nn.h
   PATHS /usr/local/include/nanomsg
   DOC   "Path to nanomsg include header files."
 )

@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----                   FairRun source file                         -----
 // -----            Created 06/01/04  by M. Al-Turany                  -----
@@ -11,6 +18,7 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairTask.h"                   // for FairTask
+#include "FairLinkManager.h"			// for FairLinkManager
 
 #include "TFile.h"                      // for TFile
 #include "TList.h"                      // for TList
@@ -47,6 +55,7 @@ FairRun::FairRun()
   }
   fRunInstance=this;
   fRootManager->SetFileHeader(fFileHeader);
+  new FairLinkManager();
 }
 //_____________________________________________________________________________
 FairRun::~FairRun()
@@ -122,6 +131,12 @@ FairEventHeader*  FairRun::GetEventHeader()
   }
   return fEvHead;
 }
+
+void FairRun::SetUseFairLinks(Bool_t val)
+{
+        fRootManager->SetUseFairLinks(val);
+}
+
 //_____________________________________________________________________________
 ClassImp(FairRun)
 

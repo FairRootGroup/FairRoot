@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 MACRO (WRITE_CONFIG_FILE filename)
 
   String(REGEX REPLACE "^.*(install).*$" "\\1" INSTALL_VERSION ${filename})
@@ -41,20 +48,10 @@ MACRO (WRITE_CONFIG_FILE filename)
                     )
     ENDIF(FAIRROOTPATH)
     
-    FILE(READ /etc/issue _linux_flavour)
-    STRING(REGEX REPLACE "[\\]" " " _result1 "${_linux_flavour}")
-    STRING(REGEX REPLACE "\n" ";" _result "${_result1}")
-    SET(_counter 0)
-    FOREACH(_line ${_result})
-      if (_counter EQUAL 0)
-        SET(_counter 1)
-        set(_linux_flavour ${_line})
-      endif (_counter EQUAL 0)
-    ENDFOREACH(_line ${_result})
-    # Replace multiple space by just one
-    String(REGEX REPLACE "[ ]+" " " _linux_flavour "${_linux_flavour}")    
-    # Replace leading and trailing spaces
-    String(STRIP ${_linux_flavour} _linux_flavour)
+    EXECUTE_PROCESS(COMMAND lsb_release -d
+                    OUTPUT_VARIABLE _linux_flavour
+                    OUTPUT_STRIP_TRAILING_WHITESPACE
+                   )
     EXECUTE_PROCESS(COMMAND uname -m 
                     OUTPUT_VARIABLE _system 
                     OUTPUT_STRIP_TRAILING_WHITESPACE

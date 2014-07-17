@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #include "FairTutorialDet4StraightLineFitter.h"
 
 #include "FairLogger.h"                 // for FairLogger, etc
@@ -164,7 +171,11 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* option)
   //  Double_t Z = 0.;
   //  new ((*fTracks)[0]) FairTrackParam(OffX, OffY, Z, SlopeX, SlopeY, matrix);
 
-
+  delete[] ZPos;
+  delete[] XPos;
+  delete[] XPosErr;
+  delete[] YPos;
+  delete[] YPosErr;
 }
 
 Bool_t FairTutorialDet4StraightLineFitter::IsGoodEvent()

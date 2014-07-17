@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQMessageNN.cxx
  *
@@ -12,125 +19,157 @@
 #include "FairMQMessageNN.h"
 #include "FairMQLogger.h"
 
-FairMQMessageNN::FairMQMessageNN() :
-  fSize(0),
-  fMessage(NULL),
-  fReceiving(false)
+FairMQMessageNN::FairMQMessageNN()
+    : fSize(0)
+    , fMessage(NULL)
+    , fReceiving(false)
 {
 }
 
 FairMQMessageNN::FairMQMessageNN(size_t size)
 {
-  fMessage = nn_allocmsg(size, 0);
-  if (!fMessage){
-    LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
-  }
-  fSize = size;
-  fReceiving = false;
+    fMessage = nn_allocmsg(size, 0);
+    if (!fMessage)
+    {
+        LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
+    }
+    fSize = size;
+    fReceiving = false;
 }
 
-FairMQMessageNN::FairMQMessageNN(void* data, size_t size)
+FairMQMessageNN::FairMQMessageNN(void* data, size_t size, fairmq_free_fn *ffn, void* hint)
 {
-  fMessage = nn_allocmsg(size, 0);
-  if (!fMessage){
-    LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
-  }
-  memcpy (fMessage, data, size);
-  fSize = size;
-  fReceiving = false;
+    fMessage = nn_allocmsg(size, 0);
+    if (!fMessage)
+    {
+        LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
+    }
+    memcpy(fMessage, data, size);
+    fSize = size;
+    fReceiving = false;
+
+    if(ffn)
+    {
+        ffn(data, hint);
+    }
+    else
+    {
+        if(data) free(data);
+    }
 }
 
 void FairMQMessageNN::Rebuild()
 {
-  Clear();
-  fSize = 0;
-  fMessage = NULL;
-  fReceiving = false;
+    Clear();
+    fSize = 0;
+    fMessage = NULL;
+    fReceiving = false;
 }
 
 void FairMQMessageNN::Rebuild(size_t size)
 {
-  Clear();
-  fMessage = nn_allocmsg(size, 0);
-  if (!fMessage){
-    LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
-  }
-  fSize = size;
-  fReceiving = false;
+    Clear();
+    fMessage = nn_allocmsg(size, 0);
+    if (!fMessage)
+    {
+        LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
+    }
+    fSize = size;
+    fReceiving = false;
 }
 
-void FairMQMessageNN::Rebuild(void* data, size_t size)
+void FairMQMessageNN::Rebuild(void* data, size_t size, fairmq_free_fn *ffn, void* hint)
 {
-  Clear();
-  fMessage = nn_allocmsg(size, 0);
-  if (!fMessage){
-    LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
-  }
-  memcpy (fMessage, data, size);
-  fSize = size;
-  fReceiving = false;
+    Clear();
+    fMessage = nn_allocmsg(size, 0);
+    if (!fMessage)
+    {
+        LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
+    }
+    memcpy(fMessage, data, size);
+    fSize = size;
+    fReceiving = false;
+
+    if(ffn)
+    {
+        ffn(data, hint);
+    }
+    else
+    {
+        if(data) free(data);
+    }
 }
 
 void* FairMQMessageNN::GetMessage()
 {
-  return fMessage;
+    return fMessage;
 }
 
 void* FairMQMessageNN::GetData()
 {
-  return fMessage;
+    return fMessage;
 }
 
 size_t FairMQMessageNN::GetSize()
 {
-  return fSize;
+    return fSize;
 }
 
 void FairMQMessageNN::SetMessage(void* data, size_t size)
 {
-  fMessage = data;
-  fSize = size;
+    fMessage = data;
+    fSize = size;
 }
 
 void FairMQMessageNN::Copy(FairMQMessage* msg)
 {
-  if (fMessage){
-    int rc = nn_freemsg(fMessage);
-    if ( rc < 0 ){
-      LOG(ERROR) << "failed freeing message, reason: " << nn_strerror(errno);
+    if (fMessage)
+    {
+        int rc = nn_freemsg(fMessage);
+        if (rc < 0)
+        {
+            LOG(ERROR) << "failed freeing message, reason: " << nn_strerror(errno);
+        }
     }
-  }
 
-  size_t size = msg->GetSize();
+    size_t size = msg->GetSize();
 
-  fMessage = nn_allocmsg(size, 0);
-  if (!fMessage){
-    LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
-  }
-  std::memcpy (fMessage, msg->GetMessage(), size);
-  fSize = size;
+    fMessage = nn_allocmsg(size, 0);
+    if (!fMessage)
+    {
+        LOG(ERROR) << "failed allocating message, reason: " << nn_strerror(errno);
+    }
+    std::memcpy(fMessage, msg->GetMessage(), size);
+    fSize = size;
 }
 
 inline void FairMQMessageNN::Clear()
 {
-  int rc = nn_freemsg(fMessage);
-  if (rc < 0) {
-    LOG(ERROR) << "failed freeing message, reason: " << nn_strerror(errno);
-  } else {
-    fMessage = NULL;
-    fSize = 0;
-  }
+    int rc = nn_freemsg(fMessage);
+    if (rc < 0)
+    {
+        LOG(ERROR) << "failed freeing message, reason: " << nn_strerror(errno);
+    }
+    else
+    {
+        fMessage = NULL;
+        fSize = 0;
+    }
 }
 
 FairMQMessageNN::~FairMQMessageNN()
 {
-  if(fReceiving){
-    int rc = nn_freemsg(fMessage);
-    if (rc < 0) {
-      LOG(ERROR) << "failed freeing message, reason: " << nn_strerror(errno);
-    } else {
-      fMessage = NULL;
-      fSize = 0;
+    if (fReceiving)
+    {
+        int rc = nn_freemsg(fMessage);
+        if (rc < 0)
+        {
+            LOG(ERROR) << "failed freeing message, reason: " << nn_strerror(errno);
+        }
+        else
+        {
+            fMessage = NULL;
+            fSize = 0;
+        }
     }
-  }
 }

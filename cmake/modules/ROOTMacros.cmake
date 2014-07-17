@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             #
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 Function(Format _output input prefix suffix)
 
 # DevNotes - input should be put in quotes or the complete list does not get passed to the function
@@ -43,16 +50,16 @@ Macro(ROOT_GENERATE_DICTIONARY)
 #      Message("Old Version")
       ROOT_GENERATE_DICTIONARY_OLD("${ARGV0}" "${ARGV1}" "${ARGV2}" "${ARGV3}")
     Else(${ARGC} EQUAL 4)
-      Message(FATAL_ERROR "Has to be implemented")  
+      Message(FATAL_ERROR "Has to be implemented")
     EndIf(${ARGC} EQUAL 4)
   EndIf(${ARGC} EQUAL 0)
- 
+
 EndMacro(ROOT_GENERATE_DICTIONARY)
 
 Macro(ROOT_GENERATE_DICTIONARY_NEW)
 
   # All Arguments needed for this new version of the macro are defined
-  # in the parent scope, namely in the CMakeLists.txt of the submodule 
+  # in the parent scope, namely in the CMakeLists.txt of the submodule
   set(Int_LINKDEF ${LINKDEF})
   set(Int_DICTIONARY ${DICTIONARY})
 
@@ -91,13 +98,13 @@ endmacro(ROOT_GENERATE_DICTIONARY_NEW)
 
 
 MACRO (ROOT_GENERATE_DICTIONARY_OLD INFILES LINKDEF_FILE OUTFILE INCLUDE_DIRS_IN)
- 
+
   set(INCLUDE_DIRS)
 
   foreach (_current_FILE ${INCLUDE_DIRS_IN})
-    set(INCLUDE_DIRS ${INCLUDE_DIRS} -I${_current_FILE})   
+    set(INCLUDE_DIRS ${INCLUDE_DIRS} -I${_current_FILE})
   endforeach (_current_FILE ${INCLUDE_DIRS_IN})
- 
+
 #  Message("Definitions: ${DEFINITIONS}")
 #  MESSAGE("INFILES: ${INFILES}")
 #  MESSAGE("OutFILE: ${OUTFILE}")
@@ -135,7 +142,7 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
   #MESSAGE("Name: ${file_name}")
   #MESSAGE("Shell Name: ${shell_script_name}")
 
-  string(REPLACE ${PROJECT_SOURCE_DIR} 
+  string(REPLACE ${PROJECT_SOURCE_DIR}
          ${PROJECT_BINARY_DIR} new_path ${path_name}
         )
 
@@ -147,13 +154,13 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
   set(MY_LD_LIBRARY_PATH ${output})
   set(my_script_name ${SCRIPT_FULL_NAME})
 
-  
+
   IF(FAIRROOTPATH)
    configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/root_macro.sh.in
                  ${new_path}/${shell_script_name}
                 )
   ELSE(FAIRROOTPATH)
-  
+
   configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro.sh.in
                  ${new_path}/${shell_script_name}
                 )
@@ -168,34 +175,37 @@ Macro(ROOT_GENERATE_ROOTMAP)
 
   # All Arguments needed for this new version of the macro are defined
   # in the parent scope, namely in the CMakeLists.txt of the submodule
-  If( IS_ABSOLUTE ${LINKDEF})
-    Set(Int_LINKDEF ${LINKDEF})
-  Else( IS_ABSOLUTE ${LINKDEF})
-    Set(Int_LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/${LINKDEF})
-  EndIf( IS_ABSOLUTE ${LINKDEF})
+  if (DEFINED LINKDEF)
+    foreach(l ${LINKDEF})
+      If( IS_ABSOLUTE ${l})
+        Set(Int_LINKDEF ${Int_LINKDEF} ${l})
+      Else( IS_ABSOLUTE ${l})
+        Set(Int_LINKDEF ${Int_LINKDEF} ${CMAKE_CURRENT_SOURCE_DIR}/${l})
+      EndIf( IS_ABSOLUTE ${l})
+    endforeach()
 
-  foreach(d ${DEPENDENCIES})
-    get_filename_component(_ext ${d} EXT)
-    if(_ext)
-      set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
-    else()
-      set(Int_DEPENDENCIES ${Int_DEPENDENCIES} lib${d}.so)
-    endif()
-  endforeach()
+    foreach(d ${DEPENDENCIES})
+      get_filename_component(_ext ${d} EXT)
+      if(_ext)
+        set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
+      else()
+        set(Int_DEPENDENCIES ${Int_DEPENDENCIES} lib${d}.so)
+      endif()
+    endforeach()
 
-  set(Int_LIB ${LIBRARY_NAME})
-  set(Int_OUTFILE ${LIBRARY_OUTPUT_PATH}/lib${Int_LIB}.rootmap)
+    set(Int_LIB ${LIBRARY_NAME})
+    set(Int_OUTFILE ${LIBRARY_OUTPUT_PATH}/lib${Int_LIB}.rootmap)
 
-
-  add_custom_command(OUTPUT ${Int_OUTFILE}
-                     COMMAND ${RLIBMAP_EXECUTABLE} -o ${Int_OUTFILE} -l ${Int_LIB} 
-                             -d ${Int_DEPENDENCIES} -c ${Int_LINKDEF}
-                     DEPENDS ${Int_LINKDEF} ${RLIBMAP_EXECUTABLE} )
-  add_custom_target( lib${Int_LIB}.rootmap ALL DEPENDS  ${Int_OUTFILE})
-  set_target_properties(lib${Int_LIB}.rootmap PROPERTIES FOLDER RootMaps )
-  #---Install the rootmap file------------------------------------
-#  install(FILES ${Int_OUTFILE} DESTINATION lib COMPONENT libraries)
-  install(FILES ${Int_OUTFILE} DESTINATION lib)
+    add_custom_command(OUTPUT ${Int_OUTFILE}
+                       COMMAND ${RLIBMAP_EXECUTABLE} -o ${Int_OUTFILE} -l ${Int_LIB}
+                               -d ${Int_DEPENDENCIES} -c ${Int_LINKDEF}
+                       DEPENDS ${Int_LINKDEF} ${RLIBMAP_EXECUTABLE} )
+    add_custom_target( lib${Int_LIB}.rootmap ALL DEPENDS  ${Int_OUTFILE})
+    set_target_properties(lib${Int_LIB}.rootmap PROPERTIES FOLDER RootMaps )
+    #---Install the rootmap file------------------------------------
+    #install(FILES ${Int_OUTFILE} DESTINATION lib COMPONENT libraries)
+    install(FILES ${Int_OUTFILE} DESTINATION lib)
+  endif(DEFINED LINKDEF)
 EndMacro(ROOT_GENERATE_ROOTMAP)
 
 Macro(GENERATE_LIBRARY)
@@ -215,7 +225,7 @@ Macro(GENERATE_LIBRARY)
   Else( IS_ABSOLUTE ${DICTIONARY})
     Set(Int_DICTIONARY ${CMAKE_CURRENT_SOURCE_DIR}/${DICTIONARY})
   EndIf( IS_ABSOLUTE ${DICTIONARY})
-  
+
   Set(Int_SRCS ${SRCS})
 
   If(HEADERS)
@@ -244,9 +254,9 @@ Macro(GENERATE_LIBRARY)
     ROOT_GENERATE_DICTIONARY()
     SET(Int_SRCS ${Int_SRCS} ${DICTIONARY})
   EndIf(LINKDEF)
- 
-  ROOT_GENERATE_ROOTMAP()  
- 
+
+  ROOT_GENERATE_ROOTMAP()
+
   ############### build the library #####################
   Add_Library(${Int_LIB} SHARED ${Int_SRCS} ${NO_DICT_SRCS})
   target_link_libraries(${Int_LIB} ${DEPENDENCIES})
@@ -261,7 +271,7 @@ Macro(GENERATE_LIBRARY)
   Set(SRCS)
   Set(HEADERS)
   Set(NO_DICT_SRCS)
-  Set(DEPENDENCIES)  
+  Set(DEPENDENCIES)
 
 EndMacro(GENERATE_LIBRARY)
 
@@ -282,7 +292,7 @@ Macro(GENERATE_EXECUTABLE)
 
   Set(EXE_NAME)
   Set(SRCS)
-  Set(DEPENDENCIES)  
+  Set(DEPENDENCIES)
 
 EndMacro(GENERATE_EXECUTABLE)
 

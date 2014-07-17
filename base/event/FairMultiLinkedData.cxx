@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
  * FairMultiLinkedData.cxx
  *
@@ -6,8 +13,10 @@
  */
 
 #include "FairMultiLinkedData.h"
+#include "FairMultiLinkedData_Interface.h"
 
 #include "FairRootManager.h"            // for FairRootManager
+#include "FairLinkManager.h"            // for FairLinkManager
 
 #include "TClonesArray.h"               // for TClonesArray
 
@@ -72,8 +81,8 @@ FairLink FairMultiLinkedData::GetLink(Int_t pos) const
 
 void FairMultiLinkedData::SetLinks(FairMultiLinkedData links, Float_t mult)
 {
-  fLinks = links.GetLinks();
-  MultiplyAllWeights(mult);
+  fLinks.clear();
+  AddLinks(links, mult);
 }
 
 
@@ -117,6 +126,7 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
       link.GetIndex() < 0 ||
       ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0) {
     InsertLink(link);
+    InsertHistory(link);
     return;
   }
 
@@ -128,7 +138,7 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
       if (fVerbose > 1) {
         std::cout << "BYPASS!" << std::endl;
       }
-      bypass = kTRUE;
+//      bypass = kTRUE;
     }
   }
 
@@ -148,15 +158,21 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
       return;
     } else {
       InsertLink(link);
+      InsertHistory(link);
     }
   } else {
     InsertLink(link);
+    InsertHistory(link);
   }
 
 }
 
 void FairMultiLinkedData::InsertLink(FairLink link)
 {
+  if (FairLinkManager::Instance()->IsIgnoreType(link.GetType())){
+	return;
+  }
+
   std::set<FairLink>::iterator it = fLinks.find(link);
   if (it != fLinks.end()) {
     FairLink myTempLink = *it;
@@ -169,6 +185,35 @@ void FairMultiLinkedData::InsertLink(FairLink link)
   return;
 }
 
+void FairMultiLinkedData::InsertHistory(FairLink link)
+{
+        FairRootManager* ioman = FairRootManager::Instance();
+        FairMultiLinkedData* pointerToLinks = 0;
+
+        if (link.GetType() < 0)
+                return;
+        if (link.GetType() == ioman->GetBranchId("MCTrack"))
+                return;
+
+        if (link.GetIndex() < 0) { //if index is -1 then this is not a TClonesArray so only the Object is returned
+                FairMultiLinkedData_Interface* interface = (FairMultiLinkedData_Interface*) ioman->GetObject(ioman->GetBranchName(link.GetType()));
+                pointerToLinks = interface->GetPointerToData();
+        } else {
+                TClonesArray* dataArray = (TClonesArray*) ioman->GetObject(ioman->GetBranchName(link.GetType()));
+                if (link.GetIndex() < dataArray->GetEntriesFast()) {
+                        FairMultiLinkedData_Interface* interface = (FairMultiLinkedData_Interface*) dataArray->At(link.GetIndex());
+                        pointerToLinks = interface->GetPointerToData();
+
+                }
+        }
+        if (pointerToLinks != 0){
+                std::set<FairLink> linkSet = pointerToLinks->GetLinks();
+                for (std::set<FairLink>::const_iterator iter = linkSet.begin(); iter!= linkSet.end(); iter++){
+                        InsertLink(*iter);
+                }
+        }
+
+}
 
 Bool_t FairMultiLinkedData::IsLinkInList(Int_t type, Int_t index)
 {

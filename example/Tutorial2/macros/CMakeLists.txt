@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial2/macros/run_tutorial2.C)
 add_test(run_tutorial2 ${CMAKE_BINARY_DIR}/example/Tutorial2/macros/run_tutorial2.sh)
 SET_TESTS_PROPERTIES(run_tutorial2 PROPERTIES TIMEOUT "30")

@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_sim.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_digi.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_reco.C)
@@ -6,7 +13,7 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/run_reco_t
 
 ForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
   Add_Test(run_sim_${_mcEngine} 
-           ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_sim.sh 1024 \"${_mcEngine}\")
+           ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_sim.sh 100 \"${_mcEngine}\")
   Set_Tests_Properties(run_sim_${_mcEngine} PROPERTIES TIMEOUT "180")
   Set_Tests_Properties(run_sim_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
 

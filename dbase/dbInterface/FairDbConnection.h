@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #ifndef FAIRDBCONNECTION
 #define FAIRDBCONNECTION
 
@@ -55,6 +62,7 @@ class FairDbConnection
     void ClearExceptionLog() { fExceptionLog.Clear(); }
     Bool_t PrintExceptionLog(Int_t level = 3) const;
     void RecordException();
+    void RefreshExistingTables(){fExistingTableList.clear();SetTableExists();}
   protected:
     std::string fDbName;
     std::string fUser;

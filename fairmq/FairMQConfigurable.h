@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQConfigurable.h
  *
@@ -15,8 +22,9 @@ using std::string;
 class FairMQConfigurable
 {
   public:
-    enum {
-      Last = 1
+    enum
+    {
+        Last = 1
     };
     FairMQConfigurable();
     virtual void SetProperty(const int key, const string& value, const int slot = 0);

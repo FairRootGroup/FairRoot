@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----                FairRingSorterTaskT source file             -----
 // -------------------------------------------------------------------------
@@ -18,6 +25,11 @@
 InitStatus FairRingSorterTask::ReInit()
 {
   return kSUCCESS;
+}
+
+FairRingSorter* FairRingSorterTask::InitSorter(Int_t numberOfCells, Double_t widthOfCells) const
+{
+	return new FairRingSorter(numberOfCells, widthOfCells);
 }
 
 // -----   Public method Init   --------------------------------------------
@@ -75,6 +87,14 @@ void FairRingSorterTask::Exec(Option_t* opt)
   }
   fSorter->DeleteOutputData();
   fEntryNr++;
+}
+
+
+void FairRingSorterTask::AddNewDataToTClonesArray(FairTimeStamp* data)
+{
+	FairRootManager* ioman = FairRootManager::Instance();
+	TClonesArray* myArray = ioman->GetTClonesArray(fOutputBranch);
+	(*myArray)[myArray->GetEntries()] = data;
 }
 
 // -------------------------------------------------------------------------

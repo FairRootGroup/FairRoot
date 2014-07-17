@@ -1,9 +1,16 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #include "FairMCPoint.h"
 #include "FairLogger.h"
 
 // -----   Default constructor   -------------------------------------------
 FairMCPoint::FairMCPoint()
-  : FairMultiLinkedData(),
+  : FairMultiLinkedData_Interface(),
     fTrackID(-1),
     fEventId(0),
     fPx(0.),
@@ -29,7 +36,7 @@ FairMCPoint::FairMCPoint()
 FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
                          TVector3 mom, Double_t tof, Double_t length,
                          Double_t eLoss, UInt_t EventId)
-  :FairMultiLinkedData(),
+  :FairMultiLinkedData_Interface(),
    fTrackID    ( trackID),
    fEventId    (EventId),
    fPx         ( mom.Px()),
@@ -45,8 +52,6 @@ FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
 {
 }
 // -------------------------------------------------------------------------
-
-
 
 // -----   Destructor   ----------------------------------------------------
 FairMCPoint::~FairMCPoint() { }

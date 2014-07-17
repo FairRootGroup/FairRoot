@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 # - Tools for building CUDA C files: libraries and build dependencies.
 # This script locates the NVIDIA CUDA C tools. It should work on linux, windows,
 # and mac and should be reasonably up to date with CUDA C releases.

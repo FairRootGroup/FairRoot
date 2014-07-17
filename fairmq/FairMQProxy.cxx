@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQProxy.cxx
  *
@@ -21,19 +28,26 @@ FairMQProxy::~FairMQProxy()
 
 void FairMQProxy::Run()
 {
-  LOG(INFO) << ">>>>>>> Run <<<<<<<";
+    LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
-  boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
+    boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
-  FairMQMessage* msg = fTransportFactory->CreateMessage();
+    FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-  while ( fState == RUNNING ) {
-    fPayloadInputs->at(0)->Receive(msg);
-    fPayloadOutputs->at(0)->Send(msg);
-  }
+    size_t bytes_received = 0;
 
-  delete msg;
+    while (fState == RUNNING)
+    {
+        bytes_received = fPayloadInputs->at(0)->Receive(msg);
+        if (bytes_received)
+        {
+            fPayloadOutputs->at(0)->Send(msg);
+            bytes_received = 0;
+        }
+    }
 
-  rateLogger.interrupt();
-  rateLogger.join();
+    delete msg;
+
+    rateLogger.interrupt();
+    rateLogger.join();
 }

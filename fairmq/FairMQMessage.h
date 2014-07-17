@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQMessage.h
  *
@@ -10,13 +17,14 @@
 
 #include <cstddef> // for size_t
 
+typedef void (fairmq_free_fn) (void *data, void *hint);
 
 class FairMQMessage
 {
   public:
     virtual void Rebuild() = 0;
     virtual void Rebuild(size_t size) = 0;
-    virtual void Rebuild(void* data, size_t size) = 0;
+    virtual void Rebuild(void* data, size_t size, fairmq_free_fn *ffn = NULL, void* hint = NULL) = 0;
 
     virtual void* GetMessage() = 0;
     virtual void* GetData() = 0;

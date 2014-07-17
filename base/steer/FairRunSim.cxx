@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 //_____________________________________________________________________________
 // -----                   FairRunSim source file                      -----
 // -----            Created 06/01/04  by M. Al-Turany                  -----
@@ -173,9 +180,15 @@ void FairRunSim::Init()
 
   if(fPythiaDecayer) {
     fApp->SetPythiaDecayer(fPythiaDecayer);
+    if (fPythiaDecayerConfig) {
+      fApp->SetPythiaDecayerConfig(fPythiaDecayerConfig);
+    }
   }
   if(fUserDecay) {
     fApp->SetUserDecay(fUserDecay);
+    if (fUserDecayConfig) {
+      fApp->SetUserDecayConfig(fUserDecayConfig);
+    }
   }
   // on/off visualisation
   if( fStoreTraj ) {
@@ -414,6 +427,7 @@ void  FairRunSim::SetPythiaDecayer(const TString& Config )
   /**switch On external decayer (Pythia). Config macro will be used */
   fPythiaDecayerConfig = Config;
   fPythiaDecayer =kTRUE;
+
 }
 //_____________________________________________________________________________
 

@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----                   FairRunAna source file                      -----
 // -----            Created 06/01/04  by M. Al-Turany                  -----
@@ -250,7 +257,7 @@ void FairRunAna::Init()
     fRtdb->initContainers(fRunId);
     fTask->SetParTask();
 
-    fRtdb->initContainers( fRunId );
+    //fRtdb->initContainers( fRunId );
 
   } else if (fMixedInput) {
     fLogger->Info(MESSAGE_ORIGIN,"Initializing for Mixed input");

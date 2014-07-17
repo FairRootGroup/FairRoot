@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQProtoSampler.h
  *
@@ -12,14 +19,15 @@
 
 #include "FairMQDevice.h"
 
-class FairMQProtoSampler: public FairMQDevice
+class FairMQProtoSampler : public FairMQDevice
 {
   public:
-    enum {
-      InputFile = FairMQDevice::Last,
-      EventRate,
-      EventSize,
-      Last
+    enum
+    {
+        InputFile = FairMQDevice::Last,
+        EventRate,
+        EventSize,
+        Last
     };
     FairMQProtoSampler();
     virtual ~FairMQProtoSampler();

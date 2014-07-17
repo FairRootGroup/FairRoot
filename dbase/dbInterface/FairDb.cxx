@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #include "FairDb.h"
 
 #include "Riosfwd.h"                    // for ostream
@@ -84,11 +91,14 @@ ValTimeStamp FairDb::MakeTimeStamp(const std::string& sqlDateTime,
   date defaultDate = {nowDate/10000, nowDate/100%100, nowDate%100,0,0,0};
   date input       = defaultDate;
 
-  istringstream in(sqlDateTime);
-  in >> input.year >> dummy >> input.month >> dummy >> input.day
-     >> input.hour >> dummy >> input.min   >> dummy >> input.sec;
+  //  istringstream in(sqlDateTime);
+  // in >> input.year >> dummy >> input.month >> dummy >> input.day
+  //   >> input.hour >> dummy >> input.min   >> dummy >> input.sec;
+
+  sscanf(sqlDateTime.c_str(),"%d-%d-%d %d:%d:%d",&input.year,&input.month,&input.day,&input.hour,&input.min,&input.sec);
 
   if ( ok ) { *ok = kTRUE; }
+  
   if (  sqlDateTime < lo || sqlDateTime > hi ) {
     if ( ok ) { *ok = kFALSE; }
     else {
@@ -111,7 +121,7 @@ ValTimeStamp FairDb::MakeTimeStamp(const std::string& sqlDateTime,
 
     input = defaultDate;
   }
-
+  
   return ValTimeStamp(input.year,input.month,input.day,
                       input.hour,input.min,input.sec);
 

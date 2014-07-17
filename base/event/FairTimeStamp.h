@@ -1,7 +1,14 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 #ifndef FAIRTIMESTAMP_H
 #define FAIRTIMESTAMP_H
 
-#include "FairMultiLinkedData.h"        // for FairMultiLinkedData
+#include "FairMultiLinkedData_Interface.h"        // for FairMultiLinkedData
 
 #include "FairLink.h"                   // for FairLink
 
@@ -10,6 +17,13 @@
 
 #include <iostream>                     // for ostream, cout
 
+
+
+#ifndef __CINT__ // for BOOST serialization
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/base_object.hpp>
+#endif //__CINT__
+
 class TObject;
 
 /**
@@ -17,7 +31,7 @@ class TObject;
  ** Aug. 2010
  **@author M.Al-Turany <m.al-turany@gsi.de>
  */
-class FairTimeStamp : public FairMultiLinkedData
+class FairTimeStamp : public FairMultiLinkedData_Interface
 {
   public:
     /** Default constructor **/
@@ -49,7 +63,7 @@ class FairTimeStamp : public FairMultiLinkedData
     }
 
 
-    void Print(std::ostream& out = std::cout) const;
+    virtual std::ostream& Print(std::ostream& out = std::cout) const;
     virtual Bool_t IsSortable() const { return kTRUE;};
 
 
@@ -62,13 +76,34 @@ class FairTimeStamp : public FairMultiLinkedData
       return out;
     }
 
+    virtual bool operator< (const FairTimeStamp* rValue) const {
+    	if (GetTimeStamp() < rValue->GetTimeStamp())
+    		return true;
+    	else
+    		return false;
+    }
 
+
+    template<class Archive>
+    void serialize(Archive & ar, const unsigned int version) 
+    {
+        //ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
+        ar & fTimeStamp;
+        ar & fTimeStampError;
+    } 
+    
+    
   protected:
+
+    #ifndef __CINT__ // for BOOST serialization
+    friend class boost::serialization::access;
+    
+    #endif // for BOOST serialization
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError;     /** Error on time stamp */
     FairLink fEntryNr; //!  indicates where the data is stored in the branch
 
-    ClassDef(FairTimeStamp,2);
+    ClassDef(FairTimeStamp,3);
 };
 
 #endif

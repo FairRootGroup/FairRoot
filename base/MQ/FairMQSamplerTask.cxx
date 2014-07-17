@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQSamplerTask.cxx
  *
@@ -12,7 +19,9 @@ FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose) :
   FairTask(name, iVerbose),
   fInput(NULL),
   fBranch(""),
-  fOutput(NULL)
+  fOutput(NULL),
+  fEventIndex(0),
+  fTransportFactory(NULL)
 {
 }
 
@@ -20,8 +29,10 @@ FairMQSamplerTask::FairMQSamplerTask() :
   FairTask( "Abstract base task used for loading a branch from a root file into memory"),
   fInput(NULL),
   fBranch(""),
-  fOutput(NULL)
-{
+  fOutput(NULL),
+  fTransportFactory(NULL),
+  fEventIndex(0)
+  {
 }
 
 FairMQSamplerTask::~FairMQSamplerTask()
@@ -51,6 +62,13 @@ void FairMQSamplerTask::SetBranch(string branch)
 {
   fBranch = branch;
 }
+
+
+void FairMQSamplerTask::SetEventIndex(Long64_t EventIndex) 
+{
+    fEventIndex=EventIndex;
+}
+
 
 FairMQMessage* FairMQSamplerTask::GetOutput()
 {

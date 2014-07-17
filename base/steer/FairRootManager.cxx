@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----                   FairRootManager source file                 -----
 // -----            Created 06/01/04  by M. Al-Turany/D. Bertini       -----
@@ -17,6 +24,7 @@
 #include "FairRun.h"                    // for FairRun
 #include "FairTSBufferFunctional.h"     // for FairTSBufferFunctional, etc
 #include "FairWriteoutBuffer.h"         // for FairWriteoutBuffer
+#include "FairLinkManager.h"			// for FairLinkManager
 #include "Riosfwd.h"                    // for ostream
 #include "TArrayI.h"                    // for TArrayI
 #include "TBranch.h"                    // for TBranch
@@ -128,6 +136,8 @@ FairRootManager::FairRootManager()
     fCurrentEntry(),
     fEvtHeaderIsNew(kFALSE),
     fFillLastData(kFALSE),
+    fUseFairLinks(kFALSE), fInitFairLinksOnce(kFALSE),
+    fFairLinksBranchName("FairLinkBranch"),
     fEntryNr(0)
 {
   if (fgInstance) {
@@ -755,6 +765,10 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
     fBranchNameList->AddLast(new TObjString(name));
     fBranchSeqId++;
   }
+
+  if (toFile == kFALSE) {
+          FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
+   }
 }
 //_____________________________________________________________________________
 
@@ -770,6 +784,11 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
   // execution with some error message if this is the case.
   if (strcmp (name, Foldername) == 0 ) {
     fLogger->Fatal(MESSAGE_ORIGIN,"The names for the object name %s and the folder name %s are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name.", name, Foldername);
+  }
+
+  if (GetUseFairLinks() == kTRUE && fInitFairLinksOnce == kFALSE){
+            fInitFairLinksOnce = kTRUE;
+            Register(fFairLinksBranchName, "FairMultiLinkedData", "FairLinksBranch", kTRUE);
   }
 
   if(toFile) { /**Write the Object to the Tree*/
@@ -799,6 +818,10 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
     fBranchNameList->AddLast(new TObjString(name));
     fBranchSeqId++;
   }
+  if (toFile == kFALSE) {
+	  FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
+  }
+
 }
 //_____________________________________________________________________________
 
@@ -1969,6 +1992,10 @@ Bool_t FairRootManager::CompareBranchList(TFile* fileHandle, TString inputLevel)
   // the list. If in the end no branch is left in the list everything is
   // fine.
   set<TString>::iterator iter1;
+  if(! fileHandle->Get("BranchList"))
+  {
+    return kTRUE;
+  }
   TList* list= dynamic_cast <TList*> (fileHandle->Get("BranchList"));
   if(list) {
     TObjString* Obj=0;

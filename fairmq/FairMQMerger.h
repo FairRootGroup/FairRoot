@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQMerger.h
  *
@@ -10,12 +17,12 @@
 
 #include "FairMQDevice.h"
 
-
-class FairMQMerger: public FairMQDevice
+class FairMQMerger : public FairMQDevice
 {
   public:
     FairMQMerger();
     virtual ~FairMQMerger();
+
   protected:
     virtual void Run();
 };

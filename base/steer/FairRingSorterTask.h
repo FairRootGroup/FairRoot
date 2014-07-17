@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 
 /** FairRingSorterTask.h
  **
@@ -89,8 +96,8 @@ class FairRingSorterTask : public FairTask
     void SetPersistance(Bool_t p = kTRUE) {fPersistance=p;};
     Bool_t GetPersistance() {return fPersistance;};
 
-    virtual void AddNewDataToTClonesArray(FairTimeStamp* data) = 0;
-    virtual FairRingSorter* InitSorter(Int_t numberOfCells, Double_t widthOfCells) const  = 0;
+    virtual void AddNewDataToTClonesArray(FairTimeStamp* data);
+    virtual FairRingSorter* InitSorter(Int_t numberOfCells, Double_t widthOfCells) const;
 
   protected:
 

@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /* $Id: */
 
 // -------------------------------------------------------------------------
@@ -167,10 +174,12 @@ void FairEventBuilderManager::SetParContainers()
 
   // Get run and runtime database
   FairRunAna* run = FairRunAna::Instance();
-  if ( ! run ) { Fatal("SetParContainers", "No analysis run"); }
-
-  FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) { Fatal("SetParContainers", "No runtime database"); }
+  if ( ! run ) { 
+    Fatal("SetParContainers", "No analysis run"); 
+  } else {
+    FairRuntimeDb* db = run->GetRuntimeDb();
+    if ( ! db ) { Fatal("SetParContainers", "No runtime database"); }
+  }
 }
 // -------------------------------------------------------------------------
 

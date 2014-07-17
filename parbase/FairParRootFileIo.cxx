@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
 //*-- Created : 21/10/2004
 //*-- Modified: 21/06/2005  Denis bertini
@@ -169,7 +176,7 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
 {
   TDatime currentDate;
   TString newParFileName = "";
-  TFile*  newParFile;
+  TFile*  newParFile=0;
 
   TObjString* string;
   TListIter myIter(fnamelist);
@@ -210,8 +217,11 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
 
     nofFiles++;
   }
-  newParFile->Close();
-
+  if(newParFile!=0){
+    newParFile->Close();
+  }else{
+    std::cout << "****NO file to close file = \"" << std::endl;
+  }
   std::cout << "**** merged file = \"" << newParFileName.Data() << "\"" << std::endl;
 
   return this->open(newParFileName,option,ftitle,compress);

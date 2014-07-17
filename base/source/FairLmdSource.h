@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -----------------------------------------------------------------------------
 // -----                                                                   -----
 // -----                           FairLmdSource                           -----
@@ -37,17 +44,19 @@ class FairLmdSource : public FairMbsSource
     virtual Int_t ReadEvent();
     virtual void Close();
 
-  private:
+  protected:
     Bool_t OpenNextFile(TString fileName);
 
     Int_t fCurrentFile;
+	Int_t fNEvent;
+	Int_t fCurrentEvent;
     TList* fFileNames;
     s_evt_channel* fxInputChannel;
     s_ve10_1* fxEvent;
     s_bufhe* fxBuffer;
     Int_t* fxEventData;
     s_ves10_1* fxSubEvent;
-
+	s_filhe* fxInfoHeader;
 
   public:
     ClassDef(FairLmdSource, 0)

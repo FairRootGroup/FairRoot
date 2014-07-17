@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * FairMQTransportFactoryZMQ.h
  *
@@ -23,10 +30,9 @@ class FairMQTransportFactoryZMQ : public FairMQTransportFactory
 
     virtual FairMQMessage* CreateMessage();
     virtual FairMQMessage* CreateMessage(size_t size);
-    virtual FairMQMessage* CreateMessage(void* data, size_t size);
-    virtual FairMQSocket* CreateSocket(const string& type, int num);
+    virtual FairMQMessage* CreateMessage(void* data, size_t size, fairmq_free_fn *ffn = NULL, void* hint = NULL);
+    virtual FairMQSocket* CreateSocket(const string& type, int num, int numIoThreads);
     virtual FairMQPoller* CreatePoller(const vector<FairMQSocket*>& inputs);
-
 
     virtual ~FairMQTransportFactoryZMQ() {};
 };

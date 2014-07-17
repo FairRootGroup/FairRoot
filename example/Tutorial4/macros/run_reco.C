@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 void run_reco( TString mcEngine="TGeant3" )
 {
    // ----  Load libraries   -------------------------------------------------
@@ -13,16 +20,20 @@ void run_reco( TString mcEngine="TGeant3" )
   Int_t iVerbose = 0; // just forget about it, for the moment
   
   // Input file (MC Events)
-  TString  inFile     ="data/testrun_";
+  TString  inFile     ="testrun_";
   inFile = inFile + mcEngine + ".root";
 
   // Output file name
-  TString  outFile     ="data/testreco_";
+  TString  outFile     ="testreco_";
   outFile = outFile + mcEngine + ".root";
 
   // Parameter file
-  TString  parFile     ="data/testparams_";    
+  TString  parFile     ="testparams_";
   parFile = parFile + mcEngine + ".root";
+
+  // Millepede file name
+  TString  milleFile     ="testmille_";
+  milleFile = milleFile + mcEngine;
 
   TList *parFileList = new TList();
 
@@ -64,6 +75,7 @@ void run_reco( TString mcEngine="TGeant3" )
   FairTutorialDet4MilleWriter* writer = new FairTutorialDet4MilleWriter();
 //  writer->SetWriteAscii(kTRUE);
   writer->SetVersion(2);
+  writer->SetFileName(milleFile);
   fRun->AddTask(writer);
   
 

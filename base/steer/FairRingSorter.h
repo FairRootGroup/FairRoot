@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
  * FairRingSorter.h
  *
@@ -31,7 +38,7 @@ class FairRingSorter : public TObject
 
     virtual ~FairRingSorter() {};
 
-    virtual FairTimeStamp* CreateElement(FairTimeStamp* data) = 0;
+    virtual FairTimeStamp* CreateElement(FairTimeStamp* data);
 
     virtual void AddElement(FairTimeStamp* digi, double timestamp);
     virtual void WriteOutElements(int index);       ///< writes out the entries from LowerBoundPointer up to index

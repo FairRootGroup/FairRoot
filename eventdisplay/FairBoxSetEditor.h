@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----              FairBoxSetEditor header file                       -----
 // -----          Created 26/03/09  by T. Stockmanns                   -----
@@ -43,8 +50,10 @@ class FairBoxSetEditor : public TGedFrame
 
     virtual void SetModel(TObject* obj) {
       fM = dynamic_cast<FairBoxSet*>(obj);
-      fTimeWindowPlus->SetNumber(fM->GetTimeWindowPlus());
-      fTimeWindowMinus->SetNumber(fM->GetTimeWindowMinus());
+      if (fM) {
+        fTimeWindowPlus->SetNumber(fM->GetTimeWindowPlus());
+        fTimeWindowMinus->SetNumber(fM->GetTimeWindowMinus());
+      }
     }
 
     virtual void TimeWindow();

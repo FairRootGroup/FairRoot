@@ -1,3 +1,10 @@
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             # 
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
 # Create a library called "libFairTestDetector" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
@@ -50,9 +57,9 @@ Set(SRCS
   simulation/FairConstField.cxx
   simulation/FairConstPar.cxx
   simulation/FairMapPar.cxx
+  
   data/FairTestDetectorPoint.cxx
   data/FairTestDetectorHit.cxx
-  data/FairTestDetectorDigi.cxx
   digitization/FairTestDetectorHitProducerSmearing.cxx
   digitization/FairTestDetectorDigiTask.cxx
   reconstruction/FairTestDetectorRecoTask.cxx
@@ -64,13 +71,26 @@ Set(SRCS
 )
 
 If (Boost_FOUND)
-  # Set(SRCS
-  #     ${SRCS}
-  #     reconstruction/FairTestDetectorMQRecoTask.cxx
-  # )
+  Set(SRCS
+    ${SRCS}
+    data/FairTestDetectorDigi.cxx
+    
+  )
+
+
   Set(NO_DICT_SRCS
     data/FairMQFileSink.cxx
+    #data/has_BoostSerialization.cxx
   )
+
+  If(HAS_CXX11_AUTO AND HAS_CXX11_AUTO_RET_TYPE AND HAS_CXX11_CONSTEXPR AND HAS_CXX11_LAMBDA AND HAS_CXX11_DECLTYPE)
+    Set(NO_DICT_SRCS
+    ${NO_DICT_SRCS} data/has_BoostSerialization.cxx
+    )
+  Endif(HAS_CXX11_AUTO AND HAS_CXX11_AUTO_RET_TYPE AND HAS_CXX11_CONSTEXPR AND HAS_CXX11_LAMBDA AND HAS_CXX11_DECLTYPE)
+
+
+
   If(PROTOBUF_FOUND)
     Set(NO_DICT_SRCS
       ${NO_DICT_SRCS}
@@ -83,8 +103,8 @@ Set(LINKDEF FairTestDetectorLinkDef.h)
 Set(LIBRARY_NAME FairTestDetector)
 
 If (Boost_FOUND)
-  Set(DEPENDENCIES 
-    Base MCStack FairMQ FairMQSampler boost_thread boost_system)
+  Set(DEPENDENCIES
+    Base MCStack FairMQ FairMQSampler boost_thread boost_system boost_serialization)
 Else (Boost_FOUND)
   Set(DEPENDENCIES Base MCStack)
 EndIf (Boost_FOUND)
@@ -95,13 +115,47 @@ Add_Subdirectory(macro)
 
 
 If (Boost_FOUND)
-  Set(Exe_Names testDetectorProcessor testDetectorSampler fileSink)
+  Set(Exe_Names
+    testDetectorSamplerBin
+    testDetectorProcessorBin
+    fileSinkBin # todo: make this consistent with the others
+    testDetectorSamplerBoost
+    testDetectorProcessorBoost
+    fileSinkBoost # todo: make this consistent with the others
+    testDetectorSamplerRoot
+    testDetectorProcessorRoot
+    fileSinkRoot # todo: make this consistent with the others
+  )
+
+  If(PROTOBUF_FOUND)
+    Set(Exe_Names
+      ${Exe_Names}
+      testDetectorSamplerProto
+      testDetectorProcessorProto
+      fileSinkProto # todo: make this consistent with the others
+    )
+  EndIf(PROTOBUF_FOUND)
 
   set(Exe_Source
-    reconstruction/runTestDetectorProcessor.cxx
-    digitization/runTestDetectorSampler.cxx
-    reconstruction/runFileSink.cxx
+    run/runTestDetectorSamplerBin.cxx
+    run/runTestDetectorProcessorBin.cxx
+    run/runFileSinkBin.cxx
+    run/runTestDetectorSamplerBoost.cxx
+    run/runTestDetectorProcessorBoost.cxx
+    run/runFileSinkBoost.cxx
+    run/runTestDetectorSamplerRoot.cxx
+    run/runTestDetectorProcessorRoot.cxx
+    run/runFileSinkRoot.cxx
     )
+
+  If(PROTOBUF_FOUND)
+    Set(Exe_Source
+      ${Exe_Source}
+      run/runTestDetectorSamplerProto.cxx
+      run/runTestDetectorProcessorProto.cxx
+      run/runFileSinkProto.cxx
+    )
+  EndIf(PROTOBUF_FOUND)
 
   List(LENGTH Exe_Names _length)
   Math(EXPR _length ${_length}-1)
