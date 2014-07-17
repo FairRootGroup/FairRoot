@@ -23,6 +23,9 @@ then
   if (not_there Boost $checkfile);
   then
     cd $SIMPATH/basics/boost
+
+    # patch file toavoid problems with newer versions of glibc
+    patch -p0 < ../boost_glibc.patch | tee -a $logfile
 	
     # boost only support up to 64 parallel processes
     tmp_nop=$number_of_processes
