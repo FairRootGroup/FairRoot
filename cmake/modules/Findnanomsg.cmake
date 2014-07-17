@@ -16,17 +16,20 @@ endIf (APPLE)
 set(LIBNANOMSG_STATIC libnanomsg.a)
 
 find_path(NANOMSG_INCLUDE_DIR NAMES nn.h
-  PATHS /usr/local/include/nanomsg
+  PATHS ${SIMPATH}/include/nanomsg
+  NO_DEFAULT_PATH
   DOC   "Path to nanomsg include header files."
 )
 
 find_library(NANOMSG_LIBRARY_SHARED NAMES ${LIBNANOMSG_SHARED}
-  PATHS /usr/local/lib
+  PATHS ${SIMPATH}/lib
+  NO_DEFAULT_PATH
   DOC   "Path to ${LIBNANOMSG_SHARED}."
 )
 
 find_library(NANOMSG_LIBRARY_STATIC NAMES ${LIBNANOMSG_STATIC}
-  PATHS /usr/local/lib
+  PATHS ${SIMPATH}/lib
+  NO_DEFAULT_PATH
   DOC   "Path to ${LIBNANOMSG_STATIC}."
 )
 
