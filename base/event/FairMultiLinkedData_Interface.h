@@ -50,7 +50,7 @@ class FairMultiLinkedData_Interface : public  TObject
 		if (fRefToLinks.GetObject() != 0)
 			return (FairMultiLinkedData*)fRefToLinks.GetObject();
 		else {
-			std::cout << "-W- FairMultiLinkedData_Interface::GetPointerToData() fRefToLinks == 0" << std::endl;
+//			std::cout << "-W- FairMultiLinkedData_Interface::GetPointerToData() fRefToLinks == 0" << std::endl;
 			return 0;
 		}
     }

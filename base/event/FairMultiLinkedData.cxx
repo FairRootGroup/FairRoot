@@ -138,7 +138,7 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
       if (fVerbose > 1) {
         std::cout << "BYPASS!" << std::endl;
       }
-      bypass = kTRUE;
+//      bypass = kTRUE;
     }
   }
 
