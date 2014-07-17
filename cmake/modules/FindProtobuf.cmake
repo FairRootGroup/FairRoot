@@ -135,19 +135,29 @@ function(_protobuf_find_libraries name filename)
    find_library(${name}_LIBRARY
        NAMES ${filename}
        PATHS
+<<<<<<< HEAD
        ${SIMPATH}/lib
        NO_DEFAULT_PATH
        NO_CMAKE_SYSTEM_PATH
    )
+=======
+       ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Release
+       ${SIMPATH}/lib)
+>>>>>>> 7470408... Modify CMake find modules for Protobuf and nanomsg to use those included with FairSoft.
    mark_as_advanced(${name}_LIBRARY)
 
    find_library(${name}_LIBRARY_DEBUG
        NAMES ${filename}
        PATHS
+<<<<<<< HEAD
        ${SIMPATH}/lib
        NO_DEFAULT_PATH
        NO_CMAKE_SYSTEM_PATH
    )
+=======
+       ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Debug
+       ${SIMPATH}/lib)
+>>>>>>> 7470408... Modify CMake find modules for Protobuf and nanomsg to use those included with FairSoft.
    mark_as_advanced(${name}_LIBRARY_DEBUG)
 
    if(NOT ${name}_LIBRARY_DEBUG)
@@ -218,8 +228,11 @@ find_path(PROTOBUF_INCLUDE_DIR
     PATHS
     ${PROTOBUF_SRC_ROOT_FOLDER}/src
     ${SIMPATH}/include
+<<<<<<< HEAD
     NO_DEFAULT_PATH
     NO_CMAKE_SYSTEM_PATH
+=======
+>>>>>>> 7470408... Modify CMake find modules for Protobuf and nanomsg to use those included with FairSoft.
 )
 mark_as_advanced(PROTOBUF_INCLUDE_DIR)
 
@@ -228,9 +241,15 @@ find_program(PROTOBUF_PROTOC_EXECUTABLE
     NAMES protoc
     DOC "The Google Protocol Buffers Compiler"
     PATHS
+<<<<<<< HEAD
     ${SIMPATH}/bin
     NO_DEFAULT_PATH
     NO_CMAKE_SYSTEM_PATH
+=======
+    ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Release
+    ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Debug
+    ${SIMPATH}/bin
+>>>>>>> 7470408... Modify CMake find modules for Protobuf and nanomsg to use those included with FairSoft.
 )
 mark_as_advanced(PROTOBUF_PROTOC_EXECUTABLE)
 
