@@ -69,7 +69,7 @@ void FairDbLogCatStream::DoConcatenation()
     if ((*inFile)) {
       char ch;
       while (inFile->get(ch)) { outFile.put(ch); }
-      delete inFile;
+      if (inFile) delete inFile;
       if ( unlink(itrFairDbLogName->c_str()) != 0) {
         cerr << "-W- " << __FILE__ << ":" << __LINE__
              << "Failed to unlink file '"
@@ -81,6 +81,7 @@ void FairDbLogCatStream::DoConcatenation()
            << " Can't open file " << (*itrFairDbLogName)
            << " for read."
            << " File skipped\n";
+      if (inFile) delete inFile; 
       continue;
     }
   }

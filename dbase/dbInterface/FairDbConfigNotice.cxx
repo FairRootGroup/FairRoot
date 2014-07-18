@@ -67,7 +67,8 @@ FairRegistry& FairDbConfigNotice::Query()
  DBLOG("FairDb",FairDbLog::kInfo)  << " "<<t<<" "<<k<<" = ["<<d<<"] "<<c<<" =? ";
     if (isBool) {
     } else if (isChar) {
-      char c1, c_in;
+      char c1; 
+      char c_in;
       fDefault.Get(k, c1);
       PROMPT("char",c,c1);
       std::cin >> c_in;
