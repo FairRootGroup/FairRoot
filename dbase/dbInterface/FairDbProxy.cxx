@@ -540,8 +540,11 @@ void  FairDbProxy::CreateMetaData(FairDbTableMetaData& metaData) const
   // Checking meta-data
   for ( UInt_t dbNo = 0; dbNo < fConnectionPool.GetNumDb(); dbNo++ ) {
     FairDbConnection* connection = fConnectionPool.GetConnection(dbNo);
+    if (!connection) {continue;} 
+
     TSQLServer* server = connection->GetServer();
-    if ( ! server ) { continue; }
+    if (!server) {continue;}
+
     connection->Connect();
     TSQLTableInfo* meta = server->GetTableInfo(tableName);
     if ( ! meta ) {

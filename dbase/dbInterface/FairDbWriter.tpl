@@ -155,7 +155,8 @@ Bool_t FairDbWriter<T>::Activate(const ValInterval& vr,
   fAggregateNo=aggNo;
   fDbNo=dbEntry;
 
-  this->Open(vr,fAggregateNo,fVersion,creationDate,fDbNo,fLogTitle);
+  return this->Open(vr,fAggregateNo,fVersion,creationDate,fDbNo,fLogTitle);
+
 
 }
 
