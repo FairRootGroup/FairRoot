@@ -64,13 +64,17 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
    fOutputDirectory(""),
    fProofOutputStatus("copy")
 {
-  cout << "+++++++ T P R O O F +++++++++++++++++++++++++++++++++" << endl;
-  cout << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data()
-       << "\");" << endl;
-  TProof::AddEnvVar("LOCALDATASERVER","file://");
-  //    TProof* proof = TProof::Open("lite:///?workers=1");
-  fProof = TProof::Open(fProofServerName.Data());
-  cout << "+++++++ C R E A T E D +++++++++++++++++++++++++++++++" << endl;
+  if ( proofName == "RunOnProofWorker" ) {
+    fRunOnProofWorker = kTRUE;
+  }
+  else {
+    fLogger->Info(MESSAGE_ORIGIN,"+++++++ T P R O O F +++++++++++++++++++++++++++++++++");
+    fLogger->Info(MESSAGE_ORIGIN,Form("creating TProof* proof = TProof::Open(\"%s\")",fProofServerName.Data()));
+    TProof::AddEnvVar("LOCALDATASERVER","file://");
+    //    TProof* proof = TProof::Open("lite:///?workers=1");
+    fProof = TProof::Open(fProofServerName.Data());
+    fLogger->Info(MESSAGE_ORIGIN,"+++++++ C R E A T E D +++++++++++++++++++++++++++++++");
+  }
 
   fRAPInstance=this;
   fAna=kTRUE;
@@ -186,7 +190,7 @@ void FairRunAnaProof::Init()
 // fOutFile = fRootManager->OpenOutFile(fOutname);
 
   if ( !fRunOnProofWorker ) {
-    std::cout << "QUITTING, CAUSE IT'S not running on proof worker" << std::endl;
+    fLogger->Info(MESSAGE_ORIGIN,"QUITTING, CAUSE IT'S not running on proof worker");
     return;
   }
   gROOT->GetListOfBrowsables()->Add(fTask);
@@ -215,7 +219,12 @@ void FairRunAnaProof::Init()
 
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
-      fRunId = fMCHeader->GetRunID();
+      if ( fMCHeader == 0 ) {
+	fLogger->Info(MESSAGE_ORIGIN,"Neither EventHeader nor MCEventHeader not available! Setting fRunId to 0.");
+      }
+      else {
+	fRunId = fMCHeader->GetRunID();
+      }
       fEvtHeader->SetRunId(fRunId);
       fRootManager->SetEvtHeaderNew(kTRUE);
     } else {
@@ -386,37 +395,30 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
 
   if ( 1 == 0 ) { // uploading packages not needed, as the libraries are in the rootmap now
-    if ( 1==0 ) { cout << "+++++++ ClearPackages" << endl; }
     fProof->ClearPackages();
-    if ( 1==0 ) { cout << "+++++++ UploadPackages" << endl; }
     fProof->UploadPackage(fProofParName.Data());
-    if ( 1==0 ) { cout << "+++++++ EnablePackages" << endl; }
     fProof->EnablePackage(fProofParName.Data());
-    if ( 1==0 ) { cout << "+++++++ ShowPackages" << endl; }
-    if ( 1==0 ) { fProof->ShowPackages(); }
-    if ( 1==0 ) { cout << "+++++++ Done" << endl; }
   }
 
   Int_t nofChainEntries = inChain->GetEntries();
-  cout << "FairRunAnaProof::RunOnProof(): The chain seems to have " << nofChainEntries << " entries." << endl;
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairRunAnaProof::RunOnProof(): The chain seems to have %d entries",nofChainEntries));
 
   TObjArray* listOfFiles = inChain->GetListOfFiles();
-  cout << "FairRunAnaProof::RunOnProof(): There are " << listOfFiles->GetEntries() << " files in the chain." << endl;
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairRunAnaProof::RunOnProof(): There are %d files in the chain",listOfFiles->GetEntries()));
 
   inChain->SetProof();
 
   Int_t nofEventsToAnalyze = NStop-NStart;
 
   if ( nofEventsToAnalyze <= 0 ) {
-    cout << "You requested to analyze events from " << NStart << " to " << NStop << " that is " << nofEventsToAnalyze << " events!!!" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,Form("You requested to analyze events from %d to %d, that is %d events!!!",NStart,NStop,nofEventsToAnalyze));
     nofEventsToAnalyze = nofChainEntries-NStart;
-    cout << "It will be changed to analyze all events from " << NStart << " to the end of chain (" << nofChainEntries << "), that is to analyze " << nofEventsToAnalyze << " events." << endl;
+    fLogger->Info(MESSAGE_ORIGIN,Form("It will be changed to analyze all events from %d to the end of chain (%d), that is to analyze %d events.",NStart,nofChainEntries,nofEventsToAnalyze));
   }
 
-  cout << "FairRunAnaProof::RunOnProof(): Starting inChain->Process(\"FairAnaSelector\",\"\","
-       << nofEventsToAnalyze << "," << NStart << ")" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairRunAnaProof::RunOnProof(): Starting inChain->Process(\"FairAnaSelector\",\"\",%d,%d)",nofEventsToAnalyze,NStart));
   inChain->Process("FairAnaSelector","",nofEventsToAnalyze,NStart);
-  cout << "FairRunAnaProof::RunOnProof(): inChain->Process DONE" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,"FairRunAnaProof::RunOnProof(): inChain->Process DONE");
 
   return;
 }

@@ -464,7 +464,7 @@ Bool_t FairRootManager::OpenInChain()
 //_____________________________________________________________________________
 Bool_t FairRootManager::OpenInTree()
 {
-  cout << "-I- FairRootManager::OpenInTree() Opening fInTree: \"" << fInTree->GetCurrentFile()->GetName() << "\"" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairRootManager::OpenInTree() Opening fInTree: \"%s\"",fInTree->GetCurrentFile()->GetName()));
   // Temporarily open the input file to extract information which
   // is needed to bring the friend trees in the correct order
   fInputFileName = fInTree->GetCurrentFile()->GetName();
@@ -525,8 +525,7 @@ Bool_t FairRootManager::OpenInTree()
 
   for ( Int_t iobj = 0 ; iobj <= fNObj ; iobj++ ) {
     if ( fObj2[iobj] ) {
-      cout << "-I- FairRootManager::OpenInTree(): Updating branch \"" << fObj2[iobj]->GetName()
-           << "\" (\"" << fObj2[iobj]->GetTitle() << "\") in the new fInTree \"" << fInTree << "\"" << endl;
+      fLogger->Info(MESSAGE_ORIGIN,Form("FairRootManager::OpenInTree(): Updating branch \"%s\" (\"%s\") in the new fInTree \"%p\"",fObj2[iobj]->GetName(),fObj2[iobj]->GetTitle(),fInTree));
       TString tempBranchName = fObj2[iobj]->GetName();
       fInTree->SetBranchStatus (tempBranchName.Data(),1);
       fInTree->SetBranchAddress(tempBranchName.Data(),&fObj2[iobj]);
@@ -535,7 +534,7 @@ Bool_t FairRootManager::OpenInTree()
 
   Int_t nofEnt =  (Int_t) fInTree->GetEntries();
 
-  cout << "-I- FairRootManager::OpenInTree() Input TREE has " << nofEnt << " entries." << endl;
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairRootManager::OpenInTree() Input TREE has %d entries.",nofEnt));
 
   return kTRUE;
 }
@@ -720,7 +719,7 @@ TFile* FairRootManager::OpenOutFile(const char* fname)
   if(fOutFile) {
     CloseOutFile();
   }
-  cout << "FairRootManager::OpenOutFile(\"" << fname << "\")" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairRootManager::OpenOutFile(\"%s\")",fname));
   fOutFile = new TFile(fname, "recreate");
   return OpenOutFile(fOutFile);
 }
@@ -1087,11 +1086,11 @@ void  FairRootManager::ReadEvent(Int_t i)
 {
   SetEntryNr(i);
   if ( fInTree ) {
-    cout << "FairRootManager::ReadEvent(" << i << "): FROM THE TREE " << fInTree << endl;
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairRootManager::ReadEvent(%d): FROM THE TREE %p",i,fInTree));
     if(0==fCurrentEntryNo) {
       Int_t totEnt = fInTree->GetEntries();
       fLogger->Info(MESSAGE_ORIGIN,"The number of entries in the tree is %i",totEnt);
-      cout << "FairRootManager::ReadEvent(" << i << "): The tree has " << totEnt << " entries" << endl;
+      fLogger->Info(MESSAGE_ORIGIN,Form("FairRootManager::ReadEvent(%d): The tree has %d entries",i,totEnt));
 
       fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
 

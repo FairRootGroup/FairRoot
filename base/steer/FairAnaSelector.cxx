@@ -13,6 +13,7 @@
 
 #include "FairAnaSelector.h"
 
+#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "FairParAsciiFileIo.h"         // for FairParAsciiFileIo
 #include "FairParRootFileIo.h"          // for FairParRootFileIo
 #include "FairRootManager.h"            // for FairRootManager
@@ -56,31 +57,31 @@ void FairAnaSelector::Init(TTree* tree)
   // Init() will be called many times when running on PROOF
   // (once per file to be processed).
   if (!tree) {
-    cout << "-W- FairAnaSelector::Init(): There is no tree." << endl;
+    fLogger->Warning(MESSAGE_ORIGIN,"FairAnaSelect::Init(): There is no tree.");
     return;
   } else {
-    cout << "-I- FairAnaSelector::Init(): Got tree     : \"" << tree << "\"" << endl;
-    cout << "-I- FairAnaSelector::Init(): Tree name    : \"" << tree->GetName() << "\"" << endl;
-    cout << "-I- FairAnaSelector::Init(): Tree title   : \"" << tree->GetTitle() << "\"" << endl;
-    cout << "-I- FairAnaSelector::Init(): Tree filename: \"" << tree->GetCurrentFile()->GetName() << "\"" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): Got tree     : \"%p\"",tree));
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): Tree name    : \"%s\"",tree->GetName()));
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): Tree title   : \"%s\"",tree->GetTitle()));
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): Tree filename: \"%s\"",tree->GetCurrentFile()->GetName()));
   }
 
   if ( fRunAna ) {
-    cout << "-I- FairAnaSelector::Init(): Already have fRunAna." << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Init(): Already have fRunAna.");
 
-    cout << "-I- FairAnaSelector::Init(): SetInTree(" << tree << ")" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): SetInTree(%p)",tree));
     fRunAna->SetInTree(tree);
-    cout << "-I- FairAnaSelector::Init(): SetInTree done" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Init(): SetInTree done");
 
     FairRootManager* ioman = FairRootManager::Instance();
     ioman->OpenInTree();
 
-    cout << "Containers static? " << (fRunAna->GetContainerStatic()?"YES":"NO") << endl;
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): Containers static? %s",(fRunAna->GetContainerStatic()?"YES":"NO")));
     if ( !fRunAna->GetContainerStatic() ) {
       fRunAna->InitContainers();
     }
   } else {
-    cout << "-I- FairAnaSelector::Init(): Have to create fRunAna." << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Init(): Have to create fRunAna.");
 
     TString vmcPath = gSystem->Getenv("VMCWORKDIR");
 
@@ -97,24 +98,23 @@ void FairAnaSelector::Init(TTree* tree)
     TString outFileName = outFile->GetTitle();
     TString outDirName  = outDir->GetTitle();
 
-    cout << "-I- FairAnaSelector::Init(): out status   : \"" << outputStat.Data() << "\"" << endl;
-    cout << "-I- FairAnaSelector::Init(): par1 file    : \"" << par1Str.Data() << "\"" << endl;
-    cout << "-I- FairAnaSelector::Init(): par2 file    : \"" << par2Str.Data() << "\"" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): out status   : \"%s\"",outputStat.Data()));
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): par1 file    : \"%s\"",par1Str.Data()));
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): par2 file    : \"%s\"",par2Str.Data()));
 
-    cout << "-I- FairAnaSelector::Init(): OutputFile option \"" << outputStat.Data() << "\" RECOGNIZED" << endl;
-
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): OutputFile option \"%s\" RECOGNIZED",outputStat.Data()));
+    
     outFileName.Remove(outFileName.Length()-5);
     TString outputFileName = Form("%s/%s_worker_%s.root",outDirName.Data(),outFileName.Data(),gProofServ->GetOrdinal());
-
-    cout << "-I- FairAnaSelector::Init(): output will go to file: \"" << outputFileName.Data() << "\"" << endl;
+    
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): output will go to file: \"%s\"",outputFileName.Data()));
     fFile = TFile::Open(outputFileName.Data(),"RECREATE");
 
-    fRunAna = new FairRunAnaProof();
-    fRunAna->SetRunOnProofWorker();
+    fRunAna = new FairRunAnaProof("RunOnProofWorker");
 
-    cout << "-I- FairAnaSelector::Init(): SetInTree(" << tree << ")" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): SetInTree(%p)",tree));
     fRunAna->SetInTree(tree);
-    cout << "-I- FairAnaSelector::Init(): SetInTree done" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Init(): SetInTree done");
 
     fRunAna->SetOutputFile(fFile);
     if ( containerS == "kTRUE" ) {
@@ -151,21 +151,22 @@ void FairAnaSelector::Init(TTree* tree)
     // ------------------------------------------------------------------------
 
     FairTask* fairTaskList = dynamic_cast<FairTask*>(fInput->FindObject("FairTaskList"));
-    cout << "-I- FairAnaSelector::Init(): FairTask = \"" << fairTaskList << "\"" << endl;
 
-    if ( 1 == 0 ) {
-      cout << "fairTaskList->Print()" << endl;
-      fairTaskList->Print();
-      cout << "fairTaskList->ls()" << endl;
-      fairTaskList->ls();
-      cout << "fairTaskList finished" << endl;
+    if ( fairTaskList != 0 ) {
+      fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Init(): FairTask = \"%p\"",fairTaskList));
+      if ( 1 == 0 ) {
+	fLogger->Debug(MESSAGE_ORIGIN,"FairAnaSelector::Init() FairTaskList->Print()");
+	fairTaskList->Print();
+	fLogger->Debug(MESSAGE_ORIGIN,"FairAnaSelector::Init() FairTaskList->ls()");
+	fairTaskList->ls();
+	fLogger->Debug(MESSAGE_ORIGIN,"FairAnaSelector::Init() FairTaskList finished");
+      }
+      fRunAna->SetTask(fairTaskList);
     }
 
-    fRunAna->SetTask(fairTaskList);
-
-    cout << "-I- FairAnaSelector::Init(): vvvvv fRunAna->Init() vvvvv" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Init(): vvvvv fRunAna->Init() vvvvv");
     fRunAna->Init();
-    cout << "-I- FairAnaSelector::Init(): ^^^^^ fRunAna->Init() ^^^^^" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Init(): ^^^^^ fRunAna->Init() ^^^^^");
   }
 
 }
@@ -179,7 +180,7 @@ Bool_t FairAnaSelector::Notify()
   // is started when using PROOF. It is normally not necessary to make changes
   // to the generated code, but the routine can be extended by the
   // user if needed. The return value is currently not used.
-  cout << "-I- FairAnaSelector::Notify()" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Notify()");
 
   return kTRUE;
 }
@@ -191,7 +192,7 @@ void FairAnaSelector::Begin(TTree* /*tree*/)
   // The Begin() function is called at the start of the query.
   // When running with PROOF Begin() is only called on the client.
   // The tree argument is deprecated (on PROOF 0 is passed).
-  cout << "-I- FairAnaSelector::Begin()" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Begin()");
 
 }
 //_____________________________________________________________________________
@@ -202,12 +203,12 @@ void FairAnaSelector::SlaveBegin(TTree* tree)
   // The SlaveBegin() function is called after the Begin() function.
   // When running with PROOF SlaveBegin() is called on each slave server.
   // The tree argument is deprecated (on PROOF 0 is passed).
-  cout << "-I- FairAnaSelector::SlaveBegin(): Tree address   : \"" << tree << "\"" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::SlaveBegin(): Tree address   : \"%p\"",tree));
 
   // useless, because have no tree anyways in slavebegin, init will be anyways called whenever a new tree comes
   //  Init(tree);
 
-  cout << "-I- FairAnaSelector::SlaveBegin(): finishing" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::SlaveBegin(): finishing");
 }
 //_____________________________________________________________________________
 
@@ -231,11 +232,11 @@ Bool_t FairAnaSelector::Process(Long64_t entry)
   // Use fStatus to set the return value of TTree::Process().
   //
   // The return value is currently not used.
-  //  cout << "-I- FairAnaSelector::Process(): Proceeding to analyze event " << entry << "." << endl;
+  //  fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Process(): Proceeding to analyze event %d",entry));
 
   fRunAna->RunOneEvent(entry);
 
-  //  cout << "-I- FairAnaSelector::Process(): Event " << entry << " analyzed." << endl;
+  //  fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::Process(): Event %d",entry));
   return kTRUE;
 }
 //_____________________________________________________________________________
@@ -251,39 +252,33 @@ void FairAnaSelector::SlaveTerminate()
   }
 
   if ( !fProofFile ) {
-    cout << "-I- FairAnaSelector::SlaveTerminate(): Calling fRunAna->TerminateRun()" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::SlaveTerminate(): Calling fRunAna->TerminateRun()");
     fRunAna->TerminateRun();
   }
 
-  cout << "-I- FairAnaSelector::SlaveTerminate(): fProofFile = \"" << fProofFile << "\"" << endl;
-  cout << "-I- FairAnaSelector::SlaveTerminate():      fFile = \"" << fFile << "\"" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::SlaveTerminate(): fProofFile = \"%p\"",fProofFile));
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::SlaveTerminate():      fFile = \"%p\"",fFile));
 
-  cout << "-I- FairAnaSelector::SlaveTerminate(): WorkingDirectory = \"" << gSystem->WorkingDirectory() << "\"" << endl;
-
+  fLogger->Info(MESSAGE_ORIGIN,Form("FairAnaSelector::SlaveTerminate(): WorkingDirectory = \"%s\"",gSystem->WorkingDirectory()));
+  
   if ( fProofFile ) {
 
-    cout << "-------------------------------- fOutput->ls()" << endl;
-    fOutput->ls();
-    cout << "-------------------------------- fOutput->Print()" << endl;
-    fOutput->Print();
-    cout << "-------------------------------- fProofFile->Print()" << endl;
-    fProofFile->Print();
-    cout << "--------------------------------" << endl;
+    // fOutput->ls();
+    // fOutput->Print();
+    // fProofFile->Print();
 
-    cout << "-I- FairAnaSelector::SlaveTerminate(): fOutput->Add(fProofFile);" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::SlaveTerminate(): fOutput->Add(fProofFile);");
     fOutput->Add(fProofFile);
 
-    cout << "-------------------------------- fProofFile->Print()" << endl;
-    fProofFile->Print();
-    cout << "--------------------------------" << endl;
+    //    fProofFile->Print();
 
-    cout << "-I- FairAnaSelector::SlaveTerminate(): fFile->Close();" << endl;
+    fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::SlaveTerminate(): fFile->Close();");
     fRunAna->TerminateRun();
     //    fFile->Close();
-
+    
   }
-
-  cout << "-I- FairAnaSelector::SlaveTerminate(): Finishing..." << endl;
+  
+  fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::SlaveTerminate(): Finishing...");
 }
 //_____________________________________________________________________________
 
@@ -293,8 +288,8 @@ void FairAnaSelector::Terminate()
   // The Terminate() function is the last function to be called during
   // a query. It always runs on the client, it can be used to present
   // the results graphically or save the results to file.
-  cout << "-I- FairAnaSelector::Terminate(): fOutput->ls()" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Terminate(): fOutput->ls()");
   fOutput->ls();
-  cout << "-I- FairAnaSelector::Terminate(): -------------" << endl;
+  fLogger->Info(MESSAGE_ORIGIN,"FairAnaSelector::Terminate(): -------------");
 }
 //_____________________________________________________________________________
