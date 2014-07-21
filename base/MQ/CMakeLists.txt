@@ -30,7 +30,6 @@ set(SRCS
 )
 
 set(DEPENDENCIES
-  ${CMAKE_THREAD_LIBS_INIT}
   Base ParBase FairTools GeoBase boost_thread boost_timer boost_system FairMQ
 )
 
@@ -40,4 +39,3 @@ set(LIBRARY_NAME FairMQSampler)
 install(FILES "FairMQSampler.tpl" DESTINATION include)
 
 GENERATE_LIBRARY()
-

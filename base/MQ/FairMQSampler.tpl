@@ -14,7 +14,9 @@ FairMQSampler<Loader>::FairMQSampler() :
   fInputFile(""),
   fParFile(""),
   fBranch(""),
-  fEventRate(1)
+  fNumEvents(0),
+  fEventRate(1),
+  fEventCounter(0)
 {
 }
 
@@ -34,6 +36,12 @@ void FairMQSampler<Loader>::Init()
   fSamplerTask->SetTransport(fTransportFactory);
 
   fFairRunAna->SetInputFile(TString(fInputFile));
+  // This loop can be used to duplicate input file to get more data. The output will still be a single file.
+  for (int i = 0; i < 4; ++i)
+  {
+    fFairRunAna->AddFile(fInputFile);
+  }
+
   TString output = fInputFile;
   output.Append(".out.root");
   fFairRunAna->SetOutputFile(output.Data());
@@ -66,7 +74,7 @@ void FairMQSampler<Loader>::Run()
 
   boost::timer::auto_cpu_timer timer;
 
-  cout << "Number of events to process: " << fNumEvents << endl;
+  LOG(INFO) << "Number of events to process: " << fNumEvents;
 
   Long64_t eventNr = 0;
 
@@ -93,17 +101,19 @@ void FairMQSampler<Loader>::Run()
 
   boost::timer::cpu_times const elapsed_time(timer.elapsed());
 
-  cout << "Sent everything in:\n" << boost::timer::format(elapsed_time, 2) << endl;
-  cout << "Sent " << sentMsgs << " messages!" << endl;
+  LOG(INFO) << "Sent everything in:\n" << boost::timer::format(elapsed_time, 2);
+  LOG(INFO) << "Sent " << sentMsgs << " messages!";
 
-  //boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
-
-  rateLogger.interrupt();
-  rateLogger.join();
-  resetEventCounter.interrupt();
-  resetEventCounter.join();
-  //commandListener.interrupt();
-  //commandListener.join();
+  try {
+    rateLogger.interrupt();
+    rateLogger.join();
+    resetEventCounter.interrupt();
+    resetEventCounter.join();
+    //commandListener.interrupt();
+    //commandListener.join();
+  } catch(boost::thread_resource_error& e) {
+    LOG(ERROR) << e.what();
+  }
 }
 
 template <typename Loader>

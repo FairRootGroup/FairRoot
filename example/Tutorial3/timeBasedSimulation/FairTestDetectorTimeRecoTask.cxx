@@ -102,7 +102,7 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* opt)
             continue;
         }
 
-        Double_t timestamp = digi->GetTimeStamp();
+        // Double_t timestamp = digi->GetTimeStamp();
         TVector3 pos(digi->GetX() + 0.5, digi->GetY() + 0.5, digi->GetZ() + 0.5);
         TVector3 dpos(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
 

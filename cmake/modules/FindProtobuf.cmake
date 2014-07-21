@@ -135,15 +135,19 @@ function(_protobuf_find_libraries name filename)
    find_library(${name}_LIBRARY
        NAMES ${filename}
        PATHS
-       ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Release
-       ${SIMPATH}/lib)
+       ${SIMPATH}/lib
+       NO_DEFAULT_PATH
+       NO_CMAKE_SYSTEM_PATH
+   )
    mark_as_advanced(${name}_LIBRARY)
 
    find_library(${name}_LIBRARY_DEBUG
        NAMES ${filename}
        PATHS
-       ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Debug
-       ${SIMPATH}/lib)
+       ${SIMPATH}/lib
+       NO_DEFAULT_PATH
+       NO_CMAKE_SYSTEM_PATH
+   )
    mark_as_advanced(${name}_LIBRARY_DEBUG)
 
    if(NOT ${name}_LIBRARY_DEBUG)
@@ -214,6 +218,8 @@ find_path(PROTOBUF_INCLUDE_DIR
     PATHS
     ${PROTOBUF_SRC_ROOT_FOLDER}/src
     ${SIMPATH}/include
+    NO_DEFAULT_PATH
+    NO_CMAKE_SYSTEM_PATH
 )
 mark_as_advanced(PROTOBUF_INCLUDE_DIR)
 
@@ -222,9 +228,9 @@ find_program(PROTOBUF_PROTOC_EXECUTABLE
     NAMES protoc
     DOC "The Google Protocol Buffers Compiler"
     PATHS
-    ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Release
-    ${PROTOBUF_SRC_ROOT_FOLDER}/vsprojects/Debug
     ${SIMPATH}/bin
+    NO_DEFAULT_PATH
+    NO_CMAKE_SYSTEM_PATH
 )
 mark_as_advanced(PROTOBUF_PROTOC_EXECUTABLE)
 
