@@ -57,7 +57,7 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
    fOutputDirectory(""),
    fProofOutputStatus("copy")
 {
-  if ( proofName == "RunOnProofWorker" ) {
+  if ( strcmp(proofName,"RunOnProofWorker") == 0 ) {
     fRunOnProofWorker = kTRUE;
   }
   else {
