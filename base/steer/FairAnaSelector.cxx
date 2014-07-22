@@ -138,13 +138,6 @@ void FairAnaSelector::Init(TTree* tree)
 
     if ( fairTaskList != 0 ) {
       LOG(INFO) << "FairAnaSelector::Init(): FairTask = \"" << fairTaskList << "\"" << FairLogger::endl;
-      if ( 1 == 0 ) {
-	LOG(INFO) << "FairAnaSelector::Init(): FairTaskList->Print()" << FairLogger::endl;
-	fairTaskList->Print();
-	LOG(INFO) << "FairAnaSelector::Init(): FairTaskList->ls()" << FairLogger::endl;
-	fairTaskList->ls();
-	LOG(INFO) << "FairAnaSelector::Init(): FairTaskList finished" << FairLogger::endl;
-      }
       fRunAna->SetTask(fairTaskList);
     }
 

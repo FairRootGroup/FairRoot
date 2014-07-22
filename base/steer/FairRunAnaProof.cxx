@@ -388,11 +388,10 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput1FName",par1File.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
 
-  if ( 1 == 0 ) { // uploading packages not needed, as the libraries are in the rootmap now
-    fProof->ClearPackages();
-    fProof->UploadPackage(fProofParName.Data());
-    fProof->EnablePackage(fProofParName.Data());
-  }
+  // uploading packages not needed, as the libraries are in the rootmap now
+  // fProof->ClearPackages();
+  // fProof->UploadPackage(fProofParName.Data());
+  // fProof->EnablePackage(fProofParName.Data());
 
   Int_t nofChainEntries = inChain->GetEntries();
   LOG(INFO) << "FairRunAnaProof::RunOnProof(): The chain seems to have " << nofChainEntries << " entries." << FairLogger::endl;
