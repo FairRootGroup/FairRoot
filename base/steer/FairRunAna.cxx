@@ -242,7 +242,12 @@ void FairRunAna::Init()
     fMCHeader = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObject("MCEventHeader."));
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
-      fRunId = fMCHeader->GetRunID();
+      if ( fMCHeader == 0 ) {
+	LOG(WARNING) << "Neither EventHeader nor MCEventHeader not available! Setting fRunId to 0." << FairLogger::endl;
+      }
+      else {
+	fRunId = fMCHeader->GetRunID();
+      }
       fEvtHeader->SetRunId(fRunId);
       fRootManager->SetEvtHeaderNew(kTRUE);
     } else {
