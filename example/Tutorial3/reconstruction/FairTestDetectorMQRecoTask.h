@@ -60,7 +60,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     virtual InitStatus Init();
 
     /** Virtual method Exec **/
-    virtual void Exec(FairMQMessage* msg, Option_t* opt);
+    virtual void Exec(Option_t* opt = "0");
 
     // boost serialize function
     template <class Archive>
@@ -80,7 +80,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 #endif // for BOOST serialization
 };
 
-////////// Template implementation of exec in FairTestDetectorMQRecoTask.tpl :
+// Template implementation of exec in FairTestDetectorMQRecoTask.tpl :
 #include "FairTestDetectorMQRecoTask.tpl"
 
 #endif /* FAIRTESTDETECTORMQRECOTASK_H */

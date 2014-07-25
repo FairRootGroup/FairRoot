@@ -105,14 +105,14 @@ InitStatus FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Init(
 // ----- Implementation of FairTestDetectorMQRecoTask::Exec() with Boost transport data format -----
 
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
-void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(FairMQMessage* msg, Option_t* opt)
+void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option_t* opt)
 {
     if (fHasBoostSerialization)
     {
-        int inputSize = msg->GetSize();
+        int inputSize = fPayload->GetSize();
 
         // prepare boost input archive
-        std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
+        std::string msgStr(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
         std::istringstream ibuffer(msgStr);
         TPayloadIn InputArchive(ibuffer);
         try
@@ -156,8 +156,8 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(FairMQ
         TPayloadOut OutputArchive(obuffer);
         OutputArchive << fHitVector;
         int outputSize = obuffer.str().length();
-        msg->Rebuild(outputSize);
-        std::memcpy(msg->GetData(), obuffer.str().c_str(), outputSize);
+        fPayload->Rebuild(outputSize);
+        std::memcpy(fPayload->GetData(), obuffer.str().c_str(), outputSize);
         if (fDigiVector.size() > 0)
             fDigiVector.clear();
         if (fHitVector.size() > 0)
@@ -172,12 +172,18 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(FairMQ
 // ----- Implementation of FairTestDetectorMQRecoTask::Exec() with pure binary transport data format -----
 
 template <>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi, TestDetectorPayload::Hit>::Exec(FairMQMessage* msg,
-                                                                                                                                      Option_t* opt)
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi, TestDetectorPayload::Hit>::Exec(Option_t* opt)
 {
-    int inputSize = msg->GetSize();
+    // // Example how to receive multipart message (uncomment the code lines to test).
+    // // 1. receive the first part.
+    // std::string test = std::string(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
+    // LOG(ERROR) << test;
+    // // Ask Processor for the next part.
+    // ReceivePart();
+
+    int inputSize = fPayload->GetSize();
     int numInput = inputSize / sizeof(TestDetectorPayload::Digi);
-    TestDetectorPayload::Digi* input = reinterpret_cast<TestDetectorPayload::Digi*>(msg->GetData());
+    TestDetectorPayload::Digi* input = reinterpret_cast<TestDetectorPayload::Digi*>(fPayload->GetData());
 
     fRecoTask->fDigiArray->Delete();
 
@@ -196,8 +202,8 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     int numOutput = numInput;
     int outputSize = numOutput * sizeof(TestDetectorPayload::Hit);
 
-    msg->Rebuild(outputSize);
-    TestDetectorPayload::Hit* output = reinterpret_cast<TestDetectorPayload::Hit*>(msg->GetData());
+    fPayload->Rebuild(outputSize);
+    TestDetectorPayload::Hit* output = reinterpret_cast<TestDetectorPayload::Hit*>(fPayload->GetData());
 
     if (inputSize > 0)
     {
@@ -236,9 +242,9 @@ void free_tmessage (void *data, void *hint)
 }
 
 template <>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>::Exec(FairMQMessage* msg, Option_t* opt)
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>::Exec(Option_t* opt)
 {
-    TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
+    TestDetectorTMessage tm(fPayload->GetData(), fPayload->GetSize());
 
     fRecoTask->fDigiArray = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
 
@@ -254,7 +260,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMess
     TMessage* out = new TMessage(kMESS_OBJECT);
     out->WriteObject(fRecoTask->fHitArray);
 
-    msg->Rebuild(out->Buffer(), out->BufferSize(), free_tmessage, out);
+    fPayload->Rebuild(out->Buffer(), out->BufferSize(), free_tmessage, out);
 }
 
 // ----- Implementation of FairTestDetectorMQRecoTask::Exec() with Google Protocol Buffers transport data format -----
@@ -269,15 +275,13 @@ void free_string (void *data, void *hint)
 }
 
 template <>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(
-    FairMQMessage* msg,
-    Option_t* opt)
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(Option_t* opt)
 {
 
     fRecoTask->fDigiArray->Delete();
 
     TestDetectorProto::DigiPayload dp;
-    dp.ParseFromArray(msg->GetData(), msg->GetSize());
+    dp.ParseFromArray(fPayload->GetData(), fPayload->GetSize());
 
     int numEntries = dp.digi_size();
 
@@ -317,9 +321,9 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     hp.SerializeToString(str);
     size_t size = str->length();
 
-    msg->Rebuild(const_cast<char*>(str->c_str()), size, free_string, str);
-    // msg->Rebuild(size);
-    // memcpy(msg->GetData(), str.c_str(), size);
+    fPayload->Rebuild(const_cast<char*>(str->c_str()), size, free_string, str);
+    // fPayload->Rebuild(size);
+    // memcpy(fPayload->GetData(), str.c_str(), size);
 }
 
 #endif /* PROTOBUF */
