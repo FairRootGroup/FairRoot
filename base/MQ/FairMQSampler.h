@@ -63,10 +63,24 @@ class FairMQSampler: public FairMQDevice
 
     void ResetEventCounter();
     virtual void ListenToCommands();
+
     virtual void SetProperty(const int key, const string& value, const int slot = 0);
     virtual string GetProperty(const int key, const string& default_ = "", const int slot = 0);
     virtual void SetProperty(const int key, const int value, const int slot = 0);
     virtual int GetProperty(const int key, const int default_ = 0, const int slot = 0);
+
+    /**
+     * Sends the currently available output of the Sampler Task as part of a multipart message
+     * and reinitializes the message to be filled with the next part.
+     * This method can be given as a callback to the SamplerTask.
+     * The final message part must be sent with normal Send method.
+     */
+    void SendPart();
+
+  protected:
+    virtual void Init();
+    virtual void Run();
+
   protected:
     FairRunAna* fFairRunAna;
     FairMQSamplerTask* fSamplerTask;
@@ -76,13 +90,9 @@ class FairMQSampler: public FairMQDevice
     int fNumEvents;
     int fEventRate;
     int fEventCounter;
-
-    virtual void Init();
-    virtual void Run();
-
 };
 
-/// Template implementation is in FairMQSampler.tpl :
+// Template implementation is in FairMQSampler.tpl :
 #include "FairMQSampler.tpl"
 
 #endif /* FAIRMQSAMPLER_H_ */

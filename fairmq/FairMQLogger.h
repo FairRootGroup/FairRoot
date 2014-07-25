@@ -31,6 +31,7 @@ class FairMQLogger
         DEBUG,
         INFO,
         ERROR,
+        WARN,
         STATE
     };
     FairMQLogger();

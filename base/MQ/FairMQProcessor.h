@@ -25,6 +25,10 @@ class FairMQProcessor: public FairMQDevice
     FairMQProcessor();
     virtual ~FairMQProcessor();
     void SetTask(FairMQProcessorTask* task);
+
+    void SendPart();
+    bool ReceivePart();
+
   protected:
     virtual void Init();
     virtual void Run();
