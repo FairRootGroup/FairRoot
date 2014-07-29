@@ -157,9 +157,9 @@
 #include "fLmd.h"
 // -- DABC
 
-#include "gps_sc_def.h"
+//#include "gps_sc_def.h"
 #include "f_evt.h"
-#include "f_evcli.h"
+//#include "f_evcli.h"
 #include "portnum_def.h"
 
 INTS4 f_evt_get_newbuf(s_evt_channel*);
@@ -704,14 +704,14 @@ INTS4 f_evt_get_open(INTS4 l_mode, CHARS* pc_server, s_evt_channel* ps_chan,
 // -- DABC
     break;
   case GETEVT__REVSERV  :
-    if(f_evcli_con(ps_chan, pc_server, l_gl_rev_port, -1, l_sample)!=STC__SUCCESS) {
-      return(GETEVT__NOSERVER);
-    }
+//    if(f_evcli_con(ps_chan, pc_server, l_gl_rev_port, -1, l_sample)!=STC__SUCCESS) {
+//      return(GETEVT__NOSERVER);
+//    }
     break;
   case GETEVT__EVENT  :
-    if(f_evcli_con(ps_chan, pc_server, l_gl_rev_port, -1, l_sample)!=STC__SUCCESS) {
-      return(GETEVT__NOSERVER);
-    }
+//    if(f_evcli_con(ps_chan, pc_server, l_gl_rev_port, -1, l_sample)!=STC__SUCCESS) {
+//      return(GETEVT__NOSERVER);
+//    }
     break;
   case GETEVT__RFIO   :
     ps_chan->l_channel_no=-1;
@@ -873,16 +873,16 @@ INTS4 f_evt_get_event(s_evt_channel* ps_chan, INTS4** ppl_buffer, INTS4** ppl_go
     return(GETEVT__SUCCESS);
   }
 // -- DABC
-  if((ps_chan->l_server_type == GETEVT__EVENT)|(ps_chan->l_server_type == GETEVT__REVSERV)) {
-    *ppl_goobuf = NULL;
-    if(f_evcli_evt(ps_chan) != STC__SUCCESS) { /* no more event, get new buffer */
-      l_stat=f_evcli_buf(ps_chan);
-      if(l_stat == STC__TIMEOUT) { return(GETEVT__TIMEOUT); }
-      if(l_stat != STC__SUCCESS) { return(GETEVT__FAILURE); }
-    }
-    *ppl_buffer = (INTS4*) ps_chan->pc_evt_buf;
-    return(GETEVT__SUCCESS);
-  }
+//  if((ps_chan->l_server_type == GETEVT__EVENT)|(ps_chan->l_server_type == GETEVT__REVSERV)) {
+//    *ppl_goobuf = NULL;
+//    if(f_evcli_evt(ps_chan) != STC__SUCCESS) { /* no more event, get new buffer */
+//      l_stat=f_evcli_buf(ps_chan);
+//      if(l_stat == STC__TIMEOUT) { return(GETEVT__TIMEOUT); }
+//      if(l_stat != STC__SUCCESS) { return(GETEVT__FAILURE); }
+//    }
+//    *ppl_buffer = (INTS4*) ps_chan->pc_evt_buf;
+//    return(GETEVT__SUCCESS);
+//  }
 
   /* e.g. read_buffer is 16384, GOOSY buffer may be only 2048,   *
    * this ps_chan->l_io_buf_posi indicats when the read_buffer is finished */
@@ -1057,7 +1057,7 @@ INTS4 f_evt_get_close(s_evt_channel* ps_chan)
       break;
     case GETEVT__REVSERV  :
     case GETEVT__EVENT  :
-      if(f_evcli_close(ps_chan)!=STC__SUCCESS) { l_close_failure=1; }
+//      if(f_evcli_close(ps_chan)!=STC__SUCCESS) { l_close_failure=1; }
       break;
     case GETEVT__RFIO :
       RFIO_close(ps_chan->l_channel_no);
