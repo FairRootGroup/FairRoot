@@ -130,11 +130,15 @@ int main(int argc, char** argv)
     sampler.SetProperty(FairMQSampler<TLoader>::OutputAddress, argv[i], 0);
     ++i;
 
+
+
+    // Add a continuous mode for the Sampler
+    sampler.SetContinuous(true); 
+
     // OUTPUT: 1 - logger
     // sampler.SetProperty(FairMQSampler::OutputSocketType, ZMQ_PUB, 1);
     // sampler.SetProperty(FairMQSampler::OutputSndBufSize, 1000, 1);
     // sampler.SetProperty(FairMQSampler::OutputAddress, "tcp://*:5561", 1);
-
 
 
     sampler.ChangeState(FairMQSampler<TLoader>::SETOUTPUT);

@@ -73,11 +73,17 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* opt)
 {
+     //<DB>  get the RID
+    int rid = fEvtHeader->GetRunId();  
     int nDigis = fInput->GetEntriesFast();
     int size = nDigis * sizeof(TestDetectorPayload::Digi);
+ 
 
-    fOutput = fTransportFactory->CreateMessage(size);
-    TestDetectorPayload::Digi* ptr = reinterpret_cast<TestDetectorPayload::Digi*>(fOutput->GetData());
+    fOutput = fTransportFactory->CreateMessage(sizeof(int)+size);
+    int* iptr = reinterpret_cast<int*> (fOutput->GetData());
+    new (&iptr[0]) int(rid);
+    
+    TestDetectorPayload::Digi* ptr = reinterpret_cast<TestDetectorPayload::Digi*>(&iptr[1]);
 
     for (Int_t i = 0; i < nDigis; ++i)
     {

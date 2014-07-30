@@ -30,4 +30,10 @@
 #pragma link C++ class FairTestDetectorDigiRingSorter+;
 #pragma link C++ class FairTestDetectorDigiSorterTask+;
 
+
+#pragma link C++ class FairDbReader<FairDbTutPar>+;
+#pragma link C++ class FairDbWriter<FairDbTutPar>+;
+#pragma link C++ class  FairDbTutPar+;
+#pragma link C++ class  FairDbTutContFact+;
+
 #endif
