@@ -75,6 +75,7 @@
                     --disable-globus \
                     --disable-reflex \
                     --disable-cintex \
+                    --enable-vc --enable-http \
                     --with-gsl-incdir=$gsl_dir/include \
                     --with-gsl-libdir=$gsl_dir/lib \
                     --with-f77=$FC $root_comp_flag $prefix_string \
