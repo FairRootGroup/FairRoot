@@ -260,7 +260,7 @@
  #include "G4PVReplica.hh"
  #include "G4PVParameterised.hh"
  #include "G4VisAttributes.hh"
-@@ -76,6 +81,53 @@
+@@ -76,6 +81,59 @@
  {
  }
  
@@ -273,7 +273,9 @@
 +	   << G4endl;
 +    return;
 +  }
-+    solid = new G4SubtractionSolid(name,A->GetSolid(), B->GetSolid());
++    const G4VSolid* solidA = A->GetSolid();
++    const G4VSolid* solidB = B->GetSolid();
++    solid = new G4SubtractionSolid(name, const_cast<G4VSolid*>(solidA), const_cast<G4VSolid*>(solidB));
 +    lv    = new G4LogicalVolume (solid,amaterial,name);
 +  // vis. attributes
 +    va= new G4VisAttributes();
@@ -289,7 +291,9 @@
 +	   << G4endl;
 +    return;
 +  }
-+   solid = new G4UnionSolid(name, A->GetSolid(), B->GetSolid());
++   const G4VSolid* solidA = A->GetSolid();
++   const G4VSolid* solidB = B->GetSolid();
++   solid = new G4UnionSolid(name, const_cast<G4VSolid*>(solidA), const_cast<G4VSolid*>(solidB));
 +   lv    = new G4LogicalVolume (solid,amaterial,name);
 +  // vis. attributes
 +    va= new G4VisAttributes();
@@ -305,7 +309,9 @@
 +	   << G4endl;
 +    return;
 +  }
-+    solid = new G4IntersectionSolid(name, A->GetSolid(), B->GetSolid());
++    const G4VSolid* solidA = A->GetSolid();
++    const G4VSolid* solidB = B->GetSolid();
++    solid = new G4IntersectionSolid(name, const_cast<G4VSolid*>(solidA), const_cast<G4VSolid*>(solidB));
 +    lv    = new G4LogicalVolume (solid,amaterial,name);
 +  // vis. attributes
 +    va= new G4VisAttributes();
