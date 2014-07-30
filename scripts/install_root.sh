@@ -17,20 +17,7 @@ then
   git clone $ROOT_LOCATION
 fi
 cd $SIMPATH/tools/root
-git checkout $ROOTBRANCH
-git reset $ROOTVERSION
-                    
-#if [ ! -d  $SIMPATH/tools/root ];
-#then 
-#  cd $SIMPATH/tools
-#  if [ ! -e root_$ROOTVERSION.source.tar.gz ];
-#  then
-#    echo "*** Downloading root sources ***"
-#    download_file $ROOT_LOCATION/root_$ROOTVERSION.source.tar.gz
-#  fi
-#  untar root root_$ROOTVERSION.source.tar.gz
-#fi 
-
+git checkout $ROOTVERSION
 
 install_prefix=$SIMPATH_INSTALL
 libdir=$install_prefix/lib/root
