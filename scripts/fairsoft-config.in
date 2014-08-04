@@ -4,7 +4,7 @@ _version=jul14p1
 _cc=@CMAKE_C_COMPILER@
 _cxx=@CMAKE_CXX_COMPILER@
 _f77=@CMAKE_Fortran_COMPILER@
-_cxxflags=@CMAKE_CXX_FLAGS@
+_cxxflags="@FAIRSOFT_CXX_FLAGS@"
 
 usage="\
 Usage: fairsoft-config [--version] [--cc] [--cxx] [--f77] \
