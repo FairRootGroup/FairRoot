@@ -1,0 +1,63 @@
+#!/bin/bash
+
+_version=jul14p1
+_cc=@CMAKE_C_COMPILER@
+_cxx=@CMAKE_CXX_COMPILER@
+_f77=@CMAKE_Fortran_COMPILER@
+_cxxflags=@CMAKE_CXX_FLAGS@
+
+usage="\
+Usage: fairsoft-config [--version] [--cc] [--cxx] [--f77] \
+ [--cxxflags] [--help]"
+
+if [ $# -eq 0 -o $# -gt 1 ]; then
+   echo "${usage}" 1>&2
+   exit 1
+fi
+
+out=""
+
+
+case $1 in
+    --version)
+      ### Output the fairsoft version
+      out="$out ${_version}"
+      ;;
+    --cc)
+      ### Output the full path of used c compiler
+      out="$out ${_cc}"
+      ;;
+    --cxx)
+      ### Output the full path of used cxx compiler
+      out="$out ${_cxx}"
+      ;;
+    --cxxflags)
+      ### Output the used special cxx compiler flags
+      out="$out ${_cxxflags}"
+      ;;
+    --f77)
+      ### Output the full path of used fortran compiler
+      out="$out ${_f77}"
+      ;;
+    --help)
+      ### Print a help message
+      echo "Usage: `basename $0` [options]"
+      echo ""
+      echo "  --version            Print the fairsoft version"
+      echo "  --cc                 Print the full path of the used c compiler"
+      echo "  --cxx                Print the full path of the used cxx compiler"
+      echo "  --f77                Print the full path of the used fortran compiler"
+      echo "  --cxxflags           Print the used special cxx compiler flags"
+      exit 0
+      ;;
+    *)
+      ### Give an error
+      echo "Unknown argument \"$1\"!" 1>&2
+      echo "${usage}" 1>&2
+      exit 1
+      ;;
+esac
+
+### Output the stuff
+echo $out
+                                                                                                          
