@@ -28,13 +28,6 @@ export FAIRDB_TSQL_USER="postgres"
 export FAIRDB_TSQL_PSWD="pasglop1"
 fi
 
-if [ $1  = "gsi_pgsql" ]
-then
-# GSI PgSQL server
-export FAIRDB_TSQL_URL="pgsql://pgsqltest.gsi.de:6846/r3b"
-export FAIRDB_TSQL_USER="r3b"
-export FAIRDB_TSQL_PSWD="i3Y1n7T6k9"
-fi
 
 if [ $1  = "local_sqlite" ]
 then
