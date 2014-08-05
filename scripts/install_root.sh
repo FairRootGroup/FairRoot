@@ -102,7 +102,10 @@ then
 
   # needed to solve problem with the TGeoManger for some CBM and Panda geometries
   patch -p0 < ../root_TGeoShape.patch
-    
+
+  # needed due to some problem with the ALICE HLT code
+  patch -p0 < ../root5_34_19_hlt.patch    
+
   . rootconfig.sh
 
   #This workaround  to run make in a loop is

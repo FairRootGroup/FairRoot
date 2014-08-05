@@ -1,0 +1,40 @@
+--- io/io/src/TStreamerInfo.cxx
++++ io/io/src/TStreamerInfo.cxx
+@@ -1040,16 +1040,16 @@ void TStreamerInfo::BuildCheck(TFile *file /* = 0 */)
+       return;
+    }
+ 
+-   if (!fClass->TestBit(TClass::kWarned)
+-       && fClass->IsLoaded() /* GetState() >= TClass::kInterpreted */
+-       && GetCheckSum() != fClass->GetCheckSum()
+-       && fClassVersion == fClass->GetClassVersion()) {
+-      // We got here, thus we are a perfect alias for the current streamerInfo,
+-      // but we might had odd v5 style name spelling, so let's prefer the
+-      // current one.
+-      SetBit(kCanDelete);
+-      return;
+-   }
++   // if (!fClass->TestBit(TClass::kWarned)
++   //     && fClass->IsLoaded() /* GetState() >= TClass::kInterpreted */
++   //     && GetCheckSum() != fClass->GetCheckSum()
++   //     && fClassVersion == fClass->GetClassVersion()) {
++   //    // We got here, thus we are a perfect alias for the current streamerInfo,
++   //    // but we might had odd v5 style name spelling, so let's prefer the
++   //    // current one.
++   //    SetBit(kCanDelete);
++   //    return;
++   // }
+ 
+    array->AddAtAndExpand(this, fClassVersion);
+    ++fgCount;
+--- tree/tree/src/TBranchElement.cxx
++++ tree/tree/src/TBranchElement.cxx
+@@ -3173,7 +3173,7 @@ void TBranchElement::InitializeOffsets()
+                            dataName.Data(),GetName());
+                   } else {
+                      // Something really bad happen.
+-                     Fatal("InitializeOffsets",
++                     Error("InitializeOffsets",
+                            "Could not find the real data member '%s' when constructing the branch '%s' [Likely an internal error, please report to the developers].",
+                            dataName.Data(),GetName());
+                   }
