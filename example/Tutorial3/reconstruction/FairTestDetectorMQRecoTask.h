@@ -24,14 +24,21 @@
 #include "TClonesArray.h"
 
 #include "FairRootManager.h"
+#include "FairEventHeader.h"
 #include "FairMQLogger.h"
 #include "FairMQProcessorTask.h"
 #include "FairMQMessage.h"
+
+#include "FairRuntimeDb.h"
+#include "FairDbTutPar.h"
+
 
 #include "FairTestDetectorRecoTask.h"
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorHit.h"
 #include "FairTestDetectorDigi.h"
+
+
 
 #if __cplusplus >= 201103L
 //#include <memory>
@@ -72,6 +79,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 
   private:
     FairTestDetectorRecoTask* fRecoTask;
+    FairRuntimeDb *fRtdb;
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
     std::vector<TIn> fDigiVector;

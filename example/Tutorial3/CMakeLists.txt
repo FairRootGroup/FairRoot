@@ -13,6 +13,7 @@ set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
 ${ROOT_INCLUDE_DIR}
 ${ZMQ_INCLUDE_DIR}
+${CMAKE_SOURCE_DIR}/parbase/dbIO
 ${CMAKE_SOURCE_DIR}/fairmq
 ${CMAKE_SOURCE_DIR}/base/MQ
 ${CMAKE_SOURCE_DIR}/example/mcstack
@@ -22,6 +23,7 @@ ${CMAKE_SOURCE_DIR}/example/Tutorial3/simulation
 ${CMAKE_SOURCE_DIR}/example/Tutorial3/digitization
 ${CMAKE_SOURCE_DIR}/example/Tutorial3/reconstruction
 ${CMAKE_SOURCE_DIR}/example/Tutorial3/timeBasedSimulation
+${CMAKE_SOURCE_DIR}/example/Tutorial3/params
 )
 
 include_directories(${INCLUDE_DIRECTORIES})
@@ -40,11 +42,14 @@ If (Boost_FOUND)
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBenchmark.sh.in ${CMAKE_BINARY_DIR}/bin/startBenchmark.sh )
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBin.sh.in ${CMAKE_BINARY_DIR}/bin/startBin.sh )
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh )
+  file(COPY  ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/dbconfig.sh DESTINATION ${CMAKE_BINARY_DIR}/bin/ )
 EndIf (Boost_FOUND)
 
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${Boost_LIBRARY_DIRS}
+${MYSQL_LIBRARY_DIR}
+${POSTGRESQL_LIBRARY_DIR}
 ) 
 
 link_directories(${LINK_DIRECTORIES})
@@ -68,6 +73,9 @@ Set(SRCS
   timeBasedSimulation/FairTestDetectorDigiWriteoutBuffer.cxx
   timeBasedSimulation/FairTestDetectorTimeDigiTask.cxx
   timeBasedSimulation/FairTestDetectorTimeRecoTask.cxx
+
+  params/FairDbTutPar.cxx
+  params/FairDbTutContFact.cxx
 )
 
 If (Boost_FOUND)
@@ -103,9 +111,9 @@ Set(LIBRARY_NAME FairTestDetector)
 
 If (Boost_FOUND)
   Set(DEPENDENCIES
-    Base MCStack FairMQ FairMQSampler boost_thread boost_system boost_serialization)
+    Base FairDB ParBase MCStack FairMQ FairMQSampler boost_thread boost_system boost_serialization)
 Else (Boost_FOUND)
-  Set(DEPENDENCIES Base MCStack)
+  Set(DEPENDENCIES Base  FairDB ParBase MCStack)
 EndIf (Boost_FOUND)
 
 GENERATE_LIBRARY()
@@ -116,6 +124,7 @@ Add_Subdirectory(macro)
 If (Boost_FOUND)
   Set(Exe_Names
     testDetectorSamplerBin
+    testDetectorSamplerBin_Init
     testDetectorProcessorBin
     fileSinkBin # todo: make this consistent with the others
     testDetectorSamplerBoost
@@ -137,6 +146,7 @@ If (Boost_FOUND)
 
   set(Exe_Source
     run/runTestDetectorSamplerBin.cxx
+    run/runTestDetectorSamplerBin_Init.cxx
     run/runTestDetectorProcessorBin.cxx
     run/runFileSinkBin.cxx
     run/runTestDetectorSamplerBoost.cxx
@@ -164,7 +174,7 @@ If (Boost_FOUND)
     List(GET Exe_Source ${_file} _src)
     Set(EXE_NAME ${_name})
     Set(SRCS ${_src})
-    Set(DEPENDENCIES FairTestDetector)
+    Set(DEPENDENCIES FairDB ParBase FairTestDetector)
     GENERATE_EXECUTABLE()
   EndForEach(_file RANGE 0 ${_length})
 EndIf (Boost_FOUND)

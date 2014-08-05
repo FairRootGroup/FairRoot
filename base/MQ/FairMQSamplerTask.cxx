@@ -30,9 +30,10 @@ FairMQSamplerTask::FairMQSamplerTask() :
   fInput(NULL),
   fBranch(""),
   fOutput(NULL),
+  fEventIndex(0),
   fTransportFactory(NULL),
-  fEventIndex(0)
-  {
+  fEvtHeader(NULL)
+{
 }
 
 FairMQSamplerTask::~FairMQSamplerTask()
@@ -45,6 +46,7 @@ FairMQSamplerTask::~FairMQSamplerTask()
 InitStatus FairMQSamplerTask::Init()
 {
   FairRootManager* ioman = FairRootManager::Instance();
+  fEvtHeader = (FairEventHeader*) ioman->GetObject("EventHeader.");
   fInput = (TClonesArray*) ioman->GetObject(fBranch.c_str());
 
   return kSUCCESS;

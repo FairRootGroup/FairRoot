@@ -9,9 +9,12 @@
 #define FAIRTESTDETECTORRECOTASK_H_
 
 #include "FairTask.h" // for FairTask, InitStatus
+#include "FairRuntimeDb.h"
 
 class TClonesArray;
 
+
+class FairEventHeader;
 class FairTestDetectorPoint;
 
 class FairTestDetectorRecoTask : public FairTask
@@ -30,8 +33,18 @@ class FairTestDetectorRecoTask : public FairTask
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
 
-    TClonesArray* fDigiArray;
-    TClonesArray* fHitArray;
+    /** Init with Id*/
+    virtual void InitWithId(Int_t rid); 
+        
+    /** Get RTDB */ 
+    FairRuntimeDb* GetRtdb(){return (FairRuntimeDb::instance());}
+
+ public: 
+    FairEventHeader* fEvtHeader; 
+    TClonesArray*    fDigiArray;
+    TClonesArray*    fHitArray;
+    Int_t fRunId;
+
 
   private:
     FairTestDetectorRecoTask(const FairTestDetectorRecoTask&);

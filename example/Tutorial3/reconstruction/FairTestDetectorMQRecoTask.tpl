@@ -9,7 +9,7 @@
 
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetectorMQRecoTask()
-    : fRecoTask(NULL)
+    : fRecoTask(NULL), fRtdb(NULL)
 {
     fHasBoostSerialization = true;
 
@@ -38,7 +38,7 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
 
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetectorMQRecoTask(Int_t verbose)
-    : fRecoTask(NULL)
+    : fRecoTask(NULL), fRtdb(NULL)
 {
     fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
@@ -85,7 +85,11 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::~FairTestDetecto
 {
     fRecoTask->fDigiArray->Delete();
     fRecoTask->fHitArray->Delete();
+    delete   fRecoTask->fEvtHeader;
+
     delete fRecoTask;
+    if (fRtdb) delete fRtdb; 
+
     if (fDigiVector.size() > 0)
         fDigiVector.clear();
     if (fHitVector.size() > 0)
@@ -98,7 +102,7 @@ InitStatus FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Init(
     fRecoTask = new FairTestDetectorRecoTask();
     fRecoTask->fDigiArray = new TClonesArray("FairTestDetectorDigi");
     fRecoTask->fHitArray = new TClonesArray("FairTestDetectorHit");
-
+    fRecoTask->fEvtHeader = new FairEventHeader();
     return kSUCCESS;
 }
 
@@ -175,14 +179,38 @@ template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi, TestDetectorPayload::Hit>::Exec(FairMQMessage* msg,
                                                                                                                                       Option_t* opt)
 {
-    int inputSize = msg->GetSize();
-    int numInput = inputSize / sizeof(TestDetectorPayload::Digi);
-    TestDetectorPayload::Digi* input = reinterpret_cast<TestDetectorPayload::Digi*>(msg->GetData());
 
+    int* ptr =  reinterpret_cast<int*>(msg->GetData());
+    LOG(INFO) << " FairTestDetectorMQRecoTask RID# "<< *ptr << endl; 
+
+    // Set the runID linked to data
+    fRecoTask->InitWithId(*ptr);
+    // Get the RuntimeDB
+    fRtdb = fRecoTask->GetRtdb();     
+ 
+    if (fRtdb){
+       FairDbTutPar* par = (FairDbTutPar*)(fRtdb->getContainer("TUTParDefault"));
+       if (par){ 		
+          par->Print();	
+        } 				
+    }
+
+
+    ptr++;						   
+ 
+
+    int inputSize = msg->GetSize()-sizeof(int);
+    int numInput = inputSize / sizeof(TestDetectorPayload::Digi);
+    TestDetectorPayload::Digi* input = reinterpret_cast<TestDetectorPayload::Digi*>(ptr);
+
+
+
+    // Remapping Data  
     fRecoTask->fDigiArray->Delete();
 
     for (int i = 0; i < numInput; ++i)
     {
+          LOG(INFO) << " FairTestDetectorMQRecoTask  X: Y: Z: "<< input[i].fX << " : " <<  input[i].fY  << " : " << input[i].fZ << endl;   
         new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(input[i].fX, input[i].fY, input[i].fZ, input[i].fTimeStamp);
     }
 

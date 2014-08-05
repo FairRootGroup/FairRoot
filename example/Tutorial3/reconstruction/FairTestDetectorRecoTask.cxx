@@ -9,6 +9,7 @@
 
 #include "FairLink.h"             // for FairLink
 #include "FairRootManager.h"      // for FairRootManager
+#include "FairEventHeader.h" // 
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi
 #include "FairTestDetectorHit.h"  // for FairTestDetectorHit
 #include "Riosfwd.h"              // for ostream
@@ -20,9 +21,19 @@
 
 #include "FairMQLogger.h"
 
+#include "FairDbTutPar.h"
+#include "FairRuntimeDb.h"
+#include "FairParAsciiFileIo.h"
+#include "FairParRootFileIo.h"
+#include "FairParTSQLIo.h"
+
+#include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
+
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorRecoTask::FairTestDetectorRecoTask()
     : FairTask()
+    , fEvtHeader(NULL)
     , fDigiArray(NULL)
     , fHitArray(NULL)
 
@@ -33,8 +44,10 @@ FairTestDetectorRecoTask::FairTestDetectorRecoTask()
 // -----   Standard constructor   ------------------------------------------
 FairTestDetectorRecoTask::FairTestDetectorRecoTask(Int_t verbose)
     : FairTask()
+	, fEvtHeader(NULL)
     , fDigiArray(NULL)
     , fHitArray(NULL)
+    , fRunId(0)
 {
     fVerbose = verbose;
 }
@@ -49,26 +62,39 @@ FairTestDetectorRecoTask::~FairTestDetectorRecoTask()
 // -----   Public method Init (abstract in base class)  --------------------
 InitStatus FairTestDetectorRecoTask::Init()
 {
-    FairRootManager* ioman = FairRootManager::Instance();
-    if (!ioman)
-    {
-        std::cout << "-E- FairTestDetectorRecoTask::Init: " /// todo replace with logger!
-                  << "RootManager not instantiated!" << std::endl;
-        return kFATAL;
-    }
+   FairRuntimeDb* db = FairRuntimeDb::instance();
+   // FairRuntimeDb IO managing
 
-    fDigiArray = (TClonesArray*)ioman->GetObject("FairTestDetectorDigi");
-    if (!fDigiArray)
-    {
-        std::cout << "-W- FairTestDetectorRecoTask::Init: "
-                  << "No Point array!" << std::endl;
-        return kERROR;
-    }
+   if (!db->getFirstInput() ) { 
+      LOG(DEBUG) << "-W- FairTestDetectorRecoTask::Init() set Io input: "  << endl;
+	  // Set the Ascii IO as first input
+	 FairParAsciiFileIo* db_input =  new FairParAsciiFileIo();
+	 TString filename ="/Users/denis/fairroot/fairbase/example/tutorial5/macros/ascii-example.par";
+	 db_input->open(filename.Data(),"in");
+	 db->setFirstInput(db_input); 
+   }
 
-    // Create and register output array
-    fHitArray = new TClonesArray("FairTestDetectorHit");
-    ioman->Register("FairTestDetectorHit", "FairTestDetector", fHitArray, kTRUE);
+   if (! db->getOutput() ) { 
+      LOG(DEBUG) << "-W- FairTestDetectorRecoTask::Init() set Io output: "  << endl;
+	  Bool_t kParameterMerged = kTRUE;
+	  FairParRootFileIo* db_output = new FairParRootFileIo(kParameterMerged);
+	  db_output->open("/Users/denis/fairroot/build/bin/zmq_test_par.root");
+	  db->setOutput(db_output);
 
+	  // Set the SQL based IO as second input
+      //FairParTSQLIo* inp2 = new FairParTSQLIo();
+      //inp2->SetVerbosity(1);
+	  //inp2->open();
+	  //db->setSecondInput(inp2);
+   }
+
+   // Paramater managing  
+   FairDbTutPar* par = (FairDbTutPar*)(db->getContainer("TUTParDefault"));
+   if (par) { 
+	 LOG(DEBUG) << "-I- FairTestDetectorDb init parameter for runId: "  <<  fRunId << endl;
+     db->initContainers(fRunId);
+	 LOG(DEBUG) << "-I- FairTestDetectorDb parameter initialised for runId: "  <<  fRunId << endl;
+   }
     return kSUCCESS;
 }
 
@@ -79,19 +105,18 @@ void FairTestDetectorRecoTask::Exec(Option_t* opt)
     fHitArray->Delete();
 
     // fill the map
-
     for (int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++)
     {
         FairTestDetectorDigi* digi = (FairTestDetectorDigi*)fDigiArray->At(ipnt);
         if (!digi)
             continue;
 
-        /*
+        /*   
         LOG(DEBUG) << " x= "  << digi->GetX()
                    << " y= " << digi->GetY()
                    << " z= " << digi->GetZ()
                    << " t= " << digi->GetTimeStamp();
-         // */
+		*/ 
 
         TVector3 pos(digi->GetX() + 0.5, digi->GetY() + 0.5, digi->GetZ() + 0.5);
         TVector3 dpos(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
@@ -99,9 +124,22 @@ void FairTestDetectorRecoTask::Exec(Option_t* opt)
         FairTestDetectorHit* hit = new ((*fHitArray)[ipnt]) FairTestDetectorHit(-1, -1, pos, dpos);
         hit->SetTimeStamp(digi->GetTimeStamp());
         hit->SetTimeStampError(digi->GetTimeStampError());
+
+       
+  
         // hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
     }
 }
 // -------------------------------------------------------------------------
+
+void FairTestDetectorRecoTask::InitWithId(Int_t rid)
+{
+  cout << "-I_ FairTestDetectorRecoTask::init() called !!!!" << rid << ":" << fRunId << endl; 
+  if (rid != fRunId ) {
+    fRunId = rid;
+    cout << "-I_ FairTestDetectorRecoTask::init() called !!!!" << endl; 
+	Init();
+  }
+}
 
 ClassImp(FairTestDetectorRecoTask)
