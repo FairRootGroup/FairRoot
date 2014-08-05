@@ -68,11 +68,15 @@ void FairMQProcessor::Run()
     delete msg;
   }
 
-  cout << "I've received " << receivedMsgs << " and sent " << sentMsgs << " messages!" << endl;
+  LOG(INFO) << "I've received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
 
   boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 
-  rateLogger.interrupt();
-  rateLogger.join();
+  try {
+    rateLogger.interrupt();
+    rateLogger.join();
+  } catch(boost::thread_resource_error& e) {
+    LOG(ERROR) << e.what();
+  }
 }
 

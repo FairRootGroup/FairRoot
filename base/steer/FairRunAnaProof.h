@@ -18,7 +18,6 @@
 #include "FairRunAna.h"
 
 #include "TProof.h"
-#include <iostream>
 
 class FairRunAnaProof : public FairRunAna
 {

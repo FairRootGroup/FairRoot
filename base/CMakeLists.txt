@@ -66,6 +66,7 @@ steer/FairTask.cxx
 steer/FairTrajFilter.cxx
 steer/FairWriteoutBuffer.cxx
 steer/FairRunOnline.cxx
+steer/FairLinkManager.cxx
 
 sim/FairBaseContFact.cxx
 sim/FairBaseParSet.cxx
@@ -94,6 +95,7 @@ event/FairMCEventHeader.cxx
 event/FairMCPoint.cxx
 event/FairMesh.cxx
 event/FairMultiLinkedData.cxx
+event/FairMultiLinkedData_Interface.cxx
 event/FairRadLenPoint.cxx
 event/FairRadMapPoint.cxx
 event/FairRecoEventHeader.cxx

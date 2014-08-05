@@ -69,13 +69,14 @@ class FairMQSampler: public FairMQDevice
     virtual int GetProperty(const int key, const int default_ = 0, const int slot = 0);
   protected:
     FairRunAna* fFairRunAna;
-    int fNumEvents;
     FairMQSamplerTask* fSamplerTask;
     string fInputFile; // Filename of a root file containing the simulated digis.
     string fParFile;
     string fBranch; // The name of the sub-detector branch to stream the digis from.
+    int fNumEvents;
     int fEventRate;
     int fEventCounter;
+
     virtual void Init();
     virtual void Run();
 

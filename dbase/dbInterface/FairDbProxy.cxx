@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairDbProxy.h"
@@ -540,8 +540,11 @@ void  FairDbProxy::CreateMetaData(FairDbTableMetaData& metaData) const
   // Checking meta-data
   for ( UInt_t dbNo = 0; dbNo < fConnectionPool.GetNumDb(); dbNo++ ) {
     FairDbConnection* connection = fConnectionPool.GetConnection(dbNo);
+    if (!connection) {continue;}
+
     TSQLServer* server = connection->GetServer();
-    if ( ! server ) { continue; }
+    if (!server) {continue;}
+
     connection->Connect();
     TSQLTableInfo* meta = server->GetTableInfo(tableName);
     if ( ! meta ) {

@@ -75,11 +75,12 @@ FairRunOnline::FairRunOnline()
    fFolder(new TFolder("HISTO", "HISTO")),
    fGenerateHtml(kFALSE),
    fHistFileName(""),
-   fRefreshRate(1000)
+   fRefreshRate(1000),
+   fNevents(0)
 {
   fgRinstance = this;
   fAna = kTRUE;
-  LOG(INFO)<<Form("FairRunOnline constructed at 0x%08x",this)<<FairLogger::endl;
+  LOG(INFO) << "FairRunOnline constructed at " << this << FairLogger::endl;
 }
 //_____________________________________________________________________________
 FairRunOnline::FairRunOnline(FairSource* source)
@@ -93,11 +94,12 @@ FairRunOnline::FairRunOnline(FairSource* source)
    fFolder(new TFolder("HISTO", "HISTO")),
    fGenerateHtml(kFALSE),
    fHistFileName(""),
-   fRefreshRate(1000)
+   fRefreshRate(1000),
+   fNevents(0)
 {
   fgRinstance = this;
   fAna = kTRUE;
-  LOG(INFO)<<Form("FairRunOnline (source) constructed at 0x%08x",this)<<FairLogger::endl;
+  LOG(INFO) << "FairRunOnline constructed at " << this << FairLogger::endl;
 }
 //_____________________________________________________________________________
 
@@ -215,7 +217,7 @@ void FairRunOnline::InitContainers()
   fRtdb = GetRuntimeDb();
   FairBaseParSet* par=(FairBaseParSet*)
                       (fRtdb->getContainer("FairBaseParSet"));
-  LOG(INFO)<<Form("FairRunOnline::InitContainers: par = 0x%08x",par)<<FairLogger::endl;
+  LOG(INFO) << "FairRunOnline::InitContainers: par = " << par << FairLogger::endl;
   if (NULL == par)
     LOG(WARNING)<<"FairRunOnline::InitContainers: no  'FairBaseParSet' container !"<<FairLogger::endl;
 

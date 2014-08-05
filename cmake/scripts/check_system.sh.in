@@ -1,7 +1,5 @@
 #!/bin/bash
-#linux_flavour=$(head -n 1 /etc/issue|tr '\\' ' '|awk '{gsub("\"","",$0);print $0}')
-#linux_flavour=$(sed '/^$/d' /etc/issue | head -n 1 | tr  '\\' ' '|awk '{gsub("\"","",$0);print $0}')
-linux_flavour=$(sed '/^$/d' /etc/issue | head -n 1 | sed 's/\\//g' |awk '{gsub("\"","",$0);print $0}')
+linux_flavour=$(lsb_release -d)
 system=$(uname -m)
 same_system=1
 

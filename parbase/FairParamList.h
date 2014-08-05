@@ -120,10 +120,6 @@ class FairParamList : public TObject
     Bool_t fill(const Text_t*,TArrayF*);
     Bool_t fill(const Text_t*,TArrayD*);
     Bool_t fillObject(const Text_t*,TObject*);
-    Int_t replace(const Text_t*,UChar_t*);
-    Int_t replace(const Text_t*,Int_t*);
-    Int_t replace(const Text_t*,Float_t*);
-    Int_t replace(const Text_t*,Double_t*);
     void print();
     FairParamObj* find(const Text_t* name) {
       return (FairParamObj*)paramList->FindObject(name);

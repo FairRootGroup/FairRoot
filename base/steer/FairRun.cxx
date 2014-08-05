@@ -18,6 +18,7 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairTask.h"                   // for FairTask
+#include "FairLinkManager.h"			// for FairLinkManager
 
 #include "TFile.h"                      // for TFile
 #include "TList.h"                      // for TList
@@ -54,6 +55,7 @@ FairRun::FairRun()
   }
   fRunInstance=this;
   fRootManager->SetFileHeader(fFileHeader);
+  new FairLinkManager();
 }
 //_____________________________________________________________________________
 FairRun::~FairRun()
@@ -129,6 +131,12 @@ FairEventHeader*  FairRun::GetEventHeader()
   }
   return fEvHead;
 }
+
+void FairRun::SetUseFairLinks(Bool_t val)
+{
+        fRootManager->SetUseFairLinks(val);
+}
+
 //_____________________________________________________________________________
 ClassImp(FairRun)
 

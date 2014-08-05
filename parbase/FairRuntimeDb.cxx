@@ -327,7 +327,7 @@ Int_t FairRuntimeDb::findOutputVersion(FairParSet* cont)
   }
   if ((firstInput==output) && (in1>0 && in2==-1)) { return in1; }
   TIter next(runs);
-  v=0;
+ // v=0;
   while ((run=(FairRtdbRun*)next())) {
     vers=run->getParVersion(name);
     if (vers->getInputVersion(1)==in1 && vers->getInputVersion(2)==in2) {

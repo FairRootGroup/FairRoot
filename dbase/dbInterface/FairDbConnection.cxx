@@ -313,7 +313,7 @@ void  FairDbConnection::SetTableExists(const string& tableName)
   //  Note: If tableName is null refresh list from the database.
 
   if ( tableName == "" ) {
-    TSQLStatement* stmt;
+    TSQLStatement* stmt=NULL;
     if ( fDbType == FairDb::kMySQL || fDbType == FairDb::kOracle ) {
       // MYSQL or Oracle
       stmt =  CreatePreparedStatement("show tables");

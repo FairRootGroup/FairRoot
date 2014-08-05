@@ -144,7 +144,10 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(FairMQ
             for (int i = 0; i < numOutput; ++i)
             {
                 TOut* hit = (TOut*)fRecoTask->fHitArray->At(i);
-                fHitVector.push_back(*hit);
+                if (hit)
+                {
+                    fHitVector.push_back(*hit);
+                }
             }
         }
 

@@ -6,7 +6,10 @@
  */
 
 template <typename TIn, typename TPayloadIn>
-FairMQFileSink<TIn, TPayloadIn>::FairMQFileSink()
+FairMQFileSink<TIn, TPayloadIn>::FairMQFileSink() :
+    fOutFile(NULL),
+    fTree(NULL),
+    fOutput(NULL)
 {
 
     fHasBoostSerialization = true;
@@ -41,10 +44,11 @@ void FairMQFileSink<TIn, TPayloadIn>::InitOutputFile(TString defaultId)
     fTree->Branch("Output", "TClonesArray", &fOutput, 64000, 99);
 }
 
+// ----- Implementation of FairMQFileSink::Run() with Boost transport data format -----
+
 template <typename TIn, typename TPayloadIn>
 void FairMQFileSink<TIn, TPayloadIn>::Run()
 {
-
     if (fHasBoostSerialization)
     {
         LOG(INFO) << ">>>>>>> Run <<<<<<<";
@@ -95,16 +99,23 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
                 fHitVector.clear();
         }
 
-        cout << "I've received " << receivedMsgs << " messages!" << endl;
+        LOG(INFO) << "I've received " << receivedMsgs << " messages!";
         boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
-        rateLogger.interrupt();
-        rateLogger.join();
+
+        try {
+            rateLogger.interrupt();
+            rateLogger.join();
+        } catch(boost::thread_resource_error& e) {
+            LOG(ERROR) << e.what();
+        }
     }
     else
     {
         LOG(ERROR) << " Boost Serialization not ok";
     }
 }
+
+// ----- Implementation of FairMQFileSink::Run() with pure binary transport data format -----
 
 template <>
 void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
@@ -149,15 +160,19 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
         delete msg;
     }
 
-    cout << "I've received " << receivedMsgs << " messages!" << endl;
+    LOG(INFO) << "I've received " << receivedMsgs << " messages!";
 
     boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 
-    rateLogger.interrupt();
-    rateLogger.join();
+    try {
+        rateLogger.interrupt();
+        rateLogger.join();
+    } catch(boost::thread_resource_error& e) {
+        LOG(ERROR) << e.what();
+    }
 }
 
-// ----- Implementation of FairMQFileSink with Root TMessage transport data format -----
+// ----- Implementation of FairMQFileSink::Run() with Root TMessage transport data format -----
 
 // special class to expose protected TMessage constructor
 class TestDetectorTMessage : public TMessage
@@ -208,14 +223,19 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
         delete msg;
     }
 
-    cout << "I've received " << receivedMsgs << " messages!" << endl;
+    LOG(INFO) << "I've received " << receivedMsgs << " messages!";
 
     boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 
-    rateLogger.interrupt();
-    rateLogger.join();
+    try {
+        rateLogger.interrupt();
+        rateLogger.join();
+    } catch(boost::thread_resource_error& e) {
+        LOG(ERROR) << e.what();
+    }
 }
 
+// ----- Implementation of FairMQFileSink::Run() with Google Protocol Buffers transport data format -----
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
 
@@ -265,12 +285,16 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
         delete msg;
     }
 
-    cout << "I've received " << receivedMsgs << " messages!" << endl;
+    LOG(INFO) << "I've received " << receivedMsgs << " messages!";
 
     boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
 
-    rateLogger.interrupt();
-    rateLogger.join();
+    try {
+        rateLogger.interrupt();
+        rateLogger.join();
+    } catch(boost::thread_resource_error& e) {
+        LOG(ERROR) << e.what();
+    }
 }
 
 #endif /* PROTOBUF */

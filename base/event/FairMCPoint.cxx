@@ -10,7 +10,7 @@
 
 // -----   Default constructor   -------------------------------------------
 FairMCPoint::FairMCPoint()
-  : FairMultiLinkedData(),
+  : FairMultiLinkedData_Interface(),
     fTrackID(-1),
     fEventId(0),
     fPx(0.),
@@ -36,7 +36,7 @@ FairMCPoint::FairMCPoint()
 FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
                          TVector3 mom, Double_t tof, Double_t length,
                          Double_t eLoss, UInt_t EventId)
-  :FairMultiLinkedData(),
+  :FairMultiLinkedData_Interface(),
    fTrackID    ( trackID),
    fEventId    (EventId),
    fPx         ( mom.Px()),
