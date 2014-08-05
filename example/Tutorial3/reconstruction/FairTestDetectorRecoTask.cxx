@@ -64,12 +64,13 @@ InitStatus FairTestDetectorRecoTask::Init()
 {
    FairRuntimeDb* db = FairRuntimeDb::instance();
    // FairRuntimeDb IO managing
+   TString workdir = getenv("VMCWORKDIR"); 
 
    if (!db->getFirstInput() ) { 
       LOG(DEBUG) << "-W- FairTestDetectorRecoTask::Init() set Io input: "  << endl;
 	  // Set the Ascii IO as first input
 	 FairParAsciiFileIo* db_input =  new FairParAsciiFileIo();
-	 TString filename ="/Users/denis/fairroot/fairbase/example/tutorial5/macros/ascii-example.par";
+	 TString filename = workdir + "/tutorial5/macros/ascii-example.par";
 	 db_input->open(filename.Data(),"in");
 	 db->setFirstInput(db_input); 
    }
@@ -78,7 +79,8 @@ InitStatus FairTestDetectorRecoTask::Init()
       LOG(DEBUG) << "-W- FairTestDetectorRecoTask::Init() set Io output: "  << endl;
 	  Bool_t kParameterMerged = kTRUE;
 	  FairParRootFileIo* db_output = new FairParRootFileIo(kParameterMerged);
-	  db_output->open("/Users/denis/fairroot/build/bin/zmq_test_par.root");
+      TString filename = workdir + "/tutorial3/macro/data/zmq_test_par.root";  
+	  db_output->open(filename.Data());
 	  db->setOutput(db_output);
 
 	  // Set the SQL based IO as second input
