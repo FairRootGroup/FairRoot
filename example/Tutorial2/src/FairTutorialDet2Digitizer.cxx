@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairTutorialDet2Digitizer.h"
@@ -102,10 +102,10 @@ InitStatus FairTutorialDet2Digitizer::Init()
   LOG(INFO) << " FairTutorialDet2Digitizer :: Init() " << FairLogger::endl;
 
   FairRootManager* ioman = FairRootManager::Instance();
-  if ( ! ioman ) { 
-    LOG(FATAL) << "No FairRootManager" << FairLogger::endl; 
+  if ( ! ioman ) {
+    LOG(FATAL) << "No FairRootManager" << FairLogger::endl;
     return kERROR;
-  } else { 
+  } else {
 
     fTutorialDetPoints=(TClonesArray*)
                        ioman->GetObject("TutorialDetPoint");

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairDbLogOSStream.h"
@@ -81,7 +81,7 @@ void FairDbLogCatStream::DoConcatenation()
            << " Can't open file " << (*itrFairDbLogName)
            << " for read."
            << " File skipped\n";
-      if (inFile) delete inFile; 
+      if (inFile) delete inFile;
       continue;
     }
   }

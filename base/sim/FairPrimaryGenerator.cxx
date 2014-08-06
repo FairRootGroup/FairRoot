@@ -144,7 +144,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
       }
     }
 
-  
+
     fTotPrim += fNTracks;
     // Screen output
 

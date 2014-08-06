@@ -6,7 +6,7 @@ scripts
 Add the following lines at the top of your macro. This will
 fork a process which will measure the memory used by executing
 the macro.  The variable Interval defines the time between two
-measurements in seconds. Choose this Interval between two 
+measurements in seconds. Choose this Interval between two
 measurements according to your needs.
 
 ~~~~~~~~~~~~~~~~~~~~~
@@ -22,9 +22,9 @@ measurements according to your needs.
    gSystem->Exec(cmdline);
 ~~~~~~~~~~~~~~~~~~~~~
 
-After you add the lines run the macro as normal. 
-After the macro finished you will have a file memory_consumption_<pid>.txt 
-which contains rows with a timestamp and the relevant information. 
+After you add the lines run the macro as normal.
+After the macro finished you will have a file memory_consumption_<pid>.txt
+which contains rows with a timestamp and the relevant information.
 This file can  be used to plot the memory consumption as a function of time.
 
 **2 How to display the data taken with check_memory.sh**

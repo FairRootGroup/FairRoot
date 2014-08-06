@@ -1,10 +1,10 @@
 generators
 ========
 
-The input to the `FairRunSim` is provided by the particle generator. 
-There are several particle generators implemented in FairRoot, however it is possible to develop additional generators - 
-they need to derive from FairGenerator and contain the ReadEvent() function that pushes generated tracks onto the stack. 
-One may add several particle generators to FairRunSim. 
+The input to the `FairRunSim` is provided by the particle generator.
+There are several particle generators implemented in FairRoot, however it is possible to develop additional generators -
+they need to derive from FairGenerator and contain the ReadEvent() function that pushes generated tracks onto the stack.
+One may add several particle generators to FairRunSim.
 
 The following generators are part of FairRoot:
 
