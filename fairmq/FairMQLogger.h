@@ -47,5 +47,6 @@ typedef unsigned long long timestamp_t;
 timestamp_t get_timestamp();
 
 #define LOG(type) FairMQLogger().Log(FairMQLogger::type)
+#define MQLOG(type) FairMQLogger().Log(FairMQLogger::type)
 
 #endif /* FAIRMQLOGGER_H_ */
