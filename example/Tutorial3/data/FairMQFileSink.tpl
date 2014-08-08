@@ -236,6 +236,7 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
 }
 
 // ----- Implementation of FairMQFileSink::Run() with Google Protocol Buffers transport data format -----
+
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
 

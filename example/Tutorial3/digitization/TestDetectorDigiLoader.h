@@ -14,11 +14,9 @@
 #ifndef TESTDETECTORDIGILOADER_H
 #define TESTDETECTORDIGILOADER_H
 
-#include "FairMQSamplerTask.h"
+#include <iostream>
 
-#include "FairMQLogger.h"
 #include <boost/timer/timer.hpp>
-
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
@@ -26,16 +24,16 @@
 #include "TMessage.h"
 
 #include "FairTestDetectorPayload.h"
-#include <iostream>
+
+#include "FairMQSamplerTask.h"
+#include "FairMQLogger.h"
 
 #if __cplusplus >= 201103L
 #include "has_BoostSerialization.h"
 #include <type_traits>
 #endif
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////////
 
-////////// Base template header <T1,T2>
+// Base template header <T1,T2>
 template <typename T1, typename T2>
 class TestDetectorDigiLoader : public FairMQSamplerTask
 {
@@ -56,7 +54,7 @@ class TestDetectorDigiLoader : public FairMQSamplerTask
     bool fHasBoostSerialization;
 };
 
-////////// Template implementation is in TestDetectorDigiLoader.tpl :
+// Template implementation is in TestDetectorDigiLoader.tpl :
 #include "TestDetectorDigiLoader.tpl"
 
 #endif /* TESTDETECTORDIGILOADER_H */
