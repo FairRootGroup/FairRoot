@@ -51,5 +51,11 @@ To setup the database to be used (dbconfig.sh) are available from the macro dire
 rutherford
 simple simulation of the Rutherford experiment, with event display.
 
+##Tutorial6
+This example demontrate
+
+Initialisation of parameter within MQ Tasks.
+
+
 ##flp2epn
 Simple example for Message based processing using FairRoot.
