@@ -16,6 +16,7 @@
 #define FAIRMQSAMPLERTASK_H_
 
 #include "FairTask.h"
+#include "FairEventHeader.h"
 #include <vector>
 #include "TClonesArray.h"
 #include <string>
@@ -42,6 +43,8 @@ class FairMQSamplerTask: public FairTask
     FairMQMessage* fOutput;
     FairMQTransportFactory* fTransportFactory;
     Long64_t fEventIndex;
+    FairEventHeader *fEvtHeader;
+
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */

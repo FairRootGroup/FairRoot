@@ -16,7 +16,8 @@ FairMQSampler<Loader>::FairMQSampler() :
   fBranch(""),
   fNumEvents(0),
   fEventRate(1),
-  fEventCounter(0)
+  fEventCounter(0),
+  fContinuous(false)
 {
 }
 
@@ -74,14 +75,32 @@ void FairMQSampler<Loader>::Run()
 
   boost::timer::auto_cpu_timer timer;
 
+
   LOG(INFO) << "Number of events to process: " << fNumEvents;
 
   Long64_t eventNr = 0;
 
-//  while ( fState == RUNNING ) {
+ // <DB> add infinite while loop  
+  if (fContinuous){
+     while ( fState == RUNNING ) {
+       for ( /* eventNr */ ; eventNr < fNumEvents; eventNr++ ) {
+       fFairRunAna->RunMQ(eventNr);
+       fPayloadOutputs->at(0)->Send(fSamplerTask->GetOutput());
+       sentMsgs++;
+       --fEventCounter;
 
-  for ( /* eventNr */ ; eventNr < fNumEvents; eventNr++ ) {
-    fSamplerTask->SetEventIndex(eventNr);
+      while (fEventCounter == 0) {
+       boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+     }
+
+    if( fState != RUNNING ) { break; }
+  }
+  eventNr=0; 
+  }
+
+   } else {
+
+    for ( /* eventNr */ ; eventNr < fNumEvents; eventNr++ ) {
     fFairRunAna->RunMQ(eventNr);
 
     fPayloadOutputs->at(0)->Send(fSamplerTask->GetOutput());
@@ -95,9 +114,11 @@ void FairMQSampler<Loader>::Run()
 
     if( fState != RUNNING ) { break; }
   }
+  eventNr=0; 
+
+  }//! fContinous
 
   boost::this_thread::interruption_point();
-//  }
 
   boost::timer::cpu_times const elapsed_time(timer.elapsed());
 

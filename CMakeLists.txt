@@ -94,6 +94,10 @@ find_package(RuleChecker)
 find_package(IWYU)
 find_package(ZeroMQ)
 find_package(Protobuf)
+find_package(MYSQL)
+find_package(PGSQL)
+find_package(SQLITE)
+
 
 if(USE_NANOMSG)
   find_package(nanomsg)
