@@ -67,6 +67,7 @@ class FairMQSampler: public FairMQDevice
     virtual string GetProperty(const int key, const string& default_ = "", const int slot = 0);
     virtual void SetProperty(const int key, const int value, const int slot = 0);
     virtual int GetProperty(const int key, const int default_ = 0, const int slot = 0);
+    void SetContinuous( bool flag ) { fContinuous = flag;} 
   protected:
     FairRunAna* fFairRunAna;
     FairMQSamplerTask* fSamplerTask;
@@ -76,9 +77,11 @@ class FairMQSampler: public FairMQDevice
     int fNumEvents;
     int fEventRate;
     int fEventCounter;
+    bool fContinuous;
 
     virtual void Init();
     virtual void Run();
+
 
 };
 
