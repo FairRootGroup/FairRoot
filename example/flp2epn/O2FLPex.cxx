@@ -40,11 +40,9 @@ bool O2FLPex::updateIPHeartbeat (string str)
   
   for (int iOutput = 0; iOutput < fNumOutputs; iOutput++) {
     if ( GetProperty (OutputAddress, "", iOutput) == str ) {
-      mtx_.lock();
-      boost::posix_time::ptime storedHeartbeat = GetProperty (OutputHeartbeat, storedHeartbeat, iOutput);
-      mtx_.unlock();
-      
-      //If there is a heartbeat, update it
+      //mtx_.lock();
+      //boost::posix_time::ptime storedHeartbeat = GetProperty (OutputHeartbeat, storedHeartbeat, iOutput);
+      //mtx_.unlock();
       //if ( to_simple_string (storedHeartbeat) != "not-a-date-time" ) {
       //  LOG(INFO) << "EPN " << iOutput << " last seen "
       //            << (currentHeartbeat - storedHeartbeat).total_milliseconds()
