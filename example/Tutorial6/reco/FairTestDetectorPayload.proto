@@ -1,0 +1,30 @@
+package TestDetectorProto;
+
+message Digi {
+  optional int32 fX = 1;
+  optional int32 fY = 2;
+  optional int32 fZ = 3;
+  optional double fTimeStamp = 4;
+  optional double fTimeStampError = 5;
+}
+
+message Hit {
+  optional int32 detID = 1;
+  optional int32 mcindex = 2;
+  optional double posX = 3;
+  optional double posY = 4;
+  optional double posZ = 5;
+  optional double dposX = 6;
+  optional double dposY = 7;
+  optional double dposZ = 8;
+  optional double fTimeStamp = 9;
+  optional double fTimeStampError = 10;
+}
+
+message DigiPayload {
+  repeated Digi digi = 1;
+}
+
+message HitPayload {
+  repeated Hit hit = 1;
+}

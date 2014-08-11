@@ -1,32 +1,22 @@
-/* 
+/*
  * File:   FairMQSampler.tpl
  * Author: winckler
  *
  * Created on February 7, 2014, 6:21 PM
  */
 
-
-
 template <typename Loader>
-FairMQSampler<Loader>::FairMQSampler() :
-  fFairRunAna(new FairRunAna()),
-  fSamplerTask(new Loader()),
-  fNumEvents(0),
-  fEventRate(1),
-  fEventCounter(0)
-{
-}
+FairMQSampler<Loader>::FairMQSampler()
+    : fFairRunAna(new FairRunAna()), fSamplerTask(new Loader()), fNumEvents(0),
+      fEventRate(1), fEventCounter(0), fContinuous(false) {}
 
-template <typename Loader>
-FairMQSampler<Loader>::~FairMQSampler()
-{
-  if(fFairRunAna) fFairRunAna->TerminateRun();
+template <typename Loader> FairMQSampler<Loader>::~FairMQSampler() {
+  if (fFairRunAna)
+    fFairRunAna->TerminateRun();
   delete fSamplerTask;
 }
 
-template <typename Loader>
-void FairMQSampler<Loader>::Init()
-{
+template <typename Loader> void FairMQSampler<Loader>::Init() {
   FairMQDevice::Init();
 
   fSamplerTask->SetBranch(fBranch);
@@ -35,9 +25,9 @@ void FairMQSampler<Loader>::Init()
   fSamplerTask->SetSendPart(boost::bind(&FairMQSampler::SendPart, this));
 
   fFairRunAna->SetInputFile(TString(fInputFile));
-  // This loop can be used to duplicate input file to get more data. The output will still be a single file.
-  for (int i = 0; i < 4; ++i)
-  {
+  // This loop can be used to duplicate input file to get more data. The output
+  // will still be a single file.
+  for (int i = 0; i < 4; ++i) {
     fFairRunAna->AddFile(fInputFile);
   }
   LOG(WARN) << "Test";
@@ -48,27 +38,27 @@ void FairMQSampler<Loader>::Init()
 
   fFairRunAna->AddTask(fSamplerTask);
 
-  FairRuntimeDb* rtdb = fFairRunAna->GetRuntimeDb();
-  FairParRootFileIo* parInput1 = new FairParRootFileIo();
+  FairRuntimeDb *rtdb = fFairRunAna->GetRuntimeDb();
+  FairParRootFileIo *parInput1 = new FairParRootFileIo();
   parInput1->open(TString(fParFile).Data());
   rtdb->setFirstInput(parInput1);
   rtdb->print();
 
   fFairRunAna->Init();
   // fFairRunAna->Run(0, 0);
-  FairRootManager* ioman = FairRootManager::Instance();
+  FairRootManager *ioman = FairRootManager::Instance();
   fNumEvents = int((ioman->GetInChain())->GetEntries());
 }
 
-template <typename Loader>
-void FairMQSampler<Loader>::Run()
-{
+template <typename Loader> void FairMQSampler<Loader>::Run() {
   LOG(INFO) << ">>>>>>> Run <<<<<<<";
   // boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
 
   boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
-  boost::thread resetEventCounter(boost::bind(&FairMQSampler::ResetEventCounter, this));
-  // boost::thread commandListener(boost::bind(&FairMQSampler::ListenToCommands, this));
+  boost::thread resetEventCounter(
+      boost::bind(&FairMQSampler::ResetEventCounter, this));
+  // boost::thread commandListener(boost::bind(&FairMQSampler::ListenToCommands,
+  // this));
 
   int sentMsgs = 0;
 
@@ -76,28 +66,54 @@ void FairMQSampler<Loader>::Run()
 
   LOG(INFO) << "Number of events to process: " << fNumEvents;
 
-//  while ( fState == RUNNING ) {
+  Long64_t eventNr = 0;
 
-  for ( Long64_t eventNr = 0 ; eventNr < fNumEvents; ++eventNr ) {
-    fSamplerTask->SetEventIndex(eventNr);
-    fFairRunAna->RunMQ(eventNr);
+  // <DB> add infinite while loop
+  if (fContinuous) {
+    while (fState == RUNNING) {
+      for (/* eventNr */; eventNr < fNumEvents; eventNr++) {
+        fFairRunAna->RunMQ(eventNr);
+        fPayloadOutputs->at(0)->Send(fSamplerTask->GetOutput());
+        sentMsgs++;
+        --fEventCounter;
 
-    fPayloadOutputs->at(0)->Send(fSamplerTask->GetOutput());
-    ++sentMsgs;
+        while (fEventCounter == 0) {
+          boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+        }
 
-    fSamplerTask->GetOutput()->CloseMessage();
-
-    --fEventCounter;
-
-    while (fEventCounter == 0) {
-      boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+        if (fState != RUNNING) {
+          break;
+        }
+      }
+      eventNr = 0;
     }
 
-    if( fState != RUNNING ) { break; }
-  }
+  } else {
+
+    for (/* eventNr */; eventNr < fNumEvents; eventNr++) {
+      fSamplerTask->SetEventIndex(eventNr);
+      fFairRunAna->RunMQ(eventNr);
+
+      fPayloadOutputs->at(0)->Send(fSamplerTask->GetOutput());
+      ++sentMsgs;
+
+      fSamplerTask->GetOutput()->CloseMessage();
+
+      --fEventCounter;
+
+      while (fEventCounter == 0) {
+        boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+      }
+
+      if (fState != RUNNING) {
+        break;
+      }
+    }
+    eventNr = 0;
+
+  } //! fContinous
 
   boost::this_thread::interruption_point();
-//  }
 
   boost::timer::cpu_times const elapsed_time(timer.elapsed());
 
@@ -111,26 +127,24 @@ void FairMQSampler<Loader>::Run()
     resetEventCounter.join();
     // commandListener.interrupt();
     // commandListener.join();
-  } catch(boost::thread_resource_error& e) {
+  }
+  catch (boost::thread_resource_error &e) {
     LOG(ERROR) << e.what();
   }
 }
 
-template <typename Loader>
-void FairMQSampler<Loader>::SendPart()
-{
-    fPayloadOutputs->at(0)->Send(fSamplerTask->GetOutput(), "snd-more");
-    fSamplerTask->GetOutput()->CloseMessage();
+template <typename Loader> void FairMQSampler<Loader>::SendPart() {
+  fPayloadOutputs->at(0)->Send(fSamplerTask->GetOutput(), "snd-more");
+  fSamplerTask->GetOutput()->CloseMessage();
 }
 
-template <typename Loader>
-void FairMQSampler<Loader>::ResetEventCounter()
-{
-  while ( true ) {
+template <typename Loader> void FairMQSampler<Loader>::ResetEventCounter() {
+  while (true) {
     try {
       fEventCounter = fEventRate / 100;
       boost::this_thread::sleep(boost::posix_time::milliseconds(10));
-    } catch (boost::thread_interrupted&) {
+    }
+    catch (boost::thread_interrupted &) {
       LOG(DEBUG) << "resetEventCounter interrupted";
       break;
     }
@@ -138,21 +152,19 @@ void FairMQSampler<Loader>::ResetEventCounter()
   LOG(DEBUG) << ">>>>>>> stopping resetEventCounter <<<<<<<";
 }
 
-template <typename Loader>
-void FairMQSampler<Loader>::ListenToCommands()
-{
+template <typename Loader> void FairMQSampler<Loader>::ListenToCommands() {
   LOG(INFO) << ">>>>>>> ListenToCommands <<<<<<<";
 
   bool received = false;
 
-  while ( true ) {
+  while (true) {
     try {
-      FairMQMessage* msg = fTransportFactory->CreateMessage();
+      FairMQMessage *msg = fTransportFactory->CreateMessage();
 
       received = fPayloadInputs->at(0)->Receive(msg);
 
       if (received) {
-        //command handling goes here.
+        // command handling goes here.
         LOG(INFO) << "> received command <";
         received = false;
       }
@@ -160,7 +172,8 @@ void FairMQSampler<Loader>::ListenToCommands()
       delete msg;
 
       boost::this_thread::interruption_point();
-    } catch (boost::thread_interrupted&) {
+    }
+    catch (boost::thread_interrupted &) {
       LOG(DEBUG) << "commandListener interrupted";
       break;
     }
@@ -169,8 +182,8 @@ void FairMQSampler<Loader>::ListenToCommands()
 }
 
 template <typename Loader>
-void FairMQSampler<Loader>::SetProperty(const int key, const string& value, const int slot/*= 0*/)
-{
+void FairMQSampler<Loader>::SetProperty(const int key, const string &value,
+                                        const int slot /*= 0*/) {
   switch (key) {
   case InputFile:
     fInputFile = value;
@@ -188,8 +201,9 @@ void FairMQSampler<Loader>::SetProperty(const int key, const string& value, cons
 }
 
 template <typename Loader>
-string FairMQSampler<Loader>::GetProperty(const int key, const string& default_/*= ""*/, const int slot/*= 0*/)
-{
+string FairMQSampler<Loader>::GetProperty(const int key,
+                                          const string &default_ /*= ""*/,
+                                          const int slot /*= 0*/) {
   switch (key) {
   case InputFile:
     return fInputFile;
@@ -203,8 +217,8 @@ string FairMQSampler<Loader>::GetProperty(const int key, const string& default_/
 }
 
 template <typename Loader>
-void FairMQSampler<Loader>::SetProperty(const int key, const int value, const int slot/*= 0*/)
-{
+void FairMQSampler<Loader>::SetProperty(const int key, const int value,
+                                        const int slot /*= 0*/) {
   switch (key) {
   case EventRate:
     fEventRate = value;
@@ -216,8 +230,9 @@ void FairMQSampler<Loader>::SetProperty(const int key, const int value, const in
 }
 
 template <typename Loader>
-int FairMQSampler<Loader>::GetProperty(const int key, const int default_/*= 0*/, const int slot/*= 0*/)
-{
+int FairMQSampler<Loader>::GetProperty(const int key,
+                                       const int default_ /*= 0*/,
+                                       const int slot /*= 0*/) {
   switch (key) {
   case EventRate:
     return fEventRate;
@@ -225,5 +240,3 @@ int FairMQSampler<Loader>::GetProperty(const int key, const int default_/*= 0*/,
     return FairMQDevice::GetProperty(key, default_, slot);
   }
 }
-
-
