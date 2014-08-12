@@ -14,6 +14,7 @@ add_subdirectory (Tutorial3)
 add_subdirectory (Tutorial4)
 add_subdirectory (Tutorial5)
 add_subdirectory (rutherford)
+add_subdirectory (flp2epn)
 
 if(SQLITE_FOUND AND POSTGRESQL_FOUND AND MYSQL_FOUND)
   add_subdirectory (Tutorial6)

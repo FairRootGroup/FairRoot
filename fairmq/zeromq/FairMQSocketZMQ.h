@@ -41,7 +41,6 @@ class FairMQSocketZMQ : public FairMQSocket
 
     virtual void SetOption(const string& option, const void* value, size_t valueSize);
     virtual void GetOption(const string& option, void* value, size_t* valueSize);
-
     virtual unsigned long GetBytesTx();
     virtual unsigned long GetBytesRx();
     virtual unsigned long GetMessagesTx();

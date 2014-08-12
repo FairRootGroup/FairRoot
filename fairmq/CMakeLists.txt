@@ -102,7 +102,7 @@ endif(NANOMSG_FOUND)
 
 set(DEPENDENCIES
   ${DEPENDENCIES}
-  boost_thread boost_timer boost_system
+  boost_date_time boost_thread boost_timer boost_system
 )
 
 set(LIBRARY_NAME FairMQ)
