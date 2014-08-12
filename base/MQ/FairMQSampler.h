@@ -1,9 +1,9 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH *
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the *
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3, *
- *                  copied verbatim in the file "LICENSE" *
+ *              This software is distributed under the terms of the             * 
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
  * FairMQSampler.h
@@ -37,46 +37,44 @@
 #include "FairMQLogger.h"
 
 /**
- * Reads simulated digis from a root file and samples the digi as a time-series
- *UDP stream.
- * Must be initialized with the filename to the root file and the name of the
- *sub-detector
+ * Reads simulated digis from a root file and samples the digi as a time-series UDP stream.
+ * Must be initialized with the filename to the root file and the name of the sub-detector
  * branch, whose digis should be streamed.
  *
- * The purpose of this class is to provide a data source of digis very similar
- *to the
- * future detector output at the point where the detector is connected to the
- *online
- * computing farm. For the development of online analysis algorithms, it is very
- *important
- * to simulate the future detector output as realistic as possible to evaluate
- *the
+ * The purpose of this class is to provide a data source of digis very similar to the
+ * future detector output at the point where the detector is connected to the online
+ * computing farm. For the development of online analysis algorithms, it is very important
+ * to simulate the future detector output as realistic as possible to evaluate the
  * feasibility and quality of the various possible online analysis features.
  */
 
-template <typename Loader> class FairMQSampler : public FairMQDevice {
-public:
-  enum { InputFile = FairMQDevice::Last, Branch, ParFile, EventRate };
-  FairMQSampler();
-  virtual ~FairMQSampler();
+template <typename Loader>
+class FairMQSampler: public FairMQDevice
+{
+  public:
+    enum {
+      InputFile = FairMQDevice::Last,
+      Branch,
+      ParFile,
+      EventRate
+    };
+    FairMQSampler();
+    virtual ~FairMQSampler();
 
-  void ResetEventCounter();
-  virtual void ListenToCommands();
+    void ResetEventCounter();
+    virtual void ListenToCommands();
 
-  virtual void SetProperty(const int key, const string &value,
-                           const int slot = 0);
-  virtual string GetProperty(const int key, const string &default_ = "",
-                             const int slot = 0);
-  virtual void SetProperty(const int key, const int value, const int slot = 0);
-  virtual int GetProperty(const int key, const int default_ = 0,
-                          const int slot = 0);
-  /**
-   * Sends the currently available output of the Sampler Task as part of a
-   * multipart message
-   * and reinitializes the message to be filled with the next part.
-   * This method can be given as a callback to the SamplerTask.
-   * The final message part must be sent with normal Send method.
-   */
+    virtual void SetProperty(const int key, const string& value, const int slot = 0);
+    virtual string GetProperty(const int key, const string& default_ = "", const int slot = 0);
+    virtual void SetProperty(const int key, const int value, const int slot = 0);
+    virtual int GetProperty(const int key, const int default_ = 0, const int slot = 0);
+
+    /**
+     * Sends the currently available output of the Sampler Task as part of a multipart message
+     * and reinitializes the message to be filled with the next part.
+     * This method can be given as a callback to the SamplerTask.
+     * The final message part must be sent with normal Send method.
+     */
   void SendPart();
 
 protected:

@@ -8,8 +8,8 @@
 /**
  * runTestDetectorProcessorBoost.cxx
  *
- *  Created on: Oct 26, 2012
- *      Author: dklein
+ * @since 2012-10-26
+ * @author D. Klein, A. Rybalchenko
  */
 
 #include <iostream>

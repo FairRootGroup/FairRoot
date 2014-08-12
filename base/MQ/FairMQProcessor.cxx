@@ -52,7 +52,7 @@ void FairMQProcessor::Run()
   int receivedMsgs = 0;
   int sentMsgs = 0;
 
-  bool received = false;
+  int received = 0;
 
   while ( fState == RUNNING ) {
     fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
@@ -60,20 +60,18 @@ void FairMQProcessor::Run()
     received = fPayloadInputs->at(0)->Receive(fProcessorTask->GetPayload());
     receivedMsgs++;
 
-    if (received) {
+    if (received > 0) {
       fProcessorTask->Exec();
 
       fPayloadOutputs->at(0)->Send(fProcessorTask->GetPayload());
       sentMsgs++;
-      received = false;
+      received = 0;
     }
 
     fProcessorTask->GetPayload()->CloseMessage();
   }
 
-  LOG(INFO) << "I've received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
-
-  boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
+  LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
 
   try {
     rateLogger.interrupt();
@@ -81,6 +79,8 @@ void FairMQProcessor::Run()
   } catch(boost::thread_resource_error& e) {
     LOG(ERROR) << e.what();
   }
+
+  FairMQDevice::Shutdown();
 }
 
 void FairMQProcessor::SendPart()
@@ -105,5 +105,3 @@ bool FairMQProcessor::ReceivePart()
         return false;
     }
 }
-
-
