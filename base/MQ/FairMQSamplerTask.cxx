@@ -22,7 +22,7 @@ FairMQSamplerTask::FairMQSamplerTask()
     : FairTask("Abstract base task used for loading a branch from a root file "
                "into memory"),
       fInput(NULL), fOutput(NULL), fEventIndex(0), fTransportFactory(NULL),
-      fEventIndex(0) fEvtHeader(NULL) {}
+      fEvtHeader(NULL) {}
 
 FairMQSamplerTask::~FairMQSamplerTask() {
   delete fInput;
