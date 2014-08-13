@@ -67,13 +67,13 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     virtual InitStatus Init();
 
     /** Virtual method Exec **/
-    virtual void Exec(FairMQMessage* msg, Option_t* opt);
+    virtual void Exec(Option_t* opt = "0");
 
     // boost serialize function
     template <class Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar& fDigiVector;
+        ar& fDigiVector; 
         ar& fHitVector;
     }
 
