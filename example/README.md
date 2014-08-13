@@ -56,6 +56,41 @@ This example demontrate
 
 Initialisation of parameter within MQ Tasks.
 
+In order to run the example you should first create a dummy simulation root file and convert it to
+a dummy digits root file. This fisrt operation is done using the following predefined macros
+
+simulation:
+```bash
+root>.L run_sim.C
+root>run_sim(10000, "TGeant3")
+```
+digitisation:
+```bash
+root>.L run_digi.C
+root>run_digi("TGeant3")
+```
+this should create the following root file in the subdirectory data. 
+
+
+```bash
+-rw-r--r--  1 denis  staff   9.2K Aug 11 08:36 FairRunInfo_testdigi_TGeant3.root
+-rw-r--r--  1 denis  staff    11K Aug 11 08:36 FairRunInfo_testrun_TGeant3.root
+-rw-r--r--  1 denis  staff   9.6K Aug 11 08:36 geofile_full.root
+-rw-r--r--  1 denis  staff   277K Aug 11 08:36 testdigi_TGeant3.root
+-rw-r--r--  1 denis  staff   7.9K Aug 11 08:36 testdigi_TGeant3.root.out.root
+-rw-r--r--  1 denis  staff    37K Aug 11 08:36 testparams_TGeant3.root
+-rw-r--r--  1 denis  staff    85M Aug 11 08:36 testrun_TGeant3.root
+```
+
+After this step, to run the example for parameter initialisation just 
+run the dummy  MQtasks scripts ( sampler - processor ( with initialisation) - file_sink ) .
+
+```bash
+<my_fairroot_path>/build/bin/run_sps_init.sh
+```
+
+
 
 ##flp2epn
 Simple example for Message based processing using FairRoot.
+

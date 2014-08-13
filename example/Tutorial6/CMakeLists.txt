@@ -5,17 +5,18 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Create a library called "libFairTestDetector" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+# Date: 13.08.14 D.Bertini
+# Create a library called "libDbMQ" 
+#
+# All SQL drivers "includes" and "libraries" are not imeediately set 
+# because of the problem i have with CMAKE and variable set to not-found
+# Instead  those are added only if they have been previously set  
+
 
 set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
 ${ROOT_INCLUDE_DIR}
 ${ZMQ_INCLUDE_DIR}
-${MYSQL_INCLUDE_DIR}
-${POSTGRESQL_INCLUDE_DIR}
-${SQLITE_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/parbase/dbIO
 ${CMAKE_SOURCE_DIR}/fairmq
 ${CMAKE_SOURCE_DIR}/base/MQ
@@ -28,6 +29,18 @@ ${CMAKE_SOURCE_DIR}/example/Tutorial6/reco
 ${CMAKE_SOURCE_DIR}/example/Tutorial6/params
 )
 
+if (MYSQL_INCLUDE_DIR)       
+  set(INCLUDE_DIRECTORIES ${INCLUDE_DIRECTORIES} ${MYSQL_INCLUDE_DIR}) 
+endif()
+if (POSTGRESQL_INCLUDE_DIR)  
+set(INCLUDE_DIRECTORIES ${INCLUDE_DIRECTORIES} ${POSTGRESQL_INCLUDE_DIR}) 
+endif()
+if (SQLITE_INCLUDE_DIR)  
+set(INCLUDE_DIRECTORIES ${INCLUDE_DIRECTORIES} ${SQLITE_INCLUDE_DIR}) 
+endif()
+
+#MESSAGE (" INCLUDES='${INCLUDE_DIRECTORIES}' ")
+
 include_directories(${INCLUDE_DIRECTORIES})
 
 if (Boost_FOUND)
@@ -38,10 +51,20 @@ endIf (Boost_FOUND)
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
     ${Boost_LIBRARY_DIRS}
-    ${MYSQL_LIBRARY_DIR}
-    ${POSTGRESQL_LIBRARY_DIR}
-    ${SQLITE_LIBRARY_DIR}
 ) 
+
+if (MYSQL_LIBRARY_DIR)       
+  set(LINK_DIRECTORIES ${LINK_DIRECTORIES} ${MYSQL_LIBRARY_DIR}) 
+endif()
+if (POSTGRESQL_LIBRARY_DIR)  
+set(LINK_DIRECTORIES ${LINK_DIRECTORIES} ${POSTGRESQL_LIBRARY_DIR}) 
+endif()
+if (SQLITE_LIBRARY_DIR)  
+set(LINK_DIRECTORIES ${LINK_DIRECTORIES} ${SQLITE_LIBRARY_DIR}) 
+endif()
+
+#MESSAGE (" LINKS='${LINK_DIRECTORIES}' ")
+
 
 link_directories(${LINK_DIRECTORIES})
 
