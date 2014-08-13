@@ -77,10 +77,12 @@ class FairMQSampler: public FairMQDevice
      */
   void SendPart();
 
+  void SetContinuous(bool flag) { fContinuous = flag; }
+
 protected:
   virtual void Init();
   virtual void Run();
-  void SetContinuous(bool flag) { fContinuous = flag; }
+
 
 protected:
   FairRunAna *fFairRunAna;
