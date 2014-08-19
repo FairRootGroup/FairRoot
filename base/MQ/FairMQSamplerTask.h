@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -16,32 +16,43 @@
 #define FAIRMQSAMPLERTASK_H_
 
 #include "FairTask.h"
+#include "FairEventHeader.h"
 #include <vector>
-#include "TClonesArray.h"
 #include <string>
+
+#include <boost/function.hpp>
+
+#include "FairTask.h"
+#include "TClonesArray.h"
+
 #include "FairMQMessage.h"
 #include "FairMQTransportFactory.h"
 
-
-class FairMQSamplerTask: public FairTask
+class FairMQSamplerTask : public FairTask
 {
   public:
     FairMQSamplerTask();
-    FairMQSamplerTask(const Text_t* name, int iVerbose=1);
+    FairMQSamplerTask(const Text_t *name, int iVerbose = 1);
+
     virtual ~FairMQSamplerTask();
+
     virtual InitStatus Init();
-    virtual void Exec(Option_t* opt);
+    virtual void Exec(Option_t *opt);
+    void
+    SetSendPart(boost::function<void()>); // provides a callback to the Sampler.
     void SetEventIndex(Long64_t EventIndex);
     void SetBranch(string branch);
-    FairMQMessage* GetOutput();
-    void SetTransport(FairMQTransportFactory* factory);
+    FairMQMessage *GetOutput();
+    void SetTransport(FairMQTransportFactory *factory);
 
   protected:
-    TClonesArray* fInput;
+    TClonesArray *fInput;
     string fBranch;
-    FairMQMessage* fOutput;
-    FairMQTransportFactory* fTransportFactory;
+    FairMQMessage *fOutput;
+    FairMQTransportFactory *fTransportFactory;
     Long64_t fEventIndex;
+    boost::function<void()> SendPart; // function pointer for the Sampler callback.
+    FairEventHeader *fEvtHeader;
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */

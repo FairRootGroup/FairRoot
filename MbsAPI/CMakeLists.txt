@@ -35,7 +35,7 @@ set(MBSAPI_SRCS
     f_evt.c
     fLmd.c
 #    f_radware.c
-#    f_ut_utime.c
+    f_ut_utime.c
 #    f_ut_wild.c
 #    f_his_hist.c
 #    f_his_swpbas.c
@@ -72,7 +72,7 @@ set(MBSAPI_HEADERS
     s_ve10_1_swap.h
 #    s_win_cond.h
     f_evt.h
-#    f_ut_utime.h
+    f_ut_utime.h
     s_bufhe.h
     s_bufhe_swap.h
 #    s_clnt_filter_swap.h

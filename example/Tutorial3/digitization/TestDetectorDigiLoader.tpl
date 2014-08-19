@@ -29,12 +29,12 @@ TestDetectorDigiLoader<T1, T2>::~TestDetectorDigiLoader()
         fDigiVector.clear();
 }
 
+
 // ----- Default implementation of TestDetectorDigiLoader::Exec() with Boost transport data format -----
 
 template <typename T1, typename T2>
 void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
 {
-
     // Default implementation of the base template Exec function using boost
     // the condition check if the input class has a function member with name
     // void serialize(T2 & ar, const unsigned int version) and if the payload are of boost type
@@ -73,6 +73,17 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* opt)
 {
+    // // Example of how to send multipart messages (uncomment the code lines to test).
+    // // 1. create some data and put it into message (optionaly in one step with zero-copy):
+    // std::string test = "hello";
+    // fOutput = fTransportFactory->CreateMessage(test.size());
+    // memcpy ((void *) fOutput->GetData(), test.c_str(), test.size());
+    // // 2. Send the current message as a part:
+    // SendPart();
+    // // This will schedule the sending to queueing system.
+    // // For the next part, create new message object.
+    // // The final part will be sent by the sampler.
+
     int nDigis = fInput->GetEntriesFast();
     int size = nDigis * sizeof(TestDetectorPayload::Digi);
 

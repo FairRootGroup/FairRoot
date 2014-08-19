@@ -69,7 +69,7 @@ void FairMQSocketNN::Connect(const string& address)
     }
 }
 
-size_t FairMQSocketNN::Send(FairMQMessage* msg)
+int FairMQSocketNN::Send(FairMQMessage* msg, const string& flag)
 {
     void* ptr = msg->GetMessage();
     int rc = nn_send(fSocket, &ptr, NN_MSG, 0);
@@ -87,7 +87,7 @@ size_t FairMQSocketNN::Send(FairMQMessage* msg)
     return rc;
 }
 
-size_t FairMQSocketNN::Receive(FairMQMessage* msg)
+int FairMQSocketNN::Receive(FairMQMessage* msg, const string& flag)
 {
     void* ptr = NULL;
     int rc = nn_recv(fSocket, &ptr, NN_MSG, 0);
@@ -106,6 +106,16 @@ size_t FairMQSocketNN::Receive(FairMQMessage* msg)
     return rc;
 }
 
+void FairMQSocketNN::Close()
+{
+    nn_close(fSocket);
+}
+
+void FairMQSocketNN::Terminate()
+{
+    nn_term();
+}
+
 void* FairMQSocketNN::GetSocket()
 {
     return NULL; // dummy method to comply with the interface. functionality not possible in zeromq.
@@ -116,17 +126,20 @@ int FairMQSocketNN::GetSocket(int nothing)
     return fSocket;
 }
 
-void FairMQSocketNN::Close()
-{
-    nn_close(fSocket);
-}
-
 void FairMQSocketNN::SetOption(const string& option, const void* value, size_t valueSize)
 {
     int rc = nn_setsockopt(fSocket, NN_SOL_SOCKET, GetConstant(option), value, valueSize);
     if (rc < 0)
     {
         LOG(ERROR) << "failed setting socket option, reason: " << nn_strerror(errno);
+    }
+}
+
+void FairMQSocketNN::GetOption(const string& option, void* value, size_t* valueSize)
+{
+    int rc = nn_getsockopt(fSocket, NN_SOL_SOCKET, GetConstant(option), value, valueSize);
+    if (rc < 0) {
+        LOG(ERROR) << "failed getting socket option, reason: " << nn_strerror(errno);
     }
 }
 
@@ -152,6 +165,8 @@ unsigned long FairMQSocketNN::GetMessagesRx()
 
 int FairMQSocketNN::GetConstant(const string& constant)
 {
+    if (constant == "")
+        return 0;
     if (constant == "sub")
         return NN_SUB;
     if (constant == "pub")
@@ -168,6 +183,16 @@ int FairMQSocketNN::GetConstant(const string& constant)
         return NN_SNDBUF;
     if (constant == "rcv-hwm")
         return NN_RCVBUF;
+    if (constant == "snd-more") {
+        LOG(ERROR) << "Multipart messages functionality currently not supported by nanomsg!";
+        return -1;
+    }
+    if (constant == "rcv-more") {
+        LOG(ERROR) << "Multipart messages functionality currently not supported by nanomsg!";
+        return -1;
+    }
+    if (constant == "linger")
+        return NN_LINGER;
 
     return -1;
 }

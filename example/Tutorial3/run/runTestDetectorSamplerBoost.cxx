@@ -6,10 +6,10 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * runTestDetectorSampler.cxx
+ * runTestDetectorSamplerBoost.cxx
  *
- *  @since 2013-04-29
- *  @author: A. Rybalchenko, N. Winckler
+ * @since 2013-04-29
+ * @author A. Rybalchenko, N. Winckler
  */
 
 #include <iostream>

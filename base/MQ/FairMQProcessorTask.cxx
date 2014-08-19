@@ -15,10 +15,40 @@
 #include "FairMQProcessorTask.h"
 
 
-FairMQProcessorTask::FairMQProcessorTask()
+FairMQProcessorTask::FairMQProcessorTask() :
+  fPayload(NULL)
 {
 }
 
 FairMQProcessorTask::~FairMQProcessorTask()
 {
+}
+
+// initialize a callback to the Processor for sending multipart messages.
+void FairMQProcessorTask::SetSendPart(boost::function<void()> callback)
+{
+    SendPart = callback;
+}
+
+// initialize a callback to the Processor for receiving multipart messages.
+void FairMQProcessorTask::SetReceivePart(boost::function<bool()> callback)
+{
+    ReceivePart = callback;
+}
+
+FairMQMessage* FairMQProcessorTask::GetPayload()
+{
+  return fPayload;
+}
+
+void FairMQProcessorTask::SetPayload(FairMQMessage* msg)
+{
+    if(msg)
+    {
+        fPayload = msg;
+    }
+    else
+    {
+        LOG(ERROR) << "FairMQMessage uninitialized or bad format";
+    }
 }

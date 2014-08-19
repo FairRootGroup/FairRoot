@@ -38,6 +38,9 @@ void FairMQProcessor::Init()
   FairMQDevice::Init();
 
   fProcessorTask->InitTask();
+
+  fProcessorTask->SetSendPart(boost::bind(&FairMQProcessor::SendPart, this));
+  fProcessorTask->SetReceivePart(boost::bind(&FairMQProcessor::ReceivePart, this));
 }
 
 void FairMQProcessor::Run()
@@ -49,28 +52,26 @@ void FairMQProcessor::Run()
   int receivedMsgs = 0;
   int sentMsgs = 0;
 
-  bool received = false;
+  int received = 0;
 
   while ( fState == RUNNING ) {
-    FairMQMessage* msg = fTransportFactory->CreateMessage();
+    fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
 
-    received = fPayloadInputs->at(0)->Receive(msg);
+    received = fPayloadInputs->at(0)->Receive(fProcessorTask->GetPayload());
     receivedMsgs++;
 
-    if (received) {
-      fProcessorTask->Exec(msg, NULL);
+    if (received > 0) {
+      fProcessorTask->Exec();
 
-      fPayloadOutputs->at(0)->Send(msg);
+      fPayloadOutputs->at(0)->Send(fProcessorTask->GetPayload());
       sentMsgs++;
-      received = false;
+      received = 0;
     }
 
-    delete msg;
+    fProcessorTask->GetPayload()->CloseMessage();
   }
 
-  LOG(INFO) << "I've received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
-
-  boost::this_thread::sleep(boost::posix_time::milliseconds(5000));
+  LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
 
   try {
     rateLogger.interrupt();
@@ -78,5 +79,29 @@ void FairMQProcessor::Run()
   } catch(boost::thread_resource_error& e) {
     LOG(ERROR) << e.what();
   }
+
+  FairMQDevice::Shutdown();
 }
 
+void FairMQProcessor::SendPart()
+{
+    fPayloadOutputs->at(0)->Send(fProcessorTask->GetPayload(), "snd-more");
+    fProcessorTask->GetPayload()->CloseMessage();
+}
+
+bool FairMQProcessor::ReceivePart()
+{
+    int64_t more = 0;
+    size_t more_size = sizeof(more);
+    fPayloadInputs->at(0)->GetOption("rcv-more", &more, &more_size);
+    if(more)
+    {
+        fProcessorTask->GetPayload()->CloseMessage();
+        fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
+        return fPayloadInputs->at(0)->Receive(fProcessorTask->GetPayload());
+    }
+    else
+    {
+        return false;
+    }
+}

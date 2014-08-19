@@ -17,8 +17,12 @@
 
 #include <vector>
 
-#include "FairMQMessage.h"
+#include <boost/function.hpp>
+
 #include "FairTask.h"
+
+#include "FairMQMessage.h"
+#include "FairMQTransportFactory.h"
 
 
 class FairMQProcessorTask : public FairTask
@@ -26,7 +30,16 @@ class FairMQProcessorTask : public FairTask
   public:
     FairMQProcessorTask();
     virtual ~FairMQProcessorTask();
-    virtual void Exec(FairMQMessage* msg, Option_t* opt) = 0;
+    virtual void Exec(Option_t* opt = "0") = 0;
+    void SetSendPart(boost::function<void()>); // provides a callback to the Processor.
+    void SetReceivePart(boost::function<bool()>); // provides a callback to the Processor.
+    FairMQMessage* GetPayload();
+    void SetPayload(FairMQMessage* msg);
+
+  protected:
+    FairMQMessage* fPayload;
+    boost::function<void()> SendPart; // function pointer for the Processor callback.
+    boost::function<bool()> ReceivePart; // function pointer for the Processor callback.
 };
 
 #endif /* FAIRMQPROCESSORTASK_H_ */
