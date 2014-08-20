@@ -421,14 +421,14 @@ namespace TestDetectorProto
         inline const ::TestDetectorProto::Digi& digi(int index) const;
         inline ::TestDetectorProto::Digi* mutable_digi(int index);
         inline ::TestDetectorProto::Digi* add_digi();
-        inline const ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Digi>& digi() const;
-        inline ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Digi>* mutable_digi();
+        inline const ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Digi>& digi() const;
+        inline ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Digi>* mutable_digi();
 
         // @@protoc_insertion_point(class_scope:TestDetectorProto.DigiPayload)
       private:
         ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-        ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Digi> digi_;
+        ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Digi> digi_;
 
         mutable int _cached_size_;
         ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -509,14 +509,14 @@ namespace TestDetectorProto
         inline const ::TestDetectorProto::Hit& hit(int index) const;
         inline ::TestDetectorProto::Hit* mutable_hit(int index);
         inline ::TestDetectorProto::Hit* add_hit();
-        inline const ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Hit>& hit() const;
-        inline ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Hit>* mutable_hit();
+        inline const ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Hit>& hit() const;
+        inline ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Hit>* mutable_hit();
 
         // @@protoc_insertion_point(class_scope:TestDetectorProto.HitPayload)
       private:
         ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-        ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Hit> hit_;
+        ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Hit> hit_;
 
         mutable int _cached_size_;
         ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -983,11 +983,11 @@ namespace TestDetectorProto
     {
         return digi_.Add();
     }
-    inline const ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Digi>& DigiPayload::digi() const
+    inline const ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Digi>& DigiPayload::digi() const
     {
         return digi_;
     }
-    inline ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Digi>* DigiPayload::mutable_digi()
+    inline ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Digi>* DigiPayload::mutable_digi()
     {
         return &digi_;
     }
@@ -1017,11 +1017,11 @@ namespace TestDetectorProto
     {
         return hit_.Add();
     }
-    inline const ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Hit>& HitPayload::hit() const
+    inline const ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Hit>& HitPayload::hit() const
     {
         return hit_;
     }
-    inline ::google::protobuf::RepeatedPtrField<::TestDetectorProto::Hit>* HitPayload::mutable_hit()
+    inline ::google::protobuf::RepeatedPtrField< ::TestDetectorProto::Hit>* HitPayload::mutable_hit()
     {
         return &hit_;
     }
