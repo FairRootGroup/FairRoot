@@ -173,11 +173,11 @@ CHECK_CXX_COMPILER_FLAG("-std=c++11 -stdlib=libc++" HAS_LIBCXX)
 If(HAS_LIBCXX)
   Message(STATUS "Current compiler does suppport -stdlib=libc++")
   Set(FAIRSOFT_CXX_FLAGS "${FAIRSOFT_CXX_FLAGS} -stdlib=libc++")
+  String(STRIP ${FAIRSOFT_CXX_FLAGS} FAIRSOFT_CXX_FLAGS)
 Else()
   Message(STATUS "Current compiler does not suppport -stdlib=libc++")
 EndIf()
 
-String(STRIP ${FAIRSOFT_CXX_FLAGS} FAIRSOFT_CXX_FLAGS)
 
 Set(Build_Python $ENV{BUILD_PYTHON})
 
