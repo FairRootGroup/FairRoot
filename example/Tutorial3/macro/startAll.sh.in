@@ -86,7 +86,7 @@ outputMethod="connect"
 outputAddress="tcp://localhost:5570"
 xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
 
-ID="401"
+ID="501"
 processorTask="FairTestDetectorMQRecoTask"
 numIoThreads="1"
 inputSocketType="pull"
@@ -100,7 +100,7 @@ outputAddress="tcp://localhost:5571"
 xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
 
 
-ID="501"
+ID="601"
 numIoThreads="1"
 numInputs="3"
 inputSocketType1="pull"
@@ -122,7 +122,7 @@ outputAddress="tcp://*:5572"
 xterm -e @CMAKE_BINARY_DIR@/bin/merger $ID $numIoThreads $numInputs $inputSocketType1 $inputRcvBufSize1 $inputMethod1 $inputAddress1 $inputSocketType2 $inputRcvBufSize2 $inputMethod2 $inputAddress2  $inputSocketType3 $inputRcvBufSize3 $inputMethod3 $inputAddress3 $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
 
 
-ID="601"
+ID="701"
 numIoThreads="1"
 inputSocketType="pull"
 inputRcvBufSize=$buffSize
