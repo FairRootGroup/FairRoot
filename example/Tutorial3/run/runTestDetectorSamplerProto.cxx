@@ -146,9 +146,13 @@ int main(int argc, char** argv)
     {
         LOG(ERROR) << e.what();
     }
-    // TODO: get rid of this hack!
-    char ch;
-    cin.get(ch);
+
+    // wait until the running thread has finished processing.
+    boost::unique_lock<boost::mutex> lock(sampler.fRunningMutex);
+    while (!sampler.fRunningFinished)
+    {
+        sampler.fRunningCondition.wait(lock);
+    }
 
     sampler.ChangeState(FairMQSampler<TLoader>::STOP);
     sampler.ChangeState(FairMQSampler<TLoader>::END);

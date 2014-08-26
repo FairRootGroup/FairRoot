@@ -38,8 +38,9 @@ If (Boost_FOUND)
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh )
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startTestDetectorSampler.sh.in ${CMAKE_BINARY_DIR}/bin/startTestDetectorSampler.sh )
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBenchmark.sh.in ${CMAKE_BINARY_DIR}/bin/startBenchmark.sh )
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBin.sh.in ${CMAKE_BINARY_DIR}/bin/startBin.sh )
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh )
+  # following scripts are only for protobuf tests and are not essential part of FairMQ
+  # configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBin.sh.in ${CMAKE_BINARY_DIR}/bin/startBin.sh )
+  # configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh )
 EndIf (Boost_FOUND)
 
 set(LINK_DIRECTORIES

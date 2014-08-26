@@ -111,8 +111,12 @@ int main(int argc, char** argv)
     filesink.ChangeState(TSink::SETINPUT);
     filesink.ChangeState(TSink::RUN);
 
-    char ch;
-    cin.get(ch);
+    // wait until the running thread has finished processing.
+    boost::unique_lock<boost::mutex> lock(filesink.fRunningMutex);
+    while (!filesink.fRunningFinished)
+    {
+        filesink.fRunningCondition.wait(lock);
+    }
 
     filesink.ChangeState(TSink::STOP);
     filesink.ChangeState(TSink::END);

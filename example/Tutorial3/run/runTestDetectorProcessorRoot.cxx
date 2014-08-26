@@ -135,8 +135,12 @@ int main(int argc, char** argv)
     processor.ChangeState(FairMQProcessor::SETINPUT);
     processor.ChangeState(FairMQProcessor::RUN);
 
-    char ch;
-    cin.get(ch);
+    // wait until the running thread has finished processing.
+    boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
+    while (!processor.fRunningFinished)
+    {
+        processor.fRunningCondition.wait(lock);
+    }
 
     processor.ChangeState(FairMQProcessor::STOP);
     processor.ChangeState(FairMQProcessor::END);
