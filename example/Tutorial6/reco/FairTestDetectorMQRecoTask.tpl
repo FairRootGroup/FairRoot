@@ -7,6 +7,8 @@
 
 ////////// Base template class <T1,T2>
 
+
+
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetectorMQRecoTask()
     : fRecoTask(NULL), fRtdb(NULL)
@@ -34,6 +36,10 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
     if (checkInputClass && checkOutputClass)
         fHasBoostSerialization = true;
 #endif
+
+
+    fParMgr = NULL;
+   
 }
 
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
@@ -78,6 +84,9 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
         fHasBoostSerialization = true;
 
 #endif
+
+
+    fParMgr = NULL;  
 }
 
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
@@ -93,6 +102,9 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::~FairTestDetecto
         fDigiVector.clear();
     if (fHitVector.size() > 0)
         fHitVector.clear();
+
+    if (fParMgr) delete fParMgr;
+     
 }
 
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
@@ -102,6 +114,12 @@ InitStatus FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Init(
     fRecoTask->fDigiArray = new TClonesArray("FairTestDetectorDigi");
     fRecoTask->fHitArray = new TClonesArray("FairTestDetectorHit");
     fRecoTask->fEvtHeader = new FairEventHeader();
+
+    // Create a FairDbMQ Parameter Manager
+    fParMgr = new FairDbMQParMgr(); 
+
+    // Register the required parameter   
+    fParMgr->Register("TUTParDefault"); 
 
     return kSUCCESS;
 }
@@ -189,18 +207,22 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
    int* ptr =  reinterpret_cast<int*>(fPayload->GetData());
     LOG(INFO) << " FairTestDetectorMQRecoTask RID# "<< *ptr << endl; 
 
-    // Set the runID linked to data
-    fRecoTask->InitWithId(*ptr);
-    // Get the RuntimeDB
-    fRtdb = fRecoTask->GetRtdb();     
- 
-    if (fRtdb){
-       FairDbTutPar* par = (FairDbTutPar*)(fRtdb->getContainer("TUTParDefault"));
-       if (par){ 		
-          par->Print();	
-        } 				
-    }
 
+   
+   
+    // DB::  INITIALISATION  -----------------------------------------------------------
+    // Using FairDbParMgr  for initialising
+     
+     int rid = (*ptr); 
+     FairDbTutPar* par = static_cast<FairDbTutPar*>(fParMgr->Initialise("TUTParDefault", rid)); 
+     if (par)
+      {
+       //par->Print();    
+      }
+     
+
+
+    // Get now the data payload  to analyse ...    
     ptr++;						   
 
     // Get the actual Paylaod    

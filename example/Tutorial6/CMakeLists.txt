@@ -20,6 +20,8 @@ ${ZMQ_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/parbase/dbIO
 ${CMAKE_SOURCE_DIR}/fairmq
 ${CMAKE_SOURCE_DIR}/base/MQ
+${CMAKE_SOURCE_DIR}/dbase/dbMQ/utils
+${CMAKE_SOURCE_DIR}/dbase/dbMQ/actors
 ${CMAKE_SOURCE_DIR}/example/mcstack
 ${CMAKE_SOURCE_DIR}/example/Tutorial6
 ${CMAKE_SOURCE_DIR}/example/Tutorial6/data
@@ -27,6 +29,8 @@ ${CMAKE_SOURCE_DIR}/example/Tutorial6/sim
 ${CMAKE_SOURCE_DIR}/example/Tutorial6/streams
 ${CMAKE_SOURCE_DIR}/example/Tutorial6/reco
 ${CMAKE_SOURCE_DIR}/example/Tutorial6/params
+${CMAKE_SOURCE_DIR}/example/Tutorial6/param
+${CMAKE_SOURCE_DIR}/example/Tutorial6/db
 )
 
 #if (MYSQL_INCLUDE_DIR)       
@@ -83,14 +87,20 @@ set(SRCS
   reco/FairTestDetectorRecoTask.cxx
   params/FairDbTutPar.cxx
   params/FairDbTutContFact.cxx
+
 )
+
+Set(NO_DICT_SRCS
+  db/FairDbMQTutWorker.cxx  
+)
+
 
 set(LINKDEF FairTestDetectorLinkDef.h)
 set(LIBRARY_NAME TutFairDbMQ)
 
 if (Boost_FOUND)
   Set(DEPENDENCIES
-    Base FairDB ParBase MCStack FairMQ FairMQSampler boost_thread boost_system boost_serialization)
+    Base FairDB ParBase MCStack FairMQ FairMQSampler FairDbMQ boost_thread boost_system boost_serialization)
 else (Boost_FOUND)
   Set(DEPENDENCIES Base  FairDB ParBase MCStack)
 endif (Boost_FOUND)
@@ -104,6 +114,7 @@ if (Boost_FOUND)
     testDetectorSamplerInitBin
     testDetectorProcessorInitBin
     fileSinkInitBin 
+    db_tut6worker
   )
 
 
@@ -111,6 +122,7 @@ if (Boost_FOUND)
     run/runTestDetectorSamplerBin.cxx
     run/runTestDetectorProcessorBin.cxx
     run/runFileSinkBin.cxx
+    run/db_tut6worker.cxx		
     )
 
   list(LENGTH Exe_Names _length)
@@ -121,7 +133,7 @@ if (Boost_FOUND)
     list(GET Exe_Source ${_file} _src)
     set(EXE_NAME ${_name})
     set(SRCS ${_src})
-    set(DEPENDENCIES FairDB ParBase  TutFairDbMQ)
+    set(DEPENDENCIES FairDB ParBase FairDbMQ TutFairDbMQ)
     GENERATE_EXECUTABLE()
   endforeach(_file RANGE 0 ${_length})
 endif (Boost_FOUND)

@@ -111,7 +111,7 @@ set(DEPENDENCIES Net RIO Cint Core)
 
 GENERATE_LIBRARY()
 
-#if (ZMQ_FOUND AND Boost_FOUND)
-#add_subdirectory(dbMQ)
-#endif()
+if (ZMQ_FOUND AND Boost_FOUND)
+add_subdirectory(dbMQ)
+endif()
 

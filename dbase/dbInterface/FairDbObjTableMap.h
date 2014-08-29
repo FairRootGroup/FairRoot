@@ -22,6 +22,9 @@
 #include <cassert>                      // for assert
 #include <string>                       // for string
 
+#include "FairDbStreamer.h"
+
+
 class FairDbOutTableBuffer;
 class FairDbResult;
 class FairDbResultPool;
@@ -88,6 +91,20 @@ class FairDbObjTableMap : public TObject
     Detector::Detector_t     GetDetector()  const { return fDetType; }
     DataType::DataType_t     GetDataType()   const { return fSimType; }
 
+    // MQ IO functionaly 
+   
+    virtual void Serialize(TString &str, Int_t& p_size){
+                 str = FairDb::StreamAsString(this, p_size); 
+    }
+
+    virtual void  Deserialize(std::string b_str){
+          FairDbStreamer aStreamer;
+          TString par_str(b_str.c_str());
+          aStreamer.SetString(par_str);
+          aStreamer.Fill(this);  
+          //cout << "-E- FairDbObjTableMap Deserializing object dumped : " <<  endl;
+          //  this->Print(); 
+}
 
   protected:
     //

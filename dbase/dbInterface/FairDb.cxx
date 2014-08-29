@@ -282,6 +282,7 @@ TString FairDb::StreamAsString(const TObject* obj, Int_t& size)
   TObject* cobj = obj->Clone();
   TBufferFile b_write(TBuffer::kWrite);
   cobj->Streamer(b_write);
+  if (cobj) delete cobj; 
 
   Char_t* buff =  b_write.Buffer();
   Int_t   ll   = b_write.Length();
