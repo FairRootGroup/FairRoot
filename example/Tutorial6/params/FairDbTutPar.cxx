@@ -11,7 +11,7 @@
 #include "FairDbLogService.h"
 #include "FairDbOutTableBuffer.h"         // for FairDbOutRowStream
 #include "FairDbStatement.h"            // for FairDbStatement
-
+#include "FairDbStreamer.h"
 #include "FairParamList.h"              // for FairParamList
 
 #include "Riosfwd.h"                    // for ostream

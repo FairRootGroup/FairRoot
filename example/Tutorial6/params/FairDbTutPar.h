@@ -83,6 +83,7 @@ class FairDbTutPar : public FairParGenericSet
                           ValTimeStamp(rid));
     }
 
+    
     // SQL-IO Meta-Class Getters
     FairDbReader<FairDbTutPar>* GetParamReader();
     FairDbWriter<FairDbTutPar>* GetParamWriter();
