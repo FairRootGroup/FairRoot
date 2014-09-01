@@ -1,3 +1,10 @@
+/** 
+ *  FairDbMQMsg.h 
+ * 
+ *  created @ 09-01-2014 
+ *  by         D.Bertini  
+ */ 
+
 #ifndef FAIRDBMQMSG_H
 #define FAIRDBMQMSG_H
 

@@ -1,3 +1,10 @@
+/** 
+ *  FairDbMQ.h 
+ * 
+ *  created @ 09-01-2014 
+ *  by         D.Bertini  
+ */ 
+
 #ifndef FAIRDBMQ_H
 #define FAIRDBMQ_H
 

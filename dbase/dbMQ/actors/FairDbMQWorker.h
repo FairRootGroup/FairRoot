@@ -1,3 +1,10 @@
+/** 
+ *  FairDbMQWorker.h 
+ * 
+ *  created @ 09-01-2014 
+ *  by         D.Bertini  
+ */ 
+
 #ifndef FAIRDBMQWORKER_H
 #define FAIRDBMQWORKER_H
 
