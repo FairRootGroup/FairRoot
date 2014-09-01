@@ -1,3 +1,10 @@
+/** 
+ *  FairDbMQUtils.h 
+ * 
+ *  created @ 09-01-2014 
+ *  by         D.Bertini  
+ */ 
+
 #ifndef FAIRDBMQUTILS_H
 #define FAIRDBMQUTILS_H
 

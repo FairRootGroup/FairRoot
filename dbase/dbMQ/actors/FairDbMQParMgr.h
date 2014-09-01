@@ -1,3 +1,10 @@
+/** 
+ *  FairDbMQParMgr.h 
+ * 
+ *  created @ 09-01-2014 
+ *  by         D.Bertini  
+ */ 
+
 #ifndef FAIRDBMQPARMGR_H
 #define FAIRDBMQPARMGR_H
 

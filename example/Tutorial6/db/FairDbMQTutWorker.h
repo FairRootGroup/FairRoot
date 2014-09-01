@@ -1,3 +1,10 @@
+/** 
+ *  FairDbMQTutWorker.h 
+ * 
+ *  created @ 09-01-2014 
+ *  by         D.Bertini  
+ */ 
+
 #ifndef FAIRDBMQTUTWORKER_H
 #define FAIRDBMQTUTWORKER_H
 

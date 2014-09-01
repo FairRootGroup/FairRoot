@@ -17,6 +17,7 @@
 #include "FairMQSamplerTask.h"
 
 #include "FairMQLogger.h"
+#include "FairRunIdGenerator.h"
 #include <boost/timer/timer.hpp>
 
 #include <boost/archive/text_oarchive.hpp>

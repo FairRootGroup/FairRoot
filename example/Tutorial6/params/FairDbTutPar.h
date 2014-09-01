@@ -5,9 +5,14 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-//
-// C++ Interface: FairDbTutPar
-//
+
+/** 
+ *  FairDbTutPar.h 
+ * 
+ *  created @ 09-01-2014 
+ *  by         D.Bertini  
+ */ 
+
 #ifndef FAIRDBTUTPAR_H
 #define FAIRDBTUTPAR_H
 

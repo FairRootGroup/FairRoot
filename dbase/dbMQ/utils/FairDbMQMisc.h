@@ -1,3 +1,10 @@
+/** 
+ *  FairDbMQMisc.h 
+ * 
+ *  created @ 09-01-2014 
+ *  by         D.Bertini  
+ */ 
+
 #ifndef FAIRDBMQMISC_H
 #define FAIRDBMQMISC_H
 
