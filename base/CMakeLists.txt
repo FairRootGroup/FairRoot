@@ -141,6 +141,18 @@ Else(BUILD_MBS)
   )
 EndIf(BUILD_MBS)
 
+EXEC_PROGRAM( ${ROOT_CONFIG_EXECUTABLE} 
+    ARGS "--has-gdml"
+    OUTPUT_VARIABLE ROOT_HAS_GDML )
+
+If ( ${ROOT_HAS_GDML} STREQUAL yes )
+  Message(STATUS "Build CbmModule with Gdml support")
+  Add_Definitions(-DROOT_HAS_GDML)
+EndIf ( ${ROOT_HAS_GDML} STREQUAL yes )
+
+If ( ${ROOT_HAS_GDML} STREQUAL yes )
+ Set (DEPENDENCIES ${DEPENDENCIES} Gdml)
+EndIf ( ${ROOT_HAS_GDML} STREQUAL yes )
 
 Set(LINKDEF FairLinkDef.h)
 Set(LIBRARY_NAME Base)

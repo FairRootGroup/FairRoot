@@ -40,8 +40,13 @@
 #include "TString.h"                    // for TString, operator!=, etc
 #include "TSystem.h"                    // for TSystem, gSystem
 
+#ifdef ROOT_HAS_GDML
+#include "TGDMLParse.h"
+#endif
+
 #include <stdlib.h>                     // for getenv
 #include <string.h>                     // for NULL, strcmp, strlen
+#include <map>
 
 class FairGeoMedium;
 class TGeoMedium;
@@ -348,6 +353,97 @@ void FairModule::ConstructRootGeometry()
       LOG(FATAL)<<"Could not find the given mother volume "<< fMotherVolumeName.Data() << " where the geomanger should be added."<<FairLogger::endl;
     }
   }
+}
+#ifdef ROOT_HAS_GDML
+void FairModule::ConstructGDMLGeometry(TGeoMatrix* posrot)
+{
+    // Parse the GDML file
+    TFile *old = gFile;
+	TGDMLParse parser;
+	TGeoVolume* gdmlTop;
+	gdmlTop = parser.GDMLReadFile(GetGeometryFileName());
+
+    // Change ID of media. TGDMLParse starts allways from 0. Need to shift.
+    ReAssignMediaId();
+
+    // Add volume to the cave and go through it recursively
+	gGeoManager->GetTopVolume()->AddNode(gdmlTop,1,posrot);
+	ExpandNodeForGDML(gGeoManager->GetTopVolume()->GetNode(gGeoManager->GetTopVolume()->GetNdaughters()-1));
+    gFile = old;
+}
+
+void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
+{
+    // Get pointer to volume and assign medium
+	TGeoVolume* curVol = curNode->GetVolume();
+    AssignMediumAtImport(curVol);
+
+    // Check if the volume is sensitive
+    if ( (this->InheritsFrom("FairDetector")) && CheckIfSensitive(curVol->GetName())) {
+        LOG(DEBUG2)<<"Sensitive Volume "<< curVol->GetName() << FairLogger::endl;
+        AddSensitiveVolume(curVol);
+    }
+
+	//! Recursevly go down the tree of nodes
+	if (curVol->GetNdaughters() != 0)
+	{
+		TObjArray* NodeChildList = curVol->GetNodes();
+		TGeoNode* curNodeChild;
+		for (Int_t j=0; j<NodeChildList->GetEntriesFast(); j++)
+		{
+			curNodeChild = (TGeoNode*)NodeChildList->At(j);
+			ExpandNodeForGDML(curNodeChild);
+		}
+	}
+}
+#else
+void FairModule::ConstructGDMLGeometry(TGeoMatrix* posrot)
+{
+    gLogger->Error(MESSAGE_ORIGIN," Could not construct magnet geometry from gdml file. ");
+    gLogger->Error(MESSAGE_ORIGIN," The used ROOT version does not support gdml. ");
+    gLogger->Error(MESSAGE_ORIGIN," Please recompile ROOT with gdml support. ");
+    gLogger->Fatal(MESSAGE_ORIGIN," Stop execution at this point. ");
+}
+
+void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
+{
+}
+#endif
+void FairModule::ReAssignMediaId()
+{
+    // Initialise pointer to GeoBuilder
+    FairGeoBuilder* geoBuilder = FairGeoLoader::Instance()->getGeoBuilder();
+    // Get list of TGeo media
+    TList* media = gGeoManager->GetListOfMedia();
+    // Loop over new media which are not in GeoBase and shift the ID
+    TGeoMedium* med;
+    TGeoMedium* med2;
+    for(Int_t i = geoBuilder->GetNMedia(); i < media->GetEntries(); i++)
+    {
+        med = (TGeoMedium*) media->At(i);
+        med->SetId(i+1);
+    }
+    // Change GeoBase medium index
+    geoBuilder->SetNMedia(media->GetEntries());
+
+    // Revove dublicated materials
+    TList* materials = gGeoManager->GetListOfMaterials();
+    TIter next1(materials);
+    // map for existing materials
+    std::map<TString, Bool_t> mapMatName;
+    TGeoMaterial* mat;
+    while( (mat = (TGeoMaterial*)next1()) )
+    {
+        // If material exist - delete dublicated. If not - set the flag
+        if(mapMatName[mat->GetName()])
+        {
+            materials->Remove(mat);
+        }
+        else
+        {
+            mapMatName[mat->GetName()] = kTRUE;
+        }
+    }
 }
 //__________________________________________________________________________
 void FairModule::ConstructASCIIGeometry()

@@ -32,6 +32,7 @@ class TArrayI;
 class TGeoMatrix;
 class TGeoNode;
 class TGeoVolume;
+class TGeoMedium;
 class TRefArray;
 
 /**
@@ -72,6 +73,8 @@ class FairModule:  public TNamed
     virtual void        ConstructASCIIGeometry();
     /** Modify the geometry for the simulation run using methods of the Root geometry package */
     virtual void        ModifyGeometry() {;}
+    /**construct geometry from GDML files*/
+    virtual void        ConstructGDMLGeometry(TGeoMatrix*);
 
     /**template function to construct geometry. to be used in derived classes.*/
     template<class T, class U>
@@ -82,6 +85,8 @@ class FairModule:  public TNamed
     virtual Bool_t      CheckIfSensitive(std::string name);
     /**called from ConstructRootGeometry()*/
     virtual void        ExpandNode(TGeoNode* Node);
+    /**called from ConstructGDMLGeometry()*/
+    virtual void        ExpandNodeForGDML(TGeoNode*);
     /**return the MC id of a volume named vname*/
     virtual Int_t       getVolId( const TString& vname ) const {return 0;}
     /**return the detector/Module id (which was set in the sim macro for the detector)*/
@@ -123,6 +128,9 @@ class FairModule:  public TNamed
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */
     void SetDefaultMatrixName(TGeoMatrix* matrix);
     void AssignMediumAtImport(TGeoVolume* v);  // O.Merle, 29.02.2012 - see impl.
+
+    /**called from ConstructGDMLGeometry. Changes default ID created by TGDMLParse*/
+    void ReAssignMediaId();
 
   protected:
     TString             fgeoVer;
