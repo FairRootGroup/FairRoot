@@ -95,6 +95,14 @@ Set(NO_DICT_SRCS
 )
 
 
+  If(PROTOBUF_FOUND)
+    Set(NO_DICT_SRCS
+      ${NO_DICT_SRCS}
+      streams/FairTestDetectorPayload.pb.cc
+    )
+  Endif(PROTOBUF_FOUND)
+
+
 set(LINKDEF FairTestDetectorLinkDef.h)
 set(LIBRARY_NAME TutFairDbMQ)
 

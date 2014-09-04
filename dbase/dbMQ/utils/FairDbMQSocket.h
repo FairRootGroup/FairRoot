@@ -136,9 +136,13 @@ class socket_t
     private:
 
         void *ptr;
-
+#ifdef ZMQ_DELETED_FUNCTION
         socket_t (const socket_t&) ZMQ_DELETED_FUNCTION;
         void operator = (const socket_t&) ZMQ_DELETED_FUNCTION;
+#else
+        socket_t (const socket_t&);
+        void operator = (const socket_t&);
+#endif
     };
 
 }
