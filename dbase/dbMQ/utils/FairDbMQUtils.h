@@ -15,6 +15,7 @@
 #include <cstring>
 #include <exception>
 
+// explicit deleted marked members function C++0x
 #if (defined(__GNUC__) && (__GNUC__ > 4 || \
       (__GNUC__ == 4 && __GNUC_MINOR__ > 2)) && \
       defined(__GXX_EXPERIMENTAL_CXX0X__))
@@ -26,7 +27,7 @@
     #endif
 
     #if __has_feature(cxx_deleted_functions)
-        #define ZMQ_DELETED_FUNCTION = delete
+        #define ZMQ_DELETED_FUNCTION 
     #endif
 #else
     #define ZMQ_DELETED_FUNCTION
