@@ -21,6 +21,9 @@
 #include "TMath.h"                      // for Pi, TwoPi, Log
 #include "TMathBase.h"                  // for Abs
 #include "TParticle.h"                  // for TParticle
+#include "TGeoManager.h"
+#include "TGeoVolume.h"
+#include "TGeoBBox.h"
 
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
@@ -159,10 +162,15 @@ Bool_t FairTrajFilter::IsAccepted(const TParticle* p) const
 void FairTrajFilter::SetVertexCut(Double_t vxMin, Double_t vyMin, Double_t vzMin,
                                   Double_t vxMax, Double_t vyMax, Double_t vzMax)
 {
+  TGeoBBox* cave = (TGeoBBox*) gGeoManager->GetTopVolume()->GetShape();
+  cave->ComputeBBox();
+  Double_t caveX = 2.*cave->GetDX();
+  Double_t caveY = 2.*cave->GetDY();
+  Double_t caveZ = 2.*cave->GetDZ();
   if( (vxMax<vxMin) || (vyMax<vyMin) || (vzMax<vzMin) ||
-      (TMath::Abs(vxMin)>2000.) || (TMath::Abs(vxMax)>2000.) ||
-      (TMath::Abs(vyMin)>2000.) || (TMath::Abs(vyMax)>2000.) ||
-      (TMath::Abs(vzMin)>2000.) || (TMath::Abs(vzMax)>2000.) ) {
+      (TMath::Abs(vxMin)>caveX) || (TMath::Abs(vxMax)>caveX) ||
+      (TMath::Abs(vyMin)>caveY) || (TMath::Abs(vyMax)>caveY) ||
+      (TMath::Abs(vzMin)>caveZ) || (TMath::Abs(vzMax)>caveZ) ) {
     cout << "-E- FairTrajFilter::SetVertexCut() : invalid region, ignoring." << endl;
     return;
   }
