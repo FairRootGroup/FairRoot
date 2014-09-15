@@ -5,7 +5,7 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_sim(Int_t nEvents=1000, TString mcEngine="TGeant3")
+void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
 {
   TStopwatch timer;
   timer.Start();
