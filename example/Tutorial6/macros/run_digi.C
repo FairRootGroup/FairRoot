@@ -24,15 +24,15 @@ void run_digi( TString mcEngine="TGeant3" )
 
 
   // Input file (MC events)
-  TString inFile = tutdir + "/data/testrun_";
+  TString inFile = tutdir + "/macros/data/testrun_";
   inFile = inFile + mcEngine + ".root";
   
   // Parameter file
-  TString parFile = tutdir + "/data/testparams_"; 
+  TString parFile = tutdir + "/macros/data/testparams_";
   parFile = parFile + mcEngine + ".root";
 
   // Output file
-  TString outFile = tutdir + "/data/testdigi_";
+  TString outFile = tutdir + "/macros/data/testdigi_";
   outFile = outFile + mcEngine + ".root";
   
   // -----   Timer   --------------------------------------------------------

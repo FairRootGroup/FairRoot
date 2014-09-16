@@ -115,7 +115,7 @@ endif (Boost_FOUND)
 
 GENERATE_LIBRARY()
 
-
+Add_Subdirectory(macros)
 
 if (Boost_FOUND)
   Set(Exe_Names
