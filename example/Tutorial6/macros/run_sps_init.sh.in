@@ -26,8 +26,8 @@ fi
 
 
 ID="101"
-inputFile="@CMAKE_SOURCE_DIR@/example/Tutorial6/data/testdigi_TGeant3.root"
-parameterFile="@CMAKE_SOURCE_DIR@/example/Tutorial6/data/testparams_TGeant3.root"
+inputFile="@CMAKE_SOURCE_DIR@/example/Tutorial6/macros/data/testdigi_TGeant3.root"
+parameterFile="@CMAKE_SOURCE_DIR@/example/Tutorial6/macros/data/testparams_TGeant3.root"
 branch="FairTestDetectorDigi"
 eventRate="0"
 numIoThreads="1"
