@@ -20,6 +20,7 @@
 #ifndef FAIRGENERICSTACK_H
 #define FAIRGENERICSTACK_H
 
+#include "TClonesArray.h" 
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include "Rtypes.h"                     // for Double_t, Int_t, etc
@@ -152,6 +153,7 @@ class FairGenericStack : public TVirtualMCStack
     virtual Int_t GetCurrentParentTrackNumber() const;
     virtual TParticle* GetParticle(Int_t trackID) const { return NULL; }
 
+    virtual TClonesArray* GetListOfParticles() { return NULL; } 
 
   protected:
     /** Fair Logger */
