@@ -31,6 +31,7 @@ ${CMAKE_SOURCE_DIR}/example/Tutorial6/reco
 ${CMAKE_SOURCE_DIR}/example/Tutorial6/params
 ${CMAKE_SOURCE_DIR}/example/Tutorial6/param
 ${CMAKE_SOURCE_DIR}/example/Tutorial6/db
+${CMAKE_SOURCE_DIR}/example/Tutorial3/data
 )
 
 #if (MYSQL_INCLUDE_DIR)       
