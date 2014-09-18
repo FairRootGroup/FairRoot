@@ -52,10 +52,20 @@ rutherford
 simple simulation of the Rutherford experiment, with event display.
 
 ##Tutorial6
-This example demontrate
 
-Initialisation of parameter within MQ Tasks.
+#### Initialisation of parameter within MQ Tasks ####
 
+* Introduction
+
+This example demonstrates the usage of the runtimeDb services ( including comunication to SQL databases via FairDB ) 
+in order to initialise parameter at a certain time within FairMQ Tasks. 
+Once a parameter has been initialised, it is cached together with its interval of validity. 
+Further calls to an update will only trigger an initialistation if the update time falls outside of the parameter 
+interval of validity. 
+In all other cases, a pointer to the valid parameter will be forwarded to the MQ process.   
+
+
+* Getting started
 In order to run the example you should first create a dummy simulation root file and convert it to
 a dummy digits root file. This fisrt operation is done using the following predefined macros
 
@@ -82,13 +92,80 @@ this should create the following root file in the subdirectory data.
 -rw-r--r--  1 denis  staff    85M Aug 11 08:36 testrun_TGeant3.root
 ```
 
-After this step, to run the example for parameter initialisation just 
+
+* Launch the FairDbMQ dispatcher
+
+With the FairMQDB the FairMQ Tasks do not directly communicate to the backend parameter store but
+initialisation messages are routed through a continuously running, the FairDbMQ dispatcher. 
+The user should launch the daemon once i.e
+ 
+```bash
+<my_fairroot_path>/build/bin/db_dispatcher &
+```
+
+The FairDbMQ dispatcher is then continuously listening to connection comming from 
+** FairMQ Tasks requiring an initialisation
+** Assigned FairDBMQWorker process to handle this request 
+
+Once the FairDbMQDispatcher process is run, you should see  the following  prompt
+
+```bash
+-I- FairDbMQDispatcher:: Queueing Daemon Started ...
+```
+meaning that process initialised itself properly and is running on the background.
+
+
+
+
+* Launch the Assigned FairDbMQWorker
+
+In order to handle an initialisation request, the user should launch at least one FairDbMQ worker
+process which as the FairDbMQDispatcher is daemonized.
+
+```bash
+<my_fairroot_path>/build/bin/db_tut6worker
+```
+
+Once the FairDbMQworker process is run, you should see  the following  prompt
+
+```bash
+[12:07:03][DEBUG] -I- FairDbMQWorker::Run() Set Io input: 
+
+[12:07:03][DEBUG] -I- FairDbMQWorker:: input IO: Text File: /Users/denis/fairroot/fairbase/example/tutorial5/macros/ascii-example.par
+
+[12:07:03][DEBUG] -I- FairDbMQWorker::Run() Set Io Output: 
+
+-I- FairDbMQTutWorker:: FairDbTutPar is created
+-I-FairDbTutContFact::createContainer TUTParDefault
+-I- FAIRDbConnectionPool  fGlobalSeqNoDbNo  0
+-I-  FairDbMQWorker::Run() RTDB initialised ... ready to work ...: 
+-I-  FairDbMQWorker Local cache container 
+Key: TUTParDefault
+Values
+OBJ: FairDbTutPar	TUTParDefault	Default tutorial parameters
+```
+Meaning that the assigned  FairDbMQWorker  is properly initialised and is waiting to handle initialisation requests for the
+container stored in its internal cache, namely in this case the FairDbTutPar parameter object.
+Furthermore, in this example, the FairDbMQWorker will use an SQL server to fetch the updated parameters values if needed. 
+In FairDB services are used within the assigned worker, the user, before launching it, needs to define  the connection to a Database system (MySQL, PostGreSQL or SQlite )  
+as it required by the FairDb Library i.e 
+
+As an example, such  a definition  for a local MySQL server is done exporting the following environment varaiables: 
+
+```bash
+export FAIRDB_TSQL_URL="mysql://localhost/r3b"
+export FAIRDB_TSQL_USER="scott"
+export FAIRDB_TSQL_PSWD="tiger"
+```
+
+
+* Main MQ Tasks
+After these steps are done, to run the example for parameter initialisation just 
 run the dummy  MQtasks scripts ( sampler - processor ( with initialisation) - file_sink ) .
 
 ```bash
 <my_fairroot_path>/build/bin/run_sps_init.sh
 ```
-
 
 
 ##flp2epn
