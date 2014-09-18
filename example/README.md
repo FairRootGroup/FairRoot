@@ -66,6 +66,7 @@ In all other cases, a pointer to the valid parameter will be forwarded to the MQ
 
 
 * Getting started
+
 In order to run the example you should first create a dummy simulation root file and convert it to
 a dummy digits root file. This fisrt operation is done using the following predefined macros
 
@@ -96,7 +97,7 @@ this should create the following root file in the subdirectory data.
 * Launch the FairDbMQ dispatcher
 
 With the FairMQDB the FairMQ Tasks do not directly communicate to the backend parameter store but
-initialisation messages are routed through a continuously running, the FairDbMQ dispatcher. 
+initialisation messages are routed through a continuously running process i.e the FairDbMQ dispatcher. 
 The user should launch the daemon once i.e
  
 ```bash
@@ -104,8 +105,9 @@ The user should launch the daemon once i.e
 ```
 
 The FairDbMQ dispatcher is then continuously listening to connection comming from 
-** FairMQ Tasks requiring an initialisation
-** Assigned FairDBMQWorker process to handle this request 
+
+ * FairMQ Tasks requiring an initialisation
+ * Assigned FairDBMQWorker process to handle this request 
 
 Once the FairDbMQDispatcher process is run, you should see  the following  prompt
 
@@ -116,14 +118,13 @@ meaning that process initialised itself properly and is running on the backgroun
 
 
 
-
 * Launch the Assigned FairDbMQWorker
 
 In order to handle an initialisation request, the user should launch at least one FairDbMQ worker
 process which as the FairDbMQDispatcher is daemonized.
 
 ```bash
-<my_fairroot_path>/build/bin/db_tut6worker
+<my_fairroot_path>/build/bin/db_tut6worker &
 ```
 
 Once the FairDbMQworker process is run, you should see  the following  prompt
@@ -146,6 +147,9 @@ OBJ: FairDbTutPar	TUTParDefault	Default tutorial parameters
 ```
 Meaning that the assigned  FairDbMQWorker  is properly initialised and is waiting to handle initialisation requests for the
 container stored in its internal cache, namely in this case the FairDbTutPar parameter object.
+
+* SQL Database settings
+
 Furthermore, in this example, the FairDbMQWorker will use an SQL server to fetch the updated parameters values if needed. 
 In FairDB services are used within the assigned worker, the user, before launching it, needs to define  the connection to a Database system (MySQL, PostGreSQL or SQlite )  
 as it required by the FairDb Library i.e 
@@ -158,8 +162,15 @@ export FAIRDB_TSQL_USER="scott"
 export FAIRDB_TSQL_PSWD="tiger"
 ```
 
+A more complete script is provided for setting up the main  supported RDBMS backends namely MySQL, PostGreSQL and SQLite:
+
+```bash
+<my_fairroot_path>/build/bin/dbconfig.sh
+```
+
 
 * Main MQ Tasks
+
 After these steps are done, to run the example for parameter initialisation just 
 run the dummy  MQtasks scripts ( sampler - processor ( with initialisation) - file_sink ) .
 
@@ -168,6 +179,6 @@ run the dummy  MQtasks scripts ( sampler - processor ( with initialisation) - fi
 ```
 
 
-##flp2epn
+##Flp2epn
 Simple example for Message based processing using FairRoot.
 
