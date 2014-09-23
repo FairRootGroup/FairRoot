@@ -14,8 +14,8 @@ ForEach(_mcEngine IN ITEMS TGeant3 TGeant4)
   Set_Tests_Properties(run_sim_Tut6_${_mcEngine} PROPERTIES TIMEOUT "180")
   Set_Tests_Properties(run_sim_Tut6_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
 
-  Add_Test(run_digi_Tut6_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial6/macros/run_digi.sh)
-  Set_Tests_Properties(run_digi_Tut6_${_mcEngine} PROPERTIES DEPENDS run_sim_Tut6${_mcEngine})
+  Add_Test(run_digi_Tut6_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial6/macros/run_digi.sh \"${_mcEngine}\")
+  Set_Tests_Properties(run_digi_Tut6_${_mcEngine} PROPERTIES DEPENDS run_sim_Tut6_${_mcEngine})
   Set_Tests_Properties(run_digi_Tut6_${_mcEngine} PROPERTIES TIMEOUT "30")
   Set_Tests_Properties(run_digi_Tut6_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
 
