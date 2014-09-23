@@ -64,7 +64,7 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   set(Int_DICTIONARY ${DICTIONARY})
 
 #  Message("DEFINITIONS: ${DEFINITIONS}")
-  set(Int_INC ${INCLUDE_DIRECTORIES})
+  set(Int_INC ${INCLUDE_DIRECTORIES} ${SYSTEM_INCLUDE_DIRECTORIES})
   set(Int_HDRS ${HDRS})
   set(Int_DEF ${DEFINITIONS})
 
@@ -186,11 +186,15 @@ Macro(ROOT_GENERATE_ROOTMAP)
 
     foreach(d ${DEPENDENCIES})
       get_filename_component(_ext ${d} EXT)
-      if(_ext)
-        set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
-      else()
-        set(Int_DEPENDENCIES ${Int_DEPENDENCIES} lib${d}.so)
-      endif()
+      If(NOT _ext MATCHES a$)
+        if(_ext)
+          set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
+        else()
+          set(Int_DEPENDENCIES ${Int_DEPENDENCIES} lib${d}.so)
+        endif()
+      Else()
+        Message("Found Static library with extension ${_ext}")
+      EndIf()
     endforeach()
 
     set(Int_LIB ${LIBRARY_NAME})
@@ -257,9 +261,21 @@ Macro(GENERATE_LIBRARY)
 
   ROOT_GENERATE_ROOTMAP()
 
+  set(Int_DEPENDENCIES)
+  foreach(d ${DEPENDENCIES})
+    get_filename_component(_ext ${d} EXT)
+    If(NOT _ext MATCHES a$)
+      set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
+    Else()      
+      Message("Found Static library with extension ${_ext}")
+      get_filename_component(_lib ${d} NAME_WE)
+      set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${_lib})
+    EndIf()
+  endforeach()
+ 
   ############### build the library #####################
   Add_Library(${Int_LIB} SHARED ${Int_SRCS} ${NO_DICT_SRCS})
-  target_link_libraries(${Int_LIB} ${DEPENDENCIES})
+  target_link_libraries(${Int_LIB} ${Int_DEPENDENCIES})
   set_target_properties(${Int_LIB} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
   ############### install the library ###################
