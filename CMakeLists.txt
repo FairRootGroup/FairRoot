@@ -141,6 +141,9 @@ SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
     SUFFIX ".so"
 )
 
+# Load the macro to generate the needed version info at compile time
+Generate_Version_Info()
+
 # Set some useful variables
 SetBasicVariables()
 
@@ -215,6 +218,10 @@ Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
 
 Install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
         DESTINATION bin
+       )
+
+Install(FILES ${CMAKE_BINARY_DIR}/FairVersion.h
+        DESTINATION include
        )
 
 Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
