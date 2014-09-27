@@ -48,7 +48,7 @@ MACRO (WRITE_CONFIG_FILE filename)
                     )
     ENDIF(FAIRROOTPATH)
     
-    EXECUTE_PROCESS(COMMAND lsb_release -d
+    EXECUTE_PROCESS(COMMAND lsb_release -sd
                     OUTPUT_VARIABLE _linux_flavour
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                    )
