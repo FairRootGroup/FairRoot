@@ -1,5 +1,5 @@
 #!/bin/csh
-set linux_flavour=`lsb_release -d`
+set linux_flavour=`lsb_release -sd`
 set system=`uname -m`
 setenv same_system 1
 
@@ -10,19 +10,19 @@ echo "                           $system"
 
 if ( "$linux_flavour" != "$Linux_Flavour_" ) then
   echo "You try to run the software on a different"
-  echo "linux flavour than it was compuiled on."
+  echo "linux flavour than it was compiled on."
   echo "This is normaly a serious error, so we stop"
   echo "the execution at this point."
   echo "If you know what you do you can change the"
-  echo "config.sh script to bypass this security issue."
+  echo "config.csh script to bypass this security issue."
   setenv same_system 0
 endif
 if ( "$system" != "$System_" ) then
   echo "You try to run the software on a different"
-  echo "linux flavour than it was compuiled on."
+  echo "linux architecture than it was compiled on."
   echo "This is normaly a serious error, so we stop"
   echo "the execution at this point."
   echo "If you know what you do you can change the"
-  echo "config.sh script to bypass this security issue."
+  echo "config.csh script to bypass this security issue."
   setenv same_system 0
 endif
