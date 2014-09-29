@@ -115,6 +115,23 @@ MACRO (CHECK_OUT_OF_SOURCE_BUILD)
 
 ENDMACRO (CHECK_OUT_OF_SOURCE_BUILD)
 
+  ##########################################################
+  #
+  # The macro checks if the build directory is different from the
+  # installation directory. In case both are the same
+  # stop the execution of cmake with an error message.
+  #
+  ##########################################################
+
+Macro (CHECK_INSTALL_DIRECTORY)
+
+   String(COMPARE EQUAL "${CMAKE_INSTALL_PREFIX}" "${CMAKE_BINARY_DIR}" _same)
+   If(_same)
+      MESSAGE(FATAL_ERROR "Your build and installation directory is the same one. This option does not work. Please change either your build or your installation directory and rerun cmake.")
+   EndIf(_same)
+
+EndMacro (CHECK_INSTALL_DIRECTORY)
+
 Macro(CHECK_EXTERNAL_PACKAGE_INSTALL_DIR)
   If(IS_DIRECTORY ${SIMPATH}/bin)
     Set(FAIRSOFT_EXTERN TRUE)

@@ -56,8 +56,10 @@ If(USE_PATH_INFO)
 EndIf(USE_PATH_INFO)
 
 # Check if the user wants to build the project in the source
+# directory and if the install directory is different from the build
 # directory
 CHECK_OUT_OF_SOURCE_BUILD()
+CHECK_INSTALL_DIRECTORY()
 
 # Check if we are on an UNIX system. If not stop with an error
 # message
