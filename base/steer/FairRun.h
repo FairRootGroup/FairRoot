@@ -132,10 +132,16 @@ class FairRun : public TNamed
     void CreateGeometryFile(const char* geofile);
 
     //** Set if RunInfo file should be written */
-    void SetWriteRunInfoFile(Bool_t write) { fWriteRunInfo = write;}
+    void SetWriteRunInfoFile(Bool_t write);
+
+    //** Set if RunInfo should be generated */
+    void SetGenerateRunInfo(Bool_t write) { fGenerateRunInfo = write;}
 
     //** Get info if RunInfo file is written */
-    Bool_t GetWriteRunInfoFile() { return fWriteRunInfo;}
+    Bool_t GetWriteRunInfoFile();
+
+    //** Get info if RunInfo file is written */
+    Bool_t IsRunInfoGenerated() { return fGenerateRunInfo;}
 
     //** Switches the use of FairLinks */
     void SetUseFairLinks(Bool_t val);
@@ -172,7 +178,7 @@ class FairRun : public TNamed
     /** File  Header */
     FairFileHeader*          fFileHeader;
     /** true if RunInfo file should be written*/
-    Bool_t                   fWriteRunInfo;  //!
+    Bool_t                   fGenerateRunInfo;  //!
 
     ClassDef(FairRun ,1)
 };

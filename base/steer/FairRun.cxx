@@ -47,7 +47,7 @@ FairRun::FairRun()
    fAna(kFALSE),
    fEvHead(NULL),
    fFileHeader(new FairFileHeader()),
-   fWriteRunInfo(kTRUE)
+   fGenerateRunInfo(kFALSE)
 {
   if (fRunInstance) {
     Fatal("FairRun", "Singleton instance already exists.");
@@ -138,6 +138,24 @@ void FairRun::SetUseFairLinks(Bool_t val)
 }
 
 //_____________________________________________________________________________
+void FairRun::SetWriteRunInfoFile(Bool_t write)
+{
+  LOG(WARNING) << "Function FairRun::SetWriteRunInfoFile(Bool_t) is depcrecated and will vanish in future versions of FairRoot.\n";
+  LOG(WARNING) << "Please use FairRun::SetGenerateRunInfo(Bool_t) instead." << FairLogger::endl;
+
+  fGenerateRunInfo = write;
+}
+
+Bool_t FairRun::GetWriteRunInfoFile()
+{
+  LOG(WARNING) << "Function FairRun::GetWriteRunInfoFile() is depcrecated and will vanish in future versions of FairRoot.\n";
+  LOG(WARNING) << "Please use FairRun::IsRunInfoGenerated() instead." << FairLogger::endl;
+
+  return fGenerateRunInfo;
+}
+
+
+
 ClassImp(FairRun)
 
 

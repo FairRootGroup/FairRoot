@@ -464,8 +464,9 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 
     }
 
-    fRunInfo.Reset();
-
+    if (fGenerateRunInfo) {
+      fRunInfo.Reset();
+    }
 
     for (int i=Ev_start; i< Ev_end; i++) {
       fRootManager->ReadEvent(i);
@@ -493,7 +494,9 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
       fRootManager->DeleteOldWriteoutBufferData();
       fTask->FinishEvent();
 
-      fRunInfo.StoreInfo();
+      if (fGenerateRunInfo) {
+        fRunInfo.StoreInfo();
+      }
       if (NULL !=  FairTrajFilter::Instance()) {
         FairTrajFilter::Instance()->Reset();
       }
@@ -502,7 +505,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 
     fRootManager->StoreAllWriteoutBufferData();
     fTask->FinishTask();
-    if (fWriteRunInfo) {
+    if (fGenerateRunInfo) {
       fRunInfo.WriteInfo();
     }
     fRootManager->LastFill();
@@ -540,8 +543,9 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
 
   }
 
-  fRunInfo.Reset();
-
+  if (fGenerateRunInfo) {
+    fRunInfo.Reset();
+  }
 
   for (int i=Ev_start; i< Ev_end; i++) {
     fRootManager->ReadEvent(i);
@@ -568,7 +572,9 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
     // fRootManager->Fill();
     fTask->FinishEvent();
 
-    fRunInfo.StoreInfo();
+    if (fGenerateRunInfo) {
+      fRunInfo.StoreInfo();
+    }
     if (NULL !=  FairTrajFilter::Instance()) {
       FairTrajFilter::Instance()->Reset();
     }
@@ -576,7 +582,7 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
   }
 
   fTask->FinishTask();
-  if (fWriteRunInfo) {
+  if (fGenerateRunInfo) {
     fRunInfo.WriteInfo();
   }
   fRootManager->LastFill();
