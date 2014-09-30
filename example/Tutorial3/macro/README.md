@@ -4,41 +4,41 @@ Currently, the configuration of topologies and devices is done via bash scripts.
 
 Here is a brief description of the script arguments and their possible values.
 
+Further details for available device options can be queried for any executable when called with `--help` command line option.
+
 ### Common for all devices
 
-**ID**: device ID. Just something to identify the device, currently used only in logger output.
+**--id**: device ID. Just something to identify the device, currently used only in logger output.
 
-**numIoThreads**: number of IO threads ZeroMQ should use. According to [ZeroMQ documentation](http://zguide.zeromq.org/page:all#I-O-Threads), using more than one thread only becomes relevant at 1GB/s and above.
+**--io-threads**: Optional parameter, to change the number of i/o threads ZeroMQ should use. Default value is 1 i/o thread. According to [ZeroMQ documentation](http://zguide.zeromq.org/page:all#I-O-Threads), using more than one thread only becomes relevant at 1GB/s and above.
 
-**outputSocketType**: output pattern. Possible values: "push"/"pub".
+**--output-socket-type**: output pattern. Possible values: "push"/"pub".
 
-**outputBufSize**: size of the ZeroMQ output queue (in # of messages). For nanomsg transport, the size is in bytes.
+**--output-buff-size**: size of the ZeroMQ output queue in number of messages. For nanomsg transport, the size is in bytes.
 
-**outputMethod**: output method - "bind"/"connect". One side should bind and other should connect. The order doesn't matter, but for some topologies chosing the right combination can simplify the configuration.
+**--output-method**: output method - "bind"/"connect". One side should bind and other should connect. The order doesn't matter, but for some topologies chosing the right combination can simplify the configuration.
 
-**outputAddress**: output address and port.
+**--output-address**: output interface, address and port.
 
-**inputSocketType**: same as above, but for input. Possible values: pull/sub.
+**--input-socket-type**: same as above, but for input. Possible values: pull/sub.
 
-**inputRcvBufSize**: same as above, but for input.
+**--input-buff-size**: same as above, but for input.
 
-**inputMethod**: same as above, but for input.
+**--input-method**: same as above, but for input.
 
-**inputAddress**: same as above, but for input.
+**--input-address**: same as above, but for input.
 
 ### Sampler specific
 
-**inputFile**: input file  (specific to sampler task)
+**--input-file**: input file  (specific to sampler task).
 
-**parameterFile**: parameter file (specific to sampler task)
+**--parameter-file**: parameter file (specific to sampler task).
 
-**branch**: define the sampler task (this is likely to be removed in future version)
-
-**eventRate**: optional limit for number of events/second, e.g. 1000 - up to 1000 events per second. Value 0 means no limit.
+**--branch**: sampler task. Default for Tutorial3 is "FairTestDetectorDigi".
 
 ### Processor specific
 
-**processorTask**: define the processor task (this is likely to be removed in future version)
+**--processor-task**: processor task. Default for Tutorial3 is "FairTestDetectorMQRecoTask".
 
 ### Data format definition
 
@@ -83,36 +83,22 @@ else
     echo "binary data format will be used."
 fi
 
-ID="101"
-inputFile="@CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi.root"
-parameterFile="@CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams.root"
-branch="FairTestDetectorDigi"
-eventRate="0"
-numIoThreads="1"
-outputSocketType="push"
-outputBufSize=$buffSize
-outputMethod="bind"
-outputAddress="tcp://*:5565"
-xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorSampler$dataFormat $ID $inputFile $parameterFile $branch $eventRate $numIoThreads $outputSocketType $outputBufSize $outputMethod $outputAddress &
+SAMPLER="testDetectorSampler$dataFormat"
+SAMPLER+=" --id 101"
+SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi.root"
+SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams.root"
+SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5565"
+xterm -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
-ID="201"
-processorTask="FairTestDetectorMQRecoTask"
-numIoThreads="1"
-inputSocketType="pull"
-inputRcvBufSize=$buffSize
-inputMethod="connect"
-inputAddress="tcp://localhost:5565"
-outputSocketType="push"
-outputSndBufSize=$buffSize
-outputMethod="connect"
-outputAddress="tcp://localhost:5570"
-xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat $ID $processorTask $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress $outputSocketType $outputSndBufSize $outputMethod $outputAddress &
+PROCESSOR="testDetectorProcessor$dataFormat"
+PROCESSOR+=" --id 201"
+PROCESSOR+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5565"
+PROCESSOR+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5570"
+xterm -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR &
 
-ID="301"
-numIoThreads="1"
-inputSocketType="pull"
-inputRcvBufSize=$buffSize
-inputMethod="bind"
-inputAddress="tcp://*:5570"
-xterm -e @CMAKE_BINARY_DIR@/bin/fileSink$dataFormat $ID $numIoThreads $inputSocketType $inputRcvBufSize $inputMethod $inputAddress &
+FILESINK="fileSink$dataFormat"
+FILESINK+=" --id 301"
+FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5570"
+xterm -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+
 ```
