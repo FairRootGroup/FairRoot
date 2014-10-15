@@ -86,7 +86,7 @@ void FairMultiLinkedData::SetLinks(FairMultiLinkedData links, Float_t mult)
 }
 
 
-inline void FairMultiLinkedData::SetLink(FairLink link, Bool_t bypass, Float_t mult)
+void FairMultiLinkedData::SetLink(FairLink link, Bool_t bypass, Float_t mult)
 {
   fLinks.clear();
   Float_t weight = link.GetWeight() * mult;
@@ -105,7 +105,7 @@ void FairMultiLinkedData::AddLinks(FairMultiLinkedData links, Float_t mult)
   }
 }
 
-inline void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
+void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
 {
 
   Float_t weight = link.GetWeight() * mult;
