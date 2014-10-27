@@ -81,8 +81,9 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
 
 Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
 {
+  TString outFileName = gSystem->WorkingDirectory();
 
-  TString outFileName = "all_";
+  outFileName += "/all_";
   Int_t pid = gSystem->GetPid();
   outFileName += pid;
   outFileName += ".par";
