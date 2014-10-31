@@ -1,5 +1,5 @@
 #!/bin/csh
-set linux_flavour=`lsb_release -sd`
+set linux_flavour=`lsb_release -sd | sed -e 's/^"//' -e 's/"$//'`
 set system=`uname -m`
 setenv same_system 1
 
