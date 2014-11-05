@@ -48,10 +48,13 @@ MACRO (WRITE_CONFIG_FILE filename)
                     )
     ENDIF(FAIRROOTPATH)
     
-    EXECUTE_PROCESS(COMMAND lsb_release -sd | sed -e 's/^"//' -e 's/"$//'
+    EXECUTE_PROCESS(COMMAND lsb_release -sd
                     OUTPUT_VARIABLE _linux_flavour
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                    )
+    STRING(REGEX REPLACE "^\"" "" _linux_flavour ${_linux_flavour})
+    STRING(REGEX REPLACE "\"$" "" _linux_flavour ${_linux_flavour})
+
     EXECUTE_PROCESS(COMMAND uname -m 
                     OUTPUT_VARIABLE _system 
                     OUTPUT_STRIP_TRAILING_WHITESPACE
