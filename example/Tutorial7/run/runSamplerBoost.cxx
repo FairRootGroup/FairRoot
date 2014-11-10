@@ -1,48 +1,52 @@
-/********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
- *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
- *                  copied verbatim in the file "LICENSE"                       *
- ********************************************************************************/
-/**
- * runTestDetectorSamplerBoost.cxx
+/* 
+ * File:   runSamplerBoost.cxx
+ * Author: winckler
  *
- * @since 2013-04-29
- * @author A. Rybalchenko, N. Winckler
+ * Created on December 2, 2014, 10:45 PM
  */
 
+/// std
 #include <iostream>
 #include <csignal>
 
+/// boost
 #include "boost/program_options.hpp"
 
-#include "FairMQLogger.h"
-#include "FairMQSampler.h"
-
+/// ZMQ/nmsg (in FairSoft)
 #ifdef NANOMSG
 #include "nanomsg/FairMQTransportFactoryNN.h"
 #else
 #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
-#include "TestDetectorDigiLoader.h"
+/// FairRoot - FairMQ
+#include "FairMQLogger.h"
+#include "GenericSampler.h"
 
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include "FairTestDetectorDigi.h"
+/// FairRoot - Base/MQ
+// sampler policy
+#include "SimpleTreeReader.h"
+#include "BoostSerializer.h"
+
+/// FairRoot - Tutorial 7
+#include "MyDigi.h"
+
 
 using namespace std;
+/// ////////////////////////////////////////////////////////////////////////
+// payload and policy type definitions
+typedef MyDigi                                         TDigi;
+// sampler and serialization policy
+typedef SimpleTreeReader<TClonesArray>                 TSamplerPolicy;
+typedef BoostSerializer<TDigi>                         TSerializePolicy;
+// remark : by default BoostSerializer has boost-binary archive format, which is not cross-platform
+// for cross-platform use xml or text format e.g. as follow:
+// BoostSerializer<TDigi,std::vector<TDigi>,boost::archive::text_iarchive,boost::archive::text_oarchive>
 
-typedef FairTestDetectorDigi TDigi;                          // class to serialize/deserialize
-typedef boost::archive::binary_oarchive TBoostBinPayloadOut; // boost binary format
-typedef boost::archive::text_oarchive TBoostTextPayloadOut;  // boost text format
-typedef TestDetectorDigiLoader<TDigi, TBoostBinPayloadOut> TLoader;
-typedef FairMQSampler<TLoader> TSampler;
+// build sampler type
+typedef GenericSampler<TSamplerPolicy,TSerializePolicy> TSampler;
 
 TSampler sampler;
-
-
 
 static void s_signal_handler(int signal)
 {
@@ -67,14 +71,11 @@ static void s_catch_signals(void)
 
 typedef struct DeviceOptions
 {
-    DeviceOptions() :
-        id(), inputFile(), parameterFile(), branch(), eventRate(0), ioThreads(0),
-        outputSocketType(), outputBufSize(0), outputMethod(), outputAddress() {}
-
     string id;
-    string inputFile;
+    string filename;
     string parameterFile;
-    string branch;
+    string treename;
+    string branchname;
     int eventRate;
     int ioThreads;
     string outputSocketType;
@@ -93,8 +94,8 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
     desc.add_options()
         ("id", bpo::value<string>()->required(), "Device ID")
         ("input-file", bpo::value<string>()->required(), "Path to the input file")
-        ("parameter-file", bpo::value<string>()->required(), "path to the parameter file")
-        ("branch", bpo::value<string>()->default_value("FairTestDetectorDigi"), "Name of the Branch")
+        ("tree", bpo::value<string>()->default_value("T7DataTree"), "Name of the tree")
+        ("branch", bpo::value<string>()->default_value("T7digidata"), "Name of the Branch")
         ("event-rate", bpo::value<int>()->default_value(0), "Event rate limit in maximum number of events per second")
         ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
         ("output-socket-type", bpo::value<string>()->required(), "Output socket type: pub/push")
@@ -108,7 +109,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
     if ( vm.count("help") )
     {
-        LOG(INFO) << "FairMQ Test Detector Sampler" << endl << desc;
+        LOG(INFO) << "Tutorial 7 - Sampler " << endl << desc;
         return false;
     }
 
@@ -118,14 +119,14 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
         _options->id = vm["id"].as<string>();
 
     if ( vm.count("input-file") )
-        _options->inputFile = vm["input-file"].as<string>();
-
-    if ( vm.count("parameter-file") )
-        _options->parameterFile = vm["parameter-file"].as<string>();
+        _options->filename = vm["input-file"].as<string>();
 
     if ( vm.count("branch") )
-        _options->branch = vm["branch"].as<string>();
+        _options->branchname = vm["branch"].as<string>();
 
+    if ( vm.count("tree") )
+        _options->treename = vm["tree"].as<string>();
+    
     if ( vm.count("event-rate") )
         _options->eventRate = vm["event-rate"].as<int>();
 
@@ -165,7 +166,7 @@ int main(int argc, char** argv)
 
     LOG(INFO) << "PID: " << getpid();
     LOG(INFO) << "CONFIG: " << "id: " << options.id << ", event rate: " << options.eventRate << ", I/O threads: " << options.ioThreads;
-    LOG(INFO) << "FILES: " << "input file: " << options.inputFile << ", parameter file: " << options.parameterFile << ", branch: " << options.branch;
+    LOG(INFO) << "FILES: " << "input file: " << options.filename << ", parameter file: " << options.parameterFile << ", branch: " << options.branchname;
     LOG(INFO) << "OUTPUT: " << options.outputSocketType << " " << options.outputBufSize << " " << options.outputMethod << " " << options.outputAddress;
 
 #ifdef NANOMSG
@@ -177,11 +178,14 @@ int main(int argc, char** argv)
     sampler.SetTransport(transportFactory);
 
     sampler.SetProperty(TSampler::Id, options.id);
-    sampler.SetProperty(TSampler::InputFile, options.inputFile);
+    sampler.SetProperty(TSampler::InputFile, options.filename);
     sampler.SetProperty(TSampler::ParFile, options.parameterFile);
-    sampler.SetProperty(TSampler::Branch, options.branch);
+    sampler.SetProperty(TSampler::Branch, options.branchname);
     sampler.SetProperty(TSampler::EventRate, options.eventRate);
     sampler.SetProperty(TSampler::NumIoThreads, options.ioThreads);
+    string treename("cbmsim");
+    sampler.SetFileProperties(options.filename,options.treename,options.branchname);
+    
 
     sampler.SetProperty(TSampler::NumInputs, 0);
     sampler.SetProperty(TSampler::NumOutputs, 1);
@@ -217,3 +221,5 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+

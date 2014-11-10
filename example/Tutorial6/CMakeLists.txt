@@ -18,6 +18,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/parbase/dbIO
   ${CMAKE_SOURCE_DIR}/fairmq
   ${CMAKE_SOURCE_DIR}/base/MQ
+  ${CMAKE_SOURCE_DIR}/base/MQ/SerializationTools
   ${CMAKE_SOURCE_DIR}/dbase/dbMQ/utils
   ${CMAKE_SOURCE_DIR}/dbase/dbMQ/actors
   ${CMAKE_SOURCE_DIR}/example/mcstack
