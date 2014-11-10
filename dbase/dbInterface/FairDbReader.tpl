@@ -34,7 +34,7 @@ FairDbReader<T>::FairDbReader() :
   fAbortTest(FairDb::kDisabled),
   fTableInterface(FairDbReader<T>::GetTableInterface()),
   fResult(0),
-  fDetType(Detector::kUnknown),
+  fDetType(FairDbDetector::kUnknown),
   fSimType(DataType::kUnknown )
 {
   T pet;
@@ -496,8 +496,8 @@ void FairDbReader<T>::SetContext(const FairDbValRecord& vrec)
   Int_t detMask        = vrng.GetDetectorMask();
   Int_t simMask        = vrng.GetSimMask();
 
-  fDetType = Detector::kUnknown;
-  fDetType = Detector::GetDetType(detMask);
+  fDetType = FairDbDetector::kUnknown;
+  fDetType = FairDbDetector::GetDetType(detMask);
 
   fSimType = DataType::kUnknown;
   if      ( simMask & DataType::kData) { fSimType = DataType::kData; }

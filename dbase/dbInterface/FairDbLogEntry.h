@@ -10,7 +10,7 @@
 
 #include "FairDbObjTableMap.h"             // for FairDbObjTableMap
 #include "ValTimeStamp.h"               // for ValTimeStamp
-#include "db_detector_def.h"            // for Detector
+#include "db_detector_def.h"            // for FairDbDetector
 
 #include "FairDb.h"                     // for Version
 
@@ -35,7 +35,7 @@ class FairDbLogEntry : public FairDbObjTableMap
 
     FairDbLogEntry(const std::string& tableName = "",
                    const std::string& reason = "",
-                   Int_t detMask = Detector::FullMask(),
+                   Int_t detMask = FairDbDetector::FullMask(),
                    Int_t simMask = DataType::FullMask(),
                    FairDb::Version task = 0,
                    Int_t logSeqNoMin = 0,
@@ -74,7 +74,7 @@ class FairDbLogEntry : public FairDbObjTableMap
     }
     void Recreate (const std::string& tableName = "",
                    const std::string& reason = "",
-                   Int_t detMask = Detector::FullMask(),
+                   Int_t detMask = FairDbDetector::FullMask(),
                    Int_t simMask = DataType::FullMask(),
                    FairDb::Version task = 0,
                    Int_t logSeqNoMin = 0,

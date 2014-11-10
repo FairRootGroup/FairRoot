@@ -21,6 +21,7 @@
 
 #include "FairDetParIo.h"               // for FairDetParIo
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairLogger.h"
 
 #include "TCollection.h"                // for TIter
 #include "TList.h"                      // for TList, TListIter
@@ -89,6 +90,11 @@ Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
   TObjString* string;
   TListIter myIter(fnamelist);
   while((string = (TObjString*)myIter.Next())) {
+    // check if the file exist
+    // if file exist return value is false
+    if ( gSystem->AccessPathName(string->GetString())) {
+      LOG(FATAL) << "Parameter file " << string->GetString() << " does not exist." << FairLogger::endl;
+    }
     //    cout <<  string->GetString() <<endl;
     catCommand += string->GetString();
     catCommand += " ";

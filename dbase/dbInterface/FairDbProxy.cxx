@@ -19,7 +19,7 @@
 #include "DataType.h"                    // for DataType_t
 #include "ValCondition.h"                 // for ValCondition, operator<<
 #include "ValTimeStamp.h"               // for ValTimeStamp, operator<<, etc
-#include "db_detector_def.h"            // for Detector, etc
+#include "db_detector_def.h"            // for FairDbDetector, etc
 
 #include "Riosfwd.h"                    // for ostream
 #include "TCollection.h"                // for TIter
@@ -97,7 +97,7 @@ void FairDbProxy::FindTimeLimits(const ValCondition& vc,
 
 // Extract information for ValCondition.
 
-  Detector::Detector_t    detType(vc.GetDetector());
+  FairDbDetector::Detector_t    detType(vc.GetDetector());
   DataType::DataType_t       simFlg(vc.GetDataType());
 
 // Use an auto_ptr to manage ownership of FairDbStatement and TSQLStatement
@@ -259,7 +259,7 @@ FairDbResultPool*  FairDbProxy::QueryValidity (const ValCondition& vc,
 
   string startGateString(FairDb::MakeDateTimeString(startGate));
   string endGateString(FairDb::MakeDateTimeString(endGate));
-  Detector::Detector_t    detType(vc.GetDetector());
+  FairDbDetector::Detector_t    detType(vc.GetDetector());
   DataType::DataType_t       simFlg(vc.GetDataType());
 
 // Generate SQL for context.
