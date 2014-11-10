@@ -17,8 +17,8 @@
 #include "db_detector_def.h"
 
 // or the default one ...
-#ifndef DETECTOR_H
-#define DETECTOR_H
+#ifndef FAIRDBDETECTOR_H
+#define FAIRDBDETECTOR_H
 
 #ifndef ROOT_Rtypes
 #if !defined(__CINT__) || defined(__MAKECINT__)
@@ -28,7 +28,7 @@
 
 #include "TString.h"
 
-class Detector
+class FairDbDetector
 {
   public:
     typedef enum EDetector {
@@ -83,7 +83,7 @@ class Detector
       }
     }
 
-    static Detector::Detector_t   CharToEnum(Char_t c) {
+    static FairDbDetector::Detector_t   CharToEnum(Char_t c) {
       switch(c) {
       case 'C':
       case '1':
@@ -127,12 +127,12 @@ class Detector
       static Char_t newstring[255] = "";
       Char_t* ptr = newstring;
       *ptr = 0; // start with nothing
-      Int_t fullmask = Detector::FullMask();
+      Int_t fullmask = FairDbDetector::FullMask();
 
       for (Int_t i=0; i<32; i++) {
-        Detector::Detector_t adet = (Detector::Detector_t)(1<<i);
+        FairDbDetector::Detector_t adet = (FairDbDetector::Detector_t)(1<<i);
         if (mask & adet & fullmask) {
-          const Char_t* toadd = Detector::AsString(adet);
+          const Char_t* toadd = FairDbDetector::AsString(adet);
           if (ptr != newstring) { *ptr++ = ','; }
           strcpy(ptr,toadd);
           ptr += strlen(toadd);
@@ -164,9 +164,9 @@ class Detector
     }
 
 
-    static Detector::Detector_t  StringToEnum(const Char_t* chars, Int_t maxChar=0) {
+    static FairDbDetector::Detector_t  StringToEnum(const Char_t* chars, Int_t maxChar=0) {
 
-      Int_t mask = Detector::StringToMask(chars,maxChar);
+      Int_t mask = FairDbDetector::StringToMask(chars,maxChar);
 
       switch (mask) {
       case kUnknown:

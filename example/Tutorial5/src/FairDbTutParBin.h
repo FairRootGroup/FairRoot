@@ -101,7 +101,7 @@ class FairDbTutParBin : public FairParGenericSet
 
     // Validity frame definition
     virtual ValCondition GetContext(UInt_t rid) {
-      return ValCondition(Detector::kGfi,
+      return ValCondition(FairDbDetector::kGfi,
                           DataType::kData,
                           ValTimeStamp(rid));
     }

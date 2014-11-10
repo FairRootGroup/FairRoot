@@ -143,7 +143,7 @@ void FairDbTutPar::fill(UInt_t rid)
 
   // Define a Context
   ValTimeStamp ts(rid);
-  ValCondition context(Detector::kGfi,DataType::kData,ts);
+  ValCondition context(FairDbDetector::kGfi,DataType::kData,ts);
 
   // Activate reading for this Context
   fParam_Reader->Activate(context, GetVersion());

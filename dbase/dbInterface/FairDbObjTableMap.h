@@ -14,7 +14,7 @@
 #include "ValCondition.h"                 // for ValCondition
 #include "ValInterval.h"                   // for ValInterval
 #include "ValTimeStamp.h"               // for ValTimeStamp
-#include "db_detector_def.h"            // for Detector, etc
+#include "db_detector_def.h"            // for FairDbDetector, etc
 
 #include "Rtypes.h"                     // for UInt_t, Int_t, etc
 
@@ -88,7 +88,7 @@ class FairDbObjTableMap : public TObject
     //
     ValTimeStamp             GetTimeStart() const { return fTimeStart; }
     ValTimeStamp             GetTimeEnd()   const { return fTimeEnd; }
-    Detector::Detector_t     GetDetector()  const { return fDetType; }
+    FairDbDetector::Detector_t     GetDetector()  const { return fDetType; }
     DataType::DataType_t     GetDataType()   const { return fSimType; }
 
     // MQ IO functionaly 
@@ -115,7 +115,7 @@ class FairDbObjTableMap : public TObject
     //
     ValTimeStamp               fTimeStart;
     ValTimeStamp               fTimeEnd;
-    Detector::Detector_t       fDetType;
+    FairDbDetector::Detector_t       fDetType;
     DataType::DataType_t       fSimType;
     //
 

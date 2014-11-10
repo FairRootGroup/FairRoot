@@ -96,7 +96,7 @@ template <class T> class FairDbReader
     FairDb::AbortTest fAbortTest;
     FairDbTableInterface& fTableInterface;
     const FairDbResult* fResult;
-    Detector::Detector_t fDetType;
+    FairDbDetector::Detector_t fDetType;
     DataType::DataType_t fSimType;
 
 #ifndef __CINT__

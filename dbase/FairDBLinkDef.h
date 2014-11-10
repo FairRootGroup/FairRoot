@@ -19,9 +19,9 @@
 #pragma link C++ enum          Experiment::EExperiment;
 #pragma link C++ nestedtypedef Experiment::Experiment_t;
 
-#pragma link C++ namespace     Detector;
-#pragma link C++ enum          Detector::EDetector;
-#pragma link C++ nestedtypedef Detector::Detector_t;
+#pragma link C++ namespace     FairDbDetector;
+#pragma link C++ enum          FairDbDetector::EDetector;
+#pragma link C++ nestedtypedef FaiDbDetector::Detector_t;
 
 #pragma link C++ namespace     DataType;
 #pragma link C++ enum          DataType::EDataType;

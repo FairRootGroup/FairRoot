@@ -16,7 +16,7 @@
 #include "ValCondition.h"                 // for ValCondition, operator<<
 #include "ValInterval.h"                   // for ValInterval
 #include "ValTimeStamp.h"               // for ValTimeStamp, operator<<, etc
-#include "db_detector_def.h"            // for Detector, etc
+#include "db_detector_def.h"            // for FairDbDetector, etc
 
 #include "Riosfwd.h"                    // for ostream
 
@@ -44,7 +44,7 @@ FairDbValRecordFactory::FairDbValRecordFactory(const FairDbProxy& proxy,
     fAggNoToIndex()
 {
 
-  Detector::Detector_t     det(vc.GetDetector());
+  FairDbDetector::Detector_t     det(vc.GetDetector());
   DataType::DataType_t       sim(vc.GetDataType());
   ValTimeStamp             ts(vc.GetTimeStamp());
   DataType::DataType_t       simTry(sim);
@@ -284,7 +284,7 @@ FairDbValRecordFactory::FairDbValRecordFactory(const FairDbValRecord& vr,
 
   const ValInterval&          vrange(vr.GetValInterval());
 
-  ValCondition vc( (Detector::Detector_t) vrange.GetDetectorMask(),
+  ValCondition vc( (FairDbDetector::Detector_t) vrange.GetDetectorMask(),
                    (DataType::DataType_t) vrange.GetSimMask(),
                    vrange.GetTimeStart());
   this->MakeGapRec(vc,tableName);

@@ -16,7 +16,7 @@
 #include "DataType.h"                    // for AsString, DataType_t
 #include "ValCondition.h"                 // for ValCondition, operator<<
 #include "ValTimeStamp.h"               // for ValTimeStamp
-#include "db_detector_def.h"            // for Detector, etc
+#include "db_detector_def.h"            // for FairDbDetector, etc
 
 #include "Riosfwd.h"                    // for ostream
 
@@ -180,7 +180,7 @@ const FairDbResult* FairDbCache::Search(const ValCondition& vc,
 
   // Loop over all possible DataType associations.
 
-  Detector::Detector_t     det(vc.GetDetector());
+  FairDbDetector::Detector_t     det(vc.GetDetector());
   DataType::DataType_t       sim(vc.GetDataType());
   ValTimeStamp              ts(vc.GetTimeStamp());
 

@@ -20,7 +20,7 @@
 #include "DataType.h"                    // for EDataType::kData
 #include "ValCondition.h"                 // for ValCondition
 #include "ValTimeStamp.h"               // for ValTimeStamp
-#include "db_detector_def.h"            // for Detector, etc
+#include "db_detector_def.h"            // for FairDbDetector, etc
 
 #include "Rtypes.h"                     // for Double_t, Int_t, UInt_t, etc
 
@@ -83,7 +83,7 @@ class FairDbTutPar : public FairParGenericSet
 
     // Validity frame definition
     virtual ValCondition GetContext(UInt_t rid) {
-      return ValCondition(Detector::kGfi,
+      return ValCondition(FairDbDetector::kGfi,
                           DataType::kData,
                           ValTimeStamp(rid));
     }
