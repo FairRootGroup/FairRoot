@@ -1,24 +1,16 @@
-/********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
- *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
- *                  copied verbatim in the file "LICENSE"                       *
- ********************************************************************************/
-/**
- * TestDetectorPayload.h
+/* 
+ * File:   MyPodData.h
+ * Author: winckler
  *
- *  @since 2013-04-22
- *  @author A. Rybalchenko
+ * Created on November 24, 2014, 1:46 PM
  */
 
-#ifndef TESTDETECTORPAYLOAD_H_
-#define TESTDETECTORPAYLOAD_H_
+#ifndef MYPODDATA_H
+#define	MYPODDATA_H
 
-#include <string>
-#include "FairTestDetectorDigi.h"
-#include "TString.h"
-
+// for root types
+#include "Riosfwd.h"
+#include "Rtypes.h" 
 
 // for boost serialization (must be hidden from CINT)
 #ifndef __CINT__
@@ -26,8 +18,9 @@
 #include <boost/serialization/base_object.hpp>
 #endif //__CINT__
 
-namespace TestDetectorPayload
+namespace MyPodData
 {
+
     class TimeStamp
     {
       public:
@@ -101,4 +94,6 @@ namespace TestDetectorPayload
     };
 }
 
-#endif /* TESTDETECTORPAYLOAD_H_ */
+
+#endif	/* MYPODDATA_H */
+

@@ -24,10 +24,10 @@ else
     echo "binary data format will be used."
 fi
 
-SAMPLER="testDetectorSampler$dataFormat"
+SAMPLER="tuto7Sampler$dataFormat"
 SAMPLER+=" --id 101"
-SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi.root"
-SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams.root"
+SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial7/macro/datasource/Tuto7InputFile.root"
+SAMPLER+=" --tree T7SamplerTree --branch MyDigi"
 SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5565"
 xterm -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
@@ -40,19 +40,19 @@ SPLITTER+=" --output-socket-type push --output-buff-size $buffSize --output-meth
 SPLITTER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5568"
 xterm -hold -e @CMAKE_BINARY_DIR@/bin/$SPLITTER &
 
-PROCESSOR1="testDetectorProcessor$dataFormat"
+PROCESSOR1="tuto7Processor$dataFormat"
 PROCESSOR1+=" --id 301"
 PROCESSOR1+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
 PROCESSOR1+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5569"
 xterm -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
-PROCESSOR2="testDetectorProcessor$dataFormat"
+PROCESSOR2="tuto7Processor$dataFormat"
 PROCESSOR2+=" --id 401"
 PROCESSOR2+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5567"
 PROCESSOR2+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5570"
 xterm -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
 
-PROCESSOR3="testDetectorProcessor$dataFormat"
+PROCESSOR3="tuto7Processor$dataFormat"
 PROCESSOR3+=" --id 501"
 PROCESSOR3+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5568"
 PROCESSOR3+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5571"
@@ -67,7 +67,13 @@ MERGER+=" --input-socket-type pull --input-buff-size $buffSize --input-method bi
 MERGER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5572"
 xterm -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
 
-FILESINK="fileSink$dataFormat"
+FILESINK="tuto7FileSink$dataFormat"
 FILESINK+=" --id 701"
+FILESINK+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial7/macro/datasource/Tuto7OutputFile$dataFormat.root"
+FILESINK+=" --tree T7SinkTree --branch MyHit --class-name MyHit"
 FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5572"
+FILESINK+=" --file-option RECREATE"
+FILESINK+=" --use-TClonesArray true"
 xterm -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+
+

@@ -30,4 +30,22 @@
 #pragma link C++ class FairTestDetectorDigiRingSorter+;
 #pragma link C++ class FairTestDetectorDigiSorterTask+;
 
+#pragma link C++ namespace TestDetectorPayload;
+#pragma link C++ nestedclass;
+#pragma link C++ nestedtypedef;
+
+#pragma link C++ class TestDetectorPayload::TimeStamp+;
+#pragma link C++ class TestDetectorPayload::Digi+;
+#pragma link C++ class TestDetectorPayload::Hit+;
+
+
+
+
+//#pragma link C++ namespace MyData;
+//#pragma link C++ class MyData::Base+;
+//#pragma link C++ class MyData::Derived1+;
+//#pragma link C++ class MyData::Derived2+;
+//#pragma link C++ class MyData::Derived3+;
+
+
 #endif
