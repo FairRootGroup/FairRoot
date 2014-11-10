@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if(@NANOMSG_FOUND@); then
+    buffSize="50000000" # nanomsg buffer size is in bytes
+else
+    buffSize="1000" # zeromq high-water mark is in messages
+fi
+
+dataFormat="Bin"
+if [ "$1" = "bin" ]; then
+    echo "attempting to use pure binary data format"
+elif [ "$1" = "boost" ]; then
+    dataFormat="Boost"
+    echo "attempting to use Boost serialized data format"
+elif [ "$1" = "proto" ]; then
+    dataFormat="Proto"
+    echo "attempting to use Google Protocol Buffers data format"
+elif [ "$1" = "root" ]; then
+    dataFormat="Root"
+    echo "attempting to use Root TMessage data format"
+else
+    echo "none or incorrect data formats provided."
+    echo "(available data format options are: bin, boost, proto, root)"
+    echo "binary data format will be used."
+fi
+
+FILESINK="tuto7FileSink$dataFormat"
+FILESINK+=" --id 701"
+FILESINK+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial7/macro/datasource/Tuto7OutputFile$dataFormat.root"
+FILESINK+=" --tree T7SinkTree --branch MyHit --class-name MyHit"
+FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5568"
+FILESINK+=" --file-option RECREATE"
+FILESINK+=" --use-TClonesArray true"
+#xterm -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+@CMAKE_BINARY_DIR@/bin/$FILESINK
+
+

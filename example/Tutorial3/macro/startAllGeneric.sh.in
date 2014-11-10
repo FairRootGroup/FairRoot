@@ -67,7 +67,15 @@ MERGER+=" --input-socket-type pull --input-buff-size $buffSize --input-method bi
 MERGER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5572"
 xterm -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
 
-FILESINK="fileSink$dataFormat"
+#FILESINK="fileSink$dataFormat"
+FILESINK="genfileSinkBin"
 FILESINK+=" --id 701"
 FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5572"
+FILESINK+=" --file-name myTuto3FileSink"
+FILESINK+=" --tree-name mytree"
+FILESINK+=" --branch-name mybranch"
+FILESINK+=" --class-name FairTestDetectorHit"
+FILESINK+=" --file-option UPDATE"
+FILESINK+=" --use-TClonesArray true"
+
 xterm -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &

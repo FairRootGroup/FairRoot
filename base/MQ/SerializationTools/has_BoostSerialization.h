@@ -18,8 +18,12 @@
 #include <type_traits>
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///  template function that check whether a class T is Boost serializable or not
-/// it search for a function member of T (and parent classes) named serialize with argument. c++11 required
+/// Template function that check whether a class T is Boost serializable or not.
+/// It checks whether a function member with name "serialize" (and with given argument(s)) in the class of type T exists.
+/// Can be used as follow:
+/// has_BoostSerialization<T, void(BoostArchiveType&, const unsigned int)>::value 
+/// Return 1 if found. 
+/// c++11 required (use auto, constexpr, variadic template...).
 
 // Primary template with a static assertion
 // for a meaningful error message

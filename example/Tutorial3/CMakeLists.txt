@@ -13,6 +13,7 @@ Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/fairmq
   ${CMAKE_SOURCE_DIR}/base/MQ
+  ${CMAKE_SOURCE_DIR}/base/MQ/SerializationTools
   ${CMAKE_SOURCE_DIR}/example/mcstack
   ${CMAKE_SOURCE_DIR}/example/Tutorial3
   ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
@@ -57,7 +58,8 @@ Set(SRCS
   simulation/FairConstField.cxx
   simulation/FairConstPar.cxx
   simulation/FairMapPar.cxx
-  
+
+  data/FairTestDetectorPayload.cxx
   data/FairTestDetectorPoint.cxx
   data/FairTestDetectorHit.cxx
   digitization/FairTestDetectorHitProducerSmearing.cxx

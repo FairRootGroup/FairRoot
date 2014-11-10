@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if(@NANOMSG_FOUND@); then
+    buffSize="50000000" # nanomsg buffer size is in bytes
+else
+    buffSize="1000" # zeromq high-water mark is in messages
+fi
+
+dataFormat="Bin"
+if [ "$1" = "bin" ]; then
+    echo "attempting to use pure binary data format"
+elif [ "$1" = "boost" ]; then
+    dataFormat="Boost"
+    echo "attempting to use Boost serialized data format"
+elif [ "$1" = "proto" ]; then
+    dataFormat="Proto"
+    echo "attempting to use Google Protocol Buffers data format"
+elif [ "$1" = "root" ]; then
+    dataFormat="Root"
+    echo "attempting to use Root TMessage data format"
+else
+    echo "none or incorrect data formats provided."
+    echo "(available data format options are: bin, boost, proto, root)"
+    echo "binary data format will be used."
+fi
+
+PROCESSOR1="tuto7Processor$dataFormat"
+PROCESSOR1+=" --id 301"
+PROCESSOR1+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5566"
+PROCESSOR1+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5568"
+#xterm -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+@CMAKE_BINARY_DIR@/bin/$PROCESSOR1
+
+
