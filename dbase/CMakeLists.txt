@@ -41,7 +41,7 @@ link_directories( ${LINK_DIRECTORIES})
 # ----- FairDb Code 
 set(SRCS
 dbValidation/Experiment.cxx
-dbValidation/Detector.cxx
+dbValidation/FairDbDetector.cxx
 dbValidation/DataType.cxx
 dbValidation/ValCondition.cxx
 dbValidation/ValInterval.cxx
