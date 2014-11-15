@@ -5,5 +5,5 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include "FairDBDetector.h"
+#include "FairDbDetector.h"
 //

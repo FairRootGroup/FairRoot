@@ -25,7 +25,7 @@
 #include <TH1F.h>
 #include "TBufferFile.h"
 
-#include "FairDBDetector.h"
+#include "FairDbDetector.h"
 #include "DataType.h"
 #include "FairDbObjTableMap.h"
 #include "ValCondition.h"
