@@ -53,9 +53,10 @@ MACRO (WRITE_CONFIG_FILE filename)
                      OUTPUT_STRIP_TRAILING_WHITESPACE
                     )
 
-    STRING(REGEX REPLACE "^\"" "" _linux_flavour ${_linux_flavour})
-    STRING(REGEX REPLACE "\"$" "" _linux_flavour ${_linux_flavour})
-
+    IF(_linux_flavour)
+      STRING(REGEX REPLACE "^\"" "" _linux_flavour ${_linux_flavour})
+      STRING(REGEX REPLACE "\"$" "" _linux_flavour ${_linux_flavour})
+    ENDIF(_linux_flavour)
 
     EXECUTE_PROCESS(COMMAND uname -m 
                     OUTPUT_VARIABLE _system 
