@@ -192,7 +192,7 @@ int main(int argc, char** argv)
     processor.ChangeState(FairMQProcessor::INIT);
 
     processor.SetProperty(FairMQProcessor::InputSocketType, options.inputSocketType);
-    processor.SetProperty(FairMQProcessor::InputSndBufSize, options.inputBufSize);
+    processor.SetProperty(FairMQProcessor::InputRcvBufSize, options.inputBufSize);
     processor.SetProperty(FairMQProcessor::InputMethod, options.inputMethod);
     processor.SetProperty(FairMQProcessor::InputAddress, options.inputAddress);
 
