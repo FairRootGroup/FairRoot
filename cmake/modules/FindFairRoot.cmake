@@ -8,15 +8,19 @@
 # Find FairRoot installation 
 # Check the environment variable "FAIRROOTPATH"
 
-IF(NOT DEFINED ENV{FAIRROOTPATH})
-      MESSAGE(FATAL_ERROR "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again.")
-  ENDIF(NOT DEFINED ENV{FAIRROOTPATH})
+if(FairRoot_DIR)
+  SET(FAIRROOTPATH ${FairRoot_DIR})
+else()
+  IF(NOT DEFINED ENV{FAIRROOTPATH})
+        MESSAGE(FATAL_ERROR "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again.")
+    ENDIF(NOT DEFINED ENV{FAIRROOTPATH})
  
-  SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
+    SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
+endif()
 
-  MESSAGE(STATUS "Setting FairRoot environment…")
+MESSAGE(STATUS "Setting FairRoot environment…")
 
- FIND_PATH(FAIRROOT_INCLUDE_DIR NAMES FairRun.h  PATHS
+FIND_PATH(FAIRROOT_INCLUDE_DIR NAMES FairRun.h  PATHS
   ${FAIRROOTPATH}/include
   NO_DEFAULT_PATH
 )
