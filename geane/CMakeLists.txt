@@ -9,18 +9,21 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-Set(INCLUDE_DIRECTORIES
-  ${CMAKE_SOURCE_DIR}/fairtools
-  ${CMAKE_SOURCE_DIR}/geobase 
-  ${CMAKE_SOURCE_DIR}/parbase 
-  ${CMAKE_SOURCE_DIR}/base 
-  ${CMAKE_SOURCE_DIR}/base/steer
-  ${CMAKE_SOURCE_DIR}/base/event
-  ${CMAKE_SOURCE_DIR}/base/field
-  ${CMAKE_SOURCE_DIR}/base/sim
-  ${CMAKE_SOURCE_DIR}/base/source
-  ${CMAKE_SOURCE_DIR}/trackbase 
-  ${CMAKE_SOURCE_DIR}/geane
+set(INCLUDE_DIRECTORIES
+${ROOT_INCLUDE_DIR} 
+${GEANT3_INCLUDE_DIR}
+${Geant3_INCLUDE_DIRS}
+${CMAKE_SOURCE_DIR}/fairtools
+${CMAKE_SOURCE_DIR}/geobase 
+${CMAKE_SOURCE_DIR}/parbase 
+${CMAKE_SOURCE_DIR}/base 
+${CMAKE_SOURCE_DIR}/base/steer
+${CMAKE_SOURCE_DIR}/base/event
+${CMAKE_SOURCE_DIR}/base/field
+${CMAKE_SOURCE_DIR}/base/sim
+${CMAKE_SOURCE_DIR}/trackbase
+${CMAKE_SOURCE_DIR}/base/source 
+${CMAKE_SOURCE_DIR}/geane
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
