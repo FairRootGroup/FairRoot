@@ -10,7 +10,7 @@
 # Setup the needed environment
 export LD_LIBRARY_PATH=@MY_LD_LIBRARY_PATH@
 export DYLD_LIBRARY_PATH=@MY_LD_LIBRARY_PATH@
-export PATH=$PATH:@GEANT4_DIR@
+export PATH=$PATH:@Geant4_DIR@
 export ROOTSYS=@ROOTSYS@
 export ROOTEXE=@ROOT_INSTALL_DIR@/bin/root.exe
 export VMCWORKDIR=@VMCWORKDIR@
@@ -27,8 +27,8 @@ export G4RADIOACTIVEDATA="@G4RADIOACTIVEDATA@"
 export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
 export G4SAIDXSDATA="@G4SAIDXSDATA@"
 export G3SYS="@GEANT3_SYSTEM_DIR@"
-if [ -e @GEANT4_DIR@/env.sh ]; then
-  . @GEANT4_DIR@/env.sh
+if [ -e @Geant4_DIR@/env.sh ]; then
+  . @Geant4_DIR@/env.sh
 fi
 
 # Concatenate all parameters given on the command line to one 
