@@ -2,6 +2,7 @@
 #define FAIR_LINK_MANAGER_H
 
 #include "TObject.h"                    // for TObject
+#include "TMCtls.h"                     // for multi-threading
 
 #include "Rtypes.h"                     // for Bool_t, Int_t, UInt_t, etc
 #include <set>							// for set of branch types to ignore
@@ -44,7 +45,12 @@ class FairLinkManager : public TObject
     Bool_t fIgnoreSetting;
 
     /**Singleton instance*/
-    static FairLinkManager*             fgInstance;
+#if !defined(__CINT__)
+    static TMCThreadLocal FairLinkManager* fgInstance;
+#else
+    static                FairLinkManager* fgInstance;
+#endif
+
     FairLogger*                         fLogger;//!
 
 

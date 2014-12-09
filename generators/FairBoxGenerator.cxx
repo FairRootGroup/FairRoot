@@ -62,6 +62,73 @@ FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
   // Constructor. Set default kinematics limits
   SetPhiRange  ();
 }
+
+// ------------------------------------------------------------------------
+FairBoxGenerator::FairBoxGenerator(const FairBoxGenerator& rhs) :
+  FairGenerator(rhs),
+  fPDGType(rhs.fPDGType),fMult(rhs.fMult),fPDGMass(rhs.fPDGMass),
+  fPtMin(rhs.fPtMin),fPtMax(rhs.fPtMax),
+  fPhiMin(rhs.fPhiMin),fPhiMax(rhs.fPhiMax),fEtaMin(rhs.fEtaMin),
+  fEtaMax(rhs.fEtaMax),fYMin(rhs.fYMin),fYMax(rhs.fYMax),
+  fPMin(rhs.fPMin),fPMax(rhs.fPMax),fThetaMin(rhs.fThetaMin),
+  fThetaMax(rhs.fThetaMax),fX(rhs.fX),fY(rhs.fY),fZ(rhs.fZ),
+  fX1(rhs.fX1),fY1(rhs.fY1),fX2(rhs.fX2),fY2(rhs.fY2),
+  fEtaRangeIsSet(rhs.fEtaRangeIsSet), fYRangeIsSet(rhs.fYRangeIsSet),
+  fThetaRangeIsSet(rhs.fThetaRangeIsSet),fCosThetaIsSet(rhs.fCosThetaIsSet),
+  fPtRangeIsSet(rhs.fPtRangeIsSet), fPRangeIsSet(rhs.fPRangeIsSet),
+  fPointVtxIsSet(rhs.fPointVtxIsSet),fBoxVtxIsSet(rhs.fBoxVtxIsSet),
+  fDebug(rhs.fDebug)
+{
+  // Copy constructor
+}
+
+// ------------------------------------------------------------------------
+FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
+{
+  // Assignment operator
+
+  // check assignment to self
+  if (this == &rhs) return *this;
+
+  // base class assignment
+  TNamed::operator=(rhs);
+
+  // assignment operator
+  fPDGType = rhs.fPDGType;
+  fMult = rhs.fMult;
+  fPDGMass = rhs.fPDGMass;
+  fPtMin = rhs.fPtMin;
+  fPtMax = rhs.fPtMax;
+  fPhiMin = rhs.fPhiMin;
+  fPhiMax = rhs.fPhiMax;
+  fEtaMin = rhs.fEtaMin;
+  fEtaMax = rhs.fEtaMax;
+  fYMin = rhs.fYMin;
+  fYMax = rhs.fYMax;
+  fPMin = rhs.fPMin;
+  fPMax = rhs.fPMax;
+  fThetaMin = rhs.fThetaMin;
+  fThetaMax = rhs.fThetaMax;
+  fX = rhs.fX;
+  fY = rhs.fY;
+  fZ = rhs.fZ;
+  fX1 = rhs.fX1;
+  fY1 = rhs.fY1;
+  fX2 = rhs.fX2;
+  fY2 = rhs.fY2;
+  fEtaRangeIsSet = rhs.fEtaRangeIsSet;
+  fYRangeIsSet = rhs.fYRangeIsSet;
+  fThetaRangeIsSet = rhs.fThetaRangeIsSet;
+  fCosThetaIsSet = rhs.fCosThetaIsSet;
+  fPtRangeIsSet = rhs.fPtRangeIsSet;
+  fPRangeIsSet = rhs.fPRangeIsSet;
+  fPointVtxIsSet = rhs.fPointVtxIsSet;
+  fBoxVtxIsSet = rhs.fBoxVtxIsSet;
+  fDebug = rhs.fDebug;
+
+  return *this;
+}
+
 // ------------------------------------------------------------------------
 Bool_t  FairBoxGenerator::Init()
 {
@@ -161,6 +228,16 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   return kTRUE;
 
 }
+
+// ------------------------------------------------------------------------
+FairGenerator* FairBoxGenerator::CloneGenerator() const
+{
+  // Clone for worker (used in MT mode only)
+
+  return new FairBoxGenerator(*this);
+}
+
+
 // ------------------------------------------------------------------------
 
 

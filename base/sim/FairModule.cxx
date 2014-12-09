@@ -92,6 +92,32 @@ FairModule::FairModule(const char* Name, const char* title ,Bool_t Active)
 }
 
 //__________________________________________________________________________
+FairModule::FairModule(const FairModule& rhs)
+  :TNamed(rhs),
+   fMotherVolumeName(rhs.fMotherVolumeName),
+   fgeoVer(rhs.fgeoVer),
+   fgeoName(rhs.fgeoName),
+   fModId(rhs.fModId),
+   fActive(rhs.fActive),
+   fNbOfSensitiveVol(rhs.fNbOfSensitiveVol),
+   fVerboseLevel(rhs.fVerboseLevel),
+   flGeoPar(0),
+   kGeoSaved(rhs.kGeoSaved)
+{
+   // Do not change anything in global fields (svList. vList)
+
+  // TO DO - add when we know what type is the elements of flGeoPar
+  //flGeoPar=new TObjArray();
+  //TIter it = rhs.flGeoPar->MakeIterator();
+  // Copy parameters
+  //TObject* obj;
+  //while((obj=it->Next())) {
+  //  flGeoPar->Add(...);
+  //}
+
+}
+
+//__________________________________________________________________________
 
 FairModule::FairModule()
   : TNamed(),
@@ -106,6 +132,38 @@ FairModule::FairModule()
     kGeoSaved(kFALSE)
 {
 
+}
+
+//__________________________________________________________________________
+FairModule& FairModule::operator= (const FairModule& rhs)
+{
+  // check assignment to self
+  if (this == &rhs) return *this;
+
+  // base class assignment
+  TNamed::operator=(rhs);
+
+  // assignment operator
+  fMotherVolumeName = rhs.fMotherVolumeName;
+  fgeoVer = rhs.fgeoVer;
+  fgeoName = rhs.fgeoName;
+  fModId = rhs.fModId;
+  fActive = rhs.fActive;
+  fNbOfSensitiveVol = rhs.fNbOfSensitiveVol;
+  fVerboseLevel = rhs.fVerboseLevel;
+  flGeoPar = 0;
+  kGeoSaved = rhs.kGeoSaved;
+
+  // TO DO - add when we know what type is the elements of flGeoPar
+  //flGeoPar=new TObjArray();
+  //TIter it = rhs.flGeoPar->MakeIterator();
+  // copy parameters
+  //TObject* obj;
+  //while((obj=it->Next())) {
+  //  flGeoPar->Add(...);
+  //}
+
+  return *this;
 }
 
 //__________________________________________________________________________
@@ -577,6 +635,13 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
       LOG(FATAL)<<"The volume "<< v->GetName() << "has no medium information and not an Assembly so we have to quit"<<FairLogger::endl;
     }
   }
+}
+
+//__________________________________________________________________________
+FairModule* FairModule::CloneModule() const
+{
+  Fatal("CloneModule","Has to be overriden in multi-threading applications.");
+  return 0;
 }
 
 //__________________________________________________________________________

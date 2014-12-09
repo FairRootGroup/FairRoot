@@ -7,12 +7,13 @@
 #include "FairLinkManager.h"
 
 #include "FairLogger.h"
+#include "FairRun.h"
 
 using std::set;
 
 #include <iostream>
 
-FairLinkManager* FairLinkManager::fgInstance = 0;
+TMCThreadLocal FairLinkManager* FairLinkManager::fgInstance = 0;
 //_____________________________________________________________________________
 FairLinkManager* FairLinkManager::Instance()
 {
@@ -25,7 +26,7 @@ FairLinkManager* FairLinkManager::Instance()
 FairLinkManager::FairLinkManager()
   : TObject(),
     fIgnoreSetting(kTRUE),
-    fLogger(FairLogger::GetLogger())
+    fLogger(0)
 
 {
   if (fgInstance) {
@@ -34,6 +35,11 @@ FairLinkManager::FairLinkManager()
   }
 //  std::cout << "-I- FairLinkManager::FairLinkManager created!" << std::endl;
   fgInstance = this;
+
+  // Logger only on master - TO DO
+  if ( FairRun::Instance()->GetIsMaster() ) {
+    fLogger = FairLogger::GetLogger();
+  }
 }
 //_____________________________________________________________________________
 FairLinkManager::~FairLinkManager()

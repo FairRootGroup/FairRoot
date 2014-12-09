@@ -27,34 +27,39 @@
 #include <stddef.h>                     // for NULL
 
 //_____________________________________________________________________________
-FairRun* FairRun::fRunInstance= 0;
+TMCThreadLocal FairRun* FairRun::fRunInstance= 0;
 //_____________________________________________________________________________
 FairRun* FairRun::Instance()
 {
   return fRunInstance;
 }
 //_____________________________________________________________________________
-FairRun::FairRun()
+FairRun::FairRun(Bool_t isMaster)
   :TNamed(),
    fNTasks(0),
    fLogger(FairLogger::GetLogger()),
    fRtdb(FairRuntimeDb::instance()),
    fTask(new FairTask("FairTaskList")),
    fOutname(""),
-   fRootManager(new FairRootManager()),
+   fRootManager(0),
    fOutFile(0),
    fRunId(0),
    fAna(kFALSE),
    fEvHead(NULL),
    fFileHeader(new FairFileHeader()),
-   fGenerateRunInfo(kFALSE)
+   fGenerateRunInfo(kFALSE),
+   fIsMaster(isMaster)
 {
   if (fRunInstance) {
     Fatal("FairRun", "Singleton instance already exists.");
     return;
   }
   fRunInstance=this;
-  fRootManager->SetFileHeader(fFileHeader);
+
+  if ( isMaster ) {
+    fRootManager = new FairRootManager(),
+    fRootManager->SetFileHeader(fFileHeader);
+  }
   new FairLinkManager();
 }
 //_____________________________________________________________________________
@@ -82,7 +87,7 @@ FairRun::~FairRun()
 void FairRun::SetOutputFile(const char* fname)
 {
   fOutname=fname;
-  fOutFile = fRootManager->OpenOutFile(fOutname);
+  if (fRootManager) fOutFile = fRootManager->OpenOutFile(fOutname);
 
 }
 //_____________________________________________________________________________
@@ -90,6 +95,8 @@ void FairRun::SetOutputFile(const char* fname)
 //_____________________________________________________________________________
 void FairRun::SetOutputFile(TFile* f)
 {
+  if (! fRootManager) return;
+
   fOutname=f->GetName();
   fRootManager->OpenOutFile(f);
   fOutFile = f;
