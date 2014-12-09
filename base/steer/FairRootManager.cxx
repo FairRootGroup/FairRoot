@@ -63,7 +63,7 @@ using std::list;
 using std::pair;
 using std::set;
 
-FairRootManager* FairRootManager::fgInstance = 0;
+TMCThreadLocal FairRootManager* FairRootManager::fgInstance = 0;
 //_____________________________________________________________________________
 FairRootManager* FairRootManager::Instance()
 {

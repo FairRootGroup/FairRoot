@@ -17,6 +17,7 @@
 #include "Rtypes.h"                     // for Bool_t, Double_t, Int_t, etc
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
+#include "TMCtls.h"                     // for multi-threading
 
 class FairField;
 class FairMCEventHeader;
@@ -34,7 +35,7 @@ class FairRunSim : public FairRun
 {
   public:
     /** default ctor*/
-    FairRunSim();
+    FairRunSim(Bool_t isMaster = kTRUE);
     /** default dtor*/
     virtual ~FairRunSim();
     /** Singelton instance*/
@@ -163,7 +164,11 @@ class FairRunSim : public FairRun
     Bool_t                 fUseBeamMom; //!                        /** flag for use Beam Energy  */
     FairPrimaryGenerator*  fGen; //!                               /** Primary Event Generator */
     FairMCEventHeader*     fMCEvHead; //!                          /** MC Event Header */
-    static FairRunSim*     fginstance;//!                          /** Singelton Instance */
+#if !defined(__CINT__)
+    static TMCThreadLocal FairRunSim*  fginstance;//!              /** Singleton Instance */
+#else
+    static                FairRunSim*  fginstance;//!              /** Singleton Instance */
+#endif
     FairField*             fField;                                 /** Magnetic Field */
     const char*            fMapName; //!                           /** Input file name map*/
     TObjArray*             fIons; //!                              /** Array of user defined ions */

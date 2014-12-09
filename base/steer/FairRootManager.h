@@ -15,6 +15,7 @@
 #include "TFile.h"                      // for TFile
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString, operator<
+#include "TMCtls.h"                     // for multi-threading
 
 #include <stddef.h>                     // for NULL
 #include <list>                         // for list
@@ -310,7 +311,12 @@ class FairRootManager : public TObject
     TTree*                              fPtrTree;//!
     Int_t                               fCurrentEntries;//!
     /**Singleton instance*/
-    static FairRootManager*             fgInstance;
+#if !defined(__CINT__)
+    static TMCThreadLocal FairRootManager*  fgInstance;
+#else
+    static                FairRootManager*  fgInstance;
+#endif
+
     /**Branch id for this run */
     Int_t                               fBranchSeqId;
     /**List of branch names as TObjString*/

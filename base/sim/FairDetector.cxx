@@ -43,12 +43,37 @@ FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId )
 }
 // -------------------------------------------------------------------------
 
+FairDetector::FairDetector(const FairDetector& rhs)
+  :FairModule(rhs),
+   fDetId(rhs.fDetId),
+   fLogger(rhs.fLogger)
+{
+}
+// -------------------------------------------------------------------------
+
 FairDetector::~FairDetector()
 {
 
   if ( flGeoPar ) { delete flGeoPar; }
 
 }
+// -------------------------------------------------------------------------
+
+FairDetector& FairDetector::operator= (const FairDetector& rhs)
+{
+  // check assignment to self
+  if (this == &rhs) return *this;
+
+  // base class assignment
+  FairModule::operator=(rhs);
+
+  // assignment operator
+  fDetId = rhs.fDetId;
+  fLogger = rhs.fLogger;
+
+  return *this;
+}
+
 // -------------------------------------------------------------------------
 
 FairDetector::FairDetector()
