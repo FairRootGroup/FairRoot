@@ -38,6 +38,36 @@ FairGenericStack::~FairGenericStack()
 {
 }
 // -------------------------------------------------------------------------
+// -----   Copy constructor   ----------------------------------------------
+FairGenericStack::FairGenericStack(const FairGenericStack& rhs)
+  : TVirtualMCStack(rhs),
+    fLogger(0),
+    fDetList(0),
+    fDetIter(0),
+    fVerbose(rhs.fVerbose)
+{
+}
+
+// -------------------------------------------------------------------------
+// -----   Assignment operator   -------------------------------------------
+FairGenericStack& FairGenericStack::operator=(const FairGenericStack& rhs)
+{
+  // check assignment to self
+  if (this == &rhs) return *this;
+
+  // base class assignment
+  TVirtualMCStack::operator=(rhs);
+
+  // assignment oiperator
+  fLogger = 0;
+  fDetList = 0;
+  fDetIter = 0;
+  fVerbose = rhs.fVerbose;
+
+  return *this;
+}
+
+// -------------------------------------------------------------------------
 // -----   Virtual method PushTrack   --------------------------------------
 void FairGenericStack::PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode,
                                  Double_t px, Double_t py, Double_t pz,
@@ -141,5 +171,14 @@ Int_t FairGenericStack::GetCurrentParentTrackNumber() const
 {
   return 0;
 }
+
+// -------------------------------------------------------------------------
+// -----   Virtual method  CloneStack  -------------------------------------
+FairGenericStack* FairGenericStack::CloneStack() const
+{
+  Fatal("CloneStack","Has to be overriden in multi-threading applications.");
+  return 0;
+}
+
 // -------------------------------------------------------------------------
 ClassImp(FairGenericStack)

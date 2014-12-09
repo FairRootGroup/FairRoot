@@ -64,6 +64,27 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char *name, const char *title)
       fMCIndexOffset(0), fEventNr(0) {
   fTargetZ[0] = 0.;
 }
+
+// -----   Copy constructor   ----------------------------------------------
+FairPrimaryGenerator::FairPrimaryGenerator(const FairPrimaryGenerator &rhs)
+    : TNamed(rhs), fBeamX0(rhs.fBeamX0), fBeamY0(rhs.fBeamY0),
+      fBeamSigmaX(rhs.fBeamSigmaX), fBeamSigmaY(rhs.fBeamSigmaY),
+      fBeamAngleX0(rhs.fBeamAngleX0), fBeamAngleY0(rhs.fBeamAngleY0),
+      fBeamAngleX(rhs.fBeamAngleX), fBeamAngleY(rhs.fBeamAngleY),
+      fBeamAngleSigmaX(rhs.fBeamAngleSigmaX), fBeamAngleSigmaY(rhs.fBeamAngleSigmaY),
+      fBeamDirection(rhs.fBeamDirection),
+      fPhiMin(rhs.fPhiMin), fPhiMax(rhs.fPhiMax), fPhi(rhs.fPhi),
+      fTargetZ(new Double_t[1]), fNrTargets(rhs.fNrTargets),
+      fTargetDz(rhs.fTargetDz), fVertex(rhs.fVertex), fNTracks(rhs.fNTracks),
+      fSmearVertexZ(rhs.fSmearVertexZ), fSmearGausVertexZ(rhs.fSmearGausVertexZ),
+      fSmearVertexXY(rhs.fSmearVertexXY), fSmearGausVertexXY(rhs.fSmearGausVertexXY),
+      fBeamAngle(rhs.fBeamAngle), fEventPlane(rhs.fEventPlane),
+      fStack(NULL), fGenList(new TObjArray()),
+      fListIter(fGenList->MakeIterator()), fEvent(NULL), fdoTracking(rhs.fdoTracking),
+      fMCIndexOffset(rhs.fMCIndexOffset), fEventNr(rhs.fEventNr) {
+  fTargetZ[0] = rhs.fTargetZ[0];
+}
+
 // -------------------------------------------------------------------------
 Bool_t FairPrimaryGenerator::Init() {
   /** Initialize list of generators*/
@@ -92,6 +113,51 @@ FairPrimaryGenerator::~FairPrimaryGenerator() {
   //  cout<<"Leave Destructor of FairPrimaryGenerator"<<endl;
 }
 // -------------------------------------------------------------------------
+
+// -----   Assignment operator   -------------------------------------------
+FairPrimaryGenerator& FairPrimaryGenerator::operator=(const FairPrimaryGenerator& rhs)
+{
+  // check assignment to self
+  if (this == &rhs) return *this;
+
+  // base class assignment
+  TNamed::operator=(rhs);
+
+  // assignment operator
+  fBeamX0 = rhs.fBeamX0;
+  fBeamY0 = rhs.fBeamY0;
+  fBeamSigmaX = rhs.fBeamSigmaX;
+  fBeamSigmaY = rhs.fBeamSigmaY;
+  fBeamAngleX0 = rhs.fBeamAngleX0;
+  fBeamAngleY0 = rhs.fBeamAngleY0;
+  fBeamAngleX = rhs.fBeamAngleX;
+  fBeamAngleY = rhs.fBeamAngleY;
+  fBeamAngleSigmaX = rhs.fBeamAngleSigmaX;
+  fBeamAngleSigmaY = rhs.fBeamAngleSigmaY;
+  fBeamDirection = rhs.fBeamDirection;
+  fPhiMin = rhs.fPhiMin;
+  fPhiMax = rhs.fPhiMax;
+  fPhi = rhs.fPhi;
+  fTargetZ = new Double_t[1];
+  fNrTargets = rhs.fNrTargets;
+  fTargetDz = rhs.fTargetDz;
+  fVertex = rhs.fVertex;
+  fNTracks = rhs.fNTracks;
+  fSmearVertexZ = rhs.fSmearVertexZ;
+  fSmearGausVertexZ = rhs.fSmearGausVertexZ;
+  fSmearVertexXY = rhs.fSmearVertexXY;
+  fSmearGausVertexXY = rhs.fSmearGausVertexXY;
+  fBeamAngle = rhs.fBeamAngle;
+  fEventPlane = rhs.fEventPlane;
+  fStack = NULL;
+  fGenList =new TObjArray();
+  fListIter = fGenList->MakeIterator();
+  fEvent = NULL;
+  fdoTracking = rhs.fdoTracking;
+  fMCIndexOffset = rhs.fMCIndexOffset;
+  fEventNr = rhs.fEventNr;
+  fTargetZ[0] = rhs.fTargetZ[0];
+}
 
 // -----   Public method GenerateEvent   -----------------------------------
 Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
@@ -256,6 +322,22 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw,
   fNTracks++;
 }
 // -------------------------------------------------------------------------
+
+// -----   Public method ClonePrimaryGenerator   ---------------------------
+FairPrimaryGenerator* FairPrimaryGenerator::ClonePrimaryGenerator() const
+{
+  FairPrimaryGenerator* newPrimaryGenerator = new FairPrimaryGenerator(*this);
+
+  /** Clone generators in the list*/
+  for (Int_t i = 0; i < fGenList->GetEntries(); i++) {
+    FairGenerator *gen = (FairGenerator *)fGenList->At(i);
+    if (gen) {
+      newPrimaryGenerator->AddGenerator(gen->CloneGenerator());
+    }
+  }
+
+  return newPrimaryGenerator;
+}
 
 // -----   Public method SetBeam   -----------------------------------------
 void FairPrimaryGenerator::SetBeam(Double_t x0, Double_t y0, Double_t sigmaX,

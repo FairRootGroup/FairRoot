@@ -61,13 +61,16 @@ class FairGenerator : public TNamed
     /**Initialize the generator if needed */
     virtual Bool_t Init() { return kTRUE;}
 
+    /** Clone this object (used in MT mode only) */
+    virtual FairGenerator* CloneGenerator() const;
+
+  protected:
+    /** Copy constructor */
+    FairGenerator(const FairGenerator&);
+    /** Assignment operator */
+    FairGenerator& operator= (const FairGenerator&);
+
     ClassDef(FairGenerator,1);
-
-  private:
-    FairGenerator(const FairGenerator& G);
-    FairGenerator& operator= (const FairGenerator&) {return *this;}
-
-
 };
 
 #endif

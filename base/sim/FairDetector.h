@@ -102,14 +102,11 @@ class FairDetector : public FairModule
       return fDetId;
     }
 
-  private:
-    FairDetector(const FairDetector& M);
-    FairDetector& operator= (const FairDetector&) {
-      return *this;
-    }
-
-
   protected:
+    /** Copy constructor */
+    FairDetector(const FairDetector&);
+    /** Assignment operator */
+    FairDetector& operator= (const FairDetector&);
 
     Int_t fDetId; // Detector Id has to be set from ctr.
     FairLogger* fLogger;  //! /// FairLogger

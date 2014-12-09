@@ -203,7 +203,8 @@ class FairStack : public FairGenericStack
     TParticle* GetParticle(Int_t trackId) const;
     TClonesArray* GetListOfParticles() { return fParticles; }
 
-
+    /** Clone this object (used in MT mode only) */
+    virtual FairGenericStack* CloneStack() const { return new FairStack(); }
 
   private:
     /** FairLogger for debugging and info */
