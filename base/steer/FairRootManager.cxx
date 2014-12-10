@@ -261,6 +261,23 @@ void FairRootManager::SetInputFile(TString name)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+Bool_t FairRootManager::InitSource() {
+    if(!fMixedInput) {
+      Bool_t retBool = fRootFileSource->Init();
+      fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
+      return retBool;
+    }else{
+      // In the mixed input the source is initialized immediatly when it is added
+      // We need only to check that the BK source exist and we can return true.
+        
+      if(fRootFileSourceBKG!=0) return kTRUE;
+    
+    }
+    
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 Bool_t FairRootManager::OpenBackgroundChain()
 {
  /* // Get the folder structure from file which describes the input tree.

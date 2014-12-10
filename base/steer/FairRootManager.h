@@ -255,12 +255,8 @@ class FairRootManager : public TObject
     void    CheckFriendChains(){fRootFileSource->CheckFriendChains();}
     void CreateNewFriendChain(TString inputFile, TString inputLevel){fRootFileSource->CreateNewFriendChain(inputFile, inputLevel);}
     
-    Bool_t InitSource() {
-      Bool_t retBool = fRootFileSource->Init();
-      fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
-      return retBool;
-    }
-
+    Bool_t InitSource();
+    
     TTree*              GetInTree() {return fRootFileSource->GetInTree();}
     TChain*             GetInChain() {return fRootFileSource->GetInChain();}
     TFile*              GetInFile() {return  fRootFileSource->GetInFile();}

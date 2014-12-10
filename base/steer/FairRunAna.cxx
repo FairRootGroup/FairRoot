@@ -136,10 +136,8 @@ void FairRunAna::Init()
   }
   fRtdb= GetRuntimeDb();
 
-  if ( fRootManager->GetRootFile() ) {
-    fRootManager->InitSource();
-    fInFileIsOpen = kTRUE;
-  }
+  // Check if we have an input file to be used
+  fInFileIsOpen = fRootManager->InitSource();
 
  //Load Geometry from user file
 
