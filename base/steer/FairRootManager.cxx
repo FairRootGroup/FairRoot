@@ -99,7 +99,6 @@ FairRootManager::FairRootManager()
     fBranchPerMap(kFALSE),
     fBrPerMap(),
     fBrPerMapIter(),
-    fFriendFileList(),
     fLogger(FairLogger::GetLogger()),
     fMixAllInputs(kFALSE),
     fMixedInput(kFALSE),
@@ -1191,7 +1190,7 @@ void FairRootManager::TruncateBranchNames(TTree* fTree, const char* folderName)
       }
     }
 
-    // Remove all occurence of FairMCEventHeader and FairEventHeader from
+    // Remove all occurence of FairMCEventHeader and   from
     // all branches containing that string.
     // This is not the correct way to do it, but up tonow we don't understand
     // why this part comes in when storing a derrived class from

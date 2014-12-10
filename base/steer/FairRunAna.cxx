@@ -222,7 +222,7 @@ void FairRunAna::Init()
 
   // Assure that basic info is there for the run
   //  if(par && fInputFile) {
-  if (par && fInFileIsOpen) {
+  if (par && fInFileIsOpen && !fMixedInput) {
 
     fLogger->Info(MESSAGE_ORIGIN,"Parameter and input file are available, Assure that basic info is there for the run!");
     fRootManager->ReadEvent(0);
