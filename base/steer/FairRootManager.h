@@ -249,7 +249,8 @@ class FairRootManager : public TObject
     void   AddFriend(TString FileName){fRootFileSource->AddFriend(FileName);}
     /**Add ROOT file to input, the file will be chained to already added files*/
     void  AddFile(TString FileName){fRootFileSource->AddFile(FileName);}
-    void  AddFriendsToChain(){fRootFileSource->AddFriendsToChain();}
+    /** Add friend to the chain for non-mixed input, for the later this is done separetly and immediatly by adding new signals or background files*/
+    void  AddFriendsToChain(){ if (!fMixedInput) fRootFileSource->AddFriendsToChain();}
     void  PrintFriendList(){fRootFileSource->PrintFriendList();}
     Bool_t  CompareBranchList(TFile* fileHandle, TString inputLevel){return fRootFileSource->CompareBranchList(fileHandle, inputLevel);}
     void    CheckFriendChains(){fRootFileSource->CheckFriendChains();}

@@ -25,6 +25,7 @@
 #include "TFolder.h"
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "TROOT.h"
+#include <list>                         // for _List_iterator, list, etc
 using std::map;
 using std::set;
 
@@ -36,6 +37,7 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
  fFileHeader(0),
  fCurrentEntryNr(0),
  fLogger(FairLogger::GetLogger()),
+ fFriendFileList(),
  fInChain(0),
  fInTree(0),
  fListFolder(new TObjArray(16)),
