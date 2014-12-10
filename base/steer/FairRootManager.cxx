@@ -77,6 +77,8 @@ FairRootManager* FairRootManager::Instance()
 FairRootManager::FairRootManager()
   : TObject(),
     fOldEntryNr(-1),
+    fCbmout(0),
+    fCbmroot(0),
     fCurrentTime(0),
     fOutFile(NULL),
     fOutTree(NULL),

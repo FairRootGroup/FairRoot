@@ -20,7 +20,8 @@
 #include "TObjArray.h"
 #include <map> 
 #include <set> 
-#include "TChainElement.h"  
+#include <algorithm>                    // for find
+#include "TChainElement.h"
 #include "TFolder.h"
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "TROOT.h"
