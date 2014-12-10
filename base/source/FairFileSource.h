@@ -31,7 +31,7 @@ class FairFileSource : public FairSource
 public:
     FairFileSource(TFile *f, const char* Title="InputRootFile", UInt_t identifier=0);
     FairFileSource(const TString* RootFileName, const char* Title="InputRootFile", UInt_t identifier=0);
-    FairFileSource(const FairFileSource& file);
+  //  FairFileSource(const FairFileSource& file);
     virtual ~FairFileSource();
     
     Bool_t              Init();
