@@ -283,30 +283,34 @@ Macro (SetBasicVariables)
 
 IF(FAIRROOT_FOUND)
   Set(BASE_INCLUDE_DIRECTORIES 
-      ${ROOT_INCLUDE_DIR}
-      ${FAIRROOT_INCLUDE_DIR}
-      ${Boost_INCLUDE_DIRS}
+    ${FAIRROOT_INCLUDE_DIR}
+  )
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${ROOT_INCLUDE_DIR}
+    ${Boost_INCLUDE_DIRS}
   )
 ELSE(FAIRROOT_FOUND)
   Set(BASE_INCLUDE_DIRECTORIES
-      ${ROOT_INCLUDE_DIR}
-      ${CMAKE_SOURCE_DIR}/fairtools
-      ${CMAKE_SOURCE_DIR}/geobase
-      ${CMAKE_SOURCE_DIR}/parbase
-      ${CMAKE_SOURCE_DIR}/base
-      ${CMAKE_SOURCE_DIR}/base/steer
-      ${CMAKE_SOURCE_DIR}/base/event
-      ${CMAKE_SOURCE_DIR}/base/field
-      ${CMAKE_SOURCE_DIR}/base/sim
-      ${CMAKE_SOURCE_DIR}/base/source
-      ${CMAKE_SOURCE_DIR}/dbase
-      ${CMAKE_SOURCE_DIR}/dbase/dbInterface
-      ${CMAKE_SOURCE_DIR}/dbase/dbValidation
-      ${CMAKE_SOURCE_DIR}/dbase/dbUtils
-      ${CMAKE_SOURCE_DIR}/input/db
-      ${CMAKE_SOURCE_DIR}/dbase/dbInput
-      ${CMAKE_SOURCE_DIR}/dbase/dbIO
-      ${Boost_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/fairtools
+    ${CMAKE_SOURCE_DIR}/geobase
+    ${CMAKE_SOURCE_DIR}/parbase
+    ${CMAKE_SOURCE_DIR}/base
+    ${CMAKE_SOURCE_DIR}/base/steer
+    ${CMAKE_SOURCE_DIR}/base/event
+    ${CMAKE_SOURCE_DIR}/base/field
+    ${CMAKE_SOURCE_DIR}/base/sim
+    ${CMAKE_SOURCE_DIR}/base/source
+    ${CMAKE_SOURCE_DIR}/dbase
+    ${CMAKE_SOURCE_DIR}/dbase/dbInterface
+    ${CMAKE_SOURCE_DIR}/dbase/dbValidation
+    ${CMAKE_SOURCE_DIR}/dbase/dbUtils
+    ${CMAKE_SOURCE_DIR}/input/db
+    ${CMAKE_SOURCE_DIR}/dbase/dbInput
+    ${CMAKE_SOURCE_DIR}/dbase/dbIO
+  )
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${ROOT_INCLUDE_DIR}
+    ${Boost_INCLUDE_DIRS}
   )  
 ENDIF(FAIRROOT_FOUND)
 
