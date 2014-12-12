@@ -9,22 +9,26 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-set(INCLUDE_DIRECTORIES
-${BASE_INCLUDE_DIRECTORIES}
-${ROOT_INCLUDE_DIR}
-${ZMQ_INCLUDE_DIR}
-${CMAKE_SOURCE_DIR}/fairmq
-${CMAKE_SOURCE_DIR}/base/MQ
-${CMAKE_SOURCE_DIR}/example/mcstack
-${CMAKE_SOURCE_DIR}/example/Tutorial3
-${CMAKE_SOURCE_DIR}/example/Tutorial3/data
-${CMAKE_SOURCE_DIR}/example/Tutorial3/simulation
-${CMAKE_SOURCE_DIR}/example/Tutorial3/digitization
-${CMAKE_SOURCE_DIR}/example/Tutorial3/reconstruction
-${CMAKE_SOURCE_DIR}/example/Tutorial3/timeBasedSimulation
+Set(INCLUDE_DIRECTORIES
+  ${BASE_INCLUDE_DIRECTORIES}
+  ${CMAKE_SOURCE_DIR}/fairmq
+  ${CMAKE_SOURCE_DIR}/base/MQ
+  ${CMAKE_SOURCE_DIR}/example/mcstack
+  ${CMAKE_SOURCE_DIR}/example/Tutorial3
+  ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
+  ${CMAKE_SOURCE_DIR}/example/Tutorial3/simulation
+  ${CMAKE_SOURCE_DIR}/example/Tutorial3/digitization
+  ${CMAKE_SOURCE_DIR}/example/Tutorial3/reconstruction
+  ${CMAKE_SOURCE_DIR}/example/Tutorial3/timeBasedSimulation
 )
 
-include_directories(${INCLUDE_DIRECTORIES})
+Set(SYSTEM_INCLUDE_DIRECTORIES
+  ${SYSTEM_INCLUDE_DIRECTORIES}
+  ${ZMQ_INCLUDE_DIR}
+)
+
+Include_Directories(${INCLUDE_DIRECTORIES})
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 If (Boost_FOUND)
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh )
@@ -38,12 +42,12 @@ If (Boost_FOUND)
   # configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh )
 EndIf (Boost_FOUND)
 
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
-${Boost_LIBRARY_DIRS}
+Set(LINK_DIRECTORIES
+  ${ROOT_LIBRARY_DIR}
+  ${Boost_LIBRARY_DIRS}
 ) 
 
-link_directories(${LINK_DIRECTORIES})
+Link_Directories(${LINK_DIRECTORIES})
 
 Set(SRCS
   simulation/FairTestDetector.cxx
