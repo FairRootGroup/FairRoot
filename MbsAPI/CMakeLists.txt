@@ -16,99 +16,52 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
    ADD_DEFINITIONS(-DDarwin  -DSYSTEM64  -D_LARGEFILE64_SOURCE)
 endif (CMAKE_SYSTEM_NAME MATCHES Darwin)
 
-set(INCLUDE_DIRECTORIES
-    ${ROOT_INCLUDE_DIR}
-    ${CMAKE_SOURCE_DIR}/MbsAPI
-   )
+Set(INCLUDE_DIRECTORIES
+  ${CMAKE_SOURCE_DIR}/MbsAPI
+)
 
-include_directories( ${INCLUDE_DIRECTORIES})
+Set(SYSTEM_INCLUDE_DIRECTORIES
+  ${ROOT_INCLUDE_DIR}
+)
 
-set(LINK_DIRECTORIES
-    ${ROOT_LIBRARY_DIR}
-   )
+Include_Directories(${INCLUDE_DIRECTORIES})
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-link_directories( ${LINK_DIRECTORIES})
+Set(LINK_DIRECTORIES
+  ${ROOT_LIBRARY_DIR}
+)
+
+Link_Directories(${LINK_DIRECTORIES})
 
 # List of source files
-set(MBSAPI_SRCS
-#    f_evcli.c
-    f_evt.c
-    fLmd.c
-#    f_radware.c
-    f_ut_utime.c
-#    f_ut_wild.c
-#    f_his_hist.c
-#    f_his_swpbas.c
-#    f_his_toupper.c
-#    f_mbs_status.c
-    f_stccomm.c
-#    f_swaplw.c
-#    f_ut_compress.c
-#    f_ut_seg_show.c
-#    f_ut_status.c
-#    f_ut_time.c
+Set(MBSAPI_SRCS
+  f_evt.c
+  fLmd.c
+  f_ut_utime.c
+  f_stccomm.c
+)
 
-   )
 # list of header files
-set(MBSAPI_HEADERS
-#    clnt_buf_def.h
-    fLmd.h
-#    gps_sc_def.h
-#    s_clntbuf.h
-    s_evhe.h
-    s_evhe_swap.h
-#    s_filter.h
-    sMbs.h
-#    s_spe.h
-    s_ves10_1.h
-    s_ves10_1_swap.h
-#    f_evcli.h
-#    f_radware.h
-#    mo_def.h
-#    s_clnt_filter.h
-#    s_flt_descr.h
-#    s_opc1.h
-    s_ve10_1.h
-    s_ve10_1_swap.h
-#    s_win_cond.h
-    f_evt.h
-    f_ut_utime.h
-    s_bufhe.h
-    s_bufhe_swap.h
-#    s_clnt_filter_swap.h
-    s_filhe.h
-    s_filhe_swap.h
-#    s_flt_descr_swap.h
-#    s_pat.h
-#    f_ut_wild.h
-#    s_errstat.h
-#    s_head.h
-#    s_pol_cond.h
-#    err_mask_def.h
-#    f_his_hist.h
-#    f_his_toupper.h
-#    f_swaplw.h
-#    f_ut_status.h
-    portnum_def.h
-#    s_daqst.h
-#    s_endian.h
-#    s_his_head.h
-#    s_set_mo.h
-    s_stdint.h
-    typedefs.h
-#    errnum_def.h
-#    f_his_swpbas.h
-    f_stccomm.h
-#    f_ut_compress.h
-#    ml_def.h
-#    sbs_def.h
-#    s_daqst_v2.h
-#    s_his_comm.h
-#    s_set_ml.h
-#    s_setup.h
-#    sys_def.h
-#    typedefs_nt.h
-   )
+Set(MBSAPI_HEADERS
+  fLmd.h
+  s_evhe.h
+  s_evhe_swap.h
+  sMbs.h
+  s_ves10_1.h
+  s_ves10_1_swap.h
+  s_ve10_1.h
+  s_ve10_1_swap.h
+  f_evt.h
+  f_ut_utime.h
+  s_bufhe.h
+  s_bufhe_swap.h
+  s_filhe.h
+  s_filhe_swap.h
+  portnum_def.h
+  s_stdint.h
+  typedefs.h
+  f_stccomm.h
+)
 
 ############### build the library #####################
 add_library(MbsAPI SHARED ${MBSAPI_SRCS})

@@ -7,19 +7,20 @@
  ################################################################################
 # Create a library called "FairDbTut" 
 
-set(INCLUDE_DIRECTORIES
-${BASE_INCLUDE_DIRECTORIES}
-${CMAKE_SOURCE_DIR}/example/Tutorial5/src
-${CMAKE_SOURCE_DIR}/example/mcstack
+Set(INCLUDE_DIRECTORIES
+  ${BASE_INCLUDE_DIRECTORIES}
+  ${CMAKE_SOURCE_DIR}/example/Tutorial5/src
+  ${CMAKE_SOURCE_DIR}/example/mcstack
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
+Include_Directories(${INCLUDE_DIRECTORIES})
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
+Set(LINK_DIRECTORIES
+  ${ROOT_LIBRARY_DIR}
 )
  
-link_directories( ${LINK_DIRECTORIES})
+Link_Directories(${LINK_DIRECTORIES})
 
 set(SRCS
 FairDbTutPar.cxx

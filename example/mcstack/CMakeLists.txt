@@ -9,26 +9,25 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-set(INCLUDE_DIRECTORIES
-${BASE_INCLUDE_DIRECTORIES}
-${Boost_INCLUDE_DIRS}
-${CMAKE_SOURCE_DIR}/example/mcstack
+Set(INCLUDE_DIRECTORIES
+  ${BASE_INCLUDE_DIRECTORIES}
+  ${CMAKE_SOURCE_DIR}/example/mcstack
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
+Include_Directories(${INCLUDE_DIRECTORIES})
+Include_Directories(SYSTEM  ${SYSTEM_INCLUDE_DIRECTORIES})
 
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
-${CMAKE_SOURCE_DIR}/base
-${CMAKE_SOURCE_DIR}/example/mcstack
-
+Set(LINK_DIRECTORIES
+  ${ROOT_LIBRARY_DIR}
+#  ${CMAKE_SOURCE_DIR}/base
+#  ${CMAKE_SOURCE_DIR}/example/mcstack
 )
  
-link_directories( ${LINK_DIRECTORIES})
+Link_Directories(${LINK_DIRECTORIES})
 
-set(SRCS
-FairStack.cxx 
-FairMCTrack.cxx
+Set(SRCS
+  FairStack.cxx 
+  FairMCTrack.cxx
 )
 
 Set(HEADERS )
@@ -37,4 +36,3 @@ Set(LIBRARY_NAME MCStack)
 Set(DEPENDENCIES Base EG Physics Cint Core)
 
 GENERATE_LIBRARY()
-
