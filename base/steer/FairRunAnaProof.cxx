@@ -133,7 +133,7 @@ void FairRunAnaProof::Init()
     } else {
 
       // Add all friend files defined by AddFriend to the correct chain
-      fRootManager->AddFriendsToChain();
+//      fRootManager->AddFriendsToChain();
       if (fLoadGeo && gGeoManager==0) {
         // Check if the geometry in the first file of the Chain
         fRootManager->GetInChain()->GetFile()->Get("FAIRGeom");

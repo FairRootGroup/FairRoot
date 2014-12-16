@@ -98,9 +98,8 @@ class FairRootManager : public TObject
          this method can be used to access the data of
          a branch that was created from a different
          analysis task, and not written in the tree yet.
-         the user have to cast this pointer to the right type.*/
-    FairGeoNode*        GetGeoParameter(const char* detname, const char* gname);
-    /** Return a pointer to the object (collection) saved in the fInChain branch named BrName*/
+         the user have to cast this pointer to the right type.
+         Return a pointer to the object (collection) saved in the fInChain branch named BrName*/
     TObject*            GetObject(const char* BrName);
     /** Return a pointer to the object (collection) saved in the fInTree branch named BrName*/
     TObject*            GetObjectFromInTree(const char* BrName);
@@ -128,7 +127,7 @@ class FairRootManager : public TObject
     TFile*            OpenOutFile(const char* fname="cbmsim.root");
     TFile*            OpenOutFile(TFile* f);
     /**Read a single entry from background chain*/
-    void                ReadBKEvent(Int_t i);
+    void              ReadBKEvent(Int_t i);
     void              ReadEvent(Int_t i);
     /**Read the tree entry on one branch**/
     void              ReadBranchEvent(const char* BrName);
@@ -249,8 +248,6 @@ class FairRootManager : public TObject
     void   AddFriend(TString FileName){fRootFileSource->AddFriend(FileName);}
     /**Add ROOT file to input, the file will be chained to already added files*/
     void  AddFile(TString FileName){fRootFileSource->AddFile(FileName);}
-    /** Add friend to the chain for non-mixed input, for the later this is done separetly and immediatly by adding new signals or background files*/
-    void  AddFriendsToChain(){ if (!fMixedInput) fRootFileSource->AddFriendsToChain();}
     void  PrintFriendList(){fRootFileSource->PrintFriendList();}
     Bool_t  CompareBranchList(TFile* fileHandle, TString inputLevel){return fRootFileSource->CompareBranchList(fileHandle, inputLevel);}
     void    CheckFriendChains(){fRootFileSource->CheckFriendChains();}

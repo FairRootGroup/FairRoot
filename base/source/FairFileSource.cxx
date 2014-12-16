@@ -29,6 +29,7 @@
 using std::map;
 using std::set;
 
+//_____________________________________________________________________________
 
 FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
  :FairSource(),
@@ -56,6 +57,8 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
   fLogger->Info(MESSAGE_ORIGIN, "FairFileSource created------------");
  
 }
+//_____________________________________________________________________________
+
 FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, UInt_t identifier)
 :FairSource(),
  fInputTitle(Title),
@@ -82,9 +85,13 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
   fLogger->Info(MESSAGE_ORIGIN, "FairFileSource created------------");
 
 }
+//_____________________________________________________________________________
+
 FairFileSource::~FairFileSource()
 {
 }
+//_____________________________________________________________________________
+
 Bool_t FairFileSource::Init()
 {
     if(IsInitialized){
@@ -192,24 +199,35 @@ Bool_t FairFileSource::Init()
 
   
 }
+//_____________________________________________________________________________
+
 Int_t FairFileSource::ReadEvent(UInt_t i)
 {
    return fInChain->GetEntry(i);
 }
+//_____________________________________________________________________________
+
 void FairFileSource::Close()
 {
 }
+//_____________________________________________________________________________
+
 void FairFileSource::Reset()
 {
 }
+//_____________________________________________________________________________
+
 void FairFileSource::AddFriend(TString fName)
 {
     fFriendFileList.push_back(fName);
 }
+//_____________________________________________________________________________
+
 void FairFileSource::AddFile(TString FileName)
 {
      fInputChainList.push_back(FileName);
 }
+//_____________________________________________________________________________
 
 void FairFileSource::AddFriendsToChain()
 {
@@ -301,6 +319,7 @@ void FairFileSource::AddFriendsToChain()
     PrintFriendList();
     
 }
+//_____________________________________________________________________________
 
 void FairFileSource::PrintFriendList( )
 {
@@ -332,6 +351,8 @@ void FairFileSource::PrintFriendList( )
     }
     
 }
+//_____________________________________________________________________________
+
 void FairFileSource::CheckFriendChains()
 {
     std::multimap< TString, std::multimap<TString,TArrayI> >::iterator it1;
@@ -408,6 +429,7 @@ void FairFileSource::CheckFriendChains()
         fLogger->Fatal(MESSAGE_ORIGIN,"Event structure mismatch");
     }
 }
+//_____________________________________________________________________________
 
 
 void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
@@ -505,3 +527,4 @@ Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
 //_____________________________________________________________________________
 
 ClassImp(FairFileSource)
+
