@@ -261,18 +261,19 @@ void FairRootManager::SetInputFile(TString name)
 
 //_____________________________________________________________________________
 Bool_t FairRootManager::InitSource() {
+    Bool_t retBool=kFALSE;
     if(!fMixedInput) {
-      Bool_t retBool = fRootFileSource->Init();
+      retBool = fRootFileSource->Init();
       fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
-      return retBool;
+      fRootFileSource->AddFriendsToChain();
     }else{
       // In the mixed input the source is initialized immediatly when it is added
       // We need only to check that the BK source exist and we can return true.
         
-      if(fRootFileSourceBKG!=0) return kTRUE;
+      if(fRootFileSourceBKG!=0) retBool=kTRUE;
     
     }
-    
+    return retBool;
 }
 //_____________________________________________________________________________
 
@@ -769,54 +770,37 @@ void FairRootManager:: WriteFolder()
 //_____________________________________________________________________________
 void  FairRootManager::ReadEvent(Int_t i)
 {
-  SetEntryNr(i);
-  if ( fRootFileSource ) {
-    if(0==fCurrentEntryNo) {
-      Int_t totEnt =  fRootFileSource->GetEntries();
-      fLogger->Info(MESSAGE_ORIGIN,"The number of entries in the tree is %i",totEnt);
-      LOG(INFO) << "FairRootManager::ReadEvent(" << i << "): The tree has " << totEnt << " entries" << FairLogger::endl;
-
-      fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
-
-      SetEventTime();
+    SetEntryNr(i);
+    /**For mixed input use the ReadMixedEvent method */
+    if(fMixedInput) {
+        fLogger->Info(MESSAGE_ORIGIN,"Read mixed event number  %i", i);
+        ReadMixedEvent(i);
+    }else{
+        /** Check if the source is not zero, it is zero if we use the mixed input (bk and sg) */
+        if ( fRootFileSource!=0) {
+            
+            /**special action needed for the first entry */
+            
+            if(0==fCurrentEntryNo) {
+                Int_t totEnt =  fRootFileSource->GetEntries();
+                fLogger->Info(MESSAGE_ORIGIN,"The number of entries in the tree is %i",totEnt);
+                LOG(INFO) << "FairRootManager::ReadEvent(" << i << "): The tree has " << totEnt << " entries" << FairLogger::endl;
+                fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
+                if(fEvtHeader ==0) {
+                    fLogger->Info(MESSAGE_ORIGIN, " No event Header was found!!!");
+                    return;
+                }
+                SetEventTime();
+            }
+            
+            /**After the first entry we are here */
+            fCurrentEntryNo=i;
+            fRootFileSource->ReadEvent(i);
+            fEvtHeader->SetMCEntryNumber(i);
+            fEvtHeader->SetEventTime(GetEventTime());
+            fEvtHeader->SetInputFileId(0);
+        }
     }
-    fCurrentEntryNo=i;
-    fRootFileSource->ReadEvent(i);
-
-    if(fEvtHeader !=0) {
-      fEvtHeader->SetMCEntryNumber(i);
-      fEvtHeader->SetEventTime(GetEventTime());
-      fEvtHeader->SetInputFileId(0);
-    } else { fLogger->Info(MESSAGE_ORIGIN, " No event Header was found!!!"); }
-    return;
-  }
-
-  if(!fMixedInput) {
-    /**Check for fCurrentEntryNo because it always starts from Zero, i could have any value! */
-    if(0==fCurrentEntryNo) {
-      Int_t totEnt = fRootFileSource->GetEntries();
-      fLogger->Info(MESSAGE_ORIGIN,"The number of entries in chain is %i",totEnt);
-
-      fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
-
-      SetEventTime();
-    }
-    fCurrentEntryNo=i;
-    fRootFileSource->ReadEvent(i);
-      
-    if(fEvtHeader !=0) {
-      fEvtHeader->SetMCEntryNumber(i);
-      fEvtHeader->SetEventTime(GetEventTime());
-      fEvtHeader->SetInputFileId(0);
-    } else {
-      fLogger->Info(MESSAGE_ORIGIN, " No event Header was found!!!");
-    }
-
-  } else {
-    fLogger->Info(MESSAGE_ORIGIN,"Read mixed event number  %i", i);
-    ReadMixedEvent(i);
-
-  }
 }
 //_____________________________________________________________________________
 
@@ -1113,33 +1097,6 @@ TClonesArray* FairRootManager::GetCloneOfTClonesArray(const FairLink link)
   return result;
 
 }
-//_____________________________________________________________________________
-FairGeoNode*  FairRootManager::GetGeoParameter(const char* detname, const char* gname)
-{
-  TFolder* detf= NULL;
-  FairGeoNode* node = NULL;
-  TList* lgeo=NULL;
-  TString lname(detname);
-  lname+="GeoPar";
-  TFolder* froot =  dynamic_cast<TFolder*> (gROOT->FindObject("cbmroot"));
-  if ( froot ) {
-    detf = dynamic_cast<TFolder*> (froot->FindObjectAny( detname ));
-  } else {
-    fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() Main Folder not found ! ");
-  }
-  if ( detf    ) {
-    lgeo = dynamic_cast<TList*> (detf->FindObjectAny( lname.Data() ));
-  } else {
-    fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() GeoPar: %s " , lname.Data() );
-  }
-  if ( lgeo    ) {
-    node = dynamic_cast<FairGeoNode*> (lgeo->FindObject(gname));
-  } else {
-    fLogger->Info(MESSAGE_ORIGIN, "GetGeoParameter() GeoList not found " );
-  }
-  return node;
-}
-//_____________________________________________________________________________
 
 //_____________________________________________________________________________
 void FairRootManager::TruncateBranchNames(TTree* fTree, const char* folderName)

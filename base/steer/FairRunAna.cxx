@@ -154,13 +154,12 @@ void FairRunAna::Init()
       }
     }
   } else {
-//    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+    /*** Get the container that normly has the geometry and all the basic stuff from simulation*/
     fRtdb->getContainer("FairGeoParSet");
   }
 
+    
   if (fInFileIsOpen) {
-    // Add all friend files defined by AddFriend to the correct chain
-    fRootManager->AddFriendsToChain();
     if (fLoadGeo && gGeoManager==0) {
       // Check if the geometry in the first file of the Chain
       fRootManager->GetInChain()->GetFile()->Get("FAIRGeom");
@@ -182,10 +181,6 @@ void FairRunAna::Init()
       }
       gFile=currentfile;
     }
-  } else if (fMixedInput) {
-
-
-
   } else { //  if(fInputFile )
     // NO input file but there is a geometry file
     if (fLoadGeo) {
@@ -202,10 +197,7 @@ void FairRunAna::Init()
       }
     }
   }
-  //Init the Chain ptr
-  //  fcurrent = fChainList.begin();
-// fOutFile = fRootManager->OpenOutFile(fOutname);
-
+ 
   gROOT->GetListOfBrowsables()->Add(fTask);
 
   // Init the RTDB containers
