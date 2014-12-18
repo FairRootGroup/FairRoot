@@ -1,0 +1,27 @@
+var class_fair_db_reader =
+[
+    [ "FairDbReader", "class_fair_db_reader.html#aaeea3e3587c74a0b293ace341f0df70b", null ],
+    [ "FairDbReader", "class_fair_db_reader.html#a766bfd60cc4e2d292c4311ff7f7dd2b4", null ],
+    [ "FairDbReader", "class_fair_db_reader.html#a1bc00f68484918e2668ca4683e3d87f4", null ],
+    [ "FairDbReader", "class_fair_db_reader.html#a081b2e76199cc90739fb18ddddb13f84", null ],
+    [ "FairDbReader", "class_fair_db_reader.html#a76644c89ffec6c3b4b08bd7d942ed59a", null ],
+    [ "FairDbReader", "class_fair_db_reader.html#aa660027712ee8527114c65676ee55819", null ],
+    [ "FairDbReader", "class_fair_db_reader.html#a9cad1f41029b8ee3ad0e6be561a7ca44", null ],
+    [ "~FairDbReader", "class_fair_db_reader.html#a02cade5273771bb6302e8ea521340e73", null ],
+    [ "Activate", "class_fair_db_reader.html#a1fa57c825c77dbcbc4d797368c7d1acc", null ],
+    [ "GetKey", "class_fair_db_reader.html#afe64bf8c3deb73c980c1b71546758f31", null ],
+    [ "GetNumRows", "class_fair_db_reader.html#ada43360e6090acaa91e86e01bdf7fa73", null ],
+    [ "GetResult", "class_fair_db_reader.html#a676646b16665ba6997b0d39de550cfff", null ],
+    [ "GetResultID", "class_fair_db_reader.html#a8a9e1b8cc1e2d396a08f98c80c37c6ba", null ],
+    [ "GetRow", "class_fair_db_reader.html#afeddf032b069cf0855212c40ece3b410", null ],
+    [ "GetRowByIndex", "class_fair_db_reader.html#a5da2cccdc24a658e868d6225935275c7", null ],
+    [ "GetValidityRec", "class_fair_db_reader.html#a48587ad06d43536cb926f92687007ce1", null ],
+    [ "NewQuery", "class_fair_db_reader.html#a0e57278427a376e07561edc471036e9c", null ],
+    [ "NewQuery", "class_fair_db_reader.html#a4d6f8783b93384abc146631e85fc7830", null ],
+    [ "NewQuery", "class_fair_db_reader.html#aba60c04c41f9d0461cf13d8d3830796a", null ],
+    [ "NewQuery", "class_fair_db_reader.html#ad5e8bc5f1d4c674d02207ac4773149cf", null ],
+    [ "NextQuery", "class_fair_db_reader.html#a068af0fd765118c6f5220b2d01f32c2d", null ],
+    [ "Reset", "class_fair_db_reader.html#a002190794f925071504d9485278e7edc", null ],
+    [ "ResultsFromDb", "class_fair_db_reader.html#abc14f8d0effcef59d457c52f1e22c078", null ],
+    [ "TableInterface", "class_fair_db_reader.html#ab6725760a51e327616b0c81c0d040321", null ]
+];

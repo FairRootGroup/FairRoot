@@ -1,0 +1,26 @@
+var class_my_field_par =
+[
+    [ "MyFieldPar", "class_my_field_par.html#a5aaf7a613ec5610e48a914e308d6e365", null ],
+    [ "MyFieldPar", "class_my_field_par.html#aa173e0c036fc8fd211928a3bee2a8752", null ],
+    [ "~MyFieldPar", "class_my_field_par.html#a06ac47c6def198e6421665eb432fb515", null ],
+    [ "GetBx", "class_my_field_par.html#a8aa3f5700fe73c0c7ac3f2ef96ec5ff9", null ],
+    [ "GetBy", "class_my_field_par.html#a9acc47c5cce7f58f1d074404215db04a", null ],
+    [ "GetBz", "class_my_field_par.html#a2c2bcc7f9b202fe080070e0a1cfd1bd5", null ],
+    [ "GetMiddle", "class_my_field_par.html#a217acc70abc0f541f0317979dadbcea9", null ],
+    [ "getParams", "class_my_field_par.html#a58747bd516727f711cafa2aacc330569", null ],
+    [ "GetPeak", "class_my_field_par.html#adeadffe2d8cb2f7aae9f51b6a290ae05", null ],
+    [ "GetPositionX", "class_my_field_par.html#a99c8f9f6479f8bc14c563f0b10c18cf7", null ],
+    [ "GetPositionY", "class_my_field_par.html#a6674b23515af22ed893d032bbaae9adf", null ],
+    [ "GetPositionZ", "class_my_field_par.html#aad046eb7d509c7452a53e92d9d9a9379", null ],
+    [ "GetScale", "class_my_field_par.html#ae38dc398f21275d3e17ed08ea94646fc", null ],
+    [ "GetType", "class_my_field_par.html#a31675ace9789d3b84b32b1c3cd9a4bd6", null ],
+    [ "GetXmax", "class_my_field_par.html#a4ca455d0790a0b3e81cd8362ba12c595", null ],
+    [ "GetXmin", "class_my_field_par.html#a1438516949ba9d65bd5da9ce35319478", null ],
+    [ "GetYmax", "class_my_field_par.html#ac49249f873404c78001c5897303a6302", null ],
+    [ "GetYmin", "class_my_field_par.html#ae957fd132722cfb60dd4522171564434", null ],
+    [ "GetZmax", "class_my_field_par.html#a9896741afd628761bc8d126141ef0eb2", null ],
+    [ "GetZmin", "class_my_field_par.html#a7b54f49955efc939b1b57343b0aca8ba", null ],
+    [ "MapName", "class_my_field_par.html#a90628ec5c5c35a5d62aecf8c0701abce", null ],
+    [ "putParams", "class_my_field_par.html#add018b700b6e9b5f6961282163abbf6d", null ],
+    [ "SetParameters", "class_my_field_par.html#aaa0b306fa56fefa2edcf9ed0bcda1631", null ]
+];

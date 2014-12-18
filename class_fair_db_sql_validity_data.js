@@ -1,0 +1,35 @@
+var class_fair_db_sql_validity_data =
+[
+    [ "CompResult_t", "class_fair_db_sql_validity_data.html#a88d3f6b90778e63e1229f7c7adb69603", null ],
+    [ "ECompResult", "class_fair_db_sql_validity_data.html#a75c5b22f4e07015b2dbfe393c5b80eb6", [
+      [ "kIdentical", "class_fair_db_sql_validity_data.html#a75c5b22f4e07015b2dbfe393c5b80eb6a0f20fdafbca3d3d6c01b45fa8d117b5d", null ],
+      [ "kUpdate", "class_fair_db_sql_validity_data.html#a75c5b22f4e07015b2dbfe393c5b80eb6aa631faaea88c665b9005b9a0111eb7e9", null ],
+      [ "kOutOfDate", "class_fair_db_sql_validity_data.html#a75c5b22f4e07015b2dbfe393c5b80eb6a658ca533a46a94c1b40884fb00fdadef", null ],
+      [ "kConflict", "class_fair_db_sql_validity_data.html#a75c5b22f4e07015b2dbfe393c5b80eb6a12f852847fbcc66fb312cfee2170248d", null ]
+    ] ],
+    [ "FairDbSqlValidityData", "class_fair_db_sql_validity_data.html#a4fd4cee179aee5cc327957e1a4730f74", null ],
+    [ "FairDbSqlValidityData", "class_fair_db_sql_validity_data.html#aa75b62df61e687cc00a40c834bfbc4cc", null ],
+    [ "FairDbSqlValidityData", "class_fair_db_sql_validity_data.html#a4eb14d690714cec8936b74c55c615e5e", null ],
+    [ "~FairDbSqlValidityData", "class_fair_db_sql_validity_data.html#a5853bde6d68b8cead081a588d14e87c3", null ],
+    [ "AddDataRow", "class_fair_db_sql_validity_data.html#abd7a790c14f44c395df62aa68f8b7b96", null ],
+    [ "CanBeStored", "class_fair_db_sql_validity_data.html#a82be60b1e08903f72c53c39f031573c6", null ],
+    [ "Clear", "class_fair_db_sql_validity_data.html#a9c04297ef4222dbad996c6a042287150", null ],
+    [ "Compare", "class_fair_db_sql_validity_data.html#a3cdb96ea5ac5e63a07ee1d3a43cb449d", null ],
+    [ "CreateTable", "class_fair_db_sql_validity_data.html#acd74a25025647f0093697acabd6d9c38", null ],
+    [ "Fill", "class_fair_db_sql_validity_data.html#a01c1364a2585d9ea935245cf4394eefe", null ],
+    [ "GetCreationDate", "class_fair_db_sql_validity_data.html#a61bfaa4aec5ced21dad924e146760a15", null ],
+    [ "GetNumErrors", "class_fair_db_sql_validity_data.html#a818133a595cc220ddc44fb9c35b077c9", null ],
+    [ "GetNumSqlStmts", "class_fair_db_sql_validity_data.html#ada18e22c20eebc0c0d9c40184fc36286", null ],
+    [ "GetSeqNo", "class_fair_db_sql_validity_data.html#abb4deb8ef78511418e211ed0f5e241ac", null ],
+    [ "GetStmt", "class_fair_db_sql_validity_data.html#a28a7a299b24e4c5670edbb2a9560265c", null ],
+    [ "GetStmtValues", "class_fair_db_sql_validity_data.html#a8a1c082c28c12a9031ad5e2c91e6d92c", null ],
+    [ "GetTableName", "class_fair_db_sql_validity_data.html#a34b464bf97e83f56882b2d9cc6576270", null ],
+    [ "IsEqual", "class_fair_db_sql_validity_data.html#aea7ddee73170b7f876fc04ab7a483ac6", null ],
+    [ "Print", "class_fair_db_sql_validity_data.html#a23e00b47ea9c59a4c9f8ec177db30da7", null ],
+    [ "Recreate", "class_fair_db_sql_validity_data.html#afb0ae5e3e2fa395a7f1db56a192dac0b", null ],
+    [ "Reset", "class_fair_db_sql_validity_data.html#ab55e99fbc6135b23b5b809be9f97ccff", null ],
+    [ "SetCreationDate", "class_fair_db_sql_validity_data.html#a0e51e2011e7619c4d917aee3dac18c7e", null ],
+    [ "SetSeqNo", "class_fair_db_sql_validity_data.html#a2bad0715d36f5331462764fd316e6054", null ],
+    [ "Store", "class_fair_db_sql_validity_data.html#ab7351582904250a72eb157e113db4bab", null ],
+    [ "Write", "class_fair_db_sql_validity_data.html#aac4377771d32a669f9d305d12bcce9aa", null ]
+];
