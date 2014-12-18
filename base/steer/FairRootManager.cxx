@@ -99,6 +99,7 @@ FairRootManager::FairRootManager()
     fBranchPerMap(kFALSE),
     fBrPerMap(),
     fBrPerMapIter(),
+    fFriendFileList(),
     fLogger(FairLogger::GetLogger()),
     fMixAllInputs(kFALSE),
     fMixedInput(kFALSE),

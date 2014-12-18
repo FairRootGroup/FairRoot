@@ -81,6 +81,11 @@ class FairRunAnaProof : public FairRunAna
     /** Output status indicator: "copy","merge","dataset"*/
     TString                                  fProofOutputStatus;
 
+  private:
+  
+    FairRunAnaProof(const FairRunAnaProof&);
+    FairRunAnaProof operator=(const FairRunAnaProof&);
+    
     ClassDef(FairRunAnaProof ,1)
 
 };
