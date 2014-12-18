@@ -25,9 +25,9 @@ FairLinkManager* FairLinkManager::Instance()
 
 FairLinkManager::FairLinkManager()
   : TObject(),
+    fIgnoreTypes(),
     fIgnoreSetting(kTRUE),
     fLogger(0)
-
 {
   if (fgInstance) {
     Fatal("FairLinkManager", "Singleton instance already exists.");

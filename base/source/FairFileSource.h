@@ -99,7 +99,9 @@ private:
     /**Initialization flag, true if initialized*/
     Bool_t                              IsInitialized;
     
-public:
+    FairFileSource(const FairFileSource&);
+    FairFileSource operator=(const FairFileSource&);
+
     ClassDef(FairFileSource, 0)
 };
 
