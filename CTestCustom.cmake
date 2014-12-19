@@ -36,6 +36,11 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "ignoring return value of 'char* fgets(char*, int, FILE*)'"
         "ignoring return value of 'char* fscanf(char*, int, FILE*)'"
 
+        # boost warnings
+        "base class 'struct boost::msm"
+        "base class 'struct boost::mpl"
+
+        "base class 'struct std::binary_function"
   )
 
 # -----------------------------------------------------------
