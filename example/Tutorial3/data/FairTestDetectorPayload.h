@@ -21,7 +21,6 @@
 
 namespace TestDetectorPayload
 {
-
     class TimeStamp
     {
       public:

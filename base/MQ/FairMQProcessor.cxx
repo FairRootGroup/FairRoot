@@ -52,20 +52,16 @@ void FairMQProcessor::Run()
   int receivedMsgs = 0;
   int sentMsgs = 0;
 
-  int received = 0;
-
   while ( fState == RUNNING ) {
     fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
 
-    received = fPayloadInputs->at(0)->Receive(fProcessorTask->GetPayload());
     receivedMsgs++;
 
-    if (received > 0) {
+    if (fPayloadInputs->at(0)->Receive(fProcessorTask->GetPayload()) > 0) {
       fProcessorTask->Exec();
 
       fPayloadOutputs->at(0)->Send(fProcessorTask->GetPayload());
       sentMsgs++;
-      received = 0;
     }
 
     fProcessorTask->GetPayload()->CloseMessage();

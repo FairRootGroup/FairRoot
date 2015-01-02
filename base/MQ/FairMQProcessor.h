@@ -19,7 +19,7 @@
 #include "FairMQProcessorTask.h"
 
 
-class FairMQProcessor: public FairMQDevice
+class FairMQProcessor : public FairMQDevice
 {
   public:
     FairMQProcessor();
@@ -32,8 +32,13 @@ class FairMQProcessor: public FairMQDevice
   protected:
     virtual void Init();
     virtual void Run();
+
   private:
     FairMQProcessorTask* fProcessorTask;
+
+    /// Copy Constructor
+    FairMQProcessor(const FairMQProcessor&);
+    FairMQProcessor operator=(const FairMQProcessor&);
 };
 
 #endif /* FAIRMQPROCESSOR_H_ */

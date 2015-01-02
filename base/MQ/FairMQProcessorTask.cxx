@@ -24,6 +24,10 @@ FairMQProcessorTask::~FairMQProcessorTask()
 {
 }
 
+void FairMQProcessorTask::Exec(Option_t *opt)
+{
+}
+
 // initialize a callback to the Processor for sending multipart messages.
 void FairMQProcessorTask::SetSendPart(boost::function<void()> callback)
 {

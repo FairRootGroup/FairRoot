@@ -10,11 +10,13 @@
 template <typename T1, typename T2>
 TestDetectorDigiLoader<T1, T2>::TestDetectorDigiLoader()
     : FairMQSamplerTask("Load class T1")
+    , fDigiVector()
+    , fHasBoostSerialization()
 {
     fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
     fHasBoostSerialization = false;
-    if (std::is_same<T2, boost::archive::binary_oarchive>::value || std::is_same<T2, boost::archive::text_oarchive>::value)
+    if (is_same<T2, boost::archive::binary_oarchive>::value || is_same<T2, boost::archive::text_oarchive>::value)
     {
         if (has_BoostSerialization<T1, void(T2&, const unsigned int)>::value == 1)
             fHasBoostSerialization = true;
@@ -43,7 +45,7 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
     {
         // LOG(INFO) <<" Boost Serialization ok ";
 
-        std::ostringstream buffer;
+        ostringstream buffer;
         T2 OutputArchive(buffer);
         for (Int_t i = 0; i < fInput->GetEntriesFast(); ++i)
         {
@@ -56,7 +58,7 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
         OutputArchive << fDigiVector;
         int size = buffer.str().length();
         fOutput = fTransportFactory->CreateMessage(size);
-        std::memcpy(fOutput->GetData(), buffer.str().c_str(), size);
+        memcpy(fOutput->GetData(), buffer.str().c_str(), size);
 
         // delete the vector content
         if (fDigiVector.size() > 0)
@@ -75,7 +77,7 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Ex
 {
     // // Example of how to send multipart messages (uncomment the code lines to test).
     // // 1. create some data and put it into message (optionaly in one step with zero-copy):
-    // std::string test = "hello";
+    // string test = "hello";
     // fOutput = fTransportFactory->CreateMessage(test.size());
     // memcpy ((void *) fOutput->GetData(), test.c_str(), test.size());
     // // 2. Send the current message as a part:
@@ -128,7 +130,7 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
 // helper function to clean up the object holding the data after it is transported.
 void free_string (void *data, void *hint)
 {
-    delete (std::string*)hint;
+    delete (string*)hint;
 }
 
 template <>
@@ -152,7 +154,7 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload
         d->set_ftimestamp(digi->GetTimeStamp());
     }
 
-    std::string* str = new std::string();
+    string* str = new string();
     dp.SerializeToString(str);
     size_t size = str->length();
 

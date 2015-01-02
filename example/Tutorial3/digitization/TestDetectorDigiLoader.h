@@ -33,6 +33,8 @@
 #include <type_traits>
 #endif
 
+using namespace std;
+
 // Base template header <T1,T2>
 template <typename T1, typename T2>
 class TestDetectorDigiLoader : public FairMQSamplerTask
@@ -50,7 +52,7 @@ class TestDetectorDigiLoader : public FairMQSamplerTask
 
   private:
     friend class boost::serialization::access;
-    std::vector<T1> fDigiVector;
+    vector<T1> fDigiVector;
     bool fHasBoostSerialization;
 };
 
