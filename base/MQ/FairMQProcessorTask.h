@@ -30,7 +30,7 @@ class FairMQProcessorTask : public FairTask
   public:
     FairMQProcessorTask();
     virtual ~FairMQProcessorTask();
-    virtual void Exec(Option_t* opt = "0") = 0;
+    virtual void Exec(Option_t* opt = "0");
     void SetSendPart(boost::function<void()>); // provides a callback to the Processor.
     void SetReceivePart(boost::function<bool()>); // provides a callback to the Processor.
     FairMQMessage* GetPayload();
@@ -40,6 +40,11 @@ class FairMQProcessorTask : public FairTask
     FairMQMessage* fPayload;
     boost::function<void()> SendPart; // function pointer for the Processor callback.
     boost::function<bool()> ReceivePart; // function pointer for the Processor callback.
+
+  private:
+    /// Copy Constructor
+    FairMQProcessorTask(const FairMQProcessorTask&);
+    FairMQProcessorTask operator=(const FairMQProcessorTask&);
 };
 
 #endif /* FAIRMQPROCESSORTASK_H_ */

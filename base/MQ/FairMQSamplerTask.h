@@ -38,8 +38,7 @@ class FairMQSamplerTask : public FairTask
 
     virtual InitStatus Init();
     virtual void Exec(Option_t *opt);
-    void
-    SetSendPart(boost::function<void()>); // provides a callback to the Sampler.
+    void SetSendPart(boost::function<void()>); // provides a callback to the Sampler.
     void SetEventIndex(Long64_t EventIndex);
     void SetBranch(string branch);
     FairMQMessage *GetOutput();
@@ -53,6 +52,11 @@ class FairMQSamplerTask : public FairTask
     Long64_t fEventIndex;
     boost::function<void()> SendPart; // function pointer for the Sampler callback.
     FairEventHeader *fEvtHeader;
+
+  private:
+    /// Copy Constructor
+    FairMQSamplerTask(const FairMQSamplerTask&);
+    FairMQSamplerTask operator=(const FairMQSamplerTask&);
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */
