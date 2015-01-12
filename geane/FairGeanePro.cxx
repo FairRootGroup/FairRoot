@@ -447,8 +447,13 @@ Bool_t FairGeanePro::PropagateToVolume(TString VolName, Int_t CopyNo , Int_t opt
 Bool_t FairGeanePro::PropagateToLength(Float_t length)
 {
   // define final length (option "L")
-  xlf[0]=length;
-  fPropOption="LE";
+ if(length < 0) {
+     xlf[0]=-length;
+     fPropOption="BLE";
+  }else {
+     xlf[0]=length;
+     fPropOption="LE";
+  }
   ProMode=1; //need errors in representation 1 (SC)(see Geane doc)
   return kTRUE;
 }
