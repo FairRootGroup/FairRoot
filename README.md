@@ -130,7 +130,7 @@ careful with this use and prefer not to have the same package installation
 also in AlFa_DIR 
 
 Adapted Find files: HEPMC, PLUTO, Pythia6, PYTHIA8, ZMQ
-
+```bash
 Replaced: FindGENERATORS.cmake with
 #	cmake/modules/FindPythia6.cmake
 
@@ -154,7 +154,7 @@ cmake \
 -DBOOST_ROOT="Path_to_boost_installation" \
 -DAlFa_DIR="Path_to_fairsoft_or_alfa_installation" \
 ../FairRoot 
-
+```
 ###Generating Doxygen documentation
 
 If the flage -DBUILD_DOXYGEN=ON  is set when calling cmake, the doxygen documentation will be generated when calling make.  The generated html files can then be found in "build/doxygen/doc/html"
