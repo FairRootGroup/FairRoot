@@ -14,21 +14,26 @@
 
 #include "FairMQSamplerTask.h"
 
-FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose) :
-  FairTask(name, iVerbose),
-  fInput(NULL),
-  fOutput(NULL),
-  fTransportFactory(NULL),
-  fEventIndex(0)
-{
-}
-
 FairMQSamplerTask::FairMQSamplerTask() :
   FairTask("Abstract base task used for loading a branch from a root file into memory"),
   fInput(NULL),
+  fBranch(),
   fOutput(NULL),
   fTransportFactory(NULL),
   fEventIndex(0),
+  SendPart(),
+  fEvtHeader(NULL)
+{
+}
+
+FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose) :
+  FairTask(name, iVerbose),
+  fInput(NULL),
+  fBranch(),
+  fOutput(NULL),
+  fTransportFactory(NULL),
+  fEventIndex(0),
+  SendPart(),
   fEvtHeader(NULL)
 {
 }

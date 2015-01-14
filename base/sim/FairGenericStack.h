@@ -155,7 +155,15 @@ class FairGenericStack : public TVirtualMCStack
 
     virtual TClonesArray* GetListOfParticles() { return NULL; } 
 
+    /** Clone this object (used in MT mode only) */
+    virtual FairGenericStack* CloneStack() const;
+
   protected:
+    /** Copy constructor */
+    FairGenericStack(const FairGenericStack&);
+    /** Assignment operator */
+    FairGenericStack& operator=(const FairGenericStack&);
+
     /** Fair Logger */
     FairLogger*            fLogger;//!
 
@@ -167,10 +175,6 @@ class FairGenericStack : public TVirtualMCStack
 
     /**Verbosity level*/
     Int_t fVerbose;
-
-  private:
-    FairGenericStack(const FairGenericStack&);
-    FairGenericStack& operator=(const FairGenericStack&);
 
     ClassDef(FairGenericStack,1)
 

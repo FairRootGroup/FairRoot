@@ -14,38 +14,44 @@ If(NOT DEFINED BUILD_MBS)
   Set(BUILD_MBS TRUE)
 EndIf(NOT DEFINED BUILD_MBS)
 
-set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR} 
-${Boost_INCLUDE_DIRS}
-${CMAKE_SOURCE_DIR}/fairtools
-${CMAKE_SOURCE_DIR}/geobase 
-${CMAKE_SOURCE_DIR}/parbase 
-${CMAKE_SOURCE_DIR}/base
-${CMAKE_SOURCE_DIR}/base/steer
-${CMAKE_SOURCE_DIR}/base/event
-${CMAKE_SOURCE_DIR}/base/field
-${CMAKE_SOURCE_DIR}/base/sim
-${CMAKE_SOURCE_DIR}/base/source
-${CMAKE_SOURCE_DIR}/dbase/dbInterface
-${CMAKE_SOURCE_DIR}/dbase/dbValidation
-${CMAKE_SOURCE_DIR}/dbase/dbUtils
-${CMAKE_SOURCE_DIR}/input/db
-${CMAKE_SOURCE_DIR}/dbase/dbInput
+Set(INCLUDE_DIRECTORIES
+  ${CMAKE_SOURCE_DIR}/fairtools
+  ${CMAKE_SOURCE_DIR}/geobase 
+  ${CMAKE_SOURCE_DIR}/parbase 
+  ${CMAKE_SOURCE_DIR}/base
+  ${CMAKE_SOURCE_DIR}/base/steer
+  ${CMAKE_SOURCE_DIR}/base/event
+  ${CMAKE_SOURCE_DIR}/base/field
+  ${CMAKE_SOURCE_DIR}/base/sim
+  ${CMAKE_SOURCE_DIR}/base/source
+  ${CMAKE_SOURCE_DIR}/dbase/dbInterface
+  ${CMAKE_SOURCE_DIR}/dbase/dbValidation
+  ${CMAKE_SOURCE_DIR}/dbase/dbUtils
+  ${CMAKE_SOURCE_DIR}/input/db
+  ${CMAKE_SOURCE_DIR}/dbase/dbInput
 )
 If(BUILD_MBS)
-  set(INCLUDE_DIRECTORIES
+  Set(INCLUDE_DIRECTORIES
      ${INCLUDE_DIRECTORIES} 
      ${CMAKE_SOURCE_DIR}/MbsAPI
   )
 EndIf(BUILD_MBS)
 
-include_directories( ${INCLUDE_DIRECTORIES})
+Set(SYSTEM_INCLUDE_DIRECTORIES
+  ${ROOT_INCLUDE_DIR} 
+  ${Boost_INCLUDE_DIRS}
+)
 
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
+
+Include_Directories(${INCLUDE_DIRECTORIES})
+
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+
+Set(LINK_DIRECTORIES
+  ${ROOT_LIBRARY_DIR}
 )
  
-link_directories( ${LINK_DIRECTORIES})
+Link_Directories(${LINK_DIRECTORIES})
 
 # List of source files
 set(SRCS
@@ -108,6 +114,7 @@ field/FairFieldFactory.cxx
 field/FairRKPropagator.cxx
 
 source/FairSource.cxx
+source/FairFileSource.cxx
 )
 
 If(BUILD_MBS)

@@ -85,6 +85,9 @@ public:
                         Double_t e = -9e9, Double_t tof = 0.,
                         Double_t weight = 0.);
 
+  /** Clone this object (used in MT mode only) */
+  virtual FairPrimaryGenerator* ClonePrimaryGenerator() const;
+
   /** Set beam position and widths.
    *@param beamX0      mean x position of beam at target
    *@param beamY0      mean y position of beam at target
@@ -150,6 +153,11 @@ public:
   Int_t GetTotPrimary() { return fTotPrim; }
 
 protected:
+  /**  Copy constructor */
+  FairPrimaryGenerator(const FairPrimaryGenerator&);
+  /**  Assignment operator */
+  FairPrimaryGenerator &operator=(const FairPrimaryGenerator&);
+
   /**  Nominal beam position at target in x [cm] */
   Double_t fBeamX0;
   /** Nominal beam position at target in y [cm]*/
@@ -255,10 +263,6 @@ protected:
       function SetEventPlane.
   **/
   void MakeEventPlane();
-
-private:
-  FairPrimaryGenerator(const FairPrimaryGenerator &);
-  FairPrimaryGenerator &operator=(const FairPrimaryGenerator &);
 
   ClassDef(FairPrimaryGenerator, 5);
 };

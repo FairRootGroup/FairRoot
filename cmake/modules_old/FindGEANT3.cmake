@@ -43,7 +43,7 @@ SET(CMAKE_REQUIRED_LIBRARIES
     Physics 
     Gui 
     EG 
-    ${GENERATORS_LIBRARY_DIR}/libPythia6.so 
+    ${Pythia6_LIBRARY_DIR}/libPythia6.so 
     EGPythia6 
     VMC 
     Geom 

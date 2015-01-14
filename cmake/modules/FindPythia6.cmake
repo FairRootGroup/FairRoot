@@ -8,35 +8,36 @@
 # - Try to find PLUTO instalation
 # Once done this will define
 #
-#  GENERATORS_FOUND - system has PYTHIA6
-#  GENERATORS_LIBRARY_DIR - The libraries directory for PYTHIA6
+#  Pythia6_FOUND - system has Pythia6
+#  Pythia6_LIBRARY_DIR - The libraries directory for Pythia6
 #
 
-if (GENERATORS_LIBRARY_DIR)
-  SET (GENERATORS_LIBRARY_DIR GENERATORS_LIBRARY_DIR-NOTFOUND)
-endif (GENERATORS_LIBRARY_DIR)
+if (Pythia6_LIBRARY_DIR)
+  SET (Pythia6_LIBRARY_DIR Pythia6_LIBRARY_DIR-NOTFOUND)
+endif (Pythia6_LIBRARY_DIR)
 
 MESSAGE(STATUS "Looking for Pythia6...")
 
-FIND_PATH(PYTHIA6_LIBRARY_DIR NAMES libPythia6.so PATHS
+FIND_PATH(Pythia6_LIBRARY_DIR NAMES libPythia6.so PATHS
+  ${Pythia6_DIR}/lib
+  ${AlFa_DIR}/lib
   ${SIMPATH}/lib
   ${SIMPATH}/generators/lib
   NO_DEFAULT_PATH
 )
 
-if (PYTHIA6_LIBRARY_DIR)
-  set(GENERATORS_FOUND TRUE)
-  set(GENERATORS_LIBRARY_DIR ${PYTHIA6_LIBRARY_DIR})
-endif(PYTHIA6_LIBRARY_DIR)
+if (Pythia6_LIBRARY_DIR)
+  set(Pythia6_FOUND TRUE)
+endif(Pythia6_LIBRARY_DIR)
 
-if (GENERATORS_FOUND)
-  if (NOT GENERATORS_FIND_QUIETLY)     
-    MESSAGE(STATUS "Looking for Pythia6... - found ${GENERATORS_LIBRARY_DIR}")
-    SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${GENERATORS_LIBRARY_DIR})
-  endif (NOT GENERATORS_FIND_QUIETLY)
-else (GENERATORS_FOUND)
-  if (GENERATORS_FIND_REQUIRED)
+if (Pythia6_FOUND)
+  if (NOT Pythia6_FIND_QUIETLY)     
+    MESSAGE(STATUS "Looking for Pythia6... - found ${Pythia6_LIBRARY_DIR}")
+    SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Pythia6_LIBRARY_DIR})
+  endif (NOT Pythia6_FIND_QUIETLY)
+else (Pythia6_FOUND)
+  if (Pythia6_FIND_REQUIRED)
     message(FATAL_ERROR "Looking for Pythia6... - Not found")
-  endif (GENERATORS_FIND_REQUIRED)
-endif (GENERATORS_FOUND)
+  endif (Pythia6_FIND_REQUIRED)
+endif (Pythia6_FOUND)
 

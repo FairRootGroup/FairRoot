@@ -136,21 +136,10 @@ void FairRunAna::Init()
   }
   fRtdb= GetRuntimeDb();
 
-  // Open the input file and add other input files added by AddFile to the
-  // input chain. Do a check if the added files are of the same type
-  // as the the input file. Same type means check if they contain the
-  // same branch.
-  if (!fMixedInput) {
-    fInFileIsOpen = fRootManager->OpenInChain();
-  } else {
-    Bool_t openBKChain = fRootManager->OpenBackgroundChain();
-    if (!openBKChain) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "Could not open background Chain!");
-    }
-    fRootManager->OpenSignalChain();
-  }
+  // Check if we have an input file to be used
+  fInFileIsOpen = fRootManager->InitSource();
 
-  //Load Geometry from user file
+ //Load Geometry from user file
 
   if (fLoadGeo) {
     if (fInputGeoFile!=0) { //First check if the user has a separate Geo file!
@@ -165,13 +154,12 @@ void FairRunAna::Init()
       }
     }
   } else {
-//    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+    /*** Get the container that normly has the geometry and all the basic stuff from simulation*/
     fRtdb->getContainer("FairGeoParSet");
   }
 
+    
   if (fInFileIsOpen) {
-    // Add all friend files defined by AddFriend to the correct chain
-    fRootManager->AddFriendsToChain();
     if (fLoadGeo && gGeoManager==0) {
       // Check if the geometry in the first file of the Chain
       fRootManager->GetInChain()->GetFile()->Get("FAIRGeom");
@@ -193,10 +181,6 @@ void FairRunAna::Init()
       }
       gFile=currentfile;
     }
-  } else if (fMixedInput) {
-
-
-
   } else { //  if(fInputFile )
     // NO input file but there is a geometry file
     if (fLoadGeo) {
@@ -213,10 +197,7 @@ void FairRunAna::Init()
       }
     }
   }
-  //Init the Chain ptr
-  //  fcurrent = fChainList.begin();
-// fOutFile = fRootManager->OpenOutFile(fOutname);
-
+ 
   gROOT->GetListOfBrowsables()->Add(fTask);
 
   // Init the RTDB containers
@@ -233,7 +214,7 @@ void FairRunAna::Init()
 
   // Assure that basic info is there for the run
   //  if(par && fInputFile) {
-  if (par && fInFileIsOpen) {
+  if (par && fInFileIsOpen && !fMixedInput) {
 
     fLogger->Info(MESSAGE_ORIGIN,"Parameter and input file are available, Assure that basic info is there for the run!");
     fRootManager->ReadEvent(0);
@@ -267,13 +248,17 @@ void FairRunAna::Init()
   } else if (fMixedInput) {
     fLogger->Info(MESSAGE_ORIGIN,"Initializing for Mixed input");
 
-    //For mixed input we have to set containers to static becauser of the different run ids
+    //For mixed input we have to set containers to static because of the different run ids
     //fRtdb->setContainersStatic(kTRUE);
 
     fEvtHeader = dynamic_cast<FairEventHeader*> (fRootManager->GetObject("EventHeader."));
-
+    if(fEvtHeader)fLogger->Info(MESSAGE_ORIGIN,"Event Header found $s",fEvtHeader->GetName() );
 
     fMCHeader = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObject("MCEventHeader."));
+    
+    if(fMCHeader)fLogger->Info(MESSAGE_ORIGIN,"MC Event Header found $s",fMCHeader->GetName() );
+  
+      
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
       fRunId = fMCHeader->GetRunID();
@@ -290,20 +275,13 @@ void FairRunAna::Init()
     fRunId = fEvtHeader->GetRunId();
     // Init the containers in Tasks
     fRtdb->initContainers(fRunId);
-
-    /*  if (gGeoManager==0) {
-        fLogger->Info(MESSAGE_ORIGIN,"Read the Geometry from Parameter file");
-         FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
-
-      }
-     */
     if (gGeoManager==0) {
       fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
     }
     fTask->SetParTask();
     fRtdb->initContainers( fRunId );
 
-  } else {
+  } else {  //end----- if(fMixedInput)
     fLogger->Info(MESSAGE_ORIGIN,"Initializing without input file or Mixed input");
     FairEventHeader* evt = GetEventHeader();
     evt->Register();
@@ -638,9 +616,6 @@ void FairRunAna::RunMQ(Long64_t entry)
 //_____________________________________________________________________________
 void FairRunAna::Run(Long64_t entry)
 {
-//  if (fTimeStamps) {
-//    RunTSBuffers();
-//  } else {
   UInt_t tmpId =0;
   fRootManager->ReadEvent(entry);
   tmpId = fEvtHeader->GetRunId();
@@ -657,7 +632,6 @@ void FairRunAna::Run(Long64_t entry)
   fRootManager->DeleteOldWriteoutBufferData();
   fRootManager->LastFill();
   fRootManager->Write();
-//  }
 }
 //_____________________________________________________________________________
 
@@ -669,7 +643,8 @@ void FairRunAna::RunTSBuffers()
   bool firstRun = true;
   while (firstRun || fRootManager->AllDataProcessed() == kFALSE) {
     firstRun = false;
-    if (globalEvent < fRootManager->GetInTree()->GetEntriesFast()) { //this step is necessary to load in all data which is not read in via TSBuffers
+    TTree *InTree= fRootManager->GetInTree();
+    if (globalEvent < InTree->GetEntriesFast()) { //this step is necessary to load in all data which is not read in via TSBuffers
       fRootManager->ReadEvent(globalEvent++);
     }
     fTask->ExecuteTask("");
@@ -860,6 +835,13 @@ void  FairRunAna::BGWindowWidthNo(UInt_t background, UInt_t Signalid)
 void  FairRunAna::BGWindowWidthTime(Double_t background, UInt_t Signalid)
 {
   fRootManager->BGWindowWidthTime(background, Signalid);
+}
+//_____________________________________________________________________________
+//_____________________________________________________________________________
+void  FairRunAna::SetMixAllInputs(Bool_t Status)
+{
+   fLogger->Info(MESSAGE_ORIGIN, "Mixing for all input is choosed, in this mode one event per input file is read per step");
+   fRootManager->SetMixAllInputs(Status);
 }
 //_____________________________________________________________________________
 

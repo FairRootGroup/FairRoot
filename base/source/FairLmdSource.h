@@ -58,7 +58,6 @@ class FairLmdSource : public FairMbsSource
     s_ves10_1* fxSubEvent;
 	s_filhe* fxInfoHeader;
 
-  public:
     ClassDef(FairLmdSource, 0)
 };
 

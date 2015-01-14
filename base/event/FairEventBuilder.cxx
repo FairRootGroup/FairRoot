@@ -54,6 +54,7 @@ using std::map;
 FairEventBuilder::FairEventBuilder()
   : FairWriteoutBuffer(),
     fBuilderName                (""),
+    fTimer                      (),
     fExecTime                   (0.),
     fIdentifier                 (0),
     fMaxAllowedEventCreationTime(0.)
@@ -66,6 +67,7 @@ FairEventBuilder::FairEventBuilder()
 FairEventBuilder::FairEventBuilder(TString branchName, TString className, TString folderName, Bool_t persistance)
   : FairWriteoutBuffer(branchName,className,folderName,persistance),
     fBuilderName                (""),
+    fTimer                      (),
     fExecTime                   (0.),
     fIdentifier                 (0),
     fMaxAllowedEventCreationTime(0.)

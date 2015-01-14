@@ -68,7 +68,7 @@ typedef struct DeviceOptions
 inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 {
     if (_options == NULL)
-        throw std::runtime_error("Internal error: options' container is empty.");
+        throw runtime_error("Internal error: options' container is empty.");
 
     namespace bpo = boost::program_options;
     bpo::options_description desc("Options");
@@ -164,7 +164,7 @@ int main(int argc, char** argv)
     proxy.ChangeState(FairMQProxy::INIT);
 
     proxy.SetProperty(FairMQProxy::InputSocketType, options.inputSocketType);
-    proxy.SetProperty(FairMQProxy::InputSndBufSize, options.inputBufSize);
+    proxy.SetProperty(FairMQProxy::InputRcvBufSize, options.inputBufSize);
     proxy.SetProperty(FairMQProxy::InputMethod, options.inputMethod);
     proxy.SetProperty(FairMQProxy::InputAddress, options.inputAddress);
 

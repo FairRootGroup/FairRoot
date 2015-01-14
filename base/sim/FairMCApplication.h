@@ -120,6 +120,16 @@ class FairMCApplication : public TVirtualMCApplication
     virtual void          PostTrack();                                      // MC Application
     /** Define actions at the beginning of each track*/
     virtual void          PreTrack();                                       // MC Application
+
+    /** Clone for worker (used in MT mode only) */
+    virtual TVirtualMCApplication* CloneForWorker() const;
+
+    /** Init worker run (used in MT mode only) */
+    virtual void InitForWorker() const;
+
+    /** Finish worker run (used in MT mode only) */
+    virtual void FinishWorkerRun() const;
+
     /** Run the MC engine
      * @param nofEvents : number of events to simulate
      */
@@ -265,7 +275,9 @@ class FairMCApplication : public TVirtualMCApplication
     ClassDef(FairMCApplication,2)  //Interface to MonteCarlo application
 
   private:
+    /** Protected copy constructor */
     FairMCApplication(const FairMCApplication&);
+    /** Protected assignment operator */
     FairMCApplication& operator=(const FairMCApplication&);
 
     FairRunInfo fRunInfo;//!

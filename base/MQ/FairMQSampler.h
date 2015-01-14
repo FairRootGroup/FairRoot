@@ -49,20 +49,20 @@
  */
 
 template <typename Loader>
-class FairMQSampler: public FairMQDevice
+class FairMQSampler : public FairMQDevice
 {
   public:
     enum {
       InputFile = FairMQDevice::Last,
-      Branch,
       ParFile,
+      Branch,
       EventRate
     };
+
     FairMQSampler();
     virtual ~FairMQSampler();
 
     void ResetEventCounter();
-    virtual void ListenToCommands();
 
     virtual void SetProperty(const int key, const string& value, const int slot = 0);
     virtual string GetProperty(const int key, const string& default_ = "", const int slot = 0);
@@ -75,26 +75,28 @@ class FairMQSampler: public FairMQDevice
      * This method can be given as a callback to the SamplerTask.
      * The final message part must be sent with normal Send method.
      */
-  void SendPart();
+    void SendPart();
 
-  void SetContinuous(bool flag) { fContinuous = flag; }
+    void SetContinuous(bool flag) { fContinuous = flag; }
 
-protected:
-  virtual void Init();
-  virtual void Run();
+  protected:
+    virtual void Init();
+    virtual void Run();
 
+    FairRunAna *fFairRunAna;
+    FairMQSamplerTask *fSamplerTask;
+    string fInputFile; // Filename of a root file containing the simulated digis.
+    string fParFile;
+    string fBranch; // The name of the sub-detector branch to stream the digis from.
+    int fNumEvents;
+    int fEventRate;
+    int fEventCounter;
+    bool fContinuous;
 
-protected:
-  FairRunAna *fFairRunAna;
-  FairMQSamplerTask *fSamplerTask;
-  string fInputFile; // Filename of a root file containing the simulated digis.
-  string fParFile;
-  string
-  fBranch; // The name of the sub-detector branch to stream the digis from.
-  int fNumEvents;
-  int fEventRate;
-  int fEventCounter;
-  bool fContinuous;
+  private:
+    /// Copy Constructor
+    FairMQSampler(const FairMQSampler&);
+    FairMQSampler operator=(const FairMQSampler&);
 };
 
 // Template implementation is in FairMQSampler.tpl :

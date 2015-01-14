@@ -59,7 +59,7 @@ typedef struct DeviceOptions
 inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 {
     if (_options == NULL)
-        throw std::runtime_error("Internal error: options' container is empty.");
+        throw runtime_error("Internal error: options' container is empty.");
 
     namespace bpo = boost::program_options;
     bpo::options_description desc("Options");
@@ -119,6 +119,7 @@ int main(int argc, char** argv)
 
     client.SetProperty(FairMQExampleClient::OutputSocketType, "req", 0);
     client.SetProperty(FairMQExampleClient::OutputSndBufSize, 10000, 0);
+    client.SetProperty(FairMQExampleClient::OutputRcvBufSize, 10000, 0);
     client.SetProperty(FairMQExampleClient::OutputMethod, "connect", 0);
     client.SetProperty(FairMQExampleClient::OutputAddress, "tcp://localhost:5005", 0);
 

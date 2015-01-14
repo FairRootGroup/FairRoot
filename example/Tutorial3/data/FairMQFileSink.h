@@ -50,6 +50,8 @@ class TFile;
 class TTree;
 class TClonesArray;
 
+using namespace std;
+
 template <typename TIn, typename TPayloadIn>
 class FairMQFileSink : public FairMQDevice
 {
@@ -73,7 +75,7 @@ class FairMQFileSink : public FairMQDevice
     TClonesArray* fOutput;
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-    std::vector<TIn> fHitVector;
+    vector<TIn> fHitVector;
     bool fHasBoostSerialization;
 #endif // for BOOST serialization
 };

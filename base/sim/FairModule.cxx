@@ -92,6 +92,32 @@ FairModule::FairModule(const char* Name, const char* title ,Bool_t Active)
 }
 
 //__________________________________________________________________________
+FairModule::FairModule(const FairModule& rhs)
+  :TNamed(rhs),
+   fMotherVolumeName(rhs.fMotherVolumeName),
+   fgeoVer(rhs.fgeoVer),
+   fgeoName(rhs.fgeoName),
+   fModId(rhs.fModId),
+   fActive(rhs.fActive),
+   fNbOfSensitiveVol(rhs.fNbOfSensitiveVol),
+   fVerboseLevel(rhs.fVerboseLevel),
+   flGeoPar(0),
+   kGeoSaved(rhs.kGeoSaved)
+{
+   // Do not change anything in global fields (svList. vList)
+
+  // TO DO - add when we know what type is the elements of flGeoPar
+  //flGeoPar=new TObjArray();
+  //TIter it = rhs.flGeoPar->MakeIterator();
+  // Copy parameters
+  //TObject* obj;
+  //while((obj=it->Next())) {
+  //  flGeoPar->Add(...);
+  //}
+
+}
+
+//__________________________________________________________________________
 
 FairModule::FairModule()
   : TNamed(),
@@ -106,6 +132,38 @@ FairModule::FairModule()
     kGeoSaved(kFALSE)
 {
 
+}
+
+//__________________________________________________________________________
+FairModule& FairModule::operator= (const FairModule& rhs)
+{
+  // check assignment to self
+  if (this == &rhs) return *this;
+
+  // base class assignment
+  TNamed::operator=(rhs);
+
+  // assignment operator
+  fMotherVolumeName = rhs.fMotherVolumeName;
+  fgeoVer = rhs.fgeoVer;
+  fgeoName = rhs.fgeoName;
+  fModId = rhs.fModId;
+  fActive = rhs.fActive;
+  fNbOfSensitiveVol = rhs.fNbOfSensitiveVol;
+  fVerboseLevel = rhs.fVerboseLevel;
+  flGeoPar = 0;
+  kGeoSaved = rhs.kGeoSaved;
+
+  // TO DO - add when we know what type is the elements of flGeoPar
+  //flGeoPar=new TObjArray();
+  //TIter it = rhs.flGeoPar->MakeIterator();
+  // copy parameters
+  //TObject* obj;
+  //while((obj=it->Next())) {
+  //  flGeoPar->Add(...);
+  //}
+
+  return *this;
 }
 
 //__________________________________________________________________________
@@ -354,7 +412,9 @@ void FairModule::ConstructRootGeometry()
     }
   }
 }
+
 #ifdef ROOT_HAS_GDML
+
 void FairModule::ConstructGDMLGeometry(TGeoMatrix* posrot)
 {
     // Parse the GDML file
@@ -396,7 +456,9 @@ void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
 		}
 	}
 }
+
 #else
+
 void FairModule::ConstructGDMLGeometry(TGeoMatrix* posrot)
 {
     gLogger->Error(MESSAGE_ORIGIN," Could not construct magnet geometry from gdml file. ");
@@ -408,7 +470,9 @@ void FairModule::ConstructGDMLGeometry(TGeoMatrix* posrot)
 void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
 {
 }
+
 #endif
+
 void FairModule::ReAssignMediaId()
 {
     // Initialise pointer to GeoBuilder
@@ -445,17 +509,20 @@ void FairModule::ReAssignMediaId()
         }
     }
 }
+
 //__________________________________________________________________________
 void FairModule::ConstructASCIIGeometry()
 {
   LOG(WARNING)<<"The method ConstructASCIIGeometry has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;
 }
+
 //__________________________________________________________________________
 Bool_t FairModule::CheckIfSensitive(std::string name)
 {
   LOG(WARNING)<<"The method CheckIfSensitive has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;
   return kFALSE;
 }
+
 //__________________________________________________________________________
 void FairModule::ExpandNode(TGeoNode* fN)
 {
@@ -485,6 +552,7 @@ void FairModule::ExpandNode(TGeoNode* fN)
     }
   }
 }
+
 //__________________________________________________________________________
 void FairModule::SetDefaultMatrixName(TGeoMatrix* matrix)
 {
@@ -577,6 +645,13 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
       LOG(FATAL)<<"The volume "<< v->GetName() << "has no medium information and not an Assembly so we have to quit"<<FairLogger::endl;
     }
   }
+}
+
+//__________________________________________________________________________
+FairModule* FairModule::CloneModule() const
+{
+  Fatal("CloneModule","Has to be overriden in multi-threading applications.");
+  return 0;
 }
 
 //__________________________________________________________________________

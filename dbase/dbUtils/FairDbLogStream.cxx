@@ -54,16 +54,18 @@ const char kColor_BgBlack[]    = { 0x1B, '[', '4', '7', 'm', 0 };
 
 
 FairDbLogStream::FairDbLogStream()
-  :fLogLevel(0)
-  ,fCurrentLogLevel(0)
+  : fLogLevel(0), 
+    fFileStat(),
+    fCurrentLogLevel(0)
 {
   strcpy(fName, "");
   Init();
 }
 
 FairDbLogStream::FairDbLogStream(const char* name)
-  :fLogLevel(0)
-  ,fCurrentLogLevel(0)
+  : fLogLevel(0),
+    fFileStat(),
+    fCurrentLogLevel(0)
 {
   if (strlen(name)>kMaxNameSize) {
     strncpy(fName, name, kMaxNameSize);

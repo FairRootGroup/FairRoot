@@ -16,13 +16,15 @@ template <typename Loader>
 FairMQSampler<Loader>::FairMQSampler() :
   fFairRunAna(new FairRunAna()),
   fSamplerTask(new Loader()),
+  fInputFile(),
+  fParFile(),
+  fBranch(),
   fNumEvents(0),
   fEventRate(1),
   fEventCounter(0),
   fContinuous(false)
 {
 }
-
 
 template <typename Loader>
 FairMQSampler<Loader>::~FairMQSampler()
@@ -31,8 +33,9 @@ FairMQSampler<Loader>::~FairMQSampler()
   delete fSamplerTask;
 }
 
-template <typename Loader>
-void FairMQSampler<Loader>::Init()
+/// Methods
+
+template <typename Loader> void FairMQSampler<Loader>::Init()
 {
   FairMQDevice::Init();
 
@@ -65,14 +68,12 @@ void FairMQSampler<Loader>::Init()
   fNumEvents = int((ioman->GetInChain())->GetEntries());
 }
 
-template <typename Loader>
-void FairMQSampler<Loader>::Run()
+template <typename Loader> void FairMQSampler<Loader>::Run()
 {
   LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
   boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
   // boost::thread resetEventCounter(boost::bind(&FairMQSampler::ResetEventCounter, this));
-  // boost::thread commandListener(boost::bind(&FairMQSampler::ListenToCommands, this));
 
   int sentMsgs = 0;
 
@@ -80,10 +81,8 @@ void FairMQSampler<Loader>::Run()
 
   LOG(INFO) << "Number of events to process: " << fNumEvents;
 
-//  while ( fState == RUNNING ) {
-
   do {
-    for ( Long64_t eventNr = 0 ; eventNr < fNumEvents; ++eventNr ) {
+    for (Long64_t eventNr = 0 ; eventNr < fNumEvents; ++eventNr) {
       fSamplerTask->SetEventIndex(eventNr);
       fFairRunAna->RunMQ(eventNr);
 
@@ -98,11 +97,9 @@ void FairMQSampler<Loader>::Run()
       //   boost::this_thread::sleep(boost::posix_time::milliseconds(1));
       // }
 
-      if( fState != RUNNING ) { break; }
+      if(fState != RUNNING) { break; }
     }
-  } while ( fState == RUNNING && fContinuous );
-
-//  }
+  } while (fState == RUNNING && fContinuous);
 
   boost::timer::cpu_times const elapsed_time(timer.elapsed());
   LOG(INFO) << "Sent everything in:\n" << boost::timer::format(elapsed_time, 2);
@@ -113,8 +110,6 @@ void FairMQSampler<Loader>::Run()
     rateLogger.join();
     // resetEventCounter.interrupt();
     // resetEventCounter.join();
-    // commandListener.interrupt();
-    // commandListener.join();
   }
   catch (boost::thread_resource_error &e) {
     LOG(ERROR) << e.what();
@@ -135,8 +130,7 @@ void FairMQSampler<Loader>::SendPart()
   fSamplerTask->GetOutput()->CloseMessage();
 }
 
-template <typename Loader>
-void FairMQSampler<Loader>::ResetEventCounter()
+template <typename Loader> void FairMQSampler<Loader>::ResetEventCounter()
 {
   while (true) {
     try {
@@ -149,37 +143,6 @@ void FairMQSampler<Loader>::ResetEventCounter()
     }
   }
   LOG(DEBUG) << ">>>>>>> stopping resetEventCounter <<<<<<<";
-}
-
-template <typename Loader>
-void FairMQSampler<Loader>::ListenToCommands()
-{
-  LOG(INFO) << ">>>>>>> ListenToCommands <<<<<<<";
-
-  int received = 0;
-
-  while (true) {
-    try {
-      FairMQMessage *msg = fTransportFactory->CreateMessage();
-
-      received = fPayloadInputs->at(0)->Receive(msg);
-
-      if (received > 0) {
-        // command handling goes here.
-        LOG(INFO) << "> received command <";
-        received = 0;
-      }
-
-      delete msg;
-
-      boost::this_thread::interruption_point();
-    }
-    catch (boost::thread_interrupted &) {
-      LOG(DEBUG) << "commandListener interrupted";
-      break;
-    }
-  }
-  LOG(DEBUG) << ">>>>>>> stopping commandListener <<<<<<<";
 }
 
 template <typename Loader>

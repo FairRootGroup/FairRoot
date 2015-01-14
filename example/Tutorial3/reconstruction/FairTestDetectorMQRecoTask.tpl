@@ -10,6 +10,9 @@
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetectorMQRecoTask()
     : fRecoTask(NULL)
+    , fDigiVector()
+    , fHitVector()
+    , fHasBoostSerialization()
 {
     fHasBoostSerialization = true;
 
@@ -19,13 +22,13 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
     bool checkOutputClass = false;
     fHasBoostSerialization = false;
 
-    if (std::is_same<TPayloadIn, boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn, boost::archive::text_iarchive>::value)
+    if (is_same<TPayloadIn, boost::archive::binary_iarchive>::value || is_same<TPayloadIn, boost::archive::text_iarchive>::value)
     {
         if (has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 1)
             checkInputClass = true;
     }
 
-    if (std::is_same<TPayloadOut, boost::archive::binary_oarchive>::value || std::is_same<TPayloadOut, boost::archive::text_oarchive>::value)
+    if (is_same<TPayloadOut, boost::archive::binary_oarchive>::value || is_same<TPayloadOut, boost::archive::text_oarchive>::value)
     {
         if (has_BoostSerialization<TOut, void(TPayloadOut&, const unsigned int)>::value == 1)
             checkOutputClass = true;
@@ -39,6 +42,9 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetectorMQRecoTask(Int_t verbose)
     : fRecoTask(NULL)
+    , fDigiVector()
+    , fHitVector()
+    , fHasBoostSerialization()
 {
     fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
@@ -46,7 +52,7 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
     bool checkOutputClass = false;
     fHasBoostSerialization = false;
 
-    if (std::is_same<TPayloadIn, boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn, boost::archive::text_iarchive>::value)
+    if (is_same<TPayloadIn, boost::archive::binary_iarchive>::value || is_same<TPayloadIn, boost::archive::text_iarchive>::value)
     {
         if (has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 1)
             checkInputClass = true;
@@ -60,7 +66,7 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
         LOG(ERROR) << "boost::archive::binary_iarchive and boost::archive::text_iarchive";
     }
 
-    if (std::is_same<TPayloadOut, boost::archive::binary_oarchive>::value || std::is_same<TPayloadOut, boost::archive::text_oarchive>::value)
+    if (is_same<TPayloadOut, boost::archive::binary_oarchive>::value || is_same<TPayloadOut, boost::archive::text_oarchive>::value)
     {
         if (has_BoostSerialization<TOut, void(TPayloadOut&, const unsigned int)>::value == 1)
             checkOutputClass = true;
@@ -112,8 +118,8 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option
         int inputSize = fPayload->GetSize();
 
         // prepare boost input archive
-        std::string msgStr(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
-        std::istringstream ibuffer(msgStr);
+        string msgStr(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
+        istringstream ibuffer(msgStr);
         TPayloadIn InputArchive(ibuffer);
         try
         {
@@ -152,12 +158,12 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option
         }
 
         // prepare boost output archive
-        std::ostringstream obuffer;
+        ostringstream obuffer;
         TPayloadOut OutputArchive(obuffer);
         OutputArchive << fHitVector;
         int outputSize = obuffer.str().length();
         fPayload->Rebuild(outputSize);
-        std::memcpy(fPayload->GetData(), obuffer.str().c_str(), outputSize);
+        memcpy(fPayload->GetData(), obuffer.str().c_str(), outputSize);
         if (fDigiVector.size() > 0)
             fDigiVector.clear();
         if (fHitVector.size() > 0)
@@ -176,7 +182,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 {
     // // Example how to receive multipart message (uncomment the code lines to test).
     // // 1. receive the first part.
-    // std::string test = std::string(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
+    // string test = string(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
     // LOG(ERROR) << test;
     // // Ask Processor for the next part.
     // ReceivePart();
@@ -271,7 +277,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMess
 // helper function to clean up the object holding the data after it is transported.
 void free_string (void *data, void *hint)
 {
-    delete (std::string*)hint;
+    delete (string*)hint;
 }
 
 template <>
@@ -317,7 +323,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
         h->set_dposz(hit->GetDz());
     }
 
-    std::string* str = new std::string();
+    string* str = new string();
     hp.SerializeToString(str);
     size_t size = str->length();
 

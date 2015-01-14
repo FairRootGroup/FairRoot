@@ -75,7 +75,7 @@ class FairDbLogFileOStream : public FairDbLogOStream
 #endif
 #endif
 
-    FairDbLogFileOStream() { }
+    FairDbLogFileOStream() : FairDbLogOStream(), fFileName(""), fOfstream(NULL) { }
     FairDbLogFileOStream(const char* name, openmode mode);
     ~FairDbLogFileOStream();
     const char* GetName() const;
@@ -85,6 +85,9 @@ class FairDbLogFileOStream : public FairDbLogOStream
   private:
     string    fFileName;
     ofstream* fOfstream;
+
+    FairDbLogFileOStream(const FairDbLogFileOStream&);
+    FairDbLogFileOStream operator=(const FairDbLogFileOStream&);
 };
 
 
@@ -100,7 +103,7 @@ class FairDbLogOStreamService
     void Register(FairDbLogOStreamMaker_t logOStreamMaker);
 
   private:
-    FairDbLogOStreamService() { }
+    FairDbLogOStreamService() : fFairDbLogOStreamTable(), fFairDbLogOStreamMakerList() { }
     static FairDbLogOStreamService* fInstance;
 
   private:
@@ -113,7 +116,7 @@ class FairDbLogOStreamService
 class FairDbLogStandardOStream : public FairDbLogOStream
 {
   public:
-    FairDbLogStandardOStream() { }
+    FairDbLogStandardOStream() : FairDbLogOStream(), kStream(){ }
     FairDbLogStandardOStream(const char* name);
     ~FairDbLogStandardOStream() { }
 

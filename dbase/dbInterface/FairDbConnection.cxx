@@ -33,6 +33,7 @@ FairDbConnection::FairDbConnection(
     fUser(user),
     fPassword(password),
     fExistingTableList(),
+    fSchema(""),
     fNumConnectedStatements(0),
     fUrl(url.c_str()),
     fUrlValidated(kFALSE),
