@@ -16,7 +16,9 @@
 
 
 FairMQProcessorTask::FairMQProcessorTask() :
-  fPayload(NULL)
+  fPayload(NULL),
+  SendPart(),
+  ReceivePart()
 {
 }
 

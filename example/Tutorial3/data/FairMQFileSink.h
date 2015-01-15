@@ -78,6 +78,10 @@ class FairMQFileSink : public FairMQDevice
     vector<TIn> fHitVector;
     bool fHasBoostSerialization;
 #endif // for BOOST serialization
+
+    /// Copy Constructor
+    FairMQFileSink(const FairMQFileSink&);
+    FairMQFileSink operator=(const FairMQFileSink&);
 };
 
 ////////// Template implementation of Run() in FairMQFileSink.tpl :
