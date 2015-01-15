@@ -70,6 +70,11 @@ static void s_catch_signals(void)
 
 typedef struct DeviceOptions
 {
+    DeviceOptions() :
+        id(), ioThreads(0), processorTask(),
+        inputSocketType(), inputBufSize(0), inputMethod(), inputAddress(),
+        outputSocketType(), outputBufSize(0), outputMethod(), outputAddress() {}
+
     string id;
     int ioThreads;
     string processorTask;
