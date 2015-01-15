@@ -112,7 +112,8 @@ The template demonstrate and implement the following:
     root [1] .q
     ```
 
-## Modular (custom) installation of FairRoot: (inrtoduced by Ivana Hrivnacova)
+## Modular (custom) installation of FairRoot: 
+ (inrtoduced by Ivana Hrivnacova)
 
 Added option FAIRROOT_MODULAR_BUILD (default is off)
 - if the option is activated the environment variables 
@@ -129,21 +130,7 @@ The PackageXYZ_DIR has precedence to  AlFa_DIR, however one should be
 careful with this use and prefer not to have the same package installation
 also in AlFa_DIR 
 
-Adapted Find files: HEPMC, PLUTO, Pythia6, PYTHIA8, ZMQ
-```bash
-Replaced: FindGENERATORS.cmake with
-#	cmake/modules/FindPythia6.cmake
-
-Moved these files in  modules_old
-(not needed with new VMC versions providing CMake): 
-#	deleted:    cmake/modules/FindGEANT3.cmake
-#	deleted:    cmake/modules/FindGEANT4.cmake
-#	deleted:    cmake/modules/FindGEANT4DATA.cmake
-#	deleted:    cmake/modules/FindGEANT4VMC.cmake
-#	deleted:    cmake/modules/FindGENERATORS.cmake
-
-
-Building with FAIRROOT_MODULAR_BUILD 
+# Building with FAIRROOT_MODULAR_BUILD 
 - should be preceded by sourcing thisroot.sh, geant4.sh
 - requires new versions of VMC packages built with CMake
 and installed either in AlFa_DIR or available on path
@@ -157,6 +144,6 @@ cmake \
 ```
 ###Generating Doxygen documentation
 
-If the flage -DBUILD_DOXYGEN=ON  is set when calling cmake, the doxygen documentation will be generated when calling make.  The generated html files can then be found in "build/doxygen/doc/html"
+If the flage -DBUILD_DOXYGEN=ON is set when calling cmake, the doxygen documentation will be generated when calling make.  The generated html files can then be found in "build/doxygen/doc/html"
 
 Doxygen documantation is also available online [here](http://Fairrootgroup.github.io/FairRoot/) 
