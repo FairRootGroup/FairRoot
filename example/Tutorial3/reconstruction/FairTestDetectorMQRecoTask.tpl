@@ -18,6 +18,7 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
 
 #if __cplusplus >= 201103L
 
+    using namespace baseMQ::tools::resolve;
     bool checkInputClass = false;
     bool checkOutputClass = false;
     fHasBoostSerialization = false;
@@ -48,6 +49,7 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
 {
     fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
+    using namespace baseMQ::tools::resolve;
     bool checkInputClass = false;
     bool checkOutputClass = false;
     fHasBoostSerialization = false;

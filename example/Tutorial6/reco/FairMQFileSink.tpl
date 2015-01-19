@@ -14,6 +14,7 @@ FairMQFileSink<TIn, TPayloadIn>::FairMQFileSink() :
 
     fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
+    using namespace baseMQ::tools::resolve;
     fHasBoostSerialization = false;
     if (std::is_same<TPayloadIn, boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn, boost::archive::text_iarchive>::value)
     {

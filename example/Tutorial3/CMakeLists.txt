@@ -13,7 +13,9 @@ Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/fairmq
   ${CMAKE_SOURCE_DIR}/base/MQ
-  ${CMAKE_SOURCE_DIR}/base/MQ/SerializationTools
+  ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
+  ${CMAKE_SOURCE_DIR}/base/MQ/devices
+  ${CMAKE_SOURCE_DIR}/base/MQ/tasks
   ${CMAKE_SOURCE_DIR}/example/mcstack
   ${CMAKE_SOURCE_DIR}/example/Tutorial3
   ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
@@ -79,18 +81,6 @@ If (Boost_FOUND)
   )
 
 
-  Set(NO_DICT_SRCS
-    # data/FairMQFileSink.cxx
-    # data/has_BoostSerialization.cxx
-  )
-
-  If(HAS_CXX11_AUTO AND HAS_CXX11_AUTO_RET_TYPE AND HAS_CXX11_CONSTEXPR AND HAS_CXX11_LAMBDA AND HAS_CXX11_DECLTYPE)
-    Set(NO_DICT_SRCS
-    ${NO_DICT_SRCS} data/has_BoostSerialization.cxx
-    )
-  Endif(HAS_CXX11_AUTO AND HAS_CXX11_AUTO_RET_TYPE AND HAS_CXX11_CONSTEXPR AND HAS_CXX11_LAMBDA AND HAS_CXX11_DECLTYPE)
-
-
 
   If(PROTOBUF_FOUND)
     Set(NO_DICT_SRCS
@@ -105,7 +95,7 @@ Set(LIBRARY_NAME FairTestDetector)
 
 If (Boost_FOUND)
   Set(DEPENDENCIES
-    Base MCStack FairMQ FairMQSampler boost_thread boost_system boost_serialization boost_program_options)
+    Base MCStack FairMQ BaseMQ boost_thread boost_system boost_serialization boost_program_options)
 Else (Boost_FOUND)
   Set(DEPENDENCIES Base MCStack)
 EndIf (Boost_FOUND)

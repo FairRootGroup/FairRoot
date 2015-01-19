@@ -32,7 +32,7 @@
 #include "FairMQMessage.h"
 #include "TriviallyCopyableDataSaver.h"
 #include "BoostDataSaver.h"
-#include "has_BoostSerialization.h"
+#include "baseMQtools.h"
 
 #define CHECK_FUN(Policy, Member) enum { Policy##Member = sizeof(&Policy::Member) > 0 };
 #define GET_POLICY_ID(Policy) #Policy
@@ -42,7 +42,7 @@
 typedef boost::archive::binary_oarchive BinArchive;
 
 template <typename T,typename BoostArchive>
-    using BoostSerializable=has_BoostSerialization<T, void(BoostArchive&, const unsigned int)>;
+    using BoostSerializable=baseMQ::tools::resolve::has_BoostSerialization<T, void(BoostArchive&, const unsigned int)>;
 
 template <typename TPayload, typename TStoragePolicy=TriviallyCopyableDataSaver<TPayload> >
 class BinaryOutFileManager : public TStoragePolicy

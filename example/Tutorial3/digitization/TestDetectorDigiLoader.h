@@ -29,7 +29,7 @@
 #include "FairMQLogger.h"
 
 #if __cplusplus >= 201103L
-#include "has_BoostSerialization.h"
+#include "baseMQtools.h"
 #include <type_traits>
 #endif
 
