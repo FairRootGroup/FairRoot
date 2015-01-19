@@ -18,7 +18,9 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/parbase/dbIO
   ${CMAKE_SOURCE_DIR}/fairmq
   ${CMAKE_SOURCE_DIR}/base/MQ
-  ${CMAKE_SOURCE_DIR}/base/MQ/SerializationTools
+  ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
+  ${CMAKE_SOURCE_DIR}/base/MQ/devices
+  ${CMAKE_SOURCE_DIR}/base/MQ/tasks
   ${CMAKE_SOURCE_DIR}/dbase/dbMQ/utils
   ${CMAKE_SOURCE_DIR}/dbase/dbMQ/actors
   ${CMAKE_SOURCE_DIR}/example/mcstack
@@ -83,7 +85,7 @@ set(LIBRARY_NAME TutFairDbMQ)
 
 if (Boost_FOUND)
   Set(DEPENDENCIES
-    Base FairDB ParBase MCStack FairMQ FairMQSampler FairDbMQ boost_thread boost_system boost_serialization)
+    Base FairDB ParBase MCStack FairMQ BaseMQ FairDbMQ boost_thread boost_system boost_serialization)
 else (Boost_FOUND)
   Set(DEPENDENCIES Base  FairDB ParBase MCStack)
 endif (Boost_FOUND)

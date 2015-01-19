@@ -14,11 +14,10 @@ ${BASE_INCLUDE_DIRECTORIES}
 ${CMAKE_SOURCE_DIR}/fairmq
 ${CMAKE_SOURCE_DIR}/fairmq/devices
 ${CMAKE_SOURCE_DIR}/base/MQ
-${CMAKE_SOURCE_DIR}/base/MQ/DevicePolicy/Sampler
-${CMAKE_SOURCE_DIR}/base/MQ/DevicePolicy/Serialization
-${CMAKE_SOURCE_DIR}/base/MQ/DevicePolicy/Storage
-${CMAKE_SOURCE_DIR}/base/MQ/DevicePolicy/Tools
-${CMAKE_SOURCE_DIR}/base/MQ/SerializationTools
+${CMAKE_SOURCE_DIR}/base/MQ/policies/Sampler
+${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
+${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage
+${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
 ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
 ${CMAKE_SOURCE_DIR}/example/Tutorial7
 ${CMAKE_SOURCE_DIR}/example/Tutorial7/data
@@ -69,7 +68,7 @@ Set(LIBRARY_NAME Tutorial7)
 
 If (Boost_FOUND)
   Set(DEPENDENCIES
-    Base FairMQ FairMQSampler 
+    Base FairMQ BaseMQ 
     boost_thread boost_system boost_serialization boost_program_options 
     RooFitCore RooFit Foam MathMore FairTestDetector
     )

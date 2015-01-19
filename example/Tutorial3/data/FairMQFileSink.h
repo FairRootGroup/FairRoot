@@ -31,7 +31,7 @@
 #include "FairTestDetectorHit.h"
 
 #if __cplusplus >= 201103L
-#include "has_BoostSerialization.h"
+#include "baseMQtools.h"
 #endif
 
 #include "TMessage.h"

@@ -13,6 +13,7 @@ TestDetectorDigiLoader<T1, T2>::TestDetectorDigiLoader()
 {
     fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
+    using namespace baseMQ::tools::resolve;
     fHasBoostSerialization = false;
     if (std::is_same<T2, boost::archive::binary_oarchive>::value || std::is_same<T2, boost::archive::text_oarchive>::value)
     {
