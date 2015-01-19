@@ -49,6 +49,11 @@ template <typename T, typename ManagerType >
 // program options
 typedef struct SimOption
 {
+    SimOption() :
+        filename(), treename(), branchname(), classname(), 
+        fileoption(), useTCA(true), plotdata(false),
+        tmax(0), Nmean(0.), Nsigma(0.) {}
+    
     string filename;
     string treename;
     string branchname;

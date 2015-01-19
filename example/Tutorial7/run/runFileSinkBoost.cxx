@@ -75,6 +75,11 @@ static void s_catch_signals(void)
 
 typedef struct DeviceOptions
 {
+    DeviceOptions() :
+        id(), ioThreads(0),
+        inputSocketType(), inputBufSize(0), inputMethod(), inputAddress(),
+        filename(), treename(), branchname(), classname(), fileoption(), useTClonesArray(true) {}
+    
     string id;
     int ioThreads;
     string inputSocketType;
@@ -88,6 +93,7 @@ typedef struct DeviceOptions
     string fileoption;
     bool useTClonesArray;
 } DeviceOptions_t;
+
 
 inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 {
