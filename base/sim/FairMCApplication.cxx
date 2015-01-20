@@ -627,7 +627,7 @@ void FairMCApplication::Stepping()
       fDisVol=fVolIter->second;
       fCopyNo=fDisVol->getCopyNo();
       if(copyNo==fCopyNo) {
-        fDisDet=dynamic_cast<FairDetector*> (fDisVol->GetModule());
+        fDisDet=fDisVol->GetDetector();
         if (fDisDet) {
           fDisDet->ProcessHits(fDisVol);
         }
@@ -643,7 +643,7 @@ void FairMCApplication::Stepping()
       fNewV->SetModule(fDisVol->GetModule());
       fNewV->setCopyNo(copyNo);
       fVolMap.insert(pair<Int_t, FairVolume* >(id, fNewV));
-      fDisDet=dynamic_cast<FairDetector*> (fDisVol->GetModule());
+      fDisDet=fDisVol->GetDetector();
       if ( fDisDet) {
         fDisDet->ProcessHits(fNewV);
       }
