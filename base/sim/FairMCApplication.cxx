@@ -73,10 +73,8 @@ using std::pair;
 FairMCApplication::FairMCApplication(const char* name, const char* title,
                                      TObjArray* ModList, const char* MatName)
   :TVirtualMCApplication(name,title),
-   fActDetIter(NULL),
    fActiveDetectors(NULL),
    fFairTaskList(NULL),
-   fDetIter(NULL),
    fDetectors(NULL),
    fDetMap(NULL),
    fLogger(FairLogger::GetLogger()),
@@ -125,17 +123,19 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
   fModIter->Reset();
   FairDetector* detector;
   TObject* obj;
+ 
   while((obj=fModIter->Next())) {
     if(obj->InheritsFrom("FairDetector")) {
       detector=dynamic_cast<FairDetector*>(obj);
       fDetectors->Add(detector);
+      listDetectors.push_back(detector);
       if(detector->IsActive()) {
         fActiveDetectors->Add(detector);
+        listActiveDetectors.push_back(detector);
       }
     }
   }
-  fDetIter=fDetectors->MakeIterator();
-  fActDetIter=fActiveDetectors->MakeIterator();
+    
 // Create a Task list
   fFairTaskList= new FairTask("Task List", 1);
   gROOT->GetListOfBrowsables()->Add(fFairTaskList);
@@ -151,10 +151,8 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
   :TVirtualMCApplication(rhs.GetName(),rhs.GetTitle()),
-   fActDetIter(NULL),
    fActiveDetectors(NULL),
    fFairTaskList(NULL),
-   fDetIter(NULL),
    fDetectors(NULL),
    fDetMap(NULL),
    fLogger(NULL),
@@ -212,15 +210,14 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
     if(obj->InheritsFrom("FairDetector")) {
       detector=dynamic_cast<FairDetector*>(obj);
       fDetectors->Add(detector);
+      listDetectors.push_back(detector);
       if(detector->IsActive()) {
         fActiveDetectors->Add(detector);
+        listActiveDetectors.push_back(detector);
       }
     }
   }
-  fDetIter=fDetectors->MakeIterator();
-  fActDetIter=fActiveDetectors->MakeIterator();
-
-  // Clone stack
+   // Clone stack
   fStack = rhs.fStack->CloneStack();
 
 // Create a Task list
@@ -233,10 +230,8 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication()
   :TVirtualMCApplication(),
-   fActDetIter(0),
    fActiveDetectors(0),
    fFairTaskList(0),
-   fDetIter(0),
    fDetectors(0),
    fDetMap(0),
    fLogger(FairLogger::GetLogger()),
@@ -283,11 +278,9 @@ FairMCApplication::~FairMCApplication()
   delete fStack;
   delete fActiveDetectors; // don't do fActiveDetectors->Delete() here
   // the modules are already deleted in FairRunSim
-  delete fActDetIter;
   delete fDetectors;
   delete gMC;
   delete fModIter;
-  delete fDetIter;
   gMC=0;
   //   cout<<"Leave Destructor of FairMCApplication"<<endl;
 }
@@ -303,10 +296,8 @@ FairMCApplication& FairMCApplication::operator=(const FairMCApplication& rhs)
   // base class assignment
   TVirtualMCApplication::operator=(rhs);
 
-  fActDetIter = NULL;
   fActiveDetectors = NULL;
   fFairTaskList = NULL;
-  fDetIter = NULL;
   fDetectors = NULL;
   fDetMap = NULL;
   fLogger = NULL;
@@ -358,13 +349,13 @@ FairMCApplication& FairMCApplication::operator=(const FairMCApplication& rhs)
     if(obj->InheritsFrom("FairDetector")) {
       detector=dynamic_cast<FairDetector*>(obj);
       fDetectors->Add(detector);
+      listDetectors.push_back(detector);
       if(detector->IsActive()) {
         fActiveDetectors->Add(detector);
+        listActiveDetectors.push_back(detector);
       }
     }
   }
-  fDetIter=fDetectors->MakeIterator();
-  fActDetIter=fActiveDetectors->MakeIterator();
 
   // Clone stack
   fStack = rhs.fStack->CloneStack();
@@ -435,17 +426,13 @@ void FairMCApplication::FinishRun()
 {
 // Finish MC run.
 // ---
-  if(fActDetIter) {
-    fActDetIter->Reset();
-    FairDetector* detector=NULL;
-    TObject* obj=0;
-    while((obj=fActDetIter->Next())) {
-      detector = dynamic_cast<FairDetector*>(obj);
-      if (detector) {
-        detector->FinishRun();
-      }
-    }
-  }
+  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  {
+    det->FinishRun();
+  });
+    
+
+    
   fFairTaskList->FinishTask();
   //fRootManager->Fill();
 
@@ -508,18 +495,11 @@ void FairMCApplication::BeginEvent()
 {
 // User actions at beginning of event
 // ---
-  if(fActDetIter) {
-    fActDetIter->Reset();
-    FairDetector* detector;
-    TObject* obj=0;
-    while((obj=fActDetIter->Next())) {
-      detector = dynamic_cast<FairDetector*>(obj);
-      if (detector) {
-        detector->BeginEvent();
-      }
-    }
-  }
-
+  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  {
+    det->BeginEvent();
+  });
+    
 }
 
 //_____________________________________________________________________________
@@ -527,17 +507,12 @@ void FairMCApplication::BeginPrimary()
 {
 // User actions at beginning of a primary track
 // ---
-  if(fActDetIter) {
-    fActDetIter->Reset();
-    FairDetector* detector=NULL;
-    TObject* obj=0;
-    while((obj=fActDetIter->Next())) {
-      detector = dynamic_cast<FairDetector*>(obj);
-      if( detector ) {
-        detector->BeginPrimary();
-      }
-    }
-  }
+   for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  {
+     det->BeginPrimary();
+  });
+
+
 }
 //_____________________________________________________________________________
 void FairMCApplication::PreTrack()
@@ -546,17 +521,13 @@ void FairMCApplication::PreTrack()
 // User actions at beginning of each track
 // ---
 
-  if(fActDetIter) {
-    fActDetIter->Reset();
-    FairDetector* detector=NULL;
-    TObject* obj=0;
-    while((obj=fActDetIter->Next())) {
-      detector = dynamic_cast<FairDetector*>(obj);
-      if (detector) {
-        detector->PreTrack();
-      }
-    }
-  }
+  
+ for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+ {
+    det->PreTrack();
+ });
+    
+    
   fTrajAccepted=kFALSE;
   if(NULL != fTrajFilter) {
     // Get the pointer to current track
@@ -697,15 +668,14 @@ void FairMCApplication::PostTrack()
 {
 // User actions after finishing of each track
 // ---
-  fActDetIter->Reset();
-  FairDetector* detector=NULL;
-  TObject* obj=0;
-  while((obj=fActDetIter->Next())) {
-    detector = dynamic_cast<FairDetector*>(obj);
-    if (detector ) {
-      detector->PostTrack();
-    }
-  }
+    
+  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  {
+        det->PostTrack();
+  });
+
+
+
 }
 
 //_____________________________________________________________________________
@@ -713,17 +683,13 @@ void FairMCApplication::FinishPrimary()
 {
 // User actions after finishing of a primary track
 // ---
-  if(fActDetIter) {
-    fActDetIter->Reset();
-    FairDetector* detector=NULL;
-    TObject* obj=0;
-    while((obj=fActDetIter->Next())) {
-      detector = dynamic_cast<FairDetector*>(obj);
-      if (detector) {
-        detector->FinishPrimary();
-      }
-    }
-  }
+  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  {
+    det->FinishPrimary();
+  });
+    
+
+    
 }
 
 //_____________________________________________________________________________
@@ -757,27 +723,20 @@ void FairMCApplication::FinishEvent()
     fFairTaskList->ExecuteTask("");
     fFairTaskList->FinishEvent();
   }
-  TObject* obj=NULL;
-  FairDetector* detector=NULL;
-  fActDetIter->Reset();
-
-  while((obj=fActDetIter->Next())) {
-    detector = dynamic_cast<FairDetector*>(obj);
-    if (detector) {
-      detector->FinishEvent();
-    }
-  }
-
+  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  {
+    det->FinishEvent();
+  });
+    
+    
   if (fRootManager) fRootManager->Fill();
-  fActDetIter->Reset();
-  detector=NULL;
-  obj=NULL;
-  while((obj=fActDetIter->Next())) {
-    detector = dynamic_cast<FairDetector*>(obj);
-    if (detector) {
-      detector->EndOfEvent();
-    }
-  }
+  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  {
+     det->EndOfEvent();
+  });
+    
+    
+    
   fStack->Reset();
   if(NULL != fTrajFilter) {
     fTrajFilter->Reset();
@@ -916,7 +875,6 @@ void FairMCApplication::InitGeometry()
   FairVolume* fv=0;
   Int_t id=0;
   fModIter->Reset();
-  FairDetector* detector=NULL;
   if(fEvGen!=0 && fStack!=0) {
     if (fRootManager) {
       fStack->Register();
@@ -931,12 +889,14 @@ void FairMCApplication::InitGeometry()
   /** Initialize the event generator */
   // if(fEvGen)fEvGen->Init();
   /** Initialize the detectors.    */
-  fActDetIter->Reset();
-  while((detector = dynamic_cast<FairDetector*>(fActDetIter->Next()))) {
-    detector->Initialize();                // initialize the detectors
-    detector->SetSpecialPhysicsCuts();     // set the detector specific detector cuts
-    detector->Register();                  //  add branches to tree
-  }
+  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  {
+     det->Initialize();
+     det->SetSpecialPhysicsCuts();
+     det->Register();
+  });
+  
+    
   /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
   /// There is always a Main Task  !
   /// so .. always a InitTasks() is called <D.B>

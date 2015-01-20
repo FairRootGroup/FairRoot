@@ -22,7 +22,8 @@
 #include "TLorentzVector.h"             // for TLorentzVector
 #include "TString.h"                    // for TString
 
-#include <map>                          // for map, multimap, etc
+#include <map>                           // for map, multimap, etc
+#include <list>                           // for list
 
 class FairDetector;
 class FairEventHeader;
@@ -196,14 +197,10 @@ class FairMCApplication : public TVirtualMCApplication
     Int_t GetIonPdg(Int_t z, Int_t a) const;
 
     // data members
-    /**Iterator for active detector list*/
-    TIterator*           fActDetIter;//!
     /**List of active detector */
     TRefArray*           fActiveDetectors;
     /**List of FairTask*/
     FairTask*             fFairTaskList;//!
-    /**Iterator for detector list (Passive and Active)*/
-    TIterator*           fDetIter; //!
     /**detector list (Passive and Active)*/
     TRefArray*           fDetectors;
     /**Map used for dispatcher*/
@@ -271,8 +268,13 @@ class FairMCApplication : public TVirtualMCApplication
     FairEventHeader*    fEventHeader; //!
 
     FairMCEventHeader*  fMCEventHeader; //!
+    /** list of senstive detectors used in the simuation session*/
+    std::list <FairDetector *> listActiveDetectors; //!
+    /** list of all detectors used in the simuation session*/
+    std::list <FairDetector *> listDetectors;  //!
 
-    ClassDef(FairMCApplication,2)  //Interface to MonteCarlo application
+    
+    ClassDef(FairMCApplication,3)  //Interface to MonteCarlo application
 
   private:
     /** Protected copy constructor */
