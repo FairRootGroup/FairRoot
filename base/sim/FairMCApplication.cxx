@@ -426,13 +426,15 @@ void FairMCApplication::FinishRun()
 {
 // Finish MC run.
 // ---
-  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+        listIter != listActiveDetectors.end();
+        listIter++)
   {
-    det->FinishRun();
-  });
-    
+        (*listIter)->FinishRun();
+  }
 
-    
+
+
   fFairTaskList->FinishTask();
   //fRootManager->Fill();
 
@@ -495,11 +497,13 @@ void FairMCApplication::BeginEvent()
 {
 // User actions at beginning of event
 // ---
-  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
-  {
-    det->BeginEvent();
-  });
     
+    for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+                                              listIter != listActiveDetectors.end();
+                                              listIter++)
+    {
+        (*listIter)->BeginEvent();
+    }
 }
 
 //_____________________________________________________________________________
@@ -507,11 +511,12 @@ void FairMCApplication::BeginPrimary()
 {
 // User actions at beginning of a primary track
 // ---
-   for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
-  {
-     det->BeginPrimary();
-  });
-
+    for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+        listIter != listActiveDetectors.end();
+        listIter++)
+    {
+        (*listIter)->BeginPrimary();
+    }
 
 }
 //_____________________________________________________________________________
@@ -522,10 +527,12 @@ void FairMCApplication::PreTrack()
 // ---
 
   
- for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+ for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+                                           listIter != listActiveDetectors.end();
+                                           listIter++)
  {
-    det->PreTrack();
- });
+        (*listIter)->PreTrack();
+ }
     
     
   fTrajAccepted=kFALSE;
@@ -669,10 +676,12 @@ void FairMCApplication::PostTrack()
 // User actions after finishing of each track
 // ---
     
-  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+        listIter != listActiveDetectors.end();
+        listIter++)
   {
-        det->PostTrack();
-  });
+        (*listIter)->PostTrack();
+  }
 
 
 
@@ -683,10 +692,12 @@ void FairMCApplication::FinishPrimary()
 {
 // User actions after finishing of a primary track
 // ---
-  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+        listIter != listActiveDetectors.end();
+        listIter++)
   {
-    det->FinishPrimary();
-  });
+        (*listIter)->FinishPrimary();
+  }
     
 
     
@@ -723,17 +734,22 @@ void FairMCApplication::FinishEvent()
     fFairTaskList->ExecuteTask("");
     fFairTaskList->FinishEvent();
   }
-  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+        listIter != listActiveDetectors.end();
+        listIter++)
   {
-    det->FinishEvent();
-  });
+        (*listIter)->FinishEvent();
+  }
     
     
   if (fRootManager) fRootManager->Fill();
-  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
+  
+  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+        listIter != listActiveDetectors.end();
+        listIter++)
   {
-     det->EndOfEvent();
-  });
+       (*listIter)->EndOfEvent();
+  }
     
     
     
@@ -889,12 +905,15 @@ void FairMCApplication::InitGeometry()
   /** Initialize the event generator */
   // if(fEvGen)fEvGen->Init();
   /** Initialize the detectors.    */
-  for_each(listActiveDetectors.begin(),listActiveDetectors.end(),[](FairDetector* det)
-  {
-     det->Initialize();
-     det->SetSpecialPhysicsCuts();
-     det->Register();
-  });
+  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+        listIter != listActiveDetectors.end();
+        listIter++)
+ {
+     
+     (*listIter)->Initialize();
+     (*listIter)->SetSpecialPhysicsCuts();
+     (*listIter)->Register();
+  }
   
     
   /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
