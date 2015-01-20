@@ -12,9 +12,9 @@
 
 #include "Rtypes.h"                     // for Int_t, FairVolume::Class, etc
 #include "TString.h"                    // for TString
-
+#include "FairModule.h"
+#include "FairDetector.h"
 class FairGeoNode;
-class FairModule;
 
 /**
  * This Object is only used for internal book keeping!
@@ -47,8 +47,14 @@ class FairVolume : public TNamed
     void  setMotherId(Int_t fM) {fMotherId=fM;}
     void  setMotherCopyNo(Int_t CopyNo) {fMotherCopyNo=CopyNo;}
 
-    FairModule* GetModule() {return fModule;}
-    void SetModule(FairModule* mod) {fModule=mod;}
+    FairModule*   GetModule()     {return fModule;}
+    FairDetector* GetDetector() { return fDetector;}
+    void SetModule(FairModule* mod) {
+        fModule=mod;
+        if (mod->InheritsFrom("FairDetector")){
+           fDetector=dynamic_cast<FairDetector *>(mod);
+        }
+    }
 
     Int_t getMCid() {return fMCid;}
     Int_t getCopyNo() { return fCopyNo;}
@@ -70,8 +76,10 @@ class FairVolume : public TNamed
     Int_t fCopyNo;         /**Volume Copy No*/
     Int_t fMotherId; /**Mother Volume Id*/
     Int_t fMotherCopyNo;   /**Mother Volume Copy No*/
-    FairModule* fModule; /**The Module (detector) which will proccess the hits for this volume*/
-    FairGeoNode* fNode;     /**Node corresponding to this volume*/
+    FairDetector* fDetector; /** The Detector which will proccess the hits for this volume*/
+    FairModule*   fModule;    /**The Module in which the volume is */
+    FairGeoNode*  fNode;     /**Node corresponding to this volume*/
+    
 
     ClassDef(FairVolume,2) // Volume Definition
 
