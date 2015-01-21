@@ -86,7 +86,7 @@ If (Boost_FOUND)
         ${CMAKE_SOURCE_DIR}/example/Tutorial3/data/FairTestDetectorPayload.pb.h
         ${CMAKE_SOURCE_DIR}/example/Tutorial3/data/FairTestDetectorPayload.pb.cc
       COMMAND
-        protoc -I=. --cpp_out=. FairTestDetectorPayload.proto
+        ${SIMPATH}/bin/protoc -I=. --cpp_out=. FairTestDetectorPayload.proto
       WORKING_DIRECTORY
         ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
       )

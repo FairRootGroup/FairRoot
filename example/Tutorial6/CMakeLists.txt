@@ -73,6 +73,16 @@ Set(NO_DICT_SRCS
 
 
   If(PROTOBUF_FOUND)
+    add_custom_command( 
+      OUTPUT
+        ${CMAKE_SOURCE_DIR}/example/Tutorial6/streams/FairTestDetectorPayload.pb.h
+        ${CMAKE_SOURCE_DIR}/example/Tutorial6/streams/FairTestDetectorPayload.pb.cc
+      COMMAND
+        ${SIMPATH}/bin/protoc -I=. --cpp_out=. FairTestDetectorPayload.proto
+      WORKING_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/example/Tutorial6/streams
+      )
+
     Set(NO_DICT_SRCS
       ${NO_DICT_SRCS}
       streams/FairTestDetectorPayload.pb.cc
