@@ -80,9 +80,17 @@ If (Boost_FOUND)
     data/FairTestDetectorDigi.cxx
   )
 
-
-
   If(PROTOBUF_FOUND)
+    add_custom_command(
+      OUTPUT
+        ${CMAKE_SOURCE_DIR}/example/Tutorial3/data/FairTestDetectorPayload.pb.h
+        ${CMAKE_SOURCE_DIR}/example/Tutorial3/data/FairTestDetectorPayload.pb.cc
+      COMMAND
+        protoc -I=. --cpp_out=. FairTestDetectorPayload.proto
+      WORKING_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
+      )
+
     Set(NO_DICT_SRCS
       ${NO_DICT_SRCS}
       data/FairTestDetectorPayload.pb.cc
