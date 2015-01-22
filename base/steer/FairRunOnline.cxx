@@ -190,6 +190,7 @@ void FairRunOnline::Init()
   }
   LOG(INFO) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
   fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
+  fEvtHeader->SetRunId(fRunId);
 
   // Initialize the source
   if(! fSource->Init()) {
@@ -385,12 +386,11 @@ void FairRunOnline::GenerateHtml()
            << "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1transitional.dtd\">" << endl
            << "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">" << endl
            << "<head>" << endl
-           << "<title>Read a ROOT file in Javascript (Demonstration)</title>" << endl
-           << "<meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\" />" << endl
-           << "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://root.cern.ch/js/style/JSRootInterface.css\" />" << endl
-           << "<script type=\"text/javascript\" src=\"http://root.cern.ch/js/scripts/JSRootInterface.js\"></script>" << endl
+           << "<title>Read a ROOT file</title>" << endl
+           << "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge; text/html\">" << endl
+           << "<script type=\"text/javascript\" src=\"http:\/\/root.cern.ch/js/3.2/scripts/JSRootCore.js\"></script>" << endl
            << "</head>" << endl
-           << "<body onload=\"BuildSimpleGUI()\">" << endl
+           << "<body onload=\"JSROOT.BuildSimpleGUI()\">" << endl
            << "<div id=\"simpleGUI\"" << endl
            << "files=\"" << rootName << "\"></div>" << endl
            << "</body>" << endl

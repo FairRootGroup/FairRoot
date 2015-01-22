@@ -41,7 +41,7 @@ class FairLmdSource : public FairMbsSource
     inline const TList* GetFileNames() const { return fFileNames; }
 
     virtual Bool_t Init();
-    virtual Int_t ReadEvent();
+    virtual Int_t ReadEvent(UInt_t=0);
     virtual void Close();
 
   protected:

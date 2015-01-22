@@ -33,7 +33,7 @@ class FairMbsSource : public FairSource
     inline const TObjArray* GetUnpackers() const { return fUnpackers; }
 
     virtual Bool_t Init();
-    virtual Int_t ReadEvent() = 0;
+    virtual Int_t ReadEvent(UInt_t=0) = 0;
     virtual void Close() = 0;
 
     void Reset();

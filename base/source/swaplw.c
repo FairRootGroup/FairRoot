@@ -30,38 +30,37 @@ long         l_len;
    p_source = (unsigned char *) pp_source;
    p_dest   = (unsigned char *) pp_dest;
 
-   switch ( (int) p_dest)
+   if(p_dest)
    {
-      case 0:                             /* source == destination */
-         for (p_d = (unsigned char *) p_source,
-              p_s = (unsigned char *) &lu_save;
-              p_d < p_source + (l_len * 4);
-              )
-         {
-             lu_save = *( (long *) p_d);
-             p_s    += 4;                 /* increment source      */
-             *(p_d++) = *(--p_s);
-             *(p_d++) = *(--p_s);
-             *(p_d++) = *(--p_s);
-             *(p_d++) = *(--p_s);
-         }
-         break;
-
-      default:                            /* source != destination */
-         for (p_s = (unsigned char *) p_source,
-              p_d = (unsigned char *) p_dest;
-              p_s < p_source + (l_len * 4);
-              p_s += 4)
-         {
-             p_s     += 4;                /* increment source      */
-             *(p_d++) = *(--p_s);
-             *(p_d++) = *(--p_s);
-             *(p_d++) = *(--p_s);
-             *(p_d++) = *(--p_s);
-         }
-         break;
-
-   }  /* switch */
+      /* source != destination */
+      for (p_s = (unsigned char *) p_source,
+           p_d = (unsigned char *) p_dest;
+           p_s < p_source + (l_len * 4);
+           p_s += 4)
+      {
+        p_s     += 4;                /* increment source      */
+        *(p_d++) = *(--p_s);
+        *(p_d++) = *(--p_s);
+        *(p_d++) = *(--p_s);
+        *(p_d++) = *(--p_s);
+      }
+    }
+    else
+    {
+       /* source == destination */
+       for (p_d = (unsigned char *) p_source,
+            p_s = (unsigned char *) &lu_save;
+            p_d < p_source + (l_len * 4);
+            )
+       {
+         lu_save = *( (long *) p_d);
+         p_s    += 4;                 /* increment source      */
+           *(p_d++) = *(--p_s);
+           *(p_d++) = *(--p_s);
+           *(p_d++) = *(--p_s);
+           *(p_d++) = *(--p_s);
+       }
+    }
 
    return(1);
 

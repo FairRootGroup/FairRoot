@@ -119,7 +119,7 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
 }
 
 
-Int_t FairLmdSource::ReadEvent()
+Int_t FairLmdSource::ReadEvent(UInt_t iev)
 {
   void* evtptr = &fxEvent;
   void* buffptr = &fxBuffer;
@@ -159,7 +159,8 @@ Int_t FairLmdSource::ReadEvent()
 
 
   // Decode event header
-  Bool_t result = Unpack((Int_t*)fxEvent, sizeof(s_ve10_1), -2, -2, -2, -2, -2);
+  Bool_t result = kFALSE;
+  /*Bool_t result = */Unpack((Int_t*)fxEvent, sizeof(s_ve10_1), -2, -2, -2, -2, -2);
 
   Int_t nrSubEvts = f_evt_get_subevent(fxEvent, 0, NULL, NULL, NULL);
   Int_t sebuflength;
@@ -179,18 +180,19 @@ Int_t FairLmdSource::ReadEvent()
   for(Int_t i = 1; i <= nrSubEvts; i++) {
     void* SubEvtptr = &fxSubEvent;
     void* EvtDataptr = &fxEventData;
-    Int_t* nrlongwords = new Int_t;
-    status = f_evt_get_subevent(fxEvent, i, (Int_t**)SubEvtptr, (Int_t**)EvtDataptr, nrlongwords);
+    Int_t nrlongwords;
+    status = f_evt_get_subevent(fxEvent, i, (Int_t**)SubEvtptr, (Int_t**)EvtDataptr, &nrlongwords);
     if(status) {
       return 1;
     }
-    sebuflength = fxSubEvent->l_dlen;
+    sebuflength = nrlongwords;
     setype = fxSubEvent->i_type;
     sesubtype = fxSubEvent->i_subtype;
     seprocid = fxSubEvent->i_procid;
     sesubcrate = fxSubEvent->h_subcrate;
     secontrol = fxSubEvent->h_control;
-    delete nrlongwords;
+
+    //cout << setype << "  " << sesubtype << "  " << seprocid << "  " << sesubcrate << "  " << secontrol << endl;
 
     if(Unpack(fxEventData, sebuflength,
               setype, sesubtype,
