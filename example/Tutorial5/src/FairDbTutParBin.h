@@ -86,7 +86,8 @@ class FairDbTutParBin : public FairParGenericSet
     // Add-ons: SQL descriptors for the parameter class
     virtual string GetTableDefinition(const char* Name = 0);
     virtual FairDbObjTableMap* CreateObjTableMap() const {
-      return new FairDbTutParBin();
+       FairDbTutParBin* p = new FairDbTutParBin();
+      return dynamic_cast<FairDbObjTableMap*> (p);
     }
 
     // Atomic IO (intrinsic)

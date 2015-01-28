@@ -7,14 +7,14 @@
  ********************************************************************************/
 
 /** 
- *  FairDbTutPar.cxx 
+ *  FairDbTutPar2.cxx 
  * 
  *  created @ 09-01-2014 
  *  by         D.Bertini  
  */ 
 
 
-#include "FairDbTutPar.h"
+#include "FairDbTutPar2.h"
 
 #include "FairDbLogFormat.h"
 #include "FairDbLogService.h"
@@ -33,17 +33,17 @@
 
 using namespace std;
 
-ClassImp(FairDbTutPar);
+ClassImp(FairDbTutPar2);
 
 #include "FairDbReader.tpl"
-template class  FairDbReader<FairDbTutPar>;
+template class  FairDbReader<FairDbTutPar2>;
 
 #include "FairDbWriter.tpl"
-template class  FairDbWriter<FairDbTutPar>;
+template class  FairDbWriter<FairDbTutPar2>;
 
 
 
-FairDbTutPar::FairDbTutPar(const char* name, const char* title, const char* context, Bool_t own)
+FairDbTutPar2::FairDbTutPar2(const char* name, const char* title, const char* context, Bool_t own)
   : FairParGenericSet(name,title,context, own),
     fTopPitch(0.),
     fTopAnchor(0.),
@@ -57,7 +57,7 @@ FairDbTutPar::FairDbTutPar(const char* name, const char* title, const char* cont
 }
 
 
-FairDbTutPar::~FairDbTutPar()
+FairDbTutPar2::~FairDbTutPar2()
 {
   if (fParam_Writer) {
     delete fParam_Writer;
@@ -72,9 +72,9 @@ FairDbTutPar::~FairDbTutPar()
 }
 
 
-void FairDbTutPar::putParams(FairParamList* list)
+void FairDbTutPar2::putParams(FairParamList* list)
 {
-  std::cout<<"-I- FairDbTutPar::putParams() called"<<std::endl;
+  std::cout<<"-I- FairDbTutPar2::putParams() called"<<std::endl;
   if(!list) { return; }
   list->add("top_pitch",  fTopPitch);
   list->add("top_anchor", fTopAnchor);
@@ -82,7 +82,7 @@ void FairDbTutPar::putParams(FairParamList* list)
   list->add("fe_Type",    (Text_t*) &fFeType);
 }
 
-Bool_t FairDbTutPar::getParams(FairParamList* list)
+Bool_t FairDbTutPar2::getParams(FairParamList* list)
 {
   if (!list) { return kFALSE; }
   if (!list->fill("top_pitch", &fTopPitch)) { return kFALSE; }
@@ -94,7 +94,7 @@ Bool_t FairDbTutPar::getParams(FairParamList* list)
   return kTRUE;
 }
 
-void FairDbTutPar::clear()
+void FairDbTutPar2::clear()
 {
   fTopPitch=fTopAnchor=0.0;
   fTopNrFE=0;
@@ -104,7 +104,7 @@ void FairDbTutPar::clear()
 }
 
 
-string FairDbTutPar::GetTableDefinition(const char* Name)
+string FairDbTutPar2::GetTableDefinition(const char* Name)
 {
 
   string sql("create table ");
@@ -122,20 +122,20 @@ string FairDbTutPar::GetTableDefinition(const char* Name)
 
 
 
-void FairDbTutPar::Fill(FairDbResultPool& res_in,
+void FairDbTutPar2::Fill(FairDbResultPool& res_in,
                         const FairDbValRecord* valrec)
 {
   res_in >> fTopPitch  >> fTopAnchor   >> fTopNrFE  >> fFeType;
 }
 
-void FairDbTutPar::Store(FairDbOutTableBuffer& res_out,
+void FairDbTutPar2::Store(FairDbOutTableBuffer& res_out,
                          const FairDbValRecord* valrec) const
 {
   res_out << fTopPitch  << fTopAnchor   << fTopNrFE  << fFeType;
 }
 
 
-void FairDbTutPar::fill(UInt_t rid)
+void FairDbTutPar2::fill(UInt_t rid)
 {
   // Get Reader Meta Class
   fParam_Reader=GetParamReader();
@@ -153,7 +153,7 @@ void FairDbTutPar::fill(UInt_t rid)
   if ( numRows > 1 ) { numRows = 1; }
 
   for (int i = 0; i < numRows; ++i) {
-    FairDbTutPar* cgd = (FairDbTutPar*) fParam_Reader->GetRow(i);
+    FairDbTutPar2* cgd = (FairDbTutPar2*) fParam_Reader->GetRow(i);
     if (!cgd) { continue; }
     fTopPitch = cgd->GetTopPitch();
     fTopAnchor =  cgd->GetTopAnchor();
@@ -164,7 +164,7 @@ void FairDbTutPar::fill(UInt_t rid)
 }
 
 
-void FairDbTutPar::store(UInt_t rid)
+void FairDbTutPar2::store(UInt_t rid)
 {
 
   // Boolean IO test variable
@@ -173,7 +173,7 @@ void FairDbTutPar::store(UInt_t rid)
   // Create a unique statement on choosen DB entry
   auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(GetDbEntry()));
   if ( ! stmtDbn.get() ) {
-    cout << "-E-  FairDbTutPar::Store()  Cannot create statement for Database_id: " << GetDbEntry()
+    cout << "-E-  FairDbTutPar2::Store()  Cannot create statement for Database_id: " << GetDbEntry()
          << "\n    Please check the FAIRDB_TSQL_* environment.  Quitting ... " << endl;
     exit(1);
   }
@@ -186,7 +186,7 @@ void FairDbTutPar::store(UInt_t rid)
 
   if (! fMultConn->GetConnection(GetDbEntry())->TableExists("FAIRDBTUTPAR") ) {
     sql_cmds.push_back(FairDb::GetValDefinition("FAIRDBTUTPAR").Data());
-    sql_cmds.push_back(FairDbTutPar::GetTableDefinition());
+    sql_cmds.push_back(FairDbTutPar2::GetTableDefinition());
   }
 
   // Packed SQL commands executed internally via SQL processor
@@ -196,7 +196,7 @@ void FairDbTutPar::store(UInt_t rid)
     stmtDbn->Commit(sql_cmd.c_str());
     if ( stmtDbn->PrintExceptions() ) {
       fail = true;
-      cout << "-E- FairDbTutPar::Store() ******* Error Executing SQL commands ***********  " << endl;
+      cout << "-E- FairDbTutPar2::Store() ******* Error Executing SQL commands ***********  " << endl;
     }
 
   }
@@ -229,12 +229,12 @@ void FairDbTutPar::store(UInt_t rid)
   // Check for eventual IO problems
   if ( !fParam_Writer->Close() ) {
     fail = true;
-    cout << "-E- FairDbTutPar::Store() ******** Cannot do IO on class: " << GetName() <<  endl;
+    cout << "-E- FairDbTutPar2::Store() ******** Cannot do IO on class: " << GetName() <<  endl;
   }
 
 }
 
-void FairDbTutPar::Print()
+void FairDbTutPar2::Print()
 {
   std::cout<<"   Tutorial SQL  Parameters:"<<std::endl;
   std::cout<<"   Top Pitch    = "<<fTopPitch<<std::endl;

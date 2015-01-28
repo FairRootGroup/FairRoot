@@ -102,8 +102,8 @@
 #pragma link C++ function operator<<(ostream&, const FairRegistry&);
 
 // #### SQL object
-#pragma link C++ class FairTSQLObject+;
-#pragma link C++ enum  FairDBObjectMemberTypes;
-#pragma link C++ union FairDBObjectMemberValues;
-#pragma link C++ class FairDBObjectMemberValue+;
+//#pragma link C++ class FairTSQLObject+;
+//#pragma link C++ enum  FairDBObjectMemberTypes;
+//#pragma link C++ union FairDBObjectMemberValues;
+//#pragma link C++ class FairDBObjectMemberValue+;
 #endif

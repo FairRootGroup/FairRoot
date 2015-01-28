@@ -70,7 +70,8 @@ class FairDbTutPar : public FairParGenericSet
     virtual std::string GetTableDefinition(const char* Name = 0);
 
     virtual FairDbObjTableMap* CreateObjTableMap() const {
-      return new FairDbTutPar();
+       FairDbTutPar* p = new FairDbTutPar();
+      return dynamic_cast<FairDbObjTableMap*> (p);
     }
 
     // Atomic IO (intrinsic)

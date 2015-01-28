@@ -14,8 +14,8 @@
  */ 
 
 
-#ifndef FAIRDBTUTCONTFACT_H
-#define FAIRDBTUTCONTFACT_H
+#ifndef FAIRDBTUTCONTFACT2_H
+#define FAIRDBTUTCONTFACT2_H
 
 #include "FairContFact.h"               // for FairContFact, etc
 
@@ -23,16 +23,16 @@
 
 class FairParSet;
 
-class FairDbTutContFact : public FairContFact
+class FairDbTutContFact2 : public FairContFact
 {
   public:
-    FairDbTutContFact();
-    ~FairDbTutContFact() {}
+    FairDbTutContFact2();
+    ~FairDbTutContFact2() {}
     FairParSet* createContainer(FairContainer* c);
   private:
     void setAllContainers();
 
-    ClassDef( FairDbTutContFact,0); // Factory for parameter containers
+    ClassDef( FairDbTutContFact2,0); // Factory for parameter containers
 };
 
-#endif  /* !FAIRDBTUTCONTFACT_H */
+#endif  /* !FAIRDBTUTCONTFACT2_H */

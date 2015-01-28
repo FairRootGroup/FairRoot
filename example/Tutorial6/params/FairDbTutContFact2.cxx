@@ -14,9 +14,9 @@
  *  by         D.Bertini  
  */ 
 
-#include "FairDbTutContFact.h"
+#include "FairDbTutContFact2.h"
 
-#include "FairDbTutPar.h"               // for FairDbTutPar
+#include "FairDbTutPar2.h"               // for FairDbTutPar2
 #include "FairParSet.h"                 // for FairParSet
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
@@ -29,11 +29,11 @@
 
 using namespace std;
 
-ClassImp(FairDbTutContFact);
+ClassImp(FairDbTutContFact2);
 
-static FairDbTutContFact gFairDbTutContFact;
+static FairDbTutContFact2 gFairDbTutContFact;
 
-FairDbTutContFact::FairDbTutContFact()
+FairDbTutContFact2::FairDbTutContFact2()
 {
   // Constructor (called when the library is loaded)
   fName="FairDbTutContFact";
@@ -42,7 +42,7 @@ FairDbTutContFact::FairDbTutContFact()
   FairRuntimeDb::instance()->addContFactory(this);
 }
 
-void FairDbTutContFact::setAllContainers()
+void FairDbTutContFact2::setAllContainers()
 {
   /** Creates the Container objects with all accepted contexts and adds them to
    *  the list of containers.*/
@@ -58,7 +58,7 @@ void FairDbTutContFact::setAllContainers()
 
 }
 
-FairParSet* FairDbTutContFact::createContainer(FairContainer* c)
+FairParSet* FairDbTutContFact2::createContainer(FairContainer* c)
 {
   /** Calls the constructor of the corresponding parameter container.
    * For an actual context, which is not an empty string and not the default context
@@ -68,7 +68,7 @@ FairParSet* FairDbTutContFact::createContainer(FairContainer* c)
   cout << "-I-FairDbTutContFact::createContainer " << name << endl;
   FairParSet* p=NULL;
   if (strcmp(name,"TUTParDefault")==0) {
-    p=new FairDbTutPar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+    p=new FairDbTutPar2(c->getConcatName().Data(),c->GetTitle(),c->getContext());
     // Set Arguments needed for SQL versioning managment
     p->SetVersion(0);
     p->SetComboNo(-1);
@@ -77,7 +77,7 @@ FairParSet* FairDbTutContFact::createContainer(FairContainer* c)
   }
 
   if (strcmp(name,"TUTParAlternative")==0) {
-    p=new FairDbTutPar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+    p=new FairDbTutPar2(c->getConcatName().Data(),c->GetTitle(),c->getContext());
     // Set Arguments needed for SQL versioning managment
     p->SetVersion(1);
     p->SetComboNo(-1);

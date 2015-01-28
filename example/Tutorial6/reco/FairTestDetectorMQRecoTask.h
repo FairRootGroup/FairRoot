@@ -31,7 +31,7 @@
 
 #include "FairRuntimeDb.h"
 #include "FairDbStreamer.h"
-#include "FairDbTutPar.h"
+#include "FairDbTutPar2.h"
 #include "FairDbMQParMgr.h"
 
 #include "FairTestDetectorRecoTask.h"

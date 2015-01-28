@@ -7,14 +7,14 @@
  ********************************************************************************/
 
 /** 
- *  FairDbTutPar.h 
+ *  FairDbTutPar2.h 
  * 
  *  created @ 09-01-2014 
  *  by         D.Bertini  
  */ 
 
-#ifndef FAIRDBTUTPAR_H
-#define FAIRDBTUTPAR_H
+#ifndef FAIRDBTUTPAR2_H
+#define FAIRDBTUTPAR2_H
 
 #include "FairParGenericSet.h"          // for FairParGenericSet
 #include "DataType.h"                    // for EDataType::kData
@@ -40,14 +40,14 @@ class FairDbValRecord;
 class FairParamList;
 
 
-class FairDbTutPar : public FairParGenericSet
+class FairDbTutPar2 : public FairParGenericSet
 {
   public :
-    FairDbTutPar (const char* name="FairDbTutPar",
+    FairDbTutPar2 (const char* name="FairDbTutPar2",
                   const char* title="Tutorial  parameter",
                   const char* context="TestDefaultContext",
                   Bool_t own=kTRUE);
-    virtual ~FairDbTutPar(void);
+    virtual ~FairDbTutPar2(void);
     void clear(void);
     void   putParams(FairParamList* list);
     Bool_t getParams(FairParamList* list);
@@ -68,10 +68,12 @@ class FairDbTutPar : public FairParGenericSet
     // Add-ons: SQL descriptors for the parameter class
     virtual std::string GetTableDefinition(const char* Name = 0);
 
+    
     virtual FairDbObjTableMap* CreateObjTableMap() const {
-      return new FairDbTutPar();
+       FairDbTutPar2* p = new FairDbTutPar2();
+      return dynamic_cast<FairDbObjTableMap*> (p);
     }
-
+    
     // Atomic IO (intrinsic)
     virtual void Fill(FairDbResultPool& res_in,
                       const FairDbValRecord* valrec);
@@ -90,8 +92,8 @@ class FairDbTutPar : public FairParGenericSet
 
     
     // SQL-IO Meta-Class Getters
-    FairDbReader<FairDbTutPar>* GetParamReader();
-    FairDbWriter<FairDbTutPar>* GetParamWriter();
+    FairDbReader<FairDbTutPar2>* GetParamReader();
+    FairDbWriter<FairDbTutPar2>* GetParamWriter();
 
   private:
     // Strip Data Parameters
@@ -104,31 +106,31 @@ class FairDbTutPar : public FairParGenericSet
     // Database Pool Index
     Int_t fDbEntry; //!
     // Parameter Container SQL Writer Meta-Class
-    FairDbWriter<FairDbTutPar>* fParam_Writer; //!
+    FairDbWriter<FairDbTutPar2>* fParam_Writer; //!
     // Parameter Container SQL Writer Meta-Class
-    FairDbReader<FairDbTutPar>* fParam_Reader; //!
+    FairDbReader<FairDbTutPar2>* fParam_Reader; //!
     // Connection Pool
     FairDbConnectionPool* fMultConn;  //!
 
-    ClassDef(FairDbTutPar,1); // Tutorial5 FairDbTutPar Parameter Container example
+    ClassDef(FairDbTutPar2,1); // Tutorial5 FairDbTutPar2 Parameter Container example
 };
 
 #endif /* !FAIRDBTUTPAR_H*/
 
-inline  FairDbReader<FairDbTutPar>* FairDbTutPar::GetParamReader()
+inline  FairDbReader<FairDbTutPar2>* FairDbTutPar2::GetParamReader()
 {
   if (fParam_Reader) { return fParam_Reader; }
   else {
-    fParam_Reader = new  FairDbReader<FairDbTutPar>();
+    fParam_Reader = new  FairDbReader<FairDbTutPar2>();
     return fParam_Reader;
   }
 }
 
-inline FairDbWriter<FairDbTutPar>* FairDbTutPar::GetParamWriter()
+inline FairDbWriter<FairDbTutPar2>* FairDbTutPar2::GetParamWriter()
 {
   if (fParam_Writer) { return fParam_Writer; }
   else {
-    fParam_Writer = new  FairDbWriter<FairDbTutPar>();
+    fParam_Writer = new  FairDbWriter<FairDbTutPar2>();
     return fParam_Writer;
   }
 }

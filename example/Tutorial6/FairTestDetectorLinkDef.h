@@ -25,9 +25,9 @@
 #pragma link C++ class FairMapPar+;
 
 
-#pragma link C++ class FairDbReader<FairDbTutPar>+;
-#pragma link C++ class FairDbWriter<FairDbTutPar>+;
-#pragma link C++ class  FairDbTutPar+;
-#pragma link C++ class  FairDbTutContFact+;
+#pragma link C++ class FairDbReader<FairDbTutPar2>+;
+#pragma link C++ class FairDbWriter<FairDbTutPar2>+;
+#pragma link C++ class  FairDbTutPar2+;
+#pragma link C++ class  FairDbTutContFact2+;
 
 #endif

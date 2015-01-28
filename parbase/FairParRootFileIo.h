@@ -14,6 +14,9 @@
 #include "TFile.h"                      // for TFile
 #include "TNamed.h"                     // for TNamed
 
+#include <fstream>
+using std::fstream;
+
 class FairRtdbRun;
 class TKey;
 class TList;

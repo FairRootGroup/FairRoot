@@ -18,6 +18,7 @@
 #include <fstream>                      // for fstream
 
 class TList;
+using std::fstream;
 
 class FairParVersion : public TNamed
 {

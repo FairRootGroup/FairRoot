@@ -21,7 +21,7 @@
 
 #include "FairMQLogger.h"
 
-#include "FairDbTutPar.h"
+#include "FairDbTutPar2.h"
 #include "FairRuntimeDb.h"
 #include "FairParAsciiFileIo.h"
 #include "FairParRootFileIo.h"
@@ -93,7 +93,7 @@ InitStatus FairTestDetectorRecoTask::Init()
 
 
    // Paramater managing  
-   FairDbTutPar* par = (FairDbTutPar*)(db->getContainer("TUTParDefault"));
+   FairDbTutPar2* par = (FairDbTutPar2*)(db->getContainer("TUTParDefault"));
    if (par) { 
 	 //LOG(DEBUG) << "-I- FairTestDetectorDb init parameter for runId: "  <<  fRunId << endl;
      db->initContainers(fRunId);

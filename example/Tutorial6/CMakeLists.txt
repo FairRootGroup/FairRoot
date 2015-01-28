@@ -63,14 +63,13 @@ set(SRCS
   sim/FairTestDetectorDigi.cxx		
   sim/FairTestDetectorDigiTask.cxx		
   reco/FairTestDetectorRecoTask.cxx
-  params/FairDbTutPar.cxx
-  params/FairDbTutContFact.cxx
+  params/FairDbTutPar2.cxx
+  params/FairDbTutContFact2.cxx
 )
 
 Set(NO_DICT_SRCS
   db/FairDbMQTutWorker.cxx  
 )
-
 
   If(PROTOBUF_FOUND)
     add_custom_command( 

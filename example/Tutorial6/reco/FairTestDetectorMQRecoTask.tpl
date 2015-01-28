@@ -215,8 +215,8 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     // Using FairDbParMgr  for initialising
      
      int rid = (*ptr); 
-   
-     FairDbTutPar* par = static_cast<FairDbTutPar*>(fParMgr->Initialise("TUTParDefault", rid)); 
+  
+     FairDbTutPar2* par = static_cast<FairDbTutPar2*>(fParMgr->Initialise("TUTParDefault", rid)); 
      if (par)
       {
        par->Print();    

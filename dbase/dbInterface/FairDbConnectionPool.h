@@ -20,6 +20,8 @@
 #include <string>                       // for string
 #include <vector>                       // for vector
 
+using std::ostream;
+
 class FairDbStatement;
 
 class FairDbConnectionPool

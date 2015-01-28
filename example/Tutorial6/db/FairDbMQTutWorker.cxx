@@ -6,7 +6,7 @@
  */ 
 
 #include "FairDbMQTutWorker.h"
-#include "FairDbTutPar.h"
+#include "FairDbTutPar2.h"
 
 FairDbMQTutWorker::FairDbMQTutWorker() : FairDbMQWorker()
 {
@@ -25,8 +25,8 @@ int FairDbMQTutWorker::Register(string p_name)
  // Parameter managing according to Container Factory definition 	
  if(!p_name.compare("TUTParDefault"))
  {
- 	cout << "-I- FairDbMQTutWorker:: FairDbTutPar is created" << endl;
-	FairDbTutPar* par = (FairDbTutPar*)(fRtdb->getContainer(p_name.c_str()));	
+ 	cout << "-I- FairDbMQTutWorker:: FairDbTutPar2 is created" << endl;
+	FairDbTutPar2* par = (FairDbTutPar2*)(fRtdb->getContainer(p_name.c_str()));	
     fParMap[p_name]=par;
  }
 
@@ -38,7 +38,7 @@ bool FairDbMQTutWorker::Initialise(int rid)
 	cout << "-I- FairDbMQTutWorker:: Initialise" << endl;
 
     // Check if required parameter exits in RTDB
-	FairDbTutPar* par = (FairDbTutPar*)(fRtdb->findContainer("TUTParDefault"));
+	FairDbTutPar2* par = (FairDbTutPar2*)(fRtdb->findContainer("TUTParDefault"));
 	   if (par) { 
 		 cout << endl;
 		 cout << "-I- FairDbMQTutWorker:: init parameter for runId: "  <<  rid << endl;
@@ -52,7 +52,7 @@ bool FairDbMQTutWorker::Initialise(int rid)
 
 void FairDbMQTutWorker::Serialize(TString& str, Int_t& p_size)
 {
-	   FairDbTutPar * par = (FairDbTutPar*)(fRtdb->findContainer("TUTParDefault"));
+	   FairDbTutPar2 * par = (FairDbTutPar2*)(fRtdb->findContainer("TUTParDefault"));
 	   if (par)
 	   {
 	   	par->Serialize(str,p_size); 

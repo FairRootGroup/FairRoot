@@ -88,7 +88,7 @@ dbInterface/FairDbUtils.cxx
 dbInterface/FairDbValRecordMap.cxx
 dbInterface/FairDbDataTypeUnion.cxx
 dbInterface/FairDbStreamer.cxx
-dbUtils/FairTSQLObject.cxx
+#dbUtils/FairTSQLObject.cxx
 dbUtils/FairDbLog.cxx
 dbUtils/FairDbLogFormat.cxx
 dbUtils/FairDbLogOSStream.cxx
@@ -109,7 +109,11 @@ set(HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbReader.h ${CM
 set(LINKDEF FairDBLinkDef.h)
 set(LIBRARY_NAME FairDB)
 
+if(ROOT_VERSION_MAJOR VERSION_LESS 6 )
 set(DEPENDENCIES Net RIO Cint Core)
+else()
+set(DEPENDENCIES Net RIO Core)
+endif()
 
 GENERATE_LIBRARY()
 
