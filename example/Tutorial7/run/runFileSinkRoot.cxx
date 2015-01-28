@@ -202,7 +202,6 @@ int main(int argc, char** argv)
     filesink.SetFileProperties(options.filename,options.treename,options.branchname,options.classname,
                                                 options.fileoption,options.useTClonesArray);
 
-    
     filesink.ChangeState(TSink::INIT);
     filesink.SetProperty(TSink::InputSocketType, options.inputSocketType);
     filesink.SetProperty(TSink::InputRcvBufSize, options.inputBufSize);
@@ -211,6 +210,8 @@ int main(int argc, char** argv)
 
     filesink.ChangeState(TSink::SETOUTPUT);
     filesink.ChangeState(TSink::SETINPUT);
+    filesink.ChangeState(TSink::BIND);
+    filesink.ChangeState(TSink::CONNECT);
     filesink.ChangeState(TSink::RUN);
 
     // wait until the running thread has finished processing.

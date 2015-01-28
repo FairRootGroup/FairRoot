@@ -34,15 +34,16 @@
 using namespace std;
 
 typedef TestDetectorDigiLoader<FairTestDetectorDigi, TMessage> TLoader;
+typedef FairMQSampler<TLoader> TSampler;
 
-FairMQSampler<TLoader> sampler;
+TSampler sampler;
 
 static void s_signal_handler(int signal)
 {
     cout << endl << "Caught signal " << signal << endl;
 
-    sampler.ChangeState(FairMQSampler<TLoader>::STOP);
-    sampler.ChangeState(FairMQSampler<TLoader>::END);
+    sampler.ChangeState(TSampler::STOP);
+    sampler.ChangeState(TSampler::END);
 
     cout << "Shutdown complete. Bye!" << endl;
     exit(1);
@@ -169,29 +170,31 @@ int main(int argc, char** argv)
 
     sampler.SetTransport(transportFactory);
 
-    sampler.SetProperty(FairMQSampler<TLoader>::Id, options.id);
-    sampler.SetProperty(FairMQSampler<TLoader>::InputFile, options.inputFile);
-    sampler.SetProperty(FairMQSampler<TLoader>::ParFile, options.parameterFile);
-    sampler.SetProperty(FairMQSampler<TLoader>::Branch, options.branch);
-    sampler.SetProperty(FairMQSampler<TLoader>::EventRate, options.eventRate);
-    sampler.SetProperty(FairMQSampler<TLoader>::NumIoThreads, options.ioThreads);
+    sampler.SetProperty(TSampler::Id, options.id);
+    sampler.SetProperty(TSampler::InputFile, options.inputFile);
+    sampler.SetProperty(TSampler::ParFile, options.parameterFile);
+    sampler.SetProperty(TSampler::Branch, options.branch);
+    sampler.SetProperty(TSampler::EventRate, options.eventRate);
+    sampler.SetProperty(TSampler::NumIoThreads, options.ioThreads);
 
-    sampler.SetProperty(FairMQSampler<TLoader>::NumInputs, 0);
-    sampler.SetProperty(FairMQSampler<TLoader>::NumOutputs, 1);
+    sampler.SetProperty(TSampler::NumInputs, 0);
+    sampler.SetProperty(TSampler::NumOutputs, 1);
 
-    sampler.ChangeState(FairMQSampler<TLoader>::INIT);
+    sampler.ChangeState(TSampler::INIT);
 
-    sampler.SetProperty(FairMQSampler<TLoader>::OutputSocketType, options.outputSocketType);
-    sampler.SetProperty(FairMQSampler<TLoader>::OutputSndBufSize, options.outputBufSize);
-    sampler.SetProperty(FairMQSampler<TLoader>::OutputMethod, options.outputMethod);
-    sampler.SetProperty(FairMQSampler<TLoader>::OutputAddress, options.outputAddress);
+    sampler.SetProperty(TSampler::OutputSocketType, options.outputSocketType);
+    sampler.SetProperty(TSampler::OutputSndBufSize, options.outputBufSize);
+    sampler.SetProperty(TSampler::OutputMethod, options.outputMethod);
+    sampler.SetProperty(TSampler::OutputAddress, options.outputAddress);
 
-    sampler.ChangeState(FairMQSampler<TLoader>::SETOUTPUT);
-    sampler.ChangeState(FairMQSampler<TLoader>::SETINPUT);
+    sampler.ChangeState(TSampler::SETOUTPUT);
+    sampler.ChangeState(TSampler::SETINPUT);
+    sampler.ChangeState(TSampler::BIND);
+    sampler.ChangeState(TSampler::CONNECT);
 
     try
     {
-        sampler.ChangeState(FairMQSampler<TLoader>::RUN);
+        sampler.ChangeState(TSampler::RUN);
     }
     catch (boost::archive::archive_exception& e)
     {
@@ -205,8 +208,8 @@ int main(int argc, char** argv)
         sampler.fRunningCondition.wait(lock);
     }
 
-    sampler.ChangeState(FairMQSampler<TLoader>::STOP);
-    sampler.ChangeState(FairMQSampler<TLoader>::END);
+    sampler.ChangeState(TSampler::STOP);
+    sampler.ChangeState(TSampler::END);
 
     return 0;
 }

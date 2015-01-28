@@ -143,6 +143,8 @@ int main(int argc, char** argv)
 
     sampler.ChangeState(FairMQSampler<TLoader>::SETOUTPUT);
     sampler.ChangeState(FairMQSampler<TLoader>::SETINPUT);
+    sampler.ChangeState(FairMQSampler<TLoader>::BIND);
+    sampler.ChangeState(FairMQSampler<TLoader>::CONNECT);
     // sampler.ChangeState(FairMQSampler<TLoader>::RUN);
 
     try

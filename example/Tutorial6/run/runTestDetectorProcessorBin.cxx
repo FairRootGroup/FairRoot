@@ -138,6 +138,8 @@ int main(int argc, char** argv)
 
     processor.ChangeState(FairMQProcessor::SETOUTPUT);
     processor.ChangeState(FairMQProcessor::SETINPUT);
+    processor.ChangeState(FairMQProcessor::BIND);
+    processor.ChangeState(FairMQProcessor::CONNECT);
     processor.ChangeState(FairMQProcessor::RUN);
 
     char ch;

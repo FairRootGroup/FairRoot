@@ -195,6 +195,8 @@ int main(int argc, char** argv)
 
     sampler.ChangeState(TSampler::SETOUTPUT);
     sampler.ChangeState(TSampler::SETINPUT);
+    sampler.ChangeState(TSampler::BIND);
+    sampler.ChangeState(TSampler::CONNECT);
 
     try
     {
