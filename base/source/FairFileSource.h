@@ -20,11 +20,11 @@
 #include <list>    
 #include "TChain.h"
 #include "TFile.h"
+#include "TFolder.h"
 class FairFileHeader;
 class TString;
 class FairLogger;
 class FairRuntimeDb;
-class TFolder;
 
 class FairFileSource : public FairSource
 {
@@ -82,10 +82,6 @@ private:
     TTree*                              fInTree;
     /** list of folders from all input (and friends) files*/
     TObjArray                           *fListFolder; //!
-    /**Branch id for this run */
-    Int_t                               fBranchSeqId;
-    /**List of branch names as TObjString*/
-    TList*                              fBranchNameList; //!
     /** RuntimeDb*/
     FairRuntimeDb*           fRtdb;
     /**folder structure of output*/
@@ -102,7 +98,7 @@ private:
     FairFileSource(const FairFileSource&);
     FairFileSource operator=(const FairFileSource&);
 
-    ClassDef(FairFileSource, 0)
+    ClassDef(FairFileSource, 1)
 };
 
 

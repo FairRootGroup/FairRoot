@@ -22,8 +22,8 @@
 #include <set> 
 #include <algorithm>                    // for find
 #include "TChainElement.h"
-#include "TFolder.h"
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairRootManager.h"
 #include "TROOT.h"
 #include <list>                         // for _List_iterator, list, etc
 using std::map;
@@ -47,8 +47,6 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
  fInChain(0),
  fInTree(0),
  fListFolder(new TObjArray(16)),
- fBranchSeqId(0),
- fBranchNameList(new TList()),
  fRtdb(FairRuntimeDb::instance()),
  fCbmout(0),
  fCbmroot(0),
@@ -80,8 +78,6 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
  fInChain(0),
  fInTree(0),
  fListFolder(new TObjArray(16)),
- fBranchSeqId(0),
- fBranchNameList(new TList()),
  fRtdb(FairRuntimeDb::instance()),
  fCbmout(0),
  fCbmroot(0),
@@ -154,10 +150,7 @@ Bool_t FairFileSource::Init()
                 fLogger->Info(MESSAGE_ORIGIN, "Branch name %s", ObjName.Data());
                 fCheckInputBranches[chainName]->push_back(ObjName.Data());
                 
-                if(fBranchNameList->FindObject(ObjName.Data())==0) {
-                    fBranchNameList->AddLast(Obj);
-                    fBranchSeqId++;
-                 }
+                FairRootManager::Instance()->AddBranchToList(ObjName.Data());
             }
         }
     }
@@ -472,10 +465,7 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
         for(Int_t i =0; i< list->GetEntries(); i++) {
             Obj=dynamic_cast <TObjString*> (list->At(i));
             fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
-            if(fBranchNameList->FindObject(Obj->GetString().Data())==0) {
-                fBranchNameList->AddLast(Obj);
-                fBranchSeqId++;
-            }
+            FairRootManager::Instance()->AddBranchToList(Obj->GetString().Data());
         }
     }
     

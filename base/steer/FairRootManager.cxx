@@ -447,16 +447,24 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
   }
   AddMemoryBranch(name, obj );
   //cout << " FairRootManager::Register Adding branch:(Obj) " << name << " In folder : " << folderName << endl;
-  if(fBranchNameList->FindObject(name)==0) {
-    fBranchNameList->AddLast(new TObjString(name));
-    fBranchSeqId++;
-  }
-
+ 
+  AddBranchToList(name);
+    
   if (toFile == kFALSE) {
           FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
    }
 }
 //_____________________________________________________________________________
+
+Int_t  FairRootManager::AddBranchToList(const char* name)
+{
+    if(fBranchNameList->FindObject(name)==0) {
+        fBranchNameList->AddLast(new TObjString(name));
+        fBranchSeqId++;
+    }
+    return fBranchSeqId;
+}
+
 
 //_____________________________________________________________________________
 void  FairRootManager::Register(const char* name,const char* Foldername ,TCollection* obj, Bool_t toFile)
@@ -500,10 +508,8 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
   }
   /**Keep the Object in Memory, and do not write it to the tree*/
   AddMemoryBranch(name, obj );
-  if(fBranchNameList->FindObject(name)==0) {
-    fBranchNameList->AddLast(new TObjString(name));
-    fBranchSeqId++;
-  }
+  AddBranchToList(name);
+  
   if (toFile == kFALSE) {
 	  FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
   }

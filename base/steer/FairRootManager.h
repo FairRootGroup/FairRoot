@@ -61,7 +61,8 @@ class FairRootManager : public TObject
     /**Add input background file by name*/
     void                AddBackgroundFile(TString name);
      Bool_t             AllDataProcessed();
-
+    /** Add a branch name to the Branchlist and give it an id*/
+    Int_t AddBranchToList(const char* name);
     /**
     Check if Branch persistence or not (Memory branch)
     return value:
