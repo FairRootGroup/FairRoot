@@ -5,38 +5,45 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Create a library called "libFAIRDB" which includes the source files given in
+# Create a library called "libFairDB" which includes the source files given in
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR}
-${CMAKE_SOURCE_DIR}/fairtools
-${CMAKE_SOURCE_DIR}/base
-${CMAKE_SOURCE_DIR}/base/steer
-${CMAKE_SOURCE_DIR}/base/event
-${CMAKE_SOURCE_DIR}/base/field
-${CMAKE_SOURCE_DIR}/base/sim
-${CMAKE_SOURCE_DIR}/parbase
-${CMAKE_SOURCE_DIR}/dbase
-${CMAKE_SOURCE_DIR}/dbase/dbInterface
-${CMAKE_SOURCE_DIR}/dbase/dbValidation
-${CMAKE_SOURCE_DIR}/dbase/dbUtils
-${CMAKE_SOURCE_DIR}/input/db
-${CMAKE_SOURCE_DIR}/dbase/dbInput
+Set(INCLUDE_DIRECTORIES
+  ${CMAKE_SOURCE_DIR}/fairtools
+  ${CMAKE_SOURCE_DIR}/base
+  ${CMAKE_SOURCE_DIR}/base/steer
+  ${CMAKE_SOURCE_DIR}/base/event
+  ${CMAKE_SOURCE_DIR}/base/field
+  ${CMAKE_SOURCE_DIR}/base/sim
+  ${CMAKE_SOURCE_DIR}/parbase
+  ${CMAKE_SOURCE_DIR}/dbase
+  ${CMAKE_SOURCE_DIR}/dbase/dbInterface
+  ${CMAKE_SOURCE_DIR}/dbase/dbValidation
+  ${CMAKE_SOURCE_DIR}/dbase/dbUtils
+  ${CMAKE_SOURCE_DIR}/input/db
+  ${CMAKE_SOURCE_DIR}/dbase/dbInput
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
-
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
+Set(SYSTEM_INCLUDE_DIRECTORIES
+  ${ROOT_INCLUDE_DIR}
 )
- 
-link_directories( ${LINK_DIRECTORIES})
 
+Include_Directories(${INCLUDE_DIRECTORIES})
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+
+# ---- Libraries
+Set(LINK_DIRECTORIES
+  ${ROOT_LIBRARY_DIR}
+)
+
+Link_Directories(${LINK_DIRECTORIES})
+
+
+# ----- FairDb Code 
 set(SRCS
 dbValidation/Experiment.cxx
-dbValidation/Detector.cxx
+dbValidation/FairDbDetector.cxx
 dbValidation/DataType.cxx
 dbValidation/ValCondition.cxx
 dbValidation/ValInterval.cxx
@@ -81,7 +88,7 @@ dbInterface/FairDbUtils.cxx
 dbInterface/FairDbValRecordMap.cxx
 dbInterface/FairDbDataTypeUnion.cxx
 dbInterface/FairDbStreamer.cxx
-dbUtils/FairTSQLObject.cxx
+#dbUtils/FairTSQLObject.cxx
 dbUtils/FairDbLog.cxx
 dbUtils/FairDbLogFormat.cxx
 dbUtils/FairDbLogOSStream.cxx
@@ -98,13 +105,19 @@ install(FILES "dbInput/db_detector_def.h" DESTINATION include)
 install(FILES "dbInput/prepare_db.sql" DESTINATION share/dbInput)
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
-SET( HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbReader.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h)
-Set(LINKDEF FairDBLinkDef.h)
-Set(LIBRARY_NAME FairDB)
-Set(DEPENDENCIES Net RIO Cint Core)
+set(HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbReader.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h)
+set(LINKDEF FairDBLinkDef.h)
+set(LIBRARY_NAME FairDB)
+
+if(ROOT_VERSION_MAJOR VERSION_LESS 6 )
+set(DEPENDENCIES Net RIO Cint Core)
+else()
+set(DEPENDENCIES Net RIO Core)
+endif()
 
 GENERATE_LIBRARY()
 
-
-
+if (ZMQ_FOUND AND Boost_FOUND)
+add_subdirectory(dbMQ)
+endif()
 

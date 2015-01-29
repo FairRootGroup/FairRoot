@@ -283,8 +283,14 @@ FairDbLogStream* FairDbLogService::CreateStream(const char* name)
   return logStream;
 }
 
-FairDbLogService::FairDbLogService() :
-  fkFatalAbort(0)
+FairDbLogService::FairDbLogService() 
+ : fDefaultLogLevel(),
+   fDefaultOStream(),
+   fDefaultFormat(),
+   fFairDbLogStreamTable(),
+   fFairDbLogCatList(),
+   fCurrentRun(-1),
+   fkFatalAbort(0)
 {
   // Set the default log level for all streams
   fDefaultLogLevel = FairDbLog::kInfo;

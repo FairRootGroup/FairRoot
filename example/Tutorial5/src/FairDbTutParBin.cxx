@@ -5,6 +5,15 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+/** 
+ *  FairDbTutParBin.cxx 
+ * 
+ *  created @ 09-01-2014 
+ *  by         D.Bertini  
+ */ 
+
+
 #include "FairDbTutParBin.h"
 
 #include "TMath.h"
@@ -173,7 +182,7 @@ void FairDbTutParBin::fill(UInt_t rid)
 
   // Define a Context
   ValTimeStamp ts(rid);
-  ValCondition context(Detector::kGfi,DataType::kData,ts);
+  ValCondition context(FairDbDetector::kGfi,DataType::kData,ts);
 
   // Activate reading for this Context
   fParam_Reader->Activate(context, GetVersion());

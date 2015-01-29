@@ -102,7 +102,7 @@ class FairDbBufferFile
 
 
 #if !defined(__CINT__)
-    fstream*  fFile;
+	std::fstream*  fFile;
 #endif
 
     Bool_t   fReading;

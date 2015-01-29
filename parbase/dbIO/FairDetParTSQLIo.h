@@ -10,7 +10,7 @@
  * License:                            *
  * Version:                            *
  ***************************************/
-#pragma once
+//#pragma once
 #ifndef FAIRDET_PAR_TSQL_IO_H
 #define FAIRDET_PAR_TSQL_IO_H
 
@@ -63,7 +63,7 @@ class FairDetParTSQLIo : public FairDetParIo
     // Undo the changes made since last commit.
     virtual void rollback();
 
-    inline void print();
+    void print();
 
 
 
@@ -87,10 +87,10 @@ class FairDetParTSQLIo : public FairDetParIo
 };
 
 /// _______________ Inline Implementations ________________
-#ifndef __CINT__
+//#ifndef __CINT__
 inline void FairDetParTSQLIo::print()
 {
   std::cout << "FairDetParTSQLIo::print()\n\n";
 };
-#endif /* __CINT__ */
+//#endif /* __CINT__ */
 #endif

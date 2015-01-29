@@ -32,6 +32,8 @@ class FairGeoBuilder : public TNamed
     virtual Bool_t createNode(FairGeoNode*, Int_t hadFormat =0)=0;
     virtual Int_t createMedium(FairGeoMedium*)=0;
     virtual void finalize() {}
+    inline const Int_t& GetNMedia() const { return nMed; }
+    inline void SetNMedia(const Int_t& nmed) { nMed = nmed; }
     ClassDef(FairGeoBuilder,0)
 };
 

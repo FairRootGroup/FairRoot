@@ -11,7 +11,7 @@
  * License:                            *
  * Version:                            *
  ***************************************/
-#pragma once
+//#pragma once
 #ifndef FAIR_PAR_TSQL_IO_h
 #define FAIR_PAR_TSQL_IO_h
 
@@ -87,18 +87,18 @@ class FairParTSQLIo: public FairParIo
      * Set which database connection is going to be the default.
      *@param dbNum The default database identification number.
      */
-    inline void SetDefaultDBNum(int const dbNum);
+    void SetDefaultDBNum(int const dbNum);
 
     /**
      *@return The default database identification number.
      */
-    inline int  GetDefaultDBNum() const;
+    int  GetDefaultDBNum() const;
 
     /**
      * Get the connection object.
      *@return The actual FairDBConnection object.
      */
-    inline FairDbConnectionPool const& GetConnections() const;
+    FairDbConnectionPool const& GetConnections() const;
 
     void readVersions(FairRtdbRun* aRun);
     FairRtdbRun* getCurrentRun() {return fCurrentRun;}
@@ -151,7 +151,7 @@ class FairParTSQLIo: public FairParIo
 };
 // ______________________ Inline functions ______________
 
-#ifndef __CINT__
+//#ifndef __CINT__
 inline FairDbConnectionPool const& FairParTSQLIo::GetConnections() const
 {
   return (*(this->fConnections));
@@ -166,5 +166,5 @@ inline int  FairParTSQLIo::GetDefaultDBNum() const
 {
   return this->fDefaultDb;
 };
-#endif /* __CINT__ */
+//#endif /* __CINT__ */
 #endif// END FAIR_PAR_TSQL_h

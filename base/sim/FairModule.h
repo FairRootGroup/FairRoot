@@ -32,6 +32,7 @@ class TArrayI;
 class TGeoMatrix;
 class TGeoNode;
 class TGeoVolume;
+class TGeoMedium;
 class TRefArray;
 
 /**
@@ -72,6 +73,14 @@ class FairModule:  public TNamed
     virtual void        ConstructASCIIGeometry();
     /** Modify the geometry for the simulation run using methods of the Root geometry package */
     virtual void        ModifyGeometry() {;}
+    /**construct geometry from GDML files*/
+    virtual void        ConstructGDMLGeometry(TGeoMatrix*);
+    /** Clone this object (used in MT mode only)*/
+    virtual FairModule* CloneModule() const;
+    /** Init worker run (used in MT mode only) */
+    virtual void BeginWorkerRun() const {;}
+    /** Finish worker run (used in MT mode only) */
+    virtual void FinishWorkerRun() const {;}
 
     /**template function to construct geometry. to be used in derived classes.*/
     template<class T, class U>
@@ -82,6 +91,8 @@ class FairModule:  public TNamed
     virtual Bool_t      CheckIfSensitive(std::string name);
     /**called from ConstructRootGeometry()*/
     virtual void        ExpandNode(TGeoNode* Node);
+    /**called from ConstructGDMLGeometry()*/
+    virtual void        ExpandNodeForGDML(TGeoNode*);
     /**return the MC id of a volume named vname*/
     virtual Int_t       getVolId( const TString& vname ) const {return 0;}
     /**return the detector/Module id (which was set in the sim macro for the detector)*/
@@ -118,13 +129,17 @@ class FairModule:  public TNamed
     FairVolume*   getFairVolume(FairGeoNode* fNode);
     void    AddSensitiveVolume(TGeoVolume* v);
   private:
-    FairModule(const FairModule&);
-    FairModule& operator=(const FairModule&);
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */
     void SetDefaultMatrixName(TGeoMatrix* matrix);
     void AssignMediumAtImport(TGeoVolume* v);  // O.Merle, 29.02.2012 - see impl.
 
+    /**called from ConstructGDMLGeometry. Changes default ID created by TGDMLParse*/
+    void ReAssignMediaId();
+    void swap(FairModule& other) throw();
+
   protected:
+    FairModule(const FairModule&);
+    FairModule& operator=(const FairModule&);
     TString             fgeoVer;
     TString             fgeoName;
     Int_t               fModId;

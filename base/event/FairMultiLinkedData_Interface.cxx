@@ -18,9 +18,9 @@ ClassImp(FairMultiLinkedData_Interface);
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface()
   :TObject(),
-   fLinkBranchName("FairLinkBranch"),
    fVerbose(0),
-   fRefToLinks(0)
+   fRefToLinks(0),
+   fLinkBranchName("FairLinkBranch")
 {
 }
 
@@ -28,8 +28,9 @@ FairMultiLinkedData_Interface::FairMultiLinkedData_Interface()
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t persistanceCheck)
   :TObject(),
-   fLinkBranchName("FairLinkBranch"),
-   fVerbose(0)
+   fVerbose(0),
+   fRefToLinks(),
+   fLinkBranchName("FairLinkBranch")
 {
 	CreateFairMultiLinkedData();
 	SetLinks(links);
@@ -37,9 +38,9 @@ FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(TString dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :TObject(),
-   fLinkBranchName("FairLinkBranch"),
-   fVerbose(0)
-
+   fVerbose(0),
+   fRefToLinks(),
+   fLinkBranchName("FairLinkBranch")
 {
 
 	CreateFairMultiLinkedData();
@@ -49,9 +50,9 @@ FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(TString dataType, s
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface( Int_t dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :TObject(),
-   fLinkBranchName("FairLinkBranch"),
-   fVerbose(0)
-
+   fVerbose(0),
+   fRefToLinks(),
+   fLinkBranchName("FairLinkBranch")
 {
 	CreateFairMultiLinkedData();
 	FairMultiLinkedData data(dataType, links, fileId, evtId, persistanceCheck, bypass, mult);

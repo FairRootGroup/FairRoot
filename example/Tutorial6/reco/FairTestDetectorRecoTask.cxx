@@ -21,7 +21,7 @@
 
 #include "FairMQLogger.h"
 
-#include "FairDbTutPar.h"
+#include "FairDbTutPar2.h"
 #include "FairRuntimeDb.h"
 #include "FairParAsciiFileIo.h"
 #include "FairParRootFileIo.h"
@@ -68,7 +68,7 @@ InitStatus FairTestDetectorRecoTask::Init()
    TString workdir = getenv("VMCWORKDIR"); 
 
    if (!db->getFirstInput() ) { 
-      LOG(DEBUG) << "-W- FairTestDetectorRecoTask::Init() set Io input: "  << endl;
+	 //  LOG(DEBUG) << "-W- FairTestDetectorRecoTask::Init() set Io input: "  << endl;
 	  // Set the Ascii IO as first input
 	 FairParAsciiFileIo* db_input =  new FairParAsciiFileIo();
 	 TString filename = workdir + "/tutorial5/macros/ascii-example.par";
@@ -91,13 +91,14 @@ InitStatus FairTestDetectorRecoTask::Init()
 	  //db->setSecondInput(inp2);
    }
 
+
    // Paramater managing  
-   FairDbTutPar* par = (FairDbTutPar*)(db->getContainer("TUTParDefault"));
+   FairDbTutPar2* par = (FairDbTutPar2*)(db->getContainer("TUTParDefault"));
    if (par) { 
-	 LOG(DEBUG) << "-I- FairTestDetectorDb init parameter for runId: "  <<  fRunId << endl;
+	 //LOG(DEBUG) << "-I- FairTestDetectorDb init parameter for runId: "  <<  fRunId << endl;
      db->initContainers(fRunId);
      db->saveOutput();
-	 LOG(DEBUG) << "-I- FairTestDetectorDb parameter initialised for runId: "  <<  fRunId << endl;
+	 // LOG(DEBUG) << "-I- FairTestDetectorDb parameter initialised for runId: "  <<  fRunId << endl;
    }
     return kSUCCESS;
 }
@@ -138,10 +139,11 @@ void FairTestDetectorRecoTask::Exec(Option_t* opt)
 
 void FairTestDetectorRecoTask::InitWithId(Int_t rid)
 {
-  cout << "-I_ FairTestDetectorRecoTask::init() called !!!!" << rid << ":" << fRunId << endl; 
-  if (rid != fRunId ) {
+  //cout << "-I_ FairTestDetectorRecoTask::init() called !!!!" << rid << ":" << fRunId << endl; 
+  // if (rid != fRunId ) {
+	if (true){  
     fRunId = rid;
-    cout << "-I_ FairTestDetectorRecoTask::init() called !!!!" << endl; 
+    //cout << "-I_ FairTestDetectorRecoTask::init() called !!!!" << endl; 
 	Init();
   }
 }

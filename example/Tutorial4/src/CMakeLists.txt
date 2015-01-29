@@ -9,25 +9,25 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-set(INCLUDE_DIRECTORIES
-${BASE_INCLUDE_DIRECTORIES}
-${Boost_INCLUDE_DIR}
-${CMAKE_SOURCE_DIR}/example/Tutorial4/src
-${CMAKE_SOURCE_DIR}/example/Tutorial4/src/mc
-${CMAKE_SOURCE_DIR}/example/Tutorial4/src/param
-${CMAKE_SOURCE_DIR}/example/Tutorial4/src/data
-${CMAKE_SOURCE_DIR}/example/Tutorial4/src/reco
-${CMAKE_SOURCE_DIR}/example/Tutorial4/src/tools
-${CMAKE_SOURCE_DIR}/example/mcstack
+Set(INCLUDE_DIRECTORIES
+  ${BASE_INCLUDE_DIRECTORIES}
+  ${CMAKE_SOURCE_DIR}/example/Tutorial4/src
+  ${CMAKE_SOURCE_DIR}/example/Tutorial4/src/mc
+  ${CMAKE_SOURCE_DIR}/example/Tutorial4/src/param
+  ${CMAKE_SOURCE_DIR}/example/Tutorial4/src/data
+  ${CMAKE_SOURCE_DIR}/example/Tutorial4/src/reco
+  ${CMAKE_SOURCE_DIR}/example/Tutorial4/src/tools
+  ${CMAKE_SOURCE_DIR}/example/mcstack
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
+Include_Directories(${INCLUDE_DIRECTORIES})
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
+Set(LINK_DIRECTORIES
+  ${ROOT_LIBRARY_DIR}
 ) 
 
-link_directories( ${LINK_DIRECTORIES})
+Link_Directories(${LINK_DIRECTORIES})
 
 set(SRCS
 #Put here your sourcefiles

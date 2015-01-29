@@ -56,8 +56,10 @@ If(USE_PATH_INFO)
 EndIf(USE_PATH_INFO)
 
 # Check if the user wants to build the project in the source
+# directory and if the install directory is different from the build
 # directory
 CHECK_OUT_OF_SOURCE_BUILD()
+CHECK_INSTALL_DIRECTORY()
 
 # Check if we are on an UNIX system. If not stop with an error
 # message
@@ -65,13 +67,17 @@ IF(NOT UNIX)
   MESSAGE(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
 ENDIF(NOT UNIX)  
 
+
 #Check if necessary environment variables are set
-#If not stop execution
-IF(NOT DEFINED ENV{SIMPATH})
-  MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
-ENDIF(NOT DEFINED ENV{SIMPATH})
-STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
-SET(SIMPATH $ENV{SIMPATH})
+#If not stop execution unless modular build is activated
+Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
+IF(NOT FAIRROOT_MODULAR_BUILD)
+  IF(NOT DEFINED ENV{SIMPATH})
+    MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
+  ENDIF(NOT DEFINED ENV{SIMPATH})
+  STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
+  SET(SIMPATH $ENV{SIMPATH})
+endif(NOT FAIRROOT_MODULAR_BUILD)
 
 # Check if the external packages are installed into a separate install
 # directory
@@ -84,12 +90,23 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 find_package(CUDA)
 find_package(ROOT 5.32.00 REQUIRED)
 find_package(PLUTO REQUIRED)
-find_package(GENERATORS REQUIRED)
-find_package(GEANT3 REQUIRED)
-find_package(GEANT4)
-find_package(GEANT4DATA)
-find_package(GEANT4VMC)
-find_package(CLHEP)
+find_package(Pythia6 REQUIRED)
+if(FAIRROOT_MODULAR_BUILD)
+  # Geant3, Geant4 installed via cmake
+  find_package(Geant3 REQUIRED)
+  find_package(Geant4 REQUIRED)
+else(FAIRROOT_MODULAR_BUILD)
+  # For old versions of VMC packages (to be removed)
+  set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules_old" ${CMAKE_MODULE_PATH})
+  find_package(GEANT3 REQUIRED)
+  find_package(GEANT4)
+  find_package(GEANT4DATA)
+  find_package(GEANT4VMC)
+  find_package(CLHEP)
+  find_package(GEANT4DATA)
+  find_package(GEANT4VMC)
+  find_package(CLHEP)
+endif(FAIRROOT_MODULAR_BUILD)
 find_package(RuleChecker)
 find_package(IWYU)
 find_package(ZeroMQ)
@@ -123,9 +140,10 @@ Message("-- Looking for Boost ...")
 # for boost.
 Unset(Boost_INCLUDE_DIR CACHE)
 Unset(Boost_LIBRARY_DIRS CACHE)
-find_package(Boost 1.41 COMPONENTS thread system timer)
+find_package(Boost 1.41 COMPONENTS thread system timer program_options)
 If (Boost_FOUND)
   Set(Boost_Avail 1)
+  Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Boost_LIBRARY_DIR})
 Else (Boost_FOUND)
   Set(Boost_Avail 0)
 EndIf (Boost_FOUND)
@@ -140,6 +158,9 @@ SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
     SOVERSION "${FAIRROOT_MAJOR_VERSION}"
     SUFFIX ".so"
 )
+
+# Load the macro to generate the needed version info at compile time
+Generate_Version_Info()
 
 # Set some useful variables
 SetBasicVariables()
@@ -215,6 +236,10 @@ Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
 
 Install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
         DESTINATION bin
+       )
+
+Install(FILES ${CMAKE_BINARY_DIR}/FairVersion.h
+        DESTINATION include
        )
 
 Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install

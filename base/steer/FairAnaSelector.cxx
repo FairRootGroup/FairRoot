@@ -57,10 +57,8 @@ void FairAnaSelector::Init(TTree* tree)
     fRunAna->SetInTree(tree);
     LOG(INFO) << "FairAnaSelector::Init(): SetInTree done" << FairLogger::endl;
 
-    FairRootManager* ioman = FairRootManager::Instance();
-    ioman->OpenInTree();
-
     LOG(INFO) << "FairAnaSelector::Init(): Containers static? " << (fRunAna->GetContainerStatic()?"YES":"NO") << FairLogger::endl;
+
     if ( !fRunAna->GetContainerStatic() ) {
       fRunAna->InitContainers();
     }

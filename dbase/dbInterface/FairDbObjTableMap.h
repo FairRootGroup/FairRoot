@@ -14,13 +14,16 @@
 #include "ValCondition.h"                 // for ValCondition
 #include "ValInterval.h"                   // for ValInterval
 #include "ValTimeStamp.h"               // for ValTimeStamp
-#include "db_detector_def.h"            // for Detector, etc
+#include "db_detector_def.h"            // for FairDbDetector, etc
 
 #include "Rtypes.h"                     // for UInt_t, Int_t, etc
 
 #include <stddef.h>                     // for NULL
 #include <cassert>                      // for assert
 #include <string>                       // for string
+
+#include "FairDbStreamer.h"
+
 
 class FairDbOutTableBuffer;
 class FairDbResult;
@@ -85,9 +88,23 @@ class FairDbObjTableMap : public TObject
     //
     ValTimeStamp             GetTimeStart() const { return fTimeStart; }
     ValTimeStamp             GetTimeEnd()   const { return fTimeEnd; }
-    Detector::Detector_t     GetDetector()  const { return fDetType; }
+    FairDbDetector::Detector_t     GetDetector()  const { return fDetType; }
     DataType::DataType_t     GetDataType()   const { return fSimType; }
 
+    // MQ IO functionaly 
+   
+    virtual void Serialize(TString &str, Int_t& p_size){
+                 str = FairDb::StreamAsString(this, p_size); 
+    }
+
+    virtual void  Deserialize(std::string b_str){
+          FairDbStreamer aStreamer;
+          TString par_str(b_str.c_str());
+          aStreamer.SetString(par_str);
+          aStreamer.Fill(this);  
+          //cout << "-E- FairDbObjTableMap Deserializing object dumped : " <<  endl;
+          //  this->Print(); 
+}
 
   protected:
     //
@@ -98,7 +115,7 @@ class FairDbObjTableMap : public TObject
     //
     ValTimeStamp               fTimeStart;
     ValTimeStamp               fTimeEnd;
-    Detector::Detector_t       fDetType;
+    FairDbDetector::Detector_t       fDetType;
     DataType::DataType_t       fSimType;
     //
 

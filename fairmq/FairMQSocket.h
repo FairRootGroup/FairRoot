@@ -18,19 +18,30 @@
 #include <string>
 #include "FairMQMessage.h"
 
-using std::string;
-using std::stringstream;
+using namespace std;
 
 class FairMQSocket
 {
   public:
+    const int SNDMORE;
+    const int RCVMORE;
+    const int NOBLOCK;
+
+    FairMQSocket(int sndMore, int rcvMore, int noBlock)
+        : SNDMORE(sndMore)
+        , RCVMORE(rcvMore)
+        , NOBLOCK(noBlock)
+        {}
+
     virtual string GetId() = 0;
 
     virtual void Bind(const string& address) = 0;
     virtual void Connect(const string& address) = 0;
 
     virtual int Send(FairMQMessage* msg, const string& flag="") = 0;
+    virtual int Send(FairMQMessage* msg, const int flags) = 0;
     virtual int Receive(FairMQMessage* msg, const string& flag="") = 0;
+    virtual int Receive(FairMQMessage* msg, const int flags) = 0;
 
     virtual void* GetSocket() = 0;
     virtual int GetSocket(int nothing) = 0;

@@ -13,17 +13,26 @@ set(LIBZMQ_SHARED libzmq.so)
 set(LIBZMQ_STATIC libzmq.a)
 
 find_path(ZMQ_INCLUDE_DIR NAMES ${ZMQ_H} ${ZMQ_UTILS_H}
+  PATHS ${ZMQ_DIR}/include
+  PATHS ${AlFa_DIR}/include
   PATHS ${SIMPATH}/include
+  NO_DEFAULT_PATH
   DOC   "Path to ZeroMQ include header files."
 )
 
 find_library(ZMQ_LIBRARY_SHARED NAMES ${LIBZMQ_SHARED}
+  PATHS ${ZMQ_DIR}/lib
+  PATHS ${AlFa_DIR}/lib
   PATHS ${SIMPATH}/lib
+  NO_DEFAULT_PATH
   DOC   "Path to ${LIBZMQ_SHARED}."
 )
 
 find_library(ZMQ_LIBRARY_STATIC NAMES ${LIBZMQ_STATIC}
+  PATHS ${ZMQ_DIR}/lib
+  PATHS ${AlFa_DIR}/lib
   PATHS ${SIMPATH}/lib
+  NO_DEFAULT_PATH
   DOC   "Path to ${LIBZMQ_STATIC}."
 )
 

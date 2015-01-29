@@ -48,8 +48,6 @@ Bool_t FairGenericParAsciiFileIo::init(FairParSet *pPar) {
   }
 
   if (pPar->InheritsFrom("FairParGenericSet")) {
-    //      std::cout << "FairGenericParAsciiFileIo ##########calling read
-    // function " << std::endl;
     return readGenericSet((FairParGenericSet *)pPar);
   }
 
@@ -147,6 +145,7 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet *pPar) {
   if (!findContainer(name)) {
     return kFALSE;
   }
+  
 
   FairParamList *paramList = new FairParamList;
   const Int_t maxbuf = 8000;
@@ -157,8 +156,10 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet *pPar) {
   while (buf[0] != '#' && !pFile->eof()) {
     pFile->getline(buf, maxbuf);
     if (buf[0] != '/' && buf[0] != '#') {
-      s = buf;
+      s = buf;	  
       n = s.First(':');
+      // <DB> Check if empty buffer  
+      if (s.IsNull()) continue;   
       if (n == -1) {
         Error("readCond(FairParGenericSet*)",
               "%s:\n  Missing backslash for parameter %s", name, pName.Data());

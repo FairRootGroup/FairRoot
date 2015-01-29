@@ -13,6 +13,7 @@ TestDetectorDigiLoader<T1, T2>::TestDetectorDigiLoader()
 {
     fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
+    using namespace baseMQ::tools::resolve;
     fHasBoostSerialization = false;
     if (std::is_same<T2, boost::archive::binary_oarchive>::value || std::is_same<T2, boost::archive::text_oarchive>::value)
     {
@@ -73,8 +74,13 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* opt)
 {
-     //<DB>  get the RID
-    int rid = fEvtHeader->GetRunId();  
+    //<DB>  get the RID
+    //int rid = fEvtHeader->GetRunId(); 
+    
+    // <DB> Generate a RunID (Time Encoded)    
+    FairRunIdGenerator runID;
+    int rid = runID.generateId();  
+
     int nDigis = fInput->GetEntriesFast();
     int size = nDigis * sizeof(TestDetectorPayload::Digi);
  

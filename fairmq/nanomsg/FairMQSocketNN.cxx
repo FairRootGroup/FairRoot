@@ -19,7 +19,10 @@
 #include "FairMQLogger.h"
 
 FairMQSocketNN::FairMQSocketNN(const string& type, int num, int numIoThreads)
-    : fBytesTx(0)
+    : FairMQSocket(0, 0, NN_DONTWAIT)
+    , fSocket()
+    , fId()
+    , fBytesTx(0)
     , fBytesRx(0)
     , fMessagesTx(0)
     , fMessagesRx(0)
@@ -33,11 +36,22 @@ FairMQSocketNN::FairMQSocketNN(const string& type, int num, int numIoThreads)
         LOG(INFO) << "number of I/O threads is not used in nanomsg";
     }
 
-    fSocket = nn_socket(AF_SP, GetConstant(type));
-    if (type == "sub")
+    if (type == "router" || type == "dealer")
     {
-        nn_setsockopt(fSocket, NN_SUB, NN_SUB_SUBSCRIBE, NULL, 0);
+        // Additional info about using the sockets ROUTER and DEALER with nanomsg can be found in:
+        // http://250bpm.com/blog:14
+        // http://www.freelists.org/post/nanomsg/a-stupid-load-balancing-question,1
+        fSocket = nn_socket(AF_SP_RAW, GetConstant(type));
     }
+    else
+    {
+        fSocket = nn_socket(AF_SP, GetConstant(type));
+        if (type == "sub")
+        {
+            nn_setsockopt(fSocket, NN_SUB, NN_SUB_SUBSCRIBE, NULL, 0);
+        }
+    }
+
 
     LOG(INFO) << "created socket #" << fId;
 }
@@ -87,10 +101,47 @@ int FairMQSocketNN::Send(FairMQMessage* msg, const string& flag)
     return rc;
 }
 
+int FairMQSocketNN::Send(FairMQMessage* msg, const int flags)
+{
+    void* ptr = msg->GetMessage();
+    int rc = nn_send(fSocket, &ptr, NN_MSG, flags);
+    if (rc < 0)
+    {
+        LOG(ERROR) << "failed sending on socket #" << fId << ", reason: " << nn_strerror(errno);
+    }
+    else
+    {
+        fBytesTx += rc;
+        ++fMessagesTx;
+        static_cast<FairMQMessageNN*>(msg)->fReceiving = false;
+    }
+
+    return rc;
+}
+
 int FairMQSocketNN::Receive(FairMQMessage* msg, const string& flag)
 {
     void* ptr = NULL;
     int rc = nn_recv(fSocket, &ptr, NN_MSG, 0);
+    if (rc < 0)
+    {
+        LOG(ERROR) << "failed receiving on socket #" << fId << ", reason: " << nn_strerror(errno);
+    }
+    else
+    {
+        fBytesRx += rc;
+        ++fMessagesRx;
+        msg->SetMessage(ptr, rc);
+        static_cast<FairMQMessageNN*>(msg)->fReceiving = true;
+    }
+
+    return rc;
+}
+
+int FairMQSocketNN::Receive(FairMQMessage* msg, const int flags)
+{
+    void* ptr = NULL;
+    int rc = nn_recv(fSocket, &ptr, NN_MSG, flags);
     if (rc < 0)
     {
         LOG(ERROR) << "failed receiving on socket #" << fId << ", reason: " << nn_strerror(errno);
@@ -172,13 +223,24 @@ int FairMQSocketNN::GetConstant(const string& constant)
     if (constant == "pub")
         return NN_PUB;
     if (constant == "xsub")
-        return NN_SUB; // TODO: is there XPUB, XSUB for nanomsg?
+        return NN_SUB;
     if (constant == "xpub")
         return NN_PUB;
     if (constant == "push")
         return NN_PUSH;
     if (constant == "pull")
         return NN_PULL;
+    if (constant == "req")
+        return NN_REQ;
+    if (constant == "rep")
+        return NN_REP;
+    if (constant == "dealer")
+        return NN_REQ;
+    if (constant == "router")
+        return NN_REP;
+    if (constant == "pair")
+        return NN_PAIR;
+
     if (constant == "snd-hwm")
         return NN_SNDBUF;
     if (constant == "rcv-hwm")
@@ -191,8 +253,11 @@ int FairMQSocketNN::GetConstant(const string& constant)
         LOG(ERROR) << "Multipart messages functionality currently not supported by nanomsg!";
         return -1;
     }
+
     if (constant == "linger")
         return NN_LINGER;
+    if (constant == "no-block")
+        return NN_DONTWAIT;
 
     return -1;
 }

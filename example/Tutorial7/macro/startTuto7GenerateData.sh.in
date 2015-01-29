@@ -1,0 +1,8 @@
+#!/bin/bash
+
+GENERATE="tuto7GenerateData"
+GENERATE+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial7/macro/datasource/Tuto7InputFile.root"
+GENERATE+=" --tree T7SamplerTree --branch MyDigi --class-name MyDigi"
+GENERATE+=" --tmax 10000"
+GENERATE+=" --plot-data false"
+@CMAKE_BINARY_DIR@/bin/$GENERATE 

@@ -25,7 +25,7 @@ class ValCondition : public TObject
   public:
 
     ValCondition();                        // necessary for streamer io
-    ValCondition(const Detector::Detector_t& detector,
+    ValCondition(const FairDbDetector::Detector_t& detector,
                  const DataType::DataType_t mcflag,
                  const ValTimeStamp& time);
     virtual ~ValCondition();
@@ -35,7 +35,7 @@ class ValCondition : public TObject
     /// statically allocated string.
     const char* AsString(Option_t* option = "") const;
 
-    Detector::Detector_t     GetDetector()  const { return fDetector;}
+    FairDbDetector::Detector_t     GetDetector()  const { return fDetector;}
     DataType::DataType_t       GetDataType()   const { return fDataType;}
     ValTimeStamp             GetTimeStamp() const { return fTimeStamp;}
 
@@ -56,13 +56,13 @@ class ValCondition : public TObject
 
   protected:
 
-    Detector::Detector_t       fDetector;
+    FairDbDetector::Detector_t       fDetector;
     DataType::DataType_t         fDataType;
     ValTimeStamp               fTimeStamp;
 
   private:
 
-    ClassDef(ValCondition,1)  // COMBO (Detector,DataType, TimeStamp)
+    ClassDef(ValCondition,1)  // COMBO (FairDbDetector,DataType, TimeStamp)
 
 };
 

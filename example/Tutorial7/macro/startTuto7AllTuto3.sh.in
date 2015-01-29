@@ -1,0 +1,81 @@
+#!/bin/bash
+
+if(@NANOMSG_FOUND@); then
+    buffSize="50000000" # nanomsg buffer size is in bytes
+else
+    buffSize="1000" # zeromq high-water mark is in messages
+fi
+
+dataFormat="Bin"
+if [ "$1" = "bin" ]; then
+    echo "attempting to use pure binary data format"
+elif [ "$1" = "boost" ]; then
+    dataFormat="Boost"
+    echo "attempting to use Boost serialized data format"
+elif [ "$1" = "proto" ]; then
+    dataFormat="Proto"
+    echo "attempting to use Google Protocol Buffers data format"
+elif [ "$1" = "root" ]; then
+    dataFormat="Root"
+    echo "attempting to use Root TMessage data format"
+else
+    echo "none or incorrect data formats provided."
+    echo "(available data format options are: bin, boost, proto, root)"
+    echo "binary data format will be used."
+fi
+
+SAMPLER="tuto7FairTestDetectorSampler$dataFormat"
+SAMPLER+=" --id 101"
+SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi.root"
+SAMPLER+=" --tree cbmsim --branch FairTestDetectorDigi"
+SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5565"
+xterm -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+
+SPLITTER="splitter"
+SPLITTER+=" --id 201"
+SPLITTER+=" --num-outputs 3"
+SPLITTER+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5565"
+SPLITTER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5566"
+SPLITTER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5567"
+SPLITTER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5568"
+xterm -hold -e @CMAKE_BINARY_DIR@/bin/$SPLITTER &
+
+PROCESSOR1="tuto7FairTestDetectorProcessor$dataFormat"
+PROCESSOR1+=" --id 301"
+PROCESSOR1+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
+PROCESSOR1+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5569"
+PROCESSOR1+=" --digi-classname FairTestDetectorDigi --hit-classname FairTestDetectorHit"
+xterm -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+
+PROCESSOR2="tuto7FairTestDetectorProcessor$dataFormat"
+PROCESSOR2+=" --id 401"
+PROCESSOR2+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5567"
+PROCESSOR2+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5570"
+PROCESSOR2+=" --digi-classname FairTestDetectorDigi --hit-classname FairTestDetectorHit"
+xterm -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+
+PROCESSOR3="tuto7FairTestDetectorProcessor$dataFormat"
+PROCESSOR3+=" --id 501"
+PROCESSOR3+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5568"
+PROCESSOR3+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5571"
+PROCESSOR3+=" --digi-classname FairTestDetectorDigi --hit-classname FairTestDetectorHit"
+xterm -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
+
+MERGER="merger"
+MERGER+=" --id 601"
+MERGER+=" --num-inputs 3"
+MERGER+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5569"
+MERGER+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5570"
+MERGER+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5571"
+MERGER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5572"
+xterm -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
+
+FILESINK="tuto7FairTestDetectorFileSink$dataFormat"
+FILESINK+=" --id 701"
+FILESINK+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial7/macro/datasource/Tuto7OutputFileFairTestDetector$dataFormat.root"
+FILESINK+=" --tree cbmsimSinkTree --branch MyHit --class-name FairTestDetectorHit"
+FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5572"
+FILESINK+=" --file-option RECREATE"
+xterm -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+
+

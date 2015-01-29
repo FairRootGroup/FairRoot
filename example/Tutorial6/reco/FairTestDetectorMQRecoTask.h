@@ -30,26 +30,34 @@
 #include "FairMQMessage.h"
 
 #include "FairRuntimeDb.h"
-#include "FairDbTutPar.h"
-
+#include "FairDbStreamer.h"
+#include "FairDbTutPar2.h"
+#include "FairDbMQParMgr.h"
 
 #include "FairTestDetectorRecoTask.h"
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorHit.h"
 #include "FairTestDetectorDigi.h"
 
+#include <csignal>
 
 
 #if __cplusplus >= 201103L
 //#include <memory>
 //#include <chrono>
-#include "has_BoostSerialization.h"
+#include "baseMQtools.h"
 #endif
 
 #include "TMessage.h"
 
+
+#include "FairDbMQ.h"
+
+
+
 using std::cout;
 using std::endl;
+
 
 class TClonesArray;
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
@@ -86,6 +94,11 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     std::vector<TOut> fHitVector;
     bool fHasBoostSerialization;
 #endif // for BOOST serialization
+
+    // FairDbMQ Parameter Manager class 
+    FairDbMQParMgr* fParMgr;
+     
+
 };
 
 ////////// Template implementation of exec in FairTestDetectorMQRecoTask.tpl :

@@ -33,3 +33,11 @@ install_manifest.txt
 build/
 example/Tutorial3/macro/data/*
 !example/Tutorial3/macro/data/dummy.txt
+core_dump*
+gphysi.dat
+FairRunInfo_*
+html/
+example/Tutorial3/data/FairTestDetectorPayload.pb.cc
+example/Tutorial3/data/FairTestDetectorPayload.pb.h
+example/Tutorial6/streams/FairTestDetectorPayload.pb.cc
+example/Tutorial6/streams/FairTestDetectorPayload.pb.h

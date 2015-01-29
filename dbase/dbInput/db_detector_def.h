@@ -7,15 +7,15 @@
  ********************************************************************************/
 
 ////////////////////////////////////////////////////////////////////////////
-// Detector
+// FairDbDetector
 //
-// Detector defines Detector_t which is an enumeration of the
+// FairDbDetector defines Detector_t which is an enumeration of the
 // legal detector configurations
 //
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef DETECTOR_H
-#define DETECTOR_H
+#ifndef FAIRDBDETECTOR_H
+#define FAIRDBDETECTOR_H
 
 #ifndef ROOT_Rtypes
 #if !defined(__CINT__) || defined(__MAKECINT__)
@@ -25,7 +25,7 @@
 
 #include "TString.h"
 
-class Detector
+class FairDbDetector
 {
   public:
     typedef enum EDetector {
@@ -84,7 +84,7 @@ class Detector
       }
     }
 
-    static Detector::Detector_t   CharToEnum(Char_t c) {
+    static FairDbDetector::Detector_t   CharToEnum(Char_t c) {
       switch(c) {
       case 'C':
       case '1':
@@ -130,12 +130,12 @@ class Detector
       static Char_t newstring[255] = "";
       Char_t* ptr = newstring;
       *ptr = 0;
-      Int_t fullmask = Detector::FullMask();
+      Int_t fullmask = FairDbDetector::FullMask();
 
       for (Int_t i=0; i<32; i++) {
-        Detector::Detector_t adet = (Detector::Detector_t)(1<<i);
+        FairDbDetector::Detector_t adet = (FairDbDetector::Detector_t)(1<<i);
         if (mask & adet & fullmask) {
-          const Char_t* toadd = Detector::AsString(adet);
+          const Char_t* toadd = FairDbDetector::AsString(adet);
           if (ptr != newstring) { *ptr++ = ','; }
           strcpy(ptr,toadd);
           ptr += strlen(toadd);
@@ -167,9 +167,9 @@ class Detector
     }
 
 
-    static Detector::Detector_t  StringToEnum(const Char_t* chars, Int_t maxChar=0) {
+    static FairDbDetector::Detector_t  StringToEnum(const Char_t* chars, Int_t maxChar=0) {
 
-      Int_t mask = Detector::StringToMask(chars,maxChar);
+      Int_t mask = FairDbDetector::StringToMask(chars,maxChar);
 
       switch (mask) {
       case kUnknown:
@@ -209,19 +209,19 @@ class Detector
 
     }
 
-    static Detector::Detector_t  GetDetType(Int_t detMask) {
+    static FairDbDetector::Detector_t  GetDetType(Int_t detMask) {
 
-      Detector::Detector_t  fDetType=Detector::kUnknown;
+      FairDbDetector::Detector_t  fDetType=FairDbDetector::kUnknown;
 
-      if      ( detMask & Detector::kCal ) { fDetType = Detector::kCal; }
-      else if ( detMask & Detector::kCalCrystal) { fDetType = Detector::kCalCrystal; }
-      else if ( detMask & Detector::kDch) { fDetType = Detector::kDch; }
-      else if ( detMask & Detector::kGfi) { fDetType = Detector::kGfi; }
-      else if ( detMask & Detector::kLand) { fDetType = Detector::kLand; }
-      else if ( detMask & Detector::kMtof) { fDetType = Detector::kMtof; }
-      else if ( detMask & Detector::kTof) { fDetType = Detector::kTof; }
-      else if ( detMask & Detector::kTracker) { fDetType = Detector::kTracker; }
-      else if ( detMask & Detector::kLos) { fDetType = Detector::kLos; }
+      if      ( detMask & FairDbDetector::kCal )       { fDetType = FairDbDetector::kCal; }
+      else if ( detMask & FairDbDetector::kCalCrystal) { fDetType = FairDbDetector::kCalCrystal; }
+      else if ( detMask & FairDbDetector::kDch)        { fDetType = FairDbDetector::kDch; }
+      else if ( detMask & FairDbDetector::kGfi)        { fDetType = FairDbDetector::kGfi; }
+      else if ( detMask & FairDbDetector::kLand)       { fDetType = FairDbDetector::kLand; }
+      else if ( detMask & FairDbDetector::kMtof)       { fDetType = FairDbDetector::kMtof; }
+      else if ( detMask & FairDbDetector::kTof)        { fDetType = FairDbDetector::kTof; }
+      else if ( detMask & FairDbDetector::kTracker)    { fDetType = FairDbDetector::kTracker; }
+      else if ( detMask & FairDbDetector::kLos)        { fDetType = FairDbDetector::kLos; }
 
       return fDetType;
     }
@@ -230,5 +230,5 @@ class Detector
 };
 
 
-#endif // DETECTOR_H
+#endif // FAIRDBDETECTOR_H
 

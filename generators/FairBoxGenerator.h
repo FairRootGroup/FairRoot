@@ -108,6 +108,14 @@ class FairBoxGenerator : public FairGenerator
      **/
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
+    /** Clone this object (used in MT mode only) */
+    virtual FairGenerator* CloneGenerator() const;
+
+  protected:
+    /** Copy constructor. **/
+    FairBoxGenerator(const FairBoxGenerator&);
+    FairBoxGenerator& operator=(const FairBoxGenerator&);
+
   private:
     Int_t      fPDGType;             // Particle type (PDG encoding)
     Int_t      fMult;                // Multiplicity

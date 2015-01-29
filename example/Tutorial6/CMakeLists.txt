@@ -13,60 +13,42 @@
 # Instead  those are added only if they have been previously set  
 
 
-set(INCLUDE_DIRECTORIES
-${BASE_INCLUDE_DIRECTORIES}
-${ROOT_INCLUDE_DIR}
-${ZMQ_INCLUDE_DIR}
-${CMAKE_SOURCE_DIR}/parbase/dbIO
-${CMAKE_SOURCE_DIR}/fairmq
-${CMAKE_SOURCE_DIR}/base/MQ
-${CMAKE_SOURCE_DIR}/example/mcstack
-${CMAKE_SOURCE_DIR}/example/Tutorial6
-${CMAKE_SOURCE_DIR}/example/Tutorial6/data
-${CMAKE_SOURCE_DIR}/example/Tutorial6/sim
-${CMAKE_SOURCE_DIR}/example/Tutorial6/streams
-${CMAKE_SOURCE_DIR}/example/Tutorial6/reco
-${CMAKE_SOURCE_DIR}/example/Tutorial6/params
+Set(INCLUDE_DIRECTORIES
+  ${BASE_INCLUDE_DIRECTORIES}
+  ${CMAKE_SOURCE_DIR}/parbase/dbIO
+  ${CMAKE_SOURCE_DIR}/fairmq
+  ${CMAKE_SOURCE_DIR}/base/MQ
+  ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
+  ${CMAKE_SOURCE_DIR}/base/MQ/devices
+  ${CMAKE_SOURCE_DIR}/base/MQ/tasks
+  ${CMAKE_SOURCE_DIR}/dbase/dbMQ/utils
+  ${CMAKE_SOURCE_DIR}/dbase/dbMQ/actors
+  ${CMAKE_SOURCE_DIR}/example/mcstack
+  ${CMAKE_SOURCE_DIR}/example/Tutorial6
+  ${CMAKE_SOURCE_DIR}/example/Tutorial6/data
+  ${CMAKE_SOURCE_DIR}/example/Tutorial6/sim
+  ${CMAKE_SOURCE_DIR}/example/Tutorial6/streams
+  ${CMAKE_SOURCE_DIR}/example/Tutorial6/reco
+  ${CMAKE_SOURCE_DIR}/example/Tutorial6/params
+  ${CMAKE_SOURCE_DIR}/example/Tutorial6/param
+  ${CMAKE_SOURCE_DIR}/example/Tutorial6/db
+  ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
 )
 
-if (MYSQL_INCLUDE_DIR)       
-  set(INCLUDE_DIRECTORIES ${INCLUDE_DIRECTORIES} ${MYSQL_INCLUDE_DIR}) 
-endif()
-if (POSTGRESQL_INCLUDE_DIR)  
-set(INCLUDE_DIRECTORIES ${INCLUDE_DIRECTORIES} ${POSTGRESQL_INCLUDE_DIR}) 
-endif()
-if (SQLITE_INCLUDE_DIR)  
-set(INCLUDE_DIRECTORIES ${INCLUDE_DIRECTORIES} ${SQLITE_INCLUDE_DIR}) 
-endif()
-
-#MESSAGE (" INCLUDES='${INCLUDE_DIRECTORIES}' ")
-
-include_directories(${INCLUDE_DIRECTORIES})
+Include_Directories(${INCLUDE_DIRECTORIES})
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 if (Boost_FOUND)
   configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial6/macros/run_sps_init.sh.in ${CMAKE_BINARY_DIR}/bin/run_sps_init.sh )
   file(COPY  ${CMAKE_SOURCE_DIR}/example/Tutorial6/macros/dbconfig.sh DESTINATION ${CMAKE_BINARY_DIR}/bin/ )
 endIf (Boost_FOUND)
 
-set(LINK_DIRECTORIES
-    ${ROOT_LIBRARY_DIR}
-    ${Boost_LIBRARY_DIRS}
+Set(LINK_DIRECTORIES
+  ${ROOT_LIBRARY_DIR}
+  ${Boost_LIBRARY_DIRS}
 ) 
 
-if (MYSQL_LIBRARY_DIR)       
-  set(LINK_DIRECTORIES ${LINK_DIRECTORIES} ${MYSQL_LIBRARY_DIR}) 
-endif()
-if (POSTGRESQL_LIBRARY_DIR)  
-set(LINK_DIRECTORIES ${LINK_DIRECTORIES} ${POSTGRESQL_LIBRARY_DIR}) 
-endif()
-if (SQLITE_LIBRARY_DIR)  
-set(LINK_DIRECTORIES ${LINK_DIRECTORIES} ${SQLITE_LIBRARY_DIR}) 
-endif()
-
-#MESSAGE (" LINKS='${LINK_DIRECTORIES}' ")
-
-
-link_directories(${LINK_DIRECTORIES})
+Link_Directories(${LINK_DIRECTORIES})
 
 set(SRCS
   sim/FairTestDetector.cxx
@@ -81,29 +63,52 @@ set(SRCS
   sim/FairTestDetectorDigi.cxx		
   sim/FairTestDetectorDigiTask.cxx		
   reco/FairTestDetectorRecoTask.cxx
-  params/FairDbTutPar.cxx
-  params/FairDbTutContFact.cxx
+  params/FairDbTutPar2.cxx
+  params/FairDbTutContFact2.cxx
 )
 
+Set(NO_DICT_SRCS
+  db/FairDbMQTutWorker.cxx  
+)
+
+  If(PROTOBUF_FOUND)
+    add_custom_command( 
+      OUTPUT
+        ${CMAKE_SOURCE_DIR}/example/Tutorial6/streams/FairTestDetectorPayload.pb.h
+        ${CMAKE_SOURCE_DIR}/example/Tutorial6/streams/FairTestDetectorPayload.pb.cc
+      COMMAND
+        ${SIMPATH}/bin/protoc -I=. --cpp_out=. FairTestDetectorPayload.proto
+      WORKING_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/example/Tutorial6/streams
+      )
+
+    Set(NO_DICT_SRCS
+      ${NO_DICT_SRCS}
+      streams/FairTestDetectorPayload.pb.cc
+    )
+  Endif(PROTOBUF_FOUND)
+
+
 set(LINKDEF FairTestDetectorLinkDef.h)
-set(LIBRARY_NAME FairDbMQ)
+set(LIBRARY_NAME TutFairDbMQ)
 
 if (Boost_FOUND)
   Set(DEPENDENCIES
-    Base FairDB ParBase MCStack FairMQ FairMQSampler boost_thread boost_system boost_serialization)
+    Base FairDB ParBase MCStack FairMQ BaseMQ FairDbMQ boost_thread boost_system boost_serialization)
 else (Boost_FOUND)
   Set(DEPENDENCIES Base  FairDB ParBase MCStack)
 endif (Boost_FOUND)
 
 GENERATE_LIBRARY()
 
-
+Add_Subdirectory(macros)
 
 if (Boost_FOUND)
   Set(Exe_Names
     testDetectorSamplerInitBin
     testDetectorProcessorInitBin
     fileSinkInitBin 
+    db_tut6worker
   )
 
 
@@ -111,6 +116,7 @@ if (Boost_FOUND)
     run/runTestDetectorSamplerBin.cxx
     run/runTestDetectorProcessorBin.cxx
     run/runFileSinkBin.cxx
+    run/db_tut6worker.cxx		
     )
 
   list(LENGTH Exe_Names _length)
@@ -121,7 +127,7 @@ if (Boost_FOUND)
     list(GET Exe_Source ${_file} _src)
     set(EXE_NAME ${_name})
     set(SRCS ${_src})
-    set(DEPENDENCIES FairDB ParBase FairDbMQ)
+    set(DEPENDENCIES FairDB ParBase FairDbMQ TutFairDbMQ)
     GENERATE_EXECUTABLE()
   endforeach(_file RANGE 0 ${_length})
 endif (Boost_FOUND)

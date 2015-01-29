@@ -9,7 +9,7 @@
 
 #include "DataType.h"                   // for EDataType::kUnknown, etc
 #include "ValCondition.h"                 // for ValCondition
-#include "db_detector_def.h"            // for Detector, etc
+#include "db_detector_def.h"            // for FairDbDetector, etc
 
 #include <stdio.h>                      // for sprintf, printf
 
@@ -58,7 +58,7 @@ const char* ValInterval::AsString(Option_t* option) const
 
   TString detbits;
   if (opt_a) {
-    detbits = Detector::MaskToString(fDetectorMask);
+    detbits = FairDbDetector::MaskToString(fDetectorMask);
   } else {
     sprintf(newstring,"det_id %#4.4x",fDetectorMask);
     detbits = newstring;
@@ -111,8 +111,8 @@ Bool_t ValInterval::IsCompatible(const ValCondition& vldc) const
 
 
   if ( ! (detector & fDetectorMask) &&
-       (detector      != Detector::kUnknown ||
-        fDetectorMask != Detector::kUnknown    ) ) { return kFALSE; }
+       (detector      != FairDbDetector::kUnknown ||
+        fDetectorMask != FairDbDetector::kUnknown    ) ) { return kFALSE; }
   if ( ! (datatype  & fSimMask) &&
        (datatype  != DataType::kUnknown ||
         fSimMask != DataType::kUnknown   ) ) { return kFALSE; }

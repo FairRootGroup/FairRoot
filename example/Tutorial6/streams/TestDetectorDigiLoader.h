@@ -17,6 +17,7 @@
 #include "FairMQSamplerTask.h"
 
 #include "FairMQLogger.h"
+#include "FairRunIdGenerator.h"
 #include <boost/timer/timer.hpp>
 
 #include <boost/archive/text_oarchive.hpp>
@@ -29,7 +30,7 @@
 #include <iostream>
 
 #if __cplusplus >= 201103L
-#include "has_BoostSerialization.h"
+#include "baseMQtools.h"
 #include <type_traits>
 #endif
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

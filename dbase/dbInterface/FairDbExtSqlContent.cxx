@@ -16,7 +16,7 @@ FairDbExtSqlContent::FairDbExtSqlContent(const std::string& ctxt)
     fIntervalType(kUndefined),
     fTimeStart(),
     fTimeEnd(),
-    fDetType(Detector::kUnknown),
+    fDetType(FairDbDetector::kUnknown),
     fSimType(DataType::kUnknown)
 {
 
@@ -25,7 +25,7 @@ FairDbExtSqlContent::FairDbExtSqlContent(const std::string& ctxt)
 FairDbExtSqlContent::FairDbExtSqlContent(IntervalType interval,
     ValTimeStamp start,
     ValTimeStamp end,
-    Detector::Detector_t det,
+    FairDbDetector::Detector_t det,
     DataType::DataType_t sim)
   : FairDbString(),
     fIntervalType(interval),

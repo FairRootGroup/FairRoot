@@ -6,16 +6,19 @@
  */
 
 template <typename TIn, typename TPayloadIn>
-FairMQFileSink<TIn, TPayloadIn>::FairMQFileSink() :
-    fOutFile(NULL),
-    fTree(NULL),
-    fOutput(NULL)
+FairMQFileSink<TIn, TPayloadIn>::FairMQFileSink()
+    : fOutFile(NULL)
+    , fTree(NULL)
+    , fOutput(NULL)
+    , fHitVector()
+    , fHasBoostSerialization()
 {
 
     fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
+    using namespace baseMQ::tools::resolve;
     fHasBoostSerialization = false;
-    if (std::is_same<TPayloadIn, boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn, boost::archive::text_iarchive>::value)
+    if (is_same<TPayloadIn, boost::archive::binary_iarchive>::value || is_same<TPayloadIn, boost::archive::text_iarchive>::value)
     {
         if (has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 1)
             fHasBoostSerialization = true;
@@ -55,18 +58,16 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
 
         boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
         int receivedMsgs = 0;
-        int received = 0;
 
         while (fState == RUNNING)
         {
             FairMQMessage* msg = fTransportFactory->CreateMessage();
-            received = fPayloadInputs->at(0)->Receive(msg);
 
-            if (received > 0)
+            if (fPayloadInputs->at(0)->Receive(msg) > 0)
             {
                 receivedMsgs++;
-                std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
-                std::istringstream ibuffer(msgStr);
+                string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
+                istringstream ibuffer(msgStr);
                 TPayloadIn InputArchive(ibuffer);
 
                 try
@@ -92,9 +93,10 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
                 }
 
                 fTree->Fill();
-                received = 0;
             }
+
             delete msg;
+
             if (fHitVector.size() > 0)
                 fHitVector.clear();
         }
@@ -126,15 +128,12 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
     boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
     int receivedMsgs = 0;
-    int received = 0;
 
     while (fState == RUNNING)
     {
         FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-        received = fPayloadInputs->at(0)->Receive(msg);
-
-        if (received > 0)
+        if (fPayloadInputs->at(0)->Receive(msg) > 0)
         {
             receivedMsgs++;
             Int_t inputSize = msg->GetSize();
@@ -156,7 +155,6 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
             }
 
             fTree->Fill();
-            received = 0;
         }
 
         delete msg;
@@ -195,15 +193,12 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
     boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
     int receivedMsgs = 0;
-    int received = 0;
 
     while (fState == RUNNING)
     {
         FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-        received = fPayloadInputs->at(0)->Receive(msg);
-
-        if (received > 0)
+        if (fPayloadInputs->at(0)->Receive(msg) > 0)
         {
             receivedMsgs++;
             TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
@@ -218,8 +213,6 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
             fTree->Fill();
 
             delete fOutput;
-
-            received = 0;
         }
 
         delete msg;
@@ -250,15 +243,12 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
     boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
 
     int receivedMsgs = 0;
-    int received = 0;
 
     while (fState == RUNNING)
     {
         FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-        received = fPayloadInputs->at(0)->Receive(msg);
-
-        if (received > 0)
+        if (fPayloadInputs->at(0)->Receive(msg) > 0)
         {
             receivedMsgs++;
             fOutput->Delete();
@@ -282,7 +272,6 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
             }
 
             fTree->Fill();
-            received = 0;
         }
 
         delete msg;

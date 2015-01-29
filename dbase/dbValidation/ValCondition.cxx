@@ -13,7 +13,7 @@ ClassImp(ValCondition)
 
 
 ValCondition::ValCondition()
-  :  fDetector(Detector::kUnknown),
+  :  fDetector(FairDbDetector::kUnknown),
      fDataType(DataType::kUnknown),
      fTimeStamp()
 {
@@ -36,7 +36,7 @@ std::ostream& operator<<(std::ostream& os, const ValCondition& vldc)
 }
 
 
-ValCondition::ValCondition(const Detector::Detector_t& detector,
+ValCondition::ValCondition(const FairDbDetector::Detector_t& detector,
                            const DataType::DataType_t mcFlag,
                            const ValTimeStamp& tstamp)
   : TObject(),
@@ -56,13 +56,13 @@ const char* ValCondition::AsString(Option_t* option) const
   case 'c':
   case 'C':
     sprintf(newstring,"[%c%c %s]",
-            Detector::AsString(GetDetector())[0],
+            FairDbDetector::AsString(GetDetector())[0],
             DataType::AsString(GetDataType())[0],
             fTimeStamp.AsString("c"));
     break;
   default:
     sprintf(newstring,"[%6.6s|%6.6s|%s]",
-            Detector::AsString(GetDetector()),
+            FairDbDetector::AsString(GetDetector()),
             DataType::AsString(GetDataType()),
             fTimeStamp.AsString("c"));
   }
@@ -79,7 +79,7 @@ void ValCondition::Print(Option_t* option) const
 
 Bool_t ValCondition::IsNull() const
 {
-  return fDetector==Detector::kUnknown && fDataType == DataType::kUnknown;
+  return fDetector==FairDbDetector::kUnknown && fDataType == DataType::kUnknown;
 }
 
 

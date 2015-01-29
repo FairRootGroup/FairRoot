@@ -5,42 +5,57 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-set(INCLUDE_DIRECTORIES
+Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairmq
   ${CMAKE_SOURCE_DIR}/fairmq/devices
+  ${CMAKE_SOURCE_DIR}/fairmq/examples/req-rep
+  ${CMAKE_SOURCE_DIR}/fairmq/tools
+)
+
+Set(SYSTEM_INCLUDE_DIRECTORIES
   ${Boost_INCLUDE_DIR}
 )
 
-if(PROTOBUF_FOUND)
-  set(INCLUDE_DIRECTORIES
+If(PROTOBUF_FOUND)
+  Set(INCLUDE_DIRECTORIES
     ${INCLUDE_DIRECTORIES}
-    ${PROTOBUF_INCLUDE_DIR}
     # # following directory is only for protobuf tests and is not essential part of FairMQ
     #${CMAKE_SOURCE_DIR}/fairmq/prototest
   )
-endif(PROTOBUF_FOUND)
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${SYSTEM_INCLUDE_DIRECTORIES}
+    ${PROTOBUF_INCLUDE_DIR}
+  )
+EndIf(PROTOBUF_FOUND)
 
-if(NANOMSG_FOUND)
-  set(INCLUDE_DIRECTORIES
+If(NANOMSG_FOUND)
+  Set(INCLUDE_DIRECTORIES
     ${INCLUDE_DIRECTORIES}
-    ${NANOMSG_LIBRARY_SHARED}
     ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
   )
-else(NANOMSG_FOUND)
-  set(INCLUDE_DIRECTORIES
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${SYSTEM_INCLUDE_DIRECTORIES}
+    ${NANOMSG_LIBRARY_SHARED}
+  )
+Else(NANOMSG_FOUND)
+  Set(INCLUDE_DIRECTORIES
     ${INCLUDE_DIRECTORIES}
-    ${ZMQ_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/fairmq/zeromq
   )
-endif(NANOMSG_FOUND)
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${SYSTEM_INCLUDE_DIRECTORIES}
+    ${ZMQ_INCLUDE_DIR}
+  )
+EndIf(NANOMSG_FOUND)
 
-include_directories(${INCLUDE_DIRECTORIES})
+Include_Directories(${INCLUDE_DIRECTORIES})
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-set(LINK_DIRECTORIES
+Set(LINK_DIRECTORIES
   ${Boost_LIBRARY_DIRS}
 )
 
-link_directories(${LINK_DIRECTORIES})
+Link_Directories(${LINK_DIRECTORIES})
 
 set(SRCS
   "FairMQLogger.cxx"
@@ -57,6 +72,8 @@ set(SRCS
   "devices/FairMQSplitter.cxx"
   "devices/FairMQMerger.cxx"
   "FairMQPoller.cxx"
+  "examples/req-rep/FairMQExampleClient.cxx"
+  "examples/req-rep/FairMQExampleServer.cxx"
 )
 
 if(PROTOBUF_FOUND)
@@ -102,9 +119,21 @@ else(NANOMSG_FOUND)
   )
 endif(NANOMSG_FOUND)
 
+
+# to copy src that are header-only files (e.g. c++ template) for FairRoot external installation
+# manual install (globbing add not recommended)
+Set(FairMQHDRFiles
+  devices/GenericSampler.h
+  devices/GenericSampler.tpl
+  devices/GenericProcessor.h
+  devices/GenericFileSink.h
+  devices/GenericFileSink.tpl
+)
+install(FILES ${FairMQHDRFiles} DESTINATION include)
+
 set(DEPENDENCIES
   ${DEPENDENCIES}
-  boost_thread boost_timer boost_system
+  boost_thread boost_timer boost_system boost_program_options
 )
 
 set(LIBRARY_NAME FairMQ)
@@ -117,7 +146,10 @@ set(Exe_Names
   splitter
   merger
   sink
-  proxy)
+  proxy
+  example_client
+  example_server
+)
 
 # following executables are only for protobuf tests and are not essential part of FairMQ
 # if(PROTOBUF_FOUND)
@@ -137,6 +169,8 @@ set(Exe_Source
   run/runMerger.cxx
   run/runSink.cxx
   run/runProxy.cxx
+  examples/req-rep/runExampleClient.cxx
+  examples/req-rep/runExampleServer.cxx
 )
 
 # following source files are only for protobuf tests and are not essential part of FairMQ

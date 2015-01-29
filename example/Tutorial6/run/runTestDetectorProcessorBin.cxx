@@ -64,6 +64,7 @@ static void s_catch_signals(void)
     sigaction(SIGTERM, &action, NULL);
 }
 
+
 int main(int argc, char** argv)
 {
     if (argc != 12)

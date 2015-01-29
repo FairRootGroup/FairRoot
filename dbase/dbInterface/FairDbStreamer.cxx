@@ -27,74 +27,114 @@ FairDbStreamer::FairDbStreamer()
 }
 
 FairDbStreamer::FairDbStreamer(const TObject* obj,FairDb::DataTypes type)
-  : TObject()
+  : TObject(),
+    fString(FairDb::StreamAsString(obj,fSize)), 
+    fSize(0),
+    fType(type)
 {
+/*
   fString = FairDb::StreamAsString(obj,fSize);
   fType=type;
+*/
 }
 
 FairDbStreamer::FairDbStreamer(const Int_t* iarr, Int_t size, FairDb::DataTypes type)
-  : TObject()
+  : TObject(),
+    fString(FairDb::StreamAsString(iarr,size)), 
+    fSize(size),
+    fType(type)
 {
+/*
   fString = FairDb::StreamAsString(iarr,size);
   fSize=size;
   fType=type;
+*/
 }
 
 FairDbStreamer::FairDbStreamer(const UInt_t* iarr, Int_t size, FairDb::DataTypes type)
-  : TObject()
+  : TObject(),
+    fString(FairDb::StreamAsString(iarr,size)), 
+    fSize(size),
+    fType(type)
 {
+/*
   fString = FairDb::StreamAsString(iarr,size);
   fSize=size;
   fType=type;
+*/
 }
 
 
 FairDbStreamer::FairDbStreamer(const Short_t* iarr, Int_t size, FairDb::DataTypes type)
-  : TObject()
+  : TObject(),
+    fString(FairDb::StreamAsString(iarr,size)), 
+    fSize(size),
+    fType(type)
 {
+/*
   fString = FairDb::StreamAsString(iarr,size);
   fSize=size;
   fType=type;
+*/
 }
 
 FairDbStreamer::FairDbStreamer(const UShort_t* iarr, Int_t size, FairDb::DataTypes type)
-  : TObject()
+  : TObject(),
+    fString(FairDb::StreamAsString(iarr,size)), 
+    fSize(size),
+    fType(type)
 {
+/*
   fString = FairDb::StreamAsString(iarr,size);
   fSize=size;
   fType=type;
+*/
 }
 
 FairDbStreamer::FairDbStreamer(const Bool_t* iarr, Int_t size, FairDb::DataTypes type)
-  : TObject()
+  : TObject(),
+    fString(FairDb::StreamAsString(iarr,size)), 
+    fSize(size),
+    fType(type)
 {
+/*
   fString = FairDb::StreamAsString(iarr,size);
   fSize=size;
   fType=type;
+*/
 }
 
 
 FairDbStreamer::FairDbStreamer(const Float_t* iarr, Int_t size, FairDb::DataTypes type)
-  : TObject()
+  : TObject(),
+    fString(FairDb::StreamAsString(iarr,size)), 
+    fSize(size),
+    fType(type)
 {
+/*
   fString = FairDb::StreamAsString(iarr,size);
   fSize=size;
   fType=type;
+*/
 }
 
 FairDbStreamer::FairDbStreamer(const Double_t* iarr, Int_t size, FairDb::DataTypes type)
-  : TObject()
+  : TObject(),
+    fString(FairDb::StreamAsString(iarr,size)), 
+    fSize(size),
+    fType(type)
 {
+/*
   fString = FairDb::StreamAsString(iarr,size);
   fSize=size;
   fType=type;
+*/
 }
 
 
 
 FairDbStreamer::FairDbStreamer(const FairDbStreamer& from)
-  : TObject(from),fString(from.fString)
+  : TObject(from),fString(from.fString),fSize(0),fType()
 {
 }
 

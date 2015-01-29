@@ -20,11 +20,15 @@
 #include <iosfwd>                       // for ostream
 #include <string>                       // for string
 
+
+using namespace std;
+
 class FairDbBufferFile;
 class FairDbTableInterface;
 class FairDbOutTableBuffer;
 class FairDbResultPool;
 class ValCondition;
+
 
 class FairDbValRecord : public FairDbObjTableMap
 {

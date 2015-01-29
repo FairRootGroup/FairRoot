@@ -20,6 +20,7 @@
 #ifndef FAIRGENERICSTACK_H
 #define FAIRGENERICSTACK_H
 
+#include "TClonesArray.h" 
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include "Rtypes.h"                     // for Double_t, Int_t, etc
@@ -152,8 +153,17 @@ class FairGenericStack : public TVirtualMCStack
     virtual Int_t GetCurrentParentTrackNumber() const;
     virtual TParticle* GetParticle(Int_t trackID) const { return NULL; }
 
+    virtual TClonesArray* GetListOfParticles() { return NULL; } 
+
+    /** Clone this object (used in MT mode only) */
+    virtual FairGenericStack* CloneStack() const;
 
   protected:
+    /** Copy constructor */
+    FairGenericStack(const FairGenericStack&);
+    /** Assignment operator */
+    FairGenericStack& operator=(const FairGenericStack&);
+
     /** Fair Logger */
     FairLogger*            fLogger;//!
 
@@ -165,10 +175,6 @@ class FairGenericStack : public TVirtualMCStack
 
     /**Verbosity level*/
     Int_t fVerbose;
-
-  private:
-    FairGenericStack(const FairGenericStack&);
-    FairGenericStack& operator=(const FairGenericStack&);
 
     ClassDef(FairGenericStack,1)
 

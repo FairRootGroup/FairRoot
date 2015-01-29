@@ -36,15 +36,15 @@
 #if __cplusplus >= 201103L
 //#include <memory>
 //#include <chrono>
-#include "has_BoostSerialization.h"
+#include "baseMQtools.h"
 #endif
 
 #include "TMessage.h"
 
-using std::cout;
-using std::endl;
+using namespace std;
 
 class TClonesArray;
+
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 {
@@ -74,10 +74,14 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     FairTestDetectorRecoTask* fRecoTask;
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-    std::vector<TIn> fDigiVector;
-    std::vector<TOut> fHitVector;
+    vector<TIn> fDigiVector;
+    vector<TOut> fHitVector;
     bool fHasBoostSerialization;
 #endif // for BOOST serialization
+
+    /// Copy Constructor
+    FairTestDetectorMQRecoTask(const FairTestDetectorMQRecoTask&);
+    FairTestDetectorMQRecoTask operator=(const FairTestDetectorMQRecoTask&);
 };
 
 // Template implementation of exec in FairTestDetectorMQRecoTask.tpl :

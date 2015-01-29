@@ -11,6 +11,7 @@
 #include "TNamed.h"                     // for TNamed
 
 #include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include "TMCtls.h"                     // for multi-threading
 
 class FairEventHeader;
 class FairFileHeader;
@@ -34,7 +35,7 @@ class FairRun : public TNamed
     /**
      * default ctor
      */
-    FairRun();
+    FairRun(Bool_t isMaster = kTRUE);
     /**
     * default dtor
     */
@@ -132,13 +133,23 @@ class FairRun : public TNamed
     void CreateGeometryFile(const char* geofile);
 
     //** Set if RunInfo file should be written */
-    void SetWriteRunInfoFile(Bool_t write) { fWriteRunInfo = write;}
+    void SetWriteRunInfoFile(Bool_t write);
+
+    //** Set if RunInfo should be generated */
+    void SetGenerateRunInfo(Bool_t write) { fGenerateRunInfo = write;}
 
     //** Get info if RunInfo file is written */
-    Bool_t GetWriteRunInfoFile() { return fWriteRunInfo;}
+    Bool_t GetWriteRunInfoFile();
+
+    //** Get info if RunInfo file is written */
+    Bool_t IsRunInfoGenerated() { return fGenerateRunInfo;}
 
     //** Switches the use of FairLinks */
     void SetUseFairLinks(Bool_t val);
+
+    //** Get info if run on master */
+    Bool_t GetIsMaster() const { return fIsMaster;}
+
 
   private:
     FairRun(const FairRun& M);
@@ -152,7 +163,11 @@ class FairRun : public TNamed
     /** Fair Logger */
     FairLogger*             fLogger;//!
     /** static pointer to this run*/
-    static FairRun*          fRunInstance;
+#if !defined(__CINT__)
+    static TMCThreadLocal FairRun* fRunInstance;
+#else
+    static                FairRun* fRunInstance;
+#endif
     /** RuntimeDb*/
     FairRuntimeDb*           fRtdb;
     /** Tasks used*/
@@ -172,7 +187,9 @@ class FairRun : public TNamed
     /** File  Header */
     FairFileHeader*          fFileHeader;
     /** true if RunInfo file should be written*/
-    Bool_t                   fWriteRunInfo;  //!
+    Bool_t                   fGenerateRunInfo;  //!
+    /** true if on master*/
+    Bool_t                   fIsMaster;  //!
 
     ClassDef(FairRun ,1)
 };

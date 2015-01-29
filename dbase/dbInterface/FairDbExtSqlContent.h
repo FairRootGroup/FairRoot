@@ -14,7 +14,7 @@
 #include "FairDbString.h"               // for FairDbString
 #include "DataType.h"                    // for DataType_t
 #include "ValTimeStamp.h"               // for ValTimeStamp
-#include "db_detector_def.h"            // for Detector, etc
+#include "db_detector_def.h"            // for FairDbDetector, etc
 
 #include "Rtypes.h"                     // for FairDbExtSqlContent::Class, etc
 
@@ -37,7 +37,7 @@ class FairDbExtSqlContent : public FairDbString
     FairDbExtSqlContent(IntervalType interval,
                         ValTimeStamp start,
                         ValTimeStamp end,
-                        Detector::Detector_t det,
+                        FairDbDetector::Detector_t det,
                         DataType::DataType_t sim);
 
     virtual ~FairDbExtSqlContent();
@@ -45,7 +45,7 @@ class FairDbExtSqlContent : public FairDbString
 
     ValTimeStamp             GetTimeStart() const { return fTimeStart; }
     ValTimeStamp             GetTimeEnd()   const { return fTimeEnd; }
-    Detector::Detector_t     GetDetector()  const { return fDetType; }
+    FairDbDetector::Detector_t     GetDetector()  const { return fDetType; }
     DataType::DataType_t       GetDataType()   const { return fSimType; }
 
 
@@ -55,7 +55,7 @@ class FairDbExtSqlContent : public FairDbString
     IntervalType             fIntervalType;
     ValTimeStamp             fTimeStart;
     ValTimeStamp             fTimeEnd;
-    Detector::Detector_t     fDetType;
+    FairDbDetector::Detector_t     fDetType;
     DataType::DataType_t       fSimType;
 
 

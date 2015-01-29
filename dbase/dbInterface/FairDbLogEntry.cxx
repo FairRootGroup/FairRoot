@@ -144,7 +144,7 @@ void FairDbLogEntry::Recreate(const string& tableName,
 {
   if (    fSeqNo > 0
           && ( tableName    == ""                       || tableName   == fLogTableName )
-          && ( detMask      == Detector::FullMask()     || detMask     == fLogDetMask )
+          && ( detMask      == FairDbDetector::FullMask()     || detMask     == fLogDetMask )
           && ( simMask      == DataType::FullMask()      || simMask     == fLogSimMask )
           && ( task         == 0                        || task        == fLogVersion )
           && ( logSeqNoMin  == 0                        || logSeqNoMin ==  fLogSeqNoMin)

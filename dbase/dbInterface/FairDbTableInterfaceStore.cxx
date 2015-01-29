@@ -49,7 +49,9 @@ FairDbTableInterfaceStore::FairDbTableInterfaceStore()
     fSqlCondition(),
     fTPmap(),
     fRollbackTimes(),
-    fDataTypeAss()
+    fDataTypeAss(),
+    fLogName(""),
+    fVerbosity(1)
 {
 
   fVerbosity = 1;

@@ -12,7 +12,7 @@
  * Version:                                *
  *******************************************/
 
-#pragma once
+//#pragma once
 #ifndef FAIR_GENERIC_PAR_TSQL_Io_H
 #define FAIR_GENERIC_PAR_TSQL_Io_H
 

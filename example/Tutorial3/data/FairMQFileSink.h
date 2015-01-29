@@ -31,7 +31,7 @@
 #include "FairTestDetectorHit.h"
 
 #if __cplusplus >= 201103L
-#include "has_BoostSerialization.h"
+#include "baseMQtools.h"
 #endif
 
 #include "TMessage.h"
@@ -49,6 +49,8 @@ class TVector3;
 class TFile;
 class TTree;
 class TClonesArray;
+
+using namespace std;
 
 template <typename TIn, typename TPayloadIn>
 class FairMQFileSink : public FairMQDevice
@@ -73,9 +75,13 @@ class FairMQFileSink : public FairMQDevice
     TClonesArray* fOutput;
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-    std::vector<TIn> fHitVector;
+    vector<TIn> fHitVector;
     bool fHasBoostSerialization;
 #endif // for BOOST serialization
+
+    /// Copy Constructor
+    FairMQFileSink(const FairMQFileSink&);
+    FairMQFileSink operator=(const FairMQFileSink&);
 };
 
 ////////// Template implementation of Run() in FairMQFileSink.tpl :

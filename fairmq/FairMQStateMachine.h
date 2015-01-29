@@ -16,13 +16,16 @@
 #define FAIRMQSTATEMACHINE_H_
 
 #include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/condition_variable.hpp>
 #include <boost/bind.hpp>
+#include <boost/function.hpp>
+
 #include <boost/msm/back/state_machine.hpp>
 #include <boost/msm/front/state_machine_def.hpp>
 #include <boost/msm/front/functor_row.hpp>
 #include <boost/msm/front/euml/common.hpp>
 #include <boost/msm/front/euml/operator.hpp>
-#include <boost/function.hpp>
 
 #include "FairMQLogger.h"
 
@@ -44,6 +47,14 @@ namespace FairMQFSM
     // defining the boost MSM state machine
     struct FairMQFSM_ : public msm::front::state_machine_def<FairMQFSM_>
     {
+        FairMQFSM_()
+        : fState()
+        , fRunningStateThread()
+        {}
+
+        // Destructor
+        virtual ~FairMQFSM_() {};
+
         template <class Event, class FSM>
         void on_entry(Event const&, FSM&)
         {
@@ -70,7 +81,7 @@ namespace FairMQFSM
             template <class EVT, class FSM, class SourceState, class TargetState>
             void operator()(EVT const&, FSM&, SourceState&, TargetState&)
             {
-                LOG(STATE) << "Transition from " << typeid(SourceState).name() << " to " << typeid(TargetState).name() << " with event:" << typeid(EVT).name();
+                // LOG(STATE) << "Transition from " << typeid(SourceState).name() << " to " << typeid(TargetState).name() << " with event:" << typeid(EVT).name();
             }
         };
         struct InitFct
@@ -106,7 +117,7 @@ namespace FairMQFSM
             void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
             {
                 fsm.fState = RUNNING;
-                fsm.running_state = boost::thread(boost::bind(&FairMQFSM_::Run, &fsm));
+                fsm.fRunningStateThread = boost::thread(boost::bind(&FairMQFSM_::Run, &fsm));
             }
         };
         struct StopFct
@@ -116,7 +127,7 @@ namespace FairMQFSM
             {
                 fsm.fState = IDLE;
                 fsm.Terminate();
-                fsm.running_state.join();
+                fsm.fRunningStateThread.join();
             }
         };
         struct PauseFct
@@ -125,7 +136,7 @@ namespace FairMQFSM
             void operator()(EVT const&, FSM& fsm, SourceState&, TargetState&)
             {
                 fsm.fState = WAITING;
-                fsm.running_state.join();
+                fsm.fRunningStateThread.join();
                 fsm.Pause();
             }
         };
@@ -157,10 +168,10 @@ namespace FairMQFSM
         template <class FSM, class Event>
         void no_transition(Event const& e, FSM&, int state)
         {
-            LOG(STATE) << "no transition from state " << state << " on event " << typeid(e).name() << std::endl;
+            LOG(STATE) << "no transition from state " << state << " on event " << typeid(e).name();
         }
         // this is to run certain functions (e.g. Run()) as separate task
-        boost::thread running_state;
+        boost::thread fRunningStateThread;
         // backward compatibility to FairMQStateMachine
         enum State
         {
@@ -192,6 +203,11 @@ class FairMQStateMachine : public FairMQFSM::FairMQFSM
     FairMQStateMachine();
     virtual ~FairMQStateMachine();
     void ChangeState(int event);
+
+    // condition variable to notify parent thread about end of running state.
+    boost::condition_variable fRunningCondition;
+    boost::mutex fRunningMutex;
+    bool fRunningFinished;
 };
 
 #endif /* FAIRMQSTATEMACHINE_H_ */

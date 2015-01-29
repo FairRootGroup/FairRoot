@@ -47,8 +47,8 @@ using std::endl;
 
 ClassImp(FairRunSim)
 //_____________________________________________________________________________
-FairRunSim::FairRunSim()
-  :FairRun(),
+FairRunSim::FairRunSim(Bool_t isMaster)
+  :FairRun(isMaster),
    count(0),
    fApp(NULL),
    fBeamMom(0),
@@ -445,7 +445,7 @@ FairMCEventHeader*  FairRunSim::GetMCEventHeader()
 }
 //_____________________________________________________________________________
 
-FairRunSim* FairRunSim::fginstance= 0;
+TMCThreadLocal FairRunSim* FairRunSim::fginstance= 0;
 
 
 
