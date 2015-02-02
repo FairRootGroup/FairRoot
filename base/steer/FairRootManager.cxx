@@ -1398,7 +1398,7 @@ void FairRootManager::AssignTClonesArray(TString branchName)
 //_____________________________________________________________________________
 Int_t FairRootManager::CheckBranchSt(const char* BrName)
 {
-  cout <<"FairRootManager::CheckBranchSt  :  " << BrName << endl;
+ // cout <<"FairRootManager::CheckBranchSt  :  " << BrName << endl;
   Int_t returnvalue=0;
   TObject* Obj1 =NULL;
   TObjArray *fListFolder=0;
@@ -1409,7 +1409,7 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
     fListFolder = new TObjArray(16);
   }
     
-  cout <<"FairRootManager::CheckBranchSt  :  " <<fCbmroot << endl;
+  //cout <<"FairRootManager::CheckBranchSt  :  " <<fCbmroot << endl;
   if (fCbmroot) {
     fListFolder->Add(fCbmroot);
     Obj1 = fCbmroot->FindObjectAny(BrName);
@@ -1420,7 +1420,7 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
   }
   if(!Obj1) {
     for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
-      cout << "Search in Folder: " << i << "  " <<  fListFolder->At(i) << endl;
+     // cout << "Search in Folder: " << i << "  " <<  fListFolder->At(i) << endl;
       TFolder* fold = dynamic_cast<TFolder*> (fListFolder->At(i));
       if(fold!=0) {
         Obj1= fold->FindObjectAny(BrName);
@@ -1455,7 +1455,7 @@ void  FairRootManager::CreatePerMap()
   fBranchPerMap=kTRUE;
   for (Int_t i=0; i<fBranchSeqId; i++) {
     TObjString* name= (TObjString*)(fBranchNameList->At(i));
-    cout << " FairRootManager::CreatePerMap() Obj At " << i << "  is "  << name->GetString() << endl;
+//    cout << " FairRootManager::CreatePerMap() Obj At " << i << "  is "  << name->GetString() << endl;
     TString BrName=name->GetString();
     fBrPerMap.insert(pair<TString, Int_t> (BrName, CheckBranchSt(BrName.Data())));
   }
@@ -1634,7 +1634,7 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
       MaxS=chain->GetEntries();
       fLogger->Info(MESSAGE_ORIGIN, "Signal chain  No %i  has  :  %i  entries ", iterN->first, MaxS);
       ratio=iterN->second;
-      cout<< " ratio = "<< ratio <<  "floor(MaxS/ratio) "<<floor(MaxS/ratio) << "  MaxBG = " << MaxBG  << endl;
+     // cout<< " ratio = "<< ratio <<  "floor(MaxS/ratio) "<<floor(MaxS/ratio) << "  MaxBG = " << MaxBG  << endl;
       if(floor(MaxS/ratio) > MaxBG) {
         localMax=MaxBG+(Int_t)floor(MaxBG*ratio);
         fLogger->Warning(MESSAGE_ORIGIN, "No of Event in Background chain is not enough for all signals in chain  %i ", iterN->first);
