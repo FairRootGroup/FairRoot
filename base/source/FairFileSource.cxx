@@ -57,7 +57,7 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
    if (fRootFile->IsZombie()) {
       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
    }
-  fLogger->Info(MESSAGE_ORIGIN, "FairFileSource created------------");
+  fLogger->Debug(MESSAGE_ORIGIN, "FairFileSource created------------");
  
 }
 //_____________________________________________________________________________
@@ -89,7 +89,7 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
     if (fRootFile->IsZombie()) {
        fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
     }
-  fLogger->Info(MESSAGE_ORIGIN, "FairFileSource created------------");
+  fLogger->Debug(MESSAGE_ORIGIN, "FairFileSource created------------");
 
 }
 //_____________________________________________________________________________
@@ -107,7 +107,7 @@ Bool_t FairFileSource::Init()
     }
     if (!fInChain ) {
         fInChain = new TChain("cbmsim", "/cbmroot");
-        fLogger->Info(MESSAGE_ORIGIN, "FairFileSource::Init() chain created");
+        fLogger->Debug(MESSAGE_ORIGIN, "FairFileSource::Init() chain created");
     }
     fInChain->Add( fRootFile->GetName() );
     
@@ -142,12 +142,12 @@ Bool_t FairFileSource::Init()
     fCheckInputBranches[chainName] = new std::list<TString>;
     if(list) {
         TObjString* Obj=0;
-        fLogger->Info(MESSAGE_ORIGIN, "Enteries in the list  %i", list->GetEntries());
+        fLogger->Debug(MESSAGE_ORIGIN, "Enteries in the list  %i", list->GetEntries());
         for(Int_t i =0; i< list->GetEntries(); i++) {
             Obj=dynamic_cast <TObjString*> (list->At(i));
             if(Obj!=0){
                 ObjName=Obj->GetString();
-                fLogger->Info(MESSAGE_ORIGIN, "Branch name %s", ObjName.Data());
+                fLogger->Debug(MESSAGE_ORIGIN, "Branch name %s", ObjName.Data());
                 fCheckInputBranches[chainName]->push_back(ObjName.Data());
                 
                 FairRootManager::Instance()->AddBranchToList(ObjName.Data());
@@ -198,7 +198,7 @@ Bool_t FairFileSource::Init()
 
     }
     fNoOfEntries = fInChain->GetEntries();
-    fLogger->Info(MESSAGE_ORIGIN, "Entries in this Source %i------------",  fNoOfEntries);
+    fLogger->Debug(MESSAGE_ORIGIN, "Entries in this Source %i------------",  fNoOfEntries);
     return kTRUE;
 
   
