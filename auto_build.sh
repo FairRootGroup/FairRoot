@@ -8,14 +8,15 @@ function num_proc() {
 }
 
 CLEANUP=false
-[ '$1' == 'cleanup' ] && CLEANUP=true
+[ '$1' == 'cleanup' ] && CLEANUP=true && shift
 
-export SHIPSOFT=/opt/xocean
-export FAIRROOTPATH=$SHIPSOFT/FairRootInst
-export SIMPATH=$SHIPSOFT/FairSoftInst
+#export SHIPSOFT=/opt/xocean
+[ -z "$SHIPSOFT" ] && echo "No SHIPSOFT env defined" && exit 1
+#export FAIRROOTPATH=$SHIPSOFT/FairRootInst
+#export SIMPATH=$SHIPSOFT/FairSoftInst
 mkdir build
 pushd build
-cmake .. -DCMAKE_INSTALL_PREFIX=$FAIRROOTPATH -DCMAKE_BUILD_TYPE=RELEASE
+cmake .. -DCMAKE_INSTALL_PREFIX=$FAIRROOTPATH -DCMAKE_BUILD_TYPE=RELEASE -DUSE_DIFFERENT_COMPILER=TRUE
 
 NP=`num_proc`
 make -j $NP &&  make install 
