@@ -38,6 +38,7 @@ class FairMultiLinkedData : public  TObject
     virtual ~FairMultiLinkedData() {};
 
     virtual std::set<FairLink>    GetLinks() const {    return fLinks;}           ///< returns stored links as FairLinks
+    virtual FairLink		GetEntryNr() const { return fEntryNr;}				///< gives back the entryNr
     virtual Int_t           GetNLinks() const { return fLinks.size(); }       ///< returns the number of stored links
     virtual FairLink        GetLink(Int_t pos) const;                 ///< returns the FairLink at the given position
     virtual FairMultiLinkedData   GetLinksWithType(Int_t type) const;             ///< Gives you a list of links which contain the given type
@@ -48,7 +49,9 @@ class FairMultiLinkedData : public  TObject
     virtual void SetDefaultType(Int_t type) {  fDefaultType = type;}
     virtual void SetPersistanceCheck(Bool_t check) {fPersistanceCheck = check;}       ///< Controls if a persistance check of a link is done or not
     virtual void SetVerbose(Int_t level) {fVerbose = level;}                ///< Sets the verbosity level
+    virtual void SetInsertHistory(Bool_t val){ fInsertHistory = val;}		///< Toggles if history of a link is inserted or not
 
+    virtual void SetEntryNr(FairLink entry){ fEntryNr = entry;}
     virtual void SetLinks(FairMultiLinkedData links, Float_t mult = 1.0);           ///< Sets the links as vector of FairLink
     virtual void SetLink(FairLink link, Bool_t bypass = kFALSE, Float_t mult = 1.0);      ///< Sets the Links with a single FairLink
 
@@ -78,7 +81,7 @@ class FairMultiLinkedData : public  TObject
 
     std::ostream& Print(std::ostream& out = std::cout) const
     {
-      out << "[";
+      out << GetEntryNr() << " -> [";
       for (Int_t i = 0; i < GetNLinks(); i++) {
         GetLink(i).Print(out);
         out << " ";
@@ -94,8 +97,10 @@ class FairMultiLinkedData : public  TObject
 
   protected:
     std::set<FairLink> fLinks;
-    Bool_t fPersistanceCheck;
-    Int_t fVerbose;
+    FairLink fEntryNr;
+    Bool_t fPersistanceCheck; //!
+    Bool_t fInsertHistory; //!
+    Int_t fVerbose; //!
 
     virtual void SimpleAddLinks(Int_t fileId, Int_t evtId, Int_t dataType, std::vector<Int_t> links, Bool_t bypass, Float_t mult) {
       for (UInt_t i = 0; i < links.size(); i++) {
@@ -105,7 +110,7 @@ class FairMultiLinkedData : public  TObject
     Int_t fDefaultType;
 
 
-    ClassDef(FairMultiLinkedData, 3);
+    ClassDef(FairMultiLinkedData, 4);
 };
 
 /**\fn virtual void FairMultiLinkedData::SetLinks(Int_t type, std::vector<Int_t> links)

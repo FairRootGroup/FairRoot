@@ -31,37 +31,40 @@ class FairMultiLinkedData_Interface : public  TObject
     FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t persistanceCheck = kTRUE);///< Constructor
     FairMultiLinkedData_Interface(TString dataType, std::vector<Int_t> links, Int_t fileId = -1, Int_t evtId = -1,Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
     FairMultiLinkedData_Interface(Int_t dataType, std::vector<Int_t> links, Int_t fileId = -1, Int_t evtId = -1, Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
+    FairMultiLinkedData_Interface(const FairMultiLinkedData_Interface& toCopy);
 
-    virtual ~FairMultiLinkedData_Interface() {};
+    virtual ~FairMultiLinkedData_Interface() {
+    	delete(fLink);
+    };
+
+    FairMultiLinkedData_Interface& operator=(const FairMultiLinkedData_Interface& rhs);
 
     virtual std::set<FairLink>  GetLinks() const;           		///< returns stored links as FairLinks
     virtual Int_t           	GetNLinks() const;                	///< returns the number of stored links
     virtual FairLink        	GetLink(Int_t pos) const;         	///< returns the FairLink at the given position
     virtual FairMultiLinkedData GetLinksWithType(Int_t type) const; ///< returns all FairLinks with the corresponding type
+    virtual FairLink            GetEntryNr() const;
+    virtual FairMultiLinkedData* 		GetPointerToLinks() const {	return fLink;}
 
     virtual void SetLinks(FairMultiLinkedData links);           ///< Sets the links as vector of FairLink
     virtual void SetLink(FairLink link);      					///< Sets the Links with a single FairLink
+    virtual void SetInsertHistory(Bool_t val);
+    virtual void SetEntryNr(FairLink val);
+    virtual void SetPointerToLinks(FairMultiLinkedData* links) {fLink = links;}
 
     virtual void AddLinks(FairMultiLinkedData links, Float_t mult = 1.0);		///< Adds a List of FairLinks (FairMultiLinkedData_Interface) to fLinks
     virtual void AddLink(FairLink link);      									///< Adds a FairLink link at the end of fLinks. If multi is kTRUE a link is allowed more than once otherwise
+    virtual void AddInterfaceData(FairMultiLinkedData_Interface* data);
 
-    FairMultiLinkedData* 	GetPointerToData() const
-    {
-		if (fRefToLinks.GetObject() != 0)
-			return (FairMultiLinkedData*)fRefToLinks.GetObject();
-		else {
-//			std::cout << "-W- FairMultiLinkedData_Interface::GetPointerToData() fRefToLinks == 0" << std::endl;
-			return 0;
-		}
-    }
+
 
     virtual void ResetLinks();
 
 
     std::ostream& Print(std::ostream& out = std::cout) const {
 
-		if (fRefToLinks.GetObject() != 0)
-			GetPointerToData()->Print(out);
+		if (GetPointerToLinks() != 0)
+			GetPointerToLinks()->Print(out);
 		return out;
     }                                                     ///< Output
 
@@ -73,12 +76,11 @@ class FairMultiLinkedData_Interface : public  TObject
   protected:
 
     Int_t fVerbose; //!
-    TRef fRefToLinks;
-    TString fLinkBranchName; //!
+    FairMultiLinkedData* fLink;
 
     FairMultiLinkedData* CreateFairMultiLinkedData();
 
-    ClassDef(FairMultiLinkedData_Interface, 4);
+    ClassDef(FairMultiLinkedData_Interface, 5);
 };
 
 /**\fn virtual void FairMultiLinkedData_Interface::SetLinks(Int_t type, std::vector<Int_t> links)

@@ -127,9 +127,7 @@ FairRootManager::FairRootManager()
     fCurrentEntry(),
     fEvtHeaderIsNew(kFALSE),
     fFillLastData(kFALSE),
-    fUseFairLinks(kFALSE), 
-    fInitFairLinksOnce(kFALSE),
-    fFairLinksBranchName("FairLinkBranch"),
+    fUseFairLinks(kFALSE),
     fEntryNr(0),
     fRootFileSource(0),
     fRootFileSourceSignal(0),
@@ -478,11 +476,6 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
   // execution with some error message if this is the case.
   if (strcmp (name, Foldername) == 0 ) {
     fLogger->Fatal(MESSAGE_ORIGIN,"The names for the object name %s and the folder name %s are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name.", name, Foldername);
-  }
-
-  if (GetUseFairLinks() == kTRUE && fInitFairLinksOnce == kFALSE){
-            fInitFairLinksOnce = kTRUE;
-            Register(fFairLinksBranchName, "FairMultiLinkedData", "FairLinksBranch", kTRUE);
   }
 
   if(toFile) { /**Write the Object to the Tree*/
