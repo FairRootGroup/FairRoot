@@ -14,6 +14,9 @@ CLEANUP=false
 [ -z "$SHIPSOFT" ] && echo "No SHIPSOFT env defined" && exit 1
 #export FAIRROOTPATH=$SHIPSOFT/FairRootInst
 #export SIMPATH=$SHIPSOFT/FairSoftInst
+if [ -f $SIMPATH/bin/thisroot.sh ] ; then
+  . $SIMPATH/bin/thisroot.sh
+fi
 mkdir build
 pushd build
 cmake .. -DCMAKE_INSTALL_PREFIX=$FAIRROOTPATH -DCMAKE_BUILD_TYPE=RELEASE -DUSE_DIFFERENT_COMPILER=TRUE
