@@ -46,7 +46,7 @@ using namespace std;
 /// ////////////////////////////////////////////////////////////////////////
 // payload and policy type definition
 typedef MyHit                                        THit;
-typedef MyHitSerializer_t                            TInputPolicy;
+typedef MyHitDeSerializer_t                          TInputPolicy;
 // Remark --> here, serialization by hand. Be aware that it is not a cross-platform format
 typedef RootOutFileManager<THit>                     TOutputPolicy; 
 typedef GenericFileSink<TInputPolicy,TOutputPolicy>  TSink;    

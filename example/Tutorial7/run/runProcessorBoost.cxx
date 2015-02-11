@@ -38,7 +38,7 @@ typedef MyDigi              TDigi;
 typedef MyHit               THit;
 
 // build policy classes
-typedef BoostSerializer<TDigi>      TInputPolicy;   // deserialize digi
+typedef BoostDeSerializer<TDigi>    TInputPolicy;   // deserialize digi
 typedef BoostSerializer<THit>       TOutputPolicy;  // serialize Hit
 typedef DigiToHitTask<TDigi,THit>   TTaskPolicy;    // process deserialized digi and fill Hit
 

@@ -42,7 +42,7 @@ using namespace std;
 typedef FairTestDetectorDigi              TDigi; 
 typedef FairTestDetectorHit               THit;
 // policy classes
-typedef Tuto3DigiSerializer_t             TInputPolicy;
+typedef Tuto3DigiDeSerializer_t             TInputPolicy;
 typedef Tuto3HitSerializer_t              TOutputPolicy;
 typedef DigiToHitTask_TCA<TDigi,THit>     TTaskPolicy; // process deserialized digi and fill Hit
 

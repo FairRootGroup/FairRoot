@@ -49,7 +49,7 @@ using namespace std;
 /// ////////////////////////////////////////////////////////////////////////
 // payload definition
 typedef FairTestDetectorHit                                 THit;    // non POD/complex data
-typedef BoostSerializer<THit,TClonesArray*>                 TInputPolicy; // boost non pod, return TClonesArray*
+typedef BoostDeSerializer<THit,TClonesArray*>               TInputPolicy; // boost non pod, return TClonesArray*
 typedef RootOutFileManager<THit>                            TOutputPolicy; // root non pod
 typedef GenericFileSink<TInputPolicy,TOutputPolicy>         TSink;    // rootfile/non pod/Boost deserialize/TClonesArray* API
 

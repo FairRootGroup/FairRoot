@@ -18,8 +18,8 @@ class BinaryBaseClassSerializer
     
 public:
     
-    BinaryBaseClassSerializer() : fPayload(nullptr), fMessage(nullptr), fNumInput(0) {;}
-    ~BinaryBaseClassSerializer(){;}
+    BinaryBaseClassSerializer() : fPayload(nullptr), fMessage(nullptr), fNumInput(0) {}
+    virtual ~BinaryBaseClassSerializer(){}
     
     void GetPayload(FairMQMessage* msg)
     {
@@ -34,7 +34,7 @@ public:
         fMessage=msg;
     }
     
-    void GetMessage()
+    FairMQMessage* GetMessage()
     {
         return fMessage;
     }

@@ -45,7 +45,7 @@ using namespace std;
 /// ////////////////////////////////////////////////////////////////////////
 // payload definition
 typedef FairTestDetectorHit                          THit;
-typedef Tuto3HitSerializer_t                         TInputPolicy; 
+typedef Tuto3HitDeSerializer_t                       TInputPolicy; 
 typedef RootOutFileManager<THit>                     TOutputPolicy; 
 typedef GenericFileSink<TInputPolicy,TOutputPolicy>  TSink;    
 

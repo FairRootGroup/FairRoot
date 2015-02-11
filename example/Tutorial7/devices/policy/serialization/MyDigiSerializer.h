@@ -21,10 +21,9 @@
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
 #include "TVector3.h"
-
+#include "BinaryBaseClassSerializer.h"
 
 // FairRoot - Tutorial7
-#include "tuto7BinarySerializer.h"
 #include "MyDigi.h"
 #include "MyPodData.h"
 
@@ -34,19 +33,15 @@
 #include "FairTestDetectorPayload.h"
 
 template <typename PodType,typename DigiType>
-class MyDigiSerializer : public tuto7BinarySerializer<PodType>
+class MyDigiSerializer : public BinaryBaseClassSerializer<PodType>
 {
-public:
+public: 
     
-    MyDigiSerializer() : tuto7BinarySerializer<PodType>() {}
+    using BinaryBaseClassSerializer<PodType>::fMessage;
+    
+    MyDigiSerializer() : BinaryBaseClassSerializer<PodType>() {}
     ~MyDigiSerializer(){}
-    // declare parent function and data members (not required when typed)
-    using tuto7BinarySerializer<PodType>::fMessage;
-    using tuto7BinarySerializer<PodType>::fContainer;
-    using tuto7BinarySerializer<PodType>::GetPayload;
-    using tuto7BinarySerializer<PodType>::fNumInput;
-    using tuto7BinarySerializer<PodType>::fPayload;
-    ////////////////////////////////////////////////////////////////////////////////////////
+    
     // serialize
     
     virtual void DoSerialization(TClonesArray* array)
@@ -75,10 +70,34 @@ public:
         }
     }
     
+    virtual FairMQMessage* SerializeMsg(TClonesArray* array)
+    {
+        DoSerialization(array);
+        return fMessage;
+    }
     
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // deserialize
+};
 
+
+
+template <typename PodType,typename DigiType>
+class MyDigiDeSerializer : public BinaryBaseClassSerializer<PodType>
+{
+public: 
+    
+    using BinaryBaseClassSerializer<PodType>::fMessage;
+    using BinaryBaseClassSerializer<PodType>::GetPayload;
+    using BinaryBaseClassSerializer<PodType>::fNumInput;
+    using BinaryBaseClassSerializer<PodType>::fPayload;
+    
+    MyDigiDeSerializer() : BinaryBaseClassSerializer<PodType>(), fContainer(nullptr) {}
+    ~MyDigiDeSerializer()
+    { 
+        if(fContainer) 
+            delete fContainer; 
+        fContainer=nullptr;
+    }
+    
     virtual void DoDeSerialization(FairMQMessage* msg)
     {
         
@@ -93,19 +112,42 @@ public:
             
             if (fContainer->IsEmpty())
             {
-                MQLOG(ERROR) << "MyDigiSerializer::message(): No Output array!";
+                MQLOG(ERROR) << "MyDigiDeSerializer::message(): No Output array!";
             }
         }
     }
-
-
+    
+    virtual TClonesArray* DeSerializeMsg(FairMQMessage* msg)
+    {
+        DoDeSerialization(msg);
+        return fContainer;
+    }
+    
+    
+    void InitContainer(const std::string &ClassName)
+    {
+        fContainer = new TClonesArray(ClassName.c_str());
+    }
+    
+    void InitContainer(TClonesArray* array)
+    {
+        fContainer = array;
+    }
+    
+    protected:
+    
+    TClonesArray* fContainer;
+    
 };
 
 
 
-typedef MyDigiSerializer<MyPodData::Digi,MyDigi> MyDigiSerializer_t;
-typedef MyDigiSerializer<TestDetectorPayload::Digi,FairTestDetectorDigi> Tuto3DigiSerializer_t;
-
+// for tuto 7 data
+typedef MyDigiSerializer<MyPodData::Digi,MyDigi>        MyDigiSerializer_t;
+typedef MyDigiDeSerializer<MyPodData::Digi,MyDigi>      MyDigiDeSerializer_t;
+// for tuto 3 data
+typedef MyDigiSerializer<TestDetectorPayload::Digi,FairTestDetectorDigi>    Tuto3DigiSerializer_t;
+typedef MyDigiDeSerializer<TestDetectorPayload::Digi,FairTestDetectorDigi>  Tuto3DigiDeSerializer_t;
 
 
 #endif	/* MYDIGISERIALIZER_H */

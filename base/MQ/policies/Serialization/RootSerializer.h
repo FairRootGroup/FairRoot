@@ -67,26 +67,13 @@ public:
 
     }
     
-    virtual FairMQMessage* message(TClonesArray* array)
+    virtual FairMQMessage* SerializeMsg(TClonesArray* array)
     {
         DoSerialization(array);
         return fMessage;
     }
     
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // deserialize
     
-    virtual void DoDeSerialization(FairMQMessage* msg)
-    {
-        FairTMessage tm(msg->GetData(), msg->GetSize());
-        fContainer  = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
-    }
-    
-    virtual TClonesArray* message(FairMQMessage* msg)
-    {
-        DoDeSerialization(msg);
-        return fContainer;
-    }
     
     void SetMessage(FairMQMessage* msg)
     {
@@ -137,7 +124,7 @@ public:
         fContainer  = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
     }
     
-    virtual TClonesArray* message(FairMQMessage* msg)
+    virtual TClonesArray* DeSerializeMsg(FairMQMessage* msg)
     {
         DoDeSerialization(msg);
         return fContainer;

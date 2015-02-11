@@ -36,8 +36,8 @@ using namespace std;
 typedef MyDigi              TDigi; 
 typedef MyHit               THit;
 // build policy classes
-typedef MyDigiSerializer_t TInputPolicy;
-typedef MyHitSerializer_t  TOutputPolicy;
+typedef MyDigiDeSerializer_t TInputPolicy;
+typedef MyHitSerializer_t    TOutputPolicy;
 // Remark --> here, serialization by hand. Be aware that it is not a cross-platform format
 typedef DigiToHitTask_TCA<TDigi,THit> TTaskPolicy; // process deserialized digi and fill Hit
 

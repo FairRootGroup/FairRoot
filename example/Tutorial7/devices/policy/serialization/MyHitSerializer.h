@@ -21,9 +21,9 @@
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
 #include "TVector3.h"
+#include "BinaryBaseClassSerializer.h"
 
 // FairRoot - Tutorial7
-#include "tuto7BinarySerializer.h"
 #include "MyHit.h"
 #include "MyPodData.h"
 
@@ -32,25 +32,21 @@
 #include "FairTestDetectorPayload.h"
 
 
-//typedef FairTestDetectorHit DigiDataType;
-//typedef TestDetectorPayload::Hit DigiPodDataType;
 
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// serialize
 template <typename PodType, typename HitType>
-class MyHitSerializer : public tuto7BinarySerializer<PodType>
+class MyHitSerializer : public BinaryBaseClassSerializer<PodType>
 {
 public:
     
-    MyHitSerializer() : tuto7BinarySerializer<PodType>() {}
-    ~MyHitSerializer(){}
+    MyHitSerializer() : BinaryBaseClassSerializer<PodType>() {}
+    virtual ~MyHitSerializer(){}
     
-    using tuto7BinarySerializer<PodType>::fMessage;
-    using tuto7BinarySerializer<PodType>::fContainer;
-    using tuto7BinarySerializer<PodType>::GetPayload;
-    using tuto7BinarySerializer<PodType>::fNumInput;
-    using tuto7BinarySerializer<PodType>::fPayload;
-    
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // serialize
+    using BinaryBaseClassSerializer<PodType>::fMessage;
     
     virtual void DoSerialization(TClonesArray* array)
     {
@@ -76,9 +72,40 @@ public:
         }
     }
     
+   
+    virtual FairMQMessage* SerializeMsg(TClonesArray* array)
+    {
+        DoSerialization(array);
+        return fMessage;
+    }
     
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // deserialize
+
+};
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+// deserialize
+    
+
+template <typename PodType, typename HitType>
+class MyHitDeSerializer : public BinaryBaseClassSerializer<PodType>
+{
+public:
+    
+    using BinaryBaseClassSerializer<PodType>::fMessage;
+    using BinaryBaseClassSerializer<PodType>::GetPayload;
+    using BinaryBaseClassSerializer<PodType>::fNumInput;
+    using BinaryBaseClassSerializer<PodType>::fPayload;
+    
+    MyHitDeSerializer() : BinaryBaseClassSerializer<PodType>(), fContainer(nullptr) {}
+    virtual ~MyHitDeSerializer() 
+    { 
+        if(fContainer) 
+            delete fContainer; 
+        fContainer=nullptr;
+    }
     
     virtual void DoDeSerialization(FairMQMessage* msg)
     {
@@ -96,17 +123,44 @@ public:
             
             if (fContainer->IsEmpty())
             {
-                MQLOG(ERROR) << "MyHitSerializer::message(): No Output array!";
+                MQLOG(ERROR) << "MyHitDeSerializer::DeSerializeMsg(): No Output array!";
             }
         }
     }
     
-
+    virtual TClonesArray* DeSerializeMsg(FairMQMessage* msg)
+    {
+        DoDeSerialization(msg);
+        return fContainer;
+    }
+    
+    void InitContainer(const std::string &ClassName)
+    {
+        fContainer = new TClonesArray(ClassName.c_str());
+    }
+    
+    void InitContainer(TClonesArray* array)
+    {
+        fContainer = array;
+    }
+    
+protected:
+    
+    TClonesArray* fContainer;
+    
 };
 
 
-typedef MyHitSerializer<MyPodData::Hit,MyHit> MyHitSerializer_t;
-typedef MyHitSerializer<TestDetectorPayload::Hit,FairTestDetectorHit> Tuto3HitSerializer_t;
+
+
+
+// for tuto 7 data
+typedef MyHitSerializer<MyPodData::Hit,MyHit>   MyHitSerializer_t;
+typedef MyHitDeSerializer<MyPodData::Hit,MyHit> MyHitDeSerializer_t;
+// for tuto 3 data
+typedef MyHitSerializer<TestDetectorPayload::Hit,FairTestDetectorHit>   Tuto3HitSerializer_t;
+typedef MyHitDeSerializer<TestDetectorPayload::Hit,FairTestDetectorHit> Tuto3HitDeSerializer_t;
+
 
 #endif	/* MYHITSERIALIER_H */
 
