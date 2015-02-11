@@ -13,8 +13,6 @@
  *  by         D.Bertini  
  */ 
 
-
-
 #include "FairDbTutPar.h"
 
 #include "FairDbLogFormat.h"
@@ -45,7 +43,7 @@ template class  FairDbWriter<FairDbTutPar>;
 
 
 FairDbTutPar::FairDbTutPar(const char* name, const char* title, const char* context, Bool_t own)
-  : FairParGenericSet(name,title,context, own),
+  : FairDbObjTableMap(name,title,context, own),
     fTopPitch(0.),
     fTopAnchor(0.),
     fTopNrFE(0),
@@ -167,7 +165,7 @@ void FairDbTutPar::fill(UInt_t rid)
 
 void FairDbTutPar::store(UInt_t rid)
 {
-
+  cout << "--------------------------- STORE -----------------" << endl;
   // Boolean IO test variable
   Bool_t fail= kFALSE;
 
@@ -222,17 +220,21 @@ void FairDbTutPar::store(UInt_t rid)
   //                      DbEntry          ,            Int_t                   set via cont. factory
   //                      LogTitle         ,            std::string             set via cont. factory
 
+cout << "--------------------------- STORE 1 -----------------" << endl;
   fParam_Writer->Activate(GetValInterval(rid),GetComboNo(), GetVersion(),GetDbEntry(),GetLogTitle());
 
+cout << "--------------------------- STORE  2 -----------------" << endl;
   // Object to Table mapping
   *fParam_Writer<< (*this);
 
+cout << "--------------------------- STORE 3 -----------------" << endl;
   // Check for eventual IO problems
   if ( !fParam_Writer->Close() ) {
     fail = true;
     cout << "-E- FairDbTutPar::Store() ******** Cannot do IO on class: " << GetName() <<  endl;
   }
 
+ cout << "--------------------------- STORE END -----------------" << endl;
 }
 
 void FairDbTutPar::Print()

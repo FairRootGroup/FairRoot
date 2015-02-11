@@ -101,6 +101,7 @@ bool FairParTSQLIo::check()
 }
 
 
+/*
 void FairParTSQLIo::setDetParIo(Text_t* ioName)
 {
   if (fConnections) {
@@ -116,6 +117,7 @@ void FairParTSQLIo::setDetParIo(Text_t* ioName)
     }
   }
 }
+*/
 
 void FairParTSQLIo::disconnect()
 {
@@ -274,6 +276,8 @@ bool FairParTSQLIo::open()
   }//! entries
 
   // Activate SQL Io
+  FairDetParTSQLIo *det_io = new FairGenericParTSQLIo();   
+  this->setDetParIo((FairDetParIo*) det_io); 
   FairRuntimeDb::instance()->activateParIo(this);
    DBLOG("FairDb",FairDbLog::kInfo) << " connected with DB Entries# " 
                                     << fConnections->GetNumDb() << endl;

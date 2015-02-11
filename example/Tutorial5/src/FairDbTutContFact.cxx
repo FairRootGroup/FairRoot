@@ -72,7 +72,7 @@ FairParSet* FairDbTutContFact::createContainer(FairContainer* c)
 
   const char* name=c->GetName();
   cout << "-I-FairDbTutContFact::createContainer " << name << endl;
-  FairParSet* p=NULL;
+  FairDbObjTableMap* p=NULL;
   if (strcmp(name,"TUTParDefault")==0) {
     p=new FairDbTutPar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
     // Set Arguments needed for SQL versioning managment
@@ -100,5 +100,5 @@ FairParSet* FairDbTutContFact::createContainer(FairContainer* c)
     p->SetLogTitle(name);
   }
 
-  return p;
+  return (FairParSet*) p;
 }

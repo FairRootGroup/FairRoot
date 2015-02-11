@@ -42,7 +42,7 @@ ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h
 
 set(LINKDEF FairDbTutLinkDef.h)
 Set(LIBRARY_NAME Tutorial5)
-Set(DEPENDENCIES Base)
+Set(DEPENDENCIES Base ParBase FairDB)
 
 GENERATE_LIBRARY()
 

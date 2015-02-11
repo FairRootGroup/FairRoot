@@ -23,6 +23,8 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/dbase/dbUtils
   ${CMAKE_SOURCE_DIR}/input/db
   ${CMAKE_SOURCE_DIR}/dbase/dbInput
+  ${CMAKE_SOURCE_DIR}/dbase/dbIO
+  ${CMAKE_SOURCE_DIR}/parbase
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -95,6 +97,10 @@ dbUtils/FairDbLogOSStream.cxx
 dbUtils/FairDbLogService.cxx
 dbUtils/FairDbLogStat.cxx
 dbUtils/FairDbLogStream.cxx
+### FairDb IO 
+dbIO/FairParTSQLIo.cxx
+dbIO/FairDetParTSQLIo.cxx
+dbIO/FairGenericParTSQLIo.cxx
 )
 
 
@@ -110,9 +116,9 @@ set(LINKDEF FairDBLinkDef.h)
 set(LIBRARY_NAME FairDB)
 
 if(ROOT_VERSION_MAJOR VERSION_LESS 6 )
-set(DEPENDENCIES Net RIO Cint Core)
+set(DEPENDENCIES Net RIO Cint Core ParBase)
 else()
-set(DEPENDENCIES Net RIO Core)
+set(DEPENDENCIES Net RIO Core ParBase)
 endif()
 
 GENERATE_LIBRARY()

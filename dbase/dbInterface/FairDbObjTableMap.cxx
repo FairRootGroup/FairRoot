@@ -10,7 +10,7 @@
 ClassImp(FairDbObjTableMap)
 
 FairDbObjTableMap::FairDbObjTableMap()
-  : TObject(),
+  : FairParGenericSet("","","",kFALSE),
     fVersion(0),
     fDbEntry(0),
     fLogTitle(""),
@@ -24,7 +24,7 @@ FairDbObjTableMap::FairDbObjTableMap()
 }
 
 FairDbObjTableMap::FairDbObjTableMap(const FairDbObjTableMap& from)
-  : TObject(from),
+  : FairParGenericSet(from),
     fVersion(from.fVersion),
     fDbEntry(from.fDbEntry),
     fLogTitle(from.fLogTitle),
@@ -36,6 +36,7 @@ FairDbObjTableMap::FairDbObjTableMap(const FairDbObjTableMap& from)
     fOwner(from.fOwner)
 {
 }
+
 
 FairDbObjTableMap& FairDbObjTableMap::operator=(const FairDbObjTableMap& from)
 {

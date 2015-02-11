@@ -27,7 +27,7 @@ using std::cout;
 ClassImp(FairParSet)
 
 FairParSet::FairParSet(const char* name,const char* title,const char* context, Bool_t owner)
-  : FairDbObjTableMap(),
+  : TObject(),
     fName(name),
     fTitle(title),
     detName(""),
@@ -105,6 +105,42 @@ void FairParSet::resetInputVersions()
     for(Int_t i=0; i<3; i++) {versions[i]=-1;}
     changed=kFALSE;
   }
+}
+
+FairParSet::FairParSet(const FairParSet& from)
+{
+ fName    = from.fName;
+ fTitle   = from.fTitle;
+ detName  = from.detName;
+ for (Int_t i=0;i<3;i++) versions[i] = from.versions[i];
+ status   = from.status;
+ changed  = from.changed;
+ owned    = from.owned;
+ paramContext = from.paramContext;
+ author       = from.author;
+ description  = from.description; 
+ fLogger      = from.fLogger;
+}
+
+
+FairParSet& FairParSet::operator=(const FairParSet& from)
+{
+  if (this == &from) {return *this;}
+  
+ TObject::operator=(from);  
+ fName    = from.fName;
+ fTitle   = from.fTitle;
+ detName  = from.detName;
+ for (Int_t i=0;i<3;i++) versions[i] = from.versions[i];
+ status   = from.status;
+ changed  = from.changed;
+ owned    = from.owned;
+ paramContext = from.paramContext;
+ author       = from.author;
+ description  = from.description; 
+ fLogger      = from.fLogger;
+ 
+ return *this;
 }
 
 

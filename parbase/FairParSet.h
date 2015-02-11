@@ -8,15 +8,15 @@
 #ifndef FAIRPARSET_H
 #define FAIRPARSET_H
 
-#include "FairDbObjTableMap.h"             // for FairDbObjTableMap
 
+#include "TNamed.h"
 #include "Rtypes.h"                     // for Int_t, Bool_t, etc
 #include "TString.h"                    // for TString
 
 class FairLogger;
 class FairParIo;
 
-class FairParSet : public FairDbObjTableMap
+class FairParSet : public TObject
 {
   protected:
     TString fName;         //
@@ -79,16 +79,10 @@ class FairParSet : public FairDbObjTableMap
       description=r.getDescription();
     }
 
-    // SQL addon I/O  member functions
-    virtual FairDbObjTableMap* CreateObjTableMap() const {
-      return new FairParSet();
-    }
-
 
     virtual void fill(UInt_t rid=0) {};
     virtual void store(UInt_t rid=0) {};
-
-  private:
+    
 
     FairParSet& operator=(const FairParSet&);
     FairParSet(const FairParSet&);
