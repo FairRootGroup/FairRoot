@@ -204,6 +204,8 @@ int main(int argc, char** argv)
 
     filesink.ChangeState(TSink::SETOUTPUT);
     filesink.ChangeState(TSink::SETINPUT);
+    filesink.ChangeState(TSink::BIND);
+    filesink.ChangeState(TSink::CONNECT);
     filesink.ChangeState(TSink::RUN);
 
     // wait until the running thread has finished processing.

@@ -204,6 +204,8 @@ int main(int argc, char** argv)
 
     processor.ChangeState(TProcessor::SETOUTPUT);
     processor.ChangeState(TProcessor::SETINPUT);
+    processor.ChangeState(TProcessor::BIND);
+    processor.ChangeState(TProcessor::CONNECT);
     processor.ChangeState(TProcessor::RUN);
 
     // wait until the running thread has finished processing.
