@@ -15,7 +15,7 @@ function halt() {
 CLEANUP=false
 [ '$1' == 'cleanup' ] && CLEANUP=true && shift
 
-[ -z "$SHIPSOFT" ] && echo "No SHIPSOFT env defined" && exit 1
+[ -z "$SHIPSOFT" ] && halt "No SHIPSOFT env defined"
 [ -f $SIMPATH/bin/thisroot.sh ] && source $SIMPATH/bin/thisroot.sh
 mkdir build
 pushd build
