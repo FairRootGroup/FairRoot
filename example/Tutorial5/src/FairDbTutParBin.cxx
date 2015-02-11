@@ -47,7 +47,7 @@ template class  FairDbWriter<FairDbTutParBin>;
 SVNID("$Id$");
 
 FairDbTutParBin::FairDbTutParBin(const char* name, const char* title, const char* context,Bool_t own)
-  : FairParGenericSet(name,title,context,own),
+  : FairDbObjTableMap(name,title,context,own),
     fTopPitch(0.),
     fTopAnchor(0.),
     fTopNrFE(0),

@@ -101,6 +101,12 @@
 #pragma link C++ class FairRegistryElementGeneric<const char*>-;
 #pragma link C++ function operator<<(ostream&, const FairRegistry&);
 
+// dbIO
+#pragma link C++ class FairParTSQLIo+;
+#pragma link C++ class FairDetParTSQLIo+;
+#pragma link C++ class FairGenericParTSQLIo+;
+
+
 // #### SQL object
 //#pragma link C++ class FairTSQLObject+;
 //#pragma link C++ enum  FairDBObjectMemberTypes;

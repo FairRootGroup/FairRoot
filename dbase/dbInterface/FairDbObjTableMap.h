@@ -24,19 +24,27 @@
 
 #include "FairDbStreamer.h"
 
+// < DB use FLAG here ! >
+#include "FairParGenericSet.h"
 
 class FairDbOutTableBuffer;
 class FairDbResult;
 class FairDbResultPool;
 class FairDbValRecord;
 
-class FairDbObjTableMap : public TObject
+// < DB Use Flag Here ! >
+//class FairDbObjTableMap : public TObject
+class FairDbObjTableMap : public FairParGenericSet
 {
   public:
 
     FairDbObjTableMap();
+    FairDbObjTableMap(const char* name,const char* title,const char* context, Bool_t ownership=kFALSE)
+     : FairParGenericSet(name,title,context,ownership) {} 
+
     FairDbObjTableMap(const FairDbObjTableMap& from);
     FairDbObjTableMap& operator=(const FairDbObjTableMap&);
+
     virtual ~FairDbObjTableMap();
 
     virtual       Bool_t CanCache() const { return kFALSE; }
@@ -106,6 +114,14 @@ class FairDbObjTableMap : public TObject
           //  this->Print(); 
 }
 
+   // add dummy RTDB IO function   
+  
+  virtual void putParams(FairParamList*){;}  
+  virtual Bool_t getParams(FairParamList*){return kTRUE;}
+
+
+
+
   protected:
     //
     FairDb::Version fVersion;
@@ -121,6 +137,8 @@ class FairDbObjTableMap : public TObject
 
   private:
     FairDbResult* fOwner;
+
+   
 
     ClassDef(FairDbObjTableMap,0)   // FairDbObjTableMap for a specific database table.
 

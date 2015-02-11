@@ -32,7 +32,6 @@ FairGenericParTSQLIo::FairGenericParTSQLIo()
     fRtdb(FairRuntimeDb::instance())
 {
   fName = "FairGenericParIo";
-//  fRtdb = FairRuntimeDb::instance();
 }
 
 /**
@@ -49,7 +48,6 @@ FairGenericParTSQLIo::FairGenericParTSQLIo(FairDbConnectionPool const& cons,
     fRtdb(FairRuntimeDb::instance())
 {
   fName = "FairGenericParIo";
-//  fRtdb = FairRuntimeDb::instance();
 }
 
 //! Destructor

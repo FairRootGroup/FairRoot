@@ -18,10 +18,10 @@
 #include "FairContFact.h"               // for FairContFact
 #include "FairDetParAsciiFileIo.h"      // for FairDetParAsciiFileIo
 #include "FairDetParRootFileIo.h"       // for FairDetParRootFileIo
-#include "FairDetParTSQLIo.h"           // for FairDetParTSQLIo
+//#include "FairDetParTSQLIo.h"           // for FairDetParTSQLIo
 #include "FairGenericParAsciiFileIo.h"  // for FairGenericParAsciiFileIo
 #include "FairGenericParRootFileIo.h"   // for FairGenericParRootFileIo
-#include "FairGenericParTSQLIo.h"       // for FairGenericParTSQLIo
+//#include "FairGenericParTSQLIo.h"       // for FairGenericParTSQLIo
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "FairParAsciiFileIo.h"         // for FairParAsciiFileIo
 #include "FairParIo.h"                  // for FairParIo
@@ -806,11 +806,12 @@ void FairRuntimeDb::activateParIo(FairParIo* io)
       FairDetParAsciiFileIo* pn=
         new FairGenericParAsciiFileIo(((FairParAsciiFileIo*)io)->getFile());
       io->setDetParIo(pn);
-    } else if(strcmp(ioName,"FairParTSQLIo") == 0) {
-      //std::cout << "\n\n\n\t TSQL versie is called en nu de rest \n\n";
-      FairDetParTSQLIo* pn = new FairGenericParTSQLIo();
-      io->setDetParIo(pn);
     }
+    // else if(strcmp(ioName,"FairParTSQLIo") == 0) {
+    //  std::cout << "\n\n\n\t TSQL versie is called en nu de rest \n\n";
+    //  FairDetParTSQLIo* pn = new FairGenericParTSQLIo();
+    //  io->setDetParIo(pn);
+    //}
   }
   TIter next(&contFactories);
   FairContFact* fact;

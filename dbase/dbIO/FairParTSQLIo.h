@@ -61,7 +61,8 @@ class FairParTSQLIo: public FairParIo
      * creates the specified I/O.
      *@param io The name of IO to be created/added in the IO list.
      */
-    void setDetParIo(Text_t* io);
+
+    //void setDetParIo(Text_t* io);
 
     /**
      * Check if at least one connection is alive.

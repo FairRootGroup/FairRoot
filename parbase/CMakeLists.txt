@@ -18,13 +18,13 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/sim
   ${CMAKE_SOURCE_DIR}/geobase
   ${CMAKE_SOURCE_DIR}/parbase
-  ${CMAKE_SOURCE_DIR}/parbase/dbIO
-  ${CMAKE_SOURCE_DIR}/dbase/
-  ${CMAKE_SOURCE_DIR}/dbase/dbInterface
-  ${CMAKE_SOURCE_DIR}/dbase/dbValidation
-  ${CMAKE_SOURCE_DIR}/input/db
-  ${CMAKE_SOURCE_DIR}/dbase/dbInput
-  ${CMAKE_SOURCE_DIR}/dbase/dbUtils
+ # ${CMAKE_SOURCE_DIR}/parbase/dbIO
+ # ${CMAKE_SOURCE_DIR}/dbase/
+ # ${CMAKE_SOURCE_DIR}/dbase/dbInterface
+ # ${CMAKE_SOURCE_DIR}/dbase/dbValidation
+ # ${CMAKE_SOURCE_DIR}/input/db
+ # ${CMAKE_SOURCE_DIR}/dbase/dbInput
+ # ${CMAKE_SOURCE_DIR}/dbase/dbUtils
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -55,10 +55,6 @@ FairParSet.cxx
 FairParamList.cxx  
 FairRtdbRun.cxx  
 FairRuntimeDb.cxx
-###### Fair DB IO #######
-dbIO/FairParTSQLIo.cxx
-dbIO/FairDetParTSQLIo.cxx
-dbIO/FairGenericParTSQLIo.cxx
 )
 
 Set(HEADERS )
@@ -66,9 +62,9 @@ Set(LINKDEF ParBaseLinkDef.h)
 Set(LIBRARY_NAME ParBase)
 
 if(ROOT_VERSION_MAJOR VERSION_LESS 6 )
-Set(DEPENDENCIES FairTools FairDB RIO Cint Core )
+Set(DEPENDENCIES FairTools RIO Cint Core )
 else()
-Set(DEPENDENCIES FairTools FairDB RIO Core )
+Set(DEPENDENCIES FairTools  RIO Core )
 endif()
 
 GENERATE_LIBRARY()
