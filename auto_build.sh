@@ -7,22 +7,24 @@ function num_proc() {
   echo $logN/1+1| bc
 }
 
+function halt() {
+  echo $1
+  exit 1
+}
+
 CLEANUP=false
 [ '$1' == 'cleanup' ] && CLEANUP=true && shift
 
-#export SHIPSOFT=/opt/xocean
 [ -z "$SHIPSOFT" ] && echo "No SHIPSOFT env defined" && exit 1
-#export FAIRROOTPATH=$SHIPSOFT/FairRootInst
-#export SIMPATH=$SHIPSOFT/FairSoftInst
-if [ -f $SIMPATH/bin/thisroot.sh ] ; then
-  . $SIMPATH/bin/thisroot.sh
-fi
+[ -f $SIMPATH/bin/thisroot.sh ] && source $SIMPATH/bin/thisroot.sh
 mkdir build
 pushd build
 cmake .. -DCMAKE_INSTALL_PREFIX=$FAIRROOTPATH -DCMAKE_BUILD_TYPE=RELEASE -DUSE_DIFFERENT_COMPILER=TRUE
 
 NP=`num_proc`
-make -j $NP &&  make install 
+echo NP: $NP
+make -j $NP || halt "make failed"
+make install || halt "make install failed"
 
 # cleanup
 popd
