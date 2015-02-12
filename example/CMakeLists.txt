@@ -13,7 +13,7 @@ add_subdirectory (Tutorial2)
 add_subdirectory (Tutorial3)
 add_subdirectory (Tutorial4)
 add_subdirectory (Tutorial5)
-#add_subdirectory (Tutorial6)
+add_subdirectory (Tutorial6)
 
 If(NOT CMAKE_CXX_FLAGS)
 Message(STATUS "No C++11 support found. Tutorial7 will not be build.")

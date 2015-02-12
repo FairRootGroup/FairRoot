@@ -28,7 +28,7 @@
 
 #include "FairDbDetector.h"
 #include "DataType.h"
-#include "FairDbObjTableMap.h"
+#include "FairDbParSet.h"
 #include "ValCondition.h"
 #include "ValInterval.h"
 #include "ValTimeStamp.h"
@@ -50,7 +50,7 @@ class FairDbValRecord;
 class FairParamList;
 class FairDbValRecord;
 
-class FairDbTutParBin : public FairDbObjTableMap
+class FairDbTutParBin : public FairDbParSet
 {
   public :
     FairDbTutParBin (const char* name="FairDbTutParBin",

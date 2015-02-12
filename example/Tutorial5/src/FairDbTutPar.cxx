@@ -43,7 +43,7 @@ template class  FairDbWriter<FairDbTutPar>;
 
 
 FairDbTutPar::FairDbTutPar(const char* name, const char* title, const char* context, Bool_t own)
-  : FairDbObjTableMap(name,title,context, own),
+  : FairDbParSet(name,title,context, own),
     fTopPitch(0.),
     fTopAnchor(0.),
     fTopNrFE(0),

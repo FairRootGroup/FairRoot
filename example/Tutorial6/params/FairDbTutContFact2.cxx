@@ -17,7 +17,7 @@
 #include "FairDbTutContFact2.h"
 
 #include "FairDbTutPar2.h"               // for FairDbTutPar2
-#include "FairParSet.h"                 // for FairParSet
+#include "FairDbParSet.h"                 // for FairParSet
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
 #include "Riosfwd.h"                    // for ostream
@@ -66,7 +66,7 @@ FairParSet* FairDbTutContFact2::createContainer(FairContainer* c)
 
   const char* name=c->GetName();
   cout << "-I-FairDbTutContFact::createContainer " << name << endl;
-  FairParSet* p=NULL;
+  FairDbParSet* p=NULL;
   if (strcmp(name,"TUTParDefault")==0) {
     p=new FairDbTutPar2(c->getConcatName().Data(),c->GetTitle(),c->getContext());
     // Set Arguments needed for SQL versioning managment

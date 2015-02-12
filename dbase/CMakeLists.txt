@@ -90,7 +90,7 @@ dbInterface/FairDbUtils.cxx
 dbInterface/FairDbValRecordMap.cxx
 dbInterface/FairDbDataTypeUnion.cxx
 dbInterface/FairDbStreamer.cxx
-#dbUtils/FairTSQLObject.cxx
+dbInterface/FairDbParSet.cxx
 dbUtils/FairDbLog.cxx
 dbUtils/FairDbLogFormat.cxx
 dbUtils/FairDbLogOSStream.cxx

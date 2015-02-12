@@ -83,6 +83,7 @@
 #pragma link C++ class FairDbTableInterfaceStore+;
 #pragma link C++ class FairDbTableInterface+;
 #pragma link C++ class FairDbObjTableMap+;
+#pragma link C++ class FairDbParSet+;
 #pragma link C++ class FairDbDataTypeUnion+;
 #pragma link C++ class FairDbStopWatch+;
 #pragma link C++ class FairDbStopWatchManager+;
