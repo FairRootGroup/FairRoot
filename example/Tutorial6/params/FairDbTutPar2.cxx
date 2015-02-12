@@ -44,7 +44,7 @@ template class  FairDbWriter<FairDbTutPar2>;
 
 
 FairDbTutPar2::FairDbTutPar2(const char* name, const char* title, const char* context, Bool_t own)
-  : FairParGenericSet(name,title,context, own),
+  : FairDbParSet(name,title,context, own),
     fTopPitch(0.),
     fTopAnchor(0.),
     fTopNrFE(0),

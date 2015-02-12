@@ -18,14 +18,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/sim
   ${CMAKE_SOURCE_DIR}/geobase
   ${CMAKE_SOURCE_DIR}/parbase
- # ${CMAKE_SOURCE_DIR}/parbase/dbIO
- # ${CMAKE_SOURCE_DIR}/dbase/
- # ${CMAKE_SOURCE_DIR}/dbase/dbInterface
- # ${CMAKE_SOURCE_DIR}/dbase/dbValidation
- # ${CMAKE_SOURCE_DIR}/input/db
- # ${CMAKE_SOURCE_DIR}/dbase/dbInput
- # ${CMAKE_SOURCE_DIR}/dbase/dbUtils
-)
+ )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
   ${ROOT_INCLUDE_DIR}

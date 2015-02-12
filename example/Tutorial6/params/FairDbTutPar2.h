@@ -16,7 +16,7 @@
 #ifndef FAIRDBTUTPAR2_H
 #define FAIRDBTUTPAR2_H
 
-#include "FairParGenericSet.h"          // for FairParGenericSet
+#include "FairDbParSet.h"          // for FairParGenericSet
 #include "DataType.h"                    // for EDataType::kData
 #include "ValCondition.h"                 // for ValCondition
 #include "ValTimeStamp.h"               // for ValTimeStamp
@@ -40,7 +40,7 @@ class FairDbValRecord;
 class FairParamList;
 
 
-class FairDbTutPar2 : public FairParGenericSet
+class FairDbTutPar2 : public FairDbParSet
 {
   public :
     FairDbTutPar2 (const char* name="FairDbTutPar2",
