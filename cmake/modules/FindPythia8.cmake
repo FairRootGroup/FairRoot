@@ -29,6 +29,14 @@ FIND_PATH(PYTHIA8_LIB_DIR  NAMES libpythia8.so PATHS
   NO_DEFAULT_PATH
 )
 
+Find_Path(PYTHIA8DATA NAMES MainProgramSettings.xml PATHS
+  ${SIMPATH}/share/pythia8/xmldoc
+)
+
+If(NOT PYTHIA8DATA)
+  Message(STATUS "Could not find Pythia8 data files")
+EndIf()
+
 if (PYTHIA8_INCLUDE_DIR AND PYTHIA8_LIB_DIR)
    set(PYTHIA8_FOUND TRUE)
 endif (PYTHIA8_INCLUDE_DIR AND PYTHIA8_LIB_DIR)
