@@ -1,4 +1,4 @@
-FROM anaderi/xfairsoft
+FROM anaderi/fairsoft
 
 RUN mkdir /tmp/FairRoot
 COPY . /tmp/FairRoot
