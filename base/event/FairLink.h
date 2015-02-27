@@ -67,17 +67,31 @@ class FairLink : public TObject
     }
 
     virtual bool operator<(const FairLink& link) const {
-      if (fFile < link.GetFile()) {
-        return true;
-      } else if ((fFile == link.GetFile() || link.GetFile() == -1) && fEntry < link.GetEntry()) {
-        return true;
-      } else if ((fFile == link.GetFile() || link.GetFile() == -1)  && (fEntry == link.GetEntry() || link.GetEntry() == -1) && fType < link.GetType()) {
-        return true;
-      } else if ((fFile == link.GetFile() || link.GetFile() == -1)  && (fEntry == link.GetEntry() || link.GetEntry() == -1) && fType == link.GetType() && fIndex < link.GetIndex()) {
-        return true;
-      } else {
-        return false;
-      }
+	if (fFile != -1 && link.GetFile() != -1){
+		if (fFile < link.GetFile()) 		return true;
+		else if (link.GetFile() < fFile) 	return false;
+	}
+	if (fEntry != -1 && link.GetEntry() != -1){
+		if(fEntry < link.GetEntry())		return true;
+		else if (link.GetEntry() < fEntry)	return false;
+	}
+	if (fType < link.GetType())				return true;
+	else if (link.GetType() < fType)		return false;
+	if (fIndex < link.GetIndex())			return true;
+	else if (link.GetIndex() < fIndex)		return false;
+
+	return false;
+//      if (fFile != -1 && fFile < link.GetFile()) {
+//        return true;
+//      } else if ((fFile == link.GetFile() || link.GetFile() == -1) && fEntry < link.GetEntry()) {
+//        return true;
+//      } else if ((fFile == link.GetFile() || link.GetFile() == -1)  && (fEntry == link.GetEntry() || link.GetEntry() == -1) && fType < link.GetType()) {
+//        return true;
+//      } else if ((fFile == link.GetFile() || link.GetFile() == -1)  && (fEntry == link.GetEntry() || link.GetEntry() == -1) && fType == link.GetType() && fIndex < link.GetIndex()) {
+//        return true;
+//      } else {
+//        return false;
+//      }
     }
 
     friend std::ostream& operator<< (std::ostream& out, const FairLink& link) {
