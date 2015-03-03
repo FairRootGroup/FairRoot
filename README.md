@@ -112,6 +112,9 @@ The template demonstrate and implement the following:
     root [1] .q
     ```
 
+## Build without data base module (-DWITH_DBASE)
+The interface to data bases can be switched off by setting the the cmake flage -DWITH_DBASE=Off, this will also exclude the tutorials 5 and 6 from the build and test process.
+
 ## Modular (custom) installation of FairRoot: 
  (inrtoduced by Ivana Hrivnacova)
 
@@ -142,6 +145,7 @@ cmake \
 -DAlFa_DIR="Path_to_fairsoft_or_alfa_installation" \
 ../FairRoot 
 ```
+
 ###Generating Doxygen documentation
 
 If the flage -DBUILD_DOXYGEN=ON is set when calling cmake, the doxygen documentation will be generated when calling make.  The generated html files can then be found in "build/doxygen/doc/html"
