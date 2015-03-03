@@ -260,6 +260,10 @@ Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
         RENAME FairRootConfig.csh
        )
 
+Install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
+        DESTINATION bin
+       )
+
 Install(DIRECTORY cmake 
         DESTINATION share/fairbase
         PATTERN ".svn" EXCLUDE)
