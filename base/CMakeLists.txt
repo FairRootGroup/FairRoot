@@ -125,6 +125,7 @@ If(BUILD_MBS)
       source/FairMbsSource.cxx
       source/FairUnpack.cxx
       source/MRevBuffer.cxx
+      source/FairMbsStreamSource.cxx
    )
 
   Set(NO_DICT_SRCS 

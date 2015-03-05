@@ -17,7 +17,7 @@ using namespace std;
 #include "TObjString.h"
 
 #include "FairLmdSource.h"
-
+#include "FairLogger.h"
 
 FairLmdSource::FairLmdSource()
   : FairMbsSource(),
@@ -91,10 +91,13 @@ Bool_t FairLmdSource::Init()
 
 Bool_t FairLmdSource::OpenNextFile(TString fileName)
 {
-  Int_t inputMode = 1;
-  fxInputChannel = new s_evt_channel;  
+  Int_t inputMode = GETEVT__FILE;
+  fxInputChannel = new s_evt_channel;
   void* headptr = &fxInfoHeader;
   INTS4 status;
+
+  LOG(INFO) << "File " << fileName << " will be opened." << FairLogger::endl;
+
   status = f_evt_get_open(inputMode,
                           const_cast<char*>(fileName.Data()),
                           fxInputChannel,
@@ -103,17 +106,14 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
                           1);
 
   if(status) {
+     LOG(ERROR) << "File " << fileName << " opening failed." << FairLogger::endl;
     return kFALSE;
   }
 
+  LOG(INFO) << "File " << fileName << " opened." << FairLogger::endl;
 
   // Decode File Header
   Bool_t result = Unpack((Int_t*)fxInfoHeader, sizeof(s_filhe), -4, -4, -4, -4, -4);
-
-  cout << "-I- FairLmdSource::OpenNextFile : file "
-       << fileName << " opened." << endl;
- 
-  
 
   return kTRUE;
 }
@@ -129,6 +129,13 @@ Int_t FairLmdSource::ReadEvent()
   //Int_t fCurrentMbsEventNo = fuEventCounter;
 
   if(GETEVT__SUCCESS != status) {
+
+    LOG(INFO) << "FairMbsStreamSource::ReadEvent()"
+              << FairLogger::endl;
+
+    CHARS* sErrorString = NULL;
+    f_evt_error(status, sErrorString , 0);
+
     if(fCurrentFile >= fFileNames->GetSize()) {
       return 1;
     }
@@ -162,6 +169,8 @@ Int_t FairLmdSource::ReadEvent()
   Short_t sesubcrate;
   Short_t secontrol;
 
+  LOG(DEBUG2)<< "FairLmdSource::ReadEvent => Found " << nrSubEvts << " Sub-event "
+             << FairLogger::endl;
   //if (fCurrentEvent%10000==0)
   //cout << " -I- LMD_ANA:  evt# " <<  fCurrentEvent << "  n_subevt# " << nrSubEvts << " evt processed# " << fNEvent <<  " : " << fxEvent->l_count << endl;
 

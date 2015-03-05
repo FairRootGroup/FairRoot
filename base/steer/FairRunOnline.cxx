@@ -139,7 +139,7 @@ void FairRunOnline::Init()
 {
   LOG(INFO)<<"FairRunOnline::Init"<<FairLogger::endl;
   if (fIsInitialized) {
-    fLogger->Fatal(MESSAGE_ORIGIN,"Error Init is already called before!");
+    LOG(FATAL) << "Error Init is already called before!" << FairLogger::endl;
     exit(-1);
   } else {
     fIsInitialized = kTRUE;
@@ -193,7 +193,8 @@ void FairRunOnline::Init()
 
   // Initialize the source
   if(! fSource->Init()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Init of the source failed...");
+    LOG(FATAL) << "Initialization of data source failed!"
+               << FairLogger::endl;
     exit(-1);
   }
 
@@ -346,6 +347,8 @@ void FairRunOnline::Finish()
   fRootManager->Write();
 
   fSource->Close();
+
+  fRootManager->CloseOutFile();
 
   if(fGenerateHtml) {
     WriteObjects();

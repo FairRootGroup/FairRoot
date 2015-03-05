@@ -16,6 +16,7 @@
 #include <iostream>
 
 #include "FairMbsSource.h"
+#include "FairLogger.h"
 
 FairMbsSource::FairMbsSource() : FairSource(), fUnpackers(new TObjArray()) {}
 
@@ -45,6 +46,13 @@ void FairMbsSource::Reset() {
 Bool_t FairMbsSource::Unpack(Int_t *data, Int_t size, Short_t type,
                              Short_t subType, Short_t procId, Short_t subCrate,
                              Short_t control) {
+
+  LOG(DEBUG2)<< "FairMbsSource::Unpack => Found Sub-event with flags: " 
+             << " Type " << type << " SubType " << subType
+             << " ProcId " << procId << " SubCrate " << subCrate
+             << " Control " << control
+             << FairLogger::endl;
+  
   FairUnpack *unpack;
   Bool_t seen = kFALSE;
   for (Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
