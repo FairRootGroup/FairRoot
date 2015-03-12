@@ -349,12 +349,12 @@ void FairRunOnline::Finish()
 
   fSource->Close();
 
-  fRootManager->CloseOutFile();
-
   if(fGenerateHtml) {
     WriteObjects();
     GenerateHtml();
   }
+
+  fRootManager->CloseOutFile();
 }
 
 //_____________________________________________________________________________
