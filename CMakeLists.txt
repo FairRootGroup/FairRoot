@@ -276,7 +276,22 @@ Install(DIRECTORY cmake
         DESTINATION share/fairbase
         PATTERN ".svn" EXCLUDE)
 
+Find_Package(Git)
 
+If(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
+  Execute_Process(COMMAND ${GIT_EXECUTABLE} describe --tags
+                  OUTPUT_VARIABLE FAIRROOT_GIT_VERSION
+                  OUTPUT_STRIP_TRAILING_WHITESPACE
+                  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                 )
+Else()
+  Set(FAIRROOT_GIT_VERSION v-15.03) 
+EndIf()
+Configure_File(${CMAKE_SOURCE_DIR}/cmake/scripts/fairroot-config.in ${CMAKE_BINARY_DIR}/fairroot-config @ONLY)
+
+Install(PROGRAMS ${CMAKE_BINARY_DIR}/fairroot-config
+        DESTINATION bin
+       )
 
 if(NOT FAIRROOT_MINIMAL)
 
