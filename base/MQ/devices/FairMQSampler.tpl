@@ -46,9 +46,9 @@ template <typename Loader> void FairMQSampler<Loader>::Init()
 
   fFairRunAna->SetInputFile(TString(fInputFile));
   // This loop can be used to duplicate input file to get more data. The output will still be a single file.
-  for (int i = 0; i < 0; ++i) {
-    fFairRunAna->AddFile(fInputFile);
-  }
+  // for (int i = 0; i < 0; ++i) {
+  //   fFairRunAna->AddFile(fInputFile);
+  // }
 
   TString output = fInputFile;
   output.Append(".out.root");
