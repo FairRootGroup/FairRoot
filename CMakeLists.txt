@@ -93,7 +93,7 @@ IF(NOT FAIRROOT_MODULAR_BUILD)
 endif(NOT FAIRROOT_MODULAR_BUILD)
 
 
-Option(WITH_DBASE "Switch off the building of FairDB." ON)
+Option(WITH_DBASE "Switch off the building of FairDB." OFF)
 If(WITH_DBASE)
   Add_Definitions(-DWITH_DBASE)
 EndIf()

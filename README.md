@@ -71,7 +71,7 @@ The template demonstrate and implement the following:
 
 3. Install the template: 
 
-   you need to copy the  [project template] (https://github.com/FairRootGroup/FairRoot/tree/dev/templates/project_template)to you own directory  
+   you need to copy the  [project template] (https://github.com/FairRootGroup/FairRoot/tree/dev/templates/project_template) to you own directory  
 
     ```bash
     # Set the shell variable FAIRROOTPATH to the FairRoot installation directory
@@ -112,8 +112,11 @@ The template demonstrate and implement the following:
     root [1] .q
     ```
 
-## Build without data base module (-DWITH_DBASE)
-The interface to data bases can be switched off by setting the the cmake flage -DWITH_DBASE=Off, this will also exclude the tutorials 5 and 6 from the build and test process.
+## Build with data base module (-DWITH_DBASE)
+The interface to data bases can be switched on by setting the the cmake flage -DWITH_DBASE=ON, 
+this will also build the tutorials 5 and 6.
+Warning: This option will change the inheritance tree of the parameter objects.
+ 
 
 ## Modular (custom) installation of FairRoot: 
  (inrtoduced by Ivana Hrivnacova)
