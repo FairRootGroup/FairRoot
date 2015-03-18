@@ -141,12 +141,13 @@ also in AlFa_DIR
 - requires new versions of VMC packages built with CMake
 and installed either in AlFa_DIR or available on path
 
-cmake \
--DCMAKE_INSTALL_PREFIX="Installation_directory_for_fairroot" \
--DFAIRROOT_MODULAR_BUILD=ON \
--DBOOST_ROOT="Path_to_boost_installation" \
--DAlFa_DIR="Path_to_fairsoft_or_alfa_installation" \
-../FairRoot 
+ ```bash
+  cmake \
+  -DCMAKE_INSTALL_PREFIX="Installation_directory_for_fairroot" \
+  -DFAIRROOT_MODULAR_BUILD=ON \
+  -DBOOST_ROOT="Path_to_boost_installation" \
+  -DAlFa_DIR="Path_to_fairsoft_or_alfa_installation" \
+  ../FairRoot 
 ```
 
 ###Generating Doxygen documentation
