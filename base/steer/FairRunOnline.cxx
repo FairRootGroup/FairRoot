@@ -388,7 +388,7 @@ void FairRunOnline::GenerateHtml()
            << "<head>" << endl
            << "<title>Read a ROOT file</title>" << endl
            << "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge; text/html\">" << endl
-           << "<script type=\"text/javascript\" src=\"http:\/\/root.cern.ch/js/3.2/scripts/JSRootCore.js\"></script>" << endl
+           << "<script type=\"text/javascript\" src=\"http://root.cern.ch/js/3.2/scripts/JSRootCore.js\"></script>" << endl
            << "</head>" << endl
            << "<body onload=\"JSROOT.BuildSimpleGUI()\">" << endl
            << "<div id=\"simpleGUI\"" << endl
