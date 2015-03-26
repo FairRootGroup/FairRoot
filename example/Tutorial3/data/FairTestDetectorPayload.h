@@ -19,13 +19,6 @@
 #include "FairTestDetectorDigi.h"
 #include "TString.h"
 
-
-// for boost serialization (must be hidden from CINT)
-#ifndef __CINT__
-#include <boost/serialization/access.hpp>
-#include <boost/serialization/base_object.hpp>
-#endif //__CINT__
-
 namespace TestDetectorPayload
 {
     class TimeStamp
@@ -33,18 +26,6 @@ namespace TestDetectorPayload
       public:
         Double_t fTimeStamp;
         Double_t fTimeStampError;
-        
-        // method to use boost serialization
-        #ifndef __CINT__
-        template<class Archive>
-        void serialize(Archive & ar, const unsigned int version) 
-        {
-            ar & fTimeStamp;
-            ar & fTimeStampError;
-        }
-        friend class boost::serialization::access;
-        #endif //__CINT__
-        
     };
 
     class Digi : public TimeStamp
@@ -53,20 +34,6 @@ namespace TestDetectorPayload
         Int_t fX;
         Int_t fY;
         Int_t fZ;
-        
-        // method to use boost serialization
-        #ifndef __CINT__
-        template<class Archive>
-        void serialize(Archive & ar, const unsigned int version) 
-        {
-            ar & boost::serialization::base_object<TimeStamp>(*this);
-            ar & fX;
-            ar & fY;
-            ar & fZ;
-        }
-        friend class boost::serialization::access;
-        #endif //__CINT__
-        
     };
 
     class Hit : public TimeStamp
@@ -80,24 +47,6 @@ namespace TestDetectorPayload
         Double_t dposX;
         Double_t dposY;
         Double_t dposZ;
-        
-        // method to use boost serialization
-        #ifndef __CINT__
-        template<class Archive>
-        void serialize(Archive & ar, const unsigned int version) 
-        {
-            ar & boost::serialization::base_object<TimeStamp>(*this);
-            ar & detID;
-            ar & mcindex;
-            ar & posX;
-            ar & posY;
-            ar & posZ;
-            ar & dposX;
-            ar & dposY;
-            ar & dposZ;
-        }
-        friend class boost::serialization::access;
-        #endif //__CINT__
     };
 }
 

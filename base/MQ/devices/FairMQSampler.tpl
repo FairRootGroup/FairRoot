@@ -33,9 +33,8 @@ FairMQSampler<Loader>::~FairMQSampler()
   delete fSamplerTask;
 }
 
-/// Methods
-
-template <typename Loader> void FairMQSampler<Loader>::Init()
+template <typename Loader>
+void FairMQSampler<Loader>::Init()
 {
   FairMQDevice::Init();
 
@@ -68,7 +67,8 @@ template <typename Loader> void FairMQSampler<Loader>::Init()
   fNumEvents = int((ioman->GetInChain())->GetEntries());
 }
 
-template <typename Loader> void FairMQSampler<Loader>::Run()
+template <typename Loader>
+void FairMQSampler<Loader>::Run()
 {
   LOG(INFO) << ">>>>>>> Run <<<<<<<";
 
@@ -97,7 +97,7 @@ template <typename Loader> void FairMQSampler<Loader>::Run()
       //   boost::this_thread::sleep(boost::posix_time::milliseconds(1));
       // }
 
-      if(fState != RUNNING) { break; }
+      if (fState != RUNNING) { break; }
     }
   } while (fState == RUNNING && fContinuous);
 
@@ -130,7 +130,8 @@ void FairMQSampler<Loader>::SendPart()
   fSamplerTask->GetOutput()->CloseMessage();
 }
 
-template <typename Loader> void FairMQSampler<Loader>::ResetEventCounter()
+template <typename Loader>
+void FairMQSampler<Loader>::ResetEventCounter()
 {
   while (true) {
     try {
@@ -146,7 +147,7 @@ template <typename Loader> void FairMQSampler<Loader>::ResetEventCounter()
 }
 
 template <typename Loader>
-void FairMQSampler<Loader>::SetProperty(const int key, const string& value, const int slot/*= 0*/)
+void FairMQSampler<Loader>::SetProperty(const int key, const std::string& value, const int slot/*= 0*/)
 {
   switch (key)
   {
@@ -166,7 +167,7 @@ void FairMQSampler<Loader>::SetProperty(const int key, const string& value, cons
 }
 
 template <typename Loader>
-string FairMQSampler<Loader>::GetProperty(const int key, const string& default_/*= ""*/, const int slot/*= 0*/)
+std::string FairMQSampler<Loader>::GetProperty(const int key, const std::string& default_/*= ""*/, const int slot/*= 0*/)
 {
   switch (key)
   {

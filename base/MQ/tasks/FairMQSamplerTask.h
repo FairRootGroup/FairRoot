@@ -15,18 +15,17 @@
 #ifndef FAIRMQSAMPLERTASK_H_
 #define FAIRMQSAMPLERTASK_H_
 
-#include "FairTask.h"
-#include "FairEventHeader.h"
 #include <vector>
 #include <string>
 
 #include <boost/function.hpp>
 
-#include "FairTask.h"
-#include "TClonesArray.h"
-
 #include "FairMQMessage.h"
 #include "FairMQTransportFactory.h"
+
+#include "TClonesArray.h"
+#include "FairTask.h"
+#include "FairEventHeader.h"
 
 class FairMQSamplerTask : public FairTask
 {
@@ -40,13 +39,13 @@ class FairMQSamplerTask : public FairTask
     virtual void Exec(Option_t *opt);
     void SetSendPart(boost::function<void()>); // provides a callback to the Sampler.
     void SetEventIndex(Long64_t EventIndex);
-    void SetBranch(string branch);
+    void SetBranch(std::string branch);
     FairMQMessage *GetOutput();
     void SetTransport(FairMQTransportFactory *factory);
 
   protected:
     TClonesArray *fInput;
-    string fBranch;
+    std::string fBranch;
     FairMQMessage *fOutput;
     FairMQTransportFactory *fTransportFactory;
     Long64_t fEventIndex;
