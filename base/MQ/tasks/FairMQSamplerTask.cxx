@@ -14,6 +14,8 @@
 
 #include "FairMQSamplerTask.h"
 
+using namespace std;
+
 FairMQSamplerTask::FairMQSamplerTask() :
   FairTask("Abstract base task used for loading a branch from a root file into memory"),
   fInput(NULL),
