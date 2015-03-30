@@ -1,4 +1,0 @@
-dbase
-========
-
-Data base interface.
