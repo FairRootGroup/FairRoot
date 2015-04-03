@@ -198,7 +198,7 @@ int main(int argc, char** argv)
     filesink.SetProperty(TSink::NumInputs, 1);
     filesink.SetProperty(TSink::NumOutputs, 0);
 
-    filesink.InitInputPolicyContainer( options.classname.c_str() );
+    filesink.InitInputContainer( options.classname.c_str() );
     filesink.SetFileProperties(options.filename,options.treename,options.branchname,options.classname,
                                                 options.fileoption,options.useTClonesArray);
 

@@ -294,7 +294,7 @@ void RootOutFileManager<DataType>::AddToFile(FairMQMessage* msg)
 
 
 template <typename DataType>
-void RootOutFileManager<DataType>::InitOutFile()
+void RootOutFileManager<DataType>::InitOutputFile()
 {
     fWrite=true;
     fOutFile = TFile::Open(fFileName.c_str(),fFileOption.c_str());

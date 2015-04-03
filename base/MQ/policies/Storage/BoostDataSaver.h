@@ -35,8 +35,10 @@ public:
     typedef std::vector<TPayload> TObjArray;
     typedef std::vector<TObjArray> TObjArrContainer;
     
-    BoostDataSaver() {;}
-    virtual ~BoostDataSaver() {;}
+    BoostDataSaver() {}
+    virtual ~BoostDataSaver() {}
+    
+    virtual void InitOutputFile(){}
     
     void Write(std::ofstream& outfile, TPayload* ObjArr, long sizeArr=1)
     {
