@@ -3,7 +3,6 @@
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR} 
 ${PYTHIA8_INCLUDE_DIR}
 ${SIMPATH}/include
 ${BASE_INCLUDE_DIRECTORIES} 
@@ -12,7 +11,8 @@ ${CMAKE_SOURCE_DIR}/generators
 
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
+include_directories(${INCLUDE_DIRECTORIES})
+include_directories(${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}

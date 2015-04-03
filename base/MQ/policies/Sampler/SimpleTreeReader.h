@@ -13,6 +13,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdint.h>
 
 // ROOT
 #include "Rtypes.h"
@@ -23,9 +24,6 @@
 // FairRoot
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
-
-
-
 
 template <typename DataBranchType>
 class SimpleTreeReader 
@@ -39,8 +37,7 @@ public:
     {
         if(fInputFile)
         {
-            if(fInputFile)
-                fInputFile->Close();
+            fInputFile->Close();
             delete fInputFile;
         }
     }
@@ -68,13 +65,13 @@ public:
             MQLOG(ERROR)<<"Could not open file "<<fFileName<<" in SimpleTreeReader::InitSampler()";
     }
     
-    DataBranchType* GetDataBranch(const Long64_t &Event)
+    DataBranchType* GetDataBranch(const int64_t &Event)
     {
         fTree->GetEntry(Event);
         return fDataBranch;
     }
     
-    int GetDataBunchNumber()
+    int64_t GetNumberOfEvent()
     {
         if(fTree) 
             return fTree->GetEntries();
@@ -89,11 +86,11 @@ public:
             std::vector<T> TempObj;
             if(std::is_same<DataBranchType,TClonesArray>::value)
             {
-                for(Long64_t i(0);i<fTree->GetEntries() ;i++)
+                for(int64_t i(0);i<fTree->GetEntries() ;i++)
                 {
                     TempObj.clear();
                     fTree->GetEntry(i);
-                    for (Int_t iobj = 0; iobj < fDataBranch->GetEntriesFast(); ++iobj)
+                    for (int64_t iobj = 0; iobj < fDataBranch->GetEntriesFast(); ++iobj)
                     {
                         T* Data_i = reinterpret_cast<T*>(fDataBranch->At(iobj));
                         if (!Data_i)
@@ -105,7 +102,7 @@ public:
             }
             else
             {
-                for(Long64_t i(0);i<fTree->GetEntries() ;i++)
+                for(int64_t i(0);i<fTree->GetEntries() ;i++)
                 {
                     TempObj.clear();
                     fTree->GetEntry(i);
