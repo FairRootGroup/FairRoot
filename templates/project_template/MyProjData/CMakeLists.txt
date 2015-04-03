@@ -1,12 +1,12 @@
  # Create a library called "libMyProjData" 
 
 set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR} 
 ${BASE_INCLUDE_DIRECTORIES}
 ${CMAKE_SOURCE_DIR}/MyProjData
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
+include_directories(${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}

@@ -98,7 +98,7 @@ public:
         return vect;
     }
     
-    void InitOutFile()
+    virtual void InitOutputFile()
     {
         fOutfile = std::ofstream(fFileName, std::ios::out | std::ios::binary | std::ios::app);
     }

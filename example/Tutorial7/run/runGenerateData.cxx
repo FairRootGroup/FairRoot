@@ -161,7 +161,7 @@ int main(int argc, char** argv)
     RootFileManager* rootman = new RootFileManager();
     rootman->SetFileProperties(options.filename, options.treename, options.branchname, 
                               options.classname,options.fileoption,options.useTCA);
-    rootman->InitOutFile();
+    rootman->InitOutputFile();
     
     //----------------------------------------------
     // Init density function for the number of digi/ bunch

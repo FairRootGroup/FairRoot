@@ -14,8 +14,11 @@ template <typename TPayload>
 class TriviallyCopyableDataSaver 
 {
 public:
-    TriviallyCopyableDataSaver() {;}
-    virtual ~TriviallyCopyableDataSaver(){;}
+    TriviallyCopyableDataSaver() {}
+    virtual ~TriviallyCopyableDataSaver(){}
+    
+    
+    virtual void InitOutputFile(){}
     
     void Write(std::ofstream& outfile, TPayload* ObjArr, long sizeArr=1)
     {
