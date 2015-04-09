@@ -120,7 +120,7 @@ The data base interface is now in a separate repository, to use it you have to d
  cd FairRoot 
  mkdir dbase 
  cd dbase 
- git clone https://github.com/denisbertini/fairdb .
+ git clone https://github.com/denisbertini/dbase .
 
 ```
 
