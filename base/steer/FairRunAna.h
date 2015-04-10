@@ -124,6 +124,9 @@ class FairRunAna : public FairRun
     /** Set the mean time for the event in ns */
     void SetEventMeanTime(Double_t mean);
 
+    /** Set the time intervall the beam is interacting and the gap in ns */
+    void SetBeamTime(Double_t beamTime, Double_t gapTime);
+
     /**Set the signal to background ratio in event units
      *@param background :  Number of background Events for one signal
      *@param Signalid :    Signal file Id, used when adding (setting) the signal file

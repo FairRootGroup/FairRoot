@@ -417,7 +417,7 @@ void FairMCApplication::RunMC(Int_t nofEvents)
   // finish run
   FinishRun();
   // Save histograms with memory and runtime information in the output file
-  if (FairRunSim::Instance()->GetWriteRunInfoFile()) {
+  if (FairRunSim::Instance()->IsRunInfoGenerated()) {
     fRunInfo.WriteInfo();
   }
 }

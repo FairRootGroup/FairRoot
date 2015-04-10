@@ -113,6 +113,8 @@ FairRootManager::FairRootManager()
     fEventTimeMax(0.),
     fEventTime(0.),
     fEventMeanTime(0.),
+    fBeamTime(-1.),
+    fGapTime(-1.),
     fTimeProb(0),
     fMCHeader(0),
     fEvtHeader(0),
@@ -1547,20 +1549,40 @@ void  FairRootManager::SetEventMeanTime(Double_t mean)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+
+void FairRootManager::SetBeamTime(Double_t beamTime, Double_t gapTime)
+{
+	fBeamTime = beamTime;
+	fGapTime = gapTime;
+}
+
 void FairRootManager::SetEventTime()
 {
-  fLogger->Debug(MESSAGE_ORIGIN, "Set event time for Entry = %i , where the current entry is %i",
-                 fTimeforEntryNo, fCurrentEntryNo );
-  if(fTimeProb!=0) {
-    fLogger->Debug(MESSAGE_ORIGIN, "Time will be  set via sampling method : old time = %f ", fEventTime);
-    fEventTime += fTimeProb->GetRandom();
-    fLogger->Debug(MESSAGE_ORIGIN, "Time set via sampling method : %f ", fEventTime);
+  fLogger->Debug(MESSAGE_ORIGIN, "Set event time for Entry = %i , where the current entry is %i and eventTime is %f", fTimeforEntryNo, fCurrentEntryNo, fEventTime);
+  if (fBeamTime < 0){
+	  fEventTime += GetDeltaEventTime();
   } else {
-    fEventTime += gRandom->Uniform( fEventTimeMin,  fEventTimeMax);
-    fLogger->Debug(MESSAGE_ORIGIN, "Time set via Uniform Random : %f ", fEventTime);
-
+	  do {
+		  fEventTime += GetDeltaEventTime();
+	  } while( fmod(fEventTime, fBeamTime + fGapTime) > fBeamTime );
   }
+  fLogger->Debug(MESSAGE_ORIGIN, "New time = %f", fEventTime);
   fTimeforEntryNo=fCurrentEntryNo;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+Double_t FairRootManager::GetDeltaEventTime()
+{
+	Double_t deltaTime = 0;
+	if (fTimeProb != 0) {
+		deltaTime = fTimeProb->GetRandom();
+		fLogger->Debug(MESSAGE_ORIGIN, "Time set via sampling method : %f ", deltaTime);
+	} else {
+		deltaTime = gRandom->Uniform(fEventTimeMin, fEventTimeMax);
+		fLogger->Debug(MESSAGE_ORIGIN, "Time set via Uniform Random : %f ", deltaTime);
+	}
+	return deltaTime;
 }
 //_____________________________________________________________________________
 

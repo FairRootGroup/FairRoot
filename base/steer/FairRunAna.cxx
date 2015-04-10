@@ -817,6 +817,12 @@ void  FairRunAna::SetEventMeanTime(Double_t mean)
   fRootManager->SetEventMeanTime(mean);
 }
 //_____________________________________________________________________________
+
+void FairRunAna::SetBeamTime(Double_t beamTime, Double_t gapTime){
+	fRootManager->SetBeamTime(beamTime, gapTime);
+}
+
+//_____________________________________________________________________________
 void  FairRunAna::SetContainerStatic(Bool_t tempBool)
 {
   fStatic=tempBool;

@@ -11,22 +11,22 @@
 // -------------------------------------------------------------------------
 
 #include "FairMCStack.h"
+#include "FairGeanePro.h"
+#include "FairTrajFilter.h"
+#include "FairRootManager.h"
+#include "FairEventManager.h"
+#include "FairMCTrack.h"
+#include "FairLogger.h"
+
 #include "TEveTrack.h"
-#include <iostream>
 #include "TEveTrackPropagator.h"
 #include "TGeoTrack.h"
-#include "FairRootManager.h"
 #include "TClonesArray.h"
 #include "TObjArray.h"
 #include "TEveManager.h"
-#include "FairEventManager.h"
-#include "FairMCTrack.h"
 #include "TGeant3.h"
-#include "FairGeanePro.h"
-#include "FairTrajFilter.h"
 
-using std::cout;
-using std::endl;
+#include <iostream>
 
 // -----   Default constructor   -------------------------------------------
 FairMCStack::FairMCStack()
@@ -46,17 +46,17 @@ FairMCStack::FairMCStack(const char* name, Int_t iVerbose)
 // -------------------------------------------------------------------------
 InitStatus FairMCStack::Init()
 {
-  if(fVerbose>1) { cout<<  "FairMCStack::Init()" << endl; }
+  LOG(DEBUG) <<  "FairMCStack::Init()" << FairLogger::endl;
   FairRootManager* fManager = FairRootManager::Instance();
   fTrackList = (TClonesArray*)fManager->GetObject("MCTrack");
   if(fTrackList==0) {
-    cout << "FairMCPointDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< endl;
+    LOG(ERROR) << "FairMCStack::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< FairLogger::endl;
     SetActive(kFALSE);
   }
-  if(fVerbose>2) { cout<<  "FairMCStack::Init() get track list" << fTrackList<< endl; }
-  if(fVerbose>2) { cout<<  "FairMCStack::Init()  create propagator" << endl; }
+  LOG(DEBUG2) <<  "FairMCStack::Init() get track list" << fTrackList<< FairLogger::endl; 
+  LOG(DEBUG2) <<  "FairMCStack::Init()  create propagator" << FairLogger::endl; 
   fEventManager =FairEventManager::Instance();
-  if(fVerbose>2) { cout<<  "FairMCStack::Init() get instance of FairEventManager " << endl; }
+  LOG(DEBUG2) <<  "FairMCStack::Init() get instance of FairEventManager " << FairLogger::endl; 
   fEvent = "Current Event";
   MinEnergyLimit=fEventManager->GetEvtMinEnergy();
   MaxEnergyLimit=fEventManager->GetEvtMaxEnergy();
@@ -97,14 +97,14 @@ void FairMCStack::Exec(Option_t* option)
 
   if (IsActive()) {
 
-    if(fVerbose>1) { cout << " FairMCStack::Exec "<< endl; }
+    LOG(DEBUG) << " FairMCStack::Exec "<< FairLogger::endl; 
     FairMCTrack* tr;
     const Double_t* point;
 
     Reset();
 
     for (Int_t i=0; i<fTrackList->GetEntriesFast(); i++)  {
-      if(fVerbose>2) { cout << "FairMCStack::Exec "<< i << endl; }
+      LOG(DEBUG2) << "FairMCStack::Exec "<< i << FairLogger::endl; 
       tr=(FairMCTrack*)fTrackList->At(i);
 
       TVector3 Ptot = tr->GetMomentum();
@@ -140,10 +140,10 @@ void FairMCStack::Exec(Option_t* option)
       PEnergy=P->Energy();
       MinEnergyLimit=TMath::Min(PEnergy,MinEnergyLimit) ;
       MaxEnergyLimit=TMath::Max(PEnergy,MaxEnergyLimit) ;
-      if(fVerbose>2) { cout << "MinEnergyLimit " << MinEnergyLimit << " MaxEnergyLimit " << MaxEnergyLimit << endl; }
+      LOG(DEBUG2) << "MinEnergyLimit " << MinEnergyLimit << " MaxEnergyLimit " << MaxEnergyLimit << FairLogger::endl; 
       if (fEventManager->IsPriOnly() && P->GetMother(0)>-1) { continue; }
       if(fEventManager->GetCurrentPDG()!=0 && fEventManager->GetCurrentPDG()!= tr->GetPdgCode()) { continue; }
-      if(fVerbose>2) { cout << "PEnergy " << PEnergy << " Min "  << fEventManager->GetMinEnergy() << " Max " << fEventManager->GetMaxEnergy() <<endl; }
+      LOG(DEBUG2) << "PEnergy " << PEnergy << " Min "  << fEventManager->GetMinEnergy() << " Max " << fEventManager->GetMaxEnergy() << FairLogger::endl; 
       if( (PEnergy<fEventManager->GetMinEnergy()) || (PEnergy >fEventManager->GetMaxEnergy())) { continue; }
 
       //here we have to propagate
@@ -174,17 +174,14 @@ void FairMCStack::Exec(Option_t* option)
           TEveVector Mom= TEveVector(P->Px(), P->Py(),P->Pz());
           path->fP=Mom;
         }
-        if(fVerbose>3) { cout << "Path marker added " << path << endl; }
-
+        LOG(DEBUG3) << "Path marker added " << path << FairLogger::endl; 
         track->AddPathMark(*path);
 
-        if(fVerbose>3) { cout << "Path marker added " << path << endl; }
+        LOG(DEBUG3) << "Path marker added " << path << FairLogger::endl; 
       }
       fTrList->AddElement(track);
-      if(fVerbose>3) { cout << "track added " << track->GetName() << endl; }
+      LOG(DEBUG2) << "track added " << track->GetName() << FairLogger::endl;}
 
-
-//  cout << "CurrentTrack " << fTrajFilter->GetCurrentTrk() << endl;
 
       /*   for (Int_t n=0; n<Np; n++){
              point=tr->GetPoint(n);
@@ -197,13 +194,13 @@ void FairMCStack::Exec(Option_t* option)
                  TEveVector Mom= TEveVector(P->Px(), P->Py(),P->Pz());
                  path->fP=Mom;
              }
-             if(fVerbose>3) cout << "Path marker added " << path << endl;
+             LOG(DEBUG3) << "Path marker added " << path << FairLogger::endl;
              track->AddPathMark(*path);
-             if(fVerbose>3) cout << "Path marker added " << path << endl;
+             LOG(DEBUG3) << "Path marker added " << path << FairLogger::endl;
           }
 
           fTrList->AddElement(track);
-      if(fVerbose>3)cout << "track added " << track->GetName() << endl;
+       LOG(DEBUG3) << "track added " << track->GetName() << FairLogger::endl;
       */
     }
     for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++) {
