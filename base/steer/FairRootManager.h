@@ -204,7 +204,10 @@ class FairRootManager : public TObject
     void                SetEventTimeInterval(Double_t min, Double_t max);
     /** Set the mean time for the event in ns */
     void                SetEventMeanTime(Double_t mean);
+    /** Set the repetition time of the beam when it can interact (beamTime) and when no interaction happen (gapTime). The total repetition time is beamTime + gapTime */
+    void				SetBeamTime(Double_t beamTime, Double_t gapTime);
     void                SetEventTime();
+    Double_t			GetDeltaEventTime();
     void                SetFileHeader(FairFileHeader* f) {fFileHeader =f;}
 
     /**Set the signal to background ratio in event units
@@ -371,6 +374,10 @@ class FairRootManager : public TObject
     Double_t                                fEventTimeMax;  //!
     /** Time of event since th start (ns) */
     Double_t                                fEventTime;     //!
+    /** Time of particles in beam (ns) */
+    Double_t								fBeamTime; //!
+    /** Time without particles in beam (gap) (ns) */
+    Double_t								fGapTime; //!
     /** EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime) */
     Double_t                                fEventMeanTime; //!
     /** used to generate random numbers for event time; */
