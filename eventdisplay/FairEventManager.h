@@ -36,6 +36,7 @@ class FairEventManager : public TEveEventManager
     virtual void DisplaySettings();       //  *Menu*
     virtual Int_t Color(Int_t pdg);
     void AddTask(FairTask* t) {fRunAna->AddTask(t);}
+    FairRootManager* GetFairRootManager(){  return fRootManager ;};
     virtual void Init( Int_t visopt = 1, Int_t vislvl = 3, Int_t maxvisnds = 10000);
     virtual Int_t GetCurrentEvent() {return fEntry;}
     virtual void SetPriOnly(Bool_t Pri) {fPriOnly=Pri;}
