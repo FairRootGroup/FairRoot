@@ -1277,7 +1277,11 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
       break;
     }
   }
-
+  if(!fObj2[fNObj]) {
+  // special FairShip case of stripped down root file
+      fRootFileSource->GetInChain()->SetBranchStatus(BrName,1);
+      fRootFileSource->GetInChain()->SetBranchAddress(BrName,&fObj2[fNObj]);
+   }
   if(!fObj2[fNObj]) {
     /** if we do not find an object corresponding to the branch in the folder structure
     *  then we have no idea about what type of object is this and we cannot set the branch address

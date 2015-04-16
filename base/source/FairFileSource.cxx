@@ -14,6 +14,7 @@
 //
 //
 #include "FairFileSource.h"
+#include "FairRootManager.h"            // for FairRootManager
 #include "TString.h"
 #include "FairFileHeader.h"
 #include "FairLogger.h"
@@ -139,14 +140,25 @@ Bool_t FairFileSource::Init()
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
     TList* list= dynamic_cast <TList*> (fRootFile->Get("BranchList"));
-    if(list==0)fLogger->Fatal(MESSAGE_ORIGIN, "No Branch list in input file");
+    if(list==0){
+  // special FairShip case of stripped down root file, create list instead of doing core dump 
+      list  = new TList();
+      TTree* sTree = dynamic_cast <TTree*> (fRootFile->Get("cbmsim")); 
+      for(Int_t i =0; i< sTree->GetListOfBranches()->GetEntries(); i++) {
+          TObjString* Obj = new TObjString( sTree->GetListOfBranches()->At(i)->GetName() ); 
+          list->Add( Obj );
+      } 
+      FairRootManager* fManager = FairRootManager::Instance();
+      fManager->SetBranchNameList(list);
+    }    
+    if(list==0){ fLogger->Fatal(MESSAGE_ORIGIN, "No Branch list in input file"); };
     TString chainName = fInputTitle;
     TString ObjName;
     fInputLevel.push_back(chainName);
     fCheckInputBranches[chainName] = new std::list<TString>;
     if(list) {
         TObjString* Obj=0;
-        fLogger->Info(MESSAGE_ORIGIN, "Enteries in the list  %i", list->GetEntries());
+        fLogger->Info(MESSAGE_ORIGIN, "Entries in the list  %i", list->GetEntries());
         for(Int_t i =0; i< list->GetEntries(); i++) {
             Obj=dynamic_cast <TObjString*> (list->At(i));
             if(Obj!=0){
