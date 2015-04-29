@@ -46,12 +46,11 @@ TSampler sampler;
 
 static void s_signal_handler(int signal)
 {
-    cout << endl << "Caught signal " << signal << endl;
+    LOG(INFO) << "Caught signal " << signal;
 
-    sampler.ChangeState(TSampler::STOP);
     sampler.ChangeState(TSampler::END);
 
-    cout << "Shutdown complete. Bye!" << endl;
+    LOG(INFO) << "Shutdown complete.";
     exit(1);
 }
 
@@ -180,49 +179,38 @@ int main(int argc, char** argv)
 
         sampler.SetTransport(transportFactory);
 
+        FairMQChannel channel(options.outputSocketType, options.outputMethod, options.outputAddress);
+        channel.fSndBufSize = options.outputBufSize;
+        channel.fRcvBufSize = options.outputBufSize;
+        channel.fRateLogging = 1;
+
+        sampler.fChannels["data-out"].push_back(channel);
+
         sampler.SetProperty(TSampler::Id, options.id);
         sampler.SetProperty(TSampler::InputFile, options.filename);
         sampler.SetProperty(TSampler::ParFile, options.parameterFile);
         sampler.SetProperty(TSampler::Branch, options.branchname);
         sampler.SetProperty(TSampler::EventRate, options.eventRate);
         sampler.SetProperty(TSampler::NumIoThreads, options.ioThreads);
-        sampler.SetFileProperties(options.filename,options.treename,options.branchname);
+        sampler.SetFileProperties(options.filename, options.treename, options.branchname);
 
+        sampler.ChangeState(TSampler::INIT_DEVICE);
+        sampler.WaitForEndOfState(TSampler::INIT_DEVICE);
 
-        sampler.SetProperty(TSampler::NumInputs, 0);
-        sampler.SetProperty(TSampler::NumOutputs, 1);
-
-        sampler.ChangeState(TSampler::INIT);
-
-        sampler.SetProperty(TSampler::OutputSocketType, options.outputSocketType);
-        sampler.SetProperty(TSampler::OutputSndBufSize, options.outputBufSize);
-        sampler.SetProperty(TSampler::OutputMethod, options.outputMethod);
-        sampler.SetProperty(TSampler::OutputAddress, options.outputAddress);
-
-        sampler.ChangeState(TSampler::SETOUTPUT);
-        sampler.ChangeState(TSampler::SETINPUT);
-        sampler.ChangeState(TSampler::BIND);
-        sampler.ChangeState(TSampler::CONNECT);
+        sampler.ChangeState(TSampler::INIT_TASK);
+        sampler.WaitForEndOfState(TSampler::INIT_TASK);
 
         sampler.ChangeState(TSampler::RUN);
+        sampler.WaitForEndOfState(TSampler::RUN);
 
-        try
-        {
-            // wait until the running thread has finished processing.
-            boost::unique_lock<boost::mutex> lock(sampler.fRunningMutex);
-            while (!sampler.fRunningFinished)
-            {
-                sampler.fRunningCondition.wait(lock);
-            }
-        }
-        catch( boost::thread_interrupted& interrupt )
-        {
-            boost::unique_lock<boost::mutex> lock(sampler.fRunningMutex);
-            LOG(ERROR)<<boost::this_thread::get_id();
-            return 1;
-        }
-        
         sampler.ChangeState(TSampler::STOP);
+
+        sampler.ChangeState(TSampler::RESET_TASK);
+        sampler.WaitForEndOfState(TSampler::RESET_TASK);
+
+        sampler.ChangeState(TSampler::RESET_DEVICE);
+        sampler.WaitForEndOfState(TSampler::RESET_DEVICE);
+
         sampler.ChangeState(TSampler::END);
     }
     catch (std::exception& e)

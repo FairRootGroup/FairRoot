@@ -58,385 +58,359 @@
 typedef boost::archive::binary_iarchive         BoostBinArchIn;
 typedef boost::archive::binary_oarchive         BoostBinArchOut;
 
-
-
-
-
-
 ///    ////////////////////////////////////////////////////////////////////////
 ///    ////////////////////////   serialize   /////////////////////////////////
 ///    ////////////////////////////////////////////////////////////////////////
 
-
-
 ////// base template class
-template <typename DataType, 
-          typename BoostArchiveOut=BoostBinArchOut>
-    class BoostSerializer
+template <typename DataType, typename BoostArchiveOut=BoostBinArchOut>
+class BoostSerializer
+{
+  public:
+    BoostSerializer()
+        : fMessage(nullptr)
+        , fTransport(nullptr)
+    {}
+
+    ~BoostSerializer()
+    {}
+
+    void CloseMessage()
     {
-
-    public:
-        BoostSerializer() : fMessage(nullptr), 
-                            fTransport(nullptr) 
-                            {}
-        ~BoostSerializer(){}
-
-        void CloseMessage()
+        if (fMessage)
         {
-            if(fMessage)
-                fMessage->CloseMessage();
+            fMessage->CloseMessage();
+        }
+    }
+
+    void SetMessage(FairMQMessage* msg)
+    {
+        fMessage = msg;
+    }
+
+    void GetMessage()
+    {
+        return fMessage;
+    }
+
+    void Init()
+    {
+        // InitContainer();
+    }
+
+    /// --------------------------------------------------------
+    /// main method to boost serialize
+    void DoSerialization()
+    {
+        std::ostringstream buffer;
+        BoostArchiveOut OutputArchive(buffer);
+        try
+        {
+            OutputArchive << fDataVector;
+        }
+        catch (boost::archive::archive_exception& e)
+        {
+            MQLOG(ERROR) << e.what();
         }
 
-        void SetMessage(FairMQMessage* msg)
+        int size = buffer.str().length();
+        // fMessage = fTransport->CreateMessage(size);
+        fMessage->Rebuild(size);
+        std::memcpy(fMessage->GetData(), buffer.str().c_str(), size);
+
+        // delete the vector content
+        if (fDataVector.size() > 0)
         {
-            fMessage=msg;
+            fDataVector.clear();
+        }
+    }
+
+    void DoSerialization(const std::vector<DataType>& DataVector)
+    {
+        std::ostringstream buffer;
+        BoostArchiveOut OutputArchive(buffer);
+        try
+        {
+            OutputArchive << DataVector;
+        }
+        catch (boost::archive::archive_exception& e)
+        {
+            MQLOG(ERROR) << e.what();
         }
 
-        void GetMessage()
-        {
-            return fMessage;
-        }
+        int size = buffer.str().length();
+        // fMessage = fTransport->CreateMessage(size);
+        fMessage->Rebuild(size);
+        std::memcpy(fMessage->GetData(), buffer.str().c_str(), size);
 
-        void Init()
-        {
-            //InitContainer();
-        }
+    }
 
-
-        /// --------------------------------------------------------
-        /// main method to boost serialize
-        void DoSerialization()
+    /// --------------------------------------------------------
+    /// DataType&    -------->  FairMQMessage*
+    FairMQMessage* SerializeMsg(DataType& Data)
+    {
+        fDataVector.push_back(Data);
+        DoSerialization();
+        return fMessage;
+    }
+    /// --------------------------------------------------------    
+    /// vector<DataType>&    -------->  FairMQMessage*
+    FairMQMessage* SerializeMsg(const std::vector<DataType>& DataVector)
+    {
+        DoSerialization(DataVector);
+        return fMessage;
+    }
+    /// --------------------------------------------------------
+    /// TClonesArray*    -------->  FairMQMessage*
+    FairMQMessage* SerializeMsg(TClonesArray* clonesArray)
+    {
+        // convert TClonesArray to vector<DataType>
+        for (Int_t i = 0; i < clonesArray->GetEntriesFast(); ++i)
         {
-            std::ostringstream buffer;
-            BoostArchiveOut OutputArchive(buffer);
-            try
+            DataType* data = reinterpret_cast<DataType*>(clonesArray->At(i));
+            if (!data)
             {
-                OutputArchive << fDataVector;
+                continue;
             }
-            catch (boost::archive::archive_exception& e)
-            {
-                MQLOG(ERROR) << e.what();
-            }
-
-            int size = buffer.str().length();
-            //fMessage = fTransport->CreateMessage(size);
-            fMessage->Rebuild(size);
-            std::memcpy(fMessage->GetData(), buffer.str().c_str(), size);
-
-            // delete the vector content
-            if (fDataVector.size() > 0)
-                fDataVector.clear();
+            fDataVector.push_back(*data);
         }
+        DoSerialization();
+        return fMessage;
+    }
 
-        void DoSerialization(const std::vector<DataType>& DataVector)
-        {
-            std::ostringstream buffer;
-            BoostArchiveOut OutputArchive(buffer);
-            try
-            {
-                OutputArchive << DataVector;
-            }
-            catch (boost::archive::archive_exception& e)
-            {
-                MQLOG(ERROR) << e.what();
-            }
+    ////////////////////////////////////////////////////////////////////////
+    /// Diverse
 
-            int size = buffer.str().length();
-            //fMessage = fTransport->CreateMessage(size);
-            fMessage->Rebuild(size);
-            std::memcpy(fMessage->GetData(), buffer.str().c_str(), size);
+    template <class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar& fDataVector;
+    }
 
-        }
+  protected:
+    virtual void SetTransport(FairMQTransportFactory* transport)
+    {
+        fTransport = transport;
+    }
 
-        /// --------------------------------------------------------
-        /// DataType&    -------->  FairMQMessage*
-        FairMQMessage* SerializeMsg(DataType& Data)
-        {
-            fDataVector.push_back(Data);
-            DoSerialization();
-            return fMessage;
-        }
-        /// --------------------------------------------------------    
-        /// vector<DataType>&    -------->  FairMQMessage*
-        FairMQMessage* SerializeMsg(const std::vector<DataType>& DataVector)
-        {
-            DoSerialization(DataVector);
-            return fMessage;
-        }
-        /// --------------------------------------------------------
-        /// TClonesArray*    -------->  FairMQMessage*
-        FairMQMessage* SerializeMsg(TClonesArray* clonesArray)
-        {
-            // convert TClonesArray to vector<DataType>
-            for (Int_t i = 0; i < clonesArray->GetEntriesFast(); ++i)
-            {
-                DataType* data = reinterpret_cast<DataType*>(clonesArray->At(i));
-                if (!data)
-                    continue;
-                fDataVector.push_back(*data);
-            }
-            DoSerialization();
-            return fMessage;
-        }
-
-        ////////////////////////////////////////////////////////////////////////
-        /// Diverse
-
-        template <class Archive>
-            void serialize(Archive& ar, const unsigned int version)
-            {
-                ar& fDataVector;
-            }
-
-
-
-    protected:
-
-        virtual void SetTransport(FairMQTransportFactory* transport)
-        {
-            fTransport=transport;
-        }
-
-        FairMQMessage*          fMessage;
-        FairMQTransportFactory* fTransport;
-        std::vector<DataType>   fDataVector;
-    };
-
-
-    
-
-
-
-
-
-
-
-
+    FairMQMessage*          fMessage;
+    FairMQTransportFactory* fTransport;
+    std::vector<DataType>   fDataVector;
+};
 
 ///    ////////////////////////////////////////////////////////////////////////
 ///    ////////////////////////   deserialize   ///////////////////////////////
 ///    ////////////////////////////////////////////////////////////////////////
 
-
-
+template<typename T, typename U>
+using enable_if_match = typename std::enable_if<std::is_same<T,U>::value,int>::type;
 
 template<typename T, typename U>
-    using enable_if_match = typename std::enable_if<std::is_same<T,U>::value,int>::type;
-
-template<typename T, typename U>
-    using enable_ifnot_match = typename std::enable_if<!std::is_same<T,U>::value,int>::type;
+using enable_ifnot_match = typename std::enable_if<!std::is_same<T,U>::value,int>::type;
 
 template<typename T>
-    using enable_if_pointer = typename std::enable_if<std::is_pointer<T>::value,int>::type;
+using enable_if_pointer = typename std::enable_if<std::is_pointer<T>::value,int>::type;
 
 template<typename T>
-    using enable_ifnot_pointer = typename std::enable_if<!std::is_pointer<T>::value,int>::type;
-
-
-
+using enable_ifnot_pointer = typename std::enable_if<!std::is_pointer<T>::value,int>::type;
 
 ////// base template class
-template <typename DataType, 
-          typename TContainer=std::vector<DataType>,
-          typename BoostArchiveIn=BoostBinArchIn >
-    class BoostDeSerializer
+template <typename DataType, typename TContainer = std::vector<DataType>, typename BoostArchiveIn = BoostBinArchIn>
+class BoostDeSerializer
+{
+  public:
+    BoostDeSerializer()
+        : fMessage(nullptr)
+        , fTransport(nullptr)
     {
+        DefaultContainerInit();
+    }
 
-        public:
-        BoostDeSerializer() :   fMessage(nullptr), 
-                                fTransport(nullptr) 
-                            {DefaultContainerInit();}
-        ~BoostDeSerializer()
-            {DestroyContainer();}
+    ~BoostDeSerializer()
+    {
+        DestroyContainer();
+    }
 
-        void CloseMessage()
+    void CloseMessage()
+    {
+        if (fMessage)
         {
-            if(fMessage)
-                fMessage->CloseMessage();
+            fMessage->CloseMessage();
         }
+    }
 
-        void SetMessage(FairMQMessage* msg)
+    void SetMessage(FairMQMessage* msg)
+    {
+        fMessage = msg;
+    }
+
+    void GetMessage()
+    {
+        return fMessage;
+    }
+
+    void Init()
+    {
+        // InitContainer();
+    }
+
+    /// --------------------------------------------------------
+    /// main method to boost deserialize
+    void DoDeSerialization(FairMQMessage* msg)
+    {
+        if (fDataVector.size() > 0)
         {
-            fMessage=msg;
+                fDataVector.clear();
         }
-
-        void GetMessage()
+        std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
+        std::istringstream buffer(msgStr);
+        BoostArchiveIn InputArchive(buffer);
+        try
         {
-            return fMessage;
+            InputArchive >> fDataVector;
         }
-
-        void Init()
+        catch (boost::archive::archive_exception& e)
         {
-            //InitContainer();
+            MQLOG(ERROR) << e.what();
         }
+    }
 
+    /// --------------------------------------------------------
+    /// FairMQMessage*  -------->  std::vector<DataType>& 
+    template <typename T = TContainer, enable_if_match<T, std::vector<DataType> > = 0>
+    T& DeSerializeMsg(FairMQMessage* msg)
+    {
+        DoDeSerialization(msg);
+        return fDataVector;
+    }
 
-
-        /// --------------------------------------------------------
-        /// main method to boost deserialize
-        void DoDeSerialization(FairMQMessage* msg)
+    /// --------------------------------------------------------
+    /// FairMQMessage*  -------->  TClonesArray* 
+    template <typename T = TContainer, enable_if_match<T, TClonesArray*> = 0>
+    void InitTClonesArray(const std::string &ClassName)
+    {
+        if (fDataContainer)
         {
-            if (fDataVector.size() > 0)
-                    fDataVector.clear();
-            std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
-            std::istringstream buffer(msgStr);
-            BoostArchiveIn InputArchive(buffer);
-            try
-            {
-                InputArchive >> fDataVector;
-            }
-            catch (boost::archive::archive_exception& e)
-            {
-                MQLOG(ERROR) << e.what();
-            }
+            delete fDataContainer;
         }
+        fDataContainer = new TClonesArray(ClassName.c_str());
+    }
 
-        /// --------------------------------------------------------
-        /// FairMQMessage*  -------->  std::vector<DataType>& 
-        template < typename T=TContainer, enable_if_match<T, std::vector<DataType> > = 0 >
-            T& DeSerializeMsg(FairMQMessage* msg)
-            {
-                DoDeSerialization(msg);
-                return fDataVector;
-            }
-
-        /// --------------------------------------------------------
-        /// FairMQMessage*  -------->  TClonesArray* 
-        template < typename T=TContainer, enable_if_match<T, TClonesArray*> = 0 >
-            void InitTClonesArray(const std::string &ClassName)
-            {
-                if(fDataContainer)
-                    delete fDataContainer;
-                fDataContainer = new TClonesArray(ClassName.c_str());
-            }
-
-        template < typename T=TContainer, enable_if_match<T, TClonesArray*> = 0 >
-            T DeSerializeMsg(FairMQMessage* msg)
-            {
-                DoDeSerialization(msg);
-                if(fDataContainer)
-                {
-                    fDataContainer->Delete();
-                    for (unsigned int i(0); i < fDataVector.size(); ++i)
-                    {
-                        new ((*fDataContainer)[i]) DataType(fDataVector.at(i));
-                    }
-                    if (fDataContainer->IsEmpty())
-                    {
-                        MQLOG(ERROR) << "BoostSerializer::message(): No Output array!";
-                    }
-                }
-                return fDataContainer;
-            }
-
-        /// --------------------------------------------------------
-        /// FairMQMessage*  -------->  DataType
-        template < typename T=TContainer, enable_if_match<T, DataType> = 0 >
-            T DeSerializeMsg(FairMQMessage* msg)
-            {
-                std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
-                std::istringstream buffer(msgStr);
-                BoostArchiveIn InputArchive(buffer);
-                try
-                {
-                    InputArchive >> fDataContainer;
-                }
-                catch (boost::archive::archive_exception& e)
-                {
-                    MQLOG(ERROR) << e.what();
-                }
-                return fDataContainer;
-            }
-
-        /// --------------------------------------------------------
-        /// FairMQMessage*  -------->  FairMQMessage* 
-        template < typename T=TContainer, enable_if_match<T, FairMQMessage*> = 0 >
-            T DeSerializeMsg(FairMQMessage* msg)
-            {
-                return msg;
-            }
-
-        ////////////////////////////////////////////////////////////////////////
-        /// Diverse
-
-        template <class Archive>
-            void serialize(Archive& ar, const unsigned int version)
-            {
-                ar& fDataVector;
-            }
-
-        template < typename T=TContainer, enable_if_pointer<T> = 0 ,typename... Args>
-            void InitContainer(Args... args)
-            {
-                typedef typename std::remove_pointer<T>::type NoptrT;
-                fDataContainer = new NoptrT(std::forward<Args>(args)...);
-            }
-
-
-        template < typename T=TContainer, enable_if_pointer<T> = 0 >
-            void InitContainer(TContainer container)
-            {
-                fDataContainer = container;
-            }
-
-        template < typename T=TContainer, enable_ifnot_pointer<T> = 0 >
-            void InitContainer()
-            {
-            }
-
-
-    protected:
-
-        virtual void SetTransport(FairMQTransportFactory* transport)
+    template <typename T = TContainer, enable_if_match<T, TClonesArray*> = 0>
+    T DeSerializeMsg(FairMQMessage* msg)
+    {
+        DoDeSerialization(msg);
+        if (fDataContainer)
         {
-            fTransport=transport;
+            fDataContainer->Delete();
+            for (unsigned int i = 0; i < fDataVector.size(); ++i)
+            {
+                new ((*fDataContainer)[i]) DataType(fDataVector.at(i));
+            }
+            if (fDataContainer->IsEmpty())
+            {
+                MQLOG(ERROR) << "BoostSerializer::message(): No Output array!";
+            }
         }
+        return fDataContainer;
+    }
 
-        FairMQMessage*          fMessage;
-        FairMQTransportFactory* fTransport;
-        std::vector<DataType>   fDataVector;
-        TContainer              fDataContainer;
+    /// --------------------------------------------------------
+    /// FairMQMessage*  -------->  DataType
+    template <typename T = TContainer, enable_if_match<T, DataType> = 0>
+    T DeSerializeMsg(FairMQMessage* msg)
+    {
+        std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
+        std::istringstream buffer(msgStr);
+        BoostArchiveIn InputArchive(buffer);
+        try
+        {
+            InputArchive >> fDataContainer;
+        }
+        catch (boost::archive::archive_exception& e)
+        {
+            MQLOG(ERROR) << e.what();
+        }
+        return fDataContainer;
+    }
 
-        //////////////////////////////////////////////////////////////////////////
-        /// container init/destroy specialization for pointer/not pointer type ///
-        //////////////////////////////////////////////////////////////////////////
+    /// --------------------------------------------------------
+    /// FairMQMessage*  -------->  FairMQMessage* 
+    template <typename T = TContainer, enable_if_match<T, FairMQMessage*> = 0>
+    T DeSerializeMsg(FairMQMessage* msg)
+    {
+        return msg;
+    }
 
-        template < typename T=TContainer, enable_if_pointer<T> = 0 >
-            void DefaultContainerInit()
-            {
-                fDataContainer=nullptr;
-            }
+    ////////////////////////////////////////////////////////////////////////
+    /// Diverse
 
-        template < typename T=TContainer, enable_ifnot_pointer<T> = 0 >
-            void DefaultContainerInit()
-            {
-            }
+    template <class Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+        ar& fDataVector;
+    }
 
-        template < typename T=TContainer, enable_if_pointer<T> = 0 >
-            void DestroyContainer()
-            {
-                if(fDataContainer)
-                    delete fDataContainer;
-            }
-
-        template < typename T=TContainer, enable_ifnot_pointer<T> = 0 >
-            void DestroyContainer()
-            {
-            }
+    template <typename T = TContainer, enable_if_pointer<T> = 0, typename... Args>
+    void InitContainer(Args... args)
+    {
+        typedef typename std::remove_pointer<T>::type NoptrT;
+        fDataContainer = new NoptrT(std::forward<Args>(args)...);
+    }
 
 
+    template <typename T = TContainer, enable_if_pointer<T> = 0>
+    void InitContainer(TContainer container)
+    {
+        fDataContainer = container;
+    }
+
+    template <typename T = TContainer, enable_ifnot_pointer<T> = 0>
+    void InitContainer()
+    {
+    }
 
 
-    };
+  protected:
 
+    virtual void SetTransport(FairMQTransportFactory* transport)
+    {
+        fTransport = transport;
+    }
 
+    FairMQMessage*          fMessage;
+    FairMQTransportFactory* fTransport;
+    std::vector<DataType>   fDataVector;
+    TContainer              fDataContainer;
 
+    //////////////////////////////////////////////////////////////////////////
+    /// container init/destroy specialization for pointer/not pointer type ///
+    //////////////////////////////////////////////////////////////////////////
 
+    template <typename T = TContainer, enable_if_pointer<T> = 0>
+    void DefaultContainerInit()
+    {
+        fDataContainer = nullptr;
+    }
 
+    template <typename T = TContainer, enable_ifnot_pointer<T> = 0>
+    void DefaultContainerInit()
+    {
+    }
 
+    template <typename T = TContainer, enable_if_pointer<T> = 0>
+    void DestroyContainer()
+    {
+        if (fDataContainer)
+        {
+            delete fDataContainer;
+        }
+    }
 
-
-
+    template <typename T = TContainer, enable_ifnot_pointer<T> = 0>
+    void DestroyContainer()
+    {
+    }
+};
 
 #endif	/* BOOSTSERIALIZER_H */
-

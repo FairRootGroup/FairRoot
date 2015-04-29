@@ -44,12 +44,11 @@ FairMQProcessor processor;
 
 static void s_signal_handler(int signal)
 {
-    cout << endl << "Caught signal " << signal << endl;
+    LOG(INFO) << "Caught signal " << signal;
 
-    processor.ChangeState(FairMQProcessor::STOP);
     processor.ChangeState(FairMQProcessor::END);
 
-    cout << "Shutdown complete. Bye!" << endl;
+    LOG(INFO) << "Shutdown complete.";
     exit(1);
 }
 
@@ -177,6 +176,20 @@ int main(int argc, char** argv)
 
     processor.SetTransport(transportFactory);
 
+    FairMQChannel inputChannel(options.inputSocketType, options.inputMethod, options.inputAddress);
+    inputChannel.fSndBufSize = options.inputBufSize;
+    inputChannel.fRcvBufSize = options.inputBufSize;
+    inputChannel.fRateLogging = 1;
+
+    processor.fChannels["data-in"].push_back(inputChannel);
+
+    FairMQChannel outputChannel(options.outputSocketType, options.outputMethod, options.outputAddress);
+    outputChannel.fSndBufSize = options.outputBufSize;
+    outputChannel.fRcvBufSize = options.outputBufSize;
+    outputChannel.fRateLogging = 1;
+
+    processor.fChannels["data-out"].push_back(outputChannel);
+
     processor.SetProperty(FairMQProcessor::Id, options.id);
     processor.SetProperty(FairMQProcessor::NumIoThreads, options.ioThreads);
 
@@ -191,35 +204,23 @@ int main(int argc, char** argv)
         exit(1);
     }
 
-    processor.SetProperty(FairMQProcessor::NumInputs, 1);
-    processor.SetProperty(FairMQProcessor::NumOutputs, 1);
+    processor.ChangeState(FairMQProcessor::INIT_DEVICE);
+    processor.WaitForEndOfState(FairMQProcessor::INIT_DEVICE);
 
-    processor.ChangeState(FairMQProcessor::INIT);
+    processor.ChangeState(FairMQProcessor::INIT_TASK);
+    processor.WaitForEndOfState(FairMQProcessor::INIT_TASK);
 
-    processor.SetProperty(FairMQProcessor::InputSocketType, options.inputSocketType);
-    processor.SetProperty(FairMQProcessor::InputRcvBufSize, options.inputBufSize);
-    processor.SetProperty(FairMQProcessor::InputMethod, options.inputMethod);
-    processor.SetProperty(FairMQProcessor::InputAddress, options.inputAddress);
-
-    processor.SetProperty(FairMQProcessor::OutputSocketType, options.outputSocketType);
-    processor.SetProperty(FairMQProcessor::OutputSndBufSize, options.outputBufSize);
-    processor.SetProperty(FairMQProcessor::OutputMethod, options.outputMethod);
-    processor.SetProperty(FairMQProcessor::OutputAddress, options.outputAddress);
-
-    processor.ChangeState(FairMQProcessor::SETOUTPUT);
-    processor.ChangeState(FairMQProcessor::SETINPUT);
-    processor.ChangeState(FairMQProcessor::BIND);
-    processor.ChangeState(FairMQProcessor::CONNECT);
     processor.ChangeState(FairMQProcessor::RUN);
-
-    // wait until the running thread has finished processing.
-    boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
-    while (!processor.fRunningFinished)
-    {
-        processor.fRunningCondition.wait(lock);
-    }
+    processor.WaitForEndOfState(FairMQProcessor::RUN);
 
     processor.ChangeState(FairMQProcessor::STOP);
+
+    processor.ChangeState(FairMQProcessor::RESET_TASK);
+    processor.WaitForEndOfState(FairMQProcessor::RESET_TASK);
+
+    processor.ChangeState(FairMQProcessor::RESET_DEVICE);
+    processor.WaitForEndOfState(FairMQProcessor::RESET_DEVICE);
+
     processor.ChangeState(FairMQProcessor::END);
 
     return 0;

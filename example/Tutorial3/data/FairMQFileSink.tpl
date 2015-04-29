@@ -54,16 +54,13 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
 {
     if (fHasBoostSerialization)
     {
-        LOG(INFO) << ">>>>>>> Run <<<<<<<";
-
-        boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
         int receivedMsgs = 0;
 
-        while (fState == RUNNING)
+        while (GetCurrentState() == RUNNING)
         {
             FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-            if (fPayloadInputs->at(0)->Receive(msg) > 0)
+            if (fChannels["data-in"].at(0).Receive(msg) > 0)
             {
                 receivedMsgs++;
                 string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
@@ -102,15 +99,6 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
         }
 
         LOG(INFO) << "I've received " << receivedMsgs << " messages!";
-
-        try {
-            rateLogger.interrupt();
-            rateLogger.join();
-        } catch(boost::thread_resource_error& e) {
-            LOG(ERROR) << e.what();
-        }
-
-        FairMQDevice::Shutdown();
     }
     else
     {
@@ -123,17 +111,13 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
 template <>
 void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
 {
-    LOG(INFO) << ">>>>>>> Run <<<<<<<";
-
-    boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
-
     int receivedMsgs = 0;
 
-    while (fState == RUNNING)
+    while (GetCurrentState() == RUNNING)
     {
         FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-        if (fPayloadInputs->at(0)->Receive(msg) > 0)
+        if (fChannels["data-in"].at(0).Receive(msg) > 0)
         {
             receivedMsgs++;
             Int_t inputSize = msg->GetSize();
@@ -161,15 +145,6 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
     }
 
     LOG(INFO) << "I've received " << receivedMsgs << " messages!";
-
-    try {
-        rateLogger.interrupt();
-        rateLogger.join();
-    } catch(boost::thread_resource_error& e) {
-        LOG(ERROR) << e.what();
-    }
-
-    FairMQDevice::Shutdown();
 }
 
 // ----- Implementation of FairMQFileSink::Run() with Root TMessage transport data format -----
@@ -188,17 +163,13 @@ class TestDetectorTMessage : public TMessage
 template <>
 void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
 {
-    LOG(INFO) << ">>>>>>> Run <<<<<<<";
-
-    boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
-
     int receivedMsgs = 0;
 
-    while (fState == RUNNING)
+    while (GetCurrentState() == RUNNING)
     {
         FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-        if (fPayloadInputs->at(0)->Receive(msg) > 0)
+        if (fChannels["data-in"].at(0).Receive(msg) > 0)
         {
             receivedMsgs++;
             TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
@@ -219,15 +190,6 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
     }
 
     LOG(INFO) << "I've received " << receivedMsgs << " messages!";
-
-    try {
-        rateLogger.interrupt();
-        rateLogger.join();
-    } catch(boost::thread_resource_error& e) {
-        LOG(ERROR) << e.what();
-    }
-
-    FairMQDevice::Shutdown();
 }
 
 // ----- Implementation of FairMQFileSink::Run() with Google Protocol Buffers transport data format -----
@@ -238,17 +200,13 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
 template <>
 void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
 {
-    LOG(INFO) << ">>>>>>> Run <<<<<<<";
-
-    boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
-
     int receivedMsgs = 0;
 
-    while (fState == RUNNING)
+    while (GetCurrentState() == RUNNING)
     {
         FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-        if (fPayloadInputs->at(0)->Receive(msg) > 0)
+        if (fChannels["data-in"].at(0).Receive(msg) > 0)
         {
             receivedMsgs++;
             fOutput->Delete();
@@ -278,15 +236,6 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
     }
 
     LOG(INFO) << "I've received " << receivedMsgs << " messages!";
-
-    try {
-        rateLogger.interrupt();
-        rateLogger.join();
-    } catch(boost::thread_resource_error& e) {
-        LOG(ERROR) << e.what();
-    }
-
-    FairMQDevice::Shutdown();
 }
 
 #endif /* PROTOBUF */

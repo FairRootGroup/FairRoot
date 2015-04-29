@@ -52,12 +52,11 @@ TProcessor processor;
 
 static void s_signal_handler(int signal)
 {
-    cout << endl << "Caught signal " << signal << endl;
+    LOG(INFO) << "Caught signal " << signal;
 
-    processor.ChangeState(TProcessor::STOP);
     processor.ChangeState(TProcessor::END);
 
-    cout << "Shutdown complete. Bye!" << endl;
+    LOG(INFO) << "Shutdown complete.";
     exit(1);
 }
 
@@ -187,46 +186,40 @@ int main(int argc, char** argv)
 
         processor.SetTransport(transportFactory);
 
+        FairMQChannel inputChannel(options.inputSocketType, options.inputMethod, options.inputAddress);
+        inputChannel.fSndBufSize = options.inputBufSize;
+        inputChannel.fRcvBufSize = options.inputBufSize;
+        inputChannel.fRateLogging = 1;
+
+        processor.fChannels["data-in"].push_back(inputChannel);
+
+        FairMQChannel outputChannel(options.outputSocketType, options.outputMethod, options.outputAddress);
+        outputChannel.fSndBufSize = options.outputBufSize;
+        outputChannel.fRcvBufSize = options.outputBufSize;
+        outputChannel.fRateLogging = 1;
+
+        processor.fChannels["data-out"].push_back(outputChannel);
+
         processor.SetProperty(TProcessor::Id, options.id);
         processor.SetProperty(TProcessor::NumIoThreads, options.ioThreads);
-        processor.SetProperty(TProcessor::NumInputs, 1);
-        processor.SetProperty(TProcessor::NumOutputs, 1);
 
-        processor.ChangeState(TProcessor::INIT);
+        processor.ChangeState(TProcessor::INIT_DEVICE);
+        processor.WaitForEndOfState(TProcessor::INIT_DEVICE);
 
-        processor.SetProperty(TProcessor::InputSocketType, options.inputSocketType);
-        processor.SetProperty(TProcessor::InputSndBufSize, options.inputBufSize);
-        processor.SetProperty(TProcessor::InputMethod, options.inputMethod);
-        processor.SetProperty(TProcessor::InputAddress, options.inputAddress);
+        processor.ChangeState(TProcessor::INIT_TASK);
+        processor.WaitForEndOfState(TProcessor::INIT_TASK);
 
-        processor.SetProperty(TProcessor::OutputSocketType, options.outputSocketType);
-        processor.SetProperty(TProcessor::OutputSndBufSize, options.outputBufSize);
-        processor.SetProperty(TProcessor::OutputMethod, options.outputMethod);
-        processor.SetProperty(TProcessor::OutputAddress, options.outputAddress);
-
-        processor.ChangeState(TProcessor::SETOUTPUT);
-        processor.ChangeState(TProcessor::SETINPUT);
-        processor.ChangeState(TProcessor::BIND);
-        processor.ChangeState(TProcessor::CONNECT);
         processor.ChangeState(TProcessor::RUN);
+        processor.WaitForEndOfState(TProcessor::RUN);
 
-        try
-        {
-            // wait until the running thread has finished processing.
-            boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
-            while (!processor.fRunningFinished)
-            {
-                processor.fRunningCondition.wait(lock);
-            }
-        }
-        catch( boost::thread_interrupted& interrupt )
-        {
-            boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
-            LOG(ERROR)<<boost::this_thread::get_id();
-            return 1;
-        }
-        
         processor.ChangeState(TProcessor::STOP);
+
+        processor.ChangeState(TProcessor::RESET_TASK);
+        processor.WaitForEndOfState(TProcessor::RESET_TASK);
+
+        processor.ChangeState(TProcessor::RESET_DEVICE);
+        processor.WaitForEndOfState(TProcessor::RESET_DEVICE);
+
         processor.ChangeState(TProcessor::END);
     }
     catch (std::exception& e)

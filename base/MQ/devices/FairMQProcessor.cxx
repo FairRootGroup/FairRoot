@@ -18,88 +18,70 @@
 #include "FairMQProcessor.h"
 #include "FairMQLogger.h"
 
-FairMQProcessor::FairMQProcessor() :
-  fProcessorTask(NULL)
+FairMQProcessor::FairMQProcessor()
+  : fProcessorTask(NULL)
 {
 }
 
 FairMQProcessor::~FairMQProcessor()
 {
-  delete fProcessorTask;
+    delete fProcessorTask;
 }
 
 void FairMQProcessor::SetTask(FairMQProcessorTask* task)
 {
-  fProcessorTask = task;
+    fProcessorTask = task;
 }
 
-void FairMQProcessor::Init()
+void FairMQProcessor::InitTask()
 {
-  FairMQDevice::Init();
+    fProcessorTask->InitTask();
 
-  fProcessorTask->InitTask();
-
-  fProcessorTask->SetSendPart(boost::bind(&FairMQProcessor::SendPart, this));
-  fProcessorTask->SetReceivePart(boost::bind(&FairMQProcessor::ReceivePart, this));
+    fProcessorTask->SetSendPart(boost::bind(&FairMQProcessor::SendPart, this));
+    fProcessorTask->SetReceivePart(boost::bind(&FairMQProcessor::ReceivePart, this));
 }
 
 void FairMQProcessor::Run()
 {
-  LOG(INFO) << ">>>>>>> Run <<<<<<<";
+    int receivedMsgs = 0;
+    int sentMsgs = 0;
 
-  boost::thread rateLogger(boost::bind(&FairMQDevice::LogSocketRates, this));
+    while (GetCurrentState() == RUNNING)
+    {
+        fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
 
-  int receivedMsgs = 0;
-  int sentMsgs = 0;
+        ++receivedMsgs;
 
-  while ( fState == RUNNING ) {
-    fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
+        if (fChannels["data-in"].at(0).Receive(fProcessorTask->GetPayload()) > 0)
+        {
+            fProcessorTask->Exec();
 
-    receivedMsgs++;
+            fChannels["data-out"].at(0).Send(fProcessorTask->GetPayload());
+            sentMsgs++;
+        }
 
-    if (fPayloadInputs->at(0)->Receive(fProcessorTask->GetPayload()) > 0) {
-      fProcessorTask->Exec();
-
-      fPayloadOutputs->at(0)->Send(fProcessorTask->GetPayload());
-      sentMsgs++;
+        fProcessorTask->GetPayload()->CloseMessage();
     }
 
-    fProcessorTask->GetPayload()->CloseMessage();
-  }
-
-  LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
-
-  try {
-    rateLogger.interrupt();
-    rateLogger.join();
-  } catch(boost::thread_resource_error& e) {
-    LOG(ERROR) << e.what();
-  }
-
-  FairMQDevice::Shutdown();
-
-  // notify parent thread about end of processing.
-  boost::lock_guard<boost::mutex> lock(fRunningMutex);
-  fRunningFinished = true;
-  fRunningCondition.notify_one();
+    LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
 }
 
 void FairMQProcessor::SendPart()
 {
-    fPayloadOutputs->at(0)->Send(fProcessorTask->GetPayload(), "snd-more");
-    fProcessorTask->GetPayload()->CloseMessage();
+      fChannels["data-out"].at(0).Send(fProcessorTask->GetPayload(), "snd-more");
+      fProcessorTask->GetPayload()->CloseMessage();
 }
 
 bool FairMQProcessor::ReceivePart()
 {
     int64_t more = 0;
     size_t more_size = sizeof(more);
-    fPayloadInputs->at(0)->GetOption("rcv-more", &more, &more_size);
-    if(more)
+    fChannels["data-in"].at(0).fSocket->GetOption("rcv-more", &more, &more_size);
+    if (more)
     {
         fProcessorTask->GetPayload()->CloseMessage();
         fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
-        return fPayloadInputs->at(0)->Receive(fProcessorTask->GetPayload());
+        return fChannels["data-in"].at(0).Receive(fProcessorTask->GetPayload());
     }
     else
     {

@@ -13,41 +13,43 @@
 #include "FairMQMessage.h"
 
 template <typename TPayload>
-class BinaryBaseClassSerializer 
+class BinaryBaseClassSerializer
 {
-    
 public:
-    
-    BinaryBaseClassSerializer() : fPayload(nullptr), fMessage(nullptr), fNumInput(0) {}
-    virtual ~BinaryBaseClassSerializer(){}
-    
+    BinaryBaseClassSerializer()
+        : fPayload(nullptr)
+        , fMessage(nullptr)
+        , fNumInput(0)
+    {}
+
+    virtual ~BinaryBaseClassSerializer()
+    {}
+
     void GetPayload(FairMQMessage* msg)
     {
         int inputSize = msg->GetSize();
-        if(inputSize>0)
+        if (inputSize > 0)
+        {
             fNumInput = inputSize / sizeof(TPayload);
+        }
         fPayload = static_cast<TPayload*>(msg->GetData());
     }
-    
+
     void SetMessage(FairMQMessage* msg)
     {
-        fMessage=msg;
+        fMessage = msg;
     }
-    
+
     FairMQMessage* GetMessage()
     {
         return fMessage;
     }
-    
-    
+
 protected:
-    
     TPayload* fPayload;
     FairMQMessage* fMessage;
     int fNumInput;
 };
 
-
-
-#endif	/* BINARYBASECLASSSERIALIZER_H */
+#endif /* BINARYBASECLASSSERIALIZER_H */
 

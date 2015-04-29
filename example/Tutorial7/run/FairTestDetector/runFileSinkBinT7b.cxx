@@ -45,20 +45,19 @@ using namespace std;
 /// ////////////////////////////////////////////////////////////////////////
 // payload definition
 typedef FairTestDetectorHit                          THit;
-typedef Tuto3HitDeSerializer_t                       TInputPolicy; 
-typedef RootOutFileManager<THit>                     TOutputPolicy; 
-typedef GenericFileSink<TInputPolicy,TOutputPolicy>  TSink;    
+typedef Tuto3HitDeSerializer_t                       TInputPolicy;
+typedef RootOutFileManager<THit>                     TOutputPolicy;
+typedef GenericFileSink<TInputPolicy,TOutputPolicy>  TSink;
 
 TSink filesink;
 
 static void s_signal_handler(int signal)
 {
-    cout << endl << "Caught signal " << signal << endl;
+    LOG(INFO) << "Caught signal " << signal;
 
-    filesink.ChangeState(TSink::STOP);
     filesink.ChangeState(TSink::END);
 
-    cout << "Shutdown complete. Bye!" << endl;
+    LOG(INFO) << "Shutdown complete.";
     exit(1);
 }
 
@@ -113,7 +112,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
     bpo::variables_map vm;
     bpo::store(bpo::parse_command_line(_argc, _argv, desc), vm);
 
-    if ( vm.count("help") )
+    if (vm.count("help"))
     {
         MQLOG(INFO) << "FairMQ File Sink" << endl << desc;
         return false;
@@ -121,42 +120,42 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
     bpo::notify(vm);
 
-    if ( vm.count("id") )
+    if (vm.count("id"))
         _options->id = vm["id"].as<string>();
 
-    if ( vm.count("io-threads") )
+    if (vm.count("io-threads"))
         _options->ioThreads = vm["io-threads"].as<int>();
 
-    if ( vm.count("input-socket-type") )
+    if (vm.count("input-socket-type"))
         _options->inputSocketType = vm["input-socket-type"].as<string>();
 
-    if ( vm.count("input-buff-size") )
+    if (vm.count("input-buff-size"))
         _options->inputBufSize = vm["input-buff-size"].as<int>();
 
-    if ( vm.count("input-method") )
+    if (vm.count("input-method"))
         _options->inputMethod = vm["input-method"].as<string>();
 
-    if ( vm.count("input-address") )
+    if (vm.count("input-address"))
         _options->inputAddress = vm["input-address"].as<string>();
-    
-    if ( vm.count("input-file") )
+
+    if (vm.count("input-file"))
         _options->filename = vm["input-file"].as<string>();
-    
-    if ( vm.count("tree") )
+
+    if (vm.count("tree"))
         _options->treename = vm["tree"].as<string>();
-    
-    if ( vm.count("branch") )
+
+    if (vm.count("branch"))
         _options->branchname = vm["branch"].as<string>();
-    
-    if ( vm.count("class-name") )
+
+    if (vm.count("class-name"))
         _options->classname = vm["class-name"].as<string>();
-    
-    if ( vm.count("file-option") )
+
+    if (vm.count("file-option"))
         _options->fileoption = vm["file-option"].as<string>();
-    
-    if ( vm.count("use-TClonesArray") )
+
+    if (vm.count("use-TClonesArray"))
         _options->useTClonesArray = vm["use-TClonesArray"].as<bool>();
-    
+
     return true;
 }
 
@@ -188,46 +187,36 @@ int main(int argc, char** argv)
 
         filesink.SetTransport(transportFactory);
 
+        FairMQChannel channel(options.inputSocketType, options.inputMethod, options.inputAddress);
+        channel.fSndBufSize = options.inputBufSize;
+        channel.fRcvBufSize = options.inputBufSize;
+        channel.fRateLogging = 1;
+
+        filesink.fChannels["data-in"].push_back(channel);
+
         filesink.SetProperty(TSink::Id, options.id);
         filesink.SetProperty(TSink::NumIoThreads, options.ioThreads);
 
-        filesink.SetProperty(TSink::NumInputs, 1);
-        filesink.SetProperty(TSink::NumOutputs, 0);
+        filesink.InitInputContainer(options.classname.c_str());
+        filesink.SetFileProperties(options.filename, options.treename, options.branchname, options.classname, options.fileoption, options.useTClonesArray);
 
-        filesink.InitInputContainer( options.classname.c_str() );
-        filesink.SetFileProperties(options.filename,options.treename,options.branchname,options.classname,
-                                                    options.fileoption,options.useTClonesArray);
+        filesink.ChangeState(TSink::INIT_DEVICE);
+        filesink.WaitForEndOfState(TSink::INIT_DEVICE);
 
+        filesink.ChangeState(TSink::INIT_TASK);
+        filesink.WaitForEndOfState(TSink::INIT_TASK);
 
-        filesink.ChangeState(TSink::INIT);
-        filesink.SetProperty(TSink::InputSocketType, options.inputSocketType);
-        filesink.SetProperty(TSink::InputRcvBufSize, options.inputBufSize);
-        filesink.SetProperty(TSink::InputMethod, options.inputMethod);
-        filesink.SetProperty(TSink::InputAddress, options.inputAddress);
-
-        filesink.ChangeState(TSink::SETOUTPUT);
-        filesink.ChangeState(TSink::SETINPUT);
-        filesink.ChangeState(TSink::BIND);
-        filesink.ChangeState(TSink::CONNECT);
         filesink.ChangeState(TSink::RUN);
+        filesink.WaitForEndOfState(TSink::RUN);
 
-        try
-        {
-            // wait until the running thread has finished processing.
-            boost::unique_lock<boost::mutex> lock(filesink.fRunningMutex);
-            while (!filesink.fRunningFinished)
-            {
-                filesink.fRunningCondition.wait(lock);
-            }
-        }
-        catch( boost::thread_interrupted& interrupt )
-        {
-            boost::unique_lock<boost::mutex> lock(filesink.fRunningMutex);
-            LOG(ERROR)<<boost::this_thread::get_id();
-            return 1;
-        }
-        
         filesink.ChangeState(TSink::STOP);
+
+        filesink.ChangeState(TSink::RESET_TASK);
+        filesink.WaitForEndOfState(TSink::RESET_TASK);
+
+        filesink.ChangeState(TSink::RESET_DEVICE);
+        filesink.WaitForEndOfState(TSink::RESET_DEVICE);
+
         filesink.ChangeState(TSink::END);
     }
     catch (std::exception& e)

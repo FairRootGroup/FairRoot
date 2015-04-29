@@ -24,7 +24,7 @@
 #include "FairRun.h"                    // for FairRun
 #include "FairTSBufferFunctional.h"     // for FairTSBufferFunctional, etc
 #include "FairWriteoutBuffer.h"         // for FairWriteoutBuffer
-#include "FairLinkManager.h"			// for FairLinkManager
+#include "FairLinkManager.h"            // for FairLinkManager
 #include "Riosfwd.h"                    // for ostream
 #include "TArrayI.h"                    // for TArrayI
 #include "TBranch.h"                    // for TBranch

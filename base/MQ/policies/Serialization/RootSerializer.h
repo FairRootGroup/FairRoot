@@ -35,14 +35,18 @@ void free_tmessage (void *data, void *hint)
 }
 
 //template <typename TPayload>
-class RootSerializer 
+class RootSerializer
 {
-    
-public:
-    
-    RootSerializer() : fContainer(nullptr), fMessage(nullptr), fNumInput(0) {}
-    ~RootSerializer() {}
-    
+  public:
+    RootSerializer()
+        : fContainer(nullptr)
+        , fMessage(nullptr)
+        , fNumInput(0)
+    {}
+
+    ~RootSerializer()
+    {}
+
     void InitContainer(const std::string &ClassName)
     {
         fContainer = new TClonesArray(ClassName.c_str());
@@ -52,103 +56,93 @@ public:
     {
         fContainer = array;
     }
-    
-    
+
     ////////////////////////////////////////////////////////////////////////////////////////
     // serialize
-    
+
     virtual void DoSerialization(TClonesArray* array)
     {
-        
         TMessage* tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(array);
-        //fMessage = fTransportFactory->CreateMessage(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
+        // fMessage = fTransportFactory->CreateMessage(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
         fMessage->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
-
     }
-    
+
     virtual FairMQMessage* SerializeMsg(TClonesArray* array)
     {
         DoSerialization(array);
         return fMessage;
     }
-    
-    
-    
+
     void SetMessage(FairMQMessage* msg)
     {
         fMessage=msg;
     }
-    
+
     FairMQMessage* GetMessage()
     {
         return fMessage;
     }
-    
-    
-protected:
-    
-    //TPayload* fPayload;
-    TClonesArray *fContainer;
+
+  protected:
+    // TPayload* fPayload;
+    TClonesArray* fContainer;
     FairMQMessage* fMessage;
     int fNumInput;
 };
 
-
-
-
-class RootDeSerializer 
+class RootDeSerializer
 {
-    
-public:
-    
-    RootDeSerializer() : fContainer(nullptr), fMessage(nullptr), fNumInput(0) {}
-    ~RootDeSerializer() {}
-    
+  public:
+    RootDeSerializer()
+        : fContainer(nullptr)
+        , fMessage(nullptr)
+        , fNumInput(0)
+    {}
+
+    ~RootDeSerializer()
+    {}
+
     void InitContainer(const std::string &ClassName)
     {
         fContainer = new TClonesArray(ClassName.c_str());
     }
-    
+
     void InitContainer(TClonesArray* array)
     {
         fContainer = array;
     }
-    
+
     ////////////////////////////////////////////////////////////////////////////////////////
     // deserialize
-    
+
     virtual void DoDeSerialization(FairMQMessage* msg)
     {
         FairTMessage tm(msg->GetData(), msg->GetSize());
         fContainer  = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
     }
-    
+
     virtual TClonesArray* DeSerializeMsg(FairMQMessage* msg)
     {
         DoDeSerialization(msg);
         return fContainer;
     }
-    
+
     void SetMessage(FairMQMessage* msg)
     {
         fMessage=msg;
     }
-    
+
     FairMQMessage* GetMessage()
     {
         return fMessage;
     }
-    
-    
-protected:
-    
-    //TPayload* fPayload;
-    TClonesArray *fContainer;
+
+  protected:
+    // TPayload* fPayload;
+    TClonesArray* fContainer;
     FairMQMessage* fMessage;
     int fNumInput;
 };
 
-
-#endif	/* ROOTBASECLASSSERIALIZER_H */
-
+#endif /* ROOTBASECLASSSERIALIZER_H */
