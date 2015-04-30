@@ -37,6 +37,7 @@ class FairLmdSource : public FairMbsSource
     virtual ~FairLmdSource();
 
     void AddFile(TString fileName);
+    void AddPath(TString dir, TString wildCard);
     inline const Int_t GetCurrentFile() const { return fCurrentFile; }
     inline const TList* GetFileNames() const { return fFileNames; }
 
