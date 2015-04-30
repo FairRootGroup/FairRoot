@@ -15,6 +15,9 @@ using namespace std;
 
 #include "TList.h"
 #include "TObjString.h"
+#include "TRegexp.h"
+#include "TSystemDirectory.h"
+#include "TSystem.h"
 
 #include "FairLmdSource.h"
 #include "FairLogger.h"
@@ -60,8 +63,50 @@ FairLmdSource::~FairLmdSource()
 
 void FairLmdSource::AddFile(TString fileName)
 {
+  FileStat_t buf;
+  if(1 == gSystem->GetPathInfo(fileName.Data(), buf))
+  {
+    LOG(WARNING) << "FairLmdSource: not found: " << fileName << FairLogger::endl;
+    return;
+  }
+
   TObjString* str = new TObjString(fileName);
   fFileNames->Add(str);
+}
+
+
+void FairLmdSource::AddPath(TString dir, TString wildCard)
+{
+  FileStat_t buf;
+  if(1 == gSystem->GetPathInfo(dir.Data(), buf))
+  {
+    LOG(WARNING) << "FairLmdSource: not found: " << dir << FairLogger::endl;
+    return;
+  }
+
+  TRegexp *re = new TRegexp(wildCard.Data(), kTRUE);
+  TSystemDirectory *sdir = new TSystemDirectory("dir", dir.Data());
+  TString dname(dir);
+  if(! dname.EndsWith("/"))
+  {
+      dname += "/";
+  }
+  TList *list = sdir->GetListOfFiles();
+
+  TIterator *iter = list->MakeIterator();
+  TSystemFile *file;
+  TString name;
+  while(NULL != (file = (TSystemFile*)iter->Next()))
+  {
+    name = file->GetName();
+    if(name.Contains(*re))
+    {
+      name = dname + name;
+      AddFile(name);
+    }
+  }
+
+  list->Delete();
 }
 
 
