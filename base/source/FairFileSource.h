@@ -67,8 +67,6 @@ private:
     FairFileHeader*                   fFileHeader; //!
     /** Current Entry number */
     Int_t                             fCurrentEntryNr;  //!
-    /** FairLogger */
-    FairLogger*                       fLogger;
     /** List of all files added with AddFriend */
     std::list<TString>                fFriendFileList; //!
     std::list<TString>                fInputChainList;//!
@@ -98,7 +96,7 @@ private:
     FairFileSource(const FairFileSource&);
     FairFileSource operator=(const FairFileSource&);
 
-    ClassDef(FairFileSource, 1)
+    ClassDef(FairFileSource, 2)
 };
 
 

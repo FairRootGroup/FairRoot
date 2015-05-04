@@ -37,7 +37,6 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
  fRootFile(f),
  fFileHeader(0),
  fCurrentEntryNr(0),
- fLogger(FairLogger::GetLogger()),
  fFriendFileList(),
  fInputChainList(),
  fFriendTypeList(),
@@ -54,11 +53,10 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
  fNoOfEntries(-1),
  IsInitialized(kFALSE)
 {
-   if (fRootFile->IsZombie()) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
-   }
-  fLogger->Debug(MESSAGE_ORIGIN, "FairFileSource created------------");
- 
+  if (fRootFile->IsZombie()) {
+    LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
+  }
+  LOG(DEBUG) << "FairFileSource created------------" << FairLogger::endl;
 }
 //_____________________________________________________________________________
 
@@ -68,7 +66,6 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
  fRootFile(0),
  fFileHeader(0),
  fCurrentEntryNr(0),
- fLogger(FairLogger::GetLogger()),
  fFriendFileList(),
  fInputChainList(),
  fFriendTypeList(),
@@ -85,12 +82,12 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
  fNoOfEntries(-1),
  IsInitialized(kFALSE)
 {
-    fRootFile = new TFile(RootFileName->Data());
-    if (fRootFile->IsZombie()) {
-       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
-    }
-  fLogger->Debug(MESSAGE_ORIGIN, "FairFileSource created------------");
-
+  fRootFile = new TFile(RootFileName->Data());
+  if (fRootFile->IsZombie()) {
+    LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
+  }
+  LOG(DEBUG) << "FairFileSource created------------" << FairLogger::endl;
+  
 }
 //_____________________________________________________________________________
 
@@ -102,12 +99,13 @@ FairFileSource::~FairFileSource()
 Bool_t FairFileSource::Init()
 {
     if(IsInitialized){
-       fLogger->Info(MESSAGE_ORIGIN, "FairFileSource already initialized");
+      LOG(INFO) << "FairFileSource already initialized" << FairLogger::endl;
        return kTRUE;
     }
     if (!fInChain ) {
         fInChain = new TChain("cbmsim", "/cbmroot");
-        fLogger->Debug(MESSAGE_ORIGIN, "FairFileSource::Init() chain created");
+        LOG(DEBUG) << "FairFileSource::Init() chain created"
+		   << FairLogger::endl;
     }
     fInChain->Add( fRootFile->GetName() );
     
@@ -135,29 +133,33 @@ Bool_t FairFileSource::Init()
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
     TList* list= dynamic_cast <TList*> (fRootFile->Get("BranchList"));
-    if(list==0)fLogger->Fatal(MESSAGE_ORIGIN, "No Branch list in input file");
+    if(list==0) {
+      LOG(FATAL) << "No Branch list in input file" << FairLogger::endl;
+    }
     TString chainName = fInputTitle;
     TString ObjName;
     fInputLevel.push_back(chainName);
     fCheckInputBranches[chainName] = new std::list<TString>;
     if(list) {
-        TObjString* Obj=0;
-        fLogger->Debug(MESSAGE_ORIGIN, "Enteries in the list  %i", list->GetEntries());
-        for(Int_t i =0; i< list->GetEntries(); i++) {
-            Obj=dynamic_cast <TObjString*> (list->At(i));
-            if(Obj!=0){
-                ObjName=Obj->GetString();
-                fLogger->Debug(MESSAGE_ORIGIN, "Branch name %s", ObjName.Data());
-                fCheckInputBranches[chainName]->push_back(ObjName.Data());
-                
-                FairRootManager::Instance()->AddBranchToList(ObjName.Data());
-            }
-        }
+      TObjString* Obj=0;
+      LOG(DEBUG) << "Enteries in the list " 
+		 << list->GetEntries() << FairLogger::endl;
+      for(Int_t i =0; i< list->GetEntries(); i++) {
+	Obj=dynamic_cast <TObjString*> (list->At(i));
+	if(Obj!=0){
+	  ObjName=Obj->GetString();
+	  LOG(DEBUG) << "Branch name " << ObjName.Data()
+		     << FairLogger::endl;
+	  fCheckInputBranches[chainName]->push_back(ObjName.Data());
+	  
+	  FairRootManager::Instance()->AddBranchToList(ObjName.Data());
+	}
+      }
     }
     
     gROOT->GetListOfBrowsables()->Add(fCbmroot);
     fListFolder->Add( fCbmroot );
-
+    
     // Store the information about the unique runids in the input file
     // together with the filename and the number of events for each runid
     // this information is needed later to check if inconsitencies exist
@@ -169,39 +171,42 @@ Bool_t FairFileSource::Init()
     // consitency check
     std::list<TString>::const_iterator iter;
     for(iter = fInputChainList.begin(); iter != fInputChainList.end(); iter++) {
-        // Store global gFile pointer for safety reasons.
-        // Set gFile to old value at the end of the routine.R
-        TFile* temp = gFile;
-        
-        // Temporarily open the input file to extract information which
-        // is needed to bring the friend trees in the correct order
-        TFile* inputFile = new TFile((*iter));
-        if (inputFile->IsZombie()) {
-            fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (*iter).Data());
-        }
-        
-        // Check if the branchlist is the same as for the first input file.
-        Bool_t isOk = CompareBranchList(inputFile, chainName);
-        if ( !isOk ) {
-            fLogger->Fatal(MESSAGE_ORIGIN, "Branch structure of the input file %s and the file to be added %s are different.", fRootFile->GetName(), (*iter).Data());
-            return kFALSE;
-        }
-        
-        // Add the runid information for all files in the chain.
-        //GetRunIdInfo(inputFile->GetName(), chainName);
-        // Add the file to the input chain
-        fInChain->Add( (*iter) );
-        
-        // Close the temporarly file and restore the gFile pointer.
-        inputFile->Close();
-        gFile = temp;
-
+      // Store global gFile pointer for safety reasons.
+      // Set gFile to old value at the end of the routine.R
+      TFile* temp = gFile;
+      
+      // Temporarily open the input file to extract information which
+      // is needed to bring the friend trees in the correct order
+      TFile* inputFile = new TFile((*iter));
+      if (inputFile->IsZombie()) {
+	LOG(FATAL) << "Error opening the file " << (*iter).Data() 
+		   << "which should be added to the input chain or as friend chain" << FairLogger::endl;
+      }
+      
+      // Check if the branchlist is the same as for the first input file.
+      Bool_t isOk = CompareBranchList(inputFile, chainName);
+      if ( !isOk ) {
+	LOG(FATAL) << "Branch structure of the input file " 
+		   << fRootFile->GetName() << " and the file to be added "
+		   << (*iter).Data() << " are different."
+		   << FairLogger::endl;
+	return kFALSE;
+      }
+      
+      // Add the runid information for all files in the chain.
+      //GetRunIdInfo(inputFile->GetName(), chainName);
+      // Add the file to the input chain
+      fInChain->Add( (*iter) );
+      
+      // Close the temporarly file and restore the gFile pointer.
+      inputFile->Close();
+      gFile = temp;
+      
     }
     fNoOfEntries = fInChain->GetEntries();
-    fLogger->Debug(MESSAGE_ORIGIN, "Entries in this Source %i------------",  fNoOfEntries);
+    LOG(DEBUG) << "Entries in this Source " << fNoOfEntries << FairLogger::endl;
     return kTRUE;
-
-  
+   
 }
 //_____________________________________________________________________________
 
@@ -281,7 +286,8 @@ void FairFileSource::AddFriendsToChain()
             
             inputFile = new TFile((*iter1));
             if (inputFile->IsZombie()) {
-                fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (*iter).Data());
+	      LOG(FATAL) << "Error opening the file " << (*iter).Data()
+			 << " which should be added to the input chain or as friend chain" << FairLogger::endl;
             }
             
             // Check if the branchlist is already stored in the map. If it is
@@ -331,26 +337,26 @@ void FairFileSource::PrintFriendList( )
     // List files from the input chain together with all files of
     // all friend chains
     
-    fLogger->Info(MESSAGE_ORIGIN,
-                  "The input consists out of the following trees and files:");
-    fLogger->Info(MESSAGE_ORIGIN," - %s",fInChain->GetName());
+  LOG(INFO) << "The input consists out of the following trees and files: "
+	    <<FairLogger::endl;
+  LOG(INFO) << " - " << fInChain->GetName() << FairLogger::endl;
     TObjArray* fileElements=fInChain->GetListOfFiles();
     TIter next(fileElements);
     TChainElement* chEl=0;
     while (( chEl=(TChainElement*)next() )) {
-        fLogger->Info(MESSAGE_ORIGIN,"    - %s",chEl->GetTitle());
+      LOG(INFO) << "    - " << chEl->GetTitle() << FairLogger::endl;
     }
     
     map< TString, TChain* >::iterator mapIterator;
     for (mapIterator = fFriendTypeList.begin();
          mapIterator != fFriendTypeList.end(); mapIterator++ ) {
         TChain* chain = (TChain*) mapIterator->second;
-        fLogger->Info(MESSAGE_ORIGIN," - %s",chain->GetName());
+        LOG(INFO) << " - " << chain->GetName() << FairLogger::endl;
         fileElements=chain->GetListOfFiles();
         TIter next1(fileElements);
         chEl=0;
         while (( chEl=(TChainElement*)next1() )) {
-            fLogger->Info(MESSAGE_ORIGIN,"    - %s",chEl->GetTitle());
+	  LOG(INFO) << "    - " << chEl->GetTitle() << FairLogger::endl;
         }
     }
     
@@ -409,28 +415,37 @@ void FairFileSource::CheckFriendChains()
     // Use goto to leave double loop at once in case of error
     // error_label:
     if (errorFlag>0) {
-        fLogger->Error(MESSAGE_ORIGIN,"The input chain and the friend chain %s have a different structure:", inputLevel.Data());
+      LOG(ERROR) << "The input chain and the friend chain " << inputLevel.Data() 
+		 << " have a different structure:" << FairLogger::endl;
         if (errorFlag == 1) {
-            fLogger->Error(MESSAGE_ORIGIN,"The input chain has the following runids and event numbers:");
+	  LOG(ERROR) << "The input chain has the following runids and event numbers:" << FairLogger::endl;
             for ( Int_t i=0; i<runid.size(); i++) {
-                fLogger->Error(MESSAGE_ORIGIN," - Runid %i with %i events", runid[i], events[i]);
+	      LOG(ERROR) << " - Runid " << runid[i] << " with " << events[i] 
+			 << " events" << FairLogger::endl;
             }
-            fLogger->Error(MESSAGE_ORIGIN,"The %s chain has the following runids and event numbers:", inputLevel.Data());
+            LOG(ERROR) << "The " << inputLevel.Data() 
+		       << " chain has the following runids and event numbers:"
+		       << FairLogger::endl;
             for ( it=map1.begin() ; it != map1.end(); it++ ) {
                 TArrayI bla = (*it).second;
-                fLogger->Error(MESSAGE_ORIGIN," - Runid %i with %i events", bla[0], bla[1]);
+                LOG(ERROR) << " - Runid " << bla[0] << " with " << bla[1] 
+			   << " events" << FairLogger::endl;
             }
         }
         if (errorFlag == 2) {
             Int_t counter = 0;
             for ( it=map1.begin() ; it != map1.end(); it++ ) {
                 TArrayI bla = (*it).second;
-                fLogger->Error(MESSAGE_ORIGIN,"Runid Input Chain, %s chain: %i, %i", inputLevel.Data(), bla[0], runid[counter]);
-                fLogger->Error(MESSAGE_ORIGIN,"Event number Input Chain, %s chain: %i, %i", inputLevel.Data(), bla[1], events[counter]);
+                LOG(ERROR) << "Runid Input Chain, " << inputLevel.Data() 
+			   << " chain: " << bla[0] << ", " << runid[counter]
+			   << FairLogger::endl;
+                LOG(ERROR) << "Event number Input Chain, " << inputLevel.Data()
+			   << " chain: " << bla[1] 
+			   << ", " << events[counter] << FairLogger::endl;
                 counter++;
             }
         }
-        fLogger->Fatal(MESSAGE_ORIGIN,"Event structure mismatch");
+        LOG(FATAL) << "Event structure mismatch" << FairLogger::endl;
     }
 }
 //_____________________________________________________________________________
@@ -446,10 +461,15 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     TString folderName = "/cbmout";
     TString folderName1 = "cbmout";
     added = dynamic_cast <TFolder*> (f->Get("cbmout"));
-    if(added==0) {
+    if(!added) {
         folderName = "/cbmroot";
         folderName1 = "cbmroot";
         added = dynamic_cast <TFolder*> (f->Get("cbmroot"));
+	if (!added) {
+	  LOG(FATAL) << "Could not find folder cbmout nor cbmroot." 
+		     <<FairLogger::endl;
+	  exit(-1);
+	}
     }
     folderName1=folderName1+"_"+inputLevel;
     added->SetName(folderName1);

@@ -27,7 +27,6 @@ class FairEventHeader;
 class FairMCEventHeader;
 class FairField;
 class TFile;
-class FairLogger;
 class TF1;
 class TTree;
 class FairSource;

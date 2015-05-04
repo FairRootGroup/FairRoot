@@ -42,7 +42,7 @@ FairMultiLinkedData_Interface::FairMultiLinkedData_Interface( Int_t dataType, st
 }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(const FairMultiLinkedData_Interface& toCopy)
-  :TObject(), fLink(0)
+  :TObject(), fLink(0), fVerbose(0)
 {
 	if (toCopy.GetPointerToLinks() != 0){
 		SetLinks(*(toCopy.GetPointerToLinks()));
