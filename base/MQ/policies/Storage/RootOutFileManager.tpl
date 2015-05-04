@@ -192,7 +192,7 @@ std::vector<std::vector<DataType> > RootOutFileManager<DataType>::GetAllObj(cons
     
     
     
-    file->Close();
+    if (file) file->Close();
     return Allobj;
 }
 

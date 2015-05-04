@@ -213,7 +213,10 @@ void FairLogger::SetLogFileName(const char* name)
     CloseLogFile();
     delete fFileStream;
     fFileStream = NULL;
-    remove(fLogFileName);
+    if( remove(fLogFileName) != 0 ) {
+      LOG(ERROR)<<"Could not delete log file "<< fLogFileName << "." << FairLogger::endl;
+    }
+    
   }
 
   fLogFileName = name;
@@ -223,7 +226,14 @@ void FairLogger::SetLogFileName(const char* name)
 
 void FairLogger::CloseLogFile()
 {
-  dynamic_cast<ofstream*>(fFileStream)->close();
+  ofstream* tmp =NULL;
+  if (fFileStream) {
+    tmp = dynamic_cast<ofstream*>(fFileStream);
+    if (tmp) {
+      tmp->close();
+    }
+  }
+  delete tmp;
 }
 
 void FairLogger::OpenLogFile()

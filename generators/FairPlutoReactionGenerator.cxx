@@ -12,6 +12,7 @@
 #include "FairPlutoReactionGenerator.h"
 
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+#include "FairLogger.h"                 // for logging
 
 #include "PFairGenerator.h"             // for PFairGenerator
 #include "PReaction.h"                  // for PReaction
@@ -19,7 +20,6 @@
 #include "Riosfwd.h"                    // for ostream
 
 #include <stddef.h>                     // for NULL
-#include <iostream>                     // for operator<<, basic_ostream, etc
 
 // -----   Default constructor   ------------------------------------------
 FairPlutoReactionGenerator::FairPlutoReactionGenerator()
@@ -30,13 +30,6 @@ FairPlutoReactionGenerator::FairPlutoReactionGenerator()
 #endif
     fReaction(NULL)
 {
-  /*
-  iEvent     = 0;
-  fReaction  = NULL;
-  #ifdef PLUTOVERSION_FOR_FAIR
-  fPlutoFairGenerator = NULL;
-  #endif
-  */
 }
 // ------------------------------------------------------------------------
 
@@ -51,18 +44,17 @@ FairPlutoReactionGenerator::FairPlutoReactionGenerator(PReaction* reaction)
 #endif
     fReaction(reaction)
 {
-  //  iEvent     = 0;
-  //  fReaction  = reaction;
 #ifdef PLUTOVERSION_FOR_FAIR
-  //  fPlutoFairGenerator = new PFairGenerator();
   if (!reaction) {
-    std::cout << "-E FairPlutoReactionGenerator: No PReaction!" << std::endl;
+    LOG(ERROR)<< "FairPlutoReactionGenerator: No PReaction!" 
+	      << FairLogger::endl;
   } else {
     reaction->AddBulk(fPlutoFairGenerator);
     reaction->IsInline();
   }
 #else
-  std::cout << "-E FairPlutoReactionGenerator: You are using the wrong Pluto version" << std::endl;
+  LOG(ERROR)<< "FairPlutoReactionGenerator: You are using the wrong Pluto version" 
+	    << FairLogger::endl;
 #endif
 }
 // ------------------------------------------------------------------------
@@ -87,7 +79,8 @@ Bool_t FairPlutoReactionGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // Check for input file
   if ( ! fReaction ) {
-    cout << "-E FairPlutoReactionGenerator: No PReaction!" << endl;
+    LOG(ERROR) << "FairPlutoReactionGenerator: No PReaction!" 
+	       << FairLogger::endl;
     return kFALSE;
   }
 

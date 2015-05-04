@@ -123,6 +123,7 @@ FairParamObj::FairParamObj(FairParamObj& o)
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,o.getParamValue(),arraySize);
   if (streamerInfoSize>0) {
+    streamerInfo = new UChar_t[streamerInfoSize];
     memcpy(streamerInfo,o.getStreamerInfo(),streamerInfoSize);
   }
 }

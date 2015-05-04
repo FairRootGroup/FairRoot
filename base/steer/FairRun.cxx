@@ -37,7 +37,6 @@ FairRun* FairRun::Instance()
 FairRun::FairRun(Bool_t isMaster)
   :TNamed(),
    fNTasks(0),
-   fLogger(FairLogger::GetLogger()),
    fRtdb(FairRuntimeDb::instance()),
    fTask(new FairTask("FairTaskList")),
    fOutname(""),
@@ -65,7 +64,7 @@ FairRun::FairRun(Bool_t isMaster)
 //_____________________________________________________________________________
 FairRun::~FairRun()
 {
-  fLogger->Debug(MESSAGE_ORIGIN," Enter Destructor of FairRun ");
+  LOG(DEBUG) << "Enter Destructor of FairRun" << FairLogger::endl;
   if (fTask) {
     delete fTask;  // There is another tasklist in MCApplication,
   }
@@ -80,6 +79,7 @@ FairRun::~FairRun()
   if (fEvHead) {
     delete fEvHead;
   }
+  LOG(DEBUG) << "Leave Destructor of FairRun" << FairLogger::endl;
 }
 //_____________________________________________________________________________
 

@@ -12,6 +12,7 @@
 #include "FairPlutoGenerator.h"
 
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+#include "FairLogger.h"                 // for logging
 
 #include "PParticle.h"                  // for PParticle
 
@@ -24,7 +25,6 @@
 #include "TVector3.h"                   // for TVector3
 
 #include <stddef.h>                     // for NULL
-#include <iostream>                     // for operator<<, basic_ostream, etc
 
 // -----   Default constructor   ------------------------------------------
 FairPlutoGenerator::FairPlutoGenerator()
@@ -35,11 +35,6 @@ FairPlutoGenerator::FairPlutoGenerator()
    fInputTree(NULL),
    fParticles(NULL)
 {
-  /*
-  iEvent     = 0;
-  fInputFile = NULL;
-  fInputTree = NULL;
-  */
 }
 // ------------------------------------------------------------------------
 
@@ -54,13 +49,7 @@ FairPlutoGenerator::FairPlutoGenerator(const Char_t* fileName)
    fInputTree(NULL),
    fParticles(new TClonesArray("PParticle",100))
 {
-  /*
-  iEvent     = 0;
-  fFileName  = fileName;
-  fInputFile = new TFile(fFileName);
-  */
   fInputTree = (TTree*) fInputFile->Get("data");
-  //  fParticles = new TClonesArray("PParticle",100);
   fInputTree->SetBranchAddress("Particles", &fParticles);
 }
 // ------------------------------------------------------------------------
@@ -82,13 +71,15 @@ Bool_t FairPlutoGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // Check for input file
   if ( ! fInputFile ) {
-    cout << "-E FairPlutoGenerator: Input file nor open!" << endl;
+    LOG(ERROR) << "FairPlutoGenerator: Input file nor open!" 
+	       << FairLogger::endl;
     return kFALSE;
   }
 
   // Check for number of events in input file
   if ( iEvent > fInputTree->GetEntries() ) {
-    cout << "-E FairPlutoGenerator: No more events in input file!" << endl;
+    LOG(ERROR) << "FairPlutoGenerator: No more events in input file!" 
+	       << FairLogger::endl;
     CloseInput();
     return kFALSE;
   }
@@ -110,8 +101,8 @@ Bool_t FairPlutoGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
     // Check if particle type is known to database
     if ( ! pdgType ) {
-      cout << "-W FairPlutoGenerator: Unknown type " << part->ID()
-           << ", skipping particle." << endl;
+      LOG(WARNING) << "FairPlutoGenerator: Unknown type " << part->ID()
+		   << ", skipping particle." << FairLogger::endl;
       continue;
     }
 
@@ -142,8 +133,8 @@ Bool_t FairPlutoGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 void FairPlutoGenerator::CloseInput()
 {
   if ( fInputFile ) {
-    cout << "-I FairPlutoGenerator: Closing input file " << fFileName
-         << endl;
+    LOG(INFO) << "FairPlutoGenerator: Closing input file " << fFileName
+	      << FairLogger::endl;
     fInputFile->Close();
     delete fInputFile;
   }

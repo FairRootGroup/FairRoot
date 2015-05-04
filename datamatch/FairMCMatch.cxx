@@ -378,8 +378,9 @@ void FairMCMatch::ClearMCList()
   for (TListIterator iter = fList.begin(); iter != fList.end(); iter++) {
     if (iter->second != 0) {
       iter->second->ClearEntries();
-    } else { fList.erase(iter); }
+    } 
   }
+  fList.clear();
 }
 
 bool FairMCMatch::IsTypeInList(Int_t type)

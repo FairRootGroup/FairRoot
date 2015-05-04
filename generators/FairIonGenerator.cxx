@@ -15,6 +15,7 @@
 #include "FairParticle.h"               // for FairParticle
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 #include "FairRunSim.h"                 // for FairRunSim
+#include "FairLogger.h"                 // for logging
 
 #include "Riosfwd.h"                    // for ostream
 #include "TDatabasePDG.h"               // for TDatabasePDG
@@ -23,10 +24,6 @@
 #include "TParticlePDG.h"               // for TParticlePDG
 
 #include <stdio.h>                      // for NULL, sprintf
-#include <iostream>                     // for operator<<, basic_ostream, etc
-
-using std::cout;
-using std::endl;
 
 // -----   Initialsisation of static variables   --------------------------
 Int_t FairIonGenerator::fgNIon = 0;
@@ -42,8 +39,9 @@ FairIonGenerator::FairIonGenerator()
    fVx(0), fVy(0), fVz(0),
    fIon(NULL),  fQ(0)
 {
-//  cout << "-W- FairIonGenerator: "
-//      << " Please do not use the default constructor! " << endl;
+//  LOG(WARNING) << "FairIonGenerator: "
+//               << " Please do not use the default constructor! " 
+//               << FairLogger::endl;
 }
 // ------------------------------------------------------------------------
 
@@ -88,8 +86,8 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
     }
   }
   if(fIon==0 && part==0 ) {
-    cout << "-E- FairIonGenerator: Ion or Particle is not defined !" << endl;
-    Fatal("FairIonGenerator", "No FairRun instantised!");
+    LOG(FATAL) << "Ion or Particle is not defined !" 
+	       << FairLogger::endl;
   }
 
 }
@@ -123,8 +121,8 @@ FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
   fIon= new FairIon(buffer, z, a, q);
   FairRunSim* run = FairRunSim::Instance();
   if ( ! run ) {
-    cout << "-E- FairIonGenerator: No FairRun instantised!" << endl;
-    Fatal("FairIonGenerator", "No FairRun instantised!");
+    LOG(ERROR) << "No FairRun instantised!" 
+	       << FairLogger::endl;
   } else {
     run->AddNewIon(fIon);
   }
@@ -165,25 +163,27 @@ Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
 
 // if ( ! fIon ) {
-//   cout << "-W- FairIonGenerator: No ion defined! " << endl;
+//   LOG(WARNING) << "FairIonGenerator: No ion defined! " 
+//                << FairLogger::endl;
 //   return kFALSE;
 // }
 
   TParticlePDG* thisPart =
     TDatabasePDG::Instance()->GetParticle(fIon->GetName());
   if ( ! thisPart ) {
-    cout << "-W- FairIonGenerator: Ion " << fIon->GetName()
-         << " not found in database!" << endl;
+    LOG(WARNING) << "FairIonGenerator: Ion " << fIon->GetName()
+		 << " not found in database!" << FairLogger::endl;
     return kFALSE;
   }
 
   int pdgType = thisPart->PdgCode();
 
-  cout << "-I- FairIonGenerator: Generating " << fMult << " ions of type "
-       << fIon->GetName() << " (PDG code " << pdgType << ")" << endl;
-  cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
-       << ") Gev from vertex (" << fVx << ", " << fVy
-       << ", " << fVz << ") cm" << endl;
+  LOG(INFO) << "FairIonGenerator: Generating " << fMult << " ions of type "
+	    << fIon->GetName() << " (PDG code " << pdgType << ")" 
+	    << FairLogger::endl;
+  LOG(INFO) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
+	    << ") Gev from vertex (" << fVx << ", " << fVy
+	    << ", " << fVz << ") cm" << FairLogger::endl;
 
   for(Int_t i=0; i<fMult; i++) {
     primGen->AddTrack(pdgType, fPx, fPy, fPz, fVx, fVy, fVz);

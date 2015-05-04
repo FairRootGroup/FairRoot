@@ -61,7 +61,7 @@ class FairUrqmdGenerator : public FairGenerator
      **/
     Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
-    //Skip some events in file
+    /** Skip defined number of events in file **/
     Bool_t SkipEvents(Int_t count);
 
   private:
@@ -76,6 +76,9 @@ class FairUrqmdGenerator : public FairGenerator
         from UrQMD particle code to PDG particle code and fills the
         conversion map. Is called from the constructor. **/
     void ReadConversionTable();
+
+    /** Check return value from fscanf call **/
+    void CheckReturnValue(Int_t retval);
 
     FairUrqmdGenerator(const FairUrqmdGenerator&);
     FairUrqmdGenerator& operator=(const FairUrqmdGenerator&);

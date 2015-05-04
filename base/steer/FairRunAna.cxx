@@ -107,17 +107,20 @@ FairRunAna::~FairRunAna()
 void  FairRunAna::SetGeomFile(const char* GeoFileName)
 {
   if (fIsInitialized) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Geometry file has to be set before Run::Init !") ;
+    LOG(FATAL) << "Geometry file has to be set before Run::Init !" 
+	       << FairLogger::endl;
     exit(-1);
   } else {
 
     TFile* CurrentFile=gFile;
     fInputGeoFile= new TFile(GeoFileName);
     if (fInputGeoFile->IsZombie()) {
-      fLogger->Error(MESSAGE_ORIGIN, "Error opening Geometry Input file");
+      LOG(ERROR) << "Error opening Geometry Input file"
+		 << FairLogger::endl;
       fInputGeoFile=0;
     }
-    fLogger->Info(MESSAGE_ORIGIN, " Opening Geometry input file: %s ", GeoFileName);
+    LOG(INFO) << "Opening Geometry input file: " << GeoFileName
+	      << FairLogger::endl;
     fLoadGeo=kTRUE;
     gFile=CurrentFile;
   }
@@ -129,7 +132,7 @@ void FairRunAna::Init()
 {
 
   if (fIsInitialized) {
-    fLogger->Fatal(MESSAGE_ORIGIN,"Error Init is already called before!");
+    LOG(FATAL) << "Error Init is already called before!" << FairLogger::endl;
     exit(-1);
   } else {
     fIsInitialized=kTRUE;
@@ -166,7 +169,7 @@ void FairRunAna::Init()
     }
     //check that the geometry was loaded if not try all connected files!
     if (fLoadGeo && gGeoManager==0) {
-      fLogger->Info(MESSAGE_ORIGIN, "Geometry was not found in the input file we will look in the friends if any!" );
+      LOG(INFO) << "Geometry was not found in the input file we will look in the friends if any!" << FairLogger::endl;
       TFile* currentfile= gFile;
       TFile* nextfile=0;
       TSeqCollection* fileList=gROOT->GetListOfFiles();
@@ -216,7 +219,7 @@ void FairRunAna::Init()
   //  if(par && fInputFile) {
   if (par && fInFileIsOpen && !fMixedInput) {
 
-    fLogger->Info(MESSAGE_ORIGIN,"Parameter and input file are available, Assure that basic info is there for the run!");
+    LOG(INFO) << "Parameter and input file are available, Assure that basic info is there for the run!" << FairLogger::endl;
     fRootManager->ReadEvent(0);
 
     fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
@@ -246,18 +249,22 @@ void FairRunAna::Init()
     //fRtdb->initContainers( fRunId );
 
   } else if (fMixedInput) {
-    fLogger->Info(MESSAGE_ORIGIN,"Initializing for Mixed input");
+    LOG(INFO) << "Initializing for Mixed input" << FairLogger::endl;
 
     //For mixed input we have to set containers to static because of the different run ids
     //fRtdb->setContainersStatic(kTRUE);
 
     fEvtHeader = dynamic_cast<FairEventHeader*> (fRootManager->GetObject("EventHeader."));
-    if(fEvtHeader)fLogger->Info(MESSAGE_ORIGIN,"Event Header found $s",fEvtHeader->GetName() );
-
+    if(fEvtHeader) {
+      LOG(INFO) << "Event Header found " << fEvtHeader->GetName()
+		<< FairLogger::endl;
+    }
     fMCHeader = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObject("MCEventHeader."));
     
-    if(fMCHeader)fLogger->Info(MESSAGE_ORIGIN,"MC Event Header found $s",fMCHeader->GetName() );
-  
+    if(fMCHeader) {
+      LOG(INFO) << "MC Event Header found " << fMCHeader->GetName()
+		<< FairLogger::endl;
+    }
       
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
@@ -276,13 +283,15 @@ void FairRunAna::Init()
     // Init the containers in Tasks
     fRtdb->initContainers(fRunId);
     if (gGeoManager==0) {
-      fLogger->Fatal(MESSAGE_ORIGIN,"Could not Read the Geometry from Parameter file");
+      LOG(FATAL) << "Could not Read the Geometry from Parameter file"
+		 << FairLogger::endl;
     }
     fTask->SetParTask();
     fRtdb->initContainers( fRunId );
 
   } else {  //end----- if(fMixedInput)
-    fLogger->Info(MESSAGE_ORIGIN,"Initializing without input file or Mixed input");
+      LOG(INFO) << "Initializing without input file or Mixed input"
+		<< FairLogger::endl;
     FairEventHeader* evt = GetEventHeader();
     evt->Register();
     FairRunIdGenerator genid;
@@ -365,7 +374,7 @@ void FairRunAna::InitContainers()
 void FairRunAna::RunMixed(Int_t Ev_start, Int_t Ev_end)
 {
 
-  fLogger->Debug(MESSAGE_ORIGIN,"Running in mixed mode");
+  LOG(DEBUG) << "Running in mixed mode" << FairLogger::endl;
   Int_t MaxAllowed=fRootManager->CheckMaxEventNo(Ev_end);
   if (Ev_end==0) {
     if (Ev_start==0) {
@@ -386,9 +395,11 @@ void FairRunAna::RunMixed(Int_t Ev_start, Int_t Ev_end)
   for (int i=Ev_start; i< Ev_end; i++) {
     fRootManager->ReadEvent(i);
     fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
-    fLogger->Debug(MESSAGE_ORIGIN,"------Event is read , now execute the tasks--------");
+    LOG(DEBUG) << "------Event is read , now execute the tasks--------"
+	       << FairLogger::endl;
     fTask->ExecuteTask("");
-    fLogger->Debug(MESSAGE_ORIGIN,"------ Tasks executed, now fill the tree  --------");
+    LOG(DEBUG) << "------ Tasks executed, now fill the tree  --------"
+	       << FairLogger::endl;
     fRootManager->Fill();
     fRootManager->DeleteOldWriteoutBufferData();
     fTask->FinishEvent();
@@ -668,7 +679,7 @@ void FairRunAna::RunOnLmdFiles(UInt_t NStart, UInt_t NStop)
   if(NStart==0 && NStop==0) {
     NStart=0;
     NStop=1000000000;
-    fLogger->Info(MESSAGE_ORIGIN," Maximum number of event is set to 1E9");
+    LOG(INFO) << " Maximum number of event is set to 1E9" << FairLogger::endl;
   }
   for (UInt_t i=NStart; i< NStop; i++) {
     if ( fFinishProcessingLMDFile ) {
@@ -729,17 +740,17 @@ void FairRunAna::SetSignalFile(TString name, UInt_t identifier )
 {
   fMixedInput=kTRUE;
   if (identifier==0) {
-    fLogger->Fatal(MESSAGE_ORIGIN," ----- Identifier 0 is reserved for background files! please use other value ------ ");
+    LOG(FATAL) << " ----- Identifier 0 is reserved for background files! please use other value ------ " << FairLogger::endl;
   }
   fRootManager->AddSignalFile(name, identifier);
-  fLogger->Info(MESSAGE_ORIGIN," ----- Mixed input mode will be used ------ ");
+  LOG(INFO) << " ----- Mixed input mode will be used ------ " << FairLogger::endl;
 }
 //_____________________________________________________________________________
 void FairRunAna::SetBackgroundFile(TString name)
 {
   fMixedInput=kTRUE;
   fRootManager->SetBackgroundFile(name);
-  fLogger->Info(MESSAGE_ORIGIN," ----- Mixed input mode will be used ------ ");
+  LOG(INFO) << " ----- Mixed input mode will be used ------ " << FairLogger::endl;
 
 }//_____________________________________________________________________________
 void FairRunAna::AddBackgroundFile(TString name)
@@ -747,7 +758,8 @@ void FairRunAna::AddBackgroundFile(TString name)
   if (fMixedInput) {
     fRootManager->AddBackgroundFile(name);
   } else {
-    fLogger->Fatal(MESSAGE_ORIGIN," Background can be added only if mixed mode is used");
+    LOG(FATAL) << "Background can be added only if mixed mode is used"
+	       << FairLogger::endl;
   }
 }
 //_____________________________________________________________________________
@@ -755,18 +767,20 @@ void FairRunAna::AddSignalFile(TString name, UInt_t identifier )
 {
   if (fMixedInput) {
     if (identifier==0) {
-      fLogger->Fatal(MESSAGE_ORIGIN," ----- Identifier 0 is reserved for background files! please use other value ------ ");
+      LOG(FATAL) << " ----- Identifier 0 is reserved for background files! please use other value ------ " << FairLogger::endl;
     }
     fRootManager->AddSignalFile(name, identifier);
   } else {
-    fLogger->Fatal(MESSAGE_ORIGIN," Signal can be added only if mixed mode is used");
+    LOG(FATAL) << " Signal can be added only if mixed mode is used"
+	       << FairLogger::endl;
   }
 }
 //_____________________________________________________________________________
 void FairRunAna::AddFriend (TString Name)
 {
   if (fIsInitialized) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "AddFriend has to be set before Run::Init !");
+    LOG(FATAL) << "AddFriend has to be set before Run::Init !"
+	       << FairLogger::endl;
   } else {
     fRootManager->AddFriend(Name);
   }
@@ -790,14 +804,16 @@ void  FairRunAna::RunWithTimeStamps()
 {
   if (ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)) {
     if (fIsInitialized) {
-      fLogger->Warning(MESSAGE_ORIGIN, "RunWithTimeStamps has to be set before Run::Init !");
+      LOG(FATAL) << "RunWithTimeStamps has to be set before Run::Init !"
+		 << FairLogger::endl;
       exit(-1);
     } else {
       fTimeStamps=kTRUE;
       fRootManager->RunWithTimeStamps();
     }
   } else {
-    fLogger->Fatal(MESSAGE_ORIGIN, "RunWithTimeStamps need at least ROOT version 5.29.1") ;
+    LOG(FATAL) << "RunWithTimeStamps need at least ROOT version 5.29.1"
+	       << FairLogger::endl;
   }
 }
 //_____________________________________________________________________________
@@ -827,9 +843,11 @@ void  FairRunAna::SetContainerStatic(Bool_t tempBool)
 {
   fStatic=tempBool;
   if ( fStatic ) {
-    fLogger->Info(MESSAGE_ORIGIN, "Parameter Cont. initialisation is static");
+    LOG(INFO) << "Parameter Cont. initialisation is static" 
+	      << FairLogger::endl;
   } else {
-    fLogger->Info(MESSAGE_ORIGIN, "Parameter Cont. initialisation is NOT static");
+    LOG(INFO) << "Parameter Cont. initialisation is NOT static"
+	      << FairLogger::endl;
   }
 }
 //_____________________________________________________________________________
@@ -846,7 +864,7 @@ void  FairRunAna::BGWindowWidthTime(Double_t background, UInt_t Signalid)
 //_____________________________________________________________________________
 void  FairRunAna::SetMixAllInputs(Bool_t Status)
 {
-   fLogger->Info(MESSAGE_ORIGIN, "Mixing for all input is choosed, in this mode one event per input file is read per step");
+  LOG(INFO) << "Mixing for all input is choosed, in this mode one event per input file is read per step" << FairLogger::endl;
    fRootManager->SetMixAllInputs(Status);
 }
 //_____________________________________________________________________________

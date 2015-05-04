@@ -66,8 +66,6 @@ class TParticle;
 #include <iostream>                     // for operator<<, basic_ostream, etc
 #include <utility>                      // for pair
 
-using std::cout;
-using std::endl;
 using std::pair;
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const char* name, const char* title,
@@ -77,7 +75,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fFairTaskList(NULL),
    fDetectors(NULL),
    fDetMap(NULL),
-   fLogger(FairLogger::GetLogger()),
    fModIter(NULL),
    fModules(NULL),
    fNoSenVolumes(0),
@@ -127,15 +124,19 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
   while((obj=fModIter->Next())) {
     if(obj->InheritsFrom("FairDetector")) {
       detector=dynamic_cast<FairDetector*>(obj);
-      fDetectors->Add(detector);
-      listDetectors.push_back(detector);
-      if(detector->IsActive()) {
-        fActiveDetectors->Add(detector);
-        listActiveDetectors.push_back(detector);
+      if(detector) {
+	fDetectors->Add(detector);
+	listDetectors.push_back(detector);
+	if(detector->IsActive()) {
+	  fActiveDetectors->Add(detector);
+	  listActiveDetectors.push_back(detector);
+	}
+      } else {
+	LOG(ERROR) << "Dynamic cast fails." << FairLogger::endl;
       }
     }
   }
-    
+  
 // Create a Task list
   fFairTaskList= new FairTask("Task List", 1);
   gROOT->GetListOfBrowsables()->Add(fFairTaskList);
@@ -155,7 +156,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
    fFairTaskList(NULL),
    fDetectors(NULL),
    fDetMap(NULL),
-   fLogger(NULL),
    fModIter(NULL),
    fModules(NULL),
    fNoSenVolumes(0),
@@ -209,11 +209,15 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
   while((obj=fModIter->Next())) {
     if(obj->InheritsFrom("FairDetector")) {
       detector=dynamic_cast<FairDetector*>(obj);
-      fDetectors->Add(detector);
-      listDetectors.push_back(detector);
-      if(detector->IsActive()) {
-        fActiveDetectors->Add(detector);
-        listActiveDetectors.push_back(detector);
+      if(detector) {
+	fDetectors->Add(detector);
+	listDetectors.push_back(detector);
+	if(detector->IsActive()) {
+	  fActiveDetectors->Add(detector);
+	  listActiveDetectors.push_back(detector);
+	}
+      } else {
+          LOG(ERROR) << "Dynamic cast fails." << FairLogger::endl;
       }
     }
   }
@@ -234,7 +238,6 @@ FairMCApplication::FairMCApplication()
    fFairTaskList(0),
    fDetectors(0),
    fDetMap(0),
-   fLogger(FairLogger::GetLogger()),
    fModIter(0),
    fModules(0),
    fNoSenVolumes(0),
@@ -274,7 +277,8 @@ FairMCApplication::FairMCApplication()
 FairMCApplication::~FairMCApplication()
 {
 // Destructor
-//   cout<<"Enter Destructor of FairMCApplication"<<endl;
+//   LOG(DEBUG3) << "Enter Destructor of FairMCApplication"
+//               << FairLogger::endl;
   delete fStack;
   delete fActiveDetectors; // don't do fActiveDetectors->Delete() here
   // the modules are already deleted in FairRunSim
@@ -282,7 +286,8 @@ FairMCApplication::~FairMCApplication()
   delete gMC;
   delete fModIter;
   gMC=0;
-  //   cout<<"Leave Destructor of FairMCApplication"<<endl;
+  //  LOG(DEBUG3) << "Leave Destructor of FairMCApplication"
+  //              << FairLogger::endl;
 }
 
 //_____________________________________________________________________________
@@ -291,88 +296,96 @@ FairMCApplication& FairMCApplication::operator=(const FairMCApplication& rhs)
 // Assignment operator
 
   // check assignment to self
-  if (this == &rhs) return *this;
+  if (this != &rhs) {
 
-  // base class assignment
-  TVirtualMCApplication::operator=(rhs);
+    // base class assignment
+    TVirtualMCApplication::operator=(rhs);
 
-  fActiveDetectors = NULL;
-  fFairTaskList = NULL;
-  fDetectors = NULL;
-  fDetMap = NULL;
-  fLogger = NULL;
-  fModIter = NULL;
-  fModules = NULL;
-  fNoSenVolumes = 0;
-  fPythiaDecayer = kFALSE;
-  fPythiaDecayerConfig = rhs.fPythiaDecayerConfig;
-  fStack = NULL;
-  fRootManager = NULL;
-  fSenVolumes = NULL;
-  fxField = rhs.fxField;
-  fEvGen = NULL;
-  fMcVersion = rhs.fMcVersion;
-  fTrajFilter = NULL;
-  fTrajAccepted = kFALSE;
-  fUserDecay = kFALSE;
-  fUserDecayConfig = rhs.fUserDecayConfig;
-  fDebug = rhs.fDebug;
-  fDisVol = NULL;
-  fDisDet = NULL;
-  fTrkPos = rhs.fTrkPos;
-  fRadLength = kFALSE;
-  fRadLenMan = NULL;
-  fRadMap = kFALSE;
-  fRadMapMan = NULL;
-  fRadGridMan = NULL;
-  fEventHeader = NULL;
-  fMCEventHeader = NULL;
-  fGeometryIsInitialized = kFALSE;
+    fActiveDetectors = NULL;
+    fFairTaskList = NULL;
+    fDetectors = NULL;
+    fDetMap = NULL;
+    fModIter = NULL;
+    fModules = NULL;
+    fNoSenVolumes = 0;
+    fPythiaDecayer = kFALSE;
+    fPythiaDecayerConfig = rhs.fPythiaDecayerConfig;
+    fStack = NULL;
+    fRootManager = NULL;
+    fSenVolumes = NULL;
+    fxField = rhs.fxField;
+    fEvGen = NULL;
+    fMcVersion = rhs.fMcVersion;
+    fTrajFilter = NULL;
+    fTrajAccepted = kFALSE;
+    fUserDecay = kFALSE;
+    fUserDecayConfig = rhs.fUserDecayConfig;
+    fDebug = rhs.fDebug;
+    fDisVol = NULL;
+    fDisDet = NULL;
+    fTrkPos = rhs.fTrkPos;
+    fRadLength = kFALSE;
+    fRadLenMan = NULL;
+    fRadMap = kFALSE;
+    fRadMapMan = NULL;
+    fRadGridMan = NULL;
+    fEventHeader = NULL;
+    fMCEventHeader = NULL;
+    fGeometryIsInitialized = kFALSE;
 
-// Do not create Root manager
-
-// Create an ObjArray of Modules and its iterator
-  fModules=new TObjArray();
-  fModIter = fModules->MakeIterator();
-  // Clone modules
-  TObject* obj;
-  while((obj=rhs.fModIter->Next())) {
-    fModules->Add(static_cast<FairModule*>(obj)->CloneModule());
-  }
-
-// Create and fill a list of active detectors
-  fDetectors=new TRefArray;
-  fActiveDetectors=new TRefArray();
-  fModIter->Reset();
-  FairDetector* detector;
-  while((obj=fModIter->Next())) {
-    if(obj->InheritsFrom("FairDetector")) {
-      detector=dynamic_cast<FairDetector*>(obj);
-      fDetectors->Add(detector);
-      listDetectors.push_back(detector);
-      if(detector->IsActive()) {
-        fActiveDetectors->Add(detector);
-        listActiveDetectors.push_back(detector);
+    // Do not create Root manager
+    
+    // Create an ObjArray of Modules and its iterator
+    fModules=new TObjArray();
+    fModIter = fModules->MakeIterator();
+    // Clone modules
+    TObject* obj;
+    while((obj=rhs.fModIter->Next())) {
+      fModules->Add(static_cast<FairModule*>(obj)->CloneModule());
+    }
+    
+    // Create and fill a list of active detectors
+    fDetectors=new TRefArray;
+    fActiveDetectors=new TRefArray();
+    fModIter->Reset();
+    FairDetector* detector;
+    while((obj=fModIter->Next())) {
+      if(obj->InheritsFrom("FairDetector")) {
+	detector=dynamic_cast<FairDetector*>(obj);
+        if (detector) {
+	  fDetectors->Add(detector);
+	  listDetectors.push_back(detector);
+	  if(detector->IsActive()) {
+	    fActiveDetectors->Add(detector);
+	    listActiveDetectors.push_back(detector);
+	  }
+	} else {
+          LOG(ERROR) << "Dynamic cast fails." << FairLogger::endl;
+	}
       }
     }
+    
+    // Clone stack
+    fStack = rhs.fStack->CloneStack();
+    
+    // Create a Task list
+    // Let's try without it
+    //fFairTaskList= new FairTask("Task List", 1);
+    //gROOT->GetListOfBrowsables()->Add(fFairTaskList);
+    
+    fDetMap=new TRefArray(1000);
   }
+  
+  return *this;
 
-  // Clone stack
-  fStack = rhs.fStack->CloneStack();
-
-// Create a Task list
-  // Let's try without it
-  //fFairTaskList= new FairTask("Task List", 1);
-  //gROOT->GetListOfBrowsables()->Add(fFairTaskList);
-
-  fDetMap=new TRefArray(1000);
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::RegisterStack()
 {
 // Registers stack in Root manager.
-//  cout << "FairMCApplication::RegisterStack() " << endl;
+//  LOG(DEBUG) << "FairMCApplication::RegisterStack() " 
+//             << FairLogger::endl;
   if(fEvGen) {
     fStack->Register();
   }
@@ -383,7 +396,9 @@ void FairMCApplication::InitMC(const char* setup, const char* cuts)
 // Initialize MC.
 // ---
   fStack = dynamic_cast<FairGenericStack*>(gMC->GetStack()) ;
-  if(fStack==NULL) { fLogger->Fatal(MESSAGE_ORIGIN, "NO Stack defined "); }
+  if(fStack==NULL) { 
+    LOG(FATAL) << "No Stack defined." << FairLogger::endl; 
+  }
   gMC->SetMagField(fxField);
 
   gMC->Init();
@@ -400,7 +415,8 @@ void FairMCApplication::InitMC(const char* setup, const char* cuts)
   }
   fTrajFilter = FairTrajFilter::Instance();
 
-  fLogger->Info(MESSAGE_ORIGIN, "Monte carlo Engine Initialisation  with : %s  ", MCName.Data());
+  LOG(INFO) << "Monte Carlo Engine Initialisation with: " << MCName.Data()
+	    << FairLogger::endl;
 }
 //_____________________________________________________________________________
 void FairMCApplication::RunMC(Int_t nofEvents)
@@ -444,47 +460,42 @@ void FairMCApplication::FinishRun()
   TObjArray* meshlist  = NULL;
 
   if (fRadGridMan ) {
-    //      cout << "-I FairMCApplication::FinishRun scaling ... " << endl;
+
     meshlist = fRadGridMan->GetMeshList();
-    //      cout << " entries " << meshlist->GetEntriesFast() << endl;
-    for(Int_t i=0; i<meshlist->GetEntriesFast(); i++ ) {
-      FairMesh* aMesh = dynamic_cast<FairMesh*>(meshlist->At(i));
-      aMesh->Scale(1./nprimary);
-    }
-  }
-  if (fRadGridMan) {
+
     TH2D* tid = NULL;
     TH2D* flu = NULL;
     TH2D* seu = NULL;
-    //      cout << "-I FairMCApplication::FinishRun saving ... " << endl;
-    //      cout << " entries " << meshlist->GetEntriesFast() << endl;
 
-    cout << endl << endl;
-    cout << "======================================================="
-         << endl;
-    cout << "   Dosimetry  histos saving " << endl << endl;
-    cout << "======================================================="
-         << endl;
-    cout << endl << endl;
+    LOG(INFO) << "======================================================="
+	      << FairLogger::endl;
+    LOG(INFO) << "   Dosimetry  histos saving " << FairLogger::endl;
+    LOG(INFO) << "======================================================="
+	      << FairLogger::endl;
+
+    TDirectory* savedir = gDirectory;
+    fRootManager->GetOutFile()->cd();
 
     gDirectory->mkdir("Dosimetry");
     gDirectory->cd("Dosimetry");
-    gDirectory->cd("");
-
 
     for(Int_t i=0; i<meshlist->GetEntriesFast(); i++ ) {
-      FairMesh* aMesh = dynamic_cast<FairMesh*> (meshlist->At(i));
-      tid = aMesh->GetMeshTid();
-      flu = aMesh->GetMeshFlu();
-      seu = aMesh->GetMeshSEU();
-      //
-      // tid->Dump();
-      tid->Write();
-      flu->Write();
-      seu->Write();
+      FairMesh* aMesh = dynamic_cast<FairMesh*>(meshlist->At(i));
+      if (aMesh) {
+        aMesh->Scale(1./nprimary); 
+        tid = aMesh->GetMeshTid();
+        flu = aMesh->GetMeshFlu();
+        seu = aMesh->GetMeshSEU();
+        tid->Write();
+        flu->Write();
+        seu->Write();
+      }
     }
+
+    gDirectory=savedir;
+        
   }
-  gDirectory->cd("..");
+
   if (!fRadGridMan) {
     if (fRootManager) fRootManager->Write();
   }
@@ -539,7 +550,8 @@ void FairMCApplication::PreTrack()
   if(NULL != fTrajFilter) {
     // Get the pointer to current track
     TParticle* particle = fStack->GetCurrentTrack();
-//  cout << " FairMCApplication::PreTrack()" << particle << endl;
+//  LOG(DEBUG) << " FairMCApplication::PreTrack(): " << particle 
+//             << FairLogger::endl;
     // Apply cuts
     fTrajAccepted = fTrajFilter->IsAccepted(particle);
     if(fTrajAccepted) {
@@ -556,7 +568,8 @@ void FairMCApplication::PreTrack()
 //_____________________________________________________________________________
 TVirtualMCApplication* FairMCApplication::CloneForWorker() const
 {
-  cout << "FairMCApplication::CloneForWorker " << this << endl;
+  LOG(INFO) << "FairMCApplication::CloneForWorker " 
+	    << this << FairLogger::endl;
 
   // Create new FairRunSim object on worker
   FairRunSim* workerRun = new FairRunSim(kFALSE);
@@ -567,14 +580,16 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
   FairMCApplication* workerApplication = new FairMCApplication(*this);
   workerApplication->SetGenerator(fEvGen->ClonePrimaryGenerator());
 
-  cout << "FairMCApplication::CloneForWorker finished " << this << endl;
+  LOG(INFO) << "FairMCApplication::CloneForWorker finished " 
+	    << this << FairLogger::endl;
   return workerApplication;
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::InitForWorker() const
 {
-  cout << "FairMCApplication::InitForWorker " << this << endl;
+  LOG(INFO) << "FairMCApplication::InitForWorker " 
+	    << this << FairLogger::endl;
 
   // Create Root manager
   // TO DO
@@ -588,18 +603,14 @@ void FairMCApplication::InitForWorker() const
 
   // if (fRootManager) RegisterStack();
 
-  if (fLogger) {
-    fLogger->Info(MESSAGE_ORIGIN,
-                  "Monte carlo Engine Worker Initialisation  with : %s  ", gMC->GetName());
-  } else {
-    cout <<  "Monte carlo Engine Worker Initialisation  with " << gMC->GetName()  << endl;
-  }
+  LOG(INFO) << "Monte Carlo Engine Worker Initialisation  with: "
+	    << gMC->GetName() << FairLogger::endl;
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::FinishWorkerRun() const
 {
-  cout << "A01MCApplication::FinishWorkerRun: " << endl;
+  LOG(INFO) << "A01MCApplication::FinishWorkerRun: " << FairLogger::endl;
 }
 
 //_____________________________________________________________________________
@@ -615,6 +626,16 @@ void FairMCApplication::Stepping()
     TrackId = gMC->GetStack()->GetCurrentTrackNumber();
   }
 
+
+  // Check if the volume with id is in the volume multimap.
+  // If it is not in the map the volume is not a sensitive volume 
+  // and we do not call nay of our ProcessHits functions.
+
+  // If the volume is in the multimap, check in second step if the current 
+  // copy is alredy inside the multimap. 
+  // If the volume is not in the multimap add the copy of the volume to the 
+  // multimap. 
+  // In any case call the ProcessHits function for this specific detector.
   Int_t copyNo;
   Int_t id = gMC->CurrentVolID(copyNo);
   Bool_t InMap =kFALSE;
@@ -636,7 +657,8 @@ void FairMCApplication::Stepping()
       }
       fVolIter++;
     } while(fVolIter!=fVolMap.upper_bound(id));
-    if(fDisVol && !InMap) {
+    //    if(fDisVol && !InMap) { // fDisVolume is set previously, no check needed
+    if(!InMap) {
       FairVolume* fNewV=new FairVolume( gMC->CurrentVolName(), id);
       fNewV->setMCid(id);
       fNewV->setModId(fDisVol->getModId());
@@ -649,6 +671,17 @@ void FairMCApplication::Stepping()
       }
     }
   }
+
+  // If information about the tracks should be stored the information as to be
+  // stored for any step.
+  // Information about each single step has also to be stored for the other 
+  // special run modes of the simulation which are used to store information 
+  // about 
+  // 1.) Radiation length in each volume
+  // 2.) Energy deposition in each volume
+  // 3.) Fluence of particles through a defined plane which can be anywhere
+  //     in the geometry. This plane has not to be correlated with any real
+  //     volume 
   if(fTrajAccepted) {
     if(gMC->TrackStep() > fTrajFilter->GetStepSizeCut()) {
       gMC->TrackPosition(fTrkPos);
@@ -713,11 +746,8 @@ void FairMCApplication::StopRun()
     fRootManager->Write();
     fRootManager->CloseOutFile();
   }
-  if (fLogger) {
-    fLogger->Warning(MESSAGE_ORIGIN, "StopRun() exiting not safetly oopps !!!@@@!!!" );
-  } else {
-    cout << "StopRun() exiting not safetly oopps !!!@@@!!!" << endl;
-  }
+  LOG(WARNING) << "StopRun() exiting not safetly oopps !!!@@@!!!"
+	       << FairLogger::endl;
   exit(0) ;
 }
 //_____________________________________________________________________________
@@ -770,7 +800,7 @@ void FairMCApplication::FinishEvent()
   // Store information about runtime for one event and memory consuption
   // for later usage.
   // Requires Logger instantiated
-  if (fLogger) fRunInfo.StoreInfo();
+  fRunInfo.StoreInfo();
 
 }
 //_____________________________________________________________________________
@@ -857,7 +887,7 @@ void FairMCApplication::ConstructGeometry()
     fNoSenVolumes=fSenVolumes->GetEntries();
   }
   if (gGeoManager) {
-    //  cout << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<<endl;
+    //  LOG(DEBUG) << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<< FairLogger::endl;
     gGeoManager->CloseGeometry();   // close geometry
     gMC->SetRootGeometry();         // notify VMC about Root geometry
     Int_t Counter=0;
@@ -870,7 +900,7 @@ void FairMCApplication::ConstructGeometry()
       TParticlePDG *Particle=0;
       while((Particle=dynamic_cast<TParticlePDG*> (particleIter->Next())) && (Counter <= 256)) {
          TString Name= gGeoManager->GetPdgName(Particle->PdgCode());
-     //    fLogger->Info(MESSAGE_ORIGIN, "%i : Particle name: %s PDG  %i  ", Counter , Name.Data() ,Particle->PdgCode());
+	 //    LOG(INFO) << Counter <<" : Particle name: "<< Name.Data() << " PDG " << Particle->PdgCode()) << FairLogger::endl;
          if(Name=="XXX") gGeoManager->SetPdgName(Particle->PdgCode(), Particle->GetName());
          Counter++;
       }
@@ -896,11 +926,7 @@ void FairMCApplication::InitGeometry()
       fStack->Register();
     }
   } else {
-    if (fLogger) {
-      fLogger->Warning(MESSAGE_ORIGIN, "Stack is not registered ");
-    } else {
-      cout << "Stack is not registered " << endl;
-    }
+    LOG(WARNING) << "Stack is not registered " << FairLogger::endl;
   }
   /** Initialize the event generator */
   // if(fEvGen)fEvGen->Init();
@@ -927,11 +953,8 @@ void FairMCApplication::InitGeometry()
   // Get and register EventHeader
   UInt_t runId = FairRunSim::Instance()->GetRunId();
 
-  if (fLogger) {
-    fLogger->Info(MESSAGE_ORIGIN, "Simulation RunID: %i  ", runId);
-  } else {
-    cout << "Simulation RunID: " << runId << endl;
-  }
+  LOG(INFO) << "Simulation RunID: " << runId << FairLogger::endl;
+
 
   // Get and register the MCEventHeader
   fMCEventHeader = FairRunSim::Instance()->GetMCEventHeader();
@@ -971,6 +994,11 @@ void FairMCApplication::InitGeometry()
 
   for ( Int_t i = 0 ; i < fNoSenVolumes ; i++ ) {
     fv= dynamic_cast<FairVolume*>(fSenVolumes->At(i));
+    if (!fv) {
+     LOG(ERROR) << "No FairVolume in fSenVolumes at position " << i 
+		 << FairLogger::endl;
+      continue; 
+    }
     id=fv->getMCid();
     if(fv->getGeoNode()==0) {  //handel sensetive volumes created directly by user
       TGeoNode* fN=0;
@@ -982,7 +1010,12 @@ void FairMCApplication::InitGeometry()
       if(fNs) {
         for(Int_t k=0; k<fNs->GetEntriesFast(); k++) {
           fN=dynamic_cast<TGeoNode*>(fNs->At(k));
-          FairVolume* fNewV=new FairVolume( fv->GetName(), id);
+          if (!fN) {
+	    LOG(ERROR) << "No TGeoNode in fNs at position " << k 
+		       << FairLogger::endl;
+	    continue; 
+	  }
+	  FairVolume* fNewV=new FairVolume( fv->GetName(), id);
           fNewV->setModId(fv->getModId());
           fNewV->SetModule(fv->GetModule());
           fNewV->setCopyNo(fN->GetNumber());
@@ -1011,7 +1044,8 @@ void FairMCApplication::GeneratePrimaries()
 // Fill the user stack (derived from TVirtualMCStack) with primary particles.
 // ---
   if(fEvGen) {
-//    cout << "FairMCApplication::GeneratePrimaries()" << endl;
+//    LOG(DEBUG) << "FairMCApplication::GeneratePrimaries()" 
+//               << FairLogger::endl;
     if (!fEvGen->GenerateEvent( fStack) ) {
       StopRun();
     }
@@ -1053,11 +1087,7 @@ void  FairMCApplication::AddIons()
       if(gGeoManager) {
         gGeoManager->SetPdgName(pdgDatabase->GetParticle(ion->GetName())->PdgCode(),ion->GetName() );
       }
-      if (fLogger) {
-        fLogger->Info(MESSAGE_ORIGIN, "Add Ion:  %s  with PDG  %i ", ion->GetName(), pdgDatabase->GetParticle(ion->GetName())->PdgCode());
-      } else {
-        cout << "Add Ion: " << ion->GetName() << " with PDG " <<  pdgDatabase->GetParticle(ion->GetName())->PdgCode() << endl;
-      }
+      LOG(INFO) << "Add Ion: " << ion->GetName() << " with PDG " <<  pdgDatabase->GetParticle(ion->GetName())->PdgCode() << FairLogger::endl;
     }
   }
   delete   Iter;
@@ -1084,7 +1114,7 @@ void  FairMCApplication::AddParticles()
     particle=dynamic_cast <FairParticle*> (obj);
     if(particle) {                // (Int_t pdg, const char* name, TMCParticleType type,
       //Double_t mass, Double_t charge, Double_t lifetime);
-      cout << "Add Particle: " << particle->GetName()  << " with PDG " <<   particle->GetPDG() << "\n"<<
+      LOG(INFO) << "Add Particle: " << particle->GetName()  << " with PDG " <<   particle->GetPDG() << "\n"<<
            particle->GetName() << "            // const TString& name \n" <<
            particle->GetMCType()<<"             // TMCParticleType mcType \n" <<
            particle->GetMass()<<"             // Double_t mass   \n" <<
@@ -1100,7 +1130,8 @@ void  FairMCApplication::AddParticles()
            particle->GetgParity()<<   "       // Int_t gParity    \n" <<
            particle->GetLepton()<<  "         // Int_t lepton  \n" <<
            particle->GetBaryon()<<  "         // Int_t baryon   \n" <<
-           particle->IsStable() <<  "         // Bool_t stable   \n" << endl;
+           particle->IsStable() <<  "         // Bool_t stable   \n" 
+		<< FairLogger::endl;
       gMC->DefineParticle(particle->GetPDG(),              // Int_t pdg
                           particle->GetName(),             // const TString& name
                           particle->GetMCType(),             // TMCParticleType mcType
@@ -1156,7 +1187,8 @@ void FairMCApplication::AddDecayModes()
     }
 
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), decayConfig)) != TString("")) {
-      cout << "---User path for Configuration (DecayConfig.C) is used : " <<  config_dir.Data() << endl;
+      LOG(INFO) << "---User path for Configuration (DecayConfig.C) is used : " 
+		<<  config_dir.Data() << FairLogger::endl;
     } else {
       if(AbsPath) {
         decayConfig=   fPythiaDecayerConfig;
@@ -1165,7 +1197,8 @@ void FairMCApplication::AddDecayModes()
       }
     }
     // Add decay modes using an external configuration script
-    cout << "External Decay Modes with script \n "<<  decayConfig.Data() << endl;
+    LOG(INFO) << "External Decay Modes with script \n "
+	      <<  decayConfig.Data() << FairLogger::endl;
     // Load configuration script and execute it
     Int_t pyt= gROOT->LoadMacro(decayConfig.Data());
     if(pyt==0) {
@@ -1188,7 +1221,8 @@ void FairMCApplication::AddDecayModes()
 
 
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), Userdecay)) != TString("")) {
-      cout << "---User path for Configuration (UserDecay.C) is used : " <<  config_dir.Data() << endl;
+      LOG(INFO) << "---User path for Configuration (UserDecay.C) is used : " 
+		<<  config_dir.Data() << FairLogger::endl;
     } else {
       if(AbsPath) {
         Userdecay=fUserDecayConfig;
@@ -1196,7 +1230,8 @@ void FairMCApplication::AddDecayModes()
         Userdecay=work_config+fUserDecayConfig;
       }
     }
-    cout << "User Decay Modes with script \n "<<  Userdecay.Data() << endl;
+    LOG(INFO) << "User Decay Modes with script \n "
+	      <<  Userdecay.Data() << FairLogger::endl;
     Int_t dec= gROOT->LoadMacro(Userdecay.Data());
     if(dec==0) {
       gInterpreter->ProcessLine("UserDecayConfig()");
@@ -1256,7 +1291,8 @@ void FairMCApplication::InitTasks()
 
   // Only RTDB init when more than Main Task list
   if(FairRun::Instance()->GetNTasks() >= 1 ) {
-    fLogger->Info(MESSAGE_ORIGIN, "Initialize Tasks--------------------------");
+    LOG(INFO) << "Initialize Tasks--------------------------" 
+	      << FairLogger::endl;
     fFairTaskList->InitTask();
 
   }
