@@ -2,8 +2,9 @@ var classFairMQProcessorTask =
 [
     [ "FairMQProcessorTask", "d5/d02/classFairMQProcessorTask.html#a0b3be8ca274794faa49e877bfae02cf4", null ],
     [ "~FairMQProcessorTask", "d5/d02/classFairMQProcessorTask.html#a940a5c7e7ccd1e64534559bb00b9cb32", null ],
+    [ "FairMQProcessorTask", "d5/d02/classFairMQProcessorTask.html#a2a5895362139451f3c7108b51e621547", null ],
     [ "CheckInputPersistance", "d5/d02/classFairMQProcessorTask.html#a7a849c5a76366538828195f2b911aed8", null ],
-    [ "Exec", "d5/d02/classFairMQProcessorTask.html#a3ee8d97db3acad27194755341d239513", null ],
+    [ "Exec", "d5/d02/classFairMQProcessorTask.html#a76e83d1835f21d6fb27bfba32cdacd82", null ],
     [ "Finish", "d5/d02/classFairMQProcessorTask.html#a3094b770cf88328da72b5b85eb1c2d77", null ],
     [ "FinishEvent", "d5/d02/classFairMQProcessorTask.html#af6679026ca14c79fad9980a2f6ce8263", null ],
     [ "FinishEvents", "d5/d02/classFairMQProcessorTask.html#a47250b1ae903c3a5403156b0f78b7544", null ],
@@ -13,6 +14,7 @@ var classFairMQProcessorTask =
     [ "Init", "d5/d02/classFairMQProcessorTask.html#a842c8f7223d9771cb2926ca95105d01f", null ],
     [ "InitTask", "d5/d02/classFairMQProcessorTask.html#ac4dcc9d6575abc349985c2a156c2964a", null ],
     [ "InitTasks", "d5/d02/classFairMQProcessorTask.html#a3d25de28ff63311a432439f401f8fc4c", null ],
+    [ "operator=", "d5/d02/classFairMQProcessorTask.html#abbeae54e14074351d14566889b492d7c", null ],
     [ "ReInit", "d5/d02/classFairMQProcessorTask.html#a3b51d4f52cddbdc2aee0bf6407d0cfa6", null ],
     [ "ReInitTask", "d5/d02/classFairMQProcessorTask.html#ae1837ac142e0559a232a62a91b0ff7c5", null ],
     [ "ReInitTasks", "d5/d02/classFairMQProcessorTask.html#ab6fb523be23a10ac777e8da2c4f84f47", null ],

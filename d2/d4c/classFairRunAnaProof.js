@@ -2,6 +2,7 @@ var classFairRunAnaProof =
 [
     [ "~FairRunAnaProof", "d2/d4c/classFairRunAnaProof.html#ae6644d2ecbab0fd8ff8d287f0c63c3ec", null ],
     [ "FairRunAnaProof", "d2/d4c/classFairRunAnaProof.html#aa0b29842d8e96b846dc17cda81fcc15d", null ],
+    [ "FairRunAnaProof", "d2/d4c/classFairRunAnaProof.html#a37f5f279708dda2fc1ec395181974c7f", null ],
     [ "AddBackgroundFile", "d2/d4c/classFairRunAnaProof.html#aef1e9fcee91c548b9681e0dd665c7d8e", null ],
     [ "AddFile", "d2/d4c/classFairRunAnaProof.html#aed653b39a868cda699201fcc01319b74", null ],
     [ "AddFriend", "d2/d4c/classFairRunAnaProof.html#a36da157e0191c3d187ec737224ec4654", null ],
@@ -33,6 +34,7 @@ var classFairRunAnaProof =
     [ "IsAna", "d2/d4c/classFairRunAnaProof.html#a56dd32ac9912b0256cec993eebd3d8b3", null ],
     [ "IsRunInfoGenerated", "d2/d4c/classFairRunAnaProof.html#aae9e4d158df9f7715a570db2dc0cac52", null ],
     [ "IsTimeStamp", "d2/d4c/classFairRunAnaProof.html#a936f099c345f65905a0ea0919c27febc", null ],
+    [ "operator=", "d2/d4c/classFairRunAnaProof.html#a82ffa4a6d10510a4a91089b1099ece33", null ],
     [ "Reinit", "d2/d4c/classFairRunAnaProof.html#a43bb1c2eeaab311a377e6e0170b42a51", null ],
     [ "Run", "d2/d4c/classFairRunAnaProof.html#abf85d9f07a7887b9ffe325511cfa9ea5", null ],
     [ "Run", "d2/d4c/classFairRunAnaProof.html#ad46d5868024c6a9a101f2752991aa2ed", null ],
@@ -46,6 +48,7 @@ var classFairRunAnaProof =
     [ "RunTSBuffers", "d2/d4c/classFairRunAnaProof.html#a4056f86e2ea7d0f15a44ec014e4a0bec", null ],
     [ "RunWithTimeStamps", "d2/d4c/classFairRunAnaProof.html#a14c9cf6f111c669cd8ea6a0dd30dda55", null ],
     [ "SetBackgroundFile", "d2/d4c/classFairRunAnaProof.html#a085194faca534fd4e0e416309960b750", null ],
+    [ "SetBeamTime", "d2/d4c/classFairRunAnaProof.html#a6f4add7e69daa38e956bc799ef1bdf81", null ],
     [ "SetContainerStatic", "d2/d4c/classFairRunAnaProof.html#a4fea9ee094c32d1893bccd59d17e5b68", null ],
     [ "SetEventHeader", "d2/d4c/classFairRunAnaProof.html#a5e9f06990e75bb0b8cd73bb3734d5b2d", null ],
     [ "SetEventMeanTime", "d2/d4c/classFairRunAnaProof.html#a14f8a17d85e1486e41697ed5dd4940b4", null ],

@@ -45,6 +45,7 @@ var classFairRunAna =
     [ "RunTSBuffers", "de/da9/classFairRunAna.html#a4056f86e2ea7d0f15a44ec014e4a0bec", null ],
     [ "RunWithTimeStamps", "de/da9/classFairRunAna.html#a14c9cf6f111c669cd8ea6a0dd30dda55", null ],
     [ "SetBackgroundFile", "de/da9/classFairRunAna.html#a085194faca534fd4e0e416309960b750", null ],
+    [ "SetBeamTime", "de/da9/classFairRunAna.html#a6f4add7e69daa38e956bc799ef1bdf81", null ],
     [ "SetContainerStatic", "de/da9/classFairRunAna.html#a4fea9ee094c32d1893bccd59d17e5b68", null ],
     [ "SetEventHeader", "de/da9/classFairRunAna.html#a5e9f06990e75bb0b8cd73bb3734d5b2d", null ],
     [ "SetEventMeanTime", "de/da9/classFairRunAna.html#a14f8a17d85e1486e41697ed5dd4940b4", null ],

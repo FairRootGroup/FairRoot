@@ -50,11 +50,9 @@ var classFairMCApplication =
     [ "StopRun", "d8/def/classFairMCApplication.html#af68192f3647a533c3fd9f59128982d58", null ],
     [ "TrackingRmax", "d8/def/classFairMCApplication.html#a1ed75e0b905ce4a9c833caf96703d6bd", null ],
     [ "TrackingZmax", "d8/def/classFairMCApplication.html#a5bb21434120e07c50c3493a07c91378d", null ],
-    [ "fActDetIter", "d8/def/classFairMCApplication.html#a95ae2977b849173326d32c1d92260637", null ],
     [ "fActiveDetectors", "d8/def/classFairMCApplication.html#ad906029bed11b6141ced20fb8465413c", null ],
     [ "fDebug", "d8/def/classFairMCApplication.html#a2b93e477cf96fbd927afcaa570897be4", null ],
     [ "fDetectors", "d8/def/classFairMCApplication.html#ac4db25cf2365b7c6a328a87bd1b2c459", null ],
-    [ "fDetIter", "d8/def/classFairMCApplication.html#aaad8736fa48625b90e1569aba5257ed5", null ],
     [ "fDetMap", "d8/def/classFairMCApplication.html#a0b7e07cdaf6152b2f01b95b93be54812", null ],
     [ "fDisDet", "d8/def/classFairMCApplication.html#ab47f1454a0580da967c8227f8cb1fc5a", null ],
     [ "fDisVol", "d8/def/classFairMCApplication.html#ac8596f2b198d68f5f3c24cf76af33ffe", null ],
@@ -88,5 +86,7 @@ var classFairMCApplication =
     [ "fUserDecayConfig", "d8/def/classFairMCApplication.html#a369b3e72a35b0b248acc7f7ab72468e1", null ],
     [ "fVolIter", "d8/def/classFairMCApplication.html#abb71eb82872ea8956bb3958f4a2887f3", null ],
     [ "fVolMap", "d8/def/classFairMCApplication.html#aa30631e47831686dd8c17ea010cd061a", null ],
-    [ "fxField", "d8/def/classFairMCApplication.html#ac42033d8fa83c5a0d24e0d6eeae8f6f8", null ]
+    [ "fxField", "d8/def/classFairMCApplication.html#ac42033d8fa83c5a0d24e0d6eeae8f6f8", null ],
+    [ "listActiveDetectors", "d8/def/classFairMCApplication.html#a765008af1a7bfe8d52ccb544d38afc0d", null ],
+    [ "listDetectors", "d8/def/classFairMCApplication.html#aeb55e4f375fb6a24395449bc3c99d9da", null ]
 ];

@@ -4,25 +4,53 @@ var files =
     [ "_GTestFairTools.cxx", "da/d33/__GTestFairTools_8cxx.html", "da/d33/__GTestFairTools_8cxx" ],
     [ "_GTestFairToolsNew.cxx", "d0/d10/__GTestFairToolsNew_8cxx.html", "d0/d10/__GTestFairToolsNew_8cxx" ],
     [ "_TestFairTools.cxx", "d3/d64/__TestFairTools_8cxx.html", "d3/d64/__TestFairTools_8cxx" ],
-    [ "gconfig/basiclibs.C", "d3/d43/gconfig_2basiclibs_8C.html", "d3/d43/gconfig_2basiclibs_8C" ],
-    [ "Tutorial4/gconfig/basiclibs.C", "d3/d19/Tutorial4_2gconfig_2basiclibs_8C.html", "d3/d19/Tutorial4_2gconfig_2basiclibs_8C" ],
+    [ "BaseDigiToHitTask.h", "d7/d30/BaseDigiToHitTask_8h.html", "d7/d30/BaseDigiToHitTask_8h" ],
+    [ "baseMQtools.h", "dd/d3d/baseMQtools_8h.html", "dd/d3d/baseMQtools_8h" ],
+    [ "BinaryBaseClassSerializer.h", "da/d8d/BinaryBaseClassSerializer_8h.html", [
+      [ "BinaryBaseClassSerializer", "db/d30/classBinaryBaseClassSerializer.html", "db/d30/classBinaryBaseClassSerializer" ]
+    ] ],
+    [ "BinaryOutFileManager.h", "d0/dd3/BinaryOutFileManager_8h.html", "d0/dd3/BinaryOutFileManager_8h" ],
+    [ "BoostDataSaver.h", "da/d2c/BoostDataSaver_8h.html", "da/d2c/BoostDataSaver_8h" ],
+    [ "BoostSerializer.h", "d7/d91/BoostSerializer_8h.html", "d7/d91/BoostSerializer_8h" ],
     [ "compare.cxx", "d1/dcf/compare_8cxx.html", "d1/dcf/compare_8cxx" ],
-    [ "create_digis.C", "d6/de9/create__digis_8C.html", "d6/de9/create__digis_8C" ],
-    [ "create_digis_mixed.C", "dd/dfe/create__digis__mixed_8C.html", "dd/dfe/create__digis__mixed_8C" ],
-    [ "create_misalign_parameter.C", "d7/d53/create__misalign__parameter_8C.html", "d7/d53/create__misalign__parameter_8C" ],
-    [ "Create_Tutorial4_Geometry.C", "d5/d00/Create__Tutorial4__Geometry_8C.html", "d5/d00/Create__Tutorial4__Geometry_8C" ],
-    [ "cuda_info.C", "dc/d7e/cuda__info_8C.html", "dc/d7e/cuda__info_8C" ],
     [ "cudaLinkDef.h", "db/d5f/cudaLinkDef_8h.html", null ],
-    [ "example/gconfig/DecayConfig.C", "dc/d22/example_2gconfig_2DecayConfig_8C.html", "dc/d22/example_2gconfig_2DecayConfig_8C" ],
-    [ "example/Tutorial4/gconfig/DecayConfig.C", "d9/d28/example_2Tutorial4_2gconfig_2DecayConfig_8C.html", "d9/d28/example_2Tutorial4_2gconfig_2DecayConfig_8C" ],
-    [ "templates/project_template/gconfig/DecayConfig.C", "d0/d02/templates_2project__template_2gconfig_2DecayConfig_8C.html", "d0/d02/templates_2project__template_2gconfig_2DecayConfig_8C" ],
-    [ "example/rutherford/macros/eventDisplay.C", "d7/dee/example_2rutherford_2macros_2eventDisplay_8C.html", "d7/dee/example_2rutherford_2macros_2eventDisplay_8C" ],
-    [ "example/Tutorial3/macro/eventDisplay.C", "d8/dbd/example_2Tutorial3_2macro_2eventDisplay_8C.html", "d8/dbd/example_2Tutorial3_2macro_2eventDisplay_8C" ],
-    [ "example/Tutorial4/macros/eventDisplay.C", "de/db7/example_2Tutorial4_2macros_2eventDisplay_8C.html", "de/db7/example_2Tutorial4_2macros_2eventDisplay_8C" ],
-    [ "templates/project_template/macro/eventDisplay.C", "d1/d31/templates_2project__template_2macro_2eventDisplay_8C.html", "d1/d31/templates_2project__template_2macro_2eventDisplay_8C" ],
+    [ "cxx11-test-__func__.cpp", "d3/daf/cxx11-test-____func_____8cpp.html", "d3/daf/cxx11-test-____func_____8cpp" ],
+    [ "cxx11-test-auto.cpp", "d7/d5f/cxx11-test-auto_8cpp.html", "d7/d5f/cxx11-test-auto_8cpp" ],
+    [ "cxx11-test-auto_fail_compile.cpp", "d3/d6e/cxx11-test-auto__fail__compile_8cpp.html", "d3/d6e/cxx11-test-auto__fail__compile_8cpp" ],
+    [ "cxx11-test-auto_ret_type.cpp", "d3/dad/cxx11-test-auto__ret__type_8cpp.html", "d3/dad/cxx11-test-auto__ret__type_8cpp" ],
+    [ "cxx11-test-class_override_final.cpp", "de/d66/cxx11-test-class__override__final_8cpp.html", "de/d66/cxx11-test-class__override__final_8cpp" ],
+    [ "cxx11-test-class_override_final_fail_compile.cpp", "d1/d5b/cxx11-test-class__override__final__fail__compile_8cpp.html", "d1/d5b/cxx11-test-class__override__final__fail__compile_8cpp" ],
+    [ "cxx11-test-constexpr.cpp", "d9/df2/cxx11-test-constexpr_8cpp.html", "d9/df2/cxx11-test-constexpr_8cpp" ],
+    [ "cxx11-test-constructor-delegation.cpp", "d0/d78/cxx11-test-constructor-delegation_8cpp.html", "d0/d78/cxx11-test-constructor-delegation_8cpp" ],
+    [ "cxx11-test-cstdint.cpp", "d5/dda/cxx11-test-cstdint_8cpp.html", "d5/dda/cxx11-test-cstdint_8cpp" ],
+    [ "cxx11-test-decltype.cpp", "d4/d59/cxx11-test-decltype_8cpp.html", "d4/d59/cxx11-test-decltype_8cpp" ],
+    [ "cxx11-test-initializer_list.cpp", "d7/df9/cxx11-test-initializer__list_8cpp.html", "d7/df9/cxx11-test-initializer__list_8cpp" ],
+    [ "cxx11-test-lambda.cpp", "df/d6e/cxx11-test-lambda_8cpp.html", "df/d6e/cxx11-test-lambda_8cpp" ],
+    [ "cxx11-test-long_long.cpp", "d5/d51/cxx11-test-long__long_8cpp.html", "d5/d51/cxx11-test-long__long_8cpp" ],
+    [ "cxx11-test-nullptr.cpp", "d4/dba/cxx11-test-nullptr_8cpp.html", "d4/dba/cxx11-test-nullptr_8cpp" ],
+    [ "cxx11-test-nullptr_fail_compile.cpp", "d3/d44/cxx11-test-nullptr__fail__compile_8cpp.html", "d3/d44/cxx11-test-nullptr__fail__compile_8cpp" ],
+    [ "cxx11-test-regex.cpp", "d2/d9b/cxx11-test-regex_8cpp.html", "d2/d9b/cxx11-test-regex_8cpp" ],
+    [ "cxx11-test-rvalue-references.cpp", "d2/d86/cxx11-test-rvalue-references_8cpp.html", "d2/d86/cxx11-test-rvalue-references_8cpp" ],
+    [ "cxx11-test-rvalue_references.cpp", "d5/d92/cxx11-test-rvalue__references_8cpp.html", "d5/d92/cxx11-test-rvalue__references_8cpp" ],
+    [ "cxx11-test-sharedpointer.cpp", "de/d35/cxx11-test-sharedpointer_8cpp.html", "de/d35/cxx11-test-sharedpointer_8cpp" ],
+    [ "cxx11-test-sizeof_member.cpp", "d7/db7/cxx11-test-sizeof__member_8cpp.html", "d7/db7/cxx11-test-sizeof__member_8cpp" ],
+    [ "cxx11-test-sizeof_member_fail.cpp", "df/d02/cxx11-test-sizeof__member__fail_8cpp.html", "df/d02/cxx11-test-sizeof__member__fail_8cpp" ],
+    [ "cxx11-test-static_assert.cpp", "d6/d14/cxx11-test-static__assert_8cpp.html", "d6/d14/cxx11-test-static__assert_8cpp" ],
+    [ "cxx11-test-static_assert_fail_compile.cpp", "d7/dff/cxx11-test-static__assert__fail__compile_8cpp.html", "d7/dff/cxx11-test-static__assert__fail__compile_8cpp" ],
+    [ "cxx11-test-variadic_templates.cpp", "d1/da6/cxx11-test-variadic__templates_8cpp.html", "d1/da6/cxx11-test-variadic__templates_8cpp" ],
+    [ "db_tut6worker.cxx", "d1/dae/db__tut6worker_8cxx.html", "d1/dae/db__tut6worker_8cxx" ],
+    [ "demo.cpp", "d2/d68/demo_8cpp.html", "d2/d68/demo_8cpp" ],
+    [ "DigiToHitTask.h", "dc/de1/DigiToHitTask_8h.html", [
+      [ "DigiToHitTask", "df/d7f/classDigiToHitTask.html", "df/d7f/classDigiToHitTask" ],
+      [ "DigiToHitTask_TCA", "da/db0/classDigiToHitTask__TCA.html", "da/db0/classDigiToHitTask__TCA" ]
+    ] ],
     [ "EventDisplayLinkDef.h", "da/d9c/EventDisplayLinkDef_8h.html", null ],
+    [ "exitCli.c", "da/d51/exitCli_8c.html", "da/d51/exitCli_8c" ],
+    [ "f_evt.c", "d6/d30/f__evt_8c.html", "d6/d30/f__evt_8c" ],
     [ "f_evt.h", "df/d26/f__evt_8h.html", "df/d26/f__evt_8h" ],
+    [ "f_stccomm.c", "dd/d6d/f__stccomm_8c.html", "dd/d6d/f__stccomm_8c" ],
     [ "f_stccomm.h", "da/d49/f__stccomm_8h.html", "da/d49/f__stccomm_8h" ],
+    [ "f_ut_utime.c", "d4/d00/f__ut__utime_8c.html", "d4/d00/f__ut__utime_8c" ],
     [ "f_ut_utime.h", "db/d69/f__ut__utime_8h.html", "db/d69/f__ut__utime_8h" ],
     [ "FairAnaSelector.cxx", "dd/d17/FairAnaSelector_8cxx.html", null ],
     [ "FairAnaSelector.h", "d7/d0a/FairAnaSelector_8h.html", [
@@ -64,12 +92,20 @@ var files =
     [ "FairCave.h", "d5/da1/FairCave_8h.html", [
       [ "FairCave", "df/d39/classFairCave.html", "df/d39/classFairCave" ]
     ] ],
-    [ "FairConstField.cxx", "de/d91/FairConstField_8cxx.html", null ],
-    [ "FairConstField.h", "d1/d50/FairConstField_8h.html", [
+    [ "Tutorial3/simulation/FairConstField.cxx", "d4/d17/Tutorial3_2simulation_2FairConstField_8cxx.html", null ],
+    [ "Tutorial6/sim/FairConstField.cxx", "d6/dba/Tutorial6_2sim_2FairConstField_8cxx.html", null ],
+    [ "Tutorial3/simulation/FairConstField.h", "d7/d00/Tutorial3_2simulation_2FairConstField_8h.html", [
       [ "FairConstField", "d0/dea/classFairConstField.html", "d0/dea/classFairConstField" ]
     ] ],
-    [ "FairConstPar.cxx", "d2/d76/FairConstPar_8cxx.html", null ],
-    [ "FairConstPar.h", "db/dc5/FairConstPar_8h.html", [
+    [ "Tutorial6/sim/FairConstField.h", "d1/d47/Tutorial6_2sim_2FairConstField_8h.html", [
+      [ "FairConstField", "d0/dea/classFairConstField.html", "d0/dea/classFairConstField" ]
+    ] ],
+    [ "Tutorial3/simulation/FairConstPar.cxx", "dc/dd0/Tutorial3_2simulation_2FairConstPar_8cxx.html", null ],
+    [ "Tutorial6/sim/FairConstPar.cxx", "d6/d19/Tutorial6_2sim_2FairConstPar_8cxx.html", null ],
+    [ "Tutorial3/simulation/FairConstPar.h", "d6/db7/Tutorial3_2simulation_2FairConstPar_8h.html", [
+      [ "FairConstPar", "dd/d05/classFairConstPar.html", "dd/d05/classFairConstPar" ]
+    ] ],
+    [ "Tutorial6/sim/FairConstPar.h", "d3/dfa/Tutorial6_2sim_2FairConstPar_8h.html", [
       [ "FairConstPar", "dd/d05/classFairConstPar.html", "dd/d05/classFairConstPar" ]
     ] ],
     [ "FairContFact.cxx", "d9/d3a/FairContFact_8cxx.html", "d9/d3a/FairContFact_8cxx" ],
@@ -78,6 +114,35 @@ var files =
       [ "FairContFact", "df/db3/classFairContFact.html", "df/db3/classFairContFact" ]
     ] ],
     [ "FairCuda.h", "d0/dbe/FairCuda_8h.html", "d0/dbe/FairCuda_8h" ],
+    [ "FairDbMQTutWorker.cxx", "d9/d34/FairDbMQTutWorker_8cxx.html", null ],
+    [ "FairDbMQTutWorker.h", "db/d00/FairDbMQTutWorker_8h.html", [
+      [ "FairDbMQTutWorker", "dc/d3c/classFairDbMQTutWorker.html", "dc/d3c/classFairDbMQTutWorker" ]
+    ] ],
+    [ "FairDbTutAccessRtdbTask.cxx", "da/d53/FairDbTutAccessRtdbTask_8cxx.html", "da/d53/FairDbTutAccessRtdbTask_8cxx" ],
+    [ "FairDbTutAccessRtdbTask.h", "dc/d46/FairDbTutAccessRtdbTask_8h.html", [
+      [ "FairDbTutAccessRtdbTask", "dd/d19/classFairDbTutAccessRtdbTask.html", "dd/d19/classFairDbTutAccessRtdbTask" ]
+    ] ],
+    [ "FairDbTutContFact.cxx", "df/d04/FairDbTutContFact_8cxx.html", "df/d04/FairDbTutContFact_8cxx" ],
+    [ "FairDbTutContFact.h", "d1/d94/FairDbTutContFact_8h.html", [
+      [ "FairDbTutContFact", "d4/d72/classFairDbTutContFact.html", "d4/d72/classFairDbTutContFact" ]
+    ] ],
+    [ "FairDbTutContFact2.cxx", "da/d16/FairDbTutContFact2_8cxx.html", "da/d16/FairDbTutContFact2_8cxx" ],
+    [ "FairDbTutContFact2.h", "dc/ddc/FairDbTutContFact2_8h.html", [
+      [ "FairDbTutContFact2", "df/d9c/classFairDbTutContFact2.html", "df/d9c/classFairDbTutContFact2" ]
+    ] ],
+    [ "FairDbTutLinkDef.h", "d8/d6a/FairDbTutLinkDef_8h.html", null ],
+    [ "FairDbTutPar.cxx", "d9/db0/FairDbTutPar_8cxx.html", "d9/db0/FairDbTutPar_8cxx" ],
+    [ "FairDbTutPar.h", "d5/dad/FairDbTutPar_8h.html", [
+      [ "FairDbTutPar", "d3/d46/classFairDbTutPar.html", "d3/d46/classFairDbTutPar" ]
+    ] ],
+    [ "FairDbTutPar2.cxx", "da/da0/FairDbTutPar2_8cxx.html", "da/da0/FairDbTutPar2_8cxx" ],
+    [ "FairDbTutPar2.h", "dc/dc9/FairDbTutPar2_8h.html", [
+      [ "FairDbTutPar2", "d6/d73/classFairDbTutPar2.html", "d6/d73/classFairDbTutPar2" ]
+    ] ],
+    [ "FairDbTutParBin.cxx", "de/dad/FairDbTutParBin_8cxx.html", "de/dad/FairDbTutParBin_8cxx" ],
+    [ "FairDbTutParBin.h", "dc/d9b/FairDbTutParBin_8h.html", [
+      [ "FairDbTutParBin", "de/d4e/classFairDbTutParBin.html", "de/d4e/classFairDbTutParBin" ]
+    ] ],
     [ "FairDetector.cxx", "dd/d6e/FairDetector_8cxx.html", null ],
     [ "FairDetector.h", "dc/db2/FairDetector_8h.html", [
       [ "FairDetector", "d6/d0c/classFairDetector.html", "d6/d0c/classFairDetector" ]
@@ -95,8 +160,6 @@ var files =
     [ "FairDetParRootFileIo.h", "dd/dc2/FairDetParRootFileIo_8h.html", [
       [ "FairDetParRootFileIo", "d1/db3/classFairDetParRootFileIo.html", "d1/db3/classFairDetParRootFileIo" ]
     ] ],
-    [ "FairDetParTSQLIo.cxx", "d4/ddf/FairDetParTSQLIo_8cxx.html", "d4/ddf/FairDetParTSQLIo_8cxx" ],
-    [ "FairDetParTSQLIo.h", "dd/d6b/FairDetParTSQLIo_8h.html", "dd/d6b/FairDetParTSQLIo_8h" ],
     [ "FairDoubleHit.cxx", "da/d4d/FairDoubleHit_8cxx.html", null ],
     [ "FairDoubleHit.h", "d0/d67/FairDoubleHit_8h.html", [
       [ "FairDoubleHit", "d4/dc7/classFairDoubleHit.html", "d4/dc7/classFairDoubleHit" ]
@@ -171,8 +234,6 @@ var files =
     [ "FairGenericParRootFileIo.h", "dc/d37/FairGenericParRootFileIo_8h.html", [
       [ "FairGenericParRootFileIo", "db/d29/classFairGenericParRootFileIo.html", "db/d29/classFairGenericParRootFileIo" ]
     ] ],
-    [ "FairGenericParTSQLIo.cxx", "d7/db7/FairGenericParTSQLIo_8cxx.html", "d7/db7/FairGenericParTSQLIo_8cxx" ],
-    [ "FairGenericParTSQLIo.h", "d0/d69/FairGenericParTSQLIo_8h.html", "d0/d69/FairGenericParTSQLIo_8h" ],
     [ "FairGenericStack.cxx", "da/db8/FairGenericStack_8cxx.html", null ],
     [ "FairGenericStack.h", "dd/dd8/FairGenericStack_8h.html", [
       [ "FairGenericStack", "dd/d76/classFairGenericStack.html", "dd/d76/classFairGenericStack" ]
@@ -363,13 +424,21 @@ var files =
     [ "FairMagnet.h", "d3/dd6/FairMagnet_8h.html", [
       [ "FairMagnet", "d1/d4c/classFairMagnet.html", "d1/d4c/classFairMagnet" ]
     ] ],
-    [ "FairMapPar.cxx", "df/dbd/FairMapPar_8cxx.html", null ],
-    [ "FairMapPar.h", "d7/dd0/FairMapPar_8h.html", [
+    [ "Tutorial3/simulation/FairMapPar.cxx", "de/d51/Tutorial3_2simulation_2FairMapPar_8cxx.html", null ],
+    [ "Tutorial6/sim/FairMapPar.cxx", "da/dbc/Tutorial6_2sim_2FairMapPar_8cxx.html", null ],
+    [ "Tutorial3/simulation/FairMapPar.h", "d6/dca/Tutorial3_2simulation_2FairMapPar_8h.html", [
+      [ "FairMapPar", "d2/dcc/classFairMapPar.html", "d2/dcc/classFairMapPar" ]
+    ] ],
+    [ "Tutorial6/sim/FairMapPar.h", "da/dd0/Tutorial6_2sim_2FairMapPar_8h.html", [
       [ "FairMapPar", "d2/dcc/classFairMapPar.html", "d2/dcc/classFairMapPar" ]
     ] ],
     [ "FairMbsSource.cxx", "d2/d1a/FairMbsSource_8cxx.html", null ],
     [ "FairMbsSource.h", "d7/d48/FairMbsSource_8h.html", [
       [ "FairMbsSource", "d2/da2/classFairMbsSource.html", "d2/da2/classFairMbsSource" ]
+    ] ],
+    [ "FairMbsStreamSource.cxx", "d6/d6e/FairMbsStreamSource_8cxx.html", null ],
+    [ "FairMbsStreamSource.h", "d7/da8/FairMbsStreamSource_8h.html", [
+      [ "FairMbsStreamSource", "d7/d1d/classFairMbsStreamSource.html", "d7/d1d/classFairMbsStreamSource" ]
     ] ],
     [ "FairMCApplication.cxx", "d5/d91/FairMCApplication_8cxx.html", null ],
     [ "FairMCApplication.h", "dc/d59/FairMCApplication_8h.html", [
@@ -499,8 +568,12 @@ var files =
     [ "FairMQExampleServer.h", "d7/d99/FairMQExampleServer_8h.html", [
       [ "FairMQExampleServer", "d3/def/classFairMQExampleServer.html", "d3/def/classFairMQExampleServer" ]
     ] ],
-    [ "FairMQFileSink.cxx", "d7/db9/FairMQFileSink_8cxx.html", null ],
-    [ "FairMQFileSink.h", "d9/d00/FairMQFileSink_8h.html", [
+    [ "Tutorial3/data/FairMQFileSink.cxx", "d5/d7a/Tutorial3_2data_2FairMQFileSink_8cxx.html", null ],
+    [ "Tutorial6/reco/FairMQFileSink.cxx", "d5/d99/Tutorial6_2reco_2FairMQFileSink_8cxx.html", null ],
+    [ "Tutorial3/data/FairMQFileSink.h", "d8/de1/Tutorial3_2data_2FairMQFileSink_8h.html", [
+      [ "FairMQFileSink", "d1/d24/classFairMQFileSink.html", "d1/d24/classFairMQFileSink" ]
+    ] ],
+    [ "Tutorial6/reco/FairMQFileSink.h", "dd/d69/Tutorial6_2reco_2FairMQFileSink_8h.html", [
       [ "FairMQFileSink", "d1/d24/classFairMQFileSink.html", "d1/d24/classFairMQFileSink" ]
     ] ],
     [ "FairMQLogger.cxx", "d1/d98/FairMQLogger_8cxx.html", "d1/d98/FairMQLogger_8cxx" ],
@@ -552,7 +625,6 @@ var files =
     [ "FairMQProxy.h", "d2/d4a/FairMQProxy_8h.html", [
       [ "FairMQProxy", "df/dac/classFairMQProxy.html", "df/dac/classFairMQProxy" ]
     ] ],
-    [ "FairMQSampler.cxx", "d4/dc0/FairMQSampler_8cxx.html", null ],
     [ "FairMQSampler.h", "d9/d3b/FairMQSampler_8h.html", [
       [ "FairMQSampler", "d3/d91/classFairMQSampler.html", "d3/d91/classFairMQSampler" ]
     ] ],
@@ -582,6 +654,7 @@ var files =
     ] ],
     [ "FairMQStateMachine.cxx", "d5/dbe/FairMQStateMachine_8cxx.html", null ],
     [ "FairMQStateMachine.h", "da/d66/FairMQStateMachine_8h.html", "da/d66/FairMQStateMachine_8h" ],
+    [ "FairMQTools.h", "d7/d8d/FairMQTools_8h.html", "d7/d8d/FairMQTools_8h" ],
     [ "FairMQTransportFactory.cxx", "d1/de0/FairMQTransportFactory_8cxx.html", null ],
     [ "FairMQTransportFactory.h", "dc/d6c/FairMQTransportFactory_8h.html", [
       [ "FairMQTransportFactory", "d7/d3b/classFairMQTransportFactory.html", "d7/d3b/classFairMQTransportFactory" ]
@@ -637,8 +710,6 @@ var files =
     [ "FairParticleGenerator.h", "dc/de2/FairParticleGenerator_8h.html", [
       [ "FairParticleGenerator", "d5/dd5/classFairParticleGenerator.html", "d5/dd5/classFairParticleGenerator" ]
     ] ],
-    [ "FairParTSQLIo.cxx", "dd/d69/FairParTSQLIo_8cxx.html", "dd/d69/FairParTSQLIo_8cxx" ],
-    [ "FairParTSQLIo.h", "d5/d5c/FairParTSQLIo_8h.html", "d5/d5c/FairParTSQLIo_8h" ],
     [ "FairPassiveContFact.cxx", "df/d79/FairPassiveContFact_8cxx.html", "df/d79/FairPassiveContFact_8cxx" ],
     [ "FairPassiveContFact.h", "d8/d90/FairPassiveContFact_8h.html", [
       [ "FairPassiveContFact", "d7/d36/classFairPassiveContFact.html", "d7/d36/classFairPassiveContFact" ]
@@ -779,16 +850,28 @@ var files =
     ] ],
     [ "FairTask.cxx", "dd/d48/FairTask_8cxx.html", null ],
     [ "FairTask.h", "d8/d44/FairTask_8h.html", "d8/d44/FairTask_8h" ],
-    [ "FairTestDetector.cxx", "d8/d51/FairTestDetector_8cxx.html", null ],
-    [ "FairTestDetector.h", "d6/db2/FairTestDetector_8h.html", [
+    [ "Tutorial3/simulation/FairTestDetector.cxx", "da/d54/Tutorial3_2simulation_2FairTestDetector_8cxx.html", null ],
+    [ "Tutorial6/sim/FairTestDetector.cxx", "df/dfe/Tutorial6_2sim_2FairTestDetector_8cxx.html", null ],
+    [ "Tutorial3/simulation/FairTestDetector.h", "d5/def/Tutorial3_2simulation_2FairTestDetector_8h.html", [
       [ "FairTestDetector", "dc/d74/classFairTestDetector.html", "dc/d74/classFairTestDetector" ]
     ] ],
-    [ "FairTestDetectorContFact.cxx", "d3/dc1/FairTestDetectorContFact_8cxx.html", "d3/dc1/FairTestDetectorContFact_8cxx" ],
-    [ "FairTestDetectorContFact.h", "dc/d03/FairTestDetectorContFact_8h.html", [
+    [ "Tutorial6/sim/FairTestDetector.h", "d3/d43/Tutorial6_2sim_2FairTestDetector_8h.html", [
+      [ "FairTestDetector", "dc/d74/classFairTestDetector.html", "dc/d74/classFairTestDetector" ]
+    ] ],
+    [ "Tutorial3/simulation/FairTestDetectorContFact.cxx", "d5/d91/Tutorial3_2simulation_2FairTestDetectorContFact_8cxx.html", "d5/d91/Tutorial3_2simulation_2FairTestDetectorContFact_8cxx" ],
+    [ "Tutorial6/sim/FairTestDetectorContFact.cxx", "d2/d5a/Tutorial6_2sim_2FairTestDetectorContFact_8cxx.html", "d2/d5a/Tutorial6_2sim_2FairTestDetectorContFact_8cxx" ],
+    [ "Tutorial3/simulation/FairTestDetectorContFact.h", "d8/db1/Tutorial3_2simulation_2FairTestDetectorContFact_8h.html", [
       [ "FairTestDetectorContFact", "d0/d0b/classFairTestDetectorContFact.html", "d0/d0b/classFairTestDetectorContFact" ]
     ] ],
-    [ "FairTestDetectorDigi.cxx", "d7/db9/FairTestDetectorDigi_8cxx.html", "d7/db9/FairTestDetectorDigi_8cxx" ],
-    [ "FairTestDetectorDigi.h", "d7/d3b/FairTestDetectorDigi_8h.html", [
+    [ "Tutorial6/sim/FairTestDetectorContFact.h", "d5/d2d/Tutorial6_2sim_2FairTestDetectorContFact_8h.html", [
+      [ "FairTestDetectorContFact", "d0/d0b/classFairTestDetectorContFact.html", "d0/d0b/classFairTestDetectorContFact" ]
+    ] ],
+    [ "Tutorial3/data/FairTestDetectorDigi.cxx", "d0/df2/Tutorial3_2data_2FairTestDetectorDigi_8cxx.html", "d0/df2/Tutorial3_2data_2FairTestDetectorDigi_8cxx" ],
+    [ "Tutorial6/sim/FairTestDetectorDigi.cxx", "d6/d29/Tutorial6_2sim_2FairTestDetectorDigi_8cxx.html", "d6/d29/Tutorial6_2sim_2FairTestDetectorDigi_8cxx" ],
+    [ "Tutorial3/data/FairTestDetectorDigi.h", "d1/d35/Tutorial3_2data_2FairTestDetectorDigi_8h.html", [
+      [ "FairTestDetectorDigi", "da/d5b/classFairTestDetectorDigi.html", "da/d5b/classFairTestDetectorDigi" ]
+    ] ],
+    [ "Tutorial6/sim/FairTestDetectorDigi.h", "d3/da3/Tutorial6_2sim_2FairTestDetectorDigi_8h.html", [
       [ "FairTestDetectorDigi", "da/d5b/classFairTestDetectorDigi.html", "da/d5b/classFairTestDetectorDigi" ]
     ] ],
     [ "FairTestDetectorDigiRingSorter.cxx", "da/d2c/FairTestDetectorDigiRingSorter_8cxx.html", "da/d2c/FairTestDetectorDigiRingSorter_8cxx" ],
@@ -799,47 +882,81 @@ var files =
     [ "FairTestDetectorDigiSorterTask.h", "d7/de4/FairTestDetectorDigiSorterTask_8h.html", [
       [ "FairTestDetectorDigiSorterTask", "db/db0/classFairTestDetectorDigiSorterTask.html", "db/db0/classFairTestDetectorDigiSorterTask" ]
     ] ],
-    [ "FairTestDetectorDigiTask.cxx", "d2/d4f/FairTestDetectorDigiTask_8cxx.html", null ],
-    [ "FairTestDetectorDigiTask.h", "db/dea/FairTestDetectorDigiTask_8h.html", [
+    [ "Tutorial3/digitization/FairTestDetectorDigiTask.cxx", "d8/d5d/Tutorial3_2digitization_2FairTestDetectorDigiTask_8cxx.html", null ],
+    [ "Tutorial6/sim/FairTestDetectorDigiTask.cxx", "da/dc0/Tutorial6_2sim_2FairTestDetectorDigiTask_8cxx.html", null ],
+    [ "Tutorial3/digitization/FairTestDetectorDigiTask.h", "d7/dd4/Tutorial3_2digitization_2FairTestDetectorDigiTask_8h.html", [
+      [ "FairTestDetectorDigiTask", "db/d5e/classFairTestDetectorDigiTask.html", "db/d5e/classFairTestDetectorDigiTask" ]
+    ] ],
+    [ "Tutorial6/sim/FairTestDetectorDigiTask.h", "d3/d5b/Tutorial6_2sim_2FairTestDetectorDigiTask_8h.html", [
       [ "FairTestDetectorDigiTask", "db/d5e/classFairTestDetectorDigiTask.html", "db/d5e/classFairTestDetectorDigiTask" ]
     ] ],
     [ "FairTestDetectorDigiWriteoutBuffer.cxx", "de/d08/FairTestDetectorDigiWriteoutBuffer_8cxx.html", "de/d08/FairTestDetectorDigiWriteoutBuffer_8cxx" ],
     [ "FairTestDetectorDigiWriteoutBuffer.h", "db/d52/FairTestDetectorDigiWriteoutBuffer_8h.html", [
       [ "FairTestDetectorDigiWriteoutBuffer", "d1/d50/classFairTestDetectorDigiWriteoutBuffer.html", "d1/d50/classFairTestDetectorDigiWriteoutBuffer" ]
     ] ],
-    [ "FairTestDetectorGeo.cxx", "d3/d29/FairTestDetectorGeo_8cxx.html", "d3/d29/FairTestDetectorGeo_8cxx" ],
-    [ "FairTestDetectorGeo.h", "d6/db0/FairTestDetectorGeo_8h.html", [
+    [ "Tutorial3/simulation/FairTestDetectorGeo.cxx", "d8/d88/Tutorial3_2simulation_2FairTestDetectorGeo_8cxx.html", "d8/d88/Tutorial3_2simulation_2FairTestDetectorGeo_8cxx" ],
+    [ "Tutorial6/sim/FairTestDetectorGeo.cxx", "d3/d9e/Tutorial6_2sim_2FairTestDetectorGeo_8cxx.html", "d3/d9e/Tutorial6_2sim_2FairTestDetectorGeo_8cxx" ],
+    [ "Tutorial3/simulation/FairTestDetectorGeo.h", "df/d75/Tutorial3_2simulation_2FairTestDetectorGeo_8h.html", [
       [ "FairTestDetectorGeo", "df/d11/classFairTestDetectorGeo.html", "df/d11/classFairTestDetectorGeo" ]
     ] ],
-    [ "FairTestDetectorGeoPar.cxx", "d4/d4a/FairTestDetectorGeoPar_8cxx.html", "d4/d4a/FairTestDetectorGeoPar_8cxx" ],
-    [ "FairTestDetectorGeoPar.h", "d2/df9/FairTestDetectorGeoPar_8h.html", [
+    [ "Tutorial6/sim/FairTestDetectorGeo.h", "d0/de5/Tutorial6_2sim_2FairTestDetectorGeo_8h.html", [
+      [ "FairTestDetectorGeo", "df/d11/classFairTestDetectorGeo.html", "df/d11/classFairTestDetectorGeo" ]
+    ] ],
+    [ "Tutorial3/simulation/FairTestDetectorGeoPar.cxx", "dd/d7e/Tutorial3_2simulation_2FairTestDetectorGeoPar_8cxx.html", "dd/d7e/Tutorial3_2simulation_2FairTestDetectorGeoPar_8cxx" ],
+    [ "Tutorial6/sim/FairTestDetectorGeoPar.cxx", "d0/dbd/Tutorial6_2sim_2FairTestDetectorGeoPar_8cxx.html", "d0/dbd/Tutorial6_2sim_2FairTestDetectorGeoPar_8cxx" ],
+    [ "Tutorial3/simulation/FairTestDetectorGeoPar.h", "d8/d0d/Tutorial3_2simulation_2FairTestDetectorGeoPar_8h.html", [
       [ "FairTestDetectorGeoPar", "d5/d37/classFairTestDetectorGeoPar.html", "d5/d37/classFairTestDetectorGeoPar" ]
     ] ],
-    [ "FairTestDetectorHit.cxx", "d4/d79/FairTestDetectorHit_8cxx.html", null ],
-    [ "FairTestDetectorHit.h", "df/def/FairTestDetectorHit_8h.html", [
+    [ "Tutorial6/sim/FairTestDetectorGeoPar.h", "d5/d89/Tutorial6_2sim_2FairTestDetectorGeoPar_8h.html", [
+      [ "FairTestDetectorGeoPar", "d5/d37/classFairTestDetectorGeoPar.html", "d5/d37/classFairTestDetectorGeoPar" ]
+    ] ],
+    [ "Tutorial3/data/FairTestDetectorHit.cxx", "d1/d4e/Tutorial3_2data_2FairTestDetectorHit_8cxx.html", null ],
+    [ "Tutorial6/sim/FairTestDetectorHit.cxx", "d0/dfa/Tutorial6_2sim_2FairTestDetectorHit_8cxx.html", null ],
+    [ "Tutorial3/data/FairTestDetectorHit.h", "d9/d85/Tutorial3_2data_2FairTestDetectorHit_8h.html", [
+      [ "FairTestDetectorHit", "d9/db6/classFairTestDetectorHit.html", "d9/db6/classFairTestDetectorHit" ]
+    ] ],
+    [ "Tutorial6/sim/FairTestDetectorHit.h", "d6/d9e/Tutorial6_2sim_2FairTestDetectorHit_8h.html", [
       [ "FairTestDetectorHit", "d9/db6/classFairTestDetectorHit.html", "d9/db6/classFairTestDetectorHit" ]
     ] ],
     [ "FairTestDetectorHitProducerSmearing.cxx", "d2/d02/FairTestDetectorHitProducerSmearing_8cxx.html", null ],
     [ "FairTestDetectorHitProducerSmearing.h", "d1/ded/FairTestDetectorHitProducerSmearing_8h.html", [
       [ "FairTestDetectorHitProducerSmearing", "d9/d61/classFairTestDetectorHitProducerSmearing.html", "d9/d61/classFairTestDetectorHitProducerSmearing" ]
     ] ],
-    [ "FairTestDetectorLinkDef.h", "dd/d6a/FairTestDetectorLinkDef_8h.html", null ],
-    [ "FairTestDetectorMQRecoTask.cxx", "da/d0e/FairTestDetectorMQRecoTask_8cxx.html", null ],
-    [ "FairTestDetectorMQRecoTask.h", "d4/d09/FairTestDetectorMQRecoTask_8h.html", [
+    [ "Tutorial3/FairTestDetectorLinkDef.h", "df/d9a/Tutorial3_2FairTestDetectorLinkDef_8h.html", null ],
+    [ "Tutorial6/FairTestDetectorLinkDef.h", "de/d0d/Tutorial6_2FairTestDetectorLinkDef_8h.html", null ],
+    [ "Tutorial3/reconstruction/FairTestDetectorMQRecoTask.cxx", "d6/dd7/Tutorial3_2reconstruction_2FairTestDetectorMQRecoTask_8cxx.html", null ],
+    [ "Tutorial6/reco/FairTestDetectorMQRecoTask.cxx", "dd/d31/Tutorial6_2reco_2FairTestDetectorMQRecoTask_8cxx.html", null ],
+    [ "Tutorial3/reconstruction/FairTestDetectorMQRecoTask.h", "de/d48/Tutorial3_2reconstruction_2FairTestDetectorMQRecoTask_8h.html", [
       [ "FairTestDetectorMQRecoTask", "d2/d61/classFairTestDetectorMQRecoTask.html", "d2/d61/classFairTestDetectorMQRecoTask" ]
     ] ],
-    [ "FairTestDetectorPayload.h", "d8/d30/FairTestDetectorPayload_8h.html", [
+    [ "Tutorial6/reco/FairTestDetectorMQRecoTask.h", "da/d71/Tutorial6_2reco_2FairTestDetectorMQRecoTask_8h.html", [
+      [ "FairTestDetectorMQRecoTask", "d2/d61/classFairTestDetectorMQRecoTask.html", "d2/d61/classFairTestDetectorMQRecoTask" ]
+    ] ],
+    [ "FairTestDetectorPayload.cxx", "da/dce/FairTestDetectorPayload_8cxx.html", null ],
+    [ "Tutorial3/data/FairTestDetectorPayload.h", "d3/daa/Tutorial3_2data_2FairTestDetectorPayload_8h.html", [
       [ "TimeStamp", "de/d8c/classTestDetectorPayload_1_1TimeStamp.html", "de/d8c/classTestDetectorPayload_1_1TimeStamp" ],
       [ "Digi", "d5/d78/classTestDetectorPayload_1_1Digi.html", "d5/d78/classTestDetectorPayload_1_1Digi" ],
       [ "Hit", "d2/da6/classTestDetectorPayload_1_1Hit.html", "d2/da6/classTestDetectorPayload_1_1Hit" ]
     ] ],
-    [ "FairTestDetectorPayload.pb.h", "de/db1/FairTestDetectorPayload_8pb_8h.html", "de/db1/FairTestDetectorPayload_8pb_8h" ],
-    [ "FairTestDetectorPoint.cxx", "db/d28/FairTestDetectorPoint_8cxx.html", null ],
-    [ "FairTestDetectorPoint.h", "d9/d51/FairTestDetectorPoint_8h.html", [
+    [ "Tutorial6/reco/FairTestDetectorPayload.h", "d0/dd0/Tutorial6_2reco_2FairTestDetectorPayload_8h.html", [
+      [ "TimeStamp", "de/d8c/classTestDetectorPayload_1_1TimeStamp.html", "de/d8c/classTestDetectorPayload_1_1TimeStamp" ],
+      [ "Digi", "d5/d78/classTestDetectorPayload_1_1Digi.html", "d5/d78/classTestDetectorPayload_1_1Digi" ],
+      [ "Hit", "d2/da6/classTestDetectorPayload_1_1Hit.html", "d2/da6/classTestDetectorPayload_1_1Hit" ]
+    ] ],
+    [ "Tutorial3/data/FairTestDetectorPoint.cxx", "d1/dfd/Tutorial3_2data_2FairTestDetectorPoint_8cxx.html", null ],
+    [ "Tutorial6/sim/FairTestDetectorPoint.cxx", "d0/d5e/Tutorial6_2sim_2FairTestDetectorPoint_8cxx.html", null ],
+    [ "Tutorial3/data/FairTestDetectorPoint.h", "d8/dcb/Tutorial3_2data_2FairTestDetectorPoint_8h.html", [
       [ "FairTestDetectorPoint", "de/d9f/classFairTestDetectorPoint.html", "de/d9f/classFairTestDetectorPoint" ]
     ] ],
-    [ "FairTestDetectorRecoTask.cxx", "d7/d81/FairTestDetectorRecoTask_8cxx.html", null ],
-    [ "FairTestDetectorRecoTask.h", "d4/d24/FairTestDetectorRecoTask_8h.html", [
+    [ "Tutorial6/sim/FairTestDetectorPoint.h", "d6/d9b/Tutorial6_2sim_2FairTestDetectorPoint_8h.html", [
+      [ "FairTestDetectorPoint", "de/d9f/classFairTestDetectorPoint.html", "de/d9f/classFairTestDetectorPoint" ]
+    ] ],
+    [ "Tutorial3/reconstruction/FairTestDetectorRecoTask.cxx", "d8/ded/Tutorial3_2reconstruction_2FairTestDetectorRecoTask_8cxx.html", null ],
+    [ "Tutorial6/reco/FairTestDetectorRecoTask.cxx", "d0/deb/Tutorial6_2reco_2FairTestDetectorRecoTask_8cxx.html", null ],
+    [ "Tutorial3/reconstruction/FairTestDetectorRecoTask.h", "d1/d49/Tutorial3_2reconstruction_2FairTestDetectorRecoTask_8h.html", [
+      [ "FairTestDetectorRecoTask", "d9/de9/classFairTestDetectorRecoTask.html", "d9/de9/classFairTestDetectorRecoTask" ]
+    ] ],
+    [ "Tutorial6/reco/FairTestDetectorRecoTask.h", "d3/d19/Tutorial6_2reco_2FairTestDetectorRecoTask_8h.html", [
       [ "FairTestDetectorRecoTask", "d9/de9/classFairTestDetectorRecoTask.html", "d9/de9/classFairTestDetectorRecoTask" ]
     ] ],
     [ "FairTestDetectorTimeDigiTask.cxx", "d8/dac/FairTestDetectorTimeDigiTask_8cxx.html", null ],
@@ -1008,37 +1125,29 @@ var files =
       [ "FairWriteoutBufferAbsBasis", "dd/d6d/classFairWriteoutBufferAbsBasis.html", "dd/d6d/classFairWriteoutBufferAbsBasis" ]
     ] ],
     [ "FieldLinkDef.h", "d3/d6e/FieldLinkDef_8h.html", null ],
-    [ "gconfig/flConfig.C", "d3/da9/gconfig_2flConfig_8C.html", "d3/da9/gconfig_2flConfig_8C" ],
-    [ "Tutorial4/gconfig/flConfig.C", "da/d9f/Tutorial4_2gconfig_2flConfig_8C.html", "da/d9f/Tutorial4_2gconfig_2flConfig_8C" ],
-    [ "gconfig/fllibs.C", "dc/d13/gconfig_2fllibs_8C.html", "dc/d13/gconfig_2fllibs_8C" ],
-    [ "Tutorial4/gconfig/fllibs.C", "d6/d30/Tutorial4_2gconfig_2fllibs_8C.html", "d6/d30/Tutorial4_2gconfig_2fllibs_8C" ],
+    [ "fLmd.c", "d6/dcb/fLmd_8c.html", "d6/dcb/fLmd_8c" ],
     [ "fLmd.h", "d8/db0/fLmd_8h.html", "d8/db0/fLmd_8h" ],
-    [ "example/gconfig/g3Config.C", "d5/d6c/example_2gconfig_2g3Config_8C.html", "d5/d6c/example_2gconfig_2g3Config_8C" ],
-    [ "example/Tutorial4/gconfig/g3Config.C", "db/dfd/example_2Tutorial4_2gconfig_2g3Config_8C.html", "db/dfd/example_2Tutorial4_2gconfig_2g3Config_8C" ],
-    [ "templates/project_template/gconfig/g3Config.C", "d2/dea/templates_2project__template_2gconfig_2g3Config_8C.html", "d2/dea/templates_2project__template_2gconfig_2g3Config_8C" ],
-    [ "gconfig/g3Config_new.C", "d9/da3/gconfig_2g3Config__new_8C.html", "d9/da3/gconfig_2g3Config__new_8C" ],
-    [ "Tutorial4/gconfig/g3Config_new.C", "d0/d5e/Tutorial4_2gconfig_2g3Config__new_8C.html", "d0/d5e/Tutorial4_2gconfig_2g3Config__new_8C" ],
-    [ "example/gconfig/g3libs.C", "d9/ddb/example_2gconfig_2g3libs_8C.html", "d9/ddb/example_2gconfig_2g3libs_8C" ],
-    [ "example/Tutorial4/gconfig/g3libs.C", "db/df9/example_2Tutorial4_2gconfig_2g3libs_8C.html", "db/df9/example_2Tutorial4_2gconfig_2g3libs_8C" ],
-    [ "templates/project_template/gconfig/g3libs.C", "dd/d93/templates_2project__template_2gconfig_2g3libs_8C.html", "dd/d93/templates_2project__template_2gconfig_2g3libs_8C" ],
-    [ "example/gconfig/g4Config.C", "de/d57/example_2gconfig_2g4Config_8C.html", "de/d57/example_2gconfig_2g4Config_8C" ],
-    [ "example/Tutorial4/gconfig/g4Config.C", "d8/d9c/example_2Tutorial4_2gconfig_2g4Config_8C.html", "d8/d9c/example_2Tutorial4_2gconfig_2g4Config_8C" ],
-    [ "templates/project_template/gconfig/g4Config.C", "de/da6/templates_2project__template_2gconfig_2g4Config_8C.html", "de/da6/templates_2project__template_2gconfig_2g4Config_8C" ],
-    [ "example/gconfig/Geane.C", "d3/dfb/example_2gconfig_2Geane_8C.html", "d3/dfb/example_2gconfig_2Geane_8C" ],
-    [ "example/Tutorial4/gconfig/Geane.C", "d8/d69/example_2Tutorial4_2gconfig_2Geane_8C.html", "d8/d69/example_2Tutorial4_2gconfig_2Geane_8C" ],
-    [ "templates/project_template/gconfig/Geane.C", "dc/d58/templates_2project__template_2gconfig_2Geane_8C.html", "dc/d58/templates_2project__template_2gconfig_2Geane_8C" ],
     [ "GeaneLinkDef.h", "d1/dc7/GeaneLinkDef_8h.html", null ],
+    [ "GenericFileSink.h", "d7/d16/GenericFileSink_8h.html", [
+      [ "GenericFileSink", "d8/df5/classGenericFileSink.html", "d8/df5/classGenericFileSink" ]
+    ] ],
+    [ "GenericMerger.h", "d7/d20/GenericMerger_8h.html", [
+      [ "GenericMerger", "df/d1b/classGenericMerger.html", "df/d1b/classGenericMerger" ]
+    ] ],
+    [ "GenericProcessor.h", "d3/deb/GenericProcessor_8h.html", [
+      [ "GenericProcessor", "d4/d10/classGenericProcessor.html", "d4/d10/classGenericProcessor" ]
+    ] ],
+    [ "GenericSampler.h", "d6/d83/GenericSampler_8h.html", [
+      [ "GenericSampler", "dc/d91/classGenericSampler.html", "dc/d91/classGenericSampler" ]
+    ] ],
     [ "generators/GenLinkDef.h", "de/d00/generators_2GenLinkDef_8h.html", null ],
     [ "templates/project_template/MyProjGenerators/GenLinkDef.h", "da/dbc/templates_2project__template_2MyProjGenerators_2GenLinkDef_8h.html", null ],
     [ "GeoBaseLinkDef.h", "d6/ddc/GeoBaseLinkDef_8h.html", null ],
-    [ "has_BoostSerialization.cxx", "d4/d9e/has__BoostSerialization_8cxx.html", null ],
-    [ "has_BoostSerialization.h", "d0/d8a/has__BoostSerialization_8h.html", [
-      [ "has_BoostSerialization", "dc/da2/structhas__BoostSerialization.html", null ],
-      [ "has_BoostSerialization< C, Ret(Args...)>", "d1/dc0/structhas__BoostSerialization_3_01C_00_01Ret_07Args_8_8_8_08_4.html", "d1/dc0/structhas__BoostSerialization_3_01C_00_01Ret_07Args_8_8_8_08_4" ]
-    ] ],
     [ "HitTrk.h", "d8/da8/HitTrk_8h.html", "d8/da8/HitTrk_8h" ],
+    [ "main.cc", "d9/d0f/main_8cc.html", "d9/d0f/main_8cc" ],
     [ "example/mcstack/MCStackLinkDef.h", "d4/da2/example_2mcstack_2MCStackLinkDef_8h.html", null ],
     [ "templates/project_template/MyProjData/MCStackLinkDef.h", "df/de5/templates_2project__template_2MyProjData_2MCStackLinkDef_8h.html", null ],
+    [ "Mille.cc", "d0/d62/Mille_8cc.html", null ],
     [ "Mille.h", "d0/d09/Mille_8h.html", [
       [ "Mille", "df/db2/classMille.html", "df/db2/classMille" ]
     ] ],
@@ -1056,6 +1165,11 @@ var files =
     [ "MyConstField.h", "d5/dbc/MyConstField_8h.html", [
       [ "MyConstField", "d4/de5/classMyConstField.html", "d4/de5/classMyConstField" ]
     ] ],
+    [ "MyDigi.cxx", "dc/d40/MyDigi_8cxx.html", "dc/d40/MyDigi_8cxx" ],
+    [ "MyDigi.h", "dc/d9a/MyDigi_8h.html", [
+      [ "MyDigi", "d6/dd4/classMyDigi.html", "d6/dd4/classMyDigi" ]
+    ] ],
+    [ "MyDigiSerializer.h", "d3/d7b/MyDigiSerializer_8h.html", "d3/d7b/MyDigiSerializer_8h" ],
     [ "MyFieldCreator.cxx", "d6/db9/MyFieldCreator_8cxx.html", "d6/db9/MyFieldCreator_8cxx" ],
     [ "MyFieldCreator.h", "de/d16/MyFieldCreator_8h.html", [
       [ "MyFieldCreator", "dc/dd1/classMyFieldCreator.html", "dc/dd1/classMyFieldCreator" ]
@@ -1066,6 +1180,11 @@ var files =
     [ "MyGeoCave.h", "d1/ddb/MyGeoCave_8h.html", [
       [ "MyGeoCave", "d3/d8f/classMyGeoCave.html", "d3/d8f/classMyGeoCave" ]
     ] ],
+    [ "MyHit.cxx", "d4/de5/MyHit_8cxx.html", null ],
+    [ "MyHit.h", "d5/d61/MyHit_8h.html", [
+      [ "MyHit", "d8/de0/classMyHit.html", "d8/de0/classMyHit" ]
+    ] ],
+    [ "MyHitSerializer.h", "db/d4d/MyHitSerializer_8h.html", "db/d4d/MyHitSerializer_8h" ],
     [ "MyMagnet.cxx", "d8/d8a/MyMagnet_8cxx.html", null ],
     [ "MyMagnet.h", "dc/d7d/MyMagnet_8h.html", [
       [ "MyMagnet", "d1/d92/classMyMagnet.html", "d1/d92/classMyMagnet" ]
@@ -1077,6 +1196,12 @@ var files =
     [ "MyPipe.cxx", "d8/d9c/MyPipe_8cxx.html", null ],
     [ "MyPipe.h", "da/d7d/MyPipe_8h.html", [
       [ "MyPipe", "d6/d9c/classMyPipe.html", "d6/d9c/classMyPipe" ]
+    ] ],
+    [ "MyPodData.cxx", "dd/dbb/MyPodData_8cxx.html", null ],
+    [ "MyPodData.h", "d3/d39/MyPodData_8h.html", [
+      [ "TimeStamp", "db/d2a/classMyPodData_1_1TimeStamp.html", "db/d2a/classMyPodData_1_1TimeStamp" ],
+      [ "Digi", "dd/de4/classMyPodData_1_1Digi.html", "dd/de4/classMyPodData_1_1Digi" ],
+      [ "Hit", "d0/d8a/classMyPodData_1_1Hit.html", "d0/d8a/classMyPodData_1_1Hit" ]
     ] ],
     [ "MyProjDetectorList.h", "dd/d53/MyProjDetectorList_8h.html", "dd/d53/MyProjDetectorList_8h" ],
     [ "MyProjMCTrack.cxx", "d7/dbf/MyProjMCTrack_8cxx.html", null ],
@@ -1149,11 +1274,14 @@ var files =
     [ "NewTask.h", "d3/d34/NewTask_8h.html", [
       [ "NewTask", "dc/d2e/classNewTask.html", "dc/d2e/classNewTask" ]
     ] ],
+    [ "NoInputMethod.h", "d1/da8/NoInputMethod_8h.html", [
+      [ "NoInputMethod", "d4/ded/classNoInputMethod.html", "d4/ded/classNoInputMethod" ]
+    ] ],
     [ "ParBaseLinkDef.h", "d5/d1e/ParBaseLinkDef_8h.html", null ],
     [ "example/passive/PassiveLinkDef.h", "d3/d02/example_2passive_2PassiveLinkDef_8h.html", null ],
     [ "templates/project_template/passive/PassiveLinkDef.h", "dc/d8d/templates_2project__template_2passive_2PassiveLinkDef_8h.html", null ],
+    [ "payload.pb.cc", "dc/dd8/payload_8pb_8cc.html", "dc/dd8/payload_8pb_8cc" ],
     [ "payload.pb.h", "d5/db0/payload_8pb_8h.html", "d5/db0/payload_8pb_8h" ],
-    [ "plots.C", "dd/dee/plots_8C.html", "dd/dee/plots_8C" ],
     [ "portnum_def.h", "df/d7e/portnum__def_8h.html", "df/d7e/portnum__def_8h" ],
     [ "ptrevcomm.h", "df/dc6/ptrevcomm_8h.html", [
       [ "srevComm", "dc/dc2/structsrevComm.html", "dc/dc2/structsrevComm" ],
@@ -1171,50 +1299,57 @@ var files =
       [ "PyTr3Rng", "dd/d80/classPyTr3Rng.html", "dd/d80/classPyTr3Rng" ],
       [ "Pythia8Generator", "de/d55/classPythia8Generator.html", "de/d55/classPythia8Generator" ]
     ] ],
-    [ "read_digis.C", "d7/d80/read__digis_8C.html", "d7/d80/read__digis_8C" ],
-    [ "Read_Memory_File.C", "d0/db3/Read__Memory__File_8C.html", "d0/db3/Read__Memory__File_8C" ],
-    [ "gconfig/rootlogon.C", "d5/d7c/gconfig_2rootlogon_8C.html", "d5/d7c/gconfig_2rootlogon_8C" ],
-    [ "Tutorial4/gconfig/rootlogon.C", "d0/da9/Tutorial4_2gconfig_2rootlogon_8C.html", "d0/da9/Tutorial4_2gconfig_2rootlogon_8C" ],
-    [ "run_bg.C", "d5/df1/run__bg_8C.html", "d5/df1/run__bg_8C" ],
-    [ "run_digi.C", "d1/d7a/run__digi_8C.html", "d1/d7a/run__digi_8C" ],
-    [ "run_digi_timebased.C", "de/d0a/run__digi__timebased_8C.html", "de/d0a/run__digi__timebased_8C" ],
-    [ "run_DiReLo.C", "de/d91/run__DiReLo_8C.html", "de/d91/run__DiReLo_8C" ],
-    [ "run_DiReOne.C", "d9/dba/run__DiReOne_8C.html", "d9/dba/run__DiReOne_8C" ],
-    [ "run_DiRePr.C", "da/dc3/run__DiRePr_8C.html", "da/dc3/run__DiRePr_8C" ],
-    [ "run_rad.C", "d3/d2f/run__rad_8C.html", "d3/d2f/run__rad_8C" ],
-    [ "Tutorial3/macro/run_reco.C", "d5/dfb/Tutorial3_2macro_2run__reco_8C.html", "d5/dfb/Tutorial3_2macro_2run__reco_8C" ],
-    [ "Tutorial4/macros/run_reco.C", "d3/dcf/Tutorial4_2macros_2run__reco_8C.html", "d3/dcf/Tutorial4_2macros_2run__reco_8C" ],
-    [ "run_reco_timebased.C", "df/db8/run__reco__timebased_8C.html", "df/db8/run__reco__timebased_8C" ],
-    [ "run_rutherford.C", "d9/d0e/run__rutherford_8C.html", "d9/d0e/run__rutherford_8C" ],
-    [ "run_sg.C", "dc/d19/run__sg_8C.html", "dc/d19/run__sg_8C" ],
-    [ "run_sg1.C", "d3/dbf/run__sg1_8C.html", "d3/dbf/run__sg1_8C" ],
-    [ "example/Tutorial3/macro/run_sim.C", "dd/dfe/example_2Tutorial3_2macro_2run__sim_8C.html", "dd/dfe/example_2Tutorial3_2macro_2run__sim_8C" ],
-    [ "templates/project_template/macro/run_sim.C", "d6/da2/templates_2project__template_2macro_2run__sim_8C.html", "d6/da2/templates_2project__template_2macro_2run__sim_8C" ],
-    [ "run_sim_sep.C", "d0/d90/run__sim__sep_8C.html", "d0/d90/run__sim__sep_8C" ],
-    [ "run_tutorial1.C", "d2/d9c/run__tutorial1_8C.html", "d2/d9c/run__tutorial1_8C" ],
-    [ "run_tutorial2.C", "d2/da9/run__tutorial2_8C.html", "d2/da9/run__tutorial2_8C" ],
-    [ "run_tutorial4.C", "d1/dbe/run__tutorial4_8C.html", "d1/dbe/run__tutorial4_8C" ],
+    [ "rclose.c", "d4/dac/rclose_8c.html", "d4/dac/rclose_8c" ],
+    [ "RooDataGenerator.h", "dd/d72/RooDataGenerator_8h.html", [
+      [ "RdmVarParameters", "d2/d29/structRdmVarParameters.html", "d2/d29/structRdmVarParameters" ],
+      [ "PDFConfig", "de/dc0/structPDFConfig.html", "de/dc0/structPDFConfig" ],
+      [ "MultiVariatePDF", "d9/d6d/classMultiVariatePDF.html", "d9/d6d/classMultiVariatePDF" ]
+    ] ],
+    [ "RootOutFileManager.h", "d7/df8/RootOutFileManager_8h.html", [
+      [ "RootOutFileManager", "d6/de3/classRootOutFileManager.html", "d6/de3/classRootOutFileManager" ]
+    ] ],
+    [ "RootSerializer.h", "da/d7c/RootSerializer_8h.html", "da/d7c/RootSerializer_8h" ],
     [ "runBenchmarkSampler.cxx", "de/d82/runBenchmarkSampler_8cxx.html", "de/d82/runBenchmarkSampler_8cxx" ],
     [ "runBinSampler.cxx", "d9/d16/runBinSampler_8cxx.html", "d9/d16/runBinSampler_8cxx" ],
     [ "runBinSink.cxx", "df/d4e/runBinSink_8cxx.html", "df/d4e/runBinSink_8cxx" ],
     [ "runBuffer.cxx", "d0/de1/runBuffer_8cxx.html", "d0/de1/runBuffer_8cxx" ],
     [ "runExampleClient.cxx", "d2/d53/runExampleClient_8cxx.html", "d2/d53/runExampleClient_8cxx" ],
     [ "runExampleServer.cxx", "d8/dff/runExampleServer_8cxx.html", "d8/dff/runExampleServer_8cxx" ],
-    [ "runFileSinkBin.cxx", "d3/df1/runFileSinkBin_8cxx.html", "d3/df1/runFileSinkBin_8cxx" ],
-    [ "runFileSinkBoost.cxx", "d9/d86/runFileSinkBoost_8cxx.html", "d9/d86/runFileSinkBoost_8cxx" ],
+    [ "Tutorial3/run/runFileSinkBin.cxx", "d9/d75/Tutorial3_2run_2runFileSinkBin_8cxx.html", "d9/d75/Tutorial3_2run_2runFileSinkBin_8cxx" ],
+    [ "Tutorial6/run/runFileSinkBin.cxx", "d2/d26/Tutorial6_2run_2runFileSinkBin_8cxx.html", "d2/d26/Tutorial6_2run_2runFileSinkBin_8cxx" ],
+    [ "Tutorial7/run/FairTestDetector/runFileSinkBin.cxx", "d9/d73/Tutorial7_2run_2FairTestDetector_2runFileSinkBin_8cxx.html", "d9/d73/Tutorial7_2run_2FairTestDetector_2runFileSinkBin_8cxx" ],
+    [ "Tutorial7/run/runFileSinkBin.cxx", "d7/db7/Tutorial7_2run_2runFileSinkBin_8cxx.html", "d7/db7/Tutorial7_2run_2runFileSinkBin_8cxx" ],
+    [ "Tutorial3/run/runFileSinkBoost.cxx", "d7/d9a/Tutorial3_2run_2runFileSinkBoost_8cxx.html", "d7/d9a/Tutorial3_2run_2runFileSinkBoost_8cxx" ],
+    [ "Tutorial7/run/FairTestDetector/runFileSinkBoost.cxx", "de/da1/Tutorial7_2run_2FairTestDetector_2runFileSinkBoost_8cxx.html", "de/da1/Tutorial7_2run_2FairTestDetector_2runFileSinkBoost_8cxx" ],
+    [ "Tutorial7/run/runFileSinkBoost.cxx", "db/dbb/Tutorial7_2run_2runFileSinkBoost_8cxx.html", "db/dbb/Tutorial7_2run_2runFileSinkBoost_8cxx" ],
     [ "runFileSinkProto.cxx", "de/dcd/runFileSinkProto_8cxx.html", "de/dcd/runFileSinkProto_8cxx" ],
-    [ "runFileSinkRoot.cxx", "d8/ddd/runFileSinkRoot_8cxx.html", "d8/ddd/runFileSinkRoot_8cxx" ],
+    [ "Tutorial3/run/runFileSinkRoot.cxx", "df/d8a/Tutorial3_2run_2runFileSinkRoot_8cxx.html", "df/d8a/Tutorial3_2run_2runFileSinkRoot_8cxx" ],
+    [ "Tutorial7/run/runFileSinkRoot.cxx", "d7/df1/Tutorial7_2run_2runFileSinkRoot_8cxx.html", "d7/df1/Tutorial7_2run_2runFileSinkRoot_8cxx" ],
+    [ "runGenerateData.cxx", "d4/d4c/runGenerateData_8cxx.html", "d4/d4c/runGenerateData_8cxx" ],
     [ "runMerger.cxx", "d3/d4e/runMerger_8cxx.html", "d3/d4e/runMerger_8cxx" ],
+    [ "runPolicyExample.cxx", "d5/d52/runPolicyExample_8cxx.html", "d5/d52/runPolicyExample_8cxx" ],
+    [ "FairTestDetector/runProcessorBin.cxx", "d1/df9/FairTestDetector_2runProcessorBin_8cxx.html", "d1/df9/FairTestDetector_2runProcessorBin_8cxx" ],
+    [ "runProcessorBin.cxx", "df/dab/runProcessorBin_8cxx.html", "df/dab/runProcessorBin_8cxx" ],
+    [ "FairTestDetector/runProcessorBoost.cxx", "db/d6b/FairTestDetector_2runProcessorBoost_8cxx.html", "db/d6b/FairTestDetector_2runProcessorBoost_8cxx" ],
+    [ "runProcessorBoost.cxx", "d2/d4e/runProcessorBoost_8cxx.html", "d2/d4e/runProcessorBoost_8cxx" ],
+    [ "runProcessorRoot.cxx", "d8/db3/runProcessorRoot_8cxx.html", "d8/db3/runProcessorRoot_8cxx" ],
     [ "runProtoSampler.cxx", "df/d01/runProtoSampler_8cxx.html", "df/d01/runProtoSampler_8cxx" ],
     [ "runProtoSink.cxx", "db/de8/runProtoSink_8cxx.html", "db/de8/runProtoSink_8cxx" ],
     [ "runProxy.cxx", "db/d0b/runProxy_8cxx.html", "db/d0b/runProxy_8cxx" ],
+    [ "FairTestDetector/runSamplerBin.cxx", "dc/d88/FairTestDetector_2runSamplerBin_8cxx.html", "dc/d88/FairTestDetector_2runSamplerBin_8cxx" ],
+    [ "runSamplerBin.cxx", "d4/dc7/runSamplerBin_8cxx.html", "d4/dc7/runSamplerBin_8cxx" ],
+    [ "FairTestDetector/runSamplerBoost.cxx", "d9/d0d/FairTestDetector_2runSamplerBoost_8cxx.html", "d9/d0d/FairTestDetector_2runSamplerBoost_8cxx" ],
+    [ "runSamplerBoost.cxx", "d0/dc4/runSamplerBoost_8cxx.html", "d0/dc4/runSamplerBoost_8cxx" ],
+    [ "runSamplerRoot.cxx", "d1/d2f/runSamplerRoot_8cxx.html", "d1/d2f/runSamplerRoot_8cxx" ],
     [ "runSink.cxx", "dc/d95/runSink_8cxx.html", "dc/d95/runSink_8cxx" ],
     [ "runSplitter.cxx", "d1/dd2/runSplitter_8cxx.html", "d1/dd2/runSplitter_8cxx" ],
-    [ "runTestDetectorProcessorBin.cxx", "d8/d1d/runTestDetectorProcessorBin_8cxx.html", "d8/d1d/runTestDetectorProcessorBin_8cxx" ],
+    [ "Tutorial3/run/runTestDetectorProcessorBin.cxx", "df/d17/Tutorial3_2run_2runTestDetectorProcessorBin_8cxx.html", "df/d17/Tutorial3_2run_2runTestDetectorProcessorBin_8cxx" ],
+    [ "Tutorial6/run/runTestDetectorProcessorBin.cxx", "db/d20/Tutorial6_2run_2runTestDetectorProcessorBin_8cxx.html", "db/d20/Tutorial6_2run_2runTestDetectorProcessorBin_8cxx" ],
     [ "runTestDetectorProcessorBoost.cxx", "dc/dac/runTestDetectorProcessorBoost_8cxx.html", "dc/dac/runTestDetectorProcessorBoost_8cxx" ],
     [ "runTestDetectorProcessorProto.cxx", "df/d6c/runTestDetectorProcessorProto_8cxx.html", "df/d6c/runTestDetectorProcessorProto_8cxx" ],
     [ "runTestDetectorProcessorRoot.cxx", "d1/d90/runTestDetectorProcessorRoot_8cxx.html", "d1/d90/runTestDetectorProcessorRoot_8cxx" ],
-    [ "runTestDetectorSamplerBin.cxx", "d5/d0b/runTestDetectorSamplerBin_8cxx.html", "d5/d0b/runTestDetectorSamplerBin_8cxx" ],
+    [ "Tutorial3/run/runTestDetectorSamplerBin.cxx", "d6/d01/Tutorial3_2run_2runTestDetectorSamplerBin_8cxx.html", "d6/d01/Tutorial3_2run_2runTestDetectorSamplerBin_8cxx" ],
+    [ "Tutorial6/run/runTestDetectorSamplerBin.cxx", "dd/dfd/Tutorial6_2run_2runTestDetectorSamplerBin_8cxx.html", "dd/dfd/Tutorial6_2run_2runTestDetectorSamplerBin_8cxx" ],
     [ "runTestDetectorSamplerBoost.cxx", "d1/d89/runTestDetectorSamplerBoost_8cxx.html", "d1/d89/runTestDetectorSamplerBoost_8cxx" ],
     [ "runTestDetectorSamplerProto.cxx", "de/dd6/runTestDetectorSamplerProto_8cxx.html", "de/dd6/runTestDetectorSamplerProto_8cxx" ],
     [ "runTestDetectorSamplerRoot.cxx", "d4/dd0/runTestDetectorSamplerRoot_8cxx.html", "d4/dd0/runTestDetectorSamplerRoot_8cxx" ],
@@ -1238,21 +1373,30 @@ var files =
       [ "s_ves10_1", "d1/dae/structs__ves10__1.html", "d1/dae/structs__ves10__1" ]
     ] ],
     [ "s_ves10_1_swap.h", "d6/d2d/s__ves10__1__swap_8h.html", null ],
-    [ "example/gconfig/SetCuts.C", "d6/d88/example_2gconfig_2SetCuts_8C.html", "d6/d88/example_2gconfig_2SetCuts_8C" ],
-    [ "example/Tutorial4/gconfig/SetCuts.C", "da/df2/example_2Tutorial4_2gconfig_2SetCuts_8C.html", "da/df2/example_2Tutorial4_2gconfig_2SetCuts_8C" ],
-    [ "templates/project_template/gconfig/SetCuts.C", "d1/d78/templates_2project__template_2gconfig_2SetCuts_8C.html", "d1/d78/templates_2project__template_2gconfig_2SetCuts_8C" ],
+    [ "SimpleTreeReader.h", "d8/d94/SimpleTreeReader_8h.html", [
+      [ "SimpleTreeReader", "df/d5d/classSimpleTreeReader.html", "df/d5d/classSimpleTreeReader" ]
+    ] ],
     [ "sMbs.h", "db/d29/sMbs_8h.html", "db/d29/sMbs_8h" ],
+    [ "swaplw.c", "de/d01/swaplw_8c.html", "de/d01/swaplw_8c" ],
     [ "test.cxx", "d5/d6a/test_8cxx.html", "d5/d6a/test_8cxx" ],
-    [ "TestDetectorDigiLoader.cxx", "df/d6d/TestDetectorDigiLoader_8cxx.html", null ],
-    [ "TestDetectorDigiLoader.h", "d3/dee/TestDetectorDigiLoader_8h.html", [
+    [ "Tutorial3/digitization/TestDetectorDigiLoader.cxx", "d0/de2/Tutorial3_2digitization_2TestDetectorDigiLoader_8cxx.html", null ],
+    [ "Tutorial6/streams/TestDetectorDigiLoader.cxx", "d1/dda/Tutorial6_2streams_2TestDetectorDigiLoader_8cxx.html", null ],
+    [ "Tutorial3/digitization/TestDetectorDigiLoader.h", "d9/db8/Tutorial3_2digitization_2TestDetectorDigiLoader_8h.html", [
+      [ "TestDetectorDigiLoader", "d1/d49/classTestDetectorDigiLoader.html", "d1/d49/classTestDetectorDigiLoader" ]
+    ] ],
+    [ "Tutorial6/streams/TestDetectorDigiLoader.h", "dd/d95/Tutorial6_2streams_2TestDetectorDigiLoader_8h.html", [
       [ "TestDetectorDigiLoader", "d1/d49/classTestDetectorDigiLoader.html", "d1/d49/classTestDetectorDigiLoader" ]
     ] ],
     [ "TrackBaseLinkDef.h", "d1/d80/TrackBaseLinkDef_8h.html", null ],
+    [ "TriviallyCopyableDataSaver.h", "da/dfe/TriviallyCopyableDataSaver_8h.html", [
+      [ "TriviallyCopyableDataSaver", "d9/d7d/classTriviallyCopyableDataSaver.html", "d9/d7d/classTriviallyCopyableDataSaver" ]
+    ] ],
+    [ "tuto7BinarySerializer.h", "d3/d20/tuto7BinarySerializer_8h.html", [
+      [ "tuto7BinarySerializer", "d1/d7f/classtuto7BinarySerializer.html", "d1/d7f/classtuto7BinarySerializer" ]
+    ] ],
     [ "Tutorial1LinkDef.h", "de/d33/Tutorial1LinkDef_8h.html", null ],
     [ "Tutorial2LinkDef.h", "dc/d63/Tutorial2LinkDef_8h.html", null ],
     [ "Tutorial4LinkDef.h", "d0/dea/Tutorial4LinkDef_8h.html", null ],
-    [ "typedefs.h", "d7/d69/typedefs_8h.html", "d7/d69/typedefs_8h" ],
-    [ "example/gconfig/UserDecay.C", "d9/d55/example_2gconfig_2UserDecay_8C.html", "d9/d55/example_2gconfig_2UserDecay_8C" ],
-    [ "example/Tutorial4/gconfig/UserDecay.C", "da/da7/example_2Tutorial4_2gconfig_2UserDecay_8C.html", "da/da7/example_2Tutorial4_2gconfig_2UserDecay_8C" ],
-    [ "templates/project_template/gconfig/UserDecay.C", "d0/df1/templates_2project__template_2gconfig_2UserDecay_8C.html", "d0/df1/templates_2project__template_2gconfig_2UserDecay_8C" ]
+    [ "Tutorial7LinkDef.h", "d9/db7/Tutorial7LinkDef_8h.html", null ],
+    [ "typedefs.h", "d7/d69/typedefs_8h.html", "d7/d69/typedefs_8h" ]
 ];
