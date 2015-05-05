@@ -1,6 +1,0 @@
-var struct_test_detector_proto_1_1_static_descriptor_initializer___fair_test_detector_payload__2eproto =
-[
-    [ "StaticDescriptorInitializer_FairTestDetectorPayload_2eproto", "struct_test_detector_proto_1_1_static_descriptor_initializer___fair_test_detector_payload__2eproto.html#a5a170710471cc61d72a34f82f784ca3c", null ],
-    [ "StaticDescriptorInitializer_FairTestDetectorPayload_2eproto", "struct_test_detector_proto_1_1_static_descriptor_initializer___fair_test_detector_payload__2eproto.html#a5a170710471cc61d72a34f82f784ca3c", null ],
-    [ "StaticDescriptorInitializer_FairTestDetectorPayload_2eproto", "struct_test_detector_proto_1_1_static_descriptor_initializer___fair_test_detector_payload__2eproto.html#a5a170710471cc61d72a34f82f784ca3c", null ]
-];

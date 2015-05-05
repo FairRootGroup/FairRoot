@@ -1,0 +1,25 @@
+var classFairMultiLinkedData__Interface =
+[
+    [ "FairMultiLinkedData_Interface", "d8/df1/classFairMultiLinkedData__Interface.html#a551c194643ac28c434db96f2e643a021", null ],
+    [ "FairMultiLinkedData_Interface", "d8/df1/classFairMultiLinkedData__Interface.html#aa83c149ece55aaac1bb708e78964245f", null ],
+    [ "FairMultiLinkedData_Interface", "d8/df1/classFairMultiLinkedData__Interface.html#a8580988f084e28730ff1c8b8b3f0dcdf", null ],
+    [ "FairMultiLinkedData_Interface", "d8/df1/classFairMultiLinkedData__Interface.html#aacc9d9d2dce4ed25ec8bddc7b02b9ba1", null ],
+    [ "~FairMultiLinkedData_Interface", "d8/df1/classFairMultiLinkedData__Interface.html#ac49106a97f8bfe8569a08b30e00b4449", null ],
+    [ "AddLink", "d8/df1/classFairMultiLinkedData__Interface.html#aafb49af28f26ae97ed79be8ba2714086", null ],
+    [ "AddLinks", "d8/df1/classFairMultiLinkedData__Interface.html#a8e23e259afa93f20d5a14eaf55ed2a2a", null ],
+    [ "ClassDef", "d8/df1/classFairMultiLinkedData__Interface.html#ae09941d872953b2051786f420217ec36", null ],
+    [ "CreateFairMultiLinkedData", "d8/df1/classFairMultiLinkedData__Interface.html#aa565f4661d4bb3e6ea980ed2b6531011", null ],
+    [ "GetLink", "d8/df1/classFairMultiLinkedData__Interface.html#a85a0638e4e2e6f29171357556c075e2c", null ],
+    [ "GetLinks", "d8/df1/classFairMultiLinkedData__Interface.html#a4ec28d842cc5a9a93761ba0416250cc3", null ],
+    [ "GetLinksWithType", "d8/df1/classFairMultiLinkedData__Interface.html#a9d9f2b25756e3431c5451d41deaf380d", null ],
+    [ "GetNLinks", "d8/df1/classFairMultiLinkedData__Interface.html#aa25ab01d1eb91618dc99f0146a1571c7", null ],
+    [ "GetPointerToData", "d8/df1/classFairMultiLinkedData__Interface.html#a4546705c82d68ca010b9b274b341385f", null ],
+    [ "Print", "d8/df1/classFairMultiLinkedData__Interface.html#a7939740f18ef641c567dcff0e0961375", null ],
+    [ "ResetLinks", "d8/df1/classFairMultiLinkedData__Interface.html#a0aae641b222fcad21a1076b3a5a8b939", null ],
+    [ "SetLink", "d8/df1/classFairMultiLinkedData__Interface.html#a365eb1ed49d855e6b3317744e51b2285", null ],
+    [ "SetLinks", "d8/df1/classFairMultiLinkedData__Interface.html#aa32a1c8fb41eef048ad94f7cbb9172f2", null ],
+    [ "operator<<", "d8/df1/classFairMultiLinkedData__Interface.html#a6cf40d63f7408737e8e69333286cae47", null ],
+    [ "fLinkBranchName", "d8/df1/classFairMultiLinkedData__Interface.html#a84c3c732fcb9ba301cb25cd76574bc55", null ],
+    [ "fRefToLinks", "d8/df1/classFairMultiLinkedData__Interface.html#ac2fbb3e29f684bd42834a3370138ecd9", null ],
+    [ "fVerbose", "d8/df1/classFairMultiLinkedData__Interface.html#a99c5b0ed8561441d13d3890dbb19f790", null ]
+];
