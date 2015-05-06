@@ -5,11 +5,13 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_tut1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
+void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
 {
   
   TString dir = getenv("VMCWORKDIR");
   TString tutdir = dir + "/Tutorial1";
+
+  TString inFile = dir + "/input/urqmd.ftn14";
 
   TString tut_geomdir = dir + "/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
@@ -17,33 +19,18 @@ void run_tut1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   TString tut_configdir = dir + "/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
-  TString partName[] = {"pions","eplus","proton"};
-  Int_t   partPdgC[] = {    211,     11,    2212};
-  Int_t chosenPart  = 0;
-  
-  Double_t momentum = 2.;
 
-  Double_t theta    = 0.;
-
-  TString outDir = "./";
+  TString outDir = "./"; 
 
   // Output file name
-  TString outFile = Form("%s/tut1_mesh%s_%s.mc_p%1.3f_t%1.0f_n%d.root",
+  TString outFile = Form("%s/tutorial1_urqmd_%s.mc.root",
                          outDir.Data(),
-			 mcEngine.Data(),
-			 partName[chosenPart].Data(),
-			 momentum,
-			 theta,
-			 nEvents);
+			 mcEngine.Data());
   
   // Parameter file name
-  TString parFile = Form("%s/tut1_mesh%s_%s.params_p%1.3f_t%1.0f_n%d.root",
+  TString parFile = Form("%s/tutorial1_urqmd_%s.params.root",
 			 outDir.Data(),
-			 mcEngine.Data(),
-			 partName[chosenPart].Data(),
-			 momentum,
-			 theta,
-			 nEvents);
+			 mcEngine.Data());
 
   // In general, the following parts need not be touched
   // ========================================================================
@@ -81,40 +68,12 @@ void run_tut1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-  FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 1);
 
-  boxGen->SetThetaRange (   theta,   theta+0.01);
-  boxGen->SetPRange     (momentum,momentum+0.01);
-  boxGen->SetPhiRange   (0.,360.);
-  boxGen->SetDebug(kTRUE);
+  FairUrqmdGenerator* urqmdGen = new FairUrqmdGenerator(inFile.Data());
+  primGen->AddGenerator(urqmdGen);
 
-  primGen->AddGenerator(boxGen);
-
-  
   run->SetGenerator(primGen);
   // ------------------------------------------------------------------------
-
-
-  run->SetStoreTraj(kFALSE); // to store particle trajectories
-
-  run->SetRadGridRegister(kTRUE); // activate RadGridManager
-
-  // define two example meshs for dosimetry
-  FairMesh* aMesh1 = new FairMesh("test1");
-  aMesh1->SetX(-40,40,200);
-  aMesh1->SetY(-40,40,200);
-  aMesh1->SetZ(5.2,5.4,1);
-
-  FairMesh* aMesh2 = new FairMesh("test2");
-  aMesh2->SetX(-20,20,20);
-  aMesh2->SetY(-20,20,20);
-  aMesh2->SetZ(-5.0,5.0,1);
-
-  aMesh1->print();
-  aMesh2->print();
-
-  run->AddMesh( aMesh1 );
-  run->AddMesh( aMesh2 );
 
   // -----   Initialize simulation run   ------------------------------------
   run->Init();
@@ -132,6 +91,7 @@ void run_tut1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
    
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
+  run->CreateGeometryFile("geofile_full.root");
   // ------------------------------------------------------------------------
   
   // -----   Finish   -------------------------------------------------------

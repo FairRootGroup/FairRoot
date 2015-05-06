@@ -322,6 +322,11 @@ void FairUrqmdGenerator::ReadConversionTable()
   TString fileName  = work + "/input/urqmd_pdg.dat";
   ifstream* pdgconv = new ifstream(fileName.Data());
 
+  if (!pdgconv->good()) {
+    LOG(FATAL) << "Could not open Urqmd->PDG input file " 
+	       << fileName << FairLogger::endl;
+  }
+
   Int_t index = 0;
   Int_t pdgId = 0;
 
