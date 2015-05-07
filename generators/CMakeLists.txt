@@ -63,6 +63,6 @@ Set(SRCS
 Set(HEADERS )
 Set(LINKDEF GenLinkDef.h)
 Set(LIBRARY_NAME Gen)
-Set(DEPENDENCIES Base EG MathCore Physics RIO Cint Core)
+Set(DEPENDENCIES Base EG MathCore Physics RIO Core)
 
 GENERATE_LIBRARY()

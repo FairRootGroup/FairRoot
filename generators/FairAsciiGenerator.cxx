@@ -36,7 +36,7 @@ FairAsciiGenerator::FairAsciiGenerator(const char* fileName)
   //  fFileName  = fileName;
   LOG(INFO) << "FairAsciiGenerator: Opening input file " 
 	    << fileName << FairLogger::endl;
-  fInputFile = new ifstream(fFileName);
+  fInputFile = new std::ifstream(fFileName);
   if ( ! fInputFile->is_open() ) {
     LOG(FATAL) << "Cannot open input file." << FairLogger::endl;
   }

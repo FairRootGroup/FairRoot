@@ -41,7 +41,7 @@ FairGeoCave::FairGeoCave()
   maxModules=1;
 }
 
-Bool_t FairGeoCave::read(fstream& fin,FairGeoMedia* media)
+Bool_t FairGeoCave::read(std::fstream& fin,FairGeoMedia* media)
 {
   // Reads the geometry from file
   if (!media) { return kFALSE; }
@@ -94,7 +94,7 @@ void FairGeoCave::addRefNodes()
   if (volu) { masterNodes->Add(new FairGeoNode(*volu)); }
 }
 
-void FairGeoCave::write(fstream& fout)
+void FairGeoCave::write(std::fstream& fout)
 {
   // Writes the geometry to file
   std::ios_base::fmtflags tmp = fout.setf(ios::fixed,ios::floatfield);

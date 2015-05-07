@@ -32,8 +32,10 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   TList *parFileList = new TList();
 
   TString paramDir = dir + "/Tutorial4/parameters/";
+  TString paramFile = paramDir + "example.par";
 
-  TObjString tutDetDigiFile = paramDir + "example.par";
+  TObjString tutDetDigiFile;
+  tutDetDigiFile.SetString(paramFile);
   parFileList->Add(&tutDetDigiFile);
 
 

@@ -283,9 +283,9 @@ FairMCApplication::~FairMCApplication()
   delete fActiveDetectors; // don't do fActiveDetectors->Delete() here
   // the modules are already deleted in FairRunSim
   delete fDetectors;
-  delete gMC;
+//  delete gMC;
   delete fModIter;
-  gMC=0;
+//  gMC=0;
   //  LOG(DEBUG3) << "Leave Destructor of FairMCApplication"
   //              << FairLogger::endl;
 }
@@ -1166,7 +1166,11 @@ void FairMCApplication::AddDecayModes()
 {
   TString work = getenv("VMCWORKDIR");
   TString work_config=work+"/gconfig/";
+  work_config.ReplaceAll("//","/");
+
   TString config_dir= getenv("CONFIG_DIR");
+  config_dir.ReplaceAll("//","/");
+
   Bool_t AbsPath=kFALSE;
 
   if (!config_dir.EndsWith("/")) {

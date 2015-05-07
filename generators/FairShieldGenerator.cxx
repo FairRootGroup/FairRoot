@@ -48,7 +48,7 @@ FairShieldGenerator::FairShieldGenerator(const char* fileName)
 
   LOG(INFO) << "FairShieldGenerator: Opening input file " 
 	    << fileName << FairLogger::endl;
-  fInputFile = new ifstream(fFileName);
+  fInputFile = new std::ifstream(fFileName);
   if ( ! fInputFile->is_open() ) {
     LOG(FATAL) << "Cannot open input file." << FairLogger::endl;
   }
@@ -60,7 +60,7 @@ FairShieldGenerator::FairShieldGenerator(const char* fileName)
   CloseInput();
   LOG(INFO) << "FairShieldGenerator: Reopening input file " 
 	    << fileName << FairLogger::endl;
-  fInputFile = new ifstream(fFileName);
+  fInputFile = new std::ifstream(fFileName);
 }
 // ------------------------------------------------------------------------
 

@@ -98,7 +98,7 @@ void FairGeoMedia::print()
   }
 }
 
-void FairGeoMedia::read(fstream& fin)
+void FairGeoMedia::read(std::fstream& fin)
 {
   // Reads the media from file
   LOG(INFO) << "FairGeoMedia: Read media " << FairLogger::endl;
@@ -120,7 +120,7 @@ void FairGeoMedia::read(fstream& fin)
   }
 }
 
-void FairGeoMedia::write(fstream& fout)
+void FairGeoMedia::write(std::fstream& fout)
 {
   // Writes the media to file
   if (!author.IsNull()) { fout<<"//Author:      "<<author<<'\n'; }

@@ -72,7 +72,7 @@ FairGeoPcon::~FairGeoPcon()
 }
 
 
-Int_t FairGeoPcon::readPoints(fstream* pFile,FairGeoVolume* volu)
+Int_t FairGeoPcon::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // reads the 'points' decribed above from ascii file and stores them in the
   // array 'points' of the volume
@@ -102,7 +102,7 @@ Int_t FairGeoPcon::readPoints(fstream* pFile,FairGeoVolume* volu)
 }
 
 
-Bool_t FairGeoPcon::writePoints(fstream* pFile,FairGeoVolume* volu)
+Bool_t FairGeoPcon::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes the 'points' decribed above to ascii file
   if (!pFile) { return kFALSE; }

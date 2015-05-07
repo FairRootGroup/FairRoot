@@ -78,20 +78,49 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   Format(Int_INC "${Int_INC}" "-I" "")
   Format(Int_DEF "${Int_DEF}" "-D" "")
 
-  set_source_files_properties(${Int_DICTIONARY} PROPERTIES GENERATED TRUE)
-  If (CMAKE_SYSTEM_NAME MATCHES Linux)
-    add_custom_command(OUTPUT  ${Int_DICTIONARY}
+  #---call rootcint / cling --------------------------------
+  set(OUTPUT_FILES ${Int_DICTIONARY})
+  if (ROOT_FOUND_VERSION GREATER 59999)
+    set(EXTRA_DICT_PARAMETERS "")
+    set(Int_ROOTMAPFILE ${LIBRARY_OUTPUT_PATH}/lib${Int_LIB}.rootmap)
+    set(Int_PCMFILE G__${Int_LIB}Dict_rdict.pcm)
+    set(OUTPUT_FILES ${OUTPUT_FILES} ${Int_PCMFILE} ${Int_ROOTMAPFILE})
+    set(EXTRA_DICT_PARAMETERS ${EXTRA_DICT_PARAMETERS}
+        -inlineInputHeader -rmf ${Int_ROOTMAPFILE} 
+        -rml ${Int_LIB}${CMAKE_SHARED_LIBRARY_SUFFIX})
+    set_source_files_properties(${OUTPUT_FILES} PROPERTIES GENERATED TRUE)
+    If (CMAKE_SYSTEM_NAME MATCHES Linux)
+      add_custom_command(OUTPUT  ${OUTPUT_FILES}
+                         COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:${_intel_lib_dirs}:$ENV{LD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} ${EXTRA_DICT_PARAMETERS} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
+                         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/${Int_PCMFILE} ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE} 
+                         DEPENDS ${Int_HDRS} ${Int_LINKDEF}
+                         )
+    Else (CMAKE_SYSTEM_NAME MATCHES Linux)
+      If (CMAKE_SYSTEM_NAME MATCHES Darwin)
+        add_custom_command(OUTPUT  ${OUTPUT_FILES}
+                           COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:$ENV{DYLD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} ${EXTRA_DICT_PARAMETERS} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
+                           COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/${Int_PCMFILE} ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE} 
+                           DEPENDS ${Int_HDRS} ${Int_LINKDEF}
+                           )
+      EndIf (CMAKE_SYSTEM_NAME MATCHES Darwin)
+    EndIf (CMAKE_SYSTEM_NAME MATCHES Linux)
+    install(FILES ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE} ${Int_ROOTMAPFILE} DESTINATION lib)
+  else (ROOT_FOUND_VERSION GREATER 59999)
+
+    If (CMAKE_SYSTEM_NAME MATCHES Linux)
+    add_custom_command(OUTPUT  ${OUTPUT_FILES}
                        COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:${_intel_lib_dirs}:$ENV{LD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
                        DEPENDS ${Int_HDRS} ${Int_LINKDEF}
                        )
-  Else (CMAKE_SYSTEM_NAME MATCHES Linux)
-    If (CMAKE_SYSTEM_NAME MATCHES Darwin)
-      add_custom_command(OUTPUT  ${Int_DICTIONARY}
-                         COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:$ENV{DYLD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
-                         DEPENDS ${Int_HDRS} ${Int_LINKDEF}
-                         )
-    EndIf (CMAKE_SYSTEM_NAME MATCHES Darwin)
-  EndIf (CMAKE_SYSTEM_NAME MATCHES Linux)
+    Else (CMAKE_SYSTEM_NAME MATCHES Linux)
+      If (CMAKE_SYSTEM_NAME MATCHES Darwin)
+        add_custom_command(OUTPUT  ${OUTPUT_FILES}
+                           COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:$ENV{DYLD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
+                           DEPENDS ${Int_HDRS} ${Int_LINKDEF}
+                           )
+      EndIf (CMAKE_SYSTEM_NAME MATCHES Darwin)
+    EndIf (CMAKE_SYSTEM_NAME MATCHES Linux)
+  endif (ROOT_FOUND_VERSION GREATER 59999)
 
 
 endmacro(ROOT_GENERATE_DICTIONARY_NEW)
@@ -259,7 +288,10 @@ Macro(GENERATE_LIBRARY)
     SET(Int_SRCS ${Int_SRCS} ${DICTIONARY})
   EndIf(LINKDEF)
 
-  ROOT_GENERATE_ROOTMAP()
+
+  If (ROOT_FOUND_VERSION LESS 59999)
+    ROOT_GENERATE_ROOTMAP()
+  EndIf()
 
   set(Int_DEPENDENCIES)
   foreach(d ${DEPENDENCIES})

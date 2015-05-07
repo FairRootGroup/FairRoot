@@ -200,7 +200,7 @@ void FairGeoMedium::getMediumPar(Double_t* params)
   params[9]=0.;
 }
 
-void FairGeoMedium::read(fstream& fin, Int_t aflag )
+void FairGeoMedium::read(std::fstream& fin, Int_t aflag )
 {
   // Reads the parameters from file
   autoflag=aflag;
@@ -266,7 +266,7 @@ void FairGeoMedium::print()
   cout<<'\n';
 }
 
-void FairGeoMedium::write (fstream& fout)
+void FairGeoMedium::write (std::fstream& fout)
 {
   // Writes the medium definition into stream
   const char* bl="  ";

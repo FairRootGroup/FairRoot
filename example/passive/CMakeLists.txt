@@ -39,6 +39,6 @@ Set(SRCS
 Set(HEADERS )
 Set(LINKDEF PassiveLinkDef.h)
 Set(LIBRARY_NAME Passive)
-Set(DEPENDENCIES Base GeoBase ParBase Geom Cint Core)
+Set(DEPENDENCIES Base GeoBase ParBase Geom Core)
 
 GENERATE_LIBRARY()

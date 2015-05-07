@@ -76,7 +76,7 @@ FairGeoCone::~FairGeoCone()
 }
 
 
-Int_t FairGeoCone::readPoints(fstream* pFile,FairGeoVolume* volu)
+Int_t FairGeoCone::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // reads the 4 'points' decribed above from ascii file
   // if the array of points is not existing in the volume it is created and
@@ -100,7 +100,7 @@ Int_t FairGeoCone::readPoints(fstream* pFile,FairGeoVolume* volu)
 }
 
 
-Bool_t FairGeoCone::writePoints(fstream* pFile,FairGeoVolume* volu)
+Bool_t FairGeoCone::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes the 4 'points' decribed above to ascii file
   if (!pFile) { return kFALSE; }

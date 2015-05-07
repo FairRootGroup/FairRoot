@@ -37,6 +37,6 @@ set(SRCS
 Set(HEADERS )
 Set(LINKDEF Tutorial2LinkDef.h)
 Set(LIBRARY_NAME Tutorial2)
-Set(DEPENDENCIES MCStack Base)# GeoBase ParBase VMC Physics Cint Core)
+Set(DEPENDENCIES MCStack Base)# GeoBase ParBase VMC Physics Core)
 
 GENERATE_LIBRARY()

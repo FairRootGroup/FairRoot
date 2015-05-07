@@ -144,7 +144,7 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
   close();
   if (fMerging ) {
     // used test merging
-    fstream* f = new fstream(fname);
+    std::fstream* f = new std::fstream(fname);
     if (f->good()) {
       // check if file already exists
       option = "UPDATE";

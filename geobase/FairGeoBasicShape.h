@@ -38,8 +38,8 @@ class FairGeoBasicShape : public TNamed
     TArrayD* getParam() {return param;}
     FairGeoTransform* getCenterPosition() {return center;}
     FairGeoTransform* getVoluPosition() {return position;}
-    virtual Int_t readPoints(fstream*,FairGeoVolume*);
-    virtual Bool_t writePoints(fstream*,FairGeoVolume*);
+    virtual Int_t readPoints(std::fstream*,FairGeoVolume*);
+    virtual Bool_t writePoints(std::fstream*,FairGeoVolume*);
     virtual void printPoints(FairGeoVolume* volu);
     virtual TArrayD* calcVoluParam(FairGeoVolume*) {return 0;}
     virtual void calcVoluPosition(FairGeoVolume*,const FairGeoTransform&);

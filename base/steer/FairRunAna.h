@@ -44,7 +44,7 @@ class FairRunAna : public FairRun
     /**initialize the run manager*/
     void        Init();
     /**Run from event number NStart to event number NStop */
-    void        Run(Int_t NStart ,Int_t NStop);
+    void        Run(Int_t NStart=0 ,Int_t NStop=0);
     /**Run over the whole input file with timpe window delta_t as unit (entry)*/
     void        Run(Double_t delta_t);
     /**Run for the given single entry*/

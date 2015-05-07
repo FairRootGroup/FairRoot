@@ -207,6 +207,7 @@ void FairModule::SetGeometryFileName(TString fname, TString geoVer)
   // If GEOMPATH is set, try to find the file there.
   // If there is no such file go on to look in the default location.
   TString userPath = getenv("GEOMPATH");
+  userPath.ReplaceAll("//","/");
   if ( ! userPath.IsNull() ) {
     if ( ! userPath.EndsWith("/") ) {
       userPath += "/";

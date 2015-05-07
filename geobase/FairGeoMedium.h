@@ -74,9 +74,9 @@ class FairGeoMedium  : public TNamed
     Int_t getFieldFlag() {return fldFlag;}
     Double_t getField() {return fld;}
     Double_t getEpsil() {return epsil;}
-    void read(fstream&, Int_t autoflag );
+    void read(std::fstream&, Int_t autoflag );
     void print();
-    void write (fstream&);
+    void write (std::fstream&);
     Bool_t calcRadiationLength();
   private:
     FairGeoMedium(const FairGeoMedium&);

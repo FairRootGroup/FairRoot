@@ -30,8 +30,8 @@ class FairGeoCons : public FairGeoBasicShape
     TArrayD* calcVoluParam(FairGeoVolume*);
     void calcVoluPosition(FairGeoVolume*,
                           const FairGeoTransform&,const FairGeoTransform&);
-    Int_t readPoints(fstream*,FairGeoVolume*);
-    Bool_t writePoints(fstream*,FairGeoVolume*);
+    Int_t readPoints(std::fstream*,FairGeoVolume*);
+    Bool_t writePoints(std::fstream*,FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);
     ClassDef(FairGeoCons,0) //
 };
