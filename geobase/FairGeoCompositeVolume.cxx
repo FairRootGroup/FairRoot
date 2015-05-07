@@ -51,7 +51,11 @@ FairGeoVolume* FairGeoCompositeVolume::getComponent(const Int_t n)
 
 void FairGeoCompositeVolume::createComponents(const Int_t n)
 {
-  if (components) { components->Delete(); }
+  if (components) { 
+    components->Delete(); 
+  } else {
+    components=new TObjArray();
+  }
   components->Expand(n);
 }
 

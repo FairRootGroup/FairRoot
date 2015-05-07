@@ -22,14 +22,11 @@
 
 #include <stdio.h>                      // for printf
 #include <string.h>                     // for NULL, strlen, strncpy
-#include <iostream>                     // for cout, endl
 #include <map>                          // for map
 #include <utility>                      // for pair
 
 using std::map;
 using std::pair;
-using std::cout;
-using std::endl;
 
 FairTutorialDet4GeoHandler::FairTutorialDet4GeoHandler()
   : TObject(),

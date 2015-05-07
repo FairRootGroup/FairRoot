@@ -112,8 +112,10 @@ Bool_t FairGeoPcon::writePoints(fstream* pFile,FairGeoVolume* volu)
     switch(i) {
     case 0:
       sprintf(buf,"%3i\n",(Int_t)v(0));
+      break;
     case 1:
       sprintf(buf,"%9.3f%10.3f\n",v(0),v(1));
+      break;
     default:
       sprintf(buf,"%9.3f%10.3f%10.3f\n",v(0),v(1),v(2));
     }
@@ -131,8 +133,10 @@ void FairGeoPcon::printPoints(FairGeoVolume* volu)
     switch(i) {
     case 0:
       printf("%3i\n",(Int_t)v(0));
+      break;
     case 1:
       printf("%9.3f%10.3f\n",v(0),v(1));
+      break;
     default:
       printf("%9.3f%10.3f%10.3f\n",v(0),v(1),v(2));
     }

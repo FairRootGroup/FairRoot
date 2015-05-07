@@ -54,11 +54,6 @@
 #include "FairDbMQ.h"
 
 
-
-using std::cout;
-using std::endl;
-
-
 class TClonesArray;
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 class FairTestDetectorMQRecoTask : public FairMQProcessorTask

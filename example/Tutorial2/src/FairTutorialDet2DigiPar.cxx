@@ -15,14 +15,10 @@
 #include "FairParamList.h"
 #include "FairDetParIo.h"
 #include "FairParIo.h"
-
+#include "FairLogger.h"
 #include "TString.h"
 #include "TMath.h"
 
-#include <iostream>
-
-using std::cout;
-using std::endl;
 
 // -----   Standard constructor   ------------------------------------------
 FairTutorialDet2DigiPar::FairTutorialDet2DigiPar(const char* name,
@@ -62,17 +58,18 @@ void FairTutorialDet2DigiPar::clear()
 void FairTutorialDet2DigiPar::printparams()
 {
 
-  cout <<"Print"<<endl;
-  cout << "ftutdetdigiparstation: " << ftutdetdigiparstation << endl;
+  LOG(INFO) <<"Print"<<FairLogger::endl;
+  LOG(INFO) << "ftutdetdigiparstation: " << ftutdetdigiparstation 
+	    << FairLogger::endl;
   Int_t size =  ftutdetdigiparsector.GetSize();
-  cout <<"size: " << size << endl;
+  LOG(INFO) <<"size: " << size << FairLogger::endl;
   for ( Int_t i=0; i< size; i++) {
-    cout << i <<" :" << ftutdetdigiparsector.GetAt(i) << endl;
+    LOG(INFO) << i <<" :" << ftutdetdigiparsector.GetAt(i) << FairLogger::endl;
   }
   size =  ftutdetdigipar->GetSize();
-  cout <<"size: " << size << endl;
+  LOG(INFO) <<"size: " << size << FairLogger::endl;
   for ( Int_t i=0; i< size; i++) {
-    cout << i <<" :" << ftutdetdigipar->GetAt(i) << endl;
+    LOG(INFO) << i <<" :" << ftutdetdigipar->GetAt(i) << FairLogger::endl;
   }
 
 }
@@ -81,7 +78,8 @@ void FairTutorialDet2DigiPar::printparams()
 void FairTutorialDet2DigiPar::putParams(FairParamList* l)
 {
   //   print();
-  cout << " I am in FairTutorialDet2DigiPar::putParams " << endl;
+  LOG(INFO) << "I am in FairTutorialDet2DigiPar::putParams " 
+	    << FairLogger::endl;
   if (!l) { return; }
   l->add("FairTutorialDet2DigiStations", ftutdetdigiparstation);
   l->add("FairTutorialDet2DigiSectorsPerStation", ftutdetdigiparsector);
@@ -90,7 +88,7 @@ void FairTutorialDet2DigiPar::putParams(FairParamList* l)
     count_sectors+=ftutdetdigiparsector[i];
   }
   Int_t array_size = (count_sectors * 10 + ftutdetdigiparstation * 3);
-  cout << "Array Size: " << array_size << endl;
+  LOG(INFO) << "Array Size: " << array_size << FairLogger::endl;
   /*   Float_t zwischen[array_size];
      for ( Int_t i=0; i< array_size; i++) {
        zwischen[i] = ftutdetdigipar.GetAt(i);
@@ -106,7 +104,8 @@ Bool_t FairTutorialDet2DigiPar::getParams(FairParamList* l)
 {
   //print();
 
-  cout << " I am in FairTutorialDet2DigiPar::getParams " << endl;
+  LOG(INFO) << "I am in FairTutorialDet2DigiPar::getParams " 
+	    << FairLogger::endl;
 
   if (!l) { return kFALSE; }
   if ( ! l->fill("FairTutorialDet2DigiStations", &ftutdetdigiparstation) ) { return kFALSE; }
@@ -118,14 +117,16 @@ Bool_t FairTutorialDet2DigiPar::getParams(FairParamList* l)
   for ( Int_t i=0; i< ftutdetdigiparstation; i++) {
     count_sectors+=ftutdetdigiparsector[i];
   }
-  cout << "Total number of sectors: " << count_sectors<<endl;
+  LOG(INFO) << "Total number of sectors: " << count_sectors
+	    <<FairLogger::endl;
 
   Int_t array_size = (count_sectors * 10 + ftutdetdigiparstation * 3);
-  cout << "Array Size: " << array_size << endl;
+  LOG(INFO) << "Array Size: " << array_size << FairLogger::endl;
   ftutdetdigipar->Set(array_size);
   //Float_t zwischen[array_size];
   if (!(l->fill("FairTutorialDet2DigiPar",ftutdetdigipar))) {
-    cout << "--W-- Could not initialize FairTutorialDet2DigiPar"<< endl;
+    LOG(WARNING) << "Could not initialize FairTutorialDet2DigiPar"
+		 << FairLogger::endl;
     return kFALSE;
   }
   //ftutdetdigipar.Set(array_size, zwischen);

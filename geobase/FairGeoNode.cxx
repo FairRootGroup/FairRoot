@@ -177,6 +177,7 @@ void FairGeoNode::print()
   cout<<"//----------------------------------------------------------\n";
   return;
 
+  /*
   cout<<((const char*)fName)<<'\n';
   if (pMother) { cout<<((const char*)mother)<<'\n'; }
   else { cout<<"-- unknown mother --\n"; }
@@ -191,6 +192,7 @@ void FairGeoNode::print()
   transform.getTransVector().print();
   transform.getRotMatrix().print();
   cout<<"//----------------------------------------------------------\n";
+  */
 }
 
 Bool_t FairGeoNode::write(fstream& fout)
@@ -330,7 +332,7 @@ Bool_t FairGeoNode::calcRefPos(FairGeoVector& refPos)
     refPos=node->getTransform().transFrom(refPos);
     node=node->getMotherNode();
     if (!node) {
-      Error("calcModuleTransform","Mother volume %s not found!",node->GetName());
+      Error("calcModuleTransform","Mother of volume %s not found!",GetName());
       return kFALSE;
     }
   } while (node&&!node->isModule());

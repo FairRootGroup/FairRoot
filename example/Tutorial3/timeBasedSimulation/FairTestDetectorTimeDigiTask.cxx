@@ -12,17 +12,14 @@
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi
 #include "FairTestDetectorDigiWriteoutBuffer.h"
 #include "FairTestDetectorPoint.h" // for FairTestDetectorPoint
+#include "FairLogger.h"
 
-#include "Riosfwd.h"      // for ostream
 #include "TClonesArray.h" // for TClonesArray
 #include "TMath.h"        // for Sqrt
 #include "TRandom.h"      // for TRandom, gRandom
 #include "TString.h"      // for TString
 
 #include <stddef.h> // for NULL
-#include <iostream> // for operator<<, basic_ostream, etc
-
-using namespace std;
 
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorTimeDigiTask::FairTestDetectorTimeDigiTask()
@@ -48,16 +45,16 @@ InitStatus FairTestDetectorTimeDigiTask::Init()
     FairRootManager* ioman = FairRootManager::Instance();
     if (!ioman)
     {
-        std::cout << "-E- FairTestDetectorTimeDigiTask::Init: " /// todo replace with logger!
-                  << "RootManager not instantiated!" << std::endl;
+        LOG(ERROR) << "FairTestDetectorTimeDigiTask::Init: " 
+		   << "RootManager not instantiated!" << FairLogger::endl;
         return kFATAL;
     }
 
     fPointArray = (TClonesArray*)ioman->GetObject("FairTestDetectorPoint");
     if (!fPointArray)
     {
-        std::cout << "-W- FairTestDetectorTimeDigiTask::Init: "
-                  << "No Point array!" << std::endl;
+        LOG(WARNING) << "FairTestDetectorTimeDigiTask::Init: "
+		     << "No Point array!" << FairLogger::endl;
         return kERROR;
     }
 
@@ -77,7 +74,9 @@ void FairTestDetectorTimeDigiTask::Exec(Option_t* opt)
 
     // fill the map
 
-    std::cout << "EventTime: " << FairRootManager::Instance()->GetEventTime() << std::endl;
+    LOG(INFO) << "EventTime: " 
+	      << FairRootManager::Instance()->GetEventTime() 
+	      << FairLogger::endl;
 
     for (int ipnt = 0; ipnt < fPointArray->GetEntries(); ipnt++)
     {

@@ -36,10 +36,6 @@
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include <stdio.h>                      // for NULL, printf
-#include <iostream>                     // for operator<<, cout, endl, etc
-
-using std::cout;
-using std::endl;
 
 FairTutorialDet4::FairTutorialDet4()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
@@ -224,7 +220,7 @@ void FairTutorialDet4::ConstructGeometry()
     LOG(INFO)<<"Constructing Tutorial4 geometry from ROOT file "<<fileName<<FairLogger::endl;
     ConstructRootGeometry();
   } else {
-    std::cout << "Geometry format not supported." << std::endl;
+    LOG(FATAL) << "Geometry format not supported." << FairLogger::endl;
   }
 }
 
@@ -315,7 +311,7 @@ void FairTutorialDet4::ModifyGeometryByFullPath()
     volPath  = volStr;
     volPath += iDet;
 
-    cout<<"Path: "<<volPath<<endl;
+    LOG(INFO) << "Path: "<< volPath << FairLogger::endl;
     gGeoManager->cd(volPath);
     TGeoHMatrix* g3 = gGeoManager->GetCurrentMatrix();
 //      g3->Print();

@@ -97,7 +97,7 @@ void FairGeoCave::addRefNodes()
 void FairGeoCave::write(fstream& fout)
 {
   // Writes the geometry to file
-  fout.setf(ios::fixed,ios::floatfield);
+  std::ios_base::fmtflags tmp = fout.setf(ios::fixed,ios::floatfield);
   FairGeoNode* volu=getVolume(name);
   if (volu) {
     FairGeoBasicShape* sh=volu->getShapePointer();
@@ -107,6 +107,7 @@ void FairGeoCave::write(fstream& fout)
       sh->writePoints(&fout,volu);
     }
   }
+  fout.setf(tmp);
 }
 
 void FairGeoCave::print()

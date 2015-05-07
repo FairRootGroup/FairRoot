@@ -7,12 +7,7 @@
  ********************************************************************************/
 #include "FairTutorialDet4Point.h"
 
-#include "Riosfwd.h"                    // for ostream
-
-#include <iostream>                     // for operator<<, basic_ostream, etc
-
-using std::cout;
-using std::endl;
+#include "FairLogger.h"
 
 // -----   Default constructor   -------------------------------------------
 FairTutorialDet4Point::FairTutorialDet4Point()
@@ -38,14 +33,16 @@ FairTutorialDet4Point::~FairTutorialDet4Point() { }
 // -----   Public method Print   -------------------------------------------
 void FairTutorialDet4Point::Print(const Option_t* opt) const
 {
-  cout << "-I- FairTutorialDet4Point: TutorialDet point for track " << fTrackID
-       << " in detector " << fDetectorID << endl;
-  cout << "    Position (" << fX << ", " << fY << ", " << fZ
-       << ") cm" << endl;
-  cout << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
-       << ") GeV" << endl;
-  cout << "    Time " << fTime << " ns,  Length " << fLength
-       << " cm,  Energy loss " << fELoss*1.0e06 << " keV" << endl;
+  LOG(INFO) << "-I- FairTutorialDet4Point: TutorialDet point for track " 
+	    << fTrackID
+	    << " in detector " << fDetectorID << FairLogger::endl;
+  LOG(INFO) << "    Position (" << fX << ", " << fY << ", " << fZ
+	    << ") cm" << FairLogger::endl;
+  LOG(INFO) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
+	    << ") GeV" << FairLogger::endl;
+  LOG(INFO) << "    Time " << fTime << " ns,  Length " << fLength
+	    << " cm,  Energy loss " << fELoss*1.0e06 << " keV" 
+	    << FairLogger::endl;
 }
 // -------------------------------------------------------------------------
 
