@@ -386,7 +386,7 @@ void FairRunOnline::GenerateHtml()
   htmlName.Remove(htmlName.Length()-4, htmlName.Length()-1);
   htmlName += TString("html");
 
-  ofstream* ofile = new ofstream(htmlName);
+  std::ofstream* ofile = new std::ofstream(htmlName);
   (*ofile) << "<?xml version=\"1.0\" encoding=\"utf-8\"?>" << endl
            << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"" << endl
            << "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1transitional.dtd\">" << endl

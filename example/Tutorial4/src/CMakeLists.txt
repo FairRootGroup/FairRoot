@@ -52,7 +52,7 @@ set(NO_DICT_SRCS tools/Mille.cc)
 Set(HEADERS )
 Set(LINKDEF Tutorial4LinkDef.h)
 Set(LIBRARY_NAME Tutorial4)
-Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Cint Core)
+Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Core)
 
 GENERATE_LIBRARY()
 

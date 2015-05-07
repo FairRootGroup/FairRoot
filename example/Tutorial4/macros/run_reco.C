@@ -39,9 +39,10 @@ void run_reco( TString mcEngine="TGeant3" )
 
   TString workDir = gSystem->Getenv("VMCWORKDIR");
   paramDir = workDir + "/Tutorial4/parameters/";
+  TString paramFile = paramDir + "example.par";
 
-//  TObjString tutDetDigiFile = paramDir + "TutorialDet.missallign.par";
-  TObjString tutDetDigiFile = paramDir + "example.par";
+  TObjString tutDetDigiFile;
+  tutDetDigiFile.SetString(paramFile);                                         
   parFileList->Add(&tutDetDigiFile);
 
   // -----   Timer   --------------------------------------------------------

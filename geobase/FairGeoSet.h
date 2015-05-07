@@ -61,11 +61,11 @@ class  FairGeoSet : public TNamed
     TString description;    /** description of the version*/
 
     FairGeoSet();
-    void readInout(fstream&);
-    void readTransform(fstream&,FairGeoTransform&);
-    Bool_t readVolumeParams(fstream&,FairGeoMedia*,FairGeoNode*,TList* l=0);
-    Bool_t readKeepIn(fstream&,FairGeoMedia*,TString&);
-    Bool_t readModule(fstream&,FairGeoMedia*,TString&,TString&,Bool_t a=kFALSE);
+    void readInout(std::fstream&);
+    void readTransform(std::fstream&,FairGeoTransform&);
+    Bool_t readVolumeParams(std::fstream&,FairGeoMedia*,FairGeoNode*,TList* l=0);
+    Bool_t readKeepIn(std::fstream&,FairGeoMedia*,TString&);
+    Bool_t readModule(std::fstream&,FairGeoMedia*,TString&,TString&,Bool_t a=kFALSE);
   public :
     virtual ~FairGeoSet();
     void setShapes(FairGeoShapes* s) {pShapes=s;}
@@ -91,9 +91,9 @@ class  FairGeoSet : public TNamed
     virtual const char* getEleName(Int_t) {return 0;}
     virtual Int_t getSecNumInMod(const TString&) {return -1;}
     virtual Int_t getModNumInMod(const TString&) {return 0;}
-    virtual Bool_t read(fstream&,FairGeoMedia*);
+    virtual Bool_t read(std::fstream&,FairGeoMedia*);
     virtual void addRefNodes() {}
-    virtual void write(fstream&);
+    virtual void write(std::fstream&);
     virtual void print();
     virtual Bool_t create(FairGeoBuilder*);
     void compare(FairGeoSet&);

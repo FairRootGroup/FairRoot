@@ -25,7 +25,7 @@
 
 using std::ios;
 
-FairDetParAsciiFileIo::FairDetParAsciiFileIo(fstream* f)
+FairDetParAsciiFileIo::FairDetParAsciiFileIo(std::fstream* f)
   :FairDetParIo(),
    fHeader(""),
    sepLine("##############################################################################\n"),
@@ -159,7 +159,7 @@ void FairDetParAsciiFileIo::writeComment(FairParSet* pPar)
 
 ClassImp(FairDetParAsciiFileIo)
 /*
-FairDetParAsciiFileIo::FairDetParAsciiFileIo(fstream* f) {
+FairDetParAsciiFileIo::FairDetParAsciiFileIo(std::fstream* f) {
   // constructor
   pFile=f;
   sepLine=

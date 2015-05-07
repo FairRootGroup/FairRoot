@@ -68,7 +68,7 @@ FairGeoBasicShape.cxx
 Set(HEADERS )
 Set(LINKDEF GeoBaseLinkDef.h)
 Set(LIBRARY_NAME GeoBase)
-Set(DEPENDENCIES Geom Graf3d Cint Core FairTools)
+Set(DEPENDENCIES Geom Graf3d Core FairTools)
 
 GENERATE_LIBRARY()
 

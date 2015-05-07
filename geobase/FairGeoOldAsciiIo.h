@@ -30,7 +30,7 @@ class FairGeoOldAsciiIo: public FairGeoIo
     TString  filename;
     TString  filedir;
     Bool_t   writable;
-    fstream* file;
+    std::fstream* file;
   public:
     FairGeoOldAsciiIo();
     ~FairGeoOldAsciiIo();

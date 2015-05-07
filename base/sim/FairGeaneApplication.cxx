@@ -47,8 +47,8 @@ FairGeaneApplication::FairGeaneApplication(Bool_t Debug)
 FairGeaneApplication::~FairGeaneApplication()
 {
 // Destructor
-  delete gMC;
-  gMC=0;
+//  delete gMC;
+//  gMC=0;
 }
 //_____________________________________________________________________________
 

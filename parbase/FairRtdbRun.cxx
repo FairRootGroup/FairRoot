@@ -150,7 +150,7 @@ void FairRtdbRun::print()
   }
 }
 
-void FairRtdbRun::write(fstream& fout)
+void FairRtdbRun::write(std::fstream& fout)
 {
   // writes the list of container versions for this run to fstream
   fout<<"run: "<<GetName()<<'\n';

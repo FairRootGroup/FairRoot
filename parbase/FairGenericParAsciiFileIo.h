@@ -22,7 +22,7 @@ class TString;
 class FairGenericParAsciiFileIo : public FairDetParAsciiFileIo
 {
   public:
-    FairGenericParAsciiFileIo(fstream* f=0);
+    FairGenericParAsciiFileIo(std::fstream* f=0);
     ~FairGenericParAsciiFileIo() {}
     Bool_t init(FairParSet*);
     Int_t write(FairParSet*);

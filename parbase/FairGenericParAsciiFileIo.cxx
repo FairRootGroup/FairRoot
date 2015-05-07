@@ -33,7 +33,7 @@ using std::ios;
 
 ClassImp(FairGenericParAsciiFileIo)
 
-FairGenericParAsciiFileIo::FairGenericParAsciiFileIo(fstream *f)
+FairGenericParAsciiFileIo::FairGenericParAsciiFileIo(std::fstream *f)
     : FairDetParAsciiFileIo(f) {
   // constructor
   // sets the name of the I/O class "FairGenericParIo"

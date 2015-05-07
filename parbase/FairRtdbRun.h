@@ -65,7 +65,7 @@ class FairRtdbRun : public TNamed
     void resetInputVersions();
     void resetOutputVersions();
     void print();
-    void write(fstream&);
+    void write(std::fstream&);
 
   private:
     FairRtdbRun& operator=(const FairRtdbRun&);

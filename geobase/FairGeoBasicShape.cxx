@@ -62,7 +62,7 @@ FairGeoBasicShape::~FairGeoBasicShape()
 }
 
 
-Int_t FairGeoBasicShape::readPoints(fstream* pFile,FairGeoVolume* volu)
+Int_t FairGeoBasicShape::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // reads nPoints with 3 components from Ascii file
   // if the array of points is not existing in the volume it is created and
@@ -82,7 +82,7 @@ Int_t FairGeoBasicShape::readPoints(fstream* pFile,FairGeoVolume* volu)
 }
 
 
-Bool_t FairGeoBasicShape::writePoints(fstream* pFile,FairGeoVolume* volu)
+Bool_t FairGeoBasicShape::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes nPoints with 3 components to Ascii file
   if (!pFile) { return kFALSE; }

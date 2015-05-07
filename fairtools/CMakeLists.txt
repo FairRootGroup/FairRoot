@@ -34,6 +34,6 @@ set(SRCS
 Set(HEADERS )
 Set(LINKDEF FairToolsLinkDef.h)
 Set(LIBRARY_NAME FairTools)
-Set(DEPENDENCIES Cint Core)
+Set(DEPENDENCIES Core)
 
 GENERATE_LIBRARY()
