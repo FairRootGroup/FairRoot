@@ -13,16 +13,13 @@
 #include "FairTSBufferFunctional.h" // for StopTime
 #include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
 #include "FairTestDetectorHit.h"    // for FairTestDetectorHit
+#include "FairLogger.h"
 
-#include "Riosfwd.h"      // for ostream
 #include "TClonesArray.h" // for TClonesArray
 #include "TMath.h"        // for Sqrt
 #include "TVector3.h"     // for TVector3
 
 #include <stddef.h> // for NULL
-#include <iostream> // for operator<<, basic_ostream, etc
-
-using namespace std;
 
 // -----   Default constructor   -------------------------------------------
 FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask()
@@ -57,16 +54,16 @@ InitStatus FairTestDetectorTimeRecoTask::Init()
     FairRootManager* ioman = FairRootManager::Instance();
     if (!ioman)
     {
-        std::cout << "-E- FairTestDetectorTimeRecoTask::Init: " /// todo replace with logger!
-                  << "RootManager not instantiated!" << std::endl;
+      LOG(ERROR) <<"FairTestDetectorTimeRecoTask::Init: "
+		 << "RootManager not instantiated!" << FairLogger::endl;
         return kFATAL;
     }
 
     fDigiArray = (TClonesArray*)ioman->GetObject("FairTestDetectorSortedDigi");
     if (!fDigiArray)
     {
-        std::cout << "-W- FairTestDetectorTimeRecoTask::Init: "
-                  << "No Point array!" << std::endl;
+      LOG(WARNING) << "FairTestDetectorTimeRecoTask::Init: "
+		   << "No Point array!" << FairLogger::endl;
         return kERROR;
     }
 
@@ -88,7 +85,9 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* opt)
     if (FairRunAna::Instance()->IsTimeStamp())
     {
         fDigiArray = FairRootManager::Instance()->GetData("FairTestDetectorSortedDigi", fFunctor, FairRootManager::Instance()->GetEventTime() + 200);
-        //    std::cout << "EventTime: " << FairRootManager::Instance()->GetEventTime() << std::endl;
+        //    LOG(INFO) << "EventTime: " 
+        //              << FairRootManager::Instance()->GetEventTime() 
+	//              << FairLogger::endl;
     }
 
     // fill the map
@@ -98,7 +97,7 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* opt)
         FairTestDetectorDigi* digi = (FairTestDetectorDigi*)fDigiArray->At(ipnt);
         if (!digi)
         {
-            std::cout << "-W- No digi!";
+	  LOG(WARNING)  << "No digi!" << FairLogger::endl;
             continue;
         }
 

@@ -12,16 +12,15 @@
  *      Author: stockman
  */
 
-#include <FairTestDetectorDigiSorterTask.h>
+#include "FairTestDetectorDigiSorterTask.h"
 
+#include "FairLogger.h"
 #include "FairRootManager.h"      // for FairRootManager
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi, etc
 #include "FairTestDetectorDigiRingSorter.h"
 
-#include "Riosfwd.h"      // for ostream
 #include "TClonesArray.h" // for TClonesArray
 
-#include <iostream> // for ostream, cout, operator<<, etc
 
 class FairRingSorter;
 class FairTimeStamp;
@@ -44,8 +43,9 @@ void FairTestDetectorDigiSorterTask::AddNewDataToTClonesArray(FairTimeStamp* dat
     TClonesArray* myArray = ioman->GetTClonesArray(fOutputBranch);
     if (fVerbose > 1)
     {
-        std::cout << "-I- FairTestDetectorDigiSorterTask::AddNewDataToTClonesArray Data: ";
-        std::cout << *(FairTestDetectorDigi*)(data) << std::endl;
+        LOG(INFO) << "AddNewDataToTClonesArray Data: "
+		  << FairLogger::endl;
+        LOG(INFO) << static_cast<FairTestDetectorDigi*>(data)->ToString();
     }
     new ((*myArray)[myArray->GetEntries()]) FairTestDetectorDigi(*(FairTestDetectorDigi*)(data));
 }

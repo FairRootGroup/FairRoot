@@ -268,7 +268,12 @@ void FairRunAna::Init()
       
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
-      fRunId = fMCHeader->GetRunID();
+      if(fMCHeader) {
+	fRunId = fMCHeader->GetRunID();
+      } else {
+	LOG(FATAL) << "Could not find a EventHeader nor a MCEventHeader."
+		   << FairLogger::endl;
+      }
       fEvtHeader->SetRunId(fRunId);
       fRootManager->SetEvtHeaderNew(kTRUE);
     }
@@ -347,12 +352,24 @@ void FairRunAna::InitContainers()
     fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObjectFromInTree("EventHeader."));
     fMCHeader  = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObjectFromInTree("MCEventHeader."));
 
-    if ( fMCHeader != 0 ) {
+    if ( fMCHeader ) {
       fRunId = fMCHeader->GetRunID();
-      fEvtHeader->SetRunId(fRunId); // should i do it?
+      if (fEvtHeader) {
+	fEvtHeader->SetRunId(fRunId); // should i do it?
+      }else {
+	LOG(FATAL) << "Could not find a EventHeader nor a MCEventHeader."
+		   << FairLogger::endl;
+	exit(42);
+      }
       fRootManager->SetEvtHeaderNew(kTRUE);
     } else {
-      fRunId = fEvtHeader->GetRunId();
+      if (fEvtHeader) {
+	fRunId = fEvtHeader->GetRunId();
+      }else {
+	LOG(FATAL) << "Could not find a EventHeader nor a MCEventHeader."
+		   << FairLogger::endl;
+	exit(42);
+      }
     }
 
     //Copy the Event Header Info to Output

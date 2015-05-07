@@ -20,6 +20,7 @@
 #include "FairTutorialDet1GeoPar.h"     // for FairTutorialDet1GeoPar
 #include "FairTutorialDet1Point.h"      // for FairTutorialDet1Point
 #include "FairVolume.h"                 // for FairVolume
+#include "FairLogger.h"                 // for logging
 
 #include "Riosfwd.h"                    // for ostream
 #include "TClonesArray.h"               // for TClonesArray
@@ -30,10 +31,6 @@
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include <stddef.h>                     // for NULL
-#include <iostream>                     // for cout, endl, operator<<, etc
-
-using std::cout;
-using std::endl;
 
 FairTutorialDet1::FairTutorialDet1()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
@@ -80,7 +77,7 @@ Bool_t  FairTutorialDet1::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
 
-  cout << "In FairTutorialDet1::ProcessHits" << endl;
+  LOG(DEBUG) << "In FairTutorialDet1::ProcessHits" << FairLogger::endl;
   //Set parameters at entrance of volume. Reset ELoss.
   if ( gMC->IsTrackEntering() ) {
     fELoss  = 0.;

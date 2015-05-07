@@ -134,11 +134,11 @@ void FairGeoSet::readInout(fstream& fin)
   // Reads the inout flag (in old files)
   char c=' ';
   do {
-    c=fin.get();
+    fin.get(c);
   } while (c==' ' || c=='\n');
   if (c!='0'&&c!='1') { fin.putback(c); }
   else do {
-      c=fin.get();
+      fin.get(c);
     } while (c!='\n');
   return;
 }
@@ -186,9 +186,9 @@ Bool_t FairGeoSet::readVolumeParams(fstream& fin,FairGeoMedia* media,
     //  cout << " read copies in Hades format " << endl;
 
     if (nameLength>4) {
-      char c;
+      char c=' ';
       do {
-        c=fin.get();
+        fin.get(c);
       } while (c==' ' || c=='\n');
       Int_t i=(Int_t)c ;
       fin.putback(c);
@@ -216,7 +216,7 @@ Bool_t FairGeoSet::readVolumeParams(fstream& fin,FairGeoMedia* media,
     if (l>0) {
       char c;
       do {
-        c=fin.get();
+        fin.get(c);
       } while (c==' ' || c=='\n');
       Int_t i=(Int_t)c;
       fin.putback(c);
@@ -360,12 +360,13 @@ void FairGeoSet::print()
   if (!description.IsNull()) {
     cout<<"//----------------------------------------------------------\n";
   }
-  cout.setf(ios::fixed,ios::floatfield);
+  std::ios_base::fmtflags tmp = cout.setf(ios::fixed,ios::floatfield);
   TListIter iter(volumes);
   FairGeoNode* volu;
   while((volu=(FairGeoNode*)iter.Next())) {
     volu->print();
   }
+  cout.setf(tmp);
 }
 
 void FairGeoSet::write(fstream& fout)
@@ -374,13 +375,14 @@ void FairGeoSet::write(fstream& fout)
   if (!author.IsNull()) { fout<<"//Author:      "<<author<<'\n'; }
   if (!description.IsNull()) { fout<<"//Description: "<<description<<'\n'; }
   fout<<"//----------------------------------------------------------\n";
-  fout.setf(ios::fixed,ios::floatfield);
+  std::ios_base::fmtflags tmp = fout.setf(ios::fixed,ios::floatfield);
   TListIter iter(volumes);
   FairGeoNode* volu;
   Bool_t rc=kTRUE;
   while((volu=(FairGeoNode*)iter.Next())&&rc) {
     rc=volu->write(fout);
   }
+  fout.setf(tmp);
 }
 
 Bool_t FairGeoSet::create(FairGeoBuilder* builder)

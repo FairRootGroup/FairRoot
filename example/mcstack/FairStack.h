@@ -51,7 +51,6 @@
 class TClonesArray;
 class TParticle;
 class TRefArray;
-class FairLogger;
 
 class FairStack : public FairGenericStack
 {
@@ -207,9 +206,6 @@ class FairStack : public FairGenericStack
     virtual FairGenericStack* CloneStack() const { return new FairStack(); }
 
   private:
-    /** FairLogger for debugging and info */
-    FairLogger* fLogger;
-
     /** STL stack (FILO) used to handle the TParticles for tracking **/
     std::stack<TParticle*>  fStack;           //!
 

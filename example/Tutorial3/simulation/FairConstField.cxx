@@ -14,14 +14,15 @@
 #include "FairConstPar.h"  // for FairConstPar
 #include "FairRun.h"       // for FairRun
 #include "FairRuntimeDb.h" // for FairRuntimeDb
+#include "FairLogger.h"    // for logging
 
 #include "Riosfwd.h" // for ostream
 #include "TString.h" // for operator<<, TString
 
 #include <iomanip>  // for operator<<, setw
-#include <iostream> // for operator<<, basic_ostream, etc
 
-using namespace std;
+using std::setw;
+using std::setprecision;
 
 // -----   Default constructor   -------------------------------------------
 FairConstField::FairConstField()
@@ -81,7 +82,7 @@ FairConstField::FairConstField(FairConstPar* fieldPar)
 {
     if (!fieldPar)
     {
-        cerr << "-W- FairConstField::FairConstField: empty parameter container!" << endl;
+      LOG(WARNING) << "empty parameter container!" << FairLogger::endl;
         fType = -1;
     }
     else
@@ -163,25 +164,31 @@ Double_t FairConstField::GetBz(Double_t x, Double_t y, Double_t z)
 // -----   Screen output   -------------------------------------------------
 void FairConstField::Print()
 {
-    cout << "======================================================" << endl;
-    cout << "----  " << fTitle << " : " << fName << endl;
-    cout << "----" << endl;
-    cout << "----  Field type    : constant" << endl;
-    cout << "----" << endl;
-    cout << "----  Field regions : " << endl;
-    cout << "----        x = " << setw(4) << fXmin << " to " << setw(4) << fXmax << " cm" << endl;
-    cout << "----        y = " << setw(4) << fYmin << " to " << setw(4) << fYmax << " cm" << endl;
-    cout << "----        z = " << setw(4) << fZmin << " to " << setw(4) << fZmax << " cm" << endl;
-    cout.precision(4);
-    cout << "----  B = ( " << fBx << ", " << fBy << ", " << fBz << " ) kG" << endl;
-    cout << "======================================================" << endl;
+    LOG(INFO) << "======================================================" 
+	      << FairLogger::endl;
+    LOG(INFO) << "----  " << fTitle << " : " << fName << FairLogger::endl;
+    LOG(INFO) << "----" << FairLogger::endl;
+    LOG(INFO) << "----  Field type    : constant" << FairLogger::endl;
+    LOG(INFO) << "----" << FairLogger::endl;
+    LOG(INFO) << "----  Field regions : " << FairLogger::endl;
+    LOG(INFO) << "----        x = " << setw(4) << fXmin << " to " << setw(4) 
+	      << fXmax << " cm" << FairLogger::endl;
+    LOG(INFO) << "----        y = " << setw(4) << fYmin << " to " << setw(4) 
+	      << fYmax << " cm" << FairLogger::endl;
+    LOG(INFO) << "----        z = " << setw(4) << fZmin << " to " << setw(4) 
+	      << fZmax << " cm" << FairLogger::endl;
+    LOG(INFO) << "----  B = ( " << setprecision(4) << fBx << ", " << fBy 
+	      << ", " << fBz << " ) kG" << FairLogger::endl;
+    LOG(INFO) << "======================================================" 
+	      << FairLogger::endl;
 }
 // -------------------------------------------------------------------------
 // ---------   Fill the parameters   --------------------------------------------
 void FairConstField::FillParContainer()
 {
     TString MapName = GetName();
-    //  cout << "FairConstField::FillParContainer() " << endl;
+    //  LOG(INFO) << "FairConstField::FillParContainer() " 
+    //            << FairLogger::endl;
     FairRun* fRun = FairRun::Instance();
     FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
     Bool_t kParameterMerged = kTRUE;
