@@ -20,7 +20,6 @@ void basiclibs()
   gSystem->Load("libVMC");
   gSystem->Load("libEGPythia6");
   gSystem->Load("libPythia6");  
-  gSystem->Load("libPluto");  
   gSystem->Load("libMinuit");
   gSystem->Load("libTree"); 
   */

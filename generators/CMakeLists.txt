@@ -9,14 +9,10 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-# Check for gcc version, since for gcc 4 one has to add friend-injection
-# as option to compile FairPlutoGenerator
 EXEC_PROGRAM( gcc ARGS "-dumpversion" OUTPUT_VARIABLE GCC_VERSION )
 STRING(REGEX REPLACE "^([0-9]+)\\.[0-9]+\\.[0-9]" "\\1" req_gcc_major_vers "${GCC_VERSION}")
 STRING(REGEX REPLACE "^[0-9]+\\.([0-9]+)\\.[0-9]" "\\1" req_gcc_minor_vers "${GCC_VERSION}")
 IF(${req_gcc_major_vers} MATCHES "4" AND NOT ${req_gcc_minor_vers} MATCHES "0")
-#  SET_SOURCE_FILES_PROPERTIES(FairPlutoGenerator.cxx PROPERTIES COMPILE_FLAGS
-#  "-ffriend-injection")
 ENDIF(${req_gcc_major_vers} MATCHES "4" AND NOT ${req_gcc_minor_vers} MATCHES "0")
 
 
@@ -35,7 +31,6 @@ Set(INCLUDE_DIRECTORIES
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
   ${ROOT_INCLUDE_DIR}
-  ${PLUTO_INCLUDE_DIR} 
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})
@@ -43,7 +38,6 @@ Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
-  ${PLUTO_LIBRARY_DIR}
 )
  
 Link_Directories(${LINK_DIRECTORIES})
@@ -53,10 +47,8 @@ Set(SRCS
   FairBoxGenerator.cxx      
   FairIonGenerator.cxx      
   FairParticleGenerator.cxx 
-  FairShieldGenerator.cxx   
-  # FairPlutoGenerator.cxx    
-  # FairPlutoReactionGenerator.cxx    
-  FairUrqmdGenerator.cxx    
+  FairShieldGenerator.cxx
+  FairUrqmdGenerator.cxx
   FairEvtGenGenerator.cxx
 )
 
