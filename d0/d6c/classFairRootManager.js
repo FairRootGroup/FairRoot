@@ -139,7 +139,6 @@ var classFairRootManager =
     [ "fGapTime", "d0/d6c/classFairRootManager.html#afa28195e50fcbfbe5d68720ec87ab765", null ],
     [ "fgInstance", "d0/d6c/classFairRootManager.html#a3896d9ec60dc603cff49134b74b02267", null ],
     [ "fInputBranchMap", "d0/d6c/classFairRootManager.html#a7a81520eff0df13c3dac91dd943ba375", null ],
-    [ "fLogger", "d0/d6c/classFairRootManager.html#ae290a8c0e3509c25841ff43a58b8f49c", null ],
     [ "fMap", "d0/d6c/classFairRootManager.html#abfbda91cd0379d4a4f536ad703c65ae6", null ],
     [ "fMCHeader", "d0/d6c/classFairRootManager.html#a79e9ce14077982cae9223052962b660e", null ],
     [ "fMixAllInputs", "d0/d6c/classFairRootManager.html#ab9455e4269a800ef0c3b367274fd98df", null ],

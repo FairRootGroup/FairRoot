@@ -7,7 +7,7 @@ var classFairParAsciiFileIo =
     [ "check", "d1/d95/classFairParAsciiFileIo.html#ae16fffea83e25573bc1df6b61f1cf19b", null ],
     [ "close", "d1/d95/classFairParAsciiFileIo.html#ac6c671e7044110956f35e98446c3b2bc", null ],
     [ "getDetParIo", "d1/d95/classFairParAsciiFileIo.html#afa9d6096a7a53fe99bd5f188f38f7799", null ],
-    [ "getFile", "d1/d95/classFairParAsciiFileIo.html#a64adfedf6e04b9dc4195d358b35c1be4", null ],
+    [ "getFile", "d1/d95/classFairParAsciiFileIo.html#a2876fcd321e3f7c84c193726b7b64da5", null ],
     [ "getFilename", "d1/d95/classFairParAsciiFileIo.html#a6776d3b63b34c1dbf9795c16643966be", null ],
     [ "isAutoWritable", "d1/d95/classFairParAsciiFileIo.html#a7b02d6df86044bfa4c7a0ba00e126cc2", null ],
     [ "open", "d1/d95/classFairParAsciiFileIo.html#ade967fe3135a3457c9c2cc3eef42de3c", null ],
@@ -22,6 +22,6 @@ var classFairParAsciiFileIo =
     [ "setInputNumber", "d1/d95/classFairParAsciiFileIo.html#a8fbceefc0f780d77376302a27d36dbd8", null ],
     [ "autoWritable", "d1/d95/classFairParAsciiFileIo.html#af97d3fcc21befa9e231a8bcccd16231c", null ],
     [ "detParIoList", "d1/d95/classFairParAsciiFileIo.html#a50b208c803f2e0aa9245c5d94dda2d9e", null ],
-    [ "file", "d1/d95/classFairParAsciiFileIo.html#ad1726e9ca254a586d2a2f7c53ba1685f", null ],
+    [ "file", "d1/d95/classFairParAsciiFileIo.html#a907663649bfc656886034d2173d7e8c0", null ],
     [ "filename", "d1/d95/classFairParAsciiFileIo.html#afae33acf8c035e8b6a3fcd883b8cd06b", null ]
 ];

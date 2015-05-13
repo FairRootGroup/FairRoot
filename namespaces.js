@@ -6,5 +6,7 @@ var namespaces =
     [ "google", "df/d40/namespacegoogle.html", "df/d40/namespacegoogle" ],
     [ "MyPodData", "db/df2/namespaceMyPodData.html", null ],
     [ "sampler", "dc/d85/namespacesampler.html", null ],
-    [ "TestDetectorPayload", "d6/d1e/namespaceTestDetectorPayload.html", null ]
+    [ "std", "d8/dcc/namespacestd.html", null ],
+    [ "TestDetectorPayload", "d6/d1e/namespaceTestDetectorPayload.html", null ],
+    [ "TestDetectorProto", "db/db1/namespaceTestDetectorProto.html", null ]
 ];

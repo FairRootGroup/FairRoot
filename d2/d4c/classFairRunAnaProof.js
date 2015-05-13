@@ -89,7 +89,6 @@ var classFairRunAnaProof =
     [ "fIsInitialized", "d2/d4c/classFairRunAnaProof.html#a20d63cdae946315e00e573d43626c496", null ],
     [ "fIsMaster", "d2/d4c/classFairRunAnaProof.html#aae2d050830ca5dcd2be4fa91e1cfa161", null ],
     [ "fLoadGeo", "d2/d4c/classFairRunAnaProof.html#af657aea498a18c2a05af79f0a31bbe30", null ],
-    [ "fLogger", "d2/d4c/classFairRunAnaProof.html#a7fe0f2cc4c6828ffc4b37e3bc879d304", null ],
     [ "fMCHeader", "d2/d4c/classFairRunAnaProof.html#a3c3ad0178c0ec1693137b016f40031b3", null ],
     [ "fMixedInput", "d2/d4c/classFairRunAnaProof.html#a4277ecc781830b8fe18ff923e37e8f99", null ],
     [ "fOutFile", "d2/d4c/classFairRunAnaProof.html#a1b9b764a0229de8571fa351968848a62", null ],

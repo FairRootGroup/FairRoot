@@ -38,7 +38,6 @@ var classFairFileSource =
     [ "fInputTitle", "d2/d60/classFairFileSource.html#aad160865fa088dffc82b243aa5003652", null ],
     [ "fInTree", "d2/d60/classFairFileSource.html#ae54f0444f66f3b01aff3863a38dfff45", null ],
     [ "fListFolder", "d2/d60/classFairFileSource.html#aff95eed5485e773b41bdd3d12c9cdce1", null ],
-    [ "fLogger", "d2/d60/classFairFileSource.html#ac870f10ab49c7e81de4056c488392ed1", null ],
     [ "fNoOfEntries", "d2/d60/classFairFileSource.html#a1f5ec15136bcb38ca1500c8b41f62cd9", null ],
     [ "fRootFile", "d2/d60/classFairFileSource.html#a3bbb67712b5e3bb018798519086e7e9f", null ],
     [ "fRtdb", "d2/d60/classFairFileSource.html#ae58e3ec1af7c2c21c17234f546a7dd33", null ],

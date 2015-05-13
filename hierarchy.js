@@ -125,25 +125,27 @@ var hierarchy =
       [ "GenericProcessor< InputPolicy, OutputPolicy, TaskPolicy >", "d4/d10/classGenericProcessor.html", null ]
     ] ],
     [ "baseMQ::tools::int_< size_t >", "da/d23/structbaseMQ_1_1tools_1_1int__.html", null ],
-    [ "std::ios_base", null, [
-      [ "std::basic_ios< Char >", null, [
-        [ "std::basic_ostream< Char >", null, [
-          [ "std::ostream", null, [
-            [ "FairLogger", "db/da1/classFairLogger.html", null ]
-          ] ]
-        ] ]
-      ] ]
-    ] ],
     [ "MergerPolicy", null, [
       [ "GenericMerger< MergerPolicy, InputPolicy, OutputPolicy >", "df/d1b/classGenericMerger.html", null ]
     ] ],
     [ "Message", null, [
       [ "sampler::Content", "d0/d7a/classsampler_1_1Content.html", null ],
-      [ "sampler::Payload", "d3/da0/classsampler_1_1Payload.html", null ]
+      [ "sampler::Payload", "d3/da0/classsampler_1_1Payload.html", null ],
+      [ "TestDetectorProto::Digi", "dd/de2/classTestDetectorProto_1_1Digi.html", null ],
+      [ "TestDetectorProto::Digi", "dd/de2/classTestDetectorProto_1_1Digi.html", null ],
+      [ "TestDetectorProto::DigiPayload", "da/d41/classTestDetectorProto_1_1DigiPayload.html", null ],
+      [ "TestDetectorProto::DigiPayload", "da/d41/classTestDetectorProto_1_1DigiPayload.html", null ],
+      [ "TestDetectorProto::Hit", "db/d78/classTestDetectorProto_1_1Hit.html", null ],
+      [ "TestDetectorProto::Hit", "db/d78/classTestDetectorProto_1_1Hit.html", null ],
+      [ "TestDetectorProto::HitPayload", "d6/de6/classTestDetectorProto_1_1HitPayload.html", null ],
+      [ "TestDetectorProto::HitPayload", "d6/de6/classTestDetectorProto_1_1HitPayload.html", null ]
     ] ],
     [ "Mille", "df/db2/classMille.html", null ],
     [ "MultiVariatePDF", "d9/d6d/classMultiVariatePDF.html", null ],
     [ "NoInputMethod", "d4/ded/classNoInputMethod.html", null ],
+    [ "ostream", null, [
+      [ "FairLogger", "db/da1/classFairLogger.html", null ]
+    ] ],
     [ "OutputPolicy", null, [
       [ "GenericFileSink< InputPolicy, OutputPolicy >", "d8/df5/classGenericFileSink.html", null ],
       [ "GenericMerger< MergerPolicy, InputPolicy, OutputPolicy >", "df/d1b/classGenericMerger.html", null ],
@@ -213,6 +215,7 @@ var hierarchy =
     [ "state_machine_def", null, [
       [ "FairMQFSM::FairMQFSM_", "d3/d94/structFairMQFSM_1_1FairMQFSM__.html", null ]
     ] ],
+    [ "TestDetectorProto::StaticDescriptorInitializer_FairTestDetectorPayload_2eproto", "d8/d62/structTestDetectorProto_1_1StaticDescriptorInitializer__FairTestDetectorPayload__2eproto.html", null ],
     [ "sampler::StaticDescriptorInitializer_payload_2eproto", "df/dc9/structsampler_1_1StaticDescriptorInitializer__payload__2eproto.html", null ],
     [ "FairMQFSM::STOP", "da/d8f/structFairMQFSM_1_1STOP.html", null ],
     [ "FairMQFSM::FairMQFSM_::StopFct", "df/d0a/structFairMQFSM_1_1FairMQFSM___1_1StopFct.html", null ],
@@ -303,8 +306,6 @@ var hierarchy =
         [ "FairEvtGenGenerator", "da/de7/classFairEvtGenGenerator.html", null ],
         [ "FairIonGenerator", "d9/dd3/classFairIonGenerator.html", null ],
         [ "FairParticleGenerator", "d5/dd5/classFairParticleGenerator.html", null ],
-        [ "FairPlutoGenerator", "d1/dc5/classFairPlutoGenerator.html", null ],
-        [ "FairPlutoReactionGenerator", "d4/dfa/classFairPlutoReactionGenerator.html", null ],
         [ "FairShieldGenerator", "db/dce/classFairShieldGenerator.html", null ],
         [ "FairUrqmdGenerator", "d0/d46/classFairUrqmdGenerator.html", null ],
         [ "Pythia6Generator", "d9/d2a/classPythia6Generator.html", null ],

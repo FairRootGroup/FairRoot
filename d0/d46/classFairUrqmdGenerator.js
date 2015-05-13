@@ -4,6 +4,7 @@ var classFairUrqmdGenerator =
     [ "FairUrqmdGenerator", "d0/d46/classFairUrqmdGenerator.html#a569e0c11edeb937e8185133c216d0c38", null ],
     [ "~FairUrqmdGenerator", "d0/d46/classFairUrqmdGenerator.html#a6e5d6361ff3e1d9f95c9942be993bada", null ],
     [ "FairUrqmdGenerator", "d0/d46/classFairUrqmdGenerator.html#a77b714b5c1703ef6330f9310464e1b95", null ],
+    [ "CheckReturnValue", "d0/d46/classFairUrqmdGenerator.html#a5a461a281d94ca7fe197c4496626e971", null ],
     [ "ClassDef", "d0/d46/classFairUrqmdGenerator.html#a0113dc4fb155a8004a86e8cab4dc70a7", null ],
     [ "ClassDef", "d0/d46/classFairUrqmdGenerator.html#a5ac5130737e5aded78c81260d896659d", null ],
     [ "CloneGenerator", "d0/d46/classFairUrqmdGenerator.html#add06ea68cafd82b50b5f81413f288b6e", null ],

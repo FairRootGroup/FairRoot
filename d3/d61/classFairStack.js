@@ -39,7 +39,7 @@ var classFairStack =
     [ "fIndex", "d3/d61/classFairStack.html#acabdedbc2f00876a530be04692757eba", null ],
     [ "fIndexIter", "d3/d61/classFairStack.html#a6eb620f554ba0c8d025a65d9686b1d32", null ],
     [ "fIndexMap", "d3/d61/classFairStack.html#a8a66568cf72a215d6f19da4672a37c37", null ],
-    [ "fLogger", "d3/d61/classFairStack.html#a3f6210e9b819868bc5d178f30605798e", null ],
+    [ "fLogger", "d3/d61/classFairStack.html#af7c43a0d3377ebb29a3e9f9a5bb1a3f5", null ],
     [ "fMinPoints", "d3/d61/classFairStack.html#af34b4f6c4fdb4a55c0325bf16ccb084a", null ],
     [ "fNParticles", "d3/d61/classFairStack.html#af72d566eeac7e24798ea690b58de85ec", null ],
     [ "fNPrimaries", "d3/d61/classFairStack.html#a97fdb1c6b569dfa358b0407b84019cb7", null ],

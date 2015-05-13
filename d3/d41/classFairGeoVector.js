@@ -41,8 +41,8 @@ var classFairGeoVector =
     [ "X", "d3/d41/classFairGeoVector.html#ac8b74b67efdbb68cec334144579a0c33", null ],
     [ "Y", "d3/d41/classFairGeoVector.html#a3b0d3612a148b2d4b14b78f914c54a04", null ],
     [ "Z", "d3/d41/classFairGeoVector.html#a01a7a0ab55a628b78873255c614b02fe", null ],
-    [ "operator<<", "d3/d41/classFairGeoVector.html#a33042e775f397f224a6f00ecd35ba772", null ],
-    [ "operator>>", "d3/d41/classFairGeoVector.html#adbe86d354dd1c68cec1bc5594f279b76", null ],
+    [ "operator<<", "d3/d41/classFairGeoVector.html#ab3f5d810e36fe30938ec42dd1112b05b", null ],
+    [ "operator>>", "d3/d41/classFairGeoVector.html#a8aff7e609d564fafc1880de4f2bd9f4a", null ],
     [ "x", "d3/d41/classFairGeoVector.html#a6312842947e1fae318e1f46700e1ff75", null ],
     [ "y", "d3/d41/classFairGeoVector.html#ac43601cf7ba3f024dacdd995895cc9eb", null ],
     [ "z", "d3/d41/classFairGeoVector.html#a82266ebfd3036348f12c4b0efc831b91", null ]

@@ -76,7 +76,6 @@ var classFairRunSim =
     [ "fIons", "dd/dbc/classFairRunSim.html#aaf23498efd55b06e2c40fd24c5a95120", null ],
     [ "fIsMaster", "dd/dbc/classFairRunSim.html#aae2d050830ca5dcd2be4fa91e1cfa161", null ],
     [ "fLoaderName", "dd/dbc/classFairRunSim.html#ab8b37d1f4febe164a9a018f8b115d81f", null ],
-    [ "fLogger", "dd/dbc/classFairRunSim.html#a7fe0f2cc4c6828ffc4b37e3bc879d304", null ],
     [ "fMapName", "dd/dbc/classFairRunSim.html#aa916bff36de578e19669aa53d015d65b", null ],
     [ "fMCEvHead", "dd/dbc/classFairRunSim.html#a2dbf79ef39226750052f38a2b3938a22", null ],
     [ "fMeshList", "dd/dbc/classFairRunSim.html#a4e7d3aac1a94ab7ddc587319d43e263e", null ],

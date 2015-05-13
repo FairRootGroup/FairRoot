@@ -54,6 +54,8 @@ var classFairTestDetectorDigi =
     [ "SetY", "da/d5b/classFairTestDetectorDigi.html#aac6f8e5daf5b6cba7b58b572f84c9317", null ],
     [ "SetZ", "da/d5b/classFairTestDetectorDigi.html#a0d729a17df0103552fa56d9d446e1a53", null ],
     [ "SetZ", "da/d5b/classFairTestDetectorDigi.html#a0d729a17df0103552fa56d9d446e1a53", null ],
+    [ "ToString", "da/d5b/classFairTestDetectorDigi.html#a436afcc6515d69d2125f23ed79523aba", null ],
+    [ "ToString", "da/d5b/classFairTestDetectorDigi.html#abf76f9e5605af1e2277c9341c216b4e9", null ],
     [ "boost::serialization::access", "da/d5b/classFairTestDetectorDigi.html#a4305f269960e8ccc92b19b2f0480b16d", null ],
     [ "operator<<", "da/d5b/classFairTestDetectorDigi.html#a5f234acf5ae9b54e8a56c37c75ac66c7", null ],
     [ "operator<<", "da/d5b/classFairTestDetectorDigi.html#a5f234acf5ae9b54e8a56c37c75ac66c7", null ],

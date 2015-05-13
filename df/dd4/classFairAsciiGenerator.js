@@ -12,5 +12,5 @@ var classFairAsciiGenerator =
     [ "operator=", "df/dd4/classFairAsciiGenerator.html#a7779acc176301b91e4f6fef22fc91132", null ],
     [ "ReadEvent", "df/dd4/classFairAsciiGenerator.html#a08bd69eafac18f2cb802521eedc27abe", null ],
     [ "fFileName", "df/dd4/classFairAsciiGenerator.html#acdc4ae79eacfc32eb20776cf21e6d3f1", null ],
-    [ "fInputFile", "df/dd4/classFairAsciiGenerator.html#a2285819c54c619b016b4af252939e27c", null ]
+    [ "fInputFile", "df/dd4/classFairAsciiGenerator.html#a3e08ae1d91234e5e9c787f6f4d73bd5c", null ]
 ];

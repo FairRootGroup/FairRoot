@@ -60,7 +60,6 @@ var classFairMCApplication =
     [ "fEvGen", "d8/def/classFairMCApplication.html#a4f66dfa7e85108f62cdfb0366f52c30f", null ],
     [ "fFairTaskList", "d8/def/classFairMCApplication.html#a9364b18cd02960318c7b8b4464cb7aa2", null ],
     [ "fGeometryIsInitialized", "d8/def/classFairMCApplication.html#a545a3a83ea282682397505e8b6ef7ffe", null ],
-    [ "fLogger", "d8/def/classFairMCApplication.html#a55e9149a5d5b0ca33118941c69372918", null ],
     [ "fMCEventHeader", "d8/def/classFairMCApplication.html#a455c82e54c5ae4876ba6fb1414d8d6f2", null ],
     [ "fMcVersion", "d8/def/classFairMCApplication.html#a29ad74ad75a6b07a570be09a2ecfc98d", null ],
     [ "fModIter", "d8/def/classFairMCApplication.html#a4aa66b3ff712f24f417f966652d83878", null ],

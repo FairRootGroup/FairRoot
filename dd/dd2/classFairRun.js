@@ -34,7 +34,6 @@ var classFairRun =
     [ "fFileHeader", "dd/dd2/classFairRun.html#af88146152e135ef8bf9fe296aee511c0", null ],
     [ "fGenerateRunInfo", "dd/dd2/classFairRun.html#af9a63008f79c9132a7efa57443ecf2cf", null ],
     [ "fIsMaster", "dd/dd2/classFairRun.html#aae2d050830ca5dcd2be4fa91e1cfa161", null ],
-    [ "fLogger", "dd/dd2/classFairRun.html#a7fe0f2cc4c6828ffc4b37e3bc879d304", null ],
     [ "fNTasks", "dd/dd2/classFairRun.html#a1dd736d83efabbe79279b3edfae0a73a", null ],
     [ "fOutFile", "dd/dd2/classFairRun.html#a1b9b764a0229de8571fa351968848a62", null ],
     [ "fOutname", "dd/dd2/classFairRun.html#a8af898b84748fe49464c19a1a592005e", null ],
