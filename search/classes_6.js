@@ -170,8 +170,6 @@ var searchData=
   ['fairparversion',['FairParVersion',['../d0/d69/classFairParVersion.html',1,'']]],
   ['fairpassivecontfact',['FairPassiveContFact',['../d7/d36/classFairPassiveContFact.html',1,'']]],
   ['fairpipe',['FairPipe',['../d2/d5a/classFairPipe.html',1,'']]],
-  ['fairplutogenerator',['FairPlutoGenerator',['../d1/dc5/classFairPlutoGenerator.html',1,'']]],
-  ['fairplutoreactiongenerator',['FairPlutoReactionGenerator',['../d4/dfa/classFairPlutoReactionGenerator.html',1,'']]],
   ['fairpointsetdraw',['FairPointSetDraw',['../d9/d8b/classFairPointSetDraw.html',1,'']]],
   ['fairprimarygenerator',['FairPrimaryGenerator',['../d6/d1f/classFairPrimaryGenerator.html',1,'']]],
   ['fairradgridmanager',['FairRadGridManager',['../df/d4f/classFairRadGridManager.html',1,'']]],
