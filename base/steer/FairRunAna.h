@@ -26,10 +26,12 @@
 
 class FairEventHeader;
 class FairField;
-class FairMCEventHeader;
 class TF1;
 class TFile;
 class TTree;
+
+class FairFileSource;
+class FairMixedSource;
 
 class FairRunAna : public FairRun
 {
@@ -39,8 +41,6 @@ class FairRunAna : public FairRun
     static FairRunAna* Instance();
     virtual ~FairRunAna();
     FairRunAna();
-    /** Add a friend file (input) by name)*/
-    void        AddFriend(TString fName);
     /**initialize the run manager*/
     void        Init();
     /**Run from event number NStart to event number NStop */
@@ -51,8 +51,6 @@ class FairRunAna : public FairRun
     void        Run(Long64_t entry);
     /**Run event reconstruction from event number NStart to event number NStop */
     void        RunEventReco(Int_t NStart ,Int_t NStop);
-    /**Run from event number NStart to event number NStop over mixed input files */
-    void        RunMixed(Int_t NStart, Int_t NStop);
     /**Run over all TSBuffers until the data is processed*/
     void        RunTSBuffers();
     /** the dummy run does not check the evt header or the parameters!! */
@@ -72,21 +70,57 @@ class FairRunAna : public FairRun
      *@param name :        signal file name
      *@param identifier :  Unsigned integer which identify the signal file
      */
+
+    void   SetSource(FairSource* tempSource) { fRootManager->SetSource(tempSource); }
+
+    // ********************************************************* //
+    // THE BELOW FUNCTIONS SHOULD BE MOVED TO FairFileSource
+    /**Set the input file by name*/
+    void        SetInputFile(TString fname);
+    /**Add a file to input chain */
+    void        AddFile(TString name);
+    /** Add a friend file (input) by name)*/
+    void        AddFriend(TString fName);
+    // ********************************************************* //
+    // THE BELOW FUNCTIONS SHOULD BE MOVED TO FairMixedSource
     void        SetSignalFile(TString name, UInt_t identifier );
-    /**Set the input background file by name*/
-    void        SetBackgroundFile(TString name);
-    /**Add input background file by name*/
-    void        AddBackgroundFile(TString name);
     /**Add signal file to input
      *@param name :        signal file name
      *@param identifier :  Unsigned integer which identify the signal file to which this signal should be added
      */
     void        AddSignalFile(TString name, UInt_t identifier );
-    /**Set the input file by name*/
-    void        SetInputFile(TString fname);
-    /**Add a file to input chain */
-    void        AddFile(TString name);
-
+    /**Set the input background file by name*/
+    void        SetBackgroundFile(TString name);
+    /**Add input background file by name*/
+    void        AddBackgroundFile(TString name);
+    /**Set the signal to background ratio in event units
+     *@param background :  Number of background Events for one signal
+     *@param Signalid :    Signal file Id, used when adding (setting) the signal file
+     * here we just forward the call to the FairRootManager
+     */
+    void BGWindowWidthNo(UInt_t background, UInt_t Signalid);
+    /**Set the signal to background rate in time units
+     *@param background :  Time of background Events before one signal
+     *@param Signalid :    Signal file Id, used when adding (setting) the signal file
+     * here we just forward the call to the FairRootManager
+     */
+    void BGWindowWidthTime(Double_t background, UInt_t Signalid);
+    /**
+     * This method will simply forward the call to the FairRootManager, 
+     * if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
+     * them in one big event and send it to the next step
+    */
+    void SetMixAllInputs(Bool_t Status);
+    // ********************************************************* //
+    // THE BELOW FUNCTIONS SHOULD BE MOVED TO FairFileSource and FairMixedSource
+    /** Set the min and max limit for event time in ns */
+    void SetEventTimeInterval(Double_t min, Double_t max);
+    /** Set the mean time for the event in ns */
+    void SetEventMeanTime(Double_t mean);
+    /** Set the time intervall the beam is interacting and the gap in ns */
+    void SetBeamTime(Double_t beamTime, Double_t gapTime);
+    // ********************************************************* //
+ 
     void        Reinit(UInt_t runId);
     UInt_t      getRunId() {
       return fRunId;
@@ -120,28 +154,6 @@ class FairRunAna : public FairRun
     }
     void        CompressData();
 
-    /** Set the min and max limit for event time in ns */
-    void SetEventTimeInterval(Double_t min, Double_t max);
-
-    /** Set the mean time for the event in ns */
-    void SetEventMeanTime(Double_t mean);
-
-    /** Set the time intervall the beam is interacting and the gap in ns */
-    void SetBeamTime(Double_t beamTime, Double_t gapTime);
-
-    /**Set the signal to background ratio in event units
-     *@param background :  Number of background Events for one signal
-     *@param Signalid :    Signal file Id, used when adding (setting) the signal file
-     * here we just forward the call to the FairRootManager
-     */
-    void BGWindowWidthNo(UInt_t background, UInt_t Signalid);
-    /**Set the signal to background rate in time units
-     *@param background :  Time of background Events before one signal
-     *@param Signalid :    Signal file Id, used when adding (setting) the signal file
-     * here we just forward the call to the FairRootManager
-     */
-    void BGWindowWidthTime(Double_t background, UInt_t Signalid);
-
     /** Set the flag for proccessing lmd files */
     void StopProcessingLMD( void ) {
       fFinishProcessingLMDFile = kTRUE;
@@ -150,12 +162,6 @@ class FairRunAna : public FairRun
     Bool_t GetLMDProcessingStatus( void ) {
       return fFinishProcessingLMDFile;
     }
-    /**
-     * This method will simply forward the call to the FairRootManager, 
-     * if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
-     * them in one big event and send it to the next step
-    */
-    void SetMixAllInputs(Bool_t Status);
 
   private:
 
@@ -173,14 +179,11 @@ class FairRunAna : public FairRun
     static FairRunAna*                      fgRinstance;
     Bool_t                                  fLoadGeo;
     FairEventHeader*                        fEvtHeader;//!
-    FairMCEventHeader*                      fMCHeader;//!
     /** true for static initialisation of parameters */
     Bool_t                                  fStatic;//!
     FairField*                              fField;
     Bool_t                                  fTimeStamps;
     Bool_t                                  fInFileIsOpen;//!
-    /**True if signal and background mixing is used*/
-    Bool_t                                  fMixedInput;//!
     /** min time for one event (ns) */
     Double_t                                fEventTimeMin;  //!
     /** max time for one Event (ns) */
@@ -192,7 +195,12 @@ class FairRunAna : public FairRun
     /** used to generate random numbers for event time; */
     TF1*                                    fTimeProb;      //!
     /** Flag for proccessing lmd-files*/
-    Bool_t                                   fFinishProcessingLMDFile;  //!
+    Bool_t                                  fFinishProcessingLMDFile;  //!
+
+    /** Temporary member to preserve old functionality without setting source in macro */
+    FairFileSource*                         fFileSource;  //! 
+    /** Temporary member to preserve old functionality without setting source in macro */
+    FairMixedSource*                        fMixedSource; //! 
 
     ClassDef(FairRunAna ,5)
 
