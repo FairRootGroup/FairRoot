@@ -17,6 +17,10 @@
 
 #include "TObject.h"
 
+#include <iostream>
+
+class FairEventHeader;
+
 class FairSource : public TObject
 {
   public:
@@ -29,6 +33,17 @@ class FairSource : public TObject
     virtual void Close() = 0;
 
     virtual void Reset() = 0;
+    
+    virtual TObject* GetObject(const char* ObjName, const char* ObjType) { return 0; }
+    
+    virtual Bool_t   ActivateObject(TObject** obj, const char* ObjType)  { return kFALSE; }
+    
+    /**Check the maximum event number we can run to*/
+    virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0) {return -1;}
+    /**Read the tree entry on one branch**/
+    virtual void   ReadBranchEvent(const char* BrName) {return;}
+    
+    virtual void FillEventHeader(FairEventHeader* feh) { return; } 
 
   public:
     ClassDef(FairSource, 0)

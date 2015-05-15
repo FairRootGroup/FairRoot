@@ -73,6 +73,7 @@
 #pragma link C++ class FairRunOnline;
 #pragma link C++ class FairSource;
 #pragma link C++ class FairFileSource;
+#pragma link C++ class FairMixedSource;
 #ifdef BUILD_MBS
 #pragma link C++ class FairMbsSource;
 #pragma link C++ class FairRemoteSource;
