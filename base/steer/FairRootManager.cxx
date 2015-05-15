@@ -99,40 +99,13 @@ FairRootManager::FairRootManager()
     fBranchPerMap(kFALSE),
     fBrPerMap(),
     fBrPerMapIter(),
-    fFriendFileList(),
-    fMixAllInputs(kFALSE),
-    fMixedInput(kFALSE),
-    fActualSignalIdentifier(0),
-    fNoOfSignals(0),
-    fSignalChainList(NULL),
-    fBackgroundChain(NULL),
-    fBackgroundFile(NULL),
-    fSignalTypeList(),
-    fEventTimeMin(0.),
-    fEventTimeMax(0.),
-    fEventTime(0.),
-    fEventMeanTime(0.),
-    fBeamTime(-1.),
-    fGapTime(-1.),
-    fTimeProb(0),
-    fMCHeader(0),
-    fEvtHeader(0),
-    fFileHeader(0),
-    fSignalBGN(),
-    fEventTimeInMCHeader(kTRUE),
-    fSBRatiobyN(kFALSE),
-    fSBRatiobyT(kFALSE),
+    fLogger(FairLogger::GetLogger()),
     fCurrentEntryNo(0),
     fTimeforEntryNo(0),
-    fNoOfBGEntries(0),
-    fCurrentEntry(),
-    fEvtHeaderIsNew(kFALSE),
     fFillLastData(kFALSE),
     fUseFairLinks(kFALSE),
     fEntryNr(0),
-    fRootFileSource(0),
-    fRootFileSourceSignal(0),
-    fRootFileSourceBKG(0)
+    fSource(0)
 {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
@@ -165,196 +138,13 @@ FairRootManager::~FairRootManager()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRootManager::SetSignalFile(TString name, UInt_t identifier )
-{
-  /**
-   * Create a new source for signal
-   */
-    
-    if(fSignalTypeList[identifier]==0) {
-      /** The first file create a new source for signal*/
-      fRootFileSourceSignal = new FairFileSource(&name, "SignalSource", identifier);
-      /** we have to inialize it to check the file and get/ create the chain from the input tree(s)*/
-      fRootFileSourceSignal->Init();
-      fCurrentEntry[identifier]= 0;
-      fNoOfSignals++;
-      fActualSignalIdentifier= identifier;
-      fSignalTypeList[identifier]=fRootFileSourceSignal;
-      fFileHeader->AddInputFile(fRootFileSourceSignal->GetInFile(), identifier, 0);
-      LOG(INFO) << "Add new signal from file " 
-		<< name.Data() << " with identifier " 
-		<< identifier << " and file number " 
-		<< fNoOfSignals << FairLogger::endl;
-    }else{
-      FairFileSource *fRootFileSourceS=fSignalTypeList[identifier];
-      fRootFileSourceS->AddFile(name);
-      TChain* CurrentChain=fRootFileSourceS->GetInChain();
-      TObjArray* fileElements=CurrentChain->GetListOfFiles();
-      fFileHeader->AddInputFile(fRootFileSourceSignal->GetInFile(), identifier, fileElements->GetEntries());
-      LOG(INFO) << "Add existing signal from file "
-		<< name.Data() << " with identifier "
-		<< identifier << " and file number "
-		<< fNoOfSignals << FairLogger::endl;
-    
-    }
-    fMixedInput=kTRUE;
-    
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRootManager::AddSignalFile(TString name, UInt_t identifier )
-{
-  SetSignalFile(name, identifier);
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-TChain* FairRootManager::GetSignalChainNo(UInt_t i)
-{
-  if(i<<fNoOfSignals) {
-    FairFileSource *fRootFileSourceS=fSignalTypeList[i];
-    return fRootFileSourceS->GetInChain();
-  } else {
-    LOG(INFO) << "Error signal identifier " << i << " does not exist."
-	      << FairLogger::endl;
-    return 0;
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRootManager::SetBackgroundFile(TString name)
-{
-  if (name.IsNull() ) {
-    LOG(INFO) << "No background file defined." << FairLogger::endl;
-  }else{
-    fRootFileSourceBKG = new FairFileSource(&name, "Background");
-    fRootFileSourceBKG->Init();
-    fFileHeader->AddInputFile(fRootFileSourceBKG->GetInFile(),0,0 );
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRootManager::AddBackgroundFile(TString name)
-{
-  if (name.IsNull() ) {
-    LOG(INFO) << "No background file defined." << FairLogger::endl;
-  }
-  if(fRootFileSourceBKG!=0) {
-     fRootFileSourceBKG->AddFile(name.Data());
-     TObjArray* fileElements=fRootFileSourceBKG->GetInChain()->GetListOfFiles();
-     fFileHeader->AddInputFile(fRootFileSourceBKG->GetInFile(),0, fileElements->GetEntries());
-  } else {
-    LOG(FATAL) << "Use SetBackGroundFile first, then add files to background"
-	       << FairLogger::endl;
-  }
-    
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRootManager::SetInputFile(TString name)
-{
-  if(!fMixedInput) {
-    //fInputFileName=name;
-    fRootFileSource = new FairFileSource(&name);
-    // fRootFileSource->Init();
-    // fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
-    
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
 Bool_t FairRootManager::InitSource() {
-    Bool_t retBool=kFALSE;
-    if(!fMixedInput) {
-      retBool = fRootFileSource->Init();
-      fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
-      fRootFileSource->AddFriendsToChain();
-    }else{
-      // In the mixed input the source is initialized immediatly when it is added
-      // We need only to check that the BK source exist and we can return true.
-        
-      if(fRootFileSourceBKG!=0) retBool=kTRUE;
-    
-    }
-    return retBool;
-}
-//_____________________________________________________________________________
+  if ( fSource ) {
+    Bool_t sourceInitBool = fSource->Init();
 
-//_____________________________________________________________________________
-Bool_t FairRootManager::OpenBackgroundChain()
-{
- /* // Get the folder structure from file which describes the input tree.
-  // There are two different names possible, so check both.
-  fCbmroot= dynamic_cast <TFolder*> (fBackgroundFile->Get("cbmroot"));
-  if(!fCbmroot) {
-    fCbmroot= dynamic_cast <TFolder*> (fBackgroundFile->Get("cbmout"));
-    if(!fCbmroot) {
-      fCbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-    } else {
-      fCbmroot->SetName("cbmroot");
-    }
+    return sourceInitBool;
   }
-
-  // Get The list of branches from the input file and add it to the
-  // actual list of existing branches.
-  // Add this list of branches also to the map of input trees, which
-  // stores the information which branches belong to which input tree.
-  // There is at least one primary input tree, but there can be many
-  // additional friend trees.
-  // This information is needed to add new files to the correct friend
-  // tree. With this information it is also possible to check if the
-  // input files which are added to the input chain all have the same
-  // branch structure. Without this check it is possible to add trees
-  // with a different branch structure but the same tree name. ROOT
-  // probably only checks if the name of the tree is the same.
-
-  TList* list= dynamic_cast <TList*> (fBackgroundFile->Get("BranchList"));
-  TString chainName = "BGInChain";
-  fInputLevel.push_back(chainName);
-  fCheckInputBranches[chainName] = new std::list<TString>;
-  if(list) {
-    TObjString* Obj=0;
-    for(Int_t i =0; i< list->GetEntries(); i++) {
-      Obj=dynamic_cast <TObjString*> (list->At(i));
-      fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
-      if(fBranchNameList->FindObject(Obj->GetString().Data())==0) {
-        fBranchNameList->AddLast(Obj);
-        fBranchSeqId++;
-      }
-    }
-  }
-
-  gROOT->GetListOfBrowsables()->Add(fCbmroot);
-  fListFolder.Add( fCbmroot );
-*/
-  return kTRUE;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-Bool_t FairRootManager::OpenSignalChain()
-{
-  std::map<UInt_t, FairFileSource*>::const_iterator iter;
-  for(iter = fSignalTypeList.begin(); iter != fSignalTypeList.end(); iter++) {
-      
-    FairFileSource *SignalFile=iter->second;
-    TChain* currentChain=SignalFile->GetInChain();
-    // cout << "Signal chain is : " << currentChain->GetName()<< endl;
-    //   currentChain->Dump();
-    TFile* ChainFirstFile = currentChain->GetFile();
-    //cout << "First file in signal chain is : " << ChainFirstFile << endl;
-    // Check if the branchlist is the same as for the first input file.
-    Bool_t isOk = CompareBranchList(ChainFirstFile,"BGInChain");
-    if ( !isOk ) {
-      LOG(FATAL) << "Branch structure of the signal chain is different than the back ground one" << FairLogger::endl;
-    }
-  }
-  return kTRUE;
+  return kFALSE;
 }
 //_____________________________________________________________________________
 
@@ -780,7 +570,7 @@ void FairRootManager::CreateGeometryFile(const char* geofile)
 void FairRootManager:: WriteFolder()
 {
   fOutFile->cd();
-  if(fCbmroot!=0 && fRootFileSource==0) {
+  if(fCbmroot!=0 && fSource==0) {
     fCbmroot->Write();
   }
   if(fCbmout!=0) {
@@ -791,117 +581,49 @@ void FairRootManager:: WriteFolder()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void  FairRootManager::ReadEvent(Int_t i)
+Int_t  FairRootManager::ReadEvent(Int_t i)
 {
-    SetEntryNr(i);
-    /**For mixed input use the ReadMixedEvent method */
-    if(fMixedInput) {
-      LOG(INFO) << "Read mixed event number " << i << FairLogger::endl;
-        ReadMixedEvent(i);
-    }else{
-        /** Check if the source is not zero, it is zero if we use the mixed input (bk and sg) */
-        if ( fRootFileSource!=0) {
-            
-            /**special action needed for the first entry */
-            
-            if(0==fCurrentEntryNo) {
-                Int_t totEnt =  fRootFileSource->GetEntries();
-                LOG(INFO) << "The number of entries in the tree is "
-			  << totEnt << FairLogger::endl;
-                LOG(INFO) << "FairRootManager::ReadEvent(" << i << "): The tree has " << totEnt << " entries" << FairLogger::endl;
-                fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
-                if(fEvtHeader ==0) {
-		  LOG(INFO) << "No event Header was found!!!" << FairLogger::endl;
-                    return;
-                }
-                SetEventTime();
-            }
-            
-            /**After the first entry we are here */
-            fCurrentEntryNo=i;
-            fRootFileSource->ReadEvent(i);
-            fEvtHeader->SetMCEntryNumber(i);
-            fEvtHeader->SetEventTime(GetEventTime());
-            fEvtHeader->SetInputFileId(0);
-        }
-    }
-}
-//_____________________________________________________________________________
+  fSource->Reset();
 
-//_____________________________________________________________________________
-void  FairRootManager::ReadMixedEvent(Int_t i)
-{
-  /**Privat method used for event mixing*/
+  SetEntryNr(i);
 
-  /**Check for fCurrentEntryNo because it always starts from Zero, i could have any value! */
-  if(0==fCurrentEntryNo) {
-    fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
-    SetEventTime();
+  if ( !fSource ) {
+    LOG(FATAL) << "No Source available" << FairLogger::endl;
+    return -1;
   }
-  Double_t SBratio=gRandom->Uniform(0,1);
-  Bool_t GetASignal=kFALSE;
 
-  if(fSBRatiobyN || fSBRatiobyT ) {
-    std::map<UInt_t, Double_t>::const_iterator iterN;
-    Double_t ratio=0;
-    if(fCurrentEntryNo==0) {
-      for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
-        ratio+=iterN->second;
-        fSignalBGN[iterN->first]=ratio;
-        LOG(DEBUG) << "--------------Set signal no. "
-		   << iterN->first << " weight " << ratio << FairLogger::endl;
-      }
-    }
-    ratio=0;
-    for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
-      ratio=iterN->second;
-      LOG(DEBUG) << "---Check signal no. "
-		 << iterN->first << " SBratio " 
-		 << SBratio << " :  ratio " 
-		 <<ratio << FairLogger::endl;
-      if(SBratio <=ratio) {
-        TChain* chain = fSignalTypeList[iterN->first]->GetInChain();
-        UInt_t entry = fCurrentEntry[iterN->first];
-        chain->GetEntry(entry);
-        fEvtHeader->SetMCEntryNumber(entry);
-        fEvtHeader->SetInputFileId(iterN->first);
-        fEvtHeader->SetEventTime(GetEventTime());
-        GetASignal=kTRUE;
-        fCurrentEntry[iterN->first]=entry+1;
-        LOG(DEBUG) << "---Get entry No. "
-		     << entry << " from signal chain number --- "
-		     << iterN->first << " ---" << FairLogger::endl;
-        break;
-      }
-    }
-    if(!GetASignal) {
-      fRootFileSourceBKG->ReadEvent(i);
-      fEvtHeader->SetMCEntryNumber(i);
-      fEvtHeader->SetInputFileId(0); //Background files has always 0 as Id
-      fEvtHeader->SetEventTime(GetEventTime());
-      LOG(DEBUG) << "---Get entry from background chain  --- " << FairLogger::endl;
-    }
-
-  }
   fCurrentEntryNo=i;
-  fEvtHeader->SetEventTime(GetEventTime());
+
+  Int_t readEventResult = fSource->ReadEvent(i);
+
+  FairEventHeader* tempEH = new FairEventHeader();
+  fSource->FillEventHeader(tempEH);
+  fCurrentTime = tempEH->GetEventTime();
+
   LOG(DEBUG) << "--Event number --- "
 	     << fCurrentEntryNo << " with time ---- " 
-	     << GetEventTime() << FairLogger::endl;
+	     << fCurrentTime << FairLogger::endl;
+
+  return readEventResult;
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void  FairRootManager::ReadBKEvent(Int_t i)
+Int_t FairRootManager::GetRunId() 
 {
-  if(fMixedInput) {
-    if(0==i) {
-      Int_t totEnt = fRootFileSourceBKG->GetInChain()->GetEntries();
-      LOG(INFO) << "The number of entries in background chain is " 
-		<< totEnt << FairLogger::endl;
-    }
-    fRootFileSourceBKG->ReadEvent(i);
+  FairEventHeader* tempEH = new FairEventHeader();
+  if ( fSource ) {
+    fSource->FillEventHeader(tempEH);
+    return tempEH->GetRunId();
   }
+  return -1;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairRootManager::ReadBranchEvent(const char* BrName)
+{
+  fSource->ReadBranchEvent(BrName);
 }
 //_____________________________________________________________________________
 
@@ -955,191 +677,6 @@ TObject* FairRootManager::GetObject(const char* BrName)
   return Obj;
 }
 //_____________________________________________________________________________
-
-//_____________________________________________________________________________
-TObject* FairRootManager::GetObjectFromInTree(const char* BrName)
-{
-   TTree *fInTree =fRootFileSource->GetInTree();
-  if ( !fInTree ) {
-    return GetObject(BrName);
-  }
-  /**Get Data object by name*/
-  TObject* Obj =NULL;
-  LOG(DEBUG2) << "Try to find if the object "
-	      << BrName << " already activated by other task or call"
-	      << FairLogger::endl;
-
-  /**Try to find the object in the folder structure, object already activated by other task or call*/
-  /**if the object does not exist then look in the input tree */
-  if(fCbmroot && !Obj) {
-    /** there is an input tree and the object was not in memory */
-    LOG(DEBUG2) << "Object "
-		<< BrName << " is not a memory branch and not yet activated, try the Input Tree (Chain)" << FairLogger::endl;
-    Obj=fCbmroot->FindObjectAny(BrName);
-    Obj=ActivateBranchInInTree(BrName);
-  }
-  if(!Obj) {
-    Obj=ActivateBranch(BrName);
-  }
-  return Obj;
-}
-//_____________________________________________________________________________
-
-TObject* FairRootManager::GetCloneOfLinkData(const FairLink link)
-{
-  TObject* result = 0;
-
-//  std::cout << "GetCloneOfLinkData: Link " << link << std::endl;
-  Int_t fileId = link.GetFile();
-  Int_t entryNr = link.GetEntry();
-  Int_t type = link.GetType();
-  Int_t index = link.GetIndex();
-
-  Int_t oldEntryNr = GetEntryNr();
-
-//  std::cout << "OldEntryNr: " << GetEntryNr();
-
-//  std::cout << "GetLinkData: " << link << std::endl;
-
-  TTree* dataTree;          //get the correct Tree
-  if (fileId < 0) {
-    dataTree = GetInTree();
-  } else if (fileId == 0) {
-    dataTree = GetBGChain();
-  } else {
-    dataTree = GetSignalChainNo(fileId);
-  }
-
-  if (dataTree == 0) {
-    dataTree = GetInTree();
-  }
-
-  if (type < 0) {
-    return 0;
-  }
-
-  TBranch* dataBranch = 0;
-
-//  std::cout << "DataType: " << GetBranchName(type) << std::endl;
-
-  if (fileId < 0 && fInputBranchMap[type] != 0) {
-    dataBranch = fInputBranchMap[type];
-  } else if (fileId < 0) {
-    fInputBranchMap[type] = dataTree->GetBranch(GetBranchName(type));
-    dataBranch = fInputBranchMap[type];
-  } else {
-    dataBranch = dataTree->GetBranch(GetBranchName(type));
-  }
-
-  if (dataBranch == 0) {
-    return 0;
-  }
-
-  if (entryNr > -1) {         //get the right entry (if entryNr < 0 then the current entry is taken
-    if (entryNr < dataBranch->GetEntries()) {
-      dataBranch->GetEntry(entryNr);
-    } else {
-      return 0;
-    }
-  } else {        //the link entry nr is negative --> take the actual one
-
-//    std::cout << "EntryNr: " << GetEntryNr() << std::endl;
-//    dataBranch->GetEntry(GetEntryNr());
-  }
-
-  if (index < 0) {                //if index is -1 then this is not a TClonesArray so only the Object is returned
-    result = GetObject(GetBranchName(type))->Clone();
-  } else {
-    TClonesArray* dataArray = (TClonesArray*)GetObject(GetBranchName(type));
-
-//    std::cout << "dataArray size: " << dataArray->GetEntriesFast() << std::endl;
-    if (index < dataArray->GetEntriesFast()) {
-//      std::cout << "DataArray at index " << index << " has Link: " << ((FairMultiLinkedData*)dataArray->At(index))->GetNLinks() << std::cout;
-      result = dataArray->At(index)->Clone();
-//      std::cout << "Result: " << *((FairMultiLinkedData*)result) << std::endl;
-    }
-  }
-  if (entryNr > -1) {
-    dataBranch->GetEntry(oldEntryNr);  //reset the dataBranch to the original entry
-  }
-  return result;
-}
-
-//_____________________________________________________________________________
-
-TClonesArray* FairRootManager::GetCloneOfTClonesArray(const FairLink link)
-{
-  TClonesArray* result = 0;
-
-  //  std::cout << "GetCloneOfLinkData: Link " << link << std::endl;
-  Int_t fileId = link.GetFile();
-  Int_t entryNr = link.GetEntry();
-  Int_t type = link.GetType();
-  Int_t index = link.GetIndex();
-
-  Int_t oldEntryNr = GetEntryNr();
-
-  //  std::cout << "OldEntryNr: " << GetEntryNr();
-
-  //  std::cout << "GetLinkData: " << link << std::endl;
-
-  TTree* dataTree;          //get the correct Tree
-  if (fileId < 0) {
-    dataTree = GetInTree();
-  } else if (fileId == 0) {
-    dataTree = GetBGChain();
-  } else {
-    dataTree = GetSignalChainNo(fileId);
-  }
-
-  if (dataTree == 0) {
-    dataTree = GetInTree();
-  }
-
-  if (type < 0) {
-    return 0;
-  }
-
-  TBranch* dataBranch = 0;
-
-  //  std::cout << "DataType: " << GetBranchName(type) << std::endl;
-
-  if (fileId < 0 && fInputBranchMap[type] != 0) {
-    dataBranch = fInputBranchMap[type];
-  } else if (fileId < 0) {
-    fInputBranchMap[type] = dataTree->GetBranch(GetBranchName(type));
-    dataBranch = fInputBranchMap[type];
-  } else {
-    dataBranch = dataTree->GetBranch(GetBranchName(type));
-  }
-
-  if (dataBranch == 0) {
-    return 0;
-  }
-
-  if (entryNr > -1) { //get the right entry (if entryNr < 0 then the current entry is taken
-    if (entryNr < dataBranch->GetEntries()) {
-      dataBranch->GetEntry(entryNr);
-    } else {
-      return 0;
-    }
-  } else {        //the link entry nr is negative --> take the actual one
-
-    //    std::cout << "EntryNr: " << GetEntryNr() << std::endl;
-    //    dataBranch->GetEntry(GetEntryNr());
-  }
-
-  if (index < 0) { //if index is -1 then this is not a TClonesArray so only the Object is returned
-    result = 0;
-  } else {
-    result = (TClonesArray*) GetObject(GetBranchName(type))->Clone();
-  }
-  if (entryNr > -1) {
-    dataBranch->GetEntry(oldEntryNr); //reset the dataBranch to the original entry
-  }
-  return result;
-
-}
 
 //_____________________________________________________________________________
 void FairRootManager::TruncateBranchNames(TTree* fTree, const char* folderName)
@@ -1275,11 +812,19 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
 //_____________________________________________________________________________
 void  FairRootManager::SetBranchNameList(TList* list)
 {
+  if ( list == NULL ) return;
   for(Int_t t=0; t<list->GetEntries(); t++) {
     fBranchNameList->AddAt(list->At(t),t);
+    fBranchSeqId++;
   }
 }
+//_____________________________________________________________________________
 
+//_____________________________________________________________________________
+Double_t FairRootManager::GetEventTime() {
+  return fCurrentTime;
+}
+//_____________________________________________________________________________
 
 
 
@@ -1298,15 +843,7 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
    calls to activate branch is done , and then just forward the pointer.
    <DB>
    **/
-  TObjArray *fListFolder;
-  if(fRootFileSource) {
-      fListFolder = fRootFileSource->GetListOfFolders();
-  } else if (fRootFileSourceBKG) {
-      fListFolder = fRootFileSourceBKG->GetListOfFolders();
-  } else {
-    return NULL;
-  }
-
+  TObjArray *fListFolder = (TObjArray*)(fSource->GetObject("","GetListOfFolders"));
   fNObj++;
   fObj2[fNObj]  =  GetMemoryBranch ( BrName );
   if ( fObj2[fNObj]   ) {
@@ -1335,87 +872,11 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
     //Fatal(" No Branch in the tree", BrName );
     return 0;
   } else {
-    if(fMixedInput) {
-      /** All branches has the same types in background and signal chains, thus
-       * we can set the branch address to al of them with one TClonesarray and then we call the proper
-       * fill in the read (event) entry
-       */
-
-      LOG(DEBUG2) << "Set the Branch address for background branch "
-		  << BrName << FairLogger::endl;
-      fRootFileSourceBKG->GetInChain()->SetBranchStatus(BrName,1);
-      fRootFileSourceBKG->GetInChain()->SetBranchAddress(BrName,&fObj2[fNObj]);
-
-      std::map<UInt_t, FairFileSource*>::const_iterator iter;
-      Int_t no=0;
-    
-      for(iter = fSignalTypeList.begin(); iter != fSignalTypeList.end(); iter++) {
-        LOG(DEBUG2) << "Set the Branch address for signal file number "
-		    << no++ << " and branch " << BrName
-		    <<FairLogger::endl;
-        FairFileSource *signal=iter->second;
-        cout << "------------------------------" << signal<< endl;
-        TChain* currentChain=signal->GetInChain();
-        currentChain->SetBranchStatus(BrName,1);
-        currentChain->SetBranchAddress(BrName,&fObj2[fNObj]);
-      }
-
-
-    } else {
-
-      if (fRootFileSource) {
-	TChain *fInChain=fRootFileSource->GetInChain();
-	if (fInChain) {
-	  fInChain->SetBranchStatus(BrName,1);
-	  fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
-	} else {
-	  return NULL;
-	}
-      } else {
-	return NULL;
-      }
-    }
+    fSource->ActivateObject(&fObj2[fNObj],BrName);
   }
   
   AddMemoryBranch( BrName , fObj2[fNObj] );
   return  fObj2[fNObj];
-  
-}
-
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-TObject* FairRootManager::ActivateBranchInInTree(const char* BrName)
-{
-    
-  TTree *fInTree =fRootFileSource->GetInTree();
-  TObjArray *fListFolder=fRootFileSource->GetListOfFolders();
-  fNObj++;
-
-  for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
-    TFolder* fold = (TFolder*) fListFolder->At(i);
-    fObj2[fNObj] = fold->FindObjectAny(BrName);
-    if (fObj2[fNObj] ) {
-      break;
-    }
-  }
-
-  if(!fObj2[fNObj]) {
-    /** if we do not find an object corresponding to the branch in the folder structure
-    *  then we have no idea about what type of object is this and we cannot set the branch address
-    */
-    LOG(INFO) << "Branch: " << BrName << " not found in Tree."
-	      << FairLogger::endl;
-    //Fatal(" No Branch in the tree", BrName );
-    return 0;
-  } else {
-    fInTree->SetBranchStatus (BrName,1);
-    fInTree->SetBranchAddress(BrName,&fObj2[fNObj]);
-  }
-
-  AddMemoryBranch( BrName , fObj2[fNObj] );
-  return  fObj2[fNObj];
-
 }
 //_____________________________________________________________________________
 
@@ -1458,8 +919,8 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
   TObject* Obj1 =NULL;
   TObjArray *fListFolder=0;
     
-  if(fRootFileSource!=0){
-    fListFolder=fRootFileSource->GetListOfFolders();
+  if(fSource!=0){
+    fListFolder=(TObjArray*)fSource->GetObject("","GetListOfFolders");
   }else{
     fListFolder = new TObjArray(16);
   }
@@ -1546,37 +1007,6 @@ void FairRootManager::SaveAllContainers()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-Double_t FairRootManager::GetEventTime()
-{
-  LOG(DEBUG) << "-- Get Event Time --" << FairLogger::endl;
-  if(!fEvtHeaderIsNew && fEvtHeader!=0) {
-    Double_t EvtTime=fEvtHeader->GetEventTime();
-    if( !(EvtTime<0)) {
-      return   EvtTime;
-    }
-  }
-
-  if (fEventTimeInMCHeader && !fMCHeader) {
-    LOG(DEBUG) << "No MCEventHeader, time is set to 0" << FairLogger::endl;
-    return 0;
-  } else if(fEventTimeInMCHeader && fMCHeader) {
-    fEventTime=fMCHeader->GetT();
-    LOG(DEBUG) << "Get event time from MCEventHeader : "
-	       << fEventTime << " ns" << FairLogger::endl;
-    return fEventTime;
-  } else {
-
-    if(fTimeforEntryNo!=fCurrentEntryNo) {
-      SetEventTime();
-    }
-    LOG(DEBUG) << "Calculate event time from user input : " 
-	       << fEventTime << " ns" << FairLogger::endl;
-    return fEventTime;
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
 void FairRootManager::WriteFileHeader(FairFileHeader* f)
 {
   fOutFile->cd();
@@ -1586,161 +1016,9 @@ void FairRootManager::WriteFileHeader(FairFileHeader* f)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRootManager::SetEventTimeInterval(Double_t min, Double_t max)
-{
-  fEventTimeMin=min;
-  fEventTimeMax=max;
-  fEventMeanTime=(fEventTimeMin+fEventTimeMax)/2;
-  fEventTimeInMCHeader=kFALSE;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void  FairRootManager::SetEventMeanTime(Double_t mean)
-{
-  fEventMeanTime =mean;
-  TString form="(1/";
-  form+= mean;
-  form+=")*exp(-x/";
-  form+=mean;
-  form+=")";
-  fTimeProb= new TF1("TimeProb.", form.Data(), 0., mean*10);
-  fTimeProb->GetRandom();
-  fEventTimeInMCHeader=kFALSE;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-
-void FairRootManager::SetBeamTime(Double_t beamTime, Double_t gapTime)
-{
-	fBeamTime = beamTime;
-	fGapTime = gapTime;
-}
-
-void FairRootManager::SetEventTime()
-{
-  LOG(DEBUG) << "Set event time for Entry = "
-	     << fTimeforEntryNo << " , where the current entry is "
-	     << fCurrentEntryNo << " and eventTime is "
-	     << fEventTime << FairLogger::endl;
-  if (fBeamTime < 0){
-	  fEventTime += GetDeltaEventTime();
-  } else {
-	  do {
-		  fEventTime += GetDeltaEventTime();
-	  } while( fmod(fEventTime, fBeamTime + fGapTime) > fBeamTime );
-  }
-  LOG(DEBUG) << "New time = " << fEventTime << FairLogger::endl;
-  fTimeforEntryNo=fCurrentEntryNo;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-Double_t FairRootManager::GetDeltaEventTime()
-{
-  Double_t deltaTime = 0;
-  if (fTimeProb != 0) {
-    deltaTime = fTimeProb->GetRandom();
-    LOG(DEBUG) << "Time set via sampling method : " <<  deltaTime
-	       << FairLogger::endl;
-  } else {
-    deltaTime = gRandom->Uniform(fEventTimeMin, fEventTimeMax);
-    LOG(DEBUG) << "Time set via Uniform Random : "
-	       << deltaTime << FairLogger::endl;
-  }
-  return deltaTime;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void  FairRootManager::BGWindowWidthNo(UInt_t background, UInt_t Signalid)
-{
-  LOG(INFO) << "SetSignal rate for signal "
-	    << Signalid << " : " << background
-	    << FairLogger::endl;
-  fSBRatiobyN=kTRUE;
-  if(fSBRatiobyT) {
-    LOG(FATAL) << "Signal rate already set by TIME!!" << FairLogger::endl;
-  }
-  Double_t value=1.0/background;
-  if(background!=0) {
-    fSignalBGN[Signalid]=value;
-  } else {
-    LOG(FATAL) << "Background cannot be Zero when setting the signal rate!!"
-	       << FairLogger::endl;
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void  FairRootManager::BGWindowWidthTime(Double_t background, UInt_t Signalid)
-{
-  fSBRatiobyT=kTRUE;
-  if(fSBRatiobyN) {
-    LOG(FATAL) << "Signal rate already set by NUMBER!!" << FairLogger::endl;
-  }
-  if(fEventTimeInMCHeader) {
-    LOG(FATAL) << "You have to Set the Event mean time before using SetSignalRateTime!" << FairLogger::endl;
-  }
-  if(fEventMeanTime==0) {
-    LOG(FATAL) << "Event mean time cannot be zero when using signal rate with time"
-	       << FairLogger::endl;
-  }
-  /**convert to number of event by dividing by the mean time */
-  Double_t value=fEventMeanTime/background;
-  if(background!=0) {
-    fSignalBGN[Signalid]=value;
-  } else {
-    LOG(FATAL) << "Background cannot be Zero when setting the signal rate!!"
-	       << FairLogger::endl;
-  }
-
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
 Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
 {
-  LOG(INFO) << "Maximum No of Event was set manually to :  "
-	    << EvtEnd << ", we will check if there is enough entries for this!! "
-	    << FairLogger::endl;
-  Int_t MaxEventNo=0;
-  if(EvtEnd!=0) {
-    MaxEventNo=EvtEnd;
-  }
-  Int_t localMax=0;
-  if(!fMixedInput) {
-    TChain *fInChain =fRootFileSource->GetInChain();
-    MaxEventNo=fInChain->GetEntries();
-  } else {
-    Int_t MaxBG=fRootFileSourceBKG->GetInChain()->GetEntries();
-    Int_t MaxS=0;
-    Double_t ratio=0.;
-    std::map<UInt_t, Double_t>::const_iterator iterN;
-    for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
-      TChain* chain = fSignalTypeList[iterN->first]->GetInChain();
-      MaxS=chain->GetEntries();
-      LOG(INFO) << "Signal chain No "
-		<< iterN->first << " has: " <<  MaxS << FairLogger::endl;
-      ratio=iterN->second;
-     // cout<< " ratio = "<< ratio <<  "floor(MaxS/ratio) "<<floor(MaxS/ratio) << "  MaxBG = " << MaxBG  << endl;
-      if(floor(MaxS/ratio) > MaxBG) {
-        localMax=MaxBG+(Int_t)floor(MaxBG*ratio);
-        LOG(WARNING) << "No of Event in Background chain is not enough for all signals in chain " << iterN->first << FairLogger::endl;
-      } else {
-        localMax=(Int_t)floor(MaxS/ratio);
-        LOG(WARNING) << "No of Event in signal chain "
-		     << iterN->first << " is not enough, the maximum event number will be reduced to: " << localMax << FairLogger::endl;
-      }
-      if(MaxEventNo==0 || MaxEventNo > localMax) {
-        MaxEventNo=localMax;
-      }
-    }
-    LOG(INFO) << "Maximum No of Event will be set to: " << MaxEventNo
-	      << FairLogger::endl;
-  }
-  return MaxEventNo;
+  return fSource->CheckMaxEventNo(EvtEnd);
 }
 //_____________________________________________________________________________
 
@@ -1802,33 +1080,6 @@ void FairRootManager::DeleteOldWriteoutBufferData()
   }
 }
 //_____________________________________________________________________________
-
-
-void FairRootManager::ReadBranchEvent(const char* BrName)
-{
-  /**fill the object with content if the other branches in this tree entry were already read**/
-    TTree *fInTree =fRootFileSource->GetInTree();
-    TChain *fInChain =fRootFileSource->GetInChain();
-
-  if(fEvtHeader == 0) { return; } //No event header, Reading will start later
-  if ( fInTree ) {
-    fInTree->FindBranch(BrName)->GetEntry(fEntryNr);
-    return;
-  }
-  if(!fMixedInput) {
-    if(!fInChain) { return; }
-    fInChain->FindBranch(BrName)->GetEntry(fEntryNr);
-    return;
-  } else {
-    TChain* chain = fSignalTypeList[fEvtHeader->GetInputFileId()]->GetInChain();
-    if(!chain) { return; }
-    chain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
-    return;
-  }
-  return;
-}
-//_____________________________________________________________________________
-
 
 
 ClassImp(FairRootManager)
