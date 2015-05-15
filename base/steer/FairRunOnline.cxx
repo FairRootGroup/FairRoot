@@ -23,7 +23,7 @@
 #include "FairFileHeader.h"
 #include "FairParIo.h"
 #include "FairField.h"
-#include "FairSource.h"
+//#include "FairSource.h"
 
 #include "FairGeoInterface.h"
 #include "FairGeoLoader.h"
@@ -71,7 +71,6 @@ FairRunOnline::FairRunOnline()
    fEvtHeader(0),
    fStatic(kFALSE),
    fField(0),
-   fSource(NULL),
    fFolder(new TFolder("HISTO", "HISTO")),
    fGenerateHtml(kFALSE),
    fHistFileName(""),
@@ -90,13 +89,13 @@ FairRunOnline::FairRunOnline(FairSource* source)
    fEvtHeader(0),
    fStatic(kFALSE),
    fField(0),
-   fSource(source),
    fFolder(new TFolder("HISTO", "HISTO")),
    fGenerateHtml(kFALSE),
    fHistFileName(""),
    fRefreshRate(1000),
    fNevents(0)
 {
+  fRootManager->SetSource(source);
   fgRinstance = this;
   fAna = kTRUE;
   LOG(INFO) << "FairRunOnline constructed at " << this << FairLogger::endl;
@@ -112,9 +111,6 @@ FairRunOnline::~FairRunOnline()
   }
   if (gGeoManager) {
     delete gGeoManager;
-  }
-  if(fSource) {
-    delete fSource;
   }
   if(fFolder) {
     fFolder->Delete();
@@ -145,6 +141,8 @@ void FairRunOnline::Init()
     fIsInitialized = kTRUE;
   }
 
+  fRootManager->InitSource();
+
   //  FairGeoLoader* loader = new FairGeoLoader("TGeo", "Geo Loader");
   //  FairGeoInterface* GeoInterFace = loader->getGeoInterface();
   //  GeoInterFace->SetNoOfSets(ListOfModules->GetEntries());
@@ -152,8 +150,14 @@ void FairRunOnline::Init()
   //  GeoInterFace->readMedia();
 
   // Add a Generated run ID to the FairRunTimeDb
-  FairRunIdGenerator genid;
-  fRunId = genid.generateId();
+  fRootManager->ReadEvent(0);
+  
+  GetEventHeader();
+  
+  fRootManager->FillEventHeader(fEvtHeader);
+
+  fRunId = fEvtHeader->GetRunId();
+  
   fRtdb->addRun(fRunId);
   fFileHeader->SetRunId(fRunId);
   FairBaseParSet* par = dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
@@ -189,7 +193,6 @@ fRootManager->WriteFileHeader(fFileHeader);
 
   //  InitContainers();
   // --- Get event header from Run
-  fEvtHeader = dynamic_cast<FairEventHeader*> (FairRunOnline::Instance()->GetEventHeader());
   if ( ! fEvtHeader ) {
     LOG(FATAL) << "FairRunOnline::InitContainers:No event header in run!" << FairLogger::endl;
     return;
@@ -197,13 +200,6 @@ fRootManager->WriteFileHeader(fFileHeader);
   LOG(INFO) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
   fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
   fEvtHeader->SetRunId(fRunId);
-
-  // Initialize the source
-  if(! fSource->Init()) {
-    LOG(FATAL) << "Initialization of data source failed!"
-               << FairLogger::endl;
-    exit(-1);
-  }
 
   // Now call the User initialize for Tasks
   fTask->InitTask();
@@ -230,7 +226,7 @@ void FairRunOnline::InitContainers()
     LOG(WARNING)<<"FairRunOnline::InitContainers: no  'FairBaseParSet' container !"<<FairLogger::endl;
 
   if (par) {
-    fEvtHeader = (FairEventHeader*)fRootManager->GetObjectFromInTree("EventHeader.");
+    fEvtHeader = (FairEventHeader*)fRootManager->GetObject("EventHeader.");
 
     fRunId = fEvtHeader->GetRunId();
 
@@ -246,43 +242,36 @@ void FairRunOnline::InitContainers()
     //       par->GetGeometry();
     //     }
   } else
-  {
-  // --- Get event header from Run
-  fEvtHeader = dynamic_cast<FairEventHeader*> (FairRunOnline::Instance()->GetEventHeader());
-  if ( ! fEvtHeader ) {
-    LOG(FATAL) << "FairRunOnline::InitContainers:No event header in run!" << FairLogger::endl;
-    return;
-  }
-  LOG(INFO) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
-  fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
-  }
+    {
+      // --- Get event header from Run
+      //      fEvtHeader = dynamic_cast<FairEventHeader*> (FairRunOnline::Instance()->GetEventHeade
+      GetEventHeader();
+      if ( ! fEvtHeader ) {
+	LOG(FATAL) << "FairRunOnline::InitContainers:No event header in run!" << FairLogger::endl;
+	return;
+      }
+      LOG(INFO) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
+      fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
+    }
 }
 //_____________________________________________________________________________
 Int_t FairRunOnline::EventLoop()
 {
   gSystem->IgnoreInterrupt();
-  gIsInterrupted = kFALSE;
   signal(SIGINT, handler_ctrlc);
 
-  fSource->Reset();
-  Int_t status = fSource->ReadEvent();
-  if(1 == status || 2 == status) {
-    return status;
+  Int_t tmpId = fRootManager->GetRunId();
+
+  if ( tmpId != -1 && tmpId != fRunId ) {
+    LOG(INFO) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId << FairLogger::endl;
+    fRunId = tmpId;
+    Reinit( fRunId );
+    fTask->ReInitTask();
   }
-
-
-  Int_t tmpId = GetEventHeader()->GetRunId();
-  
-  if ( tmpId != fRunId ) {
-//    LOG(INFO) << "Call Reinit due to changed RunID" << FairLogger::endl;
-//    fRunId = tmpId;
-//    Reinit( fRunId );
-//    fTask->ReInitTask();
-  }
-
 
   fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
   fTask->ExecuteTask("");
+  fRootManager->FillEventHeader(fEvtHeader);
   fRootManager->Fill();
   fRootManager->DeleteOldWriteoutBufferData();
   fTask->FinishEvent();
@@ -301,17 +290,43 @@ Int_t FairRunOnline::EventLoop()
   return 0;
 }
 
-
 //_____________________________________________________________________________
-void FairRunOnline::Run(Int_t nev, Int_t dummy)
+void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
 {
   fOutFile->cd();
-    
+  
   fNevents = 0;
 
+  gIsInterrupted = kFALSE;
+  
+  Int_t MaxAllowed=fRootManager->CheckMaxEventNo(Ev_end);
+  if ( MaxAllowed != -1 ) {
+    if (Ev_end==0) {
+      if (Ev_start==0) {
+        Ev_end=MaxAllowed;
+      } else {
+        Ev_end =  Ev_start;
+        if ( Ev_end > MaxAllowed ) {
+          Ev_end = MaxAllowed;
+        }
+        Ev_start=0;
+      }
+    } else {
+      if (Ev_end > MaxAllowed) {
+        cout << "-------------------Warning---------------------------" << endl;
+        cout << " -W FairRunAna : File has less events than requested!!" << endl;
+        cout << " File contains : " << MaxAllowed  << " Events" << endl;
+        cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
+        cout << " The number of events is set to " << MaxAllowed << " Events"<< endl;
+        cout << "-----------------------------------------------------" << endl;
+        Ev_end = MaxAllowed;
+      }
+    }
+  }
   Int_t status;
-  if(nev < 0) {
+  if(Ev_start < 0) {
     while(kTRUE) {
+      fRootManager->ReadEvent();
       status = EventLoop();
       if(1 == status) {
         break;
@@ -324,7 +339,8 @@ void FairRunOnline::Run(Int_t nev, Int_t dummy)
       }
     }
   } else {
-    for (Int_t i = 0; i < nev; i++) {
+    for (Int_t i = Ev_start; i < Ev_end; i++) {
+      fRootManager->ReadEvent(i);
       status = EventLoop();
       if(1 == status) {
         break;
@@ -332,6 +348,7 @@ void FairRunOnline::Run(Int_t nev, Int_t dummy)
         i -= 1;
         continue;
       }
+
       if(gIsInterrupted)
       {
         break;
@@ -352,8 +369,6 @@ void FairRunOnline::Finish()
   fTask->FinishTask();
   fRootManager->LastFill();
   fRootManager->Write();
-
-  fSource->Close();
 
   if(fGenerateHtml) {
     WriteObjects();
@@ -460,6 +475,16 @@ void FairRunOnline::WriteObjects()
 }
 //_____________________________________________________________________________
 
+//_____________________________________________________________________________
+FairEventHeader* FairRunOnline::GetEventHeader()
+{
+  //  fEvtHeader = fRootManager->GetEventHeader();
+  if ( NULL == fEvtHeader ) {
+    fEvtHeader = new FairEventHeader();
+  }
+  return fEvtHeader;
+}
+//_____________________________________________________________________________
 
 
 //_____________________________________________________________________________
