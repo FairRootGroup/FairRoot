@@ -5,17 +5,26 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-// $Id: LoggerLinkDef.h,v 1.4 2006/09/15 12:43:35 turany Exp $
 
-#ifdef __CINT__
+/*
+ * Fairmemeory.h
+ *
+ *  Created on: Mai 18, 2015
+ *      Author: f.uhlig
+ */
 
-#pragma link off all globals;
-#pragma link off all classes;
-#pragma link off all functions;
+#ifndef BASE_FAIRMEMORY_H_
+#define BASE_FAIRMEMORY_H_
 
-#pragma link C++ global gLogger;
+#include "Rtypes.h"
 
-#pragma link C++ class FairLogger+;
-#pragma link C++ class FairMemory;
+class FairMemory
+{
+ public:
 
-#endif
+  Float_t GetMaxMemory();
+  
+  ClassDef(FairMemory, 1)
+};
+
+#endif  // BASE_FAIRMEMORY_H_
