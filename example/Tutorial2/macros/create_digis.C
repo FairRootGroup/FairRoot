@@ -75,4 +75,13 @@ void create_digis(){
     printf("RealTime=%f seconds, CpuTime=%f seconds\n",rtime,ctime);
 
     cout << "Macro finished succesfully." << endl;
+
+    // Extract the maximal used memory an add is as Dart measurement
+    // This line is filtered by CTest and the value send to CDash
+    FairMemory mem;
+    Float_t maxMemory=mem.GetMaxMemory();
+    cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
+    cout << maxMemory;
+    cout << "</DartMeasurement>" << endl;
+
 }

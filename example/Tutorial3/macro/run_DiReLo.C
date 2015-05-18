@@ -77,5 +77,12 @@ void run_DiReLo(Int_t nofFiles, TString mcEngine="TGeant3" )
   cout << " Test passed" << endl;
   cout << " All ok " << endl;
 
+  // Extract the maximal used memory an add is as Dart measurement
+  // This line is filtered by CTest and the value send to CDash
+  FairMemory mem;
+  Float_t maxMemory=mem.GetMaxMemory();
+  cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
+  cout << maxMemory;
+  cout << "</DartMeasurement>" << endl;
   exit(0);
 }

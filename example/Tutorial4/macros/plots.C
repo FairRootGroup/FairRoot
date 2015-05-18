@@ -146,4 +146,12 @@ for (Int_t iev=0; iev< nevent; iev++) {
    fHist->ls();
    fHist->Close();
   }
+
+  // Extract the maximal used memory an add is as Dart measurement
+  // This line is filtered by CTest and the value send to CDash
+  FairMemory mem;
+  Float_t maxMemory=mem.GetMaxMemory();
+  cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
+  cout << maxMemory;
+  cout << "</DartMeasurement>" << endl;
 }
