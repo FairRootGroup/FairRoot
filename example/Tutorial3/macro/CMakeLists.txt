@@ -15,30 +15,30 @@ ForEach(_mcEngine IN ITEMS TGeant3 TGeant4)
   Add_Test(run_sim_${_mcEngine} 
            ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_sim.sh 100 \"${_mcEngine}\")
   Set_Tests_Properties(run_sim_${_mcEngine} PROPERTIES TIMEOUT "180")
-  Set_Tests_Properties(run_sim_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
+  Set_Tests_Properties(run_sim_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
   Add_Test(run_digi_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_digi.sh \"${_mcEngine}\")
   Set_Tests_Properties(run_digi_${_mcEngine} PROPERTIES DEPENDS run_sim_${_mcEngine})
   Set_Tests_Properties(run_digi_${_mcEngine} PROPERTIES TIMEOUT "30")
-  Set_Tests_Properties(run_digi_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
+  Set_Tests_Properties(run_digi_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
 
   Add_Test(run_reco_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_reco.sh \"${_mcEngine}\")
   Set_Tests_Properties(run_reco_${_mcEngine} PROPERTIES DEPENDS run_digi_${_mcEngine})
   Set_Tests_Properties(run_reco_${_mcEngine} PROPERTIES TIMEOUT "30")
-  Set_Tests_Properties(run_reco_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
+  Set_Tests_Properties(run_reco_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
 
   Add_Test(run_digi_timebased_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_digi_timebased.sh \"${_mcEngine}\")
   Set_Tests_Properties(run_digi_timebased_${_mcEngine} PROPERTIES DEPENDS run_sim_${_mcEngine})
   Set_Tests_Properties(run_digi_timebased_${_mcEngine} PROPERTIES TIMEOUT "30")
-  Set_Tests_Properties(run_digi_timebased_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
+  Set_Tests_Properties(run_digi_timebased_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
 
   Add_Test(run_reco_timebased_${_mcEngine} ${CMAKE_BINARY_DIR}/example/Tutorial3/macro/run_reco_timebased.sh \"${_mcEngine}\")
   Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES DEPENDS run_digi_timebased_${_mcEngine})
   Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES TIMEOUT "30")
-  Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Test passed;All ok")
+  Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 EndForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
 
 

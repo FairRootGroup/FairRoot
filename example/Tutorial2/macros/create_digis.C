@@ -16,12 +16,12 @@ void create_digis(){
     TString tutdir = dir + "/Tutorial2";
 
     TString inFile = "./tutorial2_pions.mc_p2.000_t0_n10.root";
-    TString paramFile = "./tutorial2_pions.params_p2.000_t0_n10.root";
+    TString parFile = "./tutorial2_pions.params_p2.000_t0_n10.root";
     TString outFile = "./digis.mc.root";
 
     cout << "******************************" << endl;
     cout << "InFile: " << inFile << endl;
-    cout << "ParamFile: " << paramFile << endl;
+    cout << "ParamFile: " << parFile << endl;
     cout << "OutFile: " << outFile << endl;
     cout << "******************************" << endl;
 
@@ -33,7 +33,7 @@ void create_digis(){
     // Init Simulation Parameters from Root File
     FairRuntimeDb* rtdb=fRun->GetRuntimeDb();
     FairParRootFileIo* io1=new FairParRootFileIo();
-    io1->open(paramFile.Data(),"UPDATE");
+    io1->open(parFile.Data(),"UPDATE");
  
     FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
     TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
@@ -68,20 +68,33 @@ void create_digis(){
 
     fRun->Run();
 
+    // -----   Finish   -------------------------------------------------------
+
+    cout << endl << endl;
+
+    // Extract the maximal used memory an add is as Dart measurement
+    // This line is filtered by CTest and the value send to CDash
+    FairSystemInfo sysInfo;
+    Float_t maxMemory=sysInfo.GetMaxMemory();
+    cout << "<DartMeasurement name=\"Maximum Memory\" type=\"numeric/double\">";
+    cout << maxMemory;
+    cout << "</DartMeasurement>" << endl;
 
     timer.Stop();
     Double_t rtime = timer.RealTime();
     Double_t ctime = timer.CpuTime();
-    printf("RealTime=%f seconds, CpuTime=%f seconds\n",rtime,ctime);
 
-    cout << "Macro finished succesfully." << endl;
-
-    // Extract the maximal used memory an add is as Dart measurement
-    // This line is filtered by CTest and the value send to CDash
-    FairMemory mem;
-    Float_t maxMemory=mem.GetMaxMemory();
-    cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
-    cout << maxMemory;
+    Float_t cpuUsage=ctime/rtime;
+    cout << "<DartMeasurement name=\"CPU Usage\" type=\"numeric/double\">";
+    cout << cpuUsage;
     cout << "</DartMeasurement>" << endl;
 
+    cout << endl << endl;
+    cout << "Output file is "    << outFile << endl;
+    cout << "Parameter file is " << parFile << endl;
+    cout << "Real time " << rtime << " s, CPU time " << ctime
+         << "s" << endl << endl;
+    cout << "Macro finished successfully." << endl;
+
+    // ------------------------------------------------------------------------
 }

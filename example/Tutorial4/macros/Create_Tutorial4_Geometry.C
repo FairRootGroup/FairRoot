@@ -53,11 +53,11 @@ void add_alignable_volumes();
 
 void Create_Tutorial4_Geometry() {
   // Load the necessary FairRoot libraries 
-  gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
-  basiclibs();
-  gSystem->Load("libGeoBase");
-  gSystem->Load("libParBase");
-  gSystem->Load("libBase");
+//  gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
+//  basiclibs();
+//  gSystem->Load("libGeoBase");
+//  gSystem->Load("libParBase");
+//  gSystem->Load("libBase");
 
   // Load needed material definition from media.geo file
   create_materials_from_media_file();
@@ -99,13 +99,35 @@ void Create_Tutorial4_Geometry() {
   //  top->Draw("ogl");
   //top->Raytrace();
 
+  // -----   Finish   -------------------------------------------------------
+
+  cout << endl << endl;
+
   // Extract the maximal used memory an add is as Dart measurement
   // This line is filtered by CTest and the value send to CDash
-  FairMemory mem;
-  Float_t maxMemory=mem.GetMaxMemory();
-  cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
+  FairSystemInfo sysInfo;
+  Float_t maxMemory=sysInfo.GetMaxMemory();
+  cout << "<DartMeasurement name=\"Maximum Memory\" type=\"numeric/double\">";
   cout << maxMemory;
   cout << "</DartMeasurement>" << endl;
+
+  timer.Stop();
+  Double_t rtime = timer.RealTime();
+  Double_t ctime = timer.CpuTime();
+
+  Float_t cpuUsage=ctime/rtime;
+  cout << "<DartMeasurement name=\"CPU Usage\" type=\"numeric/double\">";
+  cout << cpuUsage;
+  cout << "</DartMeasurement>" << endl;
+
+  cout << endl << endl;
+  cout << "Output file is "    << outFile << endl;
+  cout << "Parameter file is " << parFile << endl;
+  cout << "Real time " << rtime << " s, CPU time " << ctime
+       << "s" << endl << endl;
+  cout << "Macro finished successfully." << endl;
+
+  // ------------------------------------------------------------------------
 }
 
 void create_materials_from_media_file()
