@@ -50,8 +50,6 @@ public:
 
     virtual void FillEventHeader(FairEventHeader* feh);
 
-    virtual TObject* GetObject(const char* ObjName, const char* ObjType);
-
     const TFile*        GetRootFile(){return fRootFile;}
     /** Add a friend file (input) by name)*/
     void                AddFriend(TString FileName);

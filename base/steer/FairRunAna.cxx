@@ -427,30 +427,35 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
 {
   UInt_t tmpId =0;
 
-  if (Ev_end==0) {
-    if (Ev_start==0) {
-      Ev_end=Int_t((fRootManager->GetInChain())->GetEntries());
-    } else {
-      Ev_end =  Ev_start;
-      if ( Ev_end > ((fRootManager->GetInChain())->GetEntries()) ) {
-        Ev_end = (Int_t) (fRootManager->GetInChain())->GetEntries();
+  Int_t MaxAllowed=fRootManager->CheckMaxEventNo(Ev_end);
+  if ( MaxAllowed != -1 ) {
+    if (Ev_end==0) {
+      if (Ev_start==0) {
+	Ev_end=MaxAllowed;
+      } else {
+	Ev_end =  Ev_start;
+	if ( Ev_end > MaxAllowed ) {
+	  Ev_end = MaxAllowed;
+	}
+	Ev_start=0;
       }
-      Ev_start=0;
+    } else {
+      if (Ev_end > MaxAllowed) {
+	cout << "-------------------Warning---------------------------" << endl;
+	cout << " -W FairRunAna : File has less events than requested!!" << endl;
+	cout << " File contains : " << MaxAllowed  << " Events" << endl;
+	cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
+	cout << " The number of events is set to " << MaxAllowed << " Events"<< endl;
+	cout << "-----------------------------------------------------" << endl;
+	Ev_end = MaxAllowed;
+      }
     }
-  } else {
-    Int_t fileEnd=(fRootManager->GetInChain())->GetEntries();
-    if (Ev_end > fileEnd) {
-      cout << "-------------------Warning---------------------------" << endl;
-      cout << " -W FairRunAna : File has less events than requested!!" << endl;
-      cout << " File contains : " << fileEnd  << " Events" << endl;
-      cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
-      cout << " The number of events is set to " << fileEnd << " Events"<< endl;
-      cout << "-----------------------------------------------------" << endl;
-      Ev_end = fileEnd;
-    }
-
+    LOG(INFO) << "FairRunAna::Run() After checking, the run will run from event " << Ev_start << " to " << Ev_end << "." << FairLogger::endl;
   }
-
+  else {
+    LOG(INFO) << "FairRunAna::Run() continue running without stop" << FairLogger::endl;
+  }
+  
   if (fGenerateRunInfo) {
     fRunInfo.Reset();
   }

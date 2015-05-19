@@ -55,10 +55,6 @@ public:
     const TFile*        GetRootFile(){return fRootFile;}
     /** Add a friend file (input) by name)*/
 
-    virtual TObject* GetObject(const char* ObjName, const char* ObjType);
-    //    virtual Bool_t   SetObject(TObject* obj, const char* ObjType);
-    //    virtual void     SetObjectName(const char* ObjName, const char* ObjType);
-
     virtual Bool_t   ActivateObject(TObject** obj, const char* BrName);
 
     void             ReadBKEvent(UInt_t i=0);

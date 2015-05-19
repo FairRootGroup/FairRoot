@@ -17,6 +17,7 @@
 
 #include "FairRunAna.h"
 
+#include "FairFileSource.h" // FairRunAnaProof can only accept FairFileSource as source
 #include "TProof.h"
 
 class FairRunAnaProof : public FairRunAna
@@ -39,9 +40,9 @@ class FairRunAnaProof : public FairRunAna
     void        RunOnProof(Int_t NStart, Int_t NStop);
 
     /** set the input tree of fRootManager when running on PROOF worker*/
-    void        SetInTree (TTree* tempTree)   {
-      fRootManager->SetInTree (tempTree);
-    }
+    /* void        SetInTree (TTree* tempTree)   { */
+    /*   fRootManager->SetInTree (tempTree); */
+    /* } */
 
     /** GetProof */
     TProof* GetProof() {
@@ -65,6 +66,8 @@ class FairRunAnaProof : public FairRunAna
       fProofOutputStatus = outStat;
     }
 
+    virtual void   SetSource(FairSource* tempSource);
+
   protected:
     static FairRunAnaProof*                      fRAPInstance;
 
@@ -85,6 +88,8 @@ class FairRunAnaProof : public FairRunAna
   
     FairRunAnaProof(const FairRunAnaProof&);
     FairRunAnaProof operator=(const FairRunAnaProof&);
+
+    FairFileSource* fProofFileSource;
     
     ClassDef(FairRunAnaProof ,1)
 
