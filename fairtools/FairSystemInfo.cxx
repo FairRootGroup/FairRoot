@@ -6,13 +6,13 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * FairMemory.cxx
+ * FairSystemInfo.cxx
  *
  *  Created on: Mar 18, 2015
  *      Author: f.uhlig
  */
 
-#include "FairMemory.h"
+#include "FairSystemInfo.h"
 
 #include <unistd.h>
 #include <sys/resource.h>
@@ -28,7 +28,7 @@
 #endif
 
 
-Float_t FairMemory::GetMaxMemory()
+Float_t FairSystemInfo::GetMaxMemory()
 {
   // Returns the maximal used memory in MB
 

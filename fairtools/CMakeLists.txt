@@ -29,7 +29,7 @@ Link_Directories(${LINK_DIRECTORIES})
 # List of source files
 set(SRCS
    FairLogger.cxx
-   FairMemory.cxx
+   FairSystemInfo.cxx
 )
 
 Set(HEADERS )
