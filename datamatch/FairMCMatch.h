@@ -26,6 +26,7 @@
 #include "Riosfwd.h"                    // for ostream
 #include "Rtypes.h"                     // for Int_t, FairMCMatch::Class, etc
 #include "TString.h"                    // for TString
+#include "TClonesArray.h"
 
 #include <iostream>                     // for ostream, cout, endl
 #include <map>                          // for map, etc
@@ -33,7 +34,6 @@
 #include <utility>                      // for pair
 
 class FairLink;
-class TClonesArray;
 
 typedef std::map<Int_t, FairMCStage*>::iterator TListIterator;
 typedef std::map<Int_t, FairMCStage*>::const_iterator TListIteratorConst;
