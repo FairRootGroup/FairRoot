@@ -105,9 +105,10 @@ FairRootManager::FairRootManager()
     fFillLastData(kFALSE),
     fUseFairLinks(kFALSE),
     fEntryNr(0),
+    fListFolder(0),
     fSource(0),
-    fFinishRun(kFALSE)
-{
+    fSourceChain(0)
+ 
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
     return;
@@ -844,7 +845,6 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
    calls to activate branch is done , and then just forward the pointer.
    <DB>
    **/
-  TObjArray *fListFolder = (TObjArray*)(fSource->GetObject("","GetListOfFolders"));
   fNObj++;
   fObj2[fNObj]  =  GetMemoryBranch ( BrName );
   if ( fObj2[fNObj]   ) {
@@ -920,12 +920,10 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
   TObject* Obj1 =NULL;
   TObjArray *fListFolder=0;
     
-  if(fSource!=0){
-    fListFolder=(TObjArray*)fSource->GetObject("","GetListOfFolders");
-  }else{
+  if(fListFolder==0){
     fListFolder = new TObjArray(16);
   }
-    
+  
   //cout <<"FairRootManager::CheckBranchSt  :  " <<fCbmroot << endl;
   if (fCbmroot) {
     fListFolder->Add(fCbmroot);
@@ -1079,31 +1077,6 @@ void FairRootManager::DeleteOldWriteoutBufferData()
   for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
     iter->second->DeleteOldData();
   }
-}
-//_____________________________________________________________________________
-
-
-<<<<<<< HEAD
-void FairRootManager::ReadBranchEvent(const char* BrName)
-{
-  /**fill the object with content if the other branches in this tree entry were already read**/
-
-  if(fEvtHeader == 0) { return; } //No event header, Reading will start later
-  
-  if(!fMixedInput) {
-    if( !fRootFileSource ) { return; }
-    TChain *fInChain =fRootFileSource->GetInChain();
-    fInChain->FindBranch(BrName)->GetEntry(fEntryNr);
-    return;
-  } else {
-    if ( fRootFileSource != 0 ) {
-      TChain* chain = fSignalTypeList[fEvtHeader->GetInputFileId()]->GetInChain();
-      if(!chain) { return; }
-      chain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
-      return;
-    }
-  }
-  return;
 }
 //_____________________________________________________________________________
 

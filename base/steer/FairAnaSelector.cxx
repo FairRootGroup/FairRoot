@@ -13,6 +13,7 @@
 
 #include "FairAnaSelector.h"
 
+#include "FairFileSource.h"             // for FairFileSource
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "FairParAsciiFileIo.h"         // for FairParAsciiFileIo
 #include "FairParRootFileIo.h"          // for FairParRootFileIo
@@ -54,7 +55,7 @@ void FairAnaSelector::Init(TTree* tree)
     LOG(INFO) << "FairAnaSelector::Init(): Already have fRunAna." << FairLogger::endl;
 
     LOG(INFO) << "FairAnaSelector::Init(): SetInTree(" << tree << ")" << FairLogger::endl;
-    fRunAna->SetInTree(tree);
+    fProofSource->SetInTree(tree);
     LOG(INFO) << "FairAnaSelector::Init(): SetInTree done" << FairLogger::endl;
 
     LOG(INFO) << "FairAnaSelector::Init(): Containers static? " << (fRunAna->GetContainerStatic()?"YES":"NO") << FairLogger::endl;
@@ -95,7 +96,8 @@ void FairAnaSelector::Init(TTree* tree)
     fRunAna = new FairRunAnaProof("RunOnProofWorker");
 
     LOG(INFO) << "FairAnaSelector::Init(): SetInTree(" << tree << ")" << FairLogger::endl;
-    fRunAna->SetInTree(tree);
+    fProofSource = new FairFileSource(tree->GetCurrentFile());
+    fRunAna->SetSource(fProofSource);
     LOG(INFO) << "FairAnaSelector::Init(): SetInTree done" << FairLogger::endl;
 
     fRunAna->SetOutputFile(fFile);

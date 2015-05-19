@@ -52,6 +52,7 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
   :FairRunAna(),
    fProof(NULL),
    fRunOnProofWorker(kFALSE),
+   fProofFileSource(0),
    fProofServerName(proofName),
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
@@ -122,14 +123,14 @@ void FairRunAnaProof::Init()
   if (fInFileIsOpen) {
     if ( fRunOnProofWorker ) {
       if (fLoadGeo && gGeoManager==0) {
-        fRootManager->GetInFile()->Get("FAIRGeom");
+        fProofFileSource->GetInTree()->GetCurrentFile()->Get("FAIRGeom");
       }
     } else {
 
       // Add all friend files defined by AddFriend to the correct chain
       if (fLoadGeo && gGeoManager==0) {
         // Check if the geometry in the first file of the Chain
-        fRootManager->GetInChain()->GetFile()->Get("FAIRGeom");
+        fProofFileSource->GetInTree()->GetCurrentFile()->Get("FAIRGeom");
       }
       //check that the geometry was loaded if not try all connected files!
       if (fLoadGeo && gGeoManager==0) {
@@ -264,6 +265,17 @@ void FairRunAnaProof::Init()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRunAnaProof::SetSource(FairSource* tempSource) {
+  // FairRunAnaProof should accept only FairFileSource
+  if ( tempSource->GetName() != "FairFileSource" ) {
+    LOG(WARNING) << "FairRunAnaProof. Seems you are trying to set different source than FairFileSource" << FairLogger::endl;
+  }
+  fRootManager->SetSource(tempSource);
+  fProofFileSource = (FairFileSource*)tempSource;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 void FairRunAnaProof::Run(Int_t Ev_start, Int_t Ev_end)
 {
   RunOnProof(Ev_start,Ev_end);
@@ -303,7 +315,8 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 //  FairAnaSelector* proofSelector = new FairAnaSelector();
 
 
-  TChain* inChain = (TChain*)fRootManager->GetInChain();
+//  TChain* inChain = (TChain*)fRootManager->GetInChain();
+  TChain* inChain = (TChain*)fProofFileSource->GetInChain();
   TString par1File = "";
   TString par2File = "";
   if ( fRtdb->getFirstInput () ) {

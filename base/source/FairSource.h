@@ -34,8 +34,6 @@ class FairSource : public TObject
 
     virtual void Reset() = 0;
     
-    virtual TObject* GetObject(const char* ObjName, const char* ObjType) { return 0; }
-    
     virtual Bool_t   ActivateObject(TObject** obj, const char* ObjType)  { return kFALSE; }
     
     /**Check the maximum event number we can run to*/
