@@ -30,10 +30,10 @@ void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
   fRun->SetName(mcEngine);
 
   TString outFile = "data/testrun_";
-  outfile = outFile + mcEngine + ".root";
+  outFile = outFile + mcEngine + ".root";
 
   TString parFile = "data/testparams_";
-  outparam = parFile + mcEngine + ".root";
+  parFile = parFile + mcEngine + ".root";
 
   
   fRun->SetOutputFile(outFile);
