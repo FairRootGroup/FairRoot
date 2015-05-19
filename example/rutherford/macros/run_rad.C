@@ -132,7 +132,7 @@ void run_rad(Int_t nEvents = 100, TString mcEngine="TGeant3")
   // This line is filtered by CTest and the value send to CDash
   FairSystemInfo sysInfo;
   Float_t maxMemory=sysInfo.GetMaxMemory();
-  cout << "<DartMeasurement name=\"Maximum Memory\" type=\"numeric/double\">";
+  cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
   cout << maxMemory;
   cout << "</DartMeasurement>" << endl;
 
@@ -141,7 +141,7 @@ void run_rad(Int_t nEvents = 100, TString mcEngine="TGeant3")
   Double_t ctime = timer.CpuTime();
 
   Float_t cpuUsage=ctime/rtime;
-  cout << "<DartMeasurement name=\"CPU Usage\" type=\"numeric/double\">";
+  cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
   cout << cpuUsage;
   cout << "</DartMeasurement>" << endl;
 
