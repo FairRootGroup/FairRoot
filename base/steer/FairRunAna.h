@@ -71,7 +71,7 @@ class FairRunAna : public FairRun
      *@param identifier :  Unsigned integer which identify the signal file
      */
 
-    void   SetSource(FairSource* tempSource) { fRootManager->SetSource(tempSource); }
+    virtual void   SetSource(FairSource* tempSource) { fRootManager->SetSource(tempSource); }
 
     // ********************************************************* //
     // THE BELOW FUNCTIONS SHOULD BE MOVED TO FairFileSource

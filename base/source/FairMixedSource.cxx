@@ -295,6 +295,7 @@ Bool_t FairMixedSource::Init()
 
     }
     fNoOfEntries = fBackgroundChain->GetEntries();
+    FairRootManager::Instance()->SetInChain(fBackgroundChain);
 
     for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
       TFolder* fold = (TFolder*) fListFolder->At(i);
@@ -307,7 +308,8 @@ Bool_t FairMixedSource::Init()
 	ActivateObject((TObject**)&fMCHeader ,"MCEventHeader.");
       }
     }
-    
+    FairRootManager::Instance()->SetListOfFolders(fListFolder);
+
     fBackgroundChain->GetEntry(0);
     if ( fEvtHeader ) {
       fOutHeader->SetRunId      (fEvtHeader->GetRunId());
@@ -353,6 +355,8 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
         GetASignal=kTRUE;
         fCurrentEntry[iterN->first]=entry+1;
         fLogger->Debug(MESSAGE_ORIGIN,"---Get entry No. %i from signal chain number --- %i --- ",entry, iterN->first);
+	FairRootManager::Instance()->SetInChain(chain);
+
         break;
       }
     }
@@ -364,6 +368,7 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
       fOutHeader->SetEventTime(GetEventTime());
       fCurrentEntry[0]=entry+1;
       fLogger->Debug(MESSAGE_ORIGIN,"---Get entry from background chain  --- ");
+      FairRootManager::Instance()->SetInChain(fBackgroundChain);
     }
     
   }
@@ -589,18 +594,6 @@ Bool_t FairMixedSource::OpenSignalChain()
     }
   }
   return kTRUE;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-TObject* FairMixedSource::GetObject(const char* ObjName, const char* ObjType) {
-
-  if ( ObjType == "GetListOfFolders" ) {
-    return GetListOfFolders();
-  }
-
-  TObject* temp = new TObject();
-  return temp;
 }
 //_____________________________________________________________________________
 

@@ -185,6 +185,7 @@ Bool_t FairFileSource::Init()
         fInChain = new TChain("cbmsim", "/cbmroot");
         LOG(DEBUG) << "FairFileSource::Init() chain created"
 		   << FairLogger::endl;
+	FairRootManager::Instance()->SetInChain(fInChain);
     }
     fInChain->Add( fRootFile->GetName() );
     
@@ -235,7 +236,51 @@ Bool_t FairFileSource::Init()
 	}
       }
     }
+
+    gROOT->GetListOfBrowsables()->Add(fCbmroot);
+    fListFolder->Add( fCbmroot );
+
+    // Store the information about the unique runids in the input file
+    // together with the filename and the number of events for each runid
+    // this information is needed later to check if inconsitencies exist
+    // between the main input chain and any of the friend chains.
     
+    //  GetRunIdInfo(fInFile->GetName(), chainName);
+    
+    // Add all additional input files to the input chain and do a
+    // consitency check
+    std::list<TString>::const_iterator iter;
+    for(iter = fInputChainList.begin(); iter != fInputChainList.end(); iter++) {
+        // Store global gFile pointer for safety reasons.
+        // Set gFile to old value at the end of the routine.R
+        TFile* temp = gFile;
+        
+        // Temporarily open the input file to extract information which
+        // is needed to bring the friend trees in the correct order
+        TFile* inputFile = new TFile((*iter));
+        if (inputFile->IsZombie()) {
+            fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (*iter).Data());
+        }
+        
+        // Check if the branchlist is the same as for the first input file.
+        Bool_t isOk = CompareBranchList(inputFile, chainName);
+        if ( !isOk ) {
+            fLogger->Fatal(MESSAGE_ORIGIN, "Branch structure of the input file %s and the file to be added %s are different.", fRootFile->GetName(), (*iter).Data());
+            return kFALSE;
+        }
+        
+        // Add the runid information for all files in the chain.
+        //GetRunIdInfo(inputFile->GetName(), chainName);
+        // Add the file to the input chain
+        fInChain->Add( (*iter) );
+        
+        // Close the temporarly file and restore the gFile pointer.
+        inputFile->Close();
+        gFile = temp;
+
+    }
+    fNoOfEntries = fInChain->GetEntries();
+     
     LOG(DEBUG) << "Entries in this Source " << fNoOfEntries << FairLogger::endl;
     
     for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
@@ -249,6 +294,8 @@ Bool_t FairFileSource::Init()
 	  ActivateObject((TObject**)&fMCHeader ,"MCEventHeader.");
        }
     }
+
+    FairRootManager::Instance()->SetListOfFolders(fListFolder);
 
     AddFriendsToChain();
 
@@ -608,20 +655,6 @@ Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
   }
 
   return kTRUE;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-TObject* FairFileSource::GetObject(const char* ObjName, const char* ObjType) {
-  if ( ObjType == "GetListOfFolders" ) {
-    return GetListOfFolders();
-  }
-  if ( ObjType == "GetInTree" ) {
-    return GetInTree();
-  }
-    
-    TObject* temp = new TObject();
-    return temp;
 }
 //_____________________________________________________________________________
 
