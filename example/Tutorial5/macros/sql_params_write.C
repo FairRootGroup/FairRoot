@@ -95,7 +95,7 @@ Int_t  sql_params_write()
 
 
   cout << endl;
-  cout << "-I-  Parameters succesfully written to DB with RunID# " << runId << endl;
+  cout << "-I-  Parameters successfully written to DB with RunID# " << runId << endl;
   cout << endl;
 
   if (db) delete db;
