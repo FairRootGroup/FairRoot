@@ -7,24 +7,24 @@
  ********************************************************************************/
 
 /*
- * Fairmemeory.h
+ * FairSystemInfo.h
  *
  *  Created on: Mai 18, 2015
  *      Author: f.uhlig
  */
 
-#ifndef BASE_FAIRMEMORY_H_
-#define BASE_FAIRMEMORY_H_
+#ifndef BASE_FAIRSYSTEMINFO_H_
+#define BASE_FAIRSYSTEMINFO_H_
 
 #include "Rtypes.h"
 
-class FairMemory
+class FairSystemInfo
 {
  public:
 
   Float_t GetMaxMemory();
   
-  ClassDef(FairMemory, 1)
+  ClassDef(FairSystemInfo, 1)
 };
 
-#endif  // BASE_FAIRMEMORY_H_
+#endif  // BASE_FAIRSYSTEMINFO_H_
