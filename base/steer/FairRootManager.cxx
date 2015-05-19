@@ -105,7 +105,9 @@ FairRootManager::FairRootManager()
     fFillLastData(kFALSE),
     fUseFairLinks(kFALSE),
     fEntryNr(0),
-    fSource(0)
+    fListFolder(0),
+    fSource(0),
+    fSourceChain(0)
 {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
@@ -843,7 +845,6 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
    calls to activate branch is done , and then just forward the pointer.
    <DB>
    **/
-  TObjArray *fListFolder = (TObjArray*)(fSource->GetObject("","GetListOfFolders"));
   fNObj++;
   fObj2[fNObj]  =  GetMemoryBranch ( BrName );
   if ( fObj2[fNObj]   ) {
@@ -919,12 +920,10 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
   TObject* Obj1 =NULL;
   TObjArray *fListFolder=0;
     
-  if(fSource!=0){
-    fListFolder=(TObjArray*)fSource->GetObject("","GetListOfFolders");
-  }else{
+  if(fListFolder==0){
     fListFolder = new TObjArray(16);
   }
-    
+  
   //cout <<"FairRootManager::CheckBranchSt  :  " <<fCbmroot << endl;
   if (fCbmroot) {
     fListFolder->Add(fCbmroot);

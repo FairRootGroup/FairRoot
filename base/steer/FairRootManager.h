@@ -89,7 +89,6 @@ class FairRootManager : public TObject
     /**Return a TList of TObjString of branch names */
     TList*              GetBranchNameList() {return fBranchNameList;}
 
-    TChain*             GetBGChain() {   return (TChain*)fSource->GetObject("","GetBackgroundChain"); }
     TTree*              GetOutTree() {return fOutTree;}
     TFile*              GetOutFile() {return  fOutFile;}
     /**  Get the Object (container) for the given branch name,
@@ -202,16 +201,17 @@ class FairRootManager : public TObject
    
     
     /** These methods have been moved to the FairFileSource */
-    const TFile* GetRootFile(){return (TFile*)fSource->GetObject("","RootFile");}
-
     void   SetSource(FairSource* tempSource) { fSource = tempSource; }    
     Bool_t InitSource();
     
-    TTree*              GetInTree() {return (TTree*)fSource->GetObject("","GetInTree");}
-    TChain*             GetInChain() {return (TChain*)fSource->GetObject("","GetInChain");}
-    TFile*              GetInFile() {return  (TFile*)fSource->GetObject("","GetInFile");}
-    /**Set the input tree when running on PROOF worker*/
-    void                SetInTree (TTree*  tempTree);    
+    void                SetListOfFolders(TObjArray* ta){ fListFolder=ta; }
+    TChain*             GetInChain ()                  { return fSourceChain;}
+    TTree*              GetInTree  ()                  { if ( fSourceChain ) return fSourceChain->GetTree(); return 0; }
+    const TFile*        GetRootFile()                  { if ( fSourceChain ) return fSourceChain->GetFile(); return 0; }
+    TFile*              GetInFile  ()                  { if ( fSourceChain ) return fSourceChain->GetFile(); return 0; }
+    void                SetInChain (TChain* tempChain) { fSourceChain=tempChain;}
+    /* /\**Set the input tree when running on PROOF worker*\/ */
+
   private:
     /**private methods*/
     FairRootManager(const FairRootManager&);
@@ -297,7 +297,11 @@ class FairRootManager : public TObject
     Bool_t  fFillLastData; //!
     Int_t fEntryNr; //!
 
+    TObjArray                           *fListFolder; //!
+
     FairSource                          *fSource;
+
+    TChain                              *fSourceChain;
 
     Bool_t fUseFairLinks; //!
 
