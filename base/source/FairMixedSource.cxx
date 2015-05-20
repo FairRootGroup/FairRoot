@@ -39,7 +39,6 @@ FairMixedSource::FairMixedSource(TFile *f, const char* Title, UInt_t identifier)
    fInputTitle(Title),
    fRootFile(f),
    fRootManager(0),
-   fLogger(FairLogger::GetLogger()),
    fListFolder(new TObjArray(16)),
    fRtdb(FairRuntimeDb::instance()),
    fCbmout(0),
@@ -74,9 +73,9 @@ FairMixedSource::FairMixedSource(TFile *f, const char* Title, UInt_t identifier)
   IsInitialized(kFALSE)
 {
    if (fRootFile->IsZombie()) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
+     LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
    }
-  fLogger->Info(MESSAGE_ORIGIN, "FairMixedSource created------------");
+   LOG(INFO) << "FairMixedSource created------------" << FairLogger::endl;
   
   fRootManager = FairRootManager::Instance();
 
@@ -85,8 +84,7 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
 :FairSource(),
  fInputTitle(Title),
  fRootFile(0),
-   fRootManager(0),
- fLogger(FairLogger::GetLogger()),
+ fRootManager(0),
  fListFolder(new TObjArray(16)),
  fRtdb(FairRuntimeDb::instance()),
  fCbmout(0),
@@ -120,13 +118,12 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
  fNoOfEntries(-1),
  IsInitialized(kFALSE)
 {
-    fRootFile = new TFile(RootFileName->Data());
-    if (fRootFile->IsZombie()) {
-       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
-    }
-    fRootManager = FairRootManager::Instance();
-  fLogger->Info(MESSAGE_ORIGIN, "FairMixedSource created------------");
-
+  fRootFile = new TFile(RootFileName->Data());
+  if (fRootFile->IsZombie()) {
+    LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
+  }
+  fRootManager = FairRootManager::Instance();
+  LOG(INFO) << "FairMixedSource created------------" << FairLogger::endl;
 }
 
 FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalId, const char* Title, UInt_t identifier) 
@@ -134,7 +131,6 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
    fInputTitle(Title),
    fRootFile(0),
    fRootManager(0),
-   fLogger(FairLogger::GetLogger()),
    fListFolder(new TObjArray(16)),
    fRtdb(FairRuntimeDb::instance()),
    fCbmout(0),
@@ -179,7 +175,6 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     fRootManager = FairRootManager::Instance();
   // fBackgroundFile =  new TFile(name);
   // if (fBackgroundFile->IsZombie()) {
-  //   fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Background file  %s ", name.Data());
   // } else {
   //   fBackgroundChain = new TChain("cbmsim", "/cbmroot");
   //   fBackgroundChain->AddFile(name.Data());
@@ -196,12 +191,12 @@ Bool_t FairMixedSource::Init()
 
   //  LOG(INFO) << "*********** CHAIN HAS " << fBackgroundChain->GetEntries() << " entries" << FairLogger::endl;
   if(IsInitialized){
-    fLogger->Info(MESSAGE_ORIGIN, "FairMixedSource already initialized");
+    LOG(INFO) << "FairMixedSource already initialized" << FairLogger::endl;
     return kTRUE;
   }
   if (!fBackgroundChain ) {
     fBackgroundChain = new TChain("cbmsim", "/cbmroot");
-    fLogger->Info(MESSAGE_ORIGIN, "FairMixedSource::Init() chain created");
+    LOG(INFO) << "FairMixedSource::Init() chain created" << FairLogger::endl;
   }
 
     fBackgroundChain->Add( fRootFile->GetName() );
@@ -232,19 +227,19 @@ Bool_t FairMixedSource::Init()
     // probably only checks if the name of the tree is the same.
 
     TList* list= dynamic_cast <TList*> (fRootFile->Get("BranchList"));
-    if(list==0)fLogger->Fatal(MESSAGE_ORIGIN, "No Branch list in input file");
+    if(list==0) LOG(FATAL) << "No Branch list in input file" << FairLogger::endl;
     TString chainName = fInputTitle;
     TString ObjName;
     fInputLevel.push_back(chainName);
     fCheckInputBranches[chainName] = new std::list<TString>;
     if(list) {
         TObjString* Obj=0;
-        fLogger->Info(MESSAGE_ORIGIN, "Enteries in the list  %i", list->GetEntries());
+        LOG(INFO) << "Enteries in the list " << list->GetEntries() << FairLogger::endl;
         for(Int_t i =0; i< list->GetEntries(); i++) {
             Obj=dynamic_cast <TObjString*> (list->At(i));
             if(Obj!=0){
                 ObjName=Obj->GetString();
-                fLogger->Info(MESSAGE_ORIGIN, "Branch name %s", ObjName.Data());
+                LOG(INFO) << "Branch name " << ObjName.Data() << FairLogger::endl;
                 fCheckInputBranches[chainName]->push_back(ObjName.Data());
                 
                 FairRootManager::Instance()->AddBranchToList(ObjName.Data());
@@ -274,13 +269,13 @@ Bool_t FairMixedSource::Init()
         // is needed to bring the friend trees in the correct order
         TFile* inputFile = new TFile((*iter));
         if (inputFile->IsZombie()) {
-            fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (*iter).Data());
+	  LOG(FATAL) << "Error opening the file " << (*iter).Data() << " which should be added to the input chain or as friend chain" << FairLogger::endl;
         }
         
         // Check if the branchlist is the same as for the first input file.
         Bool_t isOk = CompareBranchList(inputFile, chainName);
         if ( !isOk ) {
-            fLogger->Fatal(MESSAGE_ORIGIN, "Branch structure of the input file %s and the file to be added %s are different.", fRootFile->GetName(), (*iter).Data());
+	  LOG(FATAL) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << (*iter).Data() << FairLogger::endl;
             return kFALSE;
         }
         
@@ -319,7 +314,7 @@ Bool_t FairMixedSource::Init()
     }
 
 
-    fLogger->Info(MESSAGE_ORIGIN, "Entries in this Source %i------------",  fNoOfEntries);
+    LOG(INFO) << "Entries in this Source " << fNoOfEntries << " ------------" << FairLogger::endl;
     return kTRUE;
 
   
@@ -338,13 +333,13 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
       for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
         ratio+=iterN->second;
         fSignalBGN[iterN->first]=ratio;
-        fLogger->Debug(MESSAGE_ORIGIN,"--------------Set signal no. %i  weight  %f   ", iterN->first, ratio);
+        LOG(DEBUG) << "--------------Set signal no. " << iterN->first << " weight " << ratio << "." << FairLogger::endl;
       }
     }
     ratio=0;
     for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
       ratio=iterN->second;
-      fLogger->Debug(MESSAGE_ORIGIN,"---Check signal no. %i  SBratio %f  :  ratio %f ", iterN->first , SBratio, ratio);
+      LOG(DEBUG) << "---Check signal no. " << iterN->first << " SBratio " << SBratio << " : ratio " << ratio << FairLogger::endl;
       if(SBratio <=ratio) {
         TChain* chain = fSignalTypeList[iterN->first];
         UInt_t entry = fCurrentEntry[iterN->first];
@@ -354,7 +349,7 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
         fOutHeader->SetEventTime(GetEventTime());
         GetASignal=kTRUE;
         fCurrentEntry[iterN->first]=entry+1;
-        fLogger->Debug(MESSAGE_ORIGIN,"---Get entry No. %i from signal chain number --- %i --- ",entry, iterN->first);
+        LOG(DEBUG) << "---Get entry No. " << entry << " from signal chain number --- " << iterN->first << " --- " << FairLogger::endl;
 	FairRootManager::Instance()->SetInChain(chain);
 
         break;
@@ -367,7 +362,7 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
       fOutHeader->SetInputFileId(0); //Background files has always 0 as Id
       fOutHeader->SetEventTime(GetEventTime());
       fCurrentEntry[0]=entry+1;
-      fLogger->Debug(MESSAGE_ORIGIN,"---Get entry from background chain  --- ");
+      LOG(DEBUG) << "---Get entry from background chain  --- " << FairLogger::endl;
       FairRootManager::Instance()->SetInChain(fBackgroundChain);
     }
     
@@ -375,7 +370,7 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
 
   fCurrentEntryNo=i;
   fOutHeader->SetEventTime(GetEventTime());
-  fLogger->Debug(MESSAGE_ORIGIN,"--Event number --- %i  with time ----%f",fCurrentEntryNo, GetEventTime());
+  LOG(DEBUG) << "--Event number --- " << fCurrentEntryNo << " with time ----" << GetEventTime() << FairLogger::endl;
 
   return 0;
 }
@@ -453,7 +448,7 @@ void FairMixedSource::SetSignalFile(TString name, UInt_t identifier )
 {
   TFile* SignalInFile = new TFile(name.Data());
   if (SignalInFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Signal file");
+    LOG(FATAL) << "Error opening the Signal file" << FairLogger::endl;
   } else {
     /** Set a signal file of certain type (identifier) if already exist add the file to the chain*/
     if(fSignalTypeList[identifier]==0) {
@@ -486,7 +481,7 @@ TChain* FairMixedSource::GetSignalChainNo(UInt_t i)
   if(i<<fNoOfSignals) {
     return fSignalTypeList[i];
   } else {
-    fLogger->Info(MESSAGE_ORIGIN, "Error signal identifier %i does not exist ", i);
+    LOG(INFO) << "Error signal identifier " << i << " does not exist " << FairLogger::endl;
     return 0;
   }
 }
@@ -497,11 +492,11 @@ void FairMixedSource::SetBackgroundFile(TString name)
 {
   fCurrentEntry[0]= 0;
   if (name.IsNull() ) {
-    fLogger->Info(MESSAGE_ORIGIN, "No background file defined.");
+    LOG(INFO) << "No background file defined." << FairLogger::endl;
   }
   fRootFile =  new TFile(name);
   if (fRootFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Background file  %s ", name.Data());
+    LOG(FATAL) << "Error opening the Background file  " << name.Data() << FairLogger::endl;
   }
 }
 //_____________________________________________________________________________
@@ -511,17 +506,17 @@ void FairMixedSource::SetBackgroundFile(TString name)
 void FairMixedSource::AddBackgroundFile(TString name)
 {
   if (name.IsNull() ) {
-    fLogger->Info(MESSAGE_ORIGIN, "No background file defined.");
+    LOG(INFO) << "No background file defined." << FairLogger::endl;
   }
   TFile* BGFile =  new TFile(name);
   if (BGFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Background file  %s ", name.Data());
+    LOG(FATAL) << "Error opening the Background file " << name.Data() << FairLogger::endl;
   } else {
     if(fBackgroundChain!=0) {
       fBackgroundChain->AddFile(name.Data());
       TObjArray* fileElements=fBackgroundChain->GetListOfFiles();
     } else {
-      fLogger->Fatal(MESSAGE_ORIGIN, "Use SetBackGroundFile first, then add files to background");
+      LOG(FATAL) << "Use SetBackGroundFile first, then add files to background" << FairLogger::endl;
     }
 
   }
@@ -590,7 +585,7 @@ Bool_t FairMixedSource::OpenSignalChain()
     // Check if the branchlist is the same as for the first input file.
     Bool_t isOk = CompareBranchList(ChainFirstFile,"BGInChain");
     if ( !isOk ) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "Branch structure of the signal chain is different than the back ground one");
+      LOG(FATAL) << "Branch structure of the signal chain is different than the back ground one" << FairLogger::endl;
     }
   }
   return kTRUE;
@@ -606,7 +601,7 @@ Bool_t   FairMixedSource::ActivateObject(TObject** obj, const char* BrName) {
   Int_t no=0;
   for(iter = fSignalTypeList.begin(); iter != fSignalTypeList.end(); iter++) {
     TChain* currentChain=iter->second;
-    fLogger->Debug2(MESSAGE_ORIGIN, "Set the Branch address for signal file number %i  and  branch %s ", no++ , BrName);
+    LOG(DEBUG2) << "Set the Branch address for signal file number " << no++ << " and  branch " << BrName << FairLogger::endl;
     currentChain->SetBranchStatus(BrName,1);
     currentChain->SetBranchAddress(BrName,obj);
   }
@@ -620,7 +615,7 @@ void  FairMixedSource::ReadBKEvent(UInt_t i)
 {
   if(0==i) {
     Int_t totEnt = fBackgroundChain->GetEntries();
-    fLogger->Info(MESSAGE_ORIGIN,"The number of entries in background chain is %i",totEnt);
+    LOG(INFO) << "The number of entries in background chain is " << totEnt << FairLogger::endl;
   }
   fBackgroundChain->GetEntry(i);
 }
@@ -631,13 +626,13 @@ void  FairMixedSource::BGWindowWidthNo(UInt_t background, UInt_t Signalid)
 {
   fSBRatiobyN=kTRUE;
   if(fSBRatiobyT) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Signal rate already set by TIME!!");
+    LOG(FATAL) << "Signal rate already set by TIME!!" << FairLogger::endl;
   }
   Double_t value=1.0/background;
   if(background!=0) {
     fSignalBGN[Signalid]=value;
   } else {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Background cannot be Zero when setting the signal rate!!");
+    LOG(FATAL) << "Background cannot be Zero when setting the signal rate!!" << FairLogger::endl;
   }
 }
 //_____________________________________________________________________________
@@ -647,20 +642,20 @@ void  FairMixedSource::BGWindowWidthTime(Double_t background, UInt_t Signalid)
 {
   fSBRatiobyT=kTRUE;
   if(fSBRatiobyN) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Signal rate already set by NUMBER!!");
+    LOG(FATAL) << "Signal rate already set by NUMBER!!" << FairLogger::endl;
   }
   if(fEventTimeInMCHeader) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "You have to Set the Event mean time before using SetSignalRateTime!");
+    LOG(FATAL) << "You have to Set the Event mean time before using SetSignalRateTime!" << FairLogger::endl;
   }
   if(fEventMeanTime==0) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Event mean time cannot be zero when using signal rate with time ");
+    LOG(FATAL) << "Event mean time cannot be zero when using signal rate with time " << FairLogger::endl;
   }
   /**convert to number of event by dividing by the mean time */
   Double_t value=fEventMeanTime/background;
   if(background!=0) {
     fSignalBGN[Signalid]=value;
   } else {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Background cannot be Zero when setting the signal rate!!");
+    LOG(FATAL) << "Background cannot be Zero when setting the signal rate!!" << FairLogger::endl;
   }
   
 }
@@ -681,20 +676,20 @@ Int_t  FairMixedSource::CheckMaxEventNo(Int_t EvtEnd)
   for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
     TChain* chain = fSignalTypeList[iterN->first];
     MaxS=chain->GetEntries();
-    fLogger->Info(MESSAGE_ORIGIN, "Signal chain  No %i  has  :  %i  entries ", iterN->first, MaxS);
+    LOG(INFO) << "Signal chain  No " << iterN->first << " has  : " << MaxS << " entries " << FairLogger::endl;
     ratio=iterN->second;
     if(floor(MaxS/ratio) > MaxBG) {
       localMax=MaxBG+(Int_t)floor(MaxBG*ratio);
-      fLogger->Warning(MESSAGE_ORIGIN, "No of Event in Background chain is not enough for all signals in chain  %i ", iterN->first);
+      LOG(WARNING) << "No of Event in Background chain is not enough for all signals in chain  " << iterN->first << FairLogger::endl;
     } else {
       localMax=(Int_t)floor(MaxS/ratio);
-      fLogger->Warning(MESSAGE_ORIGIN, "No of Event in signal chain %i is not enough, the maximum event number will be reduced to : %i ", iterN->first,localMax );
+      LOG(WARNING) << "No of Event in signal chain " << iterN->first << " is not enough, the maximum event number will be reduced to : " << localMax  << FairLogger::endl;
     }
     if(MaxEventNo==0 || MaxEventNo > localMax) {
       MaxEventNo=localMax;
     }
   }
-  fLogger->Info(MESSAGE_ORIGIN, "Maximum No of Event will be set to :  %i ", MaxEventNo);
+  LOG(INFO) << "Maximum No of Event will be set to : " << MaxEventNo << FairLogger::endl;
   return MaxEventNo;
 }
 //_____________________________________________________________________________
