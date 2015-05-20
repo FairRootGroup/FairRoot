@@ -291,7 +291,6 @@ class FairRootManager : public TObject
     std::map < TString , Int_t >        fBrPerMap; //!
     /**Iterator for the fBrPerMap  Map*/
     std::map < TString, Int_t>::iterator     fBrPerMapIter;
-    FairLogger*                         fLogger;//!
  
     /** for internal use, to return the same event time for the same entry*/
     UInt_t                                  fCurrentEntryNo; //!

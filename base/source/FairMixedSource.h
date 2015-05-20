@@ -124,8 +124,6 @@ private:
     TString                           fInputTitle;
     /**ROOT file*/
     TFile*                            fRootFile;
-    /** FairLogger */
-    FairLogger*                       fLogger;
     /** List of all files added with AddFriend */
     std::list<TString>                fFriendFileList; //!
     std::list<TString>                fInputChainList;//!
