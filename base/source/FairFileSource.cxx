@@ -41,7 +41,6 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
   , fRootFile(f)
   , fFileHeader(0)
   , fCurrentEntryNr(0)
-  , fLogger(FairLogger::GetLogger())
   , fFriendFileList()
   , fFriendTypeList()
   , fInputChainList()
@@ -85,7 +84,6 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
   , fRootFile(0)
   , fFileHeader(0)
   , fCurrentEntryNr(0)
-  , fLogger(FairLogger::GetLogger())
   , fFriendFileList()
   , fFriendTypeList()
   , fInputChainList()
@@ -130,7 +128,6 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
   , fRootFile(0)
   , fFileHeader(0)
   , fCurrentEntryNr(0)
-  , fLogger(FairLogger::GetLogger())
   , fFriendFileList()
   , fFriendTypeList()
   , fInputChainList()
@@ -162,9 +159,9 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
 {
     fRootFile = new TFile(RootFileName.Data());
     if (fRootFile->IsZombie()) {
-       fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
+      LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
     }
-    fLogger->Debug(MESSAGE_ORIGIN, "FairFileSource created------------");
+    LOG(DEBUG) << "FairFileSource created------------" << FairLogger::endl;
 }
 //_____________________________________________________________________________
 
@@ -259,13 +256,13 @@ Bool_t FairFileSource::Init()
         // is needed to bring the friend trees in the correct order
         TFile* inputFile = new TFile((*iter));
         if (inputFile->IsZombie()) {
-            fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the file %s which should be added to the input chain or as friend chain", (*iter).Data());
+	  LOG(FATAL) << "Error opening the file " << (*iter).Data() << " which should be added to the input chain or as friend chain" << FairLogger::endl;
         }
         
         // Check if the branchlist is the same as for the first input file.
         Bool_t isOk = CompareBranchList(inputFile, chainName);
         if ( !isOk ) {
-            fLogger->Fatal(MESSAGE_ORIGIN, "Branch structure of the input file %s and the file to be added %s are different.", fRootFile->GetName(), (*iter).Data());
+	  LOG(FATAL) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << (*iter).Data() << " are different." << FairLogger::endl;
             return kFALSE;
         }
         
@@ -677,9 +674,9 @@ Bool_t   FairFileSource::ActivateObject(TObject** obj, const char* BrName) {
 void FairFileSource::SetInputFile(TString name) {
   fRootFile = new TFile(name.Data());
   if (fRootFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Error opening the Input file");
+    LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
   }
-  fLogger->Info(MESSAGE_ORIGIN, "FairFileSource set------------");
+  LOG(INFO) << "FairFileSource set------------" << FairLogger::endl;
 
 }
 //_____________________________________________________________________________

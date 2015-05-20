@@ -99,7 +99,6 @@ FairRootManager::FairRootManager()
     fBranchPerMap(kFALSE),
     fBrPerMap(),
     fBrPerMapIter(),
-    fLogger(FairLogger::GetLogger()),
     fCurrentEntryNo(0),
     fTimeforEntryNo(0),
     fFillLastData(kFALSE),
@@ -918,7 +917,6 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
  // cout <<"FairRootManager::CheckBranchSt  :  " << BrName << endl;
   Int_t returnvalue=0;
   TObject* Obj1 =NULL;
-  TObjArray *fListFolder=0;
     
   if(fListFolder==0){
     fListFolder = new TObjArray(16);

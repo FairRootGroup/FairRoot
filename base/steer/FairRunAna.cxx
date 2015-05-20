@@ -783,7 +783,7 @@ void FairRunAna::AddSignalFile(TString name, UInt_t identifier )
 {
   LOG(WARNING) << "FairRunAna::AddSignalFile is obsolete. Set it by FairMixedSource" << FairLogger::endl;
   if (identifier==0) {
-    fLogger->Fatal(MESSAGE_ORIGIN," ----- Identifier 0 is reserved for background files! please use other value ------ ");
+    LOG(FATAL) << " ----- Identifier 0 is reserved for background files! please use other value ------ " << FairLogger::endl;
   }
   if ( fFileSource ) 
     { 

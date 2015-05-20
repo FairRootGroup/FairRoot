@@ -77,9 +77,6 @@ class FairRunOnline : public FairRun
     /** Write last data to file, close input and output **/
     void Finish();
 
-    /** Get a pointer to the attached FairSource **/
-    FairSource* GetSource() { return fSource; }
-
   private:
 
     Bool_t fAutomaticFinish;
