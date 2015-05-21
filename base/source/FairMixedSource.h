@@ -103,7 +103,6 @@ public:
 
     /**Add ROOT file to input, the file will be chained to already added files*/
     Bool_t              CompareBranchList(TFile* fileHandle, TString inputLevel);
-    void                CreateNewFriendChain(TString inputFile, TString inputLevel);
     /**Set the input tree when running on PROOF worker*/
     TObjArray*          GetListOfFolders(){return fListFolder;}
     TFolder*            GetBranchDescriptionFolder(){return fCbmroot;}
