@@ -100,7 +100,7 @@ class FairGeoNode : public FairGeoVolume
     Bool_t calcRefPos(FairGeoVector&);
     void clear();
     void print();
-    Bool_t write(fstream&);
+    Bool_t write(std::fstream&);
     Int_t compare(FairGeoNode&);
 
 

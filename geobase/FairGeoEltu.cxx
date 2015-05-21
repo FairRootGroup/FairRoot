@@ -73,7 +73,7 @@ FairGeoEltu::~FairGeoEltu()
 }
 
 
-Int_t FairGeoEltu::readPoints(fstream* pFile,FairGeoVolume* volu)
+Int_t FairGeoEltu::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // reads the 3 'points' decribed above from ascii file
   // if the array of points is not existing in the volume it is created and
@@ -98,7 +98,7 @@ Int_t FairGeoEltu::readPoints(fstream* pFile,FairGeoVolume* volu)
 }
 
 
-Bool_t FairGeoEltu::writePoints(fstream* pFile,FairGeoVolume* volu)
+Bool_t FairGeoEltu::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes the 3 'points' decribed above to ascii file
   if (!pFile) { return kFALSE; }

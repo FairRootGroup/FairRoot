@@ -32,8 +32,10 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   TList *parFileList = new TList();
 
   TString paramDir = dir + "/Tutorial4/parameters/";
+  TString paramFile = paramDir + "example.par";
 
-  TObjString tutDetDigiFile = paramDir + "example.par";
+  TObjString tutDetDigiFile;
+  tutDetDigiFile.SetString(paramFile);
   parFileList->Add(&tutDetDigiFile);
 
 
@@ -135,19 +137,36 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   rtdb->print();
 
   delete run;
+
   // -----   Finish   -------------------------------------------------------
+
+  cout << endl << endl;
+
+  // Extract the maximal used memory an add is as Dart measurement
+  // This line is filtered by CTest and the value send to CDash
+  FairSystemInfo sysInfo;
+  Float_t maxMemory=sysInfo.GetMaxMemory();
+  cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
+  cout << maxMemory;
+  cout << "</DartMeasurement>" << endl;
+
   timer.Stop();
   Double_t rtime = timer.RealTime();
   Double_t ctime = timer.CpuTime();
+
+  Float_t cpuUsage=ctime/rtime;
+  cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
+  cout << cpuUsage;
+  cout << "</DartMeasurement>" << endl;
+
   cout << endl << endl;
-  cout << "Macro finished succesfully." << endl;
   cout << "Output file is "    << outFile << endl;
   cout << "Parameter file is " << parFile << endl;
-  cout << "Real time " << rtime << " s, CPU time " << ctime 
+  cout << "Real time " << rtime << " s, CPU time " << ctime
        << "s" << endl << endl;
+  cout << "Macro finished successfully." << endl;
+
   // ------------------------------------------------------------------------
-  cout << " Test passed" << endl;
-  cout << " All ok " << endl;
 }
 
 

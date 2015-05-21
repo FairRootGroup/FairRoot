@@ -23,7 +23,7 @@ class FairDetParAsciiFileIo : public FairDetParIo
   protected:
     TString fHeader;  //! header of container output in file
     TString sepLine;  //! comment line
-    fstream* pFile;   //! pointer to ascii file
+    std::fstream* pFile;   //! pointer to ascii file
 // virtual Bool_t write(HDetector*) {return kTRUE;}
     Bool_t findContainer(const Text_t* name);
     Bool_t checkAllFound(Int_t*,Int_t);
@@ -39,7 +39,7 @@ class FairDetParAsciiFileIo : public FairDetParIo
 //  void writeVolume(HGeomVolume*,HGeomShapes*);
 
   public:
-    FairDetParAsciiFileIo(fstream* f);
+    FairDetParAsciiFileIo(std::fstream* f);
     virtual ~FairDetParAsciiFileIo() {}
 //  Bool_t read(HDetGeomPar*,Int_t*);
 //  Int_t writeFile(HDetGeomPar*);

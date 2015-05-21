@@ -21,6 +21,8 @@
 #include "Rtypes.h"  // for Int_t, etc
 
 #include <iostream> // for operator<<, basic_ostream, etc
+#include <string>
+#include <sstream>
 
 #ifndef __CINT__
 #include <boost/serialization/access.hpp>
@@ -29,7 +31,7 @@
 
 class FairTestDetectorDigi : public FairTimeStamp
 {
-  public:
+ public:
     FairTestDetectorDigi();
     FairTestDetectorDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp);
     virtual ~FairTestDetectorDigi();
@@ -111,12 +113,31 @@ class FairTestDetectorDigi : public FairTimeStamp
         return false;
     }
 
+
+
     friend std::ostream& operator<<(std::ostream& out, FairTestDetectorDigi& digi)
     {
         out << "FairTestDetectorDigi at:"
             << " (" << digi.GetX() << "/" << digi.GetY() << "/" << digi.GetZ() << ") "
             << " with TimeStamp: " << digi.GetTimeStamp() << std::endl;
         return out;
+    }
+
+    template <class T>
+    std::string ToString (const T& value) 
+    {
+      std::stringstream ss;
+      ss.precision(5);
+      ss << value;
+      return ss.str();
+    }
+
+    std::string ToString() 
+    {
+      std::string out = "FairTestDetectorDigi at: (" + ToString(GetX()) 
+  	    + "/" + ToString(GetY()) + "/" + ToString(GetZ()) 
+ 	    + ") " + " with TimeStamp: " + ToString(GetTimeStamp());
+      return out;
     }
 
     template <class Archive>

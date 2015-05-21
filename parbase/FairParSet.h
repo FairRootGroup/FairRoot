@@ -8,7 +8,6 @@
 #ifndef FAIRPARSET_H
 #define FAIRPARSET_H
 
-
 #include "TNamed.h"
 #include "Rtypes.h"                     // for Int_t, Bool_t, etc
 #include "TString.h"                    // for TString
@@ -87,7 +86,7 @@ class FairParSet : public TObject
     FairParSet& operator=(const FairParSet&);
     FairParSet(const FairParSet&);
 
-    ClassDef(FairParSet,1) // Base class for all parameter containers
+    ClassDef(FairParSet,2) // Base class for all parameter containers
 };
 
 #endif  /* !FAIRPARSET_H */

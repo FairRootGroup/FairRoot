@@ -128,7 +128,7 @@ void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
   Double_t ctime = timer.CpuTime();
   printf("RealTime=%f seconds, CpuTime=%f seconds\n",rtime,ctime);
 
-  cout << "Macro finished succesfully." << endl;  
+  cout << "Macro finished successfully." << endl;  
 
 }  
   

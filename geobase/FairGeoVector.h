@@ -82,8 +82,8 @@ class FairGeoVector : public TObject
     void clear() {x=y=z=0.;}
     void print() const {printf("%10.3f%10.3f%10.3f\n",x,y,z);}
     inline void round(Int_t n);
-    inline friend ostream& operator << (ostream& put,const FairGeoVector& v);
-    inline friend istream& operator >> (istream& get,FairGeoVector& v);
+    inline friend std::ostream& operator << (std::ostream& put,const FairGeoVector& v);
+    inline friend std::istream& operator >> (std::istream& get,FairGeoVector& v);
     ClassDef(FairGeoVector,1) // vector with 3 components
 };
 
@@ -257,12 +257,12 @@ inline void FairGeoVector::round(Int_t n)
   round(z,n);
 }
 
-inline ostream& operator << (ostream& put,const FairGeoVector& v)
+inline std::ostream& operator << (std::ostream& put,const FairGeoVector& v)
 {
   return put<<v(0)<<"  "<<v(1)<<"  "<<v(2)<<'\n';
 }
 
-inline istream& operator >> (istream& get,FairGeoVector& v)
+inline std::istream& operator >> (std::istream& get,FairGeoVector& v)
 {
   Double_t x[3];
   get>>x[0]>>x[1]>>x[2];

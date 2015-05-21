@@ -129,9 +129,6 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
 void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* opt)
 {
 
-  // Reset output array
-  if ( ! fHitArray ) { LOG(FATAL)<<"No TutorialDetHitArray"<<FairLogger::endl; }
-
   fHitArray->Clear();
 
   // Declare some variables

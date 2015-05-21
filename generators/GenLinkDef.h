@@ -16,8 +16,6 @@
 #pragma link C++ class  FairAsciiGenerator+;
 #pragma link C++ class  FairIonGenerator+;
 #pragma link C++ class  FairParticleGenerator+;
-// #pragma link C++ class  FairPlutoGenerator+;
-// #pragma link C++ class  FairPlutoReactionGenerator+;
 #pragma link C++ class  FairShieldGenerator+;
 #pragma link C++ class  FairUrqmdGenerator+;
 #pragma link C++ class  FairBoxGenerator+;

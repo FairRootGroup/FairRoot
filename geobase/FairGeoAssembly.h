@@ -27,8 +27,8 @@ class FairGeoAssembly : public FairGeoBasicShape
     TArrayD* calcVoluParam(FairGeoVolume*);
     void calcVoluPosition(FairGeoVolume*,
                           const FairGeoTransform&,const FairGeoTransform&);
-    Int_t readPoints(fstream* pFile,FairGeoVolume* volu);
-    Bool_t writePoints(fstream*,FairGeoVolume*);
+    Int_t readPoints(std::fstream* pFile,FairGeoVolume* volu);
+    Bool_t writePoints(std::fstream*,FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);
 
     ClassDef(FairGeoAssembly,0) // class for geometry shape ASSEMBLY

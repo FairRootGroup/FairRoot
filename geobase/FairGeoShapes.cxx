@@ -132,7 +132,7 @@ FairGeoBasicShape* FairGeoShapes::selectShape(const TString& name)
 }
 
 
-Int_t FairGeoShapes::readPoints(fstream* pFile,FairGeoVolume* volu)
+Int_t FairGeoShapes::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // reads the points of the given volume from the Ascii file
   // returns the number of points read
@@ -143,7 +143,7 @@ Int_t FairGeoShapes::readPoints(fstream* pFile,FairGeoVolume* volu)
 }
 
 
-Bool_t FairGeoShapes::writePoints(fstream* pFile,FairGeoVolume* volu)
+Bool_t FairGeoShapes::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes the points of the given volume to the Ascii file
   // return kFALSE if the corresponding shape class is not implemented

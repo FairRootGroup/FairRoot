@@ -158,7 +158,9 @@ void FairRunOnline::Init()
   fFileHeader->SetRunId(fRunId);
   FairBaseParSet* par = dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
   FairGeoParSet* geopar = dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
-  geopar->SetGeometry(gGeoManager);
+  if (geopar) {
+    geopar->SetGeometry(gGeoManager);
+  }
   if(fField) {
     fField->Init();
     fField->FillParContainer();
@@ -170,13 +172,17 @@ void FairRunOnline::Init()
   while ((cont=dynamic_cast<FairParSet*>(next()))) {
     ContList->Add(new TObjString(cont->GetName()));
   }
-  par->SetContListStr(ContList);
-  par->setChanged();
-  par->setInputVersion(fRunId,1);
-  geopar->setChanged();
-  geopar->setInputVersion(fRunId,1);
-
-  fRootManager->WriteFileHeader(fFileHeader);
+  if (par) {
+    par->SetContListStr(ContList);
+    par->setChanged();
+    par->setInputVersion(fRunId,1);
+  }
+  if (geopar) {
+    geopar->setChanged();
+    geopar->setInputVersion(fRunId,1);
+  }
+  
+fRootManager->WriteFileHeader(fFileHeader);
 
   fTask->SetParTask();
   fRtdb->initContainers(fRunId);
@@ -380,7 +386,7 @@ void FairRunOnline::GenerateHtml()
   htmlName.Remove(htmlName.Length()-4, htmlName.Length()-1);
   htmlName += TString("html");
 
-  ofstream* ofile = new ofstream(htmlName);
+  std::ofstream* ofile = new std::ofstream(htmlName);
   (*ofile) << "<?xml version=\"1.0\" encoding=\"utf-8\"?>" << endl
            << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"" << endl
            << "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1transitional.dtd\">" << endl
@@ -471,9 +477,11 @@ void  FairRunOnline::SetContainerStatic(Bool_t tempBool)
 {
   fStatic=tempBool;
   if ( fStatic ) {
-    fLogger->Info(MESSAGE_ORIGIN, "Parameter Cont. initialisation is static");
+    LOG(INFO) << "Parameter Cont. initialisation is static" 
+	      << FairLogger::endl;
   } else {
-    fLogger->Info(MESSAGE_ORIGIN, "Parameter Cont. initialisation is NOT static");
+    LOG(INFO) << "Parameter Cont. initialisation is NOT static"
+	      << FairLogger::endl;
   }
 }
 //_____________________________________________________________________________

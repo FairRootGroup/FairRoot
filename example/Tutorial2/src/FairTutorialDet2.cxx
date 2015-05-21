@@ -25,10 +25,6 @@
 #include "TClonesArray.h"
 #include "TVirtualMC.h"
 
-#include <iostream>
-using std::cout;
-using std::endl;
-
 FairTutorialDet2::FairTutorialDet2()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
     fTrackID(-1),

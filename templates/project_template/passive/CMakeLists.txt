@@ -5,11 +5,10 @@
 set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
 ${CMAKE_SOURCE_DIR}/passive
-${ROOT_INCLUDE_DIR} 
-
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
+include_directories(${INCLUDE_DIRECTORIES})
+include_directories(${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
@@ -30,6 +29,6 @@ MyPassiveContFact.cxx
 Set(HEADERS )
 Set(LINKDEF PassiveLinkDef.h)
 Set(LIBRARY_NAME Passive)
-Set(DEPENDENCIES Base GeoBase ParBase Geom Cint Core)
+Set(DEPENDENCIES Base GeoBase ParBase Geom Core)
 
 GENERATE_LIBRARY()

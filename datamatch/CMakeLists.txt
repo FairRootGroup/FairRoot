@@ -51,10 +51,10 @@ FairMCDataCrawler.cxx
 Set(HEADERS )
 Set(LINKDEF FairMCMatchLinkDef.h)
 Set(LIBRARY_NAME FairDataMatch)
-Set(DEPENDENCIES Base)
+Set(DEPENDENCIES Base Core)
 #    FairTools ParBase GeoBase 
 #    Proof GeomPainter Geom VMC EG MathCore Physics 
-#    Matrix Tree Hist RIO Cint Core
+#    Matrix Tree Hist RIO Core
 #)
 
 GENERATE_LIBRARY()

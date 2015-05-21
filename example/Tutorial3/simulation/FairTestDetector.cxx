@@ -29,10 +29,6 @@
 #include "TVirtualMCStack.h" // for TVirtualMCStack
 
 #include <stddef.h> // for NULL
-#include <iostream> // for cout, endl
-
-using std::cout;
-using std::endl;
 
 FairTestDetector::FairTestDetector()
     : FairDetector("FairTestDetector", kTRUE, kTutDet)

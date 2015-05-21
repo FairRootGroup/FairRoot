@@ -61,7 +61,7 @@ Bool_t FairGeoOldAsciiIo::open(const char* fname,const Text_t* status)
 {
   // Opens the file fname
   close();
-  if (!file) { file=new fstream(); }
+  if (!file) { file=new std::fstream(); }
   else { (file->clear()); }
   if (!filedir.IsNull()) { filename=filedir+"/"+fname; }
   else { filename=fname; }
@@ -128,7 +128,7 @@ Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set,FairGeoMedia* media)
 {
   // Reads the geometry from file and converts it to the new format
   if (!isOpen() || writable || set==0) { return kFALSE; }
-  fstream& fin=*file;
+  std::fstream& fin=*file;
   fin.clear();
   fin.seekg(0,ios::beg);
   FairGeoNode* volu=0;

@@ -15,7 +15,6 @@
 
 class FairEventHeader;
 class FairFileHeader;
-class FairLogger;
 class FairRootManager;
 class FairRuntimeDb;
 class FairTask;
@@ -160,8 +159,6 @@ class FairRun : public TNamed
     Int_t fNTasks;
 
   protected:
-    /** Fair Logger */
-    FairLogger*             fLogger;//!
     /** static pointer to this run*/
 #if !defined(__CINT__)
     static TMCThreadLocal FairRun* fRunInstance;
@@ -191,6 +188,6 @@ class FairRun : public TNamed
     /** true if on master*/
     Bool_t                   fIsMaster;  //!
 
-    ClassDef(FairRun ,1)
+    ClassDef(FairRun ,2)
 };
 #endif //FAIRRUN_H

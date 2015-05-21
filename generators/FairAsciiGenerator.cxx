@@ -12,12 +12,9 @@
 #include "FairAsciiGenerator.h"
 
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+#include "FairLogger.h"
 
 #include <stddef.h>                     // for NULL
-#include <iostream>                     // for cout
-
-using std::cout;
-using std::endl;
 
 // -----   Default constructor   ------------------------------------------
 FairAsciiGenerator::FairAsciiGenerator()
@@ -37,10 +34,11 @@ FairAsciiGenerator::FairAsciiGenerator(const char* fileName)
    fFileName(fileName)
 {
   //  fFileName  = fileName;
-  cout << "-I FairAsciiGenerator: Opening input file " << fileName << endl;
-  fInputFile = new ifstream(fFileName);
+  LOG(INFO) << "FairAsciiGenerator: Opening input file " 
+	    << fileName << FairLogger::endl;
+  fInputFile = new std::ifstream(fFileName);
   if ( ! fInputFile->is_open() ) {
-    Fatal("FairAsciiGenerator","Cannot open input file.");
+    LOG(FATAL) << "Cannot open input file." << FairLogger::endl;
   }
 
   // fPDG=TDatabasePDG::Instance();
@@ -64,7 +62,8 @@ Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // Check for input file
   if ( ! fInputFile->is_open() ) {
-    cout << "-E FairAsciiGenerator: Input file not open!" << endl;
+    LOG(ERROR) << "FairAsciiGenerator: Input file not open!" 
+	       << FairLogger::endl;
     return kFALSE;
   }
 
@@ -82,14 +81,15 @@ Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // If end of input file is reached : close it and abort run
   if ( fInputFile->eof() ) {
-    cout << "-I FairAsciiGenerator: End of input file reached " << endl;
+    LOG(INFO) << "FairAsciiGenerator: End of input file reached " 
+	      << FairLogger::endl;
     CloseInput();
     return kFALSE;
   }
 
-  cout << "-I FairAsciiGenerator: Event " << eventID << ",  vertex = ("
-       << vx << "," << vy << "," << vz << ") cm,  multiplicity "
-       << ntracks << endl;
+  LOG(INFO) << "FairAsciiGenerator: Event " << eventID << ",  vertex = ("
+	    << vx << "," << vy << "," << vz << ") cm,  multiplicity "
+	    << ntracks << FairLogger::endl;
 
   // Loop over tracks in the current event
   for (Int_t itrack=0; itrack<ntracks; itrack++) {
@@ -117,8 +117,8 @@ void FairAsciiGenerator::CloseInput()
 {
   if ( fInputFile ) {
     if ( fInputFile->is_open() ) {
-      cout << "-I FairAsciiGenerator: Closing input file "
-           << fFileName << endl;
+      LOG(INFO) << "FairAsciiGenerator: Closing input file "
+		<< fFileName << FairLogger::endl;
       fInputFile->close();
     }
     delete fInputFile;

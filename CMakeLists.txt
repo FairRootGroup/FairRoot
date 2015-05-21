@@ -57,8 +57,13 @@ Check_Compiler()
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 
-Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are
-used." OFF)
+Option(WITH_DBASE "Switch off the building of FairDB." OFF)
+If(WITH_DBASE)
+  Add_Definitions(-DWITH_DBASE)
+EndIf()
+
+Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
+
 If(USE_PATH_INFO)
   Set(PATH $ENV{PATH})
   If (APPLE)
@@ -92,12 +97,6 @@ IF(NOT FAIRROOT_MODULAR_BUILD)
   SET(SIMPATH $ENV{SIMPATH})
 endif(NOT FAIRROOT_MODULAR_BUILD)
 
-
-Option(WITH_DBASE "Switch off the building of FairDB." OFF)
-If(WITH_DBASE)
-  Add_Definitions(-DWITH_DBASE)
-EndIf()
-
 # Check if the external packages are installed into a separate install
 # directory
 CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
@@ -108,7 +107,6 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # mandatory
 find_package(CUDA)
 find_package(ROOT 5.32.00 REQUIRED)
-find_package(PLUTO REQUIRED)
 find_package(Pythia6 REQUIRED)
 if(FAIRROOT_MODULAR_BUILD)
   # Geant3, Geant4 installed via cmake
@@ -172,11 +170,19 @@ SET(FAIRROOT_MAJOR_VERSION 0)
 SET(FAIRROOT_MINOR_VERSION 0)
 SET(FAIRROOT_PATCH_VERSION 0)
 SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}")
-SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
-    VERSION "${FAIRROOT_VERSION}"
-    SOVERSION "${FAIRROOT_MAJOR_VERSION}"
-    SUFFIX ".so"
-)
+  
+If(ROOT_FOUND_VERSION LESS 59999)
+  SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
+      VERSION "${FAIRROOT_VERSION}"
+      SOVERSION "${FAIRROOT_MAJOR_VERSION}"
+      SUFFIX ".so"
+  )
+Else()
+  SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
+      VERSION "${FAIRROOT_VERSION}"
+      SOVERSION "${FAIRROOT_MAJOR_VERSION}"
+  )
+EndIf()
 
 # Load the macro to generate the needed version info at compile time
 Generate_Version_Info()

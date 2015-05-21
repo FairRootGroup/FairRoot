@@ -38,10 +38,10 @@ class FairGeoMedia : public TNamed
     void addMedium(FairGeoMedium* m);
     FairGeoMedium* getMedium(const char*);
     TList* getListOfMedia() {return media;}
-    void read(fstream&);
+    void read(std::fstream&);
     void print();
     void list();
-    void write(fstream&);
+    void write(std::fstream&);
     void setAuthor(TString& s) {author=s;}
     void setDescription(TString& s) {description=s;}
     TString& getAuthor() {return author;}

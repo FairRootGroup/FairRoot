@@ -12,16 +12,14 @@
 #include "FairEvtGenGenerator.h"
 
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+#include "FairLogger.h"
 
 #include "Riosfwd.h"                    // for ostream
 #include "TF1.h"                        // for TF1
 #include "TRandom.h"                    // for TRandom, gRandom
 
 #include <algorithm>                    // for max
-#include <iostream>                     // for cout
 
-using std::cout;
-using std::endl;
 using std::max;
 
 // -----   Default constructor   ------------------------------------------
@@ -45,7 +43,8 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName)
    fRsigma (0.),
    fDensityFunction(0)
 {
-  cout << "-I FairEvtGenGenerator: Opening input file " << fileName << endl;
+  LOG(INFO) << "FairEvtGenGenerator: Opening input file " << fileName 
+	    << FairLogger::endl;
   if ((fInputFile = fopen(fFileName,"r"))==NULL)
     //  fInputFile = new ifstream(fFileName);
     //  if ( ! fInputFile->is_open() )
@@ -67,9 +66,10 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, 
    fRsigma (Rsigma),
    fDensityFunction(DensityFunction)
 {
-  cout << "-I FairEvtGenGenerator: Opening input file " << fileName << endl;
+  LOG(INFO) << "FairEvtGenGenerator: Opening input file " << fileName 
+	    << FairLogger::endl;
   if ((fInputFile = fopen(fFileName,"r"))==NULL) {
-    Fatal("FairEvtGenGenerator","Cannot open input file.");
+    LOG(FATAL) << "Cannot open input file." << FairLogger::endl;
   }
 
 }
@@ -94,7 +94,8 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   // Check for input file
   if (!fInputFile) {
     // if ( ! fInputFile->is_open() ) {
-    cout << "-E FairEvtGenGenerator: Input file not open!" << endl;
+    LOG(INFO) << "FairEvtGenGenerator: Input file not open!" 
+	      << FairLogger::endl;
     return kFALSE;
   }
 
@@ -115,17 +116,18 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   if (ncols && ntracks>0) {
 
-    // cout << "Event number: " << eventID << "\tNtracks: " << ntracks << endl;
+    // LOG(INFO) << "Event number: " << eventID << "\tNtracks: " 
+    //           << ntracks << FairLogger::endl;
     for (Int_t ii=0; ii<15; ii++) {
       ncols = fscanf(fInputFile,"%s",buffer);
-      //   cout << buffer << "\t" ;
+      //   LOG(INFO) << buffer << "\t" ;
     }
-    //cout << endl;
+    //LOG(INFO) << FairLogger::endl;
 
     for (Int_t ll=0; ll<ntracks; ll++) {
       ncols = fscanf(fInputFile,"%d %d %d %d %d %d %d %g %f %f %f %f %f %f %f", &nLine, &pdgID, &nDecay, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz, &fE, &fT, &fVx, &fVy, &fVz);
-//  cout << nLine << "\t" << pdgID << "\t" << nDecay << "\t" << nM1 << "\t" << nM2 << "\t" << nDF << "\t" << nDL <<
-      //  "\t" << fPx << "\t" << fPy << "\t" << fPz << "\t" << fE << "\t" << fT << "\t" << fVx << "\t" << fVy << "\t" << fVz << endl;
+//  LOG(INFO) << nLine << "\t" << pdgID << "\t" << nDecay << "\t" << nM1 << "\t" << nM2 << "\t" << nDF << "\t" << nDL <<
+      //  "\t" << fPx << "\t" << fPy << "\t" << fPz << "\t" << fE << "\t" << fT << "\t" << fVx << "\t" << fVy << "\t" << fVz << FairLogger::endl;
       max_nr = max(max_nr, nDF);
       max_nr = max(max_nr, nDL);
       if ((nDF==-1) && (nDL==-1)) {
@@ -152,7 +154,8 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
       }
     }
   } else {
-    cout << "-I FairEvtGenGenerator: End of input file reached " << endl;
+    LOG(INFO) << "FairEvtGenGenerator: End of input file reached " 
+	      << FairLogger::endl;
     CloseInput();
     return kFALSE;
   }
@@ -160,15 +163,16 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // If end of input file is reached : close it and abort run
   if ( feof(fInputFile) ) {
-    cout << "-I FairEvtGenGenerator: End of input file reached " << endl;
+    LOG(INFO) << "FairEvtGenGenerator: End of input file reached " 
+	      << FairLogger::endl;
     CloseInput();
     return kFALSE;
   }
 
   /*
-    cout << "-I FairEvtGenGenerator: Event " << eventID << ",  vertex = ("
+    LOG(INFO) << "FairEvtGenGenerator: Event " << eventID << ",  vertex = ("
     << vx << "," << vy << "," << vz << ") cm,  multiplicity "
-    << ntracks << endl;
+    << ntracks << FairLogger::endl;
   */
 
   return kTRUE;
@@ -183,8 +187,8 @@ void FairEvtGenGenerator::CloseInput()
   if ( fInputFile ) {
     //if ( fInputFile->is_open() ) {
     {
-      cout << "-I FairEvtGenGenerator: Closing input file "
-           << fFileName << endl;
+      LOG(INFO) << "FairEvtGenGenerator: Closing input file "
+		<< fFileName << FairLogger::endl;
       //  fInputFile->close();
 
       fclose(fInputFile);

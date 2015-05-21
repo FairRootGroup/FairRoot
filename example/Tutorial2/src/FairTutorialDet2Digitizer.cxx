@@ -28,10 +28,6 @@
 #include "TGeoMatrix.h"
 #include "TGeoBBox.h"
 
-#include <iostream>
-using std::cout;
-using std::endl;
-
 // ---- Default constructor -------------------------------------------
 FairTutorialDet2Digitizer::FairTutorialDet2Digitizer()
   : FairTask("TutorialDetDigitizer", 0),
@@ -64,7 +60,8 @@ FairTutorialDet2Digitizer::~FairTutorialDet2Digitizer()
 // ----  Initialisation  ----------------------------------------------
 void FairTutorialDet2Digitizer::SetParContainers()
 {
-  LOG(INFO) << "FairTutorialDet2Digitizer :: SetParContainers() " << FairLogger::endl;
+  LOG(INFO) << "FairTutorialDet2Digitizer :: SetParContainers() " 
+	    << FairLogger::endl;
 
 
   // Get Base Container
@@ -82,7 +79,8 @@ void FairTutorialDet2Digitizer::SetParContainers()
 InitStatus FairTutorialDet2Digitizer::ReInit()
 {
 
-  LOG(INFO) << " FairTutorialDet2Digitizer :: ReInit() " << FairLogger::endl;
+  LOG(INFO) << " FairTutorialDet2Digitizer :: ReInit() " 
+	    << FairLogger::endl;
 
 
   FairRunAna* ana = FairRunAna::Instance();
@@ -99,7 +97,8 @@ InitStatus FairTutorialDet2Digitizer::ReInit()
 InitStatus FairTutorialDet2Digitizer::Init()
 {
 
-  LOG(INFO) << " FairTutorialDet2Digitizer :: Init() " << FairLogger::endl;
+  LOG(INFO) << " FairTutorialDet2Digitizer :: Init() " 
+	    << FairLogger::endl;
 
   FairRootManager* ioman = FairRootManager::Instance();
   if ( ! ioman ) { 
@@ -133,7 +132,8 @@ void FairTutorialDet2Digitizer::Exec(Option_t* option)
 
   // Here we print something
 
-  cout <<" I am in FairTutorialDet2Digitizer::Exec" << endl;
+  LOG(INFO) <<" I am in FairTutorialDet2Digitizer::Exec" 
+	    << FairLogger::endl;
 
   /*
 
@@ -179,21 +179,21 @@ void FairTutorialDet2Digitizer::Exec(Option_t* option)
         Float_t sizey = shape->GetDY();
         Float_t sizez = shape->GetDZ();
 
-  //        cout <<"x_in: " << pt->GetXIn() << endl;
-  // cout <<"x_mean: " << x_mean << endl;
-        //cout <<"x_out: " << pt->GetXOut() << endl;
+  //        LOG(INFO) <<"x_in: " << pt->GetXIn() << FairLogger::endl;
+  // LOG(INFO) <<"x_mean: " << x_mean << FairLogger::endl;
+        //LOG(INFO) <<"x_out: " << pt->GetXOut() << FairLogger::endl;
 
-        //cout <<"y: " << y_mean << endl;
+        //LOG(INFO) <<"y: " << y_mean << FairLogger::endl;
 
-        //cout <<"z_in: " << pt->GetZIn() << endl;
-        //cout <<"z_mean: " << z_mean << endl;
-  //        cout <<"z_out: " << pt->GetZOut() << endl;
+        //LOG(INFO) <<"z_in: " << pt->GetZIn() << FairLogger::endl;
+        //LOG(INFO) <<"z_mean: " << z_mean << FairLogger::endl;
+  //        LOG(INFO) <<"z_out: " << pt->GetZOut() << FairLogger::endl;
 
 
         if (matrix->IsRotation()){
-          cout <<"Module is rotated" << endl;
+          LOG(INFO) <<"Module is rotated" << FairLogger::endl;
   } else {
-          cout <<"Module is not rotated" << endl;
+          LOG(INFO) <<"Module is not rotated" << FairLogger::endl;
   }
 
 

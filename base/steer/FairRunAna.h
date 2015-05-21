@@ -44,7 +44,7 @@ class FairRunAna : public FairRun
     /**initialize the run manager*/
     void        Init();
     /**Run from event number NStart to event number NStop */
-    void        Run(Int_t NStart ,Int_t NStop);
+    void        Run(Int_t NStart=0 ,Int_t NStop=0);
     /**Run over the whole input file with timpe window delta_t as unit (entry)*/
     void        Run(Double_t delta_t);
     /**Run for the given single entry*/
@@ -123,6 +123,9 @@ class FairRunAna : public FairRun
 
     /** Set the mean time for the event in ns */
     void SetEventMeanTime(Double_t mean);
+
+    /** Set the time intervall the beam is interacting and the gap in ns */
+    void SetBeamTime(Double_t beamTime, Double_t gapTime);
 
     /**Set the signal to background ratio in event units
      *@param background :  Number of background Events for one signal

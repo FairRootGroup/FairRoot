@@ -36,6 +36,6 @@ Set(SRCS
 Set(HEADERS )
 Set(LINKDEF FairRutherfordLinkDef.h)
 Set(LIBRARY_NAME FairRutherford)
-Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Cint Core)
+Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Core)
 
 GENERATE_LIBRARY()

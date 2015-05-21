@@ -20,7 +20,7 @@ class TList;
 class FairParAsciiFileIo : public FairParIo
 {
   protected:
-    fstream* file;      // pointer to a file
+    std::fstream* file;      // pointer to a file
   public:
     FairParAsciiFileIo();
 
@@ -50,7 +50,7 @@ class FairParAsciiFileIo : public FairParIo
     // prints information about the file and the detector I/Os
     void print();
 
-    fstream* getFile();
+    std::fstream* getFile();
   private:
     FairParAsciiFileIo(const FairParAsciiFileIo&);
     FairParAsciiFileIo& operator=(const FairParAsciiFileIo&);

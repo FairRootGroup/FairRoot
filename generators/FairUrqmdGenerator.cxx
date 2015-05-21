@@ -13,6 +13,7 @@
 
 #include "FairMCEventHeader.h"          // for FairMCEventHeader
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
+#include "FairLogger.h"                 // for logging
 
 #include "Riosfwd.h"                    // for ostream, ifstream
 #include "TDatabasePDG.h"               // for TDatabasePDG
@@ -23,14 +24,7 @@
 #include "TVector3.h"                   // for TVector3
 
 #include <stdlib.h>                     // for getenv
-#include <iostream>                     // for cout
 #include <fstream>                      // IWYU pragma: keep for ifstream
-
-using std::cout;
-using std::endl;
-
-//const Double_t kProtonMass = 0.938271998;
-
 
 // -----   Default constructor   ------------------------------------------
 FairUrqmdGenerator::FairUrqmdGenerator()
@@ -52,9 +46,13 @@ FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName)
    fFileName(fileName)
 {
   //  fFileName = fileName;
-  cout << "-I FairUrqmdGenerator: Opening input file " << fileName << endl;
+  LOG(INFO) << "FairUrqmdGenerator: Opening input file " 
+	    << fileName << FairLogger::endl;
   fInputFile = fopen(fFileName, "r");
-  if ( ! fInputFile ) { Fatal("FairUrqmdgenerator","Cannot open input file."); }
+  if ( ! fInputFile ) { 
+    LOG(FATAL) << "Cannot open input file."
+	       << FairLogger::endl; 
+  }
   ReadConversionTable();
 }
 // ------------------------------------------------------------------------
@@ -64,13 +62,15 @@ FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName)
 // -----   Destructor   ---------------------------------------------------
 FairUrqmdGenerator::~FairUrqmdGenerator()
 {
-  //  cout<<"Enter Destructor of FairUrqmdGenerator"<<endl;
+  //  LOG(DEBUG) << "Enter Destructor of FairUrqmdGenerator"
+  //             << FairLogger::endl;
   if ( fInputFile ) {
     fclose(fInputFile);
     fInputFile = NULL;
   }
   fParticleTable.clear();
-  //  cout<<"Leave Destructor of FairUrqmdGenerator"<<endl;
+  //  LOG(DEBUG) << "Leave Destructor of FairUrqmdGenerator"
+  //             << FairLogger::endl;
 }
 // ------------------------------------------------------------------------
 
@@ -82,14 +82,15 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // ---> Check for input file
   if ( ! fInputFile ) {
-    cout << "-E FairUrqmdGenerator: Input file not open! " << endl;
+    LOG(ERROR) << "FairUrqmdGenerator: Input file not open! " 
+	       << FairLogger::endl;
     return kFALSE;
   }
 
   // ---> Check for primary generator
   if ( ! primGen ) {
-    cout << "-E- FairUrqmdGenerator::ReadEvent: "
-         << "No PrimaryGenerator!" << endl;
+    LOG(ERROR) << "FairUrqmdGenerator::ReadEvent: "
+	       << "No PrimaryGenerator!" << FairLogger::endl;
     return kFALSE;
   }
 
@@ -104,36 +105,48 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   char read[200];
   fgets(read, 200, fInputFile);
   if ( feof(fInputFile) ) {
-    cout << "-I FairUrqmdGenerator : End of input file reached." << endl;
+    LOG(INFO) << "FairUrqmdGenerator : End of input file reached." 
+	      << FairLogger::endl;
     fclose(fInputFile);
     fInputFile = NULL;
     return kFALSE;
   }
   if ( read[0] != 'U' ) {
-    cout << "-E FairUrqmdGenerator: Wrong event header" << endl;
+    LOG(ERROR) << "FairUrqmdGenerator: Wrong event header" 
+	       << FairLogger::endl;
     return kFALSE;
   }
 
+  Int_t retval = 0;
+
   // ---> Read rest of event header
   fgets(read, 26, fInputFile);
-  fscanf(fInputFile, "%d", &aProj);
-  fscanf(fInputFile, "%d", &zProj);
+  retval = fscanf(fInputFile, "%d", &aProj);
+  CheckReturnValue(retval);
+  retval = fscanf(fInputFile, "%d", &zProj);
+  CheckReturnValue(retval);
   fgets(read, 25, fInputFile);
-  fscanf(fInputFile, "%d", &aTarg);
-  fscanf(fInputFile, "%d", &zTarg);
+  retval = fscanf(fInputFile, "%d", &aTarg);
+  CheckReturnValue(retval);
+  retval = fscanf(fInputFile, "%d", &zTarg);
+  CheckReturnValue(retval);
   fgets(read, 200, fInputFile);
   fgets(read, 200, fInputFile);
   fgets(read, 36, fInputFile);
-  fscanf(fInputFile, "%f", &b);
+  retval = fscanf(fInputFile, "%f", &b);
+  CheckReturnValue(retval);
   fgets(read, 200, fInputFile);
   fgets(read, 39, fInputFile);
-  fscanf(fInputFile, "%e", &ekin);
+  retval = fscanf(fInputFile, "%e", &ekin);
+  CheckReturnValue(retval);
   fgets(read, 200, fInputFile);
   fgets(read, 7, fInputFile);
-  fscanf(fInputFile, "%d", &evnr);
+  retval = fscanf(fInputFile, "%d", &evnr);
+  CheckReturnValue(retval);
   fgets(read, 200, fInputFile);
   for (int iline=0; iline<8; iline++)  { fgets(read, 200,fInputFile); }
-  fscanf(fInputFile, "%d", &ntracks);
+  retval = fscanf(fInputFile, "%d", &ntracks);
+  CheckReturnValue(retval);
   fgets(read, 200, fInputFile);
   fgets(read, 200, fInputFile);
 
@@ -147,8 +160,9 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   Double_t betaCM  = pBeam / (eBeam + kProtonMass);
   Double_t gammaCM = TMath::Sqrt( 1. / ( 1. - betaCM*betaCM) );
 
-  cout << "-I FairUrqmdGenerator: Event " << evnr << ",  b = " << b
-       << " fm,  multiplicity " << ntracks  << ", ekin: " << ekin << endl;
+  LOG(INFO) << "FairUrqmdGenerator: Event " << evnr << ",  b = " << b
+	    << " fm,  multiplicity " << ntracks  << ", ekin: " 
+	    << ekin << FairLogger::endl;
 
   // Set event id and impact parameter in MCEvent if not yet done
   FairMCEventHeader* event = primGen->GetEvent();
@@ -164,13 +178,20 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
     // Read momentum and PID from file
     fgets(read, 81, fInputFile);
-    fscanf(fInputFile, "%e", &ppx);
-    fscanf(fInputFile, "%e", &ppy);
-    fscanf(fInputFile, "%e", &ppz);
-    fscanf(fInputFile, "%e", &m);
-    fscanf(fInputFile, "%d", &ityp);
-    fscanf(fInputFile, "%d", &i3);
-    fscanf(fInputFile, "%d", &ichg);
+    retval = fscanf(fInputFile, "%e", &ppx);
+    CheckReturnValue(retval);
+    retval = fscanf(fInputFile, "%e", &ppy);
+    CheckReturnValue(retval);
+    retval = fscanf(fInputFile, "%e", &ppz);
+    CheckReturnValue(retval);
+    retval = fscanf(fInputFile, "%e", &m);
+    CheckReturnValue(retval);
+    retval = fscanf(fInputFile, "%d", &ityp);
+    CheckReturnValue(retval);
+    retval = fscanf(fInputFile, "%d", &i3);
+    CheckReturnValue(retval);
+    retval = fscanf(fInputFile, "%d", &ichg);
+    CheckReturnValue(retval);
     fgets(read, 200, fInputFile);
 
     // Convert UrQMD type and charge to unique pid identifier
@@ -179,8 +200,9 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
     // Convert Unique PID into PDG particle code
     if (fParticleTable.find(pid) == fParticleTable.end()) {
-      cout << "-W FairUrqmdGenerator: PID " << ityp << " charge "
-           << ichg << " not found in table (" << pid << ")" << endl;
+      LOG(WARNING) << "FairUrqmdGenerator: PID " << ityp << " charge "
+		   << ichg << " not found in table (" << pid << ")" 
+		   << FairLogger::endl;
       continue;
     }
     Int_t pdgID = fParticleTable[pid];
@@ -219,7 +241,8 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
   for(Int_t ii=0; ii<count; ii++) {
     // ---> Check for input file
     if ( ! fInputFile ) {
-      cout << "-E FairUrqmdGenerator: Input file not open! " << endl;
+      LOG(ERROR) << "FairUrqmdGenerator: Input file not open! " 
+		 << FairLogger::endl;
       return kFALSE;
     }
 
@@ -231,40 +254,53 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
     char read[200];
     fgets(read, 200, fInputFile);
     if ( feof(fInputFile) ) {
-      cout << "-I FairUrqmdGenerator : End of input file reached." << endl;
+      LOG(INFO) << "FairUrqmdGenerator : End of input file reached." 
+		<< FairLogger::endl;
       fclose(fInputFile);
       fInputFile = NULL;
       return kFALSE;
     }
     if ( read[0] != 'U' ) {
-      cout << "-E FairUrqmdGenerator: Wrong event header" << endl;
+      LOG(ERROR) << "FairUrqmdGenerator: Wrong event header" 
+		 << FairLogger::endl;
       return kFALSE;
     }
 
+    Int_t retval = 0;
+
     // ---> Read rest of event header
     fgets(read, 26, fInputFile);
-    fscanf(fInputFile, "%d", &aProj);
-    fscanf(fInputFile, "%d", &zProj);
+    retval = fscanf(fInputFile, "%d", &aProj);
+    CheckReturnValue(retval);
+    retval = fscanf(fInputFile, "%d", &zProj);
+    CheckReturnValue(retval);
     fgets(read, 25, fInputFile);
-    fscanf(fInputFile, "%d", &aTarg);
-    fscanf(fInputFile, "%d", &zTarg);
+    retval = fscanf(fInputFile, "%d", &aTarg);
+    CheckReturnValue(retval);
+    retval = fscanf(fInputFile, "%d", &zTarg);
+    CheckReturnValue(retval);
     fgets(read, 200, fInputFile);
     fgets(read, 200, fInputFile);
     fgets(read, 36, fInputFile);
-    fscanf(fInputFile, "%f", &b);
+    retval = fscanf(fInputFile, "%f", &b);
+    CheckReturnValue(retval);
     fgets(read, 200, fInputFile);
     fgets(read, 39, fInputFile);
-    fscanf(fInputFile, "%e", &ekin);
+    retval = fscanf(fInputFile, "%e", &ekin);
+    CheckReturnValue(retval);
     fgets(read, 200, fInputFile);
     fgets(read, 7, fInputFile);
-    fscanf(fInputFile, "%d", &evnr);
+    retval = fscanf(fInputFile, "%d", &evnr);
+    CheckReturnValue(retval);
     fgets(read, 200, fInputFile);
     for (int iline=0; iline<8; iline++)  { fgets(read, 200,fInputFile); }
-    fscanf(fInputFile, "%d", &ntracks);
+    retval = fscanf(fInputFile, "%d", &ntracks);
+    CheckReturnValue(retval);
     fgets(read, 200, fInputFile);
     fgets(read, 200, fInputFile);
 
-    cout << "-I FairUrqmdGenerator: Event " << evnr << " skipped!" << endl;
+    LOG(INFO) << "FairUrqmdGenerator: Event " << evnr << " skipped!" 
+	      << FairLogger::endl;
 
     // ---> Loop over tracks in the current event
     for(int itrack=0; itrack<ntracks; itrack++) {
@@ -284,7 +320,12 @@ void FairUrqmdGenerator::ReadConversionTable()
 
   TString work      = getenv("VMCWORKDIR");
   TString fileName  = work + "/input/urqmd_pdg.dat";
-  ifstream* pdgconv = new ifstream(fileName.Data());
+  std::ifstream* pdgconv = new std::ifstream(fileName.Data());
+
+  if (!pdgconv->good()) {
+    LOG(FATAL) << "Could not open Urqmd->PDG input file " 
+	       << fileName << FairLogger::endl;
+  }
 
   Int_t index = 0;
   Int_t pdgId = 0;
@@ -298,12 +339,18 @@ void FairUrqmdGenerator::ReadConversionTable()
   pdgconv->close();
   delete pdgconv;
 
-  cout << "-I FairUrqmdGenerator: Particle table for conversion from "
-       << "UrQMD loaded" <<  endl;
+  LOG(INFO) << "FairUrqmdGenerator: Particle table for conversion from "
+	    << "UrQMD loaded" <<  FairLogger::endl;
 
 }
 // ------------------------------------------------------------------------
 
-
+void FairUrqmdGenerator::CheckReturnValue(Int_t retval)
+{
+  if (1 != retval) { 
+    LOG(ERROR) << "Error when reading variable from input file"
+	       << FairLogger::endl;
+  } 
+} 
 
 ClassImp(FairUrqmdGenerator);

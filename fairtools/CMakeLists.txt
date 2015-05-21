@@ -29,11 +29,12 @@ Link_Directories(${LINK_DIRECTORIES})
 # List of source files
 set(SRCS
    FairLogger.cxx
+   FairSystemInfo.cxx
 )
 
 Set(HEADERS )
 Set(LINKDEF FairToolsLinkDef.h)
 Set(LIBRARY_NAME FairTools)
-Set(DEPENDENCIES Cint Core)
+Set(DEPENDENCIES Core)
 
 GENERATE_LIBRARY()

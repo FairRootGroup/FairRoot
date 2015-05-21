@@ -33,6 +33,6 @@ Set(SRCS
 Set(HEADERS )
 Set(LINKDEF MCStackLinkDef.h)
 Set(LIBRARY_NAME MCStack)
-Set(DEPENDENCIES Base EG Physics Cint Core)
+Set(DEPENDENCIES Base EG Physics Core)
 
 GENERATE_LIBRARY()

@@ -118,45 +118,49 @@ FairPrimaryGenerator::~FairPrimaryGenerator() {
 FairPrimaryGenerator& FairPrimaryGenerator::operator=(const FairPrimaryGenerator& rhs)
 {
   // check assignment to self
-  if (this == &rhs) return *this;
+  if (this != &rhs) {
+    
+    // base class assignment
+    TNamed::operator=(rhs);
+    
+    // assignment operator
+    fBeamX0 = rhs.fBeamX0;
+    fBeamY0 = rhs.fBeamY0;
+    fBeamSigmaX = rhs.fBeamSigmaX;
+    fBeamSigmaY = rhs.fBeamSigmaY;
+    fBeamAngleX0 = rhs.fBeamAngleX0;
+    fBeamAngleY0 = rhs.fBeamAngleY0;
+    fBeamAngleX = rhs.fBeamAngleX;
+    fBeamAngleY = rhs.fBeamAngleY;
+    fBeamAngleSigmaX = rhs.fBeamAngleSigmaX;
+    fBeamAngleSigmaY = rhs.fBeamAngleSigmaY;
+    fBeamDirection = rhs.fBeamDirection;
+    fPhiMin = rhs.fPhiMin;
+    fPhiMax = rhs.fPhiMax;
+    fPhi = rhs.fPhi;
+    fTargetZ = new Double_t[1];
+    fNrTargets = rhs.fNrTargets;
+    fTargetDz = rhs.fTargetDz;
+    fVertex = rhs.fVertex;
+    fNTracks = rhs.fNTracks;
+    fSmearVertexZ = rhs.fSmearVertexZ;
+    fSmearGausVertexZ = rhs.fSmearGausVertexZ;
+    fSmearVertexXY = rhs.fSmearVertexXY;
+    fSmearGausVertexXY = rhs.fSmearGausVertexXY;
+    fBeamAngle = rhs.fBeamAngle;
+    fEventPlane = rhs.fEventPlane;
+    fStack = NULL;
+    fGenList =new TObjArray();
+    fListIter = fGenList->MakeIterator();
+    fEvent = NULL;
+    fdoTracking = rhs.fdoTracking;
+    fMCIndexOffset = rhs.fMCIndexOffset;
+    fEventNr = rhs.fEventNr;
+    fTargetZ[0] = rhs.fTargetZ[0];
+  }
+  
+  return *this;
 
-  // base class assignment
-  TNamed::operator=(rhs);
-
-  // assignment operator
-  fBeamX0 = rhs.fBeamX0;
-  fBeamY0 = rhs.fBeamY0;
-  fBeamSigmaX = rhs.fBeamSigmaX;
-  fBeamSigmaY = rhs.fBeamSigmaY;
-  fBeamAngleX0 = rhs.fBeamAngleX0;
-  fBeamAngleY0 = rhs.fBeamAngleY0;
-  fBeamAngleX = rhs.fBeamAngleX;
-  fBeamAngleY = rhs.fBeamAngleY;
-  fBeamAngleSigmaX = rhs.fBeamAngleSigmaX;
-  fBeamAngleSigmaY = rhs.fBeamAngleSigmaY;
-  fBeamDirection = rhs.fBeamDirection;
-  fPhiMin = rhs.fPhiMin;
-  fPhiMax = rhs.fPhiMax;
-  fPhi = rhs.fPhi;
-  fTargetZ = new Double_t[1];
-  fNrTargets = rhs.fNrTargets;
-  fTargetDz = rhs.fTargetDz;
-  fVertex = rhs.fVertex;
-  fNTracks = rhs.fNTracks;
-  fSmearVertexZ = rhs.fSmearVertexZ;
-  fSmearGausVertexZ = rhs.fSmearGausVertexZ;
-  fSmearVertexXY = rhs.fSmearVertexXY;
-  fSmearGausVertexXY = rhs.fSmearGausVertexXY;
-  fBeamAngle = rhs.fBeamAngle;
-  fEventPlane = rhs.fEventPlane;
-  fStack = NULL;
-  fGenList =new TObjArray();
-  fListIter = fGenList->MakeIterator();
-  fEvent = NULL;
-  fdoTracking = rhs.fdoTracking;
-  fMCIndexOffset = rhs.fMCIndexOffset;
-  fEventNr = rhs.fEventNr;
-  fTargetZ[0] = rhs.fTargetZ[0];
 }
 
 // -----   Public method GenerateEvent   -----------------------------------

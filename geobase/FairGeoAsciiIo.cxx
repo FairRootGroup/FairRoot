@@ -55,7 +55,7 @@ Bool_t FairGeoAsciiIo::open(const char* fname,const Text_t* status)
 {
   // Opens the file fname
   close();
-  if (!file) { file=new fstream(); }
+  if (!file) { file=new std::fstream(); }
   else { (file->clear()); }
   if (!filedir.IsNull()) { filename=filedir+"/"+fname; }
   else { filename=fname; }

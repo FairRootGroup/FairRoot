@@ -16,11 +16,11 @@
 
 #include "FairRootManager.h"      // for FairRootManager
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi, etc
+#include "FairLogger.h"           // for logging
 
 #include "Riosfwd.h"      // for ostream
 #include "TClonesArray.h" // for TClonesArray
 
-#include <iostream> // for operator<<, ostream, etc
 #include <utility>  // for pair
 
 ClassImp(FairTestDetectorDigiWriteoutBuffer);
@@ -50,7 +50,9 @@ void FairTestDetectorDigiWriteoutBuffer::AddNewDataToTClonesArray(FairTimeStamp*
     TClonesArray* myArray = ioman->GetTClonesArray(fBranchName);
     if (fVerbose > 1)
     {
-        std::cout << "Data Inserted: " << *(FairTestDetectorDigi*)(data) << std::endl;
+      LOG(INFO) << "Data Inserted: " 
+		<< static_cast<FairTestDetectorDigi*>(data)->ToString() 
+		<< FairLogger::endl;
     }
     new ((*myArray)[myArray->GetEntries()]) FairTestDetectorDigi(*(FairTestDetectorDigi*)(data));
 }

@@ -88,6 +88,7 @@ If(ROOT_CONFIG_EXECUTABLE)
   # compute overall version numbers which can be compared at once
   Math(EXPR req_vers "${ROOT_FIND_VERSION_MAJOR}*10000 + ${ROOT_FIND_VERSION_MINOR}*100 + ${ROOT_FIND_VERSION_PATCH}")
   Math(EXPR found_vers "${ROOT_VERSION_MAJOR}*10000 + ${ROOT_VERSION_MINOR}*100 + ${ROOT_VERSION_PATCH}")
+  Math(EXPR ROOT_FOUND_VERSION "${ROOT_VERSION_MAJOR}*10000 + ${ROOT_VERSION_MINOR}*100 + ${ROOT_VERSION_PATCH}")
 
   Set(ROOT_Version ${found_vers})
   Set(ROOT_VERSION_NUMBER ${found_vers})

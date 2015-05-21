@@ -36,5 +36,4 @@ eventDisplay(TString mcEngine="TGeant3")
   
   
   fMan->Init();                     
-
 }

@@ -100,7 +100,6 @@ FairRootManager::FairRootManager()
     fBrPerMap(),
     fBrPerMapIter(),
     fFriendFileList(),
-    fLogger(FairLogger::GetLogger()),
     fMixAllInputs(kFALSE),
     fMixedInput(kFALSE),
     fActualSignalIdentifier(0),
@@ -113,6 +112,8 @@ FairRootManager::FairRootManager()
     fEventTimeMax(0.),
     fEventTime(0.),
     fEventMeanTime(0.),
+    fBeamTime(-1.),
+    fGapTime(-1.),
     fTimeProb(0),
     fMCHeader(0),
     fEvtHeader(0),
@@ -145,7 +146,7 @@ FairRootManager::FairRootManager()
 FairRootManager::~FairRootManager()
 {
 //
-  fLogger->Debug(MESSAGE_ORIGIN,"Enter Destructor of FairRootManager");
+  LOG(DEBUG) << "Enter Destructor of FairRootManager" << FairLogger::endl;
   if(fOutTree) {
     delete fOutTree;
   }
@@ -159,7 +160,7 @@ FairRootManager::~FairRootManager()
   fBranchNameList->Delete();
   delete fBranchNameList;
   fgInstance = 0;
-  fLogger->Debug(MESSAGE_ORIGIN, "Leave Destructor of FairRootManager");
+  LOG(DEBUG) << "Leave Destructor of FairRootManager" << FairLogger::endl;
 }
 //_____________________________________________________________________________
 
@@ -180,14 +181,20 @@ void FairRootManager::SetSignalFile(TString name, UInt_t identifier )
       fActualSignalIdentifier= identifier;
       fSignalTypeList[identifier]=fRootFileSourceSignal;
       fFileHeader->AddInputFile(fRootFileSourceSignal->GetInFile(), identifier, 0);
-      fLogger->Info(MESSAGE_ORIGIN, "Add new signal from file %s  with identifier %i and file number %i", name.Data(), identifier,fNoOfSignals);
+      LOG(INFO) << "Add new signal from file " 
+		<< name.Data() << " with identifier " 
+		<< identifier << " and file number " 
+		<< fNoOfSignals << FairLogger::endl;
     }else{
       FairFileSource *fRootFileSourceS=fSignalTypeList[identifier];
       fRootFileSourceS->AddFile(name);
       TChain* CurrentChain=fRootFileSourceS->GetInChain();
       TObjArray* fileElements=CurrentChain->GetListOfFiles();
       fFileHeader->AddInputFile(fRootFileSourceSignal->GetInFile(), identifier, fileElements->GetEntries());
-      fLogger->Info(MESSAGE_ORIGIN, "Add existing signal from file %s  with identifier %i and file number %i", name.Data(), identifier,fNoOfSignals);
+      LOG(INFO) << "Add existing signal from file "
+		<< name.Data() << " with identifier "
+		<< identifier << " and file number "
+		<< fNoOfSignals << FairLogger::endl;
     
     }
     fMixedInput=kTRUE;
@@ -209,7 +216,8 @@ TChain* FairRootManager::GetSignalChainNo(UInt_t i)
     FairFileSource *fRootFileSourceS=fSignalTypeList[i];
     return fRootFileSourceS->GetInChain();
   } else {
-    fLogger->Info(MESSAGE_ORIGIN, "Error signal identifier %i does not exist ", i);
+    LOG(INFO) << "Error signal identifier " << i << " does not exist."
+	      << FairLogger::endl;
     return 0;
   }
 }
@@ -219,7 +227,7 @@ TChain* FairRootManager::GetSignalChainNo(UInt_t i)
 void FairRootManager::SetBackgroundFile(TString name)
 {
   if (name.IsNull() ) {
-    fLogger->Info(MESSAGE_ORIGIN, "No background file defined.");
+    LOG(INFO) << "No background file defined." << FairLogger::endl;
   }else{
     fRootFileSourceBKG = new FairFileSource(&name, "Background");
     fRootFileSourceBKG->Init();
@@ -232,14 +240,15 @@ void FairRootManager::SetBackgroundFile(TString name)
 void FairRootManager::AddBackgroundFile(TString name)
 {
   if (name.IsNull() ) {
-    fLogger->Info(MESSAGE_ORIGIN, "No background file defined.");
+    LOG(INFO) << "No background file defined." << FairLogger::endl;
   }
   if(fRootFileSourceBKG!=0) {
      fRootFileSourceBKG->AddFile(name.Data());
      TObjArray* fileElements=fRootFileSourceBKG->GetInChain()->GetListOfFiles();
      fFileHeader->AddInputFile(fRootFileSourceBKG->GetInFile(),0, fileElements->GetEntries());
   } else {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Use SetBackGroundFile first, then add files to background");
+    LOG(FATAL) << "Use SetBackGroundFile first, then add files to background"
+	       << FairLogger::endl;
   }
     
 }
@@ -322,8 +331,8 @@ Bool_t FairRootManager::OpenBackgroundChain()
 
   gROOT->GetListOfBrowsables()->Add(fCbmroot);
   fListFolder.Add( fCbmroot );
-  return kTRUE;
 */
+  return kTRUE;
 }
 //_____________________________________________________________________________
 
@@ -342,7 +351,7 @@ Bool_t FairRootManager::OpenSignalChain()
     // Check if the branchlist is the same as for the first input file.
     Bool_t isOk = CompareBranchList(ChainFirstFile,"BGInChain");
     if ( !isOk ) {
-      fLogger->Fatal(MESSAGE_ORIGIN, "Branch structure of the signal chain is different than the back ground one");
+      LOG(FATAL) << "Branch structure of the signal chain is different than the back ground one" << FairLogger::endl;
     }
   }
   return kTRUE;
@@ -377,11 +386,12 @@ Bool_t  FairRootManager::DataContainersFilled()
 TFile* FairRootManager::OpenOutFile(TFile* f)
 {
 
-  fLogger->Debug(MESSAGE_ORIGIN,"Check the output file");
+  LOG(DEBUG) << "Check the output file" << FairLogger::endl;
   fOutFile=f;
   /**Check the output file, if anything wronge with it exit!*/
   if (fOutFile->IsZombie()) {
-    fLogger->Fatal(MESSAGE_ORIGIN,"FairRootManager: Error opening output file ");
+    LOG(FATAL) << "FairRootManager: Error opening output file " 
+	       << FairLogger::endl;
     exit(-1);
   }
   FairRun* fRun = FairRun::Instance();
@@ -400,7 +410,7 @@ TFile* FairRootManager::OpenOutFile(TFile* f)
 //_____________________________________________________________________________
 TFile* FairRootManager::OpenOutFile(const char* fname)
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"Opening output file, %s", fname);
+  LOG(DEBUG) << "Opening output file, " << fname << FairLogger::endl;
   if(fOutFile) {
     CloseOutFile();
   }
@@ -419,7 +429,10 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
   // to the folder. To avoid such problems we check here if both strings are equal and stop the
   // execution with some error message if this is the case.
   if (strcmp (name, folderName) == 0 ) {
-    fLogger->Fatal(MESSAGE_ORIGIN,"The names for the object name %s and the folder name %s are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name.", name, folderName);
+    LOG(FATAL) << "The names for the object name "
+	       << name << " and the folder name "
+	       << folderName <<" are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name."
+	       << FairLogger::endl;
   }
 
   if(toFile) { /**Write the Object to the Tree*/
@@ -475,7 +488,11 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
   // to the folder. To avoid such problems we check here if both strings are equal and stop the
   // execution with some error message if this is the case.
   if (strcmp (name, Foldername) == 0 ) {
-    fLogger->Fatal(MESSAGE_ORIGIN,"The names for the object name %s and the folder name %s are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name.", name, Foldername);
+    LOG(FATAL) << "The names for the object name "
+	       << name << " and the folder name "
+	       << Foldername << " are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name."
+
+	       <<FairLogger::endl;
   }
 
   if(toFile) { /**Write the Object to the Tree*/
@@ -538,12 +555,17 @@ TClonesArray* FairRootManager::GetEmptyTClonesArray(TString branchName)
       fActiveContainer[branchName]->Delete();
     } else if (fActiveContainer[branchName]->GetEntries() > 0) {    //if the container is not empty push it into the DataContainer storage and create a new one
       fDataContainer[branchName].push(fActiveContainer[branchName]);
-      fLogger->Info(MESSAGE_ORIGIN, "GetEmptyTClonesArray moved %s with  %i to data container ",
-                    branchName.Data(),  fActiveContainer[branchName]->GetEntries());
+      LOG(INFO) << "GetEmptyTClonesArray moved "
+		<< branchName.Data() << " with "
+		<< fActiveContainer[branchName]->GetEntries() 
+		<< "to data container." << FairLogger::endl;
       fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
     } else {
-      fLogger->Info(MESSAGE_ORIGIN, "GetEmptyTClonesArray not moved %s  %s  with %i to data container ",
-                    branchName.Data(),fActiveContainer[branchName]  , fActiveContainer[branchName]->GetEntries());
+      LOG(INFO) << "GetEmptyTClonesArray not moved " 
+		<< branchName.Data() << " " 
+		<<  fActiveContainer[branchName] << " with " 
+		<< fActiveContainer[branchName]->GetEntries() 
+		<< " to data container." << FairLogger::endl;
     }
     return fActiveContainer[branchName];                        // return the container
   } else {
@@ -565,7 +587,8 @@ TClonesArray* FairRootManager::GetTClonesArray(TString branchName)
     }
     return fActiveContainer[branchName]; // return the container
   } else {
-    fLogger->Info(MESSAGE_ORIGIN,  "Branch: %s not registered!" , branchName.Data());
+    LOG(INFO) << "Branch: " << branchName.Data()
+	      << " not registered!" << FairLogger::endl ;
   }
   // error if the branch is not registered
   return 0;
@@ -685,7 +708,7 @@ void FairRootManager::ForceFill()
   if (fOutTree != 0) {
     fOutTree->Fill();
   } else {
-    fLogger->Info(MESSAGE_ORIGIN,  " No Output Tree");
+    LOG(INFO) << " No Output Tree" << FairLogger::endl;
   }
 }
 //_____________________________________________________________________________
@@ -716,7 +739,7 @@ Int_t FairRootManager::Write(const char* name, Int_t option, Int_t bufsize)
     fOutFile->cd();
     fOutTree->Write();
   } else {
-    fLogger->Info(MESSAGE_ORIGIN, "No Output Tree" );
+    LOG(INFO) << "No Output Tree" << FairLogger::endl;
   }
   return 0;
 }
@@ -773,7 +796,7 @@ void  FairRootManager::ReadEvent(Int_t i)
     SetEntryNr(i);
     /**For mixed input use the ReadMixedEvent method */
     if(fMixedInput) {
-        fLogger->Info(MESSAGE_ORIGIN,"Read mixed event number  %i", i);
+      LOG(INFO) << "Read mixed event number " << i << FairLogger::endl;
         ReadMixedEvent(i);
     }else{
         /** Check if the source is not zero, it is zero if we use the mixed input (bk and sg) */
@@ -783,11 +806,12 @@ void  FairRootManager::ReadEvent(Int_t i)
             
             if(0==fCurrentEntryNo) {
                 Int_t totEnt =  fRootFileSource->GetEntries();
-                fLogger->Info(MESSAGE_ORIGIN,"The number of entries in the tree is %i",totEnt);
+                LOG(INFO) << "The number of entries in the tree is "
+			  << totEnt << FairLogger::endl;
                 LOG(INFO) << "FairRootManager::ReadEvent(" << i << "): The tree has " << totEnt << " entries" << FairLogger::endl;
                 fEvtHeader = (FairEventHeader*) GetObject("EventHeader.");
                 if(fEvtHeader ==0) {
-                    fLogger->Info(MESSAGE_ORIGIN, " No event Header was found!!!");
+		  LOG(INFO) << "No event Header was found!!!" << FairLogger::endl;
                     return;
                 }
                 SetEventTime();
@@ -824,13 +848,17 @@ void  FairRootManager::ReadMixedEvent(Int_t i)
       for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
         ratio+=iterN->second;
         fSignalBGN[iterN->first]=ratio;
-        fLogger->Debug(MESSAGE_ORIGIN,"--------------Set signal no. %i  weight  %f   ", iterN->first, ratio);
+        LOG(DEBUG) << "--------------Set signal no. "
+		   << iterN->first << " weight " << ratio << FairLogger::endl;
       }
     }
     ratio=0;
     for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
       ratio=iterN->second;
-      fLogger->Debug(MESSAGE_ORIGIN,"---Check signal no. %i  SBratio %f  :  ratio %f ", iterN->first , SBratio, ratio);
+      LOG(DEBUG) << "---Check signal no. "
+		 << iterN->first << " SBratio " 
+		 << SBratio << " :  ratio " 
+		 <<ratio << FairLogger::endl;
       if(SBratio <=ratio) {
         TChain* chain = fSignalTypeList[iterN->first]->GetInChain();
         UInt_t entry = fCurrentEntry[iterN->first];
@@ -840,7 +868,9 @@ void  FairRootManager::ReadMixedEvent(Int_t i)
         fEvtHeader->SetEventTime(GetEventTime());
         GetASignal=kTRUE;
         fCurrentEntry[iterN->first]=entry+1;
-        fLogger->Debug(MESSAGE_ORIGIN,"---Get entry No. %i from signal chain number --- %i --- ",entry, iterN->first);
+        LOG(DEBUG) << "---Get entry No. "
+		     << entry << " from signal chain number --- "
+		     << iterN->first << " ---" << FairLogger::endl;
         break;
       }
     }
@@ -849,13 +879,15 @@ void  FairRootManager::ReadMixedEvent(Int_t i)
       fEvtHeader->SetMCEntryNumber(i);
       fEvtHeader->SetInputFileId(0); //Background files has always 0 as Id
       fEvtHeader->SetEventTime(GetEventTime());
-      fLogger->Debug(MESSAGE_ORIGIN,"---Get entry from background chain  --- ");
+      LOG(DEBUG) << "---Get entry from background chain  --- " << FairLogger::endl;
     }
 
   }
   fCurrentEntryNo=i;
   fEvtHeader->SetEventTime(GetEventTime());
-  fLogger->Debug(MESSAGE_ORIGIN,"--Event number --- %i  with time ----%f",fCurrentEntryNo, GetEventTime());
+  LOG(DEBUG) << "--Event number --- "
+	     << fCurrentEntryNo << " with time ---- " 
+	     << GetEventTime() << FairLogger::endl;
 }
 //_____________________________________________________________________________
 
@@ -865,7 +897,8 @@ void  FairRootManager::ReadBKEvent(Int_t i)
   if(fMixedInput) {
     if(0==i) {
       Int_t totEnt = fRootFileSourceBKG->GetInChain()->GetEntries();
-      fLogger->Info(MESSAGE_ORIGIN,"The number of entries in background chain is %i",totEnt);
+      LOG(INFO) << "The number of entries in background chain is " 
+		<< totEnt << FairLogger::endl;
     }
     fRootFileSourceBKG->ReadEvent(i);
   }
@@ -886,26 +919,33 @@ TObject* FairRootManager::GetObject(const char* BrName)
 {
   /**Get Data object by name*/
   TObject* Obj =NULL;
-  fLogger->Debug2(MESSAGE_ORIGIN, " Try to find if the object %s  already activated by other task or call", BrName);
+  LOG(DEBUG2) << " Try to find if the object "
+	      << BrName << " is already activated by another task or call"
+	      << FairLogger::endl;
   /**Try to find the object in the folder structure, object already activated by other task or call*/
   if(fCbmout) {
     Obj = fCbmout->FindObjectAny(BrName);
     if (Obj) {
-      fLogger->Debug2(MESSAGE_ORIGIN, "object %s was already activated by another task", BrName);
+      LOG(DEBUG2) <<"Object "  
+		  << BrName << " was already activated by another task"
+		  << FairLogger::endl;
     }
   }
   /**if the object does not exist then it could be a memory branch */
   if(!Obj) {
-    fLogger->Debug2(MESSAGE_ORIGIN, " Try to find if the object %s  is a memory branch", BrName);
+    LOG(DEBUG2) << "Try to find if the object "
+		<< BrName << " is a memory branch" << FairLogger::endl;
     Obj=GetMemoryBranch(BrName);
     if (Obj) {
-      fLogger->Debug2(MESSAGE_ORIGIN, "Object  %s  is a memory branch", BrName);
+      LOG(DEBUG2) << "Object "
+		  << BrName << " is a memory branch" << FairLogger::endl;
     }
   }
   /**if the object does not exist then look in the input tree */
   if(fCbmroot && !Obj) {
     /** there is an input tree and the object was not in memory */
-    fLogger->Debug2(MESSAGE_ORIGIN, " Object %s  is not a memory branch and not yet activated, try the Input Tree (Chain)", BrName);
+    LOG(DEBUG2) << "Object "
+		<< BrName << " is not a memory branch and not yet activated, try the Input Tree (Chain)" << FairLogger::endl;
     Obj=fCbmroot->FindObjectAny(BrName);
     Obj=ActivateBranch(BrName);
   }
@@ -925,13 +965,16 @@ TObject* FairRootManager::GetObjectFromInTree(const char* BrName)
   }
   /**Get Data object by name*/
   TObject* Obj =NULL;
-  fLogger->Debug2(MESSAGE_ORIGIN, " Try to find if the object %s  already activated by other task or call", BrName);
+  LOG(DEBUG2) << "Try to find if the object "
+	      << BrName << " already activated by other task or call"
+	      << FairLogger::endl;
 
   /**Try to find the object in the folder structure, object already activated by other task or call*/
   /**if the object does not exist then look in the input tree */
   if(fCbmroot && !Obj) {
     /** there is an input tree and the object was not in memory */
-    fLogger->Debug2(MESSAGE_ORIGIN, " Object %s  is not a memory branch and not yet activated, try the Input Tree (Chain)", BrName);
+    LOG(DEBUG2) << "Object "
+		<< BrName << " is not a memory branch and not yet activated, try the Input Tree (Chain)" << FairLogger::endl;
     Obj=fCbmroot->FindObjectAny(BrName);
     Obj=ActivateBranchInInTree(BrName);
   }
@@ -1256,23 +1299,29 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
    <DB>
    **/
   TObjArray *fListFolder;
-  if(fRootFileSource){
+  if(fRootFileSource) {
       fListFolder = fRootFileSource->GetListOfFolders();
-  }else{
+  } else if (fRootFileSourceBKG) {
       fListFolder = fRootFileSourceBKG->GetListOfFolders();
+  } else {
+    return NULL;
   }
+
   fNObj++;
   fObj2[fNObj]  =  GetMemoryBranch ( BrName );
   if ( fObj2[fNObj]   ) {
     return  fObj2[fNObj];
   }
   /**try to find the object decribing the branch in the folder structure in file*/
-  fLogger->Debug2(MESSAGE_ORIGIN, " Try to find an object %s decribing the branch in the folder structure in file", BrName);
+  LOG(DEBUG) << "Try to find an object "
+	      << BrName << " describing the branch in the folder structure in file"
+	      << FairLogger::endl;
   for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
     TFolder* fold = (TFolder*) fListFolder->At(i);
     fObj2[fNObj] = fold->FindObjectAny(BrName);
     if (fObj2[fNObj] ) {
-      fLogger->Debug(MESSAGE_ORIGIN, "object %s decribing the branch in the folder structure was found", BrName);
+      LOG(DEBUG) << "Object "
+		 << BrName << " describing the branch in the folder structure was found" << FairLogger::endl;
       break;
     }
   }
@@ -1281,7 +1330,8 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
     /** if we do not find an object corresponding to the branch in the folder structure
     *  then we have no idea about what type of object is this and we cannot set the branch address
     */
-    fLogger->Info(MESSAGE_ORIGIN, " Branch: %s  not found in Tree ", BrName);
+    LOG(INFO) << " Branch: " << BrName << " not found in Tree."
+	      << FairLogger::endl;
     //Fatal(" No Branch in the tree", BrName );
     return 0;
   } else {
@@ -1291,7 +1341,8 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
        * fill in the read (event) entry
        */
 
-      fLogger->Debug2(MESSAGE_ORIGIN, "Set the Branch address for background branch %s", BrName);
+      LOG(DEBUG2) << "Set the Branch address for background branch "
+		  << BrName << FairLogger::endl;
       fRootFileSourceBKG->GetInChain()->SetBranchStatus(BrName,1);
       fRootFileSourceBKG->GetInChain()->SetBranchAddress(BrName,&fObj2[fNObj]);
 
@@ -1299,7 +1350,9 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
       Int_t no=0;
     
       for(iter = fSignalTypeList.begin(); iter != fSignalTypeList.end(); iter++) {
-        fLogger->Debug2(MESSAGE_ORIGIN, "Set the Branch address for signal file number %i  and  branch %s ", no++ , BrName);
+        LOG(DEBUG2) << "Set the Branch address for signal file number "
+		    << no++ << " and branch " << BrName
+		    <<FairLogger::endl;
         FairFileSource *signal=iter->second;
         cout << "------------------------------" << signal<< endl;
         TChain* currentChain=signal->GetInChain();
@@ -1309,10 +1362,18 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
 
 
     } else {
-      
-      TChain *fInChain=fRootFileSource->GetInChain();
-      fInChain->SetBranchStatus(BrName,1);
-      fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
+
+      if (fRootFileSource) {
+	TChain *fInChain=fRootFileSource->GetInChain();
+	if (fInChain) {
+	  fInChain->SetBranchStatus(BrName,1);
+	  fInChain->SetBranchAddress(BrName,&fObj2[fNObj]);
+	} else {
+	  return NULL;
+	}
+      } else {
+	return NULL;
+      }
     }
   }
   
@@ -1343,7 +1404,8 @@ TObject* FairRootManager::ActivateBranchInInTree(const char* BrName)
     /** if we do not find an object corresponding to the branch in the folder structure
     *  then we have no idea about what type of object is this and we cannot set the branch address
     */
-    fLogger->Info(MESSAGE_ORIGIN, " Branch: %s  not found in Tree ", BrName);
+    LOG(INFO) << "Branch: " << BrName << " not found in Tree."
+	      << FairLogger::endl;
     //Fatal(" No Branch in the tree", BrName );
     return 0;
   } else {
@@ -1486,7 +1548,7 @@ void FairRootManager::SaveAllContainers()
 //_____________________________________________________________________________
 Double_t FairRootManager::GetEventTime()
 {
-  fLogger->Debug(MESSAGE_ORIGIN,"-- Get Event Time --");
+  LOG(DEBUG) << "-- Get Event Time --" << FairLogger::endl;
   if(!fEvtHeaderIsNew && fEvtHeader!=0) {
     Double_t EvtTime=fEvtHeader->GetEventTime();
     if( !(EvtTime<0)) {
@@ -1495,18 +1557,20 @@ Double_t FairRootManager::GetEventTime()
   }
 
   if (fEventTimeInMCHeader && !fMCHeader) {
-    fLogger->Debug(MESSAGE_ORIGIN," No MCEventHeader, time is set to 0");
+    LOG(DEBUG) << "No MCEventHeader, time is set to 0" << FairLogger::endl;
     return 0;
   } else if(fEventTimeInMCHeader && fMCHeader) {
     fEventTime=fMCHeader->GetT();
-    fLogger->Debug(MESSAGE_ORIGIN," Get event time from MCEventHeader : %f ns", fEventTime);
+    LOG(DEBUG) << "Get event time from MCEventHeader : "
+	       << fEventTime << " ns" << FairLogger::endl;
     return fEventTime;
   } else {
 
     if(fTimeforEntryNo!=fCurrentEntryNo) {
       SetEventTime();
     }
-    fLogger->Debug(MESSAGE_ORIGIN," Calculate event time from user input : %f ns", fEventTime);
+    LOG(DEBUG) << "Calculate event time from user input : " 
+	       << fEventTime << " ns" << FairLogger::endl;
     return fEventTime;
   }
 }
@@ -1547,36 +1611,64 @@ void  FairRootManager::SetEventMeanTime(Double_t mean)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+
+void FairRootManager::SetBeamTime(Double_t beamTime, Double_t gapTime)
+{
+	fBeamTime = beamTime;
+	fGapTime = gapTime;
+}
+
 void FairRootManager::SetEventTime()
 {
-  fLogger->Debug(MESSAGE_ORIGIN, "Set event time for Entry = %i , where the current entry is %i",
-                 fTimeforEntryNo, fCurrentEntryNo );
-  if(fTimeProb!=0) {
-    fLogger->Debug(MESSAGE_ORIGIN, "Time will be  set via sampling method : old time = %f ", fEventTime);
-    fEventTime += fTimeProb->GetRandom();
-    fLogger->Debug(MESSAGE_ORIGIN, "Time set via sampling method : %f ", fEventTime);
+  LOG(DEBUG) << "Set event time for Entry = "
+	     << fTimeforEntryNo << " , where the current entry is "
+	     << fCurrentEntryNo << " and eventTime is "
+	     << fEventTime << FairLogger::endl;
+  if (fBeamTime < 0){
+	  fEventTime += GetDeltaEventTime();
   } else {
-    fEventTime += gRandom->Uniform( fEventTimeMin,  fEventTimeMax);
-    fLogger->Debug(MESSAGE_ORIGIN, "Time set via Uniform Random : %f ", fEventTime);
-
+	  do {
+		  fEventTime += GetDeltaEventTime();
+	  } while( fmod(fEventTime, fBeamTime + fGapTime) > fBeamTime );
   }
+  LOG(DEBUG) << "New time = " << fEventTime << FairLogger::endl;
   fTimeforEntryNo=fCurrentEntryNo;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+Double_t FairRootManager::GetDeltaEventTime()
+{
+  Double_t deltaTime = 0;
+  if (fTimeProb != 0) {
+    deltaTime = fTimeProb->GetRandom();
+    LOG(DEBUG) << "Time set via sampling method : " <<  deltaTime
+	       << FairLogger::endl;
+  } else {
+    deltaTime = gRandom->Uniform(fEventTimeMin, fEventTimeMax);
+    LOG(DEBUG) << "Time set via Uniform Random : "
+	       << deltaTime << FairLogger::endl;
+  }
+  return deltaTime;
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
 void  FairRootManager::BGWindowWidthNo(UInt_t background, UInt_t Signalid)
 {
-  fLogger->Info(MESSAGE_ORIGIN, "SetSignal rate for signal %i  : %i ", Signalid , background );
+  LOG(INFO) << "SetSignal rate for signal "
+	    << Signalid << " : " << background
+	    << FairLogger::endl;
   fSBRatiobyN=kTRUE;
   if(fSBRatiobyT) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Signal rate already set by TIME!!");
+    LOG(FATAL) << "Signal rate already set by TIME!!" << FairLogger::endl;
   }
   Double_t value=1.0/background;
   if(background!=0) {
     fSignalBGN[Signalid]=value;
   } else {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Background cannot be Zero when setting the signal rate!!");
+    LOG(FATAL) << "Background cannot be Zero when setting the signal rate!!"
+	       << FairLogger::endl;
   }
 }
 //_____________________________________________________________________________
@@ -1586,20 +1678,22 @@ void  FairRootManager::BGWindowWidthTime(Double_t background, UInt_t Signalid)
 {
   fSBRatiobyT=kTRUE;
   if(fSBRatiobyN) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Signal rate already set by NUMBER!!");
+    LOG(FATAL) << "Signal rate already set by NUMBER!!" << FairLogger::endl;
   }
   if(fEventTimeInMCHeader) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "You have to Set the Event mean time before using SetSignalRateTime!");
+    LOG(FATAL) << "You have to Set the Event mean time before using SetSignalRateTime!" << FairLogger::endl;
   }
   if(fEventMeanTime==0) {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Event mean time cannot be zero when using signal rate with time ");
+    LOG(FATAL) << "Event mean time cannot be zero when using signal rate with time"
+	       << FairLogger::endl;
   }
   /**convert to number of event by dividing by the mean time */
   Double_t value=fEventMeanTime/background;
   if(background!=0) {
     fSignalBGN[Signalid]=value;
   } else {
-    fLogger->Fatal(MESSAGE_ORIGIN, "Background cannot be Zero when setting the signal rate!!");
+    LOG(FATAL) << "Background cannot be Zero when setting the signal rate!!"
+	       << FairLogger::endl;
   }
 
 }
@@ -1608,7 +1702,9 @@ void  FairRootManager::BGWindowWidthTime(Double_t background, UInt_t Signalid)
 //_____________________________________________________________________________
 Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
 {
-  fLogger->Info(MESSAGE_ORIGIN, "Maximum No of Event was set manually to :  %i , we will check if there is enough entries for this!! ", EvtEnd);
+  LOG(INFO) << "Maximum No of Event was set manually to :  "
+	    << EvtEnd << ", we will check if there is enough entries for this!! "
+	    << FairLogger::endl;
   Int_t MaxEventNo=0;
   if(EvtEnd!=0) {
     MaxEventNo=EvtEnd;
@@ -1625,21 +1721,24 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
     for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
       TChain* chain = fSignalTypeList[iterN->first]->GetInChain();
       MaxS=chain->GetEntries();
-      fLogger->Info(MESSAGE_ORIGIN, "Signal chain  No %i  has  :  %i  entries ", iterN->first, MaxS);
+      LOG(INFO) << "Signal chain No "
+		<< iterN->first << " has: " <<  MaxS << FairLogger::endl;
       ratio=iterN->second;
      // cout<< " ratio = "<< ratio <<  "floor(MaxS/ratio) "<<floor(MaxS/ratio) << "  MaxBG = " << MaxBG  << endl;
       if(floor(MaxS/ratio) > MaxBG) {
         localMax=MaxBG+(Int_t)floor(MaxBG*ratio);
-        fLogger->Warning(MESSAGE_ORIGIN, "No of Event in Background chain is not enough for all signals in chain  %i ", iterN->first);
+        LOG(WARNING) << "No of Event in Background chain is not enough for all signals in chain " << iterN->first << FairLogger::endl;
       } else {
         localMax=(Int_t)floor(MaxS/ratio);
-        fLogger->Warning(MESSAGE_ORIGIN, "No of Event in signal chain %i is not enough, the maximum event number will be reduced to : %i ", iterN->first,localMax );
+        LOG(WARNING) << "No of Event in signal chain "
+		     << iterN->first << " is not enough, the maximum event number will be reduced to: " << localMax << FairLogger::endl;
       }
       if(MaxEventNo==0 || MaxEventNo > localMax) {
         MaxEventNo=localMax;
       }
     }
-    fLogger->Info(MESSAGE_ORIGIN, "Maximum No of Event will be set to :  %i ", MaxEventNo);
+    LOG(INFO) << "Maximum No of Event will be set to: " << MaxEventNo
+	      << FairLogger::endl;
   }
   return MaxEventNo;
 }
@@ -1651,7 +1750,10 @@ FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, 
   if (fWriteoutBufferMap[branchName] == 0) {
     fWriteoutBufferMap[branchName] = buffer;
   } else {
-    fLogger->Warning(MESSAGE_ORIGIN, "Branch %s is already registered in WriteoutBufferMap", branchName.Data());
+    LOG(WARNING) << "Branch "
+		 << branchName.Data() 
+		 << " is already registered in WriteoutBufferMap"
+		 << FairLogger::endl;
     delete buffer;
   }
   return fWriteoutBufferMap[branchName];

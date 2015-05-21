@@ -204,7 +204,10 @@ class FairRootManager : public TObject
     void                SetEventTimeInterval(Double_t min, Double_t max);
     /** Set the mean time for the event in ns */
     void                SetEventMeanTime(Double_t mean);
+    /** Set the repetition time of the beam when it can interact (beamTime) and when no interaction happen (gapTime). The total repetition time is beamTime + gapTime */
+    void				SetBeamTime(Double_t beamTime, Double_t gapTime);
     void                SetEventTime();
+    Double_t			GetDeltaEventTime();
     void                SetFileHeader(FairFileHeader* f) {fFileHeader =f;}
 
     /**Set the signal to background ratio in event units
@@ -349,7 +352,6 @@ class FairRootManager : public TObject
     std::map < TString, Int_t>::iterator     fBrPerMapIter;
     /** List of all files added with AddFriend */
     std::list<TString>                      fFriendFileList; //!
-    FairLogger*                         fLogger;//!
     /** Mix all inputs, i.e: read one entry from each input and add them together*/
     Bool_t                              fMixAllInputs;
     /**True if signal and background mixing is used*/
@@ -371,6 +373,10 @@ class FairRootManager : public TObject
     Double_t                                fEventTimeMax;  //!
     /** Time of event since th start (ns) */
     Double_t                                fEventTime;     //!
+    /** Time of particles in beam (ns) */
+    Double_t								fBeamTime; //!
+    /** Time without particles in beam (gap) (ns) */
+    Double_t								fGapTime; //!
     /** EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime) */
     Double_t                                fEventMeanTime; //!
     /** used to generate random numbers for event time; */
@@ -414,7 +420,7 @@ class FairRootManager : public TObject
     Bool_t fUseFairLinks; //!
 
 
-    ClassDef(FairRootManager,8) // Root IO manager
+    ClassDef(FairRootManager,9) // Root IO manager
 };
 
 

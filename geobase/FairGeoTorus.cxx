@@ -62,7 +62,7 @@ FairGeoTorus::~FairGeoTorus()
   }
 }
 
-Int_t FairGeoTorus::readPoints(fstream* pFile,FairGeoVolume* volu)
+Int_t FairGeoTorus::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // reads nPoints with 3 components from Ascii file
   // if the array of points is not existing in the volume it is created and
@@ -101,7 +101,7 @@ TArrayD* FairGeoTorus::calcVoluParam(FairGeoVolume* volu)
   return param;
 }
 
-Bool_t FairGeoTorus::writePoints(fstream* pFile,FairGeoVolume* volu)
+Bool_t FairGeoTorus::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes the 4 'points' decribed above to ascii file
   if (!pFile) { return kFALSE; }

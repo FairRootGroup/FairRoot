@@ -12,16 +12,15 @@
 
 #include "FairTrackParam.h"
 
+#include "FairLogger.h"
+
 #include "Riosfwd.h"                    // for ostream
 #include "TMath.h"                      // for Sqrt
 #include "TMathBase.h"                  // for Abs
 #include "TMatrixTSym.h"                // for TMatrixTSym
 #include "TMatrixTUtils.h"              // for TMatrixTRow, etc
 
-#include <iostream>                     // for operator<<, basic_ostream, etc
-
-using std::cout;
-using std::endl;
+#include <iomanip>
 
 // -----   Default constructor   -------------------------------------------
 FairTrackParam::FairTrackParam()
@@ -80,11 +79,11 @@ FairTrackParam::~FairTrackParam() {}
 // -----   Public method Print   -------------------------------------------
 void FairTrackParam::Print(Option_t* option) const
 {
-  cout << "Position : (";
-  cout.precision(2);
-  cout << fX << ", " << fY << ", " << fZ << ")" << endl;
-  cout << "Slopes : dx/dz = " << fTx << ", dy/dz = " << fTy << endl;
-  cout << "q/p = " << fQp << endl;
+  LOG(INFO) << "Position : (" << std::setprecision(2)
+	    << fX << ", " << fY << ", " << fZ << ")" << FairLogger::endl;
+  LOG(INFO) << "Slopes : dx/dz = " << fTx << ", dy/dz = " << fTy 
+	    << FairLogger::endl;
+  LOG(INFO) << "q/p = " << fQp << FairLogger::endl;
 }
 // -------------------------------------------------------------------------
 
@@ -134,8 +133,8 @@ void FairTrackParam::CovMatrix(TMatrixFSym& covMat) const
 Double_t FairTrackParam::GetCovariance(Int_t i, Int_t j) const
 {
   if ( i<0 || j<0 || i>4 || j>4 ) {
-    cout << "-E- FairTrackParam::GetCovariance: Invalid index pair ("
-         << i << "," << j << ") !" << endl;
+    LOG(ERROR) << "FairTrackParam::GetCovariance: Invalid index pair ("
+	       << i << "," << j << ") !" << FairLogger::endl;
     return 0;
   }
   if (i>j) {
@@ -191,13 +190,13 @@ void FairTrackParam::SetCovMatrix(const TMatrixFSym& covMat)
 void FairTrackParam::SetCovariance(Int_t i, Int_t j, Double_t val)
 {
   if (i < 0 || i > 4) {
-    cout << "-W- FairTrackParam::SetCovariance: "
-         << "First index out of range!  " << i << endl;
+    LOG(WARNING) << "FairTrackParam::SetCovariance: "
+		 << "First index out of range!  " << i << FairLogger::endl;
     return;
   }
   if (j < 0 || j > 4) {
-    cout << "-W- FairTrackParam::SetCovariance: "
-         << "Second index out of range!  " << j << endl;
+    LOG(WARNING) << "FairTrackParam::SetCovariance: "
+         << "Second index out of range!  " << j << FairLogger::endl;
     return;
   }
   if (i>j) {

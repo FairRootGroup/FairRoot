@@ -47,7 +47,7 @@ public:
     void AddToFile(DataType* ObjArr, long size);
     void AddToFile(TClonesArray* InputData);
     void AddToFile(FairMQMessage* msg);
-    void InitOutFile();
+    void InitOutputFile();
     void InitTCA(const std::string &classname);
     std::vector<std::vector<DataType> > GetAllObj(const std::string &filename, 
                                                   const std::string &treename, 

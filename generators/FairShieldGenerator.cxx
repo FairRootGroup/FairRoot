@@ -14,16 +14,14 @@
 #include "FairIon.h"                    // for FairIon
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 #include "FairRunSim.h"                 // for FairRunSim
+#include "FairLogger.h"                 // for logging
 
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TParticlePDG.h"               // for TParticlePDG
 
 #include <stdio.h>                      // for NULL, sprintf
-#include <iostream>                     // for cout
 #include <utility>                      // for pair
 
-using std::cout;
-using std::endl;
 using std::map;
 
 // -----   Default constructor   ------------------------------------------
@@ -48,21 +46,21 @@ FairShieldGenerator::FairShieldGenerator(const char* fileName)
    fIonMap()
 {
 
-  //  fPDG=TDatabasePDG::Instance();
-  //  fFileName  = fileName;
-  cout << "-I- FairShieldGenerator: Opening input file " << fileName << endl;
-  fInputFile = new ifstream(fFileName);
+  LOG(INFO) << "FairShieldGenerator: Opening input file " 
+	    << fileName << FairLogger::endl;
+  fInputFile = new std::ifstream(fFileName);
   if ( ! fInputFile->is_open() ) {
-    Fatal("FairShieldGenerator","Cannot open input file.");
+    LOG(FATAL) << "Cannot open input file." << FairLogger::endl;
   }
-  cout << "-I- FairShieldGenerator: Looking for ions..." << endl;
+  LOG(INFO) << "FairShieldGenerator: Looking for ions..." 
+	    << FairLogger::endl;
   Int_t nIons = RegisterIons();
-  cout << "-I- FairShieldGenerator: " << nIons << " ions registered."
-       << endl;
+  LOG(INFO) << "FairShieldGenerator: " << nIons << " ions registered."
+	    << FairLogger::endl;
   CloseInput();
-  cout << "-I- FairShieldGenerator: Reopening input file " << fileName
-       << endl;
-  fInputFile = new ifstream(fFileName);
+  LOG(INFO) << "FairShieldGenerator: Reopening input file " 
+	    << fileName << FairLogger::endl;
+  fInputFile = new std::ifstream(fFileName);
 }
 // ------------------------------------------------------------------------
 
@@ -83,7 +81,8 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // Check for input file
   if ( ! fInputFile->is_open() ) {
-    cout << "-E- FairShieldGenerator: Input file not open!" << endl;
+    LOG(ERROR) << "FairShieldGenerator: Input file not open!" 
+	       << FairLogger::endl;
     return kFALSE;
   }
 
@@ -108,14 +107,15 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // If end of input file is reached : close it and abort run
   if ( fInputFile->eof() ) {
-    cout << "-I- FairShieldGenerator: End of input file reached " << endl;
+    LOG(INFO) << "FairShieldGenerator: End of input file reached " 
+	      << FairLogger::endl;
     CloseInput();
     return kFALSE;
   }
 
-  cout << "-I- FairShieldGenerator: Event " << eventId << ",  pBeam = "
-       << pBeam << "GeV, b = " << b << " fm, multiplicity " << nTracks
-       << endl;
+  LOG(INFO) << "FairShieldGenerator: Event " << eventId << ",  pBeam = "
+	    << pBeam << "GeV, b = " << b << " fm, multiplicity " << nTracks
+	    << FairLogger::endl;
 
   // Loop over tracks in the current event
   for (Int_t itrack=0; itrack<nTracks; itrack++) {
@@ -129,8 +129,9 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
       sprintf(ionName, "Ion_%d_%d", iMass, iCharge);
       TParticlePDG* part = fPDG->GetParticle(ionName);
       if ( ! part ) {
-        cout << "-W- FairShieldGenerator::ReadEvent: Cannot find "
-             << ionName << " in database!" << endl;
+        LOG(WARNING) << "FairShieldGenerator::ReadEvent: Cannot find "
+		     << ionName << " in database!" 
+		     << FairLogger::endl;
         continue;
       }
       pdgType = part->PdgCode();
@@ -153,8 +154,8 @@ void FairShieldGenerator::CloseInput()
 {
   if ( fInputFile ) {
     if ( fInputFile->is_open() ) {
-      cout << "-I- FairShieldGenerator: Closing input file "
-           << fFileName << endl;
+      LOG(INFO) << "FairShieldGenerator: Closing input file "
+		<< fFileName << FairLogger::endl;
       fInputFile->close();
     }
     delete fInputFile;

@@ -60,18 +60,32 @@ void run_digi_timebased( TString mcEngine="TGeant3" )
   fRun->Run();
 
   // -----   Finish   -------------------------------------------------------
+
+  cout << endl << endl;
+
+  // Extract the maximal used memory an add is as Dart measurement
+  // This line is filtered by CTest and the value send to CDash
+  FairSystemInfo sysInfo;
+  Float_t maxMemory=sysInfo.GetMaxMemory();
+  cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
+  cout << maxMemory;
+  cout << "</DartMeasurement>" << endl;
+
   timer.Stop();
   Double_t rtime = timer.RealTime();
   Double_t ctime = timer.CpuTime();
+
+  Float_t cpuUsage=ctime/rtime;
+  cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
+  cout << cpuUsage;
+  cout << "</DartMeasurement>" << endl;
+
   cout << endl << endl;
-  cout << "Macro finished successfully." << endl;
   cout << "Output file is "    << outFile << endl;
   cout << "Parameter file is " << parFile << endl;
-  cout << "Real time " << rtime << " s, CPU time " << ctime << " s" << endl;
-  cout << endl;
-  // ------------------------------------------------------------------------
-  cout << " Test passed" << endl;
-  cout << " All ok " << endl;
+  cout << "Real time " << rtime << " s, CPU time " << ctime
+       << "s" << endl << endl;
+  cout << "Macro finished successfully." << endl;
 
-  exit(0);
+  // ------------------------------------------------------------------------
 }
