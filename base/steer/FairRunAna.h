@@ -110,7 +110,7 @@ class FairRunAna : public FairRun
      * if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
      * them in one big event and send it to the next step
     */
-    void SetMixAllInputs(Bool_t Status);
+    //    void SetMixAllInputs(Bool_t Status);
     // ********************************************************* //
     // THE BELOW FUNCTIONS SHOULD BE MOVED TO FairFileSource and FairMixedSource
     /** Set the min and max limit for event time in ns */

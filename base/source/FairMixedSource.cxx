@@ -290,7 +290,7 @@ Bool_t FairMixedSource::Init()
 
     }
     fNoOfEntries = fBackgroundChain->GetEntries();
-    FairRootManager::Instance()->SetInChain(fBackgroundChain);
+    FairRootManager::Instance()->SetInChain(fBackgroundChain,0);
 
     for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
       TFolder* fold = (TFolder*) fListFolder->At(i);
@@ -350,8 +350,6 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
         GetASignal=kTRUE;
         fCurrentEntry[iterN->first]=entry+1;
         LOG(DEBUG) << "---Get entry No. " << entry << " from signal chain number --- " << iterN->first << " --- " << FairLogger::endl;
-	FairRootManager::Instance()->SetInChain(chain);
-
         break;
       }
     }
@@ -363,7 +361,6 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
       fOutHeader->SetEventTime(GetEventTime());
       fCurrentEntry[0]=entry+1;
       LOG(DEBUG) << "---Get entry from background chain  --- " << FairLogger::endl;
-      FairRootManager::Instance()->SetInChain(fBackgroundChain);
     }
     
   }
@@ -454,8 +451,9 @@ void FairMixedSource::SetSignalFile(TString name, UInt_t identifier )
     if(fSignalTypeList[identifier]==0) {
       TChain* chain = new TChain("cbmsim", "/cbmroot");
       fSignalTypeList[identifier]=chain;
+      FairRootManager::Instance()->SetInChain(chain,identifier);
       fCurrentEntry[identifier]= 0;
-     fNoOfSignals++;
+      fNoOfSignals++;
       fActualSignalIdentifier= identifier;
       chain->AddFile(name.Data());
     } else {

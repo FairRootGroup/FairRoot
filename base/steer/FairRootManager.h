@@ -55,9 +55,6 @@ class FairRootManager : public TObject
     FairRootManager();
     /**dtor*/
     virtual ~FairRootManager();
-    void                AddSignalFile(TString name, UInt_t identifier );
-    /**Add input background file by name*/
-    void                AddBackgroundFile(TString name);
      Bool_t             AllDataProcessed();
     /** Add a branch name to the Branchlist and give it an id*/
     Int_t AddBranchToList(const char* name);
@@ -175,7 +172,6 @@ class FairRootManager : public TObject
     void                WriteFileHeader(FairFileHeader* f);
     /**Write the folder structure used to create the tree to the output file */
     void                WriteFolder() ;
-    void                SetEventTime();
 
     /**Check the maximum event number we can run to*/
     Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
@@ -206,10 +202,11 @@ class FairRootManager : public TObject
     
     void                SetListOfFolders(TObjArray* ta){ fListFolder=ta; }
     TChain*             GetInChain ()                  { return fSourceChain;}
+    TChain*             GetSignalChainNo(UInt_t i)     { return fSignalChainList[i]; }
     TTree*              GetInTree  ()                  { if ( fSourceChain ) return fSourceChain->GetTree(); return 0; }
     const TFile*        GetRootFile()                  { if ( fSourceChain ) return fSourceChain->GetFile(); return 0; }
     TFile*              GetInFile  ()                  { if ( fSourceChain ) return fSourceChain->GetFile(); return 0; }
-    void                SetInChain (TChain* tempChain) { fSourceChain=tempChain;}
+    void                SetInChain (TChain* tempChain, UInt_t ident=-1);
     /* /\**Set the input tree when running on PROOF worker*\/ */
 
     void SetFinishRun(Bool_t val = kTRUE){ fFinishRun = val;}
@@ -304,7 +301,8 @@ class FairRootManager : public TObject
     FairSource                          *fSource;
 
     TChain                              *fSourceChain;
-
+    std::map<UInt_t, TChain*>            fSignalChainList;//!
+    
     Bool_t fUseFairLinks; //!
     Bool_t fFinishRun; //!
 
