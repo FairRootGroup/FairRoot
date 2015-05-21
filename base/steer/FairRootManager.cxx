@@ -106,8 +106,9 @@ FairRootManager::FairRootManager()
     fEntryNr(0),
     fListFolder(0),
     fSource(0),
-    fSourceChain(0)
-{
+    fSourceChain(0),
+    fSignalChainList()
+  {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
     return;
@@ -680,6 +681,164 @@ TObject* FairRootManager::GetObject(const char* BrName)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+TObject* FairRootManager::GetCloneOfLinkData(const FairLink link)
+{
+  TObject* result = 0;
+
+//  std::cout << "GetCloneOfLinkData: Link " << link << std::endl;
+  Int_t fileId = link.GetFile();
+  Int_t entryNr = link.GetEntry();
+  Int_t type = link.GetType();
+  Int_t index = link.GetIndex();
+
+  Int_t oldEntryNr = GetEntryNr();
+
+//  std::cout << "OldEntryNr: " << GetEntryNr();
+
+//  std::cout << "GetLinkData: " << link << std::endl;
+
+  TTree* dataTree;          //get the correct Tree
+  if (fileId < 0) {
+    dataTree = GetInTree();
+  } else if (fileId == 0) {
+    dataTree = GetInChain();
+  } else {
+    dataTree = GetSignalChainNo(fileId);
+  }
+
+  if (dataTree == 0) {
+    dataTree = GetInTree();
+  }
+
+  if (type < 0) {
+    return 0;
+  }
+
+  TBranch* dataBranch = 0;
+
+//  std::cout << "DataType: " << GetBranchName(type) << std::endl;
+
+  if (fileId < 0 && fInputBranchMap[type] != 0) {
+    dataBranch = fInputBranchMap[type];
+  } else if (fileId < 0) {
+    fInputBranchMap[type] = dataTree->GetBranch(GetBranchName(type));
+    dataBranch = fInputBranchMap[type];
+  } else {
+    dataBranch = dataTree->GetBranch(GetBranchName(type));
+  }
+
+  if (dataBranch == 0) {
+    return 0;
+  }
+
+  if (entryNr > -1) {         //get the right entry (if entryNr < 0 then the current entry is taken
+    if (entryNr < dataBranch->GetEntries()) {
+      dataBranch->GetEntry(entryNr);
+    } else {
+      return 0;
+    }
+  } else {        //the link entry nr is negative --> take the actual one
+
+//    std::cout << "EntryNr: " << GetEntryNr() << std::endl;
+//    dataBranch->GetEntry(GetEntryNr());
+  }
+
+  if (index < 0) {                //if index is -1 then this is not a TClonesArray so only the Object is returned
+    result = GetObject(GetBranchName(type))->Clone();
+  } else {
+    TClonesArray* dataArray = (TClonesArray*)GetObject(GetBranchName(type));
+
+//    std::cout << "dataArray size: " << dataArray->GetEntriesFast() << std::endl;
+    if (index < dataArray->GetEntriesFast()) {
+//      std::cout << "DataArray at index " << index << " has Link: " << ((FairMultiLinkedData*)dataArray->At(index))->GetNLinks() << std::cout;
+      result = dataArray->At(index)->Clone();
+//      std::cout << "Result: " << *((FairMultiLinkedData*)result) << std::endl;
+    }
+  }
+  if (entryNr > -1) {
+    dataBranch->GetEntry(oldEntryNr);  //reset the dataBranch to the original entry
+  }
+  return result;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+TClonesArray* FairRootManager::GetCloneOfTClonesArray(const FairLink link)
+{
+  TClonesArray* result = 0;
+
+  //  std::cout << "GetCloneOfLinkData: Link " << link << std::endl;
+  Int_t fileId = link.GetFile();
+  Int_t entryNr = link.GetEntry();
+  Int_t type = link.GetType();
+  Int_t index = link.GetIndex();
+
+  Int_t oldEntryNr = GetEntryNr();
+
+  //  std::cout << "OldEntryNr: " << GetEntryNr();
+
+  //  std::cout << "GetLinkData: " << link << std::endl;
+
+  TTree* dataTree;          //get the correct Tree
+  if (fileId < 0) {
+    dataTree = GetInTree();
+  } else if (fileId == 0) {
+    dataTree = GetInChain();
+  } else {
+    dataTree = GetSignalChainNo(fileId);
+  }
+
+  if (dataTree == 0) {
+    dataTree = GetInTree();
+  }
+
+  if (type < 0) {
+    return 0;
+  }
+
+  TBranch* dataBranch = 0;
+
+  //  std::cout << "DataType: " << GetBranchName(type) << std::endl;
+
+  if (fileId < 0 && fInputBranchMap[type] != 0) {
+    dataBranch = fInputBranchMap[type];
+  } else if (fileId < 0) {
+    fInputBranchMap[type] = dataTree->GetBranch(GetBranchName(type));
+    dataBranch = fInputBranchMap[type];
+  } else {
+    dataBranch = dataTree->GetBranch(GetBranchName(type));
+  }
+
+  if (dataBranch == 0) {
+    return 0;
+  }
+
+  if (entryNr > -1) { //get the right entry (if entryNr < 0 then the current entry is taken
+    if (entryNr < dataBranch->GetEntries()) {
+      dataBranch->GetEntry(entryNr);
+    } else {
+      return 0;
+    }
+  } else {        //the link entry nr is negative --> take the actual one
+
+    //    std::cout << "EntryNr: " << GetEntryNr() << std::endl;
+    //    dataBranch->GetEntry(GetEntryNr());
+  }
+
+  if (index < 0) { //if index is -1 then this is not a TClonesArray so only the Object is returned
+    result = 0;
+  } else {
+    result = (TClonesArray*) GetObject(GetBranchName(type))->Clone();
+  }
+  if (entryNr > -1) {
+    dataBranch->GetEntry(oldEntryNr); //reset the dataBranch to the original entry
+  }
+  return result;
+
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 void FairRootManager::TruncateBranchNames(TTree* fTree, const char* folderName)
 {
   /** If a object is created in a folder the corresponding branch
@@ -822,14 +981,20 @@ void  FairRootManager::SetBranchNameList(TList* list)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRootManager::SetInChain(TChain* tempChain, UInt_t ident)
+{ 
+  if ( ident <= 0 ) 
+    fSourceChain = tempChain;
+  else
+    fSignalChainList[ident] = tempChain;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 Double_t FairRootManager::GetEventTime() {
   return fCurrentTime;
 }
 //_____________________________________________________________________________
-
-
-
-
 
 //_____________________________________________________________________________
 /** Private functions*/
