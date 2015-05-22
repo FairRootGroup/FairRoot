@@ -206,7 +206,7 @@ class FairRootManager : public TObject
     TTree*              GetInTree  ()                  { if ( fSourceChain ) return fSourceChain->GetTree(); return 0; }
     const TFile*        GetRootFile()                  { if ( fSourceChain ) return fSourceChain->GetFile(); return 0; }
     TFile*              GetInFile  ()                  { if ( fSourceChain ) return fSourceChain->GetFile(); return 0; }
-    void                SetInChain (TChain* tempChain, UInt_t ident=-1);
+    void                SetInChain (TChain* tempChain, Int_t ident=-1);
     /* /\**Set the input tree when running on PROOF worker*\/ */
 
     void SetFinishRun(Bool_t val = kTRUE){ fFinishRun = val;}
