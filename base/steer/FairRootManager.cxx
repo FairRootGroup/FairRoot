@@ -981,7 +981,7 @@ void  FairRootManager::SetBranchNameList(TList* list)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRootManager::SetInChain(TChain* tempChain, UInt_t ident)
+void FairRootManager::SetInChain(TChain* tempChain, Int_t ident)
 { 
   if ( ident <= 0 ) 
     fSourceChain = tempChain;
