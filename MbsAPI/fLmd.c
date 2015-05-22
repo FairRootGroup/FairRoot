@@ -726,10 +726,26 @@ uint32_t fLmdGetElement(sLmdControl* pLmdControl, uint32_t iEvent, sMbsHeader** 
     if(pLmdControl->pBuffer==NULL) { return(GETLMD__NOBUFFER); } // internal buffer needed
     if(pLmdControl->pMbsFileHeader->iElements==0) { return(GETLMD__NOMORE); }
 
+    if (pLmdControl->pMbsHeader == 0)
+    {
+      // second, try to read more bytes
+
+      iReturn = fLmdReadBuffer(pLmdControl,
+                               (char*)(pLmdControl->pBuffer+pLmdControl->iLeftWords),
+                               (pLmdControl->iBufferWords-pLmdControl->iLeftWords)*2);
+
+      if(iReturn <= 0) { printf("fLmdGetElement: EOF\n"); return(GETLMD__EOFILE); }
+
+      if(pLmdControl->iSwap) { fLmdSwap4((uint32_t*)(pLmdControl->pBuffer+pLmdControl->iLeftWords),iReturn/4); }
+
+      pLmdControl->iBytes += iReturn;
+      pLmdControl->pMbsHeader=(sMbsHeader*)pLmdControl->pBuffer;
+      pLmdControl->iLeftWords += iReturn/2;
+    }
     // check if we need to read extra data
-    if ((pLmdControl->iLeftWords < 4) ||
-        (pLmdControl->pMbsHeader == 0) ||
-        (pLmdControl->pMbsHeader->iWords+4 > pLmdControl->iLeftWords)) {
+    else if((pLmdControl->iLeftWords < 4) ||
+            (pLmdControl->pMbsHeader->iWords+4 > pLmdControl->iLeftWords))
+    {
       // first copy old data, if it exists
       if (pLmdControl->iLeftWords > 0) {
         memmove(pLmdControl->pBuffer, pLmdControl->pMbsHeader, pLmdControl->iLeftWords*2);
@@ -772,7 +788,11 @@ uint32_t fLmdGetElement(sLmdControl* pLmdControl, uint32_t iEvent, sMbsHeader** 
   // get indexed event
   if(pLmdControl->iOffsetEntries) {
     if(iEvent >= pLmdControl->iOffsetEntries) { return(GETLMD__OUTOF_RANGE); }
-    fseeko64(pLmdControl->fFile,fLmdOffsetGet(pLmdControl,iEvent-1)*4,SEEK_SET);
+    int val = fseeko64(pLmdControl->fFile,fLmdOffsetGet(pLmdControl,iEvent-1)*4,SEEK_SET);
+    if(0 != val)
+    {
+      return(GETLMD__EOFILE);
+    }
     i=(fLmdOffsetGet(pLmdControl,iEvent)-fLmdOffsetGet(pLmdControl,iEvent-1));
     iReturn=fLmdReadBuffer(pLmdControl,(char*)pLmdControl->pBuffer,i*4);
     if(iReturn <= 0) {printf("fLmdGetElement: EOF\n"); return(GETLMD__EOFILE);}
@@ -956,7 +976,6 @@ uint32_t fLmdOffsetRead(sLmdControl* pLmdControl)
   if(iReturn!=pLmdControl->iOffsetEntries*pLmdControl->iOffsetSize) {
     printf("fLmdOffsetTable: LMD format error: no index table: %s\n",pLmdControl->cFile);
     pLmdControl->iOffsetEntries=0;
-    free(pTableHead);
     return(GETLMD__NOLMDFILE);
   }
   if(pLmdControl->iSwap) {
@@ -966,7 +985,11 @@ uint32_t fLmdOffsetRead(sLmdControl* pLmdControl)
     }
   }
   // go back behing header
-  fseeko64(pLmdControl->fFile,(lmdoff_t)sizeof(sMbsFileHeader),SEEK_SET);
+  int val = fseeko64(pLmdControl->fFile,(lmdoff_t)sizeof(sMbsFileHeader),SEEK_SET);
+  if(0 != val)
+  {
+    return(GETLMD__NOLMDFILE);
+  }
   // use small table
   if(pLmdControl->iOffsetSize == 4) {
     pLmdControl->pOffset4= (uint32_t*)pLmdControl->pOffset8;
@@ -1053,24 +1076,33 @@ void fLmdOffsetResize(sLmdControl* pLmdControl, uint32_t firstValue)
     if(pLmdControl->pOffset8) {
       memcpy(new,pLmdControl->pOffset8,oldEntries*pLmdControl->iOffsetSize);
       free(pLmdControl->pOffset8);
-      pLmdControl->pOffset8=new;
+      //pLmdControl->pOffset8=new;
+      pLmdControl->pOffset8 = (lmdoff_t*)malloc(newEntries*pLmdControl->iOffsetSize);
+      memcpy(pLmdControl->pOffset8,new,newEntries*pLmdControl->iOffsetSize);
     }
     if(pLmdControl->pOffset4) {
       memcpy(new,pLmdControl->pOffset4,oldEntries*pLmdControl->iOffsetSize);
       free(pLmdControl->pOffset4);
-      pLmdControl->pOffset4=(uint32_t*)new;
+      //pLmdControl->pOffset4=(uint32_t*)new;
+      pLmdControl->pOffset4 =(uint32_t*)malloc(newEntries*pLmdControl->iOffsetSize);
+      memcpy(pLmdControl->pOffset4,new,newEntries*pLmdControl->iOffsetSize);
     }
   } else { // table was new
     //printf("Create table %d entries, first offset %d\n",newEntries,firstValue);
     if(pLmdControl->iOffsetSize==8) {
-      pLmdControl->pOffset8=new;
+      //pLmdControl->pOffset8=new;
+      pLmdControl->pOffset8 = (lmdoff_t*)malloc(newEntries*pLmdControl->iOffsetSize);
+      memcpy(pLmdControl->pOffset8,new,newEntries*pLmdControl->iOffsetSize);
       *pLmdControl->pOffset8=(lmdoff_t)firstValue;
     }
     if(pLmdControl->iOffsetSize==4) {
-      pLmdControl->pOffset4=(uint32_t*)new;
+      //pLmdControl->pOffset4=(uint32_t*)new;
+      pLmdControl->pOffset4 =(uint32_t*)malloc(newEntries*pLmdControl->iOffsetSize);
+      memcpy(pLmdControl->pOffset4,new,newEntries*pLmdControl->iOffsetSize);
       *pLmdControl->pOffset4=firstValue;
     }
   }
+  free(new);
   pLmdControl->iOffsetEntries=newEntries;
 }
 //===============================================================
