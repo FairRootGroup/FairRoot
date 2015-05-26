@@ -868,6 +868,7 @@ struct s_tcpcomm* ps_server;
   INTS4 retval, /*i,*/ retry, on ;
 //  struct protoent* p;
   struct s_tcpcomm s_server;
+  memset(&s_server, 0, sizeof(s_server));
 
 
 #ifdef GSI__WINNT

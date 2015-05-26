@@ -713,6 +713,7 @@ INTS4 f_evt_get_open(INTS4 l_mode, CHARS* pc_server, s_evt_channel* ps_chan,
 //      return(GETEVT__NOSERVER);
 //    }
     break;
+#ifdef RFIO
   case GETEVT__RFIO   :
     ps_chan->l_channel_no=-1;
     ps_chan->l_channel_no=RFIO_open(pc_server,GET__OPEN_FLAG,0);
@@ -789,6 +790,7 @@ INTS4 f_evt_get_open(INTS4 l_mode, CHARS* pc_server, s_evt_channel* ps_chan,
     }/* file header */
     ps_chan->l_io_buf_size=ps_chan->l_buf_size;
     break;
+#endif
   default             :
     if(ps_info != NULL) { *ps_info=NULL; }
     return(GETEVT__NOSERVER);
@@ -838,7 +840,7 @@ INTS4 f_evt_get_open(INTS4 l_mode, CHARS* pc_server, s_evt_channel* ps_chan,
 /*1- C Main ****************+******************************************/
 INTS4 f_evt_get_event(s_evt_channel* ps_chan, INTS4** ppl_buffer, INTS4** ppl_goobuf)
 {
-  INTS4 l_temp,l_prev_ok=1, l_stat, l_used;
+  INTS4 l_temp,l_prev_ok=1, l_stat=LMD__SUCCESS, l_used;
   s_bufhe* ps_bufhe_cur;
 //  s_ve10_1* ps_ve10_1;
   sMbsHeader* pevt;
@@ -1042,7 +1044,7 @@ INTS4 f_evt_get_close(s_evt_channel* ps_chan)
       break;
     case GETEVT__STREAM :
       /* disconnect with stream server                              */
-      f_stc_write("CLOSE", 12, ps_chan->l_channel_no);
+      f_stc_write("CLOSE", 6, ps_chan->l_channel_no);
       if(f_stc_discclient(ps_chan->l_channel_no)!=STC__SUCCESS) { l_close_failure=1; }
       if(f_stc_close(&s_tcpcomm_st_evt)!=STC__SUCCESS) { l_close_failure=1; }
       if(ps_chan->pc_io_buf  != NULL) { free(ps_chan->pc_io_buf); }
@@ -1627,7 +1629,7 @@ INTS4 f_evt_get_buffer(s_evt_channel* ps_chan, INTS4* ps_buffer)
     break;
   case GETEVT__STREAM :
     if(ps_chan->l_stream_bufs == 0)
-      if(f_stc_write("GETEVT", 12, ps_chan->l_channel_no)!=STC__SUCCESS) {
+      if(f_stc_write("GETEVT", 7, ps_chan->l_channel_no)!=STC__SUCCESS) {
         return(GETEVT__FAILURE);
       }
 
@@ -1862,7 +1864,7 @@ INTS4 f_evt_get_newbuf(s_evt_channel* ps_chan)
     } /* end of while(1) */
     break;
   case GETEVT__STREAM :
-    if(f_stc_write("GETEVT", 12, ps_chan->l_channel_no)!=STC__SUCCESS) {
+    if(f_stc_write("GETEVT", 7, ps_chan->l_channel_no)!=STC__SUCCESS) {
       return(GETEVT__FAILURE);
     }
 
@@ -2108,6 +2110,7 @@ INTS4 f_evt_cre_tagfile(CHARS* pc_lmd, CHARS* pc_tag,INTS4 (*e_filter)())
   s_ve10_1* ps_ve10_1;
   s_bufhe* ps_bufhe;
   s_taghe s_taghe;
+  memset(&s_taghe, 0, sizeof(s_taghe));
   s_tag s_tag;
 
   ps_bufhe = (s_bufhe*)c_temp;
@@ -2165,7 +2168,12 @@ INTS4 f_evt_cre_tagfile(CHARS* pc_lmd, CHARS* pc_tag,INTS4 (*e_filter)())
 
   /* Open and create tag file */
   if((l_out=open(pc_tag,PUT__CRT_FLAG,DEF_FILE_ACCE))== -1) { return(GETEVT__NOFILE); }
-  write(l_out,(CHARS*)&s_taghe,sizeof(s_taghe));
+  ssize_t wcount = write(l_out,(CHARS*)&s_taghe,sizeof(s_taghe));
+  if(wcount != sizeof(s_taghe))
+  {
+    close(l_chan);
+    return(GETEVT__TAGWRERR);
+  }
 
   /* Initialize filter function */
   if(e_filter != NULL) { ii=(*e_filter)(NULL); }
@@ -2229,6 +2237,11 @@ INTS4 f_evt_cre_tagfile(CHARS* pc_lmd, CHARS* pc_tag,INTS4 (*e_filter)())
           l_evsize=ps_bufhe->l_free[1]+4; /* total words */
           if(l_evt_buf_size < l_evsize*2) {
             if(pc_evt_buf != NULL) { free(pc_evt_buf); }
+            l_evt_buf_size=l_evsize*2;
+            pc_evt_buf=(CHARS*)malloc(l_evt_buf_size);
+          }
+          if(NULL == pc_evt_buf)
+          {
             l_evt_buf_size=l_evsize*2;
             pc_evt_buf=(CHARS*)malloc(l_evt_buf_size);
           }
@@ -2405,6 +2418,7 @@ INTS4 f_evt_get_tagopen(s_evt_channel* ps_chan,CHARS* pc_tag,CHARS* pc_lmd, CHAR
     close(ps_chan->l_channel_no);
     return(GETEVT__RDERR);
   }
+  if(ps_chan->ps_taghe != NULL) {
   if(ps_chan->ps_taghe->l_linear == 0) {
     ps_chan->ps_tag = (s_tag*)malloc(ps_chan->ps_taghe->l_filesize);
     if(read(ps_chan->l_tagfile_no,(CHARS*)ps_chan->ps_tag,ps_chan->ps_taghe->l_filesize)!=ps_chan->ps_taghe->l_filesize) {
@@ -2416,6 +2430,7 @@ INTS4 f_evt_get_tagopen(s_evt_channel* ps_chan,CHARS* pc_tag,CHARS* pc_lmd, CHAR
       close(ps_chan->l_channel_no);
       return(GETEVT__TAGRDERR);
     }
+  }
   }
   if(ps_bufhe->l_free[0] != 1) { ps_chan->l_lmdswap=1; }
   if(ps_chan->l_lmdswap) { f_evt_swap_filhe(ps_bufhe); }
@@ -2455,7 +2470,7 @@ INTS4 f_evt_get_tagopen(s_evt_channel* ps_chan,CHARS* pc_tag,CHARS* pc_lmd, CHAR
 /*1- C Main ****************+******************************************/
 INTS4 f_evt_get_tagnext(s_evt_channel* ps_chan,INTS4 l_skip, INTS4** pl_event)
 {
-  INTS4 ii,*pl,kk;
+  INTS4 ii = 0,*pl=NULL,kk;
   /* no tagfile */
   /*=============================================*/
   if(ps_chan->ps_taghe == NULL) {
@@ -2553,7 +2568,11 @@ INTS4 f_evt_get_tagevent(s_evt_channel* ps_chan,INTS4 l_value, INTS4 l_type, INT
     }
     if(l_val == 0) { l_val=1; }
     ps_tag=(s_tag*)&s_tag_l;
-    lseek(ps_chan->l_tagfile_no, (l_val-1)*sizeof(s_tag)+sizeof(s_taghe), SEEK_SET);  /* set file offset*/
+    int val = lseek(ps_chan->l_tagfile_no, (l_val-1)*sizeof(s_tag)+sizeof(s_taghe), SEEK_SET);  /* set file offset*/
+    if(0 != val)
+    {
+      return(GETEVT__TAGRDERR);
+    }
     if(read(ps_chan->l_tagfile_no,(CHARS*)ps_tag,sizeof(s_tag))!=sizeof(s_tag)) {
       return(GETEVT__TAGRDERR);
     }
