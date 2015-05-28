@@ -315,7 +315,6 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
   if (toFile == kFALSE) {
 	  FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
   }
-
 }
 //_____________________________________________________________________________
 
@@ -585,6 +584,8 @@ void FairRootManager:: WriteFolder()
 //_____________________________________________________________________________
 Int_t  FairRootManager::ReadEvent(Int_t i)
 {
+  if ( !fSource ) return 0;
+  
   fSource->Reset();
 
   SetEntryNr(i);
@@ -625,7 +626,8 @@ Int_t FairRootManager::GetRunId()
 //_____________________________________________________________________________
 void FairRootManager::ReadBranchEvent(const char* BrName)
 {
-  fSource->ReadBranchEvent(BrName);
+  if ( fSource ) 
+    fSource->ReadBranchEvent(BrName);
 }
 //_____________________________________________________________________________
 
@@ -1018,13 +1020,15 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
   LOG(DEBUG) << "Try to find an object "
 	      << BrName << " describing the branch in the folder structure in file"
 	      << FairLogger::endl;
-  for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
-    TFolder* fold = (TFolder*) fListFolder->At(i);
-    fObj2[fNObj] = fold->FindObjectAny(BrName);
-    if (fObj2[fNObj] ) {
-      LOG(DEBUG) << "Object "
-		 << BrName << " describing the branch in the folder structure was found" << FairLogger::endl;
-      break;
+  if ( fListFolder ) {
+    for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
+      TFolder* fold = (TFolder*) fListFolder->At(i);
+      fObj2[fNObj] = fold->FindObjectAny(BrName);
+      if (fObj2[fNObj] ) {
+	LOG(INFO) << "Object "
+		  << BrName << " describing the branch in the folder structure was found" << FairLogger::endl;
+	break;
+      }
     }
   }
 
@@ -1037,7 +1041,8 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
     //Fatal(" No Branch in the tree", BrName );
     return 0;
   } else {
-    fSource->ActivateObject(&fObj2[fNObj],BrName);
+    if ( fSource ) 
+      fSource->ActivateObject(&fObj2[fNObj],BrName);
   }
   
   AddMemoryBranch( BrName , fObj2[fNObj] );
@@ -1180,7 +1185,9 @@ void FairRootManager::WriteFileHeader(FairFileHeader* f)
 //_____________________________________________________________________________
 Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
 {
-  return fSource->CheckMaxEventNo(EvtEnd);
+  if ( fSource ) 
+    return fSource->CheckMaxEventNo(EvtEnd);
+  return 0;
 }
 //_____________________________________________________________________________
 
