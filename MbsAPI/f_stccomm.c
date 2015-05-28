@@ -494,7 +494,7 @@ struct s_tcpcomm* ps_client;
   INTS4 /*shut,*/ retval ;
 //  INTS4 thirty = 30;
   struct s_tcpcomm s_client;
-
+  memset(&s_client, 0, sizeof(s_client));
 
   /* ----------------------------------------------------------------------- */
   /*           init communication socket.              */
@@ -868,6 +868,7 @@ struct s_tcpcomm* ps_server;
   INTS4 retval, /*i,*/ retry, on ;
 //  struct protoent* p;
   struct s_tcpcomm s_server;
+  memset(&s_server, 0, sizeof(s_server));
 
 
 #ifdef GSI__WINNT
