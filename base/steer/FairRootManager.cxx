@@ -106,7 +106,7 @@ FairRootManager::FairRootManager()
     fEntryNr(0),
     fListFolder(0),
     fSource(0),
-    fSourceChain(0),
+    fSourceChain( new TChain("cbmsim", "/cbmroot")),
     fSignalChainList()
   {
   if (fgInstance) {
