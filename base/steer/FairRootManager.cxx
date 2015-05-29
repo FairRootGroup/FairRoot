@@ -1711,9 +1711,11 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
   }
   Int_t localMax=0;
   if(!fMixedInput) {
+    if ( !fRootFileSource ) return 0;
     TChain *fInChain =fRootFileSource->GetInChain();
     MaxEventNo=fInChain->GetEntries();
   } else {
+    if ( !fRootFileSourceBKG ) return 0;
     Int_t MaxBG=fRootFileSourceBKG->GetInChain()->GetEntries();
     Int_t MaxS=0;
     Double_t ratio=0.;
@@ -1807,6 +1809,8 @@ void FairRootManager::DeleteOldWriteoutBufferData()
 void FairRootManager::ReadBranchEvent(const char* BrName)
 {
   /**fill the object with content if the other branches in this tree entry were already read**/
+  if ( fRootFileSource == 0 && fRootFileSourceBKG == 0 ) return;
+
     TTree *fInTree =fRootFileSource->GetInTree();
     TChain *fInChain =fRootFileSource->GetInChain();
 
