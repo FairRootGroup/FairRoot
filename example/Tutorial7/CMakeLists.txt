@@ -107,26 +107,26 @@ If (Boost_FOUND)
 
   set(Exe_Source
     
-    run/runSamplerBoost.cxx
-    run/runProcessorBoost.cxx
-    run/runFileSinkBoost.cxx
+    run/runSamplerBoostT7.cxx
+    run/runProcessorBoostT7.cxx
+    run/runFileSinkBoostT7.cxx
 
-    run/runSamplerBin.cxx
-    run/runProcessorBin.cxx
-    run/runFileSinkBin.cxx
+    run/runSamplerBinT7.cxx
+    run/runProcessorBinT7.cxx
+    run/runFileSinkBinT7.cxx
 
-    run/runSamplerRoot.cxx
-    run/runProcessorRoot.cxx
-    run/runFileSinkRoot.cxx
+    run/runSamplerRootT7.cxx
+    run/runProcessorRootT7.cxx
+    run/runFileSinkRootT7.cxx
 
     run/runGenerateData.cxx
 
-    run/FairTestDetector/runSamplerBoost.cxx
-    run/FairTestDetector/runProcessorBoost.cxx
-    run/FairTestDetector/runFileSinkBoost.cxx
-    run/FairTestDetector/runSamplerBin.cxx
-    run/FairTestDetector/runProcessorBin.cxx
-    run/FairTestDetector/runFileSinkBin.cxx
+    run/FairTestDetector/runSamplerBoostT7b.cxx
+    run/FairTestDetector/runProcessorBoostT7b.cxx
+    run/FairTestDetector/runFileSinkBoostT7b.cxx
+    run/FairTestDetector/runSamplerBinT7b.cxx
+    run/FairTestDetector/runProcessorBinT7b.cxx
+    run/FairTestDetector/runFileSinkBinT7b.cxx
     )
 
   List(LENGTH Exe_Names _length)

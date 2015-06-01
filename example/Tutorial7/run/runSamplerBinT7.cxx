@@ -1,48 +1,45 @@
 /* 
- * File:   runSamplerBoost.cxx
+ * File:   runSamplerBin.cxx
  * Author: winckler
  *
- * Created on December 2, 2014, 10:45 PM
+ * Created on December 2, 2014, 10:48 PM
  */
 
-// std
+/// std
 #include <iostream>
 #include <csignal>
 
-// boost
+/// boost
 #include "boost/program_options.hpp"
-#include <boost/archive/binary_oarchive.hpp>
 
-// FairRoot
-#include "FairMQLogger.h"
+/// ZMQ/nmsg (in FairSoft)
 #ifdef NANOMSG
 #include "nanomsg/FairMQTransportFactoryNN.h"
 #else
 #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
-// FairRoot - Tutorial 7
-// Sampler device
+/// FairRoot - FairMQ
+#include "FairMQLogger.h"
 #include "GenericSampler.h"
 
+/// FairRoot - Base/MQ
 // sampler policy
 #include "SimpleTreeReader.h"
 
-// serialization policy
-#include "BoostSerializer.h"
-
-// payload/data class
-#include "FairTestDetectorDigi.h"
+/// FairRoot - Tutorial 7
+#include "MyDigiSerializer.h"
+#include "MyDigi.h"
 
 using namespace std;
 /// ////////////////////////////////////////////////////////////////////////
-// payload definition
-typedef FairTestDetectorDigi                            TDigi;
-// sampler and serialization policy
-typedef SimpleTreeReader<TClonesArray>                 TSamplerPolicy;
-typedef BoostSerializer<TDigi>                          TSerializePolicy;
-// build sampler type
-typedef GenericSampler<TSamplerPolicy,TSerializePolicy> TSampler;
+// payload and policy type definitions
+typedef MyDigiSerializer_t              SerializerPolicy;
+// Remark --> here, serialization by hand. Be aware that it is not a cross-platform format
+typedef SimpleTreeReader<TClonesArray>  TCASamplerPolicy;
+
+// root sampler policy
+typedef GenericSampler<TCASamplerPolicy,SerializerPolicy > TSampler;
 
 TSampler sampler;
 
@@ -69,6 +66,11 @@ static void s_catch_signals(void)
 
 typedef struct DeviceOptions
 {
+    DeviceOptions() : 
+        id(), filename(), parameterFile(),
+        treename(), branchname(), eventRate(0), ioThreads(0),
+        outputSocketType(), outputBufSize(0), outputMethod(), outputAddress() {}
+    
     string id;
     string filename;
     string parameterFile;
@@ -148,77 +150,88 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
 int main(int argc, char** argv)
 {
-    s_catch_signals();
-
-    DeviceOptions_t options;
     try
     {
-        if (!parse_cmd_line(argc, argv, &options))
-            return 0;
+        s_catch_signals();
+
+        DeviceOptions_t options;
+        try
+        {
+            if (!parse_cmd_line(argc, argv, &options))
+                return 0;
+        }
+        catch (std::exception& err)
+        {
+            LOG(ERROR) << err.what();
+            return 1;
+        }
+
+        LOG(INFO) << "PID: " << getpid();
+        LOG(INFO) << "CONFIG: " << "id: " << options.id << ", event rate: " << options.eventRate << ", I/O threads: " << options.ioThreads;
+        LOG(INFO) << "FILES: " << "input file: " << options.filename << ", parameter file: " << options.parameterFile << ", branch: " << options.branchname;
+        LOG(INFO) << "OUTPUT: " << options.outputSocketType << " " << options.outputBufSize << " " << options.outputMethod << " " << options.outputAddress;
+
+    #ifdef NANOMSG
+        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
+    #else
+        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
+    #endif
+
+        sampler.SetTransport(transportFactory);
+
+        sampler.SetProperty(TSampler::Id, options.id);
+        sampler.SetProperty(TSampler::InputFile, options.filename);
+        sampler.SetProperty(TSampler::ParFile, options.parameterFile);
+        sampler.SetProperty(TSampler::Branch, options.branchname);
+        sampler.SetProperty(TSampler::EventRate, options.eventRate);
+        sampler.SetProperty(TSampler::NumIoThreads, options.ioThreads);
+        sampler.SetFileProperties(options.filename,options.treename,options.branchname);
+
+
+        sampler.SetProperty(TSampler::NumInputs, 0);
+        sampler.SetProperty(TSampler::NumOutputs, 1);
+
+        sampler.ChangeState(TSampler::INIT);
+
+        sampler.SetProperty(TSampler::OutputSocketType, options.outputSocketType);
+        sampler.SetProperty(TSampler::OutputSndBufSize, options.outputBufSize);
+        sampler.SetProperty(TSampler::OutputMethod, options.outputMethod);
+        sampler.SetProperty(TSampler::OutputAddress, options.outputAddress);
+
+        sampler.ChangeState(TSampler::SETOUTPUT);
+        sampler.ChangeState(TSampler::SETINPUT);
+        sampler.ChangeState(TSampler::BIND);
+        sampler.ChangeState(TSampler::CONNECT);
+
+        sampler.ChangeState(TSampler::RUN);
+
+        try
+        {
+            // wait until the running thread has finished processing.
+            boost::unique_lock<boost::mutex> lock(sampler.fRunningMutex);
+            while (!sampler.fRunningFinished)
+            {
+                sampler.fRunningCondition.wait(lock);
+            }
+        }
+        catch( boost::thread_interrupted& interrupt )
+        {
+            boost::unique_lock<boost::mutex> lock(sampler.fRunningMutex);
+            LOG(ERROR)<<boost::this_thread::get_id();
+            return 1;
+        }
+        
+        sampler.ChangeState(TSampler::STOP);
+        sampler.ChangeState(TSampler::END);
+        
     }
-    catch (exception& e)
+    catch (std::exception& e)
     {
-        LOG(ERROR) << e.what();
+        LOG(ERROR)  << "Unhandled Exception reached the top of main: " 
+                    << e.what() << ", application will now exit";
         return 1;
     }
-
-    LOG(INFO) << "PID: " << getpid();
-    LOG(INFO) << "CONFIG: " << "id: " << options.id << ", event rate: " << options.eventRate << ", I/O threads: " << options.ioThreads;
-    LOG(INFO) << "FILES: " << "input file: " << options.filename << ", parameter file: " << options.parameterFile << ", branch: " << options.branchname;
-    LOG(INFO) << "OUTPUT: " << options.outputSocketType << " " << options.outputBufSize << " " << options.outputMethod << " " << options.outputAddress;
-
-#ifdef NANOMSG
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-    sampler.SetTransport(transportFactory);
-
-    sampler.SetProperty(TSampler::Id, options.id);
-    sampler.SetProperty(TSampler::InputFile, options.filename);
-    sampler.SetProperty(TSampler::ParFile, options.parameterFile);
-    sampler.SetProperty(TSampler::Branch, options.branchname);
-    sampler.SetProperty(TSampler::EventRate, options.eventRate);
-    sampler.SetProperty(TSampler::NumIoThreads, options.ioThreads);
-    string treename("cbmsim");
-    sampler.SetFileProperties(options.filename,options.treename,options.branchname);
     
-
-    sampler.SetProperty(TSampler::NumInputs, 0);
-    sampler.SetProperty(TSampler::NumOutputs, 1);
-
-    sampler.ChangeState(TSampler::INIT);
-
-    sampler.SetProperty(TSampler::OutputSocketType, options.outputSocketType);
-    sampler.SetProperty(TSampler::OutputSndBufSize, options.outputBufSize);
-    sampler.SetProperty(TSampler::OutputMethod, options.outputMethod);
-    sampler.SetProperty(TSampler::OutputAddress, options.outputAddress);
-
-    sampler.ChangeState(TSampler::SETOUTPUT);
-    sampler.ChangeState(TSampler::SETINPUT);
-    sampler.ChangeState(TSampler::BIND);
-    sampler.ChangeState(TSampler::CONNECT);
-
-    try
-    {
-        sampler.ChangeState(TSampler::RUN);
-    }
-    catch (boost::archive::archive_exception& e)
-    {
-        LOG(ERROR) << e.what();
-    }
-
-    // wait until the running thread has finished processing.
-    boost::unique_lock<boost::mutex> lock(sampler.fRunningMutex);
-    while (!sampler.fRunningFinished)
-    {
-        sampler.fRunningCondition.wait(lock);
-    }
-
-    sampler.ChangeState(TSampler::STOP);
-    sampler.ChangeState(TSampler::END);
-
     return 0;
 }
 

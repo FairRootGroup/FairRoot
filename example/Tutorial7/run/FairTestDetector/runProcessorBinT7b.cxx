@@ -1,46 +1,50 @@
 /* 
- * File:   runProcessorRoot.cxx
+ * File:   runProcessorBin.cxx
  * Author: winckler
  *
- * Created on January 15, 2015, 4:05 PM
+ * Created on December 2, 2014, 11:14 PM
  */
 
-/// std
+// std
 #include <iostream>
 #include <csignal>
 
-/// boost
+// boost
 #include "boost/program_options.hpp"
 
-/// ZMQ/nmsg (in FairSoft)
+// FairRoot
+#include "FairMQLogger.h"
+
 #ifdef NANOMSG
 #include "nanomsg/FairMQTransportFactoryNN.h"
 #else
 #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
-/// FairRoot - FairMQ
-#include "FairMQLogger.h"
+// FairRoot - Tutorial7 
+// Processor device
 #include "GenericProcessor.h"
 
-/// FairRoot - base/MQ
-#include "RootSerializer.h"
+// Serialization policy
+#include "MyDigiSerializer.h"
+#include "MyHitSerializer.h"
 
-/// FairRoot - Tutorial7 
+// Task policy
 #include "DigiToHitTask.h"
-#include "MyDigi.h"
-#include "MyHit.h"
+
+// payload/data class
+#include "FairTestDetectorDigi.h"
+#include "FairTestDetectorHit.h"
 
 using namespace std;
 /// ////////////////////////////////////////////////////////////////////////
-// payload and policy type definitions
-typedef MyDigi              TDigi; 
-typedef MyHit               THit;
-// build policy classes
-//typedef MyDigiSerializer_t TInputPolicy;
-typedef RootDeSerializer TInputPolicy;
-typedef RootSerializer   TOutputPolicy;
-typedef DigiToHitTask_TCA<TDigi,THit> TTaskPolicy; // process deserialized digi and fill Hit
+// payload definition
+typedef FairTestDetectorDigi              TDigi; 
+typedef FairTestDetectorHit               THit;
+// policy classes
+typedef Tuto3DigiDeSerializer_t             TInputPolicy;
+typedef Tuto3HitSerializer_t              TOutputPolicy;
+typedef DigiToHitTask_TCA<TDigi,THit>     TTaskPolicy; // process deserialized digi and fill Hit
 
 typedef GenericProcessor<TInputPolicy,TOutputPolicy,TTaskPolicy> TProcessor;
 
@@ -69,12 +73,6 @@ static void s_catch_signals(void)
 
 typedef struct DeviceOptions
 {
-    DeviceOptions() :
-        id(), ioThreads(0),
-        inputSocketType(), inputBufSize(0), inputMethod(), inputAddress(),
-        outputSocketType(), outputBufSize(0), outputMethod(), outputAddress(),
-        digiclassname(), hitclassname() {}
-    
     string id;
     int ioThreads;
     string inputSocketType;
@@ -163,67 +161,83 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
 int main(int argc, char** argv)
 {
-    s_catch_signals();
-
-    DeviceOptions_t options;
     try
     {
-        if (!parse_cmd_line(argc, argv, &options))
-            return 0;
+        s_catch_signals();
+
+        DeviceOptions_t options;
+        try
+        {
+            if (!parse_cmd_line(argc, argv, &options))
+                return 0;
+        }
+        catch (std::exception& err)
+        {
+            LOG(ERROR) << err.what();
+            return 1;
+        }
+
+        LOG(INFO) << "PID: " << getpid();
+
+    #ifdef NANOMSG
+        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
+    #else
+        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
+    #endif
+
+        processor.SetTransport(transportFactory);
+
+        processor.SetProperty(TProcessor::Id, options.id);
+        processor.SetProperty(TProcessor::NumIoThreads, options.ioThreads);
+        processor.SetProperty(TProcessor::NumInputs, 1);
+        processor.SetProperty(TProcessor::NumOutputs, 1);
+
+        processor.InitInputContainer(options.digiclassname);
+        processor.InitTask(options.hitclassname);
+
+        processor.ChangeState(TProcessor::INIT);
+
+        processor.SetProperty(TProcessor::InputSocketType, options.inputSocketType);
+        processor.SetProperty(TProcessor::InputSndBufSize, options.inputBufSize);
+        processor.SetProperty(TProcessor::InputMethod, options.inputMethod);
+        processor.SetProperty(TProcessor::InputAddress, options.inputAddress);
+
+        processor.SetProperty(TProcessor::OutputSocketType, options.outputSocketType);
+        processor.SetProperty(TProcessor::OutputSndBufSize, options.outputBufSize);
+        processor.SetProperty(TProcessor::OutputMethod, options.outputMethod);
+        processor.SetProperty(TProcessor::OutputAddress, options.outputAddress);
+
+        processor.ChangeState(TProcessor::SETOUTPUT);
+        processor.ChangeState(TProcessor::SETINPUT);
+        processor.ChangeState(TProcessor::BIND);
+        processor.ChangeState(TProcessor::CONNECT);
+        processor.ChangeState(TProcessor::RUN);
+
+        try
+        {
+            // wait until the running thread has finished processing.
+            boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
+            while (!processor.fRunningFinished)
+            {
+                processor.fRunningCondition.wait(lock);
+            }
+        }
+        catch( boost::thread_interrupted& interrupt )
+        {
+            boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
+            LOG(ERROR)<<boost::this_thread::get_id();
+            return 1;
+        }
+        
+        processor.ChangeState(TProcessor::STOP);
+        processor.ChangeState(TProcessor::END);
     }
-    catch (exception& e)
+    catch (std::exception& e)
     {
-        LOG(ERROR) << e.what();
+        LOG(ERROR)  << "Unhandled Exception reached the top of main: " 
+                    << e.what() << ", application will now exit";
         return 1;
     }
-
-    LOG(INFO) << "PID: " << getpid();
-
-#ifdef NANOMSG
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-    processor.SetTransport(transportFactory);
-
-    processor.SetProperty(TProcessor::Id, options.id);
-    processor.SetProperty(TProcessor::NumIoThreads, options.ioThreads);
-    processor.SetProperty(TProcessor::NumInputs, 1);
-    processor.SetProperty(TProcessor::NumOutputs, 1);
-
-    processor.InitInputContainer(options.digiclassname);
-    processor.InitTask(options.hitclassname);
     
-    processor.ChangeState(TProcessor::INIT);
-
-    processor.SetProperty(TProcessor::InputSocketType, options.inputSocketType);
-    processor.SetProperty(TProcessor::InputSndBufSize, options.inputBufSize);
-    processor.SetProperty(TProcessor::InputMethod, options.inputMethod);
-    processor.SetProperty(TProcessor::InputAddress, options.inputAddress);
-
-    processor.SetProperty(TProcessor::OutputSocketType, options.outputSocketType);
-    processor.SetProperty(TProcessor::OutputSndBufSize, options.outputBufSize);
-    processor.SetProperty(TProcessor::OutputMethod, options.outputMethod);
-    processor.SetProperty(TProcessor::OutputAddress, options.outputAddress);
-
-    processor.ChangeState(TProcessor::SETOUTPUT);
-    processor.ChangeState(TProcessor::SETINPUT);
-    processor.ChangeState(TProcessor::BIND);
-    processor.ChangeState(TProcessor::CONNECT);
-    processor.ChangeState(TProcessor::RUN);
-
-    // wait until the running thread has finished processing.
-    boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
-    while (!processor.fRunningFinished)
-    {
-        processor.fRunningCondition.wait(lock);
-    }
-
-    processor.ChangeState(TProcessor::STOP);
-    processor.ChangeState(TProcessor::END);
-
     return 0;
 }
-
-
