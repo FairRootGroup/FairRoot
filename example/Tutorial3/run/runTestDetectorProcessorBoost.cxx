@@ -158,74 +158,92 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
 int main(int argc, char** argv)
 {
-    s_catch_signals();
-
-    DeviceOptions_t options;
     try
     {
-        if (!parse_cmd_line(argc, argv, &options))
-            return 0;
+        s_catch_signals();
+
+        DeviceOptions_t options;
+        try
+        {
+            if (!parse_cmd_line(argc, argv, &options))
+                return 0;
+        }
+        catch (std::exception& err)
+        {
+            LOG(ERROR) << err.what();
+            return 1;
+        }
+
+        LOG(INFO) << "PID: " << getpid();
+
+    #ifdef NANOMSG
+        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
+    #else
+        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
+    #endif
+
+        processor.SetTransport(transportFactory);
+
+        processor.SetProperty(FairMQProcessor::Id, options.id);
+        processor.SetProperty(FairMQProcessor::NumIoThreads, options.ioThreads);
+
+        if (strcmp(options.processorTask.c_str(), "FairTestDetectorMQRecoTask") == 0)
+        {
+            TProcessorTask* task = new TProcessorTask();
+            processor.SetTask(task);
+        }
+        else
+        {
+            LOG(ERROR) << "task not supported.";
+            exit(1);
+        }
+
+        processor.SetProperty(FairMQProcessor::NumInputs, 1);
+        processor.SetProperty(FairMQProcessor::NumOutputs, 1);
+
+        processor.ChangeState(FairMQProcessor::INIT);
+
+        processor.SetProperty(FairMQProcessor::InputSocketType, options.inputSocketType);
+        processor.SetProperty(FairMQProcessor::InputRcvBufSize, options.inputBufSize);
+        processor.SetProperty(FairMQProcessor::InputMethod, options.inputMethod);
+        processor.SetProperty(FairMQProcessor::InputAddress, options.inputAddress);
+
+        processor.SetProperty(FairMQProcessor::OutputSocketType, options.outputSocketType);
+        processor.SetProperty(FairMQProcessor::OutputSndBufSize, options.outputBufSize);
+        processor.SetProperty(FairMQProcessor::OutputMethod, options.outputMethod);
+        processor.SetProperty(FairMQProcessor::OutputAddress, options.outputAddress);
+
+        processor.ChangeState(FairMQProcessor::SETOUTPUT);
+        processor.ChangeState(FairMQProcessor::SETINPUT);
+        processor.ChangeState(FairMQProcessor::BIND);
+        processor.ChangeState(FairMQProcessor::CONNECT);
+        processor.ChangeState(FairMQProcessor::RUN);
+
+        try
+        {
+            // wait until the running thread has finished processing.
+            boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
+            while (!processor.fRunningFinished)
+            {
+                processor.fRunningCondition.wait(lock);
+            }
+        }
+        catch( boost::thread_interrupted& interrupt )
+        {
+            boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
+            LOG(ERROR)<<boost::this_thread::get_id();
+            return 1;
+        }
+        
+        processor.ChangeState(FairMQProcessor::STOP);
+        processor.ChangeState(FairMQProcessor::END);
     }
-    catch (exception& e)
+    catch (std::exception& e)
     {
-        LOG(ERROR) << e.what();
+        LOG(ERROR)  << "Unhandled Exception reached the top of main: " 
+                    << e.what() << ", application will now exit";
         return 1;
     }
-
-    LOG(INFO) << "PID: " << getpid();
-
-#ifdef NANOMSG
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-    processor.SetTransport(transportFactory);
-
-    processor.SetProperty(FairMQProcessor::Id, options.id);
-    processor.SetProperty(FairMQProcessor::NumIoThreads, options.ioThreads);
-
-    if (strcmp(options.processorTask.c_str(), "FairTestDetectorMQRecoTask") == 0)
-    {
-        TProcessorTask* task = new TProcessorTask();
-        processor.SetTask(task);
-    }
-    else
-    {
-        LOG(ERROR) << "task not supported.";
-        exit(1);
-    }
-
-    processor.SetProperty(FairMQProcessor::NumInputs, 1);
-    processor.SetProperty(FairMQProcessor::NumOutputs, 1);
-
-    processor.ChangeState(FairMQProcessor::INIT);
-
-    processor.SetProperty(FairMQProcessor::InputSocketType, options.inputSocketType);
-    processor.SetProperty(FairMQProcessor::InputRcvBufSize, options.inputBufSize);
-    processor.SetProperty(FairMQProcessor::InputMethod, options.inputMethod);
-    processor.SetProperty(FairMQProcessor::InputAddress, options.inputAddress);
-
-    processor.SetProperty(FairMQProcessor::OutputSocketType, options.outputSocketType);
-    processor.SetProperty(FairMQProcessor::OutputSndBufSize, options.outputBufSize);
-    processor.SetProperty(FairMQProcessor::OutputMethod, options.outputMethod);
-    processor.SetProperty(FairMQProcessor::OutputAddress, options.outputAddress);
-
-    processor.ChangeState(FairMQProcessor::SETOUTPUT);
-    processor.ChangeState(FairMQProcessor::SETINPUT);
-    processor.ChangeState(FairMQProcessor::BIND);
-    processor.ChangeState(FairMQProcessor::CONNECT);
-    processor.ChangeState(FairMQProcessor::RUN);
-
-    // wait until the running thread has finished processing.
-    boost::unique_lock<boost::mutex> lock(processor.fRunningMutex);
-    while (!processor.fRunningFinished)
-    {
-        processor.fRunningCondition.wait(lock);
-    }
-
-    processor.ChangeState(FairMQProcessor::STOP);
-    processor.ChangeState(FairMQProcessor::END);
-
+    
     return 0;
 }
