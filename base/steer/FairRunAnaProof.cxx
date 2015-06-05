@@ -52,6 +52,7 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
   :FairRunAna(),
    fProof(NULL),
    fRunOnProofWorker(kFALSE),
+   fProofFileSource(0),
    fProofServerName(proofName),
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
@@ -99,14 +100,6 @@ void FairRunAnaProof::Init()
     // input chain. Do a check if the added files are of the same type
     // as the the input file. Same type means check if they contain the
     // same branch.
-    if ( fMixedInput) {
-      Bool_t openBKChain = fRootManager->OpenBackgroundChain();
-      if (!openBKChain) {
-        LOG(FATAL) << "Could not open background Chain!"
-		   << FairLogger::endl;
-      }
-      fRootManager->OpenSignalChain();
-    }
   }
   //Load Geometry from user file
 
@@ -130,15 +123,14 @@ void FairRunAnaProof::Init()
   if (fInFileIsOpen) {
     if ( fRunOnProofWorker ) {
       if (fLoadGeo && gGeoManager==0) {
-        fRootManager->GetInFile()->Get("FAIRGeom");
+        fProofFileSource->GetInTree()->GetCurrentFile()->Get("FAIRGeom");
       }
     } else {
 
       // Add all friend files defined by AddFriend to the correct chain
-//      fRootManager->AddFriendsToChain();
       if (fLoadGeo && gGeoManager==0) {
         // Check if the geometry in the first file of the Chain
-        fRootManager->GetInChain()->GetFile()->Get("FAIRGeom");
+        fProofFileSource->GetInTree()->GetCurrentFile()->Get("FAIRGeom");
       }
       //check that the geometry was loaded if not try all connected files!
       if (fLoadGeo && gGeoManager==0) {
@@ -158,10 +150,6 @@ void FairRunAnaProof::Init()
         gFile=currentfile;
       }
     }
-  } else if (fMixedInput) {
-
-
-
   } else { //  if(fInputFile )
     // NO input file but there is a geometry file
     if (fLoadGeo) {
@@ -208,18 +196,11 @@ void FairRunAnaProof::Init()
     fRootManager->ReadEvent(0);
 
     fEvtHeader = (FairEventHeader*)fRootManager->GetObject("EventHeader.");
-    fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
 
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
-      if ( fMCHeader == 0 ) {
-	LOG(WARNING) << "Neither EventHeader nor MCEventHeader not available! Setting fRunId to 0." << FairLogger::endl;
-      }
-      else {
-	fRunId = fMCHeader->GetRunID();
-      }
       fEvtHeader->SetRunId(fRunId);
-      fRootManager->SetEvtHeaderNew(kTRUE);
+      //      fRootManager->SetEvtHeaderNew(kTRUE);
     } else {
       fRunId = fEvtHeader->GetRunId();
     }
@@ -235,50 +216,9 @@ void FairRunAnaProof::Init()
     fRtdb->initContainers( fRunId );
     if (gGeoManager==0) {
 
-
-
     }
     //  fRootManager->SetBranchNameList(par->GetBranchNameList());
-
-  } else if (fMixedInput) {
-    LOG(INFO) << "Initializing for Mixed input" << FairLogger::endl;
-
-    //For mixed input we have to set containers to static becauser of the different run ids
-    //fRtdb->setContainersStatic(kTRUE);
-
-    fEvtHeader = (FairEventHeader*)fRootManager->GetObject("EventHeader.");
-    fMCHeader = (FairMCEventHeader*)fRootManager->GetObject("MCEventHeader.");
-
-    if (fEvtHeader ==0) {
-      fEvtHeader=GetEventHeader();
-      fRunId = fMCHeader->GetRunID();
-      fEvtHeader->SetRunId(fRunId);
-      fRootManager->SetEvtHeaderNew(kTRUE);
-    }
-
-
-    fRootManager->ReadBKEvent(0);
-
-    //Copy the Event Header Info to Output
-    fEvtHeader->Register();
-
-    fRunId = fEvtHeader->GetRunId();
-    // Init the containers in Tasks
-    fRtdb->initContainers(fRunId);
-
-    /*   if (gGeoManager==0) {
-         LOG(INFO) << "Read the Geometry from Parameter file" << FairLogger::endl;
-          FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
-
-       }
-       if (gGeoManager==0) {
-       LOG(FATAL) << "Could not Read the Geometry from Parameter file" << FairLogger::endl;
-       }
-
-     */
-    fTask->SetParTask();
-    fRtdb->initContainers( fRunId );
-
+    
   } else {
     LOG(INFO) << "Initializing without input file or Mixed input"
 	      << FairLogger::endl;
@@ -325,6 +265,17 @@ void FairRunAnaProof::Init()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRunAnaProof::SetSource(FairSource* tempSource) {
+  // FairRunAnaProof should accept only FairFileSource
+  if ( tempSource->GetName() != "FairFileSource" ) {
+    LOG(WARNING) << "FairRunAnaProof. Seems you are trying to set different source than FairFileSource" << FairLogger::endl;
+  }
+  fRootManager->SetSource(tempSource);
+  fProofFileSource = (FairFileSource*)tempSource;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 void FairRunAnaProof::Run(Int_t Ev_start, Int_t Ev_end)
 {
   RunOnProof(Ev_start,Ev_end);
@@ -364,7 +315,8 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 //  FairAnaSelector* proofSelector = new FairAnaSelector();
 
 
-  TChain* inChain = (TChain*)fRootManager->GetInChain();
+//  TChain* inChain = (TChain*)fRootManager->GetInChain();
+  TChain* inChain = (TChain*)fProofFileSource->GetInChain();
   TString par1File = "";
   TString par2File = "";
   if ( fRtdb->getFirstInput () ) {

@@ -25,6 +25,7 @@
 
 #include <stddef.h>                     // for NULL
 
+class FairFileSource;
 class FairRunAnaProof;
 
 class TFile;
@@ -40,7 +41,7 @@ class FairAnaSelector : public TSelector
     TTree*                fChain;   //!pointer to the analyzed TTree or TChain
     FairRunAnaProof*      fRunAna;
 
- FairAnaSelector(TTree* /*tree*/ =0) : fLogger(FairLogger::GetLogger()), fProofFile(0), fFile(0), fChain(0), fRunAna(NULL) { }
+ FairAnaSelector(TTree* /*tree*/ =0) : fLogger(FairLogger::GetLogger()), fProofFile(0), fFile(0), fChain(0), fRunAna(NULL), fProofSource(0) { }
     virtual ~FairAnaSelector() { }
     virtual Int_t   Version() const {
       return 1;
@@ -80,6 +81,8 @@ class FairAnaSelector : public TSelector
 
     FairAnaSelector(const FairAnaSelector&);
     FairAnaSelector operator=(const FairAnaSelector&);
+
+    FairFileSource* fProofSource;
 
     ClassDef(FairAnaSelector,0);
 };

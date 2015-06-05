@@ -21,14 +21,12 @@
 #include <list>                         // for list
 #include <map>                          // for map, multimap, etc
 #include <queue>                        // for queue
-#include "FairFileSource.h"
+#include "FairSource.h"
 class BinaryFunctor;
-class FairEventHeader;
 class FairFileHeader;
 class FairGeoNode;
 class FairLink;
 class FairLogger;
-class FairMCEventHeader;
 class FairTSBufferFunctional;
 class FairWriteoutBuffer;
 class TArrayI;
@@ -57,9 +55,6 @@ class FairRootManager : public TObject
     FairRootManager();
     /**dtor*/
     virtual ~FairRootManager();
-    void                AddSignalFile(TString name, UInt_t identifier );
-    /**Add input background file by name*/
-    void                AddBackgroundFile(TString name);
      Bool_t             AllDataProcessed();
     /** Add a branch name to the Branchlist and give it an id*/
     Int_t AddBranchToList(const char* name);
@@ -91,8 +86,6 @@ class FairRootManager : public TObject
     /**Return a TList of TObjString of branch names */
     TList*              GetBranchNameList() {return fBranchNameList;}
 
-    TChain*             GetBGChain() { return  fBackgroundChain;}
-    TChain*             GetSignalChainNo(UInt_t i);
     TTree*              GetOutTree() {return fOutTree;}
     TFile*              GetOutFile() {return  fOutFile;}
     /**  Get the Object (container) for the given branch name,
@@ -103,7 +96,6 @@ class FairRootManager : public TObject
          Return a pointer to the object (collection) saved in the fInChain branch named BrName*/
     TObject*            GetObject(const char* BrName);
     /** Return a pointer to the object (collection) saved in the fInTree branch named BrName*/
-    TObject*            GetObjectFromInTree(const char* BrName);
     Double_t            GetEventTime();
     /** Returns a clone of the data object the link is pointing to. The clone has to be deleted in the calling code! */
     TObject*      GetCloneOfLinkData(const FairLink link);
@@ -123,16 +115,16 @@ class FairRootManager : public TObject
     /** static access method */
     static FairRootManager* Instance();
 
-    Bool_t            OpenBackgroundChain();
-    Bool_t            OpenSignalChain();
     TFile*            OpenOutFile(const char* fname="cbmsim.root");
     TFile*            OpenOutFile(TFile* f);
     /**Read a single entry from background chain*/
-    void              ReadBKEvent(Int_t i);
-    void              ReadEvent(Int_t i);
+    Int_t             ReadEvent(Int_t i=0);
     /**Read the tree entry on one branch**/
     void              ReadBranchEvent(const char* BrName);
     /**Read all entries from input tree(s) with time stamp from current time to dt (time in ns)*/
+
+    Int_t             GetRunId();
+
     Bool_t            ReadNextEvent(Double_t dt);
     /**create a new branch in the output tree
      *@param name            Name of the branch to create
@@ -153,31 +145,11 @@ class FairRootManager : public TObject
     /**Use time stamps to read data and not tree entries*/
     void                RunWithTimeStamps() {fTimeStamps = kTRUE;}
 
-    /**Set the input signal file
-     *@param name :        signal file name
-     *@param identifier :  Unsigned integer which identify the signal file
-     */
-    void                  SetSignalFile(TString name, UInt_t identifier );
-    /**Set the input background file by name*/
-    void                  SetBackgroundFile(TString name);
-    /**Add signal file to input
-     *@param name :        signal file name
-     *@param identifier :  Unsigned integer which identify the signal file to which this signal should be added
-     */
-
-    /**Set the status of the EvtHeader
-     *@param Status:  True: The header was creatged in this session and has to be filled
-              FALSE: We use an existing header from previous data level
-     */
-    void                SetEvtHeaderNew(Bool_t Status) {fEvtHeaderIsNew = Status;}
-    Bool_t              IsEvtHeaderNew() {return fEvtHeaderIsNew;}
-
     /**Set the branch name list*/
     void                SetBranchNameList(TList* list);
     void                SetCompressData(Bool_t val) {fCompressData = val;}
-    /**Set the name of the input file*/
-    void                SetInputFile(TString name);
 
+    void                FillEventHeader(FairEventHeader* feh) { if ( fSource ) fSource->FillEventHeader(feh); } 
    
     /**Set the output tree pointer*/
     void                SetOutTree(TTree* fTree) { fOutTree=fTree;}
@@ -200,26 +172,6 @@ class FairRootManager : public TObject
     void                WriteFileHeader(FairFileHeader* f);
     /**Write the folder structure used to create the tree to the output file */
     void                WriteFolder() ;
-    /** Set the min and max limit for event time in ns */
-    void                SetEventTimeInterval(Double_t min, Double_t max);
-    /** Set the mean time for the event in ns */
-    void                SetEventMeanTime(Double_t mean);
-    /** Set the repetition time of the beam when it can interact (beamTime) and when no interaction happen (gapTime). The total repetition time is beamTime + gapTime */
-    void				SetBeamTime(Double_t beamTime, Double_t gapTime);
-    void                SetEventTime();
-    Double_t			GetDeltaEventTime();
-    void                SetFileHeader(FairFileHeader* f) {fFileHeader =f;}
-
-    /**Set the signal to background ratio in event units
-    *@param background :  Number of background Events for one signal
-    *@param Signalid :    Signal file Id, used when adding (setting) the signal file
-    */
-    void BGWindowWidthNo(UInt_t background, UInt_t Signalid);
-    /**Set the signal to background rate in time units
-    *@param background :  Time of background Events before one signal
-    *@param Signalid :    Signal file Id, used when adding (setting) the signal file
-    */
-    void BGWindowWidthTime(Double_t background, UInt_t Signalid);
 
     /**Check the maximum event number we can run to*/
     Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
@@ -239,38 +191,24 @@ class FairRootManager : public TObject
      * @param Status : if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
      * them in one big event and send it to the next step
      */
-    void SetMixAllInputs(Bool_t Status) {
-       fMixAllInputs=kTRUE;
-    }
+    /* void SetMixAllInputs(Bool_t Status) { */
+    /*    fMixAllInputs=kTRUE; */
+    /* } */
    
     
     /** These methods have been moved to the FairFileSource */
-    const TFile* GetRootFile(){return fRootFileSource->GetRootFile();}
-     /** Add a friend file (input) by name)*/
-    void   AddFriend(TString FileName){fRootFileSource->AddFriend(FileName);}
-    /**Add ROOT file to input, the file will be chained to already added files*/
-    void  AddFile(TString FileName){fRootFileSource->AddFile(FileName);}
-    void  PrintFriendList(){fRootFileSource->PrintFriendList();}
-    Bool_t  CompareBranchList(TFile* fileHandle, TString inputLevel){return fRootFileSource->CompareBranchList(fileHandle, inputLevel);}
-    void    CheckFriendChains(){fRootFileSource->CheckFriendChains();}
-    void CreateNewFriendChain(TString inputFile, TString inputLevel){fRootFileSource->CreateNewFriendChain(inputFile, inputLevel);}
-    
+    void   SetSource(FairSource* tempSource) { fSource = tempSource; }    
     Bool_t InitSource();
     
-    TTree*              GetInTree() {return fRootFileSource->GetInTree();}
-    TChain*             GetInChain() {return fRootFileSource->GetInChain();}
-    TFile*              GetInFile() {return  fRootFileSource->GetInFile();}
-    void                CloseInFile() {fRootFileSource->CloseInFile(); }
-    /**Set the input tree when running on PROOF worker*/
-    void                SetInTree (TTree*  tempTree)  {
-      if ( fRootFileSource ) {
-	fRootFileSource->SetInTree(tempTree);
-      }
-      else {
-	fRootFileSource = new FairFileSource(tempTree->GetCurrentFile());
-      }
-    }
-    
+    void                SetListOfFolders(TObjArray* ta){ fListFolder=ta; }
+    TChain*             GetInChain ()                  { return fSourceChain;}
+    TChain*             GetSignalChainNo(UInt_t i)     { return fSignalChainList[i]; }
+    TTree*              GetInTree  ()                  { if ( fSourceChain ) return fSourceChain->GetTree(); return 0; }
+    const TFile*        GetRootFile()                  { if ( fSourceChain ) return fSourceChain->GetFile(); return 0; }
+    TFile*              GetInFile  ()                  { if ( fSourceChain ) return fSourceChain->GetFile(); return 0; }
+    void                SetInChain (TChain* tempChain, Int_t ident=-1);
+    /* /\**Set the input tree when running on PROOF worker*\/ */
+
   private:
     /**private methods*/
     FairRootManager(const FairRootManager&);
@@ -278,7 +216,6 @@ class FairRootManager : public TObject
     /**  Set the branch address for a given branch name and return
         a TObject pointer, the user have to cast this pointer to the right type.*/
     TObject*            ActivateBranch(const char* BrName);
-    TObject*            ActivateBranchInInTree(const char* BrName);
     void                AddFriends( );
     /**Add a branch to memory, it will not be written to the output files*/
     void                AddMemoryBranch(const char*, TObject* );
@@ -296,8 +233,6 @@ class FairRootManager : public TObject
     TObject*            GetMemoryBranch( const char* );
  //   void                GetRunIdInfo(TString fileName, TString inputLevel);
      void                SaveAllContainers();
-    /**Read a single entry*/
-    void                ReadMixedEvent(Int_t i);
 
     FairWriteoutBuffer* GetWriteoutBuffer(TString branchName);
 
@@ -350,73 +285,21 @@ class FairRootManager : public TObject
     std::map < TString , Int_t >        fBrPerMap; //!
     /**Iterator for the fBrPerMap  Map*/
     std::map < TString, Int_t>::iterator     fBrPerMapIter;
-    /** List of all files added with AddFriend */
-    std::list<TString>                      fFriendFileList; //!
-    /** Mix all inputs, i.e: read one entry from each input and add them together*/
-    Bool_t                              fMixAllInputs;
-    /**True if signal and background mixing is used*/
-    Bool_t                              fMixedInput;//!
-    /**Actual identifier of the added signals, this is used to identify how many signals are added*/
-    UInt_t                              fActualSignalIdentifier; //!
-    /** Total number of signals added (Types and not files!)*/
-    UInt_t                              fNoOfSignals; //!
-    /** list of chains which has to be created for the different signals*/
-    std::list<TString>*                  fSignalChainList; //!
-    /**Chain containing the background*/
-    TChain*                              fBackgroundChain; //!
-    TFile*                               fBackgroundFile; //!
-    std::map<UInt_t, FairFileSource*>    fSignalTypeList;//!
-
-    /** min time for one event (ns) */
-    Double_t                                fEventTimeMin;  //!
-    /** max time for one Event (ns) */
-    Double_t                                fEventTimeMax;  //!
-    /** Time of event since th start (ns) */
-    Double_t                                fEventTime;     //!
-    /** Time of particles in beam (ns) */
-    Double_t								fBeamTime; //!
-    /** Time without particles in beam (gap) (ns) */
-    Double_t								fGapTime; //!
-    /** EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime) */
-    Double_t                                fEventMeanTime; //!
-    /** used to generate random numbers for event time; */
-    TF1*                                    fTimeProb;      //!
-    /** MC Event header */
-    FairMCEventHeader*                      fMCHeader; //!
-
-    /**Event Header*/
-    FairEventHeader*                        fEvtHeader; //!
-
-    /**File Header*/
-    FairFileHeader*                          fFileHeader; //!
-
-    /**holds the SB ratio by number*/
-    std::map<UInt_t, Double_t>              fSignalBGN;//!
-    /** This is true if the event time used, came from simulation*/
-    Bool_t                                  fEventTimeInMCHeader; //!
-    /**True for background window in entry units*/
-    Bool_t                                  fSBRatiobyN;  //!
-    /**True for background window in time units (ns) */
-    Bool_t                                  fSBRatiobyT;  //!
+ 
     /** for internal use, to return the same event time for the same entry*/
     UInt_t                                  fCurrentEntryNo; //!
     /** for internal use, to return the same event time for the same entry*/
     UInt_t                                  fTimeforEntryNo; //!
-    /**No of entries in BG Chain*/
-    UInt_t                                  fNoOfBGEntries; //!
-    /**Hold the current entry for each input chain*/
-    std::map<UInt_t, UInt_t>                fCurrentEntry; //!
-    /**This flag is true if the event header was created in this session
-    * otherwise it is false which means the header was created in a previous data
-    * level and used here (e.g. in the digi)
-    */
-    Bool_t      fEvtHeaderIsNew; //!
     Bool_t  fFillLastData; //!
     Int_t fEntryNr; //!
-    FairFileSource                      *fRootFileSource;
-    FairFileSource                      *fRootFileSourceSignal;
-    FairFileSource                      *fRootFileSourceBKG;
 
+    TObjArray                           *fListFolder; //!
+
+    FairSource                          *fSource;
+
+    TChain                              *fSourceChain;
+    std::map<UInt_t, TChain*>            fSignalChainList;//!
+    
     Bool_t fUseFairLinks; //!
 
 

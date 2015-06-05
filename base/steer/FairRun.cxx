@@ -56,8 +56,7 @@ FairRun::FairRun(Bool_t isMaster)
   fRunInstance=this;
 
   if ( isMaster ) {
-    fRootManager = new FairRootManager(),
-    fRootManager->SetFileHeader(fFileHeader);
+    fRootManager = new FairRootManager();
   }
   new FairLinkManager();
 }

@@ -6,37 +6,40 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //
-//  FairFileSource.h
+//  FairMixedSource.h
 //  FAIRROOT
 //
 //  Created by Mohammad Al-Turany on 08/02/14.
 //
 //
 
-#ifndef __FAIRROOT__FairFileSource__
-#define __FAIRROOT__FairFileSource__
+#ifndef __FAIRROOT__FairMixedSource__
+#define __FAIRROOT__FairMixedSource__
 
 #include "FairSource.h"
 #include <list>    
 #include "TChain.h"
 #include "TFile.h"
-#include "TFolder.h"
 #include "TF1.h"
+
 class FairEventHeader;
 class FairFileHeader;
 class FairMCEventHeader;
 class TString;
 class FairLogger;
 class FairRuntimeDb;
+class TFolder;
 
-class FairFileSource : public FairSource
+class FairRootManager;
+
+class FairMixedSource : public FairSource
 {
 public:
-    FairFileSource(TFile *f, const char* Title="InputRootFile", UInt_t identifier=0);
-    FairFileSource(const TString* RootFileName, const char* Title="InputRootFile", UInt_t identifier=0);
-    FairFileSource(const TString RootFileName, const char* Title="InputRootFile", UInt_t identifier=0);
-  //  FairFileSource(const FairFileSource& file);
-    virtual ~FairFileSource();
+    FairMixedSource(TFile *f, const char* Title="InputRootFile", UInt_t identifier=0);
+    FairMixedSource(const TString* RootFileName, const char* Title="InputRootFile", UInt_t identifier=0);
+    FairMixedSource(const TString RootFileName, const Int_t signalId, const char* Title="InputRootFile", UInt_t identifier=0);
+  //  FairMixedSource(const FairMixedSource& file);
+    virtual ~FairMixedSource();
     
     Bool_t              Init();
     Int_t               ReadEvent(UInt_t i=0);
@@ -47,48 +50,63 @@ public:
     virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
     /**Read the tree entry on one branch**/
     virtual void   ReadBranchEvent(const char* BrName);
-
-    virtual void FillEventHeader(FairEventHeader* feh);
+    void                FillEventHeader(FairEventHeader* feh);
 
     const TFile*        GetRootFile(){return fRootFile;}
     /** Add a friend file (input) by name)*/
-    void                AddFriend(TString FileName);
-    /**Add ROOT file to input, the file will be chained to already added files*/
-    void                AddFile(TString FileName);
-    void                AddFriendsToChain();
-    void                PrintFriendList();
-    Bool_t              CompareBranchList(TFile* fileHandle, TString inputLevel);
-    void                CheckFriendChains();
-    void                CreateNewFriendChain(TString inputFile, TString inputLevel);
-    TTree*              GetInTree() {return fInChain->GetTree();}
-    TChain*             GetInChain() {return fInChain;}
-    TFile*              GetInFile() {return  fRootFile;}
-    void                CloseInFile() { if(fRootFile) { fRootFile->Close(); }}
-    /**Set the input tree when running on PROOF worker*/
-    void                SetInTree (TTree*  tempTree)  {fInTree = NULL; fInTree  = tempTree;}
-    TObjArray*          GetListOfFolders(){return fListFolder;}
-    TFolder*            GetBranchDescriptionFolder(){return fCbmroot;}
-    UInt_t              GetEntries(){return fNoOfEntries; }
 
-    //    TList*              GetBranchNameList() {return fBranchNameList;}
+    virtual Bool_t   ActivateObject(TObject** obj, const char* BrName);
 
-    void                SetInputFile(TString name);
+    void             ReadBKEvent(UInt_t i=0);
 
-    /** Set the repetition time of the beam when it can interact (beamTime) and when no interaction happen (gapTime). The total repetition time is beamTime + gapTime */
-    void                SetBeamTime(Double_t beamTime, Double_t gapTime);
+    /**Set the input signal file
+     *@param name :        signal file name
+     *@param identifier :  Unsigned integer which identify the signal file
+     */
+    void                  SetSignalFile(TString name, UInt_t identifier );
+    /**Set the input background file by name*/
+    void                  SetBackgroundFile(TString name);
+    /**Add signal file to input
+     *@param name :        signal file name
+     *@param identifier :  Unsigned integer which identify the signal file to which this signal should be added
+     */
+    void                  AddSignalFile(TString name, UInt_t identifier );
+    void                  AddBackgroundFile(TString name);
+
+    TChain*             GetBGChain() { return  fBackgroundChain;}
+    TChain*             GetSignalChainNo(UInt_t i);
+
+    Bool_t            OpenBackgroundChain();
+    Bool_t            OpenSignalChain();
+
+    /**Set the signal to background ratio in event units
+    *@param background :  Number of background Events for one signal
+    *@param Signalid :    Signal file Id, used when adding (setting) the signal file
+    */
+    void BGWindowWidthNo(UInt_t background, UInt_t Signalid);
+    /**Set the signal to background rate in time units
+    *@param background :  Time of background Events before one signal
+    *@param Signalid :    Signal file Id, used when adding (setting) the signal file
+    */
+    void BGWindowWidthTime(Double_t background, UInt_t Signalid);
+
     /** Set the min and max limit for event time in ns */
     void                SetEventTimeInterval(Double_t min, Double_t max);
     /** Set the mean time for the event in ns */
     void                SetEventMeanTime(Double_t mean);
+    /** Set the repetition time of the beam when it can interact (beamTime) and when no interaction happen (gapTime). The total repetition time is beamTime + gapTime */
+    void                SetBeamTime(Double_t beamTime, Double_t gapTime);
     void                SetEventTime();
     Double_t		GetDeltaEventTime();
     void                SetFileHeader(FairFileHeader* f) {fFileHeader =f;}
     Double_t            GetEventTime();
 
-    //    virtual Bool_t   SetObject(TObject* obj, const char* ObjType);
-    //    virtual void     SetObjectName(const char* ObjName, const char* ObjType);
-
-    virtual Bool_t   ActivateObject(TObject** obj, const char* BrName);
+    /**Add ROOT file to input, the file will be chained to already added files*/
+    Bool_t              CompareBranchList(TFile* fileHandle, TString inputLevel);
+    /**Set the input tree when running on PROOF worker*/
+    TObjArray*          GetListOfFolders(){return fListFolder;}
+    TFolder*            GetBranchDescriptionFolder(){return fCbmroot;}
+    UInt_t              GetEntries(){return fNoOfEntries; }
 
     /**Set the status of the EvtHeader
      *@param Status:  True: The header was creatged in this session and has to be filled
@@ -98,12 +116,13 @@ public:
     Bool_t              IsEvtHeaderNew() {return fEvtHeaderIsNew;}
 
 private:
+    /**IO manager */
+    FairRootManager*         fRootManager;
+
     /** Title of input source, could be input, background or signal*/
     TString                           fInputTitle;
     /**ROOT file*/
     TFile*                            fRootFile;
-    /** Current Entry number */
-    Int_t                             fCurrentEntryNr;  //!
     /** List of all files added with AddFriend */
     std::list<TString>                fFriendFileList; //!
     std::list<TString>                fInputChainList;//!
@@ -111,10 +130,6 @@ private:
     std::map<TString, std::list<TString>* > fCheckInputBranches; //!
     std::list<TString>                      fInputLevel; //!
     std::map<TString, std::multimap<TString, TArrayI> > fRunIdInfoAll; //!
-    /**Input Chain */
-    TChain*                             fInChain;
-    /**Input Tree */
-    TTree*                              fInTree;
     /** list of folders from all input (and friends) files*/
     TObjArray                           *fListFolder; //!
     /** RuntimeDb*/
@@ -129,15 +144,15 @@ private:
     UInt_t                              fNoOfEntries;
     /**Initialization flag, true if initialized*/
     Bool_t                              IsInitialized;
-    
-    FairFileSource(const FairFileSource&);
-    FairFileSource operator=(const FairFileSource&);
 
     /** MC Event header */
     FairMCEventHeader*                      fMCHeader; //!
 
     /**Event Header*/
     FairEventHeader*                        fEvtHeader; //!
+
+    /**Output Event Header*/
+    FairEventHeader*                        fOutHeader; //!
 
     /**File Header*/
     FairFileHeader*                        fFileHeader; //!
@@ -154,6 +169,10 @@ private:
     UInt_t                                  fCurrentEntryNo; //!
     /** for internal use, to return the same event time for the same entry*/
     UInt_t                                  fTimeforEntryNo; //!
+    /* /\**No of entries in BG Chain*\/ */
+    UInt_t                                  fNoOfBGEntries; //!
+    /* /\**Hold the current entry for each input chain*\/ */
+    std::map<UInt_t, UInt_t>                fCurrentEntry; //! 
 
     /** min time for one event (ns) */
     Double_t                                fEventTimeMin;  //!
@@ -170,8 +189,26 @@ private:
     /** used to generate random numbers for event time; */
     TF1*                                    fTimeProb;      //!
 
-    ClassDef(FairFileSource, 2)
+    /**holds the SB ratio by number*/
+    std::map<UInt_t, Double_t>              fSignalBGN;//! 
+    /* /\**True for background window in entry units*\/ */
+    Bool_t                                  fSBRatiobyN;  //! 
+    /* /\**True for background window in time units (ns) *\/ */
+    Bool_t                                  fSBRatiobyT;  //!
+
+    /**Actual identifier of the added signals, this is used to identify how many signals are added*/
+    UInt_t                              fActualSignalIdentifier; //!
+    /** Total number of signals added (Types and not files!)*/
+    UInt_t                              fNoOfSignals; //!
+    /** list of chains which has to be created for the different signals*/
+    std::list<TString>*                  fSignalChainList; //!
+    /**Chain containing the background*/
+    TChain*                              fBackgroundChain; //!
+    std::map<UInt_t, TChain*>            fSignalTypeList;//!
+    
+public:
+    ClassDef(FairMixedSource, 0)
 };
 
 
-#endif /* defined(__FAIRROOT__FairFileSource__) */
+#endif /* defined(__FAIRROOT__FairMixedSource__) */
