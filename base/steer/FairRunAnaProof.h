@@ -32,6 +32,9 @@ class FairRunAnaProof : public FairRunAna
     /**initialize the run manager*/
     void        Init();
 
+    /** Init containers executed on PROOF, which is part of Init when running locally*/
+    void        InitContainers();
+
     /**Run from event number NStart to event number NStop */
     void        Run(Int_t NStart ,Int_t NStop);
     /**Run for one event, used on PROOF nodes*/

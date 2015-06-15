@@ -289,35 +289,6 @@ void FairRunAna::Init()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRunAna::InitContainers()
-{
-  fRtdb= GetRuntimeDb();
-  FairBaseParSet* par=dynamic_cast<FairBaseParSet*>
-                      (fRtdb->getContainer("FairBaseParSet"));
-
-  if (par && fInFileIsOpen) {
-    fRootManager->ReadEvent(0);
-
-    fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
-
-    fRunId = fEvtHeader->GetRunId();
-
-    //Copy the Event Header Info to Output
-    fEvtHeader->Register();
-
-    // Init the containers in Tasks
-    fRtdb->initContainers(fRunId);
-    fTask->ReInitTask();
-    //    fTask->SetParTask();
-    fRtdb->initContainers( fRunId );
-    if (gGeoManager==0) {
-      //   par->GetGeometry();
-    }
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
 void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 {
   gFRAIsInterrupted = kFALSE;

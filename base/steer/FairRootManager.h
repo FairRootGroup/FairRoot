@@ -79,6 +79,9 @@ class FairRootManager : public TObject
     TClonesArray*       GetEmptyTClonesArray(TString branchName);
     TClonesArray*       GetTClonesArray(TString branchName);
     TClonesArray*       GetDataContainer(TString branchName);
+
+    void                UpdateBranches();
+
     /**Return branch name by Id*/
     TString             GetBranchName(Int_t id);
     /**Return Id of a branch named */
