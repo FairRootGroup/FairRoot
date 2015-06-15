@@ -143,9 +143,6 @@ class FairRunAna : public FairRun
      *  is not checked anymore after initialization
      */
 
-    /** Init containers executed on PROOF, which is part of Init when running locally*/
-    void        InitContainers();
-
     void        SetContainerStatic(Bool_t tempBool=kTRUE);
     Bool_t      GetContainerStatic() { return fStatic; };
     void        RunWithTimeStamps();

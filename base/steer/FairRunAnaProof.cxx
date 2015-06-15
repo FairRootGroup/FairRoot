@@ -265,6 +265,37 @@ void FairRunAnaProof::Init()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRunAnaProof::InitContainers()
+{
+  fRtdb= GetRuntimeDb();
+  FairBaseParSet* par=dynamic_cast<FairBaseParSet*>
+                      (fRtdb->getContainer("FairBaseParSet"));
+
+  if (par && fInFileIsOpen) {
+    fRootManager->ReadEvent(0);
+
+    fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
+
+    fRootManager->FillEventHeader(fEvtHeader);
+
+    fRunId = fEvtHeader->GetRunId();
+
+    //Copy the Event Header Info to Output
+    fEvtHeader->Register();
+
+    // Init the containers in Tasks
+    fRtdb->initContainers(fRunId);
+    fTask->ReInitTask();
+    //    fTask->SetParTask();
+    fRtdb->initContainers( fRunId );
+    if (gGeoManager==0) {
+      //   par->GetGeometry();
+    }
+  }
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 void FairRunAnaProof::SetSource(FairSource* tempSource) {
   // FairRunAnaProof should accept only FairFileSource
   if ( tempSource->GetName() != "FairFileSource" ) {
@@ -291,6 +322,9 @@ void FairRunAnaProof::RunOneEvent(Long64_t entry)
   } else {
     UInt_t tmpId =0;
     fRootManager->ReadEvent(entry);
+
+    fRootManager->FillEventHeader(fEvtHeader);
+
     tmpId = fEvtHeader->GetRunId();
     if ( tmpId != fRunId ) {
       fRunId = tmpId;

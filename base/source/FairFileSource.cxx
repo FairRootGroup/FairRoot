@@ -302,6 +302,17 @@ Bool_t FairFileSource::Init()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairFileSource::SetInTree(TTree*  tempTree)  {
+  fInTree = NULL; 
+  fInTree  = tempTree; 
+  fRootFile=(TFile*)tempTree->GetCurrentFile();
+  fInChain->Reset();
+  IsInitialized=kFALSE;
+  Init();
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 Int_t FairFileSource::ReadEvent(UInt_t i)
 {
     fCurrentEntryNo = i;
