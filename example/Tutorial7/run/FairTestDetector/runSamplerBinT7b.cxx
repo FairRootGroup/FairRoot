@@ -178,6 +178,7 @@ int main(int argc, char** argv)
         sampler.SetProperty(TSampler::Branch, options.branchname);
         sampler.SetProperty(TSampler::EventRate, options.eventRate);
         sampler.SetProperty(TSampler::NumIoThreads, options.ioThreads);
+
         sampler.SetFileProperties(options.filename, options.treename, options.branchname);
 
         sampler.ChangeState(TSampler::INIT_DEVICE);
