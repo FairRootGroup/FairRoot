@@ -999,6 +999,21 @@ Double_t FairRootManager::GetEventTime() {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRootManager::UpdateBranches() { 
+  for ( Int_t iobj = 0 ; iobj <= fNObj ; iobj++ ) {
+    if ( fObj2[iobj] ) {
+      LOG(INFO) << "FairRootManager::UpdateBranches \"" << fObj2[iobj]->GetName()
+		<< "\" (\"" << fObj2[iobj]->GetTitle() << "\")" << FairLogger::endl;
+      TString tempBranchName = fObj2[iobj]->GetName();
+      fSource->ActivateObject(&fObj2[fNObj],tempBranchName.Data());
+    }
+  }
+
+}
+//_____________________________________________________________________________
+
+
+//_____________________________________________________________________________
 /** Private functions*/
 //_____________________________________________________________________________
 

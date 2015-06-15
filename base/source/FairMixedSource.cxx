@@ -701,7 +701,7 @@ void  FairMixedSource::SetEventMeanTime(Double_t mean)
   form+=")*exp(-x/";
   form+=mean;
   form+=")";
-  fTimeProb= new TF1("TimeProb.", form.Data(), 0., mean*10);
+  fTimeProb= new TF1("TimeProb", form.Data(), 0., mean*10);
   fTimeProb->GetRandom();
   fEventTimeInMCHeader=kFALSE;
 }

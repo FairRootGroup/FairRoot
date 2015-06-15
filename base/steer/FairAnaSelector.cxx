@@ -63,6 +63,7 @@ void FairAnaSelector::Init(TTree* tree)
     if ( !fRunAna->GetContainerStatic() ) {
       fRunAna->InitContainers();
     }
+    FairRootManager::Instance()->UpdateBranches();
   } else {
     LOG(INFO) << "FairAnaSelector::Init(): Have to create fRunAna." << FairLogger::endl;
 
