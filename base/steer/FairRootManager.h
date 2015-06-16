@@ -271,6 +271,9 @@ class FairRootManager : public TObject
       }
     }
     
+    void SetFinishRun(Bool_t val = kTRUE){ fFinishRun = val;}
+    Bool_t FinishRun() {return fFinishRun;}
+
   private:
     /**private methods*/
     FairRootManager(const FairRootManager&);
@@ -418,6 +421,7 @@ class FairRootManager : public TObject
     FairFileSource                      *fRootFileSourceBKG;
 
     Bool_t fUseFairLinks; //!
+    Bool_t fFinishRun; //!
 
 
     ClassDef(FairRootManager,9) // Root IO manager

@@ -64,6 +64,8 @@ class FairRunAna : public FairRun
     void RunMQ(Long64_t entry);
     /** Run on a list of lmd files*/
     void        RunOnLmdFiles(UInt_t NStart=0, UInt_t NStop=0);
+
+    void RunOnTBData();
     /** finish tasks, write output*/
     void        TerminateRun();
     /**Set the input signal file
