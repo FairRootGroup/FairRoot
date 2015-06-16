@@ -16,43 +16,43 @@
 
 using namespace std;
 
-FairMQSamplerTask::FairMQSamplerTask() :
-  FairTask("Abstract base task used for loading a branch from a root file into memory"),
-  fInput(NULL),
-  fBranch(),
-  fOutput(NULL),
-  fTransportFactory(NULL),
-  fEventIndex(0),
-  SendPart(),
-  fEvtHeader(NULL)
+FairMQSamplerTask::FairMQSamplerTask()
+    : FairTask("Abstract base task used for loading a branch from a root file into memory")
+    , fInput(NULL)
+    , fBranch()
+    , fOutput(NULL)
+    , fTransportFactory(NULL)
+    , fEventIndex(0)
+    , SendPart()
+    , fEvtHeader(NULL)
 {
 }
 
-FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose) :
-  FairTask(name, iVerbose),
-  fInput(NULL),
-  fBranch(),
-  fOutput(NULL),
-  fTransportFactory(NULL),
-  fEventIndex(0),
-  SendPart(),
-  fEvtHeader(NULL)
+FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose)
+    : FairTask(name, iVerbose)
+    , fInput(NULL)
+    , fBranch()
+    , fOutput(NULL)
+    , fTransportFactory(NULL)
+    , fEventIndex(0)
+    , SendPart()
+    , fEvtHeader(NULL)
 {
 }
 
 FairMQSamplerTask::~FairMQSamplerTask()
 {
-  delete fInput;
-  // fOutput->CloseMessage();
+    delete fInput;
+    // fOutput->CloseMessage();
 }
 
 InitStatus FairMQSamplerTask::Init()
 {
-  FairRootManager* ioman = FairRootManager::Instance();
-  fEvtHeader = (FairEventHeader *)ioman->GetObject("EventHeader.");
-  fInput = (TClonesArray*) ioman->GetObject(fBranch.c_str());
+    FairRootManager* ioman = FairRootManager::Instance();
+    fEvtHeader = (FairEventHeader *)ioman->GetObject("EventHeader.");
+    fInput = (TClonesArray*) ioman->GetObject(fBranch.c_str());
 
-  return kSUCCESS;
+    return kSUCCESS;
 }
 
 void FairMQSamplerTask::Exec(Option_t *opt)
@@ -62,25 +62,25 @@ void FairMQSamplerTask::Exec(Option_t *opt)
 // initialize a callback to the Sampler for sending multipart messages.
 void FairMQSamplerTask::SetSendPart(boost::function<void()> callback)
 {
-  SendPart = callback;
+    SendPart = callback;
 }
 
 void FairMQSamplerTask::SetBranch(string branch)
 {
-  fBranch = branch;
+    fBranch = branch;
 }
 
 void FairMQSamplerTask::SetEventIndex(Long64_t EventIndex)
 {
-  fEventIndex = EventIndex;
+    fEventIndex = EventIndex;
 }
 
 FairMQMessage* FairMQSamplerTask::GetOutput()
 {
-  return fOutput;
+    return fOutput;
 }
 
 void FairMQSamplerTask::SetTransport(FairMQTransportFactory* factory)
 {
-  fTransportFactory = factory;
+    fTransportFactory = factory;
 }

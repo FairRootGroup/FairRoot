@@ -6,6 +6,8 @@ else
     buffSize="1000" # zeromq high-water mark is in messages
 fi
 
+mcEngine="TGeant3"
+
 dataFormat="Bin"
 if [ "$1" = "bin" ]; then
     echo "attempting to use pure binary data format"
@@ -26,7 +28,7 @@ fi
 
 SAMPLER="tuto7FairTestDetectorSampler$dataFormat"
 SAMPLER+=" --id 101"
-SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi.root"
+SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --tree cbmsim --branch FairTestDetectorDigi"
 SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5565"
 xterm -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &

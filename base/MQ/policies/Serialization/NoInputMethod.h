@@ -12,17 +12,17 @@
 
 class NoInputMethod 
 {
-public:
-    
-    NoInputMethod(){;}
-    ~NoInputMethod(){;}
-    
+  public:
+    NoInputMethod()
+    {}
+
+    ~NoInputMethod()
+    {}
+
     FairMQMessage* message(FairMQMessage* msg)
     {
         return msg;
     }
-    
 };
 
-#endif	/* NOINPUTMETHOD_H */
-
+#endif /* NOINPUTMETHOD_H */

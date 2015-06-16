@@ -30,7 +30,7 @@ class FairMQProcessor : public FairMQDevice
     bool ReceivePart();
 
   protected:
-    virtual void Init();
+    virtual void InitTask();
     virtual void Run();
 
   private:

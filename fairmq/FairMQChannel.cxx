@@ -22,48 +22,39 @@ using namespace std;
 FairMQChannel::FairMQChannel()
     : fType("unspecified")
     , fMethod("unspecified")
-    , fProtocol("unspecified")
     , fAddress("unspecified")
-    , fPort("unspecified")
     , fSndBufSize(1000)
     , fRcvBufSize(1000)
     , fRateLogging(1)
     , fSocket()
-    , fIsValid(false)
     , fChannelName("")
 {
 }
 
-FairMQChannel::FairMQChannel(string type, string method, string protocol, string address, string port)
+FairMQChannel::FairMQChannel(const string& type, const string& method, const string& address)
     : fType(type)
     , fMethod(method)
-    , fProtocol(protocol)
     , fAddress(address)
-    , fPort(port)
     , fSndBufSize(1000)
     , fRcvBufSize(1000)
     , fRateLogging(1)
     , fSocket()
-    , fIsValid(false)
     , fChannelName("")
 {
 }
 
 bool FairMQChannel::ValidateChannel()
 {
-    LOG(DEBUG) << "Validating channel " << fChannelName << "... ";
-    if (fIsValid)
-    {
-        LOG(DEBUG) << "Channel is already valid";
-        return true;
-    }
+    stringstream ss;
+    ss << "Validating channel " << fChannelName << "... ";
 
     const string socketTypeNames[] = { "sub", "pub", "pull", "push", "req", "rep", "xsub", "xpub", "dealer", "router", "pair" };
     const set<string> socketTypes(socketTypeNames, socketTypeNames + sizeof(socketTypeNames) / sizeof(string));
     if (socketTypes.find(fType) == socketTypes.end())
     {
+        ss << "INVALID";
+        LOG(DEBUG) << ss.str();
         LOG(DEBUG) << "Invalid channel type: " << fType;
-        fIsValid = false;
         return false;
     }
 
@@ -71,50 +62,38 @@ bool FairMQChannel::ValidateChannel()
     const set<string> socketMethods(socketMethodNames, socketMethodNames + sizeof(socketMethodNames) / sizeof(string));
     if (socketMethods.find(fMethod) == socketMethods.end())
     {
+        ss << "INVALID";
+        LOG(DEBUG) << ss.str();
         LOG(DEBUG) << "Invalid channel method: " << fMethod;
-        fIsValid = false;
-        return false;
-    }
-
-    const string socketProtocolNames[] = { "tcp", "ipc", "inproc" };
-    const set<string> socketProtocols(socketProtocolNames, socketProtocolNames + sizeof(socketProtocolNames) / sizeof(string));
-    if (socketProtocols.find(fProtocol) == socketProtocols.end())
-    {
-        LOG(DEBUG) << "Invalid channel protocol: " << fProtocol;
-        fIsValid = false;
         return false;
     }
 
     if (fAddress == "unspecified" && fAddress == "")
     {
+        ss << "INVALID";
+        LOG(DEBUG) << ss.str();
         LOG(DEBUG) << "invalid channel address: " << fAddress;
-        fIsValid = false;
-        return false;
-    }
-
-    if (fPort == "unspecified" && fPort == "")
-    {
-        LOG(DEBUG) << "invalid channel port: " << fPort;
-        fIsValid = false;
         return false;
     }
 
     if (fSndBufSize < 0)
     {
+        ss << "INVALID";
+        LOG(DEBUG) << ss.str();
         LOG(DEBUG) << "invalid channel send buffer size: " << fSndBufSize;
-        fIsValid = false;
         return false;
     }
 
     if (fRcvBufSize < 0)
     {
+        ss << "INVALID";
+        LOG(DEBUG) << ss.str();
         LOG(DEBUG) << "invalid channel receive buffer size: " << fRcvBufSize;
-        fIsValid = false;
         return false;
     }
 
-    LOG(DEBUG) << "Channel is valid";
-    fIsValid = true;
+    ss << "VALID";
+    LOG(DEBUG) << ss.str();
     return true;
 }
 

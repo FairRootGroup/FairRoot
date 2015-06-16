@@ -55,12 +55,11 @@ TSink filesink;
 
 static void s_signal_handler(int signal)
 {
-    cout << endl << "Caught signal " << signal << endl;
+    LOG(INFO) << "Caught signal " << signal;
 
-    filesink.ChangeState(TSink::STOP);
     filesink.ChangeState(TSink::END);
 
-    cout << "Shutdown complete. Bye!" << endl;
+    LOG(INFO) << "Shutdown complete.";
     exit(1);
 }
 
@@ -195,45 +194,36 @@ int main(int argc, char** argv)
 
         filesink.SetTransport(transportFactory);
 
+        FairMQChannel channel(options.inputSocketType, options.inputMethod, options.inputAddress);
+        channel.fSndBufSize = options.inputBufSize;
+        channel.fRcvBufSize = options.inputBufSize;
+        channel.fRateLogging = 1;
+
+        filesink.fChannels["data-in"].push_back(channel);
+
         filesink.SetProperty(TSink::Id, options.id);
         filesink.SetProperty(TSink::NumIoThreads, options.ioThreads);
 
-        filesink.SetProperty(TSink::NumInputs, 1);
-        filesink.SetProperty(TSink::NumOutputs, 0);
+        filesink.InitInputContainer(options.classname.c_str());
+        filesink.SetFileProperties(options.filename, options.treename, options.branchname, options.classname, options.fileoption, options.useTClonesArray);
 
-        filesink.InitInputContainer( options.classname.c_str() );
-        filesink.SetFileProperties(options.filename,options.treename,options.branchname,options.classname,
-                                                    options.fileoption,options.useTClonesArray);
+        filesink.ChangeState(TSink::INIT_DEVICE);
+        filesink.WaitForEndOfState(TSink::INIT_DEVICE);
 
-        filesink.ChangeState(TSink::INIT);
-        filesink.SetProperty(TSink::InputSocketType, options.inputSocketType);
-        filesink.SetProperty(TSink::InputRcvBufSize, options.inputBufSize);
-        filesink.SetProperty(TSink::InputMethod, options.inputMethod);
-        filesink.SetProperty(TSink::InputAddress, options.inputAddress);
+        filesink.ChangeState(TSink::INIT_TASK);
+        filesink.WaitForEndOfState(TSink::INIT_TASK);
 
-        filesink.ChangeState(TSink::SETOUTPUT);
-        filesink.ChangeState(TSink::SETINPUT);
-        filesink.ChangeState(TSink::BIND);
-        filesink.ChangeState(TSink::CONNECT);
         filesink.ChangeState(TSink::RUN);
+        filesink.WaitForEndOfState(TSink::RUN);
 
-        try
-        {
-            // wait until the running thread has finished processing.
-            boost::unique_lock<boost::mutex> lock(filesink.fRunningMutex);
-            while (!filesink.fRunningFinished)
-            {
-                filesink.fRunningCondition.wait(lock);
-            }
-        }
-        catch( boost::thread_interrupted& interrupt )
-        {
-            boost::unique_lock<boost::mutex> lock(filesink.fRunningMutex);
-            LOG(ERROR)<<boost::this_thread::get_id();
-            return 1;
-        }
-        
         filesink.ChangeState(TSink::STOP);
+
+        filesink.ChangeState(TSink::RESET_TASK);
+        filesink.WaitForEndOfState(TSink::RESET_TASK);
+
+        filesink.ChangeState(TSink::RESET_DEVICE);
+        filesink.WaitForEndOfState(TSink::RESET_DEVICE);
+
         filesink.ChangeState(TSink::END);
     }
     catch (std::exception& e)

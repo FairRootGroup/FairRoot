@@ -15,10 +15,10 @@
 #include "FairMQProcessorTask.h"
 
 
-FairMQProcessorTask::FairMQProcessorTask() :
-  fPayload(NULL),
-  SendPart(),
-  ReceivePart()
+FairMQProcessorTask::FairMQProcessorTask()
+    : fPayload(NULL)
+    , SendPart()
+    , ReceivePart()
 {
 }
 
@@ -44,12 +44,12 @@ void FairMQProcessorTask::SetReceivePart(boost::function<bool()> callback)
 
 FairMQMessage* FairMQProcessorTask::GetPayload()
 {
-  return fPayload;
+    return fPayload;
 }
 
 void FairMQProcessorTask::SetPayload(FairMQMessage* msg)
 {
-    if(msg)
+    if (msg)
     {
         fPayload = msg;
     }

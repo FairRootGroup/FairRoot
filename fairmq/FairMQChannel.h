@@ -25,29 +25,27 @@ class FairMQChannel
 
   public:
     FairMQChannel();
-    FairMQChannel(std::string type, std::string method, std::string protocol, std::string address, std::string port);
+    FairMQChannel(const std::string& type, const std::string& method, const std::string& address);
     virtual ~FairMQChannel();
 
     bool ValidateChannel();
 
     // Wrappers for the socket methods to simplify the usage of channels
-    int Send(FairMQMessage* msg, const std::string& flag="");
+    int Send(FairMQMessage* msg, const std::string& flag = "");
     int Send(FairMQMessage* msg, const int flags);
-    int Receive(FairMQMessage* msg, const std::string& flag="");
+    int Receive(FairMQMessage* msg, const std::string& flag = "");
     int Receive(FairMQMessage* msg, const int flags);
 
     std::string fType;
     std::string fMethod;
-    std::string fProtocol;
     std::string fAddress;
-    std::string fPort;
     int fSndBufSize;
     int fRcvBufSize;
     int fRateLogging;
 
-  private:
     FairMQSocket* fSocket;
-    bool fIsValid;
+
+  private:
     std::string fChannelName;
 };
 

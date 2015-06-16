@@ -1,12 +1,11 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #              This software is distributed under the terms of the             #
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-#Temporary for test
-#add_subdirectory (options/ProgOptionTest)
+
 configure_file(${CMAKE_SOURCE_DIR}/fairmq/options/ProgOptionTest/macro/bsampler-sink.json ${CMAKE_BINARY_DIR}/bin/bsampler-sink.json)
 
 Set(INCLUDE_DIRECTORIES
@@ -69,7 +68,9 @@ set(SRCS
   "FairMQTransportFactory.cxx"
   "FairMQMessage.cxx"
   "FairMQSocket.cxx"
+  "FairMQChannel.cxx"
   "FairMQDevice.cxx"
+  "FairMQPoller.cxx"
   "devices/FairMQBenchmarkSampler.cxx"
   "devices/FairMQSink.cxx"
   "devices/FairMQBuffer.cxx"
@@ -79,7 +80,6 @@ set(SRCS
   "options/FairProgOptions.cxx"
   "options/FairMQProgOptions.cxx"
   "options/FairMQParser.cxx"
-  "FairMQPoller.cxx"
   "examples/req-rep/FairMQExampleClient.cxx"
   "examples/req-rep/FairMQExampleServer.cxx"
 )
@@ -150,10 +150,10 @@ GENERATE_LIBRARY()
 
 set(Exe_Names
   bsampler
+  sink
   buffer
   splitter
   merger
-  sink
   proxy
   example_client
   example_server
@@ -172,10 +172,10 @@ set(Exe_Names
 
 set(Exe_Source 
   run/runBenchmarkSampler.cxx
+  run/runSink.cxx
   run/runBuffer.cxx
   run/runSplitter.cxx
   run/runMerger.cxx
-  run/runSink.cxx
   run/runProxy.cxx
   examples/req-rep/runExampleClient.cxx
   examples/req-rep/runExampleServer.cxx

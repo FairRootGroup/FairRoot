@@ -53,10 +53,10 @@ class FairMQSampler : public FairMQDevice
 {
   public:
     enum {
-      InputFile = FairMQDevice::Last,
-      ParFile,
-      Branch,
-      EventRate
+        InputFile = FairMQDevice::Last,
+        ParFile,
+        Branch,
+        EventRate
     };
 
     FairMQSampler();
@@ -64,10 +64,10 @@ class FairMQSampler : public FairMQDevice
 
     void ResetEventCounter();
 
-    virtual void SetProperty(const int key, const std::string& value, const int slot = 0);
-    virtual std::string GetProperty(const int key, const std::string& default_ = "", const int slot = 0);
-    virtual void SetProperty(const int key, const int value, const int slot = 0);
-    virtual int GetProperty(const int key, const int default_ = 0, const int slot = 0);
+    virtual void SetProperty(const int key, const std::string& value);
+    virtual std::string GetProperty(const int key, const std::string& default_ = "");
+    virtual void SetProperty(const int key, const int value);
+    virtual int GetProperty(const int key, const int default_ = 0);
 
     /**
      * Sends the currently available output of the Sampler Task as part of a multipart message
@@ -77,10 +77,10 @@ class FairMQSampler : public FairMQDevice
      */
     void SendPart();
 
-    void SetContinuous(bool flag) { fContinuous = flag; }
+    void SetContinuous(bool flag);
 
   protected:
-    virtual void Init();
+    virtual void InitTask();
     virtual void Run();
 
     FairRunAna *fFairRunAna;
