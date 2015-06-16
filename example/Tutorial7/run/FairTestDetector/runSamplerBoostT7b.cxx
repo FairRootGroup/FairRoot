@@ -41,6 +41,9 @@
 // payload/data class
 #include "FairTestDetectorDigi.h"
 
+/// ROOT
+#include "TSystem.h"
+
 using namespace std;
 /// ////////////////////////////////////////////////////////////////////////
 // payload definition
@@ -157,7 +160,7 @@ int main(int argc, char** argv)
     try
     {
         s_catch_signals();
-
+        gSystem->Load("libTree.so");
         DeviceOptions_t options;
         try
         {

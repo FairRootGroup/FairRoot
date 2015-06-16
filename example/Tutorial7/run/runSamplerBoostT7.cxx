@@ -32,13 +32,15 @@
 #include "GenericSampler.h"
 
 /// FairRoot - Base/MQ
-// sampler policy
+// sampler policies
 #include "SimpleTreeReader.h"
 #include "BoostSerializer.h"
 
 /// FairRoot - Tutorial 7
 #include "MyDigi.h"
 
+/// ROOT
+#include "TSystem.h"
 
 using namespace std;
 /// ////////////////////////////////////////////////////////////////////////
@@ -165,7 +167,7 @@ int main(int argc, char** argv)
     try
     {
         s_catch_signals();
-
+        gSystem->Load("libTree.so");
         DeviceOptions_t options;
         try
         {

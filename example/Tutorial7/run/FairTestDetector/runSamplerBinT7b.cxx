@@ -28,10 +28,12 @@
 // Device, take input and output policy as template argument
 #include "GenericSampler.h"
 
-// policy of GenericFileSink
+// policy of GenericSampler
 #include "MyDigiSerializer.h"
 #include "SimpleTreeReader.h"
 
+/// ROOT
+#include "TSystem.h"
 
 using namespace std;
 
@@ -147,7 +149,7 @@ int main(int argc, char** argv)
     try
     {
         s_catch_signals();
-
+        gSystem->Load("libTree.so");
         DeviceOptions_t options;
         try
         {
