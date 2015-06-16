@@ -132,7 +132,8 @@ FairRootManager::FairRootManager()
     fEntryNr(0),
     fRootFileSource(0),
     fRootFileSourceSignal(0),
-    fRootFileSourceBKG(0)
+    fRootFileSourceBKG(0),
+	fFinishRun(kFALSE)
 {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
