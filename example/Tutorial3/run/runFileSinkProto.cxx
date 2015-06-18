@@ -147,9 +147,9 @@ int main(int argc, char** argv)
     filesink.SetTransport(transportFactory);
 
     FairMQChannel channel(options.inputSocketType, options.inputMethod, options.inputAddress);
-    channel.fSndBufSize = options.inputBufSize;
-    channel.fRcvBufSize = options.inputBufSize;
-    channel.fRateLogging = 1;
+    channel.UpdateSndBufSize(options.inputBufSize);
+    channel.UpdateRcvBufSize(options.inputBufSize);
+    channel.UpdateRateLogging(1);
 
     filesink.fChannels["data-in"].push_back(channel);
 

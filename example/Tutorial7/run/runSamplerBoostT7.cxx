@@ -194,9 +194,9 @@ int main(int argc, char** argv)
         sampler.SetTransport(transportFactory);
 
         FairMQChannel channel(options.outputSocketType, options.outputMethod, options.outputAddress);
-        channel.fSndBufSize = options.outputBufSize;
-        channel.fRcvBufSize = options.outputBufSize;
-        channel.fRateLogging = 1;
+        channel.UpdateSndBufSize(options.outputBufSize);
+        channel.UpdateRcvBufSize(options.outputBufSize);
+        channel.UpdateRateLogging(1);
 
         sampler.fChannels["data-out"].push_back(channel);
 
