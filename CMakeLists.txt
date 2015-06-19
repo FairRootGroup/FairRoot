@@ -190,6 +190,19 @@ Generate_Version_Info()
 # Set some useful variables
 SetBasicVariables()
 
+# Check C++11 availability
+If(NOT CMAKE_CXX_FLAGS)
+  Message(STATUS "No C++11 support found.")
+Else()
+  String(FIND ${CMAKE_CXX_FLAGS} "-std=c++11" POS_C++11)
+  If(POS_C++11)
+    Message(STATUS "C++11 support found.")
+  Else()
+    Message(STATUS "No C++11 support found.")
+  EndIf()
+EndIf()
+
+
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
@@ -207,12 +220,14 @@ add_subdirectory (eventdisplay)
 add_subdirectory (example)
 add_subdirectory (MbsAPI)
 add_subdirectory (datamatch)
-If (Boost_FOUND)
+
+If (Boost_FOUND AND POS_C++11)
+  Message(STATUS "C++11 support & boost libraries found. FairMQ will be built.")
   add_subdirectory (fairmq)
   add_subdirectory (base/MQ)
-Else (Boost_FOUND)
-  Message(STATUS " Building of the FairMQ library is switched off since the necessary boost libraries couldn't be found on the system ")
-EndIf (Boost_FOUND)
+Else ()
+  Message(STATUS "Building of the FairMQ library is switched off since C++11 or the necessary boost libraries couldn't be found on the system")
+EndIf ()
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
 if(BUILD_DOXYGEN)
