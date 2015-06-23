@@ -24,7 +24,6 @@
 
 class FairRuntimeDb;
 class FairEventHeader;
-class FairMCEventHeader;
 class FairField;
 class TFile;
 class TF1;
@@ -41,11 +40,13 @@ class FairRunOnline : public FairRun
     FairRunOnline();
     FairRunOnline(FairSource* source);
 
+    FairEventHeader*  GetEventHeader();
+
     /**initialize the run manager*/
     void        Init();
     /**Run for the given number of events*/
-    void        Run(Int_t nev, Int_t dummy);
-
+    void        Run(Int_t Ev_start, Int_t Ev_end);
+ 
     void        Reinit(UInt_t runId);
     UInt_t      getRunId() { return fRunId; }
     /** Get the magnetic field **/
@@ -58,7 +59,7 @@ class FairRunOnline : public FairRun
     **/
     void        SetAutoFinish(Bool_t val) { fAutomaticFinish = val; }
     /** Set the source which should be used **/
-    void        SetSource(FairSource* source) { fSource = source; }
+    void        SetSource(FairSource* source) { fRootManager->SetSource(source); }
 
     /** Initialization of parameter container is set to static, i.e: the run id is
      *  is not checked anymore after initialization
@@ -75,9 +76,6 @@ class FairRunOnline : public FairRun
 
     /** Write last data to file, close input and output **/
     void Finish();
-
-    /** Get a pointer to the attached FairSource **/
-    FairSource* GetSource() { return fSource; }
 
   private:
 
@@ -98,7 +96,6 @@ class FairRunOnline : public FairRun
     Bool_t                                  fStatic;//!
     FairField*                              fField;
 
-    FairSource* fSource;       //!
     TFolder*    fFolder;       //!
     Bool_t      fGenerateHtml; //!
     TString     fHistFileName; //!
