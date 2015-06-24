@@ -272,17 +272,16 @@ void FairRootManager::SetInputFile(TString name)
 Bool_t FairRootManager::InitSource() {
     Bool_t retBool=kFALSE;
     if(!fMixedInput) {
-        if ( fRootFileSource != 0 ) {
-	    retBool = fRootFileSource->Init();
-	    fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
-	    fRootFileSource->AddFriendsToChain();
-	}
-    }else{
+      if (fRootFileSource != 0){
+		  retBool = fRootFileSource->Init();
+		  fCbmroot = fRootFileSource->GetBranchDescriptionFolder();
+		  fRootFileSource->AddFriendsToChain();
+      }
+    } else if (fMixedInput){
       // In the mixed input the source is initialized immediatly when it is added
       // We need only to check that the BK source exist and we can return true.
         
       if(fRootFileSourceBKG!=0) retBool=kTRUE;
-
     }
     return retBool;
 }
