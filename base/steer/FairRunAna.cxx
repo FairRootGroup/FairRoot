@@ -716,7 +716,7 @@ void FairRunAna::RunOnLmdFiles(UInt_t NStart, UInt_t NStop)
 void FairRunAna::RunOnTBData() {
       std::cout << "FairRunAna::RunOnTBData " << std::endl;
         while (fRootManager->FinishRun() != kTRUE) {
-		fTask->ExecuteTask("");
+        	fTask->ExecuteTask("");
             fRootManager->Fill();
             fTask->FinishEvent();
         }
