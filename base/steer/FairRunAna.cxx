@@ -1,5 +1,5 @@
 /********************************************************************************
-f *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
  *              This software is distributed under the terms of the             * 
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
@@ -716,10 +716,9 @@ void FairRunAna::RunOnLmdFiles(UInt_t NStart, UInt_t NStop)
 void FairRunAna::RunOnTBData() {
       std::cout << "FairRunAna::RunOnTBData " << std::endl;
         while (fRootManager->FinishRun() != kTRUE) {
-
-                fTask->ExecuteTask("");
-                fRootManager->Fill();
-                fTask->FinishEvent();
+		fTask->ExecuteTask("");
+            fRootManager->Fill();
+            fTask->FinishEvent();
         }
 
         fTask->FinishTask();
