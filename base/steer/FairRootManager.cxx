@@ -1812,25 +1812,21 @@ void FairRootManager::DeleteOldWriteoutBufferData()
 void FairRootManager::ReadBranchEvent(const char* BrName)
 {
   /**fill the object with content if the other branches in this tree entry were already read**/
-  if ( fRootFileSource == 0 && fRootFileSourceBKG == 0 ) return;
-
-    TTree *fInTree =fRootFileSource->GetInTree();
-    TChain *fInChain =fRootFileSource->GetInChain();
 
   if(fEvtHeader == 0) { return; } //No event header, Reading will start later
-  if ( fInTree ) {
-    fInTree->FindBranch(BrName)->GetEntry(fEntryNr);
-    return;
-  }
+
   if(!fMixedInput) {
-    if(!fInChain) { return; }
+	if( !fRootFileSource ) { return; }
+	TChain *fInChain =fRootFileSource->GetInChain();
     fInChain->FindBranch(BrName)->GetEntry(fEntryNr);
     return;
   } else {
-    TChain* chain = fSignalTypeList[fEvtHeader->GetInputFileId()]->GetInChain();
-    if(!chain) { return; }
-    chain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
-    return;
+	  if ( fRootFileSource != 0 ) {
+	    TChain* chain = fSignalTypeList[fEvtHeader->GetInputFileId()]->GetInChain();
+	    if(!chain) { return; }
+	    chain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
+	    return;
+	  }
   }
   return;
 }
