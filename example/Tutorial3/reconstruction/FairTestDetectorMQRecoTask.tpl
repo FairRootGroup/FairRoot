@@ -22,13 +22,13 @@ FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::FairTestDetector
     bool checkInputClass = false;
     bool checkOutputClass = false;
     fHasBoostSerialization = false;
-
+    // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
     if (is_same<TPayloadIn, boost::archive::binary_iarchive>::value || is_same<TPayloadIn, boost::archive::text_iarchive>::value)
     {
         if (has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 1)
             checkInputClass = true;
     }
-
+    // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
     if (is_same<TPayloadOut, boost::archive::binary_oarchive>::value || is_same<TPayloadOut, boost::archive::text_oarchive>::value)
     {
         if (has_BoostSerialization<TOut, void(TPayloadOut&, const unsigned int)>::value == 1)
