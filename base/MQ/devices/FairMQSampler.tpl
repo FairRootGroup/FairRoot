@@ -81,26 +81,27 @@ void FairMQSampler<Loader>::Run()
     LOG(INFO) << "Number of events to process: " << fNumEvents;
 
     do {
-    for (Long64_t eventNr = 0 ; eventNr < fNumEvents; ++eventNr) {
-        fSamplerTask->SetEventIndex(eventNr);
-        fFairRunAna->RunMQ(eventNr);
-
-        fChannels["data-out"].at(0).Send(fSamplerTask->GetOutput());
-        ++sentMsgs;
-
-        fSamplerTask->GetOutput()->CloseMessage();
-
-        // Optional event rate limiting
-        // --fEventCounter;
-        // while (fEventCounter == 0) {
-        //   boost::this_thread::sleep(boost::posix_time::milliseconds(1));
-        // }
-
-        if (GetCurrentState() != RUNNING)
+        for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
         {
-            break;
+            fSamplerTask->SetEventIndex(eventNr);
+            fFairRunAna->RunMQ(eventNr);
+
+            fChannels["data-out"].at(0).Send(fSamplerTask->GetOutput());
+            ++sentMsgs;
+
+            fSamplerTask->GetOutput()->CloseMessage();
+
+            // Optional event rate limiting
+            // --fEventCounter;
+            // while (fEventCounter == 0) {
+            //   boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+            // }
+
+            if (GetCurrentState() != RUNNING)
+            {
+                break;
+            }
         }
-    }
     } while (GetCurrentState() == RUNNING && fContinuous);
 
     boost::timer::cpu_times const elapsed_time(timer.elapsed());
