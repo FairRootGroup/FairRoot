@@ -1062,7 +1062,8 @@ void FairGeanePro::Track3ToLine(TVector3 X1, TVector3 X2, TVector3 X3,
 
   // select the right solution
   dmin = 1.e+08;
-  imin=-1;
+  imin=0;  // This was set to -1 which could make problem if the indx is negative!! (MT)
+
   for(Int_t j=0; j<it; j++) {
     Pointw[0] = B[0] + sol4[j]*M[0];
     Pointw[1] = B[1] + sol4[j]*M[1];
