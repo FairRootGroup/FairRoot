@@ -1481,6 +1481,7 @@ void FairGeaneUtil::FromSDToMars(Double_t PC[3], Double_t RC[15],
       Rmat[I][K] = 0.;
       Rtra[I][K] = 0.;
       AJJ[I][K] = 0.;
+      if (K < 5) RCM[I][K]=0.;
     }
   }
   for(Int_t I=0; I<6; I++) {
@@ -1490,7 +1491,7 @@ void FairGeaneUtil::FromSDToMars(Double_t PC[3], Double_t RC[15],
     Rtra[5][I] = 0.;
     AJJ[5][I]  = 0.;
   }
-
+  
   SPU = SP1;
 
   // jacobian from SD to local cartesian
