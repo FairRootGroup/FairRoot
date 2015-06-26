@@ -26,7 +26,9 @@
 #include "TMathBase.h"                  // for Abs, Sign
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <iomanip>
 #include <cmath>                        // IWYU pragma: keep for fabs
+
 // IWYU pragma: no_include <architecture/i386/math.h>
 
 using std::cout;
@@ -744,10 +746,9 @@ FairTrackParP::~FairTrackParP() {}
 void FairTrackParP::Print(Option_t* option) const
 {
   cout << "Position : (";
-  cout.precision(2);
-  cout << fX << ", " << fY << ", " << fZ << ")" << endl;
-  cout << "Slopes : dx/dz = " << fTV << ", dy/dz = " << fTW << endl;
-  cout << "q/p = " << fQp << endl;
+  cout << std::setprecision(2) << fX << ", " << fY << ", " << fZ << ")" << endl;
+  cout << std::setprecision(2) << "Slopes : dx/dz = " << fTV << ", dy/dz = " << fTW << endl;
+  cout << std::setprecision(2)  << "q/p = " << fQp << endl;
 }
 // -------------------------------------------------------------------------
 /*Double_t FairTrackParP::GetDX()

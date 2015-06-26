@@ -24,6 +24,7 @@
 #include "TMathBase.h"                  // for Abs, Sign
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <iomanip>
 #include <cmath>                        // IWYU pragma: keep for fabs
 // IWYU pragma: no_include <architecture/i386/math.h>
 
@@ -618,13 +619,12 @@ FairTrackParH::~FairTrackParH()
 void  FairTrackParH::Print(Option_t* option) const
 {
   cout << this<< endl;
-  cout << "Position : (";
-  cout.precision(2);
-  cout << fX << ", " << fY << ", " << fZ << ")" << endl;
-  cout << "Angles : Lambda = " << fLm << ", Phi = " << fPhi << endl;
+  cout << "Position : "
+       << std::setprecision(2) << fX << ", " << fY << ", " << fZ << ")" << endl;
+  cout << std::setprecision(2) << "Angles : Lambda = " << fLm << ", Phi = " << fPhi << endl;
   cout << "q/p = " << fQp << endl;
   for(Int_t i=0; i<15; i++) {
-    cout << "fCovMatrix[" << i << "] = " <<  this << " " << fCovMatrix[i] << endl;
+    cout << std::setprecision(2) << "fCovMatrix[" << i << "] = " <<  this << " " << fCovMatrix[i] << endl;
   }
 
 }

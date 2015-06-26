@@ -23,6 +23,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/example/Tutorial3/digitization
   ${CMAKE_SOURCE_DIR}/example/Tutorial3/reconstruction
   ${CMAKE_SOURCE_DIR}/example/Tutorial3/timeBasedSimulation
+  ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
