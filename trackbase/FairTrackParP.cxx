@@ -691,6 +691,13 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
     RC[i]=fCovMatrix[i];
   }
 
+  // initialize RD
+  for(Int_t i=0; i<6; i++) {
+    for(Int_t k=0; k<6; k++) {
+      RD[i][k] = 0;
+    }
+  }
+  
   // retrieve field
   Double_t pnt[3];
   pnt[0] = fX;
