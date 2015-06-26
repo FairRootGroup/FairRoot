@@ -212,7 +212,6 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
     fCovMatrix[i]=CovMatrix[i];
   }
 
-
   fPx_sd = fSPU*TMath::Sqrt( P*P / ( fTV*fTV + fTW*fTW + 1 ) );
   fPy_sd = fTV * fPx_sd;
   fPz_sd = fTW * fPx_sd;
@@ -237,7 +236,14 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   PC[0]   = fQp;
   PC[1]   = fTV;
   PC[2]   = fTW;
-
+  
+  // initialize RD
+  for(Int_t i=0; i<6; i++) {
+    for(Int_t k=0; k<6; k++) {
+      RD[i][k] = 0;
+    }
+  }
+  
   for(Int_t i=0; i<15; i++)  {
     RC[i]=fCovMatrix[i];
   }
@@ -258,6 +264,9 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 
   util.FromSDToMars(PC, RC, H, CH, SP1, fDJ, fDK, PD, RD);
 
+  
+  
+  
   fPx = PD[0];
   fPy = PD[1];
   fPz = PD[2];
