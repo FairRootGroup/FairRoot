@@ -18,6 +18,7 @@ FairMQFileSink<TIn, TPayloadIn>::FairMQFileSink()
 #if __cplusplus >= 201103L
     using namespace baseMQ::tools::resolve;
     fHasBoostSerialization = false;
+    // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
     if (is_same<TPayloadIn, boost::archive::binary_iarchive>::value || is_same<TPayloadIn, boost::archive::text_iarchive>::value)
     {
         if (has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 1)

@@ -17,6 +17,7 @@ TestDetectorDigiLoader<T1, T2>::TestDetectorDigiLoader()
 #if __cplusplus >= 201103L
     using namespace baseMQ::tools::resolve;
     fHasBoostSerialization = false;
+    // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
     if (is_same<T2, boost::archive::binary_oarchive>::value || is_same<T2, boost::archive::text_oarchive>::value)
     {
         if (has_BoostSerialization<T1, void(T2&, const unsigned int)>::value == 1)
