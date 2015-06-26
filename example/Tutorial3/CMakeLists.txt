@@ -83,17 +83,17 @@ If (Boost_FOUND)
   If(PROTOBUF_FOUND)
     add_custom_command(
       OUTPUT
-        ${CMAKE_SOURCE_DIR}/example/Tutorial3/data/FairTestDetectorPayload.pb.h
-        ${CMAKE_SOURCE_DIR}/example/Tutorial3/data/FairTestDetectorPayload.pb.cc
+        ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.h
+        ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
       COMMAND
-        ${SIMPATH}/bin/protoc -I=. --cpp_out=. FairTestDetectorPayload.proto
+        ${SIMPATH}/bin/protoc -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayload.proto
       WORKING_DIRECTORY
         ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
       )
 
     Set(NO_DICT_SRCS
       ${NO_DICT_SRCS}
-      data/FairTestDetectorPayload.pb.cc
+      ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
     )
   Endif(PROTOBUF_FOUND)
 EndIf (Boost_FOUND)
