@@ -262,7 +262,7 @@ REvent* MRevBuffer::RevGet(TSocket* pSocket, Int_t iFlush, Int_t iSkip)
   Int_t iCommSize = sizeof(sComm);      // size comm. buffer (byte)
 
   Int_t* piInfo;
-  srevInfo sInfo;
+  srevInfo sInfo = {.iSize=0, .iMode=1, .iHeadPar=0 , .iTimeOut=0 };
   Int_t iInfoSize = sizeof(sInfo);      // size info buffer (byte)
 
 //    Int_t iHeadPar = 12;         // no. of params in MBS buffer header
