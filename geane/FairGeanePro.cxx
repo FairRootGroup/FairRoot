@@ -41,7 +41,7 @@ FairGeanePro::FairGeanePro()
     fPropOption(""),
     nepred(1),
     fdbPDG(TDatabasePDG::Instance()),
-    afErtrio(gMC3->fErtrio),
+    afErtrio(NULL),
     GeantCode(0),
     ProMode(0),
     VName(""),
@@ -64,6 +64,9 @@ FairGeanePro::FairGeanePro()
     std::cerr<<"FairGeanePro::TGeant3 has not been initialized! ABORTING!"<<std::endl;
     throw;
   }
+  afErtrio = gMC3->fErtrio;
+
+
   //  nepred=1;
   xlf[0] = 0.;
   //  fdbPDG= TDatabasePDG::Instance();
