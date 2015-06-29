@@ -450,6 +450,7 @@ std::ostream& FairLogger::flush(std::ostream& strm)
   return strm;
 }
 
+// coverity[+kill]
 void FairLogger::LogFatalMessage(std::ostream& strm)
 {
   // Since Fatal indicates a fatal error it is maybe usefull to have

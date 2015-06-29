@@ -71,6 +71,8 @@ void Mille::mille(int NLC, const float *derLc,
   // store global derivatives and their lables
   for (int i = 0; i < NGL; ++i) {
     if (derGl[i] || myWriteZero) { // by default store only non-zero derivatives
+      // label[i] is always smaller than myMaxLabel, because myMaxLabel is set to the largest possible value allowed by c++
+      // coverity[result_independent_of_operands]
       if ((label[i] > 0 || myWriteZero) && label[i] <= myMaxLabel) { // and for valid labels
 	++myBufferPos;
 	myBufferFloat[myBufferPos] = derGl[i]; // global derivatives
