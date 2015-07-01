@@ -29,7 +29,7 @@ The template demonstrate and implement the following:
 
 1. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
 
-    we use here "fair_install" as a directory name, you can use what you went! 
+    we use here "fair_install" as a directory name, you can use what you want! 
     ```bash
     mkdir ~/fair_install
     cd ~/fair_install

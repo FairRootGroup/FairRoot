@@ -40,9 +40,6 @@
 /// FairRoot - Tutorial 7
 #include "MyDigi.h"
 
-/// ROOT
-#include "TSystem.h"
-
 using namespace std;
 /// ////////////////////////////////////////////////////////////////////////
 // payload and policy type definitions
@@ -164,7 +161,6 @@ int main(int argc, char** argv)
     try
     {
         s_catch_signals();
-        gSystem->Load("libTree.so");
         DeviceOptions_t options;
         try
         {

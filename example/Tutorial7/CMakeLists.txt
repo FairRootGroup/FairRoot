@@ -5,9 +5,7 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Create a library called "libFairTestDetector" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+# Create a library called "libTutorial7" 
 
 set(INCLUDE_DIRECTORIES
 ${BASE_INCLUDE_DIRECTORIES}
@@ -129,6 +127,52 @@ If (Boost_FOUND)
     run/FairTestDetector/runFileSinkBinT7b.cxx
     )
 
+############################################################
+# Check if we run on Ubuntu version>=11 and if it is the case
+# add --no-as-needed flag to the linker.
+# it is needed on Ubuntu xx>=11 to load Ttree in executables
+# see : https://root.cern.ch/phpBB3/viewtopic.php?f=3&t=14064
+# Alternative is to instantiate a TApplication or load manually with gsystem in main file
+set(UBUNTU_GREATERTHAN_v11_LINKER_FLAG )
+
+if(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
+    # use the LSB stuff if possible 
+    EXECUTE_PROCESS(
+       COMMAND cat /etc/lsb-release
+       COMMAND grep DISTRIB_ID
+       COMMAND awk -F= "{ print $2 }"
+       COMMAND tr "\n" " "
+       COMMAND sed "s/ //"
+       OUTPUT_VARIABLE LSB_ID
+       RESULT_VARIABLE LSB_ID_RESULT
+    )
+    EXECUTE_PROCESS(
+       COMMAND cat /etc/lsb-release
+       COMMAND grep DISTRIB_RELEASE
+       COMMAND awk -F= "{ print $2 }"
+       COMMAND tr "\n" " "
+       COMMAND sed "s/ //"
+       OUTPUT_VARIABLE LSB_VER
+       RESULT_VARIABLE LSB_VER_RESULT
+    )
+    
+    #message("LSB output: ${LSB_ID_RESULT}:${LSB_ID} ${LSB_VER_RESULT}:${LSB_VER}")
+    if(NOT ${LSB_ID} STREQUAL "")
+        # found some, use it :D
+        set(INSTALLER_PLATFORM "${LSB_ID}-${LSB_VER}" CACHE PATH "Installer chosen platform")
+        if(${LSB_ID} STREQUAL "Ubuntu" AND ${LSB_VER} VERSION_GREATER "10.0")
+            #message(STATUS "Running on ${INSTALLER_PLATFORM} which is more recent than Ubuntu 11.0")
+            #message(STATUS "--no-as-needed flag is added to the linker of Tutorial7 executables")
+            set(UBUNTU_GREATERTHAN_v11_LINKER_FLAG "-Wl,--no-as-needed")
+        endif()
+    else(NOT ${LSB_ID} STREQUAL "")
+       set(INSTALLER_PLATFORM "linux-generic" CACHE PATH "Installer chosen platform")
+    endif(NOT ${LSB_ID} STREQUAL "")
+endif(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
+############################################################
+
+
+
   List(LENGTH Exe_Names _length)
   Math(EXPR _length ${_length}-1)
 
@@ -137,7 +181,7 @@ If (Boost_FOUND)
     List(GET Exe_Source ${_file} _src)
     Set(EXE_NAME ${_name})
     Set(SRCS ${_src})
-    Set(DEPENDENCIES Tutorial7)
+    Set(DEPENDENCIES Tutorial7 ${UBUNTU_GREATERTHAN_v11_LINKER_FLAG})
     GENERATE_EXECUTABLE()
   EndForEach(_file RANGE 0 ${_length})
 EndIf (Boost_FOUND)

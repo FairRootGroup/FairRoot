@@ -32,9 +32,6 @@
 #include "MyDigiSerializer.h"
 #include "SimpleTreeReader.h"
 
-/// ROOT
-#include "TSystem.h"
-
 using namespace std;
 
 typedef Tuto3DigiSerializer_t SerializerPolicy;
@@ -149,7 +146,6 @@ int main(int argc, char** argv)
     try
     {
         s_catch_signals();
-        gSystem->Load("libTree.so");
         DeviceOptions_t options;
         try
         {
