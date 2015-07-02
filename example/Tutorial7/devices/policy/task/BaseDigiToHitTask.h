@@ -87,13 +87,12 @@ class BaseDigiToHitTask
 {
   public:
       
-   
     BaseDigiToHitTask() : fTaskName(), fDetID(-1), fMCIndex(-1)
     {}
     
     virtual ~BaseDigiToHitTask()
     {}
-    
+        
   protected:
       
     std::string fTaskName;
