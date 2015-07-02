@@ -1,0 +1,232 @@
+{
+    "fairMQOptions":
+    {
+"_______COMMENT:" : "SAMPLER CONFIG",
+        "device":
+        {
+            "id": "sampler1",
+            "channel":
+            {
+                "name": "data-out",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5565",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            }
+        },
+"_______COMMENT:" : "SPLITTER CONFIG",
+        "device":
+        {
+            "id": "splitter1",
+            "channel":
+            {
+                "name": "data-in",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5565",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            },
+            "channel":
+            {
+                "name": "data-out",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5566",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                },
+                "socket":
+                {
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5567",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                },
+                "socket":
+                {
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5568",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            }
+        },        
+"_______COMMENT:" : "PROCESSOR 1, 2 & 3 CONFIG",
+        "device":
+        {
+            "id": "processor1",
+            "channel":
+            {
+                "name": "data-in",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5566",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            },
+            "channel":
+            {
+                "name": "data-out",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5569",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            }
+        },
+        "device":
+        {
+            "id": "processor2",
+            "channel":
+            {
+                "name": "data-in",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5567",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            },
+            "channel":
+            {
+                "name": "data-out",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5570",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            }
+        },
+        "device":
+        {
+            "id": "processor3",
+            "channel":
+            {
+                "name": "data-in",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5568",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            },
+            "channel":
+            {
+                "name": "data-out",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5571",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            }
+        },
+"_______COMMENT:" : "MERGER CONFIG",
+        "device":
+        {
+            "id": "merger1",
+            "channel":
+            {
+                "name": "data-in",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5569",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                },
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5570",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                },
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5571",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            },
+            "channel":
+            {
+                "name": "data-out",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5572",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            }
+            
+        },
+"_______COMMENT:" : "FILESINK CONFIG",
+        "device":
+        {
+            "id": "sink1",
+            "channel":
+            {
+                "name": "data-in",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5572",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            }
+        }
+    }
+}
+

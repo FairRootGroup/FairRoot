@@ -74,7 +74,12 @@ class BoostSerializer
 
     ~BoostSerializer()
     {}
-
+    /*
+    struct trait 
+    {
+        static const SerializationTag serialization = kBoost;
+    };
+    */
     void CloseMessage()
     {
         if (fMessage)
