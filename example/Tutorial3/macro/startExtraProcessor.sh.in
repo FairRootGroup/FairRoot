@@ -39,6 +39,6 @@ counter=0
 
 while [ $counter -lt $2 ]
 do
-    xterm -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat --id $((ID+counter)) --input-socket-type $inputSocketType --input-buff-size $inputBufSize --input-method $inputMethod --input-address $inputAddress --output-socket-type $outputSocketType --output-buff-size $outputBufSize --output-method $outputMethod --output-address $outputAddress &
+    xterm -hold -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat --id $((ID+counter)) --input-socket-type $inputSocketType --input-buff-size $inputBufSize --input-method $inputMethod --input-address $inputAddress --output-socket-type $outputSocketType --output-buff-size $outputBufSize --output-method $outputMethod --output-address $outputAddress &
     counter=$(( $counter + 1 ))
 done

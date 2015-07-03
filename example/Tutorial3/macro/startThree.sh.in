@@ -31,15 +31,15 @@ SAMPLER+=" --id 101"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5565"
-xterm -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 PROCESSOR="testDetectorProcessor$dataFormat"
 PROCESSOR+=" --id 201"
 PROCESSOR+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5565"
 PROCESSOR+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5570"
-xterm -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR &
+xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR &
 
 FILESINK="fileSink$dataFormat"
 FILESINK+=" --id 301"
 FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5570"
-xterm -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &

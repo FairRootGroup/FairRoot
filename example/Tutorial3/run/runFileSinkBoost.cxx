@@ -13,7 +13,6 @@
  */
 
 #include <iostream>
-#include <csignal>
 
 #include "boost/program_options.hpp"
 
@@ -36,29 +35,6 @@ typedef FairTestDetectorHit THit;                         // class to serialize/
 typedef boost::archive::binary_iarchive TBoostBinPayload; // boost binary format
 typedef boost::archive::text_iarchive TBoostTextPayload;  // boost text format
 typedef FairMQFileSink<THit, TBoostBinPayload> TSink;
-
-
-TSink filesink;
-
-static void s_signal_handler(int signal)
-{
-    LOG(INFO) << "Caught signal " << signal;
-
-    filesink.ChangeState(TSink::END);
-
-    LOG(INFO) << "Shutdown complete.";
-    exit(1);
-}
-
-static void s_catch_signals(void)
-{
-    struct sigaction action;
-    action.sa_handler = s_signal_handler;
-    action.sa_flags = 0;
-    sigemptyset(&action.sa_mask);
-    sigaction(SIGINT, &action, NULL);
-    sigaction(SIGTERM, &action, NULL);
-}
 
 typedef struct DeviceOptions
 {
@@ -124,7 +100,8 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
 int main(int argc, char** argv)
 {
-    s_catch_signals();
+    TSink filesink;
+    filesink.CatchSignals();
 
     DeviceOptions_t options;
     try
@@ -167,17 +144,8 @@ int main(int argc, char** argv)
     filesink.InitOutputFile(options.id);
 
     filesink.ChangeState(TSink::RUN);
-    filesink.WaitForEndOfState(TSink::RUN);
+    filesink.InteractiveStateLoop();
 
-    filesink.ChangeState(TSink::STOP);
-
-    filesink.ChangeState(TSink::RESET_TASK);
-    filesink.WaitForEndOfState(TSink::RESET_TASK);
-
-    filesink.ChangeState(TSink::RESET_DEVICE);
-    filesink.WaitForEndOfState(TSink::RESET_DEVICE);
-
-    filesink.ChangeState(TSink::END);
 
     return 0;
 }
