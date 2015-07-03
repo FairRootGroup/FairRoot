@@ -13,7 +13,6 @@
  */
 
 #include <iostream>
-#include <csignal>
 
 #include "boost/program_options.hpp"
 
@@ -39,28 +38,6 @@ typedef FairTestDetectorHit THit;             // class to serialize/deserialize
 typedef TestDetectorPayload::Digi TPayloadIn; // binary payload
 typedef TestDetectorPayload::Hit TPayloadOut; // binary payload
 typedef FairTestDetectorMQRecoTask<TDigi, THit, TPayloadIn, TPayloadOut> TProcessorTask;
-
-FairMQProcessor processor;
-
-static void s_signal_handler(int signal)
-{
-    LOG(INFO) << "Caught signal " << signal;
-
-    processor.ChangeState(FairMQProcessor::END);
-
-    LOG(INFO) << "Shutdown complete.";
-    exit(1);
-}
-
-static void s_catch_signals(void)
-{
-    struct sigaction action;
-    action.sa_handler = s_signal_handler;
-    action.sa_flags = 0;
-    sigemptyset(&action.sa_mask);
-    sigaction(SIGINT, &action, NULL);
-    sigaction(SIGTERM, &action, NULL);
-}
 
 typedef struct DeviceOptions
 {
@@ -152,7 +129,8 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
 int main(int argc, char** argv)
 {
-    s_catch_signals();
+    FairMQProcessor processor;
+    processor.CatchSignals();
 
     DeviceOptions_t options;
     try
@@ -211,17 +189,7 @@ int main(int argc, char** argv)
     processor.WaitForEndOfState(FairMQProcessor::INIT_TASK);
 
     processor.ChangeState(FairMQProcessor::RUN);
-    processor.WaitForEndOfState(FairMQProcessor::RUN);
-
-    processor.ChangeState(FairMQProcessor::STOP);
-
-    processor.ChangeState(FairMQProcessor::RESET_TASK);
-    processor.WaitForEndOfState(FairMQProcessor::RESET_TASK);
-
-    processor.ChangeState(FairMQProcessor::RESET_DEVICE);
-    processor.WaitForEndOfState(FairMQProcessor::RESET_DEVICE);
-
-    processor.ChangeState(FairMQProcessor::END);
+    processor.InteractiveStateLoop();
 
     return 0;
 }

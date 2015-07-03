@@ -39,6 +39,7 @@ FairMQSampler<Loader>::~FairMQSampler()
 template <typename Loader>
 void FairMQSampler<Loader>::InitTask()
 {
+    LOG(INFO) << "Starting task initialization";
     fSamplerTask->SetBranch(fBranch);
     fSamplerTask->SetTransport(fTransportFactory);
 
@@ -47,9 +48,9 @@ void FairMQSampler<Loader>::InitTask()
 
     fFairRunAna->SetInputFile(TString(fInputFile));
     // This loop can be used to duplicate input file to get more data. The output will still be a single file.
-    // for (int i = 0; i < 0; ++i) {
-    //   fFairRunAna->AddFile(fInputFile);
-    // }
+    for (int i = 0; i < 100; ++i) {
+      fFairRunAna->AddFile(fInputFile);
+    }
 
     TString output = fInputFile;
     output.Append(".out.root");
@@ -67,6 +68,7 @@ void FairMQSampler<Loader>::InitTask()
     // fFairRunAna->Run(0, 0);
     FairRootManager *ioman = FairRootManager::Instance();
     fNumEvents = int((ioman->GetInChain())->GetEntries());
+    LOG(INFO) << "Finished task initialization";
 }
 
 template <typename Loader>
@@ -80,13 +82,17 @@ void FairMQSampler<Loader>::Run()
 
     LOG(INFO) << "Number of events to process: " << fNumEvents;
 
-    do {
+    // store the channel references to avoid traversing the map on every loop iteration
+    FairMQChannel& dataOutChannel = fChannels.at("data-out").at(0);
+
+    do
+    {
         for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
         {
             fSamplerTask->SetEventIndex(eventNr);
             fFairRunAna->RunMQ(eventNr);
 
-            fChannels["data-out"].at(0).Send(fSamplerTask->GetOutput());
+            dataOutChannel.Send(fSamplerTask->GetOutput());
             ++sentMsgs;
 
             fSamplerTask->GetOutput()->CloseMessage();
@@ -97,12 +103,12 @@ void FairMQSampler<Loader>::Run()
             //   boost::this_thread::sleep(boost::posix_time::milliseconds(1));
             // }
 
-            if (GetCurrentState() != RUNNING)
+            if (!CheckCurrentState(RUNNING))
             {
                 break;
             }
         }
-    } while (GetCurrentState() == RUNNING && fContinuous);
+    } while (CheckCurrentState(RUNNING) && fContinuous);
 
     boost::timer::cpu_times const elapsed_time(timer.elapsed());
     LOG(INFO) << "Sent everything in:\n" << boost::timer::format(elapsed_time, 2);
@@ -112,7 +118,7 @@ void FairMQSampler<Loader>::Run()
 template <typename Loader>
 void FairMQSampler<Loader>::SendPart()
 {
-    fChannels["data-out"].at(0).Send(fSamplerTask->GetOutput(), "snd-more");
+    fChannels.at("data-out").at(0).Send(fSamplerTask->GetOutput(), "snd-more");
     fSamplerTask->GetOutput()->CloseMessage();
 }
 

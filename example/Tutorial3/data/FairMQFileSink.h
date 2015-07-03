@@ -23,6 +23,7 @@
 #include "TClonesArray.h"
 #include "TVector3.h"
 #include "TString.h"
+#include "TSystem.h"
 
 #include "FairMQDevice.h"
 #include "FairMQLogger.h"

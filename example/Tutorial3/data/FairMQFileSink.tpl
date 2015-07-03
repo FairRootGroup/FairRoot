@@ -13,6 +13,8 @@ FairMQFileSink<TIn, TPayloadIn>::FairMQFileSink()
     , fHitVector()
     , fHasBoostSerialization()
 {
+    gSystem->ResetSignal(kSigInterrupt);
+    gSystem->ResetSignal(kSigTermination);
 
     fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
@@ -57,11 +59,14 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
     {
         int receivedMsgs = 0;
 
-        while (GetCurrentState() == RUNNING)
+        // store the channel references to avoid traversing the map on every loop iteration
+        FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
+
+        while (CheckCurrentState(RUNNING))
         {
             FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-            if (fChannels["data-in"].at(0).Receive(msg) > 0)
+            if (dataInChannel.Receive(msg) > 0)
             {
                 receivedMsgs++;
                 string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
@@ -114,11 +119,14 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
 {
     int receivedMsgs = 0;
 
-    while (GetCurrentState() == RUNNING)
+    // store the channel references to avoid traversing the map on every loop iteration
+    FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
+
+    while (CheckCurrentState(RUNNING))
     {
         FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-        if (fChannels["data-in"].at(0).Receive(msg) > 0)
+        if (dataInChannel.Receive(msg) > 0)
         {
             receivedMsgs++;
             Int_t inputSize = msg->GetSize();
@@ -166,11 +174,14 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
 {
     int receivedMsgs = 0;
 
-    while (GetCurrentState() == RUNNING)
+    // store the channel references to avoid traversing the map on every loop iteration
+    FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
+
+    while (CheckCurrentState(RUNNING))
     {
         FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-        if (fChannels["data-in"].at(0).Receive(msg) > 0)
+        if (dataInChannel.Receive(msg) > 0)
         {
             receivedMsgs++;
             TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
@@ -203,11 +214,14 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
 {
     int receivedMsgs = 0;
 
-    while (GetCurrentState() == RUNNING)
+    // store the channel references to avoid traversing the map on every loop iteration
+    FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
+
+    while (CheckCurrentState(RUNNING))
     {
         FairMQMessage* msg = fTransportFactory->CreateMessage();
 
-        if (fChannels["data-in"].at(0).Receive(msg) > 0)
+        if (dataInChannel.Receive(msg) > 0)
         {
             receivedMsgs++;
             fOutput->Delete();

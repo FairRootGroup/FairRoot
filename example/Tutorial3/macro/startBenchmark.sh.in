@@ -7,12 +7,12 @@ else
 fi
 
 SAMPLER="bsampler"
-SAMPLER+=" --id 101"
+SAMPLER+=" --id bsampler1"
 SAMPLER+=" --event-size 10000"
-SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5565"
-xterm -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+SAMPLER+=" --config-json-file @CMAKE_BINARY_DIR@/bin/config/bsampler-sink.json"
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 SINK="sink"
-SINK+=" --id 201"
-SINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5565"
-xterm -e @CMAKE_BINARY_DIR@/bin/$SINK &
+SINK+=" --id sink1"
+SINK+=" --config-json-file @CMAKE_BINARY_DIR@/bin/config/bsampler-sink.json"
+xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SINK &

@@ -46,17 +46,21 @@ void FairMQProcessor::Run()
     int receivedMsgs = 0;
     int sentMsgs = 0;
 
-    while (GetCurrentState() == RUNNING)
+    // store the channel references to avoid traversing the map on every loop iteration
+    FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
+    FairMQChannel& dataOutChannel = fChannels.at("data-out").at(0);
+
+    while (CheckCurrentState(RUNNING))
     {
         fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
 
         ++receivedMsgs;
 
-        if (fChannels["data-in"].at(0).Receive(fProcessorTask->GetPayload()) > 0)
+        if (dataInChannel.Receive(fProcessorTask->GetPayload()) > 0)
         {
             fProcessorTask->Exec();
 
-            fChannels["data-out"].at(0).Send(fProcessorTask->GetPayload());
+            dataOutChannel.Send(fProcessorTask->GetPayload());
             sentMsgs++;
         }
 
@@ -68,20 +72,17 @@ void FairMQProcessor::Run()
 
 void FairMQProcessor::SendPart()
 {
-      fChannels["data-out"].at(0).Send(fProcessorTask->GetPayload(), "snd-more");
+      fChannels.at("data-out").at(0).Send(fProcessorTask->GetPayload(), "snd-more");
       fProcessorTask->GetPayload()->CloseMessage();
 }
 
 bool FairMQProcessor::ReceivePart()
 {
-    int64_t more = 0;
-    size_t more_size = sizeof(more);
-    fChannels["data-in"].at(0).fSocket->GetOption("rcv-more", &more, &more_size);
-    if (more)
+    if (fChannels.at("data-in").at(0).ExpectsAnotherPart())
     {
         fProcessorTask->GetPayload()->CloseMessage();
         fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
-        return fChannels["data-in"].at(0).Receive(fProcessorTask->GetPayload());
+        return fChannels.at("data-in").at(0).Receive(fProcessorTask->GetPayload());
     }
     else
     {
