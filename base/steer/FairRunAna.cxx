@@ -48,6 +48,7 @@
 #include "TTree.h"                      // for TTree
 
 #include <stdlib.h>                     // for NULL, exit
+#include "signal.h"
 #include <string.h>                     // for strcmp
 #include <iostream>                     // for operator<<, basic_ostream, etc
 #include <list>                         // for list
