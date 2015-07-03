@@ -27,37 +27,43 @@ else
 fi
 
 SAMPLER="testDetectorSampler$dataFormat"
-SAMPLER+=" --id 101"
+SAMPLER+=" --id SAMPLER1"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5565"
-xterm -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 PROXY1="proxy"
-PROXY1+=" --id 201"
+PROXY1+=" --id PROXY1"
 PROXY1+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5565"
 PROXY1+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5566"
-xterm -e @CMAKE_BINARY_DIR@/bin/$PROXY1 &
+xterm -geometry 80x23+0+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROXY1 &
 
 PROCESSOR1="testDetectorProcessor$dataFormat"
-PROCESSOR1+=" --id 301"
+PROCESSOR1+=" --id PROCESSOR1"
 PROCESSOR1+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
 PROCESSOR1+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5567"
-xterm -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
 PROCESSOR2="testDetectorProcessor$dataFormat"
-PROCESSOR2+=" --id 401"
+PROCESSOR2+=" --id PROCESSOR2"
 PROCESSOR2+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
 PROCESSOR2+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5567"
-xterm -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+
+PROCESSOR3="testDetectorProcessor$dataFormat"
+PROCESSOR3+=" --id PROCESSOR3"
+PROCESSOR3+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
+PROCESSOR3+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5567"
+xterm -geometry 80x23+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
 
 PROXY2="proxy"
-PROXY2+=" --id 501"
+PROXY2+=" --id PROXY2"
 PROXY2+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5567"
 PROXY2+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5570"
-xterm -e @CMAKE_BINARY_DIR@/bin/$PROXY2 &
+xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROXY2 &
 
 FILESINK="fileSink$dataFormat"
-FILESINK+=" --id 701"
+FILESINK+=" --id FILESINK1"
 FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5570"
-xterm -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+xterm -geometry 80x23+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &

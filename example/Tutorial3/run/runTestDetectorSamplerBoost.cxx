@@ -13,7 +13,6 @@
  */
 
 #include <iostream>
-#include <csignal>
 
 #include "boost/program_options.hpp"
 
@@ -39,30 +38,6 @@ typedef boost::archive::binary_oarchive TBoostBinPayloadOut; // boost binary for
 typedef boost::archive::text_oarchive TBoostTextPayloadOut;  // boost text format
 typedef TestDetectorDigiLoader<TDigi, TBoostBinPayloadOut> TLoader;
 typedef FairMQSampler<TLoader> TSampler;
-
-TSampler sampler;
-
-
-
-static void s_signal_handler(int signal)
-{
-    LOG(INFO) << "Caught signal " << signal;
-
-    sampler.ChangeState(TSampler::END);
-
-    LOG(INFO) << "Shutdown complete.";
-    exit(1);
-}
-
-static void s_catch_signals(void)
-{
-    struct sigaction action;
-    action.sa_handler = s_signal_handler;
-    action.sa_flags = 0;
-    sigemptyset(&action.sa_mask);
-    sigaction(SIGINT, &action, NULL);
-    sigaction(SIGTERM, &action, NULL);
-}
 
 typedef struct DeviceOptions
 {
@@ -148,7 +123,8 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
 int main(int argc, char** argv)
 {
-    s_catch_signals();
+    TSampler sampler;
+    sampler.CatchSignals();
 
     DeviceOptions_t options;
     try
@@ -196,17 +172,7 @@ int main(int argc, char** argv)
     sampler.WaitForEndOfState(TSampler::INIT_TASK);
 
     sampler.ChangeState(TSampler::RUN);
-    sampler.WaitForEndOfState(TSampler::RUN);
-
-    sampler.ChangeState(TSampler::STOP);
-
-    sampler.ChangeState(TSampler::RESET_TASK);
-    sampler.WaitForEndOfState(TSampler::RESET_TASK);
-
-    sampler.ChangeState(TSampler::RESET_DEVICE);
-    sampler.WaitForEndOfState(TSampler::RESET_DEVICE);
-
-    sampler.ChangeState(TSampler::END);
+    sampler.InteractiveStateLoop();
 
     return 0;
 }
