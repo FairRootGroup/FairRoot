@@ -122,6 +122,13 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
     EndIf (CMAKE_SYSTEM_NAME MATCHES Linux)
   endif (ROOT_FOUND_VERSION GREATER 59999)
 
+  if (CMAKE_COMPILER_IS_GNUCXX)
+    exec_program(${CMAKE_C_COMPILER} ARGS "-dumpversion" OUTPUT_VARIABLE _gcc_version_info)
+    string(REGEX REPLACE "^([0-9]+).*$"                   "\\1" GCC_MAJOR ${_gcc_version_info})
+    if(${GCC_MAJOR} GREATER 4)
+      set_source_files_properties( ${Int_DICTIONARY} PROPERTIES COMPILE_DEFINITIONS R__ACCESS_IN_SYMBOL)
+    endif()
+  endif()
 
 endmacro(ROOT_GENERATE_DICTIONARY_NEW)
 
