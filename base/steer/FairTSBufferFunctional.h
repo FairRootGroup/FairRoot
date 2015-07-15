@@ -160,9 +160,10 @@ class FairTSBufferFunctional : public TObject
     TClonesArray* GetData(Double_t stopParameter);
     TClonesArray* GetData(Double_t startParameter, Double_t stopParameter);
     Int_t GetBranchIndex() {return fBranchIndex;}
-    void SetStartFunction(BinaryFunctor* function) {fStartFunction=function;}
-    void SetStopFunction(BinaryFunctor* function) {fStopFunction = function;}
+    void SetStartFunction(BinaryFunctor* function) { fStartFunction = function;}
+    void SetStopFunction(BinaryFunctor* function)  { fStopFunction  = function;}
     Bool_t AllDataProcessed();
+    void Terminate(){ fTerminate == kTRUE; }
 
     Bool_t TimeOut() {
       Bool_t stopTimeOut = fStopFunction->TimeOut();
@@ -199,6 +200,8 @@ class FairTSBufferFunctional : public TObject
     TBranch* fBranch;
     Int_t fBranchIndex;
     Int_t fStartIndex;
+
+    Bool_t fTerminate;
 
     Int_t fVerbose;
 
