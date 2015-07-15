@@ -466,6 +466,27 @@ TClonesArray* FairRootManager::GetData(TString branchName, BinaryFunctor* startF
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRootManager::TerminateTSBuffer(TString branchName)
+{
+	if (fTSBufferMap.count(branchName) > 0){
+		fTSBufferMap[branchName]->Terminate();
+	}
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+
+void FairRootManager::TerminateAllTSBuffer()
+{
+	for (std::map<TString, FairTSBufferFunctional*>::iterator iter = fTSBufferMap.begin(); iter != fTSBufferMap.end(); iter++)
+	{
+		iter->second->Terminate();
+	}
+}
+
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 Bool_t FairRootManager::AllDataProcessed()
 {
   for(std::map<TString, FairTSBufferFunctional*>::iterator it = fTSBufferMap.begin(); it != fTSBufferMap.end(); it++) {
