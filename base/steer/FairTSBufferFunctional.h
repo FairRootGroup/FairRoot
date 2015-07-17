@@ -163,7 +163,7 @@ class FairTSBufferFunctional : public TObject
     void SetStartFunction(BinaryFunctor* function) { fStartFunction = function;}
     void SetStopFunction(BinaryFunctor* function)  { fStopFunction  = function;}
     Bool_t AllDataProcessed();
-    void Terminate(){ fTerminate == kTRUE; }
+    void Terminate(){ fTerminate = kTRUE; }
 
     Bool_t TimeOut() {
       Bool_t stopTimeOut = fStopFunction->TimeOut();

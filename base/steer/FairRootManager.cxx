@@ -107,7 +107,8 @@ FairRootManager::FairRootManager()
     fListFolder(0),
     fSource(0),
     fSourceChain( new TChain("cbmsim", "/cbmroot")),
-    fSignalChainList()
+    fSignalChainList(),
+    fFinishRun(kFALSE)
   {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
