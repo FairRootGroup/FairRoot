@@ -43,7 +43,7 @@ configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/macro/startTuto7AllTuto3.s
 configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/macro/startTuto7Sampler.sh.in ${CMAKE_BINARY_DIR}/bin/startTuto7Sampler.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/macro/startTuto7Processor.sh.in ${CMAKE_BINARY_DIR}/bin/startTuto7Processor.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/macro/startTuto7Sink.sh.in ${CMAKE_BINARY_DIR}/bin/startTuto7Sink.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/options/tuto7Config.cfg.in ${CMAKE_SOURCE_DIR}/example/Tutorial7/options/tuto7Config.cfg)
+configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/options/tuto7Config.cfg.in ${CMAKE_BINARY_DIR}/bin/config/tuto7Config.cfg)
 
 
 set(LINK_DIRECTORIES
@@ -89,10 +89,10 @@ Set(Exe_Names
     
     #tuto7GenerateData
 
-    #tuto7FairTestDetectorSamplerBoost
+    tuto7FairTestDetectorSamplerBoost
     tuto7FairTestDetectorProcessorBoost
     tuto7FairTestDetectorFileSinkBoost
-    #tuto7FairTestDetectorSamplerBin
+    tuto7FairTestDetectorSamplerBin
     tuto7FairTestDetectorProcessorBin
     tuto7FairTestDetectorFileSinkBin
 )
@@ -115,11 +115,11 @@ set(Exe_Source
 
     #run/runGenerateData.cxx
 
-    #run/FairTestDetector/runSamplerBoostT7b.cxx
+    run/FairTestDetector/runSamplerBoostT7b.cxx
     run/FairTestDetector/runProcessorBoostT7b.cxx
     run/FairTestDetector/runFileSinkBoostT7b.cxx
     
-    #run/FairTestDetector/runSamplerBinT7b.cxx
+    run/FairTestDetector/runSamplerBinT7b.cxx
     run/FairTestDetector/runProcessorBinT7b.cxx
     run/FairTestDetector/runFileSinkBinT7b.cxx
 )

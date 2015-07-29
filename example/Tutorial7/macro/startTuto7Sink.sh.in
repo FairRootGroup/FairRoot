@@ -22,7 +22,7 @@ else
 fi
 
 ########################## CONFIGFILE = ini/txt config file
-CONFIGFILE="@CMAKE_SOURCE_DIR@/example/Tutorial7/options/tuto7Config.cfg"
+CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/tuto7Config.cfg"
 
 ########################## MQCONFIGFILE = json by default 
 MQCONFIGFILE="@CMAKE_SOURCE_DIR@/example/Tutorial7/options/tuto7MQConfig-Sampler-Processor-Sink.json"
