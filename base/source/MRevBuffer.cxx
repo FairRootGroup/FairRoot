@@ -262,7 +262,9 @@ REvent* MRevBuffer::RevGet(TSocket* pSocket, Int_t iFlush, Int_t iSkip)
   Int_t iCommSize = sizeof(sComm);      // size comm. buffer (byte)
 
   Int_t* piInfo;
-  srevInfo sInfo = {.iSize=0, .iMode=1, .iHeadPar=0 , .iTimeOut=0 };
+  //srevInfo sInfo = {.iSize=0, .iMode=1, .iHeadPar=0 , .iTimeOut=0 };
+  /** To support C++98  we have to put the initializers in the right order without the names*/
+  srevInfo sInfo = {0, 1, 0 ,0 };
   Int_t iInfoSize = sizeof(sInfo);      // size info buffer (byte)
 
 //    Int_t iHeadPar = 12;         // no. of params in MBS buffer header
