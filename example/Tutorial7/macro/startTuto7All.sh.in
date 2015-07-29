@@ -26,7 +26,7 @@ fi
 # CONFIGFILE = ini/txt config file, which, in this example, 
 # contain path to json file for the MQDevice configuration (address, MQ methods, etc.), 
 # and other key-values specific to each device (input/output file names, branch, etc.)
-CONFIGFILE="@CMAKE_SOURCE_DIR@/example/Tutorial7/options/tuto7Config.cfg"
+CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/tuto7Config.cfg"
 
 ########################## start SAMPLER
 SAMPLER="tuto7Sampler$dataFormat"
