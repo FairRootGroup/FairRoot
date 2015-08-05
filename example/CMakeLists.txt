@@ -14,7 +14,7 @@ add_subdirectory (Tutorial3)
 add_subdirectory (Tutorial4)
 If(WITH_DBASE)
   add_subdirectory (Tutorial5)
-  add_subdirectory (Tutorial6)
+#  add_subdirectory (Tutorial6)
 EndIf()
 
 If(POS_C++11)
