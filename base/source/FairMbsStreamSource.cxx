@@ -118,17 +118,16 @@ Int_t FairMbsStreamSource::ReadEvent()
   for(Int_t i = 1; i <= nrSubEvts; i++) {
     void* SubEvtptr = &fxSubEvent;
     void* EvtDataptr = &fxEventData;
-    Int_t* nrlongwords = new Int_t;
+    Int_t nrlongwords;
 
-    f_evt_get_subevent(fxEvent, i, (Int_t**)SubEvtptr, (Int_t**)EvtDataptr, nrlongwords);
+    f_evt_get_subevent(fxEvent, i, (Int_t**)SubEvtptr, (Int_t**)EvtDataptr, &nrlongwords);
 
-    sebuflength = fxSubEvent->l_dlen;
+    sebuflength = nrlongwords;
     setype = fxSubEvent->i_type;
     sesubtype = fxSubEvent->i_subtype;
     seprocid = fxSubEvent->i_procid;
     sesubcrate = fxSubEvent->h_subcrate;
     secontrol = fxSubEvent->h_control;
-    delete nrlongwords;
 
     if(! Unpack(fxEventData, sebuflength,
                 setype, sesubtype,
