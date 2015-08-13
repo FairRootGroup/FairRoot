@@ -82,6 +82,7 @@ class FairTask : public TTask
       fInputPersistance = ioman->CheckBranch(branchName);
     }
 
+    virtual void  ExecuteTask(Option_t *option="0");  // *MENU*
 
   protected:
 
@@ -117,10 +118,10 @@ class FairTask : public TTask
     /** Recursive intialisation of subtasks at begin of run **/
     void InitTasks();
 
-
     /** Recursive reinitialisation of subtasks **/
     void ReInitTasks();
 
+    virtual void  ExecuteTasks(Option_t *option);
 
     /** Recursive parameter initialisation for subtasks **/
     void SetParTasks();

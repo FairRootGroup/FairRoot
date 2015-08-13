@@ -134,6 +134,86 @@ void FairTask::InitTasks()
 }
 // -------------------------------------------------------------------------
 
+//______________________________________________________________________________
+void FairTask::ExecuteTask(Option_t *option)
+{
+   // Execute main task and its subtasks.
+   // When calling this function, the Exec function of the corresponding class
+   // is invoked, then the list of its subtasks is executed calling recursively
+   // all the subtasks, etc.
+   //
+   // The option parameter may be used to select different execution steps
+   // within a task. This parameter is passed also to all the subtasks.
+
+   if (fgBeginTask) {
+      Error("ExecuteTask","Cannot execute task:%s, already running task: %s",GetName(),fgBeginTask->GetName());
+      return;
+   }
+   if (!IsActive()) return;
+
+   fOption = option;
+   fgBeginTask = this;
+   fgBreakPoint = 0;
+
+   if (fBreakin) return;
+   if (gDebug > 1) {
+     LOG(INFO)<<"Execute task:"<<GetName()<<" : "<<GetTitle()<<FairLogger::endl;
+   }
+   FairMonitor::GetMonitor()->StartTimer(this,"EXEC");
+   Exec(option);
+   FairMonitor::GetMonitor()->StopTimer(this,"EXEC");
+
+   fHasExecuted = kTRUE;
+   ExecuteTasks(option);
+
+   if (fBreakout) return;
+
+   if (!fgBreakPoint) {
+      fgBeginTask->CleanTasks();
+      fgBeginTask = 0;
+   }
+}
+// -------------------------------------------------------------------------
+
+//______________________________________________________________________________
+void FairTask::ExecuteTasks(Option_t *option)
+{
+   // Execute all the subtasks of a task.
+
+   TIter next(fTasks);
+   FairTask *task;
+   while((task=(FairTask*)next())) {
+      if (fgBreakPoint) return;
+      if (!task->IsActive()) continue;
+      if (task->fHasExecuted) {
+         task->ExecuteTasks(option);
+         continue;
+      }
+      if (task->fBreakin == 1) {
+         printf("Break at entry of task: %s\n",task->GetName());
+         fgBreakPoint = this;
+         task->fBreakin++;
+         return;
+      }
+
+      if (gDebug > 1) {
+	LOG(INFO)<<"Execute task:"<<task->GetName()<<" : "<<task->GetTitle()<<FairLogger::endl;
+      }
+      FairMonitor::GetMonitor()->StartTimer(task,"EXEC");
+      task->Exec(option);
+      FairMonitor::GetMonitor()->StopTimer(task,"EXEC");
+
+      task->fHasExecuted = kTRUE;
+      task->ExecuteTasks(option);
+      if (task->fBreakout == 1) {
+	printf("Break at exit of task: %s\n",task->GetName());
+	fgBreakPoint = this;
+	task->fBreakout++;
+	return;
+      }
+   }
+}
+// -------------------------------------------------------------------------
 
 
 // -----   Protected method ReInitTasks   ----------------------------------
