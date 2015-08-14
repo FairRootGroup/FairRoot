@@ -444,6 +444,13 @@ Int_t FairRootManager::GetBranchId(TString BrName)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRootManager::InitTSBuffer(TString branchName, BinaryFunctor* function)
+{
+	fTSBufferMap[branchName] = new FairTSBufferFunctional(branchName, GetInTree(), function);
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 TClonesArray*    FairRootManager::GetData(TString branchName, BinaryFunctor* function, Double_t parameter)
 {
   if (fTSBufferMap[branchName] == 0) {

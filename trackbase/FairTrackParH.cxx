@@ -133,7 +133,13 @@ FairTrackParH::FairTrackParH(Double_t x, Double_t y, Double_t z,
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	H[0] = .0;
+	H[1] = .0;
+	H[2] = .0;
+  }
 
   CH=fq;
   FairGeaneUtil util;
@@ -227,7 +233,13 @@ FairTrackParH::FairTrackParH(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	H[0] = .0;
+	H[1] = .0;
+	H[2] = .0;
+  }
 
   CH=fq;
   FairGeaneUtil util;
@@ -275,7 +287,15 @@ FairTrackParH::FairTrackParH(FairTrackParP* parab, Int_t& ierr)
   pnt[1] = xyz.Y();
   pnt[2] = xyz.Z();
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+
+  if (fRun->GetField() != 0)
+	fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	H[0] = .0;
+	H[1] = .0;
+	H[2] = .0;
+  }
+
   Int_t CH  = parab->GetQ();
 
   Double_t DJ[3] = {parab->GetJVer().X(), parab->GetJVer().Y(), parab->GetJVer().Z()};
@@ -361,7 +381,13 @@ void FairTrackParH::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	H[0] = .0;
+	H[1] = .0;
+	H[2] = .0;
+  }
 
   CH=fq;
   FairGeaneUtil util;
@@ -438,7 +464,13 @@ void  FairTrackParH::SetTrackPar(Double_t x,  Double_t y,  Double_t z,
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	H[0] = .0;
+	H[1] = .0;
+	H[2] = .0;
+  }
 
   CH=fq;
   FairGeaneUtil util;
@@ -596,7 +628,13 @@ FairTrackParH::FairTrackParH(FairTrackPar& Trkbase)
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	H[0] = .0;
+	H[1] = .0;
+	H[2] = .0;
+  }
 
   CH=fq;
   FairGeaneUtil fUtil;
