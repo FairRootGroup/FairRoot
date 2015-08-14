@@ -110,6 +110,7 @@ class FairRootManager : public TObject
 
     TClonesArray* GetCloneOfTClonesArray(const FairLink link);
 
+    void InitTSBuffer(TString branchName, BinaryFunctor* function);
     TClonesArray*     GetData(TString branchName, BinaryFunctor* function, Double_t parameter);
     TClonesArray*     GetData(TString branchName, BinaryFunctor* startFunction, Double_t startParameter, BinaryFunctor* stopFunction, Double_t stopParameter);
     void RegisterTSBuffer(TString branchName, FairTSBufferFunctional* functionalBuffer) {fTSBufferMap[branchName] = functionalBuffer;}

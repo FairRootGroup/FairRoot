@@ -214,7 +214,7 @@ void FairMultiLinkedData::InsertHistory(FairLink link)
                 pointerToLinks = interface->GetPointerToLinks();
         } else {
                 TClonesArray* dataArray = (TClonesArray*) ioman->GetObject(ioman->GetBranchName(link.GetType()));
-                if (link.GetIndex() < dataArray->GetEntriesFast()) {
+                if (dataArray != 0 && link.GetIndex() < dataArray->GetEntriesFast()) {
                         FairMultiLinkedData_Interface* interface = (FairMultiLinkedData_Interface*) dataArray->At(link.GetIndex());
                         pointerToLinks = interface->GetPointerToLinks();
 
