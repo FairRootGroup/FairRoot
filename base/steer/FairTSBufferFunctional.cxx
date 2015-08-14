@@ -30,7 +30,6 @@ FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* source
    fStopFunction (stopFunction),
    fBranch(NULL),
    fBranchIndex(-1),
-   fStartIndex(-1),
    fTerminate(kFALSE),
    fVerbose(0)
 {
