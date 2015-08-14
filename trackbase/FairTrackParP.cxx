@@ -152,7 +152,13 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	  fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	  H[0] = .0;
+	  H[1] = .0;
+	  H[2] = .0;
+  }
 
   CH=fq;
 
@@ -263,7 +269,14 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	  fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	  H[0] = .0;
+	  H[1] = .0;
+	  H[2] = .0;
+  }
+
 
   CH=fq;
 
@@ -369,7 +382,14 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	  fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	  H[0] = .0;
+	  H[1] = .0;
+	  H[2] = .0;
+  }
+
 
   CH=fq;
 
@@ -462,7 +482,14 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	  fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	  H[0] = .0;
+	  H[1] = .0;
+	  H[2] = .0;
+  }
+
 
   CH=fq;
 
@@ -526,7 +553,14 @@ FairTrackParP::FairTrackParP(FairTrackParH* helix, TVector3 dj, TVector3 dk, Int
   pnt[1] = xyz.Y();
   pnt[2] = xyz.Z();
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	  fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	  H[0] = .0;
+	  H[1] = .0;
+	  H[2] = .0;
+  }
+
   Int_t CH  = helix->GetQ();
 
   Double_t DJ[3] = {dj.X(), dj.Y(), dj.Z()};
@@ -608,7 +642,14 @@ void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	  fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	  H[0] = .0;
+	  H[1] = .0;
+	  H[2] = .0;
+  }
+
 
   CH=fq;
   util.FromMarsToSD(PD, RD, H, CH, fDJ, fDK, IERR, SP1, PC, RC);
@@ -706,7 +747,14 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
   pnt[1] = fY;
   pnt[2] = fZ;
   FairRunAna* fRun = FairRunAna::Instance();
-  fRun->GetField()->GetFieldValue(pnt, H);
+  if (fRun->GetField() != 0)
+	  fRun->GetField()->GetFieldValue(pnt, H);
+  else {
+	  H[0] = .0;
+	  H[1] = .0;
+	  H[2] = .0;
+  }
+
 
   CH=fq;
 
