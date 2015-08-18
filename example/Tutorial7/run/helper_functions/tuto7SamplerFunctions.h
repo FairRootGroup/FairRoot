@@ -6,20 +6,20 @@
  */
 
 #ifndef SAMPLERFUNCTIONS_H
-#define	SAMPLERFUNCTIONS_H
+#define SAMPLERFUNCTIONS_H
 
 #include "runGenericDevices.h"
 
 // dummy function to illustrate the task container feature
-void myfuncHello(){LOG(INFO)<<"Hello ";}
-void myfuncWorld(){LOG(INFO)<<"World ";}
+void myfuncHello() { LOG(INFO) << "Hello "; }
+void myfuncWorld() { LOG(INFO) << "World "; }
 
 template<typename TGenSampler>
 inline int runSampler(TGenSampler& sampler_, int argc, char** argv)
 {
     namespace po = boost::program_options;
     FairMQProgOptions config;
-        
+
     int eventRate;
     std::string filename;
     std::string treename;
@@ -37,18 +37,15 @@ inline int runSampler(TGenSampler& sampler_, int argc, char** argv)
         ("register-task-sampler",   po::value<bool>(&taskman)->default_value(false), "Register simple example")
     ;
 
-    
-    
     config.AddToCmdLineOptions(sampler_options);
-    config.AddToCfgFileOptions(sampler_options,false);
+    config.AddToCfgFileOptions(sampler_options, false);
 
-    if (config.ParseAll(argc, argv,true))
+    if (config.ParseAll(argc, argv, true))
     {
         return 1;
     }
-    
-    
-    if(taskman)
+
+    if (taskman)
     {
         sampler_.RegisterTask(
         [](SimpleTreeReader<TClonesArray>* t, std::map<int, std::function<void()> >& task_list) 
@@ -60,16 +57,16 @@ inline int runSampler(TGenSampler& sampler_, int argc, char** argv)
         }
     );
     }
-    
+
     /// configure sampler specific from parsed values
     sampler_.SetProperty(TGenSampler::EventRate, eventRate);
     // call function member from sampler policy
     sampler_.SetFileProperties(filename, treename, branchname);
-    
+
     /// configure FairMQdevice specific from parsed values (here json file)
     /// and start the state machine
     runStateMachine(sampler_, config);
-    
+
     return 0;
 }
 
@@ -77,8 +74,8 @@ template<typename TGenSampler>
 inline int InitSamplerSetting(TGenSampler& sampler_, FairMQProgOptions& config, int argc, char** argv)
 {
     namespace po = boost::program_options;
-    //FairMQProgOptions config;
-        
+    // FairMQProgOptions config;
+
     int eventRate;
     std::string filename;
     std::string treename;
@@ -87,29 +84,29 @@ inline int InitSamplerSetting(TGenSampler& sampler_, FairMQProgOptions& config, 
     po::options_description sampler_options("Sampler options");
     sampler_options.add_options()
         ("event-rate",              po::value<int>(&eventRate)->default_value(0),                   "Event rate limit in maximum number of events per second")
-        //TODO : make the semantic required for at least one source (and not both cfg & cmd)
-        //("input.file.name",         value<std::string>(&filename)->required(),                       "Path to the input file")
+        // TODO : make the semantic required for at least one source (and not both cfg & cmd)
+        // ("input.file.name",         value<std::string>(&filename)->required(),                       "Path to the input file")
         ("input.file.name",         po::value<std::string>(&filename),                               "Path to the input file")
         ("input.file.tree",         po::value<std::string>(&treename)->default_value("T7DataTree"),  "Name of the tree")
         ("input.file.branch",       po::value<std::string>(&branchname)->default_value("T7digidata"),"Name of the Branch")
         ("register-task-sampler",   po::value<bool>()->default_value(false), "Register simple example")
     ;
-    
-    config.AddToCmdLineOptions(sampler_options);
-    config.AddToCfgFileOptions(sampler_options,false);
 
-    if (config.ParseAll(argc, argv,true))
+    config.AddToCmdLineOptions(sampler_options);
+    config.AddToCfgFileOptions(sampler_options, false);
+
+    if (config.ParseAll(argc, argv, true))
     {
         return 1;
     }
-    
+
     /// configure sampler specific from parsed values
     sampler_.SetProperty(TGenSampler::EventRate, eventRate);
     // call function member from sampler policy
     sampler_.SetFileProperties(filename, treename, branchname);
-    
+
     return 0;
 }
 
-#endif	/* SAMPLERFUNCTIONS_H */
+#endif /* SAMPLERFUNCTIONS_H */
 
