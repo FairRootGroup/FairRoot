@@ -5,23 +5,21 @@
  *
  */
 
-////////// Base template class <T1,T2>
-
 template <typename T1, typename T2>
 TestDetectorDigiLoader<T1, T2>::TestDetectorDigiLoader()
     : FairMQSamplerTask("Load class T1")
     , fDigiVector()
-    , fHasBoostSerialization()
+    , fHasBoostSerialization(false)
 {
-    fHasBoostSerialization = true;
 #if __cplusplus >= 201103L
     using namespace baseMQ::tools::resolve;
-    fHasBoostSerialization = false;
     // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
     if (is_same<T2, boost::archive::binary_oarchive>::value || is_same<T2, boost::archive::text_oarchive>::value)
     {
         if (has_BoostSerialization<T1, void(T2&, const unsigned int)>::value == 1)
+        {
             fHasBoostSerialization = true;
+        }
     }
 #endif
 }
@@ -30,11 +28,12 @@ template <typename T1, typename T2>
 TestDetectorDigiLoader<T1, T2>::~TestDetectorDigiLoader()
 {
     if (fDigiVector.size() > 0)
+    {
         fDigiVector.clear();
+    }
 }
 
-
-// ----- Default implementation of TestDetectorDigiLoader::Exec() with Boost transport data format -----
+// Default implementation of TestDetectorDigiLoader::Exec() with Boost transport data format
 
 template <typename T1, typename T2>
 void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
@@ -53,7 +52,9 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
         {
             T1* digi = reinterpret_cast<T1*>(fInput->At(i));
             if (!digi)
+            {
                 continue;
+            }
             fDigiVector.push_back(*digi);
         }
 
@@ -64,7 +65,9 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
 
         // delete the vector content
         if (fDigiVector.size() > 0)
+        {
             fDigiVector.clear();
+        }
     }
     else
     {
@@ -72,7 +75,7 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
     }
 }
 
-// ----- Implementation of TestDetectorDigiLoader::Exec() with pure binary transport data format -----
+// Implementation of TestDetectorDigiLoader::Exec() with pure binary transport data format
 
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* opt)
@@ -98,7 +101,9 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Ex
     {
         FairTestDetectorDigi* digi = reinterpret_cast<FairTestDetectorDigi*>(fInput->At(i));
         if (!digi)
+        {
             continue;
+        }
         new (&ptr[i]) TestDetectorPayload::Digi();
         ptr[i] = TestDetectorPayload::Digi();
         ptr[i].fX = digi->GetX();
@@ -108,23 +113,24 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Ex
     }
 }
 
-// ----- Implementation of TestDetectorDigiLoader::Exec() with Root TMessage transport data format -----
+// Implementation of TestDetectorDigiLoader::Exec() with Root TMessage transport data format
 
 // helper function to clean up the object holding the data after it is transported.
 void free_tmessage (void *data, void *hint)
 {
-    delete (TMessage*)hint;
+    delete static_cast<TMessage*>(hint);
 }
 
 template <>
 void TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
 {
-    TMessage* tm = new TMessage(kMESS_OBJECT);
-    tm->WriteObject(fInput);
-    fOutput = fTransportFactory->CreateMessage(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
+    TMessage* message = new TMessage(kMESS_OBJECT);
+    message->WriteObject(fInput);
+    fOutput = fTransportFactory->CreateMessage(message->Buffer(), message->BufferSize(), free_tmessage, message);
+    // note: transport will cleanup the message object when the transfer is done using the provided deallocator (free_tmessage).
 }
 
-// ----- Implementation of TestDetectorDigiLoader::Exec() with Google Protocol Buffers transport data format -----
+// Implementation of TestDetectorDigiLoader::Exec() with Google Protocol Buffers transport data format
 
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
@@ -132,7 +138,7 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
 // helper function to clean up the object holding the data after it is transported.
 void free_string (void *data, void *hint)
 {
-    delete (string*)hint;
+    delete static_cast<string*>(hint);
 }
 
 template <>

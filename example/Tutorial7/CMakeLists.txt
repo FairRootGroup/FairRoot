@@ -49,7 +49,14 @@ configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/options/tuto7Config.cfg.in
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
     ${Boost_LIBRARY_DIRS}
-) 
+)
+
+if(DDS_PATH)
+  set(LINK_DIRECTORIES
+    ${LINK_DIRECTORIES}
+    ${DDS_PATH}/lib
+  )
+endif(DDS_PATH)
 
 link_directories(${LINK_DIRECTORIES})
 
