@@ -49,7 +49,14 @@ EndIf (Boost_FOUND)
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
   ${Boost_LIBRARY_DIRS}
-) 
+)
+
+if(DDS_PATH)
+  set(LINK_DIRECTORIES
+    ${LINK_DIRECTORIES}
+    ${DDS_PATH}/lib
+  )
+endif(DDS_PATH)
 
 Link_Directories(${LINK_DIRECTORIES})
 

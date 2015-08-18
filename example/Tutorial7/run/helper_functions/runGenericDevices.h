@@ -6,7 +6,7 @@
  */
 
 #ifndef RUNGENERICDEVICES_H
-#define	RUNGENERICDEVICES_H
+#define RUNGENERICDEVICES_H
 
 /// std
 #include <iostream>
@@ -38,18 +38,17 @@
 template<typename TMQDevice>
 inline int runStateMachine(TMQDevice& device, FairMQProgOptions& config)
 {
-    
     std::string jsonfile = config.GetValue<std::string>("config-json-file");
     std::string id = config.GetValue<std::string>("id");
     int ioThreads = config.GetValue<int>("io-threads");
-    
+
     config.UserParser<FairMQParser::JSON>(jsonfile, id);
 
     device.fChannels = config.GetFairMQMap();
-    
+
     device.SetProperty(TMQDevice::Id, id);
     device.SetProperty(TMQDevice::NumIoThreads, ioThreads);
-    
+
     LOG(INFO) << "PID: " << getpid();
 
 #ifdef NANOMSG
@@ -59,7 +58,7 @@ inline int runStateMachine(TMQDevice& device, FairMQProgOptions& config)
 #endif
 
     device.SetTransport(transportFactory);
-    
+
     device.ChangeState(TMQDevice::INIT_DEVICE);
     device.WaitForEndOfState(TMQDevice::INIT_DEVICE);
 
@@ -70,7 +69,7 @@ inline int runStateMachine(TMQDevice& device, FairMQProgOptions& config)
     device.WaitForEndOfState(TMQDevice::RUN);
 
     device.ChangeState(TMQDevice::STOP);
-    
+
     device.ChangeState(TMQDevice::RESET_TASK);
     device.WaitForEndOfState(TMQDevice::RESET_TASK);
 
@@ -78,7 +77,7 @@ inline int runStateMachine(TMQDevice& device, FairMQProgOptions& config)
     device.WaitForEndOfState(TMQDevice::RESET_DEVICE);
 
     device.ChangeState(TMQDevice::END);
-    
+
     return 0;
 }
 
@@ -88,8 +87,8 @@ inline int runStateMachine(TMQDevice& device, FairMQProgOptions& config)
 template<typename TGenDevice, typename TaskMan>
 inline int AddTask(TGenDevice& generic_device, FairMQProgOptions& config, TaskMan man)
 {
-    bool taskman=config.GetValue<bool>("register-task");
-    if(taskman)
+    bool taskman = config.GetValue<bool>("register-task");
+    if (taskman)
     {
         generic_device.RegisterTask(man);
     }
@@ -97,5 +96,5 @@ inline int AddTask(TGenDevice& generic_device, FairMQProgOptions& config, TaskMa
 }
 
 
-#endif	/* RUNGENERICDEVICES_H */
+#endif /* RUNGENERICDEVICES_H */
 

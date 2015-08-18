@@ -22,6 +22,13 @@ Set(LINK_DIRECTORIES
   ${Boost_LIBRARY_DIRS}
 )
 
+if(DDS_PATH)
+  set(LINK_DIRECTORIES
+    ${LINK_DIRECTORIES}
+    ${DDS_PATH}/lib
+  )
+endif(DDS_PATH)
+
 Link_Directories(${LINK_DIRECTORIES})
 
 Set(SRCS
@@ -33,29 +40,33 @@ Set(SRCS
 # to copy src that are header-only files (e.g. c++ template) for FairRoot external installation
 # manual install (globbing add not recommended)
 Set(BaseMQHDRFiles
-   baseMQtools/baseMQtools.h
-   devices/FairMQSampler.h
-   devices/FairMQSampler.tpl
-   policies/Sampler/SimpleTreeReader.h
-   policies/Serialization/BinaryBaseClassSerializer.h
-   policies/Serialization/BoostSerializer.h
-   policies/Serialization/RootSerializer.h
-   policies/Serialization/NoInputMethod.h
-   policies/Storage/RootOutFileManager.h
-   policies/Storage/RootOutFileManager.tpl
-   policies/Storage/BinaryOutFileManager.h
-   policies/Storage/BoostDataSaver.h
-   policies/Storage/TriviallyCopyableDataSaver.h
+  baseMQtools/baseMQtools.h
+  devices/FairMQSampler.h
+  devices/FairMQSampler.tpl
+  policies/Sampler/SimpleTreeReader.h
+  policies/Serialization/BinaryBaseClassSerializer.h
+  policies/Serialization/BoostSerializer.h
+  policies/Serialization/RootSerializer.h
+  policies/Serialization/NoInputMethod.h
+  policies/Storage/RootOutFileManager.h
+  policies/Storage/RootOutFileManager.tpl
+  policies/Storage/BinaryOutFileManager.h
+  policies/Storage/BoostDataSaver.h
+  policies/Storage/TriviallyCopyableDataSaver.h
 )
 install(FILES ${BaseMQHDRFiles} DESTINATION include)
 
-
 set(DEPENDENCIES
-  Base ParBase FairTools GeoBase boost_thread boost_timer boost_system FairMQ
+  Base
+  ParBase
+  FairTools
+  GeoBase
+  boost_thread
+  boost_timer
+  boost_system
+  FairMQ
 )
 
-
 set(LIBRARY_NAME BaseMQ)
-
 
 GENERATE_LIBRARY()
