@@ -11,7 +11,6 @@ TestDetectorDigiLoader<T1, T2>::TestDetectorDigiLoader()
     , fDigiVector()
     , fHasBoostSerialization(false)
 {
-#if __cplusplus >= 201103L
     using namespace baseMQ::tools::resolve;
     // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
     if (is_same<T2, boost::archive::binary_oarchive>::value || is_same<T2, boost::archive::text_oarchive>::value)
@@ -21,7 +20,6 @@ TestDetectorDigiLoader<T1, T2>::TestDetectorDigiLoader()
             fHasBoostSerialization = true;
         }
     }
-#endif
 }
 
 template <typename T1, typename T2>
@@ -50,7 +48,7 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
         T2 OutputArchive(buffer);
         for (Int_t i = 0; i < fInput->GetEntriesFast(); ++i)
         {
-            T1* digi = reinterpret_cast<T1*>(fInput->At(i));
+            T1* digi = static_cast<T1*>(fInput->At(i));
             if (!digi)
             {
                 continue;
@@ -95,11 +93,11 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Ex
     int size = nDigis * sizeof(TestDetectorPayload::Digi);
 
     fOutput = fTransportFactory->CreateMessage(size);
-    TestDetectorPayload::Digi* ptr = reinterpret_cast<TestDetectorPayload::Digi*>(fOutput->GetData());
+    TestDetectorPayload::Digi* ptr = static_cast<TestDetectorPayload::Digi*>(fOutput->GetData());
 
     for (Int_t i = 0; i < nDigis; ++i)
     {
-        FairTestDetectorDigi* digi = reinterpret_cast<FairTestDetectorDigi*>(fInput->At(i));
+        FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fInput->At(i));
         if (!digi)
         {
             continue;
@@ -150,7 +148,7 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload
 
     for (int i = 0; i < nDigis; ++i)
     {
-        FairTestDetectorDigi* digi = reinterpret_cast<FairTestDetectorDigi*>(fInput->At(i));
+        FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fInput->At(i));
         if (!digi)
         {
             continue;
