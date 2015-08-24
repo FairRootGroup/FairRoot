@@ -48,7 +48,7 @@ void FairMQSampler<Loader>::InitTask()
 
     fFairRunAna->SetInputFile(TString(fInputFile));
     // This loop can be used to duplicate input file to get more data. The output will still be a single file.
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 10; ++i) {
       fFairRunAna->AddFile(fInputFile);
     }
 

@@ -72,11 +72,11 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 
   private:
     FairTestDetectorRecoTask* fRecoTask;
+    bool fHasBoostSerialization;
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
     vector<TIn> fDigiVector;
     vector<TOut> fHitVector;
-    bool fHasBoostSerialization;
 #endif // for BOOST serialization
 
     /// Copy Constructor
