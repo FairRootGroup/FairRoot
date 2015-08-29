@@ -11,11 +11,18 @@
 if(FairRoot_DIR)
   SET(FAIRROOTPATH ${FairRoot_DIR})
 else()
-  IF(NOT DEFINED ENV{FAIRROOTPATH})
-        MESSAGE(FATAL_ERROR "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again.")
-    ENDIF(NOT DEFINED ENV{FAIRROOTPATH})
+  if(NOT DEFINED ENV{FAIRROOTPATH})
+    set(user_message "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot.\
+         Please set this variable and execute cmake again." )
+    if(FairRoot_FIND_REQUIRED)
+        MESSAGE(FATAL_ERROR ${user_message})
+    else(FairRoot_FIND_REQUIRED)
+        MESSAGE(WARNING ${user_message})
+        return()
+    endif(FairRoot_FIND_REQUIRED)
+  endif(NOT DEFINED ENV{FAIRROOTPATH})
  
-    SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
+  SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
 endif()
 
 MESSAGE(STATUS "Setting FairRoot environment…")
