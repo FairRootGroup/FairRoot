@@ -131,7 +131,7 @@ find_package(Protobuf)
 find_package(MYSQL)
 find_package(PGSQL)
 find_package(SQLITE)
-
+find_package(DDS)
 
 if(USE_NANOMSG)
   find_package(nanomsg)
