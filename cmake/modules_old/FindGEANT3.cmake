@@ -81,18 +81,21 @@ endif (GEANT3_INCLUDE_DIR AND GEANT3_LIBRARIES)
 MESSAGE(STATUS "Looking for GEANT3...")
 
 FIND_PATH(GEANT3_SYSTEM_DIR NAMES data PATHS
+  ${GEANT3_PATH}/share/geant3
   ${SIMPATH}/share/geant3
   ${SIMPATH}/transport/geant3
   NO_DEFAULT_PATH
 )
 
 FIND_PATH(GEANT3_INCLUDE_DIR NAMES TGeant3.h PATHS
+  ${GEANT3_PATH}/include/TGeant3
   ${SIMPATH}/include/TGeant3
   ${SIMPATH}/transport/geant3/TGeant3
   NO_DEFAULT_PATH
 )
 
 FIND_PATH(GEANT3_LIBRARY_DIR NAMES libgeant321.so PATHS
+  ${GEANT3_PATH}/lib
   ${SIMPATH}/lib
   ${SIMPATH}/transport/geant3/lib/tgt_linux
   ${SIMPATH}/transport/geant3/lib/tgt_linuxicc
@@ -102,6 +105,7 @@ FIND_PATH(GEANT3_LIBRARY_DIR NAMES libgeant321.so PATHS
 )
 
 FIND_LIBRARY(GEANT3_LIB NAMES geant321 PATHS
+  ${GEANT3_PATH}/lib
   ${SIMPATH}/lib
   ${SIMPATH}/transport/geant3/lib/tgt_linux
   ${SIMPATH}/transport/geant3/lib/tgt_linuxicc
