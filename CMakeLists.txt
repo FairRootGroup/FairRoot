@@ -107,7 +107,7 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # mandatory
 find_package(CUDA)
 find_package(ROOT 5.32.00 REQUIRED)
-find_package(Pythia6 REQUIRED)
+find_package(Pythia6)
 if(FAIRROOT_MODULAR_BUILD)
   # Geant3, Geant4 installed via cmake
   find_package(Geant3 REQUIRED)
