@@ -186,5 +186,5 @@ EndForEach(_file RANGE 0 ${_length})
 
 Set(EXE_NAME tuto7GenerateData)
 Set(SRCS run/runGenerateData.cxx)
-Set(DEPENDENCIES Tutorial7 RooFitCore RooFit Foam MathMore )
+Set(DEPENDENCIES Tutorial7 RooFitCore RooFit Foam )
 GENERATE_EXECUTABLE()
