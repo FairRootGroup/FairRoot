@@ -89,10 +89,11 @@ void FairRingSorter::WriteOutElement(int index)
   std::multimap<double, FairTimeStamp*>* myDataField = &fRingBuffer.at(index);
   std::multimap<double, FairTimeStamp*>::iterator it;
   if (!myDataField->empty()) {
-    if (fVerbose > 1) { ; }
-    std::cout << "-I- FairRingSorterT:WriteOutElement ";
-    myDataField->begin()->second->Print();
-    std::cout << std::endl;
+    if (fVerbose > 1) {
+		std::cout << "-I- FairRingSorter:WriteOutElement ";
+		myDataField->begin()->second->Print();
+		std::cout << std::endl;
+    }
     for (it = myDataField->begin(); it != myDataField->end(); it++) {
       fOutputData.push_back(it->second);
     }

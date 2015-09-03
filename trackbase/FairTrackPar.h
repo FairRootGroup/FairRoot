@@ -13,6 +13,8 @@
 #include "Rtypes.h"                     // for Double_t, Int_t, etc
 #include "TVector3.h"                   // for TVector3
 
+#include "FairRunAna.h"					// for GetFieldValue
+
 class FairTrackPar : public TObject
 {
 
@@ -88,6 +90,7 @@ class FairTrackPar : public TObject
       return fDQp;
     };
 
+    virtual void GetFieldValue(const Double_t point[3], Double_t* bField);
 
 
     virtual void SetX(Double_t x)   {
