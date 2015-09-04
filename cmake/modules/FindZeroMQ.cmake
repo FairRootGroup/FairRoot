@@ -5,8 +5,6 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-message(STATUS "Looking for ZeroMQ...")
-
 set(ZMQ_H zmq.hpp)
 set(ZMQ_UTILS_H zmq_utils.h)
 set(LIBZMQ_SHARED libzmq.dylib libzmq.so)
