@@ -35,15 +35,15 @@ Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 If (Boost_FOUND)
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh )
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAllProxy.sh.in ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh )
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startPushPull.sh.in ${CMAKE_BINARY_DIR}/bin/startPushPull.sh )
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startThree.sh.in ${CMAKE_BINARY_DIR}/bin/startThree.sh )
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh )
-  configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBenchmark.sh.in ${CMAKE_BINARY_DIR}/bin/startBenchmark.sh )
+  configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAllProxy.sh.in ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startPushPull.sh.in ${CMAKE_BINARY_DIR}/bin/startPushPull.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startThree.sh.in ${CMAKE_BINARY_DIR}/bin/startThree.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBenchmark.sh.in ${CMAKE_BINARY_DIR}/bin/startBenchmark.sh)
   # following scripts are only for protobuf tests and are not essential part of FairMQ
-  # configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBin.sh.in ${CMAKE_BINARY_DIR}/bin/startBin.sh )
-  # configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh )
+  # configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBin.sh.in ${CMAKE_BINARY_DIR}/bin/startBin.sh)
+  # configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh)
 EndIf (Boost_FOUND)
 
 Set(LINK_DIRECTORIES

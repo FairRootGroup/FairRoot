@@ -5,8 +5,6 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-message(STATUS "Looking for nanomsg...")
-
 if (APPLE)
   set(LIBNANOMSG_SHARED libnanomsg.dylib)
 else (APPLE)
