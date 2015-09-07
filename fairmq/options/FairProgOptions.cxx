@@ -255,8 +255,8 @@ std::string FairProgOptions::GetStringValue(const std::string& key)
         }
         catch(std::exception& e)
         {
-            MQLOG(ERROR) << "Exception thrown for the key '" << key << "'";
-            MQLOG(ERROR) << e.what();
+            LOG(ERROR) << "Exception thrown for the key '" << key << "'";
+            LOG(ERROR) << e.what();
         }
         
         return val_str;
@@ -320,7 +320,7 @@ int FairProgOptions::PrintOptions()
     
     // formatting and printing
 
-    MQLOG(INFO)<<std::setfill ('*') << std::setw (total_len+3)<<"*";// +3 because of string " = "
+    LOG(INFO)<<std::setfill ('*') << std::setw (total_len+3)<<"*";// +3 because of string " = "
     std::string PrintOptionsTitle="     Program options found     ";
 
     int leftSpace_len=0;
@@ -342,11 +342,11 @@ int FairProgOptions::PrintOptions()
         rightSpace_len=(total_len+3)/2-rightTitle_shift_len;
 
 
-    MQLOG(INFO) <<std::setfill ('*') << std::setw(leftSpace_len) <<"*"
+    LOG(INFO) <<std::setfill ('*') << std::setw(leftSpace_len) <<"*"
                 <<std::setw(PrintOptionsTitle.length()) << PrintOptionsTitle 
                 <<std::setfill ('*') << std::setw(rightSpace_len) <<"*";
 
-    MQLOG(INFO) <<std::setfill ('*') << std::setw (total_len+3)<<"*";
+    LOG(INFO) <<std::setfill ('*') << std::setw (total_len+3)<<"*";
 
     for (const auto& p : mapinfo)
     {
@@ -357,7 +357,7 @@ int FairProgOptions::PrintOptions()
         std::string empty_str;
         key_str=p.first;
         std::tie(val_str,typeInfo_str,default_str,empty_str)=p.second;
-        MQLOG(INFO) << std::setw(maxlen_1st)<<std::left 
+        LOG(INFO) << std::setw(maxlen_1st)<<std::left 
                     << p.first << " = " 
                     << std::setw(maxlen_2nd) 
                     << val_str 
@@ -368,7 +368,7 @@ int FairProgOptions::PrintOptions()
                     << std::setw(maxlen_empty)
                     << empty_str;
     }
-    MQLOG(INFO)<<std::setfill ('*') << std::setw (total_len+3)<<"*";// +3 for " = "
+    LOG(INFO)<<std::setfill ('*') << std::setw (total_len+3)<<"*";// +3 for " = "
     return 0;
 }
 
