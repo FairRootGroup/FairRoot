@@ -1,0 +1,58 @@
+
+void unpack_mbs()
+{
+    TStopwatch timer;
+    timer.Start();
+
+    // Create source with unpackers ----------------------------------------------
+    TString dir = getenv("VMCWORKDIR");
+    TString tutdir = dir + "/Tutorial8";
+
+    FairLmdSource* source = new FairLmdSource();
+    source->AddFile(tutdir + "/data/sample_data_2.lmd");
+
+    // NeuLAND MBS parameters -------------------------------
+    Short_t type = 94;
+    Short_t subType = 9400;
+    Short_t procId = 12;
+    Short_t subCrate = 0;
+    Short_t control = 3;
+    FairTut8Unpack* unpacker = new FairTut8Unpack(type, subType, procId, subCrate, control);
+    source->AddUnpacker(unpacker);
+    // ------------------------------------------------------
+
+    // Create online run ---------------------------------------------------------
+    FairRunOnline* run = new FairRunOnline(source);
+    run->SetOutputFile("output.root");
+    // ---------------------------------------------------------------------------
+
+    // Initialize ----------------------------------------------------------------
+    run->Init();
+    // ---------------------------------------------------------------------------
+
+    // Runtime data base ---------------------------------------------------------
+    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    Bool_t kParameterMerged = kTRUE;
+    FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
+    parOut->open("params.root");
+    rtdb->setOutput(parOut);
+    rtdb->print();
+    // ---------------------------------------------------------------------------
+
+    // Run -----------------------------------------------------------------------
+    run->Run(0, 100);
+    rtdb->saveOutput();
+    // ---------------------------------------------------------------------------
+
+    timer.Stop();
+    Double_t rtime = timer.RealTime();
+    Double_t ctime = timer.CpuTime();
+    Int_t nHits = unpacker->GetNHitsTotal();
+    if(3430 == nHits)
+    {
+        cout << endl << endl;
+        cout << "Macro finished successfully." << endl;
+        cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
+    }
+}
+
