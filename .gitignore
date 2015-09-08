@@ -33,6 +33,8 @@ install_manifest.txt
 build/
 example/Tutorial3/macro/data/*
 !example/Tutorial3/macro/data/dummy.txt
+example/Tutorial7/macro/datasource/*
+!example/Tutorial7/macro/datasource/README.md
 core_dump*
 gphysi.dat
 FairRunInfo_*

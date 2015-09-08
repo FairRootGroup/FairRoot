@@ -5,46 +5,20 @@
  * Created on July 7, 2015, 4:28 PM
  */
 
-
-/// std
-#include <csignal>
-
-/// FairRoot - FairMQ
+// FairRoot - FairMQ
 #include "FairMQSplitter.h"
 
-/// FairRoot - Tutorial7
+// FairRoot - Tutorial7
 #include "runGenericDevices.h"
-
-FairMQSplitter splitter;
-
-static void s_signal_handler(int signal)
-{
-    LOG(INFO) << "Caught signal " << signal;
-
-    splitter.ChangeState(FairMQSplitter::END);
-
-    LOG(INFO) << "Shutdown complete.";
-    exit(1);
-}
-
-static void s_catch_signals(void)
-{
-    struct sigaction action;
-    action.sa_handler = s_signal_handler;
-    action.sa_flags = 0;
-    sigemptyset(&action.sa_mask);
-    sigaction(SIGINT, &action, NULL);
-    sigaction(SIGTERM, &action, NULL);
-}
-
 
 int main(int argc, char** argv) 
 {
     try
     {
+        FairMQSplitter splitter;
         FairMQProgOptions config;
         config.UseConfigFile();
-        if (config.ParseAll(argc, argv,true))
+        if (config.ParseAll(argc, argv, true))
         {
             return 1;
         }
@@ -57,7 +31,7 @@ int main(int argc, char** argv)
                     << e.what() << ", application will now exit";
         return 1;
     }
-    
+
     return 0;
 }
 

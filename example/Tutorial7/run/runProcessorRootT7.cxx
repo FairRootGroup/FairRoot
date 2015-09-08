@@ -5,7 +5,6 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-
 /*
  * File:   runProcessorRoot.cxx
  * Author: winckler
@@ -13,23 +12,21 @@
  * Created on January 15, 2015, 4:05 PM
  */
 
-/// std
-#include <csignal>
-
-/// FairRoot - FairMQ
+// FairRoot - FairMQ
 #include "GenericProcessor.h"
 
-/// FairRoot - base/MQ
+// FairRoot - base/MQ
 #include "RootSerializer.h"
 
-/// FairRoot - Tutorial7 
+// FairRoot - Tutorial7 
 #include "tuto7ProcessorFunctions.h"
 #include "DigiToHitTask.h"
 #include "MyDigi.h"
 #include "MyHit.h"
 
-using namespace std;
-/// ////////////////////////////////////////////////////////////////////////
+
+
+// ////////////////////////////////////////////////////////////////////////
 // payload and policy type definitions
 typedef MyDigi              TDigi; 
 typedef MyHit               THit;
@@ -41,36 +38,15 @@ typedef DigiToHitTask_TCA<TDigi,THit> TTaskPolicy; // process deserialized digi 
 
 typedef GenericProcessor<TInputPolicy,TOutputPolicy,TTaskPolicy> TProcessor;
 
-TProcessor processor;
-
-static void s_signal_handler(int signal)
-{
-    LOG(INFO) << "Caught signal " << signal;
-
-    processor.ChangeState(TProcessor::END);
-
-    LOG(INFO) << "Shutdown complete.";
-    exit(1);
-}
-
-static void s_catch_signals(void)
-{
-    struct sigaction action;
-    action.sa_handler = s_signal_handler;
-    action.sa_flags = 0;
-    sigemptyset(&action.sa_mask);
-    sigaction(SIGINT, &action, NULL);
-    sigaction(SIGTERM, &action, NULL);
-}
-
-
 int main(int argc, char** argv)
 {
     try
     {
-        s_catch_signals();
-        if(runProcessor(processor,argc,argv))
+        TProcessor processor;
+        if (runProcessor(processor, argc, argv))
+        {
             return 1;
+        }
     }
     catch (std::exception& e)
     {
@@ -78,7 +54,7 @@ int main(int argc, char** argv)
                     << e.what() << ", application will now exit";
         return 1;
     }
-    
+
     return 0;
 }
 
