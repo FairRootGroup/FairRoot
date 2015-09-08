@@ -110,8 +110,8 @@ void FairMQSampler<Loader>::Run()
         }
     } while (CheckCurrentState(RUNNING) && fContinuous);
 
-    boost::timer::cpu_times const elapsed_time(timer.elapsed());
-    LOG(INFO) << "Sent everything in:\n" << boost::timer::format(elapsed_time, 2);
+    boost::timer::cpu_times const elapsedTime(timer.elapsed());
+    LOG(INFO) << "Sent everything in:\n" << boost::timer::format(elapsedTime, 2);
     LOG(INFO) << "Sent " << sentMsgs << " messages!";
 }
 
