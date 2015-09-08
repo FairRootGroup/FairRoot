@@ -38,6 +38,7 @@
 template<typename TMQDevice>
 inline int runStateMachine(TMQDevice& device, FairMQProgOptions& config)
 {
+    device.CatchSignals();
     std::string jsonfile = config.GetValue<std::string>("config-json-file");
     std::string id = config.GetValue<std::string>("id");
     int ioThreads = config.GetValue<int>("io-threads");
@@ -66,17 +67,7 @@ inline int runStateMachine(TMQDevice& device, FairMQProgOptions& config)
     device.WaitForEndOfState(TMQDevice::INIT_TASK);
 
     device.ChangeState(TMQDevice::RUN);
-    device.WaitForEndOfState(TMQDevice::RUN);
-
-    device.ChangeState(TMQDevice::STOP);
-
-    device.ChangeState(TMQDevice::RESET_TASK);
-    device.WaitForEndOfState(TMQDevice::RESET_TASK);
-
-    device.ChangeState(TMQDevice::RESET_DEVICE);
-    device.WaitForEndOfState(TMQDevice::RESET_DEVICE);
-
-    device.ChangeState(TMQDevice::END);
+    device.InteractiveStateLoop();
 
     return 0;
 }
