@@ -21,4 +21,5 @@ If(POS_C++11)
   add_subdirectory(Tutorial7)
 EndIf()
 
+add_subdirectory(Tutorial8)
 add_subdirectory (rutherford)
