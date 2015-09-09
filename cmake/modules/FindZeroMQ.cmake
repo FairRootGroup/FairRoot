@@ -9,7 +9,7 @@ message(STATUS "Looking for ZeroMQ...")
 
 set(ZMQ_H zmq.hpp)
 set(ZMQ_UTILS_H zmq_utils.h)
-set(LIBZMQ_SHARED libzmq.so)
+set(LIBZMQ_SHARED libzmq.dylib libzmq.so)
 set(LIBZMQ_STATIC libzmq.a)
 
 find_path(ZMQ_INCLUDE_DIR NAMES ${ZMQ_H} ${ZMQ_UTILS_H}
