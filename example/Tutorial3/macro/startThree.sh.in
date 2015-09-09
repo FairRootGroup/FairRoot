@@ -8,38 +8,41 @@ fi
 
 mcEngine="TGeant3"
 
-dataFormat="Bin"
-if [ "$1" = "bin" ]; then
+dataFormat="binary"
+if [ "$1" = "binary" ]; then
     echo "attempting to use pure binary data format"
 elif [ "$1" = "boost" ]; then
-    dataFormat="Boost"
+    dataFormat="boost"
     echo "attempting to use Boost serialized data format"
-elif [ "$1" = "proto" ]; then
-    dataFormat="Proto"
+elif [ "$1" = "protobuf" ]; then
+    dataFormat="protobuf"
     echo "attempting to use Google Protocol Buffers data format"
-elif [ "$1" = "root" ]; then
-    dataFormat="Root"
+elif [ "$1" = "tmessage" ]; then
+    dataFormat="tmessage"
     echo "attempting to use Root TMessage data format"
 else
     echo "none or incorrect data formats provided."
-    echo "(available data format options are: bin, boost, proto, root)"
+    echo "(available data format options are: binary, boost, protobuf, tmessage)"
     echo "binary data format will be used."
 fi
 
-SAMPLER="testDetectorSampler$dataFormat"
+SAMPLER="testDetectorSampler"
 SAMPLER+=" --id 101"
+SAMPLER+=" --data-format $dataFormat"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5565"
 xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
-PROCESSOR="testDetectorProcessor$dataFormat"
+PROCESSOR="testDetectorProcessor"
 PROCESSOR+=" --id 201"
+PROCESSOR+=" --data-format $dataFormat"
 PROCESSOR+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5565"
 PROCESSOR+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5570"
 xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR &
 
-FILESINK="fileSink$dataFormat"
+FILESINK="testDetectorFileSink"
 FILESINK+=" --id 301"
+FILESINK+=" --data-format $dataFormat"
 FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5570"
 xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &

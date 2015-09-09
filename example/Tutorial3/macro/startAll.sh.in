@@ -8,26 +8,27 @@ fi
 
 mcEngine="TGeant3"
 
-dataFormat="Bin"
-if [ "$1" = "bin" ]; then
+dataFormat="binary"
+if [ "$1" = "binary" ]; then
     echo "attempting to use pure binary data format"
 elif [ "$1" = "boost" ]; then
-    dataFormat="Boost"
+    dataFormat="boost"
     echo "attempting to use Boost serialized data format"
-elif [ "$1" = "proto" ]; then
-    dataFormat="Proto"
+elif [ "$1" = "protobuf" ]; then
+    dataFormat="protobuf"
     echo "attempting to use Google Protocol Buffers data format"
-elif [ "$1" = "root" ]; then
-    dataFormat="Root"
+elif [ "$1" = "tmessage" ]; then
+    dataFormat="tmessage"
     echo "attempting to use Root TMessage data format"
 else
     echo "none or incorrect data formats provided."
-    echo "(available data format options are: bin, boost, proto, root)"
+    echo "(available data format options are: binary, boost, protobuf, tmessage)"
     echo "binary data format will be used."
 fi
 
-SAMPLER="testDetectorSampler$dataFormat"
+SAMPLER="testDetectorSampler"
 SAMPLER+=" --id 101"
+SAMPLER+=" --data-format $dataFormat"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5565"
@@ -42,20 +43,23 @@ SPLITTER+=" --output-socket-type push --output-buff-size $buffSize --output-meth
 SPLITTER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5568"
 xterm -geometry 80x23+0+350 -hold -e @CMAKE_BINARY_DIR@/bin/$SPLITTER &
 
-PROCESSOR1="testDetectorProcessor$dataFormat"
+PROCESSOR1="testDetectorProcessor"
 PROCESSOR1+=" --id 301"
+PROCESSOR1+=" --data-format $dataFormat"
 PROCESSOR1+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
 PROCESSOR1+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5569"
 xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
-PROCESSOR2="testDetectorProcessor$dataFormat"
+PROCESSOR2="testDetectorProcessor"
 PROCESSOR2+=" --id 401"
+PROCESSOR2+=" --data-format $dataFormat"
 PROCESSOR2+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5567"
 PROCESSOR2+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5570"
 xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
 
-PROCESSOR3="testDetectorProcessor$dataFormat"
+PROCESSOR3="testDetectorProcessor"
 PROCESSOR3+=" --id 501"
+PROCESSOR3+=" --data-format $dataFormat"
 PROCESSOR3+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5568"
 PROCESSOR3+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5571"
 xterm -geometry 80x23+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
@@ -69,7 +73,8 @@ MERGER+=" --input-socket-type pull --input-buff-size $buffSize --input-method bi
 MERGER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5572"
 xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
 
-FILESINK="fileSink$dataFormat"
+FILESINK="testDetectorFileSink"
 FILESINK+=" --id 701"
+FILESINK+=" --data-format $dataFormat"
 FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5572"
 xterm -geometry 80x23+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
