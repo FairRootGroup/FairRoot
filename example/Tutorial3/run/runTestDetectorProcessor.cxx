@@ -6,10 +6,10 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * runTestDetectorProcessorBoost.cxx
+ * runTestDetectorProcessor.cxx
  *
  * @since 2012-10-26
- * @author D. Klein, A. Rybalchenko
+ * @author A. Rybalchenko, N. Winckler
  */
 
 #include <iostream>
@@ -27,32 +27,53 @@
 
 #include "FairTestDetectorMQRecoTask.h"
 
+// data format for the task
+#include "FairTestDetectorDigi.h"
+#include "FairTestDetectorHit.h"
+
+// binary data format
+#include "FairTestDetectorPayload.h"
+
+// boost data format
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
-#include "FairTestDetectorHit.h"
-#include "FairTestDetectorDigi.h"
+
+// Google Protocol Buffers data format
+#include "FairTestDetectorPayload.pb.h"
+
+// TMessage data format
+#include "TMessage.h"
 
 using namespace std;
 
-typedef FairTestDetectorDigi TDigi;                          // class to serialize/deserialize
-typedef FairTestDetectorHit THit;                            // class to serialize/deserialize
+typedef TestDetectorPayload::Digi TPayloadIn; // binary input payload
+typedef TestDetectorPayload::Hit TPayloadOut; // binary output payload
+
 typedef boost::archive::binary_iarchive TBoostBinPayloadIn;  // boost binary format
 typedef boost::archive::text_iarchive TBoostTextPayloadIn;   // boost text format
 typedef boost::archive::binary_oarchive TBoostBinPayloadOut; // boost binary format
 typedef boost::archive::text_oarchive TBoostTextPayloadOut;  // boost text format
-typedef FairTestDetectorMQRecoTask<TDigi, THit, TBoostBinPayloadIn, TBoostBinPayloadOut> TProcessorTask;
+
+typedef TestDetectorProto::DigiPayload TProtoDigiPayload; // protobuf payload
+typedef TestDetectorProto::HitPayload TProtoHitPayload;   // protobuf payload
+
+typedef FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TPayloadIn, TPayloadOut> TProcessorTaskBin;
+typedef FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TBoostBinPayloadIn, TBoostBinPayloadOut> TProcessorTaskBoost;
+typedef FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TProtoDigiPayload, TProtoHitPayload> TProcessorTaskProtobuf;
+typedef FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage> TProcessorTaskTMessage;
 
 typedef struct DeviceOptions
 {
     DeviceOptions() :
-        id(), ioThreads(0), processorTask(),
+        id(), ioThreads(0), dataFormat(), processorTask(),
         inputSocketType(), inputBufSize(0), inputMethod(), inputAddress(),
         outputSocketType(), outputBufSize(0), outputMethod(), outputAddress() {}
 
     string id;
     int ioThreads;
+    string dataFormat;
     string processorTask;
     string inputSocketType;
     int inputBufSize;
@@ -74,6 +95,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
     desc.add_options()
         ("id", bpo::value<string>()->required(), "Device ID")
         ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
+        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/protobuf/tmessage)")
         ("processor-task", bpo::value<string>()->default_value("FairTestDetectorMQRecoTask"), "Name of the Processor Task")
         ("input-socket-type", bpo::value<string>()->required(), "Input socket type: sub/pull")
         ("input-buff-size", bpo::value<int>()->required(), "Input buffer size in number of messages (ZeroMQ)/bytes(nanomsg)")
@@ -88,7 +110,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
     bpo::variables_map vm;
     bpo::store(bpo::parse_command_line(_argc, _argv, desc), vm);
 
-    if ( vm.count("help") )
+    if (vm.count("help"))
     {
         LOG(INFO) << "FairMQ Test Detector Processor" << endl << desc;
         return false;
@@ -96,60 +118,27 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
     bpo::notify(vm);
 
-    if ( vm.count("id") )
-        _options->id = vm["id"].as<string>();
-
-    if ( vm.count("io-threads") )
-        _options->ioThreads = vm["io-threads"].as<int>();
-
-    if ( vm.count("processor-task") )
-        _options->processorTask = vm["processor-task"].as<string>();
-
-    if ( vm.count("input-socket-type") )
-        _options->inputSocketType = vm["input-socket-type"].as<string>();
-
-    if ( vm.count("input-buff-size") )
-        _options->inputBufSize = vm["input-buff-size"].as<int>();
-
-    if ( vm.count("input-method") )
-        _options->inputMethod = vm["input-method"].as<string>();
-
-    if ( vm.count("input-address") )
-        _options->inputAddress = vm["input-address"].as<string>();
-
-    if ( vm.count("output-socket-type") )
-        _options->outputSocketType = vm["output-socket-type"].as<string>();
-
-    if ( vm.count("output-buff-size") )
-        _options->outputBufSize = vm["output-buff-size"].as<int>();
-
-    if ( vm.count("output-method") )
-        _options->outputMethod = vm["output-method"].as<string>();
-
-    if ( vm.count("output-address") )
-        _options->outputAddress = vm["output-address"].as<string>();
+    if (vm.count("id"))                 { _options->id               = vm["id"].as<string>(); }
+    if (vm.count("io-threads"))         { _options->ioThreads        = vm["io-threads"].as<int>(); }
+    if (vm.count("data-format"))        { _options->dataFormat       = vm["data-format"].as<string>(); }
+    if (vm.count("processor-task"))     { _options->processorTask    = vm["processor-task"].as<string>(); }
+    if (vm.count("input-socket-type"))  { _options->inputSocketType  = vm["input-socket-type"].as<string>(); }
+    if (vm.count("input-buff-size"))    { _options->inputBufSize     = vm["input-buff-size"].as<int>(); }
+    if (vm.count("input-method"))       { _options->inputMethod      = vm["input-method"].as<string>(); }
+    if (vm.count("input-address"))      { _options->inputAddress     = vm["input-address"].as<string>(); }
+    if (vm.count("output-socket-type")) { _options->outputSocketType = vm["output-socket-type"].as<string>(); }
+    if (vm.count("output-buff-size"))   { _options->outputBufSize    = vm["output-buff-size"].as<int>(); }
+    if (vm.count("output-method"))      { _options->outputMethod     = vm["output-method"].as<string>(); }
+    if (vm.count("output-address"))     { _options->outputAddress    = vm["output-address"].as<string>(); }
 
     return true;
 }
 
-int main(int argc, char** argv)
+template<typename T>
+void runProcessor(const DeviceOptions_t& options)
 {
     FairMQProcessor processor;
     processor.CatchSignals();
-
-    DeviceOptions_t options;
-    try
-    {
-        if (!parse_cmd_line(argc, argv, &options))
-            return 0;
-    }
-    catch (exception& e)
-    {
-        LOG(ERROR) << e.what();
-        return 1;
-    }
-
-    LOG(INFO) << "PID: " << getpid();
 
 #ifdef NANOMSG
     FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
@@ -178,7 +167,7 @@ int main(int argc, char** argv)
 
     if (strcmp(options.processorTask.c_str(), "FairTestDetectorMQRecoTask") == 0)
     {
-        TProcessorTask* task = new TProcessorTask();
+        T* task = new T();
         processor.SetTask(task);
     }
     else
@@ -187,14 +176,42 @@ int main(int argc, char** argv)
         exit(1);
     }
 
-    processor.ChangeState(FairMQProcessor::INIT_DEVICE);
-    processor.WaitForEndOfState(FairMQProcessor::INIT_DEVICE);
+    processor.ChangeState("INIT_DEVICE");
+    processor.WaitForEndOfState("INIT_DEVICE");
 
-    processor.ChangeState(FairMQProcessor::INIT_TASK);
-    processor.WaitForEndOfState(FairMQProcessor::INIT_TASK);
+    processor.ChangeState("INIT_TASK");
+    processor.WaitForEndOfState("INIT_TASK");
 
-    processor.ChangeState(FairMQProcessor::RUN);
+    processor.ChangeState("RUN");
     processor.InteractiveStateLoop();
+}
+
+int main(int argc, char** argv)
+{
+
+    DeviceOptions_t options;
+    try
+    {
+        if (!parse_cmd_line(argc, argv, &options))
+            return 0;
+    }
+    catch (exception& e)
+    {
+        LOG(ERROR) << e.what();
+        return 1;
+    }
+
+    LOG(INFO) << "PID: " << getpid();
+
+    if (options.dataFormat == "binary") { runProcessor<TProcessorTaskBin>(options); }
+    else if (options.dataFormat == "boost") { runProcessor<TProcessorTaskBoost>(options); }
+    else if (options.dataFormat == "protobuf") { runProcessor<TProcessorTaskProtobuf>(options); }
+    else if (options.dataFormat == "tmessage") { runProcessor<TProcessorTaskTMessage>(options); }
+    else
+    {
+        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|protobuf|tmessage). ";
+        return 1;
+    }
 
     return 0;
 }
