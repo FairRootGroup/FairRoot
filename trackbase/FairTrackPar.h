@@ -13,6 +13,8 @@
 #include "Rtypes.h"                     // for Double_t, Int_t, etc
 #include "TVector3.h"                   // for TVector3
 
+#include "FairRunAna.h"					// for GetFieldValue
+
 class FairTrackPar : public TObject
 {
 
