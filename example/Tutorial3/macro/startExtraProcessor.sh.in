@@ -6,21 +6,21 @@ else
     buffSize="1000" # zeromq high-water mark is in messages
 fi
 
-dataFormat="Bin"
-if [ "$1" = "bin" ]; then
+dataFormat="binary"
+if [ "$1" = "binary" ]; then
     echo "attempting to use pure binary data format"
 elif [ "$1" = "boost" ]; then
-    dataFormat="Boost"
+    dataFormat="boost"
     echo "attempting to use Boost serialized data format"
-elif [ "$1" = "proto" ]; then
-    dataFormat="Proto"
+elif [ "$1" = "protobuf" ]; then
+    dataFormat="protobuf"
     echo "attempting to use Google Protocol Buffers data format"
-elif [ "$1" = "root" ]; then
-    dataFormat="Root"
+elif [ "$1" = "tmessage" ]; then
+    dataFormat="tmessage"
     echo "attempting to use Root TMessage data format"
 else
     echo "none or incorrect data formats provided."
-    echo "(available data format options are: bin, boost, proto, root)"
+    echo "(available data format options are: binary, boost, protobuf, tmessage)"
     echo "binary data format will be used."
 fi
 
@@ -39,6 +39,6 @@ counter=0
 
 while [ $counter -lt $2 ]
 do
-    xterm -hold -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor$dataFormat --id $((ID+counter)) --input-socket-type $inputSocketType --input-buff-size $inputBufSize --input-method $inputMethod --input-address $inputAddress --output-socket-type $outputSocketType --output-buff-size $outputBufSize --output-method $outputMethod --output-address $outputAddress &
+    xterm -hold -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor --id $((ID+counter)) --data-format $dataFormat --input-socket-type $inputSocketType --input-buff-size $inputBufSize --input-method $inputMethod --input-address $inputAddress --output-socket-type $outputSocketType --output-buff-size $outputBufSize --output-method $outputMethod --output-address $outputAddress &
     counter=$(( $counter + 1 ))
 done

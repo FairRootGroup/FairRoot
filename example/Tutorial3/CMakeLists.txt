@@ -88,22 +88,20 @@ If (Boost_FOUND)
     data/FairTestDetectorDigi.cxx
   )
 
-  If(PROTOBUF_FOUND)
-    add_custom_command(
-      OUTPUT
-        ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.h
-        ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
-      COMMAND
-        ${SIMPATH}/bin/protoc -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayload.proto
-      WORKING_DIRECTORY
-        ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
-      )
-
-    Set(NO_DICT_SRCS
-      ${NO_DICT_SRCS}
+  add_custom_command(
+    OUTPUT
+      ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.h
       ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
+    COMMAND
+      ${SIMPATH}/bin/protoc -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayload.proto
+    WORKING_DIRECTORY
+      ${CMAKE_SOURCE_DIR}/example/Tutorial3/data
     )
-  Endif(PROTOBUF_FOUND)
+
+  Set(NO_DICT_SRCS
+    ${NO_DICT_SRCS}
+    ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
+  )
 EndIf (Boost_FOUND)
 
 Set(LINKDEF FairTestDetectorLinkDef.h)
@@ -120,49 +118,18 @@ GENERATE_LIBRARY()
 
 Add_Subdirectory(macro)
 
-
 If (Boost_FOUND)
   Set(Exe_Names
-    testDetectorSamplerBin
-    testDetectorProcessorBin
-    fileSinkBin # todo: make this consistent with the others
-    testDetectorSamplerBoost
-    testDetectorProcessorBoost
-    fileSinkBoost # todo: make this consistent with the others
-    testDetectorSamplerRoot
-    testDetectorProcessorRoot
-    fileSinkRoot # todo: make this consistent with the others
+    testDetectorSampler
+    testDetectorProcessor
+    testDetectorFileSink
   )
 
-  If(PROTOBUF_FOUND)
-    Set(Exe_Names
-      ${Exe_Names}
-      testDetectorSamplerProto
-      testDetectorProcessorProto
-      fileSinkProto # todo: make this consistent with the others
-    )
-  EndIf(PROTOBUF_FOUND)
-
   set(Exe_Source
-    run/runTestDetectorSamplerBin.cxx
-    run/runTestDetectorProcessorBin.cxx
-    run/runFileSinkBin.cxx
-    run/runTestDetectorSamplerBoost.cxx
-    run/runTestDetectorProcessorBoost.cxx
-    run/runFileSinkBoost.cxx
-    run/runTestDetectorSamplerRoot.cxx
-    run/runTestDetectorProcessorRoot.cxx
-    run/runFileSinkRoot.cxx
+    run/runTestDetectorSampler.cxx
+    run/runTestDetectorProcessor.cxx
+    run/runFileSink.cxx
     )
-
-  If(PROTOBUF_FOUND)
-    Set(Exe_Source
-      ${Exe_Source}
-      run/runTestDetectorSamplerProto.cxx
-      run/runTestDetectorProcessorProto.cxx
-      run/runFileSinkProto.cxx
-    )
-  EndIf(PROTOBUF_FOUND)
 
   List(LENGTH Exe_Names _length)
   Math(EXPR _length ${_length}-1)
