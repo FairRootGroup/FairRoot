@@ -58,8 +58,10 @@ int FairMQProgOptions::ParseAll(const int argc, char** argv, bool AllowUnregiste
     
     // set log level before printing (default is 0 = DEBUG level)
     int verbose=GetValue<int>("verbose");
-    SET_LOGGER_LEVEL(verbose);
-
+    //SET_LOG_LEVEL(DEBUG);
+    fairmq::severity_level lvl = static_cast<fairmq::severity_level>(verbose);
+    
+    set_global_log_level(log_op::operation::GREATER_EQ_THAN,lvl);
     PrintOptions();
     
     // check if one of required MQ config option is there  
