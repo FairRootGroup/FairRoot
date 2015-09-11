@@ -35,6 +35,18 @@ FIND_PATH(FAIRROOT_CMAKEMOD_DIR NAMES CMakeLists.txt  PATHS
   NO_DEFAULT_PATH
 )
 
+set(FAIRMQ_DEPENDENCIES
+  boost_log
+  boost_log_setup
+  boost_thread
+  boost_filesystem
+  boost_system
+  boost_date_time
+  boost_timer
+  boost_program_options
+  pthread
+  fairmq_logger
+)
 
 if(FAIRROOT_INCLUDE_DIR AND FAIRROOT_LIBRARY_DIR)
    set(FAIRROOT_FOUND TRUE)
