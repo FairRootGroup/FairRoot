@@ -40,7 +40,7 @@ void unpack_mbs()
     // ---------------------------------------------------------------------------
 
     // Run -----------------------------------------------------------------------
-    run->Run(0, 100);
+    run->Run(0, 400);
     rtdb->saveOutput();
     // ---------------------------------------------------------------------------
 
@@ -48,7 +48,7 @@ void unpack_mbs()
     Double_t rtime = timer.RealTime();
     Double_t ctime = timer.CpuTime();
     Int_t nHits = unpacker->GetNHitsTotal();
-    if(3430 == nHits)
+    if(9086 == nHits)
     {
         cout << endl << endl;
         cout << "Macro finished successfully." << endl;
