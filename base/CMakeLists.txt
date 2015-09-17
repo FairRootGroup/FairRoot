@@ -138,7 +138,7 @@ If(BUILD_MBS)
   Set(DEPENDENCIES 
       ParBase GeoBase FairTools MbsAPI
       Proof GeomPainter Geom VMC EG MathCore Physics 
-      Matrix Tree Hist RIO Core
+      Matrix Tree Hist RIO RHTTP Core
   )
 
   Set(DEFINITIONS BUILD_MBS)
@@ -146,7 +146,7 @@ Else(BUILD_MBS)
   Set(DEPENDENCIES 
       ParBase GeoBase FairTools 
       Proof GeomPainter Geom VMC EG MathCore Physics 
-      Matrix Tree Hist RIO Core
+      Matrix Tree Hist RIO RHTTP Core
   )
 EndIf(BUILD_MBS)
 
