@@ -40,6 +40,7 @@
 #include "TFolder.h"
 #include "TH1F.h"
 #include "TH2F.h"
+#include "THttpServer.h"
 
 #include <signal.h>
 #include <stdlib.h>
@@ -75,7 +76,9 @@ FairRunOnline::FairRunOnline()
    fGenerateHtml(kFALSE),
    fHistFileName(""),
    fRefreshRate(1000),
-   fNevents(0)
+   fNevents(0),
+   fServer(NULL),
+   fServerRefreshRate(0)
 {
   fgRinstance = this;
   fAna = kTRUE;
@@ -93,7 +96,9 @@ FairRunOnline::FairRunOnline(FairSource* source)
    fGenerateHtml(kFALSE),
    fHistFileName(""),
    fRefreshRate(1000),
-   fNevents(0)
+   fNevents(0),
+   fServer(NULL),
+   fServerRefreshRate(0)
 {
   fRootManager->SetSource(source);
   fgRinstance = this;
@@ -115,6 +120,10 @@ FairRunOnline::~FairRunOnline()
   if(fFolder) {
     fFolder->Delete();
     delete fFolder;
+  }
+  if(fServer)
+  {
+    delete fServer;
   }
 }
 //_____________________________________________________________________________
@@ -281,6 +290,10 @@ Int_t FairRunOnline::EventLoop()
     WriteObjects();
     GenerateHtml();
   }
+  if(fServer && 0 == (fNevents%fServerRefreshRate))
+  {
+    fServer->ProcessRequests();
+  }
     
   if(gIsInterrupted)
   {
@@ -422,6 +435,26 @@ void FairRunOnline::GenerateHtml()
 //_____________________________________________________________________________
 
 
+//_____________________________________________________________________________
+void FairRunOnline::ActivateHttpServer(Int_t refreshRate)
+{
+  fServer = new THttpServer("http:8080");
+  fServerRefreshRate = refreshRate;
+}
+//_____________________________________________________________________________
+
+
+//_____________________________________________________________________________
+void FairRunOnline::RegisterHttpCommand(TString name, TString command)
+{
+  if(fServer)
+  {
+    TString path = "/Objects/HISTO";
+    fServer->RegisterCommand(name, path + command);
+  }
+}
+//_____________________________________________________________________________
+
 
 //_____________________________________________________________________________
 void FairRunOnline::WriteObjects()
@@ -516,10 +549,12 @@ void  FairRunOnline::SetContainerStatic(Bool_t tempBool)
 //_____________________________________________________________________________
 void FairRunOnline::AddObject(TObject* object)
 {
-  if(! fFolder) {
-    return;
+  if(fFolder) {
+    fFolder->Add(object);
   }
-  fFolder->Add(object);
+  if(fServer) {
+    fServer->Register("HISTO", object);
+  }
 }
 //_____________________________________________________________________________
 
