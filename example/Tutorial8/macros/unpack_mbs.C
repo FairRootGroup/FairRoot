@@ -24,6 +24,13 @@ void unpack_mbs()
     // Create online run ---------------------------------------------------------
     FairRunOnline* run = new FairRunOnline(source);
     run->SetOutputFile("output.root");
+    run->ActivateHttpServer();
+    run->SetAutoFinish(kFALSE);
+    // ---------------------------------------------------------------------------
+
+    // Create analysis task ------------------------------------------------------
+    FairTut8Task* task = new FairTut8Task("ExampleTask", 1);
+    run->AddTask(task);
     // ---------------------------------------------------------------------------
 
     // Initialize ----------------------------------------------------------------

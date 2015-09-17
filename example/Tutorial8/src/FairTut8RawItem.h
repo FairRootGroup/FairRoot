@@ -11,19 +11,24 @@
 
 #include "TObject.h"
 
+/**
+ * An example class for raw data object of a detector.
+ */
 class FairTut8RawItem : public TObject
 {
   public:
-    // Default Constructor
+    /** Default Constructor. */
     FairTut8RawItem();
 
-    /** Standard Constructor
-     *@param Tac_addr   tac mod address
-     *@param Tac_ch     tac channel no
-     *@param Cal        calibration bit
-     *@param clock      clock data
-     *@param Tac_data   tac data
-     *@param Qdc_data   qdc data
+    /** Standard Constructor.
+     * @param sam        a SAM value
+     * @param gtb        a GTB value
+     * @param tacAddr    TAC module address
+     * @param tacCh      TAC channel number
+     * @param cal        calibration bit
+     * @param clock      clock data
+     * @param tacData    TAC data
+     * @param qdcData    QDC data
      **/
     FairTut8RawItem(UShort_t sam,
                     UShort_t gtb,
@@ -36,7 +41,7 @@ class FairTut8RawItem : public TObject
 
     FairTut8RawItem(const FairTut8RawItem&);
 
-    // Destructor
+    /** Destructor. */
     virtual ~FairTut8RawItem()
     {
     }
@@ -75,14 +80,14 @@ class FairTut8RawItem : public TObject
     }
 
   protected:
-    UShort_t fSam;
-    UShort_t fGtb;
-    UShort_t fTacAddr; //... TAC module address
-    UShort_t fTacCh;   //... TAC channel number
-    UShort_t fCal;     //... Calibration bit
-    UShort_t fClock;   //... Clock data
-    UShort_t fTacData; //... TAC data
-    UShort_t fQdcData; //... QDC data
+    UShort_t fSam;     /**< SAM value. */
+    UShort_t fGtb;     /**< GTB value. */
+    UShort_t fTacAddr; /**< TAC module address. */
+    UShort_t fTacCh;   /**< TAC channel number. */
+    UShort_t fCal;     /**< Calibration bit. */
+    UShort_t fClock;   /**< Clock data. */
+    UShort_t fTacData; /**< TAC data. */
+    UShort_t fQdcData; /**< QDC data. */
 
   public:
     ClassDef(FairTut8RawItem, 1)

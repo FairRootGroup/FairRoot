@@ -30,6 +30,7 @@ class TF1;
 class TTree;
 class FairSource;
 class TFolder;
+class THttpServer;
 
 class FairRunOnline : public FairRun
 {
@@ -70,9 +71,21 @@ class FairRunOnline : public FairRun
     void        SetContainerStatic(Bool_t tempBool=kTRUE);
     Bool_t      GetContainerStatic() { return fStatic; };
 
+    /** Add histogram to be displayed using THttpServer.*/
     void AddObject(TObject* object);
 
     void SetGenerateHtml(Bool_t flag, const char* histFileName, Int_t refreshRate);
+
+    /** Activate http server on current host port 8080. To be called before Init.
+     * @param refreshRate an interval in number of events for server update.
+     */
+    void ActivateHttpServer(Int_t refreshRate = 10000);
+
+    /** Register a command on the http server.
+     * @param name a command name starting with /
+     * @param command a call to method "/object_name/->Method()"
+     */
+    void RegisterHttpCommand(TString name, TString command);
 
     /** Write last data to file, close input and output **/
     void Finish();
@@ -101,6 +114,9 @@ class FairRunOnline : public FairRun
     TString     fHistFileName; //!
     Int_t       fRefreshRate;  //!
     Int_t       fNevents;      //!
+
+    THttpServer* fServer;             //!
+    Int_t        fServerRefreshRate;  //!
 
     void WriteObjects();
     void GenerateHtml();

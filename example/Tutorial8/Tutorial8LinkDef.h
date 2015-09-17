@@ -16,5 +16,6 @@
 
 #pragma link C++ class FairTut8Unpack+;
 #pragma link C++ class FairTut8RawItem+;
+#pragma link C++ class FairTut8Task+;
 
 #endif
