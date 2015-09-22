@@ -11,7 +11,7 @@
 #include "runGenericDevices.h"
 
 template<typename TGenSink, typename SpecFlag=NoSpecFlag>
-inline int runFileSink(TGenSink& sink,int argc, char** argv)
+inline int runFileSink(TGenSink& sink_,int argc, char** argv)
 {
     namespace po = boost::program_options;
     FairMQProgOptions config;
@@ -44,16 +44,16 @@ inline int runFileSink(TGenSink& sink,int argc, char** argv)
     /// configure sink specific from parsed values
     
     // call function member from sink policy (storage policy)
-    sink.SetFileProperties(filename, treename, branchname, hitname, fileoption, true);
+    sink_.SetFileProperties(filename, treename, branchname, hitname, fileoption, true);
     
     // call function member from sink policy (input policy for deserialization) using the helper function to handle different API
     PolicyInit<SpecFlag> sinkInit;
-    sinkInit.template InputContainer<TGenSink>(sink,hitname);
+    sinkInit.template InputContainer<TGenSink>(sink_,hitname);
     
     
     /// configure FairMQdevice specific from parsed values (here json file)
     /// and start the state machine
-    runStateMachine(sink, config);
+    runStateMachine(sink_, config);
     
     return 0;
 }
