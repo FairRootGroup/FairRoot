@@ -11,7 +11,7 @@
 #include "runGenericDevices.h"
 
 template<typename TGenProcessor, typename SpecFlag=NoSpecFlag>
-inline int runProcessor(TGenProcessor& processor,int argc, char** argv)
+inline int runProcessor(TGenProcessor& processor_,int argc, char** argv)
 {
     namespace po = boost::program_options;
     FairMQProgOptions config;
@@ -36,12 +36,12 @@ inline int runProcessor(TGenProcessor& processor,int argc, char** argv)
     /// configure processor specific parts from parsed values
     // PolicyInit<T,U> : helper template function to handle different API of different policies (presence or not of InitTask and InitInputContainer )
     PolicyInit<SpecFlag> processorInit;
-    processorInit.template InputContainer<TGenProcessor>(processor,diginame);
-    processorInit.template Task<TGenProcessor>(processor,hitname);
+    processorInit.template InputContainer<TGenProcessor>(processor_,diginame);
+    processorInit.template Task<TGenProcessor>(processor_,hitname);
     
     /// configure FairMQdevice parts from parsed values (here json file)
     /// and start the state machine
-    runStateMachine(processor,config);
+    runStateMachine(processor_,config);
     
     return 0;
 }
