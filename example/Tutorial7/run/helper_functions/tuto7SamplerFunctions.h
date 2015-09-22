@@ -15,7 +15,7 @@ void myfuncHello(){LOG(INFO)<<"Hello ";}
 void myfuncWorld(){LOG(INFO)<<"World ";}
 
 template<typename TGenSampler>
-inline int runSampler(TGenSampler& sampler, int argc, char** argv)
+inline int runSampler(TGenSampler& sampler_, int argc, char** argv)
 {
     namespace po = boost::program_options;
     FairMQProgOptions config;
@@ -50,7 +50,7 @@ inline int runSampler(TGenSampler& sampler, int argc, char** argv)
     
     if(taskman)
     {
-        sampler.RegisterTask(
+        sampler_.RegisterTask(
         [](SimpleTreeReader<TClonesArray>* t, std::map<int, std::function<void()> >& task_list) 
         { 
             task_list[0]=std::bind(myfuncHello);
@@ -62,19 +62,19 @@ inline int runSampler(TGenSampler& sampler, int argc, char** argv)
     }
     
     /// configure sampler specific from parsed values
-    sampler.SetProperty(TGenSampler::EventRate, eventRate);
+    sampler_.SetProperty(TGenSampler::EventRate, eventRate);
     // call function member from sampler policy
-    sampler.SetFileProperties(filename, treename, branchname);
+    sampler_.SetFileProperties(filename, treename, branchname);
     
     /// configure FairMQdevice specific from parsed values (here json file)
     /// and start the state machine
-    runStateMachine(sampler, config);
+    runStateMachine(sampler_, config);
     
     return 0;
 }
 
 template<typename TGenSampler>
-inline int InitSamplerSetting(TGenSampler& sampler, FairMQProgOptions& config, int argc, char** argv)
+inline int InitSamplerSetting(TGenSampler& sampler_, FairMQProgOptions& config, int argc, char** argv)
 {
     namespace po = boost::program_options;
     //FairMQProgOptions config;
@@ -104,9 +104,9 @@ inline int InitSamplerSetting(TGenSampler& sampler, FairMQProgOptions& config, i
     }
     
     /// configure sampler specific from parsed values
-    sampler.SetProperty(TGenSampler::EventRate, eventRate);
+    sampler_.SetProperty(TGenSampler::EventRate, eventRate);
     // call function member from sampler policy
-    sampler.SetFileProperties(filename, treename, branchname);
+    sampler_.SetFileProperties(filename, treename, branchname);
     
     return 0;
 }
