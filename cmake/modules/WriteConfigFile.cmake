@@ -204,6 +204,9 @@ MACRO (WRITE_CONFIG_FILE filename)
   CONVERT_LIST_TO_STRING($ENV{NEW_CLASSPATH})
   Set(MY_CLASSPATH ${output})
 
+  CONVERT_LIST_TO_STRING(${ROOT_INCLUDE_PATH})
+  Set(ROOT_INCLUDE_PATH ${output})
+
   IF(${filename} MATCHES "[.]csh.*$")
     IF(FAIRROOTPATH)
     configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/config.csh.in
