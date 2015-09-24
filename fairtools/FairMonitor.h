@@ -9,7 +9,7 @@
 /*
  * FairMonitor.h
  *
- *  Created on: Oct 30, 2014
+ *  Created on: Aug 01, 2015
  *      Author: r.karabowicz
  */
 
@@ -32,17 +32,30 @@ class FairMonitor : public TNamed
   void StartTimer(const TTask* tTask, const char* identStr);
   void StopTimer (const TTask* tTask, const char* identStr);
 
-  virtual void Print();
+  void RecordRegister(const char* name, const char* folderName, Bool_t toFile);
+  void RecordGetting(const char* name);
+
+  void SetCurrentTask(TTask* tTask) { fCurrentTask = tTask; }
+
+  virtual void Print(Option_t* option = "");
+  virtual void Draw (Option_t* option = "");
+
   void Print(TString specString);
+
+  void DrawHist(TString specString);
 
   void PrintTask(TTask* tempTask, Int_t taskLevel=0);
 
   TList* GetHistList() { return fTimerHistList;}
 
+  void EnableMonitor(Bool_t tempBool = kTRUE) { fRunMonitor = tempBool; }
+
   private:
     static FairMonitor* instance;
     FairMonitor();
     ~FairMonitor();
+
+    Bool_t fRunMonitor;
 
     Double_t fRunTime;
 
@@ -50,6 +63,23 @@ class FairMonitor : public TNamed
 
     TList* fTimerHistList;
     TList* fTimerList;
+
+    Int_t fNoTaskRequired;
+    Int_t fNoTaskCreated;
+
+    TTask* fCurrentTask;
+    std::multimap<TString, TString> fTaskRequired;
+    std::multimap<TString, TString> fTaskCreated;
+    std::multimap<TString, TString> fTaskCreatedTemp;
+    
+    std::map<TString, Int_t> fObjectMap;
+    std::map<TString, Int_t> fTaskMap;
+
+    std::map<TString, std::pair<Double_t, Double_t> > fObjectPos;
+    std::map<TString, std::pair<Double_t, Double_t> > fTaskPos;
+ 
+    void GetTaskMap(TTask* tempTask);
+    void AnalyzeObjectMap(TTask* tempTask);
 
     ClassDef(FairMonitor, 1)
 };

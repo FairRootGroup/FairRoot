@@ -13,6 +13,7 @@
 #include "FairTask.h"
 
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairMonitor.h"                // for FairMonitor
 
 #include "TCollection.h"                // for TIter
 #include "TList.h"                      // for TList
@@ -57,12 +58,14 @@ FairTask::~FairTask() { }
 // -----   Public method InitTask   ----------------------------------------
 void FairTask::InitTask()
 {
+  FairMonitor::GetMonitor()->SetCurrentTask(this);
   if ( ! fActive ) { return; }
   InitStatus tStat = Init();
   if ( tStat == kFATAL ) {
     fLogger->Fatal(MESSAGE_ORIGIN,"Initialization of Task %s failed fatally", fName.Data());
   }
   if ( tStat == kERROR ) { fActive = kFALSE; }
+  FairMonitor::GetMonitor()->SetCurrentTask(0);
   InitTasks();
 }
 // -------------------------------------------------------------------------

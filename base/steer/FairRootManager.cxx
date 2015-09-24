@@ -20,6 +20,7 @@
 #include "FairGeoNode.h"                // for FairGeoNode
 #include "FairLink.h"                   // for FairLink
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairMonitor.h"                // for FairMonitor
 #include "FairMCEventHeader.h"          // for FairMCEventHeader
 #include "FairRun.h"                    // for FairRun
 #include "FairTSBufferFunctional.h"     // for FairTSBufferFunctional, etc
@@ -216,6 +217,7 @@ TFile* FairRootManager::OpenOutFile(const char* fname)
 //_____________________________________________________________________________
 void  FairRootManager::Register(const char* name, const char* folderName , TNamed* obj, Bool_t toFile)
 {
+  FairMonitor::GetMonitor()->RecordRegister(name,folderName,toFile);
 
   // Security check. If the the name is equal the folder name there are problems with reading
   // back the data. Instead of the object inside the folder the RootManger will return a pointer
@@ -273,6 +275,8 @@ Int_t  FairRootManager::AddBranchToList(const char* name)
 //_____________________________________________________________________________
 void  FairRootManager::Register(const char* name,const char* Foldername ,TCollection* obj, Bool_t toFile)
 {
+  FairMonitor::GetMonitor()->RecordRegister(name,Foldername,toFile);
+
   /**
   * This method do exactly the same as the one before but for TCollection which is a TObject and not a TNamed (MT)
   */
@@ -322,6 +326,7 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
 //_____________________________________________________________________________
 TClonesArray* FairRootManager::Register(TString branchName, TString className, TString folderName, Bool_t toFile)
 {
+  FairMonitor::GetMonitor()->RecordRegister(branchName,folderName,toFile);
 
   TClonesArray* outputArray;
   if (fActiveContainer.find(branchName) == fActiveContainer.end()) {
@@ -706,7 +711,9 @@ TObject* FairRootManager::GetObject(const char* BrName)
   }
   if(!Obj) {
     Obj=ActivateBranch(BrName);
-  }
+  } 
+  if ( Obj!=NULL ) 
+    FairMonitor::GetMonitor()->RecordGetting(BrName);
   return Obj;
 }
 //_____________________________________________________________________________
