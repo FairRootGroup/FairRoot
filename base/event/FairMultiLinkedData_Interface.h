@@ -76,6 +76,7 @@ class FairMultiLinkedData_Interface : public  TObject
   protected:
 
     Int_t fVerbose; //!
+    Bool_t fInsertHistory; //!
     FairMultiLinkedData* fLink;
 
     FairMultiLinkedData* CreateFairMultiLinkedData();
