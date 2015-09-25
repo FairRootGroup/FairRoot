@@ -177,7 +177,7 @@ void FairMultiLinkedData_Interface::AddInterfaceData(FairMultiLinkedData_Interfa
 	if (data->GetPointerToLinks() != 0) {
 		AddLinks(*data->GetPointerToLinks());
 	}
-	SetInsertHistory(kTRUE);
+	SetInsertHistory(fInsertHistory);
 }
 
 void FairMultiLinkedData_Interface::SetInsertHistory(Bool_t val)
