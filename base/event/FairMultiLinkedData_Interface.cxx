@@ -168,9 +168,7 @@ void FairMultiLinkedData_Interface::AddLink(FairLink link)
 
 void FairMultiLinkedData_Interface::AddInterfaceData(FairMultiLinkedData_Interface* data)
 {
-	std::cout << "AddInterfaceData called" << std::endl;
 	SetInsertHistory(kFALSE); //todo add previous history value
-	std::cout << "InsertHistory " << fInsertHistory << std::endl;
 	if (data->GetEntryNr().GetType() != -1)
 		AddLink(data->GetEntryNr());
 	else
@@ -180,7 +178,6 @@ void FairMultiLinkedData_Interface::AddInterfaceData(FairMultiLinkedData_Interfa
 		AddLinks(*data->GetPointerToLinks());
 	}
 	SetInsertHistory(kTRUE);
-	std::cout << "AddInterfaceData finished" << std::endl;
 }
 
 void FairMultiLinkedData_Interface::SetInsertHistory(Bool_t val)
