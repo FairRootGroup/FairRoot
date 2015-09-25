@@ -72,7 +72,7 @@ FairMonitor* FairMonitor::GetMonitor()
 void FairMonitor::StartTimer(const TTask* tTask, const char* identStr) {
   if ( !fRunMonitor ) return;
 
-  TString tempString = Form("hist_%X_%s_%s",tTask,tTask->GetName(),identStr);
+  TString tempString = Form("hist_%p_%s_%s",tTask,tTask->GetName(),identStr);
 
   Int_t nofHists = fTimerHistList->GetEntries();
   Int_t ihist = 0;
@@ -95,7 +95,7 @@ void FairMonitor::StartTimer(const TTask* tTask, const char* identStr) {
 void FairMonitor::StopTimer(const TTask* tTask, const char* identStr) {
   if ( !fRunMonitor ) return;
 
-  TString tempString = Form("hist_%X_%s_%s",tTask,tTask->GetName(),identStr);
+  TString tempString = Form("hist_%p_%s_%s",tTask,tTask->GetName(),identStr);
 
   Int_t nofHists = fTimerHistList->GetEntries();
   Int_t ihist = 0;
@@ -131,7 +131,7 @@ void FairMonitor::RecordRegister(const char* name, const char* folderName, Bool_
     LOG(INFO) << "*** FM::RecordRegister(" << name << ", " << folderName << (toFile?", kTRUE)":", kFALSE") << " WITHOUT TASK" << FairLogger::endl;
     return;
   }
-  TString tempString = Form("%X_%s",fCurrentTask,fCurrentTask->GetName());
+  TString tempString = Form("%p_%s",fCurrentTask,fCurrentTask->GetName());
   if ( toFile ) {
     fTaskCreated.insert(std::pair<TString, TString>(tempString,TString(name)));
   }
@@ -151,7 +151,7 @@ void FairMonitor::RecordGetting(const char* name) {
     fNoTaskRequired ++;
     return;
   }
-  TString tempString = Form("%X_%s",fCurrentTask,fCurrentTask->GetName());
+  TString tempString = Form("%p_%s",fCurrentTask,fCurrentTask->GetName());
   fTaskRequired.insert(std::pair<TString, TString>(tempString,TString(name)));
 }
 //_____________________________________________________________________________
@@ -160,7 +160,7 @@ void FairMonitor::RecordGetting(const char* name) {
 void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) {
   if ( !fRunMonitor ) return;
 
-  TString tempString = Form("hist_%X_%s_%s",tempTask,tempTask->GetName(),"EXEC");
+  TString tempString = Form("hist_%p_%s_%s",tempTask,tempTask->GetName(),"EXEC");
   Int_t nofHists = fTimerHistList->GetEntries();
   Int_t ihist = 0;
   Int_t longestName = 0;
@@ -528,7 +528,7 @@ void FairMonitor::DrawHist(TString specString) {
 
 //_Private function to fill the map of the tasks_______________________________
 void FairMonitor::GetTaskMap(TTask* tempTask) {
-  TString tempString = Form("%X_%s",tempTask,tempTask->GetName());
+  TString tempString = Form("%p_%s",tempTask,tempTask->GetName());
   fTaskMap.insert(std::pair<TString, Int_t> (tempString,0));
 
   TList* subTaskList = tempTask->GetListOfTasks();
@@ -549,7 +549,7 @@ void FairMonitor::GetTaskMap(TTask* tempTask) {
 // tasks number i create objects number i (if they go to output file) or
 // tasks number i create objects number -i (if they are not persistent)
 void FairMonitor::AnalyzeObjectMap(TTask* tempTask) {
-  TString tempString = Form("%X_%s",tempTask,tempTask->GetName());
+  TString tempString = Form("%p_%s",tempTask,tempTask->GetName());
 
   Int_t hierarchyNumber = 0;
   
