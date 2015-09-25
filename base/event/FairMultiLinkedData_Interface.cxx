@@ -17,44 +17,49 @@
 ClassImp(FairMultiLinkedData_Interface);
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface()
-  :TObject(), fLink(0), fVerbose(0)
+  :TObject(), fLink(0), fVerbose(0), fInsertHistory(kTRUE)
 {
 }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t persistanceCheck)
-  :TObject(), fLink(0), fVerbose(0)
+  :TObject(), fLink(0), fVerbose(0), fInsertHistory(kTRUE)
 {
 	SetLinks(links);
 }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(TString dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
-  :TObject(), fLink(0), fVerbose(0)
+  :TObject(), fLink(0), fVerbose(0), fInsertHistory(kTRUE)
 {
 	FairMultiLinkedData data(dataType, links, fileId, evtId, persistanceCheck, bypass, mult);
 	SetLinks(data);
 }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface( Int_t dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
-  :TObject(), fLink(0), fVerbose(0)
+  :TObject(), fLink(0), fVerbose(0), fInsertHistory(kTRUE)
 {
 	FairMultiLinkedData data(dataType, links, fileId, evtId, persistanceCheck, bypass, mult);
 	SetLinks(data);
 }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(const FairMultiLinkedData_Interface& toCopy)
-  :TObject(), fLink(0), fVerbose(0)
+  :TObject(), fLink(0), fVerbose(0), fInsertHistory(kTRUE)
 {
 	if (toCopy.GetPointerToLinks() != 0){
+		SetInsertHistory(kFALSE);
 		SetLinks(*(toCopy.GetPointerToLinks()));
         SetEntryNr(toCopy.GetEntryNr());
+        fInsertHistory = toCopy.fInsertHistory;
+        SetInsertHistory(fInsertHistory);
     }
 }
 
 FairMultiLinkedData_Interface& FairMultiLinkedData_Interface::operator=(const FairMultiLinkedData_Interface& rhs)
 {
 	if (rhs.GetPointerToLinks() != 0){
+		SetInsertHistory(kFALSE);
 		SetLinks(*(rhs.GetPointerToLinks()));
         SetEntryNr(rhs.GetEntryNr());
+        SetInsertHistory(kTRUE);
     }
     return *this;
 }
@@ -65,6 +70,7 @@ FairMultiLinkedData* FairMultiLinkedData_Interface::CreateFairMultiLinkedData()
 		if (fLink == 0){
 			fLink = new FairMultiLinkedData();
 		}
+		fLink->SetInsertHistory(fInsertHistory);
 		return fLink;
 	}
 	return 0;
@@ -166,17 +172,17 @@ void FairMultiLinkedData_Interface::AddInterfaceData(FairMultiLinkedData_Interfa
 	if (data->GetEntryNr().GetType() != -1)
 		AddLink(data->GetEntryNr());
 	else
-		std::cout
-				<< "-E- FairMultiLinkedData_Interface::AddInterfaceData EntryNr == "
-				<< data->GetEntryNr() << std::endl;
+		std::cout << "-E- FairMultiLinkedData_Interface::AddInterfaceData EntryNr == " << data->GetEntryNr() << std::endl;
+
 	if (data->GetPointerToLinks() != 0) {
 		AddLinks(*data->GetPointerToLinks());
 	}
-	SetInsertHistory(kTRUE);
+	SetInsertHistory(fInsertHistory);
 }
 
 void FairMultiLinkedData_Interface::SetInsertHistory(Bool_t val)
 {
+	fInsertHistory = val;
 	if (GetPointerToLinks() != 0) {
 		GetPointerToLinks()->SetInsertHistory(val);
 	}
