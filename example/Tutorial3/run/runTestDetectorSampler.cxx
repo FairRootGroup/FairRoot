@@ -25,7 +25,7 @@
 #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
-#include "TestDetectorDigiLoader.h"
+#include "FairTestDetectorDigiLoader.h"
 
 // data format for the task
 #include "FairTestDetectorDigi.h"
@@ -45,15 +45,15 @@
 
 using namespace std;
 
-typedef TestDetectorPayload::Digi TPayloadOut; // binary payload
-typedef boost::archive::binary_oarchive TBoostBinPayloadOut; // boost binary format
-typedef boost::archive::text_oarchive TBoostTextPayloadOut;  // boost text format
-typedef TestDetectorProto::DigiPayload TProtoDigiPayload; // protobuf payload
+using TPayloadOut = TestDetectorPayload::Digi; // binary payload
+using TBoostBinPayloadOut = boost::archive::binary_oarchive; // boost binary format
+using TBoostTextPayloadOut = boost::archive::text_oarchive;  // boost text format
+using TProtoDigiPayload = TestDetectorProto::DigiPayload; // protobuf payload
 
-typedef FairMQSampler<TestDetectorDigiLoader<FairTestDetectorDigi, TPayloadOut>> TSamplerBin;
-typedef FairMQSampler<TestDetectorDigiLoader<FairTestDetectorDigi, TBoostBinPayloadOut>> TSamplerBoost;
-typedef FairMQSampler<TestDetectorDigiLoader<FairTestDetectorDigi, TProtoDigiPayload>> TSamplerProtobuf;
-typedef FairMQSampler<TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>> TSamplerTMessage;
+using TSamplerBin = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TPayloadOut>>;
+using TSamplerBoost = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TBoostBinPayloadOut>>;
+using TSamplerProtobuf = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TProtoDigiPayload>>;
+using TSamplerTMessage = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
 
 typedef struct DeviceOptions
 {

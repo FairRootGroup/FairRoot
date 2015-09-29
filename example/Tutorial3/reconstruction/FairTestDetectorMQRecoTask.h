@@ -33,11 +33,9 @@
 #include "FairTestDetectorHit.h"
 #include "FairTestDetectorDigi.h"
 
-#if __cplusplus >= 201103L
 //#include <memory>
 //#include <chrono>
 #include "baseMQtools.h"
-#endif
 
 #include "TMessage.h"
 

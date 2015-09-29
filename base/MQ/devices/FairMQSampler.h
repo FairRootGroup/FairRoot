@@ -56,7 +56,8 @@ class FairMQSampler : public FairMQDevice
         InputFile = FairMQDevice::Last,
         ParFile,
         Branch,
-        EventRate
+        EventRate,
+        Last
     };
 
     FairMQSampler();
@@ -68,6 +69,9 @@ class FairMQSampler : public FairMQDevice
     virtual std::string GetProperty(const int key, const std::string& default_ = "");
     virtual void SetProperty(const int key, const int value);
     virtual int GetProperty(const int key, const int default_ = 0);
+
+    virtual std::string GetPropertyDescription(const int key);
+    virtual void ListProperties();
 
     /**
      * Sends the currently available output of the Sampler Task as part of a multipart message

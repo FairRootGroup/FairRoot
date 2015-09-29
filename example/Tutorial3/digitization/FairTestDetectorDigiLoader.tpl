@@ -1,12 +1,12 @@
 /*
- * File:   TestDetectorDigiLoader.tpl
+ * File:   FairTestDetectorDigiLoader.tpl
  * @since 2014-02-08
  * @author: A. Rybalchenko, N. Winckler
  *
  */
 
 template <typename T1, typename T2>
-TestDetectorDigiLoader<T1, T2>::TestDetectorDigiLoader()
+FairTestDetectorDigiLoader<T1, T2>::FairTestDetectorDigiLoader()
     : FairMQSamplerTask("Load class T1")
     , fDigiVector()
     , fHasBoostSerialization(false)
@@ -23,7 +23,7 @@ TestDetectorDigiLoader<T1, T2>::TestDetectorDigiLoader()
 }
 
 template <typename T1, typename T2>
-TestDetectorDigiLoader<T1, T2>::~TestDetectorDigiLoader()
+FairTestDetectorDigiLoader<T1, T2>::~FairTestDetectorDigiLoader()
 {
     if (fDigiVector.size() > 0)
     {
@@ -31,10 +31,10 @@ TestDetectorDigiLoader<T1, T2>::~TestDetectorDigiLoader()
     }
 }
 
-// Default implementation of TestDetectorDigiLoader::Exec() with Boost transport data format
+// Default implementation of FairTestDetectorDigiLoader::Exec() with Boost transport data format
 
 template <typename T1, typename T2>
-void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
+void FairTestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
 {
     // Default implementation of the base template Exec function using boost
     // the condition check if the input class has a function member with name
@@ -73,10 +73,10 @@ void TestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
     }
 }
 
-// Implementation of TestDetectorDigiLoader::Exec() with pure binary transport data format
+// Implementation of FairTestDetectorDigiLoader::Exec() with pure binary transport data format
 
 template <>
-void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* opt)
+void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* opt)
 {
     // // Example of how to send multipart messages (uncomment the code lines to test).
     // // 1. create some data and put it into message (optionaly in one step with zero-copy):
@@ -111,7 +111,7 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Ex
     }
 }
 
-// Implementation of TestDetectorDigiLoader::Exec() with Root TMessage transport data format
+// Implementation of FairTestDetectorDigiLoader::Exec() with Root TMessage transport data format
 
 // helper function to clean up the object holding the data after it is transported.
 void free_tmessage (void *data, void *hint)
@@ -120,7 +120,7 @@ void free_tmessage (void *data, void *hint)
 }
 
 template <>
-void TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
+void FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
 {
     TMessage* message = new TMessage(kMESS_OBJECT);
     message->WriteObject(fInput);
@@ -128,7 +128,7 @@ void TestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* opt)
     // note: transport will cleanup the message object when the transfer is done using the provided deallocator (free_tmessage).
 }
 
-// Implementation of TestDetectorDigiLoader::Exec() with Google Protocol Buffers transport data format
+// Implementation of FairTestDetectorDigiLoader::Exec() with Google Protocol Buffers transport data format
 
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
@@ -140,7 +140,7 @@ void free_string (void *data, void *hint)
 }
 
 template <>
-void TestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* opt)
+void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* opt)
 {
     int nDigis = fInput->GetEntriesFast();
 

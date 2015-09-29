@@ -6,8 +6,9 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * File:   TestDetectorDigiLoader.cxx
- * Author: winckler
+ * FairTestDetectorFileSink.cxx
  *
- * Created on February 8, 2014, 1:48 AM
+ * @since 2013-06-05
+ * @author A. Rybalchenko
  */
+// must be empty. Template function members defined in .h and .tpl

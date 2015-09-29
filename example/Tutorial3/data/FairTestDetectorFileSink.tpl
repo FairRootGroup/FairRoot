@@ -1,36 +1,32 @@
 /*
- * File:   FairMQFileSink.tpl
+ * File:   FairTestDetectorFileSink.tpl
  * Author: winckler, A. Rybalchenko
  *
  * Created on March 11, 2014, 12:12 PM
  */
 
 template <typename TIn, typename TPayloadIn>
-FairMQFileSink<TIn, TPayloadIn>::FairMQFileSink()
+FairTestDetectorFileSink<TIn, TPayloadIn>::FairTestDetectorFileSink()
     : fOutFile(NULL)
     , fTree(NULL)
     , fOutput(NULL)
     , fHitVector()
-    , fHasBoostSerialization()
+    , fHasBoostSerialization(false)
 {
     gSystem->ResetSignal(kSigInterrupt);
     gSystem->ResetSignal(kSigTermination);
 
-    fHasBoostSerialization = true;
-#if __cplusplus >= 201103L
     using namespace baseMQ::tools::resolve;
-    fHasBoostSerialization = false;
     // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
     if (is_same<TPayloadIn, boost::archive::binary_iarchive>::value || is_same<TPayloadIn, boost::archive::text_iarchive>::value)
     {
         if (has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 1)
             fHasBoostSerialization = true;
     }
-#endif
 }
 
 template <typename TIn, typename TPayloadIn>
-FairMQFileSink<TIn, TPayloadIn>::~FairMQFileSink()
+FairTestDetectorFileSink<TIn, TPayloadIn>::~FairTestDetectorFileSink()
 {
     fTree->Write();
     fOutFile->Close();
@@ -39,7 +35,7 @@ FairMQFileSink<TIn, TPayloadIn>::~FairMQFileSink()
 }
 
 template <typename TIn, typename TPayloadIn>
-void FairMQFileSink<TIn, TPayloadIn>::InitOutputFile(TString defaultId)
+void FairTestDetectorFileSink<TIn, TPayloadIn>::InitOutputFile(TString defaultId)
 {
     fOutput = new TClonesArray("FairTestDetectorHit");
     char out[256];
@@ -50,10 +46,10 @@ void FairMQFileSink<TIn, TPayloadIn>::InitOutputFile(TString defaultId)
     fTree->Branch("Output", "TClonesArray", &fOutput, 64000, 99);
 }
 
-// ----- Implementation of FairMQFileSink::Run() with Boost transport data format -----
+// ----- Implementation of FairTestDetectorFileSink::Run() with Boost transport data format -----
 
 template <typename TIn, typename TPayloadIn>
-void FairMQFileSink<TIn, TPayloadIn>::Run()
+void FairTestDetectorFileSink<TIn, TPayloadIn>::Run()
 {
     if (fHasBoostSerialization)
     {
@@ -92,7 +88,7 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
 
                 if (fOutput->IsEmpty())
                 {
-                    LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
+                    LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
                 }
 
                 fTree->Fill();
@@ -112,10 +108,10 @@ void FairMQFileSink<TIn, TPayloadIn>::Run()
     }
 }
 
-// ----- Implementation of FairMQFileSink::Run() with pure binary transport data format -----
+// ----- Implementation of FairTestDetectorFileSink::Run() with pure binary transport data format -----
 
 template <>
-void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
+void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
 {
     int receivedMsgs = 0;
 
@@ -144,7 +140,7 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
 
             if (fOutput->IsEmpty())
             {
-                LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
+                LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
             }
 
             fTree->Fill();
@@ -156,7 +152,7 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Run()
     LOG(INFO) << "I've received " << receivedMsgs << " messages!";
 }
 
-// ----- Implementation of FairMQFileSink::Run() with Root TMessage transport data format -----
+// ----- Implementation of FairTestDetectorFileSink::Run() with Root TMessage transport data format -----
 
 // special class to expose protected TMessage constructor
 class TestDetectorTMessage : public TMessage
@@ -170,7 +166,7 @@ class TestDetectorTMessage : public TMessage
 };
 
 template <>
-void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
+void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::Run()
 {
     int receivedMsgs = 0;
 
@@ -190,7 +186,7 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
 
             if (fOutput->IsEmpty())
             {
-                LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
+                LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
             }
 
             fTree->Fill();
@@ -204,13 +200,13 @@ void FairMQFileSink<FairTestDetectorHit, TMessage>::Run()
     LOG(INFO) << "I've received " << receivedMsgs << " messages!";
 }
 
-// ----- Implementation of FairMQFileSink::Run() with Google Protocol Buffers transport data format -----
+// ----- Implementation of FairTestDetectorFileSink::Run() with Google Protocol Buffers transport data format -----
 
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
 
 template <>
-void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
+void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
 {
     int receivedMsgs = 0;
 
@@ -241,7 +237,7 @@ void FairMQFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::Run()
 
             if (fOutput->IsEmpty())
             {
-                LOG(ERROR) << "FairMQFileSink::Run(): No Output array!";
+                LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
             }
 
             fTree->Fill();
