@@ -74,6 +74,8 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
+MESSAGE(STATUS "Looking for Protobuf...")
+
 function(PROTOBUF_GENERATE_CPP SRCS HDRS)
   if(NOT ARGN)
     message(SEND_ERROR "Error: PROTOBUF_GENERATE_CPP() called without any proto files")

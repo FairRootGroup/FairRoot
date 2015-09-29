@@ -6,14 +6,14 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairMQFileSink.h
+ * FairTestDetectorFileSink.h
  *
  * @since 2013-06-05
  * @author A. Rybalchenko
  */
 
-#ifndef FAIRMQFILESINK_H_
-#define FAIRMQFILESINK_H_
+#ifndef FAIRTESTDETECTORFILESINK_H_
+#define FAIRTESTDETECTORFILESINK_H_
 
 #include <iostream>
 
@@ -31,9 +31,7 @@
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorHit.h"
 
-#if __cplusplus >= 201103L
 #include "baseMQtools.h"
-#endif
 
 #include "TMessage.h"
 
@@ -54,11 +52,11 @@ class TClonesArray;
 using namespace std;
 
 template <typename TIn, typename TPayloadIn>
-class FairMQFileSink : public FairMQDevice
+class FairTestDetectorFileSink : public FairMQDevice
 {
   public:
-    FairMQFileSink();
-    virtual ~FairMQFileSink();
+    FairTestDetectorFileSink();
+    virtual ~FairTestDetectorFileSink();
     virtual void InitOutputFile(TString defaultId = "100");
 
     template <class Archive>
@@ -81,11 +79,11 @@ class FairMQFileSink : public FairMQDevice
 #endif // for BOOST serialization
 
     /// Copy Constructor
-    FairMQFileSink(const FairMQFileSink&);
-    FairMQFileSink operator=(const FairMQFileSink&);
+    FairTestDetectorFileSink(const FairTestDetectorFileSink&);
+    FairTestDetectorFileSink operator=(const FairTestDetectorFileSink&);
 };
 
-////////// Template implementation of Run() in FairMQFileSink.tpl :
-#include "FairMQFileSink.tpl"
+////////// Template implementation of Run() in FairTestDetectorFileSink.tpl :
+#include "FairTestDetectorFileSink.tpl"
 
-#endif /* FAIRMQFILESINK_H_ */
+#endif /* FAIRTESTDETECTORFILESINK_H_ */

@@ -6,15 +6,17 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+MESSAGE(STATUS "Looking for DDS...")
+
 find_path(DDS_INCLUDE_DIR NAMES KeyValue.h PATHS
   ${DDS_PATH}/include
   ${SIMPATH}/DDS/include
   NO_DEFAULT_PATH
 )
 
-find_path(DDS_LIBRARY_DIR NAMES libdds-key-value-lib.so PATHS
-  ${DDS_PATH}/lib
-  ${SIMPATH}/DDS/lib
+find_path(DDS_LIBRARY_DIR NAMES libdds-key-value-lib.dylib libdds-key-value-lib.so
+  PATHS ${DDS_PATH}/lib
+  PATHS ${SIMPATH}/DDS/lib
   NO_DEFAULT_PATH
 )
 

@@ -48,21 +48,21 @@
 
 using namespace std;
 
-typedef TestDetectorPayload::Digi TPayloadIn; // binary input payload
-typedef TestDetectorPayload::Hit TPayloadOut; // binary output payload
+using TPayloadIn = TestDetectorPayload::Digi; // binary input payload
+using TPayloadOut = TestDetectorPayload::Hit; // binary output payload
 
-typedef boost::archive::binary_iarchive TBoostBinPayloadIn;  // boost binary format
-typedef boost::archive::text_iarchive TBoostTextPayloadIn;   // boost text format
-typedef boost::archive::binary_oarchive TBoostBinPayloadOut; // boost binary format
-typedef boost::archive::text_oarchive TBoostTextPayloadOut;  // boost text format
+using TBoostBinPayloadIn = boost::archive::binary_iarchive;  // boost binary format
+using TBoostTextPayloadIn = boost::archive::text_iarchive;   // boost text format
+using TBoostBinPayloadOut = boost::archive::binary_oarchive; // boost binary format
+using TBoostTextPayloadOut = boost::archive::text_oarchive;  // boost text format
 
-typedef TestDetectorProto::DigiPayload TProtoDigiPayload; // protobuf payload
-typedef TestDetectorProto::HitPayload TProtoHitPayload;   // protobuf payload
+using TProtoDigiPayload = TestDetectorProto::DigiPayload; // protobuf payload
+using TProtoHitPayload = TestDetectorProto::HitPayload;   // protobuf payload
 
-typedef FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TPayloadIn, TPayloadOut> TProcessorTaskBin;
-typedef FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TBoostBinPayloadIn, TBoostBinPayloadOut> TProcessorTaskBoost;
-typedef FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TProtoDigiPayload, TProtoHitPayload> TProcessorTaskProtobuf;
-typedef FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage> TProcessorTaskTMessage;
+using TProcessorTaskBin = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TPayloadIn, TPayloadOut>;
+using TProcessorTaskBoost = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TBoostBinPayloadIn, TBoostBinPayloadOut>;
+using TProcessorTaskProtobuf = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TProtoDigiPayload, TProtoHitPayload>;
+using TProcessorTaskTMessage = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>;
 
 typedef struct DeviceOptions
 {

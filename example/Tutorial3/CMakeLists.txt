@@ -34,7 +34,7 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
 Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-If (Boost_FOUND)
+If (Boost_FOUND AND POS_C++11)
   configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh)
   configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startAllProxy.sh.in ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh)
   configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startPushPull.sh.in ${CMAKE_BINARY_DIR}/bin/startPushPull.sh)
@@ -44,7 +44,7 @@ If (Boost_FOUND)
   # following scripts are only for protobuf tests and are not essential part of FairMQ
   # configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startBin.sh.in ${CMAKE_BINARY_DIR}/bin/startBin.sh)
   # configure_file(${CMAKE_SOURCE_DIR}/example/Tutorial3/macro/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh)
-EndIf (Boost_FOUND)
+EndIf (Boost_FOUND AND POS_C++11)
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
@@ -82,7 +82,7 @@ Set(SRCS
   timeBasedSimulation/FairTestDetectorTimeRecoTask.cxx
 )
 
-If (Boost_FOUND)
+If (Boost_FOUND AND POS_C++11)
   Set(SRCS
     ${SRCS}
     data/FairTestDetectorDigi.cxx
@@ -102,23 +102,23 @@ If (Boost_FOUND)
     ${NO_DICT_SRCS}
     ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
   )
-EndIf (Boost_FOUND)
+EndIf (Boost_FOUND AND POS_C++11)
 
 Set(LINKDEF FairTestDetectorLinkDef.h)
 Set(LIBRARY_NAME FairTestDetector)
 
-If (Boost_FOUND)
+If (Boost_FOUND AND POS_C++11)
   Set(DEPENDENCIES
     Base MCStack FairMQ BaseMQ boost_thread boost_system boost_serialization boost_program_options)
-Else (Boost_FOUND)
+Else (Boost_FOUND AND POS_C++11)
   Set(DEPENDENCIES Base MCStack)
-EndIf (Boost_FOUND)
+EndIf (Boost_FOUND AND POS_C++11)
 
 GENERATE_LIBRARY()
 
 Add_Subdirectory(macro)
 
-If (Boost_FOUND)
+If (Boost_FOUND AND POS_C++11)
   Set(Exe_Names
     testDetectorSampler
     testDetectorProcessor
@@ -128,7 +128,7 @@ If (Boost_FOUND)
   set(Exe_Source
     run/runTestDetectorSampler.cxx
     run/runTestDetectorProcessor.cxx
-    run/runFileSink.cxx
+    run/runTestDetectorFileSink.cxx
     )
 
   List(LENGTH Exe_Names _length)
@@ -142,4 +142,4 @@ If (Boost_FOUND)
     Set(DEPENDENCIES FairTestDetector)
     GENERATE_EXECUTABLE()
   EndForEach(_file RANGE 0 ${_length})
-EndIf (Boost_FOUND)
+EndIf (Boost_FOUND AND POS_C++11)
