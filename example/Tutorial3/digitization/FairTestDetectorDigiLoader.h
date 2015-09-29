@@ -6,13 +6,13 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * File:   TestDetectorDigiLoader.h
+ * File:   FairTestDetectorDigiLoader.h
  * @since 2014-02-08
  * @author: A. Rybalchenko, N. Winckler
  */
 
-#ifndef TESTDETECTORDIGILOADER_H
-#define TESTDETECTORDIGILOADER_H
+#ifndef FAIRTESTDETECTORDIGILOADER_H
+#define FAIRTESTDETECTORDIGILOADER_H
 
 #include <iostream>
 
@@ -28,20 +28,18 @@
 #include "FairMQSamplerTask.h"
 #include "FairMQLogger.h"
 
-#if __cplusplus >= 201103L
 #include "baseMQtools.h"
 #include <type_traits>
-#endif
 
 using namespace std;
 
 // Base template header <T1,T2>
 template <typename T1, typename T2>
-class TestDetectorDigiLoader : public FairMQSamplerTask
+class FairTestDetectorDigiLoader : public FairMQSamplerTask
 {
   public:
-    TestDetectorDigiLoader();
-    virtual ~TestDetectorDigiLoader();
+    FairTestDetectorDigiLoader();
+    virtual ~FairTestDetectorDigiLoader();
     virtual void Exec(Option_t* opt);
 
     template <class Archive>
@@ -56,7 +54,7 @@ class TestDetectorDigiLoader : public FairMQSamplerTask
     bool fHasBoostSerialization;
 };
 
-// Template implementation is in TestDetectorDigiLoader.tpl :
-#include "TestDetectorDigiLoader.tpl"
+// Template implementation is in FairTestDetectorDigiLoader.tpl :
+#include "FairTestDetectorDigiLoader.tpl"
 
-#endif /* TESTDETECTORDIGILOADER_H */
+#endif /* FAIRTESTDETECTORDIGILOADER_H */

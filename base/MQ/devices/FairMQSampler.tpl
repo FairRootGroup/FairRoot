@@ -208,3 +208,32 @@ int FairMQSampler<Loader>::GetProperty(const int key, const int default_/*= 0*/)
             return FairMQDevice::GetProperty(key, default_);
     }
 }
+
+template <typename Loader>
+std::string FairMQSampler<Loader>::GetPropertyDescription(const int key)
+{
+    switch (key)
+    {
+        case InputFile:
+            return "InputFile: Input ROOT file.";
+        case ParFile:
+            return "ParFile: Input Parameter file.";
+        case Branch:
+            return "Branch: Name of the Branch (e.g. FairTestDetectorDigi).";
+        case EventRate:
+            return "EventRate: Upper limit for the message rate.";
+        default:
+            return FairMQDevice::GetPropertyDescription(key);
+    }
+}
+
+template <typename Loader>
+void FairMQSampler<Loader>::ListProperties()
+{
+    LOG(INFO) << "Properties of FairMQSampler:";
+    for (int p = FairMQConfigurable::Last; p < FairMQSampler::Last; ++p)
+    {
+        LOG(INFO) << " " << GetPropertyDescription(p);
+    }
+    LOG(INFO) << "---------------------------";
+}

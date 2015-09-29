@@ -17,7 +17,7 @@
 #include "boost/program_options.hpp"
 
 #include "FairMQLogger.h"
-#include "FairMQFileSink.h"
+#include "FairTestDetectorFileSink.h"
 
 #ifdef NANOMSG
 #include "nanomsg/FairMQTransportFactoryNN.h"
@@ -43,15 +43,15 @@
 
 using namespace std;
 
-typedef TestDetectorPayload::Hit TPayloadIn; // binary payload
-typedef boost::archive::binary_iarchive TBoostBinPayload; // boost binary format
-typedef boost::archive::text_iarchive TBoostTextPayload;  // boost text format
-typedef TestDetectorProto::HitPayload TProtoPayload; // protobuf payload
+using TPayloadIn = TestDetectorPayload::Hit; // binary payload
+using TBoostBinPayload = boost::archive::binary_iarchive; // boost binary format
+using TBoostTextPayload = boost::archive::text_iarchive;  // boost text format
+using TProtoPayload = TestDetectorProto::HitPayload; // protobuf payload
 
-typedef FairMQFileSink<FairTestDetectorHit, TPayloadIn> TSinkBin;
-typedef FairMQFileSink<FairTestDetectorHit, TBoostBinPayload> TSinkBoost;
-typedef FairMQFileSink<FairTestDetectorHit, TProtoPayload> TSinkProtobuf;
-typedef FairMQFileSink<FairTestDetectorHit, TMessage> TSinkTMessage;
+using TSinkBin = FairTestDetectorFileSink<FairTestDetectorHit, TPayloadIn>;
+using TSinkBoost = FairTestDetectorFileSink<FairTestDetectorHit, TBoostBinPayload>;
+using TSinkProtobuf = FairTestDetectorFileSink<FairTestDetectorHit, TProtoPayload>;
+using TSinkTMessage = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
 
 typedef struct DeviceOptions
 {

@@ -6,9 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairMQFileSink.cxx
+ * File:   FairTestDetectorDigiLoader.cxx
+ * Author: winckler
  *
- * @since 2013-06-05
- * @author A. Rybalchenko
+ * Created on February 8, 2014, 1:48 AM
  */
-// must be empty. Template function members defined in .h and .tpl

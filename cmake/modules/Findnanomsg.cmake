@@ -5,13 +5,8 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-if (APPLE)
-  set(LIBNANOMSG_SHARED libnanomsg.dylib)
-else (APPLE)
-  set(LIBNANOMSG_SHARED libnanomsg.so)
-endIf (APPLE)
 
-set(LIBNANOMSG_STATIC libnanomsg.a)
+MESSAGE(STATUS "Looking for nanomsg...")
 
 find_path(NANOMSG_INCLUDE_DIR NAMES nn.h
   PATHS ${SIMPATH}/include/nanomsg
@@ -19,16 +14,16 @@ find_path(NANOMSG_INCLUDE_DIR NAMES nn.h
   DOC   "Path to nanomsg include header files."
 )
 
-find_library(NANOMSG_LIBRARY_SHARED NAMES ${LIBNANOMSG_SHARED}
+find_library(NANOMSG_LIBRARY_SHARED NAMES libnanomsg.dylib libnanomsg.so
   PATHS ${SIMPATH}/lib
   NO_DEFAULT_PATH
-  DOC   "Path to ${LIBNANOMSG_SHARED}."
+  DOC   "Path to libnanomsg.dylib libnanomsg.so."
 )
 
-find_library(NANOMSG_LIBRARY_STATIC NAMES ${LIBNANOMSG_STATIC}
+find_library(NANOMSG_LIBRARY_STATIC NAMES libnanomsg.a
   PATHS ${SIMPATH}/lib
   NO_DEFAULT_PATH
-  DOC   "Path to ${LIBNANOMSG_STATIC}."
+  DOC   "Path to libnanomsg.a."
 )
 
 if(NANOMSG_INCLUDE_DIR AND NANOMSG_LIBRARY_SHARED AND NANOMSG_LIBRARY_STATIC)
