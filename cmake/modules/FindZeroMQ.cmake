@@ -5,12 +5,10 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-set(ZMQ_H zmq.hpp)
-set(ZMQ_UTILS_H zmq_utils.h)
-set(LIBZMQ_SHARED libzmq.dylib libzmq.so)
-set(LIBZMQ_STATIC libzmq.a)
 
-find_path(ZMQ_INCLUDE_DIR NAMES ${ZMQ_H} ${ZMQ_UTILS_H}
+MESSAGE(STATUS "Looking for ZeroMQ...")
+
+find_path(ZMQ_INCLUDE_DIR NAMES zmq.hpp zmq_utils.h
   PATHS ${ZMQ_DIR}/include
   PATHS ${AlFa_DIR}/include
   PATHS ${SIMPATH}/include
@@ -18,20 +16,20 @@ find_path(ZMQ_INCLUDE_DIR NAMES ${ZMQ_H} ${ZMQ_UTILS_H}
   DOC   "Path to ZeroMQ include header files."
 )
 
-find_library(ZMQ_LIBRARY_SHARED NAMES ${LIBZMQ_SHARED}
+find_library(ZMQ_LIBRARY_SHARED NAMES libzmq.dylib libzmq.so
   PATHS ${ZMQ_DIR}/lib
   PATHS ${AlFa_DIR}/lib
   PATHS ${SIMPATH}/lib
   NO_DEFAULT_PATH
-  DOC   "Path to ${LIBZMQ_SHARED}."
+  DOC   "Path to libzmq.dylib libzmq.so."
 )
 
-find_library(ZMQ_LIBRARY_STATIC NAMES ${LIBZMQ_STATIC}
+find_library(ZMQ_LIBRARY_STATIC NAMES libzmq.a
   PATHS ${ZMQ_DIR}/lib
   PATHS ${AlFa_DIR}/lib
   PATHS ${SIMPATH}/lib
   NO_DEFAULT_PATH
-  DOC   "Path to ${LIBZMQ_STATIC}."
+  DOC   "Path to libzmq.a."
 )
 
 IF(ZMQ_INCLUDE_DIR AND ZMQ_LIBRARY_SHARED AND ZMQ_LIBRARY_STATIC)
