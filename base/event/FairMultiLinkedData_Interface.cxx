@@ -66,12 +66,14 @@ FairMultiLinkedData_Interface& FairMultiLinkedData_Interface::operator=(const Fa
 
 FairMultiLinkedData* FairMultiLinkedData_Interface::CreateFairMultiLinkedData()
 {
-	if (FairRootManager::Instance()->GetUseFairLinks()){
-		if (fLink == 0){
-			fLink = new FairMultiLinkedData();
+	if (FairRootManager::Instance() != 0){
+		if (FairRootManager::Instance()->GetUseFairLinks()){
+			if (fLink == 0){
+				fLink = new FairMultiLinkedData();
+			}
+			fLink->SetInsertHistory(fInsertHistory);
+			return fLink;
 		}
-		fLink->SetInsertHistory(fInsertHistory);
-		return fLink;
 	}
 	return 0;
 }
