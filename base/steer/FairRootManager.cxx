@@ -541,6 +541,7 @@ void FairRootManager::ForceFill()
 //_____________________________________________________________________________
 void FairRootManager::LastFill()
 {
+  FairMonitor::GetMonitor()->StoreHistograms(fOutFile);
   if (fFillLastData) {
     Fill();
   }

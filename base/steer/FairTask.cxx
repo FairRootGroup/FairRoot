@@ -162,9 +162,10 @@ void FairTask::ExecuteTask(Option_t *option)
    if (gDebug > 1) {
      LOG(INFO)<<"Execute task:"<<GetName()<<" : "<<GetTitle()<<FairLogger::endl;
    }
-   FairMonitor::GetMonitor()->StartTimer(this,"EXEC");
+   FairMonitor::GetMonitor()->StartMonitoring(this,"EXEC");
    Exec(option);
-   FairMonitor::GetMonitor()->StopTimer(this,"EXEC");
+   FairMonitor::GetMonitor()->StopMonitoring(this,"EXEC");
+
 
    fHasExecuted = kTRUE;
    ExecuteTasks(option);
@@ -202,9 +203,9 @@ void FairTask::ExecuteTasks(Option_t *option)
       if (gDebug > 1) {
 	LOG(INFO)<<"Execute task:"<<task->GetName()<<" : "<<task->GetTitle()<<FairLogger::endl;
       }
-      FairMonitor::GetMonitor()->StartTimer(task,"EXEC");
+      FairMonitor::GetMonitor()->StartMonitoring(task,"EXEC");
       task->Exec(option);
-      FairMonitor::GetMonitor()->StopTimer(task,"EXEC");
+      FairMonitor::GetMonitor()->StopMonitoring(task,"EXEC");
 
       task->fHasExecuted = kTRUE;
       task->ExecuteTasks(option);

@@ -14,12 +14,16 @@
 
 #include "FairMonitor.h"
 #include "FairLogger.h"
+#include "FairSystemInfo.h"
 
 #include "TArrow.h"
 #include "TAxis.h"
 #include "TBox.h"
 #include "TCanvas.h"
+#include "TDirectory.h"
+#include "TFile.h"
 #include "TH1F.h"
+#include "TLatex.h"
 #include "TLegend.h"
 #include "TList.h"
 #include "TMath.h"
@@ -45,9 +49,9 @@ FairMonitor::FairMonitor()
   , fNoTaskRequired(0)
   , fNoTaskCreated(0)
   , fRunTime(0.)
-  , fTimeArray(new Double_t[1000])
-  , fTimerHistList(new TList())
-  , fTimerList(new TList())
+  , fRunMem(0.)
+  , fCanvas()
+  , fHistList(new TList())
 {
 }
 //_____________________________________________________________________________
@@ -57,7 +61,7 @@ FairMonitor::~FairMonitor()
 {
 }
 //_____________________________________________________________________________
-
+  
 //_____________________________________________________________________________
 FairMonitor* FairMonitor::GetMonitor()
 {
@@ -72,22 +76,16 @@ FairMonitor* FairMonitor::GetMonitor()
 void FairMonitor::StartTimer(const TTask* tTask, const char* identStr) {
   if ( !fRunMonitor ) return;
 
-  TString tempString = Form("hist_%p_%s_%s",tTask,tTask->GetName(),identStr);
+  TString tempString = Form("timer_%p_%s_%s",tTask,tTask->GetName(),identStr);
 
-  Int_t nofHists = fTimerHistList->GetEntries();
-  Int_t ihist = 0;
-  for ( ihist = 0 ; ihist < nofHists ; ihist++ ) {
-    if ( !tempString.CompareTo(fTimerHistList->At(ihist)->GetName()) ) {
-      break;
-    }
+  typedef std::map<TString, TStopwatch>::iterator ttMapIter;
+
+  ttMapIter itt = fTimerMap.find(tempString);
+  if ( itt == fTimerMap.end() ) {
+    fTimerMap.insert(std::pair<TString, TStopwatch> (tempString,TStopwatch()));
+    itt = fTimerMap.find(tempString);
   }
-  if ( ihist == nofHists ) {
-    fTimerList->Add(new TStopwatch()); 
-    TString titleString = Form("Time evolution for %s, %s",tTask->GetName(),identStr);
-    fTimerHistList->Add(new TH1F(tempString,titleString,1000,0,1000));
-    fTimeArray[nofHists] = 0.;
-  }
-  ((TStopwatch*)(fTimerList->At(ihist)))->Start();
+  fTimerMap[tempString].Start();
 }
 //_____________________________________________________________________________
 
@@ -95,29 +93,89 @@ void FairMonitor::StartTimer(const TTask* tTask, const char* identStr) {
 void FairMonitor::StopTimer(const TTask* tTask, const char* identStr) {
   if ( !fRunMonitor ) return;
 
+  TString tempString = Form("timer_%p_%s_%s",tTask,tTask->GetName(),identStr);
+
+  typedef std::map<TString, TStopwatch>::iterator ttMapIter;
+
+  ttMapIter itt = fTimerMap.find(tempString);
+  if ( itt == fTimerMap.end() ) {
+    LOG(INFO) << "FairMonitor::StopTimer() called without matching StartTimer()" << FairLogger::endl;
+    return;
+  }
+  //  itt->second
+  fTimerMap[tempString].Stop();
+
+  Double_t time = fTimerMap[tempString].RealTime();
+  RecordInfo(tTask,Form("%s_TIM",identStr),time);
+
+  if ( tempString.EndsWith("_EXEC") )
+    fRunTime += time;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairMonitor::StartMemoryMonitor(const TTask* tTask, const char* identStr) {
+  if ( !fRunMonitor ) return;
+  FairSystemInfo sysInfo;
+  Int_t memoryAtStart = (Int_t)sysInfo.GetCurrentMemory();
+
+  TString memMon = Form("mem_%p_%s_%s",tTask,tTask->GetName(),identStr);
+  
+  typedef std::map<TString, Int_t>::iterator tiMapIter;
+
+  tiMapIter iti = fMemoryMap.find(memMon);
+  if ( iti == fMemoryMap.end() ) 
+    fMemoryMap.insert(std::pair<TString, Int_t> (memMon,memoryAtStart));
+  else
+    iti->second = memoryAtStart;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairMonitor::StopMemoryMonitor(const TTask* tTask, const char* identStr) {
+  if ( !fRunMonitor ) return;
+  FairSystemInfo sysInfo;
+  Int_t memoryAtEnd = (Int_t)sysInfo.GetCurrentMemory();
+
+  TString memMon = Form("mem_%p_%s_%s",tTask,tTask->GetName(),identStr);
+  
+  typedef std::map<TString, Int_t>::iterator tiMapIter;
+
+  tiMapIter iti = fMemoryMap.find(memMon);
+  if ( iti == fMemoryMap.end() ) 
+    LOG(WARNING) << "FairMonitor::StopMemoryMonitor() Could not find corresponding entry for \"" << memMon.Data() << "\"." << FairLogger::endl;
+  else {
+    RecordInfo(tTask,Form("%s_MEM",identStr),memoryAtEnd-iti->second);
+    
+    if ( memMon.EndsWith("_EXEC") )
+      fRunMem += memoryAtEnd-iti->second;
+  } 
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairMonitor::RecordInfo(const TTask* tTask, const char* identStr, Double_t value) {
+  if ( !fRunMonitor ) return;
+  
   TString tempString = Form("hist_%p_%s_%s",tTask,tTask->GetName(),identStr);
 
-  Int_t nofHists = fTimerHistList->GetEntries();
+  Int_t nofHists = fHistList->GetEntries();
   Int_t ihist = 0;
   for ( ihist = 0 ; ihist < nofHists ; ihist++ ) {
-    if ( !tempString.CompareTo(fTimerHistList->At(ihist)->GetName()) ) {
+    if ( !tempString.CompareTo(fHistList->At(ihist)->GetName()) ) {
       break;
     }
   }
   if ( ihist == nofHists ) {
-    LOG(INFO) << "FairMonitor::StopTimer() called without matching StartTimer()" << FairLogger::endl;
-    return;
+    TString titleString = Form("Histogram %s for %s",identStr,tTask->GetName());
+    fHistList->Add(new TH1F(tempString,titleString,1000,0,1000));
   }
-  ((TStopwatch*)(fTimerList->At(ihist)))->Stop();
-  Double_t time = ((TStopwatch*)(fTimerList->At(ihist)))->RealTime();
-  TH1F* tempHist = ((TH1F*)(fTimerHistList->At(ihist)));
+  TH1F* tempHist = ((TH1F*)(fHistList->At(ihist)));
   Int_t nofEntries = tempHist->GetEntries();
   if ( nofEntries > tempHist->GetNbinsX() ) 
     tempHist->SetBins(tempHist->GetNbinsX()*10, 0, tempHist->GetXaxis()->GetXmax()*10);
-  tempHist->SetBinContent(nofEntries+1,time);
-  fTimeArray[ihist] += time;
-  if ( tempString.EndsWith("_EXEC") )
-    fRunTime += time;
+
+  tempHist->SetBinContent(nofEntries+1,value);
 }
 //_____________________________________________________________________________
 
@@ -160,64 +218,93 @@ void FairMonitor::RecordGetting(const char* name) {
 void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) {
   if ( !fRunMonitor ) return;
 
-  TString tempString = Form("hist_%p_%s_%s",tempTask,tempTask->GetName(),"EXEC");
-  Int_t nofHists = fTimerHistList->GetEntries();
-  Int_t ihist = 0;
-  Int_t longestName = 0;
+  Int_t nofHists = fHistList->GetEntries();
+  TString tempString = "";
 
-  TString printString = " ";
-  TString timeString = "";
-  Double_t timePerc = 0.;
-  Int_t timeFracLog = 0;
+  Double_t timInt = -1.;
+  Double_t timEnt = 0.;
+  Int_t memInt = -1.;
 
-  for ( ihist = 0 ; ihist < nofHists ; ihist++ ) {
-    if ( longestName < strlen(fTimerHistList->At(ihist)->GetName()) ) 
-      longestName = strlen(fTimerHistList->At(ihist)->GetName());
-  }
-  for ( ihist = 0 ; ihist < nofHists ; ihist++ ) {
-    if ( !tempString.CompareTo(fTimerHistList->At(ihist)->GetName()) ) {
-      timeString = Form("%f", fTimeArray[ihist]/(((TH1F*)(fTimerHistList->At(ihist)))->GetEntries()));
-      for ( Int_t itemp = timeString.Length() ; itemp < 10 ; itemp++ ) 
-	printString += ' ';
-      printString += timeString;
-      printString.Remove(11,100);
-      printString += " s/ev |";
-      timePerc = 100.*fTimeArray[ihist]/fRunTime;
-      if ( timePerc < 100. ) printString += ' ';
-      if ( timePerc <  10. ) printString += ' ';
-      timeString = Form("%f",timePerc);
-      for ( Int_t itemp = timeString.Length() ; itemp < 8 ; itemp++ ) 
-	printString += ' ';
-      printString += timeString;
-      printString.Remove(27,100);
-      printString += " % ";
-      tempString = printString.Data();
-      printString = "] \"";
-      for ( Int_t ilev = 0 ; ilev < taskLevel ; ilev++ )
-	printString += "  ";
-      printString += tempTask->GetName();
-      if ( printString.Length() > 80 )
-	printString.Remove(80,100);
-      printString += "\"";
-      timeFracLog = (Int_t)(TMath::Log2(timePerc/100.)/TMath::Log2(0.8));
-      timeFracLog = 30-(Int_t)(timePerc/100.*30.);
-      //      if ( timeFracLog > 30 ) timeFracLog = 30;
+  char byteChar[4] = {'B','k','M','G'};
 
-      if ( timePerc < 30 )
-	LOG(INFO) << "[\033[42m" << FairLogger::flush;
-      else if ( timePerc < 90 )
-	LOG(INFO) << "[\033[43m" << FairLogger::flush;
-      else
-	LOG(INFO) << "[\033[41m" << FairLogger::flush;
-      for ( Int_t ilen = 0 ; ilen < tempString.Length()-timeFracLog ; ilen++ ) {
-	LOG(INFO) << tempString[ilen] << FairLogger::flush;
+  for ( Int_t ihist = 0 ; ihist < nofHists ; ihist++ ) {
+    tempString = Form("%s",fHistList->At(ihist)->GetName());
+    if ( tempString.Contains(Form("%p",tempTask)) ) {
+      if ( tempString.Contains("EXEC_TIM") ) {
+	timInt = ((TH1F*)fHistList->At(ihist))->Integral();
+	timEnt = ((TH1F*)fHistList->At(ihist))->GetEntries();
       }
-      LOG(INFO) << "\033[0m" << FairLogger::flush;
-      for ( Int_t ilen = tempString.Length()-timeFracLog ; ilen < tempString.Length() ; ilen++ ) {
-	LOG(INFO) << tempString[ilen] << FairLogger::flush;
+      if ( tempString.Contains("EXEC_MEM") ) {
+	memInt = ((TH1F*)fHistList->At(ihist))->Integral();
       }
-      LOG(INFO) << printString.Data() << FairLogger::endl;
     }
+  }
+  if ( timInt < 0 ) {
+    LOG(WARNING) << "FairMonitor::PrintTask(), task \"" << tempTask->GetName() << "\" not found!" << FairLogger::endl; 
+  }
+  else {
+    //    LOG(INFO) << "\"" << tempTask->GetName() << "\" --> TIME integral =  " << timInt << " -- MEMORY integral = " << memInt << FairLogger::endl;
+    TString printString = Form("%f", timInt/timEnt);
+    for ( Int_t itemp = printString.Length() ; itemp < 10 ; itemp++ ) 
+      printString.Insert(0,' ');
+    if (printString.Length() > 10 ) printString.Remove(11,100);
+    printString += " s/ev |";
+    Double_t timePerc = 100.*timInt/fRunTime;
+    if ( timePerc < 100. ) printString += ' ';
+    if ( timePerc <  10. ) printString += ' ';
+    tempString = Form("%f",timePerc);
+    for ( Int_t itemp = tempString.Length() ; itemp < 8 ; itemp++ ) 
+      printString += ' ';
+    printString += tempString;
+    printString.Remove(27,100);
+    Int_t byteIdent = 0;
+    while ( memInt > 1024 ) {
+      memInt = memInt/1024;
+      byteIdent++;
+    }
+    tempString = Form("%4d",memInt);
+    printString += " % ] ";
+    if ( memInt < 0 )
+      printString += "- - -";
+    else {
+      printString += tempString;
+      printString += byteChar[byteIdent];
+    }
+    printString += " \"";
+    for ( Int_t ilev = 0 ; ilev < taskLevel ; ilev++ )
+      printString += "  ";
+    printString += tempTask->GetName();
+    if ( printString.Length() > 80 )
+      printString.Remove(80,100);
+    printString += "\"";
+    Int_t timeFrac = (Int_t)(timePerc/100.*30.);
+    if ( timePerc < 30 )
+      LOG(INFO) << "[\033[42m" << FairLogger::flush;
+    else if ( timePerc < 90 )
+      LOG(INFO) << "[\033[43m" << FairLogger::flush;
+    else
+      LOG(INFO) << "[\033[41m" << FairLogger::flush;
+    for ( Int_t ilen = 0 ; ilen < timeFrac ; ilen++ ) {
+      LOG(INFO) << printString[ilen] << FairLogger::flush;
+    }
+    LOG(INFO) << "\033[0m" << FairLogger::flush;
+    for ( Int_t ilen = timeFrac ; ilen < 32 ; ilen++ ) {
+      LOG(INFO) << printString[ilen] << FairLogger::flush;
+    }
+    switch ( byteIdent ) {
+    case 0:  LOG(INFO) << "\033[42m" << FairLogger::flush; break;
+    case 1:  LOG(INFO) << "\033[43m" << FairLogger::flush; break;
+    default: LOG(INFO) << "\033[41m" << FairLogger::flush; break;
+    }
+    for ( Int_t ilen = 32 ; ilen < 37 ; ilen++ ) {
+      LOG(INFO) << printString[ilen] << FairLogger::flush;
+    }
+    LOG(INFO) << "\033[0m" << FairLogger::flush;
+    for ( Int_t ilen = 37 ; ilen < printString.Length() ; ilen++ ) {
+      LOG(INFO) << printString[ilen] << FairLogger::flush;
+    }
+    LOG(INFO) << FairLogger::endl;
+    //    LOG(INFO) << printString.Data() << FairLogger::endl;
   }
 
   TList* subTaskList = tempTask->GetListOfTasks();
@@ -226,23 +313,6 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) {
     TTask* subTask = (TTask*)subTaskList->At(itask);
     if ( subTask ) 
       PrintTask(subTask,taskLevel+1);
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairMonitor::Print(TString specString) {
-  if ( !fRunMonitor ) {
-    LOG(WARNING) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;
-    return;
-  }
-
-  Int_t nofHists = fTimerHistList->GetEntries();
-  for ( Int_t ihist = 0 ; ihist < nofHists ; ihist++ ) {
-    TString histString = Form("%s",fTimerHistList->At(ihist)->GetName());
-    if ( !histString.Contains("EXEC") && histString.Contains(specString) ) {
-      LOG(INFO) << histString.Data() << " " << fTimeArray[ihist]/(((TH1F*)(fTimerHistList->At(ihist)))->GetEntries()) << " s/ev" << FairLogger::endl;
-    }
   }
 }
 //_____________________________________________________________________________
@@ -261,7 +331,6 @@ void FairMonitor::Print(Option_t* option) {
   LOG(INFO) << "-------------------------------------------------------------------------------------" << FairLogger::endl;
   
 }
-
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
@@ -316,15 +385,15 @@ void FairMonitor::Draw(Option_t* option) {
 
   LOG(DEBUG) << "Max hierarchy number is " << maxHierarchyNumber << FairLogger::endl;
 
-  TCanvas* tempCanv = new TCanvas("FairMonitor","Fair Monitor",10,10,960,600);
-  tempCanv->cd();
+  fCanvas = new TCanvas("MonitorCanvas","Fair Monitor",10,10,960,600);
+  fCanvas->cd();
 
-  tempCanv->SetFillStyle(4000);
-  tempCanv->Range(0,0,960,800);
-  tempCanv->SetFillColor(0);
-  tempCanv->SetBorderSize(0);
-  tempCanv->SetBorderMode(0);
-  tempCanv->SetFrameFillColor(0);
+  fCanvas->SetFillStyle(4000);
+  fCanvas->Range(0,0,960,800);
+  fCanvas->SetFillColor(0);
+  fCanvas->SetBorderSize(0);
+  fCanvas->SetBorderMode(0);
+  fCanvas->SetFrameFillColor(0);
 
   for ( Int_t ihier = 0 ; ihier < maxHierarchyNumber+1 ; ihier++ ) {
     Int_t nofHier = 0;
@@ -438,26 +507,25 @@ void FairMonitor::Draw(Option_t* option) {
     bkgBox->SetFillColor(kGreen-9);
     bkgBox->Draw();
 
-    TString tempString = Form("hist_%s_%s",itt->first.Data(),"EXEC");
-    Int_t nofHists = fTimerHistList->GetEntries();
+    TString tempString = Form("hist_%s_%s",itt->first.Data(),"EXEC_TIM");
+    Int_t nofHists = fHistList->GetEntries();
     for ( Int_t ihist = 0 ; ihist < nofHists ; ihist++ ) {
-      if ( !tempString.CompareTo(fTimerHistList->At(ihist)->GetName()) ) {
-	Double_t timeFrac = 80.*fTimeArray[ihist]/fRunTime;
+      if ( !tempString.CompareTo(fHistList->At(ihist)->GetName()) ) {
+	Double_t timeInt = ((TH1F*)fHistList->At(ihist))->Integral();
+	Double_t timeFrac = 80.*timeInt/fRunTime;
 	TBox* barBox = new TBox(taskPos.first-40,taskPos.second-15,taskPos.first-40+timeFrac,taskPos.second+15);
 	barBox->SetFillColor(kRed);
 	barBox->Draw();
       }
     }
 
-    TPaveText* paveText = new TPaveText(taskPos.first-40,taskPos.second-15,taskPos.first+40,taskPos.second+15,"nb");
-    paveText->SetFillColorAlpha(kWhite,0.);//4000);
-    paveText->SetShadowColor(0);
-    paveText->SetTextSizePixels(10);
     tempString = itt->first;
     tempString.Replace(0,tempString.First('_')+1,"");
     if ( tempString.Length() > 16 ) tempString.Replace(16,tempString.Length(),"");
-    paveText->AddText(tempString);
-    paveText->Draw();
+    TLatex* taskText = new TLatex(taskPos.first,taskPos.second,tempString.Data());
+    taskText->SetTextAlign(22);
+    taskText->SetTextSizePixels(10);
+    taskText->Draw();
   }
 
   for ( ito = fObjectPos.begin() ; ito != fObjectPos.end() ; ito++ ) {
@@ -487,7 +555,7 @@ void FairMonitor::DrawHist(TString specString) {
     return;
   }
 
-  Int_t nofHists = fTimerHistList->GetEntries();
+  Int_t nofHists = fHistList->GetEntries();
   Int_t nofDraws = 0;
   TString drawStr = "P";
 
@@ -495,18 +563,18 @@ void FairMonitor::DrawHist(TString specString) {
 
   Double_t histMax = 0.;
   for ( Int_t ihist = 0 ; ihist < nofHists ; ihist++ ) {
-    TString histString = Form("%s",fTimerHistList->At(ihist)->GetName());
+    TString histString = Form("%s",fHistList->At(ihist)->GetName());
     if ( histString.Contains(specString) ) {
-      TH1F* tempHist = ((TH1F*)(fTimerHistList->At(ihist)));
+      TH1F* tempHist = ((TH1F*)(fHistList->At(ihist)));
       if ( histMax < tempHist->GetMaximum() )
 	histMax = tempHist->GetMaximum();
     }
   }
 
   for ( Int_t ihist = 0 ; ihist < nofHists ; ihist++ ) {
-    TString histString = Form("%s",fTimerHistList->At(ihist)->GetName());
+    TString histString = Form("%s",fHistList->At(ihist)->GetName());
     if ( histString.Contains(specString) ) {
-      TH1F* tempHist = ((TH1F*)(fTimerHistList->At(ihist)));
+      TH1F* tempHist = ((TH1F*)(fHistList->At(ihist)));
       if ( tempHist->GetXaxis()->GetXmax() > tempHist->GetEntries() )
 	tempHist->SetBins(tempHist->GetEntries(),0,tempHist->GetEntries());
       tempHist->SetMarkerColor(nofDraws%6+2);
@@ -523,6 +591,30 @@ void FairMonitor::DrawHist(TString specString) {
   }
   if ( nofDraws > 1 ) 
     tempLeg->Draw();
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairMonitor::StoreHistograms(TFile* tfile) 
+{
+  if ( !fRunMonitor ) {
+    return;
+  }
+  this->Draw();
+
+  gDirectory = (TDirectory*)tfile;
+
+  gDirectory->mkdir("MonitorResults");
+  gDirectory->cd("MonitorResults");
+  TIter next(fHistList);
+  while ( TH1* thist = ((TH1*)next()) ) {
+    thist->SetBins(thist->GetEntries(),0,thist->GetEntries());
+    thist->Write();
+  }
+  fCanvas->Write();
+  gDirectory->cd("..");
+
+  fCanvas->Close();
 }
 //_____________________________________________________________________________
 
@@ -603,7 +695,6 @@ void FairMonitor::AnalyzeObjectMap(TTask* tempTask) {
 
 }
 //_____________________________________________________________________________
-
 
 ClassImp(FairMonitor)
 

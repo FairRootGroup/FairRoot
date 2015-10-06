@@ -20,7 +20,10 @@
 #include <map>
 
 #include "TNamed.h"
+#include "TStopwatch.h"
 
+class TCanvas;
+class TFile;
 class TList;
 class TTask;
 
@@ -29,8 +32,24 @@ class FairMonitor : public TNamed
   public:
   static FairMonitor* GetMonitor();
 
+  void EnableMonitor(Bool_t tempBool = kTRUE) { fRunMonitor = tempBool; }
+
+  void StartMonitoring(const TTask* tTask, const char* identStr) {
+    StartTimer        (tTask,identStr);
+    StartMemoryMonitor(tTask,identStr);
+  }
+  void  StopMonitoring(const TTask* tTask, const char* identStr) {
+    StopTimer        (tTask,identStr);
+    StopMemoryMonitor(tTask,identStr);
+  }
+
   void StartTimer(const TTask* tTask, const char* identStr);
-  void StopTimer (const TTask* tTask, const char* identStr);
+  void  StopTimer(const TTask* tTask, const char* identStr);
+
+  void StartMemoryMonitor(const TTask* tTask, const char* identStr);
+  void  StopMemoryMonitor(const TTask* tTask, const char* identStr);
+
+  void RecordInfo(const TTask* tTask, const char* identStr, Double_t value);
 
   void RecordRegister(const char* name, const char* folderName, Bool_t toFile);
   void RecordGetting(const char* name);
@@ -41,14 +60,12 @@ class FairMonitor : public TNamed
   virtual void Draw (Option_t* option = "");
 
   void Print(TString specString);
-
+  void PrintTask(TTask* tempTask, Int_t taskLevel=0);
   void DrawHist(TString specString);
 
-  void PrintTask(TTask* tempTask, Int_t taskLevel=0);
+  TList* GetHistList() { return fHistList; }
 
-  TList* GetHistList() { return fTimerHistList;}
-
-  void EnableMonitor(Bool_t tempBool = kTRUE) { fRunMonitor = tempBool; }
+  void StoreHistograms(TFile* tfile);
 
   private:
     static FairMonitor* instance;
@@ -57,12 +74,14 @@ class FairMonitor : public TNamed
 
     Bool_t fRunMonitor;
 
-    Double_t fRunTime;
+    Double_t fRunTime; 
+    Double_t fRunMem;
 
-    Double_t* fTimeArray;
+    std::map<TString, TStopwatch> fTimerMap;
+    std::map<TString, Int_t> fMemoryMap;
 
-    TList* fTimerHistList;
-    TList* fTimerList;
+    TList* fHistList;
+    TCanvas* fCanvas;
 
     Int_t fNoTaskRequired;
     Int_t fNoTaskCreated;
@@ -81,7 +100,7 @@ class FairMonitor : public TNamed
     void GetTaskMap(TTask* tempTask);
     void AnalyzeObjectMap(TTask* tempTask);
 
-    ClassDef(FairMonitor, 1)
+    ClassDef(FairMonitor, 0)
 };
 
 extern FairMonitor* gMonitor;

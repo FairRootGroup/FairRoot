@@ -23,7 +23,8 @@ class FairSystemInfo
  public:
 
   Float_t GetMaxMemory();
-  
+  size_t GetCurrentMemory();  
+
   ClassDef(FairSystemInfo, 1)
 };
 
