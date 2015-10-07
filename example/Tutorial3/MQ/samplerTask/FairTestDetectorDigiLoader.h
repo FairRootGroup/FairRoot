@@ -15,6 +15,7 @@
 #define FAIRTESTDETECTORDIGILOADER_H
 
 #include <iostream>
+#include <type_traits>
 
 #include <boost/timer/timer.hpp>
 #include <boost/archive/text_oarchive.hpp>
@@ -24,22 +25,43 @@
 #include "TMessage.h"
 
 #include "FairTestDetectorPayload.h"
+#include "FairTestDetectorDigi.h"
 
 #include "FairMQSamplerTask.h"
 #include "FairMQLogger.h"
 
 #include "baseMQtools.h"
-#include <type_traits>
 
 using namespace std;
 
-// Base template header <T1,T2>
 template <typename T1, typename T2>
 class FairTestDetectorDigiLoader : public FairMQSamplerTask
 {
   public:
-    FairTestDetectorDigiLoader();
-    virtual ~FairTestDetectorDigiLoader();
+    FairTestDetectorDigiLoader()
+        : FairMQSamplerTask("Load class T1")
+        , fDigiVector()
+        , fHasBoostSerialization(false)
+    {
+        using namespace baseMQ::tools::resolve;
+        // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
+        if (is_same<T2, boost::archive::binary_oarchive>::value || is_same<T2, boost::archive::text_oarchive>::value)
+        {
+            if (has_BoostSerialization<T1, void(T2&, const unsigned int)>::value == 1)
+            {
+                fHasBoostSerialization = true;
+            }
+        }
+    }
+
+    virtual ~FairTestDetectorDigiLoader()
+    {
+        if (fDigiVector.size() > 0)
+        {
+            fDigiVector.clear();
+        }
+    }
+
     virtual void Exec(Option_t* opt);
 
     template <class Archive>
@@ -55,6 +77,9 @@ class FairTestDetectorDigiLoader : public FairMQSamplerTask
 };
 
 // Template implementation is in FairTestDetectorDigiLoader.tpl :
-#include "FairTestDetectorDigiLoader.tpl"
+#include "FairTestDetectorDigiLoaderBoost.tpl"
+#include "FairTestDetectorDigiLoaderBin.tpl"
+#include "FairTestDetectorDigiLoaderProtobuf.tpl"
+#include "FairTestDetectorDigiLoaderTMessage.tpl"
 
 #endif /* FAIRTESTDETECTORDIGILOADER_H */

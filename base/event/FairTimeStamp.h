@@ -17,8 +17,6 @@
 
 #include <iostream>                     // for ostream, cout
 
-
-
 #ifndef __CINT__ // for BOOST serialization
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
@@ -83,22 +81,19 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     		return false;
     }
 
-
     template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) 
+    void serialize(Archive& ar, const unsigned int version)
     {
-        //ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
-        ar & fTimeStamp;
-        ar & fTimeStampError;
-    } 
-    
-    
-  protected:
+        // ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
+        ar& fTimeStamp;
+        ar& fTimeStampError;
+    }
 
-    #ifndef __CINT__ // for BOOST serialization
+  protected:
+#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-    
-    #endif // for BOOST serialization
+#endif // for BOOST serialization
+
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError;     /** Error on time stamp */
     FairLink fEntryNr; //!  indicates where the data is stored in the branch

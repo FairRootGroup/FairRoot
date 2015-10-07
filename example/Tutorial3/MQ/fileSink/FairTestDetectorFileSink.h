@@ -55,9 +55,48 @@ template <typename TIn, typename TPayloadIn>
 class FairTestDetectorFileSink : public FairMQDevice
 {
   public:
-    FairTestDetectorFileSink();
-    virtual ~FairTestDetectorFileSink();
-    virtual void InitOutputFile(TString defaultId = "100");
+    FairTestDetectorFileSink()
+        : fOutFile(NULL)
+        , fTree(NULL)
+        , fOutput(NULL)
+        , fHitVector()
+        , fHasBoostSerialization(false)
+    {
+        gSystem->ResetSignal(kSigInterrupt);
+        gSystem->ResetSignal(kSigTermination);
+
+        // Check if boost serialization is available if it is chosen
+        using namespace baseMQ::tools::resolve;
+        // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
+        if (is_same<TPayloadIn, boost::archive::binary_iarchive>::value || is_same<TPayloadIn, boost::archive::text_iarchive>::value)
+        {
+            if (has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 1)
+            {
+                fHasBoostSerialization = true;
+            }
+        }
+    }
+
+    virtual ~FairTestDetectorFileSink()
+    {
+        fTree->Write();
+        fOutFile->Close();
+        if (fHitVector.size() > 0)
+        {
+            fHitVector.clear();
+        }
+    }
+
+    virtual void InitOutputFile(TString defaultId = "100")
+    {
+        fOutput = new TClonesArray("FairTestDetectorHit");
+        char out[256];
+        sprintf(out, "filesink%s.root", defaultId.Data());
+
+        fOutFile = new TFile(out, "recreate");
+        fTree = new TTree("MQOut", "Test output");
+        fTree->Branch("Output", "TClonesArray", &fOutput, 64000, 99);
+    }
 
     template <class Archive>
     void serialize(Archive& ar, const unsigned int version)
@@ -72,6 +111,7 @@ class FairTestDetectorFileSink : public FairMQDevice
     TFile* fOutFile;
     TTree* fTree;
     TClonesArray* fOutput;
+
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
     vector<TIn> fHitVector;
@@ -83,7 +123,10 @@ class FairTestDetectorFileSink : public FairMQDevice
     FairTestDetectorFileSink operator=(const FairTestDetectorFileSink&);
 };
 
-////////// Template implementation of Run() in FairTestDetectorFileSink.tpl :
-#include "FairTestDetectorFileSink.tpl"
+// Template implementation of Run() in FairTestDetectorFileSink.tpl :
+#include "FairTestDetectorFileSinkBoost.tpl"
+#include "FairTestDetectorFileSinkBin.tpl"
+#include "FairTestDetectorFileSinkProtobuf.tpl"
+#include "FairTestDetectorFileSinkTMessage.tpl"
 
 #endif /* FAIRTESTDETECTORFILESINK_H_ */

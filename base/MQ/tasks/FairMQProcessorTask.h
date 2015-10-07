@@ -30,9 +30,12 @@ class FairMQProcessorTask : public FairTask
   public:
     FairMQProcessorTask();
     virtual ~FairMQProcessorTask();
+
     virtual void Exec(Option_t* opt = "0");
+
     void SetSendPart(boost::function<void()>); // provides a callback to the Processor.
     void SetReceivePart(boost::function<bool()>); // provides a callback to the Processor.
+
     FairMQMessage* GetPayload();
     void SetPayload(FairMQMessage* msg);
 
