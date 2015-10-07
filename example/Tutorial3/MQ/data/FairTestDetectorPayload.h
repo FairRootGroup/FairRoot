@@ -16,8 +16,6 @@
 #define TESTDETECTORPAYLOAD_H_
 
 #include <string>
-#include "FairTestDetectorDigi.h"
-#include "TString.h"
 
 namespace TestDetectorPayload
 {

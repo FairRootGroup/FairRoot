@@ -113,8 +113,6 @@ class FairTestDetectorDigi : public FairTimeStamp
         return false;
     }
 
-
-
     friend std::ostream& operator<<(std::ostream& out, FairTestDetectorDigi& digi)
     {
         out << "FairTestDetectorDigi at:"
@@ -124,7 +122,7 @@ class FairTestDetectorDigi : public FairTimeStamp
     }
 
     template <class T>
-    std::string ToString (const T& value) 
+    std::string ToString (const T& value)
     {
       std::stringstream ss;
       ss.precision(5);
@@ -132,7 +130,7 @@ class FairTestDetectorDigi : public FairTimeStamp
       return ss.str();
     }
 
-    std::string ToString() 
+    std::string ToString()
     {
       std::string out = "FairTestDetectorDigi at: (" + ToString(GetX()) 
   	    + "/" + ToString(GetY()) + "/" + ToString(GetZ()) 
@@ -152,7 +150,6 @@ class FairTestDetectorDigi : public FairTimeStamp
   private:
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-
 #endif // for BOOST serialization
 
     Int_t fX;

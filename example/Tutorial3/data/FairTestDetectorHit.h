@@ -40,7 +40,6 @@ class FairTestDetectorHit : public FairHit
   private:
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-
 #endif // for BOOST serialization
 
     ClassDef(FairTestDetectorHit, 1);

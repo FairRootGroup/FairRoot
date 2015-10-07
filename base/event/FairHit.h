@@ -13,8 +13,6 @@
 #include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
 #include "TVector3.h"                   // for TVector3
 
-
-
 #ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
@@ -48,7 +46,7 @@ class FairHit : public FairTimeStamp
     Double_t GetDz()            const { return fDz;                     };
     Int_t    GetRefIndex()      const { return fRefIndex;               };
     void PositionError(TVector3& dpos) const;
-    Int_t    GetDetectorID()   const { return fDetectorID;             };
+    Int_t    GetDetectorID()    const { return fDetectorID;             };
     Double_t GetX()             const { return fX;                      };
     Double_t GetY()             const { return fY;                      };
     Double_t GetZ()             const { return fZ;                      };
@@ -74,39 +72,31 @@ class FairHit : public FairTimeStamp
     /*** Output to screen */
     virtual void Print(const Option_t* opt ="") const {;}
 
-
-    
     template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) 
+    void serialize(Archive& ar, const unsigned int version)
     {
-        ar & boost::serialization::base_object<FairTimeStamp>(*this);
-        ar & fDetectorID;
-        ar & fRefIndex;
-        ar & fX;
-        ar & fY;
-        ar & fZ;
-        ar & fDx; 
-        ar & fDy; 
-        ar & fDz;
+        ar& boost::serialization::base_object<FairTimeStamp>(*this);
+        ar& fDetectorID;
+        ar& fRefIndex;
+        ar& fX;
+        ar& fY;
+        ar& fZ;
+        ar& fDx;
+        ar& fDy;
+        ar& fDz;
     }
 
   protected:
-    
-   #ifndef __CINT__ // for BOOST serialization
-   friend class boost::serialization::access;
+#ifndef __CINT__ // for BOOST serialization
+    friend class boost::serialization::access;
+#endif // for BOOST serialization
 
-    #endif // for BOOST serialization
-    
-    
     Double32_t fDx, fDy, fDz;   ///< Errors of position [cm]
     Int_t      fRefIndex;       ///< Index of FairMCPoint for this hit
     Int_t      fDetectorID;     ///< Detector unique identifier
     Double32_t fX, fY, fZ;      ///< Position of hit [cm]
 
-
     ClassDef(FairHit,3);
-
-
 };
 
 
