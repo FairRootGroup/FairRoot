@@ -334,6 +334,32 @@ void FairMonitor::Print(Option_t* option) {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairMonitor::PrintTask(TString specString) {
+  if ( !fRunMonitor ) {
+    LOG(WARNING) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;
+    return;
+  }
+
+  TString unitString = "";
+
+  Int_t nofHists = fHistList->GetEntries();
+  for ( Int_t ihist = 0 ; ihist < nofHists ; ihist++ ) {
+    TString histString = Form("%s",fHistList->At(ihist)->GetName());
+    if ( histString.Contains(specString) ) {
+      histString.Replace(0,histString.First('_')+1,"");
+      histString.Replace(0,histString.First('_')+1,"");
+      Double_t integral = ((TH1F*)(fHistList->At(ihist)))->Integral();
+      Double_t entries  = ((TH1F*)(fHistList->At(ihist)))->GetEntries();
+      Double_t valPent  = integral/entries;
+      if ( histString.EndsWith("_TIM") ) unitString = " s";
+      if ( histString.EndsWith("_MEM") ) unitString = " B";
+      LOG(INFO) << histString.Data() << " >>>>> " << integral << unitString.Data() << " / " << entries << " ent = " << integral/entries << unitString.Data() << " / ent" << FairLogger::endl;
+    }
+  }
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 void FairMonitor::Draw(Option_t* option) {
   if ( !fRunMonitor ) {
     LOG(WARNING) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;

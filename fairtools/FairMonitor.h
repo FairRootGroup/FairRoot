@@ -59,7 +59,7 @@ class FairMonitor : public TNamed
   virtual void Print(Option_t* option = "");
   virtual void Draw (Option_t* option = "");
 
-  void Print(TString specString);
+  void PrintTask(TString specString);
   void PrintTask(TTask* tempTask, Int_t taskLevel=0);
   void DrawHist(TString specString);
 
