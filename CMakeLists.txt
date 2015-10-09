@@ -124,7 +124,6 @@ else(FAIRROOT_MODULAR_BUILD)
   find_package(GEANT4VMC)
   find_package(CLHEP)
 endif(FAIRROOT_MODULAR_BUILD)
-find_package(RuleChecker)
 find_package(IWYU)
 find_package(ZeroMQ)
 find_package(Protobuf)
@@ -237,15 +236,6 @@ if(BUILD_DOXYGEN)
   MESSAGE(STATUS "*** Building the Doxygen documentaion ***")
   ADD_SUBDIRECTORY(doxygen)
 endif(BUILD_DOXYGEN)
-
-
-if(RULE_CHECKER_FOUND)
-
-  ADD_CUSTOM_TARGET(RULES 
-     COMMAND ${RULE_CHECKER_SCRIPT1} ${CMAKE_BINARY_DIR} viol > violations.html
-     DEPENDS $ENV{ALL_RULES})
-
-endif(RULE_CHECKER_FOUND)
 
 if(IWYU_FOUND)
 
