@@ -254,7 +254,6 @@ Macro(GENERATE_LIBRARY)
 
   set(Int_LIB ${LIBRARY_NAME})
 
-  Set(RuleName "${Int_LIB}_RULES")
   Set(HeaderRuleName "${Int_LIB}_HEADER_RULES")
   Set(DictName "G__${Int_LIB}Dict.cxx")
 
@@ -276,13 +275,9 @@ Macro(GENERATE_LIBRARY)
     CHANGE_FILE_EXTENSION(*.cxx *.h HDRS "${SRCS}")
   EndIf(HEADERS)
 
-#  Message("RuleName: ${RuleName}")
-  If(RULE_CHECKER_FOUND)
-    CHECK_RULES("${Int_SRCS}" "${INCLUDE_DIRECTORIES}" ${RuleName})
-  EndIf(RULE_CHECKER_FOUND)
-
   If(IWYU_FOUND)
-    CHECK_HEADERS("${Int_SRCS}" "${INCLUDE_DIRECTORIES}" ${HeaderRuleName})
+     Set(_INCLUDE_DIRS ${INCLUDE_DIRECTORIES} ${SYSTEM_INCLUDE_DIRECTORIES})
+    CHECK_HEADERS("${Int_SRCS}" "${_INCLUDE_DIRS}" ${HeaderRuleName})
   EndIf(IWYU_FOUND)
 
   install(FILES ${HDRS} DESTINATION include)
