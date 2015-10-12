@@ -269,6 +269,14 @@ FairMultiLinkedData FairMultiLinkedData::GetLinksWithType(Int_t type) const
   return result;
 }
 
+std::vector<FairLink> FairMultiLinkedData::GetSortedMCTracks(){
+	FairMultiLinkedData mcLinks = GetLinksWithType(FairRootManager::Instance()->GetBranchId("MCTrack"));
+	std::set<FairLink> mcSet = mcLinks.GetLinks();
+	std::vector<FairLink> mcVector(mcSet.begin(), mcSet.end());
+	std::sort(begin(mcVector), end(mcVector), [](FairLink& val1, FairLink& val2){ return val1.GetWeight() > val2.GetWeight();});
+	return mcVector;
+}
+
 TObject* FairMultiLinkedData::GetData(FairLink& myLink)
 {
   FairRootManager* ioman = FairRootManager::Instance();
