@@ -42,6 +42,7 @@ class FairMultiLinkedData : public  TObject
     virtual Int_t           GetNLinks() const { return fLinks.size(); }       ///< returns the number of stored links
     virtual FairLink        GetLink(Int_t pos) const;                 ///< returns the FairLink at the given position
     virtual FairMultiLinkedData   GetLinksWithType(Int_t type) const;             ///< Gives you a list of links which contain the given type
+    virtual std::vector<FairLink> GetSortedMCTracks();				///< Gives you a list of all FairLinks pointing to a "MCTrack" sorted by their weight
     TObject*         GetData(FairLink& myLink);                  ///< Get the TObject the Link is pointing to
     virtual Int_t GetDefaultType() { return fDefaultType;}
     Bool_t              GetPersistanceCheck() {return fPersistanceCheck;}     ///< Returns the value of PersistanceCheck

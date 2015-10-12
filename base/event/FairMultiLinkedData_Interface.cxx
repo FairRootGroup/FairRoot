@@ -127,6 +127,16 @@ FairMultiLinkedData   FairMultiLinkedData_Interface::GetLinksWithType(Int_t type
 	}
 }
 
+std::vector<FairLink> FairMultiLinkedData_Interface::GetSortedMCTracks()
+{
+	if (GetPointerToLinks() != 0){
+		return GetPointerToLinks()->GetSortedMCTracks();
+	} else {
+		std::vector<FairLink> empty;
+		return empty;
+	}
+}
+
 void FairMultiLinkedData_Interface::SetLinks(FairMultiLinkedData links)
 {
 	CreateFairMultiLinkedData();
