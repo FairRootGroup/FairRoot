@@ -46,6 +46,8 @@ class FairMultiLinkedData_Interface : public  TObject
     virtual FairLink            GetEntryNr() const;
     virtual FairMultiLinkedData* 		GetPointerToLinks() const {	return fLink;}
 
+    virtual std::vector<FairLink> GetSortedMCTracks();
+
     virtual void SetLinks(FairMultiLinkedData links);           ///< Sets the links as vector of FairLink
     virtual void SetLink(FairLink link);      					///< Sets the Links with a single FairLink
     virtual void SetInsertHistory(Bool_t val);
