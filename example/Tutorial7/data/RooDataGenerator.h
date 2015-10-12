@@ -23,20 +23,77 @@
 #include "RooArgSet.h"
 #include "RooRandom.h"
 
+
+
+#include "FairProgOptions.h"
+
+
+
 using namespace RooFit ;
 
+class Tuto7DataGeneratorProgOptions : public FairProgOptions
+{
 
+public:
+    Tuto7DataGeneratorProgOptions(): FairProgOptions()
+    {
+        AddToCmdLineOptions(fGenericDesc);
+    }
+    virtual ~Tuto7DataGeneratorProgOptions(){}
+    virtual int ParseAll(const int argc, char** argv, bool allowUnregistered = false)
+    {
 
+        // parse command line options
+        if (ParseCmdLine(argc, argv, fCmdLineOptions, fVarMap, allowUnregistered))
+        {
+            return 1;
+        }
+
+        // if txt/INI configuration file enabled then parse it as well
+        if (fUseConfigFile)
+        {
+            // check if file exist
+            if (fs::exists(fConfigFile))
+            {
+                if (ParseCfgFile(fConfigFile.string(), fConfigFileOptions, fVarMap, allowUnregistered))
+                {
+                    return 1;
+                }
+            }
+            else
+            {
+                LOG(ERROR) << "config file '" << fConfigFile << "' not found";
+                return 1;
+            }
+        }
+
+        // set log level before printing (default is 0 = DEBUG level)
+        std::string verbose=GetValue<std::string>("verbose");
+        //SET_LOG_LEVEL(DEBUG);
+        if (fSeverityMap.count(verbose))
+        {
+            set_global_log_level(log_op::operation::GREATER_EQ_THAN,fSeverityMap.at(verbose));
+        }
+        else
+        {
+            LOG(ERROR)<<" verbosity level '"<<verbose<<"' unknown, it will be set to DEBUG";
+            set_global_log_level(log_op::operation::GREATER_EQ_THAN,fSeverityMap.at("DEBUG"));
+        }
+
+        PrintOptions();
+        return 0;
+    }
+};
 
 struct RdmVarParameters
 {
-    RdmVarParameters(const double &Min, const double & Max, const double & Mean, const double & Sigma) :
+    RdmVarParameters(double Min, double Max, double  Mean, double Sigma) :
         min(Min),
         max(Max),
         mean(Mean),
         sigma(Sigma)
     {}
-    RdmVarParameters(const double & Mean, const double & Sigma) :
+    RdmVarParameters(double  Mean, double Sigma) :
         min(Mean-6*Sigma),
         max(Mean+6*Sigma),
         mean(Mean),
@@ -72,7 +129,7 @@ struct PDFConfig
 class MultiVariatePDF
 {
     public:
-        MultiVariatePDF(const unsigned int & t_start=0) :
+        MultiVariatePDF(unsigned int t_start=0) :
             fOpt(),
             fModel(nullptr),
             fDataSet(nullptr),
@@ -91,7 +148,7 @@ class MultiVariatePDF
         {
                 Init(t_start);
         }
-        MultiVariatePDF(const PDFConfig & opt, const unsigned int & t_start=0) :
+        MultiVariatePDF(const PDFConfig & opt, unsigned int t_start=0) :
             fOpt(opt),
             fModel(nullptr),
             fDataSet(nullptr),
@@ -129,7 +186,7 @@ class MultiVariatePDF
             delete fModel;
         }
         
-        RooDataSet* GetGeneratedData(const unsigned int & N, const unsigned int & t_i)
+        RooDataSet* GetGeneratedData(unsigned int N, unsigned int t_i)
         {
             
             t->setRange((double)t_i,(double)(t_i+1));
@@ -160,7 +217,7 @@ class MultiVariatePDF
         RooGaussian *Gauss_tErr;
         
         
-        void Init(const double &t_start)
+        void Init(double t_start)
         {
             RooMsgService::instance().setGlobalKillBelow(ERROR);
             TDatime* time = new TDatime();

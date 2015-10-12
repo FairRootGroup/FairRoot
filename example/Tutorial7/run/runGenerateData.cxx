@@ -54,92 +54,6 @@ template <typename T, typename ManagerType >
 template <typename T, typename ManagerType >
     void SavePodDataToFile(ManagerType &OutMan, RooDataSet * dataset, bool printval=false);
     
-// program options
-typedef struct SimOption
-{
-    SimOption() :
-        filename(), treename(), branchname(), classname(), 
-        fileoption(), useTCA(true), plotdata(false),
-        tmax(0), Nmean(0.), Nsigma(0.) {}
-    
-    string filename;
-    string treename;
-    string branchname;
-    string classname;
-    string fileoption;
-    bool useTCA;
-    bool plotdata;
-    unsigned int tmax;
-    double Nmean;
-    double Nsigma;
-} SimOption_t;
-
-
-// program options
-inline bool parse_cmd_line(int _argc, char* _argv[], SimOption_t* _options)
-{
-    if (_options == nullptr)
-        throw std::runtime_error("Internal error: options' container is empty.");
-
-    namespace bpo = boost::program_options;
-    bpo::options_description desc("Options");
-    desc.add_options()
-        ("input-file",  bpo::value<string>()->required(), "<   string   > : Path to the input file")
-        ("tree",        bpo::value<string>()->default_value("T7DataTree"), "<   string   > : Name of the tree")
-        ("branch",      bpo::value<string>()->default_value("mydigi"), "<   string   > : Name of the Branch")
-        ("class-name",  bpo::value<string>()->default_value("MyDigi"), "<   string   > : Name of the Payload class")
-        ("rootfile-option",  bpo::value<string>()->default_value("RECREATE"), "<   string   > : Root file option.")
-        ("use-TCA",  bpo::value<bool>()->default_value(true),     "<    bool    > : Store data bunches in TClonesArray")
-        ("plot-data",  bpo::value<bool>()->default_value(false),  "<    bool    > : Plot generated data")
-        ("tmax",  bpo::value<unsigned int>()->default_value(100), "<unsigned int> : max time index=bunch number")
-        ("Nmean",  bpo::value<double>()->default_value(1595), "<unsigned int> : min number of generated data / bunch")
-        ("Nsigma",  bpo::value<double>()->default_value(25.98), "<unsigned int> : max number of generated data / bunch")
-        ("help", "Print help messages");
-
-    bpo::variables_map vm;
-    bpo::store(bpo::parse_command_line(_argc, _argv, desc), vm);
-
-    if ( vm.count("help") )
-    {
-        MQLOG(INFO) << "Tutorial 7 - Generate bunches of random data (x,y,z,t,t_err) and store them into files." << endl << desc;
-        return false;
-    }
-
-    bpo::notify(vm);
-
-    if ( vm.count("input-file") )
-        _options->filename = vm["input-file"].as<string>();
-
-    if ( vm.count("branch") )
-        _options->branchname = vm["branch"].as<string>();
-
-    if ( vm.count("tree") )
-        _options->treename = vm["tree"].as<string>();
-    
-    if ( vm.count("class-name") )
-        _options->classname = vm["class-name"].as<string>();
-    
-    if ( vm.count("rootfile-option") )
-        _options->fileoption = vm["rootfile-option"].as<string>();
-    
-    if ( vm.count("use-TCA") )
-        _options->useTCA = vm["use-TCA"].as<bool>();
-
-    if ( vm.count("plot-data") )
-        _options->plotdata = vm["plot-data"].as<bool>();
-    
-    if ( vm.count("tmax") )
-        _options->tmax = vm["tmax"].as<unsigned int>();
-    
-    if ( vm.count("Nmean") )
-        _options->Nmean = vm["Nmean"].as<double>();
-    
-    if ( vm.count("Nsigma") )
-        _options->Nsigma = vm["Nsigma"].as<double>();
-    
-    return true;
-}
-
 
 
 ///----------------------------------------------------------------------------------- 
@@ -152,42 +66,79 @@ typedef MyPodData::Digi           TDigiPod; // POD/trivial data
 typedef RootOutFileManager<TDigi> RootFileManager;
 int main(int argc, char** argv)
 {
-    SimOption_t options;
+
+
+    string filename;
+    string treename;
+    string branchname;
+    string classname;
+    string fileoption;
+    bool useTCA;
+    bool plotdata;
+    unsigned int tmax;
+    double Nmean;
+    double Nsigma;
+    
+    namespace po = boost::program_options;
+    Tuto7DataGeneratorProgOptions config;
+
+    po::options_description desc("Data generator options");
+    desc.add_options()
+        ("output-file",     po::value<string>(&filename)->required(),                       "<   string   > : Path to the output root file of generated data")
+        ("tree",            po::value<string>(&treename)->default_value("T7SamplerTree"),   "<   string   > : Name of the tree")
+        ("branch",          po::value<string>(&branchname)->default_value("MyDigi"),        "<   string   > : Name of the Branch")
+        ("class-name",      po::value<string>(&classname)->default_value("MyDigi"),         "<   string   > : Name of the Payload class")
+        ("rootfile-option", po::value<string>(&fileoption)->default_value("RECREATE"),      "<   string   > : Root file option.")
+        ("use-TCA",         po::value<bool>(&useTCA)->default_value(true),                  "<    bool    > : Store data bunches in TClonesArray")
+        ("plot-data",       po::value<bool>(&plotdata)->default_value(false),               "<    bool    > : Plot generated data")
+        ("tmax",            po::value<unsigned int>(&tmax)->default_value(100),             "<unsigned int> : max time index=bunch number")
+        ("Nmean",           po::value<double>(&Nmean)->default_value(1595),                 "<unsigned int> : mean number of generated data / bunch")
+        ("Nsigma",          po::value<double>(&Nsigma)->default_value(25.98),               "<unsigned int> : std deviation of the number of generated data / bunch")
+        ;
+
+
+    config.AddToCmdLineOptions(desc);
+
     try
     {
-        if (!parse_cmd_line(argc, argv, &options))
-            return 0;
+        if (config.ParseAll(argc, argv, true))
+        {
+            return 1;
+        }
     }
     catch (exception& e)
     {
-        MQLOG(ERROR) << e.what();
+        LOG(ERROR) << e.what();
         return 1;
     }
     
+
     //----------------------------------------------
     // Init output file manager 
     RootFileManager* rootman = new RootFileManager();
-    rootman->SetFileProperties(options.filename, options.treename, options.branchname, 
-                              options.classname,options.fileoption,options.useTCA);
+    rootman->SetFileProperties(filename, treename, branchname, classname,fileoption,useTCA);
     rootman->InitOutputFile();
     
     //----------------------------------------------
     // Init density function for the number of digi/ bunch
-    RdmVarParameters Nval(options.Nmean,options.Nsigma);
+    RdmVarParameters Nval(Nmean,Nsigma);
     RooRealVar N("N","N",Nval.min,Nval.max);
     RooGaussian Gauss_N("Gauss_N", "gaussian PDF", N, RooConst(Nval.mean), RooConst(Nval.sigma));// mean/sigma same as tutorial 3
     
     // Init density function for the (x,y,z,t,terr) random variables
-    PDFConfig config;// default setting (i.e. default range, mean, standard deviation)
-    MultiVariatePDF* Model = new MultiVariatePDF(config);
+    PDFConfig pdfconfig;// default setting (i.e. default range, mean, standard deviation)
+    MultiVariatePDF* Model = new MultiVariatePDF(pdfconfig);
     
     //----------------------------------------------
     // loop over t (= bunch index), generate data from pdf, fill digi and save to file
-    for(unsigned int t(0); t<options.tmax;t++)
+    for(unsigned int t(0); t<tmax;t++)
     {
-        MQLOG(INFO)<<"Bunch number "<<t+1<<"/"<<options.tmax 
-                   <<" ("<< 100.*(double)(t+1)/(double)options.tmax<<" %) ";
-        unsigned int NDigi=(unsigned int)Gauss_N.generate(N,1)->get(0)->getRealValue("N");        
+        
+        unsigned int NDigi=(unsigned int)Gauss_N.generate(N,1)->get(0)->getRealValue("N");
+        LOG(INFO)  <<"Bunch number "<<t+1<<"/"<<tmax 
+                   <<" ("<< 100.*(double)(t+1)/(double)tmax<<" %). Number of generated digi : "
+                   << NDigi<< " , payload = "<<NDigi*(3*sizeof(Int_t)+2*sizeof(Double_t))<<" bytes";
+
         RooDataSet *simdataset = Model->GetGeneratedData(NDigi,t);
         SaveDataToFile<TDigi,RootFileManager>(*rootman, simdataset);
     }
@@ -196,19 +147,19 @@ int main(int argc, char** argv)
     
     //----------------------------------------------
     // option : plot generated data
-    if(options.plotdata)
+    if(plotdata)
     {
         RootFileManager man;
-        man.SetFileProperties(options.filename, options.treename, options.branchname, 
-                              options.classname,"READ",options.useTCA);
-        vector< vector<TDigi> > data=man.GetAllObj(options.filename, options.treename, options.branchname);
+        man.SetFileProperties(filename, treename, branchname, 
+                              classname,"READ",useTCA);
+        vector< vector<TDigi> > data=man.GetAllObj(filename, treename, branchname);
 
-        TH2D* histoxy = new TH2D("fxy","digi.fxy",100,config.x.min,config.x.max, 100,config.y.min,config.y.max);
-        TH1D* histox = new TH1D("fx","digi.fx",100,config.x.min,config.x.max);
-        TH1D* histoy = new TH1D("fy","digi.fy",100,config.y.min,config.y.max);
-        TH1D* histoz = new TH1D("fz","digi.fz",100,config.z.min,config.z.max);
-        TH1D* histot = new TH1D("ftimestamp","digi.ftimestamp",10*options.tmax, 0., (double)(options.tmax+1));
-        TH1D* histoterr = new TH1D("ftimestampErr","digi.ftimestampErr",100,config.tErr.min,config.tErr.max);
+        TH2D* histoxy = new TH2D("fxy","digi.fxy",100,pdfconfig.x.min,pdfconfig.x.max, 100,pdfconfig.y.min,pdfconfig.y.max);
+        TH1D* histox = new TH1D("fx","digi.fx",100,pdfconfig.x.min,pdfconfig.x.max);
+        TH1D* histoy = new TH1D("fy","digi.fy",100,pdfconfig.y.min,pdfconfig.y.max);
+        TH1D* histoz = new TH1D("fz","digi.fz",100,pdfconfig.z.min,pdfconfig.z.max);
+        TH1D* histot = new TH1D("ftimestamp","digi.ftimestamp",10*tmax, 0., (double)(tmax+1));
+        TH1D* histoterr = new TH1D("ftimestampErr","digi.ftimestampErr",100,pdfconfig.tErr.min,pdfconfig.tErr.max);
         TH1D* histoN = new TH1D("f_N","Number of digi distribution",100,Nval.min,Nval.max);
     
         for(auto& p : data)
@@ -288,7 +239,7 @@ template <typename T, typename ManagerType >
             data.SetZ( (Int_t)round(dataset->get(i)->getRealValue("z")) );
 
             if(printval)
-                MQLOG(INFO) <<  "x="    << data.GetX() 
+                LOG(INFO) <<  "x="    << data.GetX() 
                             <<"  y="    << data.GetY() 
                             <<"  z="    << data.GetZ() 
                             <<"  t="    << data.GetTimeStamp()
@@ -314,7 +265,7 @@ template <typename T, typename ManagerType >
             data.fZ = (Int_t)round(dataset->get(i)->getRealValue("z"));
 
             if(printval)
-                MQLOG(INFO) <<  "x="    << data.fX 
+                LOG(INFO) <<  "x="    << data.fX 
                             <<"  y="    << data.fY 
                             <<"  z="    << data.fZ 
                             <<"  t="    << data.fTimeStamp
