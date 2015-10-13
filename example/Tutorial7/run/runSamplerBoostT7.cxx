@@ -54,8 +54,11 @@ int main(int argc, char** argv)
         FairMQProgOptions config;
         InitSamplerSetting(sampler, config, argc, argv);
 
-        AddTask(sampler, config, std::bind(&manager,std::placeholders::_1,std::placeholders::_2) );
-
+        if( config.GetValue<bool>("register-task-sampler") )
+        {
+            AddTask(sampler, config, std::bind(&manager,std::placeholders::_1,std::placeholders::_2) );
+        }
+        
         runStateMachine(sampler, config);
     }
     catch (std::exception& e)

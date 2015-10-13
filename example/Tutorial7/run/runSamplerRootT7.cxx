@@ -42,13 +42,15 @@ int main(int argc, char** argv)
         FairMQProgOptions config;
         InitSamplerSetting(sampler, config, argc, argv);
 
-        AddTask(sampler, config, [](TSampler* s, SamplerTasksMap& task_list) 
+        if( config.GetValue<bool>("register-task-sampler") )
         {
-            //task_list[2]=std::bind( &TSampler::template MultiPartTask<5>, s);
-            task_list[0] = std::bind(myFuncHello);
-            task_list[1] = std::bind(myFuncWorld);
-        });
-
+            AddTask(sampler, config, [](TSampler* s, SamplerTasksMap& task_list) 
+            {
+                //task_list[2]=std::bind( &TSampler::template MultiPartTask<5>, s);
+                task_list[0] = std::bind(myFuncHello);
+                task_list[1] = std::bind(myFuncWorld);
+            });
+        }
         runStateMachine(sampler, config);
     }
     catch (std::exception& e)

@@ -30,7 +30,9 @@ CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/tuto7Config.cfg"
 
 ########################## start SAMPLER
 SAMPLER="tuto7Sampler$dataFormat"
-SAMPLER+=" --id sampler1  -c $CONFIGFILE --register-task-sampler true"
+SAMPLER+=" --id sampler1  -c $CONFIGFILE"
+#uncomment if you like to test the task container of the generic sampler
+#SAMPLER+=" --register-task-sampler true"
 xterm +aw -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 ########################## start SPLITTER
