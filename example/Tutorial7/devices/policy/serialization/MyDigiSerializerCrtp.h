@@ -1,12 +1,6 @@
-/* 
- * File:   MyDigiSerializer.h
- * Author: winckler
- *
- * Created on December 8, 2014, 1:16 PM
- */
 
-#ifndef MYDIGISERIALIZER_H
-#define MYDIGISERIALIZER_H
+#ifndef MYDIGISERIALIZERCRTP_H
+#define MYDIGISERIALIZERCRTP_H
 
 
 // std
@@ -22,6 +16,8 @@
 #include "FairMQMessage.h"
 #include "TVector3.h"
 #include "BinaryBaseClassSerializer.h"
+#include "BaseSerializationPolicy.h"
+#include "BaseDeserializationPolicy.h"
 
 // FairRoot - Tutorial7
 #include "MyDigi.h"
@@ -33,18 +29,33 @@
 #include "FairTestDetectorPayload.h"
 
 template <typename PodType,typename DigiType>
-class MyDigiSerializer : public BinaryBaseClassSerializer<PodType>
+class MyDigiSerializerCrtp : public BaseSerializationPolicy < MyDigiSerializerCrtp<PodType,DigiType> >
 {
 public: 
     
-    using BinaryBaseClassSerializer<PodType>::fMessage;
     
-    MyDigiSerializer() : BinaryBaseClassSerializer<PodType>() {}
-    ~MyDigiSerializer(){}
+    MyDigiSerializerCrtp() :  
+          fPayload(nullptr)
+        , fMessage(nullptr)
+        , fNumInput(0)
+
+    {}
+
+    virtual ~MyDigiSerializerCrtp()
+    {}
     
-    // serialize
+
+    void SetMessage(FairMQMessage* msg)
+    {
+        fMessage = msg;
+    }
+
+    FairMQMessage* GetMessage()
+    {
+        return fMessage;
+    }
     
-    virtual void DoSerialization(TClonesArray* array)
+    FairMQMessage* SerializeMsg(TClonesArray* array)
     {
         int nDigis = array->GetEntriesFast();
         int outputSize = nDigis * sizeof(PodType);
@@ -68,40 +79,47 @@ public:
                 //digiptr[i].fTimeStampError = digi->GetTimeStampError();// commented as in tuto3
             }
         }
-    }
-    
-    virtual FairMQMessage* SerializeMsg(TClonesArray* array)
-    {
-        DoSerialization(array);
+
         return fMessage;
     }
     
+protected:
+
+    PodType* fPayload;
+    FairMQMessage* fMessage;
+    int fNumInput;
 };
 
 
 
 template <typename PodType,typename DigiType>
-class MyDigiDeSerializer : public BinaryBaseClassSerializer<PodType>
+class MyDigiDeserializerCrtp : public BaseDeserializationPolicy < MyDigiDeserializerCrtp<PodType,DigiType> >
 {
 public: 
     
-    using BinaryBaseClassSerializer<PodType>::fMessage;
-    using BinaryBaseClassSerializer<PodType>::GetPayload;
-    using BinaryBaseClassSerializer<PodType>::fNumInput;
-    using BinaryBaseClassSerializer<PodType>::fPayload;
-    
-    MyDigiDeSerializer() : BinaryBaseClassSerializer<PodType>(), fContainer(nullptr) {}
-    ~MyDigiDeSerializer()
+    MyDigiDeserializerCrtp() : 
+          fContainer(nullptr) 
+        , fPayload(nullptr)
+        , fMessage(nullptr)
+        , fNumInput(0)
+    {}
+
+    virtual ~MyDigiDeserializerCrtp()
     { 
         if(fContainer) 
             delete fContainer; 
         fContainer=nullptr;
     }
     
-    virtual void DoDeSerialization(FairMQMessage* msg)
+    TClonesArray* DeserializeMsg(FairMQMessage* msg)
     {
-        
-        GetPayload(msg);
+        int inputSize = msg->GetSize();
+        if (inputSize > 0)
+        {
+            fNumInput = inputSize / sizeof(PodType);
+        }
+        fPayload = static_cast<PodType*>(msg->GetData());
+
         if(fContainer)
         {
             fContainer->Delete();
@@ -112,14 +130,9 @@ public:
             
             if (fContainer->IsEmpty())
             {
-                MQLOG(ERROR) << "MyDigiDeSerializer::message(): No Output array!";
+                LOG(ERROR) << "MyDigiDeserializerCrtp::message(): No Output array!";
             }
         }
-    }
-    
-    virtual TClonesArray* DeserializeMsg(FairMQMessage* msg)
-    {
-        DoDeSerialization(msg);
         return fContainer;
     }
     
@@ -137,18 +150,20 @@ public:
     protected:
     
     TClonesArray* fContainer;
+    PodType* fPayload;
+    FairMQMessage* fMessage;
+    int fNumInput;
     
 };
 
 
 
 // for tuto 7 data
-typedef MyDigiSerializer<MyPodData::Digi,MyDigi>        MyDigiSerializer_t;
-typedef MyDigiDeSerializer<MyPodData::Digi,MyDigi>      MyDigiDeSerializer_t;
+typedef MyDigiSerializerCrtp<MyPodData::Digi,MyDigi>        MyDigiSerializerCrtp_t;
+typedef MyDigiDeserializerCrtp<MyPodData::Digi,MyDigi>      MyDigiDeserializerCrtp_t;
 // for tuto 3 data
-typedef MyDigiSerializer<TestDetectorPayload::Digi,FairTestDetectorDigi>    Tuto3DigiSerializer_t;
-typedef MyDigiDeSerializer<TestDetectorPayload::Digi,FairTestDetectorDigi>  Tuto3DigiDeSerializer_t;
+typedef MyDigiSerializerCrtp<TestDetectorPayload::Digi,FairTestDetectorDigi>    Tuto3DigiSerializer_t;
+typedef MyDigiDeserializerCrtp<TestDetectorPayload::Digi,FairTestDetectorDigi>  Tuto3DigiDeSerializer_t;
 
 
-#endif  /* MYDIGISERIALIZER_H */
-
+#endif  /* MYDIGISERIALIZERCRTP_H */

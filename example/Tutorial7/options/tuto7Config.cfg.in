@@ -26,7 +26,7 @@ config-json-file =@CMAKE_SOURCE_DIR@/example/Tutorial7/options/tuto7MQConfig.jso
 [input.file]
 
 name = @CMAKE_SOURCE_DIR@/example/Tutorial7/macro/datasource/Tuto7InputFile.root
-tree = T7SamplerTree
+tree = cbmsim
 branch = MyDigi
 
 
@@ -34,6 +34,6 @@ branch = MyDigi
 [output.file]
 
 name = @CMAKE_SOURCE_DIR@/example/Tutorial7/macro/datasource/Tuto7DefaultOutputFile.root"
-tree = T7SinkTree
+tree = cbmout
 branch = MyHit
 option = RECREATE

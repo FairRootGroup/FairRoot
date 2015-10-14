@@ -9,6 +9,8 @@
 #define SAMPLERFUNCTIONS_H
 
 #include "runGenericDevices.h"
+#include "SimpleTreeReader.h"
+#include "TClonesArray.h"
 
 // dummy function to illustrate the task container feature
 void myfuncHello() { LOG(INFO) << "Hello "; }
@@ -104,6 +106,34 @@ inline int InitSamplerSetting(TGenSampler& sampler_, FairMQProgOptions& config, 
     sampler_.SetProperty(TGenSampler::EventRate, eventRate);
     // call function member from sampler policy
     sampler_.SetFileProperties(filename, treename, branchname);
+
+    return 0;
+}
+
+
+
+inline int InitConfig(FairMQProgOptions& config, int argc, char** argv)
+{
+    namespace po = boost::program_options;
+
+    po::options_description sampler_options("Sampler options");
+    sampler_options.add_options()
+        ("event-rate",              po::value<int>()->default_value(0),                   "Event rate limit in maximum number of events per second")
+        // TODO : make the semantic required for at least one source (and not both cfg & cmd)
+        // ("input.file.name",         value<std::string>(&filename)->required(),                       "Path to the input file")
+        ("input.file.name",         po::value<std::string>(),                               "Path to the input file")
+        ("input.file.tree",         po::value<std::string>()->default_value("T7DataTree"),  "Name of the tree")
+        ("input.file.branch",       po::value<std::string>()->default_value("T7digidata"),"Name of the Branch")
+        ("data-format",             po::value<std::string>()->default_value("Binary"),                    "Data format (binary/boost/protobuf/tmessage)")
+    ;
+
+    config.AddToCmdLineOptions(sampler_options);
+    config.AddToCfgFileOptions(sampler_options, false);
+
+    if (config.ParseAll(argc, argv, true))
+    {
+        return 1;
+    }
 
     return 0;
 }

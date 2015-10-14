@@ -20,14 +20,17 @@
 #include "TClonesArray.h"
 
 #include "TKey.h"
+#include "TFolder.h"
+#include "TObjString.h"
+#include "TList.h"
 
 // FairRoot
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
-
+#include "BaseSinkPolicy.h"
 
 template <typename DataType>
-class RootOutFileManager 
+class RootOutFileManager : public BaseSinkPolicy<RootOutFileManager<DataType>>
 {
 public:
     RootOutFileManager();
@@ -52,10 +55,7 @@ public:
     std::vector<std::vector<DataType> > GetAllObj(const std::string &filename, 
                                                   const std::string &treename, 
                                                   const std::string &branchname
-                                                  );
-    void ReadDir(TDirectory *dir);
-    void SeekObject(TKey *key);
-    
+                                                  );    
     
 protected:
 
@@ -74,6 +74,7 @@ protected:
     TTree* fTree;
     TClonesArray* fOutput;
     DataType* fOutputData;
+    TFolder* fFolder;
 };
 
 

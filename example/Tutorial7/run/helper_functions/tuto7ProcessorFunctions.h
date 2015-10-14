@@ -47,4 +47,25 @@ inline int runProcessor(TGenProcessor& processor_,int argc, char** argv)
     return 0;
 }
 
+inline int InitConfig(FairMQProgOptions& config, int argc, char** argv)
+{
+    namespace po = boost::program_options;
+    po::options_description processor_options("Processor options");
+    processor_options.add_options()
+        ("digi-classname", po::value<std::string>()->default_value("MyDigi"), "Digi class name for initializing TClonesArray")
+        ("hit-classname",  po::value<std::string>()->default_value("MyHit"),  "Hit class name for initializing TClonesArray")
+        ("data-format",    po::value<std::string>()->default_value("Binary"), "Data format (binary/boost/protobuf/tmessage)")
+    ;
+
+    config.AddToCmdLineOptions(processor_options);
+    config.AddToCfgFileOptions(processor_options,false);
+
+    if (config.ParseAll(argc, argv, true))
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 #endif /* PROCESSORFUNCTIONS_H */

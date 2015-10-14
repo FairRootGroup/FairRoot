@@ -6,7 +6,7 @@
  */
 
 template <typename DataType>
-RootOutFileManager<DataType>::RootOutFileManager() :
+RootOutFileManager<DataType>::RootOutFileManager() : BaseSinkPolicy<RootOutFileManager<DataType>>(),
     fFileName(),
     fTreeName(),
     fBranchName(),
@@ -18,13 +18,14 @@ RootOutFileManager<DataType>::RootOutFileManager() :
     fOutFile(nullptr),
     fTree(nullptr),
     fOutput(nullptr), 
-    fOutputData(nullptr)
+    fOutputData(nullptr),
+    fFolder(nullptr)
 {
 }
 
 
 template <typename DataType>
-RootOutFileManager<DataType>::RootOutFileManager(const std::string &filename, const std::string &treename, const std::string &branchname, const std::string &Classname, const std::string &FileOption) :
+RootOutFileManager<DataType>::RootOutFileManager(const std::string &filename, const std::string &treename, const std::string &branchname, const std::string &Classname, const std::string &FileOption) : BaseSinkPolicy<RootOutFileManager<DataType>>(),
     fFileName(filename),
     fTreeName(treename),
     fBranchName(branchname),
@@ -36,7 +37,8 @@ RootOutFileManager<DataType>::RootOutFileManager(const std::string &filename, co
     fOutFile(nullptr),
     fTree(nullptr),
     fOutput(nullptr), 
-    fOutputData(nullptr)
+    fOutputData(nullptr),
+    fFolder(nullptr)
 {
 }
 
@@ -46,12 +48,19 @@ RootOutFileManager<DataType>::~RootOutFileManager()
 {
     if(fFlowMode && fWrite)
         fTree->Write("", TObject::kOverwrite);
+
+    if(fTree)
+        delete fTree;
+
     if(fOutFile)
     {
         if(fOutFile->IsOpen())
             fOutFile->Close();
         delete fOutFile;
     }
+    
+    if(fFolder)
+        delete fFolder;
 }
 
 template <typename DataType>
@@ -78,63 +87,7 @@ void RootOutFileManager<DataType>::SetRootFileProperties(const std::string &file
     SetFileProperties(filename, treename, branchname, ClassName, FileOption, UseClonesArray, flowmode);
 }
 
-
 //______________________________________________________________________________
-template <typename DataType>
-void RootOutFileManager<DataType>::ReadDir(TDirectory *dir)
-{
-    TDirectory *dirsav = gDirectory;
-    TIter next(dir->GetListOfKeys());
-    TKey *key;
-    while ((key = (TKey*)next()))
-    {
-        if (key->IsFolder())
-        {
-            dir->cd(key->GetName());
-            TDirectory *subdir = gDirectory;
-            ReadDir(subdir);
-            dirsav->cd();
-            continue;
-        }
-        else
-            SeekObject(key);
-    }
-}
-
-
-
-//______________________________________________________________________________
-template <typename DataType>
-void RootOutFileManager<DataType>::SeekObject(TKey *key)
-{
-    /*TObject* obj ;
-    obj = key->ReadObj();
-    if ((strcmp(obj->IsA()->GetName(),"TProfile")!=0)
-    && (!obj->InheritsFrom("TH2"))
-    && (!obj->InheritsFrom("TH1"))
-    && (!obj->InheritsFrom("Header"))
-    )
-    {
-        printf("[Warning] Object %s is not a header nor 1D nor 2D histogram : "
-        "will not be converted\n",obj->GetName());
-    }
-    printf("[INFO] Found object with name:%s and title:%s\n", obj->GetName(), obj->GetTitle());
-    /// SEARCH FOR TH1D
-    if(obj->InheritsFrom("TH1D"))
-    {
-        TH1D* histo1D=NULL;
-        histo1D=(TH1D*)gDirectory->Get(obj->GetName());
-        if(histo1D)
-        {
-            f1DHisto.push_back(new TH1D(*histo1D));
-            AddToListTree(f1DHisto[fHisto1DCounter]);
-            fHisto1DCounter++;
-        }
-    }*/
-    
-}
-
-
 
 
 template <typename DataType>
@@ -338,6 +291,19 @@ void RootOutFileManager<DataType>::InitOutputFile()
         else
             fTree->Branch(fBranchName.c_str(),fClassName.c_str(), &fOutputData);
     }
+
+    fFolder = new TFolder("cbmroot","/cbmroot");
+    TList* BranchNameList = new TList();
+    BranchNameList->AddLast(new TObjString(fBranchName.c_str()));
+    BranchNameList->Write("BranchList", TObject::kSingleKey);
+    
+    TFolder* fold = fFolder->AddFolder("blah","blahtitle");
+    fold->Add(fOutput);
+    fFolder->Write();
+    
+    BranchNameList->Delete();
+    delete BranchNameList;
+
 }
 
 

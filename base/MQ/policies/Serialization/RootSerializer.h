@@ -68,7 +68,7 @@ class RootSerializer
         fMessage->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
     }
 
-    virtual FairMQMessage* SerializeMsg(TClonesArray* array)
+    FairMQMessage* SerializeMsg(TClonesArray* array)
     {
         DoSerialization(array);
         return fMessage;
@@ -122,7 +122,7 @@ class RootDeSerializer
         fContainer  = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
     }
 
-    virtual TClonesArray* DeSerializeMsg(FairMQMessage* msg)
+    TClonesArray* DeserializeMsg(FairMQMessage* msg)
     {
         DoDeSerialization(msg);
         return fContainer;

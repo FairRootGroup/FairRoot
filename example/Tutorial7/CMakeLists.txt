@@ -27,6 +27,11 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/example/Tutorial7/devices/policy/serialization
     ${CMAKE_SOURCE_DIR}/example/Tutorial7/devices/policy/task
     ${CMAKE_SOURCE_DIR}/example/Tutorial7/run/helper_functions
+    ${CMAKE_SOURCE_DIR}/MbsAPI
+
+    ${CMAKE_SOURCE_DIR}/example/Tutorial8
+    ${CMAKE_SOURCE_DIR}/example/Tutorial8/src
+    ${CMAKE_SOURCE_DIR}/example/Tutorial8/macro
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -39,6 +44,7 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(SCRIPT_ARGS "\${\@:2}")
 configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/macro/startTuto7All.sh.in ${CMAKE_BINARY_DIR}/bin/startTuto7All.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/macro/startTuto7AllCRTP.sh.in ${CMAKE_BINARY_DIR}/bin/startTuto7AllCRTP.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/macro/startTuto7GenerateData.sh.in ${CMAKE_BINARY_DIR}/bin/startTuto7GenerateData.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/macro/startTuto7AllTuto3.sh.in ${CMAKE_BINARY_DIR}/bin/startTuto7AllTuto3.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/example/Tutorial7/macro/startTuto7Sampler.sh.in ${CMAKE_BINARY_DIR}/bin/startTuto7Sampler.sh )
@@ -73,7 +79,7 @@ Set(LIBRARY_NAME Tutorial7)
 
 Set(DEPENDENCIES
     Base FairMQ BaseMQ FairTestDetector
-    boost_thread boost_system boost_serialization boost_program_options 
+    boost_thread boost_system boost_serialization boost_program_options Tutorial8
 )
 
 GENERATE_LIBRARY()
@@ -103,6 +109,10 @@ Set(Exe_Names
     tuto7FairTestDetectorSamplerBin
     tuto7FairTestDetectorProcessorBin
     tuto7FairTestDetectorFileSinkBin
+    tuto7SamplerCRTP
+    tuto7ProcessorCRTP
+    tuto7SinkCRTP
+    runLmdSourceTest
 )
 
 set(Exe_Source
@@ -130,6 +140,10 @@ set(Exe_Source
     run/FairTestDetector/runSamplerBinT7b.cxx
     run/FairTestDetector/runProcessorBinT7b.cxx
     run/FairTestDetector/runFileSinkBinT7b.cxx
+    run/runCrtpSamplerT7.cxx
+    run/runCrtpProcessorT7.cxx
+    run/runCrtpFileSinkT7.cxx
+    run/runLmdSourceTest.cxx
 )
 
 ############################################################

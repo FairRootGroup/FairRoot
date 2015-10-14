@@ -12,6 +12,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/MQ/devices
   ${CMAKE_SOURCE_DIR}/base/MQ/tasks
   ${CMAKE_SOURCE_DIR}/fairmq
+  ${CMAKE_SOURCE_DIR}/MbsAPI
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})

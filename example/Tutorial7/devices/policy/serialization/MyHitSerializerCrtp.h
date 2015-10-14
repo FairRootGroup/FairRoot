@@ -1,13 +1,13 @@
 /* 
- * File:   MyHitSerializer.h
+ * File:   MyHitSerializerCrtp.h
  * Author: winckler
  *
  * Created on October 14, 2014, 5:32 PM
  */
 
 
-#ifndef MYHITSERIALIER_H
-#define	MYHITSERIALIER_H
+#ifndef MYHITSERIALIZERCRTP_H
+#define	MYHITSERIALIZERCRTP_H
 
 // std
 #include <vector>
@@ -21,7 +21,8 @@
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
 #include "TVector3.h"
-#include "BinaryBaseClassSerializer.h"
+#include "BaseSerializationPolicy.h"
+#include "BaseDeserializationPolicy.h"
 
 // FairRoot - Tutorial7
 #include "MyHit.h"
@@ -33,22 +34,31 @@
 
 
 
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////
 // serialize
 template <typename PodType, typename HitType>
-class MyHitSerializer : public BinaryBaseClassSerializer<PodType>
+class MyHitSerializerCrtp : public BaseSerializationPolicy<MyHitSerializerCrtp<PodType,HitType> >
 {
 public:
     
-    MyHitSerializer() : BinaryBaseClassSerializer<PodType>() {}
-    virtual ~MyHitSerializer(){}
-    
-    using BinaryBaseClassSerializer<PodType>::fMessage;
-    
-    virtual void DoSerialization(TClonesArray* array)
+    MyHitSerializerCrtp() : BaseSerializationPolicy<MyHitSerializerCrtp<PodType,HitType> >(),
+        fPayload(nullptr),
+        fMessage(nullptr),
+        fNumInput(0)
+    {}
+    virtual ~MyHitSerializerCrtp(){}
+
+    void SetMessage(FairMQMessage* msg)
+    {
+        fMessage = msg;
+    }
+
+    FairMQMessage* GetMessage()
+    {
+        return fMessage;
+    }
+   
+    FairMQMessage* SerializeMsg(TClonesArray* array)
     {
         int numOutput = array->GetEntriesFast();
         int outputSize = numOutput * sizeof(PodType);
@@ -70,15 +80,14 @@ public:
                 output[i].dposZ = hit->GetDz();
             }
         }
-    }
-    
-   
-    virtual FairMQMessage* SerializeMsg(TClonesArray* array)
-    {
-        DoSerialization(array);
         return fMessage;
     }
     
+protected:
+
+    PodType* fPayload;
+    FairMQMessage* fMessage;
+    int fNumInput;
 
 };
 
@@ -90,27 +99,32 @@ public:
     
 
 template <typename PodType, typename HitType>
-class MyHitDeSerializer : public BinaryBaseClassSerializer<PodType>
+class MyHitDeserializerCrtp : public BaseDeserializationPolicy<MyHitDeserializerCrtp<PodType,HitType> >
 {
 public:
     
-    using BinaryBaseClassSerializer<PodType>::fMessage;
-    using BinaryBaseClassSerializer<PodType>::GetPayload;
-    using BinaryBaseClassSerializer<PodType>::fNumInput;
-    using BinaryBaseClassSerializer<PodType>::fPayload;
-    
-    MyHitDeSerializer() : BinaryBaseClassSerializer<PodType>(), fContainer(nullptr) {}
-    virtual ~MyHitDeSerializer() 
+    MyHitDeserializerCrtp() : BaseDeserializationPolicy<MyHitDeserializerCrtp<PodType,HitType> >(), 
+        fContainer(nullptr),
+        fPayload(nullptr),
+        fMessage(nullptr),
+        fNumInput(0)
+    {}
+
+    virtual ~MyHitDeserializerCrtp() 
     { 
         if(fContainer) 
             delete fContainer; 
         fContainer=nullptr;
     }
     
-    virtual void DoDeSerialization(FairMQMessage* msg)
+    TClonesArray* DeserializeMsg(FairMQMessage* msg)
     {
-        
-        GetPayload(msg);
+        int inputSize = msg->GetSize();
+        if (inputSize > 0)
+        {
+            fNumInput = inputSize / sizeof(PodType);
+        }
+        fPayload = static_cast<PodType*>(msg->GetData());
         if(fContainer)
         {
             fContainer->Delete();
@@ -123,14 +137,9 @@ public:
             
             if (fContainer->IsEmpty())
             {
-                MQLOG(ERROR) << "MyHitDeSerializer::DeserializeMsg(): No Output array!";
+                MQLOG(ERROR) << "MyHitDeserializerCrtp::DeSerializeMsg(): No Output array!";
             }
         }
-    }
-    
-    virtual TClonesArray* DeserializeMsg(FairMQMessage* msg)
-    {
-        DoDeSerialization(msg);
         return fContainer;
     }
     
@@ -147,20 +156,19 @@ public:
 protected:
     
     TClonesArray* fContainer;
-    
+    PodType* fPayload;
+    FairMQMessage* fMessage;
+    int fNumInput;
 };
 
 
-
-
-
 // for tuto 7 data
-typedef MyHitSerializer<MyPodData::Hit,MyHit>   MyHitSerializer_t;
-typedef MyHitDeSerializer<MyPodData::Hit,MyHit> MyHitDeSerializer_t;
+typedef MyHitSerializerCrtp<MyPodData::Hit,MyHit>   MyHitSerializerCrtp_t;
+typedef MyHitDeserializerCrtp<MyPodData::Hit,MyHit> MyHitDeserializerCrtp_t;
 // for tuto 3 data
-typedef MyHitSerializer<TestDetectorPayload::Hit,FairTestDetectorHit>   Tuto3HitSerializer_t;
-typedef MyHitDeSerializer<TestDetectorPayload::Hit,FairTestDetectorHit> Tuto3HitDeSerializer_t;
+typedef MyHitSerializerCrtp<TestDetectorPayload::Hit,FairTestDetectorHit>   Tuto3HitSerializerCrtp_t;
+typedef MyHitDeserializerCrtp<TestDetectorPayload::Hit,FairTestDetectorHit> Tuto3HitDeserializerCrtp_t;
 
 
-#endif	/* MYHITSERIALIER_H */
+#endif	/* MYHITSERIALIZERCRTP_H */
 

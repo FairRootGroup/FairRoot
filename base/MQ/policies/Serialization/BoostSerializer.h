@@ -32,6 +32,8 @@
 // FairRoot - FairMQ
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
+#include "BaseSerializationPolicy.h"
+#include "BaseDeserializationPolicy.h"
 
 // Recall:
 // a portable text archive
@@ -64,12 +66,13 @@ typedef boost::archive::binary_oarchive         BoostBinArchOut;
 
 ////// base template class
 template <typename DataType, typename BoostArchiveOut=BoostBinArchOut>
-class BoostSerializer
+class BoostSerializer : public BaseSerializationPolicy<BoostSerializer<DataType,BoostArchiveOut>>
 {
   public:
-    BoostSerializer()
-        : fMessage(nullptr)
-        , fTransport(nullptr)
+    BoostSerializer() :
+        BaseSerializationPolicy<BoostSerializer<DataType,BoostArchiveOut>>(),
+        fMessage(nullptr),
+        fTransport(nullptr)
     {}
 
     ~BoostSerializer()
@@ -221,12 +224,13 @@ using enable_ifnot_pointer = typename std::enable_if<!std::is_pointer<T>::value,
 
 ////// base template class
 template <typename DataType, typename TContainer = std::vector<DataType>, typename BoostArchiveIn = BoostBinArchIn>
-class BoostDeSerializer
+class BoostDeSerializer : public BaseSerializationPolicy<BoostDeSerializer<DataType,TContainer,BoostArchiveIn>>
 {
   public:
-    BoostDeSerializer()
-        : fMessage(nullptr)
-        , fTransport(nullptr)
+    BoostDeSerializer() :
+        BaseSerializationPolicy<BoostDeSerializer<DataType,TContainer,BoostArchiveIn>>(),
+        fMessage(nullptr),
+        fTransport(nullptr)
     {
         DefaultContainerInit();
     }
@@ -283,7 +287,7 @@ class BoostDeSerializer
     /// --------------------------------------------------------
     /// FairMQMessage*  -------->  std::vector<DataType>& 
     template <typename T = TContainer, enable_if_match<T, std::vector<DataType> > = 0>
-    T& DeSerializeMsg(FairMQMessage* msg)
+    T& DeserializeMsg(FairMQMessage* msg)
     {
         DoDeSerialization(msg);
         return fDataVector;
@@ -302,7 +306,7 @@ class BoostDeSerializer
     }
 
     template <typename T = TContainer, enable_if_match<T, TClonesArray*> = 0>
-    T DeSerializeMsg(FairMQMessage* msg)
+    T DeserializeMsg(FairMQMessage* msg)
     {
         DoDeSerialization(msg);
         if (fDataContainer)
@@ -323,7 +327,7 @@ class BoostDeSerializer
     /// --------------------------------------------------------
     /// FairMQMessage*  -------->  DataType
     template <typename T = TContainer, enable_if_match<T, DataType> = 0>
-    T DeSerializeMsg(FairMQMessage* msg)
+    T DeserializeMsg(FairMQMessage* msg)
     {
         std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
         std::istringstream buffer(msgStr);
@@ -342,7 +346,7 @@ class BoostDeSerializer
     /// --------------------------------------------------------
     /// FairMQMessage*  -------->  FairMQMessage* 
     template <typename T = TContainer, enable_if_match<T, FairMQMessage*> = 0>
-    T DeSerializeMsg(FairMQMessage* msg)
+    T DeserializeMsg(FairMQMessage* msg)
     {
         return msg;
     }

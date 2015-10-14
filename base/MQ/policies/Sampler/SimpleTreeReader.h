@@ -61,7 +61,7 @@ public:
     }
 
     // template < std::enable_if<std::is_base_of<TObject, DataType>::value,int> = 0>
-    void InitSampler()
+    void InitSource()
     {
         fInputFile = TFile::Open(fFileName.c_str(), "READ");
         if (fInputFile)
@@ -79,7 +79,7 @@ public:
         }
         else
         {
-            LOG(ERROR)<<"Could not open file "<<fFileName<<" in SimpleTreeReader::InitSampler()";
+            LOG(ERROR)<<"Could not open file "<<fFileName<<" in SimpleTreeReader::InitSource()";
         }
         
     }
