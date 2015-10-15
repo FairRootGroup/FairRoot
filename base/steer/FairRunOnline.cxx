@@ -449,8 +449,12 @@ void FairRunOnline::RegisterHttpCommand(TString name, TString command)
 {
   if(fServer)
   {
-    TString path = "/Objects/HISTO";
-    fServer->RegisterCommand(name, path + command);
+#if ROOT_VERSION_CODE > 336416
+      TString path = "/Objects/HISTO";
+      fServer->RegisterCommand(name, path + command);
+#else
+      LOG(WARNING)<<"THttp->RegisterCommand() only implemented in ROOT above version 5.34/26. Skip call of this function." << FairLogger::endl;
+#endif      
   }
 }
 //_____________________________________________________________________________
