@@ -550,7 +550,7 @@ void FairMonitor::Draw(Option_t* option) {
     if ( tempString.Length() > 16 ) tempString.Replace(16,tempString.Length(),"");
     TLatex* taskText = new TLatex(taskPos.first,taskPos.second,tempString.Data());
     taskText->SetTextAlign(22);
-    taskText->SetTextSizePixels(10);
+    taskText->SetTextSize(0.015);
     taskText->Draw();
   }
 
@@ -563,7 +563,7 @@ void FairMonitor::Draw(Option_t* option) {
       if ( iti->second < 0 ) 
 	paveText->SetFillColor(kGray);
     paveText->SetShadowColor(0);
-    paveText->SetTextSizePixels(10);
+    paveText->SetTextSize(0.015);
     TString tempString = ito->first;
     if ( tempString.Length() > 16 ) tempString.Replace(16,tempString.Length(),"");
     paveText->AddText(tempString);
