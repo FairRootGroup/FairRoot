@@ -339,8 +339,10 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
   Int_t status;
   if(Ev_start < 0) {
     while(kTRUE) {
-      fRootManager->ReadEvent();
-      status = EventLoop();
+      status = fRootManager->ReadEvent();
+      if(0 == status) {
+	status = EventLoop();
+      }
       if(1 == status) {
         break;
       } else if(2 == status) {
@@ -353,8 +355,10 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
     }
   } else {
     for (Int_t i = Ev_start; i < Ev_end; i++) {
-      fRootManager->ReadEvent(i);
-      status = EventLoop();
+      status = fRootManager->ReadEvent(i);
+      if(0 == status) {
+	status = EventLoop();
+      }
       if(1 == status) {
         break;
       } else if(2 == status) {
