@@ -107,7 +107,8 @@ FairRootManager::FairRootManager()
     fSourceChain( new TChain("cbmsim", "/cbmroot")),
     fSignalChainList(),
     fUseFairLinks(kFALSE),
-    fFinishRun(kFALSE)
+    fFinishRun(kFALSE),
+    fListOfBranchesFromInput(0)
   {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
@@ -139,9 +140,12 @@ FairRootManager::~FairRootManager()
 
 //_____________________________________________________________________________
 Bool_t FairRootManager::InitSource() {
+  
+  LOG(DEBUG) << "Call the initialiazer for the FairSource in FairRootManager " << FairLogger::endl;
   if ( fSource ) {
     Bool_t sourceInitBool = fSource->Init();
-
+    fListOfBranchesFromInput=fSourceChain->GetListOfBranches();
+    LOG(DEBUG) << "Source is intialized and the list of branches is created in FairRootManager " << FairLogger::endl;
     return sourceInitBool;
   }
   return kFALSE;
