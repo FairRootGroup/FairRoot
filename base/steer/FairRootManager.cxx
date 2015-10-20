@@ -86,8 +86,6 @@ FairRootManager::FairRootManager()
     fObj2(new TObject*[1000]),
     fNObj(-1),
     fMap(),
-    fPtrTree(NULL),
-    fCurrentEntries(0),
     fBranchSeqId(0),
     fBranchNameList(new TList()),
     fDataContainer(),
@@ -103,12 +101,12 @@ FairRootManager::FairRootManager()
     fCurrentEntryNo(0),
     fTimeforEntryNo(0),
     fFillLastData(kFALSE),
-    fUseFairLinks(kFALSE),
     fEntryNr(0),
     fListFolder(0),
     fSource(0),
     fSourceChain( new TChain("cbmsim", "/cbmroot")),
     fSignalChainList(),
+    fUseFairLinks(kFALSE),
     fFinishRun(kFALSE)
   {
   if (fgInstance) {
@@ -131,9 +129,7 @@ FairRootManager::~FairRootManager()
     fOutFile->cd();
     delete fOutFile;
   }
-  //  fObj2->Delete();
   delete fObj2;
-// if(fPtrTree)delete fPtrTree;
   fBranchNameList->Delete();
   delete fBranchNameList;
   fgInstance = 0;

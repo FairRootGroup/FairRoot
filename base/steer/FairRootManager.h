@@ -66,7 +66,7 @@ class FairRootManager : public TObject
     0 : Branch does not exist   */
     Int_t               CheckBranch(const char* BrName);
 
-
+    
     void                CloseOutFile() { if(fOutFile) { fOutFile->Close(); }}
     /**Create a new file and save the current TGeoManager object to it*/
     void                CreateGeometryFile(const char* geofile);
@@ -79,17 +79,18 @@ class FairRootManager : public TObject
     TClonesArray*       GetEmptyTClonesArray(TString branchName);
     TClonesArray*       GetTClonesArray(TString branchName);
     TClonesArray*       GetDataContainer(TString branchName);
-
+    /**Update the list of Memory branches from the source used*/
     void                UpdateBranches();
 
     /**Return branch name by Id*/
     TString             GetBranchName(Int_t id);
     /**Return Id of a branch named */
     Int_t               GetBranchId(TString BrName);
-    /**Return a TList of TObjString of branch names */
+    /**Return a TList of TObjString of branch names available in this session*/
     TList*              GetBranchNameList() {return fBranchNameList;}
-
+    /** Return a pointer to the output Tree of type TTree */
     TTree*              GetOutTree() {return fOutTree;}
+    /** Return a pointer to the output File of type TFile */
     TFile*              GetOutFile() {return  fOutFile;}
     /**  Get the Object (container) for the given branch name,
          this method can be used to access the data of
@@ -260,10 +261,14 @@ class FairRootManager : public TObject
     /**Output tree */
     TTree*                              fOutTree;
     TObject**                           fObj2; //!
+    /** Counter for the number of branches activiated */
     Int_t                               fNObj;//!
+    /** A list which hold the pointer to the branch 
+     * and the name of the branch in memory, it contains all branches (TClonesArrays)
+     * persistance and Memory only branches
+     */
     std::map < TString , TObject* >     fMap;  //!
-    TTree*                              fPtrTree;//!
-    Int_t                               fCurrentEntries;//!
+
     /**Singleton instance*/
 #if !defined(__CINT__)
     static TMCThreadLocal FairRootManager*  fgInstance;
@@ -311,11 +316,12 @@ class FairRootManager : public TObject
     
     Bool_t fUseFairLinks; //!
     Bool_t fFinishRun; //!
+    /** List of branches from input Chain or Tree*/
+    TObjArray* fListOfBranchesFromInput; //!
 
 
-    ClassDef(FairRootManager,9) // Root IO manager
+    ClassDef(FairRootManager,10) // Root IO manager
 };
-
 
 
 #endif //FAIR_ROOT_MANAGER_H   
