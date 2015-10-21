@@ -45,6 +45,7 @@
 #include "TROOT.h"                      // for TROOT, gROOT
 #include "TRandom.h"                    // for TRandom, gRandom
 #include "TTree.h"                      // for TTree
+#include "TRefArray.h"                  // for TRefArray
 
 #include <stdlib.h>                     // for exit
 #include <string.h>                     // for NULL, strcmp
@@ -145,6 +146,11 @@ Bool_t FairRootManager::InitSource() {
   if ( fSource ) {
     Bool_t sourceInitBool = fSource->Init();
     fListOfBranchesFromInput=fSourceChain->GetListOfBranches();
+    TObject *obj;
+    TIterator *BranchListIter=fListOfBranchesFromInput->MakeIterator();
+    while((obj=BranchListIter->Next())) {
+       fListOfNonTimebasedBranches->Add(obj);
+    }
     LOG(DEBUG) << "Source is intialized and the list of branches is created in FairRootManager " << FairLogger::endl;
     return sourceInitBool;
   }
@@ -661,8 +667,20 @@ Int_t FairRootManager::GetRunId()
 //_____________________________________________________________________________
 void FairRootManager::ReadBranchEvent(const char* BrName)
 {
-  if ( fSource ) 
+    if ( fSource )
     fSource->ReadBranchEvent(BrName);
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+//_____________________________________________________________________________
+void FairRootManager::ReadSingleEventFromNonTimeBasedBranchs(Int_t i)
+{
+    if ( fSource ){
+    
+    
+    }
+    
 }
 //_____________________________________________________________________________
 
@@ -1255,8 +1273,30 @@ FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, 
 		 << FairLogger::endl;
     delete buffer;
   }
+  UpdateListOfNonTimebasedBranches();
   return fWriteoutBufferMap[branchName];
 }
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairRootManager::UpdateListOfNonTimebasedBranches()
+{
+    /**
+     * Add branches that are not time based to the proper list
+     */
+    TObject *obj;
+    TBranch *branch;
+    TString BranchName;
+    TIterator *BranchListIter=fListOfBranchesFromInput->MakeIterator();
+    while((obj=BranchListIter->Next())) {
+        branch=dynamic_cast <TBranch*> (obj);
+        if(branch){
+            BranchName=branch->GetName();
+            if (fWriteoutBufferMap[BranchName] != 0)fListOfNonTimebasedBranches->Remove(obj);
+        }
+    }
+}
+
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________

@@ -551,7 +551,7 @@ void FairRunAna::RunTSBuffers()
   while (firstRun || fRootManager->AllDataProcessed() == kFALSE) {
     firstRun = false;
     if (globalEvent < fRootManager->CheckMaxEventNo(0) ) { //this step is necessary to load in all data which is not read in via TSBuffers
-      fRootManager->ReadEvent(globalEvent++);
+      fRootManager->ReadEventFromBranches(globalEvent++);
     }
     fTask->ExecuteTask("");
     fRootManager->FillEventHeader(fEvtHeader);
