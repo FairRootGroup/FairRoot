@@ -820,6 +820,19 @@ void FairFileSource::ReadBranchEvent(const char* BrName)
   return;
 }
 //_____________________________________________________________________________
+void   FairFileSource::ReadBranchEvent(const char* BrName, Int_t Entry)
+{
+
+    if ( fInTree ) {
+        fInTree->FindBranch(BrName)->GetEntry(Entry);
+        return;
+    }
+    if ( fInChain ) {
+        fInChain->FindBranch(BrName)->GetEntry(Entry);
+        return;
+    } 
+    return;
+}
 
 //_____________________________________________________________________________
 void FairFileSource::FillEventHeader(FairEventHeader* feh) 

@@ -40,11 +40,11 @@ class FairSource : public TObject
     virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0) {return -1;}
     /**Read the tree entry on one branch**/
     virtual void   ReadBranchEvent(const char* BrName) {return;}
-    
+    virtual void   ReadBranchEvent(const char* BrName, Int_t Event) {return;}
     virtual void FillEventHeader(FairEventHeader* feh) { return; } 
 
   public:
-    ClassDef(FairSource, 0)
+    ClassDef(FairSource, 1)
 };
 
 

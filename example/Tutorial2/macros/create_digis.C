@@ -26,7 +26,9 @@ void create_digis(){
     cout << "******************************" << endl;
 
     FairRunAna *fRun= new FairRunAna();
-    fRun->SetInputFile(inFile);
+    FairFileSource *fFileSource = new FairFileSource(inFile);
+    fRun->SetSource(fFileSource);
+
     fRun->SetOutputFile(outFile);
 
 

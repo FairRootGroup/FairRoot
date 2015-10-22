@@ -794,12 +794,24 @@ Double_t FairMixedSource::GetEventTime()
 
 void FairMixedSource::ReadBranchEvent(const char* BrName)
 {
-  /**fill the object with content if the other branches in this tree entry were already read**/
-  if(fEvtHeader == 0) { return; } //No event header, Reading will start later
-  TChain* chain = fSignalTypeList[fEvtHeader->GetInputFileId()];
-  if(!chain) { return; }
-  chain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
-  return;
+    /**fill the object with content if the other branches in this tree entry were already read**/
+    if(fEvtHeader == 0) { return; } //No event header, Reading will start later
+    TChain* chain = fSignalTypeList[fEvtHeader->GetInputFileId()];
+    if(!chain) { return; }
+    chain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
+    return;
+}
+//_____________________________________________________________________________
+//_____________________________________________________________________________
+
+void FairMixedSource::ReadBranchEvent(const char* BrName, Int_t Entry)
+{
+    /**fill the object with content if the other branches in this tree entry were already read**/
+    if(fEvtHeader == 0) { return; } //No event header, Reading will start later
+    TChain* chain = fSignalTypeList[fEvtHeader->GetInputFileId()];
+    if(!chain) { return; }
+    chain->FindBranch(BrName)->GetEntry(Entry);
+    return;
 }
 //_____________________________________________________________________________
 

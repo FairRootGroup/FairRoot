@@ -49,7 +49,10 @@ public:
     /**Check the maximum event number we can run to*/
     virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
     /**Read the tree entry on one branch**/
-    virtual void   ReadBranchEvent(const char* BrName);
+    void             ReadBranchEvent(const char* BrName);
+    /** Read specific tree entry on one branch**/
+    void             ReadBranchEvent(const char* BrName, Int_t Entry);
+
     void                FillEventHeader(FairEventHeader* feh);
 
     const TFile*        GetRootFile(){return fRootFile;}

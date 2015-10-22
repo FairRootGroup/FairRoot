@@ -109,7 +109,10 @@ FairRootManager::FairRootManager()
     fSignalChainList(),
     fUseFairLinks(kFALSE),
     fFinishRun(kFALSE),
-    fListOfBranchesFromInput(0)
+    fListOfBranchesFromInput(0),
+    fListOfBranchesFromInputIter(0),
+    fListOfNonTimebasedBranches(new TRefArray()),
+    fListOfNonTimebasedBranchesIter(0)
   {
   if (fgInstance) {
     Fatal("FairRootManager", "Singleton instance already exists.");
@@ -147,11 +150,12 @@ Bool_t FairRootManager::InitSource() {
     Bool_t sourceInitBool = fSource->Init();
     fListOfBranchesFromInput=fSourceChain->GetListOfBranches();
     TObject *obj;
-    TIterator *BranchListIter=fListOfBranchesFromInput->MakeIterator();
-    while((obj=BranchListIter->Next())) {
+    fListOfBranchesFromInputIter=fListOfBranchesFromInput->MakeIterator();
+    while((obj=fListOfBranchesFromInputIter->Next())) {
        fListOfNonTimebasedBranches->Add(obj);
     }
     LOG(DEBUG) << "Source is intialized and the list of branches is created in FairRootManager " << FairLogger::endl;
+    fListOfNonTimebasedBranchesIter=fListOfNonTimebasedBranches->MakeIterator();
     return sourceInitBool;
   }
   return kFALSE;
@@ -674,13 +678,15 @@ void FairRootManager::ReadBranchEvent(const char* BrName)
 
 //_____________________________________________________________________________
 //_____________________________________________________________________________
-void FairRootManager::ReadSingleEventFromNonTimeBasedBranchs(Int_t i)
+Int_t FairRootManager::ReadNonTimeBasedEventFromBranches(Int_t Entry)
 {
     if ( fSource ){
-    
-    
+        TObject *Obj;
+        fListOfNonTimebasedBranchesIter->Reset();
+        while ( (Obj=fListOfNonTimebasedBranchesIter->Next())) {
+            fSource->ReadBranchEvent(Obj->GetName(),Entry);
+        }
     }
-    
 }
 //_____________________________________________________________________________
 
@@ -1287,8 +1293,8 @@ void FairRootManager::UpdateListOfNonTimebasedBranches()
     TObject *obj;
     TBranch *branch;
     TString BranchName;
-    TIterator *BranchListIter=fListOfBranchesFromInput->MakeIterator();
-    while((obj=BranchListIter->Next())) {
+    fListOfBranchesFromInputIter->Reset();
+    while((obj=fListOfBranchesFromInputIter->Next())) {
         branch=dynamic_cast <TBranch*> (obj);
         if(branch){
             BranchName=branch->GetName();

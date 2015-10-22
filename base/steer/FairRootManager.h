@@ -39,6 +39,7 @@ class TList;
 class TNamed;
 class TTree;
 class TRefArray;
+class TIterator;
 
 /**
  * I/O Manager class
@@ -128,7 +129,7 @@ class FairRootManager : public TObject
     /**Read a single entry from background chain*/
     Int_t             ReadEvent(Int_t i=0);
     /** Read a single entry from each branch that is not read via TSBuffers*/
-    Int_t             ReadEventFromBranches(Int_t i=0);
+    Int_t             ReadNonTimeBasedEventFromBranches(Int_t i=0);
     /**Read the tree entry on one branch**/
     void              ReadBranchEvent(const char* BrName);
     /**Read all entries from input tree(s) with time stamp from current time to dt (time in ns)*/
@@ -323,8 +324,12 @@ class FairRootManager : public TObject
     Bool_t fFinishRun; //!
     /** List of branches from input Chain or Tree*/
     TObjArray* fListOfBranchesFromInput; //!
+    /** Iterator for the list of branches from input Chain or Tree */
+    TIterator* fListOfBranchesFromInputIter;//!
     /** List of branches used with no-time stamp in time-based session */
     TRefArray* fListOfNonTimebasedBranches; //!
+    /** Iterator for the list of branches used with no-time stamp in time-based session */
+    TIterator* fListOfNonTimebasedBranchesIter; //!
 
     ClassDef(FairRootManager,10) // Root IO manager
 };
