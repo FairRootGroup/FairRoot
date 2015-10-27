@@ -25,13 +25,14 @@ Use of FairDB
 
 shows how to use three generic devices, namely a generic sampler, processor and filesink. These three devices are policy based designed classes. These devices all inherit from FairMQDevice and from specific template parameters, 
 
+##Tutorial8
+
+Shows how to use MBS data unpacking with FairRunOnline steering class. FairTut8Unpack implement parsing of MBS subevents and 
+creates output in form of array of FairTut8RawItem data objects.
+
 ##rutherford
 
 simple simulation of the Rutherford experiment, with event display.
-
-##Tutorial8
-
-Shows how to use MBS data unpacking with FairRunOnline steering class. FairTut8Unpack implement parsing of MBS subevents and creates output in form of array of FairTut8RawItem data objects.
 
 ##Flp2epn
 
