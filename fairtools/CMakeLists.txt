@@ -36,6 +36,6 @@ set(SRCS
 Set(HEADERS )
 Set(LINKDEF FairToolsLinkDef.h)
 Set(LIBRARY_NAME FairTools)
-Set(DEPENDENCIES Core)
+Set(DEPENDENCIES Core Graf Gpad)
 
 GENERATE_LIBRARY()
