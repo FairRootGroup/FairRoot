@@ -89,6 +89,7 @@ FairRootManager::FairRootManager()
     fMap(),
     fBranchSeqId(0),
     fBranchNameList(new TList()),
+    fTimeBasedBranchNameList(new TList()),
     fDataContainer(),
     fActiveContainer(),
     fTSBufferMap(),
@@ -150,9 +151,12 @@ Bool_t FairRootManager::InitSource() {
     Bool_t sourceInitBool = fSource->Init();
     fListOfBranchesFromInput=fSourceChain->GetListOfBranches();
     TObject *obj;
-    fListOfBranchesFromInputIter=fListOfBranchesFromInput->MakeIterator();
-    while((obj=fListOfBranchesFromInputIter->Next())) {
-       fListOfNonTimebasedBranches->Add(obj);
+    if(fListOfBranchesFromInput){
+      fListOfBranchesFromInputIter=fListOfBranchesFromInput->MakeIterator();
+      while((obj=fListOfBranchesFromInputIter->Next())) {
+         if((fTimeBasedBranchNameList->FindObject(obj->GetName()))==0)
+         fListOfNonTimebasedBranches->Add(obj);
+      }
     }
     LOG(DEBUG) << "Source is intialized and the list of branches is created in FairRootManager " << FairLogger::endl;
     fListOfNonTimebasedBranchesIter=fListOfNonTimebasedBranches->MakeIterator();
@@ -623,6 +627,7 @@ void FairRootManager:: WriteFolder()
     fCbmout->Write();
   }
   fBranchNameList->Write("BranchList", TObject::kSingleKey);
+  fTimeBasedBranchNameList->Write("TimeBasedBranchList", TObject::kSingleKey);
 }
 //_____________________________________________________________________________
 
@@ -686,7 +691,10 @@ Int_t FairRootManager::ReadNonTimeBasedEventFromBranches(Int_t Entry)
         while ( (Obj=fListOfNonTimebasedBranchesIter->Next())) {
             fSource->ReadBranchEvent(Obj->GetName(),Entry);
         }
+    }else{
+      return 0;
     }
+    return 1;
 }
 //_____________________________________________________________________________
 
@@ -1279,28 +1287,42 @@ FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, 
 		 << FairLogger::endl;
     delete buffer;
   }
-  UpdateListOfNonTimebasedBranches();
   return fWriteoutBufferMap[branchName];
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRootManager::UpdateListOfNonTimebasedBranches()
+void FairRootManager::UpdateListOfTimebasedBranches()
 {
-    /**
-     * Add branches that are not time based to the proper list
-     */
-    TObject *obj;
-    TBranch *branch;
-    TString BranchName;
-    fListOfBranchesFromInputIter->Reset();
-    while((obj=fListOfBranchesFromInputIter->Next())) {
-        branch=dynamic_cast <TBranch*> (obj);
-        if(branch){
-            BranchName=branch->GetName();
-            if (fWriteoutBufferMap[BranchName] != 0)fListOfNonTimebasedBranches->Remove(obj);
-        }
-    }
+  /**
+   * Add branches that are time based to the proper list
+   */
+  
+  for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
+    
+    if(iter->second->IsBufferingActivated()) fTimeBasedBranchNameList->AddLast(new TObjString(iter->first.Data()));
+    
+  }
+  
+}
+
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairRootManager::SetTimeBasedBranchNameList(TList *list)
+{
+  /**
+   * Replace the list
+   */
+  
+  if(list!=0){
+    fTimeBasedBranchNameList->Delete();
+    delete fTimeBasedBranchNameList;
+    fTimeBasedBranchNameList=list;
+  }
+  
+  
+  
 }
 
 //_____________________________________________________________________________

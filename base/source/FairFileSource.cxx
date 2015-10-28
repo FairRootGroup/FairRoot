@@ -296,7 +296,14 @@ Bool_t FairFileSource::Init()
 
     AddFriendsToChain();
 
-    return kTRUE;
+   TList* timebasedlist= dynamic_cast <TList*> (fRootFile->Get("TimeBasedBranchList"));
+   if(timebasedlist==0) {
+      LOG(WARNING) << "No time based branch list in input file" << FairLogger::endl;
+   }else{
+     FairRootManager::Instance()->SetTimeBasedBranchNameList(timebasedlist);
+   }
+ 
+   return kTRUE;
    
 }
 //_____________________________________________________________________________

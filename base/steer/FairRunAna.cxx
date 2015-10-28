@@ -278,7 +278,10 @@ void FairRunAna::Init()
   if (fTrajFilter) {
     fTrajFilter->Init();
   }
-
+  // Create a list of time based branches (if any).
+  
+  fRootManager->UpdateListOfTimebasedBranches();
+  
   // create the output tree after tasks initialisation
   fOutFile->cd();
   TTree* outTree =new TTree("cbmsim", "/cbmout", 99);

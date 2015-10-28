@@ -62,6 +62,8 @@ class FairWriteoutBuffer: public TObject
       fActivateBuffering=val;   ///< fActivateBuffering has to be set to kTRUE to use the buffering. Otherwise the data is directly stored in the given TClonesArray.
     }
 
+   Bool_t IsBufferingActivated(){ return fActivateBuffering;}
+  
 /// Fills a pointer to a data object into the buffer. StartTime gives the time when the data can influence later data, activeTime gives the time how long the data can influence later data.
 /// Both time data has to be given as an absolute time!
     virtual void FillNewData(FairTimeStamp* data, double startTime, double activeTime);

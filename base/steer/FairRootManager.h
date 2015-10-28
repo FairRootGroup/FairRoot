@@ -153,13 +153,16 @@ class FairRootManager : public TObject
     TClonesArray*       Register(TString branchName, TString className, TString folderName, Bool_t toFile);
     /** Register a new FairWriteoutBuffer to the map. If a Buffer with the same map key already exists the given buffer will be deleted and the old will be returned!*/
     FairWriteoutBuffer* RegisterWriteoutBuffer(TString branchName, FairWriteoutBuffer* buffer);
-    /**Update the list of branches from the input file to remove the time-based branches*/
-    void                UpdateListOfNonTimebasedBranches();
+    /**Update the list of time based branches in the output file*/
+    void                UpdateListOfTimebasedBranches();
     /**Use time stamps to read data and not tree entries*/
     void                RunWithTimeStamps() {fTimeStamps = kTRUE;}
 
     /**Set the branch name list*/
     void                SetBranchNameList(TList* list);
+    /** Replace the time based branch name list*/
+    void SetTimeBasedBranchNameList(TList *list);
+  
     void                SetCompressData(Bool_t val) {fCompressData = val;}
 
     void                FillEventHeader(FairEventHeader* feh) { if ( fSource ) fSource->FillEventHeader(feh); } 
@@ -286,6 +289,8 @@ class FairRootManager : public TObject
     Int_t                               fBranchSeqId;
     /**List of branch names as TObjString*/
     TList*                               fBranchNameList; //!
+    /**List of Time based branchs names as TObjString*/
+    TList*                               fTimeBasedBranchNameList; //!
     /** Internally used to compress empty slots in data buffer*/
     std::map<TString, std::queue<TClonesArray*> > fDataContainer;
     /** Internally used to compress empty slots in data buffer*/
@@ -331,7 +336,7 @@ class FairRootManager : public TObject
     /** Iterator for the list of branches used with no-time stamp in time-based session */
     TIterator* fListOfNonTimebasedBranchesIter; //!
 
-    ClassDef(FairRootManager,10) // Root IO manager
+    ClassDef(FairRootManager,11) // Root IO manager
 };
 
 
