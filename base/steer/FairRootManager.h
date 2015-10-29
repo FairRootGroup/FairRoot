@@ -227,7 +227,6 @@ class FairRootManager : public TObject
 
     void SetFinishRun(Bool_t val = kTRUE){ fFinishRun = val;}
     Bool_t FinishRun() {return fFinishRun;}
-    void ReadSingleEventFromNonTimeBasedBranchs(Int_t i);
   private:
     /**private methods*/
     FairRootManager(const FairRootManager&);
