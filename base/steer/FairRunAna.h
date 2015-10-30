@@ -149,7 +149,6 @@ class FairRunAna : public FairRun
     Bool_t      IsTimeStamp() {
       return fTimeStamps;
     }
-    void        CompressData();
 
     /** Set the flag for proccessing lmd files */
     void StopProcessingLMD( void ) {

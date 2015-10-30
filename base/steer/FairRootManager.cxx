@@ -90,12 +90,10 @@ FairRootManager::FairRootManager()
     fBranchSeqId(0),
     fBranchNameList(new TList()),
     fTimeBasedBranchNameList(new TList()),
-    fDataContainer(),
     fActiveContainer(),
     fTSBufferMap(),
     fWriteoutBufferMap(),
     fInputBranchMap(),
-    fCompressData(kFALSE),
     fTimeStamps(kFALSE),
     fBranchPerMap(kFALSE),
     fBrPerMap(),
@@ -163,30 +161,6 @@ Bool_t FairRootManager::InitSource() {
     return sourceInitBool;
   }
   return kFALSE;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-Bool_t  FairRootManager::DataContainersEmpty()
-{
-  for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++) {
-    if (it->second.empty() == false) {
-      return kFALSE;
-    }
-  }
-  return kTRUE;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-Bool_t  FairRootManager::DataContainersFilled()
-{
-  for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++) {
-    if (it->second.empty() == true) {
-      return kFALSE;
-    }
-  }
-  return kTRUE;
 }
 //_____________________________________________________________________________
 
@@ -345,13 +319,7 @@ TClonesArray* FairRootManager::Register(TString branchName, TString className, T
   TClonesArray* outputArray;
   if (fActiveContainer.find(branchName) == fActiveContainer.end()) {
     fActiveContainer[branchName] = new TClonesArray(className);
-    if (fCompressData) {
-      std::queue<TClonesArray*> myQueue;
-      fDataContainer[branchName] = myQueue;
-      outputArray = new TClonesArray(className);
-    } else {
-      outputArray = fActiveContainer[branchName];
-    }
+    outputArray = fActiveContainer[branchName];
     Register(branchName, folderName, outputArray, toFile);
   }
   return fActiveContainer[branchName];
@@ -362,21 +330,8 @@ TClonesArray* FairRootManager::GetEmptyTClonesArray(TString branchName)
   if (fActiveContainer.find(branchName) != fActiveContainer.end()) {          //if a TClonesArray is registered in the active container
     if (fActiveContainer[branchName] == 0) {                      //the address of the TClonesArray is still valid
       std::cout << "-E- FairRootManager::GetEmptyTClonesArray: Container deleted outside FairRootManager!" << std::endl;
-    } else if (!fCompressData) {                          //if the data is not compressed the existing TClonesArray is just emptied
-      fActiveContainer[branchName]->Delete();
-    } else if (fActiveContainer[branchName]->GetEntries() > 0) {    //if the container is not empty push it into the DataContainer storage and create a new one
-      fDataContainer[branchName].push(fActiveContainer[branchName]);
-      LOG(INFO) << "GetEmptyTClonesArray moved "
-		<< branchName.Data() << " with "
-		<< fActiveContainer[branchName]->GetEntries() 
-		<< "to data container." << FairLogger::endl;
-      fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
     } else {
-      LOG(INFO) << "GetEmptyTClonesArray not moved " 
-		<< branchName.Data() << " " 
-		<<  fActiveContainer[branchName] << " with " 
-		<< fActiveContainer[branchName]->GetEntries() 
-		<< " to data container." << FairLogger::endl;
+      fActiveContainer[branchName]->Delete();
     }
     return fActiveContainer[branchName];                        // return the container
   } else {
@@ -390,12 +345,6 @@ TClonesArray* FairRootManager::GetEmptyTClonesArray(TString branchName)
 TClonesArray* FairRootManager::GetTClonesArray(TString branchName)
 {
   if (fActiveContainer.find(branchName) != fActiveContainer.end()) {
-    /**if a TClonesArray is registered in the active container*/
-    if (fCompressData && fActiveContainer[branchName]->GetEntries() > 0) {
-      /**if the container is not empty push it into the DataContainer storage and create a new one*/
-      fDataContainer[branchName].push(fActiveContainer[branchName]);
-      fActiveContainer[branchName] = new TClonesArray(fActiveContainer[branchName]->GetClass()->GetName());
-    }
     return fActiveContainer[branchName]; // return the container
   } else {
     LOG(INFO) << "Branch: " << branchName.Data()
@@ -403,30 +352,6 @@ TClonesArray* FairRootManager::GetTClonesArray(TString branchName)
   }
   // error if the branch is not registered
   return 0;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-TClonesArray* FairRootManager::GetDataContainer(TString branchName)
-{
-  if (DataContainersFilled()) {
-    return fDataContainer[branchName].front();
-  }
-  return 0;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-TClonesArray* FairRootManager::ForceGetDataContainer(TString branchName)
-{
-  TClonesArray* result = 0;
-  if (fDataContainer.find(branchName)!= fDataContainer.end()) {
-    if (!fDataContainer[branchName].empty()) {
-      result = fDataContainer[branchName].front();
-      fDataContainer[branchName].pop();
-    }
-  }
-  return result;
 }
 //_____________________________________________________________________________
 
@@ -526,23 +451,7 @@ Bool_t FairRootManager::AllDataProcessed()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void  FairRootManager::Fill()
-{
-// Fills the tree.
-// ---
-  if (fCompressData) {
-    if (DataContainersFilled()) {
-      AssignTClonesArrays();
-      ForceFill();
-    }
-  } else {
-    ForceFill();
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRootManager::ForceFill()
+void FairRootManager::Fill()
 {
   if (fOutTree != 0) {
     fOutTree->Fill();
@@ -566,9 +475,7 @@ void FairRootManager::LastFill()
 Int_t FairRootManager::Write(const char* name, Int_t option, Int_t bufsize)
 {
   /** Writes the tree in the file.*/
-  if (fCompressData) {
-    SaveAllContainers();
-  }
+
   if(fOutTree!=0) {
     /** Get the file handle to the current output file from the tree.
       * If ROOT splits the file (due to the size of the file) the file
@@ -1149,23 +1056,7 @@ void  FairRootManager::AddMemoryBranch( const char* fName, TObject* pObj )
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRootManager::AssignTClonesArrays()
-{
-  for(std::map<TString, std::queue<TClonesArray*> >::iterator it = fDataContainer.begin(); it != fDataContainer.end(); it++) {
-    AssignTClonesArray(it->first);
-  }
-}
-//_____________________________________________________________________________
-void FairRootManager::AssignTClonesArray(TString branchName)
-{
-  TClonesArray* output = (TClonesArray*)GetObject(branchName);
-  TClonesArray* input = ForceGetDataContainer(branchName);
-  output->Clear();
-  if (input != 0) {
-    output->AbsorbObjects(input, 0, input->GetEntries() - 1);
-  }
-}
-//_____________________________________________________________________________
+
 Int_t FairRootManager::CheckBranchSt(const char* BrName)
 {
  // cout <<"FairRootManager::CheckBranchSt  :  " << BrName << endl;
@@ -1243,16 +1134,6 @@ TObject*  FairRootManager::GetMemoryBranch( const char* fName )
     return p->second;
   } else {
     return 0;
-  }
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRootManager::SaveAllContainers()
-{
-  while(!DataContainersEmpty()) {
-    AssignTClonesArrays();
-    ForceFill();
   }
 }
 //_____________________________________________________________________________

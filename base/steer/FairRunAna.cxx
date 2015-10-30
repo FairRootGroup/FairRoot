@@ -663,11 +663,6 @@ void  FairRunAna::RunWithTimeStamps()
 }
 //_____________________________________________________________________________
 
-void FairRunAna::CompressData()
-{
-  fRootManager->SetCompressData(kTRUE);
-}
-
 //_____________________________________________________________________________
 void  FairRunAna::SetContainerStatic(Bool_t tempBool)
 {
