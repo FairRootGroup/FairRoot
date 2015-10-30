@@ -241,7 +241,6 @@ class FairRootManager : public TObject
     void                CreatePerMap();
     TObject*            GetMemoryBranch( const char* );
  //   void                GetRunIdInfo(TString fileName, TString inputLevel);
-     void                SaveAllContainers();
 
     FairWriteoutBuffer* GetWriteoutBuffer(TString branchName);
 
