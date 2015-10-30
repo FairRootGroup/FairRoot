@@ -72,15 +72,10 @@ class FairRootManager : public TObject
     void                CloseOutFile() { if(fOutFile) { fOutFile->Close(); }}
     /**Create a new file and save the current TGeoManager object to it*/
     void                CreateGeometryFile(const char* geofile);
-    Bool_t              DataContainersEmpty();
-    Bool_t              DataContainersFilled();
     void                Fill();
-    void                ForceFill();
     void                LastFill();
-    TClonesArray*       ForceGetDataContainer(TString branchName);
     TClonesArray*       GetEmptyTClonesArray(TString branchName);
     TClonesArray*       GetTClonesArray(TString branchName);
-    TClonesArray*       GetDataContainer(TString branchName);
     /**Update the list of Memory branches from the source used*/
     void                UpdateBranches();
 
@@ -163,8 +158,6 @@ class FairRootManager : public TObject
     /** Replace the time based branch name list*/
     void SetTimeBasedBranchNameList(TList *list);
   
-    void                SetCompressData(Bool_t val) {fCompressData = val;}
-
     void                FillEventHeader(FairEventHeader* feh) { if ( fSource ) fSource->FillEventHeader(feh); } 
    
     /**Set the output tree pointer*/
@@ -237,8 +230,6 @@ class FairRootManager : public TObject
     void                AddFriends( );
     /**Add a branch to memory, it will not be written to the output files*/
     void                AddMemoryBranch(const char*, TObject* );
-    void                AssignTClonesArrays();
-    void                AssignTClonesArray(TString branchName);
     /** Internal Check if Branch persistence or not (Memory branch)
     return value:
     1 : Branch is Persistance
@@ -291,16 +282,11 @@ class FairRootManager : public TObject
     /**List of Time based branchs names as TObjString*/
     TList*                               fTimeBasedBranchNameList; //!
     /** Internally used to compress empty slots in data buffer*/
-    std::map<TString, std::queue<TClonesArray*> > fDataContainer;
-    /** Internally used to compress empty slots in data buffer*/
     std::map<TString, TClonesArray*> fActiveContainer;
     /** Internally used to read time ordered data from branches*/
     std::map<TString, FairTSBufferFunctional*> fTSBufferMap; //!
     std::map<TString, FairWriteoutBuffer* > fWriteoutBufferMap; //!
     std::map<Int_t, TBranch*> fInputBranchMap; //!    //Map of input branch ID with TBranch pointer
-
-    /** if kTRUE the entries of a branch are filled from the beginning --> no empty entries*/
-    Bool_t                              fCompressData;
     /**if kTRUE Read data according to time and not entries*/
     Bool_t                              fTimeStamps;
     /**Flag for creation of Map for branch persistency list  */
