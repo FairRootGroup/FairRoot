@@ -298,7 +298,7 @@ void FairRunAnaProof::InitContainers()
 //_____________________________________________________________________________
 void FairRunAnaProof::SetSource(FairSource* tempSource) {
   // FairRunAnaProof should accept only FairFileSource
-  if ( tempSource->GetName() != "FairFileSource" ) {
+  if (strncmp(tempSource->GetName(), "FairFileSource", 14) == 0) {
     LOG(WARNING) << "FairRunAnaProof. Seems you are trying to set different source than FairFileSource" << FairLogger::endl;
   }
   fRootManager->SetSource(tempSource);
