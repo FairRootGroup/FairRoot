@@ -19,8 +19,7 @@
 // FairRoot - Base/MQ
 // sampler policies
 
-#include "FairFileSource.h"
- #include "FairSourceMQInterface.h"
+ #include "FairMQFileSource.h"
 
 // FairRoot - Tutorial 7
 #include "tuto7SamplerFunctions.h"
@@ -42,12 +41,11 @@
 // ////////////////////////////////////////////////////////////////////////
 
 
-typedef FairSourceMQInterface<FairFileSource,TClonesArray>  TSourcePolicy;
 
 // build sampler type
-typedef GenericSampler<TSourcePolicy, MyDigiSerializerCrtp_t>   TSamplerBin;
-typedef GenericSampler<TSourcePolicy, BoostSerializer<MyDigi> > TSamplerBoost;
-typedef GenericSampler<TSourcePolicy, RootSerializer>           TSamplerTMessage;
+typedef GenericSampler<FairMQFileSource_t, MyDigiSerializerCrtp_t>   TSamplerBin;
+typedef GenericSampler<FairMQFileSource_t, BoostSerializer<MyDigi> > TSamplerBoost;
+typedef GenericSampler<FairMQFileSource_t, RootSerializer>           TSamplerTMessage;
 
 
 
@@ -64,18 +62,6 @@ inline void runSampler(FairMQProgOptions& config)
     sampler.SetProperty(TSampler::EventRate, eventRate);
     // call function member from sampler policy
     sampler.SetFileProperties(filename, branchname);
-//*
-    sampler.CustomInitSourceRunAna([=](FairFileSource** fSource, TClonesArray** fData, FairRunAna** fRunAna)
-            {
-                
-            *fRunAna = new FairRunAna();
-            *fSource = new FairFileSource(filename.c_str());
-            (*fSource)->Init();
-            (*fSource)->ActivateObject((TObject**)fData,branchname.c_str());
-            }
-        );
-
-        // */
 
     runStateMachine(sampler, config);
 }

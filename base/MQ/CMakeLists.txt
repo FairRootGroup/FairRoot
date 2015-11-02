@@ -36,6 +36,7 @@ Set(SRCS
   devices/FairMQProcessor.cxx
   tasks/FairMQSamplerTask.cxx
   tasks/FairMQProcessorTask.cxx
+  devices/FairMQLmdSampler.cxx
 )
 
 # to copy src that are header-only files (e.g. c++ template) for FairRoot external installation
@@ -45,6 +46,8 @@ Set(BaseMQHDRFiles
   devices/FairMQSampler.h
   devices/FairMQSampler.tpl
   policies/Sampler/SimpleTreeReader.h
+  policies/Sampler/FairSourceMQInterface.h
+  policies/Sampler/FairMQFileSource.h
   policies/Serialization/BinaryBaseClassSerializer.h
   policies/Serialization/BoostSerializer.h
   policies/Serialization/RootSerializer.h
@@ -65,6 +68,7 @@ set(DEPENDENCIES
   boost_thread
   boost_timer
   boost_system
+  boost_filesystem
   FairMQ
 )
 

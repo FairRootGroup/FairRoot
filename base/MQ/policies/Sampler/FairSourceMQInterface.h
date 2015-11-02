@@ -8,11 +8,11 @@
 #include "FairRunOnline.h"
 
 #include "FairFileSource.h"
-#include "FairLmdSource.h"
-#include "FairMbsSource.h"
-#include "FairMbsStreamSource.h"
-#include "FairMixedSource.h"
-#include "FairRemoteSource.h"
+//#include "FairLmdSource.h"
+//#include "FairMbsSource.h"
+//#include "FairMbsStreamSource.h"
+//#include "FairMixedSource.h"
+//#include "FairRemoteSource.h"
 
 
 
@@ -130,7 +130,7 @@ public:
 
 	//______________________________________________________________________________
 	// FairLmdSource
-
+ 	/*
 	template <typename T = FairSourceType, enable_if_match<T, FairLmdSource> = 0>
 	void InitSource()
 	{
@@ -163,7 +163,7 @@ public:
  	void SetMaxIndex(int64_t max)
  	{
  		fMaxIndex=max;
- 	}
+ 	}*/
 
  	/*
 	//______________________________________________________________________________

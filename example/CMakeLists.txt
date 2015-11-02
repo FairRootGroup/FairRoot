@@ -19,6 +19,7 @@ If(GEANT3_FOUND)
 
  If(POS_C++11)
   add_subdirectory(Tutorial7)
+  add_subdirectory(MQ/LmdSampler)
  EndIf()
  add_subdirectory (rutherford)
 EndIf()
