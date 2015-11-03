@@ -29,7 +29,8 @@ FairTask::FairTask()
   : TTask(),
     fVerbose(0),
     fInputPersistance(-1),
-    fLogger(FairLogger::GetLogger())
+    fLogger(FairLogger::GetLogger()),
+    fOutputPersistance()
 {
 }
 // -------------------------------------------------------------------------
@@ -41,7 +42,8 @@ FairTask::FairTask(const char* name, Int_t iVerbose)
   : TTask(name, "FairTask"),
     fVerbose(iVerbose),
     fInputPersistance(-1),
-    fLogger(FairLogger::GetLogger())
+    fLogger(FairLogger::GetLogger()),
+    fOutputPersistance()
 {
 
 }
@@ -261,5 +263,19 @@ void FairTask::FinishEvents()
 }
 // -------------------------------------------------------------------------
 
+void FairTask::SetOutputBranchPersistent(TString branchName, Bool_t persistence)
+{
+  fOutputPersistance.insert ( std::pair<TString,Bool_t>(branchName, persistence) );
+}
+
+Bool_t FairTask::IsOutputBranchPersistent(TString branchName)
+{  
+  std::map<TString, Bool_t>::iterator it = fOutputPersistance.find(branchName);
+  if (it != fOutputPersistance.end()) {
+    return it->second;
+  } else {
+    return kTRUE;
+  }
+}
 
 ClassImp(FairTask)

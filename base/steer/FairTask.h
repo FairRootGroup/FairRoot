@@ -29,6 +29,8 @@
 #include "Rtypes.h"                     // for Int_t, FairTask::Class, etc
 #include "TString.h"                    // for TString
 
+#include <map>
+
 class FairLogger;
 
 enum InitStatus {kSUCCESS, kERROR, kFATAL};
@@ -84,6 +86,16 @@ class FairTask : public TTask
 
     virtual void  ExecuteTask(Option_t *option="0");  // *MENU*
 
+    /** Set persistency of branch with given name true or false
+     *  In case is is set to false the branch will not be written to the output.
+    **/   
+    void SetOutputBranchPersistent(TString, Bool_t);
+
+    /** Check if the branch with the given name is persistent.
+     *  If the branch is not in the map, the default return value is true.
+    **/  
+    Bool_t IsOutputBranchPersistent(TString);
+
   protected:
 
     Int_t        fVerbose;  //  Verbosity level
@@ -133,10 +145,13 @@ class FairTask : public TTask
     void FinishEvents();
 
   private:
+
+    std::map<TString, Bool_t> fOutputPersistance;
+
     FairTask(const FairTask&);
     FairTask& operator=(const FairTask&);
 
-    ClassDef(FairTask,2);
+    ClassDef(FairTask,3);
 
 };
 
