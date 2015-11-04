@@ -21,9 +21,13 @@ ROOT geometry as input for detector description
 
 Use of FairDB
 
-##Tutorial7
+##MQ/GenericDevices
 
 shows how to use three generic devices, namely a generic sampler, processor and filesink. These three devices are policy based designed classes. These devices all inherit from FairMQDevice and from specific template parameters, 
+
+##MQ/LmdSampler
+
+shows an example of a device (sampler) reading a Lmd file (lmd file provided in Tutorial8), sending the contained sub-event data to an unpacker device. The latter unpack and convert the data to a root object and send it further to a file sink device via a Root TMessage data format.
 
 ##Tutorial8
 

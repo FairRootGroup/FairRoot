@@ -4,15 +4,13 @@
 CONFIGFILE="@CMAKE_SOURCE_DIR@/example/MQ/LmdSampler/options/LmdHeaderConfig.INI"
 MQCONFIGFILE="@CMAKE_SOURCE_DIR@/example/MQ/LmdSampler/options/LmdMQConfig.json"
 LMDFILE="@CMAKE_SOURCE_DIR@/example/Tutorial8/data/sample_data_2.lmd"
-VERBOSE="INFO"
+VERBOSE="DEBUG"
 
 ########################## start SAMPLER
 SAMPLER="runLmdSampler"
 SAMPLER+=" --id LmdSampler -c $CONFIGFILE --config-json-file $MQCONFIGFILE"
 SAMPLER+=" --input-file-name $LMDFILE --verbose $VERBOSE"
-#uncomment if you like to test the task container of the generic sampler
-#SAMPLER+=" --register-task-sampler true"
-xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+xterm +aw -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 
 
@@ -20,7 +18,7 @@ xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 UNPACKER="runTut8MQUnpacker"
 UNPACKER+=" --id unpacker1 -c $CONFIGFILE --config-json-file $MQCONFIGFILE"
 UNPACKER+=" --verbose $VERBOSE"
-xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$UNPACKER &
+xterm +aw -geometry 120x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$UNPACKER &
 
 
 ########################## start FILESINK

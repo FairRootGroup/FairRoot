@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-/////////////////////////////// Tutorial 7 LinkDef ///////////////////////////////
+/////////////////////////////// LmdSamplerLinkDef.h ///////////////////////////////
 
 #ifdef __CINT__
 
@@ -15,6 +15,5 @@
 #pragma link off all functions;
 
 #pragma link C++ class FairTut8Unpacker+;
-//#pragma link C++ class FairTut8RawItem+;
 
 #endif

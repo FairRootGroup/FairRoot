@@ -14,43 +14,25 @@
 
 // FairRoot - FairMQ
 #include "FairMQLogger.h"
+#include "FairMQProgOptions.h"
+#include "runSimpleMQStateMachine.h"
 
 // FairRoot - Base/MQ
-
 #include "FairMQUnpacker.h"
 
-// FairRoot - Tutorial 7
-//#include "tuto7tut8UnpackerFunctions.h"
-
-
-#include "FairTut8RawItem.h"
+// FairRoot - MQ/lmdSampler Tutorial 
 #include "FairTut8Unpacker.h"
 
-//#include "FairMQLmdSource.h"
-//#include "boost/program_options.hpp"
-#include "FairMQProgOptions.h"
+// FairRoot - Tutorial 8
+#include "FairTut8RawItem.h"
 
- #include "runGenericDevices.h"
 // ////////////////////////////////////////////////////////////////////////
-
-
-
-
 int main(int argc, char** argv)
 {
     try
     {
         namespace po = boost::program_options;
         FairMQProgOptions config;
-
-        std::string filename;
-
-        // tut8Unpacker-specific commandline configuration
-        po::options_description tut8Unpacker_options("tut8Unpacker options");
-        tut8Unpacker_options.add_options()
-            ("output-file-name", po::value<std::string>(&filename), "Path to the output file")
-        ;
-
 
         short type;
         short subType;
@@ -69,7 +51,6 @@ int main(int argc, char** argv)
             ("LmdHeader.Tutorial8.control",     po::value<short>(&control),         "sub-event control")
         ;
 
-        config.AddToCmdLineOptions(tut8Unpacker_options);
         config.AddToCfgFileOptions(lmd_header_def);
 
         if (config.ParseAll(argc, argv, true))
@@ -82,9 +63,6 @@ int main(int argc, char** argv)
         // this channel MUST be defined in the json file for the MQ configuration
         unpacker.AddSubEvtKey(type, subType, procId, subCrate, control, chanName);
         runStateMachine(unpacker, config);
-
-
-
     }
     catch (std::exception& e)
     {
@@ -96,15 +74,3 @@ int main(int argc, char** argv)
     return 0;
 }
 
-
-
-
-
-
-
-
-
-
-///////////
-
-        

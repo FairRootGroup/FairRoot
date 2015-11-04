@@ -51,7 +51,7 @@ class FairTut8Unpacker : public FairUnpack
 
   protected:
     /** Register the output structures. */
-    virtual void Register();
+    virtual void Register(){}
 
   private:
     TClonesArray* fRawData; /**< Array of output raw items. */

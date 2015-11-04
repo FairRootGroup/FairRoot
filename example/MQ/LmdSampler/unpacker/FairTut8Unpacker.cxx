@@ -10,8 +10,6 @@
 #include "TClonesArray.h"
 
 // Fair headers
-//#include "FairRootManager.h"
-//#include "FairRunOnline.h"
 #include "FairMQLogger.h"
 
 // Land headers
@@ -37,25 +35,8 @@ FairTut8Unpacker::~FairTut8Unpacker()
 // Init: Public method
 Bool_t FairTut8Unpacker::Init()
 {
-    //Register();
     return kTRUE;
 }
-
-// Register: Protected method
-void FairTut8Unpacker::Register()
-{
-    //  LOG(DEBUG) << "Registering" ;
-    /*LOG(INFO) << "FairTut8Unpacker : Registering..." ;
-    FairRootManager* fMan = FairRootManager::Instance();
-    if (!fMan)
-    {
-        return;
-    }
-    fMan->Register("Tut8RawItem", "Tut8", fRawData, kTRUE);*/
-}
-
-
-
 
 // DoUnpack: Public method
 Bool_t FairTut8Unpacker::DoUnpack(Int_t* data, Int_t size)

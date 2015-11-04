@@ -1,0 +1,36 @@
+#!/bin/bash
+
+dataFormat="Bin"
+opt=" ${SCRIPT_ARGS}"
+if [ "$1" = "bin" ]; then
+    echo "attempting to use pure binary data format"
+elif [ "$1" = "boost" ]; then
+    dataFormat="Boost"
+    echo "attempting to use Boost serialization data format" 
+elif [ "$1" = "root" ]; then
+    dataFormat="Root"
+    echo "attempting to use Root TMessage data format"
+else
+    echo "[INFO] Usage : ./startTuto7Processor.sh [ dataFormat [--optkey1 [value1] --optkey2 [value2] ...] ]"
+    echo "[INFO] None or incorrect serialization data formats provided."
+    echo "[INFO] Available format are: bin, boost, root)"
+    echo "[INFO] Binary data format will be used."
+
+    if [ "$#" -gt 0 ]; then
+        opt=" $*"
+    fi
+fi
+
+
+########################## CONFIGFILE = ini/txt config file
+CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/genericMQTutoConfig.cfg"
+
+########################## MQCONFIGFILE = json by default 
+MQCONFIGFILE="@CMAKE_SOURCE_DIR@/example/MQ/GenericDevices/options/genericMQTutoMQConfig-Sampler-Processor-Sink.json"
+
+########################## start PROCESSOR
+PROCESSOR="genericMQTutoProcessor$opt"
+PROCESSOR+=" --id processor1 --config $CONFIGFILE --data-format $dataFormat"
+PROCESSOR+=" --config-json-file $MQCONFIGFILE"
+@CMAKE_BINARY_DIR@/bin/$PROCESSOR
+

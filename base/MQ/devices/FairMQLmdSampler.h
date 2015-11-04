@@ -57,26 +57,22 @@ protected:
 	bool OpenNextFile(const std::string& fileName);
 	
 	void Close();
-
+private:
  	////////////////////// data members
- 	int fCurrentFile;
-	int fNEvent;
-	int fCurrentEvent;
+    int fCurrentFile;
+    int fNEvent;    
+    int fCurrentEvent;
     std::vector<std::string> fFileNames;
     s_evt_channel* fxInputChannel;
     s_ve10_1* fxEvent;
     s_bufhe* fxBuffer;
     int* fxEventData;
-    
     s_ves10_1* fxSubEvent;
-	
-	s_filhe* fxInfoHeader;
-	bool stop;
-	int fMsgCounter;
-
-	typedef std::tuple<short,short,short,short,short> SubEvtKey;
-	std::map<SubEvtKey,std::string > fSubEventChanMap;
-
+    s_filhe* fxInfoHeader;
+    bool stop;
+    int fMsgCounter;
+    typedef std::tuple<short,short,short,short,short> SubEvtKey;
+    std::map<SubEvtKey,std::string > fSubEventChanMap;
 };
 
 #endif  /* !FAIRMQLMDSAMPLER_H */
