@@ -184,7 +184,7 @@ int FairMQLmdSampler::ReadEvent()
 
 
 	// Decode event header
-	bool result = false;
+	//bool result = false;
 	/*bool result = */
 	//Unpack((int*)fxEvent, sizeof(s_ve10_1), -2, -2, -2, -2, -2);
 
@@ -295,10 +295,10 @@ int FairMQLmdSampler::ReadEvent()
 	fNEvent++;
 	fCurrentEvent++;
 
-	if(! result)
+	/*if(! result)
 	{
 		return 2;
-	}
+	}*/
 
 	return 0;
 }
