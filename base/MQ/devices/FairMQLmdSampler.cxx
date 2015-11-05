@@ -204,9 +204,7 @@ int FairMQLmdSampler::ReadEvent()
 		
 		if(!fSubEventChanMap.count(key))
 		{
-			// throw or just print error?
-			// LOG(ERROR)<<"FairMQLmdSampler::ReadEvent: sub-event key not registered";
-			throw std::runtime_error(std::string("FairMQLmdSampler::ReadEvent: sub-event key not registered") );
+			LOG(TRACE)<<"FairMQLmdSampler::ReadEvent: sub-event key not registered";
 		}
 		else
 		{
