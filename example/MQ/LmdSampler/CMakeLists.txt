@@ -14,9 +14,7 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/fairmq/options
     ${CMAKE_SOURCE_DIR}/fairmq/tools
 
-    ${CMAKE_SOURCE_DIR}/base/MQ
     ${CMAKE_SOURCE_DIR}/base/MQ/devices
-    ${CMAKE_SOURCE_DIR}/base/MQ/policies/Sampler
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage
     ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
@@ -24,15 +22,10 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/example/MQ/LmdSampler
     ${CMAKE_SOURCE_DIR}/example/MQ/LmdSampler/devices
     ${CMAKE_SOURCE_DIR}/example/MQ/LmdSampler/unpacker
-
-    ${CMAKE_SOURCE_DIR}/example/Tutorial7/run/helper_functions
     
     ${CMAKE_SOURCE_DIR}/MbsAPI
 
-    ${CMAKE_SOURCE_DIR}/example/Tutorial8
     ${CMAKE_SOURCE_DIR}/example/Tutorial8/src
-    ${CMAKE_SOURCE_DIR}/example/Tutorial8/macro
-    
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -43,8 +36,6 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
 include_directories(${INCLUDE_DIRECTORIES})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-#configure_file( ${CMAKE_SOURCE_DIR}/example/MQ/LmdSampler/macro/startTuto7Sink.sh.in ${CMAKE_BINARY_DIR}/bin/startTuto7Sink.sh )
-#configure_file( ${CMAKE_SOURCE_DIR}/example/MQ/LmdSampler/options/tuto7Config.cfg.in ${CMAKE_BINARY_DIR}/bin/config/tuto7Config.cfg)
 configure_file( ${CMAKE_SOURCE_DIR}/example/MQ/LmdSampler/macro/startLmdMQChain.sh.in ${CMAKE_BINARY_DIR}/bin/startLmdMQChain.sh)
 
 
@@ -100,9 +91,7 @@ ForEach(_file RANGE 0 ${_length})
     List(GET Exe_Source ${_file} _src)
     Set(EXE_NAME ${_name})
     Set(SRCS ${_src})
-    #Set(DEPENDENCIES LmdMQSamplerExample ${UBUNTU_GREATERTHAN_v11_LINKER_FLAG})
     Set(DEPENDENCIES
-        #Base 
         FairMQ 
         BaseMQ 
         boost_thread 

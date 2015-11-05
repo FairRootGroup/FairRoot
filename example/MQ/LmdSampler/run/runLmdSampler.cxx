@@ -14,52 +14,27 @@
 
 // FairRoot - FairMQ
 #include "FairMQLogger.h"
+#include "FairMQProgOptions.h"
+#include "runSimpleMQStateMachine.h"
 
 // FairRoot - Base/MQ
-
 #include "FairMQLmdSampler.h"
 
-// FairRoot - Tutorial 7
-//#include "tuto7SamplerFunctions.h"
 
-#include "TString.h"
-//#include "FairMQLmdSource.h"
-//#include "boost/program_options.hpp"
-#include "FairMQProgOptions.h"
-
- #include "runGenericDevices.h"
 // ////////////////////////////////////////////////////////////////////////
-
-
-
-
 int main(int argc, char** argv)
 {
     try
     {
         namespace po = boost::program_options;
         FairMQProgOptions config;
-
-        std::string filename;
-        /*TString dir = getenv("VMCWORKDIR");
-        std::string defaultfilename(dir.Data());
-        defaultfilename+="/Tutorial8/data/sample_data_2.lmd";*/
-
+        
         // sampler-specific commandline configuration
+        std::string filename;
         po::options_description sampler_options("Sampler options");
         sampler_options.add_options()
             ("input-file-name", po::value<std::string>(&filename), "Path to the input file")
         ;
-
-        /*
-        short type = 94;
-        short subType = 9400;
-        short procId = 12;
-        short subCrate = 0;
-        short control = 3;
-        std::string chanName("ToTuto8Unpacker");
-        */
-
 
         short type;
         short subType;
@@ -67,7 +42,7 @@ int main(int argc, char** argv)
         short subCrate;
         short control;
         std::string chanName;
-        // INI-FILE CONFIGURATION
+        // INI-FILE CONFIGURATION (in FairRoot/example/MQ/LmdSampler/options/LmdHeaderConfig.INI)
         po::options_description lmd_header_def("Lmd-header definition");
         lmd_header_def.add_options()
             ("LmdHeader.Tutorial8.chanName",    po::value<std::string>(&chanName),  "MQ-channel name for this sub-event")
@@ -81,7 +56,8 @@ int main(int argc, char** argv)
         config.AddToCmdLineOptions(sampler_options);
         config.AddToCfgFileOptions(lmd_header_def);
 
-        if (config.ParseAll(argc, argv, true))
+        // parse command line and INI file arguments
+        if (config.ParseAll(argc, argv))
         {
             return 1;
         }
@@ -105,16 +81,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
-
-
-
-
-
-
-
-
-
-///////////
-
-        

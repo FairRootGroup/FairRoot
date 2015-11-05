@@ -45,6 +45,7 @@ Set(BaseMQHDRFiles
   baseMQtools/baseMQtools.h
   devices/FairMQSampler.h
   devices/FairMQSampler.tpl
+  devices/FairMQUnpacker.h
   policies/Sampler/SimpleTreeReader.h
   policies/Sampler/FairSourceMQInterface.h
   policies/Sampler/FairMQFileSource.h
