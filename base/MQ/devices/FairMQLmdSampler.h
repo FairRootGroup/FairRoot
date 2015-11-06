@@ -38,27 +38,27 @@ namespace fs = boost::filesystem;
 
 class FairMQLmdSampler : public FairMQDevice
 {
-	typedef fs::path 		path;
+    typedef fs::path         path;
 
 public:
 
-	FairMQLmdSampler();
-	virtual ~FairMQLmdSampler();
+    FairMQLmdSampler();
+    virtual ~FairMQLmdSampler();
 
- 	void AddSubEvtKey(short type, short subType, short procid, short subCrate, short control, const std::string& channelName);
- 	void AddDir(const std::string& dir);
-	void AddFile(const std::string& fileName);
-	
+    void AddSubEvtKey(short type, short subType, short procid, short subCrate, short control, const std::string& channelName);
+    void AddDir(const std::string& dir);
+    void AddFile(const std::string& fileName);
+
 protected:
 
-	void InitTask();
-	void Run();
-	int ReadEvent();
-	bool OpenNextFile(const std::string& fileName);
-	
-	void Close();
+    void InitTask();
+    void Run();
+    int ReadEvent();
+    bool OpenNextFile(const std::string& fileName);
+    
+    void Close();
 private:
- 	////////////////////// data members
+     ////////////////////// data members
     int fCurrentFile;
     int fNEvent;    
     int fCurrentEvent;
