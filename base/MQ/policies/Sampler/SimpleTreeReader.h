@@ -87,42 +87,13 @@ public:
     
     
     
-    /// ///////////////////////////////////////////////////////////////////////////////////////    
-    // simple example of the zmq multipart 
-    // for each available socket of the output channel, it will group N consecutive messages (via zmq multipart) before sending them
-    // the GetSocketNumber() and SendPart(int j) are callback functions of the host (derived) class GenericSampler<sampler,output>
-    template<int N>
-    void MultiPartTask()
+
+    void SendMultiPart()
     {
-        for(int j(0); j<GetSocketNumber(); j++)
-        {
-            SendMultiPart<N>(j);
-        }
-        
+        SendHeader(0);// callback that does the zmq multipart AND increment the current index (Event number) in generic sampler
+
     }
     
-    /// ///////////////////////////////////////////////////////////////////////////////////////
-    //template<int N, typename = std::enable_if<N!=0> >
-    template<int N>
-    void SendMultiPart(int socketID)//, bool recursive=false)
-    {
-        //bool recursive=true;
-        fIndex=GetCurrentIndex();
-        if(fIndex+N<GetNumberOfEvent())
-        {
-            for(int i(0); i<N; i++)
-                SendPart(socketID);// callback that does the zmq multipart AND increment the current index (Event number) in generic sampler
-        }
-        //else
-        //{
-        //    if(recursive)
-        //        SendMultiPart<N-1>(socketID);// in case we want to group the remaining messages
-        //}
-    }
-    
-    // TODO : finish the recursive template grouping 
-    //template<int N, typename = std::enable_if<N==0> >
-    //void SendMultiPart(int socketID,int=0) {}
     
     
     /// ///////////////////////////////////////////////////////////////////////////////////////
@@ -192,9 +163,9 @@ public:
     
     /// ///////////////////////////////////////////////////////////////////////////////////////
     // provides a callback to the Sampler.
-    void BindSendPart(std::function<void(int)> callback)
+    void BindSendHeader(std::function<void(int)> callback)
     {
-        SendPart = callback;
+        SendHeader = callback;
     }
     
     /// ///////////////////////////////////////////////////////////////////////////////////////
@@ -211,7 +182,7 @@ public:
     
 private:
     /// ///////////////////////////////////////////////////////////////////////////////////////
-    std::function<void(int)> SendPart;    // function pointer for the Sampler callback.
+    std::function<void(int)> SendHeader;  // function pointer for the Sampler callback.
     std::function<int()> GetSocketNumber; // function pointer for the Sampler callback.
     std::function<int()> GetCurrentIndex; // function pointer for the Sampler callback.
     /// ///////////////////////////////////////////////////////////////////////////////////////
