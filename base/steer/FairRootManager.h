@@ -207,6 +207,7 @@ class FairRootManager : public TObject
     
     /** These methods have been moved to the FairFileSource */
     void   SetSource(FairSource* tempSource) { fSource = tempSource; }    
+    FairSource* GetSource() { return fSource;}
     Bool_t InitSource();
     
     void                SetListOfFolders(TObjArray* ta){ fListFolder=ta; }
