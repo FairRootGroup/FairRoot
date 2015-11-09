@@ -36,7 +36,7 @@ CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/genericMQTutoConfig.cfg"
 ########################## start SAMPLER
 SAMPLER="genericMQTutoFairTestDetectorSampler"
 SAMPLER+=" --id sampler1 --config $CONFIGFILE --data-format $dataFormat"
-SAMPLER+=" --input.file.name @CMAKE_SOURCE_DIR@/example/Tutorial3/macro/data/testdigi_$mcEngine.root"
+SAMPLER+=" --input.file.name @CMAKE_SOURCE_DIR@/examples/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --input.file.tree cbmsim --input.file.branch FairTestDetectorDigi"
 xterm +aw -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
@@ -73,7 +73,7 @@ xterm +aw -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
 ########################## start FILESINK
 FILESINK="genericMQTutoFairTestDetectorFileSink"
 FILESINK+=" --id sink1 --config $CONFIGFILE --data-format $dataFormat"
-FILESINK+=" --output.file.name @CMAKE_SOURCE_DIR@/example/MQ/GenericDevices/data_io/GenericMQTutoOutputFileFairTestDetector$dataFormat.root"
+FILESINK+=" --output.file.name @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/GenericMQTutoOutputFileFairTestDetector$dataFormat.root"
 FILESINK+=" --output.file.tree cbmsimSinkTree"
 FILESINK+=" --output.file.branch FairTestDetectorHit"
 FILESINK+=" --hit-classname FairTestDetectorHit"

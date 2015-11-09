@@ -26,7 +26,7 @@ fi
 CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/genericMQTutoConfig.cfg"
 
 ########################## MQCONFIGFILE = json by default 
-MQCONFIGFILE="@CMAKE_SOURCE_DIR@/example/MQ/GenericDevices/options/genericMQTutoMQConfig-Sampler-Processor-Sink.json"
+MQCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/options/genericMQTutoMQConfig-Sampler-Processor-Sink.json"
 
 ########################## start PROCESSOR
 PROCESSOR="genericMQTutoProcessor$opt"

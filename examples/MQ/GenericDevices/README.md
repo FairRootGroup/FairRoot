@@ -5,7 +5,7 @@
 
 ### Generate input file
 Start the script startGenericMQTutoGenerateData.sh (in FairRoot/build/bin/) to generate and store random data. 
-A file GenericMQTutoInputFile.root will be produce in the directory FairRoot/example/MQ/GenericDevices/data_io.
+A file GenericMQTutoInputFile.root will be produce in the directory FairRoot/examples/MQ/GenericDevices/data_io.
 Use the help command line : 
 ```bash
 ./startGenericMQTutoGenerateData.sh --help 

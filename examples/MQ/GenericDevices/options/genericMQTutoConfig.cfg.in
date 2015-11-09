@@ -20,12 +20,12 @@
 
 
 #-------------------
-config-json-file =@CMAKE_SOURCE_DIR@/example/MQ/GenericDevices/options/genericMQTutoMQConfig.json
+config-json-file =@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/options/genericMQTutoMQConfig.json
 
 #-------------------
 [input.file]
 
-name = @CMAKE_SOURCE_DIR@/example/MQ/GenericDevices/data_io/GenericMQTutoInputFile.root
+name = @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/GenericMQTutoInputFile.root
 tree = cbmsim
 branch = MyDigi
 
@@ -33,7 +33,7 @@ branch = MyDigi
 #-------------------
 [output.file]
 
-name = @CMAKE_SOURCE_DIR@/example/MQ/GenericDevices/data_io/GenericMQTutoDefaultOutputFile.root"
+name = @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/GenericMQTutoDefaultOutputFile.root"
 tree = cbmout
 branch = MyHit
 option = RECREATE

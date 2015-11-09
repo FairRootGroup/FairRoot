@@ -42,7 +42,7 @@ int main(int argc, char** argv)
         short subCrate;
         short control;
         std::string chanName;
-        // INI-FILE CONFIGURATION (in FairRoot/example/MQ/LmdSampler/options/LmdHeaderConfig.INI)
+        // INI-FILE CONFIGURATION (in FairRoot/examples/MQ/LmdSampler/options/LmdHeaderConfig.INI)
         po::options_description lmd_header_def("Lmd-header definition");
         lmd_header_def.add_options()
             ("LmdHeader.Tutorial8.chanName",    po::value<std::string>(&chanName),  "MQ-channel name for this sub-event")

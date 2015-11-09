@@ -61,7 +61,7 @@ xterm +aw -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
 ########################## start FILESINK
 FILESINK="genericMQTutoSink"
 FILESINK+=" --id sink1 --config $CONFIGFILE --data-format $dataFormat"
-FILESINK+=" --output.file.name @CMAKE_SOURCE_DIR@/example/MQ/GenericDevices/data_io/GenericMQTutoOutputFile$dataFormat.root"
+FILESINK+=" --output.file.name @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/GenericMQTutoOutputFile$dataFormat.root"
 xterm +aw -geometry 120x27+0+500 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
 
 
