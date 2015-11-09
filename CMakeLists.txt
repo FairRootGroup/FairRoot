@@ -37,7 +37,7 @@ project(FAIRROOT)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
 
-SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/example)
+SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 
 # Check if the compiler support specific C++11 features
 # Up to now this is only a check since the code does not use
@@ -220,7 +220,7 @@ If(GEANT3_FOUND)
  add_subdirectory (eventdisplay)
 EndIf ()
 
-add_subdirectory (example)
+add_subdirectory (examples)
 add_subdirectory (MbsAPI)
 add_subdirectory (datamatch)
 
@@ -261,8 +261,8 @@ If(BUILD_UNITTESTS)
   EndIf(GTEST_FOUND)
 EndIf(BUILD_UNITTESTS)
 
-Install(DIRECTORY example/gconfig example/geometry
-        DESTINATION share/fairbase/example
+Install(DIRECTORY examples/gconfig examples/geometry
+        DESTINATION share/fairbase/examples
         PATTERN ".svn" EXCLUDE)
 
 Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
@@ -313,7 +313,7 @@ if(NOT FAIRROOT_MINIMAL)
   WRITE_CONFIG_FILE(config.sh)
   WRITE_CONFIG_FILE(config.csh)
 
-  SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase/example)
+  SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples)
   SET(ROOT_INCLUDE_PATH ${CMAKE_INSTALL_PREFIX}/include)
   WRITE_CONFIG_FILE(config.sh_install)
   WRITE_CONFIG_FILE(config.csh_install)

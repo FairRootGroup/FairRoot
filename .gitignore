@@ -31,15 +31,13 @@ install_manifest.txt
 # build directory & data directory
 
 build/
-example/Tutorial3/macro/data/*
-!example/Tutorial3/macro/data/dummy.txt
-example/Tutorial7/macro/datasource/*
-!example/Tutorial7/macro/datasource/README.md
+examples/Tutorial3/macro/data/*
+!examples/Tutorial3/macro/data/dummy.txt
+examples/MQ/GenericDevices/data_io/*
+!examples/MQ/GenericDevices/data_io/README.md
 core_dump*
 gphysi.dat
 FairRunInfo_*
 html/
-example/Tutorial3/data/FairTestDetectorPayload.pb.cc
-example/Tutorial3/data/FairTestDetectorPayload.pb.h
-example/Tutorial6/streams/FairTestDetectorPayload.pb.cc
-example/Tutorial6/streams/FairTestDetectorPayload.pb.h
+examples/Tutorial3/data/FairTestDetectorPayload.pb.cc
+examples/Tutorial3/data/FairTestDetectorPayload.pb.h
