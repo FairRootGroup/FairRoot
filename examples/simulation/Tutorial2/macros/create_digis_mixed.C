@@ -25,13 +25,15 @@ void create_digis_mixed(){
 
     FairRunAna *fRun= new FairRunAna();
     
-    //** Set BG file */
-    fRun->SetBackgroundFile(BGinFile);
-    //** Set first signal file */
-    fRun->SetSignalFile(SGinFile,1);
-    //** Set second signal file */
-    fRun->SetSignalFile(SG1inFile,2);
+    //** Create a mixed source and set BG file *//
+    FairMixedSource *fMixedSource = new FairMixedSource(BGinFile.Data(),0);
 
+    //** Set first signal file */
+    fMixedSource->AddSignalFile(SGinFile,1);
+    //** Set second signal file */
+    fMixedSource->AddSignalFile(SG1inFile,2);
+
+    fRun->SetSource(fMixedSource);
     
     fRun->SetOutputFile(outFile);
 
