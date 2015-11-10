@@ -1,0 +1,19 @@
+#Examples
+
+##Tutorial1:
+
+Implement a simple detector using the old ASCII interface to describe the geometry.
+
+##Tutorial2
+
+Reading and writing paramters
+
+##Tutorial4
+
+ROOT geometry as input for detector description
+
+
+##rutherford
+
+simple simulation of the Rutherford experiment, with event display.
+
