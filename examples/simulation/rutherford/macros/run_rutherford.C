@@ -9,12 +9,12 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant3")
 {
   
   TString dir = gSystem->Getenv("VMCWORKDIR");
-  TString tutdir = dir + "/rutherford/macros";
+  TString tutdir = dir + "/simulation/rutherford/macros";
 
-  TString tut_geomdir = dir + "/geometry";
+  TString tut_geomdir = dir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_configdir = dir + "/gconfig";
+  TString tut_configdir = dir + "/common/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   TString outDir  = "data";

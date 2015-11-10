@@ -13,6 +13,9 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
+  TString tut_geomdir = dir + "/common/geometry";
+  gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
+  
   Double_t momentum = 2.;
 
   Double_t theta    = 2.;
