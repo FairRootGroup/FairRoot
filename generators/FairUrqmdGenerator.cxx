@@ -56,6 +56,24 @@ FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName)
   ReadConversionTable();
 }
 // ------------------------------------------------------------------------
+FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName,  const char* conversion_table)
+:FairGenerator(),
+fInputFile(NULL),
+fParticleTable(),
+fFileName(fileName)
+{
+    //  fFileName = fileName;
+    LOG(INFO) << "FairUrqmdGenerator: Opening input file "
+    << fileName << FairLogger::endl;
+    fInputFile = fopen(fFileName, "r");
+    if ( ! fInputFile ) {
+        LOG(FATAL) << "Cannot open input file."
+	       << FairLogger::endl;
+    }
+    ReadConversionTable(conversion_table);
+}
+// ------------------------------------------------------------------------
+
 
 
 
@@ -315,13 +333,20 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
 // ------------------------------------------------------------------------
 
 // -----   Private method ReadConverisonTable   ---------------------------
-void FairUrqmdGenerator::ReadConversionTable()
+void FairUrqmdGenerator::ReadConversionTable(TString conversion_table)
 {
-
+    
   TString work      = getenv("VMCWORKDIR");
-  TString fileName  = work + "/input/urqmd_pdg.dat";
-  std::ifstream* pdgconv = new std::ifstream(fileName.Data());
+  TString fileName;
 
+  if (conversion_table.IsNull()){
+    fileName  = work + "/input/urqmd_pdg.dat";
+  }else{
+    fileName= conversion_table.Data();
+  }
+      
+  std::ifstream* pdgconv = new std::ifstream(fileName.Data());
+  
   if (!pdgconv->good()) {
     LOG(FATAL) << "Could not open Urqmd->PDG input file " 
 	       << fileName << FairLogger::endl;

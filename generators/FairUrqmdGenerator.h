@@ -48,7 +48,13 @@ class FairUrqmdGenerator : public FairGenerator
      * @param fileName The input file name
      **/
     FairUrqmdGenerator(const char* fileName);
+   
+    /** Standard constructor.
+     * @param fileName The input file name
+     * @param conversion_table name of conversion table file (from Urqmd->PDG) should use the full path to the file
+     **/
 
+    FairUrqmdGenerator(const char* fileName,  const char* conversion_table);
 
     /** Destructor. **/
     ~FairUrqmdGenerator();
@@ -75,7 +81,7 @@ class FairUrqmdGenerator : public FairGenerator
     /** Private method ReadConversionTable. Reads the conversion table
         from UrQMD particle code to PDG particle code and fills the
         conversion map. Is called from the constructor. **/
-    void ReadConversionTable();
+    void ReadConversionTable(TString conversion_table="");
 
     /** Check return value from fscanf call **/
     void CheckReturnValue(Int_t retval);

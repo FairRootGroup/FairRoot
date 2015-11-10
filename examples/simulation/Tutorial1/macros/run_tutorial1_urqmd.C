@@ -13,12 +13,14 @@ void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
 
   TString inFile = dir + "/common/input/urqmd.ftn14";
 
+  TString Urqmd_Conversion_table= dir + "/common/input/urqmd_pdg.dat";
+    
   TString tut_geomdir = dir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
   TString tut_configdir = dir + "/common/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
-
+    
 
   TString outDir = "./"; 
 
@@ -26,6 +28,7 @@ void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
   TString outFile = Form("%s/tutorial1_urqmd_%s.mc.root",
                          outDir.Data(),
 			 mcEngine.Data());
+    
   
   // Parameter file name
   TString parFile = Form("%s/tutorial1_urqmd_%s.params.root",
@@ -69,7 +72,7 @@ void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
 
-  FairUrqmdGenerator* urqmdGen = new FairUrqmdGenerator(inFile.Data());
+  FairUrqmdGenerator* urqmdGen = new FairUrqmdGenerator(inFile.Data(),Urqmd_Conversion_table.Data());
   primGen->AddGenerator(urqmdGen);
 
   run->SetGenerator(primGen);
