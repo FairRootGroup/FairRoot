@@ -9,14 +9,14 @@ void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
 {
   
   TString dir = getenv("VMCWORKDIR");
-  TString tutdir = dir + "/Tutorial1";
+  TString tutdir = dir + "/simulation//Tutorial1";
 
-  TString inFile = dir + "/input/urqmd.ftn14";
+  TString inFile = dir + "/common/input/urqmd.ftn14";
 
-  TString tut_geomdir = dir + "/geometry";
+  TString tut_geomdir = dir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_configdir = dir + "/gconfig";
+  TString tut_configdir = dir + "/common/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
 

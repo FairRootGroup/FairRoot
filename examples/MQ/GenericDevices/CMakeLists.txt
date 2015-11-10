@@ -19,8 +19,8 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage
     ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
-    ${CMAKE_SOURCE_DIR}/examples/Tutorial3/data
-    ${CMAKE_SOURCE_DIR}/examples/Tutorial3/MQ/data
+    ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/data
+    ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/data
     ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices
     ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/data_generator
     ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/data_struct

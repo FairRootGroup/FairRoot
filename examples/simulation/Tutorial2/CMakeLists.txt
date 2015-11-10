@@ -9,6 +9,6 @@ Add_Subdirectory(src)
 Add_Subdirectory(macros)
 
 Install(DIRECTORY parameters
-        DESTINATION share/fairbase/examples/Tutorial2
+        DESTINATION share/fairbase/examples/simulation/Tutorial2
         PATTERN ".svn" EXCLUDE
        )

@@ -6,7 +6,7 @@ void create_digis_mixed(){
     gDebug=0;
 
     TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/Tutorial2";
+    TString tutdir = dir + "/simulation/Tutorial2";
 
     TString BGinFile = "./tutorial2_pions.mc_p2.000_t0_n130.bg.root";
     TString SGinFile = "./tutorial2_pions.mc_p2.000_t0_n10.sg.root";
@@ -62,7 +62,7 @@ void create_digis_mixed(){
  
     FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
     TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
-    tutDetDigiFile += "/Tutorial2/parameters/tutdet.digi.par";
+    tutDetDigiFile += "/simulation/Tutorial2/parameters/tutdet.digi.par";
     parInput2->open(tutDetDigiFile.Data(),"in");
 
     rtdb->setFirstInput(io1);

@@ -11,7 +11,7 @@
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/examples/mcstack
+  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})
@@ -19,8 +19,6 @@ Include_Directories(SYSTEM  ${SYSTEM_INCLUDE_DIRECTORIES})
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
-#  ${CMAKE_SOURCE_DIR}/base
-#  ${CMAKE_SOURCE_DIR}/examples/mcstack
 )
  
 Link_Directories(${LINK_DIRECTORIES})

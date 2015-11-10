@@ -25,7 +25,7 @@ set(INCLUDE_DIRECTORIES
     
     ${CMAKE_SOURCE_DIR}/MbsAPI
 
-    ${CMAKE_SOURCE_DIR}/examples/Tutorial8/src
+    ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial8/src
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES

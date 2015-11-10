@@ -261,8 +261,8 @@ If(BUILD_UNITTESTS)
   EndIf(GTEST_FOUND)
 EndIf(BUILD_UNITTESTS)
 
-Install(DIRECTORY examples/gconfig examples/geometry
-        DESTINATION share/fairbase/examples
+Install(DIRECTORY examples/common/gconfig examples/common/geometry
+        DESTINATION share/fairbase/examples/common
         PATTERN ".svn" EXCLUDE)
 
 Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install

@@ -11,7 +11,7 @@
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/examples/passive
+  ${CMAKE_SOURCE_DIR}/examples/common/passive
 )
 
 Include_Directories( ${INCLUDE_DIRECTORIES})

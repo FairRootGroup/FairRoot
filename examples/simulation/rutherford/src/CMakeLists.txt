@@ -11,8 +11,8 @@
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/examples/rutherford/src
-  ${CMAKE_SOURCE_DIR}/examples/mcstack
+  ${CMAKE_SOURCE_DIR}/examples/simulation/rutherford/src
+  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})

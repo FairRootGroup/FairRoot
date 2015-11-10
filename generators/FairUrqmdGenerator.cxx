@@ -328,6 +328,7 @@ void FairUrqmdGenerator::ReadConversionTable()
   }
 
   Int_t index = 0;
+   
   Int_t pdgId = 0;
 
   while ( ! pdgconv->eof() ) {

@@ -9,12 +9,12 @@ void run_tutorial1(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 {
   
   TString dir = getenv("VMCWORKDIR");
-  TString tutdir = dir + "/Tutorial1";
+  TString tutdir = dir + "/simulation/Tutorial1";
 
-  TString tut_geomdir = dir + "/geometry";
+  TString tut_geomdir = dir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_configdir = dir + "/gconfig";
+  TString tut_configdir = dir + "/common/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   TString partName[] = {"pions","eplus","proton"};

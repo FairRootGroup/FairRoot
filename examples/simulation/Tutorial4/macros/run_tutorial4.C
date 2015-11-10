@@ -10,10 +10,7 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   
   TString dir = getenv("VMCWORKDIR");
 
-//  TString tut_geomdir = dir + "/geometry";
-//  gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
-
-  TString tut_configdir = dir + "/Tutorial4/gconfig";
+  TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   Double_t momentum = 2.;
@@ -31,7 +28,7 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   
   TList *parFileList = new TList();
 
-  TString paramDir = dir + "/Tutorial4/parameters/";
+  TString paramDir = dir + "/simulation/Tutorial4/parameters/";
   TString paramFile = paramDir + "example.par";
 
   TObjString tutDetDigiFile;

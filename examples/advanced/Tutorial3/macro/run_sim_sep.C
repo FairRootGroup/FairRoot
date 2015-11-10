@@ -10,7 +10,7 @@ void run_sim_sep(Int_t fileId, Int_t nEvents=1000, TString mcEngine="TGeant3")
   TString dir = getenv("VMCWORKDIR");
   TString tutdir = dir + "/";
 
-  TString tut_geomdir = tutdir + "/geometry";
+  TString tut_geomdir = tutdir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
   TString tut_configdir = tutdir + "/gconfig";

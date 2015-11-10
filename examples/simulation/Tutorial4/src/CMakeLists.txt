@@ -11,13 +11,13 @@
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/examples/Tutorial4/src
-  ${CMAKE_SOURCE_DIR}/examples/Tutorial4/src/mc
-  ${CMAKE_SOURCE_DIR}/examples/Tutorial4/src/param
-  ${CMAKE_SOURCE_DIR}/examples/Tutorial4/src/data
-  ${CMAKE_SOURCE_DIR}/examples/Tutorial4/src/reco
-  ${CMAKE_SOURCE_DIR}/examples/Tutorial4/src/tools
-  ${CMAKE_SOURCE_DIR}/examples/mcstack
+  ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src
+  ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src/mc
+  ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src/param
+  ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src/data
+  ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src/reco
+  ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src/tools
+  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})

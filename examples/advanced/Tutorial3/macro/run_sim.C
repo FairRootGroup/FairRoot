@@ -5,7 +5,7 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_sim(Int_t nEvents=10000, TString mcEngine="TGeant3")
+void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
 {
   TStopwatch timer;
   timer.Start();
@@ -15,10 +15,10 @@ void run_sim(Int_t nEvents=10000, TString mcEngine="TGeant3")
   TString dir = getenv("VMCWORKDIR");
   TString tutdir = dir + "/";
 
-  TString tut_geomdir = tutdir + "/geometry";
+  TString tut_geomdir = tutdir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_configdir = tutdir + "/gconfig";
+  TString tut_configdir = tutdir + "/common/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   // create Instance of Run Manager class

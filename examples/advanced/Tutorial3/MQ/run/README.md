@@ -85,8 +85,8 @@ fi
 
 SAMPLER="testDetectorSampler$dataFormat"
 SAMPLER+=" --id 101"
-SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/Tutorial3/macro/data/testdigi.root"
-SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/Tutorial3/macro/data/testparams.root"
+SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testdigi.root"
+SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams.root"
 SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5565"
 xterm -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 

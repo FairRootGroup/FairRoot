@@ -2,12 +2,12 @@ void run_bg(Int_t nEvents = 130)
 {
   
   TString dir = getenv("VMCWORKDIR");
-  TString tutdir = dir + "/Tutorial2";
+  TString tutdir = dir + "/simulation/Tutorial2";
 
-  TString tut_geomdir = dir + "/geometry";
+  TString tut_geomdir = dir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_configdir = dir + "/gconfig";
+  TString tut_configdir = dir + "/common/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   TString partName[] = {"pions","eplus","proton"};

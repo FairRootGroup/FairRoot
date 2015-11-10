@@ -5,31 +5,31 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/Tutorial1/macros/run_tutorial1.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/Tutorial1/macros/run_tutorial1_mesh.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/Tutorial1/macros/run_tutorial1_urqmd.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial1/macros/run_tutorial1.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial1/macros/run_tutorial1_mesh.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial1/macros/run_tutorial1_urqmd.C)
 
 Set(MaxTestTime 60)
 
 ForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
   Add_Test(run_tutorial1_${_mcEngine} 
-           ${CMAKE_BINARY_DIR}/examples/Tutorial1/macros/run_tutorial1.sh 10 \"${_mcEngine}\")
+           ${CMAKE_BINARY_DIR}/examples/simulation/Tutorial1/macros/run_tutorial1.sh 10 \"${_mcEngine}\")
   Set_Tests_Properties(run_tutorial1_${_mcEngine} PROPERTIES TIMEOUT ${MaxTestTime})
   Set_Tests_Properties(run_tutorial1_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
   Add_Test(run_tutorial1_mesh_${_mcEngine} 
-           ${CMAKE_BINARY_DIR}/examples/Tutorial1/macros/run_tutorial1_mesh.sh 10 \"${_mcEngine}\")
+           ${CMAKE_BINARY_DIR}/examples/simulation/Tutorial1/macros/run_tutorial1_mesh.sh 10 \"${_mcEngine}\")
   Set_Tests_Properties(run_tutorial1_mesh_${_mcEngine} PROPERTIES TIMEOUT ${MaxTestTime})
   Set_Tests_Properties(run_tutorial1_mesh_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
   Add_Test(run_tutorial1_urqmd_${_mcEngine} 
-           ${CMAKE_BINARY_DIR}/examples/Tutorial1/macros/run_tutorial1_urqmd.sh 2 \"${_mcEngine}\")
+           ${CMAKE_BINARY_DIR}/examples/simulation/Tutorial1/macros/run_tutorial1_urqmd.sh 2 \"${_mcEngine}\")
   Set_Tests_Properties(run_tutorial1_urqmd_${_mcEngine} PROPERTIES TIMEOUT ${MaxTestTime})
   Set_Tests_Properties(run_tutorial1_urqmd_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 EndForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
 
 Install(FILES run_tutorial1.C run_tutorial1_urqmd.C run_tutorial1_mesh.C
-        DESTINATION share/fairbase/examples/Tutorial1
+        DESTINATION share/fairbase/examples/simulation/Tutorial1
        )
 
 

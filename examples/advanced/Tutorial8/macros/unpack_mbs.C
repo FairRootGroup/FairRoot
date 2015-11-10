@@ -6,7 +6,7 @@ void unpack_mbs()
 
     // Create source with unpackers ----------------------------------------------
     TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/Tutorial8";
+    TString tutdir = dir + "/advanced/Tutorial8";
 
     FairLmdSource* source = new FairLmdSource();
     source->AddFile(tutdir + "/data/sample_data_2.lmd");
