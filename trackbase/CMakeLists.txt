@@ -21,7 +21,6 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/source
   ${CMAKE_SOURCE_DIR}/field 
   ${CMAKE_SOURCE_DIR}/passive
-  ${CMAKE_SOURCE_DIR}/genfit
   ${CMAKE_SOURCE_DIR}/trackbase
 )
 
