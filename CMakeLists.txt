@@ -105,9 +105,10 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # REQUIRED means that cmake will stop if this packages are not found
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
-find_package(CUDA)
+
 find_package(ROOT 5.32.00 REQUIRED)
 find_package(Pythia6)
+
 if(FAIRROOT_MODULAR_BUILD)
   # Geant3, Geant4 installed via cmake
   find_package(Geant3)
@@ -124,13 +125,18 @@ else(FAIRROOT_MODULAR_BUILD)
   find_package(GEANT4VMC)
   find_package(CLHEP)
 endif(FAIRROOT_MODULAR_BUILD)
+
+find_package(CUDA)
 find_package(IWYU)
 find_package(ZeroMQ)
 find_package(Protobuf)
-find_package(MYSQL)
-find_package(PGSQL)
-find_package(SQLITE)
 find_package(DDS)
+
+If(WITH_DBASE)
+  find_package(MYSQL)
+  find_package(PGSQL)
+  find_package(SQLITE)
+EndIf(WITH_DBASE)
 
 if(USE_NANOMSG)
   find_package(nanomsg)
@@ -220,7 +226,6 @@ If(GEANT3_FOUND)
  add_subdirectory (eventdisplay)
 EndIf ()
 
-add_subdirectory (examples)
 add_subdirectory (MbsAPI)
 add_subdirectory (datamatch)
 
@@ -237,6 +242,9 @@ if(BUILD_DOXYGEN)
   MESSAGE(STATUS "*** Building the Doxygen documentaion ***")
   ADD_SUBDIRECTORY(doxygen)
 endif(BUILD_DOXYGEN)
+
+
+add_subdirectory (examples)
 
 if(IWYU_FOUND)
 
