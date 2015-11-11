@@ -56,6 +56,13 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/run/scripts/start
 # options to be parsed
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/options/genericMQTutoConfig.cfg.in ${CMAKE_BINARY_DIR}/bin/config/genericMQTutoConfig.cfg)
 
+# scripts for CTest
+
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenericMQTutoTestBin.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestBin.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenericMQTutoTestBoost.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestBoost.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenericMQTutoTestRoot.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestRoot.sh )
+
+
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
@@ -107,6 +114,7 @@ Set(Exe_Names
     genericMQTutoProcessor
     genericMQTutoSink
 
+    genericMQTutoSamplerTest
     genericMQTutoProcessorTest
     genericMQTutoSinkTest
 )
@@ -123,6 +131,7 @@ set(Exe_Source
     run/runProcessorT7.cxx
     run/runFileSinkT7.cxx
 
+    test/runSamplerT7Test.cxx
     test/runProcessorT7Test.cxx
     test/runFileSinkT7Test.cxx
 )
@@ -191,3 +200,35 @@ Set(EXE_NAME genericMQTutoGenerateData)
 Set(SRCS data_generator/runGenerateData.cxx)
 Set(DEPENDENCIES GenericMQTuto RooFitCore RooFit Foam )
 GENERATE_EXECUTABLE()
+
+
+
+
+add_test(NAME run_GenericMQ_Tuto_Bin_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestBin.sh)
+set_tests_properties(run_GenericMQ_Tuto_Bin_Test_ALL PROPERTIES TIMEOUT "30")
+set_tests_properties(run_GenericMQ_Tuto_Bin_Test_ALL PROPERTIES 
+    PASS_REGULAR_EXPRESSION "Data generation successful"
+    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
+    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
+    PASS_REGULAR_EXPRESSION "Received 100 messages!"
+    )
+
+add_test(NAME run_GenericMQ_Tuto_Boost_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestBoost.sh)
+set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES TIMEOUT "30")
+set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES 
+    PASS_REGULAR_EXPRESSION "Data generation successful"
+    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
+    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
+    PASS_REGULAR_EXPRESSION "Received 100 messages!"
+    )
+
+add_test(NAME run_GenericMQ_Tuto_Root_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestRoot.sh)
+set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES TIMEOUT "30")
+set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES 
+    PASS_REGULAR_EXPRESSION "Data generation successful"
+    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
+    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
+    PASS_REGULAR_EXPRESSION "Received 100 messages!"
+    )
+
+

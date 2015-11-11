@@ -138,7 +138,7 @@ int main(int argc, char** argv)
         }
         delete Model;
         delete rootman;
-        
+        LOG(INFO) <<"Data generation successful";
         //----------------------------------------------
         // option : plot generated data
         if(plotdata)

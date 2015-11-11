@@ -1,0 +1,39 @@
+#!/bin/bash
+
+trap 'kill -TERM $GENERATE_PID; kill -TERM $SAMPLER_PID; kill -TERM $PROCESSOR1_PID; kill -TERM $FILESINK_PID; wait $GENERATE_PID; wait $SAMPLER_PID; wait $PROCESSOR1_PID; wait $FILESINK_PID;' TERM
+
+########################## start dummy data generator
+GENERATE="genericMQTutoGenerateData"
+GENERATE+=" --output-file @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/GenericMQTutoInputFile.root"
+GENERATE+=" --tree cbmsim"
+@CMAKE_BINARY_DIR@/bin/$GENERATE &
+GENERATE_PID=$!
+wait $GENERATE_PID
+
+########################## some def
+dataFormat="Root"
+CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/genericMQTutoConfig.cfg"
+JSONFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/test/genericMQTutoMQConfigTest.json"
+VERBOSITY="INFO"
+########################## start SAMPLER
+SAMPLER="genericMQTutoSamplerTest"
+SAMPLER+=" --id sampler1  -c $CONFIGFILE --config-json-file $JSONFILE --verbose $VERBOSITY --data-format $dataFormat"
+@CMAKE_BINARY_DIR@/bin/$SAMPLER &
+SAMPLER_PID=$!
+
+########################## start PROCESSOR
+PROCESSOR1="genericMQTutoProcessorTest"
+PROCESSOR1+=" --id processor1 --config $CONFIGFILE --config-json-file $JSONFILE --verbose $VERBOSITY --data-format $dataFormat"
+@CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+PROCESSOR1_PID=$!
+
+########################## start FILESINK
+FILESINK="genericMQTutoSinkTest"
+FILESINK+=" --id sink1 --config $CONFIGFILE --config-json-file $JSONFILE --verbose $VERBOSITY --data-format $dataFormat"
+FILESINK+=" --output.file.name @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/GenericMQTutoOutputFile$dataFormat.root"
+@CMAKE_BINARY_DIR@/bin/$FILESINK &
+FILESINK_PID=$!
+
+wait $SAMPLER_PID
+wait $PROCESSOR1_PID
+wait $FILESINK_PID

@@ -72,7 +72,7 @@ inline void runSink(FairMQProgOptions& config)
     sink.SetFileProperties(filename, treename, branchname, hitname, fileoption, true);
     // call function member from deserialization policy
     sink.InitInputContainer(hitname);
-    runStateMachine(sink, config);
+    runNonInteractiveStateMachine(sink, config);
 }
 
 template<>
@@ -89,7 +89,7 @@ inline void runSink<TSinkBoostTest>(FairMQProgOptions& config)
     sink.SetFileProperties(filename, treename, branchname, hitname, fileoption, true);
     // call function member from deserialization policy (required for "container = new TClonesArrays(...)" )
     sink.InitInputContainer(hitname.c_str());
-    runStateMachine(sink, config);
+    runNonInteractiveStateMachine(sink, config);
 }
 
 
