@@ -40,15 +40,11 @@ Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 If (Boost_FOUND AND POS_C++11)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startThree.sh.in ${CMAKE_BINARY_DIR}/bin/startThree.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAllProxy.sh.in ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startPushPull.sh.in ${CMAKE_BINARY_DIR}/bin/startPushPull.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startThree.sh.in ${CMAKE_BINARY_DIR}/bin/startThree.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startBenchmark.sh.in ${CMAKE_BINARY_DIR}/bin/startBenchmark.sh)
-  # following scripts are only for protobuf tests and are not essential part of FairMQ
-  # configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startBin.sh.in ${CMAKE_BINARY_DIR}/bin/startBin.sh)
-  # configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh)
 EndIf (Boost_FOUND AND POS_C++11)
 
 Set(LINK_DIRECTORIES

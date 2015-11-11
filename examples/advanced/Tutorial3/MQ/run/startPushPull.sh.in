@@ -31,20 +31,20 @@ SAMPLER+=" --id 101"
 SAMPLER+=" --data-format $dataFormat"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams_$mcEngine.root"
-SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5565"
+SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5566"
 xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 PROCESSOR1="testDetectorProcessor"
 PROCESSOR1+=" --id 201"
 PROCESSOR1+=" --data-format $dataFormat"
-PROCESSOR1+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5565"
+PROCESSOR1+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
 PROCESSOR1+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5567"
 xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
 PROCESSOR2="testDetectorProcessor"
 PROCESSOR2+=" --id 301"
 PROCESSOR2+=" --data-format $dataFormat"
-PROCESSOR2+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5565"
+PROCESSOR2+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
 PROCESSOR2+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5567"
 xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
 
