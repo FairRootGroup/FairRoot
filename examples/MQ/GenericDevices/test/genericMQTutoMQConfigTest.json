@@ -29,8 +29,8 @@
                 "socket":
                 {
                     "type": "pull",
-                    "method": "connect",
-                    "address": "tcp://localhost:5566",
+                    "method": "bind",
+                    "address": "tcp://*:5565",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
@@ -42,8 +42,8 @@
                 "socket":
                 {
                     "type": "push",
-                    "method": "connect",
-                    "address": "tcp://localhost:5569",
+                    "method": "bind",
+                    "address": "tcp://*:5566",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
@@ -61,7 +61,7 @@
                 {
                     "type": "pull",
                     "method": "connect",
-                    "address": "tcp://localhost:5572",
+                    "address": "tcp://localhost:5566",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"

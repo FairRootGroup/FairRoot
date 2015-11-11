@@ -27,11 +27,11 @@ class GenProcessorTest : public ProcessorType
     using ProcessorType::CheckCurrentState;
     using ProcessorType::RUNNING;
     
-    using ProcessorType::proc_task_type::ExecuteTask;
     using ProcessorType::deserialization_type::DeserializeMsg;
     using ProcessorType::serialization_type::SerializeMsg;
     using ProcessorType::serialization_type::SetMessage;
     using ProcessorType::proc_task_type::GetOutputData;
+    using ProcessorType::proc_task_type::ExecuteTask;
     
 public:
     using ProcessorType::fChannels;
