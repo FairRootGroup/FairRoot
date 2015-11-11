@@ -24,12 +24,21 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/field
   ${CMAKE_SOURCE_DIR}/base/sim
   ${CMAKE_SOURCE_DIR}/base/source
-  ${CMAKE_SOURCE_DIR}/dbase/dbInterface
-  ${CMAKE_SOURCE_DIR}/dbase/dbValidation
-  ${CMAKE_SOURCE_DIR}/dbase/dbUtils
-  ${CMAKE_SOURCE_DIR}/input/db
-  ${CMAKE_SOURCE_DIR}/dbase/dbInput
 )
+
+
+If(WITH_DBASE)
+  Set(INCLUDE_DIRECTORIES
+     ${INCLUDE_DIRECTORIES}
+     ${CMAKE_SOURCE_DIR}/dbase/dbInterface
+     ${CMAKE_SOURCE_DIR}/dbase/dbValidation
+     ${CMAKE_SOURCE_DIR}/dbase/dbUtils
+     ${CMAKE_SOURCE_DIR}/input/db
+     ${CMAKE_SOURCE_DIR}/dbase/dbInput
+   )
+EndIf(WITH_DBASE)
+
+
 If(BUILD_MBS)
   Set(INCLUDE_DIRECTORIES
      ${INCLUDE_DIRECTORIES} 
