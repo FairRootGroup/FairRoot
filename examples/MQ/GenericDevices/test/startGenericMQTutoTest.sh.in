@@ -1,0 +1,49 @@
+#!/bin/bash
+
+
+dataFormat="Bin"
+
+CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/genericMQTutoConfig.cfg"
+
+########################## start SAMPLER
+SAMPLER="genericMQTutoSampler"
+SAMPLER+=" --id sampler1  -c $CONFIGFILE --data-format $dataFormat"
+@CMAKE_BINARY_DIR@/bin/$SAMPLER &
+SAMPLER_PID=$!
+
+########################## start SPLITTER
+#SPLITTER="genericMQTutoSplitter"
+#SPLITTER+=" --id splitter1 --config $CONFIGFILE"
+#@CMAKE_BINARY_DIR@/bin/$SPLITTER &
+#SPLITTER_PID=$!
+
+########################## start PROCESSORs
+PROCESSOR1="genericMQTutoProcessor"
+PROCESSOR1+=" --id processor1 --config $CONFIGFILE --data-format $dataFormat"
+@CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+PROCESSOR1_PID=$!
+
+#PROCESSOR2="genericMQTutoProcessor"
+#PROCESSOR2+=" --id processor2 --config $CONFIGFILE --data-format $dataFormat"
+#@CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+#PROCESSOR2_PID=$!
+
+#PROCESSOR3="genericMQTutoProcessor"
+#PROCESSOR3+=" --id processor3 --config $CONFIGFILE --data-format $dataFormat"
+#@CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
+#PROCESSOR3_PID=$!
+
+########################## start MERGER
+#MERGER="genericMQTutoMerger"
+#MERGER+=" --id merger1 --config $CONFIGFILE"
+#@CMAKE_BINARY_DIR@/bin/$MERGER &
+#MERGER_PID=$!
+
+########################## start FILESINK
+FILESINK="genericMQTutoSink"
+FILESINK+=" --id sink1 --config $CONFIGFILE --data-format $dataFormat"
+FILESINK+=" --output.file.name @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/GenericMQTutoOutputFile$dataFormat.root"
+@CMAKE_BINARY_DIR@/bin/$FILESINK &
+FILESINK_PID=$!
+
+

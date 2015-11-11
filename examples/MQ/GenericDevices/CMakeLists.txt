@@ -106,6 +106,9 @@ Set(Exe_Names
     genericMQTutoSampler
     genericMQTutoProcessor
     genericMQTutoSink
+
+    genericMQTutoProcessorTest
+    genericMQTutoSinkTest
 )
 
 set(Exe_Source
@@ -119,6 +122,9 @@ set(Exe_Source
     run/runSamplerT7.cxx
     run/runProcessorT7.cxx
     run/runFileSinkT7.cxx
+
+    test/runProcessorT7Test.cxx
+    test/runFileSinkT7Test.cxx
 )
 
 ############################################################
