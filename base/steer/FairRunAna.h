@@ -159,6 +159,13 @@ class FairRunAna : public FairRun
       return fFinishProcessingLMDFile;
     }
 
+  protected:
+    /**
+     * Virtual function which calls the Fill function of the IOManager.
+     * Allows to override the function with an experiment specific version.
+    **/
+    virtual void Fill() { fRootManager->Fill(); }            
+                                               
   private:
 
     FairRunAna(const FairRunAna& M);

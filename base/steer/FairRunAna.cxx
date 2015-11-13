@@ -373,7 +373,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
       //std::cout << "WriteoutBufferData with time: " << fRootManager->GetEventTime();
       fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
       fTask->ExecuteTask("");
-      fRootManager->Fill();
+      Fill();
       fRootManager->DeleteOldWriteoutBufferData();
       fTask->FinishEvent();
 
@@ -454,7 +454,7 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
     fTask->ExecuteTask("");
 
     fRootManager->FillEventHeader(fEvtHeader);
-    // fRootManager->Fill();
+    // Fill();
     fTask->FinishEvent();
 
     if (fGenerateRunInfo) {
@@ -481,7 +481,7 @@ void FairRunAna::Run(Double_t delta_t)
   while (fRootManager->ReadNextEvent(delta_t)==kTRUE) {
     fTask->ExecuteTask("");
     fRootManager->FillEventHeader(fEvtHeader);
-    fRootManager->Fill();
+    Fill();
     fRootManager->DeleteOldWriteoutBufferData();
     fTask->FinishEvent();
     if (NULL !=  FairTrajFilter::Instance()) {
@@ -538,7 +538,7 @@ void FairRunAna::Run(Long64_t entry)
   fTask->ExecuteTask("");
   fRootManager->FillEventHeader(fEvtHeader);
   fTask->FinishTask();
-  fRootManager->Fill();
+  Fill();
   fRootManager->DeleteOldWriteoutBufferData();
   fRootManager->LastFill();
   fRootManager->Write();
@@ -558,7 +558,7 @@ void FairRunAna::RunTSBuffers()
     }
     fTask->ExecuteTask("");
     fRootManager->FillEventHeader(fEvtHeader);
-    fRootManager->Fill();
+    Fill();
     fRootManager->DeleteOldWriteoutBufferData();
     fTask->FinishEvent();
     if (NULL !=  FairTrajFilter::Instance()) {
@@ -588,7 +588,7 @@ void FairRunAna::RunOnLmdFiles(UInt_t NStart, UInt_t NStop)
 
     fTask->ExecuteTask("");
     fRootManager->FillEventHeader(fEvtHeader);
-    fRootManager->Fill();
+    Fill();
   }
 
   fTask->FinishTask();
@@ -600,7 +600,7 @@ void FairRunAna::RunOnTBData() {
       std::cout << "FairRunAna::RunOnTBData " << std::endl;
         while (fRootManager->FinishRun() != kTRUE) {
 		fTask->ExecuteTask("");
-            fRootManager->Fill();
+            Fill();
             fTask->FinishEvent();
         }
 
@@ -616,7 +616,7 @@ void FairRunAna::DummyRun(Int_t Ev_start, Int_t Ev_end)
   for (int i=Ev_start; i< Ev_end; i++) {
     fTask->ExecuteTask("");
     fRootManager->FillEventHeader(fEvtHeader);
-    fRootManager->Fill();
+    Fill();
   }
   fTask->FinishTask();
   fRootManager->Write();
