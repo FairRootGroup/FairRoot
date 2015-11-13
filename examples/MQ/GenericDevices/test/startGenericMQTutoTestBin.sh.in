@@ -13,7 +13,7 @@ wait $GENERATE_PID
 ########################## some def
 dataFormat="Bin"
 CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/genericMQTutoConfig.cfg"
-JSONFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/test/genericMQTutoMQConfigTest.json"
+JSONFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/test/genericMQTutoMQConfigTest$dataFormat.json"
 VERBOSITY="INFO"
 ########################## start SAMPLER
 SAMPLER="genericMQTutoSamplerTest"
