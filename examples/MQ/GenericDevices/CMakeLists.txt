@@ -99,6 +99,9 @@ Set(DEPENDENCIES
     boost_program_options
     Minuit
     XMLIO
+    MathMore
+    gsl
+    gslcblas
 )
 
 GENERATE_LIBRARY()
@@ -223,6 +226,9 @@ set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES
     PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
     PASS_REGULAR_EXPRESSION "Received 100 messages!"
     )
+set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES 
+    DEPENDS run_GenericMQ_Tuto_Bin_Test_ALL
+    )
 
 add_test(NAME run_GenericMQ_Tuto_Root_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestRoot.sh)
 set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES TIMEOUT "30")
@@ -231,6 +237,9 @@ set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES
     PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
     PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
     PASS_REGULAR_EXPRESSION "Received 100 messages!"
+    )
+set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES 
+    DEPENDS run_GenericMQ_Tuto_Boost_Test_ALL
     )
 
 
