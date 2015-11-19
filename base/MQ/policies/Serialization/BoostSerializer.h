@@ -77,12 +77,7 @@ class BoostSerializer : public BaseSerializationPolicy<BoostSerializer<DataType,
 
     ~BoostSerializer()
     {}
-    /*
-    struct trait 
-    {
-        static const SerializationTag serialization = kBoost;
-    };
-    */
+    
     void CloseMessage()
     {
         if (fMessage)
@@ -157,8 +152,43 @@ class BoostSerializer : public BaseSerializationPolicy<BoostSerializer<DataType,
     /// DataType&    -------->  FairMQMessage*
     FairMQMessage* SerializeMsg(DataType& Data)
     {
-        fDataVector.push_back(Data);
-        DoSerialization();
+        //fDataVector.push_back(Data);
+        //DoSerialization();
+        std::ostringstream buffer;
+        BoostArchiveOut OutputArchive(buffer);
+        try
+        {
+            OutputArchive << Data;
+        }
+        catch (boost::archive::archive_exception& e)
+        {
+            MQLOG(ERROR) << e.what();
+        }
+
+        int size = buffer.str().length();
+        // fMessage = fTransport->CreateMessage(size);
+        fMessage->Rebuild(size);
+        std::memcpy(fMessage->GetData(), buffer.str().c_str(), size);
+        return fMessage;
+    }
+
+    FairMQMessage* SerializeMsg(DataType* Data)
+    {
+        std::ostringstream buffer;
+        BoostArchiveOut OutputArchive(buffer);
+        try
+        {
+            OutputArchive << *Data;
+        }
+        catch (boost::archive::archive_exception& e)
+        {
+            MQLOG(ERROR) << e.what();
+        }
+
+        int size = buffer.str().length();
+        // fMessage = fTransport->CreateMessage(size);
+        fMessage->Rebuild(size);
+        std::memcpy(fMessage->GetData(), buffer.str().c_str(), size);
         return fMessage;
     }
     /// --------------------------------------------------------    
@@ -318,7 +348,7 @@ class BoostDeSerializer : public BaseSerializationPolicy<BoostDeSerializer<DataT
             }
             if (fDataContainer->IsEmpty())
             {
-                MQLOG(ERROR) << "BoostSerializer::message(): No Output array!";
+                MQLOG(ERROR) << "TClonesArray* BoostSerializer::DeserializeMsg(): No Output array!";
             }
         }
         return fDataContainer;
@@ -327,7 +357,7 @@ class BoostDeSerializer : public BaseSerializationPolicy<BoostDeSerializer<DataT
     /// --------------------------------------------------------
     /// FairMQMessage*  -------->  DataType
     template <typename T = TContainer, enable_if_match<T, DataType> = 0>
-    T DeserializeMsg(FairMQMessage* msg)
+    T& DeserializeMsg(FairMQMessage* msg)
     {
         std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
         std::istringstream buffer(msgStr);
