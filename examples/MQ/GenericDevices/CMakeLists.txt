@@ -64,7 +64,7 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGeneric
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenericMQTutoTestBoost.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestBoost.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenericMQTutoTestRoot.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestRoot.sh )
 
-
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/examples/MQ/GenericDevices/data_io)
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
