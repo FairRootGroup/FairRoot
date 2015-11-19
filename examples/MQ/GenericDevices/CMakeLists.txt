@@ -97,6 +97,8 @@ Set(DEPENDENCIES
     boost_system 
     boost_serialization 
     boost_program_options
+    Minuit
+    XMLIO
 )
 
 GENERATE_LIBRARY()
