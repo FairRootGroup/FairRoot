@@ -18,6 +18,15 @@ Set(CTEST_UPDATE_COMMAND "${CTEST_GIT_COMMAND}")
 Set(BUILD_COMMAND "make")
 Set(CTEST_BUILD_COMMAND "${BUILD_COMMAND} -j$ENV{number_of_processors}")
 
+Set(EXTRA_FLAGS $ENV{EXTRA_FLAGS})
+
+String(TOUPPER $ENV{ctest_model} _Model)
+
+Set(configure_options "-DCMAKE_BUILD_TYPE=${_Model}")
+If(EXTRA_FLAGS)
+  Set(configure_options "${configure_options};${EXTRA_FLAGS}") 
+EndIf()
+
 If($ENV{ctest_model} MATCHES Nightly OR $ENV{ctest_model} MATCHES Profile)
 
    Find_Program(GCOV_COMMAND gcov)
@@ -26,10 +35,10 @@ If($ENV{ctest_model} MATCHES Nightly OR $ENV{ctest_model} MATCHES Profile)
      Set(CTEST_COVERAGE_COMMAND ${GCOV_COMMAND})
    EndIf(GCOV_COMMAND)
  
-   String(TOUPPER $ENV{ctest_model} _Model)
+#   String(TOUPPER $ENV{ctest_model} _Model)
    Set(ENV{ctest_model} Nightly)
 
-  Set(CTEST_CONFIGURE_COMMAND " \"${CMAKE_EXECUTABLE_NAME}\" \"-DCMAKE_BUILD_TYPE=${_Model}\" \"-G${CTEST_CMAKE_GENERATOR}\" \"${CTEST_SOURCE_DIRECTORY}\" ")
+#  Set(CTEST_CONFIGURE_COMMAND " \"${CMAKE_EXECUTABLE_NAME}\" \"-DCMAKE_BUILD_TYPE=${_Model}\" \"-G${CTEST_CMAKE_GENERATOR}\" \"${EXTRA_FLAGS}\" \"${CTEST_SOURCE_DIRECTORY}\" ")
 
   CTEST_EMPTY_BINARY_DIRECTORY(${CTEST_BINARY_DIRECTORY})
 
@@ -44,10 +53,14 @@ Ctest_Start($ENV{ctest_model})
 If(NOT $ENV{ctest_model} MATCHES Experimental)
   Ctest_Update(SOURCE "${CTEST_SOURCE_DIRECTORY}")
 EndIf()
-Ctest_Configure(BUILD "${CTEST_BINARY_DIRECTORY}")
+Ctest_Configure(BUILD "${CTEST_BINARY_DIRECTORY}"
+                OPTIONS "${configure_options}"
+               )
 Ctest_Build(BUILD "${CTEST_BINARY_DIRECTORY}")
-Ctest_Test(BUILD "${CTEST_BINARY_DIRECTORY}" PARALLEL_LEVEL $ENV{number_of_processors})
-If(${_Model} MATCHES PROFILE)
+Ctest_Test(BUILD "${CTEST_BINARY_DIRECTORY}" 
+           PARALLEL_LEVEL $ENV{number_of_processors}
+          )
+If(GCOV?COMMAND)
   Ctest_Coverage(BUILD "${CTEST_BINARY_DIRECTORY}")
 EndIf()
 Ctest_Submit()
