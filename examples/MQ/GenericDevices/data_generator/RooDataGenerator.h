@@ -69,6 +69,9 @@ public:
 
         // set log level before printing (default is 0 = DEBUG level)
         std::string verbose=GetValue<std::string>("verbose");
+        bool color_format=GetValue<bool>("log-color-format");
+        if(!color_format)
+            reinit_logger(false);
         //SET_LOG_LEVEL(DEBUG);
         if (fSeverityMap.count(verbose))
         {
