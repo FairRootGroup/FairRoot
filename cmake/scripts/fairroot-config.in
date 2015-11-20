@@ -1,6 +1,9 @@
 #!/bin/bash
 
 _version=@FAIRROOT_GIT_VERSION@
+_major_version=15
+_minor_version=11
+_patch_version=0
 _cc=@CMAKE_C_COMPILER@
 _cxx=@CMAKE_CXX_COMPILER@
 _fairsoft_path=@SIMPATH@
@@ -22,6 +25,18 @@ case $1 in
       ### Output the fairroot version
       out="$out ${_version}"
       ;;
+    --major_version)
+      ### Output the fairroot version
+      out="$out ${_major_version}"
+      ;;
+    --minor_version)
+      ### Output the fairroot version
+      out="$out ${_minor_version}"
+      ;;
+    --patch_version)
+      ### Output the fairroot version
+      out="$out ${_patch_version}"
+      ;;
     --cc)
       ### Output the full path of used c compiler
       out="$out ${_cc}"
@@ -39,6 +54,9 @@ case $1 in
       echo "Usage: `basename $0` [options]"
       echo ""
       echo "  --version            Print the fairroot version"
+      echo "  --major_version      Print the fairroot major version"
+      echo "  --minor_version      Print the fairroot minor version"
+      echo "  --patch_version      Print the fairroot patch version"
       echo "  --cc                 Print the full path of the used c compiler"
       echo "  --cxx                Print the full path of the used cxx compiler"
       echo "  --fairsoft_path      Print the full path of the used fairsoft version"
