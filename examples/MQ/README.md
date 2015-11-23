@@ -1,7 +1,7 @@
 FairMQ Examples
 ===============
 
-Set of simple FairMQ examples.
+Set of FairMQ examples.
 
 Example 1: Sampler -> Sink
 --------------------------
@@ -31,3 +31,29 @@ This topology contains two devices that communicate with each other via the **RE
 Example 6: Multiple Channels
 ----------------------------
 This example demonstrates how to work with multiple channels and multiplex between them.
+
+
+Example 7: Communicating with ParameterMQServer
+----------------------------
+This example shows how to communicate with the ParameterMQServer, that retrieves parameters from FairRuntimeDb.
+
+
+Example 8: Sending Multipart messages
+----------------------------
+This example shows how to send a multipart message from one device to the other. (two parts message parts - header and body).
+
+
+
+GenericDevices:   Generic devices example
+----------------------------
+This example shows how to use the [policy based design](https://en.wikipedia.org/wiki/Policy-based_design) of the generic MQ-devices. See [here](https://github.com/FairRootGroup/FairRoot/tree/dev/fairmq/devices) for more information.
+
+
+LmdSampler: (GSI List Mode Data format) Lmd Sampler
+----------------------------
+In this tutorial a sampler read an lmd file (the one in /examples/advanced/tutorial8) and send the binary data to an unpacker device. 
+
+
+
+
+
