@@ -62,6 +62,7 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   # in the parent scope, namely in the CMakeLists.txt of the submodule
   set(Int_LINKDEF ${LINKDEF})
   set(Int_DICTIONARY ${DICTIONARY})
+  set(Int_LIB ${LIBRARY_NAME})
 
 #  Message("DEFINITIONS: ${DEFINITIONS}")
   set(Int_INC ${INCLUDE_DIRECTORIES} ${SYSTEM_INCLUDE_DIRECTORIES})
