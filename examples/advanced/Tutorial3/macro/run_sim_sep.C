@@ -13,7 +13,7 @@ void run_sim_sep(Int_t fileId, Int_t nEvents=1000, TString mcEngine="TGeant3")
   TString tut_geomdir = tutdir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_configdir = tutdir + "/gconfig";
+  TString tut_configdir = tutdir + "/common/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   // create Instance of Run Manager class
@@ -135,8 +135,8 @@ void run_sim_sep(Int_t fileId, Int_t nEvents=1000, TString mcEngine="TGeant3")
   cout << "</DartMeasurement>" << endl;
 
   cout << endl << endl;
-  cout << "Output file is "    << outFile << endl;
-  cout << "Parameter file is " << parFile << endl;
+  cout << "Output file is "    << outfile << endl;
+  cout << "Parameter file is " << outparam << endl;
   cout << "Real time " << rtime << " s, CPU time " << ctime
        << "s" << endl << endl;
   cout << "Macro finished successfully." << endl;

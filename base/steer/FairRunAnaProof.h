@@ -36,7 +36,7 @@ class FairRunAnaProof : public FairRunAna
     void        InitContainers();
 
     /**Run from event number NStart to event number NStop */
-    void        Run(Int_t NStart ,Int_t NStop);
+    void        Run(Int_t NStart=0 ,Int_t NStop=0);
     /**Run for one event, used on PROOF nodes*/
     void        RunOneEvent(Long64_t entry);
     /**Run on proof from event NStart to event NStop*/
