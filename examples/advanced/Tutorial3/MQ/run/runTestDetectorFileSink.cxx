@@ -17,7 +17,6 @@
 #include "boost/program_options.hpp"
 
 #include "FairMQLogger.h"
-#include "FairTestDetectorFileSink.h"
 
 #ifdef NANOMSG
 #include "nanomsg/FairMQTransportFactoryNN.h"
@@ -25,21 +24,7 @@
 #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
-// data format for the task
-#include "FairTestDetectorHit.h"
-
-// binary data format
-#include "FairTestDetectorPayload.h"
-
-// boost data format
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-
-// Google Protocol Buffers data format
-#include "FairTestDetectorPayload.pb.h"
-
-// TMessage data format
-#include "TMessage.h"
+#include "FairTestDetectorFileSink.h"
 
 using namespace std;
 
@@ -49,7 +34,8 @@ using TBoostTextPayload = boost::archive::text_iarchive;  // boost text format
 using TProtoPayload = TestDetectorProto::HitPayload; // protobuf payload
 
 using TSinkBin = FairTestDetectorFileSink<FairTestDetectorHit, TPayloadIn>;
-using TSinkBoost = FairTestDetectorFileSink<FairTestDetectorHit, TBoostBinPayload>;
+using TSinkBoostBin = FairTestDetectorFileSink<FairTestDetectorHit, TBoostBinPayload>;
+using TSinkBoostText = FairTestDetectorFileSink<FairTestDetectorHit, TBoostTextPayload>;
 using TSinkProtobuf = FairTestDetectorFileSink<FairTestDetectorHit, TProtoPayload>;
 using TSinkTMessage = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
 
@@ -57,7 +43,8 @@ typedef struct DeviceOptions
 {
     DeviceOptions() :
         id(), ioThreads(0), dataFormat(),
-        inputSocketType(), inputBufSize(0), inputMethod(), inputAddress() {}
+        inputSocketType(), inputBufSize(0), inputMethod(), inputAddress(),
+        ackSocketType(), ackBufSize(0), ackMethod(), ackAddress() {}
 
     string id;
     int ioThreads;
@@ -66,23 +53,31 @@ typedef struct DeviceOptions
     int inputBufSize;
     string inputMethod;
     string inputAddress;
+    string ackSocketType;
+    int ackBufSize;
+    string ackMethod;
+    string ackAddress;
 } DeviceOptions_t;
 
 inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 {
     if (_options == NULL)
-        throw std::runtime_error("Internal error: options' container is empty.");
+        throw runtime_error("Internal error: options' container is empty.");
 
     namespace bpo = boost::program_options;
     bpo::options_description desc("Options");
     desc.add_options()
         ("id", bpo::value<string>()->required(), "Device ID")
         ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
-        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/protobuf/tmessage)")
+        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/boost-text/protobuf/tmessage)")
         ("input-socket-type", bpo::value<string>()->required(), "Input socket type: sub/pull")
         ("input-buff-size", bpo::value<int>()->required(), "Input buffer size in number of messages (ZeroMQ)/bytes(nanomsg)")
         ("input-method", bpo::value<string>()->required(), "Input method: bind/connect")
         ("input-address", bpo::value<string>()->required(), "Input address, e.g.: \"tcp://*:5555\"")
+        ("ack-socket-type", bpo::value<string>()->default_value("push"), "ack socket type: sub/pull")
+        ("ack-buff-size", bpo::value<int>()->default_value(1000), "ack buffer size in number of messages (ZeroMQ)/bytes(nanomsg)")
+        ("ack-method", bpo::value<string>()->default_value("connect"), "ack method: bind/connect")
+        ("ack-address", bpo::value<string>()->required(), "ack address, e.g.: \"tcp://*:5555\"")
         ("help", "Print help messages");
 
     bpo::variables_map vm;
@@ -103,6 +98,10 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
     if (vm.count("input-buff-size"))   { _options->inputBufSize    = vm["input-buff-size"].as<int>(); }
     if (vm.count("input-method"))      { _options->inputMethod     = vm["input-method"].as<string>(); }
     if (vm.count("input-address"))     { _options->inputAddress    = vm["input-address"].as<string>(); }
+    if (vm.count("ack-socket-type"))   { _options->ackSocketType   = vm["ack-socket-type"].as<string>(); }
+    if (vm.count("ack-buff-size"))     { _options->ackBufSize      = vm["ack-buff-size"].as<int>(); }
+    if (vm.count("ack-method"))        { _options->ackMethod       = vm["ack-method"].as<string>(); }
+    if (vm.count("ack-address"))       { _options->ackAddress      = vm["ack-address"].as<string>(); }
 
     return true;
 }
@@ -121,12 +120,19 @@ void runFileSink(const DeviceOptions_t& options)
 
     filesink.SetTransport(transportFactory);
 
-    FairMQChannel channel(options.inputSocketType, options.inputMethod, options.inputAddress);
-    channel.UpdateSndBufSize(options.inputBufSize);
-    channel.UpdateRcvBufSize(options.inputBufSize);
-    channel.UpdateRateLogging(1);
+    FairMQChannel inChannel(options.inputSocketType, options.inputMethod, options.inputAddress);
+    inChannel.UpdateSndBufSize(options.inputBufSize);
+    inChannel.UpdateRcvBufSize(options.inputBufSize);
+    inChannel.UpdateRateLogging(1);
 
-    filesink.fChannels["data-in"].push_back(channel);
+    filesink.fChannels["data-in"].push_back(inChannel);
+
+    FairMQChannel ackChannel(options.ackSocketType, options.ackMethod, options.ackAddress);
+    ackChannel.UpdateSndBufSize(options.ackBufSize);
+    ackChannel.UpdateRcvBufSize(options.ackBufSize);
+    ackChannel.UpdateRateLogging(0);
+
+    filesink.fChannels["ack-out"].push_back(ackChannel);
 
     filesink.SetProperty(T::Id, options.id);
     filesink.SetProperty(T::NumIoThreads, options.ioThreads);
@@ -160,12 +166,13 @@ int main(int argc, char** argv)
     LOG(INFO) << "PID: " << getpid();
 
     if (options.dataFormat == "binary") { runFileSink<TSinkBin>(options); }
-    else if (options.dataFormat == "boost") { runFileSink<TSinkBoost>(options); }
+    else if (options.dataFormat == "boost") { runFileSink<TSinkBoostBin>(options); }
+    else if (options.dataFormat == "boost-text") { runFileSink<TSinkBoostText>(options); }
     else if (options.dataFormat == "protobuf") { runFileSink<TSinkProtobuf>(options); }
     else if (options.dataFormat == "tmessage") { runFileSink<TSinkTMessage>(options); }
     else
     {
-        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|protobuf|tmessage). ";
+        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|protobuf|tmessage). ";
         return 1;
     }
 

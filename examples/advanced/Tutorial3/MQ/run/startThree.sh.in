@@ -14,6 +14,9 @@ if [ "$1" = "binary" ]; then
 elif [ "$1" = "boost" ]; then
     dataFormat="boost"
     echo "attempting to use Boost serialized data format"
+elif [ "$1" = "boost-text" ]; then
+    dataFormat="boost-text"
+    echo "attempting to use Boost serialized data format"
 elif [ "$1" = "protobuf" ]; then
     dataFormat="protobuf"
     echo "attempting to use Google Protocol Buffers data format"
@@ -22,16 +25,18 @@ elif [ "$1" = "tmessage" ]; then
     echo "attempting to use Root TMessage data format"
 else
     echo "none or incorrect data formats provided."
-    echo "(available data format options are: binary, boost, protobuf, tmessage)"
+    echo "(available data format options are: binary, boost, boost-text, protobuf, tmessage)"
     echo "binary data format will be used."
 fi
 
 SAMPLER="testDetectorSampler"
 SAMPLER+=" --id 101"
 SAMPLER+=" --data-format $dataFormat"
+SAMPLER+=" --chain-input 99"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5565"
+SAMPLER+=" --ack-address tcp://*:5999"
 xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 PROCESSOR="testDetectorProcessor"
@@ -45,4 +50,5 @@ FILESINK="testDetectorFileSink"
 FILESINK+=" --id 301"
 FILESINK+=" --data-format $dataFormat"
 FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5570"
+FILESINK+=" --ack-address tcp://localhost:5999"
 xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
