@@ -57,13 +57,12 @@ class FairMQSampler : public FairMQDevice
         ParFile,
         Branch,
         EventRate,
+        ChainInput,
         Last
     };
 
     FairMQSampler();
     virtual ~FairMQSampler();
-
-    void ResetEventCounter();
 
     virtual void SetProperty(const int key, const std::string& value);
     virtual std::string GetProperty(const int key, const std::string& default_ = "");
@@ -73,6 +72,8 @@ class FairMQSampler : public FairMQDevice
     virtual std::string GetPropertyDescription(const int key);
     virtual void ListProperties();
 
+    void ListenForAcks();
+
     /**
      * Sends the currently available output of the Sampler Task as part of a multipart message
      * and reinitializes the message to be filled with the next part.
@@ -80,8 +81,6 @@ class FairMQSampler : public FairMQDevice
      * The final message part must be sent with normal Send method.
      */
     void SendPart();
-
-    void SetContinuous(bool flag);
 
   protected:
     virtual void InitTask();
@@ -93,9 +92,9 @@ class FairMQSampler : public FairMQDevice
     std::string fParFile;
     std::string fBranch; // The name of the sub-detector branch to stream the digis from.
     int fNumEvents;
+    int fChainInput;
     int fEventRate;
     int fEventCounter;
-    bool fContinuous;
 
   private:
     /// Copy Constructor

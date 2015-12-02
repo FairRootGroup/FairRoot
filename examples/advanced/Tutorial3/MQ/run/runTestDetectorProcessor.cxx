@@ -17,7 +17,6 @@
 #include "boost/program_options.hpp"
 
 #include "FairMQLogger.h"
-#include "FairMQProcessor.h"
 
 #ifdef NANOMSG
 #include "nanomsg/FairMQTransportFactoryNN.h"
@@ -25,26 +24,8 @@
 #include "zeromq/FairMQTransportFactoryZMQ.h"
 #endif
 
+#include "FairMQProcessor.h"
 #include "FairTestDetectorMQRecoTask.h"
-
-// data format for the task
-#include "FairTestDetectorDigi.h"
-#include "FairTestDetectorHit.h"
-
-// binary data format
-#include "FairTestDetectorPayload.h"
-
-// boost data format
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-
-// Google Protocol Buffers data format
-#include "FairTestDetectorPayload.pb.h"
-
-// TMessage data format
-#include "TMessage.h"
 
 using namespace std;
 
@@ -60,7 +41,8 @@ using TProtoDigiPayload = TestDetectorProto::DigiPayload; // protobuf payload
 using TProtoHitPayload = TestDetectorProto::HitPayload;   // protobuf payload
 
 using TProcessorTaskBin = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TPayloadIn, TPayloadOut>;
-using TProcessorTaskBoost = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TBoostBinPayloadIn, TBoostBinPayloadOut>;
+using TProcessorTaskBoostBin = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TBoostBinPayloadIn, TBoostBinPayloadOut>;
+using TProcessorTaskBoostText = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TBoostTextPayloadIn, TBoostTextPayloadOut>;
 using TProcessorTaskProtobuf = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TProtoDigiPayload, TProtoHitPayload>;
 using TProcessorTaskTMessage = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>;
 
@@ -88,14 +70,14 @@ typedef struct DeviceOptions
 inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 {
     if (_options == NULL)
-        throw std::runtime_error("Internal error: options' container is empty.");
+        throw runtime_error("Internal error: options' container is empty.");
 
     namespace bpo = boost::program_options;
     bpo::options_description desc("Options");
     desc.add_options()
         ("id", bpo::value<string>()->required(), "Device ID")
         ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
-        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/protobuf/tmessage)")
+        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/boost-text/protobuf/tmessage)")
         ("processor-task", bpo::value<string>()->default_value("FairTestDetectorMQRecoTask"), "Name of the Processor Task")
         ("input-socket-type", bpo::value<string>()->required(), "Input socket type: sub/pull")
         ("input-buff-size", bpo::value<int>()->required(), "Input buffer size in number of messages (ZeroMQ)/bytes(nanomsg)")
@@ -204,12 +186,13 @@ int main(int argc, char** argv)
     LOG(INFO) << "PID: " << getpid();
 
     if (options.dataFormat == "binary") { runProcessor<TProcessorTaskBin>(options); }
-    else if (options.dataFormat == "boost") { runProcessor<TProcessorTaskBoost>(options); }
+    else if (options.dataFormat == "boost") { runProcessor<TProcessorTaskBoostBin>(options); }
+    else if (options.dataFormat == "boost-text") { runProcessor<TProcessorTaskBoostText>(options); }
     else if (options.dataFormat == "protobuf") { runProcessor<TProcessorTaskProtobuf>(options); }
     else if (options.dataFormat == "tmessage") { runProcessor<TProcessorTaskTMessage>(options); }
     else
     {
-        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|protobuf|tmessage). ";
+        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|protobuf|tmessage). ";
         return 1;
     }
 

@@ -20,9 +20,9 @@ FairMQSampler<Loader>::FairMQSampler()
     , fParFile()
     , fBranch()
     , fNumEvents(0)
+    , fChainInput(0)
     , fEventRate(1)
     , fEventCounter(0)
-    , fContinuous(false)
 {
 }
 
@@ -39,7 +39,8 @@ FairMQSampler<Loader>::~FairMQSampler()
 template <typename Loader>
 void FairMQSampler<Loader>::InitTask()
 {
-    LOG(INFO) << "Starting task initialization";
+    LOG(INFO) << "Initializing Task...";
+
     fSamplerTask->SetBranch(fBranch);
     fSamplerTask->SetTransport(fTransportFactory);
 
@@ -47,9 +48,10 @@ void FairMQSampler<Loader>::InitTask()
     fSamplerTask->SetSendPart(boost::bind(&FairMQSampler::SendPart, this));
 
     fFairRunAna->SetInputFile(TString(fInputFile));
-    // This loop can be used to duplicate input file to get more data. The output will still be a single file.
-    for (int i = 0; i < 10; ++i) {
-      fFairRunAna->AddFile(fInputFile);
+    // Adds the same file to the input. The output will still be a single file.
+    for (int i = 0; i < fChainInput; ++i)
+    {
+        fFairRunAna->AddFile(fInputFile);
     }
 
     TString output = fInputFile;
@@ -68,51 +70,67 @@ void FairMQSampler<Loader>::InitTask()
     // fFairRunAna->Run(0, 0);
     FairRootManager *ioman = FairRootManager::Instance();
     fNumEvents = int((ioman->GetInChain())->GetEntries());
-    LOG(INFO) << "Finished task initialization";
+
+    LOG(INFO) << "Task initialized.";
 }
 
 template <typename Loader>
 void FairMQSampler<Loader>::Run()
 {
-    // boost::thread resetEventCounter(boost::bind(&FairMQSampler::ResetEventCounter, this));
+    boost::thread ackListener(boost::bind(&FairMQSampler::ListenForAcks, this));
 
     int sentMsgs = 0;
-
-    boost::timer::auto_cpu_timer timer;
 
     LOG(INFO) << "Number of events to process: " << fNumEvents;
 
     // store the channel references to avoid traversing the map on every loop iteration
     FairMQChannel& dataOutChannel = fChannels.at("data-out").at(0);
 
-    do
+    for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
     {
-        for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
+        fSamplerTask->SetEventIndex(eventNr);
+        fFairRunAna->RunMQ(eventNr);
+
+        dataOutChannel.Send(fSamplerTask->GetOutput());
+        ++sentMsgs;
+
+        fSamplerTask->GetOutput()->CloseMessage();
+
+        if (!CheckCurrentState(RUNNING))
         {
-            fSamplerTask->SetEventIndex(eventNr);
-            fFairRunAna->RunMQ(eventNr);
-
-            dataOutChannel.Send(fSamplerTask->GetOutput());
-            ++sentMsgs;
-
-            fSamplerTask->GetOutput()->CloseMessage();
-
-            // Optional event rate limiting
-            // --fEventCounter;
-            // while (fEventCounter == 0) {
-            //   boost::this_thread::sleep(boost::posix_time::milliseconds(1));
-            // }
-
-            if (!CheckCurrentState(RUNNING))
-            {
-                break;
-            }
+            break;
         }
-    } while (CheckCurrentState(RUNNING) && fContinuous);
+    }
+
+    try
+    {
+        ackListener.join();
+    }
+    catch(boost::thread_resource_error& e)
+    {
+        LOG(ERROR) << e.what();
+        exit(EXIT_FAILURE);
+    }
+}
+
+template <typename Loader>
+void FairMQSampler<Loader>::ListenForAcks()
+{
+    boost::timer::auto_cpu_timer timer;
+
+    for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
+    {
+        std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
+        fChannels.at("ack-in").at(0).Receive(ack);
+
+        if (!CheckCurrentState(RUNNING))
+        {
+            break;
+        }
+    }
 
     boost::timer::cpu_times const elapsedTime(timer.elapsed());
-    LOG(INFO) << "Sent everything in:\n" << boost::timer::format(elapsedTime, 2);
-    LOG(INFO) << "Sent " << sentMsgs << " messages!";
+    LOG(INFO) << "Acknowledged " << fNumEvents << " messages in:\n" << boost::timer::format(elapsedTime, 2);
 }
 
 template <typename Loader>
@@ -120,31 +138,6 @@ void FairMQSampler<Loader>::SendPart()
 {
     fChannels.at("data-out").at(0).Send(fSamplerTask->GetOutput(), "snd-more");
     fSamplerTask->GetOutput()->CloseMessage();
-}
-
-template <typename Loader>
-void FairMQSampler<Loader>::SetContinuous(bool flag)
-{
-    fContinuous = flag;
-}
-
-template <typename Loader>
-void FairMQSampler<Loader>::ResetEventCounter()
-{
-    while (true)
-    {
-        try
-        {
-            fEventCounter = fEventRate / 100;
-            boost::this_thread::sleep(boost::posix_time::milliseconds(10));
-        }
-        catch (boost::thread_interrupted &)
-        {
-            LOG(DEBUG) << "resetEventCounter interrupted";
-            break;
-        }
-    }
-    LOG(DEBUG) << ">>>>>>> stopping resetEventCounter <<<<<<<";
 }
 
 template <typename Loader>
@@ -191,6 +184,9 @@ void FairMQSampler<Loader>::SetProperty(const int key, const int value)
         case EventRate:
             fEventRate = value;
             break;
+        case ChainInput:
+            fChainInput = value;
+            break;
         default:
             FairMQDevice::SetProperty(key, value);
             break;
@@ -204,6 +200,8 @@ int FairMQSampler<Loader>::GetProperty(const int key, const int default_/*= 0*/)
     {
         case EventRate:
             return fEventRate;
+        case ChainInput:
+            return fChainInput;
         default:
             return FairMQDevice::GetProperty(key, default_);
     }

@@ -12,6 +12,9 @@ if [ "$1" = "binary" ]; then
 elif [ "$1" = "boost" ]; then
     dataFormat="boost"
     echo "attempting to use Boost serialized data format"
+elif [ "$1" = "boost-text" ]; then
+    dataFormat="boost-text"
+    echo "attempting to use Boost serialized data format"
 elif [ "$1" = "protobuf" ]; then
     dataFormat="protobuf"
     echo "attempting to use Google Protocol Buffers data format"
@@ -20,7 +23,7 @@ elif [ "$1" = "tmessage" ]; then
     echo "attempting to use Root TMessage data format"
 else
     echo "none or incorrect data formats provided."
-    echo "(available data format options are: binary, boost, protobuf, tmessage)"
+    echo "(available data format options are: binary, boost, boost-text, protobuf, tmessage)"
     echo "binary data format will be used."
 fi
 

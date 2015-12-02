@@ -40,6 +40,9 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Ru
                 LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
             }
 
+            std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
+            fChannels.at("ack-out").at(0).Send(ack);
+
             fTree->Fill();
         }
 
