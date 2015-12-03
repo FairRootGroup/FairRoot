@@ -60,7 +60,7 @@ Ctest_Build(BUILD "${CTEST_BINARY_DIRECTORY}")
 Ctest_Test(BUILD "${CTEST_BINARY_DIRECTORY}" 
            PARALLEL_LEVEL $ENV{number_of_processors}
           )
-If(GCOV?COMMAND)
+If(GCOV_COMMAND)
   Ctest_Coverage(BUILD "${CTEST_BINARY_DIRECTORY}")
 EndIf()
 Ctest_Submit()
