@@ -12,6 +12,7 @@
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/fairmq
+  ${CMAKE_SOURCE_DIR}/fairmq/tools
   ${CMAKE_SOURCE_DIR}/base/MQ
   ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
   ${CMAKE_SOURCE_DIR}/base/MQ/devices
@@ -43,14 +44,30 @@ If(PROTOBUF_FOUND)
   )
 EndIf(PROTOBUF_FOUND)
 
+If(MSGPACK_FOUND)
+  add_definitions(-DMSGPACK)
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${SYSTEM_INCLUDE_DIRECTORIES}
+    ${MSGPACK_INCLUDE_DIR}
+  )
+EndIf(MSGPACK_FOUND)
+
+If(FLATBUFFERS_FOUND)
+  add_definitions(-DFLATBUFFERS)
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${SYSTEM_INCLUDE_DIRECTORIES}
+    ${FLATBUFFERS_INCLUDE_DIR}
+  )
+EndIf(FLATBUFFERS_FOUND)
+
 Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startThree.sh.in ${CMAKE_BINARY_DIR}/bin/startThree.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAllProxy.sh.in ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startPushPull.sh.in ${CMAKE_BINARY_DIR}/bin/startPushPull.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startThree.sh.in          ${CMAKE_BINARY_DIR}/bin/startThree.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAll.sh.in            ${CMAKE_BINARY_DIR}/bin/startAll.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAllProxy.sh.in       ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startPushPull.sh.in       ${CMAKE_BINARY_DIR}/bin/startPushPull.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh)
 EndIf (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
 
@@ -59,12 +76,12 @@ Set(LINK_DIRECTORIES
   ${Boost_LIBRARY_DIRS}
 )
 
-if(DDS_PATH)
-  set(LINK_DIRECTORIES
+If(MSGPACK_FOUND)
+  Set(LINK_DIRECTORIES
     ${LINK_DIRECTORIES}
-    ${DDS_PATH}/lib
+    ${MSGPACK_LIBRARY_DIR}
   )
-endif(DDS_PATH)
+EndIf(MSGPACK_FOUND)
 
 Link_Directories(${LINK_DIRECTORIES})
 
@@ -105,10 +122,37 @@ If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
       ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/data
     )
 
+  If(FLATBUFFERS_FOUND)
+    add_custom_command(
+      OUTPUT
+        ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadDigi_generated.h
+      COMMAND
+        ${FLATBUFFERS_BINARY_DIR}/flatc -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadDigi.fbs
+      WORKING_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/data
+      )
+    add_custom_command(
+      OUTPUT
+        ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h
+      COMMAND
+        ${FLATBUFFERS_BINARY_DIR}/flatc -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadHit.fbs
+      WORKING_DIRECTORY
+        ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/data
+      )
+  EndIf(FLATBUFFERS_FOUND)
+
   Set(NO_DICT_SRCS
     ${NO_DICT_SRCS}
     ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
   )
+
+  If(FLATBUFFERS_FOUND)
+    Set(NO_DICT_SRCS
+      ${NO_DICT_SRCS}
+      ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadDigi_generated.h
+      ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h
+    )
+  EndIf(FLATBUFFERS_FOUND)
 EndIf (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
 
 Set(LINKDEF FairTestDetectorLinkDef.h)
@@ -124,8 +168,18 @@ If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
     )
   Endif(PROTOBUF_FOUND)
 Else (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
-  Set(DEPENDENCIES Base MCStack)
+  Set(DEPENDENCIES
+    Base
+    MCStack
+  )
 EndIf (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
+
+if(MSGPACK_FOUND)
+  Set(DEPENDENCIES
+    ${DEPENDENCIES}
+    msgpackc
+  )
+endif(MSGPACK_FOUND)
 
 GENERATE_LIBRARY()
 

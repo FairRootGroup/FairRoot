@@ -1,27 +1,43 @@
 #!/bin/bash
 
 # buffSize="500000000" # nanomsg buffer size is in bytes
-buffSize="10000" # zeromq high-water mark is in messages
+buffSize="100" # zeromq high-water mark is in messages
 
+echo "Supported data formats: binary, boost, boost-text, flatbuffers, msgpack, protobuf, tmessage"
 dataFormat="binary"
 if [ "$1" = "binary" ]; then
-    echo "attempting to use pure binary data format"
+    echo "Using: binary"
 elif [ "$1" = "boost" ]; then
     dataFormat="boost"
-    echo "attempting to use Boost serialized data format"
+    echo "Using: boost (Boost binary)"
 elif [ "$1" = "boost-text" ]; then
     dataFormat="boost-text"
-    echo "attempting to use Boost serialized data format"
+    echo "Using: boost-text (Boost text)"
+elif [ "$1" = "flatbuffers" ]; then
+    if(@FLATBUFFERS_FOUND@); then
+        dataFormat="flatbuffers"
+        echo "Using: flatbuffers (Google FlatBuffers)"
+    else
+        echo "Cannot use flatbuffers: library not found at build time"
+        exit 1
+    fi
+elif [ "$1" = "msgpack" ]; then
+    if(@MSGPACK_FOUND@); then
+        dataFormat="msgpack"
+        echo "Using: msgpack (MessagePack)"
+    else
+        echo "Cannot use msgpack: library not found at build time"
+        exit 1
+    fi
 elif [ "$1" = "protobuf" ]; then
     dataFormat="protobuf"
-    echo "attempting to use Google Protocol Buffers data format"
+    echo "Using: protobuf (Google Protocol Buffers)"
 elif [ "$1" = "tmessage" ]; then
     dataFormat="tmessage"
-    echo "attempting to use Root TMessage data format"
+    echo "Using: tmessage (Root TMessage)"
 else
-    echo "none or incorrect data formats provided."
-    echo "(available data format options are: binary, boost, boost-text, protobuf, tmessage)"
-    echo "binary data format will be used."
+    echo "None or incorrect data format provided!"
+    echo "Using: binary"
 fi
 
 ID="310"

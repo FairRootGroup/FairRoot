@@ -20,18 +20,20 @@
 
 #include "FairTestDetectorFileSink.h"
 
+
 using namespace std;
 
-using TPayloadIn = TestDetectorPayload::Hit; // binary payload
-using TBoostBinPayload = boost::archive::binary_iarchive; // boost binary format
-using TBoostTextPayload = boost::archive::text_iarchive;  // boost text format
-using TProtoPayload = TestDetectorProto::HitPayload; // protobuf payload
-
-using TSinkBin = FairTestDetectorFileSink<FairTestDetectorHit, TPayloadIn>;
-using TSinkBoostBin = FairTestDetectorFileSink<FairTestDetectorHit, TBoostBinPayload>;
-using TSinkBoostText = FairTestDetectorFileSink<FairTestDetectorHit, TBoostTextPayload>;
-using TSinkProtobuf = FairTestDetectorFileSink<FairTestDetectorHit, TProtoPayload>;
-using TSinkTMessage = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
+using TSinkBin           = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>;
+using TSinkBoostBin      = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::binary_iarchive>;
+using TSinkBoostText     = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::text_iarchive>;
+using TSinkProtobuf      = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>;
+using TSinkTMessage      = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
+#ifdef FLATBUFFERS
+using TSinkFlatBuffers   = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>;
+#endif /* FLATBUFFERS */
+#ifdef MSGPACK
+using TSinkMsgPack   = FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>;
+#endif /* MSGPACK */
 
 typedef struct DeviceOptions
 {
@@ -65,7 +67,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
         ("id", bpo::value<string>()->required(), "Device ID")
         ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
         ("transport", bpo::value<string>()->default_value("zeromq"), "Transport (zeromq/nanomsg)")
-        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/boost-text/protobuf/tmessage)")
+        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)")
         ("input-socket-type", bpo::value<string>()->required(), "Input socket type: sub/pull")
         ("input-buff-size", bpo::value<int>()->required(), "Input buffer size in number of messages (ZeroMQ)/bytes(nanomsg)")
         ("input-method", bpo::value<string>()->required(), "Input method: bind/connect")
@@ -159,11 +161,17 @@ int main(int argc, char** argv)
     if (options.dataFormat == "binary") { runFileSink<TSinkBin>(options); }
     else if (options.dataFormat == "boost") { runFileSink<TSinkBoostBin>(options); }
     else if (options.dataFormat == "boost-text") { runFileSink<TSinkBoostText>(options); }
+#ifdef FLATBUFFERS
+    else if (options.dataFormat == "flatbuffers") { runFileSink<TSinkFlatBuffers>(options); }
+#endif /* FLATBUFFERS */
+#ifdef MSGPACK
+    else if (options.dataFormat == "msgpack") { runFileSink<TSinkMsgPack>(options); }
+#endif /* MSGPACK */
     else if (options.dataFormat == "protobuf") { runFileSink<TSinkProtobuf>(options); }
     else if (options.dataFormat == "tmessage") { runFileSink<TSinkTMessage>(options); }
     else
     {
-        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|protobuf|tmessage). ";
+        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage). ";
         return 1;
     }
 

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -23,16 +23,17 @@
 
 using namespace std;
 
-using TPayloadOut = TestDetectorPayload::Digi; // binary payload
-using TBoostBinPayloadOut = boost::archive::binary_oarchive; // boost binary format
-using TBoostTextPayloadOut = boost::archive::text_oarchive;  // boost text format
-using TProtoDigiPayload = TestDetectorProto::DigiPayload; // protobuf payload
-
-using TSamplerBin = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TPayloadOut>>;
-using TSamplerBoostBin = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TBoostBinPayloadOut>>;
-using TSamplerBoostText = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TBoostTextPayloadOut>>;
-using TSamplerProtobuf = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TProtoDigiPayload>>;
-using TSamplerTMessage = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
+using TSamplerBin           = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
+using TSamplerBoostBin      = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
+using TSamplerBoostText     = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::text_oarchive>>;
+using TSamplerProtobuf      = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
+using TSamplerTMessage      = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
+#ifdef FLATBUFFERS
+using TSamplerFlatBuffers   = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
+#endif /* FLATBUFFERS */
+#ifdef MSGPACK
+using TSamplerMsgPack   = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>;
+#endif /* MSGPACK */
 
 typedef struct DeviceOptions
 {
@@ -71,7 +72,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
         ("id", bpo::value<string>()->required(), "Device ID")
         ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
         ("transport", bpo::value<string>()->default_value("zeromq"), "Transport (zeromq/nanomsg)")
-        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/boost-text/protobuf/tmessage)")
+        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)")
         ("input-file", bpo::value<string>()->required(), "Path to the input file")
         ("parameter-file", bpo::value<string>()->required(), "path to the parameter file")
         ("branch", bpo::value<string>()->default_value("FairTestDetectorDigi"), "Name of the Branch")
@@ -178,11 +179,17 @@ int main(int argc, char** argv)
     if (options.dataFormat == "binary") { runSampler<TSamplerBin>(options); }
     else if (options.dataFormat == "boost") { runSampler<TSamplerBoostBin>(options); }
     else if (options.dataFormat == "boost-text") { runSampler<TSamplerBoostText>(options); }
+#ifdef FLATBUFFERS
+    else if (options.dataFormat == "flatbuffers") { runSampler<TSamplerFlatBuffers>(options); }
+#endif /* FLATBUFFERS */
+#ifdef MSGPACK
+    else if (options.dataFormat == "msgpack") { runSampler<TSamplerMsgPack>(options); }
+#endif /* MSGPACK */
     else if (options.dataFormat == "protobuf") { runSampler<TSamplerProtobuf>(options); }
     else if (options.dataFormat == "tmessage") { runSampler<TSamplerTMessage>(options); }
     else
     {
-        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|protobuf|tmessage). ";
+        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage). ";
         return 1;
     }
 

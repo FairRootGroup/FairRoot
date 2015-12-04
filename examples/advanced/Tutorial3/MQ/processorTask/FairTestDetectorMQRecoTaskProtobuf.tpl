@@ -11,20 +11,25 @@
 #include "FairTestDetectorPayload.pb.h"
 
 // helper function to clean up the object holding the data after it is transported.
-void free_string (void *data, void *hint)
+void free_string(void *data, void *hint)
 {
-    delete (string*)hint;
+    delete (std::string*)hint;
 }
 
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(Option_t* opt)
 {
-    fRecoTask->fDigiArray->Delete();
+    fRecoTask->fDigiArray->Clear();
 
     TestDetectorProto::DigiPayload dp;
     dp.ParseFromArray(fPayload->GetData(), fPayload->GetSize());
 
     int numEntries = dp.digi_size();
+
+    // memcpy(fBigBuffer->data(), dp.bigbuffer().c_str(), sizeof(*fBigBuffer));
+
+    // Check if the data is the same as on the sender
+    // LOG(WARN) << (*fBigBuffer)[7];
 
     for (int i = 0; i < numEntries; ++i)
     {
@@ -58,13 +63,12 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
         h->set_dposz(hit->GetDz());
     }
 
-    string* str = new string();
-    hp.SerializeToString(str);
-    size_t size = str->length();
+    // hp.set_bigbuffer(fBigBuffer->data(), sizeof(*fBigBuffer));
 
-    fPayload->Rebuild(const_cast<char*>(str->c_str()), size, free_string, str);
-    // fPayload->Rebuild(size);
-    // memcpy(fPayload->GetData(), str.c_str(), size);
+    std::string* str = new std::string();
+    hp.SerializeToString(str);
+
+    fPayload->Rebuild(const_cast<char*>(str->c_str()), str->length(), free_string, str);
 }
 
 #endif /* PROTOBUF */

@@ -224,6 +224,8 @@ std::string FairMQSampler<Loader>::GetPropertyDescription(const int key)
             return "Branch: Name of the Branch (e.g. FairTestDetectorDigi).";
         case EventRate:
             return "EventRate: Upper limit for the message rate.";
+        case ChainInput:
+            return "ChainInput: Adds the same file to the input <value> times. The output is still a single file.";
         default:
             return FairMQDevice::GetPropertyDescription(key);
     }
