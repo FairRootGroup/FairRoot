@@ -131,6 +131,8 @@ find_package(IWYU)
 find_package(ZeroMQ)
 find_package(nanomsg)
 find_package(Protobuf)
+find_package(Msgpack)
+find_package(FlatBuffers)
 find_package(DDS)
 
 If(WITH_DBASE)

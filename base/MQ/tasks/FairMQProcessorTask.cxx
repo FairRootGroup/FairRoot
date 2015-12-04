@@ -17,6 +17,7 @@
 
 FairMQProcessorTask::FairMQProcessorTask()
     : fPayload(nullptr)
+    , fTransportFactory(nullptr)
     , SendPart()
     , ReceivePart()
 {
@@ -62,4 +63,9 @@ void FairMQProcessorTask::SetPayload(FairMQMessage* msg)
 void FairMQProcessorTask::ClearPayload()
 {
     delete fPayload;
+}
+
+void FairMQProcessorTask::SetTransport(FairMQTransportFactory* factory)
+{
+    fTransportFactory = factory;
 }

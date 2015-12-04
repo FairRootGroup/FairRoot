@@ -76,11 +76,11 @@ InitStatus FairTestDetectorRecoTask::Init()
 void FairTestDetectorRecoTask::Exec(Option_t* opt)
 {
 
-    fHitArray->Delete();
+    fHitArray->Clear();
 
     // fill the map
 
-    for (int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++)
+    for (int ipnt = 0; ipnt < fDigiArray->GetEntriesFast(); ipnt++)
     {
         FairTestDetectorDigi* digi = (FairTestDetectorDigi*)fDigiArray->At(ipnt);
         if (!digi)

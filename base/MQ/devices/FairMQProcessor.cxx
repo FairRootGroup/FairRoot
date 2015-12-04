@@ -37,6 +37,8 @@ void FairMQProcessor::InitTask()
 {
     fProcessorTask->InitTask();
 
+    fProcessorTask->SetTransport(fTransportFactory);
+
     fProcessorTask->SetSendPart(boost::bind(&FairMQProcessor::SendPart, this));
     fProcessorTask->SetReceivePart(boost::bind(&FairMQProcessor::ReceivePart, this));
 }
@@ -46,10 +48,7 @@ void FairMQProcessor::Run()
     int receivedMsgs = 0;
     int sentMsgs = 0;
 
-    // int inSize = 0;
-    // int outSize = 0;
-
-    // store the channel references to avoid traversing the map on every loop iteration
+    // channel references to avoid traversing the map on every loop iteration
     FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
     FairMQChannel& dataOutChannel = fChannels.at("data-out").at(0);
 
@@ -60,10 +59,8 @@ void FairMQProcessor::Run()
         if (dataInChannel.Receive(fProcessorTask->GetPayload()) > 0)
         {
             ++receivedMsgs;
-            // inSize += fProcessorTask->GetPayload()->GetSize();
             fProcessorTask->Exec();
 
-            // outSize += fProcessorTask->GetPayload()->GetSize();
             dataOutChannel.Send(fProcessorTask->GetPayload());
             sentMsgs++;
         }
@@ -71,7 +68,6 @@ void FairMQProcessor::Run()
         fProcessorTask->ClearPayload();
     }
 
-    // LOG(INFO) << "Input size (" << receivedMsgs << "): " << inSize << ". Output size (" << sentMsgs << "): " << outSize;
     LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
 }
 

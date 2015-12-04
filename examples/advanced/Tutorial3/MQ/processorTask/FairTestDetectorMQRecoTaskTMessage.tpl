@@ -19,9 +19,9 @@ class TestDetectorTMessage : public TMessage
 };
 
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage (void *data, void *hint)
+void free_tmessage(void *data, void *hint)
 {
-    delete (TMessage*)hint;
+    delete static_cast<TMessage*>(hint);
 }
 
 template <>
@@ -42,6 +42,5 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMess
 
     TMessage* out = new TMessage(kMESS_OBJECT);
     out->WriteObject(fRecoTask->fHitArray);
-
     fPayload->Rebuild(out->Buffer(), out->BufferSize(), free_tmessage, out);
 }

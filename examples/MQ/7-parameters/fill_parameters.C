@@ -16,9 +16,9 @@
 
     par->SetValue(1983 + i);
     par->setChanged();
-
-    rtdb->saveOutput();
   }
+
+  rtdb->saveOutput();
 
   rtdb->print();
 }

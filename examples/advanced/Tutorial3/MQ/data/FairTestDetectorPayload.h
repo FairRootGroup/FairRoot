@@ -48,4 +48,6 @@ namespace TestDetectorPayload
     };
 }
 
+#define BIGBUFFERSIZE 1000000
+
 #endif /* TESTDETECTORPAYLOAD_H_ */
