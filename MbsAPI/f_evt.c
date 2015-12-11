@@ -527,6 +527,19 @@ INTS4 f_evt_get_open(INTS4 l_mode, CHARS* pc_server, s_evt_channel* ps_chan,
   INTS4 l_status;//,ll;
   int val;
 
+// P.-A. Loizeau, 2015/11/26:
+//    In case of STREAM mode, catch the case where the user provided
+//    a nonstandard stream port, extract the value and clean the server
+//    name. Usefull with DABC MBS streams where the port can be user set.
+   INTS4 i_streamport = PORT__STREAM_SERV;
+   if( (GETEVT__STREAM == l_mode ) && ( (pc_temp=strchr(pc_server,':')) != NULL )) {
+//      printf("input string: %s!\n", pc_server);
+      pc_server = strtok( pc_server, ":");
+      CHARS* pc_streamport  = strtok( NULL, ":");
+
+      i_streamport = atoi(pc_streamport);
+//      printf("output string: %s! Port: %s %i\n", pc_server, pc_streamport, i_streamport);
+   }
 
 #ifndef GSI__WINNT
 // disable automatic detection of RFIO on Windows while file name can contain ":"
@@ -663,7 +676,12 @@ INTS4 f_evt_get_open(INTS4 l_mode, CHARS* pc_server, s_evt_channel* ps_chan,
     break;
   case GETEVT__STREAM :
     /* initialize connection with stream server                  */
-    if(f_stc_connectserver(pc_server,PORT__STREAM_SERV,&ps_chan->l_channel_no,
+// P.-A. Loizeau, 2015/11/26:
+//    In case of STREAM mode, catch the case where the user provided
+//    a nonstandard stream port, extract the value and clean the server
+//    name. Usefull with DABC MBS streams where the port can be user set.
+//    if(f_stc_connectserver(pc_server,PORT__STREAM_SERV,&ps_chan->l_channel_no,
+    if(f_stc_connectserver(pc_server,i_streamport,&ps_chan->l_channel_no,
                            &s_tcpcomm_st_evt)!=STC__SUCCESS) {
       return(GETEVT__NOSERVER);
     }
