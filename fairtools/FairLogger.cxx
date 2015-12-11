@@ -501,7 +501,8 @@ void FairLogger::LogFatalMessage(std::ostream& strm)
                    corefile << "\n";
     }
 
-    *(gLogger->fScreenStream) << "\33[00;30m" << std::endl;
+//    *(gLogger->fScreenStream) << "\33[00;30m" << std::endl;
+    *(gLogger->fScreenStream) << "\33[0m" << std::endl; // reset format before exiting
 
     flush(strm);
     freopen(corefile, "w", stderr);
