@@ -52,11 +52,11 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
   :FairRunAna(),
    fProof(NULL),
    fRunOnProofWorker(kFALSE),
-   fProofFileSource(0),
    fProofServerName(proofName),
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
    fOutputDirectory(""),
-   fProofOutputStatus("copy")
+   fProofOutputStatus("copy"),
+   fProofFileSource(0)
 {
   if ( strcmp(proofName,"RunOnProofWorker") == 0 ) {
     fRunOnProofWorker = kTRUE;

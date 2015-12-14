@@ -23,9 +23,9 @@
 // -----   Default constructor   -------------------------------------------
 FairMCMatchLoaderTask::FairMCMatchLoaderTask()
   : FairTask("Creates FairMCMatch"),
+    fMCMatch(NULL),
     fMCLink(NULL),
-    fEventNr(0),
-    fMCMatch(NULL)
+    fEventNr(0)
 {
 }
 // -------------------------------------------------------------------------

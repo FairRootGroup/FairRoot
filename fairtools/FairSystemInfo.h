@@ -21,6 +21,8 @@
 class FairSystemInfo
 {
  public:
+  FairSystemInfo() {}
+  virtual ~FairSystemInfo() {}
 
   Float_t GetMaxMemory();
   size_t GetCurrentMemory();  

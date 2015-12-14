@@ -56,7 +56,7 @@ class FairLink : public TObject
     void SetWeight(Float_t weight) {fWeight = weight;}
     void AddWeight(Float_t weight) {fWeight += weight;}
 
-    virtual void Print(std::ostream& out = std::cout) const;
+    virtual void PrintLinkInfo(std::ostream& out = std::cout) const;
 
     virtual bool operator==(const FairLink& link) const {
       if ((fFile == link.GetFile() || link.GetFile() == -1) && (fEntry == link.GetEntry() || link.GetEntry() == -1) && fType == link.GetType() && fIndex == link.GetIndex()) {
@@ -95,7 +95,7 @@ class FairLink : public TObject
     }
 
     friend std::ostream& operator<< (std::ostream& out, const FairLink& link) {
-      link.Print(out);
+      link.PrintLinkInfo(out);
       return out;
     }
 

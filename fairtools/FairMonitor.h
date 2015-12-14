@@ -56,11 +56,11 @@ class FairMonitor : public TNamed
 
   void SetCurrentTask(TTask* tTask) { fCurrentTask = tTask; }
 
-  virtual void Print(Option_t* option = "");
+  virtual void Print(Option_t* option = "") const;
   virtual void Draw (Option_t* option = "");
 
-  void PrintTask(TString specString);
-  void PrintTask(TTask* tempTask, Int_t taskLevel=0);
+  void PrintTask(TString specString) const;
+  void PrintTask(TTask* tempTask, Int_t taskLevel=0) const;
   void DrawHist(TString specString);
 
   TList* GetHistList() { return fHistList; }
@@ -71,6 +71,8 @@ class FairMonitor : public TNamed
     static FairMonitor* instance;
     FairMonitor();
     ~FairMonitor();
+    FairMonitor(const FairMonitor&);
+    FairMonitor& operator=(const FairMonitor&);
 
     Bool_t fRunMonitor;
 

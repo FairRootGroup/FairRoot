@@ -69,7 +69,7 @@ FairLink::FairLink(Int_t file, Int_t entry, TString branchName, Int_t index, Flo
 {
 }
 
-void FairLink::Print(std::ostream& out) const
+void FairLink::PrintLinkInfo(std::ostream& out) const
 {
   out << "(" << GetFile() << "/" << GetEntry() << "/";
   out << GetType() << "/" << GetIndex() << "/" << GetWeight() << ")";

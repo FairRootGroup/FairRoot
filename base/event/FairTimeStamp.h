@@ -61,7 +61,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     }
 
 
-    virtual std::ostream& Print(std::ostream& out = std::cout) const;
+    virtual std::ostream& PrintTimeInfo(std::ostream& out = std::cout) const;
     virtual Bool_t IsSortable() const { return kTRUE;};
 
 
@@ -70,7 +70,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     }
 
     friend std::ostream& operator<< (std::ostream& out, const FairTimeStamp& link) {
-      link.Print(out);
+      link.PrintTimeInfo(out);
       return out;
     }
 

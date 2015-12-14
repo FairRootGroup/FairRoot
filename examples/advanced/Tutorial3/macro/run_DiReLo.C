@@ -86,7 +86,7 @@ void run_DiReLo(Int_t nofFiles, TString mcEngine="TGeant3" )
 
   cout << endl << endl;
   cout << "Output file is "    << outFile << endl;
-  cout << "Parameter file is " << parFile << endl;
+  //  cout << "Parameter file is " << parFile << endl;
   cout << "Real time " << rtime << " s, CPU time " << ctime
        << "s" << endl << endl;
   cout << "Macro finished successfully." << endl;
