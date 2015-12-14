@@ -482,7 +482,7 @@ void FairModule::ReAssignMediaId()
     TList* media = gGeoManager->GetListOfMedia();
     // Loop over new media which are not in GeoBase and shift the ID
     TGeoMedium* med;
-    TGeoMedium* med2;
+//    TGeoMedium* med2;
     for(Int_t i = geoBuilder->GetNMedia(); i < media->GetEntries(); i++)
     {
         med = (TGeoMedium*) media->At(i);

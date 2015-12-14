@@ -36,25 +36,22 @@ using std::set;
 
 FairMixedSource::FairMixedSource(TFile *f, const char* Title, UInt_t identifier)
   :FairSource(),
+   fRootManager(0),
    fInputTitle(Title),
    fRootFile(f),
-   fRootManager(0),
    fListFolder(new TObjArray(16)),
    fRtdb(FairRuntimeDb::instance()),
    fCbmout(0),
    fCbmroot(0),
    fSourceIdentifier(0),
-   fActualSignalIdentifier(0),
-   fNoOfSignals(0),
-   fSignalChainList(NULL),
-   fBackgroundChain(NULL),
-   fSignalTypeList(),
+   fNoOfEntries(-1),
+   IsInitialized(kFALSE),
     fMCHeader(0),
     fEvtHeader(0),
     fOutHeader(0),
     fFileHeader(0),
-    fEvtHeaderIsNew(kFALSE),
    fEventTimeInMCHeader(kTRUE),
+    fEvtHeaderIsNew(kFALSE),
     fCurrentEntryNo(0),
     fTimeforEntryNo(0),
     fNoOfBGEntries(0),
@@ -62,15 +59,18 @@ FairMixedSource::FairMixedSource(TFile *f, const char* Title, UInt_t identifier)
     fEventTimeMin(0.),
     fEventTimeMax(0.),
     fEventTime(0.),
-    fEventMeanTime(0.),
   fBeamTime(-1.),
   fGapTime(-1.),
+    fEventMeanTime(0.),
     fTimeProb(0),
    fSignalBGN(),
    fSBRatiobyN(kFALSE),
   fSBRatiobyT(kFALSE),
-  fNoOfEntries(-1),
-  IsInitialized(kFALSE)
+   fActualSignalIdentifier(0),
+   fNoOfSignals(0),
+   fSignalChainList(NULL),
+   fBackgroundChain(NULL),
+   fSignalTypeList()
 {
    if (fRootFile->IsZombie()) {
      LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
@@ -82,25 +82,22 @@ FairMixedSource::FairMixedSource(TFile *f, const char* Title, UInt_t identifier)
 }
 FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title, UInt_t identifier)
 :FairSource(),
+ fRootManager(0),
  fInputTitle(Title),
  fRootFile(0),
- fRootManager(0),
  fListFolder(new TObjArray(16)),
  fRtdb(FairRuntimeDb::instance()),
  fCbmout(0),
  fCbmroot(0),
  fSourceIdentifier(0),
-    fActualSignalIdentifier(0),
-    fNoOfSignals(0),
-    fSignalChainList(NULL),
-    fBackgroundChain(NULL),
-    fSignalTypeList(),
+ fNoOfEntries(-1),
+ IsInitialized(kFALSE),
     fMCHeader(0),
     fEvtHeader(0),
     fOutHeader(0),
     fFileHeader(0),
-    fEvtHeaderIsNew(kFALSE),
    fEventTimeInMCHeader(kTRUE),
+    fEvtHeaderIsNew(kFALSE),
     fCurrentEntryNo(0),
     fTimeforEntryNo(0),
     fNoOfBGEntries(0),
@@ -108,15 +105,18 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     fEventTimeMin(0.),
     fEventTimeMax(0.),
     fEventTime(0.),
-    fEventMeanTime(0.),
   fBeamTime(-1.),
   fGapTime(-1.),
+    fEventMeanTime(0.),
     fTimeProb(0),
    fSignalBGN(),
    fSBRatiobyN(kFALSE),
   fSBRatiobyT(kFALSE),
- fNoOfEntries(-1),
- IsInitialized(kFALSE)
+    fActualSignalIdentifier(0),
+    fNoOfSignals(0),
+    fSignalChainList(NULL),
+    fBackgroundChain(NULL),
+    fSignalTypeList()
 {
   fRootFile = new TFile(RootFileName->Data());
   if (fRootFile->IsZombie()) {
@@ -128,25 +128,22 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
 
 FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalId, const char* Title, UInt_t identifier) 
   :FairSource(), 
+   fRootManager(0),
    fInputTitle(Title),
    fRootFile(0),
-   fRootManager(0),
    fListFolder(new TObjArray(16)),
    fRtdb(FairRuntimeDb::instance()),
    fCbmout(0),
    fCbmroot(0),
    fSourceIdentifier(0),
-   fActualSignalIdentifier(0),
-   fNoOfSignals(0),
-   fSignalChainList(NULL),
-   fBackgroundChain(NULL),
-  fSignalTypeList(),
+   fNoOfEntries(-1),
+   IsInitialized(kFALSE),
     fMCHeader(0),
     fEvtHeader(0),
   fOutHeader(0),
     fFileHeader(0),
-    fEvtHeaderIsNew(kFALSE),
    fEventTimeInMCHeader(kTRUE),
+    fEvtHeaderIsNew(kFALSE),
     fCurrentEntryNo(0),
     fTimeforEntryNo(0),
     fNoOfBGEntries(0),
@@ -154,15 +151,18 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     fEventTimeMin(0.),
     fEventTimeMax(0.),
     fEventTime(0.),
-    fEventMeanTime(0.),
   fBeamTime(-1.),
   fGapTime(-1.),
+    fEventMeanTime(0.),
     fTimeProb(0),
    fSignalBGN(),
    fSBRatiobyN(kFALSE),
   fSBRatiobyT(kFALSE),
-  fNoOfEntries(-1),
-  IsInitialized(kFALSE) 
+   fActualSignalIdentifier(0),
+   fNoOfSignals(0),
+   fSignalChainList(NULL),
+   fBackgroundChain(NULL),
+  fSignalTypeList()
 {
     fRootFile = new TFile(RootFileName.Data());
 
@@ -459,7 +459,7 @@ void FairMixedSource::SetSignalFile(TString name, UInt_t identifier )
     } else {
       TChain* CurrentChain=fSignalTypeList[identifier];
       CurrentChain->AddFile(name.Data());
-      TObjArray* fileElements=CurrentChain->GetListOfFiles();
+//      TObjArray* fileElements=CurrentChain->GetListOfFiles();
     }
 
   }
@@ -512,7 +512,7 @@ void FairMixedSource::AddBackgroundFile(TString name)
   } else {
     if(fBackgroundChain!=0) {
       fBackgroundChain->AddFile(name.Data());
-      TObjArray* fileElements=fBackgroundChain->GetListOfFiles();
+//      TObjArray* fileElements=fBackgroundChain->GetListOfFiles();
     } else {
       LOG(FATAL) << "Use SetBackGroundFile first, then add files to background" << FairLogger::endl;
     }

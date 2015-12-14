@@ -53,12 +53,12 @@ class FairMCEntry : public FairMultiLinkedData
 
     virtual ~FairMCEntry();
 
-    virtual void Print(std::ostream& out) {
+    virtual void PrintInfo(std::ostream& out) {
       out << *this;
     }
 
     friend std::ostream& operator<< (std::ostream& out, const FairMCEntry& link) {
-      ((FairMultiLinkedData)link).Print(out);
+      ((FairMultiLinkedData)link).PrintLinkInfo(out);
       return out;
     }
 
