@@ -190,11 +190,11 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
 
       # Select flags.
       set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wshadow ")
-      set(CMAKE_CXX_FLAGS_NIGHTLY        "-O2 -g -Wshadow -Weffc++")
+      set(CMAKE_CXX_FLAGS_NIGHTLY        "-O2 -g -Wshadow -Weffc++ -Wall -Wextra")
       set(CMAKE_CXX_FLAGS_RELEASE        "-O2 -Wshadow ")
       set(CMAKE_CXX_FLAGS_DEBUG          "-g -O2 -Wshadow  -fno-inline")
       set(CMAKE_CXX_FLAGS_DEBUGFULL      "-g3 -fno-inline -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -fno-check-new -fno-common")
-      set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+      set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs -Wall -Wextra")
       set(CMAKE_C_FLAGS_RELWITHDEBINFO   "-O2 -g")
       set(CMAKE_C_FLAGS_RELEASE          "-O2")
       set(CMAKE_C_FLAGS_DEBUG            "-g -O2  -fno-inline")
