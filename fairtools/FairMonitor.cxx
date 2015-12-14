@@ -45,13 +45,22 @@ FairMonitor* FairMonitor::instance = NULL;
 FairMonitor::FairMonitor()
   : TNamed("FairMonitor","Monitor for FairRoot")
   , fRunMonitor(kFALSE)
-  , fCurrentTask(0)
-  , fNoTaskRequired(0)
-  , fNoTaskCreated(0)
   , fRunTime(0.)
   , fRunMem(0.)
-  , fCanvas()
+  , fTimerMap()
+  , fMemoryMap()
   , fHistList(new TList())
+  , fCanvas()
+  , fNoTaskRequired(0)
+  , fNoTaskCreated(0)
+  , fCurrentTask(0)
+  , fTaskRequired()
+  , fTaskCreated()
+  , fTaskCreatedTemp()
+  , fObjectMap()
+  , fTaskMap()
+  , fObjectPos()
+  , fTaskPos()
 {
 }
 //_____________________________________________________________________________
@@ -215,7 +224,7 @@ void FairMonitor::RecordGetting(const char* name) {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) {
+void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const {
   if ( !fRunMonitor ) return;
 
   Int_t nofHists = fHistList->GetEntries();
@@ -318,7 +327,7 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairMonitor::Print(Option_t* option) {
+void FairMonitor::Print(Option_t* option) const {
   if ( !fRunMonitor ) {
     LOG(WARNING) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;
     return;
@@ -334,7 +343,7 @@ void FairMonitor::Print(Option_t* option) {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairMonitor::PrintTask(TString specString) {
+void FairMonitor::PrintTask(TString specString) const {
   if ( !fRunMonitor ) {
     LOG(WARNING) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;
     return;
@@ -350,7 +359,7 @@ void FairMonitor::PrintTask(TString specString) {
       histString.Replace(0,histString.First('_')+1,"");
       Double_t integral = ((TH1F*)(fHistList->At(ihist)))->Integral();
       Double_t entries  = ((TH1F*)(fHistList->At(ihist)))->GetEntries();
-      Double_t valPent  = integral/entries;
+//      Double_t valPent  = integral/entries;
       if ( histString.EndsWith("_TIM") ) unitString = " s";
       if ( histString.EndsWith("_MEM") ) unitString = " B";
       LOG(INFO) << histString.Data() << " >>>>> " << integral << unitString.Data() << " / " << entries << " ent = " << integral/entries << unitString.Data() << " / ent" << FairLogger::endl;
