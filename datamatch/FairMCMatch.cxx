@@ -301,7 +301,7 @@ void FairMCMatch::GetNextStage(FairMultiLinkedData& startStage, Int_t stopStage)
       tempStage = GetEntry(startStage.GetLink(i));
       if (fVerbose > 0) {
         std::cout << "TempStage Start";
-        startStage.GetLink(i).Print();
+        startStage.GetLink(i).PrintLinkInfo();
         std::cout << " --> " << tempStage << std::endl;
       }
       if (tempStage.GetNLinks() == 0) {

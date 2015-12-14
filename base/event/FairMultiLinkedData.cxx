@@ -28,6 +28,7 @@ ClassImp(FairMultiLinkedData);
 FairMultiLinkedData::FairMultiLinkedData()
   :TObject(),
    fLinks(),
+   fEntryNr(),
    fPersistanceCheck(kTRUE),
    fInsertHistory(kTRUE),
    fVerbose(0),
@@ -39,6 +40,7 @@ FairMultiLinkedData::FairMultiLinkedData()
 FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persistanceCheck)
   :TObject(),
    fLinks(links),
+   fEntryNr(),
    fPersistanceCheck(persistanceCheck),
    fInsertHistory(kTRUE),
    fVerbose(0),
@@ -49,6 +51,7 @@ FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persis
 FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :TObject(),
    fLinks(),
+   fEntryNr(),
    fPersistanceCheck(persistanceCheck),
    fInsertHistory(kTRUE),
    fVerbose(0),
@@ -62,6 +65,7 @@ FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> li
 FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :TObject(),
    fLinks(),
+   fEntryNr(),
    fPersistanceCheck(persistanceCheck),
    fInsertHistory(kTRUE),
    fVerbose(0),

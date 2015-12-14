@@ -63,15 +63,15 @@ class FairMultiLinkedData_Interface : public  TObject
     virtual void ResetLinks();
 
 
-    std::ostream& Print(std::ostream& out = std::cout) const {
+    std::ostream& PrintLinkInfo(std::ostream& out = std::cout) const {
 
 		if (GetPointerToLinks() != 0)
-			GetPointerToLinks()->Print(out);
+			GetPointerToLinks()->PrintLinkInfo(out);
 		return out;
     }                                                     ///< Output
 
     friend std::ostream& operator<< (std::ostream& out, FairMultiLinkedData_Interface& data) {
-      data.Print(out);
+      data.PrintLinkInfo(out);
       return out;
     }                                                     ///< Output
 

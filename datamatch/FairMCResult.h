@@ -56,11 +56,11 @@ class FairMCResult: public FairMCObject
     Int_t GetStartType(void) const {return fStartType;}
     Int_t GetStopType(void) const {return fStopType;}
 
-    virtual void Print(std::ostream& out = std::cout) { out << *this;}
+    virtual void PrintInfo(std::ostream& out = std::cout) { out << *this;}
 
     friend std::ostream& operator<< (std::ostream& out, const FairMCResult& result) {
       out << "MC Link from: " << result.GetStartType() << " to "  << result.GetStopType() << ":" << std::endl;
-      ((FairMCObject)result).Print(out);
+      ((FairMCObject)result).PrintInfo(out);
       return out;
     }
 

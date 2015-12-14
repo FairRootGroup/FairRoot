@@ -35,18 +35,21 @@ class FairMCObject: public TObject
     FairMCObject(Int_t type)
       : TObject(),
         fStage(),
-        fStageId(type) {
-    }
+        fStageId(type)
+        {
+        }	
     FairMCObject(const FairMCObject& obj)
       : TObject(obj),
-        fStageId(obj.GetStageId()),
-        fStage(obj.GetEntryVector()) {
-    }
+        fStage(obj.GetEntryVector()), 
+        fStageId(obj.GetStageId())
+        {
+        }
     FairMCObject(Int_t type, std::vector<FairMCEntry> stage)
       : TObject(),
         fStage(stage),
-        fStageId(type) {
-    }
+        fStageId(type) 
+        {
+        }
 
     FairMCObject& operator=(const FairMCObject& from) {
       if (this == &from) { return *this; }
@@ -98,7 +101,7 @@ class FairMCObject: public TObject
 
     virtual void ClearEntries() {fStage.clear();}
 
-    virtual void Print(std::ostream& out = std::cout) {out << *this;}
+    virtual void PrintInfo(std::ostream& out = std::cout) {out << *this;}
 
     /*
         void operator=(const FairMCObject& obj) {
@@ -112,7 +115,7 @@ class FairMCObject: public TObject
       for (int i = 0; i < stages.size(); i++) {
         if (stages[i].GetNLinks() > 0) {
           out << i << ": ";
-          stages[i].Print(out);
+          stages[i].PrintInfo(out);
           out << std::endl;
         }
       }
