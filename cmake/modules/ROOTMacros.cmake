@@ -64,7 +64,6 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   set(Int_DICTIONARY ${DICTIONARY})
   set(Int_LIB ${LIBRARY_NAME})
 
-#  Message("DEFINITIONS: ${DEFINITIONS}")
   set(Int_INC ${INCLUDE_DIRECTORIES} ${SYSTEM_INCLUDE_DIRECTORIES})
   set(Int_HDRS ${HDRS})
   set(Int_DEF ${DEFINITIONS})
@@ -81,57 +80,52 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
 
   #---call rootcint / cling --------------------------------
   set(OUTPUT_FILES ${Int_DICTIONARY})
-  if (ROOT_FOUND_VERSION GREATER 59999)
-    set(EXTRA_DICT_PARAMETERS "")
-    set(Int_ROOTMAPFILE ${LIBRARY_OUTPUT_PATH}/lib${Int_LIB}.rootmap)
-    set(Int_PCMFILE G__${Int_LIB}Dict_rdict.pcm)
-    set(OUTPUT_FILES ${OUTPUT_FILES} ${Int_PCMFILE} ${Int_ROOTMAPFILE})
-    set(EXTRA_DICT_PARAMETERS ${EXTRA_DICT_PARAMETERS}
+
+  If (CMAKE_SYSTEM_NAME MATCHES Linux)
+    Set(MY_LD_LIBRARY_PATH ${ROOT_LIBRARY_DIR}:${_intel_lib_dirs}:$ENV{LD_LIBRARY_PATH})
+  ElseIf(CMAKE_SYSTEM_NAME MATCHES Darwin)
+    Set(MY_LD_LIBRARY_PATH ${ROOT_LIBRARY_DIR}:$ENV{DYLD_LIBRARY_PATH})
+  EndIf()
+
+  get_filename_component(script_name ${Int_DICTIONARY} NAME_WE)
+  String(REPLACE ";" " " Int_DEF_STR "${Int_DEF}")
+  String(REPLACE ";" " " Int_INC_STR "${Int_INC}")
+  String(REPLACE ";" " " Int_HDRS_STR "${Int_HDRS}")
+
+  Set(EXTRA_DICT_PARAMETERS "")
+  If (ROOT_FOUND_VERSION GREATER 59999)
+
+    Set(Int_ROOTMAPFILE ${LIBRARY_OUTPUT_PATH}/lib${Int_LIB}.rootmap)
+    Set(Int_PCMFILE G__${Int_LIB}Dict_rdict.pcm)
+    Set(OUTPUT_FILES ${OUTPUT_FILES} ${Int_PCMFILE} ${Int_ROOTMAPFILE})
+    Set(EXTRA_DICT_PARAMETERS ${EXTRA_DICT_PARAMETERS}
         -inlineInputHeader -rmf ${Int_ROOTMAPFILE} 
         -rml ${Int_LIB}${CMAKE_SHARED_LIBRARY_SUFFIX})
-    set_source_files_properties(${OUTPUT_FILES} PROPERTIES GENERATED TRUE)
-    If (CMAKE_SYSTEM_NAME MATCHES Linux)
-      add_custom_command(OUTPUT  ${OUTPUT_FILES}
-                         COMMAND ${CMAKE_COMMAND} -E make_directory ${LIBRARY_OUTPUT_PATH}
-			 COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:${_intel_lib_dirs}:$ENV{LD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} ${EXTRA_DICT_PARAMETERS} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
-                         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/${Int_PCMFILE} ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE} 
-                         DEPENDS ${Int_HDRS} ${Int_LINKDEF}
-                         )
-    Else (CMAKE_SYSTEM_NAME MATCHES Linux)
-      If (CMAKE_SYSTEM_NAME MATCHES Darwin)
-        add_custom_command(OUTPUT  ${OUTPUT_FILES}
-                           COMMAND ${CMAKE_COMMAND} -E make_directory ${LIBRARY_OUTPUT_PATH}
-                           COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:$ENV{DYLD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} ${EXTRA_DICT_PARAMETERS} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
-                           COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/${Int_PCMFILE} ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE} 
-                           DEPENDS ${Int_HDRS} ${Int_LINKDEF}
-                           )
-      EndIf (CMAKE_SYSTEM_NAME MATCHES Darwin)
-    EndIf (CMAKE_SYSTEM_NAME MATCHES Linux)
-    install(FILES ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE} ${Int_ROOTMAPFILE} DESTINATION lib)
-  else (ROOT_FOUND_VERSION GREATER 59999)
+    Set_Source_Files_Properties(${OUTPUT_FILES} PROPERTIES GENERATED TRUE)
+    String(REPLACE ";" " " EXTRA_DICT_PARAMETERS_STR "${EXTRA_DICT_PARAMETERS}")
 
-    If (CMAKE_SYSTEM_NAME MATCHES Linux)
-    add_custom_command(OUTPUT  ${OUTPUT_FILES}
-                       COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:${_intel_lib_dirs}:$ENV{LD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c  ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
+  EndIf()
+
+  # We need some environment variables which are present when running cmake at the
+  # time we run make. To pass the variables a script is created containing the
+  # correct values for the needed variables
+  Configure_File(${PROJECT_SOURCE_DIR}/cmake/scripts/generate_dictionary_root.sh.in
+                 ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
+                )
+
+  If (ROOT_FOUND_VERSION GREATER 59999)
+    Add_Custom_Command(OUTPUT  ${OUTPUT_FILES}
+                       COMMAND ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
+                       COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/${Int_PCMFILE} ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE}
                        DEPENDS ${Int_HDRS} ${Int_LINKDEF}
-                       )
-    Else (CMAKE_SYSTEM_NAME MATCHES Linux)
-      If (CMAKE_SYSTEM_NAME MATCHES Darwin)
-        add_custom_command(OUTPUT  ${OUTPUT_FILES}
-                           COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:$ENV{DYLD_LIBRARY_PATH} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE} -f ${Int_DICTIONARY} -c ${Int_DEF} ${Int_INC} ${Int_HDRS} ${Int_LINKDEF}
-                           DEPENDS ${Int_HDRS} ${Int_LINKDEF}
-                           )
-      EndIf (CMAKE_SYSTEM_NAME MATCHES Darwin)
-    EndIf (CMAKE_SYSTEM_NAME MATCHES Linux)
-  endif (ROOT_FOUND_VERSION GREATER 59999)
-
-  if (CMAKE_COMPILER_IS_GNUCXX)
-    exec_program(${CMAKE_C_COMPILER} ARGS "-dumpversion" OUTPUT_VARIABLE _gcc_version_info)
-    string(REGEX REPLACE "^([0-9]+).*$"                   "\\1" GCC_MAJOR ${_gcc_version_info})
-    if(${GCC_MAJOR} GREATER 4)
-      set_source_files_properties( ${Int_DICTIONARY} PROPERTIES COMPILE_DEFINITIONS R__ACCESS_IN_SYMBOL)
-    endif()
-  endif()
+                      )
+    Install(FILES ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE} ${Int_ROOTMAPFILE} DESTINATION lib)
+  Else()
+    Add_Custom_Command(OUTPUT  ${OUTPUT_FILES}
+                       COMMAND ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
+                       DEPENDS ${Int_HDRS} ${Int_LINKDEF}
+                      )
+  EndIf()
 
 endmacro(ROOT_GENERATE_DICTIONARY_NEW)
 
@@ -204,7 +198,7 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
   ELSE(FAIRROOTPATH)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/root_macro.sh.in
                    ${new_path}/${shell_script_name}
-                 )
+                  )
   ENDIF(FAIRROOTPATH)
 
   EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
@@ -279,7 +273,7 @@ Macro(GENERATE_LIBRARY)
   EndIf(HEADERS)
 
   If(IWYU_FOUND)
-     Set(_INCLUDE_DIRS ${INCLUDE_DIRECTORIES} ${SYSTEM_INCLUDE_DIRECTORIES})
+    Set(_INCLUDE_DIRS ${INCLUDE_DIRECTORIES} ${SYSTEM_INCLUDE_DIRECTORIES})
     CHECK_HEADERS("${Int_SRCS}" "${_INCLUDE_DIRS}" ${HeaderRuleName})
   EndIf(IWYU_FOUND)
 
