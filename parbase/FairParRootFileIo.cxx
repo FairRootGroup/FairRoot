@@ -197,7 +197,7 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
       newParFileName = string->GetString();
       newParFileName.Replace(newParFileName.Last('/')+1,
                              newParFileName.Length(),"");
-      newParFileName = Form("%sallParams_%d_%d.root",
+      newParFileName = Form("%sallParams_%d_%06d.root",
                             newParFileName.Data(),
                             currentDate.GetDate(),
                             currentDate.GetTime());
