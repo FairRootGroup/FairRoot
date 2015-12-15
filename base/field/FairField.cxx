@@ -24,7 +24,7 @@ FairField::FairField()
 
 
 // -----   Constructor with name and title   -------------------------------
-FairField::FairField(const char* name, const char* title)
+FairField::FairField(const char* name, const char*)
   : TVirtualMagField(name),
     fType(0)
 {

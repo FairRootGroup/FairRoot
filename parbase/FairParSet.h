@@ -39,7 +39,7 @@ class FairParSet : public TObject
     virtual const char* GetTitle() const {return (char*)fTitle.Data();}
 
     virtual Bool_t init();
-    virtual Bool_t init(FairParIo* io) { return kFALSE; }
+    virtual Bool_t init(FairParIo*) { return kFALSE; }
     virtual Int_t write();
     virtual Int_t write(FairParIo*) { return kFALSE; }
     virtual void clear() {}
@@ -79,8 +79,8 @@ class FairParSet : public TObject
     }
 
 
-    virtual void fill(UInt_t rid=0) {};
-    virtual void store(UInt_t rid=0) {};
+    virtual void fill(UInt_t) {};
+    virtual void store(UInt_t) {};
     
 
     FairParSet& operator=(const FairParSet&);

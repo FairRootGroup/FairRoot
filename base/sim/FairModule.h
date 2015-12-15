@@ -56,7 +56,7 @@ class FairModule:  public TNamed
     /**default dtor*/
     virtual  ~FairModule();
     /**Print method should be implemented in detector or module*/
-    virtual void        Print(Option_t* option="") const {;}
+    virtual void        Print(Option_t*) const {;}
     /**Set the geometry file name o be used*/
     virtual void        SetGeometryFileName(TString fname, TString geoVer="0");
     /**Get the Geometry file name*/
@@ -94,7 +94,7 @@ class FairModule:  public TNamed
     /**called from ConstructGDMLGeometry()*/
     virtual void        ExpandNodeForGDML(TGeoNode*);
     /**return the MC id of a volume named vname*/
-    virtual Int_t       getVolId( const TString& vname ) const {return 0;}
+    virtual Int_t       getVolId( const TString& ) const {return 0;}
     /**return the detector/Module id (which was set in the sim macro for the detector)*/
     Int_t               GetModId() {return fModId;}
     /**Set the verbose level in this detector*/
@@ -153,7 +153,7 @@ class FairModule:  public TNamed
 };
 
 template<class T, class U>
-void FairModule::ConstructASCIIGeometry(T dataType1, TString containerName, U dataType)
+void FairModule::ConstructASCIIGeometry(T dataType1, TString containerName, U)
 {
   FairGeoLoader* loader=FairGeoLoader::Instance();
   FairGeoInterface* GeoInterface =loader->getGeoInterface();

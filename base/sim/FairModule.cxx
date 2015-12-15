@@ -186,7 +186,7 @@ void FairModule::Streamer(TBuffer& b)
 
 }
 //__________________________________________________________________________
-void FairModule::SetGeometryFileName(TString fname, TString geoVer)
+void FairModule::SetGeometryFileName(TString fname, TString)
 {
 
   // If absolute path is given as argument, try to find it there.
@@ -518,7 +518,7 @@ void FairModule::ConstructASCIIGeometry()
 }
 
 //__________________________________________________________________________
-Bool_t FairModule::CheckIfSensitive(std::string name)
+Bool_t FairModule::CheckIfSensitive(std::string)
 {
   LOG(WARNING)<<"The method CheckIfSensitive has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;
   return kFALSE;

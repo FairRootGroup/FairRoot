@@ -131,7 +131,7 @@ void FairRadMapManager::Reset()
   printf(" FairRadMapManager::Reset() ------------------------------------------------\n");
 }
 
-void FairRadMapManager::AddPoint(Int_t& ModuleId)
+void FairRadMapManager::AddPoint(Int_t&)
 {
   /**Add a point to the collection*/
   if ( gMC->IsTrackEntering() ) {

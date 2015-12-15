@@ -89,7 +89,7 @@ void FairWriteoutBuffer::WriteOutDataDeadTimeMap(double time)
       if (fVerbose > 0) {
         std::cout << "-I- FairWriteoutBuffer::WriteOutData size: " << data.size() << std::endl;
       }
-      for (int i = 0; i < data.size(); i++) {
+      for (unsigned int i = 0; i < data.size(); i++) {
         AddNewDataToTClonesArray(data[i]);
         if (fVerbose > 1) {
           std::cout << i << " : ";
@@ -206,7 +206,7 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
 
       if (dataFound == true) {
         std::vector<std::pair<double, FairTimeStamp*> > modifiedData = Modify(std::pair<double, FairTimeStamp*>(currentdeadtime, oldData), std::pair<double, FairTimeStamp*>(-1, data));
-        for (int i = 0; i < modifiedData.size(); i++) {
+        for (unsigned int i = 0; i < modifiedData.size(); i++) {
           FillDataToDeadTimeMap(modifiedData[i].second, modifiedData[i].first);
           if (fVerbose > 1) {
             std::cout << i << " :Modified Data: " << modifiedData[i].first << " : " << modifiedData[i].second << std::endl;

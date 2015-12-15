@@ -103,7 +103,7 @@ class FairMultiLinkedData : public  TObject
     Bool_t fInsertHistory; //!
     Int_t fVerbose; //!
 
-    virtual void SimpleAddLinks(Int_t fileId, Int_t evtId, Int_t dataType, std::vector<Int_t> links, Bool_t bypass, Float_t mult) {
+    virtual void SimpleAddLinks(Int_t fileId, Int_t evtId, Int_t dataType, std::vector<Int_t> links, Bool_t, Float_t) {
       for (UInt_t i = 0; i < links.size(); i++) {
         fLinks.insert(FairLink(fileId, evtId, dataType, links[i]));
       }

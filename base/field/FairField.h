@@ -103,18 +103,18 @@ class FairField : public TVirtualMagField
     /** Get x component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBx(Double_t x, Double_t y, Double_t z) {LOG(WARNING)<<"FairField::GetBx Should be implemented in User class"<<FairLogger::endl; return 0;}
+    virtual Double_t GetBx(Double_t, Double_t, Double_t) {LOG(WARNING)<<"FairField::GetBx Should be implemented in User class"<<FairLogger::endl; return 0;}
 
 
     /** Get y component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBy(Double_t x, Double_t y, Double_t z) {LOG(WARNING)<<"FairField::GetBy Should be implemented in User class"<<FairLogger::endl; return 0;}
+    virtual Double_t GetBy(Double_t, Double_t, Double_t) {LOG(WARNING)<<"FairField::GetBy Should be implemented in User class"<<FairLogger::endl; return 0;}
 
     /** Get z component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBz(Double_t x, Double_t y, Double_t z) {LOG(WARNING)<<"FairField::GetBz Should be implemented in User class"<<FairLogger::endl; return 0;}
+    virtual Double_t GetBz(Double_t, Double_t, Double_t) {LOG(WARNING)<<"FairField::GetBz Should be implemented in User class"<<FairLogger::endl; return 0;}
 
 
     /** Get magnetic field. For use of GEANT3
@@ -128,8 +128,8 @@ class FairField : public TVirtualMagField
 
 
     /** Screen output. To be implemented in the concrete class. **/
-    virtual void  Print(Option_t* option = "") const {;}
-    virtual void GetBxyz(const Double_t point[3], Double_t* bField) {LOG(WARNING)<<"FairField::GetBxyz Should be implemented in User class"<<FairLogger::endl;}
+    virtual void  Print(Option_t* = "") const {;}
+    virtual void GetBxyz(const Double_t[3], Double_t*) {LOG(WARNING)<<"FairField::GetBxyz Should be implemented in User class"<<FairLogger::endl;}
 
 
 

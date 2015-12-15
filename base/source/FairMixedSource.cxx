@@ -34,7 +34,7 @@ using std::map;
 using std::set;
 
 
-FairMixedSource::FairMixedSource(TFile *f, const char* Title, UInt_t identifier)
+FairMixedSource::FairMixedSource(TFile *f, const char* Title, UInt_t)
   :FairSource(),
    fRootManager(0),
    fInputTitle(Title),
@@ -80,7 +80,7 @@ FairMixedSource::FairMixedSource(TFile *f, const char* Title, UInt_t identifier)
   fRootManager = FairRootManager::Instance();
 
 }
-FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title, UInt_t identifier)
+FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title, UInt_t)
 :FairSource(),
  fRootManager(0),
  fInputTitle(Title),
@@ -126,7 +126,7 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
   LOG(INFO) << "FairMixedSource created------------" << FairLogger::endl;
 }
 
-FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalId, const char* Title, UInt_t identifier) 
+FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalId, const char* Title, UInt_t) 
   :FairSource(), 
    fRootManager(0),
    fInputTitle(Title),

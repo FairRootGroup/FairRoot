@@ -60,7 +60,7 @@ using std::list;
 Bool_t gFRAIsInterrupted;
 
 //_____________________________________________________________________________
-void FRA_handler_ctrlc(int s)
+void FRA_handler_ctrlc(int)
 {
   LOG(INFO) << "*********** CTRL C PRESSED *************" << FairLogger::endl;
   gFRAIsInterrupted = kTRUE;

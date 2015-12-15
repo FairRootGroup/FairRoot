@@ -252,7 +252,7 @@ Int_t FairMultiLinkedData::LinkPosInList(Int_t type, Int_t index)
   return -1;
 }
 
-void FairMultiLinkedData::DeleteLink(Int_t type, Int_t index)
+void FairMultiLinkedData::DeleteLink(Int_t /*type*/, Int_t /*index*/)
 {
   /*  Int_t pos = LinkPosInList(type, index);
     if (pos < 0) return;

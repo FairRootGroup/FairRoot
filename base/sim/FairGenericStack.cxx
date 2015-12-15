@@ -24,7 +24,7 @@ FairGenericStack::FairGenericStack()
 }
 // -------------------------------------------------------------------------
 // -----   Constructor with estimated array dimension   --------------------
-FairGenericStack::FairGenericStack(Int_t size)
+FairGenericStack::FairGenericStack(Int_t)
   : TVirtualMCStack(),
     fLogger(FairLogger::GetLogger()),
     fDetList(0),
@@ -69,39 +69,39 @@ FairGenericStack& FairGenericStack::operator=(const FairGenericStack& rhs)
 
 // -------------------------------------------------------------------------
 // -----   Virtual method PushTrack   --------------------------------------
-void FairGenericStack::PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode,
-                                 Double_t px, Double_t py, Double_t pz,
-                                 Double_t e, Double_t vx, Double_t vy, Double_t vz,
-                                 Double_t time, Double_t polx, Double_t poly,
-                                 Double_t polz, TMCProcess proc, Int_t& ntr,
-                                 Double_t weight, Int_t is)
+void FairGenericStack::PushTrack(Int_t, Int_t, Int_t,
+                                 Double_t, Double_t, Double_t,
+                                 Double_t, Double_t, Double_t, Double_t,
+                                 Double_t, Double_t, Double_t,
+                                 Double_t, TMCProcess, Int_t&,
+                                 Double_t, Int_t)
 {
 
 }
 
-void FairGenericStack::PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode,
-                                 Double_t px, Double_t py, Double_t pz,
-                                 Double_t e, Double_t vx, Double_t vy, Double_t vz,
-                                 Double_t time, Double_t polx, Double_t poly,
-                                 Double_t polz, TMCProcess proc, Int_t& ntr,
-                                 Double_t weight, Int_t is, Int_t secondMotherID)
+void FairGenericStack::PushTrack(Int_t, Int_t, Int_t,
+                                 Double_t, Double_t, Double_t,
+                                 Double_t, Double_t, Double_t, Double_t,
+                                 Double_t, Double_t, Double_t,
+                                 Double_t, TMCProcess, Int_t&,
+                                 Double_t, Int_t, Int_t)
 {
 
 }
 // -----   Virtual method PopNextTrack   -----------------------------------
-TParticle* FairGenericStack::PopNextTrack(Int_t& iTrack)
+TParticle* FairGenericStack::PopNextTrack(Int_t&)
 {
   return 0;
 }
 // -------------------------------------------------------------------------
 // -----   Virtual method PopPrimaryForTracking   --------------------------
-TParticle* FairGenericStack::PopPrimaryForTracking(Int_t iPrim)
+TParticle* FairGenericStack::PopPrimaryForTracking(Int_t)
 {
   return 0;
 }
 // -------------------------------------------------------------------------
 // -----   Public method AddParticle   -------------------------------------
-void FairGenericStack::AddParticle(TParticle* oldPart)
+void FairGenericStack::AddParticle(TParticle*)
 {
 }
 // -----   Public method SetDetArrayList  ----------------------------------
@@ -117,7 +117,7 @@ void FairGenericStack::FillTrackArray()
 }
 // -------------------------------------------------------------------------
 // -----   Public method UpdateTrackIndex   --------------------------------
-void FairGenericStack::UpdateTrackIndex(TRefArray* detList)
+void FairGenericStack::UpdateTrackIndex(TRefArray*)
 {
 
 }
@@ -133,12 +133,12 @@ void FairGenericStack::Register()
 }
 // -------------------------------------------------------------------------
 // -----   Public method Print  --------------------------------------------
-void FairGenericStack::Print(Option_t* option) const
+void FairGenericStack::Print(Option_t*) const
 {
 }
 // -------------------------------------------------------------------------
 // -----   Virtual method SetCurrentTrack   --------------------------------
-void FairGenericStack::SetCurrentTrack(Int_t iTrack)
+void FairGenericStack::SetCurrentTrack(Int_t)
 {
 }
 // -------------------------------------------------------------------------
