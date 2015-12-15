@@ -57,7 +57,7 @@ InitStatus FairRingSorterTask::Init()
 // -------------------------------------------------------------------------
 
 // -----   Public method Exec   --------------------------------------------
-void FairRingSorterTask::Exec(Option_t* opt)
+void FairRingSorterTask::Exec(Option_t*)
 {
 
 
@@ -82,7 +82,7 @@ void FairRingSorterTask::Exec(Option_t* opt)
 
 
   fOutputArray = FairRootManager::Instance()->GetEmptyTClonesArray(fOutputBranch);
-  for (int i = 0; i < sortedData.size(); i++) {
+  for (unsigned int i = 0; i < sortedData.size(); i++) {
     AddNewDataToTClonesArray(sortedData[i]);
   }
   fSorter->DeleteOutputData();
@@ -118,7 +118,7 @@ void FairRingSorterTask::FinishTask()
 
   FairRootManager* ioman = FairRootManager::Instance();
   fOutputArray = ioman->GetEmptyTClonesArray(fOutputBranch);
-  for (int i = 0; i < sortedData.size(); i++) {
+  for (unsigned int i = 0; i < sortedData.size(); i++) {
     if (fVerbose > 2) {
       std::cout << i << " FinishTask : ";
       sortedData[i]->Print();

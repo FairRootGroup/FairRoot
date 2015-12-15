@@ -98,7 +98,7 @@ class FairWriteoutBuffer: public TObject
 
     ///Modify defines the behavior of the buffer if data should be stored which is already in the buffer. Parameters are the old data with the active time, the new data with an active time.
     ///Modify returns than a vector with the new data which should be stored.
-    virtual std::vector<std::pair<double, FairTimeStamp*> > Modify(std::pair<double, FairTimeStamp*> oldData, std::pair<double, FairTimeStamp*> newData) {
+    virtual std::vector<std::pair<double, FairTimeStamp*> > Modify(std::pair<double, FairTimeStamp*> oldData, std::pair<double, FairTimeStamp*>) {
       std::vector<std::pair<double, FairTimeStamp*> > result;
       result.push_back(oldData);
       return result;

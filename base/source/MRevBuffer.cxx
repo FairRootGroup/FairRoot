@@ -237,7 +237,7 @@ Int_t* MRevBuffer::RevGetI(TSocket* pSocket, Int_t iFlush)
 
 } // RevGetI
 
-REvent* MRevBuffer::RevGet(TSocket* pSocket, Int_t iFlush, Int_t iSkip)
+REvent* MRevBuffer::RevGet(TSocket* pSocket, Int_t iFlush, Int_t)
 {
   Int_t iint = sizeof(int);
   Int_t ii;

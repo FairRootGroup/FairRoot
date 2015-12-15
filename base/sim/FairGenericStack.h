@@ -151,7 +151,7 @@ class FairGenericStack : public TVirtualMCStack
     virtual TParticle* GetCurrentTrack() const;
     virtual Int_t GetCurrentTrackNumber() const;
     virtual Int_t GetCurrentParentTrackNumber() const;
-    virtual TParticle* GetParticle(Int_t trackID) const { return NULL; }
+    virtual TParticle* GetParticle(Int_t) const { return NULL; }
 
     virtual TClonesArray* GetListOfParticles() { return NULL; } 
 

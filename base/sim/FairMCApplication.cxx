@@ -69,7 +69,7 @@ class TParticle;
 using std::pair;
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const char* name, const char* title,
-                                     TObjArray* ModList, const char* MatName)
+                                     TObjArray* ModList, const char*)
   :TVirtualMCApplication(name,title),
    fActiveDetectors(NULL),
    fFairTaskList(NULL),
@@ -391,7 +391,7 @@ void FairMCApplication::RegisterStack()
   }
 }
 //_____________________________________________________________________________
-void FairMCApplication::InitMC(const char* setup, const char* cuts)
+void FairMCApplication::InitMC(const char*, const char*)
 {
 // Initialize MC.
 // ---

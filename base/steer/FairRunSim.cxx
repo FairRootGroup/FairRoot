@@ -407,7 +407,7 @@ void FairRunSim::SetMCConfig()
 }
 
 //_____________________________________________________________________________
-void FairRunSim::Run(Int_t NEvents, Int_t NotUsed)
+void FairRunSim::Run(Int_t NEvents, Int_t)
 {
   fApp->RunMC(NEvents);
 }

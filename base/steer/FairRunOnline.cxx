@@ -132,7 +132,7 @@ FairRunOnline::~FairRunOnline()
 
 Bool_t gIsInterrupted;
 
-void handler_ctrlc(int s)
+void handler_ctrlc(int)
 {
   gIsInterrupted = kTRUE;
 }

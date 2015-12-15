@@ -29,8 +29,8 @@ class FairParGenericSet : public FairParSet
     Int_t  write(FairParIo* output);
 
    // DB add on
-    void fill(UInt_t rid=0) {};
-    void store(UInt_t rid=0) {};
+    void fill(UInt_t) {};
+    void store(UInt_t) {};
 
   protected:
     FairParGenericSet()

@@ -21,7 +21,7 @@ FairMultiLinkedData_Interface::FairMultiLinkedData_Interface()
 {
 }
 
-FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t persistanceCheck)
+FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t)
   :TObject(), fVerbose(0), fInsertHistory(kTRUE), fLink(NULL)
 {
 	SetLinks(links);

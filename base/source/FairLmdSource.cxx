@@ -164,7 +164,7 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
 }
 
 
-Int_t FairLmdSource::ReadEvent(UInt_t iev)
+Int_t FairLmdSource::ReadEvent(UInt_t)
 {
   void* evtptr = &fxEvent;
   void* buffptr = &fxBuffer;

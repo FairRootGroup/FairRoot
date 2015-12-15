@@ -58,7 +58,7 @@ class FairRingSorter : public TObject
       out << "RingSorter: Size " << fRingBuffer.size() << " CellWidth: " << fCellWidth << std::endl;
       out << "LowerBoundPointer at index: " << fLowerBoundPointer.first << " Time: " << fLowerBoundPointer.second << std::endl;
       out << "| ";
-      for (int i = 0; i < fRingBuffer.size(); i++) {
+      for (unsigned int i = 0; i < fRingBuffer.size(); i++) {
         out << fRingBuffer[i].size() << " |";
       }
       out << std::endl;

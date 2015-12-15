@@ -327,7 +327,7 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairMonitor::Print(Option_t* option) const {
+void FairMonitor::Print(Option_t*) const {
   if ( !fRunMonitor ) {
     LOG(WARNING) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;
     return;
@@ -369,7 +369,7 @@ void FairMonitor::PrintTask(TString specString) const {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairMonitor::Draw(Option_t* option) {
+void FairMonitor::Draw(Option_t*) {
   if ( !fRunMonitor ) {
     LOG(WARNING) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;
     return;

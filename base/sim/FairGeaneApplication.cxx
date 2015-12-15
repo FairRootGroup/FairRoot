@@ -58,7 +58,7 @@ void FairGeaneApplication::ConstructGeometry()
   gMC->SetRootGeometry();  // notify VMC about Root geometry
 }
 
-void FairGeaneApplication::InitMC(const char* setup, const char* cuts)
+void FairGeaneApplication::InitMC(const char*, const char*)
 {
 // Initialize MC.
 

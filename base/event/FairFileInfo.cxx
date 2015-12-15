@@ -42,7 +42,7 @@ FairFileInfo::~FairFileInfo()
 
 }
 //__________________________________________________________________________
-void FairFileInfo::Print(Option_t* option) const
+void FairFileInfo::Print(Option_t*) const
 {
   printf("Printing FairFileInfo for    :  %s \n", fName.Data());
   printf("File full path               :  %s \n", fPath.Data());
