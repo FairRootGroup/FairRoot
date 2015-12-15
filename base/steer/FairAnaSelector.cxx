@@ -88,11 +88,29 @@ void FairAnaSelector::Init(TTree* tree)
 
     LOG(INFO) << "FairAnaSelector::Init(): OutputFile option \"" << outputStat.Data() << "\" RECOGNIZED" << FairLogger::endl;
 
-    outFileName.Remove(outFileName.Length()-5);
-    TString outputFileName = Form("%s/%s_worker_%s.root",outDirName.Data(),outFileName.Data(),gProofServ->GetOrdinal());
-
-    LOG(INFO) << "FairAnaSelector::Init(): output will go to file: \"" << outputFileName.Data() << "\"" << FairLogger::endl;
-    fFile = TFile::Open(outputFileName.Data(),"RECREATE");
+    if ( outputStat.Contains("copy") ) {
+      TString outputFileName = outFile->GetTitle();
+      if ( outputFileName[0] != '/' ) {
+	outputFileName = Form("%s/%s",outDir->GetTitle(),outFile->GetTitle());
+      }
+      outputFileName.Remove(outputFileName.Length()-5);
+      outputFileName = Form("%s_worker_%s.root",outputFileName.Data(),gProofServ->GetOrdinal());
+      //      outputFileName = outputFileName(outputFileName.Last('/')+1,outputFileName.Length());
+      LOG(INFO) << "the file name = \"" << outputFileName.Data() << "\"" << FairLogger::endl;
+      fFile = TFile::Open(outputFileName.Data(),"RECREATE");
+    }
+    else if ( outputStat.Contains("merge") ) {
+      TString outputFileName = outFile->GetTitle();
+      if ( outputFileName[0] != '/' ) {
+	outputFileName = Form("%s/%s",outDir->GetTitle(),outFile->GetTitle());
+      }
+      outputFileName = outputFileName(outputFileName.Last('/')+1,outputFileName.Length());
+      fProofFile = new TProofOutputFile(outputFileName.Data());
+      if (!(fFile = fProofFile->OpenFile("RECREATE"))) {
+	Warning("SlaveBegin", "problems opening file: %s/%s",
+		fProofFile->GetDir(), fProofFile->GetFileName());
+      }
+    }
 
     fRunAna = new FairRunAnaProof("RunOnProofWorker");
 
@@ -172,6 +190,18 @@ void FairAnaSelector::Begin(TTree* /*tree*/)
   // The tree argument is deprecated (on PROOF 0 is passed).
   LOG(INFO) << "FairAnaSelector::Begin()" << FairLogger::endl;
 
+  fCurrentDirectory = gSystem->pwd();
+  TNamed* outFile     = (TNamed*) fInput->FindObject("FAIRRUNANA_fOutputFileName");
+  TNamed* outDir      = (TNamed*) fInput->FindObject("FAIRRUNANA_fOutputDirectory");
+
+  TString outputFileName = outFile->GetTitle();
+  if ( outputFileName[0] != '/' ) {
+    outputFileName = Form("%s/%s",outDir->GetTitle(),outFile->GetTitle());
+  }
+  TString outputDir = outputFileName(0,outputFileName.Last('/')+1);
+  fCurrentDirectory = gSystem->pwd();
+  gSystem->cd(outputDir.Data());
+
 }
 //_____________________________________________________________________________
 
@@ -235,7 +265,11 @@ void FairAnaSelector::SlaveTerminate()
   }
 
   LOG(INFO) << "FairAnaSelector::SlaveTerminate(): fProofFile = \"" << fProofFile << "\"" << FairLogger::endl;
+  if ( fProofFile )
+    LOG(INFO) << "FairAnaSelector::SlaveTerminate(): fProofFile = \"" << fProofFile->GetName() << "\"" << FairLogger::endl;
   LOG(INFO) << "FairAnaSelector::SlaveTerminate():      fFile = \"" << fFile << "\"" << FairLogger::endl;
+  if ( fFile )
+    LOG(INFO) << "FairAnaSelector::SlaveTerminate():      fFile = \"" << fFile->GetName() << "\"" << FairLogger::endl;
 
   LOG(INFO) << "FairAnaSelector::SlaveTerminate(): WorkingDirectory = \"" << gSystem->WorkingDirectory() << "\"" << FairLogger::endl;
 
@@ -266,7 +300,7 @@ void FairAnaSelector::Terminate()
   // a query. It always runs on the client, it can be used to present
   // the results graphically or save the results to file.
   LOG(INFO) << "FairAnaSelector::Terminate(): fOutput->ls()" << FairLogger::endl;
-  fOutput->ls();
+  gSystem->cd(fCurrentDirectory.Data());
   LOG(INFO) << "FairAnaSelector::Terminate(): -------------" << FairLogger::endl;
 }
 //_____________________________________________________________________________

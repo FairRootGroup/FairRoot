@@ -35,6 +35,15 @@ class FairRunAnaProof : public FairRunAna
     /** Init containers executed on PROOF, which is part of Init when running locally*/
     void        InitContainers();
 
+    /**
+     * Set the output file name for analysis or simulation
+    */
+    virtual void    SetOutputFile(const char* fname);
+    /**
+     * Set the output file for analysis or simulation
+    */
+    virtual void    SetOutputFile(TFile* f);
+
     /**Run from event number NStart to event number NStop */
     void        Run(Int_t NStart=0 ,Int_t NStop=0);
     /**Run for one event, used on PROOF nodes*/
@@ -64,7 +73,7 @@ class FairRunAnaProof : public FairRunAna
     void SetOutputDirectory(TString dirName) {
       fOutputDirectory = dirName;
     }
-    /** Set PROOF output status, possibilities: "copy","merge","dataset"*/
+    /** Set PROOF output status, possibilities: "copy","merge"*/
     void SetProofOutputStatus(TString outStat) {
       fProofOutputStatus = outStat;
     }
@@ -72,7 +81,7 @@ class FairRunAnaProof : public FairRunAna
     virtual void   SetSource(FairSource* tempSource);
 
   protected:
-    static FairRunAnaProof*                      fRAPInstance;
+    static FairRunAnaProof*                 fRAPInstance;
 
     /** PROOF **/
     TProof*                                 fProof;
