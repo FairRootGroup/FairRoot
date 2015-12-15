@@ -46,7 +46,6 @@ void run_DiRePr(Int_t nofFiles, TString mcEngine="TGeant3" )
 
   cout << "PAR LIST CREATED" << endl;
   parInput1->open(fnamelist);       
-  //  parInput1->open(parFile.Data());
 
   rtdb->setFirstInput(parInput1);
   
@@ -85,7 +84,6 @@ void run_DiRePr(Int_t nofFiles, TString mcEngine="TGeant3" )
 
   cout << endl << endl;
   cout << "Output file is "    << outFile << endl;
-  //  cout << "Parameter file is " << parFile << endl;
   cout << "Real time " << rtime << " s, CPU time " << ctime
        << "s" << endl << endl;
   cout << "Macro finished successfully." << endl;

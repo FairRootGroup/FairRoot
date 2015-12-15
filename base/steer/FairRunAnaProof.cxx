@@ -346,8 +346,13 @@ void FairRunAnaProof::RunOneEvent(Long64_t entry)
 //_____________________________________________________________________________
 void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 {
-//  FairAnaSelector* proofSelector = new FairAnaSelector();
-
+  fProofOutputStatus.ToLower();
+  if ( !fProofOutputStatus.Contains("copy") && !fProofOutputStatus.Contains("merge") ) {
+    LOG(WARNING) << "FairRunAnaProof::RunOnProof. Do not know how to create output \"" << fProofOutputStatus.Data() << "\"." << FairLogger::endl;
+    LOG(WARNING) << "FairRunAnaProof::RunOnProof. Please use SetProofOutputStatus to either \"copy\" or \"merge\"." << FairLogger::endl;
+    LOG(WARNING) << "FairRunAnaProof::RunOnProof. For the current run using the \"merge\" setting." << FairLogger::endl;
+    fProofOutputStatus = "merge";
+  }
 
 //  TChain* inChain = (TChain*)fRootManager->GetInChain();
   TChain* inChain = (TChain*)fProofFileSource->GetInChain();
@@ -362,8 +367,7 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 
   TString outDir = (fOutputDirectory.Length()>1?fOutputDirectory.Data():gSystem->WorkingDirectory());
 
-  TString outFile = fRootManager->GetOutFile()->GetName();
-  fRootManager->CloseOutFile();
+  TString outFile = Form("%s",fOutname);
 
   fProof->AddInput(fTask);
 
@@ -401,6 +405,25 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
   LOG(INFO) << "FairRunAnaProof::RunOnProof(): inChain->Process DONE" << FairLogger::endl;
 
   return;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairRunAnaProof::SetOutputFile(const char* fname)
+{
+  fOutname=fname;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairRunAnaProof::SetOutputFile(TFile* f)
+{
+  if (! fRootManager) return;
+
+  fOutname=f->GetName();
+  fRootManager->OpenOutFile(f);
+  fOutFile = f;
+
 }
 //_____________________________________________________________________________
 
