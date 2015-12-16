@@ -107,7 +107,7 @@ class FairWriteoutBuffer: public TObject
 
     virtual void WriteOutDataDeadTimeMap(double time);
     virtual void MoveDataFromStartTimeMapToDeadTimeMap(double time);
-    virtual void FillDataToDeadTimeMap(FairTimeStamp* data, double activeTime);
+    virtual void FillDataToDeadTimeMap(FairTimeStamp* data, double activeTime, double startTime);
 
     virtual void PrintData(FairTimeStamp* data) {
       std::cout << data->GetTimeStamp();

@@ -165,12 +165,12 @@ void FairWriteoutBuffer::FillNewData(FairTimeStamp* data, double startTime, doub
 }
 //_____________________________________________________________________________
 
-void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activeTime)
+void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activeTime, double startTime)
 {
   if (fActivateBuffering) {
     typedef  std::multimap<double, FairTimeStamp*>::iterator DTMapIter;
     typedef  std::map<FairTimeStamp, double>::iterator DataMapIter;
-
+    if (activeTime < 0) activeTime = 0; // to avoid errors due to wrong (negative) returnvalues of overwritten modify function by subdetector groups. A negative (-1) aktiveTime already indicate empty data maps!
     double timeOfOldData = FindTimeForData(data);
     // PrintDeadTimeMap();
     if(timeOfOldData > -1) {        //if an older active data object is already present
@@ -205,13 +205,19 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
       }
 
       if (dataFound == true) {
-        std::vector<std::pair<double, FairTimeStamp*> > modifiedData = Modify(std::pair<double, FairTimeStamp*>(currentdeadtime, oldData), std::pair<double, FairTimeStamp*>(-1, data));
-        for (unsigned int i = 0; i < modifiedData.size(); i++) {
-          FillDataToDeadTimeMap(modifiedData[i].second, modifiedData[i].first);
-          if (fVerbose > 1) {
-            std::cout << i << " :Modified Data: " << modifiedData[i].first << " : " << modifiedData[i].second << std::endl;
-          }
-        }
+	if (timeOfOldData > startTime) {                                     //if older active data can interference with the new data call modify function
+	  std::vector<std::pair<double, FairTimeStamp*> > modifiedData = Modify(std::pair<double, FairTimeStamp*>(currentdeadtime, oldData), std::pair<double, FairTimeStamp*>(activeTime, data));
+	  for (int i = 0; i < modifiedData.size(); i++) {
+	    FillDataToDeadTimeMap(modifiedData[i].second, modifiedData[i].first,0);//startTime  = 0 since the Maps are already empty and the startTime therefore doesn't matter anymore
+	    if (fVerbose > 1) {
+	      std::cout << i << " :Modified Data: " << modifiedData[i].first << " : " << modifiedData[i].second << std::endl;
+	    }
+	  }
+	} else {                           //no interference can happen between old hit and new hit
+	  AddNewDataToTClonesArray(oldData);    //therefore the old hit is written out
+	  fDeadTime_map.insert(std::pair<double, FairTimeStamp*>(activeTime, data));      //and the new hit is stored
+	  FillDataMap(data, activeTime);
+	}
       } else {
         std::cout << "-E- FairWriteoutBuffer::FillDataToDeadTimeMap: old data present in dataMap but not in deadTimeMap!" << std::endl;
       }
@@ -239,7 +245,8 @@ void FairWriteoutBuffer::MoveDataFromStartTimeMapToDeadTimeMap(double time)
   startTimeMapIter stopTime = fStartTime_map.lower_bound(time);
   for (startTimeMapIter iter = fStartTime_map.begin(); iter != stopTime; iter++) {
     std::pair<double, FairTimeStamp*> data = iter->second;
-    FillDataToDeadTimeMap(data.second, data.first);
+    double startTime = iter->first;
+    FillDataToDeadTimeMap(data.second, data.first, startTime);
   }
   fStartTime_map.erase(fStartTime_map.begin(), stopTime);
 }
