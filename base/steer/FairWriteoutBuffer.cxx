@@ -89,7 +89,7 @@ void FairWriteoutBuffer::WriteOutDataDeadTimeMap(double time)
       if (fVerbose > 0) {
         std::cout << "-I- FairWriteoutBuffer::WriteOutData size: " << data.size() << std::endl;
       }
-      for (unsigned int i = 0; i < data.size(); i++) {
+      for (int i = 0; i < data.size(); i++) {
         AddNewDataToTClonesArray(data[i]);
         if (fVerbose > 1) {
           std::cout << i << " : ";
