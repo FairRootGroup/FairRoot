@@ -14,7 +14,7 @@ find_path(DDS_INCLUDE_DIR NAMES KeyValue.h PATHS
   NO_DEFAULT_PATH
 )
 
-find_path(DDS_LIBRARY_DIR NAMES libdds-key-value-lib.dylib libdds-key-value-lib.so
+find_path(DDS_LIBRARY_DIR NAMES libdds-custom-cmd-lib.dylib libdds-custom-cmd-lib.so
   PATHS ${DDS_PATH}/lib
   PATHS ${SIMPATH}/DDS/lib
   NO_DEFAULT_PATH
