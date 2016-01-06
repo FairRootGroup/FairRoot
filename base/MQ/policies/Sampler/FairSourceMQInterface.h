@@ -19,89 +19,98 @@
 #include <type_traits>
 #include <functional>
 
-
 template<typename T, typename U>
 using enable_if_match = typename std::enable_if<std::is_same<T,U>::value,int>::type;
 
-
 template<typename FairSourceType, typename DataType>
-class FairSourceMQInterface : public BaseSourcePolicy< FairSourceMQInterface<FairSourceType, DataType> >
+class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<FairSourceType, DataType>>
 {
-	typedef DataType* DataType_ptr;
-	typedef FairSourceMQInterface<FairSourceType,DataType> this_type;
-public:
-	FairSourceMQInterface() : 
-			BaseSourcePolicy<FairSourceMQInterface<FairSourceType, DataType>>(), 
-			fSource(nullptr), 
-			fData(nullptr), 
-			fIndex(0),
-			fMaxIndex(-1),
-			fSourceName(),
-			fBranchName(),
-			fRunAna(nullptr)
-	{
-	}
+    typedef DataType* DataType_ptr;
+    typedef FairSourceMQInterface<FairSourceType,DataType> this_type;
 
-	virtual ~FairSourceMQInterface() 
-	{
-		if(fData)
-			delete fData;
-		fData=nullptr;
-		if(fSource)
-			delete fSource;
-		fSource=nullptr;
-		if(fRunAna)
-			delete fRunAna;
-		fRunAna=nullptr;
-	}
+  public:
+    FairSourceMQInterface() :
+        BaseSourcePolicy<FairSourceMQInterface<FairSourceType, DataType>>(),
+        fSource(nullptr),
+        fData(nullptr),
+        fIndex(0),
+        fMaxIndex(-1),
+        fClassName(),
+        fSourceName(),
+        fBranchName(),
+        fRunAna(nullptr)
+    {
+    }
 
-	//______________________________________________________________________________
-	int64_t GetNumberOfEvent()
-	{
-		return fMaxIndex;
-	}
+    FairSourceMQInterface(const FairSourceMQInterface&) = delete;
+    FairSourceMQInterface operator=(const FairSourceMQInterface&) = delete;
 
-	void SetFileProperties(const std::string &filename, const std::string &branchname)
+    virtual ~FairSourceMQInterface()
+    {
+        if (fData)
+        {
+            delete fData;
+        }
+        fData = nullptr;
+
+        if (fSource)
+        {
+            delete fSource;
+        }
+        fSource = nullptr;
+
+        if (fRunAna)
+        {
+            delete fRunAna;
+        }
+        fRunAna = nullptr;
+    }
+
+    int64_t GetNumberOfEvent()
+    {
+        return fMaxIndex;
+    }
+
+    void SetFileProperties(const std::string &filename, const std::string &branchname)
     {
         fSourceName = filename;
         fBranchName = branchname;
     }
 
 
-	//______________________________________________________________________________
-	// FairFileSource
+    //______________________________________________________________________________
+    // FairFileSource
 
-	template <typename T = FairSourceType, enable_if_match<T, FairFileSource> = 0>
-	void InitSource()
-	{
-		fRunAna = new FairRunAna();
-		fSource = new FairSourceType(fSourceName.c_str());
-		fSource->Init();
-		fSource->ActivateObject((TObject**)&fData,fBranchName.c_str());
-		fMaxIndex = fSource->CheckMaxEventNo();
-	}
+    template <typename T = FairSourceType, enable_if_match<T, FairFileSource> = 0>
+    void InitSource()
+    {
+        fRunAna = new FairRunAna();
+        fSource = new FairSourceType(fSourceName.c_str());
+        fSource->Init();
+        fSource->ActivateObject((TObject**)&fData,fBranchName.c_str());
+        fMaxIndex = fSource->CheckMaxEventNo();
+    }
 
-	template <typename T = FairSourceType, enable_if_match<T, FairFileSource> = 0>
-	void SetIndex(int64_t eventIdx)
-	{
-		fIndex=eventIdx;
-	}
+    template <typename T = FairSourceType, enable_if_match<T, FairFileSource> = 0>
+    void SetIndex(int64_t eventIdx)
+    {
+        fIndex = eventIdx;
+    }
 
-	template <typename T = FairSourceType, enable_if_match<T, FairFileSource> = 0>
- 	DataType_ptr GetOutData()
- 	{
-		fSource->ReadEvent(fIndex);
-		return fData;
- 	}
+    template <typename T = FairSourceType, enable_if_match<T, FairFileSource> = 0>
+    DataType_ptr GetOutData()
+    {
+        fSource->ReadEvent(fIndex);
+        return fData;
+    }
 
-protected:
-
- 	FairSourceType* fSource;
- 	DataType_ptr fData;
- 	int64_t fIndex;
- 	int64_t fMaxIndex;
- 	std::string fClassName;
- 	std::string fBranchName;
- 	std::string fSourceName;
- 	FairRunAna* fRunAna;
+  protected:
+    FairSourceType* fSource;
+    DataType_ptr fData;
+    int64_t fIndex;
+    int64_t fMaxIndex;
+    std::string fClassName;
+    std::string fBranchName;
+    std::string fSourceName;
+    FairRunAna* fRunAna;
 };

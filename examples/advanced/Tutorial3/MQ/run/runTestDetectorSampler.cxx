@@ -43,7 +43,7 @@ using TSamplerTMessage = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetect
 typedef struct DeviceOptions
 {
     DeviceOptions() :
-        id(), ioThreads(0), dataFormat(), inputFile(), parameterFile(), branch(), eventRate(0),
+        id(), ioThreads(0), dataFormat(), inputFile(), parameterFile(), branch(), eventRate(0), chainInput(0),
         outputSocketType(), outputBufSize(0), outputMethod(), outputAddress(),
         ackSocketType(), ackBufSize(0), ackMethod(), ackAddress() {}
 

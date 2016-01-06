@@ -32,6 +32,8 @@ class FairMQSamplerTask : public FairTask
   public:
     FairMQSamplerTask();
     FairMQSamplerTask(const Text_t *name, int iVerbose = 1);
+    FairMQSamplerTask(const FairMQSamplerTask&) = delete;
+    FairMQSamplerTask operator=(const FairMQSamplerTask&) = delete;
 
     virtual ~FairMQSamplerTask();
 
@@ -51,11 +53,6 @@ class FairMQSamplerTask : public FairTask
     Long64_t fEventIndex;
     boost::function<void()> SendPart; // function pointer for the Sampler callback.
     FairEventHeader *fEvtHeader;
-
-  private:
-    /// Copy Constructor
-    FairMQSamplerTask(const FairMQSamplerTask&);
-    FairMQSamplerTask operator=(const FairMQSamplerTask&);
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */

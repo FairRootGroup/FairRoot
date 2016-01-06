@@ -27,9 +27,8 @@ class FairTMessage : public TMessage
     }
 };
 
-
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage (void *data, void *hint)
+void free_tmessage(void *data, void *hint)
 {
     delete (TMessage*)hint;
 }
@@ -44,6 +43,9 @@ class RootSerializer
         , fNumInput(0)
     {}
 
+    RootSerializer(const RootSerializer&) = delete;
+    RootSerializer operator=(const RootSerializer&) = delete;
+
     ~RootSerializer()
     {}
 
@@ -51,7 +53,7 @@ class RootSerializer
     {
         fContainer = new TClonesArray(ClassName.c_str());
     }
-    
+
     void InitContainer(TClonesArray* array)
     {
         fContainer = array;
@@ -60,7 +62,7 @@ class RootSerializer
     ////////////////////////////////////////////////////////////////////////////////////////
     // serialize
 
-    virtual void DoSerialization(TClonesArray* array)
+    void DoSerialization(TClonesArray* array)
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(array);
@@ -100,6 +102,9 @@ class RootDeSerializer
         , fNumInput(0)
     {}
 
+    RootDeSerializer(const RootDeSerializer&) = delete;
+    RootDeSerializer operator=(const RootDeSerializer&) = delete;
+
     ~RootDeSerializer()
     {}
 
@@ -116,7 +121,7 @@ class RootDeSerializer
     ////////////////////////////////////////////////////////////////////////////////////////
     // deserialize
 
-    virtual void DoDeSerialization(FairMQMessage* msg)
+    void DoDeSerialization(FairMQMessage* msg)
     {
         FairTMessage tm(msg->GetData(), msg->GetSize());
         fContainer  = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
