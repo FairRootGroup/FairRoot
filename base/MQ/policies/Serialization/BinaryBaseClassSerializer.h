@@ -7,7 +7,7 @@
 
 
 #ifndef BINARYBASECLASSSERIALIZER_H
-#define	BINARYBASECLASSSERIALIZER_H
+#define BINARYBASECLASSSERIALIZER_H
 
 #include <iostream>
 #include "FairMQMessage.h"
@@ -15,12 +15,15 @@
 template <typename TPayload>
 class BinaryBaseClassSerializer
 {
-public:
+  public:
     BinaryBaseClassSerializer()
         : fPayload(nullptr)
         , fMessage(nullptr)
         , fNumInput(0)
     {}
+
+    BinaryBaseClassSerializer(const BinaryBaseClassSerializer&) = delete;
+    BinaryBaseClassSerializer operator=(const BinaryBaseClassSerializer&) = delete;
 
     virtual ~BinaryBaseClassSerializer()
     {}
@@ -45,7 +48,7 @@ public:
         return fMessage;
     }
 
-protected:
+  protected:
     TPayload* fPayload;
     FairMQMessage* fMessage;
     int fNumInput;

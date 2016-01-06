@@ -31,10 +31,10 @@ class FairTut8Unpacker : public FairUnpack
 
     /** Initialization. Called once, before the event loop. */
     virtual Bool_t Init();
-    
+
     /** Process an MBS sub-event. */
     virtual Bool_t DoUnpack(Int_t* data, Int_t size);
-    
+
     /** Clear the output structures. */
     virtual void Reset();
 
@@ -57,6 +57,10 @@ class FairTut8Unpacker : public FairUnpack
     TClonesArray* fRawData; /**< Array of output raw items. */
     Int_t fNHits;           /**< Number of raw items in current event. */
     Int_t fNHitsTotal;      /**< Total number of raw items. */
+
+    /// Copy Constructor
+    FairTut8Unpacker(const FairTut8Unpacker&);
+    FairTut8Unpacker operator=(const FairTut8Unpacker&);
 
   public:
     // Class definition

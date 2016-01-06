@@ -39,13 +39,16 @@
 template <typename PodType, typename HitType>
 class MyHitSerializer : public BaseSerializationPolicy<MyHitSerializer<PodType,HitType> >
 {
-public:
-    
+  public:
     MyHitSerializer() : BaseSerializationPolicy<MyHitSerializer<PodType,HitType> >(),
         fPayload(nullptr),
         fMessage(nullptr),
         fNumInput(0)
     {}
+
+    MyHitSerializer(const MyHitSerializer&) = delete;
+    MyHitSerializer operator=(const MyHitSerializer&) = delete;
+
     virtual ~MyHitSerializer(){}
 
     void SetMessage(FairMQMessage* msg)
@@ -57,7 +60,7 @@ public:
     {
         return fMessage;
     }
-   
+
     FairMQMessage* SerializeMsg(TClonesArray* array)
     {
         int numOutput = array->GetEntriesFast();
@@ -82,9 +85,8 @@ public:
         }
         return fMessage;
     }
-    
-protected:
 
+  protected:
     PodType* fPayload;
     FairMQMessage* fMessage;
     int fNumInput;
@@ -96,27 +98,28 @@ protected:
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // deserialize
-    
 
 template <typename PodType, typename HitType>
 class MyHitDeserializer : public BaseDeserializationPolicy<MyHitDeserializer<PodType,HitType> >
 {
-public:
-    
-    MyHitDeserializer() : BaseDeserializationPolicy<MyHitDeserializer<PodType,HitType> >(), 
+  public:
+    MyHitDeserializer() : BaseDeserializationPolicy<MyHitDeserializer<PodType,HitType>>(),
         fContainer(nullptr),
         fPayload(nullptr),
         fMessage(nullptr),
         fNumInput(0)
     {}
 
-    virtual ~MyHitDeserializer() 
-    { 
-        if(fContainer) 
-            delete fContainer; 
+    MyHitDeserializer(const MyHitDeserializer&) = delete;
+    MyHitDeserializer operator=(const MyHitDeserializer&) = delete;
+
+    virtual ~MyHitDeserializer()
+    {
+        if(fContainer)
+            delete fContainer;
         fContainer=nullptr;
     }
-    
+
     TClonesArray* DeserializeMsg(FairMQMessage* msg)
     {
         int inputSize = msg->GetSize();
@@ -142,19 +145,18 @@ public:
         }
         return fContainer;
     }
-    
+
     void InitContainer(const std::string &ClassName)
     {
         fContainer = new TClonesArray(ClassName.c_str());
     }
-    
+
     void InitContainer(TClonesArray* array)
     {
         fContainer = array;
     }
-    
-protected:
-    
+
+  protected:
     TClonesArray* fContainer;
     PodType* fPayload;
     FairMQMessage* fMessage;
@@ -170,5 +172,5 @@ typedef MyHitSerializer<TestDetectorPayload::Hit,FairTestDetectorHit>   Tuto3Hit
 typedef MyHitDeserializer<TestDetectorPayload::Hit,FairTestDetectorHit> Tuto3HitDeserializer_t;
 
 
-#endif	/* MYHITSERIALIZERCRTP_H */
+#endif /* MYHITSERIALIZERCRTP_H */
 

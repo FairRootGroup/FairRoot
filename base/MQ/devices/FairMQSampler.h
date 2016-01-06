@@ -62,6 +62,9 @@ class FairMQSampler : public FairMQDevice
     };
 
     FairMQSampler();
+    FairMQSampler(const FairMQSampler&) = delete;
+    FairMQSampler operator=(const FairMQSampler&) = delete;
+
     virtual ~FairMQSampler();
 
     virtual void SetProperty(const int key, const std::string& value);
@@ -95,11 +98,6 @@ class FairMQSampler : public FairMQDevice
     int fChainInput;
     int fEventRate;
     int fEventCounter;
-
-  private:
-    /// Copy Constructor
-    FairMQSampler(const FairMQSampler&);
-    FairMQSampler operator=(const FairMQSampler&);
 };
 
 // Template implementation is in FairMQSampler.tpl :

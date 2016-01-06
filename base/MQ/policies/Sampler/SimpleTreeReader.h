@@ -27,12 +27,13 @@
 #include "FairMQMessage.h"
 
 template <typename DataType>
-class base_SimpleTreeReader 
+class base_SimpleTreeReader
 {
-protected:
+  protected:
     typedef DataType* DataType_ptr;
     typedef DataType& DataType_ref;
-public:
+
+  public:
     base_SimpleTreeReader()
         : fDataBranch(nullptr)
         , fFileName()
@@ -42,7 +43,13 @@ public:
         , fTree(nullptr)
         , fIndex(0)
         , fIndexMax(0)
+        , SendHeader()
+        , GetSocketNumber()
+        , GetCurrentIndex()
     {}
+
+    base_SimpleTreeReader(const base_SimpleTreeReader&) = delete;
+    base_SimpleTreeReader operator=(const base_SimpleTreeReader&) = delete;
 
     virtual ~base_SimpleTreeReader()
     {
@@ -69,52 +76,45 @@ public:
             fTree = (TTree*)fInputFile->Get(fTreeName.c_str());
             if (fTree)
             {
-                fTree->SetBranchAddress(fBranchName.c_str(),&fDataBranch);
-                fIndexMax=fTree->GetEntries();
+                fTree->SetBranchAddress(fBranchName.c_str(), &fDataBranch);
+                fIndexMax = fTree->GetEntries();
             }
             else
             {
-                LOG(ERROR)<<"Could not find tree "<<fTreeName;
+                LOG(ERROR) << "Could not find tree " << fTreeName;
             }
         }
         else
         {
-            LOG(ERROR)<<"Could not open file "<<fFileName<<" in SimpleTreeReader::InitSource()";
+            LOG(ERROR) << "Could not open file " << fFileName << " in SimpleTreeReader::InitSource()";
         }
         
     }
-    
-    
-    
-    
 
     void SendMultiPart()
     {
         SendHeader(0);// callback that does the zmq multipart AND increment the current index (Event number) in generic sampler
-
     }
-    
-    
-    
+
     /// ///////////////////////////////////////////////////////////////////////////////////////
     void SetIndex(int64_t Event)
     {
         fIndex = Event;
     }
-    
+
     /// ///////////////////////////////////////////////////////////////////////////////////////
     DataType_ptr GetOutData()
     {
         return GetOutData(fIndex);
     }
-    
+
     /// ///////////////////////////////////////////////////////////////////////////////////////
     DataType_ptr GetOutData(int64_t Event)
     {
         fTree->GetEntry(Event);
         return fDataBranch;
     }
-    
+
     /// ///////////////////////////////////////////////////////////////////////////////////////
     int64_t GetNumberOfEvent()
     {
@@ -123,16 +123,16 @@ public:
         else 
             return 0;
     }
-    
+
     /// ///////////////////////////////////////////////////////////////////////////////////////
     template<typename T>
     std::vector< std::vector<T> > GetDataVector()
     {
-        std::vector<std::vector<T> > Allobj;
+        std::vector<std::vector<T>> Allobj;
         std::vector<T> TempObj;
         if (std::is_same<DataType,TClonesArray>::value)
         {
-            for (int64_t i(0);i<fTree->GetEntries() ;i++)
+            for (int64_t i = 0; i < fTree->GetEntries(); i++)
             {
                 TempObj.clear();
                 fTree->GetEntry(i);
@@ -148,11 +148,11 @@ public:
         }
         else
         {
-            for (int64_t i(0);i<fTree->GetEntries() ;i++)
+            for (int64_t i = 0; i < fTree->GetEntries(); i++)
             {
                 TempObj.clear();
                 fTree->GetEntry(i);
-                T Data_i=*fDataBranch;
+                T Data_i = *fDataBranch;
                 TempObj.push_back(Data_i);
                 Allobj.push_back(TempObj);
             }
@@ -160,27 +160,26 @@ public:
         return Allobj;
     }
 
-    
     /// ///////////////////////////////////////////////////////////////////////////////////////
     // provides a callback to the Sampler.
     void BindSendHeader(std::function<void(int)> callback)
     {
         SendHeader = callback;
     }
-    
+
     /// ///////////////////////////////////////////////////////////////////////////////////////
     void BindGetSocketNumber(std::function<int()> callback)
     {
         GetSocketNumber = callback;
     }
-    
+
     /// ///////////////////////////////////////////////////////////////////////////////////////
     void BindGetCurrentIndex(std::function<int()> callback)
     {
         GetCurrentIndex = callback;
     }
-    
-private:
+
+  private:
     /// ///////////////////////////////////////////////////////////////////////////////////////
     std::function<void(int)> SendHeader;  // function pointer for the Sampler callback.
     std::function<int()> GetSocketNumber; // function pointer for the Sampler callback.
@@ -199,5 +198,4 @@ private:
 template<typename T>
 using SimpleTreeReader = base_SimpleTreeReader<T>;
 
-#endif	/* SIMPLEROOTSAMPLER_H */
-
+#endif /* SIMPLEROOTSAMPLER_H */

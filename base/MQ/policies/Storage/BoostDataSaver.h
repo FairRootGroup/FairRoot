@@ -28,31 +28,30 @@ typedef boost::archive::binary_iarchive TBoostIn;
 typedef boost::archive::binary_oarchive TBoostOut;
 
 template <typename TPayload, typename TArchiveIn=TBoostIn, typename TArchiveOut=TBoostOut>
-class BoostDataSaver 
+class BoostDataSaver
 {
-public:
-    
+  public:
     typedef std::vector<TPayload> TObjArray;
     typedef std::vector<TObjArray> TObjArrContainer;
-    
+
     BoostDataSaver() {}
     virtual ~BoostDataSaver() {}
-    
+
     virtual void InitOutputFile(){}
-    
+
     void Write(std::ofstream& outfile, TPayload* ObjArr, long sizeArr=1)
     {
         TObjArray DataVector(ObjArr, ObjArr +sizeArr);
         TArchiveOut OutArchive(outfile);
         OutArchive << DataVector;
     }
-    
+
     void Write(std::ofstream& outfile, TObjArray DataVector)
     {
         TArchiveOut OutArchive(outfile);
         OutArchive << DataVector;
     }
-    
+
     void Write(std::ofstream& outfile, FairMQMessage* msg)
     {
         //std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
@@ -73,7 +72,7 @@ public:
         TArchiveOut OutArchive(outfile);
         OutArchive << objarr;
     }
-    
+
     TObjArrContainer Read(std::ifstream& infile)
     {
         TObjArrContainer DataContainer;
@@ -86,10 +85,6 @@ public:
         }
         return DataContainer;
     }
-    
-    
 };
 
-
-#endif	/* BOOSTDATASAVER_H */
-
+#endif /* BOOSTDATASAVER_H */

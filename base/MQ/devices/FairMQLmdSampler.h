@@ -32,35 +32,34 @@ extern "C"
 #include <tuple>
 #include <map>
 
-
 namespace fs = boost::filesystem;
-
 
 class FairMQLmdSampler : public FairMQDevice
 {
-    typedef fs::path         path;
+    typedef fs::path path;
 
-public:
-
+  public:
     FairMQLmdSampler();
+    FairMQLmdSampler(const FairMQLmdSampler&) = delete;
+    FairMQLmdSampler operator=(const FairMQLmdSampler&) = delete;
+
     virtual ~FairMQLmdSampler();
 
     void AddSubEvtKey(short type, short subType, short procid, short subCrate, short control, const std::string& channelName);
     void AddDir(const std::string& dir);
     void AddFile(const std::string& fileName);
 
-protected:
-
+  protected:
     void InitTask();
     void Run();
     int ReadEvent();
     bool OpenNextFile(const std::string& fileName);
-    
+
     void Close();
-private:
-     ////////////////////// data members
+
+  private:
     int fCurrentFile;
-    int fNEvent;    
+    int fNEvent;
     int fCurrentEvent;
     std::vector<std::string> fFileNames;
     s_evt_channel* fxInputChannel;
@@ -72,7 +71,7 @@ private:
     bool stop;
     int fMsgCounter;
     typedef std::tuple<short,short,short,short,short> SubEvtKey;
-    std::map<SubEvtKey,std::string > fSubEventChanMap;
+    std::map<SubEvtKey, std::string> fSubEventChanMap;
 };
 
 #endif  /* !FAIRMQLMDSAMPLER_H */

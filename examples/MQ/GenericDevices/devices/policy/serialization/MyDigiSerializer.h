@@ -23,7 +23,6 @@
 #include "MyDigi.h"
 #include "MyPodData.h"
 
-
 // FairRoot - Tutorial3
 #include "FairTestDetectorDigi.h"
 #include "FairTestDetectorPayload.h"
@@ -31,19 +30,18 @@
 template <typename PodType,typename DigiType>
 class MyDigiSerializer : public BaseSerializationPolicy < MyDigiSerializer<PodType,DigiType> >
 {
-public: 
-    
-    
-    MyDigiSerializer() :  
+  public:
+    MyDigiSerializer() :
           fPayload(nullptr)
         , fMessage(nullptr)
         , fNumInput(0)
-
     {}
+
+    MyDigiSerializer(const MyDigiSerializer&) = delete;
+    MyDigiSerializer operator=(const MyDigiSerializer&) = delete;
 
     virtual ~MyDigiSerializer()
     {}
-    
 
     void SetMessage(FairMQMessage* msg)
     {
@@ -54,7 +52,7 @@ public:
     {
         return fMessage;
     }
-    
+
     FairMQMessage* SerializeMsg(TClonesArray* array)
     {
         int nDigis = array->GetEntriesFast();
@@ -82,9 +80,8 @@ public:
 
         return fMessage;
     }
-    
-protected:
 
+  protected:
     PodType* fPayload;
     FairMQMessage* fMessage;
     int fNumInput;
@@ -95,22 +92,24 @@ protected:
 template <typename PodType,typename DigiType>
 class MyDigiDeserializer : public BaseDeserializationPolicy < MyDigiDeserializer<PodType,DigiType> >
 {
-public: 
-    
-    MyDigiDeserializer() : 
-          fContainer(nullptr) 
+  public:
+    MyDigiDeserializer()
+        : fContainer(nullptr)
         , fPayload(nullptr)
         , fMessage(nullptr)
         , fNumInput(0)
     {}
 
+    MyDigiDeserializer(const MyDigiDeserializer&) = delete;
+    MyDigiDeserializer operator=(const MyDigiDeserializer&) = delete;
+
     virtual ~MyDigiDeserializer()
-    { 
-        if(fContainer) 
-            delete fContainer; 
+    {
+        if(fContainer)
+            delete fContainer;
         fContainer=nullptr;
     }
-    
+
     TClonesArray* DeserializeMsg(FairMQMessage* msg)
     {
         int inputSize = msg->GetSize();
@@ -135,28 +134,23 @@ public:
         }
         return fContainer;
     }
-    
-    
+
     void InitContainer(const std::string &ClassName)
     {
         fContainer = new TClonesArray(ClassName.c_str());
     }
-    
+
     void InitContainer(TClonesArray* array)
     {
         fContainer = array;
     }
-    
-    protected:
-    
+
+  protected:
     TClonesArray* fContainer;
     PodType* fPayload;
     FairMQMessage* fMessage;
     int fNumInput;
-    
 };
-
-
 
 // for tuto 7 data
 typedef MyDigiSerializer<MyPodData::Digi,MyDigi>        MyDigiSerializer_t;
@@ -166,4 +160,4 @@ typedef MyDigiSerializer<TestDetectorPayload::Digi,FairTestDetectorDigi>    Tuto
 typedef MyDigiDeserializer<TestDetectorPayload::Digi,FairTestDetectorDigi>  Tuto3DigiDeSerializer_t;
 
 
-#endif  /* MYDIGISERIALIZERCRTP_H */
+#endif /* MYDIGISERIALIZERCRTP_H */

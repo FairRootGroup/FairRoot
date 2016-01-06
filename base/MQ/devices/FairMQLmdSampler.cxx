@@ -12,12 +12,12 @@
  * Created on October 27, 2015, 2:07 PM
  */
 
+#include <stdexcept>
 
 #include "FairMQLogger.h"
 #include "FairMQLmdSampler.h"
-#include <stdexcept>
 
-FairMQLmdSampler::FairMQLmdSampler() : 
+FairMQLmdSampler::FairMQLmdSampler() :
     fCurrentFile(0),
     fNEvent(0),
     fCurrentEvent(0),
@@ -29,11 +29,12 @@ FairMQLmdSampler::FairMQLmdSampler() :
     fxSubEvent(nullptr),
     fxInfoHeader(nullptr),
     stop(false),
-    fMsgCounter(0)
+    fMsgCounter(0),
+    fSubEventChanMap()
 {
 }
 
-FairMQLmdSampler::~FairMQLmdSampler() 
+FairMQLmdSampler::~FairMQLmdSampler()
 {
 }
 

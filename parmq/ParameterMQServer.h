@@ -36,6 +36,8 @@ class ParameterMQServer : public FairMQDevice
     };
 
     ParameterMQServer();
+    ParameterMQServer(const ParameterMQServer&) = delete;
+    ParameterMQServer operator=(const ParameterMQServer&) = delete;
     virtual ~ParameterMQServer();
 
     virtual void Run();
