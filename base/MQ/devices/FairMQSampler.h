@@ -31,6 +31,7 @@
 #include "FairRuntimeDb.h"
 #include "FairRunAna.h"
 #include "FairTask.h"
+#include "FairFileSource.h"
 
 #include "FairMQDevice.h"
 #include "FairMQSamplerTask.h"
@@ -91,6 +92,7 @@ class FairMQSampler : public FairMQDevice
 
     FairRunAna *fFairRunAna;
     FairMQSamplerTask *fSamplerTask;
+    boost::timer::auto_cpu_timer* fTimer;
     std::string fInputFile; // Filename of a root file containing the simulated digis.
     std::string fParFile;
     std::string fBranch; // The name of the sub-detector branch to stream the digis from.

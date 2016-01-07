@@ -24,7 +24,6 @@
 #include "FairMQMessage.h"
 #include "FairMQTransportFactory.h"
 
-
 class FairMQProcessorTask : public FairTask
 {
   public:
@@ -39,8 +38,9 @@ class FairMQProcessorTask : public FairTask
     void SetSendPart(boost::function<void()>); // provides a callback to the Processor.
     void SetReceivePart(boost::function<bool()>); // provides a callback to the Processor.
 
-    FairMQMessage* GetPayload();
     void SetPayload(FairMQMessage* msg);
+    FairMQMessage* GetPayload();
+    void ClearPayload();
 
   protected:
     FairMQMessage* fPayload;

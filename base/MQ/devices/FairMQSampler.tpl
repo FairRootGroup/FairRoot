@@ -16,6 +16,7 @@ template <typename Loader>
 FairMQSampler<Loader>::FairMQSampler()
     : fFairRunAna(new FairRunAna())
     , fSamplerTask(new Loader())
+    , fTimer(nullptr)
     , fInputFile()
     , fParFile()
     , fBranch()
@@ -47,12 +48,14 @@ void FairMQSampler<Loader>::InitTask()
     // Set the callback for the Sampler Task for sending multipart messages.
     fSamplerTask->SetSendPart(boost::bind(&FairMQSampler::SendPart, this));
 
-    fFairRunAna->SetInputFile(TString(fInputFile));
+    FairFileSource* source = new FairFileSource(TString(fInputFile));
     // Adds the same file to the input. The output will still be a single file.
     for (int i = 0; i < fChainInput; ++i)
     {
-        fFairRunAna->AddFile(fInputFile);
+        source->AddFile(fInputFile);
     }
+
+    fFairRunAna->SetSource(source);
 
     TString output = fInputFile;
     output.Append(".out.root");
@@ -60,8 +63,8 @@ void FairMQSampler<Loader>::InitTask()
 
     fFairRunAna->AddTask(fSamplerTask);
 
-    FairRuntimeDb *rtdb = fFairRunAna->GetRuntimeDb();
-    FairParRootFileIo *parInput1 = new FairParRootFileIo();
+    FairRuntimeDb* rtdb = fFairRunAna->GetRuntimeDb();
+    FairParRootFileIo* parInput1 = new FairParRootFileIo();
     parInput1->open(TString(fParFile).Data());
     rtdb->setFirstInput(parInput1);
     rtdb->print();
@@ -86,6 +89,8 @@ void FairMQSampler<Loader>::Run()
     // store the channel references to avoid traversing the map on every loop iteration
     FairMQChannel& dataOutChannel = fChannels.at("data-out").at(0);
 
+    fTimer = new boost::timer::auto_cpu_timer();
+
     for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
     {
         fSamplerTask->SetEventIndex(eventNr);
@@ -94,7 +99,7 @@ void FairMQSampler<Loader>::Run()
         dataOutChannel.Send(fSamplerTask->GetOutput());
         ++sentMsgs;
 
-        fSamplerTask->GetOutput()->CloseMessage();
+        fSamplerTask->ClearOutput();
 
         if (!CheckCurrentState(RUNNING))
         {
@@ -116,8 +121,6 @@ void FairMQSampler<Loader>::Run()
 template <typename Loader>
 void FairMQSampler<Loader>::ListenForAcks()
 {
-    boost::timer::auto_cpu_timer timer;
-
     for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
     {
         std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
@@ -129,8 +132,9 @@ void FairMQSampler<Loader>::ListenForAcks()
         }
     }
 
-    boost::timer::cpu_times const elapsedTime(timer.elapsed());
-    LOG(INFO) << "Acknowledged " << fNumEvents << " messages in:\n" << boost::timer::format(elapsedTime, 2);
+    boost::timer::cpu_times const elapsedTime(fTimer->elapsed());
+    LOG(INFO) << "Acknowledged " << fNumEvents << " messages in:";
+    delete fTimer;
 }
 
 template <typename Loader>

@@ -143,7 +143,7 @@ void runFileSink(const DeviceOptions_t& options)
     filesink.ChangeState("INIT_TASK");
     filesink.WaitForEndOfState("INIT_TASK");
 
-    filesink.InitOutputFile(options.id);
+    filesink.InitOutputFile(options.id + options.dataFormat);
 
     filesink.ChangeState("RUN");
     filesink.InteractiveStateLoop();
