@@ -14,21 +14,22 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Ru
 
     // store the channel references to avoid traversing the map on every loop iteration
     FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
+    FairMQChannel& ackOutChannel = fChannels.at("ack-out").at(0);
 
     while (CheckCurrentState(RUNNING))
     {
-        FairMQMessage* msg = fTransportFactory->CreateMessage();
+        unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage());
 
         if (dataInChannel.Receive(msg) > 0)
         {
             receivedMsgs++;
-            Int_t inputSize = msg->GetSize();
-            Int_t numInput = inputSize / sizeof(TestDetectorPayload::Hit);
+            int inputSize = msg->GetSize();
+            int numInput = inputSize / sizeof(TestDetectorPayload::Hit);
             TestDetectorPayload::Hit* input = static_cast<TestDetectorPayload::Hit*>(msg->GetData());
 
             fOutput->Delete();
 
-            for (Int_t i = 0; i < numInput; ++i)
+            for (int i = 0; i < numInput; ++i)
             {
                 TVector3 pos(input[i].posX, input[i].posY, input[i].posZ);
                 TVector3 dpos(input[i].dposX, input[i].dposY, input[i].dposZ);
@@ -40,13 +41,11 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::Ru
                 LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
             }
 
-            std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
-            fChannels.at("ack-out").at(0).Send(ack);
+            unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
+            ackOutChannel.Send(ack);
 
             fTree->Fill();
         }
-
-        delete msg;
     }
 
     LOG(INFO) << "I've received " << receivedMsgs << " messages!";

@@ -68,7 +68,7 @@ void FairMQProcessor::Run()
             sentMsgs++;
         }
 
-        fProcessorTask->GetPayload()->CloseMessage();
+        fProcessorTask->ClearPayload();
     }
 
     // LOG(INFO) << "Input size (" << receivedMsgs << "): " << inSize << ". Output size (" << sentMsgs << "): " << outSize;

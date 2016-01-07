@@ -56,9 +56,9 @@ class FairTestDetectorFileSink : public FairMQDevice
 {
   public:
     FairTestDetectorFileSink()
-        : fOutFile(NULL)
-        , fTree(NULL)
-        , fOutput(NULL)
+        : fOutput(nullptr)
+        , fOutFile(nullptr)
+        , fTree(nullptr)
         , fHitVector()
         , fHasBoostSerialization(false)
     {
@@ -76,6 +76,8 @@ class FairTestDetectorFileSink : public FairMQDevice
             }
         }
     }
+    FairTestDetectorFileSink(const FairTestDetectorFileSink&) = delete;
+    FairTestDetectorFileSink operator=(const FairTestDetectorFileSink&) = delete;
 
     virtual ~FairTestDetectorFileSink()
     {
@@ -85,6 +87,11 @@ class FairTestDetectorFileSink : public FairMQDevice
         {
             fHitVector.clear();
         }
+        if (fOutput)
+        {
+            delete fOutput;
+        }
+        delete fOutFile;
     }
 
     virtual void InitOutputFile(TString defaultId = "100")
@@ -108,19 +115,15 @@ class FairTestDetectorFileSink : public FairMQDevice
     virtual void Run();
 
   private:
+    TClonesArray* fOutput;
     TFile* fOutFile;
     TTree* fTree;
-    TClonesArray* fOutput;
 
 #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
     vector<TIn> fHitVector;
     bool fHasBoostSerialization;
 #endif // for BOOST serialization
-
-    /// Copy Constructor
-    FairTestDetectorFileSink(const FairTestDetectorFileSink&);
-    FairTestDetectorFileSink operator=(const FairTestDetectorFileSink&);
 };
 
 // Template implementation of Run() in FairTestDetectorFileSink.tpl :

@@ -47,7 +47,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
   public:
     /** Default constructor **/
     FairTestDetectorMQRecoTask()
-        : fRecoTask(NULL)
+        : fRecoTask(nullptr)
         , fDigiVector()
         , fHitVector()
         , fHasBoostSerialization(false)
@@ -79,7 +79,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     }
 
     FairTestDetectorMQRecoTask(Int_t verbose)
-        : fRecoTask(NULL)
+        : fRecoTask(nullptr)
         , fDigiVector()
         , fHitVector()
         , fHasBoostSerialization(false)
@@ -129,12 +129,22 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
             fHasBoostSerialization = true;
         }
     }
+    FairTestDetectorMQRecoTask(const FairTestDetectorMQRecoTask&) = delete;
+    FairTestDetectorMQRecoTask operator=(const FairTestDetectorMQRecoTask&) = delete;
 
     /** Destructor **/
     virtual ~FairTestDetectorMQRecoTask()
     {
-        fRecoTask->fDigiArray->Delete();
-        fRecoTask->fHitArray->Delete();
+        if (fRecoTask->fDigiArray)
+        {
+            fRecoTask->fDigiArray->Delete();
+            delete fRecoTask->fDigiArray;
+        }
+        if (fRecoTask->fHitArray)
+        {
+            fRecoTask->fHitArray->Delete();
+            delete fRecoTask->fHitArray;
+        }
         delete fRecoTask;
         if (fDigiVector.size() > 0)
         {
@@ -175,10 +185,6 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     vector<TIn> fDigiVector;
     vector<TOut> fHitVector;
 #endif // for BOOST serialization
-
-    /// Copy Constructor
-    FairTestDetectorMQRecoTask(const FairTestDetectorMQRecoTask&);
-    FairTestDetectorMQRecoTask operator=(const FairTestDetectorMQRecoTask&);
 };
 
 // Template implementation of exec in FairTestDetectorMQRecoTask.tpl :
