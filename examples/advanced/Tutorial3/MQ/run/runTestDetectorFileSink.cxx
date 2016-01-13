@@ -18,12 +18,6 @@
 
 #include "FairMQLogger.h"
 
-#ifdef NANOMSG
-#include "nanomsg/FairMQTransportFactoryNN.h"
-#else
-#include "zeromq/FairMQTransportFactoryZMQ.h"
-#endif
-
 #include "FairTestDetectorFileSink.h"
 
 using namespace std;
@@ -42,12 +36,13 @@ using TSinkTMessage = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
 typedef struct DeviceOptions
 {
     DeviceOptions() :
-        id(), ioThreads(0), dataFormat(),
+        id(), ioThreads(0), transport(), dataFormat(),
         inputSocketType(), inputBufSize(0), inputMethod(), inputAddress(),
         ackSocketType(), ackBufSize(0), ackMethod(), ackAddress() {}
 
     string id;
     int ioThreads;
+    string transport;
     string dataFormat;
     string inputSocketType;
     int inputBufSize;
@@ -69,6 +64,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
     desc.add_options()
         ("id", bpo::value<string>()->required(), "Device ID")
         ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
+        ("transport", bpo::value<string>()->default_value("zeromq"), "Transport (zeromq/nanomsg)")
         ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/boost-text/protobuf/tmessage)")
         ("input-socket-type", bpo::value<string>()->required(), "Input socket type: sub/pull")
         ("input-buff-size", bpo::value<int>()->required(), "Input buffer size in number of messages (ZeroMQ)/bytes(nanomsg)")
@@ -93,6 +89,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
     if (vm.count("id"))                { _options->id              = vm["id"].as<string>(); }
     if (vm.count("io-threads"))        { _options->ioThreads       = vm["io-threads"].as<int>(); }
+    if (vm.count("transport"))         { _options->transport       = vm["transport"].as<string>(); }
     if (vm.count("data-format"))       { _options->dataFormat      = vm["data-format"].as<string>(); }
     if (vm.count("input-socket-type")) { _options->inputSocketType = vm["input-socket-type"].as<string>(); }
     if (vm.count("input-buff-size"))   { _options->inputBufSize    = vm["input-buff-size"].as<int>(); }
@@ -112,13 +109,7 @@ void runFileSink(const DeviceOptions_t& options)
     T filesink;
     filesink.CatchSignals();
 
-#ifdef NANOMSG
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-    filesink.SetTransport(transportFactory);
+    filesink.SetTransport(options.transport);
 
     FairMQChannel inChannel(options.inputSocketType, options.inputMethod, options.inputAddress);
     inChannel.UpdateSndBufSize(options.inputBufSize);

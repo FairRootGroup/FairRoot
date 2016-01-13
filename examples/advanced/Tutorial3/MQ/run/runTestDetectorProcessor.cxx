@@ -18,12 +18,6 @@
 
 #include "FairMQLogger.h"
 
-#ifdef NANOMSG
-#include "nanomsg/FairMQTransportFactoryNN.h"
-#else
-#include "zeromq/FairMQTransportFactoryZMQ.h"
-#endif
-
 #include "FairMQProcessor.h"
 #include "FairTestDetectorMQRecoTask.h"
 
@@ -49,12 +43,13 @@ using TProcessorTaskTMessage = FairTestDetectorMQRecoTask<FairTestDetectorDigi, 
 typedef struct DeviceOptions
 {
     DeviceOptions() :
-        id(), ioThreads(0), dataFormat(), processorTask(),
+        id(), ioThreads(0), transport(), dataFormat(), processorTask(),
         inputSocketType(), inputBufSize(0), inputMethod(), inputAddress(),
         outputSocketType(), outputBufSize(0), outputMethod(), outputAddress() {}
 
     string id;
     int ioThreads;
+    string transport;
     string dataFormat;
     string processorTask;
     string inputSocketType;
@@ -77,6 +72,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
     desc.add_options()
         ("id", bpo::value<string>()->required(), "Device ID")
         ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
+        ("transport", bpo::value<string>()->default_value("zeromq"), "Transport (zeromq/nanomsg)")
         ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/boost-text/protobuf/tmessage)")
         ("processor-task", bpo::value<string>()->default_value("FairTestDetectorMQRecoTask"), "Name of the Processor Task")
         ("input-socket-type", bpo::value<string>()->required(), "Input socket type: sub/pull")
@@ -102,6 +98,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
     if (vm.count("id"))                 { _options->id               = vm["id"].as<string>(); }
     if (vm.count("io-threads"))         { _options->ioThreads        = vm["io-threads"].as<int>(); }
+    if (vm.count("transport"))          { _options->transport        = vm["transport"].as<string>(); }
     if (vm.count("data-format"))        { _options->dataFormat       = vm["data-format"].as<string>(); }
     if (vm.count("processor-task"))     { _options->processorTask    = vm["processor-task"].as<string>(); }
     if (vm.count("input-socket-type"))  { _options->inputSocketType  = vm["input-socket-type"].as<string>(); }
@@ -122,13 +119,7 @@ void runProcessor(const DeviceOptions_t& options)
     FairMQProcessor processor;
     processor.CatchSignals();
 
-#ifdef NANOMSG
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-    processor.SetTransport(transportFactory);
+    processor.SetTransport(options.transport);
 
     FairMQChannel inputChannel(options.inputSocketType, options.inputMethod, options.inputAddress);
     inputChannel.UpdateSndBufSize(options.inputBufSize);

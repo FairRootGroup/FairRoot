@@ -18,12 +18,6 @@
 
 #include "FairMQLogger.h"
 
-#ifdef NANOMSG
-#include "nanomsg/FairMQTransportFactoryNN.h"
-#else
-#include "zeromq/FairMQTransportFactoryZMQ.h"
-#endif
-
 #include "FairMQSampler.h"
 #include "FairTestDetectorDigiLoader.h"
 
@@ -43,12 +37,13 @@ using TSamplerTMessage = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetect
 typedef struct DeviceOptions
 {
     DeviceOptions() :
-        id(), ioThreads(0), dataFormat(), inputFile(), parameterFile(), branch(), eventRate(0), chainInput(0),
+        id(), ioThreads(0), transport(), dataFormat(), inputFile(), parameterFile(), branch(), eventRate(0), chainInput(0),
         outputSocketType(), outputBufSize(0), outputMethod(), outputAddress(),
         ackSocketType(), ackBufSize(0), ackMethod(), ackAddress() {}
 
     string id;
     int ioThreads;
+    string transport;
     string dataFormat;
     string inputFile;
     string parameterFile;
@@ -75,6 +70,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
     desc.add_options()
         ("id", bpo::value<string>()->required(), "Device ID")
         ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
+        ("transport", bpo::value<string>()->default_value("zeromq"), "Transport (zeromq/nanomsg)")
         ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary/boost/boost-text/protobuf/tmessage)")
         ("input-file", bpo::value<string>()->required(), "Path to the input file")
         ("parameter-file", bpo::value<string>()->required(), "path to the parameter file")
@@ -104,6 +100,7 @@ inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
 
     if (vm.count("id"))                 { _options->id               = vm["id"].as<string>(); }
     if (vm.count("io-threads"))         { _options->ioThreads        = vm["io-threads"].as<int>(); }
+    if (vm.count("transport"))          { _options->transport        = vm["transport"].as<string>(); }
     if (vm.count("data-format"))        { _options->dataFormat       = vm["data-format"].as<string>(); }
     if (vm.count("input-file"))         { _options->inputFile        = vm["input-file"].as<string>(); }
     if (vm.count("parameter-file"))     { _options->parameterFile    = vm["parameter-file"].as<string>(); }
@@ -128,13 +125,7 @@ void runSampler(const DeviceOptions_t& options)
     T sampler;
     sampler.CatchSignals();
 
-#ifdef NANOMSG
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-    sampler.SetTransport(transportFactory);
+    sampler.SetTransport(options.transport);
 
     FairMQChannel outputChannel(options.outputSocketType, options.outputMethod, options.outputAddress);
     outputChannel.UpdateSndBufSize(options.outputBufSize);

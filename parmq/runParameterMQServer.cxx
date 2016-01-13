@@ -20,12 +20,6 @@
 #include "ParameterMQServer.h"
 #include "TApplication.h"
 
-#ifdef NANOMSG
-#include "FairMQTransportFactoryNN.h"
-#else
-#include "FairMQTransportFactoryZMQ.h"
-#endif
-
 using namespace std;
 using namespace boost::program_options;
 
@@ -72,12 +66,7 @@ int main(int argc, char** argv)
 
         TApplication app("ParameterMQServer", 0, 0);
 
-#ifdef NANOMSG
-        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-        server.SetTransport(transportFactory);
+        server.SetTransport(config.GetValue<string>("transport"));
 
         server.SetProperty(ParameterMQServer::Id, id);
         server.SetProperty(ParameterMQServer::NumIoThreads, config.GetValue<int>("io-threads"));

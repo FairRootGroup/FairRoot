@@ -36,16 +36,23 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
   ${ZMQ_INCLUDE_DIR}
 )
 
+If(PROTOBUF_FOUND)
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${SYSTEM_INCLUDE_DIRECTORIES}
+    ${PROTOBUF_INCLUDE_DIR}
+  )
+EndIf(PROTOBUF_FOUND)
+
 Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-If (Boost_FOUND AND POS_C++11)
+If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startThree.sh.in ${CMAKE_BINARY_DIR}/bin/startThree.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAll.sh.in ${CMAKE_BINARY_DIR}/bin/startAll.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAllProxy.sh.in ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startPushPull.sh.in ${CMAKE_BINARY_DIR}/bin/startPushPull.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh)
-EndIf (Boost_FOUND AND POS_C++11)
+EndIf (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
@@ -82,7 +89,7 @@ Set(SRCS
   timeBasedSimulation/FairTestDetectorTimeRecoTask.cxx
 )
 
-If (Boost_FOUND AND POS_C++11)
+If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   Set(SRCS
     ${SRCS}
     data/FairTestDetectorDigi.cxx
@@ -102,23 +109,29 @@ If (Boost_FOUND AND POS_C++11)
     ${NO_DICT_SRCS}
     ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
   )
-EndIf (Boost_FOUND AND POS_C++11)
+EndIf (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
 
 Set(LINKDEF FairTestDetectorLinkDef.h)
 Set(LIBRARY_NAME FairTestDetector)
 
-If (Boost_FOUND AND POS_C++11)
+If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   Set(DEPENDENCIES
     Base MCStack FairMQ BaseMQ boost_thread boost_system boost_serialization boost_program_options)
-Else (Boost_FOUND AND POS_C++11)
+  If(PROTOBUF_FOUND)
+    Set(DEPENDENCIES
+      ${DEPENDENCIES}
+      ${PROTOBUF_LIBRARY}
+    )
+  Endif(PROTOBUF_FOUND)
+Else (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   Set(DEPENDENCIES Base MCStack)
-EndIf (Boost_FOUND AND POS_C++11)
+EndIf (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
 
 GENERATE_LIBRARY()
 
 Add_Subdirectory(macro)
 
-If (Boost_FOUND AND POS_C++11)
+If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   Set(Exe_Names
     testDetectorSampler
     testDetectorProcessor
@@ -142,4 +155,4 @@ If (Boost_FOUND AND POS_C++11)
     Set(DEPENDENCIES FairTestDetector)
     GENERATE_EXECUTABLE()
   EndForEach(_file RANGE 0 ${_length})
-EndIf (Boost_FOUND AND POS_C++11)
+EndIf (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)

@@ -1,10 +1,7 @@
 #!/bin/bash
 
-if(@NANOMSG_FOUND@); then
-    buffSize="50000000" # nanomsg buffer size is in bytes
-else
-    buffSize="1000" # zeromq high-water mark is in messages
-fi
+# buffSize="500000000" # nanomsg buffer size is in bytes
+buffSize="10000" # zeromq high-water mark is in messages
 
 dataFormat="binary"
 if [ "$1" = "binary" ]; then
