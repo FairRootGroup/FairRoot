@@ -16,6 +16,7 @@
 #pragma link C++ global gLogger;
 
 #pragma link C++ class FairLogger+;
+#pragma link C++ class FairMonitor+;
 #pragma link C++ class FairSystemInfo;
 
 #endif

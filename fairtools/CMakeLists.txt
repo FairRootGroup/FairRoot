@@ -29,12 +29,13 @@ Link_Directories(${LINK_DIRECTORIES})
 # List of source files
 set(SRCS
    FairLogger.cxx
+   FairMonitor.cxx
    FairSystemInfo.cxx
 )
 
 Set(HEADERS )
 Set(LINKDEF FairToolsLinkDef.h)
 Set(LIBRARY_NAME FairTools)
-Set(DEPENDENCIES Core)
+Set(DEPENDENCIES Core Graf Gpad)
 
 GENERATE_LIBRARY()
