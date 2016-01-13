@@ -1601,12 +1601,16 @@ void FairRootManager::SetEventTimeInterval(Double_t min, Double_t max)
 void  FairRootManager::SetEventMeanTime(Double_t mean)
 {
   fEventMeanTime =mean;
+/*
   TString form="(1/";
   form+= mean;
   form+=")*exp(-x/";
   form+=mean;
   form+=")";
   fTimeProb= new TF1("TimeProb.", form.Data(), 0., mean*10);
+*/
+  fTimeProb = new TF1("TimeProb","(1/[0])*exp(-x/[0])", 0., mean*10);
+  fTimeProb->SetParameter(0,mean);
   fTimeProb->GetRandom();
   fEventTimeInMCHeader=kFALSE;
 }
