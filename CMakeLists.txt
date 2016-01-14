@@ -308,7 +308,7 @@ If(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                  )
 Else()
-  Set(FAIRROOT_GIT_VERSION v-15.03) 
+  Set(FAIRROOT_GIT_VERSION v-15.11a) 
 EndIf()
 Configure_File(${CMAKE_SOURCE_DIR}/cmake/scripts/fairroot-config.in ${CMAKE_BINARY_DIR}/fairroot-config @ONLY)
 

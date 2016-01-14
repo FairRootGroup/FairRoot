@@ -1,9 +1,16 @@
 #!/bin/bash
 
 _version=@FAIRROOT_GIT_VERSION@
-_major_version=15
-_minor_version=11
-_patch_version=0
+major=${_version:2:2}
+minor=${_version:5:2}
+_patch=${_version:7:1}
+patch=$(printf '%d\n' "'$_patch")
+if [ $patch -gt 0 ]; then
+  bla=$(($patch-96)) // a should be 1 but a in ascii is 97
+fi
+#_major_version=15
+#_minor_version=11
+#_patch_version=1
 _cc=@CMAKE_C_COMPILER@
 _cxx=@CMAKE_CXX_COMPILER@
 _fairsoft_path=@SIMPATH@
