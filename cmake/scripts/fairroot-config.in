@@ -1,23 +1,26 @@
 #!/bin/bash
 
 _version=@FAIRROOT_GIT_VERSION@
-major=${_version:2:2}
-minor=${_version:5:2}
-_patch=${_version:7:1}
-patch=$(printf '%d\n' "'$_patch")
-if [ $patch -gt 0 ]; then
-  bla=$(($patch-96)) // a should be 1 but a in ascii is 97
+_major_version=${_version:2:2}
+_minor_version=${_version:5:2}
+_patch=${_version:7}
+length=${#_patch}
+if [ $length -eq 0 ]; then
+  _patch_version=0
+elif [ $length -eq 1 ]; then
+  _patch_version=$(printf '%d\n' "'$_patch")
+  _patch_version=$((${_patch_version}-96)) # a should be 1 but a in ascii is 97
+else
+  _patch_version=${_patch}
 fi
-#_major_version=15
-#_minor_version=11
-#_patch_version=1
+
 _cc=@CMAKE_C_COMPILER@
 _cxx=@CMAKE_CXX_COMPILER@
 _fairsoft_path=@SIMPATH@
 
 usage="\
-Usage: fairroot-config [--version] [--cc] [--cxx] \
- [--fairsoft_path] [--help]"
+Usage: fairroot-config [--version] [--major_version] [--minor_version] [--patch_version] \
+[--cc] [--cxx] [--fairsoft_path] [--help]"
 
 if [ $# -eq 0 -o $# -gt 1 ]; then
    echo "${usage}" 1>&2
