@@ -65,4 +65,4 @@ before_script:
     - cat Dart.cfg
 
 script:
-    - Dart.sh Experimental Dart.cfg
+    - ./Dart.sh Experimental Dart.cfg
