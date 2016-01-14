@@ -23,7 +23,8 @@ FairBaseParSet::FairBaseParSet(const char* name,const char* title,const char* co
     fDetList(0),
     fPriGen(0),
     fBeamMom(15),
-    fContNameList(new TObjArray())
+    fContNameList(new TObjArray()),
+    fRandomSeed(9999999999)
 {
 
 
@@ -49,6 +50,7 @@ void FairBaseParSet::putParams(FairParamList* l)
   l->addObject("Event Generator", fPriGen);
   l->add("Beam Momentum Gev/c", fBeamMom);
   l->addObject("Parameter containers list", fContNameList);
+  l->add("Random Seed", fRandomSeed);
 }
 
 Bool_t FairBaseParSet::getParams(FairParamList* l)
@@ -58,6 +60,7 @@ Bool_t FairBaseParSet::getParams(FairParamList* l)
   if (!l->fillObject("Event Generator", fPriGen)) { return kFALSE; }
   if (!l->fill("Beam Momentum Gev/c", &fBeamMom)) { return kFALSE; }
   if (!l->fillObject("Parameter containers list", fContNameList)) { return kFALSE; }
+  if (!l->fill("Random Seed", &fRandomSeed)) { return kFALSE; }
   return kTRUE;
 }
 

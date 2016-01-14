@@ -73,6 +73,11 @@ class FairBaseParSet : public FairParGenericSet
      * @param array: TObjArray of containers
      */
     void SetContListStr(TObjArray* list) {fContNameList= list;}
+   /**
+    * Set the random seed used in a run
+    * @param RndSeed: Random Seed
+    */
+    void SetRndSeed(UInt_t RndSeed) {fRandomSeed= RndSeed;}
     /**
      *  Get the detector list used in the simulation
      */
@@ -89,6 +94,11 @@ class FairBaseParSet : public FairParGenericSet
      *  Get the parameter container list used in this run
      */
     TObjArray*             GetContList() {return fContNameList;}
+   /**
+    *  Get the Random Seed used in this run
+    */
+    UInt_t  GetSetRndSeed() {return fRandomSeed;}
+   
 
   protected:
 
@@ -100,8 +110,10 @@ class FairBaseParSet : public FairParGenericSet
     Double_t              fBeamMom;
     /// List of parameter container names in the RUN
     TObjArray*              fContNameList;
+    /// Random Seed from gRandom
+    UInt_t                 fRandomSeed;
 
-    ClassDef(FairBaseParSet,5)
+    ClassDef(FairBaseParSet,6)
 
   private:
     FairBaseParSet(const FairBaseParSet& L);

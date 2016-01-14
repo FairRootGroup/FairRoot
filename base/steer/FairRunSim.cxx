@@ -37,7 +37,7 @@
 #include "TObject.h"                    // for TObject
 #include "TROOT.h"                      // for TROOT, gROOT
 #include "TSystem.h"                    // for TSystem, gSystem
-
+#include "TRandom.h"                    // for gRandom
 #include <stdlib.h>                     // for getenv, NULL
 #include <string.h>                     // for strcmp, strncmp
 #include <iostream>                     // for cout, endl, ostream
@@ -224,9 +224,11 @@ void FairRunSim::Init()
   }
 
   par->SetContListStr(ContList);
+  par->SetRndSeed(gRandom->GetSeed());
+  
   par->setChanged();
   par->setInputVersion(fRunId,1);
-
+  
   geopar->setChanged();
   geopar->setInputVersion(fRunId,1);
 
