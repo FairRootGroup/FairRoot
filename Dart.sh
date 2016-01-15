@@ -89,10 +89,12 @@ then
   else 
     export number_of_processors=$(cat /proc/cpuinfo | grep processor | wc -l)
   fi
-  export SITE=$(hostname -f)
   if [ -z $SITE ]; then
-    export SITE=$(uname -n)
-  fi  
+    export SITE=$(hostname -f)
+    if [ -z $SITE ]; then
+      export SITE=$(uname -n)
+    fi
+  fi
 elif [ "$arch" = "darwin" ];
 then
   if [ "$NCPU" != "" ];
@@ -101,7 +103,9 @@ then
   else 
     export number_of_processors=$(sysctl -n hw.ncpu)
   fi
-  export SITE=$(hostname -s)
+  if [ -z $SITE ]; then
+    export SITE=$(hostname -s)
+  fi
 fi
 
 echo "************************"

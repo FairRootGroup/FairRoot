@@ -1,10 +1,14 @@
 language: cpp
 
-#cache: ccache
+#cache: 
+#  directories:
+#    - /opt/fairsoft/nov15p1
 
 env:
+    - ROOT_VERSION=root5
+    - ROOT_VERSION=root6
 #    - GCC_VERSION=5
-    - GCC_VERSION=default
+#    - GCC_VERSION=default
 
 os:
     - linux
@@ -27,6 +31,17 @@ compiler:
 sudo: required
 dist: trusty
 
+before_install:
+    - if test "$TRAVIS_OS_NAME" = "linux"; then
+        sudo apt-get update -q;
+        sudo apt-get install -y cmake cmake-data g++ gcc gfortran build-essential make patch sed 
+                                libx11-dev libxft-dev libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev 
+                                ncurses-dev libcurl4-openssl-dev curl bzip2 gzip unzip tar subversion git xutils-dev flex 
+                                bison lsb-release python-dev libc6-dev-i386 libxml2-dev wget libssl-dev 
+                                automake autoconf libtool;
+        wget http://fairroot.gsi.de/downloads/fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb;
+        sudo dpkg -i fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb;
+      fi
 install:
 #    - if test "$TRAVIS_OS_NAME" = "osx" -a "$CXX" = "g++"; then
 #        brew update;
@@ -36,16 +51,16 @@ install:
 #          brew install coreutils && export CXX=g++-4.9 CC=gcc-4.9;
 #        fi
 #      fi
-    - if test "$TRAVIS_OS_NAME" = "linux" -a "$GCC_VERSION" = "5"; then
-        sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y &&
-        sudo apt-get update -q &&
-        sudo apt-get install g++-5 -y &&
-        export CXX=g++-5 CC=gcc-5;
-      fi
-    - if test "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++"; then
-        sudo apt-get update -q &&
-        sudo apt-get install libc++-dev libc++abi-dev -y;
-      fi
+#    - if test "$TRAVIS_OS_NAME" = "linux" -a "$GCC_VERSION" = "5"; then
+#        sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y &&
+#        sudo apt-get update -q &&
+#        sudo apt-get install g++-5 -y &&
+#        export CXX=g++-5 CC=gcc-5;
+#      fi
+#    - if test "$TRAVIS_OS_NAME" = "linux" -a "$CXX" = "clang++"; then
+#        sudo apt-get update -q &&
+#        sudo apt-get install libc++-dev libc++abi-dev -y;
+#      fi
 
 
 before_script:
@@ -56,11 +71,13 @@ before_script:
 #    - export NUMBER_OF_PROCESSORS=2
     - echo "export LINUX_FLAVOUR=Ubuntu14.04" > Dart.cfg
     - echo "export FAIRROOT_VERSION=v-15.11a" >> Dart.cfg
-    - echo "export FAIRSOFT_VERSION=nov15p1_root6" >> Dart.cfg
-    - echo "export SIMPATH=/opt/fairsoft/${FAIRSOFT_VERSION}" >> Dart.cfg 
-    - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_${FAIRSOFT_VERSION}" >> Dart.cfg
+#    - echo "export FAIRSOFT_VERSION=nov15p1_root6" >> Dart.cfg
+    - echo "export FAIRSOFT_VERSION=nov15p1_\${ROOT_VERSION}" >> Dart.cfg
+    - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg 
+    - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
     - echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\" " >> Dart.cfg
+    - echo "export SITE=\"Travis CI\" " >> Dart.cfg
     - echo $PWD
     - cat Dart.cfg
 
