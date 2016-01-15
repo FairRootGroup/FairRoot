@@ -32,10 +32,10 @@ dist: trusty
 before_install:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
         sudo apt-get update -q &&
-        sudo apt-get install -y cmake cmake-data g++ gcc gfortran build-essential make patch sed \
-                                libx11-dev libxft-dev libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev \
-                                ncurses-dev libcurl4-openssl-dev curl bzip2 gzip unzip tar subversion git xutils-dev flex \
-                                bison lsb-release python-dev libc6-dev-i386 libxml2-dev wget libssl-dev \
+        sudo apt-get install -y cmake cmake-data g++ gcc gfortran build-essential make patch sed 
+                                libx11-dev libxft-dev libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev 
+                                ncurses-dev libcurl4-openssl-dev curl bzip2 gzip unzip tar subversion git xutils-dev flex 
+                                bison lsb-release python-dev libc6-dev-i386 libxml2-dev wget libssl-dev 
                                 automake autoconf libtool &&
         wget http://fairroot.gsi.de/downloads/fairsoft-nov15p1_1.0_amd64.deb &&
         sudo dpkg -i fairsoft-nov15p1_1.0_amd64.deb 
