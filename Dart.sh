@@ -94,7 +94,7 @@ then
     if [ -z $SITE ]; then
       export SITE=$(uname -n)
     fi
-  else
+  fi
 elif [ "$arch" = "darwin" ];
 then
   if [ "$NCPU" != "" ];
