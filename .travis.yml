@@ -1,6 +1,8 @@
 language: cpp
 
-#cache: ccache
+#cache: 
+#  directories:
+#    - /opt/fairsoft/nov15p1
 
 env:
 #    - GCC_VERSION=5
@@ -27,6 +29,17 @@ compiler:
 sudo: required
 dist: trusty
 
+before_install:
+    - if test "$TRAVIS_OS_NAME" = "linux"; then
+        sudo apt-get update -q &&
+        sudo apt-get install -y cmake cmake-data g++ gcc gfortran build-essential make patch sed \
+                                libx11-dev libxft-dev libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev \
+                                ncurses-dev libcurl4-openssl-dev curl bzip2 gzip unzip tar subversion git xutils-dev flex \
+                                bison lsb-release python-dev libc6-dev-i386 libxml2-dev wget libssl-dev \
+                                automake autoconf libtool &&
+        wget http://fairroot.gsi.de/downloads/fairsoft-nov15p1_1.0_amd64.deb &&
+        sudo dpkg -i fairsoft-nov15p1_1.0_amd64.deb 
+      fi
 install:
 #    - if test "$TRAVIS_OS_NAME" = "osx" -a "$CXX" = "g++"; then
 #        brew update;
@@ -56,7 +69,8 @@ before_script:
 #    - export NUMBER_OF_PROCESSORS=2
     - echo "export LINUX_FLAVOUR=Ubuntu14.04" > Dart.cfg
     - echo "export FAIRROOT_VERSION=v-15.11a" >> Dart.cfg
-    - echo "export FAIRSOFT_VERSION=nov15p1_root6" >> Dart.cfg
+#    - echo "export FAIRSOFT_VERSION=nov15p1_root6" >> Dart.cfg
+    - echo "export FAIRSOFT_VERSION=nov15p1" >> Dart.cfg
     - echo "export SIMPATH=/opt/fairsoft/${FAIRSOFT_VERSION}" >> Dart.cfg 
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
