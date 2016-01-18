@@ -6,16 +6,16 @@ language: cpp
 
 env:
     - ROOT_VERSION=root5
-#    - ROOT_VERSION=root6
+    - ROOT_VERSION=root6
 #    - GCC_VERSION=5
 #    - GCC_VERSION=default
 
 os:
-#    - linux
+    - linux
     - osx
 
 compiler:
-#    - gcc
+    - gcc
     - clang
 
 matrix:
@@ -84,11 +84,7 @@ before_script:
     - cat Dart.cfg
 
 script:
-    - if test "$TRAVIS_OS_NAME" = "linux"; then 
         ./Dart.sh Experimental Dart.cfg;
-      else
-        return 1;
-      fi
 
 notifications:
   email:
