@@ -89,4 +89,12 @@ script:
       else
         return 1;
       fi
+
+notifications:
+  email:
+    recipients:
+      - m.al-turany@gsi.de
+      - f.uhlig@gsi.de
+    on_success: change
+    on_failure: always
       
