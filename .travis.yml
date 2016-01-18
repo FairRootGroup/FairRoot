@@ -6,26 +6,24 @@ language: cpp
 
 env:
     - ROOT_VERSION=root5
-    - ROOT_VERSION=root6
+#    - ROOT_VERSION=root6
 #    - GCC_VERSION=5
 #    - GCC_VERSION=default
 
 os:
-    - linux
-#    - osx
+#    - linux
+    - osx
 
 compiler:
-    - gcc
-#    - clang
+#    - gcc
+    - clang
 
-#matrix:
-#    exclude:
-#        - env: GCC_VERSION=5
-#          os: osx
-#          compiler: clang
-#        - env: GCC_VERSION=5
-#          os: linux
-#          compiler: clang
+matrix:
+    exclude:
+        - os: osx
+          compiler: gcc
+        - os: linux
+          compiler: clang
 
 # The following gives us Ubuntu 14.04 LTS instead of 12.04 LTS
 sudo: required
@@ -42,6 +40,11 @@ before_install:
         wget http://fairroot.gsi.de/downloads/fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb;
         sudo dpkg -i fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb; 
       fi
+    - if test "$TRAVIS_OS_NAME" = "osx"; then
+        brew install Caskroom/cask/xquartz;
+        brew install gcc cmake autoconf automake libtool pkg-config openssl;
+      fi
+      
 install:
 #    - if test "$TRAVIS_OS_NAME" = "osx" -a "$CXX" = "g++"; then
 #        brew update;
@@ -71,7 +74,6 @@ before_script:
 #    - export NUMBER_OF_PROCESSORS=2
     - echo "export LINUX_FLAVOUR=Ubuntu14.04" > Dart.cfg
     - echo "export FAIRROOT_VERSION=v-15.11a" >> Dart.cfg
-#    - echo "export FAIRSOFT_VERSION=nov15p1_root6" >> Dart.cfg
     - echo "export FAIRSOFT_VERSION=nov15p1_\${ROOT_VERSION}" >> Dart.cfg
     - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg 
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
@@ -82,4 +84,9 @@ before_script:
     - cat Dart.cfg
 
 script:
-    - ./Dart.sh Experimental Dart.cfg
+    - if test "$TRAVIS_OS_NAME" = "linux"; then 
+        ./Dart.sh Experimental Dart.cfg;
+      else
+        return 1;
+      fi
+      
