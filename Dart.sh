@@ -89,7 +89,7 @@ then
   else 
     export number_of_processors=$(cat /proc/cpuinfo | grep processor | wc -l)
   fi
-  if test -z $SITE ; then
+  if [ -z $SITE ]; then
     export SITE=$(hostname -f)
     if [ -z $SITE ]; then
       export SITE=$(uname -n)
@@ -103,7 +103,7 @@ then
   else 
     export number_of_processors=$(sysctl -n hw.ncpu)
   fi
-  if test -z $SITE ; then
+  if [ -z $SITE ]; then
     export SITE=$(hostname -s)
   fi
 fi
