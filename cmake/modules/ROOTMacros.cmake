@@ -109,9 +109,18 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   # We need some environment variables which are present when running cmake at the
   # time we run make. To pass the variables a script is created containing the
   # correct values for the needed variables
-  Configure_File(${PROJECT_SOURCE_DIR}/cmake/scripts/generate_dictionary_root.sh.in
-                 ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
-                )
+
+  IF(FAIRROOTPATH)
+    Configure_File(${FAIRROOTPATH}/share/fairbase/cmake/scripts/generate_dictionary_root.sh.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
+                  )
+    EXEC_PROGRAM(/bin/chmod ARGS "u+x ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh")
+  ELSE(FAIRROOTPATH)
+    Configure_File(${PROJECT_SOURCE_DIR}/cmake/scripts/generate_dictionary_root.sh.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
+                  )
+  ENDIF(FAIRROOTPATH)
+
 
   If (ROOT_FOUND_VERSION GREATER 59999)
     Add_Custom_Command(OUTPUT  ${OUTPUT_FILES}
