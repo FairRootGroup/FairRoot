@@ -77,6 +77,7 @@ Ctest_Build(BUILD "${CTEST_BINARY_DIRECTORY}")
 
 Ctest_Test(BUILD "${CTEST_BINARY_DIRECTORY}" 
            PARALLEL_LEVEL $ENV{number_of_processors}
+           RETURN_VALUE _ctest_test_ret_val
           )
 
 If(GCOV_COMMAND)
@@ -85,3 +86,8 @@ EndIf()
 
 Ctest_Submit()
  
+if (${CTEST_SITE} MATCHES "Travis")
+  if (_ctest_test_ret_val)
+    Message(FATAL_ERROR "Some tests failed.")
+  endif()
+endif()

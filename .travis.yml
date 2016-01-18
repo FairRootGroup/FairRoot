@@ -6,7 +6,7 @@ language: cpp
 
 env:
     - ROOT_VERSION=root5
-#    - ROOT_VERSION=root6
+    - ROOT_VERSION=root6
 #    - GCC_VERSION=5
 #    - GCC_VERSION=default
 
@@ -41,11 +41,12 @@ before_install:
         sudo dpkg -i fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb;
       fi
     - if test "$TRAVIS_OS_NAME" = "osx"; then
-#        brew install gcc cmake autoconf automake libtool pkg-config openssl;
+        brew update;
         brew install openssl;
-        brew install gcc --with-all-languages;
-        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_nov15p1_${ROOT_VERSION}-1.0.pkg;
-        sudo installer -pkg ./fairsoft_nov15p1_${ROOT_VERSION}-1.0.pkg -target /;
+        brew uninstall gcc;
+        brew install gcc;
+        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_nov15p2_${ROOT_VERSION}-1.0.pkg;
+        sudo installer -pkg ./fairsoft_nov15p2_${ROOT_VERSION}-1.0.pkg -target /;
       fi
 
 install:
@@ -78,14 +79,15 @@ before_script:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
         echo "export LINUX_FLAVOUR=Ubuntu14.04" > Dart.cfg;
         echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\" " >> Dart.cfg;
+        echo "export FAIRSOFT_VERSION=nov15p1_\${ROOT_VERSION}" >> Dart.cfg;
       fi
     - if test "$TRAVIS_OS_NAME" = "osx"; then
         echo "export LINUX_FLAVOUR=MacOSX10.9.5" > Dart.cfg;
         echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\" " >> Dart.cfg;
+        echo "export FAIRSOFT_VERSION=nov15p2_\${ROOT_VERSION}" >> Dart.cfg;
       fi
     - echo "export FAIRROOT_VERSION=v-15.11a" >> Dart.cfg
-    - echo "export FAIRSOFT_VERSION=nov15p1_\${ROOT_VERSION}" >> Dart.cfg
-    - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg 
+    - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg; 
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
     - echo "export SITE=\"Travis CI\" " >> Dart.cfg
