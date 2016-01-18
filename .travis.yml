@@ -6,26 +6,24 @@ language: cpp
 
 env:
     - ROOT_VERSION=root5
-    - ROOT_VERSION=root6
+#    - ROOT_VERSION=root6
 #    - GCC_VERSION=5
 #    - GCC_VERSION=default
 
 os:
     - linux
-#    - osx
+    - osx
 
 compiler:
     - gcc
-#    - clang
+    - clang
 
-#matrix:
-#    exclude:
-#        - env: GCC_VERSION=5
-#          os: osx
-#          compiler: clang
-#        - env: GCC_VERSION=5
-#          os: linux
-#          compiler: clang
+matrix:
+    exclude:
+        - os: osx
+          compiler: gcc
+        - os: linux
+          compiler: clang
 
 # The following gives us Ubuntu 14.04 LTS instead of 12.04 LTS
 sudo: required
@@ -42,6 +40,14 @@ before_install:
         wget http://fairroot.gsi.de/downloads/fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb;
         sudo dpkg -i fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb;
       fi
+    - if test "$TRAVIS_OS_NAME" = "osx"; then
+#        brew install gcc cmake autoconf automake libtool pkg-config openssl;
+        brew install openssl;
+        brew install gcc --with-all-languages;
+        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_nov15p1_${ROOT_VERSION}-1.0.pkg;
+        sudo installer -pkg ./fairsoft_nov15p1_${ROOT_VERSION}-1.0.pkg -target /;
+      fi
+
 install:
 #    - if test "$TRAVIS_OS_NAME" = "osx" -a "$CXX" = "g++"; then
 #        brew update;
@@ -66,20 +72,33 @@ install:
 before_script:
     - $CXX --version
     - cmake --version
-    - export dashboard_model=Experimental
-    - export build_type=Release
+#    - export dashboard_model=Experimental
+#    - export build_type=Release
 #    - export NUMBER_OF_PROCESSORS=2
-    - echo "export LINUX_FLAVOUR=Ubuntu14.04" > Dart.cfg
+    - if test "$TRAVIS_OS_NAME" = "linux"; then
+        echo "export LINUX_FLAVOUR=Ubuntu14.04" > Dart.cfg;
+        echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\" " >> Dart.cfg;
+      fi
+    - if test "$TRAVIS_OS_NAME" = "osx"; then
+        echo "export LINUX_FLAVOUR=MacOSX10.9.5" > Dart.cfg;
+        echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\" " >> Dart.cfg;
+      fi
     - echo "export FAIRROOT_VERSION=v-15.11a" >> Dart.cfg
-#    - echo "export FAIRSOFT_VERSION=nov15p1_root6" >> Dart.cfg
     - echo "export FAIRSOFT_VERSION=nov15p1_\${ROOT_VERSION}" >> Dart.cfg
     - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg 
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
-    - echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\" " >> Dart.cfg
     - echo "export SITE=\"Travis CI\" " >> Dart.cfg
     - echo $PWD
     - cat Dart.cfg
 
 script:
     - ./Dart.sh Experimental Dart.cfg
+
+notifications:
+  email:
+    recipients:
+      - m.al-turany@gsi.de
+      - f.uhlig@gsi.de
+    on_success: change
+    on_failure: always
