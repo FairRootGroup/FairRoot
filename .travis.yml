@@ -72,7 +72,7 @@ before_script:
     - echo "export LINUX_FLAVOUR=Ubuntu14.04" > Dart.cfg
     - echo "export FAIRROOT_VERSION=v-15.11a" >> Dart.cfg
 #    - echo "export FAIRSOFT_VERSION=nov15p1_root6" >> Dart.cfg
-    - echo "export FAIRSOFT_VERSION=nov15p1-\${ROOT_VERSION}" >> Dart.cfg
+    - echo "export FAIRSOFT_VERSION=nov15p1_\${ROOT_VERSION}" >> Dart.cfg
     - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg 
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
