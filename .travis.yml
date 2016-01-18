@@ -43,7 +43,7 @@ before_install:
     - if test "$TRAVIS_OS_NAME" = "osx"; then
 #        brew install Caskroom/cask/xquartz;
         brew install gcc cmake autoconf automake libtool pkg-config openssl;
-        wget http://fairroot.gsi.de/downloads/fairsoft_nov15p1_${ROOT_VERSION}-1.0.pkg
+        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_nov15p1_${ROOT_VERSION}-1.0.pkg
         sudo installer -pkg ./fairsoft_nov15p1_${ROOT_VERSION}-1.0.pkg -target /
       fi
       
@@ -101,4 +101,5 @@ notifications:
       - f.uhlig@gsi.de
     on_success: change
     on_failure: always
-      
+    
+    
