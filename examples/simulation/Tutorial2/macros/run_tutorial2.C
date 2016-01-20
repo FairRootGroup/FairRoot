@@ -26,7 +26,7 @@ void run_tutorial2(Int_t nEvents = 10)
   Double_t theta    = 0.;
 
   TString outDir = "./";
-
+   
   // Output file name
   TString outFile = Form("%s/tutorial2_%s.mc_p%1.3f_t%1.0f_n%d.root",
 			 outDir.Data(),
@@ -42,6 +42,9 @@ void run_tutorial2(Int_t nEvents = 10)
 			 momentum,
 			 theta,
 			 nEvents);
+   
+  // Set the random seed
+  gRandom->SetSeed(98989);
 
   // In general, the following parts need not be touched
   // ========================================================================
