@@ -84,7 +84,9 @@ before_script:
     - cat Dart.cfg
 
 script:
-    - ./Dart.sh Experimental Dart.cfg
+    - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then
+        ./Dart.sh Experimental Dart.cfg;
+      fi   
 
 
 notifications:
