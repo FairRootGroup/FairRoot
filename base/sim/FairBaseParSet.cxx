@@ -24,7 +24,7 @@ FairBaseParSet::FairBaseParSet(const char* name,const char* title,const char* co
     fPriGen(0),
     fBeamMom(15),
     fContNameList(new TObjArray()),
-    fRandomSeed(9999999999)
+    fRandomSeed(99999999)
 {
 
 

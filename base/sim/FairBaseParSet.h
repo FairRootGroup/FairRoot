@@ -97,7 +97,7 @@ class FairBaseParSet : public FairParGenericSet
    /**
     *  Get the Random Seed used in this run
     */
-    UInt_t  GetSetRndSeed() {return fRandomSeed;}
+    UInt_t  GetRndSeed() {return fRandomSeed;}
    
 
   protected:
