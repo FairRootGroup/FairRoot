@@ -62,7 +62,7 @@ before_script:
         echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\" " >> Dart.cfg;
         echo "export FAIRSOFT_VERSION=nov15p2_\${ROOT_VERSION}" >> Dart.cfg;
       fi
-    - echo "export FAIRROOT_VERSION=v-15.11a" >> Dart.cfg
+    - echo "export GIT_BRANCH=\${TRAVIS_COMMIT}" >> Dart.cfg
     - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg; 
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
