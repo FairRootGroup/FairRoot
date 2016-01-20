@@ -148,7 +148,7 @@ FairParamObj::FairParamObj(const Text_t* name,UInt_t value)
   :TNamed(name,""),
    paramValue(NULL),
    arraySize(sizeof(UInt_t)),
-   paramType("Int_t"),
+   paramType("UInt_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(UInt_t)),
    classVersion(-1),
