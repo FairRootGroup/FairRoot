@@ -144,6 +144,22 @@ FairParamObj::FairParamObj(const Text_t* name,Int_t value)
   memcpy(paramValue,&value,arraySize);
 }
 
+FairParamObj::FairParamObj(const Text_t* name,UInt_t value)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(UInt_t)),
+   paramType("Int_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(UInt_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
+{
+  // Constructor for a Int_t value
+  paramValue=new UChar_t[arraySize];
+  memcpy(paramValue,&value,arraySize);
+}
+
 FairParamObj::FairParamObj(const Text_t* name,Float_t value)
   :TNamed(name,""),
    paramValue(NULL),
