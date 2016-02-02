@@ -11,20 +11,24 @@
 #include "NewDetectorGeo.h"
 #include "NewDetectorGeoPar.h"
 
-#include "FairVolume.h"
-#include "FairGeoVolume.h"
-#include "FairGeoNode.h"
-#include "FairRootManager.h"
-#include "FairGeoLoader.h"
-#include "FairGeoInterface.h"
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
-#include "FairDetectorList.h"
-#include "FairStack.h"
+#include "FairGeoNode.h"                // for FairGeoNode
+#include "FairGeoVolume.h"              // for FairGeoVolume
+#include "FairRootManager.h"            // for FairRootManager
+#include "FairRun.h"                    // for FairRun
+#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairStack.h"                  // for FairStack
+#include "FairVolume.h"                 // for FairVolume
+#include "FairLogger.h"                 // for logging
 
-#include "TClonesArray.h"
-#include "TVirtualMC.h"
+#include "Riosfwd.h"                    // for ostream
+#include "TClonesArray.h"               // for TClonesArray
+#include "TList.h"                      // for TListIter, TList (ptr only)
+#include "TObjArray.h"                  // for TObjArray
+#include "TString.h"                    // for TString
+#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMCStack.h"            // for TVirtualMCStack
 
+#include <stddef.h>                     // for NULL
 #include <iostream>
 using std::cout;
 using std::endl;
