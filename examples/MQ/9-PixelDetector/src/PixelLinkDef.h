@@ -5,13 +5,16 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+#ifdef __CINT__
 
-/** Defines unique identifier for all detector systems **/
+#pragma link off all globals;
+#pragma link off all classes;
+#pragma link off all functions;
 
-#ifndef FAIRDETECTORLIST_H
-#define FAIRDETECTORLIST_H 1
-
-// kSTOPHERE is needed for iteration over the enum. All detectors have to be put before.
-enum DetectorId {kREF, kFairRutherford, kTutDet, kSTOPHERE, kPixel};
+#pragma link C++ class PixelContFact;
+#pragma link C++ class PixelGeo;
+#pragma link C++ class PixelGeoPar;
+#pragma link C++ class Pixel+;
+#pragma link C++ class PixelPoint+;
 
 #endif

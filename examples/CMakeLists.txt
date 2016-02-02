@@ -1,3 +1,4 @@
+
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
@@ -35,6 +36,7 @@ If(Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   add_subdirectory(MQ/6-multiple-channels)
   add_subdirectory(MQ/8-multipart)
   add_subdirectory(MQ/LmdSampler)
+  add_subdirectory(MQ/9-PixelDetector)
 EndIf()
 
 add_subdirectory(advanced/Tutorial8)

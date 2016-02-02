@@ -5,13 +5,22 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+#ifndef PIXELCONTFACT_H
+#define PIXELCONTFACT_H
 
-/** Defines unique identifier for all detector systems **/
+#include "FairContFact.h"
 
-#ifndef FAIRDETECTORLIST_H
-#define FAIRDETECTORLIST_H 1
+class FairContainer;
 
-// kSTOPHERE is needed for iteration over the enum. All detectors have to be put before.
-enum DetectorId {kREF, kFairRutherford, kTutDet, kSTOPHERE, kPixel};
+class PixelContFact : public FairContFact
+{
+  private:
+    void setAllContainers();
+  public:
+    PixelContFact();
+    ~PixelContFact() {}
+    FairParSet* createContainer(FairContainer*);
+    ClassDef( PixelContFact,0) // Factory for all Pixel parameter containers
+};
 
 #endif
