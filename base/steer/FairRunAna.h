@@ -24,7 +24,6 @@
 #include "Rtypes.h"                     // for Bool_t, Double_t, UInt_t, etc
 #include "TString.h"                    // for TString
 
-class FairEventHeader;
 class FairField;
 class TF1;
 class TFile;
@@ -181,7 +180,6 @@ class FairRunAna : public FairRun
     TFile*                                  fInputGeoFile;
     static FairRunAna*                      fgRinstance;
     Bool_t                                  fLoadGeo;
-    FairEventHeader*                        fEvtHeader;//!
     /** true for static initialisation of parameters */
     Bool_t                                  fStatic;//!
     FairField*                              fField;
@@ -205,7 +203,7 @@ class FairRunAna : public FairRun
     /** Temporary member to preserve old functionality without setting source in macro */
     FairMixedSource*                        fMixedSource; //! 
 
-    ClassDef(FairRunAna ,5)
+    ClassDef(FairRunAna ,6)
 
 };
 

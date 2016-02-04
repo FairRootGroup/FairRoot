@@ -23,7 +23,6 @@
 #include <iostream>
 
 class FairRuntimeDb;
-class FairEventHeader;
 class FairField;
 class TFile;
 class TF1;
@@ -40,8 +39,6 @@ class FairRunOnline : public FairRun
     virtual ~FairRunOnline();
     FairRunOnline();
     FairRunOnline(FairSource* source);
-
-    FairEventHeader*  GetEventHeader();
 
     /**initialize the run manager*/
     void        Init();
@@ -107,7 +104,6 @@ class FairRunOnline : public FairRun
     /** This variable became true after Init is called*/
     Bool_t                                  fIsInitialized;
     static FairRunOnline*                   fgRinstance;
-    FairEventHeader*                        fEvtHeader;//!
     /** true for static initialisation of parameters */
     Bool_t                                  fStatic;//!
     FairField*                              fField;

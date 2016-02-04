@@ -44,7 +44,7 @@ FairRun::FairRun(Bool_t isMaster)
    fOutFile(0),
    fRunId(0),
    fAna(kFALSE),
-   fEvHead(NULL),
+   fEvtHeader(NULL),
    fFileHeader(new FairFileHeader()),
    fGenerateRunInfo(kFALSE),
    fIsMaster(isMaster)
@@ -75,8 +75,8 @@ FairRun::~FairRun()
     delete fRootManager; // who is responsible
     fRootManager=0;
   }
-  if (fEvHead) {
-    delete fEvHead;
+  if (fEvtHeader) {
+    delete fEvtHeader;
   }
   LOG(DEBUG) << "Leave Destructor of FairRun" << FairLogger::endl;
 }
@@ -132,10 +132,10 @@ FairTask* FairRun::GetTask(const char* taskName)
 //_____________________________________________________________________________
 FairEventHeader*  FairRun::GetEventHeader()
 {
-  if ( NULL == fEvHead ) {
-    fEvHead = new FairEventHeader();
+  if ( NULL == fEvtHeader ) {
+    fEvtHeader = new FairEventHeader();
   }
-  return fEvHead;
+  return fEvtHeader;
 }
 
 void FairRun::SetUseFairLinks(Bool_t val)

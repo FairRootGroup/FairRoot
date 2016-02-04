@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -----------------------------------------------------------------------------
@@ -13,32 +13,42 @@
 // -----                                                                   -----
 // -----------------------------------------------------------------------------
 
-#ifndef FAIRMBSSOURCE_H
-#define FAIRMBSSOURCE_H
+#ifndef FAIRONLINESOURCE_H
+#define FAIRONLINESOURCE_H
 
-#include "FairOnlineSource.h"
+#include "FairSource.h"
 #include "TObjArray.h"
 
 #include "FairUnpack.h"
 
 
-class FairMbsSource : public FairOnlineSource
+class FairOnlineSource : public FairSource
 {
   public:
-    FairMbsSource();
-    FairMbsSource(const FairMbsSource& source);
-    virtual ~FairMbsSource();
+    FairOnlineSource();
+    FairOnlineSource(const FairOnlineSource& source);
+    virtual ~FairOnlineSource();
+
+    inline void AddUnpacker(FairUnpack* unpacker) { fUnpackers->Add(unpacker); }
+    inline const TObjArray* GetUnpackers() const { return fUnpackers; }
 
     virtual Bool_t Init() = 0;
     virtual Int_t ReadEvent(UInt_t=0) = 0;
     virtual void Close() = 0;
 
-  protected:
-    Bool_t Unpack(Int_t* data, Int_t size,
-                  Short_t type, Short_t subType,
-                  Short_t procId, Short_t subCrate, Short_t control);
+    void SetParUnpackers();
 
-    ClassDef(FairMbsSource, 0)
+    Bool_t InitUnpackers();
+
+    void Reset();
+
+    virtual Source_Type GetSourceType() { return kONLINE; }
+
+  protected:
+    TObjArray* fUnpackers;
+
+  private:
+    ClassDef(FairOnlineSource, 0)
 };
 
 

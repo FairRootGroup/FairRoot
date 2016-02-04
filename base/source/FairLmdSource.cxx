@@ -112,10 +112,6 @@ void FairLmdSource::AddPath(TString dir, TString wildCard)
 
 Bool_t FairLmdSource::Init()
 {
-  if(! FairMbsSource::Init()) {
-    return kFALSE;
-  }
-
   if(fFileNames->GetSize() == 0) {
     return kFALSE;
   }

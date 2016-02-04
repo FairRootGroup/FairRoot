@@ -21,6 +21,8 @@
 
 class FairEventHeader;
 
+enum Source_Type {kONLINE, kFILE};
+
 class FairSource : public TObject
 {
   public:
@@ -33,9 +35,11 @@ class FairSource : public TObject
     virtual void Close() = 0;
 
     virtual void Reset() = 0;
-    
+
     virtual Bool_t   ActivateObject(TObject**, const char*)  { return kFALSE; }
-    
+
+    virtual Source_Type GetSourceType() = 0;
+
     /**Check the maximum event number we can run to*/
     virtual Int_t  CheckMaxEventNo(Int_t=0) {return -1;}
     /**Read the tree entry on one branch**/

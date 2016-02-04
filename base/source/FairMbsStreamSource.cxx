@@ -43,10 +43,6 @@ FairMbsStreamSource::~FairMbsStreamSource()
 
 Bool_t FairMbsStreamSource::Init()
 {
-  if(! FairMbsSource::Init()) {
-    return kFALSE;
-  }
-
   if(! ConnectToServer()) {
     return kFALSE;
   }

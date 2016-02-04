@@ -50,10 +50,6 @@ FairRemoteSource::~FairRemoteSource()
 
 Bool_t FairRemoteSource::Init()
 {
-  if(! FairMbsSource::Init()) {
-    return kFALSE;
-  }
-
   fBuffer->RevStatus(0);
   fSocket = fBuffer->RevOpen(fNode, 6003, 0);
   fBuffer->RevStatus(0);
