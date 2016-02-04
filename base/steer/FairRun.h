@@ -73,7 +73,7 @@ class FairRun : public TNamed
      *       for each run
      */
     void        SetEventHeader(FairEventHeader* EvHeader)  {
-      fEvHead=EvHeader;
+      fEvtHeader=EvHeader;
     }
     /**
      * return a pointer to the RuntimeDB
@@ -180,7 +180,7 @@ class FairRun : public TNamed
     /** true for Anaylsis session*/
     Bool_t                   fAna;  //!
     /** MC Event Header */
-    FairEventHeader*         fEvHead; //!
+    FairEventHeader*         fEvtHeader; //!
     /** File  Header */
     FairFileHeader*          fFileHeader;
     /** true if RunInfo file should be written*/
@@ -188,6 +188,6 @@ class FairRun : public TNamed
     /** true if on master*/
     Bool_t                   fIsMaster;  //!
 
-    ClassDef(FairRun ,2)
+    ClassDef(FairRun ,3)
 };
 #endif //FAIRRUN_H

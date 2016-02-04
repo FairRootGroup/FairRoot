@@ -24,6 +24,7 @@
 #include "FairParIo.h"
 #include "FairField.h"
 //#include "FairSource.h"
+#include "FairMbsSource.h"
 
 #include "FairGeoInterface.h"
 #include "FairGeoLoader.h"
@@ -69,7 +70,6 @@ FairRunOnline::FairRunOnline()
   :FairRun(),
    fAutomaticFinish(kTRUE),
    fIsInitialized(kFALSE),
-   fEvtHeader(0),
    fStatic(kFALSE),
    fField(0),
    fFolder(new TFolder("HISTO", "HISTO")),
@@ -89,7 +89,6 @@ FairRunOnline::FairRunOnline(FairSource* source)
   :FairRun(),
    fAutomaticFinish(kTRUE),
    fIsInitialized(kFALSE),
-   fEvtHeader(0),
    fStatic(kFALSE),
    fField(0),
    fFolder(new TFolder("HISTO", "HISTO")),
@@ -158,15 +157,28 @@ void FairRunOnline::Init()
   //  GeoInterFace->setMediaFile(MatFname.Data());
   //  GeoInterFace->readMedia();
 
-  // Add a Generated run ID to the FairRunTimeDb
-  fRootManager->ReadEvent(0);
-  
+  // Add a Generated run ID to the FairRunTimeDb for input data which contain a FairMCEventHeader
+  // The call doesn't make sense for online sources which doesn't contain a  FairMCEventHeader
+
+  if(kONLINE != fRootManager->GetSource()->GetSourceType())
+  {  
+    fRootManager->ReadEvent(0);
+  }
+
   GetEventHeader();
   
   fRootManager->FillEventHeader(fEvtHeader);
 
-  fRunId = fEvtHeader->GetRunId();
-  
+  if(0 == fRunId)
+  {
+    fRunId = fEvtHeader->GetRunId();
+    if(0 == fRunId)
+    {
+      FairRunIdGenerator genid;
+      fRunId = genid.generateId();
+    }
+  }
+
   fRtdb->addRun(fRunId);
   fFileHeader->SetRunId(fRunId);
   FairBaseParSet* par = dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
@@ -195,8 +207,12 @@ void FairRunOnline::Init()
     geopar->setInputVersion(fRunId,1);
   }
   
-fRootManager->WriteFileHeader(fFileHeader);
+  fRootManager->WriteFileHeader(fFileHeader);
 
+  if(kONLINE == fRootManager->GetSource()->GetSourceType())
+  {
+    ((FairOnlineSource*)(fRootManager->GetSource()))->SetParUnpackers();
+  }
   fTask->SetParTask();
   fRtdb->initContainers(fRunId);
 
@@ -209,6 +225,11 @@ fRootManager->WriteFileHeader(fFileHeader);
   LOG(INFO) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
   fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
   fEvtHeader->SetRunId(fRunId);
+
+  if(kONLINE == fRootManager->GetSource()->GetSourceType())
+  {
+    ((FairOnlineSource*)(fRootManager->GetSource()))->InitUnpackers();
+  }
 
   // Now call the User initialize for Tasks
   fTask->InitTask();
@@ -269,7 +290,8 @@ Int_t FairRunOnline::EventLoop()
   gSystem->IgnoreInterrupt();
   signal(SIGINT, handler_ctrlc);
 
-  Int_t tmpId = fRootManager->GetRunId();
+  fRootManager->FillEventHeader(fEvtHeader);
+  Int_t tmpId = fEvtHeader->GetRunId();
 
   if ( tmpId != -1 && tmpId != fRunId ) {
     LOG(INFO) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId << FairLogger::endl;
@@ -516,15 +538,6 @@ void FairRunOnline::WriteObjects()
 }
 //_____________________________________________________________________________
 
-//_____________________________________________________________________________
-FairEventHeader* FairRunOnline::GetEventHeader()
-{
-  //  fEvtHeader = fRootManager->GetEventHeader();
-  if ( NULL == fEvtHeader ) {
-    fEvtHeader = new FairEventHeader();
-  }
-  return fEvtHeader;
-}
 //_____________________________________________________________________________
 
 

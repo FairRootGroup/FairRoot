@@ -21,6 +21,8 @@
 
 class FairEventHeader;
 
+enum Source_Type {kONLINE, kFILE};
+
 class FairSource : public TObject
 {
   public:
@@ -33,7 +35,9 @@ class FairSource : public TObject
     virtual void Close() = 0;
 
     virtual void Reset() = 0;
-    
+
+    virtual Source_Type GetSourceType() = 0;
+
     virtual Bool_t   ActivateObject(TObject** obj, const char* ObjType)  { return kFALSE; }
     
     /**Check the maximum event number we can run to*/
