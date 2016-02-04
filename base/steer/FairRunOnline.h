@@ -120,6 +120,8 @@ class FairRunOnline : public FairRun
     void WriteObjects();
     void GenerateHtml();
 
+    virtual void Fill();
+
     ClassDef(FairRunOnline, 0)
 };
 

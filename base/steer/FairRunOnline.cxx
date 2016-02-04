@@ -169,14 +169,25 @@ void FairRunOnline::Init()
   
   fRootManager->FillEventHeader(fEvtHeader);
 
-  if(0 == fRunId)
+  if(0 == fRunId) // Run ID was not set in run manager
   {
-    fRunId = fEvtHeader->GetRunId();
-    if(0 == fRunId)
+    if(0 == fEvtHeader->GetRunId()) // Run ID was not set in source
     {
+      // Generate unique Run ID
       FairRunIdGenerator genid;
       fRunId = genid.generateId();
+      fRootManager->GetSource()->SetRunId(fRunId);
     }
+    else
+    {
+      // Use Run ID from source
+      fRunId = fEvtHeader->GetRunId();
+    }
+  }
+  else
+  {
+    // Run ID was set in the run manager - propagate to source
+    fRootManager->GetSource()->SetRunId(fRunId);
   }
 
   fRtdb->addRun(fRunId);
@@ -209,10 +220,7 @@ void FairRunOnline::Init()
   
   fRootManager->WriteFileHeader(fFileHeader);
 
-  if(kONLINE == fRootManager->GetSource()->GetSourceType())
-  {
-    ((FairOnlineSource*)(fRootManager->GetSource()))->SetParUnpackers();
-  }
+  fRootManager->GetSource()->SetParUnpackers();
   fTask->SetParTask();
   fRtdb->initContainers(fRunId);
 
@@ -226,10 +234,7 @@ void FairRunOnline::Init()
   fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
   fEvtHeader->SetRunId(fRunId);
 
-  if(kONLINE == fRootManager->GetSource()->GetSourceType())
-  {
-    ((FairOnlineSource*)(fRootManager->GetSource()))->InitUnpackers();
-  }
+  fRootManager->GetSource()->InitUnpackers();
 
   // Now call the User initialize for Tasks
   fTask->InitTask();
@@ -297,13 +302,14 @@ Int_t FairRunOnline::EventLoop()
     LOG(INFO) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId << FairLogger::endl;
     fRunId = tmpId;
     Reinit( fRunId );
+    fRootManager->GetSource()->ReInitUnpackers();
     fTask->ReInitTask();
   }
 
   fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
   fTask->ExecuteTask("");
   fRootManager->FillEventHeader(fEvtHeader);
-  fRootManager->Fill();
+  Fill();
   fRootManager->DeleteOldWriteoutBufferData();
   fTask->FinishEvent();
   fNevents += 1;
@@ -408,6 +414,7 @@ void FairRunOnline::Finish()
   fTask->FinishTask();
   fRootManager->LastFill();
   fRootManager->Write();
+  fRootManager->GetSource()->Close();
 
   if(fGenerateHtml) {
     WriteObjects();
@@ -575,6 +582,22 @@ void FairRunOnline::AddObject(TObject* object)
   }
   if(fServer) {
     fServer->Register("HISTO", object);
+  }
+}
+//_____________________________________________________________________________
+
+
+
+//_____________________________________________________________________________
+void FairRunOnline::Fill()
+{
+  if(fMarkFill)
+  {
+    fRootManager->Fill();
+  }
+  else
+  {
+    fMarkFill = kTRUE;
   }
 }
 //_____________________________________________________________________________

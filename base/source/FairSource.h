@@ -40,15 +40,29 @@ class FairSource : public TObject
 
     virtual Source_Type GetSourceType() = 0;
 
+    virtual void SetParUnpackers() = 0;
+
+    virtual Bool_t InitUnpackers() = 0;
+
+    virtual Bool_t ReInitUnpackers() = 0;
+
+    virtual Bool_t   ActivateObject(TObject** obj, const char* ObjType)  { return kFALSE; }
+
     /**Check the maximum event number we can run to*/
     virtual Int_t  CheckMaxEventNo(Int_t=0) {return -1;}
     /**Read the tree entry on one branch**/
-    virtual void   ReadBranchEvent(const char* ) {return;}
-    virtual void   ReadBranchEvent(const char*, Int_t) {return;}
-    virtual void FillEventHeader(FairEventHeader*) { return; } 
+    virtual void   ReadBranchEvent(const char* BrName) {return;}
+    virtual void   ReadBranchEvent(const char* BrName, Int_t Event) {return;}
+    virtual void FillEventHeader(FairEventHeader* feh);
+
+    void SetRunId(Int_t runId) { fRunId = runId; }
+    Int_t GetRunId() const     { return fRunId;  }
+
+  protected:
+    Int_t fRunId;
 
   public:
-    ClassDef(FairSource, 1)
+    ClassDef(FairSource, 2)
 };
 
 
