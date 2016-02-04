@@ -26,6 +26,7 @@ class FairUnpack : public TObject
     virtual ~FairUnpack();
 
     virtual Bool_t Init() = 0;
+    virtual Bool_t ReInit() { return kTRUE; }
     virtual Bool_t DoUnpack(Int_t* data, Int_t size) = 0;
     virtual void   Reset() = 0;
     virtual void   SetParContainers() {  };

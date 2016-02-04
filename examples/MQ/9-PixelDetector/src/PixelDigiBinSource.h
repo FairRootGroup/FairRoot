@@ -43,6 +43,12 @@ public:
   
   virtual Source_Type GetSourceType() { return kFILE; }
 
+  virtual void SetParUnpackers() {}
+
+  virtual Bool_t InitUnpackers() { return kTRUE; }
+
+  virtual Bool_t ReInitUnpackers() { return kTRUE; }
+
   /**Check the maximum event number we can run to*/
   virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
 

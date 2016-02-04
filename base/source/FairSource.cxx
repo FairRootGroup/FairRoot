@@ -15,22 +15,33 @@
 #include <iostream>
 
 #include "FairSource.h"
+#include "FairEventHeader.h"
 
 
 FairSource::FairSource()
   : TObject()
+  , fRunId(0)
 {
 }
 
 
 FairSource::FairSource(const FairSource& source)
   : TObject(source)
+  , fRunId(source.fRunId)
 {
 }
 
 
 FairSource::~FairSource()
 {
+}
+
+void FairSource::FillEventHeader(FairEventHeader* eh)
+{
+  if(eh)
+  {
+    eh->SetRunId(fRunId);
+  }
 }
 
 ClassImp(FairSource)
