@@ -45,7 +45,7 @@ Set(DEPENDENCIES
   Base
   ParBase
   FairMQ
-  boost_thread
+  boost_thread${_boost_MULTITHREADED}
   boost_program_options
 )
 

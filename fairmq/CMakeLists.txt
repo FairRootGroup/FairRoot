@@ -109,7 +109,7 @@ Install(FILES ${FAIRMQHEADERS} DESTINATION include)
 Set(DEPENDENCIES
   ${DEPENDENCIES}
   ${ZMQ_LIBRARY_SHARED}
-  boost_thread
+  boost_thread${_boost_MULTITHREADED}
   fairmq_logger
   boost_timer
   boost_system

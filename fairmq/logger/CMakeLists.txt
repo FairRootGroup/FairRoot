@@ -26,9 +26,9 @@ set(SRCS logger.cxx)
 set(LIBRARY_NAME fairmq_logger)
 
 set(DEPENDENCIES
-    boost_log
-    boost_log_setup
-    boost_thread
+    boost_log${_boost_MULTITHREADED}
+    boost_log_setup${_boost_MULTITHREADED}
+    boost_thread${_boost_MULTITHREADED}
     boost_date_time
     boost_filesystem
     boost_system

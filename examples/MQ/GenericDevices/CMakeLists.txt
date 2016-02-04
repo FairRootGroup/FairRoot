@@ -95,7 +95,7 @@ Set(DEPENDENCIES
     FairMQ 
     BaseMQ 
     FairTestDetector
-    boost_thread 
+    boost_thread${_boost_MULTITHREADED} 
     boost_system 
     boost_serialization 
     boost_program_options

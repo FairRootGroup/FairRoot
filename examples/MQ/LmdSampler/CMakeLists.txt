@@ -96,7 +96,7 @@ ForEach(_file RANGE 0 ${_length})
     Set(DEPENDENCIES
         FairMQ 
         BaseMQ 
-        boost_thread 
+        boost_thread${_boost_MULTITHREADED} 
         boost_system 
         boost_serialization 
         boost_program_options 
