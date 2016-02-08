@@ -17,7 +17,7 @@ PixelGeo::PixelGeo()
   // Constructor
   // fName has to be the name used in the geometry for all volumes.
   // If there is a mismatch the geometry cannot be build.
-  fName="newdetector";
+  fName="Pixel";
   maxSectors=0;
   maxModules=10;
 }

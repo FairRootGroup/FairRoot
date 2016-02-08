@@ -6,4 +6,4 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 Add_Subdirectory(src)
-#Add_Subdirectory(macros)
+Add_Subdirectory(macros)
