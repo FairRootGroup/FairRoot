@@ -559,6 +559,7 @@ Int_t  FairRootManager::ReadEvent(Int_t i)
   FairEventHeader* tempEH = new FairEventHeader();
   fSource->FillEventHeader(tempEH);
   fCurrentTime = tempEH->GetEventTime();
+  tempEH->Delete();
 
   LOG(DEBUG) << "--Event number --- "
 	     << fCurrentEntryNo << " with time ---- " 
