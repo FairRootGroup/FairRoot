@@ -5,6 +5,10 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+
+
+
 void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 {
   
@@ -72,11 +76,10 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-  FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 1);
-
-  boxGen->SetPRange     (2.0,2.0);
-  boxGen->SetThetaRange (89.,90.)
-  boxGen->SetPhiRange   (0.,1.);
+  FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 5);
+  boxGen->SetPRange(1,2);
+  boxGen->SetThetaRange(5,10);
+  boxGen->SetPhiRange(0,360);
   boxGen->SetDebug(kTRUE);
 
   primGen->AddGenerator(boxGen);
