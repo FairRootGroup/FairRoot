@@ -30,8 +30,12 @@ Pixel.cxx
 PixelContFact.cxx
 PixelGeo.cxx
 PixelGeoPar.cxx
-PixelPoint.cxx
 PixelDigi.cxx
+PixelDigitize.cxx
+PixelDigiPar.cxx
+PixelFindHits.cxx
+PixelHit.cxx
+PixelPoint.cxx
 )
 Set(HEADERS )
 Set(LINKDEF PixelLinkDef.h)

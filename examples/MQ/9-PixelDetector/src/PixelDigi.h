@@ -32,28 +32,30 @@ class PixelDigi : public FairTimeStamp
      *\param charge deposited charge in electrons
     **/
     
-    PixelDigi(Int_t index, Int_t detID, Int_t SensorID, Int_t feID, Double_t charge, Double_t timestamp = -1);
+    PixelDigi(Int_t index, Int_t detID, Int_t feID, Int_t col, Int_t row, Double_t charge, Double_t timestamp = -1);
     virtual ~PixelDigi();
     
-    void SetIndex(Int_t in){index = in;};
-    void SetDetId(Int_t det){detID=det;};
-    void SetSenserID(Int_t Sen){SensorID=Sen;};
-    void SetfeID(Int_t fe){feID=fe;};
-    void SetCharge(Double_t ch){charge = ch;};
-              
-    Int_t GetIndex(Int_t i){return index;};
-    Int_t GetDetId(){return detID;};
-    Int_t GetSenserID(){return SensorID;};
-    Int_t GetfeID(){return feID;};
-    Double_t GetCharge(){return charge;};
-    
+    void SetIndex(Int_t in){fPointIndex = in;};
+    void SetDetectorID(Int_t det){fDetectorID=det;};
+    void SetFeID(Int_t fe){fFeID=fe;};
+    void SetCharge(Double_t ch){fCharge = ch;};
+    void SetCol(Int_t col){fCol = col;};
+    void SetRow(Int_t row){fRow = row;};              
+
+    Int_t GetIndex(){return fPointIndex;};
+    Int_t GetDetectorID(){return fDetectorID;};
+    Int_t GetFeID(){return fFeID;};
+    Double_t GetCharge(){return fCharge;};
+    Int_t GetCol(){return fCol;};
+    Int_t GetRow(){return fRow;};    
+
   private:
-    Int_t index;
-    Int_t detID;
-    Int_t SensorID;
-    Int_t feID;
-    Double_t charge;
-              
+    Int_t fPointIndex;
+    Int_t fDetectorID;
+    Int_t fFeID;
+    Double_t fCharge;
+    Int_t fCol;
+    Int_t fRow;              
               
     ClassDef(PixelDigi, 1);
 };

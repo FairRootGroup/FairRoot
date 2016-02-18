@@ -76,11 +76,11 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-  FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 5);
+  FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 1);
   boxGen->SetPRange(1,2);
-  boxGen->SetThetaRange(5,10);
+  boxGen->SetThetaRange(0,90);
   boxGen->SetPhiRange(0,360);
-  boxGen->SetDebug(kTRUE);
+  //  boxGen->SetDebug(kTRUE);
 
   primGen->AddGenerator(boxGen);
 

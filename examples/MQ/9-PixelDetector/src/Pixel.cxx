@@ -105,7 +105,24 @@ Bool_t  Pixel::ProcessHits(FairVolume* vol)
        gMC->IsTrackDisappeared()   ) {
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     fVolumeID = vol->getMCid();
+
+
     if (fELoss == 0. ) { return kFALSE; }
+
+    // Taking stationNr and sectorNr from string is almost effortless.
+    // Simulation of 100k events with 5 pions without magnetic field takes:
+    // - Real time 142.366 s, CPU time 140.32s WITH USING VolPath TO GET fVolumeID
+    // - Real time 142.407 s, CPU time 140.64s WITHOUT THE FOLLOWING TString OPERATIONS
+    {
+      TString detPath = gMC->CurrentVolPath();
+      detPath.Remove (0,detPath.Last('/')+1);
+      detPath.Remove (0,detPath.First("Pixel")+5);
+      Int_t stationNr = detPath.Atoi();
+      detPath.Remove (0,detPath.First("_")+1);
+      Int_t sectorNr  = detPath.Atoi();
+      fVolumeID = stationNr*256+sectorNr;
+    }
+
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
            TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
            fELoss);

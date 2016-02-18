@@ -8,6 +8,7 @@
 #include "PixelContFact.h"
 
 #include "PixelGeoPar.h"
+#include "PixelDigiPar.h"
 
 #include "FairRuntimeDb.h"
 
@@ -40,6 +41,14 @@ void PixelContFact::setAllContainers()
   p->addContext("TestNonDefaultContext");
 
   containers->Add(p);
+
+  FairContainer* p2 = new FairContainer ("PixelDigiParameters",
+					 "Pixel digi parameters",
+					 "TestDefaultContext");
+  p2->addContext("TestNonDefaultContext");
+
+  containers->Add(p2);
+
 }
 
 FairParSet* PixelContFact::createContainer(FairContainer* c)
@@ -53,7 +62,11 @@ FairParSet* PixelContFact::createContainer(FairContainer* c)
   FairParSet* p=NULL;
   if (strcmp(name,"PixelGeoPar")==0) {
     p=new PixelGeoPar(c->getConcatName().Data(),
-                            c->GetTitle(),c->getContext());
+		      c->GetTitle(),c->getContext());
+  }
+  if (strcmp(name,"PixelDigiParameters")==0) {
+    p=new PixelDigiPar(c->getConcatName().Data(),
+		       c->GetTitle(),c->getContext());
   }
   return p;
 }

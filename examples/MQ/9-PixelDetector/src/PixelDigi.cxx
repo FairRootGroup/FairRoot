@@ -17,21 +17,23 @@ ClassImp(PixelDigi);
 
 PixelDigi::PixelDigi()
     : FairTimeStamp()
-    , index(0)
-    , detID(0)
-    , SensorID(0)
-    , feID(0)
-    , charge(0.)
+    , fPointIndex(0)
+    , fDetectorID(0)
+    , fFeID(0)
+    , fCharge(0.)
+    , fCol(0)
+    , fRow(0)
 {
 }
 
-PixelDigi::PixelDigi(Int_t in, Int_t detid, Int_t Sensorid, Int_t feid, Double_t ch, Double_t tstamp)
+PixelDigi::PixelDigi(Int_t in, Int_t detid, Int_t feid, Int_t col, Int_t row, Double_t ch, Double_t tstamp)
     : FairTimeStamp(tstamp)
-    , index(in)
-    , detID(detid)
-    , SensorID(Sensorid)
-    , feID(feid)
-    , charge(ch)
+    , fPointIndex(in)
+    , fDetectorID(detid)
+    , fFeID(feid)
+    , fCharge(ch)
+    , fCol(col)
+    , fRow(row)
 {
 }
 

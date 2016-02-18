@@ -11,10 +11,15 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
+#pragma link C++ class Pixel+;
 #pragma link C++ class PixelContFact;
 #pragma link C++ class PixelGeo;
 #pragma link C++ class PixelGeoPar;
-#pragma link C++ class Pixel+;
+#pragma link C++ class PixelDigi+;
+#pragma link C++ class PixelDigitize+;
+#pragma link C++ class PixelDigiPar+;
+#pragma link C++ class PixelFindHits+;
+#pragma link C++ class PixelHit+;
 #pragma link C++ class PixelPoint+;
 
 #endif
