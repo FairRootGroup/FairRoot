@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * PixelHit.h
+ * PixelFindHits.h
  *
  *  Created on: 18.02.2016
  *      Author: R. Karabowicz

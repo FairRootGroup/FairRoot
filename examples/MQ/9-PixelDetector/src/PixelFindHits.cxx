@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * PixelHit.h
+ * PixelFindHits.cxx
  *
  *  Created on: 18.02.2016
  *      Author: R. Karabowicz
@@ -225,7 +225,7 @@ void PixelFindHits::Reset() {
 
 // -----   Public method Finish   ------------------------------------------
 void PixelFindHits::Finish() {
-  if ( fDigis ) fDigis->Delete();
+  if ( fHits ) fHits->Delete();
 
   LOG(INFO) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
   LOG(INFO) << " Events:        " << fTNofEvents << FairLogger::endl;
