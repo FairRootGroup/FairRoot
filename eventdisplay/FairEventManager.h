@@ -65,10 +65,10 @@ class FairEventManager : public TEveEventManager
     TEveViewer *GetMultiView() const {return fMultiView;};
     TEveViewer *GetMultiRPhiView() const { return fMultiRPhiView;};
     TEveViewer *GetMultiRhoZView() const {return fMultiRhoZView;};
-	TEveScene* GetRhoZScene() const {return fRhoZScene;};
-	TEveScene* GetRPhiScene() const {return fRPhiScene;};
-	TEveProjectionManager* GetRhoZProjManager() const {return fRhoZProjManager;};
-	TEveProjectionManager* GetRPhiProjManager() const {return fRPhiProjManager;};
+    TEveScene* GetRhoZScene() const {return fRhoZScene;};
+    TEveScene* GetRPhiScene() const {return fRPhiScene;};
+    TEveProjectionManager* GetRhoZProjManager() const {return fRhoZProjManager;};
+    TEveProjectionManager* GetRPhiProjManager() const {return fRPhiProjManager;};
     TEveProjectionAxes *GetRPhiAxes() const { return fAxesPhi;};
     TEveProjectionAxes *GetRhoZAxes() const {return fAxesRho;};
   private:
