@@ -751,6 +751,8 @@ void FairFileSource::SetBeamTime(Double_t beamTime, Double_t gapTime)
 //_____________________________________________________________________________
 void FairFileSource::SetEventTime()
 {
+  //Check if the time for the current entry is already set
+  if(fTimeforEntryNo==fCurrentEntryNo) return;
   LOG(DEBUG) << "Set event time for Entry = "
 	     << fTimeforEntryNo << " , where the current entry is "
 	     << fCurrentEntryNo << " and eventTime is "
