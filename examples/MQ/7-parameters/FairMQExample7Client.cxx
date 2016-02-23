@@ -62,12 +62,12 @@ void FairMQExample7Client::Run()
 
         LOG(INFO) << "Requesting parameter \"" << fParameterName << "\" for Run ID " << runId << ".";
 
-        unique_ptr<FairMQMessage> req(fTransportFactory->CreateMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
-        unique_ptr<FairMQMessage> rep(fTransportFactory->CreateMessage());
+        unique_ptr<FairMQMessage> req(NewMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
+        unique_ptr<FairMQMessage> rep(NewMessage());
 
-        if (fChannels.at("data").at(0).Send(req) > 0)
+        if (Send(req, "data") > 0)
         {
-            if (fChannels.at("data").at(0).Receive(rep) > 0)
+            if (Receive(rep, "data") > 0)
             {
                 FairMQExample7TMessage tmsg(rep->GetData(), rep->GetSize());
                 FairMQExample7ParOne* par = (FairMQExample7ParOne*)(tmsg.ReadObject(tmsg.GetClass()));
