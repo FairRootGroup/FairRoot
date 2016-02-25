@@ -53,6 +53,7 @@ class PixelFindHits : public FairTask
   virtual void Exec(Option_t* opt);
 
 // MQ
+  void ExecMQ(Option_t* opt);
   TClonesArray* ExecMQ(TClonesArray* digis);
   void InitMQ(const std::string& root_file, const std::string& ascii_file);
   void UpdateParameter(PixelDigiPar* digipar, FairGeoParSet* geopar);
