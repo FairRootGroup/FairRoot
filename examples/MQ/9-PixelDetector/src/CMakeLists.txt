@@ -42,14 +42,20 @@ devices/PixelFindHitsTask.cxx
 set(SRCS
 Pixel.cxx
 PixelContFact.cxx
-PixelGeo.cxx
-PixelGeoPar.cxx
-PixelDigi.cxx
 PixelDigitize.cxx
 PixelDigiPar.cxx
+PixelDigiSource.cxx
+PixelDigiWriteToFile.cxx
 PixelFindHits.cxx
-PixelHit.cxx
+PixelFindTracks.cxx
+PixelFitTracks.cxx
+PixelGeo.cxx
+PixelGeoPar.cxx
+
 PixelPoint.cxx
+PixelDigi.cxx
+PixelHit.cxx
+PixelTrack.cxx
 )
 Set(HEADERS )
 Set(LINKDEF PixelLinkDef.h)

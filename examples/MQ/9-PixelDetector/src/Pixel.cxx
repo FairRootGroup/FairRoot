@@ -35,6 +35,10 @@
 #include "TVirtualMC.h"                 // for TVirtualMC, gMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
+#include "TGeoPhysicalNode.h"
+#include "TGeoManager.h"
+#include "TGeoMatrix.h"
+
 #include <stddef.h>                     // for NULL
 
 
@@ -209,6 +213,37 @@ void Pixel::ConstructGeometry()
   par->setInputVersion(fRun->GetRunId(),1);
 
   ProcessNodes ( volList );
+}
+
+void Pixel::ModifyGeometry() {  
+  if(0==gGeoManager) {
+    std::cout<<" -E- No gGeoManager in PndGemDetector::Initialize()!"<<std::endl;
+    return;
+  }
+
+  TString tName = Form("/cave/Pixel1_1");
+  cout << tName.Data() << endl;	
+  TGeoPhysicalNode* tgpn = gGeoManager->MakePhysicalNode(tName.Data());
+  if ( !tgpn ) {cout << "no thpn" << endl; return;} 
+  cout << "got TGPN" << endl;
+  TGeoHMatrix* tghm = (TGeoHMatrix*)tgpn->GetOriginalMatrix();
+  if ( !tghm ) {cout << "no tghm" << endl; return;}
+  cout << "got TGHM" << endl;
+  cout << " * * *  o r i g  * * *  o r i g  * * *  o r i g  * * *  o r i g  * * * " << endl;
+  tghm->Print();
+  tghm->RotateX(0.);
+  tghm->RotateY(0.);
+  tghm->RotateZ(0.);//gRandom->Gaus(0.,.1));
+  Double_t* trans = tghm->GetTranslation();
+  cout << "trans = " << trans[0] << " " << trans[1] << " " << trans[2] << endl;
+  cout << " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * " << endl;
+  for ( Int_t ic = 0 ; ic < 3 ; ic++ ) 
+    trans[ic] += 3.-ic;//gRandom->Gaus(0.,.03);
+  tghm->SetTranslation(trans);
+  cout << " * * * m o v e d * * * m o v e d * * * m o v e d * * * m o v e d * * * " << endl;
+  tghm->Print();
+  cout << " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * " << endl;
+  tgpn->Align(tghm);
 }
 
 PixelPoint* Pixel::AddHit(Int_t trackID, Int_t detID,

@@ -54,6 +54,8 @@ class Pixel: public FairDetector
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
+    /**      Misalign the detector geometry        */
+    void ModifyGeometry();
 
 
     /**      This method is an example of how to add your own point
