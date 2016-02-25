@@ -43,6 +43,7 @@
 #include "TGeoManager.h"                // for gGeoManager, TGeoManager
 #include "TGeoMedium.h"                 // for TGeoMedium
 #include "TGeoNode.h"                   // for TGeoNode
+#include "TGeoPhysicalNode.h"           // for TGeoPhysicalNode
 #include "TGeoTrack.h"                  // for TGeoTrack
 #include "TGeoVolume.h"                 // for TGeoVolume
 #include "TH2.h"                        // for TH2D
@@ -499,7 +500,7 @@ void FairMCApplication::FinishRun()
   if (!fRadGridMan) {
     if (fRootManager) fRootManager->Write();
   }
-
+  UndoGeometryModifications();
   //  fRootManager->Write();
 
 }
@@ -875,6 +876,7 @@ void FairMCApplication::ConstructGeometry()
   Int_t ModId=0;
   while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
     NoOfVolumesBefore=gGeoManager->GetListOfVolumes()->GetEntriesFast();
+    Mod->InitParContainers();
     Mod->ConstructGeometry();
     ModId=Mod->GetModId();
     NoOfVolumes=gGeoManager->GetListOfVolumes()->GetEntriesFast();
@@ -905,6 +907,11 @@ void FairMCApplication::ConstructGeometry()
          Counter++;
       }
     }
+    fModIter->Reset();
+    while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+      Mod->ModifyGeometry();
+    }
+    gGeoManager->RefreshPhysicalNodes(kFALSE);
   }
 }
 //_____________________________________________________________________________
@@ -1347,6 +1354,45 @@ Int_t FairMCApplication::GetIonPdg(Int_t z, Int_t a) const
   return 1000000000 + 10*1000*z + 10*a;
 }
 
+void  FairMCApplication::UndoGeometryModifications()
+{
+  // Undo all misalignment done in the MisalignGeometry methods of the
+  // several FairModuls.
+  // In the output (parameter container and separate geometry file)
+  // only the misaligned geometry is stored.
+  // I don't know any better way then to loop over all physical nodes
+  // and to set the matrix back to the original one.
+  // TODO: In the code below is a memory problem which I don't understand
+  //       but which has to be fixed. When running the code below one gets
+  //       the following error when exiting root.
+  //   root.exe(75478,0x7fff70712cc0) malloc: *** error for object
+  //   0x10eb95540: pointer being freed was not allocated
+  //   *** set a breakpoint in malloc_error_break to debug
+  // The problem comes when taking back the misalignment which was
+  // introduced before. If skiping the line node->align(ng3)
+  // everything is okay.
+
+  /*
+    TIter next(gGeoManager->GetListOfPhysicalNodes());
+     TGeoPhysicalNode *pn;
+     while ((pn=(TGeoPhysicalNode*)next())) pn->Refresh();
+  */
+//  gGeoManager->UnlockGeometry();
+
+  LOG(INFO)<<"Undo all misalignment"<<FairLogger::endl;
+  TObjArray* physNodes = gGeoManager->GetListOfPhysicalNodes();
+  TGeoPhysicalNode* node = NULL;
+  TGeoHMatrix* ng3 = NULL;
+  for(Int_t k=0; k<physNodes->GetEntriesFast(); k++) {
+    node=(TGeoPhysicalNode*)physNodes->At(k);
+    ng3 = node->GetOriginalMatrix(); //"real" global matrix, what survey sees
+    ng3->Print();
+    node->Align(ng3);
+//   node->Refresh();
+  }
+//  gGeoManager->LockGeometry();  
+//  gGeoManager->RefreshPhysicalNodes(kTRUE);
+
+}
+
 ClassImp(FairMCApplication)
-
-

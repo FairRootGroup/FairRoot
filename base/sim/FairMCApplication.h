@@ -195,6 +195,8 @@ class FairMCApplication : public TVirtualMCApplication
 
     Int_t GetIonPdg(Int_t z, Int_t a) const;
 
+    void UndoGeometryModifications();
+
     // data members
     /**List of active detector */
     TRefArray*           fActiveDetectors;
