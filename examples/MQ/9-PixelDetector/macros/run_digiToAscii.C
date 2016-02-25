@@ -5,7 +5,7 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_digi( TString mcEngine="TGeant3" )
+void run_digiToAscii( TString mcEngine="TGeant3" )
 {
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
@@ -25,7 +25,7 @@ void run_digi( TString mcEngine="TGeant3" )
 
   // Output file
   TString outFile = "pixel_";
-  outFile = outFile + mcEngine + ".digi.root";
+  outFile = outFile + mcEngine + ".digiToAscii.root";
   
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
@@ -48,6 +48,9 @@ void run_digi( TString mcEngine="TGeant3" )
   // -----   TorinoDetector hit  producers   ---------------------------------
   PixelDigitize* digiTask = new PixelDigitize();
   fRun->AddTask(digiTask);
+
+  PixelDigiWriteToFile* digiWrite = new PixelDigiWriteToFile();
+  fRun->AddTask(digiWrite);
 
   fRun->Init();
 

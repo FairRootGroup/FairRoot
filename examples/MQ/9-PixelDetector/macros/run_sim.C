@@ -76,9 +76,9 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-  FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 1);
+  FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 5);
   boxGen->SetPRange(1,2);
-  boxGen->SetThetaRange(0,90);
+  boxGen->SetThetaRange(0,40);
   boxGen->SetPhiRange(0,360);
   //  boxGen->SetDebug(kTRUE);
 
@@ -103,7 +103,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   rtdb->saveOutput();
   rtdb->print();
   // ------------------------------------------------------------------------
-   
+
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
   run->CreateGeometryFile("geofile_full.root");

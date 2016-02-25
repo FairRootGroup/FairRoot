@@ -5,14 +5,10 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_digi( TString mcEngine="TGeant3" )
+void run_dSource( TString mcEngine="TGeant3" )
 {
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
-  
-  // Input file (MC events)
-  TString inFile = "pixel_";
-  inFile = inFile + mcEngine + ".mc.root";
   
   // Parameter file
   TString parFile = "pixel_"; 
@@ -25,15 +21,19 @@ void run_digi( TString mcEngine="TGeant3" )
 
   // Output file
   TString outFile = "pixel_";
-  outFile = outFile + mcEngine + ".digi.root";
+  outFile = outFile + mcEngine + ".viaSource.hits.root";
   
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
   
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
-  fRun->SetInputFile(inFile);
   fRun->SetOutputFile(outFile);
+
+  PixelDigiSource* digiSource = new PixelDigiSource("Pixel Digi Source");
+  digiSource->SetInputFileName("adgae.dat");
+
+  fRun->SetSource(digiSource);
   
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
@@ -46,8 +46,12 @@ void run_digi( TString mcEngine="TGeant3" )
   rtdb->setSecondInput(parIo1);
   
   // -----   TorinoDetector hit  producers   ---------------------------------
-  PixelDigitize* digiTask = new PixelDigitize();
-  fRun->AddTask(digiTask);
+  //  PixelDigiReadFromFile* digiRead = new PixelDigiReadFromFile();
+  //  fRun->AddTask(digiRead);
+
+  PixelFindHits* hitFinderTask = new PixelFindHits();
+  fRun->AddTask(hitFinderTask);
+  
 
   fRun->Init();
 
