@@ -1,0 +1,43 @@
+#!/bin/bash
+
+
+MQCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig.json"
+INPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
+INPUTBRANCH="PixelDigis"
+
+########################## start SAMPLER
+SAMPLER="FairMQEx9Sampler"
+SAMPLER+=" --id sampler1  --config-json-file $MQCONFIGFILE"
+SAMPLER+=" --input-name $INPUTFILE --input-branch $INPUTBRANCH"
+xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+
+########################## start SPLITTER
+SPLITTER="FairMQEx9Splitter"
+SPLITTER+=" --id splitter1 --config-json-file $MQCONFIGFILE"
+xterm +aw -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$SPLITTER &
+
+########################## start PROCESSORs
+PROCESSOR1="FairMQEx9Processor"
+PROCESSOR1+=" --id processor1 --config-json-file $MQCONFIGFILE"
+xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+
+PROCESSOR2="FairMQEx9Processor"
+PROCESSOR2+=" --id processor2 --config-json-file $MQCONFIGFILE"
+xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+
+PROCESSOR3="FairMQEx9Processor"
+PROCESSOR3+=" --id processor3 --config-json-file $MQCONFIGFILE"
+xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
+
+########################## start MERGER
+MERGER="FairMQEx9Merger"
+MERGER+=" --id merger1 --config-json-file $MQCONFIGFILE"
+xterm +aw -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
+
+########################## start FILESINK
+FILESINK="FairMQEx9Sink"
+FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
+FILESINK+=" --output-name @CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/out.pixel.hit.root"
+xterm +aw -geometry 120x27+0+500 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+
+

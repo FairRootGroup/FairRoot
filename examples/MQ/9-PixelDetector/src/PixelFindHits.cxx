@@ -98,7 +98,7 @@ void PixelFindHits::Exec(Option_t* opt) {
 
   Reset();
 
-  LOG(DEBUG) << "PixelFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
+  LOG(INFO) << "PixelFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
 
   fTNofEvents++;
 
@@ -135,8 +135,8 @@ void PixelFindHits::Exec(Option_t* opt) {
 
     curNode->LocalToMaster(locPosCalc,globPos);
 
-    LOG(DEBUG) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
-    LOG(DEBUG) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
+    LOG(INFO) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
+    LOG(INFO) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
 
     TVector3 pos   (globPos[0],globPos[1],globPos[2]);
     TVector3 posErr(fPitchX/TMath::Sqrt(12.),fPitchY/TMath::Sqrt(12.),actBox->GetDZ());
@@ -229,6 +229,100 @@ void PixelFindHits::Finish() {
 }
 // -------------------------------------------------------------------------
 
+
+
+// MQ
+
+void PixelFindHits::InitMQ() 
+{
+  fHits = new TClonesArray("PixelHit",10000);
+}
+
+TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis) 
+{
+
+  Reset();
+  fDigis=digis;// RootDeserializer has ownership
+
+  LOG(INFO) << "PixelFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
+
+  fTNofEvents++;
+
+  fNDigis = fDigis->GetEntriesFast();
+  fTNofDigis+= fNDigis;
+
+  TGeoHMatrix* rtMat[3][4];
+  for ( Int_t istat = 0 ; istat < 3 ; istat++ ) 
+  {
+    for ( Int_t isens = 0 ; isens < 4 ; isens++ ) 
+    {
+      rtMat[istat][isens] = new TGeoHMatrix();
+    }
+    Double_t rotMat[9] = {1.,0.,0., 0.,1.,0., 0.,0.,1.};
+    rtMat[istat][0]->SetRotation(rotMat);
+    rotMat[0] =  0.;    rotMat[1] = -1.;    rotMat[3] =  1.;    rotMat[4] =  0.;
+    rtMat[istat][1]->SetRotation(rotMat);
+    rotMat[0] = -1.;    rotMat[1] =  0.;    rotMat[3] =  0.;    rotMat[4] = -1.;
+    rtMat[istat][2]->SetRotation(rotMat);
+    rotMat[0] =  0.;    rotMat[1] =  1.;    rotMat[3] = -1.;    rotMat[4] =  0.;
+    rtMat[istat][3]->SetRotation(rotMat);
+  }
+  rtMat[0][0]->SetDx( 1.50); rtMat[0][0]->SetDy( 1.00); rtMat[0][0]->SetDz(5.);
+  rtMat[0][1]->SetDx(-1.00); rtMat[0][1]->SetDy( 1.50); rtMat[0][1]->SetDz(5.);
+  rtMat[0][2]->SetDx(-1.50); rtMat[0][2]->SetDy(-1.00); rtMat[0][2]->SetDz(5.);
+  rtMat[0][3]->SetDx( 1.00); rtMat[0][3]->SetDy(-1.50); rtMat[0][3]->SetDz(5.);
+  rtMat[1][0]->SetDx( 2.75); rtMat[1][0]->SetDy( 2.25); rtMat[1][0]->SetDz(10.);
+  rtMat[1][1]->SetDx(-2.25); rtMat[1][1]->SetDy( 2.75); rtMat[1][1]->SetDz(10.);
+  rtMat[1][2]->SetDx(-2.75); rtMat[1][2]->SetDy(-2.25); rtMat[1][2]->SetDz(10.);
+  rtMat[1][3]->SetDx( 2.25); rtMat[1][3]->SetDy(-2.75); rtMat[1][3]->SetDz(10.);
+  rtMat[2][0]->SetDx( 5.50); rtMat[2][0]->SetDy( 4.50); rtMat[2][0]->SetDz(20.);
+  rtMat[2][1]->SetDx(-4.50); rtMat[2][1]->SetDy( 5.50); rtMat[2][1]->SetDz(20.);
+  rtMat[2][2]->SetDx(-5.50); rtMat[2][2]->SetDy(-4.50); rtMat[2][2]->SetDz(20.);
+  rtMat[2][3]->SetDx( 4.50); rtMat[2][3]->SetDy(-5.50); rtMat[2][3]->SetDz(20.);
+  fFeCols = 110;
+  fFeRows = 116;
+  fMaxFEperCol = 64;
+  fPitchX = 0.01;
+  fPitchY = 0.01;
+  Double_t sensorSize[3][2] = {1.,1.5,2.25,2.75,4.5,5.5};
+  Double_t zerr = 0.0075;
+
+  for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) 
+  {
+    PixelDigi* currentDigi = (PixelDigi*)fDigis->At(iDigi);
+
+    Int_t detId = currentDigi->GetDetectorID();    
+    Int_t istat = detId/256-1;
+    Int_t isens = detId%256-1;
+
+    Int_t feId = currentDigi->GetFeID();
+    Int_t col  = currentDigi->GetCol();
+    Int_t row  = currentDigi->GetRow();
+    Double_t locPosCalc[3];
+    locPosCalc[0] = ( ((feId-1)/fMaxFEperCol)*fFeCols + col + 0.5 )*fPitchX;
+    locPosCalc[1] = ( ((feId-1)%fMaxFEperCol)*fFeRows + row + 0.5 )*fPitchY;
+    locPosCalc[2] = 0.;
+
+    LOG(DEBUG) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
+    
+    locPosCalc[0] -= sensorSize[istat][0];
+    locPosCalc[1] -= sensorSize[istat][1];
+    
+    Double_t globPos[3];
+
+    rtMat[istat][isens]->LocalToMaster(locPosCalc,globPos);
+
+    LOG(DEBUG) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
+
+    TVector3 pos   (globPos[0],globPos[1],globPos[2]);
+    TVector3 posErr(fPitchX/TMath::Sqrt(12.),fPitchY/TMath::Sqrt(12.),zerr);
+    new ((*fHits)[fNHits]) PixelHit(detId,currentDigi->GetIndex(),pos,posErr);
+    fNHits++;
+  }
+
+  fTNofHits += fNHits;
+  return fHits;
+}
 
 
 ClassImp(PixelFindHits)

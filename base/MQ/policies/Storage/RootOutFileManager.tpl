@@ -152,7 +152,7 @@ void RootOutFileManager<DataType>::AddToFile(std::vector<DataType>& InputData)
 
         if (fOutput->IsEmpty())
         {
-            MQLOG(ERROR) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
+            MQLOG(DEBUG) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
         }
 
         fTree->Fill();
@@ -179,7 +179,7 @@ void RootOutFileManager<DataType>::AddToFile(TClonesArray* InputData)
 
         if (fOutput->IsEmpty())
         {
-            MQLOG(ERROR) << "RootOutFileManager::AddToFile(TClonesArray*): No Output array!";
+            MQLOG(DEBUG) << "RootOutFileManager::AddToFile(TClonesArray*): No Output array!";
         }
         fTree->Fill();
         if (!fFlowMode)
@@ -187,7 +187,7 @@ void RootOutFileManager<DataType>::AddToFile(TClonesArray* InputData)
     }
     else
     {
-        MQLOG(ERROR) << "RootOutFileManager::AddToFile(TClonesArray*): TClonesArray not set as output container";
+        MQLOG(DEBUG) << "RootOutFileManager::AddToFile(TClonesArray*): TClonesArray not set as output container";
     }
 }
 
@@ -206,7 +206,7 @@ void RootOutFileManager<DataType>::AddToFile(DataType* ObjArr, long size)
 
         if (fOutput->IsEmpty())
         {
-            MQLOG(ERROR) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
+            MQLOG(DEBUG) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
         }
 
         fTree->Fill();
@@ -281,9 +281,9 @@ void RootOutFileManager<DataType>::InitOutputFile()
     BranchNameList->AddLast(new TObjString(fBranchName.c_str()));
     BranchNameList->Write("BranchList", TObject::kSingleKey);
 
-    TFolder* fold = fFolder->AddFolder("blah","blahtitle");
-    fold->Add(fOutput);
-    fFolder->Write();
+    //TFolder* fold = fFolder->AddFolder("blah","blahtitle");
+    //fold->Add(fOutput);
+    //fFolder->Write();
 
     BranchNameList->Delete();
     delete BranchNameList;
