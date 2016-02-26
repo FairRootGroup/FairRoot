@@ -19,12 +19,6 @@ class FairTutorialDet4GeoPar       : public FairParGenericSet
 {
   public:
 
-    /** List of FairGeoNodes for sensitive  volumes */
-    TObjArray*      fGeoSensNodes;
-
-    /** List of FairGeoNodes for sensitive  volumes */
-    TObjArray*      fGeoPassNodes;
-
     FairTutorialDet4GeoPar(const char* name="FairTutorialDet4GeoPar",
                            const char* title="FairTutorialDet4 Geometry Parameters",
                            const char* context="TestDefaultContext");
@@ -34,12 +28,24 @@ class FairTutorialDet4GeoPar       : public FairParGenericSet
     Bool_t getParams(FairParamList*);
     TObjArray* GetGeoSensitiveNodes() {return fGeoSensNodes;}
     TObjArray* GetGeoPassiveNodes()   {return fGeoPassNodes;}
+    Bool_t IsGlobalCoordinateSystem() {return fGlobalCoordinates;}
+    void SetGlobalCoordinates(Bool_t globalCoordinates) {
+      fGlobalCoordinates = globalCoordinates;
+    }
 
   private:
+    /** List of FairGeoNodes for sensitive  volumes */
+    TObjArray*      fGeoSensNodes;
+
+    /** List of FairGeoNodes for sensitive  volumes */
+    TObjArray*      fGeoPassNodes;
+
+    Bool_t          fGlobalCoordinates;
+
     FairTutorialDet4GeoPar(const FairTutorialDet4GeoPar&);
     FairTutorialDet4GeoPar& operator=(const FairTutorialDet4GeoPar&);
 
-    ClassDef(FairTutorialDet4GeoPar,1)
+    ClassDef(FairTutorialDet4GeoPar,2)
 };
 
 #endif /* FAIRTUTORIALDETGEOPAR_H */
