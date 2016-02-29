@@ -21,6 +21,7 @@
 
 #include <list>
 #include <map>
+#include <string>
 
 class TClonesArray;
 class PixelDigiPar;
@@ -51,7 +52,7 @@ class PixelFindHits : public FairTask
 
 // MQ
   TClonesArray* ExecMQ(TClonesArray* digis);
-  void InitMQ();
+  void InitMQ(const std::string& root_file, const std::string& ascii_file);
 
  private:
 

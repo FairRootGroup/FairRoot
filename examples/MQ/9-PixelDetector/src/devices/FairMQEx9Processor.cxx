@@ -10,10 +10,9 @@
 
 
 FairMQEx9Processor::FairMQEx9Processor() : 	fOutput(nullptr),
-										    fTaskName(),
+										    fRootParFileName(),
+                                            fAsciiParFileName(),
 										    fInputClassName(),
-										    fDetID(0),
-										    fMCIndex(0),
 										    fSerializer(),
 										    fDeSerializer(),
                                             fHitFinder(new PixelFindHits())
@@ -35,7 +34,7 @@ FairMQEx9Processor::~FairMQEx9Processor()
 void FairMQEx9Processor::Init()
 {
 	fDeSerializer.InitContainer(fInputClassName);
-    fHitFinder->InitMQ();
+    fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
 }
 
 void FairMQEx9Processor::Run()
@@ -74,6 +73,14 @@ void FairMQEx9Processor::SetProperty(const int key, const std::string& value)
 {
     switch (key)
     {
+        case RootParam :
+            fRootParFileName = value;
+            break;
+
+        case AsciiParam :
+            fAsciiParFileName = value;
+            break;
+
         case InputClassName :
             fInputClassName = value;
             break;
@@ -90,6 +97,12 @@ std::string FairMQEx9Processor::GetProperty(const int key, const std::string& de
 {
     switch (key)
     {
+        case RootParam :
+            return fRootParFileName;
+
+        case AsciiParam :
+            return fAsciiParFileName;
+
         case InputClassName:
             return fInputClassName;
 

@@ -36,6 +36,10 @@
 
 #include <map>
 
+ // 
+#include "FairParRootFileIo.h"
+#include "FairParAsciiFileIo.h"
+
 using std::pair;
 using std::map;
 
@@ -233,9 +237,46 @@ void PixelFindHits::Finish() {
 
 // MQ
 
-void PixelFindHits::InitMQ() 
+void PixelFindHits::InitMQ(const std::string& root_file, const std::string& ascii_file) 
 {
   fHits = new TClonesArray("PixelHit",10000);
+
+  // init parameters below
+  std::cout << "creating fRtdb" << std::endl;
+  FairRuntimeDb* fRtdb = FairRuntimeDb::instance();
+
+  std::cout << "setting root input file" << std::endl;
+  FairParRootFileIo* parInput1 = new FairParRootFileIo();
+  //parInput1->open("pixel_TGeant3.params.root");
+  parInput1->open(root_file.c_str());
+
+  std::cout << "setting ascii input file" << std::endl;
+  FairParAsciiFileIo* parIo1 = new FairParAsciiFileIo();
+  //parIo1->open("/Users/karabowi/fairroot/pixel9/FairRoot/examples/MQ/9-PixelDetector/param/pixel_digi.par","in");
+  parIo1->open(ascii_file.c_str(),"in");
+
+  fRtdb->setFirstInput(parInput1);
+  fRtdb->setSecondInput(parIo1);
+
+  std::cout << "get GeoParSet and BaseParSet" << std::endl;
+  //  fRtdb->getContainer("FairGeoParSet");
+  //  FairBaseParSet* par=dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
+
+  //  if ( par ) cout << " already got par" << endl;
+
+  //  fRtdb->print();
+
+  //PixelDigiPar* fDigiPar = (PixelDigiPar*)(fRtdb->getContainer("PixelDigiParameters"));
+  fDigiPar = (PixelDigiPar*)(fRtdb->getContainer("PixelDigiParameters"));
+  
+  Int_t runId = 1456495352;
+  std::cout << "trying to initContainers with runId = " << runId << std::endl;
+  fRtdb->initContainers(runId);
+
+  std::cout << "-> GREAT, for example xpitch = " << fDigiPar->GetXPitch() << std::endl;
+
+
+
 }
 
 TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis) 
@@ -323,6 +364,7 @@ TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis)
   fTNofHits += fNHits;
   return fHits;
 }
+
 
 
 ClassImp(PixelFindHits)

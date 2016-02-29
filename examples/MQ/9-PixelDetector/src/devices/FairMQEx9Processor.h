@@ -22,6 +22,8 @@ class FairMQEx9Processor : public FairMQDevice
     enum
     {
         InputClassName = FairMQDevice::Last,
+        RootParam,
+        AsciiParam,
         Last
     };
 
@@ -41,13 +43,13 @@ class FairMQEx9Processor : public FairMQDevice
 
 
     TClonesArray* fOutput;
-    std::string fTaskName;
+    std::string fRootParFileName;
+    std::string fAsciiParFileName;
     std::string fInputClassName;
-    Int_t fDetID;
-    Int_t fMCIndex;
     RootSerializer fSerializer;
     RootDeSerializer fDeSerializer;
     PixelFindHits* fHitFinder;
+
     
 };
 
