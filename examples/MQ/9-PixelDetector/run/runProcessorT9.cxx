@@ -37,7 +37,10 @@ int main(int argc, char** argv)
             return 1;
 
         FairMQEx9Processor processor;
+        processor.SetProperty(FairMQEx9Processor::RootParam,root_param);
+        processor.SetProperty(FairMQEx9Processor::AsciiParam,ascii_param);
         processor.SetProperty(FairMQEx9Processor::InputClassName,diginame);
+
         runStateMachine(processor, config);
 
 

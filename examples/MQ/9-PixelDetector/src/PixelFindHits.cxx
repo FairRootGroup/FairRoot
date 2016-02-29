@@ -259,7 +259,7 @@ void PixelFindHits::InitMQ(const std::string& root_file, const std::string& asci
   fRtdb->setSecondInput(parIo1);
 
   std::cout << "get GeoParSet and BaseParSet" << std::endl;
-  //  fRtdb->getContainer("FairGeoParSet");
+  fRtdb->getContainer("FairGeoParSet");
   //  FairBaseParSet* par=dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
 
   //  if ( par ) cout << " already got par" << endl;
@@ -269,12 +269,16 @@ void PixelFindHits::InitMQ(const std::string& root_file, const std::string& asci
   //PixelDigiPar* fDigiPar = (PixelDigiPar*)(fRtdb->getContainer("PixelDigiParameters"));
   fDigiPar = (PixelDigiPar*)(fRtdb->getContainer("PixelDigiParameters"));
   
-  Int_t runId = 1456495352;
+  Int_t runId = 1456147577;
   std::cout << "trying to initContainers with runId = " << runId << std::endl;
   fRtdb->initContainers(runId);
 
   std::cout << "-> GREAT, for example xpitch = " << fDigiPar->GetXPitch() << std::endl;
-
+  fFeCols = fDigiPar->GetFECols();
+  fFeRows = fDigiPar->GetFERows();
+  fMaxFEperCol = fDigiPar->GetMaxFEperCol();
+  fPitchX = fDigiPar->GetXPitch();
+  fPitchY = fDigiPar->GetYPitch();
 
 
 }
@@ -291,7 +295,51 @@ TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis)
 
   fNDigis = fDigis->GetEntriesFast();
   fTNofDigis+= fNDigis;
+//*
+  for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) 
+  {
+    PixelDigi* currentDigi = (PixelDigi*)fDigis->At(iDigi);
 
+    Int_t detId = currentDigi->GetDetectorID();    
+    TString nodeName = Form("/cave/Pixel%d_%d",detId/256,detId%256);
+
+    gGeoManager->cd(nodeName.Data());
+
+    TGeoNode* curNode = gGeoManager->GetCurrentNode();
+
+    TGeoMatrix* matrix = curNode->GetMatrix();
+
+    TGeoVolume* actVolume = gGeoManager->GetCurrentVolume();
+    TGeoBBox* actBox = (TGeoBBox*)(actVolume->GetShape());
+
+    Int_t feId = currentDigi->GetFeID();
+    Int_t col  = currentDigi->GetCol();
+    Int_t row  = currentDigi->GetRow();
+
+    Double_t locPosCalc[3];
+    locPosCalc[0] = ( ((feId-1)/fMaxFEperCol)*fFeCols + col + 0.5 )*fPitchX;
+    locPosCalc[1] = ( ((feId-1)%fMaxFEperCol)*fFeRows + row + 0.5 )*fPitchY;
+    locPosCalc[2] = 0.;
+
+    locPosCalc[0] -= actBox->GetDX();
+    locPosCalc[1] -= actBox->GetDY();
+
+    Double_t globPos[3];
+
+    curNode->LocalToMaster(locPosCalc,globPos);
+
+    LOG(INFO) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
+    LOG(INFO) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
+
+    TVector3 pos   (globPos[0],globPos[1],globPos[2]);
+    TVector3 posErr(fPitchX/TMath::Sqrt(12.),fPitchY/TMath::Sqrt(12.),actBox->GetDZ());
+
+    new ((*fHits)[fNHits]) PixelHit(detId,currentDigi->GetIndex(),pos,posErr);
+
+    fNHits++;
+  }
+  // */
+  /*
   TGeoHMatrix* rtMat[3][4];
   for ( Int_t istat = 0 ; istat < 3 ; istat++ ) 
   {
@@ -360,6 +408,7 @@ TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis)
     new ((*fHits)[fNHits]) PixelHit(detId,currentDigi->GetIndex(),pos,posErr);
     fNHits++;
   }
+  // */
 
   fTNofHits += fNHits;
   return fHits;

@@ -55,9 +55,13 @@ Set(LINKDEF PixelLinkDef.h)
 Set(LIBRARY_NAME Pixel)
 Set(DEPENDENCIES
     Base 
+    GeoBase
+    ParBase
     MCStack
     FairMQ 
     BaseMQ 
+    Gen
+    Passive
     boost_thread 
     boost_system 
     boost_serialization 

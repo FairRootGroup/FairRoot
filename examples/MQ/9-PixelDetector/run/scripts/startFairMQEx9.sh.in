@@ -30,6 +30,7 @@ xterm +aw -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$SPLITTER &
 
 ########################## start PROCESSORs
 PROCESSOR1="FairMQEx9Processor"
+#PROCESSOR1+=" --id processor1 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
 PROCESSOR1+=" --id processor1 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
 xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
