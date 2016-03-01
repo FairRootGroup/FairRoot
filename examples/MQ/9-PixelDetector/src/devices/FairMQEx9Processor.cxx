@@ -13,8 +13,12 @@ FairMQEx9Processor::FairMQEx9Processor() : 	fOutput(nullptr),
 										    fRootParFileName(),
                                             fAsciiParFileName(),
 										    fInputClassName(),
+                                            fParamName(),
+                                            fGeoParamName("FairGeoParSet"),
+                                            fCurrentRunId(-1),
 										    fSerializer(),
 										    fDeSerializer(),
+                                            fParamDeserializer(),
                                             fHitFinder(new PixelFindHits())
 {
 
@@ -34,6 +38,7 @@ FairMQEx9Processor::~FairMQEx9Processor()
 void FairMQEx9Processor::Init()
 {
 	fDeSerializer.InitContainer(fInputClassName);
+    fParamDeserializer.InitContainer("PixelDigiPar");
     fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
 }
 
@@ -54,7 +59,11 @@ void FairMQEx9Processor::Run()
             receivedMsgs++;
             // Deserialize data into TClonesArray
             TClonesArray* input = fDeSerializer.DeserializeMsg(msg.get());
-            // Execut hit finder task
+
+
+            
+
+            // Execute hit finder task
             fOutput=fHitFinder->ExecMQ(input);
             // if output not empty serialize and send
             if(!fOutput->IsEmpty())
@@ -68,6 +77,26 @@ void FairMQEx9Processor::Run()
 
     MQLOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
 }
+
+
+
+
+void FairMQEx9Processor::CustomCleanup(void *data, void *hint)
+{
+    delete (std::string*)hint;
+}
+
+
+
+
+
+void FairMQEx9Processor::UpdateParameters()
+{
+    UpdateParameter(fParamName);
+    UpdateParameter(fParamName);
+}
+
+
 
 void FairMQEx9Processor::SetProperty(const int key, const std::string& value)
 {
@@ -83,6 +112,10 @@ void FairMQEx9Processor::SetProperty(const int key, const std::string& value)
 
         case InputClassName :
             fInputClassName = value;
+            break;
+
+        case ParamName :
+            fParamName = value;
             break;
         
         default:
@@ -103,8 +136,11 @@ std::string FairMQEx9Processor::GetProperty(const int key, const std::string& de
         case AsciiParam :
             return fAsciiParFileName;
 
-        case InputClassName:
+        case InputClassName :
             return fInputClassName;
+
+        case ParamName :
+            return fParamName;
 
         default:
             return FairMQDevice::GetProperty(key, default_);

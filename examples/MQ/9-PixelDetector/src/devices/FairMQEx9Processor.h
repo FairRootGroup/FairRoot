@@ -15,6 +15,7 @@
 #include "RootSerializer.h"
 #include "TClonesArray.h"
 #include "PixelFindHits.h"
+#include "PixelDigiPar.h" 
 
 class FairMQEx9Processor : public FairMQDevice
 {
@@ -24,6 +25,7 @@ class FairMQEx9Processor : public FairMQDevice
         InputClassName = FairMQDevice::Last,
         RootParam,
         AsciiParam,
+        ParamName,
         Last
     };
 
@@ -39,6 +41,40 @@ class FairMQEx9Processor : public FairMQDevice
 
     virtual void Run();
     virtual void Init();
+    void UpdateParameter(const std::string& paramName);
+    void UpdateParameters();
+
+
+    static void CustomCleanup(void *data, void *hint);
+
+    template<typename parameter_type>
+    parameter_type* UpdateParameter(const std::string& paramName)
+    {
+        //*
+
+        boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+
+        std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
+
+        LOG(DEBUG) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << ".";
+
+        std::unique_ptr<FairMQMessage> req(fTransportFactory->CreateMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
+        std::unique_ptr<FairMQMessage> rep(fTransportFactory->CreateMessage());
+
+        if (fChannels.at("data").at(0).Send(req) > 0)
+        {
+            if (fChannels.at("data").at(0).Receive(rep) > 0)
+            {
+                parameter_type* param = fParamDeserializer.DeserializeMsg(rep.get());
+                LOG(DEBUG) << "Received parameter from the server:";
+                return param;
+            }
+        }
+
+
+        return nullptr;
+        // */
+    }
 
 
 
@@ -46,8 +82,13 @@ class FairMQEx9Processor : public FairMQDevice
     std::string fRootParFileName;
     std::string fAsciiParFileName;
     std::string fInputClassName;
+    std::string fParamName;
+    std::string fGeoParamName;
+    int fCurrentRunId;
+
     RootSerializer fSerializer;
     RootDeSerializer fDeSerializer;
+    base_RootDeSerializer<PixelDigiPar> fParamDeserializer;
     PixelFindHits* fHitFinder;
 
     

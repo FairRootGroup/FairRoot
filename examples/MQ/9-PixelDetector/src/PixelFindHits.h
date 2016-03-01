@@ -25,6 +25,8 @@
 
 class TClonesArray;
 class PixelDigiPar;
+class FairGeoParSet;
+
 
 class PixelFindHits : public FairTask
 {
@@ -53,10 +55,13 @@ class PixelFindHits : public FairTask
 // MQ
   TClonesArray* ExecMQ(TClonesArray* digis);
   void InitMQ(const std::string& root_file, const std::string& ascii_file);
+  void UpdateParameter(int runId);
 
  private:
 
   PixelDigiPar*     fDigiPar;
+  FairGeoParSet* fGeoParSet;
+
 
   TClonesArray*     fDigis;        /** Input array of PixelDigi **/
   TClonesArray*     fHits;         /** Output array of PixelHit **/

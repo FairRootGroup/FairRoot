@@ -39,6 +39,7 @@
  // 
 #include "FairParRootFileIo.h"
 #include "FairParAsciiFileIo.h"
+#include "FairGeoParSet.h"
 
 using std::pair;
 using std::map;
@@ -67,6 +68,7 @@ PixelFindHits::PixelFindHits(Int_t iVerbose)
 PixelFindHits::PixelFindHits(const char* name, Int_t iVerbose) 
   : FairTask(name, iVerbose)
   , fDigiPar(NULL)
+  , fGeoParSet(NULL)
   , fDigis(NULL)
   , fHits(NULL)
   , fNDigis(0)
@@ -267,6 +269,7 @@ void PixelFindHits::InitMQ(const std::string& root_file, const std::string& asci
   //  fRtdb->print();
 
   //PixelDigiPar* fDigiPar = (PixelDigiPar*)(fRtdb->getContainer("PixelDigiParameters"));
+  fGeoParSet = (FairGeoParSet*)(fRtdb->getContainer("FairGeoParSet"));
   fDigiPar = (PixelDigiPar*)(fRtdb->getContainer("PixelDigiParameters"));
   
   Int_t runId = 1456147577;
@@ -282,6 +285,16 @@ void PixelFindHits::InitMQ(const std::string& root_file, const std::string& asci
 
 
 }
+
+void PixelFindHits::UpdateParameter(int runId)
+{
+  fFeCols = fDigiPar->GetFECols();
+  fFeRows = fDigiPar->GetFERows();
+  fMaxFEperCol = fDigiPar->GetMaxFEperCol();
+  fPitchX = fDigiPar->GetXPitch();
+  fPitchY = fDigiPar->GetYPitch();
+}
+
 
 TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis) 
 {
@@ -303,13 +316,13 @@ TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis)
     Int_t detId = currentDigi->GetDetectorID();    
     TString nodeName = Form("/cave/Pixel%d_%d",detId/256,detId%256);
 
-    gGeoManager->cd(nodeName.Data());
+    fGeoParSet->GetGeometry()->cd(nodeName.Data());
 
-    TGeoNode* curNode = gGeoManager->GetCurrentNode();
+    TGeoNode* curNode = fGeoParSet->GetGeometry()->GetCurrentNode();
 
     TGeoMatrix* matrix = curNode->GetMatrix();
 
-    TGeoVolume* actVolume = gGeoManager->GetCurrentVolume();
+    TGeoVolume* actVolume = fGeoParSet->GetGeometry()->GetCurrentVolume();
     TGeoBBox* actBox = (TGeoBBox*)(actVolume->GetShape());
 
     Int_t feId = currentDigi->GetFeID();
