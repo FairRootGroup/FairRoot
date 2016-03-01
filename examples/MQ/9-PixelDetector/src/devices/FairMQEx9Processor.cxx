@@ -18,7 +18,9 @@ FairMQEx9Processor::FairMQEx9Processor() : 	fOutput(nullptr),
                                             fCurrentRunId(-1),
 										    fSerializer(),
 										    fDeSerializer(),
-                                            fParamDeserializer(),
+                                            fDigiPar(),
+                                            fGeoPar(),
+                                            //fParamDeserializer(),
                                             fHitFinder(new PixelFindHits())
 {
 
@@ -38,7 +40,7 @@ FairMQEx9Processor::~FairMQEx9Processor()
 void FairMQEx9Processor::Init()
 {
 	fDeSerializer.InitContainer(fInputClassName);
-    fParamDeserializer.InitContainer("PixelDigiPar");
+    //fParamDeserializer.InitContainer("PixelDigiPar");
     fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
 }
 
@@ -92,8 +94,25 @@ void FairMQEx9Processor::CustomCleanup(void *data, void *hint)
 
 void FairMQEx9Processor::UpdateParameters()
 {
-    UpdateParameter(fParamName);
-    UpdateParameter(fParamName);
+    if(fDigiPar)
+    {
+        delete fDigiPar;
+        fDigiPar=nullptr;
+    }
+
+    if(fGeoPar)
+    {
+        delete fGeoPar;
+        fGeoPar=nullptr;
+    }
+
+    fDigiPar = new PixelDigiPar();
+    fGeoPar = new FairGeoParSet();
+
+    UpdateParameter<PixelDigiPar>(fParamName,fDigiPar);
+    UpdateParameter<FairGeoParSet>(fGeoParamName,fGeoPar);
+    fHitFinder->UpdateParameter(fDigiPar, fGeoPar);
+
 }
 
 

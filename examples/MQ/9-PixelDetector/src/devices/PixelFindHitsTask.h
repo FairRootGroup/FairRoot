@@ -12,10 +12,9 @@
  *      Author: R. Karabowicz
  */
 
-#ifndef PIXELFINDHITS_H
-#define PIXELFINDHITS_H 1
+#ifndef PIXELFINDHITSTASK_H
+#define PIXELFINDHITSTASK_H 
 
-#include "FairTask.h"
 
 #include "PixelPoint.h"
 
@@ -28,13 +27,13 @@ class PixelDigiPar;
 class FairGeoParSet;
 
 
-class PixelFindHits : public FairTask
+class PixelFindHitsTask 
 {
 
  public:
 
   /** Default constructor **/
-  PixelFindHits();
+  PixelFindHitsTask();
 
 
   /** Standard constructor **/
@@ -54,17 +53,11 @@ class PixelFindHits : public FairTask
 
 // MQ
   TClonesArray* ExecMQ(TClonesArray* digis);
-  void InitMQ(const std::string& root_file, const std::string& ascii_file);
   void UpdateParameter(PixelDigiPar* digipar, FairGeoParSet* geopar);
 
  private:
 
-  PixelDigiPar*     fDigiPar;
   FairGeoParSet* fGeoParSet;
-
-
-  TClonesArray*     fDigis;        /** Input array of PixelDigi **/
-  TClonesArray*     fHits;         /** Output array of PixelHit **/
 
   Int_t             fNDigis;
   Int_t             fNHits;
