@@ -43,13 +43,13 @@ PROCESSOR1+=" --id processor1 --config-json-file $MQCONFIGFILE --root-param-file
 #xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
-#PROCESSOR2="FairMQEx9Processor"
-#PROCESSOR2+=" --id processor2 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
-#xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+PROCESSOR2="FairMQEx9Processor"
+PROCESSOR2+=" --id processor2 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
+xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
 
-#PROCESSOR3="FairMQEx9Processor"
-#PROCESSOR3+=" --id processor3 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
-#xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
+PROCESSOR3="FairMQEx9Processor"
+PROCESSOR3+=" --id processor3 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
+xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
 
 ########################## start MERGER
 MERGER="FairMQEx9Merger"
