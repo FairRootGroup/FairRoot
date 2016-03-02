@@ -77,7 +77,7 @@ void FairMQEx9Processor::Run()
             // Deserialize data into TClonesArray
             TClonesArray* input = fDeSerializer.DeserializeMsg(msg.get());
 
-            Int_t runId = 1456147577;
+            Int_t runId = 1456915975;
             if(runId!=fCurrentRunId)
             {
                 fCurrentRunId=runId;
