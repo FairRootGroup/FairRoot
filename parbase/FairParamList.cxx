@@ -144,6 +144,22 @@ FairParamObj::FairParamObj(const Text_t* name,Int_t value)
   memcpy(paramValue,&value,arraySize);
 }
 
+FairParamObj::FairParamObj(const Text_t* name,Bool_t value)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(Bool_t)),
+   paramType("Bool_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Bool_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
+{
+  // Constructor for a Int_t value
+  paramValue=new UChar_t[arraySize];
+  memcpy(paramValue,&value,arraySize);
+}
+
 FairParamObj::FairParamObj(const Text_t* name,UInt_t value)
   :TNamed(name,""),
    paramValue(NULL),
@@ -504,6 +520,12 @@ void FairParamList::add(const Text_t* name,const Int_t value)
   paramList->Add(new FairParamObj(name,value));
 }
 
+void FairParamList::add(const Text_t* name,const Bool_t value)
+{
+  // Adds a parameter of type Int_t to the list
+  paramList->Add(new FairParamObj(name,value));
+}
+
 void FairParamList::add(const Text_t* name,const UInt_t value)
 {
    // Adds a parameter of type UInt_t to the list
@@ -686,6 +708,30 @@ Bool_t FairParamList::fill(const Text_t* name,Int_t* values,const Int_t nValues)
   if (values==0) { return kFALSE; }
   FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
   if (o!=0 && strcmp(o->getParamType(),"Int_t")==0) {
+    Int_t l=o->getLength();
+    Int_t n=o->getNumParams();
+    if (n==nValues) {
+      memcpy(values,o->getParamValue(),l);
+      return kTRUE;
+    } else {
+      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
+      return kFALSE;
+    }
+  }
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
+  return kFALSE;
+}
+
+Bool_t FairParamList::fill(const Text_t* name,Bool_t* values,const Int_t nValues)
+{
+  // Copies the data from the list object into the parameter array of type Int_t.
+  // The function returns an error, if the array size of the list object is not equal
+  // to nValues.
+  if (values==0) { return kFALSE; }
+  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  if (o!=0 && strcmp(o->getParamType(),"Bool_t")==0) {
     Int_t l=o->getLength();
     Int_t n=o->getNumParams();
     if (n==nValues) {
