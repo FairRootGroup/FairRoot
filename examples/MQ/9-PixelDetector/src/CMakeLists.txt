@@ -36,6 +36,7 @@ link_directories( ${LINK_DIRECTORIES})
 
 Set(NO_DICT_SRCS
 devices/FairMQEx9Processor.cxx
+devices/PixelFindHitsTask.cxx
 )
 
 set(SRCS

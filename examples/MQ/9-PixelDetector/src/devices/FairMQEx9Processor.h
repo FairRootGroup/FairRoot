@@ -14,7 +14,7 @@
 #include "FairMQDevice.h"
 #include "RootSerializer.h"
 #include "TClonesArray.h"
-#include "PixelFindHits.h"
+#include "PixelFindHitsTask.h"
 #include "PixelDigiPar.h" 
 #include "FairGeoParSet.h"
 
@@ -51,25 +51,32 @@ class FairMQEx9Processor : public FairMQDevice
     template<typename parameter_type>
     parameter_type* UpdateParameter(const std::string& paramName, parameter_type* param)
     {
-        boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
-        std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
-        LOG(DEBUG) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << ".";
-        std::unique_ptr<FairMQMessage> req(fTransportFactory->CreateMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
-        std::unique_ptr<FairMQMessage> rep(fTransportFactory->CreateMessage());
+        
+        //while (CheckCurrentState(RUNNING))
+        //{
+            boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+            std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
+            LOG(INFO) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << ".";
+            std::unique_ptr<FairMQMessage> req(fTransportFactory->CreateMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
+            std::unique_ptr<FairMQMessage> rep(fTransportFactory->CreateMessage());
 
-        if (fChannels.at("data").at(0).Send(req) > 0)
-        {
-            if (fChannels.at("data").at(0).Receive(rep) > 0)
+            if (fChannels.at("param").at(0).Send(req) > 0)
             {
-                
-                base_RootDeSerializer<parameter_type,has_no_ownership> paramDeserializer;
-                paramDeserializer.InitContainer(param);
-                param = paramDeserializer.DeserializeMsg(rep.get());
-                LOG(DEBUG) << "Received parameter from the server:";
-                return param;
-            }
-        }
+                if (fChannels.at("param").at(0).Receive(rep) > 0)
+                {
+                    base_RootDeSerializer<parameter_type,has_no_ownership> paramDeserializer;
+                    paramDeserializer.InitContainer(param);
 
+                    //base_RootDeSerializer<parameter_type> paramDeserializer;
+                    //paramDeserializer.InitContainer(paramName.c_str());
+                    param = paramDeserializer.DeserializeMsg(rep.get());
+                    LOG(INFO) << "Received parameter"<< paramName <<" from the server:";
+                    //break;
+                    return param;
+                }
+            }
+            // todo : if timer too long then break ...
+        //}
         return nullptr;
     }
 
@@ -90,7 +97,7 @@ class FairMQEx9Processor : public FairMQDevice
     RootDeSerializer fDeSerializer;
 
     //base_RootDeSerializer<PixelDigiPar> fParamDeserializer;
-    PixelFindHits* fHitFinder;
+    PixelFindHitsTask fHitFinder;
 
     
 };

@@ -15,11 +15,11 @@
 #include "PixelFindHitsTask.h"
 
 // Includes from base
-#include "FairRootManager.h"
-#include "FairRunAna.h"
-#include "FairRuntimeDb.h"
+//#include "FairRootManager.h"
+//#include "FairRunAna.h"
+//#include "FairRuntimeDb.h"
 #include "FairLink.h"
-#include "FairLogger.h"
+//#include "FairLogger.h"
 
 // Includes from ROOT
 #include "TClonesArray.h"
@@ -40,6 +40,7 @@
 #include "FairParRootFileIo.h"
 #include "FairParAsciiFileIo.h"
 #include "FairGeoParSet.h"
+#include "FairMQLogger.h"
 
 using std::pair;
 using std::map;
@@ -73,30 +74,12 @@ PixelFindHitsTask::~PixelFindHitsTask() {
 }
 // -------------------------------------------------------------------------
 
-// -----   Public method Exec   --------------------------------------------
-
-// -------------------------------------------------------------------------
-
-// -----   Private method Init   -------------------------------------------
-// -------------------------------------------------------------------------
-
-
-
-// -----   Private method ReInit   -----------------------------------------
-InitStatus PixelFindHitsTask::ReInit() {
-
-  return kSUCCESS;
-
-}
-// -------------------------------------------------------------------------
-
-
 
 // -----   Private method Reset   ------------------------------------------
 void PixelFindHitsTask::Reset(TClonesArray* hits) 
 {
   fNDigis = fNHits = 0;
-  if ( fHits ) hits->Delete();
+  if ( hits ) hits->Delete();
 }
 // -------------------------------------------------------------------------
 
@@ -105,17 +88,17 @@ void PixelFindHitsTask::Finish()
 {
   //if ( fDigis ) fDigis->Delete();
 
-  LOG(INFO) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
-  LOG(INFO) << " Events:        " << fTNofEvents << FairLogger::endl;
-  LOG(INFO) << " Digis:         " << fTNofDigis  << "    ( " << (Double_t)fTNofDigis /((Double_t)fTNofEvents) << " per event )" << FairLogger::endl;
-  LOG(INFO) << " Hits:          " << fTNofHits   << "    ( " << (Double_t)fTNofHits  /((Double_t)fTNofEvents) << " per event )" << FairLogger::endl;
-  LOG(INFO) << "---------------------------------------------------------------------" << FairLogger::endl; 
+  LOG(INFO) << "-------------------- PixelFindHitsTask : Summary ------------------------";
+  LOG(INFO) << " Events:        " << fTNofEvents;
+  LOG(INFO) << " Digis:         " << fTNofDigis  << "    ( " << (Double_t)fTNofDigis /((Double_t)fTNofEvents) << " per event )";
+  LOG(INFO) << " Hits:          " << fTNofHits   << "    ( " << (Double_t)fTNofHits  /((Double_t)fTNofEvents) << " per event )";
+  LOG(INFO) << "---------------------------------------------------------------------"; 
 }
 // -------------------------------------------------------------------------
 
 
 
-void PixelFindHitsTask::UpdateParameter(PixelDigiPar* digipar, FairGeoParSet* geopar)
+void PixelFindHitsTask::Init(PixelDigiPar* digipar, FairGeoParSet* geopar)
 {
   fFeCols = digipar->GetFECols();
   fFeRows = digipar->GetFERows();
@@ -123,20 +106,32 @@ void PixelFindHitsTask::UpdateParameter(PixelDigiPar* digipar, FairGeoParSet* ge
   fPitchX = digipar->GetXPitch();
   fPitchY = digipar->GetYPitch();
   fGeoParSet=geopar;
+  LOG(INFO)<<"PixelFindHitsTask::Init"
+          <<" fFeCols="<<fFeCols
+          <<" fFeRows="<<fFeRows
+          <<" fMaxFEperCol="<<fMaxFEperCol
+          <<" fPitchX="<<fPitchX
+          <<" fPitchY="<<fPitchX
+          ;
+  LOG(INFO)<<"geopar->printParams()";
+  geopar->printParams();
+  LOG(INFO)<<"fGeoParSet->printParams()";
+  fGeoParSet->printParams();
 }
 
 
-void PixelFindHitsTask::ExecMQ(TClonesArray* digis, TClonesArray* hits) 
+void PixelFindHitsTask::Exec(TClonesArray* digis, TClonesArray* hits) 
 {
 
   Reset(hits);
 
-  LOG(INFO) << "PixelFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
+  LOG(INFO) << "PixelFindHits::Exec() EVENT " << fTNofEvents;
 
   fTNofEvents++;
-
+  LOG(DEBUG)<<"PixelFindHits::Exec() ok 0 ";
   fNDigis = digis->GetEntriesFast();
-  fTNodigis+= fNDigis;
+  LOG(DEBUG)<<"PixelFindHits::Exec() fNDigis = "<<fNDigis;
+  fTNofDigis+= fNDigis;
 //*
   for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) 
   {
@@ -144,11 +139,11 @@ void PixelFindHitsTask::ExecMQ(TClonesArray* digis, TClonesArray* hits)
 
     Int_t detId = currentDigi->GetDetectorID();    
     TString nodeName = Form("/cave/Pixel%d_%d",detId/256,detId%256);
-
+    LOG(DEBUG)<<"PixelFindHits::Exec() ok 1 node name = "<<nodeName.Data();
     fGeoParSet->GetGeometry()->cd(nodeName.Data());
-
+    LOG(DEBUG)<<"PixelFindHits::Exec() ok 2 ";
     TGeoNode* curNode = fGeoParSet->GetGeometry()->GetCurrentNode();
-
+    LOG(DEBUG)<<"PixelFindHits::Exec() ok 3 ";
     TGeoMatrix* matrix = curNode->GetMatrix();
 
     TGeoVolume* actVolume = fGeoParSet->GetGeometry()->GetCurrentVolume();
@@ -170,8 +165,8 @@ void PixelFindHitsTask::ExecMQ(TClonesArray* digis, TClonesArray* hits)
 
     curNode->LocalToMaster(locPosCalc,globPos);
 
-    LOG(INFO) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
-    LOG(INFO) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
+    LOG(INFO) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1];
+    LOG(INFO) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2];
 
     TVector3 pos   (globPos[0],globPos[1],globPos[2]);
     TVector3 posErr(fPitchX/TMath::Sqrt(12.),fPitchY/TMath::Sqrt(12.),actBox->GetDZ());

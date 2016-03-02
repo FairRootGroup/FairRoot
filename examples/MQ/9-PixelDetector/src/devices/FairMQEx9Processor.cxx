@@ -13,26 +13,39 @@ FairMQEx9Processor::FairMQEx9Processor() : 	fOutput(nullptr),
 										    fRootParFileName(),
                                             fAsciiParFileName(),
 										    fInputClassName(),
-                                            fParamName(),
+                                            fParamName("PixelDigiParameters"),
                                             fGeoParamName("FairGeoParSet"),
                                             fCurrentRunId(-1),
 										    fSerializer(),
 										    fDeSerializer(),
-                                            fDigiPar(),
-                                            fGeoPar(),
+                                            fDigiPar(nullptr),
+                                            fGeoPar(nullptr),
                                             //fParamDeserializer(),
-                                            fHitFinder(new PixelFindHits())
+                                            fHitFinder()
 {
 
 }
 
 FairMQEx9Processor::~FairMQEx9Processor()
 {
-    if(fHitFinder)
+    if(fDigiPar)
     {
-        delete fHitFinder;
-        fHitFinder=nullptr;
+        delete fDigiPar;
+        fDigiPar=nullptr;
     }
+
+    if(fGeoPar)
+    {
+        delete fGeoPar;
+        fGeoPar=nullptr;
+    }
+
+    if(fOutput)
+    {
+        delete fOutput;
+        fOutput=nullptr;
+    }
+
 
 }
 
@@ -41,7 +54,8 @@ void FairMQEx9Processor::Init()
 {
 	fDeSerializer.InitContainer(fInputClassName);
     //fParamDeserializer.InitContainer("PixelDigiPar");
-    fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
+    //fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
+    fOutput = new TClonesArray("PixelHit");
 }
 
 void FairMQEx9Processor::Run()
@@ -55,24 +69,32 @@ void FairMQEx9Processor::Run()
     while (CheckCurrentState(RUNNING))
     {
         std::unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage());
-
+        LOG(INFO)<<"in loop";
         if (inputChannel.Receive(msg) > 0)
         {
+            LOG(INFO)<<"message received";
             receivedMsgs++;
             // Deserialize data into TClonesArray
             TClonesArray* input = fDeSerializer.DeserializeMsg(msg.get());
 
-
+            Int_t runId = 1456147577;
+            if(runId!=fCurrentRunId)
+            {
+                fCurrentRunId=runId;
+                UpdateParameters();
+            }
             
 
             // Execute hit finder task
-            fOutput=fHitFinder->ExecMQ(input);
+            fHitFinder.Exec(input,fOutput);
+            LOG(INFO)<<"exec task finish";
             // if output not empty serialize and send
             if(!fOutput->IsEmpty())
-            {
+            {   LOG(INFO)<<"serialize message";
                 fSerializer.SetMessage(msg.get());
                 outputChannel.Send(fSerializer.SerializeMsg(fOutput));
                 sentMsgs++;
+                LOG(INFO)<<"message sent ";
             }
         }
     }
@@ -94,6 +116,7 @@ void FairMQEx9Processor::CustomCleanup(void *data, void *hint)
 
 void FairMQEx9Processor::UpdateParameters()
 {
+    //*
     if(fDigiPar)
     {
         delete fDigiPar;
@@ -108,10 +131,40 @@ void FairMQEx9Processor::UpdateParameters()
 
     fDigiPar = new PixelDigiPar();
     fGeoPar = new FairGeoParSet();
+    // */
+    LOG(INFO)<<"Update digi parameters...";
+    fDigiPar=UpdateParameter<PixelDigiPar>(fParamName,fDigiPar);
+    auto fFeCols = fDigiPar->GetFECols();
+    auto fFeRows = fDigiPar->GetFERows();
+    auto fMaxFEperCol = fDigiPar->GetMaxFEperCol();
+    auto fPitchX = fDigiPar->GetXPitch();
+    auto fPitchY = fDigiPar->GetYPitch();
+    //fGeoParSet=geopar;
+    LOG(INFO)<<"FairMQEx9Processor::UpdateParameters() 1"
+          <<" fFeCols="<<fFeCols
+          <<" fFeRows="<<fFeRows
+          <<" fMaxFEperCol="<<fMaxFEperCol
+          <<" fPitchX="<<fPitchX
+          <<" fPitchY="<<fPitchX
+          ;
 
-    UpdateParameter<PixelDigiPar>(fParamName,fDigiPar);
-    UpdateParameter<FairGeoParSet>(fGeoParamName,fGeoPar);
-    fHitFinder->UpdateParameter(fDigiPar, fGeoPar);
+    LOG(INFO)<<"Update geo parameters...";
+    fGeoPar=UpdateParameter<FairGeoParSet>(fGeoParamName,fGeoPar);
+    fHitFinder.Init(fDigiPar, fGeoPar);
+
+    fFeCols = fDigiPar->GetFECols();
+    fFeRows = fDigiPar->GetFERows();
+    fMaxFEperCol = fDigiPar->GetMaxFEperCol();
+    fPitchX = fDigiPar->GetXPitch();
+    fPitchY = fDigiPar->GetYPitch();
+
+    LOG(INFO)<<"FairMQEx9Processor::UpdateParameters() 2"
+          <<" fFeCols="<<fFeCols
+          <<" fFeRows="<<fFeRows
+          <<" fMaxFEperCol="<<fMaxFEperCol
+          <<" fPitchX="<<fPitchX
+          <<" fPitchY="<<fPitchX
+          ;
 
 }
 

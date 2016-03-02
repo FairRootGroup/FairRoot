@@ -35,25 +35,12 @@ class PixelFindHitsTask
   /** Default constructor **/
   PixelFindHitsTask();
 
-
-  /** Standard constructor **/
-  PixelFindHits(Int_t iVerbose);
-
-
-  /** Constructor with name **/
-  PixelFindHits(const char* name, Int_t iVerbose);
-
-
   /** Destructor **/
-  virtual ~PixelFindHits();
-
-
-  /** Execution **/
-  virtual void Exec(Option_t* opt);
+  virtual ~PixelFindHitsTask();
 
 // MQ
-  TClonesArray* ExecMQ(TClonesArray* digis);
-  void UpdateParameter(PixelDigiPar* digipar, FairGeoParSet* geopar);
+  void Exec(TClonesArray* digis, TClonesArray* hits);
+  void Init(PixelDigiPar* digipar, FairGeoParSet* geopar);
 
  private:
 
@@ -72,27 +59,15 @@ class PixelFindHitsTask
   Double_t fPitchX;         // Pixel cell size X
   Double_t fPitchY;         // Pixel cell size Y
   
-  /** Get parameter containers **/
-  virtual void SetParContainers();
-
-
-  /** Intialisation **/
-  virtual InitStatus Init();
-
-
-  /** Reinitialisation **/
-  virtual InitStatus ReInit();
 
 
   /** Reset eventwise counters **/
-  void Reset();
+  void Reset(TClonesArray* hits);
 
 
   /** Finish at the end of each event **/
   virtual void Finish();
 
-
-  ClassDef(PixelFindHits,1);
 
 };
 
