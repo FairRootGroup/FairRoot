@@ -52,7 +52,7 @@ class FairMQExample7TMessage : public TMessage
 
 void FairMQExample7Client::Run()
 {
-    int runId = 2001;
+    int runId = 2000;
 
     while (CheckCurrentState(RUNNING))
     {
@@ -76,11 +76,7 @@ void FairMQExample7Client::Run()
             }
         }
 
-        runId++;
-        if (runId == 2101)
-        {
-            runId = 2001;
-        }
+        runId == 2099 ? runId = 2000 : runId++;
     }
 }
 
