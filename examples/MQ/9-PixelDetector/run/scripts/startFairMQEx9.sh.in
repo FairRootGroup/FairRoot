@@ -1,5 +1,31 @@
 #!/bin/bash
 
+TRANSPORT="--transport nanomsg"
+#RUNID="--runid 1456915975"
+RUNID=""
+VERBOSE="--verbose DEBUG"
+
+while [[ $# > 1 ]]
+do
+key="$1"
+
+case $key in
+    -r|--runid)
+    RUNID="--runid $2"
+    shift
+    ;;
+    -t|--transport)
+    TRANSPORT="--transport $2"
+    shift
+    ;;
+    -v|--verbose)
+    VERBOSE="--verbose $2"
+    shift
+    ;;
+esac
+shift 
+done
+
 
 ########################### Define some variables
 # JSON file containing the configuration parameters of all FairMQ devices of this example
@@ -12,6 +38,8 @@ INPUTBRANCH="PixelDigis"
 # ASCII and ROOT parameter files for the processor device
 ROOTPARAM="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
 ASCIIPARAM="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
+# output file for sink
+OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/out.pixel.hit.root"
 ###########################
 
 
@@ -19,47 +47,49 @@ ASCIIPARAM="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
 
 
 ########################## start Parameter server
-SERVER="parmq-server"
+SERVER="parmq-server $TRANSPORT"
 SERVER+=" --id parmq-server  --config-json-file $MQCONFIGFILE"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
 xterm -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$SERVER &
 
 
 ########################## start SAMPLER
-SAMPLER="FairMQEx9Sampler"
+SAMPLER="FairMQEx9Sampler $TRANSPORT"
 SAMPLER+=" --id sampler1  --config-json-file $MQCONFIGFILE"
 SAMPLER+=" --input-name $INPUTFILE --input-branch $INPUTBRANCH"
 xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 ########################## start SPLITTER
-SPLITTER="FairMQEx9Splitter"
+SPLITTER="FairMQEx9Splitter $TRANSPORT"
 SPLITTER+=" --id splitter1 --config-json-file $MQCONFIGFILE"
 xterm +aw -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$SPLITTER &
 
 ########################## start PROCESSORs
-PROCESSOR1="FairMQEx9Processor"
-#PROCESSOR1+=" --id processor1 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
-PROCESSOR1+=" --id processor1 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
+PROCESSOR1="FairMQEx9Processor $TRANSPORT"
+PROCESSOR1+=" $RUNID $VERBOSE"
+PROCESSOR1+=" --id processor1 --config-json-file $MQCONFIGFILE"
 #xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
-PROCESSOR2="FairMQEx9Processor"
-PROCESSOR2+=" --id processor2 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
-xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+PROCESSOR2="FairMQEx9Processor $TRANSPORT"
+PROCESSOR2+=" $RUNID $VERBOSE"
+PROCESSOR2+=" --id processor2 --config-json-file $MQCONFIGFILE"
+xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
 
-PROCESSOR3="FairMQEx9Processor"
-PROCESSOR3+=" --id processor3 --config-json-file $MQCONFIGFILE --root-param-file $ROOTPARAM --ascii-param-file $ASCIIPARAM"
-xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
+PROCESSOR3="FairMQEx9Processor $TRANSPORT"
+PROCESSOR3+=" $RUNID $VERBOSE"
+PROCESSOR3+=" --id processor3 --config-json-file $MQCONFIGFILE"
+xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
 
 ########################## start MERGER
-MERGER="FairMQEx9Merger"
+MERGER="FairMQEx9Merger $TRANSPORT"
 MERGER+=" --id merger1 --config-json-file $MQCONFIGFILE"
 xterm +aw -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
 
 ########################## start FILESINK
-FILESINK="FairMQEx9Sink"
+FILESINK="FairMQEx9Sink $TRANSPORT"
 FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
-FILESINK+=" --output-name @CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/out.pixel.hit.root"
+FILESINK+=" --output-name $OUTPUTFILE"
 xterm +aw -geometry 120x27+0+500 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
 
 

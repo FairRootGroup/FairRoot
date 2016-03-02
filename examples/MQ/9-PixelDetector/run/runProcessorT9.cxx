@@ -19,14 +19,12 @@ int main(int argc, char** argv)
 {
     try
     {
-        std::string root_param;
-        std::string ascii_param;
+        int runid;
         std::string diginame;
         namespace po = boost::program_options;
         po::options_description processor_options("Processor options");
         processor_options.add_options()
-            ("root-param-file", po::value<std::string>(&root_param)->required(), "Root Parameter file")
-            ("ascii-param-file", po::value<std::string>(&ascii_param)->required(), "ASCII Parameter file")
+            ("runid", po::value<int>(&runid)->required(), "run id (temporary for test)")
             ("digi-name", po::value<std::string>(&diginame)->default_value("PixelDigi"), "Digi name for initializing TClonesArray");
 
 
@@ -37,10 +35,9 @@ int main(int argc, char** argv)
             return 1;
 
         FairMQEx9Processor processor;
-        processor.SetProperty(FairMQEx9Processor::RootParam,root_param);
-        processor.SetProperty(FairMQEx9Processor::AsciiParam,ascii_param);
         processor.SetProperty(FairMQEx9Processor::InputClassName,diginame);
 
+        processor.set_runid(runid);//temp
         runStateMachine(processor, config);
 
 

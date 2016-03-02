@@ -37,9 +37,9 @@ class FairMQEx9Processor : public FairMQDevice
     std::string GetProperty(const int key, const std::string& default_ = "");
     void SetProperty(const int key, const int value);
     int GetProperty(const int key, const int default_ = 0);
-
+    void set_runid(int runid){fNewRunId=runid;}//temp
   protected:
-
+    int fNewRunId=1;
     virtual void Run();
     virtual void Init();
     void UpdateParameter(const std::string& paramName);
@@ -56,7 +56,7 @@ class FairMQEx9Processor : public FairMQDevice
         //{
             boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
             std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
-            LOG(INFO) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << ".";
+            LOG(WARN) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << ".";
             std::unique_ptr<FairMQMessage> req(fTransportFactory->CreateMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
             std::unique_ptr<FairMQMessage> rep(fTransportFactory->CreateMessage());
 
@@ -70,7 +70,7 @@ class FairMQEx9Processor : public FairMQDevice
                     //base_RootDeSerializer<parameter_type> paramDeserializer;
                     //paramDeserializer.InitContainer(paramName.c_str());
                     param = paramDeserializer.DeserializeMsg(rep.get());
-                    LOG(INFO) << "Received parameter"<< paramName <<" from the server:";
+                    LOG(WARN) << "Received parameter"<< paramName <<" from the server:";
                     //break;
                     return param;
                 }
