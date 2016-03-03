@@ -12,7 +12,7 @@
 
 // Types to be used as template parameters.
 struct MsgPack {};
-// struct MsgPackRef { msgpack::vrefbuffer vbuf; std::vector<msgpack::type::tuple<int, int, int, double>> digis; };
+// struct MsgPackRef { msgpack::vrefbuffer vbuf; std::vector<msgpack::type::tuple<int, int, int, double, double>> digis; };
 // struct MsgPackStream {};
 
 void free_sbuffer(void *data, void *hint)
@@ -28,12 +28,12 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* o
     msgpack::sbuffer* sbuf = new msgpack::sbuffer();
     msgpack::packer<msgpack::sbuffer> packer(sbuf);
 
-    std::vector<msgpack::type::tuple<int, int, int, double>> digis;
+    std::vector<msgpack::type::tuple<int, int, int, double, double>> digis;
 
     for (int i = 0; i < nDigis; ++i)
     {
         FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fInput->At(i));
-        digis.push_back(std::make_tuple(digi->GetX(), digi->GetY(), digi->GetZ(), digi->GetTimeStamp()));
+        digis.push_back(std::make_tuple(digi->GetX(), digi->GetY(), digi->GetZ(), digi->GetTimeStamp(), digi->GetTimeStampError()));
     }
 
     // Write some data to check it on the receiver side

@@ -47,5 +47,6 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>
         digiPayload[i].fY = digi->GetY();
         digiPayload[i].fZ = digi->GetZ();
         digiPayload[i].fTimeStamp = digi->GetTimeStamp();
+        digiPayload[i].fTimeStampError = digi->GetTimeStampError();
     }
 }

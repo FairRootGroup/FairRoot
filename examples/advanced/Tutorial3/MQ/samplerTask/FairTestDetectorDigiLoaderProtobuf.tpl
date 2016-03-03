@@ -38,6 +38,7 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPay
         d->set_fy(digi->GetY());
         d->set_fz(digi->GetZ());
         d->set_ftimestamp(digi->GetTimeStamp());
+        d->set_ftimestamperror(digi->GetTimeStampError());
     }
 
     // dp.set_bigbuffer(fBigBuffer->data(), sizeof(*fBigBuffer));
