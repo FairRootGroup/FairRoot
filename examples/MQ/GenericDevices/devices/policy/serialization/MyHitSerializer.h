@@ -140,7 +140,7 @@ class MyHitDeserializer : public BaseDeserializationPolicy<MyHitDeserializer<Pod
             
             if (fContainer->IsEmpty())
             {
-                MQLOG(ERROR) << "MyHitDeserializer::DeSerializeMsg(): No Output array!";
+                MQLOG(DEBUG) << "MyHitDeserializer::DeSerializeMsg(): No Output array!";
             }
         }
         return fContainer;

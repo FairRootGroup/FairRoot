@@ -32,7 +32,7 @@ class MyDigi : public FairTimeStamp
 {
   public:
     MyDigi();
-    MyDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp);
+    MyDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp, Double_t timeStampError=0.0);
     virtual ~MyDigi();
 
     void SetXYZ(Int_t x, Int_t y, Int_t z)

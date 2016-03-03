@@ -8,9 +8,11 @@
 #include "BoostSerializer.h"
 #include "RootSerializer.h"
 
+
 // FairRoot - Tutorial7
 #include "InitFileSinkConfig.h"
 #include "MyHitSerializer.h"
+#include "MyHitSerializer_protobuff.h"
 #include "MyHit.h"
 
 // Bin, Boost, Root suffixes = deserialization format
@@ -18,6 +20,7 @@
 typedef GenericFileSink<MyHitDeserializer_t, RootOutFileManager<MyHit>>                      TSinkBin;
 typedef GenericFileSink<BoostDeSerializer<MyHit,TClonesArray*>, RootOutFileManager<MyHit>>   TSinkBoost;
 typedef GenericFileSink<RootDeSerializer, RootOutFileManager<MyHit>>                         TSinkRoot;
+typedef GenericFileSink<MyHitProtoDeserializer, RootOutFileManager<MyHit>>                   TSinkProto;
 
 
 
@@ -68,6 +71,7 @@ int main(int argc, char** argv)
         if (format == "Bin") { runSink<TSinkBin>(config); }
             else if (format == "Boost") { runSink<TSinkBoost>(config); }
             else if (format == "Root") { runSink<TSinkRoot>(config); }
+            else if (format == "Proto") { runSink<TSinkProto>(config); }
             else
             {
                 LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|tmessage). ";

@@ -24,8 +24,8 @@ MyDigi::MyDigi()
 {
 }
 
-MyDigi::MyDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp)
-    : FairTimeStamp(timeStamp)
+MyDigi::MyDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp, Double_t timeStampError)
+    : FairTimeStamp(timeStamp,timeStampError)
     , fX(x)
     , fY(y)
     , fZ(z)
