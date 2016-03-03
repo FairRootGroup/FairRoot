@@ -911,6 +911,7 @@ void FairMCApplication::ConstructGeometry()
     while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
       Mod->ModifyGeometry();
     }
+
     gGeoManager->RefreshPhysicalNodes(kFALSE);
   }
 }
@@ -1359,39 +1360,30 @@ void  FairMCApplication::UndoGeometryModifications()
   // Undo all misalignment done in the MisalignGeometry methods of the
   // several FairModuls.
   // In the output (parameter container and separate geometry file)
-  // only the misaligned geometry is stored.
-  // I don't know any better way then to loop over all physical nodes
+  // only the ideal geometry is stored.
+  // I don't know any better way than to loop over all physical nodes
   // and to set the matrix back to the original one.
-  // TODO: In the code below is a memory problem which I don't understand
-  //       but which has to be fixed. When running the code below one gets
-  //       the following error when exiting root.
-  //   root.exe(75478,0x7fff70712cc0) malloc: *** error for object
-  //   0x10eb95540: pointer being freed was not allocated
-  //   *** set a breakpoint in malloc_error_break to debug
-  // The problem comes when taking back the misalignment which was
-  // introduced before. If skiping the line node->align(ng3)
-  // everything is okay.
+  // TODO: Check if it is more easy to write the ideal geometry before
+  //       the geometry is misaligned. In this case one does not have 
+  //       to revert the misalignment.
 
-  /*
-    TIter next(gGeoManager->GetListOfPhysicalNodes());
-     TGeoPhysicalNode *pn;
-     while ((pn=(TGeoPhysicalNode*)next())) pn->Refresh();
-  */
-//  gGeoManager->UnlockGeometry();
-
-  LOG(INFO)<<"Undo all misalignment"<<FairLogger::endl;
   TObjArray* physNodes = gGeoManager->GetListOfPhysicalNodes();
+  Int_t numPhysNodes=physNodes->GetEntriesFast();
+
+  if ( 0 == numPhysNodes) return;
+
+  //fRootManager->CreateGeometryFile("misaligned_geometry.root");
+  LOG(INFO)<<"Undo all misalignment"<<FairLogger::endl;
+
   TGeoPhysicalNode* node = NULL;
   TGeoHMatrix* ng3 = NULL;
-  for(Int_t k=0; k<physNodes->GetEntriesFast(); k++) {
+  for(Int_t k=0; k<numPhysNodes; k++) {
     node=(TGeoPhysicalNode*)physNodes->At(k);
     ng3 = node->GetOriginalMatrix(); //"real" global matrix, what survey sees
-    ng3->Print();
     node->Align(ng3);
-//   node->Refresh();
   }
-//  gGeoManager->LockGeometry();  
-//  gGeoManager->RefreshPhysicalNodes(kTRUE);
+
+  gGeoManager->ClearPhysicalNodes(kFALSE);
 
 }
 

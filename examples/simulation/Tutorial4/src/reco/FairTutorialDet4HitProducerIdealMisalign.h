@@ -32,6 +32,7 @@
 #include "TArrayD.h"                    // for TArrayD
 
 class FairTutorialDet4MisalignPar;
+class FairTutorialDet4GeoPar;
 class FairTutorialDet4GeoHandler;
 class TClonesArray;
 
@@ -79,6 +80,7 @@ class FairTutorialDet4HitProducerIdealMisalign : public FairTask
 
     FairTutorialDet4MisalignPar* fDigiPar;
     FairTutorialDet4GeoHandler* fGeoHandler;
+    FairTutorialDet4GeoPar* fGeoPar;
 
     Bool_t fDoMisalignment;
   private:

@@ -11,6 +11,7 @@
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
+  ${CMAKE_SOURCE_DIR}/eventdisplay
   ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src
   ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src/mc
   ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src/param
@@ -46,13 +47,15 @@ reco/FairTutorialDet4StraightLineFitter.cxx
 reco/FairTutorialDet4MilleWriter.cxx
 
 tools/FairTutorialDet4GeoHandler.cxx
+
+display/FairTutorialDet4PointDraw.cxx
 )
 
 set(NO_DICT_SRCS tools/Mille.cc)
 Set(HEADERS )
 Set(LINKDEF Tutorial4LinkDef.h)
 Set(LIBRARY_NAME Tutorial4)
-Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Core)
+Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Core Eve)
 
 GENERATE_LIBRARY()
 
