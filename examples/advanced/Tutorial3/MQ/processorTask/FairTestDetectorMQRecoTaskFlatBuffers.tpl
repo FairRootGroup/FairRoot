@@ -32,6 +32,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     for (auto it = digis->begin(); it != digis->end(); ++it)
     {
         new ((*fRecoTask->fDigiArray)[it - digis->begin()]) FairTestDetectorDigi((*it)->x(), (*it)->y(), (*it)->z(), (*it)->timestamp());
+        static_cast<FairTestDetectorDigi*>(((*fRecoTask->fDigiArray)[it - digis->begin()]))->SetTimeStampError((*it)->timestampError());
         // LOG(INFO) << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " " << (*it)->timestamp() << " " << (*it)->timestampError();
     }
 
@@ -59,6 +60,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
         // LOG(WARN) << " " << hit->GetDetectorID() << " " << hit->GetX() << " " << hit->GetY() << " " << hit->GetZ() << " " << hit->GetDx() << " " << hit->GetDy() << " " << hit->GetDz();
         HitBuilder hb(*builder);
         hb.add_detID(hit->GetDetectorID()); // detID:int
+        hb.add_mcIndex(hit->GetRefIndex()); // GetRefIndex:int
         hb.add_x(hit->GetX()); // x:double
         hb.add_y(hit->GetY()); // y:double
         hb.add_z(hit->GetZ()); // z:double

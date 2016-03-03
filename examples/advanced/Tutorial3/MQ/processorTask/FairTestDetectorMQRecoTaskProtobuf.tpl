@@ -35,6 +35,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     {
         const TestDetectorProto::Digi& digi = dp.digi(i);
         new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(digi.fx(), digi.fy(), digi.fz(), digi.ftimestamp());
+        static_cast<FairTestDetectorDigi*>(((*fRecoTask->fDigiArray)[i]))->SetTimeStampError(digi.ftimestamperror());
     }
 
     if (!fRecoTask->fDigiArray)
@@ -55,6 +56,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
         }
         TestDetectorProto::Hit* h = hp.add_hit();
         h->set_detid(hit->GetDetectorID());
+        h->set_mcindex(hit->GetRefIndex());
         h->set_posx(hit->GetX());
         h->set_posy(hit->GetY());
         h->set_posz(hit->GetZ());

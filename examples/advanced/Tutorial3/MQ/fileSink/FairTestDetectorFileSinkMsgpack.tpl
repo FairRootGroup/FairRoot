@@ -26,7 +26,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
 
             // deserialize
 
-            std::vector<msgpack::type::tuple<int, double, double, double, double, double, double>> hits;
+            std::vector<msgpack::type::tuple<int, int, double, double, double, double, double, double>> hits;
 
             msgpack::unpacked unpackedHits;
             // msgpack::unpacked unpackedBigBuffer;
@@ -51,9 +51,9 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
 
             for (int i = 0; i < numEntries; ++i)
             {
-                TVector3 pos(std::get<1>(hits.at(i)), std::get<2>(hits.at(i)), std::get<3>(hits.at(i)));
-                TVector3 dpos(std::get<4>(hits.at(i)), std::get<5>(hits.at(i)), std::get<6>(hits.at(i)));
-                new ((*fOutput)[i]) FairTestDetectorHit(std::get<0>(hits.at(i)), 0, pos, dpos);
+                TVector3 pos(std::get<2>(hits.at(i)), std::get<3>(hits.at(i)), std::get<4>(hits.at(i)));
+                TVector3 dpos(std::get<5>(hits.at(i)), std::get<6>(hits.at(i)), std::get<7>(hits.at(i)));
+                new ((*fOutput)[i]) FairTestDetectorHit(std::get<0>(hits.at(i)), std::get<1>(hits.at(i)), pos, dpos);
             }
 
             if (fOutput->IsEmpty())
@@ -91,7 +91,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
 //             msgpack::unpack(&pmsg, static_cast<char*>(msg->GetData()), msg->GetSize());
 //             msgpack::object hitsObj = pmsg.get();
 
-//             std::vector<msgpack::type::tuple<int, double, double, double, double, double, double>> hits;
+//             std::vector<msgpack::type::tuple<int, int, double, double, double, double, double, double>> hits;
 //             hitsObj.convert(&hits);
 
 //             int numEntries = hits.size();
@@ -100,9 +100,9 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
 
 //             for (int i = 0; i < numEntries; ++i)
 //             {
-//                 TVector3 pos(std::get<1>(hits.at(i)), std::get<2>(hits.at(i)), std::get<3>(hits.at(i)));
-//                 TVector3 dpos(std::get<4>(hits.at(i)), std::get<5>(hits.at(i)), std::get<6>(hits.at(i)));
-//                 new ((*fOutput)[i]) FairTestDetectorHit(std::get<0>(hits.at(i)), 0, pos, dpos);
+//                 TVector3 pos(std::get<2>(hits.at(i)), std::get<3>(hits.at(i)), std::get<4>(hits.at(i)));
+//                 TVector3 dpos(std::get<5>(hits.at(i)), std::get<6>(hits.at(i)), std::get<7>(hits.at(i)));
+//                 new ((*fOutput)[i]) FairTestDetectorHit(std::get<0>(hits.at(i)), std::get<1>(hits.at(i)), pos, dpos);
 //             }
 
 //             if (fOutput->IsEmpty())
@@ -150,11 +150,11 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
 //             while (pac.next(&umsg))
 //             {
 //                 msgpack::object hitObj = umsg.get();
-//                 msgpack::type::tuple<int, double, double, double, double, double, double> hit;
+//                 msgpack::type::tuple<int, int, double, double, double, double, double, double> hit;
 //                 hitObj.convert(&hit);
-//                 TVector3 pos(std::get<1>(hit), std::get<2>(hit), std::get<3>(hit));
-//                 TVector3 dpos(std::get<4>(hit), std::get<5>(hit), std::get<6>(hit));
-//                 new ((*fOutput)[numEntries]) FairTestDetectorHit(std::get<0>(hit), 0, pos, dpos);
+//                 TVector3 pos(std::get<2>(hits.at(i)), std::get<3>(hits.at(i)), std::get<4>(hits.at(i)));
+//                 TVector3 dpos(std::get<5>(hits.at(i)), std::get<6>(hits.at(i)), std::get<7>(hits.at(i)));
+//                 new ((*fOutput)[i]) FairTestDetectorHit(std::get<0>(hits.at(i)), std::get<1>(hits.at(i)), pos, dpos);
 //                 numEntries++;
 //             }
 
