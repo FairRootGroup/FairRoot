@@ -140,8 +140,8 @@ void PixelFindHits::Exec(Option_t* opt) {
 
     curNode->LocalToMaster(locPosCalc,globPos);
 
-    LOG(INFO) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
-    LOG(INFO) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
+    LOG(DEBUG) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
+    LOG(DEBUG) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
 
     TVector3 pos   (globPos[0],globPos[1],globPos[2]);
     TVector3 posErr(fPitchX/TMath::Sqrt(12.),fPitchY/TMath::Sqrt(12.),actBox->GetDZ());
@@ -325,7 +325,7 @@ void PixelFindHits::Finish() {
 
 void PixelFindHits::InitMQ(const std::string& root_file, const std::string& ascii_file) 
 {
-  fHits = new TClonesArray("PixelHit",10000);
+  fHits = new TClonesArray("PixelHits",10000);
 //*
   // init parameters below
   std::cout << "creating fRtdb" << std::endl;
@@ -426,8 +426,8 @@ TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis)
 
     curNode->LocalToMaster(locPosCalc,globPos);
 
-    LOG(INFO) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
-    LOG(INFO) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
+    LOG(DEBUG) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
+    LOG(DEBUG) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
 
     TVector3 pos   (globPos[0],globPos[1],globPos[2]);
     TVector3 posErr(fPitchX/TMath::Sqrt(12.),fPitchY/TMath::Sqrt(12.),actBox->GetDZ());

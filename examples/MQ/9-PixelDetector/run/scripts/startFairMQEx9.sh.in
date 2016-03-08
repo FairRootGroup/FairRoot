@@ -1,9 +1,9 @@
 #!/bin/bash
 
-TRANSPORT="--transport nanomsg"
+TRANSPORT="--transport zeromq"
 #RUNID="--runid 1456915975"
 RUNID=""
-VERBOSE="--verbose DEBUG"
+VERBOSE="--verbose INFO"
 
 while [[ $# > 1 ]]
 do
