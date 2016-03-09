@@ -72,7 +72,7 @@ class MyHitSerializer : public BaseSerializationPolicy<MyHitSerializer<PodType,H
         {
             for (int i = 0; i < numOutput; ++i)
             {
-                HitType* hit = (HitType*)array->At(i);
+                HitType* hit = static_cast<HitType*>(array->At(i));
 
                 output[i].detID = hit->GetDetectorID();
                 output[i].posX = hit->GetX();

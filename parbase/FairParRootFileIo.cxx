@@ -94,7 +94,7 @@ void FairParRootFile::readVersions(FairRtdbRun* currentRun)
     delete run;
   }
 
-  run=(FairRtdbRun*)RootFile->Get(((char*)currentRun->GetName()));
+  run=static_cast<FairRtdbRun*>(RootFile->Get((const_cast<char*>(currentRun->GetName()))));
   //cout << "-I- FairParRootFile :: readversions " << currentRun->GetName() << " : " << run << endl;
 }
 //--------------------------------------------------------------------
@@ -186,7 +186,7 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
   TFile*  inFile;
 
   Int_t nofFiles = 0;
-  while((string = (TObjString*)myIter.Next())) {
+  while((string = static_cast<TObjString*>(myIter.Next()))) {
     inFile = TFile::Open(string->GetString().Data());
     if ( !inFile ) {
       cout << "-W- File \"" << string->GetString().Data() << "\" does not exist" << endl;
@@ -204,10 +204,10 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
       newParFile = new TFile(newParFileName.Data(),"RECREATE");
     }
 
-    TList* inputKeys = (TList*)inFile->GetListOfKeys();
+    TList* inputKeys = static_cast<TList*>(inFile->GetListOfKeys());
 
     TListIter keyIter(inputKeys);
-    while((inpKey = (TKey*)keyIter.Next())) {
+    while((inpKey = static_cast<TKey*>(keyIter.Next()))) {
       TObject* tempObj = inFile->Get(inpKey->GetName());
 
       newParFile->cd();
@@ -269,7 +269,7 @@ void FairParRootFileIo::print()
     FairDetParIo* io;
     cout<<"Root file I/O "<<file->GetName()<<" is open\n";
     cout<<"detector I/Os: ";
-    while ((io=(FairDetParIo*)next())) {
+    while ((io=static_cast<FairDetParIo*>(next()))) {
       cout<<" "<<io->GetName();
     }
     cout<<'\n';

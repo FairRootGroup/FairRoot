@@ -104,7 +104,7 @@ void FairTutorialDet4::SetParContainers()
   FairRuntimeDb* rtdb=sim->GetRuntimeDb();
   LOG_IF(FATAL, !rtdb) << "No runtime database"<<FairLogger::endl;
 
-  fMisalignPar = (FairTutorialDet4MisalignPar*)
+  fMisalignPar = static_cast<FairTutorialDet4MisalignPar*>
                  (rtdb->getContainer("FairTutorialDet4MissallignPar"));
 
 }
@@ -113,7 +113,7 @@ void FairTutorialDet4::Initialize()
 {
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet4GeoPar* par=(FairTutorialDet4GeoPar*)(rtdb->getContainer("FairTutorialDet4GeoPar"));
+  FairTutorialDet4GeoPar* par=static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
 
   if (fModifyGeometry) {
     if (fGlobalCoordinates) {
@@ -145,7 +145,7 @@ void FairTutorialDet4::InitParContainers()
 
 }
 
-Bool_t  FairTutorialDet4::ProcessHits(FairVolume* vol)
+Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
 {
   /** This method is called from the MC stepping */
 
@@ -188,7 +188,7 @@ Bool_t  FairTutorialDet4::ProcessHits(FairVolume* vol)
     }
 
     // Increment number of tutorial det points in TParticle
-    FairStack* stack = (FairStack*) gMC->GetStack();
+    FairStack* stack = static_cast<FairStack*>(gMC->GetStack());
     stack->AddPoint(kTutDet);
   }
 
@@ -273,7 +273,7 @@ void FairTutorialDet4::ConstructASCIIGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet4GeoPar* par=(FairTutorialDet4GeoPar*)(rtdb->getContainer("FairTutorialDet4GeoPar"));
+  FairTutorialDet4GeoPar* par=static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -281,7 +281,7 @@ void FairTutorialDet4::ConstructASCIIGeometry()
   FairGeoNode* node   = NULL;
   FairGeoVolume* aVol=NULL;
 
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
       fSensNodes->AddLast( aVol );
@@ -310,7 +310,7 @@ void FairTutorialDet4::ModifyGeometry()
     TGeoPNEntry* entry = gGeoManager->GetAlignableEntry(detStr.Data());
     if (entry) {
       LOG(INFO)<<"Misalign using symlinks."<<FairLogger::endl;
-      TGeoPhysicalNode* node = entry->GetPhysicalNode();
+//      TGeoPhysicalNode* node = entry->GetPhysicalNode();
 //    LOG(INFO)<<"Nr of alignable objects: "<<gGeoManager->GetNAlignable()<<FairLogger::endl;
       ModifyGeometryBySymlink();
     } else {
@@ -333,7 +333,7 @@ void FairTutorialDet4::ModifyGeometryByFullPath()
 
     LOG(DEBUG) << "Path: "<< volPath << FairLogger::endl;
     gGeoManager->cd(volPath);
-    TGeoHMatrix* g3 = gGeoManager->GetCurrentMatrix();
+//    TGeoHMatrix* g3 = gGeoManager->GetCurrentMatrix();
 //      g3->Print();
     TGeoNode* n3 = gGeoManager->GetCurrentNode();
     TGeoMatrix* l3 = n3->GetMatrix();

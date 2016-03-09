@@ -83,7 +83,7 @@ InitStatus FairBoxSetDraw::Init()
   }
   fManager = FairRootManager::Instance();
 
-  fList = (TClonesArray*)FairRootManager::Instance()->GetObject(GetName());
+  fList = static_cast<TClonesArray*>(FairRootManager::Instance()->GetObject(GetName()));
   //std::cout << fList << std::endl;
   if (fList==0) {
     cout << "FairBoxSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< endl;
@@ -105,7 +105,7 @@ InitStatus FairBoxSetDraw::Init()
   return kSUCCESS;
 }
 // -------------------------------------------------------------------------
-void FairBoxSetDraw::Exec(Option_t* option)
+void FairBoxSetDraw::Exec(Option_t* /*option*/)
 {
   if(IsActive()) {
     TObject* p;
@@ -150,7 +150,7 @@ void FairBoxSetDraw::AddBoxes(FairBoxSet* set, TObject* obj, Int_t i)
 }
 
 
-Int_t FairBoxSetDraw::GetValue(TObject* obj, Int_t i)
+Int_t FairBoxSetDraw::GetValue(TObject* /*obj*/, Int_t i)
 {
   return i;
 }

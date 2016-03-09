@@ -126,7 +126,7 @@ void FairMonitor::StopTimer(const TTask* tTask, const char* identStr) {
 void FairMonitor::StartMemoryMonitor(const TTask* tTask, const char* identStr) {
   if ( !fRunMonitor ) return;
   FairSystemInfo sysInfo;
-  Int_t memoryAtStart = (Int_t)sysInfo.GetCurrentMemory();
+  Int_t memoryAtStart = static_cast<Int_t>(sysInfo.GetCurrentMemory());
 
   TString memMon = Form("mem_%p_%s_%s",tTask,tTask->GetName(),identStr);
   
@@ -144,7 +144,7 @@ void FairMonitor::StartMemoryMonitor(const TTask* tTask, const char* identStr) {
 void FairMonitor::StopMemoryMonitor(const TTask* tTask, const char* identStr) {
   if ( !fRunMonitor ) return;
   FairSystemInfo sysInfo;
-  Int_t memoryAtEnd = (Int_t)sysInfo.GetCurrentMemory();
+  Int_t memoryAtEnd = static_cast<Int_t>(sysInfo.GetCurrentMemory());
 
   TString memMon = Form("mem_%p_%s_%s",tTask,tTask->GetName(),identStr);
   
@@ -179,7 +179,7 @@ void FairMonitor::RecordInfo(const TTask* tTask, const char* identStr, Double_t 
     TString titleString = Form("Histogram %s for %s",identStr,tTask->GetName());
     fHistList->Add(new TH1F(tempString,titleString,1000,0,1000));
   }
-  TH1F* tempHist = ((TH1F*)(fHistList->At(ihist)));
+  TH1F* tempHist = (static_cast<TH1F*>((fHistList->At(ihist))));
   Int_t nofEntries = tempHist->GetEntries();
   if ( nofEntries > tempHist->GetNbinsX() ) 
     tempHist->SetBins(tempHist->GetNbinsX()*10, 0, tempHist->GetXaxis()->GetXmax()*10);
@@ -240,11 +240,11 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const {
     tempString = Form("%s",fHistList->At(ihist)->GetName());
     if ( tempString.Contains(Form("%p",tempTask)) ) {
       if ( tempString.Contains("EXEC_TIM") ) {
-	timInt = ((TH1F*)fHistList->At(ihist))->Integral();
-	timEnt = ((TH1F*)fHistList->At(ihist))->GetEntries();
+	timInt = (static_cast<TH1F*>(fHistList->At(ihist))->Integral());
+	timEnt = (static_cast<TH1F*>(fHistList->At(ihist))->GetEntries());
       }
       if ( tempString.Contains("EXEC_MEM") ) {
-	memInt = ((TH1F*)fHistList->At(ihist))->Integral();
+	memInt = (static_cast<TH1F*>(fHistList->At(ihist))->Integral());
       }
     }
   }
@@ -286,7 +286,7 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const {
     if ( printString.Length() > 80 )
       printString.Remove(80,100);
     printString += "\"";
-    Int_t timeFrac = (Int_t)(timePerc/100.*30.);
+    Int_t timeFrac = static_cast<Int_t>((timePerc/100.*30.));
     if ( timePerc < 30 )
       LOG(INFO) << "[\033[42m" << FairLogger::flush;
     else if ( timePerc < 90 )
@@ -319,7 +319,7 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const {
   TList* subTaskList = tempTask->GetListOfTasks();
   if ( !subTaskList ) return;
   for ( Int_t itask = 0 ; itask < subTaskList->GetEntries() ; itask++ ) {
-    TTask* subTask = (TTask*)subTaskList->At(itask);
+    TTask* subTask = static_cast<TTask*>(subTaskList->At(itask));
     if ( subTask ) 
       PrintTask(subTask,taskLevel+1);
   }
@@ -334,7 +334,7 @@ void FairMonitor::Print(Option_t*) const {
   }
 
   LOG(INFO) << "- Total Run Time: " << fRunTime << " s ---------------------------------------------------------" << FairLogger::endl;
-  TTask* mainFairTask = (TTask*)(gROOT->GetListOfBrowsables()->FindObject("FairTaskList"));
+  TTask* mainFairTask = static_cast<TTask*>((gROOT->GetListOfBrowsables()->FindObject("FairTaskList")));
   if ( mainFairTask ) 
     PrintTask(mainFairTask,0);
   LOG(INFO) << "-------------------------------------------------------------------------------------" << FairLogger::endl;
@@ -357,8 +357,8 @@ void FairMonitor::PrintTask(TString specString) const {
     if ( histString.Contains(specString) ) {
       histString.Replace(0,histString.First('_')+1,"");
       histString.Replace(0,histString.First('_')+1,"");
-      Double_t integral = ((TH1F*)(fHistList->At(ihist)))->Integral();
-      Double_t entries  = ((TH1F*)(fHistList->At(ihist)))->GetEntries();
+      Double_t integral = (static_cast<TH1F*>((fHistList->At(ihist)))->Integral());
+      Double_t entries  = (static_cast<TH1F*>((fHistList->At(ihist)))->GetEntries());
 //      Double_t valPent  = integral/entries;
       if ( histString.EndsWith("_TIM") ) unitString = " s";
       if ( histString.EndsWith("_MEM") ) unitString = " B";
@@ -380,7 +380,7 @@ void FairMonitor::Draw(Option_t*) {
   typedef std::map<TString, Int_t>::iterator tiMapIter;
   tiMapIter iti;
   
-  TTask* mainFairTask = (TTask*)(gROOT->GetListOfBrowsables()->FindObject("FairTaskList"));
+  TTask* mainFairTask = static_cast<TTask*>((gROOT->GetListOfBrowsables()->FindObject("FairTaskList")));
   if ( !mainFairTask ) return;
 
   GetTaskMap(mainFairTask);
@@ -459,7 +459,7 @@ void FairMonitor::Draw(Option_t*) {
       }
       Int_t startingPosition = 575 - nofHier/(1+secLine)*45-secLine*(1-secLineEven)*45;
 
-      Double_t topEdge = 800.-800.*(2.*(Double_t)ihier-0.5)/((Double_t)2*maxHierarchyNumber+1)+secLine*15;
+      Double_t topEdge = 800.-800.*(2.*static_cast<Double_t>(ihier-0.5))/(static_cast<Double_t>(2*maxHierarchyNumber+1))+secLine*15;
       LOG(DEBUG) << "for level " << ihier << " will put top edge at " << topEdge 
 		<< ". " << (secLineEven?"Two lines":"One line") << (secLineEven?" with offset":"") << FairLogger::endl;
       for ( iti = fTaskMap.begin() ; iti != fTaskMap.end() ; iti++ ) {
@@ -488,7 +488,7 @@ void FairMonitor::Draw(Option_t*) {
     }
     Int_t startingPosition = 575 - nofHier/(1+secLine)*45-secLine*(1-secLineEven)*45;
 
-    Double_t topEdge = 800.-800.*(2.*(Double_t)ihier+0.5)/((Double_t)2*maxHierarchyNumber+1)+secLine*15;
+    Double_t topEdge = 800.-800.*(2.*static_cast<Double_t>(ihier+0.5))/(static_cast<Double_t>(2*maxHierarchyNumber+1))+secLine*15;
     LOG(DEBUG) << "for level " << ihier << " will put top edge at " << topEdge 
 	      << ". " << (secLineEven?"Two lines":"One line") << (secLineEven?" with offset":"") << FairLogger::endl;
     for ( iti = fObjectMap.begin() ; iti != fObjectMap.end() ; iti++ ) {
@@ -546,7 +546,7 @@ void FairMonitor::Draw(Option_t*) {
     Int_t nofHists = fHistList->GetEntries();
     for ( Int_t ihist = 0 ; ihist < nofHists ; ihist++ ) {
       if ( !tempString.CompareTo(fHistList->At(ihist)->GetName()) ) {
-	Double_t timeInt = ((TH1F*)fHistList->At(ihist))->Integral();
+	Double_t timeInt = (static_cast<TH1F*>(fHistList->At(ihist))->Integral());
 	Double_t timeFrac = 80.*timeInt/fRunTime;
 	TBox* barBox = new TBox(taskPos.first-40,taskPos.second-15,taskPos.first-40+timeFrac,taskPos.second+15);
 	barBox->SetFillColor(kRed);
@@ -600,7 +600,7 @@ void FairMonitor::DrawHist(TString specString) {
   for ( Int_t ihist = 0 ; ihist < nofHists ; ihist++ ) {
     TString histString = Form("%s",fHistList->At(ihist)->GetName());
     if ( histString.Contains(specString) ) {
-      TH1F* tempHist = ((TH1F*)(fHistList->At(ihist)));
+      TH1F* tempHist = (static_cast<TH1F*>((fHistList->At(ihist))));
       if ( histMax < tempHist->GetMaximum() )
 	histMax = tempHist->GetMaximum();
     }
@@ -609,7 +609,7 @@ void FairMonitor::DrawHist(TString specString) {
   for ( Int_t ihist = 0 ; ihist < nofHists ; ihist++ ) {
     TString histString = Form("%s",fHistList->At(ihist)->GetName());
     if ( histString.Contains(specString) ) {
-      TH1F* tempHist = ((TH1F*)(fHistList->At(ihist)));
+      TH1F* tempHist = (static_cast<TH1F*>((fHistList->At(ihist))));
       if ( tempHist->GetXaxis()->GetXmax() > tempHist->GetEntries() )
 	tempHist->SetBins(tempHist->GetEntries(),0,tempHist->GetEntries());
       tempHist->SetMarkerColor(nofDraws%6+2);
@@ -637,12 +637,12 @@ void FairMonitor::StoreHistograms(TFile* tfile)
   }
   this->Draw();
 
-  gDirectory = (TDirectory*)tfile;
+  gDirectory = static_cast<TDirectory*>(tfile);
 
   gDirectory->mkdir("MonitorResults");
   gDirectory->cd("MonitorResults");
   TIter next(fHistList);
-  while ( TH1* thist = ((TH1*)next()) ) {
+  while ( TH1* thist = (static_cast<TH1*>(next())) ) {
     thist->SetBins(thist->GetEntries(),0,thist->GetEntries());
     thist->Write();
   }
@@ -661,7 +661,7 @@ void FairMonitor::GetTaskMap(TTask* tempTask) {
   TList* subTaskList = tempTask->GetListOfTasks();
   if ( !subTaskList ) return;
   for ( Int_t itask = 0 ; itask < subTaskList->GetEntries() ; itask++ ) {
-    TTask* subTask = (TTask*)subTaskList->At(itask);
+    TTask* subTask = static_cast<TTask*>(subTaskList->At(itask));
     if ( subTask ) 
       GetTaskMap(subTask);
   }
@@ -723,7 +723,7 @@ void FairMonitor::AnalyzeObjectMap(TTask* tempTask) {
   TList* subTaskList = tempTask->GetListOfTasks();
   if ( !subTaskList ) return;
   for ( Int_t itask = 0 ; itask < subTaskList->GetEntries() ; itask++ ) {
-    TTask* subTask = (TTask*)subTaskList->At(itask);
+    TTask* subTask = static_cast<TTask*>(subTaskList->At(itask));
     if ( subTask ) 
       AnalyzeObjectMap(subTask);
   }

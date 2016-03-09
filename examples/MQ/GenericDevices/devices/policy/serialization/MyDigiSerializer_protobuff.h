@@ -31,9 +31,9 @@ namespace digiproto
 {
 
     // helper function to clean up the object holding the data after it is transported.
-    void free_string(void *data, void *hint)
+    void free_string(void* /*data*/, void* hint)
     {
-        delete (std::string*)hint;
+        delete static_cast<std::string*>(hint);
     }
 
 }
@@ -67,7 +67,7 @@ class MyDigiProtoSerializer : public BaseSerializationPolicy < MyDigiProtoSerial
         Tuto7PayloadProto::DigiPayload digi_array;
         for (int i = 0; i < numEntries; ++i)
         {
-            MyDigi* digi = (MyDigi*)array->At(i);
+            MyDigi* digi = static_cast<MyDigi*>(array->At(i));
             if (!digi)
             {
                 continue;

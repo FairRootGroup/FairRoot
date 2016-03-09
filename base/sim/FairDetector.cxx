@@ -95,7 +95,7 @@ void   FairDetector::Initialize()
   TString cutName;
   TString copysign="#";
   for (Int_t i = 0 ; i < NoOfEntries ; i++ )  {
-    FairVolume* aVol = (FairVolume*) svList->At(i);
+    FairVolume* aVol = static_cast<FairVolume*>(svList->At(i));
     cutName = aVol->GetName();
     Ssiz_t pos = cutName.Index (copysign, 1);
     if(pos>1) { cutName.Resize(pos); }

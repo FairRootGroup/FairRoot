@@ -93,7 +93,7 @@ std::vector<std::vector<DataType> > RootOutFileManager<DataType>::GetAllObj(cons
     std::vector<DataType> TempObj;
     if (file)
     {
-        fTree=(TTree*)file->Get(fTreeName.c_str());
+        fTree=static_cast<TTree*>(file->Get(fTreeName.c_str()));
     }
     else
         MQLOG(ERROR)<<"Could not open file"<<fTreeName.c_str();
@@ -242,7 +242,7 @@ void RootOutFileManager<DataType>::InitOutputFile()
     // if given option is update attempt to get tree from file
     if (fFileOption=="UPDATE")
     {
-        fTree=(TTree*)fOutFile->Get(fTreeName.c_str());
+        fTree=static_cast<TTree*>(fOutFile->Get(fTreeName.c_str()));
         if (fTree) 
         {
             updateTree=true;
@@ -300,7 +300,7 @@ void RootOutFileManager<DataType>::Init()
     // if given option is update attempt to get tree from file
     if (fFileOption == "UPDATE")
     {
-        fTree = (TTree*)fOutFile->Get(fTreeName.c_str());
+        fTree = static_cast<TTree*>(fOutFile->Get(fTreeName.c_str()));
         if (fTree) 
         {
             updateTree=true;

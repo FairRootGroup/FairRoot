@@ -34,7 +34,7 @@ PixelPoint::~PixelPoint() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void PixelPoint::Print(const Option_t* opt) const
+void PixelPoint::Print(const Option_t* /*opt*/) const
 {
   cout << "-I- PixelPoint: Pixel point for track " << fTrackID
        << " in detector " << fDetectorID << endl;

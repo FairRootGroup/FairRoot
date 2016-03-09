@@ -1378,7 +1378,7 @@ void  FairMCApplication::UndoGeometryModifications()
   TGeoPhysicalNode* node = NULL;
   TGeoHMatrix* ng3 = NULL;
   for(Int_t k=0; k<numPhysNodes; k++) {
-    node=(TGeoPhysicalNode*)physNodes->At(k);
+    node=static_cast<TGeoPhysicalNode*>(physNodes->At(k));
     ng3 = node->GetOriginalMatrix(); //"real" global matrix, what survey sees
     node->Align(ng3);
   }

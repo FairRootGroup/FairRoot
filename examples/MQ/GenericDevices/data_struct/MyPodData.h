@@ -38,7 +38,7 @@ namespace MyPodData
         // method to use boost serialization
         #ifndef __CINT__
         template<class Archive>
-        void serialize(Archive & ar, const unsigned int version) 
+        void serialize(Archive & ar, const unsigned int /*version*/) 
         {
             ar & fTimeStamp;
             ar & fTimeStampError;
@@ -58,7 +58,7 @@ namespace MyPodData
         // method to use boost serialization
         #ifndef __CINT__
         template<class Archive>
-        void serialize(Archive & ar, const unsigned int version) 
+        void serialize(Archive & ar, const unsigned int /*version*/) 
         {
             ar & boost::serialization::base_object<TimeStamp>(*this);
             ar & fX;
@@ -85,7 +85,7 @@ namespace MyPodData
         // method to use boost serialization
         #ifndef __CINT__
         template<class Archive>
-        void serialize(Archive & ar, const unsigned int version) 
+        void serialize(Archive & ar, const unsigned int /*version*/) 
         {
             ar & boost::serialization::base_object<TimeStamp>(*this);
             ar & detID;

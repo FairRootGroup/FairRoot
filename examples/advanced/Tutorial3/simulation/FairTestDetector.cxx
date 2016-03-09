@@ -115,7 +115,7 @@ Bool_t FairTestDetector::ProcessHits(FairVolume* vol)
                fELoss);
 
         // Increment number of FairTestDetector det points in TParticle
-        FairStack* stack = (FairStack*)gMC->GetStack();
+        FairStack* stack = static_cast<FairStack*>(gMC->GetStack());
         stack->AddPoint(kTutDet);
     }
 
@@ -179,7 +179,7 @@ void FairTestDetector::ConstructGeometry()
     // store geo parameter
     FairRun* fRun = FairRun::Instance();
     FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
-    FairTestDetectorGeoPar* par = (FairTestDetectorGeoPar*)(rtdb->getContainer("FairTestDetectorGeoPar"));
+    FairTestDetectorGeoPar* par = static_cast<FairTestDetectorGeoPar*>(rtdb->getContainer("FairTestDetectorGeoPar"));
     TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
     TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -187,7 +187,7 @@ void FairTestDetector::ConstructGeometry()
     FairGeoNode* node = NULL;
     FairGeoVolume* aVol = NULL;
 
-    while ((node = (FairGeoNode*)iter.Next()))
+    while ((node = static_cast<FairGeoNode*>(iter.Next())))
     {
         aVol = dynamic_cast<FairGeoVolume*>(node);
         if (node->isSensitive())

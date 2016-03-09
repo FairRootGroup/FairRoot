@@ -59,7 +59,7 @@ Bool_t FairTut8Unpack::DoUnpack(Int_t* data, Int_t size)
 {
     LOG(DEBUG) << "FairTut8Unpack : Unpacking... size = " << size << FairLogger::endl;
 
-    UInt_t l_i = 0;
+    Int_t l_i = 0;
 
     Int_t n17 = 0;
 
@@ -67,7 +67,7 @@ Bool_t FairTut8Unpack::DoUnpack(Int_t* data, Int_t size)
     {
         n17 = 0;
 
-        UInt_t* p1 = (UInt_t*)(data + l_i);
+        UInt_t* p1 = reinterpret_cast<UInt_t*>((data + l_i));
         UInt_t l_sam_id = (p1[0] & 0xf0000000) >> 28; // identifies the sam
         UInt_t l_gtb_id = (p1[0] & 0x0f000000) >> 24; // 0 or 1, identifies which of the 2 cables of the sam
         UInt_t l_lec = (p1[0] & 0x00f00000) >> 20;
@@ -78,9 +78,9 @@ Bool_t FairTut8Unpack::DoUnpack(Int_t* data, Int_t size)
 
         l_i += 1;
 
-        p1 = (UInt_t*)(data + l_i);
+        p1 = reinterpret_cast<UInt_t*>((data + l_i));
 
-        for (Int_t i1 = 0; i1 < l_da_siz; i1 += 2)
+        for (UInt_t i1 = 0; i1 < l_da_siz; i1 += 2)
         {
             UInt_t tac_addr;
             UInt_t tac_ch;

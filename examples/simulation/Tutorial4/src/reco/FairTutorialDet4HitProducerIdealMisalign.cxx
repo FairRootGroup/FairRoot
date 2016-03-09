@@ -59,10 +59,10 @@ void FairTutorialDet4HitProducerIdealMisalign::SetParContainers()
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDet4MisalignPar*)
+  fDigiPar = static_cast<FairTutorialDet4MisalignPar*>
              (rtdb->getContainer("FairTutorialDet4MissallignPar"));
 
-  fGeoPar = (FairTutorialDet4GeoPar*)
+  fGeoPar = static_cast<FairTutorialDet4GeoPar*>
              (rtdb->getContainer("FairTutorialDet4GeoPar"));
 
 }
@@ -74,7 +74,7 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::ReInit()
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDet4MisalignPar*)
+  fDigiPar = static_cast<FairTutorialDet4MisalignPar*>
              (rtdb->getContainer("FairTutorialDet4MissallignPar"));
 
   fShiftX=fDigiPar->GetShiftX();
@@ -99,7 +99,7 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
   }
 
   // Get input array
-  fPointArray = (TClonesArray*) ioman->GetObject("TutorialDetPoint");
+  fPointArray = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetPoint"));
   if ( ! fPointArray ) {
     LOG(FATAL)<<"No TutorialDetPoint array!" << FairLogger::endl;
     return kFATAL;
@@ -137,7 +137,7 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
 
 }
 // -----   Public method Exec   --------------------------------------------
-void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* opt)
+void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
 {
 
   fHitArray->Clear();
@@ -155,7 +155,7 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* opt)
   Int_t nHits = 0;
   Int_t nPoints = fPointArray->GetEntriesFast();
   for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
-    point = (FairTutorialDet4Point*) fPointArray->At(iPoint);
+    point = static_cast<FairTutorialDet4Point*>(fPointArray->At(iPoint));
     if ( ! point) { continue; }
 
     // Detector ID

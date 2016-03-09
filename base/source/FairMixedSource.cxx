@@ -293,14 +293,14 @@ Bool_t FairMixedSource::Init()
     FairRootManager::Instance()->SetInChain(fBackgroundChain,0);
 
     for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
-      TFolder* fold = (TFolder*) fListFolder->At(i);
-      fEvtHeader = (FairEventHeader*)   fold->FindObjectAny("EventHeader.");
-      fMCHeader  = (FairMCEventHeader*) fold->FindObjectAny("MCEventHeader.");
+      TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
+      fEvtHeader = static_cast<FairEventHeader*>(fold->FindObjectAny("EventHeader."));
+      fMCHeader  = static_cast<FairMCEventHeader*>(fold->FindObjectAny("MCEventHeader."));
       if ( fEvtHeader ) {
-	ActivateObject((TObject**)&fEvtHeader,"EventHeader.");
+	ActivateObject(reinterpret_cast<TObject**>(&fEvtHeader),"EventHeader.");
       }
       if ( fMCHeader  ) {
-	ActivateObject((TObject**)&fMCHeader ,"MCEventHeader.");
+	ActivateObject(reinterpret_cast<TObject**>(&fMCHeader),"MCEventHeader.");
       }
     }
     FairRootManager::Instance()->SetListOfFolders(fListFolder);
@@ -677,10 +677,10 @@ Int_t  FairMixedSource::CheckMaxEventNo(Int_t EvtEnd)
     LOG(INFO) << "Signal chain  No " << iterN->first << " has  : " << MaxS << " entries " << FairLogger::endl;
     ratio=iterN->second;
     if(floor(MaxS/ratio) > MaxBG) {
-      localMax=MaxBG+(Int_t)floor(MaxBG*ratio);
+      localMax=MaxBG+static_cast<Int_t>(floor(MaxBG*ratio));
       LOG(WARNING) << "No of Event in Background chain is not enough for all signals in chain  " << iterN->first << FairLogger::endl;
     } else {
-      localMax=(Int_t)floor(MaxS/ratio);
+      localMax=static_cast<Int_t>(floor(MaxS/ratio));
       LOG(WARNING) << "No of Event in signal chain " << iterN->first << " is not enough, the maximum event number will be reduced to : " << localMax  << FairLogger::endl;
     }
     if(MaxEventNo==0 || MaxEventNo > localMax) {

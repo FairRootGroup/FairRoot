@@ -130,49 +130,49 @@ void FairGeoInterface::addInputFile(const char* file)
       media->setInputFile(file);
     } else {
       if (setName.Contains("cave")) {
-        pSet=(FairGeoSet*)sets->At(kFairGeoCave);
+        pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoCave));
         if (!pSet) {
           pSet=new FairGeoCave;
           sets->AddAt(pSet,kFairGeoCave);
         }
       } else if (setName.Contains("pipe")) {
-        pSet=(FairGeoSet*)sets->At(kFairGeoPipe);
+        pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoPipe));
         if (!pSet) {
           pSet=new FairGeoPipe;
           sets->AddAt(pSet,kFairGeoPipe);
         }
       } else if (setName.Contains("target")) {
-        pSet=(FairGeoSet*)sets->At(kFairGeoTarget);
+        pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoTarget));
         if (!pSet) {
           pSet=new FairGeoTarget;
           sets->AddAt(pSet,kFairGeoTarget);
         }
       } else if (setName.Contains("magnet")) {
-        pSet=(FairGeoSet*)sets->At(kFairGeoMagnet);
+        pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoMagnet));
         if (!pSet) {
           pSet=new FairGeoMagnet;
           sets->AddAt(pSet,kFairGeoMagnet);
         }
       } else if (setName.Contains("rich")) {
-        pSet=(FairGeoSet*)sets->At(kFairGeoRich);
+        pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoRich));
         if (!pSet) {
           pSet=new FairGeoRich;
           sets->AddAt(pSet,kFairGeoRich);
         }
       } else if (setName.Contains("sts")) {
-        pSet=(FairGeoSet*)sets->At(kFairGeoSts);
+        pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoSts));
         if (!pSet) {
           pSet=new FairGeoSts;
           sets->AddAt(pSet,kFairGeoSts);
         }
       } else if (setName.Contains("trd")) {
-        pSet=(FairGeoSet*)sets->At(kFairGeoTrd);
+        pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoTrd));
         if (!pSet) {
           pSet=new FairGeoTrd;
           sets->AddAt(pSet,kFairGeoTrd);
         }
       } else if (setName.Contains("tof")) {
-        pSet=(FairGeoSet*)sets->At(kFairGeoTof);
+        pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoTof));
         if (!pSet) {
           pSet=new FairGeoTof;
           sets->AddAt(pSet,kFairGeoTof);
@@ -197,21 +197,21 @@ FairGeoSet* FairGeoInterface::findSet(const char* name)
   setName.ToLower();
   Int_t l=setName.Last('/')+1;
   setName=setName(l,setName.Length()-l);
-  /*  if (setName.Contains("cave"))        pSet=(FairGeoSet*)sets->At(kFairGeoCave);
-    else if (setName.Contains("pipe"))   pSet=(FairGeoSet*)sets->At(kFairGeoPipe);
-    else if (setName.Contains("target")) pSet=(FairGeoSet*)sets->At(kFairGeoTarget);
-    else if (setName.Contains("magnet"))  pSet=(FairGeoSet*)sets->At(kFairGeoMagnet);
-    else if (setName.Contains("rich"))   pSet=(FairGeoSet*)sets->At(kFairGeoRich);
-    else if (setName.Contains("sts"))    pSet=(FairGeoSet*)sets->At(kFairGeoSts);
-    else if (setName.Contains("trd"))    pSet=(FairGeoSet*)sets->At(kFairGeoTrd);
-    else if (setName.Contains("tof"))    pSet=(FairGeoSet*)sets->At(kFairGeoTof);
-    else if (setName.Contains("ecal")) pSet=(FairGeoSet*)sets->At(kFairGeoEcal);
+  /*  if (setName.Contains("cave"))        pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoCave));
+    else if (setName.Contains("pipe"))   pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoPipe));
+    else if (setName.Contains("target")) pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoTarget));
+    else if (setName.Contains("magnet"))  pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoMagnet));
+    else if (setName.Contains("rich"))   pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoRich));
+    else if (setName.Contains("sts"))    pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoSts));
+    else if (setName.Contains("trd"))    pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoTrd));
+    else if (setName.Contains("tof"))    pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoTof));
+    else if (setName.Contains("ecal")) pSet=static_cast<FairGeoSet*>(sets->At(kFairGeoEcal));
     return pSet;
     */
   for(Int_t i=0; i<nSets; i++) {
     PSetName=sets->At(i)->GetName();
     if (PSetName.Contains(setName.Data())) {
-      pSet=(FairGeoSet*)sets->At(i);
+      pSet=static_cast<FairGeoSet*>(sets->At(i));
       cout << "FairGeoInterface::findSet" <<pSet->GetName() <<endl;
       break;
     }
@@ -301,7 +301,7 @@ Bool_t FairGeoInterface::readAll()
   if(rc) { rc=readMedia(); }
   FairGeoSet* pSet=0;
   for(Int_t i=0; i<nSets&&rc; i++) {
-    pSet=(FairGeoSet*)sets->At(i);
+    pSet=static_cast<FairGeoSet*>(sets->At(i));
     if (pSet) {
       cout<<"Read "<<pSet->GetName()<<endl;
       rc=readSet(pSet);
@@ -317,7 +317,7 @@ Bool_t FairGeoInterface::writeAll()
   FairGeoSet* pSet=0;
   rc=writeMedia();
   for(Int_t i=0; i<nSets&&rc; i++) {
-    pSet=(FairGeoSet*)sets->At(i);
+    pSet=static_cast<FairGeoSet*>(sets->At(i));
     if (pSet) { rc=writeSet(pSet); }
   }
   return rc;
@@ -332,7 +332,7 @@ Bool_t FairGeoInterface::createAll(Bool_t withCleanup)
   if (geoBuilder) {
     FairGeoSet* pSet=0;
     for(Int_t i=0; i<nSets&&rc; i++) {
-      pSet=(FairGeoSet*)sets->At(i);
+      pSet=static_cast<FairGeoSet*>(sets->At(i));
       if (pSet) {
         cout<<"Create "<<pSet->GetName()<<endl;
         rc=pSet->create(geoBuilder);
@@ -363,7 +363,7 @@ Bool_t FairGeoInterface::createGeometry(Bool_t withCleanup)
     if (rc) { rc=readMedia(); }
     FairGeoSet* pSet=0;
     for(Int_t i=0; i<nSets&&rc; i++) {
-      pSet=(FairGeoSet*)sets->At(i);
+      pSet=static_cast<FairGeoSet*>(sets->At(i));
       if (pSet) {
         cout<<"Read and create "<<pSet->GetName()<<endl;
         rc=readSet(pSet);
@@ -431,7 +431,7 @@ Bool_t FairGeoInterface::connectOutput (const char* name)
       fName=fName+buf+".geo";
       output->open(fName,"out");
       cout<<"Output file for "<<name<<":  "
-          <<((FairGeoAsciiIo*)output)->getFilename()<<endl;
+          <<(static_cast<FairGeoAsciiIo*>(output))->getFilename()<<endl;
     }
     if (output->isOpen()&&output->isWritable()) { return kTRUE; }
   } else { Error("connectOutput","No output open"); }
@@ -453,7 +453,7 @@ void FairGeoInterface::print()
   cout<<"List of detector parts:\n";
   FairGeoSet* pSet=0;
   for(Int_t i=0; i<nSets; i++) {
-    pSet=(FairGeoSet*)sets->At(i);
+    pSet=static_cast<FairGeoSet*>(sets->At(i));
     if (pSet) { cout<<"  "<<pSet->GetName()<<":\t"<<pSet->getGeomFile()<<'\n'; }
   }
   cout<<"********************************************************************\n";
@@ -476,7 +476,7 @@ Bool_t FairGeoInterface::readSetupFile()
   // Reads the detector setups, needed for create only subsets
   Bool_t rc=kTRUE;
   if (setupFile.Length()>0) {
-    FairGeoAsciiIo* input=(FairGeoAsciiIo*)(connectInput(setupFile));
+    FairGeoAsciiIo* input=static_cast<FairGeoAsciiIo*>(connectInput(setupFile));
     if (input) { rc=input->readDetectorSetup(this); }
   }
   return rc;

@@ -7,7 +7,7 @@
 
 // Default implementation of FairTestDetectorDigiLoader::Exec() with Boost transport data format
 
-void freeStringBuffer(void *data, void *hint)
+void freeStringBuffer(void* /*data*/, void* hint)
 {
     delete static_cast<std::string*>(hint);
 }
@@ -15,7 +15,7 @@ void freeStringBuffer(void *data, void *hint)
 // example TOut: FairTestDetectorDigi
 // example TPayloadOut: boost::archive::binary_oarchive, boost::archive::text_oarchive
 template <typename TOut, typename TPayloadOut>
-void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* opt)
+void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* /*opt*/)
 {
     // Write some data to check it on the receiver side
     // (*fBigBuffer)[7] = 'c';

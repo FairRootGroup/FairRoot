@@ -129,7 +129,7 @@ class FairParamList : public TObject
     Bool_t fillObject(const Text_t*,TObject*);
     void print();
     FairParamObj* find(const Text_t* name) {
-      return (FairParamObj*)paramList->FindObject(name);
+      return static_cast<FairParamObj*>(paramList->FindObject(name));
     }
     TList* getList() { return paramList; }
   private:

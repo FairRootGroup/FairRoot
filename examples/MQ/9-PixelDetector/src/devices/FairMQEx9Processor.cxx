@@ -8,20 +8,39 @@
 
 #include "FairMQEx9Processor.h"
 
+   TClonesArray* fOutput;
+    std::string fRootParFileName;
+    std::string fAsciiParFileName;
+    std::string fInputClassName;
+    std::string fParamName;
+    std::string fGeoParamName;
+    int fCurrentRunId;
+    PixelDigiPar* fDigiPar;
+    FairGeoParSet* fGeoPar;
 
-FairMQEx9Processor::FairMQEx9Processor() : 	fOutput(nullptr),
-										    fRootParFileName(),
-                                            fAsciiParFileName(),
-										    fInputClassName(),
-                                            fParamName("PixelDigiParameters"),
-                                            fGeoParamName("FairGeoParSet"),
-                                            fCurrentRunId(-1),
-										    fSerializer(),
-										    fDeSerializer(),
-                                            fDigiPar(nullptr),
-                                            fGeoPar(nullptr),
-                                            //fParamDeserializer(),
-                                            fHitFinder()
+
+    RootSerializer fSerializer;
+    RootDeSerializer fDeSerializer;
+
+    //base_RootDeSerializer<PixelDigiPar> fParamDeserializer;
+    PixelFindHitsTask fHitFinder;
+
+
+
+FairMQEx9Processor::FairMQEx9Processor() 
+ : fOutput(nullptr),
+   fRootParFileName(""),
+   fAsciiParFileName(""),
+   fInputClassName(""),
+   fParamName("PixelDigiParameters"),
+   fGeoParamName("FairGeoParSet"),
+   fCurrentRunId(-1),
+   fDigiPar(nullptr),
+   fGeoPar(nullptr),
+   fSerializer(),
+   fDeSerializer(),
+   //fParamDeserializer(),
+   fHitFinder()
 {
 
 }
@@ -105,9 +124,9 @@ void FairMQEx9Processor::Run()
 
 
 
-void FairMQEx9Processor::CustomCleanup(void *data, void *hint)
+void FairMQEx9Processor::CustomCleanup(void* /*data*/, void* hint)
 {
-    delete (std::string*)hint;
+    delete static_cast<std::string*>(hint);
 }
 
 

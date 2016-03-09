@@ -7,7 +7,7 @@
 
 // Implementation of FairTestDetectorDigiLoader::Exec() with pure binary transport data format
 template <>
-void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* opt)
+void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* /*opt*/)
 {
     // // Example of how to send multipart messages (uncomment the code lines to test).
     // // 1. create some data and put it into message (optionaly in one step with zero-copy):

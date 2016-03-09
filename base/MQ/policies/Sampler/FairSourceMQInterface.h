@@ -35,9 +35,9 @@ class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<Fair
         fData(nullptr),
         fIndex(0),
         fMaxIndex(-1),
-        fClassName(),
-        fSourceName(),
-        fBranchName(),
+        fClassName(""),
+        fBranchName(""),
+        fSourceName(""),
         fRunAna(nullptr)
     {
     }
@@ -87,7 +87,8 @@ class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<Fair
         fRunAna = new FairRunAna();
         fSource = new FairSourceType(fSourceName.c_str());
         fSource->Init();
-        fSource->ActivateObject((TObject**)&fData,fBranchName.c_str());
+        fSource->ActivateObject(reinterpret_cast<TObject**>(&fData),fBranchName.c_str());
+//        fSource->ActivateObject(dynamic_cast<TObject*>(fData),fBranchName.c_str());
         fMaxIndex = fSource->CheckMaxEventNo();
     }
 

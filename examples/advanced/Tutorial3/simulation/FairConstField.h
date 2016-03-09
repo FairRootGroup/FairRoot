@@ -114,7 +114,7 @@ class FairConstField : public FairField
     }
 
     /** Screen output **/
-    virtual void Print();
+    virtual void Print(Option_t*) const;
 
     ClassDef(FairConstField, 1);
 

@@ -31,9 +31,9 @@
 namespace hitproto
 {
     // helper function to clean up the object holding the data after it is transported.
-    void free_string(void *data, void *hint)
+    void free_string(void* /*data*/, void* hint)
     {
-        delete (std::string*)hint;
+        delete static_cast<std::string*>(hint);
     }
 }
 
@@ -65,7 +65,7 @@ class MyHitProtoSerializer : public BaseSerializationPolicy < MyHitProtoSerializ
         Tuto7PayloadProto::HitPayload hit_array;
         for (int i = 0; i < numEntries; ++i)
         {
-            MyHit* hit = (MyHit*)array->At(i);
+            MyHit* hit = static_cast<MyHit*>(array->At(i));
             if (!hit)
             {
                 continue;

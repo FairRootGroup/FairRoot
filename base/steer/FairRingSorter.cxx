@@ -17,7 +17,7 @@
 
 FairTimeStamp* FairRingSorter::CreateElement(FairTimeStamp* data)
 {
-	return (FairTimeStamp*)data->Clone();
+	return static_cast<FairTimeStamp*>(data->Clone());
 }
 
 void FairRingSorter::AddElement(FairTimeStamp* digi, double timestamp)
@@ -53,7 +53,7 @@ void FairRingSorter::SetLowerBound(double timestampOfHitToWrite)
 {
   int index = CalcIndex(timestampOfHitToWrite + fCellWidth);
 
-  int cellValue = (int)(timestampOfHitToWrite / fCellWidth);
+  int cellValue = static_cast<int>(timestampOfHitToWrite / fCellWidth);
 
   fLowerBoundPointer.second = ((cellValue + 1) * fCellWidth) - GetBufferSize();
   fLowerBoundPointer.first = index;
@@ -103,7 +103,7 @@ void FairRingSorter::WriteOutElement(int index)
 
 int FairRingSorter::CalcIndex(double val)
 {
-  int index = (int)(val / fCellWidth);
+  unsigned int index = static_cast<unsigned int>(val / fCellWidth);
   while (index >= fRingBuffer.size()) {
     index -= fRingBuffer.size();
   }

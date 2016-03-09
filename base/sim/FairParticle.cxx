@@ -41,10 +41,10 @@ FairParticle::FairParticle(Int_t id, TParticle* particle)
     fDecayTime(particle->GetPDG()->Lifetime()),
     fpType("Ion"),
     fwidth(particle->GetPDG()->Width()),
-    fiSpin((Int_t)particle->GetPDG()->Spin()),
+    fiSpin(static_cast<Int_t>(particle->GetPDG()->Spin())),
     fiParity(particle->GetPDG()->Parity()),
     fiConjugation(0),
-    fiIsospin((Int_t)particle->GetPDG()->Isospin()),
+    fiIsospin(static_cast<Int_t>(particle->GetPDG()->Isospin())),
     fiIsospinZ(0),
     fgParity(0),
     flepton(0),
@@ -97,10 +97,10 @@ FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Int_t s,Double_t 
   fcharge= fParticle->GetPDG()->Charge();
   fDecayTime=decaytime ;
   fwidth=   fParticle->GetPDG()->Width();
-  fiSpin=   (Int_t)fParticle->GetPDG()->Spin();
+  fiSpin=   static_cast<Int_t>(fParticle->GetPDG()->Spin());
   fiParity=  fParticle->GetPDG()->Parity();
   fiConjugation= 0;
-  fiIsospin= (Int_t) fParticle->GetPDG()->Isospin();
+  fiIsospin= static_cast<Int_t>(fParticle->GetPDG()->Isospin());
   fiIsospinZ= 0;
   fgParity= 0;
   flepton=  0;
@@ -157,10 +157,10 @@ FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Double_t mass ,In
   fcharge= fParticle->GetPDG()->Charge();
   fDecayTime=decaytime ;
   fwidth=   fParticle->GetPDG()->Width();
-  fiSpin=   (Int_t)fParticle->GetPDG()->Spin();
+  fiSpin=   static_cast<Int_t>(fParticle->GetPDG()->Spin());
   fiParity=  fParticle->GetPDG()->Parity();
   fiConjugation= 0;
-  fiIsospin= (Int_t) fParticle->GetPDG()->Isospin();
+  fiIsospin= static_cast<Int_t>(fParticle->GetPDG()->Isospin());
   fiIsospinZ= 0;
   fgParity= 0;
   flepton=  0;
@@ -364,7 +364,7 @@ FairParticle* FairParticle::GetMother() const
 // Returns particle definition (TParticle).
 // ---
 
-  return (FairParticle*) fMother.GetObject();
+  return static_cast<FairParticle*>(fMother.GetObject());
 }
 
 //_____________________________________________________________________________
@@ -386,6 +386,6 @@ FairParticle* FairParticle::GetDaughter(Int_t i) const
     Fatal("GetDaughter", "Index out of range");
   }
 
-  return (FairParticle*) fDaughters.At(i);
+  return static_cast<FairParticle*>(fDaughters.At(i));
 }
 

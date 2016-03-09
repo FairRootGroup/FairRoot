@@ -10,6 +10,8 @@
 
 #include "TNamed.h"                     // for TNamed
 
+#include "FairGeoNode.h"
+
 #include "Riosfwd.h"                    // for fstream
 #include "Rtypes.h"                     // for Int_t, Bool_t, etc
 #include "TList.h"                      // for TList
@@ -17,7 +19,7 @@
 
 #include <fstream>                      // for fstream
 
-class FairGeoNode;
+//class FairGeoNode;
 class FairGeoShapes;
 class FairGeoMedia;
 class FairGeoBuilder;
@@ -78,8 +80,8 @@ class  FairGeoSet : public TNamed
     void setModules(Int_t,Int_t*);
     Int_t* getModules(void);
     Int_t getModule(Int_t,Int_t);
-    FairGeoNode* getVolume(const char* name) {return (FairGeoNode*)volumes->FindObject(name);}
-    FairGeoNode* getMasterNode(const char* name) {return (FairGeoNode*)masterNodes->FindObject(name);}
+    FairGeoNode* getVolume(const char* name) {return dynamic_cast<FairGeoNode*>(volumes->FindObject(name));}
+    FairGeoNode* getMasterNode(const char* name) {return dynamic_cast<FairGeoNode*>(masterNodes->FindObject(name));}
     TList* getListOfVolumes() {return volumes;}
     FairGeoShapes* getShapes() {return pShapes;}
     void setAuthor(TString& s) {author=s;}

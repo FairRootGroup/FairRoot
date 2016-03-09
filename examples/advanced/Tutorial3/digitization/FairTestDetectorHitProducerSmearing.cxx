@@ -62,7 +62,7 @@ InitStatus FairTestDetectorHitProducerSmearing::Init()
     FairRootManager* ioman = FairRootManager::Instance();
 
     // Get a pointer to the previous already existing data level
-    fPointsArray = (TClonesArray*)ioman->GetObject("FairTestDetectorPoint");
+    fPointsArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorPoint"));
     if (!fPointsArray)
     {
       LOG(ERROR) << "No InputDataLevelName array!" << FairLogger::endl;
@@ -91,7 +91,7 @@ InitStatus FairTestDetectorHitProducerSmearing::ReInit()
 }
 
 // ---- Exec ----------------------------------------------------------
-void FairTestDetectorHitProducerSmearing::Exec(Option_t* option)
+void FairTestDetectorHitProducerSmearing::Exec(Option_t* /*option*/)
 {
   LOG(DEBUG) << "Exec of FairTestDetectorHitProducerSmearing"
 	     << FairLogger::endl;
@@ -103,7 +103,7 @@ void FairTestDetectorHitProducerSmearing::Exec(Option_t* option)
     FairTestDetectorHit* hit = NULL;
     for (int iPoint = 0; iPoint < fPointsArray->GetEntriesFast(); iPoint++)
     {
-        point = (FairTestDetectorPoint*)fPointsArray->At(iPoint);
+        point = static_cast<FairTestDetectorPoint*>(fPointsArray->At(iPoint));
         if (!point)
         {
             continue;

@@ -86,7 +86,7 @@ void FairRunIdGenerator::get_random_bytes(void* buf, int nbytes)
 {
   int i, fd = get_random_fd();
   int lose_counter = 0;
-  char* cp = (char*) buf;
+  char* cp = static_cast<char*>(buf);
 
   if (fd >= 0) {
     while (nbytes > 0) {
@@ -116,7 +116,7 @@ void FairRunIdGenerator::get_random_bytes(void* buf, int nbytes)
 /*
  * Get the ethernet hardware address, if we can find it...
  */
-int FairRunIdGenerator::get_node_id(unsigned char* node_id)
+int FairRunIdGenerator::get_node_id(unsigned char* /*node_id*/)
 {
 #ifdef HAVE_NET_IF_H
   int sd;
@@ -229,8 +229,8 @@ try_again:
   }
 
   clock_reg = tv.tv_usec * 10 + adjustment;
-  clock_reg += ((unsigned long long) tv.tv_sec) * 10000000;
-  clock_reg += (((unsigned long long) 0x01B21DD2) << 32) + 0x13814000;
+  clock_reg += (static_cast<unsigned long long>(tv.tv_sec)) * 10000000;
+  clock_reg += ((static_cast<unsigned long long>(0x01B21DD2)) << 32) + 0x13814000;
 
   *clock_high = clock_reg >> 32;
   *clock_low = clock_reg;
@@ -264,7 +264,7 @@ void FairRunIdGenerator::uuid_generate_time(uuid_t out)
   }
   get_clock(&clock_mid, &uu.time_low, &uu.clock_seq);
   uu.clock_seq |= 0x8000;
-  uu.time_mid = (uint16_t) clock_mid;
+  uu.time_mid = static_cast<uint16_t>(clock_mid);
   uu.time_hi_and_version = (clock_mid >> 16) | 0x1000;
   memcpy(uu.node, node_id, 6);
   uuid_pack(&uu, out);
@@ -319,28 +319,28 @@ void FairRunIdGenerator::uuid_pack(const struct uuid* uu, uuid_t ptr)
   unsigned char* out = ptr;
 
   tmp = uu->time_low;
-  out[3] = (unsigned char) tmp;
+  out[3] = static_cast<unsigned char>(tmp);
   tmp >>= 8;
-  out[2] = (unsigned char) tmp;
+  out[2] = static_cast<unsigned char>(tmp);
   tmp >>= 8;
-  out[1] = (unsigned char) tmp;
+  out[1] = static_cast<unsigned char>(tmp);
   tmp >>= 8;
-  out[0] = (unsigned char) tmp;
+  out[0] = static_cast<unsigned char>(tmp);
 
   tmp = uu->time_mid;
-  out[5] = (unsigned char) tmp;
+  out[5] = static_cast<unsigned char>(tmp);
   tmp >>= 8;
-  out[4] = (unsigned char) tmp;
+  out[4] = static_cast<unsigned char>(tmp);
 
   tmp = uu->time_hi_and_version;
-  out[7] = (unsigned char) tmp;
+  out[7] = static_cast<unsigned char>(tmp);
   tmp >>= 8;
-  out[6] = (unsigned char) tmp;
+  out[6] = static_cast<unsigned char>(tmp);
 
   tmp = uu->clock_seq;
-  out[9] = (unsigned char) tmp;
+  out[9] = static_cast<unsigned char>(tmp);
   tmp >>= 8;
-  out[8] = (unsigned char) tmp;
+  out[8] = static_cast<unsigned char>(tmp);
 
   memcpy(out + 10, uu->node, 6);
 }

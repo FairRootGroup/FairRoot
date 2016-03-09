@@ -11,13 +11,13 @@
 #include "FairTestDetectorPayload.pb.h"
 
 // helper function to clean up the object holding the data after it is transported.
-void free_string(void *data, void *hint)
+void free_string(void* /*data*/, void* hint)
 {
     delete static_cast<std::string*>(hint);
 }
 
 template <>
-void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* opt)
+void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* /*opt*/)
 {
     int nDigis = fInput->GetEntriesFast();
 

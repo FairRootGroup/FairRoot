@@ -34,7 +34,7 @@ inline Int_t PixelGeo::getModNumInMod(const TString& name)
    .geo file. For example if all nodes in this file starts with
    newdetector ?? has to be 11.
   */
-  return (Int_t)(name[11]-'0')-1; //
+  return static_cast<Int_t>((name[11]-'0')-1); //
 }
 
 #endif

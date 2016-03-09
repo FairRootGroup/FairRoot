@@ -176,7 +176,7 @@ void FairModule::ConstructASCIIGeometry(T dataType1, TString containerName, U)
               << " to container " << containerName << FairLogger::endl;
 
     //    U par=(U)(rtdb->getContainer(containerName));
-    U*      par=(U*)(rtdb->getContainer(containerName));
+    U*      par=static_cast<U*>(rtdb->getContainer(containerName));
     TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
     TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -184,7 +184,7 @@ void FairModule::ConstructASCIIGeometry(T dataType1, TString containerName, U)
     FairGeoNode* node   = NULL;
     FairGeoVolume* aVol=NULL;
 
-    while( (node = (FairGeoNode*)iter.Next()) ) {
+    while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
       aVol = dynamic_cast<FairGeoVolume*> ( node );
       if ( node->isSensitive()  ) {
         fSensNodes->AddLast( aVol );

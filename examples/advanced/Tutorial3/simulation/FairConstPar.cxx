@@ -107,7 +107,7 @@ Bool_t FairConstPar::getParams(FairParamList* list)
 }
 void FairConstPar::SetParameters(FairField* field)
 {
-    FairConstField* fieldConst = (FairConstField*)field;
+    FairConstField* fieldConst = static_cast<FairConstField*>(field);
     fBx = fieldConst->GetBx();
     fBy = fieldConst->GetBy();
     fBz = fieldConst->GetBz();

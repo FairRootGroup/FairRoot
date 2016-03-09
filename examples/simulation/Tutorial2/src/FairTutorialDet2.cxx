@@ -61,9 +61,11 @@ FairTutorialDet2::~FairTutorialDet2()
 
 void FairTutorialDet2::Initialize()
 {
+/*
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairTutorialDet2GeoPar* par=(FairTutorialDet2GeoPar*)(rtdb->getContainer("FairTutorialDet2GeoPar"));
+*/
 }
 
 Bool_t  FairTutorialDet2::ProcessHits(FairVolume* vol)
@@ -94,7 +96,7 @@ Bool_t  FairTutorialDet2::ProcessHits(FairVolume* vol)
            fELoss);
 
     // Increment number of tutorial det points in TParticle
-    FairStack* stack = (FairStack*) gMC->GetStack();
+    FairStack* stack = static_cast<FairStack*>(gMC->GetStack());
     stack->AddPoint(kTutDet);
   }
 
@@ -155,7 +157,7 @@ void FairTutorialDet2::ConstructGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet2GeoPar* par=(FairTutorialDet2GeoPar*)(rtdb->getContainer("FairTutorialDet2GeoPar"));
+  FairTutorialDet2GeoPar* par=static_cast<FairTutorialDet2GeoPar*>(rtdb->getContainer("FairTutorialDet2GeoPar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -163,7 +165,7 @@ void FairTutorialDet2::ConstructGeometry()
   FairGeoNode* node   = NULL;
   FairGeoVolume* aVol=NULL;
 
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
       fSensNodes->AddLast( aVol );

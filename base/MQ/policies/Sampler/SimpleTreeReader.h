@@ -35,17 +35,17 @@ class base_SimpleTreeReader
 
   public:
     base_SimpleTreeReader()
-        : fDataBranch(nullptr)
-        , fFileName()
-        , fTreeName()
-        , fBranchName()
+        : SendHeader()
+        , GetSocketNumber()
+        , GetCurrentIndex()
+        , fDataBranch(nullptr)
+        , fFileName("")
+        , fTreeName("")
+        , fBranchName("")
         , fInputFile(nullptr)
         , fTree(nullptr)
         , fIndex(0)
         , fIndexMax(0)
-        , SendHeader()
-        , GetSocketNumber()
-        , GetCurrentIndex()
     {}
 
     base_SimpleTreeReader(const base_SimpleTreeReader&) = delete;
@@ -73,7 +73,7 @@ class base_SimpleTreeReader
         fInputFile = TFile::Open(fFileName.c_str(), "READ");
         if (fInputFile)
         {
-            fTree = (TTree*)fInputFile->Get(fTreeName.c_str());
+            fTree = static_cast<TTree*>(fInputFile->Get(fTreeName.c_str()));
             if (fTree)
             {
                 fTree->SetBranchAddress(fBranchName.c_str(), &fDataBranch);

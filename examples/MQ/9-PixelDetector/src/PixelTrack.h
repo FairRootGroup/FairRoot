@@ -61,7 +61,7 @@ class PixelTrack : public FairTimeStamp
     virtual ~PixelTrack();
 
     template <class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar& boost::serialization::base_object<FairTimeStamp>(*this);
     }

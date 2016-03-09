@@ -39,15 +39,15 @@ FairTimeStampPointDraw::~FairTimeStampPointDraw()
 
 TVector3 FairTimeStampPointDraw::GetVector(TObject* obj)
 {
-  FairMCPoint* hit =(FairMCPoint*)obj;
+  FairMCPoint* hit =static_cast<FairMCPoint*>(obj);
   return TVector3(hit->GetX(), hit->GetY(), hit->GetZ());
 }
 
-Int_t FairTimeStampPointDraw::GetValue(TObject* obj,Int_t i)
+Int_t FairTimeStampPointDraw::GetValue(TObject* obj,Int_t /*i*/)
 {
-  FairTimeStamp* tsdata = (FairTimeStamp*)obj;
+  FairTimeStamp* tsdata = static_cast<FairTimeStamp*>(obj);
   if (tsdata > 0) {
-    return (Int_t)tsdata->GetTimeStamp();
+    return static_cast<Int_t>(tsdata->GetTimeStamp());
   } else {
     return 0;
   }

@@ -80,7 +80,7 @@ FairVolume* FairVolumeList::findObject(TString name)
 void FairVolumeList::addVolume(FairVolume* elem)
 {
 
-  FairVolume* v= (FairVolume*)findObject(elem->GetName());
+  FairVolume* v= static_cast<FairVolume*>(findObject(elem->GetName()));
 
   if (v) {
     LOG(ERROR) << "FairVolumeList element: " << elem->GetName() 

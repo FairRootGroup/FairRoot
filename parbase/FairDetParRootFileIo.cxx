@@ -50,7 +50,7 @@ FairDetParRootFileIo::FairDetParRootFileIo(FairParRootFile *f)
 
 Bool_t FairDetParRootFileIo::read(FairParSet *pPar) {
   // generic read function for parameter containers
-  Text_t *name = (char *)pPar->GetName();
+  Text_t *name = const_cast<char*>(pPar->GetName());
   Int_t version = findInputVersion(name);
 
   // cout << "-I- FairDetParRootFileIo#  " << name << " : " << version <<  endl;
@@ -85,7 +85,7 @@ Int_t FairDetParRootFileIo::write(FairParSet *pPar) {
   if (pFile) {
     pFile->cd();
     if (pFile->IsWritable()) {
-      Text_t *name = (char *)pPar->GetName();
+      Text_t *name = const_cast<char*>(pPar->GetName());
       pPar->Write(name);
       pPar->setChanged(kFALSE);
       FairRuntimeDb::instance()->setVersionsChanged(kTRUE);

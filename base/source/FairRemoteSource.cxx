@@ -34,7 +34,7 @@ FairRemoteSource::FairRemoteSource(char* node)
 
 FairRemoteSource::FairRemoteSource(const FairRemoteSource& source)
   : FairMbsSource(source),
-    fNode((char*)source.GetNode()),
+    fNode(const_cast<char*>(source.GetNode())),
     fSocket(NULL),
     fBuffer(new MRevBuffer(1)),
     fREvent(NULL)

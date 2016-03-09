@@ -32,7 +32,7 @@ class PixelDigiPar : public FairParGenericSet
   void putParams(FairParamList* list);
   Bool_t getParams(FairParamList* list);
   
-  void Print();
+  void Print(Option_t*) const;
   
     Double_t GetXPitch()        const {return fDimX;}
     Double_t GetYPitch()        const {return fDimY;}

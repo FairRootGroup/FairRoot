@@ -74,7 +74,7 @@ InitStatus NewTask::ReInit()
 }
 
 // ---- Exec ----------------------------------------------------------
-void NewTask::Exec(Option_t* option)
+void NewTask::Exec(Option_t* /*option*/)
 {
   fLogger->Debug(MESSAGE_ORIGIN,"Exec of NewTask");
 }

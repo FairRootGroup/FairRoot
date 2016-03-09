@@ -73,7 +73,7 @@ PixelDigiWriteToFile::~PixelDigiWriteToFile() {
 // -------------------------------------------------------------------------
 
 // -----   Public method Exec   --------------------------------------------
-void PixelDigiWriteToFile::Exec(Option_t* opt) {
+void PixelDigiWriteToFile::Exec(Option_t* /*opt*/) {
 
   Reset();
 
@@ -82,7 +82,7 @@ void PixelDigiWriteToFile::Exec(Option_t* opt) {
   fOutputFile << "EVENT BEGIN" << std::endl;
 
   for ( Int_t iDigi = 0 ; iDigi < nofDigis ; iDigi++ ) {
-    PixelDigi* currentDigi = (PixelDigi*)fDigis->At(iDigi);
+    PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
 
     Int_t detId     = currentDigi->GetDetectorID();    
     Int_t feId      = currentDigi->GetFeID();
@@ -110,7 +110,7 @@ InitStatus PixelDigiWriteToFile::Init() {
   FairRootManager* ioman = FairRootManager::Instance();
 
   if ( ! ioman ) Fatal("Init", "No FairRootManager");
-  fDigis = (TClonesArray*) ioman->GetObject("PixelDigis");
+  fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
   if ( !fDigis ) 
     LOG(WARNING) << "PixelDigiWriteToFile::Init() No input PixelDigis array!" << FairLogger::endl;

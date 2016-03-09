@@ -32,7 +32,7 @@ class FairEventHeader;
 class PixelDigiSource : public FairSource
 {
 public:
-  PixelDigiSource(TString inputFileName);
+  PixelDigiSource(TString inputFileName="test.dat");
   virtual ~PixelDigiSource();
   
   Bool_t              Init();

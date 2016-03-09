@@ -92,7 +92,7 @@ FairGeoBasicShape* FairGeoShapes::selectShape(const TString& name)
                          };
   TString sName(name);
   if (sName.Length()==3) { sName+=" "; }
-  FairGeoBasicShape* s=(FairGeoBasicShape*)shapes->FindObject(sName);
+  FairGeoBasicShape* s=static_cast<FairGeoBasicShape*>(shapes->FindObject(sName));
   if (s) { return s; }
   Int_t no=-1;
   for(Int_t i=0; i<13; i++) {if (sName.CompareTo(allShapes[i])==0) { no=i; }}

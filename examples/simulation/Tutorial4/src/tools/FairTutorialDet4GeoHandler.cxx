@@ -194,7 +194,7 @@ void FairTutorialDet4GeoHandler::NavigateTo(TString volName)
     gGeoManager->cd(volName.Data());
     fGeoPathHash = volName.Hash();
     fCurrentVolume = gGeoManager->GetCurrentVolume();
-    fVolumeShape = (TGeoBBox*)fCurrentVolume->GetShape();
+    fVolumeShape = static_cast<TGeoBBox*>(fCurrentVolume->GetShape());
     Double_t local[3] = {0., 0., 0.};  // Local centre of volume
     gGeoManager->LocalToMaster(local, fGlobal);
     LOG(DEBUG2)<<"Pos: "<<fGlobal[0]<<" , "<<fGlobal[1]<<" , "<<fGlobal[2]<<FairLogger::endl;

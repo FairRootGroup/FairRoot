@@ -228,7 +228,7 @@ Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface)
         if (set&&mod) {
           char* ss=strtok(buf,d);
           if (ss&&strlen(ss)>3) {
-            secNo=(Int_t)(ss[3]-'0')-1;
+            secNo=static_cast<Int_t>(ss[3]-'0')-1;
             for(Int_t i=0; i<maxModules&&mod; i++) {
               ss=strtok(NULL,d);
               if (ss) { sscanf(ss,"%i",&mod[i]); }

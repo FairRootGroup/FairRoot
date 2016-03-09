@@ -100,7 +100,7 @@ PixelFindHits::~PixelFindHits() {
 // -------------------------------------------------------------------------
 
 // -----   Public method Exec   --------------------------------------------
-void PixelFindHits::Exec(Option_t* opt) {
+void PixelFindHits::Exec(Option_t* /*opt*/) {
   Reset();
 
   LOG(INFO) << "PixelFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
@@ -111,7 +111,7 @@ void PixelFindHits::Exec(Option_t* opt) {
   fTNofDigis+= fNDigis;
 
   for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) {
-    PixelDigi* currentDigi = (PixelDigi*)fDigis->At(iDigi);
+    PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
 
     Int_t detId = currentDigi->GetDetectorID();    
     TString nodeName = Form("/cave/Pixel%d_%d",detId/256,detId%256);
@@ -119,10 +119,10 @@ void PixelFindHits::Exec(Option_t* opt) {
     gGeoManager->cd(nodeName.Data());
     TGeoNode* curNode = gGeoManager->GetCurrentNode();
 
-    TGeoMatrix* matrix = curNode->GetMatrix();
+//    TGeoMatrix* matrix = curNode->GetMatrix();
 
     TGeoVolume* actVolume = gGeoManager->GetCurrentVolume();
-    TGeoBBox* actBox = (TGeoBBox*)(actVolume->GetShape());
+    TGeoBBox* actBox = static_cast<TGeoBBox*>(actVolume->GetShape());
 
     Int_t feId = currentDigi->GetFeID();
     Int_t col  = currentDigi->GetCol();
@@ -156,7 +156,7 @@ void PixelFindHits::Exec(Option_t* opt) {
 // -------------------------------------------------------------------------
 
 // -----   Public method Exec   --------------------------------------------
-void PixelFindHits::ExecMQ(Option_t* opt) {
+void PixelFindHits::ExecMQ(Option_t* /*opt*/) {
 
   Reset();
 
@@ -198,11 +198,11 @@ void PixelFindHits::ExecMQ(Option_t* opt) {
   fMaxFEperCol = 64;
   fPitchX = 0.01;
   fPitchY = 0.01;
-  Double_t sensorSize[3][2] = {1.,1.5,2.25,2.75,4.5,5.5};
+  Double_t sensorSize[3][2] = {{1.,1.5},{2.25,2.75},{4.5,5.5}};
   Double_t zerr = 0.0075;
 
   for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) {
-    PixelDigi* currentDigi = (PixelDigi*)fDigis->At(iDigi);
+    PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
 
     Int_t detId = currentDigi->GetDetectorID();    
     Int_t istat = detId/256-1;
@@ -251,7 +251,7 @@ void PixelFindHits::SetParContainers() {
   if ( ! db ) Fatal("SetParContainers", "No runtime database");
 
   // Get GEM digitisation parameter container
-  fDigiPar = (PixelDigiPar*)(db->getContainer("PixelDigiParameters"));
+  fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
 
 }
 // -------------------------------------------------------------------------
@@ -263,7 +263,7 @@ InitStatus PixelFindHits::Init() {
   FairRootManager* ioman = FairRootManager::Instance();
 
   if ( ! ioman ) Fatal("Init", "No FairRootManager");
-  fDigis = (TClonesArray*) ioman->GetObject("PixelDigis");
+  fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
   if ( !fDigis ) 
     LOG(WARNING) << "PixelFindHits::Init() No input PixelDigis array!" << FairLogger::endl;
@@ -313,8 +313,8 @@ void PixelFindHits::Finish() {
 
   LOG(INFO) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
   LOG(INFO) << " Events:        " << fTNofEvents << FairLogger::endl;
-  LOG(INFO) << " Digis:         " << fTNofDigis  << "    ( " << (Double_t)fTNofDigis /((Double_t)fTNofEvents) << " per event )" << FairLogger::endl;
-  LOG(INFO) << " Hits:          " << fTNofHits   << "    ( " << (Double_t)fTNofHits  /((Double_t)fTNofEvents) << " per event )" << FairLogger::endl;
+  LOG(INFO) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis) /(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
+  LOG(INFO) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits  )/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
   LOG(INFO) << "---------------------------------------------------------------------" << FairLogger::endl; 
 }
 // -------------------------------------------------------------------------
@@ -353,8 +353,8 @@ void PixelFindHits::InitMQ(const std::string& root_file, const std::string& asci
   //  fRtdb->print();
 
   //PixelDigiPar* fDigiPar = (PixelDigiPar*)(fRtdb->getContainer("PixelDigiParameters"));
-  fGeoParSet = (FairGeoParSet*)(fRtdb->getContainer("FairGeoParSet"));
-  fDigiPar = (PixelDigiPar*)(fRtdb->getContainer("PixelDigiParameters"));
+  fGeoParSet = static_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+  fDigiPar = static_cast<PixelDigiPar*>(fRtdb->getContainer("PixelDigiParameters"));
   
   Int_t runId = 1456147577;
   std::cout << "trying to initContainers with runId = " << runId << std::endl;
@@ -396,7 +396,7 @@ TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis)
 //*
   for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) 
   {
-    PixelDigi* currentDigi = (PixelDigi*)fDigis->At(iDigi);
+    PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
 
     Int_t detId = currentDigi->GetDetectorID();    
     TString nodeName = Form("/cave/Pixel%d_%d",detId/256,detId%256);
@@ -405,10 +405,10 @@ TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis)
 
     TGeoNode* curNode = fGeoParSet->GetGeometry()->GetCurrentNode();
 
-    TGeoMatrix* matrix = curNode->GetMatrix();
+//    TGeoMatrix* matrix = curNode->GetMatrix();
 
     TGeoVolume* actVolume = fGeoParSet->GetGeometry()->GetCurrentVolume();
-    TGeoBBox* actBox = (TGeoBBox*)(actVolume->GetShape());
+    TGeoBBox* actBox = static_cast<TGeoBBox*>(actVolume->GetShape());
 
     Int_t feId = currentDigi->GetFeID();
     Int_t col  = currentDigi->GetCol();

@@ -155,7 +155,7 @@ void FairRadMapManager::AddPoint(Int_t&)
     //    TGeoVolume* actVolume = gGeoManager->GetCurrentVolume();
     TGeoVolume* actVolume = gGeoManager->GetVolume(fVolumeID);
 
-    TVectorD* ActMass = (TVectorD*)fMassMap->GetValue(actVolume);
+    TVectorD* ActMass = static_cast<TVectorD*>(fMassMap->GetValue(actVolume));
 
     fActMass = ActMass->Min(); // read from TVectorD
 

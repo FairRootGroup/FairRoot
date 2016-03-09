@@ -38,7 +38,7 @@ FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* source
     std::cout << "-E- FairTSBufferFunctional::FairTSBufferFunctional Branch " << branchName << " does not exist!" << std::endl;
   }
   FairRootManager* ioman = FairRootManager::Instance();
-  fInputArray = (TClonesArray*)ioman->GetObject(branchName.Data());
+  fInputArray = static_cast<TClonesArray*>(ioman->GetObject(branchName.Data()));
   fBufferArray = new TClonesArray(fInputArray->GetClass()->GetName());
   fOutputArray = new TClonesArray(fInputArray->GetClass()->GetName());
 
@@ -52,7 +52,7 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
 
   if (fStopFunction == 0) {                 //no function is given ==> read in data in traditional way event by event
     ReadInNextEntry();
-    fOutputArray->AbsorbObjects((TClonesArray*)fInputArray, 0, fInputArray->GetEntriesFast() - 1);
+    fOutputArray->AbsorbObjects(static_cast<TClonesArray*>(fInputArray), 0, fInputArray->GetEntriesFast() - 1);
     return fOutputArray;
   }
   if (fVerbose > 1) {
@@ -72,7 +72,7 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
   if (fVerbose > 1) {
     std::cout << "-I- FairTSBufferFunctional::GetData fBufferArray->GetEntriesFast(): " << fBufferArray->GetEntriesFast() << std::endl;
   }
-  FairTimeStamp* dataPoint = (FairTimeStamp*)fBufferArray->Last();
+  FairTimeStamp* dataPoint = static_cast<FairTimeStamp*>(fBufferArray->Last());
   if (dataPoint == 0) {
     if (fVerbose > 0) {
       std::cout << "-I- FairTSBufferFunctional::GetData dataPoint is empty ==> All Data read in" << std::endl;
@@ -80,7 +80,7 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
     return fOutputArray;
   }
 
-  dataPoint = (FairTimeStamp*)fBufferArray->First();
+  dataPoint = static_cast<FairTimeStamp*>(fBufferArray->First());
 
   while (!(*fStopFunction)(dataPoint, stopParameter)) {     //check if you have reached end of requested data
     posBuffer++;
@@ -93,7 +93,7 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
     if (posBuffer == fBufferArray->GetEntriesFast()) {
       break;
     }
-    dataPoint = (FairTimeStamp*)fBufferArray->At(posBuffer);
+    dataPoint = static_cast<FairTimeStamp*>(fBufferArray->At(posBuffer));
     if (fVerbose > 1) {
       std::cout << posBuffer << " TimeStampData: " << dataPoint->GetTimeStamp() << std::endl;
     }
@@ -169,13 +169,13 @@ Int_t FairTSBufferFunctional::FindStartIndex(Double_t startParameter)
   fBranchIndex = tempIndex;
   //Now we have data or FindStartIndex already returned -1
 
-  dataPoint = (FairTimeStamp*)fInputArray->Last();
+  dataPoint = static_cast<FairTimeStamp*>(fInputArray->Last());
   //std::cout << "DataPoint: " << *dataPoint << std::endl;
   while(!(*fStartFunction)(dataPoint, startParameter)) {
     //std::cout << "DataPoint Search Entry: " << fBranchIndex << ": " << *dataPoint << std::endl;
     ReadInNextFilledEntry();
     if (fInputArray->GetEntries() != 0) {
-      dataPoint = (FairTimeStamp*)fInputArray->Last();
+      dataPoint = static_cast<FairTimeStamp*>(fInputArray->Last());
     } else {
       return -1;
     }
@@ -198,7 +198,7 @@ Int_t FairTSBufferFunctional::FindStartIndex(Double_t startParameter)
         return -1;
       }
     }
-    dataPoint = (FairTimeStamp*)fInputArray->At(startPos);
+    dataPoint = static_cast<FairTimeStamp*>(fInputArray->At(startPos));
   }
   fBranchIndex = previousBranchIndex;
   return previousIndex;
@@ -254,7 +254,7 @@ void FairTSBufferFunctional::ReadInEntry(Int_t number)
   if (number < fBranch->GetEntries()) {
     fBranch->GetEntry(number);
     for (int i = 0; i < fInputArray->GetEntriesFast(); i++) {
-      ((FairTimeStamp*) fInputArray->At(i))->SetEntryNr(FairLink(0, number, FairRootManager::Instance()->GetBranchId(fBranch->GetName()), i, 1));
+      (static_cast<FairTimeStamp*>( fInputArray->At(i)))->SetEntryNr(FairLink(0, number, FairRootManager::Instance()->GetBranchId(fBranch->GetName()), i, 1));
     }
     if (fVerbose > 1)
       std::cout

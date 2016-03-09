@@ -51,7 +51,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     virtual void SetEntryNr(FairLink entry) {fEntryNr = entry;}
     virtual Int_t Compare(const TObject* obj) const {
       if (this == obj) { return 0; }
-      FairTimeStamp* tsobj = (FairTimeStamp*)obj;
+      FairTimeStamp* tsobj = static_cast<FairTimeStamp*>(const_cast<TObject*>(obj));
       Double_t ts = tsobj->GetTimeStamp();
       Double_t tserror = tsobj->GetTimeStampError();
       if (fTimeStamp < ts) { return -1; }

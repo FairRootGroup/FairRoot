@@ -37,7 +37,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::Run()
 
             TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
 
-            fOutput = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
+            fOutput = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
 
             if (fOutput->IsEmpty())
             {

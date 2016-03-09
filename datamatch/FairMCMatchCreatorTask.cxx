@@ -82,7 +82,7 @@ InitStatus FairMCMatchCreatorTask::InitBranches()
 
   int NStages = fMCMatch->GetNMCStages();
   for (int i = NStages-1; i > -1; i--) {
-    TClonesArray* myBranch = (TClonesArray*)ioman->GetObject(fMCMatch->GetMCStage(i)->GetBranchName().c_str());
+    TClonesArray* myBranch = static_cast<TClonesArray*>(ioman->GetObject(fMCMatch->GetMCStage(i)->GetBranchName().c_str()));
     if (!myBranch)  {
       //std::cout << "NMCStages: " << fMCMatch->GetNMCStages() << std::endl;
       std::cout << "-W- FairMCMatchCreatorTask::Init: "<< "No "<<fMCMatch->GetMCStage(i)->GetBranchName() << " array!" << std::endl;
@@ -101,7 +101,7 @@ void FairMCMatchCreatorTask::SetParContainers()
 }
 
 // -----   Public method Exec   --------------------------------------------
-void FairMCMatchCreatorTask::Exec(Option_t* opt)
+void FairMCMatchCreatorTask::Exec(Option_t* /*opt*/)
 {
   if (!fMCLink) { Fatal("Exec", "No fMCLinkDet"); }
   fMCLink->Delete();
@@ -113,7 +113,7 @@ void FairMCMatchCreatorTask::Exec(Option_t* opt)
     if (fMCMatch->GetMCStage(i)->GetFill() == kTRUE && fMCMatch->GetMCStage(i)->GetLoaded() == kFALSE) {
       TClonesArray* clArray = fBranches[fMCMatch->GetMCStage(i)->GetBranchName()];
       for (int j = 0; j < clArray->GetEntries(); j++) {
-        FairMultiLinkedData* myData = (FairMultiLinkedData*)clArray->At(j);
+        FairMultiLinkedData* myData = static_cast<FairMultiLinkedData*>(clArray->At(j));
         fMCMatch->SetElements(fMCMatch->GetMCStage(i)->GetStageId(), j, myData);
       }
       if (fMCMatch->GetMCStage(i)->GetNEntries() > 0) {

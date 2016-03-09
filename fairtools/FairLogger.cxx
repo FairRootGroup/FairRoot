@@ -188,10 +188,10 @@ void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
     // glibc and current Windows return -1 for failure, i.e., not
     // telling us how much was needed.
 
-    if (fBufferSizeNeeded <= (int)fBufferSize && fBufferSizeNeeded >= 0) {
+    if (fBufferSizeNeeded <= static_cast<int>(fBufferSize) && fBufferSizeNeeded >= 0) {
       // It fit fine so we're done.
       GetOutputStream(level, file, line, func) <<
-          std::string(fBufferPointer, (size_t) fBufferSizeNeeded)<<
+          std::string(fBufferPointer, static_cast<size_t>(fBufferSizeNeeded))<<
           " " << FairLogger::endl;
 
       break;

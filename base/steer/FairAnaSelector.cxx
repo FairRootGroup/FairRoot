@@ -69,12 +69,12 @@ void FairAnaSelector::Init(TTree* tree)
 
     TString vmcPath = gSystem->Getenv("VMCWORKDIR");
 
-    TNamed* contStat    = (TNamed*) fInput->FindObject("FAIRRUNANA_fContainerStatic");
-    TNamed* outStat     = (TNamed*) fInput->FindObject("FAIRRUNANA_fProofOutputStatus");
-    TNamed* outFile     = (TNamed*) fInput->FindObject("FAIRRUNANA_fOutputFileName");
-    TNamed* outDir      = (TNamed*) fInput->FindObject("FAIRRUNANA_fOutputDirectory");
-    TNamed* par1Name    = (TNamed*) fInput->FindObject("FAIRRUNANA_fParInput1FName");
-    TNamed* par2Name    = (TNamed*) fInput->FindObject("FAIRRUNANA_fParInput2FName");
+    TNamed* contStat    = static_cast<TNamed*>( fInput->FindObject("FAIRRUNANA_fContainerStatic") );
+    TNamed* outStat     = static_cast<TNamed*>( fInput->FindObject("FAIRRUNANA_fProofOutputStatus") );
+    TNamed* outFile     = static_cast<TNamed*>( fInput->FindObject("FAIRRUNANA_fOutputFileName") );
+    TNamed* outDir      = static_cast<TNamed*>( fInput->FindObject("FAIRRUNANA_fOutputDirectory") );
+    TNamed* par1Name    = static_cast<TNamed*>( fInput->FindObject("FAIRRUNANA_fParInput1FName") );
+    TNamed* par2Name    = static_cast<TNamed*>( fInput->FindObject("FAIRRUNANA_fParInput2FName") );
     TString containerS  = contStat->GetTitle();
     TString outputStat  = outStat->GetTitle();
     TString par1Str     = par1Name->GetTitle();
@@ -191,8 +191,8 @@ void FairAnaSelector::Begin(TTree* /*tree*/)
   LOG(INFO) << "FairAnaSelector::Begin()" << FairLogger::endl;
 
   fCurrentDirectory = gSystem->pwd();
-  TNamed* outFile     = (TNamed*) fInput->FindObject("FAIRRUNANA_fOutputFileName");
-  TNamed* outDir      = (TNamed*) fInput->FindObject("FAIRRUNANA_fOutputDirectory");
+  TNamed* outFile     = static_cast<TNamed*>( fInput->FindObject("FAIRRUNANA_fOutputFileName") );
+  TNamed* outDir      = static_cast<TNamed*>( fInput->FindObject("FAIRRUNANA_fOutputDirectory") );
 
   TString outputFileName = outFile->GetTitle();
   if ( outputFileName[0] != '/' ) {

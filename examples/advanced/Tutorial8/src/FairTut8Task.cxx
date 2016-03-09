@@ -34,7 +34,7 @@ InitStatus FairTut8Task::Init()
         return kFATAL;
     }
 
-    fRawData = (TClonesArray*)mgr->GetObject("Tut8RawItem");
+    fRawData = static_cast<TClonesArray*>(mgr->GetObject("Tut8RawItem"));
     if (NULL == fRawData)
     {
         return kERROR;
@@ -64,7 +64,7 @@ void FairTut8Task::Exec(Option_t*)
     FairTut8RawItem* item;
     for (Int_t i = 0; i < nItems; i++)
     {
-        item = (FairTut8RawItem*)fRawData->At(i);
+        item = static_cast<FairTut8RawItem*>(fRawData->At(i));
         if (NULL == item)
         {
             continue;

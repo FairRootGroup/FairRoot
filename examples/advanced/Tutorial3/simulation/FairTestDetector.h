@@ -64,10 +64,12 @@ class FairTestDetector : public FairDetector
      *  any optional action in your detector during the transport.
     */
 
+/*
     virtual void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
     {
         ;
     }
+*/
     virtual void SetSpecialPhysicsCuts()
     {
         ;

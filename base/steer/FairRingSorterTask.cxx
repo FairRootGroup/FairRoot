@@ -67,7 +67,7 @@ void FairRingSorterTask::Exec(Option_t*)
     std::cout << "-I- FairRingSorterTask: Size PixelArray: " << fInputArray->GetEntriesFast() << std::endl;
   }
   for (int i = 0; i < fInputArray->GetEntriesFast(); i++) {
-    FairTimeStamp* myData = (FairTimeStamp*)fInputArray->At(i);
+    FairTimeStamp* myData = static_cast<FairTimeStamp*>(fInputArray->At(i));
     myData->SetEntryNr(FairLink(0, fEntryNr, fInputBranch, i));
     if (fVerbose > 1) {
       std::cout << "Sorter filled with: ";
@@ -109,8 +109,8 @@ void FairRingSorterTask::FinishTask()
   fInputArray = FairRootManager::Instance()->GetTClonesArray(fInputBranch);
   if (fVerbose > 2) { std::cout << "-I- FairRingSorterTaskT::FinishTask Size InputArray: " << fInputArray->GetEntriesFast() << std::endl; }
   for (int i = 0; i < fInputArray->GetEntriesFast(); i++) {
-    FairTimeStamp* myDigi = (FairTimeStamp*) fInputArray->At(i);
-    fSorter->AddElement(myDigi, ((FairTimeStamp*)myDigi)->GetTimeStamp());
+    FairTimeStamp* myDigi = static_cast<FairTimeStamp*>( fInputArray->At(i));
+    fSorter->AddElement(myDigi, (static_cast<FairTimeStamp*>(myDigi))->GetTimeStamp());
   }
   fSorter->Print();
   fSorter->WriteOutAll();

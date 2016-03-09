@@ -32,11 +32,12 @@ PixelDigiSource::PixelDigiSource(TString inputFileName)
   :FairSource()
   , fDigis(NULL)
   , fNDigis(0)
-  , fTNofDigis(0)
   , fTNofEvents(0)
+  , fTNofDigis(0)
+  , fInputFileName(inputFileName)
+  , fInputFile()
   , fCurrentEntryNo(0)
   , fRunId(0)
-  , fInputFileName("test.dat")
 {
   LOG(DEBUG) << "PixelDigiSource created------------" << FairLogger::endl;
 }
@@ -130,7 +131,7 @@ void PixelDigiSource::Reset()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-Int_t  PixelDigiSource::CheckMaxEventNo(Int_t EvtEnd)
+Int_t  PixelDigiSource::CheckMaxEventNo(Int_t /*EvtEnd*/)
 {
   return -1;
 }

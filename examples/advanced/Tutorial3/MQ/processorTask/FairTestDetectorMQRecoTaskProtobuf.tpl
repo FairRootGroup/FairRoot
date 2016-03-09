@@ -11,9 +11,9 @@
 #include "FairTestDetectorPayload.pb.h"
 
 // helper function to clean up the object holding the data after it is transported.
-void free_string(void *data, void *hint)
+void free_string(void* /*data*/, void* hint)
 {
-    delete (std::string*)hint;
+    delete static_cast<std::string*>(hint);
 }
 
 template <>
@@ -49,7 +49,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     for (int i = 0; i < numEntries; ++i)
     {
-        FairTestDetectorHit* hit = (FairTestDetectorHit*)fRecoTask->fHitArray->At(i);
+        FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask->fHitArray->At(i));
         if (!hit)
         {
             continue;

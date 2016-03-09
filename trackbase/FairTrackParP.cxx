@@ -103,7 +103,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 
   Double_t P  = TMath::Abs(1/fQp);
   //fq= int (P * fQp);
-  fq = (int)TMath::Sign(1.0, fQp);
+  fq = static_cast<int>(TMath::Sign(1.0, fQp));
   for(Int_t i=0; i<15; i++)  {
     fCovMatrix[i]=CovMatrix[i];
   }
@@ -215,7 +215,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   Double_t P=0;
   if(0!=fQp) {
     P = TMath::Abs(1/fQp);
-    fq = (int)TMath::Sign(1.0, fQp);
+    fq = static_cast<int>(TMath::Sign(1.0, fQp));
     //fq= int (P * fQp);
   } else { fq=1; }
   for(Int_t i=0; i<15; i++)  {
@@ -566,7 +566,7 @@ FairTrackParP::FairTrackParP(FairTrackParH* helix, TVector3 dj, TVector3 dk, Int
 void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
                                 Double_t Px, Double_t Py, Double_t Pz, Int_t Q,
                                 Double_t  CovMatrix[15],
-                                TVector3 o, TVector3 di, TVector3 dj, TVector3 dk)
+                                TVector3 o, TVector3 /*di*/, TVector3 dj, TVector3 dk)
 {
 
 
@@ -653,7 +653,7 @@ void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
 void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
                                  Double_t Tw, Double_t qp,
                                  Double_t CovMatrix[15],
-                                 TVector3 o, TVector3 di, TVector3 dj, TVector3 dk, Double_t spu)
+                                 TVector3 o, TVector3 /*di*/, TVector3 dj, TVector3 dk, Double_t spu)
 {
   Reset();
   SetPlane(o, dj, dk);
@@ -667,7 +667,7 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
 
   Double_t P  = TMath::Abs(1/fQp);
   //fq= int (P * fQp);
-  fq = (int)TMath::Sign(1.0, fQp);
+  fq = static_cast<int>(TMath::Sign(1.0, fQp));
   for(Int_t i=0; i<15; i++)  {
     fCovMatrix[i]=CovMatrix[i];
   }
@@ -751,7 +751,7 @@ FairTrackParP::~FairTrackParP() {}
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void FairTrackParP::Print(Option_t* option) const
+void FairTrackParP::Print(Option_t* /*option*/) const
 {
   cout << "Position : (";
   cout << std::setprecision(2) << fX << ", " << fY << ", " << fZ << ")" << endl;

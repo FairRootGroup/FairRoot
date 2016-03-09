@@ -61,14 +61,14 @@ InitStatus FairTutorialDet4MilleWriter::Init()
   FairRootManager* ioman = FairRootManager::Instance();
 
   // Get a pointer to the previous already existing data level
-  fTracks = (TClonesArray*) ioman->GetObject("TutorialDetTrack");
+  fTracks = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetTrack"));
   if ( ! fTracks ) {
     LOG(ERROR) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive" << FairLogger::endl;
     return kERROR;
   }
 
   // Get a pointer to the previous already existing data level
-  fHits = (TClonesArray*) ioman->GetObject("TutorialDetHit");
+  fHits = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetHit"));
   if ( ! fHits ) {
     LOG(ERROR) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive" << FairLogger::endl;
     return kERROR;
@@ -96,11 +96,11 @@ InitStatus FairTutorialDet4MilleWriter::ReInit()
 }
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDet4MilleWriter::Exec(Option_t* option)
+void FairTutorialDet4MilleWriter::Exec(Option_t* /*option*/)
 {
   if (IsGoodEvent()) {
-    if (1 == fVersion) { StraightLineShiftX(option); }
-    if (2 == fVersion) { StraightLineShiftXY(option); }
+    if (1 == fVersion) { StraightLineShiftX(); }
+    if (2 == fVersion) { StraightLineShiftXY(); }
   }
 }
 
@@ -117,7 +117,7 @@ Bool_t FairTutorialDet4MilleWriter::IsGoodEvent()
 
   Int_t nHits = fHits->GetEntriesFast();
   for (Int_t iHit=0; iHit<nHits; ++iHit) {
-    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
+    hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
     Int_t detId = hit->GetDetectorID();
     it = detIdSet.find(detId);
     if ( it == detIdSet.end() ) {
@@ -131,7 +131,7 @@ Bool_t FairTutorialDet4MilleWriter::IsGoodEvent()
   return kTRUE;
 }
 
-void FairTutorialDet4MilleWriter::StraightLineShiftX(Option_t* option)
+void FairTutorialDet4MilleWriter::StraightLineShiftX()
 {
 
   const Int_t nLC = 2; // number of local parameters
@@ -160,7 +160,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftX(Option_t* option)
     derLC[help] = 0;
   }
 
-  FairTrackParam* track = (FairTrackParam*) fTracks->At(0);
+  FairTrackParam* track = static_cast<FairTrackParam*>(fTracks->At(0));
 
   //Extract Track parameters
   Double_t OffX = track->GetX();
@@ -172,7 +172,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftX(Option_t* option)
 
   Int_t nHits = fHits->GetEntriesFast();
   for (Int_t iHit=0; iHit<nHits; ++iHit) {
-    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
+    hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
 
     Float_t Z = hit->GetZ();
     Float_t hitX = hit->GetX();
@@ -200,7 +200,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftX(Option_t* option)
 }
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDet4MilleWriter::StraightLineShiftXY(Option_t* option)
+void FairTutorialDet4MilleWriter::StraightLineShiftXY()
 {
 
   const Int_t nLC = 4; // number of local parameters
@@ -229,7 +229,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftXY(Option_t* option)
     derLC[help] = 0;
   }
 
-  FairTrackParam* track = (FairTrackParam*) fTracks->At(0);
+  FairTrackParam* track = static_cast<FairTrackParam*>(fTracks->At(0));
 
   //Extract Track parameters
   Double_t OffX = track->GetX();
@@ -243,7 +243,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftXY(Option_t* option)
 
   Int_t nHits = fHits->GetEntriesFast();
   for (Int_t iHit=0; iHit<nHits; ++iHit) {
-    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
+    hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
 
     Float_t Z = hit->GetZ();
     Float_t hitX = hit->GetX();

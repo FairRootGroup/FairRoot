@@ -91,7 +91,7 @@ class FairRun : public TNamed
      * return the run ID for the actul run
      */
     Int_t  GetRunId() {
-      return ((Int_t) fRunId);
+      return (static_cast<Int_t>(fRunId));
     }
 
 	/** 

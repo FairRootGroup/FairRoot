@@ -94,7 +94,7 @@ PixelDigitize::~PixelDigitize() {
 // -------------------------------------------------------------------------
 
 // -----   Public method Exec   --------------------------------------------
-void PixelDigitize::Exec(Option_t* opt) {
+void PixelDigitize::Exec(Option_t* /*opt*/) {
 
   Reset();
 
@@ -106,7 +106,7 @@ void PixelDigitize::Exec(Option_t* opt) {
   fTNofPoints+= fNPoints;
 
   for ( Int_t iPoint = 0 ; iPoint < fNPoints ; iPoint++ ) {
-    PixelPoint* currentPixelPoint = (PixelPoint*)fPoints->At(iPoint);
+    PixelPoint* currentPixelPoint = static_cast<PixelPoint*>(fPoints->At(iPoint));
 
     Double_t posIn[3] = {currentPixelPoint->GetX(),
 			 currentPixelPoint->GetY(),
@@ -128,18 +128,18 @@ void PixelDigitize::Exec(Option_t* opt) {
     // The local coordinate system has the origin set to the center of the volume.
     // To calculate the pixel number, it is necessary to move the origin to the bottom left corner.
     TGeoVolume* actVolume = gGeoManager->GetCurrentVolume();
-    TGeoBBox* actBox = (TGeoBBox*)(actVolume->GetShape());
-    Double_t sensorWidth  = 2.*actBox->GetDX();
-    Double_t sensorHeight = 2.*actBox->GetDY();
+    TGeoBBox* actBox = static_cast<TGeoBBox*>(actVolume->GetShape());
+//    Double_t sensorWidth  = 2.*actBox->GetDX();
+//    Double_t sensorHeight = 2.*actBox->GetDY();
     locPosIn[0] += actBox->GetDX();
     locPosIn[1] += actBox->GetDY();
 
     LOG(DEBUG) << "GLOB PNT " << detId << " POSITION:  " << posIn[0] << " / " << posIn[1] << " / " << posIn[2] << FairLogger::endl;
     LOG(DEBUG) << "POINT ON " << detId << " POSITION:  " << locPosIn[0] << " / " << locPosIn[1] << FairLogger::endl;
 
-    Int_t col  = (Int_t)(locPosIn[0]/fPitchX);
+    Int_t col  = static_cast<Int_t>(locPosIn[0]/fPitchX);
     Int_t ocol = col;
-    Int_t row  = (Int_t)(locPosIn[1]/fPitchY);
+    Int_t row  = static_cast<Int_t>(locPosIn[1]/fPitchY);
     Int_t orow = row;
     Int_t feCol = col/fFeCols;
     col = col%fFeCols;
@@ -164,7 +164,7 @@ void PixelDigitize::ActivatePixel(Int_t index, Int_t detId, Int_t feId, Int_t co
   Bool_t pixelAlreadyFired = kFALSE;
   PixelDigi* tempPixel = NULL;
   for ( Int_t ipixel = 0 ; ipixel < fNDigis ; ipixel++ ) {  
-    tempPixel = (PixelDigi*)fDigis->At(ipixel);
+    tempPixel = static_cast<PixelDigi*>(fDigis->At(ipixel));
     if ( tempPixel->GetDetectorID() == detId &&
    	 tempPixel->GetFeID()       == feId  &&
    	 tempPixel->GetCol()        == col   &&
@@ -192,7 +192,7 @@ void PixelDigitize::SetParContainers() {
   if ( ! db ) Fatal("SetParContainers", "No runtime database");
 
   // Get GEM digitisation parameter container
-  fDigiPar = (PixelDigiPar*)(db->getContainer("PixelDigiParameters"));
+  fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
 
 }
 // -------------------------------------------------------------------------
@@ -204,7 +204,7 @@ InitStatus PixelDigitize::Init() {
   FairRootManager* ioman = FairRootManager::Instance();
 
   if ( ! ioman ) Fatal("Init", "No FairRootManager");
-  fPoints = (TClonesArray*) ioman->GetObject("PixelPoint");
+  fPoints = static_cast<TClonesArray*>(ioman->GetObject("PixelPoint"));
 
   // Register output array StsDigi
   fDigis = new TClonesArray("PixelDigi",10000);
@@ -251,8 +251,8 @@ void PixelDigitize::Finish() {
 
   LOG(INFO) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
   LOG(INFO) << " Events:        " << fTNofEvents << FairLogger::endl;
-  LOG(INFO) << " MC Points:     " << fTNofPoints << "    ( " << (Double_t)fTNofPoints/((Double_t)fTNofEvents) << " per event )" << FairLogger::endl;
-  LOG(INFO) << " Digis:         " << fTNofDigis  << "    ( " << (Double_t)fTNofDigis /((Double_t)fTNofEvents) << " per event )" << FairLogger::endl;
+  LOG(INFO) << " MC Points:     " << fTNofPoints << "    ( " << static_cast<Double_t>(fTNofPoints)/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
+  LOG(INFO) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis )/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
   LOG(INFO) << "---------------------------------------------------------------------" << FairLogger::endl; 
 }
 // -------------------------------------------------------------------------

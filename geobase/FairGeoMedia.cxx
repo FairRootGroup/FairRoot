@@ -51,7 +51,7 @@ FairGeoMedia::~FairGeoMedia()
 FairGeoMedium* FairGeoMedia::getMedium(const char* mediumName)
 {
   // Returns the medium with name mediumName
-  return (FairGeoMedium*)media->FindObject(mediumName);
+  return static_cast<FairGeoMedium*>(media->FindObject(mediumName));
 }
 
 void FairGeoMedia::addMedium(FairGeoMedium* m)
@@ -67,7 +67,7 @@ void FairGeoMedia::list()
   cout<<"List of media:\n";
   TListIter iter(media);
   FairGeoMedium* medium;
-  while((medium=(FairGeoMedium*)iter.Next())) {
+  while((medium=static_cast<FairGeoMedium*>(iter.Next()))) {
     cout<<"  "<<medium->GetName()<<"\n";
   }
 }
@@ -81,7 +81,7 @@ void FairGeoMedia::print()
   TListIter iter(media);
   FairGeoMedium* medium;
   Int_t i=0;
-  while((medium=(FairGeoMedium*)iter.Next())) {
+  while((medium=static_cast<FairGeoMedium*>(iter.Next()))) {
     if (medium->getAutoFlag()!=0) {
       medium->print();
       i++;
@@ -92,7 +92,7 @@ void FairGeoMedia::print()
     cout<<"//----------------------------------------------\n";
     cout<<"AUTONULL\n";
     cout<<"//----------------------------------------------\n";
-    while((medium=(FairGeoMedium*)iter.Next())) {
+    while((medium=static_cast<FairGeoMedium*>(iter.Next()))) {
       if (medium->getAutoFlag()==0) { medium->print(); }
     }
   }
@@ -129,7 +129,7 @@ void FairGeoMedia::write(std::fstream& fout)
   TListIter iter(media);
   FairGeoMedium* medium;
   Int_t i=0;
-  while((medium=(FairGeoMedium*)iter.Next())) {
+  while((medium=static_cast<FairGeoMedium*>(iter.Next()))) {
     if (medium->getAutoFlag()!=0) {
       medium->write(fout);
       i++;
@@ -140,7 +140,7 @@ void FairGeoMedia::write(std::fstream& fout)
     fout<<"//----------------------------------------------\n";
     fout<<"AUTONULL\n";
     fout<<"//----------------------------------------------\n";
-    while((medium=(FairGeoMedium*)iter.Next())) {
+    while((medium=static_cast<FairGeoMedium*>(iter.Next()))) {
       if (medium->getAutoFlag()==0) { medium->write(fout); }
     }
   }

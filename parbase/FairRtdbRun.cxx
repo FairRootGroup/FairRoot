@@ -78,7 +78,7 @@ FairRtdbRun::FairRtdbRun(FairRtdbRun& run)
   TList* lv=run.getParVersions();
   TIter next(lv);
   FairParVersion* pv;
-  while ((pv=(FairParVersion*)next())) {
+  while ((pv=static_cast<FairParVersion*>(next()))) {
     parVersions->Add(pv);
   }
 }
@@ -113,14 +113,14 @@ FairParVersion* FairRtdbRun::getParVersion(const Text_t* name)
 {
   // return a container version object called by the name of
   // the container
-  return (FairParVersion*)parVersions->FindObject(name);
+  return static_cast<FairParVersion*>(parVersions->FindObject(name));
 }
 
 void FairRtdbRun::resetInputVersions()
 {
   TIter next(parVersions);
   FairParVersion* v;
-  while ((v=(FairParVersion*)next())) {
+  while ((v=static_cast<FairParVersion*>(next()))) {
     v->resetInputVersions();
   }
 }
@@ -129,7 +129,7 @@ void FairRtdbRun::resetOutputVersions()
 {
   TIter next(parVersions);
   FairParVersion* v;
-  while ((v=(FairParVersion*)next())) {
+  while ((v=static_cast<FairParVersion*>(next()))) {
     v->setRootVersion(0);
   }
 }
@@ -140,7 +140,7 @@ void FairRtdbRun::print()
   cout<<"run: "<<GetName()<<'\n';
   FairParVersion* v;
   TIter next(parVersions);
-  while ((v=(FairParVersion*)next())) {
+  while ((v=static_cast<FairParVersion*>(next()))) {
     cout.setf(ios::left,ios::adjustfield);
     cout<<"  "<<setw(45)<<v->GetName();
     cout.setf(ios::right,ios::adjustfield);
@@ -156,7 +156,7 @@ void FairRtdbRun::write(std::fstream& fout)
   fout<<"run: "<<GetName()<<'\n';
   FairParVersion* v;
   TIter next(parVersions);
-  while ((v=(FairParVersion*)next())) {
+  while ((v=static_cast<FairParVersion*>(next()))) {
     fout.setf(ios::left,ios::adjustfield);
     fout<<"  "<<setw(45)<<v->GetName();
     fout.setf(ios::right,ios::adjustfield);

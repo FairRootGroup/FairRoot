@@ -50,7 +50,7 @@ InitStatus FairTestDetectorTimeDigiTask::Init()
         return kFATAL;
     }
 
-    fPointArray = (TClonesArray*)ioman->GetObject("FairTestDetectorPoint");
+    fPointArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorPoint"));
     if (!fPointArray)
     {
         LOG(WARNING) << "FairTestDetectorTimeDigiTask::Init: "
@@ -60,14 +60,14 @@ InitStatus FairTestDetectorTimeDigiTask::Init()
 
     // Create and register output array
     fDataBuffer = new FairTestDetectorDigiWriteoutBuffer("FairTestDetectorDigi", "TOY", kTRUE);
-    fDataBuffer = (FairTestDetectorDigiWriteoutBuffer*)ioman->RegisterWriteoutBuffer("FairTestDetectorDigi", fDataBuffer);
+    fDataBuffer = static_cast<FairTestDetectorDigiWriteoutBuffer*>(ioman->RegisterWriteoutBuffer("FairTestDetectorDigi", fDataBuffer));
     fDataBuffer->ActivateBuffering(fTimeOrderedDigi);
 
     return kSUCCESS;
 }
 
 // -----   Public method Exec   --------------------------------------------
-void FairTestDetectorTimeDigiTask::Exec(Option_t* opt)
+void FairTestDetectorTimeDigiTask::Exec(Option_t* /*opt*/)
 {
 
     // fDigiArray->Delete();
@@ -80,7 +80,7 @@ void FairTestDetectorTimeDigiTask::Exec(Option_t* opt)
 
     for (int ipnt = 0; ipnt < fPointArray->GetEntries(); ipnt++)
     {
-        FairTestDetectorPoint* point = (FairTestDetectorPoint*)fPointArray->At(ipnt);
+        FairTestDetectorPoint* point = static_cast<FairTestDetectorPoint*>(fPointArray->At(ipnt));
         if (!point)
         {
             continue;
@@ -114,7 +114,7 @@ void FairTestDetectorTimeDigiTask::Exec(Option_t* opt)
 
 Int_t FairTestDetectorTimeDigiTask::CalcPad(Double_t posIn, Double_t posOut)
 {
-    Int_t result = (Int_t)(posIn + posOut) / 2;
+    Int_t result = static_cast<Int_t>(posIn + posOut) / 2;
     return result;
 }
 // -------------------------------------------------------------------------

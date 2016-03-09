@@ -199,13 +199,13 @@ Bool_t FairGeoNode::write(std::fstream& fout)
 {
   // Writes all parameters of a volume to file
   fout<<fName.Data()<<'\n';
-  if (pMother) { fout<<((const char*)mother)<<'\n'; }
+  if (pMother) { fout<<(const_cast<const char*>(mother.Data()))<<'\n'; }
   else {
     Error("write","Unknown mother for %s\n",fName.Data());
     return kFALSE;
   }
   if (!copyNode) {
-    if (pShape) { fout<<((const char*)shape)<<'\n'; }
+    if (pShape) { fout<<(const_cast<const char*>(shape.Data()))<<'\n'; }
     else {
       Error("write","Unknown shape for %s\n",fName.Data());
       return kFALSE;

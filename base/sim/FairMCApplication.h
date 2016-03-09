@@ -288,6 +288,6 @@ class FairMCApplication : public TVirtualMCApplication
 // inline functions
 
 inline FairMCApplication* FairMCApplication::Instance()
-{ return (FairMCApplication*)(TVirtualMCApplication::Instance());}
+{ return static_cast<FairMCApplication*>(TVirtualMCApplication::Instance());}
 
 #endif

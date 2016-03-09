@@ -249,9 +249,9 @@ void FairModule::ProcessNodes(TList* aList)
   FairGeoNode* MotherNode =NULL;
   FairVolume*  volume = NULL;
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairGeoParSet* par=(FairGeoParSet*)(rtdb->getContainer("FairGeoParSet"));
+  FairGeoParSet* par=static_cast<FairGeoParSet*>(rtdb->getContainer("FairGeoParSet"));
   TObjArray* fNodes = par->GetGeoNodes();
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
 
     node->calcLabTransform();
     MotherNode=node->getMotherNode();
@@ -332,13 +332,13 @@ void FairModule::ConstructRootGeometry()
   TIter next( l);
   TGeoNode* n=0;
   TGeoVolume* v1=0;
-  while ((key = (TKey*)next())) {
+  while ((key = static_cast<TKey*>(next()))) {
     /**loop inside the delivered root file and try to fine a TGeoManager object
      * the first TGeoManager found will be read
      */
     if (strcmp(key->GetClassName(),"TGeoManager") != 0) { continue; }
     gGeoManager=0;
-    NewGeo = (TGeoManager*)key->ReadObj();
+    NewGeo = static_cast<TGeoManager*>(key->ReadObj());
     break;
   }
   if (NewGeo!=0) {
@@ -346,7 +346,7 @@ void FairModule::ConstructRootGeometry()
      */
 
     NewGeo->cd();
-    volume=(TGeoVolume*)NewGeo->GetNode(0)->GetDaughter(0)->GetVolume();
+    volume=static_cast<TGeoVolume*>(NewGeo->GetNode(0)->GetDaughter(0)->GetVolume());
     v1=volume->MakeCopyVolume(volume->GetShape());
     // n=NewGeo->GetTopNode();
     n=v1->GetNode(0);
@@ -358,7 +358,7 @@ void FairModule::ConstructRootGeometry()
      * try to look for a TGeoVolume inside the file
      */
 
-    key=(TKey*) l->At(0);  //Get the first key in the list
+    key=static_cast<TKey*>(l->At(0));  //Get the first key in the list
     volume=dynamic_cast<TGeoVolume*> (key->ReadObj());
     if(volume!=0) { n=volume->GetNode(0); }
     if(n!=0) { v1=n->GetVolume(); }
@@ -452,7 +452,7 @@ void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
 		TGeoNode* curNodeChild;
 		for (Int_t j=0; j<NodeChildList->GetEntriesFast(); j++)
 		{
-			curNodeChild = (TGeoNode*)NodeChildList->At(j);
+			curNodeChild = static_cast<TGeoNode*>(NodeChildList->At(j));
 			ExpandNodeForGDML(curNodeChild);
 		}
 	}
@@ -485,7 +485,7 @@ void FairModule::ReAssignMediaId()
 //    TGeoMedium* med2;
     for(Int_t i = geoBuilder->GetNMedia(); i < media->GetEntries(); i++)
     {
-        med = (TGeoMedium*) media->At(i);
+        med = static_cast<TGeoMedium*>(media->At(i));
         med->SetId(i+1);
     }
     // Change GeoBase medium index
@@ -497,7 +497,7 @@ void FairModule::ReAssignMediaId()
     // map for existing materials
     std::map<TString, Bool_t> mapMatName;
     TGeoMaterial* mat;
-    while( (mat = (TGeoMaterial*)next1()) )
+    while( (mat = static_cast<TGeoMaterial*>(next1())) )
     {
         // If material exist - delete dublicated. If not - set the flag
         if(mapMatName[mat->GetName()])
@@ -536,7 +536,7 @@ void FairModule::ExpandNode(TGeoNode* fN)
   TGeoVolume* v1=fN->GetVolume();
   TObjArray* NodeList=v1->GetNodes();
   for (Int_t Nod=0; Nod<NodeList->GetEntriesFast(); Nod++) {
-    TGeoNode* fNode =(TGeoNode*)NodeList->At(Nod);
+    TGeoNode* fNode =static_cast<TGeoNode*>(NodeList->At(Nod));
     TGeoMatrix* M =fNode->GetMatrix();
     //M->SetDefaultName();
     SetDefaultMatrixName(M);
@@ -606,7 +606,7 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
     // not done automatically when using the default constructor. For all other constructors the
     // newly created medium or material is added to the TGeomanger.
     // Create the medium and material only the first time.
-    TString medName = (TString)(med1->GetName());
+    TString medName = static_cast<TString>(med1->GetName());
     if ( medName.EqualTo("dummy") && NULL == gGeoManager->GetMedium(medName) ) {
 
       TGeoMaterial *dummyMaterial = new TGeoMaterial();

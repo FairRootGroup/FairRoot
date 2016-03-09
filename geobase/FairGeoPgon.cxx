@@ -87,7 +87,7 @@ Int_t FairGeoPgon::readPoints(std::fstream* pFile,FairGeoVolume* volu)
   if (n<=0) { return 0; }
   nPoints=n+2;
   if (volu->getNumPoints()!=nPoints) { volu->createPoints(nPoints); }
-  volu->setPoint(0,(Double_t)n,0.0,0.0);
+  volu->setPoint(0,static_cast<Double_t>(n),0.0,0.0);
   for(Int_t i=1; i<nPoints; i++) {
     pFile->getline(buf,maxbuf);
     sscanf(buf,"%lf%lf%lf",&x,&y,&z);
@@ -105,7 +105,7 @@ Bool_t FairGeoPgon::writePoints(std::fstream* pFile,FairGeoVolume* volu)
   for(Int_t i=0; i<volu->getNumPoints(); i++) {
     FairGeoVector& v=*(volu->getPoint(i));
     if (i!=0) { sprintf(buf,"%9.3f%10.3f%10.3f\n",v(0),v(1),v(2)); }
-    else { sprintf(buf,"%3i\n",(Int_t)v(0)); }
+    else { sprintf(buf,"%3i\n",static_cast<Int_t>(v(0))); }
     pFile->write(buf,strlen(buf));
   }
   return kTRUE;
@@ -118,7 +118,7 @@ void FairGeoPgon::printPoints(FairGeoVolume* volu)
   for(Int_t i=0; i<volu->getNumPoints(); i++) {
     FairGeoVector& v=*(volu->getPoint(i));
     if (i!=0) { printf("%9.3f%10.3f%10.3f\n",v(0),v(1),v(2)); }
-    else { printf("%3i\n",(Int_t)v(0)); }
+    else { printf("%3i\n",static_cast<Int_t>(v(0))); }
   }
 }
 

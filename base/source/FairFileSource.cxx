@@ -281,14 +281,14 @@ Bool_t FairFileSource::Init()
     LOG(DEBUG) << "Entries in this Source " << fNoOfEntries << FairLogger::endl;
     
     for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
-       TFolder* fold = (TFolder*) fListFolder->At(i);
-       fEvtHeader = (FairEventHeader*)   fold->FindObjectAny("EventHeader.");
-       fMCHeader  = (FairMCEventHeader*) fold->FindObjectAny("MCEventHeader.");
+       TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
+       fEvtHeader = static_cast<FairEventHeader*>(fold->FindObjectAny("EventHeader."));
+       fMCHeader  = static_cast<FairMCEventHeader*>(fold->FindObjectAny("MCEventHeader."));
        if ( fEvtHeader ) {
-	  ActivateObject((TObject**)&fEvtHeader,"EventHeader.");
+	  ActivateObject(reinterpret_cast<TObject**>(&fEvtHeader),"EventHeader.");
        }
        if ( fMCHeader  ) {
-	  ActivateObject((TObject**)&fMCHeader ,"MCEventHeader.");
+	  ActivateObject(reinterpret_cast<TObject**>(&fMCHeader),"MCEventHeader.");
        }
     }
 
@@ -312,7 +312,7 @@ Bool_t FairFileSource::Init()
 void FairFileSource::SetInTree(TTree*  tempTree)  {
   fInTree = NULL; 
   fInTree  = tempTree; 
-  fRootFile=(TFile*)tempTree->GetCurrentFile();
+  fRootFile=static_cast<TFile*>(tempTree->GetCurrentFile());
   fInChain->Reset();
   IsInitialized=kFALSE;
   Init();
@@ -426,7 +426,7 @@ void FairFileSource::AddFriendsToChain()
             friendType++;
         }
         
-        TChain* chain = (TChain*) fFriendTypeList[inputLevel];
+        TChain* chain = static_cast<TChain*>(fFriendTypeList[inputLevel]);
         chain->AddFile((*iter1), 1234567890, "cbmsim");
     }
     gFile=temp;
@@ -441,7 +441,7 @@ void FairFileSource::AddFriendsToChain()
     for (mapIterator = fFriendTypeList.begin();
          mapIterator != fFriendTypeList.end(); mapIterator++ ) {
         
-        TChain* chain = (TChain*)mapIterator->second;
+        TChain* chain = static_cast<TChain*>(mapIterator->second);
         fInChain->AddFriend(chain);
     }
     
@@ -464,19 +464,19 @@ void FairFileSource::PrintFriendList( )
     TObjArray* fileElements=fInChain->GetListOfFiles();
     TIter next(fileElements);
     TChainElement* chEl=0;
-    while (( chEl=(TChainElement*)next() )) {
+    while (( chEl=static_cast<TChainElement*>(next()) )) {
       LOG(INFO) << "    - " << chEl->GetTitle() << FairLogger::endl;
     }
     
     map< TString, TChain* >::iterator mapIterator;
     for (mapIterator = fFriendTypeList.begin();
          mapIterator != fFriendTypeList.end(); mapIterator++ ) {
-        TChain* chain = (TChain*) mapIterator->second;
+        TChain* chain = static_cast<TChain*>(mapIterator->second);
         LOG(INFO) << " - " << chain->GetName() << FairLogger::endl;
         fileElements=chain->GetListOfFiles();
         TIter next1(fileElements);
         chEl=0;
-        while (( chEl=(TChainElement*)next1() )) {
+        while (( chEl=static_cast<TChainElement*>(next1()) )) {
 	  LOG(INFO) << "    - " << chEl->GetTitle() << FairLogger::endl;
         }
     }

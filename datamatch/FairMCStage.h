@@ -77,7 +77,7 @@ class FairMCStage: public FairMCObject
 
     friend std::ostream& operator<< (std::ostream& out, const FairMCStage& stage) {
       out << stage.GetStageId() << ": " << stage.GetBranchName() << " // " <<  stage.GetFileName() << std::endl; //" with weight: " << stage.GetWeight() << std::endl;
-      ((FairMCObject)stage).PrintInfo(out);
+      (static_cast<FairMCObject>(stage)).PrintInfo(out);
       return out;
     }
 

@@ -112,7 +112,7 @@ class FairMCObject: public TObject
 
     friend std::ostream& operator<< (std::ostream& out, const FairMCObject& obj) {
       std::vector<FairMCEntry> stages = obj.GetEntryVector();
-      for (int i = 0; i < stages.size(); i++) {
+      for (unsigned int i = 0; i < stages.size(); i++) {
         if (stages[i].GetNLinks() > 0) {
           out << i << ": ";
           stages[i].PrintInfo(out);

@@ -190,12 +190,12 @@ Bool_t FairGeoSet::readVolumeParams(std::fstream& fin,FairGeoMedia* media,
       do {
         fin.get(c);
       } while (c==' ' || c=='\n');
-      Int_t i=(Int_t)c ;
+      Int_t i=static_cast<Int_t>(c);
       fin.putback(c);
 
       if (!isalpha(i)) { isCopy=kTRUE; }
       refName=name(0,4);
-      refNode=(FairGeoCopyNode*)refVolumes->FindObject(refName);
+      refNode=static_cast<FairGeoCopyNode*>(refVolumes->FindObject(refName));
       if (!refNode) {
         if (isCopy) { return kFALSE; }
         refVolumes->Add(new FairGeoCopyNode(refName.Data(),volu));
@@ -218,11 +218,11 @@ Bool_t FairGeoSet::readVolumeParams(std::fstream& fin,FairGeoMedia* media,
       do {
         fin.get(c);
       } while (c==' ' || c=='\n');
-      Int_t i=(Int_t)c;
+      Int_t i=static_cast<Int_t>(c);
       fin.putback(c);
       if (!isalpha(i)) { isCopy=kTRUE; }
       refName=name(0,l);
-      refNode=(FairGeoCopyNode*)refVolumes->FindObject(refName);
+      refNode=static_cast<FairGeoCopyNode*>(refVolumes->FindObject(refName));
       if (!refNode) {
         if (isCopy) { return kFALSE; }
         refVolumes->Add(new FairGeoCopyNode(refName.Data(),volu));
@@ -363,7 +363,7 @@ void FairGeoSet::print()
   std::ios_base::fmtflags tmp = cout.setf(ios::fixed,ios::floatfield);
   TListIter iter(volumes);
   FairGeoNode* volu;
-  while((volu=(FairGeoNode*)iter.Next())) {
+  while((volu=static_cast<FairGeoNode*>(iter.Next()))) {
     volu->print();
   }
   cout.setf(tmp);
@@ -379,7 +379,7 @@ void FairGeoSet::write(std::fstream& fout)
   TListIter iter(volumes);
   FairGeoNode* volu;
   Bool_t rc=kTRUE;
-  while((volu=(FairGeoNode*)iter.Next())&&rc) {
+  while((volu=static_cast<FairGeoNode*>(iter.Next()))&&rc) {
     rc=volu->write(fout);
   }
   fout.setf(tmp);
@@ -392,7 +392,7 @@ Bool_t FairGeoSet::create(FairGeoBuilder* builder)
   TListIter iter(volumes);
   FairGeoNode* volu;
   Bool_t rc=kTRUE;
-  while((volu=(FairGeoNode*)iter.Next())&&rc) {
+  while((volu=static_cast<FairGeoNode*>(iter.Next()))&&rc) {
     if (volu->isActive()) {
 
       if (hadesGeo == 1) { rc=builder->createNode(volu, hadesGeo); }
@@ -423,7 +423,7 @@ void FairGeoSet::compare(FairGeoSet& rset)
   Int_t n=0, nnf=0, nDiff=0;
   cout<<"name\t mother medium shape  points    pos    rot\n";
   cout<<"------------------------------------------------\n";
-  while((volu=(FairGeoNode*)iter.Next())) {
+  while((volu=static_cast<FairGeoNode*>(iter.Next()))) {
     n++;
     FairGeoNode* rNode=rset.getVolume(volu->GetName());
     if (!rNode) { nnf++; }
@@ -436,7 +436,7 @@ void FairGeoSet::compare(FairGeoSet& rset)
   if (rlist->GetSize()!=(n-nnf)) {
     nnf=0;
     TListIter riter(rlist);
-    while((volu=(FairGeoNode*)riter.Next())) {
+    while((volu=static_cast<FairGeoNode*>(riter.Next()))) {
       FairGeoNode* rNode=getVolume(volu->GetName());
       if (!rNode) { nnf++; }
     }

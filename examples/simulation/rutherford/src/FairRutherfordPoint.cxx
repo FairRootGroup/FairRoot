@@ -45,7 +45,7 @@ FairRutherfordPoint::~FairRutherfordPoint()
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void FairRutherfordPoint::Print(const Option_t* opt) const
+void FairRutherfordPoint::Print(const Option_t* /*opt*/) const
 {
   cout << "-I- FairRutherfordPoint: FairRutherford point for track " << fTrackID
        << " in detector " << fDetectorID << endl;

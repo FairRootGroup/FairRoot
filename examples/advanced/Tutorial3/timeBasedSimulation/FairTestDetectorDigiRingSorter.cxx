@@ -27,5 +27,5 @@ FairTestDetectorDigiRingSorter::~FairTestDetectorDigiRingSorter()
 
 FairTimeStamp* FairTestDetectorDigiRingSorter::CreateElement(FairTimeStamp* data)
 {
-    return new FairTestDetectorDigi(*(FairTestDetectorDigi*)data);
+    return new FairTestDetectorDigi(*static_cast<FairTestDetectorDigi*>(data));
 }

@@ -37,7 +37,7 @@ using std::endl;
 // -----   Default constructor   -------------------------------------------
 FairGeanePro::FairGeanePro()
   : TNamed("Geane", "Propagate Tracks"),
-    gMC3((TGeant3*) gMC),
+    gMC3(static_cast<TGeant3*>(gMC)),
     fPropOption(""),
     nepred(1),
     fdbPDG(TDatabasePDG::Instance()),
@@ -161,7 +161,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH* TParam, FairTrackParH* TEnd, Int_t
       Int_t option;
       if(VEnter) { option =1; }
       else { option =2; }
-      gMC3->Eufilv(1, ein, (Char_t*)VName.Data(), &VCopyNo, &option);
+      gMC3->Eufilv(1, ein, const_cast<Char_t*>(VName.Data()), &VCopyNo, &option);
     } else if(fPropOption.Contains("L")) {
       if(fPCA == 0) {
         gMC3->Eufill(nepred, ein,xlf);
@@ -210,7 +210,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParH* TParam, FairTrackParH* TEnd, Int_t
   return kTRUE;
 
 }
-Bool_t FairGeanePro::Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, Int_t PDG)
+Bool_t FairGeanePro::Propagate(FairTrackParP* /*TStart*/, FairTrackParH* /*TEnd*/, Int_t /*PDG*/)
 {
   // Propagate a parabola track (SD system) and return a helix (SC system) (not used nor implemented)
   cout << "FairGeanePro::Propagate(FairTrackParP *TParam, FairTrackParH &TEnd, Int_t PDG) : (not used nor implemented)" << endl;
@@ -328,7 +328,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, Int_t
 }
 
 
-Bool_t FairGeanePro::Propagate(FairTrackParH* TStart, FairTrackParP* TEnd, Int_t PDG)
+Bool_t FairGeanePro::Propagate(FairTrackParH* /*TStart*/, FairTrackParP* /*TEnd*/, Int_t /*PDG*/)
 {
   // Propagate a helix track (SC system) and return a parabola (SD system) (not used nor implemented)
   cout << "FairGeanePro::Propagate(FairTrackParH *TParam, FairTrackParP &TEnd, Int_t PDG) not implemented" << endl;

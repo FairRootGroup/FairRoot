@@ -70,9 +70,11 @@ FairRutherford::~FairRutherford()
 
 void FairRutherford::Initialize()
 {
+/*
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairRutherfordGeoPar* par=(FairRutherfordGeoPar*)(rtdb->getContainer("FairRutherfordGeoPar"));
+*/
 }
 
 Bool_t  FairRutherford::ProcessHits(FairVolume* vol)
@@ -103,7 +105,7 @@ Bool_t  FairRutherford::ProcessHits(FairVolume* vol)
            fELoss);
 
     // Increment number of FairRutherford points in TParticle
-    FairStack* stack = (FairStack*) gMC->GetStack();
+    FairStack* stack = static_cast<FairStack*>(gMC->GetStack());
     stack->AddPoint(kFairRutherford);
   }
 
@@ -164,7 +166,7 @@ void FairRutherford::ConstructGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairRutherfordGeoPar* par=(FairRutherfordGeoPar*)(rtdb->getContainer("FairRutherfordGeoPar"));
+  FairRutherfordGeoPar* par=static_cast<FairRutherfordGeoPar*>(rtdb->getContainer("FairRutherfordGeoPar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -172,7 +174,7 @@ void FairRutherford::ConstructGeometry()
   FairGeoNode* node   = NULL;
   FairGeoVolume* aVol=NULL;
 
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
       fSensNodes->AddLast( aVol );

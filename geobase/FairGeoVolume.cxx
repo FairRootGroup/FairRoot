@@ -93,7 +93,7 @@ void FairGeoVolume::setPoint(const Int_t n,const Double_t x,
 {
   // set the 3 values of the point with index n
   if (points && n<nPoints) {
-    FairGeoVector* v=(FairGeoVector*)points->At(n);
+    FairGeoVector* v=static_cast<FairGeoVector*>(points->At(n));
     v->setX(x);
     v->setY(y);
     v->setZ(z);
@@ -104,7 +104,7 @@ void FairGeoVolume::setPoint(const Int_t n,const FairGeoVector& p)
 {
   // sets point with index n by copying the 3 components of point p
   if (points && n<nPoints) {
-    FairGeoVector& v=*((FairGeoVector*)points->At(n));
+    FairGeoVector& v=*(static_cast<FairGeoVector*>(points->At(n)));
     v=p;
   }
 }
@@ -125,12 +125,12 @@ void FairGeoVolume::clear()
 void FairGeoVolume::print()
 {
   // prints all parameters of a volume
-  cout<<"Volume: " <<((const char*)fName)<<"  Shape: "<<((const char*)shape)<<"  Mother: "
-      <<((const char*)mother)<<'\n';
+  cout<<"Volume: " <<(const_cast<const char*>(fName.Data()))<<"  Shape: "<<(const_cast<const char*>(shape.Data()))<<"  Mother: "
+      <<(const_cast<const char*>(mother.Data()))<<'\n';
   cout << "Points definition " << endl;
   if (points) {
     for (Int_t i=0; i<nPoints; i++) {
-      cout<<(*((FairGeoVector*)points->At(i)));
+      cout<<(*(static_cast<FairGeoVector*>(points->At(i))));
     }
   }
   cout << "Lab Transform " << endl;
@@ -140,7 +140,7 @@ void FairGeoVolume::print()
 
 Double_t FairGeoVolume::getVolParameter( Int_t nPoint, Int_t pos )
 {
-  FairGeoVector* vec = (FairGeoVector*) points->At( nPoint );
+  FairGeoVector* vec = static_cast<FairGeoVector*>( points->At( nPoint ));
   if ( vec ) { return vec->getValues( pos ); }
   else { return -1; }
 }

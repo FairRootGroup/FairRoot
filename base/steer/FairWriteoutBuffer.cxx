@@ -207,7 +207,7 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
       if (dataFound == true) {
 	if (timeOfOldData > startTime) {                                     //if older active data can interference with the new data call modify function
 	  std::vector<std::pair<double, FairTimeStamp*> > modifiedData = Modify(std::pair<double, FairTimeStamp*>(currentdeadtime, oldData), std::pair<double, FairTimeStamp*>(activeTime, data));
-	  for (int i = 0; i < modifiedData.size(); i++) {
+	  for (unsigned int i = 0; i < modifiedData.size(); i++) {
 	    FillDataToDeadTimeMap(modifiedData[i].second, modifiedData[i].first,0);//startTime  = 0 since the Maps are already empty and the startTime therefore doesn't matter anymore
 	    if (fVerbose > 1) {
 	      std::cout << i << " :Modified Data: " << modifiedData[i].first << " : " << modifiedData[i].second << std::endl;

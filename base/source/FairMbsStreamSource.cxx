@@ -71,7 +71,7 @@ Bool_t FairMbsStreamSource::ConnectToServer()
   status = f_evt_get_open(inputMode,
                           const_cast<char*>(fServerName.Data()),
                           fxInputChannel,
-                          (Char_t**)headptr,
+                          static_cast<Char_t**>(headptr),
                           1,
                           1);
 
@@ -97,7 +97,7 @@ Int_t FairMbsStreamSource::ReadEvent(UInt_t)
   LOG(DEBUG2)<< "FairLmdSource::ReadEvent => New event "
              << FairLogger::endl;
 
-  Int_t status = f_evt_get_event(fxInputChannel, (INTS4**)evtptr,(INTS4**) buffptr);
+  Int_t status = f_evt_get_event(fxInputChannel, static_cast<INTS4**>(evtptr),static_cast<INTS4**>(buffptr));
 
   LOG(DEBUG2)<< "FairLmdSource::ReadEvent => f_evt_get_event status: " << status
              << FairLogger::endl;
@@ -129,7 +129,7 @@ Int_t FairMbsStreamSource::ReadEvent(UInt_t)
     void* EvtDataptr = &fxEventData;
     Int_t nrlongwords;
 
-    status = f_evt_get_subevent(fxEvent, i, (Int_t**)SubEvtptr, (Int_t**)EvtDataptr, &nrlongwords);
+    status = f_evt_get_subevent(fxEvent, i, static_cast<Int_t**>(SubEvtptr), static_cast<Int_t**>(EvtDataptr), &nrlongwords);
 
     sebuflength = nrlongwords;
     setype = fxSubEvent->i_type;

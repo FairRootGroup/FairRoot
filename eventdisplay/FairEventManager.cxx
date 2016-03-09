@@ -160,19 +160,19 @@ void FairEventManager::Open()
 void FairEventManager::GotoEvent(Int_t event)
 {
   fEntry=event;
-  fRunAna->Run((Long64_t)event);
+  fRunAna->Run(static_cast<Long64_t>(event));
 }
 //______________________________________________________________________________
 void FairEventManager::NextEvent()
 {
   fEntry+=1;
-  fRunAna->Run((Long64_t)fEntry);
+  fRunAna->Run(static_cast<Long64_t>(fEntry));
 }
 //______________________________________________________________________________
 void FairEventManager::PrevEvent()
 {
   fEntry-=1;
-  fRunAna->Run((Long64_t)fEntry);
+  fRunAna->Run(static_cast<Long64_t>(fEntry));
 }
 //______________________________________________________________________________
 void FairEventManager::Close()
@@ -299,7 +299,7 @@ Int_t FairEventManager::Color( int pdg)
 }
 //______________________________________________________________________________
 
-void FairEventManager::AddParticlesToPdgDataBase(Int_t pdg)
+void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
 {
 
 //

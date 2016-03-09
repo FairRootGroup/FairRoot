@@ -228,14 +228,14 @@ void FairRunOnline::InitContainers()
 {
 
   fRtdb = GetRuntimeDb();
-  FairBaseParSet* par=(FairBaseParSet*)
+  FairBaseParSet* par=static_cast<FairBaseParSet*>
                       (fRtdb->getContainer("FairBaseParSet"));
   LOG(INFO) << "FairRunOnline::InitContainers: par = " << par << FairLogger::endl;
   if (NULL == par)
     LOG(WARNING)<<"FairRunOnline::InitContainers: no  'FairBaseParSet' container !"<<FairLogger::endl;
 
   if (par) {
-    fEvtHeader = (FairEventHeader*)fRootManager->GetObject("EventHeader.");
+    fEvtHeader = static_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
 
     fRunId = fEvtHeader->GetRunId();
 
@@ -493,19 +493,19 @@ void FairRunOnline::WriteObjects()
     // Recognise objects
     if(0 == className.CompareTo("TH1F")) {
       // If a histogram - plot it and save canvas
-      h1 = (TH1F*) object;
+      h1 = static_cast<TH1F*>(object);
       h1->Write();
     } else if(0 == className.CompareTo("TH2F")) {
       // If a histogram - plot it and save canvas
-      h2 = (TH2F*) object;
+      h2 = static_cast<TH2F*>(object);
       h2->Write();
     } else if(0 == className.CompareTo("TH1D")) {
       // If a histogram - plot it and save canvas
-      h1 = (TH1D*) object;
+      h1 = static_cast<TH1D*>(object);
       h1->Write();
     } else if(0 == className.CompareTo("TH2D")) {
       // If a histogram - plot it and save canvas
-      h2 = (TH2D*) object;
+      h2 = static_cast<TH2D*>(object);
       h2->Write();
     }
   }

@@ -90,7 +90,7 @@ void FairRadGridManager::FillMeshList()
 
   /** Sum energy loss for all steps in the mesh*/
   for (Int_t i=0; i<fMeshList->GetEntriesFast(); i++ ) {
-    FairMesh* aMesh = (FairMesh*) fMeshList->At(i);
+    FairMesh* aMesh = static_cast<FairMesh*>(fMeshList->At(i));
     Double_t fBinVolume = aMesh->GetBinVolume();
     Double_t fDiag = aMesh->GetDiag();
 

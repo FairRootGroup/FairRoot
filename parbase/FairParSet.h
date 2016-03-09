@@ -35,8 +35,8 @@ class FairParSet : public TObject
     FairParSet(const char* name="",const char* title="",const char* context="", Bool_t owner=kFALSE);
     virtual ~FairParSet() {}
 
-    virtual const char* GetName() const {return (char*)fName.Data();}
-    virtual const char* GetTitle() const {return (char*)fTitle.Data();}
+    virtual const char* GetName() const {return static_cast<const char*>(fName.Data());}
+    virtual const char* GetTitle() const {return static_cast<const char*>(fTitle.Data());}
 
     virtual Bool_t init();
     virtual Bool_t init(FairParIo*) { return kFALSE; }

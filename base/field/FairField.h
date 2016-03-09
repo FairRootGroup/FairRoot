@@ -128,7 +128,7 @@ class FairField : public TVirtualMagField
 
 
     /** Screen output. To be implemented in the concrete class. **/
-    virtual void  Print(Option_t* = "") const {;}
+    virtual void  Print(Option_t*) const {;}
     virtual void GetBxyz(const Double_t[3], Double_t*) {LOG(WARNING)<<"FairField::GetBxyz Should be implemented in User class"<<FairLogger::endl;}
 
 

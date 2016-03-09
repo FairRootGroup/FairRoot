@@ -54,13 +54,13 @@ void FairTestDetectorDigiWriteoutBuffer::AddNewDataToTClonesArray(FairTimeStamp*
 		<< static_cast<FairTestDetectorDigi*>(data)->ToString() 
 		<< FairLogger::endl;
     }
-    new ((*myArray)[myArray->GetEntries()]) FairTestDetectorDigi(*(FairTestDetectorDigi*)(data));
+    new ((*myArray)[myArray->GetEntries()]) FairTestDetectorDigi(*static_cast<FairTestDetectorDigi*>((data)));
 }
 
 double FairTestDetectorDigiWriteoutBuffer::FindTimeForData(FairTimeStamp* data)
 {
     std::map<FairTestDetectorDigi, double>::iterator it;
-    FairTestDetectorDigi myData = *(FairTestDetectorDigi*)data;
+    FairTestDetectorDigi myData = *static_cast<FairTestDetectorDigi*>(data);
     it = fData_map.find(myData);
     if (it == fData_map.end())
     {
@@ -74,13 +74,13 @@ double FairTestDetectorDigiWriteoutBuffer::FindTimeForData(FairTimeStamp* data)
 
 void FairTestDetectorDigiWriteoutBuffer::FillDataMap(FairTimeStamp* data, double activeTime)
 {
-    FairTestDetectorDigi myData = *(FairTestDetectorDigi*)data;
+    FairTestDetectorDigi myData = *static_cast<FairTestDetectorDigi*>(data);
     fData_map[myData] = activeTime;
 }
 
 void FairTestDetectorDigiWriteoutBuffer::EraseDataFromDataMap(FairTimeStamp* data)
 {
-    FairTestDetectorDigi myData = *(FairTestDetectorDigi*)data;
+    FairTestDetectorDigi myData = *static_cast<FairTestDetectorDigi*>(data);
     if (fData_map.find(myData) != fData_map.end())
     {
         fData_map.erase(fData_map.find(myData));

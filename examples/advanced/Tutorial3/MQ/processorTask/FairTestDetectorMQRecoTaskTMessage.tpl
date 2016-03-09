@@ -19,7 +19,7 @@ class TestDetectorTMessage : public TMessage
 };
 
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage(void *data, void *hint)
+void free_tmessage(void* /*data*/, void* hint)
 {
     delete static_cast<TMessage*>(hint);
 }
@@ -29,7 +29,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMess
 {
     TestDetectorTMessage tm(fPayload->GetData(), fPayload->GetSize());
 
-    fRecoTask->fDigiArray = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
+    fRecoTask->fDigiArray = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
 
     if (!fRecoTask->fDigiArray)
     {

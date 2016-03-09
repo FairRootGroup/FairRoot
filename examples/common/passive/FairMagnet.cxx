@@ -52,7 +52,7 @@ void FairMagnet::ConstructGeometry()
   }
 }
 
-Bool_t FairMagnet::CheckIfSensitive(std::string name)
+Bool_t FairMagnet::CheckIfSensitive(std::string /*name*/)
 {
   // just to get rid of the warrning during run, not need this is a passive element!
   return kFALSE;
@@ -72,7 +72,7 @@ void FairMagnet::ConstructASCIIGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairGeoPassivePar* par=(FairGeoPassivePar*)(rtdb->getContainer("FairGeoPassivePar"));
+  FairGeoPassivePar* par=static_cast<FairGeoPassivePar*>(rtdb->getContainer("FairGeoPassivePar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -80,7 +80,7 @@ void FairMagnet::ConstructASCIIGeometry()
   FairGeoNode* node   = NULL;
   FairGeoVolume* aVol=NULL;
 
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
       fSensNodes->AddLast( aVol );

@@ -7,7 +7,7 @@
 
 // Implementation of FairTestDetectorMQRecoTask::Exec() with Boost transport data format
 
-void freeStringBuffer(void *data, void *hint)
+void freeStringBuffer(void* /*data*/, void* hint)
 {
     delete static_cast<std::string*>(hint);
 }
@@ -57,7 +57,7 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option
     {
         for (int i = 0; i < numEntries; ++i)
         {
-            TOut* hit = (TOut*)fRecoTask->fHitArray->At(i);
+            TOut* hit = static_cast<TOut*>(fRecoTask->fHitArray->At(i));
             if (hit)
             {
                 fHitVector.push_back(*hit);

@@ -92,7 +92,7 @@ InitStatus FairMCStack::Init()
 
 }
 // -------------------------------------------------------------------------
-void FairMCStack::Exec(Option_t* option)
+void FairMCStack::Exec(Option_t* /*option*/)
 {
 
   if (IsActive()) {

@@ -106,7 +106,7 @@ InitStatus FairMCMatchLoaderTask::Init()
     return kFATAL;
   }
 
-  fMCLink = (TClonesArray*)ioman->GetObject("MCLink");
+  fMCLink = static_cast<TClonesArray*>(ioman->GetObject("MCLink"));
   ioman->Register("MCMatch", "MCInfo", fMCMatch, kFALSE);
 
   return kSUCCESS;
@@ -120,7 +120,7 @@ void FairMCMatchLoaderTask::SetParContainers()
 
 
 // -----   Public method Exec   --------------------------------------------
-void FairMCMatchLoaderTask::Exec(Option_t* opt)
+void FairMCMatchLoaderTask::Exec(Option_t* /*opt*/)
 {
 
   if (!fMCLink) { Fatal("Exec", "No fMCLink"); }

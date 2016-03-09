@@ -60,7 +60,7 @@ class FairMCResult: public FairMCObject
 
     friend std::ostream& operator<< (std::ostream& out, const FairMCResult& result) {
       out << "MC Link from: " << result.GetStartType() << " to "  << result.GetStopType() << ":" << std::endl;
-      ((FairMCObject)result).PrintInfo(out);
+      (static_cast<FairMCObject>(result)).PrintInfo(out);
       return out;
     }
 

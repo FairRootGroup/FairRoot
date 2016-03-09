@@ -49,7 +49,7 @@ void FairTarget::ConstructGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairGeoPassivePar* par=(FairGeoPassivePar*)(rtdb->getContainer("FairGeoPassivePar"));
+  FairGeoPassivePar* par=static_cast<FairGeoPassivePar*>(rtdb->getContainer("FairGeoPassivePar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -57,7 +57,7 @@ void FairTarget::ConstructGeometry()
   FairGeoNode* node   = NULL;
   FairGeoVolume* aVol=NULL;
 
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
       fSensNodes->AddLast( aVol );

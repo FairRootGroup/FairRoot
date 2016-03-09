@@ -193,8 +193,8 @@ class MultiVariatePDF
 
     RooDataSet* GetGeneratedData(unsigned int N, unsigned int t_i)
     {
-        t->setRange((double)t_i, (double)(t_i + 1));
-        mean_t->setVal((double)t_i + 0.5);
+        t->setRange(static_cast<double>(t_i), static_cast<double>(t_i + 1));
+        mean_t->setVal(static_cast<double>(t_i + 0.5));
         fDataSet = fModel->generate(RooArgSet(*x, *y, *z, *t, *tErr), N);
         return fDataSet;
     }
@@ -227,8 +227,8 @@ class MultiVariatePDF
         delete time;
         RooRandom::randomGenerator()->SetSeed(seed);
 
-        double tmin = (double)t_start;
-        double tmax = (double)(t_start + 1);
+        double tmin = static_cast<double>(t_start);
+        double tmax = static_cast<double>(t_start + 1);
 
         x = new RooRealVar("x", "x", fOpt.x.min, fOpt.x.max);
         y = new RooRealVar("y", "y", fOpt.y.min, fOpt.y.max) ;

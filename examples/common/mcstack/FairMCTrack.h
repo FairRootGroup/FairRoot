@@ -63,9 +63,11 @@ class FairMCTrack : public TObject
     virtual ~FairMCTrack();
 
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
     /**  Output to screen  **/
-    void Print(Int_t iTrack=0) const;
-
+    virtual void Print(Int_t iTrack) const;
+#pragma clang diagnostic pop
 
     /**  Accessors  **/
     Int_t    GetPdgCode()  const { return fPdgCode; }

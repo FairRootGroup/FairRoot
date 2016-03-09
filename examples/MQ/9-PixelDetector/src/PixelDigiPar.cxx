@@ -74,7 +74,7 @@ Bool_t PixelDigiPar::getParams(FairParamList* list)
 // -------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------
-void PixelDigiPar::Print()
+void PixelDigiPar::Print(Option_t*) const
 {
   std::cout<<"SDS Pixel Digitization Parameters:"<<std::endl;
   std::cout<<"   fDimX (cm)   = "<<fDimX<<std::endl;

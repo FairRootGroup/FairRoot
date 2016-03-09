@@ -35,9 +35,9 @@ class FairTMessage : public TMessage
 };
 
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage(void *data, void *hint)
+void free_tmessage(void* /*data*/, void* hint)
 {
-    delete (TMessage*)hint;
+    delete static_cast<TMessage*>(hint);
 }
 
 template <typename T>
@@ -147,7 +147,7 @@ class base_RootDeSerializer
     void DoDeSerialization(FairMQMessage* msg)
     {
         FairTMessage tm(msg->GetData(), msg->GetSize());
-        fContainer  = (container_type*)(tm.ReadObject(tm.GetClass()));
+        fContainer  = static_cast<container_type*>(tm.ReadObject(tm.GetClass()));
     }
 
     container_type* DeserializeMsg(FairMQMessage* msg)

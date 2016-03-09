@@ -71,7 +71,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
         }
     }
 
-    FairTestDetectorMQRecoTask(Int_t verbose)
+    FairTestDetectorMQRecoTask(Int_t /*verbose*/)
         : fRecoTask(nullptr)
         , fDigiVector()
         , fHitVector()

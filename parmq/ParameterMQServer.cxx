@@ -89,7 +89,7 @@ void ParameterMQServer::InitTask()
     }
 }
 
-void free_tmessage (void *data, void *hint)
+void free_tmessage (void* /*data*/, void *hint)
 {
     delete static_cast<TMessage*>(hint);
 }

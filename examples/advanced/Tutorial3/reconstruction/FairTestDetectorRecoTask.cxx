@@ -57,7 +57,7 @@ InitStatus FairTestDetectorRecoTask::Init()
         return kFATAL;
     }
 
-    fDigiArray = (TClonesArray*)ioman->GetObject("FairTestDetectorDigi");
+    fDigiArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorDigi"));
     if (!fDigiArray)
     {
         std::cout << "-W- FairTestDetectorRecoTask::Init: "
@@ -73,7 +73,7 @@ InitStatus FairTestDetectorRecoTask::Init()
 }
 
 // -----   Public method Exec   --------------------------------------------
-void FairTestDetectorRecoTask::Exec(Option_t* opt)
+void FairTestDetectorRecoTask::Exec(Option_t* /*opt*/)
 {
 
     fHitArray->Clear();
@@ -82,7 +82,7 @@ void FairTestDetectorRecoTask::Exec(Option_t* opt)
 
     for (int ipnt = 0; ipnt < fDigiArray->GetEntriesFast(); ipnt++)
     {
-        FairTestDetectorDigi* digi = (FairTestDetectorDigi*)fDigiArray->At(ipnt);
+        FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fDigiArray->At(ipnt));
         if (!digi)
             continue;
 

@@ -332,7 +332,7 @@ REvent* MRevBuffer::RevGet(TSocket* pSocket, Int_t iFlush, Int_t)
     }
 
     if ( (ntohl(sInfo.iMode) != 1) ||
-         ( (int) ntohl(sInfo.iSize) != iInfoSize-iint) ) {
+         ( static_cast<int>(ntohl(sInfo.iSize)) != iInfoSize-iint) ) {
       LOG(INFO) <<  "-E- invalid info buffer received: " << FairLogger::endl;
       LOG(INFO) <<  "    size data ( " << iInfoSize-iint
            << ") "  << ntohl(sInfo.iSize)
@@ -356,7 +356,7 @@ REvent* MRevBuffer::RevGet(TSocket* pSocket, Int_t iFlush, Int_t)
     } else {
       if (iEvtNo >= 0) {
         // refresh some buffer infos not stored in class data
-        pFrag = (sMbsBufFrag*) &piBuf[3];
+        pFrag = reinterpret_cast<sMbsBufFrag*>(&piBuf[3]);
 
         // check if new buffer needed
         ii = 0;                          // count buffer header
@@ -371,7 +371,7 @@ REvent* MRevBuffer::RevGet(TSocket* pSocket, Int_t iFlush, Int_t)
           if (iDebug == -1) {
             piNextEvt += iEvtPar;         // skip previous event
             LOG(DEBUG) <<  "-D- next 40 2byte-words of buffer:" << FairLogger::endl;
-            psNextEvt = (short*) piNextEvt;
+            psNextEvt = reinterpret_cast<short*>(piNextEvt);
             for (Int_t iii=0; iii<40; iii++) {
               LOG(DEBUG) <<  "    " << iii+1 << ": " << psNextEvt[iii]
                    << FairLogger::endl;
@@ -411,7 +411,7 @@ gRetryLen:
     // get size of data following
     piBuf[0] = -1;                         // enables receive check
     iSize = iint;
-    pcBuf = (char*) piBuf;
+    pcBuf = reinterpret_cast<char*>(piBuf);
     while(iSize > 0) {
       if ( (imySig == -1) && (iDebug) ) {
         LOG(DEBUG) <<  "    CTL C detected (before recv len)" << FairLogger::endl;
@@ -522,7 +522,7 @@ gNextRecvL:
     // get event buffer without length field
     piBuf[1] = -1;                         // enables receive check
     iSize = iBufSize;
-    pcBuf = (char*) &(piBuf[1]);
+    pcBuf = reinterpret_cast<char*>(&(piBuf[1]));
     while(iSize > 0) {
       if ( (imySig == -1) && (iDebug) ) {
         LOG(DEBUG) <<  "    CTL C detected (before recv data)" << FairLogger::endl;
@@ -630,7 +630,7 @@ gNextRecvD:
       fflush(stdout);
     }
 
-    pFrag = (sMbsBufFrag*) &piBuf[3];
+    pFrag = reinterpret_cast<sMbsBufFrag*>(&piBuf[3]);
     if (iDebug == 1) {
       LOG(DEBUG) <<  FairLogger::endl << "buffer " << iBufNo
            << " (" << iBufNoServ << "): "
@@ -660,7 +660,7 @@ gNextRecvD:
 
     if (iDebug == -1) {
       LOG(DEBUG) <<  "-D- first 50 2byte-words of buffer:" << FairLogger::endl;
-      psNextEvt = (short*) &piBuf[1];
+      psNextEvt = reinterpret_cast<short*>(&piBuf[1]);
       for (Int_t iii=0; iii<50; iii++) {
         LOG(DEBUG) <<  "    " << iii+1 << ": " << psNextEvt[iii] << FairLogger::endl;
       }
@@ -691,7 +691,7 @@ gNextRecvD:
       iFragBeginIgn = 0;
       iFragEndIgn = 0;
       iFragConc = 0;
-      pFrag = (sMbsBufFrag*) &piBuf[3];
+      pFrag = reinterpret_cast<sMbsBufFrag*>(&piBuf[3]);
       if (pFrag->cBuf_fragBegin) {
         iFragBegin = 1;                // keep info for next buffer
         iFragBeginIgn++;
@@ -702,11 +702,11 @@ gNextRecvD:
   } // continue with current buffer
 
   iEvtNo++;                            // total event no.
-  psNextEvt = (short*) piNextEvt;
-  pEvtHead = (sMbsEv101*) piNextEvt;
+  psNextEvt = reinterpret_cast<short*>(piNextEvt);
+  pEvtHead = reinterpret_cast<sMbsEv101*>(piNextEvt);
   ielen = pEvtHead->iMbsEv101_dlen;
-  pSEvtHead = (sMbsSev101*) &piNextEvt[4];
-  pshort = (short*) pSEvtHead;
+  pSEvtHead = reinterpret_cast<sMbsSev101*>(&piNextEvt[4]);
+  pshort = reinterpret_cast<short*>(pSEvtHead);
 
 
 
@@ -725,7 +725,7 @@ gNextRecvD:
     pEvt->subEvtProcId[0] = pSEvtHead->sMbsSev101_procid;
     pEvt->subEvtSubCrate[0] = pSEvtHead->cMbsSev101_subcrate;
     pEvt->subEvtControl[0] = pSEvtHead->cMbsSev101_control;
-    pEvt->pSubEvt[0] = (Int_t*) &pshort[6];
+    pEvt->pSubEvt[0] = reinterpret_cast<Int_t*>(&pshort[6]);
 
 /*
     LOG(DEBUG) <<  "    evt " << iEvtNo << " (" << piNextEvt[3]
@@ -744,7 +744,7 @@ gNextRecvD:
       ii++;
 //          if (ii > 3) break;
       pshort += iselen + 4;
-      pSEvtHead = (sMbsSev101*) pshort;
+      pSEvtHead = reinterpret_cast<sMbsSev101*>(pshort);
       iselen = pSEvtHead->iMbsSev101_dlen;
 //      LOG(DEBUG) <<  ", SE" << ii << " " << iselen
 //           << " " << pSEvtHead->sMbsSev101_procid;
@@ -759,7 +759,7 @@ gNextRecvD:
       pEvt->subEvtProcId[ii-1] = pSEvtHead->sMbsSev101_procid;
       pEvt->subEvtSubCrate[ii-1] = pSEvtHead->cMbsSev101_subcrate;
       pEvt->subEvtControl[ii-1] = pSEvtHead->cMbsSev101_control;
-      pEvt->pSubEvt[ii-1] = (Int_t*) &pshort[6];
+      pEvt->pSubEvt[ii-1] = reinterpret_cast<Int_t*>(&pshort[6]);
 
 
     }
@@ -960,9 +960,9 @@ Int_t REvent::ReGetData(Int_t iChan)
   Int_t* pint;
 
   //if ( (iChan < 1) || (iChan > iSize/( (signed) sizeof(int))) )
-  if ( (iChan < 1) || (iChan > (iSize+4)/( (signed) sizeof(short))) ) {
+  if ( (iChan < 1) || (iChan > (iSize+4)/( static_cast<signed>(sizeof(short)))) ) {
     LOG(INFO) <<  "-E- event parameter number " << iChan
-         << " out of range (" << (iSize+4)/( (signed) sizeof(short))
+         << " out of range (" << (iSize+4)/( static_cast<signed>(sizeof(short)))
          << " long words)" << FairLogger::endl;
     return(-1);
   }

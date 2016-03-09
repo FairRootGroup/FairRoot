@@ -99,7 +99,7 @@ void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t e, Double_t vx, Double_t vy, Double_t vz,
                           Double_t time, Double_t polx, Double_t poly,
                           Double_t polz, TMCProcess proc, Int_t& ntr,
-                          Double_t weight, Int_t is, Int_t secondparentID)
+                          Double_t weight, Int_t /*is*/, Int_t /*secondparentID*/)
 {
 
   // --> Get TParticle array
@@ -177,7 +177,7 @@ TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim)
 
   // Return the iPrim-th TParticle from the fParticle array. This should be
   // a primary.
-  TParticle* part = (TParticle*)fParticles->At(iPrim);
+  TParticle* part = static_cast<TParticle*>(fParticles->At(iPrim));
   if ( ! (part->GetMother(0) < 0) ) {
     LOG(FATAL) << "Not a primary track!" << iPrim
 	       << FairLogger::endl;
@@ -279,7 +279,7 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
 
   // First update mother ID in MCTracks
   for (Int_t i=0; i<fNTracks; i++) {
-    FairMCTrack* track = (FairMCTrack*)fTracks->At(i);
+    FairMCTrack* track = static_cast<FairMCTrack*>(fTracks->At(i));
     Int_t iMotherOld = track->GetMotherId();
     fIndexIter = fIndexMap.find(iMotherOld);
     if (fIndexIter == fIndexMap.end()) {
@@ -300,7 +300,7 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
   }
 
   FairDetector* det = NULL;
-  while( (det = (FairDetector*)fDetIter->Next() ) ) {
+  while( (det = static_cast<FairDetector*>(fDetIter->Next()) ) ) {
 
 
     // --> Get hit collections from detector
@@ -312,7 +312,7 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
 
       // --> Update track index for all MCPoints in the collection
       for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
-        FairMCPoint* point = (FairMCPoint*)hitArray->At(iPoint);
+        FairMCPoint* point = static_cast<FairMCPoint*>(hitArray->At(iPoint));
         Int_t iTrack = point->GetTrackID();
 
         fIndexIter = fIndexMap.find(iTrack);
@@ -359,7 +359,7 @@ void FairStack::Register()
 
 
 // -----   Public method Print  --------------------------------------------
-void FairStack::Print(Int_t iVerbose) const
+void FairStack::Print(Option_t*) const
 {
   LOG(INFO) << "FairStack: Number of primaries        = "
 	    << fNPrimaries << FairLogger::endl;
@@ -369,7 +369,7 @@ void FairStack::Print(Int_t iVerbose) const
 	    << fNTracks << FairLogger::endl;
   if (gLogger->IsLogNeeded(DEBUG1)) {
     for (Int_t iTrack=0; iTrack<fNTracks; iTrack++) {
-      ((FairMCTrack*) fTracks->At(iTrack))->Print(iTrack);
+      (static_cast<FairMCTrack*>( fTracks->At(iTrack))->Print(iTrack));
     }
   }
 }
@@ -422,7 +422,7 @@ TParticle* FairStack::GetParticle(Int_t trackID) const
     LOG(FATAL) << "Particle index " << trackID << " out of range."
 	       << FairLogger::endl;
   }
-  return (TParticle*)fParticles->At(trackID);
+  return static_cast<TParticle*>(fParticles->At(trackID));
 }
 // -------------------------------------------------------------------------
 

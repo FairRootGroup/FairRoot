@@ -59,7 +59,7 @@ class FairContFact : public TNamed
 
     TList* containers;   // all parameter containers managed by this factory
     const char* getActualContext(const char* name) {
-      return ((FairContainer*)containers->FindObject(name))->getActualContext();
+      return (static_cast<FairContainer*>(containers->FindObject(name)))->getActualContext();
     }
     /** Fair Logger */
     FairLogger*  fLogger;//!

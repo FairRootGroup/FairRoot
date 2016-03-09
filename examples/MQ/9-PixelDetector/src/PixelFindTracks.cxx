@@ -41,8 +41,6 @@
 using std::pair;
 using std::map;
 
-
-
 // -----   Default constructor   ------------------------------------------
 PixelFindTracks::PixelFindTracks()
   : PixelFindTracks("Pixel Track Finder", 0)
@@ -65,11 +63,11 @@ PixelFindTracks::PixelFindTracks(Int_t iVerbose)
 PixelFindTracks::PixelFindTracks(const char* name, Int_t iVerbose) 
   : FairTask(name, iVerbose)
   , fDigiPar(NULL)
-  , fTNofEvents(0)
   , fHits(NULL)
+  , fTracks(NULL)
+  , fTNofEvents(0)
   , fNHits(0)
   , fTNofHits(0)
-  , fTracks(NULL)
   , fNTracks(0)
   , fTNofTracks(0)
   , fhDist2D(NULL)
@@ -92,7 +90,7 @@ PixelFindTracks::~PixelFindTracks() {
 // -------------------------------------------------------------------------
 
 // -----   Public method Exec   --------------------------------------------
-void PixelFindTracks::Exec(Option_t* opt) {
+void PixelFindTracks::Exec(Option_t* /*opt*/) {
 
   Reset();
 
@@ -112,10 +110,10 @@ void PixelFindTracks::Exec(Option_t* opt) {
   Double_t expY  = 0.;
 
   for ( Int_t ihit1 = 0 ; ihit1 < fNHits ; ihit1++ ) {
-    curHit1 = (PixelHit*)fHits->At(ihit1);
+    curHit1 = static_cast<PixelHit*>(fHits->At(ihit1));
     if ( (curHit1->GetDetectorID())/256 != 1 ) continue;
     for ( Int_t ihit2 = 0 ; ihit2 < fNHits ; ihit2++ ) {
-      curHit2 = (PixelHit*)fHits->At(ihit2);
+      curHit2 = static_cast<PixelHit*>(fHits->At(ihit2));
       if ( (curHit2->GetDetectorID())/256 != 2 ) continue;
 
       parAX = (curHit2->GetX()-curHit1->GetX())/(curHit2->GetZ()-curHit1->GetZ());
@@ -124,7 +122,7 @@ void PixelFindTracks::Exec(Option_t* opt) {
       parY0 = curHit1->GetY()-parAY*curHit1->GetZ();
 
       for ( Int_t ihit3 = 0 ; ihit3 < fNHits ; ihit3++ ) {
-	curHit3 = (PixelHit*)fHits->At(ihit3);
+	curHit3 = static_cast<PixelHit*>(fHits->At(ihit3));
 	if ( (curHit3->GetDetectorID())/256 != 3 ) continue;
 	expX = parX0+parAX*curHit3->GetZ();
 	expY = parY0+parAY*curHit3->GetZ();
@@ -165,7 +163,7 @@ void PixelFindTracks::SetParContainers() {
   if ( ! db ) Fatal("SetParContainers", "No runtime database");
 
   // Get GEM digitisation parameter container
-  fDigiPar = (PixelDigiPar*)(db->getContainer("PixelDigiParameters"));
+  fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
 
 }
 // -------------------------------------------------------------------------
@@ -177,7 +175,7 @@ InitStatus PixelFindTracks::Init() {
   FairRootManager* ioman = FairRootManager::Instance();
 
   if ( ! ioman ) Fatal("Init", "No FairRootManager");
-  fHits = (TClonesArray*) ioman->GetObject("PixelHits");
+  fHits = static_cast<TClonesArray*>(ioman->GetObject("PixelHits"));
 
   if ( !fHits ) 
     LOG(WARNING) << "PixelFindTracks::Init() No input PixelHit array!" << FairLogger::endl;
@@ -220,8 +218,8 @@ void PixelFindTracks::Finish() {
 
   LOG(INFO) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
   LOG(INFO) << " Events:        " << fTNofEvents << FairLogger::endl;
-  LOG(INFO) << " Hits:          " << fTNofHits   << "    ( " << (Double_t)fTNofHits  /((Double_t)fTNofEvents) << " per event )" << FairLogger::endl;
-  LOG(INFO) << " Tracks:        " << fTNofTracks << "    ( " << (Double_t)fTNofTracks/((Double_t)fTNofEvents) << " per event )" << FairLogger::endl;
+  LOG(INFO) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits  )/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
+  LOG(INFO) << " Tracks:        " << fTNofTracks << "    ( " << static_cast<Double_t>(fTNofTracks)/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
   LOG(INFO) << "---------------------------------------------------------------------" << FairLogger::endl; 
 }
 // -------------------------------------------------------------------------

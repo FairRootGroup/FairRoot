@@ -68,14 +68,14 @@ class DigiToHitTask_base : public BaseProcessorTaskPolicy< DigiToHitTask_base<T,
     void ExecuteTask(TClonesArray* inputdata)
     {
         fOutputContainer->Delete();
-        for(unsigned int idigi(0);idigi<inputdata->GetEntriesFast();idigi++)
+        for(int idigi(0);idigi<inputdata->GetEntriesFast();idigi++)
         {
             TVector3 pos;
             TVector3 dpos;
             Double_t timestamp=0;
             Double_t timestampErr=0;
 
-            Digi_type* digi = (Digi_type*)inputdata->At(idigi);
+            Digi_type* digi = static_cast<Digi_type*>(inputdata->At(idigi));
             ProcessDigi(*digi, pos, dpos, timestamp, timestampErr);
 
             Hit_type* hit = new ((*fOutputContainer)[idigi]) Hit_type(fDetID, fMCIndex, pos, dpos);

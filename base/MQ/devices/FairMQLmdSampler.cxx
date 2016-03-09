@@ -99,7 +99,7 @@ void FairMQLmdSampler::Run()
 }
 
 
-void free_buffer(void *data, void *hint)
+void free_buffer(void* /*data*/, void* /*hint*/)
 {
     LOG(TRACE) << "empty deleter";
 }
@@ -116,7 +116,7 @@ int FairMQLmdSampler::ReadEvent()
     /*-               GETEVT__NOMORE=3  : No more events.                 */
     /*-               GETEVT__RDERR=6   : read server or file error       */
     /*-               GETEVT__TIMEOUT=9 : when enabled by f_evt_timeout   */
-    int status = f_evt_get_event(fxInputChannel, (INTS4**)evtptr, (INTS4**)buffptr);
+    int status = f_evt_get_event(fxInputChannel, static_cast<INTS4**>(evtptr), static_cast<INTS4**>(buffptr));
     //int fuEventCounter = fxEvent->l_count;
     //int fCurrentMbsEventNo = fuEventCounter;
     
@@ -134,7 +134,7 @@ int FairMQLmdSampler::ReadEvent()
         }
 
         // fCurrentFile incremented in InitTask once
-        if (fCurrentFile >= fFileNames.size())
+        if (fCurrentFile >= static_cast<int>(fFileNames.size()))
         {
             stop = true;
             return 1;
@@ -179,7 +179,7 @@ int FairMQLmdSampler::ReadEvent()
         void* SubEvtptr = &fxSubEvent;
         void* EvtDataptr = &fxEventData;
         int nrlongwords;
-        status = f_evt_get_subevent(fxEvent, i, (int**)SubEvtptr, (int**)EvtDataptr, &nrlongwords);
+        status = f_evt_get_subevent(fxEvent, i, static_cast<int**>(SubEvtptr), static_cast<int**>(EvtDataptr), &nrlongwords);
 
         if (status)
         {
@@ -260,7 +260,7 @@ bool FairMQLmdSampler::OpenNextFile(const std::string& fileName)
     status = f_evt_get_open(inputMode,
                           const_cast<char*>(fileName.c_str()),
                           fxInputChannel,
-                          (char**)headptr,
+                          static_cast<char**>(headptr),
                           1,
                           1);
 

@@ -90,8 +90,8 @@ void PixelFindHitsTask::Finish()
 
   LOG(INFO) << "-------------------- PixelFindHitsTask : Summary ------------------------";
   LOG(INFO) << " Events:        " << fTNofEvents;
-  LOG(INFO) << " Digis:         " << fTNofDigis  << "    ( " << (Double_t)fTNofDigis /((Double_t)fTNofEvents) << " per event )";
-  LOG(INFO) << " Hits:          " << fTNofHits   << "    ( " << (Double_t)fTNofHits  /((Double_t)fTNofEvents) << " per event )";
+  LOG(INFO) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis) /(static_cast<Double_t>(fTNofEvents)) << " per event )";
+  LOG(INFO) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits)  /(static_cast<Double_t>(fTNofEvents)) << " per event )";
   LOG(INFO) << "---------------------------------------------------------------------"; 
 }
 // -------------------------------------------------------------------------
@@ -135,7 +135,7 @@ void PixelFindHitsTask::Exec(TClonesArray* digis, TClonesArray* hits)
 //*
   for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) 
   {
-    PixelDigi* currentDigi = (PixelDigi*)digis->At(iDigi);
+    PixelDigi* currentDigi = static_cast<PixelDigi*>(digis->At(iDigi));
 
     Int_t detId = currentDigi->GetDetectorID();    
     TString nodeName = Form("/cave/Pixel%d_%d",detId/256,detId%256);
@@ -144,10 +144,10 @@ void PixelFindHitsTask::Exec(TClonesArray* digis, TClonesArray* hits)
     LOG(DEBUG)<<"PixelFindHits::Exec() ok 2 ";
     TGeoNode* curNode = fGeoParSet->GetGeometry()->GetCurrentNode();
     LOG(DEBUG)<<"PixelFindHits::Exec() ok 3 ";
-    TGeoMatrix* matrix = curNode->GetMatrix();
+//    TGeoMatrix* matrix = curNode->GetMatrix();
 
     TGeoVolume* actVolume = fGeoParSet->GetGeometry()->GetCurrentVolume();
-    TGeoBBox* actBox = (TGeoBBox*)(actVolume->GetShape());
+    TGeoBBox* actBox = static_cast<TGeoBBox*>(actVolume->GetShape());
 
     Int_t feId = currentDigi->GetFeID();
     Int_t col  = currentDigi->GetCol();

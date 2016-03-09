@@ -60,7 +60,7 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
   TObjArray* UserIons=fRun->GetUserDefIons();
   TObjArray* UserParticles=fRun->GetUserDefParticles();
   FairParticle* part=0;
-  fIon =(FairIon*) UserIons->FindObject(ionName);
+  fIon =static_cast<FairIon*>(UserIons->FindObject(ionName));
   if(fIon) {
     fgNIon++;
     fMult = mult;
@@ -72,7 +72,7 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
     fVz   = vz;
 
   } else {
-    part= (FairParticle*)UserParticles->FindObject(ionName);
+    part= static_cast<FairParticle*>(UserParticles->FindObject(ionName));
     if(part) {
       fgNIon++;
       TParticle* particle=part->GetParticle();

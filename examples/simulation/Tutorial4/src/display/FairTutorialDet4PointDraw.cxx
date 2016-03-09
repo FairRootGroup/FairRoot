@@ -62,7 +62,7 @@ void FairTutorialDet4PointDraw::SetParContainers()
   FairRun* run = FairRun::Instance();
   FairRuntimeDb* rtdb=run->GetRuntimeDb();
 
-  fGeoPar = (FairTutorialDet4GeoPar*)(rtdb->getContainer("FairTutorialDet4GeoPar"));
+  fGeoPar = static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
 
 }
 // --------------------------------------------------------------------
@@ -71,7 +71,7 @@ void FairTutorialDet4PointDraw::SetParContainers()
 InitStatus FairTutorialDet4PointDraw::Init()
 {
    FairRootManager* fManager = FairRootManager::Instance();
-   fPointList = (TClonesArray *)fManager->GetObject(GetName());
+   fPointList = static_cast<TClonesArray*>(fManager->GetObject(GetName()));
    if(NULL==fPointList){
      LOG(ERROR) << "FairTutorialDet4PointDraw::Init()  branch " << GetName()
 		<< " not found! Task will be deactivated."<< FairLogger::endl;
@@ -89,7 +89,7 @@ InitStatus FairTutorialDet4PointDraw::Init()
 // -------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------
-void FairTutorialDet4PointDraw::Exec(Option_t* option)
+void FairTutorialDet4PointDraw::Exec(Option_t* /*option*/)
 {
   if (IsActive()){
 
@@ -105,7 +105,7 @@ void FairTutorialDet4PointDraw::Exec(Option_t* option)
     q->SetMarkerSize(1.5);
     q->SetMarkerStyle(fStyle);
 
-    Int_t refCounter=0;
+//    Int_t refCounter=0;
 
     for (Int_t i=0; i<npoints; ++i) {
 

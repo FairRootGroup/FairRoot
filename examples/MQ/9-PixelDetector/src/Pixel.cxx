@@ -82,9 +82,11 @@ Pixel::~Pixel()
 
 void Pixel::Initialize()
 {
+/*
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   PixelGeoPar* par=(PixelGeoPar*)(rtdb->getContainer("PixelGeoPar"));
+*/
 }
 
 Bool_t  Pixel::ProcessHits(FairVolume* vol)
@@ -132,7 +134,7 @@ Bool_t  Pixel::ProcessHits(FairVolume* vol)
            fELoss);
 
     // Increment number of Pixel det points in TParticle
-    FairStack* stack = (FairStack*) gMC->GetStack();
+    FairStack* stack = static_cast<FairStack*>(gMC->GetStack());
     stack->AddPoint(kPixel);
   }
 
@@ -193,7 +195,7 @@ void Pixel::ConstructGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  PixelGeoPar* par=(PixelGeoPar*)(rtdb->getContainer("PixelGeoPar"));
+  PixelGeoPar* par=static_cast<PixelGeoPar*>(rtdb->getContainer("PixelGeoPar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -201,7 +203,7 @@ void Pixel::ConstructGeometry()
   FairGeoNode* node   = NULL;
   FairGeoVolume* aVol=NULL;
 
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
       fSensNodes->AddLast( aVol );
@@ -226,7 +228,7 @@ void Pixel::ModifyGeometry() {
   TGeoPhysicalNode* tgpn = gGeoManager->MakePhysicalNode(tName.Data());
   if ( !tgpn ) {cout << "no thpn" << endl; return;} 
   cout << "got TGPN" << endl;
-  TGeoHMatrix* tghm = (TGeoHMatrix*)tgpn->GetOriginalMatrix();
+  TGeoHMatrix* tghm = static_cast<TGeoHMatrix*>(tgpn->GetOriginalMatrix());
   if ( !tghm ) {cout << "no tghm" << endl; return;}
   cout << "got TGHM" << endl;
   cout << " * * *  o r i g  * * *  o r i g  * * *  o r i g  * * *  o r i g  * * * " << endl;

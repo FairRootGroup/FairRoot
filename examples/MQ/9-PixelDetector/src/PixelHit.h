@@ -39,7 +39,7 @@ class PixelHit : public FairHit
     virtual ~PixelHit();
 
     template <class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar& boost::serialization::base_object<FairHit>(*this);
     }

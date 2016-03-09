@@ -107,11 +107,11 @@ void FairRunAnaProof::Init()
     if (fInputGeoFile!=0) { //First check if the user has a separate Geo file!
       TIter next(fInputGeoFile->GetListOfKeys());
       TKey* key;
-      while ((key = (TKey*)next())) {
+      while ((key = static_cast<TKey*>(next()))) {
         if (strcmp(key->GetClassName(),"TGeoManager") != 0) {
           continue;
         }
-        gGeoManager = (TGeoManager*)key->ReadObj();
+        gGeoManager = static_cast<TGeoManager*>(key->ReadObj());
         break;
       }
     }
@@ -139,7 +139,7 @@ void FairRunAnaProof::Init()
         TFile* nextfile=0;
         TSeqCollection* fileList=gROOT->GetListOfFiles();
         for (Int_t k=0; k<fileList->GetEntries(); k++) {
-          nextfile=(TFile*)fileList->At(k);
+          nextfile=static_cast<TFile*>(fileList->At(k));
           if (nextfile) {
             nextfile->Get("FAIRGeom");
           }
@@ -156,11 +156,11 @@ void FairRunAnaProof::Init()
       if (fInputGeoFile!=0) { //First check if the user has a separate Geo file!
         TIter next(fInputGeoFile->GetListOfKeys());
         TKey* key;
-        while ((key = (TKey*)next())) {
+        while ((key = static_cast<TKey*>(next()))) {
           if (strcmp(key->GetClassName(),"TGeoManager") != 0) {
             continue;
           }
-          gGeoManager = (TGeoManager*)key->ReadObj();
+          gGeoManager = static_cast<TGeoManager*>(key->ReadObj());
           break;
         }
       }
@@ -178,7 +178,7 @@ void FairRunAnaProof::Init()
 
   // Init the RTDB containers
   fRtdb= GetRuntimeDb();
-  FairBaseParSet* par=(FairBaseParSet*)
+  FairBaseParSet* par=static_cast<FairBaseParSet*>
                       (fRtdb->getContainer("FairBaseParSet"));
 
   /**Set the IO Manager to run with time stamps*/
@@ -195,7 +195,7 @@ void FairRunAnaProof::Init()
     LOG(INFO) << "Parameter and input file are available, Assure that basic info is there for the run!" << FairLogger::endl;
     fRootManager->ReadEvent(0);
 
-    fEvtHeader = (FairEventHeader*)fRootManager->GetObject("EventHeader.");
+    fEvtHeader = static_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
 
     if (fEvtHeader ==0) {
       fEvtHeader=GetEventHeader();
@@ -302,7 +302,7 @@ void FairRunAnaProof::SetSource(FairSource* tempSource) {
     LOG(WARNING) << "FairRunAnaProof. Seems you are trying to set different source than FairFileSource" << FairLogger::endl;
   }
   fRootManager->SetSource(tempSource);
-  fProofFileSource = (FairFileSource*)tempSource;
+  fProofFileSource = static_cast<FairFileSource*>(tempSource);
 }
 //_____________________________________________________________________________
 
@@ -354,8 +354,8 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
     fProofOutputStatus = "merge";
   }
 
-//  TChain* inChain = (TChain*)fRootManager->GetInChain();
-  TChain* inChain = (TChain*)fProofFileSource->GetInChain();
+//  TChain* inChain = static_cast<TChain*>(fRootManager->GetInChain());
+  TChain* inChain = static_cast<TChain*>(fProofFileSource->GetInChain());
   TString par1File = "";
   TString par2File = "";
   if ( fRtdb->getFirstInput () ) {

@@ -128,9 +128,9 @@ int main(int argc, char** argv)
         for(unsigned int t(0); t<tmax;t++)
         {
             
-            unsigned int NDigi=(unsigned int)Gauss_N.generate(N,1)->get(0)->getRealValue("N");
+            unsigned int NDigi=static_cast<unsigned int>(Gauss_N.generate(N,1)->get(0)->getRealValue("N"));
             LOG(INFO)  <<"Bunch number "<<t+1<<"/"<<tmax 
-                       <<" ("<< 100.*(double)(t+1)/(double)tmax<<" %). Number of generated digi : "
+                       <<" ("<< 100.*static_cast<double>(t+1)/static_cast<double>(tmax)<<" %). Number of generated digi : "
                        << NDigi<< " , payload = "<<NDigi*(3*sizeof(Int_t)+2*sizeof(Double_t))<<" bytes";
 
             RooDataSet *simdataset = Model->GetGeneratedData(NDigi,t);
@@ -152,13 +152,13 @@ int main(int argc, char** argv)
             TH1D* histox = new TH1D("fx","digi.fx",100,pdfconfig.x.min,pdfconfig.x.max);
             TH1D* histoy = new TH1D("fy","digi.fy",100,pdfconfig.y.min,pdfconfig.y.max);
             TH1D* histoz = new TH1D("fz","digi.fz",100,pdfconfig.z.min,pdfconfig.z.max);
-            TH1D* histot = new TH1D("ftimestamp","digi.ftimestamp",10*tmax, 0., (double)(tmax+1));
+            TH1D* histot = new TH1D("ftimestamp","digi.ftimestamp",10*tmax, 0., static_cast<double>(tmax+1));
             TH1D* histoterr = new TH1D("ftimestampErr","digi.ftimestampErr",100,pdfconfig.tErr.min,pdfconfig.tErr.max);
             TH1D* histoN = new TH1D("f_N","Number of digi distribution",100,Nval.min,Nval.max);
         
             for(auto& p : data)
             {
-                histoN->Fill((double)p.size());
+                histoN->Fill(static_cast<double>(p.size()));
                 for(auto& q : p)
                 {
                     histox->Fill(q.GetX());
@@ -229,15 +229,15 @@ template <typename T, typename ManagerType >
     void SaveDataToFile(ManagerType &OutMan, RooDataSet * dataset, bool printval)
     {
         vector<T> DataBunch;
-        for(unsigned int i(0);i<dataset->numEntries();i++)
+        for(int i(0);i<dataset->numEntries();i++)
         {
             T data;
             data.SetTimeStamp( dataset->get(i)->getRealValue("t") );
             data.SetTimeStampError( dataset->get(i)->getRealValue("tErr") );
 
-            data.SetX( (Int_t)round(dataset->get(i)->getRealValue("x")) );
-            data.SetY( (Int_t)round(dataset->get(i)->getRealValue("y")) );
-            data.SetZ( (Int_t)round(dataset->get(i)->getRealValue("z")) );
+            data.SetX( static_cast<Int_t>(round(dataset->get(i)->getRealValue("x")) ));
+            data.SetY( static_cast<Int_t>(round(dataset->get(i)->getRealValue("y")) ));
+            data.SetZ( static_cast<Int_t>(round(dataset->get(i)->getRealValue("z")) ));
 
             if(printval)
                 LOG(INFO) <<  "x="    << data.GetX() 
@@ -255,15 +255,15 @@ template <typename T, typename ManagerType >
     void SavePodDataToFile(ManagerType &OutMan, RooDataSet * dataset, bool printval)
     {
         vector<T> DataBunch;
-        for(unsigned int i(0);i<dataset->numEntries();i++)
+        for(int i(0);i<dataset->numEntries();i++)
         {
             T data;
             data.fTimeStamp =      dataset->get(i)->getRealValue("t");
             data.fTimeStampError = dataset->get(i)->getRealValue("tErr");
 
-            data.fX = (Int_t)round(dataset->get(i)->getRealValue("x"));
-            data.fY = (Int_t)round(dataset->get(i)->getRealValue("y"));
-            data.fZ = (Int_t)round(dataset->get(i)->getRealValue("z"));
+            data.fX = static_cast<Int_t>(round(dataset->get(i)->getRealValue("x")));
+            data.fY = static_cast<Int_t>(round(dataset->get(i)->getRealValue("y")));
+            data.fZ = static_cast<Int_t>(round(dataset->get(i)->getRealValue("z")));
 
             if(printval)
                 LOG(INFO) <<  "x="    << data.fX 

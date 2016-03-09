@@ -48,13 +48,13 @@ FairMQSamplerTask::~FairMQSamplerTask()
 InitStatus FairMQSamplerTask::Init()
 {
     FairRootManager* ioman = FairRootManager::Instance();
-    fEvtHeader = (FairEventHeader*)ioman->GetObject("EventHeader.");
-    fInput = (TClonesArray*) ioman->GetObject(fBranch.c_str());
+    fEvtHeader = static_cast<FairEventHeader*>(ioman->GetObject("EventHeader."));
+    fInput = static_cast<TClonesArray*>(ioman->GetObject(fBranch.c_str()));
 
     return kSUCCESS;
 }
 
-void FairMQSamplerTask::Exec(Option_t *opt)
+void FairMQSamplerTask::Exec(Option_t* /*opt*/)
 {
 }
 

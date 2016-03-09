@@ -34,9 +34,9 @@ FairMQExample7Client::~FairMQExample7Client()
 {
 }
 
-void FairMQExample7Client::CustomCleanup(void *data, void *hint)
+void FairMQExample7Client::CustomCleanup(void* /*data*/, void* hint)
 {
-    delete (string*)hint;
+    delete static_cast<string*>(hint);
 }
 
 // special class to expose protected TMessage constructor
@@ -70,7 +70,7 @@ void FairMQExample7Client::Run()
             if (Receive(rep, "data") > 0)
             {
                 FairMQExample7TMessage tmsg(rep->GetData(), rep->GetSize());
-                FairMQExample7ParOne* par = (FairMQExample7ParOne*)(tmsg.ReadObject(tmsg.GetClass()));
+                FairMQExample7ParOne* par = static_cast<FairMQExample7ParOne*>(tmsg.ReadObject(tmsg.GetClass()));
                 LOG(INFO) << "Received parameter from the server:";
                 par->print();
             }
