@@ -61,12 +61,15 @@
 #ifndef PND_PYTHIAGENERATOR_H
 #define PND_PYTHIAGENERATOR_H
 
+#ifdef __CINT__
+#define _DLFCN_H_
+#define _DLFCN_H
+#endif
 
-#include "FairGenerator.h"
-
-class TDatabasePDG;
-class FairPrimaryGenerator;
-
+#include <stdio.h>          // for FILE
+#include "FairGenerator.h"  // for FairGenerator
+#include "Rtypes.h"         // for Int_t, Pythia6Generator::Class, Bool_t, etc
+class FairPrimaryGenerator;  // lines 68-68
 
 
 class Pythia6Generator : public FairGenerator  

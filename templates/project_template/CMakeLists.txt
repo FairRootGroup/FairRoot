@@ -6,7 +6,21 @@
 # and the experiment part.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6.0 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.2 FATAL_ERROR)
+
+### CMP0025   Compiler id for Apple Clang is now AppleClang.
+### CMP0042   MACOSX_RPATH is enabled by default.
+
+foreach(p
+  CMP0025 # CMake 3.0
+  CMP0042 # CMake 3.0
+  )
+  if(POLICY ${p})
+  cmake_policy(SET ${p} NEW)
+  endif()
+endforeach()
+
+
 
 # Set name of our project to “MYPROJ". Has to be done
 # after check of cmake version since this is a new feature                  
@@ -29,8 +43,9 @@ SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ 
 # is checked
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
-set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
+ set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
+  set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"  ${CMAKE_MODULE_PATH})
+  set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
 
 Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
 
@@ -144,8 +159,6 @@ Generate_Version_Info()
 SET(_LIBDIR ${CMAKE_BINARY_DIR}/lib)
 SET(LD_LIBRARY_PATH  ${_LIBDIR} ${LD_LIBRARY_PATH})
 
-#install(DIRECTORY geometry DESTINATION pnd_install 
-#          )
 
 
 # Check if the compiler support specific C++11 features
@@ -172,5 +185,4 @@ WRITE_CONFIG_FILE(config.sh)
 configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
               )
-
 
