@@ -15,16 +15,15 @@
 #ifndef PIXELTRACK_H_
 #define PIXELTRACK_H_
 
-#include "FairTimeStamp.h" // for FairTimeStamp
-
-#include "Rtypes.h" // for PixelTrack::Class, etc
+#include "FairTimeStamp.h"  // for FairTimeStamp
+#include "Rtypes.h"         // for PixelTrack::Class, ClassDef, PixelTrack::...
+#include "RtypesCore.h"     // for Double_t, Int_t
 
 #ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
 #endif //__CINT__
 
-class TVector3;
 
 class PixelTrack : public FairTimeStamp
 {

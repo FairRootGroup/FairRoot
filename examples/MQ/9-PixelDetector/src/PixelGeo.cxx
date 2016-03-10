@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "PixelGeo.h"
-#include "FairGeoNode.h"
+#include <stdio.h>  // for sprintf
 
 ClassImp(PixelGeo)
 

@@ -15,12 +15,11 @@
 #ifndef PIXELDIGIPAR_H
 #define PIXELDIGIPAR_H
 
-#include <TVector2.h>
-#include <TArrayD.h>
-#include <TMath.h>
 
-#include "FairParGenericSet.h"
-#include "FairParamList.h"
+#include "FairParGenericSet.h"  // for FairParGenericSet
+#include "Rtypes.h"             // for PixelDigiPar::Class, ClassDef, PixelD...
+#include "RtypesCore.h"         // for Double_t, Int_t, Bool_t
+class FairParamList;
 
 //! Digitization Parameter Class for Pixel detector
 class PixelDigiPar : public FairParGenericSet

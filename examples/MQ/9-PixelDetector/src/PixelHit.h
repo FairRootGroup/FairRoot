@@ -15,9 +15,10 @@
 #ifndef PIXELHIT_H_
 #define PIXELHIT_H_
 
-#include "FairHit.h" // for FairHit
-
-#include "Rtypes.h" // for PixelHit::Class, etc
+#include "FairHit.h"     // for FairHit
+#include "Rtypes.h"      // for PixelHit::Class, ClassDef, PixelHit::Streamer
+#include "RtypesCore.h"  // for Int_t
+class TVector3;  // lines 27-27
 
 #ifndef __CINT__
 #include <boost/serialization/access.hpp>

@@ -15,10 +15,10 @@
 #ifndef PixelDigi_H_
 #define PixelDigi_H_
 
-#include "FairTimeStamp.h" // for FairTimeStamp
-#include "Rtypes.h"        // for Int_t, etc
+#include "FairTimeStamp.h"  // for FairTimeStamp
+#include "Rtypes.h"         // for PixelDigi::Class, ClassDef, PixelDigi::St...
+#include "RtypesCore.h"     // for Int_t, Double_t
 
-#include <iostream>        // for operator<<, basic_ostream, etc
 
 class PixelDigi : public FairTimeStamp
 {

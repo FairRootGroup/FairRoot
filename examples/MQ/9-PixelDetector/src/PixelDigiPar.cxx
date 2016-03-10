@@ -12,9 +12,9 @@
  *      Author: R. Karabowicz
  */
 
-#include <iostream>
 #include "PixelDigiPar.h"
-
+#include "FairParamList.h"  // for FairParamList
+#include <iostream>
 // -------------------------------------------------------------------------
 PixelDigiPar::PixelDigiPar(const char* name, const char* title, const char* context)
 : FairParGenericSet(name,title,context)

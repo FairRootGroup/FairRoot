@@ -5,14 +5,17 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
 #include "PixelContFact.h"
+#include <string.h>         // for strcmp, NULL
+#include "FairRuntimeDb.h"  // for FairRuntimeDb
+#include "PixelDigiPar.h"   // for PixelDigiPar
+#include "PixelGeoPar.h"    // for PixelGeoPar
+#include "TList.h"          // for TList
+#include "TString.h"        // for TString
+class FairParSet;
 
-#include "PixelGeoPar.h"
-#include "PixelDigiPar.h"
 
-#include "FairRuntimeDb.h"
-
-#include <iostream>
 
 ClassImp(PixelContFact)
 

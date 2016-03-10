@@ -9,8 +9,9 @@
 #define PIXELCONTFACT_H
 
 #include "FairContFact.h"
-
-class FairContainer;
+#include "FairContFact.h"  // for FairContFact, FairContainer (ptr only)
+#include "Rtypes.h"        // for PixelContFact::Class, ClassDef, PixelContF...
+class FairParSet;
 
 class PixelContFact : public FairContFact
 {
