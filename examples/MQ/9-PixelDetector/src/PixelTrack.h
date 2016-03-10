@@ -17,7 +17,6 @@
 
 #include "FairTimeStamp.h"  // for FairTimeStamp
 #include "Rtypes.h"         // for PixelTrack::Class, ClassDef, PixelTrack::...
-#include "RtypesCore.h"     // for Double_t, Int_t
 
 #ifndef __CINT__
 #include <boost/serialization/access.hpp>

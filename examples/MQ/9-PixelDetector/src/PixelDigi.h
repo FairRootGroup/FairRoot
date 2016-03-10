@@ -17,7 +17,6 @@
 
 #include "FairTimeStamp.h"  // for FairTimeStamp
 #include "Rtypes.h"         // for PixelDigi::Class, ClassDef, PixelDigi::St...
-#include "RtypesCore.h"     // for Int_t, Double_t
 
 
 class PixelDigi : public FairTimeStamp
