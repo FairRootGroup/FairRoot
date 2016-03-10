@@ -55,7 +55,7 @@ private:
   Int_t             fTNofDigis;
 
   TString  fInputFileName;
-  ifstream fInputFile;  
+  std::ifstream fInputFile;  
 
   Int_t    fCurrentEntryNo;
 

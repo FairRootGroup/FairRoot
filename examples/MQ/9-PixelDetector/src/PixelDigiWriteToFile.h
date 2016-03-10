@@ -57,7 +57,7 @@ class PixelDigiWriteToFile : public FairTask
   TClonesArray*     fDigis;        /** Input array of PixelDigi **/
 
   TString  fOutputFileName;
-  ofstream fOutputFile;  
+  std::ofstream fOutputFile;  
 
   /** Get parameter containers **/
   virtual void SetParContainers();
