@@ -25,12 +25,6 @@
 #include "FairMQExample3Sink.h"
 #include "FairMQTools.h"
 
-#ifdef NANOMSG
-#include "FairMQTransportFactoryNN.h"
-#else
-#include "FairMQTransportFactoryZMQ.h"
-#endif
-
 #include "KeyValue.h" // DDS Key Value
 #include "CustomCmd.h" // DDS Custom Commands
 
@@ -63,20 +57,14 @@ int main(int argc, char** argv)
 
         LOG(INFO) << "PID: " << getpid();
 
-#ifdef NANOMSG
-        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-        sink.SetTransport(transportFactory);
+        sink.SetTransport(config.GetValue<std::string>("transport"));
 
         sink.SetProperty(FairMQExample3Sink::Id, id);
 
         // configure data output channel
         FairMQChannel dataInChannel("pull", "bind", "");
         dataInChannel.UpdateRateLogging(0);
-        sink.fChannels["data-in"].push_back(dataInChannel);
+        sink.fChannels["data2"].push_back(dataInChannel);
 
         // Get the IP of the current host and store it for binding.
         map<string,string> IPs;
@@ -97,7 +85,7 @@ int main(int argc, char** argv)
 
         // Configure the found host IP for the channel.
         // TCP port will be chosen randomly during the initialization (binding).
-        sink.fChannels.at("data-in").at(0).UpdateAddress(initialInputAddress);
+        sink.fChannels.at("data2").at(0).UpdateAddress(initialInputAddress);
 
         sink.ChangeState("INIT_DEVICE");
         sink.WaitForInitialValidation();
@@ -105,7 +93,7 @@ int main(int argc, char** argv)
         // Advertise the bound address via DDS property
         LOG(INFO) << "Giving sink input address to DDS.";
         dds::key_value::CKeyValue ddsKeyValue;
-        ddsKeyValue.putValue("SinkInputAddress", sink.fChannels.at("data-in").at(0).GetAddress());
+        ddsKeyValue.putValue("SinkAddress", sink.fChannels.at("data2").at(0).GetAddress());
 
         sink.WaitForEndOfState("INIT_DEVICE");
 
@@ -117,7 +105,7 @@ int main(int argc, char** argv)
         // Subscribe on custom commands
         ddsCustomCmd.subscribeCmd([&](const string& command, const string& condition, uint64_t senderId)
         {
-            LOG(INFO) << "Received custom command: " << command << " condition: " << condition << " senderId: " << senderId;
+            LOG(INFO) << "Received custom command: " << command;
             if (command == "check-state")
             {
                 ddsCustomCmd.sendCmd(id + ": " + sink.GetCurrentStateName(), to_string(senderId));

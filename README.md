@@ -7,6 +7,9 @@ The user can create simulated data and/or perform analysis with the same framewo
 ## License 
 FairRoot  is distributed under the terms of the GNU Lesser General Public Licence version 3 (LGPLv3).
 
+## Release information
+Please see : https://github.com/FairRootGroup/FairRoot/releases
+
 ##Getting started
 Please see : http://fairroot.gsi.de/getting_started  for  details.
 

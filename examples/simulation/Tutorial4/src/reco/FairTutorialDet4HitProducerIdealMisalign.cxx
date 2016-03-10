@@ -18,6 +18,7 @@
 #include "FairTutorialDet4GeoHandler.h"  // for FairTutorialDet4GeoHandler
 #include "FairTutorialDet4Hit.h"        // for FairTutorialDet4Hit
 #include "FairTutorialDet4MisalignPar.h"
+#include "FairTutorialDet4GeoPar.h"
 #include "FairTutorialDet4Point.h"      // for FairTutorialDet4Point
 
 #include "TClonesArray.h"               // for TClonesArray
@@ -41,6 +42,7 @@ FairTutorialDet4HitProducerIdealMisalign::FairTutorialDet4HitProducerIdealMisali
     fRotZ(),
     fDigiPar(NULL),
     fGeoHandler(new FairTutorialDet4GeoHandler),
+    fGeoPar(NULL),
     fDoMisalignment(kFALSE)
 {
 }
@@ -59,6 +61,9 @@ void FairTutorialDet4HitProducerIdealMisalign::SetParContainers()
 
   fDigiPar = (FairTutorialDet4MisalignPar*)
              (rtdb->getContainer("FairTutorialDet4MissallignPar"));
+
+  fGeoPar = (FairTutorialDet4GeoPar*)
+             (rtdb->getContainer("FairTutorialDet4GeoPar"));
 
 }
 // --------------------------------------------------------------------
@@ -114,6 +119,12 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
   fRotX=fDigiPar->GetRotX();
   fRotY=fDigiPar->GetRotY();
   fRotZ=fDigiPar->GetRotZ();
+
+  Bool_t isGlobalCoordinateSystem=fGeoPar->IsGlobalCoordinateSystem();
+  if (isGlobalCoordinateSystem) {
+    LOG(FATAL) << "Task can only work with local coordinates."
+	       << FairLogger::endl;
+  }
   /*
     Int_t num = fDigiPar->GetNrOfDetectors();
     Int_t size = fShiftX.GetSize();

@@ -32,35 +32,38 @@
 template <typename DataType>
 class RootOutFileManager : public BaseSinkPolicy<RootOutFileManager<DataType>>
 {
-public:
+  public:
     RootOutFileManager();
     RootOutFileManager(const std::string &filename, const std::string &treename, 
                      const std::string &branchname, const std::string &Classname, const std::string &FileOption);
+
+    RootOutFileManager(const RootOutFileManager&) = delete;
+    RootOutFileManager operator=(const RootOutFileManager&) = delete;
+
     virtual ~RootOutFileManager();
-    
+
     void SetRootFileProperties(const std::string &filename, const std::string &treename, 
                            const std::string &branchname, const std::string &Classname="", 
                            const std::string &FileOption="RECREATE", bool UseClonesArray=false, bool flowmode=true);
-    
+
     void SetFileProperties(const std::string &filename, const std::string &treename, 
                            const std::string &branchname, const std::string &Classname="", 
                            const std::string &FileOption="RECREATE", bool UseClonesArray=false, bool flowmode=true);
-    
+
     void AddToFile(std::vector<DataType>& InputData);
     void AddToFile(DataType* ObjArr, long size);
     void AddToFile(TClonesArray* InputData);
     void AddToFile(FairMQMessage* msg);
     void InitOutputFile();
     void InitTCA(const std::string &classname);
-    std::vector<std::vector<DataType> > GetAllObj(const std::string &filename, 
-                                                  const std::string &treename, 
+    std::vector<std::vector<DataType> > GetAllObj(const std::string &filename,
+                                                  const std::string &treename,
                                                   const std::string &branchname
-                                                  );    
-    
-protected:
+                                                  );
 
+  protected:
     virtual void Init();
-    
+
     std::string fFileName;
     std::string fTreeName;
     std::string fBranchName;
@@ -69,7 +72,7 @@ protected:
     bool fUseClonesArray;
     bool fFlowMode;
     bool fWrite;
-    
+
     TFile* fOutFile;
     TTree* fTree;
     TClonesArray* fOutput;
@@ -77,10 +80,6 @@ protected:
     TFolder* fFolder;
 };
 
-
 #include "RootOutFileManager.tpl"
 
-
-
-#endif	/* ROOTOUTFILEMANAGER_H */
-
+#endif /* ROOTOUTFILEMANAGER_H */

@@ -60,19 +60,21 @@ int FairMQProgOptions::ParseAll(const int argc, char** argv, bool allowUnregiste
     }
 
     // set log level before printing (default is 0 = DEBUG level)
-    std::string verbose=GetValue<std::string>("verbose");
-    bool color_format=GetValue<bool>("log-color-format");
-    if(!color_format)
+    std::string verbose = GetValue<std::string>("verbose");
+    bool color = GetValue<bool>("log-color");
+    if (!color)
+    {
         reinit_logger(false);
+    }
     //SET_LOG_LEVEL(DEBUG);
     if (fSeverityMap.count(verbose))
     {
-        set_global_log_level(log_op::operation::GREATER_EQ_THAN,fSeverityMap.at(verbose));
+        set_global_log_level(log_op::operation::GREATER_EQ_THAN, fSeverityMap.at(verbose));
     }
     else
     {
-        LOG(ERROR)<<" verbosity level '"<<verbose<<"' unknown, it will be set to DEBUG";
-        set_global_log_level(log_op::operation::GREATER_EQ_THAN,fSeverityMap.at("DEBUG"));
+        LOG(ERROR) << " verbosity level '" << verbose << "' unknown, it will be set to DEBUG";
+        set_global_log_level(log_op::operation::GREATER_EQ_THAN, fSeverityMap.at("DEBUG"));
     }
 
     PrintOptions();
@@ -99,7 +101,7 @@ int FairMQProgOptions::ParseAll(const int argc, char** argv, bool allowUnregiste
         {
             LOG(WARN) << p;
         }
-        LOG(WARN) << "No channels will be created (You can still fill these manually).";
+        LOG(WARN) << "No channels will be created (You can create them manually).";
         // return 1;
     }
 
@@ -129,18 +131,21 @@ void FairMQProgOptions::InitOptionDescription()
     if (fUseConfigFile)
     {
         fMQOptionsInCmd.add_options()
-            ("id",             po::value<string>(),                       "Device ID (required argument).")
-            ("io-threads",     po::value<int>()->default_value(1),        "Number of I/O threads.");
+            ("id",             po::value<string>(),                          "Device ID (required argument).")
+            ("io-threads",     po::value<int>()->default_value(1),           "Number of I/O threads.")
+            ("transport",      po::value<string>()->default_value("zeromq"), "Transport ('zeromq'/'nanomsg').");
 
         fMQOptionsInCfg.add_options()
-            ("id",             po::value<string>()->required(),           "Device ID (required argument).")
-            ("io-threads",     po::value<int>()->default_value(1),        "Number of I/O threads.");
+            ("id",             po::value<string>()->required(),              "Device ID (required argument).")
+            ("io-threads",     po::value<int>()->default_value(1),           "Number of I/O threads.")
+            ("transport",      po::value<string>()->default_value("zeromq"), "Transport ('zeromq'/'nanomsg').");
     }
     else
     {
         fMQOptionsInCmd.add_options()
-            ("id",             po::value<string>()->required(),           "Device ID (required argument)")
-            ("io-threads",     po::value<int>()->default_value(1),        "Number of I/O threads");
+            ("id",             po::value<string>()->required(),              "Device ID (required argument)")
+            ("io-threads",     po::value<int>()->default_value(1),           "Number of I/O threads")
+            ("transport",      po::value<string>()->default_value("zeromq"), "Transport ('zeromq'/'nanomsg').");
     }
 
     fMQParserOptions.add_options()

@@ -5,18 +5,13 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-// -------------------------------------------------------------------------
-// -----                  FairDetectorList header file                  -----
-// -----                 Created 12/06/07  by V. Friese                -----
-// -------------------------------------------------------------------------
 
-
-/** Defines unique identifier for all FAIR detector systems **/
+/** Defines unique identifier for all detector systems **/
 
 #ifndef FAIRDETECTORLIST_H
 #define FAIRDETECTORLIST_H 1
 
 // kSTOPHERE is needed for iteration over the enum. All detectors have to be put before.
-enum DetectorId {kREF, kFairRutherford, kTutDet, kSTOPHERE};
+enum DetectorId {kREF, kFairRutherford, kTutDet, kSTOPHERE, kPixel};
 
 #endif

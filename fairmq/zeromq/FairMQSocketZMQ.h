@@ -23,7 +23,9 @@
 class FairMQSocketZMQ : public FairMQSocket
 {
   public:
-    FairMQSocketZMQ(const std::string& type, const std::string& name, int numIoThreads);
+    FairMQSocketZMQ(const std::string& type, const std::string& name, const int numIoThreads, const std::string& id = "");
+    FairMQSocketZMQ(const FairMQSocketZMQ&) = delete;
+    FairMQSocketZMQ operator=(const FairMQSocketZMQ&) = delete;
 
     virtual std::string GetId();
 
@@ -66,10 +68,6 @@ class FairMQSocketZMQ : public FairMQSocket
     unsigned long fMessagesRx;
 
     static boost::shared_ptr<FairMQContextZMQ> fContext;
-
-    /// Copy Constructor
-    FairMQSocketZMQ(const FairMQSocketZMQ&);
-    FairMQSocketZMQ operator=(const FairMQSocketZMQ&);
 };
 
 #endif /* FAIRMQSOCKETZMQ_H_ */

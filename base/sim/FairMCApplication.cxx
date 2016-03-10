@@ -43,6 +43,7 @@
 #include "TGeoManager.h"                // for gGeoManager, TGeoManager
 #include "TGeoMedium.h"                 // for TGeoMedium
 #include "TGeoNode.h"                   // for TGeoNode
+#include "TGeoPhysicalNode.h"           // for TGeoPhysicalNode
 #include "TGeoTrack.h"                  // for TGeoTrack
 #include "TGeoVolume.h"                 // for TGeoVolume
 #include "TH2.h"                        // for TH2D
@@ -69,7 +70,7 @@ class TParticle;
 using std::pair;
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const char* name, const char* title,
-                                     TObjArray* ModList, const char* MatName)
+                                     TObjArray* ModList, const char*)
   :TVirtualMCApplication(name,title),
    fActiveDetectors(NULL),
    fFairTaskList(NULL),
@@ -391,7 +392,7 @@ void FairMCApplication::RegisterStack()
   }
 }
 //_____________________________________________________________________________
-void FairMCApplication::InitMC(const char* setup, const char* cuts)
+void FairMCApplication::InitMC(const char*, const char*)
 {
 // Initialize MC.
 // ---
@@ -499,7 +500,7 @@ void FairMCApplication::FinishRun()
   if (!fRadGridMan) {
     if (fRootManager) fRootManager->Write();
   }
-
+  UndoGeometryModifications();
   //  fRootManager->Write();
 
 }
@@ -875,6 +876,7 @@ void FairMCApplication::ConstructGeometry()
   Int_t ModId=0;
   while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
     NoOfVolumesBefore=gGeoManager->GetListOfVolumes()->GetEntriesFast();
+    Mod->InitParContainers();
     Mod->ConstructGeometry();
     ModId=Mod->GetModId();
     NoOfVolumes=gGeoManager->GetListOfVolumes()->GetEntriesFast();
@@ -905,6 +907,12 @@ void FairMCApplication::ConstructGeometry()
          Counter++;
       }
     }
+    fModIter->Reset();
+    while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+      Mod->ModifyGeometry();
+    }
+
+    gGeoManager->RefreshPhysicalNodes(kFALSE);
   }
 }
 //_____________________________________________________________________________
@@ -1347,6 +1355,36 @@ Int_t FairMCApplication::GetIonPdg(Int_t z, Int_t a) const
   return 1000000000 + 10*1000*z + 10*a;
 }
 
+void  FairMCApplication::UndoGeometryModifications()
+{
+  // Undo all misalignment done in the MisalignGeometry methods of the
+  // several FairModuls.
+  // In the output (parameter container and separate geometry file)
+  // only the ideal geometry is stored.
+  // I don't know any better way than to loop over all physical nodes
+  // and to set the matrix back to the original one.
+  // TODO: Check if it is more easy to write the ideal geometry before
+  //       the geometry is misaligned. In this case one does not have 
+  //       to revert the misalignment.
+
+  TObjArray* physNodes = gGeoManager->GetListOfPhysicalNodes();
+  Int_t numPhysNodes=physNodes->GetEntriesFast();
+
+  if ( 0 == numPhysNodes) return;
+
+  //fRootManager->CreateGeometryFile("misaligned_geometry.root");
+  LOG(INFO)<<"Undo all misalignment"<<FairLogger::endl;
+
+  TGeoPhysicalNode* node = NULL;
+  TGeoHMatrix* ng3 = NULL;
+  for(Int_t k=0; k<numPhysNodes; k++) {
+    node=(TGeoPhysicalNode*)physNodes->At(k);
+    ng3 = node->GetOriginalMatrix(); //"real" global matrix, what survey sees
+    node->Align(ng3);
+  }
+
+  gGeoManager->ClearPhysicalNodes(kFALSE);
+
+}
+
 ClassImp(FairMCApplication)
-
-

@@ -12,12 +12,9 @@
 set(INCLUDE_DIRECTORIES
 ${ROOT_INCLUDE_DIR} 
 #put here all directories where header files are located
-${CMAKE_SOURCE_DIR}/fairtools
-${CMAKE_SOURCE_DIR}/base
+${BASE_INCLUDE_DIRECTORIES}
 #${CMAKE_SOURCE_DIR}/<directory which contains the DetectorList>
 #${CMAKE_SOURCE_DIR}/<directory which contains the stack>
-${CMAKE_SOURCE_DIR}/parbase
-${CMAKE_SOURCE_DIR}/geobase
 ${CMAKE_SOURCE_DIR}/tutorial/NewDetector
 )
 
@@ -28,6 +25,7 @@ ${ROOT_LIBRARY_DIR}
 ) 
 
 link_directories( ${LINK_DIRECTORIES})
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(SRCS
 #Put here your sourcefiles
@@ -37,7 +35,7 @@ NewDetectorGeo.cxx
 NewDetectorGeoPar.cxx
 NewDetectorPoint.cxx
 )
-
+Set(HEADERS )
 Set(LINKDEF NewDetectorLinkDef.h)
 Set(LIBRARY_NAME NewDetector)
 Set(DEPENDENCIES

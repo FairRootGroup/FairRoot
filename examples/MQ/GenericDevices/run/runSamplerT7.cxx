@@ -33,6 +33,7 @@
 #include "BoostSerializer.h"
 #include "RootSerializer.h"
 #include "MyDigiSerializer.h"
+#include "MyDigiSerializer_protobuff.h"
 
 #include "TClonesArray.h"
 
@@ -44,10 +45,12 @@ typedef SimpleTreeReader<TClonesArray> TreeReader_t;
 typedef GenericSampler<FairMQFileSource_t, MyDigiSerializer_t>       TSamplerBin;
 typedef GenericSampler<FairMQFileSource_t, BoostSerializer<MyDigi> > TSamplerBoost;
 typedef GenericSampler<FairMQFileSource_t, RootSerializer>           TSamplerTMessage;
+typedef GenericSampler<FairMQFileSource_t, MyDigiProtoSerializer>    TSamplerProtoBuff;
 
 typedef GenericSampler<TreeReader_t, MyDigiSerializer_t>       TSamplerBin2;
 typedef GenericSampler<TreeReader_t, BoostSerializer<MyDigi> > TSamplerBoost2;
 typedef GenericSampler<TreeReader_t, RootSerializer>           TSamplerTMessage2;
+typedef GenericSampler<TreeReader_t, MyDigiProtoSerializer>    TSamplerProtoBuff2;
 
 
 // define some helper functions
@@ -104,6 +107,7 @@ int main(int argc, char** argv)
             if (format == "Bin") { runSampler<TSamplerBin>(config); }
                 else if (format == "Boost") { runSampler<TSamplerBoost>(config); }
                 else if (format == "Root") { runSampler<TSamplerTMessage>(config); }
+                else if (format == "Proto") { runSampler<TSamplerProtoBuff>(config); }
                 else
                 {
                     LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|tmessage). ";
@@ -116,6 +120,7 @@ int main(int argc, char** argv)
                 if (format == "Bin") { runSampler<TSamplerBin2>(config); }
                 else if (format == "Boost") { runSampler<TSamplerBoost2>(config); }
                 else if (format == "Root") { runSampler<TSamplerTMessage2>(config); }
+                else if (format == "Proto") { runSampler<TSamplerProtoBuff2>(config); }
                 else
                 {
                     LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|tmessage). ";

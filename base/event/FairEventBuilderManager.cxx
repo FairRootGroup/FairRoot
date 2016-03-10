@@ -84,7 +84,7 @@ FairEventBuilderManager::~FairEventBuilderManager()
 // -------------------------------------------------------------------------
 
 // -----   Public method Exec   --------------------------------------------
-void FairEventBuilderManager::Exec(Option_t* opt)
+void FairEventBuilderManager::Exec(Option_t*)
 {
   if ( fVerbose ) {
     cout << "FairEventBuilderManager::Exec() begin" << endl;
@@ -113,7 +113,7 @@ Double_t FairEventBuilderManager::FillEventVectors()
   //   *it.FindEvents();
   // }
   Double_t maxEventTimeAllowed = 10.e6;
-  for ( Int_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
+  for ( UInt_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
     if ( fVerbose ) { cout << "***** " << fEventBuilders[ieb]->GetName() << " *****" << endl; }
     if ( fVerbose ) { cout << "  there are " << fPossibleEvents[ieb].size() << " possible events" << endl; }
     std::vector<std::pair<double,FairRecoEventHeader*> > tempBuilder = fEventBuilders[ieb]->FindEvents();
@@ -121,7 +121,7 @@ Double_t FairEventBuilderManager::FillEventVectors()
       cout << "  event buffer " << fEventBuilders[ieb]->GetName() << " found " << tempBuilder.size() << " events" << endl;
     }
     std::pair<double,FairRecoEventHeader*> tempPair;
-    for ( Int_t ipair = 0 ; ipair < tempBuilder.size() ; ipair++ ) {
+    for ( UInt_t ipair = 0 ; ipair < tempBuilder.size() ; ipair++ ) {
       fPossibleEvents[ieb].push_back(tempBuilder[ipair]);
       if ( fVerbose )
         cout << "    added event " << fPossibleEvents[ieb][fPossibleEvents[ieb].size()-1].second
@@ -143,14 +143,14 @@ Double_t FairEventBuilderManager::FillEventVectors()
 void FairEventBuilderManager::CreateAndFillEvent(FairRecoEventHeader* recoEvent)
 {
 
-  for ( Int_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
+  for ( UInt_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
     fEventBuilders[ieb]->StoreEventData(recoEvent);
     fEventBuilders[ieb]->WriteOutAllDeadTimeData();
   }
 
   FairRootManager::Instance()->Fill();
 
-  for ( Int_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
+  for ( UInt_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
     fEventBuilders[ieb]->DeleteOldData();
   }
 }
@@ -192,8 +192,8 @@ InitStatus FairEventBuilderManager::Init()
 
   cout << "*** FairEventBuilderManager. " << fEventBuilders.size() << " event builders registered." << endl;
 
-  for ( Int_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
-    fEventBuilders[ieb]->SetIdentifier(TMath::Power(2,ieb));
+  for ( UInt_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
+    fEventBuilders[ieb]->SetIdentifier(TMath::Power(2,static_cast<Int_t>(ieb)));
     fEventBuilders[ieb]->Init();
   }
 
@@ -215,7 +215,7 @@ void FairEventBuilderManager::Finish()
   AnalyzeAndExtractEvents(-1.);
 
   cout << "==================== " << fName.Data() << " : Summary ========================" << endl;
-  for ( Int_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
+  for ( UInt_t ieb = 0 ; ieb < fEventBuilders.size() ; ieb++ ) {
     fEventBuilders[ieb]->Finish();
   }
   cout << "=====================================================================" << endl;

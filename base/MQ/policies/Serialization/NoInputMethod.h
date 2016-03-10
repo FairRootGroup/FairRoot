@@ -10,7 +10,7 @@
 
 #include "FairMQMessage.h"
 
-class NoInputMethod 
+class NoInputMethod
 {
   public:
     NoInputMethod()

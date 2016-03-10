@@ -16,7 +16,8 @@
 
 
 FairMQProcessorTask::FairMQProcessorTask()
-    : fPayload(NULL)
+    : fPayload(nullptr)
+    , fTransportFactory(nullptr)
     , SendPart()
     , ReceivePart()
 {
@@ -57,4 +58,14 @@ void FairMQProcessorTask::SetPayload(FairMQMessage* msg)
     {
         LOG(ERROR) << "FairMQMessage uninitialized or bad format";
     }
+}
+
+void FairMQProcessorTask::ClearPayload()
+{
+    delete fPayload;
+}
+
+void FairMQProcessorTask::SetTransport(FairMQTransportFactory* factory)
+{
+    fTransportFactory = factory;
 }

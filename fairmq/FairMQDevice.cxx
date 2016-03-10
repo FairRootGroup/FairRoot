@@ -27,6 +27,11 @@
 #include "FairMQDevice.h"
 #include "FairMQLogger.h"
 
+#include "FairMQTransportFactoryZMQ.h"
+#ifdef NANOMSG_FOUND
+#include "FairMQTransportFactoryNN.h"
+#endif
+
 using namespace std;
 
 // boost::function and a wrapper to catch the signals
@@ -85,9 +90,15 @@ void FairMQDevice::SignalHandler(int signal)
 
 void FairMQDevice::InitWrapper()
 {
+    if (!fTransportFactory)
+    {
+        LOG(ERROR) << "Transport not initialized. Did you call SetTransport()?";
+        exit(EXIT_FAILURE);
+    }
+
     if (!fCmdSocket)
     {
-        fCmdSocket = fTransportFactory->CreateSocket("pub", "device-commands", fNumIoThreads);
+        fCmdSocket = fTransportFactory->CreateSocket("pub", "device-commands", fNumIoThreads, fId);
         fCmdSocket->Bind("inproc://commands");
     }
 
@@ -180,7 +191,7 @@ bool FairMQDevice::InitChannel(FairMQChannel& ch)
 {
     LOG(DEBUG) << "Initializing channel " << ch.fChannelName << " (" << ch.fType << ")";
     // initialize the socket
-    ch.fSocket = fTransportFactory->CreateSocket(ch.fType, ch.fChannelName, fNumIoThreads);
+    ch.fSocket = fTransportFactory->CreateSocket(ch.fType, ch.fChannelName, fNumIoThreads, fId);
     // set high water marks
     ch.fSocket->SetOption("snd-hwm", &(ch.fSndBufSize), sizeof(ch.fSndBufSize));
     ch.fSocket->SetOption("rcv-hwm", &(ch.fRcvBufSize), sizeof(ch.fRcvBufSize));
@@ -454,6 +465,32 @@ void FairMQDevice::SetTransport(FairMQTransportFactory* factory)
     fTransportFactory = factory;
 }
 
+void FairMQDevice::SetTransport(const string& transport)
+{
+    if (transport == "zeromq")
+    {
+        fTransportFactory = new FairMQTransportFactoryZMQ();
+    }
+#ifdef NANOMSG_FOUND
+    else if (transport == "nanomsg")
+    {
+        fTransportFactory = new FairMQTransportFactoryNN();
+    }
+#endif
+    else
+    {
+        LOG(ERROR) << "Unavailable transport implementation requested: "
+                   << "\"" << transport << "\""
+                   << ". Available are: "
+                   << "\"zeromq\""
+#ifdef NANOMSG_FOUND
+                   << ", \"nanomsg\""
+#endif
+                   << ". Exiting.";
+        exit(EXIT_FAILURE);
+    }
+}
+
 void FairMQDevice::LogSocketRates()
 {
     timestamp_t t0;
@@ -627,12 +664,6 @@ void FairMQDevice::InteractiveStateLoop()
     tcgetattr(STDIN_FILENO, &t); // get the current terminal I/O structure
     t.c_lflag |= ICANON; // re-enable canonical input
     tcsetattr(STDIN_FILENO, TCSANOW, &t); // apply the new settings
-}
-
-inline void FairMQDevice::PrintInteractiveStateLoopHelp()
-{
-    LOG(INFO) << "Use keys to control the state machine:";
-    LOG(INFO) << "[h] help, [p] pause, [r] run, [s] stop, [t] reset task, [d] reset device, [q] end, [j] init task, [i] init device";
 }
 
 void FairMQDevice::Unblock()

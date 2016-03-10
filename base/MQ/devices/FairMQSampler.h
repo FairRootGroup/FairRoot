@@ -31,6 +31,7 @@
 #include "FairRuntimeDb.h"
 #include "FairRunAna.h"
 #include "FairTask.h"
+#include "FairFileSource.h"
 
 #include "FairMQDevice.h"
 #include "FairMQSamplerTask.h"
@@ -57,13 +58,15 @@ class FairMQSampler : public FairMQDevice
         ParFile,
         Branch,
         EventRate,
+        ChainInput,
         Last
     };
 
     FairMQSampler();
-    virtual ~FairMQSampler();
+    FairMQSampler(const FairMQSampler&) = delete;
+    FairMQSampler operator=(const FairMQSampler&) = delete;
 
-    void ResetEventCounter();
+    virtual ~FairMQSampler();
 
     virtual void SetProperty(const int key, const std::string& value);
     virtual std::string GetProperty(const int key, const std::string& default_ = "");
@@ -73,6 +76,8 @@ class FairMQSampler : public FairMQDevice
     virtual std::string GetPropertyDescription(const int key);
     virtual void ListProperties();
 
+    void ListenForAcks();
+
     /**
      * Sends the currently available output of the Sampler Task as part of a multipart message
      * and reinitializes the message to be filled with the next part.
@@ -81,26 +86,20 @@ class FairMQSampler : public FairMQDevice
      */
     void SendPart();
 
-    void SetContinuous(bool flag);
-
   protected:
     virtual void InitTask();
     virtual void Run();
 
     FairRunAna *fFairRunAna;
     FairMQSamplerTask *fSamplerTask;
+    boost::timer::auto_cpu_timer* fTimer;
     std::string fInputFile; // Filename of a root file containing the simulated digis.
     std::string fParFile;
     std::string fBranch; // The name of the sub-detector branch to stream the digis from.
     int fNumEvents;
+    int fChainInput;
     int fEventRate;
     int fEventCounter;
-    bool fContinuous;
-
-  private:
-    /// Copy Constructor
-    FairMQSampler(const FairMQSampler&);
-    FairMQSampler operator=(const FairMQSampler&);
 };
 
 // Template implementation is in FairMQSampler.tpl :

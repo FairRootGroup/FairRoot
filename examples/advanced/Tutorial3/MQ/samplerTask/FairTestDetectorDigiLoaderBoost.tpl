@@ -6,40 +6,36 @@
  */
 
 // Default implementation of FairTestDetectorDigiLoader::Exec() with Boost transport data format
-template <typename T1, typename T2>
-void FairTestDetectorDigiLoader<T1, T2>::Exec(Option_t* opt)
+
+void freeStringBuffer(void *data, void *hint)
 {
-    // Default implementation of the base template Exec function using boost
-    // the condition check if the input class has a function member with name
-    // void serialize(T2 & ar, const unsigned int version) and if the payload are of boost type
+    delete static_cast<std::string*>(hint);
+}
 
-    if (fHasBoostSerialization)
+// example TOut: FairTestDetectorDigi
+// example TPayloadOut: boost::archive::binary_oarchive, boost::archive::text_oarchive
+template <typename TOut, typename TPayloadOut>
+void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* opt)
+{
+    // Write some data to check it on the receiver side
+    // (*fBigBuffer)[7] = 'c';
+
+    std::ostringstream oss;
+    TPayloadOut OutputArchive(oss);
+    for (int i = 0; i < fInput->GetEntriesFast(); ++i)
     {
-        ostringstream buffer;
-        T2 OutputArchive(buffer);
-        for (Int_t i = 0; i < fInput->GetEntriesFast(); ++i)
+        TOut* digi = static_cast<TOut*>(fInput->At(i));
+        if (!digi)
         {
-            T1* digi = static_cast<T1*>(fInput->At(i));
-            if (!digi)
-            {
-                continue;
-            }
-            fDigiVector.push_back(*digi);
+            continue;
         }
-
-        OutputArchive << fDigiVector;
-        int size = buffer.str().length();
-        fOutput = fTransportFactory->CreateMessage(size);
-        memcpy(fOutput->GetData(), buffer.str().c_str(), size);
-
-        // delete the vector content
-        if (fDigiVector.size() > 0)
-        {
-            fDigiVector.clear();
-        }
+        fDigiVector.push_back(*digi);
     }
-    else
-    {
-        LOG(ERROR) << "Boost Serialization not available";
-    }
+
+    OutputArchive << fDigiVector;
+    // OutputArchive << boost::serialization::make_binary_object(fBigBuffer->data(), sizeof(*fBigBuffer));
+    std::string* strMsg = new std::string(oss.str());
+    fOutput = fTransportFactory->CreateMessage(const_cast<char*>(strMsg->c_str()), strMsg->length(), freeStringBuffer, strMsg);
+
+    fDigiVector.clear();
 }

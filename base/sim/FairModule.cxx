@@ -186,7 +186,7 @@ void FairModule::Streamer(TBuffer& b)
 
 }
 //__________________________________________________________________________
-void FairModule::SetGeometryFileName(TString fname, TString geoVer)
+void FairModule::SetGeometryFileName(TString fname, TString)
 {
 
   // If absolute path is given as argument, try to find it there.
@@ -482,7 +482,7 @@ void FairModule::ReAssignMediaId()
     TList* media = gGeoManager->GetListOfMedia();
     // Loop over new media which are not in GeoBase and shift the ID
     TGeoMedium* med;
-    TGeoMedium* med2;
+//    TGeoMedium* med2;
     for(Int_t i = geoBuilder->GetNMedia(); i < media->GetEntries(); i++)
     {
         med = (TGeoMedium*) media->At(i);
@@ -518,7 +518,7 @@ void FairModule::ConstructASCIIGeometry()
 }
 
 //__________________________________________________________________________
-Bool_t FairModule::CheckIfSensitive(std::string name)
+Bool_t FairModule::CheckIfSensitive(std::string)
 {
   LOG(WARNING)<<"The method CheckIfSensitive has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;
   return kFALSE;

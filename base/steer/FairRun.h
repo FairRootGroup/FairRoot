@@ -63,11 +63,11 @@ class FairRun : public TNamed
     /**
      * Set the output file name for analysis or simulation
     */
-    void        SetOutputFile(const char* fname);
+    virtual void    SetOutputFile(const char* fname);
     /**
      * Set the output file for analysis or simulation
     */
-    void        SetOutputFile(TFile* f);
+    virtual void    SetOutputFile(TFile* f);
     /**
      *       Set the experiment dependent run header
      *       for each run

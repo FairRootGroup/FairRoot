@@ -26,6 +26,13 @@ MyHit::MyHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos)
 {
 }
 
+MyHit::MyHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos, Double_t timeStamp, Double_t timeStampError)
+    : FairHit(detID, pos, dpos, mcindex)//
+{
+	SetTimeStamp(timeStamp);
+	SetTimeStampError(timeStampError);
+}
+
 MyHit::~MyHit()
 {
 }

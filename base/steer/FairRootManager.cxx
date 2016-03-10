@@ -472,7 +472,7 @@ void FairRootManager::LastFill()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-Int_t FairRootManager::Write(const char* name, Int_t option, Int_t bufsize)
+Int_t FairRootManager::Write(const char*, Int_t, Int_t)
 {
   /** Writes the tree in the file.*/
 
@@ -559,6 +559,7 @@ Int_t  FairRootManager::ReadEvent(Int_t i)
   FairEventHeader* tempEH = new FairEventHeader();
   fSource->FillEventHeader(tempEH);
   fCurrentTime = tempEH->GetEventTime();
+  tempEH->Delete();
 
   LOG(DEBUG) << "--Event number --- "
 	     << fCurrentEntryNo << " with time ---- " 
@@ -606,7 +607,7 @@ Int_t FairRootManager::ReadNonTimeBasedEventFromBranches(Int_t Entry)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-Bool_t FairRootManager::ReadNextEvent(Double_t dt)
+Bool_t FairRootManager::ReadNextEvent(Double_t)
 {
   Bool_t readentry=kFALSE;
   ///TODO

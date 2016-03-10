@@ -14,6 +14,10 @@
 #include "InitProcessorConfig.h"
 #include "MyDigiSerializer.h"
 #include "MyHitSerializer.h"
+
+#include "MyDigiSerializer_protobuff.h"
+#include "MyHitSerializer_protobuff.h"
+
 #include "DigiToHitTask.h"
 #include "MyDigi.h"
 #include "MyHit.h"
@@ -27,6 +31,7 @@ typedef GenericProcessor<
                             DigiToHitTask
                         >                                                                   TProcessorBoost;
 typedef GenericProcessor<RootDeSerializer,RootSerializer,DigiToHitTask>                     TProcessorRoot;
+typedef GenericProcessor<MyDigiProtoDeserializer,MyHitProtoSerializer,DigiToHitTask>          TProcessorProto;
 
 template<typename TProcessor>
 inline void runProcessor(FairMQProgOptions& config)
@@ -64,6 +69,7 @@ int main(int argc, char** argv)
         if (format == "Bin") { runProcessor<TProcessorBin>(config); }
             else if (format == "Boost") { runProcessor<TProcessorBoost>(config); }
             else if (format == "Root") { runProcessor<TProcessorRoot>(config); }
+            else if (format == "Proto") { runProcessor<TProcessorProto>(config); }
             else
             {
                 LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|tmessage). ";

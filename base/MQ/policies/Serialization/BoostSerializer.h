@@ -72,8 +72,12 @@ class BoostSerializer : public BaseSerializationPolicy<BoostSerializer<DataType,
     BoostSerializer() :
         BaseSerializationPolicy<BoostSerializer<DataType,BoostArchiveOut>>(),
         fMessage(nullptr),
-        fTransport(nullptr)
+        fTransport(nullptr),
+        fDataVector()
     {}
+
+    BoostSerializer(const BoostSerializer&) = delete;
+    BoostSerializer operator=(const BoostSerializer&) = delete;
 
     ~BoostSerializer()
     {}
@@ -145,7 +149,6 @@ class BoostSerializer : public BaseSerializationPolicy<BoostSerializer<DataType,
         // fMessage = fTransport->CreateMessage(size);
         fMessage->Rebuild(size);
         std::memcpy(fMessage->GetData(), buffer.str().c_str(), size);
-
     }
 
     /// --------------------------------------------------------
@@ -226,7 +229,7 @@ class BoostSerializer : public BaseSerializationPolicy<BoostSerializer<DataType,
     }
 
   protected:
-    virtual void SetTransport(FairMQTransportFactory* transport)
+    void SetTransport(FairMQTransportFactory* transport)
     {
         fTransport = transport;
     }
@@ -260,10 +263,15 @@ class BoostDeSerializer : public BaseSerializationPolicy<BoostDeSerializer<DataT
     BoostDeSerializer() :
         BaseSerializationPolicy<BoostDeSerializer<DataType,TContainer,BoostArchiveIn>>(),
         fMessage(nullptr),
-        fTransport(nullptr)
+        fTransport(nullptr),
+        fDataContainer(),
+        fDataVector()
     {
         DefaultContainerInit();
     }
+
+    BoostDeSerializer(const BoostDeSerializer&) = delete;
+    BoostDeSerializer operator=(const BoostDeSerializer&) = delete;
 
     ~BoostDeSerializer()
     {
@@ -316,7 +324,7 @@ class BoostDeSerializer : public BaseSerializationPolicy<BoostDeSerializer<DataT
 
     /// --------------------------------------------------------
     /// FairMQMessage*  -------->  std::vector<DataType>& 
-    template <typename T = TContainer, enable_if_match<T, std::vector<DataType> > = 0>
+    template <typename T = TContainer, enable_if_match<T, std::vector<DataType>> = 0>
     T& DeserializeMsg(FairMQMessage* msg)
     {
         DoDeSerialization(msg);
@@ -409,10 +417,8 @@ class BoostDeSerializer : public BaseSerializationPolicy<BoostDeSerializer<DataT
     {
     }
 
-
   protected:
-
-    virtual void SetTransport(FairMQTransportFactory* transport)
+    void SetTransport(FairMQTransportFactory* transport)
     {
         fTransport = transport;
     }

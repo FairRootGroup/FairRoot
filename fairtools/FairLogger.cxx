@@ -420,7 +420,8 @@ std::ostream&  FairLogger::endl(std::ostream& strm)
   gLogger->fIsNewLine = kTRUE;
   if ( (gLogger->fLogToScreen && gLogger->fLevel <= gLogger->fLogScreenLevel) ) {
     if (gLogger->fLogColored) {
-      *(gLogger->fScreenStream) << "\33[00;30m" << std::endl;
+      // reset format to default 
+      *(gLogger->fScreenStream) << "\33[0m" << std::endl;
     } else {
       *(gLogger->fScreenStream) << std::endl;
     }
@@ -501,7 +502,8 @@ void FairLogger::LogFatalMessage(std::ostream& strm)
                    corefile << "\n";
     }
 
-    *(gLogger->fScreenStream) << "\33[00;30m" << std::endl;
+    // reset format to default before exiting
+    *(gLogger->fScreenStream) << "\33[0m" << std::endl; 
 
     flush(strm);
     freopen(corefile, "w", stderr);

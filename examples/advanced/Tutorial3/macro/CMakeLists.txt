@@ -52,3 +52,6 @@ Install(FILES run_sim.C run_digi.C run_reco.C eventDisplay.C
         DESTINATION share/fairbase/examples/advanced/Tutorial3
        )
 
+Install(FILES data/dummy.txt
+        DESTINATION share/fairbase/examples/advanced/Tutorial3/macro/data
+       )

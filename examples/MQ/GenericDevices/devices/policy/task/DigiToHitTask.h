@@ -35,13 +35,17 @@ class DigiToHitTask_base : public BaseProcessorTaskPolicy< DigiToHitTask_base<T,
 {
     typedef T Digi_type;
     typedef U Hit_type;
+
   public:
     DigiToHitTask_base() : BaseProcessorTaskPolicy< DigiToHitTask_base<T,U> >(),
-        fOutputContainer(nullptr), 
-        fTaskName(), 
-        fDetID(-1), 
+        fOutputContainer(nullptr),
+        fTaskName(),
+        fDetID(-1),
         fMCIndex(-1)
     {}
+
+    DigiToHitTask_base(const DigiToHitTask_base&) = delete;
+    DigiToHitTask_base operator=(const DigiToHitTask_base&) = delete;
 
     virtual ~DigiToHitTask_base()
     {}

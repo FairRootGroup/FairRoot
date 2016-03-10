@@ -63,7 +63,7 @@ void FairRingSorter::SetLowerBound(double timestampOfHitToWrite)
 void FairRingSorter::WriteOutElements(int index)
 {
   if (fLowerBoundPointer.first >= index) {
-    for (int i = fLowerBoundPointer.first; i < fRingBuffer.size(); i++) {
+    for (unsigned int i = fLowerBoundPointer.first; i < fRingBuffer.size(); i++) {
       WriteOutElement(i);
     }
     for (int i = 0; i < index; i++) {
@@ -76,7 +76,7 @@ void FairRingSorter::WriteOutElements(int index)
   }
   if (fVerbose > 1) {
     std::cout << "-I- FairRingSorter::WriteOutElements: Size of Output-Array: " << fOutputData.size() << std::endl;
-    for (int i = 0; i < fOutputData.size(); i++) {
+    for (unsigned int i = 0; i < fOutputData.size(); i++) {
       fOutputData[i]->Print();
       std::cout << " | ";
     }

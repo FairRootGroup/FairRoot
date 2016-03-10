@@ -84,8 +84,7 @@ class TriviallyCopyableDataSaver
             MQLOG(ERROR) << "(de)serialization of object is not supported (Object must be a 'trivially copyable' data class).";
         }
     }
-    
-    
+
     template<typename T>
     void ReadArr(std::ifstream& infile, T* ObjArr, long posArr = 0)
     {
@@ -186,4 +185,4 @@ class TriviallyCopyableDataSaver
     }
 };
 
-#endif	/* TRIVIALLYCOPYABLEDATASAVER_H */
+#endif /* TRIVIALLYCOPYABLEDATASAVER_H */

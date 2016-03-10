@@ -45,7 +45,7 @@ class FairGeoOldAsciiIo: public FairGeoIo
     Bool_t read(FairGeoMedia*) {return kFALSE;}
     Bool_t read(FairGeoSet*,FairGeoMedia*);
     Bool_t write(FairGeoMedia*) {return kFALSE;}
-    Bool_t write(FairGeoSet* set) {return kFALSE;}
+    Bool_t write(FairGeoSet*) {return kFALSE;}
     Bool_t readGeomConfig(FairGeoInterface*) {return kFALSE;}
     Bool_t readDetectorSetup(FairGeoInterface*) {return kFALSE;}
     Bool_t setSimulRefRun(const char*) {return kTRUE;}

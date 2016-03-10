@@ -129,8 +129,8 @@ void FairRadGridManager::FillMeshList()
   }
 }
 
-Bool_t FairRadGridManager::IsTrackEntering(TLorentzVector& pos ,
-    TLorentzVector& mom )
+Bool_t FairRadGridManager::IsTrackEntering(TLorentzVector&,
+    TLorentzVector&)
 {
   // assume for the moment vertical scoring planes
   //    cout << " is entering diagnosis " << endl;

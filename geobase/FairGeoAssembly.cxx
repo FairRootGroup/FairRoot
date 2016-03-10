@@ -56,7 +56,7 @@ FairGeoAssembly::~FairGeoAssembly()
   }
 }
 
-Int_t FairGeoAssembly::readPoints(std::fstream* pFile,FairGeoVolume* volu)
+Int_t FairGeoAssembly::readPoints(std::fstream*,FairGeoVolume*)
 {
 
   //Assemblies has no parameters so just return 1;
@@ -64,7 +64,7 @@ Int_t FairGeoAssembly::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 }
 
 
-TArrayD* FairGeoAssembly::calcVoluParam(FairGeoVolume* volu)
+TArrayD* FairGeoAssembly::calcVoluParam(FairGeoVolume*)
 {
   // nothing to calculate
 
@@ -96,7 +96,7 @@ void FairGeoAssembly::printPoints(FairGeoVolume* volu)
 
 
 
-void FairGeoAssembly::calcVoluPosition(FairGeoVolume* volu,
+void FairGeoAssembly::calcVoluPosition(FairGeoVolume*,
                                        const FairGeoTransform& dTC,const FairGeoTransform& mTR)
 {
   // calls the function posInMother(...) to calculate the position of the

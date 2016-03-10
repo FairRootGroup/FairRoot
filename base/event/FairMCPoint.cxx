@@ -56,7 +56,7 @@ FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
 // -----   Destructor   ----------------------------------------------------
 FairMCPoint::~FairMCPoint() { }
 // -------------------------------------------------------------------------
-void FairMCPoint::Print(const Option_t* opt) const
+void FairMCPoint::Print(const Option_t*) const
 {
   LOG(DEBUG) << "FairMC point for track " << fTrackID
              << " in detector " << fDetectorID << FairLogger::endl;

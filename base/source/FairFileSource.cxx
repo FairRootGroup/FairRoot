@@ -35,7 +35,7 @@ using std::set;
 
 //_____________________________________________________________________________
 
-FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
+FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t)
   :FairSource()
   , fInputTitle(Title)
   , fRootFile(f)
@@ -78,7 +78,7 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t identifier)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, UInt_t identifier)
+FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, UInt_t)
   :FairSource()
   , fInputTitle(Title)
   , fRootFile(0)
@@ -122,7 +122,7 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UInt_t identifier)
+FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UInt_t)
   :FairSource()
   , fInputTitle(Title)
   , fRootFile(0)
@@ -541,7 +541,7 @@ void FairFileSource::CheckFriendChains()
 		 << " have a different structure:" << FairLogger::endl;
         if (errorFlag == 1) {
 	  LOG(ERROR) << "The input chain has the following runids and event numbers:" << FairLogger::endl;
-            for ( Int_t i=0; i<runid.size(); i++) {
+            for ( UInt_t i=0; i<runid.size(); i++) {
 	      LOG(ERROR) << " - Runid " << runid[i] << " with " << events[i] 
 			 << " events" << FairLogger::endl;
             }
@@ -751,6 +751,8 @@ void FairFileSource::SetBeamTime(Double_t beamTime, Double_t gapTime)
 //_____________________________________________________________________________
 void FairFileSource::SetEventTime()
 {
+  //Check if the time for the current entry is already set
+  if(fTimeforEntryNo==fCurrentEntryNo) return;
   LOG(DEBUG) << "Set event time for Entry = "
 	     << fTimeforEntryNo << " , where the current entry is "
 	     << fCurrentEntryNo << " and eventTime is "

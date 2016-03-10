@@ -24,11 +24,13 @@
 #include "FairMQMessage.h"
 #include "FairMQTransportFactory.h"
 
-
 class FairMQProcessorTask : public FairTask
 {
   public:
     FairMQProcessorTask();
+    FairMQProcessorTask(const FairMQProcessorTask&) = delete;
+    FairMQProcessorTask operator=(const FairMQProcessorTask&) = delete;
+
     virtual ~FairMQProcessorTask();
 
     virtual void Exec(Option_t* opt = "0");
@@ -36,18 +38,16 @@ class FairMQProcessorTask : public FairTask
     void SetSendPart(boost::function<void()>); // provides a callback to the Processor.
     void SetReceivePart(boost::function<bool()>); // provides a callback to the Processor.
 
-    FairMQMessage* GetPayload();
     void SetPayload(FairMQMessage* msg);
+    FairMQMessage* GetPayload();
+    void ClearPayload();
+    void SetTransport(FairMQTransportFactory *factory);
 
   protected:
     FairMQMessage* fPayload;
+    FairMQTransportFactory* fTransportFactory;
     boost::function<void()> SendPart; // function pointer for the Processor callback.
     boost::function<bool()> ReceivePart; // function pointer for the Processor callback.
-
-  private:
-    /// Copy Constructor
-    FairMQProcessorTask(const FairMQProcessorTask&);
-    FairMQProcessorTask operator=(const FairMQProcessorTask&);
 };
 
 #endif /* FAIRMQPROCESSORTASK_H_ */

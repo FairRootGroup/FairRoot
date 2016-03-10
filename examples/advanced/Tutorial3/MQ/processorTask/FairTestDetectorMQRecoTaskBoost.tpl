@@ -7,71 +7,72 @@
 
 // Implementation of FairTestDetectorMQRecoTask::Exec() with Boost transport data format
 
+void freeStringBuffer(void *data, void *hint)
+{
+    delete static_cast<std::string*>(hint);
+}
+
+// example TIn: FairTestDetectorDigi
+// example TOut: FairTestDetectorHit
+// example TPayloadIn: boost::archive::binary_iarchive, boost::archive::text_iarchive
+// example TPayloadOut: boost::archive::binary_oarchive, boost::archive::text_oarchive
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option_t* opt)
 {
-    if (fHasBoostSerialization)
+    int inputSize = fPayload->GetSize();
+
+    // prepare boost input archive
+    std::string msgStr(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
+    std::istringstream iss(msgStr);
+    TPayloadIn InputArchive(iss);
+    try
     {
-        int inputSize = fPayload->GetSize();
+        InputArchive >> fDigiVector;
+        // InputArchive >> boost::serialization::make_binary_object(fBigBuffer->data(), sizeof(*fBigBuffer));
+    }
+    catch (boost::archive::archive_exception& e)
+    {
+        LOG(ERROR) << e.what();
+    }
 
-        // prepare boost input archive
-        string msgStr(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
-        istringstream ibuffer(msgStr);
-        TPayloadIn InputArchive(ibuffer);
-        try
-        {
-            InputArchive >> fDigiVector; // get input Archive
-        }
-        catch (boost::archive::archive_exception& e)
-        {
-            LOG(ERROR) << e.what();
-        }
-        fRecoTask->fDigiArray->Delete();
-        int numInput = fDigiVector.size();
+    // Check if the data is the same as on the sender
+    // LOG(WARN) << (*fBigBuffer)[7];
 
-        for (int i = 0; i < numInput; ++i)
-        {
-            new ((*fRecoTask->fDigiArray)[i]) TIn(fDigiVector.at(i));
-        }
+    fRecoTask->fDigiArray->Clear();
+    int numEntries = fDigiVector.size();
 
-        if (!fRecoTask->fDigiArray)
-        {
-            LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
-        }
+    for (int i = 0; i < numEntries; ++i)
+    {
+        new ((*fRecoTask->fDigiArray)[i]) TIn(fDigiVector.at(i));
+    }
 
-        fRecoTask->Exec(opt);
-        int numOutput = numInput;
+    if (!fRecoTask->fDigiArray)
+    {
+        LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+    }
 
-        if (inputSize > 0)
+    fRecoTask->Exec(opt);
+
+    if (inputSize > 0)
+    {
+        for (int i = 0; i < numEntries; ++i)
         {
-            for (int i = 0; i < numOutput; ++i)
+            TOut* hit = (TOut*)fRecoTask->fHitArray->At(i);
+            if (hit)
             {
-                TOut* hit = (TOut*)fRecoTask->fHitArray->At(i);
-                if (hit)
-                {
-                    fHitVector.push_back(*hit);
-                }
+                fHitVector.push_back(*hit);
             }
         }
+    }
 
-        // prepare boost output archive
-        ostringstream obuffer;
-        TPayloadOut OutputArchive(obuffer);
-        OutputArchive << fHitVector;
-        int outputSize = obuffer.str().length();
-        fPayload->Rebuild(outputSize);
-        memcpy(fPayload->GetData(), obuffer.str().c_str(), outputSize);
-        if (fDigiVector.size() > 0)
-        {
-            fDigiVector.clear();
-        }
-        if (fHitVector.size() > 0)
-        {
-            fHitVector.clear();
-        }
-    }
-    else
-    {
-        LOG(ERROR) << "Boost Serialization not ok";
-    }
+    // prepare boost output archive
+    std::ostringstream oss;
+    TPayloadOut OutputArchive(oss);
+    OutputArchive << fHitVector;
+    // OutputArchive << boost::serialization::make_binary_object(fBigBuffer->data(), sizeof(*fBigBuffer));
+    std::string* strMsg = new std::string(oss.str());
+    fPayload->Rebuild(const_cast<char*>(strMsg->c_str()), strMsg->length(), freeStringBuffer, strMsg);
+
+    fDigiVector.clear();
+    fHitVector.clear();
 }

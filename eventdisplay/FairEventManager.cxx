@@ -20,6 +20,16 @@
 #include "TEveManager.h"                // for TEveManager, gEve
 #include "TGeoManager.h"                // for gGeoManager, TGeoManager
 
+
+
+#include "TGLViewer.h"
+#include "TGLCameraOverlay.h"
+#include "TGLLightSet.h"
+#include "TEveProjectionAxes.h"
+#include "TEveBrowser.h"
+
+
+
 class TGeoNode;
 
 ClassImp(FairEventManager)
@@ -43,8 +53,20 @@ FairEventManager::FairEventManager()
    fMinEnergy(0),
    fMaxEnergy(25),
    fEvtMinEnergy(0),
-   fEvtMaxEnergy(10)
-
+   fEvtMaxEnergy(10),
+   fRPhiPlane{0,0,10,0},
+   fRhoZPlane{-1,0,0,0},
+   fRPhiView(NULL),
+   fRhoZView(NULL),
+   fMultiView(NULL),
+   fMultiRPhiView(NULL),
+   fMultiRhoZView(NULL),
+   fRPhiScene(NULL),
+   fRhoZScene(NULL),
+   fRPhiProjManager(NULL),
+   fRhoZProjManager(NULL),
+   fAxesPhi(NULL),
+   fAxesRho(NULL)
 {
   fgRinstance=this;
   AddParticlesToPdgDataBase();
@@ -54,13 +76,71 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
 {
   TEveManager::Create();
   fRunAna->Init();
-  if(gGeoManager) {
-    TGeoNode* N=  gGeoManager->GetTopNode();
-    TEveGeoTopNode* TNod=new  TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
-    gEve->AddGlobalElement(TNod);
-    gEve->FullRedraw3D(kTRUE);
-    fEvent= gEve->AddEvent(this);
-  }
+  if(gGeoManager==NULL)  return;
+  TGeoNode* N=  gGeoManager->GetTopNode();
+  TEveGeoTopNode* TNod=new  TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
+  gEve->AddGlobalElement(TNod);
+  gEve->FullRedraw3D(kTRUE);
+  fEvent= gEve->AddEvent(this);
+
+  fRPhiProjManager = new TEveProjectionManager(TEveProjection::kPT_RPhi);
+  fRhoZProjManager = new TEveProjectionManager(TEveProjection::kPT_RhoZ);
+  gEve->AddToListTree(fRPhiProjManager,kFALSE);
+  gEve->AddToListTree(fRhoZProjManager,kFALSE);
+  fAxesPhi= new TEveProjectionAxes(fRPhiProjManager);
+  fAxesRho = new TEveProjectionAxes(fRhoZProjManager);
+
+  TEveWindowSlot *RPhiSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
+  TEveWindowPack *RPhiPack = RPhiSlot->MakePack();
+  RPhiPack->SetElementName("RPhi View");
+  RPhiPack->SetShowTitleBar(kFALSE);
+  RPhiPack->NewSlot()->MakeCurrent();
+
+  TEveWindowSlot *RhoZSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
+  TEveWindowPack *RhoZPack = RhoZSlot->MakePack();
+  RhoZPack->SetElementName("RhoZ View");
+  RhoZPack->SetShowTitleBar(kFALSE);
+  RhoZPack->NewSlot()->MakeCurrent();
+
+  fRPhiView = gEve->SpawnNewViewer("RPhi View", "");
+  fRhoZView = gEve->SpawnNewViewer("RhoZ View", "");
+  fRPhiScene  = gEve->SpawnNewScene("RPhi","Scene holding axis.");
+  fRhoZScene  = gEve->SpawnNewScene("RhoZ", "Scene holding axis.");
+  fRPhiScene->AddElement(fAxesPhi);
+  fRhoZScene->AddElement(fAxesRho);
+  SetViewers(fRPhiView,fRhoZView);
+
+  TEveWindowSlot *MultiSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
+  TEveWindowPack *MultiPack = MultiSlot->MakePack();
+  MultiPack->SetElementName("Multi View");
+  MultiPack->SetHorizontal();
+  MultiPack->SetShowTitleBar(kFALSE);
+  MultiPack->NewSlot()->MakeCurrent();
+  fMultiView = gEve->SpawnNewViewer("3D View (multi)", "");
+  // switch off left and right light sources for 3D MultiView
+  fMultiView->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightLeft, false);
+  fMultiView->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightRight, false);
+  // add 3D scenes (first tab) to 3D MultiView
+  fMultiView->AddScene(gEve->GetGlobalScene());
+  fMultiView->AddScene(gEve->GetEventScene());
+
+   // add slot for RPhi projection on Multi View tab
+   MultiPack = MultiPack->NewSlot()->MakePack();
+   MultiPack->SetShowTitleBar(kFALSE);
+   MultiPack->NewSlot()->MakeCurrent();
+   fMultiRPhiView = gEve->SpawnNewViewer("RPhi View (multi)", "");
+   MultiPack->NewSlot()->MakeCurrent();
+   fMultiRhoZView = gEve->SpawnNewViewer("RhoZ View (multi)", "");
+
+   SetViewers(fMultiRPhiView,fMultiRhoZView);
+
+
+   // don't change reposition camera on each update
+   fRPhiView->GetGLViewer()->SetResetCamerasOnUpdate(kFALSE);
+   fRhoZView->GetGLViewer()->SetResetCamerasOnUpdate(kFALSE);
+   fMultiView->GetGLViewer()->SetResetCamerasOnUpdate(kFALSE);
+   fMultiRPhiView->GetGLViewer()->SetResetCamerasOnUpdate(kFALSE);
+   fMultiRhoZView->GetGLViewer()->SetResetCamerasOnUpdate(kFALSE);
 }
 //______________________________________________________________________________
 void FairEventManager::UpdateEditor()
@@ -262,4 +342,52 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t pdg)
     pdgDB->AddParticle("FeedbackPhoton","FeedbackPhoton",0,kFALSE,
                        0,0,"Special",50000051);
 
+}
+
+void FairEventManager::SetViewers(TEveViewer* RPhi, TEveViewer* RhoZ) {
+	RPhi->GetGLViewer()->SetCurrentCamera(TGLViewer::kCameraOrthoXOY);
+	   // set clip plane and camera parameters
+	RPhi->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
+	RPhi->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRPhiPlane);
+	RPhi->GetGLViewer()->GetCameraOverlay()->SetOrthographicMode(TGLCameraOverlay::kAxis);
+	RPhi->GetGLViewer()->GetCameraOverlay()->SetShowOrthographic(kTRUE);
+	   // switch off left, right, top and bottom light sources
+	RPhi->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightLeft, false);
+	RPhi->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightRight, false);
+	RPhi->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightTop, false);
+	RPhi->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightBottom, false);
+
+	RhoZ->GetGLViewer()->SetCurrentCamera(TGLViewer::kCameraOrthoZOY);
+	   // set clip plane and camera parameters
+	RhoZ->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
+	RhoZ->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRhoZPlane);
+	RhoZ->GetGLViewer()->GetCameraOverlay()->SetOrthographicMode(TGLCameraOverlay::kAxis);
+	RhoZ->GetGLViewer()->GetCameraOverlay()->SetShowOrthographic(kTRUE);
+	   // switch off left, right and front light sources
+	RhoZ->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightLeft, false);
+	RhoZ->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightRight, false);
+	RhoZ->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightFront, false);
+
+	RPhi->AddScene(fRPhiScene);
+	RPhi->AddScene(gEve->GetGlobalScene());
+	RPhi->AddScene(gEve->GetEventScene());
+	RhoZ->AddScene(fRhoZScene);
+	RhoZ->AddScene(gEve->GetGlobalScene());
+	RhoZ->AddScene(gEve->GetEventScene());
+}
+
+void FairEventManager::SetRPhiPlane(Double_t a, Double_t b, Double_t c,
+		Double_t d) {
+	fRPhiPlane[0] =a;
+	fRPhiPlane[1] =b;
+	fRPhiPlane[2] =c;
+	fRPhiPlane[3] =d;
+}
+
+void FairEventManager::SetRhoZPlane(Double_t a, Double_t b, Double_t c,
+		Double_t d) {
+	fRhoZPlane[0] =a;
+	fRhoZPlane[1] =b;
+	fRhoZPlane[2] =c;
+	fRhoZPlane[3] =d;
 }

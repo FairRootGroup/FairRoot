@@ -22,12 +22,6 @@
 #include "FairMQProgOptions.h"
 #include "FairMQBenchmarkSampler.h"
 
-#ifdef NANOMSG
-#include "FairMQTransportFactoryNN.h"
-#else
-#include "FairMQTransportFactoryZMQ.h"
-#endif
-
 using namespace std;
 using namespace FairMQParser;
 using namespace boost::program_options;
@@ -41,13 +35,13 @@ int main(int argc, char** argv)
 
     try
     {
-        int eventSize;
-        int eventRate;
+        int msgSize;
+        int numMsgs;
 
         options_description sampler_options("Sampler options");
         sampler_options.add_options()
-            ("event-size", value<int>(&eventSize)->default_value(1000), "Event size in bytes")
-            ("event-rate", value<int>(&eventRate)->default_value(0),    "Event rate limit in maximum number of events per second");
+            ("msg-size", value<int>(&msgSize)->default_value(1000), "Message size in bytes")
+            ("num-msgs", value<int>(&numMsgs)->default_value(0),    "Number of messages to send");
 
         config.AddToCmdLineOptions(sampler_options);
 
@@ -65,15 +59,11 @@ int main(int argc, char** argv)
 
         LOG(INFO) << "PID: " << getpid();
 
-#ifdef NANOMSG
-        sampler.SetTransport(new FairMQTransportFactoryNN());
-#else
-        sampler.SetTransport(new FairMQTransportFactoryZMQ());
-#endif
+        sampler.SetTransport(config.GetValue<std::string>("transport"));
 
         sampler.SetProperty(FairMQBenchmarkSampler::Id, id);
-        sampler.SetProperty(FairMQBenchmarkSampler::EventSize, eventSize);
-        sampler.SetProperty(FairMQBenchmarkSampler::EventRate, eventRate);
+        sampler.SetProperty(FairMQBenchmarkSampler::MsgSize, msgSize);
+        sampler.SetProperty(FairMQBenchmarkSampler::NumMsgs, numMsgs);
         sampler.SetProperty(FairMQBenchmarkSampler::NumIoThreads, config.GetValue<int>("io-threads"));
 
         sampler.ChangeState("INIT_DEVICE");

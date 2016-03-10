@@ -56,7 +56,8 @@ FairTutorialDet4::FairTutorialDet4()
     fRotX(),
     fRotY(),
     fRotZ(),
-    fModifyGeometry(kFALSE)
+    fModifyGeometry(kFALSE),
+    fGlobalCoordinates(kFALSE)
 {
 }
 
@@ -79,7 +80,8 @@ FairTutorialDet4::FairTutorialDet4(const char* name, Bool_t active)
     fRotX(),
     fRotY(),
     fRotZ(),
-    fModifyGeometry(kFALSE)
+    fModifyGeometry(kFALSE),
+    fGlobalCoordinates(kFALSE)
 {
 }
 
@@ -112,6 +114,19 @@ void FairTutorialDet4::Initialize()
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairTutorialDet4GeoPar* par=(FairTutorialDet4GeoPar*)(rtdb->getContainer("FairTutorialDet4GeoPar"));
+
+  if (fModifyGeometry) {
+    if (fGlobalCoordinates) {
+      LOG(WARNING) << "Storing MCPoints in global coordinates and modifying the geometry was set." << FairLogger::endl;
+      LOG(WARNING) << "When modifying the geometry is set the MCPoints has to be stored in local coordinates." << FairLogger::endl;
+      LOG(WARNING) << "Store MCPoints in local coordinate system." << FairLogger::endl;
+      fGlobalCoordinates=kFALSE;
+    }
+  }
+
+  par->SetGlobalCoordinates(fGlobalCoordinates);
+  par->setChanged();
+  par->setInputVersion(FairRun::Instance()->GetRunId(),1);
 
   Bool_t isSimulation = kTRUE;
   fGeoHandler->Init(isSimulation);
@@ -155,17 +170,22 @@ Bool_t  FairTutorialDet4::ProcessHits(FairVolume* vol)
     fVolumeID = fGeoHandler->GetUniqueDetectorId();
     if (fELoss == 0. ) { return kFALSE; }
 
-    // Save positions in local coordinate system, so transform the
-    // global coordinates into local ones.
-    Double_t master[3] = {fPos.X(), fPos.Y(), fPos.Z()};
-    Double_t local[3];
 
-    gMC->Gmtod(master, local, 1);
+    if(!fGlobalCoordinates) {
+      // Save positions in local coordinate system, so transform the
+      // global coordinates into local ones.
+      Double_t master[3] = {fPos.X(), fPos.Y(), fPos.Z()};
+      Double_t local[3];
 
-//    AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
-    AddHit(fTrackID, fVolumeID, TVector3(local[0], local[1], local[2]),
-           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-           fELoss);
+      gMC->Gmtod(master, local, 1);
+      AddHit(fTrackID, fVolumeID, TVector3(local[0], local[1], local[2]),
+	     TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
+	     fELoss);
+    } else {
+      AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
+	     TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
+	     fELoss);
+    }
 
     // Increment number of tutorial det points in TParticle
     FairStack* stack = (FairStack*) gMC->GetStack();
@@ -311,7 +331,7 @@ void FairTutorialDet4::ModifyGeometryByFullPath()
     volPath  = volStr;
     volPath += iDet;
 
-    LOG(INFO) << "Path: "<< volPath << FairLogger::endl;
+    LOG(DEBUG) << "Path: "<< volPath << FairLogger::endl;
     gGeoManager->cd(volPath);
     TGeoHMatrix* g3 = gGeoManager->GetCurrentMatrix();
 //      g3->Print();
@@ -337,8 +357,8 @@ void FairTutorialDet4::ModifyGeometryByFullPath()
 
     pn3->Align(nl3);
 
-    TGeoHMatrix* ng3 = pn3->GetMatrix(); //"real" global matrix, what survey sees
-    LOG(DEBUG)<<"*************  The Misaligned Matrix in GRS **************"<<FairLogger::endl;
+//    TGeoHMatrix* ng3 = pn3->GetMatrix(); //"real" global matrix, what survey sees
+//    LOG(DEBUG)<<"*************  The Misaligned Matrix in GRS **************"<<FairLogger::endl;
 //      ng3->Print();
 
 

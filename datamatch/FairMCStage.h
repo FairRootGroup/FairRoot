@@ -73,11 +73,11 @@ class FairMCStage: public FairMCObject
       fLoaded = kFALSE;
     }
 
-    virtual void Print(std::ostream& out) {out << *this;}
+    virtual void PrintInfo(std::ostream& out) {out << *this;}
 
     friend std::ostream& operator<< (std::ostream& out, const FairMCStage& stage) {
       out << stage.GetStageId() << ": " << stage.GetBranchName() << " // " <<  stage.GetFileName() << std::endl; //" with weight: " << stage.GetWeight() << std::endl;
-      ((FairMCObject)stage).Print(out);
+      ((FairMCObject)stage).PrintInfo(out);
       return out;
     }
 

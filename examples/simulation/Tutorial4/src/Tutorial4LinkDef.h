@@ -15,11 +15,12 @@
 #pragma link C++ class FairTutorialDet4Geo;
 #pragma link C++ class FairTutorialDet4GeoPar;
 #pragma link C++ class FairTutorialDet4MisalignPar;
-#pragma link C++ class FairTutorialDet4+;
+#pragma link C++ class FairTutorialDet4;
 #pragma link C++ class FairTutorialDet4Point+;
 #pragma link C++ class FairTutorialDet4Hit+;
 #pragma link C++ class FairTutorialDet4HitProducerIdealMisalign+;
 #pragma link C++ class FairTutorialDet4GeoHandler+;
 #pragma link C++ class FairTutorialDet4StraightLineFitter+;
 #pragma link C++ class FairTutorialDet4MilleWriter+;
+#pragma link C++ class FairTutorialDet4PointDraw;
 #endif

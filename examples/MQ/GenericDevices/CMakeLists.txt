@@ -38,6 +38,19 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
     ${ZMQ_INCLUDE_DIR}
 )
 
+
+
+If(PROTOBUF_FOUND)
+   set(INCLUDE_DIRECTORIES
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${INCLUDE_DIRECTORIES}
+  )
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${SYSTEM_INCLUDE_DIRECTORIES}
+    ${PROTOBUF_INCLUDE_DIR}
+  )
+EndIf(PROTOBUF_FOUND)
+
 include_directories(${INCLUDE_DIRECTORIES})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
@@ -80,6 +93,23 @@ endif(DDS_PATH)
 
 link_directories(${LINK_DIRECTORIES})
 
+If(PROTOBUF_FOUND)
+    add_custom_command(
+        OUTPUT
+          ${CMAKE_CURRENT_BINARY_DIR}/Tuto7Payload.pb.h
+          ${CMAKE_CURRENT_BINARY_DIR}/Tuto7Payload.pb.cc
+        COMMAND
+          ${SIMPATH}/bin/protoc -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} Tuto7Payload.proto
+        WORKING_DIRECTORY
+          ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/data_struct
+        )
+
+Set(NO_DICT_SRCS
+    ${NO_DICT_SRCS}
+    ${CMAKE_CURRENT_BINARY_DIR}/Tuto7Payload.pb.cc
+  )
+EndIf(PROTOBUF_FOUND)
+
 Set(SRCS
     data_struct/MyDigi.cxx
     data_struct/MyHit.cxx
@@ -105,6 +135,13 @@ Set(DEPENDENCIES
     gsl
     gslcblas
 )
+
+If(PROTOBUF_FOUND)
+    Set(DEPENDENCIES
+      ${DEPENDENCIES}
+      ${PROTOBUF_LIBRARY}
+    )
+Endif(PROTOBUF_FOUND)
 
 GENERATE_LIBRARY()
 

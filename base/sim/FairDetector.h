@@ -69,7 +69,7 @@ class FairDetector : public FairModule
     */
     virtual void   Reset()=0;
 
-    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 , Int_t offset) {
+    virtual void   CopyClones( TClonesArray*,  TClonesArray*, Int_t) {
       ;
     }
 

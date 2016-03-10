@@ -3,7 +3,7 @@
 
 CONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/LmdSampler/options/LmdHeaderConfig.INI"
 MQCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/LmdSampler/options/LmdMQConfig.json"
-LMDFILE="@CMAKE_SOURCE_DIR@/examples/Tutorial8/data/sample_data_2.lmd"
+LMDFILE="@CMAKE_SOURCE_DIR@/examples/advanced/Tutorial8/data/sample_data_2.lmd"
 VERBOSE="DEBUG"
 
 ########################## start SAMPLER

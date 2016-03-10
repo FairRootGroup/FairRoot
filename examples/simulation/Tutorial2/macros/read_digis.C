@@ -47,7 +47,13 @@ void read_digis(){
 
     rtdb->getContainer("FairTutorialDet2DigiPar")->print();
     rtdb->saveOutput();
-
+    // -- Print out the random seed from the simulation ----------------------
+    FairBaseParSet* BasePar= (FairBaseParSet *)
+                                     rtdb->getContainer("FairBaseParSet");
+    cout<<"RndSeed used in simulation was  " <<  BasePar->GetRndSeed() << endl;
+   
+    // -----------------------------------------------------------------------
+   
     FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*) 
                                       rtdb->getContainer("FairTutorialDet2DigiPar");
 
