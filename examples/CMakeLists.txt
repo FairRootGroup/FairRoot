@@ -2,8 +2,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #              This software is distributed under the terms of the             #
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 If(GEANT3_FOUND)
@@ -21,6 +21,7 @@ If(GEANT3_FOUND)
   If(Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
     add_subdirectory(MQ/7-parameters)
     add_subdirectory(MQ/GenericDevices)
+    add_subdirectory(MQ/9-PixelDetector)
   EndIf()
   add_subdirectory (simulation/rutherford)
 EndIf()
@@ -36,7 +37,6 @@ If(Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   add_subdirectory(MQ/6-multiple-channels)
   add_subdirectory(MQ/8-multipart)
   add_subdirectory(MQ/LmdSampler)
-  add_subdirectory(MQ/9-PixelDetector)
 EndIf()
 
 add_subdirectory(advanced/Tutorial8)
