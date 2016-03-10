@@ -10,7 +10,6 @@
 
 #include "FairGeoSet.h"  // for FairGeoSet
 #include "Rtypes.h"      // for PixelGeo::Class, ClassDef, PixelGeo::Streamer
-#include "RtypesCore.h"  // for Int_t
 #include "TString.h"     // for TString
 
 class  PixelGeo : public FairGeoSet

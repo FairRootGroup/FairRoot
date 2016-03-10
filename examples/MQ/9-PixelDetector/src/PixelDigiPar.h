@@ -18,7 +18,6 @@
 
 #include "FairParGenericSet.h"  // for FairParGenericSet
 #include "Rtypes.h"             // for PixelDigiPar::Class, ClassDef, PixelD...
-#include "RtypesCore.h"         // for Double_t, Int_t, Bool_t
 class FairParamList;
 
 //! Digitization Parameter Class for Pixel detector
