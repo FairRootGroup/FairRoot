@@ -44,7 +44,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     fRecoTask->Exec(opt);
 
     flatbuffers::FlatBufferBuilder* builder = new flatbuffers::FlatBufferBuilder();
-    flatbuffers::Offset<TestDetectorFlat::Hit> hits[numEntries];
+    flatbuffers::Offset<TestDetectorFlat::Hit>* hits = new flatbuffers::Offset<TestDetectorFlat::Hit>[numEntries];
 
     // unsigned char *inv_buf = nullptr;
     // auto bigBuffer = builder->CreateUninitializedVector<unsigned char>(sizeof(*fBigBuffer), &inv_buf);
@@ -75,6 +75,8 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     auto mloc = CreateHitPayload(*builder, hvector); // hits:[Hit]
     // auto mloc = CreateHitPayload(*builder, hvector, bigBuffer); // hits:[Hit], bigBuffer:[ubyte]
     FinishHitPayloadBuffer(*builder, mloc);
+
+    delete [] hits;
 
     fPayload->Rebuild(builder->GetBufferPointer(), builder->GetSize(), free_builder, builder);
 }
