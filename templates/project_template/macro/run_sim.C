@@ -55,18 +55,6 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant4")
   // -----   Create PrimaryGenerator   --------------------------------------
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
   
-
-    // Pythia8
-    Pythia8Generator* P8gen = new Pythia8Generator();
-    P8gen->UseRandom3(); //# TRandom1 or TRandom3 ?
-    P8gen->SetParameters("SoftQCD:inelastic = on");
-    P8gen->SetParameters("PhotonCollision:gmgm2mumu = on");
-    P8gen->SetParameters("PromptPhoton:all = on");
-    P8gen->SetParameters("WeakBosonExchange:all = on");
-    P8gen->SetMom(40);  //# beam momentum in GeV
-    primGen->AddGenerator(P8gen);
-
- 
     // Add a box generator also to the run
     FairBoxGenerator* boxGen = new FairBoxGenerator(13, 5); // 13 = muon; 1 = multipl.
     boxGen->SetPRange(20,25); // GeV/c
