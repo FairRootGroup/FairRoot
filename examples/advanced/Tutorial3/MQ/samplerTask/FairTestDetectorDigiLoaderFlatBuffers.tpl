@@ -19,7 +19,7 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayl
     int nDigis = fInput->GetEntriesFast();
 
     flatbuffers::FlatBufferBuilder* builder = new flatbuffers::FlatBufferBuilder();
-    flatbuffers::Offset<TestDetectorFlat::Digi> digis[nDigis];
+    flatbuffers::Offset<TestDetectorFlat::Digi>* digis = new flatbuffers::Offset<TestDetectorFlat::Digi>[nDigis];
 
     // Write some data to check it on the receiver side
     // (*fBigBuffer)[7] = 'c';
@@ -51,6 +51,8 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayl
     auto mloc = CreateDigiPayload(*builder, dvector); // digis:[Digi]
     // auto mloc = CreateDigiPayload(*builder, dvector, bigBuffer); // digis:[Digi], bigBuffer:[ubyte]
     FinishDigiPayloadBuffer(*builder, mloc);
+
+    delete [] digis;
 
     fOutput = fTransportFactory->CreateMessage(builder->GetBufferPointer(), builder->GetSize(), free_builder, builder);
 }
