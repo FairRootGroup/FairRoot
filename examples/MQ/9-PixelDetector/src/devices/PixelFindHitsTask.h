@@ -22,6 +22,7 @@
 #include <map>
 #include <string>
 
+class TList;
 class TClonesArray;
 class PixelDigiPar;
 class FairGeoParSet;
@@ -40,6 +41,7 @@ class PixelFindHitsTask
 
 // MQ
   void Exec(TClonesArray* digis, TClonesArray* hits);
+  void Exec(TList* list, TClonesArray* hits);
   void Init(PixelDigiPar* digipar, FairGeoParSet* geopar);
 
  private:

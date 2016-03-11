@@ -35,8 +35,11 @@ ${Boost_LIBRARY_DIRS}
 link_directories( ${LINK_DIRECTORIES})
 
 Set(NO_DICT_SRCS
+devices/FairMQEx9Sampler.cxx
+devices/FairMQEx9TaskProcessor.cxx
 devices/FairMQEx9Processor.cxx
 devices/PixelFindHitsTask.cxx
+devices/FairMQEx9FileSink.cxx
 )
 
 set(SRCS

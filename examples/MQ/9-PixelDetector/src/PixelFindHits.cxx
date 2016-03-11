@@ -82,6 +82,7 @@ PixelFindHits::PixelFindHits(const char* name, Int_t iVerbose)
   , fPitchX(0.)
   , fPitchY(0.)
 {
+  LOG(INFO) << "Created PixelFindHits." << FairLogger::endl;
   Reset();
 }
 // -------------------------------------------------------------------------
@@ -103,7 +104,7 @@ PixelFindHits::~PixelFindHits() {
 void PixelFindHits::Exec(Option_t* /*opt*/) {
   Reset();
 
-  LOG(INFO) << "PixelFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
+  LOG(DEBUG) << "PixelFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
 
   fTNofEvents++;
 
@@ -256,6 +257,49 @@ void PixelFindHits::SetParContainers() {
 }
 // -------------------------------------------------------------------------
 
+// -------------------------------------------------------------------------
+void PixelFindHits::GetParList(TList* tempList) {
+  fDigiPar = new PixelDigiPar("PixelDigiParameters");
+  tempList->Add(fDigiPar);
+  
+  return;
+}
+// -------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------
+void   PixelFindHits::InitMQ(TList* tempList) {
+  LOG(INFO) << "********************************************** PixelFindHits::InitMQ()" << FairLogger::endl;
+  fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+
+  fFeCols = fDigiPar->GetFECols();
+  fFeRows = fDigiPar->GetFERows();
+  fMaxFEperCol = fDigiPar->GetMaxFEperCol();
+  fPitchX = fDigiPar->GetXPitch();
+  fPitchY = fDigiPar->GetYPitch();
+
+  LOG(INFO) << ">> fFeCols      = " << fFeCols << FairLogger::endl;
+  LOG(INFO) << ">> fFeRows      = " << fFeRows << FairLogger::endl;
+  LOG(INFO) << ">> fMaxFEperCol = " << fMaxFEperCol << FairLogger::endl;
+  LOG(INFO) << ">> fPitchX      = " << fPitchX << FairLogger::endl;
+  LOG(INFO) << ">> fPitchY      = " << fPitchY << FairLogger::endl;
+
+  fHits = new TClonesArray("PixelHit",10000);
+
+  return;
+}
+// -------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------
+void   PixelFindHits::ExecMQ(TList* inputList,TList* outputList) {
+  //  LOG(INFO) << "********************************************** PixelFindHits::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents << FairLogger::endl;
+  LOG(INFO) << "********************************************** PixelFindHits::ExecMQ(), Event " << fTNofEvents << FairLogger::endl;
+  fDigis = (TClonesArray*) inputList->FindObject("PixelDigis");
+  outputList->Add(fHits);
+  Exec("");
+  return;
+}
+// -------------------------------------------------------------------------
+
 // -----   Private method Init   -------------------------------------------
 InitStatus PixelFindHits::Init() {
 
@@ -387,7 +431,7 @@ TClonesArray* PixelFindHits::ExecMQ(TClonesArray* digis)
   Reset();
   fDigis=digis;// RootDeserializer has ownership
 
-  LOG(INFO) << "PixelFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
+  LOG(DEBUG) << "PixelFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
 
   fTNofEvents++;
 
