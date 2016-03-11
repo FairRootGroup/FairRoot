@@ -31,6 +31,7 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9.sh.in ${CMAKE_BINARY_DIR}/bin/startFairMQEx9.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9New.sh.in ${CMAKE_BINARY_DIR}/bin/startFairMQEx9New.sh )
 
 
 set(LINK_DIRECTORIES
@@ -46,17 +47,17 @@ Set(Exe_Names
     FairMQEx9Merger
 
     FairMQEx9Sampler
-    FairMQEx9Processor
-    FairMQEx9Sink
+    FairMQEx9TaskProcessor
+    FairMQEx9FileSink
 )
 
 set(Exe_Source
     runSplitterT9.cxx
     runMergerT9.cxx
 
-    runSamplerT9.cxx
-    runProcessorT9.cxx
-    runFileSinkT9.cxx
+    runEx9Sampler.cxx
+    runEx9TaskProcessor.cxx
+    runEx9FileSink.cxx
 )
 
 
