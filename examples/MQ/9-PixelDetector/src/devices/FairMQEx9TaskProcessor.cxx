@@ -202,12 +202,12 @@ FairParGenericSet* FairMQEx9TaskProcessor::UpdateParameter(FairParGenericSet* th
   //  boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
   std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
   LOG(WARN) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar << ")";
-  std::unique_ptr<FairMQMessage> req(fTransportFactory->CreateMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
-  std::unique_ptr<FairMQMessage> rep(fTransportFactory->CreateMessage());
+  std::unique_ptr<FairMQMessage> req(NewMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
+  std::unique_ptr<FairMQMessage> rep(NewMessage());
   
-  if (fChannels.at("param").at(0).Send(req) > 0)
+  if (Send(req,"param") > 0)
     {
-      if (fChannels.at("param").at(0).Receive(rep) > 0)
+      if (Receive(rep,"param") > 0)
 	{
 	  Ex9TMessage2 tm(rep->GetData(), rep->GetSize());
 	  thisPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());

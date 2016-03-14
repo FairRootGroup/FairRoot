@@ -52,46 +52,46 @@ OUTPUTBRANCH="PixelHits"
 SERVER="parmq-server $TRANSPORT"
 SERVER+=" --id parmq-server  --config-json-file $MQCONFIGFILE"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
-xterm -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$SERVER &
+xterm -geometry 80x25+0+350 -hold -e @CMAKE_BINARY_DIR@/bin/$SERVER &
 
 
 ########################## start SAMPLER
 SAMPLER="FairMQEx9Sampler $TRANSPORT"
 SAMPLER+=" --id sampler1  --config-json-file $MQCONFIGFILE"
 SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH $MAXINDEX"
-xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+xterm -geometry 80x25+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER --io-threads 2 &
 
 ########################## start PROCESSORs
 PROCESSOR1="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR1+=" $VERBOSE"
 PROCESSOR1+=" --id processor1 --config-json-file $MQCONFIGFILE"
-#xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
-xterm -geometry 100x27+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+#xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 --io-threads 2 &
+xterm -geometry 80x25+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 --io-threads 2 &
 
 PROCESSOR2="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR2+=" $VERBOSE"
 PROCESSOR2+=" --id processor2 --config-json-file $MQCONFIGFILE"
-xterm -geometry 100x27+950+50 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+xterm -geometry 80x25+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 --io-threads 2 &
 
 PROCESSOR3="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR3+=" $VERBOSE"
 PROCESSOR3+=" --id processor3 --config-json-file $MQCONFIGFILE"
-xterm -geometry 100x27+900+100 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
+xterm -geometry 80x25+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 --io-threads 2 &
 
 PROCESSOR4="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR4+=" $VERBOSE"
 PROCESSOR4+=" --id processor4 --config-json-file $MQCONFIGFILE"
-xterm -geometry 100x27+850+150 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR4 &
+xterm -geometry 80x25+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR4 --io-threads 2 &
 
 PROCESSOR5="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR5+=" $VERBOSE"
 PROCESSOR5+=" --id processor5 --config-json-file $MQCONFIGFILE"
-xterm -geometry 100x27+800+200 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR5 &
+xterm -geometry 80x25+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR5 --io-threads 2 &
 
 ########################## start FILESINK
 FILESINK="FairMQEx9FileSink $TRANSPORT"
 FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
 FILESINK+=" --file-name $OUTPUTFILE --class-name $OUTPUTCLASS --branch-name $OUTPUTBRANCH"
-xterm +aw -geometry 120x27+0+500 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+xterm +aw -geometry 80x25+0+700 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK --io-threads 2 &
 
 
