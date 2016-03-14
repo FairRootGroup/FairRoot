@@ -12,7 +12,7 @@ If(GEANT3_FOUND)
 
   add_subdirectory (simulation/Tutorial1)
   add_subdirectory (simulation/Tutorial2)
-  
+
   add_subdirectory (simulation/Tutorial4)
   If(WITH_DBASE)
     add_subdirectory (advanced/Tutorial5)
@@ -39,6 +39,10 @@ If(Boost_FOUND AND POS_C++11 AND ZMQ_FOUND AND HAS_CXX11_PATTERN1)
   add_subdirectory(MQ/8-multipart)
   add_subdirectory(MQ/LmdSampler)
   add_subdirectory(MQ/SharedMemory)
+EndIf()
+
+If(Go_FOUND AND ZMQ_FOUND)
+	add_subdirectory(advanced/GoTutorial)
 EndIf()
 
 add_subdirectory(advanced/MbsTutorial)
