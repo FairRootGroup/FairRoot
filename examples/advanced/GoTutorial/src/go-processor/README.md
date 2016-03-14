@@ -7,7 +7,7 @@ It replicates the basic example from [FairRootMQ example 2](https://github.com/F
 
 ```sh
 $> cd go-processor
-$> go build
+$> go get .
 ```
 
 ## Usage

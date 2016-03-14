@@ -7,7 +7,7 @@ It replicates the basic example from [FairRootMQ example 1](https://github.com/F
 
 ```sh
 $> cd go-sink
-$> go build
+$> go get .
 ```
 
 ## Usage

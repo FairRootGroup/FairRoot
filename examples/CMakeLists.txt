@@ -40,3 +40,7 @@ If(Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
 EndIf()
 
 add_subdirectory(advanced/Tutorial8)
+
+If(Go_FOUND AND ZMQ_FOUND)
+	add_subdirectory(advanced/GoTutorial)
+EndIf()
