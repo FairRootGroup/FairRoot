@@ -9,22 +9,22 @@
 #include "FairMQEx9Processor.h"
 #include "FairMQParts.h"
 
-   TClonesArray* fOutput;
-    std::string fRootParFileName;
-    std::string fAsciiParFileName;
-    std::string fInputClassName;
-    std::string fParamName;
-    std::string fGeoParamName;
-    int fCurrentRunId;
-    PixelDigiPar* fDigiPar;
-    FairGeoParSet* fGeoPar;
+TClonesArray* fOutput;
+std::string fRootParFileName;
+std::string fAsciiParFileName;
+std::string fInputClassName;
+std::string fParamName;
+std::string fGeoParamName;
+int fCurrentRunId;
+PixelDigiPar* fDigiPar;
+FairGeoParSet* fGeoPar;
 
 
-    RootSerializer fSerializer;
-    RootDeSerializer fDeSerializer;
+RootSerializer fSerializer;
+RootDeSerializer fDeSerializer;
 
-    //base_RootDeSerializer<PixelDigiPar> fParamDeserializer;
-    PixelFindHitsTask fHitFinder;
+//base_RootDeSerializer<PixelDigiPar> fParamDeserializer;
+PixelFindHitsTask fHitFinder;
 
 // special class to expose protected TMessage constructor
 class Ex9TMessage : public TMessage

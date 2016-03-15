@@ -96,8 +96,8 @@ class FairMQEx9Processor : public FairMQDevice
     FairGeoParSet* fGeoPar;
 
 
-    //    RootSerializer fSerializer;
-    //    RootDeSerializer fDeSerializer;
+    RootSerializer fSerializer;
+    RootDeSerializer fDeSerializer;
 
     //base_RootDeSerializer<PixelDigiPar> fParamDeserializer;
     PixelFindHitsTask fHitFinder;
