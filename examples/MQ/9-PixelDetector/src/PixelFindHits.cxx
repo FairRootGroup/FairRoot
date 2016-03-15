@@ -293,7 +293,7 @@ void   PixelFindHits::InitMQ(TList* tempList) {
 void   PixelFindHits::ExecMQ(TList* inputList,TList* outputList) {
   //  LOG(INFO) << "********************************************** PixelFindHits::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents << FairLogger::endl;
   //  LOG(INFO) << "********************************************** PixelFindHits::ExecMQ(), Event " << fTNofEvents << FairLogger::endl;
-  LOG(INFO) << "." << FairLogger::flush;
+  LOG(INFO) << "h" << FairLogger::flush;
   fDigis = (TClonesArray*) inputList->FindObject("PixelDigis");
   outputList->Add(fHits);
   Exec("");

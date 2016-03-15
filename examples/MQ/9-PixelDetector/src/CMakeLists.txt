@@ -36,10 +36,18 @@ link_directories( ${LINK_DIRECTORIES})
 
 Set(NO_DICT_SRCS
 devices/FairMQEx9Sampler.cxx
-devices/FairMQEx9TaskProcessor.cxx
 devices/FairMQEx9Processor.cxx
 devices/PixelFindHitsTask.cxx
 devices/FairMQEx9FileSink.cxx
+)
+
+Set(NO_DICT_HEADERS
+devices/FairMQEx9Sampler.h
+devices/FairMQEx9Processor.h
+devices/PixelFindHitsTask.h
+devices/FairMQEx9FileSink.h
+devices/FairMQEx9TaskProcessor.h
+devices/FairMQEx9TaskProcessor.tpl
 )
 
 set(SRCS

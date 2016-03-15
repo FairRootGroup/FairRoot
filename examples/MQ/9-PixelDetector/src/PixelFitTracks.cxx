@@ -193,6 +193,39 @@ void PixelFitTracks::SetParContainers() {
 }
 // -------------------------------------------------------------------------
 
+// -------------------------------------------------------------------------
+void PixelFitTracks::GetParList(TList* tempList) {
+  fDigiPar = new PixelDigiPar("PixelDigiParameters");
+  tempList->Add(fDigiPar);
+  
+  return;
+}
+// -------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------
+void   PixelFitTracks::InitMQ(TList* tempList) {
+  LOG(INFO) << "********************************************** PixelFitTracks::InitMQ()" << FairLogger::endl;
+  fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+
+  fFitTracks = new TClonesArray("PixelTrack",10000);
+
+  return;
+}
+// -------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------
+void   PixelFitTracks::ExecMQ(TList* inputList,TList* outputList) {
+  //  LOG(INFO) << "********************************************** PixelFitTracks::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents << FairLogger::endl;
+  //  LOG(INFO) << "********************************************** PixelFitTracks::ExecMQ(), Event " << fTNofEvents << FairLogger::endl;
+  LOG(INFO) << "f" << FairLogger::flush;
+  fHits   = (TClonesArray*) inputList->FindObject("PixelHits");
+  fTracks = (TClonesArray*) inputList->FindObject("PixelTracks");
+  outputList->Add(fFitTracks);
+  Exec("");
+  return;
+}
+// -------------------------------------------------------------------------
+
 // -----   Private method Init   -------------------------------------------
 InitStatus PixelFitTracks::Init() {
 
