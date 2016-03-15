@@ -49,6 +49,9 @@ class PixelFitTracks : public FairTask
   /** Execution **/
   virtual void Exec(Option_t* opt);
 
+  virtual void GetParList(TList* tempList);
+  virtual void InitMQ    (TList* tempList);
+  virtual void ExecMQ    (TList* inputList,TList* outputList);
 
  private:
 

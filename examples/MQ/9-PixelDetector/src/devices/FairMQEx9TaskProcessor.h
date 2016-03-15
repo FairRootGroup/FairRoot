@@ -11,14 +11,18 @@
 
 #include <string>
 
-#include "FairMQDevice.h"
-#include "TClonesArray.h"
 #include "FairEventHeader.h"
-#include "PixelFindHits.h"
 #include "FairGeoParSet.h"
 #include "FairParGenericSet.h"
-#include "TList.h"
 
+#include "FairMQDevice.h"
+#include "FairMQParts.h"
+
+#include "TClonesArray.h"
+#include "TList.h"
+#include "TMessage.h"
+
+template<typename T>
 class FairMQEx9TaskProcessor : public FairMQDevice
 {
   public:
@@ -51,10 +55,13 @@ class FairMQEx9TaskProcessor : public FairMQDevice
     int fNewRunId;
     int fCurrentRunId;
 
-    PixelFindHits* fFairTask;
+    T* fFairTask;
     TList* fParCList;
     FairGeoParSet* fGeoPar;
     
 };
+
+// Template implementation is in FairMQEx9TaskProcessor.tpl :
+#include "FairMQEx9TaskProcessor.tpl"
 
 #endif /* FAIRMQEXAMPLE9TASKPROCESSOR_H_ */
