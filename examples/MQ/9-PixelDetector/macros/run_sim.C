@@ -9,7 +9,7 @@
 
 
 
-void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
+void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
 {
   
   TString dir = getenv("VMCWORKDIR");
@@ -29,10 +29,16 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   TString outDir = "./";
 
   // Output file name
-  TString outFile = Form("%s/pixel_%s.mc.root",
-                         outDir.Data(),
-			 mcEngine.Data(),
-			 nEvents);
+  TString outFile;
+  if ( fileId == 0 )  outFile = Form("%s/pixel_%s.mc.root",
+				     outDir.Data(),
+				     mcEngine.Data(),
+				     nEvents);
+  else                outFile = Form("%s/pixel_%s.mc.f%d.root",
+				     outDir.Data(),
+				     mcEngine.Data(),
+				     fileId,
+				     nEvents);
   
   // Parameter file name
   TString parFile = Form("%s/pixel_%s.params.root",
@@ -71,6 +77,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 
   Pixel*  det = new Pixel("Tut9", kTRUE);
   det->SetGeometryFileName("pixel.geo");
+//  det->SetMisalignDetector(kTRUE);
   run->AddModule(det);
   // ------------------------------------------------------------------------
 
@@ -88,7 +95,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   run->SetGenerator(primGen);
   // ------------------------------------------------------------------------
 
-  run->SetStoreTraj(kTRUE);
+  run->SetStoreTraj(kFALSE);
    
   // -----   Initialize simulation run   ------------------------------------
   run->Init();
