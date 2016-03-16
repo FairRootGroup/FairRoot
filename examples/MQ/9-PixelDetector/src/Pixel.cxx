@@ -85,9 +85,6 @@ Pixel::~Pixel()
 void Pixel::Initialize()
 {
   FairDetector::Initialize();
-/*
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  PixelGeoPar* par=(PixelGeoPar*)(rtdb->getContainer("PixelGeoPar"));
 }
 
 Bool_t  Pixel::ProcessHits(FairVolume* vol)
