@@ -68,8 +68,8 @@ FairTutorialDet1::~FairTutorialDet1()
 
 void FairTutorialDet1::Initialize()
 {
-/*
   FairDetector::Initialize();
+/*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairTutorialDet1GeoPar* par=(FairTutorialDet1GeoPar*)(rtdb->getContainer("FairTutorialDet1GeoPar"));
 */
