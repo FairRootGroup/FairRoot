@@ -31,18 +31,18 @@ FairMQEx9Sampler::FairMQEx9Sampler()
   , fNObjects(0)
   , fMaxIndex(-1)
   , fBranchNames()
-  , fSourceName()
+  , fFileNames()
 {
 }
 
 void FairMQEx9Sampler::InitTask() 
 {
-  //  fSourceName = "/Users/karabowi/fairroot/pixel9_dev/FairRoot/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root";
-  //  fBranchNames.push_back("EventHeader.");
-  //  fBranchNames.push_back("PixelDigis");
-
   fRunAna = new FairRunAna();
-  fSource = new FairFileSource(fSourceName.c_str());
+  if ( fFileNames.size() > 0 ) {
+    fSource = new FairFileSource(fFileNames.at(0).c_str());
+    for ( int ifile = 1 ; ifile < fFileNames.size() ; ifile++ ) 
+      fSource->AddFile(fFileNames.at(ifile));
+  }
   fSource->Init();
   LOG(INFO) << "Going to request " << fBranchNames.size() << "  branches:";
   for ( int ibrn = 0 ; ibrn < fBranchNames.size() ; ibrn++ ) {
@@ -92,42 +92,6 @@ void FairMQEx9Sampler::Run()
     }
   
   LOG(INFO) << "Going out of RUNNING state.";
-}
-
-void FairMQEx9Sampler::SetProperty(const int key, const std::string& value)
-{
-    switch (key)
-    {
-        case InputFileName :
-	  SetInputFileName(value);
-            break;
-
-        default:
-            FairMQDevice::SetProperty(key, value);
-            break;
-    }
-}
-
-void FairMQEx9Sampler::SetProperty(const int key, const int value)
-{
-    FairMQDevice::SetProperty(key, value);
-}
-
-std::string FairMQEx9Sampler::GetProperty(const int key, const std::string& default_)
-{
-    switch (key)
-    {
-        case InputFileName :
-	  return GetInputFileName();
-
-        default:
-            return FairMQDevice::GetProperty(key, default_);
-    }
-}
-
-int FairMQEx9Sampler::GetProperty(const int key, const int value)
-{
-    return FairMQDevice::GetProperty(key, value);
 }
 
 FairMQEx9Sampler::~FairMQEx9Sampler()

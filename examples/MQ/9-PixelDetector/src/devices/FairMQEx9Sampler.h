@@ -36,14 +36,8 @@ class FairMQEx9Sampler : public FairMQDevice
     FairMQEx9Sampler();
     virtual ~FairMQEx9Sampler();
 
-    void SetProperty(const int key, const std::string& value);
-    void SetProperty(const int key, const int value);
-    std::string GetProperty(const int key, const std::string& default_ = "");
-    int GetProperty(const int key, const int default_ = 0);
-
-    void SetInputFileName  (std::string tempString) { fSourceName = tempString; }
+    void AddInputFileName  (std::string tempString) { fFileNames  .push_back(tempString); }
     void AddInputBranchName(std::string tempString) { fBranchNames.push_back(tempString); }
-    std::string GetInputFileName () { return fSourceName;}
     
     void SetMaxIndex(int64_t tempInt) {fMaxIndex=tempInt;}
 
@@ -58,7 +52,7 @@ class FairMQEx9Sampler : public FairMQDevice
     int             fNObjects;
     int64_t         fMaxIndex;
     std::vector<std::string>     fBranchNames;
-    std::string     fSourceName;
+    std::vector<std::string>     fFileNames;
 };
 
 #endif /* FAIRMQEX9SAMPLER_H_ */

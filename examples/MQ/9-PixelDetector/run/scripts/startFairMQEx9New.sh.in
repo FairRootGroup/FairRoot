@@ -41,6 +41,7 @@ ASCIIPARAM="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
 if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     # input file and branch for the sampler device
     INPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
+ #   INPUTFILE+=" --file-name @CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.f1.root"
     INPUTBRANCH="PixelDigis"
     
     # output file for sink

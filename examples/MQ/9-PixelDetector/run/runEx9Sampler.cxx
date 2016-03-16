@@ -16,16 +16,16 @@ int main(int argc, char** argv)
 {
     try
     {
-        std::string filename;
+        std::vector<std::string> filename;
         std::string branchname;
 	int64_t     maxindex;
 
         namespace po = boost::program_options;
         po::options_description sampler_options("Sampler options");
         sampler_options.add_options()
-	  ("file-name",   po::value<std::string>(&filename)                     , "Path to the input file")
-	  ("max-index",   po::value<int64_t>    (&maxindex)  ->default_value(-1), "number of events to read")
-	  ("branch-name", po::value<std::string>(&branchname)                   , "branch name");
+	  ("file-name",   po::value<std::vector<std::string>>(&filename)                     , "Path to the input file")
+	  ("max-index",   po::value<int64_t>                 (&maxindex)  ->default_value(-1), "number of events to read")
+	  ("branch-name", po::value<std::string>             (&branchname)                   , "branch name");
 	
 	
         FairMQProgOptions config;
@@ -35,7 +35,10 @@ int main(int argc, char** argv)
             return 1;
 
         FairMQEx9Sampler sampler;
-        sampler.SetProperty(FairMQEx9Sampler::InputFileName,filename);
+
+	for ( int ielem = 0 ; ielem < filename.size() ; ielem++ ) {
+	  sampler.AddInputFileName(filename.at(ielem));
+	}
 
 	sampler.SetMaxIndex(maxindex);
 

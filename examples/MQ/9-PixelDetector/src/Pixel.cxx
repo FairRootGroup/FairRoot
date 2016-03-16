@@ -48,6 +48,7 @@ using std::endl;
 
 Pixel::Pixel()
   : FairDetector("Pixel", kTRUE, kPixel),
+    fMisalignDetector(kFALSE),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -61,6 +62,7 @@ Pixel::Pixel()
 
 Pixel::Pixel(const char* name, Bool_t active)
   : FairDetector(name, active, kPixel),
+    fMisalignDetector(kFALSE),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -86,13 +88,12 @@ void Pixel::Initialize()
 /*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   PixelGeoPar* par=(PixelGeoPar*)(rtdb->getContainer("PixelGeoPar"));
-*/
 }
 
 Bool_t  Pixel::ProcessHits(FairVolume* vol)
 {
-  /** This method is called from the MC stepping */
 
+  /** This method is called from the MC stepping */
   //Set parameters at entrance of volume. Reset ELoss.
   if ( gMC->IsTrackEntering() ) {
     fELoss  = 0.;
@@ -218,6 +219,9 @@ void Pixel::ConstructGeometry()
 }
 
 void Pixel::ModifyGeometry() {  
+  if ( !fMisalignDetector ) {
+    return;
+  }
   if(0==gGeoManager) {
     std::cout<<" -E- No gGeoManager in PndGemDetector::Initialize()!"<<std::endl;
     return;
