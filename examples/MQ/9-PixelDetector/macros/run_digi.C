@@ -5,15 +5,16 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_digi( TString mcEngine="TGeant3" )
+void run_digi( TString mcEngine="TGeant3", Int_t fileId = 0 )
 {
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
   
   // Input file (MC events)
   TString inFile = "pixel_";
-  inFile = inFile + mcEngine + ".mc.root";
-  
+  if ( fileId == 0 )  inFile = inFile + mcEngine + ".mc.root";
+  else                inFile = Form("%s%s.mc.f%d.root",inFile.Data(),mcEngine.Data(),fileId);
+
   // Parameter file
   TString parFile = "pixel_"; 
   parFile = parFile + mcEngine + ".params.root";
@@ -25,7 +26,9 @@ void run_digi( TString mcEngine="TGeant3" )
 
   // Output file
   TString outFile = "pixel_";
-  outFile = outFile + mcEngine + ".digi.root";
+  if ( fileId == 0 )  outFile = outFile + mcEngine + ".digi.root";
+  else                outFile = Form("%s%s.digi.f%d.root",outFile.Data(),mcEngine.Data(),fileId);
+
   
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
