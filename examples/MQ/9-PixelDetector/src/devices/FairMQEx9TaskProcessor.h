@@ -38,7 +38,9 @@ class FairMQEx9TaskProcessor : public FairMQDevice
     std::string GetProperty(const int key, const std::string& default_ = "");
     void SetProperty(const int key, const int value);
     int GetProperty(const int key, const int default_ = 0);
-    void set_runid(int runid){fNewRunId=runid;}//temp
+
+    void SetDataToKeep(std::string tStr) { fDataToKeep = tStr;}
+
   protected:
     virtual void Run();
     virtual void Init();
@@ -54,6 +56,8 @@ class FairMQEx9TaskProcessor : public FairMQDevice
 
     int fNewRunId;
     int fCurrentRunId;
+
+    std::string fDataToKeep;
 
     T* fFairTask;
     TList* fParCList;

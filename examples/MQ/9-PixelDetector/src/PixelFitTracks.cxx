@@ -208,7 +208,7 @@ void   PixelFitTracks::InitMQ(TList* tempList) {
   fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
 
   fFitTracks = new TClonesArray("PixelTrack",10000);
-
+  fFitTracks->SetName("PixelFitTracks");
   return;
 }
 // -------------------------------------------------------------------------

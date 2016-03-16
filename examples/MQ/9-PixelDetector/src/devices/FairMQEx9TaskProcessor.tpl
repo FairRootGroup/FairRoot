@@ -28,6 +28,7 @@ FairMQEx9TaskProcessor<T>::FairMQEx9TaskProcessor()
   : FairMQDevice()
   , fNewRunId(1)
   , fCurrentRunId(-1)
+  , fDataToKeep("")
   , fInput(NULL)
   , fOutput(NULL)
   , fEventHeader(NULL)
@@ -82,6 +83,7 @@ void FairMQEx9TaskProcessor<T>::Run()
 {
     int receivedMsgs = 0;
     int sentMsgs = 0;
+    TObject* objectToKeep = NULL;
 
     while (CheckCurrentState(RUNNING))
     {
@@ -91,7 +93,6 @@ void FairMQEx9TaskProcessor<T>::Run()
         {
 	  LOG(DEBUG)<<"message received";
 	  receivedMsgs++;
-	  
 	  TObject* tempObjects[10];
 	  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
 	    {
@@ -118,6 +119,11 @@ void FairMQEx9TaskProcessor<T>::Run()
 	  //	  LOG(INFO) << " The blocking line... analyzing event " << fEventHeader->GetMCEntryNumber();
 	  fFairTask->ExecMQ(fInput,fOutput);
 
+	  if ( !fDataToKeep.empty() ) {
+	    objectToKeep = fInput->FindObject(fDataToKeep.c_str());
+	    if ( objectToKeep ) fOutput->Add(objectToKeep);
+	  }
+	  
 	  TMessage* messageFEH;
 	  TMessage* messageTCA[10];
 	  FairMQParts partsOut;
@@ -129,9 +135,8 @@ void FairMQEx9TaskProcessor<T>::Run()
 	    messageTCA[iobj] = new TMessage(kMESS_OBJECT);
 	    messageTCA[iobj]->WriteObject(fOutput->At(iobj));
 	    partsOut.AddPart(NewMessage(messageTCA[iobj]->Buffer(), messageTCA[iobj]->BufferSize(), free_tmessage4, messageTCA[iobj]));
-	    Send(partsOut, "data-out");
 	  }
-	  
+	  Send(partsOut, "data-out");
 	  sentMsgs++;
         }
       fInput->Clear();

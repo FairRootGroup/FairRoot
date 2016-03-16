@@ -26,11 +26,13 @@ int main(int argc, char** argv)
     try
     {
         std::string taskname;
+	std::string keepdata;
 
         namespace po = boost::program_options;
         po::options_description processor_options("Processor options");
         processor_options.add_options()
-	  ("task-name",   po::value<std::string>(&taskname)->required(),  "Name of task to run");
+	  ("task-name",   po::value<std::string>(&taskname)->required(),  "Name of task to run")
+	  ("keep-data",   po::value<std::string>(&keepdata)            ,  "Name of data to keep in stream");
 	
         FairMQProgOptions config;
         config.AddToCmdLineOptions(processor_options);
@@ -40,14 +42,17 @@ int main(int argc, char** argv)
 	
 	if      ( strcmp(taskname.c_str(),"PixelFindHits") == 0 ) {
 	  HitFinder processor;
+	  processor.SetDataToKeep(keepdata);
 	  runStateMachine(processor, config);
 	}
 	else if ( strcmp(taskname.c_str(),"PixelFindTracks") == 0 ) {
 	  TrackFinder processor;
+	  processor.SetDataToKeep(keepdata);
 	  runStateMachine(processor, config);
 	}
 	else if ( strcmp(taskname.c_str(),"PixelFitTracks") == 0 ) {
 	  TrackFitter processor;
+	  processor.SetDataToKeep(keepdata);
 	  runStateMachine(processor, config);
 	}
 	else {
