@@ -30,8 +30,10 @@ include_directories(${INCLUDE_DIRECTORIES})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9.sh.in ${CMAKE_BINARY_DIR}/bin/startFairMQEx9.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9New.sh.in ${CMAKE_BINARY_DIR}/bin/startFairMQEx9New.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9.sh.in         ${CMAKE_BINARY_DIR}/bin/startFairMQEx9.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9New.sh.in      ${CMAKE_BINARY_DIR}/bin/startFairMQEx9New.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_2Levels.sh.in ${CMAKE_BINARY_DIR}/bin/startFairMQEx9_2Levels.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_3Levels.sh.in ${CMAKE_BINARY_DIR}/bin/startFairMQEx9_3Levels.sh )
 
 
 set(LINK_DIRECTORIES

@@ -17,15 +17,15 @@ int main(int argc, char** argv)
     try
     {
         std::string filename;
-        std::string classname;
-        std::string branchname;
+	std::vector<std::string> classname;
+	std::vector<std::string> branchname;
 
         namespace po = boost::program_options;
         po::options_description fileSink_options("FileSink options");
         fileSink_options.add_options()
-	  ("file-name",   po::value<std::string>(&filename)  , "Path to the output file")
-	  ("class-name",  po::value<std::string>(&classname) , "class name")
-	  ("branch-name", po::value<std::string>(&branchname), "branch name");
+	  ("file-name",   po::value<std::string>             (&filename)  , "Path to the output file")
+	  ("class-name",  po::value<std::vector<std::string>>(&classname) , "class name")
+	  ("branch-name", po::value<std::vector<std::string>>(&branchname), "branch name");
 	
 
         FairMQProgOptions config;
@@ -37,8 +37,14 @@ int main(int argc, char** argv)
         FairMQEx9FileSink fileSink;
         fileSink.SetProperty(FairMQEx9FileSink::OutputFileName,filename);
 
-	fileSink.AddOutputBranch(classname,branchname);
+	if ( classname.size() != branchname.size() ) {
+	  LOG(ERROR) << "The classname size (" << classname.size() << ") and branchname size (" << branchname.size() << ") MISMATCH!!!";
+	}
+
 	fileSink.AddOutputBranch("FairEventHeader","EventHeader.");
+	for ( int ielem = 0 ; ielem < classname.size() ; ielem++ ) {
+	  fileSink.AddOutputBranch(classname.at(ielem),branchname.at(ielem));
+	}
 	
         runStateMachine(fileSink, config);
 
