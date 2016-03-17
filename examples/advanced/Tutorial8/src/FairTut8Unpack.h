@@ -53,6 +53,8 @@ class FairTut8Unpack : public FairUnpack
     Int_t fNHits;           /**< Number of raw items in current event. */
     Int_t fNHitsTotal;      /**< Total number of raw items. */
 
+    FairTut8Unpack(const FairTut8Unpack&);
+    FairTut8Unpack& operator=(const FairTut8Unpack&);
   public:
     // Class definition
     ClassDef(FairTut8Unpack, 1)

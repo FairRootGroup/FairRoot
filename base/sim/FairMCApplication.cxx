@@ -106,6 +106,8 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fRadGridMan(NULL),
    fEventHeader(NULL),
    fMCEventHeader(NULL),
+   listActiveDetectors(),
+   listDetectors(),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -187,6 +189,8 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
    fRadGridMan(NULL),
    fEventHeader(NULL),
    fMCEventHeader(NULL),
+   listActiveDetectors(),
+   listDetectors(),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -269,6 +273,8 @@ FairMCApplication::FairMCApplication()
    fRadGridMan(NULL),
    fEventHeader(NULL),
    fMCEventHeader(NULL),
+   listActiveDetectors(),
+   listDetectors(),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {

@@ -1039,8 +1039,9 @@ uint32_t fLmdOffsetWrite(sLmdControl* pLmdControl)
   }
   if(current/4 != pLmdControl->pMbsFileHeader->iTableOffset) {
     printf("Table offset mismatch: current:%lld calculated:%lld, cur-cal %lld\n",
-           current/4,pLmdControl->pMbsFileHeader->iTableOffset,
-           current/4-pLmdControl->pMbsFileHeader->iTableOffset);
+           (long long int)(current/4),
+           (long long int)(pLmdControl->pMbsFileHeader->iTableOffset),
+           (long long int)(current/4-pLmdControl->pMbsFileHeader->iTableOffset));
     return(LMD__FAILURE);
   }
   if(iReturn != (pLmdControl->iElements+1)*pLmdControl->iOffsetSize) {
@@ -1148,7 +1149,7 @@ void fLmdPrintFileHeader(uint32_t iVerbose, sMbsFileHeader* pMbsFileHeader)
              pMbsFileHeader->iTimeSpecSec,
              pMbsFileHeader->iTimeSpecNanoSec/1000,
              pMbsFileHeader->iMaxWords,
-             pMbsFileHeader->iTableOffset,
+             (long long unsigned int)(pMbsFileHeader->iTableOffset),
              pMbsFileHeader->iOffsetSize);
     }
   }
@@ -1185,7 +1186,7 @@ void fLmdPrintControl(uint32_t iVerbose, sLmdControl* pLmdControl)
            pLmdControl->cFile,
            pLmdControl->iBufferWords,
            pLmdControl->iLeftWords,
-           pLmdControl->iBytes,
+           (long long int)(pLmdControl->iBytes),
            pLmdControl->iElements
           );
     fLmdPrintFileHeader(iVerbose,pLmdControl->pMbsFileHeader);

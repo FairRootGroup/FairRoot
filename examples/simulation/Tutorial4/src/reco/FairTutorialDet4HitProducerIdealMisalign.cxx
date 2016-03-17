@@ -145,10 +145,10 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
   // Declare some variables
   FairTutorialDet4Point* point = NULL;
   Int_t detID   = 0;        // Detector ID
-  Int_t trackID = 0;        // Track index
+//  Int_t trackID = 0;        // Track index
   Double_t x, y, z;         // Position
   Double_t dx = 0.1;        // Position error
-  Double_t tof = 0.;        // Time of flight
+//  Double_t tof = 0.;        // Time of flight
   TVector3 pos, dpos;       // Position and error vectors
 
   // Loop over TofPoints
@@ -162,7 +162,7 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
     detID = point->GetDetectorID();
 
     // MCTrack ID
-    trackID = point->GetTrackID();
+//    trackID = point->GetTrackID();
 
     if(fDoMisalignment) {
 
@@ -186,7 +186,7 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
                  << fShiftY.At(detID)<<" cm in y-direction."<<FairLogger::endl;
 
       // Time of flight
-      tof = point->GetTime();
+//      tof = point->GetTime();
 
       // Create new hit
       pos.SetXYZ(x,y,z);
@@ -214,7 +214,7 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
       LOG(INFO)<<"Position: "<<x<<", "<<y<<", "<<z<<FairLogger::endl;
       LOG(INFO)<<"****"<<FairLogger::endl;
       // Time of flight
-      tof = point->GetTime();
+      //tof = point->GetTime();
 
       // Create new hit
       pos.SetXYZ(x,y,z);

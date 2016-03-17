@@ -59,6 +59,7 @@ PixelDigiWriteToFile::PixelDigiWriteToFile(const char* name, Int_t iVerbose)
   : FairTask(name, iVerbose)
   , fDigis(NULL)
   , fOutputFileName("test.dat")
+  , fOutputFile()
 {
   Reset();
 }

@@ -61,6 +61,9 @@ private:
 
   Int_t    fRunId;
 
+  PixelDigiSource(const PixelDigiSource&);
+  PixelDigiSource& operator=(const PixelDigiSource&);
+
   ClassDef(PixelDigiSource, 1)
 };
 

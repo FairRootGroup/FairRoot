@@ -99,13 +99,14 @@ void FairRadLenManager::AddPoint(Int_t& ModuleId)
   if ( gMC->IsTrackExiting()    ||
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
-    FairRadLenPoint* p=0;
+//    FairRadLenPoint* p=0;
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     gMC->TrackPosition(fPosOut);
     gMC->TrackMomentum(fMomOut);
     TClonesArray& clref = *fPointCollection;
     Int_t tsize = clref.GetEntriesFast();
-    p=new(clref[tsize]) FairRadLenPoint(fTrackID, ModuleId,
+//    p=new(clref[tsize]) FairRadLenPoint(fTrackID, ModuleId,
+    new(clref[tsize]) FairRadLenPoint(fTrackID, ModuleId,
                                         TVector3(fPosIn.X(),fPosIn.Y(),fPosIn.Z()),
                                         TVector3(fMomIn.X(),fMomIn.Y(),fMomIn.Z()),
                                         fTime,  fLength, fELoss,

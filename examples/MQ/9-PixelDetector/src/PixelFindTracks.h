@@ -87,6 +87,8 @@ class PixelFindTracks : public FairTask
   /** Finish at the end of each event **/
   virtual void Finish();
 
+  PixelFindTracks(const PixelFindTracks&);
+  PixelFindTracks& operator=(const PixelFindTracks&);
 
   ClassDef(PixelFindTracks,1);
 

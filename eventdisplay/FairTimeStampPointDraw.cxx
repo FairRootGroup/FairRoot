@@ -46,7 +46,7 @@ TVector3 FairTimeStampPointDraw::GetVector(TObject* obj)
 Int_t FairTimeStampPointDraw::GetValue(TObject* obj,Int_t /*i*/)
 {
   FairTimeStamp* tsdata = static_cast<FairTimeStamp*>(obj);
-  if (tsdata > 0) {
+  if (tsdata != NULL) {
     return static_cast<Int_t>(tsdata->GetTimeStamp());
   } else {
     return 0;

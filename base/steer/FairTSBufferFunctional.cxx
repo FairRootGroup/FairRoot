@@ -146,7 +146,7 @@ Int_t FairTSBufferFunctional::FindStartIndex(Double_t startParameter)
 {
   FairTimeStamp* dataPoint;
   Int_t tempIndex = fBranchIndex;
-  Bool_t runBackwards = kTRUE;
+//  Bool_t runBackwards = kTRUE;
   Int_t previousIndex = -1;
   Int_t previousBranchIndex = -1;
 
@@ -159,7 +159,7 @@ Int_t FairTSBufferFunctional::FindStartIndex(Double_t startParameter)
 
   if (fInputArray->GetEntries() == 0) {         //If the previous entries in the tree are also empty run in the forward direction
     ReadInNextFilledEntry();
-    runBackwards = kFALSE;
+//    runBackwards = kFALSE;
   }
 
   if (fInputArray->GetEntries() == 0) {         //If there is still no data the branch is empty!

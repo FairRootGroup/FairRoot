@@ -68,6 +68,8 @@ class PixelFindHitsTask
   /** Finish at the end of each event **/
   virtual void Finish();
 
+  PixelFindHitsTask(const PixelFindHitsTask&);
+  PixelFindHitsTask& operator=(const PixelFindHitsTask&);
 
 };
 

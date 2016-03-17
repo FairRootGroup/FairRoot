@@ -93,6 +93,8 @@ class PixelFitTracks : public FairTask
   /** Finish at the end of each event **/
   virtual void Finish();
 
+  PixelFitTracks(const PixelFitTracks&);
+  PixelFitTracks& operator=(const PixelFitTracks&);
 
   ClassDef(PixelFitTracks,1);
 

@@ -99,7 +99,10 @@ class FairMQEx9Processor : public FairMQDevice
     //base_RootDeSerializer<PixelDigiPar> fParamDeserializer;
     PixelFindHitsTask fHitFinder;
 
-    
+  private:
+    FairMQEx9Processor(const FairMQEx9Processor&);
+    FairMQEx9Processor& operator=(const FairMQEx9Processor&);
+      
 };
 
 #endif /* FAIRMQEXAMPLE9PROCESSOR_H_ */

@@ -9,7 +9,8 @@
 #include "FairTut8RawItem.h"
 
 FairTut8RawItem::FairTut8RawItem()
-    : fSam(0)
+    : TObject()
+    , fSam(0)
     , fGtb(0)
     , fTacAddr(0)
     , fTacCh(0)
@@ -28,7 +29,8 @@ FairTut8RawItem::FairTut8RawItem(UShort_t sam,
                                  UShort_t clock,
                                  UShort_t tacData,
                                  UShort_t qdcData)
-    : fSam(sam)
+    : TObject()
+    , fSam(sam)
     , fGtb(gtb)
     , fTacAddr(tacAddr)
     , fTacCh(tacCh)
@@ -40,7 +42,8 @@ FairTut8RawItem::FairTut8RawItem(UShort_t sam,
 }
 
 FairTut8RawItem::FairTut8RawItem(const FairTut8RawItem& right)
-    : fSam(right.fSam)
+    : TObject(right)
+    , fSam(right.fSam)
     , fGtb(right.fGtb)
     , fTacAddr(right.fTacAddr)
     , fTacCh(right.fTacCh)

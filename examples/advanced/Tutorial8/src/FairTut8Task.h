@@ -43,6 +43,9 @@ class FairTut8Task : public FairTask
     TClonesArray* fRawData; /**< Array with input data. */
     TH1F* fhQdc;            /**< Histogram object which is registered on http server. */
 
+    FairTut8Task(const FairTut8Task&);
+    FairTut8Task& operator=(const FairTut8Task&);
+
   public:
     ClassDef(FairTut8Task, 1)
 };

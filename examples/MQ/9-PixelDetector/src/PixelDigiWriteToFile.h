@@ -78,6 +78,8 @@ class PixelDigiWriteToFile : public FairTask
   /** Finish at the end of each event **/
   virtual void Finish();
 
+  PixelDigiWriteToFile(const PixelDigiWriteToFile&);
+  PixelDigiWriteToFile& operator=(const PixelDigiWriteToFile&);
 
   ClassDef(PixelDigiWriteToFile,1);
 
