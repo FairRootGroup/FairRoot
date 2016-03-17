@@ -72,7 +72,7 @@ class FairRun : public TNamed
      *       Set the experiment dependent run header
      *       for each run
      */
-    void        SetEventHeader(FairEventHeader* EvHeader)  {
+    virtual void    SetEventHeader(FairEventHeader* EvHeader)  {
       fEvHead=EvHeader;
     }
     /**

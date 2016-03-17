@@ -93,6 +93,11 @@ class FairRunOnline : public FairRun
     /** Write last data to file, close input and output **/
     void Finish();
 
+    /** Set the reconstruction event header **/
+    virtual void    SetEventHeader(FairEventHeader* EvHeader)  {
+      fEvtHeader=EvHeader;
+    }
+
   private:
 
     Bool_t fAutomaticFinish;
