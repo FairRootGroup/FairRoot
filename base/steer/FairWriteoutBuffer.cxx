@@ -169,7 +169,7 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
 {
   if (fActivateBuffering) {
     typedef  std::multimap<double, FairTimeStamp*>::iterator DTMapIter;
-    typedef  std::map<FairTimeStamp, double>::iterator DataMapIter;
+//    typedef  std::map<FairTimeStamp, double>::iterator DataMapIter;
     if (activeTime < 0) activeTime = 0; // to avoid errors due to wrong (negative) returnvalues of overwritten modify function by subdetector groups. A negative (-1) aktiveTime already indicate empty data maps!
     double timeOfOldData = FindTimeForData(data);
     // PrintDeadTimeMap();

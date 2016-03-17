@@ -164,7 +164,7 @@ void FairMQEx9Processor::UpdateParameters()
           <<" fFeRows="<<fFeRows
           <<" fMaxFEperCol="<<fMaxFEperCol
           <<" fPitchX="<<fPitchX
-          <<" fPitchY="<<fPitchX
+          <<" fPitchY="<<fPitchY
           ;
 
     LOG(WARN)<<"Update geo parameters...";

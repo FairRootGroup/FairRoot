@@ -250,7 +250,6 @@ REvent* MRevBuffer::RevGet(TSocket* pSocket, Int_t iFlush, Int_t)
   Char_t cMsg[128] = "";
   Char_t* pcBuf;
   Int_t iSize, iRC;
-  Long_t lRC;
 
   Int_t iError = 0;
   Int_t iRetry;
@@ -603,9 +602,12 @@ gNextRecvD:
       if (piBuf[9] != 1) { iSwap = 1; }
     }
 
+//  Long_t lRC;
+
     /* swap MBS buffer */
     if (iSwap) {
-      lRC  = swaplw( &piBuf[1], iBufSize/iint, 0);
+//      lRC  = swaplw( &piBuf[1], iBufSize/iint, 0);
+      swaplw( &piBuf[1], iBufSize/iint, 0);
       if ( (iBufNo == 0) && (iDebug) ) {
         LOG(DEBUG) <<  "    Event data swapped" << FairLogger::endl;
       }

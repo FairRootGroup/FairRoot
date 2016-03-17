@@ -26,6 +26,11 @@
 #include <boost/serialization/base_object.hpp>
 #endif //__CINT__
 
+#if defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
+
 namespace MyPodData
 {
 
@@ -102,6 +107,9 @@ namespace MyPodData
     };
 }
 
+#if defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic pop
+#endif
 
 #endif	/* MYPODDATA_H */
 

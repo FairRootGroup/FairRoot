@@ -41,6 +41,8 @@ class FairRemoteSource : public FairMbsSource
     MRevBuffer* fBuffer;
     REvent* fREvent;
 
+    FairRemoteSource& operator=(const FairRemoteSource&);
+    
   public:
     ClassDef(FairRemoteSource, 0)
 };

@@ -63,12 +63,15 @@ class FairMCTrack : public TObject
     virtual ~FairMCTrack();
 
 
+#if defined(__clang__)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
     /**  Output to screen  **/
     virtual void Print(Int_t iTrack) const;
+#if defined(__clang__)
 #pragma clang diagnostic pop
-
+#endif
     /**  Accessors  **/
     Int_t    GetPdgCode()  const { return fPdgCode; }
     Int_t    GetMotherId() const { return fMotherId; }

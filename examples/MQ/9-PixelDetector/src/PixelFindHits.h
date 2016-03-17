@@ -99,6 +99,8 @@ class PixelFindHits : public FairTask
   /** Finish at the end of each event **/
   virtual void Finish();
 
+  PixelFindHits(const PixelFindHits&);
+  PixelFindHits& operator=(const PixelFindHits&);
 
   ClassDef(PixelFindHits,1);
 

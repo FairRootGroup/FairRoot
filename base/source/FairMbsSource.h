@@ -46,6 +46,8 @@ class FairMbsSource : public FairSource
   private:
     TObjArray* fUnpackers;
 
+    FairMbsSource& operator=(const FairMbsSource&);
+
     ClassDef(FairMbsSource, 0)
 };
 

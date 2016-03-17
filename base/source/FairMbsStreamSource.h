@@ -46,6 +46,8 @@ class FairMbsStreamSource : public FairMbsSource
     Int_t* fxEventData;
     s_ves10_1* fxSubEvent;
 
+    FairMbsStreamSource& operator=(const FairMbsStreamSource&);
+
 
   public:
     ClassDef(FairMbsStreamSource, 0)

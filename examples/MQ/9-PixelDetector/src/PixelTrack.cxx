@@ -26,6 +26,7 @@ PixelTrack::PixelTrack()
   , fAXErr(0.)
   , fY0Err(0.)
   , fAYErr(0.)
+  , fHitIndices()
 {
 }
 
@@ -40,6 +41,7 @@ PixelTrack::PixelTrack(Double_t x0 , Double_t ax , Double_t y0 , Double_t ay ,
   , fAXErr(axe)
   , fY0Err(y0e)
   , fAYErr(aye)
+  , fHitIndices()
 {
 }
 

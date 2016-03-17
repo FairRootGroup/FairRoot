@@ -386,16 +386,16 @@ void FairRunIdGenerator::uuid_unpack(const uuid_t in, struct uuid* uu)
 unsigned int FairRunIdGenerator::generateId(void)
 {
   uuid_t uu;
-  unsigned int v;
+//  unsigned int v;
 //  struct timeval ret_tv;
   uuid_generate(uu);
 
-
+/*
   v = ((uu[0] ^ uu[4] ^ uu[8] ^ uu[12]) << 0)
       | ((uu[1] ^ uu[5] ^ uu[9] ^ uu[13]) << 8)
       | ((uu[2] ^ uu[6] ^ uu[10] ^ uu[14]) << 16)
       | ((uu[3] ^ uu[7] ^ uu[11] ^ uu[15]) << 24);
-
+*/
 
   //  return v & 0x7fffffff;
   return getTID();

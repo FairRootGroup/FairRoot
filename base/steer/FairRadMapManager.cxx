@@ -188,7 +188,7 @@ void FairRadMapManager::AddPoint(Int_t&)
        gMC->IsTrackStop()       ||
        gMC->IsTrackDisappeared()   ) {
 
-    FairRadMapPoint* p=0;
+//    FairRadMapPoint* p=0;
     fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
     Int_t copyNo;
     Int_t fVolID = gMC->CurrentVolID(copyNo); // CAVEAT: fVolID is NOT an unique identifier!!
@@ -198,7 +198,8 @@ void FairRadMapManager::AddPoint(Int_t&)
     TClonesArray& clref = *fPointCollection;
     Int_t tsize = clref.GetEntriesFast();
 
-    p=new(clref[tsize]) FairRadMapPoint(fTrackID, fVolID,
+//    p=new(clref[tsize]) FairRadMapPoint(fTrackID, fVolID,
+    new(clref[tsize]) FairRadMapPoint(fTrackID, fVolID,
                                         TVector3(fPosIn.X(),fPosIn.Y(),fPosIn.Z()),
                                         TVector3(fMomIn.X(),fMomIn.Y(),fMomIn.Z()),
                                         fTime, fLength, fELoss,

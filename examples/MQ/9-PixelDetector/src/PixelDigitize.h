@@ -93,6 +93,8 @@ class PixelDigitize : public FairTask
   /** Finish at the end of each event **/
   virtual void Finish();
 
+  PixelDigitize(const PixelDigitize&);
+  PixelDigitize& operator=(const PixelDigitize&);
 
   ClassDef(PixelDigitize,1);
 
