@@ -36,7 +36,7 @@ int main(int argc, char** argv)
 
         FairMQEx9Sampler sampler;
 
-	for ( int ielem = 0 ; ielem < filename.size() ; ielem++ ) {
+	for ( unsigned int ielem = 0 ; ielem < filename.size() ; ielem++ ) {
 	  sampler.AddInputFileName(filename.at(ielem));
 	}
 

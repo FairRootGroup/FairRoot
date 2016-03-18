@@ -114,7 +114,7 @@ void FairMQEx9FileSink::Run()
 	    {
 	      Ex9TMessage tm(parts.At(ipart).GetData(), parts.At(ipart).GetSize());
 	      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
-	      for ( int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
+	      for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
 		{
 		  if ( strcmp(tempObjects[ipart]->GetName(),fBranchNames[ibr].c_str()) == 0 ) 
 		    {

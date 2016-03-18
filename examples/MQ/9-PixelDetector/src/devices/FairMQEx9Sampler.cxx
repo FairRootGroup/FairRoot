@@ -25,9 +25,9 @@ using namespace std;
 
 FairMQEx9Sampler::FairMQEx9Sampler()
   : FairMQDevice()
-  , fInputObjects()
   , fRunAna(NULL)
   , fSource(NULL)
+  , fInputObjects()
   , fNObjects(0)
   , fMaxIndex(-1)
   , fBranchNames()
@@ -40,12 +40,12 @@ void FairMQEx9Sampler::InitTask()
   fRunAna = new FairRunAna();
   if ( fFileNames.size() > 0 ) {
     fSource = new FairFileSource(fFileNames.at(0).c_str());
-    for ( int ifile = 1 ; ifile < fFileNames.size() ; ifile++ ) 
+    for ( unsigned int ifile = 1 ; ifile < fFileNames.size() ; ifile++ ) 
       fSource->AddFile(fFileNames.at(ifile));
   }
   fSource->Init();
   LOG(INFO) << "Going to request " << fBranchNames.size() << "  branches:";
-  for ( int ibrn = 0 ; ibrn < fBranchNames.size() ; ibrn++ ) {
+  for ( unsigned int ibrn = 0 ; ibrn < fBranchNames.size() ; ibrn++ ) {
     LOG(INFO) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
     int branchStat = fSource->ActivateObject((TObject**)&fInputObjects[fNObjects],fBranchNames[ibrn].c_str()); // should check the status...
     if ( fInputObjects[fNObjects] ) {
@@ -59,7 +59,7 @@ void FairMQEx9Sampler::InitTask()
 }
 
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage2(void *data, void *hint)
+void free_tmessage2(void* /*data*/, void *hint)
 {
     delete (TMessage*)hint;
 }

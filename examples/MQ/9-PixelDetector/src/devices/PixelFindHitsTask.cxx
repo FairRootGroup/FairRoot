@@ -146,7 +146,7 @@ void PixelFindHitsTask::Exec(TClonesArray* digis, TClonesArray* hits)
     LOG(DEBUG)<<"PixelFindHits::Exec() ok 2 ";
     TGeoNode* curNode = fGeoParSet->GetGeometry()->GetCurrentNode();
     LOG(DEBUG)<<"PixelFindHits::Exec() ok 3 ";
-    TGeoMatrix* matrix = curNode->GetMatrix();
+    //TGeoMatrix* matrix = curNode->GetMatrix();
 
     TGeoVolume* actVolume = fGeoParSet->GetGeometry()->GetCurrentVolume();
     TGeoBBox* actBox = (TGeoBBox*)(actVolume->GetShape());

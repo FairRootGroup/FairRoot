@@ -38,14 +38,17 @@ class Ex9TMessage : public TMessage
 };
 
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage3(void *data, void *hint)
+void free_tmessage3(void* /*data*/, void* hint)
 {
     delete (TMessage*)hint;
 }
 
 
 FairMQEx9Processor::FairMQEx9Processor() 
- : fOutput(nullptr),
+ : FairMQDevice(),
+   fEventHeader(nullptr),
+   fInput(nullptr),
+   fOutput(nullptr),
    fRootParFileName(""),
    fAsciiParFileName(""),
    fInputClassName(""),

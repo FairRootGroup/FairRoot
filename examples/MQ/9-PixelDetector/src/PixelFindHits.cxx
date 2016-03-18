@@ -246,10 +246,10 @@ void PixelFindHits::SetParContainers() {
   
   // Get run and runtime database
   FairRun* run = FairRun::Instance();
-  if ( ! run ) Fatal("SetParContainers", "No analysis run");
+  if ( ! run ) LOG(FATAL) << "No analysis run" << FairLogger::endl;
 
   FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) Fatal("SetParContainers", "No runtime database");
+  if ( ! db ) LOG(FATAL) << "No runtime database" << FairLogger::endl;
 
   // Get GEM digitisation parameter container
   fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
@@ -307,7 +307,7 @@ InitStatus PixelFindHits::Init() {
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) Fatal("Init", "No FairRootManager");
+  if ( ! ioman ) LOG(FATAL) << "No FairRootManager" << FairLogger::endl;
   fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
   if ( !fDigis ) 

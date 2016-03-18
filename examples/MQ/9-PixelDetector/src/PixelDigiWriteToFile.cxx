@@ -110,7 +110,7 @@ InitStatus PixelDigiWriteToFile::Init() {
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) Fatal("Init", "No FairRootManager");
+  if ( ! ioman ) LOG(FATAL) << "No FairRootManager" << FairLogger::endl;
   fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
   if ( !fDigis ) 

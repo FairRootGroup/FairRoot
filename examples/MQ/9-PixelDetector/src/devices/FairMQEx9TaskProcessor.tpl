@@ -18,7 +18,7 @@ class Ex9TMessage2 : public TMessage
 };
 
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage4(void *data, void *hint)
+void free_tmessage4(void* /*data*/, void *hint)
 {
     delete (TMessage*)hint;
 }
@@ -26,15 +26,15 @@ void free_tmessage4(void *data, void *hint)
 template <typename T>
 FairMQEx9TaskProcessor<T>::FairMQEx9TaskProcessor()
   : FairMQDevice()
+  , fEventHeader(NULL)
+  , fInput(NULL)
+  , fOutput(NULL)
   , fNewRunId(1)
   , fCurrentRunId(-1)
   , fDataToKeep("")
-  , fInput(NULL)
-  , fOutput(NULL)
-  , fEventHeader(NULL)
   , fFairTask(NULL)
-  , fGeoPar(nullptr)
   , fParCList(NULL)
+  , fGeoPar(nullptr)
 {
 
 }
@@ -149,7 +149,7 @@ void FairMQEx9TaskProcessor<T>::Run()
 
 
 template <typename T>
-void FairMQEx9TaskProcessor<T>::CustomCleanup(void *data, void *hint)
+void FairMQEx9TaskProcessor<T>::CustomCleanup(void* /*data*/, void *hint)
 {
     delete (std::string*)hint;
 }

@@ -48,7 +48,6 @@ using std::endl;
 
 Pixel::Pixel()
   : FairDetector("Pixel", kTRUE, kPixel),
-    fMisalignDetector(kFALSE),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -56,13 +55,13 @@ Pixel::Pixel()
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
+    fMisalignDetector(kFALSE),
     fPixelPointCollection(new TClonesArray("PixelPoint"))
 {
 }
 
 Pixel::Pixel(const char* name, Bool_t active)
   : FairDetector(name, active, kPixel),
-    fMisalignDetector(kFALSE),
     fTrackID(-1),
     fVolumeID(-1),
     fPos(),
@@ -70,6 +69,7 @@ Pixel::Pixel(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
+    fMisalignDetector(kFALSE),
     fPixelPointCollection(new TClonesArray("PixelPoint"))
 {
 }

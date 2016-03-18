@@ -56,7 +56,7 @@ Bool_t PixelDigiSource::Init()
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) Fatal("Init", "No FairRootManager");
+  if ( ! ioman ) LOG(FATAL) << "No FairRootManager" << FairLogger::endl;
 
   // Register output array StsDigi
   fDigis = new TClonesArray("PixelDigi",10000);

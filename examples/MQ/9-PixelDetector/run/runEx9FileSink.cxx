@@ -42,7 +42,7 @@ int main(int argc, char** argv)
 	}
 
 	fileSink.AddOutputBranch("FairEventHeader","EventHeader.");
-	for ( int ielem = 0 ; ielem < classname.size() ; ielem++ ) {
+	for ( unsigned int ielem = 0 ; ielem < classname.size() ; ielem++ ) {
 	  fileSink.AddOutputBranch(classname.at(ielem),branchname.at(ielem));
 	}
 	

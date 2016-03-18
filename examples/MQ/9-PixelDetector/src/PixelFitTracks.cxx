@@ -102,9 +102,10 @@ void PixelFitTracks::Exec(Option_t* /*opt*/) {
     PixelTrack* curTrack = static_cast<PixelTrack*>(fTracks->At(itrack));
 
     const Int_t nofHits = curTrack->GetNofHits();
-    Double_t hitXPos[nofHits];
-    Double_t hitYPos[nofHits];
-    Double_t hitZPos[nofHits];
+    // Default initialize the arrays 
+    Double_t* hitXPos = new Double_t[nofHits]();
+    Double_t* hitYPos = new Double_t[nofHits]();
+    Double_t* hitZPos = new Double_t[nofHits]();
 
     for ( Int_t ihit = 0 ; ihit < nofHits ; ihit++ ) {
       PixelHit* curHit = static_cast<PixelHit*>(fHits->At(curTrack->GetHitIndex(ihit)));
@@ -141,6 +142,10 @@ void PixelFitTracks::Exec(Option_t* /*opt*/) {
 	       << "                         "
 	       << " AY = " << valAY << " += " << errAY 
 	       << " Y0 = " << valY0 << " += " << errY0 << FairLogger::endl;
+
+    delete [] hitXPos;
+    delete [] hitYPos;
+    delete [] hitZPos;
   }
 
   fTNofEvents    += 1;
@@ -183,10 +188,10 @@ void PixelFitTracks::SetParContainers() {
   
   // Get run and runtime database
   FairRun* run = FairRun::Instance();
-  if ( ! run ) Fatal("SetParContainers", "No analysis run");
+  if ( ! run ) LOG(FATAL) << "No analysis run" << FairLogger::endl;
 
   FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) Fatal("SetParContainers", "No runtime database");
+  if ( ! db ) LOG(FATAL) << "No runtime database" << FairLogger::endl;
 
   // Get GEM digitisation parameter container
   fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
@@ -232,7 +237,7 @@ InitStatus PixelFitTracks::Init() {
 
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
-  if ( ! ioman ) Fatal("Init", "No FairRootManager");
+  if ( ! ioman ) LOG(FATAL) << "No FairRootManager" << FairLogger::endl;
 
   fHits =  static_cast<TClonesArray*>(ioman->GetObject("PixelHits"));
   if ( !fHits ) 

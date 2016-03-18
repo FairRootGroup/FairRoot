@@ -65,7 +65,7 @@ class FairMQEx9FileSink : public FairMQDevice
 
     TFile* fOutFile;
     TTree* fTree;
-    int             fNObjects;
+    unsigned int    fNObjects;
     TObject**       fOutputObjects;
     /* FairEventHeader* fEventHeader; */
     /* TClonesArray*    fOutput; */
