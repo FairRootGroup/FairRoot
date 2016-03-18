@@ -98,14 +98,15 @@ void PixelFitTracks::Exec(Option_t* /*opt*/) {
 
   LOG(DEBUG) << "PixelFitTracks::Exec() EVENT " << fTNofEvents << " with " << fNTracks << " TRACKS" << FairLogger::endl;
 
-  Double_t hitXPos[3];
-  Double_t hitYPos[3];
-  Double_t hitZPos[3];
-
   for ( Int_t itrack = 0 ; itrack < fNTracks ; itrack++ ) {
     PixelTrack* curTrack = static_cast<PixelTrack*>(fTracks->At(itrack));
 
-    for ( Int_t ihit = 0 ; ihit < curTrack->GetNofHits() ; ihit++ ) {
+    const Int_t nofHits = curTrack->GetNofHits();
+    Double_t hitXPos[nofHits];
+    Double_t hitYPos[nofHits];
+    Double_t hitZPos[nofHits];
+
+    for ( Int_t ihit = 0 ; ihit < nofHits ; ihit++ ) {
       PixelHit* curHit = static_cast<PixelHit*>(fHits->At(curTrack->GetHitIndex(ihit)));
       
       //      LOG(INFO) << " HIT[" << curTrack->GetHitIndex(ihit) << "] = ( " << curHit->GetX() << " , " << curHit->GetY() << " , " << curHit->GetZ() << " )" << FairLogger::endl;
@@ -117,12 +118,12 @@ void PixelFitTracks::Exec(Option_t* /*opt*/) {
     Double_t valX0 = 0., errX0 = 0., valAX = 0., errAX = 0.;
     Double_t valY0 = 0., errY0 = 0., valAY = 0., errAY = 0.;
     
-    LinearRegression(curTrack->GetNofHits(),hitZPos,hitXPos,valX0,errX0,valAX,errAX);
-    LinearRegression(curTrack->GetNofHits(),hitZPos,hitYPos,valY0,errY0,valAY,errAY);
+    LinearRegression(nofHits,hitZPos,hitXPos,valX0,errX0,valAX,errAX);
+    LinearRegression(nofHits,hitZPos,hitYPos,valY0,errY0,valAY,errAY);
     
     PixelTrack* fitTrack = new ((*fFitTracks)[fNFitTracks]) PixelTrack(valX0,valAX,valY0,valAY,
 								       errX0,errAX,errY0,errAY);
-    for ( Int_t ihit = 0 ; ihit < curTrack->GetNofHits() ; ihit++ ) {
+    for ( Int_t ihit = 0 ; ihit < nofHits ; ihit++ ) {
       fitTrack->AddHitIndex(curTrack->GetHitIndex(ihit));
     }
 
