@@ -54,9 +54,9 @@ Configure_File(${CTEST_SOURCE_DIRECTORY}/CTestCustom.cmake
 # When building with launchers send the results to the alternative cdash server.
 File(READ ${CTEST_SOURCE_DIRECTORY}/CTestConfig.cmake f0 )
 If(USE_LAUNCHERS)
-#  String(REGEX REPLACE "cdash.gsi.de" "lxwww53.gsi.de" f1 "${f0}" )
-#  String(REGEX REPLACE "https" "http" f2 "${f1}" )
-#  File(WRITE ${CTEST_BINARY_DIRECTORY}/CTestConfig.cmake "${f2}")
+  String(REGEX REPLACE "cdash.gsi.de" "cdash.test.gsi.de" f1 "${f0}" )
+  String(REGEX REPLACE "https" "http" f2 "${f1}" )
+  File(WRITE ${CTEST_BINARY_DIRECTORY}/CTestConfig.cmake "${f2}")
 Else()
   File(WRITE ${CTEST_BINARY_DIRECTORY}/CTestConfig.cmake "${f0}")
 EndIf()
@@ -66,7 +66,7 @@ Ctest_Read_Custom_Files("${CTEST_BINARY_DIRECTORY}")
 Ctest_Start($ENV{ctest_model})
 
 If(NOT $ENV{ctest_model} MATCHES Experimental)
-#  Ctest_Update(SOURCE "${CTEST_SOURCE_DIRECTORY}")
+  Ctest_Update(SOURCE "${CTEST_SOURCE_DIRECTORY}")
 EndIf()
 
 Ctest_Configure(BUILD "${CTEST_BINARY_DIRECTORY}"
