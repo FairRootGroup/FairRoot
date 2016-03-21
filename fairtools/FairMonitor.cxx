@@ -459,7 +459,7 @@ void FairMonitor::Draw(Option_t*) {
       }
       Int_t startingPosition = 575 - nofHier/(1+secLine)*45-secLine*(1-secLineEven)*45;
 
-      Double_t topEdge = 800.-800.*(2.*static_cast<Double_t>(ihier-0.5))/(static_cast<Double_t>(2*maxHierarchyNumber+1))+secLine*15;
+      Double_t topEdge = 800.-800.*(2.*static_cast<Double_t>(ihier)-0.5)/(static_cast<Double_t>(2*maxHierarchyNumber+1))+secLine*15;
       LOG(DEBUG) << "for level " << ihier << " will put top edge at " << topEdge 
 		<< ". " << (secLineEven?"Two lines":"One line") << (secLineEven?" with offset":"") << FairLogger::endl;
       for ( iti = fTaskMap.begin() ; iti != fTaskMap.end() ; iti++ ) {
@@ -488,7 +488,7 @@ void FairMonitor::Draw(Option_t*) {
     }
     Int_t startingPosition = 575 - nofHier/(1+secLine)*45-secLine*(1-secLineEven)*45;
 
-    Double_t topEdge = 800.-800.*(2.*static_cast<Double_t>(ihier+0.5))/(static_cast<Double_t>(2*maxHierarchyNumber+1))+secLine*15;
+    Double_t topEdge = 800.-800.*(2.*static_cast<Double_t>(ihier)+0.5)/(static_cast<Double_t>(2*maxHierarchyNumber+1))+secLine*15;
     LOG(DEBUG) << "for level " << ihier << " will put top edge at " << topEdge 
 	      << ". " << (secLineEven?"Two lines":"One line") << (secLineEven?" with offset":"") << FairLogger::endl;
     for ( iti = fObjectMap.begin() ; iti != fObjectMap.end() ; iti++ ) {
