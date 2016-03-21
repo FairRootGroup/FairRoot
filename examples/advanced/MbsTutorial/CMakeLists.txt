@@ -5,13 +5,13 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Create a library called "libTutorial8" 
+# Create a library called "libMbsTutorial" 
 
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
     ${CMAKE_SOURCE_DIR}/base/source
-    ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial8
-    ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial8/src
+    ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial
+    ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial/src
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -36,8 +36,8 @@ Set(SRCS
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
 
-Set(LINKDEF Tutorial8LinkDef.h)
-Set(LIBRARY_NAME Tutorial8)
+Set(LINKDEF MbsTutorialLinkDef.h)
+Set(LIBRARY_NAME MbsTutorial)
 
 Set(DEPENDENCIES
     Base MbsAPI

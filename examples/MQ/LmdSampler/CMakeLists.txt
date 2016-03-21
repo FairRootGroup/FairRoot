@@ -27,7 +27,7 @@ set(INCLUDE_DIRECTORIES
     
     ${CMAKE_SOURCE_DIR}/MbsAPI
 
-    ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial8/src
+    ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial/src
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -60,7 +60,7 @@ Set(SRCS
 )
 
 Set(DEPENDENCIES
-    Base MbsAPI Tutorial8
+    Base MbsAPI MbsTutorial
 )
 
 Set(LINKDEF LmdSamplerLinkDef.h)
@@ -100,7 +100,7 @@ ForEach(_file RANGE 0 ${_length})
         boost_system 
         boost_serialization 
         boost_program_options 
-        Tutorial8
+        MbsTutorial
         LmdMQSampler
     )
     GENERATE_EXECUTABLE()
