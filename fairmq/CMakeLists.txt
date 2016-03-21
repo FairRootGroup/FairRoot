@@ -27,7 +27,7 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
   ${ZMQ_INCLUDE_DIR}
 )
 
-If(NANOMSG_FOUND)
+If(NANOMSG_FOUND AND MSGPACK_FOUND)
   add_definitions(-DNANOMSG_FOUND)
   Set(INCLUDE_DIRECTORIES
     ${INCLUDE_DIRECTORIES}
@@ -36,8 +36,9 @@ If(NANOMSG_FOUND)
   Set(SYSTEM_INCLUDE_DIRECTORIES
     ${SYSTEM_INCLUDE_DIRECTORIES}
     ${NANOMSG_INCLUDE_DIR}
+    ${MSGPACK_INCLUDE_DIR}
   )
-EndIf(NANOMSG_FOUND)
+EndIf(NANOMSG_FOUND AND MSGPACK_FOUND)
 
 Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
@@ -67,7 +68,6 @@ Set(SRCS
 
   "devices/FairMQBenchmarkSampler.cxx"
   "devices/FairMQSink.cxx"
-  "devices/FairMQBuffer.cxx"
   "devices/FairMQProxy.cxx"
   "devices/FairMQSplitter.cxx"
   "devices/FairMQMerger.cxx"
@@ -77,7 +77,7 @@ Set(SRCS
   "options/FairMQParser.cxx"
 )
 
-If(NANOMSG_FOUND)
+If(NANOMSG_FOUND AND MSGPACK_FOUND)
   Set(SRCS
     ${SRCS}
     "nanomsg/FairMQTransportFactoryNN.cxx"
@@ -85,7 +85,7 @@ If(NANOMSG_FOUND)
     "nanomsg/FairMQSocketNN.cxx"
     "nanomsg/FairMQPollerNN.cxx"
   )
-EndIf(NANOMSG_FOUND)
+EndIf(NANOMSG_FOUND AND MSGPACK_FOUND)
 
 
 # to copy src that are header-only files (e.g. c++ template) for FairRoot external installation
@@ -122,12 +122,13 @@ Set(DEPENDENCIES
   boost_regex
 )
 
-If(NANOMSG_FOUND)
+If(NANOMSG_FOUND AND MSGPACK_FOUND)
   Set(DEPENDENCIES
     ${DEPENDENCIES}
     ${NANOMSG_LIBRARY_SHARED}
+    # msgpackc # currently only header only
   )
-EndIf(NANOMSG_FOUND)
+EndIf(NANOMSG_FOUND AND MSGPACK_FOUND)
 
 Set(LIBRARY_NAME FairMQ)
 
@@ -136,7 +137,6 @@ GENERATE_LIBRARY()
 Set(Exe_Names
   bsampler
   sink
-  buffer
   splitter
   merger
   proxy
@@ -145,7 +145,6 @@ Set(Exe_Names
 Set(Exe_Source
   run/runBenchmarkSampler.cxx
   run/runSink.cxx
-  run/runBuffer.cxx
   run/runSplitter.cxx
   run/runMerger.cxx
   run/runProxy.cxx

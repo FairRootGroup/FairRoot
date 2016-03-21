@@ -9,16 +9,13 @@
 MESSAGE(STATUS "Looking for MessagePack...")
 
 find_path(MSGPACK_INCLUDE_DIR msgpack.hpp PATHS
-  /usr/include
-  /usr/include/msgpack
-  /usr/local/include
-  /usr/local/include/msgpack
+  ${SIMPATH}/include
+  NO_DEFAULT_PATH
 )
 
 find_path(MSGPACK_LIBRARY_DIR NAMES libmsgpackc.dylib libmsgpackc.so PATHS
-  /usr/lib
-  /usr/local/lib
-  /usr/local/lib/msgpack
+  ${SIMPATH}/lib
+  NO_DEFAULT_PATH
 )
 
 if(MSGPACK_INCLUDE_DIR AND MSGPACK_LIBRARY_DIR)
