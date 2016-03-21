@@ -18,8 +18,6 @@
 FairMQProcessorTask::FairMQProcessorTask()
     : fPayload(nullptr)
     , fTransportFactory(nullptr)
-    , SendPart()
-    , ReceivePart()
 {
 }
 
@@ -29,18 +27,6 @@ FairMQProcessorTask::~FairMQProcessorTask()
 
 void FairMQProcessorTask::Exec(Option_t* /*opt*/)
 {
-}
-
-// initialize a callback to the Processor for sending multipart messages.
-void FairMQProcessorTask::SetSendPart(boost::function<void()> callback)
-{
-    SendPart = callback;
-}
-
-// initialize a callback to the Processor for receiving multipart messages.
-void FairMQProcessorTask::SetReceivePart(boost::function<bool()> callback)
-{
-    ReceivePart = callback;
 }
 
 FairMQMessage* FairMQProcessorTask::GetPayload()

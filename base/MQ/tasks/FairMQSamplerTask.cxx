@@ -23,7 +23,6 @@ FairMQSamplerTask::FairMQSamplerTask()
     , fOutput(nullptr)
     , fTransportFactory(nullptr)
     , fEventIndex(0)
-    , SendPart()
     , fEvtHeader(nullptr)
 {
 }
@@ -35,7 +34,6 @@ FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose)
     , fOutput(nullptr)
     , fTransportFactory(nullptr)
     , fEventIndex(0)
-    , SendPart()
     , fEvtHeader(nullptr)
 {
 }
@@ -56,12 +54,6 @@ InitStatus FairMQSamplerTask::Init()
 
 void FairMQSamplerTask::Exec(Option_t* /*opt*/)
 {
-}
-
-// initialize a callback to the Sampler for sending multipart messages.
-void FairMQSamplerTask::SetSendPart(boost::function<void()> callback)
-{
-    SendPart = callback;
 }
 
 void FairMQSamplerTask::SetBranch(string branch)

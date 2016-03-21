@@ -122,7 +122,7 @@ void FairMQEx9Processor::Run()
 	    TObject* tempObjects[10];
 	    for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
 	      {
-		Ex9TMessage tm(parts.At(ipart).GetData(), parts.At(ipart).GetSize());
+		Ex9TMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
 		LOG(INFO) << "GOT PART " << ipart;
 		//	      tempObjects[ipart] = new TObject();
 		tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
@@ -135,9 +135,9 @@ void FairMQEx9Processor::Run()
 	    LOG(INFO) << "now there are " << fInput->GetEntries() << " entries in the tlist";
 
         // Deserialize data into TClonesArray
-	    // Ex9TMessage tmFEH(parts.At(0).GetData(), parts.At(0).GetSize());
+	    // Ex9TMessage tmFEH(parts.At(0)->GetData(), parts.At(0)->GetSize());
 	    // fEventHeader        = (FairEventHeader*)(tmFEH.ReadObject(tmFEH.GetClass()));
-	    // Ex9TMessage tmTCA(parts.At(1).GetData(), parts.At(1).GetSize());
+	    // Ex9TMessage tmTCA(parts.At(1)->GetData(), parts.At(1)->GetSize());
 	    // TClonesArray* input = (TClonesArray*)   (tmTCA.ReadObject(tmTCA.GetClass()));
 	    //	    LOG(INFO) << "feh with name \"" << fEventHeader->GetName() << "\", tca with name \"" << input->GetName() << "\"";
 	    fNewRunId = fEventHeader->GetRunId();

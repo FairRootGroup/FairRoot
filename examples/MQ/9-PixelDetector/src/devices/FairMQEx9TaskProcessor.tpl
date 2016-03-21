@@ -96,7 +96,7 @@ void FairMQEx9TaskProcessor<T>::Run()
 	  TObject* tempObjects[10];
 	  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
 	    {
-	      Ex9TMessage2 tm(parts.At(ipart).GetData(), parts.At(ipart).GetSize());
+	      Ex9TMessage2 tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
 	      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
 	      if ( strcmp(tempObjects[ipart]->GetName(),"EventHeader.") == 0 ) 
 		fEventHeader = (FairEventHeader*)tempObjects[ipart];

@@ -112,7 +112,7 @@ void FairMQEx9FileSink::Run()
 	  TObject* tempObjects[10];
 	  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
 	    {
-	      Ex9TMessage tm(parts.At(ipart).GetData(), parts.At(ipart).GetSize());
+	      Ex9TMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
 	      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
 	      for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
 		{
