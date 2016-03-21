@@ -10,7 +10,7 @@ Use of FairMQ
 
 Use of FairDB
 
-##Tutorial8
+##MbsTutorial
 
 Shows how to use MBS data unpacking with FairRunOnline steering class. FairTut8Unpack implement parsing of MBS subevents and 
 creates output in form of array of FairTut8RawItem data objects.

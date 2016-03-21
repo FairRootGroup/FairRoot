@@ -39,4 +39,4 @@ If(Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   add_subdirectory(MQ/LmdSampler)
 EndIf()
 
-add_subdirectory(advanced/Tutorial8)
+add_subdirectory(advanced/MbsTutorial)
