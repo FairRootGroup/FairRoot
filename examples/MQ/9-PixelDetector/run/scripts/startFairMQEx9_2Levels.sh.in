@@ -50,8 +50,8 @@ if [ "$FAIRTASKNAME1" == "--task-name PixelFindHits" -a "$FAIRTASKNAME2" == "--t
     
     # output file for sink
     OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.track.root"
-    OUTPUTCLASS="TClonesArray(PixelTrack)"
-    OUTPUTBRANCH="PixelTracks"
+    OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
+    OUTPUTBRANCH="--branch-name PixelTracks"
 elif [ "$FAIRTASKNAME1" == "--task-name PixelFindTracks" -a "$FAIRTASKNAME2" == "--task-name PixelFitTracks" ] ; then
     # input file and branch for the sampler device
     FAIRTASKNAME1+=" --keep-data PixelHits"
