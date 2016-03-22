@@ -42,8 +42,8 @@ INPUTBRANCH="PixelDigis"
 
 # output file for sink
 OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.fitTrack.root"
-OUTPUTCLASS="TClonesArray(PixelTrack)"
-OUTPUTBRANCH="PixelFitTracks"
+OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
+OUTPUTBRANCH="--branch-name PixelFitTracks"
 ###########################
 
 
@@ -99,7 +99,7 @@ xterm -geometry 80x22+1000+700 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3_2 &
 ########################## start FILESINK
 FILESINK="FairMQEx9FileSink $TRANSPORT"
 FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
-FILESINK+=" --file-name $OUTPUTFILE --class-name $OUTPUTCLASS --branch-name $OUTPUTBRANCH"
+FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
 xterm +aw -geometry 80x22+0+700 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
 
 

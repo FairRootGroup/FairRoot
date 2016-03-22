@@ -46,8 +46,8 @@ if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     
     # output file for sink
     OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hit.root"
-    OUTPUTCLASS="TClonesArray(PixelHit)"
-    OUTPUTBRANCH="PixelHits"
+    OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
+    OUTPUTBRANCH="--branch-name PixelHits"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFindTracks" ] ; then
     # input file and branch for the sampler device
     INPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hit.root"
@@ -55,8 +55,8 @@ elif [ "$FAIRTASKNAME" == "--task-name PixelFindTracks" ] ; then
     
     # output file for sink
     OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.track.root"
-    OUTPUTCLASS="TClonesArray(PixelTrack)"
-    OUTPUTBRANCH="PixelTracks"
+    OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
+    OUTPUTBRANCH="--branch-name PixelTracks"
 else
     echo "TASK $FAIRTASKNAME UNKNOWN!!!"
     exit
@@ -111,7 +111,7 @@ xterm -geometry 80x25+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR5 &
 ########################## start FILESINK
 FILESINK="FairMQEx9FileSink $TRANSPORT"
 FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
-FILESINK+=" --file-name $OUTPUTFILE --class-name $OUTPUTCLASS --branch-name $OUTPUTBRANCH"
+FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
 xterm +aw -geometry 80x25+0+700 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
 
 
