@@ -31,9 +31,22 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9.sh.in         ${CMAKE_BINARY_DIR}/bin/startFairMQEx9.sh )
+
+set(EXAMPLE9_FILE_LOCATION ${CMAKE_SOURCE_DIR})
+set(EXAMPLE9_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9New.sh.in      ${CMAKE_BINARY_DIR}/bin/startFairMQEx9New.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_2Levels.sh.in ${CMAKE_BINARY_DIR}/bin/startFairMQEx9_2Levels.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_3Levels.sh.in ${CMAKE_BINARY_DIR}/bin/startFairMQEx9_3Levels.sh )
+
+set(EXAMPLE9_FILE_LOCATION ${CMAKE_INSTALL_PREFIX}/share/fairbase)
+set(EXAMPLE9_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/bin)
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9New.sh.in      ${CMAKE_INSTALL_PREFIX}/bin/startFairMQEx9New.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_2Levels.sh.in ${CMAKE_INSTALL_PREFIX}/bin/startFairMQEx9_2Levels.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_3Levels.sh.in ${CMAKE_INSTALL_PREFIX}/bin/startFairMQEx9_3Levels.sh )
+
+Install(FILES options/Pixel9MQConfig_Multipart.json options/Pixel9MQConfig_2Levels.json options/Pixel9MQConfig_3Levels.json
+        DESTINATION share/fairbase/examples/MQ/9-PixelDetector/run/options/
+       )
 
 
 set(LINK_DIRECTORIES
