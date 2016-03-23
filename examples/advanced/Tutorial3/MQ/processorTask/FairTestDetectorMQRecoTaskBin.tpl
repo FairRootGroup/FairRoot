@@ -9,13 +9,6 @@
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi, TestDetectorPayload::Hit>::Exec(Option_t* opt)
 {
-    // // Example how to receive multipart message (uncomment the code lines to test).
-    // // 1. receive the first part.
-    // string test = string(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
-    // LOG(ERROR) << test;
-    // // Ask Processor for the next part.
-    // ReceivePart();
-
     int inputSize = fPayload->GetSize();
     // size_t bufferSize = sizeof(*fBigBuffer);
     // size_t digisSize = inputSize - bufferSize;

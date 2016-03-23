@@ -78,14 +78,6 @@ class FairMQSampler : public FairMQDevice
 
     void ListenForAcks();
 
-    /**
-     * Sends the currently available output of the Sampler Task as part of a multipart message
-     * and reinitializes the message to be filled with the next part.
-     * This method can be given as a callback to the SamplerTask.
-     * The final message part must be sent with normal Send method.
-     */
-    void SendPart();
-
   protected:
     virtual void InitTask();
     virtual void Run();

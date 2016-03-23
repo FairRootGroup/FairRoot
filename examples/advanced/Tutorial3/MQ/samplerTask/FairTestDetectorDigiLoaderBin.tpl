@@ -9,17 +9,6 @@
 template <>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* /*opt*/)
 {
-    // // Example of how to send multipart messages (uncomment the code lines to test).
-    // // 1. create some data and put it into message (optionaly in one step with zero-copy):
-    // string test = "hello";
-    // fOutput = fTransportFactory->CreateMessage(test.size());
-    // memcpy ((void *) fOutput->GetData(), test.c_str(), test.size());
-    // // 2. Send the current message as a part:
-    // SendPart();
-    // // This will schedule the sending to queueing system.
-    // // For the next part, create new message object.
-    // // The final part will be sent by the sampler.
-
     // Write some data to check it on the receiver side
     // (*fBigBuffer)[7] = 'c';
 

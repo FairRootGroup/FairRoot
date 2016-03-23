@@ -38,9 +38,6 @@ void FairMQProcessor::InitTask()
     fProcessorTask->InitTask();
 
     fProcessorTask->SetTransport(fTransportFactory);
-
-    fProcessorTask->SetSendPart(boost::bind(&FairMQProcessor::SendPart, this));
-    fProcessorTask->SetReceivePart(boost::bind(&FairMQProcessor::ReceivePart, this));
 }
 
 void FairMQProcessor::Run()
@@ -69,24 +66,4 @@ void FairMQProcessor::Run()
     }
 
     LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
-}
-
-void FairMQProcessor::SendPart()
-{
-      fChannels.at("data-out").at(0).Send(fProcessorTask->GetPayload(), "snd-more");
-      fProcessorTask->GetPayload()->CloseMessage();
-}
-
-bool FairMQProcessor::ReceivePart()
-{
-    if (fChannels.at("data-in").at(0).ExpectsAnotherPart())
-    {
-        fProcessorTask->GetPayload()->CloseMessage();
-        fProcessorTask->SetPayload(fTransportFactory->CreateMessage());
-        return fChannels.at("data-in").at(0).Receive(fProcessorTask->GetPayload());
-    }
-    else
-    {
-        return false;
-    }
 }

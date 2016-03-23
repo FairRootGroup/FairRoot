@@ -45,9 +45,6 @@ void FairMQSampler<Loader>::InitTask()
     fSamplerTask->SetBranch(fBranch);
     fSamplerTask->SetTransport(fTransportFactory);
 
-    // Set the callback for the Sampler Task for sending multipart messages.
-    fSamplerTask->SetSendPart(boost::bind(&FairMQSampler::SendPart, this));
-
     FairFileSource* source = new FairFileSource(TString(fInputFile));
     // Adds the same file to the input. The output will still be a single file.
     for (int i = 0; i < fChainInput; ++i)
@@ -135,13 +132,6 @@ void FairMQSampler<Loader>::ListenForAcks()
     boost::timer::cpu_times const elapsedTime(fTimer->elapsed());
     LOG(INFO) << "Acknowledged " << fNumEvents << " messages in:";
     delete fTimer;
-}
-
-template <typename Loader>
-void FairMQSampler<Loader>::SendPart()
-{
-    fChannels.at("data-out").at(0).Send(fSamplerTask->GetOutput(), "snd-more");
-    fSamplerTask->GetOutput()->CloseMessage();
 }
 
 template <typename Loader>
