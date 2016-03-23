@@ -28,20 +28,20 @@ done
 
 ########################### Define some variables
 # JSON file containing the configuration parameters of all FairMQ devices of this example
-MQCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_3Levels.json"
+MQCONFIGFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_3Levels.json"
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
-ASCIIPARAM="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
+ROOTPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
+ASCIIPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
 
 FAIRTASKNAME1="--task-name PixelFindHits"
 FAIRTASKNAME2="--task-name PixelFindTracks --keep-data PixelHits"
 FAIRTASKNAME3="--task-name PixelFitTracks"
 # input file and branch for the sampler device
-INPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
+INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
 INPUTBRANCH="PixelDigis"
 
 # output file for sink
-OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.fitTrack.root"
+OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.fitTrack.root"
 OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
 OUTPUTBRANCH="--branch-name PixelFitTracks"
 ###########################
@@ -54,52 +54,52 @@ OUTPUTBRANCH="--branch-name PixelFitTracks"
 SERVER="parmq-server $TRANSPORT"
 SERVER+=" --id parmq-server  --config-json-file $MQCONFIGFILE"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
-xterm -geometry 80x22+0+350 -hold -e @CMAKE_BINARY_DIR@/bin/$SERVER &
+xterm -geometry 80x22+0+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$SERVER &
 
 
 ########################## start SAMPLER
 SAMPLER="FairMQEx9Sampler $TRANSPORT"
 SAMPLER+=" --id sampler1  --config-json-file $MQCONFIGFILE"
 SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH $MAXINDEX"
-xterm -geometry 80x22+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+xterm -geometry 80x22+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER &
 
 ########################## start PROCESSORs on level 1
 PROCESSOR1_1="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR1_1+=" $VERBOSE"
 PROCESSOR1_1+=" --id processor1_1 $FAIRTASKNAME1 --config-json-file $MQCONFIGFILE"
-xterm -geometry 80x22+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1_1 &
+xterm -geometry 80x22+500+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR1_1 &
 
 PROCESSOR1_2="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR1_2+=" $VERBOSE"
 PROCESSOR1_2+=" --id processor1_2 $FAIRTASKNAME1 --config-json-file $MQCONFIGFILE"
-xterm -geometry 80x22+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1_2 &
+xterm -geometry 80x22+1000+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR1_2 &
 
 ########################## start PROCESSORs on level 2
 PROCESSOR2_1="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR2_1+=" $VERBOSE"
 PROCESSOR2_1+=" --id processor2_1 $FAIRTASKNAME2 --config-json-file $MQCONFIGFILE"
-xterm -geometry 80x22+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2_1 &
+xterm -geometry 80x22+500+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR2_1 &
 
 PROCESSOR2_2="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR2_2+=" $VERBOSE"
 PROCESSOR2_2+=" --id processor2_2 $FAIRTASKNAME2 --config-json-file $MQCONFIGFILE"
-xterm -geometry 80x22+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2_2 &
+xterm -geometry 80x22+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR2_2 &
 
 ########################## start PROCESSORs on level 3
 PROCESSOR3_1="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR3_1+=" $VERBOSE"
 PROCESSOR3_1+=" --id processor3_1 $FAIRTASKNAME3 --config-json-file $MQCONFIGFILE"
-xterm -geometry 80x22+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3_1 &
+xterm -geometry 80x22+500+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR3_1 &
 
 PROCESSOR3_2="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR3_2+=" $VERBOSE"
 PROCESSOR3_2+=" --id processor3_2 $FAIRTASKNAME3 --config-json-file $MQCONFIGFILE"
-xterm -geometry 80x22+1000+700 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3_2 &
+xterm -geometry 80x22+1000+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR3_2 &
 
 ########################## start FILESINK
 FILESINK="FairMQEx9FileSink $TRANSPORT"
 FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
 FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
-xterm +aw -geometry 80x22+0+700 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+xterm +aw -geometry 80x22+0+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$FILESINK &
 
 

@@ -5,7 +5,8 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-Add_Subdirectory(src)
-Add_Subdirectory(macros)
-Add_Subdirectory(run)
-Add_Subdirectory(param)
+Install(FILES pixel_digi.par
+        DESTINATION share/fairbase/examples/MQ/9-PixelDetector/param/
+       )
+
+
