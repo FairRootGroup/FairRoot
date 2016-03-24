@@ -41,3 +41,6 @@ core_dump*
 gphysi.dat
 FairRunInfo_*
 html/
+
+# diverse
+.DS_Store

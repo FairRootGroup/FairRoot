@@ -25,13 +25,13 @@
 #include <map>
 
 template<typename U, typename T = RootSerializer>
-class FairMQUnpacker : public FairMQDevice, public T
+class FairMQUnpacker : public FairMQDevice
 {
     typedef U unpacker_type;
     typedef T serialization_type;
 
   public:
-    FairMQUnpacker() : serialization_type(),
+    FairMQUnpacker() : 
         fSubEventChanMap(),
         fUnpacker(nullptr),
         fInputChannelName()
@@ -110,7 +110,6 @@ class FairMQUnpacker : public FairMQDevice, public T
     void Run()
     {
         const FairMQChannel& inputChannel = fChannels.at(fInputChannelName).at(0);
-        const FairMQChannel& outputChannel = fChannels.at("data-out").at(0);
 
         while (CheckCurrentState(RUNNING))
         {
@@ -129,9 +128,7 @@ class FairMQUnpacker : public FairMQDevice, public T
                         LOG(TRACE)<<"first element in array = "<<*subEvt_ptr;
 
                     fUnpacker->DoUnpack(subEvt_ptr,dataSize);
-
-                    serialization_type::SetMessage(msg.get());
-                    outputChannel.Send(serialization_type::SerializeMsg(fUnpacker->GetOutputData()));
+                    Send<serialization_type>(fUnpacker->GetOutputData(),"data-out");
                     fUnpacker->Reset();
                 }
         }

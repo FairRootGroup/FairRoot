@@ -54,12 +54,20 @@ class RootOutFileManager : public BaseSinkPolicy<RootOutFileManager<DataType>>
     void AddToFile(DataType* ObjArr, long size);
     void AddToFile(TClonesArray* InputData);
     void AddToFile(FairMQMessage* msg);
+    void AddToFile(std::unique_ptr<TClonesArray>& input){AddToFile(input.get());}
     void InitOutputFile();
     void InitTCA(const std::string &classname);
     std::vector<std::vector<DataType> > GetAllObj(const std::string &filename,
                                                   const std::string &treename,
                                                   const std::string &branchname
                                                   );
+    template<typename... Args>
+    void Serialize(Args&&... args)
+    {
+      /*required for MQ*/
+      AddToFile(std::forward<Args>(args)...);
+    }
+
 
   protected:
     virtual void Init();

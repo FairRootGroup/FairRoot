@@ -21,16 +21,14 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage
     ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
-    ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/data
-    ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/data
     ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices
     ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/data_generator
     ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/data_struct
-    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/devices
-    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/devices/policy
-    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/devices/policy/serialization
-    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/devices/policy/task
-    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/run/helper_functions
+    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/part1/devices
+    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/part2/policy
+    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/part2/policy/serialization
+    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/part2/policy/task
+    ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/part2/helper_functions
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -60,23 +58,24 @@ set(SCRIPT_ARGS "\${\@:2}")
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/data_generator/startGenericMQTutoGenerateData.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoGenerateData.sh )
 
 # start MQ chains
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/run/scripts/startGenericMQTutoAll.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoAll.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/run/scripts/startGenericMQTutoAllTuto3.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoAllTuto3.sh )
+#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/scripts/startGenEx2All.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2All.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/scripts/startGenEx1All.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx1All.sh )
 
 # start individual devices 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/run/scripts/startGenericMQTutoSampler.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoSampler.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/run/scripts/startGenericMQTutoProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoProcessor.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/run/scripts/startGenericMQTutoSink.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoSink.sh )
+#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/scripts/startGenEx2Sampler.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2Sampler.sh )
+#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/scripts/startGenEx2Processor.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2Processor.sh )
+#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/scripts/startGenEx2Sink.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2Sink.sh )
 
-# options to be parsed
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/options/genericMQTutoConfig.cfg.in ${CMAKE_BINARY_DIR}/bin/config/genericMQTutoConfig.cfg)
+
+# config file 
+#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/options/ConfigGenEx2.cfg.in ${CMAKE_BINARY_DIR}/bin/config/ConfigGenEx2.cfg )
 
 # scripts for CTest
+#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenEx2TestBin.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2TestBin.sh )
+#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenEx2TestBoost.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2TestBoost.sh )
+#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenEx2TestRoot.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2TestRoot.sh )
 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenericMQTutoTestBin.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestBin.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenericMQTutoTestBoost.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestBoost.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/GenericDevices/test/startGenericMQTutoTestRoot.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestRoot.sh )
-
+# Create a default directory that will hold root input/output data file
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/examples/MQ/GenericDevices/data_io)
 
 set(LINK_DIRECTORIES
@@ -147,37 +146,45 @@ GENERATE_LIBRARY()
 
 
 Set(Exe_Names
-    genericMQTutoSplitter
-    genericMQTutoMerger
+    genExSplitter
+    genExMerger
     
-    genericMQTutoFairTestDetectorSampler
-    genericMQTutoFairTestDetectorProcessor
-    genericMQTutoFairTestDetectorFileSink
+    #genericMQTutoFairTestDetectorSampler
+    #genericMQTutoFairTestDetectorProcessor
+    #genericMQTutoFairTestDetectorFileSink
 
-    genericMQTutoSampler
-    genericMQTutoProcessor
-    genericMQTutoSink
+    genEx1Sampler
+    genEx1Processor
+    genEx1Sink
 
-    genericMQTutoSamplerTest
-    genericMQTutoProcessorTest
-    genericMQTutoSinkTest
+    #genEx2Sampler
+    #genEx2Processor
+    #genEx2Sink
+
+    #genericMQTutoSamplerTest
+    #genericMQTutoProcessorTest
+    #genericMQTutoSinkTest
 )
 
 set(Exe_Source
-    run/runSplitterT7.cxx
-    run/runMergerT7.cxx
+    part2/run/runSplitterT7.cxx
+    part2/run/runMergerT7.cxx
 
-    run/FairTestDetector/runSamplerT7b.cxx
-    run/FairTestDetector/runProcessorT7b.cxx
-    run/FairTestDetector/runFileSinkT7b.cxx
-    
-    run/runSamplerT7.cxx
-    run/runProcessorT7.cxx
-    run/runFileSinkT7.cxx
+    #run/FairTestDetector/runSamplerT7b.cxx
+    #run/FairTestDetector/runProcessorT7b.cxx
+    #run/FairTestDetector/runFileSinkT7b.cxx
 
-    test/runSamplerT7Test.cxx
-    test/runProcessorT7Test.cxx
-    test/runFileSinkT7Test.cxx
+    part1/run/runSamplerGenEx1.cxx
+    part1/run/runProcessorGenEx1.cxx
+    part1/run/runSinkGenEx1.cxx
+
+    #part2/run/runSamplerT7.cxx
+    #part2/run/runProcessorT7.cxx
+    #part2/run/runFileSinkT7.cxx
+
+    #test/runSamplerT7Test.cxx
+    #test/runProcessorT7Test.cxx
+    #test/runFileSinkT7Test.cxx
 )
 
 ############################################################
@@ -248,7 +255,7 @@ GENERATE_EXECUTABLE()
 
 
 
-add_test(NAME run_GenericMQ_Tuto_Bin_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestBin.sh)
+add_test(NAME run_GenericMQ_Tuto_Bin_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenEx2TestBin.sh)
 set_tests_properties(run_GenericMQ_Tuto_Bin_Test_ALL PROPERTIES TIMEOUT "30")
 set_tests_properties(run_GenericMQ_Tuto_Bin_Test_ALL PROPERTIES 
     PASS_REGULAR_EXPRESSION "Data generation successful"
@@ -257,7 +264,7 @@ set_tests_properties(run_GenericMQ_Tuto_Bin_Test_ALL PROPERTIES
     PASS_REGULAR_EXPRESSION "Received 100 messages!"
     )
 
-add_test(NAME run_GenericMQ_Tuto_Boost_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestBoost.sh)
+add_test(NAME run_GenericMQ_Tuto_Boost_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenEx2TestBoost.sh)
 set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES TIMEOUT "30")
 set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES 
     PASS_REGULAR_EXPRESSION "Data generation successful"
@@ -269,7 +276,7 @@ set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES
     DEPENDS run_GenericMQ_Tuto_Bin_Test_ALL
     )
 
-add_test(NAME run_GenericMQ_Tuto_Root_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoTestRoot.sh)
+add_test(NAME run_GenericMQ_Tuto_Root_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenEx2TestRoot.sh)
 set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES TIMEOUT "30")
 set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES 
     PASS_REGULAR_EXPRESSION "Data generation successful"

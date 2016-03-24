@@ -1,0 +1,103 @@
+#!/bin/bash
+
+# dataFormat = Serialization format
+
+TRANSPORT="zeromq"
+FORMAT="Bin"
+VERBOSE="DEBUG"
+
+if [[ "$#" -eq 1 ]]; then
+key="$1"
+case $key in
+    -h|--help)
+	echo "possible command lines"
+	echo "  -df or --data-format"
+	echo "  -t or --transport"
+	echo "  -v or --verbose"
+	echo "  -h or --help"
+	exit
+    ;;
+    *)
+	echo "Unknown command line. Use -h or --help command to list the commands"
+	exit
+    ;;
+esac
+fi
+
+while [[ $# > 1 ]]
+do
+key="$1"
+
+case $key in
+    -df|--data-format)
+    FORMAT="$2"
+    shift
+    ;;
+    -t|--transport)
+    TRANSPORT="$2"
+    shift
+    ;;
+    -v|--verbose)
+    VERBOSE="$2"
+    shift
+    ;;
+    *)
+	echo "Unknown command line. Use -h or --help command to list the commands"
+	exit
+    ;;
+esac
+shift 
+done
+
+
+
+if [ "$FORMAT" = "bin" ] || [ "$FORMAT" = "Bin" ]; then
+    echo "attempting to use pure binary data format"
+    FORMAT="Bin"
+elif [ "$FORMAT" = "boost" ] || [ "$FORMAT" = "Boost" ]; then
+    FORMAT="Boost"
+    echo "attempting to use Boost serialized data format"
+elif [ "$FORMAT" = "proto" ] || [ "$FORMAT" = "Proto" ]; then
+    FORMAT="Proto"
+    echo "attempting to use Google Protocol Buffers data format"
+elif [ "$FORMAT" = "root" ] || [ "$FORMAT" = "Root" ]; then
+    FORMAT="Root"
+    echo "attempting to use Root TMessage data format"
+else
+    echo "none or incorrect data formats provided."
+    echo "(available data format options are: bin, boost, proto, root)"
+    echo "binary data format will be used."
+fi
+
+OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/outputGenEx2$FORMAT.root"
+##########################
+# CONFIGFILE = ini/txt config file, which, in this example, 
+# contain path to json file for the MQDevice configuration (address, MQ methods, etc.), 
+# and other key-values specific to each device (input/output file names, branch, etc.)
+CONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/ConfigGenEx2.cfg"
+
+########################## start SAMPLER
+SAMPLER="genEx2Sampler --transport $TRANSPORT --verbose $VERBOSE"
+SAMPLER+=" --id sampler1  -c $CONFIGFILE --data-format $FORMAT"
+xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+
+########################## start PROCESSORs
+PROCESSOR1="genEx2Processor --transport $TRANSPORT --verbose $VERBOSE"
+PROCESSOR1+=" --id processor1 --config $CONFIGFILE --data-format $FORMAT"
+xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+
+PROCESSOR2="genEx2Processor --transport $TRANSPORT --verbose $VERBOSE"
+PROCESSOR2+=" --id processor2 --config $CONFIGFILE --data-format $FORMAT"
+xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+
+PROCESSOR3="genEx2Processor --transport $TRANSPORT --verbose $VERBOSE"
+PROCESSOR3+=" --id processor3 --config $CONFIGFILE --data-format $FORMAT"
+xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
+
+########################## start FILESINK
+FILESINK="genEx2Sink --transport $TRANSPORT --verbose $VERBOSE"
+FILESINK+=" --id sink1 --config $CONFIGFILE --data-format $FORMAT"
+FILESINK+=" --output.file.name $OUTPUTFILE"
+xterm +aw -geometry 120x27+0+500 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+
+

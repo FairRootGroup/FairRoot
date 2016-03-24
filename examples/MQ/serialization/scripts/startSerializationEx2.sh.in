@@ -1,0 +1,72 @@
+#!/bin/bash
+
+TRANSPORT="zeromq"
+VERBOSE="DEBUG"
+
+if [[ "$#" -eq 1 ]]; then
+key="$1"
+case $key in
+    -h|--help)
+    echo "possible command lines"
+    echo "  -t or --transport"
+    echo "  -v or --verbose"
+    echo "  -h or --help"
+    exit
+    ;;
+    *)
+    echo "Unknown command line. Use -h or --help command"
+    exit
+    ;;
+esac
+fi
+
+while [[ $# > 1 ]]
+do
+key="$1"
+
+case $key in
+    -t|--transport)
+    TRANSPORT="$2"
+    shift
+    ;;
+    -v|--verbose)
+    VERBOSE="$2"
+    shift
+    ;;
+    *)
+    echo "Unknown command line. Use -h or --help command to list the commands"
+    exit
+    ;;
+esac
+shift 
+done
+
+INPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/inputGenEx.root"
+OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/outputEx2.root"
+JSONCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/options/MQConfig.json"
+
+########################## start SAMPLER
+SAMPLER="serialization-Ex2Sampler --transport $TRANSPORT --verbose $VERBOSE"
+SAMPLER+=" --id sampler1  --input-file $INPUTFILE --config-json-file $JSONCONFIGFILE"
+xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+
+########################## start three PROCESSORs
+PROCESSOR1="serialization-Ex2Processor --transport $TRANSPORT --verbose $VERBOSE"
+PROCESSOR1+=" --id processor1 --config-json-file $JSONCONFIGFILE"
+xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+
+PROCESSOR2="serialization-Ex2Processor --transport $TRANSPORT"
+PROCESSOR2+=" --id processor2 --config-json-file $JSONCONFIGFILE"
+xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+
+PROCESSOR3="serialization-Ex2Processor --transport $TRANSPORT --verbose $VERBOSE"
+PROCESSOR3+=" --id processor3 --config-json-file $JSONCONFIGFILE"
+xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
+
+########################## start FILESINK
+FILESINK="serialization-Ex2Sink --transport $TRANSPORT --verbose $VERBOSE"
+FILESINK+=" --id sink1 --config-json-file $JSONCONFIGFILE"
+FILESINK+=" --output-file $OUTPUTFILE"
+xterm +aw -geometry 120x27+0+500 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+
+

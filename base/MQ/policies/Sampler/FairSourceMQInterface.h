@@ -6,6 +6,10 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
  
+
+#ifndef FAIRSOURCEMQINTERFACE_H
+#define FAIRSOURCEMQINTERFACE_H
+
 #include "BaseSourcePolicy.h"
 #include "FairMQLogger.h"
 
@@ -32,7 +36,7 @@ class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<Fair
     FairSourceMQInterface() :
         BaseSourcePolicy<FairSourceMQInterface<FairSourceType, DataType>>(),
         fSource(nullptr),
-        fData(nullptr),
+        fInput(nullptr),
         fIndex(0),
         fMaxIndex(-1),
         fClassName(""),
@@ -45,13 +49,14 @@ class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<Fair
     FairSourceMQInterface(const FairSourceMQInterface&) = delete;
     FairSourceMQInterface operator=(const FairSourceMQInterface&) = delete;
 
+
     virtual ~FairSourceMQInterface()
     {
-        if (fData)
+        if (fInput)
         {
-            delete fData;
+            delete fInput;
         }
-        fData = nullptr;
+        fInput = nullptr;
 
         if (fSource)
         {
@@ -87,7 +92,7 @@ class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<Fair
         fRunAna = new FairRunAna();
         fSource = new FairSourceType(fSourceName.c_str());
         fSource->Init();
-        fSource->ActivateObject(reinterpret_cast<TObject**>(&fData),fBranchName.c_str());
+        fSource->ActivateObject(reinterpret_cast<TObject**>(&fInput),fBranchName.c_str());
 //        fSource->ActivateObject(dynamic_cast<TObject*>(fData),fBranchName.c_str());
         fMaxIndex = fSource->CheckMaxEventNo();
     }
@@ -102,12 +107,25 @@ class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<Fair
     DataType_ptr GetOutData()
     {
         fSource->ReadEvent(fIndex);
-        return fData;
+        return fInput;
+    }
+
+    void GetOutData(DataType_ptr& data, int64_t evtIdx)
+    {
+        fSource->ReadEvent(evtIdx);
+        data=fInput;
+    }
+
+    /*required for MQ*/
+    void deserialize_impl(int64_t evtIdx)
+    {
+        fSource->ReadEvent(evtIdx);
     }
 
   protected:
     FairSourceType* fSource;
-    DataType_ptr fData;
+    DataType_ptr fInput;
+    std::unique_ptr<DataType> fInput2;
     int64_t fIndex;
     int64_t fMaxIndex;
     std::string fClassName;
@@ -115,3 +133,6 @@ class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<Fair
     std::string fSourceName;
     FairRunAna* fRunAna;
 };
+
+
+#endif

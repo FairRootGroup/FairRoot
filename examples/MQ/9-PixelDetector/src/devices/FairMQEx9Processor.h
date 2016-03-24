@@ -64,16 +64,8 @@ class FairMQEx9Processor : public FairMQDevice
 
             if (fChannels.at("param").at(0).Send(req) > 0)
             {
-                if (fChannels.at("param").at(0).Receive(rep) > 0)
+                if (Receive<RootDeserializer>(rep,param,"param") > 0)
                 {
-                    base_RootDeSerializer<parameter_type,has_no_ownership> paramDeserializer;
-                    paramDeserializer.InitContainer(param);
-
-                    //base_RootDeSerializer<parameter_type> paramDeserializer;
-                    //paramDeserializer.InitContainer(paramName.c_str());
-                    param = paramDeserializer.DeserializeMsg(rep.get());
-                    LOG(WARN) << "Received parameter"<< paramName <<" from the server:";
-                    //break;
                     return param;
                 }
             }
@@ -96,10 +88,6 @@ class FairMQEx9Processor : public FairMQDevice
     FairGeoParSet* fGeoPar;
 
 
-    RootSerializer fSerializer;
-    RootDeSerializer fDeSerializer;
-
-    //base_RootDeSerializer<PixelDigiPar> fParamDeserializer;
     PixelFindHitsTask fHitFinder;
 
   private:

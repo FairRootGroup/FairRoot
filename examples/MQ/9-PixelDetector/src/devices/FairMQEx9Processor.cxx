@@ -20,8 +20,6 @@ PixelDigiPar* fDigiPar;
 FairGeoParSet* fGeoPar;
 
 
-RootSerializer fSerializer;
-RootDeSerializer fDeSerializer;
 
 //base_RootDeSerializer<PixelDigiPar> fParamDeserializer;
 PixelFindHitsTask fHitFinder;
@@ -57,8 +55,6 @@ FairMQEx9Processor::FairMQEx9Processor()
    fCurrentRunId(-1),
    fDigiPar(nullptr),
    fGeoPar(nullptr),
-   fSerializer(),
-   fDeSerializer(),
    //fParamDeserializer(),
    fHitFinder()
 {

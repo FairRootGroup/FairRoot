@@ -1,0 +1,39 @@
+#----------------------------------------------------
+# comments : INI like files have keys separated by dots, like "my.option.key"
+# brackets [] are used to group options. For example :
+#
+# [input.file]
+# name = myfilename
+#
+# is equivalent to 
+# input.file.name = myfilename
+#----------------------------------------------------
+
+#----------------------------------------------------
+# WARNING : non INI-like keys like "my-option-key" 
+# will not be parsed in config text file if they are placed after a INI-like key
+#----------------------------------------------------
+
+
+
+
+
+
+#-------------------
+config-json-file =@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/options/MQConfig.json
+
+#-------------------
+[input.file]
+
+name = @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/inputGenEx.root
+tree = cbmsim
+branch = MyDigi
+
+
+#-------------------
+[output.file]
+
+name = @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/outputGenEx2.root"
+tree = cbmout
+branch = MyHit
+option = RECREATE
