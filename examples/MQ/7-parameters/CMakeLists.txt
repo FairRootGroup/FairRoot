@@ -84,3 +84,8 @@ ForEach(_file RANGE 0 ${_length})
   set(DEPENDENCIES FairMQExample7)
   GENERATE_EXECUTABLE()
 EndForEach(_file RANGE 0 ${_length})
+
+Install(
+  FILES ex7-client.json
+  DESTINATION share/fairbase/examples/MQ/7-parameters/config/
+)
