@@ -72,7 +72,7 @@ class BoostSerializer
 
 public:
 
-    void serialize_impl(std::unique_ptr<FairMQMessage>& msg, TClonesArray* input)
+    void Serialize(FairMQMessage& msg, TClonesArray* input)
     {
         // first copy the data to a std::vector
         std::vector<DataType> input_vector;
@@ -88,43 +88,43 @@ public:
         DoSerialization(msg,input_vector);
     }
 
-    void serialize_impl(std::unique_ptr<FairMQMessage>& msg, const std::vector<DataType>& DataVector)
+    void Serialize(FairMQMessage& msg, const std::vector<DataType>& DataVector)
     {
         DoSerialization(msg,DataVector);
     }
 
 
-    void serialize_impl(std::unique_ptr<FairMQMessage>& msg, DataType* Data)
+    void Serialize(FairMQMessage& msg, DataType* Data)
     {
         std::ostringstream buffer;
         BoostArchiveOut OutputArchive(buffer);
         OutputArchive << *Data;
         int size = buffer.str().length();
-        msg->Rebuild(size);
-        std::memcpy(msg->GetData(), buffer.str().c_str(), size);
+        msg.Rebuild(size);
+        std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 
-    void serialize_impl(std::unique_ptr<FairMQMessage>& msg, const DataType& Data)
+    void Serialize(FairMQMessage& msg, const DataType& Data)
     {
         std::ostringstream buffer;
         BoostArchiveOut OutputArchive(buffer);
         OutputArchive << Data;
         int size = buffer.str().length();
-        msg->Rebuild(size);
-        std::memcpy(msg->GetData(), buffer.str().c_str(), size);
+        msg.Rebuild(size);
+        std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 
 
 
 protected:
-    void DoSerialization(std::unique_ptr<FairMQMessage>& msg, const std::vector<DataType>& DataVector)
+    void DoSerialization(FairMQMessage& msg, const std::vector<DataType>& DataVector)
     {
         std::ostringstream buffer;
         BoostArchiveOut OutputArchive(buffer);
         OutputArchive << DataVector;
         int size = buffer.str().length();
-        msg->Rebuild(size);
-        std::memcpy(msg->GetData(), buffer.str().c_str(), size);
+        msg.Rebuild(size);
+        std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 
 };
@@ -152,22 +152,22 @@ class BoostDeSerializer
     {
     }
 
-    void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, std::vector<DataType>& input)
+    void Deserialize(FairMQMessage& msg, std::vector<DataType>& input)
     {
         if (input.size() > 0)
         {
                 input.clear();
         }
-        std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
+        std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
         std::istringstream buffer(msgStr);
         BoostArchiveIn InputArchive(buffer);
         InputArchive >> input;
     }
 
-    void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, TClonesArray* input)
+    void Deserialize(FairMQMessage& msg, TClonesArray* input)
     {
         std::vector<DataType> input_vector;
-        deserialize_impl(msg,input_vector);// deserialize msg into vector
+        Deserialize(msg,input_vector);// deserialize msg into vector
         // fill TClonesArray from vector
         if (input)
         {
@@ -178,14 +178,14 @@ class BoostDeSerializer
             }
             if (input->IsEmpty())
             {
-                LOG(DEBUG) << "BoostDeserializer::deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, TClonesArray* input): No Output array!";
+                LOG(DEBUG) << "BoostDeserializer::Deserialize(FairMQMessage& msg, TClonesArray* input): No Output array!";
             }
         }
     }
 
-    void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, DataType& input)
+    void Deserialize(FairMQMessage& msg, DataType& input)
     {
-        std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
+        std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
         std::istringstream buffer(msgStr);
         BoostArchiveIn InputArchive(buffer);
         try

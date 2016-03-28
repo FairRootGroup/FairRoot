@@ -42,23 +42,20 @@ protected:
             if (Receive(parts,"data-in") > 0)
             {
                 Ex2Header* header=nullptr;
-                Deserialize<SerializerEx2>(parts.At_ref(0),header);//header=static_cast<Ex2Header*>(msg->GetData());
+                Deserialize<SerializerEx2>(parts.At_ref(0),header);
                 Deserialize<SerializerEx2>(parts.At_ref(1),fInput);
-                LOG(INFO)<<"Event number"<< header->EventNumber;
+                
                 receivedMsgs++;
 
                 Exec(fInput,fOutput);
-                //Ex2Header* header_out = new Ex2Header();
                 FairMQParts partsToSend;
-                partsToSend.AddPart(parts.At_ptr(0));
-                //partsToSend.AddPart(NewMessage(header, sizeof(Ex2Header)));
+                partsToSend.AddPart(parts.At(0));
 
                 partsToSend.AddPart(NewMessage());
                 Serialize<SerializerEx2Boost>(partsToSend.At_ref(0),*header);
                 Serialize<SerializerEx2Boost>(partsToSend.At_ref(1),fOutput);
                 Send(partsToSend, "data-out");
                 sentMsgs++;
-                //delete header;
             }
         }
         LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";

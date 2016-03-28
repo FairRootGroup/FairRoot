@@ -53,9 +53,6 @@ struct SerializerEx2
 
     void Deserialize(FairMQMessage& msg, Ex2Header*& header)
     {
-        //Ex2Header* header_ptr = static_cast<Ex2Header*>(msg.GetData());
-        //header.EventNumber = header_ptr->EventNumber;
-        //header.DetectorId = header_ptr->DetectorId;
         header=static_cast<Ex2Header*>(msg.GetData());
     }
     

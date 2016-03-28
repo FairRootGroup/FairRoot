@@ -64,8 +64,9 @@ class FairMQEx9Processor : public FairMQDevice
 
             if (fChannels.at("param").at(0).Send(req) > 0)
             {
-                if (Receive<RootDeserializer>(rep,param,"param") > 0)
+                if (Receive(rep,"param") > 0)
                 {
+                    Deserialize<RootDeserializer>(*rep,param);
                     return param;
                 }
             }

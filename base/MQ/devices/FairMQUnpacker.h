@@ -128,7 +128,8 @@ class FairMQUnpacker : public FairMQDevice
                         LOG(TRACE)<<"first element in array = "<<*subEvt_ptr;
 
                     fUnpacker->DoUnpack(subEvt_ptr,dataSize);
-                    Send<serialization_type>(fUnpacker->GetOutputData(),"data-out");
+                    Serialize<serialization_type>(*msg,fUnpacker->GetOutputData());
+                    Send(msg,"data-out");
                     fUnpacker->Reset();
                 }
         }

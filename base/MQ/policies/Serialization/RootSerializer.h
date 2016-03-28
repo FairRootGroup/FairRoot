@@ -58,6 +58,14 @@ struct RootSerializer
         tm->WriteObject(input.get());
         msg->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
     }
+
+    template<typename T>
+    void Serialize(FairMQMessage& msg, T* input)
+    {
+        TMessage* tm = new TMessage(kMESS_OBJECT);
+        tm->WriteObject(input);
+        msg.Rebuild(tm->Buffer(), tm->BufferSize(), [](void*,void* tmsg){delete static_cast<TMessage*>(tmsg);}, tm);
+    }
 };
 
 struct RootDeserializer 
@@ -77,6 +85,14 @@ struct RootDeserializer
     {
         FairTMessage tm(msg->GetData(), msg->GetSize());
         output.reset(static_cast<T*>(tm.ReadObject(tm.GetClass())));
+    }
+
+    template<typename T>
+    void Deserialize(FairMQMessage& msg, T*& output)
+    {
+        if(output) delete output;
+        FairTMessage tm(msg.GetData(), msg.GetSize());
+        output = static_cast<T*>(tm.ReadObject(tm.GetClass()));
     }
 };
 

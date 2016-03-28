@@ -60,7 +60,7 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/sta
 
 # start MQ chains
 #configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx2All.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2All.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx1All.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx1All.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx1All.sh.in ${CMAKE_BINARY_DIR}/bin/startSerializationEx1.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startSerializationEx2.sh.in ${CMAKE_BINARY_DIR}/bin/startSerializationEx2.sh )
 
 # start individual devices 
