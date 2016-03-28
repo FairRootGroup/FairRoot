@@ -66,8 +66,8 @@ protected:
             if (Receive(parts,"data-in") > 0)
             {
                 Ex2Header header;
-                Deserialize<SerializerEx2Boost>(parts.At_ptr(0),header);
-                Deserialize<SerializerEx2Boost>(parts.At_ptr(1),fInput);
+                Deserialize<SerializerEx2Boost>(parts.At_ref(0),header);
+                Deserialize<SerializerEx2Boost>(parts.At_ref(1),fInput);
                 LOG(INFO)<<"Event number"<< header.EventNumber;
                 receivedMsgs++;
                 fTree->SetBranchAddress("MyHit", &fInput);

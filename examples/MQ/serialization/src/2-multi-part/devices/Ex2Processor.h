@@ -42,8 +42,8 @@ protected:
             if (Receive(parts,"data-in") > 0)
             {
                 Ex2Header* header=nullptr;
-                Deserialize<SerializerEx2>(parts.At_ptr(0),header);//header=static_cast<Ex2Header*>(msg->GetData());
-                Deserialize<SerializerEx2>(parts.At_ptr(1),fInput);
+                Deserialize<SerializerEx2>(parts.At_ref(0),header);//header=static_cast<Ex2Header*>(msg->GetData());
+                Deserialize<SerializerEx2>(parts.At_ref(1),fInput);
                 LOG(INFO)<<"Event number"<< header->EventNumber;
                 receivedMsgs++;
 
@@ -54,8 +54,8 @@ protected:
                 //partsToSend.AddPart(NewMessage(header, sizeof(Ex2Header)));
 
                 partsToSend.AddPart(NewMessage());
-                Serialize<SerializerEx2Boost>(partsToSend.At_ptr(0),*header);
-                Serialize<SerializerEx2Boost>(partsToSend.At_ptr(1),fOutput);
+                Serialize<SerializerEx2Boost>(partsToSend.At_ref(0),*header);
+                Serialize<SerializerEx2Boost>(partsToSend.At_ref(1),fOutput);
                 Send(partsToSend, "data-out");
                 sentMsgs++;
                 //delete header;

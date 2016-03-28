@@ -84,13 +84,13 @@ protected:
             std::unique_ptr<FairMQMessage> msgHeader(NewMessage(header, sizeof(Ex2Header)));
             std::unique_ptr<FairMQMessage> msg(NewMessage());
             
-            Serialize<SerializerEx2>(msg,fInput);
+            Serialize<SerializerEx2>(*msg,fInput);
             FairMQParts parts;
             parts.AddPart(msgHeader);
             parts.AddPart(msg);
             Send(parts,"data-out");
             sentMsgs++;
-            
+
             if (!CheckCurrentState(RUNNING))
                 break;
         }

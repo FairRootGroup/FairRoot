@@ -38,10 +38,10 @@ protected:
             std::unique_ptr<FairMQMessage> msg(NewMessage());
             if (Receive(msg,"data-in") > 0)
             {
-                Deserialize<MyDeserializer>(msg,fInput);
+                Deserialize<MyDeserializer>(*msg,fInput);
                 receivedMsgs++;
                 Exec(fInput,fOutput);
-                Serialize<MySerializer>(msg,fOutput);
+                Serialize<MySerializer>(*msg,fOutput);
                 Send(msg, "data-out");
                 sentMsgs++;
             }

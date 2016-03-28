@@ -69,7 +69,7 @@ protected:
         {
             std::unique_ptr<FairMQMessage> msg(NewMessage());
             fTree->GetEntry(idx);
-            Serialize<MySerializer>(msg,fInput);
+            Serialize<MySerializer>(*msg,fInput);
             Send(msg, "data-out");
             sentMsgs++;
             if (!CheckCurrentState(RUNNING))

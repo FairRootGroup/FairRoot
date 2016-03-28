@@ -44,25 +44,25 @@ void free_tmessage(void *data, void *hint)
 struct SerializerEx2
 {
 
-    void Serialize(std::unique_ptr<FairMQMessage>& msg, TClonesArray* input)
+    void Serialize(FairMQMessage& msg, TClonesArray* input)
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(input);
-        msg->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
+        msg.Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
     }
 
-    void Deserialize(const std::unique_ptr<FairMQMessage>& msg, Ex2Header*& header)
+    void Deserialize(FairMQMessage& msg, Ex2Header*& header)
     {
-        //Ex2Header* header_ptr = static_cast<Ex2Header*>(msg->GetData());
+        //Ex2Header* header_ptr = static_cast<Ex2Header*>(msg.GetData());
         //header.EventNumber = header_ptr->EventNumber;
         //header.DetectorId = header_ptr->DetectorId;
-        header=static_cast<Ex2Header*>(msg->GetData());
+        header=static_cast<Ex2Header*>(msg.GetData());
     }
     
-    void Deserialize(const std::unique_ptr<FairMQMessage>& msg, TClonesArray*& output)
+    void Deserialize(FairMQMessage& msg, TClonesArray*& output)
     {
         if(output) delete output;
-        FairTMessage tm(msg->GetData(), msg->GetSize());
+        FairTMessage tm(msg.GetData(), msg.GetSize());
         output = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
     }
 
@@ -90,23 +90,23 @@ struct SerializerEx2Boost
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Header
-    void Serialize(std::unique_ptr<FairMQMessage>& msg, const Ex2Header& header)
+    void Serialize(FairMQMessage& msg, const Ex2Header& header)
     {
         
         std::ostringstream buffer;
         BoostBinArchOut OutputArchive(buffer);
         OutputArchive << header;
         std::string* strMsg = new std::string(buffer.str());
-        msg->Rebuild(const_cast<char*>(strMsg->c_str()), strMsg->length(), [](void* data, void* hint)
+        msg.Rebuild(const_cast<char*>(strMsg->c_str()), strMsg->length(), [](void* data, void* hint)
                     {
                         delete static_cast<std::string*>(hint);
                     }, strMsg);
     }
 
-    void Deserialize(const std::unique_ptr<FairMQMessage>& msg, Ex2Header& header)
+    void Deserialize(FairMQMessage& msg, Ex2Header& header)
     {
         
-        std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
+        std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
         std::istringstream buffer(msgStr);
         BoostBinArchIn InputArchive(buffer);
         InputArchive >> header;
@@ -116,7 +116,7 @@ struct SerializerEx2Boost
     // TClonesArray (Note : TClonesArray is converted to boost serializable object std::vector<T>
     
 
-    void Serialize(std::unique_ptr<FairMQMessage>& msg, TClonesArray* input)
+    void Serialize(FairMQMessage& msg, TClonesArray* input)
     {
         // first copy the data to a std::vector
         std::vector<MyHit> input_vector;
@@ -132,7 +132,7 @@ struct SerializerEx2Boost
         Serialize(msg,input_vector);//serialize vector<MyHit>
     }
 
-    void Deserialize(const std::unique_ptr<FairMQMessage>& msg, TClonesArray* input)
+    void Deserialize(FairMQMessage& msg, TClonesArray* input)
     {
         std::vector<MyHit> input_vector;
         Deserialize(msg,input_vector);// deserialize msg into vector
@@ -153,26 +153,26 @@ struct SerializerEx2Boost
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // vector<data>
-    void Deserialize(const std::unique_ptr<FairMQMessage>& msg, std::vector<MyHit>& input)
+    void Deserialize(FairMQMessage& msg, std::vector<MyHit>& input)
     {
         if (input.size() > 0)
         {
             input.clear();
         }
-        std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
+        std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
         std::istringstream buffer(msgStr);
         BoostBinArchIn InputArchive(buffer);
         InputArchive >> input;
     }
 
-    void Serialize(std::unique_ptr<FairMQMessage>& msg, const std::vector<MyHit>& DataVector)
+    void Serialize(FairMQMessage& msg, const std::vector<MyHit>& DataVector)
     {
         std::ostringstream buffer;
         BoostBinArchOut OutputArchive(buffer);
         OutputArchive << DataVector;
         int size = buffer.str().length();
-        msg->Rebuild(size);
-        std::memcpy(msg->GetData(), buffer.str().c_str(), size);
+        msg.Rebuild(size);
+        std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 };
 

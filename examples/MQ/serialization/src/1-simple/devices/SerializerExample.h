@@ -28,34 +28,20 @@ void free_tmessage(void *data, void *hint)
 
 struct MySerializer
 {
-    void serialize_impl(std::unique_ptr<FairMQMessage>& msg, TClonesArray* input)
+    void Serialize(FairMQMessage& msg, TClonesArray* input)
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(input);
-        msg->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
-    }
-
-    void Serialize(std::unique_ptr<FairMQMessage>& msg, TClonesArray* input)
-    {
-        TMessage* tm = new TMessage(kMESS_OBJECT);
-        tm->WriteObject(input);
-        msg->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
+        msg.Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
     }
 };
 
 struct MyDeserializer 
 {
-    void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, TClonesArray*& output)
+    void Deserialize(FairMQMessage& msg, TClonesArray*& output)
     {
         if(output) delete output;
-        FairTMessage tm(msg->GetData(), msg->GetSize());
-        output = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
-    }
-    
-    void Deserialize(const std::unique_ptr<FairMQMessage>& msg, TClonesArray*& output)
-    {
-        if(output) delete output;
-        FairTMessage tm(msg->GetData(), msg->GetSize());
+        FairTMessage tm(msg.GetData(), msg.GetSize());
         output = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
     }
 };
