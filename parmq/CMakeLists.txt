@@ -51,8 +51,8 @@ Set(DEPENDENCIES
   Base
   ParBase
   FairMQ
-  boost_thread
-  boost_program_options
+  ${Boost_THREAD_LIBRARY}
+ ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )
 
 Set(LIBRARY_NAME ParMQ)

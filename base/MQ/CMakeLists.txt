@@ -66,10 +66,10 @@ set(DEPENDENCIES
   ParBase
   FairTools
   GeoBase
-  boost_thread
-  boost_timer
-  boost_system
-  boost_filesystem
+  ${Boost_THREAD_LIBRARY}
+  ${Boost_TIMER_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
   FairMQ
 )
 

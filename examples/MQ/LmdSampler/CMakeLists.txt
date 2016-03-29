@@ -96,10 +96,10 @@ ForEach(_file RANGE 0 ${_length})
     Set(DEPENDENCIES
         FairMQ 
         BaseMQ 
-        boost_thread 
-        boost_system 
-        boost_serialization 
-        boost_program_options 
+        ${Boost_THREAD_LIBRARY}
+        ${Boost_SYSTEM_LIBRARY}
+        ${Boost_SERIALIZATION_LIBRARY} 
+        ${Boost_PROGRAM_OPTIONS_LIBRARY}
         MbsTutorial
         LmdMQSampler
     )

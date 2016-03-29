@@ -160,7 +160,14 @@ Set(LIBRARY_NAME FairTestDetector)
 
 If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   Set(DEPENDENCIES
-    Base MCStack FairMQ BaseMQ boost_thread boost_system boost_serialization boost_program_options)
+    Base MCStack FairMQ BaseMQ
+    ${Boost_THREAD_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY}
+    ${Boost_SERIALIZATION_LIBRARY}
+#    boost_serialization
+    ${Boost_PROGRAM_OPTIONS_LIBRARY})
+
+
   If(PROTOBUF_FOUND)
     Set(DEPENDENCIES
       ${DEPENDENCIES}
