@@ -69,7 +69,7 @@ else
     echo "binary data format will be used."
 fi
 
-OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/outputGenEx2$FORMAT.root"
+OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/outputGenEx2$FORMAT.root"
 ##########################
 # CONFIGFILE = ini/txt config file, which, in this example, 
 # contain path to json file for the MQDevice configuration (address, MQ methods, etc.), 

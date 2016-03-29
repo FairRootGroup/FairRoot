@@ -41,9 +41,9 @@ esac
 shift 
 done
 
-INPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/inputGenEx.root"
-OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/outputGenEx1.root"
-JSONCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/options/MQConfig.json"
+INPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/inputGenEx.root"
+OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/outputGenEx1.root"
+JSONCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/options/MQConfig.json"
 
 ########################## start SAMPLER
 SAMPLER="genEx1Sampler --transport $TRANSPORT --verbose $VERBOSE"
