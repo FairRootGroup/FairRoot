@@ -66,7 +66,7 @@ set(DEPENDENCIES
   ParBase
   FairTools
   GeoBase
-  boost_thread
+  boost_thread${_boost_MULTITHREADED}
   boost_timer
   boost_system
   boost_filesystem

@@ -159,14 +159,14 @@ Message("-- Looking for Boost ...")
 # for boost.
 Unset(Boost_INCLUDE_DIR CACHE)
 Unset(Boost_LIBRARY_DIRS CACHE)
-find_package(Boost 1.41 COMPONENTS thread system timer program_options random filesystem chrono exception regex)
+find_package(Boost 1.59 COMPONENTS thread system timer program_options random filesystem chrono exception regex)
 If (Boost_FOUND)
   Set(Boost_Avail 1)
   Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Boost_LIBRARY_DIR})
 Else (Boost_FOUND)
   Set(Boost_Avail 0)
 EndIf (Boost_FOUND)
-
+message("Hello ${_boost_MULTITHREADED}")
 # Set the library version in the main CMakeLists.txt
 SET(FAIRROOT_MAJOR_VERSION 15)
 SET(FAIRROOT_MINOR_VERSION 11)
