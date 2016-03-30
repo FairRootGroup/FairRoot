@@ -175,8 +175,24 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
         SET(CMAKE_Fortran_FLAGS "-m64")
       ENDIF(MAC_OS_10_5 OR MAC_OS_10_6 OR MAC_OS_10_7)
 
-      SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
-      SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
+      # Check for Xcode version 7.3.0
+      SET(CLANG_730 -1)
+      IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        EXEC_PROGRAM("clang --version | grep \"version 7.3.0\"" OUTPUT_VARIABLE CLANG_VERSION)
+        IF(CLANG_VERSION)
+          STRING(FIND ${CLANG_VERSION} "version 7.3.0" CLANG_730)
+        ENDIF(CLANG_VERSION)
+      ENDIF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+
+      SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -single_module -undefined dynamic_lookup")
+      SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -single_module -undefined dynamic_lookup")
+
+      # Do not use -flat_namespace flag for Xcode 7.3.0
+      IF(CLANG_730 LESS 0)
+        SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -flat_namespace")
+        SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -flat_namespace")
+      ENDIF(CLANG_730 LESS 0)
+
 #      MESSAGE("C_FLAGS: ${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS}")
 #      MESSAGE("CXX_FLAGS: ${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}")
       Execute_Process(COMMAND gfortran -print-file-name=libgfortran.dylib
