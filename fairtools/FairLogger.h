@@ -17,6 +17,7 @@
 #define BASE_FAIRLOGGER_H_
 
 #include "Rtypes.h"                     // for Bool_t, FairLogger::Class, etc
+#include "TMCtls.h"                     // for MT VMC
 
 #include <stdarg.h>                     // for va_list
 #include <fstream>                      // for ostream, operator<<, etc
@@ -178,7 +179,12 @@ class FairLogger : public std::ostream
     static std::ostream&        flush(std::ostream&);
 
   private:
-    static FairLogger* instance;
+#if !defined(__CINT__)
+    static TMCThreadLocal FairLogger* instance;
+#else
+    static                FairLogger* instance;
+#endif
+
     FairLogger();
     FairLogger(const FairLogger&);
     FairLogger operator=(const FairLogger&);
@@ -227,6 +233,6 @@ class FairLogger : public std::ostream
     ClassDef(FairLogger, 3)
 };
 
-extern FairLogger* gLogger;
+#define gLogger (FairLogger::GetLogger())
 
 #endif  // BASE_FAIRLOGGER_H_

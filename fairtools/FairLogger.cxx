@@ -26,9 +26,7 @@
 #include <iomanip>                      // for operator<<, setw
 #include <iostream>                     // for cout, cerr
 
-FairLogger* gLogger = FairLogger::GetLogger();
-
-FairLogger* FairLogger::instance = NULL;
+TMCThreadLocal FairLogger* FairLogger::instance = NULL;
 
 FairLogger::FairLogger()
   :
