@@ -8,13 +8,13 @@
 
 MESSAGE(STATUS "Looking for DDS...")
 
-find_path(DDS_INCLUDE_DIR NAMES KeyValue.h PATHS
+find_path(DDS_INCLUDE_DIR NAMES dds_intercom.h PATHS
   ${DDS_PATH}/include
   ${SIMPATH}/DDS/include
   NO_DEFAULT_PATH
 )
 
-find_path(DDS_LIBRARY_DIR NAMES libdds-custom-cmd-lib.dylib libdds-custom-cmd-lib.so
+find_path(DDS_LIBRARY_DIR NAMES libdds_intercom_lib.dylib libdds_intercom_lib.so
   PATHS ${DDS_PATH}/lib
   PATHS ${SIMPATH}/DDS/lib
   NO_DEFAULT_PATH
