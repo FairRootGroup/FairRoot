@@ -32,7 +32,7 @@
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString, operator<<, Form
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMC.h"                 // for TVirtualMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include <stdio.h>                      // for NULL, printf
@@ -150,22 +150,22 @@ Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
   /** This method is called from the MC stepping */
 
   //Set parameters at entrance of volume. Reset ELoss.
-  if ( gMC->IsTrackEntering() ) {
+  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
     fELoss  = 0.;
-    fTime   = gMC->TrackTime() * 1.0e09;
-    fLength = gMC->TrackLength();
-    gMC->TrackPosition(fPos);
-    gMC->TrackMomentum(fMom);
+    fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
+    fLength = TVirtualMC::GetMC()->TrackLength();
+    TVirtualMC::GetMC()->TrackPosition(fPos);
+    TVirtualMC::GetMC()->TrackMomentum(fMom);
   }
 
   // Sum energy loss for all steps in the active volume
-  fELoss += gMC->Edep();
+  fELoss += TVirtualMC::GetMC()->Edep();
 
   // Create FairTutorialDet4Point at exit of active volume
-  if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       ||
-       gMC->IsTrackDisappeared()   ) {
-    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
+       TVirtualMC::GetMC()->IsTrackStop()       ||
+       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
+    fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
 //    fVolumeID = vol->getMCid();
     fVolumeID = fGeoHandler->GetUniqueDetectorId();
     if (fELoss == 0. ) { return kFALSE; }
@@ -177,7 +177,7 @@ Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
       Double_t master[3] = {fPos.X(), fPos.Y(), fPos.Z()};
       Double_t local[3];
 
-      gMC->Gmtod(master, local, 1);
+      TVirtualMC::GetMC()->Gmtod(master, local, 1);
       AddHit(fTrackID, fVolumeID, TVector3(local[0], local[1], local[2]),
 	     TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
 	     fELoss);
@@ -188,7 +188,7 @@ Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
     }
 
     // Increment number of tutorial det points in TParticle
-    FairStack* stack = static_cast<FairStack*>(gMC->GetStack());
+    FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
     stack->AddPoint(kTutDet);
   }
 

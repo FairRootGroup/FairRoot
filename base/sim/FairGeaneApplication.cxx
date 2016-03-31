@@ -14,7 +14,7 @@
 
 #include "FairField.h"                  // for FairField
 
-#include "TVirtualMC.h"                 // for gMC, TVirtualMC
+#include "TVirtualMC.h"                 // for  TVirtualMC
 
 #include <stdio.h>                      // for printf
 #include <iostream>                     // for cout, endl
@@ -47,26 +47,24 @@ FairGeaneApplication::FairGeaneApplication(Bool_t Debug)
 FairGeaneApplication::~FairGeaneApplication()
 {
 // Destructor
-//  delete gMC;
-//  gMC=0;
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
 void FairGeaneApplication::ConstructGeometry()
 {
-  gMC->SetRootGeometry();  // notify VMC about Root geometry
+  TVirtualMC::GetMC()->SetRootGeometry();  // notify VMC about Root geometry
 }
 
 void FairGeaneApplication::InitMC(const char*, const char*)
 {
 // Initialize MC.
 
-  gMC->Init();
-  gMC->BuildPhysics();
+  TVirtualMC::GetMC()->Init();
+  TVirtualMC::GetMC()->BuildPhysics();
   fMcVersion = 3;  //Geane
 
-  gMC->SetMagField(fxField);
+  TVirtualMC::GetMC()->SetMagField(fxField);
 }
 //_____________________________________________________________________________
 void FairGeaneApplication::GeaneStepping()
@@ -75,11 +73,11 @@ void FairGeaneApplication::GeaneStepping()
 // ---
   if (fDebug) {
     printf(" FairGeaneApplication::GeaneStepping() \n");
-    gMC->TrackPosition(fTrkPos);
+    TVirtualMC::GetMC()->TrackPosition(fTrkPos);
     printf(" Track Position: x = %f   y= %f    z= %f \n  ", fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z());
-    printf(" Current Volume name: %s \n", gMC->CurrentVolName());
+    printf(" Current Volume name: %s \n", TVirtualMC::GetMC()->CurrentVolName());
     Int_t copyNo;
-    Int_t id = gMC->CurrentVolID(copyNo);
+    Int_t id = TVirtualMC::GetMC()->CurrentVolID(copyNo);
     printf(" Current Volume id = %i  , CopyNo = %i \n", id, copyNo);
   }
 }

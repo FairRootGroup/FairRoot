@@ -32,7 +32,7 @@
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMC.h"                 // for TVirtualMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include "TGeoPhysicalNode.h"
@@ -92,22 +92,22 @@ Bool_t  Pixel::ProcessHits(FairVolume* vol)
 
   /** This method is called from the MC stepping */
   //Set parameters at entrance of volume. Reset ELoss.
-  if ( gMC->IsTrackEntering() ) {
+  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
     fELoss  = 0.;
-    fTime   = gMC->TrackTime() * 1.0e09;
-    fLength = gMC->TrackLength();
-    gMC->TrackPosition(fPos);
-    gMC->TrackMomentum(fMom);
+    fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
+    fLength = TVirtualMC::GetMC()->TrackLength();
+    TVirtualMC::GetMC()->TrackPosition(fPos);
+    TVirtualMC::GetMC()->TrackMomentum(fMom);
   }
 
   // Sum energy loss for all steps in the active volume
-  fELoss += gMC->Edep();
+  fELoss += TVirtualMC::GetMC()->Edep();
 
   // Create PixelPoint at exit of active volume
-  if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       ||
-       gMC->IsTrackDisappeared()   ) {
-    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
+       TVirtualMC::GetMC()->IsTrackStop()       ||
+       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
+    fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
     fVolumeID = vol->getMCid();
 
 
@@ -118,7 +118,7 @@ Bool_t  Pixel::ProcessHits(FairVolume* vol)
     // - Real time 142.366 s, CPU time 140.32s WITH USING VolPath TO GET fVolumeID
     // - Real time 142.407 s, CPU time 140.64s WITHOUT THE FOLLOWING TString OPERATIONS
     {
-      TString detPath = gMC->CurrentVolPath();
+      TString detPath = TVirtualMC::GetMC()->CurrentVolPath();
       detPath.Remove (0,detPath.Last('/')+1);
       detPath.Remove (0,detPath.First("Pixel")+5);
       Int_t stationNr = detPath.Atoi();
@@ -132,7 +132,7 @@ Bool_t  Pixel::ProcessHits(FairVolume* vol)
            fELoss);
 
     // Increment number of Pixel det points in TParticle
-    FairStack* stack = static_cast<FairStack*>(gMC->GetStack());
+    FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
     stack->AddPoint(kPixel);
   }
 

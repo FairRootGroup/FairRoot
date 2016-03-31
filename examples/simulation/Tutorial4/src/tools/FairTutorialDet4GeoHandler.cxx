@@ -18,7 +18,7 @@
 #include "TGeoManager.h"                // for TGeoManager, gGeoManager
 #include "TGeoNode.h"                   // for TGeoNode
 #include "TGeoVolume.h"                 // for TGeoVolume
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMC.h"                 // for TVirtualMC
 
 #include <stdio.h>                      // for printf
 #include <string.h>                     // for NULL, strlen, strncpy
@@ -103,7 +103,7 @@ Int_t FairTutorialDet4GeoHandler::VolIdGeo(const char* name) const
 Int_t FairTutorialDet4GeoHandler::VolId(const Text_t* name) const
 {
   if (fIsSimulation) {
-    return gMC->VolId(name);
+    return TVirtualMC::GetMC()->VolId(name);
   } else {
     //
     // Return the unique numeric identifier for volume name
@@ -120,7 +120,7 @@ Int_t FairTutorialDet4GeoHandler::VolId(const Text_t* name) const
 Int_t FairTutorialDet4GeoHandler::CurrentVolID(Int_t& copy) const
 {
   if (fIsSimulation) {
-    return gMC->CurrentVolID(copy);
+    return TVirtualMC::GetMC()->CurrentVolID(copy);
   } else {
     //
     // Returns the current volume ID and copy number
@@ -137,7 +137,7 @@ Int_t FairTutorialDet4GeoHandler::CurrentVolID(Int_t& copy) const
 Int_t FairTutorialDet4GeoHandler::CurrentVolOffID(Int_t off, Int_t& copy) const
 {
   if (fIsSimulation) {
-    return gMC->CurrentVolOffID(off, copy);
+    return TVirtualMC::GetMC()->CurrentVolOffID(off, copy);
   } else {
     //
     // Return the current volume "off" upward in the geometrical tree
@@ -156,7 +156,7 @@ Int_t FairTutorialDet4GeoHandler::CurrentVolOffID(Int_t off, Int_t& copy) const
 const char* FairTutorialDet4GeoHandler::CurrentVolName() const
 {
   if (fIsSimulation) {
-    return gMC->CurrentVolName();
+    return TVirtualMC::GetMC()->CurrentVolName();
   } else {
     //
     // Returns the current volume name
@@ -170,7 +170,7 @@ const char* FairTutorialDet4GeoHandler::CurrentVolName() const
 const char* FairTutorialDet4GeoHandler::CurrentVolOffName(Int_t off) const
 {
   if (fIsSimulation) {
-    return gMC->CurrentVolOffName(off);
+    return TVirtualMC::GetMC()->CurrentVolOffName(off);
   } else {
     //
     // Return the current volume "off" upward in the geometrical tree

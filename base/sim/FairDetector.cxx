@@ -23,7 +23,7 @@
 #include "TROOT.h"                      // for TROOT, gROOT
 #include "TRefArray.h"                  // for TRefArray
 #include "TString.h"                    // for TString
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMC.h"                 // for TVirtualMC
 
 #include <stddef.h>                     // for NULL
 // -------------------------------------------------------------------------
@@ -100,7 +100,7 @@ void   FairDetector::Initialize()
     Ssiz_t pos = cutName.Index (copysign, 1);
     if(pos>1) { cutName.Resize(pos); }
     if ( aVol->getModId() == GetModId()  ) {
-      fMCid=gMC->VolId(cutName.Data());
+      fMCid=TVirtualMC::GetMC()->VolId(cutName.Data());
       aVol->setMCid(fMCid);
       fN=aVol->getGeoNode();
       if (fN) { fN->setMCid(fMCid); }

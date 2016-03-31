@@ -34,7 +34,7 @@ void UserDecayConfig() {
    mode[1][1] =AlphaPDG  ;
     
   */
-   gMC->SetDecayMode(He5PDG,bratio,mode);
+   TVirtual::GetMC()->SetDecayMode(He5PDG,bratio,mode);
     
 
     

@@ -16,8 +16,8 @@ void Config()
   
     FairStack *st = new FairStack();
     st->SetMinPoints(0);
-    gMC->SetStack( st ) ;
-    gMC->SetProcess("CKOV",1);
+    TVirtual::GetMC()->SetStack( st ) ;
+    TVirtual::GetMC()->SetProcess("CKOV",1);
 
    // set the common cuts 
     TString configm(gSystem->Getenv("VMCWORKDIR"));

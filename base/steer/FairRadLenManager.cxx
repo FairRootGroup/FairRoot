@@ -18,7 +18,7 @@
 #include "TClonesArray.h"               // for TClonesArray
 #include "TLorentzVector.h"             // for TLorentzVector
 #include "TVector3.h"                   // for TVector3
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMC.h"                 // for TVirtualMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include <stddef.h>                     // for NULL
@@ -82,27 +82,27 @@ void FairRadLenManager::Reset()
 void FairRadLenManager::AddPoint(Int_t& ModuleId)
 {
   /**Add a point to the collection*/
-  if ( gMC->IsTrackEntering() ) {
+  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
     fELoss  = 0.;
     Int_t copyNo;
-    fVolumeID = gMC->CurrentVolID(copyNo);
-    fTime   = gMC->TrackTime() * 1.0e09;
-    fLength = gMC->TrackLength();
-    gMC->TrackPosition(fPosIn);
-    gMC->TrackMomentum(fMomIn);
-    //    Int_t MatId=  gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
-    gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
+    fVolumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
+    fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
+    fLength = TVirtualMC::GetMC()->TrackLength();
+    TVirtualMC::GetMC()->TrackPosition(fPosIn);
+    TVirtualMC::GetMC()->TrackMomentum(fMomIn);
+    //    Int_t MatId=  TVirtualMC::GetMC()->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
+    TVirtualMC::GetMC()->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
   }
   /** Sum energy loss for all steps in the active volume */
-  fELoss += gMC->Edep();
+  fELoss += TVirtualMC::GetMC()->Edep();
   /**  Create a point at exit of the volume */
-  if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       ||
-       gMC->IsTrackDisappeared()   ) {
+  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
+       TVirtualMC::GetMC()->IsTrackStop()       ||
+       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
 //    FairRadLenPoint* p=0;
-    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
-    gMC->TrackPosition(fPosOut);
-    gMC->TrackMomentum(fMomOut);
+    fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
+    TVirtualMC::GetMC()->TrackPosition(fPosOut);
+    TVirtualMC::GetMC()->TrackMomentum(fMomOut);
     TClonesArray& clref = *fPointCollection;
     Int_t tsize = clref.GetEntriesFast();
 //    p=new(clref[tsize]) FairRadLenPoint(fTrackID, ModuleId,
