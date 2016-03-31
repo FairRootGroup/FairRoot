@@ -38,7 +38,7 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
 include_directories(${INCLUDE_DIRECTORIES})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/LmdSampler/macro/startLmdMQChain.sh.in ${CMAKE_BINARY_DIR}/bin/startLmdMQChain.sh)
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/LmdSampler/macro/startMQLmdChain.sh.in ${CMAKE_BINARY_DIR}/bin/startMQLmdChain.sh)
 
 
 set(LINK_DIRECTORIES

@@ -1,0 +1,72 @@
+{
+    "fairMQOptions":
+    {
+        "devices":
+        [{
+            "id": "sampler1",
+            "channels":
+            [{
+                "name": "data1",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5565"
+                }
+            },
+            {
+                "name": "ack",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5999"
+                }
+            }]
+        },
+        {
+            "key": "processor",
+            "channels":
+            [{
+                "name": "data1",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5565"
+                }
+            },
+            {
+                "name": "data2",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5570"
+                }
+            }]
+        },
+        {
+            "id": "sink1",
+            "channels":
+            [{
+                "name": "data2",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5570"
+                }
+            },
+            {
+                "name": "ack",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5999"
+                }
+            }]
+        }]
+    }
+}

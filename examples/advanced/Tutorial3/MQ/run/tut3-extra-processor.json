@@ -1,0 +1,28 @@
+{
+    "fairMQOptions":
+    {
+        "device":
+        {
+            "key": "processor",
+            "channels":
+            [{
+                "name": "data1",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5565"
+                }
+            },
+            {
+                "name": "data2",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5570"
+                }
+            }]
+        }
+    }
+}

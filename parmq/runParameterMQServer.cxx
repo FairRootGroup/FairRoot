@@ -55,21 +55,9 @@ int main(int argc, char** argv)
             return 0;
         }
 
-        string file = config.GetValue<string>("config-json-file");
-        string id = config.GetValue<string>("id");
-
-        config.UserParser<FairMQParser::JSON>(file, id);
-
-        server.fChannels = config.GetFairMQMap();
-
-        LOG(INFO) << "PID: " << getpid();
-
         TApplication app("ParameterMQServer", 0, 0);
 
-        server.SetTransport(config.GetValue<string>("transport"));
-
-        server.SetProperty(ParameterMQServer::Id, id);
-        server.SetProperty(ParameterMQServer::NumIoThreads, config.GetValue<int>("io-threads"));
+        server.SetConfig(config);
 
         server.SetProperty(ParameterMQServer::FirstInputName, firstInputName);
         server.SetProperty(ParameterMQServer::FirstInputType, firstInputType);

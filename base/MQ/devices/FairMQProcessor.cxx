@@ -46,8 +46,8 @@ void FairMQProcessor::Run()
     int sentMsgs = 0;
 
     // channel references to avoid traversing the map on every loop iteration
-    FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
-    FairMQChannel& dataOutChannel = fChannels.at("data-out").at(0);
+    FairMQChannel& dataInChannel = fChannels.at("data1").at(0);
+    FairMQChannel& dataOutChannel = fChannels.at("data2").at(0);
 
     while (CheckCurrentState(RUNNING))
     {

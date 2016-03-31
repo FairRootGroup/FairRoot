@@ -12,7 +12,11 @@
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/fairmq
+  ${CMAKE_SOURCE_DIR}/fairmq/zeromq
+  ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
+  ${CMAKE_SOURCE_DIR}/fairmq/devices
   ${CMAKE_SOURCE_DIR}/fairmq/tools
+  ${CMAKE_SOURCE_DIR}/fairmq/options
   ${CMAKE_SOURCE_DIR}/base/MQ
   ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
   ${CMAKE_SOURCE_DIR}/base/MQ/devices
@@ -64,11 +68,17 @@ Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startThree.sh.in          ${CMAKE_BINARY_DIR}/bin/startThree.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAll.sh.in            ${CMAKE_BINARY_DIR}/bin/startAll.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startAllProxy.sh.in       ${CMAKE_BINARY_DIR}/bin/startAllProxy.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startPushPull.sh.in       ${CMAKE_BINARY_DIR}/bin/startPushPull.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startExtraProcessor.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3Three.sh.in          ${CMAKE_BINARY_DIR}/bin/startMQTut3Three.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3All.sh.in            ${CMAKE_BINARY_DIR}/bin/startMQTut3All.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3AllProxy.sh.in       ${CMAKE_BINARY_DIR}/bin/startMQTut3AllProxy.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3PushPull.sh.in       ${CMAKE_BINARY_DIR}/bin/startMQTut3PushPull.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3ExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startMQTut3ExtraProcessor.sh)
+
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-all-proxy.json       ${CMAKE_BINARY_DIR}/bin/config/tut3-all-proxy.json)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-all.json             ${CMAKE_BINARY_DIR}/bin/config/tut3-all.json)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-extra-processor.json ${CMAKE_BINARY_DIR}/bin/config/tut3-extra-processor.json)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-push-pull.json       ${CMAKE_BINARY_DIR}/bin/config/tut3-push-pull.json)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-three.json           ${CMAKE_BINARY_DIR}/bin/config/tut3-three.json)
 EndIf (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
 
 Set(LINK_DIRECTORIES
@@ -194,12 +204,12 @@ Add_Subdirectory(macro)
 
 If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
   Set(Exe_Names
-    testDetectorSampler
-    testDetectorProcessor
-    testDetectorFileSink
+    tut3-sampler
+    tut3-processor
+    tut3-sink
   )
 
-  set(Exe_Source
+  Set(Exe_Source
     MQ/run/runTestDetectorSampler.cxx
     MQ/run/runTestDetectorProcessor.cxx
     MQ/run/runTestDetectorFileSink.cxx

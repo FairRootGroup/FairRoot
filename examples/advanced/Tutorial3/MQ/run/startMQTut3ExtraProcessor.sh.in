@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# buffSize="500000000" # nanomsg buffer size is in bytes
-buffSize="100" # zeromq high-water mark is in messages
-
 echo "Supported data formats: binary, boost, boost-text, flatbuffers, msgpack, protobuf, tmessage"
 dataFormat="binary"
 if [ "$1" = "binary" ]; then
@@ -40,21 +37,13 @@ else
     echo "Using: binary"
 fi
 
-ID="310"
-processorTask="FairTestDetectorMQRecoTask" # 'FairTestDetectorMQRecoTask' is default
-inputSocketType="pull"
-inputBufSize=$buffSize
-inputMethod="connect"
-inputAddress="tcp://localhost:5566"
-outputSocketType="push"
-outputBufSize=$buffSize
-outputMethod="connect"
-outputAddress="tcp://localhost:5567"
+ID="processorx"
 
-counter=0
+tut3cfg="@CMAKE_BINARY_DIR@/bin/config/tut3-extra-processor.json"
 
-while [ $counter -lt $2 ]
-do
-    xterm -hold -e @CMAKE_BINARY_DIR@/bin/testDetectorProcessor --id $((ID+counter)) --data-format $dataFormat --input-socket-type $inputSocketType --input-buff-size $inputBufSize --input-method $inputMethod --input-address $inputAddress --output-socket-type $outputSocketType --output-buff-size $outputBufSize --output-method $outputMethod --output-address $outputAddress &
-    counter=$(( $counter + 1 ))
-done
+PROCESSOR2="tut3-processor"
+PROCESSOR2+=" --id processor2"
+PROCESSOR2+=" --data-format $dataFormat"
+PROCESSOR2+=" --mq-config $tut3cfg"
+PROCESSOR2+=" --config-key processor"
+xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &

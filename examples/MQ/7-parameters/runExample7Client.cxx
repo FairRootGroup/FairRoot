@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -44,27 +44,8 @@ int main(int argc, char** argv)
             return 0;
         }
 
-        string file = config.GetValue<string>("config-json-file");
-        string id = config.GetValue<string>("id");
-
-        config.UserParser<FairMQParser::JSON>(file, id);
-
-        client.fChannels = config.GetFairMQMap();
-
-        LOG(INFO) << "PID: " << getpid();
-
-        client.SetTransport(config.GetValue<std::string>("transport"));
-
-        client.SetProperty(FairMQExample7Client::Id, "client");
+        client.SetConfig(config);
         client.SetProperty(FairMQExample7Client::ParameterName, parameterName);
-        client.SetProperty(FairMQExample7Client::NumIoThreads, 1);
-
-        FairMQChannel requestChannel("req", "connect", "tcp://localhost:5005");
-        requestChannel.UpdateSndBufSize(10000);
-        requestChannel.UpdateRcvBufSize(10000);
-        requestChannel.UpdateRateLogging(0);
-
-        client.fChannels["data"].push_back(requestChannel);
 
         client.ChangeState("INIT_DEVICE");
         client.WaitForEndOfState("INIT_DEVICE");

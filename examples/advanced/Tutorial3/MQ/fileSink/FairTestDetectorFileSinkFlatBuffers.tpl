@@ -13,7 +13,8 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>
     int receivedMsgs = 0;
 
     // channel references to avoid traversing the map on every loop iteration
-    FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
+    FairMQChannel& dataInChannel = fChannels.at("data2").at(0);
+    FairMQChannel& ackOutChannel = fChannels.at("ack").at(0);
 
     while (CheckCurrentState(RUNNING))
     {
@@ -48,7 +49,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>
             }
 
             std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
-            fChannels.at("ack-out").at(0).Send(ack);
+            ackOutChannel.Send(ack);
 
             fTree->Fill();
         }

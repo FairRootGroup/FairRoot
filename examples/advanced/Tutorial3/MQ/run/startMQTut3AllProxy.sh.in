@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# buffSize="500000000" # nanomsg buffer size is in bytes
-buffSize="100" # zeromq high-water mark is in messages
-
 mcEngine="TGeant3"
 
 echo "Supported data formats: binary, boost, boost-text, flatbuffers, msgpack, protobuf, tmessage"
@@ -42,52 +39,50 @@ else
     echo "Using: binary"
 fi
 
-SAMPLER="testDetectorSampler"
-SAMPLER+=" --id SAMPLER1"
+tut3cfg="@CMAKE_BINARY_DIR@/bin/config/tut3-all-proxy.json"
+
+SAMPLER="tut3-sampler"
+SAMPLER+=" --id sampler1"
 SAMPLER+=" --data-format $dataFormat"
 SAMPLER+=" --chain-input 99"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams_$mcEngine.root"
-SAMPLER+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5565"
-SAMPLER+=" --ack-address tcp://*:5999"
+SAMPLER+=" --mq-config $tut3cfg"
 xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 PROXY1="proxy"
-PROXY1+=" --id PROXY1"
-PROXY1+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5565"
-PROXY1+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5566"
+PROXY1+=" --id proxy1"
+PROXY1+=" --mq-config $tut3cfg"
 xterm -geometry 80x23+0+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROXY1 &
 
-PROCESSOR1="testDetectorProcessor"
-PROCESSOR1+=" --id PROCESSOR1"
+PROCESSOR1="tut3-processor"
+PROCESSOR1+=" --id processor1"
 PROCESSOR1+=" --data-format $dataFormat"
-PROCESSOR1+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
-PROCESSOR1+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5567"
+PROCESSOR1+=" --mq-config $tut3cfg"
+PROCESSOR1+=" --config-key processor"
 xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
-PROCESSOR2="testDetectorProcessor"
-PROCESSOR2+=" --id PROCESSOR2"
+PROCESSOR2="tut3-processor"
+PROCESSOR2+=" --id processor2"
 PROCESSOR2+=" --data-format $dataFormat"
-PROCESSOR2+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
-PROCESSOR2+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5567"
+PROCESSOR2+=" --mq-config $tut3cfg"
+PROCESSOR2+=" --config-key processor"
 xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
 
-PROCESSOR3="testDetectorProcessor"
-PROCESSOR3+=" --id PROCESSOR3"
+PROCESSOR3="tut3-processor"
+PROCESSOR3+=" --id processor3"
 PROCESSOR3+=" --data-format $dataFormat"
-PROCESSOR3+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5566"
-PROCESSOR3+=" --output-socket-type push --output-buff-size $buffSize --output-method connect --output-address tcp://localhost:5567"
+PROCESSOR3+=" --mq-config $tut3cfg"
+PROCESSOR3+=" --config-key processor"
 xterm -geometry 80x23+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
 
 PROXY2="proxy"
-PROXY2+=" --id PROXY2"
-PROXY2+=" --input-socket-type pull --input-buff-size $buffSize --input-method bind --input-address tcp://*:5567"
-PROXY2+=" --output-socket-type push --output-buff-size $buffSize --output-method bind --output-address tcp://*:5570"
+PROXY2+=" --id proxy2"
+PROXY2+=" --mq-config $tut3cfg"
 xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROXY2 &
 
-FILESINK="testDetectorFileSink"
-FILESINK+=" --id FILESINK1"
+FILESINK="tut3-sink"
+FILESINK+=" --id sink1"
 FILESINK+=" --data-format $dataFormat"
-FILESINK+=" --input-socket-type pull --input-buff-size $buffSize --input-method connect --input-address tcp://localhost:5570"
-FILESINK+=" --ack-address tcp://localhost:5999"
+FILESINK+=" --mq-config $tut3cfg"
 xterm -geometry 80x23+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &

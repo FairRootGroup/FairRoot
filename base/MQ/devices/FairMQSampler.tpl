@@ -84,7 +84,7 @@ void FairMQSampler<Loader>::Run()
     LOG(INFO) << "Number of events to process: " << fNumEvents;
 
     // store the channel references to avoid traversing the map on every loop iteration
-    FairMQChannel& dataOutChannel = fChannels.at("data-out").at(0);
+    FairMQChannel& dataOutChannel = fChannels.at("data1").at(0);
 
     fTimer = new boost::timer::auto_cpu_timer();
 
@@ -121,7 +121,7 @@ void FairMQSampler<Loader>::ListenForAcks()
     for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
     {
         std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
-        fChannels.at("ack-in").at(0).Receive(ack);
+        fChannels.at("ack").at(0).Receive(ack);
 
         if (!CheckCurrentState(RUNNING))
         {

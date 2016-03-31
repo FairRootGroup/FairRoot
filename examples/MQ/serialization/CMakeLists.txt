@@ -56,12 +56,12 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(SCRIPT_ARGS "\${\@:2}")
 
 # Data generator
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/startGenericMQTutoGenerateData.sh.in ${CMAKE_BINARY_DIR}/bin/startSerializationGenerateData.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/startMQSerializationGenerateData.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationGenerateData.sh )
 
 # start MQ chains
 #configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx2All.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2All.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx1All.sh.in ${CMAKE_BINARY_DIR}/bin/startSerializationEx1.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startSerializationEx2.sh.in ${CMAKE_BINARY_DIR}/bin/startSerializationEx2.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx1.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationEx1.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx2.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationEx2.sh )
 
 # start individual devices 
 #configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx2Sampler.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2Sampler.sh )

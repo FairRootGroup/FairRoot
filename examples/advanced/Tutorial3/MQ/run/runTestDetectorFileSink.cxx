@@ -17,118 +17,34 @@
 #include "boost/program_options.hpp"
 
 #include "FairMQLogger.h"
+#include "FairMQParser.h"
+#include "FairMQProgOptions.h"
 
 #include "FairTestDetectorFileSink.h"
 
 
 using namespace std;
+using namespace boost::program_options;
 
-using TSinkBin           = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>;
-using TSinkBoostBin      = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::binary_iarchive>;
-using TSinkBoostText     = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::text_iarchive>;
-using TSinkProtobuf      = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>;
-using TSinkTMessage      = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
+using TSinkBin                    = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>;
+using TSinkBoostBin               = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::binary_iarchive>;
+using TSinkBoostText              = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::text_iarchive>;
+using TSinkProtobuf               = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>;
+using TSinkTMessage               = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
 #ifdef FLATBUFFERS
-using TSinkFlatBuffers   = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>;
-#endif /* FLATBUFFERS */
+using TSinkFlatBuffers            = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>;
+#endif
 #ifdef MSGPACK
-using TSinkMsgPack   = FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>;
-#endif /* MSGPACK */
-
-typedef struct DeviceOptions
-{
-    DeviceOptions() :
-        id(), ioThreads(0), transport(), dataFormat(),
-        inputSocketType(), inputBufSize(0), inputMethod(), inputAddress(),
-        ackSocketType(), ackBufSize(0), ackMethod(), ackAddress() {}
-
-    string id;
-    int ioThreads;
-    string transport;
-    string dataFormat;
-    string inputSocketType;
-    int inputBufSize;
-    string inputMethod;
-    string inputAddress;
-    string ackSocketType;
-    int ackBufSize;
-    string ackMethod;
-    string ackAddress;
-} DeviceOptions_t;
-
-inline bool parse_cmd_line(int _argc, char* _argv[], DeviceOptions* _options)
-{
-    if (_options == NULL)
-        throw runtime_error("Internal error: options' container is empty.");
-
-    namespace bpo = boost::program_options;
-    bpo::options_description desc("Options");
-    desc.add_options()
-        ("id", bpo::value<string>()->required(), "Device ID")
-        ("io-threads", bpo::value<int>()->default_value(1), "Number of I/O threads")
-        ("transport", bpo::value<string>()->default_value("zeromq"), "Transport (zeromq/nanomsg)")
-        ("data-format", bpo::value<string>()->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)")
-        ("input-socket-type", bpo::value<string>()->required(), "Input socket type: sub/pull")
-        ("input-buff-size", bpo::value<int>()->required(), "Input buffer size in number of messages (ZeroMQ)/bytes(nanomsg)")
-        ("input-method", bpo::value<string>()->required(), "Input method: bind/connect")
-        ("input-address", bpo::value<string>()->required(), "Input address, e.g.: \"tcp://*:5555\"")
-        ("ack-socket-type", bpo::value<string>()->default_value("push"), "ack socket type: sub/pull")
-        ("ack-buff-size", bpo::value<int>()->default_value(1000), "ack buffer size in number of messages (ZeroMQ)/bytes(nanomsg)")
-        ("ack-method", bpo::value<string>()->default_value("connect"), "ack method: bind/connect")
-        ("ack-address", bpo::value<string>()->required(), "ack address, e.g.: \"tcp://*:5555\"")
-        ("help", "Print help messages");
-
-    bpo::variables_map vm;
-    bpo::store(bpo::parse_command_line(_argc, _argv, desc), vm);
-
-    if (vm.count("help"))
-    {
-        LOG(INFO) << "FairMQ File Sink" << endl << desc;
-        return false;
-    }
-
-    bpo::notify(vm);
-
-    if (vm.count("id"))                { _options->id              = vm["id"].as<string>(); }
-    if (vm.count("io-threads"))        { _options->ioThreads       = vm["io-threads"].as<int>(); }
-    if (vm.count("transport"))         { _options->transport       = vm["transport"].as<string>(); }
-    if (vm.count("data-format"))       { _options->dataFormat      = vm["data-format"].as<string>(); }
-    if (vm.count("input-socket-type")) { _options->inputSocketType = vm["input-socket-type"].as<string>(); }
-    if (vm.count("input-buff-size"))   { _options->inputBufSize    = vm["input-buff-size"].as<int>(); }
-    if (vm.count("input-method"))      { _options->inputMethod     = vm["input-method"].as<string>(); }
-    if (vm.count("input-address"))     { _options->inputAddress    = vm["input-address"].as<string>(); }
-    if (vm.count("ack-socket-type"))   { _options->ackSocketType   = vm["ack-socket-type"].as<string>(); }
-    if (vm.count("ack-buff-size"))     { _options->ackBufSize      = vm["ack-buff-size"].as<int>(); }
-    if (vm.count("ack-method"))        { _options->ackMethod       = vm["ack-method"].as<string>(); }
-    if (vm.count("ack-address"))       { _options->ackAddress      = vm["ack-address"].as<string>(); }
-
-    return true;
-}
+using TSinkMsgPack                = FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>;
+#endif
 
 template<typename T>
-void runFileSink(const DeviceOptions_t& options)
+void runFileSink(FairMQProgOptions& config)
 {
     T filesink;
     filesink.CatchSignals();
 
-    filesink.SetTransport(options.transport);
-
-    FairMQChannel inChannel(options.inputSocketType, options.inputMethod, options.inputAddress);
-    inChannel.UpdateSndBufSize(options.inputBufSize);
-    inChannel.UpdateRcvBufSize(options.inputBufSize);
-    inChannel.UpdateRateLogging(1);
-
-    filesink.fChannels["data-in"].push_back(inChannel);
-
-    FairMQChannel ackChannel(options.ackSocketType, options.ackMethod, options.ackAddress);
-    ackChannel.UpdateSndBufSize(options.ackBufSize);
-    ackChannel.UpdateRcvBufSize(options.ackBufSize);
-    ackChannel.UpdateRateLogging(0);
-
-    filesink.fChannels["ack-out"].push_back(ackChannel);
-
-    filesink.SetProperty(T::Id, options.id);
-    filesink.SetProperty(T::NumIoThreads, options.ioThreads);
+    filesink.SetConfig(config);
 
     filesink.ChangeState("INIT_DEVICE");
     filesink.WaitForEndOfState("INIT_DEVICE");
@@ -136,7 +52,7 @@ void runFileSink(const DeviceOptions_t& options)
     filesink.ChangeState("INIT_TASK");
     filesink.WaitForEndOfState("INIT_TASK");
 
-    filesink.InitOutputFile(options.id + options.dataFormat);
+    filesink.InitOutputFile(config.GetValue<string>("id") + config.GetValue<string>("data-format"));
 
     filesink.ChangeState("RUN");
     filesink.InteractiveStateLoop();
@@ -144,34 +60,45 @@ void runFileSink(const DeviceOptions_t& options)
 
 int main(int argc, char** argv)
 {
-    DeviceOptions_t options;
+    FairMQProgOptions config;
+
     try
     {
-        if (!parse_cmd_line(argc, argv, &options))
+        string dataFormat;
+
+        options_description sinkOptions("Sink options");
+        sinkOptions.add_options()
+            ("data-format", value<string>(&dataFormat)->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)");
+
+        config.AddToCmdLineOptions(sinkOptions);
+
+        if (config.ParseAll(argc, argv))
+        {
             return 0;
+        }
+
+        if (dataFormat == "binary") { runFileSink<TSinkBin>(config); }
+        else if (dataFormat == "boost") { runFileSink<TSinkBoostBin>(config); }
+        else if (dataFormat == "boost-text") { runFileSink<TSinkBoostText>(config); }
+#ifdef FLATBUFFERS
+        else if (dataFormat == "flatbuffers") { runFileSink<TSinkFlatBuffers>(config); }
+#endif
+#ifdef MSGPACK
+        else if (dataFormat == "msgpack") { runFileSink<TSinkMsgPack>(config); }
+#endif
+        else if (dataFormat == "protobuf") { runFileSink<TSinkProtobuf>(config); }
+        else if (dataFormat == "tmessage") { runFileSink<TSinkTMessage>(config); }
+        else
+        {
+            LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage). ";
+            return 1;
+        }
     }
     catch (exception& e)
     {
         LOG(ERROR) << e.what();
-        return 1;
-    }
-
-    LOG(INFO) << "PID: " << getpid();
-
-    if (options.dataFormat == "binary") { runFileSink<TSinkBin>(options); }
-    else if (options.dataFormat == "boost") { runFileSink<TSinkBoostBin>(options); }
-    else if (options.dataFormat == "boost-text") { runFileSink<TSinkBoostText>(options); }
-#ifdef FLATBUFFERS
-    else if (options.dataFormat == "flatbuffers") { runFileSink<TSinkFlatBuffers>(options); }
-#endif /* FLATBUFFERS */
-#ifdef MSGPACK
-    else if (options.dataFormat == "msgpack") { runFileSink<TSinkMsgPack>(options); }
-#endif /* MSGPACK */
-    else if (options.dataFormat == "protobuf") { runFileSink<TSinkProtobuf>(options); }
-    else if (options.dataFormat == "tmessage") { runFileSink<TSinkTMessage>(options); }
-    else
-    {
-        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage). ";
+        LOG(INFO) << "Command line options are the following: ";
+        config.PrintHelp();
         return 1;
     }
 

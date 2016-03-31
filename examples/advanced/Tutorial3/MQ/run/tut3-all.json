@@ -1,0 +1,180 @@
+{
+    "fairMQOptions":
+    {
+        "devices":
+        [{
+            "id": "sampler",
+            "channels":
+            [{
+                "name": "data1",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5565"
+                }
+            },
+            {
+                "name": "ack",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5999"
+                }
+            }]
+        },
+        {
+            "id": "splitter",
+            "channels":
+            [{
+                "name": "data-in",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5565"
+                }
+            },
+            {
+                "name": "data-out",
+                "sockets":
+                [{
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5566"
+                },
+                {
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5567"
+                },
+                {
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5568"
+                }]
+            }]
+        },
+        {
+            "id": "processor1",
+            "channels":
+            [{
+                "name": "data1",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5566"
+                }
+            },
+            {
+                "name": "data2",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5569"
+                }
+            }]
+        },
+        {
+            "id": "processor2",
+            "channels":
+            [{
+                "name": "data1",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5567"
+                }
+            },
+            {
+                "name": "data2",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5570"
+                }
+            }]
+        },
+        {
+            "id": "processor3",
+            "channels":
+            [{
+                "name": "data1",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5568"
+                }
+            },
+            {
+                "name": "data2",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5571"
+                }
+            }]
+        },
+        {
+            "id": "merger",
+            "channels":
+            [{
+                "name": "data-in",
+                "sockets":
+                [{
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5569"
+                },
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5570"
+                },
+                {
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5571"
+                }]
+            },
+            {
+                "name": "data-out",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5572"
+                }
+            }]
+        },
+        {
+            "id": "sink",
+            "channels":
+            [{
+                "name": "data2",
+                "socket":
+                {
+                    "type": "pull",
+                    "method": "connect",
+                    "address": "tcp://localhost:5572"
+                }
+            },
+            {
+                "name": "ack",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5999"
+                }
+            }]
+        }]
+    }
+}

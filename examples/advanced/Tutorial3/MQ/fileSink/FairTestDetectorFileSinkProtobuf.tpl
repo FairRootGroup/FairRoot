@@ -16,8 +16,8 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload
     int receivedMsgs = 0;
 
     // channel references to avoid traversing the map on every loop iteration
-    FairMQChannel& dataInChannel = fChannels.at("data-in").at(0);
-    FairMQChannel& ackOutChannel = fChannels.at("ack-out").at(0);
+    FairMQChannel& dataInChannel = fChannels.at("data2").at(0);
+    FairMQChannel& ackOutChannel = fChannels.at("ack").at(0);
 
     while (CheckCurrentState(RUNNING))
     {
