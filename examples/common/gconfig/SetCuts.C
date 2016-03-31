@@ -25,37 +25,37 @@ void SetCuts()
   // or to message #5362 in the PandaRoot Forum >> Monte Carlo Engines >> g3Config.C thread)
   // 
   // The default settings refer to a complete simulation which generates and follows also the secondary particles.
+  TVirtualMC *MC =TVirtualMC::GetMC();
 
-
-  TVirtual::GetMC()->SetProcess("PAIR",1); /** pair production*/
-  TVirtual::GetMC()->SetProcess("COMP",1); /**Compton scattering*/
-  TVirtual::GetMC()->SetProcess("PHOT",1); /** photo electric effect */
-  TVirtual::GetMC()->SetProcess("PFIS",0); /**photofission*/
-  TVirtual::GetMC()->SetProcess("DRAY",1); /**delta-ray*/
-  TVirtual::GetMC()->SetProcess("ANNI",1); /**annihilation*/
-  TVirtual::GetMC()->SetProcess("BREM",1); /**bremsstrahlung*/
-  TVirtual::GetMC()->SetProcess("HADR",1); /**hadronic process*/
-  TVirtual::GetMC()->SetProcess("MUNU",1); /**muon nuclear interaction*/
-  TVirtual::GetMC()->SetProcess("DCAY",1); /**decay*/
-  TVirtual::GetMC()->SetProcess("LOSS",1); /**energy loss*/
-  TVirtual::GetMC()->SetProcess("MULS",1); /**multiple scattering*/
+  MC->SetProcess("PAIR",1); /** pair production*/
+  MC->SetProcess("COMP",1); /**Compton scattering*/
+  MC->SetProcess("PHOT",1); /** photo electric effect */
+  MC->SetProcess("PFIS",0); /**photofission*/
+  MC->SetProcess("DRAY",1); /**delta-ray*/
+  MC->SetProcess("ANNI",1); /**annihilation*/
+  MC->SetProcess("BREM",1); /**bremsstrahlung*/
+  MC->SetProcess("HADR",1); /**hadronic process*/
+  MC->SetProcess("MUNU",1); /**muon nuclear interaction*/
+  MC->SetProcess("DCAY",1); /**decay*/
+  MC->SetProcess("LOSS",1); /**energy loss*/
+  MC->SetProcess("MULS",1); /**multiple scattering*/
 
   Double_t cut1 = 1.0E-3;         // GeV --> 1 MeV
   Double_t cutb = 1.0E4;          // GeV --> 10 TeV
   Double_t tofmax = 1.E10;        // seconds
   cout << "SetCuts Macro: Setting cuts.." <<endl;
   
-  TVirtual::GetMC()->SetCut("CUTGAM",cut1);   /** gammas (GeV)*/
-  TVirtual::GetMC()->SetCut("CUTELE",cut1);   /** electrons (GeV)*/
-  TVirtual::GetMC()->SetCut("CUTNEU",cut1);   /** neutral hadrons (GeV)*/
-  TVirtual::GetMC()->SetCut("CUTHAD",cut1);   /** charged hadrons (GeV)*/
-  TVirtual::GetMC()->SetCut("CUTMUO",cut1);   /** muons (GeV)*/
-  TVirtual::GetMC()->SetCut("BCUTE",cut1);    /** electron bremsstrahlung (GeV)*/
-  TVirtual::GetMC()->SetCut("BCUTM",cut1);    /** muon and hadron bremsstrahlung(GeV)*/ 
-  TVirtual::GetMC()->SetCut("DCUTE",cut1);    /** delta-rays by electrons (GeV)*/
-  TVirtual::GetMC()->SetCut("DCUTM",cut1);    /** delta-rays by muons (GeV)*/
-  TVirtual::GetMC()->SetCut("PPCUTM",cut1);   /** direct pair production by muons (GeV)*/
-  TVirtual::GetMC()->SetCut("TOFMAX",tofmax); /**time of flight cut in seconds*/
+  MC->SetCut("CUTGAM",cut1);   /** gammas (GeV)*/
+  MC->SetCut("CUTELE",cut1);   /** electrons (GeV)*/
+  MC->SetCut("CUTNEU",cut1);   /** neutral hadrons (GeV)*/
+  MC->SetCut("CUTHAD",cut1);   /** charged hadrons (GeV)*/
+  MC->SetCut("CUTMUO",cut1);   /** muons (GeV)*/
+  MC->SetCut("BCUTE",cut1);    /** electron bremsstrahlung (GeV)*/
+  MC->SetCut("BCUTM",cut1);    /** muon and hadron bremsstrahlung(GeV)*/ 
+  MC->SetCut("DCUTE",cut1);    /** delta-rays by electrons (GeV)*/
+  MC->SetCut("DCUTM",cut1);    /** delta-rays by muons (GeV)*/
+  MC->SetCut("PPCUTM",cut1);   /** direct pair production by muons (GeV)*/
+  MC->SetCut("TOFMAX",tofmax); /**time of flight cut in seconds*/
   
    
 }
