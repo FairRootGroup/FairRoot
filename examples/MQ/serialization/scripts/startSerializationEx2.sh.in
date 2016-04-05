@@ -47,25 +47,25 @@ JSONCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/options/MQConfig.js
 
 ########################## start SAMPLER
 SAMPLER="serialization-Ex2Sampler --transport $TRANSPORT --verbose $VERBOSE"
-SAMPLER+=" --id sampler1  --input-file $INPUTFILE --config-json-file $JSONCONFIGFILE"
+SAMPLER+=" --id sampler1  --input-file $INPUTFILE --mq-config $JSONCONFIGFILE"
 xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 ########################## start three PROCESSORs
 PROCESSOR1="serialization-Ex2Processor --transport $TRANSPORT --verbose $VERBOSE"
-PROCESSOR1+=" --id processor1 --config-json-file $JSONCONFIGFILE"
+PROCESSOR1+=" --id processor1 --mq-config $JSONCONFIGFILE"
 xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
 PROCESSOR2="serialization-Ex2Processor --transport $TRANSPORT"
-PROCESSOR2+=" --id processor2 --config-json-file $JSONCONFIGFILE"
+PROCESSOR2+=" --id processor2 --mq-config $JSONCONFIGFILE"
 xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
 
 PROCESSOR3="serialization-Ex2Processor --transport $TRANSPORT --verbose $VERBOSE"
-PROCESSOR3+=" --id processor3 --config-json-file $JSONCONFIGFILE"
+PROCESSOR3+=" --id processor3 --mq-config $JSONCONFIGFILE"
 xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
 
 ########################## start FILESINK
 FILESINK="serialization-Ex2Sink --transport $TRANSPORT --verbose $VERBOSE"
-FILESINK+=" --id sink1 --config-json-file $JSONCONFIGFILE"
+FILESINK+=" --id sink1 --mq-config $JSONCONFIGFILE"
 FILESINK+=" --output-file $OUTPUTFILE"
 xterm +aw -geometry 120x27+0+500 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
 

@@ -48,47 +48,47 @@ OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/out.pixel.hit.
 
 ########################## start Parameter server
 SERVER="parmq-server $TRANSPORT"
-SERVER+=" --id parmq-server  --config-json-file $MQCONFIGFILE"
+SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
 xterm -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$SERVER &
 
 
 ########################## start SAMPLER
 SAMPLER="FairMQEx9Sampler $TRANSPORT"
-SAMPLER+=" --id sampler1  --config-json-file $MQCONFIGFILE"
+SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE"
 SAMPLER+=" --input-name $INPUTFILE --input-branch $INPUTBRANCH"
 xterm -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 ########################## start SPLITTER
 SPLITTER="FairMQEx9Splitter $TRANSPORT"
-SPLITTER+=" --id splitter1 --config-json-file $MQCONFIGFILE"
+SPLITTER+=" --id splitter1 --mq-config $MQCONFIGFILE"
 xterm +aw -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$SPLITTER &
 
 ########################## start PROCESSORs
 PROCESSOR1="FairMQEx9Processor $TRANSPORT"
 PROCESSOR1+=" $RUNID $VERBOSE"
-PROCESSOR1+=" --id processor1 --config-json-file $MQCONFIGFILE"
+PROCESSOR1+=" --id processor1 --mq-config $MQCONFIGFILE"
 #xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 
 PROCESSOR2="FairMQEx9Processor $TRANSPORT"
 PROCESSOR2+=" $RUNID $VERBOSE"
-PROCESSOR2+=" --id processor2 --config-json-file $MQCONFIGFILE"
+PROCESSOR2+=" --id processor2 --mq-config $MQCONFIGFILE"
 xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
 
 PROCESSOR3="FairMQEx9Processor $TRANSPORT"
 PROCESSOR3+=" $RUNID $VERBOSE"
-PROCESSOR3+=" --id processor3 --config-json-file $MQCONFIGFILE"
+PROCESSOR3+=" --id processor3 --mq-config $MQCONFIGFILE"
 xterm -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
 
 ########################## start MERGER
 MERGER="FairMQEx9Merger $TRANSPORT"
-MERGER+=" --id merger1 --config-json-file $MQCONFIGFILE"
+MERGER+=" --id merger1 --mq-config $MQCONFIGFILE"
 xterm +aw -geometry 100x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
 
 ########################## start FILESINK
 FILESINK="FairMQEx9Sink $TRANSPORT"
-FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
+FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
 FILESINK+=" --output-name $OUTPUTFILE"
 xterm +aw -geometry 120x27+0+500 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
 

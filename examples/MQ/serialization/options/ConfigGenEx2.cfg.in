@@ -20,7 +20,7 @@
 
 
 #-------------------
-config-json-file =@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/options/MQConfig.json
+mq-config =@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/options/MQConfig.json
 
 #-------------------
 [input.file]

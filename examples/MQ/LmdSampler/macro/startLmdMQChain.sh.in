@@ -8,7 +8,7 @@ VERBOSE="DEBUG"
 
 ########################## start SAMPLER
 SAMPLER="runLmdSampler"
-SAMPLER+=" --id LmdSampler -c $CONFIGFILE --config-json-file $MQCONFIGFILE"
+SAMPLER+=" --id LmdSampler -c $CONFIGFILE --mq-config $MQCONFIGFILE"
 SAMPLER+=" --input-file-name $LMDFILE --verbose $VERBOSE"
 xterm +aw -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
@@ -16,14 +16,14 @@ xterm +aw -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 
 ########################## start Unpacker
 UNPACKER="runTut8MQUnpacker"
-UNPACKER+=" --id unpacker1 -c $CONFIGFILE --config-json-file $MQCONFIGFILE"
+UNPACKER+=" --id unpacker1 -c $CONFIGFILE --mq-config $MQCONFIGFILE"
 UNPACKER+=" --verbose $VERBOSE"
 xterm +aw -geometry 120x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/$UNPACKER &
 
 
 ########################## start FILESINK
 FILESINK="runTut8Sink"
-FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
+FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
 FILESINK+=" --output-file-name @CMAKE_SOURCE_DIR@/examples/MQ/LmdSampler/datasource/MQLmdOutput.root"
 FILESINK+=" --verbose $VERBOSE"
 xterm +aw -geometry 120x27+0+500 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &

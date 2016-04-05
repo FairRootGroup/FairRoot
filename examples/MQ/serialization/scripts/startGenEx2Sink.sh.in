@@ -30,7 +30,7 @@ MQCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/options/genericMQTut
 ########################## start FILESINK
 FILESINK="genericMQTutoFileSink$opt"
 FILESINK+=" --id sink1 --config $CONFIGFILE --data-format $dataFormat"
-FILESINK+=" --config-json-file $MQCONFIGFILE"
+FILESINK+=" --mq-config $MQCONFIGFILE"
 FILESINK+=" --output.file.name @CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/data_io/GenericMQTutoOutputFile$dataFormat.root"
 @CMAKE_BINARY_DIR@/bin/$FILESINK
 

@@ -31,6 +31,6 @@ MQCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/GenericDevices/options/genericMQTut
 ########################## start PROCESSOR
 PROCESSOR="genericMQTutoProcessor$opt"
 PROCESSOR+=" --id processor1 --config $CONFIGFILE --data-format $dataFormat"
-PROCESSOR+=" --config-json-file $MQCONFIGFILE"
+PROCESSOR+=" --mq-config $MQCONFIGFILE"
 @CMAKE_BINARY_DIR@/bin/$PROCESSOR
 

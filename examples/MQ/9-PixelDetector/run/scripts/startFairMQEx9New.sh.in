@@ -69,47 +69,47 @@ fi
 
 ########################## start Parameter server
 SERVER="parmq-server $TRANSPORT"
-SERVER+=" --id parmq-server  --config-json-file $MQCONFIGFILE"
+SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
 xterm -geometry 80x25+0+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$SERVER &
 
 
 ########################## start SAMPLER
 SAMPLER="FairMQEx9Sampler $TRANSPORT"
-SAMPLER+=" --id sampler1  --config-json-file $MQCONFIGFILE"
+SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE"
 SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH $MAXINDEX"
 xterm -geometry 80x25+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER &
 
 ########################## start PROCESSORs
 PROCESSOR1="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR1+=" $VERBOSE"
-PROCESSOR1+=" --id processor1 $FAIRTASKNAME --config-json-file $MQCONFIGFILE"
+PROCESSOR1+=" --id processor1 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
 #xterm +aw -geometry 100x27+800+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR1 &
 xterm -geometry 80x25+500+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR1 &
 
 PROCESSOR2="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR2+=" $VERBOSE"
-PROCESSOR2+=" --id processor2 $FAIRTASKNAME --config-json-file $MQCONFIGFILE"
+PROCESSOR2+=" --id processor2 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
 xterm -geometry 80x25+500+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR2 &
 
 PROCESSOR3="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR3+=" $VERBOSE"
-PROCESSOR3+=" --id processor3 $FAIRTASKNAME --config-json-file $MQCONFIGFILE"
+PROCESSOR3+=" --id processor3 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
 xterm -geometry 80x25+500+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR3 &
 
 PROCESSOR4="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR4+=" $VERBOSE"
-PROCESSOR4+=" --id processor4 $FAIRTASKNAME --config-json-file $MQCONFIGFILE"
+PROCESSOR4+=" --id processor4 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
 xterm -geometry 80x25+1000+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR4 &
 
 PROCESSOR5="FairMQEx9TaskProcessor $TRANSPORT"
 PROCESSOR5+=" $VERBOSE"
-PROCESSOR5+=" --id processor5 $FAIRTASKNAME --config-json-file $MQCONFIGFILE"
+PROCESSOR5+=" --id processor5 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
 xterm -geometry 80x25+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR5 &
 
 ########################## start FILESINK
 FILESINK="FairMQEx9FileSink $TRANSPORT"
-FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
+FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
 FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
 xterm +aw -geometry 80x25+0+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$FILESINK &
 
