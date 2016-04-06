@@ -33,8 +33,8 @@ install_manifest.txt
 build/
 examples/advanced/Tutorial3/macro/data/*
 !examples/advanced/Tutorial3/macro/data/dummy.txt
-examples/MQ/GenericDevices/data_io/*
-!examples/MQ/GenericDevices/data_io/README.md
+examples/MQ/serialization/data_io/*
+!examples/MQ/serialization/data_io/README.md
 examples/MQ/LmdSampler/datasource/*
 !examples/MQ/LmdSampler/datasource/README.md
 core_dump*
