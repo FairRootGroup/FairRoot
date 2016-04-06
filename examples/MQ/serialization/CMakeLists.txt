@@ -78,7 +78,7 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startSeria
 #configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startGenEx2TestRoot.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2TestRoot.sh )
 
 # Create a default directory that will hold root input/output data file
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/examples/MQ/serialization/data_io)
+file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_io)
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
