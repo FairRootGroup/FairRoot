@@ -56,7 +56,7 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(SCRIPT_ARGS "\${\@:2}")
 
 # Data generator
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/startGenericMQTutoGenerateData.sh.in ${CMAKE_BINARY_DIR}/bin/startGenericMQTutoGenerateData.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/startGenericMQTutoGenerateData.sh.in ${CMAKE_BINARY_DIR}/bin/startSerializationGenerateData.sh )
 
 # start MQ chains
 #configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx2All.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2All.sh )
