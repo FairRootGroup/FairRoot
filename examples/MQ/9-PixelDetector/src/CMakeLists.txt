@@ -36,18 +36,24 @@ link_directories( ${LINK_DIRECTORIES})
 
 Set(NO_DICT_SRCS
 devices/FairMQEx9Sampler.cxx
+devices/FairMQEx9SamplerBin.cxx
 devices/FairMQEx9Processor.cxx
 devices/PixelFindHitsTask.cxx
 devices/FairMQEx9FileSink.cxx
+devices/FairMQEx9FileSinkBin.cxx
 )
 
 Set(NO_DICT_HEADERS
 devices/FairMQEx9Sampler.h
+devices/FairMQEx9SamplerBin.h
 devices/FairMQEx9Processor.h
 devices/PixelFindHitsTask.h
 devices/FairMQEx9FileSink.h
+devices/FairMQEx9FileSinkBin.h
 devices/FairMQEx9TaskProcessor.h
 devices/FairMQEx9TaskProcessor.tpl
+devices/FairMQEx9TaskProcessorBin.h
+devices/FairMQEx9TaskProcessorBin.tpl
 )
 
 set(SRCS
@@ -68,7 +74,28 @@ PixelDigi.cxx
 PixelHit.cxx
 PixelTrack.cxx
 )
-Set(HEADERS )
+
+Set(HEADERS 
+Pixel.h
+PixelContFact.h
+PixelDigitize.h
+PixelDigiPar.h
+PixelDigiSource.h
+PixelDigiWriteToFile.h
+PixelFindHits.h
+PixelFindTracks.h
+PixelFitTracks.h
+PixelGeo.h
+PixelGeoPar.h
+
+PixelPoint.h
+PixelDigi.h
+PixelHit.h
+PixelTrack.h
+
+PixelPayload.h
+)
+
 Set(LINKDEF PixelLinkDef.h)
 Set(LIBRARY_NAME Pixel)
 Set(DEPENDENCIES

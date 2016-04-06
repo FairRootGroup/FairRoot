@@ -196,7 +196,7 @@ void   PixelFindTracks::InitMQ(TList* tempList) {
 void   PixelFindTracks::ExecMQ(TList* inputList,TList* outputList) {
   //  LOG(INFO) << "********************************************** PixelFindTracks::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents << FairLogger::endl;
   //  LOG(INFO) << "********************************************** PixelFindTracks::ExecMQ(), Event " << fTNofEvents << FairLogger::endl;
-  LOG(INFO) << "t" << FairLogger::flush;
+  //  LOG(INFO) << "t" << FairLogger::flush;
   fHits = (TClonesArray*) inputList->FindObject("PixelHits");
   outputList->Add(fTracks);
   Exec("");

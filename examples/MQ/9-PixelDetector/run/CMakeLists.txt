@@ -74,6 +74,10 @@ Set(Exe_Names
     FairMQEx9Sampler
     FairMQEx9TaskProcessor
     FairMQEx9FileSink
+
+    FairMQEx9SamplerBin
+    FairMQEx9TaskProcessorBin
+    FairMQEx9FileSinkBin
 )
 
 set(Exe_Source
@@ -83,6 +87,10 @@ set(Exe_Source
     runEx9Sampler.cxx
     runEx9TaskProcessor.cxx
     runEx9FileSink.cxx
+
+    runEx9SamplerBin.cxx
+    runEx9TaskProcessorBin.cxx
+    runEx9FileSinkBin.cxx
 )
 
 

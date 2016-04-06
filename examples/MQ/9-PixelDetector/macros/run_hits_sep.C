@@ -5,13 +5,13 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_hits( TString mcEngine="TGeant3" )
+void run_hits_sep( Int_t ifile, TString mcEngine="TGeant3" )
 {
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
   
   // Input file (MC events)
-  TString inFile = "pixel_";
+  TString inFile = Form("pixel_f%d_",ifile);
   inFile = inFile + mcEngine + ".digi.root";
   
   // Parameter file
@@ -24,7 +24,7 @@ void run_hits( TString mcEngine="TGeant3" )
   TString digParFile = tutdir + "/param/pixel_digi.par";
 
   // Output file
-  TString outFile = "pixel_";
+  TString outFile = Form("pixel_f%d_",ifile);
   outFile = outFile + mcEngine + ".hits.root";
   
   // -----   Timer   --------------------------------------------------------
@@ -33,18 +33,9 @@ void run_hits( TString mcEngine="TGeant3" )
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
   fRun->SetInputFile(inFile);
+
   fRun->SetOutputFile(outFile);
 
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
   parInput1->open(parFile.Data());
@@ -63,7 +54,7 @@ void run_hits( TString mcEngine="TGeant3" )
   fRun->Init();
 
   timer.Start();
-  fRun->Run(10000);
+  fRun->Run();
 
   // -----   Finish   -------------------------------------------------------
 
@@ -92,6 +83,9 @@ void run_hits( TString mcEngine="TGeant3" )
   cout << "Real time " << rtime << " s, CPU time " << ctime
        << "s" << endl << endl;
   cout << "Macro finished successfully." << endl;
+
+  cout << "DATE MARKER" << flush;
+  gSystem->Exec("date");
 
   // ------------------------------------------------------------------------
 }
