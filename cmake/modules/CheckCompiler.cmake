@@ -89,7 +89,7 @@ EndIf()
 
 
 if (CMAKE_SYSTEM_NAME MATCHES Linux)
-   MESSAGE("--- Found a Linux ssytem")
+   MESSAGE("--- Found a Linux system")
    if (CMAKE_COMPILER_IS_GNUCXX)
       MESSAGE("--- Found GNU compiler collection")
 #      set ( CMAKE_SHARED_LINKER_FLAGS "-Wl,--fatal-warnings -Wl,--no-undefined -lc ${CMAKE_SHARED_LINKER_FLAGS}")

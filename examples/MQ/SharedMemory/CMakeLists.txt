@@ -6,6 +6,9 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
+configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/SharedMemory/ex-shm.json ${CMAKE_BINARY_DIR}/bin/config/ex-shm.json)
+configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/SharedMemory/startShmExample.sh.in ${CMAKE_BINARY_DIR}/bin/startShmExample.sh)
+
 Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairmq
   ${CMAKE_SOURCE_DIR}/fairmq/zeromq
@@ -13,38 +16,54 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairmq/devices
   ${CMAKE_SOURCE_DIR}/fairmq/tools
   ${CMAKE_SOURCE_DIR}/fairmq/options
-  ${CMAKE_SOURCE_DIR}/fairmq/deployment
+  ${CMAKE_SOURCE_DIR}/examples/MQ/SharedMemory
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
-  ${SYSTEM_INCLUDE_DIRECTORIES}
   ${Boost_INCLUDE_DIR}
-  ${DDS_INCLUDE_DIR}
   ${ZMQ_INCLUDE_DIR}
 )
+
+If(NANOMSG_FOUND)
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+    ${SYSTEM_INCLUDE_DIRECTORIES}
+    ${NANOMSG_INCLUDE_DIR}
+  )
+EndIf(NANOMSG_FOUND)
 
 Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 Set(LINK_DIRECTORIES
-  ${LINK_DIRECTORIES}
   ${Boost_LIBRARY_DIRS}
-  ${DDS_LIBRARY_DIR}
 )
 
 Link_Directories(${LINK_DIRECTORIES})
 
-Install(FILES FairMQDDSTools.h DESTINATION include)
+Set(SRCS
+  "FairMQExampleShmSampler.cxx"
+  "FairMQExampleShmSink.cxx"
+)
+
+Set(DEPENDENCIES
+  ${DEPENDENCIES}
+  ${Boost_INTERPROCESS_LIBRARY}
+  FairMQ
+)
+
+Set(LIBRARY_NAME FairMQExampleShm)
+
+GENERATE_LIBRARY()
 
 Set(Exe_Names
-  ${Exe_Names}
-  fairmq-dds-command-ui
+  ex-shm-sampler
+  ex-shm-sink
 )
 
 Set(Exe_Source
-  ${Exe_Source}
-  runDDSCommandUI.cxx
+  runExampleShmSampler.cxx
+  runExampleShmSink.cxx
 )
 
 list(LENGTH Exe_Names _length)
@@ -55,6 +74,11 @@ ForEach(_file RANGE 0 ${_length})
   list(GET Exe_Source ${_file} _src)
   set(EXE_NAME ${_name})
   set(SRCS ${_src})
-  set(DEPENDENCIES FairMQ dds_intercom_lib)
+  set(DEPENDENCIES FairMQExampleShm)
   GENERATE_EXECUTABLE()
 EndForEach(_file RANGE 0 ${_length})
+
+Install(
+  FILES ex-shm.json
+  DESTINATION share/fairbase/examples/MQ/SharedMemory/config/
+)

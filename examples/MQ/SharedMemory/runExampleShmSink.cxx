@@ -5,30 +5,34 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/**
- * FairMQContextZMQ.h
- *
- * @since 2012-12-05
- * @author D. Klein, A. Rybalchenko
- */
 
-#ifndef FAIRMQCONTEXTZMQ_H_
-#define FAIRMQCONTEXTZMQ_H_
+#include <iostream>
 
-class FairMQContextZMQ
+#include "FairMQLogger.h"
+#include "FairMQProgOptions.h"
+#include "FairMQExampleShmSink.h"
+#include "runSimpleMQStateMachine.h"
+
+int main(int argc, char** argv)
 {
-  public:
-    /// Constructor
-    FairMQContextZMQ(int numIoThreads);
-    FairMQContextZMQ(const FairMQContextZMQ&) = delete;
-    FairMQContextZMQ operator=(const FairMQContextZMQ&) = delete;
+    try
+    {
+        FairMQProgOptions config;
 
-    virtual ~FairMQContextZMQ();
-    void* GetContext();
-    void Close();
+        if (config.ParseAll(argc, argv))
+        {
+            return 0;
+        }
 
-  private:
-    void* fContext;
-};
+        FairMQExampleShmSink sink;
 
-#endif /* FAIRMQCONTEXTZMQ_H_ */
+        runStateMachine(sink, config);
+    }
+    catch (std::exception& e)
+    {
+        LOG(ERROR) << "Unhandled Exception: " << e.what() << ", application will now exit";
+        return 1;
+    }
+
+    return 0;
+}

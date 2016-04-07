@@ -1,0 +1,27 @@
+#!/bin/bash
+
+msgSize="1000000"
+transport="zeromq"
+
+if [[ $1 =~ ^[0-9]+$ ]]; then
+    msgSize=$1
+fi
+
+echo "Starting shared memory example with message size of $msgSize bytes."
+echo ""
+echo "Usage: startShmExample [message size=1000000]"
+
+SAMPLER="ex-shm-sampler"
+SAMPLER+=" --id sampler1"
+SAMPLER+=" --transport $transport"
+# SAMPLER+=" --verbose TRACE"
+SAMPLER+=" --msg-size $msgSize"
+SAMPLER+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
+xterm -geometry 80x32+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+
+SINK="ex-shm-sink"
+SINK+=" --id sink1"
+SINK+=" --transport $transport"
+# SINK+=" --verbose TRACE"
+SINK+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
+xterm -geometry 80x32+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SINK &

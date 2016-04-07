@@ -6,29 +6,35 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairMQContextZMQ.h
+ * FairMQExampleShmSink.h
  *
- * @since 2012-12-05
- * @author D. Klein, A. Rybalchenko
+ * @since 2016-04-08
+ * @author A. Rybalchenko
  */
 
-#ifndef FAIRMQCONTEXTZMQ_H_
-#define FAIRMQCONTEXTZMQ_H_
+#ifndef FAIRMQEXAMPLESHMSINK_H_
+#define FAIRMQEXAMPLESHMSINK_H_
 
-class FairMQContextZMQ
+#include <string>
+
+#include "FairMQDevice.h"
+
+class FairMQExampleShmSink : public FairMQDevice
 {
   public:
-    /// Constructor
-    FairMQContextZMQ(int numIoThreads);
-    FairMQContextZMQ(const FairMQContextZMQ&) = delete;
-    FairMQContextZMQ operator=(const FairMQContextZMQ&) = delete;
+    FairMQExampleShmSink();
+    virtual ~FairMQExampleShmSink();
 
-    virtual ~FairMQContextZMQ();
-    void* GetContext();
-    void Close();
+    void Log(const int intervalInMs);
 
-  private:
-    void* fContext;
+  protected:
+    unsigned long long fBytesIn;
+    unsigned long long fMsgIn;
+    std::atomic<unsigned long long> fBytesInNew;
+    std::atomic<unsigned long long> fMsgInNew;
+
+    virtual void Init();
+    virtual void Run();
 };
 
-#endif /* FAIRMQCONTEXTZMQ_H_ */
+#endif /* FAIRMQEXAMPLESHMSINK_H_ */
