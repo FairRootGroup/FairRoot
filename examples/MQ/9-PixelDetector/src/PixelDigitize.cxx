@@ -241,7 +241,7 @@ InitStatus PixelDigitize::ReInit() {
 // -----   Private method Reset   ------------------------------------------
 void PixelDigitize::Reset() {
   fNPoints = fNDigis = 0;
-  if ( fDigis ) fDigis->Delete();
+  if ( fDigis ) fDigis->Clear();
 }
 // -------------------------------------------------------------------------
 

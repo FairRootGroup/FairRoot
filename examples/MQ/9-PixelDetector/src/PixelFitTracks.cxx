@@ -270,7 +270,7 @@ InitStatus PixelFitTracks::ReInit() {
 // -----   Private method Reset   ------------------------------------------
 void PixelFitTracks::Reset() {
   fNFitTracks = fNTracks = fNHits = 0;
-  if ( fFitTracks ) fFitTracks->Delete();
+  if ( fFitTracks ) fFitTracks->Clear();
 }
 // -------------------------------------------------------------------------
 
