@@ -348,7 +348,7 @@ InitStatus PixelFindHits::ReInit() {
 // -----   Private method Reset   ------------------------------------------
 void PixelFindHits::Reset() {
   fNDigis = fNHits = 0;
-  if ( fHits ) fHits->Delete();
+  if ( fHits ) fHits->Clear();
 }
 // -------------------------------------------------------------------------
 

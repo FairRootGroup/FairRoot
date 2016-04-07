@@ -242,7 +242,7 @@ InitStatus PixelFindTracks::ReInit() {
 // -----   Private method Reset   ------------------------------------------
 void PixelFindTracks::Reset() {
   fNTracks = fNHits = 0;
-  if ( fTracks ) fTracks->Delete();
+  if ( fTracks ) fTracks->Clear();
 }
 // -------------------------------------------------------------------------
 
