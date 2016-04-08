@@ -46,13 +46,13 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/star
 
 Install(FILES ${CMAKE_BINARY_DIR}/bin/startFairMQEx9New.sh_install
         DESTINATION bin
-        RENAME startFairMQEx9New.sh)
+        RENAME startFairMQEx9New.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 Install(FILES ${CMAKE_BINARY_DIR}/bin/startFairMQEx9_2Levels.sh_install
         DESTINATION bin
-        RENAME startFairMQEx9_2Levels.sh)
+        RENAME startFairMQEx9_2Levels.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 Install(FILES ${CMAKE_BINARY_DIR}/bin/startFairMQEx9_3Levels.sh_install
         DESTINATION bin
-        RENAME startFairMQEx9_3Levels.sh)
+        RENAME startFairMQEx9_3Levels.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 
 Install(FILES options/Pixel9MQConfig_Multipart.json options/Pixel9MQConfig_2Levels.json options/Pixel9MQConfig_3Levels.json
         DESTINATION share/fairbase/examples/MQ/9-PixelDetector/run/options/
