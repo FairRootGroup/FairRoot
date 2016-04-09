@@ -122,7 +122,7 @@ void FairMQEx9TaskProcessorBin<T>::Run()
           if ( parts.Size() == 0 ) continue; // probably impossible, but still check
 
           // the first part should be the event header
-	  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0).GetData());
+	  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
           LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
 
 	  fNewRunId = payloadE->fRunId;
@@ -134,8 +134,8 @@ void FairMQEx9TaskProcessorBin<T>::Run()
             }
 
 	  // the second part should the TClonesArray with necessary data... now assuming Digi
-	  PixelPayload::Digi* payloadD = static_cast<PixelPayload::Digi*>(parts.At(1).GetData());
-	  int digiArraySize = parts.At(1).GetSize();
+	  PixelPayload::Digi* payloadD = static_cast<PixelPayload::Digi*>(parts.At(1)->GetData());
+	  int digiArraySize = parts.At(1)->GetSize();
 	  int nofDigis      = digiArraySize / sizeof(PixelPayload::Digi);
 
   	  fInputArray->Clear();

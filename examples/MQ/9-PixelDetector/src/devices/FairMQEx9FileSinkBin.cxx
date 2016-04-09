@@ -111,7 +111,7 @@ void FairMQEx9FileSinkBin::Run()
           if ( parts.Size() == 0 ) continue; // probably impossible, but still check
 	  
           // the first part should be the event header
-	  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0).GetData());
+	  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
           LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
 	  
 	  for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
@@ -124,8 +124,8 @@ void FairMQEx9FileSinkBin::Run()
 	    }
 
 	  // the second part should the TClonesArray with necessary data... now assuming Digi
-	  PixelPayload::Hit* payloadH = static_cast<PixelPayload::Hit*>(parts.At(1).GetData());
-	  int hitArraySize = parts.At(1).GetSize();
+	  PixelPayload::Hit* payloadH = static_cast<PixelPayload::Hit*>(parts.At(1)->GetData());
+	  int hitArraySize = parts.At(1)->GetSize();
 	  int nofHits      = hitArraySize / sizeof(PixelPayload::Hit);
 
 	  for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
