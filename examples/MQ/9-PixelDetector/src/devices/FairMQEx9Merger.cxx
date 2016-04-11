@@ -81,7 +81,7 @@ void FairMQEx9Merger::Run()
 	  LOG(TRACE) << "******************************************************************************************************";
 	  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
 	    {
-	      Ex9TMessage tm(parts.At(ipart).GetData(), parts.At(ipart).GetSize());
+	      Ex9TMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
 	      tempObject = (TObject*)tm.ReadObject(tm.GetClass());
 	      if ( strcmp(tempObject->GetName(),"EventHeader.") == 0 ) 
 		{

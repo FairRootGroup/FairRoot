@@ -93,6 +93,7 @@ PixelFitTracks.h
 PixelGeo.h
 PixelGeoPar.h
 
+PixelEventHeader.h
 PixelPoint.h
 PixelDigi.h
 PixelHit.h
