@@ -78,6 +78,9 @@ Install(FILES options/Pixel9MQConfig_Multipart.json options/Pixel9MQConfig_2Leve
         DESTINATION share/fairbase/examples/MQ/9-PixelDetector/run/options/
        )
 
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9Ascii.sh.in      ${CMAKE_BINARY_DIR}/bin/startFairMQEx9Ascii.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9Ascii2Levels.sh.in      ${CMAKE_BINARY_DIR}/bin/startFairMQEx9Ascii2Levels.sh )
+
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
@@ -88,9 +91,6 @@ link_directories(${LINK_DIRECTORIES})
 
 
 Set(Exe_Names
-    FairMQEx9Splitter
-    FairMQEx9Merger
-
     FairMQEx9Sampler
     FairMQEx9TaskProcessor
     FairMQEx9FileSink
@@ -98,12 +98,12 @@ Set(Exe_Names
     FairMQEx9SamplerBin
     FairMQEx9TaskProcessorBin
     FairMQEx9FileSinkBin
+
+    FairMQEx9SamplerAscii
+    FairMQEx9Merger
 )
 
 set(Exe_Source
-    runSplitterT9.cxx
-    runMergerT9.cxx
-
     runEx9Sampler.cxx
     runEx9TaskProcessor.cxx
     runEx9FileSink.cxx
@@ -111,6 +111,9 @@ set(Exe_Source
     runEx9SamplerBin.cxx
     runEx9TaskProcessorBin.cxx
     runEx9FileSinkBin.cxx
+
+    runEx9SamplerAscii.cxx
+    runEx9Merger.cxx
 )
 
 

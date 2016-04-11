@@ -26,12 +26,15 @@ void run_dSource( TString mcEngine="TGeant3" )
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
   
+  PixelEventHeader* pixelEventHeader = new PixelEventHeader();
+
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
+  fRun->SetEventHeader(pixelEventHeader);
   fRun->SetOutputFile(outFile);
 
   PixelDigiSource* digiSource = new PixelDigiSource("Pixel Digi Source");
-  digiSource->SetInputFileName("adgae.dat");
+  digiSource->SetInputFileName("digis.p0.dat");
 
   fRun->SetSource(digiSource);
   

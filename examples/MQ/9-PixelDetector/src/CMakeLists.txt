@@ -37,8 +37,10 @@ link_directories( ${LINK_DIRECTORIES})
 Set(NO_DICT_SRCS
 devices/FairMQEx9Sampler.cxx
 devices/FairMQEx9SamplerBin.cxx
+devices/FairMQEx9SamplerAscii.cxx
 devices/FairMQEx9Processor.cxx
 devices/PixelFindHitsTask.cxx
+devices/FairMQEx9Merger.cxx
 devices/FairMQEx9FileSink.cxx
 devices/FairMQEx9FileSinkBin.cxx
 )
@@ -46,8 +48,10 @@ devices/FairMQEx9FileSinkBin.cxx
 Set(NO_DICT_HEADERS
 devices/FairMQEx9Sampler.h
 devices/FairMQEx9SamplerBin.h
+devices/FairMQEx9SamplerAscii.h
 devices/FairMQEx9Processor.h
 devices/PixelFindHitsTask.h
+devices/FairMQEx9Merger.h
 devices/FairMQEx9FileSink.h
 devices/FairMQEx9FileSinkBin.h
 devices/FairMQEx9TaskProcessor.h
@@ -69,6 +73,7 @@ PixelFitTracks.cxx
 PixelGeo.cxx
 PixelGeoPar.cxx
 
+PixelEventHeader.cxx
 PixelPoint.cxx
 PixelDigi.cxx
 PixelHit.cxx

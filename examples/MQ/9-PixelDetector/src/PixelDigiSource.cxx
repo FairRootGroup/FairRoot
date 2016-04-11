@@ -15,8 +15,8 @@
 //
 #include "PixelDigiSource.h"
 #include "PixelDigi.h"
+#include "PixelEventHeader.h"
 
-#include "FairEventHeader.h"
 #include "FairLogger.h"
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairRootManager.h"
@@ -27,9 +27,10 @@
 using std::map;
 using std::set;
 
+
 //_____________________________________________________________________________
 PixelDigiSource::PixelDigiSource(TString inputFileName)
-  :FairSource()
+  : FairSource()
   , fDigis(NULL)
   , fNDigis(0)
   , fTNofEvents(0)
@@ -38,6 +39,8 @@ PixelDigiSource::PixelDigiSource(TString inputFileName)
   , fInputFile()
   , fCurrentEntryNo(0)
   , fRunId(0)
+  , fMCEntryNo(0)
+  , fPartNo(0)
 {
   LOG(DEBUG) << "PixelDigiSource created------------" << FairLogger::endl;
 }
@@ -56,6 +59,7 @@ Bool_t PixelDigiSource::Init()
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
+  LOG(INFO) << "PixelDigiSource::Init" << FairLogger::endl;
   if ( ! ioman ) LOG(FATAL) << "No FairRootManager" << FairLogger::endl;
 
   // Register output array StsDigi
@@ -75,10 +79,45 @@ Bool_t PixelDigiSource::Init()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+Bool_t PixelDigiSource::InitMQ()
+{
+
+  // Get input array 
+  // Register output array StsDigi
+  fDigis = new TClonesArray("PixelDigi",10000);
+  fDigis->SetName("PixelDigis");
+
+  fInputFile.open(fInputFileName.Data(),std::fstream::in);
+  
+  if ( !fInputFile.is_open() ) {
+    LOG(FATAL) << "PixelDigiSource::Init() fInputFile \"" << fInputFileName.Data() << "\" could not be open!" << FairLogger::endl;
+    return kFALSE;
+  }
+
+  return kTRUE;
+   
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+int ReadIntFromString(std::string wholestr, std::string pattern) {
+  std::string tempstr = wholestr;
+  tempstr.replace(0,tempstr.find(pattern)+pattern.length(),"");
+  tempstr.replace(0,tempstr.find('=')+1,"");
+  return atoi(tempstr.c_str());
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 Int_t PixelDigiSource::ReadEvent(UInt_t i)
 {
   if (fDigis) fDigis->Delete();
   fNDigis = 0;
+
+  if ( i == 0 ) { 
+    fInputFile.clear();
+    fInputFile.seekg(0, std::ios::beg);
+  }
 
   fCurrentEntryNo = i;
 
@@ -87,12 +126,13 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
   do {
     getline(fInputFile,buffer);
     LOG(DEBUG) << "read from file: \"" << buffer << "\"" << FairLogger::endl;
-    if ( buffer[0] == 'R' ) {
-      buffer.erase(0,buffer.find(' ')+1);
-      fRunId = atoi(buffer.c_str());
-      buffer = "EVENT END";
+    if ( buffer.find("EVENT BEGIN") == 0 ) {
+      fRunId     = ReadIntFromString(buffer,"RUNID");
+      fMCEntryNo = ReadIntFromString(buffer,"MCENTRYNO");
+      fPartNo    = ReadIntFromString(buffer,"PARTNO");
+      LOG(DEBUG) << "GOT NEW EVENT " << fMCEntryNo << " (part " << fPartNo << ") with run id = " << fRunId << FairLogger::endl;
     }
-    if ( buffer[0] == 'E' ) continue;
+    if ( buffer.find("EVENT") == 0 ) continue;
     Int_t detId     = atoi(buffer.c_str());
     buffer.erase(0,buffer.find(' ')+1);
     Int_t feId      = atoi(buffer.c_str());
@@ -114,6 +154,14 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
   }
  
   return 0;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+Bool_t   PixelDigiSource::ActivateObject(TObject** obj, const char* BrName) {
+  *obj = (TObject*)fDigis; 
+  
+  return kTRUE;
 }
 //_____________________________________________________________________________
 
@@ -140,7 +188,9 @@ Int_t  PixelDigiSource::CheckMaxEventNo(Int_t /*EvtEnd*/)
 //_____________________________________________________________________________
 void PixelDigiSource::FillEventHeader(FairEventHeader* feh) 
 {
-  feh->SetRunId(fRunId);
+  ((PixelEventHeader*)feh)->SetRunId(fRunId);
+  ((PixelEventHeader*)feh)->SetMCEntryNumber(fMCEntryNo);
+  ((PixelEventHeader*)feh)->SetPartNo(fPartNo);
 }
 //_____________________________________________________________________________
 

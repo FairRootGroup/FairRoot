@@ -23,6 +23,7 @@
 #pragma link C++ class PixelGeo;
 #pragma link C++ class PixelGeoPar;
 
+#pragma link C++ class PixelEventHeader+;
 #pragma link C++ class PixelPoint+;
 #pragma link C++ class PixelDigi+;
 #pragma link C++ class PixelHit+;

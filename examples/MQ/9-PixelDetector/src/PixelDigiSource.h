@@ -36,6 +36,8 @@ public:
   virtual ~PixelDigiSource();
   
   Bool_t              Init();
+  Bool_t              InitMQ();
+
   Int_t               ReadEvent(UInt_t i=0);
   void                Close();
   void                Reset();
@@ -46,6 +48,8 @@ public:
   virtual void FillEventHeader(FairEventHeader* feh);
     
   void SetInputFileName(TString tstr) {fInputFileName = tstr;};
+
+  virtual Bool_t  ActivateObject(TObject** obj, const char* BrName);
 
 private:
   TClonesArray*     fDigis;        /** Output array of PixelDigi **/
@@ -60,6 +64,8 @@ private:
   Int_t    fCurrentEntryNo;
 
   Int_t    fRunId;
+  Int_t    fMCEntryNo;
+  Int_t    fPartNo;
 
   PixelDigiSource(const PixelDigiSource&);
   PixelDigiSource& operator=(const PixelDigiSource&);

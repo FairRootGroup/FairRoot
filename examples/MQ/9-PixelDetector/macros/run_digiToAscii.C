@@ -50,6 +50,8 @@ void run_digiToAscii( TString mcEngine="TGeant3" )
   fRun->AddTask(digiTask);
 
   PixelDigiWriteToFile* digiWrite = new PixelDigiWriteToFile();
+  digiWrite->SetOutputFileName("digis.dat");
+  digiWrite->SetDivideLevel(1); // 0 - event, 1 - station, 2 - sensor
   fRun->AddTask(digiWrite);
 
   fRun->Init();

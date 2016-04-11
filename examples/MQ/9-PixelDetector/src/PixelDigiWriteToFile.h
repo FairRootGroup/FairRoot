@@ -49,19 +49,26 @@ class PixelDigiWriteToFile : public FairTask
   /** Execution **/
   virtual void Exec(Option_t* opt);
 
-
   void SetOutputFileName(TString tstr) {fOutputFileName = tstr;};
+
+  void SetDivideLevel(Int_t idiv) { fDivideLevel = idiv; } // 0 - event, 1 - station, 2 - sensor
 
  private:
 
   TClonesArray*     fDigis;        /** Input array of PixelDigi **/
 
   TString  fOutputFileName;
-  std::ofstream fOutputFile;  
+  Int_t fNofOutputFiles;
+  std::ofstream fOutputFiles[12]; // no more than 12 output files....
 
   /** Get parameter containers **/
   virtual void SetParContainers();
-
+  
+  Int_t fDivideLevel;
+  
+  Int_t fRunId;
+  Int_t fMCEntryNo;
+  Int_t fPartNo;
 
   /** Intialisation **/
   virtual InitStatus Init();

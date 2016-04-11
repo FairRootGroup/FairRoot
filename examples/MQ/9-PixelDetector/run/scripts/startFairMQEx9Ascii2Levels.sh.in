@@ -1,0 +1,148 @@
+#!/bin/bash
+
+MAXINDEX="--max-index -1"
+TRANSPORT="--transport zeromq"
+VERBOSE="--verbose INFO"
+
+while [[ $# > 1 ]]
+do
+key="$1"
+
+case $key in
+    -m|--max-index)
+    MAXINDEX="--max-index $2"
+    shift
+    ;;
+    -t|--transport)
+    TRANSPORT="--transport $2"
+    shift
+    ;;
+    -v|--verbose)
+    VERBOSE="--verbose $2"
+    shift
+    ;;
+esac
+shift 
+done
+
+
+########################### Define some variables
+# JSON file containing the configuration parameters of all FairMQ devices of this example
+MQCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Ascii2Levels.json"
+# ASCII and ROOT parameter files for the processor device
+ROOTPARAM="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
+ASCIIPARAM="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
+
+# input file and branch for the sampler device
+INPUTFILE1="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/digis.p0.dat"
+INPUTFILE2="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/digis.p1.dat"
+INPUTFILE3="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/digis.p2.dat"
+#   INPUTFILE+=" --file-name @CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.f1.root"
+INPUTBRANCH="PixelDigis"
+
+FAIRTASKNAME1="--task-name PixelFindHits"
+
+FAIRTASKNAME4="--task-name PixelFindTracks"
+FAIRTASKNAME4+=" --keep-data PixelHits"
+
+# output file for sink
+OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.tracksFromAscii.root"
+OUTPUTCLASS="--class-name TClonesArray(PixelHit) --class-name TClonesArray(PixelTrack)"
+OUTPUTBRANCH="--branch-name PixelHits --branch-name PixelTracks"
+#OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
+#OUTPUTBRANCH="--branch-name PixelTracks"
+###########################
+
+
+
+########################### Start the chain of the devices
+
+
+########################## start Parameter server
+SERVER="parmq-server $TRANSPORT"
+SERVER+=" --id parmq-server --config-json-file $MQCONFIGFILE"
+SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
+xterm -geometry 80x25+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/$SERVER &
+
+
+########################## start SAMPLER1
+SAMPLER1="FairMQEx9SamplerAscii $TRANSPORT"
+SAMPLER1+=" --id sampler1 --config-json-file $MQCONFIGFILE"
+SAMPLER1+=" --file-name $INPUTFILE1 --branch-name $INPUTBRANCH $MAXINDEX"
+xterm -geometry 80x12+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER1 &
+
+########################## start PROCESSORs 1_1 & 1_2
+PROCESSOR1_1="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR1_1+=" $VERBOSE"
+PROCESSOR1_1+=" --id processor1_1 $FAIRTASKNAME1 --config-json-file $MQCONFIGFILE"
+#xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+xterm -geometry 40x12+0+170 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1_1 &
+
+PROCESSOR1_2="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR1_2+=" $VERBOSE"
+PROCESSOR1_2+=" --id processor1_2 $FAIRTASKNAME1 --config-json-file $MQCONFIGFILE"
+#xterm +aw -geometry 100x27+800+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+xterm -geometry 40x12+250+170 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1_2 &
+
+########################## start SAMPLER2
+SAMPLER2="FairMQEx9SamplerAscii $TRANSPORT"
+SAMPLER2+=" --id sampler2 --config-json-file $MQCONFIGFILE"
+SAMPLER2+=" --file-name $INPUTFILE2 --branch-name $INPUTBRANCH $MAXINDEX"
+xterm -geometry 80x12+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER2 &
+
+########################## start PROCESSORs 2_1 & 2_2
+PROCESSOR2_1="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR2_1+=" $VERBOSE"
+PROCESSOR2_1+=" --id processor2_1 $FAIRTASKNAME1 --config-json-file $MQCONFIGFILE"
+xterm -geometry 40x12+500+170 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2_1 &
+
+PROCESSOR2_2="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR2_2+=" $VERBOSE"
+PROCESSOR2_2+=" --id processor2_2 $FAIRTASKNAME1 --config-json-file $MQCONFIGFILE"
+xterm -geometry 40x12+750+170 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2_2 &
+
+########################## start SAMPLER3
+SAMPLER3="FairMQEx9SamplerAscii $TRANSPORT"
+SAMPLER3+=" --id sampler3 --config-json-file $MQCONFIGFILE"
+SAMPLER3+=" --file-name $INPUTFILE3 --branch-name $INPUTBRANCH $MAXINDEX"
+xterm -geometry 80x12+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER3 &
+
+########################## start PROCESSORs 3_1 & 3_2
+PROCESSOR3_1="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR3_1+=" $VERBOSE"
+PROCESSOR3_1+=" --id processor3_1 $FAIRTASKNAME1 --config-json-file $MQCONFIGFILE"
+xterm -geometry 40x12+1000+170 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3_1 &
+
+PROCESSOR3_2="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR3_2+=" $VERBOSE"
+PROCESSOR3_2+=" --id processor3_2 $FAIRTASKNAME1 --config-json-file $MQCONFIGFILE"
+xterm -geometry 40x12+1250+170 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3_2 &
+
+########################## start MERGER
+MERGER="FairMQEx9Merger $TRANSPORT"
+MERGER+=" --id merger1 --config-json-file $MQCONFIGFILE"
+xterm +aw -geometry 80x50+0+350 -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
+
+########################## start PROCESSORs 4_1, 4_2 & 4_3
+PROCESSOR4_1="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR4_1+=" $VERBOSE"
+PROCESSOR4_1+=" --id processor4_1 $FAIRTASKNAME4 --config-json-file $MQCONFIGFILE"
+xterm -geometry 80x12+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR4_1 &
+
+PROCESSOR4_2="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR4_2+=" $VERBOSE"
+PROCESSOR4_2+=" --id processor4_2 $FAIRTASKNAME4 --config-json-file $MQCONFIGFILE"
+xterm -geometry 80x12+500+520 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR4_2 &
+
+PROCESSOR4_3="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR4_3+=" $VERBOSE"
+PROCESSOR4_3+=" --id processor4_3 $FAIRTASKNAME4 --config-json-file $MQCONFIGFILE"
+xterm -geometry 80x12+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR4_3 &
+
+########################## start FILESINK
+FILESINK="FairMQEx9FileSink $TRANSPORT"
+FILESINK+=" --id sink1 --config-json-file $MQCONFIGFILE"
+FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
+xterm +aw -geometry 80x25+1000+700 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+
+
