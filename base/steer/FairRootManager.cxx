@@ -106,6 +106,7 @@ FairRootManager::FairRootManager()
     fSource(0),
     fSourceChain( new TChain("cbmsim", "/cbmroot")),
     fSignalChainList(),
+    fEventHeader(new FairEventHeader()),
     fUseFairLinks(kFALSE),
     fFinishRun(kFALSE),
     fListOfBranchesFromInput(0),
@@ -556,10 +557,8 @@ Int_t  FairRootManager::ReadEvent(Int_t i)
 
   Int_t readEventResult = fSource->ReadEvent(i);
 
-  FairEventHeader* tempEH = new FairEventHeader();
-  fSource->FillEventHeader(tempEH);
-  fCurrentTime = tempEH->GetEventTime();
-  tempEH->Delete();
+  fSource->FillEventHeader(fEventHeader);
+  fCurrentTime = fEventHeader->GetEventTime();
 
   LOG(DEBUG) << "--Event number --- "
 	     << fCurrentEntryNo << " with time ---- " 
@@ -572,10 +571,9 @@ Int_t  FairRootManager::ReadEvent(Int_t i)
 //_____________________________________________________________________________
 Int_t FairRootManager::GetRunId() 
 {
-  FairEventHeader* tempEH = new FairEventHeader();
   if ( fSource ) {
-    fSource->FillEventHeader(tempEH);
-    return tempEH->GetRunId();
+    fSource->FillEventHeader(fEventHeader);
+    return fEventHeader->GetRunId();
   }
   return -1;
 }
