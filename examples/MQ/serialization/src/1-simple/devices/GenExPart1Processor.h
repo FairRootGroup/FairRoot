@@ -14,21 +14,22 @@
 
 class GenExPart1Processor : public FairMQDevice 
 {
-public:
-	GenExPart1Processor() : FairMQDevice(), 
-	    					fInput(nullptr),
-	    					fOutput(nullptr)
+  public:
+    GenExPart1Processor() :
+        FairMQDevice(),
+        fInput(nullptr),
+        fOutput(nullptr)
     {}
-	virtual ~GenExPart1Processor(){}
 
-protected:
-    
+    virtual ~GenExPart1Processor() {}
 
+  protected:
     virtual void Init()
     {
         fOutput = new TClonesArray("MyHit");
     }
-	virtual void Run()
+
+    virtual void Run()
     {
         int receivedMsgs = 0;
         int sentMsgs = 0;
@@ -49,31 +50,28 @@ protected:
         LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
     }
 
-
-
     // do some random dummy task
     void Exec(TClonesArray* digis, TClonesArray* hits)
-	{
-		hits->Delete();
-	    for(unsigned int idigi(0);idigi<digis->GetEntriesFast();idigi++)
-	    {
-	        TVector3 pos;
-	        TVector3 dpos;
-	        Double_t timestamp=0;
-	        Double_t timestampErr=0;
-	        Int_t fDetID=0;
-    		Int_t fMCIndex=0;
-	        MyDigi* digi = (MyDigi*)digis->At(idigi);
-	        pos.SetXYZ(digi->GetX() + 0.5, digi->GetY() + 0.5, digi->GetZ() + 0.5);
-	        dpos.SetXYZ(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
-	        MyHit* hit = new ((*hits)[idigi]) MyHit(fDetID, fMCIndex, pos, dpos);
-	        hit->SetTimeStamp(digi->GetTimeStamp());
-	        hit->SetTimeStampError(digi->GetTimeStampError());
-	    }
-	}
+    {
+        hits->Delete();
+        for(unsigned int idigi(0); idigi<digis->GetEntriesFast(); idigi++)
+        {
+            TVector3 pos;
+            TVector3 dpos;
+            Double_t timestamp = 0;
+            Double_t timestampErr = 0;
+            Int_t fDetID = 0;
+            Int_t fMCIndex = 0;
+            MyDigi* digi = static_cast<MyDigi*>(digis->At(idigi));
+            pos.SetXYZ(digi->GetX() + 0.5, digi->GetY() + 0.5, digi->GetZ() + 0.5);
+            dpos.SetXYZ(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
+            MyHit* hit = new ((*hits)[idigi]) MyHit(fDetID, fMCIndex, pos, dpos);
+            hit->SetTimeStamp(digi->GetTimeStamp());
+            hit->SetTimeStampError(digi->GetTimeStampError());
+        }
+    }
 
-private:
-	/* data */
+  private:
     TClonesArray* fInput;
     TClonesArray* fOutput;
 };

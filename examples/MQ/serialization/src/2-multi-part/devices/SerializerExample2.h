@@ -1,5 +1,3 @@
-
-
 #ifndef BASICSERIALIZEREXAMPLE2_H
 #define BASICSERIALIZEREXAMPLE2_H
 
@@ -20,10 +18,9 @@
 
 struct Ex2Header
 {
-    int EventNumber=0;
-    int DetectorId=0;
+    int EventNumber = 0;
+    int DetectorId = 0;
 };
-
 
 class FairTMessage : public TMessage
 {
@@ -43,7 +40,6 @@ void free_tmessage(void *data, void *hint)
 
 struct SerializerEx2
 {
-
     void Serialize(FairMQMessage& msg, TClonesArray* input)
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
@@ -55,14 +51,13 @@ struct SerializerEx2
     {
         header=static_cast<Ex2Header*>(msg.GetData());
     }
-    
+
     void Deserialize(FairMQMessage& msg, TClonesArray*& output)
     {
-        if(output) delete output;
+        if (output) delete output;
         FairTMessage tm(msg.GetData(), msg.GetSize());
         output = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
     }
-
 };
 
 
@@ -84,12 +79,10 @@ struct SerializerEx2Boost
     typedef boost::archive::binary_iarchive         BoostBinArchIn;
     typedef boost::archive::binary_oarchive         BoostBinArchOut;
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Header
     void Serialize(FairMQMessage& msg, const Ex2Header& header)
     {
-        
         std::ostringstream buffer;
         BoostBinArchOut OutputArchive(buffer);
         OutputArchive << header;
@@ -102,7 +95,6 @@ struct SerializerEx2Boost
 
     void Deserialize(FairMQMessage& msg, Ex2Header& header)
     {
-        
         std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
         std::istringstream buffer(msgStr);
         BoostBinArchIn InputArchive(buffer);
@@ -111,7 +103,6 @@ struct SerializerEx2Boost
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // TClonesArray (Note : TClonesArray is converted to boost serializable object std::vector<T>
-    
 
     void Serialize(FairMQMessage& msg, TClonesArray* input)
     {
@@ -174,5 +165,3 @@ struct SerializerEx2Boost
 };
 
 #endif
-
-

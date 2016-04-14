@@ -1,56 +1,56 @@
-
-
-
-
 #ifndef GENEXPART1SINK_H
 #define GENEXPART1SINK_H
 
-//std
+// std
 #include <iostream>
 #include <memory>
 
-//FairRoot
+// FairRoot
 #include "FairMQDevice.h"
 #include "SerializerExample.h"
 
-//root
+// root
 #include "TFile.h"
 #include "TTree.h"
 
-
-
-class GenExPart1Sink : public FairMQDevice 
+class GenExPart1Sink : public FairMQDevice
 {
-public:
-	GenExPart1Sink() : 	FairMQDevice(), 
-						fInput(nullptr),
-						fFileName(),
-						fOutFile(nullptr),
-						fTree(nullptr)
+  public:
+    GenExPart1Sink() :
+        FairMQDevice(),
+        fInput(nullptr),
+        fFileName(),
+        fOutFile(nullptr),
+        fTree(nullptr)
     {}
-	virtual ~GenExPart1Sink()
-	{
-	    fTree->Write("", TObject::kOverwrite);
 
-	    if (fTree)
-	        delete fTree;
+    virtual ~GenExPart1Sink()
+    {
+        if (fTree)
+        {
+            fTree->Write("", TObject::kOverwrite);
+            delete fTree;
+        }
 
-	    if (fOutFile)
-	    {
-	        if (fOutFile->IsOpen())
-	            fOutFile->Close();
-	        delete fOutFile;
-	    }
-	}
-	void SetFileName(const std::string& filename){fFileName=filename;}
+        if (fOutFile)
+        {
+            if (fOutFile->IsOpen())
+            {
+                fOutFile->Close();
+            }
+            delete fOutFile;
+        }
+    }
 
-protected:
+    void SetFileName(const std::string& filename) { fFileName = filename; }
+
+  protected:
     virtual void Init()
     {
-	    fOutFile = TFile::Open(fFileName.c_str(),"RECREATE");
-	    fInput = new TClonesArray("MyHit");
-	    fTree = new TTree("GenExPart1", "Test output");
-	    fTree->Branch("MyHit","TClonesArray", &fInput);	       
+        fOutFile = TFile::Open(fFileName.c_str(),"RECREATE");
+        fInput = new TClonesArray("MyHit");
+        fTree = new TTree("GenExPart1", "Test output");
+        fTree->Branch("MyHit","TClonesArray", &fInput);
     }
 
     virtual void Run()
@@ -71,8 +71,7 @@ protected:
         LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
     }
 
-private:
-	/* data */
+  private:
     TClonesArray* fInput;
     std::string fFileName;
     TFile* fOutFile;
