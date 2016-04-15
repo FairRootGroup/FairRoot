@@ -31,6 +31,7 @@ using std::set;
 //_____________________________________________________________________________
 PixelDigiSource::PixelDigiSource(TString inputFileName)
   : FairSource()
+  , fEventHeader(NULL)
   , fDigis(NULL)
   , fNDigis(0)
   , fTNofEvents(0)
@@ -64,28 +65,11 @@ Bool_t PixelDigiSource::Init()
 
   // Register output array StsDigi
   fDigis = new TClonesArray("PixelDigi",10000);
-  ioman->Register("PixelDigis", "Pixel", fDigis, kTRUE);
+  ioman->Register("PixelDigis", "Pixel", fDigis, kFALSE);
 
-  fInputFile.open(fInputFileName.Data(),std::fstream::in);
-  
-  if ( !fInputFile.is_open() ) {
-    LOG(FATAL) << "PixelDigiSource::Init() fInputFile \"" << fInputFileName.Data() << "\" could not be open!" << FairLogger::endl;
-    return kFALSE;
-  }
-
-  return kTRUE;
-   
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-Bool_t PixelDigiSource::InitMQ()
-{
-
-  // Get input array 
-  // Register output array StsDigi
-  fDigis = new TClonesArray("PixelDigi",10000);
-  fDigis->SetName("PixelDigis");
+  fEventHeader = new PixelEventHeader();
+  fEventHeader->SetName("EventHeader.");
+  ioman->Register("EventHeader.","EvtHeader", fEventHeader, kFALSE);
 
   fInputFile.open(fInputFileName.Data(),std::fstream::in);
   
@@ -130,6 +114,10 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
       fRunId     = ReadIntFromString(buffer,"RUNID");
       fMCEntryNo = ReadIntFromString(buffer,"MCENTRYNO");
       fPartNo    = ReadIntFromString(buffer,"PARTNO");
+      fEventHeader->SetRunId(fRunId);
+      fEventHeader->SetMCEntryNumber(fMCEntryNo);
+      fEventHeader->SetPartNo(fPartNo);
+
       LOG(DEBUG) << "GOT NEW EVENT " << fMCEntryNo << " (part " << fPartNo << ") with run id = " << fRunId << FairLogger::endl;
     }
     if ( buffer.find("EVENT") == 0 ) continue;
@@ -159,7 +147,12 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
 
 //_____________________________________________________________________________
 Bool_t   PixelDigiSource::ActivateObject(TObject** obj, const char* BrName) {
-  *obj = (TObject*)fDigis; 
+  if ( strcmp(BrName,"PixelDigis") ) 
+    *obj = (TObject*)fDigis; 
+  else if ( strcmp(BrName,"EventHeader.") )
+    *obj = (TObject*)fEventHeader;
+  else
+    return kFALSE;
   
   return kTRUE;
 }

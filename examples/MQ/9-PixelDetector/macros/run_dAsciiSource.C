@@ -5,7 +5,7 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_dSource( TString mcEngine="TGeant3" )
+void run_dAsciiSource( TString mcEngine="TGeant3" )
 {
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
@@ -21,7 +21,7 @@ void run_dSource( TString mcEngine="TGeant3" )
 
   // Output file
   TString outFile = "pixel_";
-  outFile = outFile + mcEngine + ".viaSource.hits.root";
+  outFile = outFile + mcEngine + ".viaAsciiSource.hits.root";
   
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;

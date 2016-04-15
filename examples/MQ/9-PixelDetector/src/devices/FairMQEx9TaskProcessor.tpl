@@ -91,13 +91,14 @@ void FairMQEx9TaskProcessor<T>::Run()
       
       if ( Receive(parts,"data-in") >= 0 )
         {
-	  LOG(DEBUG)<<"message received";
+	  LOG(DEBUG)<<"message received with " << parts.Size() << " parts.";
 	  receivedMsgs++;
 	  TObject* tempObjects[10];
 	  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
 	    {
 	      Ex9TMessage2 tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
 	      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
+	      LOG(DEBUG) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
 	      if ( strcmp(tempObjects[ipart]->GetName(),"EventHeader.") == 0 ) 
 		fEventHeader = (FairEventHeader*)tempObjects[ipart];
 	      else {
@@ -106,6 +107,9 @@ void FairMQEx9TaskProcessor<T>::Run()
 	    }
 	  
 	  fNewRunId = fEventHeader->GetRunId();
+
+	  LOG(DEBUG)<<"got event header with run = " << fNewRunId;
+
 	  if(fNewRunId!=fCurrentRunId)
             {
 	      fCurrentRunId=fNewRunId;

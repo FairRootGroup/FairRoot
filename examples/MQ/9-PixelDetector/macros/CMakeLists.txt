@@ -17,7 +17,7 @@ ForEach(_mcEngine IN ITEMS TGeant3 TGeant4)
 
 EndForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
 
-Install(FILES run_sim.C run_digi.C run_tracks.C run_reco.C run_digiToAscii.C
+Install(FILES run_sim.C run_digi.C run_tracks.C run_reco.C run_digiToAscii.C run_digiToBin.C run_dAsciiSource.C run_dBinSource.C
         DESTINATION share/fairbase/examples/MQ/9-PixelDetector/macros/
        )
 

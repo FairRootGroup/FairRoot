@@ -27,7 +27,7 @@ class TClonesArray;
 
 class FairLogger;
 class FairRuntimeDb;
-class FairEventHeader;
+class PixelEventHeader;
 
 class PixelDigiBinSource : public FairSource
 {
@@ -36,7 +36,6 @@ public:
   virtual ~PixelDigiBinSource();
   
   Bool_t              Init();
-  Bool_t              InitMQ();
 
   Int_t               ReadEvent(UInt_t i=0);
   void                Close();
@@ -54,6 +53,7 @@ public:
   virtual Bool_t  ActivateObject(TObject** obj, const char* BrName);
 
 private:
+  PixelEventHeader* fEventHeader;
   TClonesArray*     fDigis;        /** Output array of PixelDigi **/
   Int_t             fNDigis;
   

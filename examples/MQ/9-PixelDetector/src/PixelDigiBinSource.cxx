@@ -31,6 +31,7 @@ using std::set;
 //_____________________________________________________________________________
 PixelDigiBinSource::PixelDigiBinSource(TString inputFileName)
   : FairSource()
+  , fEventHeader(NULL)
   , fDigis(NULL)
   , fNDigis(0)
   , fTNofEvents(0)
@@ -66,28 +67,11 @@ Bool_t PixelDigiBinSource::Init()
   fDigis = new TClonesArray("PixelDigi",10000);
   ioman->Register("PixelDigis", "Pixel", fDigis, kFALSE);
 
+  fEventHeader = new PixelEventHeader();
+  fEventHeader->SetName("EventHeader.");
+  ioman->Register("EventHeader.","EvtHeader", fEventHeader, kFALSE);
+
   fInputFile.open(fInputFileName.Data(),std::fstream::in|std::fstream::binary);
-  
-  if ( !fInputFile.is_open() ) {
-    LOG(FATAL) << "PixelDigiBinSource::Init() fInputFile \"" << fInputFileName.Data() << "\" could not be open!" << FairLogger::endl;
-    return kFALSE;
-  }
-
-  return kTRUE;
-   
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-Bool_t PixelDigiBinSource::InitMQ()
-{
-
-  // Get input array 
-  // Register output array StsDigi
-  fDigis = new TClonesArray("PixelDigi",10000);
-  fDigis->SetName("PixelDigis");
-
-  fInputFile.open(fInputFileName.Data(),std::fstream::in);
   
   if ( !fInputFile.is_open() ) {
     LOG(FATAL) << "PixelDigiBinSource::Init() fInputFile \"" << fInputFileName.Data() << "\" could not be open!" << FairLogger::endl;
@@ -136,6 +120,9 @@ Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
   fRunId     = head[0];
   fMCEntryNo = head[1];
   fPartNo    = head[2];
+  fEventHeader->SetRunId(fRunId);
+  fEventHeader->SetMCEntryNumber(fMCEntryNo);
+  fEventHeader->SetPartNo(fPartNo);
 
   for ( Int_t idata = 0 ; idata < head[3] ; idata++ ) {
     LOG(DEBUG) << "    --/" << idata << "/-->    " 
@@ -164,7 +151,12 @@ Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
 
 //_____________________________________________________________________________
 Bool_t   PixelDigiBinSource::ActivateObject(TObject** obj, const char* BrName) {
-  *obj = (TObject*)fDigis; 
+  if ( strcmp(BrName,"PixelDigis") ) 
+    *obj = (TObject*)fDigis; 
+  else if ( strcmp(BrName,"EventHeader.") )
+    *obj = (TObject*)fEventHeader;
+  else
+    return kFALSE;
   
   return kTRUE;
 }

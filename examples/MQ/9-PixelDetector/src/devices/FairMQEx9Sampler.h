@@ -41,13 +41,15 @@ class FairMQEx9Sampler : public FairMQDevice
     
     void SetMaxIndex(int64_t tempInt) {fMaxIndex=tempInt;}
 
+    void SetSource(FairSource* tempSource) {fSource = tempSource;}
+
  protected:
     virtual void Run();
     virtual void InitTask();
     
  private: 
     FairRunAna*     fRunAna;
-    FairFileSource* fSource;
+    FairSource*     fSource;
     TObject*        fInputObjects[100];
     int             fNObjects;
     int64_t         fMaxIndex;

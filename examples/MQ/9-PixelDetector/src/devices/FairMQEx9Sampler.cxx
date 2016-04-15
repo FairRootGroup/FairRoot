@@ -21,6 +21,9 @@
 #include "FairMQMessage.h"
 #include "TMessage.h"
 
+#include "FairSource.h"
+#include "FairFileSource.h"
+
 using namespace std;
 
 FairMQEx9Sampler::FairMQEx9Sampler()
@@ -41,7 +44,7 @@ void FairMQEx9Sampler::InitTask()
   if ( fFileNames.size() > 0 ) {
     fSource = new FairFileSource(fFileNames.at(0).c_str());
     for ( unsigned int ifile = 1 ; ifile < fFileNames.size() ; ifile++ ) 
-      fSource->AddFile(fFileNames.at(ifile));
+      ((FairFileSource*)fSource)->AddFile(fFileNames.at(ifile));
   }
   fSource->Init();
   LOG(INFO) << "Going to request " << fBranchNames.size() << "  branches:";

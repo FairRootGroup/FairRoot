@@ -28,7 +28,7 @@ done
 
 ########################### Define some variables
 # JSON file containing the configuration parameters of all FairMQ devices of this example
-MQCONFIGFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Ascii2Levels.json"
+MQCONFIGFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Merger2Levels.json"
 # ASCII and ROOT parameter files for the processor device
 ROOTPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
 ASCIIPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
