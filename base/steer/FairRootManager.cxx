@@ -104,7 +104,6 @@ FairRootManager::FairRootManager()
     fEntryNr(0),
     fListFolder(0),
     fSource(0),
-    fSourceChain( new TChain("cbmsim", "/cbmroot")),
     fSignalChainList(),
     fEventHeader(new FairEventHeader()),
     fUseFairLinks(kFALSE),
@@ -118,6 +117,12 @@ FairRootManager::FairRootManager()
     Fatal("FairRootManager", "Singleton instance already exists.");
     return;
   }
+  char* treename = getenv("OUTPUT_TREE_NAME");
+  if(NULL == treename)
+  {
+    treename = (char*)"cbmsim";
+  }
+  fSourceChain = new TChain(treename, "/cbmroot");
   fgInstance = this;
 }
 //_____________________________________________________________________________

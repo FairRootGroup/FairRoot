@@ -213,7 +213,12 @@ Bool_t FairMixedSource::Init()
     return kTRUE;
   }
   if (!fBackgroundChain ) {
-    fBackgroundChain = new TChain("cbmsim", "/cbmroot");
+    char* treename = getenv("OUTPUT_TREE_NAME");
+    if(NULL == treename)
+    {
+      treename = (char*)"cbmsim";
+    }
+    fBackgroundChain = new TChain(treename, "/cbmroot");
     LOG(INFO) << "FairMixedSource::Init() chain created" << FairLogger::endl;
   }
 
@@ -467,7 +472,12 @@ void FairMixedSource::SetSignalFile(TString name, UInt_t identifier )
   } else {
     /** Set a signal file of certain type (identifier) if already exist add the file to the chain*/
     if(fSignalTypeList[identifier]==0) {
-      TChain* chain = new TChain("cbmsim", "/cbmroot");
+      char* treename = getenv("OUTPUT_TREE_NAME");
+      if(NULL == treename)
+      {
+        treename = (char*)"cbmsim";
+      }
+      TChain* chain = new TChain(treename, "/cbmroot");
       fSignalTypeList[identifier]=chain;
       FairRootManager::Instance()->SetInChain(chain,identifier);
       fCurrentEntry[identifier]= 0;

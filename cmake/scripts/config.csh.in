@@ -35,6 +35,9 @@ if ( "$same_system" == "1" ) then
     setenv G4REALSURFACEDATA "@G4REALSURFACEDATA@"
     setenv G4SAIDXSDATA "@G4SAIDXSDATA@"
   endif
+  if ( @TREE_NAME_CHANGED@ == true ) then
+    setenv OUTPUT_TREE_NAME "@OUTPUT_TREE_NAME@"
+  endif
   setenv ROOT_LIBRARY_DIR "@ROOT_LIBRARY_DIR@"
   setenv ROOT_LIBRARIES "@ROOT_LIBRARIES@"
   setenv ROOT_INCLUDE_DIR "@ROOT_INCLUDE_DIR@"

@@ -178,8 +178,13 @@ Bool_t FairFileSource::Init()
       LOG(INFO) << "FairFileSource already initialized" << FairLogger::endl;
        return kTRUE;
     }
+    char* treename = getenv("OUTPUT_TREE_NAME");
+    if(NULL == treename)
+    {
+      treename = (char*)"cbmsim";
+    }
     if (!fInChain ) {
-        fInChain = new TChain("cbmsim", "/cbmroot");
+        fInChain = new TChain(treename, "/cbmroot");
         LOG(DEBUG) << "FairFileSource::Init() chain created"
 		   << FairLogger::endl;
 	FairRootManager::Instance()->SetInChain(fInChain);
@@ -385,7 +390,13 @@ void FairFileSource::AddFriendsToChain()
     }
     // TODO: print a warning if it was neccessary to remove a filname from the
     // list. This can be chacked by comparing the size of both list
-    
+
+    char* treename = getenv("OUTPUT_TREE_NAME");
+    if(NULL == treename)
+    {
+      treename = (char*)"cbmsim";
+    }    
+
     TFile* temp = gFile;
     
     Int_t friendType = 1;
@@ -427,7 +438,7 @@ void FairFileSource::AddFriendsToChain()
         }
         
         TChain* chain = static_cast<TChain*>(fFriendTypeList[inputLevel]);
-        chain->AddFile((*iter1), 1234567890, "cbmsim");
+        chain->AddFile((*iter1), 1234567890, treename);
     }
     gFile=temp;
     
