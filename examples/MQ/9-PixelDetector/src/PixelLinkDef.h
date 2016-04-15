@@ -16,7 +16,9 @@
 #pragma link C++ class PixelDigitize+;
 #pragma link C++ class PixelDigiPar+;
 #pragma link C++ class PixelDigiSource+;
+#pragma link C++ class PixelDigiBinSource+;
 #pragma link C++ class PixelDigiWriteToFile+;
+#pragma link C++ class PixelDigiWriteToBinFile+;
 #pragma link C++ class PixelFindHits+;
 #pragma link C++ class PixelFindTracks+;
 #pragma link C++ class PixelFitTracks+;

@@ -66,7 +66,9 @@ PixelContFact.cxx
 PixelDigitize.cxx
 PixelDigiPar.cxx
 PixelDigiSource.cxx
+PixelDigiBinSource.cxx
 PixelDigiWriteToFile.cxx
+PixelDigiWriteToBinFile.cxx
 PixelFindHits.cxx
 PixelFindTracks.cxx
 PixelFitTracks.cxx
@@ -86,7 +88,9 @@ PixelContFact.h
 PixelDigitize.h
 PixelDigiPar.h
 PixelDigiSource.h
+PixelDigiBinSource.h
 PixelDigiWriteToFile.h
+PixelDigiWriteToBinFile.h
 PixelFindHits.h
 PixelFindTracks.h
 PixelFitTracks.h

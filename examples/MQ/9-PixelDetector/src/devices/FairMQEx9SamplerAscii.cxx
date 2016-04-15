@@ -66,12 +66,6 @@ void FairMQEx9SamplerAscii::InitTask()
   LOG(INFO) << "Input source has " << fMaxIndex << " events.";
 }
 
-// helper function to clean up the object holding the data after it is transported.
-void free_tmessageSA(void *data, void *hint)
-{
-    delete (TMessage*)hint;
-}
-
 void FairMQEx9SamplerAscii::Run()
 {
   int eventCounter = 0;
@@ -80,7 +74,6 @@ void FairMQEx9SamplerAscii::Run()
   while (CheckCurrentState(RUNNING))
     {
       if ( eventCounter == fMaxIndex ) break;
-
       Int_t readEventReturn = fSource->ReadEvent(eventCounter);
       fSource->FillEventHeader(fEventHeader);
 
@@ -88,12 +81,15 @@ void FairMQEx9SamplerAscii::Run()
 
       TMessage* message[1000];
       FairMQParts parts;
-      
+
       for ( int iobj = 0 ; iobj < fNObjects ; iobj++ ) {
 	message[iobj] = new TMessage(kMESS_OBJECT);
 	LOG(TRACE) << " adding to output object \"" << fInputObjects[iobj]->GetName() << "\"";
 	message[iobj]->WriteObject(fInputObjects[iobj]);
-	parts.AddPart(NewMessage(message[iobj]->Buffer(), message[iobj]->BufferSize(), free_tmessageSA, message[iobj]));
+	parts.AddPart(NewMessage(message[iobj]->Buffer(), 
+				 message[iobj]->BufferSize(), 
+				 [](void *data, void *hint) {delete (TMessage*)hint;}, 
+				 message[iobj]));
       }
 
       LOG(TRACE) << "!!! SENDING message with " << parts.Size() << " parts";

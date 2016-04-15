@@ -5,14 +5,14 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_hits( TString mcEngine="TGeant3" )
+void run_digiToBin( TString mcEngine="TGeant3" )
 {
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
   
   // Input file (MC events)
   TString inFile = "pixel_";
-  inFile = inFile + mcEngine + ".digi.root";
+  inFile = inFile + mcEngine + ".mc.root";
   
   // Parameter file
   TString parFile = "pixel_"; 
@@ -25,7 +25,7 @@ void run_hits( TString mcEngine="TGeant3" )
 
   // Output file
   TString outFile = "pixel_";
-  outFile = outFile + mcEngine + ".hits.root";
+  outFile = outFile + mcEngine + ".digiToBin.root";
   
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
@@ -34,16 +34,6 @@ void run_hits( TString mcEngine="TGeant3" )
   FairRunAna *fRun= new FairRunAna();
   fRun->SetInputFile(inFile);
   fRun->SetOutputFile(outFile);
-
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
-  // fRun->AddFile(inFile);
   
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
@@ -56,9 +46,13 @@ void run_hits( TString mcEngine="TGeant3" )
   rtdb->setSecondInput(parIo1);
   
   // -----   TorinoDetector hit  producers   ---------------------------------
-  PixelFindHits* hitFinderTask = new PixelFindHits();
-  fRun->AddTask(hitFinderTask);
-  
+  PixelDigitize* digiTask = new PixelDigitize();
+  fRun->AddTask(digiTask);
+
+  PixelDigiWriteToBinFile* digiWrite = new PixelDigiWriteToBinFile();
+  digiWrite->SetOutputFileName("digisBin.dat");
+  digiWrite->SetDivideLevel(1); // 0 - event, 1 - station, 2 - sensor
+  fRun->AddTask(digiWrite);
 
   fRun->Init();
 
