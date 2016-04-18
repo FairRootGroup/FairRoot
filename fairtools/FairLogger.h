@@ -30,8 +30,11 @@ class FairLogger;
 #define CONVERTTOSTRING(s)      IMP_CONVERTTOSTRING(s)
 #define MESSAGE_ORIGIN          __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
 
+#define LOG_LEVEL(level) \
+  !(FATAL == level) ? gLogger->GetOutputStream(level, MESSAGE_ORIGIN) : gLogger->GetFATALOutputStream(MESSAGE_ORIGIN)
+
 #define LOG(level)        \
-  !(gLogger->IsLogNeeded(level)) ? gLogger->GetNullStream(level) : gLogger->GetOutputStream(level, MESSAGE_ORIGIN)
+  !(gLogger->IsLogNeeded(level)) ? gLogger->GetNullStream(level) : LOG_LEVEL(level)
 
 #define LOG_IF(level, condition) \
   !(condition) ? gLogger->GetNullStream(level) : LOG(level)
@@ -143,6 +146,7 @@ class FairLogger : public std::ostream
                 const char* format, ...);
 
     FairLogger& GetOutputStream(FairLogLevel level, const char* file, const char* line, const char* func);
+    FairLogger& GetFATALOutputStream(const char* file, const char* line, const char* func);
 
     std::ostream& GetNullStream(FairLogLevel level) {
       fLevel=level;

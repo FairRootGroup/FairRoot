@@ -316,6 +316,9 @@ void FairLogger::SetMinLogLevel()
 
 Bool_t FairLogger::IsLogNeeded(FairLogLevel logLevel)
 {
+  if (FATAL == logLevel) {
+    return true;
+  }
   if (logLevel <= fMinLogLevel) {
     return true;
   } else {
@@ -333,6 +336,68 @@ FairLogger& FairLogger::GetOutputStream(FairLogLevel level, const char* file, co
     fLogVerbosityLevel = verbosityHIGH;
     fLogColored = true;
   }
+
+
+  if (fIsNewLine) {
+    if ( (fLogToScreen && level <= fLogScreenLevel) ) {
+
+      if ( fLogColored ) {
+        *fScreenStream << LogLevelColor[level];
+      }
+
+      *fScreenStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
+
+      if ( fLogVerbosityLevel == verbosityHIGH ) {
+        GetTime();
+        *fScreenStream << fTimeBuffer;
+      }
+
+      if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
+        TString bla(file);
+        Ssiz_t pos = bla.Last('/');
+        TString s2(bla(pos+1, bla.Length()));
+        TString s3 = s2 + "::" + func + ":" + line;
+        *fScreenStream << "[" << s3 <<"] ";
+      }
+    }
+
+    if ( fLogToFile && level <= fLogFileLevel ) {
+      if(!fLogFileOpen) {
+        OpenLogFile();
+      }
+
+      *fFileStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
+
+      if ( fLogVerbosityLevel == verbosityHIGH ) {
+        GetTime();
+        *fFileStream << fTimeBuffer;
+      }
+
+      if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
+        TString bla(file);
+        Ssiz_t pos = bla.Last('/');
+        TString s2(bla(pos+1, bla.Length()));
+        TString s3 = s2 + "::" + func + ":" + line;
+        *fFileStream << "[" << s3 <<"] ";
+      }
+    }
+    fIsNewLine = kFALSE;
+  }
+  return *this;
+}
+
+// coverity[+kill]
+FairLogger& FairLogger::GetFATALOutputStream(const char* file, const char* line, const char* func)
+{
+
+  fLevel = FATAL;
+  FairLogLevel level = FATAL;
+
+//  if (level == FATAL) {
+    fLogToScreen = true;
+    fLogVerbosityLevel = verbosityHIGH;
+    fLogColored = true;
+//  }
 
 
   if (fIsNewLine) {
