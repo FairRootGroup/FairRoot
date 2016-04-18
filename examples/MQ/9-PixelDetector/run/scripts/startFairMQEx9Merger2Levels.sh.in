@@ -22,7 +22,7 @@ case $key in
     shift
     ;;
 esac
-shift 
+shift
 done
 
 
@@ -150,5 +150,3 @@ FILESINK="ex9-sink $TRANSPORT"
 FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
 FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
 xterm +aw -geometry 80x25+1000+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$FILESINK &
-
-
