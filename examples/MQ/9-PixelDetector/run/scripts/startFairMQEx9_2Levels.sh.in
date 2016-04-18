@@ -44,23 +44,25 @@ ROOTPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGe
 ASCIIPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME1" == "--task-name PixelFindHits" -a "$FAIRTASKNAME2" == "--task-name PixelFindTracks" ] ; then
+    FAIRTASKNAME2+=" --keep-data PixelHits"
+
     # input file and branch for the sampler device
     INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
     INPUTBRANCH="PixelDigis"
     
     # output file for sink
-    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.track.root"
-    OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
-    OUTPUTBRANCH="--branch-name PixelTracks"
+    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.2Levels.hits_tracks.root"
+    OUTPUTCLASS="--class-name TClonesArray(PixelHit) --class-name TClonesArray(PixelTrack)"
+    OUTPUTBRANCH="--branch-name PixelHits --branch-name PixelTracks"
 elif [ "$FAIRTASKNAME1" == "--task-name PixelFindTracks" -a "$FAIRTASKNAME2" == "--task-name PixelFitTracks" ] ; then
     # input file and branch for the sampler device
     FAIRTASKNAME1+=" --keep-data PixelHits"
     FAIRTASKNAME2+=" --keep-data PixelHits"
-    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hit.root"
+    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits.root"
     INPUTBRANCH="PixelHits"
     
     # output file for sink
-    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hit_fitTrack.root"
+    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.2Levels.hits_fitTracks.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelHit) --class-name TClonesArray(PixelTrack)"
     OUTPUTBRANCH="--branch-name PixelHits --branch-name PixelFitTracks"
 else

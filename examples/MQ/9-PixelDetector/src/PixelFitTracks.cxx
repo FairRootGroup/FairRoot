@@ -223,7 +223,7 @@ void   PixelFitTracks::InitMQ(TList* tempList) {
 void   PixelFitTracks::ExecMQ(TList* inputList,TList* outputList) {
   //  LOG(INFO) << "********************************************** PixelFitTracks::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents << FairLogger::endl;
   //  LOG(INFO) << "********************************************** PixelFitTracks::ExecMQ(), Event " << fTNofEvents << FairLogger::endl;
-  LOG(INFO) << "f" << FairLogger::flush;
+  //  LOG(INFO) << "f" << FairLogger::flush;
   fHits   = (TClonesArray*) inputList->FindObject("PixelHits");
   fTracks = (TClonesArray*) inputList->FindObject("PixelTracks");
   outputList->Add(fFitTracks);

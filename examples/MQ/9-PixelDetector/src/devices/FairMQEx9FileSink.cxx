@@ -75,6 +75,7 @@ void FairMQEx9FileSink::Init()
   TList* BranchNameList = new TList();
   
   for ( fNObjects = 0 ; fNObjects < fBranchNames.size() ; fNObjects++ ) {
+    LOG(INFO) << "Creating output branch \"" << fClassNames[fNObjects] << "\" with name \"" << fBranchNames[fNObjects] << "\"";
     if      ( fClassNames[fNObjects].find("TClonesArray(") == 0 ) {
       fClassNames   [fNObjects] = fClassNames[fNObjects].substr(13,fClassNames[fNObjects].length()-12-2);
       fOutputObjects            [fNObjects] = new    TClonesArray(fClassNames[fNObjects].c_str());

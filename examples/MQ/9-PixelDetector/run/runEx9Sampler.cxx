@@ -20,7 +20,7 @@ int main(int argc, char** argv)
     try
     {
         std::vector<std::string> filename;
-        std::string branchname;
+	std::vector<std::string> branchname;
 	int64_t     maxindex;
 	std::string samplerType;
 
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
         sampler_options.add_options()
 	  ("file-name",    po::value<std::vector<std::string>>(&filename)                                    , "Path to the input file")
 	  ("max-index",    po::value<int64_t>                 (&maxindex)   ->default_value(-1)              , "number of events to read")
-	  ("branch-name",  po::value<std::string>             (&branchname)                                  , "branch name")
+	  ("branch-name",  po::value<std::vector<std::string>>(&branchname) ->required()                     , "branch name")
 	  ("sampler-type", po::value<std::string>             (&samplerType)->default_value("FairFileSource"), "FairSource type");
 
 	FairMQProgOptions config;
@@ -48,7 +48,11 @@ int main(int argc, char** argv)
 	  }
 	  
 	  sampler.SetMaxIndex(maxindex);
-	  sampler.AddInputBranchName(branchname);
+
+	  for ( unsigned int ielem = 0 ; ielem < branchname.size() ; ielem++ ) {
+ 	    sampler.AddInputBranchName(branchname.at(ielem));	  
+	  }
+
 	  sampler.AddInputBranchName("EventHeader.");
 	  runStateMachine(sampler, config);
 	}
@@ -61,7 +65,9 @@ int main(int argc, char** argv)
 	  }
 	  
 	  sampler.SetMaxIndex(maxindex);
-	  sampler.AddInputBranchName(branchname);
+
+	  // for now only supporting reading PixelDigis
+	  sampler.AddInputBranchName(branchname.at(0));
 	  sampler.AddInputBranchName("EventHeader.");
 	  runStateMachine(sampler, config);
 	}
@@ -74,7 +80,9 @@ int main(int argc, char** argv)
 	  }
 	  
 	  sampler.SetMaxIndex(maxindex);
-	  sampler.AddInputBranchName(branchname);
+
+	  // for now only supporting reading PixelDigis
+	  sampler.AddInputBranchName(branchname.at(0));
 	  sampler.AddInputBranchName("EventHeader.");
 	  runStateMachine(sampler, config);
 	}
