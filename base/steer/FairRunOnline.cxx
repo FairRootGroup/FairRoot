@@ -236,7 +236,12 @@ void FairRunOnline::Init()
 
   // create the output tree after tasks initialisation
   fOutFile->cd();
-  TTree* outTree =new TTree("cbmsim", "/cbmout", 99);
+  char* treename = getenv("OUTPUT_TREE_NAME");
+  if(NULL == treename)
+  {
+    treename = (char*)"cbmsim";
+  }
+  TTree* outTree =new TTree(treename, "/cbmout", 99);
   fRootManager->TruncateBranchNames(outTree, "cbmout");
   fRootManager->SetOutTree(outTree);
   fRootManager->WriteFolder();

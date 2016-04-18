@@ -35,6 +35,9 @@ if [ "$same_system" == "1" ]; then
     export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
     export G4SAIDXSDATA="@G4SAIDXSDATA@"
   fi
+  if (@TREE_NAME_CHANGED@); then
+    export OUTPUT_TREE_NAME="@OUTPUT_TREE_NAME@"
+  fi
   export ROOT_LIBRARY_DIR="@ROOT_LIBRARY_DIR@"
   export ROOT_LIBRARIES="@ROOT_LIBRARIES@"
   export ROOT_INCLUDE_DIR="@ROOT_INCLUDE_DIR@"
