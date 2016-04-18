@@ -50,7 +50,7 @@ INPUTBRANCH="PixelDigis"
 FAIRTASKNAME="--task-name PixelFindHits"
 
 # output file for sink
-OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hitsFromAscii.root"
+OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hitsFromBinary.root"
 OUTPUTCLASS="TClonesArray(PixelHit)"
 OUTPUTBRANCH="PixelHits"
 ###########################

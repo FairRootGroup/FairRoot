@@ -34,21 +34,27 @@ ROOTPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGe
 ASCIIPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
 
 # input file and branch for the sampler device
-INPUTFILE1="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digis.p0.dat"
-INPUTFILE2="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digis.p1.dat"
-INPUTFILE3="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digis.p2.dat"
-#   INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.f1.root"
+# READ FROM ASCII FILES
+#SAMPLERTYPE="--sampler-type PixelDigiSource"
+#INPUTFILE1="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digis.p0.dat"
+#INPUTFILE2="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digis.p1.dat"
+#INPUTFILE3="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digis.p2.dat"
+# READ FROM BINARY FILES
+SAMPLERTYPE="--sampler-type PixelDigiBinSource"
+INPUTFILE1="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.p0.dat"
+INPUTFILE2="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.p1.dat"
+INPUTFILE3="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.p2.dat"
+
 INPUTBRANCH="PixelDigis"
 
 FAIRTASKNAME1="--task-name PixelFindHits"
 
 FAIRTASKNAME4="--task-name PixelFindTracks"
-FAIRTASKNAME4+=" --keep-data PixelHits"
 
 # output file for sink
-OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.tracksFromAscii.root"
-OUTPUTCLASS="--class-name TClonesArray(PixelHit) --class-name TClonesArray(PixelTrack)"
-OUTPUTBRANCH="--branch-name PixelHits --branch-name PixelTracks"
+OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.tracksFromBinary.root"
+OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
+OUTPUTBRANCH="--branch-name PixelTracks"
 #OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
 #OUTPUTBRANCH="--branch-name PixelTracks"
 ###########################
@@ -66,10 +72,10 @@ xterm -geometry 80x25+500+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$SERVER &
 
 
 ########################## start SAMPLER1
-SAMPLER1="FairMQEx9SamplerAscii $TRANSPORT"
-SAMPLER1+=" --id sampler1 --mq-config $MQCONFIGFILE"
+SAMPLER1="FairMQEx9Sampler $TRANSPORT"
+SAMPLER1+=" --id sampler1 $SAMPLERTYPE --mq-config $MQCONFIGFILE"
 SAMPLER1+=" --file-name $INPUTFILE1 --branch-name $INPUTBRANCH $MAXINDEX"
-xterm -geometry 80x12+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER1 &
+xterm -geometry 80x25+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER1 &
 
 ########################## start PROCESSORs 1_1 & 1_2
 PROCESSOR1_1="FairMQEx9TaskProcessor $TRANSPORT"
@@ -85,8 +91,8 @@ PROCESSOR1_2+=" --id processor1_2 $FAIRTASKNAME1 --mq-config $MQCONFIGFILE"
 xterm -geometry 40x12+250+170 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR1_2 &
 
 ########################## start SAMPLER2
-SAMPLER2="FairMQEx9SamplerAscii $TRANSPORT"
-SAMPLER2+=" --id sampler2 --mq-config $MQCONFIGFILE"
+SAMPLER2="FairMQEx9Sampler $TRANSPORT"
+SAMPLER2+=" --id sampler2 $SAMPLERTYPE --mq-config $MQCONFIGFILE"
 SAMPLER2+=" --file-name $INPUTFILE2 --branch-name $INPUTBRANCH $MAXINDEX"
 xterm -geometry 80x12+500+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER2 &
 
@@ -102,8 +108,8 @@ PROCESSOR2_2+=" --id processor2_2 $FAIRTASKNAME1 --mq-config $MQCONFIGFILE"
 xterm -geometry 40x12+750+170 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR2_2 &
 
 ########################## start SAMPLER3
-SAMPLER3="FairMQEx9SamplerAscii $TRANSPORT"
-SAMPLER3+=" --id sampler3 --mq-config $MQCONFIGFILE"
+SAMPLER3="FairMQEx9Sampler $TRANSPORT"
+SAMPLER3+=" --id sampler3 $SAMPLERTYPE --mq-config $MQCONFIGFILE"
 SAMPLER3+=" --file-name $INPUTFILE3 --branch-name $INPUTBRANCH $MAXINDEX"
 xterm -geometry 80x12+1000+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER3 &
 

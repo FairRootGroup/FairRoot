@@ -44,18 +44,28 @@ if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     INPUTBRANCH="PixelDigis"
     
     # output file for sink
-    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hit.root"
+    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
     OUTPUTBRANCH="--branch-name PixelHits"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFindTracks" ] ; then
-    # input file and branch for the sampler device
-    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hit.root"
+    # input file and branch for the sampler device 
+    FAIRTASKNAME+=" --keep-data PixelHits"
+    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits.root"
     INPUTBRANCH="PixelHits"
     
     # output file for sink
-    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.track.root"
+    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
+    OUTPUTCLASS="--class-name TClonesArray(PixelHit) --class-name TClonesArray(PixelTrack)"
+    OUTPUTBRANCH="--branch-name PixelHits --branch-name PixelTracks"
+elif [ "$FAIRTASKNAME" == "--task-name PixelFitTracks" ] ; then
+    # input file and branch for the sampler device
+    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
+    INPUTBRANCH="PixelHits --branch-name PixelTracks"
+    
+    # output file for sink
+    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.fitTracks.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
-    OUTPUTBRANCH="--branch-name PixelTracks"
+    OUTPUTBRANCH="--branch-name PixelFitTracks"
 else
     echo "TASK $FAIRTASKNAME UNKNOWN!!!"
     exit
@@ -111,6 +121,6 @@ xterm -geometry 80x25+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR5 &
 FILESINK="FairMQEx9FileSink $TRANSPORT"
 FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
 FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
-xterm +aw -geometry 80x25+0+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$FILESINK &
+xterm +aw -geometry 100x25+0+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$FILESINK &
 
 

@@ -41,7 +41,7 @@ INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGe
 INPUTBRANCH="PixelDigis"
 
 # output file for sink
-OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.fitTrack.root"
+OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.3Levels.fitTracks.root"
 OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
 OUTPUTBRANCH="--branch-name PixelFitTracks"
 ###########################

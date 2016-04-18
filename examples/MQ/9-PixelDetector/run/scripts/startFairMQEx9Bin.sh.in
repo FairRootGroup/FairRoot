@@ -53,7 +53,7 @@ if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     INPUTBRANCH="PixelDigis"
     
     # output file for sink
-    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hit_bin.root"
+    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.bin.hits.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
     OUTPUTBRANCH="--branch-name PixelHits"
 else
