@@ -15,6 +15,7 @@
 #include "FairLogger.h"
 
 #include <stddef.h>                     // for NULL
+#include <climits>                      // for INT_MAX
 
 // -----   Default constructor   ------------------------------------------
 FairAsciiGenerator::FairAsciiGenerator()
@@ -77,7 +78,9 @@ Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   Double_t px = 0., py = 0., pz = 0.;
 
   // Read event header line from input file
-  *fInputFile >> ntracks >> eventID >>  vx >>  vy >>  vz;
+  *fInputFile >> ntracks;
+  if (fInputFile->fail() || ntracks < 0 || ntracks > (INT_MAX-1)) LOG(FATAL) << "Error reading the number of events from event header." << FairLogger::endl;
+  *fInputFile >> eventID >>  vx >>  vy >>  vz;
 
   // If end of input file is reached : close it and abort run
   if ( fInputFile->eof() ) {

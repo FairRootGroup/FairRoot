@@ -86,7 +86,8 @@ Bool_t PixelDigiBinSource::Init()
 //_____________________________________________________________________________
 Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
 {
-  if (fDigis) fDigis->Clear();
+
+  fDigis->Clear();
   fNDigis = 0;
 
   if ( !fInputFile ) {

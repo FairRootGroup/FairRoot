@@ -580,7 +580,7 @@ uint32_t fLmdGetOpen(
 
   pLmdControl->iBytes+=iReturn;
   // more of header?
-  if(pLmdControl->pMbsFileHeader->iUsedWords > 0) {
+  if( (pLmdControl->pMbsFileHeader->iUsedWords > 0) && (pLmdControl->pMbsFileHeader->iUsedWords < UINT32_MAX/2) ) {
     // Read this additional information without swapping.
     // Could be mostly strings. Caller must know.
     pLmdControl->cHeader=malloc(pLmdControl->pMbsFileHeader->iUsedWords*2);

@@ -24,6 +24,7 @@
 #include "TVector3.h"                   // for TVector3
 
 #include <stdlib.h>                     // for getenv
+#include <climits>                      // for INT_MAX
 #include <fstream>                      // IWYU pragma: keep for ifstream
 
 // -----   Default constructor   ------------------------------------------
@@ -164,6 +165,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   fgets(read, 200, fInputFile);
   for (int iline=0; iline<8; iline++)  { fgets(read, 200,fInputFile); }
   retval = fscanf(fInputFile, "%d", &ntracks);
+  if (ntracks < 0 || ntracks > (INT_MAX-1)) LOG(FATAL) << "Error reading the number of events from event header." << FairLogger::endl;
   CheckReturnValue(retval);
   fgets(read, 200, fInputFile);
   fgets(read, 200, fInputFile);
@@ -313,6 +315,7 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
     fgets(read, 200, fInputFile);
     for (int iline=0; iline<8; iline++)  { fgets(read, 200,fInputFile); }
     retval = fscanf(fInputFile, "%d", &ntracks);
+    if (ntracks < 0 || ntracks > (INT_MAX-1)) LOG(FATAL) << "Error reading the number of events from event header." << FairLogger::endl;
     CheckReturnValue(retval);
     fgets(read, 200, fInputFile);
     fgets(read, 200, fInputFile);

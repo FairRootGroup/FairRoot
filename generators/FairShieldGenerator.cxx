@@ -21,6 +21,7 @@
 
 #include <stdio.h>                      // for NULL, sprintf
 #include <utility>                      // for pair
+#include <climits>                      // for INT_MAX
 
 using std::map;
 
@@ -103,7 +104,11 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   Int_t    pdgType = 0;
 
   // Read event header line from input file
-  *fInputFile >> eventId >> nTracks >> pBeam >> b;
+  *fInputFile >> eventId;
+  *fInputFile >> nTracks;
+  if (nTracks < 0 || nTracks > (INT_MAX-1)) LOG(FATAL) << "Error reading the number of events from event header." << FairLogger::endl;
+  *fInputFile >> pBeam >> b;
+
 
   // If end of input file is reached : close it and abort run
   if ( fInputFile->eof() ) {
@@ -177,7 +182,10 @@ Int_t FairShieldGenerator::RegisterIons()
 
   while ( ! fInputFile->eof()) {
 
-    *fInputFile >> eventId >> nTracks >> pBeam >> b;
+    *fInputFile >> eventId;
+    *fInputFile >> nTracks;
+    if (nTracks < 0 || nTracks > (INT_MAX-1)) LOG(FATAL) << "Error reading the number of events from event header." << FairLogger::endl;
+    *fInputFile >> pBeam >> b;
     if ( fInputFile->eof() ) { continue; }
     for (Int_t iTrack=0; iTrack<nTracks; iTrack++) {
       *fInputFile >> iPid >> iMass >> iCharge >> px >> py >> pz;

@@ -95,7 +95,7 @@ int ReadIntFromString(std::string wholestr, std::string pattern) {
 //_____________________________________________________________________________
 Int_t PixelDigiSource::ReadEvent(UInt_t i)
 {
-  if (fDigis) fDigis->Delete();
+  fDigis->Delete();
   fNDigis = 0;
 
   if ( i == 0 ) { 

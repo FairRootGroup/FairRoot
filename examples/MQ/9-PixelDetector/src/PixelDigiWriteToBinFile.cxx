@@ -59,6 +59,7 @@ PixelDigiWriteToBinFile::PixelDigiWriteToBinFile(const char* name, Int_t iVerbos
   : FairTask(name, iVerbose)
   , fDigis(NULL)
   , fOutputFileName("test.dat")
+  , fNofOutputFiles(0)
   , fOutputFiles()
   , fDivideLevel(0)
   , fRunId(0)
@@ -190,7 +191,7 @@ InitStatus PixelDigiWriteToBinFile::Init() {
 InitStatus PixelDigiWriteToBinFile::ReInit() {
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) Fatal("Init", "No FairRootManager");
+  if ( ! ioman ) LOG(FATAL) << "No FairRootManager found." << FairLogger::endl;
 
   fRunId = ioman->GetRunId();
   fMCEntryNo = 0;
