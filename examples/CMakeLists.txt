@@ -12,13 +12,14 @@ If(GEANT3_FOUND)
 
   add_subdirectory (simulation/Tutorial1)
   add_subdirectory (simulation/Tutorial2)
-  add_subdirectory (advanced/Tutorial3)
+  
   add_subdirectory (simulation/Tutorial4)
   If(WITH_DBASE)
     add_subdirectory (advanced/Tutorial5)
   EndIf()
 
   If(Boost_FOUND AND POS_C++11 AND ZMQ_FOUND AND HAS_CXX11_PATTERN1)
+    add_subdirectory (advanced/Tutorial3)
     add_subdirectory(MQ/7-parameters)
     add_subdirectory(MQ/serialization)
     add_subdirectory(MQ/9-PixelDetector)

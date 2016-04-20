@@ -1,5 +1,6 @@
 
-
+// test funcptr to lambda conversion in such pattern. Some old compiler may not compile the following code
+// comment : direct lambda assignment to function ptr in the main() may still works for the same compilers, however.
 using func_type = int();
 struct A
 {

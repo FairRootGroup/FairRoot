@@ -150,5 +150,5 @@ cxx11_check_feature("sizeof_member" HAS_CXX11_SIZEOF_MEMBER)
 cxx11_check_feature("static_assert" HAS_CXX11_STATIC_ASSERT)
 cxx11_check_feature("variadic_templates" HAS_CXX11_VARIADIC_TEMPLATES)
 cxx11_check_feature("sharedpointer" HAS_CXX11_SHAREDPOINTER)
-cxx11_check_feature("pattern1" HAS_CXX11_PATTERN1)
+cxx11_check_feature("funcptr-to-lambda-conversion" HAS_CXX11_PATTERN1)
 
