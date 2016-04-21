@@ -999,7 +999,7 @@ void FairMCApplication::InitGeometry()
   /// save Geo Params in Output file
   if (fRootManager) {
     fRootManager->WriteFolder();
-    TTree* outTree =new TTree("cbmsim", "/cbmroot", 99);
+    TTree* outTree =new TTree(FairRootManager::GetTreeName(), "/cbmroot", 99);
     fRootManager->TruncateBranchNames(outTree, "cbmroot");
     fRootManager->SetOutTree(outTree);
   }

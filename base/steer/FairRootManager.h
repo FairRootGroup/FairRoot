@@ -222,6 +222,8 @@ class FairRootManager : public TObject
 
     void SetFinishRun(Bool_t val = kTRUE){ fFinishRun = val;}
     Bool_t FinishRun() {return fFinishRun;}
+    
+    static char* GetTreeName();
   private:
     /**private methods*/
     FairRootManager(const FairRootManager&);
