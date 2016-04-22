@@ -19,7 +19,7 @@ endif (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 # the compiler and compiler flags used to install fairsoft.
 # Compare compiler and compiler flags used to compile fairsoft with the compiler and flags used now
 # In case of differences print a warning
-Find_Program(FAIRSOFT_CONFIG fairsoft-config PATHS $ENV{SIMPATH}/bin NO_DEFAULT_PATH)
+Find_Program(FAIRSOFT_CONFIG fairsoft-config PATHS $ENV{SIMPATH}/bin $ENV{FAIRSOFT_ROOT}/bin NO_DEFAULT_PATH)
 
 If(FAIRSOFT_CONFIG)
   Message(STATUS "fairsoft-config found")
