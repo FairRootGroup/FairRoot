@@ -119,6 +119,7 @@ if(FAIRROOT_MODULAR_BUILD)
   FIND_PATH(GEANT3_SYSTEM_DIR NAMES data PATHS
     ${Geant3_DIR}/../../share/geant3
     NO_DEFAULT_PATH
+  )
   find_package(Geant4)
   Set(GEANT4_INCLUDE_DIR ${Geant4_INCLUDE_DIRS})
   Set(GEANT4_LIBRARY_DIR "${Geant4_DIR}/..")
