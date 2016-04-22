@@ -112,7 +112,18 @@ find_package(Pythia6)
 if(FAIRROOT_MODULAR_BUILD)
   # Geant3, Geant4 installed via cmake
   find_package(Geant3)
+  # Fill the variables needed to create the config script
+  Set(GEANT3_INCLUDE_DIR ${Geant3_INCLUDE_DIRS})
+  Set(GEANT3_LIBRARIES ${Geant3_LIBRARIES})
+  Set(GEANT3_LIBRARY_DIR ${Geant3_DIR}/..)
+  FIND_PATH(GEANT3_SYSTEM_DIR NAMES data PATHS
+    ${Geant3_DIR}/../../share/geant3
+    NO_DEFAULT_PATH
   find_package(Geant4)
+  Set(GEANT4_INCLUDE_DIR ${Geant4_INCLUDE_DIRS})
+  Set(GEANT4_LIBRARY_DIR "${Geant4_DIR}/..")
+  set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules_old" ${CMAKE_MODULE_PATH})
+  find_package(GEANT4DATA)
 else(FAIRROOT_MODULAR_BUILD)
   # For old versions of VMC packages (to be removed)
   set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules_old" ${CMAKE_MODULE_PATH})
