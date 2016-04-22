@@ -102,8 +102,8 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
 
   TH1F* ResidentMemoryVsEvent = new TH1F("ResidentMemoryVsEvent","Resident Memory as function of Eventnumber;Event;Memory [MB]",entries, 0, entries);
   TH1F* VirtualMemoryVsEvent = new TH1F("VirtualMemoryVsEvent","Virtual Memory as function of Eventnumber;Event;Memory [MB]",entries, 0, entries);
-  TH1F* ResidentMemoryVsTime = new TH1F("ResidentMemoryVsTime","Resident memory as function of Runtime;Time [s];Memory [MB]",(Int_t)(timePeriod*10), 0, (Int_t)timePeriod);
-  TH1F* VirtualMemoryVsTime = new TH1F("VirtualMemoryVsTime","Virtual memory as function of Runtime;Time [s];Memory [MB]",(Int_t)(timePeriod*10), 0, (Int_t)timePeriod);
+  TH1F* ResidentMemoryVsTime = new TH1F("ResidentMemoryVsTime","Resident memory as function of Runtime;Time [s];Memory [MB]",static_cast<Int_t>(timePeriod*10), 0, static_cast<Int_t>(timePeriod));
+  TH1F* VirtualMemoryVsTime = new TH1F("VirtualMemoryVsTime","Virtual memory as function of Runtime;Time [s];Memory [MB]",static_cast<Int_t>(timePeriod*10), 0, static_cast<Int_t>(timePeriod));
   TH1F* EventtimeVsEvent = new TH1F("EventtimeVsEvent","Runtime per Event as function of Event number;Event;Time [s]",entries-1, 1, entries);
 
   std::vector<Double_t> timeDiffSorted(fTimeDiff);
@@ -114,7 +114,7 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
   Double_t maxTime = timeDiffSorted.back();
   timePeriod = maxTime - minTime;
 
-  TH1F* TimePerEvent = new TH1F("TimePerEvent","Runtime;Time [s];Events",(Int_t)((timePeriod+20)*10), (Int_t)minTime-10, (Int_t)maxTime+10);
+  TH1F* TimePerEvent = new TH1F("TimePerEvent","Runtime;Time [s];Events",static_cast<Int_t>((timePeriod+20)*10), static_cast<Int_t>(minTime-10), static_cast<Int_t>(maxTime+10));
 
   Int_t counter = 0;
   std::vector<Long_t>::iterator lit;

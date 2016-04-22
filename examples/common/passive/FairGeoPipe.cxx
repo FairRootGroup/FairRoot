@@ -46,7 +46,7 @@ Bool_t  FairGeoPipe::create ( FairGeoBuilder* build )
     FairGeoLoader* loader=FairGeoLoader::Instance();
     FairGeoInterface* GeoInterface =loader->getGeoInterface();
 
-    GeoInterface->getMasterNodes()->Add( (TObject*)  getVolume("pipeCentral") );
+    GeoInterface->getMasterNodes()->Add( static_cast<TObject*>( getVolume("pipeCentral") ) );
   }
   return rc;
 }

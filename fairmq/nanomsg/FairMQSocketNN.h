@@ -15,6 +15,8 @@
 #ifndef FAIRMQSOCKETNN_H_
 #define FAIRMQSOCKETNN_H_
 
+#include <vector>
+
 #include <nanomsg/nn.h>
 #include <nanomsg/pipeline.h>
 #include <nanomsg/pubsub.h>
@@ -26,7 +28,9 @@
 class FairMQSocketNN : public FairMQSocket
 {
   public:
-    FairMQSocketNN(const std::string& type, const std::string& name, int numIoThreads); // numIoThreads is not used in nanomsg.
+    FairMQSocketNN(const std::string& type, const std::string& name, const int numIoThreads, const std::string& id = ""); // numIoThreads is not used in nanomsg.
+    FairMQSocketNN(const FairMQSocketNN&) = delete;
+    FairMQSocketNN operator=(const FairMQSocketNN&) = delete;
 
     virtual std::string GetId();
 
@@ -35,8 +39,11 @@ class FairMQSocketNN : public FairMQSocket
 
     virtual int Send(FairMQMessage* msg, const std::string& flag = "");
     virtual int Send(FairMQMessage* msg, const int flags = 0);
+    virtual int64_t Send(const std::vector<std::unique_ptr<FairMQMessage>>& msgVec, const int flags = 0);
+
     virtual int Receive(FairMQMessage* msg, const std::string& flag = "");
     virtual int Receive(FairMQMessage* msg, const int flags = 0);
+    virtual int64_t Receive(std::vector<std::unique_ptr<FairMQMessage>>& msgVec, const int flags = 0);
 
     virtual void* GetSocket() const;
     virtual int GetSocket(int nothing) const;
@@ -67,10 +74,6 @@ class FairMQSocketNN : public FairMQSocket
     unsigned long fBytesRx;
     unsigned long fMessagesTx;
     unsigned long fMessagesRx;
-
-    /// Copy Constructor
-    FairMQSocketNN(const FairMQSocketNN&);
-    FairMQSocketNN operator=(const FairMQSocketNN&);
 };
 
 #endif /* FAIRMQSOCKETNN_H_ */

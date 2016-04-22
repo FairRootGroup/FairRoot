@@ -38,18 +38,19 @@ void FairMQExample8Sampler::Run()
         Ex8Header* header = new Ex8Header;
         // Set stopFlag to 1 for the first 4 messages, and to 0 for the 5th.
         counter < 5 ? header->stopFlag = 0 : header->stopFlag = 1;
-
-        // Create message part with the header.
-        unique_ptr<FairMQMessage> headerPart(fTransportFactory->CreateMessage(header, sizeof(Ex8Header)));
-        // Create message part with the body of 1000 bytes size.
-        unique_ptr<FairMQMessage> dataPart(fTransportFactory->CreateMessage(1000));
-
         LOG(INFO) << "Sending header with stopFlag: " << header->stopFlag;
 
-        // Schedule the header part for sending.
-        fChannels.at("data-out").at(0).SendPart(headerPart);
-        // Add body part (final part). `Send()` will send/queue all parts.
-        fChannels.at("data-out").at(0).Send(dataPart);
+        FairMQParts parts;
+
+        parts.AddPart(NewMessage(header, // data pointer
+                                 sizeof(Ex8Header), // data size
+                                 [](void* data, void* hint) { delete static_cast<Ex8Header*>(data); } // callback to deallocate after the transfer
+                                 ));
+        parts.AddPart(NewMessage(1000));
+
+        LOG(INFO) << "Sending body of size: " << parts.At(1)->GetSize();
+
+        Send(parts, "data-out");
 
         // Go out of the sending loop if the stopFlag was sent.
         if (counter == 5)

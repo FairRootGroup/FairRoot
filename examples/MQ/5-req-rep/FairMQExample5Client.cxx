@@ -29,9 +29,9 @@ FairMQExample5Client::~FairMQExample5Client()
 {
 }
 
-void FairMQExample5Client::CustomCleanup(void *data, void *hint)
+void FairMQExample5Client::CustomCleanup(void* /*data*/, void *hint)
 {
-    delete (string*)hint;
+    delete static_cast<string*>(hint);
 }
 
 void FairMQExample5Client::Run()
@@ -42,14 +42,14 @@ void FairMQExample5Client::Run()
 
         string* text = new string(fText);
 
-        unique_ptr<FairMQMessage> request(fTransportFactory->CreateMessage(const_cast<char*>(text->c_str()), text->length(), CustomCleanup, text));
-        unique_ptr<FairMQMessage> reply(fTransportFactory->CreateMessage());
+        unique_ptr<FairMQMessage> request(NewMessage(const_cast<char*>(text->c_str()), text->length(), CustomCleanup, text));
+        unique_ptr<FairMQMessage> reply(NewMessage());
 
         LOG(INFO) << "Sending \"" << fText << "\" to server.";
 
-        if (fChannels.at("data").at(0).Send(request) > 0)
+        if (Send(request, "data") > 0)
         {
-            if (fChannels.at("data").at(0).Receive(reply) >= 0)
+            if (Receive(reply, "data") >= 0)
             {
                 LOG(INFO) << "Received reply from server: \"" << string(static_cast<char*>(reply->GetData()), reply->GetSize()) << "\"";
             }

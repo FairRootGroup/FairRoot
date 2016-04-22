@@ -180,7 +180,7 @@ Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set,FairGeoMedia* media)
       return kFALSE;
     }
     Int_t npar = sh->getNumParam();
-    Double_t* par = new Double_t[npar];
+    Double_t* par = new Double_t[npar](); //() after array default-initialize an array
     for (Int_t ik=0; ik<npar; ik++) {
       fin >> par[ik];
     }

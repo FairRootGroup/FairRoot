@@ -114,7 +114,7 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat)
     const FairGeoRotation& rot=trans->getRotMatrix();
     const FairGeoVector& pos=trans->getTransVector();
     TGeoMatrix* tr=0;
-    if (((FairGeoRotation&)rot).isUnitMatrix()) {
+    if ((const_cast<FairGeoRotation&>(rot)).isUnitMatrix()) {
       tr=new TGeoTranslation(pos.getX(),pos.getY(),pos.getZ());
     } else {
       nRot++;
@@ -158,9 +158,9 @@ Int_t FairGeoRootBuilder::createMedium(FairGeoMedium* med)
     for(Int_t i=0; i<nComp; i++) {
       med->getComponent(i,p);
       if (weightFac>0) {
-        ((TGeoMixture*)material)->DefineElement(i,p[0],p[1],p[2]);
+        (static_cast<TGeoMixture*>(material))->DefineElement(i,p[0],p[1],p[2]);
       } else {
-        ((TGeoMixture*)material)->DefineElement(i,p[0],p[1],p[0]*p[2]/sumWeights);
+        (static_cast<TGeoMixture*>(material))->DefineElement(i,p[0],p[1],p[0]*p[2]/sumWeights);
       }
     }
   }

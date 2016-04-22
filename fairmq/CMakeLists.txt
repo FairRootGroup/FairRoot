@@ -8,9 +8,6 @@
 
 configure_file(${CMAKE_SOURCE_DIR}/fairmq/run/startBenchmark.sh.in ${CMAKE_BINARY_DIR}/bin/startBenchmark.sh)
 configure_file(${CMAKE_SOURCE_DIR}/fairmq/run/benchmark.json ${CMAKE_BINARY_DIR}/bin/config/benchmark.json)
-# following scripts are only for protobuf tests and are not essential part of FairMQ
-# configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startBin.sh.in ${CMAKE_BINARY_DIR}/bin/startBin.sh)
-# configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startProto.sh.in ${CMAKE_BINARY_DIR}/bin/startProto.sh)
 
 add_subdirectory(logger)
 add_subdirectory(test)
@@ -30,19 +27,8 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
   ${ZMQ_INCLUDE_DIR}
 )
 
-If(PROTOBUF_FOUND)
-  Set(INCLUDE_DIRECTORIES
-    ${INCLUDE_DIRECTORIES}
-    # following directory is only for protobuf tests and is not essential part of FairMQ
-    # ${CMAKE_SOURCE_DIR}/fairmq/prototest
-  )
-  Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
-    ${PROTOBUF_INCLUDE_DIR}
-  )
-EndIf(PROTOBUF_FOUND)
-
 If(NANOMSG_FOUND)
+  add_definitions(-DNANOMSG_FOUND)
   Set(INCLUDE_DIRECTORIES
     ${INCLUDE_DIRECTORIES}
     ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
@@ -51,6 +37,13 @@ If(NANOMSG_FOUND)
     ${SYSTEM_INCLUDE_DIRECTORIES}
     ${NANOMSG_INCLUDE_DIR}
   )
+  If(MSGPACK_FOUND)
+    add_definitions(-DMSGPACK_FOUND)
+    Set(SYSTEM_INCLUDE_DIRECTORIES
+      ${SYSTEM_INCLUDE_DIRECTORIES}
+      ${MSGPACK_INCLUDE_DIR}
+    )
+  EndIf(MSGPACK_FOUND)
 EndIf(NANOMSG_FOUND)
 
 Include_Directories(${INCLUDE_DIRECTORIES})
@@ -81,7 +74,6 @@ Set(SRCS
 
   "devices/FairMQBenchmarkSampler.cxx"
   "devices/FairMQSink.cxx"
-  "devices/FairMQBuffer.cxx"
   "devices/FairMQProxy.cxx"
   "devices/FairMQSplitter.cxx"
   "devices/FairMQMerger.cxx"
@@ -91,31 +83,6 @@ Set(SRCS
   "options/FairMQParser.cxx"
 )
 
-If(PROTOBUF_FOUND)
-  # following source files are only for protobuf tests and are not essential part of FairMQ
-  # add_custom_command(
-  #   OUTPUT
-  #     ${CMAKE_CURRENT_BINARY_DIR}/payload.pb.h
-  #     ${CMAKE_CURRENT_BINARY_DIR}/payload.pb.cc
-  #   COMMAND
-  #     ${SIMPATH}/bin/protoc -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} payload.proto
-  #   WORKING_DIRECTORY
-  #     ${CMAKE_SOURCE_DIR}/fairmq/prototest
-  #   )
-  # set(SRCS
-  #   ${SRCS}
-  #   ${CMAKE_CURRENT_BINARY_DIR}/payload.pb.cc
-  #   "prototest/FairMQProtoSampler.cxx"
-  #   "prototest/FairMQBinSampler.cxx"
-  #   "prototest/FairMQBinSink.cxx"
-  #   "prototest/FairMQProtoSink.cxx"
-  # )
-  Set(DEPENDENCIES
-    ${DEPENDENCIES}
-    ${PROTOBUF_LIBRARY}
-  )
-Endif(PROTOBUF_FOUND)
-
 If(NANOMSG_FOUND)
   Set(SRCS
     ${SRCS}
@@ -124,15 +91,13 @@ If(NANOMSG_FOUND)
     "nanomsg/FairMQSocketNN.cxx"
     "nanomsg/FairMQPollerNN.cxx"
   )
-  Set(DEPENDENCIES
-    ${DEPENDENCIES}
-    ${NANOMSG_LIBRARY_SHARED}
-  )
 EndIf(NANOMSG_FOUND)
+
 
 # to copy src that are header-only files (e.g. c++ template) for FairRoot external installation
 # manual install (globbing add not recommended)
 Set(FAIRMQHEADERS
+  FairMQParts.h
   devices/GenericSampler.h
   devices/GenericSampler.tpl
   devices/GenericProcessor.h
@@ -151,17 +116,24 @@ Install(FILES ${FAIRMQHEADERS} DESTINATION include)
 Set(DEPENDENCIES
   ${DEPENDENCIES}
   ${ZMQ_LIBRARY_SHARED}
-  boost_thread
+  ${Boost_THREAD_LIBRARY}
   fairmq_logger
-  boost_timer
-  boost_system
-  boost_filesystem
-  boost_program_options
-  boost_random
-  boost_chrono
-  boost_exception
-  boost_regex
+  ${Boost_TIMER_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_PROGRAM_OPTIONS_LIBRARY}
+  ${Boost_RANDOM_LIBRARY}
+  ${Boost_CHRONO_LIBRARY}
+  ${Boost_REGEX_LIBRARY}
 )
+
+If(NANOMSG_FOUND)
+  Set(DEPENDENCIES
+    ${DEPENDENCIES}
+    ${NANOMSG_LIBRARY_SHARED}
+    # msgpackc # currently header only
+  )
+EndIf(NANOMSG_FOUND)
 
 Set(LIBRARY_NAME FairMQ)
 
@@ -170,42 +142,18 @@ GENERATE_LIBRARY()
 Set(Exe_Names
   bsampler
   sink
-  buffer
   splitter
   merger
   proxy
 )
 
-# following executables are only for protobuf tests and are not essential part of FairMQ
-# if(PROTOBUF_FOUND)
-#   set(Exe_Names
-#       ${Exe_Names}
-#       binsampler
-#       protosampler
-#       binsink
-#       protosink
-#       )
-# endif(PROTOBUF_FOUND)
-
 Set(Exe_Source
   run/runBenchmarkSampler.cxx
   run/runSink.cxx
-  run/runBuffer.cxx
   run/runSplitter.cxx
   run/runMerger.cxx
   run/runProxy.cxx
 )
-
-# following source files are only for protobuf tests and are not essential part of FairMQ
-# if(PROTOBUF_FOUND)
-#   set(Exe_Source
-#       ${Exe_Source}
-#       prototest/runBinSampler.cxx
-#       prototest/runProtoSampler.cxx
-#       prototest/runBinSink.cxx
-#       prototest/runProtoSink.cxx
-#       )
-# endif(PROTOBUF_FOUND)
 
 list(LENGTH Exe_Names _length)
 math(EXPR _length ${_length}-1)

@@ -62,7 +62,7 @@ InitStatus FairTestDetectorHitProducerSmearing::Init()
     FairRootManager* ioman = FairRootManager::Instance();
 
     // Get a pointer to the previous already existing data level
-    fPointsArray = (TClonesArray*)ioman->GetObject("FairTestDetectorPoint");
+    fPointsArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorPoint"));
     if (!fPointsArray)
     {
       LOG(ERROR) << "No InputDataLevelName array!" << FairLogger::endl;
@@ -91,7 +91,7 @@ InitStatus FairTestDetectorHitProducerSmearing::ReInit()
 }
 
 // ---- Exec ----------------------------------------------------------
-void FairTestDetectorHitProducerSmearing::Exec(Option_t* option)
+void FairTestDetectorHitProducerSmearing::Exec(Option_t* /*option*/)
 {
   LOG(DEBUG) << "Exec of FairTestDetectorHitProducerSmearing"
 	     << FairLogger::endl;
@@ -100,10 +100,10 @@ void FairTestDetectorHitProducerSmearing::Exec(Option_t* option)
 
     // fill the map
     FairTestDetectorPoint* point = NULL;
-    FairTestDetectorHit* hit = NULL;
+    //FairTestDetectorHit* hit = NULL;
     for (int iPoint = 0; iPoint < fPointsArray->GetEntriesFast(); iPoint++)
     {
-        point = (FairTestDetectorPoint*)fPointsArray->At(iPoint);
+        point = static_cast<FairTestDetectorPoint*>(fPointsArray->At(iPoint));
         if (!point)
         {
             continue;
@@ -118,7 +118,8 @@ void FairTestDetectorHitProducerSmearing::Exec(Option_t* option)
         dposition.SetXYZ(0.05, 0.05, 0.);
         position.SetXYZ(gRandom->Gaus(position.X(), 0.05), gRandom->Gaus(position.Y(), 0.05), position.Z());
 
-        hit = new ((*fHitsArray)[iPoint]) FairTestDetectorHit(point->GetDetectorID(), iPoint, position, dposition);
+//        hit = new ((*fHitsArray)[iPoint]) FairTestDetectorHit(point->GetDetectorID(), iPoint, position, dposition);
+        new ((*fHitsArray)[iPoint]) FairTestDetectorHit(point->GetDetectorID(), iPoint, position, dposition);
     }
 }
 

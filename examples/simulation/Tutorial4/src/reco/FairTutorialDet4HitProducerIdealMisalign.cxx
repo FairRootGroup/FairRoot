@@ -18,6 +18,7 @@
 #include "FairTutorialDet4GeoHandler.h"  // for FairTutorialDet4GeoHandler
 #include "FairTutorialDet4Hit.h"        // for FairTutorialDet4Hit
 #include "FairTutorialDet4MisalignPar.h"
+#include "FairTutorialDet4GeoPar.h"
 #include "FairTutorialDet4Point.h"      // for FairTutorialDet4Point
 
 #include "TClonesArray.h"               // for TClonesArray
@@ -41,6 +42,7 @@ FairTutorialDet4HitProducerIdealMisalign::FairTutorialDet4HitProducerIdealMisali
     fRotZ(),
     fDigiPar(NULL),
     fGeoHandler(new FairTutorialDet4GeoHandler),
+    fGeoPar(NULL),
     fDoMisalignment(kFALSE)
 {
 }
@@ -57,8 +59,11 @@ void FairTutorialDet4HitProducerIdealMisalign::SetParContainers()
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDet4MisalignPar*)
+  fDigiPar = static_cast<FairTutorialDet4MisalignPar*>
              (rtdb->getContainer("FairTutorialDet4MissallignPar"));
+
+  fGeoPar = static_cast<FairTutorialDet4GeoPar*>
+             (rtdb->getContainer("FairTutorialDet4GeoPar"));
 
 }
 // --------------------------------------------------------------------
@@ -69,7 +74,7 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::ReInit()
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDet4MisalignPar*)
+  fDigiPar = static_cast<FairTutorialDet4MisalignPar*>
              (rtdb->getContainer("FairTutorialDet4MissallignPar"));
 
   fShiftX=fDigiPar->GetShiftX();
@@ -94,7 +99,7 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
   }
 
   // Get input array
-  fPointArray = (TClonesArray*) ioman->GetObject("TutorialDetPoint");
+  fPointArray = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetPoint"));
   if ( ! fPointArray ) {
     LOG(FATAL)<<"No TutorialDetPoint array!" << FairLogger::endl;
     return kFATAL;
@@ -114,6 +119,12 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
   fRotX=fDigiPar->GetRotX();
   fRotY=fDigiPar->GetRotY();
   fRotZ=fDigiPar->GetRotZ();
+
+  Bool_t isGlobalCoordinateSystem=fGeoPar->IsGlobalCoordinateSystem();
+  if (isGlobalCoordinateSystem) {
+    LOG(FATAL) << "Task can only work with local coordinates."
+	       << FairLogger::endl;
+  }
   /*
     Int_t num = fDigiPar->GetNrOfDetectors();
     Int_t size = fShiftX.GetSize();
@@ -126,7 +137,7 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
 
 }
 // -----   Public method Exec   --------------------------------------------
-void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* opt)
+void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
 {
 
   fHitArray->Clear();
@@ -134,24 +145,24 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* opt)
   // Declare some variables
   FairTutorialDet4Point* point = NULL;
   Int_t detID   = 0;        // Detector ID
-  Int_t trackID = 0;        // Track index
+//  Int_t trackID = 0;        // Track index
   Double_t x, y, z;         // Position
   Double_t dx = 0.1;        // Position error
-  Double_t tof = 0.;        // Time of flight
+//  Double_t tof = 0.;        // Time of flight
   TVector3 pos, dpos;       // Position and error vectors
 
   // Loop over TofPoints
   Int_t nHits = 0;
   Int_t nPoints = fPointArray->GetEntriesFast();
   for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
-    point = (FairTutorialDet4Point*) fPointArray->At(iPoint);
+    point = static_cast<FairTutorialDet4Point*>(fPointArray->At(iPoint));
     if ( ! point) { continue; }
 
     // Detector ID
     detID = point->GetDetectorID();
 
     // MCTrack ID
-    trackID = point->GetTrackID();
+//    trackID = point->GetTrackID();
 
     if(fDoMisalignment) {
 
@@ -175,7 +186,7 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* opt)
                  << fShiftY.At(detID)<<" cm in y-direction."<<FairLogger::endl;
 
       // Time of flight
-      tof = point->GetTime();
+//      tof = point->GetTime();
 
       // Create new hit
       pos.SetXYZ(x,y,z);
@@ -203,7 +214,7 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* opt)
       LOG(INFO)<<"Position: "<<x<<", "<<y<<", "<<z<<FairLogger::endl;
       LOG(INFO)<<"****"<<FairLogger::endl;
       // Time of flight
-      tof = point->GetTime();
+      //tof = point->GetTime();
 
       // Create new hit
       pos.SetXYZ(x,y,z);

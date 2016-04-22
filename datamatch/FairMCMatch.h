@@ -102,12 +102,12 @@ class FairMCMatch: public TNamed
 
     bool IsTypeInList(Int_t type);
 
-    void Print(std::ostream& out = std::cout) {out << *this;}
+    void PrintInfo(std::ostream& out = std::cout) {out << *this;}
 
     friend std::ostream& operator<< (std::ostream& out, const FairMCMatch& match) {
       for (int i = 0; i < match.GetNMCStages(); i++) {
         if (match.GetMCStage(i)->GetLoaded() == kTRUE) {
-          match.GetMCStage(i)->Print(out);
+          match.GetMCStage(i)->PrintInfo(out);
           out << std::endl;
         }
       }

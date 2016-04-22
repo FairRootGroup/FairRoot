@@ -121,15 +121,15 @@ else(FAIRROOT_MODULAR_BUILD)
   find_package(GEANT4DATA)
   find_package(GEANT4VMC)
   find_package(CLHEP)
-  find_package(GEANT4DATA)
-  find_package(GEANT4VMC)
-  find_package(CLHEP)
 endif(FAIRROOT_MODULAR_BUILD)
 
 find_package(CUDA)
 find_package(IWYU)
 find_package(ZeroMQ)
+find_package(nanomsg)
 find_package(Protobuf)
+find_package(Msgpack)
+find_package(FlatBuffers)
 find_package(DDS)
 
 If(WITH_DBASE)
@@ -137,12 +137,6 @@ If(WITH_DBASE)
   find_package(PGSQL)
   find_package(SQLITE)
 EndIf(WITH_DBASE)
-
-if(USE_NANOMSG)
-  find_package(nanomsg)
-else(USE_NANOMSG)
-  set(NANOMSG_FOUND false) # lower case false value is needed for bash scripts
-endif(USE_NANOMSG)
 
 If(FAIRSOFT_EXTERN)
   set(BOOST_ROOT ${SIMPATH})
@@ -162,7 +156,7 @@ Message("-- Looking for Boost ...")
 # for boost.
 Unset(Boost_INCLUDE_DIR CACHE)
 Unset(Boost_LIBRARY_DIRS CACHE)
-find_package(Boost 1.41 COMPONENTS thread system timer program_options random filesystem chrono exception regex)
+find_package(Boost 1.41 COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup)
 If (Boost_FOUND)
   Set(Boost_Avail 1)
   Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Boost_LIBRARY_DIR})
@@ -177,11 +171,18 @@ SET(FAIRROOT_PATCH_VERSION 0)
 SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}")
   
 If(ROOT_FOUND_VERSION LESS 59999)
-  SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
-      VERSION "${FAIRROOT_VERSION}"
-      SOVERSION "${FAIRROOT_MAJOR_VERSION}"
-      SUFFIX ".so"
-  )
+#  If(FAIRROOT_MODULAR_BUILD)
+#    SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
+#        VERSION "${FAIRROOT_VERSION}"
+#        SOVERSION "${FAIRROOT_MAJOR_VERSION}"
+#    )
+#  Else()
+    SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
+        VERSION "${FAIRROOT_VERSION}"
+        SOVERSION "${FAIRROOT_MAJOR_VERSION}"
+        SUFFIX ".so"
+    )
+#  EndIf()
 Else()
   SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
       VERSION "${FAIRROOT_VERSION}"
@@ -218,7 +219,6 @@ If(WITH_DBASE)
 EndIf()
 add_subdirectory (geobase)
 add_subdirectory (parbase)
-add_subdirectory (parmq)
 add_subdirectory (generators)
 If(GEANT3_FOUND)
  add_subdirectory (geane)
@@ -229,17 +229,18 @@ EndIf ()
 add_subdirectory (MbsAPI)
 add_subdirectory (datamatch)
 
-If (Boost_FOUND AND POS_C++11)
-  Message(STATUS "C++11 support & boost libraries found. FairMQ will be built.")
+If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND AND HAS_CXX11_PATTERN1)
+  Message(STATUS "Required C++11 feature(s), boost and ZeroMQ libraries found. FairMQ will be built.")
   add_subdirectory (fairmq)
   add_subdirectory (base/MQ)
+  add_subdirectory (parmq)
 Else ()
-  Message(STATUS "Building of the FairMQ library is switched off since C++11 or the necessary boost libraries couldn't be found on the system")
+  Message(STATUS "Building of the FairMQ library is switched off due to at least one of the following reasons : one or more C++11 feature(s), ZeroMQ or the necessary boost libraries couldn't be found on the system.")
 EndIf ()
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
 if(BUILD_DOXYGEN)
-  MESSAGE(STATUS "*** Building the Doxygen documentaion ***")
+  MESSAGE(STATUS "*** Building the Doxygen documentation ***")
   ADD_SUBDIRECTORY(doxygen)
 endif(BUILD_DOXYGEN)
 

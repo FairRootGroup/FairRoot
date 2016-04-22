@@ -23,7 +23,9 @@
 class FairMQSocketZMQ : public FairMQSocket
 {
   public:
-    FairMQSocketZMQ(const std::string& type, const std::string& name, int numIoThreads);
+    FairMQSocketZMQ(const std::string& type, const std::string& name, const int numIoThreads, const std::string& id = "");
+    FairMQSocketZMQ(const FairMQSocketZMQ&) = delete;
+    FairMQSocketZMQ operator=(const FairMQSocketZMQ&) = delete;
 
     virtual std::string GetId();
 
@@ -32,8 +34,11 @@ class FairMQSocketZMQ : public FairMQSocket
 
     virtual int Send(FairMQMessage* msg, const std::string& flag = "");
     virtual int Send(FairMQMessage* msg, const int flags = 0);
+    virtual int64_t Send(const std::vector<std::unique_ptr<FairMQMessage>>& msgVec, const int flags = 0);
+
     virtual int Receive(FairMQMessage* msg, const std::string& flag = "");
     virtual int Receive(FairMQMessage* msg, const int flags = 0);
+    virtual int64_t Receive(std::vector<std::unique_ptr<FairMQMessage>>& msgVec, const int flags = 0);
 
     virtual void* GetSocket() const;
     virtual int GetSocket(int nothing) const;
@@ -66,10 +71,6 @@ class FairMQSocketZMQ : public FairMQSocket
     unsigned long fMessagesRx;
 
     static boost::shared_ptr<FairMQContextZMQ> fContext;
-
-    /// Copy Constructor
-    FairMQSocketZMQ(const FairMQSocketZMQ&);
-    FairMQSocketZMQ operator=(const FairMQSocketZMQ&);
 };
 
 #endif /* FAIRMQSOCKETZMQ_H_ */

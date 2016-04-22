@@ -16,9 +16,8 @@
 
 
 FairMQProcessorTask::FairMQProcessorTask()
-    : fPayload(NULL)
-    , SendPart()
-    , ReceivePart()
+    : fPayload(nullptr)
+    , fTransportFactory(nullptr)
 {
 }
 
@@ -26,20 +25,8 @@ FairMQProcessorTask::~FairMQProcessorTask()
 {
 }
 
-void FairMQProcessorTask::Exec(Option_t *opt)
+void FairMQProcessorTask::Exec(Option_t* /*opt*/)
 {
-}
-
-// initialize a callback to the Processor for sending multipart messages.
-void FairMQProcessorTask::SetSendPart(boost::function<void()> callback)
-{
-    SendPart = callback;
-}
-
-// initialize a callback to the Processor for receiving multipart messages.
-void FairMQProcessorTask::SetReceivePart(boost::function<bool()> callback)
-{
-    ReceivePart = callback;
 }
 
 FairMQMessage* FairMQProcessorTask::GetPayload()
@@ -57,4 +44,14 @@ void FairMQProcessorTask::SetPayload(FairMQMessage* msg)
     {
         LOG(ERROR) << "FairMQMessage uninitialized or bad format";
     }
+}
+
+void FairMQProcessorTask::ClearPayload()
+{
+    delete fPayload;
+}
+
+void FairMQProcessorTask::SetTransport(FairMQTransportFactory* factory)
+{
+    fTransportFactory = factory;
 }

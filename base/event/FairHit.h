@@ -70,10 +70,10 @@ class FairHit : public FairTimeStamp
 
 
     /*** Output to screen */
-    virtual void Print(const Option_t* opt ="") const {;}
+    virtual void Print(const Option_t*) const {;}
 
     template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+    void serialize(Archive& ar, const unsigned int)
     {
         ar& boost::serialization::base_object<FairTimeStamp>(*this);
         ar& fDetectorID;

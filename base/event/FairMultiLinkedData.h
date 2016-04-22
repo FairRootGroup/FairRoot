@@ -80,11 +80,11 @@ class FairMultiLinkedData : public  TObject
     virtual void ResetLinks() {fLinks.clear();}                                    ///< Clears fLinks
 
 
-    std::ostream& Print(std::ostream& out = std::cout) const
+    std::ostream& PrintLinkInfo(std::ostream& out = std::cout) const
     {
       out << GetEntryNr() << " -> [";
       for (Int_t i = 0; i < GetNLinks(); i++) {
-        GetLink(i).Print(out);
+        GetLink(i).PrintLinkInfo(out);
         out << " ";
       }
       out << "]";
@@ -92,7 +92,7 @@ class FairMultiLinkedData : public  TObject
     }                                                     ///< Output
 
     friend std::ostream& operator<< (std::ostream& out, const FairMultiLinkedData& data) {
-      data.Print(out);
+      data.PrintLinkInfo(out);
       return out;
     }                                                     ///< Output
 
@@ -103,7 +103,7 @@ class FairMultiLinkedData : public  TObject
     Bool_t fInsertHistory; //!
     Int_t fVerbose; //!
 
-    virtual void SimpleAddLinks(Int_t fileId, Int_t evtId, Int_t dataType, std::vector<Int_t> links, Bool_t bypass, Float_t mult) {
+    virtual void SimpleAddLinks(Int_t fileId, Int_t evtId, Int_t dataType, std::vector<Int_t> links, Bool_t, Float_t) {
       for (UInt_t i = 0; i < links.size(); i++) {
         fLinks.insert(FairLink(fileId, evtId, dataType, links[i]));
       }

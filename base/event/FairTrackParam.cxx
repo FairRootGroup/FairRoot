@@ -77,7 +77,7 @@ FairTrackParam::~FairTrackParam() {}
 
 
 // -----   Public method Print   -------------------------------------------
-void FairTrackParam::Print(Option_t* option) const
+void FairTrackParam::Print(Option_t*) const
 {
   LOG(INFO) << "Position : (" << std::setprecision(2)
 	    << fX << ", " << fY << ", " << fZ << ")" << FairLogger::endl;

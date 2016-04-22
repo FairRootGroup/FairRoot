@@ -126,7 +126,7 @@ void FairGeoTorus::printPoints(FairGeoVolume* volu)
 
 
 
-void FairGeoTorus::calcVoluPosition(FairGeoVolume* volu,
+void FairGeoTorus::calcVoluPosition(FairGeoVolume*,
                                     const FairGeoTransform& dTC,const FairGeoTransform& mTR)
 {
   // calls the function posInMother(...) to calculate the position of the

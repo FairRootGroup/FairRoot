@@ -6,7 +6,7 @@
  */
 
 #ifndef GENERICMERGER_H
-#define	GENERICMERGER_H
+#define GENERICMERGER_H
 
 
 #include <boost/thread.hpp>
@@ -28,9 +28,10 @@ class GenericMerger : public FairMQDevice, public MergerPolicy, public InputPoli
     virtual ~GenericMerger()
     {}
 
-    void SetTransport(FairMQTransportFactory* transport)
+    template <typename... Args>
+    void SetTransport(Args... args)
     {
-        FairMQDevice::SetTransport(transport);
+        FairMQDevice::SetTransport(std::forward<Args>(args)...);
     }
 
   protected:
@@ -72,4 +73,3 @@ class GenericMerger : public FairMQDevice, public MergerPolicy, public InputPoli
 };
 
 #endif /* GENERICMERGER_H */
-

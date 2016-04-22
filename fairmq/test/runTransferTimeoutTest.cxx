@@ -15,12 +15,6 @@
 #include "FairMQLogger.h"
 #include "FairMQDevice.h"
 
-#ifdef NANOMSG
-#include "FairMQTransportFactoryNN.h"
-#else
-#include "FairMQTransportFactoryZMQ.h"
-#endif
-
 class TransferTimeoutTester : public FairMQDevice
 {
   public:
@@ -30,8 +24,8 @@ class TransferTimeoutTester : public FairMQDevice
   protected:
     virtual void Run()
     {
-        bool setSndOK = false;
-        bool setRcvOK = false;
+//        bool setSndOK = false;
+//        bool setRcvOK = false;
         bool getSndOK = false;
         bool getRcvOK = false;
         bool sendCanceling = false;
@@ -62,11 +56,10 @@ class TransferTimeoutTester : public FairMQDevice
 
         if (getSndOK && getRcvOK)
         {
-            void* buffer = operator new[](1000);
-            std::unique_ptr<FairMQMessage> msg1(fTransportFactory->CreateMessage(buffer, 1000));
-            std::unique_ptr<FairMQMessage> msg2(fTransportFactory->CreateMessage());
+            std::unique_ptr<FairMQMessage> msg1(NewMessage());
+            std::unique_ptr<FairMQMessage> msg2(NewMessage());
 
-            if (fChannels.at("data-out").at(0).Send(msg1) == -2)
+            if (Send(msg1, "data-out") == -2)
             {
                 LOG(INFO) << "send canceled";
                 sendCanceling = true;
@@ -76,7 +69,7 @@ class TransferTimeoutTester : public FairMQDevice
                 LOG(ERROR) << "send did not cancel";
             }
 
-            if (fChannels.at("data-in").at(0).Receive(msg2) == -2)
+            if (Receive(msg2, "data-in") == -2)
             {
                 LOG(INFO) << "receive canceled";
                 receiveCanceling = true;
@@ -94,16 +87,11 @@ class TransferTimeoutTester : public FairMQDevice
     }
 };
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** /*argv*/)
 {
     TransferTimeoutTester timeoutTester;
     timeoutTester.CatchSignals();
-
-#ifdef NANOMSG
-    timeoutTester.SetTransport(new FairMQTransportFactoryNN());
-#else
-    timeoutTester.SetTransport(new FairMQTransportFactoryZMQ());
-#endif
+    timeoutTester.SetTransport("zeromq");
 
     timeoutTester.SetProperty(TransferTimeoutTester::Id, "timeoutTester");
 

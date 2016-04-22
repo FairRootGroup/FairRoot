@@ -27,6 +27,11 @@
 #include "FairMQDevice.h"
 #include "FairMQLogger.h"
 
+#include "FairMQTransportFactoryZMQ.h"
+#ifdef NANOMSG_FOUND
+#include "FairMQTransportFactoryNN.h"
+#endif
+
 using namespace std;
 
 // boost::function and a wrapper to catch the signals
@@ -85,9 +90,15 @@ void FairMQDevice::SignalHandler(int signal)
 
 void FairMQDevice::InitWrapper()
 {
+    if (!fTransportFactory)
+    {
+        LOG(ERROR) << "Transport not initialized. Did you call SetTransport()?";
+        exit(EXIT_FAILURE);
+    }
+
     if (!fCmdSocket)
     {
-        fCmdSocket = fTransportFactory->CreateSocket("pub", "device-commands", fNumIoThreads);
+        fCmdSocket = fTransportFactory->CreateSocket("pub", "device-commands", fNumIoThreads, fId);
         fCmdSocket->Bind("inproc://commands");
     }
 
@@ -180,7 +191,7 @@ bool FairMQDevice::InitChannel(FairMQChannel& ch)
 {
     LOG(DEBUG) << "Initializing channel " << ch.fChannelName << " (" << ch.fType << ")";
     // initialize the socket
-    ch.fSocket = fTransportFactory->CreateSocket(ch.fType, ch.fChannelName, fNumIoThreads);
+    ch.fSocket = fTransportFactory->CreateSocket(ch.fType, ch.fChannelName, fNumIoThreads, fId);
     // set high water marks
     ch.fSocket->SetOption("snd-hwm", &(ch.fSndBufSize), sizeof(ch.fSndBufSize));
     ch.fSocket->SetOption("rcv-hwm", &(ch.fRcvBufSize), sizeof(ch.fRcvBufSize));
@@ -214,7 +225,7 @@ bool FairMQDevice::InitChannel(FairMQChannel& ch)
 
                 size_t pos = ch.fAddress.rfind(":");
                 stringstream newPort;
-                newPort << (int)randomPort(gen);
+                newPort << static_cast<int>(randomPort(gen));
                 ch.fAddress = ch.fAddress.substr(0, pos + 1) + newPort.str();
 
                 LOG(DEBUG) << "Binding channel " << ch.fChannelName << " on " << ch.fAddress;
@@ -454,6 +465,32 @@ void FairMQDevice::SetTransport(FairMQTransportFactory* factory)
     fTransportFactory = factory;
 }
 
+void FairMQDevice::SetTransport(const string& transport)
+{
+    if (transport == "zeromq")
+    {
+        fTransportFactory = new FairMQTransportFactoryZMQ();
+    }
+#ifdef NANOMSG_FOUND
+    else if (transport == "nanomsg")
+    {
+        fTransportFactory = new FairMQTransportFactoryNN();
+    }
+#endif
+    else
+    {
+        LOG(ERROR) << "Unavailable transport implementation requested: "
+                   << "\"" << transport << "\""
+                   << ". Available are: "
+                   << "\"zeromq\""
+#ifdef NANOMSG_FOUND
+                   << ", \"nanomsg\""
+#endif
+                   << ". Exiting.";
+        exit(EXIT_FAILURE);
+    }
+}
+
 void FairMQDevice::LogSocketRates()
 {
     timestamp_t t0;
@@ -522,19 +559,19 @@ void FairMQDevice::LogSocketRates()
             for (auto itr = filteredSockets.begin(); itr != filteredSockets.end(); itr++)
             {
                 bytesInNew.at(i) = (*itr)->GetBytesRx();
-                mbPerSecIn.at(i) = ((double)(bytesInNew.at(i) - bytesIn.at(i)) / (1024. * 1024.)) / (double)msSinceLastLog * 1000.;
+                mbPerSecIn.at(i) = (static_cast<double>(bytesInNew.at(i) - bytesIn.at(i)) / (1024. * 1024.)) / static_cast<double>(msSinceLastLog) * 1000.;
                 bytesIn.at(i) = bytesInNew.at(i);
 
                 msgInNew.at(i) = (*itr)->GetMessagesRx();
-                msgPerSecIn.at(i) = (double)(msgInNew.at(i) - msgIn.at(i)) / (double)msSinceLastLog * 1000.;
+                msgPerSecIn.at(i) = static_cast<double>(msgInNew.at(i) - msgIn.at(i)) / static_cast<double>(msSinceLastLog) * 1000.;
                 msgIn.at(i) = msgInNew.at(i);
 
                 bytesOutNew.at(i) = (*itr)->GetBytesTx();
-                mbPerSecOut.at(i) = ((double)(bytesOutNew.at(i) - bytesOut.at(i)) / (1024. * 1024.)) / (double)msSinceLastLog * 1000.;
+                mbPerSecOut.at(i) = (static_cast<double>(bytesOutNew.at(i) - bytesOut.at(i)) / (1024. * 1024.)) / static_cast<double>(msSinceLastLog) * 1000.;
                 bytesOut.at(i) = bytesOutNew.at(i);
 
                 msgOutNew.at(i) = (*itr)->GetMessagesTx();
-                msgPerSecOut.at(i) = (double)(msgOutNew.at(i) - msgOut.at(i)) / (double)msSinceLastLog * 1000.;
+                msgPerSecOut.at(i) = static_cast<double>(msgOutNew.at(i) - msgOut.at(i)) / static_cast<double>(msSinceLastLog) * 1000.;
                 msgOut.at(i) = msgOutNew.at(i);
 
                 LOG(DEBUG) << filteredChannelNames.at(i) << ": "
@@ -627,12 +664,6 @@ void FairMQDevice::InteractiveStateLoop()
     tcgetattr(STDIN_FILENO, &t); // get the current terminal I/O structure
     t.c_lflag |= ICANON; // re-enable canonical input
     tcsetattr(STDIN_FILENO, TCSANOW, &t); // apply the new settings
-}
-
-inline void FairMQDevice::PrintInteractiveStateLoopHelp()
-{
-    LOG(INFO) << "Use keys to control the state machine:";
-    LOG(INFO) << "[h] help, [p] pause, [r] run, [s] stop, [t] reset task, [d] reset device, [q] end, [j] init task, [i] init device";
 }
 
 void FairMQDevice::Unblock()

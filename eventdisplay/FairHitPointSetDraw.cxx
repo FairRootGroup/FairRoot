@@ -37,7 +37,7 @@ FairHitPointSetDraw::~FairHitPointSetDraw()
 
 TVector3 FairHitPointSetDraw::GetVector(TObject* obj)
 {
-  FairHit* p = (FairHit*)obj;
+  FairHit* p = static_cast<FairHit*>(obj);
   if (fVerbose > 1) {
     cout << "-I- FairHitPointSetDraw::GetVector: " << p->GetX() << " " << p->GetY() << " " << p->GetZ() << endl;
   }

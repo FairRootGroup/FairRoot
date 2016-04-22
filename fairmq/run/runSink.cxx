@@ -21,12 +21,6 @@
 #include "FairMQProgOptions.h"
 #include "FairMQSink.h"
 
-#ifdef NANOMSG
-#include "FairMQTransportFactoryNN.h"
-#else
-#include "FairMQTransportFactoryZMQ.h"
-#endif
-
 using namespace std;
 using namespace FairMQParser;
 using namespace boost::program_options;
@@ -40,6 +34,14 @@ int main(int argc, char** argv)
 
     try
     {
+        int numMsgs;
+
+        options_description sink_options("Sink options");
+        sink_options.add_options()
+            ("num-msgs", value<int>(&numMsgs)->default_value(0), "Number of messages to receive");
+
+        config.AddToCmdLineOptions(sink_options);
+
         if (config.ParseAll(argc, argv))
         {
             return 0;
@@ -47,7 +49,7 @@ int main(int argc, char** argv)
 
         string filename = config.GetValue<string>("config-json-file");
         string id = config.GetValue<string>("id");
-        int ioThreads = config.GetValue<int>("io-threads");
+//        int ioThreads = config.GetValue<int>("io-threads");
 
         config.UserParser<JSON>(filename, id);
 
@@ -55,15 +57,10 @@ int main(int argc, char** argv)
 
         LOG(INFO) << "PID: " << getpid();
 
-#ifdef NANOMSG
-        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-        sink.SetTransport(transportFactory);
+        sink.SetTransport(config.GetValue<std::string>("transport"));
 
         sink.SetProperty(FairMQSink::Id, id);
+        sink.SetProperty(FairMQSink::NumMsgs, numMsgs);
         sink.SetProperty(FairMQSink::NumIoThreads, config.GetValue<int>("io-threads"));
 
         sink.ChangeState("INIT_DEVICE");

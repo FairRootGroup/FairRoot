@@ -51,7 +51,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     virtual void SetEntryNr(FairLink entry) {fEntryNr = entry;}
     virtual Int_t Compare(const TObject* obj) const {
       if (this == obj) { return 0; }
-      FairTimeStamp* tsobj = (FairTimeStamp*)obj;
+      FairTimeStamp* tsobj = static_cast<FairTimeStamp*>(const_cast<TObject*>(obj));
       Double_t ts = tsobj->GetTimeStamp();
       Double_t tserror = tsobj->GetTimeStampError();
       if (fTimeStamp < ts) { return -1; }
@@ -61,7 +61,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     }
 
 
-    virtual std::ostream& Print(std::ostream& out = std::cout) const;
+    virtual std::ostream& PrintTimeInfo(std::ostream& out = std::cout) const;
     virtual Bool_t IsSortable() const { return kTRUE;};
 
 
@@ -70,7 +70,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     }
 
     friend std::ostream& operator<< (std::ostream& out, const FairTimeStamp& link) {
-      link.Print(out);
+      link.PrintTimeInfo(out);
       return out;
     }
 
@@ -82,7 +82,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     }
 
     template<class Archive>
-    void serialize(Archive& ar, const unsigned int version)
+    void serialize(Archive& ar, const unsigned int)
     {
         // ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
         ar& fTimeStamp;

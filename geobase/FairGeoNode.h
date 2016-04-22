@@ -65,10 +65,10 @@ class FairGeoNode : public FairGeoVolume
     void AddDaughter(FairGeoNode* fNode) {fDaughterList->AddLast(fNode);}
     TObjArray* GetListOfDaughters() {return fDaughterList;}
     EFairGeoNodeType getVolumeType() { return volumeType; }
-    Bool_t isTopNode() { return (Bool_t)(volumeType == kFairGeoTopNode);}
-    Bool_t isRefNode() { return (Bool_t)(volumeType == kFairGeoRefNode);}
-    Bool_t isKeepin()  { return (Bool_t)(volumeType == kFairGeoKeepin);}
-    Bool_t isModule()  { return (Bool_t)(volumeType == kFairGeoModule);}
+    Bool_t isTopNode() { return static_cast<Bool_t>((volumeType == kFairGeoTopNode));}
+    Bool_t isRefNode() { return static_cast<Bool_t>((volumeType == kFairGeoRefNode));}
+    Bool_t isKeepin()  { return static_cast<Bool_t>((volumeType == kFairGeoKeepin));}
+    Bool_t isModule()  { return static_cast<Bool_t>((volumeType == kFairGeoModule));}
     Int_t getCopyNo();
     FairGeoBasicShape* getShapePointer() { return pShape; }
     FairGeoNode* getMotherNode() {return pMother;}

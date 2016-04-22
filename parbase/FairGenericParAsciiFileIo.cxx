@@ -48,7 +48,7 @@ Bool_t FairGenericParAsciiFileIo::init(FairParSet *pPar) {
   }
 
   if (pPar->InheritsFrom("FairParGenericSet")) {
-    return readGenericSet((FairParGenericSet *)pPar);
+    return readGenericSet(static_cast<FairParGenericSet*>(pPar));
   }
 
   Error("init(FairParSet*)", "%s does not inherit from FairParGenericSet",
@@ -62,7 +62,7 @@ Int_t FairGenericParAsciiFileIo::write(FairParSet *pPar) {
     return -1;
   }
   if (pPar->InheritsFrom("FairParGenericSet")) {
-    return writeGenericSet((FairParGenericSet *)pPar);
+    return writeGenericSet(static_cast<FairParGenericSet*>(pPar));
   }
   Error("write(FairParSet*)", "%s does not inherit from FairParGenericSet",
         pPar->GetName());
@@ -103,7 +103,7 @@ const UChar_t *FairGenericParAsciiFileIo::readData(type t, const Char_t *format,
           delete[] val;
           val = va;
         }
-        Char_t *ss = strtok((Char_t *)s.Data(), d);
+        Char_t *ss = strtok(const_cast<Char_t*>(s.Data()), d);
         while (ss != 0) {
           sscanf(ss, format, &t);
           memcpy(&val[l], &t, st);
@@ -140,7 +140,7 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet *pPar) {
   }
   pFile->clear();
   pFile->seekg(0, ios::beg);
-  Text_t *name = (Char_t *)pPar->GetName();
+  const Text_t *name = (pPar->GetName());
 
   if (!findContainer(name)) {
     return kFALSE;
@@ -289,12 +289,12 @@ Int_t FairGenericParAsciiFileIo::writeGenericSet(FairParGenericSet *pPar) {
     TList *pList = paramList->getList();
     TIter next(pList);
     FairParamObj *po;
-    while ((po = (FairParamObj *)next())) {
+    while ((po = static_cast<FairParamObj*>(next()))) {
       const Char_t *pType = po->getParamType();
       UChar_t *pValue = po->getParamValue();
       if (po->isBasicType() && strcmp(pType, "UChar_t") != 0) {
         if (strcmp(pType, "Text_t") == 0) {
-          TString val((Char_t *)pValue, po->getLength());
+          TString val(reinterpret_cast<Char_t*>(pValue), po->getLength());
           val.ReplaceAll("\n", " \\\n");
           *pFile << po->GetName() << ":  " << pType << " \\\n  " << val.Data()
                  << std::endl;
@@ -306,13 +306,13 @@ Int_t FairGenericParAsciiFileIo::writeGenericSet(FairParGenericSet *pPar) {
             *pFile << po->GetName() << ":  " << pType << " \\\n  ";
           }
           if (strcmp(pType, "Char_t") == 0) {
-            writeData((Char_t *)pValue, nParams);
+            writeData(reinterpret_cast<Char_t*>(pValue), nParams);
           } else if (strcmp(pType, "Int_t") == 0) {
-            writeData((Int_t *)pValue, nParams);
+            writeData(reinterpret_cast<Int_t*>(pValue), nParams);
           } else if (strcmp(pType, "Float_t") == 0) {
-            writeData((Float_t *)pValue, nParams);
+            writeData(reinterpret_cast<Float_t*>(pValue), nParams);
           } else if (strcmp(pType, "Double_t") == 0) {
-            writeData((Double_t *)pValue, nParams);
+            writeData(reinterpret_cast<Double_t*>(pValue), nParams);
           }
         }
       } else {

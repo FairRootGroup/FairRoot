@@ -81,26 +81,26 @@ void FairRadGridManager::FillMeshList()
 {
 
   /**Add a point to the collection*/
-  TParticle* part = gMC->GetStack()->GetCurrentTrack();
-  fTrackID = gMC->GetStack()->GetCurrentTrackNumber();
-  gMC->TrackPosition(fPosIn);
-  gMC->TrackMomentum(fMomIn);
+  TParticle* part = TVirtualMC::GetMC()->GetStack()->GetCurrentTrack();
+  fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
+  TVirtualMC::GetMC()->TrackPosition(fPosIn);
+  TVirtualMC::GetMC()->TrackMomentum(fMomIn);
   fELoss = 0.;
-//  Int_t MatId=  gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
+//  Int_t MatId=  TVirtualMC::GetMC()->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
 
   /** Sum energy loss for all steps in the mesh*/
   for (Int_t i=0; i<fMeshList->GetEntriesFast(); i++ ) {
-    FairMesh* aMesh = (FairMesh*) fMeshList->At(i);
+    FairMesh* aMesh = static_cast<FairMesh*>(fMeshList->At(i));
     Double_t fBinVolume = aMesh->GetBinVolume();
     Double_t fDiag = aMesh->GetDiag();
 
     // Geometry bound test
     if ( IsTrackInside(fPosIn,aMesh) ) {
-      fELoss = gMC->Edep();
+      fELoss = TVirtualMC::GetMC()->Edep();
       //cout << "-I- track (" << fTrackID << ")  is inside " << endl;
       //cout << " E deposited is " << fELoss << endl;
-      gMC->TrackPosition(fPosOut);
-      gMC->TrackMomentum(fMomOut);
+      TVirtualMC::GetMC()->TrackPosition(fPosOut);
+      TVirtualMC::GetMC()->TrackMomentum(fMomOut);
 
       // Now cumulate fEloss (Gev/cm3)
       // and normalize it to the mesh volume
@@ -108,7 +108,7 @@ void FairRadGridManager::FillMeshList()
       // 1 estimator Edep
       fELoss = fELoss/fBinVolume;
       // 2 estimator TrackLengh
-      fLength = gMC->TrackStep();
+      fLength = TVirtualMC::GetMC()->TrackStep();
       // fill TID
 
       aMesh->fillTID(fPosOut.X(),fPosOut.Y(),fELoss);
@@ -129,8 +129,8 @@ void FairRadGridManager::FillMeshList()
   }
 }
 
-Bool_t FairRadGridManager::IsTrackEntering(TLorentzVector& pos ,
-    TLorentzVector& mom )
+Bool_t FairRadGridManager::IsTrackEntering(TLorentzVector&,
+    TLorentzVector&)
 {
   // assume for the moment vertical scoring planes
   //    cout << " is entering diagnosis " << endl;

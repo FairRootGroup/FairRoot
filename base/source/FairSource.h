@@ -21,6 +21,8 @@
 
 class FairEventHeader;
 
+enum Source_Type {kONLINE, kFILE};
+
 class FairSource : public TObject
 {
   public:
@@ -33,15 +35,17 @@ class FairSource : public TObject
     virtual void Close() = 0;
 
     virtual void Reset() = 0;
-    
-    virtual Bool_t   ActivateObject(TObject** obj, const char* ObjType)  { return kFALSE; }
-    
+
+    virtual Bool_t   ActivateObject(TObject**, const char*)  { return kFALSE; }
+
+    virtual Source_Type GetSourceType() = 0;
+
     /**Check the maximum event number we can run to*/
-    virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0) {return -1;}
+    virtual Int_t  CheckMaxEventNo(Int_t=0) {return -1;}
     /**Read the tree entry on one branch**/
-    virtual void   ReadBranchEvent(const char* BrName) {return;}
-    virtual void   ReadBranchEvent(const char* BrName, Int_t Event) {return;}
-    virtual void FillEventHeader(FairEventHeader* feh) { return; } 
+    virtual void   ReadBranchEvent(const char* ) {return;}
+    virtual void   ReadBranchEvent(const char*, Int_t) {return;}
+    virtual void FillEventHeader(FairEventHeader*) { return; } 
 
   public:
     ClassDef(FairSource, 1)

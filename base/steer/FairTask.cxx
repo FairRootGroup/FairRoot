@@ -188,7 +188,7 @@ void FairTask::ExecuteTasks(Option_t *option)
 
    TIter next(fTasks);
    FairTask *task;
-   while((task=(FairTask*)next())) {
+   while((task=static_cast<FairTask*>(next()))) {
       if (fgBreakPoint) return;
       if (!task->IsActive()) continue;
       if (task->fHasExecuted) {

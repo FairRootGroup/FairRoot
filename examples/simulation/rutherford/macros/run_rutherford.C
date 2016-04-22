@@ -5,7 +5,7 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant3")
+void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4")
 {
   
   TString dir = gSystem->Getenv("VMCWORKDIR");
@@ -23,6 +23,9 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant3")
 
   TString parFile = outDir + "/params_";
   parFile = parFile + mcEngine + ".root";
+   
+   // Set the random seed
+  gRandom->SetSeed(98989);
 
   // In general, the following parts need not be touched
   // ========================================================================
@@ -30,7 +33,6 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant3")
   // ----    Debug option   -------------------------------------------------
   gDebug = 0;
   // ------------------------------------------------------------------------
-
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
   timer.Start();

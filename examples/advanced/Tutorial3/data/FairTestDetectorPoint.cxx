@@ -50,7 +50,7 @@ FairTestDetectorPoint::~FairTestDetectorPoint()
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void FairTestDetectorPoint::Print(const Option_t* opt) const
+void FairTestDetectorPoint::Print(const Option_t* /*opt*/) const
 {
     LOG(INFO) << "FairTestDetectorPoint: FairTestDetector point for track " 
 	      << fTrackID << " in detector " << fDetectorID 

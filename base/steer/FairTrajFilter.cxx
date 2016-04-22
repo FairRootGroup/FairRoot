@@ -162,7 +162,7 @@ Bool_t FairTrajFilter::IsAccepted(const TParticle* p) const
 void FairTrajFilter::SetVertexCut(Double_t vxMin, Double_t vyMin, Double_t vzMin,
                                   Double_t vxMax, Double_t vyMax, Double_t vzMax)
 {
-  TGeoBBox* cave = (TGeoBBox*) gGeoManager->GetTopVolume()->GetShape();
+  TGeoBBox* cave = static_cast<TGeoBBox*>(gGeoManager->GetTopVolume()->GetShape());
   cave->ComputeBBox();
   Double_t caveX = 2.*cave->GetDX();
   Double_t caveY = 2.*cave->GetDY();
@@ -343,7 +343,7 @@ TGeoTrack* FairTrajFilter::AddTrack(TParticle* p)
 TGeoTrack* FairTrajFilter::GetTrack(Int_t trackId)
 {
 
-  return (TGeoTrack*)fTrackCollection->At(trackId);
+  return static_cast<TGeoTrack*>(fTrackCollection->At(trackId));
 }
 
 

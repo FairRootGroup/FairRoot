@@ -10,6 +10,8 @@ configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/2-sampler-processor-sink/ex2-samp
 
 Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairmq
+  ${CMAKE_SOURCE_DIR}/fairmq/zeromq
+  ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
   ${CMAKE_SOURCE_DIR}/fairmq/devices
   ${CMAKE_SOURCE_DIR}/fairmq/tools
   ${CMAKE_SOURCE_DIR}/fairmq/options
@@ -19,25 +21,13 @@ Set(INCLUDE_DIRECTORIES
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
   ${Boost_INCLUDE_DIR}
+  ${ZMQ_INCLUDE_DIR}
 )
 
 If(NANOMSG_FOUND)
-  Set(INCLUDE_DIRECTORIES
-    ${INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
-  )
   Set(SYSTEM_INCLUDE_DIRECTORIES
     ${SYSTEM_INCLUDE_DIRECTORIES}
-    ${ZMQ_INCLUDE_DIR}
-  )
-Else(NANOMSG_FOUND)
-  Set(INCLUDE_DIRECTORIES
-    ${INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/fairmq/zeromq
-  )
-  Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
-    ${ZMQ_INCLUDE_DIR}
+    ${NANOMSG_INCLUDE_DIR}
   )
 EndIf(NANOMSG_FOUND)
 
@@ -88,3 +78,8 @@ ForEach(_file RANGE 0 ${_length})
   Set(DEPENDENCIES FairMQExample2)
   GENERATE_EXECUTABLE()
 EndForEach(_file RANGE 0 ${_length})
+
+Install(
+  FILES ex2-sampler-processor-sink.json
+  DESTINATION share/fairbase/examples/MQ/2-sampler-processor-sink/config/
+)

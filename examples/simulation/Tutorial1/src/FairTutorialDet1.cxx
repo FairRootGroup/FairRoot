@@ -27,7 +27,7 @@
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMC.h"                 // for TVirtualMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include <stddef.h>                     // for NULL
@@ -69,8 +69,10 @@ FairTutorialDet1::~FairTutorialDet1()
 void FairTutorialDet1::Initialize()
 {
   FairDetector::Initialize();
+/*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairTutorialDet1GeoPar* par=(FairTutorialDet1GeoPar*)(rtdb->getContainer("FairTutorialDet1GeoPar"));
+*/
 }
 
 Bool_t  FairTutorialDet1::ProcessHits(FairVolume* vol)
@@ -79,22 +81,22 @@ Bool_t  FairTutorialDet1::ProcessHits(FairVolume* vol)
 
   LOG(DEBUG) << "In FairTutorialDet1::ProcessHits" << FairLogger::endl;
   //Set parameters at entrance of volume. Reset ELoss.
-  if ( gMC->IsTrackEntering() ) {
+  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
     fELoss  = 0.;
-    fTime   = gMC->TrackTime() * 1.0e09;
-    fLength = gMC->TrackLength();
-    gMC->TrackPosition(fPos);
-    gMC->TrackMomentum(fMom);
+    fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
+    fLength = TVirtualMC::GetMC()->TrackLength();
+    TVirtualMC::GetMC()->TrackPosition(fPos);
+    TVirtualMC::GetMC()->TrackMomentum(fMom);
   }
 
   // Sum energy loss for all steps in the active volume
-  fELoss += gMC->Edep();
+  fELoss += TVirtualMC::GetMC()->Edep();
 
   // Create FairTutorialDet1Point at exit of active volume
-  if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       ||
-       gMC->IsTrackDisappeared()   ) {
-    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
+       TVirtualMC::GetMC()->IsTrackStop()       ||
+       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
+    fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
     fVolumeID = vol->getMCid();
     if (fELoss == 0. ) { return kFALSE; }
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
@@ -102,7 +104,7 @@ Bool_t  FairTutorialDet1::ProcessHits(FairVolume* vol)
            fELoss);
 
     // Increment number of tutorial det points in TParticle
-    FairStack* stack = (FairStack*) gMC->GetStack();
+    FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
     stack->AddPoint(kTutDet);
   }
 
@@ -163,7 +165,7 @@ void FairTutorialDet1::ConstructGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet1GeoPar* par=(FairTutorialDet1GeoPar*)(rtdb->getContainer("FairTutorialDet1GeoPar"));
+  FairTutorialDet1GeoPar* par=static_cast<FairTutorialDet1GeoPar*>(rtdb->getContainer("FairTutorialDet1GeoPar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -171,7 +173,7 @@ void FairTutorialDet1::ConstructGeometry()
   FairGeoNode* node   = NULL;
   FairGeoVolume* aVol=NULL;
 
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
       fSensNodes->AddLast( aVol );

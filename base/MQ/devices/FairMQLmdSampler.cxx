@@ -12,12 +12,12 @@
  * Created on October 27, 2015, 2:07 PM
  */
 
+#include <stdexcept>
 
 #include "FairMQLogger.h"
 #include "FairMQLmdSampler.h"
-#include <stdexcept>
 
-FairMQLmdSampler::FairMQLmdSampler() : 
+FairMQLmdSampler::FairMQLmdSampler() :
     fCurrentFile(0),
     fNEvent(0),
     fCurrentEvent(0),
@@ -29,78 +29,77 @@ FairMQLmdSampler::FairMQLmdSampler() :
     fxSubEvent(nullptr),
     fxInfoHeader(nullptr),
     stop(false),
-    fMsgCounter(0)
+    fMsgCounter(0),
+    fSubEventChanMap()
 {
 }
 
-FairMQLmdSampler::~FairMQLmdSampler() 
+FairMQLmdSampler::~FairMQLmdSampler()
 {
 }
-
-
 
 //______________________________________________________________________________
 void FairMQLmdSampler::AddSubEvtKey(short type, short subType, short procid, short subCrate, short control, const std::string& channelName)
 {
     SubEvtKey key(type, subType, procid, subCrate, control);
-    if(!fSubEventChanMap.count(key))
+    if (!fSubEventChanMap.count(key))
+    {
         fSubEventChanMap[key] = channelName;
+    }
     else
     {
-        LOG(WARN)     << "FairMQLmdSampler : subevent header key '(" 
-                    << type
-                    << "," 
-                    << subType
-                    << ","
-                    << procid
-                    << ","
-                    << subCrate
-                    << ","
-                     << control
-                     << ")' has already been defined with channel name '"
-                    << fSubEventChanMap.at(key)
-                    << "'. it will be overwritten with new channel name = "
-                    << channelName;
+        LOG(WARN) << "FairMQLmdSampler : subevent header key '("
+                  << type
+                  << ","
+                  << subType
+                  << ","
+                  << procid
+                  << ","
+                  << subCrate
+                  << ","
+                  << control
+                  << ")' has already been defined with channel name '"
+                  << fSubEventChanMap.at(key)
+                  << "'. it will be overwritten with new channel name = "
+                  << channelName;
         fSubEventChanMap[key] = channelName;
     }
 }
-
 
 //______________________________________________________________________________
 void FairMQLmdSampler::InitTask()
 {
-  
-    if(fFileNames.size() == 0) 
+    if (fFileNames.size() == 0)
     {
-        throw std::runtime_error(std::string("FairMQLmdSampler::InitTask: No files provided") );
+        throw std::runtime_error(std::string("FairMQLmdSampler::InitTask: No files provided"));
     }
 
     std::string name = fFileNames.at(fCurrentFile);
-    if(! OpenNextFile(name)) 
+    if (!OpenNextFile(name))
     {
-        throw std::runtime_error(std::string("FairMQLmdSampler::InitTask: cannot open file ")+name );
+        throw std::runtime_error(std::string("FairMQLmdSampler::InitTask: cannot open file ") + name);
     }
 
     fCurrentFile += 1;
     // Init Counters
-    fNEvent=0;
-    fCurrentEvent=0;
+    fNEvent = 0;
+    fCurrentEvent = 0;
 }
 
 void FairMQLmdSampler::Run()
 {
-    
-    while (CheckCurrentState(RUNNING) )//&& !stop)
-    {    
-        if(1 == ReadEvent())
+    while (CheckCurrentState(RUNNING))//&& !stop)
+    {
+        if (1 == ReadEvent())
+        {
             break;
+        }
     }
-    LOG(INFO)<<"Sent "<<fMsgCounter<<" messages.";
-
+    LOG(INFO) << "Sent " << fMsgCounter << " messages.";
 }
 
 
-void free_buffer (void *data, void *hint)
+void free_buffer(void* /*data*/, void* /*hint*/)
 {
     LOG(TRACE) << "empty deleter";
 }
@@ -117,38 +116,36 @@ int FairMQLmdSampler::ReadEvent()
     /*-               GETEVT__NOMORE=3  : No more events.                 */
     /*-               GETEVT__RDERR=6   : read server or file error       */
     /*-               GETEVT__TIMEOUT=9 : when enabled by f_evt_timeout   */
-    int status = f_evt_get_event(fxInputChannel, (INTS4**)evtptr, (INTS4**)buffptr);
+    int status = f_evt_get_event(fxInputChannel, static_cast<INTS4**>(evtptr), static_cast<INTS4**>(buffptr));
     //int fuEventCounter = fxEvent->l_count;
     //int fCurrentMbsEventNo = fuEventCounter;
     
     LOG(TRACE) << "STATUS = "<<status;
-    if(GETEVT__SUCCESS != status) // if f_evt_get_event not successfull close if nomore evt or look to another file and start again
+    if (GETEVT__SUCCESS != status) // if f_evt_get_event not successfull close if nomore evt or look to another file and start again
     {
-
         LOG(TRACE) << "FairMQLmdSampler::ReadEvent()";
 
         CHARS* sErrorString = NULL;
-        f_evt_error(status, sErrorString , 0);
+        f_evt_error(status, sErrorString, 0);
 
-        if(GETEVT__NOMORE == status) 
+        if (GETEVT__NOMORE == status)
         {
             Close();
         }
 
-
         // fCurrentFile incremented in InitTask once
-        if(fCurrentFile >= fFileNames.size()) 
+        if (fCurrentFile >= static_cast<int>(fFileNames.size()))
         {
-            stop=true;
+            stop = true;
             return 1;
         }
 
         std::string name = fFileNames.at(fCurrentFile);
-        if(! OpenNextFile(name) ) 
+        if (!OpenNextFile(name))
         {
             return 1;
-        } 
-        else 
+        }
+        else
         {
             fCurrentFile += 1;
             return ReadEvent();
@@ -171,20 +168,20 @@ int FairMQLmdSampler::ReadEvent()
     short sesubcrate;
     short secontrol;
 
-    LOG(TRACE)     << "FairMQLmdSampler::ReadEvent => Found " 
-                << nrSubEvts 
-                << " Sub-event ";
+    LOG(TRACE) << "FairMQLmdSampler::ReadEvent => Found "
+               << nrSubEvts
+               << " Sub-event ";
     //if (fCurrentEvent%10000==0)
     //cout << " -I- LMD_ANA:  evt# " <<  fCurrentEvent << "  n_subevt# " << nrSubEvts << " evt processed# " << fNEvent <<  " : " << fxEvent->l_count << endl;
 
-    for(int i = 1; i <= nrSubEvts; i++) 
+    for (int i = 1; i <= nrSubEvts; i++)
     {
         void* SubEvtptr = &fxSubEvent;
         void* EvtDataptr = &fxEventData;
         int nrlongwords;
-        status = f_evt_get_subevent(fxEvent, i, (int**)SubEvtptr, (int**)EvtDataptr, &nrlongwords);
+        status = f_evt_get_subevent(fxEvent, i, static_cast<int**>(SubEvtptr), static_cast<int**>(EvtDataptr), &nrlongwords);
 
-        if(status) 
+        if (status)
         {
             return 1;
         }
@@ -197,22 +194,21 @@ int FairMQLmdSampler::ReadEvent()
         secontrol = fxSubEvent->h_control;
 
         //cout << setype << "  " << sesubtype << "  " << seprocid << "  " << sesubcrate << "  " << secontrol << endl;
-        
+
         // Data to send : fxEventData
         SubEvtKey key(setype, sesubtype, seprocid, sesubcrate, secontrol);
 
-        
-        if(!fSubEventChanMap.count(key))
+        if (!fSubEventChanMap.count(key))
         {
             LOG(TRACE)<<"FairMQLmdSampler::ReadEvent: sub-event key not registered";
         }
         else
         {
-            LOG(TRACE)<<"array size = "<<sebuflength;
-            LOG(TRACE)<<"fxEventData = "<<*fxEventData;
+            LOG(TRACE) << "array size = " << sebuflength;
+            LOG(TRACE) << "fxEventData = " << *fxEventData;
 
-            std::string chanName=fSubEventChanMap.at(key);
-            LOG(TRACE)<<"chanName="<<chanName;
+            std::string chanName = fSubEventChanMap.at(key);
+            LOG(TRACE) << "chanName=" << chanName;
 
             // send header
             //std::unique_ptr<FairMQMessage> header(fTransportFactory->CreateMessage(fxSubEvent, sizeof(fxSubEvent), free_buffer, nullptr));
@@ -220,14 +216,14 @@ int FairMQLmdSampler::ReadEvent()
 
             int* arraySize = new int(sebuflength);
 
-            std::unique_ptr<FairMQMessage> msgSize(fTransportFactory->CreateMessage(arraySize, sizeof(int)));
+            std::unique_ptr<FairMQMessage> msgSize(NewMessage(arraySize, sizeof(int), [](void *data, void *hint) { delete static_cast<int*>(hint); }, arraySize));
             fChannels.at(chanName).at(0).SendPart(msgSize);
             // send data
-            std::unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage(fxEventData, sebuflength, free_buffer, nullptr));
+            std::unique_ptr<FairMQMessage> msg(NewMessage(fxEventData, sebuflength, free_buffer, nullptr));
             fChannels.at(chanName).at(0).Send(msg);
             fMsgCounter++;
             /*
-            if(Unpack(fxEventData, sebuflength,
+            if (Unpack(fxEventData, sebuflength,
                       setype, sesubtype,
                       seprocid, sesubcrate, secontrol)) 
             {
@@ -241,7 +237,7 @@ int FairMQLmdSampler::ReadEvent()
     fNEvent++;
     fCurrentEvent++;
 
-    /*if(! result)
+    /*if (! result)
     {
         return 2;
     }*/
@@ -257,29 +253,29 @@ bool FairMQLmdSampler::OpenNextFile(const std::string& fileName)
     void* headptr = &fxInfoHeader;
     INTS4 status;
 
-    LOG(INFO)     << "File " 
-                << fileName 
-                << " will be opened.";
+    LOG(INFO) << "File "
+              << fileName
+              << " will be opened.";
 
     status = f_evt_get_open(inputMode,
                           const_cast<char*>(fileName.c_str()),
                           fxInputChannel,
-                          (char**)headptr,
+                          static_cast<char**>(headptr),
                           1,
                           1);
 
-    if(status) 
+    if (status)
     {
-        LOG(ERROR)     << "File " 
-                    << fileName 
-                    << " opening failed.";
+        LOG(ERROR) << "File "
+                   << fileName
+                   << " opening failed.";
 
         return false;
     }
 
-    LOG(INFO)     << "File " 
-                << fileName 
-                << " opened.";
+    LOG(INFO) << "File "
+              << fileName
+              << " opened.";
 
     // Decode File Header
     //bool result = Unpack((int*)fxInfoHeader, sizeof(s_filhe), -4, -4, -4, -4, -4);
@@ -320,7 +316,7 @@ void FairMQLmdSampler::AddFile(const std::string& fileName)
     }
     else
     {
-        LOG(WARN)<<"FairMQLmdSampler: file '"<< fileName <<"' not found";
+        LOG(WARN) << "FairMQLmdSampler: file '" << fileName << "' not found";
     }
 }
 
@@ -329,5 +325,5 @@ void FairMQLmdSampler::Close()
 {
     f_evt_get_close(fxInputChannel);
     //Unpack((Int_t*)fxBuffer, sizeof(s_bufhe), -4, -4, -4, -4, -4);  
-    fCurrentEvent=0;
+    fCurrentEvent = 0;
 }

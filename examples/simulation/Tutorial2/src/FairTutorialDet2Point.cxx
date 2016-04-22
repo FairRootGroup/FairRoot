@@ -31,7 +31,7 @@ FairTutorialDet2Point::~FairTutorialDet2Point() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void FairTutorialDet2Point::Print(const Option_t* opt) const
+void FairTutorialDet2Point::Print(const Option_t* /*opt*/) const
 {
   LOG(INFO) << "FairTutorialDet2Point: TutorialDet point for track " 
 	    << fTrackID << " in detector " << fDetectorID << FairLogger::endl;

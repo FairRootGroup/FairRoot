@@ -26,9 +26,7 @@
 #include <iomanip>                      // for operator<<, setw
 #include <iostream>                     // for cout, cerr
 
-FairLogger* gLogger = FairLogger::GetLogger();
-
-FairLogger* FairLogger::instance = NULL;
+TMCThreadLocal FairLogger* FairLogger::instance = NULL;
 
 FairLogger::FairLogger()
   :
@@ -188,10 +186,10 @@ void FairLogger::Log(FairLogLevel level, const char* file, const char* line,
     // glibc and current Windows return -1 for failure, i.e., not
     // telling us how much was needed.
 
-    if (fBufferSizeNeeded <= (int)fBufferSize && fBufferSizeNeeded >= 0) {
+    if (fBufferSizeNeeded <= static_cast<int>(fBufferSize) && fBufferSizeNeeded >= 0) {
       // It fit fine so we're done.
       GetOutputStream(level, file, line, func) <<
-          std::string(fBufferPointer, (size_t) fBufferSizeNeeded)<<
+          std::string(fBufferPointer, static_cast<size_t>(fBufferSizeNeeded))<<
           " " << FairLogger::endl;
 
       break;
@@ -318,6 +316,9 @@ void FairLogger::SetMinLogLevel()
 
 Bool_t FairLogger::IsLogNeeded(FairLogLevel logLevel)
 {
+  if (FATAL == logLevel) {
+    return true;
+  }
   if (logLevel <= fMinLogLevel) {
     return true;
   } else {
@@ -335,6 +336,68 @@ FairLogger& FairLogger::GetOutputStream(FairLogLevel level, const char* file, co
     fLogVerbosityLevel = verbosityHIGH;
     fLogColored = true;
   }
+
+
+  if (fIsNewLine) {
+    if ( (fLogToScreen && level <= fLogScreenLevel) ) {
+
+      if ( fLogColored ) {
+        *fScreenStream << LogLevelColor[level];
+      }
+
+      *fScreenStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
+
+      if ( fLogVerbosityLevel == verbosityHIGH ) {
+        GetTime();
+        *fScreenStream << fTimeBuffer;
+      }
+
+      if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
+        TString bla(file);
+        Ssiz_t pos = bla.Last('/');
+        TString s2(bla(pos+1, bla.Length()));
+        TString s3 = s2 + "::" + func + ":" + line;
+        *fScreenStream << "[" << s3 <<"] ";
+      }
+    }
+
+    if ( fLogToFile && level <= fLogFileLevel ) {
+      if(!fLogFileOpen) {
+        OpenLogFile();
+      }
+
+      *fFileStream << "[" << std::setw(7) << std::left << LogLevelString[level] <<"] ";
+
+      if ( fLogVerbosityLevel == verbosityHIGH ) {
+        GetTime();
+        *fFileStream << fTimeBuffer;
+      }
+
+      if ( fLogVerbosityLevel <= verbosityMEDIUM ) {
+        TString bla(file);
+        Ssiz_t pos = bla.Last('/');
+        TString s2(bla(pos+1, bla.Length()));
+        TString s3 = s2 + "::" + func + ":" + line;
+        *fFileStream << "[" << s3 <<"] ";
+      }
+    }
+    fIsNewLine = kFALSE;
+  }
+  return *this;
+}
+
+// coverity[+kill]
+FairLogger& FairLogger::GetFATALOutputStream(const char* file, const char* line, const char* func)
+{
+
+  fLevel = FATAL;
+  FairLogLevel level = FATAL;
+
+//  if (level == FATAL) {
+    fLogToScreen = true;
+    fLogVerbosityLevel = verbosityHIGH;
+    fLogColored = true;
+//  }
 
 
   if (fIsNewLine) {
@@ -420,7 +483,8 @@ std::ostream&  FairLogger::endl(std::ostream& strm)
   gLogger->fIsNewLine = kTRUE;
   if ( (gLogger->fLogToScreen && gLogger->fLevel <= gLogger->fLogScreenLevel) ) {
     if (gLogger->fLogColored) {
-      *(gLogger->fScreenStream) << "\33[00;30m" << std::endl;
+      // reset format to default 
+      *(gLogger->fScreenStream) << "\33[0m" << std::endl;
     } else {
       *(gLogger->fScreenStream) << std::endl;
     }
@@ -501,7 +565,8 @@ void FairLogger::LogFatalMessage(std::ostream& strm)
                    corefile << "\n";
     }
 
-    *(gLogger->fScreenStream) << "\33[00;30m" << std::endl;
+    // reset format to default before exiting
+    *(gLogger->fScreenStream) << "\33[0m" << std::endl; 
 
     flush(strm);
     freopen(corefile, "w", stderr);

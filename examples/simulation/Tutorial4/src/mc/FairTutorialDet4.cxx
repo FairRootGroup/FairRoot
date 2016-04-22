@@ -32,7 +32,7 @@
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString, operator<<, Form
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMC.h"                 // for TVirtualMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include <stdio.h>                      // for NULL, printf
@@ -56,7 +56,8 @@ FairTutorialDet4::FairTutorialDet4()
     fRotX(),
     fRotY(),
     fRotZ(),
-    fModifyGeometry(kFALSE)
+    fModifyGeometry(kFALSE),
+    fGlobalCoordinates(kFALSE)
 {
 }
 
@@ -79,7 +80,8 @@ FairTutorialDet4::FairTutorialDet4(const char* name, Bool_t active)
     fRotX(),
     fRotY(),
     fRotZ(),
-    fModifyGeometry(kFALSE)
+    fModifyGeometry(kFALSE),
+    fGlobalCoordinates(kFALSE)
 {
 }
 
@@ -102,7 +104,7 @@ void FairTutorialDet4::SetParContainers()
   FairRuntimeDb* rtdb=sim->GetRuntimeDb();
   LOG_IF(FATAL, !rtdb) << "No runtime database"<<FairLogger::endl;
 
-  fMisalignPar = (FairTutorialDet4MisalignPar*)
+  fMisalignPar = static_cast<FairTutorialDet4MisalignPar*>
                  (rtdb->getContainer("FairTutorialDet4MissallignPar"));
 
 }
@@ -111,7 +113,20 @@ void FairTutorialDet4::Initialize()
 {
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet4GeoPar* par=(FairTutorialDet4GeoPar*)(rtdb->getContainer("FairTutorialDet4GeoPar"));
+  FairTutorialDet4GeoPar* par=static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
+
+  if (fModifyGeometry) {
+    if (fGlobalCoordinates) {
+      LOG(WARNING) << "Storing MCPoints in global coordinates and modifying the geometry was set." << FairLogger::endl;
+      LOG(WARNING) << "When modifying the geometry is set the MCPoints has to be stored in local coordinates." << FairLogger::endl;
+      LOG(WARNING) << "Store MCPoints in local coordinate system." << FairLogger::endl;
+      fGlobalCoordinates=kFALSE;
+    }
+  }
+
+  par->SetGlobalCoordinates(fGlobalCoordinates);
+  par->setChanged();
+  par->setInputVersion(FairRun::Instance()->GetRunId(),1);
 
   Bool_t isSimulation = kTRUE;
   fGeoHandler->Init(isSimulation);
@@ -130,45 +145,50 @@ void FairTutorialDet4::InitParContainers()
 
 }
 
-Bool_t  FairTutorialDet4::ProcessHits(FairVolume* vol)
+Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
 {
   /** This method is called from the MC stepping */
 
   //Set parameters at entrance of volume. Reset ELoss.
-  if ( gMC->IsTrackEntering() ) {
+  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
     fELoss  = 0.;
-    fTime   = gMC->TrackTime() * 1.0e09;
-    fLength = gMC->TrackLength();
-    gMC->TrackPosition(fPos);
-    gMC->TrackMomentum(fMom);
+    fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
+    fLength = TVirtualMC::GetMC()->TrackLength();
+    TVirtualMC::GetMC()->TrackPosition(fPos);
+    TVirtualMC::GetMC()->TrackMomentum(fMom);
   }
 
   // Sum energy loss for all steps in the active volume
-  fELoss += gMC->Edep();
+  fELoss += TVirtualMC::GetMC()->Edep();
 
   // Create FairTutorialDet4Point at exit of active volume
-  if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       ||
-       gMC->IsTrackDisappeared()   ) {
-    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
+       TVirtualMC::GetMC()->IsTrackStop()       ||
+       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
+    fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
 //    fVolumeID = vol->getMCid();
     fVolumeID = fGeoHandler->GetUniqueDetectorId();
     if (fELoss == 0. ) { return kFALSE; }
 
-    // Save positions in local coordinate system, so transform the
-    // global coordinates into local ones.
-    Double_t master[3] = {fPos.X(), fPos.Y(), fPos.Z()};
-    Double_t local[3];
 
-    gMC->Gmtod(master, local, 1);
+    if(!fGlobalCoordinates) {
+      // Save positions in local coordinate system, so transform the
+      // global coordinates into local ones.
+      Double_t master[3] = {fPos.X(), fPos.Y(), fPos.Z()};
+      Double_t local[3];
 
-//    AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
-    AddHit(fTrackID, fVolumeID, TVector3(local[0], local[1], local[2]),
-           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-           fELoss);
+      TVirtualMC::GetMC()->Gmtod(master, local, 1);
+      AddHit(fTrackID, fVolumeID, TVector3(local[0], local[1], local[2]),
+	     TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
+	     fELoss);
+    } else {
+      AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
+	     TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
+	     fELoss);
+    }
 
     // Increment number of tutorial det points in TParticle
-    FairStack* stack = (FairStack*) gMC->GetStack();
+    FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
     stack->AddPoint(kTutDet);
   }
 
@@ -253,7 +273,7 @@ void FairTutorialDet4::ConstructASCIIGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet4GeoPar* par=(FairTutorialDet4GeoPar*)(rtdb->getContainer("FairTutorialDet4GeoPar"));
+  FairTutorialDet4GeoPar* par=static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -261,7 +281,7 @@ void FairTutorialDet4::ConstructASCIIGeometry()
   FairGeoNode* node   = NULL;
   FairGeoVolume* aVol=NULL;
 
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
       fSensNodes->AddLast( aVol );
@@ -290,7 +310,7 @@ void FairTutorialDet4::ModifyGeometry()
     TGeoPNEntry* entry = gGeoManager->GetAlignableEntry(detStr.Data());
     if (entry) {
       LOG(INFO)<<"Misalign using symlinks."<<FairLogger::endl;
-      TGeoPhysicalNode* node = entry->GetPhysicalNode();
+//      TGeoPhysicalNode* node = entry->GetPhysicalNode();
 //    LOG(INFO)<<"Nr of alignable objects: "<<gGeoManager->GetNAlignable()<<FairLogger::endl;
       ModifyGeometryBySymlink();
     } else {
@@ -311,9 +331,9 @@ void FairTutorialDet4::ModifyGeometryByFullPath()
     volPath  = volStr;
     volPath += iDet;
 
-    LOG(INFO) << "Path: "<< volPath << FairLogger::endl;
+    LOG(DEBUG) << "Path: "<< volPath << FairLogger::endl;
     gGeoManager->cd(volPath);
-    TGeoHMatrix* g3 = gGeoManager->GetCurrentMatrix();
+//    TGeoHMatrix* g3 = gGeoManager->GetCurrentMatrix();
 //      g3->Print();
     TGeoNode* n3 = gGeoManager->GetCurrentNode();
     TGeoMatrix* l3 = n3->GetMatrix();
@@ -337,8 +357,8 @@ void FairTutorialDet4::ModifyGeometryByFullPath()
 
     pn3->Align(nl3);
 
-    TGeoHMatrix* ng3 = pn3->GetMatrix(); //"real" global matrix, what survey sees
-    LOG(DEBUG)<<"*************  The Misaligned Matrix in GRS **************"<<FairLogger::endl;
+//    TGeoHMatrix* ng3 = pn3->GetMatrix(); //"real" global matrix, what survey sees
+//    LOG(DEBUG)<<"*************  The Misaligned Matrix in GRS **************"<<FairLogger::endl;
 //      ng3->Print();
 
 

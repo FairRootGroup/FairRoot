@@ -104,7 +104,7 @@ void FairEventBuilder::WriteOutAllDeadTimeData()
       if (fVerbose > 0) {
         std::cout << "-I- FairEventBuilder::WriteOutData size: " << data.size() << std::endl;
       }
-      for (int i = 0; i < data.size(); i++) {
+      for (unsigned int i = 0; i < data.size(); i++) {
         AddNewDataToTClonesArray(data[i]);
         if (fVerbose > 1) {
           std::cout << i << " : ";

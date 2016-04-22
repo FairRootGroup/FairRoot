@@ -56,8 +56,8 @@ class FairTutorialDet4MilleWriter : public FairTask
   private:
 
     void ExecVersion1(Option_t* opt);
-    void StraightLineShiftX(Option_t* opt);
-    void StraightLineShiftXY(Option_t* opt);
+    void StraightLineShiftX();
+    void StraightLineShiftXY();
 
     Bool_t IsGoodEvent();
 

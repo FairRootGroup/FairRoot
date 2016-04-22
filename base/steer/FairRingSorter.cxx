@@ -17,7 +17,7 @@
 
 FairTimeStamp* FairRingSorter::CreateElement(FairTimeStamp* data)
 {
-	return (FairTimeStamp*)data->Clone();
+	return static_cast<FairTimeStamp*>(data->Clone());
 }
 
 void FairRingSorter::AddElement(FairTimeStamp* digi, double timestamp)
@@ -53,7 +53,7 @@ void FairRingSorter::SetLowerBound(double timestampOfHitToWrite)
 {
   int index = CalcIndex(timestampOfHitToWrite + fCellWidth);
 
-  int cellValue = (int)(timestampOfHitToWrite / fCellWidth);
+  int cellValue = static_cast<int>(timestampOfHitToWrite / fCellWidth);
 
   fLowerBoundPointer.second = ((cellValue + 1) * fCellWidth) - GetBufferSize();
   fLowerBoundPointer.first = index;
@@ -63,7 +63,7 @@ void FairRingSorter::SetLowerBound(double timestampOfHitToWrite)
 void FairRingSorter::WriteOutElements(int index)
 {
   if (fLowerBoundPointer.first >= index) {
-    for (int i = fLowerBoundPointer.first; i < fRingBuffer.size(); i++) {
+    for (unsigned int i = fLowerBoundPointer.first; i < fRingBuffer.size(); i++) {
       WriteOutElement(i);
     }
     for (int i = 0; i < index; i++) {
@@ -76,7 +76,7 @@ void FairRingSorter::WriteOutElements(int index)
   }
   if (fVerbose > 1) {
     std::cout << "-I- FairRingSorter::WriteOutElements: Size of Output-Array: " << fOutputData.size() << std::endl;
-    for (int i = 0; i < fOutputData.size(); i++) {
+    for (unsigned int i = 0; i < fOutputData.size(); i++) {
       fOutputData[i]->Print();
       std::cout << " | ";
     }
@@ -103,7 +103,7 @@ void FairRingSorter::WriteOutElement(int index)
 
 int FairRingSorter::CalcIndex(double val)
 {
-  int index = (int)(val / fCellWidth);
+  unsigned int index = static_cast<unsigned int>(val / fCellWidth);
   while (index >= fRingBuffer.size()) {
     index -= fRingBuffer.size();
   }

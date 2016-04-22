@@ -36,11 +36,15 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "ignoring return value of 'char* fgets(char*, int, FILE*)'"
         "ignoring return value of 'char* fscanf(char*, int, FILE*)'"
 
-        # boost warnings
-        "base class 'struct boost::msm"
-        "base class 'struct boost::mpl"
+        # boost warnings related to -Weffc++ are now 
+        # switched off in the code using preprocessor statements
+        # which changes the compiler flags fro the problematic
+        # part of the code
 
-        "base class 'struct std::binary_function"
+        # filter warnings from generated files 
+        "FairTestDetectorPayload.pb"
+        "Tuto7Payload.pb"
+        "G__.*Dict"
   )
 
 # -----------------------------------------------------------

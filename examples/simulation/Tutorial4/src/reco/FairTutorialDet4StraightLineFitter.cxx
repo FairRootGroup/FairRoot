@@ -68,7 +68,7 @@ InitStatus FairTutorialDet4StraightLineFitter::Init()
 
   // Get a pointer to the previous already existing data level
 
-  fHits = (TClonesArray*) ioman->GetObject("TutorialDetHit");
+  fHits = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetHit"));
   if ( ! fHits ) {
     LOG(ERROR)<<"No InputDataLevelName array!\n"
               << "FairTutorialDet4StraightLineFitter will be inactive"<<FairLogger::endl;
@@ -98,7 +98,7 @@ InitStatus FairTutorialDet4StraightLineFitter::ReInit()
 }
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDet4StraightLineFitter::Exec(Option_t* option)
+void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
 {
   LOG(DEBUG) << "Exec of FairTutorialDet4StraightLineFitter"
 	     << FairLogger::endl;
@@ -107,11 +107,13 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* option)
 
   // Declare some variables
   FairTutorialDet4Hit* hit = NULL;
+/*
   Int_t detID   = 0;        // Detector ID
   Int_t trackID = 0;        // Track index
   Double_t x, y, z;         // Position
   Double_t dx = 0.1;        // Position error
   Double_t tof = 0.;        // Time of flight
+*/
   TVector3 pos, dpos;       // Position and error vectors
 
   // Loop over TofPoints
@@ -123,7 +125,7 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* option)
   Float_t* YPosErr = new Float_t[nHits];
 
   for (Int_t iHit=0; iHit<nHits; iHit++) {
-    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
+    hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
     if ( ! hit) { continue; }
 
     XPos[iHit] = hit->GetX();
@@ -197,7 +199,7 @@ Bool_t FairTutorialDet4StraightLineFitter::IsGoodEvent()
 
   Int_t nHits = fHits->GetEntriesFast();
   for (Int_t iHit=0; iHit<nHits; ++iHit) {
-    hit = (FairTutorialDet4Hit*) fHits->At(iHit);
+    hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
     Int_t detId = hit->GetDetectorID();
     it = detIdSet.find(detId);
     if ( it == detIdSet.end() ) {

@@ -41,9 +41,11 @@ FairPipe::FairPipe(const char* name, const char* title)
 void FairPipe::ConstructGeometry()
 {
 
+/*
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= fRun->GetRuntimeDb();
   FairGeoPassivePar* par=(FairGeoPassivePar*)(rtdb->getContainer("FairGeoPassivePar"));
+*/
 
   FairGeoLoader* loader=FairGeoLoader::Instance();
   FairGeoInterface* GeoInterface =loader->getGeoInterface();
@@ -55,9 +57,14 @@ void FairPipe::ConstructGeometry()
   FairGeoMedium* medSteel   = Media->getMedium("steel");
   FairGeoMedium* medAlBe    = Media->getMedium("Al+Be");
 
+/*
   Int_t nMedVacuum = geobuild->createMedium(medVacuum);
   Int_t nMedSteel  = geobuild->createMedium(medSteel);
   Int_t nMedAlBe   = geobuild->createMedium(medAlBe);
+*/
+  geobuild->createMedium(medVacuum);
+  geobuild->createMedium(medSteel);
+  geobuild->createMedium(medAlBe);
 
   Double_t parPipeLeft[9] = { 0., 360., 2,
                               -200.,  7.9, 8.,

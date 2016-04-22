@@ -46,7 +46,7 @@ Int_t FairGeoCompositeVolume::getNumComponents()
 
 FairGeoVolume* FairGeoCompositeVolume::getComponent(const Int_t n)
 {
-  return (FairGeoVolume*)components->At(n);
+  return static_cast<FairGeoVolume*>(components->At(n));
 }
 
 void FairGeoCompositeVolume::createComponents(const Int_t n)
@@ -69,7 +69,7 @@ void FairGeoCompositeVolume::clear()
 {
   FairGeoVolume::clear();
   Int_t n=getNumComponents();
-  for(Int_t i=0; i<n; i++) { ((FairGeoVolume*)components->At(i))->clear(); }
+  for(Int_t i=0; i<n; i++) { (static_cast<FairGeoVolume*>(components->At(i)))->clear(); }
 }
 
 void FairGeoCompositeVolume::print()
@@ -77,7 +77,7 @@ void FairGeoCompositeVolume::print()
   FairGeoVolume::print();
   FairGeoVolume* v;
   for(Int_t i=0; i<components->GetSize(); i++) {
-    v=(FairGeoVolume*)components->At(i);
+    v=static_cast<FairGeoVolume*>(components->At(i));
     if (v) { v->print(); }
   }
 }

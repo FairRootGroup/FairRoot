@@ -18,51 +18,42 @@ using namespace std;
 
 FairMQSamplerTask::FairMQSamplerTask()
     : FairTask("Abstract base task used for loading a branch from a root file into memory")
-    , fInput(NULL)
     , fBranch()
-    , fOutput(NULL)
-    , fTransportFactory(NULL)
+    , fInput(nullptr)
+    , fOutput(nullptr)
+    , fTransportFactory(nullptr)
     , fEventIndex(0)
-    , SendPart()
-    , fEvtHeader(NULL)
+    , fEvtHeader(nullptr)
 {
 }
 
 FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose)
     : FairTask(name, iVerbose)
-    , fInput(NULL)
     , fBranch()
-    , fOutput(NULL)
-    , fTransportFactory(NULL)
+    , fInput(nullptr)
+    , fOutput(nullptr)
+    , fTransportFactory(nullptr)
     , fEventIndex(0)
-    , SendPart()
-    , fEvtHeader(NULL)
+    , fEvtHeader(nullptr)
 {
 }
 
 FairMQSamplerTask::~FairMQSamplerTask()
 {
     delete fInput;
-    // fOutput->CloseMessage();
 }
 
 InitStatus FairMQSamplerTask::Init()
 {
     FairRootManager* ioman = FairRootManager::Instance();
-    fEvtHeader = (FairEventHeader *)ioman->GetObject("EventHeader.");
-    fInput = (TClonesArray*) ioman->GetObject(fBranch.c_str());
+    fEvtHeader = static_cast<FairEventHeader*>(ioman->GetObject("EventHeader."));
+    fInput = static_cast<TClonesArray*>(ioman->GetObject(fBranch.c_str()));
 
     return kSUCCESS;
 }
 
-void FairMQSamplerTask::Exec(Option_t *opt)
+void FairMQSamplerTask::Exec(Option_t* /*opt*/)
 {
-}
-
-// initialize a callback to the Sampler for sending multipart messages.
-void FairMQSamplerTask::SetSendPart(boost::function<void()> callback)
-{
-    SendPart = callback;
 }
 
 void FairMQSamplerTask::SetBranch(string branch)
@@ -78,6 +69,11 @@ void FairMQSamplerTask::SetEventIndex(Long64_t EventIndex)
 FairMQMessage* FairMQSamplerTask::GetOutput()
 {
     return fOutput;
+}
+
+void FairMQSamplerTask::ClearOutput()
+{
+    delete fOutput;
 }
 
 void FairMQSamplerTask::SetTransport(FairMQTransportFactory* factory)

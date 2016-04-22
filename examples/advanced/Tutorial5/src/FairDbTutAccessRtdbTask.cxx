@@ -59,7 +59,7 @@ InitStatus FairDbTutAccessRtdbTask::ReInit()
 }
 
 void
-FairDbTutAccessRtdbTask::Exec(Option_t* opt)
+FairDbTutAccessRtdbTask::Exec(Option_t* /*opt*/)
 {
   return;
 }

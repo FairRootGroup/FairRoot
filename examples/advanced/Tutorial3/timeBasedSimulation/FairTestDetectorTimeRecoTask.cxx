@@ -59,7 +59,7 @@ InitStatus FairTestDetectorTimeRecoTask::Init()
         return kFATAL;
     }
 
-    fDigiArray = (TClonesArray*)ioman->GetObject("FairTestDetectorSortedDigi");
+    fDigiArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorSortedDigi"));
     if (!fDigiArray)
     {
       LOG(WARNING) << "FairTestDetectorTimeRecoTask::Init: "
@@ -77,7 +77,7 @@ InitStatus FairTestDetectorTimeRecoTask::Init()
 }
 
 // -----   Public method Exec   --------------------------------------------
-void FairTestDetectorTimeRecoTask::Exec(Option_t* opt)
+void FairTestDetectorTimeRecoTask::Exec(Option_t* /*opt*/)
 {
 
     fHitArray->Delete();
@@ -94,7 +94,7 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* opt)
 
     for (int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++)
     {
-        FairTestDetectorDigi* digi = (FairTestDetectorDigi*)fDigiArray->At(ipnt);
+        FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fDigiArray->At(ipnt));
         if (!digi)
         {
 	  LOG(WARNING)  << "No digi!" << FairLogger::endl;

@@ -28,6 +28,7 @@ ClassImp(FairMultiLinkedData);
 FairMultiLinkedData::FairMultiLinkedData()
   :TObject(),
    fLinks(),
+   fEntryNr(),
    fPersistanceCheck(kTRUE),
    fInsertHistory(kTRUE),
    fVerbose(0),
@@ -39,6 +40,7 @@ FairMultiLinkedData::FairMultiLinkedData()
 FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persistanceCheck)
   :TObject(),
    fLinks(links),
+   fEntryNr(),
    fPersistanceCheck(persistanceCheck),
    fInsertHistory(kTRUE),
    fVerbose(0),
@@ -49,6 +51,7 @@ FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persis
 FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :TObject(),
    fLinks(),
+   fEntryNr(),
    fPersistanceCheck(persistanceCheck),
    fInsertHistory(kTRUE),
    fVerbose(0),
@@ -62,6 +65,7 @@ FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> li
 FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :TObject(),
    fLinks(),
+   fEntryNr(),
    fPersistanceCheck(persistanceCheck),
    fInsertHistory(kTRUE),
    fVerbose(0),
@@ -73,7 +77,7 @@ FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> link
 
 FairLink FairMultiLinkedData::GetLink(Int_t pos) const
 {
-  if (pos < (Int_t)fLinks.size()) {
+  if (pos < static_cast<Int_t>(fLinks.size())) {
     std::set<FairLink>::iterator it = fLinks.begin();
     for (int i = 0; i < pos; i++) { it++; }
     return *it;
@@ -150,11 +154,11 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
   if (bypass == kTRUE) {
     //FairRootManager* ioman = FairRootManager::Instance();
     if (link.GetType() > ioman->GetBranchId("MCTrack")) {
-      TClonesArray* array = (TClonesArray*)ioman->GetObject(ioman->GetBranchName(link.GetType()));
+      TClonesArray* array = static_cast<TClonesArray*>(ioman->GetObject(ioman->GetBranchName(link.GetType())));
       if (fVerbose > 1) {
         std::cout << "Entries in " << ioman->GetBranchName(link.GetType()) << " Array: " << array->GetEntries() << std::endl;
       }
-      FairMultiLinkedData* links = (FairMultiLinkedData*)array->At(link.GetIndex());
+      FairMultiLinkedData* links = static_cast<FairMultiLinkedData*>(array->At(link.GetIndex()));
       if (fVerbose > 1) {
         std::cout << "FairMultiLinkedData has " << links->GetNLinks() << " Entries: " << std::endl;
         std::cout << *links << std::endl;
@@ -210,12 +214,12 @@ void FairMultiLinkedData::InsertHistory(FairLink link)
         	return;
 
         if (link.GetIndex() < 0) { //if index is -1 then this is not a TClonesArray so only the Object is returned
-                FairMultiLinkedData_Interface* interface = (FairMultiLinkedData_Interface*) ioman->GetObject(ioman->GetBranchName(link.GetType()));
+                FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(ioman->GetObject(ioman->GetBranchName(link.GetType())));
                 pointerToLinks = interface->GetPointerToLinks();
         } else {
-                TClonesArray* dataArray = (TClonesArray*) ioman->GetObject(ioman->GetBranchName(link.GetType()));
+                TClonesArray* dataArray = static_cast<TClonesArray*>( ioman->GetObject(ioman->GetBranchName(link.GetType())));
                 if (dataArray != 0 && link.GetIndex() < dataArray->GetEntriesFast()) {
-                        FairMultiLinkedData_Interface* interface = (FairMultiLinkedData_Interface*) dataArray->At(link.GetIndex());
+                        FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(dataArray->At(link.GetIndex()));
                         pointerToLinks = interface->GetPointerToLinks();
 
                 }
@@ -248,7 +252,7 @@ Int_t FairMultiLinkedData::LinkPosInList(Int_t type, Int_t index)
   return -1;
 }
 
-void FairMultiLinkedData::DeleteLink(Int_t type, Int_t index)
+void FairMultiLinkedData::DeleteLink(Int_t /*type*/, Int_t /*index*/)
 {
   /*  Int_t pos = LinkPosInList(type, index);
     if (pos < 0) return;
@@ -287,7 +291,7 @@ TObject* FairMultiLinkedData::GetData(FairLink& myLink)
   FairRootManager* ioman = FairRootManager::Instance();
   TString branchName = ioman->GetBranchName(myLink.GetType());
   if (ioman->CheckBranch(branchName) > 0) {
-    TClonesArray* myArray = (TClonesArray*)ioman->GetObject(branchName);
+    TClonesArray* myArray = static_cast<TClonesArray*>(ioman->GetObject(branchName));
     if (myArray != 0) {
       if (myArray->GetEntries() > myLink.GetIndex()) {
         return myArray->At(myLink.GetIndex());

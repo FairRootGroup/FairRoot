@@ -43,6 +43,8 @@ public:
     void                Close();
     void                Reset();
 
+    virtual Source_Type GetSourceType() { return kFILE; }
+
     /**Check the maximum event number we can run to*/
     virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
     /**Read the tree entry on one branch**/

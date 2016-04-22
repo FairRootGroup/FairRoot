@@ -46,6 +46,8 @@ public:
     void                Close();
     void                Reset();
 
+    virtual Source_Type GetSourceType() { return kFILE; }
+
     /**Check the maximum event number we can run to*/
     virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
     /**Read the tree entry on one branch**/
@@ -208,6 +210,9 @@ private:
     /**Chain containing the background*/
     TChain*                              fBackgroundChain; //!
     std::map<UInt_t, TChain*>            fSignalTypeList;//!
+
+    FairMixedSource(const FairMixedSource&);
+    FairMixedSource& operator=(const FairMixedSource&);
     
 public:
     ClassDef(FairMixedSource, 0)

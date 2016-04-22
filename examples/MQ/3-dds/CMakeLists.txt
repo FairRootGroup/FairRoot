@@ -13,6 +13,8 @@ add_definitions(-DENABLE_DDS)
 
 Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairmq
+  ${CMAKE_SOURCE_DIR}/fairmq/zeromq
+  ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
   ${CMAKE_SOURCE_DIR}/fairmq/devices
   ${CMAKE_SOURCE_DIR}/fairmq/tools
   ${CMAKE_SOURCE_DIR}/fairmq/options
@@ -22,26 +24,15 @@ Set(INCLUDE_DIRECTORIES
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
   ${SYSTEM_INCLUDE_DIRECTORIES}
+  ${Boost_INCLUDE_DIR}
   ${DDS_INCLUDE_DIR}
+  ${ZMQ_INCLUDE_DIR}
 )
 
 If(NANOMSG_FOUND)
-  Set(INCLUDE_DIRECTORIES
-    ${INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
-  )
   Set(SYSTEM_INCLUDE_DIRECTORIES
     ${SYSTEM_INCLUDE_DIRECTORIES}
     ${NANOMSG_INCLUDE_DIR}
-  )
-Else(NANOMSG_FOUND)
-  Set(INCLUDE_DIRECTORIES
-    ${INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/fairmq/zeromq
-  )
-  Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
-    ${ZMQ_INCLUDE_DIR}
   )
 EndIf(NANOMSG_FOUND)
 
@@ -66,8 +57,7 @@ Set(SRCS
 Set(DEPENDENCIES
   ${DEPENDENCIES}
   FairMQ
-  dds-key-value-lib
-  dds-custom-cmd-lib
+  dds_intercom_lib
 )
 
 set(LIBRARY_NAME FairMQExample3)
@@ -76,10 +66,10 @@ GENERATE_LIBRARY()
 
 Set(Exe_Names
   ${Exe_Names}
-  ex3-sampler-dds
-  ex3-processor-dds
-  ex3-sink-dds
-  ex3-dds-command-ui
+  ex3-sampler
+  ex3-processor
+  ex3-sink
+  ex3-command-ui
 )
 
 Set(Exe_Source
@@ -101,3 +91,8 @@ ForEach(_file RANGE 0 ${_length})
   set(DEPENDENCIES FairMQExample3)
   GENERATE_EXECUTABLE()
 EndForEach(_file RANGE 0 ${_length})
+
+Install(
+  FILES ex3-dds-hosts.cfg ex3-dds-topology.xml
+  DESTINATION share/fairbase/examples/MQ/3-dds/config/
+)

@@ -87,7 +87,7 @@ Int_t FairGeoPcon::readPoints(std::fstream* pFile,FairGeoVolume* volu)
   if (n<=0) { return 0; }
   nPoints=n+2;
   if (volu->getNumPoints()!=nPoints) { volu->createPoints(nPoints); }
-  volu->setPoint(0,(Double_t)n,0.0,0.0);
+  volu->setPoint(0,static_cast<Double_t>(n),0.0,0.0);
   for(Int_t i=1; i<nPoints; i++) {
     pFile->getline(buf,maxbuf);
     if (i!=1) {
@@ -111,7 +111,7 @@ Bool_t FairGeoPcon::writePoints(std::fstream* pFile,FairGeoVolume* volu)
     FairGeoVector& v=*(volu->getPoint(i));
     switch(i) {
     case 0:
-      sprintf(buf,"%3i\n",(Int_t)v(0));
+      sprintf(buf,"%3i\n",static_cast<Int_t>(v(0)));
       break;
     case 1:
       sprintf(buf,"%9.3f%10.3f\n",v(0),v(1));
@@ -132,7 +132,7 @@ void FairGeoPcon::printPoints(FairGeoVolume* volu)
     FairGeoVector& v=*(volu->getPoint(i));
     switch(i) {
     case 0:
-      printf("%3i\n",(Int_t)v(0));
+      printf("%3i\n",static_cast<Int_t>(v(0)));
       break;
     case 1:
       printf("%9.3f%10.3f\n",v(0),v(1));

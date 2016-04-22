@@ -38,7 +38,7 @@ FairTutorialDet2Digitizer::FairTutorialDet2Digitizer()
 // --------------------------------------------------------------------
 
 // ---- Constructor ----------------------------------------------------
-FairTutorialDet2Digitizer::FairTutorialDet2Digitizer(const char* name, const char* title)
+FairTutorialDet2Digitizer::FairTutorialDet2Digitizer(const char* name, const char* /*title*/)
   : FairTask(name, 0),
     fTutorialDetPoints(NULL),
     fDigiPar(NULL)
@@ -68,7 +68,7 @@ void FairTutorialDet2Digitizer::SetParContainers()
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDet2DigiPar*)
+  fDigiPar = static_cast<FairTutorialDet2DigiPar*>
              (rtdb->getContainer("FairTutorialDet2DigiPar"));
 
   fDigiPar->printparams();
@@ -86,7 +86,7 @@ InitStatus FairTutorialDet2Digitizer::ReInit()
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = (FairTutorialDet2DigiPar*)
+  fDigiPar = static_cast<FairTutorialDet2DigiPar*>
              (rtdb->getContainer("FairTutorialDet2DigiPar"));
 
   return kSUCCESS;
@@ -106,8 +106,8 @@ InitStatus FairTutorialDet2Digitizer::Init()
     return kERROR;
   } else { 
 
-    fTutorialDetPoints=(TClonesArray*)
-                       ioman->GetObject("TutorialDetPoint");
+    fTutorialDetPoints=static_cast<TClonesArray*>
+                       (ioman->GetObject("TutorialDetPoint"));
 
     if ( ! fTutorialDetPoints ) {
       LOG(ERROR) << "No TutorialDetPoints array!" << FairLogger::endl;
@@ -127,7 +127,7 @@ InitStatus FairTutorialDet2Digitizer::Init()
 
 
 // ---- Exec ----------------------------------------------------------
-void FairTutorialDet2Digitizer::Exec(Option_t* option)
+void FairTutorialDet2Digitizer::Exec(Option_t* /*option*/)
 {
 
   // Here we print something

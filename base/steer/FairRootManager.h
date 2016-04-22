@@ -23,6 +23,7 @@
 #include <queue>                        // for queue
 #include "FairSource.h"
 class BinaryFunctor;
+class FairEventHeader;
 class FairFileHeader;
 class FairGeoNode;
 class FairLink;
@@ -309,6 +310,8 @@ class FairRootManager : public TObject
 
     TChain                              *fSourceChain;
     std::map<UInt_t, TChain*>            fSignalChainList;//!
+
+    FairEventHeader                     *fEventHeader;
     
     Bool_t fUseFairLinks; //!
     Bool_t fFinishRun; //!

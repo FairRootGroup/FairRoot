@@ -34,9 +34,8 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   TString paramDir = dir + "/simulation/Tutorial4/parameters/";
   TString paramFile = paramDir + "example.par";
 
-  TObjString tutDetDigiFile;
-  tutDetDigiFile.SetString(paramFile);
-  parFileList->Add(&tutDetDigiFile);
+  TObjString* tutDetDigiFile = new TObjString(paramFile);
+  parFileList->Add(tutDetDigiFile);
 
 
   // In general, the following parts need not be touched
@@ -129,6 +128,7 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
 
    
   // -----   Start run   ----------------------------------------------------
+  run->CreateGeometryFile("data/geofile_full_misaligned.root");
   run->Run(nEvents);
   run->CreateGeometryFile("data/geofile_full.root");
   // ------------------------------------------------------------------------

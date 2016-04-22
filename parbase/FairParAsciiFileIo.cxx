@@ -90,7 +90,7 @@ Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
   TString catCommand = "cat ";
   TObjString* string;
   TListIter myIter(fnamelist);
-  while((string = (TObjString*)myIter.Next())) {
+  while((string = static_cast<TObjString*>(myIter.Next()))) {
     // check if the file exist
     // if file exist return value is false
     if ( gSystem->AccessPathName(string->GetString())) {
@@ -131,7 +131,7 @@ void FairParAsciiFileIo::print()
     TIter next(detParIoList);
     FairDetParIo* io;
     cout<<"detector I/Os: ";
-    while ((io=(FairDetParIo*)next())) {
+    while ((io=static_cast<FairDetParIo*>(next()))) {
       cout<<" "<<io->GetName();
     }
     cout<<'\n';

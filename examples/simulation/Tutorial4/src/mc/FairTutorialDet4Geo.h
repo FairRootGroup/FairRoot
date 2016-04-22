@@ -35,7 +35,7 @@ inline Int_t FairTutorialDet4Geo::getModNumInMod(const TString& name)
    .geo file. For example if all nodes in this file starts with
    tutdet ?? has to be 6.
   */
-  return (Int_t)(name[6]-'0')-1; //
+  return static_cast<Int_t>((name[6]-'0')-1); //
 }
 
 #endif  /*  FAIRTUTORIALDETGEO_H */

@@ -89,7 +89,7 @@ FairPrimaryGenerator::FairPrimaryGenerator(const FairPrimaryGenerator &rhs)
 Bool_t FairPrimaryGenerator::Init() {
   /** Initialize list of generators*/
   for (Int_t i = 0; i < fGenList->GetEntries(); i++) {
-    FairGenerator *gen = (FairGenerator *)fGenList->At(i);
+    FairGenerator *gen = static_cast<FairGenerator*>(fGenList->At(i));
     if (gen) {
       gen->Init();
     }
@@ -334,7 +334,7 @@ FairPrimaryGenerator* FairPrimaryGenerator::ClonePrimaryGenerator() const
 
   /** Clone generators in the list*/
   for (Int_t i = 0; i < fGenList->GetEntries(); i++) {
-    FairGenerator *gen = (FairGenerator *)fGenList->At(i);
+    FairGenerator *gen = static_cast<FairGenerator*>(fGenList->At(i));
     if (gen) {
       newPrimaryGenerator->AddGenerator(gen->CloneGenerator());
     }
@@ -410,7 +410,7 @@ void FairPrimaryGenerator::MakeVertex() {
   if (1 == fNrTargets) {
     vz = fTargetZ[0];
   } else {
-    Int_t Target = (Int_t)gRandom->Uniform(fNrTargets);
+    Int_t Target = static_cast<Int_t>(gRandom->Uniform(fNrTargets));
     vz = fTargetZ[Target];
   }
 

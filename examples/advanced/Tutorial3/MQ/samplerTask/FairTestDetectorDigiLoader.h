@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -16,11 +16,13 @@
 
 #include <iostream>
 #include <type_traits>
+#include <array>
 
 #include <boost/timer/timer.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
+#include <boost/serialization/binary_object.hpp>
 
 #include "TMessage.h"
 
@@ -29,27 +31,27 @@
 
 #include "FairMQSamplerTask.h"
 #include "FairMQLogger.h"
+#include "FairMQTools.h"
 
 #include "baseMQtools.h"
 
-using namespace std;
-
-template <typename T1, typename T2>
+template <typename TOut, typename TPayloadOut>
 class FairTestDetectorDigiLoader : public FairMQSamplerTask
 {
   public:
     FairTestDetectorDigiLoader()
-        : FairMQSamplerTask("Load class T1")
+        : FairMQSamplerTask("Load class TOut")
         , fDigiVector()
-        , fHasBoostSerialization(false)
+        , fBigBuffer(FairMQ::tools::make_unique<std::array<unsigned char, BIGBUFFERSIZE>>())
     {
-        using namespace baseMQ::tools::resolve;
         // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
-        if (is_same<T2, boost::archive::binary_oarchive>::value || is_same<T2, boost::archive::text_oarchive>::value)
+        if (std::is_same<TPayloadOut, boost::archive::binary_oarchive>::value || std::is_same<TPayloadOut, boost::archive::text_oarchive>::value)
         {
-            if (has_BoostSerialization<T1, void(T2&, const unsigned int)>::value == 1)
+            if (baseMQ::tools::resolve::has_BoostSerialization<TOut, void(TPayloadOut&, const unsigned int)>::value == 0)
             {
-                fHasBoostSerialization = true;
+                LOG(ERROR) << "Method 'void serialize(TOut & ar, const unsigned int version)' was not found in input class";
+                LOG(ERROR) << "Boost serialization for Output Payload requested, but the output type does not support it. Check the TOut parameter. Aborting.";
+                exit(EXIT_FAILURE);
             }
         }
     }
@@ -64,21 +66,18 @@ class FairTestDetectorDigiLoader : public FairMQSamplerTask
 
     virtual void Exec(Option_t* opt);
 
-    template <class Archive>
-    void serialize(Archive& ar, const unsigned int version)
-    {
-        ar& fDigiVector;
-    }
-
   private:
-    friend class boost::serialization::access;
-    vector<T1> fDigiVector;
-    bool fHasBoostSerialization;
+#ifndef __CINT__ // for BOOST serialization
+    std::vector<TOut> fDigiVector;
+    std::unique_ptr<std::array<unsigned char, BIGBUFFERSIZE>> fBigBuffer;
+#endif // for BOOST serialization
 };
 
 // Template implementation is in FairTestDetectorDigiLoader.tpl :
-#include "FairTestDetectorDigiLoaderBoost.tpl"
 #include "FairTestDetectorDigiLoaderBin.tpl"
+#include "FairTestDetectorDigiLoaderBoost.tpl"
+#include "FairTestDetectorDigiLoaderFlatBuffers.tpl"
+#include "FairTestDetectorDigiLoaderMsgpack.tpl"
 #include "FairTestDetectorDigiLoaderProtobuf.tpl"
 #include "FairTestDetectorDigiLoaderTMessage.tpl"
 

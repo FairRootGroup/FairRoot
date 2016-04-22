@@ -13,6 +13,7 @@
 #include "Rtypes.h"                     // for Int_t, Bool_t, Double32_t, etc
 #include "TArrayD.h"                    // for TArrayD
 #include "TLorentzVector.h"             // for TLorentzVector
+#include "TClonesArray.h"
 #include "TVector3.h"                   // for TVector3
 
 #include <string>                       // for string
@@ -80,8 +81,8 @@ class FairTutorialDet4: public FairDetector
      *  any optional action in your detector during the transport.
     */
 
-    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
-                               Int_t offset) {;}
+//    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
+//                               Int_t offset) {;}
     virtual void   SetSpecialPhysicsCuts() {;}
     virtual void   EndOfEvent();
     virtual void   FinishPrimary() {;}
@@ -91,8 +92,8 @@ class FairTutorialDet4: public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
-    void SetModifyGeometry(Bool_t val) { fModifyGeometry=val;}
-
+    void SetModifyGeometry(Bool_t val) { fModifyGeometry=val; }
+    void SetGlobalCoordinates(Bool_t val) { fGlobalCoordinates=val; }
 
   private:
 
@@ -125,6 +126,7 @@ class FairTutorialDet4: public FairDetector
 
     Bool_t fModifyGeometry;
 
+    Bool_t fGlobalCoordinates;
     /** Method to construct the ascii geometry
      **
      **/
@@ -139,7 +141,7 @@ class FairTutorialDet4: public FairDetector
     FairTutorialDet4(const FairTutorialDet4&);
     FairTutorialDet4& operator=(const FairTutorialDet4&);
 
-    ClassDef(FairTutorialDet4,1)
+    ClassDef(FairTutorialDet4,2)
 };
 
 #endif //FAIRTUTORIALDET_H

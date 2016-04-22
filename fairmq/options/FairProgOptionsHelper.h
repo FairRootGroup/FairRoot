@@ -25,8 +25,6 @@
 #include <iterator>
 #include <tuple>
 
-
-
 template<class T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 {
@@ -36,9 +34,8 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& v)
 
 namespace fairmq
 {
-    
     namespace po = boost::program_options;
-    
+
     //_____________________________________________________________________________________________________________________________
 
     template<typename T>
@@ -92,22 +89,27 @@ namespace fairmq
         return valueStr;
     }
 
+#if defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#endif
     //_____________________________________________________________________________________________________________________________
     // policy to convert boost variable value into string
     struct ToString
     {
         typedef std::string returned_type;
         template<typename T>
-        std::string Value(const po::variable_value& varValue,const  std::string& type, const std::string& defaulted, const std::string& empty)
+        std::string Value(const po::variable_value& varValue,const  std::string&, const std::string&, const std::string&)
         {
             return ConvertVariableValueToString<T>(varValue);
         }
 
-        returned_type DefaultValue(const std::string& defaulted, const std::string& empty)
+        returned_type DefaultValue(const std::string&, const std::string&)
         {
             return std::string("empty value");
         }
     };
+
 //_____________________________________________________________________________________________________________________________
 
     // policy to convert variable value content into a tuple with value, type, defaulted, empty information
@@ -233,6 +235,9 @@ namespace fairmq
 
     };
 
+#if defined(__GNUC__) || defined(__GNUG__)
+#pragma GCC diagnostic pop
+#endif
 
 
 };

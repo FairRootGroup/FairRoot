@@ -52,7 +52,7 @@ Set(BaseMQHDRFiles
   policies/Serialization/BinaryBaseClassSerializer.h
   policies/Serialization/BoostSerializer.h
   policies/Serialization/RootSerializer.h
-  policies/Serialization/NoInputMethod.h
+  policies/Serialization/MQPolicyDef.h
   policies/Storage/RootOutFileManager.h
   policies/Storage/RootOutFileManager.tpl
   policies/Storage/BinaryOutFileManager.h
@@ -66,10 +66,10 @@ set(DEPENDENCIES
   ParBase
   FairTools
   GeoBase
-  boost_thread
-  boost_timer
-  boost_system
-  boost_filesystem
+  ${Boost_THREAD_LIBRARY}
+  ${Boost_TIMER_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
   FairMQ
 )
 

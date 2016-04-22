@@ -52,7 +52,7 @@ void FairParIo::setDetParIo(FairDetParIo* detParIo)
 {
   // stores pointer of the input/output class for a detector
   // used for I/O from ROOT file or Ascii file
-  Text_t* detName=(char*)detParIo->GetName();
+  const Text_t* detName=detParIo->GetName();
   if (!detParIoList->FindObject(detName)) { detParIoList->Add(detParIo); }
 }
 
@@ -61,7 +61,7 @@ void FairParIo::setInputNumber(Int_t num)
   // sets in all detector I/Os the number of the input
   TIter next(detParIoList);
   FairDetParIo* io;
-  while ((io=(FairDetParIo*)next())) {
+  while ((io=static_cast<FairDetParIo*>(next()))) {
     io->setInputNumber(num);
   }
 }
@@ -70,7 +70,7 @@ FairDetParIo* FairParIo::getDetParIo(const Text_t* detName)
 {
   // returns pointer to input/output class for a detector
   //std::cout << " DetParIO # " << detName << detParIoList->GetEntries()  <<  std::endl;
-  return ((FairDetParIo*)detParIoList->FindObject(detName));
+  return (static_cast<FairDetParIo*>(detParIoList->FindObject(detName)));
 }
 
 void FairParIo::removeDetParIo(Text_t* detName)

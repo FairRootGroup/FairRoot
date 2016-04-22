@@ -23,8 +23,10 @@ message Hit {
 
 message DigiPayload {
   repeated Digi digi = 1;
+  optional bytes bigBuffer = 2;
 }
 
 message HitPayload {
   repeated Hit hit = 1;
+  optional bytes bigBuffer = 2;
 }

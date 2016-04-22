@@ -62,8 +62,10 @@ FairTutorialDet2::~FairTutorialDet2()
 void FairTutorialDet2::Initialize()
 {
   FairDetector::Initialize();
+/*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairTutorialDet2GeoPar* par=(FairTutorialDet2GeoPar*)(rtdb->getContainer("FairTutorialDet2GeoPar"));
+*/
 }
 
 Bool_t  FairTutorialDet2::ProcessHits(FairVolume* vol)
@@ -71,22 +73,22 @@ Bool_t  FairTutorialDet2::ProcessHits(FairVolume* vol)
   /** This method is called from the MC stepping */
 
   //Set parameters at entrance of volume. Reset ELoss.
-  if ( gMC->IsTrackEntering() ) {
+  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
     fELoss  = 0.;
-    fTime   = gMC->TrackTime() * 1.0e09;
-    fLength = gMC->TrackLength();
-    gMC->TrackPosition(fPos);
-    gMC->TrackMomentum(fMom);
+    fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
+    fLength = TVirtualMC::GetMC()->TrackLength();
+    TVirtualMC::GetMC()->TrackPosition(fPos);
+    TVirtualMC::GetMC()->TrackMomentum(fMom);
   }
 
   // Sum energy loss for all steps in the active volume
-  fELoss += gMC->Edep();
+  fELoss += TVirtualMC::GetMC()->Edep();
 
   // Create FairTutorialDet2Point at exit of active volume
-  if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       ||
-       gMC->IsTrackDisappeared()   ) {
-    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
+       TVirtualMC::GetMC()->IsTrackStop()       ||
+       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
+    fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
     fVolumeID = vol->getMCid();
     if (fELoss == 0. ) { return kFALSE; }
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
@@ -94,7 +96,7 @@ Bool_t  FairTutorialDet2::ProcessHits(FairVolume* vol)
            fELoss);
 
     // Increment number of tutorial det points in TParticle
-    FairStack* stack = (FairStack*) gMC->GetStack();
+    FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
     stack->AddPoint(kTutDet);
   }
 
@@ -155,7 +157,7 @@ void FairTutorialDet2::ConstructGeometry()
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet2GeoPar* par=(FairTutorialDet2GeoPar*)(rtdb->getContainer("FairTutorialDet2GeoPar"));
+  FairTutorialDet2GeoPar* par=static_cast<FairTutorialDet2GeoPar*>(rtdb->getContainer("FairTutorialDet2GeoPar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
@@ -163,7 +165,7 @@ void FairTutorialDet2::ConstructGeometry()
   FairGeoNode* node   = NULL;
   FairGeoVolume* aVol=NULL;
 
-  while( (node = (FairGeoNode*)iter.Next()) ) {
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
       fSensNodes->AddLast( aVol );

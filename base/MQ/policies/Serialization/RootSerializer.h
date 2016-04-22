@@ -6,15 +6,20 @@
  */
 
 #ifndef ROOTBASECLASSSERIALIZER_H
-#define	ROOTBASECLASSSERIALIZER_H
+#define ROOTBASECLASSSERIALIZER_H
 
 //std
 #include <iostream>
+#include <type_traits>
+#include <memory>
+
 //Root
 #include "TClonesArray.h"
 #include "TMessage.h"
 //FairRoot
 #include "FairMQMessage.h"
+
+ #include "MQPolicyDef.h"
 
 // special class to expose protected TMessage constructor
 class FairTMessage : public TMessage
@@ -27,122 +32,74 @@ class FairTMessage : public TMessage
     }
 };
 
-
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage (void *data, void *hint)
+void free_tmessage(void* /*data*/, void* hint)
 {
-    delete (TMessage*)hint;
+    delete static_cast<TMessage*>(hint);
 }
 
-//template <typename TPayload>
-class RootSerializer
+
+struct RootSerializer
 {
-  public:
-    RootSerializer()
-        : fContainer(nullptr)
-        , fMessage(nullptr)
-        , fNumInput(0)
-    {}
-
-    ~RootSerializer()
-    {}
-
-    void InitContainer(const std::string &ClassName)
-    {
-        fContainer = new TClonesArray(ClassName.c_str());
-    }
-    
-    void InitContainer(TClonesArray* array)
-    {
-        fContainer = array;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // serialize
-
-    virtual void DoSerialization(TClonesArray* array)
+    RootSerializer() = default;
+    ~RootSerializer() = default;
+    template<typename T>
+    void serialize_impl(std::unique_ptr<FairMQMessage>& msg, T* input)
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
-        tm->WriteObject(array);
-        // fMessage = fTransportFactory->CreateMessage(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
-        fMessage->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
+        tm->WriteObject(input);
+        msg->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
     }
 
-    FairMQMessage* SerializeMsg(TClonesArray* array)
+    template<typename T>
+    void serialize_impl(std::unique_ptr<FairMQMessage>& msg, const std::unique_ptr<T>& input)
     {
-        DoSerialization(array);
-        return fMessage;
+        TMessage* tm = new TMessage(kMESS_OBJECT);
+        tm->WriteObject(input.get());
+        msg->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
     }
 
-    void SetMessage(FairMQMessage* msg)
+    template<typename T>
+    void Serialize(FairMQMessage& msg, T* input)
     {
-        fMessage=msg;
+        TMessage* tm = new TMessage(kMESS_OBJECT);
+        tm->WriteObject(input);
+        msg.Rebuild(tm->Buffer(), tm->BufferSize(), [](void*,void* tmsg){delete static_cast<TMessage*>(tmsg);}, tm);
     }
-
-    FairMQMessage* GetMessage()
-    {
-        return fMessage;
-    }
-
-  protected:
-    // TPayload* fPayload;
-    TClonesArray* fContainer;
-    FairMQMessage* fMessage;
-    int fNumInput;
 };
 
-class RootDeSerializer
+struct RootDeserializer 
 {
-  public:
-    RootDeSerializer()
-        : fContainer(nullptr)
-        , fMessage(nullptr)
-        , fNumInput(0)
-    {}
-
-    ~RootDeSerializer()
-    {}
-
-    void InitContainer(const std::string &ClassName)
+    RootDeserializer() = default;
+    ~RootDeserializer() = default;
+    template<typename T>
+    void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, T*& output)
     {
-        fContainer = new TClonesArray(ClassName.c_str());
+        if(output) delete output;
+        FairTMessage tm(msg->GetData(), msg->GetSize());
+        output = static_cast<T*>(tm.ReadObject(tm.GetClass()));
     }
 
-    void InitContainer(TClonesArray* array)
-    {
-        fContainer = array;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    // deserialize
-
-    virtual void DoDeSerialization(FairMQMessage* msg)
+    template<typename T>
+    void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, std::unique_ptr<T>& output)
     {
         FairTMessage tm(msg->GetData(), msg->GetSize());
-        fContainer  = (TClonesArray*)(tm.ReadObject(tm.GetClass()));
+        output.reset(static_cast<T*>(tm.ReadObject(tm.GetClass())));
     }
 
-    TClonesArray* DeserializeMsg(FairMQMessage* msg)
+    template<typename T>
+    void Deserialize(FairMQMessage& msg, T*& output)
     {
-        DoDeSerialization(msg);
-        return fContainer;
+        if(output) delete output;
+        FairTMessage tm(msg.GetData(), msg.GetSize());
+        output = static_cast<T*>(tm.ReadObject(tm.GetClass()));
     }
-
-    void SetMessage(FairMQMessage* msg)
-    {
-        fMessage=msg;
-    }
-
-    FairMQMessage* GetMessage()
-    {
-        return fMessage;
-    }
-
-  protected:
-    // TPayload* fPayload;
-    TClonesArray* fContainer;
-    FairMQMessage* fMessage;
-    int fNumInput;
 };
+
+
+
+using RootDefaultInputPolicy = RawPtrDefaultInputPolicy<RootDeserializer,TClonesArray>;
+using RootDefaultOutputPolicy = RawPtrDefaultOutputPolicy<RootSerializer,TClonesArray>;
+
 
 #endif /* ROOTBASECLASSSERIALIZER_H */

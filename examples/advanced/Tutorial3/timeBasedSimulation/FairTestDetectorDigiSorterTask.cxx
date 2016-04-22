@@ -47,7 +47,7 @@ void FairTestDetectorDigiSorterTask::AddNewDataToTClonesArray(FairTimeStamp* dat
 		  << FairLogger::endl;
         LOG(INFO) << static_cast<FairTestDetectorDigi*>(data)->ToString();
     }
-    new ((*myArray)[myArray->GetEntries()]) FairTestDetectorDigi(*(FairTestDetectorDigi*)(data));
+    new ((*myArray)[myArray->GetEntries()]) FairTestDetectorDigi(*static_cast<FairTestDetectorDigi*>(data));
 }
 
 FairRingSorter* FairTestDetectorDigiSorterTask::InitSorter(Int_t numberOfCells, Double_t widthOfCells) const

@@ -91,6 +91,6 @@ class FairGeaneApplication : public TVirtualMCApplication
 // inline functions
 
 inline FairGeaneApplication* FairGeaneApplication::Instance()
-{ return (FairGeaneApplication*)(TVirtualMCApplication::Instance());}
+{ return static_cast<FairGeaneApplication*>(TVirtualMCApplication::Instance());}
 
 #endif

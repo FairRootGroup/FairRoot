@@ -10,11 +10,13 @@
 
 #include "TObject.h"                    // for TObject
 
+#include "FairVolume.h"
+
 #include "Rtypes.h"                     // for Int_t, etc
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
 
-class FairVolume;
+//class FairVolume;
 
 /**
 * This Object is only used for internal book keeping!
@@ -41,7 +43,7 @@ class FairVolumeList : public TObject
     void addVolume( FairVolume* elem);
 
     Int_t getEntries () { return fData->GetEntries();}
-    FairVolume* At(Int_t pos ) { return ( (FairVolume*) fData->At(pos)); }
+    FairVolume* At(Int_t pos ) { return ( dynamic_cast<FairVolume*>(fData->At(pos))); }
 
     ClassDef(FairVolumeList,1) // Volume List
 };

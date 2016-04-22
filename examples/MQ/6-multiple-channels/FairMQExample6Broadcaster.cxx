@@ -26,9 +26,9 @@ FairMQExample6Broadcaster::FairMQExample6Broadcaster()
 {
 }
 
-void FairMQExample6Broadcaster::CustomCleanup(void *data, void *object)
+void FairMQExample6Broadcaster::CustomCleanup(void* /*data*/, void *object)
 {
-    delete (string*)object;
+    delete static_cast<string*>(object);
 }
 
 void FairMQExample6Broadcaster::Run()
@@ -38,9 +38,9 @@ void FairMQExample6Broadcaster::Run()
         boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
 
         string* text = new string("OK");
-        unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage(const_cast<char*>(text->c_str()), text->length(), CustomCleanup, text));
-        LOG(INFO) << "Sending \"" << "OK" << "\"";
-        fChannels.at("broadcast-out").at(0).Send(msg);
+        unique_ptr<FairMQMessage> msg(NewMessage(const_cast<char*>(text->c_str()), text->length(), CustomCleanup, text));
+        LOG(INFO) << "Sending OK";
+        Send(msg, "broadcast");
     }
 }
 

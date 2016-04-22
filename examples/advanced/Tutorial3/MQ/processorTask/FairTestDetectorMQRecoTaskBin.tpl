@@ -9,22 +9,25 @@
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi, TestDetectorPayload::Hit>::Exec(Option_t* opt)
 {
-    // // Example how to receive multipart message (uncomment the code lines to test).
-    // // 1. receive the first part.
-    // string test = string(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
-    // LOG(ERROR) << test;
-    // // Ask Processor for the next part.
-    // ReceivePart();
-
     int inputSize = fPayload->GetSize();
-    int numInput = inputSize / sizeof(TestDetectorPayload::Digi);
+    // size_t bufferSize = sizeof(*fBigBuffer);
+    // size_t digisSize = inputSize - bufferSize;
+    // int numEntries = digisSize / sizeof(TestDetectorPayload::Digi);
+    int numEntries = inputSize / sizeof(TestDetectorPayload::Digi);
+
     TestDetectorPayload::Digi* input = static_cast<TestDetectorPayload::Digi*>(fPayload->GetData());
 
-    fRecoTask->fDigiArray->Delete();
+    // memcpy(fBigBuffer->data(), static_cast<unsigned char*>(fPayload->GetData()) + digisSize, bufferSize);
 
-    for (int i = 0; i < numInput; ++i)
+    // Check if the data is the same as on the sender
+    // LOG(WARN) << (*fBigBuffer)[7];
+
+    fRecoTask->fDigiArray->Clear();
+
+    for (int i = 0; i < numEntries; ++i)
     {
         new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(input[i].fX, input[i].fY, input[i].fZ, input[i].fTimeStamp);
+        static_cast<FairTestDetectorDigi*>(((*fRecoTask->fDigiArray)[i]))->SetTimeStampError(input[i].fTimeStampError);
     }
 
     if (!fRecoTask->fDigiArray)
@@ -34,19 +37,23 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     fRecoTask->Exec(opt);
 
-    int numOutput = numInput;
-    int outputSize = numOutput * sizeof(TestDetectorPayload::Hit);
+    size_t hitsSize = numEntries * sizeof(TestDetectorPayload::Hit);
 
-    fPayload->Rebuild(outputSize);
+    // fPayload->Rebuild(hitsSize + bufferSize);
+    fPayload->Rebuild(hitsSize);
+
+    // memcpy(static_cast<unsigned char*>(fPayload->GetData()) + hitsSize, fBigBuffer->data(), bufferSize);
+
     TestDetectorPayload::Hit* output = static_cast<TestDetectorPayload::Hit*>(fPayload->GetData());
 
     if (inputSize > 0)
     {
-        for (int i = 0; i < numOutput; ++i)
+        for (int i = 0; i < numEntries; ++i)
         {
-            FairTestDetectorHit* hit = (FairTestDetectorHit*)fRecoTask->fHitArray->At(i);
+            FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask->fHitArray->At(i));
 
             output[i].detID = hit->GetDetectorID();
+            output[i].mcindex = hit->GetRefIndex();
             output[i].posX = hit->GetX();
             output[i].posY = hit->GetY();
             output[i].posZ = hit->GetZ();

@@ -25,7 +25,7 @@
 #include "TVector3.h"                   // for TVector3
 #include "TVectorDfwd.h"                // for TVectorD
 #include "TVectorT.h"                   // for TVectorT
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMC.h"                 // for TVirtualMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 
 #include <stdio.h>                      // for NULL, printf
@@ -131,10 +131,10 @@ void FairRadMapManager::Reset()
   printf(" FairRadMapManager::Reset() ------------------------------------------------\n");
 }
 
-void FairRadMapManager::AddPoint(Int_t& ModuleId)
+void FairRadMapManager::AddPoint(Int_t&)
 {
   /**Add a point to the collection*/
-  if ( gMC->IsTrackEntering() ) {
+  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
     fELoss  = 0.;
     fStep = 0.;
     fDose = 0.;
@@ -143,19 +143,19 @@ void FairRadMapManager::AddPoint(Int_t& ModuleId)
     fActVol = 0.;
     fActMass = 0.;
     Int_t copyNo;
-    fVolumeID = gMC->CurrentVolID(copyNo);
-    fTime   = gMC->TrackTime() * 1.0e09;
-    fLength = gMC->TrackLength();
-    gMC->TrackPosition(fPosIn);
-    gMC->TrackMomentum(fMomIn);
-    //    Int_t MatId=  gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
-    gMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
+    fVolumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
+    fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
+    fLength = TVirtualMC::GetMC()->TrackLength();
+    TVirtualMC::GetMC()->TrackPosition(fPosIn);
+    TVirtualMC::GetMC()->TrackMomentum(fMomIn);
+    //    Int_t MatId=  TVirtualMC::GetMC()->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
+    TVirtualMC::GetMC()->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
 
     //    if (!gGeoManager) { GetGeoManager(); }
     //    TGeoVolume* actVolume = gGeoManager->GetCurrentVolume();
     TGeoVolume* actVolume = gGeoManager->GetVolume(fVolumeID);
 
-    TVectorD* ActMass = (TVectorD*)fMassMap->GetValue(actVolume);
+    TVectorD* ActMass = static_cast<TVectorD*>(fMassMap->GetValue(actVolume));
 
     fActMass = ActMass->Min(); // read from TVectorD
 
@@ -163,10 +163,10 @@ void FairRadMapManager::AddPoint(Int_t& ModuleId)
 
   }
   /** Sum energy loss for all steps in the active volume */
-  fELoss += gMC->Edep();
-  fStep  += gMC->TrackStep();
+  fELoss += TVirtualMC::GetMC()->Edep();
+  fStep  += TVirtualMC::GetMC()->TrackStep();
 
-  fPdg = gMC->TrackPid();
+  fPdg = TVirtualMC::GetMC()->TrackPid();
 
   // calculate the energy dose
   // exclude fragments with PDG code >= 10000
@@ -184,21 +184,22 @@ void FairRadMapManager::AddPoint(Int_t& ModuleId)
   }
 
   /**  Create a point at exit of the volume */
-  if ( gMC->IsTrackExiting()    ||
-       gMC->IsTrackStop()       ||
-       gMC->IsTrackDisappeared()   ) {
+  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
+       TVirtualMC::GetMC()->IsTrackStop()       ||
+       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
 
-    FairRadMapPoint* p=0;
-    fTrackID  = gMC->GetStack()->GetCurrentTrackNumber();
+//    FairRadMapPoint* p=0;
+    fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
     Int_t copyNo;
-    Int_t fVolID = gMC->CurrentVolID(copyNo); // CAVEAT: fVolID is NOT an unique identifier!!
-    gMC->TrackPosition(fPosOut);
-    gMC->TrackMomentum(fMomOut);
+    Int_t fVolID = TVirtualMC::GetMC()->CurrentVolID(copyNo); // CAVEAT: fVolID is NOT an unique identifier!!
+    TVirtualMC::GetMC()->TrackPosition(fPosOut);
+    TVirtualMC::GetMC()->TrackMomentum(fMomOut);
 
     TClonesArray& clref = *fPointCollection;
     Int_t tsize = clref.GetEntriesFast();
 
-    p=new(clref[tsize]) FairRadMapPoint(fTrackID, fVolID,
+//    p=new(clref[tsize]) FairRadMapPoint(fTrackID, fVolID,
+    new(clref[tsize]) FairRadMapPoint(fTrackID, fVolID,
                                         TVector3(fPosIn.X(),fPosIn.Y(),fPosIn.Z()),
                                         TVector3(fMomIn.X(),fMomIn.Y(),fMomIn.Z()),
                                         fTime, fLength, fELoss,

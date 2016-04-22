@@ -47,7 +47,7 @@ InitStatus FairTestDetectorDigiTask::Init()
         return kFATAL;
     }
 
-    fPointArray = (TClonesArray*)ioman->GetObject("FairTestDetectorPoint");
+    fPointArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorPoint"));
     if (!fPointArray)
     {
         std::cout << "-W- FairTestDetectorDigiTask::Init: "
@@ -63,7 +63,7 @@ InitStatus FairTestDetectorDigiTask::Init()
 }
 
 // -----   Public method Exec   --------------------------------------------
-void FairTestDetectorDigiTask::Exec(Option_t* opt)
+void FairTestDetectorDigiTask::Exec(Option_t* /*opt*/)
 {
 
     fDigiArray->Delete();
@@ -72,7 +72,7 @@ void FairTestDetectorDigiTask::Exec(Option_t* opt)
 
     for (int ipnt = 0; ipnt < fPointArray->GetEntries(); ipnt++)
     {
-        FairTestDetectorPoint* point = (FairTestDetectorPoint*)fPointArray->At(ipnt);
+        FairTestDetectorPoint* point = static_cast<FairTestDetectorPoint*>(fPointArray->At(ipnt));
         if (!point)
         {
             continue;
@@ -101,7 +101,7 @@ void FairTestDetectorDigiTask::Exec(Option_t* opt)
 
 Int_t FairTestDetectorDigiTask::CalcPad(Double_t posIn, Double_t posOut)
 {
-    Int_t result = (Int_t)(posIn + posOut) / 2;
+    Int_t result = static_cast<Int_t>(posIn + posOut) / 2;
     return result;
 }
 // -------------------------------------------------------------------------

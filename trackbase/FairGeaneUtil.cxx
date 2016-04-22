@@ -1166,7 +1166,7 @@ void FairGeaneUtil::FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3],
 }
 
 void FairGeaneUtil::FromMarsToSD(Double_t PD[3], Double_t RD[6][6],
-                                 Double_t H[3], Int_t CH,
+                                 Double_t[3] /*H[3]*/, Int_t CH,
                                  Double_t DJ1[3], Double_t DK1[3],
                                  //  output
                                  Int_t& IERR, Double_t& SP1,
@@ -1415,7 +1415,7 @@ void FairGeaneUtil::FromMarsToSD(Double_t PD[3], Double_t RD[6][6],
 
 
 void FairGeaneUtil::FromSDToMars(Double_t PC[3], Double_t RC[15],
-                                 Double_t H[3], Int_t CH,
+                                 Double_t[3] /*H[3]*/, Int_t CH,
                                  Double_t SP1, Double_t DJ1[3], Double_t DK1[3],
                                  //  output
                                  Double_t* PD, sixMat& RD)

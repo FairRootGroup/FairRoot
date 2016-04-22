@@ -144,6 +144,38 @@ FairParamObj::FairParamObj(const Text_t* name,Int_t value)
   memcpy(paramValue,&value,arraySize);
 }
 
+FairParamObj::FairParamObj(const Text_t* name,Bool_t value)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(Bool_t)),
+   paramType("Bool_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(Bool_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
+{
+  // Constructor for a Int_t value
+  paramValue=new UChar_t[arraySize];
+  memcpy(paramValue,&value,arraySize);
+}
+
+FairParamObj::FairParamObj(const Text_t* name,UInt_t value)
+  :TNamed(name,""),
+   paramValue(NULL),
+   arraySize(sizeof(UInt_t)),
+   paramType("UInt_t"),
+   basicType(kTRUE),
+   bytesPerValue(sizeof(UInt_t)),
+   classVersion(-1),
+   streamerInfo(NULL),
+   streamerInfoSize(0)
+{
+  // Constructor for a Int_t value
+  paramValue=new UChar_t[arraySize];
+  memcpy(paramValue,&value,arraySize);
+}
+
 FairParamObj::FairParamObj(const Text_t* name,Float_t value)
   :TNamed(name,""),
    paramValue(NULL),
@@ -190,6 +222,22 @@ FairParamObj::FairParamObj(const Text_t* name,const Int_t* value,const Int_t nVa
   // Constructor for an array with nValues elements of type Int_t
   paramValue=new UChar_t[arraySize];
   memcpy(paramValue,value,arraySize);
+}
+
+FairParamObj::FairParamObj(const Text_t* name,const UInt_t* value,const Int_t nValues)
+:TNamed(name,""),
+paramValue(NULL),
+arraySize(sizeof(UInt_t)*nValues),
+paramType("UInt_t"),
+basicType(kTRUE),
+bytesPerValue(sizeof(UInt_t)),
+classVersion(-1),
+streamerInfo(NULL),
+streamerInfoSize(0)
+{
+   // Constructor for an array with nValues elements of type UInt_t
+   paramValue=new UChar_t[arraySize];
+   memcpy(paramValue,value,arraySize);
 }
 
 
@@ -384,7 +432,7 @@ void FairParamObj::print()
     std::cout<<"\n  Class Type:    "<<paramType.Data()<<"\n  Class Version: "
              <<classVersion<<std::endl;
   } else if (strcmp(paramType,"Text_t")==0) {
-    TString val((Char_t*)paramValue,arraySize);
+    TString val(reinterpret_cast<Char_t*>(paramValue),arraySize);
     val.ReplaceAll("\n","\n  ");
     std::cout<<paramType<<"\n  "<<val.Data()<<std::endl;
   } else {
@@ -395,16 +443,16 @@ void FairParamObj::print()
       std::cout<<paramType<<" array, nValues: "<<nParams<<"\n  ";
     }
     if (strcmp(paramType,"Char_t")==0) {
-      Char_t* val=(Char_t*)paramValue;
+      Char_t* val=reinterpret_cast<Char_t*>(paramValue);
       printData(val,nParams);
     } else if (strcmp(paramType,"Int_t")==0) {
-      Int_t* val=(Int_t*)paramValue;
+      Int_t* val=reinterpret_cast<Int_t*>(paramValue);
       printData(val,nParams);
     } else if (strcmp(paramType,"Float_t")==0) {
-      Float_t* val=(Float_t*)paramValue;
+      Float_t* val=reinterpret_cast<Float_t*>(paramValue);
       printData(val,nParams);
     } else if (strcmp(paramType,"Double_t")==0) {
-      Double_t* val=(Double_t*)paramValue;
+      Double_t* val=reinterpret_cast<Double_t*>(paramValue);
       printData(val,nParams);
     } else {
       std::cout<<"Type: "<<paramType<<"  Array  length: "<<arraySize<<std::endl;
@@ -471,6 +519,19 @@ void FairParamList::add(const Text_t* name,const Int_t value)
   // Adds a parameter of type Int_t to the list
   paramList->Add(new FairParamObj(name,value));
 }
+
+void FairParamList::add(const Text_t* name,const Bool_t value)
+{
+  // Adds a parameter of type Int_t to the list
+  paramList->Add(new FairParamObj(name,value));
+}
+
+void FairParamList::add(const Text_t* name,const UInt_t value)
+{
+   // Adds a parameter of type UInt_t to the list
+   paramList->Add(new FairParamObj(name,value));
+}
+
 
 void FairParamList::add(const Text_t* name,const Float_t value)
 {
@@ -553,13 +614,13 @@ void FairParamList::addObject(const Text_t* name,TObject* obj)
   Int_t len=buffer->Length();
   Char_t* buf=new char[len];
   memcpy(buf,buffer->Buffer(),len);
-  o->setParamValue((UChar_t*)buf,len);
+  o->setParamValue(reinterpret_cast<UChar_t*>(buf),len);
   TArrayC* fClassIndex=paramFile->GetClassIndex();
   if (fClassIndex&&fClassIndex->fArray[0] != 0) {
     TIter next(gROOT->GetListOfStreamerInfo());
     TStreamerInfo* info;
     TList list;
-    while ((info=(TStreamerInfo*)next())) {
+    while ((info=static_cast<TStreamerInfo*>(next()))) {
       Int_t uid=info->GetNumber();
       if (fClassIndex->fArray[uid]) { list.Add(info); }
     }
@@ -574,7 +635,7 @@ void FairParamList::addObject(const Text_t* name,TObject* obj)
       Int_t infolen=infoBuffer->Length();
       Char_t* infobuf=new char[infolen];
       memcpy(infobuf,infoBuffer->Buffer(),infolen);
-      o->setStreamerInfo((UChar_t*)infobuf,infolen);
+      o->setStreamerInfo(reinterpret_cast<UChar_t*>(infobuf),infolen);
       delete infoBuffer;
     } else {
       o->setStreamerInfo(0,0);
@@ -592,18 +653,18 @@ void FairParamList::print()
   // Prints the parameter list including values
   TIter next(paramList);
   FairParamObj* o;
-  while ((o=(FairParamObj*)next())!=0) { o->print(); }
+  while ((o=static_cast<FairParamObj*>(next()))!=0) { o->print(); }
 }
 
 Bool_t FairParamList::fill(const Text_t* name,Text_t* value,const Int_t length)
 {
   // Copies the data from the list object into the parameter value of type string
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (value==0) { return kFALSE; }
   if (o!=0 && strcmp(o->getParamType(),"Text_t")==0) {
     Int_t l=o->getLength();
     if (l<length-1) {
-      memcpy(value,(Char_t*)o->getParamValue(),l);
+      memcpy(value,reinterpret_cast<Char_t*>(o->getParamValue()),l);
       value[l]='\0';
       return kTRUE;
     } else {
@@ -622,7 +683,7 @@ Bool_t FairParamList::fill(const Text_t* name,UChar_t* values,const Int_t nValue
   // The function returns an error, if the array size of the list object is not equal
   // to nValues.
   if (values==0) { return kFALSE; }
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),"UChar_t")==0) {
     Int_t n=o->getLength();
     if (n==nValues) {
@@ -645,7 +706,7 @@ Bool_t FairParamList::fill(const Text_t* name,Int_t* values,const Int_t nValues)
   // The function returns an error, if the array size of the list object is not equal
   // to nValues.
   if (values==0) { return kFALSE; }
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),"Int_t")==0) {
     Int_t l=o->getLength();
     Int_t n=o->getNumParams();
@@ -663,13 +724,63 @@ Bool_t FairParamList::fill(const Text_t* name,Int_t* values,const Int_t nValues)
   return kFALSE;
 }
 
+Bool_t FairParamList::fill(const Text_t* name,Bool_t* values,const Int_t nValues)
+{
+  // Copies the data from the list object into the parameter array of type Int_t.
+  // The function returns an error, if the array size of the list object is not equal
+  // to nValues.
+  if (values==0) { return kFALSE; }
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
+  if (o!=0 && strcmp(o->getParamType(),"Bool_t")==0) {
+    Int_t l=o->getLength();
+    Int_t n=o->getNumParams();
+    if (n==nValues) {
+      memcpy(values,o->getParamValue(),l);
+      return kTRUE;
+    } else {
+      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
+      return kFALSE;
+    }
+  }
+  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  //  Error("FairParamList::fill \nNot found: %s",name);
+  return kFALSE;
+}
+
+
+Bool_t FairParamList::fill(const Text_t* name,UInt_t* values,const Int_t nValues)
+{
+   // Copies the data from the list object into the parameter array of type UInt_t.
+   // The function returns an error, if the array size of the list object is not equal
+   // to nValues.
+   if (values==0) { return kFALSE; }
+   FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
+   if (o!=0 && strcmp(o->getParamType(),"Int_t")==0) {
+      Int_t l=o->getLength();
+      Int_t n=o->getNumParams();
+      if (n==nValues) {
+         memcpy(values,o->getParamValue(),l);
+         return kTRUE;
+      } else {
+         fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+         //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
+         return kFALSE;
+      }
+   }
+   fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+   //  Error("FairParamList::fill \nNot found: %s",name);
+   return kFALSE;
+}
+
+
 Bool_t FairParamList::fill(const Text_t* name,Float_t* values,const Int_t nValues)
 {
   // Copies the data from the list object into the parameter array of type Float_t.
   // The function returns an error, if the array size of the list object is not equal
   // to nValues.
   if (values==0) { return kFALSE; }
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),"Float_t")==0) {
     Int_t l=o->getLength();
     Int_t n=o->getNumParams();
@@ -693,7 +804,7 @@ Bool_t FairParamList::fill(const Text_t* name,Double_t* values,const Int_t nValu
   // The function returns an error, if the array size of the list object is not equal
   // to nValues.
   if (values==0) { return kFALSE; }
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),"Double_t")==0) {
     Int_t l=o->getLength();
     Int_t n=o->getNumParams();
@@ -716,7 +827,7 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayI* value)
   // Copies the data from the list object into the parameter value of type TArrayI
   // The array is resized, if the number of data is different.
   if (value==0) { return kFALSE; }
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),"Int_t")==0) {
     Int_t l=o->getLength();
     Int_t n=o->getNumParams();
@@ -734,7 +845,7 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayC* value)
   // Copies the data from the list object into the parameter value of type TArrayC
   // The array is resized, if the number of data is different.
   if (value==0) { return kFALSE; }
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),"Char_t")==0) {
     Int_t l=o->getLength();
     if (value->GetSize()!=l) { value->Set(l); }
@@ -751,7 +862,7 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayF* value)
   // Copies the data from the list object into the parameter value of type TArrayF
   // The array is resized, if the number of data is different.
   if (value==0) { return kFALSE; }
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),"Float_t")==0) {
     Int_t l=o->getLength();
     Int_t n=o->getNumParams();
@@ -769,7 +880,7 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayD* value)
   // Copies the data from the list object into the parameter value of type TArrayD
   // The array is resized, if the number of data is different.
   if (value==0) { return kFALSE; }
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),"Double_t")==0) {
     Int_t l=o->getLength();
     Int_t n=o->getNumParams();
@@ -788,7 +899,7 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
   // Prints a warning if the class version in the list objects differs from the actual
   // class version.
   if (!obj) { return 0; }
-  FairParamObj* o=(FairParamObj*)paramList->FindObject(name);
+  FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),obj->IsA()->GetName())==0) {
     if (o->getClassVersion()!=obj->IsA()->GetClassVersion()) {
       fLogger->Warning(MESSAGE_ORIGIN,"Read Class Version = %i does not match actual version = %i",o->getClassVersion(),obj->IsA()->GetClassVersion());
@@ -803,7 +914,7 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
     Int_t len=o->getStreamerInfoSize();
     if (len>0&&o->getStreamerInfo()!=0) {
       buf=new TBufferFile(TBuffer::kRead,len);
-      memcpy(buf->Buffer(),(Char_t*)o->getStreamerInfo(),len);
+      memcpy(buf->Buffer(),reinterpret_cast<Char_t*>(o->getStreamerInfo()),len);
       buf->SetBufferOffset(0);
       TList list;
       buf->MapObject(&list);
@@ -811,7 +922,7 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
       delete buf;
       TStreamerInfo* info;
       TIter next(&list);
-      while ((info = (TStreamerInfo*)next())) {
+      while ((info = static_cast<TStreamerInfo*>(next()))) {
         if (info->IsA() != TStreamerInfo::Class()) {
           fLogger->Warning(MESSAGE_ORIGIN,"Not a TStreamerInfo object");
           //          Warning("FairParamList::fill","not a TStreamerInfo object");
@@ -823,7 +934,7 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
     }
     len=o->getLength();
     buf=new TBufferFile(TBuffer::kRead,len);
-    memcpy(buf->Buffer(),(Char_t*)o->getParamValue(),len);
+    memcpy(buf->Buffer(),reinterpret_cast<Char_t*>(o->getParamValue()),len);
     buf->SetBufferOffset(0);
     buf->MapObject(obj);
     obj->Streamer(*buf);

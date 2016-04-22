@@ -24,13 +24,15 @@ using namespace std;
 boost::mutex FairMQChannel::fChannelMutex;
 
 FairMQChannel::FairMQChannel()
-    : fType("unspecified")
+    : fSocket(nullptr)
+    , fType("unspecified")
     , fMethod("unspecified")
     , fAddress("unspecified")
     , fSndBufSize(1000)
     , fRcvBufSize(1000)
+    , fSndKernelSize(0)
+    , fRcvKernelSize(0)
     , fRateLogging(1)
-    , fSocket(nullptr)
     , fChannelName("")
     , fIsValid(false)
     , fPoller(nullptr)
@@ -44,13 +46,15 @@ FairMQChannel::FairMQChannel()
 }
 
 FairMQChannel::FairMQChannel(const string& type, const string& method, const string& address)
-    : fType(type)
+    : fSocket(nullptr)
+    , fType(type)
     , fMethod(method)
     , fAddress(address)
     , fSndBufSize(1000)
     , fRcvBufSize(1000)
+    , fSndKernelSize(0)
+    , fRcvKernelSize(0)
     , fRateLogging(1)
-    , fSocket(nullptr)
     , fChannelName("")
     , fIsValid(false)
     , fPoller(nullptr)
@@ -61,6 +65,51 @@ FairMQChannel::FairMQChannel(const string& type, const string& method, const str
     , fSndTimeoutInMs(-1)
     , fRcvTimeoutInMs(-1)
 {
+}
+
+FairMQChannel::FairMQChannel(const FairMQChannel& chan)
+    : fSocket(nullptr)
+    , fType(chan.fType)
+    , fMethod(chan.fMethod)
+    , fAddress(chan.fAddress)
+    , fSndBufSize(chan.fSndBufSize)
+    , fRcvBufSize(chan.fRcvBufSize)
+    , fSndKernelSize(chan.fSndKernelSize)
+    , fRcvKernelSize(chan.fRcvKernelSize)
+    , fRateLogging(chan.fRateLogging)
+    , fChannelName(chan.fChannelName)
+    , fIsValid(false)
+    , fPoller(nullptr)
+    , fCmdSocket(nullptr)
+    , fTransportFactory(nullptr)
+    , fNoBlockFlag(chan.fNoBlockFlag)
+    , fSndMoreFlag(chan.fSndMoreFlag)
+    , fSndTimeoutInMs(chan.fSndTimeoutInMs)
+    , fRcvTimeoutInMs(chan.fRcvTimeoutInMs)
+{}
+
+FairMQChannel& FairMQChannel::operator=(const FairMQChannel& chan)
+{
+    fType = chan.fType;
+    fMethod = chan.fMethod;
+    fAddress = chan.fAddress;
+    fSndBufSize = chan.fSndBufSize;
+    fRcvBufSize = chan.fRcvBufSize;
+    fSndKernelSize = chan.fSndKernelSize;
+    fRcvKernelSize = chan.fRcvKernelSize;
+    fRateLogging = chan.fRateLogging;
+    fSocket = nullptr;
+    fChannelName = chan.fChannelName;
+    fIsValid = false;
+    fPoller = nullptr;
+    fCmdSocket = nullptr;
+    fTransportFactory = nullptr;
+    fNoBlockFlag = chan.fNoBlockFlag;
+    fSndMoreFlag = chan.fSndMoreFlag;
+    fSndTimeoutInMs = chan.fSndTimeoutInMs;
+    fRcvTimeoutInMs = chan.fRcvTimeoutInMs;
+
+    return *this;
 }
 
 string FairMQChannel::GetType() const
@@ -129,6 +178,34 @@ int FairMQChannel::GetRcvBufSize() const
     catch (boost::exception& e)
     {
         LOG(ERROR) << "Exception caught in FairMQChannel::GetRcvBufSize: " << boost::diagnostic_information(e);
+        exit(EXIT_FAILURE);
+    }
+}
+
+int FairMQChannel::GetSndKernelSize() const
+{
+    try
+    {
+        boost::unique_lock<boost::mutex> scoped_lock(fChannelMutex);
+        return fSndKernelSize;
+    }
+    catch (boost::exception& e)
+    {
+        LOG(ERROR) << "Exception caught in FairMQChannel::GetSndKernelSize: " << boost::diagnostic_information(e);
+        exit(EXIT_FAILURE);
+    }
+}
+
+int FairMQChannel::GetRcvKernelSize() const
+{
+    try
+    {
+        boost::unique_lock<boost::mutex> scoped_lock(fChannelMutex);
+        return fRcvKernelSize;
+    }
+    catch (boost::exception& e)
+    {
+        LOG(ERROR) << "Exception caught in FairMQChannel::GetRcvKernelSize: " << boost::diagnostic_information(e);
         exit(EXIT_FAILURE);
     }
 }
@@ -218,6 +295,36 @@ void FairMQChannel::UpdateRcvBufSize(const int rcvBufSize)
     catch (boost::exception& e)
     {
         LOG(ERROR) << "Exception caught in FairMQChannel::UpdateRcvBufSize: " << boost::diagnostic_information(e);
+        exit(EXIT_FAILURE);
+    }
+}
+
+void FairMQChannel::UpdateSndKernelSize(const int sndKernelSize)
+{
+    try
+    {
+        boost::unique_lock<boost::mutex> scoped_lock(fChannelMutex);
+        fIsValid = false;
+        fSndKernelSize = sndKernelSize;
+    }
+    catch (boost::exception& e)
+    {
+        LOG(ERROR) << "Exception caught in FairMQChannel::UpdateSndKernelSize: " << boost::diagnostic_information(e);
+        exit(EXIT_FAILURE);
+    }
+}
+
+void FairMQChannel::UpdateRcvKernelSize(const int rcvKernelSize)
+{
+    try
+    {
+        boost::unique_lock<boost::mutex> scoped_lock(fChannelMutex);
+        fIsValid = false;
+        fRcvKernelSize = rcvKernelSize;
+    }
+    catch (boost::exception& e)
+    {
+        LOG(ERROR) << "Exception caught in FairMQChannel::UpdateRcvKernelSize: " << boost::diagnostic_information(e);
         exit(EXIT_FAILURE);
     }
 }
@@ -352,6 +459,24 @@ bool FairMQChannel::ValidateChannel()
             return false;
         }
 
+        // validate socket kernel transmit size for sending
+        if (fSndKernelSize < 0)
+        {
+            ss << "INVALID";
+            LOG(DEBUG) << ss.str();
+            LOG(DEBUG) << "invalid channel send kernel transmit size: \"" << fSndKernelSize << "\"";
+            return false;
+        }
+
+        // validate socket kernel transmit size for receiving
+        if (fRcvKernelSize < 0)
+        {
+            ss << "INVALID";
+            LOG(DEBUG) << ss.str();
+            LOG(DEBUG) << "invalid channel receive kernel transmit size: \"" << fRcvKernelSize << "\"";
+            return false;
+        }
+
         fIsValid = true;
         ss << "VALID";
         LOG(DEBUG) << ss.str();
@@ -368,7 +493,7 @@ bool FairMQChannel::InitCommandInterface(FairMQTransportFactory* factory, int nu
 {
     fTransportFactory = factory;
 
-    fCmdSocket = fTransportFactory->CreateSocket("sub", "device-commands", numIoThreads);
+    fCmdSocket = fTransportFactory->CreateSocket("sub", "device-commands", numIoThreads, "internal");
     if (fCmdSocket)
     {
         fCmdSocket->Connect("inproc://commands");
@@ -410,56 +535,6 @@ int FairMQChannel::Send(const unique_ptr<FairMQMessage>& msg) const
     return -2;
 }
 
-int FairMQChannel::SendAsync(const unique_ptr<FairMQMessage>& msg) const
-{
-    return fSocket->Send(msg.get(), fNoBlockFlag);
-}
-
-int FairMQChannel::SendPart(const unique_ptr<FairMQMessage>& msg) const
-{
-    return fSocket->Send(msg.get(), fSndMoreFlag);
-}
-
-int FairMQChannel::SendPartAsync(const unique_ptr<FairMQMessage>& msg) const
-{
-    return fSocket->Send(msg.get(), fSndMoreFlag|fNoBlockFlag);
-}
-
-// int FairMQChannel::SendParts(initializer_list<unique_ptr<FairMQMessage>> partsList) const
-// {
-//     int totalSize = 0;
-//     initializer_list<unique_ptr<FairMQMessage>>::iterator it = partsList.end();
-//     auto &last = --it;
-//     for (auto &p : partsList)
-//     {
-//         if (&p != last)
-//         {
-//             int nbytes = SendPart(p);
-//             if (nbytes >= 0)
-//             {
-//                 totalSize += nbytes;
-//             }
-//             else
-//             {
-//                 return nbytes;
-//             }
-//         }
-//         else
-//         {
-//             int nbytes = Send(p);
-//             if (nbytes >= 0)
-//             {
-//                 totalSize += nbytes;
-//             }
-//             else
-//             {
-//                 return nbytes;
-//             }
-//         }
-//     }
-//     return totalSize;
-// }
-
 int FairMQChannel::Receive(const unique_ptr<FairMQMessage>& msg) const
 {
     fPoller->Poll(fRcvTimeoutInMs);
@@ -478,9 +553,40 @@ int FairMQChannel::Receive(const unique_ptr<FairMQMessage>& msg) const
     return -2;
 }
 
-int FairMQChannel::ReceiveAsync(const unique_ptr<FairMQMessage>& msg) const
+int64_t FairMQChannel::Send(const std::vector<std::unique_ptr<FairMQMessage>>& msgVec) const
 {
-    return fSocket->Receive(msg.get(), fNoBlockFlag);
+    fPoller->Poll(fSndTimeoutInMs);
+
+    if (fPoller->CheckInput(0))
+    {
+        HandleUnblock();
+        return -2;
+    }
+
+    if (fPoller->CheckOutput(1))
+    {
+        return fSocket->Send(msgVec);
+    }
+
+    return -2;
+}
+
+int64_t FairMQChannel::Receive(std::vector<std::unique_ptr<FairMQMessage>>& msgVec) const
+{
+    fPoller->Poll(fRcvTimeoutInMs);
+
+    if (fPoller->CheckInput(0))
+    {
+        HandleUnblock();
+        return -2;
+    }
+
+    if (fPoller->CheckInput(1))
+    {
+        return fSocket->Receive(msgVec);
+    }
+
+    return -2;
 }
 
 int FairMQChannel::Send(FairMQMessage* msg, const string& flag) const
@@ -581,64 +687,6 @@ int FairMQChannel::Receive(FairMQMessage* msg, const int flags) const
     {
         return fSocket->Receive(msg, flags);
     }
-}
-
-void FairMQChannel::SetSendTimeout(const int timeout)
-{
-    // if (fSocket)
-    // {
-    //     if (fSocket->SetSendTimeout(timeout, fAddress, fMethod))
-    //     {
-            fSndTimeoutInMs = timeout;
-    //         return true;
-    //     }
-    // }
-
-    // LOG(ERROR) << "SetSendTimeout() failed - socket is not initialized!";
-    // return false;
-}
-
-int FairMQChannel::GetSendTimeout() const
-{
-    return fSndTimeoutInMs;
-    // if (fSocket)
-    // {
-    //     return fSocket->GetSendTimeout();
-    // }
-    // else
-    // {
-    //     LOG(ERROR) << "GetSendTimeout() failed - socket is not initialized!";
-    //     return -1;
-    // }
-}
-
-void FairMQChannel::SetReceiveTimeout(const int timeout)
-{
-    // if (fSocket)
-    // {
-    //     if (fSocket->SetReceiveTimeout(timeout, fAddress, fMethod))
-    //     {
-            fRcvTimeoutInMs = timeout;
-    //         return true;
-    //     }
-    // }
-
-    // LOG(ERROR) << "SetReceiveTimeout() failed - socket is not initialized!";
-    // return false;
-}
-
-int FairMQChannel::GetReceiveTimeout() const
-{
-    return fRcvTimeoutInMs;
-    // if (fSocket)
-    // {
-    //     return fSocket->GetReceiveTimeout();
-    // }
-    // else
-    // {
-    //     LOG(ERROR) << "GetReceiveTimeout() failed - socket is not initialized!";
-    //     return -1;
-    // }
 }
 
 bool FairMQChannel::ExpectsAnotherPart() const

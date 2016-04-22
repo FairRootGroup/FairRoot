@@ -18,29 +18,12 @@
 #include "FairMbsSource.h"
 #include "FairLogger.h"
 
-FairMbsSource::FairMbsSource() : FairSource(), fUnpackers(new TObjArray()) {}
+FairMbsSource::FairMbsSource() : FairOnlineSource() {}
 
 FairMbsSource::FairMbsSource(const FairMbsSource &source)
-    : FairSource(source), fUnpackers(new TObjArray(*(source.GetUnpackers()))) {}
+    : FairOnlineSource(source) {}
 
 FairMbsSource::~FairMbsSource() {
-  fUnpackers->Delete();
-  delete fUnpackers;
-}
-
-Bool_t FairMbsSource::Init() {
-  for (Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
-    if (!((FairUnpack *)fUnpackers->At(i))->Init()) {
-      return kFALSE;
-    }
-  }
-  return kTRUE;
-}
-
-void FairMbsSource::Reset() {
-  for (Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
-    ((FairUnpack *)fUnpackers->At(i))->Reset();
-  }
 }
 
 Bool_t FairMbsSource::Unpack(Int_t *data, Int_t size, Short_t type,
@@ -56,7 +39,7 @@ Bool_t FairMbsSource::Unpack(Int_t *data, Int_t size, Short_t type,
   FairUnpack *unpack;
   Bool_t seen = kFALSE;
   for (Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
-    unpack = (FairUnpack *)fUnpackers->At(i);
+    unpack = static_cast<FairUnpack*>(fUnpackers->At(i));
 
     if (unpack->GetSubCrate() < 0) { // All sub-crates
       if (type != unpack->GetType() || subType != unpack->GetSubType() ||

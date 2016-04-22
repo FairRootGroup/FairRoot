@@ -41,6 +41,12 @@ class FairMQChannel
     /// @param address Network address to bind/connect to (e.g. "tcp://127.0.0.1:5555" or "ipc://abc")
     FairMQChannel(const std::string& type, const std::string& method, const std::string& address);
 
+    /// Copy Constructor
+    FairMQChannel(const FairMQChannel&);
+
+    /// Assignment operator
+    FairMQChannel& operator=(const FairMQChannel&);
+
     /// Default destructor
     virtual ~FairMQChannel();
 
@@ -59,6 +65,12 @@ class FairMQChannel
     /// Get socket receive buffer size (in number of messages)
     /// @return Returns socket receive buffer size (in number of messages)
     int GetRcvBufSize() const;
+    /// Get socket kernel transmit send buffer size (in bytes)
+    /// @return Returns socket kernel transmit send buffer size (in bytes)
+    int GetSndKernelSize() const;
+    /// Get socket kernel transmit receive buffer size (in bytes)
+    /// @return Returns socket kernel transmit receive buffer size (in bytes)
+    int GetRcvKernelSize() const;
     /// Get socket rate logging setting (1/0)
     /// @return Returns socket rate logging setting (1/0)
     int GetRateLogging() const;
@@ -78,6 +90,12 @@ class FairMQChannel
     /// Set socket receive buffer size
     /// @param rcvBufSize Socket receive buffer size (in number of messages)
     void UpdateRcvBufSize(const int rcvBufSize);
+    /// Set socket kernel transmit send buffer size (in bytes)
+    /// @param sndKernelSize Socket send buffer size (in bytes)
+    void UpdateSndKernelSize(const int sndKernelSize);
+    /// Set socket kernel transmit receive buffer size (in bytes)
+    /// @param rcvKernelSize Socket receive buffer size (in bytes)
+    void UpdateRcvKernelSize(const int rcvKernelSize);
     /// Set socket rate logging setting
     /// @param rateLogging Socket rate logging setting (1/0)
     void UpdateRateLogging(const int rateLogging);
@@ -101,57 +119,101 @@ class FairMQChannel
     /// for some other reason (e.g. no peers connected for a binding socket), the method blocks.
     ///
     /// @param msg Constant reference of unique_ptr to a FairMQMessage
-    /// @return Number of bytes that have been queued. -2 If queueing was not possible or timed out. In case of errors, returns -1.
+    /// @return Number of bytes that have been queued. -2 If queueing was not possible or timed out.
+    /// In case of errors, returns -1.
     int Send(const std::unique_ptr<FairMQMessage>& msg) const;
 
     /// Sends a message in non-blocking mode.
     /// @details SendAsync method attempts to send a message without blocking by
-    /// putting it in the queue. If the queue is full or queueing is not possible
-    /// for some other reason (e.g. no peers connected for a binding socket), the method returns 0.
-    /// 
+    /// putting it in the queue.
+    ///
     /// @param msg Constant reference of unique_ptr to a FairMQMessage
-    /// @return Returns the number of bytes that have been queued. If queueing failed due to
-    /// full queue or no connected peers (when binding), returns -2. In case of errors, returns -1.
-    int SendAsync(const std::unique_ptr<FairMQMessage>& msg) const;
+    /// @return Number of bytes that have been queued. If queueing failed due to
+    /// full queue or no connected peers (when binding), returns -2.
+    /// In case of errors, returns -1.
+    inline int SendAsync(const std::unique_ptr<FairMQMessage>& msg) const
+    {
+        return fSocket->Send(msg.get(), fNoBlockFlag);
+    }
 
     /// Queues the current message as a part of a multi-part message
     /// @details SendPart method queues the provided message as a part of a multi-part message.
     /// The actual transfer over the network is initiated once final part has been queued with the Send() or SendAsync() methods.
-    /// 
+    ///
     /// @param msg Constant reference of unique_ptr to a FairMQMessage
-    /// @return Returns the number of bytes that have been queued. -2 If queueing was not possible. In case of errors, returns -1.
-    int SendPart(const std::unique_ptr<FairMQMessage>& msg) const;
+    /// @return Number of bytes that have been queued. -2 If queueing was not possible.
+    /// In case of errors, returns -1.
+    inline int SendPart(const std::unique_ptr<FairMQMessage>& msg) const
+    {
+        return fSocket->Send(msg.get(), fSndMoreFlag);
+    }
 
     /// Queues the current message as a part of a multi-part message without blocking
     /// @details SendPart method queues the provided message as a part of a multi-part message without blocking.
     /// The actual transfer over the network is initiated once final part has been queued with the Send() or SendAsync() methods.
-    /// 
+    ///
     /// @param msg Constant reference of unique_ptr to a FairMQMessage
-    /// @return Returns the number of bytes that have been queued. -2 If queueing was not possible. In case of errors, returns -1.
-    int SendPartAsync(const std::unique_ptr<FairMQMessage>& msg) const;
+    /// @return Number of bytes that have been queued. -2 If queueing was not possible.
+    /// In case of errors, returns -1.
+    inline int SendPartAsync(const std::unique_ptr<FairMQMessage>& msg) const
+    {
+        return fSocket->Send(msg.get(), fSndMoreFlag|fNoBlockFlag);
+    }
 
-    // /// Sends the messages provided as arguments as a multi-part message.
-    // /// 
-    // /// @param partsList Initializer list of FairMQMessages
-    // /// @return Returns the number of bytes that have been queued. -2 If queueing was not possible. In case of errors, returns -1.
-    // int SendParts(std::initializer_list<std::unique_ptr<FairMQMessage>> partsList) const;
+    /// Send a vector of messages
+    ///
+    /// @param msgVec message vector reference
+    /// @return Number of bytes that have been queued. -2 If queueing was not possible or timed out.
+    /// In case of errors, returns -1.
+    int64_t Send(const std::vector<std::unique_ptr<FairMQMessage>>& msgVec) const;
+
+    /// Sends a vector of message in non-blocking mode.
+    /// @details SendAsync method attempts to send a vector of messages without blocking by
+    /// putting it them the queue.
+    ///
+    /// @param msgVec message vector reference
+    /// @return Number of bytes that have been queued. If queueing failed due to
+    /// full queue or no connected peers (when binding), returns -2. In case of errors, returns -1.
+    inline int64_t SendAsync(const std::vector<std::unique_ptr<FairMQMessage>>& msgVec) const
+    {
+        return fSocket->Send(msgVec, fNoBlockFlag);
+    }
 
     /// Receives a message from the socket queue.
     /// @details Receive method attempts to receive a message from the input queue.
     /// If the queue is empty the method blocks.
     ///
     /// @param msg Constant reference of unique_ptr to a FairMQMessage
-    /// @return Returns the number of bytes that have been received. -2 If reading from the queue was not possible or timed out. In case of errors, returns -1.
+    /// @return Number of bytes that have been received. -2 If reading from the queue was not possible or timed out.
+    /// In case of errors, returns -1.
     int Receive(const std::unique_ptr<FairMQMessage>& msg) const;
 
     /// Receives a message in non-blocking mode.
-    /// @details ReceiveAsync method attempts to receive a message without blocking from the input queue.
-    /// If the queue is empty the method returns 0.
     ///
     /// @param msg Constant reference of unique_ptr to a FairMQMessage
-    /// @return Returns the number of bytes that have been received. If queue is empty, returns -2.
+    /// @return Number of bytes that have been received. If queue is empty, returns -2.
     /// In case of errors, returns -1.
-    int ReceiveAsync(const std::unique_ptr<FairMQMessage>& msg) const;
+    inline int ReceiveAsync(const std::unique_ptr<FairMQMessage>& msg) const
+    {
+        return fSocket->Receive(msg.get(), fNoBlockFlag);
+    }
+
+    /// Receive a vector of messages
+    ///
+    /// @param msgVec message vector reference
+    /// @return Number of bytes that have been received. -2 If reading from the queue was not possible or timed out.
+    /// In case of errors, returns -1.
+    int64_t Receive(std::vector<std::unique_ptr<FairMQMessage>>& msgVec) const;
+
+    /// Receives a vector of messages in non-blocking mode.
+    ///
+    /// @param msgVec message vector reference
+    /// @return Number of bytes that have been received. If queue is empty, returns -2.
+    /// In case of errors, returns -1.
+    inline int64_t ReceiveAsync(std::vector<std::unique_ptr<FairMQMessage>>& msgVec) const
+    {
+        return fSocket->Receive(msgVec, fNoBlockFlag);
+    }
 
     // DEPRECATED socket method wrappers with raw pointers and flag checks
     int Send(FairMQMessage* msg, const std::string& flag = "") const;
@@ -161,19 +223,31 @@ class FairMQChannel
 
     /// Sets a timeout on the (blocking) Send method
     /// @param timeout timeout value in milliseconds
-    void SetSendTimeout(const int timeout);
+    inline void SetSendTimeout(const int timeout)
+    {
+        fSndTimeoutInMs = timeout;
+    }
 
     /// Gets the current value of the timeout on the (blocking) Send method
     /// @return Timeout value in milliseconds. -1 for no timeout.
-    int GetSendTimeout() const;
+    inline int GetSendTimeout() const
+    {
+        return fSndTimeoutInMs;
+    }
 
     /// Sets a timeout on the (blocking) Receive method
     /// @param timeout timeout value in milliseconds
-    void SetReceiveTimeout(const int timeout);
+    inline void SetReceiveTimeout(const int timeout)
+    {
+        fRcvTimeoutInMs = timeout;
+    }
 
     /// Gets the current value of the timeout on the (blocking) Receive method
     /// @return Timeout value in milliseconds. -1 for no timeout.
-    int GetReceiveTimeout() const;
+    inline int GetReceiveTimeout() const
+    {
+        return fRcvTimeoutInMs;
+    }
 
     /// Checks if the socket is expecting to receive another part of a multipart message.
     /// @return Return true if the socket expects another part of a multipart message and false otherwise.
@@ -185,6 +259,8 @@ class FairMQChannel
     std::string fAddress;
     int fSndBufSize;
     int fRcvBufSize;
+    int fSndKernelSize;
+    int fRcvKernelSize;
     int fRateLogging;
 
     std::string fChannelName;

@@ -32,30 +32,28 @@ class FairMQSamplerTask : public FairTask
   public:
     FairMQSamplerTask();
     FairMQSamplerTask(const Text_t *name, int iVerbose = 1);
+    FairMQSamplerTask(const FairMQSamplerTask&) = delete;
+    FairMQSamplerTask operator=(const FairMQSamplerTask&) = delete;
 
     virtual ~FairMQSamplerTask();
 
     virtual InitStatus Init();
     virtual void Exec(Option_t *opt);
-    void SetSendPart(boost::function<void()>); // provides a callback to the Sampler.
+
     void SetEventIndex(Long64_t EventIndex);
     void SetBranch(std::string branch);
-    FairMQMessage *GetOutput();
+
+    FairMQMessage* GetOutput();
+    void ClearOutput();
     void SetTransport(FairMQTransportFactory *factory);
 
   protected:
-    TClonesArray *fInput;
     std::string fBranch;
-    FairMQMessage *fOutput;
-    FairMQTransportFactory *fTransportFactory;
+    TClonesArray* fInput;
+    FairMQMessage* fOutput;
+    FairMQTransportFactory* fTransportFactory;
     Long64_t fEventIndex;
-    boost::function<void()> SendPart; // function pointer for the Sampler callback.
-    FairEventHeader *fEvtHeader;
-
-  private:
-    /// Copy Constructor
-    FairMQSamplerTask(const FairMQSamplerTask&);
-    FairMQSamplerTask operator=(const FairMQSamplerTask&);
+    FairEventHeader* fEvtHeader;
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */

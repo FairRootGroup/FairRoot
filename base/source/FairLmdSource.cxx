@@ -96,7 +96,7 @@ void FairLmdSource::AddPath(TString dir, TString wildCard)
   TIterator *iter = list->MakeIterator();
   TSystemFile *file;
   TString name;
-  while(NULL != (file = (TSystemFile*)iter->Next()))
+  while(NULL != (file = static_cast<TSystemFile*>(iter->Next())))
   {
     name = file->GetName();
     if(name.Contains(*re))
@@ -112,15 +112,11 @@ void FairLmdSource::AddPath(TString dir, TString wildCard)
 
 Bool_t FairLmdSource::Init()
 {
-  if(! FairMbsSource::Init()) {
-    return kFALSE;
-  }
-
   if(fFileNames->GetSize() == 0) {
     return kFALSE;
   }
 
-  TString name = ((TObjString*)fFileNames->At(fCurrentFile))->GetString();
+  TString name = (static_cast<TObjString*>(fFileNames->At(fCurrentFile)))->GetString();
   if(! OpenNextFile(name)) {
     return kFALSE;
   }
@@ -146,7 +142,7 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
   status = f_evt_get_open(inputMode,
                           const_cast<char*>(fileName.Data()),
                           fxInputChannel,
-                          (Char_t**)headptr,
+                          static_cast<Char_t**>(headptr),
                           1,
                           1);
 
@@ -158,18 +154,19 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
   LOG(INFO) << "File " << fileName << " opened." << FairLogger::endl;
 
   // Decode File Header
-  Bool_t result = Unpack((Int_t*)fxInfoHeader, sizeof(s_filhe), -4, -4, -4, -4, -4);
+  //Bool_t result = Unpack((Int_t*)fxInfoHeader, sizeof(s_filhe), -4, -4, -4, -4, -4);
+  Unpack(reinterpret_cast<Int_t*>(fxInfoHeader), sizeof(s_filhe), -4, -4, -4, -4, -4);
 
   return kTRUE;
 }
 
 
-Int_t FairLmdSource::ReadEvent(UInt_t iev)
+Int_t FairLmdSource::ReadEvent(UInt_t)
 {
   void* evtptr = &fxEvent;
   void* buffptr = &fxBuffer;
 
-  Int_t status = f_evt_get_event(fxInputChannel, (INTS4**)evtptr,(INTS4**) buffptr);
+  Int_t status = f_evt_get_event(fxInputChannel, static_cast<INTS4**>(evtptr),static_cast<INTS4**>(buffptr));
   //Int_t fuEventCounter = fxEvent->l_count;
   //Int_t fCurrentMbsEventNo = fuEventCounter;
 
@@ -189,7 +186,7 @@ Int_t FairLmdSource::ReadEvent(UInt_t iev)
       Close();
     }
 
-    TString name = ((TObjString*)fFileNames->At(fCurrentFile))->GetString();
+    TString name = (static_cast<TObjString*>(fFileNames->At(fCurrentFile)))->GetString();
     if(! OpenNextFile(name)) {
       return 1;
     } else {
@@ -200,12 +197,12 @@ Int_t FairLmdSource::ReadEvent(UInt_t iev)
 
  //Store Start Times
   if (fCurrentEvent==0 ) 
-      Unpack((Int_t*)fxBuffer, sizeof(s_bufhe), -4, -4, -4, -4, -4);
+      Unpack(reinterpret_cast<Int_t*>(fxBuffer), sizeof(s_bufhe), -4, -4, -4, -4, -4);
 
 
   // Decode event header
   Bool_t result = kFALSE;
-  /*Bool_t result = */Unpack((Int_t*)fxEvent, sizeof(s_ve10_1), -2, -2, -2, -2, -2);
+  /*Bool_t result = */Unpack(reinterpret_cast<Int_t*>(fxEvent), sizeof(s_ve10_1), -2, -2, -2, -2, -2);
 
   Int_t nrSubEvts = f_evt_get_subevent(fxEvent, 0, NULL, NULL, NULL);
   Int_t sebuflength;
@@ -226,7 +223,7 @@ Int_t FairLmdSource::ReadEvent(UInt_t iev)
     void* SubEvtptr = &fxSubEvent;
     void* EvtDataptr = &fxEventData;
     Int_t nrlongwords;
-    status = f_evt_get_subevent(fxEvent, i, (Int_t**)SubEvtptr, (Int_t**)EvtDataptr, &nrlongwords);
+    status = f_evt_get_subevent(fxEvent, i, static_cast<Int_t**>(SubEvtptr), static_cast<Int_t**>(EvtDataptr), &nrlongwords);
     if(status) {
       return 1;
     }
@@ -262,7 +259,7 @@ Int_t FairLmdSource::ReadEvent(UInt_t iev)
 void FairLmdSource::Close()
 {
   f_evt_get_close(fxInputChannel);
-  Unpack((Int_t*)fxBuffer, sizeof(s_bufhe), -4, -4, -4, -4, -4);  
+  Unpack(reinterpret_cast<Int_t*>(fxBuffer), sizeof(s_bufhe), -4, -4, -4, -4, -4);  
   fCurrentEvent=0;
 }
 

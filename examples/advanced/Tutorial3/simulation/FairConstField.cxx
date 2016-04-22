@@ -162,7 +162,7 @@ Double_t FairConstField::GetBz(Double_t x, Double_t y, Double_t z)
 // -------------------------------------------------------------------------
 
 // -----   Screen output   -------------------------------------------------
-void FairConstField::Print()
+void FairConstField::Print(Option_t*) const
 {
     LOG(INFO) << "======================================================" 
 	      << FairLogger::endl;
@@ -191,8 +191,8 @@ void FairConstField::FillParContainer()
     //            << FairLogger::endl;
     FairRun* fRun = FairRun::Instance();
     FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
-    Bool_t kParameterMerged = kTRUE;
-    FairConstPar* Par = (FairConstPar*)rtdb->getContainer("FairConstPar");
+    //Bool_t kParameterMerged = kTRUE;
+    FairConstPar* Par = static_cast<FairConstPar*>(rtdb->getContainer("FairConstPar"));
     Par->SetParameters(this);
     Par->setInputVersion(fRun->GetRunId(), 1);
     Par->setChanged();

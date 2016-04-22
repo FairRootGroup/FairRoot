@@ -63,7 +63,7 @@ InitStatus FairPointSetDraw::Init()
 {
   if(fVerbose>1) { cout<<  "FairPointSetDraw::Init()" << endl; }
   FairRootManager* fManager = FairRootManager::Instance();
-  fPointList = (TClonesArray*)fManager->GetObject(GetName());
+  fPointList = static_cast<TClonesArray*>(fManager->GetObject(GetName()));
   if(fPointList==0) {
     cout << "FairPointSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< endl;
     SetActive(kFALSE);
@@ -77,7 +77,7 @@ InitStatus FairPointSetDraw::Init()
   return kSUCCESS;
 }
 // -------------------------------------------------------------------------
-void FairPointSetDraw::Exec(Option_t* option)
+void FairPointSetDraw::Exec(Option_t* /*option*/)
 {
   if (IsActive()) {
     Int_t npoints=fPointList->GetEntriesFast();
@@ -89,7 +89,7 @@ void FairPointSetDraw::Exec(Option_t* option)
     q->SetMarkerStyle(fStyle);
     //std::cout << "fPointList: " << fPointList << " " << fPointList->GetEntries() << std::endl;
     for (Int_t i=0; i<npoints; ++i) {
-      TObject*  p=(TObject*)fPointList->At(i);
+      TObject*  p=static_cast<TObject*>(fPointList->At(i));
       if(p!=0) {
         TVector3 vec(GetVector(p));
         q->SetNextPoint(vec.X(),vec.Y(), vec.Z());
@@ -103,7 +103,7 @@ void FairPointSetDraw::Exec(Option_t* option)
 
 }
 
-TObject* FairPointSetDraw::GetValue(TObject* obj,Int_t i)
+TObject* FairPointSetDraw::GetValue(TObject* /*obj*/,Int_t i)
 {
   return new TNamed(Form("Point %d", i),"");
 }

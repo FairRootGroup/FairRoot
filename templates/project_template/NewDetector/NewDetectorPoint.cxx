@@ -34,7 +34,7 @@ NewDetectorPoint::~NewDetectorPoint() { }
 // -------------------------------------------------------------------------
 
 // -----   Public method Print   -------------------------------------------
-void NewDetectorPoint::Print(const Option_t* opt) const
+void NewDetectorPoint::Print(const Option_t* /*opt*/) const
 {
   cout << "-I- NewDetectorPoint: NewDetector point for track " << fTrackID
        << " in detector " << fDetectorID << endl;

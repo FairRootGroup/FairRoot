@@ -77,7 +77,7 @@ class FairEventBuilder : public FairWriteoutBuffer
 
     virtual Bool_t Init() = 0;
 
-    virtual void Print() = 0;
+    virtual void Print(Option_t *option="") const = 0;
 
     /** Finish at the end of each event **/
     virtual void Finish();

@@ -33,7 +33,7 @@ FairMCPointDraw::~FairMCPointDraw()
 
 TVector3 FairMCPointDraw::GetVector(TObject* obj)
 {
-  FairMCPoint* p = (FairMCPoint*)obj;
+  FairMCPoint* p = static_cast<FairMCPoint*>(obj);
   return TVector3(p->GetX(), p->GetY(), p->GetZ());
 }
 

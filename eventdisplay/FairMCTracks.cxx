@@ -67,7 +67,7 @@ InitStatus FairMCTracks::Init()
 {
   LOG(DEBUG) <<  "FairMCTracks::Init()" << FairLogger::endl; 
   FairRootManager* fManager = FairRootManager::Instance();
-  fTrackList = (TClonesArray*)fManager->GetObject("GeoTracks");
+  fTrackList = static_cast<TClonesArray*>(fManager->GetObject("GeoTracks"));
   if(fTrackList==0) {
     LOG(ERROR) << "FairMCTracks::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< FairLogger::endl;
     SetActive(kFALSE);
@@ -84,7 +84,7 @@ InitStatus FairMCTracks::Init()
   else { return kERROR; }
 }
 // -------------------------------------------------------------------------
-void FairMCTracks::Exec(Option_t* option)
+void FairMCTracks::Exec(Option_t* /*option*/)
 {
 
   if (IsActive()) {
@@ -97,8 +97,8 @@ void FairMCTracks::Exec(Option_t* option)
 
     for (Int_t i=0; i<fTrackList->GetEntriesFast(); i++)  {
       LOG(DEBUG3) << "FairMCTracks::Exec "<< i << FairLogger::endl; 
-      tr=(TGeoTrack*)fTrackList->At(i);
-      TParticle* P=(TParticle*)tr->GetParticle();
+      tr=static_cast<TGeoTrack*>(fTrackList->At(i));
+      TParticle* P=static_cast<TParticle*>(tr->GetParticle());
       PEnergy=P->Energy();
       MinEnergyLimit=TMath::Min(PEnergy,MinEnergyLimit) ;
       MaxEnergyLimit=TMath::Max(PEnergy,MaxEnergyLimit) ;
@@ -163,7 +163,7 @@ void FairMCTracks::Finish()
 void FairMCTracks::Reset()
 {
   for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++) {
-    TEveTrackList*  ele=( TEveTrackList*) fEveTrList->At(i);
+    TEveTrackList*  ele=static_cast<TEveTrackList*>(fEveTrList->At(i));
     gEve->RemoveElement(ele,fEventManager);
   }
   fEveTrList->Clear();
@@ -174,7 +174,7 @@ TEveTrackList* FairMCTracks::GetTrGroup(TParticle* P)
 
   fTrList=0;
   for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++) {
-    TEveTrackList* TrListIn=( TEveTrackList*) fEveTrList->At(i);
+    TEveTrackList* TrListIn=static_cast<TEveTrackList*>(fEveTrList->At(i));
     if ( strcmp(TrListIn->GetName(),P->GetName())==0 ) {
       fTrList= TrListIn;
       break;

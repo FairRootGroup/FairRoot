@@ -19,7 +19,7 @@ endif (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 # the compiler and compiler flags used to install fairsoft.
 # Compare compiler and compiler flags used to compile fairsoft with the compiler and flags used now
 # In case of differences print a warning
-Find_Program(FAIRSOFT_CONFIG fairsoft-config PATHS $ENV{SIMPATH}/bin NO_DEFAULT_PATH)
+Find_Program(FAIRSOFT_CONFIG fairsoft-config PATHS $ENV{SIMPATH}/bin $ENV{FAIRSOFT_ROOT}/bin NO_DEFAULT_PATH)
 
 If(FAIRSOFT_CONFIG)
   Message(STATUS "fairsoft-config found")
@@ -175,8 +175,24 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
         SET(CMAKE_Fortran_FLAGS "-m64")
       ENDIF(MAC_OS_10_5 OR MAC_OS_10_6 OR MAC_OS_10_7)
 
-      SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
-      SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -flat_namespace -single_module -undefined dynamic_lookup")
+      # Check for Xcode version 7.3.0
+      SET(CLANG_730 -1)
+      IF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        EXEC_PROGRAM("clang --version | grep \"version 7.3.0\"" OUTPUT_VARIABLE CLANG_VERSION)
+        IF(CLANG_VERSION)
+          STRING(FIND ${CLANG_VERSION} "version 7.3.0" CLANG_730)
+        ENDIF(CLANG_VERSION)
+      ENDIF(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+
+      SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -single_module -undefined dynamic_lookup")
+      SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -single_module -undefined dynamic_lookup")
+
+      # Do not use -flat_namespace flag for Xcode 7.3.0
+      IF(CLANG_730 LESS 0)
+        SET(CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS} -flat_namespace")
+        SET(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -flat_namespace")
+      ENDIF(CLANG_730 LESS 0)
+
 #      MESSAGE("C_FLAGS: ${CMAKE_SHARED_LIBRARY_CREATE_C_FLAGS}")
 #      MESSAGE("CXX_FLAGS: ${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS}")
       Execute_Process(COMMAND gfortran -print-file-name=libgfortran.dylib
@@ -190,11 +206,11 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
 
       # Select flags.
       set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wshadow ")
-      set(CMAKE_CXX_FLAGS_NIGHTLY        "-O2 -g -Wshadow -Weffc++")
+      set(CMAKE_CXX_FLAGS_NIGHTLY        "-O2 -g -Wshadow -Weffc++ -Wall -Wextra")
       set(CMAKE_CXX_FLAGS_RELEASE        "-O2 -Wshadow ")
       set(CMAKE_CXX_FLAGS_DEBUG          "-g -O2 -Wshadow  -fno-inline")
       set(CMAKE_CXX_FLAGS_DEBUGFULL      "-g3 -fno-inline -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -fno-check-new -fno-common")
-      set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
+      set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs -Wall -Wextra")
       set(CMAKE_C_FLAGS_RELWITHDEBINFO   "-O2 -g")
       set(CMAKE_C_FLAGS_RELEASE          "-O2")
       set(CMAKE_C_FLAGS_DEBUG            "-g -O2  -fno-inline")

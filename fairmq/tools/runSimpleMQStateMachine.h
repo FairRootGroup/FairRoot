@@ -16,19 +16,10 @@
 /// boost
 #include "boost/program_options.hpp"
 
-/// ZMQ/nmsg (in FairSoft)
-#ifdef NANOMSG
-#include "FairMQTransportFactoryNN.h"
-#else
-#include "FairMQTransportFactoryZMQ.h"
-#endif
-
 /// FairRoot - FairMQ
 #include "FairMQLogger.h"
 #include "FairMQParser.h"
 #include "FairMQProgOptions.h"
-
-
 
 // template function that take any device, 
 // and run a simple MQ state machine configured from a JSON file
@@ -36,11 +27,8 @@ template<typename TMQDevice>
 inline int runStateMachine(TMQDevice& device, FairMQProgOptions& config)
 {
     device.CatchSignals();
-    std::string jsonfile = config.GetValue<std::string>("config-json-file");
     std::string id = config.GetValue<std::string>("id");
     int ioThreads = config.GetValue<int>("io-threads");
-
-    config.UserParser<FairMQParser::JSON>(jsonfile, id);
 
     device.fChannels = config.GetFairMQMap();
 
@@ -49,13 +37,7 @@ inline int runStateMachine(TMQDevice& device, FairMQProgOptions& config)
 
     LOG(INFO) << "PID: " << getpid();
 
-#ifdef NANOMSG
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-    device.SetTransport(transportFactory);
+    device.SetTransport(config.GetValue<std::string>("transport"));
 
     device.ChangeState(TMQDevice::INIT_DEVICE);
     device.WaitForEndOfState(TMQDevice::INIT_DEVICE);
@@ -73,11 +55,8 @@ template<typename TMQDevice>
 inline int runNonInteractiveStateMachine(TMQDevice& device, FairMQProgOptions& config)
 {
     device.CatchSignals();
-    std::string jsonfile = config.GetValue<std::string>("config-json-file");
     std::string id = config.GetValue<std::string>("id");
     int ioThreads = config.GetValue<int>("io-threads");
-
-    config.UserParser<FairMQParser::JSON>(jsonfile, id);
 
     device.fChannels = config.GetFairMQMap();
 
@@ -86,13 +65,7 @@ inline int runNonInteractiveStateMachine(TMQDevice& device, FairMQProgOptions& c
 
     LOG(INFO) << "PID: " << getpid();
 
-#ifdef NANOMSG
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-    FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-    device.SetTransport(transportFactory);
+    device.SetTransport(config.GetValue<std::string>("transport"));
 
     device.ChangeState(TMQDevice::INIT_DEVICE);
     device.WaitForEndOfState(TMQDevice::INIT_DEVICE);
@@ -114,6 +87,4 @@ inline int runNonInteractiveStateMachine(TMQDevice& device, FairMQProgOptions& c
     return 0;
 }
 
-
 #endif /* RUNSIMPLEMQSTATEMACHINE_H */
-

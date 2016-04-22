@@ -43,6 +43,7 @@
 #include "TGeoManager.h"                // for gGeoManager, TGeoManager
 #include "TGeoMedium.h"                 // for TGeoMedium
 #include "TGeoNode.h"                   // for TGeoNode
+#include "TGeoPhysicalNode.h"           // for TGeoPhysicalNode
 #include "TGeoTrack.h"                  // for TGeoTrack
 #include "TGeoVolume.h"                 // for TGeoVolume
 #include "TH2.h"                        // for TH2D
@@ -56,7 +57,7 @@
 #include "TRefArray.h"                  // for TRefArray
 #include "TSystem.h"                    // for TSystem, gSystem
 #include "TTree.h"                      // for TTree
-#include "TVirtualMC.h"                 // for TVirtualMC, gMC
+#include "TVirtualMC.h"                 // for TVirtualMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
 #include "THashList.h"
 class TParticle;
@@ -69,7 +70,7 @@ class TParticle;
 using std::pair;
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const char* name, const char* title,
-                                     TObjArray* ModList, const char* MatName)
+                                     TObjArray* ModList, const char*)
   :TVirtualMCApplication(name,title),
    fActiveDetectors(NULL),
    fFairTaskList(NULL),
@@ -105,6 +106,8 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fRadGridMan(NULL),
    fEventHeader(NULL),
    fMCEventHeader(NULL),
+   listActiveDetectors(),
+   listDetectors(),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -186,6 +189,8 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
    fRadGridMan(NULL),
    fEventHeader(NULL),
    fMCEventHeader(NULL),
+   listActiveDetectors(),
+   listDetectors(),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -268,6 +273,8 @@ FairMCApplication::FairMCApplication()
    fRadGridMan(NULL),
    fEventHeader(NULL),
    fMCEventHeader(NULL),
+   listActiveDetectors(),
+   listDetectors(),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -283,9 +290,7 @@ FairMCApplication::~FairMCApplication()
   delete fActiveDetectors; // don't do fActiveDetectors->Delete() here
   // the modules are already deleted in FairRunSim
   delete fDetectors;
-//  delete gMC;
   delete fModIter;
-//  gMC=0;
   //  LOG(DEBUG3) << "Leave Destructor of FairMCApplication"
   //              << FairLogger::endl;
 }
@@ -391,19 +396,19 @@ void FairMCApplication::RegisterStack()
   }
 }
 //_____________________________________________________________________________
-void FairMCApplication::InitMC(const char* setup, const char* cuts)
+void FairMCApplication::InitMC(const char*, const char*)
 {
 // Initialize MC.
 // ---
-  fStack = dynamic_cast<FairGenericStack*>(gMC->GetStack()) ;
+  fStack = dynamic_cast<FairGenericStack*>(TVirtualMC::GetMC()->GetStack()) ;
   if(fStack==NULL) { 
     LOG(FATAL) << "No Stack defined." << FairLogger::endl; 
   }
-  gMC->SetMagField(fxField);
+  TVirtualMC::GetMC()->SetMagField(fxField);
 
-  gMC->Init();
-  gMC->BuildPhysics();
-  TString MCName=gMC->GetName();
+  TVirtualMC::GetMC()->Init();
+  TVirtualMC::GetMC()->BuildPhysics();
+  TString MCName=TVirtualMC::GetMC()->GetName();
   if     (MCName == "TGeant3" || MCName == "TGeant3TGeo") {
     fMcVersion = 0 ;
   } else if(MCName == "TGeant4") {
@@ -429,7 +434,7 @@ void FairMCApplication::RunMC(Int_t nofEvents)
   fStack->SetDetArrayList(fActiveDetectors);
 
   // MC run.
-  gMC->ProcessRun(nofEvents);
+  TVirtualMC::GetMC()->ProcessRun(nofEvents);
   // finish run
   FinishRun();
   // Save histograms with memory and runtime information in the output file
@@ -499,7 +504,7 @@ void FairMCApplication::FinishRun()
   if (!fRadGridMan) {
     if (fRootManager) fRootManager->Write();
   }
-
+  UndoGeometryModifications();
   //  fRootManager->Write();
 
 }
@@ -559,7 +564,7 @@ void FairMCApplication::PreTrack()
       //    Int_t trackId = fStack->GetCurrentTrackNumber();
       TGeoTrack* fTrack=fTrajFilter->AddTrack(particle);
       // TLorentzVector pos;
-      gMC->TrackPosition(fTrkPos);
+      TVirtualMC::GetMC()->TrackPosition(fTrkPos);
       fTrack->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
     }
   }
@@ -598,13 +603,13 @@ void FairMCApplication::InitForWorker() const
   //fRootManager->SetDebug(true);
 
   // Set data to MC
-  gMC->SetStack(fStack);
-  gMC->SetMagField(fxField);
+  TVirtualMC::GetMC()->SetStack(fStack);
+  TVirtualMC::GetMC()->SetMagField(fxField);
 
   // if (fRootManager) RegisterStack();
 
   LOG(INFO) << "Monte Carlo Engine Worker Initialisation  with: "
-	    << gMC->GetName() << FairLogger::endl;
+	    << TVirtualMC::GetMC()->GetName() << FairLogger::endl;
 }
 
 //_____________________________________________________________________________
@@ -621,9 +626,9 @@ void FairMCApplication::Stepping()
   // Work around for Fluka VMC, which does not call
   // MCApplication::PreTrack()
   static Int_t TrackId = 0;
-  if ( fMcVersion ==2 && gMC->GetStack()->GetCurrentTrackNumber() != TrackId ) {
+  if ( fMcVersion ==2 && TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber() != TrackId ) {
     PreTrack();
-    TrackId = gMC->GetStack()->GetCurrentTrackNumber();
+    TrackId = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
   }
 
 
@@ -637,7 +642,7 @@ void FairMCApplication::Stepping()
   // multimap. 
   // In any case call the ProcessHits function for this specific detector.
   Int_t copyNo;
-  Int_t id = gMC->CurrentVolID(copyNo);
+  Int_t id = TVirtualMC::GetMC()->CurrentVolID(copyNo);
   Bool_t InMap =kFALSE;
   fDisVol=0;
   fDisDet=0;
@@ -659,7 +664,7 @@ void FairMCApplication::Stepping()
     } while(fVolIter!=fVolMap.upper_bound(id));
     //    if(fDisVol && !InMap) { // fDisVolume is set previously, no check needed
     if(!InMap) {
-      FairVolume* fNewV=new FairVolume( gMC->CurrentVolName(), id);
+      FairVolume* fNewV=new FairVolume( TVirtualMC::GetMC()->CurrentVolName(), id);
       fNewV->setMCid(id);
       fNewV->setModId(fDisVol->getModId());
       fNewV->SetModule(fDisVol->GetModule());
@@ -683,18 +688,18 @@ void FairMCApplication::Stepping()
   //     in the geometry. This plane has not to be correlated with any real
   //     volume 
   if(fTrajAccepted) {
-    if(gMC->TrackStep() > fTrajFilter->GetStepSizeCut()) {
-      gMC->TrackPosition(fTrkPos);
+    if(TVirtualMC::GetMC()->TrackStep() > fTrajFilter->GetStepSizeCut()) {
+      TVirtualMC::GetMC()->TrackPosition(fTrkPos);
       fTrajFilter->GetCurrentTrk()->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
     }
   }
   if(fRadLenMan) {
-    id = gMC->CurrentVolID(copyNo);
+    id = TVirtualMC::GetMC()->CurrentVolID(copyNo);
     fModVolIter =fModVolMap.find(id);
     fRadLenMan->AddPoint(fModVolIter->second);
   }
   if(fRadMapMan) {
-    id = gMC->CurrentVolID(copyNo);
+    id = TVirtualMC::GetMC()->CurrentVolID(copyNo);
     fModVolIter =fModVolMap.find(id);
     fRadMapMan->AddPoint(fModVolIter->second);
   }
@@ -854,7 +859,7 @@ void FairMCApplication::ConstructOpGeometry()
         effic[i]=p[2];
         rindex[i]=p[3];
       }
-      gMC->SetCerenkov(Mid, NK, ppckov,absco, effic, rindex);
+      TVirtualMC::GetMC()->SetCerenkov(Mid, NK, ppckov,absco, effic, rindex);
     }
   }
   fModIter->Reset();
@@ -875,6 +880,7 @@ void FairMCApplication::ConstructGeometry()
   Int_t ModId=0;
   while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
     NoOfVolumesBefore=gGeoManager->GetListOfVolumes()->GetEntriesFast();
+    Mod->InitParContainers();
     Mod->ConstructGeometry();
     ModId=Mod->GetModId();
     NoOfVolumes=gGeoManager->GetListOfVolumes()->GetEntriesFast();
@@ -889,7 +895,7 @@ void FairMCApplication::ConstructGeometry()
   if (gGeoManager) {
     //  LOG(DEBUG) << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<< FairLogger::endl;
     gGeoManager->CloseGeometry();   // close geometry
-    gMC->SetRootGeometry();         // notify VMC about Root geometry
+    TVirtualMC::GetMC()->SetRootGeometry();         // notify VMC about Root geometry
     Int_t Counter=0;
     TDatabasePDG* pdgDatabase = TDatabasePDG::Instance();
     const THashList *list=pdgDatabase->ParticleList();
@@ -905,6 +911,12 @@ void FairMCApplication::ConstructGeometry()
          Counter++;
       }
     }
+    fModIter->Reset();
+    while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+      Mod->ModifyGeometry();
+    }
+
+    gGeoManager->RefreshPhysicalNodes(kFALSE);
   }
 }
 //_____________________________________________________________________________
@@ -1077,7 +1089,7 @@ void  FairMCApplication::AddIons()
       // The problem occured for example for Alphas which exist already.
       Int_t ionPdg = GetIonPdg( ion->GetZ(), ion->GetA() );
       if ( !pdgDatabase->GetParticle( ionPdg ) ) {
-        gMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
+        TVirtualMC::GetMC()->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
                        ion->GetExcEnergy(),ion->GetMass());
 
       } else {
@@ -1132,7 +1144,7 @@ void  FairMCApplication::AddParticles()
            particle->GetBaryon()<<  "         // Int_t baryon   \n" <<
            particle->IsStable() <<  "         // Bool_t stable   \n" 
 		<< FairLogger::endl;
-      gMC->DefineParticle(particle->GetPDG(),              // Int_t pdg
+      TVirtualMC::GetMC()->DefineParticle(particle->GetPDG(),              // Int_t pdg
                           particle->GetName(),             // const TString& name
                           particle->GetMCType(),             // TMCParticleType mcType
                           particle->GetMass(),             // Double_t mass
@@ -1347,6 +1359,36 @@ Int_t FairMCApplication::GetIonPdg(Int_t z, Int_t a) const
   return 1000000000 + 10*1000*z + 10*a;
 }
 
+void  FairMCApplication::UndoGeometryModifications()
+{
+  // Undo all misalignment done in the MisalignGeometry methods of the
+  // several FairModuls.
+  // In the output (parameter container and separate geometry file)
+  // only the ideal geometry is stored.
+  // I don't know any better way than to loop over all physical nodes
+  // and to set the matrix back to the original one.
+  // TODO: Check if it is more easy to write the ideal geometry before
+  //       the geometry is misaligned. In this case one does not have 
+  //       to revert the misalignment.
+
+  TObjArray* physNodes = gGeoManager->GetListOfPhysicalNodes();
+  Int_t numPhysNodes=physNodes->GetEntriesFast();
+
+  if ( 0 == numPhysNodes) return;
+
+  //fRootManager->CreateGeometryFile("misaligned_geometry.root");
+  LOG(INFO)<<"Undo all misalignment"<<FairLogger::endl;
+
+  TGeoPhysicalNode* node = NULL;
+  TGeoHMatrix* ng3 = NULL;
+  for(Int_t k=0; k<numPhysNodes; k++) {
+    node=static_cast<TGeoPhysicalNode*>(physNodes->At(k));
+    ng3 = node->GetOriginalMatrix(); //"real" global matrix, what survey sees
+    node->Align(ng3);
+  }
+
+  gGeoManager->ClearPhysicalNodes(kFALSE);
+
+}
+
 ClassImp(FairMCApplication)
-
-

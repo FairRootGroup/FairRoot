@@ -16,35 +16,27 @@
 #ifndef FAIRMBSSOURCE_H
 #define FAIRMBSSOURCE_H
 
-#include "FairSource.h"
+#include "FairOnlineSource.h"
 #include "TObjArray.h"
 
 #include "FairUnpack.h"
 
 
-class FairMbsSource : public FairSource
+class FairMbsSource : public FairOnlineSource
 {
   public:
     FairMbsSource();
     FairMbsSource(const FairMbsSource& source);
     virtual ~FairMbsSource();
 
-    inline void AddUnpacker(FairUnpack* unpacker) { fUnpackers->Add(unpacker); }
-    inline const TObjArray* GetUnpackers() const { return fUnpackers; }
-
-    virtual Bool_t Init();
+    virtual Bool_t Init() = 0;
     virtual Int_t ReadEvent(UInt_t=0) = 0;
     virtual void Close() = 0;
-
-    void Reset();
 
   protected:
     Bool_t Unpack(Int_t* data, Int_t size,
                   Short_t type, Short_t subType,
                   Short_t procId, Short_t subCrate, Short_t control);
-
-  private:
-    TObjArray* fUnpackers;
 
     ClassDef(FairMbsSource, 0)
 };

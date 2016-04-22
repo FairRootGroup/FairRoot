@@ -26,6 +26,8 @@
 #include "FairMQTransportFactory.h"
 #include "FairMQSocket.h"
 #include "FairMQChannel.h"
+#include "FairMQMessage.h"
+#include "FairMQParts.h"
 
 class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable
 {
@@ -45,6 +47,10 @@ class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable
 
     /// Default constructor
     FairMQDevice();
+    /// Copy constructor (disabled)
+    FairMQDevice(const FairMQDevice&) = delete;
+    /// Assignment operator (disabled)
+    FairMQDevice operator=(const FairMQDevice&) = delete;
     /// Default destructor
     virtual ~FairMQDevice();
 
@@ -63,6 +69,132 @@ class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable
     /// @param name Name of the channel
     void PrintChannel(const std::string& name);
 
+    template<typename Serializer, typename DataType, typename... Args>
+    void Serialize(FairMQMessage& msg, DataType&& data, Args&&... args) const
+    {
+        Serializer().Serialize(msg, std::forward<DataType>(data), std::forward<Args>(args)...);
+    }
+
+    template<typename Deserializer, typename DataType, typename... Args>
+    void Deserialize(FairMQMessage& msg, DataType&& data, Args&&... args) const
+    {
+        Deserializer().Deserialize(msg, std::forward<DataType>(data), std::forward<Args>(args)...);
+    }
+
+    /// Shorthand method to send `msg` on `chan` at index `i`
+    /// @param msg message reference
+    /// @param chan channel name
+    /// @param i channel index
+    /// @return Number of bytes that have been queued. -2 If queueing was not possible or timed out.
+    /// In case of errors, returns -1.
+    inline int Send(const std::unique_ptr<FairMQMessage>& msg, const std::string& chan, const int i = 0) const
+    {
+        return fChannels.at(chan).at(i).Send(msg);
+    }
+
+    /// Shorthand method to send `msg` on `chan` at index `i` without blocking
+    /// @param msg message reference
+    /// @param chan channel name
+    /// @param i channel index
+    /// @return Number of bytes that have been queued. -2 If queueing was not possible or timed out.
+    /// In case of errors, returns -1.
+    inline int SendAsync(const std::unique_ptr<FairMQMessage>& msg, const std::string& chan, const int i = 0) const
+    {
+        return fChannels.at(chan).at(i).SendAsync(msg);
+    }
+
+    /// Shorthand method to send FairMQParts on `chan` at index `i`
+    /// @param parts parts reference
+    /// @param chan channel name
+    /// @param i channel index
+    /// @return Number of bytes that have been queued. -2 If queueing was not possible or timed out.
+    /// In case of errors, returns -1.
+    inline int64_t Send(const FairMQParts& parts, const std::string& chan, const int i = 0) const
+    {
+        return fChannels.at(chan).at(i).Send(parts.fParts);
+    }
+
+    /// Shorthand method to send FairMQParts on `chan` at index `i` without blocking
+    /// @param parts parts reference
+    /// @param chan channel name
+    /// @param i channel index
+    /// @return Number of bytes that have been queued. -2 If queueing was not possible or timed out.
+    /// In case of errors, returns -1.
+    inline int64_t SendAsync(const FairMQParts& parts, const std::string& chan, const int i = 0) const
+    {
+        return fChannels.at(chan).at(i).SendAsync(parts.fParts);
+    }
+
+    /// Shorthand method to receive `msg` on `chan` at index `i`
+    /// @param msg message reference
+    /// @param chan channel name
+    /// @param i channel index
+    /// @return Number of bytes that have been received. -2 If reading from the queue was not possible or timed out.
+    /// In case of errors, returns -1.
+    inline int Receive(const std::unique_ptr<FairMQMessage>& msg, const std::string& chan, const int i = 0) const
+    {
+        return fChannels.at(chan).at(i).Receive(msg);
+    }
+
+    /// Shorthand method to receive `msg` on `chan` at index `i` without blocking
+    /// @param msg message reference
+    /// @param chan channel name
+    /// @param i channel index
+    /// @return Number of bytes that have been received. -2 If reading from the queue was not possible or timed out.
+    /// In case of errors, returns -1.
+    inline int ReceiveAsync(const std::unique_ptr<FairMQMessage>& msg, const std::string& chan, const int i = 0) const
+    {
+        return fChannels.at(chan).at(i).ReceiveAsync(msg);
+    }
+
+    /// Shorthand method to receive FairMQParts on `chan` at index `i`
+    /// @param parts parts reference
+    /// @param chan channel name
+    /// @param i channel index
+    /// @return Number of bytes that have been received. -2 If reading from the queue was not possible or timed out.
+    /// In case of errors, returns -1.
+    inline int64_t Receive(FairMQParts& parts, const std::string& chan, const int i = 0) const
+    {
+        return fChannels.at(chan).at(i).Receive(parts.fParts);
+    }
+
+    /// Shorthand method to receive FairMQParts on `chan` at index `i` without blocking
+    /// @param parts parts reference
+    /// @param chan channel name
+    /// @param i channel index
+    /// @return Number of bytes that have been received. -2 If reading from the queue was not possible or timed out.
+    /// In case of errors, returns -1.
+    inline int64_t ReceiveAsync(FairMQParts& parts, const std::string& chan, const int i = 0) const
+    {
+        return fChannels.at(chan).at(i).ReceiveAsync(parts.fParts);
+    }
+
+    /// @brief Create empty FairMQMessage
+    /// @return pointer to FairMQMessage
+    inline FairMQMessage* NewMessage() const
+    {
+        return fTransportFactory->CreateMessage();
+    }
+
+    /// @brief Create new FairMQMessage of specified size
+    /// @param size message size
+    /// @return pointer to FairMQMessage
+    inline FairMQMessage* NewMessage(int size) const
+    {
+        return fTransportFactory->CreateMessage(size);
+    }
+
+    /// @brief Create new FairMQMessage with user provided buffer and size
+    /// @param data pointer to user provided buffer
+    /// @param size size of the user provided buffer
+    /// @param ffn optional callback, called when the message is transfered (and can be deleted)
+    /// @param hint optional helper pointer that can be used in the callback
+    /// @return pointer to FairMQMessage
+    inline FairMQMessage* NewMessage(void* data, int size, fairmq_free_fn* ffn, void* hint = NULL) const
+    {
+        return fTransportFactory->CreateMessage(data, size, ffn, hint);
+    }
+
     /// Waits for the first initialization run to finish
     void WaitForInitialValidation();
 
@@ -70,7 +202,11 @@ class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable
     /// Works only when running in a terminal. Running in background would exit, because no interactive input (std::cin) is possible.
     void InteractiveStateLoop();
     /// Prints the available commands of the InteractiveStateLoop()
-    void PrintInteractiveStateLoopHelp();
+    inline void PrintInteractiveStateLoopHelp()
+    {
+        LOG(INFO) << "Use keys to control the state machine:";
+        LOG(INFO) << "[h] help, [p] pause, [r] run, [s] stop, [t] reset task, [d] reset device, [q] end, [j] init task, [i] init device";
+    }
 
     /// Set Device properties stored as strings
     /// @param key      Property key
@@ -98,9 +234,12 @@ class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable
     /// Print all properties of this and the parent class to LOG(INFO)
     virtual void ListProperties();
 
-    /// Configures the device with a transport factory
+    /// Configures the device with a transport factory (DEPRECATED)
     /// @param factory  Pointer to the transport factory object
-    virtual void SetTransport(FairMQTransportFactory* factory);
+    void SetTransport(FairMQTransportFactory* factory);
+    /// Configures the device with a transport factory
+    /// @param transport  Transport string ("zeromq"/"nanomsg")
+    void SetTransport(const std::string& transport = "zeromq");
 
     /// Implements the sort algorithm used in SortChannel()
     /// @param lhs Right hand side value for comparison
@@ -173,10 +312,6 @@ class FairMQDevice : public FairMQStateMachine, public FairMQConfigurable
     /// Signal handler
     void SignalHandler(int signal);
     bool fCatchingSignals;
-
-    /// Copy Constructor
-    FairMQDevice(const FairMQDevice&);
-    FairMQDevice operator=(const FairMQDevice&);
 };
 
 #endif /* FAIRMQDEVICE_H_ */

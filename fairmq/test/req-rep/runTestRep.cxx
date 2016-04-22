@@ -17,26 +17,15 @@
 #include "FairMQLogger.h"
 #include "FairMQTestRep.h"
 
-#ifdef NANOMSG
-#include "FairMQTransportFactoryNN.h"
-#else
-#include "FairMQTransportFactoryZMQ.h"
-#endif
-
-int main(int argc, char** argv)
+int main(int /*argc*/, char** /*argv*/)
 {
     FairMQTestRep testRep;
     testRep.CatchSignals();
-
-#ifdef NANOMSG
-    testRep.SetTransport(new FairMQTransportFactoryNN());
-#else
-    testRep.SetTransport(new FairMQTransportFactoryZMQ());
-#endif
+    testRep.SetTransport("zeromq");
 
     testRep.SetProperty(FairMQTestRep::Id, "testRep");
 
-    FairMQChannel repChannel("rep", "connect", "tcp://127.0.0.1:5558");
+    FairMQChannel repChannel("rep", "bind", "tcp://127.0.0.1:5558");
     testRep.fChannels["data"].push_back(repChannel);
 
     testRep.ChangeState("INIT_DEVICE");

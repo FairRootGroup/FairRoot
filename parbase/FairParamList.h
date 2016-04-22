@@ -39,9 +39,12 @@ class FairParamObj : public TNamed
     FairParamObj(const Text_t* name="");
     FairParamObj(FairParamObj&);
     FairParamObj(const Text_t*,Int_t);
+    FairParamObj(const Text_t*,Bool_t);
+    FairParamObj(const Text_t*,UInt_t);
     FairParamObj(const Text_t*,Float_t);
     FairParamObj(const Text_t*,Double_t);
     FairParamObj(const Text_t*,const Int_t*,const Int_t);
+    FairParamObj(const Text_t*,const UInt_t*,const Int_t);
     FairParamObj(const Text_t*,const Float_t*,const Int_t);
     FairParamObj(const Text_t*,const Double_t*,const Int_t);
     FairParamObj(const Text_t*,const Text_t*);
@@ -99,6 +102,8 @@ class FairParamList : public TObject
     void add(FairParamObj&);
     void add(const Text_t*,const Text_t*);
     void add(const Text_t*,Int_t);
+    void add(const Text_t*,Bool_t);
+    void add(const Text_t*,UInt_t);
     void add(const Text_t*,Float_t);
     void add(const Text_t*,Double_t);
     void add(const Text_t*,TArrayI&);
@@ -112,6 +117,8 @@ class FairParamList : public TObject
     void addObject(const Text_t*,TObject*);
     Bool_t fill(const Text_t*,Text_t*,const Int_t);
     Bool_t fill(const Text_t*,Int_t*,const Int_t nValues=1);
+    Bool_t fill(const Text_t*,Bool_t*,const Int_t nValues=1);
+    Bool_t fill(const Text_t*,UInt_t*,const Int_t nValues=1);
     Bool_t fill(const Text_t*,Float_t*,const Int_t nValues=1);
     Bool_t fill(const Text_t*,Double_t*,const Int_t nValues=1);
     Bool_t fill(const Text_t*,UChar_t*,const Int_t nValues=1);
@@ -122,14 +129,14 @@ class FairParamList : public TObject
     Bool_t fillObject(const Text_t*,TObject*);
     void print();
     FairParamObj* find(const Text_t* name) {
-      return (FairParamObj*)paramList->FindObject(name);
+      return static_cast<FairParamObj*>(paramList->FindObject(name));
     }
     TList* getList() { return paramList; }
   private:
     FairParamList(const FairParamList&);
     FairParamList& operator=(const FairParamList&);
 
-    ClassDef(FairParamList,2) // Class for lists of parameters (of type FairParamObj)
+    ClassDef(FairParamList,3) // Class for lists of parameters (of type FairParamObj)
 };
 
 #endif  /* !FAIRPARAMLIST_H */

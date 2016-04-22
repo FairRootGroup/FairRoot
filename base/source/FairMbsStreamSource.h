@@ -30,7 +30,7 @@ class FairMbsStreamSource : public FairMbsSource
     virtual ~FairMbsStreamSource();
 
     virtual Bool_t Init();
-    virtual Int_t ReadEvent();
+    virtual Int_t ReadEvent(UInt_t=0);
     virtual void Close();
 
     const char* GetServerName() const {return fServerName.Data();};
@@ -45,6 +45,8 @@ class FairMbsStreamSource : public FairMbsSource
     s_bufhe* fxBuffer;
     Int_t* fxEventData;
     s_ves10_1* fxSubEvent;
+
+    FairMbsStreamSource& operator=(const FairMbsStreamSource&);
 
 
   public:

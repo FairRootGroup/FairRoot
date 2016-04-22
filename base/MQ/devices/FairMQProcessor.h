@@ -18,16 +18,15 @@
 #include "FairMQDevice.h"
 #include "FairMQProcessorTask.h"
 
-
 class FairMQProcessor : public FairMQDevice
 {
   public:
     FairMQProcessor();
+    FairMQProcessor(const FairMQProcessor&) = delete;
+    FairMQProcessor operator=(const FairMQProcessor&) = delete;
     virtual ~FairMQProcessor();
-    void SetTask(FairMQProcessorTask* task);
 
-    void SendPart();
-    bool ReceivePart();
+    void SetTask(FairMQProcessorTask* task);
 
   protected:
     virtual void InitTask();
@@ -35,10 +34,6 @@ class FairMQProcessor : public FairMQDevice
 
   private:
     FairMQProcessorTask* fProcessorTask;
-
-    /// Copy Constructor
-    FairMQProcessor(const FairMQProcessor&);
-    FairMQProcessor operator=(const FairMQProcessor&);
 };
 
 #endif /* FAIRMQPROCESSOR_H_ */

@@ -87,7 +87,7 @@ inline FairGeoVolume::FairGeoVolume()
 
 inline FairGeoVector* FairGeoVolume::getPoint(const Int_t n)
 {
-  if (points && n<nPoints) { return (FairGeoVector*)points->At(n); }
+  if (points && n<nPoints) { return static_cast<FairGeoVector*>(points->At(n)); }
   else { return 0; }
 }
 

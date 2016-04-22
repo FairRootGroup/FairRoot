@@ -29,7 +29,7 @@ FairMQMessageZMQ::FairMQMessageZMQ()
     }
 }
 
-FairMQMessageZMQ::FairMQMessageZMQ(size_t size)
+FairMQMessageZMQ::FairMQMessageZMQ(const size_t size)
     : fMessage()
 {
     if (zmq_msg_init_size(&fMessage, size) != 0)
@@ -38,10 +38,10 @@ FairMQMessageZMQ::FairMQMessageZMQ(size_t size)
     }
 }
 
-FairMQMessageZMQ::FairMQMessageZMQ(void* data, size_t size, fairmq_free_fn *ffn, void* hint)
+FairMQMessageZMQ::FairMQMessageZMQ(void* data, const size_t size, fairmq_free_fn* ffn, void* hint)
     : fMessage()
 {
-    if (zmq_msg_init_data(&fMessage, data, size, ffn ? ffn : &CleanUp, hint) != 0)
+    if (zmq_msg_init_data(&fMessage, data, size, ffn, hint) != 0)
     {
         LOG(ERROR) << "failed initializing message with data, reason: " << zmq_strerror(errno);
     }
@@ -56,7 +56,7 @@ void FairMQMessageZMQ::Rebuild()
     }
 }
 
-void FairMQMessageZMQ::Rebuild(size_t size)
+void FairMQMessageZMQ::Rebuild(const size_t size)
 {
     CloseMessage();
     if (zmq_msg_init_size(&fMessage, size) != 0)
@@ -65,10 +65,10 @@ void FairMQMessageZMQ::Rebuild(size_t size)
     }
 }
 
-void FairMQMessageZMQ::Rebuild(void* data, size_t size, fairmq_free_fn *ffn, void* hint)
+void FairMQMessageZMQ::Rebuild(void* data, const size_t size, fairmq_free_fn* ffn, void* hint)
 {
     CloseMessage();
-    if (zmq_msg_init_data(&fMessage, data, size, ffn ? ffn : &CleanUp, hint) != 0)
+    if (zmq_msg_init_data(&fMessage, data, size, ffn, hint) != 0)
     {
         LOG(ERROR) << "failed initializing message with data, reason: " << zmq_strerror(errno);
     }
@@ -89,7 +89,7 @@ size_t FairMQMessageZMQ::GetSize()
     return zmq_msg_size(&fMessage);
 }
 
-void FairMQMessageZMQ::SetMessage(void* data, size_t size)
+void FairMQMessageZMQ::SetMessage(void*, const size_t)
 {
     // dummy method to comply with the interface. functionality not allowed in zeromq.
 }
@@ -99,7 +99,7 @@ void FairMQMessageZMQ::Copy(FairMQMessage* msg)
     // DEPRECATED: Use Copy(const unique_ptr<FairMQMessage>&)
 
     // Shares the message buffer between msg and this fMessage.
-    if (zmq_msg_copy(&fMessage, (zmq_msg_t*)msg->GetMessage()) != 0)
+    if (zmq_msg_copy(&fMessage, static_cast<zmq_msg_t*>(msg->GetMessage())) != 0)
     {
         LOG(ERROR) << "failed copying message, reason: " << zmq_strerror(errno);
     }
@@ -115,7 +115,7 @@ void FairMQMessageZMQ::Copy(FairMQMessage* msg)
 void FairMQMessageZMQ::Copy(const unique_ptr<FairMQMessage>& msg)
 {
     // Shares the message buffer between msg and this fMessage.
-    if (zmq_msg_copy(&fMessage, (zmq_msg_t*)msg->GetMessage()) != 0)
+    if (zmq_msg_copy(&fMessage, static_cast<zmq_msg_t*>(msg->GetMessage())) != 0)
     {
         LOG(ERROR) << "failed copying message, reason: " << zmq_strerror(errno);
     }
@@ -134,11 +134,6 @@ inline void FairMQMessageZMQ::CloseMessage()
     {
         LOG(ERROR) << "failed closing message, reason: " << zmq_strerror(errno);
     }
-}
-
-void FairMQMessageZMQ::CleanUp(void* data, void* hint)
-{
-    free(data);
 }
 
 FairMQMessageZMQ::~FairMQMessageZMQ()

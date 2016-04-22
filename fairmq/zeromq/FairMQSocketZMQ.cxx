@@ -17,6 +17,7 @@
 #include <zmq.h>
 
 #include "FairMQSocketZMQ.h"
+#include "FairMQMessageZMQ.h"
 #include "FairMQLogger.h"
 
 using namespace std;
@@ -24,7 +25,7 @@ using namespace std;
 // Context to hold the ZeroMQ sockets
 boost::shared_ptr<FairMQContextZMQ> FairMQSocketZMQ::fContext = boost::shared_ptr<FairMQContextZMQ>(new FairMQContextZMQ(1));
 
-FairMQSocketZMQ::FairMQSocketZMQ(const string& type, const string& name, int numIoThreads)
+FairMQSocketZMQ::FairMQSocketZMQ(const string& type, const string& name, const int numIoThreads, const string& id /*= ""*/)
     : FairMQSocket(ZMQ_SNDMORE, ZMQ_RCVMORE, ZMQ_DONTWAIT)
     , fSocket(NULL)
     , fId()
@@ -33,7 +34,7 @@ FairMQSocketZMQ::FairMQSocketZMQ(const string& type, const string& name, int num
     , fMessagesTx(0)
     , fMessagesRx(0)
 {
-    fId = name + "." + type;
+    fId = id + "." + name + "." + type;
 
     if (zmq_ctx_set(fContext->GetContext(), ZMQ_IO_THREADS, numIoThreads) != 0)
     {
@@ -48,7 +49,7 @@ FairMQSocketZMQ::FairMQSocketZMQ(const string& type, const string& name, int num
         exit(EXIT_FAILURE);
     }
 
-    if (zmq_setsockopt(fSocket, ZMQ_IDENTITY, &fId, fId.length()) != 0)
+    if (zmq_setsockopt(fSocket, ZMQ_IDENTITY, fId.c_str(), fId.length()) != 0)
     {
         LOG(ERROR) << "Failed setting ZMQ_IDENTITY socket option, reason: " << zmq_strerror(errno);
     }
@@ -149,6 +150,72 @@ int FairMQSocketZMQ::Send(FairMQMessage* msg, const int flags)
     return nbytes;
 }
 
+int64_t FairMQSocketZMQ::Send(const vector<unique_ptr<FairMQMessage>>& msgVec, const int flags)
+{
+    // Sending vector typicaly handles more then one part
+    if (msgVec.size() > 1)
+    {
+        int64_t totalSize = 0;
+
+        for (unsigned int i = 0; i < msgVec.size() - 1; ++i)
+        {
+            int nbytes = zmq_msg_send(static_cast<zmq_msg_t*>(msgVec[i]->GetMessage()), fSocket, ZMQ_SNDMORE|flags);
+            if (nbytes >= 0)
+            {
+                totalSize += nbytes;
+                fBytesTx += nbytes;
+            }
+            else
+            {
+                if (zmq_errno() == EAGAIN)
+                {
+                    return -2;
+                }
+                if (zmq_errno() == ETERM)
+                {
+                    LOG(INFO) << "terminating socket " << fId;
+                    return -1;
+                }
+                LOG(ERROR) << "Failed sending on socket " << fId << ", reason: " << zmq_strerror(errno);
+                return nbytes;
+            }
+        }
+
+        int nbytes = zmq_msg_send(static_cast<zmq_msg_t*>(msgVec.back()->GetMessage()), fSocket, flags);
+        if (nbytes >= 0)
+        {
+            totalSize += nbytes;
+        }
+        else
+        {
+            if (zmq_errno() == EAGAIN)
+            {
+                return -2;
+            }
+            if (zmq_errno() == ETERM)
+            {
+                LOG(INFO) << "terminating socket " << fId;
+                return -1;
+            }
+            LOG(ERROR) << "Failed sending on socket " << fId << ", reason: " << zmq_strerror(errno);
+            return nbytes;
+        }
+
+        // store statistics on how many messages have been sent (handle all parts as a single message)
+        ++fMessagesTx;
+        return totalSize;
+    } // If there's only one part, send it as a regular message
+    else if (msgVec.size() == 1)
+    {
+        return Send(msgVec.back().get(), flags);
+    }
+    else // if the vector is empty, something might be wrong
+    {
+        LOG(WARN) << "Will not send empty vector";
+        return -1;
+    }
+}
+
 int FairMQSocketZMQ::Receive(FairMQMessage* msg, const string& flag)
 {
     int nbytes = zmq_msg_recv(static_cast<zmq_msg_t*>(msg->GetMessage()), fSocket, GetConstant(flag));
@@ -193,6 +260,44 @@ int FairMQSocketZMQ::Receive(FairMQMessage* msg, const int flags)
     return nbytes;
 }
 
+int64_t FairMQSocketZMQ::Receive(vector<unique_ptr<FairMQMessage>>& msgVec, const int flags)
+{
+    // Warn if the vector is filled before Receive() and empty it.
+    if (msgVec.size() > 0)
+    {
+        LOG(WARN) << "Message vector contains elements before Receive(), they will be deleted!";
+        msgVec.clear();
+    }
+
+    int64_t totalSize = 0;
+    int64_t more = 0;
+
+    do
+    {
+        unique_ptr<FairMQMessage> part(new FairMQMessageZMQ());
+
+        int nbytes = zmq_msg_recv(static_cast<zmq_msg_t*>(part->GetMessage()), fSocket, flags);
+        if (nbytes >= 0)
+        {
+            msgVec.push_back(move(part));
+            totalSize += nbytes;
+            fBytesRx += nbytes;
+        }
+        else
+        {
+            return nbytes;
+        }
+
+        size_t more_size = sizeof(more);
+        zmq_getsockopt(fSocket, ZMQ_RCVMORE, &more, &more_size);
+    }
+    while (more);
+
+    // store statistics on how many messages have been received (handle all parts as a single message)
+    ++fMessagesRx;
+    return totalSize;
+}
+
 void FairMQSocketZMQ::Close()
 {
     // LOG(DEBUG) << "Closing socket " << fId;
@@ -223,7 +328,7 @@ void* FairMQSocketZMQ::GetSocket() const
     return fSocket;
 }
 
-int FairMQSocketZMQ::GetSocket(int nothing) const
+int FairMQSocketZMQ::GetSocket(int) const
 {
     // dummy method to comply with the interface. functionality not possible in zeromq.
     return -1;
@@ -416,6 +521,10 @@ int FairMQSocketZMQ::GetConstant(const string& constant)
         return ZMQ_SNDHWM;
     if (constant == "rcv-hwm")
         return ZMQ_RCVHWM;
+    if (constant == "snd-size")
+        return ZMQ_SNDBUF;
+    if (constant == "rcv-size")
+        return ZMQ_RCVBUF;
     if (constant == "snd-more")
         return ZMQ_SNDMORE;
     if (constant == "rcv-more")

@@ -13,18 +13,13 @@ base_GenericSampler<T,U,K,L>::base_GenericSampler()
   , fEventRate(1)
   , fEventCounter(0)
   , fContinuous(false)
+  , fTaskList()
 {
 }
 
 template <typename T, typename U, typename K, typename L>
 base_GenericSampler<T,U,K,L>::~base_GenericSampler()
 {
-}
-
-template <typename T, typename U, typename K, typename L>
-void base_GenericSampler<T,U,K,L>::SetTransport(FairMQTransportFactory* factory)
-{
-    FairMQDevice::SetTransport(factory);
 }
 
 template <typename T, typename U, typename K, typename L>

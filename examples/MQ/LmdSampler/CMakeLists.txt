@@ -27,7 +27,7 @@ set(INCLUDE_DIRECTORIES
     
     ${CMAKE_SOURCE_DIR}/MbsAPI
 
-    ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial8/src
+    ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial/src
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -60,7 +60,7 @@ Set(SRCS
 )
 
 Set(DEPENDENCIES
-    Base MbsAPI Tutorial8
+    Base MbsAPI MbsTutorial
 )
 
 Set(LINKDEF LmdSamplerLinkDef.h)
@@ -96,11 +96,11 @@ ForEach(_file RANGE 0 ${_length})
     Set(DEPENDENCIES
         FairMQ 
         BaseMQ 
-        boost_thread 
-        boost_system 
-        boost_serialization 
-        boost_program_options 
-        Tutorial8
+        ${Boost_THREAD_LIBRARY}
+        ${Boost_SYSTEM_LIBRARY}
+        ${Boost_SERIALIZATION_LIBRARY} 
+        ${Boost_PROGRAM_OPTIONS_LIBRARY}
+        MbsTutorial
         LmdMQSampler
     )
     GENERATE_EXECUTABLE()

@@ -25,17 +25,11 @@
 #include "FairMQExample3Sampler.h"
 #include "FairMQTools.h"
 
-#ifdef NANOMSG
-#include "FairMQTransportFactoryNN.h"
-#else
-#include "FairMQTransportFactoryZMQ.h"
-#endif
-
-#include "KeyValue.h" // DDS Key Value
-#include "CustomCmd.h" // DDS Custom Commands
+#include "dds_intercom.h" // DDS
 
 using namespace std;
 using namespace boost::program_options;
+using namespace dds::intercom_api;
 
 int main(int argc, char** argv)
 {
@@ -63,20 +57,14 @@ int main(int argc, char** argv)
 
         LOG(INFO) << "PID: " << getpid();
 
-#ifdef NANOMSG
-        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryNN();
-#else
-        FairMQTransportFactory* transportFactory = new FairMQTransportFactoryZMQ();
-#endif
-
-        sampler.SetTransport(transportFactory);
+        sampler.SetTransport(config.GetValue<std::string>("transport"));
 
         sampler.SetProperty(FairMQExample3Sampler::Id, id);
 
         // configure data output channel
         FairMQChannel dataOutChannel("push", "bind", "");
         dataOutChannel.UpdateRateLogging(0);
-        sampler.fChannels["data-out"].push_back(dataOutChannel);
+        sampler.fChannels["data1"].push_back(dataOutChannel);
 
         // Get the IP of the current host and store it for binding.
         map<string,string> IPs;
@@ -97,30 +85,30 @@ int main(int argc, char** argv)
 
         // Configure the found host IP for the channel.
         // TCP port will be chosen randomly during the initialization (binding).
-        sampler.fChannels.at("data-out").at(0).UpdateAddress(initialOutputAddress);
+        sampler.fChannels.at("data1").at(0).UpdateAddress(initialOutputAddress);
 
         sampler.ChangeState("INIT_DEVICE");
         sampler.WaitForInitialValidation();
 
         // Advertise the bound addresses via DDS property
         LOG(INFO) << "Giving sampler output address to DDS.";
-        dds::key_value::CKeyValue ddsKeyValue;
-        ddsKeyValue.putValue("SamplerOutputAddress", sampler.fChannels.at("data-out").at(0).GetAddress());
+        CKeyValue ddsKeyValue;
+        ddsKeyValue.putValue("SamplerAddress", sampler.fChannels.at("data1").at(0).GetAddress());
 
         sampler.WaitForEndOfState("INIT_DEVICE");
 
         sampler.ChangeState("INIT_TASK");
         sampler.WaitForEndOfState("INIT_TASK");
 
-        dds::custom_cmd::CCustomCmd ddsCustomCmd;
+        CCustomCmd ddsCustomCmd;
 
         // Subscribe on custom commands
-        ddsCustomCmd.subscribeCmd([&](const string& command, const string& condition, uint64_t senderId)
+        ddsCustomCmd.subscribe([&](const string& command, const string& condition, uint64_t senderId)
         {
-            LOG(INFO) << "Received custom command: " << command << " condition: " << condition << " senderId: " << senderId;
+            LOG(INFO) << "Received custom command: " << command;
             if (command == "check-state")
             {
-                ddsCustomCmd.sendCmd(id + ": " + sampler.GetCurrentStateName(), to_string(senderId));
+                ddsCustomCmd.send(id + ": " + sampler.GetCurrentStateName(), to_string(senderId));
             }
             else
             {

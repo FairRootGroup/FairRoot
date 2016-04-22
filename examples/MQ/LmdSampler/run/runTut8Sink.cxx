@@ -11,7 +11,7 @@
 #include "FairTut8RawItem.h"
 
 
-typedef GenericFileSink<RootDeSerializer, RootOutFileManager<FairTut8RawItem>>  TSink;
+typedef GenericFileSink<RootDefaultInputPolicy, RootOutFileManager<FairTut8RawItem>>  TSink;
 
 
 int main(int argc, char** argv)
@@ -50,7 +50,7 @@ int main(int argc, char** argv)
         // call function member from storage policy
         sink.SetFileProperties(filename, treename, branchname, hitname, fileoption, true);
         // call function member from deserialization policy
-        sink.InitInputContainer(hitname);
+        sink.InitInputData(hitname.c_str());
         runStateMachine(sink, config);
 
     }

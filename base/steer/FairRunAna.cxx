@@ -60,7 +60,7 @@ using std::list;
 Bool_t gFRAIsInterrupted;
 
 //_____________________________________________________________________________
-void FRA_handler_ctrlc(int s)
+void FRA_handler_ctrlc(int)
 {
   LOG(INFO) << "*********** CTRL C PRESSED *************" << FairLogger::endl;
   gFRAIsInterrupted = kTRUE;
@@ -82,7 +82,6 @@ FairRunAna::FairRunAna()
    fIsInitialized(kFALSE),
    fInputGeoFile(0),
    fLoadGeo( kFALSE),
-   fEvtHeader(0),
    fStatic(kFALSE),
    fField(0),
    fTimeStamps(kFALSE),
@@ -228,7 +227,8 @@ void FairRunAna::Init()
     LOG(INFO) << "Parameter and input file are available, Assure that basic info is there for the run!" << FairLogger::endl;
     fRootManager->ReadEvent(0);
 
-    fEvtHeader = GetEventHeader();
+//    fEvtHeader = GetEventHeader();
+    GetEventHeader();
     
     fRootManager->FillEventHeader(fEvtHeader);
     
