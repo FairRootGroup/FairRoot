@@ -109,15 +109,15 @@ link_directories(${LINK_DIRECTORIES})
 
 
 Set(Exe_Names
-    FairMQEx9Sampler
-    FairMQEx9TaskProcessor
-    FairMQEx9FileSink
+    ex9-sampler
+    ex9-processor
+    ex9-sink
 
-    FairMQEx9SamplerBin
-    FairMQEx9TaskProcessorBin
-    FairMQEx9FileSinkBin
+    ex9-samplerBin
+    ex9-processorBin
+    ex9-sinkBin
 
-    FairMQEx9Merger
+    ex9-merger
 )
 
 set(Exe_Source

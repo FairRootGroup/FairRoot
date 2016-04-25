@@ -20,6 +20,7 @@
 
 #include "FairMQMessage.h"
 #include "TMessage.h"
+#include "TClonesArray.h"
 
 #include "FairSource.h"
 #include "FairFileSource.h"
@@ -52,7 +53,10 @@ void FairMQEx9Sampler::InitTask()
     LOG(INFO) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
     int branchStat = fSource->ActivateObject((TObject**)&fInputObjects[fNObjects],fBranchNames[ibrn].c_str()); // should check the status...
     if ( fInputObjects[fNObjects] ) {
-      LOG(INFO) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn] << "\" (" << branchStat << ")";
+      LOG(INFO) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn] << "\" (" << branchStat << "), it got name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
+      if ( strcmp(fInputObjects[fNObjects]->GetName(),fBranchNames[ibrn].c_str()) )
+	if ( strcmp(fInputObjects[fNObjects]->ClassName(),"TClonesArray") == 0 ) 
+	  ((TClonesArray*)fInputObjects[fNObjects])->SetName(fBranchNames[ibrn].c_str());
       fNObjects++;
     }
   }
