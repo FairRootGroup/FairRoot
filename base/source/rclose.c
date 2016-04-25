@@ -26,7 +26,7 @@ int rclose(int *piSocket, int iMode)
 {
    int iSocket;
    int iRC;
-   int iDebug = 0;
+//   int iDebug = 0;
    int iError = 0;
    int iClose = 1;
    char cModule[32] = "rclose";
@@ -57,9 +57,11 @@ int rclose(int *piSocket, int iMode)
             perror(cMsg);
             iError = -1;
          }
+/*
          else if (iDebug)
             printf("    %s: shutdown(%d) successfull\n",
                    cModule, iMode);    
+*/
       }
 
       if (iClose)
@@ -71,9 +73,11 @@ int rclose(int *piSocket, int iMode)
             perror(cMsg);
             iError = -2;
          }
+/*
          else if (iDebug)
             printf("    %s: connection closed\n", cModule);
 
+*/
       } /* (iClose) */
 
    } /* (iSocket > 0) */

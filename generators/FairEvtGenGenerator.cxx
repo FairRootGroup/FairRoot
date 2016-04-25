@@ -119,13 +119,13 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
     // LOG(INFO) << "Event number: " << eventID << "\tNtracks: " 
     //           << ntracks << FairLogger::endl;
     for (Int_t ii=0; ii<15; ii++) {
-      ncols = fscanf(fInputFile,"%s",buffer);
+      ncols += fscanf(fInputFile,"%s",buffer);
       //   LOG(INFO) << buffer << "\t" ;
     }
     //LOG(INFO) << FairLogger::endl;
 
     for (Int_t ll=0; ll<ntracks; ll++) {
-      ncols = fscanf(fInputFile,"%d %d %d %d %d %d %d %g %f %f %f %f %f %f %f", &nLine, &pdgID, &nDecay, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz, &fE, &fT, &fVx, &fVy, &fVz);
+      ncols += fscanf(fInputFile,"%d %d %d %d %d %d %d %g %f %f %f %f %f %f %f", &nLine, &pdgID, &nDecay, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz, &fE, &fT, &fVx, &fVy, &fVz);
 //  LOG(INFO) << nLine << "\t" << pdgID << "\t" << nDecay << "\t" << nM1 << "\t" << nM2 << "\t" << nDF << "\t" << nDL <<
       //  "\t" << fPx << "\t" << fPy << "\t" << fPz << "\t" << fE << "\t" << fT << "\t" << fVx << "\t" << fVy << "\t" << fVz << FairLogger::endl;
       max_nr = max(max_nr, nDF);

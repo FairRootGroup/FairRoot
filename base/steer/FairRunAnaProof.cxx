@@ -276,6 +276,8 @@ void FairRunAnaProof::InitContainers()
 
     fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
 
+    if (NULL == fEvtHeader) LOG(FATAL) << "Could not read event header." << FairLogger::endl;
+
     fRootManager->FillEventHeader(fEvtHeader);
 
     fRunId = fEvtHeader->GetRunId();

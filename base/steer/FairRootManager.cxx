@@ -114,8 +114,7 @@ FairRootManager::FairRootManager()
     fListOfNonTimebasedBranchesIter(0)
   {
   if (fgInstance) {
-    Fatal("FairRootManager", "Singleton instance already exists.");
-    return;
+    LOG(FATAL) << "Singleton instance already exists." << FairLogger::endl;
   }
   fgInstance = this;
   fSourceChain = new TChain(GetTreeName(), "/cbmroot");
@@ -1279,6 +1278,7 @@ char* FairRootManager::GetTreeName()
     if(1 != sscanf(str, "treename=%s", treename))
     {
         fclose(file);
+        delete[] treename;
         return default_name;
     }
     // Close file and return read value

@@ -22,6 +22,7 @@
 
 #elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
 #include <stdio.h>
+#include <limits>
 
 #else
 #error "Unknown OS."
@@ -62,6 +63,7 @@ size_t FairSystemInfo::GetCurrentMemory( )
 #elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
     /* Linux ---------------------------------------------------- */
     long rss = 0L;
+    long pagesize = sysconf(_SC_PAGESIZE);
     FILE* fp = NULL;
     if ( (fp = fopen( "/proc/self/statm", "r" )) == NULL )
         return (size_t)0L;      /* Can't open? */
@@ -71,7 +73,11 @@ size_t FairSystemInfo::GetCurrentMemory( )
         return (size_t)0L;      /* Can't read? */
     }
     fclose( fp );
-    return (size_t)rss * (size_t)sysconf( _SC_PAGESIZE);
+    if (rss > 0 && rss < std::numeric_limits<std::size_t>::max()/pagesize) {
+      return (size_t)rss * (size_t)sysconf(_SC_PAGESIZE); 
+    } else {
+       return (size_t)0L;
+    }
 
 #else
     /* AIX, BSD, Solaris, and Unknown OS ------------------------ */
