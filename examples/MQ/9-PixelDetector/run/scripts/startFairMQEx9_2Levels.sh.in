@@ -83,46 +83,46 @@ xterm -geometry 80x22+0+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$SERVER &
 
 
 ########################## start SAMPLER
-SAMPLER="FairMQEx9Sampler $TRANSPORT"
+SAMPLER="ex9-sampler $TRANSPORT"
 SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE"
 SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH $MAXINDEX"
 xterm -geometry 80x22+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER &
 
 ########################## start PROCESSORs on level 1
-PROCESSOR1_1="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR1_1="ex9-processor $TRANSPORT"
 PROCESSOR1_1+=" $VERBOSE"
 PROCESSOR1_1+=" --id processor1_1 $FAIRTASKNAME1 --mq-config $MQCONFIGFILE"
 xterm -geometry 80x22+500+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR1_1 &
 
-PROCESSOR1_2="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR1_2="ex9-processor $TRANSPORT"
 PROCESSOR1_2+=" $VERBOSE"
 PROCESSOR1_2+=" --id processor1_2 $FAIRTASKNAME1 --mq-config $MQCONFIGFILE"
 xterm -geometry 80x22+500+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR1_2 &
 
-PROCESSOR1_3="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR1_3="ex9-processor $TRANSPORT"
 PROCESSOR1_3+=" $VERBOSE"
 PROCESSOR1_3+=" --id processor1_3 $FAIRTASKNAME1 --mq-config $MQCONFIGFILE"
 xterm -geometry 80x22+500+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR1_3 &
 
 ########################## start PROCESSORs on level 2
-PROCESSOR2_1="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR2_1="ex9-processor $TRANSPORT"
 PROCESSOR2_1+=" $VERBOSE"
 PROCESSOR2_1+=" --id processor2_1 $FAIRTASKNAME2 --mq-config $MQCONFIGFILE"
 xterm -geometry 80x22+1000+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR2_1 &
 
-PROCESSOR2_2="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR2_2="ex9-processor $TRANSPORT"
 PROCESSOR2_2+=" $VERBOSE"
 PROCESSOR2_2+=" --id processor2_2 $FAIRTASKNAME2 --mq-config $MQCONFIGFILE"
 xterm -geometry 80x22+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR2_2 &
 
-PROCESSOR2_3="FairMQEx9TaskProcessor $TRANSPORT"
+PROCESSOR2_3="ex9-processor $TRANSPORT"
 PROCESSOR2_3+=" $VERBOSE"
 PROCESSOR2_3+=" --id processor2_3 $FAIRTASKNAME2 --mq-config $MQCONFIGFILE"
 xterm -geometry 80x22+1000+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR2_3 &
 
 
 ########################## start FILESINK
-FILESINK="FairMQEx9FileSink $TRANSPORT"
+FILESINK="ex9-sink $TRANSPORT"
 FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
 FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
 xterm +aw -geometry 80x22+0+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$FILESINK &

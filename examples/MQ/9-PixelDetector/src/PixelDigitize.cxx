@@ -121,7 +121,7 @@ void PixelDigitize::Exec(Option_t* /*opt*/) {
 
     if ( !curNode ) LOG(WARNING) << "PixelDigitize::Exec() node \"" << nodeName.Data() << "\" unknown!" << FairLogger::endl;
 
-    Double_t locPosIn[4];
+    Double_t locPosIn[3];
 
     curNode->MasterToLocal(posIn,locPosIn);
 

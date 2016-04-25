@@ -706,7 +706,9 @@ Int_t  FairFileSource::CheckMaxEventNo(Int_t EvtEnd)
   if(EvtEnd!=0) {
     MaxEventNo=EvtEnd;
   }
-  MaxEventNo=fInChain->GetEntries();
+  else {
+    MaxEventNo=fInChain->GetEntries();
+  }
   return MaxEventNo;
 }
 //_____________________________________________________________________________
