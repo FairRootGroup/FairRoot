@@ -104,6 +104,7 @@ FairRootManager::FairRootManager()
     fEntryNr(0),
     fListFolder(0),
     fSource(0),
+    fSourceChain(new TChain(GetTreeName(), "/cbmroot")),
     fSignalChainList(),
     fEventHeader(new FairEventHeader()),
     fUseFairLinks(kFALSE),
@@ -117,7 +118,6 @@ FairRootManager::FairRootManager()
     LOG(FATAL) << "Singleton instance already exists." << FairLogger::endl;
   }
   fgInstance = this;
-  fSourceChain = new TChain(GetTreeName(), "/cbmroot");
 }
 //_____________________________________________________________________________
 
@@ -1260,7 +1260,7 @@ char* FairRootManager::GetTreeName()
     }
     
     // Open file with output tree name
-    FILE* file = fopen(Form("%s/gconfig/rootmanager.dat",workdir), "r");
+    FILE* file = fopen(Form("%s/config/rootmanager.dat",workdir), "r");
     // If file does not exist -> default
     if(NULL == file)
     {

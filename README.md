@@ -28,6 +28,17 @@ The template demonstrate and implement the following:
 6.  Track visualisation tool (Event display)
 7.  A rename script which replace all the generic names to user defined ones
 
+### Optional change of output tree name
+
+By default, the name of the tree in output ROOT file is "cbmsim". In case you want to change it for your Project, you need to create "config" folder inside of top source directory of the Project and place there "rootmanager.dat" text file with following single line: "treename=name_you_chose".
+
+```bash
+cd PROJECT_TOP_DIR
+mkdir config
+echo 'treename=name_you_chose' > config/rootmanager.dat
+```
+
+
 ### Step by Step installation
 
 1. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
