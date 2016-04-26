@@ -119,7 +119,7 @@ void PixelDigitize::Exec(Option_t* /*opt*/) {
     gGeoManager->cd(nodeName.Data());
     TGeoNode* curNode = gGeoManager->GetCurrentNode();
 
-    if ( !curNode ) LOG(WARNING) << "PixelDigitize::Exec() node \"" << nodeName.Data() << "\" unknown!" << FairLogger::endl;
+    if ( !curNode ) LOG(FATAL) << "PixelDigitize::Exec() node \"" << nodeName.Data() << "\" unknown!" << FairLogger::endl;
 
     Double_t locPosIn[3];
 
