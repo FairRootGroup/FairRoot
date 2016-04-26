@@ -141,8 +141,12 @@ uint32_t fLmdPutOpen(
 
   pLmdControl->pMbsFileHeader->iType=LMD__TYPE_FILE_HEADER_101_1;
   pLmdControl->pMbsFileHeader->iEndian=1;
-  strcpy(pLmdControl->cFile,Filename);
-
+  size_t len=strlen(Filename);
+  if (len < sizeof(pLmdControl->cFile)) {
+    strncpy(pLmdControl->cFile,Filename, len);
+  } else {
+    strncpy(pLmdControl->cFile,Filename, sizeof(pLmdControl->cFile)-1);
+  }
   // optionally allocate buffer
   if(iBytes > 0) {
     pLmdControl->pBuffer=(int16_t*)malloc(iBytes);
@@ -372,15 +376,20 @@ uint32_t fLmdConnectMbs(
     fLmdCleanup(pLmdControl);
     return(LMD__FAILURE);
   }
-  strcpy(pLmdControl->cFile,Nodename);
-  if(iBufferBytes == LMD__GET_EVENTS) { // use internal buffer for fLmdGetMbsEvent
-    pLmdControl->pBuffer = (int16_t*) malloc(sMbs.iMaxBytes);
-    pLmdControl->iBufferWords=sMbs.iMaxBytes/2;
-    pLmdControl->iInternBuffer=1;
-  } else {
-    *iBufferBytes=sMbs.iMaxBytes;
-  }
-  return(LMD__SUCCESS);
+    size_t len=strlen(Nodename);
+    if (len < sizeof(pLmdControl->cFile)) {
+      strncpy(pLmdControl->cFile,Nodename, len);
+    } else {
+      strncpy(pLmdControl->cFile,Nodename, sizeof(pLmdControl->cFile)-1);
+    }
+    if(iBufferBytes == LMD__GET_EVENTS) { // use internal buffer for fLmdGetMbsEvent
+      pLmdControl->pBuffer = (int16_t*) malloc(sMbs.iMaxBytes);
+      pLmdControl->iBufferWords=sMbs.iMaxBytes/2;
+      pLmdControl->iInternBuffer=1;
+    } else {
+      *iBufferBytes=sMbs.iMaxBytes;
+    }
+    return(LMD__SUCCESS);
 }
 //===============================================================
 uint32_t fLmdInitMbs(
@@ -398,7 +407,12 @@ uint32_t fLmdInitMbs(
   if(iBuffers > 1) {printf("fLmdInitMbs: Event spanning not supported!\n"); return(LMD__FAILURE);}
   if(iStreams > 0) {printf("fLmdInitMbs: MBS not in DABC mode!\n"); return(LMD__FAILURE);}
   pLmdControl->iPort=iPort;
-  strcpy(pLmdControl->cFile,Nodename);
+  size_t len=strlen(Nodename);
+  if (len < sizeof(pLmdControl->cFile)) {
+    strncpy(pLmdControl->cFile,Nodename, len);
+  } else {
+    strncpy(pLmdControl->cFile,Nodename, sizeof(pLmdControl->cFile)-1);
+  }
   if(pLmdControl->pBuffer == NULL) { pLmdControl->pBuffer= (int16_t*) malloc(iMaxBytes); }
   pLmdControl->iBufferWords=iMaxBytes/2;
   pLmdControl->iInternBuffer=1;
@@ -538,12 +552,18 @@ uint32_t fLmdGetOpen(
   memset(pLmdControl->pMbsFileHeader,0,sizeof(sMbsFileHeader));
 
   // copy file name to control structure
-  strcpy(pLmdControl->cFile,Filename);
+  size_t len=strlen(Filename);
+  if ( len < sizeof(pLmdControl->cFile)) {
+    strncpy(pLmdControl->cFile, Filename, len);
+  } else {
+    strncpy(pLmdControl->cFile, Filename, sizeof(pLmdControl->cFile)-1);
+  }
   if((pLmdControl->fFile=(FILE*)fopen64(Filename,"r"))== NULL) {
     printf("fLmdGetOpen: File not found: %s\n",Filename);
     fLmdCleanup(pLmdControl);
     return(GETLMD__NOFILE);
   }
+
   /* read header */
   iReturn=fLmdReadBuffer(pLmdControl,
                          (char*)pLmdControl->pMbsFileHeader,
@@ -594,7 +614,7 @@ uint32_t fLmdGetOpen(
   }
 
   bufferBytes=iBytes;
-  if(bufferBytes < pLmdControl->pMbsFileHeader->iMaxWords*2) {
+  if(bufferBytes < pLmdControl->pMbsFileHeader->iMaxWords*2 && pLmdControl->pMbsFileHeader->iMaxWords*2 < UINT32_MAX) {
     bufferBytes=pLmdControl->pMbsFileHeader->iMaxWords*2;
   }
   fLmdPrintFileHeader(1,pLmdControl->pMbsFileHeader);

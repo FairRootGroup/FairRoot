@@ -559,10 +559,22 @@ INTS4 f_evt_get_open(INTS4 l_mode, CHARS* pc_server, s_evt_channel* ps_chan,
   if(ps_info != NULL) { *ps_info=NULL; }
   // when timeout is already set by f_evt_timeout(), do not overwrite
   if(ps_chan->l_timeout==0) { ps_chan->l_timeout=-1; } /* no timeout */
-  strcpy(ps_chan->c_channel,pc_server);
+
+  size_t len=strlen(pc_server);
+  if ( len < sizeof(ps_chan->c_channel) ) {
+    strncpy(ps_chan->c_channel,pc_server, len);
+  } else {
+    strncpy(ps_chan->c_channel,pc_server, sizeof(ps_chan->c_channel)-1);
+  }
   switch(l_mode) {
   case GETEVT__FILE :
-    strcpy(c_file,pc_server);
+
+    if ( len < sizeof(c_file) ) {
+      strncpy(c_file,pc_server, len);
+    } else {
+      strncpy(c_file,pc_server, sizeof(c_file)-1);
+    }
+
     if(strlen(c_file) < 5) { strcat(c_file,".lmd"); }
     else {
       pc_temp = (CHARS*) &c_file[strlen(c_file)-4];
@@ -1189,7 +1201,12 @@ INTS4 f_evt_put_open(CHARS* pc_file, INTS4 l_size, INTS4 l_stream,
     exit(2);
   }
 
-  strcpy(c_file,pc_file);
+  size_t len=strlen(pc_file);
+  if (len < sizeof(c_file)) {
+    strncpy(c_file,pc_file, len);
+  } else {
+    strncpy(c_file,pc_file, sizeof(c_file)-1);
+  }
   if(strlen(c_file) < 5) { strcat(c_file,".lmd"); }
   else {
     pc_temp = (CHARS*) &c_file[strlen(c_file)-4];
@@ -1224,7 +1241,16 @@ INTS4 f_evt_put_open(CHARS* pc_file, INTS4 l_size, INTS4 l_stream,
       ps_file_head->filhe_free[0]=1;
       ps_file_head->filhe_file_l=strlen(c_file);/* not include \0 */
       strcpy(ps_file_head->filhe_file, c_file);
-      strcpy(ps_file_head->filhe_user, getenv("USER"));/* user name */
+      char* username = getenv("USER");
+      if (username) {
+        size_t len = strlen(username);
+        // maximum length for user array in s_filhe is 30
+        if (len < sizeof(ps_file_head->filhe_user) ) {
+          strncpy(ps_file_head->filhe_user, username, len);/* user name */
+        } else {
+          strncpy(ps_file_head->filhe_user, username, sizeof(ps_file_head->filhe_user)-1);/* user name */
+        }  
+      }
       ps_file_head->filhe_user_l=strlen(ps_file_head->filhe_user);
       time(&s_timet);/* get calendar time */
       strcpy(c_mode, ctime(&s_timet));
@@ -2487,28 +2513,32 @@ INTS4 f_evt_get_tagopen(s_evt_channel* ps_chan,CHARS* pc_tag,CHARS* pc_lmd, CHAR
   }
   /* read buffer header to check if we have to swap */
   ps_bufhe  = (s_bufhe*)c_temp;
-  if(read(ps_chan->l_channel_no,c_temp,ps_chan->ps_taghe->l_bufsize)!=ps_chan->ps_taghe->l_bufsize) {
-    if(ps_chan->ps_taghe != NULL) { free(ps_chan->ps_taghe); }
-    ps_chan->ps_taghe = NULL;
-    if(ps_chan->ps_tag != NULL) { free(ps_chan->ps_tag); }
-    ps_chan->ps_tag = NULL;
-    close(ps_chan->l_tagfile_no);
-    close(ps_chan->l_channel_no);
-    return(GETEVT__RDERR);
-  }
-  if(ps_chan->ps_taghe != NULL) {
-  if(ps_chan->ps_taghe->l_linear == 0) {
-    ps_chan->ps_tag = (s_tag*)malloc(ps_chan->ps_taghe->l_filesize);
-    if(read(ps_chan->l_tagfile_no,(CHARS*)ps_chan->ps_tag,ps_chan->ps_taghe->l_filesize)!=ps_chan->ps_taghe->l_filesize) {
+  if (ps_chan->ps_taghe->l_bufsize >=0 && ps_chan->ps_taghe->l_bufsize < sizeof(c_temp)) {
+    if(read(ps_chan->l_channel_no,c_temp,ps_chan->ps_taghe->l_bufsize)!=ps_chan->ps_taghe->l_bufsize) {
       if(ps_chan->ps_taghe != NULL) { free(ps_chan->ps_taghe); }
       ps_chan->ps_taghe = NULL;
       if(ps_chan->ps_tag != NULL) { free(ps_chan->ps_tag); }
       ps_chan->ps_tag = NULL;
       close(ps_chan->l_tagfile_no);
       close(ps_chan->l_channel_no);
-      return(GETEVT__TAGRDERR);
+      return(GETEVT__RDERR);
     }
   }
+  if(ps_chan->ps_taghe != NULL) {
+    if(ps_chan->ps_taghe->l_linear == 0) {
+      if (ps_chan->ps_taghe->l_filesize >=0 && ps_chan->ps_taghe->l_filesize < sizeof(s_tag)) {
+        ps_chan->ps_tag = (s_tag*)malloc(ps_chan->ps_taghe->l_filesize);
+        if(read(ps_chan->l_tagfile_no,(CHARS*)ps_chan->ps_tag,ps_chan->ps_taghe->l_filesize)!=ps_chan->ps_taghe->l_filesize) {
+          if(ps_chan->ps_taghe != NULL) { free(ps_chan->ps_taghe); }
+          ps_chan->ps_taghe = NULL;
+          if(ps_chan->ps_tag != NULL) { free(ps_chan->ps_tag); }
+          ps_chan->ps_tag = NULL;
+          close(ps_chan->l_tagfile_no);
+          close(ps_chan->l_channel_no);
+          return(GETEVT__TAGRDERR);
+        }
+      }
+    }
   }
   if(ps_bufhe->l_free[0] != 1) { ps_chan->l_lmdswap=1; }
   if(ps_chan->l_lmdswap) { f_evt_swap_filhe(ps_bufhe); }
