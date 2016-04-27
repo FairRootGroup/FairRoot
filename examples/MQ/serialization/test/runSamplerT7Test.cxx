@@ -88,7 +88,7 @@ inline void runSampler(FairMQProgOptions& config)
     // call function member from sampler policy via a helper struct function defined above
     SetSource().Property(sampler,config);
     // simple state machine helper function
-    runNonInteractiveStateMachine(sampler, config);
+    runStateMachine(sampler, config);
 }
 
 int main(int argc, char** argv)

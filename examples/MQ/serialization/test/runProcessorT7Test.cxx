@@ -82,7 +82,7 @@ inline void runProcessor(FairMQProgOptions& config)
     TProcessor processor;
     processor.InitInputContainer(diginame);
     processor.InitTask(hitname);
-    runNonInteractiveStateMachine(processor, config);
+    runStateMachine(processor, config);
 }
 
 template<>
@@ -94,7 +94,7 @@ inline void runProcessor<TProcessorBoostTest>(FairMQProgOptions& config)
     TProcessorBoostTest processor;
     processor.InitInputContainer(diginame.c_str());
     processor.InitTask(hitname);
-    runNonInteractiveStateMachine(processor, config);
+    runStateMachine(processor, config);
 }
 
 int main(int argc, char** argv)

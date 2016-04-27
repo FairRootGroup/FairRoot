@@ -19,20 +19,20 @@ wait $GENERATE_PID
 
 ########################## start SAMPLER
 SAMPLER="genericMQTutoSamplerTest"
-SAMPLER+=" --id sampler1  -c $CONFIGFILE --config-json-file $JSONFILE --verbose $VERBOSITY --data-format $dataFormat"
+SAMPLER+=" --id sampler1  -c $CONFIGFILE --config-json-file $JSONFILE --verbose $VERBOSITY --data-format $dataFormat --control static"
 SAMPLER+=" --input.file.name $INPUTFILE --log-color false"
 @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 SAMPLER_PID=$!
 
 ########################## start PROCESSOR
 PROCESSOR1="genericMQTutoProcessorTest"
-PROCESSOR1+=" --id processor1 --config $CONFIGFILE --config-json-file $JSONFILE --verbose $VERBOSITY --data-format $dataFormat --log-color false"
+PROCESSOR1+=" --id processor1 --config $CONFIGFILE --config-json-file $JSONFILE --verbose $VERBOSITY --data-format $dataFormat --control static --log-color false"
 @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
 PROCESSOR1_PID=$!
 
 ########################## start FILESINK
 FILESINK="genericMQTutoSinkTest"
-FILESINK+=" --id sink1 --config $CONFIGFILE --config-json-file $JSONFILE --verbose $VERBOSITY --data-format $dataFormat --log-color false"
+FILESINK+=" --id sink1 --config $CONFIGFILE --config-json-file $JSONFILE --verbose $VERBOSITY --data-format $dataFormat --control static --log-color false"
 FILESINK+=" --output.file.name @CMAKE_BINARY_DIR@/examples/MQ/GenericDevices/data_io/GenericMQTutoOutputFile$dataFormat.root"
 @CMAKE_BINARY_DIR@/bin/$FILESINK &
 FILESINK_PID=$!
