@@ -43,11 +43,15 @@ class FairMQEx9Sampler : public FairMQDevice
 
     void SetSource(FairSource* tempSource) {fSource = tempSource;}
 
+    void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
+
  protected:
     virtual void Run();
     virtual void InitTask();
     
  private: 
+    std::string     fOutputChannelName;
+
     FairRunAna*     fRunAna;
     FairSource*     fSource;
     TObject*        fInputObjects[100];

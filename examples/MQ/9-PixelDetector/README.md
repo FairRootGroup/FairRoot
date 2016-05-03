@@ -77,3 +77,34 @@ hit finding is run on processors separately for each station data
 merges event data from different stations and sends whole events with PixelHits
 the second level of processors runs the track finding 
 **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; root -l -q run_digiToBin.C;
+
+##Running with DDS
+To run the example in the DDS, please check http://dds.gsi.de for the installation instructions.
+The next step, you have to configure fairroot with -DDDS_PATH="/path/to/dds/install/dir/" and rebuild it.
+
+There are following executables created that run the devices on the DDS:
+####ex9-dds-sampler;
+####ex9-dds-processor;
+####ex9-dds-sink;
+####dds-parmq-server.
+
+These programs are started with the ex9-dds-topology.xml topology, that can be started in the following way:
+
+```bash
+dds-server start -s
+dds-submit --rms localhost -n 10
+dds-topology --set bin/ex9-dds-topology.xml
+dds-topology --activate
+```
+
+One can check devices status using:
+
+```bash
+./bin/fairmq-dds-command-ui
+```
+
+Once the sampler finishes stops running, the DDS server may be stopped:
+
+```bash
+dds-server stop
+```

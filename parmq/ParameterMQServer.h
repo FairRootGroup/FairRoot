@@ -32,6 +32,7 @@ class ParameterMQServer : public FairMQDevice
         SecondInputType,
         OutputName,
         OutputType,
+	ChannelName,
         Last
     };
 
@@ -59,6 +60,7 @@ class ParameterMQServer : public FairMQDevice
     std::string fSecondInputType;
     std::string fOutputName;
     std::string fOutputType;
+    std::string fChannelName;
 };
 
 #endif /* PARAMETERMQSERVER_H_ */

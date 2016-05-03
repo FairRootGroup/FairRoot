@@ -41,9 +41,18 @@ class FairMQEx9TaskProcessor : public FairMQDevice
 
     void SetDataToKeep(std::string tStr) { fDataToKeep = tStr;}
 
+    void SetInputChannelName (std::string tstr) {fInputChannelName = tstr;}
+    void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
+    void SetParamChannelName (std::string tstr) {fParamChannelName  = tstr;}
+
   protected:
     virtual void Run();
     virtual void Init();
+
+  private:
+    std::string     fInputChannelName;
+    std::string     fOutputChannelName;
+    std::string     fParamChannelName;
 
     void UpdateParameters();
     FairParGenericSet* UpdateParameter(FairParGenericSet* thisPar);

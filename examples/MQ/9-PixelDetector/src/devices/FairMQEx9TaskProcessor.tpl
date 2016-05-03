@@ -26,6 +26,9 @@ void free_tmessage4(void* /*data*/, void *hint)
 template <typename T>
 FairMQEx9TaskProcessor<T>::FairMQEx9TaskProcessor()
   : FairMQDevice()
+  , fInputChannelName("data-in")
+  , fOutputChannelName("data-out")
+  , fParamChannelName("param")
   , fEventHeader(NULL)
   , fInput(NULL)
   , fOutput(NULL)
@@ -89,7 +92,7 @@ void FairMQEx9TaskProcessor<T>::Run()
     {
       FairMQParts parts;
       
-      if ( Receive(parts,"data-in") >= 0 )
+      if ( Receive(parts,fInputChannelName) >= 0 )
         {
 	  LOG(DEBUG)<<"message received with " << parts.Size() << " parts.";
 	  receivedMsgs++;
@@ -140,7 +143,7 @@ void FairMQEx9TaskProcessor<T>::Run()
 	    messageTCA[iobj]->WriteObject(fOutput->At(iobj));
 	    partsOut.AddPart(NewMessage(messageTCA[iobj]->Buffer(), messageTCA[iobj]->BufferSize(), free_tmessage4, messageTCA[iobj]));
 	  }
-	  Send(partsOut, "data-out");
+	  Send(partsOut, fOutputChannelName);
 	  sentMsgs++;
         }
       fInput->Clear();
@@ -220,9 +223,9 @@ FairParGenericSet* FairMQEx9TaskProcessor<T>::UpdateParameter(FairParGenericSet*
   std::unique_ptr<FairMQMessage> req(NewMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
   std::unique_ptr<FairMQMessage> rep(NewMessage());
   
-  if (Send(req,"param") > 0)
+  if (Send(req,fParamChannelName) > 0)
     {
-      if (Receive(rep,"param") > 0)
+      if (Receive(rep,fParamChannelName) > 0)
 	{
 	  Ex9TMessage2 tm(rep->GetData(), rep->GetSize());
 	  thisPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());

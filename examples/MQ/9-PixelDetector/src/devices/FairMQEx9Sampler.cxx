@@ -29,6 +29,7 @@ using namespace std;
 
 FairMQEx9Sampler::FairMQEx9Sampler()
   : FairMQDevice()
+  , fOutputChannelName("data-out")
   , fRunAna(NULL)
   , fSource(NULL)
   , fInputObjects()
@@ -93,7 +94,7 @@ void FairMQEx9Sampler::Run()
 	parts.AddPart(NewMessage(message[iobj]->Buffer(), message[iobj]->BufferSize(), free_tmessage2, message[iobj]));
       }
       
-      Send(parts, "data-out");
+      Send(parts, fOutputChannelName);
       
       eventCounter++;
     }

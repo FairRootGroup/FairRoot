@@ -35,6 +35,7 @@ class Ex9TMessage : public TMessage
 
 FairMQEx9FileSink::FairMQEx9FileSink()
   : FairMQDevice()
+  , fInputChannelName("data-in")
   , fFileName()
   , fTreeName()
  
@@ -107,7 +108,7 @@ void FairMQEx9FileSink::Run()
     {
       FairMQParts parts;
       
-      if (Receive(parts, "data-in") >= 0)
+      if (Receive(parts, fInputChannelName) >= 0)
 	{
 
 	  TObject* tempObjects[10];

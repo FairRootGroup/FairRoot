@@ -35,7 +35,8 @@ ParameterMQServer::ParameterMQServer() :
     fSecondInputName(""),
     fSecondInputType("ROOT"),
     fOutputName(""),
-    fOutputType("ROOT")
+    fOutputType("ROOT"),
+    fChannelName("data")
 {
 }
 
@@ -103,7 +104,7 @@ void ParameterMQServer::Run()
     {
         unique_ptr<FairMQMessage> req(fTransportFactory->CreateMessage());
 
-        if (fChannels.at("data").at(0).Receive(req) > 0)
+        if (fChannels.at(fChannelName).at(0).Receive(req) > 0)
         {
             string reqStr(static_cast<char*>(req->GetData()), req->GetSize());
             LOG(INFO) << "Received parameter request from client: \"" << reqStr << "\"";
@@ -133,7 +134,7 @@ void ParameterMQServer::Run()
 
                 unique_ptr<FairMQMessage> reply(fTransportFactory->CreateMessage(tmsg->Buffer(), tmsg->BufferSize(), free_tmessage, tmsg));
 
-                fChannels.at("data").at(0).Send(reply);
+                fChannels.at(fChannelName).at(0).Send(reply);
             }
             else
             {
@@ -165,6 +166,9 @@ void ParameterMQServer::SetProperty(const int key, const string& value)
         case OutputType:
             fOutputType = value;
             break;
+        case ChannelName:
+            fChannelName = value;
+            break;
         default:
             FairMQDevice::SetProperty(key, value);
             break;
@@ -187,6 +191,8 @@ string ParameterMQServer::GetProperty(const int key, const string& default_ /*= 
             return fOutputName;
         case OutputType:
             return fOutputType;
+        case ChannelName:
+            return fChannelName;
         default:
             return FairMQDevice::GetProperty(key, default_);
     }

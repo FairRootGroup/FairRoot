@@ -48,11 +48,15 @@ class FairMQEx9FileSink : public FairMQDevice
     }
     std::string GetOutputFileName () { return fFileName;}
 
+    void SetInputChannelName (std::string tstr) {fInputChannelName = tstr;}
+
   protected:
     virtual void Init();
     virtual void Run();
 
  private:
+    std::string     fInputChannelName;
+
     std::string fFileName;
     std::string fTreeName;
 
