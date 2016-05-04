@@ -85,7 +85,7 @@ Bool_t FairMbsStreamSource::ConnectToServer()
 }
 
 
-Int_t FairMbsStreamSource::ReadEvent()
+Int_t FairMbsStreamSource::ReadEvent(UInt_t)
 {
   void* evtptr = &fxEvent;
   void* buffptr = &fxBuffer;

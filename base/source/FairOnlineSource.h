@@ -36,9 +36,11 @@ class FairOnlineSource : public FairSource
     virtual Int_t ReadEvent(UInt_t=0) = 0;
     virtual void Close() = 0;
 
-    void SetParUnpackers();
+    virtual void SetParUnpackers();
 
-    Bool_t InitUnpackers();
+    virtual Bool_t InitUnpackers();
+
+    virtual Bool_t ReInitUnpackers();
 
     void Reset();
 

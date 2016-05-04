@@ -60,7 +60,7 @@ Bool_t FairRemoteSource::Init()
 }
 
 
-Int_t FairRemoteSource::ReadEvent()
+Int_t FairRemoteSource::ReadEvent(UInt_t)
 {
   usleep(10000);
   fREvent = fBuffer->RevGet(fSocket, 0, 0);

@@ -149,6 +149,9 @@ class FairRun : public TNamed
     //** Get info if run on master */
     Bool_t GetIsMaster() const { return fIsMaster;}
 
+    //** Mark/Unmark event to be filled into output. Default is TRUE. */
+    void MarkFill(Bool_t flag) { fMarkFill = flag; }
+
 
   private:
     FairRun(const FairRun& M);
@@ -188,6 +191,8 @@ class FairRun : public TNamed
     /** true if on master*/
     Bool_t                   fIsMaster;  //!
 
-    ClassDef(FairRun ,3)
+    Bool_t                   fMarkFill; //!
+
+    ClassDef(FairRun ,4)
 };
 #endif //FAIRRUN_H

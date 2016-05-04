@@ -37,6 +37,15 @@ Bool_t FairOnlineSource::InitUnpackers() {
   return kTRUE;
 }
 
+Bool_t FairOnlineSource::ReInitUnpackers() {
+  for (Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
+    if (!((FairUnpack *)fUnpackers->At(i))->ReInit()) {
+      return kFALSE;
+    }
+  }
+  return kTRUE;
+}
+
 void FairOnlineSource::SetParUnpackers() {
     for (Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
         ((FairUnpack *)fUnpackers->At(i))->SetParContainers();

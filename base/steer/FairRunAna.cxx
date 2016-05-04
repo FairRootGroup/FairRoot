@@ -887,6 +887,22 @@ void FairRunAna::SetBeamTime(Double_t beamTime, Double_t gapTime)
 }
 //_____________________________________________________________________________
 
+
+//_____________________________________________________________________________
+void FairRunAna::Fill()
+{
+  if(fMarkFill)
+  {
+    fRootManager->Fill();
+  }
+  else
+  {
+    fMarkFill = kTRUE;
+  }
+}
+//_____________________________________________________________________________
+
+
 // void  FairRunAna::SetMixAllInputs(Bool_t Status)
 // {
 //    fLogger->Info(MESSAGE_ORIGIN, "Mixing for all input is choosed, in this mode one event per input file is read per step");
