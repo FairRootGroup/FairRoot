@@ -6,6 +6,15 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
+Set(MaxTestTime 30)
+
+Add_Test(ex9_static
+	${CMAKE_BINARY_DIR}/bin/startFairMQEx9_Static.sh)
+Set_Tests_Properties(ex9_static PROPERTIES DEPENDS ex9_digi_TGeant3)
+Set_Tests_Properties(ex9_static PROPERTIES TIMEOUT ${MaxTestTime})
+Set_Tests_Properties(ex9_static PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
+
+
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
     ${CMAKE_SOURCE_DIR}/fairmq
@@ -31,8 +40,6 @@ include_directories(${INCLUDE_DIRECTORIES})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9.sh.in         ${CMAKE_BINARY_DIR}/bin/startFairMQEx9.sh )
-
 set(EXAMPLE9_FILE_LOCATION ${CMAKE_SOURCE_DIR})
 set(EXAMPLE9_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9New.sh.in                
@@ -53,6 +60,8 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/star
 		${CMAKE_BINARY_DIR}/bin/startFairMQEx9Merger2Levels.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/ex9-dds-topology.xml
 		${CMAKE_BINARY_DIR}/bin/ex9-dds-topology.xml )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_Static.sh.in
+		${CMAKE_BINARY_DIR}/bin/startFairMQEx9_Static.sh )
 
 set(EXAMPLE9_FILE_LOCATION ${CMAKE_INSTALL_PREFIX}/share/fairbase)
 set(EXAMPLE9_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/bin)
@@ -74,6 +83,8 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/star
 		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9Merger2Levels.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/ex9-dds-topology.xml
 		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/ex9-dds-topology.xml_install )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_Static.sh.in
+		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_Static.sh_install )
 
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9New.sh_install
         DESTINATION bin
@@ -102,6 +113,9 @@ Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startF
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/ex9-dds-topology.xml_install
         DESTINATION bin
         RENAME ex9-dds-topology.xml PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
+Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_Static.sh_install
+        DESTINATION bin
+        RENAME startFairMQEx9_Static.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 
 Install(FILES options/Pixel9MQConfig_Multipart.json options/Pixel9MQConfig_2Levels.json options/Pixel9MQConfig_3Levels.json options/Pixel9MQConfig_Proxy.json options/Pixel9MQConfig_2Samplers.json options/Pixel9MQConfig_Merger.json options/Pixel9MQConfig_Merger2Levels.json options/ex9-dds.json
         DESTINATION share/fairbase/examples/MQ/9-PixelDetector/run/options/

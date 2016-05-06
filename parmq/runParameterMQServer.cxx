@@ -19,6 +19,7 @@
 #include "FairMQProgOptions.h"
 #include "ParameterMQServer.h"
 #include "TApplication.h"
+#include "runSimpleMQStateMachine.h"
 
 using namespace std;
 using namespace boost::program_options;
@@ -26,7 +27,6 @@ using namespace boost::program_options;
 int main(int argc, char** argv)
 {
     ParameterMQServer server;
-    server.CatchSignals();
 
     FairMQProgOptions config;
 
@@ -57,8 +57,6 @@ int main(int argc, char** argv)
 
         TApplication app("ParameterMQServer", 0, 0);
 
-        server.SetConfig(config);
-
         server.SetProperty(ParameterMQServer::FirstInputName, firstInputName);
         server.SetProperty(ParameterMQServer::FirstInputType, firstInputType);
         server.SetProperty(ParameterMQServer::SecondInputName, secondInputName);
@@ -66,14 +64,7 @@ int main(int argc, char** argv)
         server.SetProperty(ParameterMQServer::OutputName, outputName);
         server.SetProperty(ParameterMQServer::OutputType, outputType);
 
-        server.ChangeState("INIT_DEVICE");
-        server.WaitForEndOfState("INIT_DEVICE");
-
-        server.ChangeState("INIT_TASK");
-        server.WaitForEndOfState("INIT_TASK");
-
-        server.ChangeState("RUN");
-        server.InteractiveStateLoop();
+        runStateMachine(server,config);
 
         gApplication->Terminate();
     }

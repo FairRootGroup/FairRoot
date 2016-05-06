@@ -17,12 +17,6 @@ class Ex9TMessage2 : public TMessage
   }
 };
 
-// helper function to clean up the object holding the data after it is transported.
-void free_tmessage4(void* /*data*/, void *hint)
-{
-    delete (TMessage*)hint;
-}
-
 template <typename T>
 FairMQEx9TaskProcessor<T>::FairMQEx9TaskProcessor()
   : FairMQDevice()
@@ -94,14 +88,14 @@ void FairMQEx9TaskProcessor<T>::Run()
       
       if ( Receive(parts,fInputChannelName) >= 0 )
         {
-	  LOG(DEBUG)<<"message received with " << parts.Size() << " parts.";
+	  LOG(TRACE)<<"message received with " << parts.Size() << " parts.";
 	  receivedMsgs++;
 	  TObject* tempObjects[10];
 	  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
 	    {
 	      Ex9TMessage2 tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
 	      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
-	      LOG(DEBUG) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
+	      LOG(TRACE) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
 	      if ( strcmp(tempObjects[ipart]->GetName(),"EventHeader.") == 0 ) 
 		fEventHeader = (FairEventHeader*)tempObjects[ipart];
 	      else {
@@ -111,7 +105,7 @@ void FairMQEx9TaskProcessor<T>::Run()
 	  
 	  fNewRunId = fEventHeader->GetRunId();
 
-	  LOG(DEBUG)<<"got event header with run = " << fNewRunId;
+	  LOG(TRACE)<<"got event header with run = " << fNewRunId;
 
 	  if(fNewRunId!=fCurrentRunId)
             {
@@ -137,11 +131,17 @@ void FairMQEx9TaskProcessor<T>::Run()
 	  
 	  messageFEH = new TMessage(kMESS_OBJECT);
 	  messageFEH->WriteObject(fEventHeader);
-	  partsOut.AddPart(NewMessage(messageFEH->Buffer(), messageFEH->BufferSize(), free_tmessage4, messageFEH));
+	  partsOut.AddPart(NewMessage(messageFEH->Buffer(),
+				      messageFEH->BufferSize(),
+				      [](void* data, void* hint) { delete (TMessage*)hint;},
+				      messageFEH));
 	  for ( int iobj = 0 ; iobj < fOutput->GetEntries() ; iobj++ ) {
 	    messageTCA[iobj] = new TMessage(kMESS_OBJECT);
 	    messageTCA[iobj]->WriteObject(fOutput->At(iobj));
-	    partsOut.AddPart(NewMessage(messageTCA[iobj]->Buffer(), messageTCA[iobj]->BufferSize(), free_tmessage4, messageTCA[iobj]));
+	    partsOut.AddPart(NewMessage(messageTCA[iobj]->Buffer(),
+					messageTCA[iobj]->BufferSize(),
+					[](void* data, void* hint) { delete (TMessage*)hint;},
+					messageTCA[iobj]));
 	  }
 	  Send(partsOut, fOutputChannelName);
 	  sentMsgs++;

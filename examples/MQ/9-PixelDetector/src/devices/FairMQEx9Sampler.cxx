@@ -30,6 +30,7 @@ using namespace std;
 FairMQEx9Sampler::FairMQEx9Sampler()
   : FairMQDevice()
   , fOutputChannelName("data-out")
+  , fAckChannelName("")
   , fRunAna(NULL)
   , fSource(NULL)
   , fInputObjects()
@@ -74,6 +75,8 @@ void free_tmessage2(void* /*data*/, void *hint)
 
 void FairMQEx9Sampler::Run()
 {
+  boost::thread ackListener(boost::bind(&FairMQEx9Sampler::ListenForAcks, this));
+
   int eventCounter = 0;
 
   // Check if we are still in the RUNNING state.
@@ -99,7 +102,37 @@ void FairMQEx9Sampler::Run()
       eventCounter++;
     }
   
-  LOG(INFO) << "Going out of RUNNING state.";
+  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+    try
+      {
+	ackListener.join();
+      }
+    catch(boost::thread_resource_error& e)
+      {
+	LOG(ERROR) << e.what();
+	exit(EXIT_FAILURE);
+      }
+  }
+  
+  LOG(INFO) << "Going out of RUNNING state";
+}
+
+void FairMQEx9Sampler::ListenForAcks()
+{
+  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+    for (Long64_t eventNr = 0; eventNr < fMaxIndex ; ++eventNr)
+      {
+	unique_ptr<FairMQMessage> ack(NewMessage());
+	Receive(ack,fAckChannelName.data());
+
+	if (!CheckCurrentState(RUNNING))
+	  {
+	    break;
+	  }
+      }
+
+    LOG(INFO) << "Acknowledged " << fMaxIndex << " messages.";
+  }
 }
 
 FairMQEx9Sampler::~FairMQEx9Sampler()

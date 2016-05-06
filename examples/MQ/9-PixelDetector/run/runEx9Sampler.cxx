@@ -23,6 +23,7 @@ int main(int argc, char** argv)
 	std::vector<std::string> branchname;
 	int64_t     maxindex;
 	std::string samplerType;
+	std::string ackChannel;
 
         namespace po = boost::program_options;
         po::options_description sampler_options("Sampler options");
@@ -30,7 +31,8 @@ int main(int argc, char** argv)
 	  ("file-name",    po::value<std::vector<std::string>>(&filename)                                    , "Path to the input file")
 	  ("max-index",    po::value<int64_t>                 (&maxindex)   ->default_value(-1)              , "number of events to read")
 	  ("branch-name",  po::value<std::vector<std::string>>(&branchname) ->required()                     , "branch name")
-	  ("sampler-type", po::value<std::string>             (&samplerType)->default_value("FairFileSource"), "FairSource type");
+	  ("sampler-type", po::value<std::string>             (&samplerType)->default_value("FairFileSource"), "FairSource type")
+	  ("ack-channel",  po::value<std::string>             (&ackChannel)->default_value("")               , "ack channel name");
 
 	FairMQProgOptions config;
 	config.AddToCmdLineOptions(sampler_options);
@@ -54,6 +56,9 @@ int main(int argc, char** argv)
 	  }
 
 	  sampler.AddInputBranchName("EventHeader.");
+
+	  sampler.SetAckChannelName(ackChannel);
+
 	  runStateMachine(sampler, config);
 	}
 	else if ( strcmp(samplerType.c_str(),"PixelDigiSource") == 0 ) {

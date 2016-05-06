@@ -37,6 +37,7 @@ examples/MQ/serialization/data_io/*
 !examples/MQ/serialization/data_io/README.md
 examples/MQ/LmdSampler/datasource/*
 !examples/MQ/LmdSampler/datasource/README.md
+examples/MQ/9-PixelDetector/macros/*.root
 core_dump*
 gphysi.dat
 FairRunInfo_*

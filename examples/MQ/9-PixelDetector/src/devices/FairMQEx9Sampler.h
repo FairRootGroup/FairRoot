@@ -43,7 +43,10 @@ class FairMQEx9Sampler : public FairMQDevice
 
     void SetSource(FairSource* tempSource) {fSource = tempSource;}
 
+    void ListenForAcks();
+
     void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
+    void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
 
  protected:
     virtual void Run();
@@ -51,6 +54,7 @@ class FairMQEx9Sampler : public FairMQDevice
     
  private: 
     std::string     fOutputChannelName;
+    std::string     fAckChannelName;
 
     FairRunAna*     fRunAna;
     FairSource*     fSource;

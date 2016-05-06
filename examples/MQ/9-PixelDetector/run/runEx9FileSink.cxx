@@ -19,13 +19,15 @@ int main(int argc, char** argv)
         std::string filename;
 	std::vector<std::string> classname;
 	std::vector<std::string> branchname;
+	std::string ackChannel;
 
         namespace po = boost::program_options;
         po::options_description fileSink_options("FileSink options");
         fileSink_options.add_options()
 	  ("file-name",   po::value<std::string>             (&filename)  , "Path to the output file")
 	  ("class-name",  po::value<std::vector<std::string>>(&classname) , "class name")
-	  ("branch-name", po::value<std::vector<std::string>>(&branchname), "branch name");
+	  ("branch-name", po::value<std::vector<std::string>>(&branchname), "branch name")
+	  ("ack-channel", po::value<std::string>             (&ackChannel), "ack channel name");
 	
 
         FairMQProgOptions config;
@@ -45,6 +47,8 @@ int main(int argc, char** argv)
 	for ( unsigned int ielem = 0 ; ielem < classname.size() ; ielem++ ) {
 	  fileSink.AddOutputBranch(classname.at(ielem),branchname.at(ielem));
 	}
+
+	fileSink.SetAckChannelName(ackChannel);
 	
         runStateMachine(fileSink, config);
 
