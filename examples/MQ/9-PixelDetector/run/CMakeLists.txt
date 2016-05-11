@@ -11,7 +11,7 @@ Set(MaxTestTime 30)
 GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/startFairMQEx9_Static.sh ${CMAKE_CURRENT_BINARY_DIR})
 
 Add_Test(ex9_static
-	${CMAKE_CURRENT_BINARY_DIR}/startFairMQEx9_Static.sh)
+	${CMAKE_CURRENT_BINARY_DIR}/startFairMQEx9_Static.sh --work-dir ${CMAKE_BINARY_DIR})
 Set_Tests_Properties(ex9_static PROPERTIES DEPENDS ex9_digi_TGeant3)
 Set_Tests_Properties(ex9_static PROPERTIES TIMEOUT ${MaxTestTime})
 Set_Tests_Properties(ex9_static PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
@@ -64,6 +64,10 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/ex9-
 		${CMAKE_BINARY_DIR}/bin/ex9-dds-topology.xml )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_Static.sh.in
 		${CMAKE_BINARY_DIR}/bin/startFairMQEx9_Static.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/param/pixel_digi.par
+		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/param/pixel_digi.par )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Multipart.json
+		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Multipart.json )
 
 set(EXAMPLE9_FILE_LOCATION ${CMAKE_INSTALL_PREFIX}/share/fairbase)
 set(EXAMPLE9_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/bin)

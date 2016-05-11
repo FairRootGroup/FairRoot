@@ -13,6 +13,7 @@ MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
 VERBOSE="--verbose DEBUG"
 FAIRTASKNAME="--task-name PixelFindHits"
+WORKDIR="@EXAMPLE9_FILE_LOCATION@"
 
 while [[ $# > 1 ]]
 do
@@ -31,6 +32,10 @@ case $key in
     TRANSPORT="--transport $2"
     shift
     ;;
+    -w|--work-dir)
+    WORKDIR="$2"
+    shift
+    ;;
     -v|--verbose)
     VERBOSE="--verbose $2"
     shift
@@ -41,38 +46,38 @@ done
 
 ########################### Define some variables
 # JSON file containing the configuration parameters of all FairMQ devices of this example
-MQCONFIGFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Multipart.json"
+MQCONFIGFILE="$WORKDIR/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Multipart.json"
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
-ASCIIPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
+ROOTPARAM="$WORKDIR/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
+ASCIIPARAM="$WORKDIR/examples/MQ/9-PixelDetector/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
- #   INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.f1.root"
+    INPUTFILE="$WORKDIR/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
+ #   INPUTFILE+=" --file-name $WORKDIR/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.f1.root"
     INPUTBRANCH="PixelDigis"
     
     # output file for sink
-    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits.root"
+    OUTPUTFILE="$WORKDIR/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
     OUTPUTBRANCH="--branch-name PixelHits"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFindTracks" ] ; then
     # input file and branch for the sampler device 
     FAIRTASKNAME+=" --keep-data PixelHits"
-    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits.root"
+    INPUTFILE="$WORKDIR/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits.root"
     INPUTBRANCH="PixelHits"
     
     # output file for sink
-    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
+    OUTPUTFILE="$WORKDIR/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelHit) --class-name TClonesArray(PixelTrack)"
     OUTPUTBRANCH="--branch-name PixelHits --branch-name PixelTracks"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFitTracks" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
+    INPUTFILE="$WORKDIR/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
     INPUTBRANCH="PixelHits --branch-name PixelTracks"
     
     # output file for sink
-    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.fitTracks.root"
+    OUTPUTFILE="$WORKDIR/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.fitTracks.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
     OUTPUTBRANCH="--branch-name PixelFitTracks"
 else
@@ -81,7 +86,23 @@ else
 fi
 ###########################
 
-
+########################### Check if files exist
+if [ ! -e $MQCONFIGFILE ] ; then
+    echo "MQConfig file ($MQCONFIGFILE) does not exist!"
+    exit;
+fi
+if [ ! -e $ROOTPARAM ] ; then
+    echo "RootParam file ($ROOTPARAM) does not exist!"
+    exit;
+fi
+if [ ! -e $ASCIIPARAM ] ; then
+    echo "AsciiParam file ($ASCIIPARAM) does not exist!"
+    exit;
+fi
+if [ ! -e $INPUTFILE ] ; then
+    echo "Input file ($INPUTFILE) does not exist!"
+    exit;
+fi
 
 ########################### Start the chain of the devices
 
@@ -123,22 +144,22 @@ FILESINK+=" $VERBOSE --ack-channel ack "
 FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
 FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH --control static --log-color false"
 
-$SERVER 1> server.out.log 2> server.err.log &
+$SERVER &> server.out.log &
 SERVER_PID=$!
 
-$SAMPLER 1> sampler.out.log 2> sampler.err.log &
+$SAMPLER &> sampler.out.log &
 SAMPLER_PID=$!
 
-$PROCESSOR1 1> processor1.out.log 2> processor1.err.log &
+$PROCESSOR1 &> processor1.out.log &
 PROCESSOR1_PID=$!
 
-$PROCESSOR2 1> processor2.out.log 2> processor2.err.log &
+$PROCESSOR2 &> processor2.out.log &
 PROCESSOR2_PID=$!
 
-$PROCESSOR3 1> processor3.out.log 2> processor3.err.log &
+$PROCESSOR3 &> processor3.out.log &
 PROCESSOR3_PID=$!
 
-$FILESINK 1> fileSink.out.log 2> fileSink.err.log &
+$FILESINK &> fileSink.out.log &
 FILESINK_PID=$!
 
 RUN_STRING="Running"
