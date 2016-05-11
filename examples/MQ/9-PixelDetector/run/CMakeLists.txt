@@ -8,8 +8,10 @@
 
 Set(MaxTestTime 30)
 
+GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/startFairMQEx9_Static.sh ${CMAKE_CURRENT_BINARY_DIR})
+
 Add_Test(ex9_static
-	${CMAKE_BINARY_DIR}/bin/startFairMQEx9_Static.sh)
+	${CMAKE_CURRENT_BINARY_DIR}/startFairMQEx9_Static.sh)
 Set_Tests_Properties(ex9_static PROPERTIES DEPENDS ex9_digi_TGeant3)
 Set_Tests_Properties(ex9_static PROPERTIES TIMEOUT ${MaxTestTime})
 Set_Tests_Properties(ex9_static PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")

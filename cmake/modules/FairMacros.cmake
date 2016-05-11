@@ -193,10 +193,15 @@ MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
   get_filename_component(file_name ${SCRIPT_FULL_NAME} NAME_WE)
   set(shell_script_name "${file_name}.sh")
 
-  string(REPLACE ${PROJECT_SOURCE_DIR}
-         ${PROJECT_BINARY_DIR} new_path ${path_name}
-        )
+  if(${ARGC} GREATER 1)
+    set(new_path ${ARGV1})
+  Else()
+    string(REPLACE ${PROJECT_SOURCE_DIR}
+           ${PROJECT_BINARY_DIR} new_path ${path_name}
+          )
+  EndIf()
 
+#  Message("${new_path}/${shell_script_name}")
 #  file(MAKE_DIRECTORY ${new_path}/data)
 
   CONVERT_LIST_TO_STRING(${LD_LIBRARY_PATH})
