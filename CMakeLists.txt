@@ -137,7 +137,7 @@ endif(FAIRROOT_MODULAR_BUILD)
 
 find_package(CUDA)
 find_package(IWYU)
-find_package(ZeroMQ)
+find_package(ZeroMQ 4.1.3 )
 find_package(nanomsg)
 find_package(Protobuf)
 find_package(Msgpack)
