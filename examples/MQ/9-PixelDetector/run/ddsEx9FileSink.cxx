@@ -39,11 +39,7 @@ int main(int argc, char** argv)
 	("class-name",  po::value<std::vector<std::string>>(&classname) , "class name")
 	("branch-name", po::value<std::vector<std::string>>(&branchname), "branch name");
       config.AddToCmdLineOptions(fileSink_options);
-      
-      if (config.ParseAll(argc, argv))
-        {
-	  return 1;
-        }
+      config.ParseAll(argc, argv);
 
       fileSink.SetProperty(FairMQEx9FileSink::OutputFileName,filename);
 

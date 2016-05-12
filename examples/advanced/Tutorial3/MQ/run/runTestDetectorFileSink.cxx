@@ -26,16 +26,16 @@
 using namespace std;
 using namespace boost::program_options;
 
-using TSinkBin                    = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>;
-using TSinkBoostBin               = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::binary_iarchive>;
-using TSinkBoostText              = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::text_iarchive>;
-using TSinkProtobuf               = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>;
-using TSinkTMessage               = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
+using TSinkBin         = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>;
+using TSinkBoostBin    = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::binary_iarchive>;
+using TSinkBoostText   = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::text_iarchive>;
+using TSinkProtobuf    = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>;
+using TSinkTMessage    = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
 #ifdef FLATBUFFERS
-using TSinkFlatBuffers            = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>;
+using TSinkFlatBuffers = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>;
 #endif
 #ifdef MSGPACK
-using TSinkMsgPack                = FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>;
+using TSinkMsgPack     = FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>;
 #endif
 
 template<typename T>
@@ -60,8 +60,6 @@ void runFileSink(FairMQProgOptions& config)
 
 int main(int argc, char** argv)
 {
-    FairMQProgOptions config;
-
     try
     {
         string dataFormat;
@@ -70,12 +68,9 @@ int main(int argc, char** argv)
         sinkOptions.add_options()
             ("data-format", value<string>(&dataFormat)->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)");
 
+        FairMQProgOptions config;
         config.AddToCmdLineOptions(sinkOptions);
-
-        if (config.ParseAll(argc, argv))
-        {
-            return 0;
-        }
+        config.ParseAll(argc, argv);
 
         if (dataFormat == "binary") { runFileSink<TSinkBin>(config); }
         else if (dataFormat == "boost") { runFileSink<TSinkBoostBin>(config); }
@@ -96,9 +91,8 @@ int main(int argc, char** argv)
     }
     catch (exception& e)
     {
-        LOG(ERROR) << e.what();
-        LOG(INFO) << "Command line options are the following: ";
-        config.PrintHelp();
+        LOG(ERROR) << "Unhandled Exception reached the top of main: "
+                   << e.what() << ", application will now exit";
         return 1;
     }
 

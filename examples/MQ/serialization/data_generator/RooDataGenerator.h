@@ -35,12 +35,12 @@ class Tuto7DataGeneratorProgOptions : public FairProgOptions
         AddToCmdLineOptions(fGenericDesc);
     }
     virtual ~Tuto7DataGeneratorProgOptions(){}
-    virtual int ParseAll(const int argc, char** argv, bool allowUnregistered = false)
+    virtual void ParseAll(const int argc, char** argv, bool allowUnregistered = false)
     {
         // parse command line options
         if (ParseCmdLine(argc, argv, fCmdLineOptions, fVarMap, allowUnregistered))
         {
-            return 1;
+            exit(EXIT_FAILURE);
         }
 
         // if txt/INI configuration file enabled then parse it as well
@@ -51,13 +51,13 @@ class Tuto7DataGeneratorProgOptions : public FairProgOptions
             {
                 if (ParseCfgFile(fConfigFile.string(), fConfigFileOptions, fVarMap, allowUnregistered))
                 {
-                    return 1;
+                    exit(EXIT_FAILURE);
                 }
             }
             else
             {
                 LOG(ERROR) << "config file '" << fConfigFile << "' not found";
-                return 1;
+                exit(EXIT_FAILURE);
             }
         }
 
@@ -80,7 +80,6 @@ class Tuto7DataGeneratorProgOptions : public FairProgOptions
         }
 
         PrintOptions();
-        return 0;
     }
 };
 

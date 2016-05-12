@@ -23,9 +23,7 @@ int main(int argc, char** argv)
             ("output-file", po::value<std::string>(), "Path to the input file");
 
         config.AddToCmdLineOptions(sink_options);
-
-        if (config.ParseAll(argc, argv))
-            return 1;
+        config.ParseAll(argc, argv);
 
         std::string filename = config.GetValue<std::string>("output-file");
 

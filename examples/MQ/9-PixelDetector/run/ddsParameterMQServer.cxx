@@ -47,10 +47,7 @@ int main(int argc, char** argv)
         config.AddToCmdLineOptions(serverOptions);
 	
 	
-	if (config.ParseAll(argc, argv))
-	  {
-	    return 1;
-	  }
+      config.ParseAll(argc, argv);
 
       server.SetConfig(config);
       

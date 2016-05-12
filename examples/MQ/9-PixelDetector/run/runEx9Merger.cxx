@@ -31,8 +31,7 @@ int main(int argc, char** argv)
         FairMQProgOptions config;
         config.AddToCmdLineOptions(merger_options);
 
-        if (config.ParseAll(argc, argv))
-            return 1;
+        config.ParseAll(argc, argv);
 
         FairMQEx9Merger merger;
 	

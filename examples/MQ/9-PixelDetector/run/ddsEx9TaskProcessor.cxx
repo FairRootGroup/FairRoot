@@ -43,11 +43,7 @@ int main(int argc, char** argv)
 	("keep-data",   po::value<std::string>(&keepdata)            ,  "Name of data to keep in stream");
       
       config.AddToCmdLineOptions(processor_options);
-      
-      if (config.ParseAll(argc, argv)) 
-	{
-	  return 1;
-	}
+      config.ParseAll(argc, argv);
       
       processor.SetDataToKeep(keepdata);
 

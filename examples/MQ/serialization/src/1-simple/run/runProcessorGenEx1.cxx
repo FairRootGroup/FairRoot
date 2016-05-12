@@ -21,10 +21,7 @@ int main(int argc, char** argv)
     {
         FairMQProgOptions config;
         // parse command line
-        if (config.ParseAll(argc, argv))
-        {
-            return 1;
-        }
+        config.ParseAll(argc, argv);
 
         GenExPart1Processor processor;
         runStateMachine(processor, config);

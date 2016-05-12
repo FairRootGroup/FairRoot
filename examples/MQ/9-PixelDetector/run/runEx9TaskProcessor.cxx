@@ -37,8 +37,7 @@ int main(int argc, char** argv)
         FairMQProgOptions config;
         config.AddToCmdLineOptions(processor_options);
 	
-        if (config.ParseAll(argc, argv))
-	  return 1;
+        config.ParseAll(argc, argv);
 	
 	if      ( strcmp(taskname.c_str(),"PixelFindHits") == 0 ) {
 	  HitFinder processor;
