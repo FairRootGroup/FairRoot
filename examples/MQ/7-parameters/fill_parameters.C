@@ -8,7 +8,7 @@
   //rtdb->saveOutput();
   //rtdb->print();
 
-  FairMQExample7ParOne *par = rtdb->getContainer("FairMQExample7ParOne");
+  FairMQExample7ParOne *par = (FairMQExample7ParOne*)rtdb->getContainer("FairMQExample7ParOne");
 
   for(Int_t i = 0; i < 100; i++)
   {
