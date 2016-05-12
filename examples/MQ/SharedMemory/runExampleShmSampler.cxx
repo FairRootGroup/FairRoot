@@ -29,7 +29,6 @@ int main(int argc, char** argv)
 
         FairMQProgOptions config;
         config.AddToCmdLineOptions(samplerOptions);
-
         if (config.ParseAll(argc, argv))
         {
             return 0;

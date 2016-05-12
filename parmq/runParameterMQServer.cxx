@@ -12,44 +12,36 @@
  * @author D. Klein, A. Rybalchenko
  */
 
-#include <iostream>
-
 #include "FairMQLogger.h"
-#include "FairMQParser.h"
 #include "FairMQProgOptions.h"
 #include "ParameterMQServer.h"
 #include "TApplication.h"
 #include "runSimpleMQStateMachine.h"
 
-using namespace std;
 using namespace boost::program_options;
 
 int main(int argc, char** argv)
 {
-    ParameterMQServer server;
-
-    FairMQProgOptions config;
-
     try
     {
-        string firstInputName;
-        string firstInputType;
-        string secondInputName;
-        string secondInputType;
-        string outputName;
-        string outputType;
+        std::string firstInputName;
+        std::string firstInputType;
+        std::string secondInputName;
+        std::string secondInputType;
+        std::string outputName;
+        std::string outputType;
 
         options_description serverOptions("Parameter MQ Server options");
         serverOptions.add_options()
-            ("first-input-name", value<string>(&firstInputName)->default_value("first_input.root"), "First input file name")
-            ("first-input-type", value<string>(&firstInputType)->default_value("ROOT"), "First input file type (ROOT/ASCII)")
-            ("second-input-name", value<string>(&secondInputName)->default_value(""), "Second input file name")
-            ("second-input-type", value<string>(&secondInputType)->default_value("ROOT"), "Second input file type (ROOT/ASCII)")
-            ("output-name", value<string>(&outputName)->default_value(""), "Output file name")
-            ("output-type", value<string>(&outputType)->default_value("ROOT"), "Output file type");
+            ("first-input-name", value<std::string>(&firstInputName)->default_value("first_input.root"), "First input file name")
+            ("first-input-type", value<std::string>(&firstInputType)->default_value("ROOT"), "First input file type (ROOT/ASCII)")
+            ("second-input-name", value<std::string>(&secondInputName)->default_value(""), "Second input file name")
+            ("second-input-type", value<std::string>(&secondInputType)->default_value("ROOT"), "Second input file type (ROOT/ASCII)")
+            ("output-name", value<std::string>(&outputName)->default_value(""), "Output file name")
+            ("output-type", value<std::string>(&outputType)->default_value("ROOT"), "Output file type");
 
+        FairMQProgOptions config;
         config.AddToCmdLineOptions(serverOptions);
-
         if (config.ParseAll(argc, argv))
         {
             return 0;
@@ -57,6 +49,7 @@ int main(int argc, char** argv)
 
         TApplication app("ParameterMQServer", 0, 0);
 
+        ParameterMQServer server;
         server.SetProperty(ParameterMQServer::FirstInputName, firstInputName);
         server.SetProperty(ParameterMQServer::FirstInputType, firstInputType);
         server.SetProperty(ParameterMQServer::SecondInputName, secondInputName);
@@ -64,15 +57,14 @@ int main(int argc, char** argv)
         server.SetProperty(ParameterMQServer::OutputName, outputName);
         server.SetProperty(ParameterMQServer::OutputType, outputType);
 
-        runStateMachine(server,config);
+        runStateMachine(server, config);
 
         gApplication->Terminate();
     }
-    catch (exception& e)
+    catch (std::exception& e)
     {
-        LOG(ERROR) << e.what();
-        LOG(INFO) << "Command line options are the following: ";
-        config.PrintHelp();
+        LOG(ERROR) << "Unhandled Exception reached the top of main: "
+                   << e.what() << ", application will now exit";
         return 1;
     }
 

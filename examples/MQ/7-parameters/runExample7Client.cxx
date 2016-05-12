@@ -12,38 +12,33 @@
  * @author D. Klein, A. Rybalchenko
  */
 
-#include <iostream>
+#include "boost/program_options.hpp"
 
 #include "FairMQLogger.h"
-#include "FairMQParser.h"
 #include "FairMQProgOptions.h"
 #include "FairMQExample7Client.h"
 
-using namespace std;
 using namespace boost::program_options;
 
 int main(int argc, char** argv)
 {
-    FairMQExample7Client client;
-    client.CatchSignals();
-
-    FairMQProgOptions config;
-
     try
     {
-        string parameterName;
+        std::string parameterName;
 
         options_description clientOptions("Parameter Client options");
         clientOptions.add_options()
-            ("parameter-name", value<string>(&parameterName)->default_value("FairMQExample7ParOne"), "Parameter Name");
+            ("parameter-name", value<std::string>(&parameterName)->default_value("FairMQExample7ParOne"), "Parameter Name");
 
+        FairMQProgOptions config;
         config.AddToCmdLineOptions(clientOptions);
-
         if (config.ParseAll(argc, argv))
         {
             return 0;
         }
 
+        FairMQExample7Client client;
+        client.CatchSignals();
         client.SetConfig(config);
         client.SetProperty(FairMQExample7Client::ParameterName, parameterName);
 
@@ -56,11 +51,10 @@ int main(int argc, char** argv)
         client.ChangeState("RUN");
         client.InteractiveStateLoop();
     }
-    catch (exception& e)
+    catch (std::exception& e)
     {
-        LOG(ERROR) << e.what();
-        LOG(INFO) << "Command line options are the following: ";
-        config.PrintHelp();
+        LOG(ERROR) << "Unhandled Exception reached the top of main: "
+                   << e.what() << ", application will now exit";
         return 1;
     }
 
