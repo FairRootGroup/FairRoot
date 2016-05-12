@@ -52,11 +52,7 @@ int main(int argc, char** argv)
         ;
 
         config.AddToCfgFileOptions(lmd_header_def);
-
-        if (config.ParseAll(argc, argv, true))
-        {
-            return 1;
-        }
+        config.ParseAll(argc, argv, true);
 
         FairMQUnpacker<FairTut8Unpacker> unpacker;
         // combination of sub-event header value = one special channel

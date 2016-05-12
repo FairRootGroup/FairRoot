@@ -42,14 +42,11 @@ int main(int argc, char** argv)
         config.AddToCmdLineOptions(sampler_options);
 
         // parse command lines
-        if (config.ParseAll(argc, argv))
-        {
-            return 1;
-        }
+        config.ParseAll(argc, argv);
 
         //get parsed input-file option
         std::string filename = config.GetValue<std::string>("input-file");
-        
+
         // create sampler 
         GenExPart1Sampler sampler;
         sampler.SetFileName(filename);

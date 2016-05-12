@@ -26,16 +26,16 @@
 using namespace std;
 using namespace boost::program_options;
 
-using TProcessorTaskBin           = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi,       TestDetectorPayload::Hit>;
-using TProcessorTaskBoostBin      = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, boost::archive::binary_iarchive, boost::archive::binary_oarchive>;
-using TProcessorTaskBoostText     = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, boost::archive::text_iarchive,   boost::archive::text_oarchive>;
-using TProcessorTaskProtobuf      = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload,  TestDetectorProto::HitPayload>;
-using TProcessorTaskTMessage      = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage,                        TMessage>;
+using TProcessorTaskBin         = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi,       TestDetectorPayload::Hit>;
+using TProcessorTaskBoostBin    = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, boost::archive::binary_iarchive, boost::archive::binary_oarchive>;
+using TProcessorTaskBoostText   = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, boost::archive::text_iarchive,   boost::archive::text_oarchive>;
+using TProcessorTaskProtobuf    = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload,  TestDetectorProto::HitPayload>;
+using TProcessorTaskTMessage    = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage,                        TMessage>;
 #ifdef FLATBUFFERS
-using TProcessorTaskFlatBuffers   = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorFlat::DigiPayload,   TestDetectorFlat::HitPayload>;
+using TProcessorTaskFlatBuffers = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorFlat::DigiPayload,   TestDetectorFlat::HitPayload>;
 #endif
 #ifdef MSGPACK
-using TProcessorTaskMsgPack       = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPack,                         MsgPack>;
+using TProcessorTaskMsgPack     = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPack,                         MsgPack>;
 #endif
 
 template<typename T>
@@ -69,8 +69,6 @@ void runProcessor(FairMQProgOptions& config)
 
 int main(int argc, char** argv)
 {
-    FairMQProgOptions config;
-
     try
     {
         string dataFormat;
@@ -81,12 +79,9 @@ int main(int argc, char** argv)
             ("data-format", value<string>(&dataFormat)->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)")
             ("processor-task", value<string>(&processorTask)->default_value("FairTestDetectorMQRecoTask"), "Name of the Processor Task");
 
+        FairMQProgOptions config;
         config.AddToCmdLineOptions(processorOptions);
-
-        if (config.ParseAll(argc, argv))
-        {
-            return 0;
-        }
+        config.ParseAll(argc, argv);
 
         if (dataFormat == "binary") { runProcessor<TProcessorTaskBin>(config); }
         else if (dataFormat == "boost") { runProcessor<TProcessorTaskBoostBin>(config); }
@@ -107,9 +102,8 @@ int main(int argc, char** argv)
     }
     catch (exception& e)
     {
-        LOG(ERROR) << e.what();
-        LOG(INFO) << "Command line options are the following: ";
-        config.PrintHelp();
+        LOG(ERROR) << "Unhandled Exception reached the top of main: "
+                   << e.what() << ", application will now exit";
         return 1;
     }
 

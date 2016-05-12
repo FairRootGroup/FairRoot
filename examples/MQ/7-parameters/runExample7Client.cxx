@@ -32,10 +32,7 @@ int main(int argc, char** argv)
 
         FairMQProgOptions config;
         config.AddToCmdLineOptions(clientOptions);
-        if (config.ParseAll(argc, argv))
-        {
-            return 0;
-        }
+        config.ParseAll(argc, argv);
 
         FairMQExample7Client client;
         client.CatchSignals();

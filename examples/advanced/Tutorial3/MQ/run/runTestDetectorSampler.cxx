@@ -26,16 +26,16 @@
 using namespace std;
 using namespace boost::program_options;
 
-using TSamplerBin                 = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
-using TSamplerBoostBin            = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
-using TSamplerBoostText           = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::text_oarchive>>;
-using TSamplerProtobuf            = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
-using TSamplerTMessage            = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
+using TSamplerBin         = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
+using TSamplerBoostBin    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
+using TSamplerBoostText   = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::text_oarchive>>;
+using TSamplerProtobuf    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
+using TSamplerTMessage    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
 #ifdef FLATBUFFERS
-using TSamplerFlatBuffers         = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
+using TSamplerFlatBuffers = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
 #endif
 #ifdef MSGPACK
-using TSamplerMsgPack             = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>;
+using TSamplerMsgPack     = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>;
 #endif
 
 template<typename T>
@@ -64,8 +64,6 @@ void runSampler(FairMQProgOptions& config)
 
 int main(int argc, char** argv)
 {
-    FairMQProgOptions config;
-
     try
     {
         string dataFormat;
@@ -84,12 +82,9 @@ int main(int argc, char** argv)
             ("event-rate", value<int>(&eventRate)->default_value(0), "Event rate limit in maximum number of events per second")
             ("chain-input", value<int>(&chainInput)->default_value(0), "Chain input file more than once (default)");
 
+        FairMQProgOptions config;
         config.AddToCmdLineOptions(samplerOptions);
-
-        if (config.ParseAll(argc, argv))
-        {
-            return 0;
-        }
+        config.ParseAll(argc, argv);
 
         if (dataFormat == "binary") { runSampler<TSamplerBin>(config); }
         else if (dataFormat == "boost") { runSampler<TSamplerBoostBin>(config); }
@@ -110,9 +105,8 @@ int main(int argc, char** argv)
     }
     catch (exception& e)
     {
-        LOG(ERROR) << e.what();
-        LOG(INFO) << "Command line options are the following: ";
-        config.PrintHelp();
+        LOG(ERROR) << "Unhandled Exception reached the top of main: "
+                   << e.what() << ", application will now exit";
         return 1;
     }
 

@@ -25,10 +25,7 @@ int main(int argc, char** argv)
         FairMQMerger merger;
         FairMQProgOptions config;
         config.UseConfigFile();
-        if (config.ParseAll(argc, argv, true))
-        {
-            return 1;
-        }
+        config.ParseAll(argc, argv, true);
 
         runStateMachine(merger, config);
     }

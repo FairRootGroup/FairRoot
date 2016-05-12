@@ -40,11 +40,7 @@ int main(int argc, char** argv)
 	("sampler-type", po::value<std::string>             (&samplerType)->default_value("FairFileSource"), "FairSource type");
       
       config.AddToCmdLineOptions(sampler_options);
-      
-      if (config.ParseAll(argc, argv))           
-	{
-	  return 1;
-	}
+      config.ParseAll(argc, argv);
 
       for ( unsigned int ielem = 0 ; ielem < filename.size() ; ielem++ ) {
 	sampler.AddInputFileName(filename.at(ielem));	  

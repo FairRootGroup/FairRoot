@@ -39,10 +39,7 @@ int main(int argc, char** argv)
 
         config.AddToCmdLineOptions(sink_options);
 
-        if (config.ParseAll(argc, argv))
-        {
-            return 1;
-        }
+        config.ParseAll(argc, argv);
 
         TSinkRoot sink;
         // call function member from storage policy

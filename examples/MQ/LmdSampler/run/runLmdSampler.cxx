@@ -57,10 +57,7 @@ int main(int argc, char** argv)
         config.AddToCfgFileOptions(lmd_header_def);
 
         // parse command line and INI file arguments
-        if (config.ParseAll(argc, argv))
-        {
-            return 1;
-        }
+        config.ParseAll(argc, argv);
 
         FairMQLmdSampler sampler;
         sampler.AddFile(filename);

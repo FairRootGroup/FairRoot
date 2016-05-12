@@ -33,8 +33,7 @@ int main(int argc, char** argv)
         FairMQProgOptions config;
         config.AddToCmdLineOptions(fileSink_options);
 
-        if (config.ParseAll(argc, argv))
-            return 1;
+        config.ParseAll(argc, argv);
 
         FairMQEx9FileSink fileSink;
         fileSink.SetProperty(FairMQEx9FileSink::OutputFileName,filename);

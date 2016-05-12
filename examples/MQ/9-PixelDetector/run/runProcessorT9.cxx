@@ -31,8 +31,7 @@ int main(int argc, char** argv)
         FairMQProgOptions config;
         config.AddToCmdLineOptions(processor_options);
 
-        if (config.ParseAll(argc, argv))
-            return 1;
+        config.ParseAll(argc, argv);
 
         FairMQEx9Processor processor;
         processor.SetProperty(FairMQEx9Processor::InputClassName,diginame);
