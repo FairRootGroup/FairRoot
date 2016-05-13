@@ -60,7 +60,7 @@ class FairSource : public TObject
     Int_t fRunId;
 
   public:
-    ClassDef(FairSource, 1)
+    ClassDef(FairSource, 2)
 };
 
 
