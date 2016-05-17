@@ -615,7 +615,7 @@ uint32_t fLmdGetOpen(
   }
 
   bufferBytes=iBytes;
-  if(bufferBytes < pLmdControl->pMbsFileHeader->iMaxWords*2 && pLmdControl->pMbsFileHeader->iMaxWords*2 < UINT32_MAX) {
+  if(bufferBytes < pLmdControl->pMbsFileHeader->iMaxWords*2 && (pLmdControl->pMbsFileHeader->iMaxWords < UINT32_MAX/2) ) {
     bufferBytes=pLmdControl->pMbsFileHeader->iMaxWords*2;
   }
   fLmdPrintFileHeader(1,pLmdControl->pMbsFileHeader);
