@@ -133,22 +133,6 @@ void FairMQEx9FileSink::Run()
 	    Send(msg, fAckChannelName);
 	  }
 	}
-      else 
-	{
-	  // temporary solution to close the file, when quitting.
-	  LOG(INFO) << "Saving tree, and closing file!";
-	  if (fTree)
-	    {
-	      fTree->Write();
-	      delete fTree;
-	    }
-	  if (fOutFile)
-	    {
-	      if (fOutFile->IsOpen())
-		fOutFile->Close();
-	      delete fOutFile;
-	    }
-	}
     }
 }
 
