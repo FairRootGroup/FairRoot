@@ -104,7 +104,7 @@ FairRootManager::FairRootManager()
     fEntryNr(0),
     fListFolder(0),
     fSource(0),
-    fSourceChain( new TChain("cbmsim", "/cbmroot")),
+    fSourceChain(new TChain(GetTreeName(), "/cbmroot")),
     fSignalChainList(),
     fUseFairLinks(kFALSE),
     fFinishRun(kFALSE),
@@ -1248,6 +1248,43 @@ void FairRootManager::DeleteOldWriteoutBufferData()
   for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
     iter->second->DeleteOldData();
   }
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+char* FairRootManager::GetTreeName()
+{
+    char* default_name = (char*)"cbmsim";
+    char* workdir = getenv("VMCWORKDIR");
+    if(NULL == workdir)
+    {
+        return default_name;
+    }
+
+    // Open file with output tree name
+    FILE* file = fopen(Form("%s/config/rootmanager.dat",workdir), "r");
+    // If file does not exist -> default
+    if(NULL == file)
+    {
+        return default_name;
+    }
+    // If file is empty -> default
+    char str[100];
+    if(NULL == fgets(str, 100, file))
+    {
+        fclose(file);
+        return default_name;
+    }
+    // If file does not contain treename key -> default
+    char* treename = new char[100];
+    if(1 != sscanf(str, "treename=%s", treename))
+    {
+        fclose(file);
+        return default_name;
+    }
+    // Close file and return read value
+    fclose(file);
+    return treename;
 }
 //_____________________________________________________________________________
 

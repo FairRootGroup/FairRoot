@@ -284,7 +284,7 @@ void FairRunAna::Init()
   
   // create the output tree after tasks initialisation
   fOutFile->cd();
-  TTree* outTree =new TTree("cbmsim", "/cbmout", 99);
+  TTree* outTree =new TTree(FairRootManager::GetTreeName(), "/cbmout", 99);
   fRootManager->TruncateBranchNames(outTree, "cbmout");
   fRootManager->SetOutTree(outTree);
   fRootManager->WriteFolder();

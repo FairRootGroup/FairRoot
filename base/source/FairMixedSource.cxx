@@ -176,7 +176,7 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
   // fBackgroundFile =  new TFile(name);
   // if (fBackgroundFile->IsZombie()) {
   // } else {
-  //   fBackgroundChain = new TChain("cbmsim", "/cbmroot");
+  //   fBackgroundChain = new TChain(FairRootManager::GetTreeName(), "/cbmroot");
   //   fBackgroundChain->AddFile(name.Data());
   // }
 }
@@ -195,7 +195,7 @@ Bool_t FairMixedSource::Init()
     return kTRUE;
   }
   if (!fBackgroundChain ) {
-    fBackgroundChain = new TChain("cbmsim", "/cbmroot");
+    fBackgroundChain = new TChain(FairRootManager::GetTreeName(), "/cbmroot");
     LOG(INFO) << "FairMixedSource::Init() chain created" << FairLogger::endl;
   }
 
@@ -449,7 +449,7 @@ void FairMixedSource::SetSignalFile(TString name, UInt_t identifier )
   } else {
     /** Set a signal file of certain type (identifier) if already exist add the file to the chain*/
     if(fSignalTypeList[identifier]==0) {
-      TChain* chain = new TChain("cbmsim", "/cbmroot");
+      TChain* chain = new TChain(FairRootManager::GetTreeName(), "/cbmroot");
       fSignalTypeList[identifier]=chain;
       FairRootManager::Instance()->SetInChain(chain,identifier);
       fCurrentEntry[identifier]= 0;

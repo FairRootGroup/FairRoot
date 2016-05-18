@@ -179,7 +179,7 @@ Bool_t FairFileSource::Init()
        return kTRUE;
     }
     if (!fInChain ) {
-        fInChain = new TChain("cbmsim", "/cbmroot");
+        fInChain = new TChain(FairRootManager::GetTreeName(), "/cbmroot");
         LOG(DEBUG) << "FairFileSource::Init() chain created"
 		   << FairLogger::endl;
 	FairRootManager::Instance()->SetInChain(fInChain);
@@ -427,7 +427,7 @@ void FairFileSource::AddFriendsToChain()
         }
         
         TChain* chain = (TChain*) fFriendTypeList[inputLevel];
-        chain->AddFile((*iter1), 1234567890, "cbmsim");
+        chain->AddFile((*iter1), 1234567890, FairRootManager::GetTreeName());
     }
     gFile=temp;
     
