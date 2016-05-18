@@ -26,6 +26,7 @@ class FairMQExampleShmSampler : public FairMQDevice
     enum
     {
         MsgSize = FairMQDevice::Last,
+        MsgRate,
         Last
     };
 
@@ -34,6 +35,7 @@ class FairMQExampleShmSampler : public FairMQDevice
 
     void ListenForAcks();
     void Log(const int intervalInMs);
+    void ResetMsgCounter();
 
     virtual void SetProperty(const int key, const std::string& value);
     virtual std::string GetProperty(const int key, const std::string& default_ = "");
@@ -45,6 +47,8 @@ class FairMQExampleShmSampler : public FairMQDevice
 
   protected:
     int fMsgSize;
+    int fMsgCounter;
+    int fMsgRate;
 
     unsigned long long fBytesOut;
     unsigned long long fMsgOut;

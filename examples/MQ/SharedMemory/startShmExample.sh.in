@@ -16,6 +16,7 @@ SAMPLER+=" --id sampler1"
 SAMPLER+=" --transport $transport"
 # SAMPLER+=" --verbose TRACE"
 SAMPLER+=" --msg-size $msgSize"
+# SAMPLER+=" --msg-rate 1000"
 SAMPLER+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
 xterm -geometry 80x32+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
 

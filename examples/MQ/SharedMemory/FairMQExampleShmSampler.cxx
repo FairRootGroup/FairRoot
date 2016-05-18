@@ -24,6 +24,8 @@ using namespace boost::interprocess;
 
 FairMQExampleShmSampler::FairMQExampleShmSampler()
     : fMsgSize(10000)
+    , fMsgCounter(0)
+    , fMsgRate(1)
     , fBytesOut(0)
     , fMsgOut(0)
     , fBytesOutNew(0)
@@ -67,6 +69,7 @@ void FairMQExampleShmSampler::Run()
 
     boost::thread rateLogger(boost::bind(&FairMQExampleShmSampler::Log, this, 1000));
     boost::thread ackListener(boost::bind(&FairMQExampleShmSampler::ListenForAcks, this));
+    boost::thread resetMsgCounter(boost::bind(&FairMQExampleShmSampler::ResetMsgCounter, this));
 
     // int charnum = 97;
 
@@ -136,6 +139,12 @@ void FairMQExampleShmSampler::Run()
             fLocalPtrs.erase(*ownerStr);
             SegmentManager::Instance().Segment()->destroy_ptr(owner);
         }
+
+        --fMsgCounter;
+
+        while (fMsgCounter == 0) {
+          boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+        }
     }
 
     LOG(INFO) << "Sent " << numSentMsgs << " messages, leaving RUNNING state.";
@@ -146,6 +155,8 @@ void FairMQExampleShmSampler::Run()
         ackListener.join();
         rateLogger.interrupt();
         rateLogger.join();
+        resetMsgCounter.interrupt();
+        resetMsgCounter.join();
     }
     catch(boost::thread_resource_error& e)
     {
@@ -219,6 +230,19 @@ void FairMQExampleShmSampler::Log(const int intervalInMs)
     }
 }
 
+void FairMQExampleShmSampler::ResetMsgCounter()
+{
+  while (true) {
+    try {
+      fMsgCounter = fMsgRate / 100;
+      boost::this_thread::sleep(boost::posix_time::milliseconds(10));
+    } catch (boost::thread_interrupted&) {
+      LOG(DEBUG) << "Event rate limiter thread interrupted";
+      break;
+    }
+  }
+}
+
 void FairMQExampleShmSampler::SetProperty(const int key, const string& value)
 {
     switch (key)
@@ -245,6 +269,9 @@ void FairMQExampleShmSampler::SetProperty(const int key, const int value)
         case MsgSize:
             fMsgSize = value;
             break;
+        case MsgRate:
+            fMsgRate = value;
+            break;
         default:
             FairMQDevice::SetProperty(key, value);
             break;
@@ -257,6 +284,8 @@ int FairMQExampleShmSampler::GetProperty(const int key, const int default_ /*= 0
     {
         case MsgSize:
             return fMsgSize;
+        case MsgRate:
+            return fMsgRate;
         default:
             return FairMQDevice::GetProperty(key, default_);
     }
@@ -268,6 +297,8 @@ string FairMQExampleShmSampler::GetPropertyDescription(const int key)
     {
         case MsgSize:
             return "MsgSize: Size of the transfered message buffer.";
+        case MsgRate:
+            return "MsgRate: Maximum msg rate.";
         default:
             return FairMQDevice::GetPropertyDescription(key);
     }
