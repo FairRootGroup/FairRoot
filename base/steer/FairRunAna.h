@@ -163,7 +163,7 @@ class FairRunAna : public FairRun
      * Virtual function which calls the Fill function of the IOManager.
      * Allows to override the function with an experiment specific version.
     **/
-    virtual void Fill() { fRootManager->Fill(); }            
+    virtual void Fill();
                                                
   private:
 

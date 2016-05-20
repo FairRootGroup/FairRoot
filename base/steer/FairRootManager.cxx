@@ -1258,7 +1258,7 @@ char* FairRootManager::GetTreeName()
     {
         return default_name;
     }
-    
+
     // Open file with output tree name
     FILE* file = fopen(Form("%s/config/rootmanager.dat",workdir), "r");
     // If file does not exist -> default

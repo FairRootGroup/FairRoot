@@ -47,7 +47,8 @@ FairRun::FairRun(Bool_t isMaster)
    fEvtHeader(NULL),
    fFileHeader(new FairFileHeader()),
    fGenerateRunInfo(kFALSE),
-   fIsMaster(isMaster)
+   fIsMaster(isMaster),
+   fMarkFill(kTRUE)
 {
   if (fRunInstance) {
     Fatal("FairRun", "Singleton instance already exists.");
