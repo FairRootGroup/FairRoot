@@ -136,8 +136,7 @@ endfunction()
 function(_protobuf_find_libraries name filename)
    find_library(${name}_LIBRARY
        NAMES ${filename}
-       PATHS
-       ${SIMPATH}/lib
+       PATHS ${SIMPATH}/lib ${ProtoBuf_DIR}/lib
        NO_DEFAULT_PATH
        NO_CMAKE_SYSTEM_PATH
    )
@@ -145,8 +144,7 @@ function(_protobuf_find_libraries name filename)
 
    find_library(${name}_LIBRARY_DEBUG
        NAMES ${filename}
-       PATHS
-       ${SIMPATH}/lib
+       PATHS ${SIMPATH}/lib ${ProtoBuf_DIR}/lib
        NO_DEFAULT_PATH
        NO_CMAKE_SYSTEM_PATH
    )
@@ -220,6 +218,7 @@ find_path(PROTOBUF_INCLUDE_DIR
     PATHS
     ${PROTOBUF_SRC_ROOT_FOLDER}/src
     ${SIMPATH}/include
+    ${ProtoBuf_DIR}/include
     NO_DEFAULT_PATH
     NO_CMAKE_SYSTEM_PATH
 )
@@ -231,6 +230,7 @@ find_program(PROTOBUF_PROTOC_EXECUTABLE
     DOC "The Google Protocol Buffers Compiler"
     PATHS
     ${SIMPATH}/bin
+    ${ProtoBuf_DIR}/bin
     NO_DEFAULT_PATH
     NO_CMAKE_SYSTEM_PATH
 )
