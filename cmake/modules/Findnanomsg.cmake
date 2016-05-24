@@ -8,10 +8,10 @@
 
 MESSAGE(STATUS "Looking for nanomsg...")
 
-find_path(NANOMSG_INCLUDE_DIR NAMES nn.h
-  PATHS ${NANOMSG_DIR}/include/nanomsg
-  PATHS ${AlFa_DIR}/include/nanomsg
-  PATHS ${SIMPATH}/include/nanomsg
+find_path(NANOMSG_INCLUDE_DIR NAMES nanomsg/nn.h
+  PATHS ${NANOMSG_DIR}/include
+  PATHS ${AlFa_DIR}/include
+  PATHS ${SIMPATH}/include
   NO_DEFAULT_PATH
   DOC   "Path to nanomsg include header files."
 )
