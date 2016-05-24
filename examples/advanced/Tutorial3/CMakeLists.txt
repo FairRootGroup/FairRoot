@@ -127,7 +127,7 @@ If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
       ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.h
       ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
     COMMAND
-      ${SIMPATH}/bin/protoc -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayload.proto
+      ${PROTOBUF_PROTOC_EXECUTABLE} -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayload.proto
     WORKING_DIRECTORY
       ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/data
     )

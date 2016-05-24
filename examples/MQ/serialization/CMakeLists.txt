@@ -100,7 +100,7 @@ If(PROTOBUF_FOUND)
           ${CMAKE_CURRENT_BINARY_DIR}/Tuto7Payload.pb.h
           ${CMAKE_CURRENT_BINARY_DIR}/Tuto7Payload.pb.cc
         COMMAND
-          ${SIMPATH}/bin/protoc -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} Tuto7Payload.proto
+          ${PROTOBUF_PROTOC_EXECUTABLE} -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} Tuto7Payload.proto
         WORKING_DIRECTORY
           ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_struct
         )
