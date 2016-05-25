@@ -28,6 +28,7 @@ FIND_PATH(Pythia6_LIBRARY_DIR NAMES libPythia6.so PATHS
 
 if (Pythia6_LIBRARY_DIR)
   set(Pythia6_FOUND TRUE)
+  Set(PYTHIA6_LIBRARY_DIR ${Pythia6_LIBRARY_DIR})
 endif(Pythia6_LIBRARY_DIR)
 
 if (Pythia6_FOUND)
