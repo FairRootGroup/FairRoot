@@ -27,12 +27,18 @@ int main(int argc, char** argv)
     {
         std::string taskname;
 	std::string keepdata;
+	std::string inChannel;
+	std::string outChannel;
+	std::string parChannel;
 
         namespace po = boost::program_options;
         po::options_description processor_options("Processor options");
         processor_options.add_options()
-	  ("task-name",   po::value<std::string>(&taskname)->required(),  "Name of task to run")
-	  ("keep-data",   po::value<std::string>(&keepdata)            ,  "Name of data to keep in stream");
+	  ("task-name",   po::value<std::string>(&taskname)->required()                  ,  "Name of task to run")
+	  ("keep-data",   po::value<std::string>(&keepdata)                              ,  "Name of data to keep in stream")
+	  ("in-channel",  po::value<std::string>(&inChannel)->default_value("data-in")   , "input channel name")
+	  ("out-channel", po::value<std::string>(&outChannel)->default_value("data-out") , "output channel name")
+	  ("par-channel", po::value<std::string>(&parChannel)->default_value("data")     , "param channel name");
 	
         FairMQProgOptions config;
         config.AddToCmdLineOptions(processor_options);
@@ -42,16 +48,25 @@ int main(int argc, char** argv)
 	if      ( strcmp(taskname.c_str(),"PixelFindHits") == 0 ) {
 	  HitFinder processor;
 	  processor.SetDataToKeep(keepdata);
+	  processor.SetInputChannelName (inChannel);
+	  processor.SetOutputChannelName(outChannel);
+	  processor.SetParamChannelName (parChannel);
 	  runStateMachine(processor, config);
 	}
 	else if ( strcmp(taskname.c_str(),"PixelFindTracks") == 0 ) {
 	  TrackFinder processor;
 	  processor.SetDataToKeep(keepdata);
+	  processor.SetInputChannelName (inChannel);
+	  processor.SetOutputChannelName(outChannel);
+	  processor.SetParamChannelName (parChannel);
 	  runStateMachine(processor, config);
 	}
 	else if ( strcmp(taskname.c_str(),"PixelFitTracks") == 0 ) {
 	  TrackFitter processor;
 	  processor.SetDataToKeep(keepdata);
+	  processor.SetInputChannelName (inChannel);
+	  processor.SetOutputChannelName(outChannel);
+	  processor.SetParamChannelName (parChannel);
 	  runStateMachine(processor, config);
 	}
 	else {

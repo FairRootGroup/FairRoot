@@ -19,6 +19,7 @@ int main(int argc, char** argv)
         std::string filename;
 	std::vector<std::string> classname;
 	std::vector<std::string> branchname;
+	std::string inChannel;
 	std::string ackChannel;
 
         namespace po = boost::program_options;
@@ -27,6 +28,7 @@ int main(int argc, char** argv)
 	  ("file-name",   po::value<std::string>             (&filename)  , "Path to the output file")
 	  ("class-name",  po::value<std::vector<std::string>>(&classname) , "class name")
 	  ("branch-name", po::value<std::vector<std::string>>(&branchname), "branch name")
+	  ("in-channel",  po::value<std::string>             (&inChannel)->default_value("data-in") , "input channel name")
 	  ("ack-channel", po::value<std::string>             (&ackChannel), "ack channel name");
 	
 
@@ -47,6 +49,7 @@ int main(int argc, char** argv)
 	  fileSink.AddOutputBranch(classname.at(ielem),branchname.at(ielem));
 	}
 
+	fileSink.SetInputChannelName(inChannel);
 	fileSink.SetAckChannelName(ackChannel);
 	
         runStateMachine(fileSink, config);

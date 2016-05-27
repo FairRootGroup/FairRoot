@@ -23,6 +23,7 @@ int main(int argc, char** argv)
 	std::vector<std::string> branchname;
 	int64_t     maxindex;
 	std::string samplerType;
+	std::string outChannel;
 	std::string ackChannel;
 
         namespace po = boost::program_options;
@@ -32,6 +33,7 @@ int main(int argc, char** argv)
 	  ("max-index",    po::value<int64_t>                 (&maxindex)   ->default_value(-1)              , "number of events to read")
 	  ("branch-name",  po::value<std::vector<std::string>>(&branchname) ->required()                     , "branch name")
 	  ("sampler-type", po::value<std::string>             (&samplerType)->default_value("FairFileSource"), "FairSource type")
+	  ("out-channel",  po::value<std::string>             (&outChannel)->default_value("data-out")       , "output channel name")
 	  ("ack-channel",  po::value<std::string>             (&ackChannel)->default_value("")               , "ack channel name");
 
 	FairMQProgOptions config;
@@ -56,6 +58,7 @@ int main(int argc, char** argv)
 
 	  sampler.AddInputBranchName("EventHeader.");
 
+	  sampler.SetOutputChannelName(outChannel);
 	  sampler.SetAckChannelName(ackChannel);
 
 	  runStateMachine(sampler, config);
@@ -73,6 +76,10 @@ int main(int argc, char** argv)
 	  // for now only supporting reading PixelDigis
 	  sampler.AddInputBranchName(branchname.at(0));
 	  sampler.AddInputBranchName("EventHeader.");
+
+	  sampler.SetOutputChannelName(outChannel);
+	  sampler.SetAckChannelName(ackChannel);
+
 	  runStateMachine(sampler, config);
 	}
 	else if ( strcmp(samplerType.c_str(),"PixelDigiBinSource") == 0 ) {
@@ -88,6 +95,10 @@ int main(int argc, char** argv)
 	  // for now only supporting reading PixelDigis
 	  sampler.AddInputBranchName(branchname.at(0));
 	  sampler.AddInputBranchName("EventHeader.");
+
+	  sampler.SetOutputChannelName(outChannel);
+	  sampler.SetAckChannelName(ackChannel);
+
 	  runStateMachine(sampler, config);
 	}
 	else {

@@ -1,0 +1,77 @@
+#!/bin/bash
+
+if [ -t 0 ]; then stty -echo -icanon -icrnl time 0 min 0; fi
+
+rm -rf controlDDS.out
+
+echo -ne "\033[42mRUNNING\033[0m->s->"
+echo -ne "\033[44mREADY\033[0m->t->"
+echo -ne "\033[46mDEVICE_READY\033[0m->d->"
+echo -ne "\033[47mIDLE\033[0m->q  /x-Exit"
+echo ""
+
+count=0
+keypress=''
+while [ "$keypress" != "x" ]; do
+  let count+=1
+  keypress="`cat -v`"
+  NOFWORKERS="$(dds-info -n)"
+  if [ -z "$NOFWORKERS" ]; then NOFWORKERS=0; fi
+  if [ "$NOFWORKERS" -gt 0 ]; 
+  then
+      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command c | sort &> command.out
+  fi
+  for (( i = 0 ; i < $NOFWORKERS ; i++ )); do
+      TASKS[$i]="";
+  done
+  NOFTASKS=0
+  if [ -f command.out ]; then
+      while read p; do
+	  if [[ $p == *"Received"* ]]
+	  then
+	      TASKS[$NOFTASKS]=${p}
+	      let NOFTASKS+=1
+	  fi
+      done < command.out
+      rm -f command.out
+  fi
+  echo -ne "\033[0K\r"
+  for (( i = 0 ; i < $NOFWORKERS ; i++ )); do
+      TOPRINT=${TASKS[i]}
+      TOPRINT=${TOPRINT#*\"}
+      TOPRINT=${TOPRINT%%:*}
+      TASTATE=${TASKS[i]}
+      TASTATE=${TASTATE% (*}
+      TASTATE=${TASTATE#*\"}
+      TASTATE=${TASTATE#*: }
+
+      echo -ne "["
+      if [[ $TASTATE == "RUNNING" ]]; then echo -ne "\033[42m"; fi
+      if [[ $TASTATE == "READY" ]]; then echo -ne "\033[44m"; fi
+      if [[ $TASTATE == "DEVICE_READY" ]]; then echo -ne "\033[46m"; fi
+      if [[ $TASTATE == "IDLE" ]]; then echo -ne "\033[47m"; fi
+      printf  "%10s" $TOPRINT
+      echo -ne "\033[0m"
+      echo -ne "]"
+  done
+  echo -ne "\r"
+  if [ "$keypress" == "s" ]; then
+      ./bin/fairmq-dds-command s &> temp.out
+  fi
+  if [ "$keypress" == "t" ]; then
+      ./bin/fairmq-dds-command t &> temp.out
+  fi
+  if [ "$keypress" == "d" ]; then
+      ./bin/fairmq-dds-command d &> temp.out
+  fi
+  if [ "$keypress" == "q" ]; then
+      ./bin/fairmq-dds-command q &> temp.out
+  fi
+  sleep 1
+done
+
+if [ -t 0 ]; then stty sane; fi
+
+echo "You pressed '$keypress' after $count loop iterations"
+echo "Thanks for using this script."
+exit 0

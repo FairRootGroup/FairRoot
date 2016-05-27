@@ -28,7 +28,7 @@
                 "method": "connect"
             },
             {
-                "name": "param",
+                "name": "data",
                 "property": "paramAddr",
                 "type": "req",
                 "method": "connect"
@@ -48,7 +48,7 @@
             "id": "parmq-server",
             "channel":
             {
-                "name": "param",
+                "name": "data",
                 "property": "paramAddr",
                 "type": "rep",
                 "method": "bind"
