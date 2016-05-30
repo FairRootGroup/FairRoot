@@ -20,6 +20,8 @@ if (GO_EXECUTABLE)
         set(GO_VERSION ${CMAKE_MATCH_1})
         set(GO_PLATFORM ${CMAKE_MATCH_2})
         set(GO_ARCH ${CMAKE_MATCH_3})
+        MESSAGE(STATUS "Looking for Go... found GO ${GO_VERSION}")
+
     elseif(GO_VERSION_OUTPUT MATCHES "go version devel .* ([^/]+)/(.*)$")
         set(GO_VERSION "99-devel")
         set(GO_PLATFORM ${CMAKE_MATCH_1})
