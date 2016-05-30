@@ -1,6 +1,8 @@
+#!/bin/csh
+
 setenv Linux_Flavour_ "@_linux_flavour@"
 setenv System_ "@_system@"
-source @_BINDIR@/check_system.csh
+. @_BINDIR@/check_system.csh
 if ( "$same_system" == "1" ) then 
   setenv SIMPATH "@SIMPATH@"
   setenv ROOTSYS "@ROOTSYS@"
