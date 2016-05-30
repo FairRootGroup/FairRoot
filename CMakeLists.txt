@@ -1,15 +1,15 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #              This software is distributed under the terms of the             #
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # The name of our project is "FairBase".  CMakeLists files in this project can
 # refer to the root source directory of the project as ${FAIRROOT_SOURCE_DIR} or
-# as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as 
+# as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as
 # ${FAIRROOT_BINARY_DIR} or ${CMAKE_BINARY_DIR}.
-# This difference is is important for the base classes which are in FAIRROOT 
+# This difference is is important for the base classes which are in FAIRROOT
 # and PANDAROOT.
 
 # Check if cmake has the required version
@@ -29,10 +29,10 @@ endforeach()
 
 
 # Set name of our project to "FAIRROOT". Has to be done
-# after check of cmake version                        
+# after check of cmake version
 project(FAIRROOT)
 
-# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ 
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
@@ -83,7 +83,7 @@ CHECK_INSTALL_DIRECTORY()
 # message
 IF(NOT UNIX)
   MESSAGE(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
-ENDIF(NOT UNIX)  
+ENDIF(NOT UNIX)
 
 
 #Check if necessary environment variables are set
@@ -143,6 +143,7 @@ find_package(Protobuf)
 find_package(Msgpack)
 find_package(FlatBuffers)
 find_package(DDS)
+find_package(go)
 
 If(WITH_DBASE)
   find_package(MYSQL)
@@ -181,7 +182,7 @@ SET(FAIRROOT_MAJOR_VERSION 15)
 SET(FAIRROOT_MINOR_VERSION 11)
 SET(FAIRROOT_PATCH_VERSION 99)
 SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}")
-  
+
 If(ROOT_FOUND_VERSION LESS 59999)
 #  If(FAIRROOT_MODULAR_BUILD)
 #    SET(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
@@ -261,7 +262,7 @@ add_subdirectory (examples)
 
 if(IWYU_FOUND)
 
-  ADD_CUSTOM_TARGET(checkHEADERS 
+  ADD_CUSTOM_TARGET(checkHEADERS
      DEPENDS $ENV{ALL_HEADER_RULES}
   )
 
@@ -308,7 +309,7 @@ Install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
         DESTINATION bin
        )
 
-Install(DIRECTORY cmake 
+Install(DIRECTORY cmake
         DESTINATION share/fairbase
         PATTERN ".svn" EXCLUDE)
 

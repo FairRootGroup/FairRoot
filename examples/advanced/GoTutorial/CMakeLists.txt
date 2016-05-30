@@ -1,5 +1,9 @@
 ## basically:
-export GOPATH=`pwd`:$GOPATH
-GOBIN=$CMAKE_INSTALL_PATH/bin go get go-sink
-GOBIN=$CMAKE_INSTALL_PATH/bin go get go-processor
 
+set(GOPATH $ENV{GOPATH})
+set(GOPATH ${GOPATH}:${CMAKE_SOURCE_DIR}/examples/advanced/GoTutorial/src)
+set(ENV{GOPATH} ${GOPATH})
+MESSAGE(STATUS "Looking for Go...",${GOPATH})
+
+#GOBIN=$CMAKE_INSTALL_PATH/bin go get go-sink
+#GOBIN=$CMAKE_INSTALL_PATH/bin go get go-processor
