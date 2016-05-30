@@ -30,7 +30,7 @@
     </decltask>
 
     <decltask id="Processor">
-        <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-processor --id processor_%taskIndex% --config-key processor --task-name PixelFindHits --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --in-channel data1 --out-channel data2 --control dds  --network-interface @NETWORK_INTERFACE@</exe>
+        <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-processor --id processor_%taskIndex% --config-key processor --task-name PixelFindHits --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --in-channel data1 --out-channel data2 --control dds --par-channel data --network-interface @NETWORK_INTERFACE@</exe>
 <!--        <requirement>ProcessorWorker</requirement> -->
         <properties>
             <id access="read">samplerAddr</id>

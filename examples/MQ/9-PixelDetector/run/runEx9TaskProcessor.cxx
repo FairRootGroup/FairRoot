@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 	  ("keep-data",   po::value<std::string>(&keepdata)                              ,  "Name of data to keep in stream")
 	  ("in-channel",  po::value<std::string>(&inChannel)->default_value("data-in")   , "input channel name")
 	  ("out-channel", po::value<std::string>(&outChannel)->default_value("data-out") , "output channel name")
-	  ("par-channel", po::value<std::string>(&parChannel)->default_value("data")     , "param channel name");
+	  ("par-channel", po::value<std::string>(&parChannel)->default_value("param")    , "param channel name");
 	
         FairMQProgOptions config;
         config.AddToCmdLineOptions(processor_options);
