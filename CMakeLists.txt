@@ -9,7 +9,7 @@
 # refer to the root source directory of the project as ${FAIRROOT_SOURCE_DIR} or
 # as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as
 # ${FAIRROOT_BINARY_DIR} or ${CMAKE_BINARY_DIR}.
-# This difference is is important for the base classes which are in FAIRROOT
+# This difference is important for the base classes which are in FAIRROOT
 # and PANDAROOT.
 
 # Check if cmake has the required version
