@@ -3,7 +3,8 @@
 `go-sink` is a simple `Go` based program using `nanomsg` as a transport facility.
 It replicates the basic example from [FairRootMQ example 1](https://github.com/FairRootGroup/FairRoot/tree/master/examples/MQ/1-sampler-sink).
 
-## Build
+## Manual Build
+Cmake take care of building this example (if Go is available!), the binaries are in the same directory with the source up to now, but the make install will copy them to the install directory with all other excutables, However if you went to build them manually:
 
 ```sh
 $> cd go-sink
