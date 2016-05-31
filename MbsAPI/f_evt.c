@@ -560,21 +560,11 @@ INTS4 f_evt_get_open(INTS4 l_mode, CHARS* pc_server, s_evt_channel* ps_chan,
   // when timeout is already set by f_evt_timeout(), do not overwrite
   if(ps_chan->l_timeout==0) { ps_chan->l_timeout=-1; } /* no timeout */
 
-  size_t len=strlen(pc_server);
-  if ( len < sizeof(ps_chan->c_channel) ) {
-    strncpy(ps_chan->c_channel,pc_server, len);
-  } else {
-    strncpy(ps_chan->c_channel,pc_server, sizeof(ps_chan->c_channel)-1);
-  }
+  strncpy(ps_chan->c_channel,pc_server,sizeof(ps_chan->c_channel));
   switch(l_mode) {
   case GETEVT__FILE :
 
-    if ( len < sizeof(c_file) ) {
-      strncpy(c_file,pc_server, len);
-    } else {
-      strncpy(c_file,pc_server, sizeof(c_file)-1);
-    }
-
+    strncpy(c_file,pc_server,sizeof(c_file));
     if(strlen(c_file) < 5) { strcat(c_file,".lmd"); }
     else {
       pc_temp = (CHARS*) &c_file[strlen(c_file)-4];
