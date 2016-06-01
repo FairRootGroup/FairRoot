@@ -9,18 +9,24 @@
 MESSAGE(STATUS "Looking for nanomsg...")
 
 find_path(NANOMSG_INCLUDE_DIR NAMES nn.h
+  PATHS ${NANOMSG_DIR}/include/nanomsg
+  PATHS ${AlFa_DIR}/include/nanomsg
   PATHS ${SIMPATH}/include/nanomsg
   NO_DEFAULT_PATH
   DOC   "Path to nanomsg include header files."
 )
 
 find_library(NANOMSG_LIBRARY_SHARED NAMES libnanomsg.dylib libnanomsg.so
+  PATHS ${NANOMSG_DIR}/lib
+  PATHS ${AlFa_DIR}/lib
   PATHS ${SIMPATH}/lib
   NO_DEFAULT_PATH
   DOC   "Path to libnanomsg.dylib libnanomsg.so."
 )
 
 find_library(NANOMSG_LIBRARY_STATIC NAMES libnanomsg.a
+  PATHS ${NANOMSG_DIR}/lib
+  PATHS ${AlFa_DIR}/lib
   PATHS ${SIMPATH}/lib
   NO_DEFAULT_PATH
   DOC   "Path to libnanomsg.a."
