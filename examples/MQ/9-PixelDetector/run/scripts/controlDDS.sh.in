@@ -10,6 +10,8 @@ echo -ne "\033[46mDEVICE_READY\033[0m->d->"
 echo -ne "\033[47mIDLE\033[0m->q  /x-Exit"
 echo ""
 
+WAITINGMILL="\|/-"
+
 count=0
 keypress=''
 while [ "$keypress" != "x" ]; do
@@ -35,7 +37,7 @@ while [ "$keypress" != "x" ]; do
       done < command.out
       rm -f command.out
   fi
-  echo -ne "\033[0K\r"
+  echo -ne "\033[0K\r${WAITINGMILL:$((count%4)):1}"
   for (( i = 0 ; i < $NOFWORKERS ; i++ )); do
       TOPRINT=${TASKS[i]}
       TOPRINT=${TOPRINT#*\"}
