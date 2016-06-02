@@ -143,7 +143,7 @@ find_package(Protobuf)
 find_package(Msgpack)
 find_package(FlatBuffers)
 find_package(DDS)
-find_package(go)
+find_package(Go)
 
 If(WITH_DBASE)
   find_package(MYSQL)
