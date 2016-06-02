@@ -33,3 +33,18 @@ mark_as_advanced(GO_EXECUTABLE)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Go REQUIRED_VARS GO_EXECUTABLE GO_VERSION GO_PLATFORM GO_ARCH VERSION_VAR GO_VERSION)
+
+# build_go_package build/installs a Go package 'pkg'.
+# if 'gopath' is empty "", the environment variable $GOPATH will be used and passed to
+# 'go get'.
+macro(build_go_package pkg gopath)
+	string(REPLACE "/" "_" tgt ${pkg})
+	if(gopath STREQUAL "")
+		set(gopath $ENV{GOPATH})
+	endif()
+	add_custom_target(${tgt}
+		COMMAND ${CMAKE_COMMAND} -E env "GOPATH=${gopath}"
+		${GO_EXECUTABLE} get ${pkg}
+		COMMENT "Building Go package: ${pkg}"
+	)
+endmacro(build_go_package)
