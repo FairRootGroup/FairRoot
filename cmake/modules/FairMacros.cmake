@@ -208,32 +208,19 @@ MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
   set(MY_LD_LIBRARY_PATH ${output})
   set(my_script_name ${SCRIPT_FULL_NAME})
 
-  if(CMAKE_SYSTEM MATCHES Darwin)
-    
-    IF(FAIRROOT_FOUND)
-    configure_file(${FAIRROOT_CMAKEMOD_DIR}/scripts/set_env_macos.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-    ELSE(FAIRROOT_FOUND)
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env_macos.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-    ENDIF(FAIRROOT_FOUND)
-  else(CMAKE_SYSTEM MATCHES Darwin)
-    IF(FAIRROOT_FOUND)
+  IF(FAIRROOT_FOUND)
     configure_file(${FAIRROOT_CMAKEMOD_DIR}/scripts/set_env.sh.in
                    ${new_path}/${shell_script_name}
                   )
-    ELSE(FAIRROOT_FOUND)
+  ELSE(FAIRROOT_FOUND)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env.sh.in
                    ${new_path}/${shell_script_name}
                   )
-    ENDIF(FAIRROOT_FOUND)
+  ENDIF(FAIRROOT_FOUND)
 
-  endif(CMAKE_SYSTEM MATCHES Darwin)
 
   
-EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
+  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
 
 ENDMACRO (GENERATE_TEST_SCRIPT)
 

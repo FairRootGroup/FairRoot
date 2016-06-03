@@ -425,7 +425,7 @@ void FairFileSource::AddFriendsToChain()
             CreateNewFriendChain((*iter1), inputLevel);
             friendType++;
         }
-        
+
         TChain* chain = static_cast<TChain*>(fFriendTypeList[inputLevel]);
         chain->AddFile((*iter1), 1234567890, FairRootManager::GetTreeName());
     }
