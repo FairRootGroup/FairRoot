@@ -6,14 +6,14 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * ShmChunk.h
+ * FairMQShmManager.h
  *
  * @since 2016-04-08
  * @author A. Rybalchenko
  */
 
-#ifndef SHMCHUNK_H_
-#define SHMCHUNK_H_
+#ifndef FAIRMQSHMMANAGER_H_
+#define FAIRMQSHMMANAGER_H_
 
 #include <thread>
 #include <chrono>
@@ -25,12 +25,17 @@
 
 namespace bipc = boost::interprocess;
 
-class SegmentManager
+namespace FairMQ
+{
+namespace shmem
+{
+
+class Manager
 {
   public:
-    static SegmentManager& Instance()
+    static Manager& Instance()
     {
-        static SegmentManager man;
+        static Manager man;
         return man;
     }
 
@@ -109,43 +114,43 @@ class SegmentManager
     }
 
   private:
-    SegmentManager()
+    Manager()
         : fSegment(nullptr)
     {}
 
     bipc::managed_shared_memory* fSegment;
 };
 
-class ShmChunk
+class Chunk
 {
   public:
-    ShmChunk()
+    Chunk()
         : fHandle()
         , fSize(0)
     {
     }
 
-    ShmChunk(const size_t size)
+    Chunk(const size_t size)
         : fHandle()
         , fSize(size)
     {
-        void* ptr = SegmentManager::Instance().Segment()->allocate(size);
-        fHandle = SegmentManager::Instance().Segment()->get_handle_from_address(ptr);
+        void* ptr = Manager::Instance().Segment()->allocate(size);
+        fHandle = Manager::Instance().Segment()->get_handle_from_address(ptr);
     }
 
-    ~ShmChunk()
+    ~Chunk()
     {
-        SegmentManager::Instance().Segment()->deallocate(SegmentManager::Instance().Segment()->get_address_from_handle(fHandle));
+        Manager::Instance().Segment()->deallocate(Manager::Instance().Segment()->get_address_from_handle(fHandle));
     }
 
-    bipc::managed_shared_memory::handle_t GetHandle() const
-    {
-        return fHandle;
-    }
+    // bipc::managed_shared_memory::handle_t GetHandle() const
+    // {
+    //     return fHandle;
+    // }
 
     void* GetData() const
     {
-        return SegmentManager::Instance().Segment()->get_address_from_handle(fHandle);
+        return Manager::Instance().Segment()->get_address_from_handle(fHandle);
     }
 
     size_t GetSize() const
@@ -158,7 +163,7 @@ class ShmChunk
     size_t fSize;
 };
 
-typedef bipc::managed_shared_ptr<ShmChunk, bipc::managed_shared_memory>::type ShPtrType;
+typedef bipc::managed_shared_ptr<Chunk, bipc::managed_shared_memory>::type ShPtrType;
 
 struct ShPtrOwner
 {
@@ -173,4 +178,8 @@ struct ShPtrOwner
     ShPtrType fPtr;
 };
 
-#endif /* SHMCHUNK_H_ */
+} // namespace shmem
+
+} // namespace FairMQ
+
+#endif /* FAIRMQSHMMANAGER_H_ */

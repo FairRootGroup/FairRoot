@@ -20,9 +20,30 @@ SAMPLER+=" --msg-size $msgSize"
 SAMPLER+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
 xterm -geometry 80x32+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/SharedMemory/$SAMPLER &
 
-SINK="ex-shm-sink"
-SINK+=" --id sink1"
-SINK+=" --transport $transport"
-# SINK+=" --verbosity TRACE"
-SINK+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
-xterm -geometry 80x32+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/SharedMemory/$SINK &
+SINK1="ex-shm-sink"
+SINK1+=" --id sink1"
+SINK1+=" --transport $transport"
+# SINK1+=" --verbose TRACE"
+SINK1+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
+xterm -geometry 80x32+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/SharedMemory/$SINK1 &
+
+# SINK2="ex-shm-sink"
+# SINK2+=" --id sink2"
+# SINK2+=" --transport $transport"
+# # SINK2+=" --verbose TRACE"
+# SINK2+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
+# xterm -geometry 80x32+500+500 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/SharedMemory/$SINK2 &
+
+# SINK3="ex-shm-sink"
+# SINK3+=" --id sink3"
+# SINK3+=" --transport $transport"
+# # SINK3+=" --verbose TRACE"
+# SINK3+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
+# xterm -geometry 80x32+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/SharedMemory/$SINK3 &
+
+# SINK4="ex-shm-sink"
+# SINK4+=" --id sink4"
+# SINK4+=" --transport $transport"
+# # SINK4+=" --verbose TRACE"
+# SINK4+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
+# xterm -geometry 80x32+1000+500 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/SharedMemory/$SINK4 &

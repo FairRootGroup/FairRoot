@@ -8,13 +8,10 @@
                         "name": "meta",
                         "type": "push",
                         "method": "bind",
-                        "address": "ipc://meta"
-                    },
-                    {
-                        "name": "ack",
-                        "type": "pull",
-                        "method": "bind",
-                        "address": "ipc://ack"
+                        "address": "tcp://127.0.0.1:5555",
+                        "sndBufSize": 10,
+                        "rcvBufSize": 10,
+                        "rateLogging": 0
                     }
                 ]
             },
@@ -25,13 +22,10 @@
                         "name": "meta",
                         "type": "pull",
                         "method": "connect",
-                        "address": "ipc://meta"
-                    },
-                    {
-                        "name": "ack",
-                        "type": "push",
-                        "method": "connect",
-                        "address": "ipc://ack"
+                        "address": "tcp://127.0.0.1:5555",
+                        "sndBufSize": 10,
+                        "rcvBufSize": 10,
+                        "rateLogging": 0
                     }
                 ]
             }
