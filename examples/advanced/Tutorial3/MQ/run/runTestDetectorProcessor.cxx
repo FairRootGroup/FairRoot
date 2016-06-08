@@ -29,7 +29,9 @@ using namespace boost::program_options;
 using TProcessorTaskBin         = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi,       TestDetectorPayload::Hit>;
 using TProcessorTaskBoostBin    = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, boost::archive::binary_iarchive, boost::archive::binary_oarchive>;
 using TProcessorTaskBoostText   = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, boost::archive::text_iarchive,   boost::archive::text_oarchive>;
+#ifdef PROTOBUF
 using TProcessorTaskProtobuf    = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload,  TestDetectorProto::HitPayload>;
+#endif
 using TProcessorTaskTMessage    = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage,                        TMessage>;
 #ifdef FLATBUFFERS
 using TProcessorTaskFlatBuffers = FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorFlat::DigiPayload,   TestDetectorFlat::HitPayload>;
@@ -92,7 +94,9 @@ int main(int argc, char** argv)
 #ifdef MSGPACK
         else if (dataFormat == "msgpack") { runProcessor<TProcessorTaskMsgPack>(config); }
 #endif
+#ifdef PROTOBUF
         else if (dataFormat == "protobuf") { runProcessor<TProcessorTaskProtobuf>(config); }
+#endif
         else if (dataFormat == "tmessage") { runProcessor<TProcessorTaskTMessage>(config); }
         else
         {
