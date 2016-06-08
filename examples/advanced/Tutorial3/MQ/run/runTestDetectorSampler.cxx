@@ -29,7 +29,9 @@ using namespace boost::program_options;
 using TSamplerBin         = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
 using TSamplerBoostBin    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
 using TSamplerBoostText   = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::text_oarchive>>;
+#ifdef PROTOBUF
 using TSamplerProtobuf    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
+#endif
 using TSamplerTMessage    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
 #ifdef FLATBUFFERS
 using TSamplerFlatBuffers = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
@@ -95,7 +97,9 @@ int main(int argc, char** argv)
 #ifdef MSGPACK
         else if (dataFormat == "msgpack") { runSampler<TSamplerMsgPack>(config); }
 #endif
+#ifdef PROTOBUF
         else if (dataFormat == "protobuf") { runSampler<TSamplerProtobuf>(config); }
+#endif
         else if (dataFormat == "tmessage") { runSampler<TSamplerTMessage>(config); }
         else
         {
