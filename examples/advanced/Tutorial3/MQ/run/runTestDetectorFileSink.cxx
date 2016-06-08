@@ -29,7 +29,9 @@ using namespace boost::program_options;
 using TSinkBin         = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>;
 using TSinkBoostBin    = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::binary_iarchive>;
 using TSinkBoostText   = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::text_iarchive>;
+#ifdef PROTOBUF
 using TSinkProtobuf    = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>;
+#endif
 using TSinkTMessage    = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
 #ifdef FLATBUFFERS
 using TSinkFlatBuffers = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>;
@@ -81,7 +83,9 @@ int main(int argc, char** argv)
 #ifdef MSGPACK
         else if (dataFormat == "msgpack") { runFileSink<TSinkMsgPack>(config); }
 #endif
+#ifdef PROTOBUF
         else if (dataFormat == "protobuf") { runFileSink<TSinkProtobuf>(config); }
+#endif
         else if (dataFormat == "tmessage") { runFileSink<TSinkTMessage>(config); }
         else
         {

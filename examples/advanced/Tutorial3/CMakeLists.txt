@@ -42,6 +42,7 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
 )
 
 If(PROTOBUF_FOUND)
+  add_definitions(-DPROTOBUF)
   Set(SYSTEM_INCLUDE_DIRECTORIES
     ${SYSTEM_INCLUDE_DIRECTORIES}
     ${PROTOBUF_INCLUDE_DIR}
@@ -122,6 +123,7 @@ If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
     data/FairTestDetectorDigi.cxx
   )
 
+  If(PROTOBUF_FOUND)
   add_custom_command(
     OUTPUT
       ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.h
@@ -131,6 +133,7 @@ If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
     WORKING_DIRECTORY
       ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/data
     )
+  Endif(PROTOBUF_FOUND)
 
   If(FLATBUFFERS_FOUND)
     add_custom_command(
@@ -151,10 +154,12 @@ If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
       )
   EndIf(FLATBUFFERS_FOUND)
 
+  If(PROTOBUF_FOUND)
   Set(NO_DICT_SRCS
     ${NO_DICT_SRCS}
     ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
   )
+  Endif(PROTOBUF_FOUND)
 
   If(FLATBUFFERS_FOUND)
     Set(NO_DICT_SRCS
