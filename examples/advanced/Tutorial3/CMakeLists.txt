@@ -174,7 +174,6 @@ If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
     ${Boost_THREAD_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_SERIALIZATION_LIBRARY}
-#    boost_serialization
     ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 
