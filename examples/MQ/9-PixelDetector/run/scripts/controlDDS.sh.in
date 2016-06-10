@@ -4,19 +4,62 @@ if [ -t 0 ]; then stty -echo -icanon -icrnl time 0 min 0; fi
 
 rm -rf controlDDS.out
 
-echo -ne "\033[42mRUNNING\033[0m->s->"
-echo -ne "\033[44mREADY\033[0m->t->"
-echo -ne "\033[46mDEVICE_READY\033[0m->d->"
-echo -ne "\033[47mIDLE\033[0m->q  /x-Exit"
-echo ""
+BEFORE_LINES=$(tput lines)
+BEFORE_COLS=$(tput cols)
+
+function PRINT_MENU {
+    clear
+    COLUMNS=$(tput cols)
+    if (( ${COLUMNS} > 75 )); then
+	echo -ne "\033[40m      \033[0m > r > "
+	echo -ne "\033[42m       \033[0m > s > "
+	echo -ne "\033[44m     \033[0m > t > "
+	echo -ne "\033[46m            \033[0m > d > "
+	echo -ne "\033[47m    \033[0m     |"
+	echo ""
+	echo -ne "\033[40mPAUSED\033[0m       "
+	echo -ne "\033[42mRUNNING\033[0m       "
+	echo -ne "\033[44mREADY\033[0m       "
+	echo -ne "\033[46mDEVICE_READY\033[0m       "
+	echo -ne "\033[47mIDLE\033[0m > q | x-Exit"
+	echo ""
+	echo -ne "\033[40m      \033[0m < p < "
+	echo -ne "\033[42m       \033[0m < r < "
+	echo -ne "\033[44m     \033[0m < j < "
+	echo -ne "\033[46m            \033[0m < i < "
+	echo -ne "\033[47m    \033[0m     |"
+	echo ""
+    fi;
+}
+
+PRINT_MENU
 
 WAITINGMILL="\|/-"
+NOFLINESTOPRINT=1
+DEVICESPERLINE=0
 
 count=0
 keypress=''
 while [ "$keypress" != "x" ]; do
   let count+=1
   keypress="`cat -v`"
+  LINES=$(tput lines)
+  COLS=$(tput cols)
+  if [ "$BEFORE_LINES" != "$LINES" ] || [ "$BEFORE_COLS" != "$COLS" ]; then
+      PRINT_MENU
+  fi
+  if (( ${NOFLINESTOPRINT} > 1 )); then
+      FIRSTLINE=0
+      if (( ${COLUMNS} > 74 )); then
+	  FIRSTLINE=3
+      fi
+      tput cup $FIRSTLINE 0
+      for (( i = 0 ; i < $NOFLINESTOPRINT ; i++ )); do
+	  echo -e "\033[2K";
+      done
+      echo " ";
+      tput cup $FIRSTLINE 0
+  fi
   NOFWORKERS="$(dds-info -n)"
   if [ -z "$NOFWORKERS" ]; then NOFWORKERS=0; fi
   if [ "$NOFWORKERS" -gt 0 ]; 
@@ -38,42 +81,73 @@ while [ "$keypress" != "x" ]; do
       rm -f command.out
   fi
   echo -ne "\033[0K\r${WAITINGMILL:$((count%4)):1}"
-  for (( i = 0 ; i < $NOFWORKERS ; i++ )); do
-      TOPRINT=${TASKS[i]}
-      TOPRINT=${TOPRINT#*\"}
-      TOPRINT=${TOPRINT%%:*}
-      TASTATE=${TASKS[i]}
-      TASTATE=${TASTATE% (*}
-      TASTATE=${TASTATE#*\"}
-      TASTATE=${TASTATE#*: }
+  if (( ${NOFWORKERS} > 0 )); then
+    TERMINALCOLUMNS=$(tput cols)
+    DEVICESPERLINE=0
+    NOFLINESTOPRINT=1
+    DEVICELENGTH=$((((TERMINALCOLUMNS-1) / NOFWORKERS)-2))
+    if (( ${DEVICELENGTH} > 12 )); then DEVICELENGTH=12; fi
+    if (( ${DEVICELENGTH} <  6 )); then DEVICELENGTH=6;  DEVICESPERLINE=$(((TERMINALCOLUMNS-1)/(DEVICELENGTH+2))); NOFLINESTOPRINT=$((1+(NOFWORKERS/DEVICESPERLINE))); fi
 
-      echo -ne "["
-      if [[ $TASTATE == "RUNNING" ]]; then echo -ne "\033[42m"; fi
-      if [[ $TASTATE == "READY" ]]; then echo -ne "\033[44m"; fi
-      if [[ $TASTATE == "DEVICE_READY" ]]; then echo -ne "\033[46m"; fi
-      if [[ $TASTATE == "IDLE" ]]; then echo -ne "\033[47m"; fi
-      printf  "%10s" $TOPRINT
-      echo -ne "\033[0m"
-      echo -ne "]"
-  done
+    for (( i = 0 ; i < $NOFWORKERS ; i++ )); do
+        TOPRINT=${TASKS[i]}
+        TOPRINT=${TOPRINT#*\"}
+        TOPRINT=${TOPRINT%%:*}
+	TASTATE=${TASKS[i]}
+	TASTATE=${TASTATE% (*}
+	TASTATE=${TASTATE#*\"}
+	TASTATE=${TASTATE#*: }
+	
+	echo -ne "["
+	if [[ $TASTATE == "PAUSED" ]]; then echo -ne "\033[40m"; fi
+	if [[ $TASTATE == "RUNNING" ]]; then echo -ne "\033[42m"; fi
+	if [[ $TASTATE == "READY" ]]; then echo -ne "\033[44m"; fi
+	if [[ $TASTATE == "DEVICE_READY" ]]; then echo -ne "\033[46m"; fi
+	if [[ $TASTATE == "IDLE" ]]; then echo -ne "\033[47m"; fi
+	if (( ${#TOPRINT} > ${DEVICELENGTH} )); then
+	    TOPRINT="${TOPRINT:0:$((DEVICELENGTH-5))}~${TOPRINT: -4}"
+	fi
+	printf  "%${DEVICELENGTH}s" $TOPRINT
+	echo -ne "\033[0m"
+	echo -ne "]"
+	if (( ${NOFLINESTOPRINT} > 1 )); then
+	    if (( $((i%DEVICESPERLINE)) == $((DEVICESPERLINE-1)) )); then echo ""; echo -n " "; fi;
+	fi;
+    done
+  fi
   echo -ne "\r"
+  if [ "$keypress" == "p" ]; then
+      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui p &> temp.out
+  fi
   if [ "$keypress" == "s" ]; then
-      ./bin/fairmq-dds-command-ui s &> temp.out
+      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui s &> temp.out
   fi
   if [ "$keypress" == "t" ]; then
-      ./bin/fairmq-dds-command-ui t &> temp.out
+      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui t &> temp.out
   fi
   if [ "$keypress" == "d" ]; then
-      ./bin/fairmq-dds-command-ui d &> temp.out
+      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui d &> temp.out
+  fi
+  if [ "$keypress" == "r" ]; then
+      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui r &> temp.out
+  fi
+  if [ "$keypress" == "j" ]; then
+      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui j &> temp.out
+  fi
+  if [ "$keypress" == "i" ]; then
+      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui i &> temp.out
   fi
   if [ "$keypress" == "q" ]; then
-      ./bin/fairmq-dds-command-ui q &> temp.out
+      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui q &> temp.out
+  fi
+  if [ "$keypress" == "x" ]; then
+      break;
   fi
   sleep 1
 done
 
 if [ -t 0 ]; then stty sane; fi
 
-echo "You pressed '$keypress' after $count loop iterations"
-echo "Thanks for using this script."
+echo ""
+echo "Thank you for using this script (for $count seconds)."
 exit 0
