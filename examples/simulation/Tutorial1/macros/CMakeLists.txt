@@ -8,8 +8,13 @@
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial1/macros/run_tutorial1.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial1/macros/run_tutorial1_mesh.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial1/macros/run_tutorial1_urqmd.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial1/macros/load_all_libs.C)
 
 Set(MaxTestTime 60)
+
+Add_Test(load_all_libs ${CMAKE_BINARY_DIR}/examples/simulation/Tutorial1/macros/load_all_libs.sh)
+Set_Tests_Properties(load_all_libs PROPERTIES TIMEOUT ${MaxTestTime})
+Set_Tests_Properties(load_all_libs PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished succesfully")
 
 ForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
   Add_Test(run_tutorial1_${_mcEngine} 
