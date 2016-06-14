@@ -40,13 +40,14 @@
 #define fseeko64 fseek
 #define fpos64_t fpos_t
 
+#ifndef _HAS_CLOCK_REALTIME
 /* just some dummies for compilation, we will never write lmd with time header in go4*/
 #define CLOCK_REALTIME 1
 int clock_gettime(int clockid, struct timespec* tp)
 {
   return 0;
 }
-
+#endif
 #endif
 
 
