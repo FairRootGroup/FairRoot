@@ -6,8 +6,10 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
-configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/ex7-client.json ${CMAKE_BINARY_DIR}/bin/config/ex7-client.json)
-configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/startMQEx7.sh.in  ${CMAKE_BINARY_DIR}/bin/startMQEx7.sh)
+configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/ex7-client.json 
+               ${CMAKE_BINARY_DIR}/bin/config/ex7-client.json)
+configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/startMQEx7.sh.in  
+               ${CMAKE_BINARY_DIR}/bin/examples/MQ/7-parameters/startMQEx7.sh)
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
@@ -69,6 +71,9 @@ set(Exe_Source
 
 list(LENGTH Exe_Names _length)
 math(EXPR _length ${_length}-1)
+
+set(BIN_DESTINATION share/fairbase/examples/MQ/7-parameters/bin)
+set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/7-parameters")
 
 ForEach(_file RANGE 0 ${_length})
   list(GET Exe_Names ${_file} _name)

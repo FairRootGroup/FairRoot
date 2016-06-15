@@ -353,7 +353,11 @@ Macro(GENERATE_EXECUTABLE)
   target_link_libraries(${EXE_NAME} ${DEPENDENCIES})
 
   ############### install the library ###################
-  install(TARGETS ${EXE_NAME} DESTINATION bin)
+  if(DEFINED BIN_DESTINATION)
+    install(TARGETS ${EXE_NAME} DESTINATION ${BIN_DESTINATION})
+  else(DEFINED BIN_DESTINATION)
+    install(TARGETS ${EXE_NAME} DESTINATION bin)
+  endif(DEFINED BIN_DESTINATION)
 
   Set(EXE_NAME)
   Set(SRCS)

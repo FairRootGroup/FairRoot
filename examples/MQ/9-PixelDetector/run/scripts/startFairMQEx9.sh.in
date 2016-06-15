@@ -81,7 +81,7 @@ fi
 SERVER="parmq-server $TRANSPORT"
 SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
-xterm -geometry 80x25+0+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$SERVER &
+xterm -geometry 80x25+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 
 
 ########################## start SAMPLER

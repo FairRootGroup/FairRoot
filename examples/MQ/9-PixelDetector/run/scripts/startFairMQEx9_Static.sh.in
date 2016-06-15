@@ -108,7 +108,7 @@ fi
 
 
 ########################## start Parameter server
-SERVER="@EXAMPLE9_BIN_LOCATION@/"
+SERVER="@FAIRROOT_BIN_LOCATION@/"
 SERVER+="parmq-server $TRANSPORT"
 SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE"
 SERVER+=" $VERBOSE "

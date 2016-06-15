@@ -64,7 +64,7 @@ while [ "$keypress" != "x" ]; do
   if [ -z "$NOFWORKERS" ]; then NOFWORKERS=0; fi
   if [ "$NOFWORKERS" -gt 0 ]; 
   then
-      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui c | sort &> command.out
+      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui c | sort &> command.out
   fi
   for (( i = 0 ; i < $NOFWORKERS ; i++ )); do
       TASKS[$i]="";
@@ -117,28 +117,28 @@ while [ "$keypress" != "x" ]; do
   fi
   echo -ne "\r"
   if [ "$keypress" == "p" ]; then
-      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui p &> temp.out
+      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui p &> temp.out
   fi
   if [ "$keypress" == "s" ]; then
-      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui s &> temp.out
+      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui s &> temp.out
   fi
   if [ "$keypress" == "t" ]; then
-      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui t &> temp.out
+      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui t &> temp.out
   fi
   if [ "$keypress" == "d" ]; then
-      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui d &> temp.out
+      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui d &> temp.out
   fi
   if [ "$keypress" == "r" ]; then
-      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui r &> temp.out
+      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui r &> temp.out
   fi
   if [ "$keypress" == "j" ]; then
-      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui j &> temp.out
+      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui j &> temp.out
   fi
   if [ "$keypress" == "i" ]; then
-      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui i &> temp.out
+      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui i &> temp.out
   fi
   if [ "$keypress" == "q" ]; then
-      @EXAMPLE9_BIN_LOCATION@/fairmq-dds-command-ui q &> temp.out
+      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui q &> temp.out
   fi
   if [ "$keypress" == "x" ]; then
       break;

@@ -75,7 +75,7 @@ fi
 SERVER="parmq-server $TRANSPORT"
 SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
-xterm -geometry 80x24+0+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$SERVER &
+xterm -geometry 80x24+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 
 
 ########################## start SAMPLE
@@ -95,7 +95,7 @@ PROXYS="proxy $TRANSPORT"
 PROXYS+=" --id proxysampler"
 PROXYS+=" --input-socket-type  pull --input-method  bind --input-address  tcp://*:5565"
 PROXYS+=" --output-socket-type push --output-method bind --output-address tcp://*:5566"
-xterm -geometry 80x24+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROXYS &
+xterm -geometry 80x24+0+0 -hold -e @FAIRROOT_BIN_LOCATION@/$PROXYS &
 
 ########################## start PROCESSORs
 PROCESSOR1="ex9-processorBin $TRANSPORT"
@@ -129,7 +129,7 @@ PROXYF="proxy $TRANSPORT"
 PROXYF+=" --id proxysink"
 PROXYF+=" --input-socket-type  pull --input-method  bind --input-address  tcp://*:5567"
 PROXYF+=" --output-socket-type push --output-method bind --output-address tcp://*:5572"
-xterm -geometry 80x24+0+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROXYF &
+xterm -geometry 80x24+0+700 -hold -e @FAIRROOT_BIN_LOCATION@/$PROXYF &
 
 ########################## start FILESINK
 FILESINK1="ex9-sinkBin $TRANSPORT"

@@ -51,42 +51,49 @@ which run given devices and allow setting of the different parameters from the c
 ##Topologies and scripts
 Several shell scripts using different topologies are implemented:
 
-#### ./startFairMQEx9New.sh
+#### ./startFairMQEx9.sh
 - **topology:**     sampler-5processors-sink
 - **functions:**    can process different task with (--task-name PixelFindHits, PixelFindTracks, PixelFitTracks)
 can limit number of events with --m
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
+
 #### ./startFairMQEx9_Static.sh
 - **topology:**     sampler-3processors-sink
 - **functions:**    runs the processes in the background, without opening another terminals; cpu and mem usage per each device is printed; devices' logs go to separate log files; quits after all events processed or after 50 seconds;
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
+
 #### ./startFairMQEx9_2Levels.sh
 - **topology:**     sampler-3proc-3proc-sink
 - **functions:**    can process different task with (-f PixelFindHits -g PixelFindTracks or -f PixelFindTracks -gPixelFitTracks)
 can limit number of events with --m
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
+
 #### ./startFairMQEx9_3Levels.sh
 - **topology:**     sampler-2proc-2proc-2proc-sink
 - **functions:**    runs hit finding, track finding, track fitting
 can limit number of events with --m
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
+
 #### ./startFairMQEx9Bin.sh
 - **topology:**     sampler-5processors-sink
 - **functions:**    run PixelFindHits
 transport binary data between devices
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
+
 #### ./startFairMQEx9BinProxy.sh
 - **topology:**     2samplers-proxy-5processors-proxy-2sinks
 - **functions:**    run PixelFindHits
 transport binary data between devices
 proxy has several input and output queues
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
+
 #### ./startFairMQEx9Merger.sh
 - **topology:**     3samplers-3processors-merger-sink
 - **functions:**    data is read by 3 samplers from 3 input files, for each station separately
 hit finding is run on processors separately for each station data
 merges event data from different stations and sends whole events to the sink
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; root -l -q run_digiToBin.C;
+
 #### ./startFairMQEx9Merger2Levels.sh
 - **topology:**     3samplers-6processors-merger-3processors-sink
 - **functions:**    data is read by 3 samplers from 3 input files, for each station separately
@@ -104,7 +111,7 @@ These programs are started with the ex9-dds-topology.xml topology, that can be s
 ```bash
 dds-server start -s
 dds-submit --rms localhost -n 10
-dds-topology --set bin/ex9-dds-topology.xml
+dds-topology --set bin/examples/MQ/9-PixelDetector/ex9-dds-topology.xml
 dds-topology --activate
 ```
 
@@ -117,7 +124,7 @@ One can check the status or control the devices using:
 There is also a interactive shell script created to ease the devices' state control. Different states are marked with different colors, and by pressing appropriate keys it is possible to control the devices:
 
 ```bash
-user@host:build$ ./bin/controlDDS.sh
+user@host:build$ ./bin/examples/MQ/9-PixelDetector/controlDDS.sh
 RUNNING->s->READY->t->DEVICE_READY->d->IDLE->q  /x-Exit
 [parmq-server][processor_0][processor_1][processor_2][   sampler][      sink]
 ```

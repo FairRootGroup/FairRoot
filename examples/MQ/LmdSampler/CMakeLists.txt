@@ -38,7 +38,8 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
 include_directories(${INCLUDE_DIRECTORIES})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/LmdSampler/macro/startMQLmdChain.sh.in ${CMAKE_BINARY_DIR}/bin/startMQLmdChain.sh)
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/LmdSampler/macro/startMQLmdChain.sh.in 
+                ${CMAKE_BINARY_DIR}/bin/examples/MQ/LmdSampler/startMQLmdChain.sh)
 
 
 set(LINK_DIRECTORIES
@@ -87,6 +88,9 @@ set(Exe_Source
 
 List(LENGTH Exe_Names _length)
 Math(EXPR _length ${_length}-1)
+
+set(BIN_DESTINATION share/fairbase/examples/MQ/LmdSampler/bin)
+set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/LmdSampler")
 
 ForEach(_file RANGE 0 ${_length})
     List(GET Exe_Names ${_file} _name)

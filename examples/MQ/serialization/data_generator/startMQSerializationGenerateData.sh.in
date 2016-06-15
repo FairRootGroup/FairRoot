@@ -12,4 +12,4 @@ GENERATE+=" --output-file @CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/i
 GENERATE+=" --tree cbmsim"
 # output file -> InputFile of sampler
 
-@CMAKE_BINARY_DIR@/bin/$GENERATE 
+@CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$GENERATE 

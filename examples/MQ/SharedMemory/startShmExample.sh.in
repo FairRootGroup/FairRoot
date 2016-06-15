@@ -18,11 +18,11 @@ SAMPLER+=" --transport $transport"
 SAMPLER+=" --msg-size $msgSize"
 # SAMPLER+=" --msg-rate 1000"
 SAMPLER+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
-xterm -geometry 80x32+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+xterm -geometry 80x32+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/SharedMemory/$SAMPLER &
 
 SINK="ex-shm-sink"
 SINK+=" --id sink1"
 SINK+=" --transport $transport"
 # SINK+=" --verbose TRACE"
 SINK+=" --mq-config @CMAKE_BINARY_DIR@/bin/config/ex-shm.json"
-xterm -geometry 80x32+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SINK &
+xterm -geometry 80x32+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/SharedMemory/$SINK &

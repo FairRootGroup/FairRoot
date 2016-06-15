@@ -48,7 +48,7 @@
     </decltask>
 
     <decltask id="ParamServer">
-        <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/parmq-server --id parmq-server --first-input-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root --second-input-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par --second-input-type ASCII --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --control dds --network-interface @NETWORK_INTERFACE@</exe>
+        <exe reachable="true">@FAIRROOT_BIN_LOCATION@/parmq-server --id parmq-server --first-input-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root --second-input-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par --second-input-type ASCII --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --control dds --network-interface @NETWORK_INTERFACE@</exe>
 <!--        <requirement>ParamServerWorker</requirement> -->
         <properties>
             <id access="write">paramAddr</id>

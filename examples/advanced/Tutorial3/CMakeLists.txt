@@ -69,17 +69,27 @@ Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3Three.sh.in          ${CMAKE_BINARY_DIR}/bin/startMQTut3Three.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3All.sh.in            ${CMAKE_BINARY_DIR}/bin/startMQTut3All.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3AllProxy.sh.in       ${CMAKE_BINARY_DIR}/bin/startMQTut3AllProxy.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3PushPull.sh.in       ${CMAKE_BINARY_DIR}/bin/startMQTut3PushPull.sh)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3ExtraProcessor.sh.in ${CMAKE_BINARY_DIR}/bin/startMQTut3ExtraProcessor.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3Three.sh.in
+                 ${CMAKE_BINARY_DIR}/bin/examples/advanced/Tutorial3/startMQTut3Three.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3All.sh.in
+                 ${CMAKE_BINARY_DIR}/bin/examples/advanced/Tutorial3/startMQTut3All.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3AllProxy.sh.in
+                 ${CMAKE_BINARY_DIR}/bin/examples/advanced/Tutorial3/startMQTut3AllProxy.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3PushPull.sh.in
+                 ${CMAKE_BINARY_DIR}/bin/examples/advanced/Tutorial3/startMQTut3PushPull.sh)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3ExtraProcessor.sh.in
+                 ${CMAKE_BINARY_DIR}/bin/examples/advanced/Tutorial3/startMQTut3ExtraProcessor.sh)
 
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-all-proxy.json       ${CMAKE_BINARY_DIR}/bin/config/tut3-all-proxy.json)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-all.json             ${CMAKE_BINARY_DIR}/bin/config/tut3-all.json)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-extra-processor.json ${CMAKE_BINARY_DIR}/bin/config/tut3-extra-processor.json)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-push-pull.json       ${CMAKE_BINARY_DIR}/bin/config/tut3-push-pull.json)
-  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-three.json           ${CMAKE_BINARY_DIR}/bin/config/tut3-three.json)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-all-proxy.json
+                 ${CMAKE_BINARY_DIR}/bin/config/tut3-all-proxy.json)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-all.json
+                 ${CMAKE_BINARY_DIR}/bin/config/tut3-all.json)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-extra-processor.json
+                 ${CMAKE_BINARY_DIR}/bin/config/tut3-extra-processor.json)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-push-pull.json
+                 ${CMAKE_BINARY_DIR}/bin/config/tut3-push-pull.json)
+  configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-three.json
+                 ${CMAKE_BINARY_DIR}/bin/config/tut3-three.json)
 EndIf (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
 
 Set(LINK_DIRECTORIES
@@ -221,6 +231,9 @@ If (Boost_FOUND AND POS_C++11 AND ZMQ_FOUND)
 
   List(LENGTH Exe_Names _length)
   Math(EXPR _length ${_length}-1)
+
+  set(BIN_DESTINATION share/fairbase/examples/advanced/Tutorial3/bin)
+  set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/advanced/Tutorial3")
 
   ForEach(_file RANGE 0 ${_length})
     List(GET Exe_Names ${_file} _name)

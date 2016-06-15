@@ -54,17 +54,20 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(SCRIPT_ARGS "\${\@:2}")
 
 # Data generator
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/startMQSerializationGenerateData.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationGenerateData.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/startMQSerializationGenerateData.sh.in 
+                ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startMQSerializationGenerateData.sh )
 
 # start MQ chains
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx1.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationEx1.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx2.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationEx2.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx1.sh.in
+                ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startMQSerializationEx1.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx2.sh.in
+                ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startMQSerializationEx2.sh )
 
 # test scripts
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startTestSerializationEx1.sh.in ${CMAKE_BINARY_DIR}/bin/startTestSerializationEx1.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startTestSerializationEx2.sh.in ${CMAKE_BINARY_DIR}/bin/startTestSerializationEx2.sh )
-
-
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startTestSerializationEx1.sh.in
+                ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startTestSerializationEx1.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startTestSerializationEx2.sh.in
+                ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startTestSerializationEx2.sh )
 
 # Create a default directory that will hold root input/output data file
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_io)
@@ -217,6 +220,9 @@ endif(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
 
 List(LENGTH Exe_Names _length)
 Math(EXPR _length ${_length}-1)
+
+set(BIN_DESTINATION share/fairbase/examples/MQ/serialization/bin)
+set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/serialization")
 
 ForEach(_file RANGE 0 ${_length})
     List(GET Exe_Names ${_file} _name)

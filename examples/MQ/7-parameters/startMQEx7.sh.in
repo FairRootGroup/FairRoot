@@ -5,7 +5,7 @@ parmqconfig="@CMAKE_BINARY_DIR@/bin/config/parameter-server.json"
 SAMPLER="ex7-client"
 SAMPLER+=" --id parmq-client"
 SAMPLER+=" --mq-config $ex7config"
-xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/7-parameters/$SAMPLER &
 
 PARAMETERSERVER="parmq-server"
 PARAMETERSERVER+=" --id parmq-server"
