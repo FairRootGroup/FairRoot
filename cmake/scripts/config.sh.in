@@ -1,7 +1,9 @@
+#!/bin/bash
+
 export Linux_Flavour_="@_linux_flavour@"
 export System_="@_system@"
-source @_BINDIR@/check_system.sh                               
-if [ "$same_system" == "1" ]; then 
+. @_BINDIR@/check_system.sh
+if [ $same_system -eq 1 ]; then
   export SIMPATH="@SIMPATH@"
   export ROOTSYS="@ROOTSYS@"
   export FAIRROOTPATH="@FAIRROOTPATH@"
@@ -34,6 +36,7 @@ if [ "$same_system" == "1" ]; then
     export G4RADIOACTIVEDATA="@G4RADIOACTIVEDATA@"
     export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
     export G4SAIDXSDATA="@G4SAIDXSDATA@"
+    export G4ENSDFSTATEDATA="@G4ENSDFSTATEDATA@"
   fi
   export ROOT_LIBRARY_DIR="@ROOT_LIBRARY_DIR@"
   export ROOT_LIBRARIES="@ROOT_LIBRARIES@"
