@@ -14,6 +14,11 @@ find_path(ZMQ_INCLUDE_DIR NAMES zmq.hpp zmq_utils.h
   PATHS ${ZMQ_DIR}/include
   PATHS ${AlFa_DIR}/include
   PATHS ${SIMPATH}/include
+  NO_DEFAULT_PATH
+  DOC   "Path to ZeroMQ include header files."
+)
+
+find_path(ZMQ_INCLUDE_DIR NAMES zmq.hpp zmq_utils.h
   DOC   "Path to ZeroMQ include header files."
 )
 
@@ -21,6 +26,11 @@ find_library(ZMQ_LIBRARY_SHARED NAMES libzmq.dylib libzmq.so
   PATHS ${ZMQ_DIR}/lib
   PATHS ${AlFa_DIR}/lib
   PATHS ${SIMPATH}/lib
+  NO_DEFAULT_PATH
+  DOC   "Path to libzmq.dylib libzmq.so."
+)
+
+find_library(ZMQ_LIBRARY_SHARED NAMES libzmq.dylib libzmq.so
   DOC   "Path to libzmq.dylib libzmq.so."
 )
 
@@ -28,8 +38,14 @@ find_library(ZMQ_LIBRARY_STATIC NAMES libzmq.a
   PATHS ${ZMQ_DIR}/lib
   PATHS ${AlFa_DIR}/lib
   PATHS ${SIMPATH}/lib
+  NO_DEFAULT_PATH
   DOC   "Path to libzmq.a."
 )
+
+find_library(ZMQ_LIBRARY_STATIC NAMES libzmq.a
+  DOC   "Path to libzmq.a."
+)
+
 
 IF(ZMQ_INCLUDE_DIR AND ZMQ_LIBRARY_SHARED AND ZMQ_LIBRARY_STATIC)
   SET(ZMQ_FOUND TRUE)
@@ -42,6 +58,7 @@ set(ERROR_STRING "Looking for ZeroMQ... - Not found")
 if(ZMQ_FOUND)
   FIND_FILE(ZMQ_HEADER_FILE zmq.h
     ${ZMQ_INCLUDE_DIR}
+    NO_DEFAULT_PATH
     )
   IF (DEFINED ZMQ_HEADER_FILE)
     FILE(READ "${ZMQ_HEADER_FILE}" _ZMQ_HEADER_FILE_CONTENT)
