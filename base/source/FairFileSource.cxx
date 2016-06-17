@@ -69,6 +69,7 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t)
   , fGapTime(-1.)
   , fEventMeanTime(0.)
   , fTimeProb(0)
+  , fCheckFileLayout(kTRUE)
 {
     if (fRootFile->IsZombie()) {
      LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
@@ -112,6 +113,7 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
   , fGapTime(-1.)
   , fEventMeanTime(0.)
   , fTimeProb(0)
+  , fCheckFileLayout(kTRUE)
 {
   fRootFile = new TFile(RootFileName->Data());
   if (fRootFile->IsZombie()) {
@@ -156,6 +158,7 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
   , fGapTime(-1.)
   , fEventMeanTime(0.)
   , fTimeProb(0)
+  , fCheckFileLayout(kTRUE)
 {
     fRootFile = new TFile(RootFileName.Data());
     if (fRootFile->IsZombie()) {
@@ -258,14 +261,16 @@ Bool_t FairFileSource::Init()
         if (inputFile->IsZombie()) {
 	  LOG(FATAL) << "Error opening the file " << (*iter).Data() << " which should be added to the input chain or as friend chain" << FairLogger::endl;
         }
-        
-        // Check if the branchlist is the same as for the first input file.
-        Bool_t isOk = CompareBranchList(inputFile, chainName);
-        if ( !isOk ) {
-	  LOG(FATAL) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << (*iter).Data() << " are different." << FairLogger::endl;
+
+        if (fCheckFileLayout) {
+          // Check if the branchlist is the same as for the first input file.
+          Bool_t isOk = CompareBranchList(inputFile, chainName);
+          if ( !isOk ) {
+            LOG(FATAL) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << (*iter).Data() << " are different." << FairLogger::endl;
             return kFALSE;
+          }
         }
-        
+
         // Add the runid information for all files in the chain.
         //GetRunIdInfo(inputFile->GetName(), chainName);
         // Add the file to the input chain
