@@ -13,10 +13,10 @@
 #include "TFile.h"
 #include "TTree.h"
 
-class GenExPart1Sink : public FairMQDevice
+class Ex1Sink : public FairMQDevice
 {
   public:
-    GenExPart1Sink() :
+    Ex1Sink() :
         FairMQDevice(),
         fInput(nullptr),
         fFileName(),
@@ -24,7 +24,7 @@ class GenExPart1Sink : public FairMQDevice
         fTree(nullptr)
     {}
 
-    virtual ~GenExPart1Sink()
+    virtual ~Ex1Sink()
     {
         if (fTree)
         {

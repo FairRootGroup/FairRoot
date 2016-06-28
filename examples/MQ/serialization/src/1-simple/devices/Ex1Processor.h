@@ -12,16 +12,16 @@
 
 
 
-class GenExPart1Processor : public FairMQDevice 
+class Ex1Processor : public FairMQDevice 
 {
   public:
-    GenExPart1Processor() :
+    Ex1Processor() :
         FairMQDevice(),
         fInput(nullptr),
         fOutput(nullptr)
     {}
 
-    virtual ~GenExPart1Processor() {}
+    virtual ~Ex1Processor() {}
 
   protected:
     virtual void Init()

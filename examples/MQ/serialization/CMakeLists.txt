@@ -26,10 +26,7 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_struct
     ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/src/1-simple/devices
     ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/src/2-multi-part/devices
-#    ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/src/2-multi-part/policy
-#    ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/src/2-multi-part/policy/serialization
-#    ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/src/2-multi-part/policy/task
-#    ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/src/2-multi-part/helper_functions
+
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -60,23 +57,8 @@ set(SCRIPT_ARGS "\${\@:2}")
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/startMQSerializationGenerateData.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationGenerateData.sh )
 
 # start MQ chains
-#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx2All.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2All.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx1.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationEx1.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx2.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationEx2.sh )
-
-# start individual devices 
-#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx2Sampler.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2Sampler.sh )
-#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx2Processor.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2Processor.sh )
-#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startGenEx2Sink.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2Sink.sh )
-
-
-# config file 
-#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/options/ConfigGenEx2.cfg.in ${CMAKE_BINARY_DIR}/bin/config/ConfigGenEx2.cfg )
-
-# scripts for CTest
-#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startGenEx2TestBin.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2TestBin.sh )
-#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startGenEx2TestBoost.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2TestBoost.sh )
-#configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startGenEx2TestRoot.sh.in ${CMAKE_BINARY_DIR}/bin/startGenEx2TestRoot.sh )
 
 # Create a default directory that will hold root input/output data file
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_io)
@@ -149,23 +131,14 @@ GENERATE_LIBRARY()
 
 
 Set(Exe_Names
-    #genExSplitter
-    #genExMerger
-    
-    #genericMQTutoFairTestDetectorSampler
-    #genericMQTutoFairTestDetectorProcessor
-    #genericMQTutoFairTestDetectorFileSink
 
-    genEx1Sampler
-    genEx1Processor
-    genEx1Sink
+    serialization-Ex1-Sampler
+    serialization-Ex1-Processor
+    serialization-Ex1-Sink
 
-    serialization-Ex2Sampler
-    serialization-Ex2Processor
-    serialization-Ex2Sink
-    #genEx2Sampler
-    #genEx2Processor
-    #genEx2Sink
+    serialization-Ex2-Sampler
+    serialization-Ex2-Processor
+    serialization-Ex2-Sink
 
     #genericMQTutoSamplerTest
     #genericMQTutoProcessorTest
@@ -173,24 +146,13 @@ Set(Exe_Names
 )
 
 set(Exe_Source
-    #src/2-multi-part/run/runSplitterT7.cxx
-    #src/2-multi-part/run/runMergerT7.cxx
-
-    #run/FairTestDetector/runSamplerT7b.cxx
-    #run/FairTestDetector/runProcessorT7b.cxx
-    #run/FairTestDetector/runFileSinkT7b.cxx
-
-    src/1-simple/run/runSamplerGenEx1.cxx
-    src/1-simple/run/runProcessorGenEx1.cxx
-    src/1-simple/run/runSinkGenEx1.cxx
+    src/1-simple/run/runSamplerEx1.cxx
+    src/1-simple/run/runProcessorEx1.cxx
+    src/1-simple/run/runSinkEx1.cxx
 
     src/2-multi-part/run/runSamplerEx2.cxx
     src/2-multi-part/run/runProcessorEx2.cxx
     src/2-multi-part/run/runSinkEx2.cxx
-    
-    #part2/run/runSamplerT7.cxx
-    #part2/run/runProcessorT7.cxx
-    #part2/run/runFileSinkT7.cxx
 
     #test/runSamplerT7Test.cxx
     #test/runProcessorT7Test.cxx

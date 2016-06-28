@@ -4,10 +4,7 @@
 
 /// FairRoot - FairMQ - base/MQ
 #include "FairMQLogger.h"
-#include "GenericProcessor.h"
 #include "runSimpleMQStateMachine.h"
-#include "BoostSerializer.h"
-#include "RootSerializer.h"
 #include "PixelFindHits.h"
 #include "PixelFindTracks.h"
 #include "PixelFitTracks.h"
