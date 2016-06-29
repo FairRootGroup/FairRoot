@@ -61,12 +61,12 @@ class FairMCPoint : public FairMultiLinkedData_Interface
     Double_t GetTime()       const { return fTime; }
     Double_t GetLength()     const { return fLength; }
     Double_t GetEnergyLoss() const { return fELoss; }
-    void Momentum(TVector3& mom) { mom.SetXYZ(fPx, fPy, fPz); }
+    void Momentum(TVector3& mom) const { mom.SetXYZ(fPx, fPy, fPz); }
     Int_t    GetDetectorID()   const { return fDetectorID;             };
     Double_t GetX()             const { return fX;                      };
     Double_t GetY()             const { return fY;                      };
     Double_t GetZ()             const { return fZ;                      };
-    void Position(TVector3& pos)       const;
+    void Position(TVector3& pos) const { pos.SetXYZ(fX, fY, fZ); }
 
 
 
@@ -136,10 +136,6 @@ inline void FairMCPoint::SetMomentum(const TVector3& mom)
   fPx = mom.Px();
   fPy = mom.Py();
   fPz = mom.Pz();
-}
-inline void FairMCPoint::Position(TVector3& pos) const
-{
-  pos.SetXYZ(fX, fY, fZ);
 }
 
 
