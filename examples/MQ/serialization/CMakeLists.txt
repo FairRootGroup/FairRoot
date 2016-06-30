@@ -5,7 +5,7 @@
  #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Create a library called "libGenericMQTuto" 
+# Create a library called "libSerializationExample" 
 
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
@@ -60,6 +60,12 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/sta
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx1.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationEx1.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/scripts/startMQSerializationEx2.sh.in ${CMAKE_BINARY_DIR}/bin/startMQSerializationEx2.sh )
 
+# test scripts
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startTestSerializationEx1.sh.in ${CMAKE_BINARY_DIR}/bin/startTestSerializationEx1.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/test/startTestSerializationEx2.sh.in ${CMAKE_BINARY_DIR}/bin/startTestSerializationEx2.sh )
+
+
+
 # Create a default directory that will hold root input/output data file
 file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_io)
 
@@ -102,8 +108,8 @@ Set(SRCS
 )
 
 
-Set(LINKDEF GenericMQTutoLinkDef.h)
-Set(LIBRARY_NAME GenericMQTuto)
+Set(LINKDEF SerializationExampleLinkDef.h)
+Set(LIBRARY_NAME SerializationExample)
 
 Set(DEPENDENCIES
     Base 
@@ -141,22 +147,29 @@ Set(Exe_Names
     serialization-Ex2-Sink
 
     #genericMQTutoSamplerTest
-    #genericMQTutoProcessorTest
-    #genericMQTutoSinkTest
+    test-serialization-Ex1-Processor
+    test-serialization-Ex1-sink
+
+    test-serialization-Ex2-Processor
+    test-serialization-Ex2-sink
 )
 
 set(Exe_Source
-    src/1-simple/run/runSamplerEx1.cxx
-    src/1-simple/run/runProcessorEx1.cxx
-    src/1-simple/run/runSinkEx1.cxx
+    src/1-simple/run/runEx1Sampler.cxx
+    src/1-simple/run/runEx1Processor.cxx
+    src/1-simple/run/runEx1Sink.cxx
 
-    src/2-multi-part/run/runSamplerEx2.cxx
-    src/2-multi-part/run/runProcessorEx2.cxx
-    src/2-multi-part/run/runSinkEx2.cxx
+    src/2-multi-part/run/runEx2Sampler.cxx
+    src/2-multi-part/run/runEx2Processor.cxx
+    src/2-multi-part/run/runEx2Sink.cxx
 
     #test/runSamplerT7Test.cxx
-    #test/runProcessorT7Test.cxx
-    #test/runFileSinkT7Test.cxx
+    test/testEx1Processor.cxx
+    test/testEx1Sink.cxx
+
+    test/testEx2Processor.cxx
+    test/testEx2Sink.cxx
+
 )
 
 ############################################################
@@ -188,13 +201,10 @@ if(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
        RESULT_VARIABLE LSB_VER_RESULT
     )
     
-    #message("LSB output: ${LSB_ID_RESULT}:${LSB_ID} ${LSB_VER_RESULT}:${LSB_VER}")
     if(NOT ${LSB_ID} STREQUAL "")
         # found some, use it :D
         set(INSTALLER_PLATFORM "${LSB_ID}-${LSB_VER}" CACHE PATH "Installer chosen platform")
         if(${LSB_ID} STREQUAL "Ubuntu" AND ${LSB_VER} VERSION_GREATER "10.0")
-            #message(STATUS "Running on ${INSTALLER_PLATFORM} which is more recent than Ubuntu 11.0")
-            #message(STATUS "--no-as-needed flag is added to the linker of GenericMQTuto executables")
             set(UBUNTU_GREATERTHAN_v11_LINKER_FLAG "-Wl,--no-as-needed")
         endif()
     else(NOT ${LSB_ID} STREQUAL "")
@@ -213,51 +223,41 @@ ForEach(_file RANGE 0 ${_length})
     List(GET Exe_Source ${_file} _src)
     Set(EXE_NAME ${_name})
     Set(SRCS ${_src})
-    Set(DEPENDENCIES GenericMQTuto ${UBUNTU_GREATERTHAN_v11_LINKER_FLAG})
+    Set(DEPENDENCIES SerializationExample ${UBUNTU_GREATERTHAN_v11_LINKER_FLAG})
     GENERATE_EXECUTABLE()
 EndForEach(_file RANGE 0 ${_length})
 
 
 
-Set(EXE_NAME genericMQTutoGenerateData)
+Set(EXE_NAME serialization-Ex-generate-data)
 Set(SRCS data_generator/runGenerateData.cxx)
-Set(DEPENDENCIES GenericMQTuto RooFitCore RooFit Foam )
+Set(DEPENDENCIES SerializationExample RooFitCore RooFit Foam )
 GENERATE_EXECUTABLE()
 
 
 
 
-#add_test(NAME run_GenericMQ_Tuto_Bin_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenEx2TestBin.sh)
-#set_tests_properties(run_GenericMQ_Tuto_Bin_Test_ALL PROPERTIES TIMEOUT "30")
-#set_tests_properties(run_GenericMQ_Tuto_Bin_Test_ALL PROPERTIES 
-#    PASS_REGULAR_EXPRESSION "Data generation successful"
-#    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
-#    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
-#    PASS_REGULAR_EXPRESSION "Received 100 messages!"
-#    )
+add_test(NAME run_serialization_ex1 COMMAND ${CMAKE_BINARY_DIR}/bin/startTestSerializationEx1.sh)
+set_tests_properties(run_serialization_ex1 PROPERTIES TIMEOUT "30")
+set_tests_properties(run_serialization_ex1 PROPERTIES 
+    PASS_REGULAR_EXPRESSION "Data generation successful"
+    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
+    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
+    PASS_REGULAR_EXPRESSION "Received 100 messages!"
+    )
 
-#add_test(NAME run_GenericMQ_Tuto_Boost_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenEx2TestBoost.sh)
-#set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES TIMEOUT "30")
-#set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES 
-#    PASS_REGULAR_EXPRESSION "Data generation successful"
-#    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
-#    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
-#    PASS_REGULAR_EXPRESSION "Received 100 messages!"
-#    )
-#set_tests_properties(run_GenericMQ_Tuto_Boost_Test_ALL PROPERTIES 
-#    DEPENDS run_GenericMQ_Tuto_Bin_Test_ALL
-#    )
+add_test(NAME run_serialization_ex2 COMMAND ${CMAKE_BINARY_DIR}/bin/startTestSerializationEx2.sh)
+set_tests_properties(run_serialization_ex2 PROPERTIES TIMEOUT "30")
+set_tests_properties(run_serialization_ex2 PROPERTIES 
+    PASS_REGULAR_EXPRESSION "Data generation successful"
+    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
+    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
+    PASS_REGULAR_EXPRESSION "Received 100 messages!"
+    )
+set_tests_properties(run_serialization_ex2 PROPERTIES 
+    DEPENDS run_serialization_ex1
+    )
 
-#add_test(NAME run_GenericMQ_Tuto_Root_Test_ALL COMMAND ${CMAKE_BINARY_DIR}/bin/startGenEx2TestRoot.sh)
-#set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES TIMEOUT "30")
-#set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES 
-#    PASS_REGULAR_EXPRESSION "Data generation successful"
-#    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
-#    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
-#    PASS_REGULAR_EXPRESSION "Received 100 messages!"
-#    )
-#set_tests_properties(run_GenericMQ_Tuto_Root_Test_ALL PROPERTIES 
-#    DEPENDS run_GenericMQ_Tuto_Boost_Test_ALL
-#    )
+
 
 

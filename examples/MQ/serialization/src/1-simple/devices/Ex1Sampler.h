@@ -76,7 +76,7 @@ class Ex1Sampler : public FairMQDevice
             fTree->GetEntry(idx);
             Serialize<MySerializer>(*msg, fInput);
             Send(msg, "data-out");
-            sentMsgs++;
+            sentMsgs++;//LOG(INFO)<<"SAMPLER";
             if (!CheckCurrentState(RUNNING))
             {
                 break;
