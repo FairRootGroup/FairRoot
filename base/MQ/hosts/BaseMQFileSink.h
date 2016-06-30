@@ -7,14 +7,14 @@
  ********************************************************************************/
 
 /* 
- * File:   GenericFileSink.h
+ * File:   BaseMQFileSink.h
  * Author: winckler
  *
  * Created on October 7, 2014, 6:06 PM
  */
 
-#ifndef GENERICFILESINK_H
-#define	GENERICFILESINK_H
+#ifndef BASEMQFILESINK_H
+#define BASEMQFILESINK_H
 
 #include "FairMQDevice.h"
 #include <boost/thread.hpp>
@@ -36,19 +36,18 @@
  *                sink_type::InitOutputFile()
  **********************************************************************/
 
-#include "FairMQDevice.h"
 
 template <typename T, typename U>
-class GenericFileSink : public FairMQDevice, public T, public U
+class BaseMQFileSink : public FairMQDevice, public T, public U
 {
   public:
     typedef T                        input_policy;
     typedef U                        sink_type;
-    GenericFileSink()
+    BaseMQFileSink()
         : FairMQDevice(), input_policy(), sink_type()
     {}
 
-    virtual ~GenericFileSink()
+    virtual ~BaseMQFileSink()
     {}
 
 
@@ -88,4 +87,4 @@ class GenericFileSink : public FairMQDevice, public T, public U
     }
 };
 
-#endif /* GENERICFILESINK_H */
+#endif /* BASEMQFILESINK_H */

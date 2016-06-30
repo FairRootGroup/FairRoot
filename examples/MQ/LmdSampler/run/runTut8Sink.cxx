@@ -1,6 +1,6 @@
 
 // FairRoot - FairMQ
-#include "GenericFileSink.h"
+#include "BaseMQFileSink.h"
 #include "runSimpleMQStateMachine.h"
 
 // FairRoot - base/MQ
@@ -11,7 +11,7 @@
 #include "FairTut8RawItem.h"
 
 
-typedef GenericFileSink<RootDefaultInputPolicy, RootOutFileManager<FairTut8RawItem>>  TSink;
+typedef BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairTut8RawItem>>  TSink;
 
 
 int main(int argc, char** argv)

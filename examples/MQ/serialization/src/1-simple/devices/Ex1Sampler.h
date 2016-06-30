@@ -20,10 +20,10 @@
 #include "TFile.h"
 #include "TTree.h"
 
-class GenExPart1Sampler : public FairMQDevice
+class Ex1Sampler : public FairMQDevice
 {
   public:
-    GenExPart1Sampler() :
+    Ex1Sampler() :
         FairMQDevice(),
         fInput(nullptr),
         fTree(nullptr),
@@ -31,7 +31,7 @@ class GenExPart1Sampler : public FairMQDevice
         fInputFile(nullptr)
     {}
 
-    virtual ~GenExPart1Sampler()
+    virtual ~Ex1Sampler()
     {
         if (fInputFile)
         {
@@ -76,7 +76,7 @@ class GenExPart1Sampler : public FairMQDevice
             fTree->GetEntry(idx);
             Serialize<MySerializer>(*msg, fInput);
             Send(msg, "data-out");
-            sentMsgs++;
+            sentMsgs++;//LOG(INFO)<<"SAMPLER";
             if (!CheckCurrentState(RUNNING))
             {
                 break;

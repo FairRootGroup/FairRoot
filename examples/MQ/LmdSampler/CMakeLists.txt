@@ -10,13 +10,13 @@
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
     ${CMAKE_SOURCE_DIR}/fairmq
-    ${CMAKE_SOURCE_DIR}/fairmq/devices
     ${CMAKE_SOURCE_DIR}/fairmq/options
     ${CMAKE_SOURCE_DIR}/fairmq/tools
     ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
     ${CMAKE_SOURCE_DIR}/fairmq/zeromq
 
     ${CMAKE_SOURCE_DIR}/base/MQ/devices
+    ${CMAKE_SOURCE_DIR}/base/MQ/hosts
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage
     ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
@@ -24,7 +24,7 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/examples/MQ/LmdSampler
     ${CMAKE_SOURCE_DIR}/examples/MQ/LmdSampler/devices
     ${CMAKE_SOURCE_DIR}/examples/MQ/LmdSampler/unpacker
-    
+
     ${CMAKE_SOURCE_DIR}/MbsAPI
 
     ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial/src

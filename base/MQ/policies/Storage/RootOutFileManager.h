@@ -27,10 +27,10 @@
 // FairRoot
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
-#include "BaseSinkPolicy.h"
+
 
 template <typename DataType>
-class RootOutFileManager : public BaseSinkPolicy<RootOutFileManager<DataType>>
+class RootOutFileManager 
 {
   public:
     RootOutFileManager();

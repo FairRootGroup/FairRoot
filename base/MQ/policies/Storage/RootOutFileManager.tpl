@@ -6,7 +6,7 @@
  */
 
 template <typename DataType>
-RootOutFileManager<DataType>::RootOutFileManager() : BaseSinkPolicy<RootOutFileManager<DataType>>(),
+RootOutFileManager<DataType>::RootOutFileManager() : 
     fFileName(),
     fTreeName(),
     fBranchName(),
@@ -24,7 +24,7 @@ RootOutFileManager<DataType>::RootOutFileManager() : BaseSinkPolicy<RootOutFileM
 }
 
 template <typename DataType>
-RootOutFileManager<DataType>::RootOutFileManager(const std::string &filename, const std::string &treename, const std::string &branchname, const std::string &Classname, const std::string &FileOption) : BaseSinkPolicy<RootOutFileManager<DataType>>(),
+RootOutFileManager<DataType>::RootOutFileManager(const std::string &filename, const std::string &treename, const std::string &branchname, const std::string &Classname, const std::string &FileOption) : 
     fFileName(filename),
     fTreeName(treename),
     fBranchName(branchname),

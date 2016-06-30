@@ -1,22 +1,26 @@
-#ifndef GENEXPART1SINK_H
-#define GENEXPART1SINK_H
 
 // std
 #include <iostream>
 #include <memory>
 
+// FairRoot - FairMQ
+#include "runSimpleMQStateMachine.h"
+
 // FairRoot
 #include "FairMQDevice.h"
 #include "SerializerExample.h"
+#include "FairMQProgOptions.h"
+#include "MyHit.h"
+
 
 // root
 #include "TFile.h"
 #include "TTree.h"
 
-class GenExPart1Sink : public FairMQDevice
+class Ex1SinkTest : public FairMQDevice
 {
   public:
-    GenExPart1Sink() :
+    Ex1SinkTest() :
         FairMQDevice(),
         fInput(nullptr),
         fFileName(),
@@ -24,7 +28,7 @@ class GenExPart1Sink : public FairMQDevice
         fTree(nullptr)
     {}
 
-    virtual ~GenExPart1Sink()
+    virtual ~Ex1SinkTest()
     {
         if (fTree)
         {
@@ -67,8 +71,10 @@ class GenExPart1Sink : public FairMQDevice
                 fTree->SetBranchAddress("MyHit", &fInput);
                 fTree->Fill();
             }
+            if(receivedMsgs==100)
+                break;
         }
-        LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
+        LOG(INFO) << "Received " << receivedMsgs << " messages!";
     }
 
   private:
@@ -79,4 +85,37 @@ class GenExPart1Sink : public FairMQDevice
 };
 
 
-#endif
+
+int main(int argc, char** argv)
+{
+    try
+    {
+        FairMQProgOptions config;
+        namespace po = boost::program_options;
+        po::options_description sink_options("File Sink options");
+        sink_options.add_options()
+            ("output-file", po::value<std::string>(), "Path to the input file");
+
+        config.AddToCmdLineOptions(sink_options);
+        config.ParseAll(argc, argv);
+
+        std::string filename = config.GetValue<std::string>("output-file");
+
+        Ex1SinkTest sink;
+        sink.SetFileName(filename);
+        runStateMachine(sink, config);
+
+        
+    }
+    catch (std::exception& e)
+    {
+        LOG(ERROR)  << "Unhandled Exception reached the top of main: " 
+                    << e.what() << ", application will now exit";
+        return 1;
+    }
+
+    return 0;
+}
+
+
+

@@ -14,7 +14,7 @@
 
 // FairRoot - FairMQ
 #include "FairMQLogger.h"
-#include "GenExPart1Sampler.h"
+#include "Ex1Sampler.h"
 #include "runSimpleMQStateMachine.h" 
 
 
@@ -48,7 +48,7 @@ int main(int argc, char** argv)
         std::string filename = config.GetValue<std::string>("input-file");
 
         // create sampler 
-        GenExPart1Sampler sampler;
+        Ex1Sampler sampler;
         sampler.SetFileName(filename);
 
         // start simple state machine

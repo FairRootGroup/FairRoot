@@ -6,13 +6,12 @@
 #include "FairMQLogger.h"
 #include "FairMQProgOptions.h"
 
-#include "GenericProcessor.h"
 #include "runSimpleMQStateMachine.h"
 
 #include "MyDigi.h"
 #include "MyHit.h"
 
-#include "GenExPart1Processor.h"
+#include "Ex1Processor.h"
 
 
 int main(int argc, char** argv)
@@ -23,7 +22,7 @@ int main(int argc, char** argv)
         // parse command line
         config.ParseAll(argc, argv);
 
-        GenExPart1Processor processor;
+        Ex1Processor processor;
         runStateMachine(processor, config);
 
     }

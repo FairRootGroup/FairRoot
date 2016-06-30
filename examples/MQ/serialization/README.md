@@ -1,4 +1,4 @@
-#GenericDevices
+#Serialization Examples
 
 
 ## Quick start
@@ -23,13 +23,15 @@ to increase the number of gaussian(x,y,z). For each time index, N event will be 
 ./startSerializationGenerateData.sh --Nmean 1000 --Nsigma 10
 ```
 
-to set the average number and standard deviation of digi per time index (pulse). This will vary the number of digis a message contains. For example on ubuntu 14.04.3 LTS and with gcc 4.8.4, the MyDigi class has a size of about 104 bytes (the serialized data members however have a size of 28 bytes). Therefore, with this setting, the approximated size of the generated file will be about Nmean x tmax x 104 bytes.
+to set the average number and standard deviation of digi per time index (pulse). This will vary the number of digis per message and hence the data size to transport.
 
 ### Start the process chain
 Start one of the two scripts (the scripts will use the inputGenEx.root as data source).
 
 ```bash
+# single part transport
 ./startSerializationEx1.sh
+# or multipart transport (header+data)
 ./startSerializationEx2.sh
 ```
 

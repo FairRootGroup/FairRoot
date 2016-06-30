@@ -6,7 +6,7 @@
 #include "FairMQProgOptions.h"
 #include "MyHit.h"
 
-#include "GenExPart1Sink.h"
+#include "Ex1Sink.h"
 
 
 
@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 
         std::string filename = config.GetValue<std::string>("output-file");
 
-        GenExPart1Sink sink;
+        Ex1Sink sink;
         sink.SetFileName(filename);
         runStateMachine(sink, config);
 

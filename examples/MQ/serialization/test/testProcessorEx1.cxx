@@ -1,5 +1,3 @@
-#ifndef GENEXPART1PROCESSOR_H
-#define GENEXPART1PROCESSOR_H
 
 //std
 #include <iostream>
@@ -10,18 +8,25 @@
 #include "SerializerExample.h"
 #include "TMath.h"
 
+#include "MyDigi.h"
+#include "MyHit.h"
+
+#include "FairMQLogger.h"
+#include "FairMQProgOptions.h"
+#include "runSimpleMQStateMachine.h"
 
 
-class GenExPart1Processor : public FairMQDevice 
+
+class Ex1ProcessorTest : public FairMQDevice 
 {
   public:
-    GenExPart1Processor() :
+    Ex1ProcessorTest() :
         FairMQDevice(),
         fInput(nullptr),
         fOutput(nullptr)
     {}
 
-    virtual ~GenExPart1Processor() {}
+    virtual ~Ex1ProcessorTest() {}
 
   protected:
     virtual void Init()
@@ -46,6 +51,8 @@ class GenExPart1Processor : public FairMQDevice
                 Send(msg, "data-out");
                 sentMsgs++;
             }
+            if(receivedMsgs==100 && sentMsgs==100)
+                break;
         }
         LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
     }
@@ -77,4 +84,29 @@ class GenExPart1Processor : public FairMQDevice
 };
 
 
-#endif
+
+int main(int argc, char** argv)
+{
+    try
+    {
+        FairMQProgOptions config;
+        // parse command line
+        config.ParseAll(argc, argv);
+
+        Ex1ProcessorTest processor;
+        runStateMachine(processor, config);
+
+    }
+    catch (std::exception& e)
+    {
+        LOG(ERROR)  << "Unhandled Exception reached the top of main: " 
+                    << e.what() << ", application will now exit";
+        return 1;
+    }
+
+    return 0;
+}
+
+
+
+
