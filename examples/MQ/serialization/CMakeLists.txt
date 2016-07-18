@@ -243,7 +243,7 @@ GENERATE_EXECUTABLE()
 
 
 
-add_test(NAME run_serialization_ex1 COMMAND ${CMAKE_BINARY_DIR}/bin/startTestSerializationEx1.sh)
+add_test(NAME run_serialization_ex1 COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startTestSerializationEx1.sh)
 set_tests_properties(run_serialization_ex1 PROPERTIES TIMEOUT "30")
 set_tests_properties(run_serialization_ex1 PROPERTIES 
     PASS_REGULAR_EXPRESSION "Data generation successful"
@@ -252,7 +252,7 @@ set_tests_properties(run_serialization_ex1 PROPERTIES
     PASS_REGULAR_EXPRESSION "Received 100 messages!"
     )
 
-add_test(NAME run_serialization_ex2 COMMAND ${CMAKE_BINARY_DIR}/bin/startTestSerializationEx2.sh)
+add_test(NAME run_serialization_ex2 COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startTestSerializationEx2.sh)
 set_tests_properties(run_serialization_ex2 PROPERTIES TIMEOUT "30")
 set_tests_properties(run_serialization_ex2 PROPERTIES 
     PASS_REGULAR_EXPRESSION "Data generation successful"
