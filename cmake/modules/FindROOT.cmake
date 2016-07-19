@@ -24,7 +24,7 @@
 #
 #   ROOT_INCLUDES            Same as above,
 #
-#   ROOT_LIBRARIESS          Link to these to use the ROOT libraries, not cached
+#   ROOT_LIBRARIES           Link to these to use the ROOT libraries, not cached
 #
 #   ROOT_LIBRARY_DIR         The path to where the ROOT library files are.
 #
