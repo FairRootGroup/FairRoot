@@ -577,12 +577,32 @@ void  FairRunOnline::SetContainerStatic(Bool_t tempBool)
 //_____________________________________________________________________________
 void FairRunOnline::AddObject(TObject* object)
 {
-  if(fFolder) {
-    fFolder->Add(object);
-  }
-  if(fServer) {
-    fServer->Register("HISTO", object);
-  }
+    if(NULL == object)
+    {
+        return;
+    }
+    if(fFolder) {
+        fFolder->Add(object);
+    }
+    if(fServer) {
+        TString classname = TString(object->ClassName());
+        if(classname.EqualTo("TCanvas"))
+        {
+            fServer->Register("CANVAS", object);
+        }
+        else if(classname.EqualTo("TFolder"))
+        {
+            fServer->Register("/", object);
+        }
+        else if(classname.Contains("TH1") || classname.Contains("TH2"))
+        {
+            fServer->Register("HISTO", object);
+        }
+        else
+        {
+            LOG(WARNING) << "FairRunOnline::AddObject : unrecognized object type : " << classname << FairLogger::endl;
+        }
+    }
 }
 //_____________________________________________________________________________
 
