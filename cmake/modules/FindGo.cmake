@@ -38,13 +38,17 @@ find_package_handle_standard_args(Go REQUIRED_VARS GO_EXECUTABLE GO_VERSION GO_P
 # if 'gopath' is empty "", the environment variable $GOPATH will be used and passed to
 # 'go get'.
 macro(build_go_package pkg gopath)
+#  message("Building Go Stuff")
 	string(REPLACE "/" "_" tgt ${pkg})
 	if(gopath STREQUAL "")
 		set(gopath $ENV{GOPATH})
 	endif()
-	add_custom_target(${tgt}
-		COMMAND ${CMAKE_COMMAND} -E env "GOPATH=${gopath}"
-		${GO_EXECUTABLE} get ${pkg}
-		COMMENT "Building Go package: ${pkg}"
-	)
+
+  set(workdir "${gopath}/src/${pkg}")
+#  message("Working directory:  ${workdir}")
+  execute_process (COMMAND ${GO_EXECUTABLE} get
+                   WORKING_DIRECTORY ${workdir}
+  )
+
+
 endmacro(build_go_package)
