@@ -7,12 +7,12 @@
 # StationNr global_rot nSectors
 # sect iType x0        y0       angle    lx       ly      dx       dy     stereo
 #################################################################
-[FairTutorialDetDigiPar]
+[FairTutorialDet2DigiPar]
 //-------------------------------------------------------------
-FairTutorialDetDigiStations: Int_t 8
-FairTutorialDetDigiSectorsPerStation: Int_t \ 
+FairTutorialDet2DigiStations: Int_t 8
+FairTutorialDet2DigiSectorsPerStation: Int_t \ 
 84  88  60  72  100  100  120  132
-FairTutorialDetDigiPar: Float_t  \
+FairTutorialDet2DigiPar: Float_t  \
                   1.0  0.0  84.0  \
                   1.0    3.0     3.650      1.000       0.0     4.70      2.00    0.0060    0.0000     15.0  \
                   2.0    3.0     3.000      3.000       0.0     6.00      2.00    0.0060    0.0000     15.0  \

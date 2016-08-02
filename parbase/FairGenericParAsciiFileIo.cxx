@@ -77,7 +77,7 @@ const UChar_t *FairGenericParAsciiFileIo::readData(type t, const Char_t *format,
   const Int_t st = sizeof(t);
   const Int_t maxbuf = 8000;
   const Int_t bufSizeExt = 10000 * st;
-  const Char_t d[] = " ";
+  const Char_t d[] = " \t";
   Text_t buf[maxbuf];
   TString s;
   Int_t l = 0, bufSize = bufSizeExt;
@@ -93,8 +93,8 @@ const UChar_t *FairGenericParAsciiFileIo::readData(type t, const Char_t *format,
       if (buf[0] != '/' && buf[0] != '#') {
         s = buf;
         m = s.Last('\\');
-        if (m > 0) {
-          s = s(0, s.Length() - 2);
+        if (m > 0 && m < s.Length()) {
+          s = s(0, m - 1);
         }
         if ((bufSize - 1000) < l) {
           bufSize += bufSizeExt;
@@ -147,6 +147,7 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet *pPar) {
   }
   
 
+  const Char_t d[] = " \t";
   FairParamList *paramList = new FairParamList;
   const Int_t maxbuf = 8000;
   Text_t buf[maxbuf];
@@ -197,10 +198,10 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet *pPar) {
           pPar->setDescription(pVal.Data());
         }
       } else {
-        n = s.First(' ');
-        pType = s(0, n);
-        s = s(n + 1, s.Length() - n - 1);
-        s = s.Strip(s.kLeading);
+        Char_t *ss = strtok(const_cast<Char_t*>(s.Data()), d);
+        pType = TString(ss);
+        Int_t mt = s.Index(pType);
+        s = s(mt + pType.Length() + 1, s.Length() - mt - pType.Length() - 1);
         if (pType.CompareTo("Text_t") == 0) {
           m = s.Last('\\');
           if (m < 0) {
