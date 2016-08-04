@@ -43,14 +43,14 @@ FIND_PATH(FAIRROOT_CMAKEMOD_DIR NAMES CMakeLists.txt  PATHS
 )
 
 set(FAIRMQ_DEPENDENCIES
-  boost_log
-  boost_log_setup
-  boost_thread
-  boost_filesystem
-  boost_system
-  boost_date_time
-  boost_timer
-  boost_program_options
+  ${Boost_LOG_LIBRARY}
+  ${Boost_LOG_SETUP_LIBRARY}
+  ${Boost_THREAD_LIBRARY}
+  ${Boost_FILESYSTEM_LIBRARY}
+  ${Boost_SYSTEM_LIBRARY}
+  ${Boost_DATE_TIME_LIBRARY}
+  ${Boost_TIMER_LIBRARY}
+  ${Boost_PROGRAM_OPTIONS_LIBRARY}
   pthread
   fairmq_logger
 )
