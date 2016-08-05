@@ -138,6 +138,11 @@ FairRootManager::~FairRootManager()
   delete fBranchNameList;
   fgInstance = 0;
   LOG(DEBUG) << "Leave Destructor of FairRootManager" << FairLogger::endl;
+
+  if (fEventHeader)
+	  delete fEventHeader;
+  if (fSourceChain)
+	  delete fSourceChain;
 }
 //_____________________________________________________________________________
 
