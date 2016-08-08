@@ -45,7 +45,7 @@ If(Boost_FOUND)
   Generate_Exe_Script(${CMAKE_CURRENT_SOURCE_DIR} _GTestFairModule)
   add_test(_GTestFairModule ${CMAKE_BINARY_DIR}/bin/_GTestFairModule)
  
-  File(COPY ${CMAKE_SOURCE_DIR}/example/geometry/cave.geo 
+  File(COPY ${CMAKE_SOURCE_DIR}/examples/common/geometry/cave.geo 
        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 Else(Boost_FOUND)
