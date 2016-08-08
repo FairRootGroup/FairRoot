@@ -209,12 +209,14 @@ void FairLogger::SetLogFileName(const char* name)
 {
   if (fFileStream) {
     CloseLogFile();
-    delete fFileStream;
     fFileStream = NULL;
-    if( remove(fLogFileName) != 0 ) {
-      LOG(ERROR)<<"Could not delete log file "<< fLogFileName << "." << FairLogger::endl;
+    // Remove the file only if it still exists
+    std::ifstream ifile(fLogFileName);
+    if ( ifile ) {
+      if( remove(fLogFileName) != 0 ) {
+        LOG(ERROR)<<"Could not delete log file "<< fLogFileName << "." << FairLogger::endl;
+      }
     }
-    
   }
 
   fLogFileName = name;
