@@ -34,8 +34,7 @@ static const char* const VerbosityLevelArray[] = { "LOW", "MEDIUM", "HIGH"};
 
 TEST(FairToolsTestFatal, TestFatalError)
 {
-  FairLogger* fLogger;
-  fLogger = FairLogger::GetLogger();
+  FairLogger* fLogger = FairLogger::GetLogger();
   fLogger->SetScreenStreamToCerr(true);
   EXPECT_DEATH(fLogger->Fatal(MESSAGE_ORIGIN, "This is a fatal problem"),
                "FATAL");
@@ -52,6 +51,7 @@ template <class T> class _TestFairLoggerBase : public T
 
     std::string logLevelSettingToTest;
     std::string OutputString;
+    std::string OutFileName;
     FairLogger* fLogger;
     FairTestNewOutputHandler handler;
 
@@ -60,6 +60,7 @@ template <class T> class _TestFairLoggerBase : public T
       OutputString = "I am here.";
       fLogger = FairLogger::GetLogger();
       SetFairLoggerDefaultValues();
+      SetOutFileName();
     }
 
     /*
@@ -71,6 +72,12 @@ template <class T> class _TestFairLoggerBase : public T
       // test to the SetUp function of the base class
     }
     */
+
+    void SetOutFileName() {
+      char fileName[25];
+      tmpnam(fileName);
+      OutFileName = fileName;
+    }
 
     void SetFairLoggerDefaultValues() {
       fLogger->SetLogToScreen(true);
@@ -95,8 +102,7 @@ template <class T> class _TestFairLoggerBase : public T
 
     std::vector<std::string>
     CreateExpectedOutputNoArguments(std::string loglevel,
-                                    std::string outString,
-                                    std::string filename="") {
+                                    std::string outString) {
 
       //Put blanks to the string to have all strings the same length
       int size = loglevel.size();
@@ -146,6 +152,20 @@ template <class T> class _TestFairLoggerBase : public T
       }
     }
 
+    void CheckFileOutput(std::vector<std::string> v, std::string fileName) {
+      std::vector<std::string> fileInfo;
+      fileInfo=ReadLinesFromFile(fileName);
+      int noLines = fileInfo.size();
+      int expectedNumberOfLines = v.size();
+      EXPECT_EQ(expectedNumberOfLines,noLines);
+
+      int minLines = std::min(expectedNumberOfLines,noLines);
+
+      for (int i = 0; i < minLines; ++i) {
+        EXPECT_EQ( v[i], fileInfo[i] );
+      }
+    }
+
     std::vector<std::string> ReadLinesFromFile(std::string fileName) {
 
       std::vector<std::string> list;
@@ -160,20 +180,6 @@ template <class T> class _TestFairLoggerBase : public T
       }
 
       return list;
-    }
-
-    void CheckFileOutput(std::vector<std::string> v, std::string fileName) {
-      std::vector<std::string> fileInfo;
-      fileInfo=ReadLinesFromFile(fileName);
-      int noLines = fileInfo.size();
-      int expectedNumberOfLines = v.size();
-      EXPECT_EQ(expectedNumberOfLines,noLines);
-
-      int minLines = std::min(expectedNumberOfLines,noLines);
-
-      for (int i = 0; i < minLines; ++i) {
-        EXPECT_EQ( v[i], fileInfo[i] );
-      }
     }
 
     bool CheckVerboseOutput(std::string logLevel, std::string outputString,
@@ -211,6 +217,7 @@ class LogLevelTest : public _TestFairLoggerBase<
       logLevelSettingToTest=GetParam();
       OutputString = "I am here.";
       fLogger = FairLogger::GetLogger();
+      SetOutFileName();
       SetFairLoggerDefaultValues();
     }
 };
@@ -224,6 +231,7 @@ class VerbosityLevelTest : public _TestFairLoggerBase<
       verbosityLevel=GetParam();
       OutputString = "I am here.";
       fLogger = FairLogger::GetLogger();
+      SetOutFileName();
       SetFairLoggerDefaultValues();
     }
     std::string verbosityLevel;
@@ -233,27 +241,25 @@ TEST_F(FairToolsTest, CheckDefaultSettings)
 {
   LogNoArguments();
 
-  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
+  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(v);
+    CheckScreenOutput(expected);
   }
 }
 
 TEST_F(FairToolsTest, CheckOutputOnlyToFile)
 {
 
-  char fileName[25];
-  tmpnam(fileName);
-  fLogger->SetLogFileName(fileName);
+  fLogger->SetLogFileName(OutFileName.c_str());
   fLogger->SetLogToFile(true);
   fLogger->SetLogToScreen(false);
   LogNoArguments();
 
-  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
+  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    CheckFileOutput(v, fileName);
+    CheckFileOutput(expected, OutFileName);
   }
 }
 
@@ -266,15 +272,15 @@ TEST_F(FairToolsTest, CheckWrongLogLevelSettings)
   fLogger->SetLogScreenLevel("BLA");
   LogNoArguments();
 
-  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
+  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   std::string outString="[ERROR  ] Log level \"BLA\" not supported. Use default level \"INFO\".";
   std::vector<std::string>::iterator it;
-  it = v.begin();
-  it = v.insert ( it , outString );
+  it = expected.begin();
+  it = expected.insert ( it , outString );
 
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(v);
+    CheckScreenOutput(expected);
   }
 }
 
@@ -287,15 +293,15 @@ TEST_F(FairToolsTest, CheckVerbosityLevelSettings)
   fLogger->SetLogVerbosityLevel("BLA");
   LogNoArguments();
 
-  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
+  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   std::string outString="[ERROR  ] Verbosity level \"BLA\" not supported. Use default level \"LOW\".";
   std::vector<std::string>::iterator it;
-  it = v.begin();
-  it = v.insert ( it , outString );
+  it = expected.begin();
+  it = expected.insert ( it , outString );
 
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(v);
+    CheckScreenOutput(expected);
   }
 
 }
@@ -304,24 +310,21 @@ TEST_F(FairToolsTest, CheckVerbosityLevelSettings)
 TEST_F(FairToolsTest, testScreenAndFileOutputWithoutArgument)
 {
 
-  char fileName[25];
-  tmpnam(fileName);
-  fLogger->SetLogFileName(fileName);
+  fLogger->SetLogFileName(OutFileName.c_str());
   fLogger->SetLogToScreen(true);
   fLogger->SetLogToFile(true);
   LogNoArguments();
 
-  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString, fileName);
+  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(v);
+    CheckScreenOutput(expected);
   }
 
-  v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
 
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    CheckFileOutput(v, fileName);
+    CheckFileOutput(expected, OutFileName);
   }
 
 }
@@ -331,23 +334,20 @@ TEST_P(LogLevelTest, testAllLogLevelsToScreenAndFile)
   fLogger->SetLogFileLevel(logLevelSettingToTest.c_str());
   fLogger->SetLogScreenLevel(logLevelSettingToTest.c_str());
 
-  char fileName[25];
-  tmpnam(fileName);
-  fLogger->SetLogFileName(fileName);
+  fLogger->SetLogFileName(OutFileName.c_str());
   fLogger->SetLogToScreen(true);
   fLogger->SetLogToFile(true);
   LogNoArguments();
 
-  std::vector<std::string> v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString, fileName);
+  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(v);
+    CheckScreenOutput(expected);
   }
 
-  v = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    CheckFileOutput(v, fileName);
+    CheckFileOutput(expected, OutFileName);
   }
 
 }
@@ -361,33 +361,31 @@ TEST_P(VerbosityLevelTest, testAllVerbosityLevelsToScreenAndFile)
 {
   fLogger->SetLogVerbosityLevel(verbosityLevel.c_str());
 
-  char fileName[25];
-  tmpnam(fileName);
-  fLogger->SetLogFileName(fileName);
+  fLogger->SetLogFileName(OutFileName.c_str());
   fLogger->SetLogToScreen(true);
   fLogger->SetLogToFile(true);
   LogNoArguments();
 
-  std::vector<std::string> v = CreateExpectedLogLevels(logLevelSettingToTest);
+  std::vector<std::string> expected = CreateExpectedLogLevels(logLevelSettingToTest);
 
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    int Lines = v.size();
+    int Lines = expected.size();
 
     for (int i = 0; i < Lines; ++i) {
-      EXPECT_TRUE( CheckVerboseOutput( v[i], OutputString, verbosityLevel, handler.GetCaptureLine(i) ) );
+      EXPECT_TRUE( CheckVerboseOutput( expected[i], OutputString, verbosityLevel, handler.GetCaptureLine(i) ) );
     }
   }
 
 
   std::vector<std::string> fileInfo;
-  fileInfo=ReadLinesFromFile(fileName);
+  fileInfo=ReadLinesFromFile(OutFileName);
   {
     SCOPED_TRACE(logLevelSettingToTest);
-    int Lines = v.size();
+    int Lines = expected.size();
 
     for (int i = 0; i < Lines; ++i) {
-      EXPECT_TRUE( CheckVerboseOutput( v[i], OutputString, verbosityLevel, fileInfo[i] ) );
+      EXPECT_TRUE( CheckVerboseOutput( expected[i], OutputString, verbosityLevel, fileInfo[i] ) );
     }
   }
 

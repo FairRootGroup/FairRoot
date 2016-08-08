@@ -32,6 +32,6 @@ set(LINK_DIRECTORIES
 link_directories( ${LINK_DIRECTORIES})
 
 ############### build the library #####################
-add_library(FairTest SHARED FairCaptureOutput.cxx FairTestOutputHandler.cxx FairTestNewOutputHandler.cxx )
+add_library(FairTest SHARED FairCaptureOutput.cxx FairTestOutputHandler.cxx FairTestNewOutputHandler.cxx FairCaptureOutputNew.cxx )
   target_link_libraries(FairTest ${Boost_LIBRARIES} )
 
