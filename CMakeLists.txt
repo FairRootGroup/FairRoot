@@ -315,6 +315,10 @@ endif(IWYU_FOUND)
 
 
 Option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
+Message("Test_Model: ${CMAKE_BUILD_TYPE}")
+If(${CMAKE_BUILD_TYPE} MATCHES PROFILE)
+  Set(BUILD_UNITTESTS ON)
+EndIf()
 If(BUILD_UNITTESTS)
 
   Message("Build the unit tests.")
