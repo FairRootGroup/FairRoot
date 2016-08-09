@@ -149,6 +149,8 @@ Set(Exe_Names
     serialization-Ex2-Processor
     serialization-Ex2-Sink
 
+    newConfig-exec
+
     #genericMQTutoSamplerTest
     test-serialization-Ex1-Processor
     test-serialization-Ex1-sink
@@ -165,6 +167,8 @@ set(Exe_Source
     src/2-multi-part/run/runEx2Sampler.cxx
     src/2-multi-part/run/runEx2Processor.cxx
     src/2-multi-part/run/runEx2Sink.cxx
+
+    src/test_newConfig.cxx
 
     #test/runSamplerT7Test.cxx
     test/testEx1Processor.cxx
