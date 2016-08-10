@@ -8,54 +8,38 @@
 using namespace TestDetectorFlat;
 
 template <>
-void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>::Run()
+void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>::InitTask()
 {
-    int receivedMsgs = 0;
-
-    // channel references to avoid traversing the map on every loop iteration
-    FairMQChannel& dataInChannel = fChannels.at("data2").at(0);
-    FairMQChannel& ackOutChannel = fChannels.at("ack").at(0);
-
-    while (CheckCurrentState(RUNNING))
+    OnData("data2", [this](FairMQMessagePtr& msg, int /*index*/)
     {
-        std::unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage());
+        ++fReceivedMsgs;
+        fOutput->Delete();
 
-        if (dataInChannel.Receive(msg) > 0)
+        auto hitPayload = GetHitPayload(msg->GetData());
+        auto hits = hitPayload->hits();
+
+        // int numEntries = hits->size();
+
+        for (auto it = hits->begin(); it != hits->end(); ++it)
         {
-            ++receivedMsgs;
-            fOutput->Delete();
-
-            auto hitPayload = GetHitPayload(msg->GetData());
-            auto hits = hitPayload->hits();
-            // auto rbigBuffer = hitPayload->bigBuffer();
-            // memcpy(fBigBuffer->data(), rbigBuffer->Data(), sizeof(*fBigBuffer));
-
-            // Check if the data is the same as on the sender
-            // LOG(WARN) << (*fBigBuffer)[7];
-
-            int numEntries = hits->size();
-
-            for (auto it = hits->begin(); it != hits->end(); ++it)
-            {
-                TVector3 pos((*it)->x(), (*it)->y(), (*it)->z());
-                TVector3 dpos((*it)->dx(), (*it)->dy(), (*it)->dz());
-                new ((*fOutput)[it - hits->begin()]) FairTestDetectorHit((*it)->detID(), (*it)->mcIndex(), pos, dpos);
-                // LOG(WARN) << " " << (*it)->detID() << " " << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " " << (*it)->dx() << " " << (*it)->dy() << " " << (*it)->dz();
-            }
-
-            if (fOutput->IsEmpty())
-            {
-                LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
-            }
-
-            std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
-            ackOutChannel.Send(ack);
-
-            fTree->Fill();
+            TVector3 pos((*it)->x(), (*it)->y(), (*it)->z());
+            TVector3 dpos((*it)->dx(), (*it)->dy(), (*it)->dz());
+            new ((*fOutput)[it - hits->begin()]) FairTestDetectorHit((*it)->detID(), (*it)->mcIndex(), pos, dpos);
+            // LOG(WARN) << " " << (*it)->detID() << " " << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " " << (*it)->dx() << " " << (*it)->dy() << " " << (*it)->dz();
         }
-    }
 
-    LOG(INFO) << "I've received " << receivedMsgs << " messages!";
+        if (fOutput->IsEmpty())
+        {
+            LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
+        }
+
+        FairMQMessagePtr ack(fTransportFactory->CreateMessage());
+        fChannels.at("ack").at(0).Send(ack);
+
+        fTree->Fill();
+
+        return true;
+    });
 }
 
 #endif /* FLATBUFFERS */

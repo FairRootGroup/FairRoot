@@ -8,25 +8,18 @@
 using namespace TestDetectorFlat;
 
 // helper function to clean up the object holding the data after it is transported.
-void free_builder(void *data, void *hint)
+void free_builder(void* /*data*/, void* object)
 {
-    delete static_cast<flatbuffers::FlatBufferBuilder*>(hint);
+    delete static_cast<flatbuffers::FlatBufferBuilder*>(object);
 }
 
 template <>
-void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>::Exec(Option_t* opt)
+void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>::Exec(Option_t* /*opt*/)
 {
     int nDigis = fInput->GetEntriesFast();
 
     flatbuffers::FlatBufferBuilder* builder = new flatbuffers::FlatBufferBuilder();
     flatbuffers::Offset<TestDetectorFlat::Digi>* digis = new flatbuffers::Offset<TestDetectorFlat::Digi>[nDigis];
-
-    // Write some data to check it on the receiver side
-    // (*fBigBuffer)[7] = 'c';
-
-    // unsigned char *inv_buf = nullptr;
-    // auto bigBuffer = builder->CreateUninitializedVector<unsigned char>(sizeof(*fBigBuffer), &inv_buf);
-    // memcpy(inv_buf, fBigBuffer->data(), sizeof(*fBigBuffer));
 
     for (int i = 0; i < nDigis; ++i)
     {
@@ -48,13 +41,12 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayl
     }
 
     auto dvector = builder->CreateVector(digis, nDigis);
-    auto mloc = CreateDigiPayload(*builder, dvector); // digis:[Digi]
-    // auto mloc = CreateDigiPayload(*builder, dvector, bigBuffer); // digis:[Digi], bigBuffer:[ubyte]
+    auto mloc = CreateDigiPayload(*builder, dvector);
     FinishDigiPayloadBuffer(*builder, mloc);
 
     delete [] digis;
 
-    fOutput = fTransportFactory->CreateMessage(builder->GetBufferPointer(), builder->GetSize(), free_builder, builder);
+    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(builder->GetBufferPointer(), builder->GetSize(), free_builder, builder));
 }
 
 #endif /* FLATBUFFERS */

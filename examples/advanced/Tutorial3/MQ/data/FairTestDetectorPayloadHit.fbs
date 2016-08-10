@@ -15,7 +15,6 @@ table Hit {
 
 table HitPayload {
   hits:[Hit];
-  bigBuffer:[ubyte];
 }
 
 root_type HitPayload;

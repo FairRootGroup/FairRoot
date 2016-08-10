@@ -10,7 +10,6 @@ table Digi {
 
 table DigiPayload {
   digis:[Digi];
-  bigBuffer:[ubyte];
 }
 
 root_type DigiPayload;

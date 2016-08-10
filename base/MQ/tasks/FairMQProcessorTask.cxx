@@ -16,8 +16,7 @@
 
 
 FairMQProcessorTask::FairMQProcessorTask()
-    : fPayload(nullptr)
-    , fTransportFactory(nullptr)
+    : fPayload()
 {
 }
 
@@ -29,29 +28,12 @@ void FairMQProcessorTask::Exec(Option_t* /*opt*/)
 {
 }
 
-FairMQMessage* FairMQProcessorTask::GetPayload()
+void FairMQProcessorTask::SetPayload(std::unique_ptr<FairMQMessage>& msg)
 {
-    return fPayload;
+    fPayload = std::move(msg);
 }
 
-void FairMQProcessorTask::SetPayload(FairMQMessage* msg)
+void FairMQProcessorTask::GetPayload(std::unique_ptr<FairMQMessage>& msg)
 {
-    if (msg)
-    {
-        fPayload = msg;
-    }
-    else
-    {
-        LOG(ERROR) << "FairMQMessage uninitialized or bad format";
-    }
-}
-
-void FairMQProcessorTask::ClearPayload()
-{
-    delete fPayload;
-}
-
-void FairMQProcessorTask::SetTransport(FairMQTransportFactory* factory)
-{
-    fTransportFactory = factory;
+    msg = std::move(fPayload);
 }

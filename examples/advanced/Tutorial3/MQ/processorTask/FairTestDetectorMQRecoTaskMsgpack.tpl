@@ -28,21 +28,14 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
     std::vector<msgpack::type::tuple<int, int, int, double, double>> digis;
 
     msgpack::unpacked unpackedDigis;
-    // msgpack::unpacked unpackedBigBuffer;
 
     size_t offset = 0;
 
     msgpack::unpack(unpackedDigis, static_cast<char*>(fPayload->GetData()), fPayload->GetSize(), offset);
-    // msgpack::unpack(unpackedBigBuffer, static_cast<char*>(fPayload->GetData()), fPayload->GetSize(), offset);
 
     msgpack::object digisObj = unpackedDigis.get();
-    // msgpack::object bigBufferObj = unpackedBigBuffer.get();
 
     digisObj.convert(digis);
-    // bigBufferObj.convert(fBigBuffer);
-
-    // Check if the data is the same as on the sender
-    // LOG(WARN) << (*fBigBuffer)[7];
 
     int numEntries = digis.size();
 
@@ -77,8 +70,6 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
     }
 
     packer.pack(hits);
-    // packer.pack_bin(sizeof(*fBigBuffer));
-    // packer.pack_bin_body(reinterpret_cast<char *>(fBigBuffer->data()), sizeof(*fBigBuffer));
 
     fPayload->Rebuild(sbuf->data(), sbuf->size(), free_sbuffer, sbuf);
 }

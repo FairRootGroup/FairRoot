@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <iostream>
+#include <string>
 
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
@@ -36,6 +37,7 @@
 #include "FairMQDevice.h"
 #include "FairMQSamplerTask.h"
 #include "FairMQLogger.h"
+#include "FairMQProgOptions.h"
 
 /**
  * Reads simulated digis from a root file and samples the digi as a time-series UDP stream.
@@ -49,52 +51,146 @@
  * feasibility and quality of the various possible online analysis features.
  */
 
-template <typename Loader>
+template <typename Task>
 class FairMQSampler : public FairMQDevice
 {
   public:
-    enum {
-        InputFile = FairMQDevice::Last,
-        ParFile,
-        Branch,
-        EventRate,
-        ChainInput,
-        Last
-    };
+    FairMQSampler()
+        : fFairRunAna(new FairRunAna())
+        , fSamplerTask(new Task())
+        , fTimer(nullptr)
+        , fInputFile()
+        , fParFile()
+        , fBranch()
+        , fNumEvents(0)
+        , fChainInput(0)
+        , fSentMsgs(0)
+        , fAckListener()
+    {}
 
-    FairMQSampler();
     FairMQSampler(const FairMQSampler&) = delete;
     FairMQSampler operator=(const FairMQSampler&) = delete;
 
-    virtual ~FairMQSampler();
-
-    virtual void SetProperty(const int key, const std::string& value);
-    virtual std::string GetProperty(const int key, const std::string& default_ = "");
-    virtual void SetProperty(const int key, const int value);
-    virtual int GetProperty(const int key, const int default_ = 0);
-
-    virtual std::string GetPropertyDescription(const int key);
-    virtual void ListProperties();
-
-    void ListenForAcks();
+    virtual ~FairMQSampler()
+    {
+        if (fFairRunAna)
+        {
+            fFairRunAna->TerminateRun();
+        }
+        delete fSamplerTask;
+    }
 
   protected:
-    virtual void InitTask();
-    virtual void Run();
+    virtual void InitTask()
+    {
+        LOG(INFO) << "Initializing Task...";
 
-    FairRunAna *fFairRunAna;
-    FairMQSamplerTask *fSamplerTask;
+        fInputFile = fConfig->GetValue<std::string>("input-file");
+        fParFile = fConfig->GetValue<std::string>("parameter-file");
+        fBranch = fConfig->GetValue<std::string>("branch");
+        fChainInput = fConfig->GetValue<int>("chain-input");
+
+        fSamplerTask->SetBranch(fBranch);
+        fSamplerTask->SetTransport(fTransportFactory);
+
+        FairFileSource* source = new FairFileSource(TString(fInputFile));
+        // Adds the same file to the input. The output will still be a single file.
+        for (int i = 0; i < fChainInput; ++i)
+        {
+            source->AddFile(fInputFile);
+        }
+
+        fFairRunAna->SetSource(source);
+
+        TString output = fInputFile;
+        output.Append(".out.root");
+        fFairRunAna->SetOutputFile(output.Data());
+
+        fFairRunAna->AddTask(fSamplerTask);
+
+        FairRuntimeDb* rtdb = fFairRunAna->GetRuntimeDb();
+        FairParRootFileIo* parInput1 = new FairParRootFileIo();
+        parInput1->open(TString(fParFile).Data());
+        rtdb->setFirstInput(parInput1);
+        rtdb->print();
+
+        fFairRunAna->Init();
+        // fFairRunAna->Run(0, 0);
+        FairRootManager *ioman = FairRootManager::Instance();
+        fNumEvents = int((ioman->GetInChain())->GetEntries());
+
+        LOG(INFO) << "Task initialized.";
+        LOG(INFO) << "Number of events to process: " << fNumEvents;
+    }
+
+    virtual void PreRun()
+    {
+        fTimer = new boost::timer::auto_cpu_timer();
+        fAckListener = boost::thread(boost::bind(&FairMQSampler::ListenForAcks, this));
+    }
+
+    virtual bool ConditionalRun()
+    {
+        std::unique_ptr<FairMQMessage> msg;
+
+        fSamplerTask->SetEventIndex(fSentMsgs);
+        fFairRunAna->RunMQ(fSentMsgs);
+        fSamplerTask->GetPayload(msg);
+
+        if (fChannels.at("data1").at(0).Send(msg) >= 0)
+        {
+            ++fSentMsgs;
+            if (fSentMsgs == fNumEvents)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    virtual void PostRun()
+    {
+        try
+        {
+            fAckListener.join();
+        }
+        catch(boost::thread_resource_error& e)
+        {
+            LOG(ERROR) << e.what();
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    void ListenForAcks()
+    {
+        for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
+        {
+            std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
+            fChannels.at("ack").at(0).Receive(ack);
+
+            if (!CheckCurrentState(RUNNING))
+            {
+                break;
+            }
+        }
+
+        boost::timer::cpu_times const elapsedTime(fTimer->elapsed());
+        LOG(INFO) << "Acknowledged " << fNumEvents << " messages in:";
+        delete fTimer;
+    }
+
+  private:
+    FairRunAna* fFairRunAna;
+    FairMQSamplerTask* fSamplerTask;
     boost::timer::auto_cpu_timer* fTimer;
     std::string fInputFile; // Filename of a root file containing the simulated digis.
     std::string fParFile;
     std::string fBranch; // The name of the sub-detector branch to stream the digis from.
     int fNumEvents;
     int fChainInput;
-    int fEventRate;
-    int fEventCounter;
+    int fSentMsgs;
+    boost::thread fAckListener;
 };
-
-// Template implementation is in FairMQSampler.tpl :
-#include "FairMQSampler.tpl"
 
 #endif /* FAIRMQSAMPLER_H_ */

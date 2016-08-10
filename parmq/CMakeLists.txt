@@ -9,7 +9,7 @@
 configure_file(${CMAKE_SOURCE_DIR}/parmq/parameter-server.json ${CMAKE_BINARY_DIR}/bin/config/parameter-server.json)
 
 If(DDS_FOUND)
-  add_definitions(-DDDS_FOUND)	
+  add_definitions(-DDDS_FOUND)
 EndIf(DDS_FOUND)
 
 Set(INCLUDE_DIRECTORIES
@@ -56,7 +56,7 @@ Set(DEPENDENCIES
   ParBase
   FairMQ
   ${Boost_THREAD_LIBRARY}
- ${Boost_PROGRAM_OPTIONS_LIBRARY}
+  ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )
 
 Set(LIBRARY_NAME ParMQ)

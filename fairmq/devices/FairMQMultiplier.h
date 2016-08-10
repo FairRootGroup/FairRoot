@@ -5,26 +5,30 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/**
- * FairMQExample8Sink.h
- *
- * @since 2014-10-10
- * @author A. Rybalchenko
- */
 
-#ifndef FAIRMQEXAMPLE8SINK_H_
-#define FAIRMQEXAMPLE8SINK_H_
+#ifndef FAIRMQMULTIPLIER_H_
+#define FAIRMQMULTIPLIER_H_
 
 #include "FairMQDevice.h"
 
-class FairMQExample8Sink : public FairMQDevice
+#include <string>
+
+class FairMQMultiplier : public FairMQDevice
 {
   public:
-    FairMQExample8Sink();
-    virtual ~FairMQExample8Sink();
+    FairMQMultiplier();
+    virtual ~FairMQMultiplier();
 
   protected:
-    bool HandleData(FairMQParts&, int);
+    int fMultipart;
+    int fNumOutputs;
+    std::string fInChannelName;
+    std::vector<std::string> fOutChannelNames;
+
+    virtual void InitTask();
+
+    bool HandleSingleData(std::unique_ptr<FairMQMessage>&, int);
+    bool HandleMultipartData(FairMQParts&, int);
 };
 
-#endif /* FAIRMQEXAMPLE8SINK_H_ */
+#endif /* FAIRMQMULTIPLIER_H_ */

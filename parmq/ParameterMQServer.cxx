@@ -21,10 +21,11 @@
 #include "FairRuntimeDb.h"
 #include "FairParAsciiFileIo.h"
 #include "FairParRootFileIo.h"
+#include "FairParGenericSet.h"
 
 #include "ParameterMQServer.h"
 #include "FairMQLogger.h"
-#include "FairParGenericSet.h"
+#include "FairMQProgOptions.h"
 
 using namespace std;
 
@@ -42,6 +43,14 @@ ParameterMQServer::ParameterMQServer() :
 
 void ParameterMQServer::InitTask()
 {
+    fFirstInputName = fConfig->GetValue<string>("first-input-name");
+    fFirstInputType = fConfig->GetValue<string>("first-input-type");
+    fSecondInputName = fConfig->GetValue<string>("second-input-name");
+    fSecondInputType = fConfig->GetValue<string>("second-input-type");
+    fOutputName = fConfig->GetValue<string>("output-name");
+    fOutputType = fConfig->GetValue<string>("output-type");
+    fChannelName = fConfig->GetValue<string>("channel-name");
+
     if (fRtdb != 0)
     {
         // Set first input
@@ -90,11 +99,6 @@ void ParameterMQServer::InitTask()
     }
 }
 
-void free_tmessage (void* /*data*/, void *hint)
-{
-    delete static_cast<TMessage*>(hint);
-}
-
 void ParameterMQServer::Run()
 {
     string parameterName = "";
@@ -102,7 +106,7 @@ void ParameterMQServer::Run()
 
     while (CheckCurrentState(RUNNING))
     {
-        unique_ptr<FairMQMessage> req(fTransportFactory->CreateMessage());
+        FairMQMessagePtr req(NewMessage());
 
         if (fChannels.at(fChannelName).at(0).Receive(req) > 0)
         {
@@ -132,7 +136,10 @@ void ParameterMQServer::Run()
                 TMessage* tmsg = new TMessage(kMESS_OBJECT);
                 tmsg->WriteObject(par);
 
-                unique_ptr<FairMQMessage> reply(fTransportFactory->CreateMessage(tmsg->Buffer(), tmsg->BufferSize(), free_tmessage, tmsg));
+                FairMQMessagePtr reply(NewMessage(tmsg->Buffer(),
+                                                  tmsg->BufferSize(),
+                                                  [](void* /*data*/, void* object){ delete static_cast<TMessage*>(object); },
+                                                  tmsg));
 
                 fChannels.at(fChannelName).at(0).Send(reply);
             }

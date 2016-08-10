@@ -12,12 +12,13 @@
  * @author A. Rybalchenko
  */
 
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
+#include <thread> // this_thread::sleep_for
+#include <chrono>
 
 #include "FairMQLogger.h"
 #include "FairMQExample7Client.h"
 #include "FairMQExample7ParOne.h"
+#include "FairMQProgOptions.h"
 
 #include "TMessage.h"
 #include "Rtypes.h"
@@ -34,9 +35,10 @@ FairMQExample7Client::~FairMQExample7Client()
 {
 }
 
-void FairMQExample7Client::CustomCleanup(void* /*data*/, void* hint)
+void FairMQExample7Client::InitTask()
 {
-    delete static_cast<string*>(hint);
+    fParameterName = fConfig->GetValue<string>("parameter-name");
+    fRunId = 2000;
 }
 
 // special class to expose protected TMessage constructor
@@ -50,77 +52,29 @@ class FairMQExample7TMessage : public TMessage
     }
 };
 
-void FairMQExample7Client::Run()
+bool FairMQExample7Client::ConditionalRun()
 {
-    int runId = 2000;
+    this_thread::sleep_for(chrono::seconds(1));
 
-    while (CheckCurrentState(RUNNING))
+    LOG(INFO) << "Requesting parameter \"" << fParameterName << "\" for Run ID " << fRunId << ".";
+
+    // NewSimpleMessage creates a copy of the data and takes care of its destruction (after the transfer takes place).
+    // Should only be used for small data because of the cost of an additional copy
+    FairMQMessagePtr req(NewSimpleMessage(fParameterName + "," + to_string(fRunId)));
+    FairMQMessagePtr rep(NewMessage());
+
+    if (Send(req, "data") > 0)
     {
-        boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
-
-        string* reqStr = new string(fParameterName + "," + to_string(runId));
-
-        LOG(INFO) << "Requesting parameter \"" << fParameterName << "\" for Run ID " << runId << ".";
-
-        unique_ptr<FairMQMessage> req(NewMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
-        unique_ptr<FairMQMessage> rep(NewMessage());
-
-        if (Send(req, "data") > 0)
+        if (Receive(rep, "data") > 0)
         {
-            if (Receive(rep, "data") > 0)
-            {
-                FairMQExample7TMessage tmsg(rep->GetData(), rep->GetSize());
-                FairMQExample7ParOne* par = static_cast<FairMQExample7ParOne*>(tmsg.ReadObject(tmsg.GetClass()));
-                LOG(INFO) << "Received parameter from the server:";
-                par->print();
-            }
+            FairMQExample7TMessage tmsg(rep->GetData(), rep->GetSize());
+            FairMQExample7ParOne* par = static_cast<FairMQExample7ParOne*>(tmsg.ReadObject(tmsg.GetClass()));
+            LOG(INFO) << "Received parameter from the server:";
+            par->print();
         }
-
-        runId == 2099 ? runId = 2000 : runId++;
     }
-}
 
+    fRunId == 2099 ? fRunId = 2000 : fRunId++;
 
-void FairMQExample7Client::SetProperty(const int key, const string& value)
-{
-    switch (key)
-    {
-        case ParameterName:
-            fParameterName = value;
-            break;
-        default:
-            FairMQDevice::SetProperty(key, value);
-            break;
-    }
-}
-
-string FairMQExample7Client::GetProperty(const int key, const string& default_ /*= ""*/)
-{
-    switch (key)
-    {
-        case ParameterName:
-            return fParameterName;
-            break;
-        default:
-            return FairMQDevice::GetProperty(key, default_);
-    }
-}
-
-void FairMQExample7Client::SetProperty(const int key, const int value)
-{
-    switch (key)
-    {
-        default:
-            FairMQDevice::SetProperty(key, value);
-            break;
-    }
-}
-
-int FairMQExample7Client::GetProperty(const int key, const int default_ /*= 0*/)
-{
-    switch (key)
-    {
-        default:
-            return FairMQDevice::GetProperty(key, default_);
-    }
+    return true;
 }

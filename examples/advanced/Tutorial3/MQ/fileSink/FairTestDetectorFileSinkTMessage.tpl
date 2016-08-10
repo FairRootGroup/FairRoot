@@ -19,39 +19,28 @@ class TestDetectorTMessage : public TMessage
 };
 
 template <>
-void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::Run()
+void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
 {
-    int receivedMsgs = 0;
-
-    // channel references to avoid traversing the map on every loop iteration
-    FairMQChannel& dataInChannel = fChannels.at("data2").at(0);
-    FairMQChannel& ackOutChannel = fChannels.at("ack").at(0);
-
-    while (CheckCurrentState(RUNNING))
+    OnData("data2", [this](FairMQMessagePtr& msg, int /*index*/)
     {
-        std::unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage());
+        ++fReceivedMsgs;
 
-        if (dataInChannel.Receive(msg) > 0)
+        TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
+
+        fOutput = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
+
+        if (fOutput->IsEmpty())
         {
-            receivedMsgs++;
-
-            TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
-
-            fOutput = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
-
-            if (fOutput->IsEmpty())
-            {
-                LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
-            }
-
-            std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
-            ackOutChannel.Send(ack);
-
-            fTree->Fill();
-
-            delete fOutput;
+            LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
-    }
 
-    LOG(INFO) << "I've received " << receivedMsgs << " messages!";
+        FairMQMessagePtr ack(fTransportFactory->CreateMessage());
+        fChannels.at("ack").at(0).Send(ack);
+
+        fTree->Fill();
+
+        delete fOutput;
+
+        return true;
+    });
 }

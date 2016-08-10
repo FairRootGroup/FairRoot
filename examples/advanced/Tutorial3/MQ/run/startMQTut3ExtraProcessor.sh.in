@@ -46,4 +46,4 @@ PROCESSOR2+=" --id processor2"
 PROCESSOR2+=" --data-format $dataFormat"
 PROCESSOR2+=" --mq-config $tut3cfg"
 PROCESSOR2+=" --config-key processor"
-xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR2 &

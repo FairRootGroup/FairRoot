@@ -9,9 +9,9 @@
 using namespace TestDetectorFlat;
 
 // helper function to clean up the object holding the data after it is transported.
-void free_builder(void *data, void *hint)
+void free_builder(void* /*data*/, void* object)
 {
-    delete static_cast<flatbuffers::FlatBufferBuilder*>(hint);
+    delete static_cast<flatbuffers::FlatBufferBuilder*>(object);
 }
 
 template <>
@@ -21,12 +21,6 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     auto digiPayload = GetDigiPayload(fPayload->GetData());
     auto digis = digiPayload->digis();
-    // auto rbigBuffer = digiPayload->bigBuffer();
-    // memcpy(fBigBuffer->data(), rbigBuffer->Data(), sizeof(*fBigBuffer));
-
-    // Check if the data is the same as on the sender
-    // LOG(WARN) << (*fBigBuffer)[7];
-
     int numEntries = digis->size();
 
     for (auto it = digis->begin(); it != digis->end(); ++it)
@@ -45,10 +39,6 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     flatbuffers::FlatBufferBuilder* builder = new flatbuffers::FlatBufferBuilder();
     flatbuffers::Offset<TestDetectorFlat::Hit>* hits = new flatbuffers::Offset<TestDetectorFlat::Hit>[numEntries];
-
-    // unsigned char *inv_buf = nullptr;
-    // auto bigBuffer = builder->CreateUninitializedVector<unsigned char>(sizeof(*fBigBuffer), &inv_buf);
-    // memcpy(inv_buf, fBigBuffer->data(), sizeof(*fBigBuffer));
 
     for (int i = 0; i < numEntries; ++i)
     {
@@ -72,8 +62,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
         hits[i] = hb.Finish();
     }
     auto hvector = builder->CreateVector(hits, numEntries);
-    auto mloc = CreateHitPayload(*builder, hvector); // hits:[Hit]
-    // auto mloc = CreateHitPayload(*builder, hvector, bigBuffer); // hits:[Hit], bigBuffer:[ubyte]
+    auto mloc = CreateHitPayload(*builder, hvector);
     FinishHitPayloadBuffer(*builder, mloc);
 
     delete [] hits;

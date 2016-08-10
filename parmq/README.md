@@ -11,11 +11,12 @@ The device executable has to be started with the following command line paramete
 
 Optional options are:
 
- - `--first-input-type arg (=ROOT) ` first input file type (ROOT/ASCII)
- - `--second-input-name arg (="")  ` location of the second input file
- - `--second-input-type arg (=ROOT)` second input file type (ROOT/ASCII)
- - `--output-name arg (="")        ` location of the output file
- - `--output-type arg (=ROOT)      ` output file type (ROOT)
+ - `--first-input-type arg (="ROOT") ` first input file type (ROOT/ASCII)
+ - `--second-input-name arg (="")    ` location of the second input file
+ - `--second-input-type arg (="ROOT")` second input file type (ROOT/ASCII)
+ - `--output-name arg (="")          ` location of the output file
+ - `--output-type arg (="ROOT")      ` output file type (ROOT)
+ - `--channel-name arg (="data")     ` output channel name
 
 The request for parameters is a string in this form: `"ParameterName,RunID"`.
 

@@ -48,7 +48,7 @@ SAMPLER+=" --chain-input 99"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --mq-config $tut3cfg"
-xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$SAMPLER &
 
 PROXY1="proxy"
 PROXY1+=" --id proxy1"
@@ -60,21 +60,21 @@ PROCESSOR1+=" --id processor1"
 PROCESSOR1+=" --data-format $dataFormat"
 PROCESSOR1+=" --mq-config $tut3cfg"
 PROCESSOR1+=" --config-key processor"
-xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR1 &
+xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR1 &
 
 PROCESSOR2="tut3-processor"
 PROCESSOR2+=" --id processor2"
 PROCESSOR2+=" --data-format $dataFormat"
 PROCESSOR2+=" --mq-config $tut3cfg"
 PROCESSOR2+=" --config-key processor"
-xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR2 &
+xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR2 &
 
 PROCESSOR3="tut3-processor"
 PROCESSOR3+=" --id processor3"
 PROCESSOR3+=" --data-format $dataFormat"
 PROCESSOR3+=" --mq-config $tut3cfg"
 PROCESSOR3+=" --config-key processor"
-xterm -geometry 80x23+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR3 &
+xterm -geometry 80x23+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR3 &
 
 PROXY2="proxy"
 PROXY2+=" --id proxy2"
@@ -85,4 +85,4 @@ FILESINK="tut3-sink"
 FILESINK+=" --id sink1"
 FILESINK+=" --data-format $dataFormat"
 FILESINK+=" --mq-config $tut3cfg"
-xterm -geometry 80x23+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+xterm -geometry 80x23+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$FILESINK &

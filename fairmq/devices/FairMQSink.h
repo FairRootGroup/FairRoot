@@ -22,27 +22,15 @@
 class FairMQSink : public FairMQDevice
 {
   public:
-    enum
-    {
-        NumMsgs = FairMQDevice::Last,
-        Last
-    };
-
     FairMQSink();
     virtual ~FairMQSink();
 
-    virtual void SetProperty(const int key, const std::string& value);
-    virtual std::string GetProperty(const int key, const std::string& default_ = "");
-    virtual void SetProperty(const int key, const int value);
-    virtual int GetProperty(const int key, const int default_ = 0);
-
-    virtual std::string GetPropertyDescription(const int key);
-    virtual void ListProperties();
-
   protected:
     int fNumMsgs;
+    std::string fInChannelName;
 
     virtual void Run();
+    virtual void InitTask();
 };
 
 #endif /* FAIRMQSINK_H_ */

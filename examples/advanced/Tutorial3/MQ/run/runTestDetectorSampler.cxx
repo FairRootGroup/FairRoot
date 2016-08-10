@@ -5,34 +5,20 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/**
- * runTestDetectorSamplerBin.cxx
- *
- * @since 2013-04-29
- * @author A. Rybalchenko, N. Winckler
- */
 
-#include <iostream>
-
-#include "boost/program_options.hpp"
-
-#include "FairMQLogger.h"
-#include "FairMQParser.h"
-#include "FairMQProgOptions.h"
-
+#include "runFairMQDevice.h"
 #include "FairMQSampler.h"
 #include "FairTestDetectorDigiLoader.h"
 
-using namespace std;
-using namespace boost::program_options;
+namespace bpo = boost::program_options;
 
 using TSamplerBin         = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
 using TSamplerBoostBin    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
 using TSamplerBoostText   = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::text_oarchive>>;
+using TSamplerTMessage    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
 #ifdef PROTOBUF
 using TSamplerProtobuf    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
 #endif
-using TSamplerTMessage    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
 #ifdef FLATBUFFERS
 using TSamplerFlatBuffers = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
 #endif
@@ -40,79 +26,36 @@ using TSamplerFlatBuffers = FairMQSampler<FairTestDetectorDigiLoader<FairTestDet
 using TSamplerMsgPack     = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>;
 #endif
 
-template<typename T>
-void runSampler(FairMQProgOptions& config)
+void addCustomOptions(bpo::options_description& options)
 {
-    T sampler;
-    sampler.CatchSignals();
-
-    sampler.SetConfig(config);
-
-    sampler.SetProperty(T::InputFile, config.GetValue<string>("input-file"));
-    sampler.SetProperty(T::ParFile, config.GetValue<string>("parameter-file"));
-    sampler.SetProperty(T::Branch, config.GetValue<string>("branch"));
-    sampler.SetProperty(T::EventRate, config.GetValue<int>("event-rate"));
-    sampler.SetProperty(T::ChainInput, config.GetValue<int>("chain-input"));
-
-    sampler.ChangeState("INIT_DEVICE");
-    sampler.WaitForEndOfState("INIT_DEVICE");
-
-    sampler.ChangeState("INIT_TASK");
-    sampler.WaitForEndOfState("INIT_TASK");
-
-    sampler.ChangeState("RUN");
-    sampler.InteractiveStateLoop();
+    options.add_options()
+        ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)")
+        ("input-file", bpo::value<std::string>()->required(), "Path to the input file")
+        ("parameter-file", bpo::value<std::string>()->required(), "path to the parameter file")
+        ("branch", bpo::value<std::string>()->default_value("FairTestDetectorDigi"), "Name of the Branch")
+        ("chain-input", bpo::value<int>()->default_value(0), "Chain input file more than once (default)");
 }
 
-int main(int argc, char** argv)
+FairMQDevice* getDevice(const FairMQProgOptions& config)
 {
-    try
-    {
-        string dataFormat;
-        string inputFile;
-        string parameterFile;
-        string branch;
-        int eventRate;
-        int chainInput;
+    std::string dataFormat = config.GetValue<std::string>("data-format");
 
-        options_description samplerOptions("Sampler options");
-        samplerOptions.add_options()
-            ("data-format", value<string>(&dataFormat)->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)")
-            ("input-file", value<string>(&inputFile)->required(), "Path to the input file")
-            ("parameter-file", value<string>(&parameterFile)->required(), "path to the parameter file")
-            ("branch", value<string>(&branch)->default_value("FairTestDetectorDigi"), "Name of the Branch")
-            ("event-rate", value<int>(&eventRate)->default_value(0), "Event rate limit in maximum number of events per second")
-            ("chain-input", value<int>(&chainInput)->default_value(0), "Chain input file more than once (default)");
-
-        FairMQProgOptions config;
-        config.AddToCmdLineOptions(samplerOptions);
-        config.ParseAll(argc, argv);
-
-        if (dataFormat == "binary") { runSampler<TSamplerBin>(config); }
-        else if (dataFormat == "boost") { runSampler<TSamplerBoostBin>(config); }
-        else if (dataFormat == "boost-text") { runSampler<TSamplerBoostText>(config); }
+    if (dataFormat == "binary") { return new TSamplerBin; }
+    else if (dataFormat == "boost") { return new TSamplerBoostBin; }
+    else if (dataFormat == "boost-text") { return new TSamplerBoostText; }
+    else if (dataFormat == "tmessage") { return new TSamplerTMessage; }
 #ifdef FLATBUFFERS
-        else if (dataFormat == "flatbuffers") { runSampler<TSamplerFlatBuffers>(config); }
+    else if (dataFormat == "flatbuffers") { return new TSamplerFlatBuffers; }
 #endif
 #ifdef MSGPACK
-        else if (dataFormat == "msgpack") { runSampler<TSamplerMsgPack>(config); }
+    else if (dataFormat == "msgpack") { return new TSamplerMsgPack; }
 #endif
 #ifdef PROTOBUF
-        else if (dataFormat == "protobuf") { runSampler<TSamplerProtobuf>(config); }
+    else if (dataFormat == "protobuf") { return new TSamplerProtobuf; }
 #endif
-        else if (dataFormat == "tmessage") { runSampler<TSamplerTMessage>(config); }
-        else
-        {
-            LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage). ";
-            return 1;
-        }
-    }
-    catch (exception& e)
+    else
     {
-        LOG(ERROR) << "Unhandled Exception reached the top of main: "
-                   << e.what() << ", application will now exit";
-        return 1;
+        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage). ";
+        exit(EXIT_FAILURE);
     }
-
-    return 0;
 }

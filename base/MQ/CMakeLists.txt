@@ -33,7 +33,6 @@ endif(DDS_PATH)
 Link_Directories(${LINK_DIRECTORIES})
 
 Set(SRCS
-  devices/FairMQProcessor.cxx
   tasks/FairMQSamplerTask.cxx
   tasks/FairMQProcessorTask.cxx
   devices/FairMQLmdSampler.cxx
@@ -44,7 +43,7 @@ Set(SRCS
 Set(BaseMQHDRFiles
   baseMQtools/baseMQtools.h
   devices/FairMQSampler.h
-  devices/FairMQSampler.tpl
+  devices/FairMQProcessor.h
   devices/FairMQUnpacker.h
   policies/Sampler/SimpleTreeReader.h
   policies/Sampler/FairSourceMQInterface.h

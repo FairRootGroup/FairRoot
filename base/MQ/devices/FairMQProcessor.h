@@ -17,23 +17,54 @@
 
 #include "FairMQDevice.h"
 #include "FairMQProcessorTask.h"
+#include "FairMQLogger.h"
 
+template <typename Task>
 class FairMQProcessor : public FairMQDevice
 {
   public:
-    FairMQProcessor();
+    FairMQProcessor()
+        : fProcessorTask(new Task)
+        , fReceivedMsgs(0)
+        , fSentMsgs(0)
+    {}
+
+    /// Copy Constructor
     FairMQProcessor(const FairMQProcessor&) = delete;
     FairMQProcessor operator=(const FairMQProcessor&) = delete;
-    virtual ~FairMQProcessor();
 
-    void SetTask(FairMQProcessorTask* task);
+    virtual ~FairMQProcessor()
+    {
+        delete fProcessorTask;
+    }
 
   protected:
-    virtual void InitTask();
-    virtual void Run();
+    virtual void InitTask()
+    {
+        fProcessorTask->InitTask();
+        OnData("data1", [this](std::unique_ptr<FairMQMessage>& msg, int /*index*/)
+        {
+            ++fReceivedMsgs;
+            fProcessorTask->SetPayload(msg);
+            fProcessorTask->Exec();
+            fProcessorTask->GetPayload(msg);
+
+            fChannels.at("data2").at(0).Send(msg);
+            ++fSentMsgs;
+
+            return true;
+        });
+    }
+
+    virtual void PostRun()
+    {
+        LOG(INFO) << "Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
+    }
 
   private:
     FairMQProcessorTask* fProcessorTask;
+    int fReceivedMsgs;
+    int fSentMsgs;
 };
 
 #endif /* FAIRMQPROCESSOR_H_ */

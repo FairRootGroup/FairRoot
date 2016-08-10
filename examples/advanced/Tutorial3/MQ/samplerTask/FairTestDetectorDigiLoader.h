@@ -42,7 +42,6 @@ class FairTestDetectorDigiLoader : public FairMQSamplerTask
     FairTestDetectorDigiLoader()
         : FairMQSamplerTask("Load class TOut")
         , fDigiVector()
-        , fBigBuffer(FairMQ::tools::make_unique<std::array<unsigned char, BIGBUFFERSIZE>>())
     {
         // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
         if (std::is_same<TPayloadOut, boost::archive::binary_oarchive>::value || std::is_same<TPayloadOut, boost::archive::text_oarchive>::value)
@@ -69,7 +68,6 @@ class FairTestDetectorDigiLoader : public FairMQSamplerTask
   private:
 #ifndef __CINT__ // for BOOST serialization
     std::vector<TOut> fDigiVector;
-    std::unique_ptr<std::array<unsigned char, BIGBUFFERSIZE>> fBigBuffer;
 #endif // for BOOST serialization
 };
 

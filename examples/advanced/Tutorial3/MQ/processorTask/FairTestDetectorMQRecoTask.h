@@ -47,7 +47,6 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
         : fRecoTask(nullptr)
         , fDigiVector()
         , fHitVector()
-        , fBigBuffer(FairMQ::tools::make_unique<std::array<unsigned char, BIGBUFFERSIZE>>())
     {
         // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
         if (std::is_same<TPayloadIn, boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn, boost::archive::text_iarchive>::value)
@@ -75,7 +74,6 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
         : fRecoTask(nullptr)
         , fDigiVector()
         , fHitVector()
-        , fBigBuffer(FairMQ::tools::make_unique<std::array<unsigned char, BIGBUFFERSIZE>>())
     {
         // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
         if (std::is_same<TPayloadIn, boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn, boost::archive::text_iarchive>::value)
@@ -144,7 +142,6 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 #ifndef __CINT__ // for BOOST serialization
     std::vector<TIn> fDigiVector;
     std::vector<TOut> fHitVector;
-    std::unique_ptr<std::array<unsigned char, BIGBUFFERSIZE>> fBigBuffer;
 #endif // for BOOST serialization
 };
 

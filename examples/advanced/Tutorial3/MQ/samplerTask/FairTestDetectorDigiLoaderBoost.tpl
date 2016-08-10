@@ -7,19 +7,11 @@
 
 // Default implementation of FairTestDetectorDigiLoader::Exec() with Boost transport data format
 
-void freeStringBuffer(void* /*data*/, void* hint)
-{
-    delete static_cast<std::string*>(hint);
-}
-
 // example TOut: FairTestDetectorDigi
 // example TPayloadOut: boost::archive::binary_oarchive, boost::archive::text_oarchive
 template <typename TOut, typename TPayloadOut>
 void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* /*opt*/)
 {
-    // Write some data to check it on the receiver side
-    // (*fBigBuffer)[7] = 'c';
-
     std::ostringstream oss;
     TPayloadOut OutputArchive(oss);
     for (int i = 0; i < fInput->GetEntriesFast(); ++i)
@@ -33,9 +25,11 @@ void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* /*opt*/)
     }
 
     OutputArchive << fDigiVector;
-    // OutputArchive << boost::serialization::make_binary_object(fBigBuffer->data(), sizeof(*fBigBuffer));
     std::string* strMsg = new std::string(oss.str());
-    fOutput = fTransportFactory->CreateMessage(const_cast<char*>(strMsg->c_str()), strMsg->length(), freeStringBuffer, strMsg);
+    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(const_cast<char*>(strMsg->c_str()), // data
+                                                                                   strMsg->length(), // size
+                                                                                   [](void* /*data*/, void* object){ delete static_cast<std::string*>(object); },
+                                                                                   strMsg)); // object that manages the data
 
     fDigiVector.clear();
 }

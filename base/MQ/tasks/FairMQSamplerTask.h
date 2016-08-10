@@ -31,7 +31,7 @@ class FairMQSamplerTask : public FairTask
 {
   public:
     FairMQSamplerTask();
-    FairMQSamplerTask(const Text_t *name, int iVerbose = 1);
+    FairMQSamplerTask(const Text_t* name, int iVerbose = 1);
     FairMQSamplerTask(const FairMQSamplerTask&) = delete;
     FairMQSamplerTask operator=(const FairMQSamplerTask&) = delete;
 
@@ -40,20 +40,19 @@ class FairMQSamplerTask : public FairTask
     virtual InitStatus Init();
     virtual void Exec(Option_t *opt);
 
-    void SetEventIndex(Long64_t EventIndex);
+    void SetEventIndex(Long64_t eventIndex);
     void SetBranch(std::string branch);
 
-    FairMQMessage* GetOutput();
-    void ClearOutput();
-    void SetTransport(FairMQTransportFactory *factory);
+    void GetPayload(std::unique_ptr<FairMQMessage>& msg);
+    void SetTransport(FairMQTransportFactory* factory);
 
   protected:
     std::string fBranch;
     TClonesArray* fInput;
-    FairMQMessage* fOutput;
-    FairMQTransportFactory* fTransportFactory;
+    std::unique_ptr<FairMQMessage> fPayload;
     Long64_t fEventIndex;
     FairEventHeader* fEvtHeader;
+    FairMQTransportFactory* fTransportFactory;
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */

@@ -55,6 +55,4 @@ namespace TestDetectorPayload
 #pragma GCC diagnostic pop
 #endif
 
-#define BIGBUFFERSIZE 1000000
-
 #endif /* TESTDETECTORPAYLOAD_H_ */

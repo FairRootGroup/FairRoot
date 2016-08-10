@@ -22,23 +22,12 @@
 class FairMQExample7Client : public FairMQDevice
 {
   public:
-    enum
-    {
-        ParameterName = FairMQDevice::Last,
-        Last
-    };
     FairMQExample7Client();
     virtual ~FairMQExample7Client();
 
-    static void CustomCleanup(void* data, void* hint);
-
-    virtual void SetProperty(const int key, const std::string& value);
-    virtual std::string GetProperty(const int key, const std::string& default_ = "");
-    virtual void SetProperty(const int key, const int value);
-    virtual int GetProperty(const int key, const int default_ = 0);
-
   protected:
-    virtual void Run();
+    virtual bool ConditionalRun();
+    virtual void InitTask();
 
   private:
     int fRunId;

@@ -22,7 +22,6 @@
 #include "FairTask.h"
 
 #include "FairMQMessage.h"
-#include "FairMQTransportFactory.h"
 
 class FairMQProcessorTask : public FairTask
 {
@@ -35,14 +34,11 @@ class FairMQProcessorTask : public FairTask
 
     virtual void Exec(Option_t* opt = "0");
 
-    void SetPayload(FairMQMessage* msg);
-    FairMQMessage* GetPayload();
-    void ClearPayload();
-    void SetTransport(FairMQTransportFactory *factory);
+    void SetPayload(std::unique_ptr<FairMQMessage>& msg);
+    void GetPayload(std::unique_ptr<FairMQMessage>& msg);
 
   protected:
-    FairMQMessage* fPayload;
-    FairMQTransportFactory* fTransportFactory;
+    std::unique_ptr<FairMQMessage> fPayload;
 };
 
 #endif /* FAIRMQPROCESSORTASK_H_ */

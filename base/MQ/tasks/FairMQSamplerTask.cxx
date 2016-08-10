@@ -20,10 +20,10 @@ FairMQSamplerTask::FairMQSamplerTask()
     : FairTask("Abstract base task used for loading a branch from a root file into memory")
     , fBranch()
     , fInput(nullptr)
-    , fOutput(nullptr)
-    , fTransportFactory(nullptr)
+    , fPayload()
     , fEventIndex(0)
     , fEvtHeader(nullptr)
+    , fTransportFactory(nullptr)
 {
 }
 
@@ -31,10 +31,10 @@ FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose)
     : FairTask(name, iVerbose)
     , fBranch()
     , fInput(nullptr)
-    , fOutput(nullptr)
-    , fTransportFactory(nullptr)
+    , fPayload()
     , fEventIndex(0)
     , fEvtHeader(nullptr)
+    , fTransportFactory(nullptr)
 {
 }
 
@@ -61,19 +61,14 @@ void FairMQSamplerTask::SetBranch(string branch)
     fBranch = branch;
 }
 
-void FairMQSamplerTask::SetEventIndex(Long64_t EventIndex)
+void FairMQSamplerTask::SetEventIndex(Long64_t eventIndex)
 {
-    fEventIndex = EventIndex;
+    fEventIndex = eventIndex;
 }
 
-FairMQMessage* FairMQSamplerTask::GetOutput()
+void FairMQSamplerTask::GetPayload(std::unique_ptr<FairMQMessage>& msg)
 {
-    return fOutput;
-}
-
-void FairMQSamplerTask::ClearOutput()
-{
-    delete fOutput;
+    msg = std::move(fPayload);
 }
 
 void FairMQSamplerTask::SetTransport(FairMQTransportFactory* factory)

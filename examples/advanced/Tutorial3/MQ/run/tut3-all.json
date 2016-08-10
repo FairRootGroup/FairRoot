@@ -3,7 +3,7 @@
     {
         "devices":
         [{
-            "id": "sampler",
+            "id": "sampler1",
             "channels":
             [{
                 "name": "data1",
@@ -155,7 +155,7 @@
             }]
         },
         {
-            "id": "sink",
+            "id": "sink1",
             "channels":
             [{
                 "name": "data2",

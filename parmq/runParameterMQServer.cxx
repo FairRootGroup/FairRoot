@@ -14,9 +14,11 @@
 
 #include "FairMQLogger.h"
 #include "FairMQProgOptions.h"
-#include "ParameterMQServer.h"
-#include "TApplication.h"
 #include "runSimpleMQStateMachine.h"
+
+#include "ParameterMQServer.h"
+
+#include "TApplication.h"
 
 using namespace boost::program_options;
 
@@ -24,21 +26,15 @@ int main(int argc, char** argv)
 {
     try
     {
-        std::string firstInputName;
-        std::string firstInputType;
-        std::string secondInputName;
-        std::string secondInputType;
-        std::string outputName;
-        std::string outputType;
-
         options_description serverOptions("Parameter MQ Server options");
         serverOptions.add_options()
-            ("first-input-name", value<std::string>(&firstInputName)->default_value("first_input.root"), "First input file name")
-            ("first-input-type", value<std::string>(&firstInputType)->default_value("ROOT"), "First input file type (ROOT/ASCII)")
-            ("second-input-name", value<std::string>(&secondInputName)->default_value(""), "Second input file name")
-            ("second-input-type", value<std::string>(&secondInputType)->default_value("ROOT"), "Second input file type (ROOT/ASCII)")
-            ("output-name", value<std::string>(&outputName)->default_value(""), "Output file name")
-            ("output-type", value<std::string>(&outputType)->default_value("ROOT"), "Output file type");
+            ("first-input-name", value<std::string>()->default_value("first_input.root"), "First input file name")
+            ("first-input-type", value<std::string>()->default_value("ROOT"), "First input file type (ROOT/ASCII)")
+            ("second-input-name", value<std::string>()->default_value(""), "Second input file name")
+            ("second-input-type", value<std::string>()->default_value("ROOT"), "Second input file type (ROOT/ASCII)")
+            ("output-name", value<std::string>()->default_value(""), "Output file name")
+            ("output-type", value<std::string>()->default_value("ROOT"), "Output file type")
+            ("channel-name", value<std::string>()->default_value("data"), "Output channel name");
 
         FairMQProgOptions config;
         config.AddToCmdLineOptions(serverOptions);
@@ -46,17 +42,14 @@ int main(int argc, char** argv)
 
         TApplication app("ParameterMQServer", 0, 0);
 
-        ParameterMQServer server;
-        server.SetProperty(ParameterMQServer::FirstInputName, firstInputName);
-        server.SetProperty(ParameterMQServer::FirstInputType, firstInputType);
-        server.SetProperty(ParameterMQServer::SecondInputName, secondInputName);
-        server.SetProperty(ParameterMQServer::SecondInputType, secondInputType);
-        server.SetProperty(ParameterMQServer::OutputName, outputName);
-        server.SetProperty(ParameterMQServer::OutputType, outputType);
+        { // scope to destroy the device in case gApplication->Terminate() fails or aborts.
+            ParameterMQServer server;
+            runStateMachine(server, config);
+        }
 
-        runStateMachine(server, config);
-
+        LOG(DEBUG) << "Device exited, terminating TApplication...";
         gApplication->Terminate();
+        LOG(DEBUG) << "TApplication terminated.";
     }
     catch (std::exception& e)
     {

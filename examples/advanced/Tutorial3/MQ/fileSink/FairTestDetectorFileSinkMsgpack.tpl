@@ -9,67 +9,49 @@ struct MsgPack {};
 // struct MsgPackStream {};
 
 template <>
-void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
+void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 {
-    int receivedMsgs = 0;
-
-    // channel references to avoid traversing the map on every loop iteration
-    FairMQChannel& dataInChannel = fChannels.at("data2").at(0);
-    FairMQChannel& ackOutChannel = fChannels.at("ack").at(0);
-
-    while (CheckCurrentState(RUNNING))
+    OnData("data2", [this](FairMQMessagePtr& msg, int /*index*/)
     {
-        std::unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage());
+        ++fReceivedMsgs;
 
-        if (dataInChannel.Receive(msg) > 0)
+        // deserialize
+
+        std::vector<msgpack::type::tuple<int, int, double, double, double, double, double, double>> hits;
+
+        msgpack::unpacked unpackedHits;
+
+        size_t offset = 0;
+
+        msgpack::unpack(unpackedHits, static_cast<char*>(msg->GetData()), msg->GetSize(), offset);
+
+        msgpack::object hitsObj = unpackedHits.get();
+
+        hitsObj.convert(&hits);
+
+        int numEntries = hits.size();
+
+        fOutput->Delete();
+
+        for (int i = 0; i < numEntries; ++i)
         {
-            receivedMsgs++;
-
-            // deserialize
-
-            std::vector<msgpack::type::tuple<int, int, double, double, double, double, double, double>> hits;
-
-            msgpack::unpacked unpackedHits;
-            // msgpack::unpacked unpackedBigBuffer;
-
-            size_t offset = 0;
-
-            msgpack::unpack(unpackedHits, static_cast<char*>(msg->GetData()), msg->GetSize(), offset);
-            // msgpack::unpack(unpackedBigBuffer, static_cast<char*>(msg->GetData()), msg->GetSize(), offset);
-
-            msgpack::object hitsObj = unpackedHits.get();
-            // msgpack::object bigBufferObj = unpackedBigBuffer.get();
-
-            hitsObj.convert(&hits);
-            // bigBufferObj.convert(fBigBuffer);
-
-            // Check if the data is the same as on the sender
-            // LOG(WARN) << (*fBigBuffer)[7];
-
-            int numEntries = hits.size();
-
-            fOutput->Clear();
-
-            for (int i = 0; i < numEntries; ++i)
-            {
-                TVector3 pos(std::get<2>(hits.at(i)), std::get<3>(hits.at(i)), std::get<4>(hits.at(i)));
-                TVector3 dpos(std::get<5>(hits.at(i)), std::get<6>(hits.at(i)), std::get<7>(hits.at(i)));
-                new ((*fOutput)[i]) FairTestDetectorHit(std::get<0>(hits.at(i)), std::get<1>(hits.at(i)), pos, dpos);
-            }
-
-            if (fOutput->IsEmpty())
-            {
-                LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
-            }
-
-            std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
-            ackOutChannel.Send(ack);
-
-            fTree->Fill();
+            TVector3 pos(std::get<2>(hits.at(i)), std::get<3>(hits.at(i)), std::get<4>(hits.at(i)));
+            TVector3 dpos(std::get<5>(hits.at(i)), std::get<6>(hits.at(i)), std::get<7>(hits.at(i)));
+            new ((*fOutput)[i]) FairTestDetectorHit(std::get<0>(hits.at(i)), std::get<1>(hits.at(i)), pos, dpos);
         }
-    }
 
-    LOG(INFO) << "I've received " << receivedMsgs << " messages!";
+        if (fOutput->IsEmpty())
+        {
+            LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
+        }
+
+        FairMQMessagePtr ack(fTransportFactory->CreateMessage());
+        fChannels.at("ack").at(0).Send(ack);
+
+        fTree->Fill();
+
+        return true;
+    });
 }
 
 // template <>
@@ -82,7 +64,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
 
 //     while (CheckCurrentState(RUNNING))
 //     {
-//         std::unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage());
+//         FairMQMessagePtr msg(fTransportFactory->CreateMessage());
 
 //         if (dataInChannel.Receive(msg) > 0)
 //         {
@@ -111,7 +93,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
 //                 LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
 //             }
 
-//             std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
+//             FairMQMessagePtr ack(fTransportFactory->CreateMessage());
 //             fChannels.at("ack-out").at(0).Send(ack);
 
 //             fTree->Fill();
@@ -131,7 +113,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
 
 //     while (CheckCurrentState(RUNNING))
 //     {
-//         std::unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage());
+//         FairMQMessagePtr msg(fTransportFactory->CreateMessage());
 
 //         if (dataInChannel.Receive(msg) > 0)
 //         {
@@ -164,7 +146,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::Run()
 //                 LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
 //             }
 
-//             std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
+//             FairMQMessagePtr ack(fTransportFactory->CreateMessage());
 //             fChannels.at("ack-out").at(0).Send(ack);
 
 //             fTree->Fill();

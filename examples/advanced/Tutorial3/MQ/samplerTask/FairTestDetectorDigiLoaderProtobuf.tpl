@@ -21,9 +21,6 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPay
 {
     int nDigis = fInput->GetEntriesFast();
 
-    // Write some data to check it on the receiver side
-    // (*fBigBuffer)[7] = 'c';
-
     TestDetectorProto::DigiPayload dp;
 
     for (int i = 0; i < nDigis; ++i)
@@ -41,12 +38,10 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPay
         d->set_ftimestamperror(digi->GetTimeStampError());
     }
 
-    // dp.set_bigbuffer(fBigBuffer->data(), sizeof(*fBigBuffer));
-
     std::string* str = new std::string();
     dp.SerializeToString(str);
 
-    fOutput = fTransportFactory->CreateMessage(const_cast<char*>(str->c_str()), str->length(), free_string, str);
+    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(const_cast<char*>(str->c_str()), str->length(), free_string, str));
 }
 
 #endif /* PROTOBUF */

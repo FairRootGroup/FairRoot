@@ -48,16 +48,16 @@ SAMPLER+=" --chain-input 99"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --mq-config $tut3cfg"
-xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/$SAMPLER &
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$SAMPLER &
 
 PROCESSOR="tut3-processor"
 PROCESSOR+=" --id processor1"
 PROCESSOR+=" --data-format $dataFormat"
 PROCESSOR+=" --mq-config $tut3cfg"
-xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROCESSOR &
+xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR &
 
 FILESINK="tut3-sink"
 FILESINK+=" --id sink1"
 FILESINK+=" --data-format $dataFormat"
 FILESINK+=" --mq-config $tut3cfg"
-xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$FILESINK &
+xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$FILESINK &

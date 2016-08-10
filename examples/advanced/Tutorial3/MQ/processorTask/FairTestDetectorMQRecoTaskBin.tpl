@@ -10,17 +10,9 @@ template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi, TestDetectorPayload::Hit>::Exec(Option_t* opt)
 {
     int inputSize = fPayload->GetSize();
-    // size_t bufferSize = sizeof(*fBigBuffer);
-    // size_t digisSize = inputSize - bufferSize;
-    // int numEntries = digisSize / sizeof(TestDetectorPayload::Digi);
     int numEntries = inputSize / sizeof(TestDetectorPayload::Digi);
 
     TestDetectorPayload::Digi* input = static_cast<TestDetectorPayload::Digi*>(fPayload->GetData());
-
-    // memcpy(fBigBuffer->data(), static_cast<unsigned char*>(fPayload->GetData()) + digisSize, bufferSize);
-
-    // Check if the data is the same as on the sender
-    // LOG(WARN) << (*fBigBuffer)[7];
 
     fRecoTask->fDigiArray->Clear();
 
@@ -39,10 +31,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     size_t hitsSize = numEntries * sizeof(TestDetectorPayload::Hit);
 
-    // fPayload->Rebuild(hitsSize + bufferSize);
     fPayload->Rebuild(hitsSize);
-
-    // memcpy(static_cast<unsigned char*>(fPayload->GetData()) + hitsSize, fBigBuffer->data(), bufferSize);
 
     TestDetectorPayload::Hit* output = static_cast<TestDetectorPayload::Hit*>(fPayload->GetData());
 

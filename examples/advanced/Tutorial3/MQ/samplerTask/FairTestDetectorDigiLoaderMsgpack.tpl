@@ -15,13 +15,13 @@ struct MsgPack {};
 // struct MsgPackRef { msgpack::vrefbuffer vbuf; std::vector<msgpack::type::tuple<int, int, int, double, double>> digis; };
 // struct MsgPackStream {};
 
-void free_sbuffer(void *data, void *hint)
+void free_sbuffer(void* /*data*/, void* object)
 {
-    delete static_cast<msgpack::sbuffer*>(hint);
+    delete static_cast<msgpack::sbuffer*>(object);
 }
 
 template <>
-void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* opt)
+void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* /*opt*/)
 {
     int nDigis = fInput->GetEntriesFast();
 
@@ -36,20 +36,15 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* o
         digis.push_back(std::make_tuple(digi->GetX(), digi->GetY(), digi->GetZ(), digi->GetTimeStamp(), digi->GetTimeStampError()));
     }
 
-    // Write some data to check it on the receiver side
-    // (*fBigBuffer)[7] = 'c';
-
     packer.pack(digis);
-    // packer.pack_bin(sizeof(*fBigBuffer));
-    // packer.pack_bin_body(reinterpret_cast<char *>(fBigBuffer->data()), sizeof(*fBigBuffer));
 
-    fOutput = fTransportFactory->CreateMessage(sbuf->data(), sbuf->size(), free_sbuffer, sbuf);
+    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(sbuf->data(), sbuf->size(), free_sbuffer, sbuf));
 }
 
 // MsgPackRef version sends the vector of tuples without copying it into the sbuffer
-// void free_vrefbuffer(void *data, void *hint)
+// void free_vrefbuffer(void* data, void* object)
 // {
-//     delete static_cast<MsgPackRef*>(hint);
+//     delete static_cast<MsgPackRef*>(object);
 // }
 
 // template <>
@@ -67,7 +62,7 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* o
 
 //     msgpack::pack(container->vbuf, container->digis);
 
-//     fOutput = fTransportFactory->CreateMessage(container->vbuf.vector()->iov_base, container->vbuf.vector()->iov_len, free_vrefbuffer, container);
+//     fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(container->vbuf.vector()->iov_base, container->vbuf.vector()->iov_len, free_vrefbuffer, container));
 // }
 
 // MsgPackStream version copies the data values into a stream of tuples.
@@ -85,7 +80,7 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* o
 //         packer.pack(std::make_tuple(digi->GetX(), digi->GetY(), digi->GetZ(), digi->GetTimeStamp()));
 //     }
 
-//     fOutput = fTransportFactory->CreateMessage(sbuf->data(), sbuf->size(), free_sbuffer, sbuf);
+//     fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(sbuf->data(), sbuf->size(), free_sbuffer, sbuf));
 // }
 
 #endif /* MSGPACK */

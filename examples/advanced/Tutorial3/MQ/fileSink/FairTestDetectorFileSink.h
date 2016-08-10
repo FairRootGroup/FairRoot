@@ -54,8 +54,8 @@ class FairTestDetectorFileSink : public FairMQDevice
         : fOutput(nullptr)
         , fOutFile(nullptr)
         , fTree(nullptr)
+        , fReceivedMsgs(0)
         , fHitVector()
-        , fBigBuffer(FairMQ::tools::make_unique<std::array<unsigned char, BIGBUFFERSIZE>>())
     {
         gSystem->ResetSignal(kSigInterrupt);
         gSystem->ResetSignal(kSigTermination);
@@ -101,16 +101,25 @@ class FairTestDetectorFileSink : public FairMQDevice
     }
 
   protected:
-    virtual void Run();
+    virtual void Init()
+    {
+        InitOutputFile("_" + fConfig->GetValue<string>("data-format"));
+    }
+    virtual void PostRun()
+    {
+        LOG(INFO) << "I've received " << fReceivedMsgs << " messages!";
+    }
+    virtual void InitTask();
+
 
   private:
     TClonesArray* fOutput;
     TFile* fOutFile;
     TTree* fTree;
+    int fReceivedMsgs;
 
 #ifndef __CINT__ // for BOOST serialization
     std::vector<TIn> fHitVector;
-    std::unique_ptr<std::array<unsigned char, BIGBUFFERSIZE>> fBigBuffer;
 #endif // for BOOST serialization
 };
 

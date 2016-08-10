@@ -32,19 +32,19 @@ class ParameterMQServer : public FairMQDevice
         SecondInputType,
         OutputName,
         OutputType,
-	ChannelName,
+        ChannelName,
         Last
     };
 
     ParameterMQServer();
+
     ParameterMQServer(const ParameterMQServer&) = delete;
     ParameterMQServer operator=(const ParameterMQServer&) = delete;
+
     virtual ~ParameterMQServer();
 
     virtual void Run();
     virtual void InitTask();
-
-    static void CustomCleanup(void *data, void* hint);
 
     virtual void SetProperty(const int key, const std::string& value);
     virtual std::string GetProperty(const int key, const std::string& default_ = "");
@@ -60,6 +60,7 @@ class ParameterMQServer : public FairMQDevice
     std::string fSecondInputType;
     std::string fOutputName;
     std::string fOutputType;
+
     std::string fChannelName;
 };
 
