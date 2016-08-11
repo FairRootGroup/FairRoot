@@ -19,8 +19,8 @@ FairMockMCApplication::FairMockMCApplication()
 
 FairMockMCApplication::~FairMockMCApplication()
 {
-  delete gMC;
-  gMC=0;
+//  delete gMC;
+//  gMC=0;
 }
 
 

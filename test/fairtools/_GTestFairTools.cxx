@@ -7,6 +7,7 @@
  ********************************************************************************/
 #include "FairLogger.h"
 
+#include "FairCaptureOutputNew.h"
 #include "FairTestNewOutputHandler.h"
 
 #include "gtest/gtest.h"
@@ -53,7 +54,8 @@ template <class T> class _TestFairLoggerBase : public T
     std::string OutputString;
     std::string OutFileName;
     FairLogger* fLogger;
-    FairTestNewOutputHandler handler;
+    FairCaptureOutputNew handler;
+//    FairTestNewOutputHandler handler;
 
     virtual void SetUp() {
       logLevelSettingToTest="INFO";
@@ -239,7 +241,9 @@ class VerbosityLevelTest : public _TestFairLoggerBase<
 
 TEST_F(FairToolsTest, CheckDefaultSettings)
 {
+  handler.BeginCapture();
   LogNoArguments();
+  handler.EndCapture();
 
   std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   {
@@ -251,10 +255,13 @@ TEST_F(FairToolsTest, CheckDefaultSettings)
 TEST_F(FairToolsTest, CheckOutputOnlyToFile)
 {
 
+  handler.BeginCapture();
   fLogger->SetLogFileName(OutFileName.c_str());
   fLogger->SetLogToFile(true);
   fLogger->SetLogToScreen(false);
   LogNoArguments();
+
+  handler.EndCapture();
 
   std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   {
@@ -269,8 +276,10 @@ TEST_F(FairToolsTest, CheckWrongLogLevelSettings)
   fLogger->SetLogToFile(false);
   fLogger->SetLogToScreen(true);
 
+  handler.BeginCapture();
   fLogger->SetLogScreenLevel("BLA");
   LogNoArguments();
+  handler.EndCapture();
 
   std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   std::string outString="[ERROR  ] Log level \"BLA\" not supported. Use default level \"INFO\".";
@@ -290,8 +299,10 @@ TEST_F(FairToolsTest, CheckVerbosityLevelSettings)
   fLogger->SetLogToFile(false);
   fLogger->SetLogToScreen(true);
 
+  handler.BeginCapture();
   fLogger->SetLogVerbosityLevel("BLA");
   LogNoArguments();
+  handler.EndCapture();
 
   std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   std::string outString="[ERROR  ] Verbosity level \"BLA\" not supported. Use default level \"LOW\".";
@@ -309,11 +320,13 @@ TEST_F(FairToolsTest, CheckVerbosityLevelSettings)
 
 TEST_F(FairToolsTest, testScreenAndFileOutputWithoutArgument)
 {
+  handler.BeginCapture();
 
   fLogger->SetLogFileName(OutFileName.c_str());
   fLogger->SetLogToScreen(true);
   fLogger->SetLogToFile(true);
   LogNoArguments();
+  handler.EndCapture();
 
   std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   {
@@ -334,10 +347,12 @@ TEST_P(LogLevelTest, testAllLogLevelsToScreenAndFile)
   fLogger->SetLogFileLevel(logLevelSettingToTest.c_str());
   fLogger->SetLogScreenLevel(logLevelSettingToTest.c_str());
 
+  handler.BeginCapture();
   fLogger->SetLogFileName(OutFileName.c_str());
   fLogger->SetLogToScreen(true);
   fLogger->SetLogToFile(true);
   LogNoArguments();
+  handler.EndCapture();
 
   std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
   {
@@ -361,10 +376,12 @@ TEST_P(VerbosityLevelTest, testAllVerbosityLevelsToScreenAndFile)
 {
   fLogger->SetLogVerbosityLevel(verbosityLevel.c_str());
 
+  handler.BeginCapture();
   fLogger->SetLogFileName(OutFileName.c_str());
   fLogger->SetLogToScreen(true);
   fLogger->SetLogToFile(true);
   LogNoArguments();
+  handler.EndCapture();
 
   std::vector<std::string> expected = CreateExpectedLogLevels(logLevelSettingToTest);
 
