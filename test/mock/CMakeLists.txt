@@ -30,7 +30,7 @@ Set(LINK_DIRECTORIES
 
 Link_Directories(${LINK_DIRECTORIES})
 
-Set(Sources 
+Set(SRCS
     FairMockMCApplication.cxx
     FairMockVirtualMC.cxx
 )
