@@ -146,6 +146,8 @@ class FairRootManager : public TObject
     *@param toFile          if kTRUE, branch will be saved to the tree*/
     void                Register(const char* name,const char* Foldername ,TCollection* obj, Bool_t toFile);
 
+    void                RegisterInputObject(const char* name, TObject* obj);
+
     TClonesArray*       Register(TString branchName, TString className, TString folderName, Bool_t toFile);
     /** Register a new FairWriteoutBuffer to the map. If a Buffer with the same map key already exists the given buffer will be deleted and the old will be returned!*/
     FairWriteoutBuffer* RegisterWriteoutBuffer(TString branchName, FairWriteoutBuffer* buffer);

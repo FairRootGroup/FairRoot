@@ -317,6 +317,14 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRootManager::RegisterInputObject(const char* name, TObject* obj)
+{
+    AddMemoryBranch(name, obj);
+    AddBranchToList(name);
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 TClonesArray* FairRootManager::Register(TString branchName, TString className, TString folderName, Bool_t toFile)
 {
   FairMonitor::GetMonitor()->RecordRegister(branchName,folderName,toFile);
