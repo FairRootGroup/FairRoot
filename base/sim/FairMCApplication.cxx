@@ -109,7 +109,8 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    listActiveDetectors(),
    listDetectors(),
    fRunInfo(),
-   fGeometryIsInitialized(kFALSE)
+   fGeometryIsInitialized(kFALSE),
+   fMC(NULL)
 {
 // Standard Simulation constructor
 // Check if the Fair root manager exist!
@@ -192,7 +193,9 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
    listActiveDetectors(),
    listDetectors(),
    fRunInfo(),
-   fGeometryIsInitialized(kFALSE)
+   fGeometryIsInitialized(kFALSE),
+   fMC(NULL)
+
 {
 // Copy constructor
 // Do not create Root manager
@@ -276,7 +279,9 @@ FairMCApplication::FairMCApplication()
    listActiveDetectors(),
    listDetectors(),
    fRunInfo(),
-   fGeometryIsInitialized(kFALSE)
+   fGeometryIsInitialized(kFALSE),
+   fMC(NULL)
+
 {
 // Default constructor
 }
@@ -400,15 +405,24 @@ void FairMCApplication::InitMC(const char*, const char*)
 {
 // Initialize MC.
 // ---
-  fStack = dynamic_cast<FairGenericStack*>(TVirtualMC::GetMC()->GetStack()) ;
+// This methode is called from FairRunSim::SetMCConfig which excucute first the gconfig
+// macro that creat the MC instance (G3 or G4)
+
+  fMC=TVirtualMC::GetMC();
+ 
+  if (fMC==0) {
+     LOG(FATAL)<< "No MC engine defined" << FairLogger::endl;
+  }
+  
+  fStack = dynamic_cast<FairGenericStack*>(fMC->GetStack()) ;
   if(fStack==NULL) { 
     LOG(FATAL) << "No Stack defined." << FairLogger::endl; 
   }
-  TVirtualMC::GetMC()->SetMagField(fxField);
+  fMC->SetMagField(fxField);
 
-  TVirtualMC::GetMC()->Init();
-  TVirtualMC::GetMC()->BuildPhysics();
-  TString MCName=TVirtualMC::GetMC()->GetName();
+  fMC->Init();
+  fMC->BuildPhysics();
+  TString MCName=fMC->GetName();
   if     (MCName == "TGeant3" || MCName == "TGeant3TGeo") {
     fMcVersion = 0 ;
   } else if(MCName == "TGeant4") {
@@ -434,7 +448,7 @@ void FairMCApplication::RunMC(Int_t nofEvents)
   fStack->SetDetArrayList(fActiveDetectors);
 
   // MC run.
-  TVirtualMC::GetMC()->ProcessRun(nofEvents);
+  fMC->ProcessRun(nofEvents);
   // finish run
   FinishRun();
   // Save histograms with memory and runtime information in the output file
@@ -564,7 +578,7 @@ void FairMCApplication::PreTrack()
       //    Int_t trackId = fStack->GetCurrentTrackNumber();
       TGeoTrack* fTrack=fTrajFilter->AddTrack(particle);
       // TLorentzVector pos;
-      TVirtualMC::GetMC()->TrackPosition(fTrkPos);
+      fMC->TrackPosition(fTrkPos);
       fTrack->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
     }
   }
@@ -603,13 +617,13 @@ void FairMCApplication::InitForWorker() const
   //fRootManager->SetDebug(true);
 
   // Set data to MC
-  TVirtualMC::GetMC()->SetStack(fStack);
-  TVirtualMC::GetMC()->SetMagField(fxField);
+  fMC->SetStack(fStack);
+  fMC->SetMagField(fxField);
 
   // if (fRootManager) RegisterStack();
 
   LOG(INFO) << "Monte Carlo Engine Worker Initialisation  with: "
-	    << TVirtualMC::GetMC()->GetName() << FairLogger::endl;
+	    << fMC->GetName() << FairLogger::endl;
 }
 
 //_____________________________________________________________________________
@@ -626,9 +640,9 @@ void FairMCApplication::Stepping()
   // Work around for Fluka VMC, which does not call
   // MCApplication::PreTrack()
   static Int_t TrackId = 0;
-  if ( fMcVersion ==2 && TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber() != TrackId ) {
+  if ( fMcVersion ==2 && fMC->GetStack()->GetCurrentTrackNumber() != TrackId ) {
     PreTrack();
-    TrackId = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
+    TrackId = fMC->GetStack()->GetCurrentTrackNumber();
   }
 
 
@@ -642,7 +656,7 @@ void FairMCApplication::Stepping()
   // multimap. 
   // In any case call the ProcessHits function for this specific detector.
   Int_t copyNo;
-  Int_t id = TVirtualMC::GetMC()->CurrentVolID(copyNo);
+  Int_t id = fMC->CurrentVolID(copyNo);
   Bool_t InMap =kFALSE;
   fDisVol=0;
   fDisDet=0;
@@ -664,7 +678,7 @@ void FairMCApplication::Stepping()
     } while(fVolIter!=fVolMap.upper_bound(id));
     //    if(fDisVol && !InMap) { // fDisVolume is set previously, no check needed
     if(!InMap) {
-      FairVolume* fNewV=new FairVolume( TVirtualMC::GetMC()->CurrentVolName(), id);
+      FairVolume* fNewV=new FairVolume( fMC->CurrentVolName(), id);
       fNewV->setMCid(id);
       fNewV->setModId(fDisVol->getModId());
       fNewV->SetModule(fDisVol->GetModule());
@@ -688,18 +702,18 @@ void FairMCApplication::Stepping()
   //     in the geometry. This plane has not to be correlated with any real
   //     volume 
   if(fTrajAccepted) {
-    if(TVirtualMC::GetMC()->TrackStep() > fTrajFilter->GetStepSizeCut()) {
-      TVirtualMC::GetMC()->TrackPosition(fTrkPos);
+    if(fMC->TrackStep() > fTrajFilter->GetStepSizeCut()) {
+      fMC->TrackPosition(fTrkPos);
       fTrajFilter->GetCurrentTrk()->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
     }
   }
   if(fRadLenMan) {
-    id = TVirtualMC::GetMC()->CurrentVolID(copyNo);
+    id = fMC->CurrentVolID(copyNo);
     fModVolIter =fModVolMap.find(id);
     fRadLenMan->AddPoint(fModVolIter->second);
   }
   if(fRadMapMan) {
-    id = TVirtualMC::GetMC()->CurrentVolID(copyNo);
+    id = fMC->CurrentVolID(copyNo);
     fModVolIter =fModVolMap.find(id);
     fRadMapMan->AddPoint(fModVolIter->second);
   }
@@ -859,7 +873,7 @@ void FairMCApplication::ConstructOpGeometry()
         effic[i]=p[2];
         rindex[i]=p[3];
       }
-      TVirtualMC::GetMC()->SetCerenkov(Mid, NK, ppckov,absco, effic, rindex);
+      fMC->SetCerenkov(Mid, NK, ppckov,absco, effic, rindex);
     }
   }
   fModIter->Reset();
@@ -1089,7 +1103,7 @@ void  FairMCApplication::AddIons()
       // The problem occured for example for Alphas which exist already.
       Int_t ionPdg = GetIonPdg( ion->GetZ(), ion->GetA() );
       if ( !pdgDatabase->GetParticle( ionPdg ) ) {
-        TVirtualMC::GetMC()->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
+        fMC->DefineIon(ion->GetName(), ion->GetZ(), ion->GetA(), ion->GetQ(),
                        ion->GetExcEnergy(),ion->GetMass());
 
       } else {
@@ -1144,7 +1158,7 @@ void  FairMCApplication::AddParticles()
            particle->GetBaryon()<<  "         // Int_t baryon   \n" <<
            particle->IsStable() <<  "         // Bool_t stable   \n" 
 		<< FairLogger::endl;
-      TVirtualMC::GetMC()->DefineParticle(particle->GetPDG(),              // Int_t pdg
+      fMC->DefineParticle(particle->GetPDG(),              // Int_t pdg
                           particle->GetName(),             // const TString& name
                           particle->GetMCType(),             // TMCParticleType mcType
                           particle->GetMass(),             // Double_t mass

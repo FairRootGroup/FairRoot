@@ -43,7 +43,7 @@ class TIterator;
 class TObjArray;
 class TRefArray;
 class TTask;
-
+class TVirtualMC;
 /**
  * The Main Application ( Interface to MonteCarlo application )
  * @author M. Al-Turany, D. Bertini
@@ -271,7 +271,11 @@ class FairMCApplication : public TVirtualMCApplication
     std::list <FairDetector *> listActiveDetectors; //!
     /** list of all detectors used in the simuation session*/
     std::list <FairDetector *> listDetectors;  //!
+    /** Pointer to the current MC engine //!
+     */
+    TVirtualMC* fMC;
 
+   
     
     ClassDef(FairMCApplication,4)  //Interface to MonteCarlo application
 
