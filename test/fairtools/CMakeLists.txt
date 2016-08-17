@@ -11,11 +11,16 @@
 # The extension is already found.  Any number of sources could be listed
 # here.
 
-set(INCLUDE_DIRECTORIES
- ${ROOT_INCLUDE_DIR}
- ${GTEST_INCLUDE_DIRS} 
+Set(INCLUDE_DIRECTORIES
  ${CMAKE_SOURCE_DIR}/fairtools
  ${CMAKE_SOURCE_DIR}/test/testlib
+)
+
+Include_Directories(${INCLUDE_DIRECTORIES})
+
+Set(SYSTEM_INCLUDE_DIRECTORIES
+ ${ROOT_INCLUDE_DIR}
+ ${GTEST_INCLUDE_DIRS} 
 )
 
 # Boost is needed for the regular expression handling
@@ -24,13 +29,13 @@ Set(Boost_USE_STATIC_LIBS TRUE)
 find_package(Boost COMPONENTS regex)
 
 If(Boost_FOUND)
-  Set(INCLUDE_DIRECTORIES
-      ${INCLUDE_DIRECTORIES}
+  Set(SYSTEM_INCLUDE_DIRECTORIES
+      ${SYSTEM_INCLUDE_DIRECTORIES}
       ${Boost_INCLUDE_DIRS}
      )
 EndIf(Boost_FOUND)
 
-include_directories( ${INCLUDE_DIRECTORIES})
+Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
  ${ROOT_LIBRARY_DIR}
