@@ -10,10 +10,7 @@ var classFairUnpack =
     [ "GetType", "d2/db4/classFairUnpack.html#a0e29e52ea0d2976fb9382aaac5266b7c", null ],
     [ "Init", "d2/db4/classFairUnpack.html#a125a8f000bee98b095f2505e59cb56fb", null ],
     [ "Register", "d2/db4/classFairUnpack.html#ad1d56e6dadf3e93d26e874691b3d9143", null ],
+    [ "ReInit", "d2/db4/classFairUnpack.html#afca40cbc86feee59f285c398c2427fab", null ],
     [ "Reset", "d2/db4/classFairUnpack.html#a8c942246d6fd4dee3c93e1cede26325e", null ],
-    [ "fControl", "d2/db4/classFairUnpack.html#a69ae16c73ddf026505cb58aa9ca2c5f3", null ],
-    [ "fProcId", "d2/db4/classFairUnpack.html#aa82ae218465d7c0799aeeda5ba918e7b", null ],
-    [ "fSubCrate", "d2/db4/classFairUnpack.html#a72a7e45cfe7c49e24907ad49fe40cb29", null ],
-    [ "fSubType", "d2/db4/classFairUnpack.html#a190b4b2373938fcf527f0f3d29fac3e0", null ],
-    [ "fType", "d2/db4/classFairUnpack.html#ad6194b26d513caa883109dababd8f746", null ]
+    [ "SetParContainers", "d2/db4/classFairUnpack.html#a49010b8cd5bfd37a21d58dde36e907e5", null ]
 ];

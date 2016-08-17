@@ -1,0 +1,27 @@
+var namespacefairmq_1_1policy =
+[
+    [ "data_type_interface", "d3/dce/structfairmq_1_1policy_1_1data__type__interface.html", null ],
+    [ "DataTypeHandler", "d2/dbe/structfairmq_1_1policy_1_1DataTypeHandler.html", "d2/dbe/structfairmq_1_1policy_1_1DataTypeHandler" ],
+    [ "EmptyCreator", "de/d09/structfairmq_1_1policy_1_1EmptyCreator.html", null ],
+    [ "EmptyDeleter", "d1/d15/structfairmq_1_1policy_1_1EmptyDeleter.html", null ],
+    [ "EmptyInitializer", "d9/de2/structfairmq_1_1policy_1_1EmptyInitializer.html", null ],
+    [ "InputPolicyFactory", "db/d47/classfairmq_1_1policy_1_1InputPolicyFactory.html", "db/d47/classfairmq_1_1policy_1_1InputPolicyFactory" ],
+    [ "NullptrCreator", "d6/d71/structfairmq_1_1policy_1_1NullptrCreator.html", null ],
+    [ "NullptrInitializer", "d2/d57/structfairmq_1_1policy_1_1NullptrInitializer.html", null ],
+    [ "OpNewCreator", "df/dda/structfairmq_1_1policy_1_1OpNewCreator.html", null ],
+    [ "OutputPolicyFactory", "d1/d33/classfairmq_1_1policy_1_1OutputPolicyFactory.html", "d1/d33/classfairmq_1_1policy_1_1OutputPolicyFactory" ],
+    [ "pointer_type", "d0/d46/structfairmq_1_1policy_1_1pointer__type.html", null ],
+    [ "RawPtrDeleter", "df/dcd/structfairmq_1_1policy_1_1RawPtrDeleter.html", null ],
+    [ "reference_type", "d8/d24/structfairmq_1_1policy_1_1reference__type.html", null ],
+    [ "select_type", "d3/de7/structfairmq_1_1policy_1_1select__type.html", "d3/de7/structfairmq_1_1policy_1_1select__type" ],
+    [ "select_type< pointer_type, T >", "dc/d13/structfairmq_1_1policy_1_1select__type_3_01pointer__type_00_01T_01_4.html", "dc/d13/structfairmq_1_1policy_1_1select__type_3_01pointer__type_00_01T_01_4" ],
+    [ "select_type< reference_type, T >", "d3/d00/structfairmq_1_1policy_1_1select__type_3_01reference__type_00_01T_01_4.html", "d3/d00/structfairmq_1_1policy_1_1select__type_3_01reference__type_00_01T_01_4" ],
+    [ "select_type< shared_ptr_type, T >", "d9/d23/structfairmq_1_1policy_1_1select__type_3_01shared__ptr__type_00_01T_01_4.html", "d9/d23/structfairmq_1_1policy_1_1select__type_3_01shared__ptr__type_00_01T_01_4" ],
+    [ "select_type< unique_ptr_type, T >", "da/d9f/structfairmq_1_1policy_1_1select__type_3_01unique__ptr__type_00_01T_01_4.html", "da/d9f/structfairmq_1_1policy_1_1select__type_3_01unique__ptr__type_00_01T_01_4" ],
+    [ "select_type< value_type, T >", "d1/df6/structfairmq_1_1policy_1_1select__type_3_01value__type_00_01T_01_4.html", "d1/df6/structfairmq_1_1policy_1_1select__type_3_01value__type_00_01T_01_4" ],
+    [ "shared_ptr_type", "d6/d76/structfairmq_1_1policy_1_1shared__ptr__type.html", null ],
+    [ "SmartPtrCreator", "d7/dc3/structfairmq_1_1policy_1_1SmartPtrCreator.html", null ],
+    [ "SmartPtrCreator_default", "d5/d10/structfairmq_1_1policy_1_1SmartPtrCreator__default.html", null ],
+    [ "unique_ptr_type", "dc/dd0/structfairmq_1_1policy_1_1unique__ptr__type.html", null ],
+    [ "value_type", "d4/d7e/structfairmq_1_1policy_1_1value__type.html", null ]
+];

@@ -1,0 +1,29 @@
+Determining if the CLOCK_REALTIME exist failed with the following output:
+Change Dir: /Users/turany/development/FairRoot/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_96245/fast"
+/Applications/Xcode.app/Contents/Developer/usr/bin/make -f CMakeFiles/cmTC_96245.dir/build.make CMakeFiles/cmTC_96245.dir/build
+Building C object CMakeFiles/cmTC_96245.dir/CheckSymbolExists.c.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc     -o CMakeFiles/cmTC_96245.dir/CheckSymbolExists.c.o   -c /Users/turany/development/FairRoot/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+/Users/turany/development/FairRoot/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:8:19: error: use of undeclared identifier 'CLOCK_REALTIME'
+  return ((int*)(&CLOCK_REALTIME))[argc];
+                  ^
+1 error generated.
+make[1]: *** [CMakeFiles/cmTC_96245.dir/CheckSymbolExists.c.o] Error 1
+make: *** [cmTC_96245/fast] Error 2
+
+File /Users/turany/development/FairRoot/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <time.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef CLOCK_REALTIME
+  return ((int*)(&CLOCK_REALTIME))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+

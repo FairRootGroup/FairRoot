@@ -31,8 +31,5 @@ var f__evt_8c =
     [ "f_evt_tag_filter", "d6/d30/f__evt_8c.html#a8dab82206e86b61ed555247d638c6c1a", null ],
     [ "f_evt_timeout", "d6/d30/f__evt_8c.html#ae0b722dc039683a8c659616d586f15bf", null ],
     [ "f_evt_type", "d6/d30/f__evt_8c.html#a1d6bb2d926b991535f33106c47d93468", null ],
-    [ "f_ut_utime", "d6/d30/f__evt_8c.html#af9fb2c9e6eb8cea10b644e59ece9e5df", null ],
-    [ "c_temp", "d6/d30/f__evt_8c.html#ae8e43821bb9138af38da04ec5c97a84e", null ],
-    [ "l_gl_rev_port", "d6/d30/f__evt_8c.html#a5031fce72c3a247ab4c95bc865c6c5a3", null ],
-    [ "s_tcpcomm_st_evt", "d6/d30/f__evt_8c.html#aaf684552c109b3b3ebd457626ff13c89", null ]
+    [ "f_ut_utime", "d6/d30/f__evt_8c.html#af9fb2c9e6eb8cea10b644e59ece9e5df", null ]
 ];

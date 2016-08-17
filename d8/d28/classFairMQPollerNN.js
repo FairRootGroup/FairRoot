@@ -1,12 +1,15 @@
 var classFairMQPollerNN =
 [
-    [ "FairMQPollerNN", "d8/d28/classFairMQPollerNN.html#a2439326fc60f8219423dd332dacbad36", null ],
+    [ "FairMQPollerNN", "d8/d28/classFairMQPollerNN.html#a539eeadbfd1e1178ff59308b4e67782b", null ],
+    [ "FairMQPollerNN", "d8/d28/classFairMQPollerNN.html#a34e4044ada81c47a2793b490508b9af1", null ],
+    [ "FairMQPollerNN", "d8/d28/classFairMQPollerNN.html#ad030c9c28a3bf05a1a8a3e31a99bd868", null ],
     [ "~FairMQPollerNN", "d8/d28/classFairMQPollerNN.html#aca13baa51e42caad7277252b4420bb58", null ],
-    [ "FairMQPollerNN", "d8/d28/classFairMQPollerNN.html#afd48378cdda434b85abad7deb5abdc47", null ],
-    [ "CheckInput", "d8/d28/classFairMQPollerNN.html#af1c764b895f87bbf5baba4fa5737f8a2", null ],
-    [ "CheckOutput", "d8/d28/classFairMQPollerNN.html#a0c20bc01b4cf57107f34ff7aa9c86440", null ],
-    [ "operator=", "d8/d28/classFairMQPollerNN.html#a808c6989411f1e649935fd4aa8f512d2", null ],
-    [ "Poll", "d8/d28/classFairMQPollerNN.html#a0a39e143513869a9ccb975b44e59caa3", null ],
-    [ "fNumItems", "d8/d28/classFairMQPollerNN.html#ad7b6d335e78a5c9962e0126c4905ce64", null ],
-    [ "items", "d8/d28/classFairMQPollerNN.html#a904d5d631b8a399fbafc70fbcd2f0ae1", null ]
+    [ "CheckInput", "d8/d28/classFairMQPollerNN.html#ad6a02821d7ba140c22ca53ce6fcf3935", null ],
+    [ "CheckInput", "d8/d28/classFairMQPollerNN.html#a2129f27b0fc65c5defeb497ffe063290", null ],
+    [ "CheckOutput", "d8/d28/classFairMQPollerNN.html#a7414ee564572b1ce232ed08f7869f7eb", null ],
+    [ "CheckOutput", "d8/d28/classFairMQPollerNN.html#a243fff4927c65850cd5ebd9b6a602994", null ],
+    [ "operator=", "d8/d28/classFairMQPollerNN.html#a4011d077acf28195ae7c89323f1c0a4c", null ],
+    [ "Poll", "d8/d28/classFairMQPollerNN.html#af13c31e2aa7bc11a0dd48093d698c24d", null ],
+    [ "FairMQChannel", "d8/d28/classFairMQPollerNN.html#ad5f4bdef909581fd5301ef80ab7757b2", null ],
+    [ "FairMQTransportFactoryNN", "d8/d28/classFairMQPollerNN.html#a1d1b23a00e906f6759e82813b1af85c9", null ]
 ];

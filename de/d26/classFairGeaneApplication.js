@@ -14,15 +14,9 @@ var classFairGeaneApplication =
     [ "GetField", "de/d26/classFairGeaneApplication.html#a1670ed51046fdd08b9fa67f05a43c7fb", null ],
     [ "InitGeometry", "de/d26/classFairGeaneApplication.html#a4b6bd97592aa54a0aaefa3975df89f70", null ],
     [ "InitMC", "de/d26/classFairGeaneApplication.html#a780845f2ec7dafdf05bcbdec3c594304", null ],
-    [ "Instance", "de/d26/classFairGeaneApplication.html#ae7741072a45ae4f60977502bca841d2e", null ],
-    [ "operator=", "de/d26/classFairGeaneApplication.html#a0087a9022d91e57e3ea5aeb393bf8487", null ],
     [ "PostTrack", "de/d26/classFairGeaneApplication.html#a068b0d704fff90b24e1543aad5162b37", null ],
     [ "PreTrack", "de/d26/classFairGeaneApplication.html#a718fc3806656a6c4bf9783d3a799f68d", null ],
     [ "SetField", "de/d26/classFairGeaneApplication.html#aac0fcf596beb72ce1a2f0b5169f809a6", null ],
     [ "Stepping", "de/d26/classFairGeaneApplication.html#a773becffb83d12201cff879148dec18f", null ],
-    [ "StopRun", "de/d26/classFairGeaneApplication.html#a40421321b4df81d228e5570ef311cbb1", null ],
-    [ "fDebug", "de/d26/classFairGeaneApplication.html#aba4627877556bbd8daf11f62b2dc0511", null ],
-    [ "fMcVersion", "de/d26/classFairGeaneApplication.html#ae39ea2bc13da9102af0f5d65605addf6", null ],
-    [ "fTrkPos", "de/d26/classFairGeaneApplication.html#a742ecdee330dc1bc06f9bbca2cddb895", null ],
-    [ "fxField", "de/d26/classFairGeaneApplication.html#a107bf56d5bd2fc5cb9b1c0aaf7aa366f", null ]
+    [ "StopRun", "de/d26/classFairGeaneApplication.html#a40421321b4df81d228e5570ef311cbb1", null ]
 ];

@@ -2,8 +2,6 @@ var classFairTutorialDet4GeoHandler =
 [
     [ "FairTutorialDet4GeoHandler", "d6/dc1/classFairTutorialDet4GeoHandler.html#aca1f9bfce988c81271e85226375c2574", null ],
     [ "~FairTutorialDet4GeoHandler", "d6/dc1/classFairTutorialDet4GeoHandler.html#ae511b60b47b506c95ef33a9ece80bc38", null ],
-    [ "FairTutorialDet4GeoHandler", "d6/dc1/classFairTutorialDet4GeoHandler.html#a8720ff902a06f72f0b0ce7d6b99138f7", null ],
-    [ "ConstructFullPathFromDetID", "d6/dc1/classFairTutorialDet4GeoHandler.html#a2f15c34263a6f1fdaea74f6b95ec1efe", null ],
     [ "CurrentVolID", "d6/dc1/classFairTutorialDet4GeoHandler.html#a38cf6d0172f466863b94304c2b663ae0", null ],
     [ "CurrentVolName", "d6/dc1/classFairTutorialDet4GeoHandler.html#a3f059982525d012c51181be40d7e8d57", null ],
     [ "CurrentVolOffID", "d6/dc1/classFairTutorialDet4GeoHandler.html#a8186bed9aa40470c5b18989e93c600df", null ],
@@ -14,14 +12,6 @@ var classFairTutorialDet4GeoHandler =
     [ "Init", "d6/dc1/classFairTutorialDet4GeoHandler.html#a32b706dc9a8807ed76081e231665f187", null ],
     [ "LocalToGlobal", "d6/dc1/classFairTutorialDet4GeoHandler.html#a1c198a43b671b5720e934fa5b6d5b2ec", null ],
     [ "NavigateTo", "d6/dc1/classFairTutorialDet4GeoHandler.html#a688379ae07187a1275dec85fd78ec925", null ],
-    [ "operator=", "d6/dc1/classFairTutorialDet4GeoHandler.html#a9e81ce71b31e8c843007d98a54ef56a9", null ],
     [ "VolId", "d6/dc1/classFairTutorialDet4GeoHandler.html#a1fd806427a4ae92a8d35ff01cae7ad9f", null ],
-    [ "VolIdGeo", "d6/dc1/classFairTutorialDet4GeoHandler.html#ab6983738f8ba0eda36f602e7bb3d0a86", null ],
-    [ "fCurrentVolume", "d6/dc1/classFairTutorialDet4GeoHandler.html#a7b5187bfc1b00486bd54add74ff7e553", null ],
-    [ "fGeoPathHash", "d6/dc1/classFairTutorialDet4GeoHandler.html#a37fb47e6483c0cda8b358f71657a9fe0", null ],
-    [ "fGlobal", "d6/dc1/classFairTutorialDet4GeoHandler.html#a7995c8d4d0d3d8854ef7bd48e10b9a2d", null ],
-    [ "fGlobalMatrix", "d6/dc1/classFairTutorialDet4GeoHandler.html#ae037523ca3a25f488dec47b61b204a69", null ],
-    [ "fIsSimulation", "d6/dc1/classFairTutorialDet4GeoHandler.html#aac315678a1d8ff9b3c5933091486d348", null ],
-    [ "fLastUsedDetectorID", "d6/dc1/classFairTutorialDet4GeoHandler.html#a05968a7e18d8db598de379b77f3bcd41", null ],
-    [ "fVolumeShape", "d6/dc1/classFairTutorialDet4GeoHandler.html#a9a80d54ddeef79390cc8c0dd7a582d74", null ]
+    [ "VolIdGeo", "d6/dc1/classFairTutorialDet4GeoHandler.html#ab6983738f8ba0eda36f602e7bb3d0a86", null ]
 ];

@@ -1,6 +1,5 @@
 var classFairEventManagerEditor =
 [
-    [ "FairEventManagerEditor", "d9/d53/classFairEventManagerEditor.html#ab045705af6d99593fda37f4485c6ce50", null ],
     [ "FairEventManagerEditor", "d9/d53/classFairEventManagerEditor.html#a8794e17834579be761dd07e35d04f00f", null ],
     [ "~FairEventManagerEditor", "d9/d53/classFairEventManagerEditor.html#a9c82c7fff3356ea9a7c7d4316a8c525f", null ],
     [ "ClassDef", "d9/d53/classFairEventManagerEditor.html#ab8c37661fa3021218da4f9f257e14c0f", null ],
@@ -8,7 +7,6 @@ var classFairEventManagerEditor =
     [ "Init", "d9/d53/classFairEventManagerEditor.html#a603e3c04583a79584e826f7e898e6af4", null ],
     [ "MaxEnergy", "d9/d53/classFairEventManagerEditor.html#ab595e113f9437d96e50e27f07783abab", null ],
     [ "MinEnergy", "d9/d53/classFairEventManagerEditor.html#a00ebb1b68531ef5b018e2a631bb74c59", null ],
-    [ "operator=", "d9/d53/classFairEventManagerEditor.html#aaff7e78904b2450ec749bf793e6140c4", null ],
     [ "SelectEvent", "d9/d53/classFairEventManagerEditor.html#a3b18ced1913f2bea210158496423917e", null ],
     [ "SelectPDG", "d9/d53/classFairEventManagerEditor.html#a6313e2636c13af761032680bbf649c4c", null ],
     [ "SetModel", "d9/d53/classFairEventManagerEditor.html#a282aeaf166e8eca6277fff0ec8122cb7", null ],

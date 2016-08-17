@@ -5,7 +5,6 @@ var classFairMCTrack =
     [ "FairMCTrack", "d5/d2f/classFairMCTrack.html#ade537525af82551c3038deacde50a0c7", null ],
     [ "FairMCTrack", "d5/d2f/classFairMCTrack.html#a59e7349e361ad16f5b6f4ef0deec5e3f", null ],
     [ "~FairMCTrack", "d5/d2f/classFairMCTrack.html#ac24507618e6765e636ad89e111e37bfe", null ],
-    [ "ClassDef", "d5/d2f/classFairMCTrack.html#a81193a337c3bd657e42a8658c13320ba", null ],
     [ "Get4Momentum", "d5/d2f/classFairMCTrack.html#a0f0d7f6721a520a7c212ee8c15bb1f9e", null ],
     [ "GetEnergy", "d5/d2f/classFairMCTrack.html#a14055d13702714881d8fc72779c8374e", null ],
     [ "GetMass", "d5/d2f/classFairMCTrack.html#a1e2285cff67b785de8f68c143f1bd664", null ],
@@ -24,17 +23,7 @@ var classFairMCTrack =
     [ "GetStartX", "d5/d2f/classFairMCTrack.html#a3d846cf7ef2841a63fc81ad7ba14ff7c", null ],
     [ "GetStartY", "d5/d2f/classFairMCTrack.html#a9635a52ac922206cb70b1fe2b123421b", null ],
     [ "GetStartZ", "d5/d2f/classFairMCTrack.html#aca8ac1ded1cec89f267199747966ca80", null ],
-    [ "Print", "d5/d2f/classFairMCTrack.html#a161dae7cdb11cdb970da1f971c8c14dc", null ],
+    [ "Print", "d5/d2f/classFairMCTrack.html#a1b097e370268e4d4651978d1c377a59c", null ],
     [ "SetMotherId", "d5/d2f/classFairMCTrack.html#abde4814c4337de7f8fc54c3a8143a050", null ],
-    [ "SetNPoints", "d5/d2f/classFairMCTrack.html#aee48564f64cd863fc3ade38984851fd5", null ],
-    [ "fMotherId", "d5/d2f/classFairMCTrack.html#a50ae54bdf4e5726258250820d494b29e", null ],
-    [ "fNPoints", "d5/d2f/classFairMCTrack.html#af613b7c11df97d3266308ada6bb742d1", null ],
-    [ "fPdgCode", "d5/d2f/classFairMCTrack.html#ab8d1cc178f4df79abcb2aab88a5e9f06", null ],
-    [ "fPx", "d5/d2f/classFairMCTrack.html#a756e0b7d2d28a2c6357a90aeddf9066d", null ],
-    [ "fPy", "d5/d2f/classFairMCTrack.html#abdf262aa28d2b15f3578177f820bf2a7", null ],
-    [ "fPz", "d5/d2f/classFairMCTrack.html#a562279cf3df4656c1a9191da33b52100", null ],
-    [ "fStartT", "d5/d2f/classFairMCTrack.html#afd922563fe6e3ddf52c2f5020210f06e", null ],
-    [ "fStartX", "d5/d2f/classFairMCTrack.html#a5ceeafc213019b3e9c5bf6a0449112cd", null ],
-    [ "fStartY", "d5/d2f/classFairMCTrack.html#add19c49404080bc57c733a82fe96b6c0", null ],
-    [ "fStartZ", "d5/d2f/classFairMCTrack.html#a227dc9026fc87c788226ae80cd64ef44", null ]
+    [ "SetNPoints", "d5/d2f/classFairMCTrack.html#aee48564f64cd863fc3ade38984851fd5", null ]
 ];

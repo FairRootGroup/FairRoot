@@ -13,7 +13,7 @@ var classFairGenericStack =
     [ "GetListOfParticles", "dd/d76/classFairGenericStack.html#af277e79c5cc2e80ee3f86c3d09c2ab6c", null ],
     [ "GetNprimary", "dd/d76/classFairGenericStack.html#a515fe53c8a64c88cc37290bfb47f4a9d", null ],
     [ "GetNtrack", "dd/d76/classFairGenericStack.html#aec480713ccfffa961dfb1f3ab6f2a7dc", null ],
-    [ "GetParticle", "dd/d76/classFairGenericStack.html#af22fdca6879e29a670f10c74018f76a1", null ],
+    [ "GetParticle", "dd/d76/classFairGenericStack.html#a9fe425a02d9377c541b431b11d084967", null ],
     [ "operator=", "dd/d76/classFairGenericStack.html#ac59511110424a5a3f8c9c84ff882d831", null ],
     [ "PopNextTrack", "dd/d76/classFairGenericStack.html#a86e78cea3cc63a889dc3ee8643ccd7be", null ],
     [ "PopPrimaryForTracking", "dd/d76/classFairGenericStack.html#afa5ccd725dc6403d3361e5207bc90db9", null ],

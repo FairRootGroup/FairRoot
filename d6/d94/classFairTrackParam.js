@@ -4,7 +4,6 @@ var classFairTrackParam =
     [ "FairTrackParam", "d6/d94/classFairTrackParam.html#a1ccbfd36c3ce9416b06beb26b25f6c25", null ],
     [ "FairTrackParam", "d6/d94/classFairTrackParam.html#a7839f557a3a6fe2276ad259b9f1ebdaf", null ],
     [ "~FairTrackParam", "d6/d94/classFairTrackParam.html#a94014ea693ee9cf248bf2566d228b61b", null ],
-    [ "ClassDef", "d6/d94/classFairTrackParam.html#a94a0ce31ad0a2f0a8dd26f59c2aea766", null ],
     [ "CovMatrix", "d6/d94/classFairTrackParam.html#a7984ef7405f9d038ce2e82c12b3f6bbf", null ],
     [ "CovMatrix", "d6/d94/classFairTrackParam.html#a882030fde35ea14bff23693bb477cd8e", null ],
     [ "GetCovariance", "d6/d94/classFairTrackParam.html#a07105d6a10d6622656423ce99a5b183b", null ],
@@ -27,12 +26,5 @@ var classFairTrackParam =
     [ "SetTy", "d6/d94/classFairTrackParam.html#a3944f0d82f70370d730bf498d7233d13", null ],
     [ "SetX", "d6/d94/classFairTrackParam.html#aefb40085cc14e1c58df306961a25b7ef", null ],
     [ "SetY", "d6/d94/classFairTrackParam.html#aa90cbae5e0f376aeb980a7c93c3a40aa", null ],
-    [ "SetZ", "d6/d94/classFairTrackParam.html#a875f2f07c16683b517fc4b9ff148d072", null ],
-    [ "fCovMatrix", "d6/d94/classFairTrackParam.html#a0caeb5fdae2449a29c50a335673e63b8", null ],
-    [ "fQp", "d6/d94/classFairTrackParam.html#a293814068528b1fccad371df413d9f0e", null ],
-    [ "fTx", "d6/d94/classFairTrackParam.html#a82d6c0c91c1c757b10467bd8e775ccca", null ],
-    [ "fTy", "d6/d94/classFairTrackParam.html#ac77447d15765bc955f908751741f1fc9", null ],
-    [ "fX", "d6/d94/classFairTrackParam.html#a2b94acd3121a0065954b346e4bc57ab8", null ],
-    [ "fY", "d6/d94/classFairTrackParam.html#a18e563767c2bf39c3792840461850b34", null ],
-    [ "fZ", "d6/d94/classFairTrackParam.html#a5c65f88ec9f0037a29e9947971d89cc1", null ]
+    [ "SetZ", "d6/d94/classFairTrackParam.html#a875f2f07c16683b517fc4b9ff148d072", null ]
 ];

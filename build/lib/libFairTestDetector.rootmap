@@ -1,0 +1,22 @@
+[ FairTestDetector.dylib ]
+# List of selected classes
+class FairConstField
+class FairConstPar
+class FairMapPar
+class FairTestDetector
+class FairTestDetectorContFact
+class FairTestDetectorDigi
+class FairTestDetectorDigiRingSorter
+class FairTestDetectorDigiSorterTask
+class FairTestDetectorDigiTask
+class FairTestDetectorDigiWriteoutBuffer
+class FairTestDetectorGeo
+class FairTestDetectorGeoPar
+class FairTestDetectorHit
+class FairTestDetectorHitProducerSmearing
+class FairTestDetectorPoint
+class FairTestDetectorRecoTask
+class FairTestDetectorTimeDigiTask
+class FairTestDetectorTimeRecoTask
+header FairMapPar.h
+header FairTestDetectorDigi.h

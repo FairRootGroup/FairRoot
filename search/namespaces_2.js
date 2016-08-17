@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['google',['google',['../df/d40/namespacegoogle.html',1,'']]],
-  ['protobuf',['protobuf',['../d0/df5/namespacegoogle_1_1protobuf.html',1,'google']]]
+  ['log_5fop',['log_op',['../dd/dda/namespacelog__op.html',1,'']]]
 ];

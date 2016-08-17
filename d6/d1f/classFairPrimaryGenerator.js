@@ -59,6 +59,5 @@ var classFairPrimaryGenerator =
     [ "fStack", "d6/d1f/classFairPrimaryGenerator.html#a24b99b7cbfbb5c780b57a78728fe6c18", null ],
     [ "fTargetDz", "d6/d1f/classFairPrimaryGenerator.html#a9d0795c236a062be391a756e49396248", null ],
     [ "fTargetZ", "d6/d1f/classFairPrimaryGenerator.html#a2c43ae954a95b0fb2d3a808f4c3101f3", null ],
-    [ "fTotPrim", "d6/d1f/classFairPrimaryGenerator.html#a479446643d1e9c2f3442009f46175abd", null ],
     [ "fVertex", "d6/d1f/classFairPrimaryGenerator.html#a954c1b3b7d1561f1041fc8d671aa669d", null ]
 ];

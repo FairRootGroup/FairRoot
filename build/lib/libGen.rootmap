@@ -1,0 +1,9 @@
+[ Gen.dylib ]
+# List of selected classes
+class FairAsciiGenerator
+class FairBoxGenerator
+class FairEvtGenGenerator
+class FairIonGenerator
+class FairParticleGenerator
+class FairShieldGenerator
+class FairUrqmdGenerator

@@ -17,8 +17,9 @@ var classFairMultiLinkedData__Interface =
     [ "GetLinksWithType", "d8/df1/classFairMultiLinkedData__Interface.html#a9d9f2b25756e3431c5451d41deaf380d", null ],
     [ "GetNLinks", "d8/df1/classFairMultiLinkedData__Interface.html#aa25ab01d1eb91618dc99f0146a1571c7", null ],
     [ "GetPointerToLinks", "d8/df1/classFairMultiLinkedData__Interface.html#a864b54ec02b4d48fade8b69ce8c97ef9", null ],
+    [ "GetSortedMCTracks", "d8/df1/classFairMultiLinkedData__Interface.html#a2ac8d43ae314d3aa66871c404b2cef9c", null ],
     [ "operator=", "d8/df1/classFairMultiLinkedData__Interface.html#a6076bcd007b8959c143ebcbd516399d4", null ],
-    [ "Print", "d8/df1/classFairMultiLinkedData__Interface.html#a7939740f18ef641c567dcff0e0961375", null ],
+    [ "PrintLinkInfo", "d8/df1/classFairMultiLinkedData__Interface.html#ad4f72b2a05e280c334ebbc3c02b014df", null ],
     [ "ResetLinks", "d8/df1/classFairMultiLinkedData__Interface.html#a0aae641b222fcad21a1076b3a5a8b939", null ],
     [ "SetEntryNr", "d8/df1/classFairMultiLinkedData__Interface.html#a2fd9d8809638920493b69511716c47f3", null ],
     [ "SetInsertHistory", "d8/df1/classFairMultiLinkedData__Interface.html#a94ba4360f4c094275d0986455a50561a", null ],
@@ -26,6 +27,7 @@ var classFairMultiLinkedData__Interface =
     [ "SetLinks", "d8/df1/classFairMultiLinkedData__Interface.html#aa32a1c8fb41eef048ad94f7cbb9172f2", null ],
     [ "SetPointerToLinks", "d8/df1/classFairMultiLinkedData__Interface.html#a06c1c9aed94c22a48ab1c8fdddaf90fe", null ],
     [ "operator<<", "d8/df1/classFairMultiLinkedData__Interface.html#a6cf40d63f7408737e8e69333286cae47", null ],
+    [ "fInsertHistory", "d8/df1/classFairMultiLinkedData__Interface.html#a45f53b12ee020d03a54dd9afb1c2d4ac", null ],
     [ "fLink", "d8/df1/classFairMultiLinkedData__Interface.html#aca9fddbc1c74e21d4a7756f382403b6e", null ],
     [ "fVerbose", "d8/df1/classFairMultiLinkedData__Interface.html#a99c5b0ed8561441d13d3890dbb19f790", null ]
 ];

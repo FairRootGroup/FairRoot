@@ -15,7 +15,6 @@ var classFairGeoVolume =
     [ "getShape", "d2/d0a/classFairGeoVolume.html#a884464861685a3a3003077a44ad3b591", null ],
     [ "getTransform", "d2/d0a/classFairGeoVolume.html#a1d791179a3a909b54252cab6f15a3645", null ],
     [ "getVolParameter", "d2/d0a/classFairGeoVolume.html#aa86cd37c9dc13b5b84cc67338c0353ea", null ],
-    [ "operator=", "d2/d0a/classFairGeoVolume.html#a69f6e637b5ce503d6ce90286512a625d", null ],
     [ "print", "d2/d0a/classFairGeoVolume.html#a65ae4d00f090234c9dbc28c5531992a7", null ],
     [ "setHadFormat", "d2/d0a/classFairGeoVolume.html#a800cbc69310e9910787e262adb851090", null ],
     [ "setMCid", "d2/d0a/classFairGeoVolume.html#a2ad9c938992b0dfe05796289057ece91", null ],

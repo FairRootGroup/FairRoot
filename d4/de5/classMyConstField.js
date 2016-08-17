@@ -4,7 +4,6 @@ var classMyConstField =
     [ "MyConstField", "d4/de5/classMyConstField.html#a7ad2c5ba1713b8ad972a3437a9469187", null ],
     [ "MyConstField", "d4/de5/classMyConstField.html#ad6d3aa615a6aa5f02e02090d94b17ad7", null ],
     [ "~MyConstField", "d4/de5/classMyConstField.html#ae48c6d14ee177e0db052a4d1bfe9085f", null ],
-    [ "ClassDef", "d4/de5/classMyConstField.html#a865420be2fdf6a8322b538541f8013a9", null ],
     [ "GetBx", "d4/de5/classMyConstField.html#a5c60601a5bfe8244d7ea1901d41cf2f2", null ],
     [ "GetBx", "d4/de5/classMyConstField.html#a759f2cb1c5f1034252990f0a55062229", null ],
     [ "GetBy", "d4/de5/classMyConstField.html#ab2c9f325843569e5eff6ecd75ff99da3", null ],
@@ -19,14 +18,5 @@ var classMyConstField =
     [ "GetZmin", "d4/de5/classMyConstField.html#a805c6514c658139db11ae94e98b37924", null ],
     [ "Print", "d4/de5/classMyConstField.html#a98ff1c9d8b64edd2f9844bb8a831e189", null ],
     [ "SetField", "d4/de5/classMyConstField.html#a2b5cb0a474f08b984ecb2bcea5a63748", null ],
-    [ "SetFieldRegion", "d4/de5/classMyConstField.html#a326b2e2fdcaf5a9f4aeb297bf7a65ece", null ],
-    [ "fBx", "d4/de5/classMyConstField.html#a1bc3350ca2eea3ef9f9336bb07ec426e", null ],
-    [ "fBy", "d4/de5/classMyConstField.html#a31d1603bb4a6c211fc784d5ebbf6bd7c", null ],
-    [ "fBz", "d4/de5/classMyConstField.html#a35d92e3c60c639625273458073bd9c54", null ],
-    [ "fXmax", "d4/de5/classMyConstField.html#a85398e12fd0cac38dbb0ba433a10324a", null ],
-    [ "fXmin", "d4/de5/classMyConstField.html#ad765777a9cbce7581300c082b938261b", null ],
-    [ "fYmax", "d4/de5/classMyConstField.html#a423b6bcfe455dd5b3ec55907e0fb1edd", null ],
-    [ "fYmin", "d4/de5/classMyConstField.html#a3aabd12cfc24ca1be9cedd45ad7a938d", null ],
-    [ "fZmax", "d4/de5/classMyConstField.html#a72a6ebe4198c2cedf52d92b728eb4317", null ],
-    [ "fZmin", "d4/de5/classMyConstField.html#af3a14848de09217e489e76f8cee116c8", null ]
+    [ "SetFieldRegion", "d4/de5/classMyConstField.html#a326b2e2fdcaf5a9f4aeb297bf7a65ece", null ]
 ];

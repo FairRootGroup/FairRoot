@@ -10,7 +10,6 @@ var classFairRtdbRun =
     [ "getParVersions", "d6/de1/classFairRtdbRun.html#a0af769e75d9ec4596a3f620dc3123262", null ],
     [ "getRefRun", "d6/de1/classFairRtdbRun.html#a84e9fd0bcf803f44bdc0ebe27b8319fb", null ],
     [ "getRunId", "d6/de1/classFairRtdbRun.html#a0630e94c4390e88e9b35e0e560dd07c2", null ],
-    [ "operator=", "d6/de1/classFairRtdbRun.html#abb1146782f4b11ece1029301c4234f45", null ],
     [ "print", "d6/de1/classFairRtdbRun.html#a7c7950526ea9baca69857ba3acf3ee48", null ],
     [ "resetInputVersions", "d6/de1/classFairRtdbRun.html#ac07c3ad1576a9e63e9a593a9787125eb", null ],
     [ "resetOutputVersions", "d6/de1/classFairRtdbRun.html#a8895f2547698a6889c5a9b9903811d1a", null ],

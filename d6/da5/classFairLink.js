@@ -15,14 +15,9 @@ var classFairLink =
     [ "GetWeight", "d6/da5/classFairLink.html#a1d2581f4b79a434aacb932390dfa02a3", null ],
     [ "operator<", "d6/da5/classFairLink.html#a5d1ebd2bac59d4fdcd4d4ebc325b08e5", null ],
     [ "operator==", "d6/da5/classFairLink.html#a44abfd97a93d6bc014605f8151a47a89", null ],
-    [ "Print", "d6/da5/classFairLink.html#af6a8cc66f90e5f99b7ae61d1a2f80437", null ],
+    [ "PrintLinkInfo", "d6/da5/classFairLink.html#a1b882b021dbce32f89595484f646c7fa", null ],
     [ "SetLink", "d6/da5/classFairLink.html#a9bd24bf476b6d487b96be0f0c79ce347", null ],
     [ "SetLink", "d6/da5/classFairLink.html#abafaa347ed7ac1d6d6bbc4ef60977ee0", null ],
     [ "SetWeight", "d6/da5/classFairLink.html#a7b9238bb9a934c83c1129c282a4c6057", null ],
-    [ "operator<<", "d6/da5/classFairLink.html#ad818151834c1d108e4c9dcebb80acac8", null ],
-    [ "fEntry", "d6/da5/classFairLink.html#abdf5ef91ff37062d7ca2b7cab8ce1db6", null ],
-    [ "fFile", "d6/da5/classFairLink.html#a4385cd68827c5958a78084a4446bfac3", null ],
-    [ "fIndex", "d6/da5/classFairLink.html#a8e92fd718273897dab92ef3928025112", null ],
-    [ "fType", "d6/da5/classFairLink.html#a696ed3fb99379f020423cb4665e0f446", null ],
-    [ "fWeight", "d6/da5/classFairLink.html#a23bcbef424d86c434604ba278f5a1528", null ]
+    [ "operator<<", "d6/da5/classFairLink.html#ad818151834c1d108e4c9dcebb80acac8", null ]
 ];

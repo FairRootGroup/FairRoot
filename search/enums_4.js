@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['level',['Level',['../dc/d53/classFairMQLogger.html#aa072244dfc8281445baebc6679119c5e',1,'FairMQLogger']]]
+  ['initstatus',['InitStatus',['../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c',1,'FairTask.h']]]
 ];

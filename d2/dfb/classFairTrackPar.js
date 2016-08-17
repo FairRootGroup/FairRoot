@@ -11,6 +11,7 @@ var classFairTrackPar =
     [ "GetDX", "d2/dfb/classFairTrackPar.html#a73c8f65de46e4c9370aafa87adf07f06", null ],
     [ "GetDY", "d2/dfb/classFairTrackPar.html#ac217e225a2377254e344e0b06ea1e483", null ],
     [ "GetDZ", "d2/dfb/classFairTrackPar.html#a1e3ac570b82565810f33488f755e2b6c", null ],
+    [ "GetFieldValue", "d2/dfb/classFairTrackPar.html#a2fba4e9ce6d8ed6d08ce9d42ea829847", null ],
     [ "GetMomentum", "d2/dfb/classFairTrackPar.html#a82b3d239ff710c04550cea5df141864d", null ],
     [ "GetPosition", "d2/dfb/classFairTrackPar.html#a06a7f81da2119daa07f98eff9191ce66", null ],
     [ "GetPx", "d2/dfb/classFairTrackPar.html#aa30e3ce720739bbc20bf2a1577bb220b", null ],

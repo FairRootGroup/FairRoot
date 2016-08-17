@@ -1,0 +1,40 @@
+file(REMOVE_RECURSE
+  "G__PixelDict.cxx"
+  "G__PixelDict_rdict.pcm"
+  "../../../../lib/libPixel.rootmap"
+  "CMakeFiles/Pixel.dir/Pixel.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelContFact.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelDigitize.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelDigiPar.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelDigiSource.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelDigiBinSource.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelDigiWriteToFile.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelDigiWriteToBinFile.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelFindHits.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelFindTracks.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelFitTracks.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelGeo.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelGeoPar.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelEventHeader.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelPoint.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelDigi.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelHit.cxx.o"
+  "CMakeFiles/Pixel.dir/PixelTrack.cxx.o"
+  "CMakeFiles/Pixel.dir/G__PixelDict.cxx.o"
+  "CMakeFiles/Pixel.dir/devices/FairMQEx9Sampler.cxx.o"
+  "CMakeFiles/Pixel.dir/devices/FairMQEx9SamplerBin.cxx.o"
+  "CMakeFiles/Pixel.dir/devices/FairMQEx9Processor.cxx.o"
+  "CMakeFiles/Pixel.dir/devices/PixelFindHitsTask.cxx.o"
+  "CMakeFiles/Pixel.dir/devices/FairMQEx9Merger.cxx.o"
+  "CMakeFiles/Pixel.dir/devices/FairMQEx9FileSink.cxx.o"
+  "CMakeFiles/Pixel.dir/devices/FairMQEx9FileSinkBin.cxx.o"
+  "../../../../lib/libPixel.pdb"
+  "../../../../lib/libPixel.dylib"
+  "../../../../lib/libPixel.16.06.00.dylib"
+  "../../../../lib/libPixel.16.dylib"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/Pixel.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

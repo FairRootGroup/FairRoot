@@ -1,0 +1,51 @@
+run_fairmq_push_pull_zmq 3 1.96242
+run_fairmq_pub_sub_zmq 2 1.77554
+run_fairmq_req_rep_zmq 2 1.68498
+run_fairmq_transfer_timeout_zmq 3 3.73046
+run_fairmq_push_pull_nn 3 1.4402
+run_fairmq_pub_sub_nn 3 2.51929
+run_fairmq_req_rep_nn 3 2.4409
+run_fairmq_transfer_timeout_nn 3 3.54571
+load_all_libs 3 2.04181
+run_tutorial1_TGeant3 3 6.44295
+run_tutorial1_mesh_TGeant3 3 4.79232
+run_tutorial1_urqmd_TGeant3 3 9.84336
+run_tutorial1_TGeant4 3 9.14871
+run_tutorial1_mesh_TGeant4 3 9.82275
+run_tutorial1_urqmd_TGeant4 3 16.7726
+run_tutorial2 3 6.26647
+run_bg 3 7.31663
+run_sg 3 4.86915
+run_sg1 3 6.15769
+create_digis_mixed 2 3.2092
+create_digis 3 4.15332
+read_digis 3 4.03385
+run_tutorial4_TGeant3 3 7.59149
+run_reco_tut4_TGeant3 3 3.6294
+run_tutorial4_TGeant4 3 10.1019
+run_reco_tut4_TGeant4 0 0
+run_sim_TGeant3 3 17.7775
+run_digi_TGeant3 3 2.88782
+run_reco_TGeant3 3 2.05664
+run_digi_timebased_TGeant3 3 3.98748
+run_reco_timebased_TGeant3 3 2.00658
+run_sim_TGeant4 3 16.0597
+run_digi_TGeant4 3 3.36389
+run_reco_TGeant4 3 2.11244
+run_digi_timebased_TGeant4 3 4.6086
+run_reco_timebased_TGeant4 3 2.03484
+run_serialization_ex1 0 0
+run_serialization_ex2 0 0
+ex9_sim_TGeant3 3 50.327
+ex9_digi_TGeant3 3 1.97909
+ex9_static 3 4.19377
+run_rutherford_TGeant3 3 4.89189
+run_rad_TGeant3 3 4.82542
+run_rutherford_TGeant4 3 9.45836
+run_rad_TGeant4 3 9.86721
+unpack_mbs 3 2.55187
+---
+run_serialization_ex1
+run_serialization_ex2
+run_fairmq_req_rep_zmq
+run_reco_tut4_TGeant4

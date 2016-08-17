@@ -4,8 +4,6 @@ var classTestDetectorPayload_1_1Hit =
     [ "dposX", "d2/da6/classTestDetectorPayload_1_1Hit.html#a1a9543e22a7fbc0a4e76ca769f37b7fc", null ],
     [ "dposY", "d2/da6/classTestDetectorPayload_1_1Hit.html#a5282d045b0c8a34e053f3ae804916dea", null ],
     [ "dposZ", "d2/da6/classTestDetectorPayload_1_1Hit.html#a8fd5b161243e95a5fd02f2b4c7f51ca3", null ],
-    [ "fTimeStamp", "d2/da6/classTestDetectorPayload_1_1Hit.html#ad15a892ec56fa4879cd1db1668decbba", null ],
-    [ "fTimeStampError", "d2/da6/classTestDetectorPayload_1_1Hit.html#a8691852d5804a64f1b0db187ee4556c7", null ],
     [ "mcindex", "d2/da6/classTestDetectorPayload_1_1Hit.html#a98797e036c04ce4436e13902847800d9", null ],
     [ "posX", "d2/da6/classTestDetectorPayload_1_1Hit.html#a9efbcf2bf1184ec93a82a7e2eaf2afec", null ],
     [ "posY", "d2/da6/classTestDetectorPayload_1_1Hit.html#af5d423b59fc614306afef5e38f2b156a", null ],

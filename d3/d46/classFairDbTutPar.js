@@ -2,7 +2,6 @@ var classFairDbTutPar =
 [
     [ "FairDbTutPar", "d3/d46/classFairDbTutPar.html#add66e325889da4918dedbeef946630e0", null ],
     [ "~FairDbTutPar", "d3/d46/classFairDbTutPar.html#afd2d4c447b4d983ceb5fd23f54a27540", null ],
-    [ "ClassDef", "d3/d46/classFairDbTutPar.html#aedcc79b64d53589d5ce91c0637c82664", null ],
     [ "clear", "d3/d46/classFairDbTutPar.html#a204ad0f1c4eeebc0f488741c8c1bd258", null ],
     [ "CreateObjTableMap", "d3/d46/classFairDbTutPar.html#ac41cfc08a6e4e6d7b92d4ca76678708c", null ],
     [ "Fill", "d3/d46/classFairDbTutPar.html#aacfa482324aef705e004bb381a5a1db7", null ],
@@ -23,13 +22,5 @@ var classFairDbTutPar =
     [ "SetTopAnchor", "d3/d46/classFairDbTutPar.html#a2cee87ef417f4d52442300bc80e05088", null ],
     [ "SetTopPitch", "d3/d46/classFairDbTutPar.html#a4b6c238c7c0b99262db874eaa11b59f4", null ],
     [ "Store", "d3/d46/classFairDbTutPar.html#a5ac7df41c38d98d511dbe84b7e3d9820", null ],
-    [ "store", "d3/d46/classFairDbTutPar.html#ac6baec6cc8791a93d65b0c93a66f98a5", null ],
-    [ "fDbEntry", "d3/d46/classFairDbTutPar.html#a37e812942efa9cdce131159d569af801", null ],
-    [ "fFeType", "d3/d46/classFairDbTutPar.html#af26d3e68c649a8139c858adec51ec161", null ],
-    [ "fMultConn", "d3/d46/classFairDbTutPar.html#ae68444f3fdb85cd132b3881a15b3782f", null ],
-    [ "fParam_Reader", "d3/d46/classFairDbTutPar.html#a942620d8cf37d862615132a4cf38c82a", null ],
-    [ "fParam_Writer", "d3/d46/classFairDbTutPar.html#a9ffdfcb4df9991bce7542cfd627c4c7b", null ],
-    [ "fTopAnchor", "d3/d46/classFairDbTutPar.html#a619abe2b81a006e93106f6c54b4142ac", null ],
-    [ "fTopNrFE", "d3/d46/classFairDbTutPar.html#a925fc43c56ce2c1b08bf735295c9dcb3", null ],
-    [ "fTopPitch", "d3/d46/classFairDbTutPar.html#a9d0acf73c8b8e2144f565d4de5117fa4", null ]
+    [ "store", "d3/d46/classFairDbTutPar.html#ac6baec6cc8791a93d65b0c93a66f98a5", null ]
 ];

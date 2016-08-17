@@ -1,10 +1,12 @@
 var FairLogger_8h =
 [
     [ "FairLogger", "db/da1/classFairLogger.html", "db/da1/classFairLogger" ],
-    [ "CONVERTTOSTRING", "d5/de4/FairLogger_8h.html#a2674c74d66cd6d77ccab579d9c1f60a0", null ],
+    [ "CONVERTTOSTRING", "d5/de4/FairLogger_8h.html#a4f659f932be3e388e0d64dfe42446a6f", null ],
+    [ "gLogger", "d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79", null ],
     [ "IMP_CONVERTTOSTRING", "d5/de4/FairLogger_8h.html#afb11b0bd8c8f751561054b1310bcb07f", null ],
-    [ "LOG", "d5/de4/FairLogger_8h.html#aba7b09d6e8fbe414c23705ad24dde6ff", null ],
+    [ "LOG", "d5/de4/FairLogger_8h.html#a1ce5aa0ad405dd2f9f4573df6d94ebe5", null ],
     [ "LOG_IF", "d5/de4/FairLogger_8h.html#aa4ae83e3bef480ad62165f3d89b30a9c", null ],
+    [ "LOG_LEVEL", "d5/de4/FairLogger_8h.html#a8ba768c5c42073c95eebfd8bbe1f9918", null ],
     [ "MESSAGE_ORIGIN", "d5/de4/FairLogger_8h.html#ac965ad830d9931f8e369c177fd3141bd", null ],
     [ "FairLogColor", "d5/de4/FairLogger_8h.html#af41c92854bb633ebee6088d70a90d372", [
       [ "Fair_Color_Normal", "d5/de4/FairLogger_8h.html#af41c92854bb633ebee6088d70a90d372ac7c2fbab40a3d2bef15e752f12c98a6b", null ],
@@ -33,9 +35,5 @@ var FairLogger_8h =
       [ "verbosityHIGH", "d5/de4/FairLogger_8h.html#adee9aa46200d9cdcaf77228e9cf3b28aa2235ee475b9821f75b0034ea115c5361", null ],
       [ "verbosityMEDIUM", "d5/de4/FairLogger_8h.html#adee9aa46200d9cdcaf77228e9cf3b28aa3aab3aad538ac24b56055f1693fa2ac5", null ],
       [ "verbosityLOW", "d5/de4/FairLogger_8h.html#adee9aa46200d9cdcaf77228e9cf3b28aaa213a3cfb7a6a86aa4ea8a2148276df7", null ]
-    ] ],
-    [ "gLogger", "d5/de4/FairLogger_8h.html#aa51f456027743a9b7625b51665167364", null ],
-    [ "LogLevelColor", "d5/de4/FairLogger_8h.html#a6e24e2ec1bec3a7c38e0898630011af6", null ],
-    [ "LogLevelString", "d5/de4/FairLogger_8h.html#a639d9aab022842ffdaf22474f7014bb8", null ],
-    [ "LogVerbosityString", "d5/de4/FairLogger_8h.html#a6b22250fe348c594d045d0177e723efd", null ]
+    ] ]
 ];

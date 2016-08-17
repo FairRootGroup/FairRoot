@@ -1,0 +1,5 @@
+[ FairTools.dylib ]
+# List of selected classes
+class FairLogger
+class FairMonitor
+class FairSystemInfo

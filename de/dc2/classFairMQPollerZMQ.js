@@ -1,12 +1,15 @@
 var classFairMQPollerZMQ =
 [
-    [ "FairMQPollerZMQ", "de/dc2/classFairMQPollerZMQ.html#afdffb56822fee3a2dad7497b7a03e9ce", null ],
+    [ "FairMQPollerZMQ", "de/dc2/classFairMQPollerZMQ.html#a7647d4bdcdf770a0346633994429d65a", null ],
+    [ "FairMQPollerZMQ", "de/dc2/classFairMQPollerZMQ.html#a5e9182724fe00da7f9542b63436a4d8a", null ],
+    [ "FairMQPollerZMQ", "de/dc2/classFairMQPollerZMQ.html#ac0f7cd7386c060a489de12eb41718968", null ],
     [ "~FairMQPollerZMQ", "de/dc2/classFairMQPollerZMQ.html#ac45c6d334f1a83e3bf4e8c8133bb3172", null ],
-    [ "FairMQPollerZMQ", "de/dc2/classFairMQPollerZMQ.html#a9443023941af5a04b148de5ae206b64e", null ],
-    [ "CheckInput", "de/dc2/classFairMQPollerZMQ.html#a2a19c0af95617366701054d299ad2a3d", null ],
-    [ "CheckOutput", "de/dc2/classFairMQPollerZMQ.html#a71cdb5f7f011e65a1668ccf7f685036b", null ],
-    [ "operator=", "de/dc2/classFairMQPollerZMQ.html#a3df1ffba34dfd0fe0ed64ae3368a7e8c", null ],
-    [ "Poll", "de/dc2/classFairMQPollerZMQ.html#acf045ec55d3ae9d0dd3c1e0e11013be3", null ],
-    [ "fNumItems", "de/dc2/classFairMQPollerZMQ.html#a777359a447f9e91d76ffabbd1714178c", null ],
-    [ "items", "de/dc2/classFairMQPollerZMQ.html#aa5ce4a86c4d9e7433b522d578eee5395", null ]
+    [ "CheckInput", "de/dc2/classFairMQPollerZMQ.html#af8a1a07b6ab107b946673ba253541ca4", null ],
+    [ "CheckInput", "de/dc2/classFairMQPollerZMQ.html#a41228fe2af4bfbea23b15d3bc04fa2ea", null ],
+    [ "CheckOutput", "de/dc2/classFairMQPollerZMQ.html#a770c386e3c6eab70b8d5c8bbb6a9b19f", null ],
+    [ "CheckOutput", "de/dc2/classFairMQPollerZMQ.html#a89c6130f84fbd0febef60069f25f07a3", null ],
+    [ "operator=", "de/dc2/classFairMQPollerZMQ.html#a62ca42f7e1065e2533a611d34f031135", null ],
+    [ "Poll", "de/dc2/classFairMQPollerZMQ.html#a0b65ee23ce60cabd2db2438e1528f97a", null ],
+    [ "FairMQChannel", "de/dc2/classFairMQPollerZMQ.html#ad5f4bdef909581fd5301ef80ab7757b2", null ],
+    [ "FairMQTransportFactoryZMQ", "de/dc2/classFairMQPollerZMQ.html#a3734d4da0ceadb0186b0e10894b02611", null ]
 ];

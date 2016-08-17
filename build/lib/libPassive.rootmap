@@ -1,0 +1,12 @@
+[ Passive.dylib ]
+# List of selected classes
+class FairCave
+class FairGeoCave
+class FairGeoMagnet
+class FairGeoPassivePar
+class FairGeoPipe
+class FairGeoTarget
+class FairMagnet
+class FairPassiveContFact
+class FairPipe
+class FairTarget

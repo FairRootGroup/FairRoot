@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['waiting',['WAITING',['../d3/d94/structFairMQFSM_1_1FairMQFSM__.html#aa7d1a369ffd88f99ea79c4e4f4e71d7aa3752bf1f741896318c42f21e290546b6',1,'FairMQFSM::FairMQFSM_']]],
-  ['warn',['WARN',['../dc/d53/classFairMQLogger.html#aa072244dfc8281445baebc6679119c5ea1eca200b8638e32e52bb6839e96af836',1,'FairMQLogger']]],
-  ['warning',['WARNING',['../d5/de4/FairLogger_8h.html#a3a99952da2be9a5e2b18e021432a2b8da984de77c680eaff141ec910e25568a81',1,'FairLogger.h']]]
+  ['verbosityhigh',['verbosityHIGH',['../d5/de4/FairLogger_8h.html#adee9aa46200d9cdcaf77228e9cf3b28aa2235ee475b9821f75b0034ea115c5361',1,'FairLogger.h']]],
+  ['verbositylow',['verbosityLOW',['../d5/de4/FairLogger_8h.html#adee9aa46200d9cdcaf77228e9cf3b28aaa213a3cfb7a6a86aa4ea8a2148276df7',1,'FairLogger.h']]],
+  ['verbositymedium',['verbosityMEDIUM',['../d5/de4/FairLogger_8h.html#adee9aa46200d9cdcaf77228e9cf3b28aa3aab3aad538ac24b56055f1693fa2ac5',1,'FairLogger.h']]]
 ];

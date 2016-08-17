@@ -2,12 +2,9 @@ var classFairGeoInterface =
 [
     [ "FairGeoInterface", "dc/dc3/classFairGeoInterface.html#aa8ae1cad8b47e2a6fb5f6a2347be17fa", null ],
     [ "~FairGeoInterface", "dc/dc3/classFairGeoInterface.html#a36cc343a4a9504d88378fa6259ee0cd7", null ],
-    [ "FairGeoInterface", "dc/dc3/classFairGeoInterface.html#ab2b154393902a7bed923b4a70ae196cc", null ],
     [ "addGeoModule", "dc/dc3/classFairGeoInterface.html#a697953369c00ee61e7f39d66a2ede212", null ],
     [ "addInputFile", "dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099", null ],
     [ "addSetupFile", "dc/dc3/classFairGeoInterface.html#a72454233b960e5fc67372b5d67397fd5", null ],
-    [ "connectInput", "dc/dc3/classFairGeoInterface.html#ae304d454b06f34df84355280a3ff6954", null ],
-    [ "connectOutput", "dc/dc3/classFairGeoInterface.html#a965640dc17807752bcd82581739abbb0", null ],
     [ "createAll", "dc/dc3/classFairGeoInterface.html#a7a1d51046698ad9b9fdf344077d3d87d", null ],
     [ "createGeometry", "dc/dc3/classFairGeoInterface.html#a20c09910c99d5f23510ed5eb4c8b0a4b", null ],
     [ "createSet", "dc/dc3/classFairGeoInterface.html#a173a18717e49c2c8485a0e32df72f862", null ],
@@ -19,7 +16,6 @@ var classFairGeoInterface =
     [ "getOraInput", "dc/dc3/classFairGeoInterface.html#ac6ea8aba969d4a6c0e3f84ebf71e0fae", null ],
     [ "getOutput", "dc/dc3/classFairGeoInterface.html#aefa689a06a88e9669af0673f9ca81961", null ],
     [ "getShapes", "dc/dc3/classFairGeoInterface.html#ad2f6f0622effa808c33de293bcd6d8b7", null ],
-    [ "operator=", "dc/dc3/classFairGeoInterface.html#abd5ef56b49c6e1fda91244fdd8e3c2bc", null ],
     [ "print", "dc/dc3/classFairGeoInterface.html#a0964ee1301ee5ad89db9c32c4c0f1e59", null ],
     [ "readAll", "dc/dc3/classFairGeoInterface.html#a43facf1e09b3213a4b44fc70637b8d4b", null ],
     [ "readGeomConfig", "dc/dc3/classFairGeoInterface.html#a8d7f3cd4a5a89fbdfc5d56c59bee14ae", null ],
@@ -35,16 +31,5 @@ var classFairGeoInterface =
     [ "writeMedia", "dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe", null ],
     [ "writeMedia", "dc/dc3/classFairGeoInterface.html#ac310e3776c5a6fdbc72dc0eb97da1d74", null ],
     [ "writeSet", "dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa", null ],
-    [ "writeSet", "dc/dc3/classFairGeoInterface.html#a087247419abc5c9c63b5e67c9133c3e8", null ],
-    [ "fileInput", "dc/dc3/classFairGeoInterface.html#ac3c5b6024c83f3f03a7fee8e569a0923", null ],
-    [ "geoBuilder", "dc/dc3/classFairGeoInterface.html#a21f44f85aa8753efa1239fc5a3779692", null ],
-    [ "masterNodes", "dc/dc3/classFairGeoInterface.html#a9e058bedfb2ef4bde444d7ac7975b03a", null ],
-    [ "media", "dc/dc3/classFairGeoInterface.html#a135824c58fd4a9887dad45405684783e", null ],
-    [ "nActualSets", "dc/dc3/classFairGeoInterface.html#a39c0a4d09040a21256065debeea9f0ae", null ],
-    [ "nSets", "dc/dc3/classFairGeoInterface.html#a2bbdc13bd93002b6f706e1cd18846659", null ],
-    [ "oraInput", "dc/dc3/classFairGeoInterface.html#abbcc4e4a05f25ce599d0e845048d0f0f", null ],
-    [ "output", "dc/dc3/classFairGeoInterface.html#a0ea0f1da1fcbacbe96da2a79d87a8838", null ],
-    [ "sets", "dc/dc3/classFairGeoInterface.html#a6f9c89b1a79e6e79c727402bd50fb0f9", null ],
-    [ "setupFile", "dc/dc3/classFairGeoInterface.html#a58777435d02d6fe792b894c02df5aabe", null ],
-    [ "shapes", "dc/dc3/classFairGeoInterface.html#ac8c22e7ed0bc4c2f21eb9ee247182fdf", null ]
+    [ "writeSet", "dc/dc3/classFairGeoInterface.html#a087247419abc5c9c63b5e67c9133c3e8", null ]
 ];

@@ -1,0 +1,34 @@
+[ GeoBase.dylib ]
+# List of selected classes
+class FairGeoAsciiIo
+class FairGeoAssembly
+class FairGeoBasicShape
+class FairGeoBrik
+class FairGeoBuilder
+class FairGeoCompositeVolume
+class FairGeoCone
+class FairGeoCons
+class FairGeoEltu
+class FairGeoInterface
+class FairGeoIo
+class FairGeoLoader
+class FairGeoMatrix
+class FairGeoMedia
+class FairGeoMedium
+class FairGeoNode
+class FairGeoOldAsciiIo
+class FairGeoPcon
+class FairGeoPgon
+class FairGeoRootBuilder
+class FairGeoRotation
+class FairGeoSet
+class FairGeoShapes
+class FairGeoSphe
+class FairGeoTorus
+class FairGeoTransform
+class FairGeoTrap
+class FairGeoTrd1
+class FairGeoTube
+class FairGeoTubs
+class FairGeoVector
+class FairGeoVolume

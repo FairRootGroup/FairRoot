@@ -5,7 +5,6 @@ var classMyProjMCTrack =
     [ "MyProjMCTrack", "df/dea/classMyProjMCTrack.html#a38b80cf4742af9a318053002e6c957b1", null ],
     [ "MyProjMCTrack", "df/dea/classMyProjMCTrack.html#aeedb27496c6e98219b02dd73f713b1f1", null ],
     [ "~MyProjMCTrack", "df/dea/classMyProjMCTrack.html#a41c8dee274d22cc4836b1c63b9310b6c", null ],
-    [ "ClassDef", "df/dea/classMyProjMCTrack.html#a609fcf6cd9d5a4c1f84342f125adc0b5", null ],
     [ "Get4Momentum", "df/dea/classMyProjMCTrack.html#a97155c80bacc648d4e11defb63ee6b8a", null ],
     [ "GetEnergy", "df/dea/classMyProjMCTrack.html#ab6eda46634c097d4dfcc971a3a399043", null ],
     [ "GetMass", "df/dea/classMyProjMCTrack.html#a6531db2335381e763f78bb6726bf08ff", null ],
@@ -26,15 +25,5 @@ var classMyProjMCTrack =
     [ "GetStartZ", "df/dea/classMyProjMCTrack.html#af0c3edb9f9a30b918eb056dae9552811", null ],
     [ "Print", "df/dea/classMyProjMCTrack.html#a02434c9165aa88aa67c0b33c53ad8047", null ],
     [ "SetMotherId", "df/dea/classMyProjMCTrack.html#a37952caa41419a8d5cfe520a2249a39f", null ],
-    [ "SetNPoints", "df/dea/classMyProjMCTrack.html#aabc7a48e69916526c159923651afe45d", null ],
-    [ "fMotherId", "df/dea/classMyProjMCTrack.html#a2e92f124bfa0c8c09a30fc0d4daec920", null ],
-    [ "fNPoints", "df/dea/classMyProjMCTrack.html#a50058db8e6e0e2dc03ce3d1932b91040", null ],
-    [ "fPdgCode", "df/dea/classMyProjMCTrack.html#ae34acb5670f467bff7c1ab5beae8bd6a", null ],
-    [ "fPx", "df/dea/classMyProjMCTrack.html#af9bc499c57d38f55fb9a63b1bed83085", null ],
-    [ "fPy", "df/dea/classMyProjMCTrack.html#a27e2968a11977be1f99f8857a50b787b", null ],
-    [ "fPz", "df/dea/classMyProjMCTrack.html#a96cf4ebd76f9f2968afbbbc8e6c473b1", null ],
-    [ "fStartT", "df/dea/classMyProjMCTrack.html#a018ba3708d0196429c17d4cb0a897dde", null ],
-    [ "fStartX", "df/dea/classMyProjMCTrack.html#a37a487a1fa34e8eb5df80f07dc5d6b8f", null ],
-    [ "fStartY", "df/dea/classMyProjMCTrack.html#ac04e51e5a0d30460c3fc27f5b3502ece", null ],
-    [ "fStartZ", "df/dea/classMyProjMCTrack.html#afd5d9a374b98a770f436ef9200635dd3", null ]
+    [ "SetNPoints", "df/dea/classMyProjMCTrack.html#aabc7a48e69916526c159923651afe45d", null ]
 ];

@@ -1,0 +1,12 @@
+[ FairDataMatch.dylib ]
+# List of selected classes
+class FairMCDataCrawler
+class FairMCEntry
+class FairMCList
+class FairMCMatch
+class FairMCMatchCreatorTask
+class FairMCMatchLoaderTask
+class FairMCMatchSelectorTask
+class FairMCObject
+class FairMCResult
+class FairMCStage

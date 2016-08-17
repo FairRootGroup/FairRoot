@@ -1,0 +1,39 @@
+[INFO   ] [17.08.2016 11:18:03] [FairRootManager.cxx::OpenOutFile:204] FairRootManager::OpenOutFile("data/test1_TGeant3.mc.root")
+[INFO   ] [17.08.2016 11:18:03] [FairRunSim.cxx::SetMaterials:441] Media file used: /Users/turany/development/FairRoot/examples/common/geometry/media.geo
+[INFO   ] [17.08.2016 11:18:03] [FairRunSim.cxx::Init:150] ==============  FairRunSim: Initialising simulation run ==============
+[INFO   ] [17.08.2016 11:18:03] [FairGeoMedia.cxx::read:104] FairGeoMedia: Read media 
+[INFO   ] [17.08.2016 11:18:03] [FairRunSim.cxx::Init:201] Create visualisation manager 
+[INFO   ] [17.08.2016 11:18:03] [FairRunSim.cxx::SetMCConfig:338] -------------- Standard Config is called ------------------------------------
+[INFO   ] [17.08.2016 11:18:03] [FairRunSim.cxx::SetMCConfig:346] ---User path for Configuration (g3libs.C) is used: /Users/turany/development/FairRoot/examples/common/gconfig
+[INFO   ] [17.08.2016 11:18:03] [FairRunSim.cxx::SetMCConfig:354] ---User path for Configuration (g3Config.C) is used: /Users/turany/development/FairRoot/examples/common/gconfig
+[INFO   ] [17.08.2016 11:18:03] [FairRunSim.cxx::SetMCConfig:393] ---User path for Cuts and Processes (SetCuts.C) is used: /Users/turany/development/FairRoot/examples/common/gconfig
+[INFO   ] [17.08.2016 11:18:04] [FairMCApplication.cxx::InitGeometry:968] Simulation RunID: 1471425483
+[INFO   ] [17.08.2016 11:18:04] [FairMCApplication.cxx::InitMC:423] Monte Carlo Engine Initialisation with: TGeant3TGeo
+[INFO   ] [17.08.2016 11:18:04] [FairRuntimeDb.cxx::writeContainer:418] ***  FairBaseParSet written to ROOT file   version: 4  
+[INFO   ] [17.08.2016 11:18:04] [FairRuntimeDb.cxx::writeContainer:418] ***  FairGeoParSet written to ROOT file   version: 4  
+[INFO   ] [17.08.2016 11:18:04] [FairRuntimeDb.cxx::writeContainer:418] ***  FairGeoPassivePar written to ROOT file   version: 4  
+[INFO   ] [17.08.2016 11:18:04] [FairRuntimeDb.cxx::writeContainer:418] ***  FairRutherfordGeoPar written to ROOT file   version: 4  
+er:418] ***  FairBaseParSet written to ROOT file   version: 4  
+[INFO   ] [17.08.2016 11:18:03] [FairRuntimeDb.cxx::writeContainer:418] ***  FairGeoParSet written to ROOT file   version: 4  
+[INFO   ] [17.08.2016 11:18:03] [FairRuntimeDb.cxx::writeContainer:418] ***  FairGeoPassivePar written to ROOT file   version: 4  
+[INFO   ] [17.08.2016 11:18:03] [FairRuntimeDb.cxx::writeContainer:418] ***  FairRutherfordGeoPar written to ROOT file   version: 4  
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:181] FairIonGenerator: Generating 1 ions of type Alpha (PDG code 1000020040)
+[INFO   ] [17.08.2016 11:18:03] [FairIonGenerator.cxx::ReadEvent:184]     Momentum (0, 0, 0.2) Gev from vertex (0, 0, -1) cm

@@ -1,0 +1,11 @@
+ Generating stack trace...
+ 0x0000000104d51388 in <unknown function>
+ 0x0000000104d50047 in <unknown function>
+ 0x000000010559256f in cling::IncrementalExecutor::executeWrapper(llvm::StringRef, cling::Value*) (in libCling.so) (IncrementalExecutor.h:186)
+ 0x000000010559094a in cling::Interpreter::RunFunction(clang::FunctionDecl const*, cling::Value*) (in libCling.so) (Interpreter.cpp:759)
+ 0x000000010558fdf9 in cling::Interpreter::EvaluateInternal(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> > const&, cling::CompilationOptions, cling::Value*, cling::Transaction**) (in l
+ 0x00000001055cc395 in cling::MetaSema::actOnxCommand(llvm::StringRef, llvm::StringRef, cling::Value*) (in libCling.so) (MetaSema.cpp:125)
+ 0x00000001055c521e in cling::MetaParser::isXCommand(cling::MetaSema::ActionResult&, cling::Value*) (in libCling.so) (MetaParser.cpp:272)
+ 0x00000001055c4977 in cling::MetaParser::isCommand(cling::MetaSema::ActionResult&, cling::Value*) (in libCling.so) (MetaParser.cpp:124)
+ 0x00000001055c474a in cling::MetaParser::isMetaCommand(cling::MetaSema::ActionResult&, cling::Value*) (in libCling.so) (MetaParser.cpp:101)
+ 0x00000001055c9ebf in cling::MetaProcessor::process(char const*, cling::Interpreter::CompilationResult&, cling::Value*) (in libCling.so) (MetaProcessor.cpp:149)

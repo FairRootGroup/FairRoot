@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['usetca',['useTCA',['../d6/dc6/structSimOption.html#aef6c1162de06dd8431f870cbcd8f96c8',1,'SimOption']]],
-  ['usetclonesarray',['useTClonesArray',['../d7/def/structDeviceOptions.html#a62de986c86743808de670541ffe3ebd0',1,'DeviceOptions']]]
+  ['use',['use',['../d6/dc0/LICENSE_8txt.html#a00a2ff2e406f6fbfdd9bfc4684e970fa',1,'LICENSE.txt']]]
 ];
