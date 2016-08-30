@@ -87,12 +87,14 @@ void logToLoggerCoutTest(int iterations)
   }
 }
 
-void logTo(int iterations)
+void logTo(int)
 {
 
+/*
   for (int i=0; i < iterations; i++) {
     Int_t val = i * i - (i-1);
   }
+*/
 }
 
 void setSyncOutput(bool decision)
@@ -124,11 +126,11 @@ void doCalculation(std::vector<Double_t> rtime, std::vector<Double_t> ctime)
   ctime.erase(ctime.begin());
   ctime.pop_back();
 
-  Double_t ctime_sum;
-  Double_t ctime_avg;
-  Double_t rtime_sum;
-  Double_t rtime_avg;
-  for(int i = 0; i < rtime.size(); i++) {
+  Double_t ctime_sum = 0.0;
+  Double_t ctime_avg = 0.0;
+  Double_t rtime_sum = 0.0;
+  Double_t rtime_avg = 0.0;
+  for(unsigned int i = 0; i < rtime.size(); i++) {
     rtime_sum += rtime.at(i);
     ctime_sum += ctime.at(i);
   }

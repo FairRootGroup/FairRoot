@@ -37,6 +37,9 @@ class FairTestNewOutputHandler
     bool fCaptureStdOut;
     bool fCaptureStdErr;
 
+    FairTestNewOutputHandler(const FairTestNewOutputHandler&);
+    FairTestNewOutputHandler& operator=(const FairTestNewOutputHandler&);
+
     void Split();
 
 };

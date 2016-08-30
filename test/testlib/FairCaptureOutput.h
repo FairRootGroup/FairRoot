@@ -44,6 +44,10 @@ class FairCaptureOutput
     bool fCaptureStdOut;
     bool fCaptureStdErr;
     FairTestOutputHandler* fOutputHandler;
+
+    FairCaptureOutput(const FairCaptureOutput&);
+    FairCaptureOutput& operator=(const FairCaptureOutput&);
+    
 };
 #endif
 

@@ -48,6 +48,8 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
 
         # filter warnings from internal gtest headers
         "gtest/internal"
+        "gtest/gtest-test-part.h"
+        "gtest/gtest.h"
   )
 
 # -----------------------------------------------------------
