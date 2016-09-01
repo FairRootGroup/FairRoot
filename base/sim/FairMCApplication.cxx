@@ -108,9 +108,9 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fMCEventHeader(NULL),
    listActiveDetectors(),
    listDetectors(),
+   fMC(NULL),
    fRunInfo(),
-   fGeometryIsInitialized(kFALSE),
-   fMC(NULL)
+   fGeometryIsInitialized(kFALSE)
 {
 // Standard Simulation constructor
 // Check if the Fair root manager exist!
@@ -192,10 +192,9 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
    fMCEventHeader(NULL),
    listActiveDetectors(),
    listDetectors(),
+   fMC(NULL),
    fRunInfo(),
-   fGeometryIsInitialized(kFALSE),
-   fMC(NULL)
-
+   fGeometryIsInitialized(kFALSE)
 {
 // Copy constructor
 // Do not create Root manager
@@ -278,10 +277,9 @@ FairMCApplication::FairMCApplication()
    fMCEventHeader(NULL),
    listActiveDetectors(),
    listDetectors(),
+   fMC(NULL),
    fRunInfo(),
-   fGeometryIsInitialized(kFALSE),
-   fMC(NULL)
-
+   fGeometryIsInitialized(kFALSE)
 {
 // Default constructor
 }

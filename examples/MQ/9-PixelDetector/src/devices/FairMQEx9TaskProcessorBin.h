@@ -67,7 +67,9 @@ class FairMQEx9TaskProcessorBin : public FairMQDevice
     T* fFairTask;
     TList* fParCList;
     FairGeoParSet* fGeoPar;
-    
+
+    FairMQEx9TaskProcessorBin(const FairMQEx9TaskProcessorBin&);    
+    FairMQEx9TaskProcessorBin& operator=(const FairMQEx9TaskProcessorBin&);    
 };
 
 // Template implementation is in FairMQEx9TaskProcessorBin.tpl :

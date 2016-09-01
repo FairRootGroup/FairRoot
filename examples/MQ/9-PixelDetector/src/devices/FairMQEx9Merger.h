@@ -44,6 +44,9 @@ class FairMQEx9Merger : public FairMQDevice
     
     int fNofParts;
     PixelEventHeader* fEventHeader;
+
+    FairMQEx9Merger(const FairMQEx9Merger&);
+    FairMQEx9Merger& operator=(const FairMQEx9Merger&);
 };
 
 #endif /* FAIRMQEX9MERGER_H_ */

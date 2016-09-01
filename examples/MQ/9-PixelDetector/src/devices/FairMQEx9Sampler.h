@@ -63,6 +63,9 @@ class FairMQEx9Sampler : public FairMQDevice
     int64_t         fMaxIndex;
     std::vector<std::string>     fBranchNames;
     std::vector<std::string>     fFileNames;
+
+    FairMQEx9Sampler(const FairMQEx9Sampler&);
+    FairMQEx9Sampler& operator=(const FairMQEx9Sampler&);
 };
 
 #endif /* FAIRMQEX9SAMPLER_H_ */

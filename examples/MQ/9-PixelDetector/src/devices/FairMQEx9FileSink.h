@@ -77,6 +77,8 @@ class FairMQEx9FileSink : public FairMQDevice
     /* TClonesArray*    fOutput; */
     TFolder* fFolder;
 
+    FairMQEx9FileSink(const FairMQEx9FileSink&);
+    FairMQEx9FileSink& operator=(const FairMQEx9FileSink&);
 };
 
 #endif /* FAIRMQEX9FILESINK_H_ */

@@ -50,6 +50,8 @@ class FairOnlineSource : public FairSource
     TObjArray* fUnpackers;
 
   private:
+    FairOnlineSource& operator=(const FairOnlineSource&);
+
     ClassDef(FairOnlineSource, 0)
 };
 
