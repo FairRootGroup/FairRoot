@@ -924,6 +924,7 @@ void FairMCApplication::ConstructGeometry()
          if(Name=="XXX") gGeoManager->SetPdgName(Particle->PdgCode(), Particle->GetName());
          Counter++;
       }
+      delete particleIter;
     }
     fModIter->Reset();
     while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {

@@ -36,6 +36,7 @@ FairGenericStack::FairGenericStack(Int_t)
 // -----   Destructor   ----------------------------------------------------
 FairGenericStack::~FairGenericStack()
 {
+  if (fDetIter) delete fDetIter;
 }
 // -------------------------------------------------------------------------
 // -----   Copy constructor   ----------------------------------------------

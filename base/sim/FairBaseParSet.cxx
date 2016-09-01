@@ -39,7 +39,10 @@ void FairBaseParSet::clear(void)
 {
   if(fPriGen) { delete fPriGen; }
   if(fDetList) { delete fDetList; }
-  if(fContNameList) { delete fContNameList; }
+  if(fContNameList) {
+    fContNameList->Delete();
+    delete fContNameList;
+  }
 
 }
 
