@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -33,13 +33,17 @@ FairBaseParSet::FairBaseParSet(const char* name,const char* title,const char* co
 
 FairBaseParSet::~FairBaseParSet(void)
 {
+  clear();
 }
 
 void FairBaseParSet::clear(void)
 {
   if(fPriGen) { delete fPriGen; }
   if(fDetList) { delete fDetList; }
-  if(fContNameList) { delete fContNameList; }
+  if(fContNameList) {
+    fContNameList->Delete();
+    delete fContNameList;
+  }
 
 }
 
@@ -63,5 +67,3 @@ Bool_t FairBaseParSet::getParams(FairParamList* l)
   if (!l->fill("Random Seed", &fRandomSeed)) { return kFALSE; }
   return kTRUE;
 }
-
-
