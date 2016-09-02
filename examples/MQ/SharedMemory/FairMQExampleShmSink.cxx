@@ -70,7 +70,7 @@ void FairMQExampleShmSink::Run()
 
             if (owner)
             {
-                void* ptr = SegmentManager::Instance().Segment()->get_address_from_handle(owner->get()->Handle());
+                // void* ptr = SegmentManager::Instance().Segment()->get_address_from_handle(owner->get()->Handle());
                 LOG(TRACE) << "chunk handle: " << owner->get()->Handle();
                 LOG(TRACE) << "chunk size: " << owner->get()->Size();
                 fBytesInNew += owner->get()->Size();

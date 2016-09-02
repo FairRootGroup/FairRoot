@@ -30,6 +30,10 @@ FairMQExampleShmSampler::FairMQExampleShmSampler()
     , fMsgOut(0)
     , fBytesOutNew(0)
     , fMsgOutNew(0)
+    , fLocalPtrs()
+    , fContainerMutex()
+    , fAckMutex()
+    , fAckCV()
 {
     if (shared_memory_object::remove("FairMQSharedMemory"))
     {
@@ -118,13 +122,13 @@ void FairMQExampleShmSampler::Run()
         LOG(TRACE) << "chunk size: " << owner->fSharedPtr.get()->Size();
         LOG(TRACE) << "owner use count: " << owner->fSharedPtr.use_count();
 
-        char* cptr = static_cast<char*>(ptr);
+        // char* cptr = static_cast<char*>(ptr);
 
         // LOG(TRACE) << "check: " << cptr[3];
 
         unique_ptr<FairMQMessage> msg(NewMessage(const_cast<char*>(ownerStr->c_str()),
                                                                    ownerStr->length(),
-                                                                   [](void* data, void* hint){ delete static_cast<string*>(hint); },
+                                                                   [](void* /*data*/, void* hint){ delete static_cast<string*>(hint); },
                                                                    ownerStr));
 
         if (Send(msg, "meta") >= 0)

@@ -26,6 +26,9 @@ class Ex1ProcessorTest : public FairMQDevice
         fOutput(nullptr)
     {}
 
+    Ex1ProcessorTest(const Ex1ProcessorTest&);
+    Ex1ProcessorTest& operator=(const Ex1ProcessorTest&);
+
     virtual ~Ex1ProcessorTest() {}
 
   protected:

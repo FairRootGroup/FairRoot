@@ -104,7 +104,9 @@ class SegmentManager
     }
 
   private:
-    SegmentManager() {}
+    SegmentManager()
+        : fSegment(nullptr)
+    {}
 
     boost::interprocess::managed_shared_memory* fSegment;
 };
@@ -113,7 +115,8 @@ class ShmChunk
 {
   public:
     ShmChunk(const size_t size)
-        : fSize(size)
+        : fHandle()
+        , fSize(size)
     {
         void* ptr = SegmentManager::Instance().Segment()->allocate(size);
         fHandle = SegmentManager::Instance().Segment()->get_handle_from_address(ptr);

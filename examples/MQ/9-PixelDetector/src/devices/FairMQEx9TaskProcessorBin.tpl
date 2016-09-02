@@ -164,7 +164,7 @@ void FairMQEx9TaskProcessorBin<T>::Run()
 
 	  FairMQMessage* msgHeader = NewMessage(header,
 						sizeof(PixelPayload::EventHeader),
-						[](void* data, void* hint) { delete static_cast<PixelPayload::EventHeader*>(data); }
+						[](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
  						);
 	  partsOut.AddPart(msgHeader);
 

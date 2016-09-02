@@ -28,6 +28,9 @@ class Ex2SinkTest : public FairMQDevice
         fTree(nullptr)
     {}
 
+    Ex2SinkTest(const Ex2SinkTest&);
+    Ex2SinkTest& operator=(const Ex2SinkTest&);
+
     virtual ~Ex2SinkTest()
     {
         if (fTree)

@@ -21,7 +21,7 @@ class FairTMessage : public TMessage
 };
 
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage(void *data, void *hint)
+void free_tmessage(void* /*data*/, void* hint)
 {
     delete (TMessage*)hint;
 }
@@ -36,7 +36,7 @@ struct MySerializer
     }
 };
 
-struct MyDeserializer 
+struct MyDeserializer
 {
     void Deserialize(FairMQMessage& msg, TClonesArray*& output)
     {
@@ -46,7 +46,4 @@ struct MyDeserializer
     }
 };
 
-
 #endif
-
-

@@ -26,6 +26,9 @@ class Ex2Sink : public FairMQDevice
         fTree(nullptr)
     {}
 
+    Ex2Sink(const Ex2Sink&);
+    Ex2Sink& operator=(const Ex2Sink&);
+
     virtual ~Ex2Sink()
     {
         if (fTree)

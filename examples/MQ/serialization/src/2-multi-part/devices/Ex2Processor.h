@@ -20,6 +20,9 @@ class Ex2Processor : public FairMQDevice
         fOutput(nullptr)
     {}
 
+    Ex2Processor(const Ex2Processor&);
+    Ex2Processor& operator=(const Ex2Processor&);
+
     virtual ~Ex2Processor() {}
 
   protected:
@@ -63,12 +66,12 @@ class Ex2Processor : public FairMQDevice
     void Exec(TClonesArray* digis, TClonesArray* hits)
     {
         hits->Delete();
-        for (unsigned int idigi(0); idigi<digis->GetEntriesFast(); idigi++)
+        for (int idigi(0); idigi<digis->GetEntriesFast(); idigi++)
         {
             TVector3 pos;
             TVector3 dpos;
-            Double_t timestamp = 0;
-            Double_t timestampErr = 0;
+            // Double_t timestamp = 0;
+            // Double_t timestampErr = 0;
             Int_t fDetID = 0;
             Int_t fMCIndex = 0;
             MyDigi* digi = (MyDigi*)digis->At(idigi);

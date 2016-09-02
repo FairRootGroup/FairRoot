@@ -46,9 +46,9 @@ class FairMQExampleShmSampler : public FairMQDevice
     virtual void ListProperties();
 
   protected:
-    int fMsgSize;
-    int fMsgCounter;
-    int fMsgRate;
+    unsigned int fMsgSize;
+    unsigned int fMsgCounter;
+    unsigned int fMsgRate;
 
     unsigned long long fBytesOut;
     unsigned long long fMsgOut;

@@ -216,7 +216,7 @@ int FairMQLmdSampler::ReadEvent()
 
             int* arraySize = new int(sebuflength);
 
-            std::unique_ptr<FairMQMessage> msgSize(NewMessage(arraySize, sizeof(int), [](void *data, void *hint) { delete static_cast<int*>(hint); }, arraySize));
+            std::unique_ptr<FairMQMessage> msgSize(NewMessage(arraySize, sizeof(int), [](void* /*data*/, void* hint) { delete static_cast<int*>(hint); }, arraySize));
             fChannels.at(chanName).at(0).SendPart(msgSize);
             // send data
             std::unique_ptr<FairMQMessage> msg(NewMessage(fxEventData, sebuflength, free_buffer, nullptr));

@@ -33,7 +33,7 @@ class FairTMessage : public TMessage
 };
 
 // helper function to clean up the object holding the data after it is transported.
-void free_tmessage(void *data, void *hint)
+void free_tmessage(void* /*data*/, void* hint)
 {
     delete (TMessage*)hint;
 }
@@ -64,7 +64,7 @@ struct SerializerEx2
 namespace boost {
     namespace serialization {
         template<class Archive>
-        void serialize(Archive & ar, Ex2Header& header, const unsigned int version)
+        void serialize(Archive & ar, Ex2Header& header, const unsigned int /*version*/)
         {
             ar & header.EventNumber;
             ar & header.DetectorId;
@@ -87,7 +87,7 @@ struct SerializerEx2Boost
         BoostBinArchOut OutputArchive(buffer);
         OutputArchive << header;
         std::string* strMsg = new std::string(buffer.str());
-        msg.Rebuild(const_cast<char*>(strMsg->c_str()), strMsg->length(), [](void* data, void* hint)
+        msg.Rebuild(const_cast<char*>(strMsg->c_str()), strMsg->length(), [](void* /*data*/, void* hint)
                     {
                         delete static_cast<std::string*>(hint);
                     }, strMsg);

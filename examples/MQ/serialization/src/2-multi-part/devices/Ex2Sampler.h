@@ -31,6 +31,9 @@ class Ex2Sampler : public FairMQDevice
         fInputFile(nullptr)
     {}
 
+    Ex2Sampler(const Ex2Sampler&);
+    Ex2Sampler& operator=(const Ex2Sampler&);
+
     virtual ~Ex2Sampler()
     {
         if (fInputFile)
