@@ -6,7 +6,9 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairLogger.h"
+
 #include "FairCaptureOutputNew.h"
+#include "FairTestNewOutputHandler.h"
 #include "FairTestOutputHandler.h"
 
 #include "gtest/gtest.h"
@@ -17,7 +19,6 @@
 #include <fstream>
 #include <algorithm>
 #include <boost/regex.hpp>
-
 
 static const char* const LogString[] = { "FATAL  ", "ERROR  ", "WARNING",
                                        "INFO   ", "DEBUG  ", "DEBUG1 ",
@@ -32,19 +33,12 @@ static const char* const TestLogs[] = { "ERROR", "WARNING",
 
 static const char* const VerbosityLevelArray[] = { "LOW", "MEDIUM", "HIGH"};
 
-
-TEST(FairToolsTestFatal, TestFatalError)
-{
-  gLogger->SetScreenStreamToCerr(true);
-  EXPECT_DEATH(LOG(FATAL) << "This is a fatal problem" << FairLogger::endl,
-               "FATAL");
-  // TODO: check if cored dump is written to file
-}
-
-// Base class to use the same basic setup for parameterized and
-// non-parameterized tests
-// Here one defines everything which is common for all the different
-// test cases
+/*
+ Base class to use the same basic setup for parameterized and
+ non-parameterized tests.
+ Here one defines everything which is common for all the different
+ test cases
+*/
 template <class T> class _TestFairLoggerBase : public T
 {
   protected:
@@ -54,22 +48,27 @@ template <class T> class _TestFairLoggerBase : public T
     std::string OutFileName;
     FairCaptureOutputNew handler;
 
+    _TestFairLoggerBase()
+    : logLevelSettingToTest("INFO"),
+      OutputString("I am here."),
+      OutFileName(""),
+      handler()
+    {
+    }
+
+    _TestFairLoggerBase(const _TestFairLoggerBase&);
+    _TestFairLoggerBase& operator=(const _TestFairLoggerBase&);
+
+    ~_TestFairLoggerBase() {};
+
     virtual void SetUp() {
-      logLevelSettingToTest="INFO";
-      OutputString = "I am here.";
       SetFairLoggerDefaultValues();
       SetOutFileName();
     }
 
-    /*
     virtual void TearDown()
     {
-      // Check for the existens of an output file, close and remove
-      // the file if it exists.
-      // If this is done the file handling can move from the single
-      // test to the SetUp function of the base class
     }
-    */
 
     void SetOutFileName() {
       char fileName[25];
@@ -185,10 +184,15 @@ template <class T> class _TestFairLoggerBase : public T
     }
 };
 
-// This is the derived class for the non-parameterized test cases.
+/*
+This is the derived class for the non-parameterized test cases.
+*/
 class  FairToolsTest : public _TestFairLoggerBase<testing::Test> {};
 
-// This is the derived class for the parameterized test cases.
+/*
+ This is the derived class for the parameterized test case
+ which test all log levels.
+*/
 class LogLevelTest : public _TestFairLoggerBase<
   testing::TestWithParam<const char*> >
 {
@@ -201,10 +205,17 @@ class LogLevelTest : public _TestFairLoggerBase<
     }
 };
 
+/*
+ This is the derived class for the parameterized test case
+ which test all verbosity levels.
+*/
 class VerbosityLevelTest : public _TestFairLoggerBase<
   testing::TestWithParam<const char*> >
 {
   protected:
+ 
+    VerbosityLevelTest() : verbosityLevel("") {}   
+
     virtual void SetUp() {
       logLevelSettingToTest="INFO";
       verbosityLevel=GetParam();
@@ -215,186 +226,3 @@ class VerbosityLevelTest : public _TestFairLoggerBase<
     std::string verbosityLevel;
 };
 
-TEST_F(FairToolsTest, CheckDefaultSettings)
-{
-  handler.BeginCapture();
-  LogNoArguments();
-  handler.EndCapture();
-
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(expected);
-  }
-}
-
-TEST_F(FairToolsTest, CheckOutputOnlyToFile)
-{
-
-  handler.BeginCapture();
-
-  gLogger->SetLogFileName(OutFileName.c_str());
-  gLogger->SetLogToFile(true);
-  gLogger->SetLogToScreen(false);
-  LogNoArguments();
-
-  handler.EndCapture();
-
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  FairTestOutputHandler outputhandler(OutFileName);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckFileOutput(expected, outputhandler);
-  }
-}
-
-TEST_F(FairToolsTest, CheckWrongLogLevelSettings)
-{
-
-  gLogger->SetLogToFile(false);
-  gLogger->SetLogToScreen(true);
-
-  handler.BeginCapture();
-  gLogger->SetLogScreenLevel("BLA");
-  LogNoArguments();
-  handler.EndCapture();
-
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  std::string outString="[ERROR  ] Log level \"BLA\" not supported. Use default level \"INFO\".";
-  std::vector<std::string>::iterator it;
-  it = expected.begin();
-  it = expected.insert ( it , outString );
-
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(expected);
-  }
-}
-
-TEST_F(FairToolsTest, CheckVerbosityLevelSettings)
-{
-
-  gLogger->SetLogToFile(false);
-  gLogger->SetLogToScreen(true);
-
-  handler.BeginCapture();
-  gLogger->SetLogVerbosityLevel("BLA");
-  LogNoArguments();
-  handler.EndCapture();
-
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  std::string outString="[ERROR  ] Verbosity level \"BLA\" not supported. Use default level \"LOW\".";
-  std::vector<std::string>::iterator it;
-  it = expected.begin();
-  it = expected.insert ( it , outString );
-
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(expected);
-  }
-
-}
-
-
-
-TEST_F(FairToolsTest, testScreenAndFileOutputWithoutArgument)
-{
-
-  handler.BeginCapture();
-
-  gLogger->SetLogFileName(OutFileName.c_str());
-  gLogger->SetLogToScreen(true);
-  gLogger->SetLogToFile(true);
-  LogNoArguments();
-
-  handler.EndCapture();
-
-
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(expected);
-  }
-
-  FairTestOutputHandler outputhandler(OutFileName);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckFileOutput(expected, outputhandler);
-  }
-
-}
-
-
-TEST_P(LogLevelTest, testAllLogLevelsToScreenAndFile)
-{
-  gLogger->SetLogFileLevel(logLevelSettingToTest.c_str());
-  gLogger->SetLogScreenLevel(logLevelSettingToTest.c_str());
-
-  handler.BeginCapture();
-
-  gLogger->SetLogFileName(OutFileName.c_str());
-  gLogger->SetLogToScreen(true);
-  gLogger->SetLogToFile(true);
-  LogNoArguments();
-  handler.EndCapture();
-
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(expected);
-  }
-
-  FairTestOutputHandler outputhandler(OutFileName);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckFileOutput(expected, outputhandler);
-  }
-
-}
-
-INSTANTIATE_TEST_CASE_P(TestAllLogLevels,
-                        LogLevelTest,
-                        ::testing::ValuesIn(TestLogs));
-
-
-TEST_P(VerbosityLevelTest, testAllVerbosityLevelsToScreenAndFile)
-{
-  gLogger->SetLogVerbosityLevel(verbosityLevel.c_str());
-
-  handler.BeginCapture();
-
-  gLogger->SetLogFileName(OutFileName.c_str());
-  gLogger->SetLogToScreen(true);
-  gLogger->SetLogToFile(true);
-  LogNoArguments();
-
-  handler.EndCapture();
-
-  std::vector<std::string> expected = CreateExpectedLogLevels(logLevelSettingToTest);
-
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    int Lines = expected.size();
-
-    for (int i = 0; i < Lines; ++i) {
-      EXPECT_TRUE( CheckVerboseOutput( expected[i], OutputString, verbosityLevel, handler.GetCaptureLine(i) ) );
-    }
-  }
-
-
-  FairTestOutputHandler outputhandler(OutFileName);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    int Lines = expected.size();
-
-    for (int i = 0; i < Lines; ++i) {
-      EXPECT_TRUE( CheckVerboseOutput( expected[i], OutputString, verbosityLevel, outputhandler.GetCaptureLine(i) ) );
-    }
-  }
-
-}
-
-INSTANTIATE_TEST_CASE_P(TestAllVerbosityLevels,
-                        VerbosityLevelTest,
-                        ::testing::ValuesIn(VerbosityLevelArray));

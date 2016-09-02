@@ -43,33 +43,92 @@ set(LINK_DIRECTORIES
 )
 
 link_directories( ${LINK_DIRECTORIES})
-############### build the test #####################
+
 If(Boost_FOUND)
+  Set(Exe_Names
+    _FairLoggerDeathTest1
+    _FairLoggerDeathTest2
+    _FairLoggerCheckDefaultSettings 
+    _FairLoggerCheckVerbosityLevelSetting
+    _FairLoggerCheckOutputOnlytoFile
+    _FairLoggerCheckWrongLogLevelSettings
+    _FairLoggerTestScreenAndFileOutputWithoutArgument
+    _FairLoggerTestAllLogLevelsToScreenAndFile
+    _FairLoggerTestAllVerbosityLevelsToScreenAndFile
 
-  add_executable(_GTestFairTools _GTestFairTools.cxx)
-  target_link_libraries(_GTestFairTools ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${GTEST_BOTH_LIBRARIES} FairTools FairTest)
-  add_test(_GTestFairTools ${CMAKE_BINARY_DIR}/bin/_GTestFairTools)
+    _FairLoggerNewDeathTest1
+    _FairLoggerNewDeathTest2
+    _FairLoggerNewCheckDefaultSettings 
+    _FairLoggerNewCheckVerbosityLevelSetting
+    _FairLoggerNewCheckOutputOnlytoFile
+    _FairLoggerNewCheckWrongLogLevelSettings
+    _FairLoggerNewTestScreenAndFileOutputWithoutArgument
+    _FairLoggerNewTestAllLogLevelsToScreenAndFile
+    _FairLoggerNewTestAllVerbosityLevelsToScreenAndFile
+    _FairLoggerNewTestManipToScreen
+    _FairLoggerNewTestManipToFile
+  )
 
-  add_executable(_GTestFairToolsNew _GTestFairToolsNew.cxx)
-  target_link_libraries(_GTestFairToolsNew ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${GTEST_BOTH_LIBRARIES} FairTools FairTest)
-  add_test(_GTestFairToolsNew ${CMAKE_BINARY_DIR}/bin/_GTestFairToolsNew)
+  Set(Exe_Source
+    _FairLoggerDeathTest1.cxx
+    _FairLoggerDeathTest2.cxx
+    _FairLoggerCheckDefaultSettings.cxx   
+    _FairLoggerCheckVerbosityLevelSettings.cxx  
+    _FairLoggerCheckOutputOnlytoFile.cxx  
+    _FairLoggerCheckWrongLogLevelSettings.cxx
+    _FairLoggerTestScreenAndFileOutputWithoutArgument.cxx
+    _FairLoggerTestAllLogLevelsToScreenAndFile.cxx
+    _FairLoggerTestAllVerbosityLevelsToScreenAndFile.cxx
+
+    _FairLoggerNewDeathTest1.cxx
+    _FairLoggerNewDeathTest2.cxx
+    _FairLoggerNewCheckDefaultSettings.cxx   
+    _FairLoggerNewCheckVerbosityLevelSettings.cxx  
+    _FairLoggerNewCheckOutputOnlytoFile.cxx  
+    _FairLoggerNewCheckWrongLogLevelSettings.cxx
+    _FairLoggerNewTestScreenAndFileOutputWithoutArgument.cxx
+    _FairLoggerNewTestAllLogLevelsToScreenAndFile.cxx
+    _FairLoggerNewTestAllVerbosityLevelsToScreenAndFile.cxx
+    _FairLoggerNewTestManipToScreen.cxx
+    _FairLoggerNewTestManipToFile.cxx
+  )
+
+  List(LENGTH Exe_Names _length)
+  Math(EXPR _length ${_length}-1)
+
+  ForEach(_file RANGE 0 ${_length})
+    List(GET Exe_Names ${_file} _name)
+    List(GET Exe_Source ${_file} _src)
+    Set(EXE_NAME ${_name})
+    Set(SRCS ${_src})
+    Set(DEPENDENCIES ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${GTEST_BOTH_LIBRARIES} FairTools FairTest)
+    GENERATE_EXECUTABLE()
+    add_test(${_name} ${CMAKE_BINARY_DIR}/bin/${_name})
+  EndForEach(_file RANGE 0 ${_length})
+
+#  Set(Exe_Names
+#    _CoverageFairLoggerFatal
+#  )
+
+#  Set(Exe_Source
+#    _CoverageFairLoggerFatal.cxx
+#  )
+
+#  List(LENGTH Exe_Names _length)
+#  Math(EXPR _length ${_length}-1)
+
+#  ForEach(_file RANGE 0 ${_length})
+#    List(GET Exe_Names ${_file} _name)
+#    List(GET Exe_Source ${_file} _src)
+#    Set(EXE_NAME ${_name})
+#    Set(SRCS ${_src})
+#    Set(DEPENDENCIES ${ROOT_LIBRARIES} FairTools)
+#    GENERATE_EXECUTABLE()
+#    add_test(${_name} ${CMAKE_BINARY_DIR}/bin/${_name})
+#  EndForEach(_file RANGE 0 ${_length})
 
 Else(Boost_FOUND)
   Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
 EndIf(Boost_FOUND)
-
-add_executable(_test test.cxx)
-target_link_libraries(_test ${ROOT_LIBRARIES} FairTools)
-#target_link_libraries(_test FairTools)
-add_test(_test ${CMAKE_BINARY_DIR}/bin/_test)
-
-#If(Boost_FOUND)
-#  add_executable(_BoostTestFairTools _BoostTestFairTools.cxx)
-#  target_link_libraries(_BoostTestFairTools ${Boost_LIBRARIES} FairTools FairTest)
-#  add_test(_BoostTestFairTools ${CMAKE_BINARY_DIR}/bin/_BoostTestFairTools)
-#Else(Boost_FOUND)
-#  Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
-#EndIf(Boost_FOUND)
-
 
 
