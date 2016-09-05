@@ -33,18 +33,15 @@ FairBaseParSet::FairBaseParSet(const char* name,const char* title,const char* co
 
 FairBaseParSet::~FairBaseParSet(void)
 {
-  clear();
-}
-
-void FairBaseParSet::clear(void)
-{
-  if(fPriGen) { delete fPriGen; }
-  if(fDetList) { delete fDetList; }
   if(fContNameList) {
     fContNameList->Delete();
     delete fContNameList;
   }
+}
 
+void FairBaseParSet::clear(void)
+{
+  fContNameList->Delete();
 }
 
 void FairBaseParSet::putParams(FairParamList* l)
