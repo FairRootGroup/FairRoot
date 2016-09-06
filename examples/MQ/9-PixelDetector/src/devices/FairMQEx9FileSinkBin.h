@@ -49,10 +49,12 @@ class FairMQEx9FileSinkBin : public FairMQDevice
     std::string GetOutputFileName () { return fFileName;}
 
   protected:
+    bool StoreData(FairMQParts&, int);
     virtual void Init();
-    virtual void Run();
 
  private:
+    std::string     fInputChannelName;
+
     std::string fFileName;
     std::string fTreeName;
 

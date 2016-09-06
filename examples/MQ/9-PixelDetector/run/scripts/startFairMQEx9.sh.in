@@ -87,7 +87,7 @@ xterm -geometry 80x25+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 ########################## start SAMPLER
 SAMPLER="ex9-sampler $TRANSPORT"
 SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE"
-SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH $MAXINDEX"
+SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX"
 xterm -geometry 80x25+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER &
 
 ########################## start PROCESSORs
@@ -120,7 +120,7 @@ xterm -geometry 80x25+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR5 &
 ########################## start FILESINK
 FILESINK="ex9-sink $TRANSPORT"
 FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
-FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
+FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH"
 xterm +aw -geometry 100x25+0+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$FILESINK &
 
 

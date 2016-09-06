@@ -15,10 +15,11 @@
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 
+#include "TMessage.h"
+
 #include "FairMQEx9FileSink.h"
 #include "FairMQLogger.h"
-
-#include "TMessage.h"
+#include "FairMQProgOptions.h"
 
 using namespace std;
 
@@ -56,6 +57,12 @@ FairMQEx9FileSink::FairMQEx9FileSink()
 
 void FairMQEx9FileSink::Init()
 {
+  fFileName          = fConfig->GetValue<std::string>             ("file-name");
+  fClassNames        = fConfig->GetValue<std::vector<std::string>>("class-name");
+  fBranchNames       = fConfig->GetValue<std::vector<std::string>>("branch-name");
+  fInputChannelName  = fConfig->GetValue<std::string>             ("in-channel");
+  fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
+
   LOG(INFO) << "SHOULD CREATE THE FILE AND TREE";
   //  fFileName = "/Users/karabowi/fairroot/pixel9_dev/FairRoot/examples/MQ/9-PixelDetector/macros/tmpOut.root";
   fFileOption = "RECREATE";
@@ -101,75 +108,32 @@ void FairMQEx9FileSink::Init()
   BranchNameList->Delete();
   delete BranchNameList;
   
+  OnData(fInputChannelName, &FairMQEx9FileSink::StoreData);
 }
 
-void FairMQEx9FileSink::Run()
+bool FairMQEx9FileSink::StoreData(FairMQParts& parts, int index)
 {
-  while (CheckCurrentState(RUNNING))
+  TObject* tempObjects[10];
+  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
     {
-      FairMQParts parts;
-      
-      if (Receive(parts, fInputChannelName) >= 0)
+      Ex9TMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
+      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
+      for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
 	{
-
-	  TObject* tempObjects[10];
-	  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
+	  if ( strcmp(tempObjects[ipart]->GetName(),fBranchNames[ibr].c_str()) == 0 ) 
 	    {
-	      Ex9TMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
-	      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
-	      for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
-		{
-		  if ( strcmp(tempObjects[ipart]->GetName(),fBranchNames[ibr].c_str()) == 0 ) 
-		    {
-		      fOutputObjects[ibr] = tempObjects[ipart];
-		      fTree->SetBranchAddress(fBranchNames[ibr].c_str(),&fOutputObjects[ibr]);
-		    }
-		}
+	      fOutputObjects[ibr] = tempObjects[ipart];
+	      fTree->SetBranchAddress(fBranchNames[ibr].c_str(),&fOutputObjects[ibr]);
 	    }
-	  fTree->Fill();
-
-	  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
-	    unique_ptr<FairMQMessage> msg(NewMessage());
-	    Send(msg, fAckChannelName);
-	  }
 	}
     }
-}
-
-void FairMQEx9FileSink::SetProperty(const int key, const std::string& value)
-{
-    switch (key)
-    {
-        case OutputFileName :
-	  SetOutputFileName(value);
-            break;
-
-        default:
-            FairMQDevice::SetProperty(key, value);
-            break;
-    }
-}
-
-void FairMQEx9FileSink::SetProperty(const int key, const int value)
-{
-    FairMQDevice::SetProperty(key, value);
-}
-
-std::string FairMQEx9FileSink::GetProperty(const int key, const std::string& default_)
-{
-    switch (key)
-    {
-        case OutputFileName :
-	  return GetOutputFileName();
-
-        default:
-            return FairMQDevice::GetProperty(key, default_);
-    }
-}
-
-int FairMQEx9FileSink::GetProperty(const int key, const int value)
-{
-    return FairMQDevice::GetProperty(key, value);
+  fTree->Fill();
+  
+  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+    unique_ptr<FairMQMessage> msg(NewMessage());
+    Send(msg, fAckChannelName);
+  }
+  return true;
 }
 
 FairMQEx9FileSink::~FairMQEx9FileSink()

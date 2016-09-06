@@ -42,7 +42,9 @@ class FairMQEx9SamplerBin : public FairMQDevice
     void SetMaxIndex(int64_t tempInt) {fMaxIndex=tempInt;}
 
  protected:
-    virtual void Run();
+    virtual bool OnRun();
+    virtual void PreRun();
+    virtual void PostRun();
     virtual void InitTask();
     
  private: 
@@ -51,6 +53,9 @@ class FairMQEx9SamplerBin : public FairMQDevice
     TObject*        fInputObjects[100];
     int             fNObjects;
     int64_t         fMaxIndex;
+
+    int             fEventCounter;
+
     std::vector<std::string>     fBranchNames;
     std::vector<std::string>     fFileNames;
 

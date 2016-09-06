@@ -74,7 +74,7 @@ xterm -geometry 80x25+500+700 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 ########################## start SAMPLER1
 SAMPLER1="ex9-sampler $TRANSPORT"
 SAMPLER1+=" --id sampler1 $SAMPLERTYPE --mq-config $MQCONFIGFILE"
-SAMPLER1+=" --file-name $INPUTFILE1 --branch-name $INPUTBRANCH $MAXINDEX"
+SAMPLER1+=" --file-name $INPUTFILE1 --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX"
 xterm -geometry 80x25+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER1 &
 
 ########################## start PROCESSORs 1_1 & 1_2
@@ -93,7 +93,7 @@ xterm -geometry 40x12+250+170 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR1_2 &
 ########################## start SAMPLER2
 SAMPLER2="ex9-sampler $TRANSPORT"
 SAMPLER2+=" --id sampler2 $SAMPLERTYPE --mq-config $MQCONFIGFILE"
-SAMPLER2+=" --file-name $INPUTFILE2 --branch-name $INPUTBRANCH $MAXINDEX"
+SAMPLER2+=" --file-name $INPUTFILE2 --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX"
 xterm -geometry 80x12+500+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER2 &
 
 ########################## start PROCESSORs 2_1 & 2_2
@@ -110,7 +110,7 @@ xterm -geometry 40x12+750+170 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR2_2 &
 ########################## start SAMPLER3
 SAMPLER3="ex9-sampler $TRANSPORT"
 SAMPLER3+=" --id sampler3 $SAMPLERTYPE --mq-config $MQCONFIGFILE"
-SAMPLER3+=" --file-name $INPUTFILE3 --branch-name $INPUTBRANCH $MAXINDEX"
+SAMPLER3+=" --file-name $INPUTFILE3 --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX"
 xterm -geometry 80x12+1000+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER3 &
 
 ########################## start PROCESSORs 3_1 & 3_2
@@ -148,5 +148,5 @@ xterm -geometry 80x12+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR4_3 &
 ########################## start FILESINK
 FILESINK="ex9-sink $TRANSPORT"
 FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
-FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
+FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH"
 xterm +aw -geometry 80x25+1000+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$FILESINK &

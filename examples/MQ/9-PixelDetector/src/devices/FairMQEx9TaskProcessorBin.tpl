@@ -26,6 +26,9 @@ void free_tmessage4(void* /*data*/, void *hint)
 template <typename T>
 FairMQEx9TaskProcessorBin<T>::FairMQEx9TaskProcessorBin()
   : FairMQDevice()
+  , fInputChannelName("data-in")
+  , fOutputChannelName("data-out")
+  , fParamChannelName("param")
   , fEventHeader(NULL)
   , fInput(NULL)
   , fOutput(NULL)
@@ -37,8 +40,9 @@ FairMQEx9TaskProcessorBin<T>::FairMQEx9TaskProcessorBin()
   , fFairTask(NULL)
   , fParCList(NULL)
   , fGeoPar(nullptr)
+  , fReceivedMsgs(0)
+  , fSentMsgs(0)
 {
-
 }
 
 template <typename T>
@@ -86,6 +90,11 @@ FairMQEx9TaskProcessorBin<T>::~FairMQEx9TaskProcessorBin()
 template <typename T>
 void FairMQEx9TaskProcessorBin<T>::Init()
 {
+  fDataToKeep        = fConfig->GetValue<std::string>("keep-data");
+  fInputChannelName  = fConfig->GetValue<std::string>("in-channel");
+  fOutputChannelName = fConfig->GetValue<std::string>("out-channel");
+  fParamChannelName  = fConfig->GetValue<std::string>("par-channel");
+
     //fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
   fFairTask = new T();
   fGeoPar = new FairGeoParSet("FairGeoParSet");
@@ -101,112 +110,111 @@ void FairMQEx9TaskProcessorBin<T>::Init()
   fInput->Add(fInputArray);
 //  fOutputArray = new TClonesArray("PixelHit");
 //  fOutputArray->SetName("PixelHits");
+
+  OnData(fInputChannelName, &FairMQEx9TaskProcessorBin<T>::ProcessData);
 }
 
 template <typename T>
-void FairMQEx9TaskProcessorBin<T>::Run()
+bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
 {
-    int receivedMsgs = 0;
-    int sentMsgs = 0;
+  TObject* objectToKeep = NULL;
 
-    while (CheckCurrentState(RUNNING))
+  LOG(TRACE)<<"message received with " << parts.Size() << " parts!";
+  fReceivedMsgs++;
+  
+  if ( parts.Size() == 0 ) return 0; // probably impossible, but still check
+  
+  // the first part should be the event header
+  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
+  LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+  
+  fNewRunId = payloadE->fRunId;
+  if(fNewRunId!=fCurrentRunId)
     {
-      FairMQParts parts;
-      
-      if ( Receive(parts,"data-in") >= 0 )
-        {
-	  LOG(TRACE)<<"message received with " << parts.Size() << " parts!";
-	  receivedMsgs++;
+      fCurrentRunId=fNewRunId;
+      UpdateParameters();
+      fFairTask->InitMQ(fParCList);
 
-          if ( parts.Size() == 0 ) continue; // probably impossible, but still check
-
-          // the first part should be the event header
-	  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
-          LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
-
-	  fNewRunId = payloadE->fRunId;
-	  if(fNewRunId!=fCurrentRunId)
-            {
-	      fCurrentRunId=fNewRunId;
-	      UpdateParameters();
-	      fFairTask->InitMQ(fParCList);
-            }
-
-	  // the second part should the TClonesArray with necessary data... now assuming Digi
-	  PixelPayload::Digi* payloadD = static_cast<PixelPayload::Digi*>(parts.At(1)->GetData());
-	  int digiArraySize = parts.At(1)->GetSize();
-	  int nofDigis      = digiArraySize / sizeof(PixelPayload::Digi);
-
-  	  fInputArray->Clear();
-	  for ( int idigi = 0 ; idigi < nofDigis ; idigi++ ) {
-	      new ((*fInputArray)[idigi]) PixelDigi(-1,
-	                                            payloadD[idigi].fDetectorID,
-	                                            payloadD[idigi].fFeID,
-	                                            payloadD[idigi].fCol,
-	                                            payloadD[idigi].fRow,
-	                                            payloadD[idigi].fCharge);
-	  }
-
-	  LOG(TRACE) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
-
-	  // Execute hit finder task
-	  fOutput->Clear();
-	  //	  LOG(INFO) << " The blocking line... analyzing event " << fEventHeader->GetMCEntryNumber();
-	  fFairTask->ExecMQ(fInput,fOutput);
-
-	  FairMQParts partsOut;
-
-	  PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
-	  header->fRunId     = payloadE->fRunId;
-	  header->fMCEntryNo = payloadE->fMCEntryNo;
-	  header->fPartNo    = payloadE->fPartNo;
-
-	  FairMQMessage* msgHeader = NewMessage(header,
-						sizeof(PixelPayload::EventHeader),
-						[](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
- 						);
-	  partsOut.AddPart(msgHeader);
-
-	  for ( int iobj = 0 ; iobj < fOutput->GetEntries() ; iobj++ ) {
-	    if ( strcmp(fOutput->At(iobj)->GetName(),"PixelHits") == 0 ) {
-              Int_t nofEntries = ((TClonesArray*)fOutput->At(iobj))->GetEntries();
-  	      size_t hitsSize = nofEntries * sizeof(PixelPayload::Hit);
-	  
-	      FairMQMessage*  msgTCA = NewMessage(hitsSize);
-	  
-	      PixelPayload::Hit* hitPayload = static_cast<PixelPayload::Hit*>(msgTCA->GetData());
-	  
-	      for ( int ihit = 0 ; ihit < nofEntries ; ihit++ ) {
-	        PixelHit* hit = static_cast<PixelHit*>(((TClonesArray*)fOutput->At(iobj))->At(ihit));
-	        if ( !hit ) {
-	          continue;
-	        }
-	        new (&hitPayload[ihit]) PixelPayload::Hit();
-	        hitPayload[ihit].fDetectorID = hit->GetDetectorID();
-	        hitPayload[ihit].posX        = hit->GetX();
-	        hitPayload[ihit].posY        = hit->GetY();
-	        hitPayload[ihit].posZ        = hit->GetZ();
-	        hitPayload[ihit].dposX       = hit->GetDx();
-	        hitPayload[ihit].dposY       = hit->GetDy();
-	        hitPayload[ihit].dposZ       = hit->GetDz();
-	      }
-	      LOG(TRACE) << "second part has size = " << hitsSize;
-	      partsOut.AddPart(msgTCA);
-
-	      LOG(TRACE) << "Output array should have " << nofEntries << "hits";
-	    }
-          }
-
-
-	  Send(partsOut, "data-out");
-	  sentMsgs++;
-        }
+      LOG(INFO) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
     }
+  
+  // the second part should the TClonesArray with necessary data... now assuming Digi
+  PixelPayload::Digi* payloadD = static_cast<PixelPayload::Digi*>(parts.At(1)->GetData());
+  int digiArraySize = parts.At(1)->GetSize();
+  int nofDigis      = digiArraySize / sizeof(PixelPayload::Digi);
+  
+  fInputArray->Clear();
+  for ( int idigi = 0 ; idigi < nofDigis ; idigi++ ) {
+    new ((*fInputArray)[idigi]) PixelDigi(-1,
+					  payloadD[idigi].fDetectorID,
+					  payloadD[idigi].fFeID,
+					  payloadD[idigi].fCol,
+					  payloadD[idigi].fRow,
+					  payloadD[idigi].fCharge);
+  }
+  
+  LOG(TRACE) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
+  
+  // Execute hit finder task
+  fOutput->Clear();
+  //	  LOG(INFO) << " The blocking line... analyzing event " << fEventHeader->GetMCEntryNumber();
+  fFairTask->ExecMQ(fInput,fOutput);
+  
+  FairMQParts partsOut;
+  
+  PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
+  header->fRunId     = payloadE->fRunId;
+  header->fMCEntryNo = payloadE->fMCEntryNo;
+  header->fPartNo    = payloadE->fPartNo;
+  
+  FairMQMessage* msgHeader = NewMessage(header,
+					sizeof(PixelPayload::EventHeader),
+					[](void* data, void* hint) { delete static_cast<PixelPayload::EventHeader*>(data); }
+					);
+  partsOut.AddPart(msgHeader);
+  
+  for ( int iobj = 0 ; iobj < fOutput->GetEntries() ; iobj++ ) {
+    if ( strcmp(fOutput->At(iobj)->GetName(),"PixelHits") == 0 ) {
+      Int_t nofEntries = ((TClonesArray*)fOutput->At(iobj))->GetEntries();
+      size_t hitsSize = nofEntries * sizeof(PixelPayload::Hit);
+      
+      FairMQMessage*  msgTCA = NewMessage(hitsSize);
+      
+      PixelPayload::Hit* hitPayload = static_cast<PixelPayload::Hit*>(msgTCA->GetData());
+      
+      for ( int ihit = 0 ; ihit < nofEntries ; ihit++ ) {
+	PixelHit* hit = static_cast<PixelHit*>(((TClonesArray*)fOutput->At(iobj))->At(ihit));
+	if ( !hit ) {
+	  continue;
+	}
+	new (&hitPayload[ihit]) PixelPayload::Hit();
+	hitPayload[ihit].fDetectorID = hit->GetDetectorID();
+	hitPayload[ihit].posX        = hit->GetX();
+	hitPayload[ihit].posY        = hit->GetY();
+	hitPayload[ihit].posZ        = hit->GetZ();
+	hitPayload[ihit].dposX       = hit->GetDx();
+	hitPayload[ihit].dposY       = hit->GetDy();
+	hitPayload[ihit].dposZ       = hit->GetDz();
+      }
+      LOG(TRACE) << "second part has size = " << hitsSize;
+      partsOut.AddPart(msgTCA);
+      
+      LOG(TRACE) << "Output array should have " << nofEntries << "hits";
+    }
+  }
+  
+  Send(partsOut, fOutputChannelName);
+  fSentMsgs++;
     
-    MQLOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
+  return true;
 }
 
 
+template <typename T>
+void FairMQEx9TaskProcessorBin<T>::PostRun()
+{
+    MQLOG(INFO) << "FairMQEx9TaskProcessorBin<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
+}
 
 
 template <typename T>
@@ -214,49 +222,6 @@ void FairMQEx9TaskProcessorBin<T>::CustomCleanup(void* /*data*/, void *hint)
 {
     delete (std::string*)hint;
 }
-
-
-
-template <typename T>
-void FairMQEx9TaskProcessorBin<T>::SetProperty(const int key, const std::string& value)
-{
-    switch (key)
-    {
-        default:
-            FairMQDevice::SetProperty(key, value);
-            break;
-    }
-}
-
-
-
-template <typename T>
-std::string FairMQEx9TaskProcessorBin<T>::GetProperty(const int key, const std::string& default_)
-{
-    switch (key)
-    {
-        default:
-            return FairMQDevice::GetProperty(key, default_);
-    }
-}
-
-
-template <typename T>
-void FairMQEx9TaskProcessorBin<T>::SetProperty(const int key, const int value)
-{
-    FairMQDevice::SetProperty(key, value);
-}
-
-template <typename T>
-int FairMQEx9TaskProcessorBin<T>::GetProperty(const int key, const int value)
-{
-    return FairMQDevice::GetProperty(key, value);
-}
-
-
-
-
-
 
 
 template <typename T>
@@ -277,9 +242,9 @@ FairParGenericSet* FairMQEx9TaskProcessorBin<T>::UpdateParameter(FairParGenericS
   std::unique_ptr<FairMQMessage> req(NewMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
   std::unique_ptr<FairMQMessage> rep(NewMessage());
   
-  if (Send(req,"param") > 0)
+  if (Send(req,fParamChannelName) > 0)
     {
-      if (Receive(rep,"param") > 0)
+      if (Receive(rep,fParamChannelName) > 0)
 	{
 	  Ex9TMessage2 tm(rep->GetData(), rep->GetSize());
 	  thisPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());

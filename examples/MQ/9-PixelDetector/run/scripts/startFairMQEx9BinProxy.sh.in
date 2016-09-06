@@ -81,12 +81,12 @@ xterm -geometry 80x24+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 ########################## start SAMPLE
 SAMPLER1="ex9-samplerBin $TRANSPORT"
 SAMPLER1+=" --id sampler1  --mq-config $MQCONFIGFILE"
-SAMPLER1+=" --file-name $INPUTFILE1 --branch-name $INPUTBRANCH $MAXINDEX"
+SAMPLER1+=" --file-name $INPUTFILE1 --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
 xterm -geometry 80x24+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER1 &
 
 SAMPLER2="ex9-samplerBin $TRANSPORT"
 SAMPLER2+=" --id sampler1  --mq-config $MQCONFIGFILE"
-SAMPLER2+=" --file-name $INPUTFILE2 --branch-name $INPUTBRANCH $MAXINDEX"
+SAMPLER2+=" --file-name $INPUTFILE2 --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
 xterm -geometry 80x24+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER2 &
 
 ########################## start PROXY SAMPLER
