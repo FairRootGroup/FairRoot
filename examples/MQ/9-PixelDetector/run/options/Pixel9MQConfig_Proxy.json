@@ -22,7 +22,7 @@
 "_______COMMENT:" : "PROXY SAMPLER",
         "device":
         {
-            "id": "proxySampler",
+            "id": "proxysampler",
             "channel":
             {
                 "name": "data-in",
@@ -269,7 +269,7 @@
 "_______COMMENT:" : "PROXY FILE SINK",
         "device":
         {
-            "id": "proxySink",
+            "id": "proxysink",
             "channel":
             {
                 "name": "data-in",

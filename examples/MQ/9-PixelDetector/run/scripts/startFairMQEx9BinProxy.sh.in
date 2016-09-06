@@ -91,10 +91,7 @@ xterm -geometry 80x24+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER2 &
 
 ########################## start PROXY SAMPLER
 PROXYS="proxy $TRANSPORT"
-#PROXYS+=" --id proxysampler --mq-config $MQCONFIGFILE"
-PROXYS+=" --id proxysampler"
-PROXYS+=" --input-socket-type  pull --input-method  bind --input-address  tcp://*:5565"
-PROXYS+=" --output-socket-type push --output-method bind --output-address tcp://*:5566"
+PROXYS+=" --id proxysampler --mq-config $MQCONFIGFILE"
 xterm -geometry 80x24+0+0 -hold -e @FAIRROOT_BIN_LOCATION@/$PROXYS &
 
 ########################## start PROCESSORs
@@ -126,9 +123,7 @@ xterm -geometry 80x24+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR5 &
 
 ########################## start PROXY SAMPLER
 PROXYF="proxy $TRANSPORT"
-PROXYF+=" --id proxysink"
-PROXYF+=" --input-socket-type  pull --input-method  bind --input-address  tcp://*:5567"
-PROXYF+=" --output-socket-type push --output-method bind --output-address tcp://*:5572"
+PROXYF+=" --id proxysink --mq-config $MQCONFIGFILE"
 xterm -geometry 80x24+0+700 -hold -e @FAIRROOT_BIN_LOCATION@/$PROXYF &
 
 ########################## start FILESINK
