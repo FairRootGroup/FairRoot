@@ -14,6 +14,7 @@ TRANSPORT="--transport zeromq"
 VERBOSE="--verbosity DEBUG"
 FAIRTASKNAME="--task-name PixelFindHits"
 WORKDIR="@EXAMPLE9_FILE_LOCATION@"
+DATESTRING=`date +%Y%m%d_%H%M%S`
 
 while [[ $# > 1 ]]
 do
@@ -119,7 +120,7 @@ SAMPLER="@EXAMPLE9_BIN_LOCATION@/"
 SAMPLER+="ex9-sampler $TRANSPORT"
 SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE"
 SAMPLER+=" $VERBOSE --ack-channel ack "
-SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH $MAXINDEX --control static --log-color false"
+SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX --control static --log-color false"
 
 ########################## start PROCESSORs
 PROCESSOR1="@EXAMPLE9_BIN_LOCATION@/"
@@ -142,24 +143,24 @@ FILESINK="@EXAMPLE9_BIN_LOCATION@/"
 FILESINK+="ex9-sink $TRANSPORT"
 FILESINK+=" $VERBOSE --ack-channel ack "
 FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
-FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH --control static --log-color false"
+FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH --control static --log-color false"
 
-$SERVER &> server.out.log &
+$SERVER &> server_$DATESTRING.out.log &
 SERVER_PID=$!
 
-$SAMPLER &> sampler.out.log &
+$SAMPLER &> sampler_$DATESTRING.out.log &
 SAMPLER_PID=$!
 
-$PROCESSOR1 &> processor1.out.log &
+$PROCESSOR1 &> processor1_$DATESTRING.out.log &
 PROCESSOR1_PID=$!
 
-$PROCESSOR2 &> processor2.out.log &
+$PROCESSOR2 &> processor2_$DATESTRING.out.log &
 PROCESSOR2_PID=$!
 
-$PROCESSOR3 &> processor3.out.log &
+$PROCESSOR3 &> processor3_$DATESTRING.out.log &
 PROCESSOR3_PID=$!
 
-$FILESINK &> fileSink.out.log &
+$FILESINK &> fileSink_$DATESTRING.out.log &
 FILESINK_PID=$!
 
 RUN_STRING="Running"

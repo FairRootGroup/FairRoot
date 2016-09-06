@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairMQEx9Merger.cxx
+ * FairMQEx9Merger3Ch.cxx
  *
  * @since 2016-03-21
  * @author R. Karabowicz
@@ -15,7 +15,7 @@
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 
-#include "FairMQEx9Merger.h"
+#include "FairMQEx9Merger3Ch.h"
 #include "FairMQLogger.h"
 
 #include "TMessage.h"
@@ -33,25 +33,31 @@ class Ex9TMessage : public TMessage
   }
 };
 
-FairMQEx9Merger::FairMQEx9Merger()
+FairMQEx9Merger3Ch::FairMQEx9Merger3Ch()
   : FairMQDevice()
   , fEventHeader(NULL)
   , fNofParts(3)
   , fNofPartsPerEventMap()
   , fObjectMap()
-  , fInputChannelName("data-in")
+    // split input channel into three channels, to receive data from different station on different channel
+  , fInputChannel1Name("data-in1")
+  , fInputChannel2Name("data-in2")
+  , fInputChannel3Name("data-in3")
   , fOutputChannelName("data-out")
   , fNofReceivedMessages(0)
   , fNofSentMessages(0)
 {
 }
 
-void FairMQEx9Merger::Init()
+void FairMQEx9Merger3Ch::Init()
 {
-  OnData(fInputChannelName, &FairMQEx9Merger::MergeData);
+  // in this example, we can do the same for the different channels, but it will generally be different actions
+  OnData(fInputChannel1Name, &FairMQEx9Merger3Ch::MergeData);
+  OnData(fInputChannel2Name, &FairMQEx9Merger3Ch::MergeData);
+  OnData(fInputChannel3Name, &FairMQEx9Merger3Ch::MergeData);
 }
 
-bool FairMQEx9Merger::MergeData(FairMQParts& parts, int index)
+bool FairMQEx9Merger3Ch::MergeData(FairMQParts& parts, int index)
 {
 
   bool printInfo = false;
@@ -81,7 +87,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int index)
 	  MultiMapDef::iterator it3;
 	  it3 = fObjectMap.find(fEvRIPartTrio);
 	  if ( it3 != fObjectMap.end() ) {
-	    LOG(INFO) << "FairMQEx9Merger::Run(), shouldn't happen, already got objects for part " << fEvRIPartTrio.second 
+	    LOG(INFO) << "FairMQEx9Merger3Ch::Run(), shouldn't happen, already got objects for part " << fEvRIPartTrio.second 
 		      << ", event " << fEvRIPair.first << ", run " << fEvRIPair.second << ". Skipping this message!!!";
 	    nofReceivedParts = -1;
 	    break; // break the for(ipart) loop, as nothing else is left to do
@@ -158,7 +164,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int index)
       messageFEH = new TMessage(kMESS_OBJECT);
       messageFEH->WriteObject(fEventHeader);
       partsOut.AddPart(NewMessage(messageFEH->Buffer(), 
-				  messageFEH->BufferSize(), 
+				  messageFEH->BufferSize(),
 				  [](void* data, void* hint) { delete (TMessage*)hint;},
 				  messageFEH));
       for ( int iarray = 0 ; iarray < nofArrays ; iarray++ ) {
@@ -178,6 +184,6 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int index)
   return true;
 }
 
-FairMQEx9Merger::~FairMQEx9Merger()
+FairMQEx9Merger3Ch::~FairMQEx9Merger3Ch()
 { 
 }

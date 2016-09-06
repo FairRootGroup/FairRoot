@@ -28,24 +28,24 @@ template<typename T>
 class FairMQEx9TaskProcessorBin : public FairMQDevice
 {
   public:
-    enum
-    {
-        Last
-    };
-
     FairMQEx9TaskProcessorBin();
     virtual ~FairMQEx9TaskProcessorBin();
 
-    void SetProperty(const int key, const std::string& value);
-    std::string GetProperty(const int key, const std::string& default_ = "");
-    void SetProperty(const int key, const int value);
-    int GetProperty(const int key, const int default_ = 0);
-
     void SetDataToKeep(std::string tStr) { fDataToKeep = tStr;}
 
+    void SetInputChannelName (std::string tstr) {fInputChannelName = tstr;}
+    void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
+    void SetParamChannelName (std::string tstr) {fParamChannelName  = tstr;}
+
   protected:
-    virtual void Run();
+    bool ProcessData(FairMQParts&, int);
     virtual void Init();
+    virtual void PostRun();
+
+ private:
+    std::string     fInputChannelName;
+    std::string     fOutputChannelName;
+    std::string     fParamChannelName;
 
     void UpdateParameters();
     FairParGenericSet* UpdateParameter(FairParGenericSet* thisPar);
@@ -63,6 +63,9 @@ class FairMQEx9TaskProcessorBin : public FairMQDevice
     int fCurrentRunId;
 
     std::string fDataToKeep;
+
+    int fReceivedMsgs = 0;
+    int fSentMsgs = 0;
 
     T* fFairTask;
     TList* fParCList;

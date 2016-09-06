@@ -26,20 +26,9 @@
 class FairMQEx9FileSinkBin : public FairMQDevice
 {
   public:
-    enum
-    {
-        OutputFileName = FairMQDevice::Last,
-        Last
-    };
-
     FairMQEx9FileSinkBin();
     virtual ~FairMQEx9FileSinkBin();
 
-    void SetProperty(const int key, const std::string& value);
-    void SetProperty(const int key, const int value);
-    std::string GetProperty(const int key, const std::string& default_ = "");
-    int GetProperty(const int key, const int default_ = 0);
-    
     void SetOutputFileName(std::string tempString) { fFileName = tempString; }
     void AddOutputBranch  (std::string classString, std::string branchString) 
     { 
@@ -48,11 +37,17 @@ class FairMQEx9FileSinkBin : public FairMQDevice
     }
     std::string GetOutputFileName () { return fFileName;}
 
+    void SetInputChannelName (std::string tstr) {fInputChannelName = tstr;}
+    void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
+
   protected:
+    bool StoreData(FairMQParts&, int);
     virtual void Init();
-    virtual void Run();
 
  private:
+    std::string     fInputChannelName;
+    std::string     fAckChannelName;
+
     std::string fFileName;
     std::string fTreeName;
 

@@ -16,11 +16,13 @@
 #include <boost/bind.hpp>
 
 #include "FairMQEx9Sampler.h"
-#include "FairMQLogger.h"
 
-#include "FairMQMessage.h"
 #include "TMessage.h"
 #include "TClonesArray.h"
+
+#include "FairMQLogger.h"
+#include "FairMQMessage.h"
+#include "FairMQProgOptions.h"
 
 #include "FairSource.h"
 #include "FairFileSource.h"
@@ -38,17 +40,27 @@ FairMQEx9Sampler::FairMQEx9Sampler()
   , fMaxIndex(-1)
   , fBranchNames()
   , fFileNames()
+  , fEventCounter(0)
 {
 }
 
 void FairMQEx9Sampler::InitTask() 
 {
+  fFileNames         = fConfig->GetValue<std::vector<std::string>>("file-name");
+  fMaxIndex          = fConfig->GetValue<int64_t>                 ("max-index");
+  fBranchNames       = fConfig->GetValue<std::vector<std::string>>("branch-name");
+  fOutputChannelName = fConfig->GetValue<std::string>             ("out-channel");
+  fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
+  
   fRunAna = new FairRunAna();
-  if ( fFileNames.size() > 0 ) {
-    fSource = new FairFileSource(fFileNames.at(0).c_str());
-    for ( unsigned int ifile = 1 ; ifile < fFileNames.size() ; ifile++ ) 
-      ((FairFileSource*)fSource)->AddFile(fFileNames.at(ifile));
-  }
+
+  if ( fSource == NULL ) 
+    {
+      fSource = new FairFileSource(fFileNames.at(0).c_str());
+      for ( unsigned int ifile = 1 ; ifile < fFileNames.size() ; ifile++ ) 
+	((FairFileSource*)fSource)->AddFile(fFileNames.at(ifile));
+    }
+
   fSource->Init();
   LOG(INFO) << "Going to request " << fBranchNames.size() << "  branches:";
   for ( unsigned int ibrn = 0 ; ibrn < fBranchNames.size() ; ibrn++ ) {
@@ -67,42 +79,49 @@ void FairMQEx9Sampler::InitTask()
   LOG(INFO) << "Input source has " << fMaxIndex << " events.";
 }
 
-void FairMQEx9Sampler::Run()
+// helper function to clean up the object holding the data after it is transported.
+void free_tmessage2(void* /*data*/, void *hint)
 {
-  boost::thread ackListener(boost::bind(&FairMQEx9Sampler::ListenForAcks, this));
+    delete (TMessage*)hint;
+}
 
-  int eventCounter = 0;
+void FairMQEx9Sampler::PreRun()
+{
+  LOG(INFO) << "FairMQEx9Sampler::PreRun() started!";
 
-  // Check if we are still in the RUNNING state.
-  while (CheckCurrentState(RUNNING))
-    {
-      if ( eventCounter == fMaxIndex ) break;
+  fAckListener = new boost::thread(boost::bind(&FairMQEx9Sampler::ListenForAcks, this));
+}
 
-      Int_t readEventReturn = fSource->ReadEvent(eventCounter);
-
-      if ( readEventReturn != 0 ) break;
-
-      TMessage* message[1000];
-      FairMQParts parts;
-      
-      for ( int iobj = 0 ; iobj < fNObjects ; iobj++ ) {
-	message[iobj] = new TMessage(kMESS_OBJECT);
-	message[iobj]->WriteObject(fInputObjects[iobj]);
-	parts.AddPart(NewMessage(message[iobj]->Buffer(), 
-				 message[iobj]->BufferSize(), 
-				 [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-				 message[iobj]));
-      }
-      
-      Send(parts, fOutputChannelName);
-      
-      eventCounter++;
-    }
+bool FairMQEx9Sampler::ConditionalRun()
+{
+  if ( fEventCounter == fMaxIndex ) return false;
   
+  Int_t readEventReturn = fSource->ReadEvent(fEventCounter);
+
+  if ( readEventReturn != 0 ) return false;
+  
+  TMessage* message[1000];
+  FairMQParts parts;
+  
+  for ( int iobj = 0 ; iobj < fNObjects ; iobj++ ) {
+    message[iobj] = new TMessage(kMESS_OBJECT);
+    message[iobj]->WriteObject(fInputObjects[iobj]);
+    parts.AddPart(NewMessage(message[iobj]->Buffer(), message[iobj]->BufferSize(), free_tmessage2, message[iobj]));
+  }
+  
+  Send(parts, fOutputChannelName);
+  
+  fEventCounter++;
+
+  return true;
+}
+
+void FairMQEx9Sampler::PostRun() 
+{
   if ( strcmp(fAckChannelName.data(),"") != 0 ) {
     try
       {
-	ackListener.join();
+	fAckListener->join();
       }
     catch(boost::thread_resource_error& e)
       {
@@ -111,7 +130,7 @@ void FairMQEx9Sampler::Run()
       }
   }
   
-  LOG(INFO) << "Going out of RUNNING state";
+  LOG(INFO) << "PostRun() finished!";
 }
 
 void FairMQEx9Sampler::ListenForAcks()

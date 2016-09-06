@@ -26,18 +26,8 @@ template<typename T>
 class FairMQEx9TaskProcessor : public FairMQDevice
 {
   public:
-    enum
-    {
-        Last
-    };
-
     FairMQEx9TaskProcessor();
     virtual ~FairMQEx9TaskProcessor();
-
-    void SetProperty(const int key, const std::string& value);
-    std::string GetProperty(const int key, const std::string& default_ = "");
-    void SetProperty(const int key, const int value);
-    int GetProperty(const int key, const int default_ = 0);
 
     void SetDataToKeep(std::string tStr) { fDataToKeep = tStr;}
 
@@ -46,8 +36,9 @@ class FairMQEx9TaskProcessor : public FairMQDevice
     void SetParamChannelName (std::string tstr) {fParamChannelName  = tstr;}
 
   protected:
-    virtual void Run();
+    bool ProcessData(FairMQParts&, int);
     virtual void Init();
+    virtual void PostRun();
 
   private:
     std::string     fInputChannelName;
@@ -67,6 +58,9 @@ class FairMQEx9TaskProcessor : public FairMQDevice
     int fCurrentRunId;
 
     std::string fDataToKeep;
+
+    int fReceivedMsgs = 0;
+    int fSentMsgs = 0;
 
     T* fFairTask;
     TList* fParCList;

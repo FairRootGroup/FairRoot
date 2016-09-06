@@ -12,6 +12,7 @@
 set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/fairmq
+  ${CMAKE_SOURCE_DIR}/fairmq/options
   ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
   ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src
   ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src/devices
@@ -40,6 +41,7 @@ devices/FairMQEx9SamplerBin.cxx
 devices/FairMQEx9Processor.cxx
 devices/PixelFindHitsTask.cxx
 devices/FairMQEx9Merger.cxx
+devices/FairMQEx9Merger3Ch.cxx
 devices/FairMQEx9FileSink.cxx
 devices/FairMQEx9FileSinkBin.cxx
 )
@@ -50,6 +52,7 @@ devices/FairMQEx9SamplerBin.h
 devices/FairMQEx9Processor.h
 devices/PixelFindHitsTask.h
 devices/FairMQEx9Merger.h
+devices/FairMQEx9Merger3Ch.h
 devices/FairMQEx9FileSink.h
 devices/FairMQEx9FileSinkBin.h
 devices/FairMQEx9TaskProcessor.h

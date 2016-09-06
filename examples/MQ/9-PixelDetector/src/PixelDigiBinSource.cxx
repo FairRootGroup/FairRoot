@@ -152,9 +152,9 @@ Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
 
 //_____________________________________________________________________________
 Bool_t   PixelDigiBinSource::ActivateObject(TObject** obj, const char* BrName) {
-  if ( strcmp(BrName,"PixelDigis") ) 
+  if ( strcmp(BrName,"PixelDigis") == 0 ) 
     *obj = (TObject*)fDigis; 
-  else if ( strcmp(BrName,"EventHeader.") )
+  else if ( strcmp(BrName,"EventHeader.") == 0 )
     *obj = (TObject*)fEventHeader;
   else
     return kFALSE;

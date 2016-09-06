@@ -1,60 +1,22 @@
-
-/// std
-#include <csignal>
-
-/// FairRoot - FairMQ - base/MQ
-#include "FairMQLogger.h"
-#include "runSimpleMQStateMachine.h"
-
+#include "runFairMQDevice.h"
 
 // 9-PixelDetector example
 #include "FairMQEx9SamplerBin.h"
 
-// ////////////////////////////////////////////////////////////////////////
+namespace bpo = boost::program_options;
 
-int main(int argc, char** argv)
+void addCustomOptions(bpo::options_description& options)
 {
-    try
-    {
-        std::vector<std::string> filename;
-        std::string branchname;
-	int64_t     maxindex;
+  options.add_options()
+    ("file-name",   bpo::value<std::vector<std::string>>()                                  , "Path to the input file")
+    ("max-index",   bpo::value<int64_t>                 ()->default_value(-1)               , "number of events to read")
+    ("branch-name", bpo::value<std::vector<std::string>>()                                  , "branch name")
+    ("out-channel", bpo::value<std::string>             ()->default_value("data-out")       , "output channel name")
+    ("ack-channel", bpo::value<std::string>             ()->default_value("")               , "ack channel name");
+;
+}
 
-        namespace po = boost::program_options;
-        po::options_description sampler_options("Sampler options");
-        sampler_options.add_options()
-	  ("file-name",   po::value<std::vector<std::string>>(&filename)                     , "Path to the input file")
-	  ("max-index",   po::value<int64_t>                 (&maxindex)  ->default_value(-1), "number of events to read")
-	  ("branch-name", po::value<std::string>             (&branchname)                   , "branch name");
-	
-	
-        FairMQProgOptions config;
-        config.AddToCmdLineOptions(sampler_options);
-
-        config.ParseAll(argc, argv);
-
-        FairMQEx9SamplerBin sampler;
-	
-	for ( unsigned int ielem = 0 ; ielem < filename.size() ; ielem++ ) {
-	  sampler.AddInputFileName(filename.at(ielem));
-	}
-	
-	sampler.SetMaxIndex(maxindex);
-	
-	sampler.AddInputBranchName("EventHeader.");
-
-	sampler.AddInputBranchName(branchname);
-	
-        runStateMachine(sampler, config);
-
-
-    }
-    catch (std::exception& e)
-    {
-        LOG(ERROR)  << "Unhandled Exception reached the top of main: " 
-                    << e.what() << ", application will now exit";
-        return 1;
-    }
-
-    return 0;
+FairMQDevice* getDevice(const FairMQProgOptions& config)
+{
+  return new FairMQEx9SamplerBin;
 }

@@ -41,21 +41,36 @@ class FairMQEx9SamplerBin : public FairMQDevice
     
     void SetMaxIndex(int64_t tempInt) {fMaxIndex=tempInt;}
 
+    void ListenForAcks();
+
+    void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
+    void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
+
  protected:
-    virtual void Run();
+    virtual bool ConditionalRun();
+    virtual void PreRun();
+    virtual void PostRun();
     virtual void InitTask();
     
  private: 
+    std::string     fOutputChannelName;
+    std::string     fAckChannelName;
+
     FairRunAna*     fRunAna;
     FairFileSource* fSource;
     TObject*        fInputObjects[100];
     int             fNObjects;
     int64_t         fMaxIndex;
+
+    int             fEventCounter;
+
     std::vector<std::string>     fBranchNames;
     std::vector<std::string>     fFileNames;
 
     FairMQEx9SamplerBin(const FairMQEx9SamplerBin&);
     FairMQEx9SamplerBin& operator=(const FairMQEx9SamplerBin&);
+
+    boost::thread* fAckListener;
 };
 
 #endif /* FAIRMQEX9SAMPLER_H_ */

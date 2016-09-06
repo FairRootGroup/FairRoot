@@ -1,7 +1,7 @@
 {
     "fairMQOptions":
     {
-"_______COMMENT:" : "SAMPLER CONFIG",
+"_______COMMENT:" : "SAMPLERS 1, 2 & 3 CONFIG",
         "device":
         {
             "id": "sampler1",
@@ -11,31 +11,17 @@
                 "socket":
                 {
                     "type": "push",
-                    "method": "connect",
-                    "address": "tcp://localhost:5565",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "1"
-                }
-            }
-        },
-"_______COMMENT:" : "PROXY SAMPLER",
-        "device":
-        {
-            "id": "proxysampler",
-            "channel":
-            {
-                "name": "data-in",
-                "socket":
-                {
-                    "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:5565",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
                 }
-            },
+            }
+        },
+        "device":
+        {
+            "id": "sampler2",
             "channel":
             {
                 "name": "data-out",
@@ -49,7 +35,24 @@
                     "rateLogging": "1"
                 }
             }
-	},
+        },
+        "device":
+        {
+            "id": "sampler3",
+            "channel":
+            {
+                "name": "data-out",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "bind",
+                    "address": "tcp://*:5567",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            }
+        },
 "_______COMMENT:" : "PROCESSOR 1, 2 & 3 CONFIG",
         "device":
         {
@@ -61,7 +64,7 @@
                 {
                     "type": "pull",
                     "method": "connect",
-                    "address": "tcp://localhost:5566",
+                    "address": "tcp://localhost:5565",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
@@ -74,7 +77,7 @@
                 {
                     "type": "push",
                     "method": "connect",
-                    "address": "tcp://localhost:5567",
+                    "address": "tcp://localhost:5570",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
@@ -117,7 +120,7 @@
                 {
                     "type": "push",
                     "method": "connect",
-                    "address": "tcp://localhost:5567",
+                    "address": "tcp://localhost:5571",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
@@ -147,7 +150,7 @@
                 {
                     "type": "pull",
                     "method": "connect",
-                    "address": "tcp://localhost:5566",
+                    "address": "tcp://localhost:5567",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
@@ -160,7 +163,7 @@
                 {
                     "type": "push",
                     "method": "connect",
-                    "address": "tcp://localhost:5567",
+                    "address": "tcp://localhost:5572",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
@@ -180,104 +183,18 @@
                 }
             }
         },
+"_______COMMENT:" : "MERGER CONFIG",
         "device":
         {
-            "id": "processor4",
+            "id": "merger1",
             "channel":
             {
-                "name": "data-in",
-                "socket":
-                {
-                    "type": "pull",
-                    "method": "connect",
-                    "address": "tcp://localhost:5566",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "1"
-                }
-            },
-            "channel":
-            {
-                "name": "data-out",
-                "socket":
-                {
-                    "type": "push",
-                    "method": "connect",
-                    "address": "tcp://localhost:5567",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "1"
-                }
-            },
-            "channel":
-            {
-                "name": "param",
-                "socket":
-                {
-                    "type": "req",
-                    "method": "connect",
-                    "address": "tcp://localhost:5005",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "0"
-                }
-            }
-        },
-        "device":
-        {
-            "id": "processor5",
-            "channel":
-            {
-                "name": "data-in",
-                "socket":
-                {
-                    "type": "pull",
-                    "method": "connect",
-                    "address": "tcp://localhost:5566",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "1"
-                }
-            },
-            "channel":
-            {
-                "name": "data-out",
-                "socket":
-                {
-                    "type": "push",
-                    "method": "connect",
-                    "address": "tcp://localhost:5567",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "1"
-                }
-            },
-            "channel":
-            {
-                "name": "param",
-                "socket":
-                {
-                    "type": "req",
-                    "method": "connect",
-                    "address": "tcp://localhost:5005",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "0"
-                }
-            }
-        },
-"_______COMMENT:" : "PROXY FILE SINK",
-        "device":
-        {
-            "id": "proxysink",
-            "channel":
-            {
-                "name": "data-in",
+                "name": "data-in1",
                 "socket":
                 {
                     "type": "pull",
                     "method": "bind",
-                    "address": "tcp://*:5567",
+                    "address": "tcp://*:5570",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
@@ -285,18 +202,44 @@
             },
             "channel":
             {
-                "name": "data-out",
+                "name": "data-in2",
                 "socket":
                 {
-                    "type": "push",
+                    "type": "pull",
+                    "method": "bind",
+                    "address": "tcp://*:5571",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
+            },
+            "channel":
+            {
+                "name": "data-in3",
+                "socket":
+                {
+                    "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:5572",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
                 }
+            },
+            "channel":
+            {
+                "name": "data-out",
+                "socket":
+                {
+                    "type": "push",
+                    "method": "connect",
+                    "address": "tcp://localhost:5573",
+                    "sndBufSize": "1000",
+                    "rcvBufSize": "1000",
+                    "rateLogging": "1"
+                }
             }
-	},
+        },
 "_______COMMENT:" : "FILESINK CONFIG",
         "device":
         {
@@ -307,8 +250,8 @@
                 "socket":
                 {
                     "type": "pull",
-                    "method": "connect",
-                    "address": "tcp://localhost:5572",
+                    "method": "bind",
+                    "address": "tcp://*:5573",
                     "sndBufSize": "1000",
                     "rcvBufSize": "1000",
                     "rateLogging": "1"

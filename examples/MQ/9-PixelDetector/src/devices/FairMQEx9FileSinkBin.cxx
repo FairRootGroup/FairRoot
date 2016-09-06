@@ -17,6 +17,7 @@
 
 #include "FairMQEx9FileSinkBin.h"
 #include "FairMQLogger.h"
+#include "FairMQProgOptions.h"
 
 #include "TMessage.h"
 #include "TVector3.h"
@@ -39,6 +40,8 @@ class Ex9TMessage : public TMessage
 
 FairMQEx9FileSinkBin::FairMQEx9FileSinkBin()
   : FairMQDevice()
+  , fInputChannelName("data-in")
+  , fAckChannelName("")
   , fFileName()
   , fTreeName()
  
@@ -58,6 +61,12 @@ FairMQEx9FileSinkBin::FairMQEx9FileSinkBin()
 
 void FairMQEx9FileSinkBin::Init()
 {
+  fFileName          = fConfig->GetValue<std::string>             ("file-name");
+  fClassNames        = fConfig->GetValue<std::vector<std::string>>("class-name");
+  fBranchNames       = fConfig->GetValue<std::vector<std::string>>("branch-name");
+  fInputChannelName  = fConfig->GetValue<std::string>             ("in-channel");
+  fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
+
   LOG(INFO) << "SHOULD CREATE THE FILE AND TREE";
   //  fFileName = "/Users/karabowi/fairroot/pixel9_dev/FairRoot/examples/MQ/9-PixelDetector/macros/tmpOut.root";
   fFileOption = "RECREATE";
@@ -97,95 +106,53 @@ void FairMQEx9FileSinkBin::Init()
   BranchNameList->Delete();
   delete BranchNameList;
   
+  OnData(fInputChannelName, &FairMQEx9FileSinkBin::StoreData);
 }
 
-void FairMQEx9FileSinkBin::Run()
+bool FairMQEx9FileSinkBin::StoreData(FairMQParts& parts, int index)
 {
-  while (CheckCurrentState(RUNNING))
+  if ( parts.Size() == 0 ) return true; // probably impossible, but still check
+  
+  // the first part should be the event header
+  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
+  LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+  
+  for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
     {
-      FairMQParts parts;
-      
-      if (Receive(parts, "data-in") >= 0)
+      if ( strcmp("EventHeader.",fBranchNames[ibr].c_str()) == 0 ) 
 	{
-
-          if ( parts.Size() == 0 ) continue; // probably impossible, but still check
-	  
-          // the first part should be the event header
-	  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
-          LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
-	  
-	  for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
-	    {
-	      if ( strcmp("EventHeader.",fBranchNames[ibr].c_str()) == 0 ) 
-		{
-		  ((FairEventHeader*)fOutputObjects[ibr])->SetRunId        (payloadE->fRunId);
-		  ((FairEventHeader*)fOutputObjects[ibr])->SetMCEntryNumber(payloadE->fMCEntryNo);
-		}
-	    }
-
-	  // the second part should the TClonesArray with necessary data... now assuming Digi
-	  PixelPayload::Hit* payloadH = static_cast<PixelPayload::Hit*>(parts.At(1)->GetData());
-	  int hitArraySize = parts.At(1)->GetSize();
-	  int nofHits      = hitArraySize / sizeof(PixelPayload::Hit);
-
-	  for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
-	    {
-	      if ( strcmp("PixelHits",fBranchNames[ibr].c_str()) == 0 ) 
-		{
-		  ((TClonesArray*)fOutputObjects[ibr])->Clear();
-		  for ( int ihit = 0 ; ihit < nofHits ; ihit++ )
-		    {
-		      TVector3 pos   (payloadH[ihit].posX, payloadH[ihit].posY, payloadH[ihit].posZ);
-		      TVector3 posErr(payloadH[ihit].dposX,payloadH[ihit].dposY,payloadH[ihit].dposZ);
-		      new ((*((TClonesArray*)fOutputObjects[ibr]))[ihit]) PixelHit(payloadH[ihit].fDetectorID,-1,pos,posErr);
-		      //		      new ((*fHits)[fNHits]) PixelHit(detId,currentDigi->GetIndex(),pos,posErr);
-		    }
-		}
-	    }
-	  
-	  fTree->Fill();
-	}
-      else 
-	{
-	  LOG(INFO) << "oops!";
+	  ((FairEventHeader*)fOutputObjects[ibr])->SetRunId        (payloadE->fRunId);
+	  ((FairEventHeader*)fOutputObjects[ibr])->SetMCEntryNumber(payloadE->fMCEntryNo);
 	}
     }
-}
-
-void FairMQEx9FileSinkBin::SetProperty(const int key, const std::string& value)
-{
-    switch (key)
+  
+  // the second part should the TClonesArray with necessary data... now assuming Digi
+  PixelPayload::Hit* payloadH = static_cast<PixelPayload::Hit*>(parts.At(1)->GetData());
+  int hitArraySize = parts.At(1)->GetSize();
+  int nofHits      = hitArraySize / sizeof(PixelPayload::Hit);
+  
+  for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
     {
-        case OutputFileName :
-	  SetOutputFileName(value);
-            break;
-
-        default:
-            FairMQDevice::SetProperty(key, value);
-            break;
+      if ( strcmp("PixelHits",fBranchNames[ibr].c_str()) == 0 ) 
+	{
+	  ((TClonesArray*)fOutputObjects[ibr])->Clear();
+	  for ( int ihit = 0 ; ihit < nofHits ; ihit++ )
+	    {
+	      TVector3 pos   (payloadH[ihit].posX, payloadH[ihit].posY, payloadH[ihit].posZ);
+	      TVector3 posErr(payloadH[ihit].dposX,payloadH[ihit].dposY,payloadH[ihit].dposZ);
+	      new ((*((TClonesArray*)fOutputObjects[ibr]))[ihit]) PixelHit(payloadH[ihit].fDetectorID,-1,pos,posErr);
+	      //		      new ((*fHits)[fNHits]) PixelHit(detId,currentDigi->GetIndex(),pos,posErr);
+	    }
+	}
     }
-}
+  
+  fTree->Fill();
 
-void FairMQEx9FileSinkBin::SetProperty(const int key, const int value)
-{
-    FairMQDevice::SetProperty(key, value);
-}
-
-std::string FairMQEx9FileSinkBin::GetProperty(const int key, const std::string& default_)
-{
-    switch (key)
-    {
-        case OutputFileName :
-	  return GetOutputFileName();
-
-        default:
-            return FairMQDevice::GetProperty(key, default_);
-    }
-}
-
-int FairMQEx9FileSinkBin::GetProperty(const int key, const int value)
-{
-    return FairMQDevice::GetProperty(key, value);
+  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+    unique_ptr<FairMQMessage> msg(NewMessage());
+    Send(msg, fAckChannelName);
+  }
+  return true;
 }
 
 FairMQEx9FileSinkBin::~FairMQEx9FileSinkBin()

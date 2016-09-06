@@ -9,7 +9,7 @@
 #include "runFairMQDevice.h"
 
 // 9-PixelDetector example
-#include "FairMQEx9Merger.h"
+#include "FairMQEx9Merger3Ch.h"
 
 namespace bpo = boost::program_options;
 
@@ -19,5 +19,5 @@ void addCustomOptions(bpo::options_description& options)
 
 FairMQDevice* getDevice(const FairMQProgOptions& config)
 {
-  return new FairMQEx9Merger();
+  return new FairMQEx9Merger3Ch();
 }
