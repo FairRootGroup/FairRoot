@@ -169,9 +169,7 @@ class FairLogger : public std::ostream
 
     /*! \brief Pass the ios_base manipulators
      */
-#if (__GNUC__ >= 3)
     FairLogger&                      operator<<(std::ios_base & (*manip) (std::ios_base&));
-#endif
     FairLogger&                      operator<<(std::ostream & (*manip) (std::ostream&));
 
     /*! \brief End of the line
