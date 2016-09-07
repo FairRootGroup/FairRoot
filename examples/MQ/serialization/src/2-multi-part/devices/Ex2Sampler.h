@@ -80,7 +80,7 @@ class Ex2Sampler : public FairMQDevice
             std::unique_ptr<FairMQMessage> msgHeader(NewMessage(
                 header,
                 sizeof(Ex2Header),
-                [](void* data, void* hint) { delete static_cast<Ex2Header*>(data); }
+                [](void* data, void* /*hint*/) { delete static_cast<Ex2Header*>(data); }
                 ));
             std::unique_ptr<FairMQMessage> msg(NewMessage());
             

@@ -19,7 +19,7 @@
 //FairRoot
 #include "FairMQMessage.h"
 
- #include "MQPolicyDef.h"
+#include "MQPolicyDef.h"
 
 // special class to expose protected TMessage constructor
 class FairTMessage : public TMessage
@@ -38,11 +38,11 @@ void free_tmessage(void* /*data*/, void* hint)
     delete static_cast<TMessage*>(hint);
 }
 
-
 struct RootSerializer
 {
     RootSerializer() = default;
-    ~RootSerializer() = default;
+    virtual ~RootSerializer() = default;
+
     template<typename T>
     void serialize_impl(std::unique_ptr<FairMQMessage>& msg, T* input)
     {
@@ -71,7 +71,8 @@ struct RootSerializer
 struct RootDeserializer 
 {
     RootDeserializer() = default;
-    ~RootDeserializer() = default;
+    virtual ~RootDeserializer() = default;
+
     template<typename T>
     void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, T*& output)
     {
@@ -96,10 +97,7 @@ struct RootDeserializer
     }
 };
 
-
-
-using RootDefaultInputPolicy = RawPtrDefaultInputPolicy<RootDeserializer,TClonesArray>;
-using RootDefaultOutputPolicy = RawPtrDefaultOutputPolicy<RootSerializer,TClonesArray>;
-
+using RootDefaultInputPolicy = RawPtrDefaultInputPolicy<RootDeserializer, TClonesArray>;
+using RootDefaultOutputPolicy = RawPtrDefaultOutputPolicy<RootSerializer, TClonesArray>;
 
 #endif /* ROOTBASECLASSSERIALIZER_H */
