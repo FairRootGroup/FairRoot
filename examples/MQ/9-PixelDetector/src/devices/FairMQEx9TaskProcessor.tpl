@@ -133,14 +133,14 @@ void FairMQEx9TaskProcessor<T>::Run()
 	  messageFEH->WriteObject(fEventHeader);
 	  partsOut.AddPart(NewMessage(messageFEH->Buffer(),
 				      messageFEH->BufferSize(),
-				      [](void* data, void* hint) { delete (TMessage*)hint;},
+				      [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
 				      messageFEH));
 	  for ( int iobj = 0 ; iobj < fOutput->GetEntries() ; iobj++ ) {
 	    messageTCA[iobj] = new TMessage(kMESS_OBJECT);
 	    messageTCA[iobj]->WriteObject(fOutput->At(iobj));
 	    partsOut.AddPart(NewMessage(messageTCA[iobj]->Buffer(),
 					messageTCA[iobj]->BufferSize(),
-					[](void* data, void* hint) { delete (TMessage*)hint;},
+					[](void* /*data*/, void* hint) { delete (TMessage*)hint;},
 					messageTCA[iobj]));
 	  }
 	  Send(partsOut, fOutputChannelName);

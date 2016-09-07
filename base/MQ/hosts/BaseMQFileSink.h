@@ -36,20 +36,19 @@
  *                sink_type::InitOutputFile()
  **********************************************************************/
 
-
 template <typename T, typename U>
 class BaseMQFileSink : public FairMQDevice, public T, public U
 {
   public:
-    typedef T                        input_policy;
-    typedef U                        sink_type;
+    typedef T input_policy;
+    typedef U sink_type;
+
     BaseMQFileSink()
         : FairMQDevice(), input_policy(), sink_type()
     {}
 
     virtual ~BaseMQFileSink()
     {}
-
 
     template<typename... Args>
     void InitInputData(Args&&... args)

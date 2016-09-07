@@ -5,9 +5,8 @@
 * Created on October 7, 2014, 8:07 PM
 */
 
-
 #ifndef BOOSTSERIALIZER_H
-#define	BOOSTSERIALIZER_H
+#define BOOSTSERIALIZER_H
 
 // std
 #include <iostream>
@@ -59,8 +58,8 @@
 // boost::archive::binary_iarchive // loading
 
 // Remark : boost binary archives are not multiplatform --> use xml or text format for cross-platform use
-typedef boost::archive::binary_iarchive         BoostBinArchIn;
-typedef boost::archive::binary_oarchive         BoostBinArchOut;
+typedef boost::archive::binary_iarchive BoostBinArchIn;
+typedef boost::archive::binary_oarchive BoostBinArchOut;
 
 ///    ////////////////////////////////////////////////////////////////////////
 ///    ////////////////////////   serialize   /////////////////////////////////
@@ -69,9 +68,7 @@ typedef boost::archive::binary_oarchive         BoostBinArchOut;
 template <typename DataType, typename BoostArchiveOut = BoostBinArchOut>
 class BoostSerializer
 {
-
-public:
-
+  public:
     void Serialize(FairMQMessage& msg, TClonesArray* input)
     {
         // first copy the data to a std::vector
@@ -85,14 +82,13 @@ public:
             }
             input_vector.push_back(*data);
         }
-        DoSerialization(msg,input_vector);
+        DoSerialization(msg, input_vector);
     }
 
     void Serialize(FairMQMessage& msg, const std::vector<DataType>& DataVector)
     {
-        DoSerialization(msg,DataVector);
+        DoSerialization(msg, DataVector);
     }
-
 
     void Serialize(FairMQMessage& msg, DataType* Data)
     {
@@ -114,9 +110,7 @@ public:
         std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 
-
-
-protected:
+  protected:
     void DoSerialization(FairMQMessage& msg, const std::vector<DataType>& DataVector)
     {
         std::ostringstream buffer;
@@ -126,38 +120,30 @@ protected:
         msg.Rebuild(size);
         std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
-
 };
-
-
-
-
 
 ///    ////////////////////////////////////////////////////////////////////////
 ///    ////////////////////////   deserialize   ///////////////////////////////
 ///    ////////////////////////////////////////////////////////////////////////
 
 template <typename DataType, typename BoostArchiveIn = BoostBinArchIn>
-class BoostDeSerializer 
+class BoostDeSerializer
 {
   public:
-    BoostDeSerializer() 
+    BoostDeSerializer()
     {
     }
 
     BoostDeSerializer(const BoostDeSerializer&) = delete;
     BoostDeSerializer operator=(const BoostDeSerializer&) = delete;
 
-    ~BoostDeSerializer()
+    virtual ~BoostDeSerializer()
     {
     }
 
     void Deserialize(FairMQMessage& msg, std::vector<DataType>& input)
     {
-        if (input.size() > 0)
-        {
-                input.clear();
-        }
+        input.clear();
         std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
         std::istringstream buffer(msgStr);
         BoostArchiveIn InputArchive(buffer);
@@ -197,19 +183,6 @@ class BoostDeSerializer
             MQLOG(ERROR) << e.what();
         }
     }
-
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-#endif	/* BOOSTSERIALIZER_H */
+#endif /* BOOSTSERIALIZER_H */

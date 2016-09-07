@@ -1,4 +1,3 @@
-
 // std
 #include <iostream>
 #include <memory>
@@ -12,10 +11,11 @@
 #include "FairMQProgOptions.h"
 #include "MyHit.h"
 
-
 // root
 #include "TFile.h"
 #include "TTree.h"
+
+namespace po = boost::program_options;
 
 class Ex1SinkTest : public FairMQDevice
 {
@@ -63,7 +63,7 @@ class Ex1SinkTest : public FairMQDevice
     virtual void Run()
     {
         int receivedMsgs = 0;
-        int sentMsgs = 0;
+
         while (CheckCurrentState(RUNNING))
         {
             std::unique_ptr<FairMQMessage> msg(NewMessage());
@@ -74,9 +74,12 @@ class Ex1SinkTest : public FairMQDevice
                 fTree->SetBranchAddress("MyHit", &fInput);
                 fTree->Fill();
             }
-            if(receivedMsgs==100)
+            if (receivedMsgs == 100)
+            {
                 break;
+            }
         }
+
         LOG(INFO) << "Received " << receivedMsgs << " messages!";
     }
 
@@ -87,14 +90,12 @@ class Ex1SinkTest : public FairMQDevice
     TTree* fTree;
 };
 
-
-
 int main(int argc, char** argv)
 {
     try
     {
         FairMQProgOptions config;
-        namespace po = boost::program_options;
+
         po::options_description sink_options("File Sink options");
         sink_options.add_options()
             ("output-file", po::value<std::string>(), "Path to the input file");
@@ -102,13 +103,9 @@ int main(int argc, char** argv)
         config.AddToCmdLineOptions(sink_options);
         config.ParseAll(argc, argv);
 
-        std::string filename = config.GetValue<std::string>("output-file");
-
         Ex1SinkTest sink;
-        sink.SetFileName(filename);
+        sink.SetFileName(config.GetValue<std::string>("output-file"));
         runStateMachine(sink, config);
-
-        
     }
     catch (std::exception& e)
     {
@@ -119,6 +116,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
-
-

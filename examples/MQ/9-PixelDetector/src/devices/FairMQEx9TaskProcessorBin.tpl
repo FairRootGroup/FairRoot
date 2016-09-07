@@ -108,7 +108,7 @@ void FairMQEx9TaskProcessorBin<T>::Run()
 {
     int receivedMsgs = 0;
     int sentMsgs = 0;
-    TObject* objectToKeep = NULL;
+    // TObject* objectToKeep = NULL;
 
     while (CheckCurrentState(RUNNING))
     {
