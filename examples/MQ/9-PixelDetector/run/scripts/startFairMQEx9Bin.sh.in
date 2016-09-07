@@ -77,7 +77,7 @@ xterm -geometry 80x25+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 ########################## start SAMPLER
 SAMPLER="ex9-samplerBin $TRANSPORT"
 SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE"
-SAMPLER+=" --file-name $INPUTFILE --branch-name EventHeader. $MAXINDEX"
+SAMPLER+=" --file-name $INPUTFILE --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
 xterm -geometry 80x25+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER &
 
 ########################## start PROCESSORs

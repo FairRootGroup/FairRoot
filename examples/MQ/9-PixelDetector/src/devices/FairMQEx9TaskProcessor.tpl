@@ -147,6 +147,8 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int index)
   Send(partsOut, fOutputChannelName);
   fSentMsgs++;
 
+  fInput->Clear();
+
   return true;
 }
 

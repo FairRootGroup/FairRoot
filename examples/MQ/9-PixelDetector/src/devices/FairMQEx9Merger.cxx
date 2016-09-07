@@ -117,7 +117,8 @@ void FairMQEx9Merger::Run()
 	    } // end the for(ipart) loop, should have received TCAs in tempArrays and PixelEventHeader
 	  if ( nofReceivedParts == -1 ) continue;
 	  
-	  if ( nofReceivedParts != fNofParts ) // got all the parts of the event, have to combine and send message, consisting of objects from tempArrays
+	  // not all parts are there yet, have to put them in buffer
+	  if ( nofReceivedParts != fNofParts )
 	    { 
 	      LOG(TRACE) << "not all parts are yet here... adding to (size = " << fObjectMap.size() << ")";
 	      LOG(TRACE) << "+" << fEventHeader->GetName() << "[" << evRIPartTrio.first.second << "][" << evRIPartTrio.first.first << "][" << evRIPartTrio.second << "]";
@@ -131,6 +132,7 @@ void FairMQEx9Merger::Run()
 	      if ( printInfo) 
 		LOG(INFO) << ">> [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() << "][" << fEventHeader->GetPartNo() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
 	    }
+	  // got all the parts of the event, have to combine and send message, consisting of objects from tempArrays
 	  else
 	    {
 	      int currentEventPart = fEventHeader->GetPartNo();

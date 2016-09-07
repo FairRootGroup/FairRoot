@@ -60,6 +60,11 @@ FairMQEx9FileSinkBin::FairMQEx9FileSinkBin()
 
 void FairMQEx9FileSinkBin::Init()
 {
+  fFileName          = fConfig->GetValue<std::string>             ("file-name");
+  fClassNames        = fConfig->GetValue<std::vector<std::string>>("class-name");
+  fBranchNames       = fConfig->GetValue<std::vector<std::string>>("branch-name");
+  fInputChannelName  = fConfig->GetValue<std::string>             ("in-channel");
+
   LOG(INFO) << "SHOULD CREATE THE FILE AND TREE";
   //  fFileName = "/Users/karabowi/fairroot/pixel9_dev/FairRoot/examples/MQ/9-PixelDetector/macros/tmpOut.root";
   fFileOption = "RECREATE";

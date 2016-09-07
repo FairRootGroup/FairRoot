@@ -2,7 +2,7 @@
 
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
-VERBOSE="--verbosity INFO"
+VERBOSE="--verbosity DEBUG"
 
 while [[ $# > 1 ]]
 do
