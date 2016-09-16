@@ -33,12 +33,6 @@ class Ex9TMessage : public TMessage
   }
 };
 
-// helper function to clean up the object holding the data after it is transported.
-void free_tmessageMerger(void *data, void *hint)
-{
-    delete (TMessage*)hint;
-}
-
 FairMQEx9Merger::FairMQEx9Merger()
   : FairMQDevice()
   , fEventHeader(NULL)
@@ -171,11 +165,17 @@ void FairMQEx9Merger::Run()
 	      
 	      messageFEH = new TMessage(kMESS_OBJECT);
 	      messageFEH->WriteObject(fEventHeader);
-	      partsOut.AddPart(NewMessage(messageFEH->Buffer(), messageFEH->BufferSize(), free_tmessageMerger, messageFEH));
+	      partsOut.AddPart(NewMessage(messageFEH->Buffer(), 
+					  messageFEH->BufferSize(), 
+					  [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
+					  messageFEH));
 	      for ( int iarray = 0 ; iarray < nofArrays ; iarray++ ) {
 		messageTCA[iarray] = new TMessage(kMESS_OBJECT);
 		messageTCA[iarray]->WriteObject(tempArrays[iarray]);
-		partsOut.AddPart(NewMessage(messageTCA[iarray]->Buffer(), messageTCA[iarray]->BufferSize(), free_tmessageMerger, messageTCA[iarray]));
+		partsOut.AddPart(NewMessage(messageTCA[iarray]->Buffer(), 
+					    messageTCA[iarray]->BufferSize(), 
+					    [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
+					    messageTCA[iarray]));
 	      }
 	      Send(partsOut, "data-out");
 	      fNofSentMessages++;

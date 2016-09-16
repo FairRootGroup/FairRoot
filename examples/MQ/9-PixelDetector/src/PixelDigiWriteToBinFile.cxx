@@ -117,7 +117,6 @@ void PixelDigiWriteToBinFile::Exec(Option_t* /*opt*/) {
     short int feId      = (short int)currentDigi->GetFeID();
     short int col       = (short int)currentDigi->GetCol();
     short int row       = (short int)currentDigi->GetRow();
-    // Double_t charge = currentDigi->GetCharge();
 
     Int_t fileToSave = 0;
     if ( fDivideLevel == 1 ) {

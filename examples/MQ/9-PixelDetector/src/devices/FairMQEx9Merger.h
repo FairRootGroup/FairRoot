@@ -39,12 +39,12 @@ class FairMQEx9Merger : public FairMQDevice
 
  private:
 
+    PixelEventHeader* fEventHeader;
+    int fNofParts;
+
     std::map     <std::pair<int,int>,int>                     fNofPartsPerEventMap;  // number of parts for pair<event number,run id>
     std::multimap<std::pair<std::pair<int,int>,int>,TObject*> fObjectMap;            // TObjects for given pair<pair<event number, run,id>part>
     
-    int fNofParts;
-    PixelEventHeader* fEventHeader;
-
     FairMQEx9Merger(const FairMQEx9Merger&);
     FairMQEx9Merger& operator=(const FairMQEx9Merger&);
 };

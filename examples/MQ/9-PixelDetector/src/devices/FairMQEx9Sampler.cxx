@@ -67,12 +67,6 @@ void FairMQEx9Sampler::InitTask()
   LOG(INFO) << "Input source has " << fMaxIndex << " events.";
 }
 
-// helper function to clean up the object holding the data after it is transported.
-void free_tmessage2(void* /*data*/, void *hint)
-{
-    delete (TMessage*)hint;
-}
-
 void FairMQEx9Sampler::Run()
 {
   boost::thread ackListener(boost::bind(&FairMQEx9Sampler::ListenForAcks, this));
@@ -94,7 +88,10 @@ void FairMQEx9Sampler::Run()
       for ( int iobj = 0 ; iobj < fNObjects ; iobj++ ) {
 	message[iobj] = new TMessage(kMESS_OBJECT);
 	message[iobj]->WriteObject(fInputObjects[iobj]);
-	parts.AddPart(NewMessage(message[iobj]->Buffer(), message[iobj]->BufferSize(), free_tmessage2, message[iobj]));
+	parts.AddPart(NewMessage(message[iobj]->Buffer(), 
+				 message[iobj]->BufferSize(), 
+				 [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
+				 message[iobj]));
       }
       
       Send(parts, fOutputChannelName);

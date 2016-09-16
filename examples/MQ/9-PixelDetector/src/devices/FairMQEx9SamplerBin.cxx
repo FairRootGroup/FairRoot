@@ -93,7 +93,7 @@ void FairMQEx9SamplerBin::Run()
 	  header->fPartNo    = 0;
 	  FairMQMessage* msgHeader = NewMessage(header,
 						sizeof(PixelPayload::EventHeader),
-						[](void* data, void* hint) { delete static_cast<PixelPayload::EventHeader*>(data); }
+						[](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
 						);
 	  parts.AddPart(msgHeader);
 	  LOG(TRACE) << "-----------------------------";
