@@ -209,12 +209,14 @@ void FairLogger::SetLogFileName(const char* name)
 {
   if (fFileStream) {
     CloseLogFile();
-    delete fFileStream;
     fFileStream = NULL;
-    if( remove(fLogFileName) != 0 ) {
-      LOG(ERROR)<<"Could not delete log file "<< fLogFileName << "." << FairLogger::endl;
+    // Remove the file only if it still exists
+    std::ifstream ifile(fLogFileName);
+    if ( ifile ) {
+      if( remove(fLogFileName) != 0 ) {
+        LOG(ERROR)<<"Could not delete log file "<< fLogFileName << "." << FairLogger::endl;
+      }
     }
-    
   }
 
   fLogFileName = name;
@@ -331,12 +333,13 @@ FairLogger& FairLogger::GetOutputStream(FairLogLevel level, const char* file, co
 
   fLevel = level;
 
+  /*
   if (level == FATAL) {
     fLogToScreen = true;
     fLogVerbosityLevel = verbosityHIGH;
     fLogColored = true;
   }
-
+  */
 
   if (fIsNewLine) {
     if ( (fLogToScreen && level <= fLogScreenLevel) ) {
@@ -393,12 +396,9 @@ FairLogger& FairLogger::GetFATALOutputStream(const char* file, const char* line,
   fLevel = FATAL;
   FairLogLevel level = FATAL;
 
-//  if (level == FATAL) {
-    fLogToScreen = true;
-    fLogVerbosityLevel = verbosityHIGH;
-    fLogColored = true;
-//  }
-
+  fLogToScreen = true;
+  fLogVerbosityLevel = verbosityHIGH;
+  fLogColored = true;
 
   if (fIsNewLine) {
     if ( (fLogToScreen && level <= fLogScreenLevel) ) {
@@ -448,29 +448,33 @@ FairLogger& FairLogger::GetFATALOutputStream(const char* file, const char* line,
   return *this;
 }
 
-
-#if (__GNUC__ >= 3)
 FairLogger& FairLogger::operator<<(std::ios_base& (*manip) (std::ios_base&))
 {
-  if (fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+//  if (fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+  if (fLogToScreen && (fLevel <= fLogScreenLevel) ) {
     *(fScreenStream) << manip;
   }
 
-  if (fLogToFile && !fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+  //if (fLogToFile && !fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+  if (fLogToFile && (fLevel <= fLogFileLevel) ) {
     *(fFileStream) << manip;
   }
 
   return *this;
 }
-#endif
 
 FairLogger& FairLogger::operator<<(std::ostream& (*manip) (std::ostream&))
 {
-  if (fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+  //if (fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+  if (fLogToScreen && fLevel <= fLogScreenLevel) {
     *(fScreenStream) << manip;
   }
-
-  if (fLogToFile && !fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+  
+  //if (fLogToFile && !fLogToScreen && (fLevel <= fLogScreenLevel || fLevel <= fLogFileLevel) ) {
+  // Second option looks more clear but when used one gets an extra newline when using FairLogger::endl
+  // so use the first option since  no problems in the file are detected so far 
+  if (fLogToFile && !fLogToScreen && (fLevel <= fLogFileLevel) ) {
+  // if (fLogToFile && fLevel <= fLogFileLevel) {
     *(fFileStream) << manip;
   }
 
@@ -490,9 +494,8 @@ std::ostream&  FairLogger::endl(std::ostream& strm)
     }
   }
 
-  if (gLogger->fLogToFile &&
-      gLogger->fLevel <= gLogger->fLogFileLevel) {
-    *(gLogger->fFileStream) << std::endl;
+  if ( (gLogger->fLogToFile && gLogger->fLevel <= gLogger->fLogFileLevel) ) {
+      *(gLogger->fFileStream) << std::endl;
   }
 
   if (gLogger->fLevel == FATAL) {
@@ -572,9 +575,9 @@ void FairLogger::LogFatalMessage(std::ostream& strm)
     freopen(corefile, "w", stderr);
     gSystem->StackTrace();
     fclose(stderr);
-    gSystem->Abort(1);
+    exit(1);
   } else {
-    abort();
+    exit(1);
   }
 
 }

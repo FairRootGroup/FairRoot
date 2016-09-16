@@ -31,7 +31,7 @@ class FairLogger;
 #define MESSAGE_ORIGIN          __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
 
 #define LOG_LEVEL(level) \
-  !(FATAL == level) ? gLogger->GetOutputStream(level, MESSAGE_ORIGIN) : gLogger->GetFATALOutputStream(MESSAGE_ORIGIN)
+  (!(FATAL == level) ? gLogger->GetOutputStream(level, MESSAGE_ORIGIN) : gLogger->GetFATALOutputStream(MESSAGE_ORIGIN))
 
 #define LOG(level)        \
   !(gLogger->IsLogNeeded(level)) ? gLogger->GetNullStream(level) : LOG_LEVEL(level)
@@ -169,9 +169,7 @@ class FairLogger : public std::ostream
 
     /*! \brief Pass the ios_base manipulators
      */
-#if (__GNUC__ >= 3)
     FairLogger&                      operator<<(std::ios_base & (*manip) (std::ios_base&));
-#endif
     FairLogger&                      operator<<(std::ostream & (*manip) (std::ostream&));
 
     /*! \brief End of the line
