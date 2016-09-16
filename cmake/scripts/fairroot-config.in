@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_version=v-16.06
+_version=v-16.06a
 _major_version=${_version:2:2}
 _minor_version=${_version:5:2}
 _patch=${_version:7}
