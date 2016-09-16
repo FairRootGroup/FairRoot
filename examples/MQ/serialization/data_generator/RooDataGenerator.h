@@ -24,6 +24,7 @@
 #include "RooRandom.h"
 
 #include "FairProgOptions.h"
+#include "FairMQLogger.h"
 
 using namespace RooFit;
 
@@ -71,12 +72,12 @@ class Tuto7DataGeneratorProgOptions : public FairProgOptions
         //SET_LOG_LEVEL(DEBUG);
         if (fSeverityMap.count(verbose))
         {
-            set_global_log_level(log_op::operation::GREATER_EQ_THAN, fSeverityMap.at(verbose));
+            DefaultConsoleSetFilter(fSeverityMap.at(verbose));
         }
         else
         {
             LOG(ERROR)<<" verbosity level '"<<verbose<<"' unknown, it will be set to DEBUG";
-            set_global_log_level(log_op::operation::GREATER_EQ_THAN, fSeverityMap.at("DEBUG"));
+            DefaultConsoleSetFilter(fSeverityMap.at("DEBUG"));
         }
 
         PrintOptions();
