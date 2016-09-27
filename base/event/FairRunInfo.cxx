@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairRunInfo.h"
@@ -185,7 +185,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   fLogger->Debug(MESSAGE_ORIGIN,"FileName: %s",
                  filename.Data());
 
-  TFile* f1 = new TFile(filename, "recreate");
+  TFile* f1 = TFile::Open(filename, "recreate");
   f1->cd();
 
   TIterator* listIter=histoList->MakeIterator();
@@ -229,4 +229,3 @@ void FairRunInfo::Reset()
 {
   GetInfo();
 }
-

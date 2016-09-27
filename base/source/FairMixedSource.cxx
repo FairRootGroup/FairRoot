@@ -130,7 +130,7 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     fBackgroundChain(NULL),
     fSignalTypeList()
 {
-  fRootFile = new TFile(RootFileName->Data());
+  fRootFile = TFile::Open(RootFileName->Data());
   if (fRootFile->IsZombie()) {
     LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
   }
@@ -182,7 +182,7 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
    fBackgroundChain(NULL),
   fSignalTypeList()
 {
-    fRootFile = new TFile(RootFileName.Data());
+    fRootFile = TFile::Open(RootFileName.Data());
 
   if ( signalId == 0 ) {
     SetBackgroundFile(RootFileName);
@@ -191,7 +191,7 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     SetSignalFile(RootFileName,signalId);
   }
     fRootManager = FairRootManager::Instance();
-  // fBackgroundFile =  new TFile(name);
+  // fBackgroundFile =  TFile::Open(name);
   // if (fBackgroundFile->IsZombie()) {
   // } else {
   //   fBackgroundChain = new TChain(FairRootManager::GetTreeName(), "/cbmroot");
@@ -285,7 +285,7 @@ Bool_t FairMixedSource::Init()
         
         // Temporarily open the input file to extract information which
         // is needed to bring the friend trees in the correct order
-        TFile* inputFile = new TFile((*iter));
+        TFile* inputFile = TFile::Open((*iter));
         if (inputFile->IsZombie()) {
 	  LOG(FATAL) << "Error opening the file " << (*iter).Data() << " which should be added to the input chain or as friend chain" << FairLogger::endl;
         }
@@ -461,7 +461,7 @@ Bool_t FairMixedSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
 //_____________________________________________________________________________
 void FairMixedSource::SetSignalFile(TString name, UInt_t identifier )
 {
-  TFile* SignalInFile = new TFile(name.Data());
+  TFile* SignalInFile = TFile::Open(name.Data());
   if (SignalInFile->IsZombie()) {
     LOG(FATAL) << "Error opening the Signal file" << FairLogger::endl;
   } else {
@@ -510,7 +510,7 @@ void FairMixedSource::SetBackgroundFile(TString name)
   if (name.IsNull() ) {
     LOG(INFO) << "No background file defined." << FairLogger::endl;
   }
-  fRootFile =  new TFile(name);
+  fRootFile =  TFile::Open(name);
   if (fRootFile->IsZombie()) {
     LOG(FATAL) << "Error opening the Background file  " << name.Data() << FairLogger::endl;
   }
@@ -524,7 +524,7 @@ void FairMixedSource::AddBackgroundFile(TString name)
   if (name.IsNull() ) {
     LOG(INFO) << "No background file defined." << FairLogger::endl;
   }
-  TFile* BGFile =  new TFile(name);
+  TFile* BGFile =  TFile::Open(name);
   if (BGFile->IsZombie()) {
     LOG(FATAL) << "Error opening the Background file " << name.Data() << FairLogger::endl;
   } else {

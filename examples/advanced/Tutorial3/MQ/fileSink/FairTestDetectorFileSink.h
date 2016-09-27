@@ -95,7 +95,7 @@ class FairTestDetectorFileSink : public FairMQDevice
         char out[256];
         sprintf(out, "filesink%s.root", defaultId.Data());
 
-        fOutFile = new TFile(out, "recreate");
+        fOutFile = TFile::Open(out, "recreate");
         fTree = new TTree("MQOut", "Test output");
         fTree->Branch("Output", "TClonesArray", &fOutput, 64000, 99);
     }

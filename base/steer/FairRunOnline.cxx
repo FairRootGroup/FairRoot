@@ -498,7 +498,7 @@ void FairRunOnline::WriteObjects()
 {
   TDirectory *oldDir = gDirectory;
 
-  TFile *file = new TFile(fHistFileName, "RECREATE");
+  TFile *file = TFile::Open(fHistFileName, "RECREATE");
 
   // Create iterator with the folder content
   TIter iter(fFolder->GetListOfFolders());

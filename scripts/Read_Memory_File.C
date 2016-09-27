@@ -30,7 +30,7 @@ void Read_Memory_File(TString inputFile, Int_t Interval) {
 
    TString outputFile(inputFile);
    outputFile.ReplaceAll(".txt",".root");
-   TFile *f = new TFile(outputFile,"RECREATE");
+   TFile *f = TFile::Open(outputFile,"RECREATE");
    TNtuple *ntuple = new TNtuple("ntuple","data from ascii file",
          "time:vmPeak:vmSize:vmLck:vmHWM:vmRSS:vmData:vmStk:vmExe:vmLib:vmPTE:filesize:cpu");
 

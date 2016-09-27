@@ -26,8 +26,8 @@ plots(Int_t nEvents = 1000, Int_t iout=1, TString mcEngine="TGeant3")
   parInput1->open(ParFile.Data());
   rtdb->setFirstInput(parInput1);
 
-  TFile *f1 = new TFile(MCFile);
-  TFile *f2 = new TFile(RecoFile);
+  TFile *f1 = TFile::Open(MCFile);
+  TFile *f2 = TFile::Open(RecoFile);
 
   TTree *t1 = f1->Get("cbmsim");
   TTree *t2 = f2->Get("cbmsim");
@@ -127,7 +127,7 @@ for (Int_t iev=0; iev< nevent; iev++) {
 
 
 // save histos to file
-// TFile *fHist = new TFile("data/auaumbias.hst.root","RECREATE");
+// TFile *fHist = TFile::Open("data/auaumbias.hst.root","RECREATE");
  cout << "Processing done, outflag =" <<iout << endl;
  if (iout==1){
    fHist->Write();

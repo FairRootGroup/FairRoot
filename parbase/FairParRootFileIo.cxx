@@ -50,11 +50,11 @@ FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option,
                                  const Text_t* ftitle, Int_t compress)
   :TNamed(fname,  ftitle),
    run(NULL),
-   RootFile(new TFile(fname,option,ftitle,compress))
+   RootFile(TFile::Open(fname,option,ftitle,compress))
 {
 //              : TFile(fname,option,ftitle,compress) {
   // constructor opens a ROOT file
-  //  RootFile=new TFile(fname,option,ftitle,compress);
+  //  RootFile=TFile::Open(fname,option,ftitle,compress);
   //run=0;
 }
 //--------------------------------------------------------------------
@@ -67,7 +67,7 @@ FairParRootFile::FairParRootFile(TFile* f)
 {
 //  :TFile(f->GetName(),"UPDATE"){
   // constructor opens a ROOT file
-  //RootFile=new TFile(f->GetName(),"UPDATE");
+  //RootFile=TFile::Open(f->GetName(),"UPDATE");
   //  RootFile=f;
   //  run=0;
 }
@@ -201,7 +201,7 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
                             newParFileName.Data(),
                             currentDate.GetDate(),
                             currentDate.GetTime());
-      newParFile = new TFile(newParFileName.Data(),"RECREATE");
+      newParFile = TFile::Open(newParFileName.Data(),"RECREATE");
     }
 
     TList* inputKeys = static_cast<TList*>(inFile->GetListOfKeys());

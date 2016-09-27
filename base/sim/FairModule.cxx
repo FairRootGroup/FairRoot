@@ -326,7 +326,7 @@ void FairModule::ConstructRootGeometry()
   TGeoManager* OldGeo=gGeoManager;
   TGeoManager* NewGeo=0;
   TGeoVolume* volume=0;;
-  TFile* f=new TFile(GetGeometryFileName().Data());
+  TFile* f=TFile::Open(GetGeometryFileName().Data());
   TList* l= f->GetListOfKeys();
   TKey* key;
   TIter next( l);

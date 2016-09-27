@@ -88,11 +88,11 @@ void Create_Tutorial4_Geometry() {
   gGeoMan->PrintOverlaps();
   gGeoMan->Test();
 
-  TFile* outfile = new TFile(FileName,"RECREATE");
+  TFile* outfile = TFile::Open(FileName,"RECREATE");
   top->Write();
   outfile->Close();
 
-  TFile* outfile = new TFile(FileName1,"RECREATE");
+  TFile* outfile = TFile::Open(FileName1,"RECREATE");
   gGeoMan->Write();
   outfile->Close();
 
