@@ -23,6 +23,11 @@
 
 #include <iostream>                     // for ostream, cout
 
+#ifndef __CINT__
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/base_object.hpp>
+#endif //__CINT__
+
 class FairLink : public TObject
 {
   public:
@@ -100,6 +105,16 @@ class FairLink : public TObject
     }
 
     ClassDef(FairLink, 3);
+
+    template<class Archive>
+        void serialize(Archive& ar, const unsigned int)
+        {
+            ar& fFile;
+            ar& fEntry;
+            ar& fType;
+            ar& fIndex;
+            ar& fWeight;
+        }
 
 
   private:

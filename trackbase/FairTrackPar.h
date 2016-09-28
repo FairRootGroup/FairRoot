@@ -13,6 +13,11 @@
 #include "Rtypes.h"                     // for Double_t, Int_t, etc
 #include "TVector3.h"                   // for TVector3
 
+#ifndef __CINT__
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/base_object.hpp>
+#endif //__CINT__
+
 class FairTrackPar : public TObject
 {
 
@@ -23,7 +28,12 @@ class FairTrackPar : public TObject
 
     /** Constructor with all variables **/
     FairTrackPar(Double_t x,  Double_t y,  Double_t z,
-                 Double_t fx, Double_t fy, Double_t fz, Int_t q);
+                 Double_t px, Double_t py, Double_t pz, Int_t q);
+
+    FairTrackPar(Double_t x,  Double_t y,  Double_t z, Double_t dx, Double_t dy, Double_t dz,
+                     Double_t px, Double_t py, Double_t pz, Double_t dpx, Double_t dpy, Double_t dpz,
+					 Int_t q);
+
 
     /** Destructor **/
     virtual ~FairTrackPar();
@@ -135,6 +145,25 @@ class FairTrackPar : public TObject
       fQp = qp;
     };
 
+    template<class Archive>
+        void serialize(Archive& ar, const unsigned int)
+        {
+            ar& fX;
+            ar& fY;
+            ar& fZ;
+            ar& fDX;
+            ar& fDY;
+            ar& fDZ;
+            ar& fPx;
+            ar& fPy;
+            ar& fPz;
+            ar& fDPx;
+            ar& fDPy;
+            ar& fDPz;
+            ar& fQp;
+            ar& fDQp;
+            ar& fq;
+        }
 
   protected:
 

@@ -68,6 +68,30 @@ FairTrackPar::FairTrackPar(Double_t x, Double_t y, Double_t z,
 
 
 }
+
+FairTrackPar::FairTrackPar(Double_t x,  Double_t y,  Double_t z, Double_t dx, Double_t dy, Double_t dz,
+                 Double_t px, Double_t py, Double_t pz, Double_t dpx, Double_t dpy, Double_t dpz,
+				 Int_t q)
+: TObject(),
+  fX (x),
+  fY (y),
+  fZ (z),
+  fDX (dx),
+  fDY (dy),
+  fDZ (dz),
+  fPx (px),
+  fPy (py),
+  fPz (pz),
+  fDPx (dpx),
+  fDPy (dpy),
+  fDPz (dpz),
+  fQp (0.),
+  fDQp (0.),
+  fq  (q)
+{
+	Double_t p=TMath::Sqrt(fPx*fPx +fPy*fPy +fPz*fPz );
+	  if (p!=0) { fQp = q/p; }
+}
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
