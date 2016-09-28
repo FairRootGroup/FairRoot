@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -27,9 +27,9 @@ FairEventHeader::FairEventHeader()
 FairEventHeader::~FairEventHeader() { }
 // -------------------------------------------------------------------------
 
-void FairEventHeader::Register()
+void FairEventHeader::Register(Bool_t Persistence)
 {
-  FairRootManager::Instance()->Register("EventHeader.", "EvtHeader", this, kTRUE);
+  FairRootManager::Instance()->Register("EventHeader.", "EvtHeader", this, Persistence);
 }
 
 
