@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRRUNANA_H
@@ -105,7 +105,7 @@ class FairRunAna : public FairRun
      */
     void BGWindowWidthTime(Double_t background, UInt_t Signalid);
     /**
-     * This method will simply forward the call to the FairRootManager, 
+     * This method will simply forward the call to the FairRootManager,
      * if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
      * them in one big event and send it to the next step
     */
@@ -119,7 +119,12 @@ class FairRunAna : public FairRun
     /** Set the time intervall the beam is interacting and the gap in ns */
     void SetBeamTime(Double_t beamTime, Double_t gapTime);
     // ********************************************************* //
- 
+
+    /** Switch On/Off the storing of FairEventHeader in output file*/
+    void SetEventHeaderPersistence(Bool_t flag){
+        fStoreEventHeader=flag;
+    }
+
     void        Reinit(UInt_t runId);
     UInt_t      getRunId() {
       return fRunId;
@@ -164,7 +169,7 @@ class FairRunAna : public FairRun
      * Allows to override the function with an experiment specific version.
     **/
     virtual void Fill();
-                                               
+
   private:
 
     FairRunAna(const FairRunAna& M);
@@ -199,9 +204,12 @@ class FairRunAna : public FairRun
     Bool_t                                  fFinishProcessingLMDFile;  //!
 
     /** Temporary member to preserve old functionality without setting source in macro */
-    FairFileSource*                         fFileSource;  //! 
+    FairFileSource*                         fFileSource;  //!
     /** Temporary member to preserve old functionality without setting source in macro */
-    FairMixedSource*                        fMixedSource; //! 
+    FairMixedSource*                        fMixedSource; //!
+    /** Flag for Event Header Persistency */
+    Bool_t  fStoreEventHeader; //!
+
 
     ClassDef(FairRunAna ,6)
 

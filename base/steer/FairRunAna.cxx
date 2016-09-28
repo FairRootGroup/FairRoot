@@ -91,9 +91,11 @@ FairRunAna::FairRunAna()
    fEventTime(0),
    fEventMeanTime(0),
    fTimeProb(0),
-   fFinishProcessingLMDFile(kFALSE)
-  ,fFileSource(0)
-  ,fMixedSource(0)
+   fFinishProcessingLMDFile(kFALSE),
+   fFileSource(0),
+   fMixedSource(0),
+   fStoreEventHeader(kTRUE)
+
 {
 
   fgRinstance=this;
@@ -235,7 +237,7 @@ void FairRunAna::Init()
     fRunId = fEvtHeader->GetRunId();
 
     //Copy the Event Header Info to Output
-    fEvtHeader->Register();
+    fEvtHeader->Register(fStoreEventHeader);
 
     // Init the containers in Tasks
 
@@ -248,7 +250,7 @@ void FairRunAna::Init()
     LOG(INFO) << "Initializing without input file or Mixed input"
 	      << FairLogger::endl;
     FairEventHeader* evt = GetEventHeader();
-    evt->Register();
+    evt->Register(fStoreEventHeader);
     FairRunIdGenerator genid;
     fRunId = genid.generateId();
     fRtdb->addRun(fRunId);
