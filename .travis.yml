@@ -73,7 +73,9 @@ before_script:
     - echo "export SITE=\"Travis CI\" " >> Dart.cfg
     - echo $PWD
     - cat Dart.cfg
-
+    - cat trackbase/CMakeLists.txt
+    - ls -la $SIMPATH/include/boost/serialization
+    
 script:
     - ./Dart.sh Experimental Dart.cfg
 
