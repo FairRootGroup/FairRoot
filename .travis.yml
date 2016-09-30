@@ -74,7 +74,7 @@ before_script:
     - echo $PWD
     - cat Dart.cfg
     - cat trackbase/CMakeLists.txt
-    - ls -la /opt/fairsoft/${FAIRSOFT_VERSION}/include/boost/serialization
+    - ls -la /opt/fairsoft/nov15p1_${ROOT_VERSION}/include/boost/serialization
     
 script:
     - ./Dart.sh Experimental Dart.cfg
