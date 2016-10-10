@@ -120,7 +120,10 @@ void FairMQEx9Sampler::ListenForAcks()
     for (Long64_t eventNr = 0; eventNr < fMaxIndex ; ++eventNr)
       {
 	unique_ptr<FairMQMessage> ack(NewMessage());
-	Receive(ack,fAckChannelName.data());
+	if (Receive(ack,fAckChannelName.data())) 
+	  {
+	    // do not need to do anything
+	  }
 
 	if (!CheckCurrentState(RUNNING))
 	  {
