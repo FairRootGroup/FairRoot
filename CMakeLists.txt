@@ -304,6 +304,7 @@ endif(BUILD_DOXYGEN)
 
 
 add_subdirectory (examples)
+add_subdirectory (fairxml)
 
 if(IWYU_FOUND)
 
