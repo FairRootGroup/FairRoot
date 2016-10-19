@@ -22,7 +22,7 @@
 -->
 
     <decltask id="Sampler">
-        <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-sampler --id sampler --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root --branch-name PixelDigis --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --out-channel data1 --control dds --network-interface @NETWORK_INTERFACE@</exe>
+        <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-sampler --id sampler --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root --branch-name PixelDigis --branch-name EventHeader. --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --out-channel data1 --control dds --network-interface @NETWORK_INTERFACE@</exe>
 <!--        <requirement>SamplerWorker</requirement> -->
         <properties>
             <id access="write">samplerAddr</id>

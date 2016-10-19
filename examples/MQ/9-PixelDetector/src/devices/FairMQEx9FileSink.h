@@ -26,20 +26,9 @@
 class FairMQEx9FileSink : public FairMQDevice
 {
   public:
-    enum
-    {
-        OutputFileName = FairMQDevice::Last,
-        Last
-    };
-
     FairMQEx9FileSink();
     virtual ~FairMQEx9FileSink();
 
-    void SetProperty(const int key, const std::string& value);
-    void SetProperty(const int key, const int value);
-    std::string GetProperty(const int key, const std::string& default_ = "");
-    int GetProperty(const int key, const int default_ = 0);
-    
     void SetOutputFileName(std::string tempString) { fFileName = tempString; }
     void AddOutputBranch  (std::string classString, std::string branchString) 
     { 
@@ -52,8 +41,8 @@ class FairMQEx9FileSink : public FairMQDevice
     void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
 
   protected:
+    bool StoreData(FairMQParts&, int);
     virtual void Init();
-    virtual void Run();
 
  private:
     std::string     fInputChannelName;

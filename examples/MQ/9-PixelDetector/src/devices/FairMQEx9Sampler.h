@@ -17,6 +17,8 @@
 
 #include <string>
 
+#include <boost/thread.hpp>
+
 #include "TClonesArray.h"
 
 #include "FairFileSource.h"
@@ -27,12 +29,6 @@
 class FairMQEx9Sampler : public FairMQDevice
 {
   public:
-    enum
-    {
-        InputFileName = FairMQDevice::Last,
-        Last
-    };
-
     FairMQEx9Sampler();
     virtual ~FairMQEx9Sampler();
 
@@ -49,7 +45,9 @@ class FairMQEx9Sampler : public FairMQDevice
     void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
 
  protected:
-    virtual void Run();
+    virtual bool OnRun();
+    virtual void PreRun();
+    virtual void PostRun();
     virtual void InitTask();
     
  private: 
@@ -61,11 +59,16 @@ class FairMQEx9Sampler : public FairMQDevice
     TObject*        fInputObjects[100];
     int             fNObjects;
     int64_t         fMaxIndex;
+
+    int             fEventCounter;
+
     std::vector<std::string>     fBranchNames;
     std::vector<std::string>     fFileNames;
 
     FairMQEx9Sampler(const FairMQEx9Sampler&);
     FairMQEx9Sampler& operator=(const FairMQEx9Sampler&);
+
+    boost::thread* fAckListener;
 };
 
 #endif /* FAIRMQEX9SAMPLER_H_ */

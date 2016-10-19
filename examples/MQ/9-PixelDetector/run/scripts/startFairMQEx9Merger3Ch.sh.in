@@ -2,7 +2,7 @@
 
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
-VERBOSE="--verbosity DEBUG"
+VERBOSE="--verbose DEBUG"
 
 while [[ $# > 1 ]]
 do
@@ -18,7 +18,7 @@ case $key in
     shift
     ;;
     -v|--verbose)
-    VERBOSE="--verbosity $2"
+    VERBOSE="--verbose $2"
     shift
     ;;
 esac
@@ -28,7 +28,7 @@ done
 
 ########################### Define some variables
 # JSON file containing the configuration parameters of all FairMQ devices of this example
-MQCONFIGFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Merger.json"
+MQCONFIGFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Merger3Ch.json"
 # ASCII and ROOT parameter files for the processor device
 ROOTPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
 ASCIIPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
@@ -50,7 +50,7 @@ INPUTBRANCH="PixelDigis"
 FAIRTASKNAME="--task-name PixelFindHits"
 
 # output file for sink
-OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hitsFromBinary.root"
+OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQ.pixel_TGeant3.hitsFromBinary.3Ch.root"
 OUTPUTCLASS="TClonesArray(PixelHit)"
 OUTPUTBRANCH="PixelHits"
 ###########################
@@ -105,7 +105,8 @@ PROCESSOR3+=" --id processor3 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
 xterm -geometry 80x25+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR3 &
 
 ########################## start MERGER
-MERGER="ex9-merger $TRANSPORT"
+MERGER="ex9-merger3Ch $TRANSPORT"
+MERGER+=" $VERBOSE"
 MERGER+=" --id merger1 --mq-config $MQCONFIGFILE"
 xterm +aw -geometry 80x25+500+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$MERGER &
 

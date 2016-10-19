@@ -32,8 +32,9 @@ FairMQEx9TaskProcessor<T>::FairMQEx9TaskProcessor()
   , fFairTask(NULL)
   , fParCList(NULL)
   , fGeoPar(nullptr)
+  , fReceivedMsgs(0)
+  , fSentMsgs(0)
 {
-
 }
 
 template <typename T>
@@ -64,7 +65,11 @@ FairMQEx9TaskProcessor<T>::~FairMQEx9TaskProcessor()
 template <typename T>
 void FairMQEx9TaskProcessor<T>::Init()
 {
-    //fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
+  fDataToKeep        = fConfig->GetValue<std::string>("keep-data");
+  fInputChannelName  = fConfig->GetValue<std::string>("in-channel");
+  fOutputChannelName = fConfig->GetValue<std::string>("out-channel");
+  fParamChannelName  = fConfig->GetValue<std::string>("par-channel");
+  
   fFairTask = new T();
   fGeoPar = new FairGeoParSet("FairGeoParSet");
   fParCList = new TList();
@@ -73,86 +78,86 @@ void FairMQEx9TaskProcessor<T>::Init()
   
   fOutput = new TList();
   fInput = new TList();
+
+  OnData(fInputChannelName, &FairMQEx9TaskProcessor<T>::ProcessData);
 }
 
 template <typename T>
-void FairMQEx9TaskProcessor<T>::Run()
+bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int index)
 {
-    int receivedMsgs = 0;
-    int sentMsgs = 0;
-    TObject* objectToKeep = NULL;
-
-    while (CheckCurrentState(RUNNING))
+  TObject* objectToKeep = NULL;
+  
+  LOG(TRACE)<<"message received with " << parts.Size() << " parts.";
+  fReceivedMsgs++;
+  TObject* tempObjects[10];
+  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
     {
-      FairMQParts parts;
-      
-      if ( Receive(parts,fInputChannelName) >= 0 )
-        {
-	  LOG(TRACE)<<"message received with " << parts.Size() << " parts.";
-	  receivedMsgs++;
-	  TObject* tempObjects[10];
-	  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
-	    {
-	      Ex9TMessage2 tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
-	      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
-	      LOG(TRACE) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
-	      if ( strcmp(tempObjects[ipart]->GetName(),"EventHeader.") == 0 ) 
-		fEventHeader = (FairEventHeader*)tempObjects[ipart];
-	      else {
-		fInput->Add(tempObjects[ipart]);
-	      }
-	    }
-	  
-	  fNewRunId = fEventHeader->GetRunId();
-
-	  LOG(TRACE)<<"got event header with run = " << fNewRunId;
-
-	  if(fNewRunId!=fCurrentRunId)
-            {
-	      fCurrentRunId=fNewRunId;
-	      UpdateParameters();
-	      fFairTask->InitMQ(fParCList);
-            }
-            
-	  
-	  // Execute hit finder task
-	  fOutput->Clear();
-	  //	  LOG(INFO) << " The blocking line... analyzing event " << fEventHeader->GetMCEntryNumber();
-	  fFairTask->ExecMQ(fInput,fOutput);
-
-	  if ( !fDataToKeep.empty() ) {
-	    objectToKeep = fInput->FindObject(fDataToKeep.c_str());
-	    if ( objectToKeep ) fOutput->Add(objectToKeep);
-	  }
-	  
-	  TMessage* messageFEH;
-	  TMessage* messageTCA[10];
-	  FairMQParts partsOut;
-	  
-	  messageFEH = new TMessage(kMESS_OBJECT);
-	  messageFEH->WriteObject(fEventHeader);
-	  partsOut.AddPart(NewMessage(messageFEH->Buffer(),
-				      messageFEH->BufferSize(),
-				      [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-				      messageFEH));
-	  for ( int iobj = 0 ; iobj < fOutput->GetEntries() ; iobj++ ) {
-	    messageTCA[iobj] = new TMessage(kMESS_OBJECT);
-	    messageTCA[iobj]->WriteObject(fOutput->At(iobj));
-	    partsOut.AddPart(NewMessage(messageTCA[iobj]->Buffer(),
-					messageTCA[iobj]->BufferSize(),
-					[](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-					messageTCA[iobj]));
-	  }
-	  Send(partsOut, fOutputChannelName);
-	  sentMsgs++;
-        }
-      fInput->Clear();
+      Ex9TMessage2 tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
+      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
+      LOG(TRACE) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
+      if ( strcmp(tempObjects[ipart]->GetName(),"EventHeader.") == 0 ) 
+	fEventHeader = (FairEventHeader*)tempObjects[ipart];
+      else {
+	fInput->Add(tempObjects[ipart]);
+      }
     }
-    
-    MQLOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
+  
+  fNewRunId = fEventHeader->GetRunId();
+  
+  LOG(TRACE)<<"got event header with run = " << fNewRunId;
+  
+  if(fNewRunId!=fCurrentRunId)
+    {
+      fCurrentRunId=fNewRunId;
+      UpdateParameters();
+      fFairTask->InitMQ(fParCList);
+
+      LOG(INFO) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
+    }
+  
+  
+  // Execute hit finder task
+  fOutput->Clear();
+  //	  LOG(INFO) << " The blocking line... analyzing event " << fEventHeader->GetMCEntryNumber();
+  fFairTask->ExecMQ(fInput,fOutput);
+  
+  if ( !fDataToKeep.empty() ) {
+    objectToKeep = fInput->FindObject(fDataToKeep.c_str());
+    if ( objectToKeep ) fOutput->Add(objectToKeep);
+  }
+  
+  TMessage* messageFEH;
+  TMessage* messageTCA[10];
+  FairMQParts partsOut;
+  
+  messageFEH = new TMessage(kMESS_OBJECT);
+  messageFEH->WriteObject(fEventHeader);
+  partsOut.AddPart(NewMessage(messageFEH->Buffer(),
+			      messageFEH->BufferSize(),
+			      [](void* data, void* hint) { delete (TMessage*)hint;},
+			      messageFEH));
+  for ( int iobj = 0 ; iobj < fOutput->GetEntries() ; iobj++ ) {
+    messageTCA[iobj] = new TMessage(kMESS_OBJECT);
+    messageTCA[iobj]->WriteObject(fOutput->At(iobj));
+    partsOut.AddPart(NewMessage(messageTCA[iobj]->Buffer(),
+				messageTCA[iobj]->BufferSize(),
+				[](void* data, void* hint) { delete (TMessage*)hint;},
+				messageTCA[iobj]));
+  }
+  Send(partsOut, fOutputChannelName);
+  fSentMsgs++;
+
+  fInput->Clear();
+
+  return true;
 }
 
-
+    
+template <typename T>
+void FairMQEx9TaskProcessor<T>::PostRun()
+{
+    MQLOG(INFO) << "FairMQEx9TaskProcessor<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
+}
 
 
 template <typename T>
@@ -160,49 +165,6 @@ void FairMQEx9TaskProcessor<T>::CustomCleanup(void* /*data*/, void *hint)
 {
     delete (std::string*)hint;
 }
-
-
-
-template <typename T>
-void FairMQEx9TaskProcessor<T>::SetProperty(const int key, const std::string& value)
-{
-    switch (key)
-    {
-        default:
-            FairMQDevice::SetProperty(key, value);
-            break;
-    }
-}
-
-
-
-template <typename T>
-std::string FairMQEx9TaskProcessor<T>::GetProperty(const int key, const std::string& default_)
-{
-    switch (key)
-    {
-        default:
-            return FairMQDevice::GetProperty(key, default_);
-    }
-}
-
-
-template <typename T>
-void FairMQEx9TaskProcessor<T>::SetProperty(const int key, const int value)
-{
-    FairMQDevice::SetProperty(key, value);
-}
-
-template <typename T>
-int FairMQEx9TaskProcessor<T>::GetProperty(const int key, const int value)
-{
-    return FairMQDevice::GetProperty(key, value);
-}
-
-
-
-
-
 
 
 template <typename T>
@@ -213,6 +175,7 @@ void FairMQEx9TaskProcessor<T>::UpdateParameters() {
     fParCList->AddAt(UpdateParameter(tempObj),iparC);
   }
 }
+
 
 template <typename T>
 FairParGenericSet* FairMQEx9TaskProcessor<T>::UpdateParameter(FairParGenericSet* thisPar) {
