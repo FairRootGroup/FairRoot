@@ -16,10 +16,6 @@ Set_Tests_Properties(ex9_static PROPERTIES DEPENDS ex9_digi_TGeant3)
 Set_Tests_Properties(ex9_static PROPERTIES TIMEOUT ${MaxTestTime})
 Set_Tests_Properties(ex9_static PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
 
-If(DDS_FOUND)
-  add_definitions(-DDDS_FOUND)	
-EndIf(DDS_FOUND)
-
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
     ${CMAKE_SOURCE_DIR}/fairmq
@@ -40,13 +36,6 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
     ${SYSTEM_INCLUDE_DIRECTORIES}
     ${ZMQ_INCLUDE_DIR}
 )
-
-If(DDS_FOUND)
-  Set(SYSTEM_INCLUDE_DIRECTORIES
-      ${SYSTEM_INCLUDE_DIRECTORIES}
-      ${DDS_INCLUDE_DIR}
-  )
-EndIf(DDS_FOUND)
 
 include_directories(${INCLUDE_DIRECTORIES})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})

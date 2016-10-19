@@ -8,10 +8,6 @@
 
 configure_file(${CMAKE_SOURCE_DIR}/parmq/parameter-server.json ${CMAKE_BINARY_DIR}/bin/config/parameter-server.json)
 
-If(DDS_FOUND)
-  add_definitions(-DDDS_FOUND)
-EndIf(DDS_FOUND)
-
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/parmq
@@ -28,13 +24,6 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
   ${Boost_INCLUDE_DIR}
   ${ZMQ_INCLUDE_DIR}
 )
-
-If(DDS_FOUND)
-  Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
-    ${DDS_INCLUDE_DIR}
-  )
-EndIf(DDS_FOUND)
 
 Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
