@@ -40,15 +40,15 @@ before_install:
       fi
     - if test "$TRAVIS_OS_NAME" = "osx"; then
         brew update;
-        brew tap homebrew/versions;        
+#        brew tap homebrew/versions;        
         brew install openssl;
         brew uninstall gcc;
-        brew install homebrew/versions/gcc5;
-        ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
-        mkdir -p /usr/local/opt/gcc/lib/gcc;
-        ln -s /usr/local/Cellar/gcc5/5.4.0/lib/gcc/5 /usr/local/opt/gcc/lib/gcc/5;
-        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_nov15p2_${ROOT_VERSION}-1.0.pkg;
-        sudo installer -pkg ./fairsoft_nov15p2_${ROOT_VERSION}-1.0.pkg -target /;
+#        brew install homebrew/versions/gcc5;
+#        ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
+#        mkdir -p /usr/local/opt/gcc/lib/gcc;
+#        ln -s /usr/local/Cellar/gcc5/5.4.0/lib/gcc/5 /usr/local/opt/gcc/lib/gcc/5;
+        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_may16p1_${ROOT_VERSION}-1.0.pkg;
+        sudo installer -pkg ./fairsoft_may16p1_${ROOT_VERSION}-1.0.pkg -target /;
       fi
 
 install:
@@ -64,7 +64,7 @@ before_script:
     - if test "$TRAVIS_OS_NAME" = "osx"; then
         echo "export LINUX_FLAVOUR=MacOSX10.9.5" > Dart.cfg;
         echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\" " >> Dart.cfg;
-        echo "export FAIRSOFT_VERSION=nov15p2_\${ROOT_VERSION}" >> Dart.cfg;
+        echo "export FAIRSOFT_VERSION=may16p1_\${ROOT_VERSION}" >> Dart.cfg;
       fi
     - echo "export GIT_BRANCH=\${TRAVIS_COMMIT}" >> Dart.cfg
     - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg; 
