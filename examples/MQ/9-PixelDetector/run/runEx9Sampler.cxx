@@ -19,7 +19,7 @@ void addCustomOptions(bpo::options_description& options)
     ("ack-channel",  bpo::value<std::string>             ()->default_value("")               , "ack channel name");
 }
 
-FairMQDevice* getDevice(const FairMQProgOptions& config)
+FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
   std::string              samplerType = config.GetValue<std::string>             ("sampler-type");
   std::vector<std::string> filename    = config.GetValue<std::vector<std::string>>("file-name");

@@ -7,7 +7,6 @@
             "channel":
             {
                 "name": "data1",
-                "property": "samplerAddr",
                 "type": "push",
                 "method": "bind"
             }
@@ -17,19 +16,16 @@
             "channels":
             [{
                 "name": "data1",
-                "property": "samplerAddr",
                 "type": "pull",
                 "method": "connect"
             },
             {
                 "name": "data2",
-                "property": "sinkAddr",
                 "type": "push",
                 "method": "connect"
             },
             {
                 "name": "data",
-                "property": "paramAddr",
                 "type": "req",
                 "method": "connect"
             }]
@@ -39,7 +35,6 @@
             "channel":
             {
                 "name": "data2",
-                "property": "sinkAddr",
                 "type": "pull",
                 "method": "bind"
             }
@@ -49,7 +44,6 @@
             "channel":
             {
                 "name": "data",
-                "property": "paramAddr",
                 "type": "rep",
                 "method": "bind"
             }

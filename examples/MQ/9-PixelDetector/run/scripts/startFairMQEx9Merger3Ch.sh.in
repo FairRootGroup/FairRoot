@@ -2,7 +2,7 @@
 
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
-VERBOSE="--verbose DEBUG"
+VERBOSE="--verbosity DEBUG"
 
 while [[ $# > 1 ]]
 do
@@ -17,8 +17,8 @@ case $key in
     TRANSPORT="--transport $2"
     shift
     ;;
-    -v|--verbose)
-    VERBOSE="--verbose $2"
+    -v|--verbosity)
+    VERBOSE="--verbosity $2"
     shift
     ;;
 esac

@@ -29,7 +29,7 @@ void addCustomOptions(bpo::options_description& options)
     ("par-channel", bpo::value<std::string>()->default_value("param")    , "param channel name");
 }
 
-FairMQDevice* getDevice(const FairMQProgOptions& config)
+FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
   std::string taskname = config.GetValue<std::string>("task-name");
 

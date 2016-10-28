@@ -23,7 +23,7 @@ void addCustomOptions(bpo::options_description& options)
     ("ack-channel", bpo::value<std::string>             ()                           , "ack channel name");
 }
 
-FairMQDevice* getDevice(const FairMQProgOptions& config)
+FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
   return new FairMQEx9FileSink();
 }

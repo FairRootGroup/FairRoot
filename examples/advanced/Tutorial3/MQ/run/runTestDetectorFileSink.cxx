@@ -31,7 +31,7 @@ void addCustomOptions(bpo::options_description& options)
         ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)");
 }
 
-FairMQDevice* getDevice(const FairMQProgOptions& config)
+FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
     std::string dataFormat = config.GetValue<std::string>("data-format");
 

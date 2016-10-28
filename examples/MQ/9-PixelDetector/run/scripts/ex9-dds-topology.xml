@@ -1,8 +1,8 @@
 <topology id="ExampleDDS">
 
-    <property id="samplerAddr" />
-    <property id="sinkAddr" />
-    <property id="paramAddr" />
+    <property id="data1" />
+    <property id="data2" />
+    <property id="data" />
 
 <!--    <declrequirement id="SamplerWorker">
         <hostPattern type="wnname" value="sampler"/>
@@ -25,7 +25,7 @@
         <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-sampler --id sampler --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root --branch-name PixelDigis --branch-name EventHeader. --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --out-channel data1 --control dds --network-interface @NETWORK_INTERFACE@</exe>
 <!--        <requirement>SamplerWorker</requirement> -->
         <properties>
-            <id access="write">samplerAddr</id>
+            <id access="write">data1</id>
         </properties>
     </decltask>
 
@@ -33,9 +33,9 @@
         <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-processor --id processor_%taskIndex% --config-key processor --task-name PixelFindHits --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --in-channel data1 --out-channel data2 --control dds --par-channel data --network-interface @NETWORK_INTERFACE@</exe>
 <!--        <requirement>ProcessorWorker</requirement> -->
         <properties>
-            <id access="read">samplerAddr</id>
-            <id access="read">sinkAddr</id>
-            <id access="read">paramAddr</id>
+            <id access="read">data1</id>
+            <id access="read">data2</id>
+            <id access="read">data</id>
         </properties>
     </decltask>
 
@@ -43,7 +43,7 @@
         <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-sink --id sink --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/DDS.pixel_TGeant3.hits.root --class-name "TClonesArray(PixelHit)" --branch-name PixelHits --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --in-channel data2 --control dds --network-interface @NETWORK_INTERFACE@</exe>
 <!--        <requirement>SinkWorker</requirement> -->
         <properties>
-            <id access="write">sinkAddr</id>
+            <id access="write">data2</id>
         </properties>
     </decltask>
 
@@ -51,7 +51,7 @@
         <exe reachable="true">@FAIRROOT_BIN_LOCATION@/parmq-server --id parmq-server --first-input-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root --second-input-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par --second-input-type ASCII --log-color false --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds.json --control dds --network-interface @NETWORK_INTERFACE@</exe>
 <!--        <requirement>ParamServerWorker</requirement> -->
         <properties>
-            <id access="write">paramAddr</id>
+            <id access="write">data</id>
         </properties>
     </decltask>
 

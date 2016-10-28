@@ -1,9 +1,9 @@
 {
     "fairMQOptions":
     {
-"_______COMMENT:" : "SAMPLER CONFIG",
-        "device":
-        {
+        "devices":
+        [{
+            "_______COMMENT:" : "SAMPLER CONFIG",
             "id": "LmdSampler",
             "channel":
             {
@@ -19,12 +19,11 @@
                 }
             }
         },
-"_______COMMENT:" : "UNPACKER CONFIG",
-        "device":
         {
+            "_______COMMENT:" : "UNPACKER CONFIG",
             "id": "unpacker1",
-            "channel":
-            {
+            "channels":
+            [{
                 "name": "ToTuto8Unpacker",
                 "socket":
                 {
@@ -36,7 +35,6 @@
                     "rateLogging": "1"
                 }
             },
-            "channel":
             {
                 "name": "data-out",
                 "socket":
@@ -48,11 +46,10 @@
                     "rcvBufSize": "1000",
                     "rateLogging": "1"
                 }
-            }
+            }]
         },
-"_______COMMENT:" : "FILESINK CONFIG",
-        "device":
         {
+            "_______COMMENT:" : "FILESINK CONFIG",
             "id": "sink1",
             "channel":
             {
@@ -67,7 +64,7 @@
                     "rateLogging": "1"
                 }
             }
-        }
+        }]
     }
 }
 

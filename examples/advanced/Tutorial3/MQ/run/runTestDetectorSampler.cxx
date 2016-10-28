@@ -36,7 +36,7 @@ void addCustomOptions(bpo::options_description& options)
         ("chain-input", bpo::value<int>()->default_value(0), "Chain input file more than once (default)");
 }
 
-FairMQDevice* getDevice(const FairMQProgOptions& config)
+FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
     std::string dataFormat = config.GetValue<std::string>("data-format");
 

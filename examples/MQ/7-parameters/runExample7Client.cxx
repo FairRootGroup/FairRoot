@@ -17,7 +17,7 @@ void addCustomOptions(bpo::options_description& options)
         ("parameter-name", bpo::value<std::string>()->default_value("FairMQExample7ParOne"), "Parameter Name");
 }
 
-FairMQDevice* getDevice(const FairMQProgOptions& /*config*/)
+FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
 {
     return new FairMQExample7Client();
 }
