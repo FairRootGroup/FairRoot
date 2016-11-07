@@ -95,19 +95,19 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
   RPhiPack->SetElementName("RPhi View");
   RPhiPack->SetShowTitleBar(kFALSE);
   RPhiPack->NewSlot()->MakeCurrent();
+  fRPhiView = gEve->SpawnNewViewer("RPhi View", "");
+  fRPhiScene  = gEve->SpawnNewScene("RPhi","Scene holding axis.");
+  fRPhiScene->AddElement(fAxesPhi);
 
   TEveWindowSlot *RhoZSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
   TEveWindowPack *RhoZPack = RhoZSlot->MakePack();
   RhoZPack->SetElementName("RhoZ View");
   RhoZPack->SetShowTitleBar(kFALSE);
   RhoZPack->NewSlot()->MakeCurrent();
-
-  fRPhiView = gEve->SpawnNewViewer("RPhi View", "");
   fRhoZView = gEve->SpawnNewViewer("RhoZ View", "");
-  fRPhiScene  = gEve->SpawnNewScene("RPhi","Scene holding axis.");
   fRhoZScene  = gEve->SpawnNewScene("RhoZ", "Scene holding axis.");
-  fRPhiScene->AddElement(fAxesPhi);
   fRhoZScene->AddElement(fAxesRho);
+
   SetViewers(fRPhiView,fRhoZView);
 
   TEveWindowSlot *MultiSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
