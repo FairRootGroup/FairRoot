@@ -469,9 +469,11 @@ void FairRunOnline::GenerateHtml()
 
 
 //_____________________________________________________________________________
-void FairRunOnline::ActivateHttpServer(Int_t refreshRate)
+void FairRunOnline::ActivateHttpServer(Int_t refreshRate, Int_t httpServer)
 {
-  fServer = new THttpServer("http:8080");
+  TString serverAddress="http:";
+  serverAddress+=httpServer;
+  fServer = new THttpServer(serverAddress);
   fServerRefreshRate = refreshRate;
 }
 //_____________________________________________________________________________
