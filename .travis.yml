@@ -1,9 +1,5 @@
 language: cpp
 
-#cache: 
-#  directories:
-#    - /opt/fairsoft/nov15p1
-
 matrix:
     include:
         - os: osx
@@ -24,29 +20,6 @@ matrix:
           dist: trusty
           sudo: required
           env: ROOT_VERSION=root6
-
-#env:
-#    - ROOT_VERSION=root5
-#    - ROOT_VERSION=root6
-#
-#os:
-#    - linux    
-#    - osx
-#
-#compiler:
-#    - gcc
-#    - clang
-#
-#matrix:
-#    exclude:
-#        - os: osx
-#          compiler: gcc
-#        - os: linux
-#          compiler: clang
-
-# The following gives us Ubuntu 14.04 LTS instead of 12.04 LTS
-#sudo: required
-#dist: trusty
 
 before_install:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
