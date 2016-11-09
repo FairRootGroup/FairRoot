@@ -2,10 +2,10 @@ language: cpp
 
 matrix:
     include:
-#        - os: osx
-#          compiler: clang
-#          osx_image: beta-xcode6.2
-#          env: FAIRSOFT_VERSION=nov15p2_root5
+        - os: osx
+          compiler: clang
+          osx_image: beta-xcode6.2
+          env: FAIRSOFT_VERSION=nov15p7_root5
         - os: osx
           compiler: clang
           osx_image: xcode7.3
@@ -14,10 +14,10 @@ matrix:
           compiler: clang
           osx_image: xcode7.3
           env: FAIRSOFT_VERSION=may16p1_root6
-#        - os: osx
-#          compiler: clang
-#          osx_image: beta-xcode6.2
-#          env: FAIRSOFT_VERSION=nov15p2_root6
+        - os: osx
+          compiler: clang
+          osx_image: beta-xcode6.2
+          env: FAIRSOFT_VERSION=nov15p7_root6
 #        - os: linux
 #          compiler: gcc
 #          dist: trusty
@@ -42,25 +42,21 @@ before_install:
       fi
     - if test "$TRAVIS_OS_NAME" = "osx"; then
         brew update;
-        if test "${FAIRSOFT_VERSION}" = "nov15p2_root5"; then
-        brew tap homebrew/versions;        
-        brew install openssl;
-          brew uninstall gcc;
-          brew install homebrew/versions/gcc5;
-          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
-          mkdir -p /usr/local/opt/gcc/lib/gcc;
-          ln -s /usr/local/Cellar/gcc5/5.4.0/lib/gcc/5 /usr/local/opt/gcc/lib/gcc/5;
-        fi;
         if test "${_system_version}" = "10.11"; then
           brew install gcc;
-          curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2;
-          sudo tar -xjf fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2 -C /;
         fi;
-        if test "${_system_version}" != "10.11"; then  
-          curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}-1.0.pkg;
-          sudo installer -verbose -pkg ./fairsoft_${FAIRSOFT_VERSION}-1.0.pkg -target /;
+        if test "${_system_version}" != "10.9"; then  
+          brew tap homebrew/versions;        
+          brew install openssl;
+          brew uninstall gcc;
+          brew install homebrew/versions/gcc5;
         fi;
+        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2;
+        sudo tar -xjf fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2 -C /;
       fi
+#          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
+#          mkdir -p /usr/local/opt/gcc/lib/gcc;
+#          ln -s /usr/local/Cellar/gcc5/5.4.0/lib/gcc/5 /usr/local/opt/gcc/lib/gcc/5;
 
 install:
 
