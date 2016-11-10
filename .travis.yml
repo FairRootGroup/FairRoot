@@ -6,18 +6,18 @@ matrix:
           compiler: clang
           osx_image: beta-xcode6.2
           env: FAIRSOFT_VERSION=nov15p7_root5
-#        - os: osx
-#          compiler: clang
-#          osx_image: xcode7.3
-#          env: FAIRSOFT_VERSION=may16p1_root5
-#        - os: osx
-#          compiler: clang
-#          osx_image: xcode7.3
-#          env: FAIRSOFT_VERSION=may16p1_root6
-#        - os: osx
-#          compiler: clang
-#          osx_image: beta-xcode6.2
-#          env: FAIRSOFT_VERSION=nov15p7_root6
+        - os: osx
+          compiler: clang
+          osx_image: xcode7.3
+          env: FAIRSOFT_VERSION=may16p1_root5
+        - os: osx
+          compiler: clang
+          osx_image: xcode7.3
+          env: FAIRSOFT_VERSION=may16p1_root6
+        - os: osx
+          compiler: clang
+          osx_image: beta-xcode6.2
+          env: FAIRSOFT_VERSION=nov15p7_root6
 #        - os: linux
 #          compiler: gcc
 #          dist: trusty
