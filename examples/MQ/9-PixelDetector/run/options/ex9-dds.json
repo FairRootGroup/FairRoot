@@ -4,12 +4,12 @@
         "devices":
         [{
             "id": "sampler",
-            "channel":
-            {
+            "channels":
+			[{
                 "name": "data1",
                 "type": "push",
                 "method": "bind"
-            }
+            }]
         },
         {
             "key": "processor",
@@ -32,21 +32,21 @@
         },
         {
             "id": "sink",
-            "channel":
-            {
+            "channels":
+			[{
                 "name": "data2",
                 "type": "pull",
                 "method": "bind"
-            }
+            }]
         },
         {
             "id": "parmq-server",
-            "channel":
-            {
+            "channels":
+			[{
                 "name": "data",
                 "type": "rep",
                 "method": "bind"
-            }
+            }]
         }]
     }
 }

@@ -7,21 +7,21 @@
             "channels":
             [{
                 "name": "data1",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5565"
-                }
+                }]
             },
             {
                 "name": "ack",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:5999"
-                }
+                }]
             }]
         },
         {
@@ -29,21 +29,21 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:5565"
-                }
+                }]
             },
             {
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "bind",
                     "address": "tcp://*:5566"
-                }
+                }]
             }]
         },
         {
@@ -51,21 +51,21 @@
             "channels":
             [{
                 "name": "data1",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5566"
-                }
+                }]
             },
             {
                 "name": "data2",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5567"
-                }
+                }]
             }]
         },
         {
@@ -73,21 +73,21 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:5567"
-                }
+                }]
             },
             {
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "bind",
                     "address": "tcp://*:5570"
-                }
+                }]
             }]
         },
         {
@@ -95,21 +95,21 @@
             "channels":
             [{
                 "name": "data2",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5570"
-                }
+                }]
             },
             {
                 "name": "ack",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5999"
-                }
+                }]
             }]
         }]
     }

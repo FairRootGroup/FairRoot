@@ -5,19 +5,19 @@
         [{
             "_______COMMENT:" : "SAMPLER CONFIG",
             "id": "sampler1",
-            "channel":
-            {
+            "channels":
+			[{
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:1565",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "1"
-                }
-            }
+                    "sndBufSize": 1000,
+                    "rcvBufSize": 1000,
+                    "rateLogging": 1
+                }]
+            }]
         },
         {
             "_______COMMENT:" : "PROCESSOR 1 CONFIG",
@@ -25,45 +25,45 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:1565",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "1"
-                }
+                    "sndBufSize": 1000,
+                    "rcvBufSize": 1000,
+                    "rateLogging": 1
+                }]
             },
             {
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "bind",
                     "address": "tcp://*:1566",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "1"
-                }
+                    "sndBufSize": 1000,
+                    "rcvBufSize": 1000,
+                    "rateLogging": 1
+                }]
             }]
         },
         {
             "_______COMMENT:" : "FILESINK CONFIG",
             "id": "sink1",
-            "channel":
-            {
+            "channels":
+			[{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:1566",
-                    "sndBufSize": "1000",
-                    "rcvBufSize": "1000",
-                    "rateLogging": "1"
-                }
-            }
+                    "sndBufSize": 1000,
+                    "rcvBufSize": 1000,
+                    "rateLogging": 1
+                }]
+            }]
         }]
     }
 }

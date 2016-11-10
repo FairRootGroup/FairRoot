@@ -7,21 +7,21 @@
             "channels":
             [{
                 "name": "data1",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5565"
-                }
+                }]
             },
             {
                 "name": "ack",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:5999"
-                }
+                }]
             }]
         },
         {
@@ -29,12 +29,12 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:5565"
-                }
+                }]
             },
             {
                 "name": "data-out",
@@ -61,21 +61,21 @@
             "channels":
             [{
                 "name": "data1",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5566"
-                }
+                }]
             },
             {
                 "name": "data2",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5569"
-                }
+                }]
             }]
         },
         {
@@ -83,21 +83,21 @@
             "channels":
             [{
                 "name": "data1",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5567"
-                }
+                }]
             },
             {
                 "name": "data2",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5570"
-                }
+                }]
             }]
         },
         {
@@ -105,21 +105,21 @@
             "channels":
             [{
                 "name": "data1",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5568"
-                }
+                }]
             },
             {
                 "name": "data2",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5571"
-                }
+                }]
             }]
         },
         {
@@ -146,12 +146,12 @@
             },
             {
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "bind",
                     "address": "tcp://*:5572"
-                }
+                }]
             }]
         },
         {
@@ -159,21 +159,21 @@
             "channels":
             [{
                 "name": "data2",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5572"
-                }
+                }]
             },
             {
                 "name": "ack",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5999"
-                }
+                }]
             }]
         }]
     }

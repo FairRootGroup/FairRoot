@@ -6,19 +6,19 @@
         [
                 {
                     "id": "sampler1",
-                    "channel":
-                    {
+                    "channels":
+					[{
                         "name": "data-out",
                         "sockets":
                         [{
                             "type": "push",
                             "method": "bind",
                             "address": "tcp://*:5565",
-                            "sndBufSize": "1000",
-                            "rcvBufSize": "1000",
-                            "rateLogging": "1"
+                            "sndBufSize": 1000,
+                            "rcvBufSize": 1000,
+                            "rateLogging": 1
                         }]
-                    }
+                    }]
                 },
 
                 {
@@ -31,9 +31,9 @@
                             "type": "pull",
                             "method": "connect",
                             "address": "tcp://localhost:5565",
-                            "sndBufSize": "1000",
-                            "rcvBufSize": "1000",
-                            "rateLogging": "1"
+                            "sndBufSize": 1000,
+                            "rcvBufSize": 1000,
+                            "rateLogging": 1
                         }]
                     },
                     {
@@ -43,9 +43,9 @@
                             "type": "push",
                             "method": "connect",
                             "address": "tcp://localhost:5570",
-                            "sndBufSize": "1000",
-                            "rcvBufSize": "1000",
-                            "rateLogging": "1"
+                            "sndBufSize": 1000,
+                            "rcvBufSize": 1000,
+                            "rateLogging": 1
                         }]
                     }]
                 },
@@ -60,9 +60,9 @@
                             "type": "pull",
                             "method": "connect",
                             "address": "tcp://localhost:5565",
-                            "sndBufSize": "1000",
-                            "rcvBufSize": "1000",
-                            "rateLogging": "1"
+                            "sndBufSize": 1000,
+                            "rcvBufSize": 1000,
+                            "rateLogging": 1
                         }]
                     },
                     {
@@ -72,9 +72,9 @@
                             "type": "push",
                             "method": "connect",
                             "address": "tcp://localhost:5570",
-                            "sndBufSize": "1000",
-                            "rcvBufSize": "1000",
-                            "rateLogging": "1"
+                            "sndBufSize": 1000,
+                            "rcvBufSize": 1000,
+                            "rateLogging": 1
                         }]
                     }]
                 },
@@ -89,9 +89,9 @@
                         "type": "pull",
                         "method": "connect",
                         "address": "tcp://localhost:5565",
-                        "sndBufSize": "1000",
-                        "rcvBufSize": "1000",
-                        "rateLogging": "1"
+                        "sndBufSize": 1000,
+                        "rcvBufSize": 1000,
+                        "rateLogging": 1
                     }]
                 },
                 {
@@ -101,9 +101,9 @@
                         "type": "push",
                         "method": "connect",
                         "address": "tcp://localhost:5570",
-                        "sndBufSize": "1000",
-                        "rcvBufSize": "1000",
-                        "rateLogging": "1"
+                        "sndBufSize": 1000,
+                        "rcvBufSize": 1000,
+                        "rateLogging": 1
                     }]
                 }]
             },
@@ -118,9 +118,9 @@
                         "type": "pull",
                         "method": "bind",
                         "address": "tcp://*:5570",
-                        "sndBufSize": "1000",
-                        "rcvBufSize": "1000",
-                        "rateLogging": "1"
+                        "sndBufSize": 1000,
+                        "rcvBufSize": 1000,
+                        "rateLogging": 1
                     }]
                 }]
             }

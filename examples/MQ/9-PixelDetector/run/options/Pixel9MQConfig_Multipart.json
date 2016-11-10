@@ -8,21 +8,21 @@
             "channels":
             [{
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "bind",
                     "address": "tcp://*:5565"
-                }
+                }]
             },
             {
                 "name": "ack",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:5556"
-                }
+                }]
             }]
         },
         {
@@ -31,31 +31,31 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5565"
-                }
+                }]
             },
             {
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5572"
-                }
+                }]
             },
             {
                 "name": "param",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "req",
                     "method": "connect",
                     "address": "tcp://localhost:5005",
-                    "rateLogging": "0"
-                }
+                    "rateLogging": 0
+                }]
             }]
         },
         {
@@ -63,31 +63,31 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5565"
-                }
+                }]
             },
             {
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5572"
-                }
+                }]
             },
             {
                 "name": "param",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "req",
                     "method": "connect",
                     "address": "tcp://localhost:5005",
-                    "rateLogging": "0"
-                }
+                    "rateLogging": 0
+                }]
             }]
         },
         {
@@ -95,31 +95,31 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5565"
-                }
+                }]
             },
             {
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5572"
-                }
+                }]
             },
             {
                 "name": "param",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "req",
                     "method": "connect",
                     "address": "tcp://localhost:5005",
-                    "rateLogging": "0"
-                }
+                    "rateLogging": 0
+                }]
             }]
         },
         {
@@ -127,31 +127,31 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5565"
-                }
+                }]
             },
             {
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5572"
-                }
+                }]
             },
             {
                 "name": "param",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "req",
                     "method": "connect",
                     "address": "tcp://localhost:5005",
-                    "rateLogging": "0"
-                }
+                    "rateLogging": 0
+                }]
             }]
         },
         {
@@ -159,31 +159,31 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "connect",
                     "address": "tcp://localhost:5565"
-                }
+                }]
             },
             {
                 "name": "data-out",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5572"
-                }
+                }]
             },
             {
                 "name": "param",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "req",
                     "method": "connect",
                     "address": "tcp://localhost:5005",
-                    "rateLogging": "0"
-                }
+                    "rateLogging": 0
+                }]
             }]
         },
         {
@@ -192,37 +192,37 @@
             "channels":
             [{
                 "name": "data-in",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "pull",
                     "method": "bind",
                     "address": "tcp://*:5572"
-                }
+                }]
             },
             {
                 "name": "ack",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "push",
                     "method": "connect",
                     "address": "tcp://localhost:5556"
-                }
+                }]
             }]
         },
         {
             "_______COMMENT:" : "PARAMETER SERVER CONFIG",
             "id": "parmq-server",
-            "channel":
-            {
+            "channels":
+			[{
                 "name": "data",
-                "socket":
-                {
+                "sockets":
+				[{
                     "type": "rep",
                     "method": "bind",
                     "address": "tcp://*:5005",
-                    "rateLogging": "0"
-                }
-            }
+                    "rateLogging": 0
+                }]
+            }]
         }]
     }
 }
