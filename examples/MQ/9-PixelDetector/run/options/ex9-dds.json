@@ -1,52 +1,56 @@
 {
-    "fairMQOptions":
-    {
-        "devices":
-        [{
-            "id": "sampler",
-            "channels":
-			[{
-                "name": "data1",
-                "type": "push",
-                "method": "bind"
-            }]
-        },
-        {
-            "key": "processor",
-            "channels":
-            [{
-                "name": "data1",
-                "type": "pull",
-                "method": "connect"
+    "fairMQOptions": {
+        "devices": [
+            {
+                "id": "sampler",
+                "channels": [
+                    {
+                        "name": "data1",
+                        "type": "push",
+                        "method": "bind"
+                    }
+                ]
             },
             {
-                "name": "data2",
-                "type": "push",
-                "method": "connect"
+                "key": "processor",
+                "channels": [
+                    {
+                        "name": "data1",
+                        "type": "pull",
+                        "method": "connect"
+                    },
+                    {
+                        "name": "data2",
+                        "type": "push",
+                        "method": "connect"
+                    },
+                    {
+                        "name": "data",
+                        "type": "req",
+                        "method": "connect"
+                    }
+                ]
             },
             {
-                "name": "data",
-                "type": "req",
-                "method": "connect"
-            }]
-        },
-        {
-            "id": "sink",
-            "channels":
-			[{
-                "name": "data2",
-                "type": "pull",
-                "method": "bind"
-            }]
-        },
-        {
-            "id": "parmq-server",
-            "channels":
-			[{
-                "name": "data",
-                "type": "rep",
-                "method": "bind"
-            }]
-        }]
+                "id": "sink",
+                "channels": [
+                    {
+                        "name": "data2",
+                        "type": "pull",
+                        "method": "bind"
+                    }
+                ]
+            },
+            {
+                "id": "parmq-server",
+                "channels": [
+                    {
+                        "name": "data",
+                        "type": "rep",
+                        "method": "bind"
+                    }
+                ]
+            }
+        ]
     }
 }

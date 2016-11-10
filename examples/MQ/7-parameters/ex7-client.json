@@ -1,23 +1,24 @@
 {
-    "fairMQOptions":
-    {
-        "devices":
-		[{
-            "id": "parmq-client",
-            "channels":
-			[{
-                "name": "data",
-                "sockets":
-				[{
-                    "type": "req",
-                    "method": "connect",
-                    "address": "tcp://localhost:5005",
-                    "sndBufSize": 1000,
-                    "rcvBufSize": 1000,
-                    "rateLogging": 0
-                }]
-            }]
-        }]
+    "fairMQOptions": {
+        "devices": [
+            {
+                "id": "parmq-client",
+                "channels": [
+                    {
+                        "name": "data",
+                        "sockets": [
+                            {
+                                "type": "req",
+                                "method": "connect",
+                                "address": "tcp://localhost:5005",
+                                "sndBufSize": 1000,
+                                "rcvBufSize": 1000,
+                                "rateLogging": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     }
 }
-
