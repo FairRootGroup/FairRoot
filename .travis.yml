@@ -51,6 +51,7 @@ before_install:
           brew install openssl;
           brew uninstall gcc;
           brew install homebrew/versions/gcc5;
+          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
         fi;
         curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2;
         sudo tar -xjf fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2 -C /;
