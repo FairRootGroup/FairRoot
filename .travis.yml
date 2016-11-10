@@ -5,21 +5,29 @@ matrix:
         - os: osx
           compiler: clang
           osx_image: beta-xcode6.2
-          env: ROOT_VERSION=root5
+          env: FAIRSOFT_VERSION=nov15p7_root5
+        - os: osx
+          compiler: clang
+          osx_image: xcode7.3
+          env: FAIRSOFT_VERSION=may16p1_root5
+        - os: osx
+          compiler: clang
+          osx_image: xcode7.3
+          env: FAIRSOFT_VERSION=may16p1_root6
         - os: osx
           compiler: clang
           osx_image: beta-xcode6.2
-          env: ROOT_VERSION=root6
-        - os: linux
-          compiler: gcc
-          dist: trusty
-          sudo: required
-          env: ROOT_VERSION=root5
-        - os: linux
-          compiler: gcc
-          dist: trusty
-          sudo: required
-          env: ROOT_VERSION=root6
+          env: FAIRSOFT_VERSION=nov15p7_root6
+#        - os: linux
+#          compiler: gcc
+#          dist: trusty
+#          sudo: required
+#          env: ROOT_VERSION=root5
+#        - os: linux
+#          compiler: gcc
+#          dist: trusty
+#          sudo: required
+#          env: ROOT_VERSION=root6
 
 before_install:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
@@ -33,17 +41,24 @@ before_install:
         sudo dpkg -i fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb;
       fi
     - if test "$TRAVIS_OS_NAME" = "osx"; then
+        env;
         brew update;
-        brew tap homebrew/versions;        
-        brew install openssl;
-        brew uninstall gcc;
-        brew install homebrew/versions/gcc5;
-        ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
-        mkdir -p /usr/local/opt/gcc/lib/gcc;
-        ln -s /usr/local/Cellar/gcc5/5.4.0/lib/gcc/5 /usr/local/opt/gcc/lib/gcc/5;
-        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_nov15p2_${ROOT_VERSION}-1.0.pkg;
-        sudo installer -pkg ./fairsoft_nov15p2_${ROOT_VERSION}-1.0.pkg -target /;
+        if test "${_system_version}" = "10.11"; then
+          brew install gcc;
+        fi;
+        if test "${_system_version}" = "10.9"; then  
+          brew tap homebrew/versions;        
+          brew install openssl;
+          brew uninstall gcc;
+          brew install homebrew/versions/gcc5;
+          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
+        fi;
+        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2;
+        sudo tar -xjf fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2 -C /;
       fi
+#          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
+#          mkdir -p /usr/local/opt/gcc/lib/gcc;
+#          ln -s /usr/local/Cellar/gcc5/5.4.0/lib/gcc/5 /usr/local/opt/gcc/lib/gcc/5;
 
 install:
 
@@ -58,7 +73,7 @@ before_script:
     - if test "$TRAVIS_OS_NAME" = "osx"; then
         echo "export LINUX_FLAVOUR=MacOSX10.9.5" > Dart.cfg;
         echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\" " >> Dart.cfg;
-        echo "export FAIRSOFT_VERSION=nov15p2_\${ROOT_VERSION}" >> Dart.cfg;
+        echo "export FAIRSOFT_VERSION=\${FAIRSOFT_VERSION}" >> Dart.cfg;
       fi
     - echo "export GIT_BRANCH=\${TRAVIS_COMMIT}" >> Dart.cfg
     - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg; 
