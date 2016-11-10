@@ -46,8 +46,7 @@ before_install:
         if test "${_system_version}" = "10.11"; then
           brew install gcc;
         fi;
-        set -xv;
-        if test "${_system_version}" != "10.9"; then  
+        if test "${_system_version}" = "10.9"; then  
           brew tap homebrew/versions;        
           brew install openssl;
           brew uninstall gcc;
@@ -55,7 +54,6 @@ before_install:
         fi;
         curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2;
         sudo tar -xjf fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2 -C /;
-        set +xv;
       fi
 #          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
 #          mkdir -p /usr/local/opt/gcc/lib/gcc;
