@@ -63,20 +63,20 @@ class Tuto7DataGeneratorProgOptions : public FairProgOptions
         }
 
         // set log level before printing (default is 0 = DEBUG level)
-        std::string verbose = GetValue<std::string>("verbose");
+        std::string verbosity = GetValue<std::string>("verbosity");
         bool color = GetValue<bool>("log-color");
         if (!color)
         {
             reinit_logger(false);
         }
         //SET_LOG_LEVEL(DEBUG);
-        if (fSeverityMap.count(verbose))
+        if (fSeverityMap.count(verbosity))
         {
-            DefaultConsoleSetFilter(fSeverityMap.at(verbose));
+            DefaultConsoleSetFilter(fSeverityMap.at(verbosity));
         }
         else
         {
-            LOG(ERROR)<<" verbosity level '"<<verbose<<"' unknown, it will be set to DEBUG";
+            LOG(ERROR)<<" verbosity level '"<<verbosity<<"' unknown, it will be set to DEBUG";
             DefaultConsoleSetFilter(fSeverityMap.at("DEBUG"));
         }
 
