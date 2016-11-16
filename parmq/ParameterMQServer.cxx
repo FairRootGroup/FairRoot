@@ -12,9 +12,6 @@
  * @author M. Al-Turany, A. Rybalchenko
  */
 
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-
 #include "TMessage.h"
 #include "Rtypes.h"
 

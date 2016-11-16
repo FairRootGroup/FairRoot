@@ -167,21 +167,21 @@ bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
   header->fMCEntryNo = payloadE->fMCEntryNo;
   header->fPartNo    = payloadE->fPartNo;
   
-  FairMQMessage* msgHeader = NewMessage(header,
-					sizeof(PixelPayload::EventHeader),
-					[](void* data, void* hint) { delete static_cast<PixelPayload::EventHeader*>(data); }
-					);
+  FairMQMessagePtr msgHeader(NewMessage(header,
+                                        sizeof(PixelPayload::EventHeader),
+                                        [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
+                                        ));
   partsOut.AddPart(msgHeader);
   
   for ( int iobj = 0 ; iobj < fOutput->GetEntries() ; iobj++ ) {
     if ( strcmp(fOutput->At(iobj)->GetName(),"PixelHits") == 0 ) {
       Int_t nofEntries = ((TClonesArray*)fOutput->At(iobj))->GetEntries();
       size_t hitsSize = nofEntries * sizeof(PixelPayload::Hit);
-      
-      FairMQMessage*  msgTCA = NewMessage(hitsSize);
-      
+
+      FairMQMessagePtr msgTCA(NewMessage(hitsSize));
+
       PixelPayload::Hit* hitPayload = static_cast<PixelPayload::Hit*>(msgTCA->GetData());
-      
+
       for ( int ihit = 0 ; ihit < nofEntries ; ihit++ ) {
 	PixelHit* hit = static_cast<PixelHit*>(((TClonesArray*)fOutput->At(iobj))->At(ihit));
 	if ( !hit ) {

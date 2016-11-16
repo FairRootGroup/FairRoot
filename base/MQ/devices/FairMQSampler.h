@@ -18,10 +18,8 @@
 #include <vector>
 #include <iostream>
 #include <string>
-
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/timer/timer.hpp>
+#include <exception>
+#include <chrono>
 
 #include "TList.h"
 #include "TObjString.h"
@@ -58,7 +56,8 @@ class FairMQSampler : public FairMQDevice
     FairMQSampler()
         : fFairRunAna(new FairRunAna())
         , fSamplerTask(new Task())
-        , fTimer(nullptr)
+        , fStart()
+        , fEnd()
         , fInputFile()
         , fParFile()
         , fBranch()
@@ -125,8 +124,8 @@ class FairMQSampler : public FairMQDevice
 
     virtual void PreRun()
     {
-        fTimer = new boost::timer::auto_cpu_timer();
-        fAckListener = boost::thread(boost::bind(&FairMQSampler::ListenForAcks, this));
+        fStart = std::chrono::high_resolution_clock::now();
+        fAckListener = std::thread(&FairMQSampler::ListenForAcks, this);
     }
 
     virtual bool ConditionalRun()
@@ -155,9 +154,9 @@ class FairMQSampler : public FairMQDevice
         {
             fAckListener.join();
         }
-        catch(boost::thread_resource_error& e)
+        catch (std::exception& e)
         {
-            LOG(ERROR) << e.what();
+            LOG(ERROR) << "Exception when ending AckListener thread: " << e.what();
             exit(EXIT_FAILURE);
         }
     }
@@ -175,22 +174,22 @@ class FairMQSampler : public FairMQDevice
             }
         }
 
-        boost::timer::cpu_times const elapsedTime(fTimer->elapsed());
-        LOG(INFO) << "Acknowledged " << fNumEvents << " messages in:";
-        delete fTimer;
+        fEnd = std::chrono::high_resolution_clock::now();
+        LOG(INFO) << "Acknowledged " << fNumEvents << " messages in: " << std::chrono::duration<double, std::milli>(fEnd - fStart).count() << "ms.";
     }
 
   private:
     FairRunAna* fFairRunAna;
     FairMQSamplerTask* fSamplerTask;
-    boost::timer::auto_cpu_timer* fTimer;
+    std::chrono::high_resolution_clock::time_point fStart;
+    std::chrono::high_resolution_clock::time_point fEnd;
     std::string fInputFile; // Filename of a root file containing the simulated digis.
     std::string fParFile;
     std::string fBranch; // The name of the sub-detector branch to stream the digis from.
     int fNumEvents;
     int fChainInput;
     int fSentMsgs;
-    boost::thread fAckListener;
+    std::thread fAckListener;
 };
 
 #endif /* FAIRMQSAMPLER_H_ */

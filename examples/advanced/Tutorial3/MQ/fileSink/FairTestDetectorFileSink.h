@@ -38,8 +38,6 @@
 #include "TMessage.h"
 
 #ifndef __CINT__
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/vector.hpp>

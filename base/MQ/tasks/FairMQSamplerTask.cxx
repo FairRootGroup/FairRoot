@@ -66,12 +66,12 @@ void FairMQSamplerTask::SetEventIndex(Long64_t eventIndex)
     fEventIndex = eventIndex;
 }
 
-void FairMQSamplerTask::GetPayload(std::unique_ptr<FairMQMessage>& msg)
+void FairMQSamplerTask::GetPayload(FairMQMessagePtr& msg)
 {
-    msg = std::move(fPayload);
+    msg = move(fPayload);
 }
 
-void FairMQSamplerTask::SetTransport(FairMQTransportFactory* factory)
+void FairMQSamplerTask::SetTransport(shared_ptr<FairMQTransportFactory> factory)
 {
     fTransportFactory = factory;
 }

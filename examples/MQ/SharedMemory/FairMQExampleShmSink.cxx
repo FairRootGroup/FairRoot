@@ -12,7 +12,7 @@
  * @author A. Rybalchenko
  */
 
-#include <boost/timer/timer.hpp>
+#include <boost/thread.hpp>
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/smart_ptr/shared_ptr.hpp>
 
@@ -45,8 +45,6 @@ void FairMQExampleShmSink::Init()
 void FairMQExampleShmSink::Run()
 {
     uint64_t numReceivedMsgs = 0;
-
-    boost::timer::auto_cpu_timer timer;
 
     boost::thread rateLogger(boost::bind(&FairMQExampleShmSink::Log, this, 1000));
 
