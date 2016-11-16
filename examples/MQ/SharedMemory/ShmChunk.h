@@ -12,7 +12,9 @@
  * @author A. Rybalchenko
  */
 
-#include <boost/thread.hpp>
+#include <thread>
+#include <chrono>
+
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/smart_ptr/shared_ptr.hpp>
 
@@ -70,7 +72,7 @@ class SegmentManager
                                 LOG(DEBUG) << "Could not open shared memory segment on try " << numTries << ". Retrying in 1 second...";
                                 LOG(DEBUG) << ie.what();
 
-                                boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+                                std::this_thread::sleep_for(std::chrono::milliseconds(1000));
                             }
                         }
                     }

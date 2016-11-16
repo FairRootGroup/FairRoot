@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 #include <boost/function.hpp>
 
@@ -44,15 +45,15 @@ class FairMQSamplerTask : public FairTask
     void SetBranch(std::string branch);
 
     void GetPayload(std::unique_ptr<FairMQMessage>& msg);
-    void SetTransport(FairMQTransportFactory* factory);
+    void SetTransport(std::shared_ptr<FairMQTransportFactory> factory);
 
   protected:
     std::string fBranch;
     TClonesArray* fInput;
-    std::unique_ptr<FairMQMessage> fPayload;
+    FairMQMessagePtr fPayload;
     Long64_t fEventIndex;
     FairEventHeader* fEvtHeader;
-    FairMQTransportFactory* fTransportFactory;
+    std::shared_ptr<FairMQTransportFactory> fTransportFactory;
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */

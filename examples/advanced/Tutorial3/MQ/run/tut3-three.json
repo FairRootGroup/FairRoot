@@ -13,7 +13,7 @@
                                 "address": "tcp://*:5565",
                                 "sndBufSize": 1000,
                                 "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -26,7 +26,7 @@
                                 "address": "tcp://*:5999",
                                 "sndBufSize": 1000,
                                 "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }
@@ -44,7 +44,7 @@
                                 "address": "tcp://localhost:5565",
                                 "sndBufSize": 1000,
                                 "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -57,7 +57,7 @@
                                 "address": "tcp://localhost:5570",
                                 "sndBufSize": 1000,
                                 "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }
@@ -75,7 +75,7 @@
                                 "address": "tcp://*:5570",
                                 "sndBufSize": 1000,
                                 "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -88,7 +88,7 @@
                                 "address": "tcp://localhost:5999",
                                 "sndBufSize": 1000,
                                 "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }

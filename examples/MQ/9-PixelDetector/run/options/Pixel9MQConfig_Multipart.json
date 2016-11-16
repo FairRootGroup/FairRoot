@@ -12,9 +12,7 @@
                                 "type": "push",
                                 "method": "bind",
                                 "address": "tcp://*:5565",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -25,9 +23,7 @@
                                 "type": "pull",
                                 "method": "bind",
                                 "address": "tcp://*:5556",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }
@@ -44,9 +40,7 @@
                                 "type": "pull",
                                 "method": "connect",
                                 "address": "tcp://localhost:5565",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -57,9 +51,7 @@
                                 "type": "push",
                                 "method": "connect",
                                 "address": "tcp://localhost:5572",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -70,9 +62,7 @@
                                 "type": "req",
                                 "method": "connect",
                                 "address": "tcp://localhost:5005",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }
@@ -88,9 +78,7 @@
                                 "type": "pull",
                                 "method": "connect",
                                 "address": "tcp://localhost:5565",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -101,9 +89,7 @@
                                 "type": "push",
                                 "method": "connect",
                                 "address": "tcp://localhost:5572",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -114,9 +100,7 @@
                                 "type": "req",
                                 "method": "connect",
                                 "address": "tcp://localhost:5005",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }
@@ -132,9 +116,7 @@
                                 "type": "pull",
                                 "method": "connect",
                                 "address": "tcp://localhost:5565",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -145,9 +127,7 @@
                                 "type": "push",
                                 "method": "connect",
                                 "address": "tcp://localhost:5572",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -158,9 +138,7 @@
                                 "type": "req",
                                 "method": "connect",
                                 "address": "tcp://localhost:5005",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }
@@ -176,9 +154,7 @@
                                 "type": "pull",
                                 "method": "connect",
                                 "address": "tcp://localhost:5565",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -189,9 +165,7 @@
                                 "type": "push",
                                 "method": "connect",
                                 "address": "tcp://localhost:5572",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -202,9 +176,7 @@
                                 "type": "req",
                                 "method": "connect",
                                 "address": "tcp://localhost:5005",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }
@@ -220,9 +192,7 @@
                                 "type": "pull",
                                 "method": "connect",
                                 "address": "tcp://localhost:5565",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -233,9 +203,7 @@
                                 "type": "push",
                                 "method": "connect",
                                 "address": "tcp://localhost:5572",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -246,9 +214,7 @@
                                 "type": "req",
                                 "method": "connect",
                                 "address": "tcp://localhost:5005",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }
@@ -265,9 +231,7 @@
                                 "type": "pull",
                                 "method": "bind",
                                 "address": "tcp://*:5572",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     },
@@ -278,9 +242,7 @@
                                 "type": "push",
                                 "method": "connect",
                                 "address": "tcp://localhost:5556",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }
@@ -297,9 +259,7 @@
                                 "type": "rep",
                                 "method": "bind",
                                 "address": "tcp://*:5005",
-                                "sndBufSize": 1000,
-                                "rcvBufSize": 1000,
-                                "rateLogging": 0
+                                "rateLogging": 1
                             }
                         ]
                     }

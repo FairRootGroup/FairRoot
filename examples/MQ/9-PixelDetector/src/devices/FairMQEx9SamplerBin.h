@@ -16,6 +16,7 @@
 #define FAIRMQEX9SAMPLERBIN_H_
 
 #include <string>
+#include <thread>
 
 #include "TClonesArray.h"
 
@@ -70,7 +71,7 @@ class FairMQEx9SamplerBin : public FairMQDevice
     FairMQEx9SamplerBin(const FairMQEx9SamplerBin&);
     FairMQEx9SamplerBin& operator=(const FairMQEx9SamplerBin&);
 
-    boost::thread* fAckListener;
+    std::thread* fAckListener;
 };
 
 #endif /* FAIRMQEX9SAMPLER_H_ */

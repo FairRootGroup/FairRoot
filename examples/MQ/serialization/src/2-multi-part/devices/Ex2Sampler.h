@@ -4,15 +4,10 @@
 // std
 #include <iostream>
 #include <memory>
-
-// boost
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-#include <boost/timer/timer.hpp>
+#include <chrono>
 
 // FairRoot
 #include "FairMQDevice.h"
-#include "FairMQMessageZMQ.h"
 #include "SerializerExample2.h"
 
 // root
@@ -71,8 +66,8 @@ class Ex2Sampler : public FairMQDevice
         int64_t sentMsgs(0);
         const int64_t numEvents = fTree->GetEntries();
         LOG(INFO) << "Number of events to process: " << numEvents;
-        boost::timer::auto_cpu_timer timer;
-        for (int64_t idx(0); idx < numEvents; idx++)
+        auto tStart = std::chrono::high_resolution_clock::now();
+        for (int64_t idx = 0; idx < numEvents; idx++)
         {
             fTree->GetEntry(idx);
             Ex2Header* header = new Ex2Header();
@@ -83,7 +78,7 @@ class Ex2Sampler : public FairMQDevice
                 [](void* data, void* /*hint*/) { delete static_cast<Ex2Header*>(data); }
                 ));
             std::unique_ptr<FairMQMessage> msg(NewMessage());
-            
+
             Serialize<SerializerEx2>(*msg, fInput);
             FairMQParts parts;
             parts.AddPart(std::move(msgHeader));
@@ -96,8 +91,8 @@ class Ex2Sampler : public FairMQDevice
                 break;
             }
         }
-        boost::timer::cpu_times const elapsed_time(timer.elapsed());
-        LOG(INFO) << "Sent everything in:\n" << boost::timer::format(elapsed_time, 2);
+        auto tEnd = std::chrono::high_resolution_clock::now();
+        LOG(INFO) << "Sent everything in: " << std::chrono::duration<double, std::milli>(tEnd - tStart).count() << " ms";
         LOG(INFO) << "Sent " << sentMsgs << " messages!";
     }
 
