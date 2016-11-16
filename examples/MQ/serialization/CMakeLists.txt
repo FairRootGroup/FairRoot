@@ -1,11 +1,11 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #              This software is distributed under the terms of the             #
+ #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Create a library called "libSerializationExample" 
+# Create a library called "libSerializationExample"
 
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
@@ -32,7 +32,7 @@ set(INCLUDE_DIRECTORIES
 Set(SYSTEM_INCLUDE_DIRECTORIES
     ${SYSTEM_INCLUDE_DIRECTORIES}
     ${ZMQ_INCLUDE_DIR}
-    ${GSL_INCLUDE_DIRS}
+#    ${GSL_INCLUDE_DIRS}
 )
 
 
@@ -54,7 +54,7 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(SCRIPT_ARGS "\${\@:2}")
 
 # Data generator
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/startMQSerializationGenerateData.sh.in 
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_generator/startMQSerializationGenerateData.sh.in
                 ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startMQSerializationGenerateData.sh )
 
 # start MQ chains
@@ -75,7 +75,7 @@ file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_io)
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
     ${Boost_LIBRARY_DIRS}
-    ${GSL_LIBRARY_DIRS}
+  #  ${GSL_LIBRARY_DIRS}
 )
 
 if(DDS_PATH)
@@ -115,9 +115,9 @@ Set(LINKDEF SerializationExampleLinkDef.h)
 Set(LIBRARY_NAME SerializationExample)
 
 Set(DEPENDENCIES
-    Base 
-    FairMQ 
-    BaseMQ 
+    Base
+    FairMQ
+    BaseMQ
     ${Boost_THREAD_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_SERIALIZATION_LIBRARY}
@@ -125,8 +125,8 @@ Set(DEPENDENCIES
     Minuit
     XMLIO
     MathMore
-    gsl
-    gslcblas
+#    gsl
+  #  gslcblas
 )
 
 If(PROTOBUF_FOUND)
@@ -184,7 +184,7 @@ set(Exe_Source
 set(UBUNTU_GREATERTHAN_v11_LINKER_FLAG )
 
 if(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
-    # use the LSB stuff if possible 
+    # use the LSB stuff if possible
     EXECUTE_PROCESS(
        COMMAND cat /etc/lsb-release
        COMMAND grep DISTRIB_ID
@@ -203,7 +203,7 @@ if(NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
        OUTPUT_VARIABLE LSB_VER
        RESULT_VARIABLE LSB_VER_RESULT
     )
-    
+
     if(NOT ${LSB_ID} STREQUAL "")
         # found some, use it :D
         set(INSTALLER_PLATFORM "${LSB_ID}-${LSB_VER}" CACHE PATH "Installer chosen platform")
@@ -245,25 +245,21 @@ GENERATE_EXECUTABLE()
 
 add_test(NAME run_serialization_ex1 COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startTestSerializationEx1.sh)
 set_tests_properties(run_serialization_ex1 PROPERTIES TIMEOUT "30")
-set_tests_properties(run_serialization_ex1 PROPERTIES 
+set_tests_properties(run_serialization_ex1 PROPERTIES
     PASS_REGULAR_EXPRESSION "Data generation successful"
-    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
+    PASS_REGULAR_EXPRESSION "Sent 100 messages!"
     PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
     PASS_REGULAR_EXPRESSION "Received 100 messages!"
     )
 
 add_test(NAME run_serialization_ex2 COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startTestSerializationEx2.sh)
 set_tests_properties(run_serialization_ex2 PROPERTIES TIMEOUT "30")
-set_tests_properties(run_serialization_ex2 PROPERTIES 
+set_tests_properties(run_serialization_ex2 PROPERTIES
     PASS_REGULAR_EXPRESSION "Data generation successful"
-    PASS_REGULAR_EXPRESSION "Sent 100 messages!" 
+    PASS_REGULAR_EXPRESSION "Sent 100 messages!"
     PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
     PASS_REGULAR_EXPRESSION "Received 100 messages!"
     )
-set_tests_properties(run_serialization_ex2 PROPERTIES 
+set_tests_properties(run_serialization_ex2 PROPERTIES
     DEPENDS run_serialization_ex1
     )
-
-
-
-
