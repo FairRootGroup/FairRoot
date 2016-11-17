@@ -83,16 +83,14 @@ q
 - Then, in another terminal:
 
 ```sh
-$> go-sink
-2016/03/11 14:37:28 dialing tcp://localhost:5555 ...
-2016/03/11 14:37:28 dialing tcp://localhost:5555 ... [done]
-2016/03/11 14:37:28 recv: Hello
-2016/03/11 14:37:29 recv: Hello
-2016/03/11 14:37:30 recv: Hello
-2016/03/11 14:37:31 recv: Hello
-2016/03/11 14:37:32 recv: Hello
-2016/03/11 14:37:33 recv: Hello
-2016/03/11 14:37:34 recv: Hello
-^C
+$> go-sink --id sink1 \
+	--tranport nanomsg \
+	--mq-config /opt/alice/src/fair-root/examples/MQ/1-sampler-sink/ex1-sampler-sink.json
+sink1: --- new device: { sink1  [{data [{pull bind tcp://*:5555 1000 1000 0}]    0 0 0}]}
+sink1: received: "Hello"
+sink1: received: "Hello"
+sink1: received: "Hello"
+[...]
+q
 $>
 ```

@@ -1,75 +1,68 @@
+// Copyright 2016 The fer Authors.  All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package main
 
 import (
-	"bytes"
-	"flag"
-	"io"
 	"log"
 
-	"github.com/go-mangos/mangos"
-	"github.com/go-mangos/mangos/protocol/pull"
-	"github.com/go-mangos/mangos/protocol/push"
-	"github.com/go-mangos/mangos/transport/ipc"
-	"github.com/go-mangos/mangos/transport/tcp"
+	"github.com/sbinet-alice/fer"
+	"github.com/sbinet-alice/fer/config"
 )
 
-func main() {
-	var iaddr string
-	flag.StringVar(&iaddr, "iaddr", "tcp://localhost:5555", "input data port")
+type processor struct {
+	cfg    config.Device
+	idatac chan fer.Msg
+	odatac chan fer.Msg
+}
 
-	var oaddr string
-	flag.StringVar(&oaddr, "oaddr", "tcp://localhost:5556", "output data port")
+func (dev *processor) Configure(cfg config.Device) error {
+	dev.cfg = cfg
+	return nil
+}
 
-	flag.Parse()
-
-	isck, err := pull.NewSocket()
+func (dev *processor) Init(ctl fer.Controler) error {
+	idatac, err := ctl.Chan("data1", 0)
 	if err != nil {
-		log.Fatalf("error creating a nanomsg socket: %v\n", err)
+		return err
 	}
-	defer isck.Close()
 
-	isck.AddTransport(ipc.NewTransport())
-	isck.AddTransport(tcp.NewTransport())
-
-	osck, err := push.NewSocket()
+	odatac, err := ctl.Chan("data2", 0)
 	if err != nil {
-		log.Fatalf("error creating output port: %v\n", err)
+		return err
 	}
-	defer osck.Close()
 
-	osck.AddTransport(ipc.NewTransport())
-	osck.AddTransport(tcp.NewTransport())
+	dev.idatac = idatac
+	dev.odatac = odatac
+	return nil
+}
 
-	log.Printf("dialing %s ...\n", iaddr)
-	err = isck.Dial(iaddr)
-	if err != nil {
-		log.Fatalf("error dialing: %v\n", err)
-	}
-	log.Printf("dialing %s ... [done]\n", iaddr)
-
-	log.Printf("dialing %s ...\n", oaddr)
-	err = osck.Dial(oaddr)
-	if err != nil {
-		log.Fatalf("error dialing: %v\n", err)
-	}
-	log.Printf("dialing %s ... [done]\n", oaddr)
-
+func (dev *processor) Run(ctl fer.Controler) error {
 	for {
-		msg, err := isck.Recv()
-		if err != nil {
-			if err == io.EOF || err == mangos.ErrClosed {
-				log.Printf("received EOF: %v\n", err)
-				break
-			}
-			log.Fatalf("error receiving data: %v\n", err)
-		}
-		log.Printf("recv: %v\n", string(msg))
-
-		omsg := bytes.Repeat(msg, 2)
-		err = osck.Send(omsg)
-		if err != nil {
-			log.Fatalf("error sending data: %v\n", err)
+		select {
+		case data := <-dev.idatac:
+			ctl.Printf("received: %q\n", string(data.Data))
+			out := append([]byte(nil), data.Data...)
+			out = append(out, []byte(" (modified by "+dev.cfg.Name()+")")...)
+			dev.odatac <- fer.Msg{Data: out}
+		case <-ctl.Done():
+			return nil
 		}
 	}
+}
 
+func (dev *processor) Pause(ctl fer.Controler) error {
+	return nil
+}
+
+func (dev *processor) Reset(ctl fer.Controler) error {
+	return nil
+}
+
+func main() {
+	err := fer.Main(&processor{})
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -1,48 +1,58 @@
+// Copyright 2016 The fer Authors.  All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package main
 
 import (
-	"flag"
-	"io"
 	"log"
 
-	"github.com/go-mangos/mangos"
-	"github.com/go-mangos/mangos/protocol/pull"
-	"github.com/go-mangos/mangos/transport/ipc"
-	"github.com/go-mangos/mangos/transport/tcp"
+	"github.com/sbinet-alice/fer"
+	"github.com/sbinet-alice/fer/config"
 )
 
-func main() {
-	var addr string
-	flag.StringVar(&addr, "addr", "tcp://localhost:5555", "input data port")
+type sink struct {
+	cfg   config.Device
+	datac chan fer.Msg
+}
 
-	flag.Parse()
+func (dev *sink) Configure(cfg config.Device) error {
+	dev.cfg = cfg
+	return nil
+}
 
-	sck, err := pull.NewSocket()
+func (dev *sink) Init(ctl fer.Controler) error {
+	datac, err := ctl.Chan("data", 0)
 	if err != nil {
-		log.Fatalf("error creating a nanomsg socket: %v\n", err)
+		return err
 	}
-	defer sck.Close()
 
-	sck.AddTransport(ipc.NewTransport())
-	sck.AddTransport(tcp.NewTransport())
+	dev.datac = datac
+	return nil
+}
 
-	log.Printf("dialing %s ...\n", addr)
-	err = sck.Dial(addr)
-	if err != nil {
-		log.Fatalf("error dialing: %v\n", err)
-	}
-	log.Printf("dialing %s ... [done]\n", addr)
-
+func (dev *sink) Run(ctl fer.Controler) error {
 	for {
-		msg, err := sck.Recv()
-		if err != nil {
-			if err == io.EOF || err == mangos.ErrClosed {
-				log.Printf("received EOF: %v\n", err)
-				break
-			}
-			log.Fatalf("error receiving from bus: %v\n", err)
+		select {
+		case data := <-dev.datac:
+			ctl.Printf("received: %q\n", string(data.Data))
+		case <-ctl.Done():
+			return nil
 		}
-		log.Printf("recv: %v\n", string(msg))
 	}
+}
 
+func (dev *sink) Pause(ctl fer.Controler) error {
+	return nil
+}
+
+func (dev *sink) Reset(ctl fer.Controler) error {
+	return nil
+}
+
+func main() {
+	err := fer.Main(&sink{})
+	if err != nil {
+		log.Fatal(err)
+	}
 }

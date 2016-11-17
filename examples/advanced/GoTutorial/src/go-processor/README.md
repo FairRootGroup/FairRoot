@@ -1,6 +1,6 @@
 # go-processor
 
-`go-processor` is a simple `Go` based program using `nanomsg` as a transport facility.
+`go-processor` is a simple `Go` based program using `nanomsg` or `ZeroMQ` as a transport facility.
 It replicates the basic example from [FairRootMQ example 2](https://github.com/FairRootGroup/FairRoot/tree/master/examples/MQ/2-sampler-processor-sink).
 
 ## Manual Build
@@ -86,19 +86,17 @@ q
 - Then, in another terminal:
 
 ```sh
-$> go-processor
-2016/03/11 17:04:53 dialing tcp://localhost:5555 ...
-2016/03/11 17:04:53 dialing tcp://localhost:5555 ... [done]
-2016/03/11 17:04:53 dialing tcp://localhost:5556 ...
-2016/03/11 17:04:53 dialing tcp://localhost:5556 ... [done]
-2016/03/11 17:04:53 recv: Hello
-2016/03/11 17:04:54 recv: Hello
-2016/03/11 17:04:55 recv: Hello
-2016/03/11 17:04:56 recv: Hello
+$> go-processor --id processor \
+	--transport nanomsg \
+	--mq-config /opt/alice/src/fair-root/examples/MQ/2-sampler-processor-sink/ex2-sampler-processor-sink.json
+processor: --- new device: {  processor [{data1 [{pull connect tcp://localhost:5555 1000 1000 0}]    0 0 0} {data2 [{push connect tcp://localhost:5556 1000 1000 0}]    0 0 0}]}
+processor: received: "Hello"
+processor: received: "Hello"
+processor: received: "Hello"
+processor: received: "Hello"
 [...]
-2016/03/11 17:06:07 recv: Hello
-2016/03/11 17:06:08 recv: Hello
-^C
+processor: received: "Hello"
+q
 ```
 
 - And, in yet another terminal:
@@ -150,15 +148,15 @@ $> ex2-sink --id sink1 --config-json-file /opt/alice/src/fair-root/examples/MQ/2
 [17:05:57][INFO] Use keys to control the state machine:
 [17:05:57][INFO] [h] help, [p] pause, [r] run, [s] stop, [t] reset task, [d] reset device, [q] end, [j] init task, [i] init device
 [17:05:57][INFO] DEVICE: Running...
-[17:05:57][INFO] Received message: "HelloHello"
-[17:05:57][INFO] Received message: "HelloHello"
-[17:05:57][INFO] Received message: "HelloHello"
+[17:05:57][INFO] Received message: "Hello (modified by processor)"
+[17:05:57][INFO] Received message: "Hello (modified by processor)"
+[17:05:57][INFO] Received message: "Hello (modified by processor)"
 [...]
-[17:06:04][INFO] Received message: "HelloHello"
-[17:06:05][INFO] Received message: "HelloHello"
-[17:06:06][INFO] Received message: "HelloHello"
-[17:06:07][INFO] Received message: "HelloHello"
-[17:06:08][INFO] Received message: "HelloHello"
+[17:06:04][INFO] Received message: "Hello (modified by processor)"
+[17:06:05][INFO] Received message: "Hello (modified by processor)"
+[17:06:06][INFO] Received message: "Hello (modified by processor)"
+[17:06:07][INFO] Received message: "Hello (modified by processor)"
+[17:06:08][INFO] Received message: "Hello (modified by processor)"
 q
 [17:06:12][INFO] [q] end
 [17:06:12][STATE] Entering EXITING state
