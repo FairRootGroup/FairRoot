@@ -15,9 +15,9 @@ struct MsgPack {};
 // struct MsgPackRef { msgpack::vrefbuffer vbuf; std::vector<msgpack::type::tuple<int, int, double, double, double, double, double, double>> hits; };
 // struct MsgPackStream {};
 
-void free_sbuffer(void *data, void *hint)
+void free_sbuffer(void* /*data*/, void* obj)
 {
-    delete static_cast<msgpack::sbuffer*>(hint);
+    delete static_cast<msgpack::sbuffer*>(obj);
 }
 
 template <>

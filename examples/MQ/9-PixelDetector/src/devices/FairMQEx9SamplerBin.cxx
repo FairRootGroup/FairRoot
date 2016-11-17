@@ -82,7 +82,7 @@ void FairMQEx9SamplerBin::PreRun()
 {
   LOG(INFO) << "FairMQEx9Sampler::PreRun() started!";
 
-  fAckListener = new boost::thread(boost::bind(&FairMQEx9SamplerBin::ListenForAcks, this));
+  fAckListener = new std::thread(&FairMQEx9SamplerBin::ListenForAcks, this);
 }
 
 bool FairMQEx9SamplerBin::ConditionalRun()
@@ -102,10 +102,10 @@ bool FairMQEx9SamplerBin::ConditionalRun()
       header->fRunId     = ((FairEventHeader*)fInputObjects[iobj])->GetRunId();
       header->fMCEntryNo = ((FairEventHeader*)fInputObjects[iobj])->GetMCEntryNumber();
       header->fPartNo    = 0;
-      FairMQMessage* msgHeader = NewMessage(header,
-					    sizeof(PixelPayload::EventHeader),
-					    [](void* data, void* hint) { delete static_cast<PixelPayload::EventHeader*>(data); }
-					    );
+      FairMQMessagePtr msgHeader(NewMessage(header,
+                                            sizeof(PixelPayload::EventHeader),
+                                            [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
+                                            ));
       parts.AddPart(msgHeader);
       LOG(TRACE) << "-----------------------------";
       LOG(TRACE) << "first part has size = " << sizeof(PixelPayload::EventHeader);
@@ -114,7 +114,7 @@ bool FairMQEx9SamplerBin::ConditionalRun()
       Int_t nofEntries = ((TClonesArray*)fInputObjects[iobj])->GetEntries();
       size_t digisSize = nofEntries * sizeof(PixelPayload::Digi);
       
-      FairMQMessage*  msgTCA = NewMessage(digisSize);
+      FairMQMessagePtr  msgTCA(NewMessage(digisSize));
       
       PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgTCA->GetData());
       

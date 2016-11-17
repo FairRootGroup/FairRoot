@@ -10,6 +10,8 @@
 #define FAIRMQEXAMPLE9PROCESSOR_H_
 
 #include <string>
+#include <thread>
+#include <chrono>
 
 #include "FairMQDevice.h"
 #include "RootSerializer.h"
@@ -56,7 +58,7 @@ class FairMQEx9Processor : public FairMQDevice
         
         //while (CheckCurrentState(RUNNING))
         //{
-            boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
             std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
             LOG(WARN) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << ".";
             std::unique_ptr<FairMQMessage> req(fTransportFactory->CreateMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));

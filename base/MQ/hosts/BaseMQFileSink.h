@@ -17,8 +17,6 @@
 #define BASEMQFILESINK_H
 
 #include "FairMQDevice.h"
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
 #include "FairMQLogger.h"
 
 /*********************************************************************

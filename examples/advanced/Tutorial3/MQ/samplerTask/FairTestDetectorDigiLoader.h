@@ -18,7 +18,6 @@
 #include <type_traits>
 #include <array>
 
-#include <boost/timer/timer.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>

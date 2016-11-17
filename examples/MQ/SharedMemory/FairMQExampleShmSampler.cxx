@@ -12,7 +12,7 @@
  * @author A. Rybalchenko
  */
 
-#include <boost/timer/timer.hpp>
+#include <boost/thread.hpp>
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/smart_ptr/shared_ptr.hpp>
 
@@ -69,7 +69,6 @@ void FairMQExampleShmSampler::Run()
     static uint64_t numSentMsgs = 0;
 
     LOG(INFO) << "Starting the benchmark with message size of " << fMsgSize;
-    boost::timer::auto_cpu_timer timer;
 
     boost::thread rateLogger(boost::bind(&FairMQExampleShmSampler::Log, this, 1000));
     boost::thread ackListener(boost::bind(&FairMQExampleShmSampler::ListenForAcks, this));
