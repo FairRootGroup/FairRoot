@@ -1,6 +1,6 @@
 # GoTutorial
 
-`GoTutorial` shows how one can mix and mash devices written in `C++` and devices written in `Go`, exchanging data over `nanomsg`.
+`GoTutorial` shows how one can mix and mash devices written in `C++` and devices written in `Go`, exchanging data over `nanomsg` or `ZeroMQ`.
 
 - `go-sink` is a sink, written in `Go`
 - `go-processor` is a processor, written in `Go`
