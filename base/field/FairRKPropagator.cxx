@@ -87,7 +87,7 @@ void FairRKPropagator::PropagatToPlane(Double_t Charge, Double_t* vecRKIn, Doubl
     if( res< 0.001 || res >res_old ) {
       break;
     } else {
-      for (Int_t i=0; i< 3; i++) {
+      for (Int_t i=0; i< 7; i++) {
         vecRKIn[i]=vecRKOut[i];
         vecRKoutT[i]=vecRKOut[i];
       }
@@ -97,7 +97,7 @@ void FairRKPropagator::PropagatToPlane(Double_t Charge, Double_t* vecRKIn, Doubl
   } while(1);
 //  printf("The results is  %f %f %f  , no of iter %i \n", vecRKOut[0],vecRKOut[1],vecRKOut[2], nIter);
 //  printf("\n");
-  for (Int_t i=0; i< 3; i++) {
+  for (Int_t i=0; i< 7; i++) {
     if (res > res_old) { vecOut[i]=vecRKoutT[i]; }
     else { vecOut[i]=vecRKOut[i]; }
   }
@@ -120,7 +120,7 @@ void FairRKPropagator::Propagat(Double_t Charge, Double_t* vecRKIn, Double_t* Po
     if( TMath::Abs(res)< 0.01 || res >res_old ) {
       break;
     } else {
-      for (Int_t i=0; i< 3; i++) {
+      for (Int_t i=0; i< 7; i++) {
         vecRKOutT[i]=vecRKOut[i];
         vecRKIn[i]=vecRKOut[i];
       }
@@ -145,9 +145,9 @@ void FairRKPropagator::Step(Double_t Charge, Double_t* vecRKIn, Double_t* vecOut
   vecOut[1] = vecRKOut[1];
   vecOut[2] = vecRKOut[2];
   vecOut[6] = vecRKOut[6];
-  vecOut[3] = vecRKOut[3]/vecOut[6];
-  vecOut[4] = vecRKOut[4]/vecOut[6];
-  vecOut[5] = vecRKOut[5]/vecOut[6];
+  vecOut[3] = vecRKOut[3];
+  vecOut[4] = vecRKOut[4];
+  vecOut[5] = vecRKOut[5];
 
 }
 
@@ -195,16 +195,15 @@ void FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
   Double_t yt;
   Double_t zt;
 
-//  Double_t maxit = 1992;
-  Double_t maxit = 10;
+  Double_t maxit = 1992;
   Double_t maxcut = 11;
 
   const Double_t hmin   = 1e-4; // !!! MT ADD,  should be member
-  const Double_t kdlt   = 1e-3; // !!! MT CHANGE from 1e-4, should be member
+  const Double_t kdlt   = 1e-6; // !!! MT CHANGE from 1e-4, should be member
   const Double_t kdlt32 = kdlt/32.;
   const Double_t kthird = 1./3.;
   const Double_t khalf  = 0.5;
-  const Double_t kec    = 2.9979251e-3;
+  const Double_t kec    = 2.99792458e-4;
   const Double_t kpisqua = 9.86960440109;
   /*  const Int_t kix  = 0;
     const Int_t kiy  = 1;
@@ -231,22 +230,13 @@ void FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
 
   do {
     rest  = step - tl;
-    printf(" Step  no. %i  x=%f  y=%f  z=%f  px/p = %f  py/p =%f  pz/p= %f \n", iter, x,y,z,a,b,c);
+    //printf(" Step  no. %i  x=%f  y=%f  z=%f  px/p = %f  py/p =%f  pz/p= %f \n", iter, x,y,z,a,b,c);
     if (TMath::Abs(h) > TMath::Abs(rest)) {
       h = rest;
     }
 
 
     fMagField->GetFieldValue( vout, f);
-    f[0] = -1.0*f[0];
-    f[1] = -1.0*f[1];
-    f[2] = -1.0*f[2];
-
-
-//    printf(" Field Values     x=%f  y=%f  z=%f \n", f[0],f[1],f[2]);
-//    f[0] = -fH.fB.fX;
-//    f[1] = -fH.fB.fY;
-//    f[2] = -fH.fB.fZ;
 
     // * start of integration
     x      = vout[0];
@@ -291,18 +281,6 @@ void FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
 
     fMagField->GetFieldValue( xyzt, f);
 
-    f[0] = -f[0];
-    f[1] = -f[1];
-    f[2] = -f[2];
-
-
-//    printf(" Field Values  at  x=%f  y=%f  z=%f ,  Bx=%f By=%f Bz=%f  \n", xyzt[0], xyzt[1], xyzt[2] ,f[0],f[1],f[2]);
-//    fH.fB = fMagFieldObj->GetField(xt, yt, zt);
-//    f[0] = -fH.fB.fX;
-//    f[1] = -fH.fB.fY;
-//    f[2] = -fH.fB.fZ;
-
-
 
 
     at     = a + secxs[0];
@@ -341,14 +319,6 @@ void FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
     xyzt[2] = zt;
 
     fMagField->GetFieldValue( xyzt, f);
-    f[0] = -1.0*f[0];
-    f[1] = -1.0*f[1];
-    f[2] = -1.0*f[2];
-
-    //  fH.fB = fMagFieldObj->GetField(xt, yt, zt);
-    //  f[0] = -fH.fB.fX;
-    //  f[1] = -fH.fB.fY;
-    //  f[2] = -fH.fB.fZ;
 
     z      = z + (c + (seczs[0] + seczs[1] + seczs[2]) * kthird) * h;
     y      = y + (b + (secys[0] + secys[1] + secys[2]) * kthird) * h;
