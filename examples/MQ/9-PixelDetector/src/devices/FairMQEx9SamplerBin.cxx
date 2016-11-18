@@ -146,7 +146,7 @@ bool FairMQEx9SamplerBin::ConditionalRun()
 
 void FairMQEx9SamplerBin::PostRun() 
 {
-  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+  if ( fAckChannelName != "" ) {
     try
       {
 	fAckListener->join();
@@ -163,11 +163,11 @@ void FairMQEx9SamplerBin::PostRun()
 
 void FairMQEx9SamplerBin::ListenForAcks()
 {
-  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+  if ( fAckChannelName != "" ) {
     for (Long64_t eventNr = 0; eventNr < fMaxIndex ; ++eventNr)
       {
 	unique_ptr<FairMQMessage> ack(NewMessage());
-	if (Receive(ack,fAckChannelName.data())) 
+	if (Receive(ack,fAckChannelName)) 
 	  {
 	    // do not need to do anything
 	  }

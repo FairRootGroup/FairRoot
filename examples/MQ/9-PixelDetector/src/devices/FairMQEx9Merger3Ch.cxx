@@ -142,7 +142,7 @@ bool FairMQEx9Merger3Ch::MergeData(FairMQParts& parts, int index)
 	    fEvRIPartTrio.second = ieventpart;
 	    fRet = fObjectMap.equal_range(fEvRIPartTrio);
 	    for ( MultiMapDef::iterator it = fRet.first ; it != fRet.second ; ++it ) {
-	      if ( strcmp(tempArrays[iarray]->GetName(),it->second->GetName()) == 0 ) {
+	      if ( tempArrays[iarray]->GetName() == it->second->GetName() ) {
 		arrayToAdd = (TClonesArray*)it->second;
 		tempArrays[iarray]->AbsorbObjects(arrayToAdd);
 		LOG(TRACE) << "FOUND ONE!, TCA has now " << tempArrays[iarray]->GetEntries() << " entries.";

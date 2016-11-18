@@ -87,9 +87,9 @@ void free_tmessage2(void* /*data*/, void *hint)
 
 void FairMQEx9Sampler::PreRun()
 {
-  LOG(INFO) << "FairMQEx9Sampler::PreRun() started!";
-
   fAckListener = new boost::thread(boost::bind(&FairMQEx9Sampler::ListenForAcks, this));
+
+  LOG(INFO) << "FairMQEx9Sampler::PreRun() finished!";
 }
 
 bool FairMQEx9Sampler::ConditionalRun()
@@ -118,7 +118,7 @@ bool FairMQEx9Sampler::ConditionalRun()
 
 void FairMQEx9Sampler::PostRun() 
 {
-  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+  if ( fAckChannelName != "" ) {
     try
       {
 	fAckListener->join();
@@ -135,11 +135,11 @@ void FairMQEx9Sampler::PostRun()
 
 void FairMQEx9Sampler::ListenForAcks()
 {
-  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+  if ( fAckChannelName != "" ) {
     for (Long64_t eventNr = 0; eventNr < fMaxIndex ; ++eventNr)
       {
 	unique_ptr<FairMQMessage> ack(NewMessage());
-	if (Receive(ack,fAckChannelName.data())) 
+	if (Receive(ack,fAckChannelName)) 
 	  {
 	    // do not need to do anything
 	  }
