@@ -35,7 +35,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 
   std::cout << "get device with setting!" << std::endl;
 
-  if      ( strcmp(taskname.c_str(),"PixelFindHits") == 0 ) {
+  if      ( taskname == "PixelFindHits" ) {
     return new HitFinder();
   }
 

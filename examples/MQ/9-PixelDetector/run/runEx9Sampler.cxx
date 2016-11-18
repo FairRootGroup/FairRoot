@@ -26,15 +26,15 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 
   FairMQEx9Sampler* sampler = new FairMQEx9Sampler();
 
-  if      ( strcmp(samplerType.c_str(),"FairFileSource") == 0 ) {
+  if      ( samplerType == "FairFileSource" ) {
   }
-  else if ( strcmp(samplerType.c_str(),"PixelDigiSource") == 0 ) {
+  else if ( samplerType == "PixelDigiSource" ) {
     if ( filename.size() >= 1 ) {
       PixelDigiSource* digiSource = new PixelDigiSource(filename.at(0));
       sampler->SetSource(digiSource);
     }
   }	  
-  else if ( strcmp(samplerType.c_str(),"PixelDigiBinSource") == 0 ) {
+  else if ( samplerType == "PixelDigiBinSource" ) {
     if ( filename.size() >= 1 ) {
       PixelDigiBinSource* digiSource = new PixelDigiBinSource(filename.at(0));
       sampler->SetSource(digiSource);

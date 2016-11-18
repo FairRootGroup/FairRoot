@@ -120,7 +120,7 @@ bool FairMQEx9FileSink::StoreData(FairMQParts& parts, int index)
       tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
       for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
 	{
-	  if ( strcmp(tempObjects[ipart]->GetName(),fBranchNames[ibr].c_str()) == 0 ) 
+	  if ( tempObjects[ipart]->GetName() == fBranchNames[ibr] ) 
 	    {
 	      fOutputObjects[ibr] = tempObjects[ipart];
 	      fTree->SetBranchAddress(fBranchNames[ibr].c_str(),&fOutputObjects[ibr]);
@@ -129,7 +129,7 @@ bool FairMQEx9FileSink::StoreData(FairMQParts& parts, int index)
     }
   fTree->Fill();
   
-  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+  if ( fAckChannelName != "" ) {
     unique_ptr<FairMQMessage> msg(NewMessage());
     Send(msg, fAckChannelName);
   }

@@ -119,7 +119,7 @@ bool FairMQEx9FileSinkBin::StoreData(FairMQParts& parts, int index)
   
   for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
     {
-      if ( strcmp("EventHeader.",fBranchNames[ibr].c_str()) == 0 ) 
+      if ( "EventHeader." == fBranchNames[ibr] )
 	{
 	  ((FairEventHeader*)fOutputObjects[ibr])->SetRunId        (payloadE->fRunId);
 	  ((FairEventHeader*)fOutputObjects[ibr])->SetMCEntryNumber(payloadE->fMCEntryNo);
@@ -133,7 +133,7 @@ bool FairMQEx9FileSinkBin::StoreData(FairMQParts& parts, int index)
   
   for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
     {
-      if ( strcmp("PixelHits",fBranchNames[ibr].c_str()) == 0 ) 
+      if ( "PixelHits" == fBranchNames[ibr] )
 	{
 	  ((TClonesArray*)fOutputObjects[ibr])->Clear();
 	  for ( int ihit = 0 ; ihit < nofHits ; ihit++ )
@@ -148,7 +148,7 @@ bool FairMQEx9FileSinkBin::StoreData(FairMQParts& parts, int index)
   
   fTree->Fill();
 
-  if ( strcmp(fAckChannelName.data(),"") != 0 ) {
+  if ( fAckChannelName != "" ) {
     unique_ptr<FairMQMessage> msg(NewMessage());
     Send(msg, fAckChannelName);
   }
