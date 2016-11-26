@@ -80,7 +80,7 @@ class FairRunOnline : public FairRun
      * @param refreshRate an interval in number of events for server update.
      * @param httpPort the port which is used by the http server
      */
-    void ActivateHttpServer(Int_t refreshRate = 10000, Int_t httpPort=8080);
+    void ActivateHttpServer(Int_t refreshRate = 10000, Int_t httpPort=8080, TString extraParameter="");
 
     /** Register a command on the http server.
      * @param name a command name starting with /
