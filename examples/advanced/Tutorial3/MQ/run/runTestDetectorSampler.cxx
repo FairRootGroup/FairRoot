@@ -31,7 +31,7 @@ void addCustomOptions(bpo::options_description& options)
     options.add_options()
         ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)")
         ("input-file", bpo::value<std::string>()->required(), "Path to the input file")
-        ("parameter-file", bpo::value<std::string>()->required(), "path to the parameter file")
+        ("parameter-file", bpo::value<std::string>()->default_value(""), "Path to the parameter file")
         ("branch", bpo::value<std::string>()->default_value("FairTestDetectorDigi"), "Name of the Branch")
         ("chain-input", bpo::value<int>()->default_value(0), "Chain input file more than once (default)");
 }

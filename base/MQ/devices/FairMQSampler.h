@@ -107,15 +107,22 @@ class FairMQSampler : public FairMQDevice
 
         fFairRunAna->AddTask(fSamplerTask);
 
-        FairRuntimeDb* rtdb = fFairRunAna->GetRuntimeDb();
-        FairParRootFileIo* parInput1 = new FairParRootFileIo();
-        parInput1->open(TString(fParFile).Data());
-        rtdb->setFirstInput(parInput1);
-        rtdb->print();
+        if (fParFile != "")
+        {
+            FairRuntimeDb* rtdb = fFairRunAna->GetRuntimeDb();
+            FairParRootFileIo* parInput = new FairParRootFileIo();
+            parInput->open(TString(fParFile).Data());
+            rtdb->setFirstInput(parInput);
+            rtdb->print();
+        }
+        else
+        {
+            LOG(WARN) << "Parameter file not provided. Starting without RuntimeDB.";
+        }
 
         fFairRunAna->Init();
         // fFairRunAna->Run(0, 0);
-        FairRootManager *ioman = FairRootManager::Instance();
+        FairRootManager* ioman = FairRootManager::Instance();
         fNumEvents = int((ioman->GetInChain())->GetEntries());
 
         LOG(INFO) << "Task initialized.";
@@ -130,7 +137,7 @@ class FairMQSampler : public FairMQDevice
 
     virtual bool ConditionalRun()
     {
-        std::unique_ptr<FairMQMessage> msg;
+        FairMQMessagePtr msg;
 
         fSamplerTask->SetEventIndex(fSentMsgs);
         fFairRunAna->RunMQ(fSentMsgs);
