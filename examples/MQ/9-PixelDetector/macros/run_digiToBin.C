@@ -5,8 +5,13 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_digiToBin( TString mcEngine="TGeant3" )
+void run_digiToBin(Int_t divideLevel = 1, TString mcEngine="TGeant3" )
 {
+  if ( divideLevel < 0 || divideLevel > 2 ) {
+    cout << "set divideLevel to either 0 - event, 1 - station, 2 - sensor" << endl;
+    return;
+  }
+
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
   
@@ -51,7 +56,7 @@ void run_digiToBin( TString mcEngine="TGeant3" )
 
   PixelDigiWriteToBinFile* digiWrite = new PixelDigiWriteToBinFile();
   digiWrite->SetOutputFileName("digisBin.dat");
-  digiWrite->SetDivideLevel(1); // 0 - event, 1 - station, 2 - sensor
+  digiWrite->SetDivideLevel(divideLevel); // 0 - event, 1 - station, 2 - sensor
   fRun->AddTask(digiWrite);
 
   fRun->Init();
