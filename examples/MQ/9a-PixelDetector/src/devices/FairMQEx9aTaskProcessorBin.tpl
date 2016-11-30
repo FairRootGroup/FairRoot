@@ -18,7 +18,7 @@ class Ex9TMessage2 : public TMessage
 };
 
 template <typename T>
-FairMQEx9TaskProcessorBin<T>::FairMQEx9TaskProcessorBin()
+FairMQEx9aTaskProcessorBin<T>::FairMQEx9aTaskProcessorBin()
   : FairMQDevice()
   , fInputChannelName("data-in")
   , fOutputChannelName("data-out")
@@ -36,7 +36,7 @@ FairMQEx9TaskProcessorBin<T>::FairMQEx9TaskProcessorBin()
 }
 
 template <typename T>
-FairMQEx9TaskProcessorBin<T>::~FairMQEx9TaskProcessorBin()
+FairMQEx9aTaskProcessorBin<T>::~FairMQEx9aTaskProcessorBin()
 {
   LOG(INFO) << "deteling fGeoPar"; 
   if(fGeoPar)
@@ -50,7 +50,7 @@ FairMQEx9TaskProcessorBin<T>::~FairMQEx9TaskProcessorBin()
 
 
 template <typename T>
-void FairMQEx9TaskProcessorBin<T>::Init()
+void FairMQEx9aTaskProcessorBin<T>::Init()
 {
   fDataToKeep        = fConfig->GetValue<std::string>("keep-data");
   fInputChannelName  = fConfig->GetValue<std::string>("in-channel");
@@ -64,11 +64,11 @@ void FairMQEx9TaskProcessorBin<T>::Init()
   fParCList->Add(fGeoPar);
   fFairTask->GetParList(fParCList);
   
-  OnData(fInputChannelName, &FairMQEx9TaskProcessorBin<T>::ProcessData);
+  OnData(fInputChannelName, &FairMQEx9aTaskProcessorBin<T>::ProcessData);
 }
 
 template <typename T>
-bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
+bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
 {
   TObject* objectToKeep = NULL;
 
@@ -106,16 +106,16 @@ bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
   header->fRunId     = payloadE->fRunId;
   header->fMCEntryNo = payloadE->fMCEntryNo;
   header->fPartNo    = payloadE->fPartNo;
-  FairMQMessage* msgHeader = NewMessage(header,
+  FairMQMessagePtr msgHeader(NewMessage(header,
 					sizeof(PixelPayload::EventHeader),
 					[](void* data, void* hint) { delete static_cast<PixelPayload::EventHeader*>(data); }
-					);
+					));
   partsOut.AddPart(msgHeader);
 
   // create part with hits
   int hitsSize = nofDigis*sizeof(PixelPayload::Hit);
   
-  FairMQMessage*  msgTCA = NewMessage(hitsSize);
+  FairMQMessagePtr msgTCA = NewMessage(hitsSize);
   
   PixelPayload::Hit* hitPayload = static_cast<PixelPayload::Hit*>(msgTCA->GetData());
   
@@ -132,21 +132,21 @@ bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
 }
 
 template <typename T>
-void FairMQEx9TaskProcessorBin<T>::PostRun()
+void FairMQEx9aTaskProcessorBin<T>::PostRun()
 {
-    MQLOG(INFO) << "FairMQEx9TaskProcessorBin<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
+    MQLOG(INFO) << "FairMQEx9aTaskProcessorBin<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
 }
 
 
 template <typename T>
-void FairMQEx9TaskProcessorBin<T>::CustomCleanup(void* /*data*/, void *hint)
+void FairMQEx9aTaskProcessorBin<T>::CustomCleanup(void* /*data*/, void *hint)
 {
     delete (std::string*)hint;
 }
 
 
 template <typename T>
-void FairMQEx9TaskProcessorBin<T>::UpdateParameters() {
+void FairMQEx9aTaskProcessorBin<T>::UpdateParameters() {
   for ( int iparC = 0 ; iparC < fParCList->GetEntries() ; iparC++ ) {
     FairParGenericSet* tempObj = (FairParGenericSet*)(fParCList->At(iparC));
     fParCList->Remove(tempObj);
@@ -155,7 +155,7 @@ void FairMQEx9TaskProcessorBin<T>::UpdateParameters() {
 }
 
 template <typename T>
-FairParGenericSet* FairMQEx9TaskProcessorBin<T>::UpdateParameter(FairParGenericSet* thisPar) {
+FairParGenericSet* FairMQEx9aTaskProcessorBin<T>::UpdateParameter(FairParGenericSet* thisPar) {
   std::string paramName = thisPar->GetName();
   //  boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
   std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));

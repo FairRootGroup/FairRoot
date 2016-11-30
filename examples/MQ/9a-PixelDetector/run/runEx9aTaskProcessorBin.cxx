@@ -11,9 +11,9 @@
 #include "PixelAltFindHits.h"
 
 // 9-PixelDetector example
-#include "FairMQEx9TaskProcessorBin.h"
+#include "FairMQEx9aTaskProcessorBin.h"
 
-using HitFinder   = FairMQEx9TaskProcessorBin<PixelAltFindHits>;
+using HitFinder   = FairMQEx9aTaskProcessorBin<PixelAltFindHits>;
 
 namespace bpo = boost::program_options;
 
