@@ -6,8 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIRMQEXAMPLE9TASKPROCESSORBIN_H_
-#define FAIRMQEXAMPLE9TASKPROCESSORBIN_H_ 
+#ifndef FAIRMQEXAMPLE9aTASKPROCESSORBIN_H_
+#define FAIRMQEXAMPLE9aTASKPROCESSORBIN_H_ 
 #include <string>
 
 #include "FairEventHeader.h"
@@ -25,11 +25,11 @@
 #include "PixelDigi.h"
 
 template<typename T>
-class FairMQEx9TaskProcessorBin : public FairMQDevice
+class FairMQEx9aTaskProcessorBin : public FairMQDevice
 {
   public:
-    FairMQEx9TaskProcessorBin();
-    virtual ~FairMQEx9TaskProcessorBin();
+    FairMQEx9aTaskProcessorBin();
+    virtual ~FairMQEx9aTaskProcessorBin();
 
     void SetDataToKeep(std::string tStr) { fDataToKeep = tStr;}
 
@@ -66,11 +66,11 @@ class FairMQEx9TaskProcessorBin : public FairMQDevice
     TList* fParCList;
     FairGeoParSet* fGeoPar;
 
-    FairMQEx9TaskProcessorBin(const FairMQEx9TaskProcessorBin&);    
-    FairMQEx9TaskProcessorBin& operator=(const FairMQEx9TaskProcessorBin&);    
+    FairMQEx9aTaskProcessorBin(const FairMQEx9aTaskProcessorBin&);    
+    FairMQEx9aTaskProcessorBin& operator=(const FairMQEx9aTaskProcessorBin&);    
 };
 
-// Template implementation is in FairMQEx9TaskProcessorBin.tpl :
-#include "FairMQEx9TaskProcessorBin.tpl"
+// Template implementation is in FairMQEx9aTaskProcessorBin.tpl :
+#include "FairMQEx9aTaskProcessorBin.tpl"
 
-#endif /* FAIRMQEXAMPLE9TASKPROCESSOR_H_ */
+#endif /* FAIRMQEXAMPLE9aTASKPROCESSOR_H_ */

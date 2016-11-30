@@ -37,11 +37,15 @@ ${Boost_LIBRARY_DIRS}
 link_directories( ${LINK_DIRECTORIES})
 
 Set(NO_DICT_SRCS
+devices/FairMQEx9aSamplerBin.cxx
+devices/FairMQEx9aFileSinkBin.cxx
 )
 
 Set(NO_DICT_HEADERS
-devices/FairMQEx9TaskProcessorBin.h
-devices/FairMQEx9TaskProcessorBin.tpl
+devices/FairMQEx9aSamplerBin.h
+devices/FairMQEx9aFileSinkBin.h
+devices/FairMQEx9aTaskProcessorBin.h
+devices/FairMQEx9aTaskProcessorBin.tpl
 )
 
 set(SRCS

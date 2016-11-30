@@ -39,16 +39,16 @@ ASCIIPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_dig
 
 if [ "$FAIRTASKNAME" == "--task-name PixelAltFindHits" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.root"
+    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
  #   INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.f1.root"
     INPUTBRANCH="PixelDigis"
     
@@ -75,10 +75,10 @@ xterm -geometry 80x25+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 
 
 ########################## start SAMPLER
-SAMPLER="ex9-samplerBin $TRANSPORT"
-SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE"
-SAMPLER+=" --file-name $INPUTFILE --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
-xterm -geometry 80x25+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER &
+SAMPLER="ex9a-samplerBin $TRANSPORT"
+SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE --ack-channel ack "
+SAMPLER+=" --file-name $INPUTFILE $MAXINDEX"
+xterm -geometry 80x25+0+0 -hold -e @EXAMPLE9a_BIN_LOCATION@/$SAMPLER &
 
 ########################## start PROCESSORs
 PROCESSOR1="ex9a-processorBin $TRANSPORT"
@@ -109,8 +109,8 @@ xterm -geometry 80x25+1000+350 -hold -e @EXAMPLE9a_BIN_LOCATION@/$PROCESSOR5 &
 
 ########################## start FILESINK
 FILESINK="ex9-sinkBin $TRANSPORT"
-FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
-FILESINK+=" --file-name $OUTPUTFILE $OUTPUTCLASS $OUTPUTBRANCH"
+FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE --ack-channel ack "
+FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH"
 xterm +aw -geometry 80x25+0+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$FILESINK &
 
 

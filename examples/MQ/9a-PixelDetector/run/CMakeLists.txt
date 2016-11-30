@@ -44,8 +44,16 @@ set(EXAMPLE9a_FILE_LOCATION ${CMAKE_SOURCE_DIR})
 set(EXAMPLE9a_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/9a-PixelDetector)
 set(FAIRROOT_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9Bin.sh.in                
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/9a-PixelDetector/startFairMQEx9Bin.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromRoot.sh.in                
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/9a-PixelDetector/startFairMQEx9aFromRoot.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromRoot_Static.sh.in                
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/9a-PixelDetector/startFairMQEx9aFromRoot_Static.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromBin.sh.in                
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/9a-PixelDetector/startFairMQEx9aFromBin.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromBin_Static.sh.in                
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/9a-PixelDetector/startFairMQEx9aFromBin_Static.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aToBin.sh.in                
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/9a-PixelDetector/startFairMQEx9aToBin.sh )
 
 set(EXAMPLE9_FILE_LOCATION ${CMAKE_INSTALL_PREFIX}/share/fairbase)
 set(EXAMPLE9_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples/MQ/9-PixelDetector/bin)
@@ -53,15 +61,35 @@ set(EXAMPLE9a_FILE_LOCATION ${CMAKE_INSTALL_PREFIX}/share/fairbase)
 set(EXAMPLE9a_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples/MQ/9a-PixelDetector/bin)
 set(FAIRROOT_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/bin)
 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9Bin.sh.in      
-		${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9Bin.sh_install )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromRoot.sh.in      
+		${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromRoot.sh_install )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromRoot_Static.sh.in      
+		${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromRoot_Static.sh_install )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromBin.sh.in      
+		${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromBin.sh_install )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromBin_Static.sh.in      
+		${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromBin_Static.sh_install )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aToBin.sh.in      
+		${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aToBin.sh_install )
 
 set(EXAMPLE9_INSTALL_BIN share/fairbase/examples/MQ/9a-PixelDetector/bin)
 set(EXAMPLE9a_INSTALL_BIN share/fairbase/examples/MQ/9a-PixelDetector/bin)
 
-Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9Bin.sh_install
+Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromRoot.sh_install
         DESTINATION ${EXAMPLE9a_INSTALL_BIN}
-        RENAME startFairMQEx9Bin.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
+        RENAME startFairMQEx9aFromRoot.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
+Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromRoot_Static.sh_install
+        DESTINATION ${EXAMPLE9a_INSTALL_BIN}
+        RENAME startFairMQEx9aFromRoot_Static.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
+Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromBin.sh_install
+        DESTINATION ${EXAMPLE9a_INSTALL_BIN}
+        RENAME startFairMQEx9aFromBin.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
+Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aFromBin_Static.sh_install
+        DESTINATION ${EXAMPLE9a_INSTALL_BIN}
+        RENAME startFairMQEx9aFromBin_Static.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
+Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9a-PixelDetector/run/scripts/startFairMQEx9aToBin.sh_install
+        DESTINATION ${EXAMPLE9a_INSTALL_BIN}
+        RENAME startFairMQEx9aToBin.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 
 
 set(LINK_DIRECTORIES
@@ -73,11 +101,15 @@ link_directories(${LINK_DIRECTORIES})
 
 
 Set(Exe_Names
+    ex9a-samplerBin
+    ex9a-sinkBin
     ex9a-processorBin
 )
 
 set(Exe_Source
-    runEx9TaskProcessorBin.cxx
+    runEx9aSamplerBin.cxx
+    runEx9aFileSinkBin.cxx
+    runEx9aTaskProcessorBin.cxx
 )
 
 
