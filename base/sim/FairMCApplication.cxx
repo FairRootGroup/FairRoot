@@ -871,7 +871,7 @@ void FairMCApplication::ConstructOpGeometry()
         effic[i]=p[2];
         rindex[i]=p[3];
       }
-      fMC->SetCerenkov(Mid, NK, ppckov,absco, effic, rindex);
+      TVirtualMC::GetMC()->SetCerenkov(Mid, NK, ppckov,absco, effic, rindex);
     }
   }
   fModIter->Reset();
