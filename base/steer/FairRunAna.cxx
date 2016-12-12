@@ -111,6 +111,10 @@ FairRunAna::~FairRunAna()
     delete fField;
   }
   if (gGeoManager) {
+    if (gROOT->GetVersionInt() >= 60602) {
+      gGeoManager->GetListOfVolumes()->Delete();
+      gGeoManager->GetListOfShapes()->Delete();
+    }
     delete gGeoManager;
   }
 }

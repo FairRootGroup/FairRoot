@@ -114,6 +114,10 @@ FairRunOnline::~FairRunOnline()
     delete fField;
   }
   if (gGeoManager) {
+    if (gROOT->GetVersionInt() >= 60602) {
+      gGeoManager->GetListOfVolumes()->Delete();
+      gGeoManager->GetListOfShapes()->Delete();
+    }
     delete gGeoManager;
   }
   if(fFolder) {
