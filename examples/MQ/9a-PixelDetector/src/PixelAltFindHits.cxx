@@ -235,10 +235,10 @@ void   PixelAltFindHits::ExecMQ(TList* inputList,TList* outputList) {
 // -------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------
-void PixelAltFindHits::ExecMQ    (PixelPayload::Digi *digiPalVector,
-			       int                 nofDigis,
-			       PixelPayload::Hit  *hitPalVector,
-			       int                &nofHits) {
+void PixelAltFindHits::ExecMQ(PixelPayload::Digi *digiPalVector,
+                              int                 nofDigis,
+                              PixelPayload::Hit  *hitPalVector,
+                              int                &nofHits) {
   for ( int idigi = 0 ; idigi < nofDigis ; idigi++ ) {
     FindHit(digiPalVector[idigi].fDetectorID,
 	    digiPalVector[idigi].fFeID,

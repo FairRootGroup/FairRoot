@@ -19,7 +19,12 @@
 #include <thread>
 #include <fstream>
 
+#include "TBranch.h"
+#include "TChain.h"
+
 #include "FairMQDevice.h"
+
+#include "PixelPayload.h"
 
 class FairMQEx9aSamplerBin : public FairMQDevice
 {
@@ -47,6 +52,9 @@ class FairMQEx9aSamplerBin : public FairMQDevice
     virtual void PreRun();
     virtual void PostRun();
     virtual void InitTask();
+
+    bool ReadBinFile();
+    bool ReadRootFile();
     
  private: 
     std::string     fOutputChannelName;
@@ -56,9 +64,16 @@ class FairMQEx9aSamplerBin : public FairMQDevice
     std::ifstream   fInputFile;
     int             fCurrentFile;
 
+    TChain                          *fInputChain;
+    PixelPayload::EventHeader       *fEventHeader;
+    TBranch                         *fDigiBranch;
+    std::vector<PixelPayload::Digi> *fDigiArray;
+
     int64_t         fMaxIndex;
 
     int             fEventCounter;
+
+    bool            fReadingRootFiles;
 
     FairMQEx9aSamplerBin(const FairMQEx9aSamplerBin&);
     FairMQEx9aSamplerBin& operator=(const FairMQEx9aSamplerBin&);

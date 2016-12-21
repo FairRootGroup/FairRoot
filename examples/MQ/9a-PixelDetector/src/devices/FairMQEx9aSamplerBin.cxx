@@ -34,6 +34,11 @@ FairMQEx9aSamplerBin::FairMQEx9aSamplerBin()
   , fFileNames()
   , fCurrentFile(0)
   , fEventCounter(0)
+  , fInputChain(0)
+  , fEventHeader(0)
+  , fDigiArray(0)
+  , fDigiBranch(0)
+  , fReadingRootFiles(false)
 {
 }
 
@@ -49,11 +54,35 @@ void FairMQEx9aSamplerBin::InitTask()
 void FairMQEx9aSamplerBin::PreRun()
 {
   LOG(INFO) << "FairMQEx9aSampler::PreRun() started!";
+  fReadingRootFiles = false;
 
   fAckListener = new std::thread(&FairMQEx9aSamplerBin::ListenForAcks, this);
+
+  if ( fFileNames.size() == 0 ) return;
+
+  if ( fFileNames[0].find(".root") == std::string::npos ) return;
+
+  fInputChain = new TChain("fairdata");
+
+  for ( int ifile = 0 ; ifile < fFileNames.size() ; ifile++ ) {
+    fInputChain->Add(fFileNames[ifile].c_str());
+  }
+
+  fEventHeader = new PixelPayload::EventHeader();
+  fInputChain->SetBranchAddress("EventHeader.",&fEventHeader);
+  fInputChain->SetBranchAddress("DigiVector",&fDigiArray,&fDigiBranch);
+
+  LOG(INFO) << "Loaded " << fFileNames.size() << " root files. Chain has now " << fInputChain->GetEntriesFast() << " entries";
+  fReadingRootFiles = true;
 }
 
 bool FairMQEx9aSamplerBin::ConditionalRun()
+{
+  if ( fReadingRootFiles ) return ReadRootFile();
+  else                     return ReadBinFile();
+}
+
+bool FairMQEx9aSamplerBin::ReadBinFile()
 {
   if ( fEventCounter == fMaxIndex ) return false;
 
@@ -68,7 +97,7 @@ bool FairMQEx9aSamplerBin::ConditionalRun()
     LOG(ERROR) << "FairMQEx9aSamplerBin::ConditionalRun fInputFile \"" << fFileNames[fCurrentFile] << "\" could not be open!";
     return false;
   }
-  
+
   std::string buffer;
 
   int head[4]; // runId, MCEntryNo, PartNo, NofDigis
@@ -82,14 +111,14 @@ bool FairMQEx9aSamplerBin::ConditionalRun()
     else
       return true;
   }
-  
+
   int dataSize = 4; // detId, feId, col, row
   const int constNofData = head[3]*dataSize;
   short int dataCont[constNofData];
   fInputFile.read((char*)dataCont,sizeof(dataCont));
 
   FairMQParts parts;
-  
+
   PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
   header->fRunId     = head[0];
   header->fMCEntryNo = head[1];
@@ -102,11 +131,11 @@ bool FairMQEx9aSamplerBin::ConditionalRun()
   parts.AddPart(msgHeader);
 
   size_t digisSize = head[3] * sizeof(PixelPayload::Digi);
-      
+
   FairMQMessagePtr  msgDigis(NewMessage(digisSize));
-  
+
   PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgDigis->GetData());
-            
+
   for ( int idigi = 0 ; idigi < head[3] ; idigi++ ) {
     new (&digiPayload[idigi]) PixelPayload::Digi();
     digiPayload[idigi].fDetectorID = (int)dataCont[idigi*dataSize+0];
@@ -116,7 +145,55 @@ bool FairMQEx9aSamplerBin::ConditionalRun()
     digiPayload[idigi].fRow        = (int)dataCont[idigi*dataSize+3];
   }
   parts.AddPart(msgDigis);
-  
+
+  Send(parts, fOutputChannelName);
+
+  fEventCounter++;
+
+  if ( fInputFile.eof() ) {
+    LOG(INFO) << "End of file reached!";
+    fInputFile.close();
+  }
+
+  return true;
+}
+
+bool FairMQEx9aSamplerBin::ReadRootFile()
+{
+  if ( fEventCounter == fMaxIndex ) return false;
+
+  // fill the input data containers
+  fInputChain->GetEntry(fEventCounter);
+  fDigiBranch->GetEntry(fEventCounter);
+
+  // create output multipart message
+  FairMQParts parts;
+
+  PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
+  header->fRunId     = fEventHeader->fRunId;
+  header->fMCEntryNo = fEventHeader->fMCEntryNo;
+  header->fPartNo    = fEventHeader->fPartNo;
+  FairMQMessagePtr msgHeader(NewMessage(header,
+                                        sizeof(PixelPayload::EventHeader),
+                                        [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
+                                        ));
+  parts.AddPart(msgHeader);
+
+  size_t digisSize = sizeof(PixelPayload::Digi)*fDigiArray->size();
+
+  FairMQMessagePtr  msgDigis(NewMessage(digisSize));
+  PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgDigis->GetData());
+
+  for ( int idigi = 0 ; idigi < fDigiArray->size() ; idigi++ ) {
+    new (&digiPayload[idigi]) PixelPayload::Digi();
+    digiPayload[idigi].fDetectorID = fDigiArray->at(idigi).fDetectorID;
+    digiPayload[idigi].fFeID       = fDigiArray->at(idigi).fFeID;
+    digiPayload[idigi].fCharge     = fDigiArray->at(idigi).fCharge;
+    digiPayload[idigi].fCol        = fDigiArray->at(idigi).fCol;
+    digiPayload[idigi].fRow        = fDigiArray->at(idigi).fRow;
+  }
+  parts.AddPart(msgDigis);
+
   Send(parts, fOutputChannelName);
 
   fEventCounter++;
@@ -125,7 +202,7 @@ bool FairMQEx9aSamplerBin::ConditionalRun()
     LOG(INFO) << "End of file reached!"; 
     fInputFile.close();
   }
-  
+
   return true;
 }
 
@@ -142,7 +219,7 @@ void FairMQEx9aSamplerBin::PostRun()
 	exit(EXIT_FAILURE);
       }
   }
-  
+
   LOG(INFO) << "PostRun() finished!";
 }
 

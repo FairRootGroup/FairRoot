@@ -59,6 +59,11 @@ void run_digiToBin(Int_t divideLevel = 1, TString mcEngine="TGeant3" )
   digiWrite->SetDivideLevel(divideLevel); // 0 - event, 1 - station, 2 - sensor
   fRun->AddTask(digiWrite);
 
+  // PixelAltDigiWriteToRootVector* digiWrite = new PixelAltDigiWriteToRootVector();
+  // digiWrite->SetOutputFileName("digisBin.root");
+  // digiWrite->SetDivideLevel(divideLevel); // 0 - event, 1 - station, 2 - sensor
+  // fRun->AddTask(digiWrite);
+
   fRun->Init();
 
   timer.Start();

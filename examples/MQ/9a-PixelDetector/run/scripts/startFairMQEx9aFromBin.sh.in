@@ -4,6 +4,7 @@ MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
 VERBOSE="--verbosity INFO"
 FAIRTASKNAME="--task-name PixelAltFindHits"
+INPUTTYPE="dat"
 
 while [[ $# > 1 ]]
 do
@@ -20,6 +21,10 @@ case $key in
     ;;
     -t|--transport)
     TRANSPORT="--transport $2"
+    shift
+    ;;
+    -i|--input-type)
+    INPUTTYPE="$2"
     shift
     ;;
     -v|--verbose)
@@ -39,16 +44,16 @@ ASCIIPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_dig
 
 if [ "$FAIRTASKNAME" == "--task-name PixelAltFindHits" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.dat"
+    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
  #   INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.f1.root"
     INPUTBRANCH="PixelDigis"
     
