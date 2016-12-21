@@ -50,10 +50,12 @@ devices/FairMQEx9aTaskProcessorBin.tpl
 
 set(SRCS
 PixelAltFindHits.cxx
+PixelAltDigiWriteToRootVector.cxx
 )
 
 Set(HEADERS 
 PixelAltFindHits.h
+PixelAltDigiWriteToRootVector.h
 )
 
 Set(LINKDEF PixelAltLinkDef.h)

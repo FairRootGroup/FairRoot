@@ -31,4 +31,9 @@
 #pragma link C++ class PixelHit+;
 #pragma link C++ class PixelTrack+;
 
+#pragma link C++ class PixelPayload::EventHeader+;
+#pragma link C++ class PixelPayload::Digi+;
+#pragma link C++ class PixelPayload::Hit+;
+#pragma link C++ class PixelPayload::Track+;
+
 #endif

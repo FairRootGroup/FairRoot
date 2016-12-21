@@ -12,5 +12,6 @@
 #pragma link off all functions;
 
 #pragma link C++ class PixelAltFindHits+;
+#pragma link C++ class PixelAltDigiWriteToRootVector+;
 
 #endif
