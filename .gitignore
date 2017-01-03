@@ -45,3 +45,6 @@ html/
 
 # diverse
 .DS_Store
+
+#editor tmp files
+.*.swp
