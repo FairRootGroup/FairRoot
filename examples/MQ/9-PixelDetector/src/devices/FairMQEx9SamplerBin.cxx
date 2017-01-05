@@ -106,7 +106,7 @@ bool FairMQEx9SamplerBin::ConditionalRun()
                                             sizeof(PixelPayload::EventHeader),
                                             [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
                                             ));
-      parts.AddPart(msgHeader);
+      parts.AddPart(std::move(msgHeader));
       LOG(TRACE) << "-----------------------------";
       LOG(TRACE) << "first part has size = " << sizeof(PixelPayload::EventHeader);
     }
@@ -132,7 +132,7 @@ bool FairMQEx9SamplerBin::ConditionalRun()
 	digiPayload[idigi].fRow        = digi->GetRow();
       }
       LOG(TRACE) << "second part has size = " << digisSize;
-      parts.AddPart(msgTCA);
+      parts.AddPart(std::move(msgTCA));
     }
   }
       

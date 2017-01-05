@@ -150,7 +150,7 @@ bool FairMQEx9aSamplerBin::ReadBinFile()
                                           sizeof(PixelPayload::EventHeader),
                                           [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
                                           ));
-    parts.AddPart(msgHeader);
+    parts.AddPart(std::move(msgHeader));
 
     size_t digisSize = head[3] * sizeof(PixelPayload::Digi);
 
@@ -166,7 +166,7 @@ bool FairMQEx9aSamplerBin::ReadBinFile()
       digiPayload[idigi].fCol        = (int)dataCont[idigi*dataSize+2];
       digiPayload[idigi].fRow        = (int)dataCont[idigi*dataSize+3];
     }
-    parts.AddPart(msgDigis);
+    parts.AddPart(std::move(msgDigis));
 
     fEventCounter++;
   }
@@ -200,7 +200,7 @@ bool FairMQEx9aSamplerBin::ReadRootFile()
                                         sizeof(PixelPayload::EventHeader),
                                         [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
                                         ));
-  parts.AddPart(msgHeader);
+  parts.AddPart(std::move(msgHeader));
 
   size_t digisSize = sizeof(PixelPayload::Digi)*fDigiArray->size();
 
@@ -215,7 +215,7 @@ bool FairMQEx9aSamplerBin::ReadRootFile()
     digiPayload[idigi].fCol        = fDigiArray->at(idigi).fCol;
     digiPayload[idigi].fRow        = fDigiArray->at(idigi).fRow;
   }
-  parts.AddPart(msgDigis);
+  parts.AddPart(std::move(msgDigis));
 
   Send(parts, fOutputChannelName);
 

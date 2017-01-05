@@ -50,7 +50,7 @@ class Ex2Processor : public FairMQDevice
 
                 Exec(fInput, fOutput);
                 FairMQParts partsToSend;
-                partsToSend.AddPart(parts.At(0));
+                partsToSend.AddPart(std::move(parts.At(0)));
 
                 partsToSend.AddPart(NewMessage());
                 Serialize<SerializerEx2Boost>(partsToSend.AtRef(0), *header);

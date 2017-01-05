@@ -82,7 +82,7 @@ class Ex2Sampler : public FairMQDevice
             Serialize<SerializerEx2>(*msg, fInput);
             FairMQParts parts;
             parts.AddPart(std::move(msgHeader));
-            parts.AddPart(msg);
+            parts.AddPart(std::move(msg));
             Send(parts,"data-out");
             sentMsgs++;
 
