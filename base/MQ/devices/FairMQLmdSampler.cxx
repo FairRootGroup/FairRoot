@@ -98,13 +98,6 @@ void FairMQLmdSampler::Run()
     LOG(INFO) << "Sent " << fMsgCounter << " messages.";
 }
 
-
-void free_buffer(void* /*data*/, void* /*hint*/)
-{
-    LOG(TRACE) << "empty deleter";
-}
-
-//______________________________________________________________________________
 int FairMQLmdSampler::ReadEvent()
 {
     void* evtptr = &fxEvent;
@@ -210,17 +203,17 @@ int FairMQLmdSampler::ReadEvent()
             std::string chanName = fSubEventChanMap.at(key);
             LOG(TRACE) << "chanName=" << chanName;
 
+            FairMQParts parts;
+
             // send header
             //std::unique_ptr<FairMQMessage> header(fTransportFactory->CreateMessage(fxSubEvent, sizeof(fxSubEvent), free_buffer, nullptr));
             //fChannels.at(chanName).at(0).SendPart(header);
 
             int* arraySize = new int(sebuflength);
 
-            std::unique_ptr<FairMQMessage> msgSize(NewMessage(arraySize, sizeof(int), [](void* /*data*/, void* hint) { delete static_cast<int*>(hint); }, arraySize));
-            fChannels.at(chanName).at(0).SendPart(msgSize);
-            // send data
-            std::unique_ptr<FairMQMessage> msg(NewMessage(fxEventData, sebuflength, free_buffer, nullptr));
-            fChannels.at(chanName).at(0).Send(msg);
+            parts.AddPart(NewMessage(arraySize, sizeof(int), [](void* /*data*/, void* hint) { delete static_cast<int*>(hint); }, arraySize));
+            parts.AddPart(NewMessage(fxEventData, sebuflength, [](void* /*data*/, void* /*hint*/) { LOG(TRACE) << "empty deleter"; }, nullptr));
+            Send(parts, chanName);
             fMsgCounter++;
             /*
             if (Unpack(fxEventData, sebuflength,
