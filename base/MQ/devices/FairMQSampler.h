@@ -170,10 +170,13 @@ class FairMQSampler : public FairMQDevice
 
     void ListenForAcks()
     {
+        uint64_t numAcks = 0;
         for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
         {
             std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
             fChannels.at("ack").at(0).Receive(ack);
+
+            ++numAcks;
 
             if (!CheckCurrentState(RUNNING))
             {
@@ -182,7 +185,7 @@ class FairMQSampler : public FairMQDevice
         }
 
         fEnd = std::chrono::high_resolution_clock::now();
-        LOG(INFO) << "Acknowledged " << fNumEvents << " messages in: " << std::chrono::duration<double, std::milli>(fEnd - fStart).count() << "ms.";
+        LOG(INFO) << "Acknowledged " << numAcks << " messages in: " << std::chrono::duration<double, std::milli>(fEnd - fStart).count() << "ms.";
     }
 
   private:

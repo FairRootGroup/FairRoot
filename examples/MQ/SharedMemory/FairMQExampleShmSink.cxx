@@ -57,34 +57,50 @@ void FairMQExampleShmSink::Run()
     {
         FairMQMessagePtr msg(NewMessage());
 
-        if (Receive(msg, "meta") >= 0)
+        if (Receive(msg, "meta") > 0)
         {
+            ExMetaHeader* hdr = static_cast<ExMetaHeader*>(msg->GetData());
+            size_t size = hdr->fSize;
+            bipc::managed_shared_memory::handle_t handle = hdr->fHandle;
+            void* ptr = SegmentManager::Instance().Segment()->get_address_from_handle(handle);
+
+            // LOG(INFO) << size;
+            // LOG(INFO) << handle;
+            // LOG(WARN) << ptr;
+
+            fBytesInNew += size;
+            ++fMsgInNew;
+            SegmentManager::Instance().Segment()->deallocate(ptr);
+
             // get the shared pointer ID from the received message
-            string ownerID(static_cast<char*>(msg->GetData()), msg->GetSize());
+            // string ownerID(static_cast<char*>(msg->GetData()), msg->GetSize());
 
             // find the shared pointer in shared memory with its ID
-            ShPtrOwner* owner = SegmentManager::Instance().Segment()->find<ShPtrOwner>(ownerID.c_str()).first;
+            // ShPtrOwner* owner = SegmentManager::Instance().Segment()->find<ShPtrOwner>(ownerID.c_str()).first;
             // LOG(DEBUG) << "owner (" << ownerID << ") use count: " << owner->fPtr.use_count();
 
-            if (owner)
-            {
-                // void* ptr = owner->fPtr->GetData();
 
-                // LOG(DEBUG) << "chunk handle: " << owner->fPtr->GetHandle();
-                // LOG(DEBUG) << "chunk size: " << owner->fPtr->GetSize();
+            // if (owner)
+            // {
+            //     // void* ptr = owner->fPtr->GetData();
 
-                fBytesInNew += owner->fPtr->GetSize();
-                ++fMsgInNew;
+            //     // LOG(DEBUG) << "chunk handle: " << owner->fPtr->GetHandle();
+            //     // LOG(DEBUG) << "chunk size: " << owner->fPtr->GetSize();
 
-                // char* cptr = static_cast<char*>(ptr);
-                // LOG(DEBUG) << "check: " << cptr[3];
+            //     fBytesInNew += owner->fPtr->GetSize();
+            //     ++fMsgInNew;
 
-                SegmentManager::Instance().Segment()->destroy_ptr(owner);
-            }
-            else
-            {
-                LOG(WARN) << "Shared pointer is zero.";
-            }
+            //     // char* cptr = static_cast<char*>(ptr);
+            //     // LOG(DEBUG) << "check: " << cptr[3];
+
+            //     SegmentManager::Instance().Segment()->deallocate(ptr);
+
+            //     // SegmentManager::Instance().Segment()->destroy_ptr(owner);
+            // }
+            // else
+            // {
+            //     LOG(WARN) << "Shared pointer is zero.";
+            // }
 
 
             ++numReceivedMsgs;
