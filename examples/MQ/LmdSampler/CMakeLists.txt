@@ -12,8 +12,6 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/fairmq
     ${CMAKE_SOURCE_DIR}/fairmq/options
     ${CMAKE_SOURCE_DIR}/fairmq/tools
-    ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
-    ${CMAKE_SOURCE_DIR}/fairmq/zeromq
 
     ${CMAKE_SOURCE_DIR}/base/MQ/devices
     ${CMAKE_SOURCE_DIR}/base/MQ/hosts

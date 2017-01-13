@@ -71,7 +71,7 @@ class FairMQEx9SamplerBin : public FairMQDevice
     FairMQEx9SamplerBin(const FairMQEx9SamplerBin&);
     FairMQEx9SamplerBin& operator=(const FairMQEx9SamplerBin&);
 
-    std::thread* fAckListener;
+    std::thread fAckListener;
 };
 
 #endif /* FAIRMQEX9SAMPLER_H_ */

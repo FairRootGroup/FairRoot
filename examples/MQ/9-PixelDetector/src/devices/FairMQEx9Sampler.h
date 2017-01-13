@@ -17,8 +17,6 @@
 
 #include <string>
 
-#include <boost/thread.hpp>
-
 #include "TClonesArray.h"
 
 #include "FairFileSource.h"
@@ -68,7 +66,7 @@ class FairMQEx9Sampler : public FairMQDevice
     FairMQEx9Sampler(const FairMQEx9Sampler&);
     FairMQEx9Sampler& operator=(const FairMQEx9Sampler&);
 
-    boost::thread* fAckListener;
+    std::thread fAckListener;
 };
 
 #endif /* FAIRMQEX9SAMPLER_H_ */

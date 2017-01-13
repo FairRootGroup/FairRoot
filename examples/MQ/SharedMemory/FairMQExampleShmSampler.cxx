@@ -84,25 +84,48 @@ void FairMQExampleShmSampler::Run()
 
     while (CheckCurrentState(RUNNING))
     {
-        // ShmChunk container ID
-        string chunkID = "c" + to_string(numSentMsgs);
-        // shared pointer ID
-        string ownerID = "o" + to_string(numSentMsgs);
+        void* ptr = nullptr;
+        bipc::managed_shared_memory::handle_t handle;
 
-        ShPtrOwner* owner = nullptr;
+        while (!ptr)
+        {
+            try
+            {
+                ptr = SegmentManager::Instance().Segment()->allocate(fMsgSize);
+            }
+            catch (bipc::bad_alloc& ba)
+            {
+                this_thread::sleep_for(chrono::milliseconds(50));
+                if (CheckCurrentState(RUNNING))
+                {
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
 
-        try
-        {
-            owner = SegmentManager::Instance().Segment()->construct<ShPtrOwner>(ownerID.c_str())(
-                make_managed_shared_ptr(SegmentManager::Instance().Segment()->construct<ShmChunk>(chunkID.c_str())(fMsgSize),
-                                        *(SegmentManager::Instance().Segment())));
-        }
-        catch (bipc::bad_alloc& ba)
-        {
-            LOG(WARN) << "Shared memory full...";
-            this_thread::sleep_for(chrono::milliseconds(100));
-            continue;
-        }
+        // // ShmChunk container ID
+        // string chunkID = "c" + to_string(numSentMsgs);
+        // // shared pointer ID
+        // string ownerID = "o" + to_string(numSentMsgs);
+
+        // ShPtrOwner* owner = nullptr;
+
+        // try
+        // {
+        //     owner = SegmentManager::Instance().Segment()->construct<ShPtrOwner>(ownerID.c_str())(
+        //         make_managed_shared_ptr(SegmentManager::Instance().Segment()->construct<ShmChunk>(chunkID.c_str())(fMsgSize),
+        //                                 *(SegmentManager::Instance().Segment())));
+        // }
+        // catch (bipc::bad_alloc& ba)
+        // {
+        //     LOG(WARN) << "Shared memory full...";
+        //     this_thread::sleep_for(chrono::milliseconds(100));
+        //     continue;
+        // }
 
         // void* ptr = owner->fPtr->GetData();
 
@@ -122,17 +145,31 @@ void FairMQExampleShmSampler::Run()
         // char* cptr = static_cast<char*>(ptr);
         // LOG(DEBUG) << "check: " << cptr[3];
 
-        FairMQMessagePtr msg(NewSimpleMessage(ownerID));
+        // FairMQMessagePtr msg(NewSimpleMessage(ownerID));
 
-        if (Send(msg, "meta", 0) >= 0)
+        if (ptr)
         {
-            fBytesOutNew += fMsgSize;
-            ++fMsgOutNew;
-            ++numSentMsgs;
-        }
-        else
-        {
-            SegmentManager::Instance().Segment()->destroy_ptr(owner);
+            handle = SegmentManager::Instance().Segment()->get_handle_from_address(ptr);
+            FairMQMessagePtr msg(NewMessage(sizeof(ExMetaHeader)));
+            ExMetaHeader* metaPtr = new(msg->GetData()) ExMetaHeader();
+            metaPtr->fSize = fMsgSize;
+            metaPtr->fHandle = handle;
+
+            // LOG(INFO) << metaPtr->fSize;
+            // LOG(INFO) << metaPtr->fHandle;
+            // LOG(WARN) << ptr;
+
+            if (Send(msg, "meta", 0) > 0)
+            {
+                fBytesOutNew += fMsgSize;
+                ++fMsgOutNew;
+                ++numSentMsgs;
+            }
+            else
+            {
+                SegmentManager::Instance().Segment()->deallocate(ptr);
+                // SegmentManager::Instance().Segment()->destroy_ptr(owner);
+            }
         }
 
         // --fMsgCounter;

@@ -12,9 +12,6 @@
  * @author R. Karabowicz
  */
 
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-
 #include "FairMQEx9SamplerBin.h"
 #include "FairMQLogger.h"
 #include "FairMQProgOptions.h"
@@ -46,6 +43,7 @@ FairMQEx9SamplerBin::FairMQEx9SamplerBin()
   , fEventCounter(0)
   , fBranchNames()
   , fFileNames()
+  , fAckListener()
 {
 }
 
@@ -82,7 +80,7 @@ void FairMQEx9SamplerBin::PreRun()
 {
   LOG(INFO) << "FairMQEx9Sampler::PreRun() started!";
 
-  fAckListener = new std::thread(&FairMQEx9SamplerBin::ListenForAcks, this);
+  fAckListener = thread(&FairMQEx9SamplerBin::ListenForAcks, this);
 }
 
 bool FairMQEx9SamplerBin::ConditionalRun()
@@ -146,18 +144,10 @@ bool FairMQEx9SamplerBin::ConditionalRun()
 
 void FairMQEx9SamplerBin::PostRun() 
 {
-  if ( fAckChannelName != "" ) {
-    try
-      {
-	fAckListener->join();
-      }
-    catch(boost::thread_resource_error& e)
-      {
-	LOG(ERROR) << e.what();
-	exit(EXIT_FAILURE);
-      }
+  if (fAckChannelName != "") {
+    fAckListener.join();
   }
-  
+
   LOG(INFO) << "PostRun() finished!";
 }
 
