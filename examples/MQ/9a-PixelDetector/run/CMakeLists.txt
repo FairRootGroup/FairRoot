@@ -19,7 +19,6 @@ Set_Tests_Properties(ex9a_static PROPERTIES PASS_REGULAR_EXPRESSION "Shell scrip
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
     ${CMAKE_SOURCE_DIR}/fairmq
-    ${CMAKE_SOURCE_DIR}/fairmq/deployment
     ${CMAKE_SOURCE_DIR}/fairmq/devices
     ${CMAKE_SOURCE_DIR}/fairmq/options
     ${CMAKE_SOURCE_DIR}/fairmq/tools
