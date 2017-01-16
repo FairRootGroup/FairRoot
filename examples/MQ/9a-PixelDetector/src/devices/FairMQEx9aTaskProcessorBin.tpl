@@ -76,58 +76,66 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
   fReceivedMsgs++;
   
   if ( parts.Size() == 0 ) return 0; // probably impossible, but still check
-  
-  // the first part should be the event header
-  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
-  LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
-  
-  fNewRunId = payloadE->fRunId;
-  if(fNewRunId!=fCurrentRunId)
-    {
-      fCurrentRunId=fNewRunId;
-      UpdateParameters();
-      fFairTask->InitMQ(fParCList);
 
-      LOG(INFO) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
-    }
-  
-  // the second part should the TClonesArray with necessary data... now assuming Digi
-  PixelPayload::Digi* payloadD = static_cast<PixelPayload::Digi*>(parts.At(1)->GetData());
-  int digiArraySize = parts.At(1)->GetSize();
-  int nofDigis      = digiArraySize / sizeof(PixelPayload::Digi);
-  
-  LOG(TRACE) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
-  
+  // expecting even number of parts in the form: header,data,header,data,header,data and so on...
+  int nPPE = 2; // nof parts per event
+
+  if ( parts.Size()%nPPE >= 1 )
+    LOG(INFO) << "received " << parts.Size() << " parts, will ignore last part!!!";
+
   // creating output multipart message
   FairMQParts partsOut;
-  
-  // create eventHeader part
-  PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
-  header->fRunId     = payloadE->fRunId;
-  header->fMCEntryNo = payloadE->fMCEntryNo;
-  header->fPartNo    = payloadE->fPartNo;
-  FairMQMessagePtr msgHeader(NewMessage(header,
-					sizeof(PixelPayload::EventHeader),
-					[](void* data, void* hint) { delete static_cast<PixelPayload::EventHeader*>(data); }
-					));
-  partsOut.AddPart(msgHeader);
 
-  // create part with hits
-  int hitsSize = nofDigis*sizeof(PixelPayload::Hit);
-  
-  FairMQMessagePtr msgTCA = NewMessage(hitsSize);
-  
-  PixelPayload::Hit* hitPayload = static_cast<PixelPayload::Hit*>(msgTCA->GetData());
-  
-  // actually find hits
-  int nofHits = 0;
-  fFairTask->ExecMQ(payloadD,nofDigis,hitPayload,nofHits);
-  
-  partsOut.AddPart(msgTCA);
+  for ( int ievent = 0 ; ievent < parts.Size()/nPPE ; ievent++ ) {
+    // the first part should be the event header
+    PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(nPPE*ievent)->GetData());
+    LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+
+    fNewRunId = payloadE->fRunId;
+    if(fNewRunId!=fCurrentRunId)
+      {
+        fCurrentRunId=fNewRunId;
+        UpdateParameters();
+        fFairTask->InitMQ(fParCList);
+
+        LOG(INFO) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
+      }
+
+    // the second part should the TClonesArray with necessary data... now assuming Digi
+    PixelPayload::Digi* payloadD = static_cast<PixelPayload::Digi*>(parts.At(nPPE*ievent+1)->GetData());
+    int digiArraySize = parts.At(nPPE*ievent+1)->GetSize();
+    int nofDigis      = digiArraySize / sizeof(PixelPayload::Digi);
+
+    LOG(TRACE) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
+
+    // create eventHeader part
+    PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
+    header->fRunId     = payloadE->fRunId;
+    header->fMCEntryNo = payloadE->fMCEntryNo;
+    header->fPartNo    = payloadE->fPartNo;
+    FairMQMessagePtr msgHeader(NewMessage(header,
+                                          sizeof(PixelPayload::EventHeader),
+                                          [](void* data, void* hint) { delete static_cast<PixelPayload::EventHeader*>(data); }
+                                          ));
+    partsOut.AddPart(msgHeader);
+
+    // create part with hits
+    int hitsSize = nofDigis*sizeof(PixelPayload::Hit);
+
+    FairMQMessagePtr msgTCA = NewMessage(hitsSize);
+
+    PixelPayload::Hit* hitPayload = static_cast<PixelPayload::Hit*>(msgTCA->GetData());
+
+    // actually find hits
+    int nofHits = 0;
+    fFairTask->ExecMQ(payloadD,nofDigis,hitPayload,nofHits);
+
+    partsOut.AddPart(msgTCA);
+  }
   
   Send(partsOut, fOutputChannelName);
   fSentMsgs++;
-    
+
   return true;
 }
 
