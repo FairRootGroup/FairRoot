@@ -29,6 +29,7 @@ FairMQEx9aSamplerBin::FairMQEx9aSamplerBin()
   : FairMQDevice()
   , fOutputChannelName("data-out")
   , fAckChannelName("")
+  , fAggregateLevel(1)
   , fMaxIndex(-1)
   , fInputFile()
   , fFileNames()
@@ -48,12 +49,15 @@ void FairMQEx9aSamplerBin::InitTask()
   fMaxIndex          = fConfig->GetValue<int64_t>                 ("max-index");
   fOutputChannelName = fConfig->GetValue<std::string>             ("out-channel");
   fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
-
+  fAggregateLevel    = fConfig->GetValue<int>                     ("aggregate");
 }
 
 void FairMQEx9aSamplerBin::PreRun()
 {
-  LOG(INFO) << "FairMQEx9aSampler::PreRun() started!";
+  if ( fAggregateLevel < 1 ) fAggregateLevel = 1;
+
+  LOG(INFO) << "FairMQEx9aSamplerBin::PreRun() started. fAggregateLevel = " << fAggregateLevel;
+
   fReadingRootFiles = false;
 
   fAckListener = new std::thread(&FairMQEx9aSamplerBin::ListenForAcks, this);
@@ -84,71 +88,89 @@ bool FairMQEx9aSamplerBin::ConditionalRun()
 
 bool FairMQEx9aSamplerBin::ReadBinFile()
 {
-  if ( fEventCounter == fMaxIndex ) return false;
-
-  if ( !fInputFile.is_open() ) { // file not there
-    if ( fCurrentFile == fFileNames.size() ) // maybe it is last file?
-      return false; 
-    fInputFile.open(fFileNames[fCurrentFile],std::fstream::in|std::fstream::binary);
-    fCurrentFile++;
-  }
-
-  if ( !fInputFile.is_open() ) { // wrong file name 
-    LOG(ERROR) << "FairMQEx9aSamplerBin::ConditionalRun fInputFile \"" << fFileNames[fCurrentFile] << "\" could not be open!";
-    return false;
-  }
-
-  std::string buffer;
-
-  int head[4]; // runId, MCEntryNo, PartNo, NofDigis
-  fInputFile.read((char*)head,sizeof(head));
-
-  if ( fInputFile.eof() ) {
-    LOG(INFO) << "End of file reached!"; 
-    fInputFile.close();
-    if ( fCurrentFile == fFileNames.size() ) // maybe it is last file?
-      return false;
-    else
-      return true;
-  }
-
-  int dataSize = 4; // detId, feId, col, row
-  const int constNofData = head[3]*dataSize;
-  short int dataCont[constNofData];
-  fInputFile.read((char*)dataCont,sizeof(dataCont));
-
   FairMQParts parts;
 
-  PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
-  header->fRunId     = head[0];
-  header->fMCEntryNo = head[1];
+  for ( int iaggr = 0 ; iaggr < fAggregateLevel ; iaggr++ ) {
 
-  header->fPartNo    = head[2];
-  FairMQMessagePtr msgHeader(NewMessage(header,
-					sizeof(PixelPayload::EventHeader),
-					[](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
-					));
-  parts.AddPart(msgHeader);
+    if ( fEventCounter == fMaxIndex ) { // check if reached event limit
+      if ( parts.Size() > 0 ) {
+        Send(parts, fOutputChannelName);
+      }
+      return false;
+    }
 
-  size_t digisSize = head[3] * sizeof(PixelPayload::Digi);
+    if ( !fInputFile.is_open() ) { // file not there
+      if ( fCurrentFile == fFileNames.size() ) { // this is last file
+        if ( parts.Size() > 0 ) {
+          Send(parts, fOutputChannelName);
+        }
+        return false;
+      }
+      fInputFile.open(fFileNames[fCurrentFile],std::fstream::in|std::fstream::binary);
+      fCurrentFile++;
+    }
 
-  FairMQMessagePtr  msgDigis(NewMessage(digisSize));
+    if ( !fInputFile.is_open() ) { // wrong file name
+      LOG(ERROR) << "FairMQEx9aSamplerBin::ConditionalRun fInputFile \"" << fFileNames[fCurrentFile] << "\" could not be open!";
+      if ( parts.Size() > 0 ) {
+        Send(parts, fOutputChannelName);
+      }
+      return false;
+    }
 
-  PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgDigis->GetData());
+    std::string buffer;
 
-  for ( int idigi = 0 ; idigi < head[3] ; idigi++ ) {
-    new (&digiPayload[idigi]) PixelPayload::Digi();
-    digiPayload[idigi].fDetectorID = (int)dataCont[idigi*dataSize+0];
-    digiPayload[idigi].fFeID       = (int)dataCont[idigi*dataSize+1];
-    digiPayload[idigi].fCharge     = 1.;
-    digiPayload[idigi].fCol        = (int)dataCont[idigi*dataSize+2];
-    digiPayload[idigi].fRow        = (int)dataCont[idigi*dataSize+3];
+    int head[4]; // runId, MCEntryNo, PartNo, NofDigis
+    fInputFile.read((char*)head,sizeof(head));
+
+    if ( fInputFile.eof() ) {
+      LOG(INFO) << "End of file reached!";
+      fInputFile.close();
+      if ( fCurrentFile == fFileNames.size() ) { // this is the last file
+        if ( parts.Size() > 0 ) {
+          Send(parts, fOutputChannelName);
+        }
+        return false;
+      }
+      else
+        return true;
+    }
+
+    int dataSize = 4; // detId, feId, col, row
+    const int constNofData = head[3]*dataSize;
+    short int dataCont[constNofData];
+    fInputFile.read((char*)dataCont,sizeof(dataCont));
+
+    PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
+    header->fRunId     = head[0];
+    header->fMCEntryNo = head[1];
+    header->fPartNo    = head[2];
+    FairMQMessagePtr msgHeader(NewMessage(header,
+                                          sizeof(PixelPayload::EventHeader),
+                                          [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
+                                          ));
+    parts.AddPart(msgHeader);
+
+    size_t digisSize = head[3] * sizeof(PixelPayload::Digi);
+
+    FairMQMessagePtr  msgDigis(NewMessage(digisSize));
+
+    PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgDigis->GetData());
+
+    for ( int idigi = 0 ; idigi < head[3] ; idigi++ ) {
+      new (&digiPayload[idigi]) PixelPayload::Digi();
+      digiPayload[idigi].fDetectorID = (int)dataCont[idigi*dataSize+0];
+      digiPayload[idigi].fFeID       = (int)dataCont[idigi*dataSize+1];
+      digiPayload[idigi].fCharge     = 1.;
+      digiPayload[idigi].fCol        = (int)dataCont[idigi*dataSize+2];
+      digiPayload[idigi].fRow        = (int)dataCont[idigi*dataSize+3];
+    }
+    parts.AddPart(msgDigis);
+
+    fEventCounter++;
   }
-  parts.AddPart(msgDigis);
 
   Send(parts, fOutputChannelName);
-
-  fEventCounter++;
 
   if ( fInputFile.eof() ) {
     LOG(INFO) << "End of file reached!";
@@ -226,7 +248,7 @@ void FairMQEx9aSamplerBin::PostRun()
 void FairMQEx9aSamplerBin::ListenForAcks()
 {
   if ( fAckChannelName != "" ) {
-    for (long int eventNr = 0; eventNr < fMaxIndex ; ++eventNr)
+    for (long int imess = 0; imess < fMaxIndex/fAggregateLevel ; ++imess)
       {
 	unique_ptr<FairMQMessage> ack(NewMessage());
 	if (Receive(ack,fAckChannelName)) 

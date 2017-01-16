@@ -15,6 +15,8 @@ VERBOSE="--verbosity DEBUG"
 FAIRTASKNAME="--task-name PixelAltFindHits"
 WORKDIR="@EXAMPLE9_FILE_LOCATION@"
 INPUTTYPE="dat"
+AGGREGATE="--aggregate 1"
+
 DATESTRING=`date +%Y%m%d_%H%M%S`
 
 NOFPROCESSORS=5
@@ -42,6 +44,10 @@ case $key in
     ;;
     -i|--input-type)
     INPUTTYPE="$2"
+    shift
+    ;;
+    -a|--aggregate)
+    AGGREGATE="--aggregate $2"
     shift
     ;;
     -v|--verbose)
@@ -100,7 +106,7 @@ SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second
 SAMPLER="@EXAMPLE9a_BIN_LOCATION@/"
 SAMPLER+="ex9a-samplerBin $TRANSPORT"
 SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE"
-SAMPLER+=" $VERBOSE --ack-channel ack "
+SAMPLER+=" $VERBOSE --ack-channel ack $AGGREGATE"
 SAMPLER+=" --file-name $INPUTFILE $MAXINDEX --control static --log-color false"
 
 ########################## start PROCESSORs

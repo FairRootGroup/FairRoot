@@ -113,41 +113,50 @@ bool FairMQEx9FileSinkBin::StoreData(FairMQParts& parts, int index)
 {
   if ( parts.Size() == 0 ) return true; // probably impossible, but still check
   
-  // the first part should be the event header
-  PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
-  LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
-  
-  for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
-    {
-      if ( "EventHeader." == fBranchNames[ibr] )
-	{
-	  ((FairEventHeader*)fOutputObjects[ibr])->SetRunId        (payloadE->fRunId);
-	  ((FairEventHeader*)fOutputObjects[ibr])->SetMCEntryNumber(payloadE->fMCEntryNo);
-	}
-    }
-  
-  // the second part should the TClonesArray with necessary data... now assuming Digi
-  PixelPayload::Hit* payloadH = static_cast<PixelPayload::Hit*>(parts.At(1)->GetData());
-  int hitArraySize = parts.At(1)->GetSize();
-  int nofHits      = hitArraySize / sizeof(PixelPayload::Hit);
-  
-  for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
-    {
-      if ( "PixelHits" == fBranchNames[ibr] )
-	{
-	  ((TClonesArray*)fOutputObjects[ibr])->Clear();
-	  for ( int ihit = 0 ; ihit < nofHits ; ihit++ )
-	    {
-	      TVector3 pos   (payloadH[ihit].posX, payloadH[ihit].posY, payloadH[ihit].posZ);
-	      TVector3 posErr(payloadH[ihit].dposX,payloadH[ihit].dposY,payloadH[ihit].dposZ);
-	      new ((*((TClonesArray*)fOutputObjects[ibr]))[ihit]) PixelHit(payloadH[ihit].fDetectorID,-1,pos,posErr);
-	      //		      new ((*fHits)[fNHits]) PixelHit(detId,currentDigi->GetIndex(),pos,posErr);
-	    }
-	}
-    }
-  
-  fTree->Fill();
+  // expecting even number of parts in the form: header,data,header,data,header,data and so on...
+  int nPPE = 2; // nof parts per event
 
+  if ( parts.Size()%nPPE >= 1 )
+    LOG(INFO) << "received " << parts.Size() << " parts, will ignore last part!!!";
+
+  for ( int ievent = 0 ; ievent < parts.Size()/nPPE ; ievent++ ) {
+
+    // the first part should be the event header
+    PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(nPPE*ievent)->GetData());
+    LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+  
+    for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ )
+      {
+        if ( "EventHeader." == fBranchNames[ibr] )
+          {
+            ((FairEventHeader*)fOutputObjects[ibr])->SetRunId        (payloadE->fRunId);
+            ((FairEventHeader*)fOutputObjects[ibr])->SetMCEntryNumber(payloadE->fMCEntryNo);
+          }
+      }
+
+    // the second part should the TClonesArray with necessary data... now assuming Digi
+    PixelPayload::Hit* payloadH = static_cast<PixelPayload::Hit*>(parts.At(nPPE*ievent+1)->GetData());
+    int hitArraySize = parts.At(nPPE*ievent+1)->GetSize();
+    int nofHits      = hitArraySize / sizeof(PixelPayload::Hit);
+
+    for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ )
+      {
+        if ( "PixelHits" == fBranchNames[ibr] )
+          {
+            ((TClonesArray*)fOutputObjects[ibr])->Clear();
+            for ( int ihit = 0 ; ihit < nofHits ; ihit++ )
+              {
+                TVector3 pos   (payloadH[ihit].posX, payloadH[ihit].posY, payloadH[ihit].posZ);
+                TVector3 posErr(payloadH[ihit].dposX,payloadH[ihit].dposY,payloadH[ihit].dposZ);
+                new ((*((TClonesArray*)fOutputObjects[ibr]))[ihit]) PixelHit(payloadH[ihit].fDetectorID,-1,pos,posErr);
+                //		      new ((*fHits)[fNHits]) PixelHit(detId,currentDigi->GetIndex(),pos,posErr);
+              }
+          }
+      }
+
+    fTree->Fill();
+  }
+  
   if ( fAckChannelName != "" ) {
     unique_ptr<FairMQMessage> msg(NewMessage());
     Send(msg, fAckChannelName);
@@ -166,7 +175,7 @@ FairMQEx9FileSinkBin::~FairMQEx9FileSinkBin()
   if (fOutFile)
     {
       if (fOutFile->IsOpen())
-	fOutFile->Close();
+        fOutFile->Close();
       delete fOutFile;
     }
 }

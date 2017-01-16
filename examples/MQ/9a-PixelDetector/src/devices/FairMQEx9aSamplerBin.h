@@ -47,6 +47,8 @@ class FairMQEx9aSamplerBin : public FairMQDevice
     void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
     void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
 
+    void SetAggregateFactor(int nal) {fAggregateLevel = nal;}
+
  protected:
     virtual bool ConditionalRun();
     virtual void PreRun();
@@ -68,6 +70,8 @@ class FairMQEx9aSamplerBin : public FairMQDevice
     PixelPayload::EventHeader       *fEventHeader;
     TBranch                         *fDigiBranch;
     std::vector<PixelPayload::Digi> *fDigiArray;
+
+    int             fAggregateLevel;
 
     int64_t         fMaxIndex;
 
