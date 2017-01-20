@@ -103,7 +103,6 @@ void FairTask::FinishEvent()
 {
   if ( ! fActive ) { return; }
   FinishEvents();
-  //  FinishTasks();
 }
 
 // -----    Public method FinishTask   -------------------------------------
@@ -250,7 +249,6 @@ void FairTask::FinishTasks()
   TIter next(GetListOfTasks());
   FairTask* task;
   while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->FinishTask(); }
-  while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->Finish(); }
 }
 // -------------------------------------------------------------------------
 

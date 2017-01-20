@@ -55,20 +55,23 @@ class FairTask : public TTask
     virtual ~FairTask();
 
 
-    /** Initialisation at begin of run. For this task and all of the
-        subtasks. **/
+    /** Initialisation at begin of run. For this task and all of the subtasks.
+        Method used internally in FairRoot. **/
     void InitTask();
 
 
-    /** Reinitialisation. For this task and all of the subtasks. **/
+    /** Reinitialisation. For this task and all of the subtasks.
+        Method used internally in FairRoot. **/
     void ReInitTask();
 
 
-    /** Set parameters. For this task and all of the subtasks. **/
+    /** Set parameters. For this task and all of the subtasks.
+        Method used internally in FairRoot. **/
     void SetParTask();
 
 
-    /** Action at end of run. For this task and all of the subtasks. **/
+    /** Action at end of run. For this task and all of the subtasks.
+        Method used internally in FairRoot. **/
     virtual void FinishTask();
 
     /** Action at end of event. For this task and all of the subtasks. **/
@@ -120,11 +123,10 @@ class FairTask : public TTask
     virtual void SetParContainers() { };
 
 
-    /** Action after each event. To be implemented in the derived class **/
+    /** Action at end of run. For this task and all of the subtasks.
+        To be implemented in the derived class.
+    **/
     virtual void Finish() { };
-
-    //  /** Action after each event. To be implemented in the derived class **/
-    //  virtual void FinishTask() { };
 
 
     /** Recursive intialisation of subtasks at begin of run **/
