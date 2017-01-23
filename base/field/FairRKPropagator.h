@@ -31,7 +31,7 @@ class FairRKPropagator : public TObject
     FairField*              fMagField;
   public:
     void Step(Double_t Charge, Double_t* vecRKIn, Double_t* vecOut);
-    void OneStepRungeKutta(Double_t charge, Double_t step, Double_t* vect, Double_t* vout);
+    Double_t OneStepRungeKutta(Double_t charge, Double_t step, Double_t* vect, Double_t* vout);
     FairRKPropagator(FairField* field);
     /**Propagate to closest approach of a point
     @CHARGE    Particle charge

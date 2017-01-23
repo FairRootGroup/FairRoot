@@ -152,7 +152,7 @@ void FairRKPropagator::Step(Double_t Charge, Double_t* vecRKIn, Double_t* vecOut
 }
 
 //______________________________________________________________________________
-void FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
+Double_t FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
     Double_t* vect, Double_t* vout)
 {
 
@@ -190,6 +190,8 @@ void FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
   Double_t x=0;
   Double_t y=0;
   Double_t z=0;
+
+  Double_t track_length = 0.;
 
   Double_t xt;
   Double_t yt;
@@ -359,12 +361,15 @@ void FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
 
 
     rest = step - tl;
+    track_length = tl;
     //  printf(" Position 4 at  x=%f  y=%f  z=%f  Step = %f  \n", x, y, z, step );
 
     if (step < 0.) { rest = -rest; }
-    if (rest < 1.e-5*TMath::Abs(step)) { return; }
+    if (rest < 1.e-5*TMath::Abs(step)) { return track_length; }
 
   } while(1);
+
+  return track_length;
 
   // angle too big, use helix
   /*
