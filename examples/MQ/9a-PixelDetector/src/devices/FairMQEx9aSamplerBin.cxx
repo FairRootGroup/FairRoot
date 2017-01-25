@@ -29,6 +29,7 @@ FairMQEx9aSamplerBin::FairMQEx9aSamplerBin()
   : FairMQDevice()
   , fOutputChannelName("data-out")
   , fAckChannelName("")
+  , fNofRecAcks(0)
   , fAggregateLevel(1)
   , fMaxIndex(-1)
   , fInputFile()
@@ -251,8 +252,9 @@ void FairMQEx9aSamplerBin::ListenForAcks()
     for (long int imess = 0; imess < fMaxIndex/fAggregateLevel ; ++imess)
       {
 	unique_ptr<FairMQMessage> ack(NewMessage());
-	if (Receive(ack,fAckChannelName)) 
+	if (Receive(ack,fAckChannelName)>=0)
 	  {
+            fNofRecAcks++;
 	    // do not need to do anything
 	  }
 
@@ -262,7 +264,7 @@ void FairMQEx9aSamplerBin::ListenForAcks()
 	  }
       }
 
-    LOG(INFO) << "Acknowledged " << fMaxIndex << " messages.";
+    LOG(INFO) << "Acknowledged " << fNofRecAcks << " messages out of " << fMaxIndex << ".";
   }
 }
 

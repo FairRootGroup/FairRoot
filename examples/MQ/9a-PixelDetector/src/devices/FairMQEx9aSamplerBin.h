@@ -76,6 +76,7 @@ class FairMQEx9aSamplerBin : public FairMQDevice
     int64_t         fMaxIndex;
 
     int             fEventCounter;
+    int             fNofRecAcks;
 
     bool            fReadingRootFiles;
 
