@@ -22,12 +22,12 @@ matrix:
           compiler: gcc
           dist: trusty
           sudo: required
-          env: ROOT_VERSION=root5
+          env: FAIRSOFT_VERSION=may16p1_root5
         - os: linux
           compiler: gcc
           dist: trusty
           sudo: required
-          env: ROOT_VERSION=root6
+          env: FAIRSOFT_VERSION=may16p1_root6
 
 before_install:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
@@ -37,8 +37,8 @@ before_install:
                                 ncurses-dev libcurl4-openssl-dev curl bzip2 gzip unzip tar subversion git xutils-dev flex 
                                 bison lsb-release python-dev libc6-dev-i386 libxml2-dev wget libssl-dev 
                                 automake autoconf libtool;
-        wget http://fairroot.gsi.de/downloads/fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb;
-        sudo dpkg -i fairsoft-nov15p1-${ROOT_VERSION}_1.0_amd64.deb;
+        wget http://fairroot.gsi.de/downloads/fairsoft-${FAIRSOFT_VERSION}_1.0_amd64.deb;
+        sudo dpkg -i fairsoft-${FAIRSOFT_VERSION}_1.0_amd64.deb;
       fi
     - if test "$TRAVIS_OS_NAME" = "osx"; then
         env;
@@ -68,7 +68,7 @@ before_script:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
         echo "export LINUX_FLAVOUR=Ubuntu14.04" > Dart.cfg;
         echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\" " >> Dart.cfg;
-        echo "export FAIRSOFT_VERSION=nov15p1_\${ROOT_VERSION}" >> Dart.cfg;
+        echo "export FAIRSOFT_VERSION=\${FAIRSOFT_VERSION}" >> Dart.cfg;
       fi
     - if test "$TRAVIS_OS_NAME" = "osx"; then
         echo "export LINUX_FLAVOUR=MacOSX${_system_version}" > Dart.cfg;
