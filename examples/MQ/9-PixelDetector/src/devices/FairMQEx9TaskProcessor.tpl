@@ -29,11 +29,11 @@ FairMQEx9TaskProcessor<T>::FairMQEx9TaskProcessor()
   , fNewRunId(1)
   , fCurrentRunId(-1)
   , fDataToKeep("")
+  , fReceivedMsgs(0)
+  , fSentMsgs(0)
   , fFairTask(NULL)
   , fParCList(NULL)
   , fGeoPar(nullptr)
-  , fReceivedMsgs(0)
-  , fSentMsgs(0)
 {
 }
 
@@ -83,7 +83,7 @@ void FairMQEx9TaskProcessor<T>::Init()
 }
 
 template <typename T>
-bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int index)
+bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 {
   TObject* objectToKeep = NULL;
   
@@ -134,14 +134,14 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int index)
   messageFEH->WriteObject(fEventHeader);
   partsOut.AddPart(NewMessage(messageFEH->Buffer(),
 			      messageFEH->BufferSize(),
-			      [](void* data, void* hint) { delete (TMessage*)hint;},
+			      [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
 			      messageFEH));
   for ( int iobj = 0 ; iobj < fOutput->GetEntries() ; iobj++ ) {
     messageTCA[iobj] = new TMessage(kMESS_OBJECT);
     messageTCA[iobj]->WriteObject(fOutput->At(iobj));
     partsOut.AddPart(NewMessage(messageTCA[iobj]->Buffer(),
 				messageTCA[iobj]->BufferSize(),
-				[](void* data, void* hint) { delete (TMessage*)hint;},
+				[](void* /*data*/, void* hint) { delete (TMessage*)hint;},
 				messageTCA[iobj]));
   }
   Send(partsOut, fOutputChannelName);

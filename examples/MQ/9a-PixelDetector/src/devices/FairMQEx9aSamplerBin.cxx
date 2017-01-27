@@ -29,17 +29,17 @@ FairMQEx9aSamplerBin::FairMQEx9aSamplerBin()
   : FairMQDevice()
   , fOutputChannelName("data-out")
   , fAckChannelName("")
-  , fNofRecAcks(0)
-  , fAggregateLevel(1)
-  , fMaxIndex(-1)
-  , fInputFile()
   , fFileNames()
+  , fInputFile()
   , fCurrentFile(0)
-  , fEventCounter(0)
   , fInputChain(0)
   , fEventHeader(0)
-  , fDigiArray(0)
   , fDigiBranch(0)
+  , fDigiArray(0)
+  , fAggregateLevel(1)
+  , fMaxIndex(-1)
+  , fEventCounter(0)
+  , fNofRecAcks(0)
   , fReadingRootFiles(false)
 {
 }
@@ -69,7 +69,7 @@ void FairMQEx9aSamplerBin::PreRun()
 
   fInputChain = new TChain("fairdata");
 
-  for ( int ifile = 0 ; ifile < fFileNames.size() ; ifile++ ) {
+  for ( int ifile = 0 ; ifile < (int)fFileNames.size() ; ifile++ ) {
     fInputChain->Add(fFileNames[ifile].c_str());
   }
 
@@ -101,7 +101,7 @@ bool FairMQEx9aSamplerBin::ReadBinFile()
     }
 
     if ( !fInputFile.is_open() ) { // file not there
-      if ( fCurrentFile == fFileNames.size() ) { // this is last file
+      if ( fCurrentFile == (int)fFileNames.size() ) { // this is last file
         if ( parts.Size() > 0 ) {
           Send(parts, fOutputChannelName);
         }
@@ -127,7 +127,7 @@ bool FairMQEx9aSamplerBin::ReadBinFile()
     if ( fInputFile.eof() ) {
       LOG(INFO) << "End of file reached!";
       fInputFile.close();
-      if ( fCurrentFile == fFileNames.size() ) { // this is the last file
+      if ( fCurrentFile == (int)fFileNames.size() ) { // this is the last file
         if ( parts.Size() > 0 ) {
           Send(parts, fOutputChannelName);
         }
@@ -207,7 +207,7 @@ bool FairMQEx9aSamplerBin::ReadRootFile()
   FairMQMessagePtr  msgDigis(NewMessage(digisSize));
   PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgDigis->GetData());
 
-  for ( int idigi = 0 ; idigi < fDigiArray->size() ; idigi++ ) {
+  for ( int idigi = 0 ; idigi < (int)fDigiArray->size() ; idigi++ ) {
     new (&digiPayload[idigi]) PixelPayload::Digi();
     digiPayload[idigi].fDetectorID = fDigiArray->at(idigi).fDetectorID;
     digiPayload[idigi].fFeID       = fDigiArray->at(idigi).fFeID;
