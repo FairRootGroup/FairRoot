@@ -38,9 +38,9 @@ FairMQEx9Sampler::FairMQEx9Sampler()
   , fInputObjects()
   , fNObjects(0)
   , fMaxIndex(-1)
+  , fEventCounter(0)
   , fBranchNames()
   , fFileNames()
-  , fEventCounter(0)
 {
 }
 

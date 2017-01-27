@@ -35,14 +35,17 @@ class Ex9TMessage : public TMessage
 
 FairMQEx9Merger::FairMQEx9Merger()
   : FairMQDevice()
-  , fEventHeader(NULL)
-  , fNofParts(3)
-  , fNofPartsPerEventMap()
-  , fObjectMap()
   , fInputChannelName("data-in")
   , fOutputChannelName("data-out")
+  , fNofPartsPerEventMap()
+  , fObjectMap()
+  , fEvRIPair()
+  , fEvRIPartTrio()
+  , fRet()
   , fNofReceivedMessages(0)
   , fNofSentMessages(0)
+  , fNofParts(3)
+  , fEventHeader(NULL)
 {
 }
 
@@ -51,7 +54,7 @@ void FairMQEx9Merger::Init()
   OnData(fInputChannelName, &FairMQEx9Merger::MergeData);
 }
 
-bool FairMQEx9Merger::MergeData(FairMQParts& parts, int index)
+bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
 {
 
   bool printInfo = false;
@@ -159,14 +162,14 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int index)
       messageFEH->WriteObject(fEventHeader);
       partsOut.AddPart(NewMessage(messageFEH->Buffer(), 
 				  messageFEH->BufferSize(), 
-				  [](void* data, void* hint) { delete (TMessage*)hint;},
+				  [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
 				  messageFEH));
       for ( int iarray = 0 ; iarray < nofArrays ; iarray++ ) {
 	messageTCA[iarray] = new TMessage(kMESS_OBJECT);
 	messageTCA[iarray]->WriteObject(tempArrays[iarray]);
 	partsOut.AddPart(NewMessage(messageTCA[iarray]->Buffer(), 
 				    messageTCA[iarray]->BufferSize(), 
-				    [](void* data, void* hint) { delete (TMessage*)hint;},
+				    [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
 				    messageTCA[iarray]));
       }
       Send(partsOut, fOutputChannelName);

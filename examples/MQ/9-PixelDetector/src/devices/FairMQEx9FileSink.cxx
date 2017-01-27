@@ -111,7 +111,7 @@ void FairMQEx9FileSink::Init()
   OnData(fInputChannelName, &FairMQEx9FileSink::StoreData);
 }
 
-bool FairMQEx9FileSink::StoreData(FairMQParts& parts, int index)
+bool FairMQEx9FileSink::StoreData(FairMQParts& parts, int /*index*/)
 {
   TObject* tempObjects[10];
   for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 

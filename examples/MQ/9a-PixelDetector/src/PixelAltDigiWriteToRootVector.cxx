@@ -60,15 +60,16 @@ PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector(Int_t iVerbose)
 PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector(const char* name, Int_t iVerbose) 
   : FairTask(name, iVerbose)
   , fDigis(NULL)
+  , fOutputRootFile()
+  , fOutputRootTree()
+  , fPixelEventHeader(0)
+  , fPixelDigiVector()
   , fOutputFileName("test.root")
   , fNofOutputFiles(0)
   , fDivideLevel(0)
   , fRunId(0)
   , fMCEntryNo(0)
   , fPartNo(0)
-    //  , fOutputRootFile({0,0,0,0,0,0,0,0,0,0,0,0})
-    //  , fOutputRootTree({0,0,0,0,0,0,0,0,0,0,0,0})
-  , fPixelEventHeader(0)
 {
   Reset();
 }
@@ -88,8 +89,6 @@ void PixelAltDigiWriteToRootVector::Exec(Option_t* /*opt*/) {
   Reset();
 
   Int_t nofDigis = fDigis->GetEntriesFast();
-
-  Int_t digisPerFile[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
 
   for ( Int_t ifile = 0 ; ifile < fNofOutputFiles ; ifile++ ) {
     fPixelDigiVector.clear();
@@ -115,7 +114,7 @@ void PixelAltDigiWriteToRootVector::Exec(Option_t* /*opt*/) {
       int feId      = (int)currentDigi->GetFeID();
       int col       = (int)currentDigi->GetCol();
       int row       = (int)currentDigi->GetRow();
-      double charge = (double)currentDigi->GetCharge();
+      //      double charge = (double)currentDigi->GetCharge();
 
       PixelPayload::Digi tempDigi;// = new PixelPayload::Digi();
       tempDigi.fDetectorID = detId;

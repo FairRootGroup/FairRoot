@@ -27,11 +27,11 @@ FairMQEx9aTaskProcessorBin<T>::FairMQEx9aTaskProcessorBin()
   , fNewRunId(1)
   , fCurrentRunId(-1)
   , fDataToKeep("")
+  , fReceivedMsgs(0)
+  , fSentMsgs(0)
   , fFairTask(NULL)
   , fParCList(NULL)
   , fGeoPar(nullptr)
-  , fReceivedMsgs(0)
-  , fSentMsgs(0)
 {
 }
 
@@ -68,10 +68,8 @@ void FairMQEx9aTaskProcessorBin<T>::Init()
 }
 
 template <typename T>
-bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
+bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/)
 {
-  TObject* objectToKeep = NULL;
-
   LOG(TRACE)<<"message received with " << parts.Size() << " parts!";
   fReceivedMsgs++;
   
@@ -115,7 +113,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
     header->fPartNo    = payloadE->fPartNo;
     FairMQMessagePtr msgHeader(NewMessage(header,
                                           sizeof(PixelPayload::EventHeader),
-                                          [](void* data, void* hint) { delete static_cast<PixelPayload::EventHeader*>(data); }
+                                          [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
                                           ));
     partsOut.AddPart(msgHeader);
 

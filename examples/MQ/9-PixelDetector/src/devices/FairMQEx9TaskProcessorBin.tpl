@@ -37,11 +37,11 @@ FairMQEx9TaskProcessorBin<T>::FairMQEx9TaskProcessorBin()
   , fNewRunId(1)
   , fCurrentRunId(-1)
   , fDataToKeep("")
+  , fReceivedMsgs(0)
+  , fSentMsgs(0)
   , fFairTask(NULL)
   , fParCList(NULL)
   , fGeoPar(nullptr)
-  , fReceivedMsgs(0)
-  , fSentMsgs(0)
 {
 }
 
@@ -115,10 +115,8 @@ void FairMQEx9TaskProcessorBin<T>::Init()
 }
 
 template <typename T>
-bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int index)
+bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/)
 {
-  TObject* objectToKeep = NULL;
-
   LOG(TRACE)<<"message received with " << parts.Size() << " parts!";
   fReceivedMsgs++;
   

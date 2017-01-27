@@ -46,7 +46,7 @@ void FairMQEx9aFileSinkBin::Init()
   OnData(fInputChannelName, &FairMQEx9aFileSinkBin::StoreData);
 }
 
-bool FairMQEx9aFileSinkBin::StoreData(FairMQParts& parts, int index)
+bool FairMQEx9aFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
 {
   if ( parts.Size() == 0 ) return true; // probably impossible, but still check
   
