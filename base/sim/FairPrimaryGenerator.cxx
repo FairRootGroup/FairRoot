@@ -99,18 +99,12 @@ Bool_t FairPrimaryGenerator::Init() {
 
 // -----   Destructor   ----------------------------------------------------
 FairPrimaryGenerator::~FairPrimaryGenerator() {
-  //  cout<<"Enter Destructor of FairPrimaryGenerator"<<endl;
-  // the stack is deleted by FairMCApplication
-  if (1 == fNrTargets) {
-    delete fTargetZ;
-  } else {
-    delete[] fTargetZ;
-  }
+
+  delete[] fTargetZ;
   fGenList->Delete();
   delete fGenList;
   delete fListIter;
 
-  //  cout<<"Leave Destructor of FairPrimaryGenerator"<<endl;
 }
 // -------------------------------------------------------------------------
 
@@ -386,11 +380,7 @@ void FairPrimaryGenerator::SetTarget(Double_t z, Double_t dz) {
 void FairPrimaryGenerator::SetMultTarget(Int_t nroftargets, Double_t *targetpos,
                                          Double_t dz) {
 
-  if (1 == fNrTargets) {
-    delete fTargetZ;
-  } else {
-    delete[] fTargetZ;
-  }
+  delete[] fTargetZ;
 
   fNrTargets = nroftargets;
 
