@@ -9,6 +9,7 @@ then
     exit;
 fi
 
+NOFEXPEVENTS=-1
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
 VERBOSE="--verbosity DEBUG"
@@ -31,6 +32,7 @@ case $key in
     shift
     ;;
     -m|--max-index)
+    NOFEXPEVENTS=$2
     MAXINDEX="--max-index $2"
     shift
     ;;
@@ -50,6 +52,10 @@ case $key in
     AGGREGATE="--aggregate $2"
     shift
     ;;
+    -w|--work-dir)
+    WORKDIR="$2"
+    shift
+    ;;
     -v|--verbose)
     VERBOSE="--verbosity $2"
     shift
@@ -60,28 +66,19 @@ done
 
 ########################### Define some variables
 # JSON file containing the configuration parameters of all FairMQ devices of this example
-MQCONFIGFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Multipart.json"
+MQCONFIGFILE="$WORKDIR/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Multipart.json"
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
-ASCIIPARAM="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par"
+ROOTPARAM="$WORKDIR/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.params.root"
+ASCIIPARAM="$WORKDIR/examples/MQ/9-PixelDetector/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME" == "--task-name PixelAltFindHits" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
-    INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
- #   INPUTFILE+=" --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/pixel_TGeant3.digi.f1.root"
+    INPUTFILE="$WORKDIR/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
+#    INPUTFILE+=" --file-name $WORKDIR/examples/MQ/9-PixelDetector/macros/digisBin.$INPUTTYPE"
     INPUTBRANCH="PixelDigis"
     
     # output file for sink
-    OUTPUTFILE="@EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/MQa.pixel_TGeant3.bin_staticA.hits.root"
+    OUTPUTFILE="$WORKDIR/examples/MQ/9-PixelDetector/macros/MQa.pixel_TGeant3.bin_staticA.hits.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
     OUTPUTBRANCH="--branch-name PixelHits"
 else
@@ -229,9 +226,9 @@ echo "====="
 #INPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $INPUTFILE | tail -1)"
 OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $OUTPUTFILE | tail -1)"
 #echo "There are $INPUT_EVENTS in the input file."
-echo "There are $OUTPUT_EVENTS in the output file."
+echo "There are $OUTPUT_EVENTS in the output file ($NOFEXPEVENTS expected)."
 
-#if [ "$OUTPUT_EVENTS" -eq "$INPUT_EVENTS" ];
-#then
-#    echo "Shell script finished successfully.";
-#fi
+if [ "$OUTPUT_EVENTS" -eq "$NOFEXPEVENTS" ];
+then
+    echo "Shell script finished successfully.";
+fi

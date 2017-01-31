@@ -264,7 +264,7 @@ void FairMQEx9aSamplerBin::ListenForAcks()
 	  }
       }
 
-    LOG(INFO) << "Acknowledged " << fNofRecAcks << " messages out of " << fMaxIndex << ".";
+    LOG(INFO) << "Acknowledged " << fNofRecAcks << " messages (" << fAggregateLevel << " events each) out of " << fMaxIndex << " events.";
   }
 }
 
