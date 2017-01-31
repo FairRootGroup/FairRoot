@@ -8,6 +8,14 @@
 
 Set(MaxTestTime 30)
 
+GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/9a-PixelDetector/startFairMQEx9aFromBin_Static.sh ${CMAKE_CURRENT_BINARY_DIR})
+
+Add_Test(ex9a_static
+	${CMAKE_CURRENT_BINARY_DIR}/startFairMQEx9aFromBin_Static.sh --work-dir ${CMAKE_BINARY_DIR} --max-index 10000 --aggregate 100 --processors 5)
+Set_Tests_Properties(ex9a_static PROPERTIES DEPENDS ex9_dbin_TGeant3)
+Set_Tests_Properties(ex9a_static PROPERTIES TIMEOUT ${MaxTestTime})
+Set_Tests_Properties(ex9a_static PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
+
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
     ${CMAKE_SOURCE_DIR}/fairmq
