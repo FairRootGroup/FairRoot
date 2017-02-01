@@ -1,14 +1,5 @@
 #!/bin/bash
 
-CHECK_BEFORE="$(ps -fea | grep Pixel9MQConfig_Multipart.json | grep -v grep)"
-if [ -n "$CHECK_BEFORE" ];
-then
-    echo "some example/MQ/9-Pixel programs are still running:"
-    echo $CHECK_BEFORE
-    echo "quit them before proceeding."
-    exit;
-fi
-
 NOFEXPEVENTS=-1
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
@@ -21,6 +12,8 @@ AGGREGATE="--aggregate 1"
 DATESTRING=`date +%Y%m%d_%H%M%S`
 
 NOFPROCESSORS=5
+
+FORCEKILL=false
 
 while [[ $# > 1 ]]
 do
@@ -63,6 +56,21 @@ case $key in
 esac
 shift 
 done
+
+CHECK_BEFORE="$(ps -fea | grep Pixel9MQConfig_Multipart.json | grep "transport" | grep "control" | grep -v grep)"
+if [ -n "$CHECK_BEFORE" ];
+then
+    echo "some example/MQ/9-Pixel programs are still running:"
+    echo $CHECK_BEFORE
+    echo "quit them before proceeding (will do it automatically? $FORCEKILL)"
+    if [ "$FORCEKILL" == "true" ];
+    then
+        echo "trying to kill..."
+        ps -fea | grep Pixel9MQConfig_Multipart.json | grep "transport" | grep "control" | grep -v grep | awk '{print $2}' | xargs kill -9
+    else
+        return;
+    fi
+fi
 
 ########################### Define some variables
 # JSON file containing the configuration parameters of all FairMQ devices of this example
