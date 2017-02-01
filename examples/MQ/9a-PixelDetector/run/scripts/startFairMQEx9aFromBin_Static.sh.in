@@ -62,7 +62,7 @@ if [ -n "$CHECK_BEFORE" ];
 then
     echo "some example/MQ/9-Pixel programs are still running:"
     echo $CHECK_BEFORE
-    echo "quit them before proceeding."
+    echo "quit them before proceeding (will do it automatically? $FORCEKILL)"
     if [ "$FORCEKILL" == "true" ];
     then
         echo "trying to kill..."
