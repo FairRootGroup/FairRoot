@@ -30,7 +30,7 @@ void run_tutorial1_pythia8(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   TString outDir = "./";
 
   // Output file name
-  TString outFile = Form("%s/tutorial1_pythia6_%s_%s.mc_p%1.3f_t%1.0f_n%d.root",
+  TString outFile = Form("%s/tutorial1_pythia8_%s_%s.mc_p%1.3f_t%1.0f_n%d.root",
                          outDir.Data(),
 			 mcEngine.Data(),
 			 partName[chosenPart].Data(),
@@ -39,7 +39,7 @@ void run_tutorial1_pythia8(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 			 nEvents);
   
   // Parameter file name
-  TString parFile = Form("%s/tutorial1_pythia6_%s_%s.params_p%1.3f_t%1.0f_n%d.root",
+  TString parFile = Form("%s/tutorial1_pythia8_%s_%s.params_p%1.3f_t%1.0f_n%d.root",
 			 outDir.Data(),
 			 mcEngine.Data(),
 			 partName[chosenPart].Data(),
