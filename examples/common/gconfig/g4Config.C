@@ -46,7 +46,8 @@ void Config()
    geant4->SetStack(stack);
 
    if(FairRunSim::Instance()->IsExtDecayer()){
-      TVirtualMCDecayer* decayer = TPythia6Decayer::Instance();
+      TVirtualMCDecayer* decayer = TVirtualMC::GetMC()->GetDecayer();
+//      TVirtualMCDecayer* decayer = TPythia6Decayer::Instance();
       geant4->SetExternalDecayer(decayer);
    }
   
@@ -54,7 +55,7 @@ void Config()
 /// (verbose level, global range cut, ..)
 
    TString configm(gSystem->Getenv("VMCWORKDIR"));
-   configm1 = configm + "/gconfig/g4config.in";
+   configm1 = configm + "/common/gconfig/g4config.in";
    cout << " -I g4Config() using g4conf  macro: " << configm1 << endl;
 
    //set geant4 specific stuff
