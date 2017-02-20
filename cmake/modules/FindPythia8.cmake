@@ -12,6 +12,7 @@
 MESSAGE(STATUS "Looking for PYTHIA8 ...")
 
 FIND_PATH(PYTHIA8_INCLUDE_DIR NAMES Pythia.h PATHS
+  $ENV{PYTHIA_ROOT}/include/Pythia8
   ${PYTHIA8_DIR}/include/Pythia8
   ${AlFa_DIR}/include/Pythia8
   ${SIMPATH}/include/Pythia8
@@ -22,6 +23,7 @@ FIND_PATH(PYTHIA8_INCLUDE_DIR NAMES Pythia.h PATHS
 )
 
 FIND_PATH(PYTHIA8_LIB_DIR  NAMES libpythia8.so PATHS
+  $ENV{PYTHIA_ROOT}/lib
   ${PYTHIA8_DIR}/lib
   ${AlFa_DIR}/lib
   ${SIMPATH}/lib
@@ -30,6 +32,9 @@ FIND_PATH(PYTHIA8_LIB_DIR  NAMES libpythia8.so PATHS
 )
 
 Find_Path(PYTHIA8DATA NAMES MainProgramSettings.xml PATHS
+  $ENV{PYTHIA8DATA}
+  $ENV{PYTHIA_ROOT}/share/Pythia8/xmldoc
+  ${PYTHIA8_DIR}/share/Pythia8/xmldoc
   ${SIMPATH}/share/pythia8/xmldoc
 )
 

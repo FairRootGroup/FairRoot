@@ -108,6 +108,7 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 
 find_package(ROOT 5.32.00 REQUIRED)
 find_package(Pythia6)
+find_package(Pythia8)
 
 if(FAIRROOT_MODULAR_BUILD)
   # Geant3, Geant4 installed via cmake
