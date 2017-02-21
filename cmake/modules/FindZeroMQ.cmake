@@ -1,97 +1,157 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
+################################################################################
+# Copyright (C) 2012-2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
+#
+# Authors:
+#
+#   Mohammad Al-Turany
+#   Dennis Klein
+#   Matthias Richter
+#   Alexey Rybalchenko
+#   Florian Uhlig
+#
+#
+# #############################
+# # Locate the ZeroMQ library #
+# #############################
+#
+#
+# Usage:
+#
+#   find_package(ZeroMQ [version] [QUIET] [REQUIRED])
+#
+#
+# Defines the following variables:
+#
+#   ZeroMQ_FOUND - Found the ZeroMQ library
+#   ZeroMQ_INCLUDE_DIR (CMake cache) - Include directory
+#   ZeroMQ_LIBRARY_SHARED (CMake cache) - Path to shared libzmq
+#   ZeroMQ_LIBRARY_STATIC (CMake cache) - Path to static libzmq
+#   ZeroMQ_VERSION - full version string
+#   ZeroMQ_VERSION_MAJOR - major version component
+#   ZeroMQ_VERSION_MINOR - minor version component
+#   ZeroMQ_VERSION_PATCH - patch version component
+#
+#
+# Accepts the following variables as hints for installation directories:
+#
+#   ZMQ_DIR (CMake var)
+#   AlFa_DIR (CMake var)
+#   SIMPATH (CMake var)
+#   ZEROMQ_ROOT (CMake var, ENV var)
+#
+#
 
 if(NOT ZeroMQ_FIND_QUIETLY)
-  message(STATUS "Looking for ZeroMQ...")
-endif(NOT ZeroMQ_FIND_QUIETLY)
-
-find_path(ZMQ_INCLUDE_DIR NAMES zmq.hpp zmq_utils.h
-  PATHS ${ZMQ_DIR}/include
-  PATHS ${AlFa_DIR}/include
-  PATHS ${SIMPATH}/include
-  NO_DEFAULT_PATH
-  DOC   "Path to ZeroMQ include header files."
-)
-
-find_path(ZMQ_INCLUDE_DIR NAMES zmq.hpp zmq_utils.h
-  DOC   "Path to ZeroMQ include header files."
-)
-
-find_library(ZMQ_LIBRARY_SHARED NAMES libzmq.dylib libzmq.so
-  PATHS ${ZMQ_DIR}/lib
-  PATHS ${AlFa_DIR}/lib
-  PATHS ${SIMPATH}/lib
-  NO_DEFAULT_PATH
-  DOC   "Path to libzmq.dylib libzmq.so."
-)
-
-find_library(ZMQ_LIBRARY_SHARED NAMES libzmq.dylib libzmq.so
-  DOC   "Path to libzmq.dylib libzmq.so."
-)
-
-find_library(ZMQ_LIBRARY_STATIC NAMES libzmq.a
-  PATHS ${ZMQ_DIR}/lib
-  PATHS ${AlFa_DIR}/lib
-  PATHS ${SIMPATH}/lib
-  NO_DEFAULT_PATH
-  DOC   "Path to libzmq.a."
-)
-
-find_library(ZMQ_LIBRARY_STATIC NAMES libzmq.a
-  DOC   "Path to libzmq.a."
-)
-
-
-IF(ZMQ_INCLUDE_DIR AND ZMQ_LIBRARY_SHARED AND ZMQ_LIBRARY_STATIC)
-  SET(ZMQ_FOUND TRUE)
-ELSE(ZMQ_INCLUDE_DIR AND ZMQ_LIBRARY_SHARED AND ZMQ_LIBRARY_STATIC)
-  SET(ZMQ_FOUND FALSE)
-ENDIF(ZMQ_INCLUDE_DIR AND ZMQ_LIBRARY_SHARED AND ZMQ_LIBRARY_STATIC)
-
-set(ERROR_STRING "Looking for ZeroMQ... - Not found")
-
-if(ZMQ_FOUND)
-  FIND_FILE(ZMQ_HEADER_FILE zmq.h
-    ${ZMQ_INCLUDE_DIR}
-    NO_DEFAULT_PATH
-    )
-  IF (DEFINED ZMQ_HEADER_FILE)
-    FILE(READ "${ZMQ_HEADER_FILE}" _ZMQ_HEADER_FILE_CONTENT)
-    STRING(REGEX MATCH "#define ZMQ_VERSION_MAJOR ([0-9])" _MATCH "${_ZMQ_HEADER_FILE_CONTENT}")
-    SET(ZMQ_VERSION_MAJOR ${CMAKE_MATCH_1})
-    STRING(REGEX MATCH "#define ZMQ_VERSION_MINOR ([0-9])" _MATCH "${_ZMQ_HEADER_FILE_CONTENT}")
-    SET(ZMQ_VERSION_MINOR ${CMAKE_MATCH_1})
-    STRING(REGEX MATCH "#define ZMQ_VERSION_PATCH ([0-9])" _MATCH "${_ZMQ_HEADER_FILE_CONTENT}")
-    SET(ZMQ_VERSION_PATCH ${CMAKE_MATCH_1})
-    set (ZMQ_VERSION "${ZMQ_VERSION_MAJOR}.${ZMQ_VERSION_MINOR}.${ZMQ_VERSION_PATCH}")
-    IF (DEFINED ZeroMQ_FIND_VERSION AND ZMQ_VERSION VERSION_LESS ZeroMQ_FIND_VERSION)
-      SET(ZMQ_FOUND FALSE)
-      SET(ERROR_STRING "Installed version ${ZMQ_VERSION} of ZeroMQ does not meet the minimum required version ${ZeroMQ_FIND_VERSION}")
-    endif ()
-  endif ()
+    message(STATUS "Looking for ZeroMQ")
 endif()
 
-if(ZMQ_FOUND)
-  set(ZMQ_LIBRARIES "${ZMQ_LIBRARY_STATIC};${ZMQ_LIBRARY_SHARED}")
-  if(NOT ZeroMQ_FIND_QUIETLY)
-    message(STATUS "Looking for ZeroMQ... - found ${ZMQ_LIBRARIES} ${ZMQ_VERSION}")
-  endif(NOT ZeroMQ_FIND_QUIETLY)
-else(ZMQ_FOUND)
-  unset(ZMQ_INCLUDE_DIR)
-  unset(ZMQ_LIBRARY_SHARED)
-  unset(ZMQ_LIBRARY_STATIC)
-  if(ZeroMQ_FIND_REQUIRED)
-    message(FATAL_ERROR "${ERROR_STRING}")
-  else(ZeroMQ_FIND_REQUIRED)
-    if(NOT ZeroMQ_FIND_QUIETLY)
-      message(STATUS "${ERROR_STRING}")
-    endif(NOT ZeroMQ_FIND_QUIETLY)
-  endif(ZeroMQ_FIND_REQUIRED)
-endif(ZMQ_FOUND)
+if(DEFINED ENV{ZEROMQ_ROOT})
+    set(ZEROMQ_ROOT $ENV{ZEROMQ_ROOT})
+endif()
 
-mark_as_advanced(ZMQ_INCLUDE_DIR ZMQ_LIBRARIES ZMQ_LIBRARY_SHARED ZMQ_LIBRARY_STATIC)
+find_path(ZeroMQ_INCLUDE_DIR NAMES "zmq.h" "zmq_utils.h"
+    PATHS "${ZMQ_DIR}/include"
+          "${AlFa_DIR}/include"
+          "${SIMPATH}/include"
+          "${ZEROMQ_ROOT}/include"
+    DOC "ZeroMQ include directories"
+    NO_DEFAULT_PATH
+)
+set(ZMQ_INCLUDE_DIR ${ZeroMQ_INCLUDE_DIR}
+    CACHE PATH "ZeroMQ include directories (DEPRECATED)")
+
+find_library(ZeroMQ_LIBRARY_SHARED NAMES "libzmq.dylib" "libzmq.so"
+    PATHS "${ZMQ_DIR}/lib"
+          "${AlFa_DIR}/lib"
+          "${SIMPATH}/lib"
+          "${ZEROMQ_ROOT}/lib"
+    DOC "Path to libzmq.dylib or libzmq.so."
+    NO_DEFAULT_PATH
+)
+set(ZMQ_LIBRARY_SHARED ${ZeroMQ_LIBRARY_SHARED}
+    CACHE FILEPATH "Path to libzmq.dylib or libzmq.so (DEPRECATED)")
+
+find_library(ZeroMQ_LIBRARY_STATIC NAMES "libzmq.a"
+    PATHS "${ZMQ_DIR}/lib"
+          "${AlFa_DIR}/lib"
+          "${SIMPATH}/lib"
+          "${ZEROMQ_ROOT}/lib"
+    DOC "Path to libzmq.a."
+    NO_DEFAULT_PATH
+)
+set(ZMQ_LIBRARY_STATIC ${ZeroMQ_LIBRARY_STATIC}
+    CACHE FILEPATH "Path to libzmq.a (DEPRECATED)")
+
+if(ZeroMQ_INCLUDE_DIR AND ZeroMQ_LIBRARY_SHARED AND ZeroMQ_LIBRARY_STATIC)
+    set(ZeroMQ_FOUND TRUE)
+    set(ZMQ_FOUND TRUE) # DEPRECATED
+else()
+    set(ZeroMQ_FOUND FALSE)
+    set(ZMQ_FOUND FALSE) # DEPRECATED
+endif()
+
+set(ERROR_STRING "Looking for ZeroMQ - NOT FOUND")
+
+if(ZeroMQ_FOUND)
+    find_file(ZeroMQ_HEADER_FILE "zmq.h"
+        ${ZeroMQ_INCLUDE_DIR}
+        NO_DEFAULT_PATH
+    )
+    if (DEFINED ZeroMQ_HEADER_FILE)
+        file(READ "${ZeroMQ_HEADER_FILE}" _ZeroMQ_HEADER_FILE_CONTENT)
+        string(REGEX MATCH "#define ZMQ_VERSION_MAJOR ([0-9])" _MATCH "${_ZeroMQ_HEADER_FILE_CONTENT}")
+        set(ZeroMQ_VERSION_MAJOR ${CMAKE_MATCH_1})
+        string(REGEX MATCH "#define ZMQ_VERSION_MINOR ([0-9])" _MATCH "${_ZeroMQ_HEADER_FILE_CONTENT}")
+        set(ZeroMQ_VERSION_MINOR ${CMAKE_MATCH_1})
+        string(REGEX MATCH "#define ZMQ_VERSION_PATCH ([0-9])" _MATCH "${_ZeroMQ_HEADER_FILE_CONTENT}")
+        set(ZeroMQ_VERSION_PATCH ${CMAKE_MATCH_1})
+        set(ZeroMQ_VERSION "${ZeroMQ_VERSION_MAJOR}.${ZeroMQ_VERSION_MINOR}.${ZeroMQ_VERSION_PATCH}")
+        if(DEFINED ZeroMQ_FIND_VERSION AND ZeroMQ_VERSION VERSION_LESS ZeroMQ_FIND_VERSION)
+            set(ZeroMQ_FOUND FALSE)
+            set(ERROR_STRING "Looking for ZeroMQ - Installed version ${ZeroMQ_VERSION} does not meet the minimum required version ${ZeroMQ_FIND_VERSION}")
+        endif ()
+        unset(ZeroMQ_HEADER_FILE CACHE)
+    endif ()
+endif()
+
+if(ZeroMQ_FOUND)
+    set(ZeroMQ_LIBRARIES "${ZeroMQ_LIBRARY_STATIC};${ZeroMQ_LIBRARY_SHARED}")
+    if(NOT ZeroMQ_FIND_QUIETLY)
+        message(STATUS "Looking for ZeroMQ - Found ${ZeroMQ_INCLUDE_DIR}")
+        message(STATUS "Looking for ZeroMQ - Found version ${ZeroMQ_VERSION}")
+    endif(NOT ZeroMQ_FIND_QUIETLY)
+else()
+    if(ZeroMQ_FIND_REQUIRED)
+        message(FATAL_ERROR "${ERROR_STRING}")
+    else()
+        if(NOT ZeroMQ_FIND_QUIETLY)
+            message(STATUS "${ERROR_STRING}")
+        endif(NOT ZeroMQ_FIND_QUIETLY)
+    endif()
+endif()
+
+if(NOT ZeroMQ_NO_DEPRECATED)
+    message(DEPRECATION
+"ZMQ_FOUND, ZMQ_INCLUDE_DIR, ZMQ_LIBRARY_STATIC|SHARED, ZMQ_* variables are DEPRECATED.
+Use ZeroMQ_FOUND, ZeroMQ_INCLUDE_DIR, ZeroMQ_LIBRARY_STATIC|SHARED, ZeroMQ_* instead.
+Use '-Wno-deprecated' or '-DZeroMQ_NO_DEPRECATED=ON' to suppress this message.")
+endif()
+
+unset(ERROR_STRING)
+unset(ZEROMQ_ROOT)
+
+mark_as_advanced(
+    ZeroMQ_LIBRARIES
+    ZeroMQ_LIBRARY_SHARED
+    ZMQ_LIBRARY_SHARED
+    ZeroMQ_LIBRARY_STATIC
+    ZMQ_LIBRARY_STATIC
+    ZeroMQ_VERSION_MAJOR
+    ZeroMQ_VERSION_MINOR
+    ZeroMQ_VERSION_PATCH
+)
