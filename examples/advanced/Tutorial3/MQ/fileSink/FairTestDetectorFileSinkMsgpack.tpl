@@ -27,7 +27,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 
         msgpack::object hitsObj = unpackedHits.get();
 
-        hitsObj.convert(&hits);
+        hitsObj.convert(hits);
 
         int numEntries = hits.size();
 

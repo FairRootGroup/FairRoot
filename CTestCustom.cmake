@@ -41,7 +41,9 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         # which changes the compiler flags fro the problematic
         # part of the code
 
-        # filter warnings from generated files 
+        # filter warnings from generated files
+        "FairTestDetectorPayloadDigi_generated.h"
+        "FairTestDetectorPayloadHit_generated.h"
         "FairTestDetectorPayload.pb"
         "Tuto7Payload.pb"
         "G__.*Dict"
