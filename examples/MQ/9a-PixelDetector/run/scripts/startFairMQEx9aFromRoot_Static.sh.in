@@ -208,6 +208,9 @@ kill $FILESINK_PID
 
 echo "Finished gracefully."
 
+# have to wait for the FILESINK process to finish
+wait $FILESINK_PID
+
 INPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $INPUTFILE | tail -1)"
 OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $OUTPUTFILE | tail -1)"
 echo "There are $INPUT_EVENTS in the input file."

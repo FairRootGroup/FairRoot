@@ -228,8 +228,8 @@ kill $FILESINK_PID
 
 echo "Finished gracefully."
 
-# have to sleep one second, otherwise the output file is not closed...
-sleep 1
+# have to wait for the FILESINK process to finish
+wait $FILESINK_PID
 
 echo "the output file name is $OUTPUTFILE"
 
