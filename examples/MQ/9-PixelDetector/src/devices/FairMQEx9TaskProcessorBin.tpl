@@ -169,7 +169,7 @@ bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/
                                         sizeof(PixelPayload::EventHeader),
                                         [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
                                         ));
-  partsOut.AddPart(msgHeader);
+  partsOut.AddPart(std::move(msgHeader));
   
   for ( int iobj = 0 ; iobj < fOutput->GetEntries() ; iobj++ ) {
     if ( strcmp(fOutput->At(iobj)->GetName(),"PixelHits") == 0 ) {
@@ -195,7 +195,7 @@ bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/
 	hitPayload[ihit].dposZ       = hit->GetDz();
       }
       LOG(TRACE) << "second part has size = " << hitsSize;
-      partsOut.AddPart(msgTCA);
+      partsOut.AddPart(std::move(msgTCA));
       
       LOG(TRACE) << "Output array should have " << nofEntries << "hits";
     }

@@ -12,9 +12,6 @@
  * @author R. Karabowicz
  */
 
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-
 #include "FairMQEx9Sampler.h"
 
 #include "TMessage.h"
@@ -41,6 +38,7 @@ FairMQEx9Sampler::FairMQEx9Sampler()
   , fEventCounter(0)
   , fBranchNames()
   , fFileNames()
+  , fAckListener()
 {
 }
 
@@ -87,7 +85,7 @@ void free_tmessage2(void* /*data*/, void *hint)
 
 void FairMQEx9Sampler::PreRun()
 {
-  fAckListener = new boost::thread(boost::bind(&FairMQEx9Sampler::ListenForAcks, this));
+  fAckListener = thread(&FairMQEx9Sampler::ListenForAcks, this);
 
   LOG(INFO) << "FairMQEx9Sampler::PreRun() finished!";
 }
@@ -116,41 +114,35 @@ bool FairMQEx9Sampler::ConditionalRun()
   return true;
 }
 
-void FairMQEx9Sampler::PostRun() 
+void FairMQEx9Sampler::PostRun()
 {
-  if ( fAckChannelName != "" ) {
-    try
-      {
-	fAckListener->join();
-      }
-    catch(boost::thread_resource_error& e)
-      {
-	LOG(ERROR) << e.what();
-	exit(EXIT_FAILURE);
-      }
+  if (fAckChannelName != "") {
+    fAckListener.join();
   }
-  
+
   LOG(INFO) << "PostRun() finished!";
 }
 
 void FairMQEx9Sampler::ListenForAcks()
 {
-  if ( fAckChannelName != "" ) {
-    for (Long64_t eventNr = 0; eventNr < fMaxIndex ; ++eventNr)
+  if (fAckChannelName != "")
+  {
+    Long64_t numAcks = 0;
+    for (Long64_t eventNr = 0; eventNr < fMaxIndex; ++eventNr)
+    {
+      unique_ptr<FairMQMessage> ack(NewMessage());
+      if (Receive(ack, fAckChannelName))
       {
-	unique_ptr<FairMQMessage> ack(NewMessage());
-	if (Receive(ack,fAckChannelName)) 
-	  {
-	    // do not need to do anything
-	  }
-
-	if (!CheckCurrentState(RUNNING))
-	  {
-	    break;
-	  }
+        // do not need to do anything
       }
 
-    LOG(INFO) << "Acknowledged " << fMaxIndex << " messages.";
+      if (!CheckCurrentState(RUNNING))
+      {
+        break;
+      }
+    }
+
+    LOG(INFO) << "Acknowledged " << numAcks << " messages.";
   }
 }
 

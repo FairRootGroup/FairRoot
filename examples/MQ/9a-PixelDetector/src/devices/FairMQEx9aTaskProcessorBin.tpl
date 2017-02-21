@@ -115,7 +115,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
                                           sizeof(PixelPayload::EventHeader),
                                           [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
                                           ));
-    partsOut.AddPart(msgHeader);
+    partsOut.AddPart(std::move(msgHeader));
 
     // create part with hits
     int hitsSize = nofDigis*sizeof(PixelPayload::Hit);
@@ -128,7 +128,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
     int nofHits = 0;
     fFairTask->ExecMQ(payloadD,nofDigis,hitPayload,nofHits);
 
-    partsOut.AddPart(msgTCA);
+    partsOut.AddPart(std::move(msgTCA));
   }
   
   Send(partsOut, fOutputChannelName);

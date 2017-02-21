@@ -45,24 +45,24 @@ class Ex2ProcessorTest : public FairMQDevice
 
         while (CheckCurrentState(RUNNING))
         {
-            FairMQParts parts;
+            FairMQParts partsIn;
 
-            if (Receive(parts, "data-in") > 0)
+            if (Receive(partsIn, "data-in") > 0)
             {
                 Ex2Header* header=nullptr;
-                Deserialize<SerializerEx2>(parts.AtRef(0), header);
-                Deserialize<SerializerEx2>(parts.AtRef(1), fInput);
+                Deserialize<SerializerEx2>(*partsIn.At(0), header);
+                Deserialize<SerializerEx2>(*partsIn.At(1), fInput);
 
                 receivedMsgs++;
 
                 Exec(fInput, fOutput);
-                FairMQParts partsToSend;
-                partsToSend.AddPart(parts.At(0));
+                FairMQParts partsOut;
+                partsOut.AddPart(std::move(partsIn.At(0)));
 
-                partsToSend.AddPart(NewMessage());
-                Serialize<SerializerEx2Boost>(partsToSend.AtRef(0), *header);
-                Serialize<SerializerEx2Boost>(partsToSend.AtRef(1), fOutput);
-                Send(partsToSend, "data-out");
+                partsOut.AddPart(NewMessage());
+                Serialize<SerializerEx2Boost>(*partsOut.At(0), *header);
+                Serialize<SerializerEx2Boost>(*partsOut.At(1), fOutput);
+                Send(partsOut, "data-out");
                 sentMsgs++;
             }
             if(receivedMsgs==100 && sentMsgs==100)
