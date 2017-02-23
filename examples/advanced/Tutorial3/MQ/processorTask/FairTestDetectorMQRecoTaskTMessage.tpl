@@ -39,6 +39,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMess
     fRecoTask->Exec(opt);
 
     delete fRecoTask->fDigiArray;
+    fRecoTask->fDigiArray = nullptr;
 
     TMessage* out = new TMessage(kMESS_OBJECT);
     out->WriteObject(fRecoTask->fHitArray);

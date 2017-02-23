@@ -40,6 +40,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
         fTree->Fill();
 
         delete fOutput;
+        fOutput = nullptr;
 
         return true;
     });
