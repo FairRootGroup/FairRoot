@@ -53,7 +53,7 @@ addons:
 
     # Commands to prepare for build_command
     # ** likely specific to your build **
-    build_command_prepend: 'mkdir build && cd build && export SIMPATH=/opt/fairsoft/nov15p1_root5 && cmake -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc ..'
+    build_command_prepend: 'mkdir build && cd build && export SIMPATH=/opt/fairsoft/${FAIRSOFT_VERSION} && cmake -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc ..'
 
     # The command that will be added as an argument to "cov-build" to compile your project for analysis,
     # ** likely specific to your build **
