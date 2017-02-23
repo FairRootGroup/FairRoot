@@ -1,15 +1,23 @@
 language: cpp
 
+
+env:
+
+  global:
+    # COVERITY_SCAN_TOKEN
+    # ** specific to your project **
+     - secure: "t65xtdQ7WpWBujB04gE7Ezh9cZ/GtHFEnwJyHeZdFDLeM0YgcNg8+Iv0LQj40DCbfMLV7c0lDV9hKOqfn+OhtHzBHglaiyHwMRZREH0VoIEnK/0W1z4nDFe0z5uv0SCp1UkhsnotDTiR99OzENg525SfTEiO5n9tdlz0gDCA40M="
+
 matrix:
     include:
-        - os: osx
-          compiler: clang
-          osx_image: xcode7.3
-          env: FAIRSOFT_VERSION=may16p1_root5
-        - os: osx
-          compiler: clang
-          osx_image: xcode7.3
-          env: FAIRSOFT_VERSION=may16p1_root6
+#        - os: osx
+#          compiler: clang
+#          osx_image: xcode7.3
+#          env: FAIRSOFT_VERSION=may16p1_root5
+#        - os: osx
+#          compiler: clang
+#          osx_image: xcode7.3
+#          env: FAIRSOFT_VERSION=may16p1_root6
 #        - os: osx
 #          compiler: clang
 #          osx_image: beta-xcode6.2
@@ -23,11 +31,38 @@ matrix:
           dist: trusty
           sudo: required
           env: FAIRSOFT_VERSION=may16p1_root5
-        - os: linux
-          compiler: gcc
-          dist: trusty
-          sudo: required
-          env: FAIRSOFT_VERSION=may16p1_root6
+#        - os: linux
+#          compiler: gcc
+#          dist: trusty
+#          sudo: required
+#          env: FAIRSOFT_VERSION=may16p1_root6
+
+
+addons:
+  coverity_scan:
+
+    # GitHub project metadata
+    # ** specific to your project **
+    project:
+      name: FairRootGroup/FairRoot
+      version: dev
+      description: "dev branch"
+
+    # Where email notification of build analysis results will be sent
+    notification_email: f.uhlig@gsi.de
+
+    # Commands to prepare for build_command
+    # ** likely specific to your build **
+    build_command_prepend: 'mkdir build && cd build && export SIMPATH=/opt/fairsoft/nov15p1_root5 && cmake -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc ..'
+
+    # The command that will be added as an argument to "cov-build" to compile your project for analysis,
+    # ** likely specific to your build **
+    build_command: make -j2
+
+    # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
+    # Take care in resource usage, and consider the build frequency allowances per
+    #   https://scan.coverity.com/faq#frequency
+    branch_pattern: coverity_scan
 
 before_install:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
@@ -86,7 +121,7 @@ before_script:
 script:
     - if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then
         ./Dart.sh Experimental Dart.cfg;
-      fi   
+      fi
 
 
 notifications:
