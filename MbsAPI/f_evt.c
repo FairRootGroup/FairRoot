@@ -560,11 +560,23 @@ INTS4 f_evt_get_open(INTS4 l_mode, CHARS* pc_server, s_evt_channel* ps_chan,
   // when timeout is already set by f_evt_timeout(), do not overwrite
   if(ps_chan->l_timeout==0) { ps_chan->l_timeout=-1; } /* no timeout */
 
-  strncpy(ps_chan->c_channel,pc_server,sizeof(ps_chan->c_channel));
+  if (strlen(pc_server) < sizeof(ps_chan->c_channel)) { // length of pc_server < 128
+    strncpy(ps_chan->c_channel,pc_server,sizeof(ps_chan->c_channel)-1);
+  } else {
+    printf("file name to long!\n");
+    return(GETEVT__NOFILE);
+  }
+
   switch(l_mode) {
   case GETEVT__FILE :
 
-    strncpy(c_file,pc_server,sizeof(c_file));
+    if (strlen(pc_server) < sizeof(c_file)) { // length of pc_server < 256
+      strncpy(c_file,pc_server,sizeof(c_file)-1);
+    } else {
+      printf("file name to long!\n");
+      return(GETEVT__NOFILE);
+    }
+
     if(strlen(c_file) < 5) { strcat(c_file,".lmd"); }
     else {
       pc_temp = (CHARS*) &c_file[strlen(c_file)-4];
@@ -1242,9 +1254,29 @@ INTS4 f_evt_put_open(CHARS* pc_file, INTS4 l_size, INTS4 l_stream,
         }  
       }
       ps_file_head->filhe_user_l=strlen(ps_file_head->filhe_user);
-      time(&s_timet);/* get calendar time */
-      strcpy(c_mode, ctime(&s_timet));
-      strcpy(ps_file_head->filhe_time, &c_mode[4]);
+
+      /* get calendar time
+       The returned string from ctime is of the format
+       Www Mmm dd hh:mm:ss yyyy
+       The string is followed by a new-line character ('\n') and terminated with a null-character.
+       The strinh has a length of 25 characters
+      */
+      time(&s_timet);
+      char* temptime = ctime(&s_timet);
+
+      if ( strlen(temptime) < sizeof(c_mode)) {
+        strncpy(c_mode, temptime, sizeof(c_mode)-1);
+      } else {
+        return(PUTEVT__FAILURE);
+      }
+
+      if ( strlen(&c_mode[4]) < sizeof(ps_file_head->filhe_time)) {
+        strncpy(ps_file_head->filhe_time, &c_mode[4], sizeof(ps_file_head->filhe_time)-1);
+      } else {
+        return(PUTEVT__FAILURE);
+      }
+
+      // Remove the terminating new-line character
       ps_file_head->filhe_time[20]=' ';
       l_write_size=write(ps_chan->l_channel_no,(CHARS*)ps_file_head,
                          ps_chan->l_buf_size);
