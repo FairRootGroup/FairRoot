@@ -23,7 +23,7 @@
 #include <fstream>                      // for ostream, operator<<, etc
 #include <string>                       // for operator<<
 #include <vector>                       // for vector
-
+#include <algorithm>                    // for min, max
 class FairLogger;
 
 #define IMP_CONVERTTOSTRING(s)  # s
@@ -38,6 +38,8 @@ class FairLogger;
 
 #define LOG_IF(level, condition) \
   !(condition) ? gLogger->GetNullStream(level) : LOG(level)
+
+#define gLogger (FairLogger::GetLogger())
 
 // Definiton of the different log levels
 // TODO(F.U): Find bettter names for DEBUG1..4
@@ -110,10 +112,21 @@ class FairLogger : public std::ostream
       SetMinLogLevel();
     }
 
+    void SetLogFileLevel(int level) {
+      fLogFileLevel = SanitizeLogLevel(level);
+      SetMinLogLevel();
+    }
+
     void SetLogScreenLevel(const char* level) {
       fLogScreenLevel = ConvertToLogLevel(level);
       SetMinLogLevel();
     }
+
+    void SetLogScreenLevel(const int level) {
+      fLogScreenLevel = SanitizeLogLevel(level);
+      SetMinLogLevel();
+    }
+
 
     void SetLogVerbosityLevel(const char* vlevel) {
       fLogVerbosityLevel = ConvertToLogVerbosityLevel(vlevel);
@@ -210,6 +223,13 @@ class FairLogger : public std::ostream
 
     const char* ConvertLogLevelToString(FairLogLevel level) const
     { return LogLevelString[level]; }
+    
+    FairLogLevel SanitizeLogLevel(int level)
+    {
+      int n=std::min((int)(sizeof(LogLevelString)/sizeof(LogLevelString[0]))-1, std::max(level, 0));
+      if (n!=level)
+	LOG(ERROR)<<"Numerical log level \""<<level<<"\" is out of range. Constraining to level "<<n <<" ("<< LogLevelString[n]<<")"<<FairLogger::endl;
+    }
 
     const char* fLogFileName;
     Bool_t fLogToScreen;
@@ -235,6 +255,5 @@ class FairLogger : public std::ostream
     ClassDef(FairLogger, 3)
 };
 
-#define gLogger (FairLogger::GetLogger())
 
 #endif  // BASE_FAIRLOGGER_H_
