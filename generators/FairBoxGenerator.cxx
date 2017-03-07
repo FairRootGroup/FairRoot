@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -41,10 +41,10 @@ FairBoxGenerator::FairBoxGenerator() :
   fPDGType(0),fMult(0),fPDGMass(0),fPtMin(0),fPtMax(0),
   fPhiMin(0),fPhiMax(0),fEtaMin(0),fEtaMax(0),fYMin(0),fYMax(0),
   fPMin(0),fPMax(0),fThetaMin(0),fThetaMax(0),fX(0),fY(0),fZ(0),
-  fX1(0),fY1(0),fX2(0),fY2(0),
+  fX1(0),fY1(0),fX2(0),fY2(0),fEkinMin(0),fEkinMax(0),
   fEtaRangeIsSet(0),fYRangeIsSet(0),fThetaRangeIsSet(0),
   fCosThetaIsSet(0),fPtRangeIsSet(0),fPRangeIsSet(0),
-  fPointVtxIsSet(0),fBoxVtxIsSet(0),fDebug(0)
+  fPointVtxIsSet(0),fBoxVtxIsSet(0),fDebug(0),fEkinRangeIsSet(0)
 {
   // Default constructor
 }
@@ -54,10 +54,10 @@ FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
   fPDGType(pdgid),fMult(mult),fPDGMass(0),fPtMin(0),fPtMax(0),
   fPhiMin(0),fPhiMax(0),fEtaMin(0),fEtaMax(0),fYMin(0),fYMax(0),
   fPMin(0),fPMax(0),fThetaMin(0),fThetaMax(0),fX(0),fY(0),fZ(0),
-  fX1(0),fY1(0),fX2(0),fY2(0),
+  fX1(0),fY1(0),fX2(0),fY2(0),fEkinMin(0),fEkinMax(0),
   fEtaRangeIsSet(0), fYRangeIsSet(0),fThetaRangeIsSet(0),
   fCosThetaIsSet(0), fPtRangeIsSet(0), fPRangeIsSet(0),
-  fPointVtxIsSet(0),fBoxVtxIsSet(0),fDebug(0)
+  fPointVtxIsSet(0),fBoxVtxIsSet(0),fDebug(0), fEkinRangeIsSet(0)
 {
   // Constructor. Set default kinematics limits
   SetPhiRange  ();
@@ -73,11 +73,12 @@ FairBoxGenerator::FairBoxGenerator(const FairBoxGenerator& rhs) :
   fPMin(rhs.fPMin),fPMax(rhs.fPMax),fThetaMin(rhs.fThetaMin),
   fThetaMax(rhs.fThetaMax),fX(rhs.fX),fY(rhs.fY),fZ(rhs.fZ),
   fX1(rhs.fX1),fY1(rhs.fY1),fX2(rhs.fX2),fY2(rhs.fY2),
+  fEkinMin(rhs.fEkinMin),fEkinMax(rhs.fEkinMax),
   fEtaRangeIsSet(rhs.fEtaRangeIsSet), fYRangeIsSet(rhs.fYRangeIsSet),
   fThetaRangeIsSet(rhs.fThetaRangeIsSet),fCosThetaIsSet(rhs.fCosThetaIsSet),
   fPtRangeIsSet(rhs.fPtRangeIsSet), fPRangeIsSet(rhs.fPRangeIsSet),
   fPointVtxIsSet(rhs.fPointVtxIsSet),fBoxVtxIsSet(rhs.fBoxVtxIsSet),
-  fDebug(rhs.fDebug)
+  fDebug(rhs.fDebug), fEkinRangeIsSet(rhs.fEkinRangeIsSet)
 {
   // Copy constructor
 }
@@ -116,6 +117,8 @@ FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
   fY1 = rhs.fY1;
   fX2 = rhs.fX2;
   fY2 = rhs.fY2;
+  fEkinMin = rhs.fEkinMin;
+  fEkinMax = rhs.fEkinMax;
   fEtaRangeIsSet = rhs.fEtaRangeIsSet;
   fYRangeIsSet = rhs.fYRangeIsSet;
   fThetaRangeIsSet = rhs.fThetaRangeIsSet;
@@ -125,6 +128,7 @@ FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
   fPointVtxIsSet = rhs.fPointVtxIsSet;
   fBoxVtxIsSet = rhs.fBoxVtxIsSet;
   fDebug = rhs.fDebug;
+  fEkinRangeIsSet = rhs.fEkinRangeIsSet;
 
   return *this;
 }
@@ -134,10 +138,31 @@ Bool_t  FairBoxGenerator::Init()
 {
   // Initialize generator
 
+  // Check for particle type
+  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
+  TParticlePDG* particle = pdgBase->GetParticle(fPDGType);
 
-  if (fPhiMax-fPhiMin>360)
+  if (! particle) {
+    Fatal("FairBoxGenerator","PDG code %d not defined.",fPDGType);
+  } else {
+    fPDGMass = particle->Mass();
+  }
+
+  if (fPhiMax-fPhiMin>360){
     Fatal("Init()","FairBoxGenerator: phi range is too wide: %f<phi<%f",
           fPhiMin,fPhiMax);
+  }
+  if (fEkinRangeIsSet){
+    if (fPRangeIsSet){
+      Fatal("Init()","FairBoxGenerator: Cannot set P and Ekin ranges simultaneously");
+    } else {
+      // Transform EkinRange to PRange, calculate momentum in GeV, p = √(K² + 2Kmc²)
+      fPMin = TMath::Sqrt(fEkinMin*fEkinMin + 2*fEkinMin*fPDGMass);
+      fPMax = TMath::Sqrt(fEkinMax*fEkinMax + 2*fEkinMax*fPDGMass);
+      fPRangeIsSet = kTRUE;
+      fEkinRangeIsSet = kFALSE;
+    }
+  }
   if (fPRangeIsSet && fPtRangeIsSet) {
     Fatal("Init()","FairBoxGenerator: Cannot set P and Pt ranges simultaneously");
   }
@@ -153,17 +178,6 @@ Bool_t  FairBoxGenerator::Init()
     Fatal("Init()","FairBoxGenerator: Cannot set point and box vertices simultaneously");
   }
 
-  // Check for particle type
-  TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  TParticlePDG* particle = pdgBase->GetParticle(fPDGType);
-
-  if (! particle) {
-    Fatal("FairBoxGenerator","PDG code %d not defined.",fPDGType);
-  } else {
-    fPDGMass = particle->Mass();
-    // printf("particle->Mass() = %f \n", fPDGMass);
-    return kTRUE;
-  }
 
   return kTRUE;
 }
