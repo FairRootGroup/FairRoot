@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -67,6 +67,9 @@ class FairBoxGenerator : public FairGenerator
     void SetPtRange      (Double32_t ptmin=0   , Double32_t ptmax=10)
     {fPtMin=ptmin; fPtMax=ptmax; fPtRangeIsSet=kTRUE;};
 
+    void SetEkinRange    (Double32_t kmin=0   , Double32_t kmax=10)
+    {fEkinMin=kmin; fEkinMax=kmax; fEkinRangeIsSet=kTRUE;}
+
     void SetPhiRange     (Double32_t phimin=0  , Double32_t phimax=360)
     {fPhiMin=phimin; fPhiMax=phimax;};
 
@@ -129,6 +132,7 @@ class FairBoxGenerator : public FairGenerator
     Double32_t fThetaMin, fThetaMax; // Polar angle range in lab system [degree]
     Double32_t fX, fY, fZ;           // Point vertex coordinates [cm]
     Double32_t fX1, fY1, fX2, fY2;   // Box vertex coords (x1,y1)->(x2,y2)
+    Double32_t fEkinMin,fEkinMax;    // Kinetic Energy range in lab system [GeV]
 
     Bool_t     fEtaRangeIsSet;       // True if eta range is set
     Bool_t     fYRangeIsSet;         // True if rapidity range is set
@@ -140,8 +144,9 @@ class FairBoxGenerator : public FairGenerator
     Bool_t     fPointVtxIsSet;       // True if point vertex is set
     Bool_t     fBoxVtxIsSet;         // True if box vertex is set
     Bool_t     fDebug;               // Debug switch
+    Bool_t     fEkinRangeIsSet;      // True if kinetic energy range is set
 
-    ClassDef(FairBoxGenerator,3);
+    ClassDef(FairBoxGenerator,4);
 
 };
 
