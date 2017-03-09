@@ -105,8 +105,8 @@ bool FairMQEx9SamplerBin::ConditionalRun()
                                             [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
                                             ));
       parts.AddPart(std::move(msgHeader));
-      LOG(TRACE) << "-----------------------------";
-      LOG(TRACE) << "first part has size = " << sizeof(PixelPayload::EventHeader);
+      // LOG(TRACE) << "-----------------------------";
+      // LOG(TRACE) << "first part has size = " << sizeof(PixelPayload::EventHeader);
     }
     else {
       Int_t nofEntries = ((TClonesArray*)fInputObjects[iobj])->GetEntries();
@@ -129,12 +129,12 @@ bool FairMQEx9SamplerBin::ConditionalRun()
 	digiPayload[idigi].fCol        = digi->GetCol();
 	digiPayload[idigi].fRow        = digi->GetRow();
       }
-      LOG(TRACE) << "second part has size = " << digisSize;
+      // LOG(TRACE) << "second part has size = " << digisSize;
       parts.AddPart(std::move(msgTCA));
     }
   }
       
-  LOG(TRACE) << "sending data with " << parts.Size() << " parts";
+  // LOG(TRACE) << "sending data with " << parts.Size() << " parts";
   Send(parts, fOutputChannelName);
   
   fEventCounter++;

@@ -123,7 +123,7 @@ bool FairMQEx9FileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
 
     // the first part should be the event header
     PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(nPPE*ievent)->GetData());
-    LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+    // LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
   
     for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ )
       {

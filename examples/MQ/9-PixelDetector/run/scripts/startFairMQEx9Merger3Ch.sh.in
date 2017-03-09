@@ -105,7 +105,7 @@ PROCESSOR3+=" --id processor3 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
 xterm -geometry 80x25+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR3 &
 
 ########################## start MERGER
-MERGER="ex9-merger3Ch $TRANSPORT"
+MERGER="ex9-merger $TRANSPORT"
 MERGER+=" $VERBOSE"
 MERGER+=" --id merger1 --mq-config $MQCONFIGFILE"
 xterm +aw -geometry 80x25+500+700 -hold -e @EXAMPLE9_BIN_LOCATION@/$MERGER &

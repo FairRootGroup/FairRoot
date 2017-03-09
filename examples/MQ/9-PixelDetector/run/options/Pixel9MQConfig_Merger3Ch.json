@@ -194,7 +194,7 @@
                 "id": "merger1",
                 "channels": [
                     {
-                        "name": "data-in1",
+                        "name": "data-in",
                         "sockets": [
                             {
                                 "type": "pull",
@@ -203,12 +203,7 @@
                                 "sndBufSize": 1000,
                                 "rcvBufSize": 1000,
                                 "rateLogging": 0
-                            }
-                        ]
-                    },
-                    {
-                        "name": "data-in2",
-                        "sockets": [
+                            },
                             {
                                 "type": "pull",
                                 "method": "bind",
@@ -216,12 +211,7 @@
                                 "sndBufSize": 1000,
                                 "rcvBufSize": 1000,
                                 "rateLogging": 0
-                            }
-                        ]
-                    },
-                    {
-                        "name": "data-in3",
-                        "sockets": [
+                            },
                             {
                                 "type": "pull",
                                 "method": "bind",

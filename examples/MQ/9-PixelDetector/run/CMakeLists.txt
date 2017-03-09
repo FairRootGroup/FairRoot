@@ -168,7 +168,6 @@ Set(Exe_Names
     ex9-sinkBin
 
     ex9-merger
-    ex9-merger3Ch
 )
 
 set(Exe_Source
@@ -181,7 +180,6 @@ set(Exe_Source
     runEx9FileSinkBin.cxx
 
     runEx9Merger.cxx
-    runEx9Merger3Ch.cxx
 )
 
 
