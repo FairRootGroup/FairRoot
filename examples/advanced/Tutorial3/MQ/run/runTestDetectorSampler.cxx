@@ -33,6 +33,8 @@ void addCustomOptions(bpo::options_description& options)
         ("input-file", bpo::value<std::string>()->required(), "Path to the input file")
         ("parameter-file", bpo::value<std::string>()->default_value(""), "Path to the parameter file")
         ("branch", bpo::value<std::string>()->default_value("FairTestDetectorDigi"), "Name of the Branch")
+        ("out-channel", bpo::value<std::string>()->default_value("data1"), "Name of the output channel")
+        ("ack-channel", bpo::value<std::string>()->default_value("ack"), "Name of the acknowledgement channel")
         ("chain-input", bpo::value<int>()->default_value(0), "Chain input file more than once (default)");
 }
 

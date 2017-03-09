@@ -23,7 +23,6 @@
 #include "TTree.h"
 #include "TClonesArray.h"
 #include "TVector3.h"
-#include "TString.h"
 #include "TSystem.h"
 
 #include "FairMQDevice.h"
@@ -53,6 +52,8 @@ class FairTestDetectorFileSink : public FairMQDevice
         , fOutFile(nullptr)
         , fTree(nullptr)
         , fReceivedMsgs(0)
+        , fInChannelName("data2")
+        , fAckChannelName("ack")
         , fHitVector()
     {
         gSystem->ResetSignal(kSigInterrupt);
@@ -81,11 +82,11 @@ class FairTestDetectorFileSink : public FairMQDevice
         delete fOutFile;
     }
 
-    virtual void InitOutputFile(TString defaultId = "100")
+    virtual void InitOutputFile(std::string defaultId = "100")
     {
         fOutput = new TClonesArray("FairTestDetectorHit");
         char out[256];
-        sprintf(out, "filesink%s.root", defaultId.Data());
+        sprintf(out, "filesink%s.root", defaultId.c_str());
 
         fOutFile = TFile::Open(out, "recreate");
         fTree = new TTree("MQOut", "Test output");
@@ -95,6 +96,18 @@ class FairTestDetectorFileSink : public FairMQDevice
   protected:
     virtual void Init()
     {
+        std::string inChannelName = fConfig->GetValue<std::string>("in-channel");
+        std::string ackChannelName = fConfig->GetValue<std::string>("ack-channel");
+        // check if the returned value actually exists, for the compatibility with old devices.
+        if (inChannelName != "")
+        {
+            fInChannelName = inChannelName;
+        }
+        if (ackChannelName != "")
+        {
+            fAckChannelName = ackChannelName;
+        }
+
         InitOutputFile("_" + fConfig->GetValue<string>("data-format"));
     }
     virtual void PostRun()
@@ -109,6 +122,8 @@ class FairTestDetectorFileSink : public FairMQDevice
     TFile* fOutFile;
     TTree* fTree;
     int fReceivedMsgs;
+    std::string fInChannelName;
+    std::string fAckChannelName;
 
 #ifndef __CINT__ // for BOOST serialization
     std::vector<TIn> fHitVector;

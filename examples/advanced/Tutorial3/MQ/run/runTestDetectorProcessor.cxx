@@ -29,6 +29,8 @@ using TProcessorMsgPack     = FairMQProcessor<FairTestDetectorMQRecoTask<FairTes
 void addCustomOptions(bpo::options_description& options)
 {
     options.add_options()
+        ("in-channel", bpo::value<std::string>()->default_value("data1"), "Name of the input channel")
+        ("out-channel", bpo::value<std::string>()->default_value("data2"), "Name of the output channel")
         ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)");
 }
 

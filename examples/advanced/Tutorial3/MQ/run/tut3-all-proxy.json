@@ -36,7 +36,7 @@
                 "id": "proxy1",
                 "channels": [
                     {
-                        "name": "data-in",
+                        "name": "data1",
                         "sockets": [
                             {
                                 "type": "pull",
@@ -49,7 +49,7 @@
                         ]
                     },
                     {
-                        "name": "data-out",
+                        "name": "data2",
                         "sockets": [
                             {
                                 "type": "push",
@@ -67,7 +67,7 @@
                 "key": "processor",
                 "channels": [
                     {
-                        "name": "data1",
+                        "name": "data2",
                         "sockets": [
                             {
                                 "type": "pull",
@@ -80,7 +80,7 @@
                         ]
                     },
                     {
-                        "name": "data2",
+                        "name": "data3",
                         "sockets": [
                             {
                                 "type": "push",
@@ -98,7 +98,7 @@
                 "id": "proxy2",
                 "channels": [
                     {
-                        "name": "data-in",
+                        "name": "data3",
                         "sockets": [
                             {
                                 "type": "pull",
@@ -111,7 +111,7 @@
                         ]
                     },
                     {
-                        "name": "data-out",
+                        "name": "data4",
                         "sockets": [
                             {
                                 "type": "push",
@@ -129,7 +129,7 @@
                 "id": "sink1",
                 "channels": [
                     {
-                        "name": "data2",
+                        "name": "data4",
                         "sockets": [
                             {
                                 "type": "pull",

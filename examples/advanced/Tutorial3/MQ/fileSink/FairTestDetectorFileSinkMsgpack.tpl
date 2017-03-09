@@ -11,7 +11,7 @@ struct MsgPack {};
 template <>
 void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 {
-    OnData("data2", [this](FairMQMessagePtr& msg, int /*index*/)
+    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/)
     {
         ++fReceivedMsgs;
 
@@ -46,7 +46,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
         }
 
         FairMQMessagePtr ack(fTransportFactory->CreateMessage());
-        fChannels.at("ack").at(0).Send(ack);
+        fChannels.at(fAckChannelName).at(0).Send(ack);
 
         fTree->Fill();
 

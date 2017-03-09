@@ -61,6 +61,8 @@ class FairMQSampler : public FairMQDevice
         , fInputFile()
         , fParFile()
         , fBranch()
+        , fOutChannelName("data1")
+        , fAckChannelName("ack")
         , fNumEvents(0)
         , fChainInput(0)
         , fSentMsgs(0)
@@ -88,6 +90,18 @@ class FairMQSampler : public FairMQDevice
         fParFile = fConfig->GetValue<std::string>("parameter-file");
         fBranch = fConfig->GetValue<std::string>("branch");
         fChainInput = fConfig->GetValue<int>("chain-input");
+
+        std::string outChannelName = fConfig->GetValue<std::string>("out-channel");
+        std::string ackChannelName = fConfig->GetValue<std::string>("ack-channel");
+        // check if the returned value actually exists, for the compatibility with old devices.
+        if (outChannelName != "")
+        {
+            fOutChannelName = outChannelName;
+        }
+        if (ackChannelName != "")
+        {
+            fAckChannelName = ackChannelName;
+        }
 
         fSamplerTask->SetBranch(fBranch);
         fSamplerTask->SetTransport(fTransportFactory);
@@ -143,7 +157,7 @@ class FairMQSampler : public FairMQDevice
         fFairRunAna->RunMQ(fSentMsgs);
         fSamplerTask->GetPayload(msg);
 
-        if (fChannels.at("data1").at(0).Send(msg) >= 0)
+        if (Send(msg, fOutChannelName) >= 0)
         {
             ++fSentMsgs;
             if (fSentMsgs == fNumEvents)
@@ -173,8 +187,8 @@ class FairMQSampler : public FairMQDevice
         uint64_t numAcks = 0;
         for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
         {
-            std::unique_ptr<FairMQMessage> ack(fTransportFactory->CreateMessage());
-            fChannels.at("ack").at(0).Receive(ack);
+            FairMQMessagePtr ack(NewMessage());
+            Receive(ack, fAckChannelName);
 
             ++numAcks;
 
@@ -196,6 +210,8 @@ class FairMQSampler : public FairMQDevice
     std::string fInputFile; // Filename of a root file containing the simulated digis.
     std::string fParFile;
     std::string fBranch; // The name of the sub-detector branch to stream the digis from.
+    std::string fOutChannelName;
+    std::string fAckChannelName;
     int fNumEvents;
     int fChainInput;
     int fSentMsgs;
