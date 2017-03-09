@@ -25,6 +25,8 @@ class FairMQProcessor : public FairMQDevice
   public:
     FairMQProcessor()
         : fProcessorTask(new Task)
+        , fInChannelName("data1")
+        , fOutChannelName("data2")
         , fReceivedMsgs(0)
         , fSentMsgs(0)
     {}
@@ -33,23 +35,32 @@ class FairMQProcessor : public FairMQDevice
     FairMQProcessor(const FairMQProcessor&) = delete;
     FairMQProcessor operator=(const FairMQProcessor&) = delete;
 
-    virtual ~FairMQProcessor()
-    {
-        delete fProcessorTask;
-    }
+    virtual ~FairMQProcessor() {}
 
   protected:
     virtual void InitTask()
     {
+        std::string inChannelName = fConfig->GetValue<std::string>("in-channel");
+        std::string outChannelName = fConfig->GetValue<std::string>("out-channel");
+        // check if the returned value actually exists, for the compatibility with old devices.
+        if (inChannelName != "")
+        {
+            fInChannelName = inChannelName;
+        }
+        if (outChannelName != "")
+        {
+            fOutChannelName = outChannelName;
+        }
+
         fProcessorTask->InitTask();
-        OnData("data1", [this](std::unique_ptr<FairMQMessage>& msg, int /*index*/)
+        OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/)
         {
             ++fReceivedMsgs;
             fProcessorTask->SetPayload(msg);
             fProcessorTask->Exec();
             fProcessorTask->GetPayload(msg);
 
-            fChannels.at("data2").at(0).Send(msg);
+            Send(msg, fOutChannelName);
             ++fSentMsgs;
 
             return true;
@@ -62,7 +73,9 @@ class FairMQProcessor : public FairMQDevice
     }
 
   private:
-    FairMQProcessorTask* fProcessorTask;
+    std::unique_ptr<FairMQProcessorTask> fProcessorTask;
+    std::string fInChannelName;
+    std::string fOutChannelName;
     int fReceivedMsgs;
     int fSentMsgs;
 };

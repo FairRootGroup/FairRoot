@@ -21,7 +21,7 @@ class TestDetectorTMessage : public TMessage
 template <>
 void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
 {
-    OnData("data2", [this](FairMQMessagePtr& msg, int /*index*/)
+    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/)
     {
         ++fReceivedMsgs;
 
@@ -35,7 +35,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
         }
 
         FairMQMessagePtr ack(fTransportFactory->CreateMessage());
-        fChannels.at("ack").at(0).Send(ack);
+        fChannels.at(fAckChannelName).at(0).Send(ack);
 
         fTree->Fill();
 

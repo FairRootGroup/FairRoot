@@ -28,6 +28,8 @@ using TSinkMsgPack     = FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>;
 void addCustomOptions(bpo::options_description& options)
 {
     options.add_options()
+        ("in-channel", bpo::value<std::string>()->default_value("data2"), "Name of the input channel")
+        ("ack-channel", bpo::value<std::string>()->default_value("ack"), "Name of the acknowledgement channel")
         ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)");
 }
 
