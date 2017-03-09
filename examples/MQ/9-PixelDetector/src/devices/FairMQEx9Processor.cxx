@@ -98,7 +98,7 @@ void FairMQEx9Processor::Run()
 
       FairMQParts parts;
 
-        LOG(TRACE)<<"in loop";
+        // LOG(TRACE)<<"in loop";
         if ( Receive(parts,"data-in") >= 0 )
         {
 	  LOG(INFO) << "my message has " << parts.Size() << " parts...";
@@ -137,7 +137,7 @@ void FairMQEx9Processor::Run()
 
             // Execute hit finder task
             fHitFinder.Exec(fInput,fOutput);
-            LOG(TRACE)<<"exec task finish";
+            // LOG(TRACE)<<"exec task finish";
             // if output not empty serialize and send
 
 
@@ -154,7 +154,7 @@ void FairMQEx9Processor::Run()
             Send(partsOut, "data-out");
 
 	    sentMsgs++;
-	    LOG(TRACE)<<"message sent ";
+	    // LOG(TRACE)<<"message sent ";
         }
 	fInput->Clear();
     }
@@ -194,13 +194,13 @@ void FairMQEx9Processor::UpdateParameters()
     auto fPitchX = fDigiPar->GetXPitch();
     auto fPitchY = fDigiPar->GetYPitch();
     //fGeoParSet=geopar;
-    LOG(TRACE)<<"FairMQEx9Processor::UpdateParameters() "
-          <<" fFeCols="<<fFeCols
-          <<" fFeRows="<<fFeRows
-          <<" fMaxFEperCol="<<fMaxFEperCol
-          <<" fPitchX="<<fPitchX
-          <<" fPitchY="<<fPitchY
-          ;
+    // LOG(TRACE)<<"FairMQEx9Processor::UpdateParameters() "
+          // <<" fFeCols="<<fFeCols
+          // <<" fFeRows="<<fFeRows
+          // <<" fMaxFEperCol="<<fMaxFEperCol
+          // <<" fPitchX="<<fPitchX
+          // <<" fPitchY="<<fPitchY
+          // ;
 
     LOG(WARN)<<"Update geo parameters...";
     fGeoPar=UpdateParameter<FairGeoParSet>(fGeoParamName,fGeoPar);

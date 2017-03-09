@@ -85,7 +85,9 @@ void free_tmessage2(void* /*data*/, void *hint)
 
 void FairMQEx9Sampler::PreRun()
 {
-  fAckListener = thread(&FairMQEx9Sampler::ListenForAcks, this);
+  if (fAckChannelName != "") {
+    fAckListener = thread(&FairMQEx9Sampler::ListenForAcks, this);
+  }
 
   LOG(INFO) << "FairMQEx9Sampler::PreRun() finished!";
 }

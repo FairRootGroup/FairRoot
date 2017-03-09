@@ -66,7 +66,7 @@ void FairMQEx9aTaskProcessorBin<T>::Init()
 template <typename T>
 bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/)
 {
-  LOG(TRACE)<<"message received with " << parts.Size() << " parts!";
+  // LOG(TRACE)<<"message received with " << parts.Size() << " parts!";
   fReceivedMsgs++;
   
   if ( parts.Size() == 0 ) return 0; // probably impossible, but still check
@@ -83,7 +83,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
   for ( int ievent = 0 ; ievent < parts.Size()/nPPE ; ievent++ ) {
     // the first part should be the event header
     PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(nPPE*ievent)->GetData());
-    LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+    // LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
 
     fNewRunId = payloadE->fRunId;
     if(fNewRunId!=fCurrentRunId)
@@ -100,7 +100,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
     int digiArraySize = parts.At(nPPE*ievent+1)->GetSize();
     int nofDigis      = digiArraySize / sizeof(PixelPayload::Digi);
 
-    LOG(TRACE) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
+    // LOG(TRACE) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
 
     // create eventHeader part
     PixelPayload::EventHeader* header = new PixelPayload::EventHeader();

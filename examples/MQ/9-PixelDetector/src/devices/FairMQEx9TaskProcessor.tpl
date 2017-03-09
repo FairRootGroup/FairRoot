@@ -75,14 +75,14 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 {
   TObject* objectToKeep = NULL;
   
-  LOG(TRACE)<<"message received with " << parts.Size() << " parts.";
+  // LOG(TRACE)<<"message received with " << parts.Size() << " parts.";
   fReceivedMsgs++;
   TObject* tempObjects[10];
   for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
     {
       Ex9TMessage2 tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
       tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
-      LOG(TRACE) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
+      // LOG(TRACE) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
       if ( strcmp(tempObjects[ipart]->GetName(),"EventHeader.") == 0 ) 
 	fEventHeader = (FairEventHeader*)tempObjects[ipart];
       else {
@@ -92,7 +92,7 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
   
   fNewRunId = fEventHeader->GetRunId();
   
-  LOG(TRACE)<<"got event header with run = " << fNewRunId;
+  // LOG(TRACE)<<"got event header with run = " << fNewRunId;
   
   if(fNewRunId!=fCurrentRunId)
     {
