@@ -30,8 +30,8 @@ FairTutorialDet2GeoPar::~FairTutorialDet2GeoPar(void)
 
 void FairTutorialDet2GeoPar::clear(void)
 {
-  if(fGeoSensNodes) { delete fGeoSensNodes; }
-  if(fGeoPassNodes) { delete fGeoPassNodes; }
+  delete fGeoSensNodes;
+  delete fGeoPassNodes;
 }
 
 void FairTutorialDet2GeoPar::putParams(FairParamList* l)

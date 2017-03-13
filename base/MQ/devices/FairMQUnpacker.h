@@ -43,10 +43,7 @@ class FairMQUnpacker : public FairMQDevice
 
     virtual ~FairMQUnpacker()
     {
-        if (fUnpacker)
-        {
-            delete fUnpacker;
-        }
+        delete fUnpacker;
     }
 
     void AddSubEvtKey(short type, short subType, short procid, short subCrate, short control, const std::string& channelName)

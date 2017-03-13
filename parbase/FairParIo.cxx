@@ -77,8 +77,6 @@ void FairParIo::removeDetParIo(Text_t* detName)
 {
   // removes input/output class for a detector
   TObject* p=detParIoList->FindObject(detName);
-  if (p) {
-    delete p;
-    p=0;
-  }
+  delete p;
+  p=0;
 }

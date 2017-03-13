@@ -85,7 +85,7 @@ PixelDigitize::PixelDigitize(const char* name, Int_t iVerbose)
 // -----   Destructor   ----------------------------------------------------
 PixelDigitize::~PixelDigitize() { 
   Reset();
-  if ( fDigiPar)   delete fDigiPar;
+  delete fDigiPar;
   if ( fDigis ) {
     fDigis->Delete();
     delete fDigis;

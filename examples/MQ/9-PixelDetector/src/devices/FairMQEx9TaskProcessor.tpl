@@ -40,24 +40,12 @@ FairMQEx9TaskProcessor<T>::FairMQEx9TaskProcessor()
 template <typename T>
 FairMQEx9TaskProcessor<T>::~FairMQEx9TaskProcessor()
 {
-  if(fGeoPar)
-    {
-      delete fGeoPar;
-      fGeoPar=nullptr;
-    }
-  
-  if(fInput)
-    {
-      delete fInput;
-      fInput=nullptr;
-    }
-  
-  if(fOutput)
-    {
-      delete fOutput;
-      fOutput=nullptr;
-    }
-
+  delete fGeoPar;
+  fGeoPar=nullptr;
+  delete fInput;
+  fInput=nullptr;
+  delete fOutput;
+  fOutput=nullptr;
   delete fFairTask;
 }
 

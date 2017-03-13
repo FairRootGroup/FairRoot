@@ -406,7 +406,7 @@ void FairModule::ConstructRootGeometry()
        *  produce TGeoVolumes with materials that have only names and no properties
        */
       ExpandNode(n);
-      if(NewGeo!=0) { delete NewGeo; }
+      delete NewGeo;
       delete f;
     } else {
       LOG(FATAL)<<"Could not find the given mother volume "<< fMotherVolumeName.Data() << " where the geomanger should be added."<<FairLogger::endl;

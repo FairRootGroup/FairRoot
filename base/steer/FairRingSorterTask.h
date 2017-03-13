@@ -79,7 +79,7 @@ class FairRingSorterTask : public FairTask
 
     /** Destructor **/
     virtual ~FairRingSorterTask() {
-      if (fSorter!= 0) { delete fSorter; }
+      delete fSorter;
     }
 
     /** Virtual method Init **/

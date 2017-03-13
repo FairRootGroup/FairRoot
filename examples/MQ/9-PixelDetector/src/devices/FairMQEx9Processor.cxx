@@ -63,24 +63,14 @@ FairMQEx9Processor::FairMQEx9Processor()
 
 FairMQEx9Processor::~FairMQEx9Processor()
 {
-    if(fDigiPar)
-    {
-        delete fDigiPar;
-        fDigiPar=nullptr;
-    }
+    delete fDigiPar;
+    fDigiPar=nullptr;
 
-    if(fGeoPar)
-    {
-        delete fGeoPar;
-        fGeoPar=nullptr;
-    }
+    delete fGeoPar;
+    fGeoPar=nullptr;
 
-    if(fOutput)
-    {
-        delete fOutput;
-        fOutput=nullptr;
-    }
-
+    delete fOutput;
+    fOutput=nullptr;
 
 }
 
@@ -187,17 +177,11 @@ void FairMQEx9Processor::CustomCleanup(void* /*data*/, void* hint)
 void FairMQEx9Processor::UpdateParameters()
 {
     //*
-    if(fDigiPar)
-    {
-        delete fDigiPar;
-        fDigiPar=nullptr;
-    }
+    delete fDigiPar;
+    fDigiPar=nullptr;
 
-    if(fGeoPar)
-    {
-        delete fGeoPar;
-        fGeoPar=nullptr;
-    }
+    delete fGeoPar;
+    fGeoPar=nullptr;
 
     fDigiPar = new PixelDigiPar();
     fGeoPar = new FairGeoParSet();

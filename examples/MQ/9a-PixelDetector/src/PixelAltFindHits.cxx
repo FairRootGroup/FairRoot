@@ -92,7 +92,7 @@ PixelAltFindHits::PixelAltFindHits(const char* name, Int_t iVerbose)
 // -----   Destructor   ----------------------------------------------------
 PixelAltFindHits::~PixelAltFindHits() { 
   Reset();
-  if ( fDigiPar)   delete fDigiPar;
+  delete fDigiPar;
   if ( fHits ) {
     fHits->Delete();
     delete fHits;

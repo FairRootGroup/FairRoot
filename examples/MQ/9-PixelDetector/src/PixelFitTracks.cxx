@@ -80,7 +80,7 @@ PixelFitTracks::PixelFitTracks(const char* name, Int_t iVerbose)
 // -----   Destructor   ----------------------------------------------------
 PixelFitTracks::~PixelFitTracks() { 
   Reset();
-  if ( fDigiPar)   delete fDigiPar;
+  delete fDigiPar;
   if ( fFitTracks ) {
     fFitTracks->Delete();
     delete fFitTracks;

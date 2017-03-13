@@ -224,8 +224,5 @@ int ParameterMQServer::GetProperty(const int key, const int default_ /*= 0*/)
 
 ParameterMQServer::~ParameterMQServer()
 {
-    if (fRtdb)
-    {
-        delete fRtdb;
-    }
+    delete fRtdb;
 }

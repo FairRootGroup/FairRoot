@@ -77,9 +77,7 @@ FairParRootFile::FairParRootFile(TFile* f)
 FairParRootFile::~FairParRootFile()
 {
   // destructor
-  if (run) {
-    delete run;
-  }
+  delete run;
   run=0;
   //TODO: What about the file? Should it be closed or not
 }
@@ -90,9 +88,7 @@ void FairParRootFile::readVersions(FairRtdbRun* currentRun)
 {
   // finds the current run containing the parameter container versions
   // in the ROOT file
-  if (run) {
-    delete run;
-  }
+  delete run;
 
   run=static_cast<FairRtdbRun*>(RootFile->Get((const_cast<char*>(currentRun->GetName()))));
   //cout << "-I- FairParRootFile :: readversions " << currentRun->GetName() << " : " << run << endl;

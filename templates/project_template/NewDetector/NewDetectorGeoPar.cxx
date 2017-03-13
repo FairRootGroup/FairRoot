@@ -30,8 +30,8 @@ NewDetectorGeoPar::~NewDetectorGeoPar(void)
 
 void NewDetectorGeoPar::clear(void)
 {
-  if(fGeoSensNodes) { delete fGeoSensNodes; }
-  if(fGeoPassNodes) { delete fGeoPassNodes; }
+  delete fGeoSensNodes;
+  delete fGeoPassNodes;
 }
 
 void NewDetectorGeoPar::putParams(FairParamList* l)

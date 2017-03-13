@@ -52,22 +52,13 @@ class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<Fair
 
     virtual ~FairSourceMQInterface()
     {
-        if (fInput)
-        {
-            delete fInput;
-        }
+        delete fInput;
         fInput = nullptr;
 
-        if (fSource)
-        {
-            delete fSource;
-        }
+        delete fSource;
         fSource = nullptr;
 
-        if (fRunAna)
-        {
-            delete fRunAna;
-        }
+        delete fRunAna;
         fRunAna = nullptr;
     }
 

@@ -76,7 +76,7 @@ struct RootDeserializer
     template<typename T>
     void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, T*& output)
     {
-        if(output) delete output;
+        delete output;
         FairTMessage tm(msg->GetData(), msg->GetSize());
         output = static_cast<T*>(tm.ReadObject(tm.GetClass()));
     }
@@ -91,7 +91,7 @@ struct RootDeserializer
     template<typename T>
     void Deserialize(FairMQMessage& msg, T*& output)
     {
-        if(output) delete output;
+        delete output;
         FairTMessage tm(msg.GetData(), msg.GetSize());
         output = static_cast<T*>(tm.ReadObject(tm.GetClass()));
     }

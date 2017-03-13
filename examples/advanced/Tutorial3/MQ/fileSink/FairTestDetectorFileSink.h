@@ -76,14 +76,8 @@ class FairTestDetectorFileSink : public FairMQDevice
     {
         fTree->Write();
         fOutFile->Close();
-        if (fHitVector.size() > 0)
-        {
-            fHitVector.clear();
-        }
-        if (fOutput)
-        {
-            delete fOutput;
-        }
+        fHitVector.clear();
+        delete fOutput;
         delete fOutFile;
     }
 

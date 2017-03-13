@@ -444,7 +444,7 @@ void FairRunSim::SetMaterials(const char* MatFileName)
 void FairRunSim::SetGeoModel( char* name )
 {
   if ( strncmp(fName,"TGeant3",7) == 0 ) {
-    if (fLoaderName) { delete fLoaderName; }
+    delete fLoaderName;
     fLoaderName = new TString(name);
     LOG(INFO) << "FairRun::SetGeoModel(): G3 native geometry model used "
 	      << FairLogger::endl;

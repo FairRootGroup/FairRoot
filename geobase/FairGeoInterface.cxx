@@ -66,18 +66,13 @@ FairGeoInterface::FairGeoInterface()
 FairGeoInterface::~FairGeoInterface()
 {
   // Destructor
-  if (fileInput) {
-    delete fileInput;
-    fileInput=0;
-  }
-  if (oraInput) {
-    delete oraInput;
-    oraInput=0;
-  }
-  if (output) {
-    delete output;
-    output=0;
-  }
+  delete fileInput;
+  fileInput=0;
+  delete oraInput;
+  oraInput=0;
+  delete output;
+  output=0;
+
 //  if (geoBuilder) {
 //    delete geoBuilder;
 //    geoBuilder=0;

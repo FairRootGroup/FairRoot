@@ -24,14 +24,8 @@ FairTestDetectorGeoPar::~FairTestDetectorGeoPar(void)
 
 void FairTestDetectorGeoPar::clear(void)
 {
-    if (fGeoSensNodes)
-    {
-        delete fGeoSensNodes;
-    }
-    if (fGeoPassNodes)
-    {
-        delete fGeoPassNodes;
-    }
+    delete fGeoSensNodes;
+    delete fGeoPassNodes;
 }
 
 void FairTestDetectorGeoPar::putParams(FairParamList* l)

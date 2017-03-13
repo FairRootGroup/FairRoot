@@ -81,7 +81,7 @@ PixelFindTracks::PixelFindTracks(const char* name, Int_t iVerbose)
 // -----   Destructor   ----------------------------------------------------
 PixelFindTracks::~PixelFindTracks() { 
   Reset();
-  if ( fDigiPar)   delete fDigiPar;
+  delete fDigiPar;
   if ( fTracks ) {
     fTracks->Delete();
     delete fTracks;

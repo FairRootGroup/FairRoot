@@ -54,7 +54,7 @@ struct SerializerEx2
 
     void Deserialize(FairMQMessage& msg, TClonesArray*& output)
     {
-        if (output) delete output;
+        delete output;
         FairTMessage tm(msg.GetData(), msg.GetSize());
         output = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
     }

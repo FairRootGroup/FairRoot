@@ -107,9 +107,7 @@ FairRunAna::FairRunAna()
 FairRunAna::~FairRunAna()
 {
   //  delete fFriendFileList;
-  if (fField) {
-    delete fField;
-  }
+  delete fField;
   if (gGeoManager) {
     if (gROOT->GetVersionInt() >= 60602) {
       gGeoManager->GetListOfVolumes()->Delete();

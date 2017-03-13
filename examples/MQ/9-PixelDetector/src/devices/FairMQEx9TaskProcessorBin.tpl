@@ -49,39 +49,24 @@ template <typename T>
 FairMQEx9TaskProcessorBin<T>::~FairMQEx9TaskProcessorBin()
 {
   LOG(INFO) << "deteling fGeoPar"; 
- if(fGeoPar)
-    {
-      delete fGeoPar;
-      fGeoPar=nullptr;
-    }
-   
+  delete fGeoPar;
+  fGeoPar=nullptr;
+
   LOG(INFO) << "deteling fInput";
- if(fInput)
-    {
-      delete fInput;
-      fInput=nullptr;
-    }
-  
+  delete fInput;
+  fInput=nullptr;
+
   LOG(INFO) << "deteling fOutput";
-  if(fOutput)
-    {
-      delete fOutput;
-      fOutput=nullptr;
-    }
+  delete fOutput;
+  fOutput=nullptr;
 
   LOG(INFO) << "deteling fInputArray";
-  if(fInputArray)
-    {
-      delete fInputArray;
-      fInputArray=nullptr;
-    }
-  
+  delete fInputArray;
+  fInputArray=nullptr;
+
   LOG(INFO) << "deteling fOutputArray";
-  if(fOutputArray)
-    {
-      delete fOutputArray;
-      fOutputArray=nullptr;
-    }
+  delete fOutputArray;
+  fOutputArray=nullptr;
 
   delete fFairTask;
 }
