@@ -53,9 +53,7 @@ FairDetector::FairDetector(const FairDetector& rhs)
 
 FairDetector::~FairDetector()
 {
-
-  if ( flGeoPar ) { delete flGeoPar; }
-
+  delete flGeoPar;
 }
 // -------------------------------------------------------------------------
 

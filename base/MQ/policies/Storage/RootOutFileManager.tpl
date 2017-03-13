@@ -47,8 +47,7 @@ RootOutFileManager<DataType>::~RootOutFileManager()
     if (fFlowMode && fWrite)
         fTree->Write("", TObject::kOverwrite);
 
-    if (fTree)
-        delete fTree;
+    delete fTree;
 
     if (fOutFile)
     {
@@ -56,9 +55,8 @@ RootOutFileManager<DataType>::~RootOutFileManager()
             fOutFile->Close();
         delete fOutFile;
     }
-    
-    if (fFolder)
-        delete fFolder;
+ 
+    delete fFolder;
 }
 
 template <typename DataType>

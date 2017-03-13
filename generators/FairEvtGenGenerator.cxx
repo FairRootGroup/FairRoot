@@ -80,7 +80,7 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, 
 // -----   Destructor   ---------------------------------------------------
 FairEvtGenGenerator::~FairEvtGenGenerator()
 {
-  if(fDensityFunction) { delete fDensityFunction; }
+  delete fDensityFunction;
   if(fInputFile) { fclose(fInputFile); }
 }
 // ------------------------------------------------------------------------

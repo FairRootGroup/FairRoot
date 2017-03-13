@@ -45,10 +45,8 @@ FairGeoAsciiIo::~FairGeoAsciiIo()
 {
   // Destructor
   close();
-  if (file) {
-    delete file;
-    file=0;
-  }
+  delete file;
+  file=0;
 }
 
 Bool_t FairGeoAsciiIo::open(const char* fname,const Text_t* status)
@@ -208,10 +206,8 @@ Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface)
     if (strlen(buf)>=3 && buf[1]!='/') {
       if (buf[0]=='[') {
         set=0;
-        if (mod) {
-          delete [] mod;
-          mod=0;
-        }
+        delete [] mod;
+        mod=0;
         s=buf;
         Ssiz_t n=s.First(']');
         det=s(1,n-1);
@@ -219,7 +215,7 @@ Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface)
         set=interface->findSet(det);
         if (!set) {
           Error("readDetectorSetup","Detector %s not found",det.Data());
-          if (mod) { delete [] mod; }
+          delete [] mod;
           return kFALSE;
         }
         maxModules=set->getMaxModules();
@@ -236,12 +232,12 @@ Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface)
             set->setModules(secNo,mod);
           }
         } else {
-          if (mod) { delete [] mod; }
+          delete [] mod;
           return kFALSE;
         }
       }
     }
   }
-  if (mod) { delete [] mod; }
+  delete [] mod;
   return kTRUE;
 }

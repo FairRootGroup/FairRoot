@@ -33,8 +33,8 @@ FairGeoParSet::~FairGeoParSet(void)
 
 void FairGeoParSet::clear(void)
 {
-  //if(fGeoNodes) { delete fGeoNodes; }
-// if(fGeom ) delete fGeom;
+  //delete fGeoNodes;
+// delete fGeom;
 
 }
 

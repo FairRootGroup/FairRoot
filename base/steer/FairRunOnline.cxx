@@ -110,9 +110,7 @@ FairRunOnline::FairRunOnline(FairSource* source)
 FairRunOnline::~FairRunOnline()
 {
   //  delete fFriendFileList;
-  if (fField) {
-    delete fField;
-  }
+  delete fField;
   if (gGeoManager) {
     if (gROOT->GetVersionInt() >= 60602) {
       gGeoManager->GetListOfVolumes()->Delete();
@@ -124,10 +122,7 @@ FairRunOnline::~FairRunOnline()
     fFolder->Delete();
     delete fFolder;
   }
-  if(fServer)
-  {
-    delete fServer;
-  }
+  delete fServer;
 }
 //_____________________________________________________________________________
 

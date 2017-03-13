@@ -58,15 +58,10 @@ FairGeoSet::FairGeoSet()
 FairGeoSet::~FairGeoSet()
 {
   // Destructor
-  if (volumes) {
-//    volumes->Delete("slow");
-    delete volumes;
-    volumes=0;
-  }
-  if (modules) {
-    delete modules;
-    modules=0;
-  }
+  delete volumes;
+  volumes=0;
+  delete modules;
+  modules=0;
 }
 
 void FairGeoSet::setModules(Int_t s,Int_t* m)

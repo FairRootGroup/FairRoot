@@ -31,8 +31,8 @@ FairGeoPassivePar::~FairGeoPassivePar(void)
 
 void FairGeoPassivePar::clear(void)
 {
-  if(fGeoSensNodes) { delete fGeoSensNodes; }
-  if(fGeoPassNodes) { delete fGeoPassNodes; }
+  delete fGeoSensNodes;
+  delete fGeoPassNodes;
 }
 
 void FairGeoPassivePar::putParams(FairParamList* l)

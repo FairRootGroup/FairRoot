@@ -324,14 +324,10 @@ FairParamObj::FairParamObj(const Text_t* name,const UChar_t* value,const Int_t n
 FairParamObj::~FairParamObj()
 {
   // Destructor
-  if (paramValue) {
-    delete [] paramValue;
-    paramValue=0;
-  }
-  if (streamerInfo) {
-    delete [] streamerInfo;
-    streamerInfo=0;
-  }
+  delete [] paramValue;
+  paramValue=0;
+  delete [] streamerInfo;
+  streamerInfo=0;
 }
 
 void FairParamObj::setParamType(const Text_t* t)
@@ -374,7 +370,7 @@ void FairParamObj::setParamType(const Text_t* t)
 UChar_t* FairParamObj::setLength(Int_t l)
 {
   // Sets the length of the binary array
-  if (paramValue) { delete [] paramValue; }
+  delete [] paramValue;
   arraySize=l;
   if (l>0) {
     paramValue=new UChar_t[arraySize];
@@ -387,7 +383,7 @@ UChar_t* FairParamObj::setLength(Int_t l)
 void FairParamObj::setParamValue(UChar_t* value,const Int_t length)
 {
   // Sets the parameter value (the array is not copied!)
-  if (paramValue) { delete [] paramValue; }
+  delete [] paramValue;
   arraySize=length;
   paramValue=value;
 }
@@ -395,7 +391,7 @@ void FairParamObj::setParamValue(UChar_t* value,const Int_t length)
 UChar_t* FairParamObj::setStreamerInfoSize(Int_t l)
 {
   // Sets the length of the streamer info
-  if (streamerInfo) { delete [] streamerInfo; }
+  delete [] streamerInfo;
   streamerInfoSize=l;
   if (l>0) {
     streamerInfo=new UChar_t[streamerInfoSize];
@@ -408,7 +404,7 @@ UChar_t* FairParamObj::setStreamerInfoSize(Int_t l)
 void FairParamObj::setStreamerInfo(UChar_t* array,const Int_t length)
 {
   // Sets the streamer info of ROOT classes (the array is not copied!)
-  if (streamerInfo) { delete [] streamerInfo; }
+  delete [] streamerInfo;
   streamerInfoSize=length;
   streamerInfo=array;
 }

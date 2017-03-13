@@ -28,8 +28,8 @@ FairRutherfordGeoPar::~FairRutherfordGeoPar(void)
 
 void FairRutherfordGeoPar::clear(void)
 {
-  if(fGeoSensNodes) { delete fGeoSensNodes; }
-  if(fGeoPassNodes) { delete fGeoPassNodes; }
+  delete fGeoSensNodes;
+  delete fGeoPassNodes;
 }
 
 void FairRutherfordGeoPar::putParams(FairParamList* l)

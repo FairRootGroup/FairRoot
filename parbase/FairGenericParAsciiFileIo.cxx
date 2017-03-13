@@ -253,9 +253,7 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet *pPar) {
           UChar_t *pValue = obj->setLength(length);
           memcpy(pValue, val, length);
           paramList->getList()->Add(obj);
-          if (val) {
-            delete[] val;
-          }
+          delete[] val;
         }
       }
     }

@@ -63,18 +63,12 @@ FairGeoTrap::FairGeoTrap()
 FairGeoTrap::~FairGeoTrap()
 {
   // destructor
-  if (param) {
-    delete param;
-    param=0;
-  }
-  if (center) {
-    delete center;
-    center=0;
-  }
-  if (position) {
-    delete position;
-    position=0;
-  }
+  delete param;
+  param=0;
+  delete center;
+  center=0;
+  delete position;
+  position=0;
 }
 
 

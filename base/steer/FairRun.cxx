@@ -65,20 +65,12 @@ FairRun::FairRun(Bool_t isMaster)
 FairRun::~FairRun()
 {
   LOG(DEBUG) << "Enter Destructor of FairRun" << FairLogger::endl;
-  if (fTask) {
-    delete fTask;  // There is another tasklist in MCApplication,
-  }
+  delete fTask;  // There is another tasklist in MCApplication,
   // but this should be independent
-  if (fRtdb) {
-    delete fRtdb;  // who is responsible for the RuntimeDataBase
-  }
-  if (fRootManager) {
-    delete fRootManager; // who is responsible
-    fRootManager=0;
-  }
-  if (fEvtHeader) {
-    delete fEvtHeader;
-  }
+  delete fRtdb;  // who is responsible for the RuntimeDataBase
+  delete fRootManager; // who is responsible
+  fRootManager=0;
+  delete fEvtHeader;
   LOG(DEBUG) << "Leave Destructor of FairRun" << FairLogger::endl;
 }
 //_____________________________________________________________________________
@@ -114,7 +106,7 @@ void FairRun::AddTask(FairTask* t)
 //_____________________________________________________________________________
 void FairRun::SetTask(FairTask* t)
 {
-  if ( fTask ) { delete fTask; }
+  delete fTask;
   fTask = t;
   fFileHeader->AddTaskClassName(t->ClassName());
 }

@@ -126,9 +126,7 @@ FairRootManager::~FairRootManager()
 {
 //
   LOG(DEBUG) << "Enter Destructor of FairRootManager" << FairLogger::endl;
-  if(fOutTree) {
-    delete fOutTree;
-  }
+  delete fOutTree;
   if(fOutFile) {
     fOutFile->cd();
     delete fOutFile;
@@ -139,10 +137,8 @@ FairRootManager::~FairRootManager()
   fgInstance = 0;
   LOG(DEBUG) << "Leave Destructor of FairRootManager" << FairLogger::endl;
 
-  if (fEventHeader)
-	  delete fEventHeader;
-  if (fSourceChain)
-	  delete fSourceChain;
+  delete fEventHeader;
+  delete fSourceChain;
 }
 //_____________________________________________________________________________
 

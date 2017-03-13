@@ -30,8 +30,8 @@ PixelGeoPar::~PixelGeoPar(void)
 
 void PixelGeoPar::clear(void)
 {
-  if(fGeoSensNodes) { delete fGeoSensNodes; }
-  if(fGeoPassNodes) { delete fGeoPassNodes; }
+  delete fGeoSensNodes;
+  delete fGeoPassNodes;
 }
 
 void PixelGeoPar::putParams(FairParamList* l)

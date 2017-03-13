@@ -39,12 +39,8 @@ template <typename T>
 FairMQEx9aTaskProcessorBin<T>::~FairMQEx9aTaskProcessorBin()
 {
   LOG(INFO) << "deteling fGeoPar"; 
-  if(fGeoPar)
-    {
-      delete fGeoPar;
-      fGeoPar=nullptr;
-    }
-  
+  delete fGeoPar;
+  fGeoPar=nullptr;
   delete fFairTask;
 }
 

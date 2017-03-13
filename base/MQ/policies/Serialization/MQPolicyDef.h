@@ -173,11 +173,8 @@ struct RawPtrDeleter
     template<typename T>
     static void Destroy_impl(T* input)
     {
-        if (input)
-        {
-            delete input;
-            input = nullptr;
-        }
+        delete input;
+        input = nullptr;
     }
 };
 
