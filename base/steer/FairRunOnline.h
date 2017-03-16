@@ -76,16 +76,21 @@ class FairRunOnline : public FairRun
 
     void SetGenerateHtml(Bool_t flag, const char* histFileName, Int_t refreshRate);
 
-    /** Activate http server on current host port 8080. To be called before Init.
+    /** Activate http server on defined host port. To be called before Init.
      * @param refreshRate an interval in number of events for server update.
+     * @param httpPort the port which is used by the http server
      */
-    void ActivateHttpServer(Int_t refreshRate = 10000);
+    void ActivateHttpServer(Int_t refreshRate = 10000, Int_t httpPort=8080);
 
     /** Register a command on the http server.
      * @param name a command name starting with /
      * @param command a call to method "/object_name/->Method()"
      */
     void RegisterHttpCommand(TString name, TString command);
+
+
+    /** Get direct access to the http server. */
+    THttpServer* GetHttpServer() { return fServer; }
 
     /** Write last data to file, close input and output **/
     void Finish();
