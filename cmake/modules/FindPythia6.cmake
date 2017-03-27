@@ -12,13 +12,10 @@
 #  Pythia6_LIBRARY_DIR - The libraries directory for Pythia6
 #
 
-if (Pythia6_LIBRARY_DIR)
-  SET (Pythia6_LIBRARY_DIR Pythia6_LIBRARY_DIR-NOTFOUND)
-endif (Pythia6_LIBRARY_DIR)
-
 MESSAGE(STATUS "Looking for Pythia6...")
 
-FIND_PATH(Pythia6_LIBRARY_DIR NAMES libPythia6.so PATHS
+FIND_PATH(Pythia6_LIBRARY_DIR NAMES libPythia6.so libPythia6.dylib PATHS
+  $ENV{PYTHIA6_ROOT}/lib
   ${Pythia6_DIR}/lib
   ${AlFa_DIR}/lib
   ${SIMPATH}/lib
