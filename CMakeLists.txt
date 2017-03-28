@@ -13,14 +13,16 @@
 # and PANDAROOT.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7.2 FATAL_ERROR)
 
 ### CMP0025   Compiler id for Apple Clang is now AppleClang.
 ### CMP0042   MACOSX_RPATH is enabled by default.
 
 foreach(p
   CMP0025 # CMake 3.0
+  CMP0028 # double colon for imported and alias targets
   CMP0042 # CMake 3.0
+  CMP0054 # Only interpret ``if()`` arguments as variables or keywords when unquoted.
   )
   if(POLICY ${p})
   cmake_policy(SET ${p} NEW)
@@ -50,6 +52,9 @@ include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
+
+# COmpile TIme REducer helper
+include(cotire)
 
 #Check the compiler and set the compile and link flags
 Check_Compiler()
@@ -190,6 +195,11 @@ find_package(FlatBuffers)
 find_package(DDS)
 find_package(Go)
 find_package(GSL)
+if(NOT DEFINED GTEST_ROOT)
+  set(GTEST_ROOT ${SIMPATH})
+endif()
+find_package(GTest)
+
 
 If(WITH_DBASE)
   find_package(MYSQL)
@@ -323,9 +333,6 @@ EndIf()
 If(BUILD_UNITTESTS)
 
   Message("Build the unit tests.")
-
-  Set(GTEST_ROOT ${SIMPATH})
-  Find_Package(GTest)
 
   If(GTEST_FOUND)
     Message("Add tests library and tests.")
