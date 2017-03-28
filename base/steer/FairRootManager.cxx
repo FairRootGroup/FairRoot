@@ -126,10 +126,13 @@ FairRootManager::~FairRootManager()
 {
 //
   LOG(DEBUG) << "Enter Destructor of FairRootManager" << FairLogger::endl;
-  delete fOutTree;
+  // delete fOutTree;
   if(fOutFile) {
     fOutFile->cd();
     delete fOutFile;
+  } else {
+    // if fOutFile exists, fOutTree is deleted with the file
+    delete fOutTree;
   }
   delete fObj2;
   fBranchNameList->Delete();
@@ -199,6 +202,8 @@ TFile* FairRootManager::OpenOutFile(const char* fname)
   }
   LOG(INFO) << "FairRootManager::OpenOutFile(\"" << fname << "\")" << FairLogger::endl;
   fOutFile = TFile::Open(fname, "recreate");
+  LOG(DEBUG) << "FairRootManager::OpenOutFile(\"" << fname << "\") " << this << " "
+    << fOutFile << FairLogger::endl;
   return OpenOutFile(fOutFile);
 }
 //_____________________________________________________________________________
@@ -478,12 +483,13 @@ void FairRootManager::LastFill()
     Fill();
   }
 }
-//_____________________________________________________________________________
 
 //_____________________________________________________________________________
 Int_t FairRootManager::Write(const char*, Int_t, Int_t)
 {
   /** Writes the tree in the file.*/
+
+    LOG(DEBUG) << "FairRootManager::Write "  << this << FairLogger::endl ;
 
   if(fOutTree!=0) {
     /** Get the file handle to the current output file from the tree.
@@ -491,7 +497,11 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
       * handle fOutFile is lost and the program crash while writing the
       * last part of the last file.
     */
+
+    // fOutTree->Print();
+
     fOutFile = fOutTree->GetCurrentFile();
+    LOG(DEBUG) << "FairRootManager::Write to file: "  << fOutFile->GetName()  << FairLogger::endl ;
     fOutFile->cd();
     fOutTree->Write();
   } else {

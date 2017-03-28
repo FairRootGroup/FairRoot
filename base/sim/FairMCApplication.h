@@ -34,10 +34,11 @@ class FairPrimaryGenerator;
 class FairRadGridManager;
 class FairRadLenManager;
 class FairRadMapManager;
-class FairRootManager;
+class FairGenericRootManager;
 class FairTask;
 class FairTrajFilter;
 class FairVolume;
+class FairRunSim;
 class TChain;
 class TIterator;
 class TObjArray;
@@ -124,11 +125,11 @@ class FairMCApplication : public TVirtualMCApplication
     /** Clone for worker (used in MT mode only) */
     virtual TVirtualMCApplication* CloneForWorker() const;
 
-    /** Init worker run (used in MT mode only) */
-    virtual void InitForWorker() const;
+    /** Init application on worker (used in MT mode only) */
+    virtual void InitOnWorker();
 
-    /** Finish worker run (used in MT mode only) */
-    virtual void FinishWorkerRun() const;
+    /** Finish run on worker (used in MT mode only) */
+    virtual void FinishRunOnWorker();
 
     /** Run the MC engine
      * @param nofEvents : number of events to simulate
@@ -191,8 +192,6 @@ class FairMCApplication : public TVirtualMCApplication
 
   private:
     // methods
-    void RegisterStack();
-
     Int_t GetIonPdg(Int_t z, Int_t a) const;
 
     void UndoGeometryModifications();
@@ -219,7 +218,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** Simulation Stack  */
     FairGenericStack*     fStack; //!
     /**Pointer to thr I/O Manager */
-    FairRootManager*      fRootManager; //!
+    FairGenericRootManager*  fRootManager; //!
     /**List of sensetive volumes in all detectors*/
     TRefArray*           fSenVolumes; //!
     /**Magnetic Field Pointer*/
@@ -273,9 +272,9 @@ class FairMCApplication : public TVirtualMCApplication
     std::list <FairDetector *> listDetectors;  //!
     /** Pointer to the current MC engine //!
      */
-    TVirtualMC* fMC;
-
-   
+    TVirtualMC*  fMC;
+    /** Pointer to FairRunSim //! */
+    FairRunSim*  fRun;
     
     ClassDef(FairMCApplication,4)  //Interface to MonteCarlo application
 
@@ -287,6 +286,8 @@ class FairMCApplication : public TVirtualMCApplication
 
     FairRunInfo fRunInfo;//!
     Bool_t      fGeometryIsInitialized;
+
+    static FairMCApplication* fgMasterInstance;
 };
 
 // inline functions
