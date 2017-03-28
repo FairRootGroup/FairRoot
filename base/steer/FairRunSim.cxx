@@ -87,11 +87,18 @@ FairRunSim::FairRunSim(Bool_t isMaster)
 //_____________________________________________________________________________
 FairRunSim::~FairRunSim()
 {
+
   LOG(DEBUG) << "Enter Destructor of FairRunSim " << FairLogger::endl;
+
+  delete fApp;
+
   /** List of Modules is filled via AddModule from the macro, but it
    is the responsibility of FairRunSim to call the destructors of
    the modules-
   */
+/*
+  // TO DO: to be fixed
+  // breaks
   LOG(DEBUG) << "Start deleting all registered modules" 
 	     << FairLogger::endl;
   ListOfModules->Delete();
@@ -104,10 +111,11 @@ FairRunSim::~FairRunSim()
   fParticles->Delete();
   delete fParticles;
 
-  delete fApp;
+  // delete fApp;
   delete fField;
   delete fGen;
   delete fMCEvHead;
+*/
 }
 //_____________________________________________________________________________
 FairRunSim* FairRunSim::Instance()

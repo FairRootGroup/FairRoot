@@ -82,10 +82,22 @@ class FairRun : public TNamed
       return fRtdb;
     }
     /**
+     * Set the  output file name without creating the file
+     */
+    void SetOutputFileName(const TString& name) {
+      fOutname = name;
+    }
+    /**
      * return a pointer to the output file
      */
     TFile* GetOutputFile() {
       return fOutFile;
+    }
+    /**
+     * return a pointer to the output file
+     */
+    TString GetOutputFileName() {
+      return fOutname;
     }
     /**
      * return the run ID for the actul run
@@ -173,7 +185,7 @@ class FairRun : public TNamed
     /** Tasks used*/
     FairTask*                fTask;
     /**Output file name*/
-    const char*              fOutname;
+    TString                  fOutname;
     /**IO manager */
     FairRootManager*         fRootManager;
     /**Output file*/
