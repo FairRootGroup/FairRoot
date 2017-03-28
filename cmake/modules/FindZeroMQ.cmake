@@ -117,6 +117,12 @@ if(ZeroMQ_FOUND)
         endif ()
         unset(ZeroMQ_HEADER_FILE CACHE)
     endif ()
+
+    add_library(ZeroMQ SHARED IMPORTED)
+    set_target_properties(ZeroMQ PROPERTIES
+        IMPORTED_LOCATION ${ZMQ_LIBRARY_SHARED}
+        INCLUDE_DIRECTORIES ${ZMQ_INCLUDE_DIR}
+    )
 endif()
 
 if(ZeroMQ_FOUND)

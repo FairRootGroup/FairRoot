@@ -6,14 +6,16 @@
 # and the experiment part.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.7.2 FATAL_ERROR)
 
 ### CMP0025   Compiler id for Apple Clang is now AppleClang.
 ### CMP0042   MACOSX_RPATH is enabled by default.
 
 foreach(p
   CMP0025 # CMake 3.0
+  CMP0028 # double colon for imported and alias targets
   CMP0042 # CMake 3.0
+  CMP0054 # Only interpret ``if()`` arguments as variables or keywords when unquoted.
   )
   if(POLICY ${p})
   cmake_policy(SET ${p} NEW)

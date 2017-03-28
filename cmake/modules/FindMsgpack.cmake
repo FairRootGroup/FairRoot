@@ -18,8 +18,18 @@ find_path(MSGPACK_LIBRARY_DIR NAMES libmsgpackc.dylib libmsgpackc.so PATHS
   NO_DEFAULT_PATH
 )
 
+find_library(MSGPACK_LIBRARY_SHARED NAMES libmsgpackc.dylib libmsgpackc.so
+  PATHS ${SIMPATH}/lib
+  NO_DEFAULT_PATH
+)
+
 if(MSGPACK_INCLUDE_DIR AND MSGPACK_LIBRARY_DIR)
   set(MSGPACK_FOUND true)
+  add_library(Msgpack SHARED IMPORTED)
+  set_target_properties(Msgpack PROPERTIES
+    IMPORTED_LOCATION ${MSGPACK_LIBRARY_SHARED}
+    INCLUDE_DIRECTORIES ${MSGPACK_INCLUDE_DIR}
+  )
   message(STATUS "Looking for MessagePack ... found at ${MSGPACK_LIBRARY_DIR}")
 else(MSGPACK_INCLUDE_DIR AND MSGPACK_LIBRARY_DIR)
   set(MSGPACK_FOUND false)
