@@ -42,8 +42,8 @@ FairGenericStack::~FairGenericStack()
 // -----   Copy constructor   ----------------------------------------------
 FairGenericStack::FairGenericStack(const FairGenericStack& rhs)
   : TVirtualMCStack(rhs),
-    fLogger(0),
-    fDetList(0),
+    fLogger(FairLogger::GetLogger()),
+    fDetList(rhs.fDetList),
     fDetIter(0),
     fVerbose(rhs.fVerbose)
 {

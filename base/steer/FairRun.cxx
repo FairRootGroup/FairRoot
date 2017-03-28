@@ -56,9 +56,8 @@ FairRun::FairRun(Bool_t isMaster)
   }
   fRunInstance=this;
 
-  if ( isMaster ) {
-    fRootManager = new FairRootManager();
-  }
+  fRootManager = new FairRootManager();
+
   new FairLinkManager();
 }
 //_____________________________________________________________________________
@@ -79,7 +78,7 @@ FairRun::~FairRun()
 void FairRun::SetOutputFile(const char* fname)
 {
   fOutname=fname;
-  if (fRootManager) fOutFile = fRootManager->OpenOutFile(fOutname);
+  if (fRootManager) fOutFile = fRootManager->OpenOutFile(fOutname.Data());
 
 }
 //_____________________________________________________________________________
