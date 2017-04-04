@@ -13,7 +13,7 @@
 # and PANDAROOT.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.7.2 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.6.0 FATAL_ERROR)
 
 ### CMP0025   Compiler id for Apple Clang is now AppleClang.
 ### CMP0042   MACOSX_RPATH is enabled by default.
@@ -119,7 +119,7 @@ if(FAIRROOT_MODULAR_BUILD)
   # Geant3, Geant4 installed via cmake
   Message(STATUS "Looking for GEANT3...")
   Find_Package(Geant3)
-  # Fill the variables needed to create the config script  
+  # Fill the variables needed to create the config script
   If(Geant3_DIR)
     Set(GEANT3_INCLUDE_DIR ${Geant3_INCLUDE_DIRS})
     Set(GEANT3_LIBRARIES ${Geant3_LIBRARIES})
