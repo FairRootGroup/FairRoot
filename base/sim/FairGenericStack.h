@@ -93,7 +93,7 @@ class FairGenericStack : public TVirtualMCStack
     /** Register the MCTrack array to the Root Manager  **/
     virtual void Register() {}
 
-    virtual TClonesArray* GetListOfParticles() = 0;
+    virtual TClonesArray* GetListOfParticles() { return 0; }
 
     /** Clone this object (used in MT mode only) */
     virtual FairGenericStack* CloneStack() const;
