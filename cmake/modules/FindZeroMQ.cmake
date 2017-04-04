@@ -13,6 +13,7 @@
 #   Matthias Richter
 #   Alexey Rybalchenko
 #   Florian Uhlig
+#   Dario Berzano
 #
 #
 # #############################
@@ -45,6 +46,10 @@
 #   ZEROMQ_ROOT (CMake var, ENV var)
 #
 #
+# If the above variables are not defined, or if ZeroMQ could not be found there,
+# it will look for it in the system directories. Custom ZeroMQ installations
+# will always have priority over system ones.
+#
 
 if(NOT ZeroMQ_FIND_QUIETLY)
     message(STATUS "Looking for ZeroMQ")
@@ -62,6 +67,9 @@ find_path(ZeroMQ_INCLUDE_DIR NAMES "zmq.h" "zmq_utils.h"
     DOC "ZeroMQ include directories"
     NO_DEFAULT_PATH
 )
+if(NOT ZeroMQ_INCLUDE_DIR)
+  find_path(ZeroMQ_INCLUDE_DIR NAMES "zmq.h" "zmq_utils.h" DOC "ZeroMQ include directories")
+endif()
 set(ZMQ_INCLUDE_DIR ${ZeroMQ_INCLUDE_DIR}
     CACHE PATH "ZeroMQ include directories (DEPRECATED)")
 
@@ -70,9 +78,12 @@ find_library(ZeroMQ_LIBRARY_SHARED NAMES "libzmq.dylib" "libzmq.so"
           "${AlFa_DIR}/lib"
           "${SIMPATH}/lib"
           "${ZEROMQ_ROOT}/lib"
-    DOC "Path to libzmq.dylib or libzmq.so."
+    DOC "Path to libzmq.dylib or libzmq.so"
     NO_DEFAULT_PATH
 )
+if(NOT ZeroMQ_LIBRARY_SHARED)
+  find_library(ZeroMQ_LIBRARY_SHARED NAMES "libzmq.dylib" "libzmq.so" DOC "Path to libzmq.dylib or libzmq.so")
+endif()
 set(ZMQ_LIBRARY_SHARED ${ZeroMQ_LIBRARY_SHARED}
     CACHE FILEPATH "Path to libzmq.dylib or libzmq.so (DEPRECATED)")
 
@@ -81,9 +92,12 @@ find_library(ZeroMQ_LIBRARY_STATIC NAMES "libzmq.a"
           "${AlFa_DIR}/lib"
           "${SIMPATH}/lib"
           "${ZEROMQ_ROOT}/lib"
-    DOC "Path to libzmq.a."
+    DOC "Path to libzmq.a"
     NO_DEFAULT_PATH
 )
+if(NOT ZeroMQ_LIBRARY_STATIC)
+  find_library(ZeroMQ_LIBRARY_STATIC NAMES "libzmq.a" DOC "Path to libzmq.a")
+endif()
 set(ZMQ_LIBRARY_STATIC ${ZeroMQ_LIBRARY_STATIC}
     CACHE FILEPATH "Path to libzmq.a (DEPRECATED)")
 
