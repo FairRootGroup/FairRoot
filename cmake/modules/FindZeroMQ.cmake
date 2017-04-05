@@ -120,8 +120,9 @@ if(ZeroMQ_FOUND)
 
     add_library(ZeroMQ SHARED IMPORTED)
     set_target_properties(ZeroMQ PROPERTIES
+        # TODO switch to ZeroMQ_ vars here once deprecated vars are removed
         IMPORTED_LOCATION ${ZMQ_LIBRARY_SHARED}
-        INCLUDE_DIRECTORIES ${ZMQ_INCLUDE_DIR}
+        INTERFACE_INCLUDE_DIRECTORIES ${ZMQ_INCLUDE_DIR}
     )
 endif()
 
