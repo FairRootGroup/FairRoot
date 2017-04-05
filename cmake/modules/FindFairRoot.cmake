@@ -27,7 +27,7 @@ endif()
 
 MESSAGE(STATUS "Setting FairRoot environment…")
 
-FIND_PATH(FAIRROOT_INCLUDE_DIR NAMES FairRun.h  PATHS
+FIND_PATH(FAIRROOT_INCLUDE_DIR NAMES FairRun.h PATHS
   ${FAIRROOTPATH}/include
   NO_DEFAULT_PATH
 )
@@ -42,19 +42,14 @@ FIND_PATH(FAIRROOT_CMAKEMOD_DIR NAMES CMakeLists.txt  PATHS
   NO_DEFAULT_PATH
 )
 
-set(FAIRMQ_DEPENDENCIES
-  ${Boost_LOG_LIBRARY}
-  ${Boost_LOG_SETUP_LIBRARY}
-  ${Boost_THREAD_LIBRARY}
-  ${Boost_FILESYSTEM_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_DATE_TIME_LIBRARY}
-  ${Boost_PROGRAM_OPTIONS_LIBRARY}
-  ${Boost_INTERPROCESS_LIBRARY}
-  dl
-  pthread
-  fairmq_logger
+# look for exported FairMQ targets and include them
+find_file(_fairroot_fairmq_cmake
+    NAMES FairMQ.cmake
+    PATHS ${FAIRROOTPATH}/include/cmake
 )
+if(_fairroot_fairmq_cmake)
+    include(${_fairroot_fairmq_cmake})
+endif()
 
 if(FAIRROOT_INCLUDE_DIR AND FAIRROOT_LIBRARY_DIR)
    set(FAIRROOT_FOUND TRUE)
