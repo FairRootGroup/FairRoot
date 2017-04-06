@@ -16,11 +16,6 @@
 
 ClassImp(FairMultiLinkedData_Interface);
 
-FairMultiLinkedData_Interface::FairMultiLinkedData_Interface()
-  :TObject(), fVerbose(0), fInsertHistory(kTRUE), fLink(NULL)
-{
-}
-
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t)
   :TObject(), fVerbose(0), fInsertHistory(kTRUE), fLink(NULL)
 {
