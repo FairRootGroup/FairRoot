@@ -86,6 +86,13 @@ class FairMultiLinkedData_Interface : public  TObject
     ClassDef(FairMultiLinkedData_Interface, 5);
 };
 
+inline
+FairMultiLinkedData_Interface::FairMultiLinkedData_Interface()
+  :TObject(), fVerbose(0), fInsertHistory(kTRUE), fLink(NULL)
+{
+}
+
+
 /**\fn virtual void FairMultiLinkedData_Interface::SetLinks(Int_t type, std::vector<Int_t> links)
  * \param type as Int_t gives one type of source data for all indices
  * \param links as vector<Int_t> gives the vector of indices at which position in the TClonesArray the source data is stored
