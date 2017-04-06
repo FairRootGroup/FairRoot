@@ -24,7 +24,8 @@
 #   add_testsuite(<name> SOURCES source1 [source2 ...]
 #                        [DEPENDS dep1 [dep2 ...]]
 #                        [LINKS linklib1 [linklib2 ...]
-#                        [INCLUDES dir1 [dir2 ...])
+#                        [INCLUDES dir1 [dir2 ...]
+#                        [TIMEOUT seconds])
 #
 #   -> created target: testsuite_<name>
 #
