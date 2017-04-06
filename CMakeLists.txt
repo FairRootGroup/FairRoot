@@ -313,8 +313,10 @@ if(BUILD_DOXYGEN)
   ADD_SUBDIRECTORY(doxygen)
 endif(BUILD_DOXYGEN)
 
-
-add_subdirectory (examples)
+Option(BUILD_EXAMPLES "Build Examples" ON)
+if(BUILD_EXAMPLES)
+  add_subdirectory (examples)
+endif(BUILD_EXAMPLES)
 
 if(IWYU_FOUND)
 
@@ -340,9 +342,11 @@ If(BUILD_UNITTESTS)
   EndIf(GTEST_FOUND)
 EndIf(BUILD_UNITTESTS)
 
-Install(DIRECTORY examples/common/gconfig examples/common/geometry
-        DESTINATION share/fairbase/examples/common
-        PATTERN ".svn" EXCLUDE)
+if(BUILD_EXAMPLES)
+  Install(DIRECTORY examples/common/gconfig examples/common/geometry
+          DESTINATION share/fairbase/examples/common
+          PATTERN ".svn" EXCLUDE)
+endif(BUILD_EXAMPLES)
 
 Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
         DESTINATION bin
