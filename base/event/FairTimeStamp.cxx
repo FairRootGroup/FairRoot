@@ -7,36 +7,6 @@
  ********************************************************************************/
 #include "FairTimeStamp.h"
 
-// -----   Default constructor   -------------------------------------------
-FairTimeStamp::FairTimeStamp()
-  : FairMultiLinkedData_Interface(),
-    fTimeStamp(-1),
-    fTimeStampError(-1),
-    fEntryNr()
-{
-}
-// -----   Standard constructor   ------------------------------------------
-FairTimeStamp::FairTimeStamp(Double_t time)
-  : FairMultiLinkedData_Interface(),
-    fTimeStamp(time),
-    fTimeStampError(-1),
-    fEntryNr()
-{
-}
-
-FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
-  : FairMultiLinkedData_Interface(),
-    fTimeStamp(time),
-    fTimeStampError(timeerror),
-    fEntryNr()
-{
-}
-
-// -----   Destructor   ----------------------------------------------------
-FairTimeStamp::~FairTimeStamp()
-{
-}
-
 // -------------------------------------------------------------------------
 
 std::ostream& FairTimeStamp::PrintTimeInfo(std::ostream& out) const
