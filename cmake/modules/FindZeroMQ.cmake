@@ -9,11 +9,11 @@
 # Authors:
 #
 #   Mohammad Al-Turany
+#   Dario Berzano
 #   Dennis Klein
 #   Matthias Richter
 #   Alexey Rybalchenko
 #   Florian Uhlig
-#   Dario Berzano
 #
 #
 # #############################
@@ -60,44 +60,32 @@ if(DEFINED ENV{ZEROMQ_ROOT})
 endif()
 
 find_path(ZeroMQ_INCLUDE_DIR NAMES "zmq.h" "zmq_utils.h"
-    PATHS "${ZMQ_DIR}/include"
+    HINTS "${ZMQ_DIR}/include"
           "${AlFa_DIR}/include"
           "${SIMPATH}/include"
           "${ZEROMQ_ROOT}/include"
     DOC "ZeroMQ include directories"
-    NO_DEFAULT_PATH
 )
-if(NOT ZeroMQ_INCLUDE_DIR)
-  find_path(ZeroMQ_INCLUDE_DIR NAMES "zmq.h" "zmq_utils.h" DOC "ZeroMQ include directories")
-endif()
 set(ZMQ_INCLUDE_DIR ${ZeroMQ_INCLUDE_DIR}
     CACHE PATH "ZeroMQ include directories (DEPRECATED)")
 
 find_library(ZeroMQ_LIBRARY_SHARED NAMES "libzmq.dylib" "libzmq.so"
-    PATHS "${ZMQ_DIR}/lib"
+    HINTS "${ZMQ_DIR}/lib"
           "${AlFa_DIR}/lib"
           "${SIMPATH}/lib"
           "${ZEROMQ_ROOT}/lib"
     DOC "Path to libzmq.dylib or libzmq.so"
-    NO_DEFAULT_PATH
 )
-if(NOT ZeroMQ_LIBRARY_SHARED)
-  find_library(ZeroMQ_LIBRARY_SHARED NAMES "libzmq.dylib" "libzmq.so" DOC "Path to libzmq.dylib or libzmq.so")
-endif()
 set(ZMQ_LIBRARY_SHARED ${ZeroMQ_LIBRARY_SHARED}
     CACHE FILEPATH "Path to libzmq.dylib or libzmq.so (DEPRECATED)")
 
 find_library(ZeroMQ_LIBRARY_STATIC NAMES "libzmq.a"
-    PATHS "${ZMQ_DIR}/lib"
+    HINTS "${ZMQ_DIR}/lib"
           "${AlFa_DIR}/lib"
           "${SIMPATH}/lib"
           "${ZEROMQ_ROOT}/lib"
     DOC "Path to libzmq.a"
-    NO_DEFAULT_PATH
 )
-if(NOT ZeroMQ_LIBRARY_STATIC)
-  find_library(ZeroMQ_LIBRARY_STATIC NAMES "libzmq.a" DOC "Path to libzmq.a")
-endif()
 set(ZMQ_LIBRARY_STATIC ${ZeroMQ_LIBRARY_STATIC}
     CACHE FILEPATH "Path to libzmq.a (DEPRECATED)")
 
