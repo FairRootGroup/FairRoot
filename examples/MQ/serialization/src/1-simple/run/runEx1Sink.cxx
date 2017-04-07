@@ -1,44 +1,24 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 
-// FairRoot - FairMQ
-#include "runSimpleMQStateMachine.h"
-
-// FairRoot - Tutorial7
-#include "FairMQProgOptions.h"
-#include "MyHit.h"
-
+#include "runFairMQDevice.h"
 #include "Ex1Sink.h"
 
+namespace bpo = boost::program_options;
 
-
-
-
-int main(int argc, char** argv)
+void addCustomOptions(bpo::options_description& options)
 {
-    try
-    {
-        FairMQProgOptions config;
-        namespace po = boost::program_options;
-        po::options_description sink_options("File Sink options");
-        sink_options.add_options()
-            ("output-file", po::value<std::string>(), "Path to the input file");
+    options.add_options()
+        ("output-file", bpo::value<std::string>(), "Path to the output file")
+        ("num-msgs", bpo::value<int>()->default_value(0), "Stop after <n> msgs (0 - no limit).");
+}
 
-        config.AddToCmdLineOptions(sink_options);
-        config.ParseAll(argc, argv);
-
-        std::string filename = config.GetValue<std::string>("output-file");
-
-        Ex1Sink sink;
-        sink.SetFileName(filename);
-        runStateMachine(sink, config);
-
-        
-    }
-    catch (std::exception& e)
-    {
-        LOG(ERROR)  << "Unhandled Exception reached the top of main: " 
-                    << e.what() << ", application will now exit";
-        return 1;
-    }
-
-    return 0;
+FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
+{
+    return new Ex1Sink();
 }
