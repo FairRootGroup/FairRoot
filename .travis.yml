@@ -39,7 +39,7 @@ before_install:
                                 automake autoconf libtool;
         wget http://fairroot.gsi.de/downloads/fairsoft-${FAIRSOFT_VERSION}_1.0_amd64.deb;
         sudo dpkg -i fairsoft-${FAIRSOFT_VERSION}_1.0_amd64.deb;
-        export PATH=/opt/fairsoft/${FAIRSOFT_VERSION}/bin:$PATH
+        export PATH=/opt/fairsoft/${FAIRSOFT_VERSION}/bin:$PATH;
       fi
     - if test "$TRAVIS_OS_NAME" = "osx"; then
         env;
