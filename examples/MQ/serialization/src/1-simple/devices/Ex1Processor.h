@@ -10,15 +10,17 @@
 #include "SerializerExample.h"
 #include "TMath.h"
 
+#include "MyDigi.h"
+#include "MyHit.h"
 
-
-class Ex1Processor : public FairMQDevice 
+class Ex1Processor : public FairMQDevice
 {
   public:
     Ex1Processor() :
         FairMQDevice(),
         fInput(nullptr),
-        fOutput(nullptr)
+        fOutput(nullptr),
+        fNumMsgs(0)
     {}
 
     Ex1Processor(const Ex1Processor&);
@@ -29,6 +31,7 @@ class Ex1Processor : public FairMQDevice
   protected:
     virtual void Init()
     {
+        fNumMsgs = fConfig->GetValue<int>("num-msgs");
         fOutput = new TClonesArray("MyHit");
     }
 
@@ -48,6 +51,14 @@ class Ex1Processor : public FairMQDevice
                 Serialize<MySerializer>(*msg,fOutput);
                 Send(msg, "data-out");
                 sentMsgs++;
+
+                if (fNumMsgs != 0)
+                {
+                    if (receivedMsgs == fNumMsgs)
+                    {
+                        break;
+                    }
+                }
             }
         }
         LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
@@ -77,7 +88,7 @@ class Ex1Processor : public FairMQDevice
   private:
     TClonesArray* fInput;
     TClonesArray* fOutput;
+    int fNumMsgs;
 };
-
 
 #endif
