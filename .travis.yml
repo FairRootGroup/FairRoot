@@ -22,20 +22,20 @@ matrix:
           compiler: gcc
           dist: trusty
           sudo: required
-          env: FAIRSOFT_VERSION=may16p1_root5
+          env: FAIRSOFT_VERSION=mar17_root5
         - os: linux
           compiler: gcc
           dist: trusty
           sudo: required
-          env: FAIRSOFT_VERSION=may16p1_root6
+          env: FAIRSOFT_VERSION=mar17_root6
 
 before_install:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
         sudo apt-get update -q;
-        sudo apt-get install -y cmake cmake-data g++ gcc gfortran build-essential make patch sed 
-                                libx11-dev libxft-dev libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev 
-                                ncurses-dev libcurl4-openssl-dev curl bzip2 gzip unzip tar subversion git xutils-dev flex 
-                                bison lsb-release python-dev libc6-dev-i386 libxml2-dev wget libssl-dev 
+        sudo apt-get install -y cmake cmake-data g++ gcc gfortran build-essential make patch sed
+                                libx11-dev libxft-dev libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev
+                                ncurses-dev libcurl4-openssl-dev curl bzip2 gzip unzip tar subversion git xutils-dev flex
+                                bison lsb-release python-dev libc6-dev-i386 libxml2-dev wget libssl-dev
                                 automake autoconf libtool;
         wget http://fairroot.gsi.de/downloads/fairsoft-${FAIRSOFT_VERSION}_1.0_amd64.deb;
         sudo dpkg -i fairsoft-${FAIRSOFT_VERSION}_1.0_amd64.deb;
@@ -76,7 +76,7 @@ before_script:
         echo "export FAIRSOFT_VERSION=\${FAIRSOFT_VERSION}" >> Dart.cfg;
       fi
     - echo "export GIT_BRANCH=\${TRAVIS_COMMIT}" >> Dart.cfg
-    - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg; 
+    - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg;
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
     - echo "export SITE=\"Travis CI\" " >> Dart.cfg
