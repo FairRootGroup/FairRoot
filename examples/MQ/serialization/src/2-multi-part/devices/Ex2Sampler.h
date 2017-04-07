@@ -15,6 +15,8 @@
 #include "TFile.h"
 #include "TTree.h"
 
+#include "MyDigi.h"
+
 class Ex2Sampler : public FairMQDevice
 {
   public:
@@ -37,11 +39,11 @@ class Ex2Sampler : public FairMQDevice
             delete fInputFile;
         }
     }
-    void SetFileName(const std::string& name){fFileName=name;}
 
   protected:
     virtual void Init()
     {
+        fFileName = fConfig->GetValue<std::string>("input-file");
         fInputFile = TFile::Open(fFileName.c_str(), "READ");
         if (fInputFile)
         {

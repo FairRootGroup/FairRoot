@@ -15,11 +15,12 @@
 #include "TFile.h"
 #include "TTree.h"
 
+#include "MyDigi.h"
+
 class Ex1Sampler : public FairMQDevice
 {
   public:
     Ex1Sampler() :
-        FairMQDevice(),
         fInput(nullptr),
         fTree(nullptr),
         fFileName(),
@@ -38,11 +39,10 @@ class Ex1Sampler : public FairMQDevice
         }
     }
 
-    void SetFileName(const std::string& name){fFileName=name;}
-
   protected:
     virtual void Init()
     {
+        fFileName = fConfig->GetValue<std::string>("input-file");
         fInputFile = TFile::Open(fFileName.c_str(), "READ");
         if (fInputFile)
         {
