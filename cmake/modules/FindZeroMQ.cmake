@@ -66,8 +66,6 @@ find_path(ZeroMQ_INCLUDE_DIR NAMES "zmq.h" "zmq_utils.h"
           "${ZEROMQ_ROOT}/include"
     DOC "ZeroMQ include directories"
 )
-set(ZMQ_INCLUDE_DIR ${ZeroMQ_INCLUDE_DIR}
-    CACHE PATH "ZeroMQ include directories (DEPRECATED)")
 
 find_library(ZeroMQ_LIBRARY_SHARED NAMES "libzmq.dylib" "libzmq.so"
     HINTS "${ZMQ_DIR}/lib"
@@ -76,8 +74,6 @@ find_library(ZeroMQ_LIBRARY_SHARED NAMES "libzmq.dylib" "libzmq.so"
           "${ZEROMQ_ROOT}/lib"
     DOC "Path to libzmq.dylib or libzmq.so"
 )
-set(ZMQ_LIBRARY_SHARED ${ZeroMQ_LIBRARY_SHARED}
-    CACHE FILEPATH "Path to libzmq.dylib or libzmq.so (DEPRECATED)")
 
 find_library(ZeroMQ_LIBRARY_STATIC NAMES "libzmq.a"
     HINTS "${ZMQ_DIR}/lib"
@@ -86,15 +82,11 @@ find_library(ZeroMQ_LIBRARY_STATIC NAMES "libzmq.a"
           "${ZEROMQ_ROOT}/lib"
     DOC "Path to libzmq.a"
 )
-set(ZMQ_LIBRARY_STATIC ${ZeroMQ_LIBRARY_STATIC}
-    CACHE FILEPATH "Path to libzmq.a (DEPRECATED)")
 
 if(ZeroMQ_INCLUDE_DIR AND ZeroMQ_LIBRARY_SHARED AND ZeroMQ_LIBRARY_STATIC)
     set(ZeroMQ_FOUND TRUE)
-    set(ZMQ_FOUND TRUE) # DEPRECATED
 else()
     set(ZeroMQ_FOUND FALSE)
-    set(ZMQ_FOUND FALSE) # DEPRECATED
 endif()
 
 set(ERROR_STRING "Looking for ZeroMQ - NOT FOUND")
@@ -122,9 +114,8 @@ if(ZeroMQ_FOUND)
 
     add_library(ZeroMQ SHARED IMPORTED)
     set_target_properties(ZeroMQ PROPERTIES
-        # TODO switch to ZeroMQ_ vars here once deprecated vars are removed
-        IMPORTED_LOCATION ${ZMQ_LIBRARY_SHARED}
-        INTERFACE_INCLUDE_DIRECTORIES ${ZMQ_INCLUDE_DIR}
+        IMPORTED_LOCATION ${ZeroMQ_LIBRARY_SHARED}
+        INTERFACE_INCLUDE_DIRECTORIES ${ZeroMQ_INCLUDE_DIR}
     )
 endif()
 
@@ -144,22 +135,13 @@ else()
     endif()
 endif()
 
-if(NOT ZeroMQ_NO_DEPRECATED)
-    message(DEPRECATION
-"ZMQ_FOUND, ZMQ_INCLUDE_DIR, ZMQ_LIBRARY_STATIC|SHARED, ZMQ_* variables are DEPRECATED.
-Use ZeroMQ_FOUND, ZeroMQ_INCLUDE_DIR, ZeroMQ_LIBRARY_STATIC|SHARED, ZeroMQ_* instead.
-Use '-Wno-deprecated' or '-DZeroMQ_NO_DEPRECATED=ON' to suppress this message.")
-endif()
-
 unset(ERROR_STRING)
 unset(ZEROMQ_ROOT)
 
 mark_as_advanced(
     ZeroMQ_LIBRARIES
     ZeroMQ_LIBRARY_SHARED
-    ZMQ_LIBRARY_SHARED
     ZeroMQ_LIBRARY_STATIC
-    ZMQ_LIBRARY_STATIC
     ZeroMQ_VERSION_MAJOR
     ZeroMQ_VERSION_MINOR
     ZeroMQ_VERSION_PATCH
