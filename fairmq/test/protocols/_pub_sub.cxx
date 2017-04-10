@@ -23,6 +23,7 @@ using namespace fair::mq::test;
 auto RunPubSub(string transport) -> void
 {
     auto pub = execute_result{"", 0};
+    cout << "spawn [PUB] thread" << endl;
     thread pub_thread([&]() {
         stringstream cmd;
         cmd << runTestDevice << " --id pub_" << transport << " --control static --verbosity DEBUG "
@@ -31,6 +32,7 @@ auto RunPubSub(string transport) -> void
     });
 
     auto sub1 = execute_result{"", 0};
+    cout << "spawn [SUB1] thread" << endl;
     thread sub1_thread([&]() {
         stringstream cmd;
         cmd << runTestDevice << " --id sub_" << transport << " --control static --verbosity DEBUG "
@@ -39,6 +41,7 @@ auto RunPubSub(string transport) -> void
     });
 
     auto sub2 = execute_result{"", 0};
+    cout << "spawn [SUB2] thread" << endl;
     thread sub2_thread([&]() {
         stringstream cmd;
         cmd << runTestDevice << " --id sub_" << transport << " --control static --verbosity DEBUG "
@@ -47,9 +50,13 @@ auto RunPubSub(string transport) -> void
     });
 
     pub_thread.join();
+    cout << "joined [PUB] thread" << endl;
     sub1_thread.join();
+    cout << "joined [SUB1] thread" << endl;
     sub2_thread.join();
+    cout << "joined [SUB2] thread" << endl;
     cerr << pub.error_out << sub1.error_out << sub2.error_out;
+    cout << pub.error_out << sub1.error_out << sub2.error_out;
 
     exit(pub.exit_code + sub1.exit_code + sub2.exit_code);
 }
