@@ -40,7 +40,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     FairTimeStamp(Double_t time, Double_t timeerror);
 
     /** Destructor **/
-    virtual ~FairTimeStamp() = default;
+    virtual ~FairTimeStamp();
     /** Accessors **/
     virtual Double_t GetTimeStamp()             const { return fTimeStamp; };
     virtual Double_t GetTimeStampError()     const { return fTimeStampError;};
