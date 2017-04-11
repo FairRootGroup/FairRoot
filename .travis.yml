@@ -76,7 +76,11 @@ before_script:
         echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\" " >> Dart.cfg;
         echo "export FAIRSOFT_VERSION=\${FAIRSOFT_VERSION}" >> Dart.cfg;
       fi
-    - echo "export GIT_BRANCH=\${TRAVIS_COMMIT}" >> Dart.cfg
+    - if test "$TRAVIS_PULL_REQUEST" = "false"; then
+        echo "export GIT_BRANCH=\${TRAVIS_COMMIT}" >> Dart.cfg;
+      else
+        echo "export GIT_BRANCH=PR#\${TRAVIS_PULL_REQUEST}_\${TRAVIS_PULL_REQUEST_BRANCH}" >> Dart.cfg;
+      fi
     - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg;
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
