@@ -74,8 +74,6 @@ class FairRunOnline : public FairRun
     /** Add histogram to be displayed using THttpServer.*/
     void AddObject(TObject* object);
 
-    void SetGenerateHtml(Bool_t flag, const char* histFileName, Int_t refreshRate);
-
     /** Activate http server on defined host port. To be called before Init.
      * @param refreshRate an interval in number of events for server update.
      * @param httpPort the port which is used by the http server
@@ -113,17 +111,9 @@ class FairRunOnline : public FairRun
     Bool_t                                  fStatic;//!
     FairField*                              fField;
 
-    TFolder*    fFolder;       //!
-    Bool_t      fGenerateHtml; //!
-    TString     fHistFileName; //!
-    Int_t       fRefreshRate;  //!
     Int_t       fNevents;      //!
-
     THttpServer* fServer;             //!
     Int_t        fServerRefreshRate;  //!
-
-    void WriteObjects();
-    void GenerateHtml();
 
     virtual void Fill();
 
