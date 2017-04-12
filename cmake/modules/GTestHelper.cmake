@@ -25,7 +25,8 @@
 #                        [DEPENDS dep1 [dep2 ...]]
 #                        [LINKS linklib1 [linklib2 ...]
 #                        [INCLUDES dir1 [dir2 ...]
-#                        [TIMEOUT seconds])
+#                        [TIMEOUT seconds]
+#                        [RUN_SERIAL ON/OFF])
 #
 #   -> created target: testsuite_<name>
 #
@@ -45,10 +46,12 @@
 #
 
 function(add_testsuite suitename)
-    set(optional_args "")
-    set(single_value_args TIMEOUT)
-    set(multi_value_args SOURCES LINKS DEPENDS INCLUDES)
-    cmake_parse_arguments(testsuite "${optional_args}" "${single_value_args}" "${multi_value_args}" ${ARGN})
+    cmake_parse_arguments(testsuite
+        ""
+        "TIMEOUT;RUN_SERIAL"
+        "SOURCES;LINKS;DEPENDS;INCLUDES"
+        ${ARGN}
+    )
 
     list(INSERT testsuite_LINKS 0 GTest::Main GTest::GTest)
     set(target "testsuite_${suitename}")
@@ -65,6 +68,9 @@ function(add_testsuite suitename)
     add_test(NAME "${suitename}" COMMAND ${target})
     if(testsuite_TIMEOUT)
         set_tests_properties("${suitename}" PROPERTIES TIMEOUT ${testsuite_TIMEOUT})
+    endif()
+    if(testsuite_RUN_SERIAL)
+        set_tests_properties("${suitename}" PROPERTIES RUN_SERIAL ${testsuite_RUN_SERIAL})
     endif()
 
     list(APPEND ALL_TEST_TARGETS ${target})
