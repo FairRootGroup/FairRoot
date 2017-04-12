@@ -37,6 +37,13 @@
 #
 #   -> created target: testhelper_<name>
 #
+#   add_testlib(<name> SOURCES source1 [source2 ...]
+#                      [DEPENDS dep1 [dep2 ...]]
+#                      [LINKS linklib1 [linklib2 ...]
+#                      [INCLUDES dir1 [dir2 ...])
+#
+#   -> created target: <name>
+#
 #   The above add_* functions add all created targets to the cmake
 #   variable ALL_TEST_TARGETS which can be used to create an aggregate
 #   target, e.g.:
@@ -78,21 +85,55 @@ function(add_testsuite suitename)
 endfunction()
 
 function(add_testhelper helpername)
-    set(optional_args "")
-    set(multi_value_args SOURCES LINKS DEPENDS INCLUDES)
-    cmake_parse_arguments(testhelper "${optional_args}" "" "${multi_value_args}" ${ARGN})
+    cmake_parse_arguments(testhelper
+        ""
+        ""
+        "SOURCES;LINKS;DEPENDS;INCLUDES"
+        ${ARGN}
+    )
 
     set(target "testhelper_${helpername}")
     
     add_executable(${target} ${testhelper_SOURCES})
     if(testhelper_LINKS)
-    target_link_libraries(${target} ${testhelper_LINKS})
+        target_link_libraries(${target} ${testhelper_LINKS})
     endif()
     if(testhelper_DEPENDS)
         add_dependencies(${target} ${testhelper_DEPENDS})
     endif()
     if(testhelper_INCLUDES)
         target_include_directories(${target} PUBLIC ${testhelper_INCLUDES})
+    endif()
+
+    list(APPEND ALL_TEST_TARGETS ${target})
+    set(ALL_TEST_TARGETS ${ALL_TEST_TARGETS} PARENT_SCOPE)
+endfunction()
+
+function(add_testlib libname)
+    cmake_parse_arguments(testlib
+        "HIDDEN"
+        "VERSION"
+        "SOURCES;LINKS;DEPENDS;INCLUDES"
+        ${ARGN}
+    )
+
+    set(target "${libname}")
+    
+    add_library(${target} SHARED ${testlib_SOURCES})
+    if(testlib_LINKS)
+        target_link_libraries(${target} ${testlib_LINKS})
+    endif()
+    if(testlib_DEPENDS)
+        add_dependencies(${target} ${testlib_DEPENDS})
+    endif()
+    if(testlib_INCLUDES)
+        target_include_directories(${target} PUBLIC ${testlib_INCLUDES})
+    endif()
+    if(testlib_HIDDEN)
+        set_target_properties(${target} PROPERTIES CXX_VISIBILITY_PRESET hidden)
+    endif()
+    if(testlib_VERSION)
+        set_target_properties(${target} PROPERTIES VERSION ${testlib_VERSION})
     endif()
 
     list(APPEND ALL_TEST_TARGETS ${target})
