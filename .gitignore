@@ -28,6 +28,9 @@ Makefile
 cmake_install.cmake
 install_manifest.txt
 
+# CTest
+Testing/
+
 # build directory & data directory
 
 build/
