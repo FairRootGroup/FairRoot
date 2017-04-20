@@ -1,6 +1,4 @@
-#FairRoot 
-
-##The framework 
+## The FairRoot framework 
 A simulation, reconstruction and analysis framework that is based on the ROOT system. 
 The user can create simulated data and/or perform analysis with the same framework.  Geant3 and Geant4 transport engines are supported, however the user code that creates simulated data do not depend on a particular monte carlo engine. The framework delivers base classes which enable the users to  construct their detectors and /or analysis tasks in a simple way, it also delivers some general functionality like track visualization. Moreover an interface for reading magnetic field maps is also implemented.
 
@@ -175,7 +173,7 @@ and installed either in AlFa_DIR or available on path
   ../FairRoot 
 ```
 
-###Generating Doxygen documentation
+### Generating Doxygen documentation
 
 If the flage -DBUILD_DOXYGEN=ON is set when calling cmake, the doxygen documentation will be generated when calling make.  The generated html files can then be found in "build/doxygen/doc/html"
 
