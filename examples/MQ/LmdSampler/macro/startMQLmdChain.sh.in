@@ -8,7 +8,7 @@ VERBOSE="DEBUG"
 
 ########################## start SAMPLER
 SAMPLER="runLmdSampler"
-SAMPLER+=" --id LmdSampler -c $CONFIGFILE --mq-config $MQCONFIGFILE"
+SAMPLER+=" --id LmdSampler --config-file $CONFIGFILE --mq-config $MQCONFIGFILE"
 SAMPLER+=" --input-file-name $LMDFILE --verbosity $VERBOSE"
 xterm +aw -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/LmdSampler/$SAMPLER &
 
@@ -16,7 +16,7 @@ xterm +aw -geometry 120x27+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/LmdSa
 
 ########################## start Unpacker
 UNPACKER="runTut8MQUnpacker"
-UNPACKER+=" --id unpacker1 -c $CONFIGFILE --mq-config $MQCONFIGFILE"
+UNPACKER+=" --id unpacker1 --config-file $CONFIGFILE --mq-config $MQCONFIGFILE"
 UNPACKER+=" --verbosity $VERBOSE"
 xterm +aw -geometry 120x27+800+500 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/LmdSampler/$UNPACKER &
 
