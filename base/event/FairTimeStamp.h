@@ -101,4 +101,33 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     ClassDef(FairTimeStamp,3);
 };
 
+// -----   Default constructor   -------------------------------------------
+inline
+FairTimeStamp::FairTimeStamp()
+  : FairMultiLinkedData_Interface(),
+    fTimeStamp(-1),
+    fTimeStampError(-1),
+    fEntryNr()
+{
+}
+
+// -----   Standard constructor   ------------------------------------------
+inline
+FairTimeStamp::FairTimeStamp(Double_t time)
+  : FairMultiLinkedData_Interface(),
+    fTimeStamp(time),
+    fTimeStampError(-1),
+    fEntryNr()
+{
+}
+
+inline
+FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
+  : FairMultiLinkedData_Interface(),
+    fTimeStamp(time),
+    fTimeStampError(timeerror),
+    fEntryNr()
+{
+}
+
 #endif

@@ -9,9 +9,9 @@
 #include <boost/program_options.hpp>
 
 #include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
+#include "options/FairMQProgOptions.h"
 #include "FairMQDevice.h"
-#include "runSimpleMQStateMachine.h"
+#include "tools/runSimpleMQStateMachine.h"
 
 template <typename R>
 class GenericFairMQDevice : public FairMQDevice
@@ -52,6 +52,11 @@ int main(int argc, char** argv)
         config.ParseAll(argc, argv);
 
         std::unique_ptr<FairMQDevice> device(getDevice(config));
+        if (!device)
+        {
+            LOG(ERROR) << "getDevice(): no valid device provided. Exiting.";
+            return 1;
+        }
         int result = runStateMachine(*device, config);
 
         if (result > 0)

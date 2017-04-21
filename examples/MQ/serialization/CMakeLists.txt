@@ -138,7 +138,6 @@ GENERATE_LIBRARY()
 
 
 Set(Exe_Names
-
     serialization-Ex1-Sampler
     serialization-Ex1-Processor
     serialization-Ex1-Sink
@@ -146,13 +145,6 @@ Set(Exe_Names
     serialization-Ex2-Sampler
     serialization-Ex2-Processor
     serialization-Ex2-Sink
-
-    #genericMQTutoSamplerTest
-    test-serialization-Ex1-Processor
-    test-serialization-Ex1-sink
-
-    test-serialization-Ex2-Processor
-    test-serialization-Ex2-sink
 )
 
 set(Exe_Source
@@ -163,14 +155,6 @@ set(Exe_Source
     src/2-multi-part/run/runEx2Sampler.cxx
     src/2-multi-part/run/runEx2Processor.cxx
     src/2-multi-part/run/runEx2Sink.cxx
-
-    #test/runSamplerT7Test.cxx
-    test/testEx1Processor.cxx
-    test/testEx1Sink.cxx
-
-    test/testEx2Processor.cxx
-    test/testEx2Sink.cxx
-
 )
 
 ############################################################

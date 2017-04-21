@@ -1,37 +1,23 @@
+/********************************************************************************
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 
-/// std
-#include <csignal>
-
-/// FairRoot - FairMQ - base/MQ
-#include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
-
-#include "runSimpleMQStateMachine.h"
-
-#include "MyDigi.h"
-#include "MyHit.h"
-
+#include "runFairMQDevice.h"
 #include "Ex2Processor.h"
 
+namespace bpo = boost::program_options;
 
-int main(int argc, char** argv)
+void addCustomOptions(bpo::options_description& options)
 {
-    try
-    {
-        FairMQProgOptions config;
-        // parse command line
-        config.ParseAll(argc, argv);
+    options.add_options()
+        ("num-msgs", bpo::value<int>()->default_value(0), "Stop after <n> msgs (0 - no limit).");
+}
 
-        Ex2Processor processor;
-        runStateMachine(processor, config);
-
-    }
-    catch (std::exception& e)
-    {
-        LOG(ERROR)  << "Unhandled Exception reached the top of main: " 
-                    << e.what() << ", application will now exit";
-        return 1;
-    }
-
-    return 0;
+FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
+{
+    return new Ex2Processor();
 }

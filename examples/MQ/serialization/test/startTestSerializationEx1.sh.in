@@ -28,14 +28,14 @@ SAMPLER+=" --input-file $INPUTFILE --log-color false --control static"
 SAMPLER_PID=$!
 
 ########################## start PROCESSOR
-PROCESSOR1="test-serialization-Ex1-Processor"
-PROCESSOR1+=" --id processor1 --mq-config $JSONCONFIGFILE --verbosity $VERBOSITY --log-color false --control static"
+PROCESSOR1="serialization-Ex1-Processor"
+PROCESSOR1+=" --id processor1 --mq-config $JSONCONFIGFILE --verbosity $VERBOSITY --log-color false --control static --num-msgs 100"
 @CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$PROCESSOR1 &
 PROCESSOR1_PID=$!
 
 ########################## start FILESINK
-FILESINK="test-serialization-Ex1-sink"
-FILESINK+=" --id sink1 --mq-config $JSONCONFIGFILE --verbosity $VERBOSITY --log-color false --control static"
+FILESINK="serialization-Ex1-Sink"
+FILESINK+=" --id sink1 --mq-config $JSONCONFIGFILE --verbosity $VERBOSITY --log-color false --control static --num-msgs 100"
 FILESINK+=" --output-file $OUTPUTFILE"
 @CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$FILESINK &
 FILESINK_PID=$!

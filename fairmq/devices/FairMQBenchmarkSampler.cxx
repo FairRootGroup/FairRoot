@@ -12,13 +12,14 @@
  * @author D. Klein, A. Rybalchenko
  */
 
+#include "FairMQBenchmarkSampler.h"
+
 #include <vector>
 #include <chrono>
 #include <thread>
 
-#include "FairMQBenchmarkSampler.h"
-#include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
+#include "../FairMQLogger.h"
+#include "../options/FairMQProgOptions.h"
 
 using namespace std;
 
@@ -47,7 +48,7 @@ void FairMQBenchmarkSampler::InitTask()
 
 void FairMQBenchmarkSampler::Run()
 {
-    // std::thread resetMsgCounter(&FairMQBenchmarkSampler::ResetMsgCounter, this);
+    std::thread resetMsgCounter(&FairMQBenchmarkSampler::ResetMsgCounter, this);
 
     uint64_t numSentMsgs = 0;
 
@@ -95,18 +96,19 @@ void FairMQBenchmarkSampler::Run()
             }
         }
 
-        // --fMsgCounter;
+        --fMsgCounter;
 
-        // while (fMsgCounter == 0) {
-        //   this_thread::sleep_for(chrono::milliseconds(1));
-        // }
+        while (fMsgCounter == 0)
+        {
+            this_thread::sleep_for(chrono::milliseconds(1));
+        }
     }
 
     auto tEnd = chrono::high_resolution_clock::now();
 
     LOG(INFO) << "Leaving RUNNING state. Sent " << numSentMsgs << " messages in " << chrono::duration<double, milli>(tEnd - tStart).count() << "ms.";
 
-    // resetMsgCounter.join();
+    resetMsgCounter.join();
 }
 
 void FairMQBenchmarkSampler::ResetMsgCounter()
@@ -116,4 +118,5 @@ void FairMQBenchmarkSampler::ResetMsgCounter()
         fMsgCounter = fMsgRate / 100;
         this_thread::sleep_for(chrono::milliseconds(10));
     }
+    fMsgCounter = -1;
 }

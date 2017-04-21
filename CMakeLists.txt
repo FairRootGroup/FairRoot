@@ -13,14 +13,16 @@
 # and PANDAROOT.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.6.0 FATAL_ERROR)
 
 ### CMP0025   Compiler id for Apple Clang is now AppleClang.
 ### CMP0042   MACOSX_RPATH is enabled by default.
 
 foreach(p
   CMP0025 # CMake 3.0
+  CMP0028 # double colon for imported and alias targets
   CMP0042 # CMake 3.0
+  CMP0054 # Only interpret ``if()`` arguments as variables or keywords when unquoted.
   )
   if(POLICY ${p})
   cmake_policy(SET ${p} NEW)
@@ -50,6 +52,9 @@ include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
+
+# COmpile TIme REducer helper
+include(cotire)
 
 #Check the compiler and set the compile and link flags
 Check_Compiler()
@@ -114,7 +119,7 @@ if(FAIRROOT_MODULAR_BUILD)
   # Geant3, Geant4 installed via cmake
   Message(STATUS "Looking for GEANT3...")
   Find_Package(Geant3)
-  # Fill the variables needed to create the config script  
+  # Fill the variables needed to create the config script
   If(Geant3_DIR)
     Set(GEANT3_INCLUDE_DIR ${Geant3_INCLUDE_DIRS})
     Set(GEANT3_LIBRARIES ${Geant3_LIBRARIES})
@@ -188,8 +193,15 @@ find_package(Protobuf)
 find_package(Msgpack)
 find_package(FlatBuffers)
 find_package(DDS)
-find_package(Go)
+if(NOT DISABLE_GO)
+  find_package(Go 1.7)
+endif()
 find_package(GSL)
+if(NOT DEFINED GTEST_ROOT)
+  set(GTEST_ROOT ${SIMPATH})
+endif()
+find_package(GTest)
+
 
 If(WITH_DBASE)
   find_package(MYSQL)
@@ -303,8 +315,10 @@ if(BUILD_DOXYGEN)
   ADD_SUBDIRECTORY(doxygen)
 endif(BUILD_DOXYGEN)
 
-
-add_subdirectory (examples)
+Option(BUILD_EXAMPLES "Build Examples" ON)
+if(BUILD_EXAMPLES)
+  add_subdirectory (examples)
+endif(BUILD_EXAMPLES)
 
 if(IWYU_FOUND)
 
@@ -324,18 +338,17 @@ If(BUILD_UNITTESTS)
 
   Message("Build the unit tests.")
 
-  Set(GTEST_ROOT ${SIMPATH})
-  Find_Package(GTest)
-
   If(GTEST_FOUND)
     Message("Add tests library and tests.")
     add_subdirectory(test)
   EndIf(GTEST_FOUND)
 EndIf(BUILD_UNITTESTS)
 
-Install(DIRECTORY examples/common/gconfig examples/common/geometry
-        DESTINATION share/fairbase/examples/common
-        PATTERN ".svn" EXCLUDE)
+if(BUILD_EXAMPLES)
+  Install(DIRECTORY examples/common/gconfig examples/common/geometry
+          DESTINATION share/fairbase/examples/common
+          PATTERN ".svn" EXCLUDE)
+endif(BUILD_EXAMPLES)
 
 Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
         DESTINATION bin

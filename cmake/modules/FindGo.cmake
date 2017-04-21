@@ -20,13 +20,12 @@ if (GO_EXECUTABLE)
         set(GO_VERSION ${CMAKE_MATCH_1})
         set(GO_PLATFORM ${CMAKE_MATCH_2})
         set(GO_ARCH ${CMAKE_MATCH_3})
-        MESSAGE(STATUS "Looking for Go... found Go ${GO_VERSION}")
-
+        message(STATUS "Looking for Go... found Go ${GO_VERSION}")
     elseif(GO_VERSION_OUTPUT MATCHES "go version devel .* ([^/]+)/(.*)$")
         set(GO_VERSION "99-devel")
         set(GO_PLATFORM ${CMAKE_MATCH_1})
         set(GO_ARCH ${CMAKE_MATCH_2})
-        message("WARNING: Development version of Go being used, can't determine compatibility.")
+        message(WARNING "Development version of Go being used, can't determine compatibility.")
     endif()
 endif()
 mark_as_advanced(GO_EXECUTABLE)
@@ -35,20 +34,18 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Go REQUIRED_VARS GO_EXECUTABLE GO_VERSION GO_PLATFORM GO_ARCH VERSION_VAR GO_VERSION)
 
 # build_go_package build/installs a Go package 'pkg'.
-# if 'gopath' is empty "", the environment variable $GOPATH will be used and passed to
+# if 'gopath' is empty "", the environment variable $GOPATH will be used a/nd passed to
 # 'go get'.
 macro(build_go_package pkg gopath)
-#  message("Building Go Stuff")
-	string(REPLACE "/" "_" tgt ${pkg})
-	if(gopath STREQUAL "")
-		set(gopath $ENV{GOPATH})
-	endif()
-
+  string(REPLACE "/" "_" tgt ${pkg})
+  if(NOT gopath)
+    set(gopath $ENV{GOPATH})
+  endif()
   set(workdir "${gopath}/src/${pkg}")
-#  message("Working directory:  ${workdir}")
-  execute_process (COMMAND ${GO_EXECUTABLE} get
-                   WORKING_DIRECTORY ${workdir}
-  )
-
-
+  execute_process(COMMAND ${GO_EXECUTABLE} get
+                  WORKING_DIRECTORY ${workdir}
+                  RESULT_VARIABLE goret)
+  if(NOT "${goret}")
+    message(FATAL_ERROR "Go build for ${pkg} failed!")
+  endif()
 endmacro(build_go_package)

@@ -369,14 +369,12 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 
   TString outDir = (fOutputDirectory.Length()>1?fOutputDirectory.Data():gSystem->WorkingDirectory());
 
-  TString outFile = Form("%s",fOutname);
-
   fProof->AddInput(fTask);
 
   fProof->AddInput(new TNamed("FAIRRUNANA_fContainerStatic",(fStatic?"kTRUE":"kFALSE")));
   fProof->AddInput(new TNamed("FAIRRUNANA_fProofOutputStatus",fProofOutputStatus.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fOutputDirectory",outDir.Data()));
-  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",outFile.Data()));
+  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",fOutname.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput1FName",par1File.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
 
