@@ -11,7 +11,7 @@
 
 std::ostream& FairTimeStamp::PrintTimeInfo(std::ostream& out) const
 {
-  out << "EntryNr of Data: " << fEntryNr << " TimeStamp: " << GetTimeStamp() << " +/- " << GetTimeStampError() << std::endl;
+  out << " TimeStamp: " << GetTimeStamp() << " +/- " << GetTimeStampError() << std::endl;
   FairMultiLinkedData_Interface::PrintLinkInfo(out);
 
   return out;
