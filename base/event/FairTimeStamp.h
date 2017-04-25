@@ -42,13 +42,11 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     /** Destructor **/
     virtual ~FairTimeStamp(){};
     /** Accessors **/
-    virtual Double_t GetTimeStamp()             const { return fTimeStamp; };
-    virtual Double_t GetTimeStampError()     const { return fTimeStampError;};
-    virtual FairLink GetEntryNr() const {return fEntryNr;}
+    Double_t GetTimeStamp()             const { return fTimeStamp; }
+    Double_t GetTimeStampError()     const { return fTimeStampError; }
     /** Modifiers **/
-    virtual void SetTimeStamp(Double_t t) { fTimeStamp = t; }
-    virtual void SetTimeStampError(Double_t t) {fTimeStampError = t;}
-    virtual void SetEntryNr(FairLink entry) {fEntryNr = entry;}
+    void SetTimeStamp(Double_t t) { fTimeStamp = t; }
+    void SetTimeStampError(Double_t t) {fTimeStampError = t; }
     virtual Int_t Compare(const TObject* obj) const {
       if (this == obj) { return 0; }
       FairTimeStamp* tsobj = static_cast<FairTimeStamp*>(const_cast<TObject*>(obj));
@@ -60,10 +58,8 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
       else { return 1; }
     }
 
-
     virtual std::ostream& PrintTimeInfo(std::ostream& out = std::cout) const;
     virtual Bool_t IsSortable() const { return kTRUE;};
-
 
     virtual bool equal(FairTimeStamp* data) {
       return (fTimeStamp == data->GetTimeStamp() && fTimeStampError == data->GetTimeStampError());
@@ -96,9 +92,8 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
 
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError;     /** Error on time stamp */
-    FairLink fEntryNr; //!  indicates where the data is stored in the branch
 
-    ClassDef(FairTimeStamp,3);
+    ClassDef(FairTimeStamp,4);
 };
 
 // -----   Default constructor   -------------------------------------------
@@ -106,8 +101,7 @@ inline
 FairTimeStamp::FairTimeStamp()
   : FairMultiLinkedData_Interface(),
     fTimeStamp(-1),
-    fTimeStampError(-1),
-    fEntryNr()
+    fTimeStampError(-1)
 {
 }
 
@@ -116,8 +110,7 @@ inline
 FairTimeStamp::FairTimeStamp(Double_t time)
   : FairMultiLinkedData_Interface(),
     fTimeStamp(time),
-    fTimeStampError(-1),
-    fEntryNr()
+    fTimeStampError(-1)
 {
 }
 
@@ -125,8 +118,7 @@ inline
 FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
   : FairMultiLinkedData_Interface(),
     fTimeStamp(time),
-    fTimeStampError(timeerror),
-    fEntryNr()
+    fTimeStampError(timeerror)
 {
 }
 
