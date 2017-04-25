@@ -17,6 +17,7 @@
 
 #include <iostream>
 #include <array>
+#include <string>
 
 #include "Rtypes.h"
 #include "TFile.h"
@@ -108,7 +109,7 @@ class FairTestDetectorFileSink : public FairMQDevice
             fAckChannelName = ackChannelName;
         }
 
-        InitOutputFile("_" + fConfig->GetValue<string>("data-format"));
+        InitOutputFile("_" + fConfig->GetValue<std::string>("data-format"));
     }
     virtual void PostRun()
     {
