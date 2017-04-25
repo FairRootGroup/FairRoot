@@ -600,8 +600,11 @@ Int_t FairRootManager::GetRunId()
 //_____________________________________________________________________________
 void FairRootManager::ReadBranchEvent(const char* BrName)
 {
-    if ( fSource )
-    fSource->ReadBranchEvent(BrName);
+    if ( fSource ) {
+        fSource->ReadBranchEvent(BrName);
+        fSource->FillEventHeader(fEventHeader);
+        fCurrentTime = fEventHeader->GetEventTime();
+    }
 }
 //_____________________________________________________________________________
 
@@ -614,6 +617,8 @@ Int_t FairRootManager::ReadNonTimeBasedEventFromBranches(Int_t Entry)
         fListOfNonTimebasedBranchesIter->Reset();
         while ( (Obj=fListOfNonTimebasedBranchesIter->Next())) {
             fSource->ReadBranchEvent(Obj->GetName(),Entry);
+            fSource->FillEventHeader(fEventHeader);
+            fCurrentTime = fEventHeader->GetEventTime();
         }
     }else{
       return 0;

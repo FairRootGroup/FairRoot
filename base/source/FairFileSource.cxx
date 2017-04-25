@@ -328,7 +328,7 @@ void FairFileSource::SetInTree(TTree*  tempTree)  {
 Int_t FairFileSource::ReadEvent(UInt_t i)
 {
     fCurrentEntryNo = i;
-    SetEventTime();
+    fEventTime = GetEventTime();
     if ( fInChain->GetEntry(i) ) return 0;
 
     return 1;
@@ -831,10 +831,12 @@ void FairFileSource::ReadBranchEvent(const char* BrName)
   if(fEvtHeader == 0) { return; } //No event header, Reading will start later
   if ( fInTree ) {
     fInTree->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
+    fEventTime = GetEventTime();
     return;
   }
   if ( fInChain ) {
     fInChain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
+    fEventTime = GetEventTime();
     return;
   }
   return;
@@ -845,10 +847,12 @@ void   FairFileSource::ReadBranchEvent(const char* BrName, Int_t Entry)
 
     if ( fInTree ) {
         fInTree->FindBranch(BrName)->GetEntry(Entry);
+        fEventTime = GetEventTime();
         return;
     }
     if ( fInChain ) {
         fInChain->FindBranch(BrName)->GetEntry(Entry);
+        fEventTime = GetEventTime();
         return;
     }
     return;
