@@ -38,6 +38,7 @@ void run_reco_timebased( TString mcEngine="TGeant3" )
   fRun->SetInputFile(inFile);
   fRun->SetOutputFile(outFile);
   fRun->RunWithTimeStamps();
+  fRun->SetUseFairLinks(kTRUE);
   
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();

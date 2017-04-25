@@ -94,7 +94,7 @@ void FairTestDetectorDigiTask::Exec(Option_t* /*opt*/)
             digi->SetTimeStampError(0);
         }
 
-        digi->SetLink(FairLink("FairTestDetectorPoint", ipnt));
+        digi->AddLink(FairLink(-1, FairRootManager::Instance()->GetEntryNr(), "FairTestDetectorPoint", ipnt));
     }
 }
 // -------------------------------------------------------------------------

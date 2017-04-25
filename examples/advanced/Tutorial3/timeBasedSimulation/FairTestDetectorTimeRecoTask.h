@@ -35,6 +35,8 @@ class FairTestDetectorTimeRecoTask : public FairTask
     TClonesArray* fDigiArray;
     TClonesArray* fHitArray;
 
+    Double_t fTime;
+
     BinaryFunctor* fFunctor; //!
 
     FairTestDetectorTimeRecoTask(const FairTestDetectorTimeRecoTask&);

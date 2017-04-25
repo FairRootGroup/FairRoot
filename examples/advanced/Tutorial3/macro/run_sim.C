@@ -23,7 +23,8 @@ void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
 
   // create Instance of Run Manager class
   FairRunSim *fRun = new FairRunSim();
-  
+  fRun->SetUseFairLinks(kTRUE);
+//  FairLinkManager::Instance()->AddIncludeType(0);  
   // set the MC version used
   // ------------------------
 

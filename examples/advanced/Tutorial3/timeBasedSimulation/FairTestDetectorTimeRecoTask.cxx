@@ -27,6 +27,7 @@ FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask()
     , fDigiArray(NULL)
     , fHitArray(NULL)
     , fFunctor(NULL)
+	, fTime (0.)
 {
 }
 // -------------------------------------------------------------------------
@@ -37,6 +38,7 @@ FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask(Int_t verbose)
     , fDigiArray(NULL)
     , fHitArray(NULL)
     , fFunctor(NULL)
+	, fTime(0.)
 {
     fVerbose = verbose;
 }
@@ -82,15 +84,18 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* /*opt*/)
 
     fHitArray->Delete();
 
+    fTime += 200;
     if (FairRunAna::Instance()->IsTimeStamp())
     {
-        fDigiArray = FairRootManager::Instance()->GetData("FairTestDetectorSortedDigi", fFunctor, FairRootManager::Instance()->GetEventTime() + 200);
-        //    LOG(INFO) << "EventTime: " 
-        //              << FairRootManager::Instance()->GetEventTime() 
-	//              << FairLogger::endl;
+        fDigiArray = FairRootManager::Instance()->GetData("FairTestDetectorSortedDigi", fFunctor, fTime);
+        //    LOG(INFO) << "EventTime: " << FairRootManager::Instance()->GetEntryNr() << " " << FairRootManager::Instance()->GetEventTime()
+	    //          << FairLogger::endl;
     }
 
+
     // fill the map
+
+    //LOG(INFO) << "NDigis: " << fDigiArray->GetEntries() << FairLogger::endl;
 
     for (int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++)
     {
@@ -108,7 +113,8 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* /*opt*/)
         FairTestDetectorHit* hit = new ((*fHitArray)[ipnt]) FairTestDetectorHit(-1, -1, pos, dpos);
         hit->SetTimeStamp(digi->GetTimeStamp());
         hit->SetTimeStampError(digi->GetTimeStampError());
-        hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
+        hit->AddLink(digi->GetEntryNr());
+        hit->AddInterfaceData(digi);
 
         fHitArray->Sort();
     }

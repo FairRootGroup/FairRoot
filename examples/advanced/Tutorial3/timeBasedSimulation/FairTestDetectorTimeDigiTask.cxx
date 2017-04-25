@@ -102,7 +102,7 @@ void FairTestDetectorTimeDigiTask::Exec(Option_t* /*opt*/)
             digi->SetTimeStampError(0);
         }
 
-        digi->SetLink(FairLink("FairTestDetectorPoint", ipnt));
+        digi->SetLink(FairLink(-1, FairRootManager::Instance()->GetEntryNr(), "FairTestDetectorPoint", ipnt));
 
         Double_t timeOfFlight = point->GetTime();
         Double_t eventTime = FairRootManager::Instance()->GetEventTime();

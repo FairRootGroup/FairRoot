@@ -97,9 +97,9 @@ void FairTestDetectorRecoTask::Exec(Option_t* /*opt*/)
         TVector3 dpos(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
 
         FairTestDetectorHit* hit = new ((*fHitArray)[ipnt]) FairTestDetectorHit(-1, -1, pos, dpos);
+        hit->AddLink(FairLink(-1, FairRootManager::Instance()->GetEntryNr(), FairRootManager::Instance()->GetBranchId("FairTestDetectorDigi"), ipnt));
         hit->SetTimeStamp(digi->GetTimeStamp());
         hit->SetTimeStampError(digi->GetTimeStampError());
-        // hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
     }
 }
 // -------------------------------------------------------------------------
