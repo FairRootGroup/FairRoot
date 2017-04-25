@@ -15,7 +15,7 @@
 #ifndef FAIRLINK_H_
 #define FAIRLINK_H_
 
-#include "TObject.h"                    // for TObject
+#include "TObject.h"                    // for TObject; ClassDefNV
 
 #include "Riosfwd.h"                    // for ostream
 #include "Rtypes.h"                     // for Int_t, Float_t, etc
@@ -28,7 +28,7 @@
 #include <boost/serialization/base_object.hpp>
 #endif //__CINT__
 
-class FairLink : public TObject
+class FairLink
 {
   public:
     FairLink();
@@ -36,7 +36,7 @@ class FairLink : public TObject
     FairLink(TString branchName, Int_t index, Float_t weight = 1.);
     FairLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight = 1.);
     FairLink(Int_t file, Int_t entry, TString branchName, Int_t index, Float_t weight = 1.);
-    virtual ~FairLink();
+    ~FairLink() {};
 
     void SetLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight = 1.) {
       fFile = file;
@@ -61,9 +61,9 @@ class FairLink : public TObject
     void SetWeight(Float_t weight) {fWeight = weight;}
     void AddWeight(Float_t weight) {fWeight += weight;}
 
-    virtual void PrintLinkInfo(std::ostream& out = std::cout) const;
+    void PrintLinkInfo(std::ostream& out = std::cout) const;
 
-    virtual bool operator==(const FairLink& link) const {
+    bool operator==(const FairLink& link) const {
       if ((fFile == link.GetFile() || link.GetFile() == -1) && (fEntry == link.GetEntry() || link.GetEntry() == -1) && fType == link.GetType() && fIndex == link.GetIndex()) {
         return true;
       } else {
@@ -71,7 +71,7 @@ class FairLink : public TObject
       }
     }
 
-    virtual bool operator<(const FairLink& link) const {
+    bool operator<(const FairLink& link) const {
 	if (fFile != -1 && link.GetFile() != -1){
 		if (fFile < link.GetFile()) 		return true;
 		else if (link.GetFile() < fFile) 	return false;
@@ -104,7 +104,7 @@ class FairLink : public TObject
       return out;
     }
 
-    ClassDef(FairLink, 3);
+    ClassDefNV(FairLink, 4);
 
     template<class Archive>
         void serialize(Archive& ar, const unsigned int)
@@ -125,5 +125,32 @@ class FairLink : public TObject
     Float_t fWeight;
 
 };
+
+inline FairLink::FairLink() :
+   fFile(-1),
+   fEntry(-1),
+   fType(-1),
+   fIndex(-1),
+   fWeight(1.0)
+{
+}
+
+inline FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
+  :fFile(-1),
+   fEntry(-1),
+   fType(type),
+   fIndex(index),
+   fWeight(weight)
+{
+}
+
+inline FairLink::FairLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight)
+  :fFile(file),
+   fEntry(entry),
+   fType(type),
+   fIndex(index),
+   fWeight(weight)
+{
+}
 
 #endif /* FAIRLINK_H_ */
