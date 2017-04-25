@@ -71,6 +71,7 @@ void FairTutorialDet2Digitizer::SetParContainers()
   fDigiPar = static_cast<FairTutorialDet2DigiPar*>
              (rtdb->getContainer("FairTutorialDet2DigiPar"));
 
+  // parameters are not filled yet
   fDigiPar->printparams();
 }
 // --------------------------------------------------------------------
@@ -118,6 +119,9 @@ InitStatus FairTutorialDet2Digitizer::Init()
     //fListStack = (TClonesArray*)ioman->GetObject("MCTrack");
     //fDigiCollection = new TClonesArray("FairTrdDigi", 100);
     //ioman->Register("TRDDigi","TRD Digis",fDigiCollection,kTRUE);
+
+    // now parameters are filled 
+    fDigiPar->printparams();
 
     return kSUCCESS;
 
