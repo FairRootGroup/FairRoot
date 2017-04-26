@@ -6,10 +6,7 @@
  */
 
 #include "FairMultiLinkedData_Interface.h"
-
 #include "FairRootManager.h"            // for FairRootManager
-
-#include "TClonesArray.h"               // for TClonesArray
 
 #include <algorithm>                    // for find
 #include <iterator>                     // for distance
@@ -17,35 +14,35 @@
 ClassImp(FairMultiLinkedData_Interface);
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t)
-  :TObject(), fVerbose(0), fInsertHistory(kTRUE), fLink(NULL)
+  :TObject(), fLink(NULL)
 {
 	SetLinks(links);
 }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(TString dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
-  :TObject(), fVerbose(0), fInsertHistory(kTRUE), fLink(NULL)
+  :TObject(), fLink(NULL)
 {
 	FairMultiLinkedData data(dataType, links, fileId, evtId, persistanceCheck, bypass, mult);
 	SetLinks(data);
 }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface( Int_t dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
-  :TObject(), fVerbose(0), fInsertHistory(kTRUE), fLink(NULL)
+  :TObject(), fLink(NULL)
 {
 	FairMultiLinkedData data(dataType, links, fileId, evtId, persistanceCheck, bypass, mult);
 	SetLinks(data);
 }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(const FairMultiLinkedData_Interface& toCopy)
-  :TObject(toCopy), fVerbose(0), fInsertHistory(kTRUE), fLink(NULL)
+  :TObject(toCopy), fLink(NULL)
 {
 	if (toCopy.GetPointerToLinks() != 0){
-		SetInsertHistory(kFALSE);
+	        SetInsertHistory(kFALSE);
 		SetLinks(*(toCopy.GetPointerToLinks()));
-        SetEntryNr(toCopy.GetEntryNr());
-        fInsertHistory = toCopy.fInsertHistory;
-        SetInsertHistory(fInsertHistory);
-    }
+                SetEntryNr(toCopy.GetEntryNr());
+                // copy history flag information
+                SetInsertHistory(toCopy.GetPointerToLinks()->GetInsertHistory());
+        }
 }
 
 FairMultiLinkedData_Interface& FairMultiLinkedData_Interface::operator=(const FairMultiLinkedData_Interface& rhs)
@@ -66,7 +63,6 @@ FairMultiLinkedData* FairMultiLinkedData_Interface::CreateFairMultiLinkedData()
 			if (fLink == 0){
 				fLink = new FairMultiLinkedData();
 			}
-			fLink->SetInsertHistory(fInsertHistory);
 			return fLink;
 		}
 	}
@@ -184,12 +180,11 @@ void FairMultiLinkedData_Interface::AddInterfaceData(FairMultiLinkedData_Interfa
 	if (data->GetPointerToLinks() != 0) {
 		AddLinks(*data->GetPointerToLinks());
 	}
-	SetInsertHistory(fInsertHistory);
+	SetInsertHistory(GetPointerToLinks()->GetInsertHistory());
 }
 
 void FairMultiLinkedData_Interface::SetInsertHistory(Bool_t val)
 {
-	fInsertHistory = val;
 	if (GetPointerToLinks() != 0) {
 		GetPointerToLinks()->SetInsertHistory(val);
 	}
