@@ -44,7 +44,7 @@ class FairMultiLinkedData_Interface : public  TObject
     virtual FairLink        	GetLink(Int_t pos) const;         	///< returns the FairLink at the given position
     virtual FairMultiLinkedData GetLinksWithType(Int_t type) const; ///< returns all FairLinks with the corresponding type
     virtual FairLink            GetEntryNr() const;
-    virtual FairMultiLinkedData* 		GetPointerToLinks() const {	return fLink;}
+    FairMultiLinkedData* 	GetPointerToLinks() const { return fLink;}
 
     virtual std::vector<FairLink> GetSortedMCTracks();
 
@@ -76,11 +76,7 @@ class FairMultiLinkedData_Interface : public  TObject
     }                                                     ///< Output
 
   protected:
-
-    Int_t fVerbose; //!
-    Bool_t fInsertHistory; //!
     FairMultiLinkedData* fLink;
-
     FairMultiLinkedData* CreateFairMultiLinkedData();
 
     ClassDef(FairMultiLinkedData_Interface, 5);
@@ -88,7 +84,7 @@ class FairMultiLinkedData_Interface : public  TObject
 
 inline
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface()
-  :TObject(), fVerbose(0), fInsertHistory(kTRUE), fLink(NULL)
+  :TObject(), fLink(NULL)
 {
 }
 
