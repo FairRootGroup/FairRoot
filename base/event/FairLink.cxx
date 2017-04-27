@@ -19,22 +19,23 @@ ClassImp(FairLink);
 
 
 FairLink::FairLink(TString branchName, Int_t index, Float_t weight)
-  :fFile(-1),
+  :fFile(0),
+   fType(0),
    fEntry(-1),
-   fType(FairRootManager::Instance()->GetBranchId(branchName)),
    fIndex(index),
    fWeight(weight)
 {
+	SetType(FairRootManager::Instance()->GetBranchId(branchName));
 }
 
 
 FairLink::FairLink(Int_t file, Int_t entry, TString branchName, Int_t index, Float_t weight)
-  :fFile(file),
-   fEntry(entry),
-   fType(FairRootManager::Instance()->GetBranchId(branchName)),
+  :fEntry(entry),
    fIndex(index),
    fWeight(weight)
 {
+	SetFile(file);
+	SetType(FairRootManager::Instance()->GetBranchId(branchName));
 }
 
 void FairLink::PrintLinkInfo(std::ostream& out) const
