@@ -79,8 +79,8 @@ FairRootManager* FairRootManager::Instance()
 FairRootManager::FairRootManager()
   : TObject(),
     fOldEntryNr(-1),
-    fCbmout(0),
-    fCbmroot(0),
+    fOutFolder(0),
+    fRootFolder(0),
     fCurrentTime(0),
     fOutFile(NULL),
     fOutTree(NULL),
@@ -183,11 +183,11 @@ TFile* FairRootManager::OpenOutFile(TFile* f)
   FairRun* fRun = FairRun::Instance();
   /**Check if a simulation run!*/
   if(!fRun->IsAna()) {
-    fCbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-    gROOT->GetListOfBrowsables()->Add(fCbmroot);
+    fRootFolder= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
+    gROOT->GetListOfBrowsables()->Add(fRootFolder);
   } else {
-    fCbmout= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
-    gROOT->GetListOfBrowsables()->Add(fCbmout);
+    fOutFolder= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
+    gROOT->GetListOfBrowsables()->Add(fOutFolder);
   }
   return fOutFile;
 }
@@ -227,17 +227,17 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
   if(toFile) { /**Write the Object to the Tree*/
     TFolder* folder=0;
     TFolder* f=0;
-    if(fCbmout==0) {
-      f=static_cast<TFolder*>(fCbmroot->FindObjectAny(folderName));
+    if(fOutFolder==0) {
+      f=static_cast<TFolder*>(fRootFolder->FindObjectAny(folderName));
       if(f==0) {
-        folder= fCbmroot->AddFolder(folderName,folderName);
+        folder= fRootFolder->AddFolder(folderName,folderName);
       } else {
         folder=f;
       }
     } else {
-      f=static_cast<TFolder*>(fCbmout->FindObjectAny(folderName));
+      f=static_cast<TFolder*>(fOutFolder->FindObjectAny(folderName));
       if(f==0) {
-        folder= fCbmout->AddFolder(folderName,folderName);
+        folder= fOutFolder->AddFolder(folderName,folderName);
       } else {
         folder=f;
       }
@@ -289,17 +289,17 @@ void  FairRootManager::Register(const char* name,const char* Foldername ,TCollec
   if(toFile) { /**Write the Object to the Tree*/
     TFolder* folder=0;
     TFolder* f=0;
-    if(fCbmout==0) {
-      f=static_cast<TFolder*>(fCbmroot->FindObjectAny(Foldername));
+    if(fOutFolder==0) {
+      f=static_cast<TFolder*>(fRootFolder->FindObjectAny(Foldername));
       if(f==0) {
-        folder= fCbmroot->AddFolder(Foldername,Foldername);
+        folder= fRootFolder->AddFolder(Foldername,Foldername);
       } else {
         folder=f;
       }
     } else {
-      f=static_cast<TFolder*>(fCbmout->FindObjectAny(Foldername));
+      f=static_cast<TFolder*>(fOutFolder->FindObjectAny(Foldername));
       if(f==0) {
-        folder= fCbmout->AddFolder(Foldername,Foldername);
+        folder= fOutFolder->AddFolder(Foldername,Foldername);
       } else {
         folder=f;
       }
@@ -546,11 +546,11 @@ void FairRootManager::CreateGeometryFile(const char* geofile)
 void FairRootManager:: WriteFolder()
 {
   fOutFile->cd();
-  if(fCbmroot!=0 && fSource==0) {
-    fCbmroot->Write();
+  if(fRootFolder!=0 && fSource==0) {
+    fRootFolder->Write();
   }
-  if(fCbmout!=0) {
-    fCbmout->Write();
+  if(fOutFolder!=0) {
+    fOutFolder->Write();
   }
   fBranchNameList->Write("BranchList", TObject::kSingleKey);
   fTimeBasedBranchNameList->Write("TimeBasedBranchList", TObject::kSingleKey);
@@ -645,8 +645,8 @@ TObject* FairRootManager::GetObject(const char* BrName)
 	      << BrName << " is already activated by another task or call"
 	      << FairLogger::endl;
   /**Try to find the object in the folder structure, object already activated by other task or call*/
-  if(fCbmout) {
-    Obj = fCbmout->FindObjectAny(BrName);
+  if(fOutFolder) {
+    Obj = fOutFolder->FindObjectAny(BrName);
     if (Obj) {
       LOG(DEBUG2) <<"Object "  
 		  << BrName << " was already activated by another task"
@@ -664,11 +664,11 @@ TObject* FairRootManager::GetObject(const char* BrName)
     }
   }
   /**if the object does not exist then look in the input tree */
-  if(fCbmroot && !Obj) {
+  if(fRootFolder && !Obj) {
     /** there is an input tree and the object was not in memory */
     LOG(DEBUG2) << "Object "
 		<< BrName << " is not a memory branch and not yet activated, try the Input Tree (Chain)" << FairLogger::endl;
-    Obj=fCbmroot->FindObjectAny(BrName);
+    Obj=fRootFolder->FindObjectAny(BrName);
     Obj=ActivateBranch(BrName);
   }
   if(!Obj) {
@@ -1089,14 +1089,14 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
     fListFolder = new TObjArray(16);
   }
   
-  //cout <<"FairRootManager::CheckBranchSt  :  " <<fCbmroot << endl;
-  if (fCbmroot) {
-    fListFolder->Add(fCbmroot);
-    Obj1 = fCbmroot->FindObjectAny(BrName);
+  //cout <<"FairRootManager::CheckBranchSt  :  " <<fRootFolder << endl;
+  if (fRootFolder) {
+    fListFolder->Add(fRootFolder);
+    Obj1 = fRootFolder->FindObjectAny(BrName);
   }
-  if(fCbmout && !Obj1) {
-    fListFolder->Add(fCbmout);
-    Obj1 = fCbmout->FindObjectAny(BrName);  //Branch in output folder
+  if(fOutFolder && !Obj1) {
+    fListFolder->Add(fOutFolder);
+    Obj1 = fOutFolder->FindObjectAny(BrName);  //Branch in output folder
   }
   if(!Obj1) {
     for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
