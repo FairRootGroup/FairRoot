@@ -255,9 +255,9 @@ class FairRootManager : public TObject
 //_____________________________________________________________________
     /**private Members*/
     /**folder structure of output*/
-    TFolder*                            fCbmout;
+    TFolder*                            fOutFolder;
     /**folder structure of input*/
-    TFolder*                            fCbmroot;
+    TFolder*                            fRootFolder;
     /** current time in ns*/
     Double_t                            fCurrentTime;
     /**Output file */
