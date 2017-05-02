@@ -134,18 +134,16 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
   TObject* obj;
  
   while((obj=fModIter->Next())) {
-    if(obj->InheritsFrom("FairDetector")) {
-      detector=dynamic_cast<FairDetector*>(obj);
-      if(detector) {
-        fDetectors->Add(detector);
-        listDetectors.push_back(detector);
-        if(detector->IsActive()) {
-          fActiveDetectors->Add(detector);
-          listActiveDetectors.push_back(detector);
-	      }
-      } else {
-        LOG(ERROR) << "Dynamic cast fails." << FairLogger::endl;
+    detector=dynamic_cast<FairDetector*>(obj);
+    if(detector) {
+      fDetectors->Add(detector);
+      listDetectors.push_back(detector);
+      if(detector->IsActive()) {
+        fActiveDetectors->Add(detector);
+        listActiveDetectors.push_back(detector);
       }
+    } else {
+        LOG(ERROR) << "Dynamic cast fails." << FairLogger::endl;
     }
   }
   
