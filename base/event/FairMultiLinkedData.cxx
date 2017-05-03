@@ -132,7 +132,8 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
 
   if (fPersistanceCheck == kFALSE ||
       link.GetIndex() < 0 ||
-      ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0) {
+      ( link.GetType() != ioman->GetMCTrackBranchId() &&
+	ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0) ) {
     InsertLink(link);
     if (fInsertHistory == kTRUE)
     	InsertHistory(link);
