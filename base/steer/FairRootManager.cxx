@@ -90,6 +90,7 @@ FairRootManager::FairRootManager()
     fBranchSeqId(0),
     fBranchNameList(new TList()),
     fTimeBasedBranchNameList(new TList()),
+    fMCTrackBranchId(-1),
     fActiveContainer(),
     fTSBufferMap(),
     fWriteoutBufferMap(),
@@ -252,19 +253,22 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
     
   if (toFile == kFALSE) {
           FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
-   }
+  }
 }
-//_____________________________________________________________________________
 
+//_____________________________________________________________________________
 Int_t  FairRootManager::AddBranchToList(const char* name)
 {
     if(fBranchNameList->FindObject(name)==0) {
         fBranchNameList->AddLast(new TObjString(name));
+        // check if we are setting the MCTrack Branch
+        if(strcmp(name, "MCTrack") == 0) {
+	   fMCTrackBranchId = fBranchSeqId;
+        }
         fBranchSeqId++;
     }
     return fBranchSeqId;
 }
-
 
 //_____________________________________________________________________________
 void  FairRootManager::Register(const char* name,const char* Foldername ,TCollection* obj, Bool_t toFile)
@@ -384,20 +388,19 @@ TString FairRootManager::GetBranchName(Int_t id)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-Int_t FairRootManager::GetBranchId(TString BrName)
+Int_t FairRootManager::GetBranchId(TString const &BrName)
 {
   /**Return the branch id from the name*/
   TObjString* ObjStr;
   Int_t Id=-1;
   for(Int_t t=0; t<fBranchNameList->GetEntries(); t++) {
-    ObjStr= static_cast<TObjString*>(fBranchNameList->At(t));
+    ObjStr= static_cast<TObjString*>(fBranchNameList->TList::At(t));
     if(BrName==ObjStr->GetString()) {
       Id=t;
       break;
     }
   }
   return Id;
-
 }
 //_____________________________________________________________________________
 
@@ -973,9 +976,11 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
 void  FairRootManager::SetBranchNameList(TList* list)
 {
   if ( list == NULL ) return;
-  for(Int_t t=0; t<list->GetEntries(); t++) {
-    fBranchNameList->AddAt(list->At(t),t);
-    fBranchSeqId++;
+  // otherwise clear existing and add via the standard interface
+  fBranchNameList->Clear();
+  fMCTrackBranchId = -1;
+  for (Int_t t=0; t<list->GetEntries(); t++) {
+    AddBranchToList(static_cast<TObjString*>(list->At(t))->GetString().Data());
   }
 }
 //_____________________________________________________________________________

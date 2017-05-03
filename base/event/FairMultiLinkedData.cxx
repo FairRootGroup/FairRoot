@@ -143,7 +143,7 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
     if (fVerbose > 1) {
       std::cout << "BranchName " << ioman->GetBranchName(link.GetType()) << " checkStatus: " <<  ioman->CheckBranch(ioman->GetBranchName(link.GetType())) << std::endl;
     }
-    if (link.GetType() > ioman->GetBranchId("MCTrack") && ioman->CheckBranch(ioman->GetBranchName(link.GetType())) != 1) {
+    if (link.GetType() > ioman->GetMCTrackBranchId() && ioman->CheckBranch(ioman->GetBranchName(link.GetType())) != 1) {
       if (fVerbose > 1) {
         std::cout << "BYPASS!" << std::endl;
       }
@@ -153,7 +153,7 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
 
   if (bypass == kTRUE) {
     //FairRootManager* ioman = FairRootManager::Instance();
-    if (link.GetType() > ioman->GetBranchId("MCTrack")) {
+    if (link.GetType() > ioman->GetMCTrackBranchId()) {
       TClonesArray* array = static_cast<TClonesArray*>(ioman->GetObject(ioman->GetBranchName(link.GetType())));
       if (fVerbose > 1) {
         std::cout << "Entries in " << ioman->GetBranchName(link.GetType()) << " Array: " << array->GetEntries() << std::endl;
@@ -206,7 +206,7 @@ void FairMultiLinkedData::InsertHistory(FairLink link)
 
         if (link.GetType() < 0)
                 return;
-        if (link.GetType() == ioman->GetBranchId("MCTrack"))
+        if (link.GetType() == ioman->GetMCTrackBranchId())
                 return;
         if(ioman->GetBranchName(link.GetType()).Contains("."))
         	return;
@@ -278,7 +278,7 @@ bool LargerWeight(FairLink val1, FairLink val2){
 }
 
 std::vector<FairLink> FairMultiLinkedData::GetSortedMCTracks(){
-	FairMultiLinkedData mcLinks = GetLinksWithType(FairRootManager::Instance()->GetBranchId("MCTrack"));
+	FairMultiLinkedData mcLinks = GetLinksWithType(FairRootManager::Instance()->GetMCTrackBranchId());
 	std::set<FairLink> mcSet = mcLinks.GetLinks();
 	std::vector<FairLink> mcVector(mcSet.begin(), mcSet.end());
 	//std::sort(begin(mcVector), end(mcVector), [](FairLink& val1, FairLink& val2){ return val1.GetWeight() > val2.GetWeight();});
