@@ -83,7 +83,11 @@ class FairRootManager : public TObject
     /**Return branch name by Id*/
     TString             GetBranchName(Int_t id);
     /**Return Id of a branch named */
-    Int_t               GetBranchId(TString BrName);
+    Int_t               GetBranchId(TString const &BrName);
+
+    /**The MCTrack branch stands out since it is required by the framework algorithms**/
+    Int_t GetMCTrackBranchId() const { return fMCTrackBranchId; }
+
     /**Return a TList of TObjString of branch names available in this session*/
     TList*              GetBranchNameList() {return fBranchNameList;}
     /** Return a pointer to the output Tree of type TTree */
@@ -281,9 +285,12 @@ class FairRootManager : public TObject
 #endif
 
     /**Branch id for this run */
-    Int_t                               fBranchSeqId;
+    Int_t                                fBranchSeqId;
     /**List of branch names as TObjString*/
     TList*                               fBranchNameList; //!
+    /**The branch ID for the special (required) MCTrack branch**/
+    Int_t                                fMCTrackBranchId; //!
+
     /**List of Time based branchs names as TObjString*/
     TList*                               fTimeBasedBranchNameList; //!
     /** Internally used to compress empty slots in data buffer*/
