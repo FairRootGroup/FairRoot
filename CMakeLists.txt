@@ -29,7 +29,6 @@ foreach(p
   endif()
 endforeach()
 
-
 # Set name of our project to "FAIRROOT". Has to be done
 # after check of cmake version
 project(FAIRROOT)
@@ -38,6 +37,16 @@ project(FAIRROOT)
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
+
+if(APPLE)
+  # Configure RPATH entries on macOS
+  # https://cmake.org/Wiki/CMake_RPATH_handling#Always_full_RPATH
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+  list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+  if("${isSystemDir}" STREQUAL "-1")
+    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+  endif()
+endif()
 
 SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 
