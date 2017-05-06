@@ -45,7 +45,12 @@ before_install:
         env;
         brew update;
         if test "${_system_version}" = "10.11"; then
-          brew install gcc;
+          brew install --force-bottle gcc@6;
+          sudo ln -s $(brew --prefix gcc@6)/bin/gfortran-6 /usr/local/bin/gfortran;
+          target=$(dirname $(greadlink -f $(gfortran -print-file-name=libgfortran.dylib)));
+          link=/usr/local/opt/gcc/lib/gcc/6;
+          sudo mkdir -p $(dirname $link);
+          sudo ln -s $target $link;
         fi;
         if test "${_system_version}" = "10.9"; then
           brew tap homebrew/versions;
