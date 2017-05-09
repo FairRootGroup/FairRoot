@@ -19,6 +19,9 @@
 
 class FairMQParts
 {
+  private:
+    using PartsContainer = std::vector<std::unique_ptr<FairMQMessage>>;
+
   public:
     /// Default constructor
     FairMQParts() : fParts() {};
@@ -69,7 +72,13 @@ class FairMQParts
     /// @return number of parts in the container
     inline int Size() const { return fParts.size(); }
 
-    std::vector<std::unique_ptr<FairMQMessage>> fParts;
+    using iterator = PartsContainer::iterator;
+    using const_iterator = PartsContainer::const_iterator;
+
+    iterator begin() { return fParts.begin(); }
+    iterator end() { return fParts.end(); }
+
+    PartsContainer fParts;
 };
 
 #endif /* FAIRMQPARTS_H_ */
