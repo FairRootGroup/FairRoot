@@ -68,7 +68,9 @@ FairMQDevice::FairMQDevice()
     , fInputChannelKeys()
     , fMultitransportMutex()
     , fMultitransportProceed(false)
+    , fExternalConfig(false)
 {
+    LOG(DEBUG) << "PID: " << getpid();
 }
 
 void FairMQDevice::CatchSignals()
@@ -141,6 +143,9 @@ void FairMQDevice::AttachChannels(list<FairMQChannel*>& chans)
 
 void FairMQDevice::InitWrapper()
 {
+    fNetworkInterface = fConfig->GetValue<string>("network-interface");
+    fInitializationTimeoutInS = fConfig->GetValue<int>("initialization-timeout");
+
     if (!fTransportFactory)
     {
         LOG(ERROR) << "Transport not initialized. Did you call SetTransport()?";
@@ -913,8 +918,32 @@ unique_ptr<FairMQTransportFactory> FairMQDevice::MakeTransport(const string& tra
     return move(tr);
 }
 
+void FairMQDevice::CreateOwnConfig()
+{
+    // TODO: make fConfig a shared_ptr when no old user code has FairMQProgOptions ptr*
+    fConfig = new FairMQProgOptions();
+
+    // dummy argc+argv
+    char arg0[] = "undefined"; // executable name
+    char arg1[] = "--id";
+    char arg2[] = "undefined"; // device ID (get it from the property)
+    char* argv[] = { &arg0[0], &arg1[0], &arg2[0], nullptr };
+    int argc = static_cast<int>((sizeof(argv) / sizeof(argv[0])) - 1);
+
+    fConfig->ParseAll(argc, &argv[0]);
+    fConfig->UpdateValue<string>("id", GetProperty(FairMQDevice::Id, "default_id"));
+    fConfig->UpdateValue<int>("io-threads", GetProperty(FairMQDevice::NumIoThreads, 1));
+}
+
 void FairMQDevice::SetTransport(const string& transport)
 {
+    // This method is the first to be called, if FairMQProgOptions are not used (either SetTransport() or SetConfig() make sense, not both).
+    // Make sure here that at least internal config is available.
+    if (!fExternalConfig && !fConfig)
+    {
+        CreateOwnConfig();
+    }
+
     if (fTransports.empty())
     {
         LOG(DEBUG) << "Requesting '" << transport << "' as default transport for the device";
@@ -929,7 +958,7 @@ void FairMQDevice::SetTransport(const string& transport)
 
 void FairMQDevice::SetConfig(FairMQProgOptions& config)
 {
-    LOG(DEBUG) << "PID: " << getpid();
+    fExternalConfig = true;
     fConfig = &config;
     fChannels = config.GetFairMQMap();
     fDefaultTransport = config.GetValue<string>("transport");
@@ -1209,6 +1238,11 @@ const FairMQChannel& FairMQDevice::GetChannel(const std::string& channelName, co
 void FairMQDevice::Exit()
 {
     LOG(DEBUG) << "All transports are shut down.";
+
+    if (!fExternalConfig && fConfig)
+    {
+        delete fConfig;
+    }
 }
 
 FairMQDevice::~FairMQDevice()
