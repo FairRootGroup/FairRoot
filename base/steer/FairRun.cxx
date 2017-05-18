@@ -56,7 +56,7 @@ FairRun::FairRun(Bool_t isMaster)
   }
   fRunInstance=this;
 
-  fRootManager = new FairRootManager();
+    fRootManager = FairRootManager::Instance();
 
   new FairLinkManager();
 }

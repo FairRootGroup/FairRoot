@@ -54,9 +54,7 @@ class TIterator;
 class FairRootManager : public TObject
 {
   public:
-    /**ctor*/
-    FairRootManager();
-    /**dtor*/
+      /**dtor*/
     virtual ~FairRootManager();
      Bool_t             AllDataProcessed();
     /** Add a branch name to the Branchlist and give it an id*/
@@ -231,7 +229,10 @@ class FairRootManager : public TObject
 
     static char* GetTreeName();
   private:
+    
     /**private methods*/
+    /**ctor*/
+    FairRootManager();
     FairRootManager(const FairRootManager&);
     FairRootManager& operator=(const FairRootManager&);
     /**  Set the branch address for a given branch name and return
