@@ -44,7 +44,7 @@ FairRootManagerSim::FairRootManagerSim()
   fRootManager = FairRootManager::Instance();
   if ( ! fRootManager ) {
     std::cout << "Creating FairRootManager" << std::endl;
-    fRootManager = new FairRootManager();
+      fRootManager = FairRootManager::Instance();
   } else {
     std::cout << "Got FairRootManager existing" << std::endl;
   }

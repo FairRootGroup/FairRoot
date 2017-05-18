@@ -93,7 +93,7 @@ FairRootManagerSimMT::FairRootManagerSimMT()
   if ( ! fRootManager ) {
     LOG(ERROR) << "FairRootManager::Instance() does not exist, creating new instance in " 
       << fId << " " << this << FairLogger::endl;
-    fRootManager = new FairRootManager();
+      fRootManager = FairRootManager::Instance();
   }
 
   if ( fgDebug ) {

@@ -71,7 +71,8 @@ FairRootManager* FairRootManager::Instance()
 {
 // Returns singleton instance.
 // ---
-  return fgInstance;
+    if (!fgInstance) fgInstance = new FairRootManager;
+    return fgInstance;
 }
 //_____________________________________________________________________________
 
