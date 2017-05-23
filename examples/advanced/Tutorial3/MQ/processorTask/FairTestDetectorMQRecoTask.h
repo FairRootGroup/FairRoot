@@ -127,6 +127,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     virtual InitStatus Init()
     {
         fRecoTask = new FairTestDetectorRecoTask();
+        fRecoTask->SetStreamProcessing(kTRUE);
         fRecoTask->fDigiArray = new TClonesArray("FairTestDetectorDigi");
         fRecoTask->fHitArray = new TClonesArray("FairTestDetectorHit");
 

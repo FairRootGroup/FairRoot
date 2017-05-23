@@ -59,6 +59,7 @@ void FairMQEx9TaskProcessor<T>::Init()
   fParamChannelName  = fConfig->GetValue<std::string>("par-channel");
   
   fFairTask = new T();
+  fFairTask->SetStreamProcessing(kTRUE);
   fGeoPar = new FairGeoParSet("FairGeoParSet");
   fParCList = new TList();
   fParCList->Add(fGeoPar);
