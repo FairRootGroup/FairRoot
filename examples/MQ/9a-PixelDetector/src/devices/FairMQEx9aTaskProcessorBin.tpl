@@ -55,6 +55,7 @@ void FairMQEx9aTaskProcessorBin<T>::Init()
 
     //fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
   fFairTask = new T();
+  fFairTask->SetStreamProcessing(kTRUE);
   fGeoPar = new FairGeoParSet("FairGeoParSet");
   fParCList = new TList();
   fParCList->Add(fGeoPar);
