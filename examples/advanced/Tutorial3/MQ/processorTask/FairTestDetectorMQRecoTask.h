@@ -28,7 +28,6 @@
 #include "FairMQLogger.h"
 #include "FairMQProcessorTask.h"
 #include "FairMQMessage.h"
-#include "FairMQTools.h"
 
 #include "FairTestDetectorRecoTask.h"
 #include "FairTestDetectorPayload.h"

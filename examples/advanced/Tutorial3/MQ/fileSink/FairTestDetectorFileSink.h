@@ -27,7 +27,6 @@
 #include "TSystem.h"
 
 #include "FairMQDevice.h"
-#include "FairMQTools.h"
 #include "FairMQLogger.h"
 
 #include "FairTestDetectorPayload.h"
