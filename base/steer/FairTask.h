@@ -99,11 +99,14 @@ class FairTask : public TTask
     **/  
     Bool_t IsOutputBranchPersistent(TString);
 
+    void SetStreamProcessing(Bool_t val=kTRUE) {fStreamProcessing=val;}
+
   protected:
 
     Int_t        fVerbose;  //  Verbosity level
     Int_t        fInputPersistance; ///< Indicates if input branch is persistant
     FairLogger*  fLogger; //!
+    Bool_t       fStreamProcessing;
 
     /** Intialisation at begin of run. To be implemented in the derived class.
     *@value  Success   If not kSUCCESS, task will be set inactive.
@@ -153,7 +156,7 @@ class FairTask : public TTask
     FairTask(const FairTask&);
     FairTask& operator=(const FairTask&);
 
-    ClassDef(FairTask,3);
+    ClassDef(FairTask,4);
 
 };
 
