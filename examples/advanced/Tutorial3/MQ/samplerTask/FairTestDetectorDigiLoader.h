@@ -30,7 +30,6 @@
 
 #include "FairMQSamplerTask.h"
 #include "FairMQLogger.h"
-#include "FairMQTools.h"
 
 #include "baseMQtools.h"
 
