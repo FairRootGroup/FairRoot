@@ -7,21 +7,22 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 If(GEANT3_FOUND)
-  add_subdirectory (common/passive)
-  add_subdirectory (common/mcstack)
+  add_subdirectory(common/passive)
+  add_subdirectory(common/mcstack)
 
-  add_subdirectory (simulation/Tutorial1)
-  add_subdirectory (simulation/Tutorial2)
+  add_subdirectory(simulation/Tutorial1)
+  add_subdirectory(simulation/Tutorial2)
 
-  add_subdirectory (simulation/Tutorial4)
+  add_subdirectory(simulation/Tutorial4)
   If(Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND AND HAS_CXX11_PATTERN1)
-    add_subdirectory (advanced/Tutorial3)
+    add_subdirectory(advanced/Tutorial3)
+    add_subdirectory(advanced/Region)
     add_subdirectory(MQ/7-parameters)
     add_subdirectory(MQ/serialization)
     add_subdirectory(MQ/9-PixelDetector)
     add_subdirectory(MQ/9a-PixelDetector)
   EndIf()
-  add_subdirectory (simulation/rutherford)
+  add_subdirectory(simulation/rutherford)
 EndIf()
 
 If(Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND AND HAS_CXX11_PATTERN1)
@@ -38,7 +39,7 @@ If(Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND AND HAS_CXX11_PATTERN1)
 EndIf()
 
 If(Go_FOUND AND ZeroMQ_FOUND)
-	add_subdirectory(advanced/GoTutorial)
+  add_subdirectory(advanced/GoTutorial)
 EndIf()
 
 add_subdirectory(advanced/MbsTutorial)
