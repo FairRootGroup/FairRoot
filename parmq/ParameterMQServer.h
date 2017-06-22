@@ -51,6 +51,22 @@ class ParameterMQServer : public FairMQDevice
     virtual void SetProperty(const int key, const int value);
     virtual int GetProperty(const int key, const int default_ = 0);
 
+    void SetFirstInputName(const std::string& firstInputName) { fFirstInputName = firstInputName; }
+    std::string GetFirstInputName() { return fFirstInputName; }
+    void SetFirstInputType(const std::string& firstInputType) { fFirstInputType = firstInputType; }
+    std::string GetFirstInputType() { return fFirstInputType; }
+    void SetSecondInputName(const std::string& secondInputName) { fSecondInputName = secondInputName; }
+    std::string GetSecondInputName() { return fSecondInputName; }
+    void SetSecondInputType(const std::string& secondInputType) { fSecondInputType = secondInputType; }
+    std::string GetSecondInputType() { return fSecondInputType; }
+    void SetOutputName(const std::string& outputName) { fOutputName = outputName; }
+    std::string GetOutputName() { return fOutputName; }
+    void SetOutputType(const std::string& outputType) { fOutputType = outputType; }
+    std::string GetOutputType() { return fOutputType; }
+
+    void SetChannelName(const std::string& channelName) { fChannelName = channelName; }
+    std::string GetChannelName() { return fChannelName; }
+
   private:
     FairRuntimeDb* fRtdb;
 
