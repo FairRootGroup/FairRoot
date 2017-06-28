@@ -31,6 +31,7 @@ the tracking from the macro (M. Al-Turany)
 #include "Rtypes.h"    // for Double_t, Bool_t, Int_t, etc
 #include "TObjArray.h" // for TObjArray
 #include "TVector3.h"  // for TVector3
+#include "TMCProcess.h"
 
 #include <iostream> // for operator<<, basic_ostream, etc
 
@@ -83,7 +84,7 @@ public:
                         Double_t vx, Double_t vy, Double_t vz,
                         Int_t parent = -1, Bool_t wanttracking = true,
                         Double_t e = -9e9, Double_t tof = 0.,
-                        Double_t weight = 0.);
+                        Double_t weight = 0., TMCProcess proc = kPPrimary);
 
   /** Clone this object (used in MT mode only) */
   virtual FairPrimaryGenerator* ClonePrimaryGenerator() const;
