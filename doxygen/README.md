@@ -1,5 +1,5 @@
 
-###Generating Doxygen documentation
+### Generating Doxygen documentation
 
 If the flage -DBUILD_DOXYGEN=ON  is set when calling cmake, the doxygen documentation will be generated when calling make.  The generated html files can then be found in "build/doxygen/doc/html"
 
