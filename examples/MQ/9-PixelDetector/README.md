@@ -1,4 +1,4 @@
-#Move from root to FairMQ
+# Move from root to FairMQ
 
 This example uses standard FairRoot analysis chain:
 
@@ -8,7 +8,7 @@ This example uses standard FairRoot analysis chain:
 
 to show how to switch for root single-core processing to FairMQ multi-core pipeline processing.
 
-##MQ Devices
+## MQ Devices
 
 The following MQ devices are implemented:
 
@@ -35,7 +35,7 @@ but only some data classes may be sent (the ones specified in PixelPayload).
 
 FairMQEx9Merger - device to merge different parts of events. The event parts are merged into one object and sent to output.
 
-##Executables
+## Executables
 
 Separate executables for the different devices have been created:
 
@@ -48,7 +48,7 @@ which run given devices and allow setting of the different parameters from the c
 - static - changes states automatically;
 - dds - react to the commands sent via dds_intercom.
 
-##Topologies and scripts
+## Topologies and scripts
 Several shell scripts using different topologies are implemented:
 
 #### ./startFairMQEx9.sh
@@ -102,7 +102,7 @@ merges event data from different stations and sends whole events with PixelHits
 the second level of processors runs the track finding 
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; root -l -q run_digiToBin.C;
 
-##Running with DDS
+## Running with DDS
 To run the example in the DDS, please check http://dds.gsi.de for the installation instructions.
 The next step, you have to configure fairroot with -DDDS_PATH="/path/to/dds/install/dir/" and rebuild it.
 
