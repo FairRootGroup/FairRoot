@@ -16,7 +16,6 @@
 #include "TDatabasePDG.h" // for TDatabasePDG
 #include "TF1.h"          // for TF1
 #include "TIterator.h"    // for TIterator
-#include "TMCProcess.h"   // for TMCProcess::kPPrimary
 #include "TMath.h"        // for Sqrt
 #include "TObject.h"      // for TObject
 #include "TParticlePDG.h" // for TParticlePDG
@@ -234,7 +233,8 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw,
                                     Double_t py_raw, Double_t pz_raw,
                                     Double_t vx, Double_t vy, Double_t vz,
                                     Int_t parent, Bool_t wanttracking,
-                                    Double_t e, Double_t tof, Double_t weight) {
+                                    Double_t e, Double_t tof,
+                                    Double_t weight, TMCProcess proc) {
 
   // ---> Add event vertex to track vertex
   vx += fVertex.X();
@@ -315,7 +315,7 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw,
   } // correct for tracks which are in list before generator is called
   // Add track to stack
   fStack->PushTrack(doTracking, dummyparent, pdgid, mom.X(), mom.Y(), mom.Z(),
-                    e, vx, vy, vz, tof, polx, poly, polz, kPPrimary, ntr,
+                    e, vx, vy, vz, tof, polx, poly, polz, proc, ntr,
                     weight, status, parent);
   fNTracks++;
 }
