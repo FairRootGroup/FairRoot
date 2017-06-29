@@ -6,8 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef _FAIRTUT8_TASK_
-#define _FAIRTUT8_TASK_
+#ifndef _FAIRMBS_TASK_
+#define _FAIRMBS_TASK_
 
 #include "FairTask.h"
 
@@ -18,14 +18,14 @@ class TH1F;
  * An example analysis task for demonstartion of THttpServer usage.
  * Loops over detector raw items in an event and fills the histogram.
  */
-class FairTut8Task : public FairTask
+class FairMBSTask : public FairTask
 {
   public:
     /** Standard Constructor. */
-    FairTut8Task(const char* name, Int_t iVerbose);
+    FairMBSTask(const char* name, Int_t iVerbose);
     
     /** Destructor. */
-    virtual ~FairTut8Task();
+    virtual ~FairMBSTask();
 
     /** Initialization of the task. */
     virtual InitStatus Init();
@@ -46,11 +46,11 @@ class FairTut8Task : public FairTask
     TH1F* fhClock;
     TH1F* fhTacCh;
 
-    FairTut8Task(const FairTut8Task&);
-    FairTut8Task& operator=(const FairTut8Task&);
+    FairMBSTask(const FairMBSTask&);
+    FairMBSTask& operator=(const FairMBSTask&);
 
   public:
-    ClassDef(FairTut8Task, 1)
+    ClassDef(FairMBSTask, 1)
 };
 
 #endif

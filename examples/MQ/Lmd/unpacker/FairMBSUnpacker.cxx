@@ -10,54 +10,38 @@
 #include "TClonesArray.h"
 
 // Fair headers
-#include "FairRootManager.h"
-#include "FairRunOnline.h"
-#include "FairLogger.h"
+#include "FairMQLogger.h"
 
 // Land headers
-#include "FairTut8RawItem.h"
-#include "FairTut8Unpack.h"
+#include "FairMBSRawItem.h"
+#include "FairMBSUnpacker.h"
 
-// FairTut8Unpack: Constructor
-FairTut8Unpack::FairTut8Unpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
+// FairMBSUnpacker: Constructor
+FairMBSUnpacker::FairMBSUnpacker(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
     : FairUnpack(type, subType, procId, subCrate, control)
-    , fRawData(new TClonesArray("FairTut8RawItem"))
+    , fRawData(new TClonesArray("FairMBSRawItem"))
     , fNHits(0)
     , fNHitsTotal(0)
 {
 }
 
-// Virtual FairTut8Unpack: Public method
-FairTut8Unpack::~FairTut8Unpack()
+// Virtual FairMBSUnpacker: Public method
+FairMBSUnpacker::~FairMBSUnpacker()
 {
-    LOG(INFO) << "FairTut8Unpack: Delete instance" << FairLogger::endl;
+    LOG(INFO) << "FairMBSUnpacker: Delete instance";
     delete fRawData;
 }
 
 // Init: Public method
-Bool_t FairTut8Unpack::Init()
+Bool_t FairMBSUnpacker::Init()
 {
-    Register();
     return kTRUE;
 }
 
-// Register: Protected method
-void FairTut8Unpack::Register()
-{
-    //  LOG(DEBUG) << "Registering" << FairLogger::endl;
-    LOG(INFO) << "FairTut8Unpack : Registering..." << FairLogger::endl;
-    FairRootManager* fMan = FairRootManager::Instance();
-    if (!fMan)
-    {
-        return;
-    }
-    fMan->Register("Tut8RawItem", "Tut8", fRawData, kTRUE);
-}
-
 // DoUnpack: Public method
-Bool_t FairTut8Unpack::DoUnpack(Int_t* data, Int_t size)
+Bool_t FairMBSUnpacker::DoUnpack(Int_t* data, Int_t size)
 {
-    LOG(DEBUG) << "FairTut8Unpack : Unpacking... size = " << size << FairLogger::endl;
+    LOG(DEBUG) << "FairMBSUnpacker: Unpacking... size = " << size;
 
     Int_t l_i = 0;
 
@@ -67,18 +51,17 @@ Bool_t FairTut8Unpack::DoUnpack(Int_t* data, Int_t size)
     {
         n17 = 0;
 
-        UInt_t* p1 = reinterpret_cast<UInt_t*>((data + l_i));
+        UInt_t* p1 = reinterpret_cast<UInt_t*>(data + l_i);
         UInt_t l_sam_id = (p1[0] & 0xf0000000) >> 28; // identifies the sam
         UInt_t l_gtb_id = (p1[0] & 0x0f000000) >> 24; // 0 or 1, identifies which of the 2 cables of the sam
         UInt_t l_lec = (p1[0] & 0x00f00000) >> 20;
         UInt_t l_da_siz = (p1[0] & 0x000001ff);
 
-        LOG(DEBUG) << "FairTut8Unpack : SAM:" << l_sam_id << ",  GTB:" << l_gtb_id << ",  lec:" << l_lec
-                   << ",  size:" << l_da_siz << FairLogger::endl;
+        LOG(DEBUG) << "FairMBSUnpacker: SAM: " << l_sam_id << ", GTB: " << l_gtb_id << ", lec: " << l_lec << ", size: " << l_da_siz;
 
         l_i += 1;
 
-        p1 = reinterpret_cast<UInt_t*>((data + l_i));
+        p1 = reinterpret_cast<UInt_t*>(data + l_i);
 
         for (UInt_t i1 = 0; i1 < l_da_siz; i1 += 2)
         {
@@ -100,17 +83,15 @@ Bool_t FairTut8Unpack::DoUnpack(Int_t* data, Int_t size)
             {
                 n17 += 1;
             }
-            LOG(DEBUG) << "FairTut8Unpack : TAC ADDR IS " << tac_addr << ",  TAC CH IS " << tac_ch << ",  TAC Data IS "
-                       << tac_data << ",  QDC Data IS " << qdc_data << FairLogger::endl;
-            new ((*fRawData)[fNHits])
-                FairTut8RawItem(l_sam_id, l_gtb_id, tac_addr, tac_ch, cal, clock, tac_data, qdc_data);
+            LOG(DEBUG) << "FairMBSUnpacker: TAC ADDR: " << tac_addr << ", TAC CH: " << tac_ch << ", TAC Data: " << tac_data << ", QDC Data: " << qdc_data;
+            new ((*fRawData)[fNHits]) FairMBSRawItem(l_sam_id, l_gtb_id, tac_addr, tac_ch, cal, clock, tac_data, qdc_data);
             fNHits++;
         }
 
-        LOG(DEBUG) << "FairTut8Unpack : n17=" << n17 << FairLogger::endl;
+        LOG(DEBUG) << "FairMBSUnpacker: n17=" << n17;
     }
 
-    LOG(DEBUG) << "FairTut8Unpack : Number of hits in LAND: " << fNHits << FairLogger::endl;
+    LOG(DEBUG) << "FairMBSUnpacker: Number of hits in LAND: " << fNHits;
     
     fNHitsTotal += fNHits;
     
@@ -118,11 +99,11 @@ Bool_t FairTut8Unpack::DoUnpack(Int_t* data, Int_t size)
 }
 
 // Reset: Public method
-void FairTut8Unpack::Reset()
+void FairMBSUnpacker::Reset()
 {
-    LOG(DEBUG) << "FairTut8Unpack : Clearing Data Structure" << FairLogger::endl;
+    LOG(DEBUG) << "FairMBSUnpacker: Clearing Data Structure";
     fRawData->Clear();
     fNHits = 0;
 }
 
-ClassImp(FairTut8Unpack)
+ClassImp(FairMBSUnpacker)

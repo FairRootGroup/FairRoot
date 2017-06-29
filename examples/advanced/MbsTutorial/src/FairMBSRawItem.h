@@ -6,19 +6,19 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIRTUT8RAWITEM_H
-#define FAIRTUT8RAWITEM_H
+#ifndef FAIRMBSRAWITEM_H
+#define FAIRMBSRAWITEM_H
 
 #include "TObject.h"
 
 /**
  * An example class for raw data object of a detector.
  */
-class FairTut8RawItem : public TObject
+class FairMBSRawItem : public TObject
 {
   public:
     /** Default Constructor. */
-    FairTut8RawItem();
+    FairMBSRawItem();
 
     /** Standard Constructor.
      * @param sam        a SAM value
@@ -30,19 +30,18 @@ class FairTut8RawItem : public TObject
      * @param tacData    TAC data
      * @param qdcData    QDC data
      **/
-    FairTut8RawItem(UShort_t sam,
-                    UShort_t gtb,
-                    UShort_t tacAddr,
-                    UShort_t tacCh,
-                    UShort_t cal,
-                    UShort_t clock,
-                    UShort_t tacData,
-                    UShort_t qdcData);
+    FairMBSRawItem(UShort_t sam,
+                   UShort_t gtb,
+                   UShort_t tacAddr,
+                   UShort_t tacCh,
+                   UShort_t cal,
+                   UShort_t clock,
+                   UShort_t tacData,
+                   UShort_t qdcData);
 
-    FairTut8RawItem(const FairTut8RawItem&);
+    FairMBSRawItem(const FairMBSRawItem&);
 
-    /** Destructor. */
-    virtual ~FairTut8RawItem()
+    virtual ~FairMBSRawItem()
     {
     }
 
@@ -90,7 +89,7 @@ class FairTut8RawItem : public TObject
     UShort_t fQdcData; /**< QDC data. */
 
   public:
-    ClassDef(FairTut8RawItem, 1)
+    ClassDef(FairMBSRawItem, 1)
 };
 
 #endif

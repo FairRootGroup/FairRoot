@@ -6,8 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIRTUT8UNPACK_H
-#define FAIRTUT8UNPACK_H
+#ifndef FAIRMBSUNPACK_H
+#define FAIRMBSUNPACK_H
 
 #include "FairUnpack.h"
 
@@ -16,18 +16,18 @@ class TClonesArray;
 /**
  * An example unpacker of MBS data.
  */
-class FairTut8Unpack : public FairUnpack
+class FairMBSUnpack : public FairUnpack
 {
   public:
     /** Standard Constructor. Input - MBS parameters of the detector. */
-    FairTut8Unpack(Short_t type = 94,
-                   Short_t subType = 9400,
-                   Short_t procId = 10,
-                   Short_t subCrate = 1,
-                   Short_t control = 3);
+    FairMBSUnpack(Short_t type = 94,
+                  Short_t subType = 9400,
+                  Short_t procId = 10,
+                  Short_t subCrate = 1,
+                  Short_t control = 3);
 
     /** Destructor. */
-    virtual ~FairTut8Unpack();
+    virtual ~FairMBSUnpack();
 
     /** Initialization. Called once, before the event loop. */
     virtual Bool_t Init();
@@ -53,11 +53,11 @@ class FairTut8Unpack : public FairUnpack
     Int_t fNHits;           /**< Number of raw items in current event. */
     Int_t fNHitsTotal;      /**< Total number of raw items. */
 
-    FairTut8Unpack(const FairTut8Unpack&);
-    FairTut8Unpack& operator=(const FairTut8Unpack&);
+    FairMBSUnpack(const FairMBSUnpack&);
+    FairMBSUnpack& operator=(const FairMBSUnpack&);
   public:
     // Class definition
-    ClassDef(FairTut8Unpack, 1)
+    ClassDef(FairMBSUnpack, 1)
 };
 
 #endif

@@ -30,19 +30,21 @@
  * 
  * 
  *  -------- OUTPUT POLICY --------
- *                sink_type::AddToFile(CONTAINER_TYPE);
- *                sink_type::InitOutputFile()
+ *                SinkType::AddToFile(CONTAINER_TYPE);
+ *                SinkType::InitOutputFile()
  **********************************************************************/
 
 template <typename T, typename U>
 class BaseMQFileSink : public FairMQDevice, public T, public U
 {
   public:
-    typedef T input_policy;
-    typedef U sink_type;
+    typedef T InputPolicy;
+    typedef U SinkType;
 
     BaseMQFileSink()
-        : FairMQDevice(), input_policy(), sink_type()
+        : FairMQDevice()
+        , InputPolicy()
+        , SinkType()
     {}
 
     virtual ~BaseMQFileSink()
@@ -51,21 +53,18 @@ class BaseMQFileSink : public FairMQDevice, public T, public U
     template<typename... Args>
     void InitInputData(Args&&... args)
     {
-        input_policy::Create(std::forward<Args>(args)...);
+        InputPolicy::Create(std::forward<Args>(args)...);
     }
 
   protected:
-
-    
-    using input_policy::fInput;
-
+    using InputPolicy::fInput;
 
     virtual void InitTask()
     {
-        sink_type::InitOutputFile();
+        SinkType::InitOutputFile();
     }
 
-    typedef typename input_policy::deserialization_type deserializer_type;
+    typedef typename InputPolicy::deserialization_type DeserializerType;
     virtual void Run()
     {
         int receivedMsg = 0;
@@ -74,8 +73,8 @@ class BaseMQFileSink : public FairMQDevice, public T, public U
             std::unique_ptr<FairMQMessage> msg(NewMessage());
             if (Receive(msg,"data-in") > 0)
             {
-                Deserialize<deserializer_type>(*msg,fInput);
-                U::Serialize(fInput);// add fInput to file
+                Deserialize<DeserializerType>(*msg, fInput);
+                U::Serialize(fInput); // add fInput to file
                 receivedMsg++;
             }
         }

@@ -2,11 +2,10 @@
     "fairMQOptions": {
         "devices": [
             {
-                "_______COMMENT:": "SAMPLER CONFIG",
                 "id": "LmdSampler",
                 "channels": [
                     {
-                        "name": "ToTuto8Unpacker",
+                        "name": "ToMBSUnpacker",
                         "sockets": [
                             {
                                 "type": "push",
@@ -21,11 +20,10 @@
                 ]
             },
             {
-                "_______COMMENT:": "UNPACKER CONFIG",
                 "id": "unpacker1",
                 "channels": [
                     {
-                        "name": "ToTuto8Unpacker",
+                        "name": "ToMBSUnpacker",
                         "sockets": [
                             {
                                 "type": "pull",
@@ -53,7 +51,6 @@
                 ]
             },
             {
-                "_______COMMENT:": "FILESINK CONFIG",
                 "id": "sink1",
                 "channels": [
                     {

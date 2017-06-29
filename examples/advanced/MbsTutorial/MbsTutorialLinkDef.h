@@ -14,8 +14,8 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class FairTut8Unpack+;
-#pragma link C++ class FairTut8RawItem+;
-#pragma link C++ class FairTut8Task+;
+#pragma link C++ class FairMBSUnpack+;
+#pragma link C++ class FairMBSRawItem+;
+#pragma link C++ class FairMBSTask+;
 
 #endif
