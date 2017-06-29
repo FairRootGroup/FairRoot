@@ -1,11 +1,11 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
- /* 
+ /*
  * File:   FairMQUnpacker.h
  * Author: winckler
  *
@@ -27,17 +27,16 @@
 template<typename U, typename T = RootSerializer>
 class FairMQUnpacker : public FairMQDevice
 {
-    typedef U unpacker_type;
-    typedef T serialization_type;
+    typedef U UnpackerType;
+    typedef T SerializationType;
 
   public:
-    FairMQUnpacker() : 
+    FairMQUnpacker() :
         fSubEventChanMap(),
         fUnpacker(nullptr),
         fInputChannelName()
-    {
-    }
-    /// Copy Constructor
+    {}
+
     FairMQUnpacker(const FairMQUnpacker&) = delete;
     FairMQUnpacker operator=(const FairMQUnpacker&) = delete;
 
@@ -55,27 +54,15 @@ class FairMQUnpacker : public FairMQDevice
         else
         {
              SubEvtKey key(type, subType, procid, subCrate, control);
-             fInputChannelName=channelName;
+             fInputChannelName = channelName;
 
-            if (!fSubEventChanMap.count(fInputChannelName))
-                fSubEventChanMap[fInputChannelName] = key;
-            else
+            if (fSubEventChanMap.count(fInputChannelName))
             {
-                LOG(WARN)   << "FairMQLmdSampler : subevent header key '(" 
-                            << type
-                            << "," 
-                            << subType
-                            << ","
-                            << procid
-                            << ","
-                            << subCrate
-                            << ","
-                            << control
-                            << ")' has already been defined. "
-                            << "It will be overwritten with new channel name = "
-                            << fInputChannelName;
-                            fSubEventChanMap[fInputChannelName] = key;
+                LOG(WARN) << "FairMQLmdSampler : subevent header key '("
+                          << type << "," << subType << "," << procid << "," << subCrate << "," << control << ")' has already been defined. "
+                          << "It will be overwritten with new channel name = " << fInputChannelName;
             }
+            fSubEventChanMap[fInputChannelName] = key;
         }
     }
 
@@ -83,15 +70,15 @@ class FairMQUnpacker : public FairMQDevice
     void InitTask()
     {
         // check if subevt map is configured
-        if (fInputChannelName.empty() || fSubEventChanMap.size()==0)
+        if (fInputChannelName.empty() || fSubEventChanMap.size() == 0)
         {
-            throw std::runtime_error(std::string("Sub-event map not configured.") );
+            throw std::runtime_error(std::string("Sub-event map not configured."));
         }
 
         // check if given channel exist
         if (!fChannels.count(fInputChannelName))
         {
-            throw std::runtime_error(std::string("MQ-channel name '")+fInputChannelName+ "' does not exist. Check the MQ-channel configuration");
+            throw std::runtime_error(std::string("MQ-channel name '") + fInputChannelName + "' does not exist. Check the MQ-channel configuration");
         }
 
         short setype;
@@ -99,9 +86,9 @@ class FairMQUnpacker : public FairMQDevice
         short seprocid;
         short sesubcrate;
         short secontrol;
-        std::tie (setype,sesubtype,seprocid,sesubcrate,secontrol) = fSubEventChanMap.at(fInputChannelName);
-        fUnpacker = new unpacker_type(setype,sesubtype,seprocid,sesubcrate,secontrol);
-        //fUnpacker->Init(); // a priori not needed -> only required for Registering in FairRootManager
+        std::tie(setype, sesubtype, seprocid, sesubcrate, secontrol) = fSubEventChanMap.at(fInputChannelName);
+        fUnpacker = new UnpackerType(setype, sesubtype, seprocid, sesubcrate, secontrol);
+        // fUnpacker->Init(); // a priori not needed -> only required for Registering in FairRootManager
     }
 
     void Run()
@@ -110,33 +97,36 @@ class FairMQUnpacker : public FairMQDevice
 
         while (CheckCurrentState(RUNNING))
         {
-
-            std::unique_ptr<FairMQMessage> msgSize(fTransportFactory->CreateMessage());
-            std::unique_ptr<FairMQMessage> msg(fTransportFactory->CreateMessage());
+            FairMQMessagePtr msgSize(NewMessage());
+            FairMQMessagePtr msg(NewMessage());
 
             if (inputChannel.Receive(msgSize) >= 0)
+            {
                 if (inputChannel.Receive(msg) >= 0)
                 {
-                    int dataSize=*(static_cast<int*>(msgSize->GetData()));
-                    int* subEvt_ptr = static_cast<int*>(msg->GetData());
+                    int dataSize = *(static_cast<int*>(msgSize->GetData()));
+                    int* subEvtPtr = static_cast<int*>(msg->GetData());
 
-                    LOG(TRACE)<<"array size = "<<dataSize;
-                    if (dataSize>0)
-                        LOG(TRACE)<<"first element in array = "<<*subEvt_ptr;
+                    // LOG(TRACE) << "array size = " << dataSize;
+                    // if (dataSize > 0)
+                    // {
+                    //     LOG(TRACE) << "first element in array = " << *subEvtPtr;
+                    // }
 
-                    fUnpacker->DoUnpack(subEvt_ptr,dataSize);
-                    Serialize<serialization_type>(*msg,fUnpacker->GetOutputData());
-                    Send(msg,"data-out");
+                    fUnpacker->DoUnpack(subEvtPtr, dataSize);
+                    Serialize<SerializationType>(*msg, fUnpacker->GetOutputData());
+                    Send(msg, "data-out");
                     fUnpacker->Reset();
                 }
+            }
         }
     }
 
-    typedef std::tuple<short,short,short,short,short> SubEvtKey;
+    typedef std::tuple<short, short, short, short, short> SubEvtKey;
     std::map<std::string, SubEvtKey> fSubEventChanMap;
 
-    unpacker_type* fUnpacker;
+    UnpackerType* fUnpacker;
     std::string fInputChannelName;
 };
 
-#endif  /* !FAIRMQUNPACKER_H */
+#endif /* !FAIRMQUNPACKER_H */

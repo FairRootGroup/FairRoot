@@ -17,7 +17,7 @@ void unpack_mbs()
     Short_t procId = 12;
     Short_t subCrate = 0;
     Short_t control = 3;
-    FairTut8Unpack* unpacker = new FairTut8Unpack(type, subType, procId, subCrate, control);
+    FairMBSUnpack* unpacker = new FairMBSUnpack(type, subType, procId, subCrate, control);
     source->AddUnpacker(unpacker);
     // ------------------------------------------------------
 
@@ -29,7 +29,7 @@ void unpack_mbs()
     // ---------------------------------------------------------------------------
 
     // Create analysis task ------------------------------------------------------
-    FairTut8Task* task = new FairTut8Task("ExampleTask", 1);
+    FairMBSTask* task = new FairMBSTask("ExampleTask", 1);
     run->AddTask(task);
     // ---------------------------------------------------------------------------
 

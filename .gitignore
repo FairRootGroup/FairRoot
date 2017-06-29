@@ -38,8 +38,6 @@ examples/advanced/Tutorial3/macro/data/*
 !examples/advanced/Tutorial3/macro/data/dummy.txt
 examples/MQ/serialization/data_io/*
 !examples/MQ/serialization/data_io/README.md
-examples/MQ/LmdSampler/datasource/*
-!examples/MQ/LmdSampler/datasource/README.md
 examples/MQ/9-PixelDetector/macros/*.root
 examples/MQ/9-PixelDetector/macros/*.dat
 core_dump*

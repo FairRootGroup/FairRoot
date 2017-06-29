@@ -14,10 +14,10 @@
 #include "FairRootManager.h"
 #include "FairRunOnline.h"
 
-#include "FairTut8RawItem.h"
-#include "FairTut8Task.h"
+#include "FairMBSRawItem.h"
+#include "FairMBSTask.h"
 
-FairTut8Task::FairTut8Task(const char* name, Int_t iVerbose)
+FairMBSTask::FairMBSTask(const char* name, Int_t iVerbose)
     : FairTask(name, iVerbose)
     , fRawData(NULL)
     , fhQdc(NULL)
@@ -27,11 +27,11 @@ FairTut8Task::FairTut8Task(const char* name, Int_t iVerbose)
 {
 }
 
-FairTut8Task::~FairTut8Task()
+FairMBSTask::~FairMBSTask()
 {
 }
 
-InitStatus FairTut8Task::Init()
+InitStatus FairMBSTask::Init()
 {
     FairRootManager* mgr = FairRootManager::Instance();
     if (NULL == mgr)
@@ -39,7 +39,7 @@ InitStatus FairTut8Task::Init()
         return kFATAL;
     }
 
-    fRawData = static_cast<TClonesArray*>(mgr->GetObject("Tut8RawItem"));
+    fRawData = static_cast<TClonesArray*>(mgr->GetObject("MBSRawItem"));
     if (NULL == fRawData)
     {
         return kERROR;
@@ -82,17 +82,17 @@ InitStatus FairTut8Task::Init()
     return kSUCCESS;
 }
 
-void FairTut8Task::Exec(Option_t*)
+void FairMBSTask::Exec(Option_t*)
 {
     if (NULL == fRawData)
     {
         return;
     }
     Int_t nItems = fRawData->GetEntriesFast();
-    FairTut8RawItem* item;
+    FairMBSRawItem* item;
     for (Int_t i = 0; i < nItems; i++)
     {
-        item = static_cast<FairTut8RawItem*>(fRawData->At(i));
+        item = static_cast<FairMBSRawItem*>(fRawData->At(i));
         if (NULL == item)
         {
             continue;
@@ -104,12 +104,12 @@ void FairTut8Task::Exec(Option_t*)
     }
 }
 
-void FairTut8Task::FinishEvent()
+void FairMBSTask::FinishEvent()
 {
 }
 
-void FairTut8Task::FinishTask()
+void FairMBSTask::FinishTask()
 {
 }
 
-ClassImp(FairTut8Task)
+ClassImp(FairMBSTask)

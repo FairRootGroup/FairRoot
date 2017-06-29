@@ -6,9 +6,9 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "FairTut8RawItem.h"
+#include "FairMBSRawItem.h"
 
-FairTut8RawItem::FairTut8RawItem()
+FairMBSRawItem::FairMBSRawItem()
     : TObject()
     , fSam(0)
     , fGtb(0)
@@ -21,7 +21,7 @@ FairTut8RawItem::FairTut8RawItem()
 {
 }
 
-FairTut8RawItem::FairTut8RawItem(UShort_t sam,
+FairMBSRawItem::FairMBSRawItem(UShort_t sam,
                                  UShort_t gtb,
                                  UShort_t tacAddr,
                                  UShort_t tacCh,
@@ -41,7 +41,7 @@ FairTut8RawItem::FairTut8RawItem(UShort_t sam,
 {
 }
 
-FairTut8RawItem::FairTut8RawItem(const FairTut8RawItem& right)
+FairMBSRawItem::FairMBSRawItem(const FairMBSRawItem& right)
     : TObject(right)
     , fSam(right.fSam)
     , fGtb(right.fGtb)
@@ -54,4 +54,4 @@ FairTut8RawItem::FairTut8RawItem(const FairTut8RawItem& right)
 {
 }
 
-ClassImp(FairTut8RawItem)
+ClassImp(FairMBSRawItem)

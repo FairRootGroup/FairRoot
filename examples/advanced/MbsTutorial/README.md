@@ -17,8 +17,8 @@ root -l unpack_mbs.C
 
 ## Introduction
 The MbsTutorial shows how to use MBS data unpacking with FairRunOnline
-steering class. FairTut8Unpack implements parsing of MBS subevents
-and creates output in form of array of FairTut8RawItem data objects.
+steering class. FairMBSUnpack implements parsing of MBS subevents
+and creates output in form of array of FairMBSRawItem data objects.
 This example also demonstrates usage of ROOT histogram online server
 with possibility to view 1D and 2D histograms, with monitorring option
 and pre-defined user commands.

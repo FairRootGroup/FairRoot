@@ -70,7 +70,7 @@ class FairMQLmdSampler : public FairMQDevice
     s_filhe* fxInfoHeader;
     bool stop;
     int fMsgCounter;
-    typedef std::tuple<short,short,short,short,short> SubEvtKey;
+    typedef std::tuple<short, short, short, short, short> SubEvtKey;
     std::map<SubEvtKey, std::string> fSubEventChanMap;
 };
 
