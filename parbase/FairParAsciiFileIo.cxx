@@ -81,6 +81,10 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
 
 Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
 {
+  if ( 0 == fnamelist->GetEntries() ) {
+    LOG(ERROR) << "The defined list of parameter files is empty. There are no parameters initialized from the ASCII files." << FairLogger::endl; 
+    return kFALSE;
+  }
   TString outFileName = gSystem->WorkingDirectory();
 
   outFileName += "/all_";
