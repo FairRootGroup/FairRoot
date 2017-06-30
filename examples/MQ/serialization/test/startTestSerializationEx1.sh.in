@@ -13,7 +13,7 @@ JSONCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/test/testSerializat
 
 
 ########################## start dummy data generator
-GENERATE="serialization-Ex-generate-data"
+GENERATE="serialization-Ex-generate-data --id generator"
 GENERATE+=" --output-file $INPUTFILE"
 GENERATE+=" --tree cbmsim --log-color false"
 @CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$GENERATE &

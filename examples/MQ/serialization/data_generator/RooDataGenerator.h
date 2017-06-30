@@ -36,7 +36,7 @@ class Tuto7DataGeneratorProgOptions : public FairProgOptions
         AddToCmdLineOptions(fGenericDesc);
     }
     virtual ~Tuto7DataGeneratorProgOptions(){}
-    virtual void ParseAll(const int argc, char** argv, bool allowUnregistered = false)
+    virtual void ParseAll(const int argc, char const* const* argv, bool allowUnregistered = false)
     {
         // parse command line options
         if (ParseCmdLine(argc, argv, fCmdLineOptions, fVarMap, allowUnregistered))

@@ -29,6 +29,7 @@
 #include "TCanvas.h"
 
 // FairRoot
+#include <options/FairMQProgOptions.h>
 #include "FairMQLogger.h"
 #include "RootOutFileManager.h"
 
@@ -81,7 +82,7 @@ int main(int argc, char** argv)
         double Nsigma;
         
         namespace po = boost::program_options;
-        Tuto7DataGeneratorProgOptions config;
+        FairMQProgOptions config;
 
         po::options_description desc("Data generator options");
         desc.add_options()
