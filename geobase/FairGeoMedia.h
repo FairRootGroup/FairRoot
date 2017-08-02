@@ -10,7 +10,7 @@
 
 #include "TNamed.h"                     // for TNamed
 
-#include "Riosfwd.h"                    // for fstream
+#include <iosfwd>                       // for fstream
 #include "Rtypes.h"                     // for FairGeoMedia::Class, etc
 #include "TString.h"                    // for TString
 

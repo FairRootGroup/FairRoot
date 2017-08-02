@@ -12,7 +12,7 @@
 
 #include "FairGeoVector.h"              // for FairGeoVector
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Double_t, Int_t, Bool_t, etc
 
 #include <iostream>                     // for operator<<, cout, ostream, etc

@@ -15,7 +15,7 @@
 #include "FairGeaneApplication.h"       // for FairGeaneApplication
 #include "FairRunAna.h"                 // for FairRunAna
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TGeoManager.h"                // for TGeoManager
 #include "TROOT.h"                      // for TROOT, gROOT
 #include "TString.h"                    // for TString, operator!=, etc

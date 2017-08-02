@@ -38,7 +38,7 @@
 #include "FairTrajFilter.h"             // for FairTrajFilter
 #include "FairVolume.h"                 // for FairVolume
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TDirectory.h"                 // for TDirectory, gDirectory
 #include "TGeoManager.h"                // for gGeoManager, TGeoManager

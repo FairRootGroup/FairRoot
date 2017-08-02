@@ -12,7 +12,7 @@
 
 #include "FairGeoNode.h"
 
-#include "Riosfwd.h"                    // for fstream
+#include <iosfwd>                       // for fstream
 #include "Rtypes.h"                     // for Int_t, Bool_t, etc
 #include "TList.h"                      // for TList
 #include "TString.h"                    // for TString

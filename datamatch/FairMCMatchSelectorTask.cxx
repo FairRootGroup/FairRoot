@@ -16,7 +16,7 @@
 #include "FairMCStage.h"                // for FairMCStage
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, ostream, etc

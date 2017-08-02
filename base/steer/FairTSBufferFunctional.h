@@ -10,7 +10,7 @@
 
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
 #include "TObject.h"                    // for TObject
 #include "TString.h"                    // for TString

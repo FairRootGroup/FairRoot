@@ -27,7 +27,7 @@
 
 
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 #include "TList.h"                      // for TListIter, TList (ptr only)
 #include "TObjArray.h"                  // for TObjArray

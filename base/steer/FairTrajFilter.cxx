@@ -14,7 +14,7 @@
 
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 #include "TError.h"                     // for Fatal
 #include "TGeoTrack.h"                  // for TGeoTrack

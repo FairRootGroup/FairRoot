@@ -10,7 +10,7 @@
 
 #include "FairDetParIo.h"               // for FairDetParIo
 
-#include "Riosfwd.h"                    // for fstream
+#include <iosfwd>                       // for fstream
 #include "Rtypes.h"                     // for Text_t, Bool_t, etc
 #include "TString.h"                    // for TString
 

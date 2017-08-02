@@ -10,7 +10,7 @@
 
 #include "FairGeoBasicShape.h"          // for FairGeoBasicShape
 
-#include "Riosfwd.h"                    // for fstream
+#include <iosfwd>                       // for fstream
 #include "Rtypes.h"                     // for FairGeoAssembly::Class, etc
 
 #include <iosfwd>                       // for fstream

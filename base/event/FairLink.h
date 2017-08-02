@@ -25,7 +25,7 @@
 
 #include "TObject.h"                    // for TObject; ClassDefNV
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Int_t, Float_t, etc
 
 #include <iostream>                     // for ostream, cout

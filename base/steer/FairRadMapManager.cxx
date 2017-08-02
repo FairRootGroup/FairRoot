@@ -14,7 +14,7 @@
 #include "FairRadMapPoint.h"            // for FairRadMapPoint
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 #include "TGeoManager.h"                // for TGeoManager, gGeoManager
 #include "TGeoVolume.h"                 // for TGeoVolume

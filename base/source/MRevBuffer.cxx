@@ -26,7 +26,7 @@
 
 #include "MRevBuffer.h"            // class definition
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TSocket.h"                    // for TSocket, etc
 
 #include <iostream>                     // for operator<<, basic_ostream, etc

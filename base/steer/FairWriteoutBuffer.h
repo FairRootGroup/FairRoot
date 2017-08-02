@@ -37,7 +37,7 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Bool_t, Int_t, etc
 #include "TClonesArray.h"               // for TClonesArray
 #include "TString.h"                    // for TString

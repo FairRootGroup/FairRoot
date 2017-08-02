@@ -10,7 +10,7 @@
 
 #include "TObject.h"                    // for TObject
 
-#include "Riosfwd.h"                    // for ostream, istream
+#include <iosfwd>                       // for ostream, istream
 #include "Rtypes.h"                     // for Double_t, Bool_t, Int_t, etc
 #include "TMath.h"                      // for pow, floor, sqrt
 #include "TMathBase.h"                  // for Abs

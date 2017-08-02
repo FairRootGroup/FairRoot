@@ -14,7 +14,7 @@
 #define FAIRRADGRIDMANAGER_H 1
 
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Float_t, Double_t, Int_t, etc
 #include "TLorentzVector.h"             // for TLorentzVector
 #include "TObjArray.h"                  // for TObjArray
