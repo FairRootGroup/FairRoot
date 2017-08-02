@@ -32,7 +32,7 @@
 #include "FairParIo.h"                  // for FairParIo
 #include "FairParamList.h"              // for FairParamList
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TString.h"                    // for operator<<, TString
 
 #include <iostream>                     // for operator<<, ostream, cout, etc

@@ -17,7 +17,7 @@
 #include "FairLink.h"                   // for FairLink, operator<<
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 
 #include <iostream>                     // for operator<<, ostream, cout, etc
 

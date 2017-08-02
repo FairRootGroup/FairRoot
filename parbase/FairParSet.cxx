@@ -18,7 +18,7 @@
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 
 #include <iostream>                     // for operator<<, ostream, etc
 

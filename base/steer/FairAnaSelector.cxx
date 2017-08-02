@@ -22,7 +22,7 @@
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairTask.h"                   // for FairTask
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TFile.h"                      // for TFile
 #include "TList.h"                      // for TList
 #include "TNamed.h"                     // for TNamed

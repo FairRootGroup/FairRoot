@@ -14,7 +14,7 @@
 #include "FairMCMatch.h"                // for FairMCMatch
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 
 #include <stddef.h>                     // for NULL

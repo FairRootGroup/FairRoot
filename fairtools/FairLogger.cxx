@@ -14,7 +14,7 @@
 
 #include "FairLogger.h"
 
-#include "Riosfwd.h"                    // for ostream, ofstream
+#include <iosfwd>                       // for ostream, ofstream
 #include "TString.h"                    // for TString, operator==, etc
 #include "TSystem.h"                    // for gSystem, TSystem
 

@@ -18,7 +18,7 @@
 
 #include "TObject.h"                    // for TObject
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for FairRingSorter::Class, etc
 
 #include <iostream>                     // for operator<<, ostream, etc

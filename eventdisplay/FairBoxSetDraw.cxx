@@ -18,7 +18,7 @@
 #include "FairTSBufferFunctional.h"     // for StopTime
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 #include "TEveBoxSet.h"
 #include "TEveManager.h"                // for TEveManager, gEve

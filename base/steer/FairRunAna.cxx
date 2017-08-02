@@ -31,7 +31,7 @@
 #include "FairMixedSource.h"            // ONLY TEMPORARILY, FOR COMPABILITY
 
 #include "RVersion.h"                   // for ROOT_VERSION, etc
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TChain.h"                     // for TChain
 #include "TCollection.h"                // for TIter
 #include "TDirectory.h"                 // for TDirectory, gDirectory

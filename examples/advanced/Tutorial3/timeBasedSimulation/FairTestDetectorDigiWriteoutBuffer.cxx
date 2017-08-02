@@ -18,7 +18,7 @@
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi, etc
 #include "FairLogger.h"           // for logging
 
-#include "Riosfwd.h"      // for ostream
+#include <iosfwd>         // for ostream
 #include "TClonesArray.h" // for TClonesArray
 
 #include <utility>  // for pair

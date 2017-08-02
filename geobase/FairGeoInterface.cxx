@@ -30,7 +30,7 @@
 #include "FairGeoSet.h"                 // for FairGeoSet
 #include "FairGeoShapes.h"              // for FairGeoShapes
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClass.h"                     // for TClass
 #include "TList.h"                      // for TList
 #include "TObjArray.h"                  // for TObjArray

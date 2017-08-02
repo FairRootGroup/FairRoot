@@ -10,7 +10,7 @@
 
 #include "TNamed.h"                     // for TNamed
 
-#include "Riosfwd.h"                    // for fstream
+#include <iosfwd>                       // for fstream
 #include "Rtypes.h"                     // for Int_t, Text_t, UInt_t, etc
 #include "TString.h"                    // for TString
 

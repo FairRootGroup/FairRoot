@@ -26,7 +26,7 @@
 #include "FairDetParIo.h"               // for FairDetParIo
 #include "FairRtdbRun.h"                // for FairRtdbRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include "Riosfwd.h"                    // for ostream, fstream
+#include <iosfwd>                       // for ostream, fstream
 #include "TCollection.h"                // for TIter
 #include "TDatime.h"                    // for TDatime
 #include "TKey.h"                       // for TKey

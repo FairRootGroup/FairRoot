@@ -27,7 +27,7 @@ the tracking from the macro (M. Al-Turany)
 
 #include "FairGenerator.h" // for FairGenerator
 
-#include "Riosfwd.h"   // for ostream
+#include <iosfwd>      // for ostream
 #include "Rtypes.h"    // for Double_t, Bool_t, Int_t, etc
 #include "TObjArray.h" // for TObjArray
 #include "TVector3.h"  // for TVector3

@@ -17,7 +17,7 @@
 #include "FairRunSim.h"                 // for FairRunSim
 #include "FairLogger.h"                 // for logging
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TObjArray.h"                  // for TObjArray
 #include "TParticle.h"                  // for TParticle

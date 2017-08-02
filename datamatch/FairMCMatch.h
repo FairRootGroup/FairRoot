@@ -23,7 +23,7 @@
 #include "FairMultiLinkedData.h"        // for FairMultiLinkedData
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Int_t, FairMCMatch::Class, etc
 #include "TString.h"                    // for TString
 #include "TClonesArray.h"

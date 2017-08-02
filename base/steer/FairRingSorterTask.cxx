@@ -15,7 +15,7 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClass.h"                     // for TClass
 #include "TClonesArray.h"               // for TClonesArray
 

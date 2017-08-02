@@ -29,7 +29,7 @@
 #include "FairTask.h"                   // for FairTask
 #include "FairTrajFilter.h"             // for FairTrajFilter
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TCollection.h"                // for TIter
 #include "TGeoManager.h"                // for gGeoManager
 #include "TList.h"                      // for TList

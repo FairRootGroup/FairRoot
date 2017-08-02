@@ -30,7 +30,7 @@
 #define FAIRFIELD_H 1
 
 #include "RVersion.h"                   // for ROOT_VERSION_CODE
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Double_t, Bool_t, etc
 
 #if ROOT_VERSION_CODE < 333824

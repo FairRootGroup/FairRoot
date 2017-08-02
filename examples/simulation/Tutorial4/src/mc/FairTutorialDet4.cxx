@@ -23,7 +23,7 @@
 #include "FairTutorialDet4MisalignPar.h"
 #include "FairTutorialDet4Point.h"      // for FairTutorialDet4Point
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 #include "TGeoManager.h"                // for TGeoManager, gGeoManager
 #include "TGeoMatrix.h"                 // for TGeoHMatrix, TGeoCombiTrans, etc

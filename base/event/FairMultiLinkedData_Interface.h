@@ -14,7 +14,7 @@
 #include "FairMultiLinkedData.h"
 #include "FairRootManager.h"
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Int_t, Bool_t, kFALSE, etc
 #include "TString.h"                    // for TString
 #include "TRef.h"

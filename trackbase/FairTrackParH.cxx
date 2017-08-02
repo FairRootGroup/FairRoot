@@ -19,7 +19,7 @@
 #include "FairGeaneUtil.h"              // for FairGeaneUtil
 #include "FairRunAna.h"                 // for FairRunAna
 #include "FairTrackParP.h"              // for FairTrackParP
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TMath.h"                      // for pow, Sqrt, sqrt, Sin, Cos, etc
 #include "TMathBase.h"                  // for Abs, Sign
 

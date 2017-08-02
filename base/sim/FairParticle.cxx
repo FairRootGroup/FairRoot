@@ -15,7 +15,7 @@
 // particles
 #include "FairParticle.h"
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TMCParticleType.h"            // for TMCParticleType::kPTIon, etc
 #include "TParticle.h"                  // for TParticle

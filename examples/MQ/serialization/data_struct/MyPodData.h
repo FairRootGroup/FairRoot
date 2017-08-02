@@ -17,7 +17,7 @@
 #define	MYPODDATA_H
 
 // for root types
-#include "Riosfwd.h"
+#include <iosfwd>   
 #include "Rtypes.h" 
 
 // for boost serialization (must be hidden from CINT)

@@ -12,7 +12,7 @@
 
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TArrayD.h"                    // for TArrayD
 #include "TArrayF.h"                    // for TArrayF
 #include "TArrayI.h"                    // for TArrayI
