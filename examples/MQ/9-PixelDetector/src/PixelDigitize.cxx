@@ -186,14 +186,14 @@ void PixelDigitize::SetParContainers() {
   
   // Get run and runtime database
   FairRun* run = FairRun::Instance();
-  if ( ! run ) LOG(FATAL) << "No analysis run" << FairLogger::endl;
-
-  FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) LOG(FATAL) << "No runtime database" << FairLogger::endl;
-
-  // Get GEM digitisation parameter container
-  fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
-
+    if (!run){ LOG(FATAL) << "No analysis run" << FairLogger::endl;
+    
+    }else   { FairRuntimeDb* db = run->GetRuntimeDb();
+             if ( ! db ) {LOG(FATAL) << "No runtime database" << FairLogger::endl;
+             } else{
+                // Get GEM digitisation parameter container
+                fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));}
+    }
 }
 // -------------------------------------------------------------------------
 
