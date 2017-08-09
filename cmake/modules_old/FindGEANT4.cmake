@@ -26,6 +26,7 @@ MESSAGE(STATUS "Looking for GEANT4...")
 FIND_PATH(GEANT4_DIR NAMES geant4-config PATHS
   ${SIMPATH}/transport/geant4/bin
   ${SIMPATH}/bin
+  ${GEANT4_ROOT}/bin
   NO_DEFAULT_PATH
 )
 
@@ -40,6 +41,7 @@ FIND_PATH(GEANT4_INCLUDE_DIR NAMES G4Event.hh PATHS
   ${SIMPATH}/transport/geant4/include/Geant4
   ${SIMPATH}/include/geant4
   ${SIMPATH}/include/Geant4
+  ${GEANT4_ROOT}/include/Geant4
   NO_DEFAULT_PATH
 )
 
@@ -55,6 +57,7 @@ FIND_PATH(GEANT4_LIB_DIR NAMES libG3toG4.so PATHS
   ${SIMPATH}/transport/geant4/lib/Linux-icc
   ${SIMPATH}/transport/geant4/lib
   ${SIMPATH}/lib
+  ${GEANT4_ROOT}/lib  
   NO_DEFAULT_PATH
 )
 

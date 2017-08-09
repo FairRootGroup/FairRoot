@@ -14,6 +14,8 @@ MESSAGE(STATUS "Looking for Pythia6...")
 FIND_PATH(PYTHIA6_LIBRARY_DIR NAMES libPythia6.so PATHS
   ${SIMPATH}/lib
   ${SIMPATH}/generators/lib
+  ${Pythia6_LIBRARY_DIR}
+  $ENV{PYTHIA6_ROOT}/lib
   NO_DEFAULT_PATH
 )
 
