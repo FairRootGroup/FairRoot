@@ -142,8 +142,9 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
         fActiveDetectors->Add(detector);
         listActiveDetectors.push_back(detector);
       }
-    } else {
-        LOG(ERROR) << "Dynamic cast fails." << FairLogger::endl;
+    }
+    else if(!dynamic_cast<FairModule*>(obj)) {
+        LOG(ERROR) << "Dynamic cast fails. Object neither FairDetector nor FairModule in module list" << FairLogger::endl;
     }
   }
   
