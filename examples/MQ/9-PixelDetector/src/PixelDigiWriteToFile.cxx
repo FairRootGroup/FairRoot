@@ -172,12 +172,15 @@ InitStatus PixelDigiWriteToFile::Init() {
 InitStatus PixelDigiWriteToFile::ReInit() {
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) LOG(FATAL) << "No FairRootManager found." << FairLogger::endl;
-
-  fRunId = ioman->GetRunId();
-  fMCEntryNo = 0;
- 
-  return kSUCCESS;
+    InitStatus Status=kFATAL;
+    if ( ! ioman ){
+      LOG(FATAL) << "No FairRootManager found." << FairLogger::endl;
+    }else {
+      fRunId = ioman->GetRunId();
+      fMCEntryNo = 0;
+      Status= kSUCCESS;
+    }
+    return Status;
 }
 // -------------------------------------------------------------------------
 
