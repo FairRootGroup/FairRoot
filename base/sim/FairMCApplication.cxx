@@ -922,19 +922,25 @@ void FairMCApplication::ConstructGeometry()
 // Construct geometry and also fill following member data:
 // - fModVolMap: (volId,moduleId)
 // - fSenVolumes: list of sensitive volumes
+  if (!gGeoManager) {
+    LOG(FATAL) << "gGeoManager not initialized at FairMCApplication::ConstructGeometry\n";
+  }
 
   fModIter->Reset();
   FairModule* Mod=NULL;
   Int_t NoOfVolumes=0;
   Int_t NoOfVolumesBefore=0;
   Int_t ModId=0;
+
+  TObjArray* tgeovolumelist = gGeoManager->GetListOfVolumes();
+
   while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
-    NoOfVolumesBefore=gGeoManager->GetListOfVolumes()->GetEntriesFast();
+    NoOfVolumesBefore=tgeovolumelist->GetEntriesFast();
     Mod->InitParContainers();
     Mod->ConstructGeometry();
     ModId=Mod->GetModId();
-    NoOfVolumes=gGeoManager->GetListOfVolumes()->GetEntriesFast();
-    for (Int_t n=NoOfVolumesBefore; n <= NoOfVolumes; n++) {
+    NoOfVolumes=tgeovolumelist->GetEntriesFast();
+    for (Int_t n=NoOfVolumesBefore; n < NoOfVolumes; n++) {
       fModVolMap.insert(pair<Int_t, Int_t >(n,ModId));
     }
   }
@@ -942,33 +948,44 @@ void FairMCApplication::ConstructGeometry()
   if(fSenVolumes) {
     fNoSenVolumes=fSenVolumes->GetEntries();
   }
-  if (gGeoManager) {
-    //  LOG(DEBUG) << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<< FairLogger::endl;
-    gGeoManager->CloseGeometry();   // close geometry
-    TVirtualMC::GetMC()->SetRootGeometry();         // notify VMC about Root geometry
-    Int_t Counter=0;
-    TDatabasePDG* pdgDatabase = TDatabasePDG::Instance();
-    const THashList *list=pdgDatabase->ParticleList();
-    if(list==0)pdgDatabase->ReadPDGTable();
-    list =pdgDatabase->ParticleList();
-    if(list!=0){
-      TIterator *particleIter = list->MakeIterator();
-      TParticlePDG *Particle=0;
-      while((Particle=dynamic_cast<TParticlePDG*> (particleIter->Next())) && (Counter <= 256)) {
-         TString Name= gGeoManager->GetPdgName(Particle->PdgCode());
-	 //    LOG(INFO) << Counter <<" : Particle name: "<< Name.Data() << " PDG " << Particle->PdgCode()) << FairLogger::endl;
-         if(Name=="XXX") gGeoManager->SetPdgName(Particle->PdgCode(), Particle->GetName());
-         Counter++;
-      }
-      delete particleIter;
-    }
-    fModIter->Reset();
-    while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
-      Mod->ModifyGeometry();
-    }
+  
+  //  LOG(DEBUG) << "FairMCApplication::ConstructGeometry() : Now closing the geometry"<< FairLogger::endl;
+  int NoOfVolumesBeforeClose = tgeovolumelist->GetEntries();
+  gGeoManager->CloseGeometry();   // close geometry
+  int NoOfVolumesAfterClose = tgeovolumelist->GetEntries();
 
-    gGeoManager->RefreshPhysicalNodes(kFALSE);
+  // Check if CloseGeometry has modified the volume list which might happen for
+  // runtime shapes (parametrizations,etc). If this is the case, our lookup structures
+  // built above are likely out of date. Issue at least a warning here.
+  if (NoOfVolumesBeforeClose != NoOfVolumesAfterClose) {
+    LOG(ERROR) << "TGeoManager::CloseGeometry() modified the volume list from " << NoOfVolumesBeforeClose
+	       << " to " << NoOfVolumesAfterClose << "\n"
+               << "This almost certainly means inconsistent lookup structures used in simulation/stepping.\n";
   }
+  
+  TVirtualMC::GetMC()->SetRootGeometry();         // notify VMC about Root geometry
+  Int_t Counter=0;
+  TDatabasePDG* pdgDatabase = TDatabasePDG::Instance();
+  const THashList *list=pdgDatabase->ParticleList();
+  if(list==0)pdgDatabase->ReadPDGTable();
+  list =pdgDatabase->ParticleList();
+  if(list!=0){
+    TIterator *particleIter = list->MakeIterator();
+    TParticlePDG *Particle=0;
+    while((Particle=dynamic_cast<TParticlePDG*> (particleIter->Next())) && (Counter <= 256)) {
+      TString Name= gGeoManager->GetPdgName(Particle->PdgCode());
+      //    LOG(INFO) << Counter <<" : Particle name: "<< Name.Data() << " PDG " << Particle->PdgCode()) << FairLogger::endl;
+      if(Name=="XXX") gGeoManager->SetPdgName(Particle->PdgCode(), Particle->GetName());
+      Counter++;
+    }
+    delete particleIter;
+  }
+  fModIter->Reset();
+  while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+    Mod->ModifyGeometry();
+  }
+
+  gGeoManager->RefreshPhysicalNodes(kFALSE);
 }
 
 //_____________________________________________________________________________
