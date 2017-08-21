@@ -18,11 +18,8 @@
 #include "FairTimeStamp.h"  // for FairTimeStamp
 #include "Rtypes.h"         // for PixelTrack::Class, ClassDef, PixelTrack::...
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
-
 
 class PixelTrack : public FairTimeStamp
 {
@@ -67,9 +64,7 @@ class PixelTrack : public FairTimeStamp
     }
 
   private:
-#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-#endif // for BOOST serialization
 
     Double_t fX0;
     Double_t fAX;

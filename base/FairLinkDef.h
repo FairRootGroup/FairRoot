@@ -85,8 +85,4 @@
 #pragma link C++ class REvent;
 #endif
 
-#if ROOT_VERSION_CODE < 333824
-#pragma link C++ class TVirtualMagField+;
-#endif
-
 #endif

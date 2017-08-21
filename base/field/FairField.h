@@ -29,35 +29,9 @@
 #ifndef FAIRFIELD_H
 #define FAIRFIELD_H 1
 
-#include "RVersion.h"                   // for ROOT_VERSION_CODE
 #include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Double_t, Bool_t, etc
-
-#if ROOT_VERSION_CODE < 333824
-
-#ifndef ROOT_TVirtualMagField
-#define ROOT_TVirtualMagField
-// copied from ROOT for backward compatibility with ROOT versions before 5.24
-#include "TNamed.h"
-
-class TVirtualMagField : public TNamed
-{
-  public:
-    TVirtualMagField()                 : TNamed() {}
-    TVirtualMagField(const char* name) : TNamed(name,"") {}
-    virtual ~TVirtualMagField() {}
-    virtual void Field(const Double_t* x, Double_t* B) = 0;
-    ClassDef(TVirtualMagField, 1)              // Abstract base field class
-};
-ClassImp(TVirtualMagField)
-#endif
-
-
-#else
-
 #include "TVirtualMagField.h"
-
-#endif
 
 #include <stdio.h>                      // for printf
 #include <iostream>                     // for operator<<, basic_ostream, etc

@@ -21,10 +21,8 @@
 #include "TVector3.h"                   // for TVector3
 
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 class FairMCPoint : public FairMultiLinkedData_Interface
 {
@@ -111,11 +109,8 @@ class FairMCPoint : public FairMultiLinkedData_Interface
 
   protected:
 
-    #ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
 
-    #endif // for BOOST serialization
-    
     Int_t fTrackID;               ///< Track index
     UInt_t fEventId;              ///< MC Event id
     Double32_t fPx, fPy, fPz;     ///< Momentum components [GeV]

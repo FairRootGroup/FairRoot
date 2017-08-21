@@ -13,10 +13,8 @@
 #include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
 #include "TVector3.h"                   // for TVector3
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 /**
  * Abstract base class for reconstructed hits in the FAIR detectors.
@@ -87,9 +85,7 @@ class FairHit : public FairTimeStamp
     }
 
   protected:
-#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-#endif // for BOOST serialization
 
     Double32_t fDx, fDy, fDz;   ///< Errors of position [cm]
     Int_t      fRefIndex;       ///< Index of FairMCPoint for this hit

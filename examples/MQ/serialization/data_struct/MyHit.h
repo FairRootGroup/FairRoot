@@ -20,10 +20,8 @@
 
 #include "Rtypes.h" // for MyHit::Class, etc
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 class TVector3;
 
@@ -47,10 +45,7 @@ class MyHit : public FairHit
     }
 
   private:
-#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-
-#endif // for BOOST serialization
 
     ClassDef(MyHit, 1);
 };

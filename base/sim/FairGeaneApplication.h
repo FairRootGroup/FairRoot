@@ -15,7 +15,6 @@
 
 #include "TVirtualMCApplication.h"      // for TVirtualMCApplication
 
-#include "RVersion.h"                   // for ROOT_VERSION_CODE
 #include "Rtypes.h"                     // for Bool_t, etc
 #include "TLorentzVector.h"             // for TLorentzVector
 
@@ -38,10 +37,6 @@ class FairGeaneApplication : public TVirtualMCApplication
     FairGeaneApplication(Bool_t Debug);
     /** default destructor */
     virtual ~FairGeaneApplication();
-#if ROOT_VERSION_CODE < 333824
-    /** Calculate user field  b at point x */
-    void          Field(const Double_t* x, Double_t* b) const;      // MC Application
-#endif
     /** Return Field used in simulation*/
     FairField*             GetField() {return fxField;}
     /** Initialize MC engine */

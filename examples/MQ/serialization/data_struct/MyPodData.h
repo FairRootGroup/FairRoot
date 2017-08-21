@@ -20,11 +20,8 @@
 #include <iosfwd>   
 #include "Rtypes.h" 
 
-// for boost serialization (must be hidden from CINT)
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 #if defined(__GNUC__) || defined(__GNUG__)
 #pragma GCC diagnostic push
@@ -41,7 +38,6 @@ namespace MyPodData
         Double_t fTimeStampError;
         
         // method to use boost serialization
-        #ifndef __CINT__
         template<class Archive>
         void serialize(Archive & ar, const unsigned int /*version*/) 
         {
@@ -49,7 +45,6 @@ namespace MyPodData
             ar & fTimeStampError;
         }
         friend class boost::serialization::access;
-        #endif //__CINT__
         
     };
 
@@ -61,7 +56,6 @@ namespace MyPodData
         Int_t fZ;
         
         // method to use boost serialization
-        #ifndef __CINT__
         template<class Archive>
         void serialize(Archive & ar, const unsigned int /*version*/) 
         {
@@ -71,7 +65,6 @@ namespace MyPodData
             ar & fZ;
         }
         friend class boost::serialization::access;
-        #endif //__CINT__
         
     };
 
@@ -88,7 +81,6 @@ namespace MyPodData
         Double_t dposZ;
         
         // method to use boost serialization
-        #ifndef __CINT__
         template<class Archive>
         void serialize(Archive & ar, const unsigned int /*version*/) 
         {
@@ -103,7 +95,6 @@ namespace MyPodData
             ar & dposZ;
         }
         friend class boost::serialization::access;
-        #endif //__CINT__
     };
 }
 
