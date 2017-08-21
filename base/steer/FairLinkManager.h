@@ -45,11 +45,7 @@ class FairLinkManager : public TObject
     Bool_t fIgnoreSetting;
 
     /**Singleton instance*/
-#if !defined(__CINT__)
     static TMCThreadLocal FairLinkManager* fgInstance;
-#else
-    static                FairLinkManager* fgInstance;
-#endif
 
     FairLogger*                         fLogger;//!
 

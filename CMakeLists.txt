@@ -64,6 +64,13 @@ SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
 include(CheckCXX11Features)
 
+# FairRoot only uses C++11 or later, so we need an compiler which supports C++11
+# Check if the used compiler support C++11. If not stop with an error message
+If(NOT _HAS_CXX11_FLAG)
+  Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11. CbmRoot can only be compiled with compilers supporting C++11. Please install such a compiler.")
+EndIf()
+
+
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(WriteConfigFile)
@@ -75,6 +82,20 @@ include(cotire)
 
 #Check the compiler and set the compile and link flags
 Check_Compiler()
+
+# Check also if FairSoft has been compiled with C++11 or C++14 support
+# If FairSoft is used the compiler flags provided by fairsoft-config
+# are added to the variable CMAKE_CXX_FLAGS.
+# If alibuild is used the compiler flags are passed on the command line
+# and are also added to CMAKE_CXX_FLAGS.
+# So check if CMAKE_CXX_FLAGS has the compiler flags -std=c++11 or -std=c++14
+String(FIND ${CMAKE_CXX_FLAGS} "-std=c++11" POS_C++11)
+If(${POS_C++11} EQUAL -1)
+  String(FIND ${CMAKE_CXX_FLAGS} "-std=c++14" POS_C++11)
+  If(${POS_C++11} EQUAL -1)
+    Message(FATAL_ERROR "FairSoft wasn't compiled with c++11 or c++14 support. Please recompile FairSoft with a compiler which supports at least c++11.")
+  EndIf()
+EndIf()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
@@ -110,14 +131,15 @@ ENDIF(NOT UNIX)
 
 #Check if necessary environment variables are set
 #If not stop execution unless modular build is activated
-Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
-IF(NOT FAIRROOT_MODULAR_BUILD)
+#Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
+#IF(NOT FAIRROOT_MODULAR_BUILD)
+If(FAIRSOFT_CONFIG)
   IF(NOT DEFINED ENV{SIMPATH})
     MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
   ENDIF(NOT DEFINED ENV{SIMPATH})
   STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
   SET(SIMPATH $ENV{SIMPATH})
-endif(NOT FAIRROOT_MODULAR_BUILD)
+endif()
 
 # Check if the external packages are installed into a separate install
 # directory
@@ -128,7 +150,8 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
-find_package(ROOT 5.32.00 REQUIRED)
+# FairRoot only supports ROOT6, so check which version is available 
+find_package(ROOT 6.00.00 REQUIRED)
 find_package(Pythia6)
 find_package(Pythia8)
 

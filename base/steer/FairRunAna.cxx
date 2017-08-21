@@ -30,7 +30,6 @@
 #include "FairFileSource.h"             // ONLY TEMPORARILY, FOR COMPABILITY
 #include "FairMixedSource.h"            // ONLY TEMPORARILY, FOR COMPABILITY
 
-#include "RVersion.h"                   // for ROOT_VERSION, etc
 #include <iosfwd>                       // for ostream
 #include "TChain.h"                     // for TChain
 #include "TCollection.h"                // for TIter
@@ -653,16 +652,12 @@ void FairRunAna::Reinit(UInt_t runId)
 
 void  FairRunAna::RunWithTimeStamps()
 {
-  if (ROOT_VERSION_CODE >= ROOT_VERSION(5,29,1)) {
-    if (fIsInitialized) {
-      LOG(WARNING) << "RunWithTimeStamps has to be set before Run::Init !" << FairLogger::endl;
-      exit(-1);
-    } else {
-      fTimeStamps=kTRUE;
-      fRootManager->RunWithTimeStamps();
-    }
+  if (fIsInitialized) {
+    LOG(WARNING) << "RunWithTimeStamps has to be set before Run::Init !" << FairLogger::endl;
+    exit(-1);
   } else {
-    LOG(FATAL) << "RunWithTimeStamps need at least ROOT version 5.29.1" << FairLogger::endl;
+    fTimeStamps=kTRUE;
+    fRootManager->RunWithTimeStamps();
   }
 }
 //_____________________________________________________________________________

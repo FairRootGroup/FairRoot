@@ -17,10 +17,8 @@
 
 #include "FairEventHeader.h"     // for FairEventHeader
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 class PixelEventHeader : public FairEventHeader
 {
@@ -43,9 +41,7 @@ class PixelEventHeader : public FairEventHeader
   private:
     Int_t fPartNo;
 
-#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-#endif // for BOOST serialization
 
     ClassDef(PixelEventHeader, 1);
 };

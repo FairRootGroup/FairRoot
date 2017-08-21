@@ -12,14 +12,12 @@
 #include <sstream>
 #include <array>
 
-#ifndef __CINT__ // Boost serialization
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/binary_object.hpp>
-#endif //__CINT__
 
 #include "TMath.h"
 #include "TClonesArray.h"
@@ -139,10 +137,8 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 
   private:
     FairTestDetectorRecoTask* fRecoTask;
-#ifndef __CINT__ // for BOOST serialization
     std::vector<TIn> fDigiVector;
     std::vector<TOut> fHitVector;
-#endif // for BOOST serialization
 };
 
 // Template implementation of exec in FairTestDetectorMQRecoTask.tpl :

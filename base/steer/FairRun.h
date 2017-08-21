@@ -175,11 +175,7 @@ class FairRun : public TNamed
 
   protected:
     /** static pointer to this run*/
-#if !defined(__CINT__)
     static TMCThreadLocal FairRun* fRunInstance;
-#else
-    static                FairRun* fRunInstance;
-#endif
     /** RuntimeDb*/
     FairRuntimeDb*           fRtdb;
     /** Tasks used*/

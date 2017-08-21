@@ -12,9 +12,7 @@
 #include "TDatime.h"
 
 // roofit
-#ifndef __CINT__
 #include "RooGlobalFunc.h"
-#endif
 #include "RooConstVar.h"
 #include "RooRealVar.h"
 #include "RooDataSet.h"

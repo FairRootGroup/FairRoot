@@ -17,7 +17,6 @@
 
 #include "FairRunInfo.h"                // for FairRunInfo
 
-#include "RVersion.h"                   // for ROOT_VERSION_CODE
 #include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
 #include "TLorentzVector.h"             // for TLorentzVector
 #include "TString.h"                    // for TString
@@ -89,10 +88,6 @@ class FairMCApplication : public TVirtualMCApplication
     virtual void          ConstructGeometry();                              // MC Application
     /** Define parameters for optical processes (optional) */
     virtual void          ConstructOpGeometry();                            // MC Application
-#if ROOT_VERSION_CODE < 333824
-    /** Calculate user field  b at point x */
-    virtual void          Field(const Double_t* x, Double_t* b) const;      // MC Application
-#endif
     /** Define actions at the end of event */
     virtual void          FinishEvent();                                    // MC Application
     /** Define actions at the end of primary track */

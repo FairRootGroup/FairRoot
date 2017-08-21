@@ -24,10 +24,8 @@
 #include <string>
 #include <sstream>
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 class FairTestDetectorDigi : public FairTimeStamp
 {
@@ -148,9 +146,7 @@ class FairTestDetectorDigi : public FairTimeStamp
     }
 
   private:
-#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-#endif // for BOOST serialization
 
     Int_t fX;
     Int_t fY;

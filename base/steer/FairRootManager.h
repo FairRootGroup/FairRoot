@@ -279,11 +279,7 @@ class FairRootManager : public TObject
     std::map < TString , TObject* >     fMap;  //!
 
     /**Singleton instance*/
-#if !defined(__CINT__)
     static TMCThreadLocal FairRootManager*  fgInstance;
-#else
-    static                FairRootManager*  fgInstance;
-#endif
 
     /**Branch id for this run */
     Int_t                                fBranchSeqId;

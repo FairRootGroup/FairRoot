@@ -36,12 +36,10 @@
 
 #include "TMessage.h"
 
-#ifndef __CINT__
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/binary_object.hpp>
-#endif //__CINT__
 
 template <typename TIn, typename TPayloadIn>
 class FairTestDetectorFileSink : public FairMQDevice
@@ -125,9 +123,7 @@ class FairTestDetectorFileSink : public FairMQDevice
     std::string fInChannelName;
     std::string fAckChannelName;
 
-#ifndef __CINT__ // for BOOST serialization
     std::vector<TIn> fHitVector;
-#endif // for BOOST serialization
 };
 
 // Template implementation of Run() in FairTestDetectorFileSink.tpl :

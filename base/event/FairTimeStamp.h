@@ -17,10 +17,8 @@
 
 #include <iostream>                     // for ostream, cout
 
-#ifndef __CINT__ // for BOOST serialization
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 class TObject;
 
@@ -86,9 +84,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     }
 
   protected:
-#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-#endif // for BOOST serialization
 
     Double_t fTimeStamp;        /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError;     /** Error on time stamp */

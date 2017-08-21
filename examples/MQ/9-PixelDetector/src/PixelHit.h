@@ -19,10 +19,8 @@
 #include "Rtypes.h"      // for PixelHit::Class, ClassDef, PixelHit::Streamer
 class TVector3;  // lines 27-27
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 class TVector3;
 
@@ -45,9 +43,7 @@ class PixelHit : public FairHit
     }
 
   private:
-#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-#endif // for BOOST serialization
 
     ClassDef(PixelHit, 1);
 };

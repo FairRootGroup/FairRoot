@@ -30,10 +30,8 @@
 
 #include <iostream>                     // for ostream, cout
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 class FairLink
 {
