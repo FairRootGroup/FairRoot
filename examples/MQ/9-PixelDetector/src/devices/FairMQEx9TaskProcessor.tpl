@@ -133,6 +133,12 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 				[](void* /*data*/, void* hint) { delete (TMessage*)hint;},
 				messageTCA[iobj]));
   }
+
+  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
+    {
+      delete tempObjects[ipart];
+    }
+  
   Send(partsOut, fOutputChannelName);
   fSentMsgs++;
 
