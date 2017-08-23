@@ -6,10 +6,10 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
-configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/ex7-client.json 
-               ${CMAKE_BINARY_DIR}/bin/config/ex7-client.json)
-configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/startMQEx7.sh.in  
-               ${CMAKE_BINARY_DIR}/bin/examples/MQ/7-parameters/startMQEx7.sh)
+configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/ex7-client.json ${CMAKE_BINARY_DIR}/bin/config/ex7-client.json)
+configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/startMQEx7.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/7-parameters/startMQEx7.sh)
+configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/testMQEx7.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/7-parameters/testMQEx7.sh)
+configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/mqexample7_param.root ${CMAKE_BINARY_DIR}/bin/examples/MQ/7-parameters/mqexample7_param.root COPYONLY)
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
@@ -81,6 +81,11 @@ ForEach(_file RANGE 0 ${_length})
   set(DEPENDENCIES FairMQExample7)
   GENERATE_EXECUTABLE()
 EndForEach(_file RANGE 0 ${_length})
+
+add_test(NAME MQ.ex7-parameters COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/7-parameters/testMQEx7.sh)
+set_tests_properties(MQ.ex7-parameters PROPERTIES TIMEOUT "30")
+set_tests_properties(MQ.ex7-parameters PROPERTIES RUN_SERIAL true)
+set_tests_properties(MQ.ex7-parameters PROPERTIES PASS_REGULAR_EXPRESSION "Received parameter from the server:")
 
 Install(
   FILES ex7-client.json
