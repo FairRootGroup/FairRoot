@@ -136,7 +136,7 @@ FairRootManager::~FairRootManager()
     // if fOutFile exists, fOutTree is deleted with the file
     delete fOutTree;
   }
-  delete fObj2;
+  delete[] fObj2;
   fBranchNameList->Delete();
   delete fBranchNameList;
   fgInstance = 0;
