@@ -942,7 +942,8 @@ void FairMCApplication::ConstructGeometry()
     ModId=Mod->GetModId();
     NoOfVolumes=tgeovolumelist->GetEntriesFast();
     for (Int_t n=NoOfVolumesBefore; n < NoOfVolumes; n++) {
-      fModVolMap.insert(pair<Int_t, Int_t >(n,ModId));
+      TGeoVolume* v = (TGeoVolume*) tgeovolumelist->At(n);
+      fModVolMap.insert(pair<Int_t, Int_t >(v->GetNumber(),ModId));
     }
   }
   fSenVolumes=FairModule::svList;
