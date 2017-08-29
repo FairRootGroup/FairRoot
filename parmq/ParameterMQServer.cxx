@@ -105,7 +105,7 @@ void ParameterMQServer::Run()
     {
         FairMQMessagePtr req(NewMessage());
 
-        if (fChannels.at(fChannelName).at(0).Receive(req) > 0)
+        if (Receive(req, fChannelName, 0) > 0)
         {
             string reqStr(static_cast<char*>(req->GetData()), req->GetSize());
             LOG(INFO) << "Received parameter request from client: \"" << reqStr << "\"";
@@ -133,16 +133,27 @@ void ParameterMQServer::Run()
                 TMessage* tmsg = new TMessage(kMESS_OBJECT);
                 tmsg->WriteObject(par);
 
-                FairMQMessagePtr reply(NewMessage(tmsg->Buffer(),
-                                                  tmsg->BufferSize(),
-                                                  [](void* /*data*/, void* object){ delete static_cast<TMessage*>(object); },
-                                                  tmsg));
+                FairMQMessagePtr rep(NewMessage(tmsg->Buffer(),
+                                                tmsg->BufferSize(),
+                                                [](void* /*data*/, void* object){ delete static_cast<TMessage*>(object); },
+                                                tmsg));
 
-                fChannels.at(fChannelName).at(0).Send(reply);
+                if (Send(rep, fChannelName, 0) < 0)
+                {
+                    LOG(ERROR) << "failed sending reply";
+                    break;
+                }
             }
             else
             {
                 LOG(ERROR) << "Parameter uninitialized!";
+                // Send an empty message back to keep the REQ/REP cycle
+                FairMQMessagePtr rep(NewMessage());
+                if (Send(rep, fChannelName, 0) < 0)
+                {
+                    LOG(ERROR) << "failed sending reply";
+                    break;
+                }
             }
         }
     }
