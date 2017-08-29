@@ -9,7 +9,7 @@
 configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/ex7-client.json ${CMAKE_BINARY_DIR}/bin/config/ex7-client.json)
 configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/startMQEx7.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/7-parameters/startMQEx7.sh)
 configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/testMQEx7.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/7-parameters/testMQEx7.sh)
-configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/mqexample7_param.root ${CMAKE_BINARY_DIR}/bin/examples/MQ/7-parameters/mqexample7_param.root COPYONLY)
+configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/mqexample7_param.root ${CMAKE_BINARY_DIR}/examples/MQ/7-parameters/mqexample7_param.root COPYONLY)
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}

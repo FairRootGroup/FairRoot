@@ -66,12 +66,19 @@ bool FairMQExample7Client::ConditionalRun()
 
     if (Send(req, "data") > 0)
     {
-        if (Receive(rep, "data") > 0)
+        if (Receive(rep, "data") >= 0)
         {
-            FairMQExample7TMessage tmsg(rep->GetData(), rep->GetSize());
-            FairMQExample7ParOne* par = static_cast<FairMQExample7ParOne*>(tmsg.ReadObject(tmsg.GetClass()));
-            LOG(INFO) << "Received parameter from the server:";
-            par->print();
+            if (rep->GetSize() != 0)
+            {
+                FairMQExample7TMessage tmsg(rep->GetData(), rep->GetSize());
+                FairMQExample7ParOne* par = static_cast<FairMQExample7ParOne*>(tmsg.ReadObject(tmsg.GetClass()));
+                LOG(INFO) << "Received parameter from the server:";
+                par->print();
+            }
+            else
+            {
+                LOG(ERROR) << "Received empty reply. Parameter not available";
+            }
         }
     }
 
