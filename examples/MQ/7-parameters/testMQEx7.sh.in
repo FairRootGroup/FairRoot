@@ -1,4 +1,7 @@
 #!/bin/bash
+
+source @CMAKE_BINARY_DIR@/config.sh
+
 ex7config="@CMAKE_BINARY_DIR@/bin/config/ex7-client.json"
 parmqconfig="@CMAKE_BINARY_DIR@/bin/config/parameter-server.json"
 

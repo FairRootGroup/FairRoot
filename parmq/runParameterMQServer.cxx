@@ -48,6 +48,7 @@ int main(int argc, char** argv)
         }
 
         LOG(DEBUG) << "Device exited, terminating TApplication...";
+        gApplication->SetReturnFromRun(true);
         gApplication->Terminate();
         LOG(DEBUG) << "TApplication terminated.";
     }

@@ -1,5 +1,5 @@
 {
-  FairRuntimeDb *rtdb = FairRuntimeDb::instance();
+  FairRuntimeDb* rtdb = FairRuntimeDb::instance();
 
   Bool_t kParameterMerged = kTRUE;
   FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
@@ -8,7 +8,7 @@
   //rtdb->saveOutput();
   //rtdb->print();
 
-  FairMQExample7ParOne *par = (FairMQExample7ParOne*)rtdb->getContainer("FairMQExample7ParOne");
+  FairMQExample7ParOne* par = static_cast<FairMQExample7ParOne*>(rtdb->getContainer("FairMQExample7ParOne"));
 
   for(Int_t i = 0; i < 100; i++)
   {
