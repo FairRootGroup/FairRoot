@@ -135,12 +135,7 @@ void FairMQEx9Sampler::ListenForAcks()
       unique_ptr<FairMQMessage> ack(NewMessage());
       if (Receive(ack, fAckChannelName))
       {
-        // do not need to do anything
-      }
-
-      if (!CheckCurrentState(RUNNING))
-      {
-        break;
+        numAcks++;
       }
     }
 

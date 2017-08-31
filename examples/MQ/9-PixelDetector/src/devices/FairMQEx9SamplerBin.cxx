@@ -154,21 +154,17 @@ void FairMQEx9SamplerBin::PostRun()
 void FairMQEx9SamplerBin::ListenForAcks()
 {
   if ( fAckChannelName != "" ) {
+    Long64_t numAcks = 0;
     for (Long64_t eventNr = 0; eventNr < fMaxIndex ; ++eventNr)
+    {
+      unique_ptr<FairMQMessage> ack(NewMessage());
+      if (Receive(ack,fAckChannelName)) 
       {
-	unique_ptr<FairMQMessage> ack(NewMessage());
-	if (Receive(ack,fAckChannelName)) 
-	  {
-	    // do not need to do anything
-	  }
-
-	if (!CheckCurrentState(RUNNING))
-	  {
-	    break;
-	  }
+        numAcks++;
       }
+    }
 
-    LOG(INFO) << "Acknowledged " << fMaxIndex << " messages.";
+    LOG(INFO) << "Acknowledged " << numAcks << " messages.";
   }
 }
 
