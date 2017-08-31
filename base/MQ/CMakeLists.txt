@@ -1,42 +1,24 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
+################################################################################
+#    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+#                                                                              #
+#              This software is distributed under the terms of the             # 
+#              GNU Lesser General Public Licence (LGPL) version 3,             #  
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/base/MQ
-  ${CMAKE_SOURCE_DIR}/base/MQ/devices
-  ${CMAKE_SOURCE_DIR}/base/MQ/tasks
-  ${CMAKE_SOURCE_DIR}/MbsAPI
-)
-
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR}
-  ${Boost_LIBRARY_DIRS}
-)
-
-Link_Directories(${LINK_DIRECTORIES})
-
-Set(SRCS
+add_fairroot_library(BaseMQ
+  SOURCES
   tasks/FairMQSamplerTask.cxx
   tasks/FairMQProcessorTask.cxx
-)
 
-# to copy src that are header-only files (e.g. c++ template) for FairRoot external installation
-# manual install (globbing add not recommended)
-Set(BaseMQHDRFiles
+  HEADERS
   baseMQtools/baseMQtools.h
   devices/FairMQSampler.h
   devices/FairMQProcessor.h
   devices/FairMQUnpacker.h
   devices/FairMQLmdSampler.h
+  tasks/FairMQSamplerTask.h
+  tasks/FairMQProcessorTask.h
   policies/Sampler/SimpleTreeReader.h
   policies/Sampler/FairSourceMQInterface.h
   policies/Sampler/FairMQFileSource.h
@@ -48,21 +30,25 @@ Set(BaseMQHDRFiles
   policies/Storage/BinaryOutFileManager.h
   policies/Storage/BoostDataSaver.h
   policies/Storage/TriviallyCopyableDataSaver.h
-)
-install(FILES ${BaseMQHDRFiles} DESTINATION include)
 
-set(DEPENDENCIES
+  DEPENDENCIES
   Base
   ParBase
   FairTools
   GeoBase
-  ${Boost_THREAD_LIBRARY}
-  ${Boost_TIMER_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_FILESYSTEM_LIBRARY}
-  FairMQ::FairMQ
+  Boost::thread
+  Boost::timer
+  Boost::system
+  Boost::filesystem
+  FairMQ
+
+  INCLUDE_DIRS
+  ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/baseMQtools
+  ${CMAKE_CURRENT_SOURCE_DIR}/devices
+  ${CMAKE_CURRENT_SOURCE_DIR}/policies
+  ${CMAKE_CURRENT_SOURCE_DIR}/policies/Sampler
+  ${CMAKE_CURRENT_SOURCE_DIR}/policies/Serialization
+  ${CMAKE_CURRENT_SOURCE_DIR}/policies/Storage
+  ${CMAKE_CURRENT_SOURCE_DIR}/tasks
 )
-
-set(LIBRARY_NAME BaseMQ)
-
-GENERATE_LIBRARY()

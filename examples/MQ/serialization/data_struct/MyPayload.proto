@@ -1,38 +1,38 @@
-syntax = "proto2";
+syntax = "proto3";
 
 package MyPayloadProto;
 
 message Digi
 {
-  optional int32 x = 1;
-  optional int32 y = 2;
-  optional int32 z = 3;
-  optional double time_stamp = 4;
-  optional double time_stamperror = 5;
+  int32 x = 1;
+  int32 y = 2;
+  int32 z = 3;
+  double time_stamp = 4;
+  double time_stamperror = 5;
 }
 
 message Hit
 {
-  optional int32 det_id = 1;
-  optional int32 mcindex = 2;
-  optional double posx = 3;
-  optional double posy = 4;
-  optional double posz = 5;
-  optional double dposx = 6;
-  optional double dposy = 7;
-  optional double dposz = 8;
-  optional double time_stamp = 9;
-  optional double time_stamperror = 10;
+  int32 det_id = 1;
+  int32 mcindex = 2;
+  double posx = 3;
+  double posy = 4;
+  double posz = 5;
+  double dposx = 6;
+  double dposy = 7;
+  double dposz = 8;
+  double time_stamp = 9;
+  double time_stamperror = 10;
 }
 
 message DigiPayload
 {
   repeated Digi digi = 1;
-  optional bytes bigBuffer = 2;
+  bytes bigBuffer = 2;
 }
 
 message HitPayload
 {
   repeated Hit hit = 1;
-  optional bytes bigBuffer = 2;
+  bytes bigBuffer = 2;
 }

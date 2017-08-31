@@ -6,18 +6,12 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-add_fairroot_library(Tutorial2
-  SOURCES
-  FairTutorialDet2.cxx
-  FairTutorialDet2ContFact.cxx
-  FairTutorialDet2Geo.cxx
-  FairTutorialDet2GeoPar.cxx
-  FairTutorialDet2Point.cxx
-  FairTutorialDet2DigiPar.cxx
-  FairTutorialDet2Digitizer.cxx
-  FairTutorialDet2CustomTask.cxx
+option(WITH_DBASE "Switch off the building of FairDB." OFF)
+option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
+option(BUILD_DOXYGEN "Build Doxygen" OFF)
+option(BUILD_EXAMPLES "Build Examples" ON)
 
-  INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-  DEPENDENCIES MCStack Base GeoBase FairTools ParBase
-  LINKDEF Tutorial2LinkDef.h
-)
+option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
+if(${CMAKE_BUILD_TYPE} MATCHES PROFILE)
+  set(BUILD_UNITTESTS ON)
+endif()

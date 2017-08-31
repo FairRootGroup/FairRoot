@@ -13,6 +13,9 @@
  */
 
 #include "runFairMQDevice.h"
+#include <fairmq/FairMQLogger.h>
+#include <fairmq/options/FairMQProgOptions.h>
+
 #include "ParameterMQServer.h"
 
 namespace bpo = boost::program_options;

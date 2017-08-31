@@ -6,18 +6,20 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-add_fairroot_library(Tutorial2
-  SOURCES
-  FairTutorialDet2.cxx
-  FairTutorialDet2ContFact.cxx
-  FairTutorialDet2Geo.cxx
-  FairTutorialDet2GeoPar.cxx
-  FairTutorialDet2Point.cxx
-  FairTutorialDet2DigiPar.cxx
-  FairTutorialDet2Digitizer.cxx
-  FairTutorialDet2CustomTask.cxx
+if(NOT PYTHIA8DATA)
+  set(PYTHIA8DATA $ENV{PYTHIA8DATA})
+endif()
 
-  INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-  DEPENDENCIES MCStack Base GeoBase FairTools ParBase
-  LINKDEF Tutorial2LinkDef.h
+find_path(PYTHIA8DATA
+  NAMES MainProgramSettings.xml
+
+  HINTS
+  ${PYTHIA8DATA}
+  ${PYTHIA_ROOT}/share/Pythia8/xmldoc
+  ${SIMPATH}/share/pythia8/xmldoc
+)
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Pythia8Data
+  REQUIRED_VARS PYTHIA8DATA
 )

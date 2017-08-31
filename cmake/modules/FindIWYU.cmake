@@ -1,36 +1,30 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# - Try to find the include-what-you-use (IWYU) instalation
-# - This tool is based on llvm and will check the #include statements
-# - Once done this will define
-#
-# - Define macros to run the tool
-#
-#  IWYU_FOUND - system has include-what-you-use
+################################################################################
+#    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Message(STATUS "Looking for IWYU...")
+if(NOT IWYU_ROOT)
+    set(IWYU_ROOT $ENV{IWYU_ROOT})
+endif()
 
-Find_File(IWYU_BINARY NAMES include-what-you-use PATHS ENV PATH)
+find_file(IWYU_BINARY
+  NAMES include-what-you-use
+  HINTS ${IWYU_ROOT} $ENV{IWYU_ROOT}
+  PATH_SUFFIXES bin
+  PATHS ENV PATH
+)
 
-If(IWYU_BINARY)
-  Set(IWYU_FOUND TRUE)
-EndIf(IWYU_BINARY)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(IWYU
+  REQUIRED_VARS IWYU_BINARY
+)
 
-If (IWYU_FOUND)
-  If (NOT IWYU_FIND_QUIETLY)
-    MESSAGE(STATUS "Looking for IWYU... - found ${IWYU_BINARY}")
-    SET(ENV{ALL_HEADER_RULES} "")
-  endif (NOT IWYU_FIND_QUIETLY)
-else (IWYU_FOUND)
-    message(STATUS "Looking for IWYU... - Not found")
-endif (IWYU_FOUND)
-
-#########
+if(IWYU_FOUND)
+  add_custom_target(checkHEADERS DEPENDS $ENV{ALL_HEADER_RULES})
+endif(IWYU_FOUND)
 
 Macro(CHECK_HEADERS INFILES INCLUDE_DIRS_IN HEADER_RULE_NAME)
 

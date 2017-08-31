@@ -6,17 +6,13 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-add_fairroot_library(MCStack
-  SOURCES
-  FairStack.cxx 
-  FairMCTrack.cxx
+if(NOT VGM_ROOT)
+  set(VGM_ROOT $ENV{VGM_ROOT})
+endif()
 
-  HEADERS
-  FairDetectorList.h
-  FairMCTrack.h
-  FairStack.h
-
-  INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-  DEPENDENCIES Base ROOT::EG ROOT::Physics ROOT::Core
-  LINKDEF MCStackLinkDef.h
+find_package(VGM QUIET CONFIG
+  HINTS ${VGM_ROOT} ${SIMPATH}
 )
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(VGM CONFIG_MODE)

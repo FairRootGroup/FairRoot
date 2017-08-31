@@ -6,18 +6,20 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-add_fairroot_library(Tutorial2
-  SOURCES
-  FairTutorialDet2.cxx
-  FairTutorialDet2ContFact.cxx
-  FairTutorialDet2Geo.cxx
-  FairTutorialDet2GeoPar.cxx
-  FairTutorialDet2Point.cxx
-  FairTutorialDet2DigiPar.cxx
-  FairTutorialDet2Digitizer.cxx
-  FairTutorialDet2CustomTask.cxx
+get_property(ROOT_INCLUDE_PATH GLOBAL PROPERTY ROOT_INCLUDE_PATH)
+list(INSERT LD_LIBRARY_PATH 0 ${CMAKE_BINARY_DIR}/lib)
+list(REMOVE_DUPLICATES LD_LIBRARY_PATH)
+set(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 
-  INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-  DEPENDENCIES MCStack Base GeoBase FairTools ParBase
-  LINKDEF Tutorial2LinkDef.h
-)
+if(NOT FAIRROOT_MINIMAL)
+  WRITE_CONFIG_FILE(config.sh)
+  WRITE_CONFIG_FILE(config.csh)
+
+  SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples)
+  SET(ROOT_INCLUDE_PATH ${CMAKE_INSTALL_PREFIX}/include)
+  WRITE_CONFIG_FILE(config.sh_install)
+  WRITE_CONFIG_FILE(config.csh_install)
+
+else()
+  WRITE_MINIMAL_CONFIG_FILE(config.sh)
+endif()

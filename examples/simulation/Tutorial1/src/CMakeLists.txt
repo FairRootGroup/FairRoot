@@ -1,40 +1,20 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libTutorial1" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+#    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial1/src
-  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
-)
-
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR}
-) 
-
-Link_Directories(${LINK_DIRECTORIES})
-
-Set(SRCS
+add_fairroot_library(Tutorial1
+  SOURCES
   FairTutorialDet1.cxx
   FairTutorialDet1ContFact.cxx
   FairTutorialDet1Geo.cxx
   FairTutorialDet1GeoPar.cxx
   FairTutorialDet1Point.cxx
+
+  INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+  DEPENDENCIES MCStack GeoBase ParBase Base FairTools
+  LINKDEF Tutorial1LinkDef.h
 )
-
-Set(HEADERS )
-Set(LINKDEF Tutorial1LinkDef.h)
-Set(LIBRARY_NAME Tutorial1)
-Set(DEPENDENCIES MCStack Base)
-
-GENERATE_LIBRARY()

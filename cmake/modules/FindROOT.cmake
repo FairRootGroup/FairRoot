@@ -1,168 +1,38 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# - Find ROOT instalation
-# This module tries to find the ROOT installation on your system.
-# It tries to find the root-config script which gives you all the needed 
-# information.
-# If the system variable ROOTSYS is set this is straight forward.
-# If not the module uses the pathes given in ROOT_CONFIG_SEARCHPATH.
-# If you need an other path you should add this path to this varaible.  
-# The root-config script is then used to detect basically everything else.
-# This module defines a number of key variables and macros.
-#
-# Variables defined by this module:
-#
-#   ROOT_FOUND               System has ROOT, this means the root-config 
-#                            executable was found.
-#
-#   ROOT_INCLUDE_DIR         ROOT include directories: not cached
-#
-#   ROOT_INCLUDES            Same as above,
-#
-#   ROOT_LIBRARIES           Link to these to use the ROOT libraries, not cached
-#
-#   ROOT_LIBRARY_DIR         The path to where the ROOT library files are.
-#
-#   ROOT_VERSION_STRING      The version string of the ROOT libraries which
-#                            is reported by root-config
-#
-#   ROOT_VERSION_MAJOR       Major version number of ROOT
-#   ROOT_VERSION_MINOR       Minor version number of ROOT
-#   ROOT_VERSION_PATCH       Patch version number of ROOT
-#
-#   ROOT_VERSION_NUMBER      A unique version number which is calculated from 
-#                            major, minor and patch version found
-#
-#   ROOT_CINT_EXECUTABLE     The rootcint executable.
-#
-#   RLIBMAP_EXECUTABLE       The rlibmap executable.
+################################################################################
+#    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+#                                                                              #
+#              This software is distributed under the terms of the             # 
+#              GNU Lesser General Public Licence (LGPL) version 3,             #  
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Message(STATUS "Looking for Root...")
-
-Set(ROOT_FOUND FALSE)
-Set(ROOT_DEFINITIONS "")
-Set(ROOT_INSTALLED_VERSION_TOO_OLD FALSE)
-Set(ROOT_CONFIG_EXECUTABLE ROOT_CONFIG_EXECUTABLE-NOTFOUND)
-
-Find_Program(ROOT_CONFIG_EXECUTABLE NAMES root-config 
-  HINTS ${ROOT_DIR} ${SIMPATH} ${ROOTSYS} $ENV{ROOTSYS}
-  PATH_SUFFIXES bin tools/root/bin
-  NO_DEFAULT_PATH
+# search ROOTConfig.cmake
+find_package(ROOT QUIET CONFIG
+  HINTS ${ROOT_ROOT} $ENV{ROOT_ROOT} ${ROOTSYS} $ENV{ROOTSYS} ${SIMPATH}
 )
-     
-If(ROOT_CONFIG_EXECUTABLE)
-   
-  String(REGEX REPLACE "(^.*)/bin/root-config" "\\1" test ${ROOT_CONFIG_EXECUTABLE}) 
-  Set(ENV{ROOTSYS} ${test})
-  Set(ROOTSYS ${test})
 
-  Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --version 
-                  OUTPUT_VARIABLE ROOT_VERSION_STRING
-                 )
-  Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --prefix
-                  OUTPUT_VARIABLE ROOT_INSTALL_DIR
-                 )
-  String(STRIP ${ROOT_VERSION_STRING} ROOT_VERSION_STRING)
-  String(STRIP ${ROOT_INSTALL_DIR} ROOT_INSTALL_DIR)
+# process results of above search
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(ROOT CONFIG_MODE)
 
+# contains upstream ROOT_GENERATE_DICTIONARY and ROOT_LINKER_LIBRARY macros
+include(${ROOT_USE_FILE})
 
-  MESSAGE(STATUS "Looking for Root... - Found ${ROOT_INSTALL_DIR}/bin/root")
-  MESSAGE(STATUS "Looking for Root... - Found version is ${ROOT_VERSION_STRING} ")   
-   
-  # extract major, minor, and patch versions from
-  # the version string given by root-config
-  String(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+.*" "\\1" ROOT_VERSION_MAJOR "${ROOT_VERSION_STRING}")
-  String(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_VERSION_MINOR "${ROOT_VERSION_STRING}")
-  String(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+).*" "\\1" ROOT_VERSION_PATCH "${ROOT_VERSION_STRING}")
+get_filename_component(ROOTSYS ${ROOT_BINARY_DIR} DIRECTORY)
 
-  # compute overall version numbers which can be compared at once
-  Math(EXPR req_vers "${ROOT_FIND_VERSION_MAJOR}*10000 + ${ROOT_FIND_VERSION_MINOR}*100 + ${ROOT_FIND_VERSION_PATCH}")
-  Math(EXPR found_vers "${ROOT_VERSION_MAJOR}*10000 + ${ROOT_VERSION_MINOR}*100 + ${ROOT_VERSION_PATCH}")
-  Math(EXPR ROOT_FOUND_VERSION "${ROOT_VERSION_MAJOR}*10000 + ${ROOT_VERSION_MINOR}*100 + ${ROOT_VERSION_PATCH}")
+# will be filled by add_fairroot_library
+set_property(GLOBAL PROPERTY ROOT_INCLUDE_PATH "")
 
-  Set(ROOT_Version ${found_vers})
-  Set(ROOT_VERSION_NUMBER ${found_vers})
+if(ROOT_FOUND)
+  list(APPEND LD_LIBRARY_PATH ${ROOT_LIBRARY_DIR})
 
-  If(found_vers LESS req_vers)
-    Set(ROOT_FOUND FALSE)
-    Set(ROOT_INSTALLED_VERSION_TOO_OLD TRUE)
-  Else(found_vers LESS req_vers)
-    Set(ROOT_FOUND TRUE)
-  EndIf(found_vers LESS req_vers)
-
-Else(ROOT_CONFIG_EXECUTABLE)
-  Message(STATUS "Looking for Root... - Not found")
-  Message(FATAL_ERROR "ROOT not installed in the searchpath and ROOTSYS is not set. Please set ROOTSYS or add the path to your ROOT installation in the Macro FindROOT.cmake in the subdirectory cmake/modules.")
-Endif(ROOT_CONFIG_EXECUTABLE)
-
-
-If(ROOT_FOUND)
-
-  # ask root-config for the library dir
-  # Set ROOT_LIBRARY_DIR
-  Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --libdir
-                  OUTPUT_VARIABLE ROOT_LIBRARY_DIR
-                 )
-  String(STRIP ${ROOT_LIBRARY_DIR} ROOT_LIBRARY_DIR)
-
-  # ask root-config for the binary dir
-  Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --bindir
-                  OUTPUT_VARIABLE ROOT_BINARY_DIR
-                 )
-  String(STRIP ${ROOT_BINARY_DIR} ROOT_BINARY_DIR)
-
-  # ask root-config for the include dir
-  Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --incdir
-                  OUTPUT_VARIABLE ROOT_INCLUDE_DIR
-                 )
-  String(STRIP ${ROOT_INCLUDE_DIR} ROOT_INCLUDE_DIR)
-
-  # ask root-config for the library varaibles
-  Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --glibs
-                  OUTPUT_VARIABLE ROOT_LIBRARIES
-                 )
-  String(STRIP ${ROOT_LIBRARIES} ROOT_LIBRARIES)
-
-  # Make variables changeble to the advanced user
-  Mark_As_Advanced(ROOT_LIBRARY_DIR ROOT_INCLUDE_DIR ROOT_DEFINITIONS)
-
-  # Set ROOT_INCLUDES
-  Set(ROOT_INCLUDES ${ROOT_INCLUDE_DIR})
-
-  Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${ROOT_LIBRARY_DIR})
-
-  #######################################
-  #
-  #       Check the executables of ROOT 
-  #          ( rootcint ) 
-  #
-  #######################################
-
-  Find_Program(ROOT_CINT_EXECUTABLE
-    NAMES rootcint
-    PATHS ${ROOT_BINARY_DIR}
-    NO_DEFAULT_PATH
-    )
-
-  Find_Program(RLIBMAP_EXECUTABLE
-    NAMES rlibmap
-    PATHS ${ROOT_BINARY_DIR}
-    NO_DEFAULT_PATH
-    )
-
-    Include(ROOTMacros)
-
-Else(ROOT_FOUND)
-
-  If(ROOT_FIND_REQUIRED)
-    Message(STATUS "Looking for ROOT... - Found version to old.")
-    Message(STATUS "Looking for ROOT... - Minimum required version is ${ROOT_FIND_VERSION}")
-    Message(FATAL_ERROR "Stop here because of a wrong Root version.")
-  EndIf(ROOT_FIND_REQUIRED)
-
-Endif(ROOT_FOUND)
+  # Add missing include dirs TODO this should be done by upstream
+  foreach(t ROOT::vectorDict ROOT::listDict ROOT::forward_listDict ROOT::dequeDict ROOT::mapDict ROOT::map2Dict ROOT::unordered_mapDict ROOT::multimapDict ROOT::multimap2Dict ROOT::unordered_multimapDict ROOT::setDict ROOT::unordered_setDict ROOT::multisetDict ROOT::unordered_multisetDict ROOT::complexDict ROOT::valarrayDict ROOT::Cling ROOT::MultiProc ROOT::Rint ROOT::Thread ROOT::Imt ROOT::New ROOT::Core ROOT::rmkdepend ROOT::MathCore ROOT::MathMore ROOT::Matrix ROOT::Minuit ROOT::Minuit2 ROOT::Fumili ROOT::Physics ROOT::MLP ROOT::Quadp ROOT::Foam ROOT::Smatrix ROOT::SPlot ROOT::GenVector ROOT::Genetic ROOT::Hist ROOT::HistPainter ROOT::Spectrum ROOT::SpectrumPainter ROOT::Unfold ROOT::Hbook ROOT::Tree ROOT::TreePlayer ROOT::TreeViewer ROOT::RIO ROOT::SQLIO ROOT::XMLIO ROOT::XMLParser ROOT::Net ROOT::RootAuth ROOT::Krb5Auth ROOT::SrvAuth ROOT::rootd ROOT::Netx ROOT::NetxNG ROOT::RHTTP ROOT::Gpad ROOT::Graf ROOT::Postscript ROOT::mathtext ROOT::GX11 ROOT::GX11TTF ROOT::ASImage ROOT::ASImageGui ROOT::Graf3d ROOT::X3d ROOT::Eve ROOT::RGL ROOT::GLEW ROOT::FTGL ROOT::Gviz3d ROOT::Gui ROOT::Ged ROOT::FitPanel ROOT::GuiBld ROOT::GuiHtml ROOT::Recorder ROOT::SessionViewer ROOT::Proof ROOT::ProofPlayer ROOT::ProofDraw ROOT::ProofBench ROOT::proofd ROOT::XrdProofd ROOT::proofexecv ROOT::Proofx ROOT::pq2 ROOT::Html ROOT::EG ROOT::VMC ROOT::EGPythia6 ROOT::EGPythia8 ROOT::Geom ROOT::GeomBuilder ROOT::GeomPainter ROOT::Gdml ROOT::root ROOT::minicern ROOT::MemStat ROOT::rootn.exe ROOT::roots.exe ROOT::ssh2rpd ROOT::xpdtest ROOT::root.exe ROOT::proofserv.exe ROOT::hadd ROOT::rootnb.exe ROOT::g2root ROOT::h2root ROOT::rootcling ROOT::PyROOT ROOT::JupyROOT ROOT::PgSQL ROOT::RSQLite ROOT::TMVA ROOT::TMVAGui ROOT::RooFitCore ROOT::RooFit ROOT::RooStats ROOT::HistFactory ROOT::hist2workspace)
+    if(TARGET ${t})
+      get_target_property(incdirs ${t} INTERFACE_INCLUDE_DIRECTORIES)
+      if(NOT incdirs)
+        set_target_properties(${t} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES ${ROOT_INCLUDE_DIRS})
+      endif()
+    endif()
+  endforeach()
+endif()

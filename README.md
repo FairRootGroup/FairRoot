@@ -140,39 +140,6 @@ The interface to data bases can be switched on by setting the the cmake flage -D
 
 __Warning__: This option will change the inheritance tree of the parameter objects.
 
-
-## Modular (custom) installation of FairRoot:
- (inrtoduced by Ivana Hrivnacova)
-
-Added option FAIRROOT_MODULAR_BUILD (default is off)
-- if the option is activated the environment variables
-SIMPATH and FAIRROOTPATH need not to be set;
-
-
-The external packages are searched in these paths:
-- on the system path (if their cmake configuration is available)
-- in PackageXYZ_DIR              
-- in AlFa_DIR  (cmake replacement for SIMPATH, introduced to be sure
-that we do not mix build via env and via CMake together)
-
-The PackageXYZ_DIR has precedence to  AlFa_DIR, however one should be
-careful with this use and prefer not to have the same package installation
-also in AlFa_DIR
-
-# Building with FAIRROOT_MODULAR_BUILD
-- should be preceded by sourcing thisroot.sh, geant4.sh
-- requires new versions of VMC packages built with CMake
-and installed either in AlFa_DIR or available on path
-
- ```bash
-  cmake \
-  -DCMAKE_INSTALL_PREFIX="Installation_directory_for_fairroot" \
-  -DFAIRROOT_MODULAR_BUILD=ON \
-  -DBOOST_ROOT="Path_to_boost_installation" \
-  -DAlFa_DIR="Path_to_fairsoft_or_alfa_installation" \
-  ../FairRoot
-```
-
 ### Generating Doxygen documentation
 
 If the flage -DBUILD_DOXYGEN=ON is set when calling cmake, the doxygen documentation will be generated when calling make.  The generated html files can then be found in "build/doxygen/doc/html"
