@@ -55,7 +55,7 @@ void Config()
 /// (verbose level, global range cut, ..)
 
    TString configm(gSystem->Getenv("VMCWORKDIR"));
-   configm1 = configm + "/common/gconfig/g4config.in";
+   TString configm1 = configm + "/common/gconfig/g4config.in";
    cout << " -I g4Config() using g4conf  macro: " << configm1 << endl;
 
    //set geant4 specific stuff

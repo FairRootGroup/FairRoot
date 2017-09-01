@@ -38,7 +38,7 @@ void run_reco( TString mcEngine="TGeant3" )
   TList *parFileList = new TList();
 
   TString workDir = gSystem->Getenv("VMCWORKDIR");
-  paramDir = workDir + "/simulation/Tutorial4/parameters/";
+  TString paramDir = workDir + "/simulation/Tutorial4/parameters/";
   TString paramFile = paramDir + "example.par";
 
   TObjString tutDetDigiFile;
