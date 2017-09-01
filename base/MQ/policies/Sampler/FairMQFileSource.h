@@ -8,4 +8,4 @@
 
 #include "FairSourceMQInterface.h"
 
-typedef FairSourceMQInterface<FairFileSource,TClonesArray>  FairMQFileSource_t;
+using FairMQFileSource_t = FairSourceMQInterface<FairFileSource, TClonesArray>;

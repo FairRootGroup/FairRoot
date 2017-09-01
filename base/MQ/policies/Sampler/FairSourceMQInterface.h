@@ -24,7 +24,7 @@
 #include <functional>
 
 template<typename T, typename U>
-using enable_if_match = typename std::enable_if<std::is_same<T,U>::value,int>::type;
+using enable_if_match = typename std::enable_if<std::is_same<T, U>::value, int>::type;
 
 template<typename FairSourceType, typename DataType>
 class FairSourceMQInterface : public BaseSourcePolicy<FairSourceMQInterface<FairSourceType, DataType>>

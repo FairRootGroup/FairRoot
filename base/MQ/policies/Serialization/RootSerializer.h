@@ -5,21 +5,15 @@
  * Created on January 14, 2015, 3:44 PM
  */
 
-#ifndef ROOTBASECLASSSERIALIZER_H
-#define ROOTBASECLASSSERIALIZER_H
+#ifndef ROOTSERIALIZER_H
+#define ROOTSERIALIZER_H
 
-//std
-#include <iostream>
-#include <type_traits>
 #include <memory>
 
-//Root
 #include "TClonesArray.h"
 #include "TMessage.h"
-//FairRoot
-#include "FairMQMessage.h"
 
-#include "MQPolicyDef.h"
+#include "FairMQMessage.h"
 
 // special class to expose protected TMessage constructor
 class FairTMessage : public TMessage
@@ -32,61 +26,38 @@ class FairTMessage : public TMessage
     }
 };
 
-// helper function to clean up the object holding the data after it is transported.
-void free_tmessage(void* /*data*/, void* hint)
-{
-    delete static_cast<TMessage*>(hint);
-}
-
 struct RootSerializer
 {
     RootSerializer() = default;
     virtual ~RootSerializer() = default;
 
     template<typename T>
-    void serialize_impl(std::unique_ptr<FairMQMessage>& msg, T* input)
-    {
-        TMessage* tm = new TMessage(kMESS_OBJECT);
-        tm->WriteObject(input);
-        msg->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
-    }
-
-    template<typename T>
-    void serialize_impl(std::unique_ptr<FairMQMessage>& msg, const std::unique_ptr<T>& input)
-    {
-        TMessage* tm = new TMessage(kMESS_OBJECT);
-        tm->WriteObject(input.get());
-        msg->Rebuild(tm->Buffer(), tm->BufferSize(), free_tmessage, tm);
-    }
-
-    template<typename T>
     void Serialize(FairMQMessage& msg, T* input)
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(input);
-        msg.Rebuild(tm->Buffer(), tm->BufferSize(), [](void*,void* tmsg){delete static_cast<TMessage*>(tmsg);}, tm);
+        msg.Rebuild(tm->Buffer(),
+                    tm->BufferSize(),
+                    [](void*,void* tmsg){ delete static_cast<TMessage*>(tmsg); },
+                    tm);
+    }
+
+    template<typename T>
+    void Serialize(FairMQMessage& msg, const std::unique_ptr<T>& input)
+    {
+        TMessage* tm = new TMessage(kMESS_OBJECT);
+        tm->WriteObject(input.get());
+        msg.Rebuild(tm->Buffer(),
+                    tm->BufferSize(),
+                    [](void*,void* tmsg){ delete static_cast<TMessage*>(tmsg); },
+                    tm);
     }
 };
 
-struct RootDeserializer 
+struct RootDeserializer
 {
     RootDeserializer() = default;
     virtual ~RootDeserializer() = default;
-
-    template<typename T>
-    void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, T*& output)
-    {
-        delete output;
-        FairTMessage tm(msg->GetData(), msg->GetSize());
-        output = static_cast<T*>(tm.ReadObject(tm.GetClass()));
-    }
-
-    template<typename T>
-    void deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, std::unique_ptr<T>& output)
-    {
-        FairTMessage tm(msg->GetData(), msg->GetSize());
-        output.reset(static_cast<T*>(tm.ReadObject(tm.GetClass())));
-    }
 
     template<typename T>
     void Deserialize(FairMQMessage& msg, T*& output)
@@ -95,9 +66,20 @@ struct RootDeserializer
         FairTMessage tm(msg.GetData(), msg.GetSize());
         output = static_cast<T*>(tm.ReadObject(tm.GetClass()));
     }
+
+    template<typename T>
+    void Deserialize(FairMQMessage& msg, std::unique_ptr<T>& output)
+    {
+        FairTMessage tm(msg.GetData(), msg.GetSize());
+        output.reset(static_cast<T*>(tm.ReadObject(tm.GetClass())));
+    }
 };
 
-using RootDefaultInputPolicy = RawPtrDefaultInputPolicy<RootDeserializer, TClonesArray>;
-using RootDefaultOutputPolicy = RawPtrDefaultOutputPolicy<RootSerializer, TClonesArray>;
+// using RootDefaultOutputPolicy = fair::mq::policy::OutputPolicy<RootSerializer,
+//                                                                TClonesArray,
+//                                                                fair::mq::policy::PointerType,
+//                                                                fair::mq::policy::OpNewCreator,
+//                                                                fair::mq::policy::NullptrInitializer,
+//                                                                fair::mq::policy::RawPtrDeleter>;
 
-#endif /* ROOTBASECLASSSERIALIZER_H */
+#endif /* ROOTSERIALIZER_H */

@@ -1,13 +1,9 @@
-#ifndef GENEXPART1PROCESSOR_H
-#define GENEXPART1PROCESSOR_H
+#ifndef EX1PROCESSOR_H
+#define EX1PROCESSOR_H
 
-//std
-#include <iostream>
-#include <memory>
-
-//FairRoot
 #include "FairMQDevice.h"
 #include "SerializerExample.h"
+
 #include "TMath.h"
 
 #include "MyDigi.h"
@@ -16,11 +12,10 @@
 class Ex1Processor : public FairMQDevice
 {
   public:
-    Ex1Processor() :
-        FairMQDevice(),
-        fInput(nullptr),
-        fOutput(nullptr),
-        fNumMsgs(0)
+    Ex1Processor()
+        : fInput(nullptr)
+        , fOutput(nullptr)
+        , fNumMsgs(0)
     {}
 
     Ex1Processor(const Ex1Processor&);
@@ -42,13 +37,13 @@ class Ex1Processor : public FairMQDevice
 
         while (CheckCurrentState(RUNNING))
         {
-            std::unique_ptr<FairMQMessage> msg(NewMessage());
+            FairMQMessagePtr msg(NewMessage());
             if (Receive(msg,"data-in") > 0)
             {
-                Deserialize<MyDeserializer>(*msg,fInput);
+                Deserialize<MyDeserializer>(*msg, fInput);
                 receivedMsgs++;
-                Exec(fInput,fOutput);
-                Serialize<MySerializer>(*msg,fOutput);
+                Exec(fInput, fOutput);
+                Serialize<MySerializer>(*msg, fOutput);
                 Send(msg, "data-out");
                 sentMsgs++;
 
@@ -68,7 +63,7 @@ class Ex1Processor : public FairMQDevice
     void Exec(TClonesArray* digis, TClonesArray* hits)
     {
         hits->Delete();
-        for(int idigi(0); idigi<digis->GetEntriesFast(); idigi++)
+        for (int i = 0; i < digis->GetEntriesFast(); i++)
         {
             TVector3 pos;
             TVector3 dpos;
@@ -76,10 +71,10 @@ class Ex1Processor : public FairMQDevice
             // Double_t timestampErr = 0;
             Int_t fDetID = 0;
             Int_t fMCIndex = 0;
-            MyDigi* digi = static_cast<MyDigi*>(digis->At(idigi));
+            MyDigi* digi = static_cast<MyDigi*>(digis->At(i));
             pos.SetXYZ(digi->GetX() + 0.5, digi->GetY() + 0.5, digi->GetZ() + 0.5);
             dpos.SetXYZ(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
-            MyHit* hit = new ((*hits)[idigi]) MyHit(fDetID, fMCIndex, pos, dpos);
+            MyHit* hit = new ((*hits)[i]) MyHit(fDetID, fMCIndex, pos, dpos);
             hit->SetTimeStamp(digi->GetTimeStamp());
             hit->SetTimeStampError(digi->GetTimeStampError());
         }
@@ -91,4 +86,4 @@ class Ex1Processor : public FairMQDevice
     int fNumMsgs;
 };
 
-#endif
+#endif // EX1PROCESSOR_H

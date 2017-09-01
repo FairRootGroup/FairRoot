@@ -1,16 +1,9 @@
-#ifndef GENEXPART1SAMPLER_H
-#define GENEXPART1SAMPLER_H
+#ifndef EX1SAMPLER_H
+#define EX1SAMPLER_H
 
-// std
-#include <iostream>
-#include <memory>
-#include <chrono>
-
-// FairRoot
 #include "FairMQDevice.h"
 #include "SerializerExample.h"
 
-// root
 #include "Rtypes.h"
 #include "TFile.h"
 #include "TTree.h"
@@ -20,11 +13,11 @@
 class Ex1Sampler : public FairMQDevice
 {
   public:
-    Ex1Sampler() :
-        fInput(nullptr),
-        fTree(nullptr),
-        fFileName(),
-        fInputFile(nullptr)
+    Ex1Sampler()
+        : fInput(nullptr)
+        , fTree(nullptr)
+        , fFileName()
+        , fInputFile(nullptr)
     {}
 
     Ex1Sampler(const Ex1Sampler&);
@@ -64,24 +57,23 @@ class Ex1Sampler : public FairMQDevice
 
     virtual void Run()
     {
-        int64_t sentMsgs(0);
-        const int64_t numEvents = fTree->GetEntries();
+        uint64_t sentMsgs = 0;
+        const uint64_t numEvents = fTree->GetEntries();
         LOG(INFO) << "Number of events to process: " << numEvents;
-        auto tStart = std::chrono::high_resolution_clock::now();
-        for (int64_t idx = 0; idx < numEvents; idx++)
+
+        for (uint64_t i = 0; i < numEvents; i++)
         {
-            std::unique_ptr<FairMQMessage> msg(NewMessage());
-            fTree->GetEntry(idx);
+            FairMQMessagePtr msg(NewMessage());
+            fTree->GetEntry(i);
             Serialize<MySerializer>(*msg, fInput);
             Send(msg, "data-out");
-            sentMsgs++;//LOG(INFO)<<"SAMPLER";
+            sentMsgs++;
             if (!CheckCurrentState(RUNNING))
             {
                 break;
             }
         }
-        auto tEnd = std::chrono::high_resolution_clock::now();
-        LOG(INFO) << "Sent everything in: " << std::chrono::duration<double, std::milli>(tEnd - tStart).count() << " ms";
+
         LOG(INFO) << "Sent " << sentMsgs << " messages!";
     }
 
@@ -92,4 +84,4 @@ class Ex1Sampler : public FairMQDevice
     TFile* fInputFile;
 };
 
-#endif
+#endif // EX1SAMPLER_H

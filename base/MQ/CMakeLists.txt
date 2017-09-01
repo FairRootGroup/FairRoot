@@ -12,6 +12,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/MQ/devices
   ${CMAKE_SOURCE_DIR}/base/MQ/tasks
   ${CMAKE_SOURCE_DIR}/fairmq
+  ${CMAKE_SOURCE_DIR}/fairmq/options
   ${CMAKE_SOURCE_DIR}/MbsAPI
 )
 
@@ -35,7 +36,6 @@ Link_Directories(${LINK_DIRECTORIES})
 Set(SRCS
   tasks/FairMQSamplerTask.cxx
   tasks/FairMQProcessorTask.cxx
-  devices/FairMQLmdSampler.cxx
 )
 
 # to copy src that are header-only files (e.g. c++ template) for FairRoot external installation
@@ -45,6 +45,7 @@ Set(BaseMQHDRFiles
   devices/FairMQSampler.h
   devices/FairMQProcessor.h
   devices/FairMQUnpacker.h
+  devices/FairMQLmdSampler.h
   policies/Sampler/SimpleTreeReader.h
   policies/Sampler/FairSourceMQInterface.h
   policies/Sampler/FairMQFileSource.h

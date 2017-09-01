@@ -18,33 +18,16 @@
 
 #include "FairMQDevice.h"
 #include "FairMQLogger.h"
+#include "FairMQProgOptions.h"
 
-/*********************************************************************
- * -------------- NOTES -----------------------
- * All policies must have a default constructor
- * Function to define in (parent) policy classes :
- * 
- *  -------- INPUT POLICY --------
- *                deserialization_type::InitContainer(...)
- * CONTAINER_TYPE deserialization_type::DeserializeMsg(FairMQMessage* msg)
- * 
- * 
- *  -------- OUTPUT POLICY --------
- *                SinkType::AddToFile(CONTAINER_TYPE);
- *                SinkType::InitOutputFile()
- **********************************************************************/
-
-template <typename T, typename U>
-class BaseMQFileSink : public FairMQDevice, public T, public U
+template <typename InputPolicy, typename OutputPolicy>
+class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPolicy
 {
   public:
-    typedef T InputPolicy;
-    typedef U SinkType;
-
     BaseMQFileSink()
         : FairMQDevice()
         , InputPolicy()
-        , SinkType()
+        , OutputPolicy()
     {}
 
     virtual ~BaseMQFileSink()
@@ -57,24 +40,22 @@ class BaseMQFileSink : public FairMQDevice, public T, public U
     }
 
   protected:
-    using InputPolicy::fInput;
-
     virtual void InitTask()
     {
-        SinkType::InitOutputFile();
+        OutputPolicy::SetFileProperties(*fConfig);
+        OutputPolicy::InitOutputFile();
     }
 
-    typedef typename InputPolicy::deserialization_type DeserializerType;
     virtual void Run()
     {
         int receivedMsg = 0;
         while (CheckCurrentState(RUNNING))
         {
             std::unique_ptr<FairMQMessage> msg(NewMessage());
-            if (Receive(msg,"data-in") > 0)
+            if (Receive(msg, "data-in") > 0)
             {
-                Deserialize<DeserializerType>(*msg, fInput);
-                U::Serialize(fInput); // add fInput to file
+                Deserialize<typename InputPolicy::DeserializerType>(*msg, InputPolicy::fInput); // get data from message.
+                OutputPolicy::Serialize(InputPolicy::fInput); // put data into output.
                 receivedMsg++;
             }
         }

@@ -24,10 +24,10 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option
     // prepare boost input archive
     std::string msgStr(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
     std::istringstream iss(msgStr);
-    TPayloadIn InputArchive(iss);
+    TPayloadIn onputArchive(iss);
     try
     {
-        InputArchive >> fDigiVector;
+        onputArchive >> fDigiVector;
     }
     catch (boost::archive::archive_exception& e)
     {
@@ -63,8 +63,8 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option
 
     // prepare boost output archive
     std::ostringstream oss;
-    TPayloadOut OutputArchive(oss);
-    OutputArchive << fHitVector;
+    TPayloadOut outputArchive(oss);
+    outputArchive << fHitVector;
     std::string* strMsg = new std::string(oss.str());
     fPayload->Rebuild(const_cast<char*>(strMsg->c_str()), strMsg->length(), freeStringBuffer, strMsg);
 

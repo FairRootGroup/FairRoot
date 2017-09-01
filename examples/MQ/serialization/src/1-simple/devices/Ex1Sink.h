@@ -1,15 +1,9 @@
-#ifndef GENEXPART1SINK_H
-#define GENEXPART1SINK_H
+#ifndef EX1SINK_H
+#define EX1SINK_H
 
-// std
-#include <iostream>
-#include <memory>
-
-// FairRoot
 #include "FairMQDevice.h"
 #include "SerializerExample.h"
 
-// root
 #include "TFile.h"
 #include "TTree.h"
 
@@ -18,13 +12,12 @@
 class Ex1Sink : public FairMQDevice
 {
   public:
-    Ex1Sink() :
-        FairMQDevice(),
-        fInput(nullptr),
-        fFileName(),
-        fOutFile(nullptr),
-        fTree(nullptr),
-        fNumMsgs(0)
+    Ex1Sink()
+        : fInput(nullptr)
+        , fFileName()
+        , fOutFile(nullptr)
+        , fTree(nullptr)
+        , fNumMsgs(0)
     {}
 
     Ex1Sink(const Ex1Sink&);
@@ -64,7 +57,7 @@ class Ex1Sink : public FairMQDevice
         int receivedMsgs = 0;
         while (CheckCurrentState(RUNNING))
         {
-            std::unique_ptr<FairMQMessage> msg(NewMessage());
+            FairMQMessagePtr msg(NewMessage());
             if (Receive(msg, "data-in") > 0)
             {
                 Deserialize<MyDeserializer>(*msg,fInput);
@@ -92,4 +85,4 @@ class Ex1Sink : public FairMQDevice
     int fNumMsgs;
 };
 
-#endif
+#endif // EX1SINK_H
