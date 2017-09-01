@@ -18,12 +18,12 @@
 // boost
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/vector.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp> // input: a non-portable native binary archive
+#include <boost/archive/binary_oarchive.hpp> // output: a non-portable native binary archive
+#include <boost/archive/text_iarchive.hpp> // input: a portable text archive
+#include <boost/archive/text_oarchive.hpp> // output: a portable text archive
+#include <boost/archive/xml_iarchive.hpp> // input: a portable XML archive
+#include <boost/archive/xml_oarchive.hpp> // output: a portable XML archive
 
 // root
 #include "TClonesArray.h"
@@ -34,45 +34,16 @@
 #include "BaseSerializationPolicy.h"
 #include "BaseDeserializationPolicy.h"
 
- #include "MQPolicyDef.h"
+#include "MQPolicyDef.h"
 
-// Recall:
-// a portable text archive
-// boost::archive::text_oarchive // saving
-// boost::archive::text_iarchive // loading
-
-// a portable text archive using a wide character stream
-// boost::archive::text_woarchive // saving
-// boost::archive::text_wiarchive // loading
-
-// a portable XML archive
-// boost::archive::xml_oarchive // saving
-// boost::archive::xml_iarchive // loading
-
-// a portable XML archive which uses wide characters - use for utf-8 output
-// boost::archive::xml_woarchive // saving
-// boost::archive::xml_wiarchive // loading
-
-// a non-portable native binary archive
-// boost::archive::binary_oarchive // saving
-// boost::archive::binary_iarchive // loading
-
-// Remark : boost binary archives are not multiplatform --> use xml or text format for cross-platform use
-typedef boost::archive::binary_iarchive BoostBinArchIn;
-typedef boost::archive::binary_oarchive BoostBinArchOut;
-
-///    ////////////////////////////////////////////////////////////////////////
-///    ////////////////////////   serialize   /////////////////////////////////
-///    ////////////////////////////////////////////////////////////////////////
-
-template <typename DataType, typename BoostArchiveOut = BoostBinArchOut>
+template <typename DataType, typename BoostArchiveOut = boost::archive::binary_oarchive>
 class BoostSerializer
 {
   public:
     void Serialize(FairMQMessage& msg, TClonesArray* input)
     {
         // first copy the data to a std::vector
-        std::vector<DataType> input_vector;
+        std::vector<DataType> dataVec;
         for (Int_t i = 0; i < input->GetEntriesFast(); ++i)
         {
             DataType* data = reinterpret_cast<DataType*>(input->At(i));
@@ -80,21 +51,26 @@ class BoostSerializer
             {
                 continue;
             }
-            input_vector.push_back(*data);
+            dataVec.push_back(*data);
         }
-        DoSerialization(msg, input_vector);
+        Serialize(msg, dataVec);
     }
 
-    void Serialize(FairMQMessage& msg, const std::vector<DataType>& DataVector)
+    void Serialize(FairMQMessage& msg, const std::vector<DataType>& dataVec)
     {
-        DoSerialization(msg, DataVector);
+        std::ostringstream buffer;
+        BoostArchiveOut outputArchive(buffer);
+        outputArchive << dataVec;
+        int size = buffer.str().length();
+        msg.Rebuild(size);
+        std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 
     void Serialize(FairMQMessage& msg, DataType* Data)
     {
         std::ostringstream buffer;
-        BoostArchiveOut OutputArchive(buffer);
-        OutputArchive << *Data;
+        BoostArchiveOut outputArchive(buffer);
+        outputArchive << *Data;
         int size = buffer.str().length();
         msg.Rebuild(size);
         std::memcpy(msg.GetData(), buffer.str().c_str(), size);
@@ -103,64 +79,38 @@ class BoostSerializer
     void Serialize(FairMQMessage& msg, const DataType& Data)
     {
         std::ostringstream buffer;
-        BoostArchiveOut OutputArchive(buffer);
-        OutputArchive << Data;
-        int size = buffer.str().length();
-        msg.Rebuild(size);
-        std::memcpy(msg.GetData(), buffer.str().c_str(), size);
-    }
-
-  protected:
-    void DoSerialization(FairMQMessage& msg, const std::vector<DataType>& DataVector)
-    {
-        std::ostringstream buffer;
-        BoostArchiveOut OutputArchive(buffer);
-        OutputArchive << DataVector;
+        BoostArchiveOut outputArchive(buffer);
+        outputArchive << Data;
         int size = buffer.str().length();
         msg.Rebuild(size);
         std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 };
 
-///    ////////////////////////////////////////////////////////////////////////
-///    ////////////////////////   deserialize   ///////////////////////////////
-///    ////////////////////////////////////////////////////////////////////////
-
-template <typename DataType, typename BoostArchiveIn = BoostBinArchIn>
-class BoostDeSerializer
+template <typename DataType, typename BoostArchiveIn = boost::archive::binary_iarchive>
+class BoostDeserializer
 {
   public:
-    BoostDeSerializer()
-    {
-    }
-
-    BoostDeSerializer(const BoostDeSerializer&) = delete;
-    BoostDeSerializer operator=(const BoostDeSerializer&) = delete;
-
-    virtual ~BoostDeSerializer()
-    {
-    }
-
     void Deserialize(FairMQMessage& msg, std::vector<DataType>& input)
     {
         input.clear();
         std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
         std::istringstream buffer(msgStr);
-        BoostArchiveIn InputArchive(buffer);
-        InputArchive >> input;
+        BoostArchiveIn inputArchive(buffer);
+        inputArchive >> input;
     }
 
     void Deserialize(FairMQMessage& msg, TClonesArray* input)
     {
-        std::vector<DataType> input_vector;
-        Deserialize(msg,input_vector);// deserialize msg into vector
+        std::vector<DataType> dataVec;
+        Deserialize(msg, dataVec);// deserialize msg into vector
         // fill TClonesArray from vector
         if (input)
         {
             input->Delete();
-            for (unsigned int i = 0; i < input_vector.size(); ++i)
+            for (unsigned int i = 0; i < dataVec.size(); ++i)
             {
-                new ((*input)[i]) DataType(input_vector.at(i));
+                new ((*input)[i]) DataType(dataVec.at(i));
             }
             if (input->IsEmpty())
             {
@@ -173,10 +123,10 @@ class BoostDeSerializer
     {
         std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
         std::istringstream buffer(msgStr);
-        BoostArchiveIn InputArchive(buffer);
+        BoostArchiveIn inputArchive(buffer);
         try
         {
-            InputArchive >> input;
+            inputArchive >> input;
         }
         catch (boost::archive::archive_exception& e)
         {

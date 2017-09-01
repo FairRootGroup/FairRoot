@@ -5,51 +5,44 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+#include "runFairMQDevice.h"
 #include "BaseMQFileSink.h"
-#include "runSimpleMQStateMachine.h"
 
-#include "RootSerializer.h"
-#include "RootOutFileManager.h"
+#include "MQPolicyDef.h" // fair::mq::policy::
+#include "RootSerializer.h" // RootDeserializer
+#include "TClonesArray.h" // data type for the InputPolicy
 
-#include "FairMBSRawItem.h"
+#include "RootOutFileManager.h" // OutputPolicy
+#include "FairMBSRawItem.h" // data type for the OutputPolicy
 
-namespace po = boost::program_options;
+// InputPolicy - initialize input and deserialize message into it
+using RootDefaultInputPolicy = fair::mq::policy::InputPolicy<RootDeserializer, // deserializer from msg to input
+                                                             TClonesArray, // input data type
+                                                             fair::mq::policy::PointerType, // input pointer type (automatically selected)
+                                                             fair::mq::policy::OpNewCreator, // input allocation
+                                                             fair::mq::policy::NullptrInitializer, // input initialization
+                                                             fair::mq::policy::RawPtrDeleter>; // input deleter
 
-int main(int argc, char** argv)
+namespace bpo = boost::program_options;
+
+void addCustomOptions(bpo::options_description& options)
 {
-    try
-    {
-        std::string filename;
-        std::string treename;
-        std::string branchname;
-        std::string hitname;
-        std::string fileoption;
+    options.add_options()
+        ("output-file-name",   po::value<std::string>(),                                  "Path to the input file")
+        ("output-file-tree",   po::value<std::string>()->default_value("mbstree"),        "Name of the output tree")
+        ("output-file-branch", po::value<std::string>()->default_value("FairMBSRawItem"), "Name of the output Branch")
+        ("hit-classname",      po::value<std::string>()->default_value("FairMBSRawItem"), "Hit class name for initializing TClonesArray")
+        ("output-file-option", po::value<std::string>()->default_value("RECREATE"),       "Root file option : UPDATE, RECREATE etc.")
+        ("use-clones-array",   po::value<bool>()->default_value(true),                    "Use TClonesArray")
+        ("flow-mode",          po::value<bool>()->default_value(true),                    "Flow mode");
+}
 
-        po::options_description sink_options("File Sink options");
-        sink_options.add_options()
-            ("output-file-name",   po::value<std::string>(&filename),                                    "Path to the input file")
-            ("output-file-tree",   po::value<std::string>(&treename)->default_value("mbstree"),          "Name of the output tree")
-            ("output-file-branch", po::value<std::string>(&branchname)->default_value("FairMBSRawItem"), "Name of the output Branch")
-            ("output-file-option", po::value<std::string>(&fileoption)->default_value("RECREATE"),       "Root file option : UPDATE, RECREATE etc.")
-            ("hit-classname",      po::value<std::string>(&hitname)->default_value("FairMBSRawItem"),    "Hit class name for initializing TClonesArray");
+FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+{
+    BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>* sink = new BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>();
 
-        FairMQProgOptions config;
-        config.AddToCmdLineOptions(sink_options);
-        config.ParseAll(argc, argv, true);
+    // call function member from deserialization policy
+    sink->InitInputData(config.GetValue<std::string>("hit-classname").c_str());
 
-        BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>> sink;
-        // call function member from storage policy
-        sink.SetFileProperties(filename, treename, branchname, hitname, fileoption, true);
-        // call function member from deserialization policy
-        sink.InitInputData(hitname.c_str());
-
-        runStateMachine(sink, config);
-    }
-    catch (std::exception& e)
-    {
-        LOG(ERROR)  << "Unhandled Exception reached the top of main: "  << e.what() << ", application will now exit";
-        return 1;
-    }
-
-    return 0;
+    return sink;
 }

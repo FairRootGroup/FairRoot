@@ -16,7 +16,7 @@
 #define FAIRMQUNPACKER_H
 
 #include "FairMQDevice.h"
-#include "FairMQMessage.h"
+#include "FairMQProgOptions.h"
 #include "RootSerializer.h"
 
 #include <stdexcept>
@@ -24,17 +24,20 @@
 #include <tuple>
 #include <map>
 
-template<typename U, typename T = RootSerializer>
+template<typename UnpackerType, typename SerializationType = RootSerializer>
 class FairMQUnpacker : public FairMQDevice
 {
-    typedef U UnpackerType;
-    typedef T SerializationType;
-
   public:
-    FairMQUnpacker() :
-        fSubEventChanMap(),
-        fUnpacker(nullptr),
-        fInputChannelName()
+    FairMQUnpacker()
+        : fSubEventChanMap()
+        , fUnpacker(nullptr)
+        , fInputChannelName()
+        , fType(0)
+        , fSubType(0)
+        , fProcId(0)
+        , fSubCrate(0)
+        , fControl(0)
+        , fChanName()
     {}
 
     FairMQUnpacker(const FairMQUnpacker&) = delete;
@@ -69,6 +72,17 @@ class FairMQUnpacker : public FairMQDevice
   protected:
     void InitTask()
     {
+        fType = fConfig->GetValue<short>("lmd-type");
+        fSubType = fConfig->GetValue<short>("lmd-sub-type");
+        fProcId = fConfig->GetValue<short>("lmd-proc-id");
+        fSubCrate = fConfig->GetValue<short>("lmd-sub-crate");
+        fControl = fConfig->GetValue<short>("lmd-control");
+        fChanName = fConfig->GetValue<std::string>("lmd-chan-name");
+
+        // combination of sub-event header value = one special channel
+        // this channel MUST be defined in the json file for the MQ configuration
+        AddSubEvtKey(fType, fSubType, fProcId, fSubCrate, fControl, fChanName);
+
         // check if subevt map is configured
         if (fInputChannelName.empty() || fSubEventChanMap.size() == 0)
         {
@@ -127,6 +141,13 @@ class FairMQUnpacker : public FairMQDevice
 
     UnpackerType* fUnpacker;
     std::string fInputChannelName;
+
+    short fType;
+    short fSubType;
+    short fProcId;
+    short fSubCrate;
+    short fControl;
+    std::string fChanName;
 };
 
 #endif /* !FAIRMQUNPACKER_H */
