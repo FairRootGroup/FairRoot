@@ -61,6 +61,9 @@ class FairGenericRootManager : public TObject
     virtual void  CloseOutFile() = 0;
     // virtual void  WriteAndClose() = 0;
 
+    virtual Int_t               GetBranchId(TString const &BrName) = 0;
+
+
     // access to the implementation class
     virtual FairRootManager*    GetFairRootManager() const = 0;
     virtual Int_t  GetId() const = 0;
