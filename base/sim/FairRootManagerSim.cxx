@@ -105,7 +105,7 @@ void  FairRootManagerSim::Fill()
 }  
 
 //_____________________________________________________________________________
-void FairRootManagerSim:: Write()
+void FairRootManagerSim::Write()
 {
 /// Write the Root tree in the file.
 
@@ -113,12 +113,20 @@ void FairRootManagerSim:: Write()
 }  
 
 //_____________________________________________________________________________
-void FairRootManagerSim:: CloseOutFile()
+void FairRootManagerSim::CloseOutFile()
 {
 /// Close the Root file.
 
   fRootManager->CloseOutFile();
 }  
+
+//_____________________________________________________________________________
+Int_t FairRootManagerSim::GetBranchId(TString const & brName)
+{
+/// Return branch Id
+
+  return fRootManager->GetBranchId(brName);
+}
 
 // //_____________________________________________________________________________
 // void FairRootManagerSim:: WriteAndClose()

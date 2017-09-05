@@ -57,6 +57,8 @@ class FairRootManagerSim : public FairGenericRootManager
     virtual void  Write();
     virtual void  CloseOutFile();
 
+    virtual Int_t GetBranchId(TString const &BrName);
+
     virtual FairRootManager*    GetFairRootManager() const { return fRootManager; }
     virtual Int_t  GetId() const { return 0; }
 

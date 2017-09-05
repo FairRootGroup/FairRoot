@@ -394,4 +394,12 @@ void FairRootManagerSimMT:: CloseOutFile()
   lk.unlock();
 #endif
   LogMessage("Released lock for CloseOutFile");
-}  
+}
+
+//_____________________________________________________________________________
+Int_t FairRootManagerSimMT::GetBranchId(TString const & brName)
+{
+/// Return branch Id
+
+  return fRootManager->GetBranchId(brName);
+}
