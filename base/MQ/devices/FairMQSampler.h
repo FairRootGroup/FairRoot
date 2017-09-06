@@ -54,8 +54,8 @@ class FairMQSampler : public FairMQDevice
 {
   public:
     FairMQSampler()
-        : fFairRunAna(new FairRunAna())
-        , fSamplerTask(new Task())
+        : fFairRunAna(nullptr)
+        , fSamplerTask(nullptr)
         , fStart()
         , fEnd()
         , fInputFile()
@@ -73,18 +73,15 @@ class FairMQSampler : public FairMQDevice
     FairMQSampler operator=(const FairMQSampler&) = delete;
 
     virtual ~FairMQSampler()
-    {
-        if (fFairRunAna)
-        {
-            fFairRunAna->TerminateRun();
-        }
-        delete fSamplerTask;
-    }
+    {}
 
   protected:
     virtual void InitTask()
     {
         LOG(INFO) << "Initializing Task...";
+
+        fFairRunAna = new FairRunAna();
+        fSamplerTask = new Task();
 
         fInputFile = fConfig->GetValue<std::string>("input-file");
         fParFile = fConfig->GetValue<std::string>("parameter-file");
@@ -180,6 +177,15 @@ class FairMQSampler : public FairMQDevice
             LOG(ERROR) << "Exception when ending AckListener thread: " << e.what();
             exit(EXIT_FAILURE);
         }
+    }
+
+    virtual void ResetTask()
+    {
+        if (fFairRunAna)
+        {
+            fFairRunAna->TerminateRun();
+        }
+        delete fSamplerTask;
     }
 
     void ListenForAcks()
