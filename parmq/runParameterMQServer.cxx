@@ -12,52 +12,24 @@
  * @author D. Klein, A. Rybalchenko
  */
 
-#include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
-#include "runSimpleMQStateMachine.h"
-
+#include "runFairMQDevice.h"
 #include "ParameterMQServer.h"
 
-#include "TApplication.h"
+namespace bpo = boost::program_options;
 
-using namespace boost::program_options;
-
-int main(int argc, char** argv)
+void addCustomOptions(bpo::options_description& options)
 {
-    try
-    {
-        options_description serverOptions("Parameter MQ Server options");
-        serverOptions.add_options()
-            ("first-input-name", value<std::string>()->default_value("first_input.root"), "First input file name")
-            ("first-input-type", value<std::string>()->default_value("ROOT"), "First input file type (ROOT/ASCII)")
-            ("second-input-name", value<std::string>()->default_value(""), "Second input file name")
-            ("second-input-type", value<std::string>()->default_value("ROOT"), "Second input file type (ROOT/ASCII)")
-            ("output-name", value<std::string>()->default_value(""), "Output file name")
-            ("output-type", value<std::string>()->default_value("ROOT"), "Output file type")
-            ("channel-name", value<std::string>()->default_value("data"), "Output channel name");
+    options.add_options()
+        ("first-input-name", bpo::value<std::string>()->default_value("first_input.root"), "First input file name")
+        ("first-input-type", bpo::value<std::string>()->default_value("ROOT"), "First input file type (ROOT/ASCII)")
+        ("second-input-name", bpo::value<std::string>()->default_value(""), "Second input file name")
+        ("second-input-type", bpo::value<std::string>()->default_value("ROOT"), "Second input file type (ROOT/ASCII)")
+        ("output-name", bpo::value<std::string>()->default_value(""), "Output file name")
+        ("output-type", bpo::value<std::string>()->default_value("ROOT"), "Output file type")
+        ("channel-name", bpo::value<std::string>()->default_value("data"), "Output channel name");
+}
 
-        FairMQProgOptions config;
-        config.AddToCmdLineOptions(serverOptions);
-        config.ParseAll(argc, argv);
-
-        TApplication app("ParameterMQServer", 0, 0);
-
-        { // scope to destroy the device in case gApplication->Terminate() fails or aborts.
-            ParameterMQServer server;
-            runStateMachine(server, config);
-        }
-
-        LOG(DEBUG) << "Device exited, terminating TApplication...";
-        gApplication->SetReturnFromRun(true);
-        gApplication->Terminate();
-        LOG(DEBUG) << "TApplication terminated.";
-    }
-    catch (std::exception& e)
-    {
-        LOG(ERROR) << "Unhandled Exception reached the top of main: "
-                   << e.what() << ", application will now exit";
-        return 1;
-    }
-
-    return 0;
+FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
+{
+    return new ParameterMQServer();
 }
