@@ -1,12 +1,12 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-/* 
+/*
  * File:   BaseMQFileSink.h
  * Author: winckler
  *
@@ -25,8 +25,7 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
 {
   public:
     BaseMQFileSink()
-        : FairMQDevice()
-        , InputPolicy()
+        : InputPolicy()
         , OutputPolicy()
     {}
 
