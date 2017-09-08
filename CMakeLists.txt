@@ -257,7 +257,9 @@ Else(FAIRSOFT_EXTERN)
   set(GSL_DIR ${SIMPATH}/basics/gsl)
 EndIf(FAIRSOFT_EXTERN)
 
-Set(Boost_NO_SYSTEM_PATHS TRUE)
+if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
+  Set(Boost_NO_SYSTEM_PATHS TRUE)
+endif()
 Set(Boost_NO_BOOST_CMAKE TRUE)
 Message("-- Looking for Boost ...")
 # If an older version of boost is found both of the variables below are
