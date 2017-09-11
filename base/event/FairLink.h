@@ -112,7 +112,7 @@ class FairLink
         void serialize(Archive& ar, const unsigned int)
         {
             ar& fFile;
-			ar& fType;
+            ar& fType;
             ar& fEntry;
             ar& fIndex;
             ar& fWeight;
@@ -140,6 +140,7 @@ inline FairLink::FairLink() :
 
 inline FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
   :fFile(0),
+   fType(0),
    fEntry(-1),
    fIndex(index),
    fWeight(weight)
@@ -148,7 +149,9 @@ inline FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
 }
 
 inline FairLink::FairLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight)
-  :fEntry(entry),
+  :fFile(0),
+   fType(0),
+   fEntry(entry),
    fIndex(index),
    fWeight(weight)
 {

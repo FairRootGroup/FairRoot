@@ -30,7 +30,9 @@ FairLink::FairLink(TString branchName, Int_t index, Float_t weight)
 
 
 FairLink::FairLink(Int_t file, Int_t entry, TString branchName, Int_t index, Float_t weight)
-  :fEntry(entry),
+  :fFile(0),
+   fType(0),
+   fEntry(entry),
    fIndex(index),
    fWeight(weight)
 {
