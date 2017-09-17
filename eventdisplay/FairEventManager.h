@@ -21,6 +21,9 @@
 #include "TEveScene.h"
 #include "TEveProjectionAxes.h"
 #include "TEveProjectionManager.h"
+#include "TGeoNode.h"
+#include "FairXMLNode.h"
+#include <map>
 
 class FairRootManager; //does not work with streamer, reason unclear
 class FairTask;
@@ -32,6 +35,7 @@ class FairEventManager : public TEveEventManager
     static FairEventManager* Instance();
     FairEventManager();
     virtual ~FairEventManager();
+    virtual void SetXMLConfig(TString xml_config){fXMLConfig = xml_config;};
     virtual void Open();
     virtual void GotoEvent(Int_t event); // *MENU*
     virtual void NextEvent();   // *MENU*
@@ -71,6 +75,9 @@ class FairEventManager : public TEveEventManager
     TEveProjectionManager* GetRPhiProjManager() const {return fRPhiProjManager;};
     TEveProjectionAxes *GetRPhiAxes() const { return fAxesPhi;};
     TEveProjectionAxes *GetRhoZAxes() const {return fAxesRho;};
+    virtual void LoadXMLSettings();
+    void LoadXMLDetector(TGeoNode *node, FairXMLNode *xml, Int_t depth=0);
+    Int_t StringToColor(TString color)const;
   private:
     FairRootManager* fRootManager; //!
     Int_t fEntry;                 //!
@@ -95,11 +102,14 @@ class FairEventManager : public TEveEventManager
     TEveProjectionManager *fRhoZProjManager;	//!
     TEveProjectionAxes *fAxesPhi;
     TEveProjectionAxes *fAxesRho;
+    TString fXMLConfig;
+    std::map<int,int> fPDGToColor;;
 
     static FairEventManager*    fgRinstance; //!
     FairEventManager(const FairEventManager&);
     FairEventManager& operator=(const FairEventManager&);
     void SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ);
+
 };
 
 #endif

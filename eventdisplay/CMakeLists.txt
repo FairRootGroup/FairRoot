@@ -51,11 +51,12 @@ FairMCPointDraw.cxx
 FairHitDraw.cxx
 FairHitPointSetDraw.cxx
 FairTimeStampPointDraw.cxx
+FairXMLNode.cxx
 )
 
 Set(HEADERS )
 Set(LINKDEF EventDisplayLinkDef.h)
 Set(LIBRARY_NAME EventDisplay)
-Set(DEPENDENCIES Base Eve)
+Set(DEPENDENCIES Base Eve XMLIO XMLParser)
 
 GENERATE_LIBRARY()
