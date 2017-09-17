@@ -15,11 +15,14 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRunAna.h"                 // for FairRunAna
 
+#include "TDOMParser.h"
+#include "TXMLEngine.h"
+#include "TXMLAttr.h"
+#include "TXMLNode.h"
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TEveGeoNode.h"                // for TEveGeoTopNode
 #include "TEveManager.h"                // for TEveManager, gEve
 #include "TGeoManager.h"                // for gGeoManager, TGeoManager
-
 
 
 #include "TGLViewer.h"
@@ -27,6 +30,7 @@
 #include "TGLLightSet.h"
 #include "TEveProjectionAxes.h"
 #include "TEveBrowser.h"
+
 
 
 
@@ -66,10 +70,60 @@ FairEventManager::FairEventManager()
    fRPhiProjManager(NULL),
    fRhoZProjManager(NULL),
    fAxesPhi(NULL),
-   fAxesRho(NULL)
+   fAxesRho(NULL),
+   fXMLConfig("")
 {
   fgRinstance=this;
   AddParticlesToPdgDataBase();
+  fPDGToColor[22] = 623;	// photon
+  fPDGToColor[-2112] = 2;	// anti-neutron
+  fPDGToColor[-11] = 3;	// e+
+  fPDGToColor[-3122] = 4;	// anti-lambda
+  fPDGToColor[11] = 5;	// e-
+  fPDGToColor[-3222] = 6;	// Sigma -
+  fPDGToColor[12] = 7;	// e-neutrino
+  fPDGToColor[-3212] = 8;	//  Sigma0
+  fPDGToColor[-13] = 9;	// mu+
+  fPDGToColor[-3112] = 10;	// Sigma+ (PB
+  fPDGToColor[13] = 11;	//  mu-
+  fPDGToColor[-3322] = 12;	//  Xi0
+  fPDGToColor[111] = 13;	// pi0
+  fPDGToColor[-3312] = 14;	//  Xi+
+  fPDGToColor[211] = 15;	// pi+
+  fPDGToColor[-3334] = 16;	//  Omega+ (PB)
+  fPDGToColor[-211] = 17;	// pi-
+  fPDGToColor[-15] = 18;	// tau+
+  fPDGToColor[130] = 19;	// K long
+  fPDGToColor[15] = 20;	//  tau -
+  fPDGToColor[321] = 21;	// K+
+  fPDGToColor[411] = 22;	// D+
+  fPDGToColor[-321] = 23;	// K-
+  fPDGToColor[-411] = 24;	// D-
+  fPDGToColor[2112] = 25;	// n
+  fPDGToColor[421] = 26;	// D0
+  fPDGToColor[2212] = 27;	// p
+  fPDGToColor[-421] = 28;	// D0
+  fPDGToColor[-2212] = 29;	//  anti-proton
+  fPDGToColor[431] = 30;	// Ds+
+  fPDGToColor[310] = 31;	// K short
+  fPDGToColor[-431] = 32;	// anti Ds-
+  fPDGToColor[221] = 33;	// eta
+  fPDGToColor[4122] = 34;	// Lambda_C+
+  fPDGToColor[3122] = 35;	//  Lambda
+  fPDGToColor[24] = 36;	// W+
+  fPDGToColor[3222] = 37;	// Sigma+
+  fPDGToColor[-24] = 38;		//	W-
+  fPDGToColor[3212] = 39;	//Sigma0
+  fPDGToColor[23] = 40;	//	Z
+  fPDGToColor[3112] = 41;	// Sigma -
+  fPDGToColor[3322] = 42;	// Xi0
+  fPDGToColor[3312] = 43; 	// Xi-
+  fPDGToColor[3334] = 44; 	// Omega- (PB)
+  fPDGToColor[50000050] = 801; //Cerenkov
+  fPDGToColor[1000010020] = 45;
+  fPDGToColor[1000010030] = 48;
+  fPDGToColor[1000020040] = 50;
+  fPDGToColor[1000020030] = 55;
 }
 //______________________________________________________________________________
 void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
@@ -79,6 +133,8 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
   if(gGeoManager==NULL)  return;
   TGeoNode* N=  gGeoManager->GetTopNode();
   TEveGeoTopNode* TNod=new  TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
+  if(!fXMLConfig.EqualTo(""))
+	   LoadXMLSettings();
   gEve->AddGlobalElement(TNod);
   gEve->FullRedraw3D(kTRUE);
   fEvent= gEve->AddEvent(this);
@@ -141,6 +197,10 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
    fMultiView->GetGLViewer()->SetResetCamerasOnUpdate(kFALSE);
    fMultiRPhiView->GetGLViewer()->SetResetCamerasOnUpdate(kFALSE);
    fMultiRhoZView->GetGLViewer()->SetResetCamerasOnUpdate(kFALSE);
+   fMultiView->GetEveFrame()->HideAllDecorations();
+   fMultiRPhiView->GetEveFrame()->HideAllDecorations();
+   fMultiRhoZView->GetEveFrame()->HideAllDecorations();
+
 }
 //______________________________________________________________________________
 void FairEventManager::UpdateEditor()
@@ -190,112 +250,10 @@ void FairEventManager::DisplaySettings()
 //______________________________________________________________________________
 Int_t FairEventManager::Color( int pdg)
 {
-  switch(pdg) {
-
-  case   22     :
-    return  623;    // photon
-  case   -2112  :
-    return  2 ;   // anti-neutron
-  case   -11    :
-    return  3;    // e+
-  case   -3122  :
-    return  4;   // anti-Lambda
-  case   11     :
-    return  5;    // e-
-  case   -3222  :
-    return  6;   // Sigma-
-  case   12     :
-    return  7;    // e-neutrino (NB: flavour undefined by Geant)
-  case   -3212  :
-    return  8;   // Sigma0
-  case   -13    :
-    return  9;    // mu+
-  case   -3112  :
-    return  10;   // Sigma+ (PB)*/
-  case   13     :
-    return  11;    // mu-
-  case   -3322  :
-    return  12;   // Xi0
-  case   111    :
-    return  13;    // pi0
-  case   -3312  :
-    return  14;   // Xi+
-  case   211    :
-    return  15;    // pi+
-  case   -3334  :
-    return  16;   // Omega+ (PB)
-  case   -211   :
-    return  17;    // pi-
-  case   -15    :
-    return  18;   // tau+
-  case   130    :
-    return  19;   // K long
-  case   15     :
-    return  20;   // tau-
-  case   321    :
-    return  21;   // K+
-  case   411    :
-    return  22;   // D+
-  case   -321   :
-    return  23;   // K-
-  case   -411   :
-    return  24;   // D-
-  case   2112   :
-    return  25;   // n
-  case   421    :
-    return  26;   // D0
-  case   2212   :
-    return  27;   // p
-  case   -421   :
-    return  28;   // D0
-  case   -2212  :
-    return  29;   // anti-proton
-  case   431    :
-    return  30;   // Ds+
-  case   310    :
-    return  31;   // K short
-  case   -431   :
-    return  32;   // anti Ds-
-  case   221    :
-    return  33;   // eta
-  case   4122   :
-    return  34;   // Lamba_c+
-  case   3122   :
-    return  35;   // Lambda
-  case   24     :
-    return  36;   // W+
-  case   3222   :
-    return  37;   // Sigma+
-  case   -24    :
-    return  38;   // W-
-  case   3212   :
-    return  39;   // Sigma0
-  case   23     :
-    return  40;   // Z
-  case   3112   :
-    return  41;   // Sigma-
-  case   3322   :
-    return  42;   // Xi0
-  case   3312   :
-    return  43;   // Xi-
-  case   3334   :
-    return  44;   // Omega- (PB)
-  case   50000050   :
-    return  801;   // Cerenkov
-  case   1000010020  :
-    return  45;
-  case   1000010030  :
-    return  48;
-  case   1000020040   :
-    return  50;
-  case   1000020030   :
-    return  55;
-  default  :
-    return 0;
-
-  }
-
-
+	if(fPDGToColor.find(pdg)!=fPDGToColor.end()){
+		return fPDGToColor[pdg];
+	}
+	return 0;
 }
 //______________________________________________________________________________
 
@@ -391,3 +349,127 @@ void FairEventManager::SetRhoZPlane(Double_t a, Double_t b, Double_t c,
 	fRhoZPlane[2] =c;
 	fRhoZPlane[3] =d;
 }
+
+void FairEventManager::LoadXMLSettings() {
+	TDOMParser *Parser = new TDOMParser();
+	Parser->SetValidate(kFALSE);
+	Parser->ParseFile(fXMLConfig);
+	TXMLNode *MainNode = Parser->GetXMLDocument()->GetRootNode();
+	FairXMLNode *xml = new FairXMLNode(MainNode);
+	for(int i =0;i<xml->GetNChildren();i++){
+		TString nodename = xml->GetChild(i)->GetName();
+		if(nodename.EqualTo("Detectors")){
+			TGeoNode *top = gGeoManager->GetTopNode();
+			FairXMLNode *top_xml = xml->GetChild(i)->GetChild(0);
+			if(!top_xml->IsNull())
+				LoadXMLDetector(top,top_xml);
+		}else if(nodename.EqualTo("MCTracksColors")){
+			FairXMLNode *colors = xml->GetChild(i);
+			for(int j=0;j<colors->GetNChildren();j++){
+				FairXMLNode *color = colors->GetChild(j);
+				TString pgd_code = color->GetAttribValue("pdg");
+				TString color_code = color->GetAttribValue("color");
+				fPDGToColor[pgd_code.Atoi()] = StringToColor(color_code);
+			}
+		}
+	}
+	delete xml;
+	delete Parser;
+	gEve->Redraw3D();
+}
+
+void FairEventManager::LoadXMLDetector(TGeoNode* node, FairXMLNode* xml,Int_t depth) {
+	TString name = xml->GetAttribValue("name");
+	TString node_name = node->GetName();
+	Bool_t recursive = (xml->GetAttribValue("recursive").Length()!=0&&!name.EqualTo(node_name));
+	if(recursive&&depth==0) return;
+	TString transparency = xml->GetAttribValue("transparency");
+	TString color = xml->GetAttribValue("color");
+	if(!color.EqualTo("")){
+		node->GetVolume()->SetFillColor(StringToColor(color));
+		node->GetVolume()->SetLineColor(StringToColor(color));
+	}
+	if(!transparency.EqualTo("")){
+		node->GetVolume()->SetTransparency((Char_t)(transparency.Atoi()));
+	}
+	if(xml->GetAttribValue("recursive").Length()>0){
+		TString val = xml->GetAttribValue("recursive");
+		Int_t xml_depth = val.Atoi();
+		if(recursive){
+			xml_depth =depth-1;
+		}
+		for(int i=0;i<node->GetNdaughters();i++){
+			TGeoNode *daughter_node = node->GetDaughter(i);
+			LoadXMLDetector(daughter_node,xml,xml_depth);
+		}
+	}
+	if(xml->GetNChildren()>0&&!recursive){
+		for(int i=0;i<node->GetNdaughters();i++){
+			TString subdetector_name = node->GetDaughter(i)->GetName();
+			for(int j=0;j<xml->GetNChildren();j++){
+				FairXMLNode *subnode = xml->GetChild(j);
+				TString subnode_name = subnode->GetAttribValue("name");
+				if(subnode_name==subdetector_name){
+					LoadXMLDetector(node->GetDaughter(i),subnode);
+				}
+			}
+		}
+	}
+}
+
+Int_t FairEventManager::StringToColor(TString color) const {
+	Int_t color_val = 0;
+	if (color.Contains("k")) {
+		Int_t plus_index = color.First('+');
+		Int_t minus_index = color.First('-');
+		Int_t cut = plus_index;
+		if (cut == -1)
+			cut = minus_index;
+		if(cut==-1) cut = color.Length();
+		TString col_name(color( 0, cut));
+		Int_t col_val;
+		if (col_name.EqualTo("kWhite")) {
+			col_val = 0;
+		} else if (col_name.EqualTo("kBlack")) {
+			col_val = 1;
+		} else if (col_name.EqualTo("kGray")) {
+			col_val = 920;
+		} else if (col_name.EqualTo("kRed")) {
+			col_val = 632;
+		} else if (col_name.EqualTo("kGreen")) {
+			col_val = 416;
+		} else if (col_name.EqualTo("kBlue")) {
+			col_val = 600;
+		} else if (col_name.EqualTo("kYellow")) {
+			col_val = 400;
+		} else if (col_name.EqualTo("kMagenta")) {
+			col_val = 616;
+		} else if (col_name.EqualTo("kCyan")) {
+			col_val = 432;
+		} else if (col_name.EqualTo("kOrange")) {
+			col_val = 800;
+		} else if (col_name.EqualTo("kSpring")) {
+			col_val = 820;
+		} else if (col_name.EqualTo("kTeal")) {
+			col_val = 840;
+		} else if (col_name.EqualTo("kAzure")) {
+			col_val = 860;
+		} else if (col_name.EqualTo("kViolet")) {
+			col_val = 880;
+		} else if (col_name.EqualTo("kPink")) {
+			col_val = 900;
+		}
+		TString col_num(color( cut + 1, color.Length()));
+		if(col_num.Length()>0){
+			if(color.Contains("+")){
+				col_val +=col_num.Atoi();
+			}else{
+				col_val -=col_num.Atoi();
+			}
+		}
+		return col_val;
+	}else{
+		return color.Atoi();
+	}
+}
+
