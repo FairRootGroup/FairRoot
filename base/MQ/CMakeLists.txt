@@ -54,7 +54,6 @@ Set(BaseMQHDRFiles
   policies/Serialization/RootSerializer.h
   policies/Serialization/MQPolicyDef.h
   policies/Storage/RootOutFileManager.h
-  policies/Storage/RootOutFileManager.tpl
   policies/Storage/BinaryOutFileManager.h
   policies/Storage/BoostDataSaver.h
   policies/Storage/TriviallyCopyableDataSaver.h
