@@ -28,18 +28,12 @@
 class FairMQEx9SamplerBin : public FairMQDevice
 {
   public:
-    enum
-    {
-        InputFileName = FairMQDevice::Last,
-        Last
-    };
-
     FairMQEx9SamplerBin();
     virtual ~FairMQEx9SamplerBin();
 
     void AddInputFileName  (std::string tempString) { fFileNames  .push_back(tempString); }
     void AddInputBranchName(std::string tempString) { fBranchNames.push_back(tempString); }
-    
+
     void SetMaxIndex(int64_t tempInt) {fMaxIndex=tempInt;}
 
     void ListenForAcks();
@@ -47,13 +41,13 @@ class FairMQEx9SamplerBin : public FairMQDevice
     void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
     void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
 
- protected:
+  protected:
     virtual bool ConditionalRun();
     virtual void PreRun();
     virtual void PostRun();
     virtual void InitTask();
-    
- private: 
+
+  private:
     std::string     fOutputChannelName;
     std::string     fAckChannelName;
 

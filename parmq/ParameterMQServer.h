@@ -24,18 +24,6 @@ class FairRuntimeDb;
 class ParameterMQServer : public FairMQDevice
 {
   public:
-    enum
-    {
-        FirstInputName = FairMQDevice::Last,
-        FirstInputType,
-        SecondInputName,
-        SecondInputType,
-        OutputName,
-        OutputType,
-        ChannelName,
-        Last
-    };
-
     ParameterMQServer();
 
     ParameterMQServer(const ParameterMQServer&) = delete;
@@ -45,11 +33,6 @@ class ParameterMQServer : public FairMQDevice
 
     virtual void Run();
     virtual void InitTask();
-
-    virtual void SetProperty(const int key, const std::string& value);
-    virtual std::string GetProperty(const int key, const std::string& default_ = "");
-    virtual void SetProperty(const int key, const int value);
-    virtual int GetProperty(const int key, const int default_ = 0);
 
     void SetFirstInputName(const std::string& firstInputName) { fFirstInputName = firstInputName; }
     std::string GetFirstInputName() { return fFirstInputName; }
