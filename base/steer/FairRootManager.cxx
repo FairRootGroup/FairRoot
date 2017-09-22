@@ -208,11 +208,11 @@ TFile* FairRootManager::OpenOutFile(const char* fname)
     << fOutFile << FairLogger::endl;
   return OpenOutFile(fOutFile);
 }
-//_____________________________________________________________________________
 
+// a common implementation for Register
 //_____________________________________________________________________________
-void  FairRootManager::Register(const char* name, const char* folderName , TNamed* obj, Bool_t toFile)
-{
+template<typename T>
+void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* obj, Bool_t toFile) {
   FairMonitor::GetMonitor()->RecordRegister(name,folderName,toFile);
 
   // Security check. If the the name is equal the folder name there are problems with reading
@@ -247,14 +247,18 @@ void  FairRootManager::Register(const char* name, const char* folderName , TName
     obj->SetName(name);
     folder->Add(obj);
   }
-  AddMemoryBranch(name, obj );
-  //cout << " FairRootManager::Register Adding branch:(Obj) " << name << " In folder : " << folderName << endl;
- 
+  AddMemoryBranch(name, obj);
   AddBranchToList(name);
     
   if (toFile == kFALSE) {
-          FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
+    FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
   }
+}
+
+//_____________________________________________________________________________
+void  FairRootManager::Register(const char* name, const char* folderName , TNamed* obj, Bool_t toFile)
+{
+  RegisterImpl(name, folderName, obj, toFile);
 }
 
 //_____________________________________________________________________________
@@ -272,53 +276,9 @@ Int_t  FairRootManager::AddBranchToList(const char* name)
 }
 
 //_____________________________________________________________________________
-void  FairRootManager::Register(const char* name,const char* Foldername ,TCollection* obj, Bool_t toFile)
+void  FairRootManager::Register(const char* name,const char* foldername ,TCollection* obj, Bool_t toFile)
 {
-  FairMonitor::GetMonitor()->RecordRegister(name,Foldername,toFile);
-
-  /**
-  * This method do exactly the same as the one before but for TCollection which is a TObject and not a TNamed (MT)
-  */
-  // Security check. If the the name is equal the folder name there are problems with reading
-  // back the data. Instead of the object inside the folder the RootManger will return a pointer
-  // to the folder. To avoid such problems we check here if both strings are equal and stop the
-  // execution with some error message if this is the case.
-  if (strcmp (name, Foldername) == 0 ) {
-    LOG(FATAL) << "The names for the object name "
-	       << name << " and the folder name "
-	       << Foldername << " are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name."
-
-	       <<FairLogger::endl;
-  }
-
-  if(toFile) { /**Write the Object to the Tree*/
-    TFolder* folder=0;
-    TFolder* f=0;
-    if(fOutFolder==0) {
-      f=static_cast<TFolder*>(fRootFolder->FindObjectAny(Foldername));
-      if(f==0) {
-        folder= fRootFolder->AddFolder(Foldername,Foldername);
-      } else {
-        folder=f;
-      }
-    } else {
-      f=static_cast<TFolder*>(fOutFolder->FindObjectAny(Foldername));
-      if(f==0) {
-        folder= fOutFolder->AddFolder(Foldername,Foldername);
-      } else {
-        folder=f;
-      }
-    }
-    obj->SetName(name);
-    folder->Add(obj);
-  }
-  /**Keep the Object in Memory, and do not write it to the tree*/
-  AddMemoryBranch(name, obj );
-  AddBranchToList(name);
-  
-  if (toFile == kFALSE) {
-	  FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
-  }
+  RegisterImpl(name, foldername, obj, toFile);
 }
 //_____________________________________________________________________________
 

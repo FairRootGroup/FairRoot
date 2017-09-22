@@ -241,6 +241,9 @@ class FairRootManager : public TObject
     void                AddFriends( );
     /**Add a branch to memory, it will not be written to the output files*/
     void                AddMemoryBranch(const char*, TObject* );
+    template<typename T>
+    void RegisterImpl(const char* name, const char* Foldername, T* obj, Bool_t toFile);
+
     /** Internal Check if Branch persistence or not (Memory branch)
     return value:
     1 : Branch is Persistance
