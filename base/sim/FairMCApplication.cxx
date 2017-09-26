@@ -1080,6 +1080,9 @@ void FairMCApplication::InitGeometry()
     rootManager->TruncateBranchNames(outTree, "cbmroot");
     rootManager->SetOutTree(outTree);
 
+    // create other branches not managed by folder
+    rootManager->CreatePersistentBranchesAny();
+
     // Explicit registration of stack in MT mode
     // (should be removed when problem with "Register" is resolved)
     // Create branch in outTree manually

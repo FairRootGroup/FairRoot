@@ -56,6 +56,8 @@
 #include <set>                          // for set, set<>::iterator
 #include <utility>                      // for pair
 #include <vector>                       // for vector
+#include <type_traits>
+#include <cxxabi.h>
 
 using std::flush;
 using std::cout;
@@ -1274,6 +1276,64 @@ char* FairRootManager::GetTreeName()
     // Close file and return read value
     fclose(file);
     return treename;
+}
+//_____________________________________________________________________________
+
+namespace impl
+{
+  inline
+  // a helper function to demangle a type_name
+  std::string demangle(const char* name)
+  {
+    int status = -4; // some arbitrary value to eliminate the compiler warning
+    std::unique_ptr<char, void (*)(void*)> res{ abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free };
+    return (status == 0) ? res.get() : name;
+  }
+}
+
+// actually instantiates the persistent "any" branches in the outtree
+bool FairRootManager::CreatePersistentBranchesAny() {
+  auto tree = GetOutTree();
+  if(tree) {
+    for(auto& brname : fPersistentBranchesAny) {
+      // fetch information for this branch from fAnyBranchMap
+      std::cerr << "CREATING BRANCH " << brname << "\n";
+      auto iter = fAnyBranchMap.find(brname);
+      if(iter != fAnyBranchMap.end()){
+        auto &tinfo = iter->second->persistenttypeinfo;
+        auto tname = impl::demangle(tinfo.name());
+
+        // for the branch creation we need a TClass describing the object
+        // get it from ROOT via the type name
+        auto cl = TClass::GetClass(tname.c_str());
+        if(!cl) {
+          LOG(FATAL) << "No TClass found for " << tname << "\n";
+          return false;
+        }
+
+        if(!cl->HasDictionary()) {
+          LOG(FATAL) << "No dictionary found for " << tname << "\n";
+          return false;
+        }
+        // create the branch
+        auto obj = iter->second->ptraddr;
+
+        LOG(INFO) << "Creating branch for " << tname.c_str() << " with address " << obj << "\n";
+        tree->Branch(brname.c_str(), tname.c_str(), obj);
+      }
+      else {
+        LOG(FATAL) << "No entry for " << brname << " found\n";
+      }
+    }
+  }
+  return true;
+}
+
+//_____________________________________________________________________________
+void FairRootManager::EmitMemoryBranchWrongTypeWarning(const char* brname, const char *type1, const char *type2) const {
+  LOG(WARNING) << "Trying to read from memory branch " << brname
+               << " with wrong type " << type1
+               << " (expexted: " << type2 << " )" << FairLogger::endl;
 }
 //_____________________________________________________________________________
 

@@ -32,6 +32,7 @@
 FairTutorialDet2Digitizer::FairTutorialDet2Digitizer()
   : FairTask("TutorialDetDigitizer", 0),
     fTutorialDetPoints(NULL),
+    fCustomData2(new std::vector<CustomClass>),
     fDigiPar(NULL)
 {
 }
@@ -41,6 +42,7 @@ FairTutorialDet2Digitizer::FairTutorialDet2Digitizer()
 FairTutorialDet2Digitizer::FairTutorialDet2Digitizer(const char* name, const char* /*title*/)
   : FairTask(name, 0),
     fTutorialDetPoints(NULL),
+    fCustomData2(new std::vector<CustomClass>),
     fDigiPar(NULL)
 {
 }
@@ -110,6 +112,7 @@ InitStatus FairTutorialDet2Digitizer::Init()
     fTutorialDetPoints=static_cast<TClonesArray*>
                        (ioman->GetObject("TutorialDetPoint"));
 
+    fCustomData = ioman->InitObjectAs<std::vector<CustomClass> const*>("TutorialCustomData");
     if ( ! fTutorialDetPoints ) {
       LOG(ERROR) << "No TutorialDetPoints array!" << FairLogger::endl;
       LOG(ERROR) << "Task will be inactive" << FairLogger::endl;
@@ -123,6 +126,9 @@ InitStatus FairTutorialDet2Digitizer::Init()
     // now parameters are filled 
     fDigiPar->printparams();
 
+    // register data output of this task
+    Register();
+    
     return kSUCCESS;
 
   }
@@ -139,6 +145,14 @@ void FairTutorialDet2Digitizer::Exec(Option_t* /*option*/)
   LOG(INFO) <<" I am in FairTutorialDet2Digitizer::Exec" 
 	    << FairLogger::endl;
 
+  LOG(INFO) << " The custom data input vector has size" << fCustomData->size() << "\n"; 
+  for(auto& entry : *fCustomData) {
+    LOG(INFO) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
+    // process data and fill a structure here, which can be consumed by the next task
+    fCustomData2->emplace_back(entry.GetX()*2, entry.GetQ()*10);
+  }
+
+  
   /*
 
   fNHits = 0;
@@ -217,9 +231,9 @@ void FairTutorialDet2Digitizer::Finish()
 // ---- Register ------------------------------------------------------
 void FairTutorialDet2Digitizer::Register()
 {
-
-  //FairRootManager::Instance()->Register("TrdDigi","Trd Digi", fDigiCollection, kTRUE);
-
+  // testing to transfer a variable to another task via a memory branch
+  LOG(INFO) << "Digitizer::Register\n";
+  FairRootManager::Instance()->RegisterAny("InMemory1", fCustomData2, false);
 }
 // --------------------------------------------------------------------
 

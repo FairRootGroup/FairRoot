@@ -30,6 +30,7 @@
 #include "TRandom.h"                    // for TRandom, gRandom
 #include "TROOT.h"
 #include <list>                         // for _List_iterator, list, etc
+#include <typeinfo>
 using std::map;
 using std::set;
 
@@ -690,6 +691,52 @@ Bool_t   FairFileSource::ActivateObject(TObject** obj, const char* BrName) {
     }
 
     return kTRUE;
+}
+//_____________________________________________________________________________
+
+namespace {
+
+template<typename S>
+bool ActivateObjectAnyImpl(S* source, void **obj, const std::type_info& info, const char* brname) {
+  // we check if the types match at all
+  auto br = source->GetBranch(brname);
+  if(!br) {
+    // branch not found in source
+    return false;
+  }
+
+  // look up the TClass and resulting typeid stored in this branch
+  auto cl = TClass::GetClass(br->GetClassName());
+  if(!cl) {
+    // class not found
+    return false;
+  }
+
+  auto storedtype = cl->GetTypeInfo();
+
+  // check consistency of types
+  if(info.hash_code() != storedtype->hash_code()){
+    LOG(INFO) << "Trying to read from branch " << brname << " with wrong type " << info.name()
+              << " (expected: " << storedtype->name() << " )\n";
+    return false; 
+  }
+  source->SetBranchStatus(brname, 1);
+  // force to use the (void*) interface which is non-checking
+  source->SetBranchAddress(brname, (void*)obj);
+  return true;
+}
+
+}
+
+//_____________________________________________________________________________
+Bool_t  FairFileSource::ActivateObjectAny(void** obj, const std::type_info& info, const char* BrName) {
+    if ( fInTree ) {
+      return ActivateObjectAnyImpl(fInTree, obj, info, BrName);
+    }
+    if ( fInChain ) {
+      return ActivateObjectAnyImpl(fInChain, obj, info, BrName);
+    }
+    return kFALSE;
 }
 //_____________________________________________________________________________
 

@@ -98,6 +98,7 @@ public:
     //    virtual void     SetObjectName(const char* ObjName, const char* ObjType);
 
     virtual Bool_t   ActivateObject(TObject** obj, const char* BrName);
+    virtual Bool_t   ActivateObjectAny(void **, const std::type_info &, const char*);
 
     /**Set the status of the EvtHeader
      *@param Status:  True: The header was creatged in this session and has to be filled

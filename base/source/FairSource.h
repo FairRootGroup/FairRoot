@@ -37,6 +37,7 @@ class FairSource : public TObject
     virtual void Reset() = 0;
 
     virtual Bool_t   ActivateObject(TObject**, const char*)  { return kFALSE; }
+    virtual Bool_t   ActivateObjectAny(void **, const std::type_info &, const char*) { return kFALSE; }
 
     virtual Source_Type GetSourceType() = 0;
 
