@@ -32,6 +32,7 @@ set(SRCS
   FairTutorialDet2Point.cxx
   FairTutorialDet2DigiPar.cxx
   FairTutorialDet2Digitizer.cxx
+  FairTutorialDet2CustomTask.cxx
 )
 
 Set(HEADERS )

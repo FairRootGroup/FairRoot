@@ -53,7 +53,9 @@ void create_digis(){
 
     // add the task
     fRun->AddTask( digi );
-    
+    // add another task (to test reading data from in memory branches)
+    fRun->AddTask( new FairTutorialDet2CustomTask() );    
+
     fRun->Init();
 
     rtdb->getContainer("FairTutorialDet2DigiPar")->print();

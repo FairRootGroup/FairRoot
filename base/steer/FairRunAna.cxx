@@ -290,6 +290,7 @@ void FairRunAna::Init()
   TTree* outTree =new TTree(FairRootManager::GetTreeName(), "/cbmout", 99);
   fRootManager->TruncateBranchNames(outTree, "cbmout");
   fRootManager->SetOutTree(outTree);
+  fRootManager->CreatePersistentBranchesAny();
   fRootManager->WriteFolder();
   fRootManager->WriteFileHeader(fFileHeader);
 }

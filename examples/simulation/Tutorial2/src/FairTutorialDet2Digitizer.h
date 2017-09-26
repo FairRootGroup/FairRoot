@@ -19,6 +19,7 @@
 #include "FairTask.h"
 
 #include "TVector3.h"
+#include "FairTutorialDet2Point.h"
 
 class TClonesArray;
 
@@ -60,6 +61,9 @@ class FairTutorialDet2Digitizer : public FairTask
   private:
 
     TClonesArray* fTutorialDetPoints; //! Tutorial Det MC points
+    std::vector<CustomClass> const* fCustomData = nullptr; //!
+    std::vector<CustomClass>* fCustomData2 = nullptr; //!
+
     //    TClonesArray *fDigiCollection; //! TRD hits
     //TClonesArray *fListStack;         //Tracks
 

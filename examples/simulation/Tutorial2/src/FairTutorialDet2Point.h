@@ -46,9 +46,21 @@ class FairTutorialDet2Point : public FairMCPoint
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
 
-
     ClassDef(FairTutorialDet2Point,1)
+};
 
+// a custom class holding some data
+// mainly to demonstrate that we don't need TObject inheritance
+class CustomClass {
+public:
+  CustomClass() {}
+  CustomClass(double x, int q) : fX(x), fQ(q) {}
+  double GetX() const {return fX;}
+  int GetQ() const {return fQ;}
+private:
+  double fX = 0.; // x position
+  int    fQ = 0; // charge
+  ClassDefNV(CustomClass, 1);
 };
 
 #endif

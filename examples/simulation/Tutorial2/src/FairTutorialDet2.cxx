@@ -24,6 +24,10 @@
 
 #include "TClonesArray.h"
 #include "TVirtualMC.h"
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
+#include <cassert>
 
 FairTutorialDet2::FairTutorialDet2()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
@@ -34,7 +38,8 @@ FairTutorialDet2::FairTutorialDet2()
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fFairTutorialDet2PointCollection(new TClonesArray("FairTutorialDet2Point"))
+    fFairTutorialDet2PointCollection(new TClonesArray("FairTutorialDet2Point")),
+    fCustomData(new Det2PointContainer())
 {
 }
 
@@ -47,7 +52,8 @@ FairTutorialDet2::FairTutorialDet2(const char* name, Bool_t active)
     fTime(-1.),
     fLength(-1.),
     fELoss(-1),
-    fFairTutorialDet2PointCollection(new TClonesArray("FairTutorialDet2Point"))
+    fFairTutorialDet2PointCollection(new TClonesArray("FairTutorialDet2Point")),
+    fCustomData(new Det2PointContainer())
 {
 }
 
@@ -105,9 +111,7 @@ Bool_t  FairTutorialDet2::ProcessHits(FairVolume* vol)
 
 void FairTutorialDet2::EndOfEvent()
 {
-
-  fFairTutorialDet2PointCollection->Clear();
-
+  Reset();
 }
 
 
@@ -120,10 +124,11 @@ void FairTutorialDet2::Register()
       this collection will not be written to the file, it will exist
       only during the simulation.
   */
-
-  FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
-                                        fFairTutorialDet2PointCollection, kTRUE);
-
+  auto mgr = FairRootManager::Instance();
+  mgr->Register("TutorialDetPoint", "TutorialDet",
+                 fFairTutorialDet2PointCollection, kTRUE);
+  // example how to register any type T
+  mgr->RegisterAny("TutorialCustomData", fCustomData, kTRUE);
 }
 
 
@@ -136,6 +141,7 @@ TClonesArray* FairTutorialDet2::GetCollection(Int_t iColl) const
 void FairTutorialDet2::Reset()
 {
   fFairTutorialDet2PointCollection->Clear();
+  fCustomData->clear();
 }
 
 void FairTutorialDet2::ConstructGeometry()
@@ -186,6 +192,10 @@ FairTutorialDet2Point* FairTutorialDet2::AddHit(Int_t trackID, Int_t detID,
 {
   TClonesArray& clref = *fFairTutorialDet2PointCollection;
   Int_t size = clref.GetEntriesFast();
+
+  // fill this with some (meaningless) data
+  fCustomData->emplace_back(pos.X(), size);
+  
   return new(clref[size]) FairTutorialDet2Point(trackID, detID, pos, mom,
          time, length, eLoss);
 }

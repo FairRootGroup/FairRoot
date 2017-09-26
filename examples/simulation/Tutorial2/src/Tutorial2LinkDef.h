@@ -18,5 +18,8 @@
 #pragma link C++ class FairTutorialDet2Point+;
 #pragma link C++ class FairTutorialDet2DigiPar+;
 #pragma link C++ class FairTutorialDet2Digitizer+;
+#pragma link C++ class FairTutorialDet2CustomTask+;
+#pragma link C++ class CustomClass+;
+#pragma link C++ class std::vector<CustomClass>+;
 
 #endif
