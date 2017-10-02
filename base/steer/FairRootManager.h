@@ -92,7 +92,10 @@ class FairRootManager : public TObject
 
     /**Return a TList of TObjString of branch names available in this session*/
     TList*              GetBranchNameList() {return fBranchNameList;}
-    /** Return a pointer to the output Tree of type TTree */
+    /**Return the vector of branch names that were requested by tasks as input*/
+    const std::vector<std::string>& GetReqBranchNames() const {return fReqBrNames;}
+
+      /** Return a pointer to the output Tree of type TTree */
     TTree*              GetOutTree() {return fOutTree;}
     /** Return a pointer to the output File of type TFile */
     TFile*              GetOutFile() {return  fOutFile;}
@@ -142,6 +145,9 @@ class FairRootManager : public TObject
     Int_t             ReadNonTimeBasedEventFromBranches(Int_t i=0);
     /**Read the tree entry on one branch**/
     void              ReadBranchEvent(const char* BrName);
+    /**Read the tree entry on one branch for a specific entry**/
+    void              ReadBranchEvent(const char* BrName, Int_t entry);
+
     /**Read all entries from input tree(s) with time stamp from current time to dt (time in ns)*/
 
     Int_t             GetRunId();
@@ -332,6 +338,9 @@ class FairRootManager : public TObject
     Int_t                                fBranchSeqId;
     /**List of branch names as TObjString*/
     TList*                               fBranchNameList; //!
+    /**Vector of (not necessarily unique) branch names requested per GetObject / InitObjectAs */
+    std::vector<std::string>             fReqBrNames; //!
+    
     /**The branch ID for the special (required) MCTrack branch**/
     Int_t                                fMCTrackBranchId; //!
 
@@ -411,6 +420,7 @@ T FairRootManager::GetMemoryBranchAny(const char* brname) const {
 
 template<typename T>
 void FairRootManager::RegisterAny(const char* brname, T *& obj, bool persistence) {
+  AddBranchToList(brname);
   if (persistence) {
     fPersistentBranchesAny.push_back(brname);
   }
@@ -449,7 +459,10 @@ TPtr FairRootManager::InitObjectAs(const char* brname) {
   }
   // add into branch list
   AddMemoryBranchAny<T>(brname, addr);
-
+  // register as a **requested** branch
+  // (duplications are explicitely allowed)
+  fReqBrNames.emplace_back(brname);
+  
   // NOTE: ideally we would do proper resource management for addr and *addr
   // since the FairRootManager becomes owner of these pointers/instances; Unfortunately this
   // is quite a difficult task since we would have to store something like std::unique_ptr<T> in a member
