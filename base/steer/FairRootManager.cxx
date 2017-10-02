@@ -553,6 +553,19 @@ Int_t  FairRootManager::ReadEvent(Int_t i)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
+void FairRootManager::ReadBranchEvent(const char* BrName, Int_t entry)
+{
+  if ( !fSource) return;
+  fSource->Reset();
+  SetEntryNr(entry);
+
+  fSource->ReadBranchEvent(BrName, entry);
+  fSource->FillEventHeader(fEventHeader);
+  fCurrentTime = fEventHeader->GetEventTime();
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
 Int_t FairRootManager::GetRunId() 
 {
   if ( fSource ) {
@@ -605,6 +618,7 @@ Bool_t FairRootManager::ReadNextEvent(Double_t)
 //_____________________________________________________________________________
 TObject* FairRootManager::GetObject(const char* BrName)
 {
+  fReqBrNames.emplace_back(BrName);
   /**Get Data object by name*/
   TObject* Obj =NULL;
   LOG(DEBUG2) << " Try to find if the object "
