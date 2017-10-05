@@ -891,7 +891,7 @@ void FairFileSource::ReadBranchEvent(const char* BrName)
 //_____________________________________________________________________________
 void   FairFileSource::ReadBranchEvent(const char* BrName, Int_t Entry)
 {
-
+    fCurrentEntryNo = Entry;
     if ( fInTree ) {
         fInTree->FindBranch(BrName)->GetEntry(Entry);
         fEventTime = GetEventTime();
