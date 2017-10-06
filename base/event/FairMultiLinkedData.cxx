@@ -133,10 +133,10 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
   if (fPersistanceCheck == kFALSE ||
       link.GetIndex() < 0 ||
       ( link.GetType() != ioman->GetMCTrackBranchId() &&
-	ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0) ) {
+	  ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0) ) {
     InsertLink(link);
     if (fInsertHistory == kTRUE)
-    	InsertHistory(link);
+    	   InsertHistory(link);
     return;
   }
 
@@ -203,37 +203,48 @@ void FairMultiLinkedData::InsertHistory(FairLink link)
         FairMultiLinkedData* pointerToLinks = 0;
 
         if (fVerbose > 1)
-        	std::cout << "FairMultiLinkedData::InsertHistory for Link " << link << " Type: " << ioman->GetBranchName(link.GetType()) << std::endl;
+        	    std::cout << "FairMultiLinkedData::InsertHistory for Link " << link << " Type: " << ioman->GetBranchName(link.GetType()) << std::endl;
 
         if (link.GetType() < 0)
-                return;
+            return;
         if (link.GetType() == ioman->GetMCTrackBranchId())
-                return;
+            return;
         if(ioman->GetBranchName(link.GetType()).Contains("."))
-        	return;
+        		return;
         if(link.GetEntry() != -1 && link.GetEntry() != ioman->GetEntryNr())
-        	return;
+        		return;
 
         if (link.GetIndex() < 0) { //if index is -1 then this is not a TClonesArray so only the Object is returned
-                FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(ioman->GetObject(ioman->GetBranchName(link.GetType())));
-                pointerToLinks = interface->GetPointerToLinks();
+			TObject* myObject = ioman->GetObject(ioman->GetBranchName(link.GetType()));
+			if (myObject->InheritsFrom("FairMultiLinkedData_Interface")){
+				FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(myObject);
+				pointerToLinks = interface->GetPointerToLinks();
+			} else {
+				std::cout << "FairMultiLinkedData::InsertHistory Link to wrong Class: " << ioman->GetBranchName(link.GetType()) << std::endl;
+				return;
+			}
         } else {
-                TClonesArray* dataArray = static_cast<TClonesArray*>( ioman->GetObject(ioman->GetBranchName(link.GetType())));
-                if (dataArray != 0 && link.GetIndex() < dataArray->GetEntriesFast()) {
-                        FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(dataArray->At(link.GetIndex()));
-                        pointerToLinks = interface->GetPointerToLinks();
-
-                }
+			TClonesArray* dataArray = static_cast<TClonesArray*>( ioman->GetObject(ioman->GetBranchName(link.GetType())));
+			if (dataArray != 0 && link.GetIndex() < dataArray->GetEntriesFast()) {
+				TObject* myObject = dataArray->At(link.GetIndex());
+				if (myObject->InheritsFrom("FairMultiLinkedData_Interface")){
+					FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(myObject);
+					pointerToLinks = interface->GetPointerToLinks();
+				}
+				else  {
+					std::cout << "FairMultiLinkedData::InsertHistory Link to wrong Class: " << ioman->GetBranchName(link.GetType()) << std::endl;
+					return;
+				}
+			}
         }
         if (pointerToLinks != 0){
-                std::set<FairLink> linkSet = pointerToLinks->GetLinks();
-                for (std::set<FairLink>::const_iterator iter = linkSet.begin(); iter!= linkSet.end(); iter++){
-                	if (fVerbose > 1)
-                		std::cout << "FairMultiLinkedData::InsertHistory inserting " << *iter << std::endl;
-                    InsertLink(*iter);
-                }
+			std::set<FairLink> linkSet = pointerToLinks->GetLinks();
+			for (std::set<FairLink>::const_iterator iter = linkSet.begin(); iter!= linkSet.end(); iter++){
+				if (fVerbose > 1)
+					std::cout << "FairMultiLinkedData::InsertHistory inserting " << *iter << std::endl;
+				InsertLink(*iter);
+			}
         }
-
 }
 
 Bool_t FairMultiLinkedData::IsLinkInList(Int_t type, Int_t index)
