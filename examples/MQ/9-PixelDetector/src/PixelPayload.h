@@ -17,10 +17,6 @@
 
 #include <string>
 
-#if defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#endif
 namespace PixelPayload
 {
     class EventHeader
@@ -66,9 +62,6 @@ namespace PixelPayload
         double fAYErr;
     };
 }
-#if defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic pop
-#endif
 
 #define BIGBUFFERSIZE 1000000
 

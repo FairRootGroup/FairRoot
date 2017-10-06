@@ -35,11 +35,6 @@ class TTree;
  * The method TimeOut is used to break the processing if for example always the same data is requested.
  */
 
-#if defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#endif
-
 class BinaryFunctor : public std::binary_function<FairTimeStamp* ,double, bool>
 {
   public :
@@ -51,10 +46,6 @@ class BinaryFunctor : public std::binary_function<FairTimeStamp* ,double, bool>
     virtual ~BinaryFunctor() {};
 
 };
-
-#if defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic pop
-#endif
 
 /**
  * \class StopTime
