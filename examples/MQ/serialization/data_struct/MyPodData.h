@@ -23,11 +23,6 @@
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
 
-#if defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#endif
-
 namespace MyPodData
 {
 
@@ -97,10 +92,6 @@ namespace MyPodData
         friend class boost::serialization::access;
     };
 }
-
-#if defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic pop
-#endif
 
 #endif	/* MYPODDATA_H */
 
