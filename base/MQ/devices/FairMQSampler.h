@@ -194,9 +194,10 @@ class FairMQSampler : public FairMQDevice
         for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
         {
             FairMQMessagePtr ack(NewMessage());
-            Receive(ack, fAckChannelName);
-
-            ++numAcks;
+            if (Receive(ack, fAckChannelName) >= 0)
+            {
+                ++numAcks;
+            }
 
             if (!CheckCurrentState(RUNNING))
             {
