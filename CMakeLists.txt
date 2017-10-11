@@ -150,7 +150,7 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
-# FairRoot only supports ROOT6, so check which version is available 
+# FairRoot only supports ROOT6, so check which version is available
 find_package(ROOT 6.00.00 REQUIRED)
 find_package(Pythia6)
 find_package(Pythia8)
@@ -229,7 +229,8 @@ find_package(CUDA)
 find_package(IWYU)
 find_package(ZeroMQ 4.1.3)
 find_package(nanomsg)
-find_package(Protobuf)
+#find_package(Protobuf)
+find_package(Protobuf REQUIRED)
 find_package(Msgpack)
 find_package(FlatBuffers)
 find_package(DDS)
