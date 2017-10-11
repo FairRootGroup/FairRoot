@@ -18,11 +18,11 @@ void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
         fOutput->Delete();
         std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
         std::istringstream iss(msgStr);
-        TPayloadIn InputArchive(iss);
+        TPayloadIn inputArchive(iss);
 
         try
         {
-            InputArchive >> fHitVector;
+            inputArchive >> fHitVector;
         }
         catch (boost::archive::archive_exception& e)
         {

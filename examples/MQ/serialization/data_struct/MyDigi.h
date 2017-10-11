@@ -18,15 +18,13 @@
 
 #include "FairTimeStamp.h" // for FairTimeStamp
 
-#include "Riosfwd.h" // for ostream
+#include <iosfwd>    // for ostream
 #include "Rtypes.h"  // for Int_t, etc
 
 #include <iostream> // for operator<<, basic_ostream, etc
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 class MyDigi : public FairTimeStamp
 {
@@ -130,10 +128,7 @@ class MyDigi : public FairTimeStamp
     }
 
   private:
-#ifndef __CINT__ // for BOOST serialization
     friend class boost::serialization::access;
-
-#endif // for BOOST serialization
 
     Int_t fX;
     Int_t fY;

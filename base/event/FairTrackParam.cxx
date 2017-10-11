@@ -14,7 +14,7 @@
 
 #include "FairLogger.h"
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TMath.h"                      // for Sqrt
 #include "TMathBase.h"                  // for Abs
 #include "TMatrixTSym.h"                // for TMatrixTSym

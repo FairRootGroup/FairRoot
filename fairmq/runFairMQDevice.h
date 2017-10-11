@@ -1,36 +1,15 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
  *              This software is distributed under the terms of the             *
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#include <fairmq/DeviceRunner.h>
 #include <boost/program_options.hpp>
-
-#include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
-#include "FairMQDevice.h"
-#include "runSimpleMQStateMachine.h"
-
-template <typename R>
-class GenericFairMQDevice : public FairMQDevice
-{
-  public:
-    GenericFairMQDevice(R func) : r(func) {}
-
-  protected:
-    virtual bool ConditionalRun() { return r(*static_cast<FairMQDevice*>(this)); }
-
-  private:
-    R r;
-};
-
-template <typename R>
-FairMQDevice* makeDeviceWithConditionalRun(R r)
-{
-    return new GenericFairMQDevice<R>(r);
-}
+#include <memory>
+#include <string>
 
 using FairMQDevicePtr = FairMQDevice*;
 
@@ -40,30 +19,49 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config);
 // to be implemented by the user to add custom command line options (or just with empty body)
 void addCustomOptions(boost::program_options::options_description&);
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
+    using namespace fair::mq;
+    using namespace fair::mq::hooks;
+
     try
     {
-        boost::program_options::options_description customOptions("Custom options");
-        addCustomOptions(customOptions);
+        fair::mq::DeviceRunner runner{argc, argv};
 
-        FairMQProgOptions config;
-        config.AddToCmdLineOptions(customOptions);
-        config.ParseAll(argc, argv);
+        // runner.AddHook<LoadPlugins>([](DeviceRunner& r){
+        //     // for example:
+        //     r.fPluginManager->SetSearchPaths({"/lib", "/lib/plugins"});
+        //     r.fPluginManager->LoadPlugin("asdf");
+        // });
 
-        std::unique_ptr<FairMQDevice> device(getDevice(config));
-        int result = runStateMachine(*device, config);
+        runner.AddHook<SetCustomCmdLineOptions>([](DeviceRunner& r){
+            boost::program_options::options_description customOptions("Custom options");
+            addCustomOptions(customOptions);
+            r.fConfig.AddToCmdLineOptions(customOptions);
+        });
 
-        if (result > 0)
-        {
-            return 1;
-        }
+        // runner.AddHook<ModifyRawCmdLineArgs>([](DeviceRunner& r){
+        //     // for example:
+        //     r.fRawCmdLineArgs.push_back("--blubb");
+        // });
+
+        runner.AddHook<InstantiateDevice>([](DeviceRunner& r){
+            r.fDevice = std::shared_ptr<FairMQDevice>{getDevice(r.fConfig)};
+        });
+
+        return runner.Run();
+
+        // Run with builtin catch all exception handler, just:
+        // return runner.RunWithExceptionHandlers();
     }
     catch (std::exception& e)
     {
         LOG(ERROR) << "Unhandled exception reached the top of main: " << e.what() << ", application will now exit";
         return 1;
     }
-
-    return 0;
+    catch (...)
+    {
+        LOG(ERROR) << "Non-exception instance being thrown. Please make sure you use std::runtime_exception() instead. Application will now exit.";
+        return 1;
+    }
 }

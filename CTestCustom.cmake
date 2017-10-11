@@ -36,11 +36,6 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "ignoring return value of 'char* fgets(char*, int, FILE*)'"
         "ignoring return value of 'char* fscanf(char*, int, FILE*)'"
 
-        # boost warnings related to -Weffc++ are now 
-        # switched off in the code using preprocessor statements
-        # which changes the compiler flags fro the problematic
-        # part of the code
-
         # filter warnings from generated files
         "FairTestDetectorPayloadDigi_generated.h"
         "FairTestDetectorPayloadHit_generated.h"

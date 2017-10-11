@@ -1,46 +1,45 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/**
- * FairMQTransportFactoryNN.h
- *
- * @since 2014-01-20
- * @author: A. Rybalchenko
- */
 
 #ifndef FAIRMQTRANSPORTFACTORYNN_H_
 #define FAIRMQTRANSPORTFACTORYNN_H_
-
-#include <vector>
-#include <string>
 
 #include "FairMQTransportFactory.h"
 #include "FairMQMessageNN.h"
 #include "FairMQSocketNN.h"
 #include "FairMQPollerNN.h"
+#include "FairMQRegionNN.h"
+#include <options/FairMQProgOptions.h>
+
+#include <vector>
+#include <string>
 
 class FairMQTransportFactoryNN : public FairMQTransportFactory
 {
   public:
-    FairMQTransportFactoryNN();
+    FairMQTransportFactoryNN(const std::string& id = "", const FairMQProgOptions* config = nullptr);
+    ~FairMQTransportFactoryNN() override;
 
-    virtual FairMQMessagePtr CreateMessage() const;
-    virtual FairMQMessagePtr CreateMessage(const size_t size) const;
-    virtual FairMQMessagePtr CreateMessage(void* data, const size_t size, fairmq_free_fn* ffn, void* hint = NULL) const;
+    FairMQMessagePtr CreateMessage() const override;
+    FairMQMessagePtr CreateMessage(const size_t size) const override;
+    FairMQMessagePtr CreateMessage(void* data, const size_t size, fairmq_free_fn* ffn, void* hint = nullptr) const override;
+    FairMQMessagePtr CreateMessage(FairMQRegionPtr& region, void* data, const size_t size) const override;
 
-    virtual FairMQSocketPtr CreateSocket(const std::string& type, const std::string& name, const int numIoThreads, const std::string& id = "") const;
+    FairMQSocketPtr CreateSocket(const std::string& type, const std::string& name) const override;
 
-    virtual FairMQPollerPtr CreatePoller(const std::vector<FairMQChannel>& channels) const;
-    virtual FairMQPollerPtr CreatePoller(const std::unordered_map<std::string, std::vector<FairMQChannel>>& channelsMap, const std::vector<std::string>& channelList) const;
-    virtual FairMQPollerPtr CreatePoller(const FairMQSocket& cmdSocket, const FairMQSocket& dataSocket) const;
+    FairMQPollerPtr CreatePoller(const std::vector<FairMQChannel>& channels) const override;
+    FairMQPollerPtr CreatePoller(const std::vector<const FairMQChannel*>& channels) const override;
+    FairMQPollerPtr CreatePoller(const std::unordered_map<std::string, std::vector<FairMQChannel>>& channelsMap, const std::vector<std::string>& channelList) const override;
+    FairMQPollerPtr CreatePoller(const FairMQSocket& cmdSocket, const FairMQSocket& dataSocket) const override;
 
-    virtual FairMQ::Transport GetType() const;
+    FairMQRegionPtr CreateRegion(const size_t size) const override;
 
-    virtual ~FairMQTransportFactoryNN() {};
+    FairMQ::Transport GetType() const override;
 
   private:
     static FairMQ::Transport fTransportType;

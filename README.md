@@ -1,8 +1,8 @@
-## The FairRoot framework 
-A simulation, reconstruction and analysis framework that is based on the ROOT system. 
+## The FairRoot framework
+A simulation, reconstruction and analysis framework that is based on the ROOT system.
 The user can create simulated data and/or perform analysis with the same framework.  Geant3 and Geant4 transport engines are supported, however the user code that creates simulated data do not depend on a particular monte carlo engine. The framework delivers base classes which enable the users to  construct their detectors and /or analysis tasks in a simple way, it also delivers some general functionality like track visualization. Moreover an interface for reading magnetic field maps is also implemented.
 
-## License 
+## License
 FairRoot  is distributed under the terms of the GNU Lesser General Public Licence version 3 (LGPLv3).
 
 ## Release information
@@ -41,7 +41,7 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
 
 1. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
 
-    we use here "fair_install" as a directory name, you can use what you want! 
+    we use here "fair_install" as a directory name, you can use what you want!
     ```bash
     mkdir ~/fair_install
     cd ~/fair_install
@@ -81,7 +81,7 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
     make test
     ```
 
-3. Install the template: 
+3. Install the template:
 
    you need to copy the  [project template] (https://github.com/FairRootGroup/FairRoot/tree/dev/templates/project_template) to you own directory  
 
@@ -93,8 +93,8 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
     cd ~/fair_install
     cp  -rf  FairRoot/templates/project_template   MyTest
     cd MyTest
-    ./rename.sh  MyExperiment  PREFIX  MyDetector 
-    
+    ./rename.sh  MyExperiment  PREFIX  MyDetector
+
     # Please call the script with three parameters. The first one is the
     # name of the project. The second one is the prefix in front of
     # the class names. and some directories. So this second parameter
@@ -108,7 +108,7 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
     cd ..
     mkdir build
     cd build
-    cmake ../MyExperiment 
+    cmake ../MyExperiment
       make
     . config.sh    [or source config.csh]
     ```
@@ -129,27 +129,27 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
 The data base interface is now in a separate repository, to use it you have to download it first:
 
 ```bash
- cd FairRoot 
- mkdir dbase 
- cd dbase 
+ cd FairRoot
+ mkdir dbase
+ cd dbase
  git clone https://github.com/denisbertini/dbase .
 
 ```
 
-The interface to data bases can be switched on by setting the the cmake flage -DWITH_DBASE=ON, 
-this will also build the tutorials 5 and 6.
-Warning: This option will change the inheritance tree of the parameter objects.
+The interface to data bases can be switched on by setting the the cmake flage -DWITH_DBASE=ON
+
+__Warning__: This option will change the inheritance tree of the parameter objects.
 
 
-## Modular (custom) installation of FairRoot: 
+## Modular (custom) installation of FairRoot:
  (inrtoduced by Ivana Hrivnacova)
 
 Added option FAIRROOT_MODULAR_BUILD (default is off)
-- if the option is activated the environment variables 
+- if the option is activated the environment variables
 SIMPATH and FAIRROOTPATH need not to be set;
 
 
-The external packages are searched in these patch:
+The external packages are searched in these paths:
 - on the system path (if their cmake configuration is available)
 - in PackageXYZ_DIR              
 - in AlFa_DIR  (cmake replacement for SIMPATH, introduced to be sure
@@ -157,9 +157,9 @@ that we do not mix build via env and via CMake together)
 
 The PackageXYZ_DIR has precedence to  AlFa_DIR, however one should be
 careful with this use and prefer not to have the same package installation
-also in AlFa_DIR 
+also in AlFa_DIR
 
-# Building with FAIRROOT_MODULAR_BUILD 
+# Building with FAIRROOT_MODULAR_BUILD
 - should be preceded by sourcing thisroot.sh, geant4.sh
 - requires new versions of VMC packages built with CMake
 and installed either in AlFa_DIR or available on path
@@ -170,11 +170,11 @@ and installed either in AlFa_DIR or available on path
   -DFAIRROOT_MODULAR_BUILD=ON \
   -DBOOST_ROOT="Path_to_boost_installation" \
   -DAlFa_DIR="Path_to_fairsoft_or_alfa_installation" \
-  ../FairRoot 
+  ../FairRoot
 ```
 
 ### Generating Doxygen documentation
 
 If the flage -DBUILD_DOXYGEN=ON is set when calling cmake, the doxygen documentation will be generated when calling make.  The generated html files can then be found in "build/doxygen/doc/html"
 
-Doxygen documantation is also available online [here](http://Fairrootgroup.github.io/FairRoot/) 
+Doxygen documantation is also available online [here](http://Fairrootgroup.github.io/FairRoot/)

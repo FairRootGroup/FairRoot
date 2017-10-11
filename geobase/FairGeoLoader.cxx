@@ -17,7 +17,7 @@
 #include "FairGeoInterface.h"           // for FairGeoInterface
 #include "FairGeoRootBuilder.h"         // for FairGeoRootBuilder
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TGeoManager.h"                // for TGeoManager
 
 #include <string.h>                     // for strncmp

@@ -1,24 +1,21 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2017 GSI Helmholtzzentrum fuer Schwerionenforschung Gmb   *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/**
- * FairMQTransportFactoryNN.cxx
- *
- * @since 2014-01-20
- * @author: A. Rybalchenko
- */
 
 #include "FairMQTransportFactoryNN.h"
+
+#include <nanomsg/nn.h>
 
 using namespace std;
 
 FairMQ::Transport FairMQTransportFactoryNN::fTransportType = FairMQ::Transport::NN;
 
-FairMQTransportFactoryNN::FairMQTransportFactoryNN()
+FairMQTransportFactoryNN::FairMQTransportFactoryNN(const string& id, const FairMQProgOptions* /*config*/)
+    : FairMQTransportFactory(id)
 {
     LOG(DEBUG) << "Transport: Using nanomsg library";
 }
@@ -38,12 +35,22 @@ FairMQMessagePtr FairMQTransportFactoryNN::CreateMessage(void* data, const size_
     return unique_ptr<FairMQMessage>(new FairMQMessageNN(data, size, ffn, hint));
 }
 
-FairMQSocketPtr FairMQTransportFactoryNN::CreateSocket(const string& type, const string& name, const int numIoThreads, const string& id /*= ""*/) const
+FairMQMessagePtr FairMQTransportFactoryNN::CreateMessage(FairMQRegionPtr& region, void* data, const size_t size) const
 {
-    return unique_ptr<FairMQSocket>(new FairMQSocketNN(type, name, numIoThreads, id));
+    return unique_ptr<FairMQMessage>(new FairMQMessageNN(region, data, size));
+}
+
+FairMQSocketPtr FairMQTransportFactoryNN::CreateSocket(const string& type, const string& name) const
+{
+    return unique_ptr<FairMQSocket>(new FairMQSocketNN(type, name, GetId()));
 }
 
 FairMQPollerPtr FairMQTransportFactoryNN::CreatePoller(const vector<FairMQChannel>& channels) const
+{
+    return unique_ptr<FairMQPoller>(new FairMQPollerNN(channels));
+}
+
+FairMQPollerPtr FairMQTransportFactoryNN::CreatePoller(const std::vector<const FairMQChannel*>& channels) const
 {
     return unique_ptr<FairMQPoller>(new FairMQPollerNN(channels));
 }
@@ -58,7 +65,18 @@ FairMQPollerPtr FairMQTransportFactoryNN::CreatePoller(const FairMQSocket& cmdSo
     return unique_ptr<FairMQPoller>(new FairMQPollerNN(cmdSocket, dataSocket));
 }
 
+FairMQRegionPtr FairMQTransportFactoryNN::CreateRegion(const size_t size) const
+{
+    return unique_ptr<FairMQRegion>(new FairMQRegionNN(size));
+}
+
 FairMQ::Transport FairMQTransportFactoryNN::GetType() const
 {
     return fTransportType;
+}
+
+FairMQTransportFactoryNN::~FairMQTransportFactoryNN()
+{
+    // nn_term();
+    // see https://www.freelists.org/post/nanomsg/Getting-rid-of-nn-init-and-nn-term,8
 }

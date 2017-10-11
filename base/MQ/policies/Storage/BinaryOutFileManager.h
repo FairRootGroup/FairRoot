@@ -36,21 +36,16 @@
 
 #define CHECK_FUN(Policy, Member) enum { Policy##Member = sizeof(&Policy::Member) > 0 };
 #define GET_POLICY_ID(Policy) #Policy
-//has_BoostSerialization<T, void(BoostArchiveType&, const unsigned int)>::value
-//typedef BoostDataSaver<>
 
-typedef boost::archive::binary_oarchive BinArchive;
+using BinArchive = boost::archive::binary_oarchive;
 
-template <typename T,typename BoostArchive>
-    using BoostSerializable=baseMQ::tools::resolve::has_BoostSerialization<T, void(BoostArchive&, const unsigned int)>;
+template <typename T, typename BoostArchive>
+using BoostSerializable=baseMQ::tools::resolve::has_BoostSerialization<T, void(BoostArchive&, const unsigned int)>;
 
-template <typename TPayload, typename TStoragePolicy=TriviallyCopyableDataSaver<TPayload> >
+template <typename TPayload, typename TStoragePolicy = TriviallyCopyableDataSaver<TPayload>>
 class BinaryOutFileManager : public TStoragePolicy
 {
-    //CHECK_FUN(TStoragePolicy, Write)
   public:
-    //enum { kPolicyMember = sizeof(&TStoragePolicy::Write) > 0 };
-
     using TStoragePolicy::Write;
     using TStoragePolicy::Read;
 
@@ -68,32 +63,32 @@ class BinaryOutFileManager : public TStoragePolicy
 
     void SetFileProperties(const std::string &filename)
     {
-        fFileName=filename;
+        fFileName = filename;
     }
 
     void AddToFile(FairMQMessage* msg)
     {
-        Write(fOutfile,msg);
+        TStoragePolicy::Write(fOutfile, msg);
     }
 
-    void AddToFile(TPayload* ObjArr, long size)
+    void AddToFile(TPayload* objArr, long size)
     {
-        AppendObjArray<TPayload>(fOutfile,ObjArr,size);
+        AppendObjArray<TPayload>(fOutfile, objArr, size);
     }
 
     template<typename T>
-    void AppendObjArray(std::ofstream& outfile, T* ObjArr, long size)
+    void AppendObjArray(std::ofstream& outfile, T* objArr, long size)
     {
-        Write(outfile,ObjArr,size);
+        TStoragePolicy::Write(outfile, objArr, size);
     }
 
     std::vector<std::vector<TPayload> > GetAllObj(const std::string &filename)
     {
         std::ifstream infile;
         infile = std::ifstream(filename);
-        std::vector<std::vector<TPayload> > vect=Read(infile);
+        std::vector<std::vector<TPayload>> vec = TStoragePolicy::Read(infile);
 
-        return vect;
+        return vec;
     }
 
     virtual void InitOutputFile()

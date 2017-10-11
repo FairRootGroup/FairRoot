@@ -15,7 +15,7 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairLogger.h"
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 #include "TEveManager.h"                // for TEveManager, gEve
 #include "TEvePathMark.h"               // for TEvePathMark

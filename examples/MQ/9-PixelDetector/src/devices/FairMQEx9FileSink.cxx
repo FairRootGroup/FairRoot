@@ -119,20 +119,26 @@ bool FairMQEx9FileSink::StoreData(FairMQParts& parts, int /*index*/)
       Ex9TMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
       tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
       for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
-	{
-	  if ( tempObjects[ipart]->GetName() == fBranchNames[ibr] ) 
-	    {
-	      fOutputObjects[ibr] = tempObjects[ipart];
-	      fTree->SetBranchAddress(fBranchNames[ibr].c_str(),&fOutputObjects[ibr]);
-	    }
-	}
+        {
+          if ( tempObjects[ipart]->GetName() == fBranchNames[ibr] )
+            {
+              fOutputObjects[ibr] = tempObjects[ipart];
+              fTree->SetBranchAddress(fBranchNames[ibr].c_str(),&fOutputObjects[ibr]);
+            }
+        }
     }
   fTree->Fill();
   
-  if ( fAckChannelName != "" ) {
-    unique_ptr<FairMQMessage> msg(NewMessage());
-    Send(msg, fAckChannelName);
-  }
+  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ )
+    {
+      delete tempObjects[ipart];
+    }
+  
+  if ( fAckChannelName != "" )
+    {
+      unique_ptr<FairMQMessage> msg(NewMessage());
+      Send(msg, fAckChannelName);
+    }
   return true;
 }
 

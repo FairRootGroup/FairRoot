@@ -59,6 +59,7 @@ void FairMQEx9TaskProcessor<T>::Init()
   fParamChannelName  = fConfig->GetValue<std::string>("par-channel");
   
   fFairTask = new T();
+  fFairTask->SetStreamProcessing(kTRUE);
   fGeoPar = new FairGeoParSet("FairGeoParSet");
   fParCList = new TList();
   fParCList->Add(fGeoPar);
@@ -132,6 +133,12 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 				[](void* /*data*/, void* hint) { delete (TMessage*)hint;},
 				messageTCA[iobj]));
   }
+
+  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
+    {
+      delete tempObjects[ipart];
+    }
+  
   Send(partsOut, fOutputChannelName);
   fSentMsgs++;
 

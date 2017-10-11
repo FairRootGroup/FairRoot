@@ -10,7 +10,7 @@
 
 #include "FairGeoIo.h"                  // for FairGeoIo
 
-#include "Riosfwd.h"                    // for fstream
+#include <iosfwd>                       // for fstream
 #include "Rtypes.h"                     // for Bool_t, etc
 #include "TString.h"                    // for TString
 

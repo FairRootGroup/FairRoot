@@ -13,10 +13,8 @@
 #include "Rtypes.h"                     // for Double_t, Int_t, etc
 #include "TVector3.h"                   // for TVector3
 
-#ifndef __CINT__
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
-#endif //__CINT__
 
 class FairTrackPar : public TObject
 {

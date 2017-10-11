@@ -62,35 +62,35 @@ struct SerializerEx2
 
 
 namespace boost {
-    namespace serialization {
-        template<class Archive>
-        void serialize(Archive & ar, Ex2Header& header, const unsigned int /*version*/)
-        {
-            ar & header.EventNumber;
-            ar & header.DetectorId;
-        }
-    } // namespace serialization
+namespace serialization {
+
+template<class Archive>
+void serialize(Archive& ar, Ex2Header& header, const unsigned int /*version*/)
+{
+    ar& header.EventNumber;
+    ar& header.DetectorId;
+}
+
+} // namespace serialization
 } // namespace boost
 
 
 
 struct SerializerEx2Boost
 {
-    typedef boost::archive::binary_iarchive         BoostBinArchIn;
-    typedef boost::archive::binary_oarchive         BoostBinArchOut;
+    using BoostBinArchIn = boost::archive::binary_iarchive;
+    using BoostBinArchOut = boost::archive::binary_oarchive;
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Header
     void Serialize(FairMQMessage& msg, const Ex2Header& header)
     {
         std::ostringstream buffer;
         BoostBinArchOut OutputArchive(buffer);
         OutputArchive << header;
         std::string* strMsg = new std::string(buffer.str());
-        msg.Rebuild(const_cast<char*>(strMsg->c_str()), strMsg->length(), [](void* /*data*/, void* hint)
-                    {
-                        delete static_cast<std::string*>(hint);
-                    }, strMsg);
+        msg.Rebuild(const_cast<char*>(strMsg->c_str()),
+                    strMsg->length(),
+                    [](void* /*data*/, void* hint) { delete static_cast<std::string*>(hint); },
+                    strMsg);
     }
 
     void Deserialize(FairMQMessage& msg, Ex2Header& header)
@@ -134,7 +134,7 @@ struct SerializerEx2Boost
             }
             if (input->IsEmpty())
             {
-                LOG(DEBUG) << "BoostDeserializer::deserialize_impl(const std::unique_ptr<FairMQMessage>& msg, TClonesArray* input): No Output array!";
+                LOG(DEBUG) << "BoostDeserializer::Deserialize(FairMQMessage& msg, TClonesArray* input): No Output array!";
             }
         }
     }

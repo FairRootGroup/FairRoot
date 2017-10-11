@@ -1,9 +1,5 @@
-
-
-#ifndef BASICSERIALIZEREXAMPLE_H
-#define BASICSERIALIZEREXAMPLE_H
-
-#include <memory>
+#ifndef SERIALIZEREXAMPLE_H
+#define SERIALIZEREXAMPLE_H
 
 #include "TMessage.h"
 #include "TClonesArray.h"
@@ -46,4 +42,4 @@ struct MyDeserializer
     }
 };
 
-#endif
+#endif // SERIALIZEREXAMPLE_H

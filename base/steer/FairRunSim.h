@@ -164,11 +164,7 @@ class FairRunSim : public FairRun
     Bool_t                 fUseBeamMom; //!                        /** flag for use Beam Energy  */
     FairPrimaryGenerator*  fGen; //!                               /** Primary Event Generator */
     FairMCEventHeader*     fMCEvHead; //!                          /** MC Event Header */
-#if !defined(__CINT__)
     static TMCThreadLocal FairRunSim*  fginstance;//!              /** Singleton Instance */
-#else
-    static                FairRunSim*  fginstance;//!              /** Singleton Instance */
-#endif
     FairField*             fField;                                 /** Magnetic Field */
     const char*            fMapName; //!                           /** Input file name map*/
     TObjArray*             fIons; //!                              /** Array of user defined ions */

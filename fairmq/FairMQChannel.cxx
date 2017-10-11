@@ -45,6 +45,8 @@ FairMQChannel::FairMQChannel()
     , fNoBlockFlag(0)
     , fSndMoreFlag(0)
     , fMultipart(false)
+    , fModified(true)
+    , fReset(false)
 {
 }
 
@@ -68,6 +70,33 @@ FairMQChannel::FairMQChannel(const string& type, const string& method, const str
     , fNoBlockFlag(0)
     , fSndMoreFlag(0)
     , fMultipart(false)
+    , fModified(true)
+    , fReset(false)
+{
+}
+
+FairMQChannel::FairMQChannel(const string& name, const string& type, std::shared_ptr<FairMQTransportFactory> factory)
+    : fSocket(factory->CreateSocket(type, name))
+    , fType(type)
+    , fMethod("unspecified")
+    , fAddress("unspecified")
+    , fTransport("default") // TODO refactor, either use string representation or enum type
+    , fSndBufSize(1000)
+    , fRcvBufSize(1000)
+    , fSndKernelSize(0)
+    , fRcvKernelSize(0)
+    , fRateLogging(1)
+    , fName(name)
+    , fIsValid(false)
+    , fPoller(nullptr)
+    , fChannelCmdSocket(nullptr)
+    , fTransportType(factory->GetType())
+    , fTransportFactory(factory)
+    , fNoBlockFlag(0)
+    , fSndMoreFlag(0)
+    , fMultipart(false)
+    , fModified(true)
+    , fReset(false)
 {
 }
 
@@ -91,6 +120,8 @@ FairMQChannel::FairMQChannel(const FairMQChannel& chan)
     , fNoBlockFlag(chan.fNoBlockFlag)
     , fSndMoreFlag(chan.fSndMoreFlag)
     , fMultipart(chan.fMultipart)
+    , fModified(chan.fModified)
+    , fReset(false)
 {}
 
 FairMQChannel& FairMQChannel::operator=(const FairMQChannel& chan)
@@ -131,7 +162,16 @@ string FairMQChannel::GetChannelName() const
 string FairMQChannel::GetChannelPrefix() const
 {
     string prefix = fName;
-    return prefix.erase(fName.rfind("["));
+    prefix = prefix.erase(fName.rfind("["));
+    return prefix;
+}
+
+string FairMQChannel::GetChannelIndex() const
+{
+    string indexStr = fName;
+    indexStr.erase(indexStr.rfind("]"));
+    indexStr.erase(0, indexStr.rfind("[") + 1);
+    return indexStr;
 }
 
 string FairMQChannel::GetType() const
@@ -267,6 +307,7 @@ void FairMQChannel::UpdateType(const string& type)
         unique_lock<mutex> lock(fChannelMutex);
         fIsValid = false;
         fType = type;
+        fModified = true;
     }
     catch (exception& e)
     {
@@ -282,6 +323,7 @@ void FairMQChannel::UpdateMethod(const string& method)
         unique_lock<mutex> lock(fChannelMutex);
         fIsValid = false;
         fMethod = method;
+        fModified = true;
     }
     catch (exception& e)
     {
@@ -297,6 +339,7 @@ void FairMQChannel::UpdateAddress(const string& address)
         unique_lock<mutex> lock(fChannelMutex);
         fIsValid = false;
         fAddress = address;
+        fModified = true;
     }
     catch (exception& e)
     {
@@ -312,6 +355,7 @@ void FairMQChannel::UpdateTransport(const string& transport)
         unique_lock<mutex> lock(fChannelMutex);
         fIsValid = false;
         fTransport = transport;
+        fModified = true;
     }
     catch (exception& e)
     {
@@ -327,6 +371,7 @@ void FairMQChannel::UpdateSndBufSize(const int sndBufSize)
         unique_lock<mutex> lock(fChannelMutex);
         fIsValid = false;
         fSndBufSize = sndBufSize;
+        fModified = true;
     }
     catch (exception& e)
     {
@@ -342,6 +387,7 @@ void FairMQChannel::UpdateRcvBufSize(const int rcvBufSize)
         unique_lock<mutex> lock(fChannelMutex);
         fIsValid = false;
         fRcvBufSize = rcvBufSize;
+        fModified = true;
     }
     catch (exception& e)
     {
@@ -357,6 +403,7 @@ void FairMQChannel::UpdateSndKernelSize(const int sndKernelSize)
         unique_lock<mutex> lock(fChannelMutex);
         fIsValid = false;
         fSndKernelSize = sndKernelSize;
+        fModified = true;
     }
     catch (exception& e)
     {
@@ -372,6 +419,7 @@ void FairMQChannel::UpdateRcvKernelSize(const int rcvKernelSize)
         unique_lock<mutex> lock(fChannelMutex);
         fIsValid = false;
         fRcvKernelSize = rcvKernelSize;
+        fModified = true;
     }
     catch (exception& e)
     {
@@ -387,10 +435,41 @@ void FairMQChannel::UpdateRateLogging(const int rateLogging)
         unique_lock<mutex> lock(fChannelMutex);
         fIsValid = false;
         fRateLogging = rateLogging;
+        fModified = true;
     }
     catch (exception& e)
     {
         LOG(ERROR) << "Exception caught in FairMQChannel::UpdateRateLogging: " << e.what();
+        exit(EXIT_FAILURE);
+    }
+}
+
+auto FairMQChannel::SetModified(const bool modified) -> void
+{
+    try
+    {
+        unique_lock<mutex> lock(fChannelMutex);
+        fModified = modified;
+    }
+    catch (exception& e)
+    {
+        LOG(ERROR) << "Exception caught in FairMQChannel::SetModified: " << e.what();
+        exit(EXIT_FAILURE);
+    }
+}
+
+void FairMQChannel::UpdateChannelName(const string& name)
+{
+    try
+    {
+        unique_lock<mutex> lock(fChannelMutex);
+        fIsValid = false;
+        fName = name;
+        fModified = true;
+    }
+    catch (exception& e)
+    {
+        LOG(ERROR) << "Exception caught in FairMQChannel::UpdateChannelName: " << e.what();
         exit(EXIT_FAILURE);
     }
 }
@@ -446,11 +525,9 @@ bool FairMQChannel::ValidateChannel()
         }
         else
         {
-            //TODO: maybe cache fEndpoints as a class member? not really needed as tokenizing is
-            //fast, and only happens during (re-)configure
-            vector<string> fEndpoints;
-            Tokenize(fEndpoints, fAddress);
-            for (const auto endpoint : fEndpoints)
+            vector<string> endpoints;
+            boost::algorithm::split(endpoints, fAddress, boost::algorithm::is_any_of(","));
+            for (const auto endpoint : endpoints)
             {
                 string address;
                 if (endpoint[0] == '@' || endpoint[0] == '+' || endpoint[0] == '>')
@@ -493,6 +570,18 @@ bool FairMQChannel::ValidateChannel()
                         ss << "INVALID";
                         LOG(DEBUG) << ss.str();
                         LOG(ERROR) << "invalid channel address: \"" << address << "\" (empty IPC address?)";
+                        return false;
+                    }
+                }
+                else if (address.compare(0, 9, "inproc://") == 0)
+                {
+                    // check if IPC address is not empty
+                    string addressString = address.substr(9);
+                    if (addressString == "")
+                    {
+                        ss << "INVALID";
+                        LOG(DEBUG) << ss.str();
+                        LOG(ERROR) << "invalid channel address: \"" << address << "\" (empty inproc address?)";
                         return false;
                     }
                 }
@@ -581,9 +670,9 @@ void FairMQChannel::InitTransport(shared_ptr<FairMQTransportFactory> factory)
     fTransportType = factory->GetType();
 }
 
-bool FairMQChannel::InitCommandInterface(int numIoThreads)
+bool FairMQChannel::InitCommandInterface()
 {
-    fChannelCmdSocket = fTransportFactory->CreateSocket("sub", "device-commands", numIoThreads, "internal");
+    fChannelCmdSocket = fTransportFactory->CreateSocket("sub", "device-commands");
     if (fChannelCmdSocket)
     {
         fChannelCmdSocket->Connect("inproc://commands");
@@ -759,11 +848,6 @@ FairMQChannel::~FairMQChannel()
 {
 }
 
-void FairMQChannel::Tokenize(vector<string>& output, const string& input, const string delimiters)
-{
-    boost::algorithm::split(output, input, boost::algorithm::is_any_of(delimiters));
-}
-
 unsigned long FairMQChannel::GetBytesTx() const
 {
     return fSocket->GetBytesTx();
@@ -784,12 +868,6 @@ unsigned long FairMQChannel::GetMessagesRx() const
     return fSocket->GetMessagesRx();
 }
 
-
-FairMQTransportFactory* FairMQChannel::Transport()
-{
-    return fTransportFactory.get();
-}
-
 bool FairMQChannel::CheckCompatibility(unique_ptr<FairMQMessage>& msg) const
 {
     if (fTransportType == msg->GetType())
@@ -808,27 +886,26 @@ bool FairMQChannel::CheckCompatibility(unique_ptr<FairMQMessage>& msg) const
 
 bool FairMQChannel::CheckCompatibility(vector<unique_ptr<FairMQMessage>>& msgVec) const
 {
+    bool match = true;
+
     if (msgVec.size() > 0)
     {
-        if (fTransportType == msgVec.at(0)->GetType())
+        for (unsigned int i = 0; i < msgVec.size(); ++i)
         {
-            return true;
-        }
-        else
-        {
-            // LOG(WARN) << "Channel type does not match message type. Copying...";
-            vector<unique_ptr<FairMQMessage>> tempVec;
-            for (unsigned int i = 0; i < msgVec.size(); ++i)
+            if (fTransportType != msgVec.at(i)->GetType())
             {
-                tempVec.push_back(fTransportFactory->CreateMessage(msgVec[i]->GetSize()));
-                memcpy(tempVec[i]->GetData(), msgVec[i]->GetData(), msgVec[i]->GetSize());
+                // LOG(WARN) << "Channel type does not match message type. Copying...";
+                FairMQMessagePtr newMsg(fTransportFactory->CreateMessage(msgVec[i]->GetSize()));
+                memcpy(newMsg->GetData(), msgVec[i]->GetData(), msgVec[i]->GetSize());
+                msgVec[i] = move(newMsg);
+                match = false;
             }
-            msgVec = move(tempVec);
-            return false;
         }
     }
     else
     {
         return true;
     }
+
+    return match;
 }

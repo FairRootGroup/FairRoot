@@ -16,7 +16,7 @@
 
 #include "FairHit.h"                    // for FairHit
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TVector3.h"                   // for TVector3
 
 #include <iostream>                     // for operator<<, basic_ostream, etc

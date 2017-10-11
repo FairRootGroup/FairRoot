@@ -15,7 +15,7 @@
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 #include "FairLogger.h"                 // for logging
 
-#include "Riosfwd.h"                    // for ostream, ifstream
+#include <iosfwd>                       // for ostream, ifstream
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TLorentzVector.h"             // for TLorentzVector
 #include "TMath.h"                      // for Sqrt, sqrt

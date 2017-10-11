@@ -29,27 +29,21 @@
 class FairMQEx9aSamplerBin : public FairMQDevice
 {
   public:
-    enum
-    {
-        InputFileName = FairMQDevice::Last,
-        Last
-    };
-
     FairMQEx9aSamplerBin();
     virtual ~FairMQEx9aSamplerBin();
 
-    void AddInputFileName  (std::string tempString) { fFileNames  .push_back(tempString); }
-    
-    void SetMaxIndex(int64_t tempInt) {fMaxIndex=tempInt;}
+    void AddInputFileName  (std::string tempString) { fFileNames.push_back(tempString); }
+
+    void SetMaxIndex(int64_t tempInt) { fMaxIndex = tempInt; }
 
     void ListenForAcks();
 
-    void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
-    void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
+    void SetOutputChannelName(std::string tstr) { fOutputChannelName = tstr; }
+    void SetAckChannelName(std::string tstr) { fAckChannelName = tstr; }
 
-    void SetAggregateFactor(int nal) {fAggregateLevel = nal;}
+    void SetAggregateFactor(int nal) { fAggregateLevel = nal; }
 
- protected:
+  protected:
     virtual bool ConditionalRun();
     virtual void PreRun();
     virtual void PostRun();
@@ -57,8 +51,8 @@ class FairMQEx9aSamplerBin : public FairMQDevice
 
     bool ReadBinFile();
     bool ReadRootFile();
-    
- private: 
+
+  private:
     std::string     fOutputChannelName;
     std::string     fAckChannelName;
 

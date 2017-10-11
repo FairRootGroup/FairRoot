@@ -12,18 +12,24 @@
  * @author D. Klein, A. Rybalchenko
  */
 
-#include "FairMQLogger.h"
 #include "FairMQMerger.h"
-#include "FairMQPoller.h"
-#include "FairMQProgOptions.h"
+#include "../FairMQLogger.h"
+#include "../FairMQPoller.h"
+#include "../options/FairMQProgOptions.h"
 
 using namespace std;
 
 FairMQMerger::FairMQMerger()
     : fMultipart(1)
-    , fInChannelName()
-    , fOutChannelName()
+    , fInChannelName("data-in")
+    , fOutChannelName("data-out")
 {
+}
+
+void FairMQMerger::RegisterChannelEndpoints()
+{
+    RegisterChannelEndpoint(fInChannelName, 1, 10000);
+    RegisterChannelEndpoint(fOutChannelName, 1, 1);
 }
 
 FairMQMerger::~FairMQMerger()
@@ -41,7 +47,14 @@ void FairMQMerger::Run()
 {
     int numInputs = fChannels.at(fInChannelName).size();
 
-    std::unique_ptr<FairMQPoller> poller(fTransportFactory->CreatePoller(fChannels.at(fInChannelName)));
+    vector<const FairMQChannel*> chans;
+
+    for (auto& chan : fChannels.at(fInChannelName))
+    {
+        chans.push_back(&chan);
+    }
+
+    FairMQPollerPtr poller(NewPoller(chans));
 
     if (fMultipart)
     {

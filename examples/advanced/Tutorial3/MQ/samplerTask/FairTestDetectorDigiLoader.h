@@ -30,7 +30,6 @@
 
 #include "FairMQSamplerTask.h"
 #include "FairMQLogger.h"
-#include "FairMQTools.h"
 
 #include "baseMQtools.h"
 
@@ -65,9 +64,7 @@ class FairTestDetectorDigiLoader : public FairMQSamplerTask
     virtual void Exec(Option_t* opt);
 
   private:
-#ifndef __CINT__ // for BOOST serialization
     std::vector<TOut> fDigiVector;
-#endif // for BOOST serialization
 };
 
 // Template implementation is in FairTestDetectorDigiLoader.tpl :

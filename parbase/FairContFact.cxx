@@ -21,7 +21,7 @@
 #include "FairLogger.h"                 // for FairLogger
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TCollection.h"                // for TIter
 #include "TObjString.h"                 // for TObjString
 

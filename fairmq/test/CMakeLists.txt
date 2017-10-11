@@ -1,137 +1,169 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
+################################################################################
+#    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-configure_file(${CMAKE_SOURCE_DIR}/fairmq/test/test-fairmq-push-pull.sh.in ${CMAKE_BINARY_DIR}/fairmq/test/test-fairmq-push-pull.sh)
-configure_file(${CMAKE_SOURCE_DIR}/fairmq/test/test-fairmq-pub-sub.sh.in ${CMAKE_BINARY_DIR}/fairmq/test/test-fairmq-pub-sub.sh)
-configure_file(${CMAKE_SOURCE_DIR}/fairmq/test/test-fairmq-req-rep.sh.in ${CMAKE_BINARY_DIR}/fairmq/test/test-fairmq-req-rep.sh)
+find_package(GTest REQUIRED)
+set(PSTREAMS_SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rdparty/pstreams)
+find_package(PStreams REQUIRED)
+include(GTestHelper)
 
-Set(INCLUDE_DIRECTORIES
-  ${CMAKE_SOURCE_DIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/fairmq/zeromq
-  ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
-  ${CMAKE_SOURCE_DIR}/fairmq/devices
-  ${CMAKE_SOURCE_DIR}/fairmq/tools
-  ${CMAKE_SOURCE_DIR}/fairmq/options
-  ${CMAKE_SOURCE_DIR}/fairmq/test/
-  ${CMAKE_SOURCE_DIR}/fairmq/test/push-pull
-  ${CMAKE_SOURCE_DIR}/fairmq/test/pub-sub
-  ${CMAKE_SOURCE_DIR}/fairmq/test/req-rep
-  ${CMAKE_CURRENT_BINARY_DIR}
+#############################
+# FairMQ Testsuites/helpers #
+#############################
+
+add_testhelper(runTestDevice
+    SOURCES
+    helper/runTestDevice.cxx
+    helper/devices/TestPollIn.cxx
+    helper/devices/TestPollOut.cxx
+    helper/devices/TestPub.cxx
+    helper/devices/TestPull.cxx
+    helper/devices/TestPush.cxx
+    helper/devices/TestRep.cxx
+    helper/devices/TestReq.cxx
+    helper/devices/TestSub.cxx
+    helper/devices/TestTransferTimeout.cxx
+
+    LINKS FairMQ
 )
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
-  ${Boost_INCLUDE_DIR}
-  ${ZeroMQ_INCLUDE_DIR}
+
+set(MQ_CONFIG "${CMAKE_BINARY_DIR}/bin/testsuite_FairMQ.IOPatterns_config.json")
+set(RUN_TEST_DEVICE "${CMAKE_BINARY_DIR}/bin/testhelper_runTestDevice")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/protocols/config.json.in ${MQ_CONFIG})
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/protocols/runner.cxx.in ${CMAKE_CURRENT_BINARY_DIR}/protocols/runner.cxx)
+
+add_testsuite(FairMQ.Protocols
+    SOURCES
+    ${CMAKE_CURRENT_BINARY_DIR}/protocols/runner.cxx
+    protocols/_poller.cxx
+    protocols/_pub_sub.cxx
+    protocols/_push_pull.cxx
+    protocols/_req_rep.cxx
+    protocols/_transfer_timeout.cxx
+    protocols/_push_pull_multipart.cxx
+
+    LINKS PStreams FairMQ
+    DEPENDS testhelper_runTestDevice
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/protocols
+    TIMEOUT 30
+    RUN_SERIAL ON
 )
 
-If(NANOMSG_FOUND)
-  Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
-    ${NANOMSG_INCLUDE_DIR}
-  )
-EndIf(NANOMSG_FOUND)
+add_testsuite(FairMQ.Parts
+    SOURCES
+    parts/runner.cxx
+    parts/_iterator_interface.cxx
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
-  ${Boost_LIBRARY_DIRS}
+    LINKS FairMQ ZeroMQ
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/parts
+    TIMEOUT 5
 )
 
-Link_Directories(${LINK_DIRECTORIES})
+add_testsuite(FairMQ.Device
+    SOURCES
+    device/TestSender.h
+    device/TestReceiver.h
+    device/TestVersion.h
+    device/runner.cxx
+    device/_multiple_devices.cxx
+    device/_device_version.cxx
 
-set(SRCS
-  "push-pull/FairMQTestPush.cxx"
-  "push-pull/FairMQTestPull.cxx"
-  "pub-sub/FairMQTestPub.cxx"
-  "pub-sub/FairMQTestSub.cxx"
-  "req-rep/FairMQTestReq.cxx"
-  "req-rep/FairMQTestRep.cxx"
+    LINKS FairMQ
+    INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/device
+    TIMEOUT 5
+    RUN_SERIAL ON
 )
 
-set(DEPENDENCIES
-  ${DEPENDENCIES}
-  FairMQ
+set(VERSION_MAJOR 1)
+set(VERSION_MINOR 1)
+set(VERSION_PATCH 0)
+set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/helper/plugins/dummy.h.in ${CMAKE_CURRENT_BINARY_DIR}/helper/plugins/dummy.h)
+add_testlib(FairMQPlugin_test_dummy
+    SOURCES
+    ${CMAKE_CURRENT_BINARY_DIR}/helper/plugins/dummy.h
+    helper/plugins/dummy.cxx
+
+    LINKS FairMQ
+    INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/helper/plugins
+    HIDDEN
+    VERSION ${VERSION}
 )
 
-set(LIBRARY_NAME FairMQTest)
+set(VERSION_MAJOR 2)
+set(VERSION_MINOR 2)
+set(VERSION_PATCH 0)
+set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/helper/plugins/dummy2.h.in ${CMAKE_CURRENT_BINARY_DIR}/helper/plugins/dummy2.h)
+add_testlib(FairMQPlugin_test_dummy2
+    SOURCES
+    ${CMAKE_CURRENT_BINARY_DIR}/helper/plugins/dummy2.h
+    helper/plugins/dummy2.cxx
 
-GENERATE_LIBRARY()
-
-set(Exe_Names
-  test-fairmq-push
-  test-fairmq-pull
-  test-fairmq-pub
-  test-fairmq-sub
-  test-fairmq-req
-  test-fairmq-rep
-  test-fairmq-transfer-timeout
+    LINKS FairMQ
+    INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/helper/plugins
+    HIDDEN
+    VERSION ${VERSION}
 )
 
-set(Exe_Source
-  push-pull/runTestPush.cxx
-  push-pull/runTestPull.cxx
-  pub-sub/runTestPub.cxx
-  pub-sub/runTestSub.cxx
-  req-rep/runTestReq.cxx
-  req-rep/runTestRep.cxx
-  runTransferTimeoutTest.cxx
+add_testsuite(FairMQ.Plugins
+    SOURCES
+    plugins/runner.cxx
+    plugins/_plugin.cxx
+    plugins/_plugin_manager.cxx
+
+    LINKS FairMQ
+    DEPENDS FairMQPlugin_test_dummy FairMQPlugin_test_dummy2
+    TIMEOUT 10
 )
 
-list(LENGTH Exe_Names _length)
-math(EXPR _length ${_length}-1)
+add_testsuite(FairMQ.PluginsPrelinked
+    SOURCES
+    plugins/runner.cxx
+    plugins/_plugin_manager_prelink.cxx
 
-ForEach(_file RANGE 0 ${_length})
-  list(GET Exe_Names ${_file} _name)
-  list(GET Exe_Source ${_file} _src)
-  set(EXE_NAME ${_name})
-  set(SRCS ${_src})
-  set(DEPENDENCIES FairMQTest)
-  GENERATE_EXECUTABLE()
-EndForEach(_file RANGE 0 ${_length})
+    LINKS FairMQ FairMQPlugin_test_dummy FairMQPlugin_test_dummy2
+    TIMEOUT 10
+)
 
-add_test(NAME run_fairmq_push_pull_zmq COMMAND ${CMAKE_BINARY_DIR}/fairmq/test/test-fairmq-push-pull.sh zeromq)
-set_tests_properties(run_fairmq_push_pull_zmq PROPERTIES TIMEOUT "30")
-set_tests_properties(run_fairmq_push_pull_zmq PROPERTIES PASS_REGULAR_EXPRESSION "PUSH-PULL test successfull")
+add_testsuite(FairMQ.PluginServices
+    SOURCES
+    plugin_services/runner.cxx
+    plugin_services/_config.cxx
+    plugin_services/_control.cxx
+    plugin_services/Fixture.h
 
-add_test(NAME run_fairmq_pub_sub_zmq COMMAND ${CMAKE_BINARY_DIR}/fairmq/test/test-fairmq-pub-sub.sh zeromq)
-set_tests_properties(run_fairmq_pub_sub_zmq PROPERTIES TIMEOUT "30")
-set_tests_properties(run_fairmq_pub_sub_zmq PROPERTIES PASS_REGULAR_EXPRESSION "PUB-SUB test successfull")
-Set_Tests_Properties(run_fairmq_pub_sub_zmq PROPERTIES DEPENDS run_fairmq_push_pull_zmq)
+    LINKS FairMQ
+    TIMEOUT 10
+)
 
-add_test(NAME run_fairmq_req_rep_zmq COMMAND ${CMAKE_BINARY_DIR}/fairmq/test/test-fairmq-req-rep.sh zeromq)
-set_tests_properties(run_fairmq_req_rep_zmq PROPERTIES TIMEOUT "30")
-set_tests_properties(run_fairmq_req_rep_zmq PROPERTIES PASS_REGULAR_EXPRESSION "REQ-REP test successfull")
-Set_Tests_Properties(run_fairmq_req_rep_zmq PROPERTIES DEPENDS run_fairmq_pub_sub_zmq)
+add_testsuite(FairMQ.EventManager
+    SOURCES
+    event_manager/runner.cxx
+    event_manager/_event_manager.cxx
 
-add_test(NAME run_fairmq_transfer_timeout_zmq COMMAND ${CMAKE_BINARY_DIR}/bin/test-fairmq-transfer-timeout zeromq)
-set_tests_properties(run_fairmq_transfer_timeout_zmq PROPERTIES TIMEOUT "30")
-set_tests_properties(run_fairmq_transfer_timeout_zmq PROPERTIES PASS_REGULAR_EXPRESSION "Transfer timeout test successfull")
-Set_Tests_Properties(run_fairmq_transfer_timeout_zmq PROPERTIES DEPENDS run_fairmq_pub_sub_zmq)
+    LINKS FairMQ
+    TIMEOUT 10
+)
 
-If(NANOMSG_FOUND)
-  add_test(NAME run_fairmq_push_pull_nn COMMAND ${CMAKE_BINARY_DIR}/fairmq/test/test-fairmq-push-pull.sh nanomsg)
-  set_tests_properties(run_fairmq_push_pull_nn PROPERTIES TIMEOUT "30")
-  set_tests_properties(run_fairmq_push_pull_nn PROPERTIES PASS_REGULAR_EXPRESSION "PUSH-PULL test successfull")
-  Set_Tests_Properties(run_fairmq_push_pull_nn PROPERTIES DEPENDS run_fairmq_transfer_timeout_zmq)
+add_testsuite(FairMQ.StateMachine
+    SOURCES
+    state_machine/runner.cxx
+    state_machine/_state_machine.cxx
 
-  add_test(NAME run_fairmq_pub_sub_nn COMMAND ${CMAKE_BINARY_DIR}/fairmq/test/test-fairmq-pub-sub.sh nanomsg)
-  set_tests_properties(run_fairmq_pub_sub_nn PROPERTIES TIMEOUT "30")
-  set_tests_properties(run_fairmq_pub_sub_nn PROPERTIES PASS_REGULAR_EXPRESSION "PUB-SUB test successfull")
-  Set_Tests_Properties(run_fairmq_pub_sub_nn PROPERTIES DEPENDS run_fairmq_push_pull_nn)
+    LINKS FairMQ
+    TIMEOUT 10
+)
 
-  add_test(NAME run_fairmq_req_rep_nn COMMAND ${CMAKE_BINARY_DIR}/fairmq/test/test-fairmq-req-rep.sh nanomsg)
-  set_tests_properties(run_fairmq_req_rep_nn PROPERTIES TIMEOUT "30")
-  set_tests_properties(run_fairmq_req_rep_nn PROPERTIES PASS_REGULAR_EXPRESSION "REQ-REP test successfull")
-  Set_Tests_Properties(run_fairmq_req_rep_nn PROPERTIES DEPENDS run_fairmq_pub_sub_nn)
-
-  add_test(NAME run_fairmq_transfer_timeout_nn COMMAND ${CMAKE_BINARY_DIR}/bin/test-fairmq-transfer-timeout nanomsg)
-  set_tests_properties(run_fairmq_transfer_timeout_nn PROPERTIES TIMEOUT "30")
-  set_tests_properties(run_fairmq_transfer_timeout_nn PROPERTIES PASS_REGULAR_EXPRESSION "Transfer timeout test successfull")
-  Set_Tests_Properties(run_fairmq_transfer_timeout_nn PROPERTIES DEPENDS run_fairmq_req_rep_nn)
-EndIf(NANOMSG_FOUND)
+##############################
+# Aggregate all test targets #
+##############################
+add_custom_target(FairMQTests
+    DEPENDS
+    ${ALL_TEST_TARGETS}
+)

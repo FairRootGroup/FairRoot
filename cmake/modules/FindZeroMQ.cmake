@@ -9,6 +9,7 @@
 # Authors:
 #
 #   Mohammad Al-Turany
+#   Dario Berzano
 #   Dennis Klein
 #   Matthias Richter
 #   Alexey Rybalchenko
@@ -45,6 +46,10 @@
 #   ZEROMQ_ROOT (CMake var, ENV var)
 #
 #
+# If the above variables are not defined, or if ZeroMQ could not be found there,
+# it will look for it in the system directories. Custom ZeroMQ installations
+# will always have priority over system ones.
+#
 
 if(NOT ZeroMQ_FIND_QUIETLY)
     message(STATUS "Looking for ZeroMQ")
@@ -55,44 +60,33 @@ if(DEFINED ENV{ZEROMQ_ROOT})
 endif()
 
 find_path(ZeroMQ_INCLUDE_DIR NAMES "zmq.h" "zmq_utils.h"
-    PATHS "${ZMQ_DIR}/include"
+    HINTS "${ZMQ_DIR}/include"
           "${AlFa_DIR}/include"
           "${SIMPATH}/include"
           "${ZEROMQ_ROOT}/include"
     DOC "ZeroMQ include directories"
-    NO_DEFAULT_PATH
 )
-set(ZMQ_INCLUDE_DIR ${ZeroMQ_INCLUDE_DIR}
-    CACHE PATH "ZeroMQ include directories (DEPRECATED)")
 
 find_library(ZeroMQ_LIBRARY_SHARED NAMES "libzmq.dylib" "libzmq.so"
-    PATHS "${ZMQ_DIR}/lib"
+    HINTS "${ZMQ_DIR}/lib"
           "${AlFa_DIR}/lib"
           "${SIMPATH}/lib"
           "${ZEROMQ_ROOT}/lib"
-    DOC "Path to libzmq.dylib or libzmq.so."
-    NO_DEFAULT_PATH
+    DOC "Path to libzmq.dylib or libzmq.so"
 )
-set(ZMQ_LIBRARY_SHARED ${ZeroMQ_LIBRARY_SHARED}
-    CACHE FILEPATH "Path to libzmq.dylib or libzmq.so (DEPRECATED)")
 
 find_library(ZeroMQ_LIBRARY_STATIC NAMES "libzmq.a"
-    PATHS "${ZMQ_DIR}/lib"
+    HINTS "${ZMQ_DIR}/lib"
           "${AlFa_DIR}/lib"
           "${SIMPATH}/lib"
           "${ZEROMQ_ROOT}/lib"
-    DOC "Path to libzmq.a."
-    NO_DEFAULT_PATH
+    DOC "Path to libzmq.a"
 )
-set(ZMQ_LIBRARY_STATIC ${ZeroMQ_LIBRARY_STATIC}
-    CACHE FILEPATH "Path to libzmq.a (DEPRECATED)")
 
 if(ZeroMQ_INCLUDE_DIR AND ZeroMQ_LIBRARY_SHARED AND ZeroMQ_LIBRARY_STATIC)
     set(ZeroMQ_FOUND TRUE)
-    set(ZMQ_FOUND TRUE) # DEPRECATED
 else()
     set(ZeroMQ_FOUND FALSE)
-    set(ZMQ_FOUND FALSE) # DEPRECATED
 endif()
 
 set(ERROR_STRING "Looking for ZeroMQ - NOT FOUND")
@@ -117,6 +111,12 @@ if(ZeroMQ_FOUND)
         endif ()
         unset(ZeroMQ_HEADER_FILE CACHE)
     endif ()
+
+    add_library(ZeroMQ SHARED IMPORTED)
+    set_target_properties(ZeroMQ PROPERTIES
+        IMPORTED_LOCATION ${ZeroMQ_LIBRARY_SHARED}
+        INTERFACE_INCLUDE_DIRECTORIES ${ZeroMQ_INCLUDE_DIR}
+    )
 endif()
 
 if(ZeroMQ_FOUND)
@@ -135,22 +135,13 @@ else()
     endif()
 endif()
 
-if(NOT ZeroMQ_NO_DEPRECATED)
-    message(DEPRECATION
-"ZMQ_FOUND, ZMQ_INCLUDE_DIR, ZMQ_LIBRARY_STATIC|SHARED, ZMQ_* variables are DEPRECATED.
-Use ZeroMQ_FOUND, ZeroMQ_INCLUDE_DIR, ZeroMQ_LIBRARY_STATIC|SHARED, ZeroMQ_* instead.
-Use '-Wno-deprecated' or '-DZeroMQ_NO_DEPRECATED=ON' to suppress this message.")
-endif()
-
 unset(ERROR_STRING)
 unset(ZEROMQ_ROOT)
 
 mark_as_advanced(
     ZeroMQ_LIBRARIES
     ZeroMQ_LIBRARY_SHARED
-    ZMQ_LIBRARY_SHARED
     ZeroMQ_LIBRARY_STATIC
-    ZMQ_LIBRARY_STATIC
     ZeroMQ_VERSION_MAJOR
     ZeroMQ_VERSION_MINOR
     ZeroMQ_VERSION_PATCH

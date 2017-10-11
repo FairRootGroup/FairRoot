@@ -54,8 +54,8 @@ class FairMQSampler : public FairMQDevice
 {
   public:
     FairMQSampler()
-        : fFairRunAna(new FairRunAna())
-        , fSamplerTask(new Task())
+        : fFairRunAna(nullptr)
+        , fSamplerTask(nullptr)
         , fStart()
         , fEnd()
         , fInputFile()
@@ -73,18 +73,15 @@ class FairMQSampler : public FairMQDevice
     FairMQSampler operator=(const FairMQSampler&) = delete;
 
     virtual ~FairMQSampler()
-    {
-        if (fFairRunAna)
-        {
-            fFairRunAna->TerminateRun();
-        }
-        delete fSamplerTask;
-    }
+    {}
 
   protected:
     virtual void InitTask()
     {
         LOG(INFO) << "Initializing Task...";
+
+        fFairRunAna = new FairRunAna();
+        fSamplerTask = new Task();
 
         fInputFile = fConfig->GetValue<std::string>("input-file");
         fParFile = fConfig->GetValue<std::string>("parameter-file");
@@ -182,15 +179,25 @@ class FairMQSampler : public FairMQDevice
         }
     }
 
+    virtual void ResetTask()
+    {
+        if (fFairRunAna)
+        {
+            fFairRunAna->TerminateRun();
+        }
+        delete fSamplerTask;
+    }
+
     void ListenForAcks()
     {
         uint64_t numAcks = 0;
         for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
         {
             FairMQMessagePtr ack(NewMessage());
-            Receive(ack, fAckChannelName);
-
-            ++numAcks;
+            if (Receive(ack, fAckChannelName) >= 0)
+            {
+                ++numAcks;
+            }
 
             if (!CheckCurrentState(RUNNING))
             {

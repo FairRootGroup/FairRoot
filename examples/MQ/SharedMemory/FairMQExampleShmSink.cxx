@@ -15,6 +15,7 @@
 #include <string>
 #include <thread>
 #include <chrono>
+#include <iomanip>
 
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/smart_ptr/shared_ptr.hpp>

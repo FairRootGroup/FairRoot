@@ -22,12 +22,16 @@
 #include <map>                          // for map, multimap, etc
 #include <queue>                        // for queue
 #include "FairSource.h"
+#include <typeinfo>
+#include <typeindex>
+#include <vector>
+#include <memory>
+
 class BinaryFunctor;
 class FairEventHeader;
 class FairFileHeader;
 class FairGeoNode;
 class FairLink;
-class FairLogger;
 class FairTSBufferFunctional;
 class FairWriteoutBuffer;
 class TArrayI;
@@ -54,9 +58,7 @@ class TIterator;
 class FairRootManager : public TObject
 {
   public:
-    /**ctor*/
-    FairRootManager();
-    /**dtor*/
+      /**dtor*/
     virtual ~FairRootManager();
      Bool_t             AllDataProcessed();
     /** Add a branch name to the Branchlist and give it an id*/
@@ -83,10 +85,17 @@ class FairRootManager : public TObject
     /**Return branch name by Id*/
     TString             GetBranchName(Int_t id);
     /**Return Id of a branch named */
-    Int_t               GetBranchId(TString BrName);
+    Int_t               GetBranchId(TString const &BrName);
+
+    /**The MCTrack branch stands out since it is required by the framework algorithms**/
+    Int_t GetMCTrackBranchId() const { return fMCTrackBranchId; }
+
     /**Return a TList of TObjString of branch names available in this session*/
     TList*              GetBranchNameList() {return fBranchNameList;}
-    /** Return a pointer to the output Tree of type TTree */
+    /**Return the vector of branch names that were requested by tasks as input*/
+    const std::vector<std::string>& GetReqBranchNames() const {return fReqBrNames;}
+
+      /** Return a pointer to the output Tree of type TTree */
     TTree*              GetOutTree() {return fOutTree;}
     /** Return a pointer to the output File of type TFile */
     TFile*              GetOutFile() {return  fOutFile;}
@@ -97,6 +106,14 @@ class FairRootManager : public TObject
          the user have to cast this pointer to the right type.
          Return a pointer to the object (collection) saved in the fInChain branch named BrName*/
     TObject*            GetObject(const char* BrName);
+
+    /// Initializes and returns a default object for a branch or looks it up when it exists already.
+    /// Returns nullptr when the branch does not exist or looking up with wrong type.
+    /// The name Init indicates that this functions should be called only in Init sections of FairTasks.
+    /// The returned default object will be filled with data by the framework.
+    template<typename T>
+    T InitObjectAs(const char* BrName);
+
     /** Return a pointer to the object (collection) saved in the fInTree branch named BrName*/
     Double_t            GetEventTime();
     /** Returns a clone of the data object the link is pointing to. The clone has to be deleted in the calling code! */
@@ -128,6 +145,9 @@ class FairRootManager : public TObject
     Int_t             ReadNonTimeBasedEventFromBranches(Int_t i=0);
     /**Read the tree entry on one branch**/
     void              ReadBranchEvent(const char* BrName);
+    /**Read the tree entry on one branch for a specific entry**/
+    void              ReadBranchEvent(const char* BrName, Int_t entry);
+
     /**Read all entries from input tree(s) with time stamp from current time to dt (time in ns)*/
 
     Int_t             GetRunId();
@@ -145,6 +165,15 @@ class FairRootManager : public TObject
     *@param obj             Pointer of type TCollection (e.g. TClonesArray of hits, points)
     *@param toFile          if kTRUE, branch will be saved to the tree*/
     void                Register(const char* name,const char* Foldername ,TCollection* obj, Bool_t toFile);
+
+    
+    /** create a new branch based on an arbitrary type T (for which a dictionary must exist) **/
+    template<typename T>
+    void RegisterAny(const char* name, T* &obj, Bool_t toFile);
+    /// for branches which are not managed by folders, we need a special function
+    /// to trigger persistent branch creation
+    /// return true if successful; false if problem
+    bool CreatePersistentBranchesAny();    
 
     void                RegisterInputObject(const char* name, TObject* obj);
 
@@ -227,7 +256,18 @@ class FairRootManager : public TObject
 
     static char* GetTreeName();
   private:
+
+    // helper struct since std::pair has problems with type_info
+    struct TypeAddressPair {
+    TypeAddressPair(const std::type_info &oi, const std::type_info &pi, void* a) : origtypeinfo(oi), persistenttypeinfo(pi), ptraddr(a) {}
+      const std::type_info &origtypeinfo; // type_info of type addr points to 
+      const std::type_info &persistenttypeinfo; // type_info of ROOT persistent branch (drops pointers)
+      void *ptraddr; // address of a pointer (pointing to origtypeinfo);
+    };
+    
     /**private methods*/
+    /**ctor*/
+    FairRootManager();
     FairRootManager(const FairRootManager&);
     FairRootManager& operator=(const FairRootManager&);
     /**  Set the branch address for a given branch name and return
@@ -236,6 +276,15 @@ class FairRootManager : public TObject
     void                AddFriends( );
     /**Add a branch to memory, it will not be written to the output files*/
     void                AddMemoryBranch(const char*, TObject* );
+
+    template<typename T>
+    void AddMemoryBranchAny(const char *name, T** obj);
+    template<typename T>
+    T GetMemoryBranchAny(const char* name) const;
+
+    template<typename T>
+    void RegisterImpl(const char* name, const char* Foldername, T* obj, Bool_t toFile);
+
     /** Internal Check if Branch persistence or not (Memory branch)
     return value:
     1 : Branch is Persistance
@@ -250,14 +299,16 @@ class FairRootManager : public TObject
 
     FairWriteoutBuffer* GetWriteoutBuffer(TString branchName);
 
+    // private helper function to emit a warning
+    void EmitMemoryBranchWrongTypeWarning(const char* brname, const char *typen1, const char *typen2) const;
 
     Int_t       fOldEntryNr;
 //_____________________________________________________________________
     /**private Members*/
     /**folder structure of output*/
-    TFolder*                            fCbmout;
+    TFolder*                            fOutFolder;
     /**folder structure of input*/
-    TFolder*                            fCbmroot;
+    TFolder*                            fRootFolder;
     /** current time in ns*/
     Double_t                            fCurrentTime;
     /**Output file */
@@ -273,17 +324,26 @@ class FairRootManager : public TObject
      */
     std::map < TString , TObject* >     fMap;  //!
 
+    /// A map of branchnames to typeinformation + memory address;
+    /// used for branches registered with RegisterAny; use of ptr here
+    /// since type_info cannot be copied
+    std::map<std::string, std::unique_ptr<TypeAddressPair const>> fAnyBranchMap; //!
+    /// keeps track of branches which are supposed to be persistified
+    std::vector<std::string> fPersistentBranchesAny;
+    
     /**Singleton instance*/
-#if !defined(__CINT__)
     static TMCThreadLocal FairRootManager*  fgInstance;
-#else
-    static                FairRootManager*  fgInstance;
-#endif
 
     /**Branch id for this run */
-    Int_t                               fBranchSeqId;
+    Int_t                                fBranchSeqId;
     /**List of branch names as TObjString*/
     TList*                               fBranchNameList; //!
+    /**Vector of (not necessarily unique) branch names requested per GetObject / InitObjectAs */
+    std::vector<std::string>             fReqBrNames; //!
+    
+    /**The branch ID for the special (required) MCTrack branch**/
+    Int_t                                fMCTrackBranchId; //!
+
     /**List of Time based branchs names as TObjString*/
     TList*                               fTimeBasedBranchNameList; //!
     /** Internally used to compress empty slots in data buffer*/
@@ -328,10 +388,91 @@ class FairRootManager : public TObject
     /** Iterator for the list of branches used with no-time stamp in time-based session */
     TIterator* fListOfNonTimebasedBranchesIter; //!
 
-    ClassDef(FairRootManager,11) // Root IO manager
+    ClassDef(FairRootManager,12) // Root IO manager
 };
 
+// FIXME: move to source since we can make it non-template dependent
+template<typename T>
+void FairRootManager::AddMemoryBranchAny(const char* brname, T** obj) {
+  if (fAnyBranchMap.find(brname) == fAnyBranchMap.end()) {
+    auto& ot = typeid(T*);
+    auto& pt = typeid(T);
+    fAnyBranchMap[brname]=std::unique_ptr<TypeAddressPair const> (new TypeAddressPair(ot, pt,(void*)obj));
+  }
+}
 
-#endif //FAIR_ROOT_MANAGER_H   
+// try to retrieve an object address from the registered branches/names
+template<typename T>
+T FairRootManager::GetMemoryBranchAny(const char* brname) const {
+  static_assert(std::is_pointer<T>::value, "Return type of GetMemoryBranchAny has to be a pointer"); 
+  using P = typename std::remove_pointer<T>::type;
+  auto iter = fAnyBranchMap.find(brname);
+  if(iter != fAnyBranchMap.end()) {
+    // verify type consistency
+    if(typeid(P).hash_code() != iter->second->origtypeinfo.hash_code()) {
+      EmitMemoryBranchWrongTypeWarning(brname, typeid(P).name(), iter->second->origtypeinfo.name());
+      return nullptr;
+    }
+    return static_cast<T>(iter->second->ptraddr);
+  }
+  return nullptr;
+}
 
+template<typename T>
+void FairRootManager::RegisterAny(const char* brname, T *& obj, bool persistence) {
+  AddBranchToList(brname);
+  if (persistence) {
+    fPersistentBranchesAny.push_back(brname);
+  }
+  // we are taking the address of the passed pointer
+  AddMemoryBranchAny<T>(brname, &obj);
+}
+
+// this function serves as a factory (or lookup) for memory managed 
+// instances associated to branches
+// it returns a pointer to unmodifiable instance of T
+template<typename TPtr>
+TPtr FairRootManager::InitObjectAs(const char* brname) {
+  static_assert(std::is_pointer<TPtr>::value, "Return type of GetObjectAs has to be a pointer"); 
+  using X = typename std::remove_pointer<TPtr>::type;
+  static_assert(std::is_const<X>::value, "Return type of GetObjectAs has to be pointer to const class");
+  using T = typename std::remove_const<X>::type;
+  
+  // is there already an object associated to the branch in memory?? 
+  // then just return
+  T** obj = GetMemoryBranchAny<T**>(brname);
+  // obj is some address/instance holding TPtr instances
+  if(obj!=nullptr) return *obj;
+
+  // it does not seem to be the case, let us create the pointer which will be initialized
+  // with the data (pointer to T)
+  T** addr = new T*;
+  // init the pointee to a default obj which we can return
+  (*addr) = new T;
+  // try to find and activate in the source
+  auto succeeded = fSource->ActivateObjectAny((void**)addr, typeid(T), brname);
+
+  if(!succeeded) {
+    delete (*addr);
+    delete addr;
+    return nullptr;
+  }
+  // add into branch list
+  AddMemoryBranchAny<T>(brname, addr);
+  // register as a **requested** branch
+  // (duplications are explicitely allowed)
+  fReqBrNames.emplace_back(brname);
+  
+  // NOTE: ideally we would do proper resource management for addr and *addr
+  // since the FairRootManager becomes owner of these pointers/instances; Unfortunately this
+  // is quite a difficult task since we would have to store something like std::unique_ptr<T> in a member
+  // container which we cannot know a priori; Some solutions we could think of in the future are
+  // a) use the Destructor mechanism of ROOT::TClass since we still have the type info.
+  // b) investigate if boost::any could be of help here
+  // In any case, this problem is not very critical in the sense that FairRootManager is a singleton and hence
+  // cannot really leak memory (Assuming that the destructors of T are not doing something non-trivial).
+  return *addr;
+}
+
+#endif //FAIR_ROOT_MANAGER_H
 

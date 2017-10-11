@@ -8,16 +8,16 @@
 /*
  * File:   FairProgOptions.cxx
  * Author: winckler
- * 
+ *
  * Created on March 11, 2015, 5:38 PM
  */
 
 #include "FairProgOptions.h"
 
+#include <iomanip>
+
 using namespace std;
 
-/// //////////////////////////////////////////////////////////////////////////////////////////////////////
-/// Constructor
 FairProgOptions::FairProgOptions() :
                         fVarMap(),
                         fGenericDesc("Generic options description"),
@@ -28,6 +28,7 @@ FairProgOptions::FairProgOptions() :
                         fConfigFileOptions("Configuration file options"),
                         fSeverityMap(),
                         fVisibleOptions("Visible options"),
+                        fConfigMutex(),
                         fVerbosityLevel("INFO"),
                         fUseConfigFile(false),
                         fConfigFile()
@@ -37,27 +38,18 @@ FairProgOptions::FairProgOptions() :
     fGenericDesc.add_options()
         ("help,h", "produce help")
         ("version,v", "print version")
-        ("verbosity", po::value<std::string>(&fVerbosityLevel)->default_value("DEBUG"), "Verbosity level : \n"
-            "  TRACE \n"
-            "  DEBUG \n"
-            "  RESULTS \n"
-            "  INFO \n"
-            "  WARN \n"
-            "  ERROR \n"
-            "  STATE \n"
-            "  NOLOG"
-            )
+        ("verbosity", po::value<std::string>(&fVerbosityLevel)->default_value("DEBUG"), "Verbosity level : TRACE, DEBUG, RESULTS, INFO, WARN, ERROR, STATE, NOLOG")
         ("log-color", po::value<bool>()->default_value(true), "logger color: true or false")
-        ;
+        ("print-options", po::value<bool>()->implicit_value(true), "print options in machine-readable format (<option>:<computed-value>:<type>:<description>)");
 
-    fSeverityMap["TRACE"]              = FairMQ::severity_level::TRACE;
-    fSeverityMap["DEBUG"]              = FairMQ::severity_level::DEBUG;
-    fSeverityMap["RESULTS"]            = FairMQ::severity_level::RESULTS;
-    fSeverityMap["INFO"]               = FairMQ::severity_level::INFO;
-    fSeverityMap["WARN"]               = FairMQ::severity_level::WARN;
-    fSeverityMap["ERROR"]              = FairMQ::severity_level::ERROR;
-    fSeverityMap["STATE"]              = FairMQ::severity_level::STATE;
-    fSeverityMap["NOLOG"]              = FairMQ::severity_level::NOLOG;
+    fSeverityMap["TRACE"]   = fair::mq::logger::SeverityLevel::TRACE;
+    fSeverityMap["DEBUG"]   = fair::mq::logger::SeverityLevel::DEBUG;
+    fSeverityMap["RESULTS"] = fair::mq::logger::SeverityLevel::RESULTS;
+    fSeverityMap["INFO"]    = fair::mq::logger::SeverityLevel::INFO;
+    fSeverityMap["WARN"]    = fair::mq::logger::SeverityLevel::WARN;
+    fSeverityMap["ERROR"]   = fair::mq::logger::SeverityLevel::ERROR;
+    fSeverityMap["STATE"]   = fair::mq::logger::SeverityLevel::STATE;
+    fSeverityMap["NOLOG"]   = fair::mq::logger::SeverityLevel::NOLOG;
 }
 
 /// Destructor
@@ -67,7 +59,7 @@ FairProgOptions::~FairProgOptions()
 
 /// //////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Add option descriptions
-int FairProgOptions::AddToCmdLineOptions(const po::options_description& optDesc, bool visible)
+int FairProgOptions::AddToCmdLineOptions(const po::options_description optDesc, bool visible)
 {
     fCmdLineOptions.add(optDesc);
     if (visible)
@@ -77,7 +69,7 @@ int FairProgOptions::AddToCmdLineOptions(const po::options_description& optDesc,
     return 0;
 }
 
-int FairProgOptions::AddToCfgFileOptions(const po::options_description& optDesc, bool visible)
+int FairProgOptions::AddToCfgFileOptions(const po::options_description optDesc, bool visible)
 {
     //if UseConfigFile() not yet called, then enable it with required file name to be provided by command line
     if (!fUseConfigFile)
@@ -108,7 +100,7 @@ po::options_description& FairProgOptions::GetEnvironmentOptions()
     return fEnvironmentDesc;
 }
 
-int FairProgOptions::AddToEnvironmentOptions(const po::options_description& optDesc)
+int FairProgOptions::AddToEnvironmentOptions(const po::options_description optDesc)
 {
     fEnvironmentDesc.add(optDesc);
     return 0;
@@ -120,7 +112,7 @@ void FairProgOptions::UseConfigFile(const string& filename)
         if (filename.empty())
         {
             fConfigDesc.add_options()
-                ("config,c", po::value<boost::filesystem::path>(&fConfigFile)->required(), "Path to configuration file (required argument)");
+                ("config-file", po::value<boost::filesystem::path>(&fConfigFile)->required(), "Path to configuration file (required argument)");
             AddToCmdLineOptions(fConfigDesc);
         }
         else
@@ -132,7 +124,7 @@ void FairProgOptions::UseConfigFile(const string& filename)
 /// //////////////////////////////////////////////////////////////////////////////////////////////////////
 /// Parser
 
-int FairProgOptions::ParseCmdLine(const int argc, char** argv, const po::options_description& desc, po::variables_map& varmap, bool allowUnregistered)
+int FairProgOptions::ParseCmdLine(const int argc, char const* const* argv, const po::options_description& desc, po::variables_map& varmap, bool allowUnregistered)
 {
     // get options from cmd line and store in variable map
     // here we use command_line_parser instead of parse_command_line, to allow unregistered and positional options
@@ -159,7 +151,7 @@ int FairProgOptions::ParseCmdLine(const int argc, char** argv, const po::options
     return 0;
 }
 
-int FairProgOptions::ParseCmdLine(const int argc, char** argv, const po::options_description& desc, bool allowUnregistered)
+int FairProgOptions::ParseCmdLine(const int argc, char const* const* argv, const po::options_description& desc, bool allowUnregistered)
 {
     return ParseCmdLine(argc, argv, desc, fVarMap, allowUnregistered);
 }
@@ -213,31 +205,34 @@ int FairProgOptions::ParseEnvironment(const function<string(string)>& environmen
     return 0;
 }
 
-// Given a key, convert the variable value to string
-string FairProgOptions::GetStringValue(const string& key)
-{
-    string valueStr;
-    try
-    {
-        if (fVarMap.count(key))
-        {
-            valueStr=FairMQ::ConvertVariableValue<FairMQ::ToString>().Run(fVarMap.at(key));
-        }
-    }
-    catch(exception& e)
-    {
-        LOG(ERROR) << "Exception thrown for the key '" << key << "'";
-        LOG(ERROR) << e.what();
-    }
-
-    return valueStr;
-}
-
-/// //////////////////////////////////////////////////////////////////////////////////////////////////////
-/// Print/notify options
-int FairProgOptions::PrintHelp()  const
+int FairProgOptions::PrintHelp() const
 {
     cout << fVisibleOptions << "\n";
+    return 0;
+}
+
+int FairProgOptions::PrintOptionsRaw()
+{
+    MapVarValInfo_t mapInfo;
+
+    for (const auto& m : fVarMap)
+    {
+        mapInfo[m.first] = GetVariableValueInfo(m.second);
+    }
+
+    for (const auto& p : mapInfo)
+    {
+        string keyStr;
+        string valueStr;
+        string typeInfoStr;
+        string defaultStr;
+        string emptyStr;
+        keyStr = p.first;
+        tie(valueStr, typeInfoStr, defaultStr, emptyStr) = p.second;
+        auto option = fCmdLineOptions.find_nothrow(keyStr, false);
+        cout << keyStr << ":" << valueStr << ":" << typeInfoStr << ":" << (option ? option->description() : "<not found>") << endl;
+    }
+
     return 0;
 }
 

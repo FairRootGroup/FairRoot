@@ -12,10 +12,7 @@
  * @author D. Klein, A. Rybalchenko
  */
 
-#include <chrono> // WaitForEndOfStateForMs()
-
 #include "FairMQStateMachine.h"
-#include "FairMQLogger.h"
 
 FairMQStateMachine::FairMQStateMachine()
 {
@@ -27,25 +24,9 @@ FairMQStateMachine::~FairMQStateMachine()
     stop();
 }
 
-int FairMQStateMachine::GetInterfaceVersion()
+int FairMQStateMachine::GetInterfaceVersion() const
 {
     return FAIRMQ_INTERFACE_VERSION;
-}
-
-int FairMQStateMachine::GetEventNumber(std::string event)
-{
-    if (event == "INIT_DEVICE") return INIT_DEVICE;
-    if (event == "INIT_TASK") return INIT_TASK;
-    if (event == "RUN") return RUN;
-    if (event == "PAUSE") return PAUSE;
-    if (event == "STOP") return STOP;
-    if (event == "RESET_DEVICE") return RESET_DEVICE;
-    if (event == "RESET_TASK") return RESET_TASK;
-    if (event == "END") return END;
-    if (event == "ERROR_FOUND") return ERROR_FOUND;
-    LOG(ERROR) << "Requested number for non-existent event... " << event << std::endl
-               << "Supported are: INIT_DEVICE, INIT_TASK, RUN, PAUSE, STOP, RESET_DEVICE, RESET_TASK, END, ERROR_FOUND";
-    return -1;
 }
 
 bool FairMQStateMachine::ChangeState(int event)
@@ -57,79 +38,79 @@ bool FairMQStateMachine::ChangeState(int event)
             case INIT_DEVICE:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::INIT_DEVICE());
+                process_event(fair::mq::fsm::INIT_DEVICE());
                 return true;
             }
             case internal_DEVICE_READY:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::internal_DEVICE_READY());
+                process_event(fair::mq::fsm::internal_DEVICE_READY());
                 return true;
             }
             case INIT_TASK:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::INIT_TASK());
+                process_event(fair::mq::fsm::INIT_TASK());
                 return true;
             }
             case internal_READY:
             {
-                // std::lock_guard<std::mutex> lock(fChangeStateMutex); // InitTask is synchronous, until ROOT workaround is no longer needed.
-                process_event(FairMQFSM::internal_READY());
+                std::lock_guard<std::mutex> lock(fChangeStateMutex);
+                process_event(fair::mq::fsm::internal_READY());
                 return true;
             }
             case RUN:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::RUN());
+                process_event(fair::mq::fsm::RUN());
                 return true;
             }
             case PAUSE:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::PAUSE());
+                process_event(fair::mq::fsm::PAUSE());
                 return true;
             }
             case STOP:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::STOP());
+                process_event(fair::mq::fsm::STOP());
                 return true;
             }
             case RESET_DEVICE:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::RESET_DEVICE());
+                process_event(fair::mq::fsm::RESET_DEVICE());
                 return true;
             }
             case RESET_TASK:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::RESET_TASK());
+                process_event(fair::mq::fsm::RESET_TASK());
                 return true;
             }
             case internal_IDLE:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::internal_IDLE());
+                process_event(fair::mq::fsm::internal_IDLE());
                 return true;
             }
             case END:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::END());
+                process_event(fair::mq::fsm::END());
                 return true;
             }
             case ERROR_FOUND:
             {
                 std::lock_guard<std::mutex> lock(fChangeStateMutex);
-                process_event(FairMQFSM::ERROR_FOUND());
+                process_event(fair::mq::fsm::ERROR_FOUND());
                 return true;
             }
             default:
             {
                 LOG(ERROR) << "Requested state transition with an unsupported event: " << event << std::endl
-                           << "Supported are: INIT_DEVICE, INIT_TASK, RUN, PAUSE, STOP, RESET_TASK, RESET_DEVICE, END, ERROR_FOUND";
+                            << "Supported are: INIT_DEVICE, INIT_TASK, RUN, PAUSE, STOP, RESET_TASK, RESET_DEVICE, END, ERROR_FOUND";
                 return false;
             }
         }
@@ -142,7 +123,7 @@ bool FairMQStateMachine::ChangeState(int event)
     return false;
 }
 
-bool FairMQStateMachine::ChangeState(std::string event)
+bool FairMQStateMachine::ChangeState(const std::string& event)
 {
     return ChangeState(GetEventNumber(event));
 }
@@ -154,6 +135,7 @@ void FairMQStateMachine::WaitForEndOfState(int event)
         switch (event)
         {
             case INIT_DEVICE:
+            case INIT_TASK:
             case RUN:
             case RESET_TASK:
             case RESET_DEVICE:
@@ -166,8 +148,6 @@ void FairMQStateMachine::WaitForEndOfState(int event)
 
                 break;
             }
-            case INIT_TASK:
-                break; // InitTask is synchronous, until ROOT workaround is no longer needed.
             default:
                 LOG(ERROR) << "Requested state is either synchronous or does not exist.";
                 break;
@@ -179,7 +159,7 @@ void FairMQStateMachine::WaitForEndOfState(int event)
     }
 }
 
-void FairMQStateMachine::WaitForEndOfState(std::string event)
+void FairMQStateMachine::WaitForEndOfState(const std::string& event)
 {
     return WaitForEndOfState(GetEventNumber(event));
 }
@@ -191,6 +171,7 @@ bool FairMQStateMachine::WaitForEndOfStateForMs(int event, int durationInMs)
         switch (event)
         {
             case INIT_DEVICE:
+            case INIT_TASK:
             case RUN:
             case RESET_TASK:
             case RESET_DEVICE:
@@ -205,10 +186,7 @@ bool FairMQStateMachine::WaitForEndOfStateForMs(int event, int durationInMs)
                     }
                 }
                 return true;
-                break;
             }
-            case INIT_TASK:
-                break; // InitTask is synchronous, until ROOT workaround is no longer needed.
             default:
                 LOG(ERROR) << "Requested state is either synchronous or does not exist.";
                 return false;
@@ -221,7 +199,33 @@ bool FairMQStateMachine::WaitForEndOfStateForMs(int event, int durationInMs)
     return false;
 }
 
-bool FairMQStateMachine::WaitForEndOfStateForMs(std::string event, int durationInMs)
+bool FairMQStateMachine::WaitForEndOfStateForMs(const std::string& event, int durationInMs)
 {
     return WaitForEndOfStateForMs(GetEventNumber(event), durationInMs);
+}
+
+void FairMQStateMachine::SubscribeToStateChange(const std::string& key, std::function<void(const State)> callback)
+{
+    fStateChangeSignalsMap.insert({key, fStateChangeSignal.connect(callback)});
+}
+void FairMQStateMachine::UnsubscribeFromStateChange(const std::string& key)
+{
+    fStateChangeSignalsMap.at(key).disconnect();
+    fStateChangeSignalsMap.erase(key);
+}
+
+int FairMQStateMachine::GetEventNumber(const std::string& event)
+{
+    if (event == "INIT_DEVICE") return INIT_DEVICE;
+    if (event == "INIT_TASK") return INIT_TASK;
+    if (event == "RUN") return RUN;
+    if (event == "PAUSE") return PAUSE;
+    if (event == "STOP") return STOP;
+    if (event == "RESET_DEVICE") return RESET_DEVICE;
+    if (event == "RESET_TASK") return RESET_TASK;
+    if (event == "END") return END;
+    if (event == "ERROR_FOUND") return ERROR_FOUND;
+    LOG(ERROR) << "Requested number for non-existent event... " << event << std::endl
+               << "Supported are: INIT_DEVICE, INIT_TASK, RUN, PAUSE, STOP, RESET_DEVICE, RESET_TASK, END, ERROR_FOUND";
+    return -1;
 }

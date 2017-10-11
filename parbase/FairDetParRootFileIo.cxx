@@ -27,7 +27,7 @@
 #include "FairRtdbRun.h"       // for FairParVersion, FairRtdbRun
 #include "FairRuntimeDb.h"     // for FairRuntimeDb
 
-#include "Riosfwd.h"    // for ostream
+#include <iosfwd>       // for ostream
 #include "TDirectory.h" // for TDirectory, gDirectory
 #include "TKey.h"       // for TKey
 #include "TROOT.h"      // for TROOT, gROOT

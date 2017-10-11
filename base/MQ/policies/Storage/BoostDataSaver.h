@@ -24,66 +24,57 @@
 // FairRoot
 #include "FairMQMessage.h"
 
-typedef boost::archive::binary_iarchive TBoostIn;
-typedef boost::archive::binary_oarchive TBoostOut;
-
-template <typename TPayload, typename TArchiveIn=TBoostIn, typename TArchiveOut=TBoostOut>
+template <typename TPayload, typename TArchiveIn = boost::archive::binary_iarchive, typename TArchiveOut = TBoboost::archive::binary_oarchiveostOut>
 class BoostDataSaver
 {
   public:
-    typedef std::vector<TPayload> TObjArray;
-    typedef std::vector<TObjArray> TObjArrContainer;
-
     BoostDataSaver() {}
     virtual ~BoostDataSaver() {}
 
-    virtual void InitOutputFile(){}
+    virtual void InitOutputFile() {}
 
-    void Write(std::ofstream& outfile, TPayload* ObjArr, long sizeArr=1)
+    void Write(std::ofstream& outfile, TPayload* objArr, long sizeArr = 1)
     {
-        TObjArray DataVector(ObjArr, ObjArr +sizeArr);
-        TArchiveOut OutArchive(outfile);
-        OutArchive << DataVector;
+        std::vector<TPayload> dataVector(objArr, objArr + sizeArr);
+        TArchiveOut outArchive(outfile);
+        outArchive << dataVector;
     }
 
-    void Write(std::ofstream& outfile, TObjArray DataVector)
+    void Write(std::ofstream& outfile, std::vector<TPayload> dataVector)
     {
-        TArchiveOut OutArchive(outfile);
-        OutArchive << DataVector;
+        TArchiveOut outArchive(outfile);
+        outArchive << dataVector;
     }
 
     void Write(std::ofstream& outfile, FairMQMessage* msg)
     {
-        //std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
-        //outfile<<msgStr;
-        //outfile<<msg->GetData();
-        TObjArray objarr;
+        std::vector<TPayload> objArr;
         std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
         std::istringstream ibuffer(msgStr);
-        TArchiveIn InputArchive(ibuffer);
+        TArchiveIn inputArchive(ibuffer);
         try
         {
-            InputArchive >> objarr; // get input Archive
+            inputArchive >> objArr;
         }
         catch (boost::archive::archive_exception& e)
         {
             MQLOG(ERROR) << e.what();
         }
-        TArchiveOut OutArchive(outfile);
-        OutArchive << objarr;
+        TArchiveOut outArchive(outfile);
+        outArchive << objArr;
     }
 
-    TObjArrContainer Read(std::ifstream& infile)
+    std::vector<std::vector<TPayload>> Read(std::ifstream& infile)
     {
-        TObjArrContainer DataContainer;
-        while(infile.peek()!= EOF && !infile.eof())
+        std::vector<std::vector<TPayload>> dataContainer;
+        while (infile.peek()!= EOF && !infile.eof())
         {
-            TArchiveIn InArchive(infile);
-            TObjArray temp;
-            InArchive >> temp;
-            DataContainer.push_back(temp);
+            TArchiveIn inArchive(infile);
+            std::vector<TPayload> temp;
+            inArchive >> temp;
+            dataContainer.push_back(temp);
         }
-        return DataContainer;
+        return dataContainer;
     }
 };
 

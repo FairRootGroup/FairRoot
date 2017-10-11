@@ -11,7 +11,7 @@
 #include "FairRootManager.h"      // for FairRootManager
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi
 #include "FairTestDetectorHit.h"  // for FairTestDetectorHit
-#include "Riosfwd.h"              // for ostream
+#include <iosfwd>                 // for ostream
 #include "TClonesArray.h"         // for TClonesArray
 #include "TMath.h"                // for Sqrt
 #include "TVector3.h"             // for TVector3
@@ -97,9 +97,10 @@ void FairTestDetectorRecoTask::Exec(Option_t* /*opt*/)
         TVector3 dpos(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
 
         FairTestDetectorHit* hit = new ((*fHitArray)[ipnt]) FairTestDetectorHit(-1, -1, pos, dpos);
+        if ( fStreamProcessing == kFALSE )
+          hit->AddLink(FairLink(-1, FairRootManager::Instance()->GetEntryNr(), FairRootManager::Instance()->GetBranchId("FairTestDetectorDigi"), ipnt));
         hit->SetTimeStamp(digi->GetTimeStamp());
         hit->SetTimeStampError(digi->GetTimeStampError());
-        // hit->SetLink(FairLink("FairTestDetectorDigi", ipnt));
     }
 }
 // -------------------------------------------------------------------------

@@ -10,7 +10,7 @@
 
 #include "TObject.h"                    // for TObject
 
-#include "Riosfwd.h"                    // for fstream
+#include <iosfwd>                       // for fstream
 #include "Rtypes.h"                     // for FairGeoShapes::Class, etc
 #include "TString.h"                    // for TString
 

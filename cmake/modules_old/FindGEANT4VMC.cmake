@@ -26,6 +26,7 @@ FIND_PATH(GEANT4VMC_INCLUDE_DIR NAMES TG4G3Units.h PATHS
   ${SIMPATH}/transport/geant4_vmc/include/geant4vmc
   ${SIMPATH}/transport/geant4_vmc/include
   ${SIMPATH}/include/geant4vmc
+  ${GEANT4_VMC_ROOT}/include/geant4vmc
    NO_DEFAULT_PATH
 )
 
@@ -55,6 +56,7 @@ FIND_PATH(GEANT4VMC_MACRO_DIR NAMES g4libs.C PATHS
   ${SIMPATH}/transport/geant4_vmc/examples/macro/
   ${SIMPATH}/transport/geant4_vmc/examples/macro/
   ${SIMPATH}/share/geant4_vmc/macro/
+  ${GEANT4_VMC_ROOT}/share/examples/macro/
   NO_DEFAULT_PATH
 )
 
@@ -64,6 +66,7 @@ FIND_PATH(GEANT4VMC_LIBRARY_DIR NAMES libgeant4vmc.so libgeant4vmc.dylib PATHS
   ${SIMPATH}/transport/geant4_vmc/lib/tgt_linuxx8664gcc
   ${SIMPATH}/transport/geant4_vmc/lib
   ${SIMPATH}/lib
+  ${GEANT4_VMC_ROOT}/lib/
   NO_DEFAULT_PATH
 )
 
@@ -93,6 +96,7 @@ FIND_PATH(VGM_LIBRARY_DIR NAMES libBaseVGM.so libBaseVGM.dylib PATHS
   ${SIMPATH}/transport/vgm/lib/Linux-icc
   ${SIMPATH}/transport/vgm/lib
   ${SIMPATH}/lib
+  ${VGM_ROOT}/lib
   NO_DEFAULT_PATH
 )
 

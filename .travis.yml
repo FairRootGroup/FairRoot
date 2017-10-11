@@ -5,46 +5,35 @@ matrix:
         - os: osx
           compiler: clang
           osx_image: xcode7.3
-          env: FAIRSOFT_VERSION=may16p1_root5
-        - os: osx
-          compiler: clang
-          osx_image: xcode7.3
           env: FAIRSOFT_VERSION=may16p1_root6
-#        - os: osx
-#          compiler: clang
-#          osx_image: beta-xcode6.2
-#          env: FAIRSOFT_VERSION=nov15p7_root5
-#        - os: osx
-#          compiler: clang
-#          osx_image: beta-xcode6.2
-#          env: FAIRSOFT_VERSION=nov15p7_root6
         - os: linux
           compiler: gcc
           dist: trusty
           sudo: required
-          env: FAIRSOFT_VERSION=may16p1_root5
-        - os: linux
-          compiler: gcc
-          dist: trusty
-          sudo: required
-          env: FAIRSOFT_VERSION=may16p1_root6
+          env: FAIRSOFT_VERSION=mar17_root6
 
 before_install:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
         sudo apt-get update -q;
-        sudo apt-get install -y cmake cmake-data g++ gcc gfortran build-essential make patch sed 
-                                libx11-dev libxft-dev libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev 
-                                ncurses-dev libcurl4-openssl-dev curl bzip2 gzip unzip tar subversion git xutils-dev flex 
-                                bison lsb-release python-dev libc6-dev-i386 libxml2-dev wget libssl-dev 
+        sudo apt-get install -y cmake cmake-data g++ gcc gfortran build-essential make patch sed
+                                libx11-dev libxft-dev libxext-dev libxpm-dev libxmu-dev libglu1-mesa-dev libgl1-mesa-dev
+                                ncurses-dev libcurl4-openssl-dev curl bzip2 gzip unzip tar subversion git xutils-dev flex
+                                bison lsb-release python-dev libc6-dev-i386 libxml2-dev wget libssl-dev
                                 automake autoconf libtool;
         wget http://fairroot.gsi.de/downloads/fairsoft-${FAIRSOFT_VERSION}_1.0_amd64.deb;
         sudo dpkg -i fairsoft-${FAIRSOFT_VERSION}_1.0_amd64.deb;
+        export PATH=/opt/fairsoft/${FAIRSOFT_VERSION}/bin:$PATH;
       fi
     - if test "$TRAVIS_OS_NAME" = "osx"; then
         env;
         brew update;
         if test "${_system_version}" = "10.11"; then
-          brew install gcc;
+          brew install --force-bottle gcc@6;
+          sudo ln -s $(brew --prefix gcc@6)/bin/gfortran-6 /usr/local/bin/gfortran;
+          target=$(dirname $(greadlink -f $(gfortran -print-file-name=libgfortran.dylib)));
+          link=/usr/local/opt/gcc/lib/gcc/6;
+          sudo mkdir -p $(dirname $link);
+          sudo ln -s $target $link;
         fi;
         if test "${_system_version}" = "10.9"; then
           brew tap homebrew/versions;
@@ -75,8 +64,12 @@ before_script:
         echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\" " >> Dart.cfg;
         echo "export FAIRSOFT_VERSION=\${FAIRSOFT_VERSION}" >> Dart.cfg;
       fi
-    - echo "export GIT_BRANCH=\${TRAVIS_COMMIT}" >> Dart.cfg
-    - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg; 
+    - if test "$TRAVIS_PULL_REQUEST" = "false"; then
+        echo "export GIT_BRANCH=\${TRAVIS_COMMIT}" >> Dart.cfg;
+      else
+        echo "export GIT_BRANCH=PR#\${TRAVIS_PULL_REQUEST}_\${TRAVIS_PULL_REQUEST_BRANCH}" >> Dart.cfg;
+      fi
+    - echo "export SIMPATH=/opt/fairsoft/\${FAIRSOFT_VERSION}" >> Dart.cfg;
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
     - echo "export SITE=\"Travis CI\" " >> Dart.cfg

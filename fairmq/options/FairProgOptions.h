@@ -24,6 +24,7 @@
 #include <iostream>
 #include <fstream>
 #include <iterator>
+#include <mutex>
 #include <tuple>
 
 /*
@@ -63,10 +64,24 @@ class FairProgOptions
     FairProgOptions();
     virtual ~FairProgOptions();
 
+    auto GetPropertyKeys() const -> std::vector<std::string>
+    {
+        std::lock_guard<std::mutex> lock{fConfigMutex};
+
+        std::vector<std::string> result;
+
+        for (const auto& it : fVarMap)
+        {
+            result.push_back(it.first.c_str());
+        }
+
+        return result;
+    }
+
     //  add options_description
-    int AddToCmdLineOptions(const po::options_description& optDesc, bool visible = true);
-    int AddToCfgFileOptions(const po::options_description& optDesc, bool visible = true);
-    int AddToEnvironmentOptions(const po::options_description& optDesc);
+    int AddToCmdLineOptions(const po::options_description optDesc, bool visible = true);
+    int AddToCfgFileOptions(const po::options_description optDesc, bool visible = true);
+    int AddToEnvironmentOptions(const po::options_description optDesc);
     po::options_description& GetCmdLineOptions();
     po::options_description& GetCfgFileOptions();
     po::options_description& GetEnvironmentOptions();
@@ -77,6 +92,8 @@ class FairProgOptions
     template<typename T>
     T GetValue(const std::string& key) const
     {
+        std::unique_lock<std::mutex> lock(fConfigMutex);
+
         T val = T();
         try
         {
@@ -99,21 +116,47 @@ class FairProgOptions
         return val;
     }
 
-    // convert value to string that corresponds to the key
-    std::string GetStringValue(const std::string& key);
+    // Given a key, convert the variable value to string
+    std::string GetStringValue(const std::string& key)
+    {
+        std::unique_lock<std::mutex> lock(fConfigMutex);
+
+        std::string valueStr;
+        try
+        {
+            if (fVarMap.count(key))
+            {
+                valueStr = FairMQ::ConvertVariableValue<FairMQ::ToString>().Run(fVarMap.at(key));
+            }
+        }
+        catch (std::exception& e)
+        {
+            LOG(ERROR) << "Exception thrown for the key '" << key << "'";
+            LOG(ERROR) << e.what();
+        }
+
+        return valueStr;
+    }
+
+    int Count(const std::string& key) const
+    {
+        std::unique_lock<std::mutex> lock(fConfigMutex);
+
+        return fVarMap.count(key);
+    }
 
     //restrict conversion to fundamental types
     template<typename T>
     T ConvertTo(const std::string& strValue)
     {
-        if (std::is_arithmetic<T>::value) 
+        if (std::is_arithmetic<T>::value)
         {
             std::istringstream iss(strValue);
             T val;
             iss >> val;
             return val;
-        } 
-        else 
+        }
+        else
         {
             LOG(ERROR) << "the provided string " << strValue << " cannot be converted in the requested type. The target types must be arithmetic types";
         }
@@ -122,8 +165,8 @@ class FairProgOptions
     const po::variables_map& GetVarMap() const { return fVarMap; }
 
     // boost prog options parsers
-    int ParseCmdLine(const int argc, char** argv, const po::options_description& desc, po::variables_map& varmap, bool allowUnregistered = false);
-    int ParseCmdLine(const int argc, char** argv, const po::options_description& desc, bool allowUnregistered = false);
+    int ParseCmdLine(const int argc, char const* const* argv, const po::options_description& desc, po::variables_map& varmap, bool allowUnregistered = false);
+    int ParseCmdLine(const int argc, char const* const* argv, const po::options_description& desc, bool allowUnregistered = false);
 
     int ParseCfgFile(const std::string& filename, const po::options_description& desc, po::variables_map& varmap, bool allowUnregistered = false);
     int ParseCfgFile(const std::string& filename, const po::options_description& desc, bool allowUnregistered = false);
@@ -132,9 +175,10 @@ class FairProgOptions
 
     int ParseEnvironment(const std::function<std::string(std::string)>&);
 
-    virtual void ParseAll(const int argc, char** argv, bool allowUnregistered = false) = 0;// TODO change return type to bool and propagate to executable
+    virtual void ParseAll(const int argc, char const* const* argv, bool allowUnregistered = false) = 0;// TODO change return type to bool and propagate to executable
 
     virtual int PrintOptions();
+    virtual int PrintOptionsRaw();
     int PrintHelp() const;
 
   protected:
@@ -153,8 +197,10 @@ class FairProgOptions
 
     // Description which is printed in help command line
     // to handle logger severity
-    std::map<std::string, FairMQ::severity_level> fSeverityMap;
+    std::map<std::string, fair::mq::logger::SeverityLevel> fSeverityMap;
     po::options_description fVisibleOptions;
+
+    mutable std::mutex fConfigMutex;
 
     std::string fVerbosityLevel;
     bool fUseConfigFile;
@@ -169,15 +215,15 @@ class FairProgOptions
     }
 
     template<typename T>
-    void replace(std::map<std::string, po::variable_value>& vm, const std::string& opt, const T& val)
+    void replace(std::map<std::string, po::variable_value>& vm, const std::string& key, const T& val)
     {
-        vm[opt].value() = boost::any(val);
+        vm[key].value() = boost::any(val);
     }
 
   private:
     // Methods below are helper functions used in the PrintOptions method
-    typedef std::tuple<std::string, std::string,std::string, std::string> VarValInfo_t;
-    typedef std::map<std::string, VarValInfo_t> MapVarValInfo_t;
+    using VarValInfo_t = std::tuple<std::string, std::string, std::string, std::string>;
+    using MapVarValInfo_t = std::map<std::string, VarValInfo_t>;
 
     VarValInfo_t GetVariableValueInfo(const po::variable_value& varValue);
 

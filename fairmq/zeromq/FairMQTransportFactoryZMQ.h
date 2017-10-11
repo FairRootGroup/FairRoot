@@ -19,32 +19,39 @@
 #include <string>
 
 #include "FairMQTransportFactory.h"
-#include "FairMQContextZMQ.h"
 #include "FairMQMessageZMQ.h"
 #include "FairMQSocketZMQ.h"
 #include "FairMQPollerZMQ.h"
+#include "FairMQRegionZMQ.h"
+#include <options/FairMQProgOptions.h>
 
 class FairMQTransportFactoryZMQ : public FairMQTransportFactory
 {
   public:
-    FairMQTransportFactoryZMQ();
+    FairMQTransportFactoryZMQ(const std::string& id = "", const FairMQProgOptions* config = nullptr);
+    FairMQTransportFactoryZMQ(const FairMQTransportFactoryZMQ&) = delete;
+    FairMQTransportFactoryZMQ operator=(const FairMQTransportFactoryZMQ&) = delete;
 
-    virtual FairMQMessagePtr CreateMessage() const;
-    virtual FairMQMessagePtr CreateMessage(const size_t size) const;
-    virtual FairMQMessagePtr CreateMessage(void* data, const size_t size, fairmq_free_fn* ffn, void* hint = NULL) const;
+    ~FairMQTransportFactoryZMQ() override;
 
-    virtual FairMQSocketPtr CreateSocket(const std::string& type, const std::string& name, const int numIoThreads, const std::string& id = "") const;
+    FairMQMessagePtr CreateMessage() const override;
+    FairMQMessagePtr CreateMessage(const size_t size) const override;
+    FairMQMessagePtr CreateMessage(void* data, const size_t size, fairmq_free_fn* ffn, void* hint = nullptr) const override;
+    FairMQMessagePtr CreateMessage(FairMQRegionPtr& region, void* data, const size_t size) const override;
 
-    virtual FairMQPollerPtr CreatePoller(const std::vector<FairMQChannel>& channels) const;
-    virtual FairMQPollerPtr CreatePoller(const std::unordered_map<std::string, std::vector<FairMQChannel>>& channelsMap, const std::vector<std::string>& channelList) const;
-    virtual FairMQPollerPtr CreatePoller(const FairMQSocket& cmdSocket, const FairMQSocket& dataSocket) const;
+    FairMQSocketPtr CreateSocket(const std::string& type, const std::string& name) const override;
 
-    virtual FairMQ::Transport GetType() const;
+    FairMQPollerPtr CreatePoller(const std::vector<FairMQChannel>& channels) const override;
+    FairMQPollerPtr CreatePoller(const std::vector<const FairMQChannel*>& channels) const override;
+    FairMQPollerPtr CreatePoller(const std::unordered_map<std::string, std::vector<FairMQChannel>>& channelsMap, const std::vector<std::string>& channelList) const override;
+    FairMQPollerPtr CreatePoller(const FairMQSocket& cmdSocket, const FairMQSocket& dataSocket) const override;
 
-    virtual ~FairMQTransportFactoryZMQ() {};
+    FairMQRegionPtr CreateRegion(const size_t size) const override;
 
+    FairMQ::Transport GetType() const override;
   private:
     static FairMQ::Transport fTransportType;
+    void* fContext;
 };
 
 #endif /* FAIRMQTRANSPORTFACTORYZMQ_H_ */

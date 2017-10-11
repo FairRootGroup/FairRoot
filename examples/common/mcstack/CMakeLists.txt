@@ -23,12 +23,17 @@ Set(LINK_DIRECTORIES
  
 Link_Directories(${LINK_DIRECTORIES})
 
+Set(HEADERS
+  FairDetectorList.h
+  FairMCTrack.h
+  FairStack.h
+)
+
 Set(SRCS
   FairStack.cxx 
   FairMCTrack.cxx
 )
 
-Set(HEADERS )
 Set(LINKDEF MCStackLinkDef.h)
 Set(LIBRARY_NAME MCStack)
 Set(DEPENDENCIES Base EG Physics Core)

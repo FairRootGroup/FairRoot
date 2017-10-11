@@ -10,7 +10,7 @@
 
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
 #include "TObject.h"                    // for TObject
 #include "TString.h"                    // for TString
@@ -35,11 +35,6 @@ class TTree;
  * The method TimeOut is used to break the processing if for example always the same data is requested.
  */
 
-#if defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#endif
-
 class BinaryFunctor : public std::binary_function<FairTimeStamp* ,double, bool>
 {
   public :
@@ -51,10 +46,6 @@ class BinaryFunctor : public std::binary_function<FairTimeStamp* ,double, bool>
     virtual ~BinaryFunctor() {};
 
 };
-
-#if defined(__GNUC__) || defined(__GNUG__)
-#pragma GCC diagnostic pop
-#endif
 
 /**
  * \class StopTime

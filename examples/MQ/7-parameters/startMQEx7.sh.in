@@ -10,5 +10,5 @@ xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/7-paramete
 PARAMETERSERVER="parmq-server"
 PARAMETERSERVER+=" --id parmq-server"
 PARAMETERSERVER+=" --mq-config $parmqconfig"
-PARAMETERSERVER+=" --first-input-name @CMAKE_SOURCE_DIR@/examples/MQ/7-parameters/mqexample7_param.root"
+PARAMETERSERVER+=" --first-input-name @CMAKE_BINARY_DIR@/examples/MQ/7-parameters/mqexample7_param.root"
 xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PARAMETERSERVER &

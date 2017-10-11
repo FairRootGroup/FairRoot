@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -16,6 +16,7 @@
 #define FAIRMQBENCHMARKSAMPLER_H_
 
 #include <string>
+#include <thread>
 
 #include "FairMQDevice.h"
 
@@ -29,6 +30,9 @@ class FairMQBenchmarkSampler : public FairMQDevice
     FairMQBenchmarkSampler();
     virtual ~FairMQBenchmarkSampler();
 
+    void PreRun() override;
+    void PostRun() override;
+
     void ResetMsgCounter();
 
   protected:
@@ -36,11 +40,13 @@ class FairMQBenchmarkSampler : public FairMQDevice
     int fMsgSize;
     int fMsgCounter;
     int fMsgRate;
-    uint64_t fNumMsgs;
+    uint64_t fNumIterations;
+    uint64_t fMaxIterations;
     std::string fOutChannelName;
+    std::thread fResetMsgCounter;
 
-    virtual void InitTask();
-    virtual void Run();
+    virtual void InitTask() override;
+    virtual void Run() override;
 };
 
 #endif /* FAIRMQBENCHMARKSAMPLER_H_ */

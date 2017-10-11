@@ -13,7 +13,7 @@
 
 #include "FairMesh.h"
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TMath.h"                      // for Sqrt
 #include "TString.h"                    // for TString, operator+
 

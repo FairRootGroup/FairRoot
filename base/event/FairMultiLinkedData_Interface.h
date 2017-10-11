@@ -14,7 +14,7 @@
 #include "FairMultiLinkedData.h"
 #include "FairRootManager.h"
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Int_t, Bool_t, kFALSE, etc
 #include "TString.h"                    // for TString
 #include "TRef.h"
@@ -44,7 +44,7 @@ class FairMultiLinkedData_Interface : public  TObject
     virtual FairLink        	GetLink(Int_t pos) const;         	///< returns the FairLink at the given position
     virtual FairMultiLinkedData GetLinksWithType(Int_t type) const; ///< returns all FairLinks with the corresponding type
     virtual FairLink            GetEntryNr() const;
-    virtual FairMultiLinkedData* 		GetPointerToLinks() const {	return fLink;}
+    FairMultiLinkedData* 	GetPointerToLinks() const { return fLink;}
 
     virtual std::vector<FairLink> GetSortedMCTracks();
 
@@ -76,15 +76,18 @@ class FairMultiLinkedData_Interface : public  TObject
     }                                                     ///< Output
 
   protected:
-
-    Int_t fVerbose; //!
-    Bool_t fInsertHistory; //!
     FairMultiLinkedData* fLink;
-
     FairMultiLinkedData* CreateFairMultiLinkedData();
 
     ClassDef(FairMultiLinkedData_Interface, 5);
 };
+
+inline
+FairMultiLinkedData_Interface::FairMultiLinkedData_Interface()
+  :TObject(), fLink(NULL)
+{
+}
+
 
 /**\fn virtual void FairMultiLinkedData_Interface::SetLinks(Int_t type, std::vector<Int_t> links)
  * \param type as Int_t gives one type of source data for all indices

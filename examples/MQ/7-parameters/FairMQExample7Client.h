@@ -32,6 +32,8 @@ class FairMQExample7Client : public FairMQDevice
   private:
     int fRunId;
     std::string fParameterName;
+    uint64_t fMaxIterations;
+    uint64_t fNumIterations;
 };
 
 #endif /* FAIRMQEXAMPLE7CLIENT_H_ */

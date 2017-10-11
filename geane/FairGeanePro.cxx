@@ -17,7 +17,7 @@
 #include "FairTrackParH.h"              // for FairTrackParH
 #include "FairTrackParP.h"              // for FairTrackParP
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TDatabasePDG.h"               // for TDatabasePDG
 #include "TGeant3.h"                    // for TGeant3, Ertrio_t
 #include "TGeoTorus.h"                  // for TGeoTorus

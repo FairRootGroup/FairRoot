@@ -17,7 +17,7 @@
 #include "FairLink.h"                   // for FairLink, operator<<
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 
 #include <iostream>                     // for operator<<, ostream, cout, etc
 
@@ -195,7 +195,7 @@ void FairMCDataCrawler::GetNextStage(FairMultiLinkedData& startStage, Int_t stop
       if (fVerbose > 0) {
 //        std::cout << "TempStage Start";
         std::cout << " // ";
-        actualLink.Print();
+	std::cout << actualLink;
         std::cout << " --> " << *tempStage;
       }
       if (tempStage->GetNLinks() == 0) {

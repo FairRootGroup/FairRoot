@@ -72,10 +72,6 @@ FairRunOnline::FairRunOnline()
    fIsInitialized(kFALSE),
    fStatic(kFALSE),
    fField(0),
-   fFolder(new TFolder("HISTO", "HISTO")),
-   fGenerateHtml(kFALSE),
-   fHistFileName(""),
-   fRefreshRate(1000),
    fNevents(0),
    fServer(NULL),
    fServerRefreshRate(0)
@@ -91,10 +87,6 @@ FairRunOnline::FairRunOnline(FairSource* source)
    fIsInitialized(kFALSE),
    fStatic(kFALSE),
    fField(0),
-   fFolder(new TFolder("HISTO", "HISTO")),
-   fGenerateHtml(kFALSE),
-   fHistFileName(""),
-   fRefreshRate(1000),
    fNevents(0),
    fServer(NULL),
    fServerRefreshRate(0)
@@ -117,10 +109,6 @@ FairRunOnline::~FairRunOnline()
       gGeoManager->GetListOfShapes()->Delete();
     }
     delete gGeoManager;
-  }
-  if(fFolder) {
-    fFolder->Delete();
-    delete fFolder;
   }
   delete fServer;
 }
@@ -312,11 +300,6 @@ Int_t FairRunOnline::EventLoop()
   fRootManager->DeleteOldWriteoutBufferData();
   fTask->FinishEvent();
   fNevents += 1;
-  if(fGenerateHtml && 0 == (fNevents%fRefreshRate))
-  {
-    WriteObjects();
-    GenerateHtml();
-  }
   if(fServer && 0 == (fNevents%fServerRefreshRate))
   {
     fServer->ProcessRequests();
@@ -415,57 +398,9 @@ void FairRunOnline::Finish()
   fRootManager->Write();
   fRootManager->GetSource()->Close();
 
-  if(fGenerateHtml) {
-    WriteObjects();
-    GenerateHtml();
-  }
-
   fRootManager->CloseOutFile();
 }
-
 //_____________________________________________________________________________
-void FairRunOnline::SetGenerateHtml(Bool_t flag, const char* histFileName, Int_t refreshRate)
-{
-  fGenerateHtml = flag;
-  fHistFileName = TString(histFileName);
-  fRefreshRate = refreshRate;
-}
-//_____________________________________________________________________________
-
-
-
-//_____________________________________________________________________________
-void FairRunOnline::GenerateHtml()
-{
-  TString htmlName = TString(fHistFileName);
-  TString rootName = TString(fHistFileName);
-  Int_t last = htmlName.Last('/');
-  if(-1 != last) {
-    rootName.Remove(0, last+1);
-  }
-  htmlName.Remove(htmlName.Length()-4, htmlName.Length()-1);
-  htmlName += TString("html");
-
-  std::ofstream* ofile = new std::ofstream(htmlName);
-  (*ofile) << "<?xml version=\"1.0\" encoding=\"utf-8\"?>" << endl
-           << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"" << endl
-           << "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1transitional.dtd\">" << endl
-           << "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"en\">" << endl
-           << "<head>" << endl
-           << "<title>Read a ROOT file</title>" << endl
-           << "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge; text/html\">" << endl
-           << "<script type=\"text/javascript\" src=\"http://root.cern.ch/js/3.2/scripts/JSRootCore.js\"></script>" << endl
-           << "</head>" << endl
-           << "<body onload=\"JSROOT.BuildSimpleGUI()\">" << endl
-           << "<div id=\"simpleGUI\"" << endl
-           << "files=\"" << rootName << "\"></div>" << endl
-           << "</body>" << endl
-           << "</html>" << endl;
-  ofile->close();
-  delete ofile;
-}
-//_____________________________________________________________________________
-
 
 //_____________________________________________________________________________
 void FairRunOnline::ActivateHttpServer(Int_t refreshRate, Int_t httpServer)
@@ -483,69 +418,10 @@ void FairRunOnline::RegisterHttpCommand(TString name, TString command)
 {
   if(fServer)
   {
-#if ROOT_VERSION_CODE > 336416
-      TString path = "/Objects/HISTO";
-      fServer->RegisterCommand(name, path + command);
-#else
-      LOG(WARNING)<<"THttp->RegisterCommand() only implemented in ROOT above version 5.34/26. Skip call of this function." << FairLogger::endl;
-#endif      
+    TString path = "/Objects/HISTO";
+    fServer->RegisterCommand(name, path + command);
   }
 }
-//_____________________________________________________________________________
-
-
-//_____________________________________________________________________________
-void FairRunOnline::WriteObjects()
-{
-  TDirectory *oldDir = gDirectory;
-
-  TFile *file = TFile::Open(fHistFileName, "RECREATE");
-
-  // Create iterator with the folder content
-  TIter iter(fFolder->GetListOfFolders());
-
-  // Pointer to an object
-  TObject* object;
-
-  // Class name of the object
-  TString className;
-
-  // Histogram pointers
-  TH1* h1;
-  TH2* h2;
-
-  // Loop over objects in the folder
-  while((object = iter())) {
-
-    // Get class name
-    className = object->ClassName();
-
-    // Recognise objects
-    if(0 == className.CompareTo("TH1F")) {
-      // If a histogram - plot it and save canvas
-      h1 = static_cast<TH1F*>(object);
-      h1->Write();
-    } else if(0 == className.CompareTo("TH2F")) {
-      // If a histogram - plot it and save canvas
-      h2 = static_cast<TH2F*>(object);
-      h2->Write();
-    } else if(0 == className.CompareTo("TH1D")) {
-      // If a histogram - plot it and save canvas
-      h1 = static_cast<TH1D*>(object);
-      h1->Write();
-    } else if(0 == className.CompareTo("TH2D")) {
-      // If a histogram - plot it and save canvas
-      h2 = static_cast<TH2D*>(object);
-      h2->Write();
-    }
-  }
-
-  file->Close();
-
-  oldDir->cd();
-}
-//_____________________________________________________________________________
-
 //_____________________________________________________________________________
 
 
@@ -581,9 +457,6 @@ void FairRunOnline::AddObject(TObject* object)
     if(NULL == object)
     {
         return;
-    }
-    if(fFolder) {
-        fFolder->Add(object);
     }
     if(fServer) {
         TString classname = TString(object->ClassName());

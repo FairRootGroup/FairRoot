@@ -13,20 +13,21 @@
 # and PANDAROOT.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.6.0 FATAL_ERROR)
 
 ### CMP0025   Compiler id for Apple Clang is now AppleClang.
 ### CMP0042   MACOSX_RPATH is enabled by default.
 
 foreach(p
   CMP0025 # CMake 3.0
+  CMP0028 # double colon for imported and alias targets
   CMP0042 # CMake 3.0
+  CMP0054 # Only interpret ``if()`` arguments as variables or keywords when unquoted.
   )
   if(POLICY ${p})
   cmake_policy(SET ${p} NEW)
   endif()
 endforeach()
-
 
 # Set name of our project to "FAIRROOT". Has to be done
 # after check of cmake version
@@ -37,6 +38,24 @@ project(FAIRROOT)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
 
+if(APPLE)
+  # Configure RPATH entries on macOS
+  # https://cmake.org/Wiki/CMake_RPATH_handling#Always_full_RPATH
+  set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+  list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+  if("${isSystemDir}" STREQUAL "-1")
+    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+  endif()
+endif()
+
+if(CMAKE_GENERATOR STREQUAL "Ninja" AND
+  ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9) OR
+   (CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.5)))
+  # Force colored warnings in Ninja's output, if the compiler has -fdiagnostics-color support.
+  # Rationale in https://github.com/ninja-build/ninja/issues/814
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always")
+endif()
+
 SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 
 # Check if the compiler support specific C++11 features
@@ -45,14 +64,38 @@ SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
 include(CheckCXX11Features)
 
+# FairRoot only uses C++11 or later, so we need an compiler which supports C++11
+# Check if the used compiler support C++11. If not stop with an error message
+If(NOT _HAS_CXX11_FLAG)
+  Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11. CbmRoot can only be compiled with compilers supporting C++11. Please install such a compiler.")
+EndIf()
+
+
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
 
+# COmpile TIme REducer helper
+include(cotire)
+
 #Check the compiler and set the compile and link flags
 Check_Compiler()
+
+# Check also if FairSoft has been compiled with C++11 or C++14 support
+# If FairSoft is used the compiler flags provided by fairsoft-config
+# are added to the variable CMAKE_CXX_FLAGS.
+# If alibuild is used the compiler flags are passed on the command line
+# and are also added to CMAKE_CXX_FLAGS.
+# So check if CMAKE_CXX_FLAGS has the compiler flags -std=c++11 or -std=c++14
+String(FIND ${CMAKE_CXX_FLAGS} "-std=c++11" POS_C++11)
+If(${POS_C++11} EQUAL -1)
+  String(FIND ${CMAKE_CXX_FLAGS} "-std=c++14" POS_C++11)
+  If(${POS_C++11} EQUAL -1)
+    Message(FATAL_ERROR "FairSoft wasn't compiled with c++11 or c++14 support. Please recompile FairSoft with a compiler which supports at least c++11.")
+  EndIf()
+EndIf()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
@@ -88,14 +131,15 @@ ENDIF(NOT UNIX)
 
 #Check if necessary environment variables are set
 #If not stop execution unless modular build is activated
-Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
-IF(NOT FAIRROOT_MODULAR_BUILD)
+#Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
+#IF(NOT FAIRROOT_MODULAR_BUILD)
+If(FAIRSOFT_CONFIG)
   IF(NOT DEFINED ENV{SIMPATH})
     MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
   ENDIF(NOT DEFINED ENV{SIMPATH})
   STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
   SET(SIMPATH $ENV{SIMPATH})
-endif(NOT FAIRROOT_MODULAR_BUILD)
+endif()
 
 # Check if the external packages are installed into a separate install
 # directory
@@ -106,7 +150,8 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
-find_package(ROOT 5.32.00 REQUIRED)
+# FairRoot only supports ROOT6, so check which version is available 
+find_package(ROOT 6.00.00 REQUIRED)
 find_package(Pythia6)
 find_package(Pythia8)
 
@@ -114,7 +159,7 @@ if(FAIRROOT_MODULAR_BUILD)
   # Geant3, Geant4 installed via cmake
   Message(STATUS "Looking for GEANT3...")
   Find_Package(Geant3)
-  # Fill the variables needed to create the config script  
+  # Fill the variables needed to create the config script
   If(Geant3_DIR)
     Set(GEANT3_INCLUDE_DIR ${Geant3_INCLUDE_DIRS})
     Set(GEANT3_LIBRARIES ${Geant3_LIBRARIES})
@@ -155,7 +200,7 @@ if(FAIRROOT_MODULAR_BUILD)
     Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${GEANT4VMC_LIBRARY_DIR})
     Set(GEANT4VMC_SHARE_DIR "${Geant4VMC_DIR}/../../share")
     Find_Path(GEANT4VMC_MACRO_DIR NAMES g4libs.C PATHS
-       ${GEANT4VMC_SHARE_DIR}/Geant4VMC-3.3.0/examples/macro
+       ${GEANT4VMC_SHARE_DIR}/Geant4VMC-${Geant4VMC_VERSION}/examples/macro
        NO_DEFAULT_PATH
     )
     Set(GEANT4VMC_FOUND TRUE)
@@ -188,8 +233,15 @@ find_package(Protobuf)
 find_package(Msgpack)
 find_package(FlatBuffers)
 find_package(DDS)
-find_package(Go)
+if(NOT DISABLE_GO)
+  find_package(Go 1.7)
+endif()
 find_package(GSL)
+if(NOT DEFINED GTEST_ROOT)
+  set(GTEST_ROOT ${SIMPATH})
+endif()
+find_package(GTest)
+
 
 If(WITH_DBASE)
   find_package(MYSQL)
@@ -205,7 +257,9 @@ Else(FAIRSOFT_EXTERN)
   set(GSL_DIR ${SIMPATH}/basics/gsl)
 EndIf(FAIRSOFT_EXTERN)
 
-Set(Boost_NO_SYSTEM_PATHS TRUE)
+if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
+  Set(Boost_NO_SYSTEM_PATHS TRUE)
+endif()
 Set(Boost_NO_BOOST_CMAKE TRUE)
 Message("-- Looking for Boost ...")
 # If an older version of boost is found both of the variables below are
@@ -215,7 +269,7 @@ Message("-- Looking for Boost ...")
 # for boost.
 Unset(Boost_INCLUDE_DIR CACHE)
 Unset(Boost_LIBRARY_DIRS CACHE)
-find_package(Boost 1.41 COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time)
+find_package(Boost 1.61 COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time)
 If (Boost_FOUND)
   Set(Boost_Avail 1)
   Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Boost_LIBRARY_DIR})
@@ -303,8 +357,10 @@ if(BUILD_DOXYGEN)
   ADD_SUBDIRECTORY(doxygen)
 endif(BUILD_DOXYGEN)
 
-
-add_subdirectory (examples)
+Option(BUILD_EXAMPLES "Build Examples" ON)
+if(BUILD_EXAMPLES)
+  add_subdirectory (examples)
+endif(BUILD_EXAMPLES)
 
 if(IWYU_FOUND)
 
@@ -324,18 +380,17 @@ If(BUILD_UNITTESTS)
 
   Message("Build the unit tests.")
 
-  Set(GTEST_ROOT ${SIMPATH})
-  Find_Package(GTest)
-
   If(GTEST_FOUND)
     Message("Add tests library and tests.")
     add_subdirectory(test)
   EndIf(GTEST_FOUND)
 EndIf(BUILD_UNITTESTS)
 
-Install(DIRECTORY examples/common/gconfig examples/common/geometry
-        DESTINATION share/fairbase/examples/common
-        PATTERN ".svn" EXCLUDE)
+if(BUILD_EXAMPLES)
+  Install(DIRECTORY examples/common/gconfig examples/common/geometry
+          DESTINATION share/fairbase/examples/common
+          PATTERN ".svn" EXCLUDE)
+endif(BUILD_EXAMPLES)
 
 Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
         DESTINATION bin

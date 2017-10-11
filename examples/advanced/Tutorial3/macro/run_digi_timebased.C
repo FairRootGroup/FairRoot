@@ -37,6 +37,7 @@ void run_digi_timebased( TString mcEngine="TGeant3" )
   FairRunAna *fRun= new FairRunAna();
   fRun->SetInputFile(inFile);
   fRun->SetOutputFile(outFile);
+  fRun->SetUseFairLinks(kTRUE);
   
   fRun->SetEventMeanTime(50);
 

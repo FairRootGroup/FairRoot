@@ -19,7 +19,7 @@
 
 #include "FairLink.h"                   // for FairLink
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Int_t, Bool_t, kFALSE, etc
 #include "TString.h"                    // for TString
 
@@ -51,6 +51,7 @@ class FairMultiLinkedData : public  TObject
     virtual void SetPersistanceCheck(Bool_t check) {fPersistanceCheck = check;}       ///< Controls if a persistance check of a link is done or not
     virtual void SetVerbose(Int_t level) {fVerbose = level;}                ///< Sets the verbosity level
     virtual void SetInsertHistory(Bool_t val){ fInsertHistory = val;}		///< Toggles if history of a link is inserted or not
+    Bool_t GetInsertHistory() const {return fInsertHistory;}
 
     virtual void SetEntryNr(FairLink entry){ fEntryNr = entry;}
     virtual void SetLinks(FairMultiLinkedData links, Float_t mult = 1.0);           ///< Sets the links as vector of FairLink

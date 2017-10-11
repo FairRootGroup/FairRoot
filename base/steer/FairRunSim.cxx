@@ -29,7 +29,7 @@
 #include "FairTask.h"                   // for FairTask
 #include "FairTrajFilter.h"             // for FairTrajFilter
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TCollection.h"                // for TIter
 #include "TGeoManager.h"                // for gGeoManager
 #include "TList.h"                      // for TList
@@ -87,17 +87,21 @@ FairRunSim::FairRunSim(Bool_t isMaster)
 //_____________________________________________________________________________
 FairRunSim::~FairRunSim()
 {
+
   LOG(DEBUG) << "Enter Destructor of FairRunSim " << FairLogger::endl;
+
+  // delete fApp;
+
   /** List of Modules is filled via AddModule from the macro, but it
    is the responsibility of FairRunSim to call the destructors of
    the modules-
   */
   LOG(DEBUG) << "Start deleting all registered modules" 
-	     << FairLogger::endl;
+       << FairLogger::endl;
   ListOfModules->Delete();
   delete ListOfModules;
   LOG(DEBUG) << "Finish deleting all registered modules"
-	     << FairLogger::endl;
+       << FairLogger::endl;
 
   fIons->Delete();
   delete fIons;
@@ -105,7 +109,8 @@ FairRunSim::~FairRunSim()
   delete fParticles;
 
   delete fApp;
-  delete fField;
+  // delete fField;
+      // Not owner of the field
   delete fGen;
   delete fMCEvHead;
 }
@@ -169,7 +174,7 @@ void FairRunSim::Init()
   fFileHeader->SetRunId(fRunId);
   /** Add Tasks to simulation if any*/
   fApp->AddTask(fTask);
-
+  /** This call will create the container if it does not exist*/
   FairBaseParSet* par=dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
   if (par) {
     par->SetDetList(GetListOfModules());
@@ -177,6 +182,7 @@ void FairRunSim::Init()
     par->SetBeamMom(fBeamMom);
   }
 
+  /** This call will create the container if it does not exist*/
   FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
   if (geopar) {
     geopar->SetGeometry(gGeoManager);
@@ -222,17 +228,16 @@ void FairRunSim::Init()
   while ((cont=dynamic_cast<FairParSet*>(next()))) {
     ContList->Add(new TObjString(cont->GetName()));
   }
-
-  par->SetContListStr(ContList);
-  par->SetRndSeed(gRandom->GetSeed());
-  
-  par->setChanged();
-  par->setInputVersion(fRunId,1);
-  
-  geopar->setChanged();
-  geopar->setInputVersion(fRunId,1);
-
-
+  if(par){
+     par->SetContListStr(ContList);
+     par->SetRndSeed(gRandom->GetSeed());
+     par->setChanged();
+     par->setInputVersion(fRunId,1);
+  }
+  if(geopar){
+     geopar->setChanged();
+     geopar->setInputVersion(fRunId,1);
+  }
 
   /**Set the configuration for MC engine*/
   SetMCConfig();

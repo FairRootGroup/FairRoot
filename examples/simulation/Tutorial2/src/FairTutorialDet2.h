@@ -12,8 +12,8 @@
 
 #include "TVector3.h"
 #include "TLorentzVector.h"
+#include "FairTutorialDet2Point.h"
 
-class FairTutorialDet2Point;
 class FairVolume;
 class TClonesArray;
 
@@ -96,6 +96,12 @@ class FairTutorialDet2: public FairDetector
     /** container for data points */
 
     TClonesArray*  fFairTutorialDet2PointCollection;
+
+    /** alternative output based on standard containers 
+        just to demonstrate that we can pass non TClonesArray/TObject data
+    */
+    using Det2PointContainer = std::vector<CustomClass>;
+    Det2PointContainer *fCustomData;
 
     FairTutorialDet2(const FairTutorialDet2&);
     FairTutorialDet2& operator=(const FairTutorialDet2&);

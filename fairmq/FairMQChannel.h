@@ -26,9 +26,7 @@
 #include "FairMQPoller.h"
 #include "FairMQTransports.h"
 #include "FairMQLogger.h"
-
-class FairMQPoller;
-class FairMQTransportFactory;
+#include "FairMQParts.h"
 
 class FairMQChannel
 {
@@ -44,6 +42,12 @@ class FairMQChannel
     /// @param address Network address to bind/connect to (e.g. "tcp://127.0.0.1:5555" or "ipc://abc")
     FairMQChannel(const std::string& type, const std::string& method, const std::string& address);
 
+    /// Constructor
+    /// @param name Channel name
+    /// @param type Socket type (push/pull/pub/sub/spub/xsub/pair/req/rep/dealer/router/)
+    /// @param factory TransportFactory
+    FairMQChannel(const std::string& name, const std::string& type, std::shared_ptr<FairMQTransportFactory> factory);
+
     /// Copy Constructor
     FairMQChannel(const FairMQChannel&);
 
@@ -55,13 +59,31 @@ class FairMQChannel
 
     FairMQSocket const & GetSocket() const;
 
+    auto Bind(const std::string& address) -> bool
+    {
+        fMethod = "bind";
+        fAddress = address;
+        return fSocket->Bind(address);
+    }
+
+    auto Connect(const std::string& address) -> void
+    {
+        fMethod = "connect";
+        fAddress = address;
+        return fSocket->Connect(address);
+    }
+
     /// Get channel name
     /// @return Returns full channel name (e.g. "data[0]")
     std::string GetChannelName() const;
 
     /// Get channel prefix
-    /// @return Returns channel prefix (e.g. "data")
+    /// @return Returns channel prefix (e.g. "data" in "data[0]")
     std::string GetChannelPrefix() const;
+
+    /// Get channel index
+    /// @return Returns channel index (e.g. 0 in "data[0]")
+    std::string GetChannelIndex() const;
 
     /// Get socket type
     /// @return Returns socket type (push/pull/pub/sub/spub/xsub/pair/req/rep/dealer/router/)
@@ -134,6 +156,10 @@ class FairMQChannel
     /// Set socket rate logging interval (in seconds)
     /// @param rateLogging Socket rate logging interval (in seconds)
     void UpdateRateLogging(const int rateLogging);
+
+    /// Set channel name
+    /// @param name Arbitrary channel name
+    void UpdateChannelName(const std::string& name);
 
     /// Checks if the configured channel settings are valid (checks the validity parameter, without running full validation (as oposed to ValidateChannel()))
     /// @return true if channel settings are valid, false otherwise.
@@ -218,15 +244,63 @@ class FairMQChannel
     /// In case of errors, returns -1.
     int64_t ReceiveAsync(std::vector<std::unique_ptr<FairMQMessage>>& msgVec) const;
 
-    // TODO: this might go to some base utility library
-    static void Tokenize(std::vector<std::string>& output, const std::string& input, const std::string delimiters = ",");
+    int64_t Send(FairMQParts& parts) const
+    {
+        return Send(parts.fParts);
+    }
+
+    int64_t Receive(FairMQParts& parts) const
+    {
+        return Receive(parts.fParts);
+    }
+
+    int64_t Send(FairMQParts& parts, int sndTimeoutInMs) const
+    {
+        return Send(parts.fParts, sndTimeoutInMs);
+    }
+
+    int64_t Receive(FairMQParts& parts, int rcvTimeoutInMs) const
+    {
+        return Receive(parts.fParts, rcvTimeoutInMs);
+    }
+
+    int64_t SendAsync(FairMQParts& parts) const
+    {
+        return SendAsync(parts.fParts);
+    }
+
+    int64_t ReceiveAsync(FairMQParts& parts) const
+    {
+        return ReceiveAsync(parts.fParts);
+    }
 
     unsigned long GetBytesTx() const;
     unsigned long GetBytesRx() const;
     unsigned long GetMessagesTx() const;
     unsigned long GetMessagesRx() const;
 
-    FairMQTransportFactory* Transport();
+    auto Transport() const -> const FairMQTransportFactory*
+    {
+        return fTransportFactory.get();
+    };
+
+    template<typename... Args>
+    FairMQMessagePtr NewMessage(Args&&... args) const
+    {
+        return Transport()->CreateMessage(std::forward<Args>(args)...);
+    }
+
+    template<typename T>
+    FairMQMessagePtr NewSimpleMessage(const T& data) const
+    {
+        return Transport()->NewSimpleMessage(data);
+    }
+
+    template<typename T>
+    FairMQMessagePtr NewStaticMessage(const T& data) const
+    {
+        return Transport()->NewStaticMessage(data);
+    }
 
   private:
     std::unique_ptr<FairMQSocket> fSocket;
@@ -244,7 +318,6 @@ class FairMQChannel
     std::string fName;
     std::atomic<bool> fIsValid;
 
-
     FairMQPollerPtr fPoller;
     FairMQSocketPtr fChannelCmdSocket;
 
@@ -258,7 +331,7 @@ class FairMQChannel
     bool CheckCompatibility(std::vector<std::unique_ptr<FairMQMessage>>& msgVec) const;
 
     void InitTransport(std::shared_ptr<FairMQTransportFactory> factory);
-    bool InitCommandInterface(int numIoThreads);
+    bool InitCommandInterface();
 
     bool HandleUnblock() const;
 
@@ -270,6 +343,9 @@ class FairMQChannel
 
     static std::atomic<bool> fInterrupted;
     bool fMultipart;
+    bool fModified;
+    auto SetModified(const bool modified) -> void;
+    bool fReset;
 };
 
 #endif /* FAIRMQCHANNEL_H_ */

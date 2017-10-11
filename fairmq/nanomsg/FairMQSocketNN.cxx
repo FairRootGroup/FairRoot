@@ -31,7 +31,7 @@ using namespace std;
 
 atomic<bool> FairMQSocketNN::fInterrupted(false);
 
-FairMQSocketNN::FairMQSocketNN(const string& type, const string& name, const int numIoThreads, const string& id /*= ""*/)
+FairMQSocketNN::FairMQSocketNN(const string& type, const string& name, const string& id /*= ""*/)
     : FairMQSocket(0, 0, NN_DONTWAIT)
     , fSocket(-1)
     , fId()
@@ -41,11 +41,6 @@ FairMQSocketNN::FairMQSocketNN(const string& type, const string& name, const int
     , fMessagesRx(0)
 {
     fId = id + "." + name + "." + type;
-
-    if (numIoThreads > 1)
-    {
-        LOG(INFO) << "number of I/O threads is not used in nanomsg";
-    }
 
     if (type == "router" || type == "dealer")
     {
@@ -87,7 +82,10 @@ FairMQSocketNN::FairMQSocketNN(const string& type, const string& name, const int
 
 #ifdef NN_RCVMAXSIZE
     int rcvSize = -1;
-    nn_setsockopt(fSocket, NN_SOL_SOCKET, NN_RCVMAXSIZE, &rcvSize, sizeof(rcvSize));
+    if (nn_setsockopt(fSocket, NN_SOL_SOCKET, NN_RCVMAXSIZE, &rcvSize, sizeof(rcvSize)) != 0)
+    {
+        LOG(ERROR) << "Failed setting NN_RCVMAXSIZE socket option, reason: " << nn_strerror(errno);
+    }
 #endif
 
     // LOG(INFO) << "created socket " << fId;
@@ -129,7 +127,14 @@ int FairMQSocketNN::Send(FairMQMessagePtr& msg, const int flags)
     while (true)
     {
         void* ptr = msg->GetMessage();
-        nbytes = nn_send(fSocket, &ptr, NN_MSG, flags);
+        if (static_cast<FairMQMessageNN*>(msg.get())->fRegion == false)
+        {
+            nbytes = nn_send(fSocket, &ptr, NN_MSG, flags);
+        }
+        else
+        {
+            nbytes = nn_send(fSocket, ptr, msg->GetSize(), flags);
+        }
         if (nbytes >= 0)
         {
             fBytesTx += nbytes;
@@ -287,11 +292,11 @@ int64_t FairMQSocketNN::Receive(vector<unique_ptr<FairMQMessage>>& msgVec, const
 {
 #ifdef MSGPACK_FOUND
     // Warn if the vector is filled before Receive() and empty it.
-    if (msgVec.size() > 0)
-    {
-        LOG(WARN) << "Message vector contains elements before Receive(), they will be deleted!";
-        msgVec.clear();
-    }
+    // if (msgVec.size() > 0)
+    // {
+    //     LOG(WARN) << "Message vector contains elements before Receive(), they will be deleted!";
+    //     msgVec.clear();
+    // }
 
     while (true)
     {
@@ -368,11 +373,6 @@ int64_t FairMQSocketNN::Receive(vector<unique_ptr<FairMQMessage>>& msgVec, const
 void FairMQSocketNN::Close()
 {
     nn_close(fSocket);
-}
-
-void FairMQSocketNN::Terminate()
-{
-    nn_term();
 }
 
 void FairMQSocketNN::Interrupt()

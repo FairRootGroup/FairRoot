@@ -113,6 +113,7 @@ class FairTestDetector : public FairDetector
     Double32_t fTime;       //!  time
     Double32_t fLength;     //!  length
     Double32_t fELoss;      //!  energy loss
+    Int_t fEventNr; //! current event number;
 
     /** container for data points */
 

@@ -30,6 +30,7 @@
 #include "TRandom.h"                    // for TRandom, gRandom
 #include "TROOT.h"
 #include <list>                         // for _List_iterator, list, etc
+#include <typeinfo>
 using std::map;
 using std::set;
 
@@ -328,7 +329,7 @@ void FairFileSource::SetInTree(TTree*  tempTree)  {
 Int_t FairFileSource::ReadEvent(UInt_t i)
 {
     fCurrentEntryNo = i;
-    SetEventTime();
+    fEventTime = GetEventTime();
     if ( fInChain->GetEntry(i) ) return 0;
 
     return 1;
@@ -693,6 +694,52 @@ Bool_t   FairFileSource::ActivateObject(TObject** obj, const char* BrName) {
 }
 //_____________________________________________________________________________
 
+namespace {
+
+template<typename S>
+bool ActivateObjectAnyImpl(S* source, void **obj, const std::type_info& info, const char* brname) {
+  // we check if the types match at all
+  auto br = source->GetBranch(brname);
+  if(!br) {
+    // branch not found in source
+    return false;
+  }
+
+  // look up the TClass and resulting typeid stored in this branch
+  auto cl = TClass::GetClass(br->GetClassName());
+  if(!cl) {
+    // class not found
+    return false;
+  }
+
+  auto storedtype = cl->GetTypeInfo();
+
+  // check consistency of types
+  if(info.hash_code() != storedtype->hash_code()){
+    LOG(INFO) << "Trying to read from branch " << brname << " with wrong type " << info.name()
+              << " (expected: " << storedtype->name() << " )\n";
+    return false; 
+  }
+  source->SetBranchStatus(brname, 1);
+  // force to use the (void*) interface which is non-checking
+  source->SetBranchAddress(brname, (void*)obj);
+  return true;
+}
+
+}
+
+//_____________________________________________________________________________
+Bool_t  FairFileSource::ActivateObjectAny(void** obj, const std::type_info& info, const char* BrName) {
+    if ( fInTree ) {
+      return ActivateObjectAnyImpl(fInTree, obj, info, BrName);
+    }
+    if ( fInChain ) {
+      return ActivateObjectAnyImpl(fInChain, obj, info, BrName);
+    }
+    return kFALSE;
+}
+//_____________________________________________________________________________
+
 //_____________________________________________________________________________
 void FairFileSource::SetInputFile(TString name) {
   fRootFile = TFile::Open(name.Data());
@@ -831,10 +878,12 @@ void FairFileSource::ReadBranchEvent(const char* BrName)
   if(fEvtHeader == 0) { return; } //No event header, Reading will start later
   if ( fInTree ) {
     fInTree->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
+    fEventTime = GetEventTime();
     return;
   }
   if ( fInChain ) {
     fInChain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
+    fEventTime = GetEventTime();
     return;
   }
   return;
@@ -842,13 +891,15 @@ void FairFileSource::ReadBranchEvent(const char* BrName)
 //_____________________________________________________________________________
 void   FairFileSource::ReadBranchEvent(const char* BrName, Int_t Entry)
 {
-
+    fCurrentEntryNo = Entry;
     if ( fInTree ) {
         fInTree->FindBranch(BrName)->GetEntry(Entry);
+        fEventTime = GetEventTime();
         return;
     }
     if ( fInChain ) {
         fInChain->FindBranch(BrName)->GetEntry(Entry);
+        fEventTime = GetEventTime();
         return;
     }
     return;

@@ -15,7 +15,9 @@
 #include "TFile.h"
 #include "TTree.h"
 
-class Ex2Sink : public FairMQDevice 
+#include "MyHit.h"
+
+class Ex2Sink : public FairMQDevice
 {
   public:
     Ex2Sink() :
@@ -23,7 +25,8 @@ class Ex2Sink : public FairMQDevice
         fInput(nullptr),
         fFileName(),
         fOutFile(nullptr),
-        fTree(nullptr)
+        fTree(nullptr),
+        fNumMsgs(0)
     {}
 
     Ex2Sink(const Ex2Sink&);
@@ -47,11 +50,12 @@ class Ex2Sink : public FairMQDevice
             delete fOutFile;
         }
     }
-    void SetFileName(const std::string& filename) { fFileName = filename; }
 
   protected:
     virtual void Init()
     {
+        fNumMsgs = fConfig->GetValue<int>("num-msgs");
+        fFileName = fConfig->GetValue<std::string>("output-file");
         fOutFile = TFile::Open(fFileName.c_str(), "RECREATE");
         fInput = new TClonesArray("MyHit");
         fTree = new TTree("SerializationEx2", "output");
@@ -72,6 +76,14 @@ class Ex2Sink : public FairMQDevice
                 receivedMsgs++;
                 fTree->SetBranchAddress("MyHit", &fInput);
                 fTree->Fill();
+
+                if (fNumMsgs != 0)
+                {
+                    if (receivedMsgs == fNumMsgs)
+                    {
+                        break;
+                    }
+                }
             }
         }
         LOG(INFO) << "Received " << receivedMsgs << " messages!";
@@ -82,7 +94,7 @@ class Ex2Sink : public FairMQDevice
     std::string fFileName;
     TFile* fOutFile;
     TTree* fTree;
+    int fNumMsgs;
 };
-
 
 #endif

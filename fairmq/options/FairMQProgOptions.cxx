@@ -15,18 +15,21 @@
 #include "FairMQProgOptions.h"
 #include <algorithm>
 #include "FairMQParser.h"
+#include "FairMQSuboptParser.h"
 #include "FairMQLogger.h"
+#include <iostream>
 
 using namespace std;
 
 FairMQProgOptions::FairMQProgOptions()
-    : FairProgOptions(), FairMQEventManager()
+    : FairProgOptions()
     , fMQParserOptions("MQ-Device parser options")
     , fMQOptionsInCfg("MQ-Device options")
     , fMQOptionsInCmd("MQ-Device options")
     , fFairMQMap()
     , fHelpTitle("***** FAIRMQ Program Options ***** ")
     , fVersion("Beta version 0.1")
+    , fChannelInfo()
     , fMQKeyMap()
     // , fSignalMap() //string API
 {
@@ -36,7 +39,19 @@ FairMQProgOptions::~FairMQProgOptions()
 {
 }
 
-void FairMQProgOptions::ParseAll(const int argc, char** argv, bool allowUnregistered)
+void FairMQProgOptions::ParseAll(const std::vector<std::string>& cmdLineArgs, bool allowUnregistered)
+{
+    std::vector<const char*> argv(cmdLineArgs.size());
+
+    std::transform(cmdLineArgs.begin(), cmdLineArgs.end(), argv.begin(), [](const std::string& str)
+    {
+        return str.c_str();
+    });
+
+    ParseAll(argv.size(), const_cast<char**>(argv.data()), allowUnregistered);
+}
+
+void FairMQProgOptions::ParseAll(const int argc, char const* const* argv, bool allowUnregistered)
 {
     // init description
     InitOptionDescription();
@@ -67,6 +82,19 @@ void FairMQProgOptions::ParseAll(const int argc, char** argv, bool allowUnregist
         }
     }
 
+    if (fVarMap.count("print-options"))
+    {
+        PrintOptionsRaw();
+        exit(EXIT_SUCCESS);
+    }
+
+    // if these options are provided, do no further checks and let the device handle them
+    if (fVarMap.count("print-channels") || fVarMap.count("version"))
+    {
+        fair::mq::logger::DefaultConsoleSetFilter(fSeverityMap.at("NOLOG"));
+        return;
+    }
+
     string verbosity = GetValue<string>("verbosity");
     string logFile = GetValue<string>("log-to-file");
     bool color = GetValue<bool>("log-color");
@@ -80,20 +108,20 @@ void FairMQProgOptions::ParseAll(const int argc, char** argv, bool allowUnregist
 
     if (logFile != "")
     {
-        reinit_logger(false, logFile, fSeverityMap.at(verbosity));
-        DefaultConsoleSetFilter(fSeverityMap.at("NOLOG"));
+        fair::mq::logger::ReinitLogger(false, logFile, fSeverityMap.at(verbosity));
+        fair::mq::logger::DefaultConsoleSetFilter(fSeverityMap.at("NOLOG"));
     }
     else
     {
         if (!color)
         {
-            reinit_logger(false);
+            fair::mq::logger::ReinitLogger(false);
         }
 
-        DefaultConsoleSetFilter(fSeverityMap.at(verbosity));
+        fair::mq::logger::DefaultConsoleSetFilter(fSeverityMap.at(verbosity));
     }
 
-    // check if one of required MQ config option is there  
+    // check if one of required MQ config option is there
     auto parserOptions = fMQParserOptions.options();
     bool optionExists = false;
     vector<string> MQParserKeys;
@@ -109,52 +137,51 @@ void FairMQProgOptions::ParseAll(const int argc, char** argv, bool allowUnregist
 
     if (!optionExists)
     {
-        LOG(WARN) << "Options to configure FairMQ channels are not provided.";
-        LOG(WARN) << "Please provide the value for one of the following keys:";
+        LOG(WARN) << "FairMQProgOptions: no channels configuration provided via neither of:";
         for (const auto& p : MQParserKeys)
         {
-            LOG(WARN) << p;
+            LOG(WARN) << " --" << p;
         }
         LOG(WARN) << "No channels will be created (You can create them manually).";
-        // return 1;
     }
     else
     {
+        string id;
+
+        if (fVarMap.count("config-key"))
+        {
+            id = fVarMap["config-key"].as<string>();
+        }
+        else
+        {
+            id = fVarMap["id"].as<string>();
+        }
+
         // if cmdline mq-config called then use the default xml/json parser
         if (fVarMap.count("mq-config"))
         {
             LOG(DEBUG) << "mq-config: Using default XML/JSON parser";
 
             string file = fVarMap["mq-config"].as<string>();
-            string id;
 
-            if (fVarMap.count("config-key"))
-            {
-                id = fVarMap["config-key"].as<string>();
-            }
-            else
-            {
-                id = fVarMap["id"].as<string>();
-            }
+            string ext = boost::filesystem::extension(file);
 
-            string fileExtension = boost::filesystem::extension(file);
+            transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
 
-            transform(fileExtension.begin(), fileExtension.end(), fileExtension.begin(), ::tolower);
-
-            if (fileExtension == ".json")
+            if (ext == ".json")
             {
                 UserParser<FairMQParser::JSON>(file, id);
             }
             else
             {
-                if (fileExtension == ".xml")
+                if (ext == ".xml")
                 {
                     UserParser<FairMQParser::XML>(file, id);
                 }
                 else
                 {
                     LOG(ERROR)  << "mq-config command line called but file extension '"
-                                << fileExtension
+                                << ext
                                 << "' not recognized. Program will now exit";
                     exit(EXIT_FAILURE);
                 }
@@ -163,17 +190,6 @@ void FairMQProgOptions::ParseAll(const int argc, char** argv, bool allowUnregist
         else if (fVarMap.count("config-json-string"))
         {
             LOG(DEBUG) << "config-json-string: Parsing JSON string";
-
-            string id;
-
-            if (fVarMap.count("config-key"))
-            {
-                id = fVarMap["config-key"].as<string>();
-            }
-            else
-            {
-                id = fVarMap["id"].as<string>();
-            }
 
             string value = FairMQ::ConvertVariableValue<FairMQ::ToString>().Run(fVarMap.at("config-json-string"));
             stringstream ss;
@@ -184,21 +200,15 @@ void FairMQProgOptions::ParseAll(const int argc, char** argv, bool allowUnregist
         {
             LOG(DEBUG) << "config-json-string: Parsing XML string";
 
-            string id;
-
-            if (fVarMap.count("config-key"))
-            {
-                id = fVarMap["config-key"].as<string>();
-            }
-            else
-            {
-                id = fVarMap["id"].as<string>();
-            }
-
             string value = FairMQ::ConvertVariableValue<FairMQ::ToString>().Run(fVarMap.at("config-xml-string"));
             stringstream ss;
             ss << value;
             UserParser<FairMQParser::XML>(ss, id);
+        }
+        else if (fVarMap.count(FairMQParser::SUBOPT::OptionKeyChannelConfig))
+        {
+            LOG(DEBUG) << "channel-config: Parsing channel configuration";
+            UserParser<FairMQParser::SUBOPT>(fVarMap, id);
         }
     }
 
@@ -208,6 +218,7 @@ void FairMQProgOptions::ParseAll(const int argc, char** argv, bool allowUnregist
 int FairMQProgOptions::Store(const FairMQMap& channels)
 {
     fFairMQMap = channels;
+    UpdateChannelInfo();
     UpdateMQValues();
     return 0;
 }
@@ -216,8 +227,18 @@ int FairMQProgOptions::Store(const FairMQMap& channels)
 int FairMQProgOptions::UpdateChannelMap(const FairMQMap& channels)
 {
     fFairMQMap = channels;
+    UpdateChannelInfo();
     UpdateMQValues();
     return 0;
+}
+
+void FairMQProgOptions::UpdateChannelInfo()
+{
+    fChannelInfo.clear();
+    for (const auto& c : fFairMQMap)
+    {
+        fChannelInfo.insert(std::make_pair(c.first, c.second.size()));
+    }
 }
 
 // read FairMQChannelMap and insert/update corresponding values in variable map
@@ -230,15 +251,15 @@ void FairMQProgOptions::UpdateMQValues()
 
         for (const auto& channel : p.second)
         {
-            string typeKey = p.first + "." + to_string(index) + ".type";
-            string methodKey = p.first + "." + to_string(index) + ".method";
-            string addressKey = p.first + "." + to_string(index) + ".address";
-            string transportKey = p.first + "." + to_string(index) + ".transport";
-            string sndBufSizeKey = p.first + "." + to_string(index) + ".sndBufSize";
-            string rcvBufSizeKey = p.first + "." + to_string(index) + ".rcvBufSize";
-            string sndKernelSizeKey = p.first + "." + to_string(index) + ".sndKernelSize";
-            string rcvKernelSizeKey = p.first + "." + to_string(index) + ".rcvKernelSize";
-            string rateLoggingKey = p.first + "." + to_string(index) + ".rateLogging";
+            string typeKey = "chans." + p.first + "." + to_string(index) + ".type";
+            string methodKey = "chans." + p.first + "." + to_string(index) + ".method";
+            string addressKey = "chans." + p.first + "." + to_string(index) + ".address";
+            string transportKey = "chans." + p.first + "." + to_string(index) + ".transport";
+            string sndBufSizeKey = "chans." + p.first + "." + to_string(index) + ".sndBufSize";
+            string rcvBufSizeKey = "chans." + p.first + "." + to_string(index) + ".rcvBufSize";
+            string sndKernelSizeKey = "chans." + p.first + "." + to_string(index) + ".sndKernelSize";
+            string rcvKernelSizeKey = "chans." + p.first + "." + to_string(index) + ".rcvKernelSize";
+            string rateLoggingKey = "chans." + p.first + "." + to_string(index) + ".rateLogging";
 
             fMQKeyMap[typeKey] = make_tuple(p.first, index, "type");
             fMQKeyMap[methodKey] = make_tuple(p.first, index, "method");
@@ -254,7 +275,6 @@ void FairMQProgOptions::UpdateMQValues()
             UpdateVarMap<string>(methodKey, channel.GetMethod());
             UpdateVarMap<string>(addressKey, channel.GetAddress());
             UpdateVarMap<string>(transportKey, channel.GetTransport());
-
 
             //UpdateVarMap<string>(sndBufSizeKey, to_string(channel.GetSndBufSize()));// string API
             UpdateVarMap<int>(sndBufSizeKey, channel.GetSndBufSize());
@@ -292,13 +312,7 @@ int FairMQProgOptions::NotifySwitchOption()
 {
     if (fVarMap.count("help"))
     {
-        LOG(INFO) << fHelpTitle << "\n" << fVisibleOptions;
-        return 1;
-    }
-
-    if (fVarMap.count("version")) 
-    {
-        LOG(INFO) << fVersion << "\n";
+        std::cout << fHelpTitle << std::endl << fVisibleOptions;
         return 1;
     }
 
@@ -311,50 +325,56 @@ void FairMQProgOptions::InitOptionDescription()
     if (fUseConfigFile)
     {
         fMQOptionsInCmd.add_options()
-            ("id",                     po::value<string>(),                               "Device ID (required argument).")
-            ("io-threads",             po::value<int   >()->default_value(1),             "Number of I/O threads.")
-            ("transport",              po::value<string>()->default_value("zeromq"),      "Transport ('zeromq'/'nanomsg').")
-            ("config",                 po::value<string>()->default_value("static"),      "Config source ('static'/<config library filename>).")
-            ("control",                po::value<string>()->default_value("interactive"), "States control ('interactive'/'static'/<control library filename>).")
-            ("network-interface",      po::value<string>()->default_value("default"),     "Network interface to bind on (e.g. eth0, ib0..., default will try to detect the interface of the default route).")
-            ("config-key",             po::value<string>(),                               "Use provided value instead of device id for fetching the configuration from the config file.")
-            ("catch-signals",          po::value<int   >()->default_value(1),             "Enable signal handling (1/0).")
-            ("initialization-timeout", po::value<int   >()->default_value(120),           "Timeout for the initialization in seconds (when expecting dynamic initialization).")
-            ("port-range-min",         po::value<int   >()->default_value(22000),         "Start of the port range for dynamic initialization.")
-            ("port-range-max",         po::value<int   >()->default_value(32000),         "End of the port range for dynamic initialization.")
-            ("log-to-file",            po::value<string>()->default_value(""),            "Log output to a file.")
+            ("id",                     po::value<string>(),                                     "Device ID (required argument).")
+            ("io-threads",             po::value<int   >()->default_value(1),                   "Number of I/O threads.")
+            ("transport",              po::value<string>()->default_value("zeromq"),            "Transport ('zeromq'/'nanomsg').")
+            ("config",                 po::value<string>()->default_value("static"),            "Config source ('static'/<config library filename>).")
+            ("network-interface",      po::value<string>()->default_value("default"),           "Network interface to bind on (e.g. eth0, ib0..., default will try to detect the interface of the default route).")
+            ("config-key",             po::value<string>(),                                     "Use provided value instead of device id for fetching the configuration from the config file.")
+            ("catch-signals",          po::value<int   >()->default_value(1),                   "Enable signal handling (1/0).")
+            ("initialization-timeout", po::value<int   >()->default_value(120),                 "Timeout for the initialization in seconds (when expecting dynamic initialization).")
+            ("port-range-min",         po::value<int   >()->default_value(22000),               "Start of the port range for dynamic initialization.")
+            ("port-range-max",         po::value<int   >()->default_value(32000),               "End of the port range for dynamic initialization.")
+            ("log-to-file",            po::value<string>()->default_value(""),                  "Log output to a file.")
+            ("print-channels",         po::value<bool  >()->implicit_value(true),               "Print registered channel endpoints in a machine-readable format (<channel name>:<min num subchannels>:<max num subchannels>)")
+            ("shm-segment-size",       po::value<size_t>()->default_value(2000000000),          "shmem transport: size of the shared memory segment (in bytes).")
+            ("shm-segment-name",       po::value<string>()->default_value("fairmq_shmem_main"), "shmem transport: name of the shared memory segment.")
             ;
 
         fMQOptionsInCfg.add_options()
-            ("id",                     po::value<string>()->required(),                   "Device ID (required argument).")
-            ("io-threads",             po::value<int   >()->default_value(1),             "Number of I/O threads.")
-            ("transport",              po::value<string>()->default_value("zeromq"),      "Transport ('zeromq'/'nanomsg').")
-            ("config",                 po::value<string>()->default_value("static"),      "Config source ('static'/<config library filename>).")
-            ("control",                po::value<string>()->default_value("interactive"), "States control ('interactive'/'static'/<control library filename>).")
-            ("network-interface",      po::value<string>()->default_value("default"),     "Network interface to bind on (e.g. eth0, ib0..., default will try to detect the interface of the default route).")
-            ("config-key",             po::value<string>(),                               "Use provided value instead of device id for fetching the configuration from the config file.")
-            ("catch-signals",          po::value<int   >()->default_value(1),             "Enable signal handling (1/0).")
-            ("initialization-timeout", po::value<int   >()->default_value(120),           "Timeout for the initialization in seconds (when expecting dynamic initialization).")
-            ("port-range-min",         po::value<int   >()->default_value(22000),         "Start of the port range for dynamic initialization.")
-            ("port-range-max",         po::value<int   >()->default_value(32000),         "End of the port range for dynamic initialization.")
-            ("log-to-file",            po::value<string>()->default_value(""),            "Log output to a file.")
+            ("id",                     po::value<string>(),                                     "Device ID (required argument).")
+            ("io-threads",             po::value<int   >()->default_value(1),                   "Number of I/O threads.")
+            ("transport",              po::value<string>()->default_value("zeromq"),            "Transport ('zeromq'/'nanomsg').")
+            ("config",                 po::value<string>()->default_value("static"),            "Config source ('static'/<config library filename>).")
+            ("network-interface",      po::value<string>()->default_value("default"),           "Network interface to bind on (e.g. eth0, ib0..., default will try to detect the interface of the default route).")
+            ("config-key",             po::value<string>(),                                     "Use provided value instead of device id for fetching the configuration from the config file.")
+            ("catch-signals",          po::value<int   >()->default_value(1),                   "Enable signal handling (1/0).")
+            ("initialization-timeout", po::value<int   >()->default_value(120),                 "Timeout for the initialization in seconds (when expecting dynamic initialization).")
+            ("port-range-min",         po::value<int   >()->default_value(22000),               "Start of the port range for dynamic initialization.")
+            ("port-range-max",         po::value<int   >()->default_value(32000),               "End of the port range for dynamic initialization.")
+            ("log-to-file",            po::value<string>()->default_value(""),                  "Log output to a file.")
+            ("print-channels",         po::value<bool  >()->implicit_value(true),               "Print registered channel endpoints in a machine-readable format (<channel name>:<min num subchannels>:<max num subchannels>)")
+            ("shm-segment-size",       po::value<size_t>()->default_value(2000000000),          "shmem transport: size of the shared memory segment (in bytes).")
+            ("shm-segment-name",       po::value<string>()->default_value("fairmq_shmem_main"), "shmem transport: name of the shared memory segment.")
             ;
     }
     else
     {
         fMQOptionsInCmd.add_options()
-            ("id",                     po::value<string>()->required(),                   "Device ID (required argument)")
-            ("io-threads",             po::value<int   >()->default_value(1),             "Number of I/O threads")
-            ("transport",              po::value<string>()->default_value("zeromq"),      "Transport ('zeromq'/'nanomsg').")
-            ("config",                 po::value<string>()->default_value("static"),      "Config source ('static'/<config library filename>).")
-            ("control",                po::value<string>()->default_value("interactive"), "States control ('interactive'/'static'/<control library filename>).")
-            ("network-interface",      po::value<string>()->default_value("default"),     "Network interface to bind on (e.g. eth0, ib0..., default will try to detect the interface of the default route).")
-            ("config-key",             po::value<string>(),                               "Use provided value instead of device id for fetching the configuration from the config file.")
-            ("catch-signals",          po::value<int   >()->default_value(1),             "Enable signal handling (1/0).")
-            ("initialization-timeout", po::value<int   >()->default_value(120),           "Timeout for the initialization in seconds (when expecting dynamic initialization).")
-            ("port-range-min",         po::value<int   >()->default_value(22000),         "Start of the port range for dynamic initialization.")
-            ("port-range-max",         po::value<int   >()->default_value(32000),         "End of the port range for dynamic initialization.")
-            ("log-to-file",            po::value<string>()->default_value(""),            "Log output to a file.")
+            ("id",                     po::value<string>(),                                     "Device ID (required argument).")
+            ("io-threads",             po::value<int   >()->default_value(1),                   "Number of I/O threads.")
+            ("transport",              po::value<string>()->default_value("zeromq"),            "Transport ('zeromq'/'nanomsg').")
+            ("config",                 po::value<string>()->default_value("static"),            "Config source ('static'/<config library filename>).")
+            ("network-interface",      po::value<string>()->default_value("default"),           "Network interface to bind on (e.g. eth0, ib0..., default will try to detect the interface of the default route).")
+            ("config-key",             po::value<string>(),                                     "Use provided value instead of device id for fetching the configuration from the config file.")
+            ("catch-signals",          po::value<int   >()->default_value(1),                   "Enable signal handling (1/0).")
+            ("initialization-timeout", po::value<int   >()->default_value(120),                 "Timeout for the initialization in seconds (when expecting dynamic initialization).")
+            ("port-range-min",         po::value<int   >()->default_value(22000),               "Start of the port range for dynamic initialization.")
+            ("port-range-max",         po::value<int   >()->default_value(32000),               "End of the port range for dynamic initialization.")
+            ("log-to-file",            po::value<string>()->default_value(""),                  "Log output to a file.")
+            ("print-channels",         po::value<bool  >()->implicit_value(true),               "Print registered channel endpoints in a machine-readable format (<channel name>:<min num subchannels>:<max num subchannels>)")
+            ("shm-segment-size",       po::value<size_t>()->default_value(2000000000),          "shmem transport: size of the shared memory segment (in bytes).")
+            ("shm-segment-name",       po::value<string>()->default_value("fairmq_shmem_main"), "shmem transport: name of the shared memory segment.")
             ;
     }
 
@@ -364,6 +384,7 @@ void FairMQProgOptions::InitOptionDescription()
         ("config-json-string", po::value<vector<string>>()->multitoken(), "JSON input as command line string.")
         // ("config-json-file",   po::value<string>(),                       "JSON input as file.")
         ("mq-config",          po::value<string>(),                       "JSON/XML input as file. The configuration object will check xml or json file extention and will call the json or xml parser accordingly")
+        (FairMQParser::SUBOPT::OptionKeyChannelConfig, po::value<std::vector<std::string>>()->multitoken()->composing(), "Configuration of single or multiple channel(s) by comma separated key=value list")
         ;
 
     AddToCmdLineOptions(fGenericDesc);

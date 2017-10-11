@@ -22,7 +22,7 @@
 
 using namespace std;
 
-typedef unordered_map<string, vector<FairMQChannel>> FairMQMap;
+using FairMQMap = unordered_map<string, vector<FairMQChannel>>;
 
 class MyDevice : public FairMQDevice
 {
@@ -71,13 +71,13 @@ int main(int argc, char** argv)
             ("data-rate", po::value<double>()->default_value(0.5), "Data rate");
 
         // parse command lines, parse json file and init FairMQMap
-        config.ParseAll(argc, argv);
+        config.ParseAll(argc, argv, true);
 
         // // get FairMQMap
         // auto map1 = config.GetFairMQMap();
 
         // // update value in variable map, and propagate the update to the FairMQMap
-        // config.UpdateValue<string>("data.0.address","tcp://localhost:1234");
+        // config.UpdateValue<string>("chans.data.0.address","tcp://localhost:1234");
 
         // // get the updated FairMQMap
         // auto map2 = config.GetFairMQMap();
@@ -89,7 +89,7 @@ int main(int argc, char** argv)
         // config.UpdateChannelMap(map2);
 
         MyDevice device;
-        device.CatchSignals();
+        // device.CatchSignals();
         device.SetConfig(config);
 
         // getting as string and conversion helpers
@@ -98,35 +98,44 @@ int main(int argc, char** argv)
         // double dataRate = config.ConvertTo<double>(dataRateStr);
         // LOG(INFO) << "dataRate: " << dataRate;
 
-        LOG(INFO) << "Subscribing: <string>(data.0.address)";
-        config.Subscribe<string>("data.0.address", [&device](const string& key, const string& value)
+        LOG(INFO) << "Subscribing: <string>(chans.data.0.address)";
+        config.Subscribe<string>("test", [&device](const string& key, string value)
         {
-            LOG(INFO) << "[callback] Updating device parameter " << key << " = " << value;
-            device.fChannels.at("data").at(0).UpdateAddress(value);
+            if (key == "chans.data.0.address")
+            {
+                LOG(INFO) << "[callback] Updating device parameter " << key << " = " << value;
+                device.fChannels.at("data").at(0).UpdateAddress(value);
+            }
         });
 
-        LOG(INFO) << "Subscribing: <int>(data.0.rcvBufSize)";
-        config.Subscribe<int>("data.0.rcvBufSize", [&device](const string& key, int value)
+        LOG(INFO) << "Subscribing: <int>(chans.data.0.rcvBufSize)";
+        config.Subscribe<int>("test", [&device](const string& key, int value)
         {
-            LOG(INFO) << "[callback] Updating device parameter " << key << " = " << value;
-            device.fChannels.at("data").at(0).UpdateRcvBufSize(value);
+            if(key == "chans.data.0.rcvBufSize")
+            {
+                LOG(INFO) << "[callback] Updating device parameter " << key << " = " << value;
+                device.fChannels.at("data").at(0).UpdateRcvBufSize(value);
+            }
         });
 
         LOG(INFO) << "Subscribing: <double>(data-rate)";
-        config.Subscribe<double>("data-rate", [&device](const string& key, double value)
+        config.Subscribe<double>("test", [&device](const string& key, double value)
         {
-            LOG(INFO) << "[callback] Updating device parameter " << key << " = " << value;
-            device.SetRate(value);
+            if (key == "data-rate")
+            {
+                LOG(INFO) << "[callback] Updating device parameter " << key << " = " << value;
+                device.SetRate(value);
+            }
         });
 
         LOG(INFO) << "Starting value updates...\n";
 
-        config.UpdateValue<string>("data.0.address", "tcp://localhost:4321");
-        LOG(INFO) << "config: " << config.GetValue<string>("data.0.address");
+        config.UpdateValue<string>("chans.data.0.address", "tcp://localhost:4321");
+        LOG(INFO) << "config: " << config.GetValue<string>("chans.data.0.address");
         LOG(INFO) << "device: " << device.fChannels.at("data").at(0).GetAddress() << endl;
 
-        config.UpdateValue<int>("data.0.rcvBufSize", 100);
-        LOG(INFO) << "config: " << config.GetValue<int>("data.0.rcvBufSize");
+        config.UpdateValue<int>("chans.data.0.rcvBufSize", 100);
+        LOG(INFO) << "config: " << config.GetValue<int>("chans.data.0.rcvBufSize");
         LOG(INFO) << "device: " << device.fChannels.at("data").at(0).GetRcvBufSize() << endl;
 
         config.UpdateValue<double>("data-rate", 0.9);
@@ -134,6 +143,11 @@ int main(int argc, char** argv)
         LOG(INFO) << "device: " << device.GetRate() << endl;
         // device.Print();
 
+        LOG(INFO) << "nase: " << config.GetValue<double>("nase");
+
+        config.Unsubscribe<string>("test");
+        config.Unsubscribe<int>("test");
+        config.Unsubscribe<double>("test");
         // advanced commands
 
         // LOG(INFO) << "-------------------- start custom 1";

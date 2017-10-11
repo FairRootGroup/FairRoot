@@ -32,19 +32,16 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
   TString outFile;
   if ( fileId == 0 )  outFile = Form("%s/pixel_%s.mc.root",
 				     outDir.Data(),
-				     mcEngine.Data(),
-				     nEvents);
+				     mcEngine.Data());
   else                outFile = Form("%s/pixel_%s.mc.f%d.root",
 				     outDir.Data(),
 				     mcEngine.Data(),
-				     fileId,
-				     nEvents);
+				     fileId);
   
   // Parameter file name
   TString parFile = Form("%s/pixel_%s.params.root",
 			 outDir.Data(),
-			 mcEngine.Data(),
-			 nEvents);
+			 mcEngine.Data());
 
   // In general, the following parts need not be touched
   // ========================================================================

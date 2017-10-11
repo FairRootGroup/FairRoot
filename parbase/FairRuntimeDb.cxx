@@ -29,7 +29,7 @@
 #include "FairParSet.h"                 // for FairParSet
 #include "FairRtdbRun.h"                // for FairRtdbRun, FairParVersion
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClass.h"                     // for TClass
 #include "TCollection.h"                // for TIter
 #include "TFile.h"                      // for TFile, gFile

@@ -181,11 +181,7 @@ class FairLogger : public std::ostream
     static std::ostream&        flush(std::ostream&);
 
   private:
-#if !defined(__CINT__)
     static TMCThreadLocal FairLogger* instance;
-#else
-    static                FairLogger* instance;
-#endif
 
     FairLogger();
     FairLogger(const FairLogger&);

@@ -20,7 +20,7 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 #include "TIterator.h"                  // for TIterator
 #include "TLorentzVector.h"             // for TLorentzVector

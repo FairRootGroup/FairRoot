@@ -13,7 +13,7 @@ template <typename TOut, typename TPayloadOut>
 void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* /*opt*/)
 {
     std::ostringstream oss;
-    TPayloadOut OutputArchive(oss);
+    TPayloadOut outputArchive(oss);
     for (int i = 0; i < fInput->GetEntriesFast(); ++i)
     {
         TOut* digi = static_cast<TOut*>(fInput->At(i));
@@ -24,7 +24,7 @@ void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* /*opt*/)
         fDigiVector.push_back(*digi);
     }
 
-    OutputArchive << fDigiVector;
+    outputArchive << fDigiVector;
     std::string* strMsg = new std::string(oss.str());
     fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(const_cast<char*>(strMsg->c_str()), // data
                                                                                    strMsg->length(), // size

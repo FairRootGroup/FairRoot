@@ -14,7 +14,7 @@
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 #include "FairLogger.h"
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TF1.h"                        // for TF1
 #include "TRandom.h"                    // for TRandom, gRandom
 

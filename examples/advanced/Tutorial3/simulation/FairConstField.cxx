@@ -16,7 +16,7 @@
 #include "FairRuntimeDb.h" // for FairRuntimeDb
 #include "FairLogger.h"    // for logging
 
-#include "Riosfwd.h" // for ostream
+#include <iosfwd>    // for ostream
 #include "TString.h" // for operator<<, TString
 
 #include <iomanip>  // for operator<<, setw

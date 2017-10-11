@@ -30,6 +30,7 @@ FairTask::FairTask()
     fVerbose(0),
     fInputPersistance(-1),
     fLogger(FairLogger::GetLogger()),
+    fStreamProcessing(kFALSE),
     fOutputPersistance()
 {
 }

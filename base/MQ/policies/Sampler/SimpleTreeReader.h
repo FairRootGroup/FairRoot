@@ -27,17 +27,13 @@
 #include "FairMQMessage.h"
 
 template <typename DataType>
-class base_SimpleTreeReader
+class BaseSimpleTreeReader
 {
-  protected:
-    typedef DataType* DataType_ptr;
-    typedef DataType& DataType_ref;
-
   public:
-    base_SimpleTreeReader()
-        : SendHeader()
-        , GetSocketNumber()
-        , GetCurrentIndex()
+    BaseSimpleTreeReader()
+        : fSendHeader()
+        , fGetSocketNumber()
+        , fGetCurrentIndex()
         , fInput(nullptr)
         , fFileName("")
         , fTreeName("")
@@ -48,10 +44,10 @@ class base_SimpleTreeReader
         , fIndexMax(0)
     {}
 
-    base_SimpleTreeReader(const base_SimpleTreeReader&) = delete;
-    base_SimpleTreeReader operator=(const base_SimpleTreeReader&) = delete;
+    BaseSimpleTreeReader(const BaseSimpleTreeReader&) = delete;
+    BaseSimpleTreeReader operator=(const BaseSimpleTreeReader&) = delete;
 
-    virtual ~base_SimpleTreeReader()
+    virtual ~BaseSimpleTreeReader()
     {
         if (fInputFile)
         {
@@ -59,9 +55,8 @@ class base_SimpleTreeReader
             delete fInputFile;
         }
     }
-    
 
-    void SetFileProperties(const std::string &filename, const std::string &treename, const std::string &branchname)
+    void SetFileProperties(const std::string& filename, const std::string& treename, const std::string& branchname)
     {
         fFileName = filename;
         fTreeName = treename;
@@ -94,37 +89,34 @@ class base_SimpleTreeReader
 
     void SendMultiPart()
     {
-        SendHeader(0);// callback that does the zmq multipart AND increment the current index (Event number) in generic sampler
+        fSendHeader(0);// callback that does the zmq multipart AND increment the current index (Event number) in generic sampler
     }
 
-    /// ///////////////////////////////////////////////////////////////////////////////////////
     void SetIndex(int64_t Event)
     {
         fIndex = Event;
     }
 
-    /// ///////////////////////////////////////////////////////////////////////////////////////
-    DataType_ptr GetOutData()
+    DataType* GetOutData()
     {
         return GetOutData(fIndex);
     }
 
-    /// ///////////////////////////////////////////////////////////////////////////////////////
-    DataType_ptr GetOutData(int64_t Event)
+    DataType* GetOutData(int64_t Event)
     {
         fTree->GetEntry(Event);
         return fInput;
     }
-    void GetOutData(DataType_ptr& data, int64_t Event)
+    void GetOutData(DataType*& data, int64_t Event)
     {
         fTree->GetEntry(Event);
-        data=fInput;
+        data = fInput;
     }
-    void deserialize_impl(DataType_ptr& data, int64_t Event)
+    void deserialize_impl(DataType*& data, int64_t Event)
     {
         /*required for MQ*/
         fTree->GetEntry(Event);
-        data=fInput;
+        data = fInput;
     }
     void deserialize_impl(int64_t Event)
     {
@@ -132,79 +124,80 @@ class base_SimpleTreeReader
         fTree->GetEntry(Event);
     }
 
-
-    /// ///////////////////////////////////////////////////////////////////////////////////////
     int64_t GetNumberOfEvent()
     {
-        if (fTree) 
+        if (fTree)
+        {
             return fIndexMax;
-        else 
+        }
+        else
+        {
             return 0;
+        }
     }
 
-    /// ///////////////////////////////////////////////////////////////////////////////////////
     template<typename T>
-    std::vector< std::vector<T> > GetDataVector()
+    std::vector< std::vector<T>> GetDataVector()
     {
-        std::vector<std::vector<T>> Allobj;
-        std::vector<T> TempObj;
-        if (std::is_same<DataType,TClonesArray>::value)
+        std::vector<std::vector<T>> allObj;
+        std::vector<T> tempObj;
+
+        if (std::is_same<DataType, TClonesArray>::value)
         {
             for (int64_t i = 0; i < fTree->GetEntries(); i++)
             {
-                TempObj.clear();
+                tempObj.clear();
                 fTree->GetEntry(i);
                 for (int64_t iobj = 0; iobj < fInput->GetEntriesFast(); ++iobj)
                 {
-                    T* Data_i = reinterpret_cast<T*>(fInput->At(iobj));
-                    if (!Data_i)
+                    T* data = reinterpret_cast<T*>(fInput->At(iobj));
+                    if (!data)
+                    {
                         continue;
-                    TempObj.push_back(*Data_i);
+                    }
+                    tempObj.push_back(*data);
                 }
-                Allobj.push_back(TempObj);
+                allObj.push_back(tempObj);
             }
         }
         else
         {
             for (int64_t i = 0; i < fTree->GetEntries(); i++)
             {
-                TempObj.clear();
+                tempObj.clear();
                 fTree->GetEntry(i);
-                T Data_i = *fInput;
-                TempObj.push_back(Data_i);
-                Allobj.push_back(TempObj);
+                T data = *fInput;
+                tempObj.push_back(data);
+                allObj.push_back(tempObj);
             }
         }
-        return Allobj;
+        return allObj;
     }
 
-    /// ///////////////////////////////////////////////////////////////////////////////////////
     // provides a callback to the Sampler.
     void BindSendHeader(std::function<void(int)> callback)
     {
-        SendHeader = callback;
+        fSendHeader = callback;
     }
 
-    /// ///////////////////////////////////////////////////////////////////////////////////////
     void BindGetSocketNumber(std::function<int()> callback)
     {
-        GetSocketNumber = callback;
+        fGetSocketNumber = callback;
     }
 
-    /// ///////////////////////////////////////////////////////////////////////////////////////
     void BindGetCurrentIndex(std::function<int()> callback)
     {
-        GetCurrentIndex = callback;
+        fGetCurrentIndex = callback;
     }
 
   protected:
-        DataType_ptr fInput;// data type of the branch you want to extract
+    DataType* fInput;// data type of the branch you want to extract
+
   private:
-    /// ///////////////////////////////////////////////////////////////////////////////////////
-    std::function<void(int)> SendHeader;  // function pointer for the Sampler callback.
-    std::function<int()> GetSocketNumber; // function pointer for the Sampler callback.
-    std::function<int()> GetCurrentIndex; // function pointer for the Sampler callback.
-    /// ///////////////////////////////////////////////////////////////////////////////////////
+    std::function<void(int)> fSendHeader;  // function pointer for the Sampler callback.
+    std::function<int()> fGetSocketNumber; // function pointer for the Sampler callback.
+    std::function<int()> fGetCurrentIndex; // function pointer for the Sampler callback.
+
     std::string fFileName;
     std::string fTreeName;
     std::string fBranchName;
@@ -215,6 +208,6 @@ class base_SimpleTreeReader
 };
 
 template<typename T>
-using SimpleTreeReader = base_SimpleTreeReader<T>;
+using SimpleTreeReader = BaseSimpleTreeReader<T>;
 
 #endif /* SIMPLEROOTSAMPLER_H */

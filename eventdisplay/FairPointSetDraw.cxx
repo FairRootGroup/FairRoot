@@ -14,7 +14,7 @@
 #include "FairEventManager.h"           // for FairEventManager
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
 #include "TEveManager.h"                // for TEveManager, gEve
 #include "TEvePointSet.h"               // for TEvePointSet

@@ -25,9 +25,11 @@
 
 using namespace std;
 
-FairMQExample7Client::FairMQExample7Client() :
-    fRunId(0),
-    fParameterName()
+FairMQExample7Client::FairMQExample7Client()
+    : fRunId(0)
+    , fParameterName()
+    , fMaxIterations(0)
+    , fNumIterations(0)
 {
 }
 
@@ -38,6 +40,7 @@ FairMQExample7Client::~FairMQExample7Client()
 void FairMQExample7Client::InitTask()
 {
     fParameterName = fConfig->GetValue<string>("parameter-name");
+    fMaxIterations = fConfig->GetValue<uint64_t>("max-iterations");
     fRunId = 2000;
 }
 
@@ -54,8 +57,6 @@ class FairMQExample7TMessage : public TMessage
 
 bool FairMQExample7Client::ConditionalRun()
 {
-    this_thread::sleep_for(chrono::seconds(1));
-
     LOG(INFO) << "Requesting parameter \"" << fParameterName << "\" for Run ID " << fRunId << ".";
 
     // NewSimpleMessage creates a copy of the data and takes care of its destruction (after the transfer takes place).
@@ -65,16 +66,31 @@ bool FairMQExample7Client::ConditionalRun()
 
     if (Send(req, "data") > 0)
     {
-        if (Receive(rep, "data") > 0)
+        if (Receive(rep, "data") >= 0)
         {
-            FairMQExample7TMessage tmsg(rep->GetData(), rep->GetSize());
-            FairMQExample7ParOne* par = static_cast<FairMQExample7ParOne*>(tmsg.ReadObject(tmsg.GetClass()));
-            LOG(INFO) << "Received parameter from the server:";
-            par->print();
+            if (rep->GetSize() != 0)
+            {
+                FairMQExample7TMessage tmsg(rep->GetData(), rep->GetSize());
+                FairMQExample7ParOne* par = static_cast<FairMQExample7ParOne*>(tmsg.ReadObject(tmsg.GetClass()));
+                LOG(INFO) << "Received parameter from the server:";
+                par->print();
+            }
+            else
+            {
+                LOG(ERROR) << "Received empty reply. Parameter not available";
+            }
         }
     }
 
     fRunId == 2099 ? fRunId = 2000 : fRunId++;
+
+    if (fMaxIterations > 0 && ++fNumIterations >= fMaxIterations)
+    {
+        LOG(INFO) << "Configured maximum number of iterations reached. Leaving RUNNING state.";
+        return false;
+    }
+
+    this_thread::sleep_for(chrono::seconds(1));
 
     return true;
 }

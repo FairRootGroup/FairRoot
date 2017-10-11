@@ -34,7 +34,7 @@
 #include "FairGeoVector.h"              // for FairGeoVector
 #include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TArrayD.h"                    // for TArrayD
 #include "TMath.h"                      // for ATan, Pi, Sqrt, atan
 #include "TMathBase.h"                  // for Abs

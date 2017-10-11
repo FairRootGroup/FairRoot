@@ -102,13 +102,13 @@ if (CMAKE_SYSTEM_NAME MATCHES Linux)
 
    # Select flags.
    set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wshadow")
-   set(CMAKE_CXX_FLAGS_NIGHTLY        "-O0 -g -Wshadow -Weffc++")
-   set(CMAKE_CXX_FLAGS_TEST           "-O2 -g -Wshadow -Weffc++")
+   set(CMAKE_CXX_FLAGS_NIGHTLY        "-O0 -g -Wshadow")
+   set(CMAKE_CXX_FLAGS_TEST           "-O2 -g -Wshadow")
    set(CMAKE_CXX_FLAGS_RELEASE        "-O2 -Wshadow ")
 #   set(CMAKE_CXX_FLAGS_DEBUG          "-g -O2 -fno-reorder-blocks -fno-schedule-insns -fno-inline")
    set(CMAKE_CXX_FLAGS_DEBUG          "-g -Wshadow ")
    set(CMAKE_CXX_FLAGS_DEBUGFULL      "-g3 -fno-inline  -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -fno-check-new -fno-common -fexceptions")
-   set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs -Wshadow -Weffc++ -Wall -Wextra -Wunused-variable")
+   set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs -Wshadow -Wall -Wextra -Wunused-variable")
    set(CMAKE_CXX_FLAGS_ARRAY_CHECK    "-g3 -fno-inline -ftest-coverage -fprofile-arcs -fstack-protector")
    set(CMAKE_C_FLAGS_RELWITHDEBINFO   "-O2 -g")
    set(CMAKE_C_FLAGS_RELEASE          "-O2")
@@ -206,7 +206,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
 
       # Select flags.
       set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wshadow ")
-      set(CMAKE_CXX_FLAGS_NIGHTLY        "-O2 -g -Wshadow -Weffc++ -Wall -Wextra")
+      set(CMAKE_CXX_FLAGS_NIGHTLY        "-O2 -g -Wshadow -Wall -Wextra")
       set(CMAKE_CXX_FLAGS_RELEASE        "-O2 -Wshadow ")
       set(CMAKE_CXX_FLAGS_DEBUG          "-g -Wshadow  -fno-inline")
       set(CMAKE_CXX_FLAGS_DEBUGFULL      "-g3 -fno-inline -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -fno-check-new -fno-common")
@@ -230,11 +230,12 @@ endif (CMAKE_SYSTEM_NAME MATCHES Darwin)
 
 
 
-#STRING(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UPPER)
-
-SET (BLA CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE_UPPER})
+if (CMAKE_BUILD_TYPE)
+  STRING(TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_UPPER)
+  SET(CMAKE_BUILD_TYPE_CXXFLAGS_KEY CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE_UPPER})
+endif ()
 
 MESSAGE("--- Build Type: ${CMAKE_BUILD_TYPE}")
-MESSAGE("--- Compiler Flags: ${CMAKE_CXX_FLAGS} ${${BLA}}")
+MESSAGE("--- Compiler Flags: ${CMAKE_CXX_FLAGS}  ${${CMAKE_BUILD_TYPE_CXXFLAGS_KEY}}")
 
 ENDMACRO ( Check_Compiler )

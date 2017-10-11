@@ -12,9 +12,7 @@
 #include "TDatime.h"
 
 // roofit
-#ifndef __CINT__
 #include "RooGlobalFunc.h"
-#endif
 #include "RooConstVar.h"
 #include "RooRealVar.h"
 #include "RooDataSet.h"
@@ -23,66 +21,7 @@
 #include "RooArgSet.h"
 #include "RooRandom.h"
 
-#include "FairProgOptions.h"
-#include "FairMQLogger.h"
-
 using namespace RooFit;
-
-class Tuto7DataGeneratorProgOptions : public FairProgOptions
-{
-  public:
-    Tuto7DataGeneratorProgOptions(): FairProgOptions()
-    {
-        AddToCmdLineOptions(fGenericDesc);
-    }
-    virtual ~Tuto7DataGeneratorProgOptions(){}
-    virtual void ParseAll(const int argc, char** argv, bool allowUnregistered = false)
-    {
-        // parse command line options
-        if (ParseCmdLine(argc, argv, fCmdLineOptions, fVarMap, allowUnregistered))
-        {
-            exit(EXIT_FAILURE);
-        }
-
-        // if txt/INI configuration file enabled then parse it as well
-        if (fUseConfigFile)
-        {
-            // check if file exist
-            if (fs::exists(fConfigFile))
-            {
-                if (ParseCfgFile(fConfigFile.string(), fConfigFileOptions, fVarMap, allowUnregistered))
-                {
-                    exit(EXIT_FAILURE);
-                }
-            }
-            else
-            {
-                LOG(ERROR) << "config file '" << fConfigFile << "' not found";
-                exit(EXIT_FAILURE);
-            }
-        }
-
-        // set log level before printing (default is 0 = DEBUG level)
-        std::string verbosity = GetValue<std::string>("verbosity");
-        bool color = GetValue<bool>("log-color");
-        if (!color)
-        {
-            reinit_logger(false);
-        }
-        //SET_LOG_LEVEL(DEBUG);
-        if (fSeverityMap.count(verbosity))
-        {
-            DefaultConsoleSetFilter(fSeverityMap.at(verbosity));
-        }
-        else
-        {
-            LOG(ERROR)<<" verbosity level '"<<verbosity<<"' unknown, it will be set to DEBUG";
-            DefaultConsoleSetFilter(fSeverityMap.at("DEBUG"));
-        }
-
-        PrintOptions();
-    }
-};
 
 struct RdmVarParameters
 {

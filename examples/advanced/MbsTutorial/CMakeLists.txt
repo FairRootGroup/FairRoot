@@ -29,9 +29,9 @@ set(LINK_DIRECTORIES
 link_directories(${LINK_DIRECTORIES})
 
 Set(SRCS
-    src/FairTut8Unpack.cxx
-    src/FairTut8RawItem.cxx
-    src/FairTut8Task.cxx
+    src/FairMBSUnpack.cxx
+    src/FairMBSRawItem.cxx
+    src/FairMBSTask.cxx
 )
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")

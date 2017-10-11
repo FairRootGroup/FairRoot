@@ -42,6 +42,7 @@ FairTestDetector::FairTestDetector()
     , fLength(-1.)
     , fELoss(-1)
     , fFairTestDetectorPointCollection(new TClonesArray("FairTestDetectorPoint"))
+	, fEventNr(0)
 {
 }
 
@@ -57,6 +58,7 @@ FairTestDetector::FairTestDetector(const char* name, Bool_t active)
     , fLength(-1.)
     , fELoss(-1)
     , fFairTestDetectorPointCollection(new TClonesArray("FairTestDetectorPoint"))
+    , fEventNr(0)
 {
 }
 
@@ -126,6 +128,7 @@ void FairTestDetector::EndOfEvent()
 {
 
     fFairTestDetectorPointCollection->Clear();
+    fEventNr++;
 }
 
 void FairTestDetector::Register()
@@ -217,7 +220,9 @@ FairTestDetectorPoint* FairTestDetector::AddHit(Int_t trackID,
 {
     TClonesArray& clref = *fFairTestDetectorPointCollection;
     Int_t size = clref.GetEntriesFast();
-    return new (clref[size]) FairTestDetectorPoint(trackID, detID, pos, mom, posOut, momOut, time, length, eLoss);
+    FairTestDetectorPoint* myPoint = new (clref[size]) FairTestDetectorPoint(trackID, detID, pos, mom, posOut, momOut, time, length, eLoss);
+    myPoint->SetLink(FairLink(-1, fEventNr, FairRootManager::Instance()->GetBranchId("MCTrack"), trackID));
+    return myPoint;
 }
 
 ClassImp(FairTestDetector)

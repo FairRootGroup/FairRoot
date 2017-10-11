@@ -12,7 +12,7 @@
 #include "FairTestDetectorDigi.h"  // for FairTestDetectorDigi
 #include "FairTestDetectorPoint.h" // for FairTestDetectorPoint
 
-#include "Riosfwd.h"      // for ostream
+#include <iosfwd>         // for ostream
 #include "TClonesArray.h" // for TClonesArray
 #include "TMath.h"        // for Sqrt
 #include "TRandom.h"      // for TRandom, gRandom
@@ -94,7 +94,7 @@ void FairTestDetectorDigiTask::Exec(Option_t* /*opt*/)
             digi->SetTimeStampError(0);
         }
 
-        digi->SetLink(FairLink("FairTestDetectorPoint", ipnt));
+        digi->AddLink(FairLink(-1, FairRootManager::Instance()->GetEntryNr(), "FairTestDetectorPoint", ipnt));
     }
 }
 // -------------------------------------------------------------------------

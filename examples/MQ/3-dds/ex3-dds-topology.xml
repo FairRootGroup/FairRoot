@@ -3,29 +3,25 @@
     <property id="data1" />
     <property id="data2" />
 
-    <declrequirement id="SamplerWorker">
-        <hostPattern type="wnname" value="sampler"/>
-    </declrequirement>
-
-    <declrequirement id="ProcessorWorker">
-        <hostPattern type="wnname" value="processor"/>
-    </declrequirement>
-
-    <declrequirement id="SinkWorker">
-        <hostPattern type="wnname" value="sink"/>
-    </declrequirement>
+    <declrequirement id="SamplerWorker" type="wnname" value="sampler"/>
+    <declrequirement id="ProcessorWorker" type="wnname" value="processor"/>
+    <declrequirement id="SinkWorker" type="wnname" value="sink"/>
 
     <decltask id="Sampler">
-        <exe reachable="true">@CMAKE_BINARY_DIR@/bin/examples/MQ/3-dds/ex3-sampler --id sampler --log-color false --control libFairMQDDSControlPlugin.so --config libFairMQDDSConfigPlugin.so --mq-config @CMAKE_BINARY_DIR@/bin/config/ex3-dds.json</exe>
-        <requirement>SamplerWorker</requirement>
+        <exe reachable="true">@CMAKE_BINARY_DIR@/bin/examples/MQ/3-dds/ex3-sampler --id sampler --log-color false --channel-config name=data1,type=push,method=bind -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds</exe>
+        <requirements>
+            <id>SamplerWorker</id>
+        </requirements>
         <properties>
             <id access="write">data1</id>
         </properties>
     </decltask>
 
     <decltask id="Processor">
-        <exe reachable="true">@CMAKE_BINARY_DIR@/bin/examples/MQ/3-dds/ex3-processor --id processor_%taskIndex% --config-key processor --log-color false --control libFairMQDDSControlPlugin.so --config libFairMQDDSConfigPlugin.so --mq-config @CMAKE_BINARY_DIR@/bin/config/ex3-dds.json</exe>
-        <requirement>ProcessorWorker</requirement>
+        <exe reachable="true">@CMAKE_BINARY_DIR@/bin/examples/MQ/3-dds/ex3-processor --id processor_%taskIndex% --config-key processor --log-color false --channel-config name=data1,type=pull,method=connect name=data2,type=push,method=connect -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds</exe>
+        <requirements>
+            <id>ProcessorWorker</id>
+        </requirements>
         <properties>
             <id access="read">data1</id>
             <id access="read">data2</id>
@@ -33,8 +29,10 @@
     </decltask>
 
     <decltask id="Sink">
-        <exe reachable="true">@CMAKE_BINARY_DIR@/bin/examples/MQ/3-dds/ex3-sink --id sink --log-color false --control libFairMQDDSControlPlugin.so --config libFairMQDDSConfigPlugin.so --mq-config @CMAKE_BINARY_DIR@/bin/config/ex3-dds.json</exe>
-        <requirement>SinkWorker</requirement>
+        <exe reachable="true">@CMAKE_BINARY_DIR@/bin/examples/MQ/3-dds/ex3-sink --id sink --log-color false --channel-config name=data2,type=pull,method=bind -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds</exe>
+        <requirements>
+            <id>SinkWorker</id>
+        </requirements>
         <properties>
             <id access="write">data2</id>
         </properties>

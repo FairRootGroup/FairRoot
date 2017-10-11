@@ -21,7 +21,7 @@
 #include "FairMCEntry.h"                // for FairMCEntry
 #include "FairMultiLinkedData.h"        // for FairMultiLinkedData
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "Rtypes.h"                     // for Int_t, FairMCObject::Class, etc
 
 #include <iostream>                     // for ostream, etc

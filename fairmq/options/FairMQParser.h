@@ -20,7 +20,7 @@
 namespace FairMQParser
 {
 
-typedef std::unordered_map<std::string, std::vector<FairMQChannel>> FairMQMap;
+using FairMQMap = std::unordered_map<std::string, std::vector<FairMQChannel>>;
 
 FairMQMap ptreeToMQMap(const boost::property_tree::ptree& pt, const std::string& deviceId, const std::string& rootNode, const std::string& formatFlag = "json");
 
@@ -43,6 +43,7 @@ void PrintDeviceList(const boost::property_tree::ptree& tree, const std::string&
 void DeviceParser(const boost::property_tree::ptree& tree, FairMQMap& channelMap, const std::string& deviceId, const std::string& formatFlag);
 void ChannelParser(const boost::property_tree::ptree& tree, FairMQMap& channelMap, const std::string& formatFlag);
 void SocketParser(const boost::property_tree::ptree& tree, std::vector<FairMQChannel>& channelList, const std::string& channelName, const FairMQChannel& commonChannel);
+void PrintPropertyTree(const boost::property_tree::ptree& tree, int level = 0);
 
 } // Helper namespace
 

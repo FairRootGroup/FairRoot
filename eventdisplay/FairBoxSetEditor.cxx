@@ -10,7 +10,7 @@
 #include "FairEventManager.h"           // for FairEventManager
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                       // for ostream
 #include "TGLabel.h"                    // for TGLabel
 #include "TGLayout.h"                   // for TGLayoutHints, etc
 #include "TGNumberEntry.h"              // for TGNumberEntry, etc
