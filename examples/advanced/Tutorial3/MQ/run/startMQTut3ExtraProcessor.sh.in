@@ -43,6 +43,7 @@ tut3cfg="@CMAKE_BINARY_DIR@/bin/config/tut3-extra-processor.json"
 
 PROCESSOR2="tut3-processor"
 PROCESSOR2+=" --id processor2"
+PROCESSOR2+=" --severity debug"
 PROCESSOR2+=" --data-format $dataFormat"
 PROCESSOR2+=" --mq-config $tut3cfg"
 PROCESSOR2+=" --config-key processor"

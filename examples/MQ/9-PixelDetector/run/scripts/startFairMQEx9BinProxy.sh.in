@@ -2,7 +2,7 @@
 
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
-VERBOSE="--verbosity INFO"
+VERBOSE="--severity INFO"
 FAIRTASKNAME="--task-name PixelFindHits"
 
 while [[ $# > 1 ]]
@@ -23,7 +23,7 @@ case $key in
     shift
     ;;
     -v|--verbose)
-    VERBOSE="--verbosity $2"
+    VERBOSE="--severity $2"
     shift
     ;;
 esac
@@ -80,12 +80,12 @@ xterm -geometry 80x24+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 
 ########################## start SAMPLE
 SAMPLER1="ex9-samplerBin $TRANSPORT"
-SAMPLER1+=" --id sampler1  --mq-config $MQCONFIGFILE"
+SAMPLER1+=" --id sampler1  --mq-config $MQCONFIGFILE --severity info"
 SAMPLER1+=" --file-name $INPUTFILE1 --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
 xterm -geometry 80x24+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER1 &
 
 SAMPLER2="ex9-samplerBin $TRANSPORT"
-SAMPLER2+=" --id sampler1  --mq-config $MQCONFIGFILE"
+SAMPLER2+=" --id sampler1  --mq-config $MQCONFIGFILE --severity info"
 SAMPLER2+=" --file-name $INPUTFILE2 --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
 xterm -geometry 80x24+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER2 &
 

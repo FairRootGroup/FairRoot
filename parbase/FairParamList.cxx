@@ -664,11 +664,11 @@ Bool_t FairParamList::fill(const Text_t* name,Text_t* value,const Int_t length)
       value[l]='\0';
       return kTRUE;
     } else {
-      fLogger->Error(MESSAGE_ORIGIN,"char array too small");
+      LOG(error) << "char array too small";
       //      Error("FairParamList::fill(const Text_t*,Text_t*)","char array too small");
     }
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -686,12 +686,12 @@ Bool_t FairParamList::fill(const Text_t* name,UChar_t* values,const Int_t nValue
       memcpy(values,o->getParamValue(),n);
       return kTRUE;
     } else {
-      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      LOG(error) << "Different array sizes for parameter " << name;
       //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
       return kFALSE;
     }
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -710,12 +710,12 @@ Bool_t FairParamList::fill(const Text_t* name,Int_t* values,const Int_t nValues)
       memcpy(values,o->getParamValue(),l);
       return kTRUE;
     } else {
-      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      LOG(error) << "Different array sizes for parameter " << name;
       //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
       return kFALSE;
     }
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -734,12 +734,12 @@ Bool_t FairParamList::fill(const Text_t* name,Bool_t* values,const Int_t nValues
       memcpy(values,o->getParamValue(),l);
       return kTRUE;
     } else {
-      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      LOG(error) << "Different array sizes for parameter " << name;
       //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
       return kFALSE;
     }
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -759,12 +759,12 @@ Bool_t FairParamList::fill(const Text_t* name,UInt_t* values,const Int_t nValues
          memcpy(values,o->getParamValue(),l);
          return kTRUE;
       } else {
-         fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+         LOG(error) << "Different array sizes for parameter " << name;
          //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
          return kFALSE;
       }
    }
-   fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+   LOG(error) << "Could not find parameter " << name;
    //  Error("FairParamList::fill \nNot found: %s",name);
    return kFALSE;
 }
@@ -784,12 +784,12 @@ Bool_t FairParamList::fill(const Text_t* name,Float_t* values,const Int_t nValue
       memcpy(values,o->getParamValue(),l);
       return kTRUE;
     } else {
-      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      LOG(error) << "Different array sizes for parameter " << name;
       //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
       return kFALSE;
     }
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -808,12 +808,12 @@ Bool_t FairParamList::fill(const Text_t* name,Double_t* values,const Int_t nValu
       memcpy(values,o->getParamValue(),l);
       return kTRUE;
     } else {
-      fLogger->Error(MESSAGE_ORIGIN,"Different array sizes for parameter %s",name);
+      LOG(error) << "Different array sizes for parameter " << name;
       //      Error("FairParamList::fill \nDifferent array sizes for parameter %s",name);
       return kFALSE;
     }
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -831,7 +831,7 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayI* value)
     memcpy(value->GetArray(),o->getParamValue(),l);
     return kTRUE;
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -848,7 +848,7 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayC* value)
     memcpy(value->GetArray(),o->getParamValue(),l);
     return kTRUE;
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -866,7 +866,7 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayF* value)
     memcpy(value->GetArray(),o->getParamValue(),l);
     return kTRUE;
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -884,7 +884,7 @@ Bool_t FairParamList::fill(const Text_t* name,TArrayD* value)
     memcpy(value->GetArray(),o->getParamValue(),l);
     return kTRUE;
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return kFALSE;
 }
@@ -898,7 +898,7 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
   FairParamObj* o=static_cast<FairParamObj*>(paramList->FindObject(name));
   if (o!=0 && strcmp(o->getParamType(),obj->IsA()->GetName())==0) {
     if (o->getClassVersion()!=obj->IsA()->GetClassVersion()) {
-      fLogger->Warning(MESSAGE_ORIGIN,"Read Class Version = %i does not match actual version = %i",o->getClassVersion(),obj->IsA()->GetClassVersion());
+      LOG(warn) << "Read Class Version = " << o->getClassVersion() << " does not match actual version = " << obj->IsA()->GetClassVersion();
     }
     //      Warning("FairParamList::fill",
     //              "\n       Read Class Version = %i does not match actual version = %i",
@@ -920,7 +920,7 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
       TIter next(&list);
       while ((info = static_cast<TStreamerInfo*>(next()))) {
         if (info->IsA() != TStreamerInfo::Class()) {
-          fLogger->Warning(MESSAGE_ORIGIN,"Not a TStreamerInfo object");
+          LOG(warn) << "Not a TStreamerInfo object";
           //          Warning("FairParamList::fill","not a TStreamerInfo object");
           continue;
         }
@@ -938,7 +938,7 @@ Bool_t FairParamList::fillObject(const Text_t* name,TObject* obj)
     gFile=filesave;
     return len;
   }
-  fLogger->Error(MESSAGE_ORIGIN,"Could not find parameter %s", name);
+  LOG(error) << "Could not find parameter " << name;
   //  Error("FairParamList::fill \nNot found: %s",name);
   return 0;
 }

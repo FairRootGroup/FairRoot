@@ -75,8 +75,8 @@ template <typename T>
 bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 {
   TObject* objectToKeep = NULL;
-  
-  // LOG(TRACE)<<"message received with " << parts.Size() << " parts.";
+
+  // LOG(DEBUG)<<"message received with " << parts.Size() << " parts.";
   fReceivedMsgs++;
 
   std::vector<TObject*> tempObjects;
@@ -91,11 +91,11 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 	fInput->Add(tempObjects.back());
       }
     }
-  
+
   fNewRunId = fEventHeader->GetRunId();
-  
-  // LOG(TRACE)<<"got event header with run = " << fNewRunId;
-  
+
+  // LOG(DEBUG)<<"got event header with run = " << fNewRunId;
+
   if(fNewRunId!=fCurrentRunId)
     {
       fCurrentRunId=fNewRunId;
@@ -104,22 +104,21 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 
       LOG(INFO) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
     }
-  
-  
+
   // Execute hit finder task
   fOutput->Clear();
   //	  LOG(INFO) << " The blocking line... analyzing event " << fEventHeader->GetMCEntryNumber();
   fFairTask->ExecMQ(fInput,fOutput);
-  
+
   if ( !fDataToKeep.empty() ) {
     objectToKeep = fInput->FindObject(fDataToKeep.c_str());
     if ( objectToKeep ) fOutput->Add(objectToKeep);
   }
-  
+
   TMessage* messageFEH;
   TMessage* messageTCA[10];
   FairMQParts partsOut;
-  
+
   messageFEH = new TMessage(kMESS_OBJECT);
   messageFEH->WriteObject(fEventHeader);
   partsOut.AddPart(NewMessage(messageFEH->Buffer(),

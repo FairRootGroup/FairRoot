@@ -2,8 +2,7 @@
 
 TEST(FairToolsTestFatal, TestFatalError)
 {
-  gLogger->SetScreenStreamToCerr(true);
-  EXPECT_DEATH(LOG(FATAL) << "This is a fatal problem" << FairLogger::endl,
-              "FATAL");
-  // TODO: check if cored dump is written to file
+    gLogger->SetScreenStreamToCerr(true);
+    ASSERT_THROW(LOG(fatal) << "This is a fatal problem", fair::FatalException);
+    // TODO: check if cored dump is written to file
 }

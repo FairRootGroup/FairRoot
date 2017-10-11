@@ -10,7 +10,7 @@ trap 'kill -TERM $CLIENT_PID; kill -TERM $PARAMETERSERVER_PID; wait $CLIENT_PID;
 
 CLIENT="ex7-client"
 CLIENT+=" --id parmq-client"
-CLIENT+=" --control static --log-color false"
+CLIENT+=" --control static --color false"
 CLIENT+=" --max-iterations 1"
 CLIENT+=" --mq-config $ex7config"
 @CMAKE_BINARY_DIR@/bin/examples/MQ/7-parameters/$CLIENT &
@@ -18,8 +18,8 @@ CLIENT_PID=$!
 
 PARAMETERSERVER="parmq-server"
 PARAMETERSERVER+=" --id parmq-server"
-PARAMETERSERVER+=" --verbosity NOLOG"
-PARAMETERSERVER+=" --control static --log-color false"
+PARAMETERSERVER+=" --severity NOLOG"
+PARAMETERSERVER+=" --control static --color false"
 PARAMETERSERVER+=" --mq-config $parmqconfig"
 PARAMETERSERVER+=" --first-input-name @CMAKE_BINARY_DIR@/examples/MQ/7-parameters/mqexample7_param.root"
 @CMAKE_BINARY_DIR@/bin/$PARAMETERSERVER &

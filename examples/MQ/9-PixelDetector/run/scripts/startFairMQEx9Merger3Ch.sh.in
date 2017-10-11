@@ -2,7 +2,7 @@
 
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
-VERBOSE="--verbosity DEBUG"
+VERBOSE="--severity DEBUG"
 
 while [[ $# > 1 ]]
 do
@@ -18,7 +18,7 @@ case $key in
     shift
     ;;
     -v|--verbosity)
-    VERBOSE="--verbosity $2"
+    VERBOSE="--severity $2"
     shift
     ;;
 esac
@@ -69,7 +69,7 @@ xterm -geometry 80x25+0+700 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 
 ########################## start SAMPLER
 SAMPLER1="ex9-sampler $TRANSPORT"
-SAMPLER1+=" --id sampler1 $SAMPLERTYPE --mq-config $MQCONFIGFILE"
+SAMPLER1+=" --id sampler1 $SAMPLERTYPE --mq-config $MQCONFIGFILE --severity info"
 SAMPLER1+=" --file-name $INPUTFILE1 --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX"
 xterm -geometry 80x25+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER1 &
 

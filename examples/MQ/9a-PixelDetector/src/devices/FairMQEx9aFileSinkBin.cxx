@@ -53,7 +53,7 @@ bool FairMQEx9aFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
   // the first part should be the event header
   PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
 
-  LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+  // LOG(DEBUG) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
   
   // the second part should be the array of PixelPayload::Hit
   PixelPayload::Hit* payloadH = static_cast<PixelPayload::Hit*>(parts.At(1)->GetData());

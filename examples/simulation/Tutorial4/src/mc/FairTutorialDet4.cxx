@@ -100,9 +100,9 @@ void FairTutorialDet4::SetParContainers()
   LOG(INFO)<< "Set tutdet missallign parameters"<<FairLogger::endl;
   // Get Base Container
   FairRun* sim = FairRun::Instance();
-  LOG_IF(FATAL, !sim) << "No run object"<<FairLogger::endl;
+  LOG_IF(FATAL, !sim) << "No run object";
   FairRuntimeDb* rtdb=sim->GetRuntimeDb();
-  LOG_IF(FATAL, !rtdb) << "No runtime database"<<FairLogger::endl;
+  LOG_IF(FATAL, !rtdb) << "No runtime database";
 
   fMisalignPar = static_cast<FairTutorialDet4MisalignPar*>
                  (rtdb->getContainer("FairTutorialDet4MissallignPar"));

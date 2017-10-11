@@ -65,7 +65,7 @@ void FairTask::InitTask()
   if ( ! fActive ) { return; }
   InitStatus tStat = Init();
   if ( tStat == kFATAL ) {
-    fLogger->Fatal(MESSAGE_ORIGIN,"Initialization of Task %s failed fatally", fName.Data());
+    LOG(fatal) << "Initialization of Task " << fName.Data() << " failed fatally";
   }
   if ( tStat == kERROR ) { fActive = kFALSE; }
   FairMonitor::GetMonitor()->SetCurrentTask(0);
@@ -81,7 +81,7 @@ void FairTask::ReInitTask()
   if ( ! fActive ) { return; }
   InitStatus tStat = ReInit();
   if ( tStat == kFATAL ) {
-    fLogger->Fatal(MESSAGE_ORIGIN,"Reinitialization of Task %s failed fatally", fName.Data());
+    LOG(fatal) << "Reinitialization of Task " << fName.Data() << " failed fatally";
   }
   if ( tStat == kERROR ) { fActive = kFALSE; }
   ReInitTasks();

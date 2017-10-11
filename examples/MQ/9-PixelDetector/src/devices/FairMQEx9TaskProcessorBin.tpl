@@ -103,14 +103,14 @@ void FairMQEx9TaskProcessorBin<T>::Init()
 template <typename T>
 bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/)
 {
-  // LOG(TRACE)<<"message received with " << parts.Size() << " parts!";
+  // LOG(DEBUG)<<"message received with " << parts.Size() << " parts!";
   fReceivedMsgs++;
   
   if ( parts.Size() == 0 ) return 0; // probably impossible, but still check
   
   // the first part should be the event header
   PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
-  // LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+  // LOG(DEBUG) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
   
   fNewRunId = payloadE->fRunId;
   if(fNewRunId!=fCurrentRunId)
@@ -137,7 +137,7 @@ bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/
 					  payloadD[idigi].fCharge);
   }
   
-  // LOG(TRACE) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
+  // LOG(DEBUG) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
   
   // Execute hit finder task
   fOutput->Clear();
@@ -180,10 +180,10 @@ bool FairMQEx9TaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/
 	hitPayload[ihit].dposY       = hit->GetDy();
 	hitPayload[ihit].dposZ       = hit->GetDz();
       }
-      // LOG(TRACE) << "second part has size = " << hitsSize;
+      // LOG(DEBUG) << "second part has size = " << hitsSize;
       partsOut.AddPart(std::move(msgTCA));
       
-      // LOG(TRACE) << "Output array should have " << nofEntries << "hits";
+      // LOG(DEBUG) << "Output array should have " << nofEntries << "hits";
     }
   }
   

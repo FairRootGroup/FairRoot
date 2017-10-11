@@ -3,29 +3,28 @@
 
 TEST_P(LogLevelTest, testAllLogLevelsToScreenAndFile)
 {
-  fLogger->SetLogFileLevel(logLevelSettingToTest.c_str());
-  fLogger->SetLogScreenLevel(logLevelSettingToTest.c_str());
+    fLogger->SetLogFileLevel(fLogLevelSettingToTest.c_str());
+    fLogger->SetLogScreenLevel(fLogLevelSettingToTest.c_str());
 
-  handler.BeginCapture();
-  fLogger->SetLogFileName(OutFileName.c_str());
-  fLogger->SetLogToScreen(true);
-  fLogger->SetLogToFile(true);
-  LogNoArguments();
-  handler.EndCapture();
+    fHandler.BeginCapture();
 
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(expected);
-  }
+    fLogger->SetLogFileName(fOutFileName.c_str());
+    fLogger->SetLogToScreen(true);
+    fLogger->SetLogToFile(true);
+    LogNoArguments();
 
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckFileOutput(expected, OutFileName);
-  }
+    fHandler.EndCapture();
 
+    std::vector<std::string> expected = CreateExpectedOutputNoArguments(fLogLevelSettingToTest, fOutputString);
+    {
+        SCOPED_TRACE(fLogLevelSettingToTest);
+        CheckScreenOutput(expected);
+    }
+
+    {
+        SCOPED_TRACE(fLogLevelSettingToTest);
+        CheckFileOutput(expected, fOutFileName);
+    }
 }
 
-INSTANTIATE_TEST_CASE_P(TestAllLogLevels,
-                        LogLevelTest,
-                        ::testing::ValuesIn(TestLogs));
+INSTANTIATE_TEST_CASE_P(TestAllLogLevels, LogLevelTest, ::testing::ValuesIn(TestLogs));

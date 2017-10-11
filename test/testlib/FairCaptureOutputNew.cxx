@@ -25,8 +25,7 @@ FairCaptureOutputNew::~FairCaptureOutputNew()
 void FairCaptureOutputNew::BeginCapture()
 {
   if (fCaptureStdOut && fCaptureStdErr) {
-    std::cout << "Can't capture stdout and stderr at the same time."
-              << std::endl;
+    std::cout << "Can't capture stdout and stderr at the same time." << std::endl;
     exit(1);
   }
   if (fCaptureStdOut) {

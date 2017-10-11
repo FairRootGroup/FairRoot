@@ -2,20 +2,19 @@
 
 TEST_F(FairToolsTest, CheckOutputOnlyToFile)
 {
+    fHandler.BeginCapture();
 
-  handler.BeginCapture();
+    gLogger->SetLogFileName(fOutFileName.c_str());
+    gLogger->SetLogToFile(true);
+    gLogger->SetLogToScreen(false);
+    LogNoArguments();
 
-  gLogger->SetLogFileName(OutFileName.c_str());
-  gLogger->SetLogToFile(true);
-  gLogger->SetLogToScreen(false);
-  LogNoArguments();
+    fHandler.EndCapture();
 
-  handler.EndCapture();
-
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  FairTestOutputHandler outputhandler(OutFileName);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckFileOutput(expected, outputhandler);
-  }
+    std::vector<std::string> expected = CreateExpectedOutputNoArguments(fLogLevelSettingToTest, fOutputString);
+    FairTestOutputHandler outputhandler(fOutFileName);
+    {
+        SCOPED_TRACE(fLogLevelSettingToTest);
+        CheckFileOutput(expected, outputhandler);
+    }
 }

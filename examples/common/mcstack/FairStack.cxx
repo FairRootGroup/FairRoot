@@ -367,7 +367,7 @@ void FairStack::Print(Option_t*) const
 	    << fNParticles << FairLogger::endl;
   LOG(INFO) << "              Number of tracks in output = "
 	    << fNTracks << FairLogger::endl;
-  if (gLogger->IsLogNeeded(DEBUG1)) {
+  if (gLogger->IsLogNeeded(fair::Logger::Severity::DEBUG1)) {
     for (Int_t iTrack=0; iTrack<fNTracks; iTrack++) {
       (static_cast<FairMCTrack*>( fTracks->At(iTrack))->Print(iTrack));
     }

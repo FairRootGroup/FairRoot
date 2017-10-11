@@ -121,10 +121,10 @@ class FairMQUnpacker : public FairMQDevice
                     int dataSize = *(static_cast<int*>(msgSize->GetData()));
                     int* subEvtPtr = static_cast<int*>(msg->GetData());
 
-                    // LOG(TRACE) << "array size = " << dataSize;
+                    // LOG(DEBUG) << "array size = " << dataSize;
                     // if (dataSize > 0)
                     // {
-                    //     LOG(TRACE) << "first element in array = " << *subEvtPtr;
+                    //     LOG(DEBUG) << "first element in array = " << *subEvtPtr;
                     // }
 
                     fUnpacker->DoUnpack(subEvtPtr, dataSize);

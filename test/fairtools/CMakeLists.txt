@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # Create a library called "libFairTools" which includes the source files
@@ -48,7 +48,7 @@ If(Boost_FOUND)
   Set(Exe_Names
     _FairLoggerDeathTest1
     _FairLoggerDeathTest2
-    _FairLoggerCheckDefaultSettings 
+    _FairLoggerCheckDefaultSettings
     _FairLoggerCheckVerbosityLevelSetting
     _FairLoggerCheckOutputOnlytoFile
     _FairLoggerCheckWrongLogLevelSettings
@@ -58,7 +58,7 @@ If(Boost_FOUND)
 
     _FairLoggerNewDeathTest1
     _FairLoggerNewDeathTest2
-    _FairLoggerNewCheckDefaultSettings 
+    _FairLoggerNewCheckDefaultSettings
     _FairLoggerNewCheckVerbosityLevelSetting
     _FairLoggerNewCheckOutputOnlytoFile
     _FairLoggerNewCheckWrongLogLevelSettings
@@ -72,9 +72,9 @@ If(Boost_FOUND)
   Set(Exe_Source
     _FairLoggerDeathTest1.cxx
     _FairLoggerDeathTest2.cxx
-    _FairLoggerCheckDefaultSettings.cxx   
-    _FairLoggerCheckVerbosityLevelSettings.cxx  
-    _FairLoggerCheckOutputOnlytoFile.cxx  
+    _FairLoggerCheckDefaultSettings.cxx
+    _FairLoggerCheckVerbosityLevelSettings.cxx
+    _FairLoggerCheckOutputOnlytoFile.cxx
     _FairLoggerCheckWrongLogLevelSettings.cxx
     _FairLoggerTestScreenAndFileOutputWithoutArgument.cxx
     _FairLoggerTestAllLogLevelsToScreenAndFile.cxx
@@ -82,9 +82,9 @@ If(Boost_FOUND)
 
     _FairLoggerNewDeathTest1.cxx
     _FairLoggerNewDeathTest2.cxx
-    _FairLoggerNewCheckDefaultSettings.cxx   
-    _FairLoggerNewCheckVerbosityLevelSettings.cxx  
-    _FairLoggerNewCheckOutputOnlytoFile.cxx  
+    _FairLoggerNewCheckDefaultSettings.cxx
+    _FairLoggerNewCheckVerbosityLevelSettings.cxx
+    _FairLoggerNewCheckOutputOnlytoFile.cxx
     _FairLoggerNewCheckWrongLogLevelSettings.cxx
     _FairLoggerNewTestScreenAndFileOutputWithoutArgument.cxx
     _FairLoggerNewTestAllLogLevelsToScreenAndFile.cxx

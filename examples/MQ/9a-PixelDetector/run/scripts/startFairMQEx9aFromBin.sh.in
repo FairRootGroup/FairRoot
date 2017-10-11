@@ -2,7 +2,7 @@
 
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
-VERBOSE="--verbosity INFO"
+VERBOSE="--severity INFO"
 FAIRTASKNAME="--task-name PixelAltFindHits"
 INPUTTYPE="dat"
 AGGREGATE="--aggregate 1"
@@ -33,7 +33,7 @@ case $key in
     shift
     ;;
     -v|--verbose)
-    VERBOSE="--verbosity $2"
+    VERBOSE="--severity $2"
     shift
     ;;
 esac
@@ -87,7 +87,7 @@ xterm -geometry 80x25+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 ########################## start SAMPLER
 SAMPLER="ex9a-samplerBin $TRANSPORT"
 SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE --ack-channel ack $AGGREGATE"
-SAMPLER+=" --file-name $INPUTFILE $MAXINDEX"
+SAMPLER+=" --file-name $INPUTFILE $MAXINDEX --severity info"
 xterm -geometry 80x25+0+0 -hold -e @EXAMPLE9a_BIN_LOCATION@/$SAMPLER &
 
 ########################## start PROCESSORs
