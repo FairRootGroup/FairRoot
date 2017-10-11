@@ -78,16 +78,17 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
   
   // LOG(TRACE)<<"message received with " << parts.Size() << " parts.";
   fReceivedMsgs++;
-  TObject* tempObjects[10];
-  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
+
+  std::vector<TObject*> tempObjects;
+  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ )
     {
       Ex9TMessage2 tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
-      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
+      tempObjects.push_back((TObject*)tm.ReadObject(tm.GetClass()));
       // LOG(TRACE) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
-      if ( strcmp(tempObjects[ipart]->GetName(),"EventHeader.") == 0 ) 
-	fEventHeader = (FairEventHeader*)tempObjects[ipart];
+      if ( strcmp(tempObjects.back()->GetName(),"EventHeader.") == 0 )
+	fEventHeader = (FairEventHeader*)(tempObjects.back());
       else {
-	fInput->Add(tempObjects[ipart]);
+	fInput->Add(tempObjects.back());
       }
     }
   
@@ -134,11 +135,13 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 				messageTCA[iobj]));
   }
 
-  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
+  for ( int ipart = 0 ; ipart < tempObjects.size() ; ipart++ )
     {
-      delete tempObjects[ipart];
+      if ( tempObjects[ipart] )
+        delete tempObjects[ipart];
     }
-  
+  tempObjects.clear();
+
   Send(partsOut, fOutputChannelName);
   fSentMsgs++;
 

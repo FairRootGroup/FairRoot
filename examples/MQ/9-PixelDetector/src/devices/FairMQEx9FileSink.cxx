@@ -113,26 +113,28 @@ void FairMQEx9FileSink::Init()
 
 bool FairMQEx9FileSink::StoreData(FairMQParts& parts, int /*index*/)
 {
-  TObject* tempObjects[10];
+  std::vector<TObject*> tempObjects;
   for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
     {
       Ex9TMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
-      tempObjects[ipart] = (TObject*)tm.ReadObject(tm.GetClass());
+      tempObjects.push_back((TObject*)tm.ReadObject(tm.GetClass()));
       for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
         {
-          if ( tempObjects[ipart]->GetName() == fBranchNames[ibr] )
+          if ( strcmp(tempObjects.back()->GetName(),fBranchNames[ibr].data()) == 0 )
             {
-              fOutputObjects[ibr] = tempObjects[ipart];
+              fOutputObjects[ibr] = tempObjects.back();
               fTree->SetBranchAddress(fBranchNames[ibr].c_str(),&fOutputObjects[ibr]);
             }
         }
     }
   fTree->Fill();
   
-  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ )
+  for ( int ipart = 0 ; ipart < tempObjects.size() ; ipart++ )
     {
-      delete tempObjects[ipart];
+      if ( tempObjects[ipart] )
+        delete tempObjects[ipart];
     }
+  tempObjects.clear();
   
   if ( fAckChannelName != "" )
     {
