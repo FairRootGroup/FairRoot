@@ -17,18 +17,19 @@
 #include <algorithm>
 #include <boost/regex.hpp>
 
-static const char* const LogString[] = { "FATAL  ", "ERROR  ", "WARNING",
-                                       "INFO   ", "DEBUG  ", "DEBUG1 ",
-                                       "DEBUG2 ", "DEBUG3 ", "DEBUG4 "
-                                       };
+static const char* const LogString[] = {
+  "FATAL", "ERROR", "WARN", "INFO",
+  "DEBUG", "DEBUG1", "DEBUG2", "DEBUG3", "DEBUG4"
+};
 
+static const char* const TestLogs[] = {
+  "ERROR", "WARN", "INFO",
+  "DEBUG", "DEBUG1", "DEBUG2", "DEBUG3", "DEBUG4"
+};
 
-static const char* const TestLogs[] = { "ERROR", "WARNING",
-                                        "INFO", "DEBUG", "DEBUG1",
-                                        "DEBUG2", "DEBUG3", "DEBUG4"
-                                      };
-
-static const char* const VerbosityLevelArray[] = { "LOW", "MEDIUM", "HIGH"};
+static const char* const VerbosityLevelArray[] = {
+  "LOW", "MEDIUM", "HIGH"
+};
 
 
 TEST(FairToolsTestFatal, TestFatalError)

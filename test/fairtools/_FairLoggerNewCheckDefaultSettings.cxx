@@ -2,13 +2,15 @@
 
 TEST_F(FairToolsTest, CheckDefaultSettings)
 {
-  handler.BeginCapture();
-  LogNoArguments();
-  handler.EndCapture();
+    fHandler.BeginCapture();
 
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(expected);
-  }
+    LogNoArguments();
+
+    fHandler.EndCapture();
+
+    std::vector<std::string> expected = CreateExpectedOutputNoArguments(fLogLevelSettingToTest, fOutputString);
+    {
+        SCOPED_TRACE(fLogLevelSettingToTest);
+        CheckScreenOutput(expected);
+    }
 }

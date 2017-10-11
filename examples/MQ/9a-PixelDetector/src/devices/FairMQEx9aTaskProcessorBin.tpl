@@ -60,16 +60,16 @@ void FairMQEx9aTaskProcessorBin<T>::Init()
   fParCList = new TList();
   fParCList->Add(fGeoPar);
   fFairTask->GetParList(fParCList);
-  
+
   OnData(fInputChannelName, &FairMQEx9aTaskProcessorBin<T>::ProcessData);
 }
 
 template <typename T>
 bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/)
 {
-  // LOG(TRACE)<<"message received with " << parts.Size() << " parts!";
+  // LOG(DEBUG)<<"message received with " << parts.Size() << " parts!";
   fReceivedMsgs++;
-  
+
   if ( parts.Size() == 0 ) return 0; // probably impossible, but still check
 
   // expecting even number of parts in the form: header,data,header,data,header,data and so on...
@@ -84,7 +84,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
   for ( int ievent = 0 ; ievent < parts.Size()/nPPE ; ievent++ ) {
     // the first part should be the event header
     PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(nPPE*ievent)->GetData());
-    // LOG(TRACE) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+    // LOG(DEBUG) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
 
     fNewRunId = payloadE->fRunId;
     if(fNewRunId!=fCurrentRunId)
@@ -101,7 +101,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
     int digiArraySize = parts.At(nPPE*ievent+1)->GetSize();
     int nofDigis      = digiArraySize / sizeof(PixelPayload::Digi);
 
-    // LOG(TRACE) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
+    // LOG(DEBUG) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
 
     // create eventHeader part
     PixelPayload::EventHeader* header = new PixelPayload::EventHeader();

@@ -2,23 +2,24 @@
 
 TEST_F(FairToolsTest, CheckWrongLogLevelSettings)
 {
+    gLogger->SetLogToFile(false);
+    gLogger->SetLogToScreen(true);
 
-  gLogger->SetLogToFile(false);
-  gLogger->SetLogToScreen(true);
+    fHandler.BeginCapture();
 
-  handler.BeginCapture();
-  gLogger->SetLogScreenLevel("BLA");
-  LogNoArguments();
-  handler.EndCapture();
+    gLogger->SetLogScreenLevel("BLA");
+    LogNoArguments();
 
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  std::string outString="[ERROR  ] Log level \"BLA\" not supported. Use default level \"INFO\".";
-  std::vector<std::string>::iterator it;
-  it = expected.begin();
-  it = expected.insert ( it , outString );
+    fHandler.EndCapture();
 
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(expected);
-  }
+    std::vector<std::string> expected = CreateExpectedOutputNoArguments(fLogLevelSettingToTest, fOutputString);
+    std::string outString = "[ERROR] Unknown severity setting: 'BLA', setting to default 'info'.";
+    std::vector<std::string>::iterator it;
+    it = expected.begin();
+    it = expected.insert(it, outString);
+
+    {
+        SCOPED_TRACE(fLogLevelSettingToTest);
+        CheckScreenOutput(expected);
+    }
 }

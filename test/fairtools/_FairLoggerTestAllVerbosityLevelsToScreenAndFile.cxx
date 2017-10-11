@@ -2,39 +2,40 @@
 
 TEST_P(VerbosityLevelTest, testAllVerbosityLevelsToScreenAndFile)
 {
-  fLogger->SetLogVerbosityLevel(verbosityLevel.c_str());
+    fLogger->SetLogVerbosityLevel(fVerbosityLevel.c_str());
 
-  handler.BeginCapture();
-  fLogger->SetLogFileName(OutFileName.c_str());
-  fLogger->SetLogToScreen(true);
-  fLogger->SetLogToFile(true);
-  LogNoArguments();
-  handler.EndCapture();
+    fHandler.BeginCapture();
 
-  std::vector<std::string> expected = CreateExpectedLogLevels(logLevelSettingToTest);
+    fLogger->SetLogFileName(fOutFileName.c_str());
+    fLogger->SetLogToScreen(true);
+    fLogger->SetLogToFile(true);
+    LogNoArguments();
 
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    int Lines = expected.size();
+    fHandler.EndCapture();
 
-    for (int i = 0; i < Lines; ++i) {
-      EXPECT_TRUE( CheckVerboseOutput( expected[i], OutputString, verbosityLevel, handler.GetCaptureLine(i) ) );
+    std::vector<std::string> expected = CreateExpectedLogLevels(fLogLevelSettingToTest);
+
+    {
+        SCOPED_TRACE(fLogLevelSettingToTest);
+        int lines = expected.size();
+
+        for (int i = 0; i < lines; ++i)
+        {
+            EXPECT_TRUE(CheckVerboseOutput(expected[i], fOutputString, fVerbosityLevel, fHandler.GetCaptureLine(i)));
+        }
     }
-  }
 
+    std::vector<std::string> fileInfo;
+    fileInfo = ReadLinesFromFile(fOutFileName);
+    {
+        SCOPED_TRACE(fLogLevelSettingToTest);
+        int lines = expected.size();
 
-  std::vector<std::string> fileInfo;
-  fileInfo=ReadLinesFromFile(OutFileName);
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    int Lines = expected.size();
-
-    for (int i = 0; i < Lines; ++i) {
-      EXPECT_TRUE( CheckVerboseOutput( expected[i], OutputString, verbosityLevel, fileInfo[i] ) );
+        for (int i = 0; i < lines; ++i)
+        {
+            EXPECT_TRUE(CheckVerboseOutput(expected[i], fOutputString, fVerbosityLevel, fileInfo[i]));
+        }
     }
-  }
 }
 
-INSTANTIATE_TEST_CASE_P(TestAllVerbosityLevels,
-                        VerbosityLevelTest,
-                        ::testing::ValuesIn(VerbosityLevelArray));
+INSTANTIATE_TEST_CASE_P(TestAllVerbosityLevels, VerbosityLevelTest, ::testing::ValuesIn(VerbosityLevelArray));

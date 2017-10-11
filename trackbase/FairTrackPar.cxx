@@ -101,8 +101,8 @@ FairTrackPar::~FairTrackPar() {}
 // -----   Public method Print   -------------------------------------------
 void FairTrackPar::Print(Option_t* /*option*/) const
 {
-  gLogger->Info(MESSAGE_ORIGIN,"Position :(%f,%f,%f)",fX,fY,fZ);
-  gLogger->Info(MESSAGE_ORIGIN,"Momentum :(%f,%f,%f)",fPx,fPy,fPz);
+  LOG(info) << "Position :(" << fX << "," << fY << "," << fZ << ")";
+  LOG(info) << "Momentum :(" << fPx << "," << fPy << "," << fPz << ")";
 }
 
 void FairTrackPar::GetFieldValue(const Double_t point[3], Double_t* bField)

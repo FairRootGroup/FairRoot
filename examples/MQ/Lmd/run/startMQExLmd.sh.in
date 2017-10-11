@@ -2,7 +2,7 @@
 
 MQCONFIGFILE="@CMAKE_BINARY_DIR@/bin/config/ex-lmd.json"
 LMDFILE="@CMAKE_SOURCE_DIR@/examples/advanced/MbsTutorial/data/sample_data_2.lmd"
-VERBOSITY="DEBUG"
+SEVERITY="DEBUG"
 
 ########################## start SAMPLER
 SAMPLER="ex-lmd-sampler"
@@ -15,7 +15,7 @@ SAMPLER+=" --lmd-sub-crate 0"
 SAMPLER+=" --lmd-control 3"
 SAMPLER+=" --lmd-chan-name ToMBSUnpacker"
 SAMPLER+=" --input-file-name $LMDFILE"
-SAMPLER+=" --verbosity $VERBOSITY"
+SAMPLER+=" --severity $SEVERITY"
 xterm -geometry 80x30+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/Lmd/$SAMPLER &
 
 ########################## start Unpacker
@@ -28,12 +28,12 @@ UNPACKER+=" --lmd-proc-id 12"
 UNPACKER+=" --lmd-sub-crate 0"
 UNPACKER+=" --lmd-control 3"
 UNPACKER+=" --lmd-chan-name ToMBSUnpacker"
-UNPACKER+=" --verbosity $VERBOSITY"
+UNPACKER+=" --severity $SEVERITY"
 xterm -geometry 80x30+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/Lmd/$UNPACKER &
 
 ########################## start FILESINK
 FILESINK="ex-lmd-mbs-sink"
 FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
 FILESINK+=" --output-file-name @CMAKE_BINARY_DIR@/bin/examples/MQ/Lmd/ex-lmd-output.root"
-FILESINK+=" --verbosity $VERBOSITY"
+FILESINK+=" --severity $SEVERITY"
 xterm -geometry 80x30+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/Lmd/$FILESINK &

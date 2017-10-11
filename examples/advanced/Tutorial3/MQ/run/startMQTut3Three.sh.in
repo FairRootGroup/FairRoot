@@ -52,12 +52,14 @@ xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tuto
 
 PROCESSOR="tut3-processor"
 PROCESSOR+=" --id processor1"
+PROCESSOR+=" --severity debug"
 PROCESSOR+=" --data-format $dataFormat"
 PROCESSOR+=" --mq-config $tut3cfg"
 xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR &
 
 FILESINK="tut3-sink"
 FILESINK+=" --id sink1"
+FILESINK+=" --severity debug"
 FILESINK+=" --data-format $dataFormat"
 FILESINK+=" --mq-config $tut3cfg"
 xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$FILESINK &

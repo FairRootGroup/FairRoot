@@ -2,24 +2,24 @@
 
 TEST_F(FairToolsTest, CheckVerbosityLevelSettings)
 {
+    gLogger->SetLogToFile(false);
+    gLogger->SetLogToScreen(true);
 
-  gLogger->SetLogToFile(false);
-  gLogger->SetLogToScreen(true);
+    fHandler.BeginCapture();
 
-  handler.BeginCapture();
-  gLogger->SetLogVerbosityLevel("BLA");
-  LogNoArguments();
-  handler.EndCapture();
+    gLogger->SetLogVerbosityLevel("BLA");
+    LogNoArguments();
 
-  std::vector<std::string> expected = CreateExpectedOutputNoArguments(logLevelSettingToTest, OutputString);
-  std::string outString="[ERROR  ] Verbosity level \"BLA\" not supported. Use default level \"LOW\".";
-  std::vector<std::string>::iterator it;
-  it = expected.begin();
-  it = expected.insert ( it , outString );
+    fHandler.EndCapture();
 
-  {
-    SCOPED_TRACE(logLevelSettingToTest);
-    CheckScreenOutput(expected);
-  }
+    std::vector<std::string> expected = CreateExpectedOutputNoArguments(fLogLevelSettingToTest, fOutputString);
+    std::string outString = "[ERROR] Unknown verbosity setting: 'BLA', setting to default 'low'.";
+    std::vector<std::string>::iterator it;
+    it = expected.begin();
+    it = expected.insert(it, outString);
 
+    {
+        SCOPED_TRACE(fLogLevelSettingToTest);
+        CheckScreenOutput(expected);
+    }
 }

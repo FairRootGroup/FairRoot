@@ -2,7 +2,7 @@
 
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
-VERBOSE="--verbosity DEBUG"
+VERBOSE="--severity DEBUG"
 FAIRTASKNAME="--task-name PixelFindHits"
 WORKDIR="@EXAMPLE9_FILE_LOCATION@"
 DATESTRING=`date +%Y%m%d_%H%M%S`
@@ -31,7 +31,7 @@ case $key in
     shift
     ;;
     -v|--verbose)
-    VERBOSE="--verbosity $2"
+    VERBOSE="--severity $2"
     shift
     ;;
     -k|--force-kill)
@@ -125,37 +125,37 @@ SERVER="@FAIRROOT_BIN_LOCATION@/"
 SERVER+="parmq-server $TRANSPORT"
 SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE"
 SERVER+=" $VERBOSE "
-SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII --control static --log-color false"
+SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII --control static --color false"
 
 ########################## start SAMPLER
 SAMPLER="@EXAMPLE9_BIN_LOCATION@/"
 SAMPLER+="ex9-sampler $TRANSPORT"
 SAMPLER+=" --id sampler1  --mq-config $MQCONFIGFILE"
-SAMPLER+=" $VERBOSE --ack-channel ack "
-SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX --control static --log-color false"
+SAMPLER+=" --severity info --ack-channel ack "
+SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX --control static --color false"
 
 ########################## start PROCESSORs
 PROCESSOR1="@EXAMPLE9_BIN_LOCATION@/"
 PROCESSOR1+="ex9-processor $TRANSPORT"
 PROCESSOR1+=" $VERBOSE"
-PROCESSOR1+=" --id processor1 $FAIRTASKNAME --mq-config $MQCONFIGFILE --control static --log-color false"
+PROCESSOR1+=" --id processor1 $FAIRTASKNAME --mq-config $MQCONFIGFILE --control static --color false"
 
 PROCESSOR2="@EXAMPLE9_BIN_LOCATION@/"
 PROCESSOR2+="ex9-processor $TRANSPORT"
 PROCESSOR2+=" $VERBOSE"
-PROCESSOR2+=" --id processor2 $FAIRTASKNAME --mq-config $MQCONFIGFILE --control static --log-color false"
+PROCESSOR2+=" --id processor2 $FAIRTASKNAME --mq-config $MQCONFIGFILE --control static --color false"
 
 PROCESSOR3="@EXAMPLE9_BIN_LOCATION@/"
 PROCESSOR3+="ex9-processor $TRANSPORT"
 PROCESSOR3+=" $VERBOSE"
-PROCESSOR3+=" --id processor3 $FAIRTASKNAME --mq-config $MQCONFIGFILE --control static --log-color false"
+PROCESSOR3+=" --id processor3 $FAIRTASKNAME --mq-config $MQCONFIGFILE --control static --color false"
 
 ########################## start FILESINK
 FILESINK="@EXAMPLE9_BIN_LOCATION@/"
 FILESINK+="ex9-sink $TRANSPORT"
 FILESINK+=" $VERBOSE --ack-channel ack "
 FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
-FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH --control static --log-color false"
+FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH --control static --color false"
 
 $SERVER &> server_$DATESTRING.out.log &
 SERVER_PID=$!

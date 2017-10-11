@@ -45,25 +45,25 @@ FairLinkManager::FairLinkManager()
 FairLinkManager::~FairLinkManager()
 {
 //
-  fLogger->Debug(MESSAGE_ORIGIN,"Enter Destructor of FairLinkManager");
+  LOG(debug) << "Enter Destructor of FairLinkManager";
   fgInstance = 0;
-  fLogger->Debug(MESSAGE_ORIGIN, "Leave Destructor of FairLinkManager");
+  LOG(debug) <<  "Leave Destructor of FairLinkManager";
 }
 //_____________________________________________________________________________
 
 void FairLinkManager::AddIgnoreType(Int_t type)
 {
 	if (fIgnoreSetting == kFALSE){
-		fLogger->Debug(MESSAGE_ORIGIN, "AddIgnoreType ignored because of IncludeType setting");
+		LOG(debug) <<  "AddIgnoreType ignored because of IncludeType setting";
 		return;
 	}
-	fLogger->Debug(MESSAGE_ORIGIN, "AddIgnoreType");
+	LOG(debug) <<  "AddIgnoreType";
 	fIgnoreTypes.insert(type);
 }
 
 void FairLinkManager::AddIncludeType(Int_t type)
 {
-	fLogger->Debug(MESSAGE_ORIGIN, "AddIgnoreType");
+	LOG(debug) <<  "AddIgnoreType";
 //	std::cout << "-I- FairLinkManager::AddIgnoreType: " << type << std::endl;
 	if (fIgnoreSetting == kTRUE){
 		fIgnoreSetting=kFALSE;

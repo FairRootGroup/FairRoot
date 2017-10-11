@@ -52,6 +52,7 @@ xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tuto
 
 SPLITTER="splitter"
 SPLITTER+=" --id splitter"
+SPLITTER+=" --severity debug"
 SPLITTER+=" --in-channel data1"
 SPLITTER+=" --out-channel data2"
 SPLITTER+=" --mq-config $tut3cfg"
@@ -59,6 +60,7 @@ xterm -geometry 80x23+0+350 -hold -e @CMAKE_BINARY_DIR@/bin/$SPLITTER &
 
 PROCESSOR1="tut3-processor"
 PROCESSOR1+=" --id processor1"
+PROCESSOR1+=" --severity debug"
 PROCESSOR1+=" --in-channel data2"
 PROCESSOR1+=" --out-channel data3"
 PROCESSOR1+=" --mq-config $tut3cfg"
@@ -67,6 +69,7 @@ xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tu
 
 PROCESSOR2="tut3-processor"
 PROCESSOR2+=" --id processor2"
+PROCESSOR2+=" --severity debug"
 PROCESSOR2+=" --in-channel data2"
 PROCESSOR2+=" --out-channel data3"
 PROCESSOR2+=" --mq-config $tut3cfg"
@@ -75,6 +78,7 @@ xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/
 
 PROCESSOR3="tut3-processor"
 PROCESSOR3+=" --id processor3"
+PROCESSOR3+=" --severity debug"
 PROCESSOR3+=" --in-channel data2"
 PROCESSOR3+=" --out-channel data3"
 PROCESSOR3+=" --mq-config $tut3cfg"
@@ -83,6 +87,7 @@ xterm -geometry 80x23+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/
 
 MERGER="merger"
 MERGER+=" --id merger"
+MERGER+=" --severity debug"
 MERGER+=" --in-channel data3"
 MERGER+=" --out-channel data4"
 MERGER+=" --mq-config $tut3cfg"
@@ -90,6 +95,7 @@ xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
 
 FILESINK="tut3-sink"
 FILESINK+=" --id sink1"
+FILESINK+=" --severity debug"
 FILESINK+=" --in-channel data4"
 FILESINK+=" --mq-config $tut3cfg"
 FILESINK+=" --data-format $dataFormat"

@@ -5,7 +5,7 @@ trap 'kill -TERM $GENERATE_PID; kill -TERM $SAMPLER_PID; kill -TERM $PROCESSOR1_
 
 ########################## some def
 
-VERBOSITY="DEBUG"
+SEVERITY="DEBUG"
 INPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/testinput2.root"
 OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/outputEx2Test.root"
 #JSONCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/options/MQConfig.json"
@@ -15,27 +15,27 @@ JSONCONFIGFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/test/testSerializat
 ########################## start dummy data generator
 GENERATE="serialization-Ex-generate-data --id generator"
 GENERATE+=" --output-file $INPUTFILE"
-GENERATE+=" --tree cbmsim --log-color false"
+GENERATE+=" --tree cbmsim --color false"
 @CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$GENERATE &
 GENERATE_PID=$!
 wait $GENERATE_PID
 
 ########################## start SAMPLER
 SAMPLER="serialization-Ex2-Sampler"
-SAMPLER+=" --id sampler1 --mq-config $JSONCONFIGFILE --verbosity $VERBOSITY"
-SAMPLER+=" --input-file $INPUTFILE --log-color false --control static"
+SAMPLER+=" --id sampler1 --mq-config $JSONCONFIGFILE --severity $SEVERITY"
+SAMPLER+=" --input-file $INPUTFILE --color false --control static"
 @CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$SAMPLER &
 SAMPLER_PID=$!
 
 ########################## start PROCESSOR
 PROCESSOR1="serialization-Ex2-Processor"
-PROCESSOR1+=" --id processor1 --mq-config $JSONCONFIGFILE --verbosity $VERBOSITY --log-color false --control static --num-msgs 100"
+PROCESSOR1+=" --id processor1 --mq-config $JSONCONFIGFILE --severity $SEVERITY --color false --control static --num-msgs 100"
 @CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$PROCESSOR1 &
 PROCESSOR1_PID=$!
 
 ########################## start FILESINK
 FILESINK="serialization-Ex2-Sink"
-FILESINK+=" --id sink1 --mq-config $JSONCONFIGFILE --verbosity $VERBOSITY --log-color false --control static --num-msgs 100"
+FILESINK+=" --id sink1 --mq-config $JSONCONFIGFILE --severity $SEVERITY --color false --control static --num-msgs 100"
 FILESINK+=" --output-file $OUTPUTFILE"
 @CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$FILESINK &
 FILESINK_PID=$!
