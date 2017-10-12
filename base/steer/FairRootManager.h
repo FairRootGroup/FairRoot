@@ -331,9 +331,6 @@ class FairRootManager : public TObject
     /// keeps track of branches which are supposed to be persistified
     std::vector<std::string> fPersistentBranchesAny;
     
-    /**Singleton instance*/
-    static TMCThreadLocal FairRootManager*  fgInstance;
-
     /**Branch id for this run */
     Int_t                                fBranchSeqId;
     /**List of branch names as TObjString*/
