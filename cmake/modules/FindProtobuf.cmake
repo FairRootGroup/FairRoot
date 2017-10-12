@@ -136,17 +136,13 @@ endfunction()
 function(_protobuf_find_libraries name filename)
    find_library(${name}_LIBRARY
        NAMES ${filename}
-       PATHS ${SIMPATH}/lib ${ProtoBuf_DIR}/lib
-       NO_DEFAULT_PATH
-       NO_CMAKE_SYSTEM_PATH
+       HINTS ${SIMPATH}/lib ${ProtoBuf_DIR}/lib
    )
    mark_as_advanced(${name}_LIBRARY)
 
    find_library(${name}_LIBRARY_DEBUG
        NAMES ${filename}
-       PATHS ${SIMPATH}/lib ${ProtoBuf_DIR}/lib
-       NO_DEFAULT_PATH
-       NO_CMAKE_SYSTEM_PATH
+       HINTS ${SIMPATH}/lib ${ProtoBuf_DIR}/lib
    )
    mark_as_advanced(${name}_LIBRARY_DEBUG)
 
@@ -215,12 +211,7 @@ endif()
 # Find the include directory
 find_path(PROTOBUF_INCLUDE_DIR
     google/protobuf/service.h
-    PATHS
-    ${PROTOBUF_SRC_ROOT_FOLDER}/src
-    ${SIMPATH}/include
-    ${ProtoBuf_DIR}/include
-    NO_DEFAULT_PATH
-    NO_CMAKE_SYSTEM_PATH
+    HINTS ${PROTOBUF_SRC_ROOT_FOLDER}/src ${SIMPATH}/include ${ProtoBuf_DIR}/include
 )
 mark_as_advanced(PROTOBUF_INCLUDE_DIR)
 
@@ -228,21 +219,17 @@ mark_as_advanced(PROTOBUF_INCLUDE_DIR)
 find_program(PROTOBUF_PROTOC_EXECUTABLE
     NAMES protoc
     DOC "The Google Protocol Buffers Compiler"
-    PATHS
-    ${SIMPATH}/bin
-    ${ProtoBuf_DIR}/bin
-    NO_DEFAULT_PATH
-    NO_CMAKE_SYSTEM_PATH
+    HINTS ${SIMPATH}/bin ${ProtoBuf_DIR}/bin
 )
 mark_as_advanced(PROTOBUF_PROTOC_EXECUTABLE)
 
 
 include(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(PROTOBUF DEFAULT_MSG
-    PROTOBUF_LIBRARY PROTOBUF_INCLUDE_DIR)
+    PROTOBUF_LIBRARY PROTOBUF_INCLUDE_DIR PROTOBUF_PROTOC_EXECUTABLE)
 
 if(PROTOBUF_FOUND)
     set(PROTOBUF_INCLUDE_DIRS ${PROTOBUF_INCLUDE_DIR})
-    message(STATUS "Looking for Protobuf... - found ${PROTOBUF_LIBRARIES}")
+    message(STATUS "Looking for Protobuf... - found: libraries: ${PROTOBUF_LIBRARIES}, includes: ${PROTOBUF_INCLUDE_DIRS}, protoc: ${PROTOBUF_PROTOC_EXECUTABLE}")
     add_definitions(-DPROTOBUF)
 endif()
