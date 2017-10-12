@@ -67,14 +67,13 @@ using std::list;
 using std::pair;
 using std::set;
 
-TMCThreadLocal FairRootManager* FairRootManager::fgInstance = 0;
 //_____________________________________________________________________________
 FairRootManager* FairRootManager::Instance()
 {
 // Returns singleton instance.
 // ---
-    if (!fgInstance) fgInstance = new FairRootManager;
-    return fgInstance;
+    static thread_local FairRootManager instance;
+    return &instance;
 }
 //_____________________________________________________________________________
 
@@ -92,8 +91,8 @@ FairRootManager::FairRootManager()
     fMap(),
     fBranchSeqId(0),
     fBranchNameList(new TList()),
-    fTimeBasedBranchNameList(new TList()),
     fMCTrackBranchId(-1),
+    fTimeBasedBranchNameList(new TList()),
     fActiveContainer(),
     fTSBufferMap(),
     fWriteoutBufferMap(),
@@ -117,11 +116,7 @@ FairRootManager::FairRootManager()
     fListOfBranchesFromInputIter(0),
     fListOfNonTimebasedBranches(new TRefArray()),
     fListOfNonTimebasedBranchesIter(0)
-  {
-  if (fgInstance) {
-    LOG(FATAL) << "Singleton instance already exists." << FairLogger::endl;
-  }
-  fgInstance = this;
+{
 }
 //_____________________________________________________________________________
 
@@ -141,9 +136,7 @@ FairRootManager::~FairRootManager()
   delete[] fObj2;
   fBranchNameList->Delete();
   delete fBranchNameList;
-  fgInstance = 0;
   LOG(DEBUG) << "Leave Destructor of FairRootManager" << FairLogger::endl;
-
   delete fEventHeader;
   delete fSourceChain;
 }
