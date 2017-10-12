@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -127,8 +127,7 @@ FairRootManager::~FairRootManager()
   LOG(DEBUG) << "Enter Destructor of FairRootManager" << FairLogger::endl;
   // delete fOutTree;
   if(fOutFile) {
-    fOutFile->cd();
-    delete fOutFile;
+    CloseOutFile();
   } else {
     // if fOutFile exists, fOutTree is deleted with the file
     delete fOutTree;
@@ -144,7 +143,7 @@ FairRootManager::~FairRootManager()
 
 //_____________________________________________________________________________
 Bool_t FairRootManager::InitSource() {
-  
+
   LOG(DEBUG) << "Call the initialiazer for the FairSource in FairRootManager " << FairLogger::endl;
   if ( fSource ) {
     Bool_t sourceInitBool = fSource->Init();
@@ -173,7 +172,7 @@ TFile* FairRootManager::OpenOutFile(TFile* f)
   fOutFile=f;
   /**Check the output file, if anything wronge with it exit!*/
   if (fOutFile->IsZombie()) {
-    LOG(FATAL) << "FairRootManager: Error opening output file " 
+    LOG(FATAL) << "FairRootManager: Error opening output file "
 	       << FairLogger::endl;
     exit(-1);
   }
@@ -244,7 +243,7 @@ void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* 
   }
   AddMemoryBranch(name, obj);
   AddBranchToList(name);
-    
+
   if (toFile == kFALSE) {
     FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
   }
@@ -520,7 +519,7 @@ void FairRootManager:: WriteFolder()
 Int_t  FairRootManager::ReadEvent(Int_t i)
 {
   if ( !fSource ) return 0;
-  
+
   fSource->Reset();
 
   SetEntryNr(i);
@@ -538,7 +537,7 @@ Int_t  FairRootManager::ReadEvent(Int_t i)
   fCurrentTime = fEventHeader->GetEventTime();
 
   LOG(DEBUG) << "--Event number --- "
-	     << fCurrentEntryNo << " with time ---- " 
+	     << fCurrentEntryNo << " with time ---- "
 	     << fCurrentTime << FairLogger::endl;
 
   return readEventResult;
@@ -559,7 +558,7 @@ void FairRootManager::ReadBranchEvent(const char* BrName, Int_t entry)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-Int_t FairRootManager::GetRunId() 
+Int_t FairRootManager::GetRunId()
 {
   if ( fSource ) {
     fSource->FillEventHeader(fEventHeader);
@@ -621,7 +620,7 @@ TObject* FairRootManager::GetObject(const char* BrName)
   if(fOutFolder) {
     Obj = fOutFolder->FindObjectAny(BrName);
     if (Obj) {
-      LOG(DEBUG2) <<"Object "  
+      LOG(DEBUG2) <<"Object "
 		  << BrName << " was already activated by another task"
 		  << FairLogger::endl;
     }
@@ -646,8 +645,8 @@ TObject* FairRootManager::GetObject(const char* BrName)
   }
   if(!Obj) {
     Obj=ActivateBranch(BrName);
-  } 
-  if ( Obj!=NULL ) 
+  }
+  if ( Obj!=NULL )
     FairMonitor::GetMonitor()->RecordGetting(BrName);
   return Obj;
 }
@@ -957,8 +956,8 @@ void  FairRootManager::SetBranchNameList(TList* list)
 
 //_____________________________________________________________________________
 void FairRootManager::SetInChain(TChain* tempChain, Int_t ident)
-{ 
-  if ( ident <= 0 ) 
+{
+  if ( ident <= 0 )
     fSourceChain = tempChain;
   else
     fSignalChainList[ident] = tempChain;
@@ -972,7 +971,7 @@ Double_t FairRootManager::GetEventTime() {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRootManager::UpdateBranches() { 
+void FairRootManager::UpdateBranches() {
   for ( Int_t iobj = 0 ; iobj <= fNObj ; iobj++ ) {
     if ( fObj2[iobj] ) {
       LOG(INFO) << "FairRootManager::UpdateBranches \"" << fObj2[iobj]->GetName()
@@ -1029,10 +1028,10 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
     //Fatal(" No Branch in the tree", BrName );
     return 0;
   } else {
-    if ( fSource ) 
+    if ( fSource )
       fSource->ActivateObject(&fObj2[fNObj],BrName);
   }
-  
+
   AddMemoryBranch( BrName , fObj2[fNObj] );
   return  fObj2[fNObj];
 }
@@ -1059,11 +1058,11 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
  // cout <<"FairRootManager::CheckBranchSt  :  " << BrName << endl;
   Int_t returnvalue=0;
   TObject* Obj1 =NULL;
-    
+
   if(fListFolder==0){
     fListFolder = new TObjArray(16);
   }
-  
+
   //cout <<"FairRootManager::CheckBranchSt  :  " <<fRootFolder << endl;
   if (fRootFolder) {
     fListFolder->Add(fRootFolder);
@@ -1147,7 +1146,7 @@ void FairRootManager::WriteFileHeader(FairFileHeader* f)
 //_____________________________________________________________________________
 Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
 {
-  if ( fSource ) 
+  if ( fSource )
     return fSource->CheckMaxEventNo(EvtEnd);
   return 0;
 }
@@ -1160,7 +1159,7 @@ FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, 
     fWriteoutBufferMap[branchName] = buffer;
   } else {
     LOG(WARNING) << "Branch "
-		 << branchName.Data() 
+		 << branchName.Data()
 		 << " is already registered in WriteoutBufferMap"
 		 << FairLogger::endl;
     delete buffer;
@@ -1175,13 +1174,13 @@ void FairRootManager::UpdateListOfTimebasedBranches()
   /**
    * Add branches that are time based to the proper list
    */
-  
+
   for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
-    
+
     if(iter->second->IsBufferingActivated()) fTimeBasedBranchNameList->AddLast(new TObjString(iter->first.Data()));
-    
+
   }
-  
+
 }
 
 //_____________________________________________________________________________
@@ -1192,15 +1191,15 @@ void FairRootManager::SetTimeBasedBranchNameList(TList *list)
   /**
    * Replace the list
    */
-  
+
   if(list!=0){
     fTimeBasedBranchNameList->Delete();
     delete fTimeBasedBranchNameList;
     fTimeBasedBranchNameList=list;
   }
-  
-  
-  
+
+
+
 }
 
 //_____________________________________________________________________________
@@ -1345,11 +1344,3 @@ void FairRootManager::EmitMemoryBranchWrongTypeWarning(const char* brname, const
 //_____________________________________________________________________________
 
 ClassImp(FairRootManager)
-
-
-
-
-
-
-
-
