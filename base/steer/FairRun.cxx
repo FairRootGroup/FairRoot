@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -67,8 +67,6 @@ FairRun::~FairRun()
   delete fTask;  // There is another tasklist in MCApplication,
   // but this should be independent
   delete fRtdb;  // who is responsible for the RuntimeDataBase
-  delete fRootManager; // who is responsible
-  fRootManager=0;
   delete fEvtHeader;
   LOG(DEBUG) << "Leave Destructor of FairRun" << FairLogger::endl;
 }
@@ -155,5 +153,3 @@ Bool_t FairRun::GetWriteRunInfoFile()
 
 
 ClassImp(FairRun)
-
-
