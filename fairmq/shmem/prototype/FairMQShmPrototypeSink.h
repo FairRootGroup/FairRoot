@@ -6,24 +6,24 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairMQExampleShmSink.h
+ * FairMQShmPrototypeSink.h
  *
  * @since 2016-04-08
  * @author A. Rybalchenko
  */
 
-#ifndef FAIRMQEXAMPLESHMSINK_H_
-#define FAIRMQEXAMPLESHMSINK_H_
+#ifndef FAIRMQSHMPROTOTYPESINK_H_
+#define FAIRMQSHMPROTOTYPESINK_H_
 
 #include <atomic>
 
 #include "FairMQDevice.h"
 
-class FairMQExampleShmSink : public FairMQDevice
+class FairMQShmPrototypeSink : public FairMQDevice
 {
   public:
-    FairMQExampleShmSink();
-    virtual ~FairMQExampleShmSink();
+    FairMQShmPrototypeSink();
+    virtual ~FairMQShmPrototypeSink();
 
     void Log(const int intervalInMs);
 
@@ -37,4 +37,4 @@ class FairMQExampleShmSink : public FairMQDevice
     virtual void Run();
 };
 
-#endif /* FAIRMQEXAMPLESHMSINK_H_ */
+#endif /* FAIRMQSHMPROTOTYPESINK_H_ */

@@ -6,24 +6,24 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairMQExampleShmSampler.h
+ * FairMQShmPrototypeSampler.h
  *
  * @since 2016-04-08
  * @author A. Rybalchenko
  */
 
-#ifndef FAIRMQEXAMPLESHMSAMPLER_H_
-#define FAIRMQEXAMPLESHMSAMPLER_H_
+#ifndef FAIRMQSHMPROTOTYPESAMPLER_H_
+#define FAIRMQSHMPROTOTYPESAMPLER_H_
 
 #include <atomic>
 
 #include "FairMQDevice.h"
 
-class FairMQExampleShmSampler : public FairMQDevice
+class FairMQShmPrototypeSampler : public FairMQDevice
 {
   public:
-    FairMQExampleShmSampler();
-    virtual ~FairMQExampleShmSampler();
+    FairMQShmPrototypeSampler();
+    virtual ~FairMQShmPrototypeSampler();
 
     void Log(const int intervalInMs);
     void ResetMsgCounter();
@@ -42,4 +42,4 @@ class FairMQExampleShmSampler : public FairMQDevice
     virtual void Run();
 };
 
-#endif /* FAIRMQEXAMPLESHMSAMPLER_H_ */
+#endif /* FAIRMQSHMPROTOTYPESAMPLER_H_ */
