@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairMQExampleShmSampler.cpp
+ * FairMQShmPrototypeSampler.cpp
  *
  * @since 2016-04-08
  * @author A. Rybalchenko
@@ -20,7 +20,7 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/smart_ptr/shared_ptr.hpp>
 
-#include "FairMQExampleShmSampler.h"
+#include "FairMQShmPrototypeSampler.h"
 #include "FairMQProgOptions.h"
 #include "FairMQLogger.h"
 
@@ -29,7 +29,7 @@
 using namespace std;
 using namespace boost::interprocess;
 
-FairMQExampleShmSampler::FairMQExampleShmSampler()
+FairMQShmPrototypeSampler::FairMQShmPrototypeSampler()
     : fMsgSize(10000)
     , fMsgCounter(0)
     , fMsgRate(1)
@@ -38,7 +38,7 @@ FairMQExampleShmSampler::FairMQExampleShmSampler()
     , fBytesOutNew(0)
     , fMsgOutNew(0)
 {
-    if (shared_memory_object::remove("FairMQSharedMemory"))
+    if (shared_memory_object::remove("FairMQSharedMemoryPrototype"))
     {
         LOG(INFO) << "Successfully removed shared memory upon device start.";
     }
@@ -48,9 +48,9 @@ FairMQExampleShmSampler::FairMQExampleShmSampler()
     }
 }
 
-FairMQExampleShmSampler::~FairMQExampleShmSampler()
+FairMQShmPrototypeSampler::~FairMQShmPrototypeSampler()
 {
-    if (shared_memory_object::remove("FairMQSharedMemory"))
+    if (shared_memory_object::remove("FairMQSharedMemoryPrototype"))
     {
         LOG(INFO) << "Successfully removed shared memory after the device has stopped.";
     }
@@ -60,17 +60,17 @@ FairMQExampleShmSampler::~FairMQExampleShmSampler()
     }
 }
 
-void FairMQExampleShmSampler::Init()
+void FairMQShmPrototypeSampler::Init()
 {
     fMsgSize = fConfig->GetValue<int>("msg-size");
     fMsgRate = fConfig->GetValue<int>("msg-rate");
 
-    SegmentManager::Instance().InitializeSegment("open_or_create", "FairMQSharedMemory", 2000000000);
+    SegmentManager::Instance().InitializeSegment("open_or_create", "FairMQSharedMemoryPrototype", 2000000000);
     LOG(INFO) << "Created/Opened shared memory segment of 2,000,000,000 bytes. Available are "
               << SegmentManager::Instance().Segment()->get_free_memory() << " bytes.";
 }
 
-void FairMQExampleShmSampler::Run()
+void FairMQShmPrototypeSampler::Run()
 {
     // count sent messages (also used in creating ShmChunk container ID)
     static uint64_t numSentMsgs = 0;
@@ -78,8 +78,8 @@ void FairMQExampleShmSampler::Run()
     LOG(INFO) << "Starting the benchmark with message size of " << fMsgSize;
 
     // start rate logger and acknowledgement listener in separate threads
-    thread rateLogger(&FairMQExampleShmSampler::Log, this, 1000);
-    // thread resetMsgCounter(&FairMQExampleShmSampler::ResetMsgCounter, this);
+    thread rateLogger(&FairMQShmPrototypeSampler::Log, this, 1000);
+    // thread resetMsgCounter(&FairMQShmPrototypeSampler::ResetMsgCounter, this);
 
     // int charnum = 97;
 
@@ -186,7 +186,7 @@ void FairMQExampleShmSampler::Run()
     // resetMsgCounter.join();
 }
 
-void FairMQExampleShmSampler::Log(const int intervalInMs)
+void FairMQShmPrototypeSampler::Log(const int intervalInMs)
 {
     timestamp_t t0 = get_timestamp();
     timestamp_t t1;
@@ -217,7 +217,7 @@ void FairMQExampleShmSampler::Log(const int intervalInMs)
     }
 }
 
-void FairMQExampleShmSampler::ResetMsgCounter()
+void FairMQShmPrototypeSampler::ResetMsgCounter()
 {
     while (CheckCurrentState(RUNNING))
     {

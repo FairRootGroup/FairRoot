@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairMQExampleShmSink.cxx
+ * FairMQShmPrototypeSink.cxx
  *
  * @since 2016-04-08
  * @author A. Rybalchenko
@@ -20,7 +20,7 @@
 #include <boost/interprocess/managed_shared_memory.hpp>
 #include <boost/interprocess/smart_ptr/shared_ptr.hpp>
 
-#include "FairMQExampleShmSink.h"
+#include "FairMQShmPrototypeSink.h"
 #include "FairMQProgOptions.h"
 #include "FairMQLogger.h"
 
@@ -29,7 +29,7 @@
 using namespace std;
 using namespace boost::interprocess;
 
-FairMQExampleShmSink::FairMQExampleShmSink()
+FairMQShmPrototypeSink::FairMQShmPrototypeSink()
     : fBytesIn(0)
     , fMsgIn(0)
     , fBytesInNew(0)
@@ -37,22 +37,22 @@ FairMQExampleShmSink::FairMQExampleShmSink()
 {
 }
 
-FairMQExampleShmSink::~FairMQExampleShmSink()
+FairMQShmPrototypeSink::~FairMQShmPrototypeSink()
 {
 }
 
-void FairMQExampleShmSink::Init()
+void FairMQShmPrototypeSink::Init()
 {
-    SegmentManager::Instance().InitializeSegment("open_or_create", "FairMQSharedMemory", 2000000000);
+    SegmentManager::Instance().InitializeSegment("open_or_create", "FairMQSharedMemoryPrototype", 2000000000);
     LOG(INFO) << "Created/Opened shared memory segment of 2,000,000,000 bytes. Available are "
               << SegmentManager::Instance().Segment()->get_free_memory() << " bytes.";
 }
 
-void FairMQExampleShmSink::Run()
+void FairMQShmPrototypeSink::Run()
 {
     static uint64_t numReceivedMsgs = 0;
 
-    thread rateLogger(&FairMQExampleShmSink::Log, this, 1000);
+    thread rateLogger(&FairMQShmPrototypeSink::Log, this, 1000);
 
     while (CheckCurrentState(RUNNING))
     {
@@ -113,7 +113,7 @@ void FairMQExampleShmSink::Run()
     rateLogger.join();
 }
 
-void FairMQExampleShmSink::Log(const int intervalInMs)
+void FairMQShmPrototypeSink::Log(const int intervalInMs)
 {
     timestamp_t t0 = get_timestamp();
     timestamp_t t1;

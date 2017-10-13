@@ -7,15 +7,18 @@
  ********************************************************************************/
 
 #include "runFairMQDevice.h"
-#include "FairMQExampleShmSink.h"
+#include "FairMQShmPrototypeSampler.h"
 
 namespace bpo = boost::program_options;
 
-void addCustomOptions(bpo::options_description& /*options*/)
+void addCustomOptions(bpo::options_description& options)
 {
+    options.add_options()
+        ("msg-size", bpo::value<int>()->default_value(1000), "Message size in bytes")
+        ("msg-rate", bpo::value<int>()->default_value(0), "Msg rate limit in maximum number of messages per second");
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
 {
-    return new FairMQExampleShmSink();
+    return new FairMQShmPrototypeSampler();
 }

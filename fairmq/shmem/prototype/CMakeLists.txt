@@ -6,10 +6,10 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
-configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/SharedMemory/ex-shm.json 
-               ${CMAKE_BINARY_DIR}/bin/config/ex-shm.json)
-configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/SharedMemory/startShmExample.sh.in 
-               ${CMAKE_BINARY_DIR}/bin/examples/MQ/SharedMemory/startShmExample.sh)
+configure_file(${CMAKE_SOURCE_DIR}/fairmq/shmem/prototype/shm-prototype.json
+               ${CMAKE_BINARY_DIR}/bin/config/shm-prototype.json)
+configure_file(${CMAKE_SOURCE_DIR}/fairmq/shmem/prototype/startShmPrototype.sh.in
+               ${CMAKE_BINARY_DIR}/bin/prototype/shmem/startShmPrototype.sh)
 
 Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairmq
@@ -18,7 +18,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairmq/devices
   ${CMAKE_SOURCE_DIR}/fairmq/tools
   ${CMAKE_SOURCE_DIR}/fairmq/options
-  ${CMAKE_SOURCE_DIR}/examples/MQ/SharedMemory
+  ${CMAKE_SOURCE_DIR}/fairmq/shmem/prototype
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
@@ -37,8 +37,8 @@ Set(LINK_DIRECTORIES
 Link_Directories(${LINK_DIRECTORIES})
 
 Set(SRCS
-  "FairMQExampleShmSampler.cxx"
-  "FairMQExampleShmSink.cxx"
+  "FairMQShmPrototypeSampler.cxx"
+  "FairMQShmPrototypeSink.cxx"
 )
 
 Set(DEPENDENCIES
@@ -47,36 +47,30 @@ Set(DEPENDENCIES
   FairMQ
 )
 
-Set(LIBRARY_NAME FairMQExampleShm)
+Set(LIBRARY_NAME FairMQShmPrototype)
 
 GENERATE_LIBRARY()
 
 Set(Exe_Names
-  ex-shm-sampler
-  ex-shm-sink
+  shm-prototype-sampler
+  shm-prototype-sink
 )
 
 Set(Exe_Source
-  runExampleShmSampler.cxx
-  runExampleShmSink.cxx
+  runShmPrototypeSampler.cxx
+  runShmPrototypeSink.cxx
 )
 
 list(LENGTH Exe_Names _length)
 math(EXPR _length ${_length}-1)
 
-set(BIN_DESTINATION share/fairbase/examples/MQ/SharedMemory/bin)
-set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/SharedMemory")
+set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/prototype/shmem")
 
 ForEach(_file RANGE 0 ${_length})
   list(GET Exe_Names ${_file} _name)
   list(GET Exe_Source ${_file} _src)
   set(EXE_NAME ${_name})
   set(SRCS ${_src})
-  set(DEPENDENCIES FairMQExampleShm)
+  set(DEPENDENCIES FairMQShmPrototype)
   GENERATE_EXECUTABLE()
 EndForEach(_file RANGE 0 ${_length})
-
-Install(
-  FILES ex-shm.json
-  DESTINATION share/fairbase/examples/MQ/SharedMemory/config/
-)

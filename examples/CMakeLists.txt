@@ -34,7 +34,6 @@ If(Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND AND HAS_CXX11_PATTERN1)
   add_subdirectory(MQ/6-multiple-channels)
   add_subdirectory(MQ/8-multipart)
   add_subdirectory(MQ/Lmd)
-  add_subdirectory(MQ/SharedMemory)
   add_subdirectory(MQ/multiple-transports)
 EndIf()
 
