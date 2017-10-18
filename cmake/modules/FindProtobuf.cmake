@@ -136,13 +136,15 @@ endfunction()
 function(_protobuf_find_libraries name filename)
    find_library(${name}_LIBRARY
        NAMES ${filename}
-       HINTS ${SIMPATH}/lib ${ProtoBuf_DIR}/lib
+       HINTS ${ProtoBuf_DIR} ${SIMPATH}
+       PATH_SUFFIXES lib
    )
    mark_as_advanced(${name}_LIBRARY)
 
    find_library(${name}_LIBRARY_DEBUG
        NAMES ${filename}
-       HINTS ${SIMPATH}/lib ${ProtoBuf_DIR}/lib
+       HINTS ${ProtoBuf_DIR} ${SIMPATH}
+       PATH_SUFFIXES lib
    )
    mark_as_advanced(${name}_LIBRARY_DEBUG)
 
@@ -209,9 +211,14 @@ if(UNIX)
 endif()
 
 # Find the include directory
+set(PROTOBUF_SRC_HINT "")
+if(PROTOBUF_SRC_ROOT_FOLDER AND EXISTS "${PROTOBUF_SRC_ROOT_FOLDER}")
+  set(PROTOBUF_SRC_HINT "${PROTOBUF_SRC_ROOT_FOLDER}/src")
+endif()
 find_path(PROTOBUF_INCLUDE_DIR
     google/protobuf/service.h
-    HINTS ${PROTOBUF_SRC_ROOT_FOLDER}/src ${SIMPATH}/include ${ProtoBuf_DIR}/include
+    HINTS ${PROTOBUF_SRC_HINT} ${ProtoBuf_DIR} ${SIMPATH}
+    PATH_SUFFIXES include
 )
 mark_as_advanced(PROTOBUF_INCLUDE_DIR)
 
@@ -219,7 +226,8 @@ mark_as_advanced(PROTOBUF_INCLUDE_DIR)
 find_program(PROTOBUF_PROTOC_EXECUTABLE
     NAMES protoc
     DOC "The Google Protocol Buffers Compiler"
-    HINTS ${SIMPATH}/bin ${ProtoBuf_DIR}/bin
+    HINTS ${ProtoBuf_DIR} ${SIMPATH}
+    PATH_SUFFIXES bin
 )
 mark_as_advanced(PROTOBUF_PROTOC_EXECUTABLE)
 
