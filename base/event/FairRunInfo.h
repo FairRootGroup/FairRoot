@@ -44,7 +44,6 @@ class FairRunInfo : public TObject
     std::vector<Double_t> fTime;//!
     std::vector<Long_t> fResidentMemory;//!
     std::vector<Long_t> fVirtualMemory;//!
-    FairLogger* fLogger;
 
     void CalculateTimeDifference();
 
@@ -59,7 +58,7 @@ class FairRunInfo : public TObject
     FairRunInfo(const FairRunInfo&);
     FairRunInfo& operator=(const FairRunInfo&);
 
-    ClassDef(FairRunInfo,1)
+    ClassDef(FairRunInfo,2)
 
 };
 #endif
