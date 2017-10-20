@@ -38,7 +38,7 @@ void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
 
   
   fRun->SetOutputFile(outFile);
-
+  fRun->SetGenerateRunInfo(kTRUE);       // Create FairRunInfo file
 
   // -----   Magnetic field   -------------------------------------------
   // Constant Field

@@ -40,7 +40,7 @@ void run_digi( TString mcEngine="TGeant3" )
   fRun->SetUseFairLinks(kTRUE);
   FairLinkManager::Instance()->AddIncludeType(0);
 //  FairLinkManager::Instance()->AddIncludeType(1);
-
+  fRun->SetGenerateRunInfo(kTRUE);       // Create FairRunInfo file
   
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
