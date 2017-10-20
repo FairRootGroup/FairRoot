@@ -31,8 +31,7 @@ FairRunInfo::FairRunInfo()
    fTimeDiff(),
    fTime(),
    fResidentMemory(),
-   fVirtualMemory(),
-   fLogger(FairLogger::GetLogger())
+   fVirtualMemory()
 {
 }
 //_____________________________________________________________________________
@@ -79,12 +78,12 @@ void FairRunInfo::CalculateTimeDifference()
 void FairRunInfo::PrintInfo()
 {
 
-  fLogger->Debug(MESSAGE_ORIGIN,"Time to execute 1 event: %f s",
-                 fTimeDiff.back());
-  fLogger->Debug(MESSAGE_ORIGIN,"Used resident memory: %i MB",
-                 fResidentMemory.back());
-  fLogger->Debug(MESSAGE_ORIGIN,"Used virtual memory: %i MB",
-                 fVirtualMemory.back());
+  LOG(DEBUG) << "Time to execute 1 event: " << fTimeDiff.back() << "s" 
+             << FairLogger::endl;
+  LOG(DEBUG) << "Used resident memory: " << fResidentMemory.back() 
+             << " MB" << FairLogger::endl;
+  LOG(DEBUG) << "Used virtual memory: " << fVirtualMemory.back()
+             << " MB" << FairLogger::endl;
 }
 //_____________________________________________________________________________
 void FairRunInfo::WriteInfo()
@@ -99,11 +98,13 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
 {
   Int_t entries = fTime.size();
   Double_t timePeriod = fTime.back()-fTime.front();
+  Int_t timeBins = static_cast<Int_t>(timePeriod*10);
+  if ( 0 == timeBins ) timeBins=1;
 
   TH1F* ResidentMemoryVsEvent = new TH1F("ResidentMemoryVsEvent","Resident Memory as function of Eventnumber;Event;Memory [MB]",entries, 0, entries);
   TH1F* VirtualMemoryVsEvent = new TH1F("VirtualMemoryVsEvent","Virtual Memory as function of Eventnumber;Event;Memory [MB]",entries, 0, entries);
-  TH1F* ResidentMemoryVsTime = new TH1F("ResidentMemoryVsTime","Resident memory as function of Runtime;Time [s];Memory [MB]",static_cast<Int_t>(timePeriod*10), 0, static_cast<Int_t>(timePeriod));
-  TH1F* VirtualMemoryVsTime = new TH1F("VirtualMemoryVsTime","Virtual memory as function of Runtime;Time [s];Memory [MB]",static_cast<Int_t>(timePeriod*10), 0, static_cast<Int_t>(timePeriod));
+  TH1F* ResidentMemoryVsTime = new TH1F("ResidentMemoryVsTime","Resident memory as function of Runtime;Time [s];Memory [MB]", timeBins, 0, timeBins);
+  TH1F* VirtualMemoryVsTime = new TH1F("VirtualMemoryVsTime","Virtual memory as function of Runtime;Time [s];Memory [MB]", timeBins, 0, timeBins);
   TH1F* EventtimeVsEvent = new TH1F("EventtimeVsEvent","Runtime per Event as function of Event number;Event;Time [s]",entries-1, 1, entries);
 
   std::vector<Double_t> timeDiffSorted(fTimeDiff);
@@ -157,8 +158,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   TFile* oldfile = gFile;
 
   TString directory = gFile->GetName();
-  fLogger->Debug(MESSAGE_ORIGIN,"Name %s:",
-                 gFile->GetName());
+  LOG(DEBUG) << "Name: " << gFile->GetName() << FairLogger::endl;
   Ssiz_t posLastSlash = directory.Last('/');
   directory.Remove(posLastSlash+1, directory.Length()-posLastSlash-1);
   TString filename = "";
@@ -168,13 +168,11 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
 
 
   directory = gFile->GetName();
-  fLogger->Debug(MESSAGE_ORIGIN,"Name: %s",
-                 directory.Data());
+  LOG(DEBUG) << "Name: " << directory.Data() << FairLogger::endl;
   posLastSlash = directory.Last('/');
   directory.Remove(0, posLastSlash+1);
   directory.ReplaceAll(".root","");
-  fLogger->Debug(MESSAGE_ORIGIN,"Name: %s",
-                 directory.Data());
+  LOG(DEBUG) << "Name: " << directory.Data() << FairLogger::endl;
 
 
 
@@ -182,8 +180,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   filename += "FairRunInfo_";
   filename += directory;
   filename += ".root";
-  fLogger->Debug(MESSAGE_ORIGIN,"FileName: %s",
-                 filename.Data());
+  LOG(DEBUG) << "Filename: " << filename.Data() << FairLogger::endl;
 
   TFile* f1 = TFile::Open(filename, "recreate");
   f1->cd();
@@ -203,25 +200,6 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   f1->Delete();
   gFile=oldfile;
 
-
-  /*
-  // create a new subdirectory in the output file and
-  // write all histograms
-  TDirectory* currentDir = gDirectory;
-
-  gDirectory->cd();
-  gDirectory->mkdir("FairRunInfo");
-  gDirectory->cd("FairRunInfo");
-
-  TIterator* listIter=histoList->MakeIterator();
-  listIter->Reset();
-  TObject* obj = NULL;
-  while((obj=listIter->Next())) {
-    obj->Write();
-  }
-
-  gDirectory=currentDir;
-  */
 }
 //_____________________________________________________________________________
 

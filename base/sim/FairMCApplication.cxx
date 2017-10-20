@@ -457,10 +457,6 @@ void FairMCApplication::RunMC(Int_t nofEvents)
   fMC->ProcessRun(nofEvents);
   // finish run
   FinishRun();
-  // Save histograms with memory and runtime information in the output file
-  if (FairRunSim::Instance()->IsRunInfoGenerated()) {
-    fRunInfo.WriteInfo();
-  }
 }
 //____________________________________________________________________________
 void FairMCApplication::FinishRun()
@@ -526,6 +522,11 @@ void FairMCApplication::FinishRun()
 
     gDirectory=savedir;
         
+  }
+
+  // Save histograms with memory and runtime information in the output file
+  if (FairRunSim::Instance()->IsRunInfoGenerated()) {
+    fRunInfo.WriteInfo();
   }
 
   if (!fRadGridMan && fRootManager) {
@@ -852,8 +853,8 @@ void FairMCApplication::FinishEvent()
 
   // Store information about runtime for one event and memory consuption
   // for later usage.
-  if ( ! gMC->IsMT() ) {
-    // fRunInfo.StoreInfo();
+  if ( (FairRunSim::Instance()->IsRunInfoGenerated()) && ! gMC->IsMT() ) {
+    fRunInfo.StoreInfo();
   }
 }
 //_____________________________________________________________________________
