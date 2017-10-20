@@ -11,6 +11,11 @@ matrix:
           dist: trusty
           sudo: required
           env: FAIRSOFT_VERSION=mar17_root6
+        - os: linux
+          compiler: gcc
+          dist: trusty
+          sudo: required
+          env: FAIRSOFT_VERSION=dev_root6
 
 before_install:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
@@ -73,6 +78,7 @@ before_script:
     - echo "export BUILDDIR=/tmp/fairroot/build_fairroot_\${FAIRSOFT_VERSION}" >> Dart.cfg
     - echo "export SOURCEDIR=$PWD" >> Dart.cfg
     - echo "export SITE=\"Travis CI\" " >> Dart.cfg
+    - echo "export PATH=$SIMPATH/bin:$PATH" >> Dart.cfg
     - echo $PWD
     - cat Dart.cfg
 
