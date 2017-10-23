@@ -7,7 +7,7 @@ def nodeSpecs(List specs, Closure callback) {
     return nodes
 }
  
-if(env.BRANCH_NAME ==~ /^PR/) {
+//if(env.BRANCH_NAME ==~ /^PR/) {
 
 stage("Run Unit Tests") {
      
@@ -40,4 +40,4 @@ stage("Run Unit Tests") {
     }
 }
 
-}
+//}
