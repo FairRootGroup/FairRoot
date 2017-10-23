@@ -15,12 +15,12 @@ pipeline{
             steps{
                 parallel(
                     "debian8-gcc4.9-oct17": {
-                        node {
+                        node("debian8-gcc4.9-oct17") {
                             sh "sleep 5"
                         }
                     },
                     "fedora26-gcc7.2-oct17": {
-                        node {
+                        node("debian8-gcc4.9-oct17") {
                             sh "sleep 5"
                         }
                     }
