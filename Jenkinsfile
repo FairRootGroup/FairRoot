@@ -1,20 +1,27 @@
 #!groovy
 
 pipeline{
-    agent none
-    stages {
-        stage("Run Build/Test Matrix") {
-            steps{
-                parallel(
-                    'debian8-gcc4.9-fairsoft_oct17': {
-                        node('debian8-gcc4.9-fairsoft_oct17') {
-                            sh "sleep 5"
-                        }
-                    }
-                )
+  agent none
+  stages {
+    stage("Run Build/Test Matrix") {
+      steps{
+        parallel(
+          'debian8-gcc4.9-fairsoft_oct17': {
+            node('debian8-gcc4.9-fairsoft_oct17') {
+              checkout scm
+              sh '''\
+                $CXX --version
+                cmake --version
+                echo "export LINUX_FLAVOUR=Debian8" > Dart.cfg
+                echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\" " >> Dart.cfg
+                cat Dart.cfg
+              '''
             }
-        }
+          }
+        )
+      }
     }
+  }
 }
 
 /* node { */
