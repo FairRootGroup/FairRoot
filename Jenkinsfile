@@ -1,19 +1,21 @@
-/* def nodeSpecs(List specs, Closure callback) { */
-/*     def nodes = [:] */
-/*     for (spec in specs) { */
-/*         nodes["${spec}"] = { callback.call(spec) } */
-/*     } */
-/*       */
-/*     return nodes */
-/* } */
- 
-// if(env.BRANCH_NAME ==~ /^PR.*/) {
-pipeline {
-    /* parallel nodeSpecs([ */
-    /*     [os: 'debian8', compiler: 'gcc4.9'] */
-    /* ]) { spec ->  */
-        node {
+def buildMatrix(List specs, Closure callback) {
+    def stages = [:]
+    for (spec in specs) {
+        stages["${spec.os}-${spec.compiler}"] = { callback.call(spec) }
+    }
 
+    return stages
+}
+ 
+if(env.BRANCH_NAME ==~ /^PR.*/) {
+
+pipeline {
+    agent none
+
+    parallel buildMatrix([
+        [os: 'debian8', compiler: 'gcc4.9']
+    ]) { spec ->
+        stage {
             stages {
                 stage("pre") {
                     script { setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'PENDING') }
@@ -32,5 +34,7 @@ pipeline {
                 }
             }
         }
-    /* } */
+    }
+}
+
 }
