@@ -19,7 +19,7 @@ if(env.BRANCH_NAME ==~ /^PR.*/) {
             /*     } */
             /* } */
             stage("pre") {
-                setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'PENDING')
+                script { setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'PENDING') }
             }
             stage("configure") {
                 sh "sleep 5"
@@ -31,7 +31,7 @@ if(env.BRANCH_NAME ==~ /^PR.*/) {
                 sh "sleep 5"
             }
             stage("post") {
-                setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'SUCCESS')
+                script { setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'SUCCESS') }
             }
         }
     /* } */
