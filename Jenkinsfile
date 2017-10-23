@@ -6,6 +6,7 @@ for (slave in jenkins.model.Jenkins.instance.getNodes()) {
         available.plus(slave.getAssignedLabels())
     }
 }
+echo available
 
 def nodeSpecToLabel(Map spec) {
     return "${spec.os}-${spec.compiler}-${spec.fairsoft}"
@@ -29,6 +30,7 @@ pipeline{
             steps{
                 parallel(nodeSpecs([
                     [os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17'],
+                    [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'],
                 ]) { spec ->
                     timeout(60) {
                         node(nodeSpecToLabel(spec)) {
