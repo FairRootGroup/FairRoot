@@ -13,13 +13,8 @@ stage("Run Build/Test Matrix") {
         [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'],
     ]) { spec -> 
         node {
-            stage("Configure ${spec}") {
-                sh "sleep 5"
-            }
-            stage("Build ${spec}") {
-                sh "sleep 5"
-            }
-            stage("Test ${spec}") {
+            stage("${spec}") {
+                agent { label "${spec.os}-${spec.compiler}-${fairsoft}" }
                 sh "sleep 5"
             }
         }
