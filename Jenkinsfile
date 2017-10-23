@@ -1,23 +1,23 @@
 def nodeSpecs(List specs, Closure callback) {
     def nodes = [:]
     for (spec in specs) {
-        nodes["Spec ${spec}"] = { callback.call(spec) }
+        nodes["${spec}"] = { callback.call(spec) }
     }
      
     return nodes
 }
  
 if(env.BRANCH_NAME ==~ /^PR.*/) {
-    parallel nodeSpecs([
-        [os: 'debian8', compiler: 'gcc4.9']
-    ]) { spec -> 
+    /* parallel nodeSpecs([ */
+    /*     [os: 'debian8', compiler: 'gcc4.9'] */
+    /* ]) { spec ->  */
         node {
-            agent {
-                allOf {
-                    label spec.os
-                    label spec.compiler
-                }
-            }
+            /* agent { */
+            /*     allOf { */
+            /*         label spec.os */
+            /*         label spec.compiler */
+            /*     } */
+            /* } */
             stage("pre") {
                 setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'PENDING')
             }
@@ -34,5 +34,5 @@ if(env.BRANCH_NAME ==~ /^PR.*/) {
                 setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'SUCCESS')
             }
         }
-    }
+    /* } */
 }
