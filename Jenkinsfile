@@ -1,7 +1,7 @@
 def nodeSpecs(List specs, Closure callback) {
     def nodes = [:]
     for (spec in specs) {
-        nodes[spec] = { callback.call(spec) }
+        nodes["${spec}"] = { callback.call(spec) }
     }
      
     return nodes
@@ -13,7 +13,7 @@ stage("Run Build/Test Matrix") {
         [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'],
     ]) { spec -> 
         node {
-            stage(spec) {
+            stage("${spec}") {
                 sh "sleep 5"
             }
         }
