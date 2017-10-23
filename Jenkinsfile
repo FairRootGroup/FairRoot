@@ -13,12 +13,12 @@ pipeline{
                 gcc --version
                 cmake --version
                 echo "export LINUX_FLAVOUR=Debian8" > Dart.cfg
-                echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\" " >> Dart.cfg
+                echo "export EXTRA_FLAGS=\\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\\" " >> Dart.cfg
                 echo "export FAIRSOFT_VERSION=\${FAIRSOFT_VERSION}" >> Dart.cfg
                 echo "export SIMPATH=${SIMPATH}" >> Dart.cfg;
                 echo "export BUILDDIR=$PWD/build" >> Dart.cfg
                 echo "export SOURCEDIR=$PWD" >> Dart.cfg
-                echo "export SITE=\"Travis CI\" " >> Dart.cfg
+                echo "export SITE=\\"AlFa CI (lxbuild05.gsi.de)\\" " >> Dart.cfg
                 echo "export PATH=$SIMPATH/bin:$PATH" >> Dart.cfg
                 echo $PWD
                 cat Dart.cfg
