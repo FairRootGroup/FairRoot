@@ -8,7 +8,7 @@ def nodeSpecs(List specs, Closure callback) {
     return nodes
 }
  
-stage("Run Test Matrix") {
+stage("Run Build/Test Matrix") {
     parallel nodeSpecs([
         [os: 'debian8', compiler: 'gcc4.9'],
     ]) { spec -> 
