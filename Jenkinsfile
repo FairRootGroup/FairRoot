@@ -1,7 +1,7 @@
 #!groovy
 
 def nodeSpecToLabel(Map spec) {
-    return "${spec.os}-${spec.compiler}-${spec.fairsoft}"
+    return "${spec.os}-${spec.compiler}-fairsoft${spec.fairsoft}"
 }
 
 def nodeSpecs(List specs, Closure callback) {
@@ -14,7 +14,7 @@ def nodeSpecs(List specs, Closure callback) {
 }
 
 pipeline{
-    agent none
+    agent any
     stages {
         stage("Run Build/Test Matrix") {
             steps{
