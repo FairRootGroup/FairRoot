@@ -17,10 +17,8 @@ pipeline{
                 [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'],
             ]) { spec -> 
                 node {
-                    stage("${spec}") {
-                        agent { label "${spec.os}-${spec.compiler}-${fairsoft}" }
-                        sh "sleep 5"
-                    }
+                    /* agent { label "${spec.os}-${spec.compiler}-${fairsoft}" } */
+                    sh "sleep 5"
                 }
             })
         }
