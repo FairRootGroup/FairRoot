@@ -1,13 +1,13 @@
 def buildMatrix(List specs, Closure callback) {
-    def stages = [:]
+    def builds = [:]
     for (spec in specs) {
-        stages["${spec.os}-${spec.compiler}"] = { callback.call(spec) }
+        builds["${spec.os}-${spec.compiler}"] = { callback.call(spec) }
     }
 
-    return stages
+    return builds
 }
  
-if(env.BRANCH_NAME ==~ /^PR.*/) {
+//if(env.BRANCH_NAME ==~ /^PR.*/) {
 
 pipeline {
     agent none
@@ -37,4 +37,4 @@ pipeline {
     }
 }
 
-}
+//}
