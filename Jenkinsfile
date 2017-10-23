@@ -1,31 +1,41 @@
 #!groovy
 
+Set available = []
+for (slave in jenkins.model.Jenkins.instance.getNodes()) {
+    if (slave.toComputer().isOnline()) {
+        available.plus(slave.getAssignedLabels())
+    }
+}
+
+def nodeSpecToLabel(Map spec) {
+    return "${spec.os}-${spec.compiler}-${spec.fairsoft}"
+}
+
 def nodeSpecs(List specs, Closure callback) {
     def nodes = [:]
     for (spec in specs) {
-        nodes["${spec}"] = { callback.call(spec) }
+        def label = nodeSpecToLabel(spec)
+        if(available.find { it == label}) {
+            nodes[label] = { callback.call(spec) }
+        }
     }
-     
     return nodes
 }
- 
+
 pipeline{
     agent none
     stages {
         stage("Run Build/Test Matrix") {
             steps{
-                parallel(
-                    "debian8-gcc4.9-oct17": {
-                        node("debian8-gcc4.9-oct17") {
-                            sh "sleep 5"
-                        }
-                    },
-                    "fedora26-gcc7.2-oct17": {
-                        node("fedora26-gcc7.2-oct17") {
+                parallel(nodeSpecs([
+                    [os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17'],
+                ]) { spec ->
+                    timeout(60) {
+                        node(nodeSpecToLabel(spec)) {
                             sh "sleep 5"
                         }
                     }
-                )
+                })
             }
         }
     }
