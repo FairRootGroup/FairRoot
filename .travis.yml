@@ -2,10 +2,10 @@ language: cpp
 
 matrix:
     include:
-#        - os: osx
-#          compiler: clang
-#          osx_image: xcode7.3
-#          env: FAIRSOFT_VERSION=may16p1_root6
+        - os: osx
+          compiler: clang
+          osx_image: xcode8.1
+          env: FAIRSOFT_VERSION=oct17
 #        - os: linux
 #          compiler: gcc
 #          dist: trusty
@@ -29,17 +29,17 @@ before_install:
         sudo dpkg -i fairsoft-${FAIRSOFT_VERSION}_1.0_amd64.deb;
         export PATH=/opt/fairsoft/${FAIRSOFT_VERSION}/bin:$PATH;
       fi
-#    - if test "$TRAVIS_OS_NAME" = "osx"; then
-#        env;
-#        brew update;
-#        if test "${_system_version}" = "10.11"; then
-#          brew install --force-bottle gcc@6;
+    - if test "$TRAVIS_OS_NAME" = "osx"; then
+        env;
+        brew update;
+        if test "${_system_version}" = "10.12"; then
+          brew install --force-bottle gcc;
 #          sudo ln -s $(brew --prefix gcc@6)/bin/gfortran-6 /usr/local/bin/gfortran;
 #          target=$(dirname $(greadlink -f $(gfortran -print-file-name=libgfortran.dylib)));
 #          link=/usr/local/opt/gcc/lib/gcc/6;
 #          sudo mkdir -p $(dirname $link);
 #          sudo ln -s $target $link;
-#        fi;
+        fi;
 #        if test "${_system_version}" = "10.9"; then
 #          brew tap homebrew/versions;
 #          brew install openssl;
@@ -47,9 +47,9 @@ before_install:
 #          brew install homebrew/versions/gcc5;
 #          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
 #        fi;
-#        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2;
-#        sudo tar -xjf fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2 -C /;
-#      fi
+        curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2;
+        sudo tar -xjf fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2 -C /;
+      fi
 #          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
 #          mkdir -p /usr/local/opt/gcc/lib/gcc;
 #          ln -s /usr/local/Cellar/gcc5/5.4.0/lib/gcc/5 /usr/local/opt/gcc/lib/gcc/5;
