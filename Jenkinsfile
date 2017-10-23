@@ -21,7 +21,7 @@ pipeline{
                         }
                     },
                     "fedora26-gcc7.2-oct17": {
-                        node("debian8-gcc4.9-oct17") {
+                        node("fedora26-gcc7.2-oct17") {
                             sh "sleep 5"
                         }
                     }
