@@ -1,18 +1,5 @@
 #!groovy
 
-def nodeSpecToLabel(Map spec) {
-    return "${spec.os}-${spec.compiler}-fairsoft${spec.fairsoft}"
-}
-
-def nodeSpecs(List specs, Closure callback) {
-    def nodes = [:]
-    for (spec in specs) {
-        def label = nodeSpecToLabel(spec)
-        nodes[label] = { callback.call(spec) }
-    }
-    return nodes
-}
-
 pipeline{
     agent none
     stages {
