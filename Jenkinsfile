@@ -1,8 +1,7 @@
 def nodeSpecs(List specs, Closure callback) {
     def nodes = [:]
     for (spec in specs) {
-        def label = "${spec.os}-${spec.compiler}"
-        nodes[label] = { callback.call(label) }
+        nodes[spec] = { callback.call(spec) }
     }
      
     return nodes
@@ -10,7 +9,8 @@ def nodeSpecs(List specs, Closure callback) {
  
 stage("Run Build/Test Matrix") {
     parallel nodeSpecs([
-        [os: 'debian8', compiler: 'gcc4.9'],
+        [os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17'],
+        [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'],
     ]) { spec -> 
         node {
             stage(spec) {
