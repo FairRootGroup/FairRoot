@@ -14,7 +14,7 @@ node {
     parallel buildMatrix([
         [os: 'debian8', compiler: 'gcc4.9']
     ]) { label ->
-        node("${label}") {
+        node {
             stage("pre") {
                 script { setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'PENDING') }
             }
