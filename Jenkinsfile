@@ -7,10 +7,7 @@ def nodeSpecs(List specs, Closure callback) {
     return nodes
 }
  
-//if(env.BRANCH_NAME ==~ /^PR/) {
-
-stage("Run Unit Tests") {
-     
+if(env.BRANCH_NAME ==~ /^PR.*/) {
     parallel nodeSpecs([
         [os: 'debian8', compiler: 'gcc4.9']
     ]) { spec -> 
@@ -39,5 +36,3 @@ stage("Run Unit Tests") {
         }
     }
 }
-
-//}
