@@ -10,6 +10,7 @@ def nodeSpecs(List specs, Closure callback) {
 }
  
 pipeline{
+    agent none
     stages {
         stage("Run Build/Test Matrix") {
             steps{
