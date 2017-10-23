@@ -16,9 +16,9 @@ pipeline{
                 [os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17'],
                 [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'],
             ]) { spec -> 
-                node("${spec.os}-${spec.compiler}-${fairsoft}") {
+                /* node("${spec.os}-${spec.compiler}-${fairsoft}") { */
                     sh "sleep 5"
-                }
+                /* } */
             })
         }
     }
