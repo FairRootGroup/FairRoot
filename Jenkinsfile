@@ -10,16 +10,19 @@ def nodeSpecs(List specs, Closure callback) {
 }
  
 pipeline{
-    agent any
     stages {
         stage("Run Build/Test Matrix") {
             steps{
                 parallel(
                     "debian8-gcc4.9-oct17": {
-                        sh "sleep 5"
+                        node {
+                            sh "sleep 5"
+                        }
                     },
                     "fedora26-gcc7.2-oct17": {
-                        sh "sleep 5"
+                        node {
+                            sh "sleep 5"
+                        }
                     }
                 )
             }
