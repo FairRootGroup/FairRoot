@@ -14,15 +14,17 @@ def nodeSpecs(List specs, Closure callback) {
 }
 
 pipeline{
-    agent any
+    agent none
     stages {
         stage("Run Build/Test Matrix") {
             steps{
                 parallel(
-                    nodeSpecToLabel([os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17']): node(nodeSpecToLabel([os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17'])) {
-                        sh "sleep 5"
+                    'debian8-gcc4.9-fairsoft_oct17': {
+                        node('debian8-gcc4.9-fairsoft_oct17'])) {
+                            sh "sleep 5"
+                        }
                     }
-                })
+                )
             }
         }
     }
