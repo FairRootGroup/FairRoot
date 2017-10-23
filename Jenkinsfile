@@ -7,7 +7,7 @@
 /*     return nodes */
 /* } */
  
-/* if(env.BRANCH_NAME ==~ /^PR.*/) { */
+// if(env.BRANCH_NAME ==~ /^PR.*/) {
 pipeline {
     /* parallel nodeSpecs([ */
     /*     [os: 'debian8', compiler: 'gcc4.9'] */
