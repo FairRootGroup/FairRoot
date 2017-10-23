@@ -14,25 +14,27 @@ pipeline {
 
     stages {
         stage("distribute") {
-            parallel buildMatrix([
-                [os: 'debian8', compiler: 'gcc4.9']
-            ]) { spec ->
-                stage("${spec}") {
-                    stages {
-                        stage("pre") {
-                            script { setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'PENDING') }
-                        }
-                        stage("configure") {
-                            sh "sleep 5"
-                        }
-                        stage("build") {
-                            sh "sleep 5"
-                        }
-                        stage("test") {
-                            sh "sleep 5"
-                        }
-                        stage("post") {
-                            script { setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'SUCCESS') }
+            script {
+                parallel buildMatrix([
+                    [os: 'debian8', compiler: 'gcc4.9']
+                ]) { spec ->
+                    stage("${spec}") {
+                        stages {
+                            stage("pre") {
+                                script { setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'PENDING') }
+                            }
+                            stage("configure") {
+                                sh "sleep 5"
+                            }
+                            stage("build") {
+                                sh "sleep 5"
+                            }
+                            stage("test") {
+                                sh "sleep 5"
+                            }
+                            stage("post") {
+                                script { setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'SUCCESS') }
+                            }
                         }
                     }
                 }
