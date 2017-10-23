@@ -1,7 +1,8 @@
 def buildMatrix(List specs, Closure callback) {
     def builds = [:]
     for (spec in specs) {
-        builds["${spec.os}-${spec.compiler}"] = { callback.call(spec) }
+        def label = "${spec.os}-${spec.compiler}"
+        builds[label] = { callback.call(label) }
     }
 
     return builds
@@ -12,8 +13,8 @@ def buildMatrix(List specs, Closure callback) {
 node {
     parallel buildMatrix([
         [os: 'debian8', compiler: 'gcc4.9']
-    ]) { spec ->
-        node("${spec}") {
+    ]) { label ->
+        node("${label}") {
             stage("pre") {
                 script { setGitHubPullRequestStatus(context: "hui", message: "bla bla", state: 'PENDING') }
             }
