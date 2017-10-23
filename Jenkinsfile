@@ -1,10 +1,5 @@
-pipeline {
-  agent any
-  stages {
-    stage('dummy') {
-      steps {
-        echo 'hello world blubb'
-      }
+node {
+    stage('build') {
+        sh 'env'
     }
-  }
 }
