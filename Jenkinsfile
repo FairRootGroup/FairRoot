@@ -1,3 +1,5 @@
+#!groovy
+
 def nodeSpecs(List specs, Closure callback) {
     def nodes = [:]
     for (spec in specs) {
@@ -7,16 +9,20 @@ def nodeSpecs(List specs, Closure callback) {
     return nodes
 }
  
-stage("Run Build/Test Matrix") {
-    parallel nodeSpecs([
-        [os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17'],
-        [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'],
-    ]) { spec -> 
-        node {
-            stage("${spec}") {
-                agent { label "${spec.os}-${spec.compiler}-${fairsoft}" }
-                sh "sleep 5"
-            }
+pipeline{
+    stage("Run Build/Test Matrix") {
+        steps{
+            parallel(nodeSpecs([
+                [os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17'],
+                [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'],
+            ]) { spec -> 
+                node {
+                    stage("${spec}") {
+                        agent { label "${spec.os}-${spec.compiler}-${fairsoft}" }
+                        sh "sleep 5"
+                    }
+                }
+            })
         }
     }
 }
