@@ -7,7 +7,7 @@ pipeline{
             steps{
                 parallel(
                     'debian8-gcc4.9-fairsoft_oct17': {
-                        node('debian8-gcc4.9-fairsoft_oct17'])) {
+                        node('debian8-gcc4.9-fairsoft_oct17') {
                             sh "sleep 5"
                         }
                     }
