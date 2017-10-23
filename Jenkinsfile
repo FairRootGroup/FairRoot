@@ -1,13 +1,5 @@
 #!groovy
 
-Set available = []
-for (slave in jenkins.model.Jenkins.instance.getNodes()) {
-    if (slave.toComputer().isOnline()) {
-        available.plus(slave.getAssignedLabels())
-    }
-}
-echo available
-
 def nodeSpecToLabel(Map spec) {
     return "${spec.os}-${spec.compiler}-${spec.fairsoft}"
 }
@@ -16,9 +8,7 @@ def nodeSpecs(List specs, Closure callback) {
     def nodes = [:]
     for (spec in specs) {
         def label = nodeSpecToLabel(spec)
-        if(available.find { it == label}) {
-            nodes[label] = { callback.call(spec) }
-        }
+        nodes[label] = { callback.call(spec) }
     }
     return nodes
 }
