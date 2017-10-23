@@ -10,19 +10,10 @@ def nodeSpecs(List specs, Closure callback) {
 }
  
 pipeline{
+    agent any
     stages {
         stage("Run Build/Test Matrix") {
             steps{
-                /* parallel(nodeSpecs([ */
-                /*     [os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17'], */
-                /*     [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'], */
-                /* ]) { spec -> */
-                /*     node("${spec.os}-${spec.compiler}-${fairsoft}") { */
-                /*         steps{ */
-                /*             sh "sleep 5" */
-                /*         } */
-                /*     } */
-                /* }) */
                 parallel(
                     "debian8-gcc4.9-oct17": {
                         sh "sleep 5"
