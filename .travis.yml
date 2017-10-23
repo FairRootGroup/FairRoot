@@ -2,20 +2,15 @@ language: cpp
 
 matrix:
     include:
-        - os: osx
-          compiler: clang
-          osx_image: xcode8.1
-          env: FAIRSOFT_VERSION=oct17
-#        - os: linux
-#          compiler: gcc
-#          dist: trusty
-#          sudo: required
-#          env: FAIRSOFT_VERSION=mar17_root6
         - os: linux
           compiler: gcc
           dist: trusty
           sudo: required
           env: FAIRSOFT_VERSION=dev_root6
+        - os: osx
+          compiler: clang
+          osx_image: xcode8.1
+          env: FAIRSOFT_VERSION=oct17
 
 before_install:
     - if test "$TRAVIS_OS_NAME" = "linux"; then
@@ -34,19 +29,7 @@ before_install:
         brew update;
         if test "${_system_version}" = "10.12"; then
           brew install --force-bottle gcc;
-#          sudo ln -s $(brew --prefix gcc@6)/bin/gfortran-6 /usr/local/bin/gfortran;
-#          target=$(dirname $(greadlink -f $(gfortran -print-file-name=libgfortran.dylib)));
-#          link=/usr/local/opt/gcc/lib/gcc/6;
-#          sudo mkdir -p $(dirname $link);
-#          sudo ln -s $target $link;
         fi;
-#        if test "${_system_version}" = "10.9"; then
-#          brew tap homebrew/versions;
-#          brew install openssl;
-#          brew uninstall gcc;
-#          brew install homebrew/versions/gcc5;
-#          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
-#        fi;
         curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2;
         sudo tar -xjf fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2 -C /;
       fi
