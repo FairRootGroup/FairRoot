@@ -22,9 +22,10 @@ pipeline{
                     [os: 'debian8', compiler: 'gcc4.9', fairsoft: 'oct17'],
                     [os: 'fedora26', compiler: 'gcc7.2', fairsoft: 'oct17'],
                 ]) { spec ->
-                        node(nodeSpecToLabel(spec)) {
-                            sh "sleep 5"
-                        }
+
+                    node(nodeSpecToLabel(spec)) {
+                        sh "sleep 5"
+                    }
                 })
             }
         }
