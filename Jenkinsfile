@@ -1,13 +1,14 @@
-def nodeSpecs(List specs, Closure callback) {
-    def nodes = [:]
-    for (spec in specs) {
-        nodes["${spec}"] = { callback.call(spec) }
-    }
-     
-    return nodes
-}
+/* def nodeSpecs(List specs, Closure callback) { */
+/*     def nodes = [:] */
+/*     for (spec in specs) { */
+/*         nodes["${spec}"] = { callback.call(spec) } */
+/*     } */
+/*       */
+/*     return nodes */
+/* } */
  
-if(env.BRANCH_NAME ==~ /^PR.*/) {
+/* if(env.BRANCH_NAME ==~ /^PR.*/) { */
+pipeline {
     /* parallel nodeSpecs([ */
     /*     [os: 'debian8', compiler: 'gcc4.9'] */
     /* ]) { spec ->  */
