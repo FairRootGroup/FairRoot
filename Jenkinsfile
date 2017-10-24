@@ -23,6 +23,7 @@ pipeline{
                 echo $PWD
                 cat Dart.cfg
               '''
+              sh "env"
               sh "./Dart.sh Experimental Dart.cfg"
             }
           }
