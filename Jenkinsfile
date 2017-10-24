@@ -1,9 +1,29 @@
 #!groovy
 
+def specToLabel(Map spec) {
+  return "${spec.os}-${spec.arch}-${spec.compiler}-FairSoft_${spec.fairsoft}"
+}
+
 def buildMatrix(List specs, Closure callback) {
   def nodes = [:]
   for (spec in specs) {
-    nodes["${spec.os}-${spec.compiler}"] = { callback.call(spec) }
+    def label = specToLabel(spec)
+    nodes[label] = { 
+      node(label) {
+        githubNotify(context: "alfa-ci/${label}", description: 'Building ...', status: 'PENDING')
+        try {
+          deleteDir()
+          checkout scm
+
+          callback.call(spec, label)
+
+          githubNotify(context: "alfa-ci/${label}", description: 'Success', status: 'SUCCESS', targetUrl: 'https://cdash.gsi.de/index.php?project=FairRoot#!#Experimental')
+        } catch (e) {
+          githubNotify(context: "alfa-ci/${label}", description: 'Error', status: 'ERROR', targetUrl: 'https://cdash.gsi.de/index.php?project=FairRoot#!#Experimental')
+          throw e
+        }
+      }
+    }
   }
   return nodes
 }
@@ -14,56 +34,21 @@ pipeline{
     stage("Run Build/Test Matrix") {
       steps{
         script {
-        parallel(
-          'Debian8-x86_64-gcc4.9-FairSoft_oct17': {
-            node('Debian8-x86_64-gcc4.9-FairSoft_oct17') {
-              githubNotify(context: 'alfa-ci/Debian8-x86_64-gcc4.9-FairSoft_oct17', description: 'Building ...', status: 'PENDING')
-              script { try {
-                deleteDir()
-                checkout scm
-                sh 'gcc --version'
-                sh 'cmake --version'
-                sh 'echo $PWD'
-                sh '''\
-                  echo "export BUILDDIR=$PWD/build" >> Dart.cfg
-                  echo "export SOURCEDIR=$PWD" >> Dart.cfg
-                  echo "export PATH=$SIMPATH/bin:$PATH" >> Dart.cfg
-                  echo "export GIT_BRANCH=$JOB_BASE_NAME" >> Dart.cfg
-                '''
-                sh 'env'
-                sh './Dart.sh Experimental Dart.cfg; echo $?'
-                githubNotify(context: 'alfa-ci/Debian8-x86_64-gcc4.9-FairSoft_oct17', description: 'Success', status: 'SUCCESS', targetUrl: 'https://cdash.gsi.de/index.php?project=FairRoot#!#Experimental')
-              } catch (e) {
-                githubNotify(context: 'alfa-ci/Debian8-x86_64-gcc4.9-FairSoft_oct17', description: 'Error', status: 'ERROR', targetUrl: 'https://cdash.gsi.de/index.php?project=FairRoot#!#Experimental')
-                throw e
-              }}
-            }
-          },
-          'MacOS10.11-x86_64-AppleLLVM8.0.0-FairSoft_oct17': {
-            node('MacOS10.11-x86_64-AppleLLVM8.0.0-FairSoft_oct17') {
-              githubNotify(context: 'alfa-ci/MacOS10.11-x86_64-AppleLLVM8.0.0-FairSoft_oct17', description: 'Building ...', status: 'PENDING')
-              script { try {
-                deleteDir()
-                checkout scm
-                sh 'clang --version'
-                sh 'cmake --version'
-                sh 'echo $PWD'
-                sh '''\
-                  echo "export BUILDDIR=$PWD/build" >> Dart.cfg
-                  echo "export SOURCEDIR=$PWD" >> Dart.cfg
-                  echo "export PATH=$SIMPATH/bin:$PATH" >> Dart.cfg
-                  echo "export GIT_BRANCH=$JOB_BASE_NAME" >> Dart.cfg
-                '''
-                sh 'env'
-                sh './Dart.sh Experimental Dart.cfg; echo $?'
-                githubNotify(context: 'alfa-ci/MacOS10.11-x86_64-AppleLLVM8.0.0-FairSoft_oct17', description: 'Success', status: 'SUCCESS', targetUrl: 'https://cdash.gsi.de/index.php?project=FairRoot#!#Experimental')
-              } catch (e) {
-                githubNotify(context: 'alfa-ci/MacOS10.11-x86_64-AppleLLVM8.0.0-FairSoft_oct17', description: 'Error', status: 'ERROR', targetUrl: 'https://cdash.gsi.de/index.php?project=FairRoot#!#Experimental')
-                throw e
-              }}
-            }
-          }
-        )
+          parallel(buildMatrix([
+            [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc4.9',         fairsoft: 'oct17'],
+            [os: 'MacOS10.11', arch: 'x86_64', compiler: 'AppleLLVM8.0.0', fairsoft: 'oct17'],
+          ]) { spec, label ->
+            sh 'cmake --version'
+            sh 'echo $PWD'
+            sh '''\
+              echo "export BUILDDIR=$PWD/build" >> Dart.cfg
+              echo "export SOURCEDIR=$PWD" >> Dart.cfg
+              echo "export PATH=$SIMPATH/bin:$PATH" >> Dart.cfg
+              echo "export GIT_BRANCH=$JOB_BASE_NAME" >> Dart.cfg
+            '''
+            sh 'env'
+            sh './Dart.sh Experimental Dart.cfg; echo $?'
+          })
         }
       }
     }
