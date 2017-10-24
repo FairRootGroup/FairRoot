@@ -29,9 +29,11 @@ before_install:
         brew update;
         if test "${_system_version}" = "10.12"; then
           brew install --force-bottle gcc;
+          brew link --overwrite gcc
         fi;
         curl -L -O http://fairroot.gsi.de/downloads/fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2;
         sudo tar -xjf fairsoft_${FAIRSOFT_VERSION}_osx${_system_version}.tar.bz2 -C /;
+        export PATH=/opt/fairsoft/${FAIRSOFT_VERSION}/bin:$PATH;
       fi
 #          ln -s /usr/local/bin/gfortran-5 /usr/local/bin/gfortran;
 #          mkdir -p /usr/local/opt/gcc/lib/gcc;
@@ -47,11 +49,11 @@ before_script:
         echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\" " >> Dart.cfg;
         echo "export FAIRSOFT_VERSION=\${FAIRSOFT_VERSION}" >> Dart.cfg;
       fi
-#    - if test "$TRAVIS_OS_NAME" = "osx"; then
-#        echo "export LINUX_FLAVOUR=MacOSX${_system_version}" > Dart.cfg;
-#        echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\" " >> Dart.cfg;
-#        echo "export FAIRSOFT_VERSION=\${FAIRSOFT_VERSION}" >> Dart.cfg;
-#      fi
+    - if test "$TRAVIS_OS_NAME" = "osx"; then
+        echo "export LINUX_FLAVOUR=MacOSX${_system_version}" > Dart.cfg;
+        echo "export EXTRA_FLAGS=\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\" " >> Dart.cfg;
+        echo "export FAIRSOFT_VERSION=\${FAIRSOFT_VERSION}" >> Dart.cfg;
+      fi
     - if test "$TRAVIS_PULL_REQUEST" = "false"; then
         echo "export GIT_BRANCH=\${TRAVIS_COMMIT}" >> Dart.cfg;
       else
