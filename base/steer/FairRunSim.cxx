@@ -293,7 +293,7 @@ void FairRunSim::SetMCConfig()
 
   TString Lib_config= getenv("GEANT4VMC_MACRO_DIR");
   Lib_config.ReplaceAll("//","/");
-  if (!Lib_config.EndsWith("/")) { Lib_config+="/"; }
+  if (!Lib_config.EndsWith("/") && !Lib_config.IsNull()) { Lib_config+="/"; }
 
   TString config_dir= getenv("CONFIG_DIR");
   config_dir.ReplaceAll("//","/");
@@ -320,10 +320,13 @@ void FairRunSim::SetMCConfig()
     if (TString(gSystem->FindFile(config_dir.Data(),g4LibMacro)) != TString("")) { //be carfull after this call the string g4LibMacro is empty if not found!!!!
       LOG(INFO) << "---User path for Configuration (g4libs.C) is used: " 
 		<< config_dir.Data() << FairLogger::endl;
-    } else {
-      g4LibMacro=Lib_config+"g4libs.C";
+      LibMacro = g4LibMacro;
+    } else if(gSystem->AccessPathName((Lib_config + "g4libs.C").Data()) == false) {
+      // Note: file is existing if AccessPathName return false
+      LOG(INFO) << "---G4VMC macro  path for Configuration (g4libs.C) is used: "
+                << Lib_config.Data() << FairLogger::endl;
+      LibMacro = Lib_config+"g4libs.C";
     }
-    LibMacro=g4LibMacro;
     LibFunction="g4libs()";
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),g4Macro)) != TString("")) {
       LOG(INFO) << "---User path for Configuration (g4Config.C) is used: " 
@@ -350,10 +353,13 @@ void FairRunSim::SetMCConfig()
     if (TString(gSystem->FindFile(config_dir.Data(),g3LibMacro)) != TString("")) {
       LOG(INFO) << "---User path for Configuration (g3libs.C) is used: " 
 		<< config_dir.Data() << FairLogger::endl;
-    } else {
-      g3LibMacro=work_config+"g3libs.C";
+      LibMacro=g3LibMacro;
+    } else if(gSystem->AccessPathName((work_config+"g3libs.C").Data()) == false) {
+      // Note: file is existing if AccessPathName return false
+      LOG(INFO) << "---VMCWORKDIR path for Configuration (g3libs.C) is used: "
+                << work_config.Data() << FairLogger::endl;
+      LibMacro = work_config+"g3libs.C";
     }
-    LibMacro=g3LibMacro;
     LibFunction="g3libs()";
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),g3Macro)) != TString("")) {
       LOG(INFO) << "---User path for Configuration (g3Config.C) is used: "
@@ -401,8 +407,10 @@ void FairRunSim::SetMCConfig()
     cuts =work_config+ fUserCuts;
   }
   //--------------------------------------Now load the Config and Cuts------------------------------------
-  gROOT->LoadMacro(LibMacro.Data());
-  gROOT->ProcessLine(LibFunction.Data());
+  if (!LibMacro.IsNull()) {
+    gROOT->LoadMacro(LibMacro.Data());
+    gROOT->ProcessLine(LibFunction.Data());
+  }
 
   gROOT->LoadMacro(ConfigMacro.Data());
   gROOT->ProcessLine("Config()");
