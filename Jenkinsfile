@@ -9,7 +9,7 @@ pipeline{
           'Debian8-x86_64-gcc4.9-FairSoft_oct17': {
             node('Debian8-x86_64-gcc4.9-FairSoft_oct17') {
               githubNotify(context: 'alfa-ci/Debian8-x86_64-gcc4.9-FairSoft_oct17', description: 'Building ...', status: 'PENDING')
-              try {
+              script { try {
                 deleteDir()
                 checkout scm
                 sh 'gcc --version'
@@ -27,13 +27,13 @@ pipeline{
               } catch (e) {
                 githubNotify(context: 'alfa-ci/Debian8-x86_64-gcc4.9-FairSoft_oct17', description: 'Error', status: 'ERROR')
                 throw e
-              }
+              }}
             }
           },
           'MacOS10.11-x86_64-AppleLLVM8.0.0-FairSoft_oct17': {
             node('MacOS10.11-x86_64-AppleLLVM8.0.0-FairSoft_oct17') {
               githubNotify(context: 'alfa-ci/MacOS10.11-x86_64-AppleLLVM8.0.0-FairSoft_oct17', description: 'Building ...', status: 'PENDING')
-              try {
+              script { try {
                 deleteDir()
                 checkout scm
                 sh 'clang --version'
@@ -51,7 +51,7 @@ pipeline{
               } catch (e) {
                 githubNotify(context: 'alfa-ci/MacOS10.11-x86_64-AppleLLVM8.0.0-FairSoft_oct17', description: 'Error', status: 'ERROR')
                 throw e
-              }
+              }}
             }
           }
         )
