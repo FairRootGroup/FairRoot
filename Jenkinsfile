@@ -38,8 +38,10 @@ def buildMatrix(List specs) {
     def label = specToLabel(spec)
     nodes[label] = { 
       node(label) {
-        withGithubNotifications() {
-          buildSteps(spec: spec, label: label)
+        script {
+          withGithubNotifications() {
+            buildSteps(spec: spec, label: label)
+          }
         }
       }
     }
