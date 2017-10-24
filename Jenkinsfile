@@ -8,7 +8,7 @@ pipeline{
         parallel(
           'debian8-x86_64-gcc4.9-fairsoft_oct17': {
             node('debian8-x86_64-gcc4.9-fairsoft_oct17') {
-              deleteDir()
+              deleteDir
               checkout scm
               sh 'gcc --version'
               sh 'cmake --version'
