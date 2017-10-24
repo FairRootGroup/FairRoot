@@ -38,7 +38,7 @@ def buildMatrix(List specs) {
     def label = specToLabel(spec)
     nodes[label] = { 
       node(label) {
-        withGithubNotifications(cdashUrl: cdashUrl) {
+        withGithubNotifications() {
           buildSteps(spec: spec, label: label)
         }
       }
@@ -56,7 +56,7 @@ pipeline{
           parallel(buildMatrix([
             [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc4.9',         fairsoft: 'oct17'],
             [os: 'MacOS10.11', arch: 'x86_64', compiler: 'AppleLLVM8.0.0', fairsoft: 'oct17'],
-          ])
+          ]))
         }
       }
     }
