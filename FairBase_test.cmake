@@ -86,8 +86,6 @@ EndIf()
 
 Ctest_Submit()
  
-if (${CTEST_SITE} MATCHES "Travis")
-  if (_ctest_test_ret_val)
-    Message(FATAL_ERROR "Some tests failed.")
-  endif()
+if (_ctest_test_ret_val)
+  Message(FATAL_ERROR "Some tests failed.")
 endif()
