@@ -69,14 +69,16 @@ chip=$(uname -m | tr '[A-Z]' '[a-z]')
 # environment variables used by ctest
 SYSTEM=$arch-$chip
 if test -z $CXX ; then
-  COMPILER=gcc;
-  GCC_VERSION=$(gcc -dumpversion)
+  if [ "$arch" == "darwin" ]; then
+    COMPILER=$(clang --version | head -n 1 | cut -d' ' -f1,2,4 | tr -d ' ')
+  else
+    COMPILER=gcc$(gcc -dumpversion)
+  fi
 else
-  COMPILER=$CXX;
-  GCC_VERSION=$($CXX -dumpversion)
+  COMPILER=$CXX$($CXX -dumpversion)
 fi
 
-export LABEL1=${LINUX_FLAVOUR}-$SYSTEM-$COMPILER$GCC_VERSION-fairroot_$GIT_BRANCH-fairsoft_$FAIRSOFT_VERSION
+export LABEL1=${LINUX_FLAVOUR}-$chip-$COMPILER-FairRoot_$GIT_BRANCH-FairSoft_$FAIRSOFT_VERSION
 export LABEL=$(echo $LABEL1 | sed -e 's#/#_#g')
 
 # get the number of processors
