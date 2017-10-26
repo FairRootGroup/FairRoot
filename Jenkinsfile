@@ -9,7 +9,7 @@ def buildMatrix(List specs, Closure callback) {
   for (spec in specs) {
     def label = specToLabel(spec)
     def cdashUrl = 'https://cdash.gsi.de/index.php?project=FairRoot#!#Experimental'
-    nodes[label] = { 
+    nodes[label] = {
       node(label) {
         githubNotify(context: "alfa-ci/${label}", description: 'Building ...', status: 'PENDING')
         try {
@@ -50,7 +50,7 @@ pipeline{
             '''
             sh 'cmake --version'
             sh 'env'
-            sh './Dart.sh Experimental Dart.cfg'
+            sh './Dart.sh jenkins Dart.cfg'
           })
         }
       }
