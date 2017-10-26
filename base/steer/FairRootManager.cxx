@@ -127,7 +127,8 @@ FairRootManager::~FairRootManager()
   LOG(DEBUG) << "Enter Destructor of FairRootManager" << FairLogger::endl;
   // delete fOutTree;
   if(fOutFile) {
-    CloseOutFile();
+    // the following line lead to a segfault:
+    // CloseOutFile();
   } else {
     // if fOutFile exists, fOutTree is deleted with the file
     delete fOutTree;
