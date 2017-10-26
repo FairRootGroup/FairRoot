@@ -33,7 +33,7 @@ if [ "$#" -lt "2" ]; then
   echo "-- Error -- Possible arguments are Nightly, Experimental, "
   echo "-- Error -- Continuous or Profile."
   echo "-- Error -- The second parameter is the file containg the"
-  echo "-- Error -- Information about the setup at the client" 
+  echo "-- Error -- Information about the setup at the client"
   echo "-- Error -- installation (see example below)."
   echo ""
   print_example
@@ -41,13 +41,13 @@ if [ "$#" -lt "2" ]; then
 fi
 
 # test if a valid ctest model is defined
-if [ "$1" == "Experimental" -o "$1" == "Nightly" -o "$1" == "Continuous" -o "$1" == "Profile" ]; then
+if [ "$1" == "Experimental" -o "$1" == "Nightly" -o "$1" == "Continuous" -o "$1" == "Profile" -o "$1" == "jenkins" ]; then
   echo ""
 else
   echo "-- Error -- This ctest model is not supported."
   echo "-- Error -- Possible arguments are Nightly, Experimental, Continuous or Profile."
   exit 1
-fi 
+fi
 
 # test if the input file exists and execute it
 if [ -e "$2" ];then
@@ -55,7 +55,7 @@ if [ -e "$2" ];then
 else
   echo "-- Error -- Input file does not exist."
   echo "-- Error -- Please choose existing input file."
-  exit 1  
+  exit 1
 fi
 
 # set the ctest model to command line parameter
@@ -88,7 +88,7 @@ then
   if [ "$NCPU" != "" ];
   then
     export number_of_processors=$NCPU
-  else 
+  else
     export number_of_processors=$(cat /proc/cpuinfo | grep processor | wc -l)
   fi
   if [ -z "$SITE" ]; then
@@ -102,7 +102,7 @@ then
   if [ "$NCPU" != "" ];
   then
     export number_of_processors=$NCPU
-  else 
+  else
     export number_of_processors=$(sysctl -n hw.ncpu)
   fi
   if [ -z "$SITE" ]; then
@@ -120,4 +120,4 @@ echo "************************"
 
 cd $SOURCEDIR
 
-ctest -S $SOURCEDIR/FairBase_test.cmake -V --VV 
+ctest -S $SOURCEDIR/FairBase_test.cmake -V --VV
