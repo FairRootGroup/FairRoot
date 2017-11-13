@@ -313,7 +313,7 @@ FairVolume* FairModule::getFairVolume(FairGeoNode* fN)
   return fvol;
 }
 //__________________________________________________________________________
-void FairModule::ConstructRootGeometry()
+void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
 {
   /** Construct the detector geometry from ROOT files, possible inputs are:
    * 1. A TGeoVolume as a mother (master) volume containing the detector geometry
@@ -379,26 +379,51 @@ void FairModule::ConstructRootGeometry()
       Cave = gGeoManager->GetVolume(fMotherVolumeName);
     }
     if(Cave!=NULL) {
-      /**Every thing is OK, we have a TGeoVolume and now we add it to the simulation TGeoManager  */
+      /** Everything is OK, we have a TGeoVolume and now we add it to the simulation TGeoManager */
       gGeoManager->AddVolume(v1);
-      /** force rebuilding of voxels */
+      /** Force rebuilding of voxels */
       TGeoVoxelFinder* voxels = v1->GetVoxels();
       if (voxels) { voxels->SetNeedRebuild(); }
 
       // else { fLogger->Fatal(MESSAGE_ORIGIN, "\033[5m\033[31mFairModule::ConstructRootGeometry(): could not find voxels  \033[0m"); }
 
-      /**To avoid having different names of the default matrices because we could have get the volume from another
+      /**To avoid having different names of the default matrices
+       * because we could have get the volume from another
        * TGeoManager, we reset the default matrix name
        */
       TGeoMatrix* M = n->GetMatrix();
-      SetDefaultMatrixName(M);
 
-      /** NOw we can remove the matrix so that the new geomanager will rebuild it properly*/
-      gGeoManager->GetListOfMatrices()->Remove(M);
+      // very nasty!
+      TGeoHMatrix* M2 = new TGeoHMatrix(*M);
+
+      // For debugging
+      //M2->Dump();
+      //const Double_t* transl1 = M2->GetTranslation();
+      //std::cout << transl1[0] << "\t" << transl1[1] << "\t" << transl1[2] << std::endl;
+      //if (shiftM) {
+      //  shiftM->Dump();
+      //  const Double_t* transl2 = shiftM->GetTranslation();
+      //  std::cout << transl2[0] << "\t" << transl2[1] << "\t" << transl2[2] << std::endl;
+      //}
+
+      if (shiftM) {
+        M2->Multiply(shiftM); // HACK!
+      }
+
+      SetDefaultMatrixName(M2);
+
+      //TODO
+      // I don't really understand this juggling with the matices,
+      // so, please, take care of how it works with my changes.
+      // Egor.
+
+      /** Now we can remove the matrix so that the new geomanager will rebuild it properly*/
+      gGeoManager->GetListOfMatrices()->Remove(M2);
       TGeoHMatrix* global = gGeoManager->GetHMatrix();
       gGeoManager->GetListOfMatrices()->Remove(global); //Remove the Identity matrix
-      /**Now we can add the node to the existing cave */
-      Cave->AddNode(v1,0, M);
+      /** Now we can add the node to the existing cave */
+
+      Cave->AddNode(v1, 0, M2);
       /** correction from O. Merle: in case of a TGeoVolume (v1) set the material properly */
 
       AssignMediumAtImport(v1);
