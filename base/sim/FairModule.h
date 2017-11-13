@@ -68,7 +68,7 @@ class FairModule:  public TNamed
     /**method called from the MC application to set optical geometry properties*/
     virtual void        ConstructOpGeometry();
     /**construct geometry from root files (TGeo)*/
-    virtual void        ConstructRootGeometry();
+    virtual void        ConstructRootGeometry(TGeoMatrix* shiftM=NULL);
     /**construct geometry from standard ASSCII files (Hades Format)*/
     virtual void        ConstructASCIIGeometry();
     /** Modify the geometry for the simulation run using methods of the Root geometry package */
