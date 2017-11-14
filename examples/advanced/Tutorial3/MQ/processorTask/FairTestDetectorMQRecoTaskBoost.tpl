@@ -7,11 +7,6 @@
 
 // Implementation of FairTestDetectorMQRecoTask::Exec() with Boost transport data format
 
-void freeStringBuffer(void* /*data*/, void* hint)
-{
-    delete static_cast<std::string*>(hint);
-}
-
 // example TIn: FairTestDetectorDigi
 // example TOut: FairTestDetectorHit
 // example TPayloadIn: boost::archive::binary_iarchive, boost::archive::text_iarchive
@@ -24,10 +19,10 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option
     // prepare boost input archive
     std::string msgStr(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
     std::istringstream iss(msgStr);
-    TPayloadIn onputArchive(iss);
+    TPayloadIn ouputArchive(iss);
     try
     {
-        onputArchive >> fDigiVector;
+        ouputArchive >> fDigiVector;
     }
     catch (boost::archive::archive_exception& e)
     {
@@ -66,7 +61,10 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option
     TPayloadOut outputArchive(oss);
     outputArchive << fHitVector;
     std::string* strMsg = new std::string(oss.str());
-    fPayload->Rebuild(const_cast<char*>(strMsg->c_str()), strMsg->length(), freeStringBuffer, strMsg);
+    fPayload->Rebuild(const_cast<char*>(strMsg->c_str()),
+                      strMsg->length(),
+                      [](void* /*data*/, void* hint){ delete static_cast<std::string*>(hint); },
+                      strMsg);
 
     fDigiVector.clear();
     fHitVector.clear();

@@ -15,11 +15,6 @@ struct MsgPack {};
 // struct MsgPackRef { msgpack::vrefbuffer vbuf; std::vector<msgpack::type::tuple<int, int, int, double, double>> digis; };
 // struct MsgPackStream {};
 
-void free_sbuffer(void* /*data*/, void* object)
-{
-    delete static_cast<msgpack::sbuffer*>(object);
-}
-
 template <>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* /*opt*/)
 {
@@ -38,7 +33,10 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* /
 
     packer.pack(digis);
 
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(sbuf->data(), sbuf->size(), free_sbuffer, sbuf));
+    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(sbuf->data(),
+                                                                 sbuf->size(),
+                                                                 [](void* /* data */, void* obj) { delete static_cast<msgpack::sbuffer*>(obj); },
+                                                                 sbuf));
 }
 
 // MsgPackRef version sends the vector of tuples without copying it into the sbuffer
