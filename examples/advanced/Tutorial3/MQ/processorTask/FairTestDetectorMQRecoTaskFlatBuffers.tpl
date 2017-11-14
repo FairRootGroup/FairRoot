@@ -8,12 +8,6 @@
 
 using namespace TestDetectorFlat;
 
-// helper function to clean up the object holding the data after it is transported.
-void free_builder(void* /*data*/, void* object)
-{
-    delete static_cast<flatbuffers::FlatBufferBuilder*>(object);
-}
-
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorFlat::DigiPayload, TestDetectorFlat::HitPayload>::Exec(Option_t* opt)
 {
@@ -67,7 +61,10 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     delete [] hits;
 
-    fPayload->Rebuild(builder->GetBufferPointer(), builder->GetSize(), free_builder, builder);
+    fPayload->Rebuild(builder->GetBufferPointer(),
+                      builder->GetSize(),
+                      [](void* /* data */, void* obj){ delete static_cast<flatbuffers::FlatBufferBuilder*>(obj); },
+                      builder);
 }
 
 #endif /* FLATBUFFERS */

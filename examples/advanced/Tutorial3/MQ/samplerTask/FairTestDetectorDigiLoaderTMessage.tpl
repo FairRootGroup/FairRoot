@@ -14,6 +14,6 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* 
     message->WriteObject(fInput);
     fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(message->Buffer(),
                                                                  message->BufferSize(),
-                                                                 [](void* /*data*/, void* object){ delete static_cast<TMessage*>(object); },
+                                                                 [](void* /*data*/, void* obj){ delete static_cast<TMessage*>(obj); },
                                                                  message));
 }

@@ -10,12 +10,6 @@
 
 #include "FairTestDetectorPayload.pb.h"
 
-// helper function to clean up the object holding the data after it is transported.
-void free_string(void* /*data*/, void* hint)
-{
-    delete static_cast<std::string*>(hint);
-}
-
 template <>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* /*opt*/)
 {
@@ -41,7 +35,10 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPay
     std::string* str = new std::string();
     dp.SerializeToString(str);
 
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(const_cast<char*>(str->c_str()), str->length(), free_string, str));
+    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(const_cast<char*>(str->c_str()),
+                                                                 str->length(),
+                                                                 [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
+                                                                 str));
 }
 
 #endif /* PROTOBUF */

@@ -28,7 +28,7 @@ void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* /*opt*/)
     std::string* strMsg = new std::string(oss.str());
     fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(const_cast<char*>(strMsg->c_str()), // data
                                                                                    strMsg->length(), // size
-                                                                                   [](void* /*data*/, void* object){ delete static_cast<std::string*>(object); },
+                                                                                   [](void* /*data*/, void* obj){ delete static_cast<std::string*>(obj); },
                                                                                    strMsg)); // object that manages the data
 
     fDigiVector.clear();
