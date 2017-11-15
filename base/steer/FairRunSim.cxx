@@ -285,6 +285,12 @@ void FairRunSim::CheckFlukaExec()
 //_____________________________________________________________________________
 void FairRunSim::SetMCConfig()
 {
+  // Either setup the simulation with the provided user hook
+  if (fUseSimSetupFunction) {
+    fSimSetup();
+  }
+  else {
+    // or use the conventional method of loading configuration macros
   /** Private method for setting simulation and/or Geane configuration and cuts*/
 
   TString work = getenv("VMCWORKDIR");
@@ -417,8 +423,9 @@ void FairRunSim::SetMCConfig()
 
   gROOT->LoadMacro(cuts);
   gROOT->ProcessLine("SetCuts()");
+  }
 
-  fApp->InitMC(ConfigMacro.Data(), cuts.Data());
+  fApp->InitMC("foo", "bar");
 }
 
 //_____________________________________________________________________________

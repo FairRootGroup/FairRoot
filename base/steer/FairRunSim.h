@@ -18,6 +18,7 @@
 #include "TObjArray.h"                  // for TObjArray
 #include "TString.h"                    // for TString
 #include "TMCtls.h"                     // for multi-threading
+#include <functional>
 
 class FairField;
 class FairMCEventHeader;
@@ -151,6 +152,9 @@ class FairRunSim : public FairRun
     /**Get beam energy flag */
     Bool_t UseBeamMom() {return fUseBeamMom;}
     void SetFieldContainer();
+
+    void SetSimSetup(std::function<void()> f) { fSimSetup = f; fUseSimSetupFunction = true; }
+    
   private:
     FairRunSim(const FairRunSim& M);
     FairRunSim& operator= (const  FairRunSim&) {return *this;}
@@ -184,7 +188,9 @@ class FairRunSim : public FairRun
     TString                fUserConfig; //!                        /** Macro for geant configuration*/
     TString                fUserCuts; //!                          /** Macro for geant cuts*/
 
-
+    std::function<void()>    fSimSetup; //!         /** A user provided function to do sim setup / instead of using macros **/ 
+    bool                     fUseSimSetupFunction = false;
+    
     ClassDef(FairRunSim ,2)
 
 };
