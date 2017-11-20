@@ -33,7 +33,7 @@ class FairPrimaryGenerator;
 class FairRadGridManager;
 class FairRadLenManager;
 class FairRadMapManager;
-class FairGenericRootManager;
+class FairRootManager;
 class FairTask;
 class FairTrajFilter;
 class FairVolume;
@@ -213,7 +213,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** Simulation Stack  */
     FairGenericStack*     fStack; //!
     /**Pointer to thr I/O Manager */
-    FairGenericRootManager*  fRootManager; //!
+    FairRootManager*     fRootManager; //!
     /**List of sensetive volumes in all detectors*/
     TRefArray*           fSenVolumes; //!
     /**Magnetic Field Pointer*/
