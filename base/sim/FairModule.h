@@ -118,13 +118,13 @@ class FairModule:  public TNamed
     TList* GetListOfGeoPar() { return flGeoPar;}
 
     /**list of volumes in a simulation session*/
-    static              FairVolumeList*   vList; //!
+    static thread_local FairVolumeList*   vList; //!
     /**total number of volumes in a simulaion session*/
-    static Int_t        fNbOfVolumes;  //!
+    static thread_local Int_t        fNbOfVolumes;  //!
     /**list of all sensitive volumes in  a simulaion session*/
-    static TRefArray*   svList;   //!
+    static thread_local TRefArray*   svList;   //!
 
-    static TArrayI*     volNumber; //!
+    static thread_local TArrayI*     volNumber; //!
     TString             fMotherVolumeName; //!
     FairVolume*   getFairVolume(FairGeoNode* fNode);
     void    AddSensitiveVolume(TGeoVolume* v);

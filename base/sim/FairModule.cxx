@@ -51,10 +51,10 @@
 class FairGeoMedium;
 class TGeoMedium;
 
-TArrayI* FairModule::volNumber=0;
-Int_t FairModule::fNbOfVolumes=0;
-FairVolumeList*  FairModule::vList=0;
-TRefArray*    FairModule::svList=0;
+thread_local TArrayI* FairModule::volNumber=0;
+thread_local Int_t FairModule::fNbOfVolumes=0;
+thread_local FairVolumeList*  FairModule::vList=0;
+thread_local TRefArray*    FairModule::svList=0;
 
 
 
@@ -104,7 +104,8 @@ FairModule::FairModule(const FairModule& rhs)
    flGeoPar(0),
    kGeoSaved(rhs.kGeoSaved)
 {
-   // Do not change anything in global fields (svList. vList)
+  if(!svList) { svList=new TRefArray(); }
+  if(!vList) { vList=new FairVolumeList(); }
 
   // TO DO - add when we know what type is the elements of flGeoPar
   //flGeoPar=new TObjArray();
@@ -283,6 +284,7 @@ void  FairModule::AddSensitiveVolume(TGeoVolume* v)
 {
 
   LOG(DEBUG2)<<"AddSensitiveVolume " << v->GetName() << FairLogger::endl;
+
   // Only register volumes which are not already registered
   // Otherwise the stepping will be slowed down
   if( ! vList->findObject(v->GetName() ) ) {
@@ -445,23 +447,23 @@ void FairModule::ConstructGDMLGeometry(TGeoMatrix* posrot)
 {
     // Parse the GDML file
     TFile *old = gFile;
-	TGDMLParse parser;
-	TGeoVolume* gdmlTop;
-	gdmlTop = parser.GDMLReadFile(GetGeometryFileName());
+        TGDMLParse parser;
+        TGeoVolume* gdmlTop;
+        gdmlTop = parser.GDMLReadFile(GetGeometryFileName());
 
     // Change ID of media. TGDMLParse starts allways from 0. Need to shift.
     ReAssignMediaId();
 
     // Add volume to the cave and go through it recursively
-	gGeoManager->GetTopVolume()->AddNode(gdmlTop,1,posrot);
-	ExpandNodeForGDML(gGeoManager->GetTopVolume()->GetNode(gGeoManager->GetTopVolume()->GetNdaughters()-1));
+        gGeoManager->GetTopVolume()->AddNode(gdmlTop,1,posrot);
+        ExpandNodeForGDML(gGeoManager->GetTopVolume()->GetNode(gGeoManager->GetTopVolume()->GetNdaughters()-1));
     gFile = old;
 }
 
 void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
 {
     // Get pointer to volume and assign medium
-	TGeoVolume* curVol = curNode->GetVolume();
+        TGeoVolume* curVol = curNode->GetVolume();
     AssignMediumAtImport(curVol);
 
     // Check if the volume is sensitive
@@ -470,17 +472,17 @@ void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
         AddSensitiveVolume(curVol);
     }
 
-	//! Recursevly go down the tree of nodes
-	if (curVol->GetNdaughters() != 0)
-	{
-		TObjArray* NodeChildList = curVol->GetNodes();
-		TGeoNode* curNodeChild;
-		for (Int_t j=0; j<NodeChildList->GetEntriesFast(); j++)
-		{
-			curNodeChild = static_cast<TGeoNode*>(NodeChildList->At(j));
-			ExpandNodeForGDML(curNodeChild);
-		}
-	}
+        //! Recursevly go down the tree of nodes
+        if (curVol->GetNdaughters() != 0)
+        {
+                TObjArray* NodeChildList = curVol->GetNodes();
+                TGeoNode* curNodeChild;
+                for (Int_t j=0; j<NodeChildList->GetEntriesFast(); j++)
+                {
+                        curNodeChild = static_cast<TGeoNode*>(NodeChildList->At(j));
+                        ExpandNodeForGDML(curNodeChild);
+                }
+        }
 }
 
 #else
