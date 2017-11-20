@@ -245,9 +245,12 @@ void  FairRootManager::FillWithTmpLock()
     // __after__ the first Fill
     (*fgIsFillLocks)[fId] = false;
     Bool_t isDoneAll = true;
-    Int_t counter = 0;
+    Int_t counter = 1;
     while ( isDoneAll && counter < fgCounter ) {
-      isDoneAll = ! (*fgIsFillLocks)[counter++];
+      if ( (*fgIsFillLocks)[counter++] ) {
+        isDoneAll = false;
+        break;
+      }
     }
     if ( isDoneAll ) {
       LogMessage("... Switching off locking of Fill()");
