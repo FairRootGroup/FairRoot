@@ -151,7 +151,7 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # mandatory
 
 # FairRoot only supports ROOT6, so check which version is available
-find_package(ROOT 6.00.00 REQUIRED)
+find_package(ROOT 6.10.00 REQUIRED)
 find_package(Pythia6)
 find_package(Pythia8)
 
