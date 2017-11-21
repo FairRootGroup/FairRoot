@@ -46,9 +46,7 @@
 #include "TRandom.h"                    // for TRandom, gRandom
 #include "TTree.h"                      // for TTree
 #include "TRefArray.h"                  // for TRefArray
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,1) )
 #include "TMCAutoLock.h"
-#endif
 
 #include <stdlib.h>                     // for exit
 #include <string.h>                     // for NULL, strcmp
@@ -70,22 +68,17 @@ using std::list;
 using std::pair;
 using std::set;
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
 namespace {
   // Define mutexes per operation for the functions
   // which are supposed to be called from VMC applications
   TMCMutex createMutex = TMCMUTEX_INITIALIZER;
   TMCMutex deleteMutex = TMCMUTEX_INITIALIZER;
-  TMCMutex register1Mutex = TMCMUTEX_INITIALIZER;
-  TMCMutex register2Mutex = TMCMUTEX_INITIALIZER;
-  TMCMutex register3Mutex = TMCMUTEX_INITIALIZER;
-  TMCMutex register4Mutex = TMCMUTEX_INITIALIZER;
+  TMCMutex registerMutex = TMCMUTEX_INITIALIZER;
   TMCMutex fillMutex  = TMCMUTEX_INITIALIZER;
   TMCMutex tmpFillMutex  = TMCMUTEX_INITIALIZER;
   TMCMutex writeMutex = TMCMUTEX_INITIALIZER;
   TMCMutex closeMutex = TMCMUTEX_INITIALIZER;
 }
-#endif
 
 //_____________________________________________________________________________
 Int_t   FairRootManager::fgCounter = 0;
@@ -147,9 +140,7 @@ FairRootManager::FairRootManager()
     LOG(INFO) << "FairRootManager::FairRootManager: going to lock "
       << this << FairLogger::endl;
   }
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   TMCAutoLock lk(&createMutex);
-#endif
 
   // Set Id
   fId = fgCounter;
@@ -161,9 +152,7 @@ FairRootManager::FairRootManager()
   ++fgCounter;
   fgIsFillLocks->push_back(true);
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   lk.unlock();
-#endif
   if ( fDebugMT ) {
     LOG(INFO) << "Released lock and done FairRootManager::FairRootManager in "
       << fId << " " << this << FairLogger::endl;
@@ -180,9 +169,7 @@ FairRootManager::~FairRootManager()
     LOG(INFO) << "FairRootManager::~FairRootManager: going to lock "
       << fId << " " << this << FairLogger::endl;
   }
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   TMCAutoLock lk(&deleteMutex);
-#endif
 
   // delete fOutTree;
   if(fOutFile) {
@@ -207,9 +194,7 @@ FairRootManager::~FairRootManager()
   }
 
   //
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   lk.unlock();
-#endif
   if ( fDebugMT ) {
     LOG(INFO) << "Released lock and done FairRootManager::~FairRootManager in "
       << fId << " " << this << FairLogger::endl;
@@ -235,10 +220,8 @@ void  FairRootManager::FillWithTmpLock()
 {
 /// Fill the Root tree.
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   LogMessage("Going to lock for Fill");
   TMCAutoLock lk(&tmpFillMutex);
-#endif
 
   LogMessage("Fill");
   FillImpl();
@@ -265,10 +248,8 @@ void  FairRootManager::FillWithTmpLock()
 
   LogMessage("Exiting Fill");
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   lk.unlock();
   LogMessage("Released lock for Fill");
-#endif
 }
 
 //_____________________________________________________________________________
@@ -276,19 +257,15 @@ void  FairRootManager::FillWithLock()
 {
 /// Fill the Root tree.
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   LogMessage("Going to lock for Fill");
   TMCAutoLock lk(&fillMutex);
-#endif
 
   LogMessage("Fill");
   FillImpl();
   LogMessage("Done Fill");
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   lk.unlock();
   LogMessage("Released lock for Fill");
-#endif
 }
 
 //_____________________________________________________________________________
@@ -372,10 +349,8 @@ void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* 
 
   FairMonitor::GetMonitor()->RecordRegister(name,folderName,toFile);
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   LogMessage("Going to lock for Register (1)");
-  TMCAutoLock lk(&register1Mutex);
-#endif
+  TMCAutoLock lk(&registerMutex);
 
   LogMessage(TString("Register (1)") + name);
 
@@ -420,11 +395,8 @@ void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* 
 
   LogMessage(TString("Done Register (1)") + name);
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   lk.unlock();
   LogMessage("Released lock for Register (1)");
-#endif
-
 }
 
 //_____________________________________________________________________________
@@ -456,10 +428,9 @@ void  FairRootManager::Register(const char* name,const char* foldername ,TCollec
 //_____________________________________________________________________________
 void FairRootManager::RegisterInputObject(const char* name, TObject* obj)
 {
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   LogMessage("Going to lock for Register (2)");
-  TMCAutoLock lk(&register2Mutex);
-#endif
+  TMCAutoLock lk(&registerMutex);
+
   LogMessage(TString("Register (2)") + name);
 
   AddMemoryBranch(name, obj);
@@ -467,20 +438,16 @@ void FairRootManager::RegisterInputObject(const char* name, TObject* obj)
 
   LogMessage(TString("Done Register (2)") + name);
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   lk.unlock();
   LogMessage("Released lock for Register (2)");
-#endif
-
 }
 
 //_____________________________________________________________________________
 TClonesArray* FairRootManager::Register(TString branchName, TString className, TString folderName, Bool_t toFile)
 {
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   LogMessage("Going to lock for Register (3)");
-  TMCAutoLock lk(&register3Mutex);
-#endif
+  TMCAutoLock lk(&registerMutex);
+
   LogMessage(TString("Register (3)") + branchName);
 
   FairMonitor::GetMonitor()->RecordRegister(branchName,folderName,toFile);
@@ -493,10 +460,9 @@ TClonesArray* FairRootManager::Register(TString branchName, TString className, T
   }
 
   LogMessage(TString("Done Register (3)") + branchName);
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
+
   lk.unlock();
   LogMessage("Released lock for Register (3)");
-#endif
 
   return fActiveContainer[branchName];
 }
@@ -657,10 +623,9 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
 
   LOG(DEBUG) << "FairRootManager::Write "  << this << FairLogger::endl ;
 
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   LogMessage("Going to lock for Write");
   TMCAutoLock lk(&writeMutex);
-#endif
+
   LogMessage("Write");
 
   if(fOutTree!=0) {
@@ -681,10 +646,9 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
   }
 
   LogMessage("Done Write");
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
+
   lk.unlock();
   LogMessage("Released lock for Write");
-#endif
 
   return 0;
 }
@@ -693,10 +657,9 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
 //_____________________________________________________________________________
 void FairRootManager:: CloseOutFile()
 {
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   LogMessage("Going to lock for CloseOutFile");
   TMCAutoLock lk(&closeMutex);
-#endif
+
   LogMessage("CloseOutFile");
 
   if(fOutFile) {
@@ -704,10 +667,9 @@ void FairRootManager:: CloseOutFile()
   }
 
   LogMessage("Done CloseOutFile");
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
+
   lk.unlock();
   LogMessage("Released lock for CloseOutFile");
-#endif
 }
 
 //_____________________________________________________________________________
@@ -1367,10 +1329,9 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
 //_____________________________________________________________________________
 FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, FairWriteoutBuffer* buffer)
 {
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   LogMessage("Going to lock for RegisterWriteoutBuffer");
-  TMCAutoLock lk(&register4Mutex);
-#endif
+  TMCAutoLock lk(&registerMutex);
+
   LogMessage("RegisterWriteoutBuffer");
 
   if (fWriteoutBufferMap[branchName] == 0) {
@@ -1384,10 +1345,9 @@ FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, 
   }
 
   LogMessage("Done RegisterWriteoutBuffer");
-#if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
+
   lk.unlock();
   LogMessage("Released lock for RegisterWriteoutBuffer");
-#endif
 
   return fWriteoutBufferMap[branchName];
 }
