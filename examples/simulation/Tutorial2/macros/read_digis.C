@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 void read_digis(){
@@ -24,7 +24,8 @@ void read_digis(){
     cout << "******************************" << endl;
 
     FairRunAna *fRun= new FairRunAna();
-    fRun->SetInputFile(inFile);
+    FairFileSource *fFileSource = new FairFileSource(inFile);
+    fRun->SetSource(fFileSource);
     fRun->SetOutputFile(outFile);
 
 
@@ -32,7 +33,7 @@ void read_digis(){
     FairRuntimeDb* rtdb=fRun->GetRuntimeDb();
     FairParRootFileIo* io1=new FairParRootFileIo();
     io1->open(parFile.Data(),"UPDATE");
- 
+
     FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
     TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
     tutDetDigiFile += "/simulation/Tutorial2/parameters/tutdet.digi.par";
@@ -51,10 +52,10 @@ void read_digis(){
     FairBaseParSet* BasePar= (FairBaseParSet *)
                                      rtdb->getContainer("FairBaseParSet");
     cout<<"RndSeed used in simulation was  " <<  BasePar->GetRndSeed() << endl;
-   
+
     // -----------------------------------------------------------------------
-   
-    FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*) 
+
+    FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*)
                                       rtdb->getContainer("FairTutorialDet2DigiPar");
 
     DigiPar->setChanged();
