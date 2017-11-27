@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 eventDisplay(TString mcEngine="TGeant3")
@@ -14,7 +14,8 @@ eventDisplay(TString mcEngine="TGeant3")
 
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
-  fRun->SetInputFile(inFile);
+  FairFileSource *fFileSource = new FairFileSource(inFile);
+  fRun->SetSource(fFileSource);
   
   fRun->SetOutputFile(outFile);
 
@@ -29,10 +30,10 @@ eventDisplay(TString mcEngine="TGeant3")
   FairEventManager   *fMan      = new FairEventManager   ();
   FairMCTracks       *Track     = new FairMCTracks       ("Monte-Carlo Tracks");
   FairMCPointDraw    *RutherfordPoints = new FairMCPointDraw    ("FairRutherfordPoint",kBlue , kFullSquare);
-                                                     
+
   fMan->AddTask(Track);
   fMan->AddTask(RutherfordPoints);
-    
-  fMan->Init();                    
+
+  fMan->Init();
 
 }

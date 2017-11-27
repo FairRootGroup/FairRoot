@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 void run_digiToBin(Int_t divideLevel = 1, TString mcEngine="TGeant3" )
@@ -14,13 +14,13 @@ void run_digiToBin(Int_t divideLevel = 1, TString mcEngine="TGeant3" )
 
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
-  
+
   // Input file (MC events)
   TString inFile = "pixel_";
   inFile = inFile + mcEngine + ".mc.root";
-  
+
   // Parameter file
-  TString parFile = "pixel_"; 
+  TString parFile = "pixel_";
   parFile = parFile + mcEngine + ".params.root";
 
   // Digitization parameter file
@@ -31,25 +31,26 @@ void run_digiToBin(Int_t divideLevel = 1, TString mcEngine="TGeant3" )
   // Output file
   TString outFile = "pixel_";
   outFile = outFile + mcEngine + ".digiToBin.root";
-  
+
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
-  
+
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
-  fRun->SetInputFile(inFile);
+  FairFileSource *fFileSource = new FairFileSource(inFile);
+  fRun->SetSource(fFileSource);
   fRun->SetOutputFile(outFile);
-  
+
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
   parInput1->open(parFile.Data());
 
   FairParAsciiFileIo* parIo1 = new FairParAsciiFileIo();
   parIo1->open(digParFile.Data(),"in");
-        
+
   rtdb->setFirstInput(parInput1);
   rtdb->setSecondInput(parIo1);
-  
+
   // -----   TorinoDetector hit  producers   ---------------------------------
   PixelDigitize* digiTask = new PixelDigitize();
   fRun->AddTask(digiTask);
