@@ -1,19 +1,18 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH *
  *                                                                              *
- *              This software is distributed under the terms of the             *
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
- *                  copied verbatim in the file "LICENSE"                       *
+ *              This software is distributed under the terms of the *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3, *
+ *                  copied verbatim in the file "LICENSE" *
  ********************************************************************************/
-void run_reco_timebased( TString mcEngine="TGeant3" )
-{
+void run_reco_timebased(TString mcEngine = "TGeant3") {
   FairLogger *logger = FairLogger::GetLogger();
   logger->SetLogFileName("MyLog.log");
-//  logger->SetLogToScreen(kTRUE);
-//  logger->SetLogToFile(kTRUE);
-//  logger->SetLogVerbosityLevel("HIGH");
-//  logger->SetLogFileLevel("DEBUG4");
-//  logger->SetLogScreenLevel("DEBUG");
+  //  logger->SetLogToScreen(kTRUE);
+  //  logger->SetLogToFile(kTRUE);
+  //  logger->SetLogVerbosityLevel("HIGH");
+  //  logger->SetLogFileLevel("DEBUG4");
+  //  logger->SetLogScreenLevel("DEBUG");
 
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
@@ -34,23 +33,22 @@ void run_reco_timebased( TString mcEngine="TGeant3" )
   TStopwatch timer;
 
   // -----   Reconstruction run   -------------------------------------------
-  FairRunAna *fRun= new FairRunAna();
 
-  FairRunAna *fRun= new FairRunAna();
+  FairRunAna *fRun = new FairRunAna();
   FairFileSource *fFileSource = new FairFileSource(inFile);
   fRun->SetOutputFile(outFile);
   fRun->RunWithTimeStamps();
   fRun->SetUseFairLinks(kTRUE);
 
-  FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
-  FairParRootFileIo* parInput1 = new FairParRootFileIo();
+  FairRuntimeDb *rtdb = fRun->GetRuntimeDb();
+  FairParRootFileIo *parInput1 = new FairParRootFileIo();
   parInput1->open(parFile.Data());
   rtdb->setFirstInput(parInput1);
 
   // -----   TorinoDetector hit  producers   ---------------------------------
-  FairTestDetectorTimeRecoTask* hitProducer = new FairTestDetectorTimeRecoTask();
+  FairTestDetectorTimeRecoTask *hitProducer =
+      new FairTestDetectorTimeRecoTask();
   fRun->AddTask(hitProducer);
-
 
   fRun->Init();
 
@@ -64,7 +62,7 @@ void run_reco_timebased( TString mcEngine="TGeant3" )
   // Extract the maximal used memory an add is as Dart measurement
   // This line is filtered by CTest and the value send to CDash
   FairSystemInfo sysInfo;
-  Float_t maxMemory=sysInfo.GetMaxMemory();
+  Float_t maxMemory = sysInfo.GetMaxMemory();
   cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
   cout << maxMemory;
   cout << "</DartMeasurement>" << endl;
@@ -73,16 +71,16 @@ void run_reco_timebased( TString mcEngine="TGeant3" )
   Double_t rtime = timer.RealTime();
   Double_t ctime = timer.CpuTime();
 
-  Float_t cpuUsage=ctime/rtime;
+  Float_t cpuUsage = ctime / rtime;
   cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
   cout << cpuUsage;
   cout << "</DartMeasurement>" << endl;
 
   cout << endl << endl;
-  cout << "Output file is "    << outFile << endl;
+  cout << "Output file is " << outFile << endl;
   cout << "Parameter file is " << parFile << endl;
-  cout << "Real time " << rtime << " s, CPU time " << ctime
-       << "s" << endl << endl;
+  cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl
+       << endl;
   cout << "Macro finished successfully." << endl;
 
   // ------------------------------------------------------------------------
