@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 void run_reco( TString mcEngine="TGeant3" )
@@ -16,44 +16,45 @@ void run_reco( TString mcEngine="TGeant3" )
   logger->SetLogVerbosityLevel("LOW");
 //  logger->SetLogFileLevel("DEBUG4");
   logger->SetLogScreenLevel("INFO");
-  
+
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
-  
+
   // Input file (MC events)
   TString inFile = "data/testdigi_";
   inFile = inFile + mcEngine + ".root";
 
   // Parameter file
-  TString parFile = "data/testparams_"; 
+  TString parFile = "data/testparams_";
   parFile = parFile + mcEngine + ".root";
 
   // Output file
   TString outFile = "data/testreco_";
   outFile = outFile + mcEngine + ".root";
-  
+
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
-  
+
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
-  fRun->SetInputFile(inFile);
+  FairFileSource *fFileSource = new FairFileSource(inFile);
+  fRun->SetSource(fFileSource);
   fRun->SetOutputFile(outFile);
   fRun->SetUseFairLinks(kTRUE);
   FairLinkManager::Instance()->AddIncludeType(0);
 //  FairLinkManager::Instance()->AddIncludeType(1);
   fRun->SetGenerateRunInfo(kTRUE);       // Create FairRunInfo file
 
-  
+
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
   parInput1->open(parFile.Data());
   rtdb->setFirstInput(parInput1);
-  
+
   // -----   TorinoDetector hit  producers   ---------------------------------
   FairTestDetectorRecoTask* hitProducer = new FairTestDetectorRecoTask();
   fRun->AddTask(hitProducer);
-  
+
 
   fRun->Init();
 

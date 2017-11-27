@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #         GNU Lesser General Public Licence version 3 (LGPL) version 3,        #  
+ #              This software is distributed under the terms of the             #
+ #             GNU Lesser General Public Licence (LGPL) version 3,              #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # Create a library called "libBase" which includes the source files given in
@@ -16,8 +16,8 @@ EndIf(NOT DEFINED BUILD_MBS)
 
 Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairtools
-  ${CMAKE_SOURCE_DIR}/geobase 
-  ${CMAKE_SOURCE_DIR}/parbase 
+  ${CMAKE_SOURCE_DIR}/geobase
+  ${CMAKE_SOURCE_DIR}/parbase
   ${CMAKE_SOURCE_DIR}/base
   ${CMAKE_SOURCE_DIR}/base/steer
   ${CMAKE_SOURCE_DIR}/base/event
@@ -41,13 +41,13 @@ EndIf(WITH_DBASE)
 
 If(BUILD_MBS)
   Set(INCLUDE_DIRECTORIES
-     ${INCLUDE_DIRECTORIES} 
+     ${INCLUDE_DIRECTORIES}
      ${CMAKE_SOURCE_DIR}/MbsAPI
   )
 EndIf(BUILD_MBS)
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
-  ${ROOT_INCLUDE_DIR} 
+  ${ROOT_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
 )
 
@@ -59,7 +59,7 @@ Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
 )
- 
+
 Link_Directories(${LINK_DIRECTORIES})
 
 # List of source files
@@ -142,28 +142,28 @@ If(BUILD_MBS)
       source/FairMbsStreamSource.cxx
    )
 
-  Set(NO_DICT_SRCS 
+  Set(NO_DICT_SRCS
       source/exitCli.c
       source/rclose.c
       source/swaplw.c
   )
 
-  Set(DEPENDENCIES 
+  Set(DEPENDENCIES
       ParBase GeoBase FairTools MbsAPI
-      Proof GeomPainter Geom VMC EG MathCore Physics 
+      Proof GeomPainter Geom VMC EG MathCore Physics
       Matrix Tree Hist RIO RHTTP Core
   )
 
   Set(DEFINITIONS BUILD_MBS)
 Else(BUILD_MBS)
-  Set(DEPENDENCIES 
-      ParBase GeoBase FairTools 
-      Proof GeomPainter Geom VMC EG MathCore Physics 
+  Set(DEPENDENCIES
+      ParBase GeoBase FairTools
+      Proof GeomPainter Geom VMC EG MathCore Physics
       Matrix Tree Hist RIO RHTTP Core
   )
 EndIf(BUILD_MBS)
 
-EXEC_PROGRAM( ${ROOT_CONFIG_EXECUTABLE} 
+EXEC_PROGRAM( ${ROOT_CONFIG_EXECUTABLE}
     ARGS "--has-gdml"
     OUTPUT_VARIABLE ROOT_HAS_GDML )
 
@@ -180,5 +180,3 @@ Set(LINKDEF FairLinkDef.h)
 Set(LIBRARY_NAME Base)
 
 GENERATE_LIBRARY()
-
- 
