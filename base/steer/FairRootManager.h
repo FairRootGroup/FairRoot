@@ -72,10 +72,9 @@ class FairRootManager : public TObject
     Int_t               CheckBranch(const char* BrName);
 
     
-    void                CloseOutFile();
+    void                CloseOutFile() { if(fOutFile) { fOutFile->Close(); }}
     /**Create a new file and save the current TGeoManager object to it*/
     void                CreateGeometryFile(const char* geofile);
-    void                FillImpl();
     void                Fill();
     void                LastFill();
     TClonesArray*       GetEmptyTClonesArray(TString branchName);
@@ -258,12 +257,6 @@ class FairRootManager : public TObject
     static char* GetTreeName();
 
     /**public Members for multi-threading */
-
-    void SetIsMT(Bool_t isMT) { fIsMT = isMT; }
-    void SetDebugMT(Bool_t debugMT) { fDebugMT = debugMT; }
-
-    Bool_t GetIsMT() const { return fIsMT; }
-    Bool_t GetDebugMT() const { return fDebugMT; }
     Int_t  GetInstanceId() const { return fId; }
 
   private:
@@ -398,21 +391,10 @@ class FairRootManager : public TObject
 
 //_____________________________________________________________________
     /**private Members for multi-threading */
-    // methods
-    void  LogMessage(const TString& message);
-    void  FillWithLock();
-    void  FillWithTmpLock();
-    void  FillWithoutLock();
-
     // global static data members
-    static  Int_t    fgCounter;         // The counter of instances
-    static  Bool_t   fgIsFillLock;      // The if the Fill should be locked
-    static  std::vector<Bool_t>* fgIsFillLocks; // The info per thread if the Fill should be locked
-
+    static  Int_t     fgCounter;     // The counter of instances
     // data members
     Int_t             fId;           // This manager ID
-    Bool_t            fIsMT;         // Option to activate locking needed in MT mode
-    Bool_t            fDebugMT;      // Option to activate debug printings in MT related functions
 
     ClassDef(FairRootManager,12) // Root IO manager
 };

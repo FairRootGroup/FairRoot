@@ -503,7 +503,6 @@ void FairMCApplication::FinishRun()
               << FairLogger::endl;
 
     TDirectory* savedir = gDirectory;
-    // FairRootManager* rootManager = fRootManager->GetFairRootManager();
     fRootManager->GetOutFile()->cd();
 
     gDirectory->mkdir("Dosimetry");
@@ -629,7 +628,6 @@ void FairMCApplication::InitOnWorker()
 {
   // Create Root manager
   fRootManager = FairRootManager::Instance();
-  fRootManager->SetDebugMT(true);
 
   LOG(INFO) << "FairMCApplication::InitForWorker " 
     << fRootManager->GetInstanceId() << " " << this << FairLogger::endl;
@@ -841,11 +839,7 @@ void FairMCApplication::FinishEvent()
   }
 
   if (fRootManager) {
-    if ( gMC->IsMT() ) {
-      fRootManager->Fill();
-    } else {
-      fRootManager->FillImpl();
-    }
+    fRootManager->Fill();
   }
   
   for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();

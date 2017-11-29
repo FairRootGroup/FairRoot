@@ -69,21 +69,13 @@ using std::pair;
 using std::set;
 
 namespace {
-  // Define mutexes per operation for the functions
-  // which are supposed to be called from VMC applications
+  // Define mutexes per operation which modify shared data
   TMCMutex createMutex = TMCMUTEX_INITIALIZER;
   TMCMutex deleteMutex = TMCMUTEX_INITIALIZER;
-  TMCMutex registerMutex = TMCMUTEX_INITIALIZER;
-  TMCMutex fillMutex  = TMCMUTEX_INITIALIZER;
-  TMCMutex tmpFillMutex  = TMCMUTEX_INITIALIZER;
-  TMCMutex writeMutex = TMCMUTEX_INITIALIZER;
-  TMCMutex closeMutex = TMCMUTEX_INITIALIZER;
 }
 
 //_____________________________________________________________________________
 Int_t   FairRootManager::fgCounter = 0;
-Bool_t  FairRootManager::fgIsFillLock = true;
-std::vector<Bool_t>* FairRootManager::fgIsFillLocks = 0;
 
 //_____________________________________________________________________________
 FairRootManager* FairRootManager::Instance()
@@ -133,30 +125,23 @@ FairRootManager::FairRootManager()
     fListOfBranchesFromInputIter(0),
     fListOfNonTimebasedBranches(new TRefArray()),
     fListOfNonTimebasedBranchesIter(0),
-    fId(0),
-    fDebugMT(false)
+    fId(0)
 {
-  if ( fDebugMT ) {
-    LOG(INFO) << "FairRootManager::FairRootManager: going to lock "
-      << this << FairLogger::endl;
-  }
+  LOG(DEBUG) << "FairRootManager::FairRootManager: going to lock "
+    << this << FairLogger::endl;
+
   TMCAutoLock lk(&createMutex);
 
   // Set Id
   fId = fgCounter;
 
   // Increment counter
-  if ( ! fgCounter ) {
-    fgIsFillLocks = new std::vector<Bool_t>();
-  }
   ++fgCounter;
-  fgIsFillLocks->push_back(true);
 
   lk.unlock();
-  if ( fDebugMT ) {
-    LOG(INFO) << "Released lock and done FairRootManager::FairRootManager in "
-      << fId << " " << this << FairLogger::endl;
-  }
+
+  LOG(DEBUG) << "Released lock and done FairRootManager::FairRootManager in "
+    << fId << " " << this << FairLogger::endl;
 }
 
 //_____________________________________________________________________________
@@ -164,12 +149,6 @@ FairRootManager::~FairRootManager()
 {
 //
   LOG(DEBUG) << "Enter Destructor of FairRootManager" << FairLogger::endl;
-
-  if ( fDebugMT ) {
-    LOG(INFO) << "FairRootManager::~FairRootManager: going to lock "
-      << fId << " " << this << FairLogger::endl;
-  }
-  TMCAutoLock lk(&deleteMutex);
 
   // delete fOutTree;
   if(fOutFile) {
@@ -187,98 +166,19 @@ FairRootManager::~FairRootManager()
   delete fSourceChain;
 
   // Global cleanup
+  TMCAutoLock lk(&deleteMutex);
+
+  LOG(DEBUG) << "FairRootManager::~FairRootManager: going to lock "
+    << fId << " " << this << FairLogger::endl;
+
   --fgCounter;
-  if ( ! fgCounter ) {
-    delete fgIsFillLocks;
-    fgIsFillLocks = 0;
-  }
 
   //
   lk.unlock();
-  if ( fDebugMT ) {
-    LOG(INFO) << "Released lock and done FairRootManager::~FairRootManager in "
-      << fId << " " << this << FairLogger::endl;
-  }
+
+  LOG(DEBUG) << "Released lock and done FairRootManager::~FairRootManager in "
+    << fId << " " << this << FairLogger::endl;
 }
-
-//
-// private methods for MT
-//
-
-//_____________________________________________________________________________
-void  FairRootManager::LogMessage(const TString& message)
-{
-/// Output one line log message followed with the instance Id and pointer
-
-  if ( fDebugMT ) {
-    LOG(INFO) << message << " in " << fId << " " << this << FairLogger::endl;
-  }
-}
-
-//_____________________________________________________________________________
-void  FairRootManager::FillWithTmpLock()
-{
-/// Fill the Root tree.
-
-  LogMessage("Going to lock for Fill");
-  TMCAutoLock lk(&tmpFillMutex);
-
-  LogMessage("Fill");
-  FillImpl();
-  LogMessage("Done Fill");
-
-  if ( fgIsFillLock ) {
-    // the access to TFile and TTree needs to be locked only until
-    // __after__ the first Fill
-    (*fgIsFillLocks)[fId] = false;
-    Bool_t isDoneAll = true;
-    Int_t counter = 1;
-    while ( isDoneAll && counter < fgCounter ) {
-      if ( (*fgIsFillLocks)[counter] ) {
-        isDoneAll = false;
-        break;
-      }
-      ++counter;
-    }
-    if ( isDoneAll ) {
-      LogMessage("... Switching off locking of Fill()");
-      fgIsFillLock = false;
-    }
-  }
-
-  LogMessage("Exiting Fill");
-
-  lk.unlock();
-  LogMessage("Released lock for Fill");
-}
-
-//_____________________________________________________________________________
-void  FairRootManager::FillWithLock()
-{
-/// Fill the Root tree.
-
-  LogMessage("Going to lock for Fill");
-  TMCAutoLock lk(&fillMutex);
-
-  LogMessage("Fill");
-  FillImpl();
-  LogMessage("Done Fill");
-
-  lk.unlock();
-  LogMessage("Released lock for Fill");
-}
-
-//_____________________________________________________________________________
-void  FairRootManager::FillWithoutLock()
-{
-  LogMessage("Fill");
-  FillImpl();
-  LogMessage("Done Fill");
-}
-
-//
-// end of private methods for MT
-//
 
 //_____________________________________________________________________________
 Bool_t FairRootManager::InitSource() {
@@ -349,11 +249,6 @@ void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* 
 
   FairMonitor::GetMonitor()->RecordRegister(name,folderName,toFile);
 
-  LogMessage("Going to lock for Register (1)");
-  TMCAutoLock lk(&registerMutex);
-
-  LogMessage(TString("Register (1)") + name);
-
   // Security check. If the the name is equal the folder name there are problems with reading
   // back the data. Instead of the object inside the folder the RootManger will return a pointer
   // to the folder. To avoid such problems we check here if both strings are equal and stop the
@@ -392,11 +287,6 @@ void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* 
   if (toFile == kFALSE) {
     FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
   }
-
-  LogMessage(TString("Done Register (1)") + name);
-
-  lk.unlock();
-  LogMessage("Released lock for Register (1)");
 }
 
 //_____________________________________________________________________________
@@ -428,28 +318,13 @@ void  FairRootManager::Register(const char* name,const char* foldername ,TCollec
 //_____________________________________________________________________________
 void FairRootManager::RegisterInputObject(const char* name, TObject* obj)
 {
-  LogMessage("Going to lock for Register (2)");
-  TMCAutoLock lk(&registerMutex);
-
-  LogMessage(TString("Register (2)") + name);
-
   AddMemoryBranch(name, obj);
   AddBranchToList(name);
-
-  LogMessage(TString("Done Register (2)") + name);
-
-  lk.unlock();
-  LogMessage("Released lock for Register (2)");
 }
 
 //_____________________________________________________________________________
 TClonesArray* FairRootManager::Register(TString branchName, TString className, TString folderName, Bool_t toFile)
 {
-  LogMessage("Going to lock for Register (3)");
-  TMCAutoLock lk(&registerMutex);
-
-  LogMessage(TString("Register (3)") + branchName);
-
   FairMonitor::GetMonitor()->RecordRegister(branchName,folderName,toFile);
 
   TClonesArray* outputArray;
@@ -458,11 +333,6 @@ TClonesArray* FairRootManager::Register(TString branchName, TString className, T
     outputArray = fActiveContainer[branchName];
     Register(branchName, folderName, outputArray, toFile);
   }
-
-  LogMessage(TString("Done Register (3)") + branchName);
-
-  lk.unlock();
-  LogMessage("Released lock for Register (3)");
 
   return fActiveContainer[branchName];
 }
@@ -581,30 +451,13 @@ Bool_t FairRootManager::AllDataProcessed()
 }
 
 //_____________________________________________________________________________
-void FairRootManager::FillImpl()
+void FairRootManager::Fill()
 {
   if (fOutTree != 0) {
     fOutTree->Fill();
   } else {
     LOG(INFO) << " No Output Tree" << FairLogger::endl;
   }
-}
-
-//_____________________________________________________________________________
-void  FairRootManager::Fill()
-{
-/// Fill the Root tree.
-
-  // Fill with lack untill first call on all threads
-  if ( fgIsFillLock ) {
-    FillWithTmpLock();
-  }
-  else {
-    FillWithoutLock();
-  }
-
-  // Fill with lock during the whole run
-  // FillWithLock();
 }
 
 //_____________________________________________________________________________
@@ -623,11 +476,6 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
 
   LOG(DEBUG) << "FairRootManager::Write "  << this << FairLogger::endl ;
 
-  LogMessage("Going to lock for Write");
-  TMCAutoLock lk(&writeMutex);
-
-  LogMessage("Write");
-
   if(fOutTree!=0) {
     /** Get the file handle to the current output file from the tree.
       * If ROOT splits the file (due to the size of the file) the file
@@ -645,31 +493,7 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
     LOG(INFO) << "No Output Tree" << FairLogger::endl;
   }
 
-  LogMessage("Done Write");
-
-  lk.unlock();
-  LogMessage("Released lock for Write");
-
   return 0;
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRootManager:: CloseOutFile()
-{
-  LogMessage("Going to lock for CloseOutFile");
-  TMCAutoLock lk(&closeMutex);
-
-  LogMessage("CloseOutFile");
-
-  if(fOutFile) {
-    fOutFile->Close();
-  }
-
-  LogMessage("Done CloseOutFile");
-
-  lk.unlock();
-  LogMessage("Released lock for CloseOutFile");
 }
 
 //_____________________________________________________________________________
@@ -1329,11 +1153,6 @@ Int_t  FairRootManager::CheckMaxEventNo(Int_t EvtEnd)
 //_____________________________________________________________________________
 FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, FairWriteoutBuffer* buffer)
 {
-  LogMessage("Going to lock for RegisterWriteoutBuffer");
-  TMCAutoLock lk(&registerMutex);
-
-  LogMessage("RegisterWriteoutBuffer");
-
   if (fWriteoutBufferMap[branchName] == 0) {
     fWriteoutBufferMap[branchName] = buffer;
   } else {
@@ -1343,11 +1162,6 @@ FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, 
                  << FairLogger::endl;
     delete buffer;
   }
-
-  LogMessage("Done RegisterWriteoutBuffer");
-
-  lk.unlock();
-  LogMessage("Released lock for RegisterWriteoutBuffer");
 
   return fWriteoutBufferMap[branchName];
 }
