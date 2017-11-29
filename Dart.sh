@@ -41,7 +41,7 @@ if [ "$#" -lt "2" ]; then
 fi
 
 # test if a valid ctest model is defined
-if [ "$1" == "Experimental" -o "$1" == "Nightly" -o "$1" == "Continuous" -o "$1" == "Profile" -o "$1" == "jenkins" ]; then
+if [ "$1" == "Experimental" -o "$1" == "Nightly" -o "$1" == "Continuous" -o "$1" == "Profile" -o "$1" == "alfa_ci" ]; then
   echo ""
 else
   echo "-- Error -- This ctest model is not supported."
@@ -59,7 +59,12 @@ else
 fi
 
 # set the ctest model to command line parameter
-export ctest_model=$1
+if [ "$1" == "alfa_ci" ]; then
+  export ctest_model=Experimental
+else
+  export ctest_model=$1
+fi
+
 
 # test for architecture
 arch=$(uname -s | tr '[A-Z]' '[a-z]')
@@ -78,8 +83,13 @@ else
   COMPILER=$CXX$($CXX -dumpversion)
 fi
 
-export LABEL1=${LINUX_FLAVOUR}-$chip-$COMPILER-FairRoot_$GIT_BRANCH-FairSoft_$FAIRSOFT_VERSION
-export LABEL=$(echo $LABEL1 | sed -e 's#/#_#g')
+if [ "$1" == "alfa_ci" ]; then
+  export LABEL1=alfa_ci-$COMPILER-FairRoot_$GIT_BRANCH-FairSoft_$FAIRSOFT_VERSION
+  export LABEL=$(echo $LABEL1 | sed -e 's#/#_#g')
+else
+  export LABEL1=${LINUX_FLAVOUR}-$chip-$COMPILER-FairRoot_$GIT_BRANCH-FairSoft_$FAIRSOFT_VERSION
+  export LABEL=$(echo $LABEL1 | sed -e 's#/#_#g')
+fi
 
 # get the number of processors
 # and information about the host

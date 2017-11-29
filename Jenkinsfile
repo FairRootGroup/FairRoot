@@ -49,7 +49,7 @@ pipeline{
             '''
             sh 'cmake --version'
             sh 'env'
-            sh './Dart.sh jenkins Dart.cfg'
+            sh './Dart.sh alfa_ci Dart.cfg'
           })
         }
       }
