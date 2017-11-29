@@ -8,7 +8,6 @@ def buildMatrix(List specs, Closure callback) {
   def nodes = [:]
   for (spec in specs) {
     def label = specToLabel(spec)
-    def cdashUrl = 'https://cdash.gsi.de/index.php?project=FairRoot#!#Experimental'
     nodes[label] = {
       node(label) {
         githubNotify(context: "alfa-ci/${label}", description: 'Building ...', status: 'PENDING')
@@ -19,10 +18,10 @@ def buildMatrix(List specs, Closure callback) {
           callback.call(spec, label)
 
           deleteDir()
-          githubNotify(context: "alfa-ci/${label}", description: 'Success', status: 'SUCCESS', targetUrl: cdashUrl)
+          githubNotify(context: "alfa-ci/${label}", description: 'Success', status: 'SUCCESS')
         } catch (e) {
           deleteDir()
-          githubNotify(context: "alfa-ci/${label}", description: 'Error', status: 'ERROR', targetUrl: cdashUrl)
+          githubNotify(context: "alfa-ci/${label}", description: 'Error', status: 'ERROR')
           throw e
         }
       }
