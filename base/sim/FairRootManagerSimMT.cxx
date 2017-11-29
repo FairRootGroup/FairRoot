@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
@@ -46,7 +46,7 @@ namespace {
   TMCMutex writeMutex = TMCMUTEX_INITIALIZER;
   TMCMutex closeMutex = TMCMUTEX_INITIALIZER;
   TMCMutex getMutex =  TMCMUTEX_INITIALIZER;
-}  
+}
 #endif
 
 pthread_mutex_t counter_mutex;
@@ -56,8 +56,8 @@ pthread_mutex_t fill_lock_mutex;
 // static data, methods
 //
 
-Int_t   FairRootManagerSimMT::fgCounter = 0; 
-Bool_t  FairRootManagerSimMT::fgIsFillLock = true; 
+Int_t   FairRootManagerSimMT::fgCounter = 0;
+Bool_t  FairRootManagerSimMT::fgIsFillLock = true;
 std::vector<Bool_t>* FairRootManagerSimMT::fgIsFillLocks = 0;
 
 //
@@ -78,7 +78,7 @@ FairRootManagerSimMT::FairRootManagerSimMT()
   //}
 
   if ( fgDebug ) {
-    LOG(INFO) << "FairRootManagerSimMT::FairRootManagerSimMT: going to lock " 
+    LOG(INFO) << "FairRootManagerSimMT::FairRootManagerSimMT: going to lock "
       << this << FairLogger::endl;
   }
 #if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
@@ -91,22 +91,22 @@ FairRootManagerSimMT::FairRootManagerSimMT()
   // Get  FairRootManager (created via FairRun object)
   fRootManager = FairRootManager::Instance();
   if ( ! fRootManager ) {
-    LOG(ERROR) << "FairRootManager::Instance() does not exist, creating new instance in " 
+    LOG(ERROR) << "FairRootManager::Instance() does not exist, creating new instance in "
       << fId << " " << this << FairLogger::endl;
       fRootManager = FairRootManager::Instance();
   }
 
   if ( fgDebug ) {
-    LOG(INFO) << "Done get fRootManager " << fRootManager << " in " 
+    LOG(INFO) << "Done get fRootManager " << fRootManager << " in "
       << fId << " " << this << FairLogger::endl;
   }
 
   // Increment counter
   if ( ! fgCounter ) {
     fgIsFillLocks = new std::vector<Bool_t>();
-  } 
+  }
   ++fgCounter;
-  fgIsFillLocks->push_back(true);  
+  fgIsFillLocks->push_back(true);
 
 #if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   lk.unlock();
@@ -118,12 +118,12 @@ FairRootManagerSimMT::FairRootManagerSimMT()
 }
 
 //_____________________________________________________________________________
-FairRootManagerSimMT::~FairRootManagerSimMT() 
+FairRootManagerSimMT::~FairRootManagerSimMT()
 {
 /// Destructor
 
   if ( fgDebug ) {
-    LOG(INFO) << "FairRootManagerSimMT::~FairRootManagerSimMT: going to lock " 
+    LOG(INFO) << "FairRootManagerSimMT::~FairRootManagerSimMT: going to lock "
       << fId << " " << this << FairLogger::endl;
   }
 #if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
@@ -132,23 +132,23 @@ FairRootManagerSimMT::~FairRootManagerSimMT()
 
   // Delete Root manager
   if ( fgDebug ) {
-    LOG(INFO) << "Going to Delete fRootManager in " 
+    LOG(INFO) << "Going to Delete fRootManager in "
       << fId << " " << this << FairLogger::endl;
   }
   delete fRootManager;
   if ( fgDebug ) {
-    LOG(INFO) << "Done Delete fRootManager in " 
+    LOG(INFO) << "Done Delete fRootManager in "
       << fId << " " << this << FairLogger::endl;
   }
 
-  // Global cleanup 
+  // Global cleanup
   --fgCounter;
   if ( ! fgCounter ) {
     delete fgIsFillLocks;
     fgIsFillLocks = 0;
-  } 
+  }
 
-  //  
+  //
 #if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   lk.unlock();
 #endif
@@ -186,9 +186,9 @@ void  FairRootManagerSimMT::FillWithTmpLock()
   LogMessage("Fill");
   fRootManager->Fill();
   LogMessage("Done Fill");
-  
+
   if ( fgIsFillLock ) {
-    // the access to TFile and TTree needs to be locked only until 
+    // the access to TFile and TTree needs to be locked only until
     // __after__ the first Fill
     (*fgIsFillLocks)[fId] = false;
     Bool_t isDoneAll = true;
@@ -208,7 +208,7 @@ void  FairRootManagerSimMT::FillWithTmpLock()
   lk.unlock();
 #endif
   LogMessage("Released lock for Fill");
-}  
+}
 
 //_____________________________________________________________________________
 void  FairRootManagerSimMT::FillWithLock()
@@ -223,12 +223,12 @@ void  FairRootManagerSimMT::FillWithLock()
   LogMessage("Fill");
   fRootManager->Fill();
   LogMessage("Done Fill");
-  
+
 #if ( ROOT_VERSION_CODE >= ROOT_VERSION(6,9,3) )
   lk.unlock();
 #endif
   LogMessage("Released lock for Fill");
-}  
+}
 
 //_____________________________________________________________________________
 
@@ -347,14 +347,14 @@ void  FairRootManagerSimMT::Fill()
   // Fill with lack untill first call on all threads
   if ( fgIsFillLock ) {
     FillWithTmpLock();
-  }  
+  }
   else {
     FillWithoutLock();
   }
 
   // Fill with lock during the whole run
   // FillWithLock();
-}  
+}
 
 //_____________________________________________________________________________
 void FairRootManagerSimMT:: Write()
@@ -374,7 +374,7 @@ void FairRootManagerSimMT:: Write()
   lk.unlock();
 #endif
   LogMessage("Released lock for Write");
-}  
+}
 
 //_____________________________________________________________________________
 void FairRootManagerSimMT:: CloseOutFile()
