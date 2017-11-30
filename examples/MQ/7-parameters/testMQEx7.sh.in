@@ -18,6 +18,7 @@ CLIENT_PID=$!
 
 PARAMETERSERVER="parmq-server"
 PARAMETERSERVER+=" --id parmq-server"
+PARAMETERSERVER+=" --verbosity NOLOG"
 PARAMETERSERVER+=" --control static --log-color false"
 PARAMETERSERVER+=" --mq-config $parmqconfig"
 PARAMETERSERVER+=" --first-input-name @CMAKE_BINARY_DIR@/examples/MQ/7-parameters/mqexample7_param.root"
