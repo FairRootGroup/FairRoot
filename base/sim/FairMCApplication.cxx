@@ -795,6 +795,7 @@ void FairMCApplication::FinishPrimary()
     (*listIter)->FinishPrimary();
   }
 
+  fStack->FinishPrimary();
 }
 
 //_____________________________________________________________________________
@@ -1086,15 +1087,6 @@ void FairMCApplication::InitGeometry()
 
     // create other branches not managed by folder
     fRootManager->CreatePersistentBranchesAny();
-
-    // Explicit registration of stack in MT mode
-    // (should be removed when problem with "Register" is resolved)
-    // Create branch in outTree manually
-    if (  gMC->IsMT() ) {
-      LOG(WARNING) << "Create branch explicitly " << FairLogger::endl;
-      TClonesArray* tracks = fStack->GetListOfParticles();
-      outTree->Bronch("MCTrack", "TClonesArray", &tracks, 3200, 99);
-    }
   }
 
   // Get static thread local svList
