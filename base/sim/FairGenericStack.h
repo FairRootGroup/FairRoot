@@ -87,6 +87,9 @@ class FairGenericStack : public TVirtualMCStack
     /** Set the list of detectors to be used for filltering the stack*/
     void SetDetArrayList(TRefArray* detArray);
 
+    /** Allow a stack to perform a clean-up after a primary particle is finished **/
+    virtual void FinishPrimary() {}
+
     /** Resets arrays and stack and deletes particles and tracks **/
     virtual void Reset() {}
 
