@@ -191,6 +191,7 @@ class FairMCApplication : public TVirtualMCApplication
 
     void UndoGeometryModifications();
 
+  protected:
     // data members
     /**List of active detector */
     TRefArray*           fActiveDetectors;
