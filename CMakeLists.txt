@@ -269,7 +269,8 @@ Message("-- Looking for Boost ...")
 # for boost.
 Unset(Boost_INCLUDE_DIR CACHE)
 Unset(Boost_LIBRARY_DIRS CACHE)
-find_package(Boost 1.64 COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time)
+find_package(Boost 1.64 COMPONENTS thread system timer program_options random filesystem chrono exception regex
+    serialization log log_setup atomic date_time signals)
 If (Boost_FOUND)
   Set(Boost_Avail 1)
   Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Boost_LIBRARY_DIR})
