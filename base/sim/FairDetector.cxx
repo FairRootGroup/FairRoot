@@ -37,7 +37,7 @@ FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId )
   TString lname( GetName());
   lname += "GeoPar";
   flGeoPar->SetName(lname.Data());
-  kGeoSaved = kFALSE;
+  fGeoSaved = kFALSE;
 
 
 }
@@ -105,13 +105,16 @@ void   FairDetector::Initialize()
     }
   }
 
+  // Initialize cached pointer to MC (on master in sequential mode)
+  fMC = TVirtualMC::GetMC();
+
 }
 // -------------------------------------------------------------------------
 
 void FairDetector::SaveGeoParams()
 {
 
-  if ( ! kGeoSaved  ) {
+  if ( ! fGeoSaved  ) {
     fLogger->Info(MESSAGE_ORIGIN,"Detector: %s Geometry parameters saved ... ", GetName());
     TFolder* mf = dynamic_cast<TFolder*>(gROOT->FindObjectAny("cbmroot")) ;
     TFolder* stsf = NULL;
@@ -120,7 +123,7 @@ void FairDetector::SaveGeoParams()
       TFolder* newf = stsf->AddFolder("Parameters","Detector parameters",NULL);
       newf->Add( flGeoPar ) ;
     }
-    kGeoSaved = kTRUE;
+    fGeoSaved = kTRUE;
   }
 }
 // -------------------------------------------------------------------------

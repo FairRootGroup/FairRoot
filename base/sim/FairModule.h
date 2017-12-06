@@ -34,6 +34,7 @@ class TGeoNode;
 class TGeoVolume;
 class TGeoMedium;
 class TRefArray;
+class TVirtualMC;
 
 /**
  * Base class for constructing all detecors and passive volumes
@@ -147,7 +148,8 @@ class FairModule:  public TNamed
     Int_t               fNbOfSensitiveVol; //!
     Int_t               fVerboseLevel;
     TList*              flGeoPar; //!  list of Detector Geometry parameters
-    Bool_t              kGeoSaved; //! flag for initialisation
+    Bool_t              fGeoSaved; //! flag for initialisation
+    TVirtualMC*         fMC; //! cahed pointer to MC (available only after initialization)
 
     ClassDef( FairModule,4)
 };
