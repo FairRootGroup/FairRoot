@@ -39,6 +39,7 @@
 #include "TRefArray.h"                  // for TRefArray
 #include "TString.h"                    // for TString, operator!=, etc
 #include "TSystem.h"                    // for TSystem, gSystem
+#include "TVirtualMC.h"
 
 #ifdef ROOT_HAS_GDML
 #include "TGDMLParse.h"
@@ -84,7 +85,8 @@ FairModule::FairModule(const char* Name, const char* title ,Bool_t Active)
    fNbOfSensitiveVol(0),
    fVerboseLevel(0),
    flGeoPar(0),
-   kGeoSaved(kFALSE)
+   fGeoSaved(kFALSE),
+   fMC(0)
 {
   if(!svList) { svList=new TRefArray(); }
   if(!vList) { vList=new FairVolumeList(); }
@@ -102,10 +104,14 @@ FairModule::FairModule(const FairModule& rhs)
    fNbOfSensitiveVol(rhs.fNbOfSensitiveVol),
    fVerboseLevel(rhs.fVerboseLevel),
    flGeoPar(0),
-   kGeoSaved(rhs.kGeoSaved)
+   fGeoSaved(rhs.fGeoSaved),
+   fMC(0)
 {
   if(!svList) { svList=new TRefArray(); }
   if(!vList) { vList=new FairVolumeList(); }
+
+  // Initialize cached pointer to MC (on worker)
+  fMC = TVirtualMC::GetMC();
 
   // TO DO - add when we know what type is the elements of flGeoPar
   //flGeoPar=new TObjArray();
@@ -130,7 +136,7 @@ FairModule::FairModule()
     fNbOfSensitiveVol(0),
     fVerboseLevel(0),
     flGeoPar(0),
-    kGeoSaved(kFALSE)
+    fGeoSaved(kFALSE)
 {
 
 }
@@ -153,7 +159,7 @@ FairModule& FairModule::operator= (const FairModule& rhs)
   fNbOfSensitiveVol = rhs.fNbOfSensitiveVol;
   fVerboseLevel = rhs.fVerboseLevel;
   flGeoPar = 0;
-  kGeoSaved = rhs.kGeoSaved;
+  fGeoSaved = rhs.fGeoSaved;
 
   // TO DO - add when we know what type is the elements of flGeoPar
   //flGeoPar=new TObjArray();
