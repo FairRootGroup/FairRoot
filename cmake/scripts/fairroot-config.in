@@ -1,18 +1,16 @@
 #!/bin/bash
 
-_version=v-17.03
-_major_version=${_version:2:2}
-_minor_version=${_version:5:2}
-_patch=${_version:7}
-length=${#_patch}
-if [ $length -eq 0 ]; then
-  _patch_version=0
-elif [ $length -eq 1 ]; then
-  _patch_version=$(printf '%d\n' "'$_patch")
-  _patch_version=$((${_patch_version}-96)) # a should be 1 but a in ascii is 97
+_major_version=@FAIRROOT_MAJOR_VERSION@
+_minor_version=@FAIRROOT_MINOR_VERSION@
+_patch_version=@FAIRROOT_PATCH_VERSION@
+if [ $_patch_version -eq "00" ]; then
+  _patch=""
 else
-  _patch_version=${_patch}
+  _tmp=$(printf '%d' $_patch_version)
+  _tmp=$((_tmp+96))
+  _patch=$(printf \\$(printf '%03o' $_tmp))
 fi
+_version=v-@FAIRROOT_MAJOR_VERSION@.@FAIRROOT_MINOR_VERSION@$_patch
 
 _cc=@CMAKE_C_COMPILER@
 _cxx=@CMAKE_CXX_COMPILER@
