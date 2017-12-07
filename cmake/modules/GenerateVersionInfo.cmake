@@ -29,10 +29,11 @@
    endif(FAIRROOT)
   
  Else()
+   include(${BINARY_DIR}/FairRootConfigVersion.cmake)
    if(FAIRROOT)
-     Configure_File(${FAIRROOT}/scripts/FairVersion.h.default ${BINARY_DIR}/FairVersion.h COPYONLY)
+     Configure_File(${FAIRROOT}/scripts/FairVersion.h.default ${BINARY_DIR}/FairVersion.h @ONLY)
    else(FAIRROOT) 
-     Configure_File(${SOURCE_DIR}/cmake/scripts/FairVersion.h.default ${BINARY_DIR}/FairVersion.h COPYONLY)
+     Configure_File(${SOURCE_DIR}/cmake/scripts/FairVersion.h.default ${BINARY_DIR}/FairVersion.h @ONLY)
    endif(FAIRROOT)
  EndIf()
 

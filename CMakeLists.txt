@@ -281,8 +281,8 @@ EndIf (Boost_FOUND)
 # Set the library version in the main CMakeLists.txt
 SET(FAIRROOT_MAJOR_VERSION 17)
 SET(FAIRROOT_MINOR_VERSION 10)
-SET(FAIRROOT_PATCH_VERSION 00)
-SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}")
+SET(FAIRROOT_PATCH_VERSION 02)
+SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}" CACHE STRING "FairRoot Version")
 
 If(ROOT_FOUND_VERSION LESS 59999)
 #  If(FAIRROOT_MODULAR_BUILD)
@@ -303,6 +303,8 @@ Else()
       SOVERSION "${FAIRROOT_MAJOR_VERSION}"
   )
 EndIf()
+
+configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
 
 # Load the macro to generate the needed version info at compile time
 Generate_Version_Info()
