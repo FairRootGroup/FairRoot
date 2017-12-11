@@ -1,6 +1,8 @@
-package Tuto7PayloadProto;
+syntax = "proto2";
 
-message Digi 
+package MyPayloadProto;
+
+message Digi
 {
   optional int32 x = 1;
   optional int32 y = 2;
@@ -9,7 +11,7 @@ message Digi
   optional double time_stamperror = 5;
 }
 
-message Hit 
+message Hit
 {
   optional int32 det_id = 1;
   optional int32 mcindex = 2;
@@ -23,13 +25,13 @@ message Hit
   optional double time_stamperror = 10;
 }
 
-message DigiPayload 
+message DigiPayload
 {
   repeated Digi digi = 1;
   optional bytes bigBuffer = 2;
 }
 
-message HitPayload 
+message HitPayload
 {
   repeated Hit hit = 1;
   optional bytes bigBuffer = 2;

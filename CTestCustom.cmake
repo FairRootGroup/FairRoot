@@ -40,7 +40,7 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "FairTestDetectorPayloadDigi_generated.h"
         "FairTestDetectorPayloadHit_generated.h"
         "FairTestDetectorPayload.pb"
-        "Tuto7Payload.pb"
+        "MyPayload.pb"
         "G__.*Dict"
 
         # filter warnings from internal gtest headers

@@ -76,17 +76,17 @@ link_directories(${LINK_DIRECTORIES})
 if(PROTOBUF_FOUND)
     add_custom_command(
         OUTPUT
-          ${CMAKE_CURRENT_BINARY_DIR}/Tuto7Payload.pb.h
-          ${CMAKE_CURRENT_BINARY_DIR}/Tuto7Payload.pb.cc
+          ${CMAKE_CURRENT_BINARY_DIR}/MyPayload.pb.h
+          ${CMAKE_CURRENT_BINARY_DIR}/MyPayload.pb.cc
         COMMAND
-          ${PROTOBUF_PROTOC_EXECUTABLE} -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} Tuto7Payload.proto
+          ${PROTOBUF_PROTOC_EXECUTABLE} -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} MyPayload.proto
         WORKING_DIRECTORY
           ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_struct
         )
 
 set(NO_DICT_SRCS
     ${NO_DICT_SRCS}
-    ${CMAKE_CURRENT_BINARY_DIR}/Tuto7Payload.pb.cc
+    ${CMAKE_CURRENT_BINARY_DIR}/MyPayload.pb.cc
   )
 endif(PROTOBUF_FOUND)
 
