@@ -29,9 +29,15 @@ foreach(p
   endif()
 endforeach()
 
-# Set name of our project to "FAIRROOT". Has to be done
-# after check of cmake version
-project(FAIRROOT)
+# Set project version
+SET(FAIRROOT_MAJOR_VERSION 17)
+SET(FAIRROOT_MINOR_VERSION 10)
+SET(FAIRROOT_PATCH_VERSION 02)
+
+# Set name of our project to "FAIRROOT".
+# Has to be done after check of cmake version
+# This also sets ${FAIRROOT_VERSION} to the provided VERSION value, which would be empty if not set here explicitly
+project(FAIRROOT VERSION ${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION})
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
@@ -276,12 +282,6 @@ If (Boost_FOUND)
 Else (Boost_FOUND)
   Set(Boost_Avail 0)
 EndIf (Boost_FOUND)
-
-# Set the library version in the main CMakeLists.txt
-SET(FAIRROOT_MAJOR_VERSION 17)
-SET(FAIRROOT_MINOR_VERSION 10)
-SET(FAIRROOT_PATCH_VERSION 02)
-SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}" CACHE STRING "FairRoot Version")
 
 If(ROOT_FOUND_VERSION LESS 59999)
 #  If(FAIRROOT_MODULAR_BUILD)
