@@ -95,9 +95,6 @@ sim/FairMCApplication.cxx
 sim/FairModule.cxx
 sim/FairParticle.cxx
 sim/FairPrimaryGenerator.cxx
-sim/FairGenericRootManager.cxx
-sim/FairRootManagerSim.cxx
-sim/FairRootManagerSimMT.cxx
 sim/FairRunIdGenerator.cxx
 sim/FairVolume.cxx
 sim/FairVolumeList.cxx
