@@ -25,6 +25,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/field
   ${CMAKE_SOURCE_DIR}/base/sim
   ${CMAKE_SOURCE_DIR}/base/source
+  ${CMAKE_SOURCE_DIR}/base/sink
 )
 
 
@@ -128,6 +129,9 @@ source/FairSource.cxx
 source/FairFileSource.cxx
 source/FairMixedSource.cxx
 source/FairOnlineSource.cxx
+
+sink/FairSink.cxx
+sink/FairFileSink.cxx
 )
 
 If(BUILD_MBS)

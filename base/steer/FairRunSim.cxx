@@ -81,7 +81,6 @@ FairRunSim::FairRunSim(Bool_t isMaster)
     Fatal("FairRun", "Singleton instance already exists.");
     return;
   }
-  fOutname="";
   fginstance=this;
   fRunId=0;
   fAna=kFALSE;
@@ -148,7 +147,8 @@ TObjArray* FairRunSim::GetUserDefParticles()
 void FairRunSim::Init()
 {
   /**Initialize the simulation session*/
-
+  fRootManager->InitSink();
+  
   CheckFlukaExec();
 
 //  fOutFile=fRootManager->OpenOutFile(fOutname);

@@ -227,11 +227,9 @@ void FairRunOnline::Init()
   fTask->InitTask();
 
   // create the output tree after tasks initialisation
-  fOutFile->cd();
-  TTree* outTree =new TTree(FairRootManager::GetTreeName(), "/cbmout", 99);
-  fRootManager->TruncateBranchNames(outTree, "cbmout");
-  fRootManager->SetOutTree(outTree);
+  fRootManager->InitSink();
   fRootManager->WriteFolder();
+  fRootManager->WriteFileHeader(fFileHeader);
 }
 //_____________________________________________________________________________
 
@@ -316,8 +314,6 @@ Int_t FairRunOnline::EventLoop()
 //_____________________________________________________________________________
 void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
 {
-  fOutFile->cd();
-  
   fNevents = 0;
 
   gIsInterrupted = kFALSE;
@@ -398,7 +394,7 @@ void FairRunOnline::Finish()
   fRootManager->Write();
   fRootManager->GetSource()->Close();
 
-  fRootManager->CloseOutFile();
+  fRootManager->CloseSink();
 }
 //_____________________________________________________________________________
 

@@ -253,10 +253,7 @@ void FairRunAnaProof::Init()
   }
 
   // create the output tree after tasks initialisation
-  fOutFile->cd();
-  TTree* outTree =new TTree(FairRootManager::GetTreeName(), "/cbmout", 99);
-  fRootManager->TruncateBranchNames(outTree, "cbmout");
-  fRootManager->SetOutTree(outTree);
+  fRootManager->InitSink();
   fRootManager->WriteFolder();
   fRootManager->WriteFileHeader(fFileHeader);
 }
@@ -372,7 +369,7 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
   fProof->AddInput(new TNamed("FAIRRUNANA_fContainerStatic",(fStatic?"kTRUE":"kFALSE")));
   fProof->AddInput(new TNamed("FAIRRUNANA_fProofOutputStatus",fProofOutputStatus.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fOutputDirectory",outDir.Data()));
-  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",fOutname.Data()));
+  //  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",fOutname.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput1FName",par1File.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
 
@@ -406,24 +403,24 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 }
 //_____________________________________________________________________________
 
-//_____________________________________________________________________________
-void FairRunAnaProof::SetOutputFile(const char* fname)
-{
-  fOutname=fname;
-}
-//_____________________________________________________________________________
+// //_____________________________________________________________________________
+// void FairRunAnaProof::SetOutputFile(const char* fname)
+// {
+//   fOutname=fname;
+// }
+// //_____________________________________________________________________________
 
-//_____________________________________________________________________________
-void FairRunAnaProof::SetOutputFile(TFile* f)
-{
-  if (! fRootManager) return;
+// //_____________________________________________________________________________
+// void FairRunAnaProof::SetOutputFile(TFile* f)
+// {
+//   if (! fRootManager) return;
 
-  fOutname=f->GetName();
-  fRootManager->OpenOutFile(f);
-  fOutFile = f;
+//   fOutname=f->GetName();
+//   fRootManager->OpenOutFile(f);
+//   fOutFile = f;
 
-}
-//_____________________________________________________________________________
+// }
+// //_____________________________________________________________________________
 
 ClassImp(FairRunAnaProof)
 

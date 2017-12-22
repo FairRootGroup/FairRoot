@@ -58,7 +58,6 @@
 #include <utility>                      // for pair
 #include <vector>                       // for vector
 #include <type_traits>
-#include <cxxabi.h>
 
 using std::flush;
 using std::cout;
@@ -93,8 +92,7 @@ FairRootManager::FairRootManager()
     fOutFolder(0),
     fRootFolder(0),
     fCurrentTime(0),
-    fOutFile(NULL),
-    fOutTree(NULL),
+    fSink(NULL),
     fObj2(new TObject*[1000]),
     fNObj(-1),
     fMap(),
@@ -149,14 +147,6 @@ FairRootManager::~FairRootManager()
 //
   LOG(debug) << "Enter Destructor of FairRootManager";
 
-  // delete fOutTree;
-  if(fOutFile) {
-    // the following line lead to a segfault:
-    // CloseOutFile();
-  } else {
-    // if fOutFile exists, fOutTree is deleted with the file
-    delete fOutTree;
-  }
   delete[] fObj2;
   fBranchNameList->Delete();
   delete fBranchNameList;
@@ -203,41 +193,13 @@ Bool_t FairRootManager::InitSource() {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-TFile* FairRootManager::OpenOutFile(TFile* f)
-{
-
-  LOG(debug) << "Check the output file";
-  fOutFile=f;
-  /**Check the output file, if anything wronge with it exit!*/
-  if (fOutFile->IsZombie()) {
-    LOG(fatal) << "FairRootManager: Error opening output file ";
-    exit(-1);
+Bool_t FairRootManager::InitSink() {
+  if ( fSink ) {
+    fSink->Init();
   }
-  FairRun* fRun = FairRun::Instance();
-  /**Check if a simulation run!*/
-  if(!fRun->IsAna()) {
-    fRootFolder= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-    gROOT->GetListOfBrowsables()->Add(fRootFolder);
-  } else {
-    fOutFolder= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
-    gROOT->GetListOfBrowsables()->Add(fOutFolder);
-  }
-  return fOutFile;
+  return kTRUE;
 }
-
 //_____________________________________________________________________________
-TFile* FairRootManager::OpenOutFile(const char* fname)
-{
-  LOG(debug) << "Opening output file, " << fname;
-  if(fOutFile) {
-    CloseOutFile();
-  }
-  LOG(info) << "FairRootManager::OpenOutFile(\"" << fname << "\")";
-  fOutFile = TFile::Open(fname, "recreate");
-  LOG(debug) << "FairRootManager::OpenOutFile(\"" << fname << "\") " << this << " "
-    << fOutFile;
-  return OpenOutFile(fOutFile);
-}
 
 //_____________________________________________________________________________
 template<typename T>
@@ -258,25 +220,11 @@ void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* 
   }
 
   if(toFile) { /**Write the Object to the Tree*/
-    TFolder* folder=0;
-    TFolder* f=0;
-    if(fOutFolder==0) {
-      f=static_cast<TFolder*>(fRootFolder->FindObjectAny(folderName));
-      if(f==0) {
-        folder= fRootFolder->AddFolder(folderName,folderName);
-      } else {
-        folder=f;
-      }
-    } else {
-      f=static_cast<TFolder*>(fOutFolder->FindObjectAny(folderName));
-      if(f==0) {
-        folder= fOutFolder->AddFolder(folderName,folderName);
-      } else {
-        folder=f;
-      }
-    }
     obj->SetName(name);
-    folder->Add(obj);
+    if ( fSink )
+      {
+	fSink->RegisterImpl(name,folderName,obj);
+      }
   }
   AddMemoryBranch(name, obj);
   AddBranchToList(name);
@@ -450,20 +398,14 @@ Bool_t FairRootManager::AllDataProcessed()
 //_____________________________________________________________________________
 void FairRootManager::Fill()
 {
-  if (fOutTree != 0) {
-    fOutTree->Fill();
-  } else {
-    LOG(info) << " No Output Tree";
-  }
+  if ( fSink ) fSink->Fill();
 }
 
 //_____________________________________________________________________________
 void FairRootManager::LastFill()
 {
-  FairMonitor::GetMonitor()->StoreHistograms(fOutFile);
-  if (fFillLastData) {
-    Fill();
-  }
+  //  FairMonitor::GetMonitor()->StoreHistograms(fOutFile); // RK fix this
+  if ( fSink ) fSink->Fill();
 }
 
 //_____________________________________________________________________________
@@ -473,22 +415,7 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
 
   LOG(debug) << "FairRootManager::Write "  << this;
 
-  if(fOutTree!=0) {
-    /** Get the file handle to the current output file from the tree.
-      * If ROOT splits the file (due to the size of the file) the file
-      * handle fOutFile is lost and the program crash while writing the
-      * last part of the last file.
-    */
-
-    // fOutTree->Print();
-
-    fOutFile = fOutTree->GetCurrentFile();
-    LOG(debug) << "FairRootManager::Write to file: "  << fOutFile->GetName();
-    fOutFile->cd();
-    fOutTree->Write();
-  } else {
-    LOG(info) << "No Output Tree";
-  }
+  if ( fSink ) return (fSink->Write());
 
   return 0;
 }
@@ -497,12 +424,7 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
 void FairRootManager:: WriteGeometry()
 {
   /** Writes the geometry in the current output file.*/
-
-  if(fOutTree!=0) {
-    fOutFile = fOutTree->GetCurrentFile();
-    fOutFile->cd();
-    gGeoManager->Write();
-  }
+  if ( fSink ) fSink->WriteGeometry();
 }
 
 //_____________________________________________________________________________
@@ -525,15 +447,11 @@ void FairRootManager::CreateGeometryFile(const char* geofile)
 //_____________________________________________________________________________
 void FairRootManager:: WriteFolder()
 {
-  fOutFile->cd();
-  if(fRootFolder!=0 && fSource==0) {
-    fRootFolder->Write();
+  if ( fSink ) {
+    fSink->WriteFolder();
+    fSink->WriteObject(fBranchNameList,          "BranchList",          TObject::kSingleKey);
+    fSink->WriteObject(fTimeBasedBranchNameList, "TimeBasedBranchList", TObject::kSingleKey);
   }
-  if(fOutFolder!=0) {
-    fOutFolder->Write();
-  }
-  fBranchNameList->Write("BranchList", TObject::kSingleKey);
-  fTimeBasedBranchNameList->Write("TimeBasedBranchList", TObject::kSingleKey);
 }
 
 //_____________________________________________________________________________
@@ -820,117 +738,6 @@ TClonesArray* FairRootManager::GetCloneOfTClonesArray(const FairLink link)
 }
 
 //_____________________________________________________________________________
-void FairRootManager::TruncateBranchNames(TTree* fTree, const char* folderName)
-{
-  /** If a object is created in a folder the corresponding branch
-  * in the tree is crated with a wrong name.
-  * The name of the branch is created as follows
-  * mainFolder.subFolder.nameOfStoredObject
-  * e.g. cbmroot.Event.ExampleClass.
-  * The name which is wanted is only nameOfStoredObject
-  * e.g. ExampleClass.
-  * This is corrected in this function
-  * If the folder does not exist don't do anything
-  */
-  TFolder* cbm=static_cast<TFolder*>(gROOT->FindObjectAny(folderName));
-  if(cbm) {
-    TCollection* lf=cbm->GetListOfFolders();
-    TIterator* iter= lf->MakeIterator();
-    TObjArray* Br= fTree->GetListOfBranches();
-    TIterator* BrIter= Br->MakeIterator();
-    TObject* obj;
-    TObject* BrObj;
-
-    /** correct branch names in all folders below the main output folder*/
-    while((obj=iter->Next())) {
-
-      /** Create TString with the part of the branch name which should be
-      * removed. This is mainFolderName.folderName. e.g. cbmroot.Event.
-      * This part of the branch name is obsolete, so it is removed from
-      * the branch name.
-      */
-      TString ffn=cbm->GetName();
-      ffn=ffn+".";
-      ffn=ffn+obj->GetName();
-      ffn=ffn+".";
-
-      /** Correct name of all branches and leaves which correspond to
-      * the subfolder. To do so loop over all branches and check
-      * if the branch corresponds with the folder. If it corresponds
-      * correct the branch names of all sub branches.
-      * Only correct branch names for up to now uncorrected branches.
-      */
-      BrIter->Reset();
-
-      while((BrObj=BrIter->Next())) {
-        TBranch* b=static_cast<TBranch*>(BrObj);
-        TruncateBranchNames(b, ffn);
-      }
-    }
-
-    // Remove all occurence of FairMCEventHeader and   from
-    // all branches containing that string.
-    // This is not the correct way to do it, but up tonow we don't understand
-    // why this part comes in when storing a derrived class from
-    // FairMCEventHeader or FairEventHeader.
-
-    iter->Reset();
-    while((obj=iter->Next())) {
-
-      TString ffn=".FairMCEventHeader";
-      BrIter->Reset();
-
-      while((BrObj=BrIter->Next())) {
-        TBranch* b=static_cast<TBranch*>(BrObj);
-        TruncateBranchNames(b, ffn);
-      }
-    }
-
-    iter->Reset();
-    while((obj=iter->Next())) {
-
-      TString ffn=".FairEventHeader";
-      BrIter->Reset();
-
-      while((BrObj=BrIter->Next())) {
-        TBranch* b=static_cast<TBranch*>(BrObj);
-        TruncateBranchNames(b, ffn);
-      }
-    }
-
-    delete  iter;
-    delete  BrIter;
-  }
-}
-
-//_____________________________________________________________________________
-void FairRootManager::TruncateBranchNames(TBranch* b, TString ffn)
-{
-  /** Get the branch name from the branch object, remove common
-  *  and wrong part of the name and and set branch name to
-  *  the new corrected name. This has to be done recursivly for
-  *  all subbranches/leaves
-  *  Remove wrong part of branch name
-  */
-  TObject* BrObj;
-  TString nn= b->GetName();
-  //  cout<<"nn.Data before: "<<nn.Data()<<endl;
-  nn.ReplaceAll(ffn.Data(),"");
-  //  cout<<"nn.Data after: "<<nn.Data()<<endl;
-  //  cout <<"##################"<<endl;
-  b->SetName(nn.Data());
-  TObjArray* Br= b->GetListOfBranches();
-  TIterator* BrIter= Br->MakeIterator();
-  BrIter->Reset();
-
-  while((BrObj=BrIter->Next())) {
-    TBranch* bb=static_cast<TBranch*>(BrObj);
-    TruncateBranchNames(bb, ffn);
-  }
-  delete  BrIter;
-}
-
-//_____________________________________________________________________________
 Int_t FairRootManager::CheckBranch(const char* BrName)
 {
   /**The first time this method is called the map is generated and then used*/
@@ -1130,9 +937,7 @@ TObject*  FairRootManager::GetMemoryBranch( const char* fName )
 //_____________________________________________________________________________
 void FairRootManager::WriteFileHeader(FairFileHeader* f)
 {
-  fOutFile->cd();
-  f->SetName(fOutFile->GetName());
-  f->Write("FileHeader", TObject::kSingleKey);
+  if ( fSink ) fSink->WriteObject(f,"FileHeader", TObject::kSingleKey);
 }
 
 //_____________________________________________________________________________
@@ -1262,56 +1067,6 @@ char* FairRootManager::GetTreeName()
   // Close file and return read value
   fclose(file);
   return treename;
-}
-
-namespace impl
-{
-  inline
-  // a helper function to demangle a type_name
-  std::string demangle(const char* name)
-  {
-    int status = -4; // some arbitrary value to eliminate the compiler warning
-    std::unique_ptr<char, void (*)(void*)> res{ abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free };
-    return (status == 0) ? res.get() : name;
-  }
-}
-
-// actually instantiates the persistent "any" branches in the outtree
-bool FairRootManager::CreatePersistentBranchesAny() {
-  auto tree = GetOutTree();
-  if(tree) {
-    for(auto& brname : fPersistentBranchesAny) {
-      // fetch information for this branch from fAnyBranchMap
-      std::cerr << "CREATING BRANCH " << brname << "\n";
-      auto iter = fAnyBranchMap.find(brname);
-      if(iter != fAnyBranchMap.end()){
-        auto &tinfo = iter->second->persistenttypeinfo;
-        auto tname = impl::demangle(tinfo.name());
-
-        // for the branch creation we need a TClass describing the object
-        // get it from ROOT via the type name
-        auto cl = TClass::GetClass(tname.c_str());
-        if(!cl) {
-          LOG(fatal) << "No TClass found for " << tname << "\n";
-          return false;
-        }
-
-        if(!cl->HasDictionary()) {
-          LOG(fatal) << "No dictionary found for " << tname << "\n";
-          return false;
-        }
-        // create the branch
-        auto obj = iter->second->ptraddr;
-
-        LOG(info) << "Creating branch for " << tname.c_str() << " with address " << obj << "\n";
-        tree->Branch(brname.c_str(), tname.c_str(), obj);
-      }
-      else {
-        LOG(fatal) << "No entry for " << brname << " found\n";
-      }
-    }
-  }
-  return true;
 }
 
 //_____________________________________________________________________________
