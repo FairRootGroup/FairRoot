@@ -43,7 +43,7 @@ PixelDigiSource::PixelDigiSource(TString inputFileName)
   , fMCEntryNo(0)
   , fPartNo(0)
 {
-  LOG(DEBUG) << "PixelDigiSource created------------" << FairLogger::endl;
+  LOG(debug) << "PixelDigiSource created------------" << FairLogger::endl;
 }
 //_____________________________________________________________________________
 
@@ -60,8 +60,8 @@ Bool_t PixelDigiSource::Init()
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  LOG(INFO) << "PixelDigiSource::Init" << FairLogger::endl;
-  if ( ! ioman ) LOG(FATAL) << "No FairRootManager" << FairLogger::endl;
+  LOG(info) << "PixelDigiSource::Init" << FairLogger::endl;
+  if ( ! ioman ) LOG(fatal) << "No FairRootManager" << FairLogger::endl;
 
   // Register output array StsDigi
   fDigis = new TClonesArray("PixelDigi",10000);
@@ -74,7 +74,7 @@ Bool_t PixelDigiSource::Init()
   fInputFile.open(fInputFileName.Data(),std::fstream::in);
   
   if ( !fInputFile.is_open() ) {
-    LOG(FATAL) << "PixelDigiSource::Init() fInputFile \"" << fInputFileName.Data() << "\" could not be open!" << FairLogger::endl;
+    LOG(fatal) << "PixelDigiSource::Init() fInputFile \"" << fInputFileName.Data() << "\" could not be open!" << FairLogger::endl;
     return kFALSE;
   }
 
@@ -106,10 +106,10 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
   fCurrentEntryNo = i;
 
   std::string buffer;
-  LOG(DEBUG) << "PixelDigiSource::ReadEvent() Begin of (" << fDigis->GetEntries() << ")" << FairLogger::endl;
+  LOG(debug) << "PixelDigiSource::ReadEvent() Begin of (" << fDigis->GetEntries() << ")" << FairLogger::endl;
   do {
     getline(fInputFile,buffer);
-    LOG(DEBUG) << "read from file: \"" << buffer << "\"" << FairLogger::endl;
+    LOG(debug) << "read from file: \"" << buffer << "\"" << FairLogger::endl;
     if ( buffer.find("EVENT BEGIN") == 0 ) {
       fRunId     = ReadIntFromString(buffer,"RUNID");
       fMCEntryNo = ReadIntFromString(buffer,"MCENTRYNO");
@@ -118,7 +118,7 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
       fEventHeader->SetMCEntryNumber(fMCEntryNo);
       fEventHeader->SetPartNo(fPartNo);
 
-      LOG(DEBUG) << "GOT NEW EVENT " << fMCEntryNo << " (part " << fPartNo << ") with run id = " << fRunId << FairLogger::endl;
+      LOG(debug) << "GOT NEW EVENT " << fMCEntryNo << " (part " << fPartNo << ") with run id = " << fRunId << FairLogger::endl;
     }
     if ( buffer.find("EVENT") == 0 ) continue;
     Int_t detId     = atoi(buffer.c_str());
@@ -130,12 +130,12 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
     Int_t row       = atoi(buffer.c_str());
     buffer.erase(0,buffer.find(' ')+1);
     Double_t charge = atof(buffer.c_str());
-    LOG(DEBUG) << "    --/" << fNDigis << "/-->    " << detId << " / " << feId << " / " << col << " / " << row << " / " << charge << FairLogger::endl;
+    LOG(debug) << "    --/" << fNDigis << "/-->    " << detId << " / " << feId << " / " << col << " / " << row << " / " << charge << FairLogger::endl;
     new ((*fDigis)[fNDigis]) PixelDigi(-1,detId,feId,col,row,charge,0.);
     fNDigis++;
   }
   while ( fInputFile && buffer.compare("EVENT END") );
-  LOG(DEBUG) << "PixelDigiSource::ReadEvent() End of" << FairLogger::endl;
+  LOG(debug) << "PixelDigiSource::ReadEvent() End of" << FairLogger::endl;
 
   if ( !fInputFile ) {
     return 1;

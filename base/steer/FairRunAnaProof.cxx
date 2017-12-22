@@ -62,13 +62,13 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
     fRunOnProofWorker = kTRUE;
   }
   else {
-    LOG(INFO) << "+++++++ T P R O O F +++++++++++++++++++++++++++++++++" << FairLogger::endl;
-    LOG(INFO) << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data()
+    LOG(info) << "+++++++ T P R O O F +++++++++++++++++++++++++++++++++" << FairLogger::endl;
+    LOG(info) << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data()
 	 << "\");" << FairLogger::endl;
     TProof::AddEnvVar("LOCALDATASERVER","file://");
     //    TProof* proof = TProof::Open("lite:///?workers=1");
     fProof = TProof::Open(fProofServerName.Data());
-    LOG(INFO) << "+++++++ C R E A T E D +++++++++++++++++++++++++++++++" << FairLogger::endl;
+    LOG(info) << "+++++++ C R E A T E D +++++++++++++++++++++++++++++++" << FairLogger::endl;
   }
 
   fRAPInstance=this;
@@ -88,7 +88,7 @@ void FairRunAnaProof::Init()
   fInFileIsOpen = fRootManager->InitSource();
 
   if (fIsInitialized) {
-    LOG(FATAL) << "Error Init is already called before!"
+    LOG(fatal) << "Error Init is already called before!"
 	       << FairLogger::endl;
     exit(-1);
   } else {
@@ -134,7 +134,7 @@ void FairRunAnaProof::Init()
       }
       //check that the geometry was loaded if not try all connected files!
       if (fLoadGeo && gGeoManager==0) {
-        LOG(INFO) << "Geometry was not found in the input file we will look in the friends if any!" << FairLogger::endl;
+        LOG(info) << "Geometry was not found in the input file we will look in the friends if any!" << FairLogger::endl;
         TFile* currentfile= gFile;
         TFile* nextfile=0;
         TSeqCollection* fileList=gROOT->GetListOfFiles();
@@ -171,7 +171,7 @@ void FairRunAnaProof::Init()
 // fOutFile = fRootManager->OpenOutFile(fOutname);
 
   if ( !fRunOnProofWorker ) {
-    LOG(WARNING) << "QUITTING, CAUSE IT'S not running on proof worker" << FairLogger::endl;
+    LOG(warn) << "QUITTING, CAUSE IT'S not running on proof worker" << FairLogger::endl;
     return;
   }
   gROOT->GetListOfBrowsables()->Add(fTask);
@@ -192,7 +192,7 @@ void FairRunAnaProof::Init()
 
   if (par && fInFileIsOpen) {
 
-    LOG(INFO) << "Parameter and input file are available, Assure that basic info is there for the run!" << FairLogger::endl;
+    LOG(info) << "Parameter and input file are available, Assure that basic info is there for the run!" << FairLogger::endl;
     fRootManager->ReadEvent(0);
 
     fEvtHeader = static_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
@@ -220,7 +220,7 @@ void FairRunAnaProof::Init()
     //  fRootManager->SetBranchNameList(par->GetBranchNameList());
     
   } else {
-    LOG(INFO) << "Initializing without input file or Mixed input"
+    LOG(info) << "Initializing without input file or Mixed input"
 	      << FairLogger::endl;
     FairEventHeader* evt = GetEventHeader();
     evt->Register();
@@ -276,7 +276,7 @@ void FairRunAnaProof::InitContainers()
 
     fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
 
-    if (NULL == fEvtHeader) LOG(FATAL) << "Could not read event header." << FairLogger::endl;
+    if (NULL == fEvtHeader) LOG(fatal) << "Could not read event header." << FairLogger::endl;
 
     fRootManager->FillEventHeader(fEvtHeader);
 
@@ -301,7 +301,7 @@ void FairRunAnaProof::InitContainers()
 void FairRunAnaProof::SetSource(FairSource* tempSource) {
   // FairRunAnaProof should accept only FairFileSource
   if (strncmp(tempSource->GetName(), "FairFileSource", 14) != 0) {
-    LOG(WARNING) << "FairRunAnaProof. Seems you are trying to set different source than FairFileSource" << FairLogger::endl;
+    LOG(warn) << "FairRunAnaProof. Seems you are trying to set different source than FairFileSource" << FairLogger::endl;
   }
   fRootManager->SetSource(tempSource);
   fProofFileSource = static_cast<FairFileSource*>(tempSource);
@@ -350,9 +350,9 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 {
   fProofOutputStatus.ToLower();
   if ( !fProofOutputStatus.Contains("copy") && !fProofOutputStatus.Contains("merge") ) {
-    LOG(WARNING) << "FairRunAnaProof::RunOnProof. Do not know how to create output \"" << fProofOutputStatus.Data() << "\"." << FairLogger::endl;
-    LOG(WARNING) << "FairRunAnaProof::RunOnProof. Please use SetProofOutputStatus to either \"copy\" or \"merge\"." << FairLogger::endl;
-    LOG(WARNING) << "FairRunAnaProof::RunOnProof. For the current run using the \"merge\" setting." << FairLogger::endl;
+    LOG(warn) << "FairRunAnaProof::RunOnProof. Do not know how to create output \"" << fProofOutputStatus.Data() << "\"." << FairLogger::endl;
+    LOG(warn) << "FairRunAnaProof::RunOnProof. Please use SetProofOutputStatus to either \"copy\" or \"merge\"." << FairLogger::endl;
+    LOG(warn) << "FairRunAnaProof::RunOnProof. For the current run using the \"merge\" setting." << FairLogger::endl;
     fProofOutputStatus = "merge";
   }
 
@@ -384,25 +384,25 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
   // fProof->EnablePackage(fProofParName.Data());
 
   Int_t nofChainEntries = inChain->GetEntries();
-  LOG(INFO) << "FairRunAnaProof::RunOnProof(): The chain seems to have " << nofChainEntries << " entries." << FairLogger::endl;
+  LOG(info) << "FairRunAnaProof::RunOnProof(): The chain seems to have " << nofChainEntries << " entries." << FairLogger::endl;
 
   TObjArray* listOfFiles = inChain->GetListOfFiles();
-  LOG(INFO) << "FairRunAnaProof::RunOnProof(): There are " << listOfFiles->GetEntries() << " files in the chain." << FairLogger::endl;
+  LOG(info) << "FairRunAnaProof::RunOnProof(): There are " << listOfFiles->GetEntries() << " files in the chain." << FairLogger::endl;
 
   inChain->SetProof();
 
   Int_t nofEventsToAnalyze = NStop-NStart;
 
   if ( nofEventsToAnalyze <= 0 ) {
-    LOG(INFO) << "You requested to analyze events from " << NStart << " to " << NStop << " that is " << nofEventsToAnalyze << " events!!!" << FairLogger::endl;
+    LOG(info) << "You requested to analyze events from " << NStart << " to " << NStop << " that is " << nofEventsToAnalyze << " events!!!" << FairLogger::endl;
     nofEventsToAnalyze = nofChainEntries-NStart;
-    LOG(INFO) << "It will be changed to analyze all events from " << NStart << " to the end of chain (" << nofChainEntries << "), that is to analyze " << nofEventsToAnalyze << " events." << FairLogger::endl;
+    LOG(info) << "It will be changed to analyze all events from " << NStart << " to the end of chain (" << nofChainEntries << "), that is to analyze " << nofEventsToAnalyze << " events." << FairLogger::endl;
   }
 
-  LOG(INFO) << "FairRunAnaProof::RunOnProof(): Starting inChain->Process(\"FairAnaSelector\",\"\","
+  LOG(info) << "FairRunAnaProof::RunOnProof(): Starting inChain->Process(\"FairAnaSelector\",\"\","
        << nofEventsToAnalyze << "," << NStart << ")" << FairLogger::endl;
   inChain->Process("FairAnaSelector","",nofEventsToAnalyze,NStart);
-  LOG(INFO) << "FairRunAnaProof::RunOnProof(): inChain->Process DONE" << FairLogger::endl;
+  LOG(info) << "FairRunAnaProof::RunOnProof(): inChain->Process DONE" << FairLogger::endl;
 
   return;
 }

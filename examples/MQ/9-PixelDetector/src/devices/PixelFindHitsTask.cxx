@@ -89,11 +89,11 @@ void PixelFindHitsTask::Finish()
 {
   //if ( fDigis ) fDigis->Delete();
 
-  LOG(INFO) << "-------------------- PixelFindHitsTask : Summary ------------------------";
-  LOG(INFO) << " Events:        " << fTNofEvents;
-  LOG(INFO) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis) /(static_cast<Double_t>(fTNofEvents)) << " per event )";
-  LOG(INFO) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits)  /(static_cast<Double_t>(fTNofEvents)) << " per event )";
-  LOG(INFO) << "---------------------------------------------------------------------"; 
+  LOG(info) << "-------------------- PixelFindHitsTask : Summary ------------------------";
+  LOG(info) << " Events:        " << fTNofEvents;
+  LOG(info) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis) /(static_cast<Double_t>(fTNofEvents)) << " per event )";
+  LOG(info) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits)  /(static_cast<Double_t>(fTNofEvents)) << " per event )";
+  LOG(info) << "---------------------------------------------------------------------"; 
 }
 // -------------------------------------------------------------------------
 
@@ -107,16 +107,16 @@ void PixelFindHitsTask::Init(PixelDigiPar* digipar, FairGeoParSet* geopar)
   fPitchX = digipar->GetXPitch();
   fPitchY = digipar->GetYPitch();
   fGeoParSet=geopar;
-  LOG(INFO)<<"PixelFindHitsTask::Init"
+  LOG(info)<<"PixelFindHitsTask::Init"
           <<" fFeCols="<<fFeCols
           <<" fFeRows="<<fFeRows
           <<" fMaxFEperCol="<<fMaxFEperCol
           <<" fPitchX="<<fPitchX
           <<" fPitchY="<<fPitchX
           ;
-  LOG(INFO)<<"geopar->printParams()";
+  LOG(info)<<"geopar->printParams()";
   geopar->printParams();
-  LOG(INFO)<<"fGeoParSet->printParams()";
+  LOG(info)<<"fGeoParSet->printParams()";
   fGeoParSet->printParams();
 }
 
@@ -127,12 +127,12 @@ void PixelFindHitsTask::Exec(TClonesArray* digis, TClonesArray* hits)
 
   Reset(hits);
 
-  LOG(INFO) << "PixelFindHits::Exec(TCA) EVENT " << fTNofEvents;
+  LOG(info) << "PixelFindHits::Exec(TCA) EVENT " << fTNofEvents;
 
   fTNofEvents++;
-  LOG(DEBUG)<<"PixelFindHits::Exec() ok 0 ";
+  LOG(debug)<<"PixelFindHits::Exec() ok 0 ";
   fNDigis = digis->GetEntriesFast();
-  LOG(DEBUG)<<"PixelFindHits::Exec() fNDigis = "<<fNDigis;
+  LOG(debug)<<"PixelFindHits::Exec() fNDigis = "<<fNDigis;
   fTNofDigis+= fNDigis;
 //*
   for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) 
@@ -141,11 +141,11 @@ void PixelFindHitsTask::Exec(TClonesArray* digis, TClonesArray* hits)
 
     Int_t detId = currentDigi->GetDetectorID();    
     TString nodeName = Form("/cave/Pixel%d_%d",detId/256,detId%256);
-    LOG(DEBUG)<<"PixelFindHits::Exec() ok 1 node name = "<<nodeName.Data();
+    LOG(debug)<<"PixelFindHits::Exec() ok 1 node name = "<<nodeName.Data();
     fGeoParSet->GetGeometry()->cd(nodeName.Data());
-    LOG(DEBUG)<<"PixelFindHits::Exec() ok 2 ";
+    LOG(debug)<<"PixelFindHits::Exec() ok 2 ";
     TGeoNode* curNode = fGeoParSet->GetGeometry()->GetCurrentNode();
-    LOG(DEBUG)<<"PixelFindHits::Exec() ok 3 ";
+    LOG(debug)<<"PixelFindHits::Exec() ok 3 ";
     //TGeoMatrix* matrix = curNode->GetMatrix();
 
     TGeoVolume* actVolume = fGeoParSet->GetGeometry()->GetCurrentVolume();
@@ -167,8 +167,8 @@ void PixelFindHitsTask::Exec(TClonesArray* digis, TClonesArray* hits)
 
     curNode->LocalToMaster(locPosCalc,globPos);
 
-    LOG(DEBUG) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1];
-    LOG(DEBUG) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2];
+    LOG(debug) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1];
+    LOG(debug) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2];
 
     TVector3 pos   (globPos[0],globPos[1],globPos[2]);
     TVector3 posErr(fPitchX/TMath::Sqrt(12.),fPitchY/TMath::Sqrt(12.),actBox->GetDZ());
@@ -189,18 +189,18 @@ void PixelFindHitsTask::Exec(TList* list, TClonesArray* hits)
 
   Reset(hits);
 
-  LOG(INFO) << "PixelFindHits::Exec(TList) EVENT " << fTNofEvents;
+  LOG(info) << "PixelFindHits::Exec(TList) EVENT " << fTNofEvents;
 
   TClonesArray* digis = (TClonesArray*)list->FindObject("PixelDigis");
   if ( !digis ) {
-    LOG(ERROR) << "OOOPS!!! no digis array";
+    LOG(error) << "OOOPS!!! no digis array";
     return;
   }
 
   fTNofEvents++;
-  LOG(DEBUG)<<"PixelFindHits::Exec() ok 0 ";
+  LOG(debug)<<"PixelFindHits::Exec() ok 0 ";
   fNDigis = digis->GetEntriesFast();
-  LOG(DEBUG)<<"PixelFindHits::Exec() fNDigis = "<<fNDigis;
+  LOG(debug)<<"PixelFindHits::Exec() fNDigis = "<<fNDigis;
   fTNofDigis+= fNDigis;
 //*
   for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) 
@@ -209,11 +209,11 @@ void PixelFindHitsTask::Exec(TList* list, TClonesArray* hits)
 
     Int_t detId = currentDigi->GetDetectorID();    
     TString nodeName = Form("/cave/Pixel%d_%d",detId/256,detId%256);
-    LOG(DEBUG)<<"PixelFindHits::Exec() ok 1 node name = "<<nodeName.Data();
+    LOG(debug)<<"PixelFindHits::Exec() ok 1 node name = "<<nodeName.Data();
     fGeoParSet->GetGeometry()->cd(nodeName.Data());
-    LOG(DEBUG)<<"PixelFindHits::Exec() ok 2 ";
+    LOG(debug)<<"PixelFindHits::Exec() ok 2 ";
     TGeoNode* curNode = fGeoParSet->GetGeometry()->GetCurrentNode();
-    LOG(DEBUG)<<"PixelFindHits::Exec() ok 3 ";
+    LOG(debug)<<"PixelFindHits::Exec() ok 3 ";
 //    TGeoMatrix* matrix = curNode->GetMatrix();
 
     TGeoVolume* actVolume = fGeoParSet->GetGeometry()->GetCurrentVolume();
@@ -235,8 +235,8 @@ void PixelFindHitsTask::Exec(TList* list, TClonesArray* hits)
 
     curNode->LocalToMaster(locPosCalc,globPos);
 
-    LOG(DEBUG) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1];
-    LOG(DEBUG) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2];
+    LOG(debug) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1];
+    LOG(debug) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2];
 
     TVector3 pos   (globPos[0],globPos[1],globPos[2]);
     TVector3 posErr(fPitchX/TMath::Sqrt(12.),fPitchY/TMath::Sqrt(12.),actBox->GetDZ());

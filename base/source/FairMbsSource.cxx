@@ -30,7 +30,7 @@ Bool_t FairMbsSource::Unpack(Int_t *data, Int_t size, Short_t type,
                              Short_t subType, Short_t procId, Short_t subCrate,
                              Short_t control) {
 
-  LOG(DEBUG2)<< "FairMbsSource::Unpack => Found Sub-event with flags: " 
+  LOG(debug2)<< "FairMbsSource::Unpack => Found Sub-event with flags: " 
              << " Type " << type << " SubType " << subType
              << " ProcId " << procId << " SubCrate " << subCrate
              << " Control " << control

@@ -143,13 +143,13 @@ InitStatus PixelAltDigiWriteToRootVector::Init() {
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) LOG(FATAL) << "No FairRootManager" << FairLogger::endl;
+  if ( ! ioman ) LOG(fatal) << "No FairRootManager" << FairLogger::endl;
   fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
   if ( !fDigis ) 
-    LOG(WARNING) << "PixelAltDigiWriteToRootVector::Init() No input PixelDigis array!" << FairLogger::endl;
+    LOG(warn) << "PixelAltDigiWriteToRootVector::Init() No input PixelDigis array!" << FairLogger::endl;
 
-  LOG(INFO) << "-I- " << fName.Data() << "::Init(). Initialization succesfull." << FairLogger::endl;
+  LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull." << FairLogger::endl;
 
   fRunId = ioman->GetRunId();
 
@@ -164,7 +164,7 @@ InitStatus PixelAltDigiWriteToRootVector::Init() {
       fNofOutputFiles = 12; // 1 file per sensor  (3 stations times 4 sensors)
     }
     else {
-      LOG(FATAL) << "PixelAltDigiWriteToRootVector::Init(), fDivideLevel = " << fDivideLevel << " unknown, it has to be in the range <0,2>" << FairLogger::endl;
+      LOG(fatal) << "PixelAltDigiWriteToRootVector::Init(), fDivideLevel = " << fDivideLevel << " unknown, it has to be in the range <0,2>" << FairLogger::endl;
       return kFATAL;
     }
   }
@@ -177,10 +177,10 @@ InitStatus PixelAltDigiWriteToRootVector::Init() {
 
     fOutputRootFile[ifile] = new TFile(fileName.Data(),"RECREATE");
     fOutputRootTree[ifile] = new TTree("fairdata","example MQ 9 Pixel data");
-    LOG(DEBUG) << "trying to create branch in file >>" << fOutputRootFile[ifile]->GetName() << "<<" << FairLogger::endl;
+    LOG(debug) << "trying to create branch in file >>" << fOutputRootFile[ifile]->GetName() << "<<" << FairLogger::endl;
     fOutputRootTree[ifile]->Branch("EventHeader.","PixelPayload::EventHeader",&fPixelEventHeader,0);
     fOutputRootTree[ifile]->Branch("DigiVector.",&fPixelDigiVector,32000,0);
-    LOG(DEBUG) << "branches created, fPixelDigiVector = >>" << &fPixelDigiVector << "<<" << FairLogger::endl;
+    LOG(debug) << "branches created, fPixelDigiVector = >>" << &fPixelDigiVector << "<<" << FairLogger::endl;
   }
   
   return kSUCCESS;
@@ -195,7 +195,7 @@ InitStatus PixelAltDigiWriteToRootVector::ReInit() {
   FairRootManager* ioman = FairRootManager::Instance();
     InitStatus Status=kFATAL;
     if ( ! ioman ){
-        LOG(FATAL) << "No FairRootManager found." << FairLogger::endl;
+        LOG(fatal) << "No FairRootManager found." << FairLogger::endl;
     }else{
        fRunId = ioman->GetRunId();
        fMCEntryNo = 0;

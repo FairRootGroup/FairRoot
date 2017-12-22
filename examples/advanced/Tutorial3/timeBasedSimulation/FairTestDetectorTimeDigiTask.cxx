@@ -45,7 +45,7 @@ InitStatus FairTestDetectorTimeDigiTask::Init()
     FairRootManager* ioman = FairRootManager::Instance();
     if (!ioman)
     {
-        LOG(ERROR) << "FairTestDetectorTimeDigiTask::Init: " 
+        LOG(error) << "FairTestDetectorTimeDigiTask::Init: " 
 		   << "RootManager not instantiated!" << FairLogger::endl;
         return kFATAL;
     }
@@ -53,7 +53,7 @@ InitStatus FairTestDetectorTimeDigiTask::Init()
     fPointArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorPoint"));
     if (!fPointArray)
     {
-        LOG(WARNING) << "FairTestDetectorTimeDigiTask::Init: "
+        LOG(warn) << "FairTestDetectorTimeDigiTask::Init: "
 		     << "No Point array!" << FairLogger::endl;
         return kERROR;
     }
@@ -74,7 +74,7 @@ void FairTestDetectorTimeDigiTask::Exec(Option_t* /*opt*/)
 
     // fill the map
 
-    LOG(INFO) << "EventTime: " 
+    LOG(info) << "EventTime: " 
 	      << FairRootManager::Instance()->GetEventTime() 
 	      << FairLogger::endl;
 

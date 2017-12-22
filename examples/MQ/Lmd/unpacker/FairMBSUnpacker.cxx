@@ -28,7 +28,7 @@ FairMBSUnpacker::FairMBSUnpacker(Short_t type, Short_t subType, Short_t procId, 
 // Virtual FairMBSUnpacker: Public method
 FairMBSUnpacker::~FairMBSUnpacker()
 {
-    LOG(INFO) << "FairMBSUnpacker: Delete instance";
+    LOG(info) << "FairMBSUnpacker: Delete instance";
     delete fRawData;
 }
 
@@ -41,7 +41,7 @@ Bool_t FairMBSUnpacker::Init()
 // DoUnpack: Public method
 Bool_t FairMBSUnpacker::DoUnpack(Int_t* data, Int_t size)
 {
-    LOG(DEBUG) << "FairMBSUnpacker: Unpacking... size = " << size;
+    LOG(debug) << "FairMBSUnpacker: Unpacking... size = " << size;
 
     Int_t l_i = 0;
 
@@ -57,7 +57,7 @@ Bool_t FairMBSUnpacker::DoUnpack(Int_t* data, Int_t size)
         UInt_t l_lec = (p1[0] & 0x00f00000) >> 20;
         UInt_t l_da_siz = (p1[0] & 0x000001ff);
 
-        LOG(DEBUG) << "FairMBSUnpacker: SAM: " << l_sam_id << ", GTB: " << l_gtb_id << ", lec: " << l_lec << ", size: " << l_da_siz;
+        LOG(debug) << "FairMBSUnpacker: SAM: " << l_sam_id << ", GTB: " << l_gtb_id << ", lec: " << l_lec << ", size: " << l_da_siz;
 
         l_i += 1;
 
@@ -83,15 +83,15 @@ Bool_t FairMBSUnpacker::DoUnpack(Int_t* data, Int_t size)
             {
                 n17 += 1;
             }
-            LOG(DEBUG) << "FairMBSUnpacker: TAC ADDR: " << tac_addr << ", TAC CH: " << tac_ch << ", TAC Data: " << tac_data << ", QDC Data: " << qdc_data;
+            LOG(debug) << "FairMBSUnpacker: TAC ADDR: " << tac_addr << ", TAC CH: " << tac_ch << ", TAC Data: " << tac_data << ", QDC Data: " << qdc_data;
             new ((*fRawData)[fNHits]) FairMBSRawItem(l_sam_id, l_gtb_id, tac_addr, tac_ch, cal, clock, tac_data, qdc_data);
             fNHits++;
         }
 
-        LOG(DEBUG) << "FairMBSUnpacker: n17=" << n17;
+        LOG(debug) << "FairMBSUnpacker: n17=" << n17;
     }
 
-    LOG(DEBUG) << "FairMBSUnpacker: Number of hits in LAND: " << fNHits;
+    LOG(debug) << "FairMBSUnpacker: Number of hits in LAND: " << fNHits;
     
     fNHitsTotal += fNHits;
     
@@ -101,7 +101,7 @@ Bool_t FairMBSUnpacker::DoUnpack(Int_t* data, Int_t size)
 // Reset: Public method
 void FairMBSUnpacker::Reset()
 {
-    LOG(DEBUG) << "FairMBSUnpacker: Clearing Data Structure";
+    LOG(debug) << "FairMBSUnpacker: Clearing Data Structure";
     fRawData->Clear();
     fNHits = 0;
 }

@@ -40,18 +40,18 @@ FairTutorialDet2CustomTask::~FairTutorialDet2CustomTask()
 // ---- Init ----------------------------------------------------------
 InitStatus FairTutorialDet2CustomTask::Init()
 {
-  LOG(INFO) << " FairTutorialDet2CustomTask :: Init() " 
+  LOG(info) << " FairTutorialDet2CustomTask :: Init() " 
 	    << FairLogger::endl;
 
   FairRootManager* ioman = FairRootManager::Instance();
   if ( ! ioman ) { 
-    LOG(FATAL) << "No FairRootManager" << FairLogger::endl; 
+    LOG(fatal) << "No FairRootManager" << FairLogger::endl; 
     return kERROR;
   } else {
     fCustomData=ioman->InitObjectAs<std::vector<CustomClass> const*>("TutorialCustomData");
     if ( ! fCustomData ) {
-      LOG(ERROR) << "No input data found!" << FairLogger::endl;
-      LOG(ERROR) << "Task will be inactive" << FairLogger::endl;
+      LOG(error) << "No input data found!" << FairLogger::endl;
+      LOG(error) << "Task will be inactive" << FairLogger::endl;
       return kERROR;
     }
 
@@ -71,18 +71,18 @@ InitStatus FairTutorialDet2CustomTask::Init()
 void FairTutorialDet2CustomTask::Exec(Option_t* /*option*/)
 {
   // Here we print something
-  LOG(INFO) <<" I am in FairTutorialDet2CustomTask::Exec" 
+  LOG(info) <<" I am in FairTutorialDet2CustomTask::Exec" 
 	    << FairLogger::endl;
 
-  LOG(INFO) << " The custom data input vector has size" << fCustomData->size() << "\n"; 
+  LOG(info) << " The custom data input vector has size" << fCustomData->size() << "\n"; 
   for(auto& entry : *fCustomData) {
-    LOG(INFO) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
+    LOG(info) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
   }
 
   // process data that we got from DigitizerTask
-  LOG(INFO) << " The input vector from DigitizerTask has size" << fCustomData2->size() << "\n"; 
+  LOG(info) << " The input vector from DigitizerTask has size" << fCustomData2->size() << "\n"; 
   for(auto& entry : *fCustomData2) {
-    LOG(INFO) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
+    LOG(info) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
   }
 
 }

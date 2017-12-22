@@ -50,8 +50,8 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
         {
             if (baseMQ::tools::resolve::has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 0)
             {
-                LOG(ERROR) << "Method 'void serialize(TIn & ar, const unsigned int version)' was not found in input class";
-                LOG(ERROR) << "Boost serialization for Input Payload requested, but the input type does not support it. Check the TIn parameter. Aborting.";
+                LOG(error) << "Method 'void serialize(TIn & ar, const unsigned int version)' was not found in input class";
+                LOG(error) << "Boost serialization for Input Payload requested, but the input type does not support it. Check the TIn parameter. Aborting.";
                 exit(EXIT_FAILURE);
             }
         }
@@ -60,8 +60,8 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
         {
             if (baseMQ::tools::resolve::has_BoostSerialization<TOut, void(TPayloadOut&, const unsigned int)>::value == 0)
             {
-                LOG(ERROR) << "Method 'void serialize(TOut & ar, const unsigned int version)' was not found in input class";
-                LOG(ERROR) << "Boost serialization for Output Payload requested, but the output type does not support it. Check the TOut parameter. Aborting.";
+                LOG(error) << "Method 'void serialize(TOut & ar, const unsigned int version)' was not found in input class";
+                LOG(error) << "Boost serialization for Output Payload requested, but the output type does not support it. Check the TOut parameter. Aborting.";
                 exit(EXIT_FAILURE);
             }
         }
@@ -77,8 +77,8 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
         {
             if (baseMQ::tools::resolve::has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 0)
             {
-                LOG(ERROR) << "Method 'void serialize(TIn & ar, const unsigned int version)' was not found in input class";
-                LOG(ERROR) << "Boost serialization for Input Payload requested, but the input type does not support it. Check the TIn parameter. Aborting.";
+                LOG(error) << "Method 'void serialize(TIn & ar, const unsigned int version)' was not found in input class";
+                LOG(error) << "Boost serialization for Input Payload requested, but the input type does not support it. Check the TIn parameter. Aborting.";
                 exit(EXIT_FAILURE);
             }
         }
@@ -88,8 +88,8 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
         {
             if (baseMQ::tools::resolve::has_BoostSerialization<TOut, void(TPayloadOut&, const unsigned int)>::value == 0)
             {
-                LOG(ERROR) << "Method 'void serialize(TOut & ar, const unsigned int version)' was not found in input class";
-                LOG(ERROR) << "Boost serialization for Output Payload requested, but the output type does not support it. Check the TOut parameter. Aborting.";
+                LOG(error) << "Method 'void serialize(TOut & ar, const unsigned int version)' was not found in input class";
+                LOG(error) << "Boost serialization for Output Payload requested, but the output type does not support it. Check the TOut parameter. Aborting.";
                 exit(EXIT_FAILURE);
             }
         }

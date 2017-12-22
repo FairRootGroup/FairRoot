@@ -86,7 +86,7 @@ class Ex2Sink : public FairMQDevice
                 }
             }
         }
-        LOG(INFO) << "Received " << receivedMsgs << " messages!";
+        LOG(info) << "Received " << receivedMsgs << " messages!";
     }
 
   private:

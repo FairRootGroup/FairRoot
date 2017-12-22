@@ -63,7 +63,7 @@ class FairTestDetectorFileSink : public FairMQDevice
         {
             if (baseMQ::tools::resolve::has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 0)
             {
-                LOG(ERROR) << "Boost serialization for Input Payload requested, but the input type does not support it. Check the TIn parameter. Aborting.";
+                LOG(error) << "Boost serialization for Input Payload requested, but the input type does not support it. Check the TIn parameter. Aborting.";
                 exit(EXIT_FAILURE);
             }
         }
@@ -110,7 +110,7 @@ class FairTestDetectorFileSink : public FairMQDevice
     }
     virtual void PostRun()
     {
-        LOG(INFO) << "I've received " << fReceivedMsgs << " messages!";
+        LOG(info) << "I've received " << fReceivedMsgs << " messages!";
     }
     virtual void InitTask();
 

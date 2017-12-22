@@ -71,7 +71,7 @@ class FairMQLmdSampler : public FairMQDevice
         SubEvtKey key(type, subType, procid, subCrate, control);
         if (fSubEventChanMap.count(key))
         {
-            LOG(WARN) << "FairMQLmdSampler : subevent header key '("
+            LOG(warn) << "FairMQLmdSampler : subevent header key '("
                       << type << "," << subType << "," << procid << "," << subCrate << "," << control << ")' has already been defined with channel name '" << fSubEventChanMap.at(key)
                       << "'. it will be overwritten with new channel name = " << channelName;
         }
@@ -97,7 +97,7 @@ class FairMQLmdSampler : public FairMQDevice
         }
         else
         {
-            LOG(WARN) << "FairMQLmdSampler: directory '" << directory.string() << "' not found";
+            LOG(warn) << "FairMQLmdSampler: directory '" << directory.string() << "' not found";
         }
     }
     void AddFile(const std::string& fileName)
@@ -109,7 +109,7 @@ class FairMQLmdSampler : public FairMQDevice
         }
         else
         {
-            LOG(WARN) << "FairMQLmdSampler: file '" << fileName << "' not found";
+            LOG(warn) << "FairMQLmdSampler: file '" << fileName << "' not found";
         }
     }
 
@@ -154,7 +154,7 @@ class FairMQLmdSampler : public FairMQDevice
                 break;
             }
         }
-        LOG(INFO) << "Sent " << fMsgCounter << " messages.";
+        LOG(info) << "Sent " << fMsgCounter << " messages.";
     }
 
     int ReadEvent()
@@ -172,10 +172,10 @@ class FairMQLmdSampler : public FairMQDevice
         //int fuEventCounter = fEvent->l_count;
         //int fCurrentMbsEventNo = fuEventCounter;
 
-        // LOG(DEBUG) << "STATUS = " << status;
+        // LOG(debug) << "STATUS = " << status;
         if (GETEVT__SUCCESS != status) // if f_evt_get_event not successfull close if nomore evt or look to another file and start again
         {
-            // LOG(DEBUG) << "FairMQLmdSampler::ReadEvent()";
+            // LOG(debug) << "FairMQLmdSampler::ReadEvent()";
 
             CHARS* sErrorString = NULL;
             f_evt_error(status, sErrorString, 0);
@@ -220,7 +220,7 @@ class FairMQLmdSampler : public FairMQDevice
         short sesubcrate;
         short secontrol;
 
-        // LOG(DEBUG) << "FairMQLmdSampler::ReadEvent => Found " << nrSubEvts << " Sub-event ";
+        // LOG(debug) << "FairMQLmdSampler::ReadEvent => Found " << nrSubEvts << " Sub-event ";
         //if (fCurrentEvent%10000==0)
         //cout << " -I- LMD_ANA:  evt# " <<  fCurrentEvent << "  n_subevt# " << nrSubEvts << " evt processed# " << fNEvent <<  " : " << fEvent->l_count << endl;
 
@@ -250,15 +250,15 @@ class FairMQLmdSampler : public FairMQDevice
 
             if (!fSubEventChanMap.count(key))
             {
-                // LOG(DEBUG) << "FairMQLmdSampler::ReadEvent: sub-event key not registered";
+                // LOG(debug) << "FairMQLmdSampler::ReadEvent: sub-event key not registered";
             }
             else
             {
-                // LOG(DEBUG) << "array size = " << sebuflength;
-                // LOG(DEBUG) << "fEventData = " << *fEventData;
+                // LOG(debug) << "array size = " << sebuflength;
+                // LOG(debug) << "fEventData = " << *fEventData;
 
                 std::string chanName = fSubEventChanMap.at(key);
-                // LOG(DEBUG) << "chanName = " << chanName;
+                // LOG(debug) << "chanName = " << chanName;
 
                 FairMQParts parts;
 
@@ -269,7 +269,7 @@ class FairMQLmdSampler : public FairMQDevice
                 int* arraySize = new int(sebuflength);
 
                 parts.AddPart(NewMessage(arraySize, sizeof(int), [](void* /*data*/, void* hint) { delete static_cast<int*>(hint); }, arraySize));
-                parts.AddPart(NewMessage(fEventData, sebuflength, [](void* /*data*/, void* /*hint*/) { /*LOG(DEBUG) << "empty deleter";*/ }, nullptr));
+                parts.AddPart(NewMessage(fEventData, sebuflength, [](void* /*data*/, void* /*hint*/) { /*LOG(debug) << "empty deleter";*/ }, nullptr));
                 Send(parts, chanName);
                 fMsgCounter++;
                 /*
@@ -301,17 +301,17 @@ class FairMQLmdSampler : public FairMQDevice
         void* headptr = &fInfoHeader;
         INTS4 status;
 
-        LOG(INFO) << "File " << fileName << " will be opened.";
+        LOG(info) << "File " << fileName << " will be opened.";
 
         status = f_evt_get_open(inputMode, const_cast<char*>(fileName.c_str()), fInputChannel, static_cast<char**>(headptr), 1, 1);
 
         if (status)
         {
-            LOG(ERROR) << "File " << fileName << " opening failed.";
+            LOG(error) << "File " << fileName << " opening failed.";
             return false;
         }
 
-        LOG(INFO) << "File " << fileName << " opened.";
+        LOG(info) << "File " << fileName << " opened.";
 
         // Decode File Header
         // bool result = Unpack((int*)fInfoHeader, sizeof(s_filhe), -4, -4, -4, -4, -4);

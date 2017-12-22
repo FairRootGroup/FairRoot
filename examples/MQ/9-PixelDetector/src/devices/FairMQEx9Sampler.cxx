@@ -60,12 +60,12 @@ void FairMQEx9Sampler::InitTask()
     }
 
   fSource->Init();
-  LOG(INFO) << "Going to request " << fBranchNames.size() << "  branches:";
+  LOG(info) << "Going to request " << fBranchNames.size() << "  branches:";
   for ( unsigned int ibrn = 0 ; ibrn < fBranchNames.size() ; ibrn++ ) {
-    LOG(INFO) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
+    LOG(info) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
     int branchStat = fSource->ActivateObject((TObject**)&fInputObjects[fNObjects],fBranchNames[ibrn].c_str()); // should check the status...
     if ( fInputObjects[fNObjects] ) {
-      LOG(INFO) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn] << "\" (" << branchStat << "), it got name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
+      LOG(info) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn] << "\" (" << branchStat << "), it got name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
       if ( strcmp(fInputObjects[fNObjects]->GetName(),fBranchNames[ibrn].c_str()) )
 	if ( strcmp(fInputObjects[fNObjects]->ClassName(),"TClonesArray") == 0 ) 
 	  ((TClonesArray*)fInputObjects[fNObjects])->SetName(fBranchNames[ibrn].c_str());
@@ -74,7 +74,7 @@ void FairMQEx9Sampler::InitTask()
   }
   if ( fMaxIndex < 0 )
     fMaxIndex = fSource->CheckMaxEventNo();
-  LOG(INFO) << "Input source has " << fMaxIndex << " events.";
+  LOG(info) << "Input source has " << fMaxIndex << " events.";
 }
 
 // helper function to clean up the object holding the data after it is transported.
@@ -89,7 +89,7 @@ void FairMQEx9Sampler::PreRun()
     fAckListener = thread(&FairMQEx9Sampler::ListenForAcks, this);
   }
 
-  LOG(INFO) << "FairMQEx9Sampler::PreRun() finished!";
+  LOG(info) << "FairMQEx9Sampler::PreRun() finished!";
 }
 
 bool FairMQEx9Sampler::ConditionalRun()
@@ -122,7 +122,7 @@ void FairMQEx9Sampler::PostRun()
     fAckListener.join();
   }
 
-  LOG(INFO) << "PostRun() finished!";
+  LOG(info) << "PostRun() finished!";
 }
 
 void FairMQEx9Sampler::ListenForAcks()
@@ -139,7 +139,7 @@ void FairMQEx9Sampler::ListenForAcks()
       }
     }
 
-    LOG(INFO) << "Acknowledged " << numAcks << " messages.";
+    LOG(info) << "Acknowledged " << numAcks << " messages.";
   }
 }
 

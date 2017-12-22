@@ -39,7 +39,7 @@ FairIonGenerator::FairIonGenerator()
    fVx(0), fVy(0), fVz(0),
    fIon(NULL),  fQ(0)
 {
-//  LOG(WARNING) << "FairIonGenerator: "
+//  LOG(warn) << "FairIonGenerator: "
 //               << " Please do not use the default constructor! " 
 //               << FairLogger::endl;
 }
@@ -86,7 +86,7 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
     }
   }
   if(fIon==0 && part==0 ) {
-    LOG(FATAL) << "Ion or Particle is not defined !" 
+    LOG(fatal) << "Ion or Particle is not defined !" 
 	       << FairLogger::endl;
   }
 
@@ -121,7 +121,7 @@ FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
   fIon= new FairIon(buffer, z, a, q);
   FairRunSim* run = FairRunSim::Instance();
   if ( ! run ) {
-    LOG(ERROR) << "No FairRun instantised!" 
+    LOG(error) << "No FairRun instantised!" 
 	       << FairLogger::endl;
   } else {
     run->AddNewIon(fIon);
@@ -163,7 +163,7 @@ Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
 
 // if ( ! fIon ) {
-//   LOG(WARNING) << "FairIonGenerator: No ion defined! " 
+//   LOG(warn) << "FairIonGenerator: No ion defined! " 
 //                << FairLogger::endl;
 //   return kFALSE;
 // }
@@ -171,17 +171,17 @@ Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   TParticlePDG* thisPart =
     TDatabasePDG::Instance()->GetParticle(fIon->GetName());
   if ( ! thisPart ) {
-    LOG(WARNING) << "FairIonGenerator: Ion " << fIon->GetName()
+    LOG(warn) << "FairIonGenerator: Ion " << fIon->GetName()
 		 << " not found in database!" << FairLogger::endl;
     return kFALSE;
   }
 
   int pdgType = thisPart->PdgCode();
 
-  LOG(INFO) << "FairIonGenerator: Generating " << fMult << " ions of type "
+  LOG(info) << "FairIonGenerator: Generating " << fMult << " ions of type "
 	    << fIon->GetName() << " (PDG code " << pdgType << ")" 
 	    << FairLogger::endl;
-  LOG(INFO) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
+  LOG(info) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
 	    << ") Gev from vertex (" << fVx << ", " << fVy
 	    << ", " << fVz << ") cm" << FairLogger::endl;
 

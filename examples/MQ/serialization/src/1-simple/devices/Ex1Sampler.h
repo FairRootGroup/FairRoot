@@ -46,12 +46,12 @@ class Ex1Sampler : public FairMQDevice
             }
             else
             {
-                LOG(ERROR) << "Could not find tree 'MyDigi'";
+                LOG(error) << "Could not find tree 'MyDigi'";
             }
         }
         else
         {
-            LOG(ERROR) << "Could not open file " << fFileName << " in SimpleTreeReader::InitSource()";
+            LOG(error) << "Could not open file " << fFileName << " in SimpleTreeReader::InitSource()";
         }
     }
 
@@ -59,7 +59,7 @@ class Ex1Sampler : public FairMQDevice
     {
         uint64_t sentMsgs = 0;
         const uint64_t numEvents = fTree->GetEntries();
-        LOG(INFO) << "Number of events to process: " << numEvents;
+        LOG(info) << "Number of events to process: " << numEvents;
 
         for (uint64_t i = 0; i < numEvents; i++)
         {
@@ -74,7 +74,7 @@ class Ex1Sampler : public FairMQDevice
             }
         }
 
-        LOG(INFO) << "Sent " << sentMsgs << " messages!";
+        LOG(info) << "Sent " << sentMsgs << " messages!";
     }
 
   private:

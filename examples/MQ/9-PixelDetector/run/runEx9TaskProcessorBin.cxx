@@ -39,6 +39,6 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     return new HitFinder();
   }
 
-  LOG(INFO) << "TASK \"" << taskname << "\" UNKNOWN!!!";
+  LOG(info) << "TASK \"" << taskname << "\" UNKNOWN!!!";
   return 0;
 }

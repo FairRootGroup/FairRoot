@@ -72,7 +72,7 @@ class Ex2Processor : public FairMQDevice
                 }
             }
         }
-        LOG(INFO) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
+        LOG(info) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
     }
 
     // do some random dummy task

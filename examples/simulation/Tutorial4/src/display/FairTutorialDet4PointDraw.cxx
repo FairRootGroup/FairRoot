@@ -73,7 +73,7 @@ InitStatus FairTutorialDet4PointDraw::Init()
    FairRootManager* fManager = FairRootManager::Instance();
    fPointList = static_cast<TClonesArray*>(fManager->GetObject(GetName()));
    if(NULL==fPointList){
-     LOG(ERROR) << "FairTutorialDet4PointDraw::Init()  branch " << GetName()
+     LOG(error) << "FairTutorialDet4PointDraw::Init()  branch " << GetName()
 		<< " not found! Task will be deactivated."<< FairLogger::endl;
      return kERROR;
     }

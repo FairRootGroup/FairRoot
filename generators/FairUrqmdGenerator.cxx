@@ -47,11 +47,11 @@ FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName)
    fFileName(fileName)
 {
   //  fFileName = fileName;
-  LOG(INFO) << "FairUrqmdGenerator: Opening input file " 
+  LOG(info) << "FairUrqmdGenerator: Opening input file " 
 	    << fileName << FairLogger::endl;
   fInputFile = fopen(fFileName, "r");
   if ( ! fInputFile ) { 
-    LOG(FATAL) << "Cannot open input file."
+    LOG(fatal) << "Cannot open input file."
 	       << FairLogger::endl; 
   }
   ReadConversionTable();
@@ -64,11 +64,11 @@ fParticleTable(),
 fFileName(fileName)
 {
     //  fFileName = fileName;
-    LOG(INFO) << "FairUrqmdGenerator: Opening input file "
+    LOG(info) << "FairUrqmdGenerator: Opening input file "
     << fileName << FairLogger::endl;
     fInputFile = fopen(fFileName, "r");
     if ( ! fInputFile ) {
-        LOG(FATAL) << "Cannot open input file."
+        LOG(fatal) << "Cannot open input file."
 	       << FairLogger::endl;
     }
     ReadConversionTable(conversion_table);
@@ -81,14 +81,14 @@ fFileName(fileName)
 // -----   Destructor   ---------------------------------------------------
 FairUrqmdGenerator::~FairUrqmdGenerator()
 {
-  //  LOG(DEBUG) << "Enter Destructor of FairUrqmdGenerator"
+  //  LOG(debug) << "Enter Destructor of FairUrqmdGenerator"
   //             << FairLogger::endl;
   if ( fInputFile ) {
     fclose(fInputFile);
     fInputFile = NULL;
   }
   fParticleTable.clear();
-  //  LOG(DEBUG) << "Leave Destructor of FairUrqmdGenerator"
+  //  LOG(debug) << "Leave Destructor of FairUrqmdGenerator"
   //             << FairLogger::endl;
 }
 // ------------------------------------------------------------------------
@@ -101,14 +101,14 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // ---> Check for input file
   if ( ! fInputFile ) {
-    LOG(ERROR) << "FairUrqmdGenerator: Input file not open! " 
+    LOG(error) << "FairUrqmdGenerator: Input file not open! " 
 	       << FairLogger::endl;
     return kFALSE;
   }
 
   // ---> Check for primary generator
   if ( ! primGen ) {
-    LOG(ERROR) << "FairUrqmdGenerator::ReadEvent: "
+    LOG(error) << "FairUrqmdGenerator::ReadEvent: "
 	       << "No PrimaryGenerator!" << FairLogger::endl;
     return kFALSE;
   }
@@ -124,14 +124,14 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   char read[200];
   fgets(read, 200, fInputFile);
   if ( feof(fInputFile) ) {
-    LOG(INFO) << "FairUrqmdGenerator : End of input file reached." 
+    LOG(info) << "FairUrqmdGenerator : End of input file reached." 
 	      << FairLogger::endl;
     fclose(fInputFile);
     fInputFile = NULL;
     return kFALSE;
   }
   if ( read[0] != 'U' ) {
-    LOG(ERROR) << "FairUrqmdGenerator: Wrong event header" 
+    LOG(error) << "FairUrqmdGenerator: Wrong event header" 
 	       << FairLogger::endl;
     return kFALSE;
   }
@@ -165,7 +165,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   fgets(read, 200, fInputFile);
   for (int iline=0; iline<8; iline++)  { fgets(read, 200,fInputFile); }
   retval = fscanf(fInputFile, "%d", &ntracks);
-  if (ntracks < 0 || ntracks > (INT_MAX-1)) LOG(FATAL) << "Error reading the number of events from event header." << FairLogger::endl;
+  if (ntracks < 0 || ntracks > (INT_MAX-1)) LOG(fatal) << "Error reading the number of events from event header." << FairLogger::endl;
   CheckReturnValue(retval);
   fgets(read, 200, fInputFile);
   fgets(read, 200, fInputFile);
@@ -180,7 +180,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   Double_t betaCM  = pBeam / (eBeam + kProtonMass);
   Double_t gammaCM = TMath::Sqrt( 1. / ( 1. - betaCM*betaCM) );
 
-  LOG(INFO) << "FairUrqmdGenerator: Event " << evnr << ",  b = " << b
+  LOG(info) << "FairUrqmdGenerator: Event " << evnr << ",  b = " << b
 	    << " fm,  multiplicity " << ntracks  << ", ekin: " 
 	    << ekin << FairLogger::endl;
 
@@ -220,7 +220,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
     // Convert Unique PID into PDG particle code
     if (fParticleTable.find(pid) == fParticleTable.end()) {
-      LOG(WARNING) << "FairUrqmdGenerator: PID " << ityp << " charge "
+      LOG(warn) << "FairUrqmdGenerator: PID " << ityp << " charge "
 		   << ichg << " not found in table (" << pid << ")" 
 		   << FairLogger::endl;
       continue;
@@ -261,7 +261,7 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
   for(Int_t ii=0; ii<count; ii++) {
     // ---> Check for input file
     if ( ! fInputFile ) {
-      LOG(ERROR) << "FairUrqmdGenerator: Input file not open! " 
+      LOG(error) << "FairUrqmdGenerator: Input file not open! " 
 		 << FairLogger::endl;
       return kFALSE;
     }
@@ -274,14 +274,14 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
     char read[200];
     fgets(read, 200, fInputFile);
     if ( feof(fInputFile) ) {
-      LOG(INFO) << "FairUrqmdGenerator : End of input file reached." 
+      LOG(info) << "FairUrqmdGenerator : End of input file reached." 
 		<< FairLogger::endl;
       fclose(fInputFile);
       fInputFile = NULL;
       return kFALSE;
     }
     if ( read[0] != 'U' ) {
-      LOG(ERROR) << "FairUrqmdGenerator: Wrong event header" 
+      LOG(error) << "FairUrqmdGenerator: Wrong event header" 
 		 << FairLogger::endl;
       return kFALSE;
     }
@@ -315,12 +315,12 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
     fgets(read, 200, fInputFile);
     for (int iline=0; iline<8; iline++)  { fgets(read, 200,fInputFile); }
     retval = fscanf(fInputFile, "%d", &ntracks);
-    if (ntracks < 0 || ntracks > (INT_MAX-1)) LOG(FATAL) << "Error reading the number of events from event header." << FairLogger::endl;
+    if (ntracks < 0 || ntracks > (INT_MAX-1)) LOG(fatal) << "Error reading the number of events from event header." << FairLogger::endl;
     CheckReturnValue(retval);
     fgets(read, 200, fInputFile);
     fgets(read, 200, fInputFile);
 
-    LOG(INFO) << "FairUrqmdGenerator: Event " << evnr << " skipped!" 
+    LOG(info) << "FairUrqmdGenerator: Event " << evnr << " skipped!" 
 	      << FairLogger::endl;
 
     // ---> Loop over tracks in the current event
@@ -351,7 +351,7 @@ void FairUrqmdGenerator::ReadConversionTable(TString conversion_table)
   std::ifstream* pdgconv = new std::ifstream(fileName.Data());
   
   if (!pdgconv->good()) {
-    LOG(FATAL) << "Could not open Urqmd->PDG input file " 
+    LOG(fatal) << "Could not open Urqmd->PDG input file " 
 	       << fileName << FairLogger::endl;
   }
 
@@ -368,7 +368,7 @@ void FairUrqmdGenerator::ReadConversionTable(TString conversion_table)
   pdgconv->close();
   delete pdgconv;
 
-  LOG(INFO) << "FairUrqmdGenerator: Particle table for conversion from "
+  LOG(info) << "FairUrqmdGenerator: Particle table for conversion from "
 	    << "UrQMD loaded" <<  FairLogger::endl;
 
 }
@@ -377,7 +377,7 @@ void FairUrqmdGenerator::ReadConversionTable(TString conversion_table)
 void FairUrqmdGenerator::CheckReturnValue(Int_t retval)
 {
   if (1 != retval) { 
-    LOG(ERROR) << "Error when reading variable from input file"
+    LOG(error) << "Error when reading variable from input file"
 	       << FairLogger::endl;
   } 
 } 

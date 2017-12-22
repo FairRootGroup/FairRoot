@@ -103,7 +103,7 @@ int main(int argc, char** argv)
         for (unsigned int t = 0; t < tmax; t++)
         {
             unsigned int NDigi = static_cast<unsigned int>(Gauss_N.generate(N, 1)->get(0)->getRealValue("N"));
-            LOG(INFO) << "Bunch number " << t + 1 << "/" << tmax
+            LOG(info) << "Bunch number " << t + 1 << "/" << tmax
                       << " (" << 100. * static_cast<double>(t + 1) / static_cast<double>(tmax) << " %). Number of generated digis: "
                       << NDigi << ", payload = " << NDigi * (3 * sizeof(Int_t) + 2 * sizeof(Double_t)) << " bytes";
 
@@ -111,7 +111,7 @@ int main(int argc, char** argv)
             SaveDataToFile<TDigi, RootFileManager>(rootman, simdataset);
         }
 
-        LOG(INFO) << "Data generation successful";
+        LOG(info) << "Data generation successful";
 
         // option : plot generated data
         if (plotdata)
@@ -173,7 +173,7 @@ int main(int argc, char** argv)
     }
     catch (exception& e)
     {
-        LOG(ERROR) << e.what();
+        LOG(error) << e.what();
         return 1;
     }
 
@@ -196,7 +196,7 @@ void SaveDataToFile(ManagerType& outMan, RooDataSet* dataset, bool printval)
 
         if (printval)
         {
-            LOG(INFO) << "x=" << data.GetX()
+            LOG(info) << "x=" << data.GetX()
                       << " y=" << data.GetY()
                       << " z=" << data.GetZ()
                       << " t=" << data.GetTimeStamp()
@@ -224,7 +224,7 @@ void SavePodDataToFile(ManagerType& outMan, RooDataSet* dataset, bool printval)
 
         if (printval)
         {
-            LOG(INFO) << "x=" << data.fX
+            LOG(info) << "x=" << data.fX
                       << "  y=" << data.fY
                       << "  z=" << data.fZ
                       << "  t=" << data.fTimeStamp

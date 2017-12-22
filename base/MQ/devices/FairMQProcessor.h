@@ -69,7 +69,7 @@ class FairMQProcessor : public FairMQDevice
 
     virtual void PostRun()
     {
-        LOG(INFO) << "Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
+        LOG(info) << "Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
     }
 
   private:

@@ -67,7 +67,7 @@ void FairMQEx9FileSinkBin::Init()
   fInputChannelName  = fConfig->GetValue<std::string>             ("in-channel");
   fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
 
-  LOG(INFO) << "SHOULD CREATE THE FILE AND TREE";
+  LOG(info) << "SHOULD CREATE THE FILE AND TREE";
   //  fFileName = "/Users/karabowi/fairroot/pixel9_dev/FairRoot/examples/MQ/9-PixelDetector/macros/tmpOut.root";
   fFileOption = "RECREATE";
   fTreeName = "cbmsim";  
@@ -97,7 +97,7 @@ void FairMQEx9FileSinkBin::Init()
       BranchNameList->AddLast(new TObjString(fBranchNames[fNObjects].c_str()));
     }
     else {
-      LOG(ERROR) << "!!! Unknown output object \"" << fClassNames[fNObjects] << "\" !!!";
+      LOG(error) << "!!! Unknown output object \"" << fClassNames[fNObjects] << "\" !!!";
     }
   }  
 
@@ -117,13 +117,13 @@ bool FairMQEx9FileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
   int nPPE = 2; // nof parts per event
 
   if ( parts.Size()%nPPE >= 1 )
-    LOG(INFO) << "received " << parts.Size() << " parts, will ignore last part!!!";
+    LOG(info) << "received " << parts.Size() << " parts, will ignore last part!!!";
 
   for ( int ievent = 0 ; ievent < parts.Size()/nPPE ; ievent++ ) {
 
     // the first part should be the event header
     PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(nPPE*ievent)->GetData());
-    // LOG(DEBUG) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+    // LOG(debug) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
   
     for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ )
       {

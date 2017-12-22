@@ -62,23 +62,23 @@ void FairMQEx9SamplerBin::InitTask()
       fSource->AddFile(fFileNames.at(ifile));
   }
   fSource->Init();
-  LOG(INFO) << "Going to request " << fBranchNames.size() << "  branches:";
+  LOG(info) << "Going to request " << fBranchNames.size() << "  branches:";
   for ( unsigned int ibrn = 0 ; ibrn < fBranchNames.size() ; ibrn++ ) {
-    LOG(INFO) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
+    LOG(info) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
     int branchStat = fSource->ActivateObject((TObject**)&fInputObjects[fNObjects],fBranchNames[ibrn].c_str()); // should check the status...
     if ( fInputObjects[fNObjects] ) {
-      LOG(INFO) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn] << "\" (" << branchStat << ")";
+      LOG(info) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn] << "\" (" << branchStat << ")";
       fNObjects++;
     }
   }
   if ( fMaxIndex < 0 )
     fMaxIndex = fSource->CheckMaxEventNo();
-  LOG(INFO) << "Input source has " << fMaxIndex << " events.";
+  LOG(info) << "Input source has " << fMaxIndex << " events.";
 }
 
 void FairMQEx9SamplerBin::PreRun()
 {
-  LOG(INFO) << "FairMQEx9Sampler::PreRun() started!";
+  LOG(info) << "FairMQEx9Sampler::PreRun() started!";
 
   fAckListener = thread(&FairMQEx9SamplerBin::ListenForAcks, this);
 }
@@ -105,8 +105,8 @@ bool FairMQEx9SamplerBin::ConditionalRun()
                                             [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
                                             ));
       parts.AddPart(std::move(msgHeader));
-      // LOG(DEBUG) << "-----------------------------";
-      // LOG(DEBUG) << "first part has size = " << sizeof(PixelPayload::EventHeader);
+      // LOG(debug) << "-----------------------------";
+      // LOG(debug) << "first part has size = " << sizeof(PixelPayload::EventHeader);
     }
     else {
       Int_t nofEntries = ((TClonesArray*)fInputObjects[iobj])->GetEntries();
@@ -129,12 +129,12 @@ bool FairMQEx9SamplerBin::ConditionalRun()
 	digiPayload[idigi].fCol        = digi->GetCol();
 	digiPayload[idigi].fRow        = digi->GetRow();
       }
-      // LOG(DEBUG) << "second part has size = " << digisSize;
+      // LOG(debug) << "second part has size = " << digisSize;
       parts.AddPart(std::move(msgTCA));
     }
   }
       
-  // LOG(DEBUG) << "sending data with " << parts.Size() << " parts";
+  // LOG(debug) << "sending data with " << parts.Size() << " parts";
   Send(parts, fOutputChannelName);
   
   fEventCounter++;
@@ -148,7 +148,7 @@ void FairMQEx9SamplerBin::PostRun()
     fAckListener.join();
   }
 
-  LOG(INFO) << "PostRun() finished!";
+  LOG(info) << "PostRun() finished!";
 }
 
 void FairMQEx9SamplerBin::ListenForAcks()
@@ -164,7 +164,7 @@ void FairMQEx9SamplerBin::ListenForAcks()
       }
     }
 
-    LOG(INFO) << "Acknowledged " << numAcks << " messages.";
+    LOG(info) << "Acknowledged " << numAcks << " messages.";
   }
 }
 

@@ -87,7 +87,7 @@ void FairTestDetectorRecoTask::Exec(Option_t* /*opt*/)
             continue;
 
         /*
-        LOG(DEBUG) << " x= "  << digi->GetX()
+        LOG(debug) << " x= "  << digi->GetX()
                    << " y= " << digi->GetY()
                    << " z= " << digi->GetZ()
                    << " t= " << digi->GetTimeStamp();

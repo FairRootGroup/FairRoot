@@ -26,7 +26,7 @@ void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
         }
         catch (boost::archive::archive_exception& e)
         {
-            LOG(ERROR) << e.what();
+            LOG(error) << e.what();
         }
 
         int numInput = fHitVector.size();
@@ -38,7 +38,7 @@ void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
 
         if (fOutput->IsEmpty())
         {
-            LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
+            LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
         FairMQMessagePtr ack(fTransportFactory->CreateMessage());

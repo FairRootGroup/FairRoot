@@ -162,7 +162,7 @@ void FairTask::ExecuteTask(Option_t *option)
 
    if (fBreakin) return;
    if (gDebug > 1) {
-     LOG(INFO)<<"Execute task:"<<GetName()<<" : "<<GetTitle()<<FairLogger::endl;
+     LOG(info)<<"Execute task:"<<GetName()<<" : "<<GetTitle()<<FairLogger::endl;
    }
    FairMonitor::GetMonitor()->StartMonitoring(this,"EXEC");
    Exec(option);
@@ -203,7 +203,7 @@ void FairTask::ExecuteTasks(Option_t *option)
       }
 
       if (gDebug > 1) {
-	LOG(INFO)<<"Execute task:"<<task->GetName()<<" : "<<task->GetTitle()<<FairLogger::endl;
+	LOG(info)<<"Execute task:"<<task->GetName()<<" : "<<task->GetTitle()<<FairLogger::endl;
       }
       FairMonitor::GetMonitor()->StartMonitoring(task,"EXEC");
       task->Exec(option);

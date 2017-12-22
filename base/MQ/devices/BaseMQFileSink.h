@@ -59,7 +59,7 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
             }
         }
 
-        LOG(INFO) << "Received " << receivedMsg << " messages!";
+        LOG(info) << "Received " << receivedMsg << " messages!";
     }
 };
 

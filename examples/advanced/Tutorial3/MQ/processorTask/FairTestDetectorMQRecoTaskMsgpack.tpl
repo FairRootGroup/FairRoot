@@ -44,7 +44,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 
     if (!fRecoTask->fDigiArray)
     {
-        LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+        LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
     // execute task on the deserialized data (digis)
@@ -99,7 +99,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 
 //     if (!fRecoTask->fDigiArray)
 //     {
-//         LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+//         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
 //     }
 
 //     fRecoTask->Exec(opt);
@@ -142,7 +142,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 
 //     if (!fRecoTask->fDigiArray)
 //     {
-//         LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+//         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
 //     }
 
 //     fRecoTask->Exec(opt);

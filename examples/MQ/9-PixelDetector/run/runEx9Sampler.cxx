@@ -41,7 +41,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     }
   }
   else {
-    LOG(ERROR) << "Sampler \"" << samplerType 
+    LOG(error) << "Sampler \"" << samplerType 
 	       << "\" unknown! Set it to \"FairFileSource\" or \"PixelDigiSource\" or \"PixelDigiBinSource\"";
     return NULL;
   }

@@ -108,15 +108,15 @@ void ParameterMQServer::Run()
         if (Receive(req, fChannelName, 0) > 0)
         {
             string reqStr(static_cast<char*>(req->GetData()), req->GetSize());
-            LOG(INFO) << "Received parameter request from client: \"" << reqStr << "\"";
+            LOG(info) << "Received parameter request from client: \"" << reqStr << "\"";
 
             size_t pos = reqStr.rfind(",");
             string newParameterName = reqStr.substr(0, pos);
             int runId = stoi(reqStr.substr(pos + 1));
-            LOG(INFO) << "Parameter name: " << newParameterName;
-            LOG(INFO) << "Run ID: " << runId;
+            LOG(info) << "Parameter name: " << newParameterName;
+            LOG(info) << "Run ID: " << runId;
 
-            LOG(INFO) << "Retrieving parameter...";
+            LOG(info) << "Retrieving parameter...";
             // Check if the parameter name has changed to avoid getting same container repeatedly
             if (newParameterName != parameterName)
             {
@@ -125,7 +125,7 @@ void ParameterMQServer::Run()
             }
             fRtdb->initContainers(runId);
 
-            LOG(INFO) << "Sending following parameter to the client:";
+            LOG(info) << "Sending following parameter to the client:";
             if (par)
             {
                 par->print();
@@ -140,18 +140,18 @@ void ParameterMQServer::Run()
 
                 if (Send(rep, fChannelName, 0) < 0)
                 {
-                    LOG(ERROR) << "failed sending reply";
+                    LOG(error) << "failed sending reply";
                     break;
                 }
             }
             else
             {
-                LOG(ERROR) << "Parameter uninitialized!";
+                LOG(error) << "Parameter uninitialized!";
                 // Send an empty message back to keep the REQ/REP cycle
                 FairMQMessagePtr rep(NewMessage());
                 if (Send(rep, fChannelName, 0) < 0)
                 {
-                    LOG(ERROR) << "failed sending reply";
+                    LOG(error) << "failed sending reply";
                     break;
                 }
             }

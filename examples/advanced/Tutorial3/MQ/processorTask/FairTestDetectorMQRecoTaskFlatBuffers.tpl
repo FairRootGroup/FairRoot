@@ -21,12 +21,12 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     {
         new ((*fRecoTask->fDigiArray)[it - digis->begin()]) FairTestDetectorDigi((*it)->x(), (*it)->y(), (*it)->z(), (*it)->timestamp());
         static_cast<FairTestDetectorDigi*>(((*fRecoTask->fDigiArray)[it - digis->begin()]))->SetTimeStampError((*it)->timestampError());
-        // LOG(INFO) << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " " << (*it)->timestamp() << " " << (*it)->timestampError();
+        // LOG(info) << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " " << (*it)->timestamp() << " " << (*it)->timestampError();
     }
 
     if (!fRecoTask->fDigiArray)
     {
-        LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+        LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
     fRecoTask->Exec(opt);
@@ -41,7 +41,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
         {
             continue;
         }
-        // LOG(WARN) << " " << hit->GetDetectorID() << " " << hit->GetX() << " " << hit->GetY() << " " << hit->GetZ() << " " << hit->GetDx() << " " << hit->GetDy() << " " << hit->GetDz();
+        // LOG(warn) << " " << hit->GetDetectorID() << " " << hit->GetX() << " " << hit->GetY() << " " << hit->GetZ() << " " << hit->GetDx() << " " << hit->GetDy() << " " << hit->GetDz();
         HitBuilder hb(*builder);
         hb.add_detID(hit->GetDetectorID()); // detID:int
         hb.add_mcIndex(hit->GetRefIndex()); // GetRefIndex:int

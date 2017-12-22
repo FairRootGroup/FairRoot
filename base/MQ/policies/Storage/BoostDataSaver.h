@@ -58,7 +58,7 @@ class BoostDataSaver
         }
         catch (boost::archive::archive_exception& e)
         {
-            MQLOG(ERROR) << e.what();
+            LOG(error) << e.what();
         }
         TArchiveOut outArchive(outfile);
         outArchive << objArr;

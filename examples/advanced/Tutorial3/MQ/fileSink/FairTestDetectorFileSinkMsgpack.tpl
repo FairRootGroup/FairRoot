@@ -42,7 +42,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 
         if (fOutput->IsEmpty())
         {
-            LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
+            LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
         FairMQMessagePtr ack(fTransportFactory->CreateMessage());
@@ -90,7 +90,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 
 //             if (fOutput->IsEmpty())
 //             {
-//                 LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
+//                 LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
 //             }
 
 //             FairMQMessagePtr ack(fTransportFactory->CreateMessage());
@@ -100,7 +100,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 //         }
 //     }
 
-//     LOG(INFO) << "I've received " << receivedMsgs << " messages!";
+//     LOG(info) << "I've received " << receivedMsgs << " messages!";
 // }
 
 // template <>
@@ -143,7 +143,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 
 //             if (fOutput->IsEmpty())
 //             {
-//                 LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
+//                 LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
 //             }
 
 //             FairMQMessagePtr ack(fTransportFactory->CreateMessage());
@@ -153,7 +153,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 //         }
 //     }
 
-//     LOG(INFO) << "I've received " << receivedMsgs << " messages!";
+//     LOG(info) << "I've received " << receivedMsgs << " messages!";
 // }
 
 #endif /* MSGPACK */

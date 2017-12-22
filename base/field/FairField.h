@@ -77,18 +77,18 @@ class FairField : public TVirtualMagField
     /** Get x component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBx(Double_t, Double_t, Double_t) {LOG(WARNING)<<"FairField::GetBx Should be implemented in User class"<<FairLogger::endl; return 0;}
+    virtual Double_t GetBx(Double_t, Double_t, Double_t) {LOG(warn)<<"FairField::GetBx Should be implemented in User class"<<FairLogger::endl; return 0;}
 
 
     /** Get y component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBy(Double_t, Double_t, Double_t) {LOG(WARNING)<<"FairField::GetBy Should be implemented in User class"<<FairLogger::endl; return 0;}
+    virtual Double_t GetBy(Double_t, Double_t, Double_t) {LOG(warn)<<"FairField::GetBy Should be implemented in User class"<<FairLogger::endl; return 0;}
 
     /** Get z component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBz(Double_t, Double_t, Double_t) {LOG(WARNING)<<"FairField::GetBz Should be implemented in User class"<<FairLogger::endl; return 0;}
+    virtual Double_t GetBz(Double_t, Double_t, Double_t) {LOG(warn)<<"FairField::GetBz Should be implemented in User class"<<FairLogger::endl; return 0;}
 
 
     /** Get magnetic field. For use of GEANT3
@@ -103,13 +103,13 @@ class FairField : public TVirtualMagField
 
     /** Screen output. To be implemented in the concrete class. **/
     virtual void  Print(Option_t*) const {;}
-    virtual void GetBxyz(const Double_t[3], Double_t*) {LOG(WARNING)<<"FairField::GetBxyz Should be implemented in User class"<<FairLogger::endl;}
+    virtual void GetBxyz(const Double_t[3], Double_t*) {LOG(warn)<<"FairField::GetBxyz Should be implemented in User class"<<FairLogger::endl;}
 
 
 
     /**Fill Paramater*/
 
-    virtual void FillParContainer() {LOG(WARNING)<<"FairField::FillParContainer Should be implemented in User class"<<FairLogger::endl;}
+    virtual void FillParContainer() {LOG(warn)<<"FairField::FillParContainer Should be implemented in User class"<<FairLogger::endl;}
   protected:
 
     /** Field type. 1 = constant field, 2 = field map. **/

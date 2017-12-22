@@ -65,7 +65,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
   TObject*      tempObject;
   TClonesArray* tempArrays[10];
   int nofArrays = 0;
-  // LOG(DEBUG) << "******************************************************************************************************";
+  // LOG(debug) << "******************************************************************************************************";
   for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
   {
     Ex9TMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
@@ -73,7 +73,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
     if ( strcmp(tempObject->GetName(),"EventHeader.") == 0 )
     {
       fEventHeader = (PixelEventHeader*)tempObject;
-      // LOG(DEBUG) << "GOT PART [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() << "][" << fEventHeader->GetPartNo() << "]";
+      // LOG(debug) << "GOT PART [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() << "][" << fEventHeader->GetPartNo() << "]";
 
       // setting how many parts were received...
       fEvRIPair    .first  = fEventHeader->GetMCEntryNumber();
@@ -84,7 +84,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
       MultiMapDef::iterator it3;
       it3 = fObjectMap.find(fEvRIPartTrio);
       if ( it3 != fObjectMap.end() ) {
-        LOG(INFO) << "FairMQEx9Merger::Run(), shouldn't happen, already got objects for part " << fEvRIPartTrio.second 
+        LOG(info) << "FairMQEx9Merger::Run(), shouldn't happen, already got objects for part " << fEvRIPartTrio.second 
                   << ", event " << fEvRIPair.first << ", run " << fEvRIPair.second << ". Skipping this message!!!";
         nofReceivedParts = -1;
         break; // break the for(ipart) loop, as nothing else is left to do
@@ -93,7 +93,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
       std::map<std::pair<int,int>,int>::iterator it2;
       it2 = fNofPartsPerEventMap.find(fEvRIPair);
       if ( it2 == fNofPartsPerEventMap.end() ) {
-        // LOG(DEBUG) << "FIRST PART OF event " << fEvRIPair.first;
+        // LOG(debug) << "FIRST PART OF event " << fEvRIPair.first;
         fNofPartsPerEventMap[fEvRIPair] = 1;
         nofReceivedParts = 1;
       }
@@ -101,7 +101,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
         it2->second+=1;
         nofReceivedParts = it2->second;
       }
-      // LOG(DEBUG) << " got " << nofReceivedParts << " parts of event " << fEvRIPair.first;
+      // LOG(debug) << " got " << nofReceivedParts << " parts of event " << fEvRIPair.first;
     }
     else { 
       tempArrays[nofArrays] = (TClonesArray*)tempObject;
@@ -113,17 +113,17 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
   // not all parts are there yet, have to put them in buffer
   if ( nofReceivedParts != fNofParts )
     { 
-      // LOG(DEBUG) << "not all parts are yet here... adding to (size = " << fObjectMap.size() << ")";
-      // LOG(DEBUG) << "+" << fEventHeader->GetName() << "[" << fEvRIPartTrio.first.second << "][" << fEvRIPartTrio.first.first << "][" << fEvRIPartTrio.second << "]";
+      // LOG(debug) << "not all parts are yet here... adding to (size = " << fObjectMap.size() << ")";
+      // LOG(debug) << "+" << fEventHeader->GetName() << "[" << fEvRIPartTrio.first.second << "][" << fEvRIPartTrio.first.first << "][" << fEvRIPartTrio.second << "]";
       fObjectMap.insert(std::pair<std::pair<std::pair<int,int>,int>,TObject*>(fEvRIPartTrio,(TObject*)fEventHeader));
       for ( int iarray = 0 ; iarray < nofArrays ; iarray++ )
       {
-        // LOG(DEBUG) << "+" << tempArrays[iarray]->GetName() << "[" << fEvRIPartTrio.first.second << "][" << fEvRIPartTrio.first.first << "][" << fEvRIPartTrio.second << "]";
+        // LOG(debug) << "+" << tempArrays[iarray]->GetName() << "[" << fEvRIPartTrio.first.second << "][" << fEvRIPartTrio.first.first << "][" << fEvRIPartTrio.second << "]";
         fObjectMap.insert(std::pair<std::pair<std::pair<int,int>,int>,TObject*>(fEvRIPartTrio,(TObject*)tempArrays[iarray]));
       }
-      // LOG(DEBUG) << "                 now we have fObjectMap (size = " << fObjectMap.size() << ")";
+      // LOG(debug) << "                 now we have fObjectMap (size = " << fObjectMap.size() << ")";
       if ( printInfo) 
-        LOG(INFO) << ">> [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() << "][" << fEventHeader->GetPartNo() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
+        LOG(info) << ">> [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() << "][" << fEventHeader->GetPartNo() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
     }
   // got all the parts of the event, have to combine and send message, consisting of objects from tempArrays
   else
@@ -131,7 +131,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
       int currentEventPart = fEventHeader->GetPartNo();
       for ( int iarray = 0 ; iarray < nofArrays ; iarray++ ) 
       {
-        // LOG(DEBUG) << "BEFORE ADDING, TCA \"" << tempArrays[iarray]->GetName() << "\" has " << tempArrays[iarray]->GetEntries() << " entries.";
+        // LOG(debug) << "BEFORE ADDING, TCA \"" << tempArrays[iarray]->GetName() << "\" has " << tempArrays[iarray]->GetEntries() << " entries.";
         TClonesArray* arrayToAdd;
 
         for ( int ieventpart = 0 ; ieventpart < fNofParts ; ieventpart++ ) {
@@ -142,7 +142,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
             if ( tempArrays[iarray]->GetName() == it->second->GetName() ) {
               arrayToAdd = (TClonesArray*)it->second;
               tempArrays[iarray]->AbsorbObjects(arrayToAdd);
-              // LOG(DEBUG) << "FOUND ONE!, TCA has now " << tempArrays[iarray]->GetEntries() << " entries.";
+              // LOG(debug) << "FOUND ONE!, TCA has now " << tempArrays[iarray]->GetEntries() << " entries.";
             }
           }
         }
@@ -175,7 +175,7 @@ bool FairMQEx9Merger::MergeData(FairMQParts& parts, int /*index*/)
       Send(partsOut, fOutputChannelName);
       fNofSentMessages++;
       if ( printInfo )
-        LOG(INFO) << ">> [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() << "][" << fEventHeader->GetPartNo() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
+        LOG(info) << ">> [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() << "][" << fEventHeader->GetPartNo() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
     }
 
   return true;
