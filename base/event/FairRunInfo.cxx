@@ -78,11 +78,11 @@ void FairRunInfo::CalculateTimeDifference()
 void FairRunInfo::PrintInfo()
 {
 
-  LOG(DEBUG) << "Time to execute 1 event: " << fTimeDiff.back() << "s" 
+  LOG(debug) << "Time to execute 1 event: " << fTimeDiff.back() << "s" 
              << FairLogger::endl;
-  LOG(DEBUG) << "Used resident memory: " << fResidentMemory.back() 
+  LOG(debug) << "Used resident memory: " << fResidentMemory.back() 
              << " MB" << FairLogger::endl;
-  LOG(DEBUG) << "Used virtual memory: " << fVirtualMemory.back()
+  LOG(debug) << "Used virtual memory: " << fVirtualMemory.back()
              << " MB" << FairLogger::endl;
 }
 //_____________________________________________________________________________
@@ -158,7 +158,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   TFile* oldfile = gFile;
 
   TString directory = gFile->GetName();
-  LOG(DEBUG) << "Name: " << gFile->GetName() << FairLogger::endl;
+  LOG(debug) << "Name: " << gFile->GetName() << FairLogger::endl;
   Ssiz_t posLastSlash = directory.Last('/');
   directory.Remove(posLastSlash+1, directory.Length()-posLastSlash-1);
   TString filename = "";
@@ -168,11 +168,11 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
 
 
   directory = gFile->GetName();
-  LOG(DEBUG) << "Name: " << directory.Data() << FairLogger::endl;
+  LOG(debug) << "Name: " << directory.Data() << FairLogger::endl;
   posLastSlash = directory.Last('/');
   directory.Remove(0, posLastSlash+1);
   directory.ReplaceAll(".root","");
-  LOG(DEBUG) << "Name: " << directory.Data() << FairLogger::endl;
+  LOG(debug) << "Name: " << directory.Data() << FairLogger::endl;
 
 
 
@@ -180,7 +180,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   filename += "FairRunInfo_";
   filename += directory;
   filename += ".root";
-  LOG(DEBUG) << "Filename: " << filename.Data() << FairLogger::endl;
+  LOG(debug) << "Filename: " << filename.Data() << FairLogger::endl;
 
   TFile* f1 = TFile::Open(filename, "recreate");
   f1->cd();

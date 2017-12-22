@@ -80,8 +80,8 @@ class TriviallyCopyableDataSaver
         }
         else
         {
-            MQLOG(ERROR) << "In ReadArr(std::ifstream& , std::vector<std::vector<TPayload> >& ) :";
-            MQLOG(ERROR) << "(de)serialization of object is not supported (Object must be a 'trivially copyable' data class).";
+            LOG(error) << "In ReadArr(std::ifstream& , std::vector<std::vector<TPayload> >& ) :";
+            LOG(error) << "(de)serialization of object is not supported (Object must be a 'trivially copyable' data class).";
         }
     }
 
@@ -107,8 +107,8 @@ class TriviallyCopyableDataSaver
         }
         else
         {
-            MQLOG(ERROR) << "In ReadArr(std::ifstream& infile, T* ObjArr, long posArr = 0):";
-            MQLOG(ERROR) << "(de)serialization of object is not supported (Object must be a 'trivially copyable' data class).";
+            LOG(error) << "In ReadArr(std::ifstream& infile, T* ObjArr, long posArr = 0):";
+            LOG(error) << "(de)serialization of object is not supported (Object must be a 'trivially copyable' data class).";
         }
     }
 

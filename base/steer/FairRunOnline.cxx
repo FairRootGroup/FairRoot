@@ -78,7 +78,7 @@ FairRunOnline::FairRunOnline()
 {
   fgRinstance = this;
   fAna = kTRUE;
-  LOG(INFO) << "FairRunOnline constructed at " << this << FairLogger::endl;
+  LOG(info) << "FairRunOnline constructed at " << this << FairLogger::endl;
 }
 //_____________________________________________________________________________
 FairRunOnline::FairRunOnline(FairSource* source)
@@ -94,7 +94,7 @@ FairRunOnline::FairRunOnline(FairSource* source)
   fRootManager->SetSource(source);
   fgRinstance = this;
   fAna = kTRUE;
-  LOG(INFO) << "FairRunOnline constructed at " << this << FairLogger::endl;
+  LOG(info) << "FairRunOnline constructed at " << this << FairLogger::endl;
 }
 //_____________________________________________________________________________
 
@@ -128,9 +128,9 @@ void handler_ctrlc(int)
 //_____________________________________________________________________________
 void FairRunOnline::Init()
 {
-  LOG(INFO)<<"FairRunOnline::Init"<<FairLogger::endl;
+  LOG(info)<<"FairRunOnline::Init"<<FairLogger::endl;
   if (fIsInitialized) {
-    LOG(FATAL) << "Error Init is already called before!" << FairLogger::endl;
+    LOG(fatal) << "Error Init is already called before!" << FairLogger::endl;
     exit(-1);
   } else {
     fIsInitialized = kTRUE;
@@ -214,10 +214,10 @@ void FairRunOnline::Init()
   //  InitContainers();
   // --- Get event header from Run
   if ( ! fEvtHeader ) {
-    LOG(FATAL) << "FairRunOnline::InitContainers:No event header in run!" << FairLogger::endl;
+    LOG(fatal) << "FairRunOnline::InitContainers:No event header in run!" << FairLogger::endl;
     return;
   }
-  LOG(INFO) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
+  LOG(info) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
   fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
   fEvtHeader->SetRunId(fRunId);
 
@@ -243,9 +243,9 @@ void FairRunOnline::InitContainers()
   fRtdb = GetRuntimeDb();
   FairBaseParSet* par=static_cast<FairBaseParSet*>
                       (fRtdb->getContainer("FairBaseParSet"));
-  LOG(INFO) << "FairRunOnline::InitContainers: par = " << par << FairLogger::endl;
+  LOG(info) << "FairRunOnline::InitContainers: par = " << par << FairLogger::endl;
   if (NULL == par)
-    LOG(WARNING)<<"FairRunOnline::InitContainers: no  'FairBaseParSet' container !"<<FairLogger::endl;
+    LOG(warn)<<"FairRunOnline::InitContainers: no  'FairBaseParSet' container !"<<FairLogger::endl;
 
   if (par) {
     fEvtHeader = static_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
@@ -269,10 +269,10 @@ void FairRunOnline::InitContainers()
       //      fEvtHeader = dynamic_cast<FairEventHeader*> (FairRunOnline::Instance()->GetEventHeade
       GetEventHeader();
       if ( ! fEvtHeader ) {
-	LOG(FATAL) << "FairRunOnline::InitContainers:No event header in run!" << FairLogger::endl;
+	LOG(fatal) << "FairRunOnline::InitContainers:No event header in run!" << FairLogger::endl;
 	return;
       }
-      LOG(INFO) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
+      LOG(info) << "FairRunOnline::InitContainers: event header at " << fEvtHeader << FairLogger::endl;
       fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
     }
 }
@@ -286,7 +286,7 @@ Int_t FairRunOnline::EventLoop()
   Int_t tmpId = fEvtHeader->GetRunId();
 
   if ( tmpId != -1 && tmpId != fRunId ) {
-    LOG(INFO) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId << FairLogger::endl;
+    LOG(info) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId << FairLogger::endl;
     fRunId = tmpId;
     Reinit( fRunId );
     fRootManager->GetSource()->ReInitUnpackers();
@@ -440,10 +440,10 @@ void  FairRunOnline::SetContainerStatic(Bool_t tempBool)
 {
   fStatic=tempBool;
   if ( fStatic ) {
-    LOG(INFO) << "Parameter Cont. initialisation is static" 
+    LOG(info) << "Parameter Cont. initialisation is static" 
 	      << FairLogger::endl;
   } else {
-    LOG(INFO) << "Parameter Cont. initialisation is NOT static"
+    LOG(info) << "Parameter Cont. initialisation is NOT static"
 	      << FairLogger::endl;
   }
 }
@@ -474,7 +474,7 @@ void FairRunOnline::AddObject(TObject* object)
         }
         else
         {
-            LOG(WARNING) << "FairRunOnline::AddObject : unrecognized object type : " << classname << FairLogger::endl;
+            LOG(warn) << "FairRunOnline::AddObject : unrecognized object type : " << classname << FairLogger::endl;
         }
     }
 }

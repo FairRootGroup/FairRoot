@@ -56,7 +56,7 @@ InitStatus FairTestDetectorTimeRecoTask::Init()
     FairRootManager* ioman = FairRootManager::Instance();
     if (!ioman)
     {
-      LOG(ERROR) <<"FairTestDetectorTimeRecoTask::Init: "
+      LOG(error) <<"FairTestDetectorTimeRecoTask::Init: "
 		 << "RootManager not instantiated!" << FairLogger::endl;
         return kFATAL;
     }
@@ -64,7 +64,7 @@ InitStatus FairTestDetectorTimeRecoTask::Init()
     fDigiArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorSortedDigi"));
     if (!fDigiArray)
     {
-      LOG(WARNING) << "FairTestDetectorTimeRecoTask::Init: "
+      LOG(warn) << "FairTestDetectorTimeRecoTask::Init: "
 		   << "No Point array!" << FairLogger::endl;
         return kERROR;
     }
@@ -88,21 +88,21 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* /*opt*/)
     if (FairRunAna::Instance()->IsTimeStamp())
     {
         fDigiArray = FairRootManager::Instance()->GetData("FairTestDetectorSortedDigi", fFunctor, fTime);
-        //    LOG(INFO) << "EventTime: " << FairRootManager::Instance()->GetEntryNr() << " " << FairRootManager::Instance()->GetEventTime()
+        //    LOG(info) << "EventTime: " << FairRootManager::Instance()->GetEntryNr() << " " << FairRootManager::Instance()->GetEventTime()
 	    //          << FairLogger::endl;
     }
 
 
     // fill the map
 
-    //LOG(INFO) << "NDigis: " << fDigiArray->GetEntries() << FairLogger::endl;
+    //LOG(info) << "NDigis: " << fDigiArray->GetEntries() << FairLogger::endl;
 
     for (int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++)
     {
         FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fDigiArray->At(ipnt));
         if (!digi)
         {
-	  LOG(WARNING)  << "No digi!" << FairLogger::endl;
+	  LOG(warn)  << "No digi!" << FairLogger::endl;
             continue;
         }
 

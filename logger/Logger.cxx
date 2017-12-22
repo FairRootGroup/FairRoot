@@ -235,7 +235,7 @@ void Logger::SetConsoleSeverity(const string& severityStr)
     }
     else
     {
-        LOG(ERROR) << "Unknown severity setting: '" << severityStr << "', setting to default 'info'.";
+        LOG(error) << "Unknown severity setting: '" << severityStr << "', setting to default 'info'.";
         SetConsoleSeverity(Severity::info);
     }
 }

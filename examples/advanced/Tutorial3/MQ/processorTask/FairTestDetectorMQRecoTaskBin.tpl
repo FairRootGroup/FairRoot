@@ -24,7 +24,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     if (!fRecoTask->fDigiArray)
     {
-        LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+        LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
     fRecoTask->Exec(opt);

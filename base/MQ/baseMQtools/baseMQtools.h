@@ -18,7 +18,7 @@
 #include <boost/archive/text_iarchive.hpp>
 
 // FairRoot - FairMQ
-#include "FairMQLogger.h"
+#include "FairLogger.h"
 
 namespace baseMQ
 {
@@ -134,74 +134,73 @@ using has_InitTClonesArray = std::integral_constant<bool, details::has_InitTClon
 
 } // end namespace resolve
 
-/// ///////////////////////// --- TYPE INFO --- /////////////////////////
 namespace typeinfo
 {
 template <typename T, typename Archive=boost::archive::text_iarchive>
 void DataTypeInfo(std::string classname)
 {
-    MQLOG(INFO)<<"Info on type "<<classname;
+    LOG(info) << "Info on type " << classname;
+
     if(std::is_class<T>::value)
     {
 
         if (std::is_pod<T>::value)
         {
-            MQLOG(INFO)<<classname<<" is POD" ;
+            LOG(info) << classname << " is POD" ;
         }
         else
         {
-            MQLOG(INFO)<<classname<<" is not POD" ;
+            LOG(info) << classname << " is not POD" ;
         }
 
 
         if (std::is_trivial<T>::value)
         {
-            MQLOG(INFO)<<classname<<" is trivial" ;
+            LOG(info) << classname << " is trivial" ;
         }
         else
         {
-            MQLOG(INFO)<<classname<<" is not trivial" ;
+            LOG(info) << classname << " is not trivial" ;
         }
 
 
         // below commented because not yet implemented in gcc
         //if(std::is_trivially_copyable<TPayload>::value) not implemented yet in gcc 4.8.2
-        //    MQLOG(INFO)<<classname<<" is trivially copyable" ;
+        //    LOG(info) << classname << " is trivially copyable" ;
         //else
-        //    MQLOG(INFO)<<classname<<" is not trivially copyable" ;
+        //    LOG(info) << classname << " is not trivially copyable" ;
 
 
         if (std::is_standard_layout<T>::value)
         {
-            MQLOG(INFO)<<classname<<" is standard layout" ;
+            LOG(info) << classname << " is standard layout" ;
         }
         else
         {
-            MQLOG(INFO)<<classname<<" is not standard layout" ;
+            LOG(info) << classname << " is not standard layout" ;
         }
 
 
         if (resolve::has_BoostSerialization<T, void(Archive&, const unsigned int)>::value)
         {
-            MQLOG(INFO)<<classname<<" is boost serializable" ;
+            LOG(info) << classname << " is boost serializable" ;
         }
         else
         {
             if (resolve::has_BoostSerialization<T, void(Archive&)>::value)
             {
-                MQLOG(INFO)<<classname<<" is boost serializable" ;
+                LOG(info) << classname << " is boost serializable" ;
             }
             else
             {
-                MQLOG(INFO)<<classname<<" has no void serialize(BoostArchive&) member" ;
+                LOG(info) << classname << " has no void serialize(BoostArchive&) member" ;
             }
         }
     }
     else
     {
-        MQLOG(INFO)<<classname<<" is not a class" ;
+        LOG(info) << classname << " is not a class" ;
     }
-    MQLOG(INFO)<<"";
 };
 
 } // end namespace TypeInfo

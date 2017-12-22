@@ -52,7 +52,7 @@ class FairMQUnpacker : public FairMQDevice
     {
         if (fSubEventChanMap.size() > 0)
         {
-            LOG(ERROR) << "Only one input channel allowed for this device";
+            LOG(error) << "Only one input channel allowed for this device";
         }
         else
         {
@@ -61,7 +61,7 @@ class FairMQUnpacker : public FairMQDevice
 
             if (fSubEventChanMap.count(fInputChannelName))
             {
-                LOG(WARN) << "FairMQLmdSampler : subevent header key '("
+                LOG(warn) << "FairMQLmdSampler : subevent header key '("
                           << type << "," << subType << "," << procid << "," << subCrate << "," << control << ")' has already been defined. "
                           << "It will be overwritten with new channel name = " << fInputChannelName;
             }
@@ -121,10 +121,10 @@ class FairMQUnpacker : public FairMQDevice
                     int dataSize = *(static_cast<int*>(msgSize->GetData()));
                     int* subEvtPtr = static_cast<int*>(msg->GetData());
 
-                    // LOG(DEBUG) << "array size = " << dataSize;
+                    // LOG(debug) << "array size = " << dataSize;
                     // if (dataSize > 0)
                     // {
-                    //     LOG(DEBUG) << "first element in array = " << *subEvtPtr;
+                    //     LOG(debug) << "first element in array = " << *subEvtPtr;
                     // }
 
                     fUnpacker->DoUnpack(subEvtPtr, dataSize);

@@ -50,7 +50,7 @@ void FairTestDetectorDigiWriteoutBuffer::AddNewDataToTClonesArray(FairTimeStamp*
     TClonesArray* myArray = ioman->GetTClonesArray(fBranchName);
     if (fVerbose > 1)
     {
-      LOG(INFO) << "Data Inserted: " 
+      LOG(info) << "Data Inserted: " 
 		<< static_cast<FairTestDetectorDigi*>(data)->ToString() 
 		<< FairLogger::endl;
     }

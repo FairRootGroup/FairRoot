@@ -31,7 +31,7 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayl
         db.add_timestampError(digi->GetTimeStampError()); // timestampError:double
 
         digis[i] = db.Finish();
-        // LOG(INFO) << digi->GetX() << " " << digi->GetY() << " " << digi->GetZ() << " " << digi->GetTimeStamp() << " " << digi->GetTimeStampError();
+        // LOG(info) << digi->GetX() << " " << digi->GetY() << " " << digi->GetZ() << " " << digi->GetTimeStamp() << " " << digi->GetTimeStampError();
     }
 
     auto dvector = builder->CreateVector(digis, nDigis);

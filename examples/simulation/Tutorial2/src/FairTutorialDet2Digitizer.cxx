@@ -62,7 +62,7 @@ FairTutorialDet2Digitizer::~FairTutorialDet2Digitizer()
 // ----  Initialisation  ----------------------------------------------
 void FairTutorialDet2Digitizer::SetParContainers()
 {
-  LOG(INFO) << "FairTutorialDet2Digitizer :: SetParContainers() " 
+  LOG(info) << "FairTutorialDet2Digitizer :: SetParContainers() " 
 	    << FairLogger::endl;
 
 
@@ -82,7 +82,7 @@ void FairTutorialDet2Digitizer::SetParContainers()
 InitStatus FairTutorialDet2Digitizer::ReInit()
 {
 
-  LOG(INFO) << " FairTutorialDet2Digitizer :: ReInit() " 
+  LOG(info) << " FairTutorialDet2Digitizer :: ReInit() " 
 	    << FairLogger::endl;
 
 
@@ -100,12 +100,12 @@ InitStatus FairTutorialDet2Digitizer::ReInit()
 InitStatus FairTutorialDet2Digitizer::Init()
 {
 
-  LOG(INFO) << " FairTutorialDet2Digitizer :: Init() " 
+  LOG(info) << " FairTutorialDet2Digitizer :: Init() " 
 	    << FairLogger::endl;
 
   FairRootManager* ioman = FairRootManager::Instance();
   if ( ! ioman ) { 
-    LOG(FATAL) << "No FairRootManager" << FairLogger::endl; 
+    LOG(fatal) << "No FairRootManager" << FairLogger::endl; 
     return kERROR;
   } else { 
 
@@ -114,8 +114,8 @@ InitStatus FairTutorialDet2Digitizer::Init()
 
     fCustomData = ioman->InitObjectAs<std::vector<CustomClass> const*>("TutorialCustomData");
     if ( ! fTutorialDetPoints ) {
-      LOG(ERROR) << "No TutorialDetPoints array!" << FairLogger::endl;
-      LOG(ERROR) << "Task will be inactive" << FairLogger::endl;
+      LOG(error) << "No TutorialDetPoints array!" << FairLogger::endl;
+      LOG(error) << "Task will be inactive" << FairLogger::endl;
       return kERROR;
     }
 
@@ -142,12 +142,12 @@ void FairTutorialDet2Digitizer::Exec(Option_t* /*option*/)
 
   // Here we print something
 
-  LOG(INFO) <<" I am in FairTutorialDet2Digitizer::Exec" 
+  LOG(info) <<" I am in FairTutorialDet2Digitizer::Exec" 
 	    << FairLogger::endl;
 
-  LOG(INFO) << " The custom data input vector has size" << fCustomData->size() << "\n"; 
+  LOG(info) << " The custom data input vector has size" << fCustomData->size() << "\n"; 
   for(auto& entry : *fCustomData) {
-    LOG(INFO) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
+    LOG(info) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
     // process data and fill a structure here, which can be consumed by the next task
     fCustomData2->emplace_back(entry.GetX()*2, entry.GetQ()*10);
   }
@@ -197,21 +197,21 @@ void FairTutorialDet2Digitizer::Exec(Option_t* /*option*/)
         Float_t sizey = shape->GetDY();
         Float_t sizez = shape->GetDZ();
 
-  //        LOG(INFO) <<"x_in: " << pt->GetXIn() << FairLogger::endl;
-  // LOG(INFO) <<"x_mean: " << x_mean << FairLogger::endl;
-        //LOG(INFO) <<"x_out: " << pt->GetXOut() << FairLogger::endl;
+  //        LOG(info) <<"x_in: " << pt->GetXIn() << FairLogger::endl;
+  // LOG(info) <<"x_mean: " << x_mean << FairLogger::endl;
+        //LOG(info) <<"x_out: " << pt->GetXOut() << FairLogger::endl;
 
-        //LOG(INFO) <<"y: " << y_mean << FairLogger::endl;
+        //LOG(info) <<"y: " << y_mean << FairLogger::endl;
 
-        //LOG(INFO) <<"z_in: " << pt->GetZIn() << FairLogger::endl;
-        //LOG(INFO) <<"z_mean: " << z_mean << FairLogger::endl;
-  //        LOG(INFO) <<"z_out: " << pt->GetZOut() << FairLogger::endl;
+        //LOG(info) <<"z_in: " << pt->GetZIn() << FairLogger::endl;
+        //LOG(info) <<"z_mean: " << z_mean << FairLogger::endl;
+  //        LOG(info) <<"z_out: " << pt->GetZOut() << FairLogger::endl;
 
 
         if (matrix->IsRotation()){
-          LOG(INFO) <<"Module is rotated" << FairLogger::endl;
+          LOG(info) <<"Module is rotated" << FairLogger::endl;
   } else {
-          LOG(INFO) <<"Module is not rotated" << FairLogger::endl;
+          LOG(info) <<"Module is not rotated" << FairLogger::endl;
   }
 
 
@@ -232,7 +232,7 @@ void FairTutorialDet2Digitizer::Finish()
 void FairTutorialDet2Digitizer::Register()
 {
   // testing to transfer a variable to another task via a memory branch
-  LOG(INFO) << "Digitizer::Register\n";
+  LOG(info) << "Digitizer::Register\n";
   FairRootManager::Instance()->RegisterAny("InMemory1", fCustomData2, false);
 }
 // --------------------------------------------------------------------

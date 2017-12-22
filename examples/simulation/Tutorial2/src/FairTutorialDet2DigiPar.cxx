@@ -58,18 +58,18 @@ void FairTutorialDet2DigiPar::clear()
 void FairTutorialDet2DigiPar::printparams()
 {
 
-  LOG(INFO) <<"Print"<<FairLogger::endl;
-  LOG(INFO) << "ftutdetdigiparstation: " << ftutdetdigiparstation 
+  LOG(info) <<"Print"<<FairLogger::endl;
+  LOG(info) << "ftutdetdigiparstation: " << ftutdetdigiparstation 
 	    << FairLogger::endl;
   Int_t size =  ftutdetdigiparsector.GetSize();
-  LOG(INFO) <<"size: " << size << FairLogger::endl;
+  LOG(info) <<"size: " << size << FairLogger::endl;
   for ( Int_t i=0; i< size; i++) {
-    LOG(INFO) << i <<" :" << ftutdetdigiparsector.GetAt(i) << FairLogger::endl;
+    LOG(info) << i <<" :" << ftutdetdigiparsector.GetAt(i) << FairLogger::endl;
   }
   size =  ftutdetdigipar->GetSize();
-  LOG(INFO) <<"size: " << size << FairLogger::endl;
+  LOG(info) <<"size: " << size << FairLogger::endl;
   for ( Int_t i=0; i< size; i++) {
-    LOG(INFO) << i <<" :" << ftutdetdigipar->GetAt(i) << FairLogger::endl;
+    LOG(info) << i <<" :" << ftutdetdigipar->GetAt(i) << FairLogger::endl;
   }
 
 }
@@ -78,7 +78,7 @@ void FairTutorialDet2DigiPar::printparams()
 void FairTutorialDet2DigiPar::putParams(FairParamList* l)
 {
   //   print();
-  LOG(INFO) << "I am in FairTutorialDet2DigiPar::putParams " 
+  LOG(info) << "I am in FairTutorialDet2DigiPar::putParams " 
 	    << FairLogger::endl;
   if (!l) { return; }
   l->add("FairTutorialDet2DigiStations", ftutdetdigiparstation);
@@ -88,7 +88,7 @@ void FairTutorialDet2DigiPar::putParams(FairParamList* l)
     count_sectors+=ftutdetdigiparsector[i];
   }
   Int_t array_size = (count_sectors * 10 + ftutdetdigiparstation * 3);
-  LOG(INFO) << "Array Size: " << array_size << FairLogger::endl;
+  LOG(info) << "Array Size: " << array_size << FairLogger::endl;
   /*   Float_t zwischen[array_size];
      for ( Int_t i=0; i< array_size; i++) {
        zwischen[i] = ftutdetdigipar.GetAt(i);
@@ -104,7 +104,7 @@ Bool_t FairTutorialDet2DigiPar::getParams(FairParamList* l)
 {
   //print();
 
-  LOG(INFO) << "I am in FairTutorialDet2DigiPar::getParams " 
+  LOG(info) << "I am in FairTutorialDet2DigiPar::getParams " 
 	    << FairLogger::endl;
 
   if (!l) { return kFALSE; }
@@ -117,15 +117,15 @@ Bool_t FairTutorialDet2DigiPar::getParams(FairParamList* l)
   for ( Int_t i=0; i< ftutdetdigiparstation; i++) {
     count_sectors+=ftutdetdigiparsector[i];
   }
-  LOG(INFO) << "Total number of sectors: " << count_sectors
+  LOG(info) << "Total number of sectors: " << count_sectors
 	    <<FairLogger::endl;
 
   Int_t array_size = (count_sectors * 10 + ftutdetdigiparstation * 3);
-  LOG(INFO) << "Array Size: " << array_size << FairLogger::endl;
+  LOG(info) << "Array Size: " << array_size << FairLogger::endl;
   ftutdetdigipar->Set(array_size);
   //Float_t zwischen[array_size];
   if (!(l->fill("FairTutorialDet2DigiPar",ftutdetdigipar))) {
-    LOG(WARNING) << "Could not initialize FairTutorialDet2DigiPar"
+    LOG(warn) << "Could not initialize FairTutorialDet2DigiPar"
 		 << FairLogger::endl;
     return kFALSE;
   }

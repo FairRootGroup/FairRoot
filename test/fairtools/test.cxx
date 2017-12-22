@@ -26,7 +26,7 @@
 std::cout<<"Das sollte schwarz sein."<<std::endl;
 */
 
-//    LOG(INFO) << "Value: "<< val <<" "<< FairLogger::endl;
+//    LOG(info) << "Value: "<< val <<" "<< FairLogger::endl;
 
 /*
 std::cout<<"Das sollte wieder schwarz sein."<<std::endl;
@@ -74,7 +74,7 @@ void logToLoggerCout(int iterations)
 {
   for (int i=0; i < iterations; i++) {
     Int_t val = i * i - (i-1);
-    LOG(INFO) << "Value: "<< val <<" "<< FairLogger::endl;
+    LOG(info) << "Value: "<< val <<" "<< FairLogger::endl;
   }
 }
 
@@ -82,8 +82,8 @@ void logToLoggerCoutTest(int iterations)
 {
   for (int i=0; i < iterations; i++) {
     Int_t val = i * i - (i-1);
-    LOG(INFO) << "Value: "<< val <<" "<< FairLogger::endl;
-    LOG(DEBUG) << "Value: "<< val <<" "<< FairLogger::endl;
+    LOG(info) << "Value: "<< val <<" "<< FairLogger::endl;
+    LOG(debug) << "Value: "<< val <<" "<< FairLogger::endl;
   }
 }
 
@@ -162,8 +162,8 @@ int main(int argc, char* argv[])
   //gLogger->SetLogToFile(false);
   //gLogger->SetLogToScreen(false);
   //gLogger->Fatal(MESSAGE_ORIGIN, "This is a fatal message.");
-  //LOG(INFO) << "This message should never be printed." << FairLogger::endl;
-  //LOG(FATAL) << "This is a fatal message" << FairLogger::endl;
+  //LOG(info) << "This message should never be printed." << FairLogger::endl;
+  //LOG(fatal) << "This is a fatal message" << FairLogger::endl;
   //exit(-42);
 
   int iterations = 1000000;

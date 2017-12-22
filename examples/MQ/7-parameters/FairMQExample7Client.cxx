@@ -57,7 +57,7 @@ class FairMQExample7TMessage : public TMessage
 
 bool FairMQExample7Client::ConditionalRun()
 {
-    LOG(INFO) << "Requesting parameter \"" << fParameterName << "\" for Run ID " << fRunId << ".";
+    LOG(info) << "Requesting parameter \"" << fParameterName << "\" for Run ID " << fRunId << ".";
 
     // NewSimpleMessage creates a copy of the data and takes care of its destruction (after the transfer takes place).
     // Should only be used for small data because of the cost of an additional copy
@@ -72,12 +72,12 @@ bool FairMQExample7Client::ConditionalRun()
             {
                 FairMQExample7TMessage tmsg(rep->GetData(), rep->GetSize());
                 FairMQExample7ParOne* par = static_cast<FairMQExample7ParOne*>(tmsg.ReadObject(tmsg.GetClass()));
-                LOG(INFO) << "Received parameter from the server:";
+                LOG(info) << "Received parameter from the server:";
                 par->print();
             }
             else
             {
-                LOG(ERROR) << "Received empty reply. Parameter not available";
+                LOG(error) << "Received empty reply. Parameter not available";
             }
         }
     }
@@ -86,7 +86,7 @@ bool FairMQExample7Client::ConditionalRun()
 
     if (fMaxIterations > 0 && ++fNumIterations >= fMaxIterations)
     {
-        LOG(INFO) << "Configured maximum number of iterations reached. Leaving RUNNING state.";
+        LOG(info) << "Configured maximum number of iterations reached. Leaving RUNNING state.";
         return false;
     }
 

@@ -54,12 +54,12 @@ class Ex2Sampler : public FairMQDevice
             }
             else
             {
-                LOG(ERROR) << "Could not find tree 'MyDigi'";
+                LOG(error) << "Could not find tree 'MyDigi'";
             }
         }
         else
         {
-            LOG(ERROR) << "Could not open file " << fFileName << " in SimpleTreeReader::InitSource()";
+            LOG(error) << "Could not open file " << fFileName << " in SimpleTreeReader::InitSource()";
         }
     }
 
@@ -67,7 +67,7 @@ class Ex2Sampler : public FairMQDevice
     {
         int64_t sentMsgs(0);
         const int64_t numEvents = fTree->GetEntries();
-        LOG(INFO) << "Number of events to process: " << numEvents;
+        LOG(info) << "Number of events to process: " << numEvents;
         auto tStart = std::chrono::high_resolution_clock::now();
         for (int64_t idx = 0; idx < numEvents; idx++)
         {
@@ -94,8 +94,8 @@ class Ex2Sampler : public FairMQDevice
             }
         }
         auto tEnd = std::chrono::high_resolution_clock::now();
-        LOG(INFO) << "Sent everything in: " << std::chrono::duration<double, std::milli>(tEnd - tStart).count() << " ms";
-        LOG(INFO) << "Sent " << sentMsgs << " messages!";
+        LOG(info) << "Sent everything in: " << std::chrono::duration<double, std::milli>(tEnd - tStart).count() << " ms";
+        LOG(info) << "Sent " << sentMsgs << " messages!";
     }
 
   private:

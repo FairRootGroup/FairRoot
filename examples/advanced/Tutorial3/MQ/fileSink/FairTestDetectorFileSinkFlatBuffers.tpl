@@ -25,12 +25,12 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>
             TVector3 pos((*it)->x(), (*it)->y(), (*it)->z());
             TVector3 dpos((*it)->dx(), (*it)->dy(), (*it)->dz());
             new ((*fOutput)[it - hits->begin()]) FairTestDetectorHit((*it)->detID(), (*it)->mcIndex(), pos, dpos);
-            // LOG(WARN) << " " << (*it)->detID() << " " << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " " << (*it)->dx() << " " << (*it)->dy() << " " << (*it)->dz();
+            // LOG(warn) << " " << (*it)->detID() << " " << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " " << (*it)->dx() << " " << (*it)->dy() << " " << (*it)->dz();
         }
 
         if (fOutput->IsEmpty())
         {
-            LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
+            LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
         FairMQMessagePtr ack(fTransportFactory->CreateMessage());

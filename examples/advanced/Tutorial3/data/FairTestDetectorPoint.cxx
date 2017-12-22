@@ -52,14 +52,14 @@ FairTestDetectorPoint::~FairTestDetectorPoint()
 // -----   Public method Print   -------------------------------------------
 void FairTestDetectorPoint::Print(const Option_t* /*opt*/) const
 {
-    LOG(INFO) << "FairTestDetectorPoint: FairTestDetector point for track " 
+    LOG(info) << "FairTestDetectorPoint: FairTestDetector point for track " 
 	      << fTrackID << " in detector " << fDetectorID 
 	      << FairLogger::endl;
-    LOG(INFO) << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm" 
+    LOG(info) << "    Position (" << fX << ", " << fY << ", " << fZ << ") cm" 
 	      << FairLogger::endl;
-    LOG(INFO) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV" 
+    LOG(info) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV" 
 	      << FairLogger::endl;
-    LOG(INFO) << "    Time " << fTime << " ns,  Length " << fLength 
+    LOG(info) << "    Time " << fTime << " ns,  Length " << fLength 
 	      << " cm,  Energy loss " << fELoss * 1.0e06 << " keV" 
 	      << FairLogger::endl;
 }

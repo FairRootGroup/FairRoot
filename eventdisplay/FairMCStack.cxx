@@ -46,17 +46,17 @@ FairMCStack::FairMCStack(const char* name, Int_t iVerbose)
 // -------------------------------------------------------------------------
 InitStatus FairMCStack::Init()
 {
-  LOG(DEBUG) <<  "FairMCStack::Init()" << FairLogger::endl;
+  LOG(debug) <<  "FairMCStack::Init()" << FairLogger::endl;
   FairRootManager* fManager = FairRootManager::Instance();
   fTrackList = (TClonesArray*)fManager->GetObject("MCTrack");
   if(fTrackList==0) {
-    LOG(ERROR) << "FairMCStack::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< FairLogger::endl;
+    LOG(error) << "FairMCStack::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< FairLogger::endl;
     SetActive(kFALSE);
   }
-  LOG(DEBUG2) <<  "FairMCStack::Init() get track list" << fTrackList<< FairLogger::endl; 
-  LOG(DEBUG2) <<  "FairMCStack::Init()  create propagator" << FairLogger::endl; 
+  LOG(debug2) <<  "FairMCStack::Init() get track list" << fTrackList<< FairLogger::endl; 
+  LOG(debug2) <<  "FairMCStack::Init()  create propagator" << FairLogger::endl; 
   fEventManager =FairEventManager::Instance();
-  LOG(DEBUG2) <<  "FairMCStack::Init() get instance of FairEventManager " << FairLogger::endl; 
+  LOG(debug2) <<  "FairMCStack::Init() get instance of FairEventManager " << FairLogger::endl; 
   fEvent = "Current Event";
   MinEnergyLimit=fEventManager->GetEvtMinEnergy();
   MaxEnergyLimit=fEventManager->GetEvtMaxEnergy();
@@ -97,14 +97,14 @@ void FairMCStack::Exec(Option_t* /*option*/)
 
   if (IsActive()) {
 
-    LOG(DEBUG) << " FairMCStack::Exec "<< FairLogger::endl; 
+    LOG(debug) << " FairMCStack::Exec "<< FairLogger::endl; 
     FairMCTrack* tr;
     const Double_t* point;
 
     Reset();
 
     for (Int_t i=0; i<fTrackList->GetEntriesFast(); i++)  {
-      LOG(DEBUG2) << "FairMCStack::Exec "<< i << FairLogger::endl; 
+      LOG(debug2) << "FairMCStack::Exec "<< i << FairLogger::endl; 
       tr=(FairMCTrack*)fTrackList->At(i);
 
       TVector3 Ptot = tr->GetMomentum();
@@ -140,10 +140,10 @@ void FairMCStack::Exec(Option_t* /*option*/)
       PEnergy=P->Energy();
       MinEnergyLimit=TMath::Min(PEnergy,MinEnergyLimit) ;
       MaxEnergyLimit=TMath::Max(PEnergy,MaxEnergyLimit) ;
-      LOG(DEBUG2) << "MinEnergyLimit " << MinEnergyLimit << " MaxEnergyLimit " << MaxEnergyLimit << FairLogger::endl; 
+      LOG(debug2) << "MinEnergyLimit " << MinEnergyLimit << " MaxEnergyLimit " << MaxEnergyLimit << FairLogger::endl; 
       if (fEventManager->IsPriOnly() && P->GetMother(0)>-1) { continue; }
       if(fEventManager->GetCurrentPDG()!=0 && fEventManager->GetCurrentPDG()!= tr->GetPdgCode()) { continue; }
-      LOG(DEBUG2) << "PEnergy " << PEnergy << " Min "  << fEventManager->GetMinEnergy() << " Max " << fEventManager->GetMaxEnergy() << FairLogger::endl; 
+      LOG(debug2) << "PEnergy " << PEnergy << " Min "  << fEventManager->GetMinEnergy() << " Max " << fEventManager->GetMaxEnergy() << FairLogger::endl; 
       if( (PEnergy<fEventManager->GetMinEnergy()) || (PEnergy >fEventManager->GetMaxEnergy())) { continue; }
 
       //here we have to propagate
@@ -174,13 +174,13 @@ void FairMCStack::Exec(Option_t* /*option*/)
           TEveVector Mom= TEveVector(P->Px(), P->Py(),P->Pz());
           path->fP=Mom;
         }
-        LOG(DEBUG3) << "Path marker added " << path << FairLogger::endl; 
+        LOG(debug3) << "Path marker added " << path << FairLogger::endl; 
         track->AddPathMark(*path);
 
-        LOG(DEBUG3) << "Path marker added " << path << FairLogger::endl; 
+        LOG(debug3) << "Path marker added " << path << FairLogger::endl; 
       }
       fTrList->AddElement(track);
-      LOG(DEBUG2) << "track added " << track->GetName() << FairLogger::endl;}
+      LOG(debug2) << "track added " << track->GetName() << FairLogger::endl;}
 
 
       /*   for (Int_t n=0; n<Np; n++){
@@ -194,13 +194,13 @@ void FairMCStack::Exec(Option_t* /*option*/)
                  TEveVector Mom= TEveVector(P->Px(), P->Py(),P->Pz());
                  path->fP=Mom;
              }
-             LOG(DEBUG3) << "Path marker added " << path << FairLogger::endl;
+             LOG(debug3) << "Path marker added " << path << FairLogger::endl;
              track->AddPathMark(*path);
-             LOG(DEBUG3) << "Path marker added " << path << FairLogger::endl;
+             LOG(debug3) << "Path marker added " << path << FairLogger::endl;
           }
 
           fTrList->AddElement(track);
-       LOG(DEBUG3) << "track added " << track->GetName() << FairLogger::endl;
+       LOG(debug3) << "track added " << track->GetName() << FairLogger::endl;
       */
     }
     for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++) {

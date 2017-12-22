@@ -96,7 +96,7 @@ void PixelFitTracks::Exec(Option_t* /*opt*/) {
   fNHits   = fHits  ->GetEntriesFast();
   fNTracks = fTracks->GetEntriesFast();
 
-  LOG(DEBUG) << "PixelFitTracks::Exec() EVENT " << fTNofEvents << " with " << fNTracks << " TRACKS" << FairLogger::endl;
+  LOG(debug) << "PixelFitTracks::Exec() EVENT " << fTNofEvents << " with " << fNTracks << " TRACKS" << FairLogger::endl;
 
   for ( Int_t itrack = 0 ; itrack < fNTracks ; itrack++ ) {
     PixelTrack* curTrack = static_cast<PixelTrack*>(fTracks->At(itrack));
@@ -110,7 +110,7 @@ void PixelFitTracks::Exec(Option_t* /*opt*/) {
     for ( Int_t ihit = 0 ; ihit < nofHits ; ihit++ ) {
       PixelHit* curHit = static_cast<PixelHit*>(fHits->At(curTrack->GetHitIndex(ihit)));
       
-      //      LOG(INFO) << " HIT[" << curTrack->GetHitIndex(ihit) << "] = ( " << curHit->GetX() << " , " << curHit->GetY() << " , " << curHit->GetZ() << " )" << FairLogger::endl;
+      //      LOG(info) << " HIT[" << curTrack->GetHitIndex(ihit) << "] = ( " << curHit->GetX() << " , " << curHit->GetY() << " , " << curHit->GetZ() << " )" << FairLogger::endl;
       hitXPos[ihit] = curHit->GetX();
       hitYPos[ihit] = curHit->GetY();
       hitZPos[ihit] = curHit->GetZ();
@@ -130,13 +130,13 @@ void PixelFitTracks::Exec(Option_t* /*opt*/) {
 
     fNFitTracks += 1;
 
-    LOG(DEBUG) << "Track params:  "
+    LOG(debug) << "Track params:  "
 	       << " AX = " << curTrack->GetAX() << " += " << curTrack->GetAXErr() 
 	       << " X0 = " << curTrack->GetX0() << " += " << curTrack->GetX0Err() << FairLogger::endl
 	       << "                         "
 	       << " AY = " << curTrack->GetAY() << " += " << curTrack->GetAYErr() 
 	       << " Y0 = " << curTrack->GetY0() << " += " << curTrack->GetY0Err() << FairLogger::endl;
-    LOG(DEBUG) << "Fitted params: " 
+    LOG(debug) << "Fitted params: " 
 	       << " AX = " << valAX << " += " << errAX
 	       << " X0 = " << valX0 << " += " << errX0 << FairLogger::endl
 	       << "                         "
@@ -188,10 +188,10 @@ void PixelFitTracks::SetParContainers() {
   
   // Get run and runtime database
   FairRun* run = FairRun::Instance();
-  if ( ! run ) LOG(FATAL) << "No analysis run" << FairLogger::endl;
+  if ( ! run ) LOG(fatal) << "No analysis run" << FairLogger::endl;
 
   FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) LOG(FATAL) << "No runtime database" << FairLogger::endl;
+  if ( ! db ) LOG(fatal) << "No runtime database" << FairLogger::endl;
 
   // Get GEM digitisation parameter container
   fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
@@ -210,7 +210,7 @@ void PixelFitTracks::GetParList(TList* tempList) {
 
 // -------------------------------------------------------------------------
 void   PixelFitTracks::InitMQ(TList* tempList) {
-  LOG(INFO) << "********************************************** PixelFitTracks::InitMQ()" << FairLogger::endl;
+  LOG(info) << "********************************************** PixelFitTracks::InitMQ()" << FairLogger::endl;
   fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
 
   fFitTracks = new TClonesArray("PixelTrack",10000);
@@ -221,9 +221,9 @@ void   PixelFitTracks::InitMQ(TList* tempList) {
 
 // -------------------------------------------------------------------------
 void   PixelFitTracks::ExecMQ(TList* inputList,TList* outputList) {
-  //  LOG(INFO) << "********************************************** PixelFitTracks::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents << FairLogger::endl;
-  //  LOG(INFO) << "********************************************** PixelFitTracks::ExecMQ(), Event " << fTNofEvents << FairLogger::endl;
-  //  LOG(INFO) << "f" << FairLogger::flush;
+  //  LOG(info) << "********************************************** PixelFitTracks::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents << FairLogger::endl;
+  //  LOG(info) << "********************************************** PixelFitTracks::ExecMQ(), Event " << fTNofEvents << FairLogger::endl;
+  //  LOG(info) << "f" << FairLogger::flush;
   fHits   = (TClonesArray*) inputList->FindObject("PixelHits");
   fTracks = (TClonesArray*) inputList->FindObject("PixelTracks");
   outputList->Add(fFitTracks);
@@ -237,14 +237,14 @@ InitStatus PixelFitTracks::Init() {
 
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
-  if ( ! ioman ) LOG(FATAL) << "No FairRootManager" << FairLogger::endl;
+  if ( ! ioman ) LOG(fatal) << "No FairRootManager" << FairLogger::endl;
 
   fHits =  static_cast<TClonesArray*>(ioman->GetObject("PixelHits"));
   if ( !fHits ) 
-    LOG(WARNING) << "PixelFitTracks::Init() No input PixelHit array!" << FairLogger::endl;
+    LOG(warn) << "PixelFitTracks::Init() No input PixelHit array!" << FairLogger::endl;
   fTracks =  static_cast<TClonesArray*>(ioman->GetObject("PixelTracks"));
   if ( !fTracks ) 
-    LOG(WARNING) << "PixelFitTracks::Init() No input PixelTrack array!" << FairLogger::endl;
+    LOG(warn) << "PixelFitTracks::Init() No input PixelTrack array!" << FairLogger::endl;
   
   // Register output array PixelHit
   fFitTracks = new TClonesArray("PixelTrack",10000);
@@ -278,11 +278,11 @@ void PixelFitTracks::Reset() {
 void PixelFitTracks::Finish() {
   if ( fFitTracks ) fFitTracks->Delete();
 
-  LOG(INFO) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
-  LOG(INFO) << " Events:        " << fTNofEvents << FairLogger::endl;
-  LOG(INFO) << " Tracks:        " << fTNofTracks   << "    ( " << static_cast<Double_t>(fTNofTracks  )/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
-  LOG(INFO) << " Fitted Tracks: " << fTNofFitTracks << "    ( " << static_cast<Double_t>(fTNofFitTracks)/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
-  LOG(INFO) << "---------------------------------------------------------------------" << FairLogger::endl; 
+  LOG(info) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
+  LOG(info) << " Events:        " << fTNofEvents << FairLogger::endl;
+  LOG(info) << " Tracks:        " << fTNofTracks   << "    ( " << static_cast<Double_t>(fTNofTracks  )/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
+  LOG(info) << " Fitted Tracks: " << fTNofFitTracks << "    ( " << static_cast<Double_t>(fTNofFitTracks)/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
+  LOG(info) << "---------------------------------------------------------------------" << FairLogger::endl; 
 }
 // -------------------------------------------------------------------------
 

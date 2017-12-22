@@ -35,11 +35,11 @@ FairAsciiGenerator::FairAsciiGenerator(const char* fileName)
    fFileName(fileName)
 {
   //  fFileName  = fileName;
-  LOG(INFO) << "FairAsciiGenerator: Opening input file " 
+  LOG(info) << "FairAsciiGenerator: Opening input file " 
 	    << fileName << FairLogger::endl;
   fInputFile = new std::ifstream(fFileName);
   if ( ! fInputFile->is_open() ) {
-    LOG(FATAL) << "Cannot open input file." << FairLogger::endl;
+    LOG(fatal) << "Cannot open input file." << FairLogger::endl;
   }
 
   // fPDG=TDatabasePDG::Instance();
@@ -63,7 +63,7 @@ Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // Check for input file
   if ( ! fInputFile->is_open() ) {
-    LOG(ERROR) << "FairAsciiGenerator: Input file not open!" 
+    LOG(error) << "FairAsciiGenerator: Input file not open!" 
 	       << FairLogger::endl;
     return kFALSE;
   }
@@ -79,18 +79,18 @@ Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // Read event header line from input file
   *fInputFile >> ntracks;
-  if (fInputFile->fail() || ntracks < 0 || ntracks > (INT_MAX-1)) LOG(FATAL) << "Error reading the number of events from event header." << FairLogger::endl;
+  if (fInputFile->fail() || ntracks < 0 || ntracks > (INT_MAX-1)) LOG(fatal) << "Error reading the number of events from event header." << FairLogger::endl;
   *fInputFile >> eventID >>  vx >>  vy >>  vz;
 
   // If end of input file is reached : close it and abort run
   if ( fInputFile->eof() ) {
-    LOG(INFO) << "FairAsciiGenerator: End of input file reached " 
+    LOG(info) << "FairAsciiGenerator: End of input file reached " 
 	      << FairLogger::endl;
     CloseInput();
     return kFALSE;
   }
 
-  LOG(INFO) << "FairAsciiGenerator: Event " << eventID << ",  vertex = ("
+  LOG(info) << "FairAsciiGenerator: Event " << eventID << ",  vertex = ("
 	    << vx << "," << vy << "," << vz << ") cm,  multiplicity "
 	    << ntracks << FairLogger::endl;
 
@@ -120,7 +120,7 @@ void FairAsciiGenerator::CloseInput()
 {
   if ( fInputFile ) {
     if ( fInputFile->is_open() ) {
-      LOG(INFO) << "FairAsciiGenerator: Closing input file "
+      LOG(info) << "FairAsciiGenerator: Closing input file "
 		<< fFileName << FairLogger::endl;
       fInputFile->close();
     }

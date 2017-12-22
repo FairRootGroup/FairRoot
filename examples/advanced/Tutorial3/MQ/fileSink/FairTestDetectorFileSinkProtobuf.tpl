@@ -33,7 +33,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload
 
         if (fOutput->IsEmpty())
         {
-            LOG(ERROR) << "FairTestDetectorFileSink::Run(): No Output array!";
+            LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
         FairMQMessagePtr ack(fTransportFactory->CreateMessage());

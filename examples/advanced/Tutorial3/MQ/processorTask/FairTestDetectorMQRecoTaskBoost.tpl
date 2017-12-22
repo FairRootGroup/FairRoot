@@ -26,7 +26,7 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option
     }
     catch (boost::archive::archive_exception& e)
     {
-        LOG(ERROR) << e.what();
+        LOG(error) << e.what();
     }
 
     fRecoTask->fDigiArray->Clear();
@@ -39,7 +39,7 @@ void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option
 
     if (!fRecoTask->fDigiArray)
     {
-        LOG(ERROR) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+        LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
     fRecoTask->Exec(opt);

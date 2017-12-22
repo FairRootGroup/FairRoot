@@ -25,7 +25,7 @@
 #include "TList.h"
 
 // FairRoot
-#include "FairMQLogger.h"
+#include "FairLogger.h"
 #include "FairMQMessage.h"
 #include "FairMQProgOptions.h"
 
@@ -102,8 +102,8 @@ class RootOutFileManager
         if (!std::is_base_of<TObject, DataType>::value && fUseClonesArray)
         {
             fUseClonesArray = false;
-            MQLOG(WARN) << "Deactivate TClonesArray method: the data class must inherit from TObject.";
-        } 
+            LOG(warn) << "Deactivate TClonesArray method: the data class must inherit from TObject.";
+        }
     }
 
     void SetFileProperties(const FairMQProgOptions& config)
@@ -119,8 +119,8 @@ class RootOutFileManager
         if (!std::is_base_of<TObject, DataType>::value && fUseClonesArray)
         {
             fUseClonesArray = false;
-            MQLOG(WARN) << "Deactivate TClonesArray method: the data class must inherit from TObject.";
-        } 
+            LOG(warn) << "Deactivate TClonesArray method: the data class must inherit from TObject.";
+        }
     }
 
     void AddToFile(std::vector<DataType>& inputData)
@@ -136,7 +136,7 @@ class RootOutFileManager
 
             if (fOutput->IsEmpty())
             {
-                MQLOG(DEBUG) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
+                LOG(debug) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
             }
 
             fTree->Fill();
@@ -169,7 +169,7 @@ class RootOutFileManager
 
             if (fOutput->IsEmpty())
             {
-                MQLOG(DEBUG) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
+                LOG(debug) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
             }
 
             fTree->Fill();
@@ -194,7 +194,7 @@ class RootOutFileManager
 
             if (fOutput->IsEmpty())
             {
-                MQLOG(DEBUG) << "RootOutFileManager::AddToFile(TClonesArray*): No Output array!";
+                LOG(debug) << "RootOutFileManager::AddToFile(TClonesArray*): No Output array!";
             }
             fTree->Fill();
             if (!fFlowMode)
@@ -204,7 +204,7 @@ class RootOutFileManager
         }
         else
         {
-            MQLOG(DEBUG) << "RootOutFileManager::AddToFile(TClonesArray*): TClonesArray not set as output container";
+            LOG(debug) << "RootOutFileManager::AddToFile(TClonesArray*): TClonesArray not set as output container";
         }
     }
 
@@ -236,15 +236,15 @@ class RootOutFileManager
         if (fFileOption == "UPDATE")
         {
             fTree = static_cast<TTree*>(fOutFile->Get(fTreeName.c_str()));
-            if (fTree) 
+            if (fTree)
             {
                 updateTree = true;
-                MQLOG(INFO) << "Update tree";
+                LOG(info) << "Update tree";
             }
             else
             {
                 updateTree = false;
-                MQLOG(INFO) << "Create new tree";
+                LOG(info) << "Create new tree";
             }
         }
 
@@ -304,7 +304,7 @@ class RootOutFileManager
         }
         else
         {
-            MQLOG(ERROR) << "Could not open file" << fTreeName.c_str();
+            LOG(error) << "Could not open file" << fTreeName.c_str();
         }
 
         if (fTree)
@@ -344,7 +344,7 @@ class RootOutFileManager
         }
         else
         {
-            MQLOG(ERROR) << "Could not find tree " << treename.c_str();
+            LOG(error) << "Could not find tree " << treename.c_str();
         }
 
         if (file)
@@ -375,12 +375,12 @@ class RootOutFileManager
             if (fTree) 
             {
                 updateTree = true;
-                MQLOG(INFO) << "Update tree";
+                LOG(info) << "Update tree";
             }
             else
             {
                 updateTree = false;
-                MQLOG(INFO) << "Create new tree";
+                LOG(info) << "Create new tree";
             }
         }
 

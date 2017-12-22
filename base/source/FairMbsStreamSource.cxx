@@ -59,9 +59,9 @@ Bool_t FairMbsStreamSource::ConnectToServer()
   void* headptr = &fxInfoHeader;
   INTS4 status;
 
-  LOG(INFO) << "FairMbsStreamSource::ConnectToServer()"
+  LOG(info) << "FairMbsStreamSource::ConnectToServer()"
 		    << FairLogger::endl;
-  LOG(INFO) << Form("- open connection to MBS stream server %s...", fServerName.Data())
+  LOG(info) << Form("- open connection to MBS stream server %s...", fServerName.Data())
 		    << FairLogger::endl;
 
   status = f_evt_get_open(inputMode,
@@ -78,7 +78,7 @@ Bool_t FairMbsStreamSource::ConnectToServer()
     return kFALSE;
   }
 
-  LOG(INFO) << Form("- connection to MBS stream server %s established.", fServerName.Data())
+  LOG(info) << Form("- connection to MBS stream server %s established.", fServerName.Data())
 		    << FairLogger::endl;
 
   return kTRUE;
@@ -90,16 +90,16 @@ Int_t FairMbsStreamSource::ReadEvent(UInt_t)
   void* evtptr = &fxEvent;
   void* buffptr = &fxBuffer;
 
-  LOG(DEBUG2)<< "FairLmdSource::ReadEvent => New event "
+  LOG(debug2)<< "FairLmdSource::ReadEvent => New event "
              << FairLogger::endl;
 
   Int_t status = f_evt_get_event(fxInputChannel, static_cast<INTS4**>(evtptr),static_cast<INTS4**>(buffptr));
 
-  LOG(DEBUG2)<< "FairLmdSource::ReadEvent => f_evt_get_event status: " << status
+  LOG(debug2)<< "FairLmdSource::ReadEvent => f_evt_get_event status: " << status
              << FairLogger::endl;
 
   if(GETEVT__SUCCESS != status) {
-    LOG(INFO) << "FairMbsStreamSource::ReadEvent()"
+    LOG(info) << "FairMbsStreamSource::ReadEvent()"
               << FairLogger::endl;
 
     CHARS* sErrorString = NULL;
@@ -117,7 +117,7 @@ Int_t FairMbsStreamSource::ReadEvent(UInt_t)
   Short_t sesubcrate;
   Short_t secontrol;
 
-  LOG(DEBUG2)<< "FairLmdSource::ReadEvent => Found " << nrSubEvts << " Sub-event "
+  LOG(debug2)<< "FairLmdSource::ReadEvent => Found " << nrSubEvts << " Sub-event "
              << FairLogger::endl;
 
   for(Int_t i = 1; i <= nrSubEvts; i++) {
@@ -149,7 +149,7 @@ void FairMbsStreamSource::Close()
 {
   Int_t status = f_evt_get_close(fxInputChannel);
 
-  LOG(INFO) << "FairMbsStreamSource::Close()"
+  LOG(info) << "FairMbsStreamSource::Close()"
   		    << FairLogger::endl;
 
   CHARS* sErrorString = NULL;

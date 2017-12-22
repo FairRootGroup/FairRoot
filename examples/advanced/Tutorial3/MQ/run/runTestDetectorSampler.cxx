@@ -57,7 +57,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 #endif
     else
     {
-        LOG(ERROR) << "No valid data format provided. (--data-format binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage). ";
+        LOG(error) << "No valid data format provided. (--data-format binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage). ";
         exit(EXIT_FAILURE);
     }
 }

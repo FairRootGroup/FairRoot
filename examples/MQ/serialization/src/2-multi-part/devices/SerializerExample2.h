@@ -134,7 +134,7 @@ struct SerializerEx2Boost
             }
             if (input->IsEmpty())
             {
-                LOG(DEBUG) << "BoostDeserializer::Deserialize(FairMQMessage& msg, TClonesArray* input): No Output array!";
+                LOG(debug) << "BoostDeserializer::Deserialize(FairMQMessage& msg, TClonesArray* input): No Output array!";
             }
         }
     }

@@ -33,13 +33,13 @@ FairTutorialDet2Point::~FairTutorialDet2Point() { }
 // -----   Public method Print   -------------------------------------------
 void FairTutorialDet2Point::Print(const Option_t* /*opt*/) const
 {
-  LOG(INFO) << "FairTutorialDet2Point: TutorialDet point for track " 
+  LOG(info) << "FairTutorialDet2Point: TutorialDet point for track " 
 	    << fTrackID << " in detector " << fDetectorID << FairLogger::endl;
-  LOG(INFO) << "    Position (" << fX << ", " << fY << ", " << fZ
+  LOG(info) << "    Position (" << fX << ", " << fY << ", " << fZ
 	    << ") cm" << FairLogger::endl;
-  LOG(INFO) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
+  LOG(info) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
 	    << ") GeV" << FairLogger::endl;
-  LOG(INFO) << "    Time " << fTime << " ns,  Length " << fLength
+  LOG(info) << "    Time " << fTime << " ns,  Length " << fLength
 	    << " cm,  Energy loss " << fELoss*1.0e06 << " keV" 
 	    << FairLogger::endl;
 }

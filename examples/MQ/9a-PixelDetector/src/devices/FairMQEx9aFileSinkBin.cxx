@@ -39,7 +39,7 @@ void FairMQEx9aFileSinkBin::Init()
   fInputChannelName  = fConfig->GetValue<std::string>             ("in-channel");
   fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
 
-  LOG(INFO) << "SHOULD CREATE THE FILE AND TREE";
+  LOG(info) << "SHOULD CREATE THE FILE AND TREE";
 
   fOutFile.open(fFileName,std::fstream::out|std::fstream::binary);
   
@@ -53,7 +53,7 @@ bool FairMQEx9aFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
   // the first part should be the event header
   PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
 
-  // LOG(DEBUG) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+  // LOG(debug) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
   
   // the second part should be the array of PixelPayload::Hit
   PixelPayload::Hit* payloadH = static_cast<PixelPayload::Hit*>(parts.At(1)->GetData());

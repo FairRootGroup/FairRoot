@@ -73,9 +73,9 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t)
   , fCheckFileLayout(kTRUE)
 {
     if (fRootFile->IsZombie()) {
-     LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
+     LOG(fatal) << "Error opening the Input file" << FairLogger::endl;
   }
-  LOG(DEBUG) << "FairFileSource created------------" << FairLogger::endl;
+  LOG(debug) << "FairFileSource created------------" << FairLogger::endl;
 }
 //_____________________________________________________________________________
 
@@ -118,9 +118,9 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
 {
   fRootFile = TFile::Open(RootFileName->Data());
   if (fRootFile->IsZombie()) {
-    LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
+    LOG(fatal) << "Error opening the Input file" << FairLogger::endl;
   }
-  LOG(DEBUG) << "FairFileSource created------------" << FairLogger::endl;
+  LOG(debug) << "FairFileSource created------------" << FairLogger::endl;
   }
 //_____________________________________________________________________________
 
@@ -163,9 +163,9 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
 {
     fRootFile = TFile::Open(RootFileName.Data());
     if (fRootFile->IsZombie()) {
-      LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
+      LOG(fatal) << "Error opening the Input file" << FairLogger::endl;
     }
-    LOG(DEBUG) << "FairFileSource created------------" << FairLogger::endl;
+    LOG(debug) << "FairFileSource created------------" << FairLogger::endl;
 }
 //_____________________________________________________________________________
 
@@ -179,12 +179,12 @@ FairFileSource::~FairFileSource()
 Bool_t FairFileSource::Init()
 {
     if(IsInitialized){
-      LOG(INFO) << "FairFileSource already initialized" << FairLogger::endl;
+      LOG(info) << "FairFileSource already initialized" << FairLogger::endl;
        return kTRUE;
     }
     if (!fInChain ) {
         fInChain = new TChain(FairRootManager::GetTreeName(), "/cbmroot");
-        LOG(DEBUG) << "FairFileSource::Init() chain created"
+        LOG(debug) << "FairFileSource::Init() chain created"
 		   << FairLogger::endl;
 	FairRootManager::Instance()->SetInChain(fInChain);
     }
@@ -215,7 +215,7 @@ Bool_t FairFileSource::Init()
     // probably only checks if the name of the tree is the same.
     TList* list= dynamic_cast <TList*> (fRootFile->Get("BranchList"));
     if(list==0) {
-      LOG(FATAL) << "No Branch list in input file" << FairLogger::endl;
+      LOG(fatal) << "No Branch list in input file" << FairLogger::endl;
     }
     TString chainName = fInputTitle;
     TString ObjName;
@@ -223,13 +223,13 @@ Bool_t FairFileSource::Init()
     fCheckInputBranches[chainName] = new std::list<TString>;
     if(list) {
       TObjString* Obj=0;
-      LOG(DEBUG) << "Enteries in the list "
+      LOG(debug) << "Enteries in the list "
 		 << list->GetEntries() << FairLogger::endl;
       for(Int_t i =0; i< list->GetEntries(); i++) {
 	Obj=dynamic_cast <TObjString*> (list->At(i));
 	if(Obj!=0){
 	  ObjName=Obj->GetString();
-	  LOG(DEBUG) << "Branch name " << ObjName.Data()
+	  LOG(debug) << "Branch name " << ObjName.Data()
 		     << FairLogger::endl;
 	  fCheckInputBranches[chainName]->push_back(ObjName.Data());
 
@@ -260,14 +260,14 @@ Bool_t FairFileSource::Init()
         // is needed to bring the friend trees in the correct order
         TFile* inputFile = TFile::Open((*iter));
         if (inputFile->IsZombie()) {
-	  LOG(FATAL) << "Error opening the file " << (*iter).Data() << " which should be added to the input chain or as friend chain" << FairLogger::endl;
+	  LOG(fatal) << "Error opening the file " << (*iter).Data() << " which should be added to the input chain or as friend chain" << FairLogger::endl;
         }
 
         if (fCheckFileLayout) {
           // Check if the branchlist is the same as for the first input file.
           Bool_t isOk = CompareBranchList(inputFile, chainName);
           if ( !isOk ) {
-            LOG(FATAL) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << (*iter).Data() << " are different." << FairLogger::endl;
+            LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << (*iter).Data() << " are different." << FairLogger::endl;
             return kFALSE;
           }
         }
@@ -284,7 +284,7 @@ Bool_t FairFileSource::Init()
     }
     fNoOfEntries = fInChain->GetEntries();
 
-    LOG(DEBUG) << "Entries in this Source " << fNoOfEntries << FairLogger::endl;
+    LOG(debug) << "Entries in this Source " << fNoOfEntries << FairLogger::endl;
 
     for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
        TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
@@ -304,7 +304,7 @@ Bool_t FairFileSource::Init()
 
    TList* timebasedlist= dynamic_cast <TList*> (fRootFile->Get("TimeBasedBranchList"));
    if(timebasedlist==0) {
-      LOG(WARNING) << "No time based branch list in input file" << FairLogger::endl;
+      LOG(warn) << "No time based branch list in input file" << FairLogger::endl;
    }else{
      FairRootManager::Instance()->SetTimeBasedBranchNameList(timebasedlist);
    }
@@ -412,7 +412,7 @@ void FairFileSource::AddFriendsToChain()
 
             inputFile = TFile::Open((*iter1));
             if (inputFile->IsZombie()) {
-	      LOG(FATAL) << "Error opening the file " << (*iter).Data()
+	      LOG(fatal) << "Error opening the file " << (*iter).Data()
 			 << " which should be added to the input chain or as friend chain" << FairLogger::endl;
             }
 
@@ -464,26 +464,26 @@ void FairFileSource::PrintFriendList( )
     // List files from the input chain together with all files of
     // all friend chains
 
-  LOG(INFO) << "The input consists out of the following trees and files: "
+  LOG(info) << "The input consists out of the following trees and files: "
 	    <<FairLogger::endl;
-  LOG(INFO) << " - " << fInChain->GetName() << FairLogger::endl;
+  LOG(info) << " - " << fInChain->GetName() << FairLogger::endl;
     TObjArray* fileElements=fInChain->GetListOfFiles();
     TIter next(fileElements);
     TChainElement* chEl=0;
     while (( chEl=static_cast<TChainElement*>(next()) )) {
-      LOG(INFO) << "    - " << chEl->GetTitle() << FairLogger::endl;
+      LOG(info) << "    - " << chEl->GetTitle() << FairLogger::endl;
     }
 
     map< TString, TChain* >::iterator mapIterator;
     for (mapIterator = fFriendTypeList.begin();
          mapIterator != fFriendTypeList.end(); mapIterator++ ) {
         TChain* chain = static_cast<TChain*>(mapIterator->second);
-        LOG(INFO) << " - " << chain->GetName() << FairLogger::endl;
+        LOG(info) << " - " << chain->GetName() << FairLogger::endl;
         fileElements=chain->GetListOfFiles();
         TIter next1(fileElements);
         chEl=0;
         while (( chEl=static_cast<TChainElement*>(next1()) )) {
-	  LOG(INFO) << "    - " << chEl->GetTitle() << FairLogger::endl;
+	  LOG(info) << "    - " << chEl->GetTitle() << FairLogger::endl;
         }
     }
 
@@ -543,20 +543,20 @@ void FairFileSource::CheckFriendChains()
     // Use goto to leave double loop at once in case of error
     // error_label:
     if (errorFlag>0) {
-      LOG(ERROR) << "The input chain and the friend chain " << inputLevel.Data()
+      LOG(error) << "The input chain and the friend chain " << inputLevel.Data()
 		 << " have a different structure:" << FairLogger::endl;
         if (errorFlag == 1) {
-	  LOG(ERROR) << "The input chain has the following runids and event numbers:" << FairLogger::endl;
+	  LOG(error) << "The input chain has the following runids and event numbers:" << FairLogger::endl;
             for ( UInt_t i=0; i<runid.size(); i++) {
-	      LOG(ERROR) << " - Runid " << runid[i] << " with " << events[i]
+	      LOG(error) << " - Runid " << runid[i] << " with " << events[i]
 			 << " events" << FairLogger::endl;
             }
-            LOG(ERROR) << "The " << inputLevel.Data()
+            LOG(error) << "The " << inputLevel.Data()
 		       << " chain has the following runids and event numbers:"
 		       << FairLogger::endl;
             for ( it=map1.begin() ; it != map1.end(); it++ ) {
                 TArrayI bla = (*it).second;
-                LOG(ERROR) << " - Runid " << bla[0] << " with " << bla[1]
+                LOG(error) << " - Runid " << bla[0] << " with " << bla[1]
 			   << " events" << FairLogger::endl;
             }
         }
@@ -564,16 +564,16 @@ void FairFileSource::CheckFriendChains()
             Int_t counter = 0;
             for ( it=map1.begin() ; it != map1.end(); it++ ) {
                 TArrayI bla = (*it).second;
-                LOG(ERROR) << "Runid Input Chain, " << inputLevel.Data()
+                LOG(error) << "Runid Input Chain, " << inputLevel.Data()
 			   << " chain: " << bla[0] << ", " << runid[counter]
 			   << FairLogger::endl;
-                LOG(ERROR) << "Event number Input Chain, " << inputLevel.Data()
+                LOG(error) << "Event number Input Chain, " << inputLevel.Data()
 			   << " chain: " << bla[1]
 			   << ", " << events[counter] << FairLogger::endl;
                 counter++;
             }
         }
-        LOG(FATAL) << "Event structure mismatch" << FairLogger::endl;
+        LOG(fatal) << "Event structure mismatch" << FairLogger::endl;
     }
 }
 //_____________________________________________________________________________
@@ -594,7 +594,7 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
         folderName1 = "cbmroot";
         added = dynamic_cast <TFolder*> (f->Get("cbmroot"));
 	if (!added) {
-	  LOG(FATAL) << "Could not find folder cbmout nor cbmroot."
+	  LOG(fatal) << "Could not find folder cbmout nor cbmroot."
 		     <<FairLogger::endl;
 	  exit(-1);
 	}
@@ -669,9 +669,9 @@ Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
   // reference list, this is also a sign that both branch list are not the
   // same
   if (branches.size() != 0 ) {
-    LOG(INFO) << "Compare Branch List will return kFALSE. The list has " << branches.size() << " branches:" << FairLogger::endl;
+    LOG(info) << "Compare Branch List will return kFALSE. The list has " << branches.size() << " branches:" << FairLogger::endl;
     for (std::set<TString>::iterator it=branches.begin(); it!=branches.end(); ++it)
-      LOG(INFO) << "  -> " << *it << FairLogger::endl;
+      LOG(info) << "  -> " << *it << FairLogger::endl;
     return kFALSE;
   }
 
@@ -716,7 +716,7 @@ bool ActivateObjectAnyImpl(S* source, void **obj, const std::type_info& info, co
 
   // check consistency of types
   if(info.hash_code() != storedtype->hash_code()){
-    LOG(INFO) << "Trying to read from branch " << brname << " with wrong type " << info.name()
+    LOG(info) << "Trying to read from branch " << brname << " with wrong type " << info.name()
               << " (expected: " << storedtype->name() << " )\n";
     return false; 
   }
@@ -744,9 +744,9 @@ Bool_t  FairFileSource::ActivateObjectAny(void** obj, const std::type_info& info
 void FairFileSource::SetInputFile(TString name) {
   fRootFile = TFile::Open(name.Data());
   if (fRootFile->IsZombie()) {
-    LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
+    LOG(fatal) << "Error opening the Input file" << FairLogger::endl;
   }
-  LOG(INFO) << "FairFileSource set------------" << FairLogger::endl;
+  LOG(info) << "FairFileSource set------------" << FairLogger::endl;
 
 }
 //_____________________________________________________________________________
@@ -807,7 +807,7 @@ void FairFileSource::SetEventTime()
 {
   //Check if the time for the current entry is already set
   if(fTimeforEntryNo==fCurrentEntryNo) return;
-  LOG(DEBUG) << "Set event time for Entry = "
+  LOG(debug) << "Set event time for Entry = "
 	     << fTimeforEntryNo << " , where the current entry is "
 	     << fCurrentEntryNo << " and eventTime is "
 	     << fEventTime << FairLogger::endl;
@@ -818,7 +818,7 @@ void FairFileSource::SetEventTime()
 		  fEventTime += GetDeltaEventTime();
 	  } while( fmod(fEventTime, fBeamTime + fGapTime) > fBeamTime );
   }
-  LOG(DEBUG) << "New time = " << fEventTime << FairLogger::endl;
+  LOG(debug) << "New time = " << fEventTime << FairLogger::endl;
   fTimeforEntryNo=fCurrentEntryNo;
 }
 //_____________________________________________________________________________
@@ -829,11 +829,11 @@ Double_t FairFileSource::GetDeltaEventTime()
   Double_t deltaTime = 0;
   if (fTimeProb != 0) {
     deltaTime = fTimeProb->GetRandom();
-    LOG(DEBUG) << "Time set via sampling method : " <<  deltaTime
+    LOG(debug) << "Time set via sampling method : " <<  deltaTime
 	       << FairLogger::endl;
   } else {
     deltaTime = gRandom->Uniform(fEventTimeMin, fEventTimeMax);
-    LOG(DEBUG) << "Time set via Uniform Random : "
+    LOG(debug) << "Time set via Uniform Random : "
 	       << deltaTime << FairLogger::endl;
   }
   return deltaTime;
@@ -843,7 +843,7 @@ Double_t FairFileSource::GetDeltaEventTime()
 //_____________________________________________________________________________
 Double_t FairFileSource::GetEventTime()
 {
- LOG(DEBUG) << "-- Get Event Time --" << FairLogger::endl;
+ LOG(debug) << "-- Get Event Time --" << FairLogger::endl;
   if(!fEvtHeaderIsNew && fEvtHeader!=0) {
     Double_t EvtTime=fEvtHeader->GetEventTime();
     if( !(EvtTime<0)) {
@@ -852,11 +852,11 @@ Double_t FairFileSource::GetEventTime()
   }
 
   if (fEventTimeInMCHeader && !fMCHeader) {
-    LOG(DEBUG) << "No MCEventHeader, time is set to 0" << FairLogger::endl;
+    LOG(debug) << "No MCEventHeader, time is set to 0" << FairLogger::endl;
     return 0;
   } else if(fEventTimeInMCHeader && fMCHeader) {
     fEventTime=fMCHeader->GetT();
-    LOG(DEBUG) << "Get event time from MCEventHeader : "
+    LOG(debug) << "Get event time from MCEventHeader : "
 	       << fEventTime << " ns" << FairLogger::endl;
     return fEventTime;
   } else {
@@ -864,7 +864,7 @@ Double_t FairFileSource::GetEventTime()
     if(fTimeforEntryNo!=fCurrentEntryNo) {
       SetEventTime();
     }
-    LOG(DEBUG) << "Calculate event time from user input : "
+    LOG(debug) << "Calculate event time from user input : "
 	       << fEventTime << " ns" << FairLogger::endl;
     return fEventTime;
   }

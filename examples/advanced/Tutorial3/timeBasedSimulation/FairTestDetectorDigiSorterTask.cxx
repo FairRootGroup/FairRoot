@@ -43,9 +43,9 @@ void FairTestDetectorDigiSorterTask::AddNewDataToTClonesArray(FairTimeStamp* dat
     TClonesArray* myArray = ioman->GetTClonesArray(fOutputBranch);
     if (fVerbose > 1)
     {
-        LOG(INFO) << "AddNewDataToTClonesArray Data: "
+        LOG(info) << "AddNewDataToTClonesArray Data: "
 		  << FairLogger::endl;
-        LOG(INFO) << static_cast<FairTestDetectorDigi*>(data)->ToString();
+        LOG(info) << static_cast<FairTestDetectorDigi*>(data)->ToString();
     }
     new ((*myArray)[myArray->GetEntries()]) FairTestDetectorDigi(*static_cast<FairTestDetectorDigi*>(data));
 }

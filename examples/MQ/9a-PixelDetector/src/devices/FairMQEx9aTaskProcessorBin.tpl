@@ -38,7 +38,7 @@ FairMQEx9aTaskProcessorBin<T>::FairMQEx9aTaskProcessorBin()
 template <typename T>
 FairMQEx9aTaskProcessorBin<T>::~FairMQEx9aTaskProcessorBin()
 {
-  LOG(INFO) << "deteling fGeoPar"; 
+  LOG(info) << "deteling fGeoPar"; 
   delete fGeoPar;
   fGeoPar=nullptr;
   delete fFairTask;
@@ -67,7 +67,7 @@ void FairMQEx9aTaskProcessorBin<T>::Init()
 template <typename T>
 bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*/)
 {
-  // LOG(DEBUG)<<"message received with " << parts.Size() << " parts!";
+  // LOG(debug)<<"message received with " << parts.Size() << " parts!";
   fReceivedMsgs++;
 
   if ( parts.Size() == 0 ) return 0; // probably impossible, but still check
@@ -76,7 +76,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
   int nPPE = 2; // nof parts per event
 
   if ( parts.Size()%nPPE >= 1 )
-    LOG(INFO) << "received " << parts.Size() << " parts, will ignore last part!!!";
+    LOG(info) << "received " << parts.Size() << " parts, will ignore last part!!!";
 
   // creating output multipart message
   FairMQParts partsOut;
@@ -84,7 +84,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
   for ( int ievent = 0 ; ievent < parts.Size()/nPPE ; ievent++ ) {
     // the first part should be the event header
     PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(nPPE*ievent)->GetData());
-    // LOG(DEBUG) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+    // LOG(debug) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
 
     fNewRunId = payloadE->fRunId;
     if(fNewRunId!=fCurrentRunId)
@@ -93,7 +93,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
         UpdateParameters();
         fFairTask->InitMQ(fParCList);
 
-        LOG(INFO) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
+        LOG(info) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
       }
 
     // the second part should the TClonesArray with necessary data... now assuming Digi
@@ -101,7 +101,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
     int digiArraySize = parts.At(nPPE*ievent+1)->GetSize();
     int nofDigis      = digiArraySize / sizeof(PixelPayload::Digi);
 
-    // LOG(DEBUG) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
+    // LOG(debug) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
 
     // create eventHeader part
     PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
@@ -137,7 +137,7 @@ bool FairMQEx9aTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index*
 template <typename T>
 void FairMQEx9aTaskProcessorBin<T>::PostRun()
 {
-    MQLOG(INFO) << "FairMQEx9aTaskProcessorBin<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
+    LOG(info) << "FairMQEx9aTaskProcessorBin<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
 }
 
 
@@ -162,7 +162,7 @@ FairParGenericSet* FairMQEx9aTaskProcessorBin<T>::UpdateParameter(FairParGeneric
   std::string paramName = thisPar->GetName();
   //  boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
   std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
-  LOG(WARN) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar << ")";
+  LOG(warn) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar << ")";
   std::unique_ptr<FairMQMessage> req(NewMessage(const_cast<char*>(reqStr->c_str()), reqStr->length(), CustomCleanup, reqStr));
   std::unique_ptr<FairMQMessage> rep(NewMessage());
   
@@ -172,7 +172,7 @@ FairParGenericSet* FairMQEx9aTaskProcessorBin<T>::UpdateParameter(FairParGeneric
 	{
 	  Ex9TMessage2 tm(rep->GetData(), rep->GetSize());
 	  thisPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());
-	  LOG(WARN) << "Received parameter"<< paramName <<" from the server (" << thisPar << ")";
+	  LOG(warn) << "Received parameter"<< paramName <<" from the server (" << thisPar << ")";
 	  return thisPar;
 	}
     } 

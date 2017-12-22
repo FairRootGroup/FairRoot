@@ -58,7 +58,7 @@ void FairMQEx9aSamplerBin::PreRun()
 {
   if ( fAggregateLevel < 1 ) fAggregateLevel = 1;
 
-  LOG(INFO) << "FairMQEx9aSamplerBin::PreRun() started. fAggregateLevel = " << fAggregateLevel;
+  LOG(info) << "FairMQEx9aSamplerBin::PreRun() started. fAggregateLevel = " << fAggregateLevel;
 
   fReadingRootFiles = false;
 
@@ -78,7 +78,7 @@ void FairMQEx9aSamplerBin::PreRun()
   fInputChain->SetBranchAddress("EventHeader.",&fEventHeader);
   fInputChain->SetBranchAddress("DigiVector",&fDigiArray,&fDigiBranch);
 
-  LOG(INFO) << "Loaded " << fFileNames.size() << " root files. Chain has now " << fInputChain->GetEntriesFast() << " entries";
+  LOG(info) << "Loaded " << fFileNames.size() << " root files. Chain has now " << fInputChain->GetEntriesFast() << " entries";
   fReadingRootFiles = true;
 }
 
@@ -113,7 +113,7 @@ bool FairMQEx9aSamplerBin::ReadBinFile()
     }
 
     if ( !fInputFile.is_open() ) { // wrong file name
-      LOG(ERROR) << "FairMQEx9aSamplerBin::ConditionalRun fInputFile \"" << fFileNames[fCurrentFile] << "\" could not be open!";
+      LOG(error) << "FairMQEx9aSamplerBin::ConditionalRun fInputFile \"" << fFileNames[fCurrentFile] << "\" could not be open!";
       if ( parts.Size() > 0 ) {
         Send(parts, fOutputChannelName);
       }
@@ -126,7 +126,7 @@ bool FairMQEx9aSamplerBin::ReadBinFile()
     fInputFile.read((char*)head,sizeof(head));
 
     if ( fInputFile.eof() ) {
-      LOG(INFO) << "End of file reached!";
+      LOG(info) << "End of file reached!";
       fInputFile.close();
       if ( fCurrentFile == (int)fFileNames.size() ) { // this is the last file
         if ( parts.Size() > 0 ) {
@@ -175,7 +175,7 @@ bool FairMQEx9aSamplerBin::ReadBinFile()
   Send(parts, fOutputChannelName);
 
   if ( fInputFile.eof() ) {
-    LOG(INFO) << "End of file reached!";
+    LOG(info) << "End of file reached!";
     fInputFile.close();
   }
 
@@ -223,7 +223,7 @@ bool FairMQEx9aSamplerBin::ReadRootFile()
   fEventCounter++;
 
   if ( fInputFile.eof() ) {
-    LOG(INFO) << "End of file reached!"; 
+    LOG(info) << "End of file reached!"; 
     fInputFile.close();
   }
 
@@ -239,12 +239,12 @@ void FairMQEx9aSamplerBin::PostRun()
       }
     catch(boost::thread_resource_error& e)
       {
-	LOG(ERROR) << e.what();
+	LOG(error) << e.what();
 	exit(EXIT_FAILURE);
       }
   }
 
-  LOG(INFO) << "PostRun() finished!";
+  LOG(info) << "PostRun() finished!";
 }
 
 void FairMQEx9aSamplerBin::ListenForAcks()
@@ -260,7 +260,7 @@ void FairMQEx9aSamplerBin::ListenForAcks()
       }
     }
 
-    LOG(INFO) << "Acknowledged " << fNofRecAcks << " messages (" << fAggregateLevel << " events each) out of " << fMaxIndex << " events.";
+    LOG(info) << "Acknowledged " << fNofRecAcks << " messages (" << fAggregateLevel << " events each) out of " << fMaxIndex << " events.";
   }
 }
 

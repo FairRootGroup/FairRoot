@@ -65,17 +65,17 @@ FairMCTracks::FairMCTracks(const char* name, Int_t iVerbose)
 // -------------------------------------------------------------------------
 InitStatus FairMCTracks::Init()
 {
-  LOG(DEBUG) <<  "FairMCTracks::Init()" << FairLogger::endl; 
+  LOG(debug) <<  "FairMCTracks::Init()" << FairLogger::endl; 
   FairRootManager* fManager = FairRootManager::Instance();
   fTrackList = static_cast<TClonesArray*>(fManager->GetObject("GeoTracks"));
   if(fTrackList==0) {
-    LOG(ERROR) << "FairMCTracks::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< FairLogger::endl;
+    LOG(error) << "FairMCTracks::Init()  branch " << GetName() << " Not found! Task will be deactivated "<< FairLogger::endl;
     SetActive(kFALSE);
   }
-  LOG(DEBUG1) <<  "FairMCTracks::Init() get track list" << fTrackList << FairLogger::endl; 
-  LOG(DEBUG1) <<  "FairMCTracks::Init()  create propagator" << FairLogger::endl; 
+  LOG(debug1) <<  "FairMCTracks::Init() get track list" << fTrackList << FairLogger::endl; 
+  LOG(debug1) <<  "FairMCTracks::Init()  create propagator" << FairLogger::endl; 
   fEventManager =FairEventManager::Instance();
-  LOG(DEBUG1) <<  "FairMCTracks::Init() get instance of FairEventManager " << FairLogger::endl; 
+  LOG(debug1) <<  "FairMCTracks::Init() get instance of FairEventManager " << FairLogger::endl; 
   fEvent = "Current Event";
   MinEnergyLimit=fEventManager->GetEvtMinEnergy();
   MaxEnergyLimit=fEventManager->GetEvtMaxEnergy();
@@ -89,23 +89,23 @@ void FairMCTracks::Exec(Option_t* /*option*/)
 
   if (IsActive()) {
 
-    LOG(DEBUG1) << " FairMCTracks::Exec "<< FairLogger::endl; 
+    LOG(debug1) << " FairMCTracks::Exec "<< FairLogger::endl; 
     TGeoTrack* tr;
     const Double_t* point;
 
     Reset();
 
     for (Int_t i=0; i<fTrackList->GetEntriesFast(); i++)  {
-      LOG(DEBUG3) << "FairMCTracks::Exec "<< i << FairLogger::endl; 
+      LOG(debug3) << "FairMCTracks::Exec "<< i << FairLogger::endl; 
       tr=static_cast<TGeoTrack*>(fTrackList->At(i));
       TParticle* P=static_cast<TParticle*>(tr->GetParticle());
       PEnergy=P->Energy();
       MinEnergyLimit=TMath::Min(PEnergy,MinEnergyLimit) ;
       MaxEnergyLimit=TMath::Max(PEnergy,MaxEnergyLimit) ;
-      LOG(DEBUG3)<< "MinEnergyLimit " << MinEnergyLimit << " MaxEnergyLimit " << MaxEnergyLimit << FairLogger::endl; 
+      LOG(debug3)<< "MinEnergyLimit " << MinEnergyLimit << " MaxEnergyLimit " << MaxEnergyLimit << FairLogger::endl; 
       if (fEventManager->IsPriOnly() && P->GetMother(0)>-1) { continue; }
       if(fEventManager->GetCurrentPDG()!=0 && fEventManager->GetCurrentPDG()!= tr->GetPDG()) { continue; }
-      LOG(DEBUG3) << "PEnergy " << PEnergy << " Min "  << fEventManager->GetMinEnergy() << " Max " << fEventManager->GetMaxEnergy() << FairLogger::endl; 
+      LOG(debug3) << "PEnergy " << PEnergy << " Min "  << fEventManager->GetMinEnergy() << " Max " << fEventManager->GetMaxEnergy() << FairLogger::endl; 
       if( (PEnergy<fEventManager->GetMinEnergy()) || (PEnergy >fEventManager->GetMaxEnergy())) { continue; }
 
       Int_t Np=tr->GetNpoints();
@@ -123,16 +123,16 @@ void FairMCTracks::Exec(Option_t* /*option*/)
           TEveVector Mom= TEveVector(P->Px(), P->Py(),P->Pz());
           path->fP=Mom;
         }
-        LOG(DEBUG4) << "Path marker added " << path << FairLogger::endl; 
+        LOG(debug4) << "Path marker added " << path << FairLogger::endl; 
 
         track->AddPathMark(*path);
 
-        LOG(DEBUG4) << "Path marker added " << path << FairLogger::endl; 
+        LOG(debug4) << "Path marker added " << path << FairLogger::endl; 
 
         delete path;
       }
       fTrList->AddElement(track);
-      LOG(DEBUG3) << "track added " << track->GetName() << FairLogger::endl; 
+      LOG(debug3) << "track added " << track->GetName() << FairLogger::endl; 
 
     }
     for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++) {

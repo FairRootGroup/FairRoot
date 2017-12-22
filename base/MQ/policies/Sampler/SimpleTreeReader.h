@@ -77,12 +77,12 @@ class BaseSimpleTreeReader
             }
             else
             {
-                LOG(ERROR) << "Could not find tree " << fTreeName;
+                LOG(error) << "Could not find tree " << fTreeName;
             }
         }
         else
         {
-            LOG(ERROR) << "Could not open file " << fFileName << " in SimpleTreeReader::InitSource()";
+            LOG(error) << "Could not open file " << fFileName << " in SimpleTreeReader::InitSource()";
         }
         
     }

@@ -114,7 +114,7 @@ class BoostDeserializer
             }
             if (input->IsEmpty())
             {
-                LOG(DEBUG) << "BoostDeserializer::Deserialize(FairMQMessage& msg, TClonesArray* input): No Output array!";
+                LOG(debug) << "BoostDeserializer::Deserialize(FairMQMessage& msg, TClonesArray* input): No Output array!";
             }
         }
     }
@@ -130,7 +130,7 @@ class BoostDeserializer
         }
         catch (boost::archive::archive_exception& e)
         {
-            MQLOG(ERROR) << e.what();
+            LOG(error) << e.what();
         }
     }
 };

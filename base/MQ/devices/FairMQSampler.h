@@ -78,7 +78,7 @@ class FairMQSampler : public FairMQDevice
   protected:
     virtual void InitTask()
     {
-        LOG(INFO) << "Initializing Task...";
+        LOG(info) << "Initializing Task...";
 
         fFairRunAna = new FairRunAna();
         fSamplerTask = new Task();
@@ -128,7 +128,7 @@ class FairMQSampler : public FairMQDevice
         }
         else
         {
-            LOG(WARN) << "Parameter file not provided. Starting without RuntimeDB.";
+            LOG(warn) << "Parameter file not provided. Starting without RuntimeDB.";
         }
 
         fFairRunAna->Init();
@@ -136,8 +136,8 @@ class FairMQSampler : public FairMQDevice
         FairRootManager* ioman = FairRootManager::Instance();
         fNumEvents = int((ioman->GetInChain())->GetEntries());
 
-        LOG(INFO) << "Task initialized.";
-        LOG(INFO) << "Number of events to process: " << fNumEvents;
+        LOG(info) << "Task initialized.";
+        LOG(info) << "Number of events to process: " << fNumEvents;
     }
 
     virtual void PreRun()
@@ -174,7 +174,7 @@ class FairMQSampler : public FairMQDevice
         }
         catch (std::exception& e)
         {
-            LOG(ERROR) << "Exception when ending AckListener thread: " << e.what();
+            LOG(error) << "Exception when ending AckListener thread: " << e.what();
             exit(EXIT_FAILURE);
         }
     }
@@ -206,7 +206,7 @@ class FairMQSampler : public FairMQDevice
         }
 
         fEnd = std::chrono::high_resolution_clock::now();
-        LOG(INFO) << "Acknowledged " << numAcks << " messages in: " << std::chrono::duration<double, std::milli>(fEnd - fStart).count() << "ms.";
+        LOG(info) << "Acknowledged " << numAcks << " messages in: " << std::chrono::duration<double, std::milli>(fEnd - fStart).count() << "ms.";
     }
 
   private:
