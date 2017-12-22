@@ -20,6 +20,8 @@
 #include "FairTask.h"                   // for FairTask
 #include "FairLinkManager.h"            // for FairLinkManager
 
+#include "FairFileSink.h"               // only temporary, should be removed after the move to FairSink is finished
+
 #include "TFile.h"                      // for TFile
 #include "TList.h"                      // for TList
 #include "TObject.h"                    // for TObject
@@ -39,9 +41,8 @@ FairRun::FairRun(Bool_t isMaster)
    fNTasks(0),
    fRtdb(FairRuntimeDb::instance()),
    fTask(new FairTask("FairTaskList")),
-   fOutname(""),
    fRootManager(0),
-   fOutFile(0),
+   fSink(0),
    fRunId(0),
    fAna(kFALSE),
    fEvtHeader(NULL),
@@ -69,27 +70,6 @@ FairRun::~FairRun()
   delete fRtdb;  // who is responsible for the RuntimeDataBase
   delete fEvtHeader;
   LOG(debug) << "Leave Destructor of FairRun";
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRun::SetOutputFile(const char* fname)
-{
-  fOutname=fname;
-  if (fRootManager) fOutFile = fRootManager->OpenOutFile(fOutname.Data());
-
-}
-//_____________________________________________________________________________
-
-//_____________________________________________________________________________
-void FairRun::SetOutputFile(TFile* f)
-{
-  if (! fRootManager) return;
-
-  fOutname=f->GetName();
-  fRootManager->OpenOutFile(f);
-  fOutFile = f;
-
 }
 //_____________________________________________________________________________
 
@@ -150,6 +130,30 @@ Bool_t FairRun::GetWriteRunInfoFile()
   return fGenerateRunInfo;
 }
 
+//_____________________________________________________________________________
+void FairRun::SetOutputFile(const char* fname)
+{
+  LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairFileSink." << FairLogger::endl;
+  fSink = new FairFileSink(fname);
+  if (fRootManager) fRootManager->SetSink(fSink);
+}
+//_____________________________________________________________________________
 
+//_____________________________________________________________________________
+void FairRun::SetOutputFile(TFile* f)
+{
+  LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairFileSink." << FairLogger::endl;
+  fSink = new FairFileSink(f);
+  if (fRootManager) fRootManager->SetSink(fSink);
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairRun::SetOutputFileName(const TString& name) {
+  LOG(WARNING) << "FairRun::SetOutputFileName() deprecated. Use FairFileSink." << FairLogger::endl;
+  fSink = new FairFileSink(name);
+  if (fRootManager) fRootManager->SetSink(fSink);
+}
+//_____________________________________________________________________________
 
 ClassImp(FairRun)

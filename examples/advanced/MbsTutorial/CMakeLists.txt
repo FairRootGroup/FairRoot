@@ -9,7 +9,6 @@
 
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/base/source
     ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial
     ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial/src
 )

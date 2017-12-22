@@ -152,7 +152,8 @@ void FairRunAna::Init()
 
   // Check if we have an input file to be used
   fInFileIsOpen = fRootManager->InitSource();
-
+  fRootManager->InitSink();
+  
  //Load Geometry from user file
   if (fLoadGeo) {
     if (fInputGeoFile!=0) { //First check if the user has a separate Geo file!
@@ -283,11 +284,7 @@ void FairRunAna::Init()
   fRootManager->UpdateListOfTimebasedBranches();
 
   // create the output tree after tasks initialisation
-  fOutFile->cd();
-  TTree* outTree =new TTree(FairRootManager::GetTreeName(), "/cbmout", 99);
-  fRootManager->TruncateBranchNames(outTree, "cbmout");
-  fRootManager->SetOutTree(outTree);
-  fRootManager->CreatePersistentBranchesAny();
+  fRootManager->InitSink();
   fRootManager->WriteFolder();
   fRootManager->WriteFileHeader(fFileHeader);
 }
@@ -630,14 +627,14 @@ void FairRunAna::TerminateRun()
 {
   fRootManager->StoreAllWriteoutBufferData();
   fTask->FinishTask();
-  gDirectory->SetName(fRootManager->GetOutFile()->GetName());
+  //  gDirectory->SetName(fRootManager->GetOutFile()->GetName());
   //  fRunInfo.WriteInfo(); // CRASHES due to file ownership i guess...
   //   cout << ">>> SlaveTerminate fRootManager->GetInChain()->Print()" << endl;
   //   fRootManager->GetInChain()->Print();
   //   cout << ">>>------------------------------------------------<<<" << endl;
   fRootManager->LastFill();
   fRootManager->Write();
-  fRootManager->CloseOutFile();
+  fRootManager->CloseSink();
 }
 //_____________________________________________________________________________
 

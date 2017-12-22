@@ -296,6 +296,7 @@ ELSE(FAIRROOT_FOUND)
     ${CMAKE_SOURCE_DIR}/base/event
     ${CMAKE_SOURCE_DIR}/base/field
     ${CMAKE_SOURCE_DIR}/base/sim
+    ${CMAKE_SOURCE_DIR}/base/sink
     ${CMAKE_SOURCE_DIR}/base/source
     ${CMAKE_SOURCE_DIR}/dbase
     ${CMAKE_SOURCE_DIR}/dbase/dbInterface

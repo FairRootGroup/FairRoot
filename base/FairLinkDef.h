@@ -76,6 +76,9 @@
 #pragma link C++ class FairFileSource;
 #pragma link C++ class FairMixedSource;
 #pragma link C++ class FairOnlineSource;
+
+#pragma link C++ class FairSink;
+#pragma link C++ class FairFileSink;
 #ifdef BUILD_MBS
 #pragma link C++ class FairMbsSource;
 #pragma link C++ class FairRemoteSource;

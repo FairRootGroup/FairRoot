@@ -38,11 +38,11 @@ class FairRunAnaProof : public FairRunAna
     /**
      * Set the output file name for analysis or simulation
     */
-    virtual void    SetOutputFile(const char* fname);
+    //    virtual void    SetOutputFile(const char* fname);
     /**
      * Set the output file for analysis or simulation
     */
-    virtual void    SetOutputFile(TFile* f);
+    //    virtual void    SetOutputFile(TFile* f);
 
     /**Run from event number NStart to event number NStop */
     void        Run(Int_t NStart=0 ,Int_t NStop=0);
