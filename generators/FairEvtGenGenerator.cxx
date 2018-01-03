@@ -19,6 +19,7 @@
 #include "TRandom.h"                    // for TRandom, gRandom
 
 #include <algorithm>                    // for max
+#include <sstream>                      // for stringstream
 
 using std::max;
 
@@ -118,11 +119,12 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
     // LOG(info) << "Event number: " << eventID << "\tNtracks: " 
     //           << ntracks << FairLogger::endl;
+    // std::stringstream ss;
     for (Int_t ii=0; ii<15; ii++) {
       ncols += fscanf(fInputFile,"%s",buffer);
-      //   LOG(info) << buffer << "\t" ;
+      //   ss << buffer << "\t" ;
     }
-    //LOG(info) << FairLogger::endl;
+    //LOG(info) << ss.str();
 
     for (Int_t ll=0; ll<ntracks; ll++) {
       ncols += fscanf(fInputFile,"%d %d %d %d %d %d %d %g %f %f %f %f %f %f %f", &nLine, &pdgID, &nDecay, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz, &fE, &fT, &fVx, &fVy, &fVz);
