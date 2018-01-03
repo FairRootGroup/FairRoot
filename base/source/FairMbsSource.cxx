@@ -33,8 +33,7 @@ Bool_t FairMbsSource::Unpack(Int_t *data, Int_t size, Short_t type,
   LOG(debug2)<< "FairMbsSource::Unpack => Found Sub-event with flags: " 
              << " Type " << type << " SubType " << subType
              << " ProcId " << procId << " SubCrate " << subCrate
-             << " Control " << control
-             << FairLogger::endl;
+             << " Control " << control;
   
   FairUnpack *unpack;
   Bool_t seen = kFALSE;

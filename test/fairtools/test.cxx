@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairLogger.h"
@@ -26,13 +26,13 @@
 std::cout<<"Das sollte schwarz sein."<<std::endl;
 */
 
-//    LOG(info) << "Value: "<< val <<" "<< FairLogger::endl;
+//    LOG(info) << "Value: "<< val <<" ";
 
 /*
 std::cout<<"Das sollte wieder schwarz sein."<<std::endl;
-LOG_IF(WarningLog, true) << "Das sollte man sehen."<< FairLogger::endl;
-LOG_IF(WarningLog, false) << "Das sollte man nicht sehen."<< FairLogger::endl;
-LOG_IF(WarningLog, i%2) << "Jedes zweite mal."<< FairLogger::endl;
+LOG_IF(WarningLog, true) << "Das sollte man sehen.";
+LOG_IF(WarningLog, false) << "Das sollte man nicht sehen.";
+LOG_IF(WarningLog, i%2) << "Jedes zweite mal.";
 std::cout<<"Das sollte wieder schwarz sein."<<std::endl;
 */
 //  }
@@ -74,7 +74,7 @@ void logToLoggerCout(int iterations)
 {
   for (int i=0; i < iterations; i++) {
     Int_t val = i * i - (i-1);
-    LOG(info) << "Value: "<< val <<" "<< FairLogger::endl;
+    LOG(info) << "Value: "<< val <<" ";
   }
 }
 
@@ -82,8 +82,8 @@ void logToLoggerCoutTest(int iterations)
 {
   for (int i=0; i < iterations; i++) {
     Int_t val = i * i - (i-1);
-    LOG(info) << "Value: "<< val <<" "<< FairLogger::endl;
-    LOG(debug) << "Value: "<< val <<" "<< FairLogger::endl;
+    LOG(info) << "Value: "<< val <<" ";
+    LOG(debug) << "Value: "<< val <<" ";
   }
 }
 
@@ -162,8 +162,8 @@ int main(int argc, char* argv[])
   //gLogger->SetLogToFile(false);
   //gLogger->SetLogToScreen(false);
   //gLogger->Fatal(MESSAGE_ORIGIN, "This is a fatal message.");
-  //LOG(info) << "This message should never be printed." << FairLogger::endl;
-  //LOG(fatal) << "This is a fatal message" << FairLogger::endl;
+  //LOG(info) << "This message should never be printed.";
+  //LOG(fatal) << "This is a fatal message";
   //exit(-42);
 
   int iterations = 1000000;

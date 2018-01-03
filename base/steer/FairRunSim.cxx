@@ -88,7 +88,7 @@ FairRunSim::FairRunSim(Bool_t isMaster)
 FairRunSim::~FairRunSim()
 {
 
-  LOG(debug) << "Enter Destructor of FairRunSim " << FairLogger::endl;
+  LOG(debug) << "Enter Destructor of FairRunSim ";
 
   // delete fApp;
 
@@ -96,12 +96,10 @@ FairRunSim::~FairRunSim()
    is the responsibility of FairRunSim to call the destructors of
    the modules-
   */
-  LOG(debug) << "Start deleting all registered modules" 
-       << FairLogger::endl;
+  LOG(debug) << "Start deleting all registered modules" ;
   ListOfModules->Delete();
   delete ListOfModules;
-  LOG(debug) << "Finish deleting all registered modules"
-       << FairLogger::endl;
+  LOG(debug) << "Finish deleting all registered modules";
 
   fIons->Delete();
   delete fIons;
@@ -152,7 +150,7 @@ void FairRunSim::Init()
   CheckFlukaExec();
 
 //  fOutFile=fRootManager->OpenOutFile(fOutname);
-  LOG(info) << "==============  FairRunSim: Initialising simulation run ==============" << FairLogger::endl;
+  LOG(info) << "==============  FairRunSim: Initialising simulation run ==============";
 
   FairGeoLoader* loader=new FairGeoLoader(fLoaderName->Data(), "Geo Loader");
   FairGeoInterface* GeoInterFace=loader->getGeoInterface();
@@ -204,7 +202,7 @@ void FairRunSim::Init()
   }
   // on/off visualisation
   if( fStoreTraj ) {
-    LOG(info) << "Create visualisation manager " << FairLogger::endl;
+    LOG(info) << "Create visualisation manager ";
     new FairTrajFilter();
   }
   if(fRadLength) {
@@ -268,7 +266,7 @@ void FairRunSim::CheckFlukaExec()
     TString flexec="run_fluka.sh";
     if (TString(gSystem->FindFile(config_dir.Data(),flexec)) != TString("")) {
       LOG(info) << "---User path for Configuration is used: " 
-		<< config_dir.Data() << FairLogger::endl;
+		<< config_dir.Data();
     } else {
       flexec=work_config+"run_fluka.sh";
     }
@@ -321,22 +319,22 @@ void FairRunSim::SetMCConfig()
       if (fUserConfig.Contains("/")) { AbsPath=kTRUE; }
       g4Macro = fUserConfig;
       LOG(info) << "---------------User config is used: " 
-		<< g4Macro.Data() << FairLogger::endl;
+		<< g4Macro.Data();
     }
     if (TString(gSystem->FindFile(config_dir.Data(),g4LibMacro)) != TString("")) { //be carfull after this call the string g4LibMacro is empty if not found!!!!
       LOG(info) << "---User path for Configuration (g4libs.C) is used: " 
-		<< config_dir.Data() << FairLogger::endl;
+		<< config_dir.Data();
       LibMacro = g4LibMacro;
     } else if(gSystem->AccessPathName((Lib_config + "g4libs.C").Data()) == false) {
       // Note: file is existing if AccessPathName return false
       LOG(info) << "---G4VMC macro  path for Configuration (g4libs.C) is used: "
-                << Lib_config.Data() << FairLogger::endl;
+                << Lib_config.Data();
       LibMacro = Lib_config+"g4libs.C";
     }
     LibFunction="g4libs()";
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),g4Macro)) != TString("")) {
       LOG(info) << "---User path for Configuration (g4Config.C) is used: " 
-		<< config_dir.Data() << FairLogger::endl;
+		<< config_dir.Data();
       ConfigMacro=g4Macro;
     } else {
       if(AbsPath) { ConfigMacro = fUserConfig; }
@@ -349,27 +347,27 @@ void FairRunSim::SetMCConfig()
     if(fUserConfig.IsNull()) {
       g3Macro="g3Config.C";
       fUserConfig = g3Macro;
-      LOG(info) << "-------------- Standard Config is called ------------------------------------" << FairLogger::endl;
+      LOG(info) << "-------------- Standard Config is called ------------------------------------";
     } else {
       if (fUserConfig.Contains("/")) { AbsPath=kTRUE; }
       g3Macro = fUserConfig;
       LOG(info) << "---------------User config is used: " 
-		<< g3Macro.Data() << FairLogger::endl;
+		<< g3Macro.Data();
     }
     if (TString(gSystem->FindFile(config_dir.Data(),g3LibMacro)) != TString("")) {
       LOG(info) << "---User path for Configuration (g3libs.C) is used: " 
-		<< config_dir.Data() << FairLogger::endl;
+		<< config_dir.Data();
       LibMacro=g3LibMacro;
     } else if(gSystem->AccessPathName((work_config+"g3libs.C").Data()) == false) {
       // Note: file is existing if AccessPathName return false
       LOG(info) << "---VMCWORKDIR path for Configuration (g3libs.C) is used: "
-                << work_config.Data() << FairLogger::endl;
+                << work_config.Data();
       LibMacro = work_config+"g3libs.C";
     }
     LibFunction="g3libs()";
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),g3Macro)) != TString("")) {
       LOG(info) << "---User path for Configuration (g3Config.C) is used: "
-		<< config_dir.Data() << FairLogger::endl;
+		<< config_dir.Data();
       ConfigMacro=g3Macro;
     } else {
       if(AbsPath) { ConfigMacro = fUserConfig; }
@@ -386,11 +384,11 @@ void FairRunSim::SetMCConfig()
       if (fUserConfig.Contains("/")) { AbsPath=kTRUE; }
       flMacro = fUserConfig;
       LOG(info) << "---------------User config is used: " 
-		<< flMacro.Data() << FairLogger::endl;
+		<< flMacro.Data();
     }
     if (TString(gSystem->FindFile(config_dir.Data(), flLibMacro)) != TString("")) {
       LOG(info) << "---User path for Configuration (fllibs.C) is used: "
-		<< config_dir.Data() << FairLogger::endl;
+		<< config_dir.Data();
     } else {
       flLibMacro=work_config+"fllibs.C";
     }
@@ -398,7 +396,7 @@ void FairRunSim::SetMCConfig()
     LibFunction="fllibs()";
     if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(),flMacro)) != TString("")) {
       LOG(info) << "---User path for Configuration (flConfig.C) is used: " 
-		<< config_dir.Data() << FairLogger::endl;
+		<< config_dir.Data();
       ConfigMacro=flMacro;
     } else {
       if(AbsPath) { ConfigMacro = fUserConfig; }
@@ -408,7 +406,7 @@ void FairRunSim::SetMCConfig()
   //----------------------------------------------SetCuts------------------------------------------------
   if (TString(gSystem->FindFile(config_dir.Data(),cuts)) != TString("")) {
     LOG(info) << "---User path for Cuts and Processes (SetCuts.C) is used: "
-	      << config_dir.Data() << FairLogger::endl;
+	      << config_dir.Data();
   } else {
     cuts =work_config+ fUserCuts;
   }
@@ -458,7 +456,7 @@ void FairRunSim::SetMaterials(const char* MatFileName)
     if (!Mat.EndsWith("/")) { Mat+="/"; }
   }
   MatFname=Mat+MatFileName;
-  LOG(info) << "Media file used: " << MatFname.Data() << FairLogger::endl;
+  LOG(info) << "Media file used: " << MatFname.Data();
 }
 //_____________________________________________________________________________
 void FairRunSim::SetGeoModel( char* name )
@@ -466,13 +464,10 @@ void FairRunSim::SetGeoModel( char* name )
   if ( strncmp(fName,"TGeant3",7) == 0 ) {
     delete fLoaderName;
     fLoaderName = new TString(name);
-    LOG(info) << "FairRun::SetGeoModel(): G3 native geometry model used "
-	      << FairLogger::endl;
+    LOG(info) << "FairRun::SetGeoModel(): G3 native geometry model used ";
   } else {
-    LOG(info) << "FairRun::SetGeoModel(): Geant3 MC engine only !"
-	      << FairLogger::endl;
-    LOG(info) << "FairRun::SetGeoModel(): Method skipped ... "
-	      << FairLogger::endl;
+    LOG(info) << "FairRun::SetGeoModel(): Geant3 MC engine only !";
+    LOG(info) << "FairRun::SetGeoModel(): Method skipped ... ";
   }
 }
 //_____________________________________________________________________________

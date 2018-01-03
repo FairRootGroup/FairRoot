@@ -51,8 +51,7 @@ void FairTestDetectorDigiWriteoutBuffer::AddNewDataToTClonesArray(FairTimeStamp*
     if (fVerbose > 1)
     {
       LOG(info) << "Data Inserted: " 
-		<< static_cast<FairTestDetectorDigi*>(data)->ToString() 
-		<< FairLogger::endl;
+		<< static_cast<FairTestDetectorDigi*>(data)->ToString();
     }
     new ((*myArray)[myArray->GetEntries()]) FairTestDetectorDigi(*static_cast<FairTestDetectorDigi*>((data)));
 }

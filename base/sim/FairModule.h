@@ -175,7 +175,7 @@ void FairModule::ConstructASCIIGeometry(T dataType1, TString containerName, U)
 
   if ( "" != containerName) {
     LOG(info) << "Add GeoNodes for "<< MGeo->getDescription()
-              << " to container " << containerName << FairLogger::endl;
+              << " to container " << containerName;
 
     //    U par=(U)(rtdb->getContainer(containerName));
     U*      par=static_cast<U*>(rtdb->getContainer(containerName));

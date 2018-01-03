@@ -54,7 +54,7 @@ FairTutorialDet4HitProducerIdealMisalign::~FairTutorialDet4HitProducerIdealMisal
 void FairTutorialDet4HitProducerIdealMisalign::SetParContainers()
 {
 
-  LOG(info)<< "Set tutdet missallign parameters"<<FairLogger::endl;
+  LOG(info)<< "Set tutdet missallign parameters";
   // Get Base Container
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
@@ -94,14 +94,14 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
   // Get RootManager
   FairRootManager* ioman = FairRootManager::Instance();
   if ( ! ioman ) {
-    LOG(fatal) << "RootManager not instantised!" << FairLogger::endl;
+    LOG(fatal) << "RootManager not instantised!";
     return kFATAL;
   }
 
   // Get input array
   fPointArray = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetPoint"));
   if ( ! fPointArray ) {
-    LOG(fatal)<<"No TutorialDetPoint array!" << FairLogger::endl;
+    LOG(fatal)<<"No TutorialDetPoint array!";
     return kFATAL;
   }
 
@@ -109,8 +109,7 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
   fHitArray = new TClonesArray("FairTutorialDet4Hit");
   ioman->Register("TutorialDetHit", "TutorialDet", fHitArray, kTRUE);
 
-  LOG(info)<< "HitProducerIdealMissallign: Initialisation successfull"
-           << FairLogger::endl;
+  LOG(info)<< "HitProducerIdealMissallign: Initialisation successfull";
 
 
   fShiftX=fDigiPar->GetShiftX();
@@ -122,15 +121,14 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
 
   Bool_t isGlobalCoordinateSystem=fGeoPar->IsGlobalCoordinateSystem();
   if (isGlobalCoordinateSystem) {
-    LOG(fatal) << "Task can only work with local coordinates."
-	       << FairLogger::endl;
+    LOG(fatal) << "Task can only work with local coordinates.";
   }
   /*
     Int_t num = fDigiPar->GetNrOfDetectors();
     Int_t size = fShiftX.GetSize();
-    LOG(info)<<"Array has a size of "<< size << "elements"<<FairLogger::endl;
+    LOG(info)<<"Array has a size of "<< size << "elements";
     for (Int_t i=0; i< num; ++i) {
-      LOG(info)<< i <<": "<<fShiftX.At(i)<<FairLogger::endl;
+      LOG(info)<< i <<": "<<fShiftX.At(i);
     }
   */
   return kSUCCESS;
@@ -175,15 +173,15 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
       z  = point->GetZ();
 
       LOG(debug)<<"Pos before misalignment: "<< point->GetX() <<", "
-                << point->GetY() <<", "<< point->GetZ() <<FairLogger::endl;
+                << point->GetY() <<", "<< point->GetZ();
       LOG(debug)<<"Pos after misalignment: "<< x <<", "
-                << y <<", "<< z <<FairLogger::endl;
+                << y <<", "<< z;
 
       x = x + GetHitErr(0.1);
       y = y + GetHitErr(0.1);
 
       LOG(debug2)<<"Missallign hit by "<<fShiftX.At(detID)<<" cm in x- and "
-                 << fShiftY.At(detID)<<" cm in y-direction."<<FairLogger::endl;
+                 << fShiftY.At(detID)<<" cm in y-direction.";
 
       // Time of flight
 //      tof = point->GetTime();
@@ -200,7 +198,7 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
       y  = point->GetY();
       z  = point->GetZ();
 
-      LOG(info)<<"Position: "<<x<<", "<<y<<", "<<z<<FairLogger::endl;
+      LOG(info)<<"Position: "<<x<<", "<<y<<", "<<z;
 
       Double_t local[3] = {x, y, z};
       Double_t global[3];
@@ -211,8 +209,8 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
       y = global[1] + GetHitErr(0.1);
       z = global[2];
 
-      LOG(info)<<"Position: "<<x<<", "<<y<<", "<<z<<FairLogger::endl;
-      LOG(info)<<"****"<<FairLogger::endl;
+      LOG(info)<<"Position: "<<x<<", "<<y<<", "<<z;
+      LOG(info)<<"****";
       // Time of flight
       //tof = point->GetTime();
 
@@ -226,7 +224,7 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
   }
   // Event summary
   LOG(debug)<< "Create " << nHits << " TutorialDetHits out of "
-            << nPoints << " TutorilaDetPoints created." << FairLogger::endl;
+            << nPoints << " TutorilaDetPoints created.";
 
 }
 // -------------------------------------------------------------------------

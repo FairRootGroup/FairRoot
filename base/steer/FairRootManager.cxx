@@ -127,8 +127,7 @@ FairRootManager::FairRootManager()
     fListOfNonTimebasedBranchesIter(0),
     fId(0)
 {
-  LOG(debug) << "FairRootManager::FairRootManager: going to lock "
-    << this << FairLogger::endl;
+  LOG(debug) << "FairRootManager::FairRootManager: going to lock " << this;
 
   TMCAutoLock lk(&createMutex);
 
@@ -141,14 +140,14 @@ FairRootManager::FairRootManager()
   lk.unlock();
 
   LOG(debug) << "Released lock and done FairRootManager::FairRootManager in "
-    << fId << " " << this << FairLogger::endl;
+    << fId << " " << this;
 }
 
 //_____________________________________________________________________________
 FairRootManager::~FairRootManager()
 {
 //
-  LOG(debug) << "Enter Destructor of FairRootManager" << FairLogger::endl;
+  LOG(debug) << "Enter Destructor of FairRootManager";
 
   // delete fOutTree;
   if(fOutFile) {
@@ -161,7 +160,7 @@ FairRootManager::~FairRootManager()
   delete[] fObj2;
   fBranchNameList->Delete();
   delete fBranchNameList;
-  LOG(debug) << "Leave Destructor of FairRootManager" << FairLogger::endl;
+  LOG(debug) << "Leave Destructor of FairRootManager";
   delete fEventHeader;
   delete fSourceChain;
 
@@ -169,7 +168,7 @@ FairRootManager::~FairRootManager()
   TMCAutoLock lk(&deleteMutex);
 
   LOG(debug) << "FairRootManager::~FairRootManager: going to lock "
-    << fId << " " << this << FairLogger::endl;
+    << fId << " " << this;
 
   --fgCounter;
 
@@ -177,13 +176,13 @@ FairRootManager::~FairRootManager()
   lk.unlock();
 
   LOG(debug) << "Released lock and done FairRootManager::~FairRootManager in "
-    << fId << " " << this << FairLogger::endl;
+    << fId << " " << this;
 }
 
 //_____________________________________________________________________________
 Bool_t FairRootManager::InitSource() {
 
-  LOG(debug) << "Call the initialiazer for the FairSource in FairRootManager " << FairLogger::endl;
+  LOG(debug) << "Call the initialiazer for the FairSource in FairRootManager ";
   if ( fSource ) {
     Bool_t sourceInitBool = fSource->Init();
     fListOfBranchesFromInput=fSourceChain->GetListOfBranches();
@@ -195,7 +194,7 @@ Bool_t FairRootManager::InitSource() {
          fListOfNonTimebasedBranches->Add(obj);
       }
     }
-    LOG(debug) << "Source is intialized and the list of branches is created in FairRootManager " << FairLogger::endl;
+    LOG(debug) << "Source is intialized and the list of branches is created in FairRootManager ";
     fListOfNonTimebasedBranchesIter=fListOfNonTimebasedBranches->MakeIterator();
     return sourceInitBool;
   }
@@ -207,12 +206,11 @@ Bool_t FairRootManager::InitSource() {
 TFile* FairRootManager::OpenOutFile(TFile* f)
 {
 
-  LOG(debug) << "Check the output file" << FairLogger::endl;
+  LOG(debug) << "Check the output file";
   fOutFile=f;
   /**Check the output file, if anything wronge with it exit!*/
   if (fOutFile->IsZombie()) {
-    LOG(fatal) << "FairRootManager: Error opening output file "
-               << FairLogger::endl;
+    LOG(fatal) << "FairRootManager: Error opening output file ";
     exit(-1);
   }
   FairRun* fRun = FairRun::Instance();
@@ -230,14 +228,14 @@ TFile* FairRootManager::OpenOutFile(TFile* f)
 //_____________________________________________________________________________
 TFile* FairRootManager::OpenOutFile(const char* fname)
 {
-  LOG(debug) << "Opening output file, " << fname << FairLogger::endl;
+  LOG(debug) << "Opening output file, " << fname;
   if(fOutFile) {
     CloseOutFile();
   }
-  LOG(info) << "FairRootManager::OpenOutFile(\"" << fname << "\")" << FairLogger::endl;
+  LOG(info) << "FairRootManager::OpenOutFile(\"" << fname << "\")";
   fOutFile = TFile::Open(fname, "recreate");
   LOG(debug) << "FairRootManager::OpenOutFile(\"" << fname << "\") " << this << " "
-    << fOutFile << FairLogger::endl;
+    << fOutFile;
   return OpenOutFile(fOutFile);
 }
 
@@ -256,8 +254,7 @@ void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* 
   if (strcmp (name, folderName) == 0 ) {
     LOG(fatal) << "The names for the object name "
                << name << " and the folder name "
-               << folderName <<" are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name."
-               << FairLogger::endl;
+               << folderName <<" are equal. This isn't allowed. So we stop the execution at this point. Pleae change either the name or the folder name.";
   }
 
   if(toFile) { /**Write the Object to the Tree*/
@@ -360,7 +357,7 @@ TClonesArray* FairRootManager::GetTClonesArray(TString branchName)
     return fActiveContainer[branchName]; // return the container
   } else {
     LOG(info) << "Branch: " << branchName.Data()
-              << " not registered!" << FairLogger::endl ;
+              << " not registered!" ;
   }
   // error if the branch is not registered
   return 0;
@@ -456,7 +453,7 @@ void FairRootManager::Fill()
   if (fOutTree != 0) {
     fOutTree->Fill();
   } else {
-    LOG(info) << " No Output Tree" << FairLogger::endl;
+    LOG(info) << " No Output Tree";
   }
 }
 
@@ -474,7 +471,7 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
 {
   /** Writes the tree in the file.*/
 
-  LOG(debug) << "FairRootManager::Write "  << this << FairLogger::endl ;
+  LOG(debug) << "FairRootManager::Write "  << this;
 
   if(fOutTree!=0) {
     /** Get the file handle to the current output file from the tree.
@@ -486,11 +483,11 @@ Int_t FairRootManager::Write(const char*, Int_t, Int_t)
     // fOutTree->Print();
 
     fOutFile = fOutTree->GetCurrentFile();
-    LOG(debug) << "FairRootManager::Write to file: "  << fOutFile->GetName()  << FairLogger::endl ;
+    LOG(debug) << "FairRootManager::Write to file: "  << fOutFile->GetName();
     fOutFile->cd();
     fOutTree->Write();
   } else {
-    LOG(info) << "No Output Tree" << FairLogger::endl;
+    LOG(info) << "No Output Tree";
   }
 
   return 0;
@@ -549,7 +546,7 @@ Int_t  FairRootManager::ReadEvent(Int_t i)
   SetEntryNr(i);
 
   if ( !fSource ) {
-    LOG(fatal) << "No Source available" << FairLogger::endl;
+    LOG(fatal) << "No Source available";
     return -1;
   }
 
@@ -562,7 +559,7 @@ Int_t  FairRootManager::ReadEvent(Int_t i)
 
   LOG(debug) << "--Event number --- "
              << fCurrentEntryNo << " with time ---- "
-             << fCurrentTime << FairLogger::endl;
+             << fCurrentTime;
 
   return readEventResult;
 }
@@ -631,32 +628,30 @@ TObject* FairRootManager::GetObject(const char* BrName)
   /**Get Data object by name*/
   TObject* Obj =NULL;
   LOG(debug2) << " Try to find if the object "
-              << BrName << " is already activated by another task or call"
-              << FairLogger::endl;
+              << BrName << " is already activated by another task or call";
   /**Try to find the object in the folder structure, object already activated by other task or call*/
   if(fOutFolder) {
     Obj = fOutFolder->FindObjectAny(BrName);
     if (Obj) {
       LOG(debug2) <<"Object "
-                  << BrName << " was already activated by another task"
-                  << FairLogger::endl;
+                  << BrName << " was already activated by another task";
     }
   }
   /**if the object does not exist then it could be a memory branch */
   if(!Obj) {
     LOG(debug2) << "Try to find if the object "
-                << BrName << " is a memory branch" << FairLogger::endl;
+                << BrName << " is a memory branch";
     Obj=GetMemoryBranch(BrName);
     if (Obj) {
       LOG(debug2) << "Object "
-                  << BrName << " is a memory branch" << FairLogger::endl;
+                  << BrName << " is a memory branch";
     }
   }
   /**if the object does not exist then look in the input tree */
   if(fRootFolder && !Obj) {
     /** there is an input tree and the object was not in memory */
     LOG(debug2) << "Object "
-                << BrName << " is not a memory branch and not yet activated, try the Input Tree (Chain)" << FairLogger::endl;
+                << BrName << " is not a memory branch and not yet activated, try the Input Tree (Chain)";
     Obj=fRootFolder->FindObjectAny(BrName);
     Obj=ActivateBranch(BrName);
   }
@@ -983,7 +978,7 @@ void FairRootManager::UpdateBranches() {
   for ( Int_t iobj = 0 ; iobj <= fNObj ; iobj++ ) {
     if ( fObj2[iobj] ) {
       LOG(info) << "FairRootManager::UpdateBranches \"" << fObj2[iobj]->GetName()
-                << "\" (\"" << fObj2[iobj]->GetTitle() << "\")" << FairLogger::endl;
+                << "\" (\"" << fObj2[iobj]->GetTitle() << "\")";
       TString tempBranchName = fObj2[iobj]->GetName();
       fSource->ActivateObject(&fObj2[fNObj],tempBranchName.Data());
     }
@@ -1011,15 +1006,14 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
   }
   /**try to find the object decribing the branch in the folder structure in file*/
   LOG(debug) << "Try to find an object "
-              << BrName << " describing the branch in the folder structure in file"
-              << FairLogger::endl;
+              << BrName << " describing the branch in the folder structure in file";
   if ( fListFolder ) {
     for(Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
       TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
       fObj2[fNObj] = fold->FindObjectAny(BrName);
       if (fObj2[fNObj] ) {
         LOG(info) << "Object "
-                  << BrName << " describing the branch in the folder structure was found" << FairLogger::endl;
+                  << BrName << " describing the branch in the folder structure was found";
         break;
       }
     }
@@ -1029,8 +1023,7 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
     /** if we do not find an object corresponding to the branch in the folder structure
     *  then we have no idea about what type of object is this and we cannot set the branch address
     */
-    LOG(info) << " Branch: " << BrName << " not found in Tree."
-              << FairLogger::endl;
+    LOG(info) << " Branch: " << BrName << " not found in Tree.";
     //Fatal(" No Branch in the tree", BrName );
     return 0;
   } else {
@@ -1158,8 +1151,7 @@ FairWriteoutBuffer* FairRootManager::RegisterWriteoutBuffer(TString branchName, 
   } else {
     LOG(warn) << "Branch "
                  << branchName.Data()
-                 << " is already registered in WriteoutBufferMap"
-                 << FairLogger::endl;
+                 << " is already registered in WriteoutBufferMap";
     delete buffer;
   }
 
@@ -1326,7 +1318,7 @@ bool FairRootManager::CreatePersistentBranchesAny() {
 void FairRootManager::EmitMemoryBranchWrongTypeWarning(const char* brname, const char *type1, const char *type2) const {
   LOG(warn) << "Trying to read from memory branch " << brname
                << " with wrong type " << type1
-               << " (expexted: " << type2 << " )" << FairLogger::endl;
+               << " (expexted: " << type2 << " )";
 }
 
 ClassImp(FairRootManager)

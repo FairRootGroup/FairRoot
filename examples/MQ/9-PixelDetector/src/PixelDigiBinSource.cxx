@@ -43,7 +43,7 @@ PixelDigiBinSource::PixelDigiBinSource(TString inputFileName)
   , fMCEntryNo(0)
   , fPartNo(0)
 {
-  LOG(debug) << "PixelDigiBinSource created------------" << FairLogger::endl;
+  LOG(debug) << "PixelDigiBinSource created------------";
 }
 //_____________________________________________________________________________
 
@@ -60,8 +60,8 @@ Bool_t PixelDigiBinSource::Init()
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  LOG(info) << "PixelDigiBinSource::Init" << FairLogger::endl;
-  if ( ! ioman ) LOG(fatal) << "No FairRootManager" << FairLogger::endl;
+  LOG(info) << "PixelDigiBinSource::Init";
+  if ( ! ioman ) LOG(fatal) << "No FairRootManager";
 
   // Register output array StsDigi
   fDigis = new TClonesArray("PixelDigi",10000);
@@ -74,7 +74,7 @@ Bool_t PixelDigiBinSource::Init()
   fInputFile.open(fInputFileName.Data(),std::fstream::in|std::fstream::binary);
   
   if ( !fInputFile.is_open() ) {
-    LOG(fatal) << "PixelDigiBinSource::Init() fInputFile \"" << fInputFileName.Data() << "\" could not be open!" << FairLogger::endl;
+    LOG(fatal) << "PixelDigiBinSource::Init() fInputFile \"" << fInputFileName.Data() << "\" could not be open!";
     return kFALSE;
   }
 
@@ -102,13 +102,13 @@ Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
   fCurrentEntryNo = i;
 
   std::string buffer;
-  LOG(debug) << "PixelDigiBinSource::ReadEvent() Begin of (" << fDigis->GetEntries() << ")" << FairLogger::endl;
+  LOG(debug) << "PixelDigiBinSource::ReadEvent() Begin of (" << fDigis->GetEntries() << ")";
 
   Int_t head[4]; // runId, MCEntryNo, PartNo, NofDigis
   fInputFile.read((char*)head,sizeof(head));
 
   if ( fInputFile.eof() ) {
-    LOG(info) << "End of file reached!" << FairLogger::endl;
+    LOG(info) << "End of file reached!";
     return 1;
   }
   
@@ -131,7 +131,7 @@ Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
 	       << dataCont[idata*dataSize+1] << " / " 
 	       << dataCont[idata*dataSize+2] << " / " 
 	       << dataCont[idata*dataSize+3] << " / " 
-	       << " 0." << FairLogger::endl;
+	       << " 0.";
     new ((*fDigis)[fNDigis]) PixelDigi(-1,
 				       (Int_t)dataCont[idata*dataSize+0],
 				       (Int_t)dataCont[idata*dataSize+1],
@@ -140,7 +140,7 @@ Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
 				       0.,0.);
     fNDigis++;
   }
-  LOG(debug) << "PixelDigiBinSource::ReadEvent() End of" << FairLogger::endl;
+  LOG(debug) << "PixelDigiBinSource::ReadEvent() End of";
   
   if ( !fInputFile ) {
     return 1;

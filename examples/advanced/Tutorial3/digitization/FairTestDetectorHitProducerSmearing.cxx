@@ -24,15 +24,13 @@ FairTestDetectorHitProducerSmearing::FairTestDetectorHitProducerSmearing()
     , fPointsArray(NULL)
     , fHitsArray(new TClonesArray("FairTestDetectorHit", 100))
 {
-  LOG(debug) << "Default Constructor of FairTestDetectorHitProducerSmearing"
-	     << FairLogger::endl;
+  LOG(debug) << "Default Constructor of FairTestDetectorHitProducerSmearing";
 }
 
 // ---- Destructor ----------------------------------------------------
 FairTestDetectorHitProducerSmearing::~FairTestDetectorHitProducerSmearing()
 {
-  LOG(debug) << "Destructor of FairTestDetectorHitProducerSmearing"
-	     << FairLogger::endl;
+  LOG(debug) << "Destructor of FairTestDetectorHitProducerSmearing";
     fHitsArray->Delete();
     delete fHitsArray;
 }
@@ -41,7 +39,7 @@ FairTestDetectorHitProducerSmearing::~FairTestDetectorHitProducerSmearing()
 void FairTestDetectorHitProducerSmearing::SetParContainers()
 {
   LOG(debug) << "SetParContainers of FairTestDetectorHitProducerSmearing"
-	     << FairLogger::endl;
+;
     // Load all necessary parameter containers from the runtime data base
     /*
     FairRunAna* ana = FairRunAna::Instance();
@@ -55,8 +53,7 @@ void FairTestDetectorHitProducerSmearing::SetParContainers()
 // ---- Init ----------------------------------------------------------
 InitStatus FairTestDetectorHitProducerSmearing::Init()
 {
-  LOG(debug) << "Initilization of FairTestDetectorHitProducerSmearing"
-	     << FairLogger::endl;
+  LOG(debug) << "Initilization of FairTestDetectorHitProducerSmearing";
 
     // Get a handle from the IO manager
     FairRootManager* ioman = FairRootManager::Instance();
@@ -65,9 +62,8 @@ InitStatus FairTestDetectorHitProducerSmearing::Init()
     fPointsArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorPoint"));
     if (!fPointsArray)
     {
-      LOG(error) << "No InputDataLevelName array!" << FairLogger::endl;
-      LOG(error) << "FairTestDetectorHitProducerSmearing will be inactive"
-		 << FairLogger::endl;
+      LOG(error) << "No InputDataLevelName array!";
+      LOG(error) << "FairTestDetectorHitProducerSmearing will be inactive";
         return kERROR;
     }
 
@@ -85,16 +81,14 @@ InitStatus FairTestDetectorHitProducerSmearing::Init()
 // ---- ReInit  -------------------------------------------------------
 InitStatus FairTestDetectorHitProducerSmearing::ReInit()
 {
-  LOG(debug) << "Reinitilization of FairTestDetectorHitProducerSmearing"
-	     << FairLogger::endl;
+  LOG(debug) << "Reinitilization of FairTestDetectorHitProducerSmearing";
     return kSUCCESS;
 }
 
 // ---- Exec ----------------------------------------------------------
 void FairTestDetectorHitProducerSmearing::Exec(Option_t* /*option*/)
 {
-  LOG(debug) << "Exec of FairTestDetectorHitProducerSmearing"
-	     << FairLogger::endl;
+  LOG(debug) << "Exec of FairTestDetectorHitProducerSmearing";
 
     fHitsArray->Delete();
 
@@ -126,8 +120,7 @@ void FairTestDetectorHitProducerSmearing::Exec(Option_t* /*option*/)
 // ---- Finish --------------------------------------------------------
 void FairTestDetectorHitProducerSmearing::Finish()
 {
-  LOG(debug) << "Finish of FairTestDetectorHitProducerSmearing"
-	     << FairLogger::endl;
+  LOG(debug) << "Finish of FairTestDetectorHitProducerSmearing";
 }
 
 ClassImp(FairTestDetectorHitProducerSmearing)

@@ -79,7 +79,7 @@ Bool_t  FairTutorialDet1::ProcessHits(FairVolume* vol)
 {
   /** This method is called from the MC stepping */
 
-  LOG(debug) << "In FairTutorialDet1::ProcessHits" << FairLogger::endl;
+  LOG(debug) << "In FairTutorialDet1::ProcessHits";
   //Set parameters at entrance of volume. Reset ELoss.
   if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
     fELoss  = 0.;

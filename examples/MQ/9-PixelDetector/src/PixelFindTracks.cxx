@@ -96,7 +96,7 @@ void PixelFindTracks::Exec(Option_t* /*opt*/) {
 
   fNHits = fHits->GetEntriesFast();
 
-  LOG(debug) << "PixelFindTracks::Exec() EVENT " << fTNofEvents << " with " << fNHits << " HITS" << FairLogger::endl;
+  LOG(debug) << "PixelFindTracks::Exec() EVENT " << fTNofEvents << " with " << fNHits << " HITS";
 
   PixelHit* curHit1;
   PixelHit* curHit2;
@@ -111,11 +111,11 @@ void PixelFindTracks::Exec(Option_t* /*opt*/) {
 
   for ( Int_t ihit1 = 0 ; ihit1 < fNHits ; ihit1++ ) {
     curHit1 = static_cast<PixelHit*>(fHits->At(ihit1));
-    LOG(debug) << "hit1 at " << curHit1->GetX() << " , " << curHit1->GetY() << " , " << curHit1->GetZ() << " / " << curHit1->GetDetectorID() << FairLogger::endl;
+    LOG(debug) << "hit1 at " << curHit1->GetX() << " , " << curHit1->GetY() << " , " << curHit1->GetZ() << " / " << curHit1->GetDetectorID();
     if ( (curHit1->GetDetectorID())/256 != 1 ) continue;
     for ( Int_t ihit2 = 0 ; ihit2 < fNHits ; ihit2++ ) {
       curHit2 = static_cast<PixelHit*>(fHits->At(ihit2));
-      LOG(debug) << "hit2 at " << curHit2->GetX() << " , " << curHit2->GetY() << " , " << curHit2->GetZ() << " / " << curHit2->GetDetectorID() << FairLogger::endl;
+      LOG(debug) << "hit2 at " << curHit2->GetX() << " , " << curHit2->GetY() << " , " << curHit2->GetZ() << " / " << curHit2->GetDetectorID();
       if ( (curHit2->GetDetectorID())/256 != 2 ) continue;
       
       parAX = (curHit2->GetX()-curHit1->GetX())/(curHit2->GetZ()-curHit1->GetZ());
@@ -125,7 +125,7 @@ void PixelFindTracks::Exec(Option_t* /*opt*/) {
       
       for ( Int_t ihit3 = 0 ; ihit3 < fNHits ; ihit3++ ) {
 	curHit3 = static_cast<PixelHit*>(fHits->At(ihit3));
-	LOG(debug) << "hit3 at " << curHit3->GetX() << " , " << curHit3->GetY() << " , " << curHit3->GetZ() << " / " << curHit3->GetDetectorID() << FairLogger::endl;
+	LOG(debug) << "hit3 at " << curHit3->GetX() << " , " << curHit3->GetY() << " , " << curHit3->GetZ() << " / " << curHit3->GetDetectorID();
 	if ( (curHit3->GetDetectorID())/256 != 3 ) continue;
 	expX = parX0+parAX*curHit3->GetZ();
 	expY = parY0+parAY*curHit3->GetZ();
@@ -134,16 +134,16 @@ void PixelFindTracks::Exec(Option_t* /*opt*/) {
 
 	if ( TMath::Abs(expX-curHit3->GetX()) < 0.03 &&
 	     TMath::Abs(expY-curHit3->GetY()) < 0.03 ) {
-	  LOG(debug) << "should create track..." << FairLogger::endl;
+	  LOG(debug) << "should create track...";
 	  PixelTrack* tempTrack = new ((*fTracks)[fNTracks]) PixelTrack(parX0,parAX,parY0,parAY,0.,0.,0.,0.);
 	  tempTrack->AddHitIndex(ihit1);
 	  tempTrack->AddHitIndex(ihit2);
 	  tempTrack->AddHitIndex(ihit3);
-	  LOG(debug) << "--> " << fNTracks << FairLogger::endl;
+	  LOG(debug) << "--> " << fNTracks;
 	  fNTracks++;
 	}
-	// LOG(debug) << ">>>>>> " << curHit3->GetX() << "  /  " << curHit3->GetY() << FairLogger::endl;
-	// LOG(debug) << "       " << expX << "  /  " << expY << FairLogger::endl;
+	// LOG(debug) << ">>>>>> " << curHit3->GetX() << "  /  " << curHit3->GetY();
+	// LOG(debug) << "       " << expX << "  /  " << expY;
 
       }
     }
@@ -160,10 +160,10 @@ void PixelFindTracks::SetParContainers() {
   
   // Get run and runtime database
   FairRun* run = FairRun::Instance();
-  if ( ! run ) LOG(fatal) << "No analysis run" << FairLogger::endl;
+  if ( ! run ) LOG(fatal) << "No analysis run";
 
   FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) LOG(fatal) << "No runtime database" << FairLogger::endl;
+  if ( ! db ) LOG(fatal) << "No runtime database";
 
   // Get GEM digitisation parameter container
   fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
@@ -182,7 +182,7 @@ void PixelFindTracks::GetParList(TList* tempList) {
 
 // -------------------------------------------------------------------------
 void   PixelFindTracks::InitMQ(TList* tempList) {
-  LOG(info) << "********************************************** PixelFindTracks::InitMQ()" << FairLogger::endl;
+  LOG(info) << "********************************************** PixelFindTracks::InitMQ()";
   fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
 
   fTracks = new TClonesArray("PixelTrack",10000);
@@ -194,8 +194,8 @@ void   PixelFindTracks::InitMQ(TList* tempList) {
 
 // -------------------------------------------------------------------------
 void   PixelFindTracks::ExecMQ(TList* inputList,TList* outputList) {
-  //  LOG(info) << "********************************************** PixelFindTracks::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents << FairLogger::endl;
-  //  LOG(info) << "********************************************** PixelFindTracks::ExecMQ(), Event " << fTNofEvents << FairLogger::endl;
+  //  LOG(info) << "********************************************** PixelFindTracks::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents;
+  //  LOG(info) << "********************************************** PixelFindTracks::ExecMQ(), Event " << fTNofEvents;
   //  LOG(info) << "t" << FairLogger::flush;
   fHits = (TClonesArray*) inputList->FindObject("PixelHits");
   outputList->Add(fTracks);
@@ -210,11 +210,11 @@ InitStatus PixelFindTracks::Init() {
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) LOG(fatal) << "No FairRootManager" << FairLogger::endl;
+  if ( ! ioman ) LOG(fatal) << "No FairRootManager";
   fHits = static_cast<TClonesArray*>(ioman->GetObject("PixelHits"));
 
   if ( !fHits ) 
-    LOG(warn) << "PixelFindTracks::Init() No input PixelHit array!" << FairLogger::endl;
+    LOG(warn) << "PixelFindTracks::Init() No input PixelHit array!";
 
   // Register output array PixelHit
   fTracks = new TClonesArray("PixelTrack",10000);
@@ -252,11 +252,11 @@ void PixelFindTracks::Finish() {
 
   fhDist2D->Draw("colz");
 
-  LOG(info) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
-  LOG(info) << " Events:        " << fTNofEvents << FairLogger::endl;
-  LOG(info) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits  )/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
-  LOG(info) << " Tracks:        " << fTNofTracks << "    ( " << static_cast<Double_t>(fTNofTracks)/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
-  LOG(info) << "---------------------------------------------------------------------" << FairLogger::endl; 
+  LOG(info) << "-------------------- " << fName.Data() << " : Summary ------------------------";
+  LOG(info) << " Events:        " << fTNofEvents;
+  LOG(info) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits  )/(static_cast<Double_t>(fTNofEvents)) << " per event )";
+  LOG(info) << " Tracks:        " << fTNofTracks << "    ( " << static_cast<Double_t>(fTNofTracks)/(static_cast<Double_t>(fTNofEvents)) << " per event )";
+  LOG(info) << "---------------------------------------------------------------------"; 
 }
 // -------------------------------------------------------------------------
 

@@ -63,12 +63,12 @@ FairRun::FairRun(Bool_t isMaster)
 //_____________________________________________________________________________
 FairRun::~FairRun()
 {
-  LOG(debug) << "Enter Destructor of FairRun" << FairLogger::endl;
+  LOG(debug) << "Enter Destructor of FairRun";
   delete fTask;  // There is another tasklist in MCApplication,
   // but this should be independent
   delete fRtdb;  // who is responsible for the RuntimeDataBase
   delete fEvtHeader;
-  LOG(debug) << "Leave Destructor of FairRun" << FairLogger::endl;
+  LOG(debug) << "Leave Destructor of FairRun";
 }
 //_____________________________________________________________________________
 
@@ -137,7 +137,7 @@ void FairRun::SetUseFairLinks(Bool_t val)
 void FairRun::SetWriteRunInfoFile(Bool_t write)
 {
   LOG(warn) << "Function FairRun::SetWriteRunInfoFile(Bool_t) is depcrecated and will vanish in future versions of FairRoot.\n";
-  LOG(warn) << "Please use FairRun::SetGenerateRunInfo(Bool_t) instead." << FairLogger::endl;
+  LOG(warn) << "Please use FairRun::SetGenerateRunInfo(Bool_t) instead.";
 
   fGenerateRunInfo = write;
 }
@@ -145,7 +145,7 @@ void FairRun::SetWriteRunInfoFile(Bool_t write)
 Bool_t FairRun::GetWriteRunInfoFile()
 {
   LOG(warn) << "Function FairRun::GetWriteRunInfoFile() is depcrecated and will vanish in future versions of FairRoot.\n";
-  LOG(warn) << "Please use FairRun::IsRunInfoGenerated() instead." << FairLogger::endl;
+  LOG(warn) << "Please use FairRun::IsRunInfoGenerated() instead.";
 
   return fGenerateRunInfo;
 }

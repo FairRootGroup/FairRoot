@@ -29,19 +29,19 @@ FairTutorialDet4MilleWriter::FairTutorialDet4MilleWriter()
    fVersion(1),
    fFileName("mp2tst")
 {
-  LOG(debug) << "Default Constructor of FairTutorialDet4MilleWriter" << FairLogger::endl;
+  LOG(debug) << "Default Constructor of FairTutorialDet4MilleWriter";
 }
 
 // ---- Destructor ----------------------------------------------------
 FairTutorialDet4MilleWriter::~FairTutorialDet4MilleWriter()
 {
-  LOG(debug) << "Destructor of FairTutorialDet4MilleWriter" << FairLogger::endl;
+  LOG(debug) << "Destructor of FairTutorialDet4MilleWriter";
 }
 
 // ----  Initialisation  ----------------------------------------------
 void FairTutorialDet4MilleWriter::SetParContainers()
 {
-  LOG(debug) << "SetParContainers of FairTutorialDet4MilleWriter" << FairLogger::endl;
+  LOG(debug) << "SetParContainers of FairTutorialDet4MilleWriter";
   // Load all necessary parameter containers from the runtime data base
   /*
   FairRunAna* ana = FairRunAna::Instance();
@@ -55,7 +55,7 @@ void FairTutorialDet4MilleWriter::SetParContainers()
 // ---- Init ----------------------------------------------------------
 InitStatus FairTutorialDet4MilleWriter::Init()
 {
-  LOG(debug) << "Initilization of FairTutorialDet4MilleWriter" << FairLogger::endl;
+  LOG(debug) << "Initilization of FairTutorialDet4MilleWriter";
 
   // Get a handle from the IO manager
   FairRootManager* ioman = FairRootManager::Instance();
@@ -63,14 +63,14 @@ InitStatus FairTutorialDet4MilleWriter::Init()
   // Get a pointer to the previous already existing data level
   fTracks = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetTrack"));
   if ( ! fTracks ) {
-    LOG(error) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive" << FairLogger::endl;
+    LOG(error) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive";
     return kERROR;
   }
 
   // Get a pointer to the previous already existing data level
   fHits = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetHit"));
   if ( ! fHits ) {
-    LOG(error) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive" << FairLogger::endl;
+    LOG(error) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive";
     return kERROR;
   }
 
@@ -91,7 +91,7 @@ InitStatus FairTutorialDet4MilleWriter::Init()
 // ---- ReInit  -------------------------------------------------------
 InitStatus FairTutorialDet4MilleWriter::ReInit()
 {
-  LOG(debug) << "Initilization of FairTutorialDet4MilleWriter" << FairLogger::endl;
+  LOG(debug) << "Initilization of FairTutorialDet4MilleWriter";
   return kSUCCESS;
 }
 
@@ -177,7 +177,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftX()
     Float_t Z = hit->GetZ();
     Float_t hitX = hit->GetX();
     Float_t fitX = OffX + SlopeX * Z;
-    LOG(debug)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
+    LOG(debug)<<"hitX, fitX: "<< hitX<<" ,"<<fitX;
 
     label[0] = iHit+1;
 
@@ -187,7 +187,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftX()
     derLC[1] = Z;
 
     residual = fitX - hitX;
-    LOG(debug)<<"ResidualX: "<< residual<<FairLogger::endl;
+    LOG(debug)<<"ResidualX: "<< residual;
     //call to Mille Writer
     fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
 
@@ -250,7 +250,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftXY()
     Float_t fitX = OffX + SlopeX * Z;
     Float_t hitY = hit->GetY();
     Float_t fitY = OffY + SlopeY * Z;
-    LOG(debug)<<"hitX, fitX: "<< hitX<<" ,"<<fitX<<FairLogger::endl;
+    LOG(debug)<<"hitX, fitX: "<< hitX<<" ,"<<fitX;
 
     label[0] = iHit+1;
     label[1] = iHit+101;
@@ -264,7 +264,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftXY()
     derLC[3] = 0;
 
     residual = fitX - hitX;
-    LOG(debug)<<"ResidualX: "<< residual<<FairLogger::endl;
+    LOG(debug)<<"ResidualX: "<< residual;
     //call to Mille Writer
     fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
 
@@ -277,7 +277,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftXY()
     derLC[3] = Z;
 
     residual = fitY - hitY;
-    LOG(debug)<<"ResidualX: "<< residual<<FairLogger::endl;
+    LOG(debug)<<"ResidualX: "<< residual;
     //call to Mille Writer
     fMille->mille(nLC,derLC,nGL,derGL,label,residual,sigma);
 
@@ -292,7 +292,7 @@ void FairTutorialDet4MilleWriter::StraightLineShiftXY()
 // ---- Finish --------------------------------------------------------
 void FairTutorialDet4MilleWriter::Finish()
 {
-  LOG(debug) << "Finish of FairTutorialDet4MilleWriter" << FairLogger::endl;
+  LOG(debug) << "Finish of FairTutorialDet4MilleWriter";
 }
 
 ClassImp(FairTutorialDet4MilleWriter)

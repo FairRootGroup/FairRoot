@@ -66,7 +66,7 @@ void FairLmdSource::AddFile(TString fileName)
   FileStat_t buf;
   if(1 == gSystem->GetPathInfo(fileName.Data(), buf))
   {
-    LOG(warn) << "FairLmdSource: not found: " << fileName << FairLogger::endl;
+    LOG(warn) << "FairLmdSource: not found: " << fileName;
     return;
   }
 
@@ -80,7 +80,7 @@ void FairLmdSource::AddPath(TString dir, TString wildCard)
   FileStat_t buf;
   if(1 == gSystem->GetPathInfo(dir.Data(), buf))
   {
-    LOG(warn) << "FairLmdSource: not found: " << dir << FairLogger::endl;
+    LOG(warn) << "FairLmdSource: not found: " << dir;
     return;
   }
 
@@ -137,7 +137,7 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
   void* headptr = &fxInfoHeader;
   INTS4 status;
 
-  LOG(info) << "File " << fileName << " will be opened." << FairLogger::endl;
+  LOG(info) << "File " << fileName << " will be opened.";
 
   status = f_evt_get_open(inputMode,
                           const_cast<char*>(fileName.Data()),
@@ -147,11 +147,11 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
                           1);
 
   if(status) {
-     LOG(error) << "File " << fileName << " opening failed." << FairLogger::endl;
+     LOG(error) << "File " << fileName << " opening failed.";
     return kFALSE;
   }
 
-  LOG(info) << "File " << fileName << " opened." << FairLogger::endl;
+  LOG(info) << "File " << fileName << " opened.";
 
   // Decode File Header
   //Bool_t result = Unpack((Int_t*)fxInfoHeader, sizeof(s_filhe), -4, -4, -4, -4, -4);
@@ -172,8 +172,7 @@ Int_t FairLmdSource::ReadEvent(UInt_t)
 
   if(GETEVT__SUCCESS != status) {
 
-    LOG(info) << "FairMbsStreamSource::ReadEvent()"
-              << FairLogger::endl;
+    LOG(info) << "FairMbsStreamSource::ReadEvent()";
 
     CHARS* sErrorString = NULL;
     f_evt_error(status, sErrorString , 0);
@@ -212,8 +211,7 @@ Int_t FairLmdSource::ReadEvent(UInt_t)
   Short_t sesubcrate;
   Short_t secontrol;
 
-  LOG(debug2)<< "FairLmdSource::ReadEvent => Found " << nrSubEvts << " Sub-event "
-             << FairLogger::endl;
+  LOG(debug2)<< "FairLmdSource::ReadEvent => Found " << nrSubEvts << " Sub-event ";
   //if (fCurrentEvent%10000==0)
   //cout << " -I- LMD_ANA:  evt# " <<  fCurrentEvent << "  n_subevt# " << nrSubEvts << " evt processed# " << fNEvent <<  " : " << fxEvent->l_count << endl;
 

@@ -106,11 +106,10 @@ void FairMCTrack::Print(Int_t trackId) const
 {
   LOG(debug) << "Track " << trackId << ", mother : " << fMotherId << ", Type "
              << fPdgCode << ", momentum (" << fPx << ", " << fPy << ", "
-             << fPz << ") GeV" << FairLogger::endl;
+             << fPz << ") GeV";
   LOG(debug2) << "       Ref " << GetNPoints(kREF)
               << ", TutDet " << GetNPoints(kTutDet)
-              << ", Rutherford " << GetNPoints(kFairRutherford)
-              << FairLogger::endl;
+              << ", Rutherford " << GetNPoints(kFairRutherford);
 }
 // -------------------------------------------------------------------------
 
@@ -152,7 +151,7 @@ Int_t FairMCTrack::GetNPoints(DetectorId detId) const
   else if ( detId == kFairRutherford ) { return ( (fNPoints & (31 <<  4) ) >>  4); }
   else {
     LOG(error) << "Unknown detector ID "
-               << detId << FairLogger::endl;
+               << detId;
     return 0;
   }
 }
@@ -183,7 +182,7 @@ void FairMCTrack::SetNPoints(Int_t iDet, Int_t nPoints)
   }
 
   else LOG(error) << "Unknown detector ID "
-                    << iDet << FairLogger::endl;
+                    << iDet;
 
 }
 // -------------------------------------------------------------------------

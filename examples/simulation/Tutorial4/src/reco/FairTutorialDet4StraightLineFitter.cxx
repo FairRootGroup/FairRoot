@@ -27,15 +27,13 @@ FairTutorialDet4StraightLineFitter::FairTutorialDet4StraightLineFitter()
    fTracks(NULL),
    fVersion(2)
 {
-  LOG(debug) << "Default Constructor of FairTutorialDet4StraightLineFitter"
-	     << FairLogger::endl;
+  LOG(debug) << "Default Constructor of FairTutorialDet4StraightLineFitter";
 }
 
 // ---- Destructor ----------------------------------------------------
 FairTutorialDet4StraightLineFitter::~FairTutorialDet4StraightLineFitter()
 {
-  LOG(debug) << "Destructor of FairTutorialDet4StraightLineFitter"
-	     << FairLogger::endl;
+  LOG(debug) << "Destructor of FairTutorialDet4StraightLineFitter";
   if (fTracks) {
     fTracks->Delete();
     delete fTracks;
@@ -45,8 +43,7 @@ FairTutorialDet4StraightLineFitter::~FairTutorialDet4StraightLineFitter()
 // ----  Initialisation  ----------------------------------------------
 void FairTutorialDet4StraightLineFitter::SetParContainers()
 {
-  LOG(debug) << "SetParContainers of FairTutorialDet4StraightLineFitter"
-	     << FairLogger::endl;
+  LOG(debug) << "SetParContainers of FairTutorialDet4StraightLineFitter";
   // Load all necessary parameter containers from the runtime data base
   /*
   FairRunAna* ana = FairRunAna::Instance();
@@ -60,8 +57,7 @@ void FairTutorialDet4StraightLineFitter::SetParContainers()
 // ---- Init ----------------------------------------------------------
 InitStatus FairTutorialDet4StraightLineFitter::Init()
 {
-  LOG(debug) << "Initilization of FairTutorialDet4StraightLineFitter"
-	     << FairLogger::endl;
+  LOG(debug) << "Initilization of FairTutorialDet4StraightLineFitter";
 
   // Get a handle from the IO manager
   FairRootManager* ioman = FairRootManager::Instance();
@@ -71,7 +67,7 @@ InitStatus FairTutorialDet4StraightLineFitter::Init()
   fHits = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetHit"));
   if ( ! fHits ) {
     LOG(error)<<"No InputDataLevelName array!\n"
-              << "FairTutorialDet4StraightLineFitter will be inactive"<<FairLogger::endl;
+              << "FairTutorialDet4StraightLineFitter will be inactive";
     return kERROR;
   }
 
@@ -92,16 +88,14 @@ InitStatus FairTutorialDet4StraightLineFitter::Init()
 // ---- ReInit  -------------------------------------------------------
 InitStatus FairTutorialDet4StraightLineFitter::ReInit()
 {
-  LOG(debug) << "Initilization of FairTutorialDet4StraightLineFitter"
-	     << FairLogger::endl;
+  LOG(debug) << "Initilization of FairTutorialDet4StraightLineFitter";
   return kSUCCESS;
 }
 
 // ---- Exec ----------------------------------------------------------
 void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
 {
-  LOG(debug) << "Exec of FairTutorialDet4StraightLineFitter"
-	     << FairLogger::endl;
+  LOG(debug) << "Exec of FairTutorialDet4StraightLineFitter";
 
   if (!IsGoodEvent()) { return; }
 
@@ -155,14 +149,14 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
     OffY = f1->GetParameter(1);
     Chi2Y = f1->GetChisquare();
 
-    LOG(debug)<<XPos[0]<<","<<XPos[nHits-1]<<","<<YPos[0]<<","<<YPos[nHits-1]<<","<<ZPos[0]<<","<<ZPos[nHits-1]<<FairLogger::endl;
+    LOG(debug)<<XPos[0]<<","<<XPos[nHits-1]<<","<<YPos[0]<<","<<YPos[nHits-1]<<","<<ZPos[0]<<","<<ZPos[nHits-1];
     Double_t XSlope = (XPos[nHits-1]-XPos[0])/(ZPos[nHits-1]-ZPos[0]);
     Double_t YSlope = (YPos[nHits-1]-YPos[0])/(ZPos[nHits-1]-ZPos[0]);
 
-    LOG(debug)<<"Slope(x,y): "<<SlopeX<<" ,"<<SlopeY<<FairLogger::endl;
-    LOG(debug)<<"Slope1(x,y): "<<XSlope<<" ,"<<YSlope<<FairLogger::endl;
-    LOG(debug)<<"Offset(x,y): "<<OffX<<" ,"<<OffY<<FairLogger::endl;
-    LOG(debug)<<"Chi2(x,y): "<<Chi2X<<" ,"<<Chi2Y<<FairLogger::endl;
+    LOG(debug)<<"Slope(x,y): "<<SlopeX<<" ,"<<SlopeY;
+    LOG(debug)<<"Slope1(x,y): "<<XSlope<<" ,"<<YSlope;
+    LOG(debug)<<"Offset(x,y): "<<OffX<<" ,"<<OffY;
+    LOG(debug)<<"Chi2(x,y): "<<Chi2X<<" ,"<<Chi2Y;
 
   }
 
@@ -216,8 +210,7 @@ Bool_t FairTutorialDet4StraightLineFitter::IsGoodEvent()
 // ---- Finish --------------------------------------------------------
 void FairTutorialDet4StraightLineFitter::Finish()
 {
-  LOG(debug) << "Finish of FairTutorialDet4StraightLineFitter"
-	     << FairLogger::endl;
+  LOG(debug) << "Finish of FairTutorialDet4StraightLineFitter";
 }
 
 ClassImp(FairTutorialDet4StraightLineFitter)
