@@ -30,6 +30,7 @@
 #include "TSocket.h"                    // for TSocket, etc
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <sstream>                     // for stringstream
 
 #include <signal.h>                     // IWYU pragma: keep
 #include <unistd.h>                     // IWYU pragma: keep
@@ -730,12 +731,13 @@ gNextRecvD:
     pEvt->pSubEvt[0] = reinterpret_cast<Int_t*>(&pshort[6]);
 
 /*
-    LOG(debug) <<  "    evt " << iEvtNo << " (" << piNextEvt[3]
+    std::stringstream ss
+    ss <<  "    evt " << iEvtNo << " (" << piNextEvt[3]
          << "), len " << pEvtHead->iMbsEv101_dlen
          << ", type " << pEvtHead->sMbsEv101_type
          << "." << pEvtHead->sMbsEv101_subtype
          << ", trigger " << pEvtHead->sMbsEv101_trigger;
-    LOG(debug) <<  ", SE1 len " << iselen1
+    ss <<  ", SE1 len " << iselen1
          << " procid " << pSEvtHead->sMbsSev101_procid;
 */
     ielen -= (iselen1 + 8);
@@ -748,7 +750,7 @@ gNextRecvD:
       pshort += iselen + 4;
       pSEvtHead = reinterpret_cast<sMbsSev101*>(pshort);
       iselen = pSEvtHead->iMbsSev101_dlen;
-//      LOG(debug) <<  ", SE" << ii << " " << iselen
+//      ss <<  ", SE" << ii << " " << iselen
 //           << " " << pSEvtHead->sMbsSev101_procid;
       ielen -= (iselen + 4);
 
@@ -765,7 +767,7 @@ gNextRecvD:
 
 
     }
-//    LOG(debug) <<  FairLogger::endl;
+//    LOG(debug) << ss.str();
   }
 
   // fill event header
