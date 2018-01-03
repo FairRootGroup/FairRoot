@@ -82,7 +82,7 @@ FairConstField::FairConstField(FairConstPar* fieldPar)
 {
     if (!fieldPar)
     {
-      LOG(warn) << "empty parameter container!" << FairLogger::endl;
+      LOG(warn) << "empty parameter container!";
         fType = -1;
     }
     else
@@ -164,31 +164,28 @@ Double_t FairConstField::GetBz(Double_t x, Double_t y, Double_t z)
 // -----   Screen output   -------------------------------------------------
 void FairConstField::Print(Option_t*) const
 {
-    LOG(info) << "======================================================" 
-	      << FairLogger::endl;
-    LOG(info) << "----  " << fTitle << " : " << fName << FairLogger::endl;
-    LOG(info) << "----" << FairLogger::endl;
-    LOG(info) << "----  Field type    : constant" << FairLogger::endl;
-    LOG(info) << "----" << FairLogger::endl;
-    LOG(info) << "----  Field regions : " << FairLogger::endl;
-    LOG(info) << "----        x = " << setw(4) << fXmin << " to " << setw(4) 
-	      << fXmax << " cm" << FairLogger::endl;
-    LOG(info) << "----        y = " << setw(4) << fYmin << " to " << setw(4) 
-	      << fYmax << " cm" << FairLogger::endl;
-    LOG(info) << "----        z = " << setw(4) << fZmin << " to " << setw(4) 
-	      << fZmax << " cm" << FairLogger::endl;
-    LOG(info) << "----  B = ( " << setprecision(4) << fBx << ", " << fBy 
-	      << ", " << fBz << " ) kG" << FairLogger::endl;
-    LOG(info) << "======================================================" 
-	      << FairLogger::endl;
+    LOG(info) << "======================================================" ;
+    LOG(info) << "----  " << fTitle << " : " << fName;
+    LOG(info) << "----";
+    LOG(info) << "----  Field type    : constant";
+    LOG(info) << "----";
+    LOG(info) << "----  Field regions : ";
+    LOG(info) << "----        x = " << setw(4) << fXmin << " to " << setw(4)
+              << fXmax << " cm";
+    LOG(info) << "----        y = " << setw(4) << fYmin << " to " << setw(4)
+              << fYmax << " cm";
+    LOG(info) << "----        z = " << setw(4) << fZmin << " to " << setw(4)
+              << fZmax << " cm";
+    LOG(info) << "----  B = ( " << setprecision(4) << fBx << ", " << fBy
+              << ", " << fBz << " ) kG";
+    LOG(info) << "======================================================";
 }
 // -------------------------------------------------------------------------
 // ---------   Fill the parameters   --------------------------------------------
 void FairConstField::FillParContainer()
 {
     TString MapName = GetName();
-    //  LOG(info) << "FairConstField::FillParContainer() " 
-    //            << FairLogger::endl;
+    //  LOG(info) << "FairConstField::FillParContainer() ";
     FairRun* fRun = FairRun::Instance();
     FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
     //Bool_t kParameterMerged = kTRUE;

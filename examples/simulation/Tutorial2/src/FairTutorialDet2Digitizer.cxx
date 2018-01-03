@@ -62,8 +62,7 @@ FairTutorialDet2Digitizer::~FairTutorialDet2Digitizer()
 // ----  Initialisation  ----------------------------------------------
 void FairTutorialDet2Digitizer::SetParContainers()
 {
-  LOG(info) << "FairTutorialDet2Digitizer :: SetParContainers() " 
-	    << FairLogger::endl;
+  LOG(info) << "FairTutorialDet2Digitizer :: SetParContainers() ";
 
 
   // Get Base Container
@@ -82,8 +81,7 @@ void FairTutorialDet2Digitizer::SetParContainers()
 InitStatus FairTutorialDet2Digitizer::ReInit()
 {
 
-  LOG(info) << " FairTutorialDet2Digitizer :: ReInit() " 
-	    << FairLogger::endl;
+  LOG(info) << " FairTutorialDet2Digitizer :: ReInit() ";
 
 
   FairRunAna* ana = FairRunAna::Instance();
@@ -100,12 +98,11 @@ InitStatus FairTutorialDet2Digitizer::ReInit()
 InitStatus FairTutorialDet2Digitizer::Init()
 {
 
-  LOG(info) << " FairTutorialDet2Digitizer :: Init() " 
-	    << FairLogger::endl;
+  LOG(info) << " FairTutorialDet2Digitizer :: Init() ";
 
   FairRootManager* ioman = FairRootManager::Instance();
   if ( ! ioman ) { 
-    LOG(fatal) << "No FairRootManager" << FairLogger::endl; 
+    LOG(fatal) << "No FairRootManager"; 
     return kERROR;
   } else { 
 
@@ -114,8 +111,8 @@ InitStatus FairTutorialDet2Digitizer::Init()
 
     fCustomData = ioman->InitObjectAs<std::vector<CustomClass> const*>("TutorialCustomData");
     if ( ! fTutorialDetPoints ) {
-      LOG(error) << "No TutorialDetPoints array!" << FairLogger::endl;
-      LOG(error) << "Task will be inactive" << FairLogger::endl;
+      LOG(error) << "No TutorialDetPoints array!";
+      LOG(error) << "Task will be inactive";
       return kERROR;
     }
 
@@ -142,8 +139,7 @@ void FairTutorialDet2Digitizer::Exec(Option_t* /*option*/)
 
   // Here we print something
 
-  LOG(info) <<" I am in FairTutorialDet2Digitizer::Exec" 
-	    << FairLogger::endl;
+  LOG(info) <<" I am in FairTutorialDet2Digitizer::Exec";
 
   LOG(info) << " The custom data input vector has size" << fCustomData->size() << "\n"; 
   for(auto& entry : *fCustomData) {
@@ -197,21 +193,21 @@ void FairTutorialDet2Digitizer::Exec(Option_t* /*option*/)
         Float_t sizey = shape->GetDY();
         Float_t sizez = shape->GetDZ();
 
-  //        LOG(info) <<"x_in: " << pt->GetXIn() << FairLogger::endl;
-  // LOG(info) <<"x_mean: " << x_mean << FairLogger::endl;
-        //LOG(info) <<"x_out: " << pt->GetXOut() << FairLogger::endl;
+  //        LOG(info) <<"x_in: " << pt->GetXIn();
+  // LOG(info) <<"x_mean: " << x_mean;
+        //LOG(info) <<"x_out: " << pt->GetXOut();
 
-        //LOG(info) <<"y: " << y_mean << FairLogger::endl;
+        //LOG(info) <<"y: " << y_mean;
 
-        //LOG(info) <<"z_in: " << pt->GetZIn() << FairLogger::endl;
-        //LOG(info) <<"z_mean: " << z_mean << FairLogger::endl;
-  //        LOG(info) <<"z_out: " << pt->GetZOut() << FairLogger::endl;
+        //LOG(info) <<"z_in: " << pt->GetZIn();
+        //LOG(info) <<"z_mean: " << z_mean;
+  //        LOG(info) <<"z_out: " << pt->GetZOut();
 
 
         if (matrix->IsRotation()){
-          LOG(info) <<"Module is rotated" << FairLogger::endl;
+          LOG(info) <<"Module is rotated";
   } else {
-          LOG(info) <<"Module is not rotated" << FairLogger::endl;
+          LOG(info) <<"Module is not rotated";
   }
 
 

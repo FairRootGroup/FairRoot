@@ -108,7 +108,7 @@ void FairMonitor::StopTimer(const TTask* tTask, const char* identStr) {
 
   ttMapIter itt = fTimerMap.find(tempString);
   if ( itt == fTimerMap.end() ) {
-    LOG(info) << "FairMonitor::StopTimer() called without matching StartTimer()" << FairLogger::endl;
+    LOG(info) << "FairMonitor::StopTimer() called without matching StartTimer()";
     return;
   }
   //  itt->second
@@ -152,7 +152,7 @@ void FairMonitor::StopMemoryMonitor(const TTask* tTask, const char* identStr) {
 
   tiMapIter iti = fMemoryMap.find(memMon);
   if ( iti == fMemoryMap.end() ) 
-    LOG(warn) << "FairMonitor::StopMemoryMonitor() Could not find corresponding entry for \"" << memMon.Data() << "\"." << FairLogger::endl;
+    LOG(warn) << "FairMonitor::StopMemoryMonitor() Could not find corresponding entry for \"" << memMon.Data() << "\".";
   else {
     RecordInfo(tTask,Form("%s_MEM",identStr),memoryAtEnd-iti->second);
     
@@ -192,10 +192,10 @@ void FairMonitor::RecordInfo(const TTask* tTask, const char* identStr, Double_t 
 void FairMonitor::RecordRegister(const char* name, const char* folderName, Bool_t toFile) {
   if ( !fRunMonitor ) return;
 
-  LOG(debug) << "*** FM::RecordRegister(" << name << ", " << folderName << (toFile?", kTRUE)":", kFALSE") << " for task >>" << fCurrentTask << "<< (" << (fCurrentTask?fCurrentTask->GetName():"") << ")" << FairLogger::endl;
+  LOG(debug) << "*** FM::RecordRegister(" << name << ", " << folderName << (toFile?", kTRUE)":", kFALSE") << " for task >>" << fCurrentTask << "<< (" << (fCurrentTask?fCurrentTask->GetName():"") << ")";
   if ( fCurrentTask == 0 ) {
     fNoTaskCreated ++; 
-    LOG(info) << "*** FM::RecordRegister(" << name << ", " << folderName << (toFile?", kTRUE)":", kFALSE") << " WITHOUT TASK" << FairLogger::endl;
+    LOG(info) << "*** FM::RecordRegister(" << name << ", " << folderName << (toFile?", kTRUE)":", kFALSE") << " WITHOUT TASK";
     return;
   }
   TString tempString = Form("%p_%s",fCurrentTask,fCurrentTask->GetName());
@@ -212,7 +212,7 @@ void FairMonitor::RecordRegister(const char* name, const char* folderName, Bool_
 void FairMonitor::RecordGetting(const char* name) {
   if ( !fRunMonitor ) return;
 
-  LOG(debug) << "*** FM::RecordGetting(" << name << ") for task >>" << fCurrentTask << "<< (" << (fCurrentTask?fCurrentTask->GetName():"") << ")" << FairLogger::endl;
+  LOG(debug) << "*** FM::RecordGetting(" << name << ") for task >>" << fCurrentTask << "<< (" << (fCurrentTask?fCurrentTask->GetName():"") << ")";
 
   if ( fCurrentTask == 0 ) {
     fNoTaskRequired ++;
@@ -249,10 +249,10 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const {
     }
   }
   if ( timInt < 0 ) {
-    LOG(warn) << "FairMonitor::PrintTask(), task \"" << tempTask->GetName() << "\" not found!" << FairLogger::endl; 
+    LOG(warn) << "FairMonitor::PrintTask(), task \"" << tempTask->GetName() << "\" not found!"; 
   }
   else {
-    //    LOG(info) << "\"" << tempTask->GetName() << "\" --> TIME integral =  " << timInt << " -- MEMORY integral = " << memInt << FairLogger::endl;
+    //    LOG(info) << "\"" << tempTask->GetName() << "\" --> TIME integral =  " << timInt << " -- MEMORY integral = " << memInt;
     TString printString = Form("%f", timInt/timEnt);
     for ( Int_t itemp = printString.Length() ; itemp < 10 ; itemp++ ) 
       printString.Insert(0,' ');
@@ -312,8 +312,8 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const {
     for ( Int_t ilen = 37 ; ilen < printString.Length() ; ilen++ ) {
       LOG(info) << printString[ilen] << FairLogger::flush;
     }
-    LOG(info) << FairLogger::endl;
-    //    LOG(info) << printString.Data() << FairLogger::endl;
+    LOG(info) << std::endl;
+    //    LOG(info) << printString.Data();
   }
 
   TList* subTaskList = tempTask->GetListOfTasks();
@@ -329,15 +329,15 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const {
 //_____________________________________________________________________________
 void FairMonitor::Print(Option_t*) const {
   if ( !fRunMonitor ) {
-    LOG(warn) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;
+    LOG(warn) << "FairMonitor was disabled. Nothing to print!";
     return;
   }
 
-  LOG(info) << "- Total Run Time: " << fRunTime << " s ---------------------------------------------------------" << FairLogger::endl;
+  LOG(info) << "- Total Run Time: " << fRunTime << " s ---------------------------------------------------------";
   TTask* mainFairTask = static_cast<TTask*>((gROOT->GetListOfBrowsables()->FindObject("FairTaskList")));
   if ( mainFairTask ) 
     PrintTask(mainFairTask,0);
-  LOG(info) << "-------------------------------------------------------------------------------------" << FairLogger::endl;
+  LOG(info) << "-------------------------------------------------------------------------------------";
   
 }
 //_____________________________________________________________________________
@@ -345,7 +345,7 @@ void FairMonitor::Print(Option_t*) const {
 //_____________________________________________________________________________
 void FairMonitor::PrintTask(TString specString) const {
   if ( !fRunMonitor ) {
-    LOG(warn) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;
+    LOG(warn) << "FairMonitor was disabled. Nothing to print!";
     return;
   }
 
@@ -362,7 +362,7 @@ void FairMonitor::PrintTask(TString specString) const {
 //      Double_t valPent  = integral/entries;
       if ( histString.EndsWith("_TIM") ) unitString = " s";
       if ( histString.EndsWith("_MEM") ) unitString = " B";
-      LOG(info) << histString.Data() << " >>>>> " << integral << unitString.Data() << " / " << entries << " ent = " << integral/entries << unitString.Data() << " / ent" << FairLogger::endl;
+      LOG(info) << histString.Data() << " >>>>> " << integral << unitString.Data() << " / " << entries << " ent = " << integral/entries << unitString.Data() << " / ent";
     }
   }
 }
@@ -371,7 +371,7 @@ void FairMonitor::PrintTask(TString specString) const {
 //_____________________________________________________________________________
 void FairMonitor::Draw(Option_t*) {
   if ( !fRunMonitor ) {
-    LOG(warn) << "FairMonitor was disabled. Nothing to print!" << FairLogger::endl;
+    LOG(warn) << "FairMonitor was disabled. Nothing to print!";
     return;
   }
 
@@ -418,7 +418,7 @@ void FairMonitor::Draw(Option_t*) {
       maxHierarchyNumber = iti->second; 
   }
 
-  LOG(debug) << "Max hierarchy number is " << maxHierarchyNumber << FairLogger::endl;
+  LOG(debug) << "Max hierarchy number is " << maxHierarchyNumber;
 
   fCanvas = new TCanvas("MonitorCanvas","Fair Monitor",10,10,960,600);
   fCanvas->cd();
@@ -437,7 +437,7 @@ void FairMonitor::Draw(Option_t*) {
 	nofHier ++;
       }
     }
-    LOG(debug) << "There are " << nofHier << " tasks on level " << ihier << "." << FairLogger::endl;
+    LOG(debug) << "There are " << nofHier << " tasks on level " << ihier << ".";
 
     if ( ihier == 0 ) {
       Double_t iObj = 0.;
@@ -461,7 +461,7 @@ void FairMonitor::Draw(Option_t*) {
 
       Double_t topEdge = 800.-800.*(2.*static_cast<Double_t>(ihier)-0.5)/(static_cast<Double_t>(2*maxHierarchyNumber+1))+secLine*15;
       LOG(debug) << "for level " << ihier << " will put top edge at " << topEdge 
-		<< ". " << (secLineEven?"Two lines":"One line") << (secLineEven?" with offset":"") << FairLogger::endl;
+		<< ". " << (secLineEven?"Two lines":"One line") << (secLineEven?" with offset":"");
       for ( iti = fTaskMap.begin() ; iti != fTaskMap.end() ; iti++ ) {
 	if ( iti->second == ihier ) {
 	  std::pair<Double_t, Double_t> tempPos(startingPosition+iObj*90/(1+secLine)-secLineEven*(iObj%2)*45,topEdge-15-secLine*(iObj%2)*35);
@@ -477,7 +477,7 @@ void FairMonitor::Draw(Option_t*) {
 	nofHier ++;
       }
     }
-    LOG(debug) << "There are " << nofHier << " objects on level " << ihier << "." << FairLogger::endl;
+    LOG(debug) << "There are " << nofHier << " objects on level " << ihier << ".";
 
     Int_t iObj = 0;
     Int_t secLine = 0;
@@ -490,7 +490,7 @@ void FairMonitor::Draw(Option_t*) {
 
     Double_t topEdge = 800.-800.*(2.*static_cast<Double_t>(ihier)+0.5)/(static_cast<Double_t>(2*maxHierarchyNumber+1))+secLine*15;
     LOG(debug) << "for level " << ihier << " will put top edge at " << topEdge 
-	      << ". " << (secLineEven?"Two lines":"One line") << (secLineEven?" with offset":"") << FairLogger::endl;
+	      << ". " << (secLineEven?"Two lines":"One line") << (secLineEven?" with offset":"");
     for ( iti = fObjectMap.begin() ; iti != fObjectMap.end() ; iti++ ) {
       if ( TMath::Abs(iti->second) == ihier ) {
 	std::pair<Double_t, Double_t> tempPos(startingPosition+iObj*90/(1+secLine)-secLineEven*(iObj%2)*45,topEdge-15-secLine*(iObj%2)*35);
@@ -586,7 +586,7 @@ void FairMonitor::Draw(Option_t*) {
 //_____________________________________________________________________________
 void FairMonitor::DrawHist(TString specString) {
   if ( !fRunMonitor ) {
-    LOG(warn) << "FairMonitor was disabled. Nothing to draw!" << FairLogger::endl;
+    LOG(warn) << "FairMonitor was disabled. Nothing to draw!";
     return;
   }
 
@@ -684,10 +684,10 @@ void FairMonitor::AnalyzeObjectMap(TTask* tempTask) {
   typedef std::map<TString, Int_t>::iterator tiMapIter;
   tiMapIter iti;
 
-  LOG(debug) << "TASK \"" << tempTask->GetName() << "\" NEEDS:" << FairLogger::endl;
+  LOG(debug) << "TASK \"" << tempTask->GetName() << "\" NEEDS:";
   for(bnMapIter itb = fTaskRequired.begin(); itb != fTaskRequired.end() ; itb++) {
     if ( itb->first != tempString ) continue;
-    LOG(debug) << "   \"" << itb->second.Data() << "\"" << FairLogger::endl;
+    LOG(debug) << "   \"" << itb->second.Data() << "\"";
     iti = fObjectMap.find(itb->second);
     if ( iti == fObjectMap.end() ) continue;
     if ( hierarchyNumber <= TMath::Abs(iti->second) )
@@ -696,16 +696,16 @@ void FairMonitor::AnalyzeObjectMap(TTask* tempTask) {
 
   //  hierarchyNumber++;
 
-  LOG(debug) << "WILL GET hierarchyNumber = " << hierarchyNumber << FairLogger::endl;
+  LOG(debug) << "WILL GET hierarchyNumber = " << hierarchyNumber;
 
   iti = fTaskMap.find(tempString);
   if ( iti != fTaskMap.end() ) 
     iti->second = hierarchyNumber;
 
-  LOG(debug) << "     \"" << tempTask->GetName() << "\" CREATES:" << FairLogger::endl;
+  LOG(debug) << "     \"" << tempTask->GetName() << "\" CREATES:";
   for(bnMapIter itb = fTaskCreated.begin(); itb != fTaskCreated.end() ; itb++) {
     if ( itb->first != tempString ) continue;
-    LOG(debug) << " + \"" << itb->second.Data() << "\"" << FairLogger::endl;
+    LOG(debug) << " + \"" << itb->second.Data() << "\"";
     iti = fObjectMap.find(itb->second);
     if ( iti == fObjectMap.end() ) continue;
     iti->second = hierarchyNumber;
@@ -713,7 +713,7 @@ void FairMonitor::AnalyzeObjectMap(TTask* tempTask) {
 
   for(bnMapIter itb = fTaskCreatedTemp.begin(); itb != fTaskCreatedTemp.end() ; itb++) {
     if ( itb->first != tempString ) continue;
-    LOG(debug) << " - \"" << itb->second.Data() << "\"" << FairLogger::endl;
+    LOG(debug) << " - \"" << itb->second.Data() << "\"";
     iti = fObjectMap.find(itb->second);
     if ( iti == fObjectMap.end() ) continue;
     iti->second = -hierarchyNumber;

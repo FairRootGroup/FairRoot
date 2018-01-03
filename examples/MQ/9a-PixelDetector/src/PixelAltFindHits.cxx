@@ -82,7 +82,7 @@ PixelAltFindHits::PixelAltFindHits(const char* name, Int_t iVerbose)
   , fPitchX(0.)
   , fPitchY(0.)
 {
-  LOG(info) << "Created PixelAltFindHits." << FairLogger::endl;
+  LOG(info) << "Created PixelAltFindHits.";
   Reset();
 }
 // -------------------------------------------------------------------------
@@ -104,7 +104,7 @@ PixelAltFindHits::~PixelAltFindHits() {
 void PixelAltFindHits::Exec(Option_t* /*opt*/) {
   Reset();
 
-  LOG(debug) << "PixelAltFindHits::Exec() EVENT " << fTNofEvents << FairLogger::endl;
+  LOG(debug) << "PixelAltFindHits::Exec() EVENT " << fTNofEvents;
 
   fTNofEvents++;
 
@@ -159,8 +159,8 @@ Int_t PixelAltFindHits::FindHit(Int_t detId, Int_t feId, Int_t col, Int_t row, I
   
   curNode->LocalToMaster(locPosCalc,globPos);
   
-  LOG(debug) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1] << FairLogger::endl;
-  LOG(debug) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2] << FairLogger::endl;
+  LOG(debug) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1];
+  LOG(debug) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2];
 
   posX = globPos[0];
   posY = globPos[1];
@@ -179,10 +179,10 @@ void PixelAltFindHits::SetParContainers() {
   
   // Get run and runtime database
   FairRun* run = FairRun::Instance();
-  if ( ! run ) LOG(fatal) << "No analysis run" << FairLogger::endl;
+  if ( ! run ) LOG(fatal) << "No analysis run";
 
   FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) LOG(fatal) << "No runtime database" << FairLogger::endl;
+  if ( ! db ) LOG(fatal) << "No runtime database";
 
   // Get GEM digitisation parameter container
   fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
@@ -201,7 +201,7 @@ void PixelAltFindHits::GetParList(TList* tempList) {
 
 // -------------------------------------------------------------------------
 void   PixelAltFindHits::InitMQ(TList* tempList) {
-  LOG(info) << "********************************************** PixelAltFindHits::InitMQ()" << FairLogger::endl;
+  LOG(info) << "********************************************** PixelAltFindHits::InitMQ()";
   fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
 
   fFeCols = fDigiPar->GetFECols();
@@ -210,11 +210,11 @@ void   PixelAltFindHits::InitMQ(TList* tempList) {
   fPitchX = fDigiPar->GetXPitch();
   fPitchY = fDigiPar->GetYPitch();
 
-  LOG(info) << ">> fFeCols      = " << fFeCols << FairLogger::endl;
-  LOG(info) << ">> fFeRows      = " << fFeRows << FairLogger::endl;
-  LOG(info) << ">> fMaxFEperCol = " << fMaxFEperCol << FairLogger::endl;
-  LOG(info) << ">> fPitchX      = " << fPitchX << FairLogger::endl;
-  LOG(info) << ">> fPitchY      = " << fPitchY << FairLogger::endl;
+  LOG(info) << ">> fFeCols      = " << fFeCols;
+  LOG(info) << ">> fFeRows      = " << fFeRows;
+  LOG(info) << ">> fMaxFEperCol = " << fMaxFEperCol;
+  LOG(info) << ">> fPitchX      = " << fPitchX;
+  LOG(info) << ">> fPitchY      = " << fPitchY;
 
   fHits = new TClonesArray("PixelHit",10000);
 
@@ -224,8 +224,8 @@ void   PixelAltFindHits::InitMQ(TList* tempList) {
 
 // -------------------------------------------------------------------------
 void   PixelAltFindHits::ExecMQ(TList* inputList,TList* outputList) {
-  //  LOG(info) << "********************************************** PixelAltFindHits::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents << FairLogger::endl;
-  //  LOG(info) << "********************************************** PixelAltFindHits::ExecMQ(), Event " << fTNofEvents << FairLogger::endl;
+  //  LOG(info) << "********************************************** PixelAltFindHits::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents;
+  //  LOG(info) << "********************************************** PixelAltFindHits::ExecMQ(), Event " << fTNofEvents;
   //  LOG(info) << "h" << FairLogger::flush;
   fDigis = (TClonesArray*) inputList->FindObject("PixelDigis");
   outputList->Add(fHits);
@@ -264,17 +264,17 @@ InitStatus PixelAltFindHits::Init() {
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) LOG(fatal) << "No FairRootManager" << FairLogger::endl;
+  if ( ! ioman ) LOG(fatal) << "No FairRootManager";
   fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
   if ( !fDigis ) 
-    LOG(warn) << "PixelAltFindHits::Init() No input PixelDigis array!" << FairLogger::endl;
+    LOG(warn) << "PixelAltFindHits::Init() No input PixelDigis array!";
 
   // Register output array PixelHit
   fHits = new TClonesArray("PixelHit",10000);
   ioman->Register("PixelHits", "Pixel", fHits, kTRUE);
 
-  LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull." << FairLogger::endl;
+  LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull.";
 
   fFeCols = fDigiPar->GetFECols();
   fFeRows = fDigiPar->GetFERows();
@@ -282,7 +282,7 @@ InitStatus PixelAltFindHits::Init() {
   fPitchX = fDigiPar->GetXPitch();
   fPitchY = fDigiPar->GetYPitch();
 
-  LOG(info) << "PixelAltFindHits::SetParContainers() Pixel detector with pitch size " << fPitchX << "cm x" << fPitchY << "cm" << FairLogger::endl;
+  LOG(info) << "PixelAltFindHits::SetParContainers() Pixel detector with pitch size " << fPitchX << "cm x" << fPitchY << "cm";
   
 
   return kSUCCESS;
@@ -313,11 +313,11 @@ void PixelAltFindHits::Reset() {
 void PixelAltFindHits::Finish() {
   if ( fHits ) fHits->Delete();
 
-  LOG(info) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
-  LOG(info) << " Events:        " << fTNofEvents << FairLogger::endl;
-  LOG(info) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis) /(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
-  LOG(info) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits  )/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
-  LOG(info) << "---------------------------------------------------------------------" << FairLogger::endl; 
+  LOG(info) << "-------------------- " << fName.Data() << " : Summary ------------------------";
+  LOG(info) << " Events:        " << fTNofEvents;
+  LOG(info) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis) /(static_cast<Double_t>(fTNofEvents)) << " per event )";
+  LOG(info) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits  )/(static_cast<Double_t>(fTNofEvents)) << " per event )";
+  LOG(info) << "---------------------------------------------------------------------"; 
 }
 // -------------------------------------------------------------------------
 

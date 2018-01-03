@@ -101,7 +101,7 @@ void FairGeoMedia::print()
 void FairGeoMedia::read(std::fstream& fin)
 {
   // Reads the media from file
-  LOG(info) << "FairGeoMedia: Read media " << FairLogger::endl;
+  LOG(info) << "FairGeoMedia: Read media ";
   const Int_t maxBuf=256;
   char buf[maxBuf];
   Int_t autoflag=1;

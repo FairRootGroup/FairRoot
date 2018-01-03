@@ -38,8 +38,7 @@ FairVolume* FairVolumeList::getVolume(TString* name)
 
   TObject* obj = findObject(* name);
   if (obj) { 
-    LOG(info) << "FairVolume getVolume " << name->Data() 
-	      << "found" << FairLogger::endl; 
+    LOG(info) << "FairVolume getVolume " << name->Data() << "found";
   }
 
   return static_cast<FairVolume*>(obj);
@@ -83,10 +82,9 @@ void FairVolumeList::addVolume(FairVolume* elem)
   FairVolume* v= static_cast<FairVolume*>(findObject(elem->GetName()));
 
   if (v) {
-    LOG(error) << "FairVolumeList element: " << elem->GetName() 
-	       << " VolId : " << elem->getVolumeId() 
-	       << " already defined " << v->getVolumeId() 
-	       << FairLogger::endl; 
+    LOG(error) << "FairVolumeList element: " << elem->GetName()
+	       << " VolId : " << elem->getVolumeId()
+	       << " already defined " << v->getVolumeId();
   } else {
     fData->Add(elem);
   }

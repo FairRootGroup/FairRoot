@@ -87,17 +87,17 @@ FairTutorialDet4::FairTutorialDet4(const char* name, Bool_t active)
 
 FairTutorialDet4::~FairTutorialDet4()
 {
-  LOG(debug4)<<"Entering Destructor of FairTutorialDet4"<<FairLogger::endl;
+  LOG(debug4)<<"Entering Destructor of FairTutorialDet4";
   if (fFairTutorialDet4PointCollection) {
     fFairTutorialDet4PointCollection->Delete();
     delete fFairTutorialDet4PointCollection;
   }
-  LOG(debug4)<<"Leaving Destructor of FairTutorialDet4"<<FairLogger::endl;
+  LOG(debug4)<<"Leaving Destructor of FairTutorialDet4";
 }
 void FairTutorialDet4::SetParContainers()
 {
 
-  LOG(info)<< "Set tutdet missallign parameters"<<FairLogger::endl;
+  LOG(info)<< "Set tutdet missallign parameters";
   // Get Base Container
   FairRun* sim = FairRun::Instance();
   LOG_IF(FATAL, !sim) << "No run object";
@@ -117,9 +117,9 @@ void FairTutorialDet4::Initialize()
 
   if (fModifyGeometry) {
     if (fGlobalCoordinates) {
-      LOG(warn) << "Storing MCPoints in global coordinates and modifying the geometry was set." << FairLogger::endl;
-      LOG(warn) << "When modifying the geometry is set the MCPoints has to be stored in local coordinates." << FairLogger::endl;
-      LOG(warn) << "Store MCPoints in local coordinate system." << FairLogger::endl;
+      LOG(warn) << "Storing MCPoints in global coordinates and modifying the geometry was set.";
+      LOG(warn) << "When modifying the geometry is set the MCPoints has to be stored in local coordinates.";
+      LOG(warn) << "Store MCPoints in local coordinate system.";
       fGlobalCoordinates=kFALSE;
     }
   }
@@ -134,7 +134,7 @@ void FairTutorialDet4::Initialize()
 
 void FairTutorialDet4::InitParContainers()
 {
-  LOG(info)<< "Initialize tutdet missallign parameters"<<FairLogger::endl;
+  LOG(info)<< "Initialize tutdet missallign parameters";
   fNrOfDetectors=fMisalignPar->GetNrOfDetectors();
   fShiftX=fMisalignPar->GetShiftX();
   fShiftY=fMisalignPar->GetShiftY();
@@ -234,13 +234,13 @@ void FairTutorialDet4::ConstructGeometry()
 {
   TString fileName=GetGeometryFileName();
   if (fileName.EndsWith(".geo")) {
-    LOG(info)<<"Constructing Tutorial4 geometry from ASCII file "<<fileName<<FairLogger::endl;
+    LOG(info)<<"Constructing Tutorial4 geometry from ASCII file "<<fileName;
     ConstructASCIIGeometry();
   } else if (fileName.EndsWith(".root")) {
-    LOG(info)<<"Constructing Tutorial4 geometry from ROOT file "<<fileName<<FairLogger::endl;
+    LOG(info)<<"Constructing Tutorial4 geometry from ROOT file "<<fileName;
     ConstructRootGeometry();
   } else {
-    LOG(fatal) << "Geometry format not supported." << FairLogger::endl;
+    LOG(fatal) << "Geometry format not supported.";
   }
 }
 
@@ -262,7 +262,7 @@ void FairTutorialDet4::ConstructASCIIGeometry()
   FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
   FairTutorialDet4Geo*  Geo  = new FairTutorialDet4Geo();
-  LOG(debug)<<"Read Geo file "<<GetGeometryFileName()<<FairLogger::endl;
+  LOG(debug)<<"Read Geo file "<<GetGeometryFileName();
   Geo->setGeomFile(GetGeometryFileName());
   geoFace->addGeoModule(Geo);
 
@@ -303,18 +303,18 @@ void FairTutorialDet4::ModifyGeometry()
   // The code is here to demonstrate how to use this feature.
 
   if (fModifyGeometry) {
-    LOG(info)<<"Misalign the geometry for the tutorial detector."<<FairLogger::endl;
+    LOG(info)<<"Misalign the geometry for the tutorial detector.";
 
     TString detStr   = "Tutorial4/det00";
 
     TGeoPNEntry* entry = gGeoManager->GetAlignableEntry(detStr.Data());
     if (entry) {
-      LOG(info)<<"Misalign using symlinks."<<FairLogger::endl;
+      LOG(info)<<"Misalign using symlinks.";
 //      TGeoPhysicalNode* node = entry->GetPhysicalNode();
-//    LOG(info)<<"Nr of alignable objects: "<<gGeoManager->GetNAlignable()<<FairLogger::endl;
+//    LOG(info)<<"Nr of alignable objects: "<<gGeoManager->GetNAlignable();
       ModifyGeometryBySymlink();
     } else {
-      LOG(info)<<"Misalign using full path."<<FairLogger::endl;
+      LOG(info)<<"Misalign using full path.";
       ModifyGeometryByFullPath();
     }
   }
@@ -327,11 +327,11 @@ void FairTutorialDet4::ModifyGeometryByFullPath()
   TString volStr   = "/cave_1/tutorial4_0/tut4_det_";
 
   for (Int_t iDet = 0; iDet < fNrOfDetectors; ++iDet) {
-    LOG(debug)<<"Misalign detector nr "<<iDet<<FairLogger::endl;
+    LOG(debug)<<"Misalign detector nr "<<iDet;
     volPath  = volStr;
     volPath += iDet;
 
-    LOG(debug) << "Path: "<< volPath << FairLogger::endl;
+    LOG(debug) << "Path: "<< volPath;
     gGeoManager->cd(volPath);
 //    TGeoHMatrix* g3 = gGeoManager->GetCurrentMatrix();
 //      g3->Print();
@@ -358,12 +358,12 @@ void FairTutorialDet4::ModifyGeometryByFullPath()
     pn3->Align(nl3);
 
 //    TGeoHMatrix* ng3 = pn3->GetMatrix(); //"real" global matrix, what survey sees
-//    LOG(debug)<<"*************  The Misaligned Matrix in GRS **************"<<FairLogger::endl;
+//    LOG(debug)<<"*************  The Misaligned Matrix in GRS **************";
 //      ng3->Print();
 
 
   }
-  LOG(debug)<<"Align in total "<<fNrOfDetectors<<" detectors."<<FairLogger::endl;
+  LOG(debug)<<"Align in total "<<fNrOfDetectors<<" detectors.";
 
 }
 
@@ -373,7 +373,7 @@ void FairTutorialDet4::ModifyGeometryBySymlink()
   TString detStr   = "Tutorial4/det";
 
   for (Int_t iDet = 0; iDet < fNrOfDetectors; ++iDet) {
-    LOG(info)<<"Misalign detector nr "<<iDet<<FairLogger::endl;
+    LOG(info)<<"Misalign detector nr "<<iDet;
 
     symName  = detStr;
     symName += Form("%02d",iDet);
@@ -398,7 +398,7 @@ void FairTutorialDet4::ModifyGeometryBySymlink()
     Double_t dphi   = fRotX[iDet];
     Double_t dtheta = fRotY[iDet];
     Double_t dpsi   = fRotZ[iDet];
-    LOG(info)<<"Psi: "<<dpsi<<FairLogger::endl;
+    LOG(info)<<"Psi: "<<dpsi;
 
     TGeoRotation* rrot = new TGeoRotation("rot",dphi,dtheta,dpsi);
     TGeoCombiTrans localdelta = *(new TGeoCombiTrans(dx,dy,dz, rrot));
@@ -415,7 +415,7 @@ void FairTutorialDet4::ModifyGeometryBySymlink()
 
   }
   //do something
-  LOG(info)<<"Total Nr of detectors: "<<fNrOfDetectors<<FairLogger::endl;
+  LOG(info)<<"Total Nr of detectors: "<<fNrOfDetectors;
 
 
 

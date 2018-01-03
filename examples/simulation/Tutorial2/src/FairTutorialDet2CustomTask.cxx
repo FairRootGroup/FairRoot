@@ -40,18 +40,17 @@ FairTutorialDet2CustomTask::~FairTutorialDet2CustomTask()
 // ---- Init ----------------------------------------------------------
 InitStatus FairTutorialDet2CustomTask::Init()
 {
-  LOG(info) << " FairTutorialDet2CustomTask :: Init() " 
-	    << FairLogger::endl;
+  LOG(info) << " FairTutorialDet2CustomTask :: Init() ";
 
   FairRootManager* ioman = FairRootManager::Instance();
   if ( ! ioman ) { 
-    LOG(fatal) << "No FairRootManager" << FairLogger::endl; 
+    LOG(fatal) << "No FairRootManager"; 
     return kERROR;
   } else {
     fCustomData=ioman->InitObjectAs<std::vector<CustomClass> const*>("TutorialCustomData");
     if ( ! fCustomData ) {
-      LOG(error) << "No input data found!" << FairLogger::endl;
-      LOG(error) << "Task will be inactive" << FairLogger::endl;
+      LOG(error) << "No input data found!";
+      LOG(error) << "Task will be inactive";
       return kERROR;
     }
 
@@ -71,18 +70,17 @@ InitStatus FairTutorialDet2CustomTask::Init()
 void FairTutorialDet2CustomTask::Exec(Option_t* /*option*/)
 {
   // Here we print something
-  LOG(info) <<" I am in FairTutorialDet2CustomTask::Exec" 
-	    << FairLogger::endl;
+  LOG(info) <<" I am in FairTutorialDet2CustomTask::Exec";
 
-  LOG(info) << " The custom data input vector has size" << fCustomData->size() << "\n"; 
+  LOG(info) << " The custom data input vector has size" << fCustomData->size();
   for(auto& entry : *fCustomData) {
-    LOG(info) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
+    LOG(info) << " Got entry " << entry.GetX() << " " << entry.GetQ();
   }
 
   // process data that we got from DigitizerTask
-  LOG(info) << " The input vector from DigitizerTask has size" << fCustomData2->size() << "\n"; 
+  LOG(info) << " The input vector from DigitizerTask has size" << fCustomData2->size();
   for(auto& entry : *fCustomData2) {
-    LOG(info) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
+    LOG(info) << " Got entry " << entry.GetX() << " " << entry.GetQ();
   }
 
 }

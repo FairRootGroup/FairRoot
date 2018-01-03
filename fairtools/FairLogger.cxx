@@ -164,7 +164,6 @@ void FairLogger::Log(fair::Logger::Severity severity, const char* file, const ch
         if (fBufferSizeNeeded <= static_cast<int>(fBufferSize) && fBufferSizeNeeded >= 0) {
             // It fits fine so we're done.
             LOGD(severity, file, line, func) << std::string(fBufferPointer, static_cast<size_t>(fBufferSizeNeeded));
-            // GetOutputStream(severity, file, line, func) << std::string(fBufferPointer, static_cast<size_t>(fBufferSizeNeeded)) << " " << FairLogger::endl;
             break;
         }
 

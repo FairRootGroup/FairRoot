@@ -30,7 +30,7 @@ FairMBSUnpack::FairMBSUnpack(Short_t type, Short_t subType, Short_t procId, Shor
 // Virtual FairMBSUnpack: Public method
 FairMBSUnpack::~FairMBSUnpack()
 {
-    LOG(info) << "FairMBSUnpack: Delete instance" << FairLogger::endl;
+    LOG(info) << "FairMBSUnpack: Delete instance";
     delete fRawData;
 }
 
@@ -44,8 +44,8 @@ Bool_t FairMBSUnpack::Init()
 // Register: Protected method
 void FairMBSUnpack::Register()
 {
-    //  LOG(debug) << "Registering" << FairLogger::endl;
-    LOG(info) << "FairMBSUnpack : Registering..." << FairLogger::endl;
+    //  LOG(debug) << "Registering";
+    LOG(info) << "FairMBSUnpack : Registering...";
     FairRootManager* fMan = FairRootManager::Instance();
     if (!fMan)
     {
@@ -57,7 +57,7 @@ void FairMBSUnpack::Register()
 // DoUnpack: Public method
 Bool_t FairMBSUnpack::DoUnpack(Int_t* data, Int_t size)
 {
-    LOG(debug) << "FairMBSUnpack : Unpacking... size = " << size << FairLogger::endl;
+    LOG(debug) << "FairMBSUnpack : Unpacking... size = " << size;
 
     Int_t l_i = 0;
 
@@ -74,7 +74,7 @@ Bool_t FairMBSUnpack::DoUnpack(Int_t* data, Int_t size)
         UInt_t l_da_siz = (p1[0] & 0x000001ff);
 
         LOG(debug) << "FairMBSUnpack : SAM:" << l_sam_id << ",  GTB:" << l_gtb_id << ",  lec:" << l_lec
-                   << ",  size:" << l_da_siz << FairLogger::endl;
+                   << ",  size:" << l_da_siz;
 
         l_i += 1;
 
@@ -101,16 +101,16 @@ Bool_t FairMBSUnpack::DoUnpack(Int_t* data, Int_t size)
                 n17 += 1;
             }
             LOG(debug) << "FairMBSUnpack : TAC ADDR IS " << tac_addr << ",  TAC CH IS " << tac_ch << ",  TAC Data IS "
-                       << tac_data << ",  QDC Data IS " << qdc_data << FairLogger::endl;
+                       << tac_data << ",  QDC Data IS " << qdc_data;
             new ((*fRawData)[fNHits])
                 FairMBSRawItem(l_sam_id, l_gtb_id, tac_addr, tac_ch, cal, clock, tac_data, qdc_data);
             fNHits++;
         }
 
-        LOG(debug) << "FairMBSUnpack : n17=" << n17 << FairLogger::endl;
+        LOG(debug) << "FairMBSUnpack : n17=" << n17;
     }
 
-    LOG(debug) << "FairMBSUnpack : Number of hits in LAND: " << fNHits << FairLogger::endl;
+    LOG(debug) << "FairMBSUnpack : Number of hits in LAND: " << fNHits;
     
     fNHitsTotal += fNHits;
     
@@ -120,7 +120,7 @@ Bool_t FairMBSUnpack::DoUnpack(Int_t* data, Int_t size)
 // Reset: Public method
 void FairMBSUnpack::Reset()
 {
-    LOG(debug) << "FairMBSUnpack : Clearing Data Structure" << FairLogger::endl;
+    LOG(debug) << "FairMBSUnpack : Clearing Data Structure";
     fRawData->Clear();
     fNHits = 0;
 }

@@ -160,7 +160,7 @@ FairPrimaryGenerator& FairPrimaryGenerator::operator=(const FairPrimaryGenerator
 Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
   // Check for MCEventHeader
   if (!fEvent) {
-    LOG(fatal) << "No MCEventHeader branch!" << FairLogger::endl;
+    LOG(fatal) << "No MCEventHeader branch!";
     return kFALSE;
   } else {
 
@@ -201,8 +201,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
       fMCIndexOffset = fNTracks; // number tracks before generator is called
       Bool_t test = gen->ReadEvent(this);
       if (!test) {
-        LOG(error) << "ReadEvent failed for generator " << genName
-                   << FairLogger::endl;
+        LOG(error) << "ReadEvent failed for generator " << genName;
         return kFALSE;
       }
     }
@@ -219,7 +218,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
     LOG(debug) << "(Event " << fEvent->GetEventID() << ") " << fNTracks
                << " primary tracks from vertex (" << fVertex.X() << ", "
                << fVertex.Y() << ", " << fVertex.Z() << ") with beam angle ("
-               << fBeamAngleX << ", " << fBeamAngleY << ") " << FairLogger::endl;
+               << fBeamAngleX << ", " << fBeamAngleY << ") ";
 
     fEvent->SetNPrim(fNTracks);
 

@@ -62,12 +62,12 @@ thread_local TRefArray*    FairModule::svList=0;
 //__________________________________________________________________________
 void FairModule::ConstructGeometry()
 {
-  LOG(warn)<<"The method ConstructGeometry has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;
+  LOG(warn)<<"The method ConstructGeometry has to be implemented in the detector class which inherits from FairModule";
 }
 //__________________________________________________________________________
 void FairModule::ConstructOpGeometry()
 {
-  LOG(debug2)<<"The method ConstructOpGeometry has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;;
+  LOG(debug2)<<"The method ConstructOpGeometry has to be implemented in the detector class which inherits from FairModule";
 }
 //__________________________________________________________________________
 FairModule::~FairModule()
@@ -201,13 +201,12 @@ void FairModule::SetGeometryFileName(TString fname, TString)
   if ( fname.BeginsWith("/") ) {
     if ( gSystem->AccessPathName(fname.Data()) ) {
       LOG(fatal) << fName << ": geometry file " << fname
-                 << " not found in absolut path!"
-                 << FairLogger::endl;
+                 << " not found in absolut path!";
       fgeoName = "";
     } // file not found
     fgeoName = fname;
     LOG(debug) << fName << ": using geometry file "
-               << fgeoName << FairLogger::endl;
+               << fgeoName;
     return;
   }
 
@@ -221,13 +220,12 @@ void FairModule::SetGeometryFileName(TString fname, TString)
     }
     fgeoName = userPath + fname;
     if ( ! gSystem->AccessPathName(fgeoName.Data()) ) {
-      LOG(debug) << fName << ": using geometry file " << fgeoName
-                 << FairLogger::endl;
+      LOG(debug) << fName << ": using geometry file " << fgeoName;
       return;
     }
     LOG(debug) << fName << ": geometry file " << fname
                << " not found in GEOMPATH "
-               << userPath << FairLogger::endl;
+               << userPath;
   }
 
   // Look in the standard path
@@ -235,14 +233,13 @@ void FairModule::SetGeometryFileName(TString fname, TString)
   fgeoName += "/geometry/" + fname;
   if ( ! gSystem->AccessPathName(fgeoName.Data()) ) {
     LOG(debug) << fName << ": using geometry file "
-               << fgeoName << FairLogger::endl;
+               << fgeoName;
     return;
   }
 
   // File not found
   LOG(fatal) << fName << ": geometry file " << fname
-             << " not found in standard path "
-             << FairLogger::endl;
+             << " not found in standard path ";
   fgeoName = "";
   return;
 
@@ -289,7 +286,7 @@ void FairModule::ProcessNodes(TList* aList)
 void  FairModule::AddSensitiveVolume(TGeoVolume* v)
 {
 
-  LOG(debug2)<<"AddSensitiveVolume " << v->GetName() << FairLogger::endl;
+  LOG(debug2)<<"AddSensitiveVolume " << v->GetName();
 
   // Only register volumes which are not already registered
   // Otherwise the stepping will be slowed down
@@ -373,7 +370,7 @@ void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
   }
 
   if(v1==0) {
-    LOG(fatal)<<"Could not find any geometry in file " << GetGeometryFileName().Data() << FairLogger::endl;
+    LOG(fatal)<<"Could not find any geometry in file " << GetGeometryFileName().Data();
   } else {
     gGeoManager=OldGeo;
     gGeoManager->cd();
@@ -442,7 +439,7 @@ void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
       delete NewGeo;
       delete f;
     } else {
-      LOG(fatal)<<"Could not find the given mother volume "<< fMotherVolumeName.Data() << " where the geomanger should be added."<<FairLogger::endl;
+      LOG(fatal)<<"Could not find the given mother volume "<< fMotherVolumeName.Data() << " where the geomanger should be added.";
     }
   }
 }
@@ -474,7 +471,7 @@ void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
 
     // Check if the volume is sensitive
     if ( (this->InheritsFrom("FairDetector")) && CheckIfSensitive(curVol->GetName())) {
-        LOG(debug2)<<"Sensitive Volume "<< curVol->GetName() << FairLogger::endl;
+        LOG(debug2)<<"Sensitive Volume "<< curVol->GetName();
         AddSensitiveVolume(curVol);
     }
 
@@ -547,13 +544,13 @@ void FairModule::ReAssignMediaId()
 //__________________________________________________________________________
 void FairModule::ConstructASCIIGeometry()
 {
-  LOG(warn)<<"The method ConstructASCIIGeometry has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;
+  LOG(warn)<<"The method ConstructASCIIGeometry has to be implemented in the detector class which inherits from FairModule";
 }
 
 //__________________________________________________________________________
 Bool_t FairModule::CheckIfSensitive(std::string)
 {
-  LOG(warn)<<"The method CheckIfSensitive has to be implemented in the detector class which inherits from FairModule"<<FairLogger::endl;
+  LOG(warn)<<"The method CheckIfSensitive has to be implemented in the detector class which inherits from FairModule";
   return kFALSE;
 }
 
@@ -577,11 +574,11 @@ void FairModule::ExpandNode(TGeoNode* fN)
     TGeoVolume* v= fNode->GetVolume();
     AssignMediumAtImport(v);
     if (!gGeoManager->FindVolumeFast(v->GetName())) {
-      LOG(debug2)<<"Register Volume " << v->GetName()<<FairLogger::endl;
+      LOG(debug2)<<"Register Volume " << v->GetName();
       v->RegisterYourself();
     }
     if ( (this->InheritsFrom("FairDetector")) && CheckIfSensitive(v->GetName())) {
-      LOG(debug2)<<"Sensitive Volume "<< v->GetName() << FairLogger::endl;
+      LOG(debug2)<<"Sensitive Volume "<< v->GetName();
       AddSensitiveVolume(v);
     }
   }
@@ -659,7 +656,7 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
       /**The Material is not defined in the TGeoManager, we try to create one if we have enough information about it*/
       FairGeoMedium* FairMedium=Media->getMedium(mat1->GetName());
       if (!FairMedium) {
-        LOG(fatal)<<"Material "<< mat1->GetName() << "is not defined in ASCII file nor in Root file." << FairLogger::endl;
+        LOG(fatal)<<"Material "<< mat1->GetName() << "is not defined in ASCII file nor in Root file.";
         //     FairMedium=new FairGeoMedium(mat1->GetName());
         //      Media->addMedium(FairMedium);
       } else {
@@ -676,7 +673,7 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
   } else {
     if (strcmp(v->ClassName(),"TGeoVolumeAssembly") != 0) {
       //[R.K.-3.3.08]  // When there is NO material defined, set it to avoid conflicts in Geant
-      LOG(fatal)<<"The volume "<< v->GetName() << "has no medium information and not an Assembly so we have to quit"<<FairLogger::endl;
+      LOG(fatal)<<"The volume "<< v->GetName() << "has no medium information and not an Assembly so we have to quit";
     }
   }
 }

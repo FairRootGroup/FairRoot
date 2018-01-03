@@ -59,13 +59,12 @@ FairMCPoint::~FairMCPoint() { }
 void FairMCPoint::Print(const Option_t*) const
 {
   LOG(debug) << "FairMC point for track " << fTrackID
-             << " in detector " << fDetectorID << FairLogger::endl;
-  LOG(debug) << "Position (" << fX << ", " << fY << ", " << fZ
-             << ") cm" << FairLogger::endl;
+             << " in detector " << fDetectorID;
+  LOG(debug) << "Position (" << fX << ", " << fY << ", " << fZ << ") cm";
   LOG(debug) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
-             << ") GeV" << FairLogger::endl;
+             << ") GeV";
   LOG(debug) << "    Time " << fTime << " ns,  Length " << fLength
-             << " cm,  Energy loss " << fELoss*1.0e06 << " keV" << FairLogger::endl;
+             << " cm,  Energy loss " << fELoss*1.0e06 << " keV";
 }
 
 

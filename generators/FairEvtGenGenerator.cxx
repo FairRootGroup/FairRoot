@@ -44,8 +44,7 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName)
    fRsigma (0.),
    fDensityFunction(0)
 {
-  LOG(info) << "FairEvtGenGenerator: Opening input file " << fileName 
-	    << FairLogger::endl;
+  LOG(info) << "FairEvtGenGenerator: Opening input file " << fileName;
   if ((fInputFile = fopen(fFileName,"r"))==NULL)
     //  fInputFile = new ifstream(fFileName);
     //  if ( ! fInputFile->is_open() )
@@ -67,10 +66,9 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, 
    fRsigma (Rsigma),
    fDensityFunction(DensityFunction)
 {
-  LOG(info) << "FairEvtGenGenerator: Opening input file " << fileName 
-	    << FairLogger::endl;
+  LOG(info) << "FairEvtGenGenerator: Opening input file " << fileName;
   if ((fInputFile = fopen(fFileName,"r"))==NULL) {
-    LOG(fatal) << "Cannot open input file." << FairLogger::endl;
+    LOG(fatal) << "Cannot open input file.";
   }
 
 }
@@ -95,8 +93,7 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   // Check for input file
   if (!fInputFile) {
     // if ( ! fInputFile->is_open() ) {
-    LOG(info) << "FairEvtGenGenerator: Input file not open!" 
-	      << FairLogger::endl;
+    LOG(info) << "FairEvtGenGenerator: Input file not open!";
     return kFALSE;
   }
 
@@ -117,8 +114,7 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   if (ncols && ntracks>0) {
 
-    // LOG(info) << "Event number: " << eventID << "\tNtracks: " 
-    //           << ntracks << FairLogger::endl;
+    // LOG(info) << "Event number: " << eventID << "\tNtracks: " << ntracks;
     // std::stringstream ss;
     for (Int_t ii=0; ii<15; ii++) {
       ncols += fscanf(fInputFile,"%s",buffer);
@@ -129,7 +125,7 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
     for (Int_t ll=0; ll<ntracks; ll++) {
       ncols += fscanf(fInputFile,"%d %d %d %d %d %d %d %g %f %f %f %f %f %f %f", &nLine, &pdgID, &nDecay, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz, &fE, &fT, &fVx, &fVy, &fVz);
 //  LOG(info) << nLine << "\t" << pdgID << "\t" << nDecay << "\t" << nM1 << "\t" << nM2 << "\t" << nDF << "\t" << nDL <<
-      //  "\t" << fPx << "\t" << fPy << "\t" << fPz << "\t" << fE << "\t" << fT << "\t" << fVx << "\t" << fVy << "\t" << fVz << FairLogger::endl;
+      //  "\t" << fPx << "\t" << fPy << "\t" << fPz << "\t" << fE << "\t" << fT << "\t" << fVx << "\t" << fVy << "\t" << fVz;
       max_nr = max(max_nr, nDF);
       max_nr = max(max_nr, nDL);
       if ((nDF==-1) && (nDL==-1)) {
@@ -156,8 +152,7 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
       }
     }
   } else {
-    LOG(info) << "FairEvtGenGenerator: End of input file reached " 
-	      << FairLogger::endl;
+    LOG(info) << "FairEvtGenGenerator: End of input file reached ";
     CloseInput();
     return kFALSE;
   }
@@ -165,8 +160,7 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // If end of input file is reached : close it and abort run
   if ( feof(fInputFile) ) {
-    LOG(info) << "FairEvtGenGenerator: End of input file reached " 
-	      << FairLogger::endl;
+    LOG(info) << "FairEvtGenGenerator: End of input file reached ";
     CloseInput();
     return kFALSE;
   }
@@ -174,7 +168,7 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   /*
     LOG(info) << "FairEvtGenGenerator: Event " << eventID << ",  vertex = ("
     << vx << "," << vy << "," << vz << ") cm,  multiplicity "
-    << ntracks << FairLogger::endl;
+    << ntracks;
   */
 
   return kTRUE;
@@ -189,8 +183,7 @@ void FairEvtGenGenerator::CloseInput()
   if ( fInputFile ) {
     //if ( fInputFile->is_open() ) {
     {
-      LOG(info) << "FairEvtGenGenerator: Closing input file "
-		<< fFileName << FairLogger::endl;
+      LOG(info) << "FairEvtGenGenerator: Closing input file " << fFileName;
       //  fInputFile->close();
 
       fclose(fInputFile);

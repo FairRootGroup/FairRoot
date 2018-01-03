@@ -98,7 +98,7 @@ void PixelDigitize::Exec(Option_t* /*opt*/) {
 
   Reset();
 
-  LOG(debug) << "PixelDigitize::Exec() EVENT " << fTNofEvents << FairLogger::endl;
+  LOG(debug) << "PixelDigitize::Exec() EVENT " << fTNofEvents;
 
   fTNofEvents++;
 
@@ -119,7 +119,7 @@ void PixelDigitize::Exec(Option_t* /*opt*/) {
     gGeoManager->cd(nodeName.Data());
     TGeoNode* curNode = gGeoManager->GetCurrentNode();
 
-    if ( !curNode ) LOG(fatal) << "PixelDigitize::Exec() node \"" << nodeName.Data() << "\" unknown!" << FairLogger::endl;
+    if ( !curNode ) LOG(fatal) << "PixelDigitize::Exec() node \"" << nodeName.Data() << "\" unknown!";
 
     Double_t locPosIn[3];
 
@@ -134,8 +134,8 @@ void PixelDigitize::Exec(Option_t* /*opt*/) {
     locPosIn[0] += actBox->GetDX();
     locPosIn[1] += actBox->GetDY();
 
-    LOG(debug) << "GLOB PNT " << detId << " POSITION:  " << posIn[0] << " / " << posIn[1] << " / " << posIn[2] << FairLogger::endl;
-    LOG(debug) << "POINT ON " << detId << " POSITION:  " << locPosIn[0] << " / " << locPosIn[1] << FairLogger::endl;
+    LOG(debug) << "GLOB PNT " << detId << " POSITION:  " << posIn[0] << " / " << posIn[1] << " / " << posIn[2];
+    LOG(debug) << "POINT ON " << detId << " POSITION:  " << locPosIn[0] << " / " << locPosIn[1];
 
     Int_t col  = static_cast<Int_t>(locPosIn[0]/fPitchX);
     Int_t ocol = col;
@@ -149,7 +149,7 @@ void PixelDigitize::Exec(Option_t* /*opt*/) {
 
     LOG(debug) << "COL = " << feCol << " FE + " << col << " ( " << ocol << " ) /// " 
 	       << "ROW = " << feRow << " FE + " << row << " ( " << orow << " ) /// " 
-	       << " /// PIXEL = " << feId << FairLogger::endl;
+	       << " /// PIXEL = " << feId;
 
     ActivatePixel(iPoint,detId,feId,col,row,1.,0.);
   }
@@ -186,10 +186,10 @@ void PixelDigitize::SetParContainers() {
   
   // Get run and runtime database
   FairRun* run = FairRun::Instance();
-    if (!run){ LOG(fatal) << "No analysis run" << FairLogger::endl;
+    if (!run){ LOG(fatal) << "No analysis run";
     
     }else   { FairRuntimeDb* db = run->GetRuntimeDb();
-             if ( ! db ) {LOG(fatal) << "No runtime database" << FairLogger::endl;
+             if ( ! db ) {LOG(fatal) << "No runtime database";
              } else{
                 // Get GEM digitisation parameter container
                 fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));}
@@ -203,14 +203,14 @@ InitStatus PixelDigitize::Init() {
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) LOG(fatal) << "No FairRootManager" << FairLogger::endl;
+  if ( ! ioman ) LOG(fatal) << "No FairRootManager";
   fPoints = static_cast<TClonesArray*>(ioman->GetObject("PixelPoint"));
 
   // Register output array StsDigi
   fDigis = new TClonesArray("PixelDigi",10000);
   ioman->Register("PixelDigis", "Pixel", fDigis, kTRUE);
 
-  LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull." << FairLogger::endl;
+  LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull.";
 
   fFeCols = fDigiPar->GetFECols();
   fFeRows = fDigiPar->GetFERows();
@@ -218,7 +218,7 @@ InitStatus PixelDigitize::Init() {
   fPitchX = fDigiPar->GetXPitch();
   fPitchY = fDigiPar->GetYPitch();
 
-  LOG(info) << "PixelDigitize::SetParContainers() Pixel detector with pitch size " << fPitchX << "cm x" << fPitchY << "cm" << FairLogger::endl;
+  LOG(info) << "PixelDigitize::SetParContainers() Pixel detector with pitch size " << fPitchX << "cm x" << fPitchY << "cm";
   
 
   return kSUCCESS;
@@ -249,11 +249,11 @@ void PixelDigitize::Reset() {
 void PixelDigitize::Finish() {
   if ( fDigis ) fDigis->Delete();
 
-  LOG(info) << "-------------------- " << fName.Data() << " : Summary ------------------------" << FairLogger::endl;
-  LOG(info) << " Events:        " << fTNofEvents << FairLogger::endl;
-  LOG(info) << " MC Points:     " << fTNofPoints << "    ( " << static_cast<Double_t>(fTNofPoints)/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
-  LOG(info) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis )/(static_cast<Double_t>(fTNofEvents)) << " per event )" << FairLogger::endl;
-  LOG(info) << "---------------------------------------------------------------------" << FairLogger::endl; 
+  LOG(info) << "-------------------- " << fName.Data() << " : Summary ------------------------";
+  LOG(info) << " Events:        " << fTNofEvents;
+  LOG(info) << " MC Points:     " << fTNofPoints << "    ( " << static_cast<Double_t>(fTNofPoints)/(static_cast<Double_t>(fTNofEvents)) << " per event )";
+  LOG(info) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis )/(static_cast<Double_t>(fTNofEvents)) << " per event )";
+  LOG(info) << "---------------------------------------------------------------------"; 
 }
 // -------------------------------------------------------------------------
 

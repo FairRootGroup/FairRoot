@@ -128,13 +128,13 @@ InitStatus PixelDigiWriteToFile::Init() {
   // Get input array 
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) LOG(fatal) << "No FairRootManager" << FairLogger::endl;
+  if ( ! ioman ) LOG(fatal) << "No FairRootManager";
   fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
   if ( !fDigis ) 
-    LOG(warn) << "PixelDigiWriteToFile::Init() No input PixelDigis array!" << FairLogger::endl;
+    LOG(warn) << "PixelDigiWriteToFile::Init() No input PixelDigis array!";
 
-  LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull." << FairLogger::endl;
+  LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull.";
 
   fRunId = ioman->GetRunId();
 
@@ -150,7 +150,7 @@ InitStatus PixelDigiWriteToFile::Init() {
       fNofOutputFiles = 12; // 1 file per sensor  (3 stations times 4 sensors)
     }
     else {
-      LOG(fatal) << "PixelDigiWriteToFile::Init(), fDivideLevel = " << fDivideLevel << " unknown, it has to be in the range <0,2>" << FairLogger::endl;
+      LOG(fatal) << "PixelDigiWriteToFile::Init(), fDivideLevel = " << fDivideLevel << " unknown, it has to be in the range <0,2>";
       return kFATAL;
     }
     for ( Int_t ifile = 0 ; ifile < fNofOutputFiles ; ifile++ ) {
@@ -174,7 +174,7 @@ InitStatus PixelDigiWriteToFile::ReInit() {
 
     InitStatus Status=kFATAL;
     if ( ! ioman ){
-      LOG(fatal) << "No FairRootManager found." << FairLogger::endl;
+      LOG(fatal) << "No FairRootManager found.";
     }else {
       fRunId = ioman->GetRunId();
       fMCEntryNo = 0;

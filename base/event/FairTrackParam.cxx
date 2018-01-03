@@ -80,10 +80,9 @@ FairTrackParam::~FairTrackParam() {}
 void FairTrackParam::Print(Option_t*) const
 {
   LOG(info) << "Position : (" << std::setprecision(2)
-	    << fX << ", " << fY << ", " << fZ << ")" << FairLogger::endl;
-  LOG(info) << "Slopes : dx/dz = " << fTx << ", dy/dz = " << fTy 
-	    << FairLogger::endl;
-  LOG(info) << "q/p = " << fQp << FairLogger::endl;
+	    << fX << ", " << fY << ", " << fZ << ")";
+  LOG(info) << "Slopes : dx/dz = " << fTx << ", dy/dz = " << fTy;
+  LOG(info) << "q/p = " << fQp;
 }
 // -------------------------------------------------------------------------
 
@@ -134,7 +133,7 @@ Double_t FairTrackParam::GetCovariance(Int_t i, Int_t j) const
 {
   if ( i<0 || j<0 || i>4 || j>4 ) {
     LOG(error) << "FairTrackParam::GetCovariance: Invalid index pair ("
-	       << i << "," << j << ") !" << FairLogger::endl;
+	       << i << "," << j << ") !";
     return 0;
   }
   if (i>j) {
@@ -191,12 +190,12 @@ void FairTrackParam::SetCovariance(Int_t i, Int_t j, Double_t val)
 {
   if (i < 0 || i > 4) {
     LOG(warn) << "FairTrackParam::SetCovariance: "
-		 << "First index out of range!  " << i << FairLogger::endl;
+		 << "First index out of range!  " << i;
     return;
   }
   if (j < 0 || j > 4) {
     LOG(warn) << "FairTrackParam::SetCovariance: "
-         << "Second index out of range!  " << j << FairLogger::endl;
+         << "Second index out of range!  " << j;
     return;
   }
   if (i>j) {

@@ -33,13 +33,13 @@ void FairMQExample7ParOne::clear()
 
 void FairMQExample7ParOne::print()
 {
-    LOG(info) << "Print" << FairLogger::endl;
-    LOG(info) << "fParameterValue: " << fParameterValue << FairLogger::endl;
+    LOG(info) << "Print";
+    LOG(info) << "fParameterValue: " << fParameterValue;
 }
 
 void FairMQExample7ParOne::putParams(FairParamList* list)
 {
-    LOG(info) << "FairMQExample7ParOne::putParams()" << FairLogger::endl;
+    LOG(info) << "FairMQExample7ParOne::putParams()";
 
     if (!list)
     {
@@ -52,7 +52,7 @@ void FairMQExample7ParOne::putParams(FairParamList* list)
 
 Bool_t FairMQExample7ParOne::getParams(FairParamList* list)
 {
-    LOG(info) << "FairMQExample7ParOne::getParams()" << FairLogger::endl;
+    LOG(info) << "FairMQExample7ParOne::getParams()";
 
     if (!list)
     {
