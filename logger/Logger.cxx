@@ -11,7 +11,8 @@
 #include <ostream>
 #include <array>
 #include <chrono>
-#include <iomanip> // put_time
+#include <ctime> // strftime
+#include <iomanip> // setw, setfill
 
 using namespace std;
 
@@ -317,7 +318,13 @@ void Logger::InitFileSink(const Severity severity, const string& filename, bool 
         // TODO: customize file name
         auto now = chrono::system_clock::to_time_t(chrono::system_clock::now());
         stringstream ss;
-        ss << "_" << put_time(localtime(&now), "%Y-%m-%d_%H_%M_%S") << ".log";
+        ss << "_";
+        char tsstr[32];
+        if (strftime(tsstr, sizeof(tsstr), "%Y-%m-%d_%H_%M_%S", localtime(&now)))
+        {
+            ss << tsstr;
+        }
+        ss << ".log";
         fullName += ss.str();
     }
 
@@ -376,17 +383,22 @@ ostringstream& Logger::Log(const string& file, const string& line, const string&
     auto now = chrono::system_clock::now();
     auto now_c = chrono::system_clock::to_time_t(now);
     auto ns = chrono::duration_cast<chrono::microseconds>(now.time_since_epoch()) % 1000000;
+    char tsstr[32];
+    if (!strftime(tsstr, sizeof(tsstr), "%H:%M:%S", localtime(&now_c)))
+    {
+        tsstr[0] = 'u';
+    }
 
     if ((!fColored && LoggingToConsole()) || (fFileStream.is_open() && LoggingToFile()))
     {
         if (fVerbosity >= Verbosity::high)
         {
             fBWOut << "[" << fProcessName << "]"
-                   << "[" << put_time(localtime(&now_c), "%H:%M:%S") << "." << setw(6) << setfill('0') << ns.count() << "]";
+                   << "[" << tsstr << "." << setw(6) << setfill('0') << ns.count() << "]";
         }
         else if (fVerbosity == Verbosity::medium)
         {
-            fBWOut << "[" << put_time(localtime(&now_c), "%H:%M:%S") << "]";
+            fBWOut << "[" << tsstr << "]";
         }
 
         fBWOut << "[" << fSeverityNames.at(static_cast<size_t>(fCurrentSeverity)) << "]";
@@ -404,11 +416,11 @@ ostringstream& Logger::Log(const string& file, const string& line, const string&
         if (fVerbosity >= Verbosity::high)
         {
             fColorOut << "[" << ColorOut(Color::fgBlue, fProcessName) << "]"
-                      << "[" << startColor(Color::fgCyan) << put_time(localtime(&now_c), "%H:%M:%S") << "." << setw(6) << setfill('0') << ns.count() << endColor() << "]";
+                      << "[" << startColor(Color::fgCyan) << tsstr << "." << setw(6) << setfill('0') << ns.count() << endColor() << "]";
         }
         else if (fVerbosity == Verbosity::medium)
         {
-            fColorOut << "[" << startColor(Color::fgCyan) << put_time(localtime(&now_c), "%H:%M:%S") << endColor() << "]";
+            fColorOut << "[" << startColor(Color::fgCyan) << tsstr << endColor() << "]";
         }
 
         fColorOut << "[" << ColoredSeverityWriter(fCurrentSeverity) << "]";
