@@ -47,8 +47,6 @@ pipeline{
               echo "export PATH=$SIMPATH/bin:$PATH" >> Dart.cfg
               echo "export GIT_BRANCH=$JOB_BASE_NAME" >> Dart.cfg
             '''
-            sh 'cmake --version'
-            sh 'env'
             sh './Dart.sh alfa_ci Dart.cfg'
           })
         }
