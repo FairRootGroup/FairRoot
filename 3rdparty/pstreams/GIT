@@ -1,4 +1,0 @@
-# PStreams release 1.0.1 (2017/2/2)
-git clone git://git.code.sf.net/p/pstreams/code pstreams
-cd pstreams
-git checkout 48dd2a8294ae2d419057d85c20dc1b960d8ff42d
