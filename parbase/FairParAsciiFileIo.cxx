@@ -97,9 +97,10 @@ Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
   while((string = static_cast<TObjString*>(myIter.Next()))) {
     // check if the file exist
     // if file exist return value is false
-    if ( gSystem->AccessPathName(string->GetString())) {
-      LOG(fatal) << "Parameter file " << string->GetString() << " does not exist.";
-    }
+    TString strParPath = string->GetString();
+    gSystem->ExpandPathName(strParPath);
+    if (gSystem->AccessPathName(strParPath))
+        LOG(FATAL) << "Parameter file " << strParPath << " does not exist." << FairLogger::endl;
     //    cout <<  string->GetString() <<endl;
     catCommand += string->GetString();
     catCommand += " ";
