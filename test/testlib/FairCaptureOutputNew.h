@@ -15,7 +15,7 @@
 class FairCaptureOutputNew
 {
   public:
-    FairCaptureOutputNew(bool captureStdErr = true, bool captureStdOut = false);
+    FairCaptureOutputNew(bool captureStdErr = false, bool captureStdOut = true);
     ~FairCaptureOutputNew();
 
     void BeginCapture();

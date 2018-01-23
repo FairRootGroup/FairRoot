@@ -127,8 +127,6 @@ class Logger
 
     static void OnFatal(std::function<void()> func);
 
-    static void SetCerrOnly(bool cerrOnly);
-
     virtual ~Logger() noexcept(false);
 
   private:
@@ -139,7 +137,6 @@ class Logger
     std::ostringstream fBWOut;
     static const std::string fProcessName;
     static bool fColored;
-    static bool fCerrOnly;
     static std::fstream fFileStream;
 
     static Severity fConsoleSeverity;

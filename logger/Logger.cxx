@@ -124,7 +124,6 @@ class ColoredSeverityWriter
 };
 
 bool Logger::fColored = false;
-bool Logger::fCerrOnly = false;
 fstream Logger::fFileStream;
 Logger::Verbosity Logger::fVerbosity = Logger::Verbosity::low;
 Logger::Severity Logger::fConsoleSeverity = Logger::Severity::info;
@@ -441,11 +440,6 @@ void Logger::OnFatal(std::function<void()> func)
     fFatalCallback = func;
 }
 
-void Logger::SetCerrOnly(bool cerrOnly)
-{
-    fCerrOnly = cerrOnly;
-}
-
 Logger::~Logger() noexcept(false)
 {
     fContent << "\n"; // "\n" + flush instead of endl makes output thread safe.
@@ -457,25 +451,11 @@ Logger::~Logger() noexcept(false)
         if (fColored)
         {
             fColorOut << fContent.str();
-            if (fCurrentSeverity == Severity::fatal || fCurrentSeverity == Severity::error || fCerrOnly)
-            {
-                cerr << fColorOut.str() << flush;
-            }
-            else
-            {
-                cout << fColorOut.str() << flush;
-            }
+            cout << fColorOut.str() << flush;
         }
         else
         {
-            if (fCurrentSeverity == Severity::fatal || fCurrentSeverity == Severity::error || fCerrOnly)
-            {
-                cerr << fBWOut.str() << flush;
-            }
-            else
-            {
-                cout << fBWOut.str() << flush;
-            }
+            cout << fBWOut.str() << flush;
         }
     }
 
