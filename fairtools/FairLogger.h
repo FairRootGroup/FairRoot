@@ -99,9 +99,8 @@ class FairLogger
     static constexpr char endl = ' ';
     static constexpr char flush = ' ';
 
-    void SetScreenStreamToCerr(bool useCerr)
+    void SetScreenStreamToCerr(bool /* useCerr */)
     {
-        fair::Logger::SetCerrOnly(useCerr);
     }
 
   private:
