@@ -18,7 +18,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <algorithm>
-#include <boost/regex.hpp>
+#include <regex>
 
 static const char* const LogString[] = {
     "FATAL", "ERROR", "WARN", "INFO",
@@ -200,8 +200,8 @@ template <class T> class _TestFairLoggerBase : public T
 
         regexString += "[ ]" + outputString + ".*";
 
-        const boost::regex e(regexString);
-        return regex_match(resultString, e);
+        const std::regex e(regexString);
+        return std::regex_match(resultString, e);
     }
 };
 

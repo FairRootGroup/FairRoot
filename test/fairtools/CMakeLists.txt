@@ -20,91 +20,77 @@ Include_Directories(${INCLUDE_DIRECTORIES})
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
  ${ROOT_INCLUDE_DIR}
- ${GTEST_INCLUDE_DIRS} 
+ ${GTEST_INCLUDE_DIRS}
 )
-
-# Boost is needed for the regular expression handling
-# Need static boost libraries to link executable with path to library
-Set(Boost_USE_STATIC_LIBS TRUE)
-find_package(Boost COMPONENTS regex)
-
-If(Boost_FOUND)
-  Set(SYSTEM_INCLUDE_DIRECTORIES
-      ${SYSTEM_INCLUDE_DIRECTORIES}
-      ${Boost_INCLUDE_DIRS}
-     )
-EndIf(Boost_FOUND)
 
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
  ${ROOT_LIBRARY_DIR}
- ${Boost_LIBRARY_DIRS}
 )
 
 link_directories( ${LINK_DIRECTORIES})
 
-If(Boost_FOUND)
-  Set(Exe_Names
-    _FairLoggerDeathTest1
-    _FairLoggerDeathTest2
-    _FairLoggerCheckDefaultSettings
-    _FairLoggerCheckVerbosityLevelSetting
-    _FairLoggerCheckOutputOnlytoFile
-    _FairLoggerCheckWrongLogLevelSettings
-    _FairLoggerTestScreenAndFileOutputWithoutArgument
-    _FairLoggerTestAllLogLevelsToScreenAndFile
-    _FairLoggerTestAllVerbosityLevelsToScreenAndFile
+Set(Exe_Names
+  _FairLoggerDeathTest1
+  _FairLoggerDeathTest2
+  _FairLoggerCheckDefaultSettings
+  _FairLoggerCheckVerbosityLevelSetting
+  _FairLoggerCheckOutputOnlytoFile
+  _FairLoggerCheckWrongLogLevelSettings
+  _FairLoggerTestScreenAndFileOutputWithoutArgument
+  _FairLoggerTestAllLogLevelsToScreenAndFile
+  _FairLoggerTestAllVerbosityLevelsToScreenAndFile
 
-    _FairLoggerNewDeathTest1
-    _FairLoggerNewDeathTest2
-    _FairLoggerNewCheckDefaultSettings
-    _FairLoggerNewCheckVerbosityLevelSetting
-    _FairLoggerNewCheckOutputOnlytoFile
-    _FairLoggerNewCheckWrongLogLevelSettings
-    _FairLoggerNewTestScreenAndFileOutputWithoutArgument
-    _FairLoggerNewTestAllLogLevelsToScreenAndFile
-    _FairLoggerNewTestAllVerbosityLevelsToScreenAndFile
-    _FairLoggerNewTestManipToScreen
-    _FairLoggerNewTestManipToFile
-  )
+  _FairLoggerNewDeathTest1
+  _FairLoggerNewDeathTest2
+  _FairLoggerNewCheckDefaultSettings
+  _FairLoggerNewCheckVerbosityLevelSetting
+  _FairLoggerNewCheckOutputOnlytoFile
+  _FairLoggerNewCheckWrongLogLevelSettings
+  _FairLoggerNewTestScreenAndFileOutputWithoutArgument
+  _FairLoggerNewTestAllLogLevelsToScreenAndFile
+  _FairLoggerNewTestAllVerbosityLevelsToScreenAndFile
+  _FairLoggerNewTestManipToScreen
+  _FairLoggerNewTestManipToFile
+)
 
-  Set(Exe_Source
-    _FairLoggerDeathTest1.cxx
-    _FairLoggerDeathTest2.cxx
-    _FairLoggerCheckDefaultSettings.cxx
-    _FairLoggerCheckVerbosityLevelSettings.cxx
-    _FairLoggerCheckOutputOnlytoFile.cxx
-    _FairLoggerCheckWrongLogLevelSettings.cxx
-    _FairLoggerTestScreenAndFileOutputWithoutArgument.cxx
-    _FairLoggerTestAllLogLevelsToScreenAndFile.cxx
-    _FairLoggerTestAllVerbosityLevelsToScreenAndFile.cxx
+Set(Exe_Source
+  _FairLoggerDeathTest1.cxx
+  _FairLoggerDeathTest2.cxx
+  _FairLoggerCheckDefaultSettings.cxx
+  _FairLoggerCheckVerbosityLevelSettings.cxx
+  _FairLoggerCheckOutputOnlytoFile.cxx
+  _FairLoggerCheckWrongLogLevelSettings.cxx
+  _FairLoggerTestScreenAndFileOutputWithoutArgument.cxx
+  _FairLoggerTestAllLogLevelsToScreenAndFile.cxx
+  _FairLoggerTestAllVerbosityLevelsToScreenAndFile.cxx
 
-    _FairLoggerNewDeathTest1.cxx
-    _FairLoggerNewDeathTest2.cxx
-    _FairLoggerNewCheckDefaultSettings.cxx
-    _FairLoggerNewCheckVerbosityLevelSettings.cxx
-    _FairLoggerNewCheckOutputOnlytoFile.cxx
-    _FairLoggerNewCheckWrongLogLevelSettings.cxx
-    _FairLoggerNewTestScreenAndFileOutputWithoutArgument.cxx
-    _FairLoggerNewTestAllLogLevelsToScreenAndFile.cxx
-    _FairLoggerNewTestAllVerbosityLevelsToScreenAndFile.cxx
-    _FairLoggerNewTestManipToScreen.cxx
-    _FairLoggerNewTestManipToFile.cxx
-  )
+  _FairLoggerNewDeathTest1.cxx
+  _FairLoggerNewDeathTest2.cxx
+  _FairLoggerNewCheckDefaultSettings.cxx
+  _FairLoggerNewCheckVerbosityLevelSettings.cxx
+  _FairLoggerNewCheckOutputOnlytoFile.cxx
+  _FairLoggerNewCheckWrongLogLevelSettings.cxx
+  _FairLoggerNewTestScreenAndFileOutputWithoutArgument.cxx
+  _FairLoggerNewTestAllLogLevelsToScreenAndFile.cxx
+  _FairLoggerNewTestAllVerbosityLevelsToScreenAndFile.cxx
+  _FairLoggerNewTestManipToScreen.cxx
+  _FairLoggerNewTestManipToFile.cxx
+)
 
-  List(LENGTH Exe_Names _length)
-  Math(EXPR _length ${_length}-1)
+List(LENGTH Exe_Names _length)
+Math(EXPR _length ${_length}-1)
 
-  ForEach(_file RANGE 0 ${_length})
-    List(GET Exe_Names ${_file} _name)
-    List(GET Exe_Source ${_file} _src)
-    Set(EXE_NAME ${_name})
-    Set(SRCS ${_src})
-    Set(DEPENDENCIES ${ROOT_LIBRARIES} ${Boost_LIBRARIES} ${GTEST_BOTH_LIBRARIES} FairTools FairTest)
-    GENERATE_EXECUTABLE()
-    add_test(${_name} ${CMAKE_BINARY_DIR}/bin/${_name})
-  EndForEach(_file RANGE 0 ${_length})
+ForEach(_file RANGE 0 ${_length})
+  List(GET Exe_Names ${_file} _name)
+  List(GET Exe_Source ${_file} _src)
+  Set(EXE_NAME ${_name})
+  Set(SRCS ${_src})
+  Set(DEPENDENCIES ${ROOT_LIBRARIES} ${GTEST_BOTH_LIBRARIES} FairTools FairTest)
+  GENERATE_EXECUTABLE()
+  add_test(${_name} ${CMAKE_BINARY_DIR}/bin/${_name})
+EndForEach(_file RANGE 0 ${_length})
 
 #  Set(Exe_Names
 #    _CoverageFairLoggerFatal
@@ -126,9 +112,3 @@ If(Boost_FOUND)
 #    GENERATE_EXECUTABLE()
 #    add_test(${_name} ${CMAKE_BINARY_DIR}/bin/${_name})
 #  EndForEach(_file RANGE 0 ${_length})
-
-Else(Boost_FOUND)
-  Message(STATUS "Could not build the test executable, because the Boost libraries are misssing.")
-EndIf(Boost_FOUND)
-
-
