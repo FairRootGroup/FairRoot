@@ -18,9 +18,63 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
+#include <unordered_map>
+#include <chrono>
+#include <mutex>
+#include <utility> // pair
+#include <time.h> // time_t
 
 namespace fair
 {
+
+enum class Severity : int
+{
+    nolog,
+    fatal,
+    error,
+    warn,
+    state,
+    info,
+    debug,
+    debug1,
+    debug2,
+    debug3,
+    debug4,
+    trace,
+    // backwards-compatibility:
+    NOLOG = nolog,
+    FATAL = fatal,
+    ERROR = error,
+    WARN = warn,
+    warning = warn,
+    WARNING = warn,
+    STATE = state,
+    INFO = info,
+    DEBUG = debug,
+    DEBUG1 = debug1,
+    DEBUG2 = debug2,
+    DEBUG3 = debug3,
+    DEBUG4 = debug4,
+    TRACE = trace
+};
+
+// verbosity levels:
+// low:      [severity] message
+// medium:   [HH:MM:SS][severity] message
+// high:     [process name][HH:MM:SS:µS][severity] message
+// veryhigh: [process name][HH:MM:SS:µS][severity][file:line:function] message
+enum class Verbosity : int
+{
+    low,
+    medium,
+    high,
+    veryhigh,
+    // backwards-compatibility:
+    LOW = low,
+    MEDIUM = medium,
+    HIGH = high,
+    VERYHIGH = veryhigh
+};
 
 // non-std exception to avoid undesirable catches - fatal should exit in a way we want.
 class FatalException
@@ -43,65 +97,31 @@ class FatalException
     std::string fWhat;
 };
 
+struct LogMetaData
+{
+    std::time_t timestamp;
+    std::chrono::microseconds us;
+    std::string process_name;
+    std::string file;
+    std::string line;
+    std::string func;
+    std::string severity_name;
+    fair::Severity severity;
+};
+
 class Logger
 {
   public:
-    enum class Severity : int
-    {
-        nolog,
-        fatal,
-        error,
-        warn,
-        state,
-        info,
-        debug,
-        debug1,
-        debug2,
-        debug3,
-        debug4,
-        trace,
-        // backwards-compatibility:
-        NOLOG = nolog,
-        FATAL = fatal,
-        ERROR = error,
-        WARN = warn,
-        warning = warn,
-        WARNING = warn,
-        STATE = state,
-        INFO = info,
-        DEBUG = debug,
-        DEBUG1 = debug1,
-        DEBUG2 = debug2,
-        DEBUG3 = debug3,
-        DEBUG4 = debug4,
-        TRACE = trace
-    };
-
-    // verbosity levels:
-    // low:      [severity] message
-    // medium:   [HH:MM:SS][severity] message
-    // high:     [process name][HH:MM:SS:NS][severity] message
-    // veryhigh: [process name][HH:MM:SS:NS][severity][file:line:function] message
-    enum class Verbosity : int
-    {
-        low,
-        medium,
-        high,
-        veryhigh,
-        // backwards-compatibility:
-        LOW = low,
-        MEDIUM = medium,
-        HIGH = high,
-        VERYHIGH = veryhigh
-    };
-
-    Logger(Severity severity);
+    Logger(Severity severity, const std::string& file, const std::string& line, const std::string& func);
 
     static void SetConsoleSeverity(const Severity severity);
     static void SetConsoleSeverity(const std::string& severityStr);
 
     static void SetFileSeverity(const Severity severity);
     static void SetFileSeverity(const std::string& severityStr);
+
+    static void SetCustomSeverity(const std::string& key, const Severity severity);
+    static void SetCustomSeverity(const std::string& key, const std::string& severityStr);
 
     static bool Logging(const Severity severity);
 
@@ -118,19 +138,23 @@ class Logger
     static std::string SeverityName(Severity);
     static std::string VerbosityName(Verbosity);
 
-    std::ostringstream& Log(const std::string& file, const std::string& line, const std::string& func);
+    static void OnFatal(std::function<void()> func);
+
+    static void AddCustomSink(const std::string& key, Severity severity, std::function<void(const std::string& content, const LogMetaData& metadata)> sink);
+    static void AddCustomSink(const std::string& key, const std::string& severityStr, std::function<void(const std::string& content, const LogMetaData& metadata)> sink);
+    static void RemoveCustomSink(const std::string& key);
+
+    std::ostringstream& Log();
 
     static const std::unordered_map<std::string, Verbosity> fVerbosityMap;
     static const std::unordered_map<std::string, Severity> fSeverityMap;
     static const std::array<std::string, 12> fSeverityNames;
     static const std::array<std::string, 4> fVerbosityNames;
 
-    static void OnFatal(std::function<void()> func);
-
     virtual ~Logger() noexcept(false);
 
   private:
-    Severity fCurrentSeverity;
+    LogMetaData fMetaData;
 
     std::ostringstream fContent;
     std::ostringstream fColorOut;
@@ -146,9 +170,12 @@ class Logger
     static Verbosity fVerbosity;
 
     static std::function<void()> fFatalCallback;
+    static std::unordered_map<std::string, std::pair<Severity, std::function<void(const std::string& content, const LogMetaData& metadata)>>> fCustomSinks;
+    static std::mutex fMtx;
 
     bool LoggingToConsole() const;
     bool LoggingToFile() const;
+    bool LoggingCustom(const Severity) const;
 
     static void UpdateMinSeverity();
 };
@@ -159,13 +186,13 @@ class Logger
 #define CONVERTTOSTRING(s) IMP_CONVERTTOSTRING(s)
 
 #define LOG(severity) \
-    for (bool fairLOggerunLikelyvariable = false; fair::Logger::Logging(fair::Logger::Severity::severity) && !fairLOggerunLikelyvariable; fairLOggerunLikelyvariable = true) \
-        fair::Logger(fair::Logger::Severity::severity).Log(__FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__)
+    for (bool fairLOggerunLikelyvariable = false; fair::Logger::Logging(fair::Severity::severity) && !fairLOggerunLikelyvariable; fairLOggerunLikelyvariable = true) \
+        fair::Logger(fair::Severity::severity, __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__).Log()
 
 // with custom file, line, function
 #define LOGD(severity, file, line, function) \
     for (bool fairLOggerunLikelyvariable = false; fair::Logger::Logging(severity) && !fairLOggerunLikelyvariable; fairLOggerunLikelyvariable = true) \
-        fair::Logger(severity).Log(file, line, function)
+        fair::Logger(severity, file, line, function).Log()
 
 #define LOG_IF(severity, condition) \
     for (bool fairLOggerunLikelyvariable2 = false; condition && !fairLOggerunLikelyvariable2; fairLOggerunLikelyvariable2 = true) \

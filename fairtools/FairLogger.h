@@ -40,7 +40,7 @@ class FairLogger
         }
         else
         {
-            fair::Logger::SetConsoleSeverity(fair::Logger::Severity::fatal);
+            fair::Logger::SetConsoleSeverity(fair::Severity::fatal);
         }
     }
 
@@ -58,7 +58,7 @@ class FairLogger
         }
         else
         {
-            fair::Logger::SetFileSeverity(fair::Logger::Severity::fatal);
+            fair::Logger::SetFileSeverity(fair::Severity::fatal);
         }
     }
 
@@ -84,7 +84,7 @@ class FairLogger
         fair::Logger::SetVerbosity(verbosity);
     }
 
-    bool IsLogNeeded(fair::Logger::Severity severity);
+    bool IsLogNeeded(fair::Severity severity);
 
     void Fatal  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
     void Error  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
@@ -112,7 +112,7 @@ class FairLogger
 
     ~FairLogger() {}
 
-    void Log(fair::Logger::Severity level, const char* file, const char* line, const char*, const char* format, va_list arglist);
+    void Log(fair::Severity level, const char* file, const char* line, const char*, const char* format, va_list arglist);
 
     static void LogFatalMessage();
 

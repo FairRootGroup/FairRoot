@@ -36,7 +36,8 @@ static const char* const VerbosityLevelArray[] = {
 
 // Base class to use the same basic setup for parameterized and non-parameterized tests.
 // Here one defines everything which is common for all the different test cases
-template <class T> class _TestFairLoggerBase : public T
+template <class T>
+class _TestFairLoggerBase : public T
 {
   protected:
     std::string fLogLevelSettingToTest;

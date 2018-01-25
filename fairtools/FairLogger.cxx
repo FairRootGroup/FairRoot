@@ -49,99 +49,99 @@ void FairLogger::Fatal(const char* file, const char* line, const char* func, con
 {
     va_list ap;
     va_start(ap, format);
-    Log(fair::Logger::Severity::fatal, file, line, func, format, ap);
+    Log(fair::Severity::fatal, file, line, func, format, ap);
     va_end(ap);
 }
 
 void FairLogger::Error(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Logger::Severity::error))
+    if (IsLogNeeded(fair::Severity::error))
     {
         va_list ap;
         va_start(ap, format);
-        Log(fair::Logger::Severity::error, file, line, func, format, ap);
+        Log(fair::Severity::error, file, line, func, format, ap);
         va_end(ap);
     }
 }
 
 void FairLogger::Warning(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Logger::Severity::warning))
+    if (IsLogNeeded(fair::Severity::warning))
     {
         va_list ap;
         va_start(ap, format);
-        Log(fair::Logger::Severity::warning, file, line, func, format, ap);
+        Log(fair::Severity::warning, file, line, func, format, ap);
         va_end(ap);
     }
 }
 
 void FairLogger::Info(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Logger::Severity::info))
+    if (IsLogNeeded(fair::Severity::info))
     {
         va_list ap;
         va_start(ap, format);
-        Log(fair::Logger::Severity::info, file, line, func, format, ap);
+        Log(fair::Severity::info, file, line, func, format, ap);
         va_end(ap);
     }
 }
 
 void FairLogger::Debug(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Logger::Severity::debug))
+    if (IsLogNeeded(fair::Severity::debug))
     {
         va_list ap;
         va_start(ap, format);
-        Log(fair::Logger::Severity::debug, file, line, func, format, ap);
+        Log(fair::Severity::debug, file, line, func, format, ap);
         va_end(ap);
     }
 }
 
 void FairLogger::Debug1(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Logger::Severity::debug1))
+    if (IsLogNeeded(fair::Severity::debug1))
     {
         va_list ap;
         va_start(ap, format);
-        Log(fair::Logger::Severity::debug1, file, line, func, format, ap);
+        Log(fair::Severity::debug1, file, line, func, format, ap);
         va_end(ap);
     }
 }
 
 void FairLogger::Debug2(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Logger::Severity::debug2))
+    if (IsLogNeeded(fair::Severity::debug2))
     {
         va_list ap;
         va_start(ap, format);
-        Log(fair::Logger::Severity::debug2, file, line, func, format, ap);
+        Log(fair::Severity::debug2, file, line, func, format, ap);
         va_end(ap);
     }
 }
 
 void FairLogger::Debug3(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Logger::Severity::debug3))
+    if (IsLogNeeded(fair::Severity::debug3))
     {
         va_list ap;
         va_start(ap, format);
-        Log(fair::Logger::Severity::debug3, file, line, func, format, ap);
+        Log(fair::Severity::debug3, file, line, func, format, ap);
         va_end(ap);
     }
 }
 
 void FairLogger::Debug4(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Logger::Severity::debug4))
+    if (IsLogNeeded(fair::Severity::debug4))
     {
         va_list ap;
         va_start(ap, format);
-        Log(fair::Logger::Severity::debug4, file, line, func, format, ap);
+        Log(fair::Severity::debug4, file, line, func, format, ap);
         va_end(ap);
     }
 }
 
-void FairLogger::Log(fair::Logger::Severity severity, const char* file, const char* line, const char* func, const char* format, va_list arglist)
+void FairLogger::Log(fair::Severity severity, const char* file, const char* line, const char* func, const char* format, va_list arglist)
 {
     // If the format string together with the argument list was used once it can't
     // be used another time. Don't know why but if we do so the arguments are not
@@ -175,7 +175,7 @@ void FairLogger::Log(fair::Logger::Severity severity, const char* file, const ch
     }
 }
 
-bool FairLogger::IsLogNeeded(fair::Logger::Severity severity)
+bool FairLogger::IsLogNeeded(fair::Severity severity)
 {
     return fair::Logger::Logging(severity);
 }
