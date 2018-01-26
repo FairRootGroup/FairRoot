@@ -111,6 +111,14 @@ void FairRuntimeDb::addContFactory(FairContFact* fact)
   }
 }
 
+void FairRuntimeDb::removeContFactory(FairContFact* fact)
+{
+  // removes a container factory to the list of factories
+  if ((contFactories.Remove(fact))) {
+    fLogger->Debug( MESSAGE_ORIGIN,"removed RTDB container factory %s",fact->GetName() );
+  }
+}
+
 FairContFact* FairRuntimeDb::getContFactory(const Text_t* FactName)
 {
   return (static_cast<FairContFact*>(contFactories.FindObject(FactName)));

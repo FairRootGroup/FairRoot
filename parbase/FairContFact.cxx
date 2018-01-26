@@ -152,6 +152,7 @@ FairContFact::FairContFact()
 FairContFact::~FairContFact()
 {
   // Destructor deletes the container list and its elements
+  FairRuntimeDb::instance()->removeContFactory(this);
   containers->Delete();
   delete containers;
 }
