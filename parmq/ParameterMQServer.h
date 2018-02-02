@@ -20,6 +20,7 @@
 #include "FairMQDevice.h"
 
 class FairRuntimeDb;
+class FairMQMessage;
 
 class ParameterMQServer : public FairMQDevice
 {
@@ -31,8 +32,10 @@ class ParameterMQServer : public FairMQDevice
 
     virtual ~ParameterMQServer();
 
-    virtual void Run();
     virtual void InitTask();
+    virtual void Init();
+    bool         ProcessRequest(FairMQMessagePtr&, int);
+    bool         ProcessUpdate (FairMQMessagePtr&, int);
 
     void SetFirstInputName(const std::string& firstInputName) { fFirstInputName = firstInputName; }
     std::string GetFirstInputName() { return fFirstInputName; }
@@ -47,8 +50,11 @@ class ParameterMQServer : public FairMQDevice
     void SetOutputType(const std::string& outputType) { fOutputType = outputType; }
     std::string GetOutputType() { return fOutputType; }
 
-    void SetChannelName(const std::string& channelName) { fChannelName = channelName; }
-    std::string GetChannelName() { return fChannelName; }
+    void SetChannelName(const std::string& channelName) { fRequestChannelName = channelName; }
+    std::string GetChannelName() { return fRequestChannelName; }
+
+    void SetUpdateChannelName(const std::string& channelName) { fUpdateChannelName = channelName; }
+    std::string GetUpdateChannelName() { return fUpdateChannelName; }
 
   private:
     FairRuntimeDb* fRtdb;
@@ -60,7 +66,8 @@ class ParameterMQServer : public FairMQDevice
     std::string fOutputName;
     std::string fOutputType;
 
-    std::string fChannelName;
+    std::string fRequestChannelName;
+    std::string fUpdateChannelName;
 };
 
 #endif /* PARAMETERMQSERVER_H_ */

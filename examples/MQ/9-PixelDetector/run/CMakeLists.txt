@@ -22,6 +22,8 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage
     ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
+    ${CMAKE_SOURCE_DIR}/generators
+    ${CMAKE_SOURCE_DIR}/examples/common/passive
     ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector
     ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src
     ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src/devices
@@ -46,6 +48,8 @@ set(FAIRROOT_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
 
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9.sh.in                
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/9-PixelDetector/startFairMQEx9.sh )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9Simulation.sh.in
+                ${CMAKE_BINARY_DIR}/bin/examples/MQ/9-PixelDetector/startFairMQEx9Simulation.sh @ONLY )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_2Levels.sh.in           
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/9-PixelDetector/startFairMQEx9_2Levels.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_3Levels.sh.in           
@@ -79,6 +83,8 @@ set(FAIRROOT_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/bin)
 
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9.sh.in      
 		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9.sh_install )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9Simulation.sh.in
+                ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9Simulation.sh_install @ONLY )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_2Levels.sh.in 
 		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_2Levels.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_3Levels.sh.in 
@@ -107,6 +113,9 @@ set(EXAMPLE9_INSTALL_BIN share/fairbase/examples/MQ/9-PixelDetector/bin)
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9.sh_install
         DESTINATION ${EXAMPLE9_INSTALL_BIN}
         RENAME startFairMQEx9.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
+Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9Simulation.sh_install
+        DESTINATION ${EXAMPLE9_INSTALL_BIN}
+        RENAME startFairMQEx9Simulation.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_2Levels.sh_install
         DESTINATION ${EXAMPLE9_INSTALL_BIN}
         RENAME startFairMQEx9_2Levels.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
@@ -164,6 +173,8 @@ Set(Exe_Names
     ex9-sinkBin
 
     ex9-merger
+
+    run-sim
 )
 
 set(Exe_Source
@@ -176,6 +187,8 @@ set(Exe_Source
     runEx9FileSinkBin.cxx
 
     runEx9Merger.cxx
+
+    runMQSim.cxx
 )
 
 

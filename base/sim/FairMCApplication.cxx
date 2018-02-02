@@ -812,6 +812,12 @@ void FairMCApplication::StopRun()
 }
 
 //_____________________________________________________________________________
+void FairMCApplication::StopMCRun()
+{
+  if ( fMC ) fMC->StopRun();
+}
+
+//_____________________________________________________________________________
 void FairMCApplication::FinishEvent()
 {
 // User actions after finishing of an event

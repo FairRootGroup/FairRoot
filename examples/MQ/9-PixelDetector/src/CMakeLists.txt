@@ -40,6 +40,7 @@ devices/PixelFindHitsTask.cxx
 devices/FairMQEx9Merger.cxx
 devices/FairMQEx9FileSink.cxx
 devices/FairMQEx9FileSinkBin.cxx
+devices/FairMQSimDevice.cxx
 )
 
 Set(NO_DICT_HEADERS
@@ -53,6 +54,7 @@ devices/FairMQEx9TaskProcessor.h
 devices/FairMQEx9TaskProcessor.tpl
 devices/FairMQEx9TaskProcessorBin.h
 devices/FairMQEx9TaskProcessorBin.tpl
+devices/FairMQSimDevice.h
 )
 
 set(SRCS

@@ -258,6 +258,8 @@ void FairModule::SetGeometryFileName(TString fname, TString)
 //__________________________________________________________________________
 void FairModule::ProcessNodes(TList* aList)
 {
+  if(!svList) { svList=new TRefArray(); }
+  if(!vList) { vList=new FairVolumeList(); }
 
   TListIter iter(aList);
   FairGeoNode* node   = NULL;
@@ -290,7 +292,6 @@ void FairModule::ProcessNodes(TList* aList)
       fNodes->AddLast( aVol );
       fNbOfSensitiveVol++;
     }
-
   }
 }
 //__________________________________________________________________________

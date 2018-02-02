@@ -163,8 +163,10 @@ class FairRunSim : public FairRun
 
     void SetImportTGeoToVMC(Bool_t v) { fImportTGeoToVMC = v; }
     Bool_t IsImportTGeoToVMC() const { return fImportTGeoToVMC; }
-    
-  private:
+
+    void StopMCRun() { fApp->StopMCRun(); }
+
+ private:
     FairRunSim(const FairRunSim& M);
     FairRunSim& operator= (const  FairRunSim&) {return *this;}
     void SetMCConfig();
