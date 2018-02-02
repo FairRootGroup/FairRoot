@@ -38,15 +38,15 @@ public:
     //  FairFileSink(const FairFileSink& file);
     virtual ~FairFileSink();
 
-    Bool_t              Init();
-    void                Close();
-    void                Reset();
+    virtual Bool_t      Init();
+    virtual void        Close();
+    virtual void        Reset();
 
-    virtual Sink_Type GetSinkType() { return kFILESINK; }
+    virtual Sink_Type   GetSinkType() { return kFILESINK; }
 
-    virtual void FillEventHeader(FairEventHeader* feh);
+    virtual void        FillEventHeader(FairEventHeader* feh);
 
-    const TFile*        GetRootFile(){return fRootFile;}
+    const TFile* GetRootFile(){return fRootFile;}
 
     virtual void        SetOutTree(TTree* fTree) { fOutTree=fTree;}
 
@@ -54,14 +54,14 @@ public:
 
     virtual Int_t       Write(const char* name=0, Int_t option=0, Int_t bufsize=0);
 
-    virtual void RegisterImpl(const char* , const char* , void* );
-    virtual void RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj);
+    virtual void        RegisterImpl(const char* , const char* , void* );
+    virtual void        RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj);
 
-    virtual void WriteFolder();
-    virtual bool CreatePersistentBranchesAny();
+    virtual void        WriteFolder();
+    virtual bool        CreatePersistentBranchesAny();
 
-    virtual void WriteObject(TObject* f, const char*, Int_t option = 0);
-    virtual void WriteGeometry();
+    virtual void        WriteObject(TObject* f, const char*, Int_t option = 0);
+    virtual void        WriteGeometry();
 
 
 private:

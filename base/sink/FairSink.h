@@ -30,12 +30,11 @@ class FairSink : public TObject
     FairSink(const FairSink& sink);
     virtual ~FairSink();
 
-    virtual Bool_t Init() = 0;
-    virtual void Close() = 0;
+    virtual Bool_t      Init() { return kTRUE; }  // TODO, need it by FairMQSimDevice
+    virtual void        Close() = 0;
+    virtual void        Reset() = 0;
 
-    virtual void Reset() = 0;
-
-    virtual Sink_Type GetSinkType() = 0;
+    virtual Sink_Type   GetSinkType() = 0;
 
     void  SetRunId(Int_t runId) { fRunId = runId; }
     Int_t GetRunId() const      { return fRunId;  }
@@ -46,14 +45,14 @@ class FairSink : public TObject
 
     virtual Int_t       Write(const char* name=0, Int_t option=0, Int_t bufsize=0) = 0;
 
-    virtual void RegisterImpl(const char* , const char* , void* ) = 0;
-    virtual void RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj) = 0;
+    virtual void        RegisterImpl(const char* , const char* , void* ) = 0;
+    virtual void        RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj) = 0;
 
-    virtual void WriteFolder() = 0;
-    virtual bool CreatePersistentBranchesAny() = 0;
+    virtual void        WriteFolder() = 0;
+    virtual bool        CreatePersistentBranchesAny() = 0;
 
-    virtual void WriteObject(TObject* f, const char*, Int_t option = 0) = 0;
-    virtual void WriteGeometry() = 0;
+    virtual void        WriteObject(TObject* f, const char*, Int_t option = 0) = 0;
+    virtual void        WriteGeometry() = 0;
 
   protected:
     struct TypeAddressPair {

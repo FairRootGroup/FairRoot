@@ -17,6 +17,7 @@
 
 #include "TMessage.h"
 
+#include "FairMCEventHeader.h"
 #include "FairMQEx9FileSink.h"
 #include "FairMQLogger.h"
 #include <options/FairMQProgOptions.h>
@@ -95,6 +96,12 @@ void FairMQEx9FileSink::Init()
     else if ( fClassNames[fNObjects].find("FairEventHeader") == 0 ) {
       fOutputObjects            [fNObjects] = new    FairEventHeader();
       fTree->Branch(fBranchNames[fNObjects].c_str(),"FairEventHeader", &fOutputObjects[fNObjects]);
+      foldEventHeader->Add(fOutputObjects[fNObjects]);
+      BranchNameList->AddLast(new TObjString(fBranchNames[fNObjects].c_str()));
+    }
+    else if ( fClassNames[fNObjects].find("FairMCEventHeader") == 0 ) {
+      fOutputObjects            [fNObjects] = new    FairMCEventHeader();
+      fTree->Branch(fBranchNames[fNObjects].c_str(),"FairMCEventHeader", &fOutputObjects[fNObjects]);
       foldEventHeader->Add(fOutputObjects[fNObjects]);
       BranchNameList->AddLast(new TObjString(fBranchNames[fNObjects].c_str()));
     }

@@ -26,7 +26,8 @@ void addCustomOptions(bpo::options_description& options)
         ("second-input-type", bpo::value<std::string>()->default_value("ROOT"), "Second input file type (ROOT/ASCII)")
         ("output-name", bpo::value<std::string>()->default_value(""), "Output file name")
         ("output-type", bpo::value<std::string>()->default_value("ROOT"), "Output file type")
-        ("channel-name", bpo::value<std::string>()->default_value("data"), "Output channel name");
+        ("channel-name", bpo::value<std::string>()->default_value(""), "Output channel name")
+        ("update-channel-name", bpo::value<std::string>()->default_value(""), "Update channel name");
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
