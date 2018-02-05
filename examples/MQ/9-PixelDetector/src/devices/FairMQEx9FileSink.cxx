@@ -64,7 +64,7 @@ void FairMQEx9FileSink::Init()
   fInputChannelName  = fConfig->GetValue<std::string>             ("in-channel");
   fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
 
-  LOG(info) << "SHOULD CREATE THE FILE AND TREE";
+  LOG(INFO) << "SHOULD CREATE THE FILE AND TREE";
   //  fFileName = "/Users/karabowi/fairroot/pixel9_dev/FairRoot/examples/MQ/9-PixelDetector/macros/tmpOut.root";
   fFileOption = "RECREATE";
   fTreeName = "cbmsim";  
@@ -85,7 +85,7 @@ void FairMQEx9FileSink::Init()
   TList* BranchNameList = new TList();
   
   for ( fNObjects = 0 ; fNObjects < fBranchNames.size() ; fNObjects++ ) {
-    LOG(info) << "Creating output branch \"" << fClassNames[fNObjects] << "\" with name \"" << fBranchNames[fNObjects] << "\"";
+    LOG(INFO) << "Creating output branch \"" << fClassNames[fNObjects] << "\" with name \"" << fBranchNames[fNObjects] << "\"";
     if      ( fClassNames[fNObjects].find("TClonesArray(") == 0 ) {
       fClassNames   [fNObjects] = fClassNames[fNObjects].substr(13,fClassNames[fNObjects].length()-12-2);
       fOutputObjects            [fNObjects] = new    TClonesArray(fClassNames[fNObjects].c_str());
@@ -106,7 +106,7 @@ void FairMQEx9FileSink::Init()
       BranchNameList->AddLast(new TObjString(fBranchNames[fNObjects].c_str()));
     }
     else {
-      LOG(error) << "!!! Unknown output object \"" << fClassNames[fNObjects] << "\" !!!";
+      LOG(ERROR) << "!!! Unknown output object \"" << fClassNames[fNObjects] << "\" !!!";
     }
   }  
 
@@ -152,7 +152,7 @@ bool FairMQEx9FileSink::StoreData(FairMQParts& parts, int /*index*/)
 }
 
 FairMQEx9FileSink::~FairMQEx9FileSink()
-{ 
+{
   if (fTree)
     {
       fTree->Write();
