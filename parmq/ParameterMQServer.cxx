@@ -196,10 +196,10 @@ bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
       if ( parDescr.find("RUNID") != std::string::npos )
         parDescr.erase(0,parDescr.find("RUNID")+5);
     }
-
   fRtdb->initContainers(runId);
 
   newPar->setChanged(true); // trigger writing to file
+  newPar->setStatic(true); // to get rid of error
   newPar->Print();
 
   if ( fRtdb->addContainer(newPar) )
