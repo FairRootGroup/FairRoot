@@ -5,7 +5,7 @@ NOFSIMULS="1"
 TRANSPORTNAME="TGeant3"
 TRANSPORT="--transport zeromq"
 WORKDIR="@EXAMPLE9_FILE_LOCATION@"
-VERBOSE="--verbosity DEBUG"
+VERBOSE="--severity INFO"
 FORCEKILL=false
 
 CONTROL=""
