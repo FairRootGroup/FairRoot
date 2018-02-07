@@ -1,15 +1,14 @@
 #!/bin/bash
 
-NOFEVENTS="--nof-events 1"
+NOFEVENTS="100"
 NOFSIMULS="1"
 TRANSPORTNAME="TGeant3"
 TRANSPORT="--transport zeromq"
 WORKDIR="@EXAMPLE9_FILE_LOCATION@"
 VERBOSE="--severity INFO"
 FORCEKILL=false
+COMMAND="interactive"
 
-CONTROL=""
-#CONTROL="--control static --log-color false"
 DATESTRING=`date +%Y%m%d_%H%M%S`
 
 NOFRANDOMNUMBERS=0
@@ -20,7 +19,7 @@ key="$1"
 
 case $key in
     -n|--nof-events)
-    NOFEVENTS="--nof-events $2"
+    NOFEVENTS="$2"
     shift
     ;;
     -r|--random-number)
@@ -44,6 +43,10 @@ case $key in
     WORKDIR="$2"
     shift
     ;;
+    -c|--command)
+    COMMAND="$2"
+    shift
+    ;;
     -v|--verbose)
     VERBOSE="--verbosity $2"
     shift
@@ -55,6 +58,11 @@ case $key in
 esac
 shift 
 done
+
+CONTROL=""
+if [ "$COMMAND" == "static" ]; then
+    CONTROL="--control static --log-color false"
+fi
 
 case $NOFSIMULS in
     ''|*[!0-9]*) NOFSIMULS=1 ;;
@@ -132,7 +140,7 @@ SAMPLER="@EXAMPLE9_BIN_LOCATION@/"
 SAMPLER+="run-sim $TRANSPORT"
 SAMPLER+=" --config-key sampler  --mq-config $MQCONFIGFILE"
 SAMPLER+=" $VERBOSE "
-SAMPLER+=" $NOFEVENTS $TRANSPORTNAME $CONTROL"
+SAMPLER+=" --nof-events $NOFEVENTS $TRANSPORTNAME $CONTROL"
 
 for (( i=$NOFRANDOMNUMBERS ; i<$NOFSIMULS ; i++ ))
 do
@@ -151,13 +159,132 @@ FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
 FILESINK+=" --class-name FairMCEventHeader --branch-name MCEventHeader."
 FILESINK+=" --class-name TClonesArray(PixelPoint) --branch-name PixelPoint"
 FILESINK+=" --class-name TClonesArray(FairMCTrack) --branch-name MCTrack"
-FILESINK+=" --file-name $OUTPUTFILE"
+FILESINK+=" --file-name $OUTPUTFILE $CONTROL"
 
 ########################## run all
-xterm -geometry 80x50+0+0 -hold -e $SERVER &
-xterm -geometry 80x50+1000+0 -hold -e $FILESINK &
+if [ "$COMMAND" == "interactive" ]; then
+    xterm -geometry 80x50+0+0 -hold -e $SERVER &
+    xterm -geometry 80x50+1000+0 -hold -e $FILESINK &
 
-for (( i=0 ; i<$NOFSIMULS ; i++ ))
-do
-    xterm -geometry 80x50+500+0 -hold -e ${ASAMPLER[i]} &
-done
+    for (( i=0 ; i<$NOFSIMULS ; i++ ))
+    do
+	xterm -geometry 80x50+500+0 -hold -e ${ASAMPLER[i]} &
+    done
+fi
+
+if [ "$COMMAND" == "static" ]; then
+    CHECK_BEFORE="$(ps -fea | grep Pixel9MQConfig_Simulation.json | grep "transport" | grep "control" | grep -v grep)"
+    if [ -n "$CHECK_BEFORE" ];
+    then
+	echo "some example/MQ/9-Pixel programs are still running:"
+	echo $CHECK_BEFORE
+	echo "quit them before proceeding."
+	if [ "$FORCEKILL" == "true" ];
+	then
+            echo "trying to kill..."
+            ps -fea | grep Pixel9MQConfig_Simulation.json | grep "transport" | grep "control" | grep -v grep | awk '{print $2}' | xargs kill -9
+	else
+            return;
+	fi
+    fi
+
+    $SERVER &> server_$DATESTRING.out.log &
+    SERVER_PID=$!
+
+    for (( i=0 ; i<$NOFSIMULS ; i++ ))
+    do
+	$SAMPLER &> sampler$i_$DATESTRING.out.log &
+	SAMPLER_PID[i]=$!
+    done
+
+    $FILESINK &> fileSink_$DATESTRING.out.log &
+    FILESINK_PID=$!
+
+    RUN_STRING="Running"
+
+    for (( isimul=0 ; isimul<$NOFSIMULS+2 ; isimul++ ))
+    do
+	printf "_______________"
+    done
+    printf "_\n|     server   |"
+    for (( isimul=0 ; isimul<$NOFSIMULS ; isimul++ ))
+    do
+	printf "    sampler   |"
+    done
+    printf "   file sink  |\n| pid = %6d |" $SERVER_PID
+    for (( isimul=0 ; isimul<$NOFSIMULS ; isimul++ ))
+    do
+	printf " pid = %6d |" ${SAMPLER_PID[isimul]}
+    done
+    printf " pid = %6d |\n" $FILESINK_PID
+    for (( isimul=0 ; isimul<$NOFSIMULS+2 ; isimul++ ))
+    do
+	printf "|   CPU    mem ";
+    done
+    printf "|\n"
+
+    MAXRUNNINGTIME=100
+    SAMPLERRUNNING=0
+    for ((isec = 0 ; isec < MAXRUNNINGTIME ; isec++ ));
+    do
+	if (( SAMPLERRUNNING != -1 )); then
+	    SAMPLERRUNNING=0
+	    for (( isimul=0 ; isimul<$NOFSIMULS ; isimul++ ))
+	    do
+		CHECK_SAMPLER="$(kill -0 ${SAMPLER_PID[isimul]} &> /dev/null && echo $RUN_STRING)";
+		if [ "$CHECK_SAMPLER" == "$RUN_STRING" ];
+		then
+		    SAMPLERRUNNING=1;
+		fi
+	    done
+	    if (( SAMPLERRUNNING == 0 )); then
+		MAXRUNNINGTIME=$((isec+2)); #TODO let it run for two more seconds after all samplers finish working... workaround for now
+		SAMPLERRUNNING=-1
+	    fi
+	fi
+
+	SERVER_INFO="$(ps -o %cpu -o rss $SERVER_PID | tail -1)"
+	printf "| %5s %6s |" $SERVER_INFO;
+	for (( isimul=0 ; isimul<$NOFSIMULS ; isimul++ ))
+	do
+	    SAMPLER_INFO="$(ps -o %cpu -o rss ${SAMPLER_PID[isimul]} | tail -1)"
+	    printf " %5s %6s |" $SAMPLER_INFO;
+	done
+	FILESINK_INFO="$(ps -o %cpu -o rss $FILESINK_PID | tail -1)"
+	printf " %5s %6s |\r" $FILESINK_INFO
+	sleep 1;
+    done;
+    echo;
+    for (( isimul=0 ; isimul<$NOFSIMULS+2 ; isimul++ ))
+    do
+	printf "_______________"
+    done
+    printf "_\n"
+    echo "Jobs finished in $isec seconds."
+
+    sleep 2;
+
+    kill $SERVER_PID
+    for (( i=0 ; i<$NOFSIMULS ; i++ ))
+    do
+	CHECK_SAMPLER="$(kill -0 ${SAMPLER_PID[isimul]} &> /dev/null && echo $RUN_STRING)";
+	if [ "$CHECK_SAMPLER" == "$RUN_STRING" ];
+	then
+	    kill ${SAMPLER_PID[i]};
+	fi
+    done
+    kill $FILESINK_PID
+
+    wait $FILESINK_PID
+
+    OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $OUTPUTFILE | tail -1)"
+    echo "There are $OUTPUT_EVENTS in the output file."
+
+    if (( $OUTPUT_EVENTS == $NOFSIMULS*$NOFEVENTS ));
+    then
+	echo "Shell script finished successfully.";
+    fi
+
+fi
+
+
