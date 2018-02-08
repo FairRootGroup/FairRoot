@@ -25,9 +25,11 @@ namespace bpo = boost::program_options;
 void addCustomOptions(bpo::options_description& options)
 {
   options.add_options()
-    ("random-seed",     bpo::value<int64_t>    ()->default_value(0)         , "Random seed number")
-    ("transport-name",  bpo::value<std::string>()->default_value("TGeant3") , "Transport name")
-    ("nof-events",      bpo::value<int64_t>    ()->required()               , "Number of events to simulate");
+    ("random-seed",          bpo::value<int64_t>    ()->default_value(0)         , "Random seed number")
+    ("transport-name",       bpo::value<std::string>()->default_value("TGeant3") , "Transport name")
+    ("nof-events",           bpo::value<int64_t>    ()->required()               , "Number of events to simulate")
+    ("fairroot-config-dir",  bpo::value<std::string>()->default_value("")        , "FairRoot config dir")
+    ;
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& config)
@@ -40,11 +42,13 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
   TString tut_geomdir = dir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
 
-  TString tut_configdir = dir + "/common/gconfig";
+  TString tut_configdir = config.GetValue<std::string>("fairroot-config-dir");
+  if ( tut_configdir.Length() < 1 ) 
+    tut_configdir = dir + "/common/gconfig";
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   FairMQSimDevice* run = new FairMQSimDevice();
-  
+
   run->SetNofEvents       (config.GetValue<int64_t>    ("nof-events"));
   run->SetTransportName   (config.GetValue<std::string>("transport-name"));
   run->SetMaterials       ("media.geo");

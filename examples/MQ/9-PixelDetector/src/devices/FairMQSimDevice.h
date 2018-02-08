@@ -68,6 +68,8 @@ class FairMQSimDevice : public FairMQDevice, public FairSink
     void SetTaskArray       (TObjArray* array)              { fTaskArray = array;};
     void SetFirstParameter  (FairParIo* par)                { fFirstParameter  = par;};
     void SetSecondParameter (FairParIo* par)                { fSecondParameter = par;};
+    void SetUserConfig      (const TString& Config)         { fUserConfig = Config;}
+    void SetUserCuts        (const TString& Cuts)           { fUserCuts = Cuts;}
     // ------ ---------- -------- ------
 
  protected:
@@ -91,6 +93,8 @@ class FairMQSimDevice : public FairMQDevice, public FairSink
     TObjArray*            fTaskArray;
     FairParIo*            fFirstParameter;    // first (prefered) input for parameters
     FairParIo*            fSecondParameter;   // second input (used if not found in first input)
+    TString               fUserConfig;        //!                  /** Macro for geant configuration*/
+    TString               fUserCuts;          //!                  /** Macro for geant cuts*/
     // ------ ---------- -------- ------
 
     void UpdateParameterServer();

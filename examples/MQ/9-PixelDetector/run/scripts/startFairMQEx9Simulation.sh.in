@@ -8,6 +8,7 @@ WORKDIR="@EXAMPLE9_FILE_LOCATION@"
 VERBOSE="--severity INFO"
 FORCEKILL=false
 COMMAND="interactive"
+FAIRROOTCONFIGDIR=""
 
 DATESTRING=`date +%Y%m%d_%H%M%S`
 
@@ -33,6 +34,10 @@ case $key in
     ;;
     -g|--transport-name)
     TRANSPORTNAME="$2"
+    shift
+    ;;
+    -f|--fairroot-config-dir)
+    FAIRROOTCONFIGDIR="--fairroot-config-dir $2"
     shift
     ;;
     -t|--transport)
@@ -71,7 +76,7 @@ esac
 
 unameOut=$(uname -s)
 case $unameOut in
-    Linux)     NOFCORES=$(cat /proc/cpuinfo | awk '/^processor/{print $3}');;
+    Linux)     NOFCORES=$(cat /proc/cpuinfo | grep processor | wc -l);;
     Darwin)    NOFCORES=$(sysctl -n hw.ncpu);;
     *)         NOFCORES=1;;
 esac
@@ -140,7 +145,7 @@ SAMPLER="@EXAMPLE9_BIN_LOCATION@/"
 SAMPLER+="run-sim $TRANSPORT"
 SAMPLER+=" --config-key sampler  --mq-config $MQCONFIGFILE"
 SAMPLER+=" $VERBOSE "
-SAMPLER+=" --nof-events $NOFEVENTS $TRANSPORTNAME $CONTROL"
+SAMPLER+=" --nof-events $NOFEVENTS $TRANSPORTNAME $FAIRROOTCONFIGDIR $CONTROL"
 
 for (( i=$NOFRANDOMNUMBERS ; i<$NOFSIMULS ; i++ ))
 do
@@ -193,7 +198,7 @@ if [ "$COMMAND" == "static" ]; then
 
     for (( i=0 ; i<$NOFSIMULS ; i++ ))
     do
-	$SAMPLER &> sampler$i_$DATESTRING.out.log &
+	$SAMPLER &> sampler${i}_$DATESTRING.out.log &
 	SAMPLER_PID[i]=$!
     done
 
