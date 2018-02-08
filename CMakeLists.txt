@@ -304,6 +304,8 @@ Else()
   )
 EndIf()
 
+find_package(OFI REQUIRED COMPONENTS fi_sockets fi_verbs)
+
 configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
 
 # Load the macro to generate the needed version info at compile time
