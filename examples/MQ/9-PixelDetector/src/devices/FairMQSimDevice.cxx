@@ -78,6 +78,10 @@ void FairMQSimDevice::InitTask()
   fOutFolder= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
   gROOT->GetListOfBrowsables()->Add(fOutFolder);
 
+  if ( fUserConfig.Length() > 0 )
+    fRunSim->SetUserConfig(fUserConfig);
+  if ( fUserCuts.Length() > 0 )
+    fRunSim->SetUserCuts(fUserCuts);
   // ------------------------------------------------------------------------
   
   // -----   Create media   -------------------------------------------------
