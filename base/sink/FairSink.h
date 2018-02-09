@@ -16,23 +16,22 @@
 #define FAIRSINK_H
 
 #include "TFolder.h"
-#include "TObject.h"
 #include "TTree.h"
 
 #include <iostream>
 
 enum Sink_Type {kONLINESINK, kFILESINK};
 
-class FairSink : public TObject
+class FairSink
 {
   public:
     FairSink();
     FairSink(const FairSink& sink);
     virtual ~FairSink();
 
-    virtual Bool_t      Init() { return kTRUE; }  // TODO, need it by FairMQSimDevice
-    virtual void        Close() = 0;
-    virtual void        Reset() = 0;
+    virtual Bool_t      InitSink() = 0;
+    virtual void        Close()    = 0;
+    virtual void        Reset()    = 0;
 
     virtual Sink_Type   GetSinkType() = 0;
 

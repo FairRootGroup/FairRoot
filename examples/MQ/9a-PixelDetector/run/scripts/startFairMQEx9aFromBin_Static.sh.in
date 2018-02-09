@@ -107,7 +107,7 @@ fi
 ########################## start Parameter server
 SERVER="@FAIRROOT_BIN_LOCATION@/"
 SERVER+="parmq-server $TRANSPORT"
-SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE"
+SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE --channel-name data"
 SERVER+=" $VERBOSE "
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII --control static --color false"
 

@@ -136,7 +136,7 @@ fi
 ########################## start Parameter server
 SERVER="@FAIRROOT_BIN_LOCATION@/"
 SERVER+="parmq-server $TRANSPORT"
-SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE"
+SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE "
 SERVER+=" $VERBOSE "
 SERVER+=" --update-channel-name updateChannel --output-name $OUTPUTPARAM $CONTROL"
 
