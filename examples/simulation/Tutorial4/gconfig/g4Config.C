@@ -32,8 +32,11 @@ void Config()
 /// When more than one options are selected, they should be separated with '+'
 /// character: eg. stepLimit+specialCuts.
 
+   Bool_t mtMode = FairRunSim::Instance()->IsMT();
+   Bool_t specialStacking = false;
    TG4RunConfiguration* runConfiguration 
-           = new TG4RunConfiguration("geomRoot", "QGSP_BERT_EMV", "stepLimiter+specialCuts+specialControls");
+           = new TG4RunConfiguration("geomRoot", "QGSP_BERT_EMV", "stepLimiter+specialCuts+specialControls",
+                                      specialStacking, mtMode);
 
 /// Create the G4 VMC 
    TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration);
