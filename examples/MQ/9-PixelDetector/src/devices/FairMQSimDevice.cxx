@@ -193,7 +193,7 @@ void FairMQSimDevice::RegisterAny(const char* brname, const std::type_info &oi, 
 void  FairMQSimDevice::Fill()
 {
   /// Fill the Root tree.
-  LOG(DEBUG) << "called FairMQSimDevice::Fill()!!!!" << FairLogger::endl;
+  LOG(DEBUG) << "called FairMQSimDevice::Fill()!!!!";
   if ( !CheckCurrentState(RUNNING) )
     {
       fRunSim->StopMCRun();
@@ -230,10 +230,10 @@ void  FairMQSimDevice::Fill()
     }
 }
  
-// Bool_t FairMQSimDevice::Init()
-// {
-//   return kTRUE;
-// }
+Bool_t FairMQSimDevice::InitSink()
+{
+  return kTRUE;
+}
 
 void  FairMQSimDevice::Reset()
 {

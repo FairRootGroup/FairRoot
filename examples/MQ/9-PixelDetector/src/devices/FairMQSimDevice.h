@@ -34,7 +34,7 @@ class FairMQSimDevice : public FairMQDevice, public FairSink
     FairMQSimDevice();
     virtual ~FairMQSimDevice();
   
-    //    virtual Bool_t      Init();
+    virtual Bool_t      InitSink();
     virtual void        Close();
     virtual void        Reset();
 
@@ -46,13 +46,13 @@ class FairMQSimDevice : public FairMQDevice, public FairSink
 
     virtual void        Fill();
 
-    virtual Int_t       Write(const char* name=0, Int_t option=0, Int_t bufsize=0) {}
+    virtual Int_t       Write(const char* name=0, Int_t option=0, Int_t bufsize=0) {return -1;}
 
     virtual void        RegisterImpl(const char* , const char* , void* );
     virtual void        RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj);
 
     virtual void        WriteFolder() {}
-    virtual bool        CreatePersistentBranchesAny() {}
+    virtual bool        CreatePersistentBranchesAny() {return false;}
 
     virtual void        WriteObject(TObject* f, const char*, Int_t option = 0) {}
     virtual void        WriteGeometry() {}

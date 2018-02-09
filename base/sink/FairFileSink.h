@@ -38,7 +38,7 @@ public:
     //  FairFileSink(const FairFileSink& file);
     virtual ~FairFileSink();
 
-    virtual Bool_t      Init();
+    virtual Bool_t      InitSink();
     virtual void        Close();
     virtual void        Reset();
 

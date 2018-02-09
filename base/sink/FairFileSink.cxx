@@ -50,9 +50,9 @@ FairFileSink::FairFileSink(TFile *f, const char* Title)
   , fFileHeader(0)
 {
     if (fRootFile->IsZombie()) {
-     LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
+     LOG(FATAL) << "Error opening the Input file";
     }
-    LOG(DEBUG) << "FairFileSink created------------" << FairLogger::endl;
+    LOG(DEBUG) << "FairFileSink created------------";
 }
 //_____________________________________________________________________________
 
@@ -69,9 +69,9 @@ FairFileSink::FairFileSink(const TString* RootFileName, const char* Title)
 {
     fRootFile = TFile::Open(RootFileName->Data(),"recreate");
     if (fRootFile->IsZombie()) {
-      LOG(FATAL) << "Error opening the Output file" << FairLogger::endl;
+      LOG(FATAL) << "Error opening the Output file";
     }
-    LOG(DEBUG) << "FairFileSink created------------" << FairLogger::endl;
+    LOG(DEBUG) << "FairFileSink created------------";
 }
 //_____________________________________________________________________________
 
@@ -88,9 +88,9 @@ FairFileSink::FairFileSink(const TString RootFileName, const char* Title)
 {
     fRootFile = TFile::Open(RootFileName.Data(),"recreate");
     if (fRootFile->IsZombie()) {
-      LOG(FATAL) << "Error opening the Input file" << FairLogger::endl;
+      LOG(FATAL) << "Error opening the Input file";
     }
-    LOG(DEBUG) << "FairFileSink created------------" << FairLogger::endl;
+    LOG(DEBUG) << "FairFileSink created------------";
 }
 //_____________________________________________________________________________
 
@@ -101,10 +101,10 @@ FairFileSink::~FairFileSink()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-Bool_t FairFileSink::Init()
+Bool_t FairFileSink::InitSink()
 {
     if(fIsInitialized){
-        LOG(INFO) << "FairFileSink already initialized" << FairLogger::endl;
+        LOG(INFO) << "FairFileSink already initialized";
         return kTRUE;
     }
     fIsInitialized = kTRUE;
@@ -123,9 +123,9 @@ Bool_t FairFileSink::Init()
         fOutFolder= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
         gROOT->GetListOfBrowsables()->Add(fOutFolder);
       }
-    LOG(INFO) << "FairFileSink initialized." << FairLogger::endl;
-    LOG(INFO) << " - " << fOutFolder->GetName() << FairLogger::endl;
-    LOG(INFO) << "    - " << fRootFile->GetName() << FairLogger::endl;
+    LOG(INFO) << "FairFileSink initialized.";
+    LOG(INFO) << " - " << fOutFolder->GetName();
+    LOG(INFO) << "    - " << fRootFile->GetName();
 
     return kTRUE;
 }
@@ -223,10 +223,10 @@ void FairFileSink::TruncateBranchNames(TBranch* b, TString ffn)
   */
   TObject* BrObj;
   TString nn= b->GetName();
-  LOG(DEBUG)<<"nn.Data before: "<<nn.Data()<<FairLogger::endl;
+  LOG(DEBUG)<<"nn.Data before: "<<nn.Data();
   nn.ReplaceAll(ffn.Data(),"");
-  LOG(DEBUG)<<"nn.Data after: "<<nn.Data()<<FairLogger::endl;
-  LOG(DEBUG) <<"##################"<<FairLogger::endl;
+  LOG(DEBUG)<<"nn.Data after: "<<nn.Data();
+  LOG(DEBUG) <<"##################";
   b->SetName(nn.Data());
   TObjArray* Br= b->GetListOfBranches();
   TIterator* BrIter= Br->MakeIterator();
@@ -323,7 +323,7 @@ bool FairFileSink::CreatePersistentBranchesAny()
 {
   for(auto& iter : fPersistentBranchesMap)
     {
-      LOG(INFO) << "CREATING BRANCH " << iter.first << FairLogger::endl;
+      LOG(INFO) << "CREATING BRANCH " << iter.first;
       auto &tinfo = iter.second->persistenttypeinfo;
       auto tname = impl::demangle(tinfo.name());
 
@@ -343,7 +343,7 @@ bool FairFileSink::CreatePersistentBranchesAny()
       // create the branch
       auto obj = iter.second->ptraddr;
 
-      LOG(INFO) << "Creating branch for " << iter.first.c_str() << " with address " << obj << FairLogger::endl;
+      LOG(INFO) << "Creating branch for " << iter.first.c_str() << " with address " << obj;
       fOutTree->Branch(iter.first.c_str(), tname.c_str(), obj);
     }
   return true;
@@ -369,7 +369,7 @@ void FairFileSink::Fill() {
   if (fOutTree != 0) {
     fOutTree->Fill();
   } else {
-    LOG(INFO) << " No Output Tree" << FairLogger::endl;
+    LOG(INFO) << " No Output Tree";
   }
 }
 //_____________________________________________________________________________
@@ -388,11 +388,11 @@ Int_t FairFileSink::Write(const char*, Int_t, Int_t)
     // fOutTree->Print();
 
     fRootFile = fOutTree->GetCurrentFile();
-    LOG(DEBUG) << "FairFileSink::Write to file: "  << fRootFile->GetName()  << FairLogger::endl ;
+    LOG(DEBUG) << "FairFileSink::Write to file: "  << fRootFile->GetName();
     fRootFile->cd();
     fOutTree->Write();
   } else {
-    LOG(INFO) << "No Output Tree" << FairLogger::endl;
+    LOG(INFO) << "No Output Tree";
   }
   return 0;
 }

@@ -195,7 +195,7 @@ Bool_t FairRootManager::InitSource() {
 //_____________________________________________________________________________
 Bool_t FairRootManager::InitSink() {
   if ( fSink ) {
-    fSink->Init();
+    fSink->InitSink();
   }
   return kTRUE;
 }
@@ -206,7 +206,6 @@ template<typename T>
 void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* obj, Bool_t toFile)
 {
 /// a common implementation for Register
-
   FairMonitor::GetMonitor()->RecordRegister(name,folderName,toFile);
 
   // Security check. If the the name is equal the folder name there are problems with reading

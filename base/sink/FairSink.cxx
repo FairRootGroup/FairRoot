@@ -19,16 +19,14 @@
 
 
 FairSink::FairSink()
-  : TObject()
-  , fRunId(0)
+  : fRunId(0)
   , fOutFolder(0)
 {
 }
 
 
 FairSink::FairSink(const FairSink& sink)
-  : TObject(sink)
-  , fRunId(sink.fRunId)
+  : fRunId(sink.fRunId)
   , fOutFolder(0)
 {
 }

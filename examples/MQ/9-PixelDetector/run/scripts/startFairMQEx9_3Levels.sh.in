@@ -52,7 +52,7 @@ OUTPUTBRANCH="--branch-name PixelFitTracks"
 
 ########################## start Parameter server
 SERVER="parmq-server $TRANSPORT"
-SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE"
+SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE --channel-name data"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
 xterm -geometry 80x22+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 

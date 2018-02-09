@@ -133,7 +133,7 @@ Bool_t FairRun::GetWriteRunInfoFile()
 //_____________________________________________________________________________
 void FairRun::SetOutputFile(const char* fname)
 {
-  LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairFileSink." << FairLogger::endl;
+  LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairFileSink.";
   fSink = new FairFileSink(fname);
   if (fRootManager) fRootManager->SetSink(fSink);
 }
@@ -142,7 +142,7 @@ void FairRun::SetOutputFile(const char* fname)
 //_____________________________________________________________________________
 void FairRun::SetOutputFile(TFile* f)
 {
-  LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairFileSink." << FairLogger::endl;
+  LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairFileSink.";
   fSink = new FairFileSink(f);
   if (fRootManager) fRootManager->SetSink(fSink);
 }
@@ -150,7 +150,7 @@ void FairRun::SetOutputFile(TFile* f)
 
 //_____________________________________________________________________________
 void FairRun::SetOutputFileName(const TString& name) {
-  LOG(WARNING) << "FairRun::SetOutputFileName() deprecated. Use FairFileSink." << FairLogger::endl;
+  LOG(WARNING) << "FairRun::SetOutputFileName() deprecated. Use FairFileSink.";
   fSink = new FairFileSink(name);
   if (fRootManager) fRootManager->SetSink(fSink);
 }
