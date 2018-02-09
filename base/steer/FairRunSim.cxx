@@ -72,7 +72,8 @@ FairRunSim::FairRunSim(Bool_t isMaster)
    fRadGrid(kFALSE),
    fMeshList( new TObjArray() ),
    fUserConfig(""),
-   fUserCuts("SetCuts.C")
+   fUserCuts("SetCuts.C"),
+   fIsMT(kFALSE)
 
 {
   if (fginstance) {
