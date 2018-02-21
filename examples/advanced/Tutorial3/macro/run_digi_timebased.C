@@ -38,7 +38,7 @@ void run_digi_timebased( TString mcEngine="TGeant3" )
   FairFileSource *fFileSource = new FairFileSource(inFile);
   fRun->SetSource(fFileSource);
   
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
   fRun->SetUseFairLinks(kTRUE);
 
   fRun->SetEventMeanTime(50);

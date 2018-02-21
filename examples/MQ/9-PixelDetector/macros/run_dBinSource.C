@@ -31,7 +31,7 @@ void run_dBinSource( TString mcEngine="TGeant3" )
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
   fRun->SetEventHeader(pixelEventHeader);
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
 
   PixelDigiBinSource* digiSource = new PixelDigiBinSource("Pixel Digi Source");
   digiSource->SetInputFileName("digisBin.dat");

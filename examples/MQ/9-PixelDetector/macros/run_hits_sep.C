@@ -35,7 +35,7 @@ void run_hits_sep( Int_t ifile, TString mcEngine="TGeant3" )
   FairFileSource *fFileSource = new FairFileSource(inFile);
   fRun->SetSource(fFileSource);
 
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
 
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();

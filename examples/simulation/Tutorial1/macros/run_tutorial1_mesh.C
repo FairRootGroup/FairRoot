@@ -60,7 +60,7 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
   run->SetName(mcEngine);              // Transport engine
-  run->SetOutputFile(outFile);          // Output file
+  run->SetSink(new FairRootFileSink(outFile));          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
   
@@ -83,9 +83,10 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
   FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
   FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 1);
 
-  boxGen->SetThetaRange (   theta,   theta+0.01);
+  boxGen->SetThetaRange (   theta,   theta+55.);
   boxGen->SetPRange     (momentum,momentum+0.01);
   boxGen->SetPhiRange   (0.,360.);
+  boxGen->SetCosTheta();
   boxGen->SetDebug(kTRUE);
 
   primGen->AddGenerator(boxGen);
@@ -101,9 +102,9 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 
   // define two example meshs for dosimetry
   FairMesh* aMesh1 = new FairMesh("test1");
-  aMesh1->SetX(-40,40,200);
-  aMesh1->SetY(-40,40,200);
-  aMesh1->SetZ(5.2,5.4,1);
+  aMesh1->SetX(-60,60,200);
+  aMesh1->SetY(-60,60,200);
+  aMesh1->SetZ(29.,31.,1);
 
   FairMesh* aMesh2 = new FairMesh("test2");
   aMesh2->SetX(-20,20,20);
@@ -118,6 +119,7 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 
   // -----   Initialize simulation run   ------------------------------------
   run->Init();
+  FairRadGridManager::Instance()->SetOutputFileName("radGridResults.root");
   // ------------------------------------------------------------------------
 
   // -----   Runtime database   ---------------------------------------------

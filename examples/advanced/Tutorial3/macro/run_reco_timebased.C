@@ -36,7 +36,7 @@ void run_reco_timebased(TString mcEngine = "TGeant3") {
 
   FairRunAna *fRun = new FairRunAna();
   FairFileSource *fFileSource = new FairFileSource(inFile);
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
   fRun->RunWithTimeStamps();
   fRun->SetUseFairLinks(kTRUE);
 

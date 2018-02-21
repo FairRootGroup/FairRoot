@@ -23,7 +23,7 @@ void unpack_mbs()
 
     // Create online run ---------------------------------------------------------
     FairRunOnline* run = new FairRunOnline(source);
-    run->SetOutputFile("output.root");
+    run->SetSink(new FairRootFileSink("output.root"));
     run->ActivateHttpServer();
     run->SetAutoFinish(kFALSE);
     // ---------------------------------------------------------------------------

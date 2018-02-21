@@ -36,7 +36,7 @@ void run_DiRePr(Int_t nofFiles, TString mcEngine="TGeant3" )
   for ( Int_t ifile = 1 ; ifile < nofFiles ; ifile++ )
     fFileSource->AddFile(Form("file://%s/data/testrun_%s_f%d.root",workDir.Data(),mcEngine.Data(),ifile));
 
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
 
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();

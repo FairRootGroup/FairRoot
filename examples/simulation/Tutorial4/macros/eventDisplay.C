@@ -18,7 +18,7 @@ void eventDisplay(TString mcEngine="TGeant3")
   FairRunAna *fRun= new FairRunAna();
   FairFileSource *fFileSource = new FairFileSource(InputFile);
   fRun->SetSource(fFileSource);
-  fRun->SetOutputFile(OutFile.Data());
+  fRun->SetSink(new FairRootFileSink(OutFile.Data()));
 
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();

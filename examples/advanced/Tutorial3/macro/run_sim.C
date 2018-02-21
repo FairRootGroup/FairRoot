@@ -40,7 +40,7 @@ void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
   parFile = parFile + mcEngine + ".root";
 
   
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
   fRun->SetGenerateRunInfo(kTRUE);       // Create FairRunInfo file
 
   // -----   Magnetic field   -------------------------------------------

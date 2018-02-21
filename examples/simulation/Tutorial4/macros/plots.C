@@ -47,7 +47,7 @@ plots(Int_t nEvents = 1000, Int_t iout=1, TString mcEngine="TGeant3")
   FairTutorialDet4Hit      *Hit;
 
   //histograms
-  fRun->SetOutputFile("test.ana.root");
+  fRun->SetSink(new FairRootFileSink("test.ana.root"));
   TFile *fHist = fRun->GetOutputFile();
 
   Float_t xrange=80.;

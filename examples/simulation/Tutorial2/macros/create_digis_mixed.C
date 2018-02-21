@@ -35,7 +35,7 @@ void create_digis_mixed(){
 
     fRun->SetSource(fMixedSource);
     
-    fRun->SetOutputFile(outFile);
+    fRun->SetSink(new FairRootFileSink(outFile));
 
     //----- Mix using entries  ----------------------------------------
     

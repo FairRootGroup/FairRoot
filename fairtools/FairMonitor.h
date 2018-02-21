@@ -32,7 +32,8 @@ class FairMonitor : public TNamed
   public:
   static FairMonitor* GetMonitor();
 
-  void EnableMonitor(Bool_t tempBool = kTRUE) { fRunMonitor = tempBool; }
+  void EnableMonitor(Bool_t tempBool = kTRUE, TString fileName = "") { fRunMonitor = tempBool; fOutputFileName = fileName; }
+  Bool_t IsRunning() { return fRunMonitor; }
 
   void StartMonitoring(const TTask* tTask, const char* identStr) {
     StartTimer        (tTask,identStr);
@@ -65,7 +66,7 @@ class FairMonitor : public TNamed
 
   TList* GetHistList() { return fHistList; }
 
-  void StoreHistograms(TFile* tfile);
+  void StoreHistograms();
 
   private:
     static FairMonitor* instance;
@@ -89,6 +90,9 @@ class FairMonitor : public TNamed
     Int_t fNoTaskCreated;
 
     TTask* fCurrentTask;
+
+    TString fOutputFileName; // output file name, if empty then try to use FairSink to store histograms
+
     std::multimap<TString, TString> fTaskRequired;
     std::multimap<TString, TString> fTaskCreated;
     std::multimap<TString, TString> fTaskCreatedTemp;
@@ -98,7 +102,7 @@ class FairMonitor : public TNamed
 
     std::map<TString, std::pair<Double_t, Double_t> > fObjectPos;
     std::map<TString, std::pair<Double_t, Double_t> > fTaskPos;
- 
+
     void GetTaskMap(TTask* tempTask);
     void AnalyzeObjectMap(TTask* tempTask);
 

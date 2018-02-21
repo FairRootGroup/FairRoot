@@ -207,7 +207,7 @@ class FairRootManager : public TObject
 
     void        StoreWriteoutBufferData(Double_t eventTime);
     void        StoreAllWriteoutBufferData();
-    void    DeleteOldWriteoutBufferData();
+    void        DeleteOldWriteoutBufferData();
 
     Int_t GetEntryNr() {return fEntryNr;}
     void SetEntryNr(Int_t val) {fEntryNr = val;}
@@ -249,6 +249,7 @@ class FairRootManager : public TObject
 
     /**public Members for multi-threading */
     Int_t  GetInstanceId() const { return fId; }
+    void   UpdateSinkFileName();
 
   private:
 

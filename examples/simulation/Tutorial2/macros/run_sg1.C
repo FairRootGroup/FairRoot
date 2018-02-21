@@ -51,7 +51,7 @@ void run_sg1(Int_t nEvents = 20)
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
   run->SetName("TGeant3");              // Transport engine
-  run->SetOutputFile(outFile);          // Output file
+  run->SetSink(new FairRootFileSink(outFile));          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
   

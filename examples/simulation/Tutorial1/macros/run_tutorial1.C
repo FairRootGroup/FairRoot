@@ -63,7 +63,7 @@ void run_tutorial1(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
   FairRunSim* run = new FairRunSim();
   run->SetName(mcEngine);              // Transport engine
   run->SetIsMT(isMT);                  // Multi-threading mode (Geant4 only)
-  run->SetOutputFile(outFile);          // Output file
+  run->SetSink(new FairRootFileSink(outFile));          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
   

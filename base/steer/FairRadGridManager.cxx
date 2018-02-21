@@ -52,6 +52,7 @@ FairRadGridManager::FairRadGridManager()
     fAbsl(0),
     fEstimator(0),
     fMeshList(NULL)
+  ,fOutputFileName("radGridManager.root")
 {
   /** radiation length default ctor */
   if(NULL == fgInstance) {

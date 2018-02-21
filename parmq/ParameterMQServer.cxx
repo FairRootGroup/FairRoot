@@ -75,17 +75,20 @@ void ParameterMQServer::InitTask()
     if (fRtdb != 0)
     {
         // Set first input
-        if (fFirstInputType == "ROOT")
+        if (fFirstInputName != "")
         {
-            FairParRootFileIo* par1R = new FairParRootFileIo();
-            par1R->open(fFirstInputName.data(), "UPDATE");
-            fRtdb->setFirstInput(par1R);
-        }
-        else if (fFirstInputType == "ASCII")
-        {
-            FairParAsciiFileIo* par1A = new FairParAsciiFileIo();
-            par1A->open(fFirstInputName.data(), "in");
-            fRtdb->setFirstInput(par1A);
+            if (fFirstInputType == "ROOT")
+            {
+                FairParRootFileIo* par1R = new FairParRootFileIo();
+                par1R->open(fFirstInputName.data(), "UPDATE");
+                fRtdb->setFirstInput(par1R);
+            }
+            else if (fFirstInputType == "ASCII")
+            {
+                FairParAsciiFileIo* par1A = new FairParAsciiFileIo();
+                par1A->open(fFirstInputName.data(), "in");
+                fRtdb->setFirstInput(par1A);
+            }
         }
 
         // Set second input

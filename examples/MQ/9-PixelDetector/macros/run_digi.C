@@ -37,7 +37,7 @@ void run_digi( TString mcEngine="TGeant3", Int_t fileId = 0 )
   FairRunAna *fRun= new FairRunAna();
   FairFileSource *fFileSource = new FairFileSource(inFile);
   fRun->SetSource(fFileSource);
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
 
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
