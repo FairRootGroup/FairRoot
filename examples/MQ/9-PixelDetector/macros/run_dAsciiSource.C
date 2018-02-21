@@ -31,7 +31,7 @@ void run_dAsciiSource( TString mcEngine="TGeant3" )
   // -----   Reconstruction run   -------------------------------------------
   FairRunAna *fRun= new FairRunAna();
   fRun->SetEventHeader(pixelEventHeader);
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
 
   PixelDigiSource* digiSource = new PixelDigiSource("Pixel Digi Source");
   digiSource->SetInputFileName("digis.p0.dat");

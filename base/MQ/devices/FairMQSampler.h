@@ -30,6 +30,7 @@
 #include "FairRuntimeDb.h"
 #include "FairRunAna.h"
 #include "FairTask.h"
+#include "FairRootFileSink.h"
 #include "FairFileSource.h"
 
 #include "FairMQDevice.h"
@@ -114,7 +115,7 @@ class FairMQSampler : public FairMQDevice
 
         TString output = fInputFile;
         output.Append(".out.root");
-        fFairRunAna->SetOutputFile(output.Data());
+        fFairRunAna->SetSink(new FairRootFileSink(output.Data()));
 
         fFairRunAna->AddTask(fSamplerTask);
 

@@ -131,7 +131,7 @@ source/FairMixedSource.cxx
 source/FairOnlineSource.cxx
 
 sink/FairSink.cxx
-sink/FairFileSink.cxx
+sink/FairRootFileSink.cxx
 )
 
 If(BUILD_MBS)

@@ -5,15 +5,14 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+// -----------------------------------------------------------------------------
+// -----                                                                   -----
+// -----                             FairRootFileSink                      -----
+// -----                    Created 22.12.2017 by R. Karabowicz            -----
+// -----                                                                   -----
+// -----------------------------------------------------------------------------
 
-//
-//  FairFileSink.cxx
-//  FAIRROOT
-//
-//  Created by Mohammad Al-Turany on 08/02/14.
-//
-//
-#include "FairFileSink.h"
+#include "FairRootFileSink.h"
 #include "TString.h"
 #include "FairEventHeader.h"
 #include "FairFileHeader.h"
@@ -39,7 +38,7 @@ using std::map;
 using std::set;
 
 //_____________________________________________________________________________
-FairFileSink::FairFileSink(TFile *f, const char* Title)
+FairRootFileSink::FairRootFileSink(TFile *f, const char* Title)
   :FairSink()
   , fOutputTitle(Title)
   , fRootFile(f)
@@ -52,12 +51,12 @@ FairFileSink::FairFileSink(TFile *f, const char* Title)
     if (fRootFile->IsZombie()) {
      LOG(FATAL) << "Error opening the Input file";
     }
-    LOG(DEBUG) << "FairFileSink created------------";
+    LOG(DEBUG) << "FairRootFileSink created------------";
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-FairFileSink::FairFileSink(const TString* RootFileName, const char* Title)
+FairRootFileSink::FairRootFileSink(const TString* RootFileName, const char* Title)
   :FairSink()
   , fOutputTitle(Title)
   , fRootFile(0)
@@ -71,12 +70,12 @@ FairFileSink::FairFileSink(const TString* RootFileName, const char* Title)
     if (fRootFile->IsZombie()) {
       LOG(FATAL) << "Error opening the Output file";
     }
-    LOG(DEBUG) << "FairFileSink created------------";
+    LOG(DEBUG) << "FairRootFileSink created------------";
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-FairFileSink::FairFileSink(const TString RootFileName, const char* Title)
+FairRootFileSink::FairRootFileSink(const TString RootFileName, const char* Title)
   :FairSink()
   , fOutputTitle(Title)
   , fRootFile(0)
@@ -90,21 +89,28 @@ FairFileSink::FairFileSink(const TString RootFileName, const char* Title)
     if (fRootFile->IsZombie()) {
       LOG(FATAL) << "Error opening the Input file";
     }
-    LOG(DEBUG) << "FairFileSink created------------";
+    LOG(DEBUG) << "FairRootFileSink created------------";
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-FairFileSink::~FairFileSink()
+FairRootFileSink::~FairRootFileSink()
 {
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-Bool_t FairFileSink::InitSink()
+TFile* FairRootFileSink::OpenRootFile(TString fileName) {
+  if ( fileName.Length() <= 5 ) return NULL;
+  return TFile::Open(fileName.Data(),"recreate");
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+Bool_t FairRootFileSink::InitSink()
 {
     if(fIsInitialized){
-        LOG(INFO) << "FairFileSink already initialized";
+        LOG(INFO) << "FairRootFileSink already initialized";
         return kTRUE;
     }
     fIsInitialized = kTRUE;
@@ -123,7 +129,7 @@ Bool_t FairFileSink::InitSink()
         fOutFolder= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
         gROOT->GetListOfBrowsables()->Add(fOutFolder);
       }
-    LOG(INFO) << "FairFileSink initialized.";
+    LOG(INFO) << "FairRootFileSink initialized.";
     LOG(INFO) << " - " << fOutFolder->GetName();
     LOG(INFO) << "    - " << fRootFile->GetName();
 
@@ -132,7 +138,7 @@ Bool_t FairFileSink::InitSink()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::TruncateBranchNames()
+void FairRootFileSink::TruncateBranchNames()
 {
   /** If a object is created in a folder the corresponding branch
   * in the tree is crated with a wrong name.
@@ -213,7 +219,7 @@ void FairFileSink::TruncateBranchNames()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::TruncateBranchNames(TBranch* b, TString ffn)
+void FairRootFileSink::TruncateBranchNames(TBranch* b, TString ffn)
 {
   /** Get the branch name from the branch object, remove common
   *  and wrong part of the name and and set branch name to
@@ -241,7 +247,7 @@ void FairFileSink::TruncateBranchNames(TBranch* b, TString ffn)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::Close()
+void FairRootFileSink::Close()
 {
     if(fRootFile)
       {
@@ -251,20 +257,20 @@ void FairFileSink::Close()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::Reset()
+void FairRootFileSink::Reset()
 {
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::FillEventHeader(FairEventHeader* feh)
+void FairRootFileSink::FillEventHeader(FairEventHeader* feh)
 {
   return;
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::RegisterImpl(const char* name, const char *folderName, void* obj) {
+void FairRootFileSink::RegisterImpl(const char* name, const char *folderName, void* obj) {
   TFolder* folder=0;
   TFolder* f=0;
   f=static_cast<TFolder*>(fOutFolder->FindObjectAny(folderName));
@@ -279,13 +285,13 @@ void FairFileSink::RegisterImpl(const char* name, const char *folderName, void* 
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj) {
+void FairRootFileSink::RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj) {
   fPersistentBranchesMap[brname]=std::unique_ptr<TypeAddressPair const> (new TypeAddressPair(oi, pi,obj));
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::WriteFolder() {
+void FairRootFileSink::WriteFolder() {
   fRootFile->cd();
   if(fOutFolder!=0) {
     fOutFolder->Write();
@@ -319,7 +325,7 @@ namespace impl
   }
 }
 
-bool FairFileSink::CreatePersistentBranchesAny()
+bool FairRootFileSink::CreatePersistentBranchesAny()
 {
   for(auto& iter : fPersistentBranchesMap)
     {
@@ -351,21 +357,21 @@ bool FairFileSink::CreatePersistentBranchesAny()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::WriteObject(TObject* f, const char* name, Int_t option) {
+void FairRootFileSink::WriteObject(TObject* f, const char* name, Int_t option) {
   fRootFile->cd();
   f->Write(name, option);
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::WriteGeometry() {
+void FairRootFileSink::WriteGeometry() {
   fRootFile->cd();
   gGeoManager->Write();
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairFileSink::Fill() {
+void FairRootFileSink::Fill() {
   if (fOutTree != 0) {
     fOutTree->Fill();
   } else {
@@ -375,7 +381,7 @@ void FairFileSink::Fill() {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-Int_t FairFileSink::Write(const char*, Int_t, Int_t)
+Int_t FairRootFileSink::Write(const char*, Int_t, Int_t)
 {
   /** Writes the tree in the file.*/
   if(fOutTree!=0) {
@@ -388,7 +394,7 @@ Int_t FairFileSink::Write(const char*, Int_t, Int_t)
     // fOutTree->Print();
 
     fRootFile = fOutTree->GetCurrentFile();
-    LOG(DEBUG) << "FairFileSink::Write to file: "  << fRootFile->GetName();
+    LOG(DEBUG) << "FairRootFileSink::Write to file: "  << fRootFile->GetName();
     fRootFile->cd();
     fOutTree->Write();
   } else {
@@ -397,4 +403,4 @@ Int_t FairFileSink::Write(const char*, Int_t, Int_t)
   return 0;
 }
 
-ClassImp(FairFileSink)
+ClassImp(FairRootFileSink)

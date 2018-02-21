@@ -28,7 +28,7 @@ void run_sim_sep(Int_t fileId, Int_t nEvents=1000, TString mcEngine="TGeant3")
   TString outparam = Form("data/testpar_%s_f%d.root",mcEngine.Data(),fileId);
 
   
-  fRun->SetOutputFile(outfile);
+  fRun->SetSink(new FairRootFileSink(outfile));
 
 
   // -----   Magnetic field   -------------------------------------------

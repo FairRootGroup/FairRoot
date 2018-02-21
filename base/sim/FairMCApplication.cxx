@@ -485,7 +485,7 @@ void FairMCApplication::FinishRun()
   TObjArray* meshlist  = NULL;
 
   // Only in sequential mode
-  /* if (fRadGridMan) { // RK - have to fix this!!!
+  if (fRadGridMan) {
 
     meshlist = fRadGridMan->GetMeshList();
 
@@ -494,14 +494,12 @@ void FairMCApplication::FinishRun()
     TH2D* seu = NULL;
 
     LOG(info) << "=======================================================";
-    LOG(info) << "   Dosimetry  histos saving ";
+    LOG(info) << "   Dosimetry  histos saving in \"" << fRadGridMan->GetOutputFileName() << "\"";
     LOG(info) << "=======================================================";
 
-    TDirectory* savedir = gDirectory;
-    fRootManager->GetOutFile()->cd();
-
-    gDirectory->mkdir("Dosimetry");
-    gDirectory->cd("Dosimetry");
+    TFile* radGridFile = TFile::Open(fRadGridMan->GetOutputFileName(),"recreate");
+    radGridFile->mkdir("Dosimetry");
+    radGridFile->cd("Dosimetry");
 
     for(Int_t i=0; i<meshlist->GetEntriesFast(); i++ ) {
       FairMesh* aMesh = dynamic_cast<FairMesh*>(meshlist->At(i));
@@ -515,10 +513,10 @@ void FairMCApplication::FinishRun()
         seu->Write();
       }
     }
-
-    gDirectory=savedir;
-
-    }*/ // RK - have to fix this
+    radGridFile->Write();
+    radGridFile->Close();
+    delete radGridFile;
+  }
 
   // Save histograms with memory and runtime information in the output file
   if (FairRunSim::Instance()->IsRunInfoGenerated()) {
@@ -636,13 +634,7 @@ void FairMCApplication::InitOnWorker()
   fRun = FairRunSim::Instance();
 
   // Generate per-thread file name
-  //TString newFileName = FairRunSim::Instance()->GetOutputFileName(); // RK have to fix this!!!
-  //TString tid = "_t"; // RK have to fix this!!!
-  //tid += fRootManager->GetInstanceId(); // RK have to fix this!!!
-  //newFileName.Insert(newFileName.Index(".root"), tid); // RK have to fix this!!!
-
-  // Open per-thread file
-  //FairRunSim::Instance()->SetOutputFile(newFileName.Data()); // RK have to fix this!!!
+  fRootManager->UpdateSinkFileName();
 
   // Cache thread-local gMC
   fMC = gMC;

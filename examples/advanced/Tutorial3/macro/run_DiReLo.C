@@ -39,7 +39,7 @@ void run_DiReLo(Int_t nofFiles, TString mcEngine="TGeant3" )
     fFileSource->AddFile(Form("file://%s/data/testrun_%s_f%d.root",workDir.Data(),mcEngine.Data(),ifile));
   }
 
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
 
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();

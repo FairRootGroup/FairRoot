@@ -29,7 +29,7 @@ void create_digis(){
     FairFileSource *fFileSource = new FairFileSource(inFile);
     fRun->SetSource(fFileSource);
 
-    fRun->SetOutputFile(outFile);
+    fRun->SetSink(new FairRootFileSink(outFile));
 
 
     // Init Simulation Parameters from Root File

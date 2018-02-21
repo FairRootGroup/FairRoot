@@ -5,16 +5,15 @@
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-//
-//  FairFileSink.h
-//  FAIRROOT
-//
-//  Created by Mohammad Al-Turany on 08/02/14.
-//
-//
+// -----------------------------------------------------------------------------
+// -----                                                                   -----
+// -----                             FairRootFileSink                      -----
+// -----                    Created 22.12.2017 by R. Karabowicz            -----
+// -----                                                                   -----
+// -----------------------------------------------------------------------------
 
-#ifndef __FAIRROOT__FairFileSink__
-#define __FAIRROOT__FairFileSink__
+#ifndef __FAIRROOT__FairRootFileSink__
+#define __FAIRROOT__FairRootFileSink__
 
 #include "FairSink.h"
 #include <list>
@@ -29,14 +28,14 @@ class TString;
 class FairLogger;
 class FairRuntimeDb;
 
-class FairFileSink : public FairSink
+class FairRootFileSink : public FairSink
 {
 public:
-    FairFileSink(TFile *f, const char* Title="OutputRootFile");
-    FairFileSink(const TString* RootFileName, const char* Title="OutputRootFile");
-    FairFileSink(const TString RootFileName, const char* Title="OutputRootFile");
-    //  FairFileSink(const FairFileSink& file);
-    virtual ~FairFileSink();
+    FairRootFileSink(TFile *f, const char* Title="OutputRootFile");
+    FairRootFileSink(const TString* RootFileName, const char* Title="OutputRootFile");
+    FairRootFileSink(const TString RootFileName, const char* Title="OutputRootFile");
+    //  FairRootFileSink(const FairRootFileSink& file);
+    virtual ~FairRootFileSink();
 
     virtual Bool_t      InitSink();
     virtual void        Close();
@@ -46,7 +45,9 @@ public:
 
     virtual void        FillEventHeader(FairEventHeader* feh);
 
-    const TFile* GetRootFile(){return fRootFile;}
+    virtual TFile*      OpenRootFile(TString fileName="");
+    const TFile*        GetRootFile (){return fRootFile;}
+    virtual TString     GetFileName (){return (fRootFile?fRootFile->GetName():"");}
 
     virtual void        SetOutTree(TTree* fTree) { fOutTree=fTree;}
 
@@ -78,8 +79,8 @@ private:
     /**Initialization flag, true if initialized*/
     Bool_t                              fIsInitialized;
 
-    FairFileSink(const FairFileSink&);
-    FairFileSink operator=(const FairFileSink&);
+    FairRootFileSink(const FairRootFileSink&);
+    FairRootFileSink operator=(const FairRootFileSink&);
 
     void TruncateBranchNames();
     void TruncateBranchNames(TBranch* b, TString ffn);
@@ -88,8 +89,8 @@ private:
     /**File Header*/
     FairFileHeader*                        fFileHeader; //!
 
-    ClassDef(FairFileSink, 1)
+    ClassDef(FairRootFileSink, 1)
 };
 
 
-#endif /* defined(__FAIRROOT__FairFileSink__) */
+#endif /* defined(__FAIRROOT__FairRootFileSink__) */

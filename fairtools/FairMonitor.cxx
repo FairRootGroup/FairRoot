@@ -287,33 +287,21 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const {
       printString.Remove(80,100);
     printString += "\"";
     Int_t timeFrac = static_cast<Int_t>((timePerc/100.*30.));
-    if ( timePerc < 30 )
-      LOG(info) << "[\033[42m" << FairLogger::flush;
-    else if ( timePerc < 90 )
-      LOG(info) << "[\033[43m" << FairLogger::flush;
-    else
-      LOG(info) << "[\033[41m" << FairLogger::flush;
-    for ( Int_t ilen = 0 ; ilen < timeFrac ; ilen++ ) {
-      LOG(info) << printString[ilen] << FairLogger::flush;
-    }
-    LOG(info) << "\033[0m" << FairLogger::flush;
-    for ( Int_t ilen = timeFrac ; ilen < 32 ; ilen++ ) {
-      LOG(info) << printString[ilen] << FairLogger::flush;
-    }
+
+    printString.Insert(37,"\033[0m");
     switch ( byteIdent ) {
-    case 0:  LOG(info) << "\033[42m" << FairLogger::flush; break;
-    case 1:  LOG(info) << "\033[43m" << FairLogger::flush; break;
-    default: LOG(info) << "\033[41m" << FairLogger::flush; break;
+    case 0:  printString.Insert(32,"\033[42m"); break;
+    case 1:  printString.Insert(32,"\033[43m"); break;
+    default: printString.Insert(32,"\033[41m"); break;
     }
-    for ( Int_t ilen = 32 ; ilen < 37 ; ilen++ ) {
-      LOG(info) << printString[ilen] << FairLogger::flush;
-    }
-    LOG(info) << "\033[0m" << FairLogger::flush;
-    for ( Int_t ilen = 37 ; ilen < printString.Length() ; ilen++ ) {
-      LOG(info) << printString[ilen] << FairLogger::flush;
-    }
-    LOG(info) << std::endl;
-    //    LOG(info) << printString.Data();
+    printString.Insert(timeFrac,"\033[0m");
+    if ( timePerc < 30 )
+      printString.Insert(0,"[\033[42m");
+    else if ( timePerc < 90 )
+      printString.Insert(0,"[\033[43m");
+    else
+      printString.Insert(0,"[\033[41m");
+    LOG(INFO) << printString.Data();
   }
 
   TList* subTaskList = tempTask->GetListOfTasks();
@@ -630,26 +618,36 @@ void FairMonitor::DrawHist(TString specString) {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairMonitor::StoreHistograms(TFile* tfile) 
+void FairMonitor::StoreHistograms()
 {
   if ( !fRunMonitor ) {
     return;
   }
   this->Draw();
 
-  gDirectory = static_cast<TDirectory*>(tfile);
+  TFile* prevFile = gFile;
 
-  gDirectory->mkdir("MonitorResults");
-  gDirectory->cd("MonitorResults");
+  TFile* outFile = NULL;
+  if ( fOutputFileName.Length() > 1 && fOutputFileName != gFile->GetName() ) {
+    outFile = TFile::Open(fOutputFileName,"recreate");
+  }
+
+  gFile->mkdir("MonitorResults");
+  gFile->cd("MonitorResults");
   TIter next(fHistList);
   while ( TH1* thist = (static_cast<TH1*>(next())) ) {
     thist->SetBins(thist->GetEntries(),0,thist->GetEntries());
     thist->Write();
   }
   fCanvas->Write();
-  gDirectory->cd("..");
-
   fCanvas->Close();
+
+  if ( outFile ) {
+    outFile->Close();
+    delete outFile;
+  }
+
+  gDirectory = prevFile;
 }
 //_____________________________________________________________________________
 

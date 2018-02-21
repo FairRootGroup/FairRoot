@@ -39,7 +39,7 @@ void run_reco( TString mcEngine="TGeant3" )
   FairRunAna *fRun= new FairRunAna();
   FairFileSource *fFileSource = new FairFileSource(inFile);
   fRun->SetSource(fFileSource);
-  fRun->SetOutputFile(outFile);
+  fRun->SetSink(new FairRootFileSink(outFile));
   fRun->SetUseFairLinks(kTRUE);
   FairLinkManager::Instance()->AddIncludeType(0);
 //  FairLinkManager::Instance()->AddIncludeType(1);

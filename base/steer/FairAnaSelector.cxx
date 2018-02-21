@@ -13,6 +13,7 @@
 
 #include "FairAnaSelector.h"
 
+#include "FairRootFileSink.h"               // for FairRootFileSink
 #include "FairFileSource.h"             // for FairFileSource
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "FairParAsciiFileIo.h"         // for FairParAsciiFileIo
@@ -119,7 +120,7 @@ void FairAnaSelector::Init(TTree* tree)
     fRunAna->SetSource(fProofSource);
     LOG(info) << "FairAnaSelector::Init(): SetInTree done";
 
-    fRunAna->SetOutputFile(fFile);
+    fRunAna->SetSink(new FairRootFileSink(fFile));
     if ( containerS == "kTRUE" ) {
       fRunAna->SetContainerStatic(kTRUE);
     } else {
