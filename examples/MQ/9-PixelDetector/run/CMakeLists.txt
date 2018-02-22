@@ -6,12 +6,12 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
-Set(MaxTestTime 30)
+Set(MaxTestTime 60)
 
 GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/9-PixelDetector/startFairMQEx9Simulation.sh ${CMAKE_CURRENT_BINARY_DIR})
 
 Add_Test(ex9_simulation
-	${CMAKE_CURRENT_BINARY_DIR}/startFairMQEx9Simulation.sh -n 1000 -g TGeant3 -c static -s 6 --force-kill true)
+       ${CMAKE_CURRENT_BINARY_DIR}/startFairMQEx9Simulation.sh -n 1000 -g TGeant3 -c static -s 6 --force-kill true -m 20)
 Set_Tests_Properties(ex9_simulation PROPERTIES TIMEOUT ${MaxTestTime})
 Set_Tests_Properties(ex9_simulation PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
 
