@@ -406,7 +406,9 @@ void FairRootManager::Fill()
 void FairRootManager::LastFill()
 {
   FairMonitor::GetMonitor()->StoreHistograms();
-  if ( fSink ) fSink->Fill();
+  if (fFillLastData) {
+      if ( fSink ) fSink->Fill();
+  }
 }
 
 //_____________________________________________________________________________
