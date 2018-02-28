@@ -172,6 +172,16 @@ FILESINK+=" --class-name TClonesArray(FairMCTrack) --branch-name MCTrack"
 FILESINK+=" --file-name $OUTPUTFILE $CONTROL"
 
 ########################## run all
+if [ "$COMMAND" == "print" ]; then
+    echo $SERVER
+    echo $FILESINK
+
+    for (( i=0 ; i<$NOFSIMULS ; i++ ))
+    do
+	echo ${ASAMPLER[i]}
+    done
+fi
+
 if [ "$COMMAND" == "interactive" ]; then
     xterm -geometry 80x50+0+0 -hold -e $SERVER &
     xterm -geometry 80x50+1000+0 -hold -e $FILESINK &

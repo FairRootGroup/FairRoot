@@ -1,0 +1,82 @@
+{
+    "fairMQOptions": {
+        "devices": [
+            {
+                "key": "sampler",
+                "channels": [
+                    {
+                        "name": "dataStore#all#",
+                        "type": "push",
+                        "method": "connect"
+                    },
+                    {
+                        "name": "dataAna#all#",
+                        "type": "push",
+                        "method": "connect"
+                    },
+                    {
+                        "name": "storeParams",
+                        "type": "req",
+                        "method": "connect"
+                    }
+		    
+                ]
+            },
+            {
+                "id": "simSink",
+                "channels": [
+                    {
+                        "name": "dataStore#all#",
+                        "type": "pull",
+                        "method": "bind"
+                    }
+                ]
+            },
+            {
+                "key": "processor",
+                "channels": [
+                    {
+                        "name": "dataAna#all#",
+                        "type": "pull",
+                        "method": "bind"
+                    },
+                    {
+                        "name": "anaStore",
+                        "type": "push",
+                        "method": "bind"
+                    },
+                    {
+                        "name": "retrieveParams",
+                        "type": "req",
+                        "method": "connect"
+                    }
+                ]
+            },
+            {
+                "id": "anaSink",
+                "channels": [
+                    {
+                        "name": "anaStore",
+                        "type": "pull",
+                        "method": "connect"
+                    }
+                ]
+            },
+            {
+                "id": "parmq-server",
+                "channels": [
+                    {
+                        "name": "storeParams",
+                        "type": "rep",
+                        "method": "bind"
+                    },
+                    {
+                        "name": "retrieveParams",
+                        "type": "rep",
+                        "method": "bind"
+                    }
+                ]
+            }
+        ]
+    }
+}

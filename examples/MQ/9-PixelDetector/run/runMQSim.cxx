@@ -25,10 +25,11 @@ namespace bpo = boost::program_options;
 void addCustomOptions(bpo::options_description& options)
 {
   options.add_options()
-    ("random-seed",          bpo::value<int64_t>    ()->default_value(0)         , "Random seed number")
-    ("transport-name",       bpo::value<std::string>()->default_value("TGeant3") , "Transport name")
-    ("nof-events",           bpo::value<int64_t>    ()->required()               , "Number of events to simulate")
-    ("fairroot-config-dir",  bpo::value<std::string>()->default_value("")        , "FairRoot config dir")
+    ("random-seed",          bpo::value<int64_t>    ()->default_value(0)              , "Random seed number")
+    ("transport-name",       bpo::value<std::string>()->default_value("TGeant3")      , "Transport name")
+    ("nof-events",           bpo::value<int64_t>    ()->required()                    , "Number of events to simulate")
+    ("fairroot-config-dir",  bpo::value<std::string>()->default_value("")             , "FairRoot config dir")
+    ("param-channel-name",   bpo::value<std::string>()->default_value("updateChannel"), "Parameter update channel name")
     ;
 }
 
@@ -48,6 +49,8 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   FairMQSimDevice* run = new FairMQSimDevice();
+
+  run->SetParamUpdateChannelName(config.GetValue<std::string>("param-channel-name"));
 
   run->SetNofEvents       (config.GetValue<int64_t>    ("nof-events"));
   run->SetTransportName   (config.GetValue<std::string>("transport-name"));

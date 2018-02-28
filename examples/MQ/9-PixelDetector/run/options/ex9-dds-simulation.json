@@ -1,0 +1,42 @@
+{
+    "fairMQOptions": {
+        "devices": [
+            {
+                "key": "sampler",
+                "channels": [
+                    {
+                        "name": "data#all#",
+                        "type": "push",
+                        "method": "connect"
+                    },
+                    {
+                        "name": "updateChannel",
+                        "type": "req",
+                        "method": "connect"
+                    }
+		    
+                ]
+            },
+            {
+                "id": "sink1",
+                "channels": [
+                    {
+                        "name": "data#all#",
+                        "type": "pull",
+                        "method": "bind"
+                    }
+                ]
+            },
+            {
+                "id": "parmq-server",
+                "channels": [
+                    {
+                        "name": "updateChannel",
+                        "type": "rep",
+                        "method": "bind"
+                    }
+                ]
+            }
+        ]
+    }
+}

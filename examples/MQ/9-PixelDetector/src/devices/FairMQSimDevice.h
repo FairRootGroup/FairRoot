@@ -72,6 +72,8 @@ class FairMQSimDevice : public FairMQDevice, public FairSink
     void SetUserCuts        (const TString& Cuts)           { fUserCuts = Cuts;}
     // ------ ---------- -------- ------
 
+    void SetParamUpdateChannelName(TString tString) { fUpdateChannelName = tString; }
+
  protected:
     virtual void InitTask();
     virtual void PreRun();

@@ -155,7 +155,8 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
         par->print();
 
         TMessage* tmsg = new TMessage(kMESS_OBJECT);
-        tmsg->WriteObject(par);        FairMQMessagePtr rep(NewMessage(tmsg->Buffer(),
+        tmsg->WriteObject(par);
+        FairMQMessagePtr rep(NewMessage(tmsg->Buffer(),
                                         tmsg->BufferSize(),
                                         [](void* /*data*/, void* object){ delete static_cast<TMessage*>(object); },
                                         tmsg));

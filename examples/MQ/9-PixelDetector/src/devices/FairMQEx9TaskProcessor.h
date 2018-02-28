@@ -12,6 +12,7 @@
 #include <string>
 
 #include "FairEventHeader.h"
+#include "FairMCEventHeader.h"
 #include "FairGeoParSet.h"
 #include "FairParGenericSet.h"
 
@@ -35,6 +36,8 @@ class FairMQEx9TaskProcessor : public FairMQDevice
     void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
     void SetParamChannelName (std::string tstr) {fParamChannelName  = tstr;}
 
+    void SetStaticParameters (bool tbool)       {fStaticParameters = tbool;}
+
   protected:
     bool ProcessData(FairMQParts&, int);
     virtual void Init();
@@ -48,10 +51,12 @@ class FairMQEx9TaskProcessor : public FairMQDevice
     void UpdateParameters();
     FairParGenericSet* UpdateParameter(FairParGenericSet* thisPar);
 
-    FairEventHeader* fEventHeader;
-    TList*           fInput;
-    TList*           fOutput;
+    FairEventHeader*   fEventHeader;
+    FairMCEventHeader* fMCEventHeader;
+    TList*             fInput;
+    TList*             fOutput;
 
+    bool fStaticParameters;
     int fNewRunId;
     int fCurrentRunId;
 

@@ -22,7 +22,9 @@ FairMQEx9TaskProcessor<T>::FairMQEx9TaskProcessor()
     : fInputChannelName("data-in")
     , fOutputChannelName("data-out")
     , fParamChannelName("param")
+    , fStaticParameters(false)
     , fEventHeader(nullptr)
+    , fMCEventHeader(nullptr)
     , fInput(nullptr)
     , fOutput(nullptr)
     , fNewRunId(1)
@@ -56,6 +58,7 @@ void FairMQEx9TaskProcessor<T>::Init()
     fInputChannelName  = fConfig->GetValue<std::string>("in-channel");
     fOutputChannelName = fConfig->GetValue<std::string>("out-channel");
     fParamChannelName  = fConfig->GetValue<std::string>("par-channel");
+    fStaticParameters  = fConfig->GetValue<bool>       ("static-pars");
 
     fFairTask = new T();
     fFairTask->SetStreamProcessing(kTRUE);
@@ -88,23 +91,33 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
         {
             fEventHeader = (FairEventHeader*)(tempObjects.back());
         }
+        if (strcmp(tempObjects.back()->GetName(),"MCEventHeader.") == 0)
+        {
+            fMCEventHeader = (FairMCEventHeader*)(tempObjects.back());
+        }
         else
         {
             fInput->Add(tempObjects.back());
         }
     }
 
-    fNewRunId = fEventHeader->GetRunId();
+    if ( fStaticParameters == false || fCurrentRunId == -1 ) {
+        // TODO: create fEventHeader form fMCEventHeader, if not there
+        if ( fEventHeader )
+            fNewRunId = fEventHeader->GetRunId();
+        else if ( fMCEventHeader )
+            fNewRunId = fMCEventHeader->GetRunID();
 
     // LOG(debug)<<"got event header with run = " << fNewRunId;
 
-    if (fNewRunId != fCurrentRunId)
-    {
-        fCurrentRunId = fNewRunId;
-        UpdateParameters();
-        fFairTask->InitMQ(fParCList);
+        if (fNewRunId != fCurrentRunId)
+        {
+            fCurrentRunId = fNewRunId;
+            UpdateParameters();
+            fFairTask->InitMQ(fParCList);
 
-        LOG(info) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
+            LOG(info) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
+        }
     }
 
     // Execute hit finder task
@@ -114,7 +127,7 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 
     if (!fDataToKeep.empty())
     {
-        objectToKeep = fInput->FindObject(fDataToKeep.c_str());
+        objectToKeep = (fInput->FindObject(fDataToKeep.c_str()))->Clone();
         if (objectToKeep) fOutput->Add(objectToKeep);
     }
 
@@ -122,12 +135,22 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
     TMessage* messageTCA[10];
     FairMQParts partsOut;
 
-    messageFEH = new TMessage(kMESS_OBJECT);
-    messageFEH->WriteObject(fEventHeader);
-    partsOut.AddPart(NewMessage(messageFEH->Buffer(),
-                                messageFEH->BufferSize(),
-                                [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-                                messageFEH));
+    if ( fEventHeader ) {
+         messageFEH = new TMessage(kMESS_OBJECT);
+         messageFEH->WriteObject(fEventHeader);
+         partsOut.AddPart(NewMessage(messageFEH->Buffer(),
+		                     messageFEH->BufferSize(),
+                                     [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
+                                     messageFEH));
+    }
+    else if ( fMCEventHeader ) {
+         messageFEH = new TMessage(kMESS_OBJECT);
+         messageFEH->WriteObject(fMCEventHeader);
+         partsOut.AddPart(NewMessage(messageFEH->Buffer(),
+		                     messageFEH->BufferSize(),
+                                     [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
+                                     messageFEH));
+    }
 
     for (int iobj = 0; iobj < fOutput->GetEntries(); iobj++)
     {
@@ -139,6 +162,9 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
                                     messageTCA[iobj]));
     }
 
+    Send(partsOut, fOutputChannelName);
+    fSentMsgs++;
+
     for (int ipart = 0; ipart < tempObjects.size(); ipart++)
     {
         if (tempObjects[ipart])
@@ -148,9 +174,6 @@ bool FairMQEx9TaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
     }
 
     tempObjects.clear();
-
-    Send(partsOut, fOutputChannelName);
-    fSentMsgs++;
 
     fInput->Clear();
 
@@ -179,7 +202,7 @@ FairParGenericSet* FairMQEx9TaskProcessor<T>::UpdateParameter(FairParGenericSet*
     std::string paramName = thisPar->GetName();
     //  boost::this_thread::sleep(boost::posix_time::milliseconds(1000));
     std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
-    LOG(warn) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar << ")";
+    LOG(debug) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar << ")";
 
     FairMQMessagePtr req(NewMessage(const_cast<char*>(reqStr->c_str()),
                                     reqStr->length(),
@@ -193,7 +216,7 @@ FairParGenericSet* FairMQEx9TaskProcessor<T>::UpdateParameter(FairParGenericSet*
         {
             Ex9TMessage2 tm(rep->GetData(), rep->GetSize());
             thisPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());
-            LOG(warn) << "Received parameter"<< paramName <<" from the server (" << thisPar << ")";
+            LOG(info) << "Received parameter"<< paramName <<" from the server (" << thisPar << ")";
             return thisPar;
         }
     }
