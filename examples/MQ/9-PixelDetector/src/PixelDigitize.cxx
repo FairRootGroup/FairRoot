@@ -197,6 +197,49 @@ void PixelDigitize::SetParContainers() {
 }
 // -------------------------------------------------------------------------
 
+// -------------------------------------------------------------------------
+void PixelDigitize::GetParList(TList* tempList) {
+  fDigiPar = new PixelDigiPar("PixelDigiParameters");
+  tempList->Add(fDigiPar);
+
+  return;
+}
+// -------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------
+void   PixelDigitize::InitMQ(TList* tempList) {
+  LOG(info) << "********************************************** PixelDigitize::InitMQ()";
+  fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+
+  fFeCols = fDigiPar->GetFECols();
+  fFeRows = fDigiPar->GetFERows();
+  fMaxFEperCol = fDigiPar->GetMaxFEperCol();
+  fPitchX = fDigiPar->GetXPitch();
+  fPitchY = fDigiPar->GetYPitch();
+
+  LOG(info) << ">> fFeCols      = " << fFeCols;
+  LOG(info) << ">> fFeRows      = " << fFeRows;
+  LOG(info) << ">> fMaxFEperCol = " << fMaxFEperCol;
+  LOG(info) << ">> fPitchX      = " << fPitchX;
+  LOG(info) << ">> fPitchY      = " << fPitchY;
+
+  fDigis = new TClonesArray("PixelDigi",10000);
+
+  return;
+}
+// -------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------
+void   PixelDigitize::ExecMQ(TList* inputList,TList* outputList) {
+  //  LOG(info) << "********************************************** PixelDigitize::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents;
+  //  LOG(info) << "********************************************** PixelDigitize::ExecMQ(), Event " << fTNofEvents;
+  fPoints = (TClonesArray*) inputList->FindObject("PixelPoint");
+  outputList->Add(fDigis);
+  Exec("");
+  return;
+}
+// ----------------------------------------------------------------------
+
 // -----   Private method Init   -------------------------------------------
 InitStatus PixelDigitize::Init() {
 

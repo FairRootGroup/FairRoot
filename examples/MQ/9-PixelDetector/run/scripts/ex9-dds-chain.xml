@@ -1,0 +1,59 @@
+<topology id="ExampleDDS">
+ 
+  <property id="dataStore#all#" />
+  <property id="dataAna#all#" />
+  <property id="anaStore" />
+  <property id="storeParams" />
+  <property id="retrieveParams" />
+
+    <decltask id="Sampler">
+      <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/run-sim --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds-chain.json --config-key sampler --id sampler_%taskIndex% --severity DEBUG --param-channel-name storeParams --nof-events 100000 --transport-name TGeant3 --random-seed 0 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+          <id access="read">dataStore#all#</id>
+          <id access="read">dataAna#all#</id>
+	  <id access="read">storeParams</id>
+        </properties>
+    </decltask>
+
+    <decltask id="SimSink">
+      <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-sink --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds-chain.json --id simSink --severity DEBUG --in-channel dataStore#all# --class-name FairMCEventHeader --branch-name MCEventHeader. --class-name "TClonesArray(PixelPoint)" --branch-name PixelPoint --class-name "TClonesArray(FairMCTrack)" --branch-name MCTrack --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/DDS.simulation_TGeant3.mc.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+            <id access="write">dataStore#all#</id>
+        </properties>
+    </decltask>
+
+    <decltask id="Processor">
+        <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-processor --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds-chain.json --config-key processor --id processor_%taskIndex% --severity DEBUG --task-name PixelDigitize --in-channel dataAna#all# --out-channel anaStore --par-channel retrieveParams --static-pars true -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+            <id access="write">dataAna#all#</id>
+            <id access="write">anaStore</id>
+            <id access="read">retrieveParams</id>
+        </properties>
+    </decltask>
+
+    <decltask id="AnaSink">
+      <exe reachable="true">@EXAMPLE9_BIN_LOCATION@/ex9-sink --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds-chain.json --id anaSink --severity DEBUG --in-channel anaStore --class-name FairMCEventHeader --branch-name MCEventHeader. --class-name "TClonesArray(PixelDigi)" --branch-name PixelDigis --file-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/DDS.simulation_TGeant3.digi.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+            <id access="read">anaStore</id>
+        </properties>
+    </decltask>
+
+    <decltask id="ParamServer">
+      <exe reachable="true">@FAIRROOT_BIN_LOCATION@/parmq-server --mq-config @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/run/options/ex9-dds-chain.json --id parmq-server --severity DEBUG --update-channel-name storeParams --channel-name retrieveParams --first-input-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/param/pixel_digi.par --first-input-type ASCII --output-name @EXAMPLE9_FILE_LOCATION@/examples/MQ/9-PixelDetector/macros/DDS.simulation_TGeant3.pars.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+            <id access="write">storeParams</id>
+            <id access="write">retrieveParams</id>
+        </properties>
+    </decltask>
+
+    <main id="main">
+        <group id="SamplerGroup" n="3">
+            <task>Sampler</task>
+        </group>
+        <task>SimSink</task>
+        <task>Processor</task>
+        <task>AnaSink</task>
+        <task>ParamServer</task>
+    </main>
+
+</topology>
