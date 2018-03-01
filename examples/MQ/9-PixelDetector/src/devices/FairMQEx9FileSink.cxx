@@ -73,6 +73,14 @@ void FairMQEx9FileSink::Init()
   // fClassNames .push_back("FairEventHeader");
   // fBranchNames.push_back("PixelHits");
   // fClassNames .push_back("TClonesArray(PixelHit)");
+
+  if ( ::getenv("DDS_SESSION_ID") ) {
+    std::string DDS_SESSION_ID = ::getenv("DDS_SESSION_ID");
+    if ( fFileName.length() > 5 ) {
+      DDS_SESSION_ID = "." + DDS_SESSION_ID + ".root";
+      fFileName.replace(fFileName.length()-5,5,DDS_SESSION_ID.c_str());
+    }
+  }
   
   fOutFile = TFile::Open(fFileName.c_str(),fFileOption.c_str());
   
