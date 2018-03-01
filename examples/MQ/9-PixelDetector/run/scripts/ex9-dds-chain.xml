@@ -47,7 +47,7 @@
     </decltask>
 
     <main id="main">
-        <group id="SamplerGroup" n="3">
+        <group id="SamplerGroup" n="1">
             <task>Sampler</task>
         </group>
         <task>SimSink</task>

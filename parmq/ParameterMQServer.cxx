@@ -72,6 +72,16 @@ void ParameterMQServer::InitTask()
     fOutputName = fConfig->GetValue<string>("output-name");
     fOutputType = fConfig->GetValue<string>("output-type");
 
+    if ( ::getenv("DDS_SESSION_ID") )
+    {
+        std::string DDS_SESSION_ID = ::getenv("DDS_SESSION_ID");
+	if ( fOutputName.length() > 5 )
+	{
+	    DDS_SESSION_ID = "." + DDS_SESSION_ID + ".root";
+	    fOutputName.replace(fOutputName.length()-5,5,DDS_SESSION_ID.c_str());
+	}
+    }
+
     if (fRtdb != 0)
     {
         // Set first input
