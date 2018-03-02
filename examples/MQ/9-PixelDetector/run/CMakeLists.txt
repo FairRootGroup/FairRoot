@@ -87,6 +87,9 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/options/Pixe
 		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/options/Pixel9MQConfig_Multipart.json )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/controlDDS.sh.in
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/9-PixelDetector/controlDDS.sh @ONLY)
+set(DDS_LOCATION $ENV{DDS_LOCATION})
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/run_ex9_dds_chain.sh.in
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/9-PixelDetector/run_ex9_dds_chain.sh @ONLY)
 
 set(EXAMPLE9_FILE_LOCATION ${CMAKE_INSTALL_PREFIX}/share/fairbase)
 set(EXAMPLE9_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples/MQ/9-PixelDetector/bin)
@@ -122,6 +125,8 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/star
 		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startFairMQEx9_Static.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/controlDDS.sh.in
 		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/controlDDS.sh_install @ONLY)
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/run/scripts/run_ex9_dds_chain.sh.in
+		${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/run_ex9_dds_chain.sh_install @ONLY)
 
 set(EXAMPLE9_INSTALL_BIN share/fairbase/examples/MQ/9-PixelDetector/bin)
 
@@ -170,6 +175,9 @@ Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/startF
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/controlDDS.sh_install
         DESTINATION ${EXAMPLE9_INSTALL_BIN}
         RENAME controlDDS.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
+Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/9-PixelDetector/run/scripts/run_ex9_dds_chain.sh_install
+        DESTINATION ${EXAMPLE9_INSTALL_BIN}
+        RENAME run_ex9_dds_chain.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 
 Install(FILES options/Pixel9MQConfig_Multipart.json options/Pixel9MQConfig_2Levels.json options/Pixel9MQConfig_3Levels.json options/Pixel9MQConfig_Proxy.json options/Pixel9MQConfig_2Samplers.json options/Pixel9MQConfig_Merger.json options/Pixel9MQConfig_Merger2Levels.json options/Pixel9MQConfig_Merger3Ch.json options/ex9-dds.json options/ex9-dds-simulation.json options/ex9-dds-chain.json
         DESTINATION share/fairbase/examples/MQ/9-PixelDetector/run/options/
