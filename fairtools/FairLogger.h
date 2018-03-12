@@ -96,8 +96,8 @@ class FairLogger
     void Debug3 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
     void Debug4 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
 
-    static constexpr char endl = ' ';
-    static constexpr char flush = ' ';
+    static char const endl;
+    static char const flush;
 
     void SetScreenStreamToCerr(bool /* useCerr */)
     {

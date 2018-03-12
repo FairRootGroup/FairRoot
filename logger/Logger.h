@@ -144,7 +144,35 @@ class Logger
     static void AddCustomSink(const std::string& key, const std::string& severityStr, std::function<void(const std::string& content, const LogMetaData& metadata)> sink);
     static void RemoveCustomSink(const std::string& key);
 
-    std::ostringstream& Log();
+    Logger& Log();
+
+    template<typename T>
+    Logger& operator<<(const T& t)
+    {
+        fContent << t;
+        return *this;
+    }
+
+    // overload for char* to make sure it is not nullptr
+    Logger& operator<<(const char* cptr)
+    {
+        if (cptr != nullptr) {
+            fContent << cptr;
+        }
+        return *this;
+    }
+
+    // overload for char* to make sure it is not nullptr
+    Logger& operator<<(char* cptr)
+    {
+        if (cptr != nullptr) {
+            fContent << cptr;
+        }
+        return *this;
+    }
+
+    Logger& operator<<(std::ios_base& (*manip) (std::ios_base&));
+    Logger& operator<<(std::ostream& (*manip) (std::ostream&));
 
     static const std::unordered_map<std::string, Verbosity> fVerbosityMap;
     static const std::unordered_map<std::string, Severity> fSeverityMap;
