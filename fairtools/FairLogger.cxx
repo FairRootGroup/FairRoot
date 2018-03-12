@@ -23,6 +23,9 @@
 
 FairLogger* FairLogger::instance = nullptr;
 
+const char FairLogger::endl = ' ';
+const char FairLogger::flush = ' ';
+
 FairLogger::FairLogger()
     : fLogFileName()
     , fLogFileSeverity("info")

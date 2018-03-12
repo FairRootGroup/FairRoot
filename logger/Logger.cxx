@@ -470,7 +470,7 @@ void Logger::RemoveCustomSink(const string& key)
     }
 }
 
-ostringstream& Logger::Log()
+Logger& Logger::Log()
 {
     char tsstr[32];
     if (!strftime(tsstr, sizeof(tsstr), "%H:%M:%S", localtime(&(fMetaData.timestamp))))
@@ -522,7 +522,19 @@ ostringstream& Logger::Log()
         fColorOut << " ";
     }
 
-    return fContent;
+    return *this;
+}
+
+Logger& Logger::operator<<(ios_base& (*manip) (ios_base&))
+{
+    fContent << manip;
+    return *this;
+}
+
+Logger& Logger::operator<<(ostream& (*manip) (ostream&))
+{
+    fContent << manip;
+    return *this;
 }
 
 Logger::~Logger() noexcept(false)
