@@ -38,6 +38,9 @@ WAITINGMILL="\|/-"
 NOFLINESTOPRINT=1
 DEVICESPERLINE=0
 
+MAX_DEV_LEN=20
+MIN_DEV_LEN=12
+
 count=0
 keypress=''
 while [ "$keypress" != "x" ]; do
@@ -64,7 +67,7 @@ while [ "$keypress" != "x" ]; do
   if [ -z "$NOFWORKERS" ]; then NOFWORKERS=0; fi
   if [ "$NOFWORKERS" -gt 0 ]; 
   then
-      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui c | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c c | sort &> command.out
   fi
   for (( i = 0 ; i < $NOFWORKERS ; i++ )); do
       TASKS[$i]="";
@@ -86,26 +89,27 @@ while [ "$keypress" != "x" ]; do
     DEVICESPERLINE=0
     NOFLINESTOPRINT=1
     DEVICELENGTH=$((((TERMINALCOLUMNS-1) / NOFWORKERS)-2))
-    if (( ${DEVICELENGTH} > 12 )); then DEVICELENGTH=12; fi
-    if (( ${DEVICELENGTH} <  6 )); then DEVICELENGTH=6;  DEVICESPERLINE=$(((TERMINALCOLUMNS-1)/(DEVICELENGTH+2))); NOFLINESTOPRINT=$((1+(NOFWORKERS/DEVICESPERLINE))); fi
+    if (( ${DEVICELENGTH} > ${MAX_DEV_LEN} )); then DEVICELENGTH=${MAX_DEV_LEN}; fi
+    if (( ${DEVICELENGTH} < ${MIN_DEV_LEN} )); then DEVICELENGTH=${MIN_DEV_LEN};  DEVICESPERLINE=$(((TERMINALCOLUMNS-1)/(DEVICELENGTH+2))); NOFLINESTOPRINT=$((1+(NOFWORKERS/DEVICESPERLINE))); fi
 
     for (( i = 0 ; i < $NOFWORKERS ; i++ )); do
         TOPRINT=${TASKS[i]}
-        TOPRINT=${TOPRINT#*\"}
-        TOPRINT=${TOPRINT%%:*}
+        TOPRINT=${TOPRINT% (*}
+        TOPRINT=${TOPRINT%:*}
+        TOPRINT=${TOPRINT#*: }
 	TASTATE=${TASKS[i]}
 	TASTATE=${TASTATE% (*}
-	TASTATE=${TASTATE#*\"}
-	TASTATE=${TASTATE#*: }
+        TASTATE=${TASTATE#*: }
+        TASTATE=${TASTATE#*: }
 	
 	echo -ne "["
 	if [[ $TASTATE == "PAUSED" ]]; then echo -ne "\033[40m"; fi
 	if [[ $TASTATE == "RUNNING" ]]; then echo -ne "\033[42m"; fi
 	if [[ $TASTATE == "READY" ]]; then echo -ne "\033[44m"; fi
-	if [[ $TASTATE == "DEVICE_READY" ]]; then echo -ne "\033[46m"; fi
+	if [[ $TASTATE == "DEVICE READY" ]]; then echo -ne "\033[46m"; fi
 	if [[ $TASTATE == "IDLE" ]]; then echo -ne "\033[47m"; fi
 	if (( ${#TOPRINT} > ${DEVICELENGTH} )); then
-	    TOPRINT="${TOPRINT:0:$((DEVICELENGTH-5))}~${TOPRINT: -4}"
+	    TOPRINT="${TOPRINT:0:$((DEVICELENGTH+1-MIN_DEV_LEN))}~${TOPRINT: 2-MIN_DEV_LEN}"
 	fi
 	printf  "%${DEVICELENGTH}s" $TOPRINT
 	echo -ne "\033[0m"
@@ -117,28 +121,28 @@ while [ "$keypress" != "x" ]; do
   fi
   echo -ne "\r"
   if [ "$keypress" == "p" ]; then
-      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui p &> temp.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c p | sort &> command.out
   fi
   if [ "$keypress" == "s" ]; then
-      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui s &> temp.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c s | sort &> command.out
   fi
   if [ "$keypress" == "t" ]; then
-      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui t &> temp.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c t | sort &> command.out
   fi
   if [ "$keypress" == "d" ]; then
-      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui d &> temp.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c d | sort &> command.out
   fi
   if [ "$keypress" == "r" ]; then
-      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui r &> temp.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c r | sort &> command.out
   fi
   if [ "$keypress" == "j" ]; then
-      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui j &> temp.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c j | sort &> command.out
   fi
   if [ "$keypress" == "i" ]; then
-      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui i &> temp.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c i | sort &> command.out
   fi
   if [ "$keypress" == "q" ]; then
-      @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui q &> temp.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c q | sort &> command.out
   fi
   if [ "$keypress" == "x" ]; then
       break;
