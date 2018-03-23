@@ -73,7 +73,6 @@ void  FairOnlineSink::Fill()
  
 Bool_t FairOnlineSink::InitSink()
 {
-    fMQSimDevice = FairMQSimDevice::Instance();
     return kTRUE;
 }
 

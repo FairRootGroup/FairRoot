@@ -52,6 +52,8 @@ class FairOnlineSink : public FairSink
     virtual void        WriteObject(TObject* f, const char*, Int_t option = 0) {}
     virtual void        WriteGeometry() {}
 
+    virtual void        SetMQSimDevice(FairMQSimDevice* mrs) { fMQSimDevice = mrs;}
+
  private: 
     FairMQSimDevice* fMQSimDevice;
     

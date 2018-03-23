@@ -28,14 +28,13 @@ class FairParIo;
 class FairPrimaryGenerator;
 class TObject;
 class TObjArray;
+class FairSink;
 
 class FairMQSimDevice : public FairMQDevice
 {
  public:
     FairMQSimDevice();
     virtual ~FairMQSimDevice();
-   /** Singelton instance*/
-    static FairMQSimDevice* Instance();
 
     virtual void        SendBranches();
 
@@ -52,6 +51,7 @@ class FairMQSimDevice : public FairMQDevice
     void SetSecondParameter (FairParIo* par)                { fSecondParameter = par;};
     void SetUserConfig      (const TString& Config)         { fUserConfig = Config;}
     void SetUserCuts        (const TString& Cuts)           { fUserCuts = Cuts;}
+    void SetSink            (FairSink* sink)                { fSink = sink;}
     // ------ ---------- -------- ------
 
     void SetParamUpdateChannelName(TString tString) { fUpdateChannelName = tString; }
@@ -62,12 +62,7 @@ class FairMQSimDevice : public FairMQDevice
     virtual void PostRun();
     virtual bool ConditionalRun();
 
-    FairMQSimDevice(const FairMQSimDevice&);
-    FairMQSimDevice& operator=(const FairMQSimDevice&);
-
- private: 
-    static FairMQSimDevice* fginstance;
-
+ private:
     std::string fUpdateChannelName;
 
     FairRunSim*     fRunSim;
@@ -84,11 +79,14 @@ class FairMQSimDevice : public FairMQDevice
     FairParIo*            fSecondParameter;   // second input (used if not found in first input)
     TString               fUserConfig;        //!                  /** Macro for geant configuration*/
     TString               fUserCuts;          //!                  /** Macro for geant cuts*/
+    FairSink*             fSink;
     // ------ ---------- -------- ------
 
     void UpdateParameterServer();
     void SendObject(TObject* obj, std::string chan);
 
+    FairMQSimDevice(const FairMQSimDevice&);
+    FairMQSimDevice& operator=(const FairMQSimDevice&);
 };
 
 #endif /* FAIRMQSIMDEVICE_H_ */

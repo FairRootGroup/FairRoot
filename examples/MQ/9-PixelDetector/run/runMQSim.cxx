@@ -12,7 +12,10 @@
 
 #include "Pixel.h"
 #include "PixelDigitize.h"
-  
+
+#include "FairOnlineSink.h"
+//#include "FairRootFileSink.h"
+
 #include "TRandom.h"
 #include "TRint.h"
 #include "TROOT.h"
@@ -49,6 +52,12 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
   gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
   FairMQSimDevice* run = new FairMQSimDevice();
+
+  //  TString outputfilename = Form("outputfile_%d.root",(int)(getpid()));
+  //  FairRootFileSink* sink = new FairRootFileSink(outputfilename);
+  FairOnlineSink* sink = new FairOnlineSink();
+  sink->SetMQSimDevice(run);
+  run->SetSink(sink);
 
   run->SetParamUpdateChannelName(config.GetValue<std::string>("param-channel-name"));
 
