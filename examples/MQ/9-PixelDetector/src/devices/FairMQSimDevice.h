@@ -17,45 +17,27 @@
 #define FAIRMQSIMDEVICE_H_
 
 #include <string>
+#include "TString.h"
 
-#include "FairSink.h"
 #include "FairMQDevice.h"
 
 class FairEventHeader;
 class FairRunSim;
-class TObjArray;
 class FairField;
 class FairParIo;
 class FairPrimaryGenerator;
+class TObject;
+class TObjArray;
 
-class FairMQSimDevice : public FairMQDevice, public FairSink
+class FairMQSimDevice : public FairMQDevice
 {
  public:
     FairMQSimDevice();
     virtual ~FairMQSimDevice();
-  
-    virtual Bool_t      InitSink();
-    virtual void        Close();
-    virtual void        Reset();
+   /** Singelton instance*/
+    static FairMQSimDevice* Instance();
 
-    virtual Sink_Type   GetSinkType() { return kONLINESINK; }
-
-    virtual void        FillEventHeader(FairEventHeader* feh) {}
-
-    virtual void        SetOutTree(TTree* fTree) { return; }
-
-    virtual void        Fill();
-
-    virtual Int_t       Write(const char* name=0, Int_t option=0, Int_t bufsize=0) {return -1;}
-
-    virtual void        RegisterImpl(const char* , const char* , void* );
-    virtual void        RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj);
-
-    virtual void        WriteFolder() {}
-    virtual bool        CreatePersistentBranchesAny() {return false;}
-
-    virtual void        WriteObject(TObject* f, const char*, Int_t option = 0) {}
-    virtual void        WriteGeometry() {}
+    virtual void        SendBranches();
 
     // ------ FairRunSim setters ------
     void SetNofEvents       (int64_t nofev)                 { fNofEvents = nofev;};
@@ -80,7 +62,12 @@ class FairMQSimDevice : public FairMQDevice, public FairSink
     virtual void PostRun();
     virtual bool ConditionalRun();
 
+    FairMQSimDevice(const FairMQSimDevice&);
+    FairMQSimDevice& operator=(const FairMQSimDevice&);
+
  private: 
+    static FairMQSimDevice* fginstance;
+
     std::string fUpdateChannelName;
 
     FairRunSim*     fRunSim;
@@ -102,8 +89,6 @@ class FairMQSimDevice : public FairMQDevice, public FairSink
     void UpdateParameterServer();
     void SendObject(TObject* obj, std::string chan);
 
-    FairMQSimDevice(const FairMQSimDevice&);
-    FairMQSimDevice& operator=(const FairMQSimDevice&);
 };
 
 #endif /* FAIRMQSIMDEVICE_H_ */

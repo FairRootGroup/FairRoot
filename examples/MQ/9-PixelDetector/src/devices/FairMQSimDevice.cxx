@@ -18,17 +18,18 @@
 #include "FairMQMessage.h"
 #include "FairMQProgOptions.h"
 
+#include "FairOnlineSink.h"
+
+#include "FairMCEventHeader.h"
+#include "FairRootManager.h"
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
-#include "FairRootManager.h"
 
 #include "FairEventHeader.h"
 #include "FairModule.h"
 #include "FairPrimaryGenerator.h"
 #include "FairParRootFileIo.h"
 #include "FairParSet.h"
-
-#include "FairMCEventHeader.h"
 
 #include "TROOT.h"
 #include "TRint.h"
@@ -41,9 +42,10 @@
 
 using namespace std;
 
+FairMQSimDevice* FairMQSimDevice::fginstance= 0;
+
 FairMQSimDevice::FairMQSimDevice()
   : FairMQDevice()
-  , FairSink()
   , fUpdateChannelName("updateChannel")
   , fRunSim(NULL)
   , fNofEvents(1)
@@ -57,13 +59,24 @@ FairMQSimDevice::FairMQSimDevice()
   , fFirstParameter(NULL)
   , fSecondParameter(NULL)
 {
+    if (fginstance) {
+        LOG(FATAL) << "FairMQSimDevice already exists!";
+        return;
+    }
+    fginstance=this;
+}
+
+FairMQSimDevice* FairMQSimDevice::Instance()
+{
+   return fginstance;
 }
 
 void FairMQSimDevice::InitTask() 
 {
   fRunSim = new FairRunSim();
-  
-  fRunSim->SetSink(this);
+
+  FairOnlineSink* onlineSink = new FairOnlineSink();
+  fRunSim->SetSink(onlineSink);
 
   if ( fFirstParameter || fSecondParameter ) {
     FairRuntimeDb *rtdb=fRunSim->GetRuntimeDb();
@@ -74,9 +87,6 @@ void FairMQSimDevice::InitTask()
   }
 
   fRunSim->SetName(fTransportName.data());
-
-  fOutFolder= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-  gROOT->GetListOfBrowsables()->Add(fOutFolder);
 
   if ( fUserConfig.Length() > 0 )
     fRunSim->SetUserConfig(fUserConfig);
@@ -178,22 +188,10 @@ FairMQSimDevice::~FairMQSimDevice()
 {
 }
 
-//_____________________________________________________________________________
-void FairMQSimDevice::RegisterImpl(const char* , const char* , void* )
-{
-  return;
-}
-
-//_____________________________________________________________________________
-void FairMQSimDevice::RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj)
-{
-  return;
-}
-
-void  FairMQSimDevice::Fill()
+void  FairMQSimDevice::SendBranches()
 {
   /// Fill the Root tree.
-  LOG(DEBUG) << "called FairMQSimDevice::Fill()!!!!";
+  LOG(DEBUG) << "called FairMQSimDevice::SendBranches()!!!!";
   if ( !CheckCurrentState(RUNNING) )
     {
       fRunSim->StopMCRun();
@@ -228,17 +226,4 @@ void  FairMQSimDevice::Fill()
       if ( parts.Size() > 0 )
         Send(parts,mi.first.data());
     }
-}
- 
-Bool_t FairMQSimDevice::InitSink()
-{
-  return kTRUE;
-}
-
-void  FairMQSimDevice::Reset()
-{
-}
-
-void  FairMQSimDevice::Close()
-{
 }
