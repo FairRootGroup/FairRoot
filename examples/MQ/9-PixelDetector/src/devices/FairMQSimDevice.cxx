@@ -42,8 +42,6 @@
 
 using namespace std;
 
-FairMQSimDevice* FairMQSimDevice::fginstance= 0;
-
 FairMQSimDevice::FairMQSimDevice()
   : FairMQDevice()
   , fUpdateChannelName("updateChannel")
@@ -58,25 +56,15 @@ FairMQSimDevice::FairMQSimDevice()
   , fTaskArray(NULL)
   , fFirstParameter(NULL)
   , fSecondParameter(NULL)
+  , fSink(NULL)
 {
-    if (fginstance) {
-        LOG(FATAL) << "FairMQSimDevice already exists!";
-        return;
-    }
-    fginstance=this;
-}
-
-FairMQSimDevice* FairMQSimDevice::Instance()
-{
-   return fginstance;
 }
 
 void FairMQSimDevice::InitTask() 
 {
   fRunSim = new FairRunSim();
 
-  FairOnlineSink* onlineSink = new FairOnlineSink();
-  fRunSim->SetSink(onlineSink);
+  fRunSim->SetSink(fSink);
 
   if ( fFirstParameter || fSecondParameter ) {
     FairRuntimeDb *rtdb=fRunSim->GetRuntimeDb();
