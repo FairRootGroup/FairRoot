@@ -41,6 +41,7 @@ devices/FairMQEx9Merger.cxx
 devices/FairMQEx9FileSink.cxx
 devices/FairMQEx9FileSinkBin.cxx
 devices/FairMQSimDevice.cxx
+FairOnlineSink.cxx
 )
 
 Set(NO_DICT_HEADERS
@@ -55,6 +56,7 @@ devices/FairMQEx9TaskProcessor.tpl
 devices/FairMQEx9TaskProcessorBin.h
 devices/FairMQEx9TaskProcessorBin.tpl
 devices/FairMQSimDevice.h
+FairOnlineSink.h
 )
 
 set(SRCS
