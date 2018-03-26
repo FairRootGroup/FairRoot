@@ -107,8 +107,19 @@ FairModule::FairModule(const FairModule& rhs)
    fGeoSaved(rhs.fGeoSaved),
    fMC(0)
 {
-  if(!svList) { svList=new TRefArray(); }
-  if(!vList) { vList=new FairVolumeList(); }
+  if(!svList) {
+    svList=new TRefArray();
+    for (Int_t i=0; i < rhs.svList->GetEntries(); i++) {
+      svList->Add(rhs.svList->At(i));
+    }
+  }
+
+  if(!vList) {
+    vList=new FairVolumeList();
+    for (Int_t i=0; i < rhs.vList->getEntries(); i++) {
+      vList->addVolume(rhs.vList->At(i));
+    }
+  }
 
   // Initialize cached pointer to MC (on worker)
   fMC = TVirtualMC::GetMC();
@@ -687,6 +698,3 @@ FairModule* FairModule::CloneModule() const
 
 //__________________________________________________________________________
 ClassImp(FairModule)
-
-
-

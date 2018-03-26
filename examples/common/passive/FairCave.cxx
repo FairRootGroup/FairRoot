@@ -58,6 +58,15 @@ void FairCave::ConstructGeometry()
   par->setInputVersion(fRun->GetRunId(),1);
 
 }
+
+FairCave::FairCave(const FairCave& rhs)
+ : FairModule(rhs)
+{
+  world[0] = rhs.world[0];
+  world[1] = rhs.world[1];
+  world[2] = rhs.world[2];
+}
+
 FairCave::FairCave()
 {
 }
@@ -72,4 +81,9 @@ FairCave::FairCave(const char* name,  const char* Title)
   world[0] = 0;
   world[1] = 0;
   world[2] = 0;
+}
+
+FairModule* FairCave::CloneModule() const
+{
+  return new FairCave(*this);
 }

@@ -21,6 +21,10 @@ class FairPipe : public FairModule
     virtual ~FairPipe();
     virtual void ConstructGeometry();
 
+    virtual FairModule* CloneModule() const;
+
+  private:
+    FairPipe(const FairPipe& rhs);
     ClassDef(FairPipe,1) //PNDPIPE
 
 };

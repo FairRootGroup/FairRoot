@@ -126,7 +126,22 @@ FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
 }
 //_________________________________________________________________________
 
-
+FairIonGenerator::FairIonGenerator(const FairIonGenerator& rhs)
+  :FairGenerator(rhs),
+   fMult(rhs.fMult),
+   fPx(rhs.fPx), fPy(rhs.fPy), fPz(rhs.fPz),
+   fVx(rhs.fVx), fVy(rhs.fVy), fVz(rhs.fVz),
+   fIon(rhs.fIon), // CHECK
+   fQ(0)
+{
+  // fIon= new FairIon(buffer, z, a, q);
+  FairRunSim* run = FairRunSim::Instance();
+  if ( ! run ) {
+    LOG(error) << "No FairRun instantised!";
+  } else {
+    run->AddNewIon(fIon);
+  }
+}
 
 // -----   Destructor   ---------------------------------------------------
 FairIonGenerator::~FairIonGenerator()
@@ -190,5 +205,14 @@ Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
 //_____________________________________________________________________________
 
+// ------------------------------------------------------------------------
+FairGenerator* FairIonGenerator::CloneGenerator() const
+{
+  // Clone for worker (used in MT mode only)
+
+  return new FairIonGenerator(*this);
+}
+
+//_____________________________________________________________________________
 
 ClassImp(FairIonGenerator)

@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
+void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=false)
 {
   
   TString dir = getenv("VMCWORKDIR");
@@ -56,6 +56,7 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
   run->SetName(mcEngine);              // Transport engine
+  run->SetIsMT(isMT);                  // Multi-threading mode (Geant4 only)
   run->SetOutputFile(outFile);          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
@@ -71,7 +72,10 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3")
 
   FairTutorialDet4* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
   tutdet->SetGeometryFileName("tutorial4.root"); 
-  tutdet->SetModifyGeometry(kTRUE);
+  if ( ! isMT ) {
+    // This mode does not yet work with MT
+    tutdet->SetModifyGeometry(kTRUE);
+  }
   run->AddModule(tutdet);
   // ------------------------------------------------------------------------
 

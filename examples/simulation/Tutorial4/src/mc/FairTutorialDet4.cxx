@@ -37,6 +37,8 @@
 
 #include <stdio.h>                      // for NULL, printf
 
+FairTutorialDet4Geo* FairTutorialDet4::fgGeo;   //!
+
 FairTutorialDet4::FairTutorialDet4()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
     fTrackID(-1),
@@ -85,6 +87,30 @@ FairTutorialDet4::FairTutorialDet4(const char* name, Bool_t active)
 {
 }
 
+FairTutorialDet4::FairTutorialDet4(const FairTutorialDet4& rhs)
+  : FairDetector(rhs),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fELoss(-1),
+    fFairTutorialDet4PointCollection(new TClonesArray("FairTutorialDet4Point")),
+    fGeoHandler(new FairTutorialDet4GeoHandler()),
+    fMisalignPar(NULL),
+    fNrOfDetectors(-1),
+    fShiftX(),
+    fShiftY(),
+    fShiftZ(),
+    fRotX(),
+    fRotY(),
+    fRotZ(),
+    fModifyGeometry(kFALSE),
+    fGlobalCoordinates(kFALSE)
+{
+}
+
 FairTutorialDet4::~FairTutorialDet4()
 {
   LOG(debug4)<<"Entering Destructor of FairTutorialDet4";
@@ -111,6 +137,12 @@ void FairTutorialDet4::SetParContainers()
 
 void FairTutorialDet4::Initialize()
 {
+  // Initialize sensitive volume if geometry is build from ASCII file
+  TString fileName=GetGeometryFileName();
+  if (fileName.EndsWith(".geo")) {
+    SetSensitiveVolumes();
+  }
+
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairTutorialDet4GeoPar* par=static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
@@ -213,9 +245,13 @@ void FairTutorialDet4::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
-                                        fFairTutorialDet4PointCollection, kTRUE);
-
+  if ( ! gMC->IsMT() ) {
+    FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
+                                          fFairTutorialDet4PointCollection, kTRUE);
+  } else {
+    FairRootManager::Instance()->RegisterAny("TutorialDetPoint",
+                                             fFairTutorialDet4PointCollection, kTRUE);
+  }
 }
 
 
@@ -261,38 +297,13 @@ void FairTutorialDet4::ConstructASCIIGeometry()
 
   FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  FairTutorialDet4Geo*  Geo  = new FairTutorialDet4Geo();
+  fgGeo  = new FairTutorialDet4Geo();
   LOG(debug)<<"Read Geo file "<<GetGeometryFileName();
-  Geo->setGeomFile(GetGeometryFileName());
-  geoFace->addGeoModule(Geo);
+  fgGeo->setGeomFile(GetGeometryFileName());
+  geoFace->addGeoModule(fgGeo);
 
-  Bool_t rc = geoFace->readSet(Geo);
-  if (rc) { Geo->create(geoLoad->getGeoBuilder()); }
-  TList* volList = Geo->getListOfVolumes();
-
-  // store geo parameter
-  FairRun* fRun = FairRun::Instance();
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet4GeoPar* par=static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
-  TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
-  TObjArray* fPassNodes = par->GetGeoPassiveNodes();
-
-  TListIter iter(volList);
-  FairGeoNode* node   = NULL;
-  FairGeoVolume* aVol=NULL;
-
-  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
-    aVol = dynamic_cast<FairGeoVolume*> ( node );
-    if ( node->isSensitive()  ) {
-      fSensNodes->AddLast( aVol );
-    } else {
-      fPassNodes->AddLast( aVol );
-    }
-  }
-  par->setChanged();
-  par->setInputVersion(fRun->GetRunId(),1);
-
-  ProcessNodes ( volList );
+  Bool_t rc = geoFace->readSet(fgGeo);
+  if (rc) { fgGeo->create(geoLoad->getGeoBuilder()); }
 }
 
 void FairTutorialDet4::ModifyGeometry()
@@ -433,7 +444,38 @@ FairTutorialDet4Point* FairTutorialDet4::AddHit(Int_t trackID, Int_t detID,
          time, length, eLoss);
 }
 
+FairModule* FairTutorialDet4::CloneModule() const
+{
+  return new FairTutorialDet4(*this);
+}
 
+void FairTutorialDet4::SetSensitiveVolumes()
+{
+  TList* volList = fgGeo->getListOfVolumes();
 
+  // store geo parameter
+  FairRun* fRun = FairRun::Instance();
+  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
+  FairTutorialDet4GeoPar* par=static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
+  TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
+  TObjArray* fPassNodes = par->GetGeoPassiveNodes();
+
+  TListIter iter(volList);
+  FairGeoNode* node   = NULL;
+  FairGeoVolume* aVol=NULL;
+
+  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
+    aVol = dynamic_cast<FairGeoVolume*> ( node );
+    if ( node->isSensitive()  ) {
+      fSensNodes->AddLast( aVol );
+    } else {
+      fPassNodes->AddLast( aVol );
+    }
+  }
+  par->setChanged();
+  par->setInputVersion(fRun->GetRunId(),1);
+
+  ProcessNodes ( volList );
+}
 
 ClassImp(FairTutorialDet4)

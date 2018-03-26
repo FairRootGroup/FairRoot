@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_tutorial2(Int_t nEvents = 10)
+void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT=false)
 {
   
   TString dir = getenv("VMCWORKDIR");
@@ -60,7 +60,8 @@ void run_tutorial2(Int_t nEvents = 10)
 
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
-  run->SetName("TGeant3");              // Transport engine
+  run->SetName(mcEngine);              // Transport engine
+  run->SetIsMT(isMT);                  // Multi-threading mode (Geant4 only)
   run->SetOutputFile(outFile);          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
