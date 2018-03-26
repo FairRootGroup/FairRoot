@@ -23,6 +23,7 @@
 #include "TROOT.h"                      // for TROOT, gROOT
 #include "TRefArray.h"                  // for TRefArray
 #include "TString.h"                    // for TString
+#include "TGeoManager.h"                // for gGeoManager
 #include "TVirtualMC.h"                 // for TVirtualMC
 
 #include <stddef.h>                     // for NULL
@@ -80,6 +81,22 @@ FairDetector::FairDetector()
 {
 
 }
+
+// -------------------------------------------------------------------------
+
+void FairDetector::DefineSensitiveVolumes()
+{
+  TObjArray* volumes = gGeoManager->GetListOfVolumes();
+  TIter next(volumes);
+  TGeoVolume* volume;
+  while ( ( volume = static_cast<TGeoVolume*>(next()) ) ) {
+    if ( CheckIfSensitive(volume->GetName()) ) {
+      LOG(debug2)<<"Sensitive Volume "<< volume->GetName();
+      AddSensitiveVolume(volume);
+    }
+  }
+}
+
 // -------------------------------------------------------------------------
 
 void   FairDetector::Initialize()
@@ -87,6 +104,13 @@ void   FairDetector::Initialize()
 // Registers hits collection in Root manager;
 // sets sensitive volumes.
 // ---
+
+  // Define sensitive volumes if in MT
+  if ( gMC->IsMT() ) {
+    std::cout << "Define sensitive volume " << std::endl;
+    DefineSensitiveVolumes();
+  }
+
   Int_t NoOfEntries=svList->GetEntries();
   Int_t fMCid;
   FairGeoNode* fN;

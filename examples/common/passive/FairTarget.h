@@ -19,8 +19,12 @@ class FairTarget : public FairModule
     FairTarget();
     virtual ~FairTarget();
     virtual void ConstructGeometry();
-    ClassDef(FairTarget,1)
 
+    virtual FairModule* CloneModule() const;
+
+  private:
+    FairTarget(const FairTarget& rhs);
+    ClassDef(FairTarget,1)
 };
 
 #endif //Target_H

@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4")
+void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=false)
 {
   
   TString dir = gSystem->Getenv("VMCWORKDIR");
@@ -50,6 +50,7 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4")
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
   run->SetName(mcEngine);              // Transport engine
+  run->SetIsMT(isMT);                  // Multi-threading mode (Geant4 only)
   run->SetOutputFile(outFile);          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------

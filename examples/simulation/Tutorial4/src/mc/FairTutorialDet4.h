@@ -21,6 +21,7 @@
 class FairTutorialDet4Point;
 class FairTutorialDet4GeoHandler;
 class FairTutorialDet4MisalignPar;
+class FairTutorialDet4Geo;
 class FairVolume;
 class TClonesArray;
 
@@ -95,7 +96,13 @@ class FairTutorialDet4: public FairDetector
     void SetModifyGeometry(Bool_t val) { fModifyGeometry=val; }
     void SetGlobalCoordinates(Bool_t val) { fGlobalCoordinates=val; }
 
+    virtual FairModule* CloneModule() const;
+
   private:
+    void SetSensitiveVolumes();
+
+    static FairTutorialDet4Geo* fgGeo;   //!
+
 
     /** Track information to be stored until the track leaves the
     active volume.

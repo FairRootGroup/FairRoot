@@ -38,6 +38,11 @@ FairPipe::FairPipe(const char* name, const char* title)
 {
 }
 
+FairPipe::FairPipe(const FairPipe& rhs)
+ : FairModule(rhs)
+{
+}
+
 void FairPipe::ConstructGeometry()
 {
 
@@ -216,6 +221,11 @@ void FairPipe::ConstructGeometry()
   TGeoVolume* cave = gGeoManager->GetTopVolume();
   cave->AddNode(beamPipe, 1);
 
+}
+
+FairModule* FairPipe::CloneModule() const
+{
+  return new FairPipe(*this);
 }
 
 ClassImp(FairPipe)

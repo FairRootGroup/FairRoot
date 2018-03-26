@@ -32,6 +32,8 @@
 
 #include <stddef.h>                     // for NULL
 
+FairTutorialDet1Geo* FairTutorialDet1::fgGeo = NULL;
+
 FairTutorialDet1::FairTutorialDet1()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
     fTrackID(-1),
@@ -58,6 +60,19 @@ FairTutorialDet1::FairTutorialDet1(const char* name, Bool_t active)
 {
 }
 
+FairTutorialDet1::FairTutorialDet1(const FairTutorialDet1& rhs)
+  : FairDetector(rhs),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fELoss(-1),
+    fFairTutorialDet1PointCollection(new TClonesArray("FairTutorialDet1Point"))
+{
+}
+
 FairTutorialDet1::~FairTutorialDet1()
 {
   if (fFairTutorialDet1PointCollection) {
@@ -68,6 +83,8 @@ FairTutorialDet1::~FairTutorialDet1()
 
 void FairTutorialDet1::Initialize()
 {
+  SetSensitiveVolumes();
+
   FairDetector::Initialize();
 /*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
@@ -129,9 +146,13 @@ void FairTutorialDet1::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
-                                        fFairTutorialDet1PointCollection, kTRUE);
-
+  if ( ! gMC->IsMT() ) {
+    FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
+                                          fFairTutorialDet1PointCollection, kTRUE);
+  } else {
+    FairRootManager::Instance()->RegisterAny("TutorialDetPoint",
+                                             fFairTutorialDet1PointCollection, kTRUE);
+  }
 }
 
 
@@ -154,13 +175,33 @@ void FairTutorialDet1::ConstructGeometry()
 
   FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  FairTutorialDet1Geo*  Geo  = new FairTutorialDet1Geo();
-  Geo->setGeomFile(GetGeometryFileName());
-  geoFace->addGeoModule(Geo);
+  fgGeo  = new FairTutorialDet1Geo();
+  fgGeo->setGeomFile(GetGeometryFileName());
+  geoFace->addGeoModule(fgGeo);
 
-  Bool_t rc = geoFace->readSet(Geo);
-  if (rc) { Geo->create(geoLoad->getGeoBuilder()); }
-  TList* volList = Geo->getListOfVolumes();
+  Bool_t rc = geoFace->readSet(fgGeo);
+  if (rc) { fgGeo->create(geoLoad->getGeoBuilder()); }
+}
+
+FairTutorialDet1Point* FairTutorialDet1::AddHit(Int_t trackID, Int_t detID,
+    TVector3 pos, TVector3 mom,
+    Double_t time, Double_t length,
+    Double_t eLoss)
+{
+  TClonesArray& clref = *fFairTutorialDet1PointCollection;
+  Int_t size = clref.GetEntriesFast();
+  return new(clref[size]) FairTutorialDet1Point(trackID, detID, pos, mom,
+         time, length, eLoss);
+}
+
+FairModule* FairTutorialDet1::CloneModule() const
+{
+  return new FairTutorialDet1(*this);
+}
+
+void FairTutorialDet1::SetSensitiveVolumes()
+{
+  TList* volList = fgGeo->getListOfVolumes();
 
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
@@ -187,15 +228,5 @@ void FairTutorialDet1::ConstructGeometry()
   ProcessNodes ( volList );
 }
 
-FairTutorialDet1Point* FairTutorialDet1::AddHit(Int_t trackID, Int_t detID,
-    TVector3 pos, TVector3 mom,
-    Double_t time, Double_t length,
-    Double_t eLoss)
-{
-  TClonesArray& clref = *fFairTutorialDet1PointCollection;
-  Int_t size = clref.GetEntriesFast();
-  return new(clref[size]) FairTutorialDet1Point(trackID, detID, pos, mom,
-         time, length, eLoss);
-}
 
 ClassImp(FairTutorialDet1)

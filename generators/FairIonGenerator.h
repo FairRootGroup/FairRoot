@@ -80,6 +80,8 @@ class FairIonGenerator : public FairGenerator
      **/
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
+    /** Clone this object (used in MT mode only) */
+    virtual FairGenerator* CloneGenerator() const;
 
   private:
 

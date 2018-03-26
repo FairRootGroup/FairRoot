@@ -91,6 +91,9 @@ class FairRunSim : public FairRun
     /**switch On/Off the track visualisation */
     void SetStoreTraj(Bool_t storeTraj=kTRUE) {fStoreTraj = storeTraj;}
 
+    /**Return the switch for the track visualisation */
+    Bool_t GetStoreTraj() const {return fStoreTraj;}
+
     /**switch On/Off the debug mode */
     void SetTrackingDebugMode( Bool_t set ) { if (fApp) { fApp->SetTrackingDebugMode( set ); } }
 

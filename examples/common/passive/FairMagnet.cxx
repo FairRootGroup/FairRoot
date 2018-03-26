@@ -39,6 +39,11 @@ FairMagnet::FairMagnet(const char* name, const char* Title)
 {
 }
 
+FairMagnet::FairMagnet(const FairMagnet& rhs)
+ : FairModule(rhs)
+{
+}
+
 void FairMagnet::ConstructGeometry()
 {
 
@@ -91,6 +96,11 @@ void FairMagnet::ConstructASCIIGeometry()
   ProcessNodes( volList );
   par->setChanged();
   par->setInputVersion(fRun->GetRunId(),1);
+}
+
+FairModule* FairMagnet::CloneModule() const
+{
+  return new FairMagnet(*this);
 }
 
 ClassImp(FairMagnet)

@@ -34,6 +34,8 @@
 using std::cout;
 using std::endl;
 
+FairRutherfordGeo* FairRutherford::fgGeo = NULL;
+
 FairRutherford::FairRutherford()
   : FairDetector("FairRutherford", kTRUE, kFairRutherford),
     fTrackID(-1),
@@ -60,6 +62,19 @@ FairRutherford::FairRutherford(const char* name, Bool_t active)
 {
 }
 
+FairRutherford::FairRutherford(const FairRutherford& rhs)
+  : FairDetector(rhs),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fELoss(-1),
+    fFairRutherfordPointCollection(new TClonesArray("FairRutherfordPoint"))
+{
+}
+
 FairRutherford::~FairRutherford()
 {
   if (fFairRutherfordPointCollection) {
@@ -70,6 +85,8 @@ FairRutherford::~FairRutherford()
 
 void FairRutherford::Initialize()
 {
+  SetSensitiveVolumes();
+
   FairDetector::Initialize();
 /*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
@@ -123,16 +140,19 @@ void FairRutherford::EndOfEvent()
 
 void FairRutherford::Register()
 {
-
   /** This will create a branch in the output tree called
       FairRutherfordPoint, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("FairRutherfordPoint", "FairRutherford",
-                                        fFairRutherfordPointCollection, kTRUE);
-
+  if ( ! gMC->IsMT() ) {
+    FairRootManager::Instance()->Register("FairRutherfordPoint", "FairRutherford",
+                                          fFairRutherfordPointCollection, kTRUE);
+  } else {
+    FairRootManager::Instance()->RegisterAny("FairRutherfordPoint",
+                                             fFairRutherfordPointCollection, kTRUE);
+  }
 }
 
 
@@ -155,20 +175,40 @@ void FairRutherford::ConstructGeometry()
 
   FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  FairRutherfordGeo*  Geo  = new FairRutherfordGeo();
-  Geo->setGeomFile(GetGeometryFileName());
-  geoFace->addGeoModule(Geo);
+  fgGeo  = new FairRutherfordGeo();
+  fgGeo->setGeomFile(GetGeometryFileName());
+  geoFace->addGeoModule(fgGeo);
 
-  Bool_t rc = geoFace->readSet(Geo);
-  if (rc) { Geo->create(geoLoad->getGeoBuilder()); }
-  TList* volList = Geo->getListOfVolumes();
+  Bool_t rc = geoFace->readSet(fgGeo);
+  if (rc) { fgGeo->create(geoLoad->getGeoBuilder()); }
+}
+
+FairRutherfordPoint* FairRutherford::AddHit(Int_t trackID, Int_t detID,
+    TVector3 pos, TVector3 mom,
+    Double_t time, Double_t length,
+    Double_t eLoss)
+{
+
+  TClonesArray& clref = *fFairRutherfordPointCollection;
+  Int_t size = clref.GetEntriesFast();
+  return new(clref[size]) FairRutherfordPoint(trackID, detID, pos, mom,
+         time, length, eLoss, pos.Mag(), pos.Phi(), pos.Theta());
+}
+
+FairModule* FairRutherford::CloneModule() const
+{
+  return new FairRutherford(*this);
+}
+
+void FairRutherford::SetSensitiveVolumes()
+{
+  TList* volList = fgGeo->getListOfVolumes();
 
   // store geo parameter
-  FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairRutherfordGeoPar* par=static_cast<FairRutherfordGeoPar*>(rtdb->getContainer("FairRutherfordGeoPar"));
-  TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
-  TObjArray* fPassNodes = par->GetGeoPassiveNodes();
+  TObjArray* sensNodes = par->GetGeoSensitiveNodes();
+  TObjArray* passNodes = par->GetGeoPassiveNodes();
 
   TListIter iter(volList);
   FairGeoNode* node   = NULL;
@@ -177,26 +217,15 @@ void FairRutherford::ConstructGeometry()
   while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
     if ( node->isSensitive()  ) {
-      fSensNodes->AddLast( aVol );
+      sensNodes->AddLast( aVol );
     } else {
-      fPassNodes->AddLast( aVol );
+      passNodes->AddLast( aVol );
     }
   }
   par->setChanged();
-  par->setInputVersion(fRun->GetRunId(),1);
+  par->setInputVersion(FairRun::Instance()->GetRunId(),1);
 
   ProcessNodes ( volList );
-}
-
-FairRutherfordPoint* FairRutherford::AddHit(Int_t trackID, Int_t detID,
-    TVector3 pos, TVector3 mom,
-    Double_t time, Double_t length,
-    Double_t eLoss)
-{
-  TClonesArray& clref = *fFairRutherfordPointCollection;
-  Int_t size = clref.GetEntriesFast();
-  return new(clref[size]) FairRutherfordPoint(trackID, detID, pos, mom,
-         time, length, eLoss, pos.Mag(), pos.Phi(), pos.Theta());
 }
 
 ClassImp(FairRutherford)

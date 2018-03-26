@@ -29,6 +29,8 @@
 #endif
 #include <cassert>
 
+FairTutorialDet2Geo* FairTutorialDet2::fgGeo;   //!
+
 FairTutorialDet2::FairTutorialDet2()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
     fTrackID(-1),
@@ -57,6 +59,20 @@ FairTutorialDet2::FairTutorialDet2(const char* name, Bool_t active)
 {
 }
 
+FairTutorialDet2::FairTutorialDet2(const FairTutorialDet2& rhs)
+  : FairDetector(rhs),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fELoss(-1),
+    fFairTutorialDet2PointCollection(new TClonesArray("FairTutorialDet2Point")),
+    fCustomData(new Det2PointContainer())
+{
+}
+
 FairTutorialDet2::~FairTutorialDet2()
 {
   if (fFairTutorialDet2PointCollection) {
@@ -67,6 +83,8 @@ FairTutorialDet2::~FairTutorialDet2()
 
 void FairTutorialDet2::Initialize()
 {
+  SetSensitiveVolumes();
+
   FairDetector::Initialize();
 /*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
@@ -115,7 +133,6 @@ void FairTutorialDet2::EndOfEvent()
 }
 
 
-
 void FairTutorialDet2::Register()
 {
 
@@ -125,8 +142,15 @@ void FairTutorialDet2::Register()
       only during the simulation.
   */
   auto mgr = FairRootManager::Instance();
-  mgr->Register("TutorialDetPoint", "TutorialDet",
-                 fFairTutorialDet2PointCollection, kTRUE);
+
+  if ( ! gMC->IsMT() ) {
+    mgr->Register("TutorialDetPoint", "TutorialDet",
+                  fFairTutorialDet2PointCollection, kTRUE);
+  } else {
+    mgr->RegisterAny("TutorialDetPoint",
+                     fFairTutorialDet2PointCollection, kTRUE);
+  }
+
   // example how to register any type T
   mgr->RegisterAny("TutorialCustomData", fCustomData, kTRUE);
 }
@@ -152,13 +176,37 @@ void FairTutorialDet2::ConstructGeometry()
 
   FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  FairTutorialDet2Geo*  Geo  = new FairTutorialDet2Geo();
-  Geo->setGeomFile(GetGeometryFileName());
-  geoFace->addGeoModule(Geo);
+  fgGeo  = new FairTutorialDet2Geo();
+  fgGeo->setGeomFile(GetGeometryFileName());
+  geoFace->addGeoModule(fgGeo);
 
-  Bool_t rc = geoFace->readSet(Geo);
-  if (rc) { Geo->create(geoLoad->getGeoBuilder()); }
-  TList* volList = Geo->getListOfVolumes();
+  Bool_t rc = geoFace->readSet(fgGeo);
+  if (rc) { fgGeo->create(geoLoad->getGeoBuilder()); }
+}
+
+FairTutorialDet2Point* FairTutorialDet2::AddHit(Int_t trackID, Int_t detID,
+    TVector3 pos, TVector3 mom,
+    Double_t time, Double_t length,
+    Double_t eLoss)
+{
+  TClonesArray& clref = *fFairTutorialDet2PointCollection;
+  Int_t size = clref.GetEntriesFast();
+
+  // fill this with some (meaningless) data
+  fCustomData->emplace_back(pos.X(), size);
+
+  return new(clref[size]) FairTutorialDet2Point(trackID, detID, pos, mom,
+         time, length, eLoss);
+}
+
+FairModule* FairTutorialDet2::CloneModule() const
+{
+  return new FairTutorialDet2(*this);
+}
+
+void FairTutorialDet2::SetSensitiveVolumes()
+{
+  TList* volList = fgGeo->getListOfVolumes();
 
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
@@ -183,21 +231,6 @@ void FairTutorialDet2::ConstructGeometry()
   par->setInputVersion(fRun->GetRunId(),1);
 
   ProcessNodes ( volList );
-}
-
-FairTutorialDet2Point* FairTutorialDet2::AddHit(Int_t trackID, Int_t detID,
-    TVector3 pos, TVector3 mom,
-    Double_t time, Double_t length,
-    Double_t eLoss)
-{
-  TClonesArray& clref = *fFairTutorialDet2PointCollection;
-  Int_t size = clref.GetEntriesFast();
-
-  // fill this with some (meaningless) data
-  fCustomData->emplace_back(pos.X(), size);
-  
-  return new(clref[size]) FairTutorialDet2Point(trackID, detID, pos, mom,
-         time, length, eLoss);
 }
 
 ClassImp(FairTutorialDet2)

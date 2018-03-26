@@ -17,6 +17,7 @@
 #include "TGeoTrack.h"                  // IWYU pragma: keep needed by cint
 #include "TMath.h"                      // for Pi, TwoPi
 #include "TString.h"                    // for TString
+#include "TMCtls.h"                     // for multi-threading
 
 class TClonesArray;
 class TParticle;
@@ -67,7 +68,7 @@ class FairTrajFilter
     FairTrajFilter(const FairTrajFilter&);
     FairTrajFilter& operator=(const FairTrajFilter&);
 
-    static FairTrajFilter* fgInstance;
+    static TMCThreadLocal FairTrajFilter* fgInstance;
 
     Double_t fVxMin;
     Double_t fVxMax;

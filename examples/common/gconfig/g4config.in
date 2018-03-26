@@ -38,8 +38,6 @@
 #/control/manual   
 #/control/createHTML  
 
-/run/particle/dumpCutValues
-
 # Limit max number of Cerenkov photons per step
 # (Needed as Cerenkov process does not limit step itself)
 #

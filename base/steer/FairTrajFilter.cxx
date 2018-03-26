@@ -35,7 +35,7 @@ ClassImp(FairTrajFilter)
 
 
 
-FairTrajFilter* FairTrajFilter::fgInstance = NULL;
+TMCThreadLocal FairTrajFilter* FairTrajFilter::fgInstance = NULL;
 
 FairTrajFilter* FairTrajFilter::Instance()
 {
@@ -94,8 +94,7 @@ FairTrajFilter::~FairTrajFilter()
 void FairTrajFilter::Init(TString brName, TString folderName)
 {
 
-  FairRootManager::Instance()->Register(brName.Data(), folderName.Data(), fTrackCollection, kTRUE);
-
+  FairRootManager::Instance()->RegisterAny(brName, fTrackCollection, kTRUE);
 }
 
 void FairTrajFilter::Reset()

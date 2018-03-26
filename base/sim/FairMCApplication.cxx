@@ -610,6 +610,12 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
   workerRun->SetName(fRun->GetName()); // Transport engine
   workerRun->SetOutputFileName(fRun->GetOutputFileName());
 
+  // Trajectories filter is created explicitly as we do not call
+  // FairRunSim::Init on workers
+  if ( fRun->GetStoreTraj() ) {
+    new FairTrajFilter();
+  }
+
   // Create new  FairMCApplication object on worker
   FairMCApplication* workerApplication = new FairMCApplication(*this);
   workerApplication->SetGenerator(fEvGen->ClonePrimaryGenerator());
@@ -1048,10 +1054,6 @@ void FairMCApplication::InitGeometry()
   fMCEventHeader->SetRunID(runId);
   if (fRootManager) {
     fMCEventHeader->Register();
-  }
-
-  if(NULL !=fRadGridMan) {
-    fRadGridMan->Init();
   }
 
   if(fEvGen) {

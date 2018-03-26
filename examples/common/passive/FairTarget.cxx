@@ -35,6 +35,12 @@ FairTarget::FairTarget(const char* name,  const char* title)
   : FairModule(name ,title)
 {
 }
+
+FairTarget::FairTarget(const FairTarget& rhs)
+ : FairModule(rhs)
+{
+}
+
 void FairTarget::ConstructGeometry()
 {
   FairGeoLoader* loader=FairGeoLoader::Instance();
@@ -70,6 +76,12 @@ void FairTarget::ConstructGeometry()
   par->setInputVersion(fRun->GetRunId(),1);
 
 }
+
+FairModule* FairTarget::CloneModule() const
+{
+  return new FairTarget(*this);
+}
+
 ClassImp(FairTarget)
 
 

@@ -15,6 +15,7 @@
 #include "TVector3.h"                   // for TVector3
 
 class FairTutorialDet1Point;
+class FairTutorialDet1Geo;
 class FairVolume;
 class TClonesArray;
 
@@ -80,8 +81,12 @@ class FairTutorialDet1: public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
+    virtual FairModule* CloneModule() const;
 
   private:
+    void SetSensitiveVolumes();
+
+    static FairTutorialDet1Geo* fgGeo;   //!
 
     /** Track information to be stored until the track leaves the
     active volume.

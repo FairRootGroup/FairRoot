@@ -15,6 +15,7 @@
 #include "TVector3.h"                   // for TVector3
 
 class FairRutherfordPoint;
+class FairRutherfordGeo;
 class FairVolume;
 class TClonesArray;
 
@@ -80,10 +81,14 @@ class FairRutherford: public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
+    virtual FairModule* CloneModule() const;
 
   private:
+    void SetSensitiveVolumes();
 
-    /** Track information to be stored until the track leaves the
+    static FairRutherfordGeo* fgGeo;   //!
+
+   /** Track information to be stored until the track leaves the
     active volume.
     */
     Int_t          fTrackID;           //!  track index
