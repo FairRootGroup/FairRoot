@@ -12,6 +12,7 @@
  * @author M. Al-Turany, A. Rybalchenko
  */
 
+#include "TGeoManager.h"
 #include "TMessage.h"
 #include "TClass.h"
 #include "Rtypes.h"
@@ -194,6 +195,8 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
 
 bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
 {
+  gGeoManager = NULL; // FairGeoParSet update deletes previous geometry because of resetting gGeoManager, so let's NULL it
+
   LOG(DEBUG) << "got process update message!";
   ParMQTMessage tm(update->GetData(), update->GetSize());
 
