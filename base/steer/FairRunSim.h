@@ -158,6 +158,9 @@ class FairRunSim : public FairRun
     void SetIsMT(Bool_t isMT) { fIsMT = isMT; }
     Bool_t IsMT() const { return fIsMT; }
 
+    void SetImportTGeoToVMC(Bool_t v) { fImportTGeoToVMC = v; }
+    Bool_t IsImportTGeoToVMC() const { return fImportTGeoToVMC; }
+    
   private:
     FairRunSim(const FairRunSim& M);
     FairRunSim& operator= (const  FairRunSim&) {return *this;}
@@ -191,7 +194,7 @@ class FairRunSim : public FairRun
     TString                fUserConfig; //!                        /** Macro for geant configuration*/
     TString                fUserCuts; //!                          /** Macro for geant cuts*/
     Bool_t                 fIsMT; //!                              /** MT mode option (Geant4 only)*/
-
+    Bool_t                 fImportTGeoToVMC; //!                   /** Allow importing TGeometry to VMC */
     std::function<void()>    fSimSetup; //!         /** A user provided function to do sim setup / instead of using macros **/ 
     bool                     fUseSimSetupFunction = false;
     
