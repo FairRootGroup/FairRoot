@@ -974,7 +974,13 @@ void FairMCApplication::ConstructGeometry()
                << "This almost certainly means inconsistent lookup structures used in simulation/stepping.\n";
   }
   
-  TVirtualMC::GetMC()->SetRootGeometry();         // notify VMC about Root geometry
+  if (fRun->IsImportTGeoToVMC() ) {
+    TVirtualMC::GetMC()->SetRootGeometry();         // notify VMC about Root geometry
+    LOG(info) << "TGeometry will be imported to VMC" << "\n";
+  }
+  else {
+    LOG(info) << "TGeometry will not be imported to VMC" << "\n";
+  }
   Int_t Counter=0;
   TDatabasePDG* pdgDatabase = TDatabasePDG::Instance();
   const THashList *list=pdgDatabase->ParticleList();

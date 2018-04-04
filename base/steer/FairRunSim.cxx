@@ -73,7 +73,8 @@ FairRunSim::FairRunSim(Bool_t isMaster)
    fMeshList( new TObjArray() ),
    fUserConfig(""),
    fUserCuts("SetCuts.C"),
-   fIsMT(kFALSE)
+   fIsMT(kFALSE),
+   fImportTGeoToVMC(kTRUE)
 
 {
   if (fginstance) {
