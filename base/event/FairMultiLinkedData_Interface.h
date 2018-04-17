@@ -70,7 +70,7 @@ class FairMultiLinkedData_Interface : public  TObject
 		return out;
     }                                                     ///< Output
 
-    friend std::ostream& operator<< (std::ostream& out, FairMultiLinkedData_Interface& data) {
+    friend std::ostream& operator<< (std::ostream& out, const FairMultiLinkedData_Interface& data) {
       data.PrintLinkInfo(out);
       return out;
     }                                                     ///< Output

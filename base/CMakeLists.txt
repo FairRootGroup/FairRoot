@@ -118,6 +118,7 @@ event/FairRecoEventHeader.cxx
 event/FairRunInfo.cxx
 event/FairTimeStamp.cxx
 event/FairTrackParam.cxx
+event/FairPrintFairLinks.cxx
 
 field/FairField.cxx
 field/FairFieldFactory.cxx

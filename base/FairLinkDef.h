@@ -68,6 +68,7 @@
 #pragma link C++ class FairRingSorterTask;
 #pragma link C++ class FairAnaSelector+;
 #pragma link C++ class FairLinkManager+;
+#pragma link C++ class FairPrintFairLinks;
 
 
 #pragma link C++ class FairRunOnline;
