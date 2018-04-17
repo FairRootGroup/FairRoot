@@ -11,8 +11,6 @@
 
 set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/fairmq/options
   ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
   ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src
   ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src/devices
@@ -110,7 +108,7 @@ Set(DEPENDENCIES
     GeoBase
     ParBase
     MCStack
-    FairMQ 
+    FairMQ::FairMQ
     BaseMQ 
     Gen
     Passive

@@ -15,7 +15,7 @@
 #ifndef BASE_FAIRLOGGER_H_
 #define BASE_FAIRLOGGER_H_
 
-#include <Logger.h>
+#include <fairlogger/Logger.h>
 
 #include "Rtypes.h" // for bool, FairLogger::Class, etc
 

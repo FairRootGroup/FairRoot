@@ -2,7 +2,7 @@
 
 exRegionConfig="@CMAKE_BINARY_DIR@/bin/config/ex-region.json"
 msgSize="1000000"
-SESSION="$(@CMAKE_BINARY_DIR@/bin/uuidGen -h)"
+SESSION="$(@FairMQ_BINDIR@/uuidGen -h)"
 
 # setup a trap to kill everything if the test fails/timeouts
 trap 'kill -TERM $SAMPLER_PID; kill -TERM $SINK_PID; wait $SAMPLER_PID; wait $SINK_PID; @CMAKE_BINARY_DIR@/bin/shmmonitor --cleanup --session $SESSION' TERM

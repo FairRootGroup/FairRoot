@@ -19,7 +19,7 @@
 #include "FairMQExample6Sampler.h"
 #include "FairMQPoller.h"
 #include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
+#include <options/FairMQProgOptions.h>
 
 using namespace std;
 

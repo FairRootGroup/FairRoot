@@ -11,10 +11,8 @@ configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Region/startMQExRegion.sh.i
 configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Region/testMQExRegion.sh.in ${CMAKE_BINARY_DIR}/bin/examples/advanced/Region/testMQExRegion.sh)
 
 Set(INCLUDE_DIRECTORIES
-  ${CMAKE_SOURCE_DIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/fairmq/devices
-  ${CMAKE_SOURCE_DIR}/fairmq/tools
-  ${CMAKE_SOURCE_DIR}/fairmq/options
+  ${FairMQ_INCDIR}
+  ${FairMQ_INCDIR}/fairmq
   ${CMAKE_SOURCE_DIR}/examples/advanced/Region
   ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -40,7 +38,7 @@ Set(SRCS
 
 Set(DEPENDENCIES
   ${DEPENDENCIES}
-  FairMQ
+  FairMQ::FairMQ
 )
 
 Set(LIBRARY_NAME FairMQExampleRegion)

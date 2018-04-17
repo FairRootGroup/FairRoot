@@ -19,7 +19,7 @@
 
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
-#include "FairMQProgOptions.h"
+#include <options/FairMQProgOptions.h>
 
 #include "FairSource.h"
 #include "FairFileSource.h"

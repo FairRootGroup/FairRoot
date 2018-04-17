@@ -17,7 +17,7 @@
 
 #include "FairMQEx9FileSinkBin.h"
 #include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
+#include <options/FairMQProgOptions.h>
 
 #include "TMessage.h"
 #include "TVector3.h"

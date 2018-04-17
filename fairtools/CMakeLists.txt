@@ -10,8 +10,8 @@
 # The extension is already found.  Any number of sources could be listed here.
 
 Set(INCLUDE_DIRECTORIES
- ${CMAKE_SOURCE_DIR}/logger
  ${CMAKE_SOURCE_DIR}/fairtools
+ ${FairLogger_INCDIR}
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -37,6 +37,6 @@ set(SRCS
 Set(HEADERS )
 Set(LINKDEF FairToolsLinkDef.h)
 Set(LIBRARY_NAME FairTools)
-Set(DEPENDENCIES Logger Core Graf Gpad)
+Set(DEPENDENCIES FairLogger::FairLogger Core Graf Gpad)
 
 GENERATE_LIBRARY()

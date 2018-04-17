@@ -9,10 +9,8 @@
 
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/fairmq
-    ${CMAKE_SOURCE_DIR}/fairmq/devices
-    ${CMAKE_SOURCE_DIR}/fairmq/options
-    ${CMAKE_SOURCE_DIR}/fairmq/tools
+    ${FairMQ_INCDIR}
+    ${FairMQ_INCDIR}/fairmq
     ${CMAKE_SOURCE_DIR}/base/MQ
     ${CMAKE_SOURCE_DIR}/base/MQ/devices
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Sampler
@@ -101,7 +99,7 @@ set(LIBRARY_NAME SerializationExample)
 
 set(DEPENDENCIES
     Base
-    FairMQ
+    FairMQ::FairMQ
     BaseMQ
     ${Boost_THREAD_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}

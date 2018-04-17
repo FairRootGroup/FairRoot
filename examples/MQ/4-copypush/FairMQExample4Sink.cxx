@@ -14,7 +14,7 @@
 
 #include "FairMQExample4Sink.h"
 #include "FairMQLogger.h"
-#include "FairMQProgOptions.h" // device->fConfig
+#include <options/FairMQProgOptions.h> // device->fConfig
 
 #include <stdint.h> // uint64_t
 

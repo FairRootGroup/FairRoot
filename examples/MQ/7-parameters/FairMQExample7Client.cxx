@@ -18,7 +18,7 @@
 #include "FairMQLogger.h"
 #include "FairMQExample7Client.h"
 #include "FairMQExample7ParOne.h"
-#include "FairMQProgOptions.h"
+#include <options/FairMQProgOptions.h>
 
 #include "TMessage.h"
 #include "Rtypes.h"

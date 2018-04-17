@@ -11,18 +11,12 @@ configure_file(${CMAKE_SOURCE_DIR}/parmq/parameter-server.json ${CMAKE_BINARY_DI
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/parmq
-  ${CMAKE_SOURCE_DIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/fairmq/zeromq
-  ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
-  ${CMAKE_SOURCE_DIR}/fairmq/tools
-  ${CMAKE_SOURCE_DIR}/fairmq/options
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
   ${SYSTEM_INCLUDE_DIRECTORIES}
   ${Boost_INCLUDE_DIR}
-  ${ZeroMQ_INCLUDE_DIR}
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})
@@ -43,7 +37,7 @@ Set(DEPENDENCIES
   ${DEPENDENCIES}
   Base
   ParBase
-  FairMQ
+  FairMQ::FairMQ
   ${Boost_THREAD_LIBRARY}
   ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )

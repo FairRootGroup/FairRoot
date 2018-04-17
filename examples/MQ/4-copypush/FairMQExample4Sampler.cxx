@@ -17,7 +17,7 @@
 
 #include "FairMQExample4Sampler.h"
 #include "FairMQLogger.h"
-#include "FairMQProgOptions.h" // device->fConfig
+#include <options/FairMQProgOptions.h> // device->fConfig
 
 using namespace std;
 

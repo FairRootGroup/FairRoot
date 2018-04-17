@@ -11,12 +11,8 @@
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/fairmq/zeromq
-  ${CMAKE_SOURCE_DIR}/fairmq/nanomsg
-  ${CMAKE_SOURCE_DIR}/fairmq/devices
-  ${CMAKE_SOURCE_DIR}/fairmq/tools
-  ${CMAKE_SOURCE_DIR}/fairmq/options
+  ${FairMQ_INCDIR}
+  ${FairMQ_INCDIR}/fairmq
   ${CMAKE_SOURCE_DIR}/base/MQ
   ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
   ${CMAKE_SOURCE_DIR}/base/MQ/devices
@@ -68,7 +64,7 @@ EndIf(FLATBUFFERS_FOUND)
 Include_Directories(${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-If (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
+If (FairMQ_FOUND)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3Three.sh.in
                  ${CMAKE_BINARY_DIR}/bin/examples/advanced/Tutorial3/startMQTut3Three.sh)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/startMQTut3All.sh.in
@@ -90,7 +86,7 @@ If (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
                  ${CMAKE_BINARY_DIR}/bin/config/tut3-push-pull.json)
   configure_file(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run/tut3-three.json
                  ${CMAKE_BINARY_DIR}/bin/config/tut3-three.json)
-EndIf (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
+EndIf ()
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
@@ -127,7 +123,7 @@ Set(SRCS
   timeBasedSimulation/FairTestDetectorTimeRecoTask.cxx
 )
 
-If (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
+If (FairMQ_FOUND)
   Set(SRCS
     ${SRCS}
     data/FairTestDetectorDigi.cxx
@@ -178,14 +174,14 @@ If (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
       ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h
     )
   EndIf(FLATBUFFERS_FOUND)
-EndIf (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
+EndIf ()
 
 Set(LINKDEF FairTestDetectorLinkDef.h)
 Set(LIBRARY_NAME FairTestDetector)
 
-If (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
+If (FairMQ_FOUND)
   Set(DEPENDENCIES
-    Base MCStack FairMQ BaseMQ
+    Base MCStack FairMQ::FairMQ BaseMQ
     ${Boost_THREAD_LIBRARY}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_SERIALIZATION_LIBRARY}
@@ -198,12 +194,12 @@ If (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
       ${PROTOBUF_LIBRARY}
     )
   Endif(PROTOBUF_FOUND)
-Else (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
+Else ()
   Set(DEPENDENCIES
     Base
     MCStack
   )
-EndIf (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
+EndIf ()
 
 if(MSGPACK_FOUND)
   Set(DEPENDENCIES
@@ -216,7 +212,7 @@ GENERATE_LIBRARY()
 
 Add_Subdirectory(macro)
 
-If (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
+If (FairMQ_FOUND)
   Set(Exe_Names
     tut3-sampler
     tut3-processor
@@ -243,4 +239,4 @@ If (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
     Set(DEPENDENCIES FairTestDetector)
     GENERATE_EXECUTABLE()
   EndForEach(_file RANGE 0 ${_length})
-EndIf (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND)
+EndIf ()
