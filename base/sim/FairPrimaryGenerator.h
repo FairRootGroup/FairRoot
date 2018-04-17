@@ -64,6 +64,8 @@ public:
     fGenList->Add(generator);
   }
 
+  void SetEventNr(Int_t evtNr) { fEventNr = evtNr; }
+
   /** Public method GenerateEvent
       To be called at the beginning of each event from FairMCApplication.
       Generates an event vertex and calls the ReadEvent methods from the

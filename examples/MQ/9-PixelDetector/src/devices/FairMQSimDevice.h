@@ -63,6 +63,7 @@ class FairMQSimDevice : public FairMQDevice
     virtual bool ConditionalRun();
 
  private:
+    UInt_t fSimDeviceId;
     std::string fUpdateChannelName;
 
     FairRunSim*     fRunSim;

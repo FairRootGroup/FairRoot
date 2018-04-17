@@ -42,8 +42,20 @@
 
 using namespace std;
 
+// special class to expose protected TMessage constructor
+class SimMQTMessage : public TMessage
+{
+  public:
+  SimMQTMessage(void* buf, Int_t len)
+    : TMessage(buf, len)
+  {
+    ResetBit(kIsOwner);
+  }
+};
+
 FairMQSimDevice::FairMQSimDevice()
   : FairMQDevice()
+  , fSimDeviceId(0)
   , fUpdateChannelName("updateChannel")
   , fRunSim(NULL)
   , fNofEvents(1)
@@ -97,8 +109,38 @@ void FairMQSimDevice::InitTask()
   }
   // ------------------------------------------------------------------------
 
+  // -----   Negotiate the run number   -------------------------------------
+  // -----      via the fUpdateChannelName   --------------------------------
+  // -----      ask the fParamMQServer   ------------------------------------
+  // -----      receive the run number and sampler id   ---------------------
+  std::string* askForRunNumber = new string("ReportSimDevice");
+  FairMQMessagePtr req(NewMessage(const_cast<char*>(askForRunNumber->c_str()),
+                                  askForRunNumber->length(),
+                                  [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                                  askForRunNumber));
+  std::unique_ptr<FairMQMessage> rep(NewMessage());
+
+  unsigned int runId = 0;
+  if (Send(req, fUpdateChannelName) > 0)
+      {
+          if (Receive(rep, fUpdateChannelName) > 0)
+              {
+                  std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
+                  LOG(INFO) << " -> " << repString.data();
+                  runId = stoi(repString);
+                  repString = repString.substr(repString.find_first_of('_')+1,repString.length());
+                  fSimDeviceId = stoi(repString);
+                  LOG(INFO) << "runId = " << runId << "  ///  fSimDeviceId = " << fSimDeviceId;
+              }
+      }
+  // ------------------------------------------------------------------------
+
+  // ------------------------------------------------------------------------
   if ( fPrimaryGenerator )
-    fRunSim->SetGenerator(fPrimaryGenerator);
+      {
+          fPrimaryGenerator->SetEventNr(fSimDeviceId*fNofEvents); // run n simulations with same run id - offset the event number
+          fRunSim->SetGenerator(fPrimaryGenerator);
+      }
   // ------------------------------------------------------------------------
 
   fRunSim->SetStoreTraj(fStoreTrajFlag);
@@ -110,8 +152,9 @@ void FairMQSimDevice::InitTask()
     }
   }
   // ------------------------------------------------------------------------
-  
+
   // -----   Initialize simulation run   ------------------------------------
+  fRunSim->SetRunId(runId); // run n simulations with same run id - offset the event number
   fRunSim->Init();
   // ------------------------------------------------------------------------
 
@@ -123,9 +166,10 @@ void FairMQSimDevice::PreRun()
 
 bool FairMQSimDevice::ConditionalRun()
 {
-  UpdateParameterServer();
-  fRunSim->Run(fNofEvents);
-  return false;
+    if ( fSimDeviceId == 0 )
+        UpdateParameterServer();
+    fRunSim->Run(fNofEvents);
+    return false;
 }
 
 void FairMQSimDevice::UpdateParameterServer()
@@ -163,7 +207,7 @@ void FairMQSimDevice::SendObject(TObject* obj, std::string chan) {
       if (Receive(rep, chan) > 0)
         {
           std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
-          printf (" -> %s\n",repString.data());
+          LOG(INFO) << " -> " << repString.data();
         }
     }
 }

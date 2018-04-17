@@ -58,6 +58,8 @@ class ParameterMQServer : public FairMQDevice
 
   private:
     FairRuntimeDb* fRtdb;
+    int            fRunId;
+    int            fNofSimDevices;
 
     std::string fFirstInputName;
     std::string fFirstInputType;
