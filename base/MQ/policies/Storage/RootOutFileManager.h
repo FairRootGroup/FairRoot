@@ -27,7 +27,7 @@
 // FairRoot
 #include "FairLogger.h"
 #include "FairMQMessage.h"
-#include "FairMQProgOptions.h"
+#include <options/FairMQProgOptions.h>
 
 
 template <typename DataType>

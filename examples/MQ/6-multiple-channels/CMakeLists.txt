@@ -11,10 +11,8 @@ configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/6-multiple-channels/startMQEx6.sh
 configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/6-multiple-channels/testMQEx6.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/6-multiple-channels/testMQEx6.sh)
 
 set(INCLUDE_DIRECTORIES
-  ${CMAKE_SOURCE_DIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/fairmq/devices
-  ${CMAKE_SOURCE_DIR}/fairmq/tools
-  ${CMAKE_SOURCE_DIR}/fairmq/options
+  ${FairMQ_INCDIR}
+  ${FairMQ_INCDIR}/fairmq
   ${CMAKE_SOURCE_DIR}/examples/MQ/6-multiple-channels
   ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -41,7 +39,7 @@ set(SRCS
 
 set(DEPENDENCIES
   ${DEPENDENCIES}
-  FairMQ
+  FairMQ::FairMQ
 )
 
 set(LIBRARY_NAME FairMQExample6)

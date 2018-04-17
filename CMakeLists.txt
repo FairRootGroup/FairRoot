@@ -39,8 +39,6 @@ SET(FAIRROOT_PATCH_VERSION 02)
 # This also sets ${FAIRROOT_VERSION} to the provided VERSION value, which would be empty if not set here explicitly
 project(FAIRROOT VERSION ${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION})
 
-option(BUILD_OFI_TRANSPORT "Build FairMQ OFI transport" OFF)
-
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
@@ -84,9 +82,6 @@ include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
-
-# COmpile TIme REducer helper
-include(cotire)
 
 #Check the compiler and set the compile and link flags
 Check_Compiler()
@@ -158,8 +153,13 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
+if(SIMPATH)
+  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
+endif()
+
 # FairRoot only supports ROOT6, so check which version is available
 find_package(ROOT 6.10.00 REQUIRED)
+find_package(FairLogger 1.0.6 REQUIRED)
 find_package(Pythia6)
 find_package(Pythia8)
 
@@ -235,15 +235,6 @@ endif(FAIRROOT_MODULAR_BUILD)
 
 find_package(CUDA)
 find_package(IWYU)
-find_package(ZeroMQ 4.1.3)
-find_package(nanomsg)
-if(SIMPATH)
-  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
-endif()
-find_package(Protobuf)
-find_package(Msgpack)
-find_package(FlatBuffers)
-find_package(DDS)
 if(NOT DISABLE_GO)
   find_package(Go 1.7)
 endif()
@@ -251,8 +242,10 @@ find_package(GSL)
 if(NOT DEFINED GTEST_ROOT)
   set(GTEST_ROOT ${SIMPATH})
 endif()
-find_package(GTest)
-
+find_package(FairMQ 1.1.7)
+# find_package(Protobuf)
+# find_package(msgpack)
+# find_package(FlatBuffers)
 
 If(WITH_DBASE)
   find_package(MYSQL)
@@ -309,9 +302,6 @@ Else()
   )
 EndIf()
 
-if(BUILD_OFI_TRANSPORT)
-  find_package(OFI REQUIRED COMPONENTS fi_sockets)
-endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
 
@@ -337,7 +327,6 @@ EndIf()
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
-add_subdirectory (logger)
 add_subdirectory (fairtools)
 add_subdirectory (base)
 If(WITH_DBASE)
@@ -355,13 +344,11 @@ EndIf ()
 add_subdirectory (MbsAPI)
 add_subdirectory (datamatch)
 
-If (Boost_FOUND AND POS_C++11 AND ZeroMQ_FOUND AND HAS_CXX11_PATTERN1)
-  Message(STATUS "Required C++11 feature(s), boost and ZeroMQ libraries found. FairMQ will be built.")
-  add_subdirectory (fairmq)
+If (FairMQ_FOUND)
   add_subdirectory (base/MQ)
   add_subdirectory (parmq)
 Else ()
-  Message(STATUS "Building of the FairMQ library is switched off due to at least one of the following reasons : one or more C++11 feature(s), ZeroMQ or the necessary boost libraries couldn't be found on the system.")
+  Message(STATUS "base/MQ and parmq will not be built, because FairMQ was not found.")
 EndIf ()
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)

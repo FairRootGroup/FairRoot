@@ -13,10 +13,8 @@ configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters/mqexample7_param.roo
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/fairmq/devices
-  ${CMAKE_SOURCE_DIR}/fairmq/tools
-  ${CMAKE_SOURCE_DIR}/fairmq/options
+  ${FairMQ_INCDIR}
+  ${FairMQ_INCDIR}/fairmq
   ${CMAKE_SOURCE_DIR}/examples/MQ/7-parameters
   ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -48,7 +46,7 @@ Set(NO_DICT_SRCS
 
 set(DEPENDENCIES
   ${DEPENDENCIES}
-  FairMQ
+  FairMQ::FairMQ
   Base
   MCStack
 )

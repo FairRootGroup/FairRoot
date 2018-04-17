@@ -14,7 +14,7 @@
 
 #include "FairMQExampleRegionSampler.h"
 #include "FairMQLogger.h"
-#include "FairMQProgOptions.h" // device->fConfig
+#include <options/FairMQProgOptions.h> // device->fConfig
 
 #include <thread>
 #include <atomic>

@@ -11,10 +11,8 @@ configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/5-req-rep/startMQEx5.sh.in ${CMAK
 configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/5-req-rep/testMQEx5.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/5-req-rep/testMQEx5.sh)
 
 set(INCLUDE_DIRECTORIES
-  ${CMAKE_SOURCE_DIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/fairmq/devices
-  ${CMAKE_SOURCE_DIR}/fairmq/tools
-  ${CMAKE_SOURCE_DIR}/fairmq/options
+  ${FairMQ_INCDIR}
+  ${FairMQ_INCDIR}/fairmq
   ${CMAKE_SOURCE_DIR}/examples/MQ/5-req-rep
   ${CMAKE_CURRENT_BINARY_DIR}
 )
@@ -40,7 +38,7 @@ set(SRCS
 
 set(DEPENDENCIES
   ${DEPENDENCIES}
-  FairMQ
+  FairMQ::FairMQ
 )
 
 set(LIBRARY_NAME FairMQExample5)

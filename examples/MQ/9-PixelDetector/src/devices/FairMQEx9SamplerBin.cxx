@@ -14,7 +14,7 @@
 
 #include "FairMQEx9SamplerBin.h"
 #include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
+#include <options/FairMQProgOptions.h>
 
 #include "FairMQMessage.h"
 #include "TMessage.h"

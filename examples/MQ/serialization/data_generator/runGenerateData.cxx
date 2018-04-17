@@ -28,7 +28,7 @@
 // FairRoot
 #include <options/FairMQProgOptions.h>
 #include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
+#include <options/FairMQProgOptions.h>
 #include "RootOutFileManager.h"
 
 // FairRoot - Tutorial 7

@@ -18,7 +18,7 @@
 #include "FairMQExample8Sampler.h"
 #include "FairMQEx8Header.h"
 #include "FairMQLogger.h"
-#include "FairMQProgOptions.h"
+#include <options/FairMQProgOptions.h>
 
 using namespace std;
 

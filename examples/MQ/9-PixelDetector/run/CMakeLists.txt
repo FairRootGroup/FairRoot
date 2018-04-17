@@ -18,10 +18,6 @@ Set_Tests_Properties(ex9_static PROPERTIES PASS_REGULAR_EXPRESSION "Shell script
 
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/fairmq
-    ${CMAKE_SOURCE_DIR}/fairmq/devices
-    ${CMAKE_SOURCE_DIR}/fairmq/options
-    ${CMAKE_SOURCE_DIR}/fairmq/tools
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Sampler
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage

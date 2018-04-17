@@ -11,8 +11,6 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/MQ
   ${CMAKE_SOURCE_DIR}/base/MQ/devices
   ${CMAKE_SOURCE_DIR}/base/MQ/tasks
-  ${CMAKE_SOURCE_DIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/fairmq/options
   ${CMAKE_SOURCE_DIR}/MbsAPI
 )
 
@@ -69,7 +67,7 @@ set(DEPENDENCIES
   ${Boost_TIMER_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_FILESYSTEM_LIBRARY}
-  FairMQ
+  FairMQ::FairMQ
 )
 
 set(LIBRARY_NAME BaseMQ)

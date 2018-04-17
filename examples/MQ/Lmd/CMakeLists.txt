@@ -8,9 +8,8 @@
 
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/fairmq
-    ${CMAKE_SOURCE_DIR}/fairmq/options
-    ${CMAKE_SOURCE_DIR}/fairmq/tools
+    ${FairMQ_INCDIR}
+    ${FairMQ_INCDIR}/fairmq
 
     ${CMAKE_SOURCE_DIR}/base/MQ/devices
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
@@ -57,7 +56,7 @@ Set(SRCS
 )
 
 Set(DEPENDENCIES
-    Base MbsAPI MbsTutorial FairMQ
+  Base MbsAPI MbsTutorial FairMQ::FairMQ
 )
 
 Set(LINKDEF LmdLinkDef.h)
@@ -89,7 +88,7 @@ ForEach(_file RANGE 0 ${_length})
     Set(EXE_NAME ${_name})
     Set(SRCS ${_src})
     Set(DEPENDENCIES
-        FairMQ
+        FairMQ::FairMQ
         BaseMQ
         ${Boost_THREAD_LIBRARY}
         ${Boost_SYSTEM_LIBRARY}
