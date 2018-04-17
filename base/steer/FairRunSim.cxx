@@ -166,9 +166,11 @@ void FairRunSim::Init()
   fApp->SetGenerator(fGen);
 
   // Add a Generated run ID to the FairRunTimeDb
-  FairRunIdGenerator genid;
-  // FairRuntimeDb *rtdb= GetRuntimeDb();
-  fRunId = genid.generateId();
+  if ( fRunId == 0 ) {
+      FairRunIdGenerator genid;
+      // FairRuntimeDb *rtdb= GetRuntimeDb();
+      fRunId = genid.generateId();
+  }
   fRtdb->addRun(fRunId);
 
   fFileHeader->SetRunId(fRunId);

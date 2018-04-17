@@ -21,6 +21,7 @@
 #include "FairParAsciiFileIo.h"
 #include "FairParRootFileIo.h"
 #include "FairParGenericSet.h"
+#include "FairRunIdGenerator.h"
 
 #include "ParameterMQServer.h"
 #include "FairMQLogger.h"
@@ -41,6 +42,8 @@ class ParMQTMessage : public TMessage
 
 ParameterMQServer::ParameterMQServer() :
     fRtdb(FairRuntimeDb::instance()),
+    fRunId(0),
+    fNofSimDevices(0),
     fFirstInputName("first_input.root"),
     fFirstInputType("ROOT"),
     fSecondInputName(""),
@@ -195,56 +198,72 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
 
 bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
 {
-  gGeoManager = NULL; // FairGeoParSet update deletes previous geometry because of resetting gGeoManager, so let's NULL it
+    gGeoManager = NULL; // FairGeoParSet update deletes previous geometry because of resetting gGeoManager, so let's NULL it
 
-  LOG(DEBUG) << "got process update message!";
-  ParMQTMessage tm(update->GetData(), update->GetSize());
+    std::string* text;
 
-  std::string* text;
+    LOG(DEBUG) << "got process update message with size = " << update->GetSize() << " !";
+    if ( update->GetSize() < 20 )
+        {
+            std::string repString = string(static_cast<char*>(update->GetData()), update->GetSize());
+            LOG(INFO) << "Received string " << repString << " !";
+            if ( fNofSimDevices == 0 ) {
+                FairRunIdGenerator genid;
+                fRunId = genid.generateId();
+            }
+            string messageToSend = to_string(fRunId) + "_" + to_string(fNofSimDevices);
+            text = new string(messageToSend);
+            fNofSimDevices += 1;
+            LOG(INFO) << "Replying with \"" << messageToSend << "\"";
+        }
+    else
+        {
+            ParMQTMessage tm(update->GetData(), update->GetSize());
 
-  // get the run id coded in the description of FairParSet
-  FairParGenericSet* newPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());
-  std::string parDescr = std::string(newPar->getDescription());
-  uint runId = 0;
-  if ( parDescr.find("RUNID") != std::string::npos )
-    {
-      parDescr.erase(0,parDescr.find("RUNID")+5);
-      runId = atoi(parDescr.data());
-      if ( parDescr.find("RUNID") != std::string::npos )
-        parDescr.erase(0,parDescr.find("RUNID")+5);
-    }
-  fRtdb->initContainers(runId);
+            // get the run id coded in the description of FairParSet
+            FairParGenericSet* newPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());
+            std::string parDescr = std::string(newPar->getDescription());
+            uint runId = 0;
+            if ( parDescr.find("RUNID") != std::string::npos )
+                {
+                    parDescr.erase(0,parDescr.find("RUNID")+5);
+                    runId = atoi(parDescr.data());
+                    if ( parDescr.find("RUNID") != std::string::npos )
+                        parDescr.erase(0,parDescr.find("RUNID")+5);
+                }
+            fRtdb->initContainers(runId);
 
-  newPar->setChanged(true); // trigger writing to file
-  newPar->setStatic(true); // to get rid of error
-  newPar->Print();
+            newPar->setChanged(true); // trigger writing to file
+            newPar->setStatic(true); // to get rid of error
+            newPar->Print();
 
-  if ( fRtdb->addContainer(newPar) )
-    {
-      text = new string("SUCCESS");
-    }
-  else
-    {
-      text = new string("FAIL");
-    }
+            if ( fRtdb->addContainer(newPar) )
+                {
+                    text = new string("SUCCESS");
+                }
+            else
+                {
+                    text = new string("FAIL");
+                }
 
-  Bool_t kParameterMerged = kTRUE;
-  FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
-  parOut->open(fOutputName.data());
-  fRtdb->setOutput(parOut);
-  fRtdb->saveOutput();
-  fRtdb->closeOutput();
+            Bool_t kParameterMerged = kTRUE;
+            FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
+            parOut->open(fOutputName.data());
+            fRtdb->setOutput(parOut);
+            fRtdb->saveOutput();
+            fRtdb->closeOutput();
+        }
 
-  FairMQMessagePtr msg(NewMessage(const_cast<char*>(text->c_str()),
-                                  text->length(),
-                                  [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
-                                  text));
+    FairMQMessagePtr msg(NewMessage(const_cast<char*>(text->c_str()),
+                                    text->length(),
+                                    [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                                    text));
 
-  if (Send(msg, fUpdateChannelName) < 0)
-    {
-      return false;
-    }
-  return true;
+    if (Send(msg, fUpdateChannelName) < 0)
+        {
+            return false;
+        }
+    return true;
 }
 
 ParameterMQServer::~ParameterMQServer()
