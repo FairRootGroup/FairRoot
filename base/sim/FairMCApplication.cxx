@@ -114,6 +114,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    listDetectors(),
    fMC(NULL),
    fRun(NULL),
+   fSaveCurrentEvent(kTRUE),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -203,6 +204,7 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
    listDetectors(),
    fMC(NULL),
    fRun(NULL),
+   fSaveCurrentEvent(kTRUE),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -293,6 +295,7 @@ FairMCApplication::FairMCApplication()
    listActiveDetectors(),
    listDetectors(),
    fMC(NULL),
+   fSaveCurrentEvent(kTRUE),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -828,8 +831,12 @@ void FairMCApplication::FinishEvent()
   }
     
     
-  if (fRootManager) fRootManager->Fill();
-  
+  if (fRootManager && fSaveCurrentEvent) {
+    fRootManager->Fill();
+  } else {
+    fSaveCurrentEvent = kTRUE;
+  }
+
   for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
         listIter != listActiveDetectors.end();
         listIter++)
