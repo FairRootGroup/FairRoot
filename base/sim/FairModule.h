@@ -129,6 +129,9 @@ class FairModule:  public TNamed
     TString             fMotherVolumeName; //!
     FairVolume*   getFairVolume(FairGeoNode* fNode);
     void    AddSensitiveVolume(TGeoVolume* v);
+    /// Special/custom setting of processes and cuts for modules and certain media
+    // \note moved here from FairDetector
+    virtual void   SetSpecialPhysicsCuts() {;}
   private:
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */
     void SetDefaultMatrixName(TGeoMatrix* matrix);
