@@ -1033,15 +1033,44 @@ void FairMCApplication::InitGeometry()
   // if(fEvGen)fEvGen->Init();
 
   /** Initialize the detectors.    */
-  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
+  /*for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
        listIter != listActiveDetectors.end();
        listIter++)
   {
     (*listIter)->Initialize();
     (*listIter)->SetSpecialPhysicsCuts();
     (*listIter)->Register();
-  }  
+  } */ 
     
+  /** SetSpecialPhysicsCuts for passive FairModules */
+  // for convenience, move detector initialization here for now
+  FairModule* module;
+  FairDetector* detector;
+  TObject* obj;
+  fModIter->Reset();
+  LOG(INFO) << "FairModule::SetSpecialPhysicsCuts() called for all FairModules";
+  while((obj=fModIter->Next())) {
+    detector=dynamic_cast<FairDetector*>(obj);
+    module=dynamic_cast<FairModule*>(obj);
+    // check first if we have a FairDetector
+    if(detector) {
+      // is that active? that corresponds then to the properties of detectors in FairMCApplication::listActiveDetectors
+      if(detector->IsActive()) {
+        detector->Initialize();
+        detector->SetSpecialPhysicsCuts();
+        detector->Register();
+      }
+    }
+    // if not a FairDetector, maybe it's just a FairModule where we still want to apply SetSpecialPhysicsCuts
+    else if(module)
+    {
+      module->SetSpecialPhysicsCuts();
+    }
+  }
+  // reset fModIter for further use
+  fModIter->Reset();
+
+
   /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the tree*/
   /// There is always a Main Task  !
   /// so .. always a InitTasks() is called <D.B>
