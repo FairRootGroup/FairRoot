@@ -1,0 +1,54 @@
+# Executables
+*.exe
+*.out
+*.app
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.ko
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+*.lib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+# CTest
+Testing/
+
+# build directory & data directory
+
+build/
+examples/advanced/Tutorial3/macro/data/*
+!examples/advanced/Tutorial3/macro/data/dummy.txt
+examples/MQ/serialization/data_io/*
+!examples/MQ/serialization/data_io/README.md
+examples/MQ/LmdSampler/datasource/*
+!examples/MQ/LmdSampler/datasource/README.md
+examples/MQ/9-PixelDetector/macros/*.root
+examples/MQ/9-PixelDetector/macros/*.dat
+core_dump*
+gphysi.dat
+FairRunInfo_*
+html/
+
+# diverse
+.DS_Store
+
+#editor tmp files
+.*.swp
