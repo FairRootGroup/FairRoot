@@ -45,7 +45,6 @@ examples/MQ/9-PixelDetector/macros/*.dat
 core_dump*
 gphysi.dat
 FairRunInfo_*
-html/
 
 # diverse
 .DS_Store
