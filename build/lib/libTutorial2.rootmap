@@ -1,9 +1,0 @@
-[ Tutorial2.dylib ]
-# List of selected classes
-class FairTutorialDet2
-class FairTutorialDet2ContFact
-class FairTutorialDet2DigiPar
-class FairTutorialDet2Digitizer
-class FairTutorialDet2Geo
-class FairTutorialDet2GeoPar
-class FairTutorialDet2Point

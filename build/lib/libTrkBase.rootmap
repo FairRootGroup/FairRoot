@@ -1,6 +1,0 @@
-[ TrkBase.dylib ]
-# List of selected classes
-class FairGeaneUtil
-class FairTrackPar
-class FairTrackParH
-class FairTrackParP

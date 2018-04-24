@@ -1,7 +1,0 @@
-[ FairRutherford.dylib ]
-# List of selected classes
-class FairRutherford
-class FairRutherfordContFact
-class FairRutherfordGeo
-class FairRutherfordGeoPar
-class FairRutherfordPoint

@@ -1,7 +1,0 @@
-[ Tutorial1.dylib ]
-# List of selected classes
-class FairTutorialDet1
-class FairTutorialDet1ContFact
-class FairTutorialDet1Geo
-class FairTutorialDet1GeoPar
-class FairTutorialDet1Point
