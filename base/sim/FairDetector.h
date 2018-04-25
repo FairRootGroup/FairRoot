@@ -94,10 +94,6 @@ class FairDetector : public FairModule
     virtual void   FinishEvent() {
       ;
     }
-    // \note moved to FairModule
-    /*virtual void   SetSpecialPhysicsCuts() {
-      ;
-    }*/
     void SaveGeoParams();
     Int_t  GetDetId() {
       return fDetId;

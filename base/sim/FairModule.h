@@ -76,6 +76,9 @@ class FairModule:  public TNamed
     virtual void        ModifyGeometry() {;}
     /**construct geometry from GDML files*/
     virtual void        ConstructGDMLGeometry(TGeoMatrix*);
+    /** custom settings of processes and cuts for media to be forwarded to the 
+     ** detector simulation */
+    virtual void        SetSpecialPhysicsCuts() {;}
     /** Clone this object (used in MT mode only)*/
     virtual FairModule* CloneModule() const;
     /** Init worker run (used in MT mode only) */
@@ -129,9 +132,6 @@ class FairModule:  public TNamed
     TString             fMotherVolumeName; //!
     FairVolume*   getFairVolume(FairGeoNode* fNode);
     void    AddSensitiveVolume(TGeoVolume* v);
-    /// Special/custom setting of processes and cuts for modules and certain media
-    // \note moved here from FairDetector
-    virtual void   SetSpecialPhysicsCuts() {;}
   private:
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */
     void SetDefaultMatrixName(TGeoMatrix* matrix);
