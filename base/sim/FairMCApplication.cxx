@@ -1039,18 +1039,15 @@ void FairMCApplication::InitGeometry()
   while((obj=fModIter->Next())) {
     detector=dynamic_cast<FairDetector*>(obj);
     module=dynamic_cast<FairModule*>(obj);
-    // check first if we have a FairDetector
+    if(module) {
+      module->SetSpecialPhysicsCuts();
+    }
     if(detector) {
       // check whether detector is active 
       if(detector->IsActive()) {
         detector->Initialize();
-        detector->SetSpecialPhysicsCuts();
         detector->Register();
       }
-    }
-    // if not a FairDetector, maybe it's just a FairModule where SetSpecialPhysicsCuts should still be applied
-    else if(module) {
-      module->SetSpecialPhysicsCuts();
     }
   }
   fModIter->Reset();
