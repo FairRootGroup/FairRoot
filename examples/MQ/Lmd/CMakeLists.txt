@@ -42,13 +42,6 @@ set(LINK_DIRECTORIES
     ${Boost_LIBRARY_DIRS}
 )
 
-if(DDS_PATH)
-  set(LINK_DIRECTORIES
-    ${LINK_DIRECTORIES}
-    ${DDS_PATH}/lib
-  )
-endif(DDS_PATH)
-
 link_directories(${LINK_DIRECTORIES})
 
 Set(SRCS

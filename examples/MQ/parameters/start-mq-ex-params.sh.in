@@ -1,0 +1,13 @@
+#!/bin/bash
+
+CLIENT="ex-params-client"
+CLIENT+=" --id parmq-client"
+CLIENT+=" --channel-config name=data,type=req,method=connect,address=tcp://localhost:5005,rateLogging=0"
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/parameters/$CLIENT &
+
+PARAMETERSERVER="parmq-server"
+PARAMETERSERVER+=" --id parmq-server"
+PARAMETERSERVER+=" --channel-name data"
+PARAMETERSERVER+=" --channel-config name=data,type=rep,method=bind,rateLogging=0,address=tcp://*:5005"
+PARAMETERSERVER+=" --first-input-name @CMAKE_BINARY_DIR@/examples/MQ/parameters/mq_ex_params.root"
+xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PARAMETERSERVER &
