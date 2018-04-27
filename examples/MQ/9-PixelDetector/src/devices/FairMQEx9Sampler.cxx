@@ -128,19 +128,20 @@ void FairMQEx9Sampler::PostRun()
 void FairMQEx9Sampler::ListenForAcks()
 {
   if (fAckChannelName != "")
-  {
-    Long64_t numAcks = 0;
-    for (Long64_t eventNr = 0; eventNr < fMaxIndex; ++eventNr)
-    {
-      unique_ptr<FairMQMessage> ack(NewMessage());
-      if (Receive(ack, fAckChannelName))
       {
-        numAcks++;
+          Long64_t numAcks = 0;
+          do
+              {
+                  unique_ptr<FairMQMessage> ack(NewMessage());
+                  if (Receive(ack, fAckChannelName) >= 0)
+                      {
+                          numAcks++;
+                      }
+              }
+          while (numAcks < fMaxIndex);
+          
+          LOG(info) << "Acknowledged " << numAcks << " messages.";
       }
-    }
-
-    LOG(info) << "Acknowledged " << numAcks << " messages.";
-  }
 }
 
 FairMQEx9Sampler::~FairMQEx9Sampler()

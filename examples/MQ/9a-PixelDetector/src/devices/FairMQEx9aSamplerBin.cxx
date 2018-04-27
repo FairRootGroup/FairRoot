@@ -250,18 +250,19 @@ void FairMQEx9aSamplerBin::PostRun()
 void FairMQEx9aSamplerBin::ListenForAcks()
 {
   if (fAckChannelName != "")
-  {
-    for (long int i = 0; i < fMaxIndex / fAggregateLevel ; ++i)
-    {
-      FairMQMessagePtr ack(NewMessage());
-      if (Receive(ack, fAckChannelName) >= 0)
       {
-        fNofRecAcks++;
+          do
+              {
+                  FairMQMessagePtr ack(NewMessage());
+                  if (Receive(ack, fAckChannelName) >= 0)
+                      {
+                          fNofRecAcks++;
+                      }
+              }
+          while (fNofRecAcks < fMaxIndex/fAggregateLevel);
+          
+          LOG(info) << "Acknowledged " << fNofRecAcks << " messages (" << fAggregateLevel << " events each) out of " << fMaxIndex << " events.";
       }
-    }
-
-    LOG(info) << "Acknowledged " << fNofRecAcks << " messages (" << fAggregateLevel << " events each) out of " << fMaxIndex << " events.";
-  }
 }
 
 FairMQEx9aSamplerBin::~FairMQEx9aSamplerBin()
