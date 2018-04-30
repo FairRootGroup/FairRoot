@@ -35,6 +35,8 @@ void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
 			 outDir.Data(),
 			 mcEngine.Data());
 
+  TString geoFile = outDir + "geofile_urqmd_" + mcEngine + "_full.root";
+
   // In general, the following parts need not be touched
   // ========================================================================
 
@@ -94,7 +96,7 @@ void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
    
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
-//  run->CreateGeometryFile("geofile_full.root");
+  run->CreateGeometryFile(geoFile);
   // ------------------------------------------------------------------------
   
   // -----   Finish   -------------------------------------------------------

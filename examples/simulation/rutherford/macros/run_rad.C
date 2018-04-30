@@ -21,6 +21,9 @@ void run_rad(Int_t nEvents = 100, TString mcEngine="TGeant3")
   TString outFile = outDir + "/test1_";
   outFile = outFile + mcEngine + ".mc.root";
 
+  TString geoFile = outDir + "/geofile_rad_";
+  geoFile = geoFile + mcEngine + "_full.root";
+
   TString parFile = outDir + "/params1_";    
   parFile = parFile + mcEngine + ".root";   
 
@@ -122,7 +125,7 @@ void run_rad(Int_t nEvents = 100, TString mcEngine="TGeant3")
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
   // ------------------------------------------------------------------------
-  run->CreateGeometryFile("data/geofile_full.root");
+  run->CreateGeometryFile(geoFile);
   
   // -----   Finish   -------------------------------------------------------
 

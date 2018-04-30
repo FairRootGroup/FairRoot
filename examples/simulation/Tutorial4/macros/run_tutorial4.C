@@ -26,6 +26,9 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
   TString  outFile     ="testrun_";
   outFile = outFile + mcEngine + ".root";
 
+  TString geoFile ="data/geoFile_" + mcEngine + "_full.root";
+  TString geoFileMisaligned ="data/geoFile_" + mcEngine + "_full_misaligned.root";
+
   TString  parFile     ="testparams_";
   parFile = parFile + mcEngine + ".root";
   
@@ -132,9 +135,9 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
 
    
   // -----   Start run   ----------------------------------------------------
-  run->CreateGeometryFile("data/geofile_full_misaligned.root");
+  run->CreateGeometryFile(geoFileMisaligned);
   run->Run(nEvents);
-  run->CreateGeometryFile("data/geofile_full.root");
+  run->CreateGeometryFile(geoFile);
   // ------------------------------------------------------------------------
   
   rtdb->saveOutput();

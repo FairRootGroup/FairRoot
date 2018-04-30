@@ -47,6 +47,8 @@ void run_tutorial1_pythia8(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 			 theta,
 			 nEvents);
 
+  TString geoFile = outDir + "geofile_pythia8_" + mcEngine + "_full.root";
+
   // In general, the following parts need not be touched
   // ========================================================================
 
@@ -114,7 +116,7 @@ void run_tutorial1_pythia8(Int_t nEvents = 10, TString mcEngine = "TGeant3")
    
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
-  run->CreateGeometryFile("geofile_full.root");
+  run->CreateGeometryFile(geoFile);
   // ------------------------------------------------------------------------
   
   // -----   Finish   -------------------------------------------------------

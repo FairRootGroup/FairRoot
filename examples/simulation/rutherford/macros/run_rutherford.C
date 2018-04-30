@@ -21,6 +21,9 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
   TString outFile = outDir + "/test_";
   outFile = outFile + mcEngine + ".mc.root";
 
+  TString geoFile = outDir + "/geofile_rutherford_";
+  geoFile = geoFile + mcEngine + "_full.root";
+
   TString parFile = outDir + "/params_";
   parFile = parFile + mcEngine + ".root";
    
@@ -129,7 +132,7 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
   // ------------------------------------------------------------------------
-  run->CreateGeometryFile("data/geofile_full.root");
+  run->CreateGeometryFile(geoFile);
   
   // -----   Finish   -------------------------------------------------------
 
