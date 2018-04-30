@@ -33,6 +33,9 @@ void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
   TString outFile = "data/testrun_";
   outFile = outFile + mcEngine + ".root";
 
+  TString geoFile = "data/geofile_";
+  geoFile = geoFile + mcEngine + "_full.root";
+
   TString parFile = "data/testparams_";
   parFile = parFile + mcEngine + ".root";
 
@@ -120,7 +123,7 @@ void run_sim(Int_t nEvents=100, TString mcEngine="TGeant3")
   //  Int_t nEvents = 1;
   fRun->Run(nEvents);
 
-  fRun->CreateGeometryFile("data/geofile_full.root");
+  fRun->CreateGeometryFile(geoFile);
 
   // -----   Finish   -------------------------------------------------------
 

@@ -45,6 +45,8 @@ void run_tutorial1(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
 			 theta,
 			 nEvents);
 
+  TString geoFile = "geofile_" + mcEngine + "_full.root";
+
   // In general, the following parts need not be touched
   // ========================================================================
 
@@ -111,7 +113,7 @@ void run_tutorial1(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
    
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
-  run->CreateGeometryFile("geofile_full.root");
+  run->CreateGeometryFile(geoFile);
   // ------------------------------------------------------------------------
   
   // -----   Finish   -------------------------------------------------------
