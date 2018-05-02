@@ -27,6 +27,33 @@ class FairLogger;
 
 #define MESSAGE_ORIGIN __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
 
+// backwards-compatibility with older FairLogger calls, TODO: delete me as soon as possible
+enum FairLogLevel
+{
+    FATAL,
+    ERROR,
+    WARNING,
+    INFO,
+    DEBUG,
+    DEBUG1,
+    DEBUG2,
+    DEBUG3,
+    DEBUG4
+};
+
+// backwards-compatibility with older FairLogger calls, TODO: delete me as soon as possible
+static const char* const LogLevelString[] = {
+    "FATAL",
+    "ERROR",
+    "WARNING",
+    "INFO",
+    "DEBUG",
+    "DEBUG1",
+    "DEBUG2",
+    "DEBUG3",
+    "DEBUG4"
+};
+
 class FairLogger
 {
   public:
@@ -85,6 +112,7 @@ class FairLogger
     }
 
     bool IsLogNeeded(fair::Severity severity);
+    bool IsLogNeeded(FairLogLevel level);
 
     void Fatal  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
     void Error  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
@@ -113,6 +141,8 @@ class FairLogger
     ~FairLogger() {}
 
     void Log(fair::Severity level, const char* file, const char* line, const char*, const char* format, va_list arglist);
+
+    const char* ConvertLogLevelToString(FairLogLevel level) const { return LogLevelString[level]; }
 
     static void LogFatalMessage();
 

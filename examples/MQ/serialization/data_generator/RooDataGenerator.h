@@ -160,7 +160,7 @@ class MultiVariatePDF
 
     void Init(double t_start)
     {
-        RooMsgService::instance().setGlobalKillBelow(ERROR);
+        RooMsgService::instance().setGlobalKillBelow(MsgLevel::ERROR);
         TDatime* time = new TDatime();
         int seed = time->GetTime();
         delete time;
