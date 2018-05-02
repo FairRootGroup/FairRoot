@@ -159,7 +159,7 @@ endif()
 
 # FairRoot only supports ROOT6, so check which version is available
 find_package(ROOT 6.10.00 REQUIRED)
-find_package(FairLogger 1.0.6 REQUIRED)
+find_package(FairLogger 1.1.0 REQUIRED)
 find_package(Pythia6)
 find_package(Pythia8)
 
