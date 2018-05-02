@@ -11,6 +11,7 @@
 
 set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
+  ${FairMQ_INCDIR}/fairmq/options
   ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
   ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src
   ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src/devices
