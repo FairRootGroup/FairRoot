@@ -50,7 +50,7 @@ SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/dat
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams_$mcEngine.root"
 xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$SAMPLER &
 
-SPLITTER="splitter"
+SPLITTER="fairmq-splitter"
 SPLITTER+=" --id splitter"
 SPLITTER+=" --severity debug"
 SPLITTER+=" --in-channel data1"
@@ -85,7 +85,7 @@ PROCESSOR3+=" --mq-config $tut3cfg"
 PROCESSOR3+=" --data-format $dataFormat"
 xterm -geometry 80x23+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR3 &
 
-MERGER="merger"
+MERGER="fairmq-merger"
 MERGER+=" --id merger"
 MERGER+=" --severity debug"
 MERGER+=" --in-channel data3"
