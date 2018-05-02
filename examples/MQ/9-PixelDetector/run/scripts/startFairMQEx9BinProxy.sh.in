@@ -90,7 +90,7 @@ SAMPLER2+=" --file-name $INPUTFILE2 --branch-name EventHeader. --branch-name $IN
 xterm -geometry 80x24+0+0 -hold -e @EXAMPLE9_BIN_LOCATION@/$SAMPLER2 &
 
 ########################## start PROXY SAMPLER
-PROXYS="proxy $TRANSPORT"
+PROXYS="fairmq-proxy $TRANSPORT"
 PROXYS+=" --id proxysampler --mq-config $MQCONFIGFILE"
 xterm -geometry 80x24+0+0 -hold -e @FAIRROOT_BIN_LOCATION@/$PROXYS &
 
@@ -122,7 +122,7 @@ PROCESSOR5+=" --id processor5 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
 xterm -geometry 80x24+1000+350 -hold -e @EXAMPLE9_BIN_LOCATION@/$PROCESSOR5 &
 
 ########################## start PROXY SAMPLER
-PROXYF="proxy $TRANSPORT"
+PROXYF="fairmq-proxy $TRANSPORT"
 PROXYF+=" --id proxysink --mq-config $MQCONFIGFILE"
 xterm -geometry 80x24+0+700 -hold -e @FAIRROOT_BIN_LOCATION@/$PROXYF &
 

@@ -50,7 +50,7 @@ SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro
 SAMPLER+=" --mq-config $tut3cfg"
 xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$SAMPLER &
 
-PROXY1="proxy"
+PROXY1="fairmq-proxy"
 PROXY1+=" --id proxy1"
 PROXY1+=" --severity debug"
 PROXY1+=" --in-channel data1"
@@ -88,7 +88,7 @@ PROCESSOR3+=" --mq-config $tut3cfg"
 PROCESSOR3+=" --config-key processor"
 xterm -geometry 80x23+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR3 &
 
-PROXY2="proxy"
+PROXY2="fairmq-proxy"
 PROXY2+=" --id proxy2"
 PROXY2+=" --severity debug"
 PROXY2+=" --in-channel data3"
