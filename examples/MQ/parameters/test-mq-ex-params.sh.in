@@ -18,6 +18,7 @@ PARAMETERSERVER="parmq-server"
 PARAMETERSERVER+=" --id parmq-server"
 PARAMETERSERVER+=" --verbosity veryhigh"
 PARAMETERSERVER+=" --control static --color false"
+PARAMETERSERVER+=" --channel-name data"
 PARAMETERSERVER+=" --channel-config name=data,type=rep,method=bind,rateLogging=0,address=tcp://*:5005"
 PARAMETERSERVER+=" --first-input-name @CMAKE_BINARY_DIR@/examples/MQ/parameters/mq_ex_params.root"
 @CMAKE_BINARY_DIR@/bin/$PARAMETERSERVER &
