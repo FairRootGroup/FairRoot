@@ -56,6 +56,7 @@ FairGeanePro::FairGeanePro()
     fvpf(TVector3(0., 0., 0.)),
     fvwi(TVector3(0., 0., 0.)),
     ftrklength(0.),
+    ftrktime(0.),
     flag(0),
     fApp(FairGeaneApplication::Instance()),
     fPrintErrors(kTRUE)
@@ -361,6 +362,8 @@ Bool_t FairGeanePro::Propagate(Int_t PDG)
 
   ftrklength=gMC3->TrackLength();
 
+  ftrktime=gMC3->TrackTime();
+
   Double_t trasp[25];
   for(int i = 0; i < 25; i++) {
     //       trasp[i] = afErtrio->ertrsp[i]; // single precision tr. mat.
@@ -495,6 +498,7 @@ Bool_t FairGeanePro::PropagateToPCA(Int_t pca)
   fvpf = TVector3(0.,0.,0.);
   fvwi = TVector3(0.,0.,0.);
   ftrklength = 0;
+  ftrktime = 0;
   return kTRUE;
 }
 
@@ -512,6 +516,7 @@ Bool_t FairGeanePro::PropagateToPCA(Int_t pca, Int_t dir)
   fvpf = TVector3(0.,0.,0.);
   fvwi = TVector3(0.,0.,0.);
   ftrklength = 0;
+  ftrktime = 0;
   return kTRUE;
 }
 
@@ -530,6 +535,7 @@ Bool_t FairGeanePro::ActualFindPCA(Int_t pca, FairTrackParP* par, Int_t dir)
   fvpf = TVector3(0.,0.,0.);
   fvwi = TVector3(0.,0.,0.);
   ftrklength = 0;
+  ftrktime = 0;
   for(Int_t i=0; i<15; i++) { ein[i]=0.00; }
   return kTRUE;
 }
@@ -546,6 +552,7 @@ Bool_t FairGeanePro::BackTrackToVertex()
   fvpf = TVector3(0.,0.,0.);
   fvwi = TVector3(0.,0.,0.);
   ftrklength = 0;
+  ftrktime = 0;
   return kTRUE;
 }
 
@@ -561,6 +568,7 @@ Bool_t FairGeanePro::PropagateToVirtualPlaneAtPCA(Int_t pca)
   fvpf = TVector3(0.,0.,0.);
   fvwi = TVector3(0.,0.,0.);
   ftrklength = 0;
+  ftrktime = 0;
   return kTRUE;
 }
 
@@ -576,6 +584,7 @@ Bool_t FairGeanePro::BackTrackToVirtualPlaneAtPCA(Int_t pca)
   fvpf = TVector3(0.,0.,0.);
   fvwi = TVector3(0.,0.,0.);
   ftrklength = 0;
+  ftrktime = 0;
   return kTRUE;
 }
 
