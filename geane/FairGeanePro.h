@@ -65,6 +65,7 @@ class FairGeanePro : public TNamed
     TVector3 GetPCAOnWire() { return fvwi; }
     TVector3 GetPCAOnTrack() { return fvpf; }
     Float_t GetLengthAtPCA() { return ftrklength; }
+    Float_t GetTimeAtPCA() { return ftrktime; }
     Bool_t PropagateToVirtualPlaneAtPCA(Int_t pca);
     Bool_t BackTrackToVertex();
     Bool_t BackTrackToVirtualPlaneAtPCA(Int_t pca);
@@ -113,6 +114,7 @@ class FairGeanePro : public TNamed
     Double_t fRad, fDi;
     TVector3 fvpf, fvwi;
     Float_t ftrklength;
+    Float_t ftrktime;
     Int_t flag;
     FairGeaneApplication* fApp;
     Double_t trpmat[5][5];
