@@ -123,6 +123,7 @@ event/FairPrintFairLinks.cxx
 
 field/FairField.cxx
 field/FairFieldFactory.cxx
+field/FairPropagator.cxx
 field/FairRKPropagator.cxx
 
 source/FairSource.cxx

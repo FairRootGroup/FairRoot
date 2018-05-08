@@ -57,6 +57,7 @@
 #pragma link C++ class FairRadGridManager+;
 #pragma link C++ class FairRadMapManager+;
 #pragma link C++ class FairMesh+;
+#pragma link C++ class FairPropagator+;
 #pragma link C++ class FairRKPropagator+;
 #pragma link C++ class FairTimeStamp+;
 #pragma link C++ class FairRadMapPoint+;

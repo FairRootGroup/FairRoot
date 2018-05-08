@@ -8,20 +8,18 @@
 /**
 * Runge-Kutte Track propagator
 * @author M. Al-Turany
-* @version 0.1
+* @version 0.2
 * @since 22.1.10
 */
 
 #ifndef RKPropagator
 #define RKPropagator
 
-#include "TObject.h"                    // for TObject
-
-#include "Rtypes.h"                     // for Double_t, etc
+#include "FairPropagator.h"
 
 class FairField;
 
-class FairRKPropagator : public TObject
+class FairRKPropagator : public FairPropagator
 {
 
   private:
@@ -53,7 +51,7 @@ class FairRKPropagator : public TObject
     void PropagatToPlane(Double_t Charge, Double_t* vecRKIn, Double_t* vec1, Double_t* vec2, Double_t* vec3, Double_t* vecOut);
 
     virtual ~FairRKPropagator();
-    ClassDef(FairRKPropagator, 1);
+    ClassDef(FairRKPropagator, 2);
 
 };
 
