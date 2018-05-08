@@ -37,7 +37,7 @@ class FairRKPropagator : public FairPropagator
     @vecRKIn   Initial co-ords,direction cosines,momentum
     @vecOut    Output co-ords,direction cosines,momentum
     */
-    void Propagat(Double_t Charge, Double_t* vecRKIn, Double_t* Pos);
+    void Propagate(Double_t Charge, Double_t* vecRKIn, Double_t* Pos);
 
     /**Propagate to closest approach of a plane
     @CHARGE    Particle charge
@@ -48,7 +48,7 @@ class FairRKPropagator : public FairPropagator
     @vecOut    Output co-ords,direction cosines,momentum
     */
 
-    void PropagatToPlane(Double_t Charge, Double_t* vecRKIn, Double_t* vec1, Double_t* vec2, Double_t* vec3, Double_t* vecOut);
+    void PropagateToPlane(Double_t Charge, Double_t* vecRKIn, Double_t* vec1, Double_t* vec2, Double_t* vec3, Double_t* vecOut);
 
     virtual ~FairRKPropagator();
     ClassDef(FairRKPropagator, 2);

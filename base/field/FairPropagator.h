@@ -31,7 +31,7 @@ public:
      @vecRKIn   Initial co-ords,direction cosines,momentum
      @vecOut    Output co-ords,direction cosines,momentum
      */
-    virtual void Propagat(Double_t Charge, Double_t* vecRKIn, Double_t* Pos) = 0;
+    virtual void Propagate(Double_t Charge, Double_t* vecRKIn, Double_t* Pos) = 0;
     
     /**Propagate to closest approach of a plane
      @CHARGE    Particle charge
@@ -41,7 +41,7 @@ public:
      @vec3      point on the plane
      @vecOut    Output co-ords,direction cosines,momentum
      */
-    virtual void PropagatToPlane(Double_t Charge, Double_t* vecRKIn, Double_t* vec1, Double_t* vec2, Double_t* vec3, Double_t* vecOut) = 0;
+    virtual void PropagateToPlane(Double_t Charge, Double_t* vecRKIn, Double_t* vec1, Double_t* vec2, Double_t* vec3, Double_t* vecOut) = 0;
     
     ClassDef(FairPropagator, 0)
 };

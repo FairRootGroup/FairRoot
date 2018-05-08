@@ -29,7 +29,7 @@ FairRKPropagator::~FairRKPropagator()
   // Destructor.
 }
 //______________________________________________________________________________
-void FairRKPropagator::PropagatToPlane(Double_t Charge, Double_t* vecRKIn, Double_t* vec1, Double_t* vec2, Double_t* vec3, Double_t* vecOut)
+void FairRKPropagator::PropagateToPlane(Double_t Charge, Double_t* vecRKIn, Double_t* vec1, Double_t* vec2, Double_t* vec3, Double_t* vecOut)
 {
   /**
   vec1 & vec2 are vectors on the plane
@@ -102,7 +102,7 @@ void FairRKPropagator::PropagatToPlane(Double_t Charge, Double_t* vecRKIn, Doubl
   }
 }
 //______________________________________________________________________________
-void FairRKPropagator::Propagat(Double_t Charge, Double_t* vecRKIn, Double_t* Pos)
+void FairRKPropagator::Propagate(Double_t Charge, Double_t* vecRKIn, Double_t* Pos)
 {
   Double_t diff = Pos[2] - vecRKIn[2];
   fMaxStep = diff/25;
