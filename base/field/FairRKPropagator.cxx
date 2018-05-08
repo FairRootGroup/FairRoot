@@ -18,8 +18,7 @@ ClassImp(FairRKPropagator);
 
 //______________________________________________________________________________
 FairRKPropagator::FairRKPropagator(FairField* field)
-  : TObject(),
-    fMaxStep(10.0),
+:   fMaxStep(10.0),
     fMagField (field)
 {
   //  fMaxStep=10.0;
