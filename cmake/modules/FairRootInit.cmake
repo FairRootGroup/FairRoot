@@ -57,14 +57,14 @@ function(get_fairroot_version)
   cmake_parse_arguments(ARGS "" "DEFAULT_VERSION;DEFAULT_DATE" "" ${ARGN})
 
   if(GIT_FOUND AND EXISTS ${CMAKE_SOURCE_DIR}/.git)
-      execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --dirty --match "v-*"
+      execute_process(COMMAND ${GIT_EXECUTABLE} describe --tags --dirty --match "v*"
       OUTPUT_VARIABLE FAIRROOT_GIT_VERSION
       OUTPUT_STRIP_TRAILING_WHITESPACE
       WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
     if(FAIRROOT_GIT_VERSION)
       # cut first two characters "v-"
-      string(SUBSTRING ${FAIRROOT_GIT_VERSION} 2 -1 FAIRROOT_GIT_VERSION)
+      string(SUBSTRING ${FAIRROOT_GIT_VERSION} 1 -1 FAIRROOT_GIT_VERSION)
     endif()
     execute_process(COMMAND ${GIT_EXECUTABLE} log -1 --format=%cd
       OUTPUT_VARIABLE FAIRROOT_GIT_DATE
