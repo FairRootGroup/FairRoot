@@ -593,6 +593,7 @@ void FairModule::ExpandNode(TGeoNode* fN)
       LOG(debug2)<<"Sensitive Volume "<< v->GetName();
       AddSensitiveVolume(v);
     }
+    v->GetShape()->AfterStreamer();
   }
 }
 
