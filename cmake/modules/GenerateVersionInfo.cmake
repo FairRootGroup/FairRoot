@@ -11,7 +11,7 @@
  Find_Package(Git)
 
  If(GIT_FOUND AND EXISTS "${SOURCE_DIR}/.git")
-   Execute_Process(COMMAND ${GIT_EXECUTABLE} describe
+   Execute_Process(COMMAND ${GIT_EXECUTABLE} describe --tags
                    OUTPUT_VARIABLE FAIRROOT_GIT_VERSION
                    OUTPUT_STRIP_TRAILING_WHITESPACE
                    WORKING_DIRECTORY ${SOURCE_DIR}
