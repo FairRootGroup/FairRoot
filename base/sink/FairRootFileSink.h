@@ -46,7 +46,7 @@ public:
     virtual void        FillEventHeader(FairEventHeader* feh);
 
     virtual TFile*      OpenRootFile(TString fileName="");
-    const TFile*        GetRootFile (){return fRootFile;}
+    TFile*              GetRootFile (){return fRootFile;}
     virtual TString     GetFileName (){return (fRootFile?fRootFile->GetName():"");}
 
     virtual void        SetOutTree(TTree* fTree) { fOutTree=fTree;}
