@@ -156,4 +156,15 @@ void FairRun::SetOutputFileName(const TString& name) {
 }
 //_____________________________________________________________________________
 
+//_____________________________________________________________________________
+TFile* FairRun::GetOutputFile()
+{
+  LOG(WARNING) << "FairRun::GetOutputFile() deprecated. Use FairRootFileSink.";
+  auto sink = GetSink();
+  assert(sink->GetSinkType() == kFILESINK);
+  auto rootFileSink = static_cast<FairRootFileSink*>(sink);
+  return rootFileSink->GetRootFile();
+}
+//_____________________________________________________________________________
+
 ClassImp(FairRun)

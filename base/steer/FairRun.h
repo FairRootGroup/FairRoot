@@ -166,6 +166,7 @@ class FairRun : public TNamed
      * Set the  output file name without creating the file
      */
     void SetOutputFileName(const TString& name);
+    TFile* GetOutputFile();
     // ^^^^^^^^^^ depracted functions, replaced by FairSink ^^^^^^^^^^
 
   private:
