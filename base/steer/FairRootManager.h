@@ -251,6 +251,10 @@ class FairRootManager : public TObject
     Int_t  GetInstanceId() const { return fId; }
     void   UpdateSinkFileName();
 
+    // vvvvvvvvvv depracted functions, replaced by FairSink vvvvvvvvvv
+    /** Return a pointer to the output File of type TFile */
+    TFile* GetOutFile();
+    // ^^^^^^^^^^ depracted functions, replaced by FairSink ^^^^^^^^^^
   private:
 
     // helper struct since std::pair has problems with type_info

@@ -1093,4 +1093,15 @@ void FairRootManager::UpdateSinkFileName()
 }
 //_____________________________________________________________________________
 
+//_____________________________________________________________________________
+TFile* FairRootManager::GetOutFile()
+{
+  LOG(WARNING) << "FairRootManager::GetOutFile() deprecated. Use separate file to store additional data.";
+  auto sink = GetSink();
+  assert(sink->GetSinkType() == kFILESINK);
+  auto rootFileSink = static_cast<FairRootFileSink*>(sink);
+  return rootFileSink->GetRootFile();
+}
+//_____________________________________________________________________________
+
 ClassImp(FairRootManager)
