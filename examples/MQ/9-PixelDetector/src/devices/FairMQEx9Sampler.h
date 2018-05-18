@@ -16,6 +16,7 @@
 #define FAIRMQEX9SAMPLER_H_
 
 #include <string>
+#include <thread>
 
 #include "TClonesArray.h"
 
