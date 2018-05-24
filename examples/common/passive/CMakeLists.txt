@@ -12,6 +12,7 @@
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/examples/common/passive
+  ${FairLogger_INCDIR}
 )
 
 Include_Directories( ${INCLUDE_DIRECTORIES})

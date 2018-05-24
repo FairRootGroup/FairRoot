@@ -16,6 +16,7 @@ set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src
   ${CMAKE_SOURCE_DIR}/examples/MQ/9-PixelDetector/src/devices
   ${CMAKE_SOURCE_DIR}/examples/common/mcstack
+  ${FairLogger_INCDIR}
 )
 
 

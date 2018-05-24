@@ -30,6 +30,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/run
   ${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/MQ/data
   ${CMAKE_CURRENT_BINARY_DIR}
+  ${FairLogger_INCDIR}
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
