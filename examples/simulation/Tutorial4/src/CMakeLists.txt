@@ -19,6 +19,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src/reco
   ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/src/tools
   ${CMAKE_SOURCE_DIR}/examples/common/mcstack
+  ${FairLogger_INCDIR}
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})
