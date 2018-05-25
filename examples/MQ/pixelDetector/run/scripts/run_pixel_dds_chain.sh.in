@@ -1,0 +1,64 @@
+#! /usr/bin/env bash
+
+# Task name
+#SBATCH -J test
+# Run time limit
+#SBATCH --time=0:10:00
+# FIXME Working directory on shared storage
+#SBATCH -D /lustre/nyx/rz/karabowi/slurm_log/
+# Standard and error output in different files
+#SBATCH -o %j_%N.out.log
+#SBATCH -e %j_%N.err.log
+
+DDS_location=@DDS_LOCATION@
+topologyFile="@PIXEL_BIN_LOCATION@/pixel-dds-chain.xml"
+requiredNofAgents=5
+
+# FIXME Need to set home on GSI luster
+# export HOME=/lustre/nyx/rz/karabowi
+# Source DDS environment
+echo "DDS from this location is used ${location}"
+source @CMAKE_BINARY_DIR@/config.sh
+source ${DDS_location}/DDS_env.sh
+
+# Start DDS commander server
+echo "Starting DDS server..."
+startOutput=$(dds-server start -s)
+echo "${startOutput}"
+
+# Extract session ID from "dds-server start" output
+sessionID=$(echo -e "${startOutput}" | head -1 | awk '{split($0,a,":"); print a[2]}' |  tr -d '[:space:]')
+echo "DDS session ID: ${sessionID}"
+
+# Submit agents
+echo "Submiting agents..."
+dds-submit -r localhost -n ${requiredNofAgents} --session ${sessionID}
+
+# Waiting for DDS agents.
+# Give DDS agents 20 seconds to start.
+counter=0
+nofAgents=$(dds-info -n --session ${sessionID})
+while [ ${nofAgents} -lt ${requiredNofAgents} ]; do
+	nofAgents=$(dds-info -n --session ${sessionID})
+    let counter=counter+1
+    if [ ${counter} -gt 20 ]; then
+      echo "Error: not enough agents"
+      exit 1
+    fi
+    sleep 1
+done
+
+# Activate topology
+echo "Activating topology..."
+dds-topology --disable-validation --session ${sessionID} --activate ${topologyFile}
+
+# FIXME: Implement proper waiting
+sleep 120
+
+# FIXME: Implement proper check of the results
+
+# Stop DDS commander
+echo "Stoping server..."
+dds-server stop ${sessionID}
+
+exit 0

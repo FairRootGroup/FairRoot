@@ -1,0 +1,36 @@
+<topology id="ExampleDDS">
+
+    <property id="data#all#" />
+    <property id="updateChannel" />
+
+    <decltask id="Sampler">
+      <exe reachable="true">@PIXEL_BIN_LOCATION@/run-sim --config-key sampler --mq-config @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/run/options/pixel-dds-simulation.json --severity DEBUG --nof-events 100000 --transport-name TGeant3 --id sampler_%taskIndex% --random-seed 0 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+          <id access="read">data#all#</id>
+	  <id access="read">updateChannel</id>
+        </properties>
+    </decltask>
+
+    <decltask id="Sink">
+      <exe reachable="true">@PIXEL_BIN_LOCATION@/pixel-sink --in-channel data#all# --severity DEBUG --id sink1 --mq-config @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/run/options/pixel-dds-simulation.json --class-name FairMCEventHeader --branch-name MCEventHeader. --class-name "TClonesArray(PixelPoint)" --branch-name PixelPoint --class-name "TClonesArray(FairMCTrack)" --branch-name MCTrack --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/DDS.simulation_TGeant3.data.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+            <id access="write">data#all#</id>
+        </properties>
+    </decltask>
+
+    <decltask id="ParamServer">
+      <exe reachable="true">@FAIRROOT_BIN_LOCATION@/parmq-server zeromq --id parmq-server --mq-config @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/run/options/pixel-dds-simulation.json --severity DEBUG --update-channel-name updateChannel --output-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/DDS.simulation_TGeant3.pars.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+            <id access="write">updateChannel</id>
+        </properties>
+    </decltask>
+
+    <main id="main">
+        <group id="SamplerGroup" n="5">
+            <task>Sampler</task>
+        </group>
+        <task>Sink</task>
+        <task>ParamServer</task>
+    </main>
+
+</topology>
