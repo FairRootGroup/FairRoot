@@ -1,0 +1,140 @@
+#!/bin/bash
+
+MAXINDEX="--max-index -1"
+TRANSPORT="--transport zeromq"
+VERBOSE="--severity INFO"
+FAIRTASKNAME="--task-name PixelFindHits"
+
+while [[ $# > 1 ]]
+do
+key="$1"
+
+case $key in
+    -f|--task-name)
+    FAIRTASKNAME="--task-name $2"
+    shift
+    ;;
+    -m|--max-index)
+    MAXINDEX="--max-index $2"
+    shift
+    ;;
+    -t|--transport)
+    TRANSPORT="--transport $2"
+    shift
+    ;;
+    -v|--verbose)
+    VERBOSE="--severity $2"
+    shift
+    ;;
+esac
+shift 
+done
+
+########################### Define some variables
+# JSON file containing the configuration parameters of all FairMQ devices of this example
+MQCONFIGFILE="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/run/options/PixelMQConfig_Proxy.json"
+# ASCII and ROOT parameter files for the processor device
+ROOTPARAM="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.params.root"
+ASCIIPARAM="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/param/pixel_digi.par"
+
+if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
+    # input file and branch for the sampler device
+    INPUTFILE1="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.root"
+    INPUTFILE1+=" --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.root"
+    INPUTFILE1+=" --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.root"
+    INPUTFILE1+=" --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.root"
+    INPUTFILE1+=" --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.root"
+
+    cp @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.root @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.2.root
+   
+    INPUTFILE2="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.2.root"
+    INPUTFILE2+=" --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.2.root"
+    INPUTFILE2+=" --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.2.root"
+    INPUTFILE2+=" --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.2.root"
+    INPUTFILE2+=" --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.2.root"
+ #   INPUTFILE+=" --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.f1.root"
+    INPUTBRANCH="PixelDigis"
+    
+    # output file for sink
+    OUTPUTFILE1="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.bin.hits1.root"
+    OUTPUTFILE2="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.bin.hits2.root"
+    OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
+    OUTPUTBRANCH="--branch-name PixelHits"
+else
+    echo "TASK $FAIRTASKNAME UNKNOWN!!!"
+    exit
+fi
+###########################
+
+
+
+########################### Start the chain of the devices
+
+
+########################## start Parameter server
+SERVER="parmq-server $TRANSPORT"
+SERVER+=" --id parmq-server  --mq-config $MQCONFIGFILE --channel-name data"
+SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
+xterm -geometry 80x24+0+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
+
+
+########################## start SAMPLE
+SAMPLER1="pixel-samplerBin $TRANSPORT"
+SAMPLER1+=" --id sampler1  --mq-config $MQCONFIGFILE --severity info"
+SAMPLER1+=" --file-name $INPUTFILE1 --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
+xterm -geometry 80x24+0+0 -hold -e @PIXEL_BIN_LOCATION@/$SAMPLER1 &
+
+SAMPLER2="pixel-samplerBin $TRANSPORT"
+SAMPLER2+=" --id sampler1  --mq-config $MQCONFIGFILE --severity info"
+SAMPLER2+=" --file-name $INPUTFILE2 --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
+xterm -geometry 80x24+0+0 -hold -e @PIXEL_BIN_LOCATION@/$SAMPLER2 &
+
+########################## start PROXY SAMPLER
+PROXYS="fairmq-proxy $TRANSPORT"
+PROXYS+=" --id proxysampler --mq-config $MQCONFIGFILE"
+xterm -geometry 80x24+0+0 -hold -e @FAIRROOT_BIN_LOCATION@/$PROXYS &
+
+########################## start PROCESSORs
+PROCESSOR1="pixel-processorBin $TRANSPORT"
+PROCESSOR1+=" $VERBOSE"
+PROCESSOR1+=" --id processor1 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
+#xterm +aw -geometry 100x27+700+0 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR1 &
+xterm -geometry 80x24+500+0 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR1 &
+
+PROCESSOR2="pixel-processorBin $TRANSPORT"
+PROCESSOR2+=" $VERBOSE"
+PROCESSOR2+=" --id processor2 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
+xterm -geometry 80x24+500+350 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR2 &
+
+PROCESSOR3="pixel-processorBin $TRANSPORT"
+PROCESSOR3+=" $VERBOSE"
+PROCESSOR3+=" --id processor3 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
+xterm -geometry 80x24+500+700 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR3 &
+
+PROCESSOR4="pixel-processorBin $TRANSPORT"
+PROCESSOR4+=" $VERBOSE"
+PROCESSOR4+=" --id processor4 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
+xterm -geometry 80x24+1000+0 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR4 &
+
+PROCESSOR5="pixel-processorBin $TRANSPORT"
+PROCESSOR5+=" $VERBOSE"
+PROCESSOR5+=" --id processor5 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
+xterm -geometry 80x24+1000+350 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR5 &
+
+########################## start PROXY SAMPLER
+PROXYF="fairmq-proxy $TRANSPORT"
+PROXYF+=" --id proxysink --mq-config $MQCONFIGFILE"
+xterm -geometry 80x24+0+700 -hold -e @FAIRROOT_BIN_LOCATION@/$PROXYF &
+
+########################## start FILESINK
+FILESINK1="pixel-sinkBin $TRANSPORT"
+FILESINK1+=" --id sink1 --mq-config $MQCONFIGFILE"
+FILESINK1+=" --file-name $OUTPUTFILE1 $OUTPUTCLASS $OUTPUTBRANCH"
+xterm +aw -geometry 80x24+0+700 -hold -e @PIXEL_BIN_LOCATION@/$FILESINK1 &
+
+FILESINK2="pixel-sinkBin $TRANSPORT"
+FILESINK2+=" --id sink1 --mq-config $MQCONFIGFILE"
+FILESINK2+=" --file-name $OUTPUTFILE2 $OUTPUTCLASS $OUTPUTBRANCH"
+xterm +aw -geometry 80x24+0+700 -hold -e @PIXEL_BIN_LOCATION@/$FILESINK2 &
+
+
