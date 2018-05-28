@@ -52,14 +52,10 @@ which run given devices and allow setting of the different parameters from the c
 Several shell scripts using different topologies are implemented:
 
 #### ./startFairMQPixel.sh
-- **topology:**     sampler-5processors-sink
-- **functions:**    can process different task with (--task-name PixelFindHits, PixelFindTracks, PixelFitTracks)
-can limit number of events with --m
-- **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
-
-#### ./startFairMQPixel_Static.sh
 - **topology:**     sampler-3processors-sink
-- **functions:**    runs the processes in the background, without opening another terminals; cpu and mem usage per each device is printed; devices' logs go to separate log files; quits after all events processed or after 50 seconds;
+- **functions:**    can process different task with (--task-name PixelFindHits, PixelFindTracks, PixelFitTracks),
+can set the number of processors tasks with -p, can limit number of events with -m,
+can change running mode with --command (interactive or static)
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
 
 #### ./startFairMQPixel_2Levels.sh

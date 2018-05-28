@@ -165,17 +165,17 @@ bool FairMQPixelTaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
     Send(partsOut, fOutputChannelName);
     fSentMsgs++;
 
+    fInput->Clear();
+
     for (int ipart = 0; ipart < tempObjects.size(); ipart++)
-    {
-        if (tempObjects[ipart])
         {
-            delete tempObjects[ipart];
+            if (tempObjects[ipart])
+                {
+                    delete tempObjects[ipart];
+                }
         }
-    }
 
     tempObjects.clear();
-
-    fInput->Clear();
 
     return true;
 }

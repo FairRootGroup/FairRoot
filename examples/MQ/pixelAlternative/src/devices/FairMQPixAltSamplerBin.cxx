@@ -48,7 +48,7 @@ FairMQPixAltSamplerBin::FairMQPixAltSamplerBin()
 void FairMQPixAltSamplerBin::InitTask() 
 {
   fFileNames         = fConfig->GetValue<std::vector<std::string>>("file-name");
-  fMaxIndex          = fConfig->GetValue<int64_t>                 ("max-index");
+  fMaxIndex          = fConfig->GetValue<int64_t>                 ("max-index"); //RK 2818.05.28 int64_t will print "Unknown value", but the value is still passed
   fOutputChannelName = fConfig->GetValue<std::string>             ("out-channel");
   fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
   fAggregateLevel    = fConfig->GetValue<int>                     ("aggregate");
