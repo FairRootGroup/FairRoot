@@ -9,6 +9,12 @@
 #include "FairPropagator.h"
 
 FairPropagator::FairPropagator()
+  : TNamed("FairPropagator", "Base class for propagators")
+{
+}
+
+FairPropagator::FairPropagator(const TString& name, const TString& title)
+  : TNamed(name, title)
 {
 }
 

@@ -18,7 +18,8 @@ ClassImp(FairRKPropagator);
 
 //______________________________________________________________________________
 FairRKPropagator::FairRKPropagator(FairField* field)
-:   fMaxStep(10.0),
+:   FairPropagator("FairRKPropagator", "Runge-Kutta propagator"),
+    fMaxStep(10.0),
     fMagField (field)
 {
   //  fMaxStep=10.0;
