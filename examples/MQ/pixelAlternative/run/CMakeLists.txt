@@ -8,10 +8,10 @@
 
 Set(MaxTestTime 30)
 
-GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelAlternative/startFairMQPixAltFromBin_Static.sh ${CMAKE_CURRENT_BINARY_DIR})
+GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelAlternative/startFairMQPixAltFromBin.sh ${CMAKE_CURRENT_BINARY_DIR})
 
 Add_Test(pixalt_static
-	${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixAltFromBin_Static.sh --work-dir ${CMAKE_BINARY_DIR} --max-index 10000 --aggregate 100 --processors 5 --force-kill true)
+	${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixAltFromBin.sh --work-dir ${CMAKE_BINARY_DIR} --max-index 10000 --aggregate 100 --processors 5 --command static --force-kill true)
 Set_Tests_Properties(pixalt_static PROPERTIES DEPENDS pixel_static)
 Set_Tests_Properties(pixalt_static PROPERTIES TIMEOUT ${MaxTestTime})
 Set_Tests_Properties(pixalt_static PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
@@ -56,9 +56,7 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/sta
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromRoot_Static.sh.in                
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelAlternative/startFairMQPixAltFromRoot_Static.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromBin.sh.in                
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelAlternative/startFairMQPixAltFromBin.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromBin_Static.sh.in                
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelAlternative/startFairMQPixAltFromBin_Static.sh )
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelAlternative/startFairMQPixAltFromBin.sh @ONLY )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltToBin.sh.in                
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelAlternative/startFairMQPixAltToBin.sh )
 
@@ -73,9 +71,7 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/sta
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromRoot_Static.sh.in      
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromRoot_Static.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromBin.sh.in      
-		${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromBin.sh_install )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromBin_Static.sh.in      
-		${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromBin_Static.sh_install )
+		${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromBin.sh_install @ONLY )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltToBin.sh.in      
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltToBin.sh_install )
 
@@ -91,9 +87,6 @@ Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/start
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromBin.sh_install
         DESTINATION ${PIXALT_INSTALL_BIN}
         RENAME startFairMQPixAltFromBin.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
-Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltFromBin_Static.sh_install
-        DESTINATION ${PIXALT_INSTALL_BIN}
-        RENAME startFairMQPixAltFromBin_Static.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/startFairMQPixAltToBin.sh_install
         DESTINATION ${PIXALT_INSTALL_BIN}
         RENAME startFairMQPixAltToBin.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
