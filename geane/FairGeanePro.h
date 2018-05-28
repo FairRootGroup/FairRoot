@@ -12,7 +12,7 @@
 #ifndef FAIRGEANEPRO_H
 #define FAIRGEANEPRO_H 1
 
-#include "TNamed.h"                     // for TNamed
+#include "FairPropagator.h"                     // for TNamed
 
 #include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
 #include "TGeant3.h"                    // for Ertrio_t, etc
@@ -25,7 +25,7 @@ class FairTrackParH;
 class FairGeaneApplication;
 class TDatabasePDG;
 
-class FairGeanePro : public TNamed
+class FairGeanePro : public FairPropagator
 {
 
   public:
@@ -125,7 +125,7 @@ class FairGeanePro : public TNamed
     FairGeanePro(const FairGeanePro&);
     FairGeanePro& operator=(const FairGeanePro&);
 
-    ClassDef(FairGeanePro,1);
+    ClassDef(FairGeanePro,2);
 };
 
 #endif

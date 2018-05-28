@@ -36,7 +36,7 @@ using std::endl;
 
 // -----   Default constructor   -------------------------------------------
 FairGeanePro::FairGeanePro()
-  : TNamed("Geane", "Propagate Tracks"),
+  : FairPropagator("Geane", "Propagate Tracks"),
     gMC3(static_cast<TGeant3 *> (TVirtualMC::GetMC())),
     fPropOption(""),
     nepred(1),
