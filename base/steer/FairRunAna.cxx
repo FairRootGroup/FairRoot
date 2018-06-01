@@ -246,8 +246,7 @@ void FairRunAna::Init()
     //fRtdb->initContainers( fRunId );
 
   } else {  //end----- if(fMixedInput)
-    LOG(info) << "Initializing without input file or Mixed input"
-;
+    LOG(info) << "Initializing without input file or Mixed input";
     FairEventHeader* evt = GetEventHeader();
     evt->Register(fStoreEventHeader);
     FairRunIdGenerator genid;
@@ -284,7 +283,6 @@ void FairRunAna::Init()
   fRootManager->UpdateListOfTimebasedBranches();
 
   // create the output tree after tasks initialisation
-  fRootManager->InitSink();
   fRootManager->WriteFolder();
   fRootManager->WriteFileHeader(fFileHeader);
 }
