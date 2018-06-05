@@ -187,6 +187,13 @@ class FairMCApplication : public TVirtualMCApplication
 
     void AddMeshList ( TObjArray* meshList );
 
+    /**
+    * Set if the current event should be written to the output file.
+    * The default value which is set back after each event is to store
+    * the event.
+    */
+    void                  SetSaveCurrentEvent(Bool_t set) {fSaveCurrentEvent=set;}
+
   private:
     // methods
     Int_t GetIonPdg(Int_t z, Int_t a) const;
@@ -273,6 +280,9 @@ class FairMCApplication : public TVirtualMCApplication
     TVirtualMC*  fMC;
     /** Pointer to FairRunSim //! */
     FairRunSim*  fRun;
+
+    /** Flag if the current event should be saved */
+    Bool_t fSaveCurrentEvent;
     
     ClassDef(FairMCApplication,4)  //Interface to MonteCarlo application
 
