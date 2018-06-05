@@ -16,7 +16,7 @@ Three devices has been created:
 Preparations:
 root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; root -l -q 'run_digiToBin.C(0)';
 
-Scripts:
-- startFairMQPixAltFromRoot.sh - read the data from root file, transport and reconstruct binary, store root file;
-- startFairMQPixAltFromBin.sh - read the data from binary file, transport and reconstruct binary, store root file;
-- startFairMQPixAltToBin.sh - read the data from binary file, transport and reconstruct binary, store binary file;
+Scripts startFairMQPixAlt.sh:
+- reads the data from binary file (can read root file with "--input-type root" option);
+- transports and reconstructs binary;
+- stores root file (can store binary fill with "--output-type dat" option);

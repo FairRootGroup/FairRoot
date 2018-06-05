@@ -97,7 +97,7 @@ if [ "$FAIRTASKNAME" == "--task-name PixelAltFindHits" ] ; then
     # output file for sink
     if [ "$OUTPUTTYPE" == "dat" ] ; then
         OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQa.pixel_TGeant3.bin.hits.dat"
-    elif [ "$OUTPUTTYPE" == "root" ] ; then 
+    elif [ "$OUTPUTTYPE" == "root" ] ; then
         OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQa.pixel_TGeant3.bin.hits.root"
         OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
         OUTPUTBRANCH="--branch-name PixelHits"
@@ -127,7 +127,7 @@ elif [ "$INPUTTYPE" == "root" ] ; then
     SAMPLER="@PIXEL_BIN_LOCATION@/"
     SAMPLER+="pixel-samplerBin $TRANSPORT"
     SAMPLER+=" --branch-name EventHeader. --branch-name $INPUTBRANCH"
-fi 
+fi
 SAMPLER+=" --id sampler1 --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5106"
 if [ "$COMMAND" == "static" ]; then
     SAMPLER+=" --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=1,address=tcp://*:5108"
@@ -150,7 +150,7 @@ done
 if [ "$OUTPUTTYPE" == "dat" ] ; then
     FILESINK="@PIXALT_BIN_LOCATION@/"
     FILESINK+="pixalt-sinkBin $TRANSPORT"
-elif [ "$OUTPUTTYPE" == "root" ] ; then 
+elif [ "$OUTPUTTYPE" == "root" ] ; then
     FILESINK="@PIXEL_BIN_LOCATION@/"
     FILESINK+="pixel-sinkBin $TRANSPORT"
     FILESINK+=" --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH"
