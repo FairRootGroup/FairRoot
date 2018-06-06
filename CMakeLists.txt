@@ -137,15 +137,16 @@ ENDIF(NOT UNIX)
 
 #Check if necessary environment variables are set
 #If not stop execution unless modular build is activated
-#Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
-#IF(NOT FAIRROOT_MODULAR_BUILD)
-If(FAIRSOFT_CONFIG)
-  IF(NOT DEFINED ENV{SIMPATH})
-    MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
-  ENDIF(NOT DEFINED ENV{SIMPATH})
-  STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
-  SET(SIMPATH $ENV{SIMPATH})
-endif()
+Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
+IF(NOT FAIRROOT_MODULAR_BUILD)
+  If(FAIRSOFT_CONFIG)
+    IF(NOT DEFINED ENV{SIMPATH})
+      MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
+    ENDIF(NOT DEFINED ENV{SIMPATH})
+    STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
+    SET(SIMPATH $ENV{SIMPATH})
+  endif()
+EndIf()
 
 # Check if the external packages are installed into a separate install
 # directory
