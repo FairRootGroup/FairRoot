@@ -9,14 +9,14 @@ to create an array of PixelPayload::Hit. This eliminates necessity to deal with 
 reconstructing data.
 
 Three devices has been created:
-- FairMQPixAltTaskProcessorBin: runs the PixelAltFindHits task;
 - FairMQPixAltSamplerBin: reads data from the binary file and sends PixelPayload::EventHeader and array of PixelPayload::Digi;
+- FairMQPixAltTaskProcessorBin: runs the PixelAltFindHits task;
 - FairMQPixAltFileSink: stores the EventHeader and Hits in the output binary file;
 
 Preparations:
 root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; root -l -q 'run_digiToBin.C(0)';
 
-Scripts startFairMQPixAlt.sh:
+Script startFairMQPixAlt.sh:
 - reads the data from binary file (can read root file with "--input-type root" option);
 - transports and reconstructs binary;
-- stores root file (can store binary fill with "--output-type dat" option);
+- stores root file (can store binary file with "--output-type dat" option);

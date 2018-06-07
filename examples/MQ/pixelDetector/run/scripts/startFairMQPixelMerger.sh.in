@@ -2,7 +2,8 @@
 
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
-VERBOSE="--severity DEBUG"
+VERBOSE="--severity INFO"
+MERGERSOCKETS=1
 
 while [[ $# > 1 ]]
 do
@@ -10,25 +11,27 @@ key="$1"
 
 case $key in
     -m|--max-index)
-    MAXINDEX="--max-index $2"
-    shift
-    ;;
+        MAXINDEX="--max-index $2"
+        shift
+        ;;
     -t|--transport)
-    TRANSPORT="--transport $2"
-    shift
-    ;;
+        TRANSPORT="--transport $2"
+        shift
+        ;;
+    -s|--merger-sockets)
+        MERGERSOCKETS=$2
+        shift
+        ;;
     -v|--verbose)
-    VERBOSE="--severity $2"
-    shift
-    ;;
+        VERBOSE="--severity $2"
+        shift
+        ;;
 esac
 shift 
 done
 
 
 ########################### Define some variables
-# JSON file containing the configuration parameters of all FairMQ devices of this example
-MQCONFIGFILE="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/run/options/PixelMQConfig_Merger.json"
 # ASCII and ROOT parameter files for the processor device
 ROOTPARAM="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.params.root"
 ASCIIPARAM="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/param/pixel_digi.par"
@@ -62,56 +65,81 @@ OUTPUTBRANCH="PixelHits"
 
 ########################## start Parameter server
 SERVER="parmq-server $TRANSPORT"
-SERVER+=" --id parmq-server --mq-config $MQCONFIGFILE --channel-name data"
+SERVER+=" --id parmq-server --channel-config name=data,type=rep,method=bind,rateLogging=0,address=tcp://*:5205 --channel-name data"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
 xterm -geometry 80x25+0+700 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
 
 
 ########################## start SAMPLER
 SAMPLER1="pixel-sampler $TRANSPORT"
-SAMPLER1+=" --id sampler1 $SAMPLERTYPE --mq-config $MQCONFIGFILE --severity info"
+SAMPLER1+=" --id sampler1 $SAMPLERTYPE --severity info"
+SAMPLER1+=" --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5211"
 SAMPLER1+=" --file-name $INPUTFILE1 --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX"
 xterm -geometry 80x25+0+0 -hold -e @PIXEL_BIN_LOCATION@/$SAMPLER1 &
 
 ########################## start PROCESSORs
 PROCESSOR1="pixel-processor $TRANSPORT"
-PROCESSOR1+=" $VERBOSE"
-PROCESSOR1+=" --id processor1 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
-#xterm +aw -geometry 100x27+800+0 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR1 &
+PROCESSOR1+=" $VERBOSE $FAIRTASKNAME"
+PROCESSOR1+=" --id processor1 --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5211"
+if (( MERGERSOCKETS == 1 )); then # here the same
+    PROCESSOR1+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5220"
+else
+    PROCESSOR1+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5221"
+fi
+PROCESSOR1+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5205"
 xterm -geometry 80x25+0+350 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR1 &
 
 ########################## start SAMPLER
 SAMPLER2="pixel-sampler $TRANSPORT"
-SAMPLER2+=" --id sampler2 $SAMPLERTYPE --mq-config $MQCONFIGFILE"
+SAMPLER2+=" --id sampler2 $SAMPLERTYPE --severity info"
+SAMPLER2+=" --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5212"
 SAMPLER2+=" --file-name $INPUTFILE2 --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX"
 xterm -geometry 80x25+500+0 -hold -e @PIXEL_BIN_LOCATION@/$SAMPLER2 &
 
 ########################## start PROCESSORs
 PROCESSOR2="pixel-processor $TRANSPORT"
-PROCESSOR2+=" $VERBOSE"
-PROCESSOR2+=" --id processor2 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
+PROCESSOR2+=" $VERBOSE $FAIRTASKNAME"
+PROCESSOR2+=" --id processor2 --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5212"
+if (( MERGERSOCKETS == 1 )); then # here the same
+    PROCESSOR2+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5220"
+else
+    PROCESSOR2+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5222"
+fi
+PROCESSOR2+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5205"
 xterm -geometry 80x25+500+350 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR2 &
 
 ########################## start SAMPLER
 SAMPLER3="pixel-sampler $TRANSPORT"
-SAMPLER3+=" --id sampler3 $SAMPLERTYPE --mq-config $MQCONFIGFILE"
+SAMPLER3+=" --id sampler3 $SAMPLERTYPE --severity info"
+SAMPLER3+=" --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5213"
 SAMPLER3+=" --file-name $INPUTFILE3 --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX"
 xterm -geometry 80x25+1000+0 -hold -e @PIXEL_BIN_LOCATION@/$SAMPLER3 &
 
 ########################## start PROCESSORs
 PROCESSOR3="pixel-processor $TRANSPORT"
-PROCESSOR3+=" $VERBOSE"
-PROCESSOR3+=" --id processor3 $FAIRTASKNAME --mq-config $MQCONFIGFILE"
+PROCESSOR3+=" $VERBOSE $FAIRTASKNAME"
+PROCESSOR3+=" --id processor3 --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5213"
+if (( MERGERSOCKETS == 1 )); then # here the same
+    PROCESSOR3+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5220"
+else
+    PROCESSOR3+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5223"
+fi
+PROCESSOR3+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5205"
 xterm -geometry 80x25+1000+350 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR3 &
 
 ########################## start MERGER
 MERGER="pixel-merger $TRANSPORT"
-MERGER+=" --id merger1 --mq-config $MQCONFIGFILE"
+if (( MERGERSOCKETS == 1 )); then # here the same
+    MERGER+=" --id merger1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5220"
+else
+    MERGER+=" --id merger1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5221,address=tcp://*:5222,address=tcp://*:5223"
+fi
+MERGER+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5230"
 xterm +aw -geometry 80x25+500+700 -hold -e @PIXEL_BIN_LOCATION@/$MERGER &
 
 ########################## start FILESINK
 FILESINK="pixel-sink $TRANSPORT"
-FILESINK+=" --id sink1 --mq-config $MQCONFIGFILE"
+FILESINK+=" --id sink 1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5230"
 FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. --class-name $OUTPUTCLASS --branch-name $OUTPUTBRANCH"
 xterm +aw -geometry 80x25+1000+700 -hold -e @PIXEL_BIN_LOCATION@/$FILESINK &
 

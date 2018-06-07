@@ -11,7 +11,7 @@ Set(MaxTestTime 60)
 GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelSimulation.sh ${CMAKE_CURRENT_BINARY_DIR})
 
 Add_Test(pixel_simulation
-       ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixelSimulation.sh -n 1000 -g TGeant3 -c static -s 6 --force-kill true -m 20)
+       ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixelSimulation.sh --work-dir ${CMAKE_BINARY_DIR} -n 1000 -g TGeant3 -c static -s 6 --force-kill true -m 20)
 Set_Tests_Properties(pixel_simulation PROPERTIES TIMEOUT ${MaxTestTime})
 Set_Tests_Properties(pixel_simulation PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
 
@@ -57,22 +57,14 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startF
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixel.sh @ONLY )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelSimulation.sh.in
                 ${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelSimulation.sh @ONLY )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_2Levels.sh.in           
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixel_2Levels.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_3Levels.sh.in           
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixel_3Levels.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin.sh.in                
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelBin.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin_2Samplers.sh.in      
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelBin_2Samplers.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBinProxy.sh.in 
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelBinProxy.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger.sh.in      
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelMerger.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger2Levels.sh.in      
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelMerger2Levels.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger3Ch.sh.in      
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelMerger3Ch.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/pixel-dds-topology.xml
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/pixel-dds-topology.xml )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/pixel-dds-simulation.xml
@@ -81,8 +73,6 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/pixel-
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/pixel-dds-chain.xml )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/param/pixel_digi.par
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/param/pixel_digi.par )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/options/PixelMQConfig_Multipart.json
-		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/options/PixelMQConfig_Multipart.json )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/controlDDS.sh.in
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/controlDDS.sh @ONLY)
 set(DDS_LOCATION $ENV{DDS_LOCATION})
@@ -97,22 +87,14 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startF
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel.sh_install @ONLY )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelSimulation.sh.in
                 ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelSimulation.sh_install @ONLY )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_2Levels.sh.in 
-		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_2Levels.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_3Levels.sh.in 
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_3Levels.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin.sh.in      
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin.sh_install )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin_2Samplers.sh.in      
-		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin_2Samplers.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBinProxy.sh.in 
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBinProxy.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger.sh.in
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger.sh_install )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger2Levels.sh.in
-		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger2Levels.sh_install )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger3Ch.sh.in
-		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger3Ch.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/pixel-dds-topology.xml
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/pixel-dds-topology.xml_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/pixel-dds-simulation.xml
@@ -132,30 +114,18 @@ Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFai
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelSimulation.sh_install
         DESTINATION ${PIXEL_INSTALL_BIN}
         RENAME startFairMQPixelSimulation.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
-Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_2Levels.sh_install
-        DESTINATION ${PIXEL_INSTALL_BIN}
-        RENAME startFairMQPixel_2Levels.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_3Levels.sh_install
         DESTINATION ${PIXEL_INSTALL_BIN}
         RENAME startFairMQPixel_3Levels.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin.sh_install
         DESTINATION ${PIXEL_INSTALL_BIN}
         RENAME startFairMQPixelBin.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
-Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin_2Samplers.sh_install
-        DESTINATION ${PIXEL_INSTALL_BIN}
-        RENAME startFairMQPixelBin_2Samplers.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBinProxy.sh_install
         DESTINATION ${PIXEL_INSTALL_BIN}
         RENAME startFairMQPixelBinProxy.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger.sh_install
         DESTINATION ${PIXEL_INSTALL_BIN}
         RENAME startFairMQPixelMerger.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
-Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger2Levels.sh_install
-        DESTINATION ${PIXEL_INSTALL_BIN}
-        RENAME startFairMQPixelMerger2Levels.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
-Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger3Ch.sh_install
-        DESTINATION ${PIXEL_INSTALL_BIN}
-        RENAME startFairMQPixelMerger3Ch.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/pixel-dds-topology.xml_install
         DESTINATION ${PIXEL_INSTALL_BIN}
         RENAME pixel-dds-topology.xml PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
@@ -171,11 +141,6 @@ Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/controlD
 Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/run_pixel_dds_chain.sh_install
         DESTINATION ${PIXEL_INSTALL_BIN}
         RENAME run_pixel_dds_chain.sh PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ WORLD_READ)
-
-Install(FILES options/PixelMQConfig_Multipart.json options/PixelMQConfig_2Levels.json options/PixelMQConfig_3Levels.json options/PixelMQConfig_Proxy.json options/PixelMQConfig_2Samplers.json options/PixelMQConfig_Merger.json options/PixelMQConfig_Merger2Levels.json options/PixelMQConfig_Merger3Ch.json options/pixel-dds.json options/pixel-dds-simulation.json options/pixel-dds-chain.json
-        DESTINATION share/fairbase/examples/MQ/pixelDetector/run/options/
-       )
-
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}

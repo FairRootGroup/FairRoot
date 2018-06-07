@@ -38,6 +38,8 @@ class FairMQPixelTaskProcessorBin : public FairMQDevice
     void SetOutputChannelName(std::string str) { fOutputChannelName = str; }
     void SetParamChannelName (std::string str) { fParamChannelName  = str; }
 
+    void SetStaticParameters (bool tbool)       {fStaticParameters = tbool;}
+
   protected:
     bool ProcessData(FairMQParts&, int);
     virtual void Init();
@@ -58,6 +60,7 @@ class FairMQPixelTaskProcessorBin : public FairMQDevice
     TClonesArray* fInputArray;
     TClonesArray* fOutputArray;
 
+    bool fStaticParameters;
     int fNewRunId;
     int fCurrentRunId;
 

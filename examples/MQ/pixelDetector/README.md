@@ -43,7 +43,7 @@ Separate executables for the different devices have been created:
 - **pixel-processor** ( **ex-processorBin**),
 - **pixel-sink** ( **ex-sinkBin**),
 
-which run given devices and allow setting of the different parameters from the command line. Also a path to the config file (.json) is set here to read various network properties. These devices may run in different control modes:
+which run given devices and allow setting of the different parameters from the command line. These devices may run in different control modes:
 - interactive - waiting for the keyboard input to change states;
 - static - changes states automatically;
 - dds - react to the commands sent via dds_intercom.
@@ -56,12 +56,6 @@ Several shell scripts using different topologies are implemented:
 - **functions:**    can process different task with (--task-name PixelFindHits, PixelFindTracks, PixelFitTracks),
 can set the number of processors tasks with -p, can limit number of events with -m,
 can change running mode with --command (interactive or static)
-- **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
-
-#### ./startFairMQPixel_2Levels.sh
-- **topology:**     sampler-3proc-3proc-sink
-- **functions:**    can process different task with (-f PixelFindHits -g PixelFindTracks or -f PixelFindTracks -gPixelFitTracks)
-can limit number of events with --m
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; 
 
 #### ./startFairMQPixel_3Levels.sh
@@ -90,13 +84,11 @@ hit finding is run on processors separately for each station data
 merges event data from different stations and sends whole events to the sink
 - **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; root -l -q run_digiToBin.C;
 
-#### ./startFairMQPixelMerger2Levels.sh
-- **topology:**     3samplers-6processors-merger-3processors-sink
-- **functions:**    data is read by 3 samplers from 3 input files, for each station separately
-hit finding is run on processors separately for each station data
-merges event data from different stations and sends whole events with PixelHits
-the second level of processors runs the track finding 
-- **preparations:** root -l -q 'run_sim.C(100000)' &> sim_100k.dat; root -l -q run_digi.C; root -l -q run_digiToBin.C;
+#### ./startFairMQPixelSimulation.sh
+- **topology:**     3samplers-sink
+- **functions:**    samplers are producing Monte Carlo data, one can set
+the number of events produced by each sampler using --nof-events, the default
+TGeant3 can be changed to --transport-name TGeant4
 
 ## Running with DDS
 To run the example in the DDS, please check http://dds.gsi.de for the installation instructions.
@@ -107,8 +99,7 @@ These programs are started with the pixel-dds-topology.xml topology, that can be
 ```bash
 dds-server start -s
 dds-submit --rms localhost -n 10
-dds-topology --set bin/examples/MQ/pixelDetector/pixel-dds-topology.xml
-dds-topology --activate
+dds-topology --activate bin/examples/MQ/pixelDetector/pixel-dds-topology.xml
 ```
 
 One can check the status or control the devices using:
