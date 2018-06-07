@@ -67,7 +67,7 @@ while [ "$keypress" != "x" ]; do
   if [ -z "$NOFWORKERS" ]; then NOFWORKERS=0; fi
   if [ "$NOFWORKERS" -gt 0 ]; 
   then
-      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c c | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c c | sort &> command.out
   fi
   for (( i = 0 ; i < $NOFWORKERS ; i++ )); do
       TASKS[$i]="";
@@ -121,28 +121,28 @@ while [ "$keypress" != "x" ]; do
   fi
   echo -ne "\r"
   if [ "$keypress" == "p" ]; then
-      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c p | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c p | sort &> command.out
   fi
   if [ "$keypress" == "s" ]; then
-      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c s | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c s | sort &> command.out
   fi
   if [ "$keypress" == "t" ]; then
-      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c t | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c t | sort &> command.out
   fi
   if [ "$keypress" == "d" ]; then
-      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c d | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c d | sort &> command.out
   fi
   if [ "$keypress" == "r" ]; then
-      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c r | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c r | sort &> command.out
   fi
   if [ "$keypress" == "j" ]; then
-      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c j | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c j | sort &> command.out
   fi
   if [ "$keypress" == "i" ]; then
-      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c i | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c i | sort &> command.out
   fi
   if [ "$keypress" == "q" ]; then
-      tail -1 ~/.DDS/default.sid | xargs -I {} @FAIRROOT_BIN_LOCATION@/fairmq-dds-command-ui -s {} -c q | sort &> command.out
+      tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c q | sort &> command.out
   fi
   if [ "$keypress" == "x" ]; then
       break;

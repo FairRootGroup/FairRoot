@@ -22,6 +22,7 @@ FairMQPixelTaskProcessorBin<T>::FairMQPixelTaskProcessorBin()
     : fInputChannelName("data-in")
     , fOutputChannelName("data-out")
     , fParamChannelName("param")
+    , fStaticParameters(false)
     , fEventHeader(nullptr)
     , fInput(nullptr)
     , fOutput(nullptr)
@@ -72,6 +73,7 @@ void FairMQPixelTaskProcessorBin<T>::Init()
     fInputChannelName  = fConfig->GetValue<std::string>("in-channel");
     fOutputChannelName = fConfig->GetValue<std::string>("out-channel");
     fParamChannelName  = fConfig->GetValue<std::string>("par-channel");
+    fStaticParameters  = fConfig->GetValue<bool>       ("static-pars");
 
     // fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
     fFairTask = new T();
@@ -105,14 +107,16 @@ bool FairMQPixelTaskProcessorBin<T>::ProcessData(FairMQParts& parts, int /*index
     PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(0)->GetData());
     // LOG(debug) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
 
-    fNewRunId = payloadE->fRunId;
-    if (fNewRunId != fCurrentRunId)
-    {
-        fCurrentRunId = fNewRunId;
-        UpdateParameters();
-        fFairTask->InitMQ(fParCList);
+    if ( fStaticParameters == false || fCurrentRunId == -1 ) {
+        fNewRunId = payloadE->fRunId;
+        if (fNewRunId != fCurrentRunId)
+            {
+                fCurrentRunId = fNewRunId;
+                UpdateParameters();
+                fFairTask->InitMQ(fParCList);
 
-        LOG(info) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
+                LOG(info) << "Parameters updated, back to ProcessData(" << parts.Size() << " parts!)";
+            }
     }
 
     // the second part should the TClonesArray with necessary data... now assuming Digi
