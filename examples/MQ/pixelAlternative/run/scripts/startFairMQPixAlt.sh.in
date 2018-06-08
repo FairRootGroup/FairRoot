@@ -116,7 +116,7 @@ fi
 ########################## start Parameter server
 SERVER="@FAIRROOT_BIN_LOCATION@/"
 SERVER+="parmq-server $TRANSPORT $CONTROL"
-SERVER+=" --id parmq-server  --channel-config name=param,type=rep,method=bind,rateLogging=0,address=tcp://*:5105"
+SERVER+=" --id pixAlt-parmq-server  --channel-config name=param,type=rep,method=bind,rateLogging=0,address=tcp://*:5305"
 SERVER+=" --channel-name param --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
 ########################## start SAMPLER
 if [ "$INPUTTYPE" == "dat" ] ; then
@@ -128,9 +128,9 @@ elif [ "$INPUTTYPE" == "root" ] ; then
     SAMPLER+="pixel-samplerBin $TRANSPORT"
     SAMPLER+=" --branch-name EventHeader. --branch-name $INPUTBRANCH"
 fi
-SAMPLER+=" --id sampler1 --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5106"
+SAMPLER+=" --id pixAlt-sampler1 --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5306"
 if [ "$COMMAND" == "static" ]; then
-    SAMPLER+=" --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=1,address=tcp://*:5108"
+    SAMPLER+=" --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=1,address=tcp://*:5308"
 fi
 SAMPLER+=" --file-name $INPUTFILE $MAXINDEX --severity info $CONTROL"
 ########################## start PROCESSORs
@@ -138,13 +138,13 @@ PROCESSOR="@PIXALT_BIN_LOCATION@/"
 PROCESSOR+="pixalt-processorBin $TRANSPORT"
 PROCESSOR+=" $VERBOSE"
 PROCESSOR+=" $FAIRTASKNAME $CONTROL"
-PROCESSOR+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5105"
-PROCESSOR+=" --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5106"
-PROCESSOR+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5107"
+PROCESSOR+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5305"
+PROCESSOR+=" --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5306"
+PROCESSOR+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5307"
 
 for (( i=0 ; i<$NOFPROCESSORS ; i++ ))
 do
-    APROCESSOR[i]="$PROCESSOR --id processor$((i+1))"
+    APROCESSOR[i]="$PROCESSOR --id pixAlt-processor$((i+1))"
 done
 ########################## start FILESINK
 if [ "$OUTPUTTYPE" == "dat" ] ; then
@@ -155,9 +155,9 @@ elif [ "$OUTPUTTYPE" == "root" ] ; then
     FILESINK+="pixel-sinkBin $TRANSPORT"
     FILESINK+=" --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH"
 fi
-FILESINK+=" --id sink1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5107"
+FILESINK+=" --id pixAlt-sink1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5307"
 if [ "$COMMAND" == "static" ]; then
-    FILESINK+=" --ack-channel ack --channel-config name=ack,type=push,method=connect,rateLogging=0,address=tcp://localhost:5108"
+    FILESINK+=" --ack-channel ack --channel-config name=ack,type=push,method=connect,rateLogging=0,address=tcp://localhost:5308"
 fi
 FILESINK+=" --file-name $OUTPUTFILE $CONTROL"
 
@@ -187,7 +187,7 @@ fi
 
 if [ "$COMMAND" == "static" ]; then
 
-    CHECK_BEFORE="$(ps -fea | grep "channel-config" | grep "transport" | grep "control" | grep -v grep)"
+    CHECK_BEFORE="$(ps -fea | grep pixAlt | grep -v grep)"
     if [ -n "$CHECK_BEFORE" ];
     then
         echo "some example/MQ/pixel programs are still running:"
@@ -196,9 +196,9 @@ if [ "$COMMAND" == "static" ]; then
         if [ "$FORCEKILL" == "true" ];
         then
             echo "trying to kill..."
-            ps -fea | grep "channel-config" | grep "transport" | grep "control" | grep -v grep | awk '{print $2}' | xargs kill -9
+            ps -fea | grep pixAlt | grep -v grep | awk '{print $2}' | xargs kill -9
         else
-            return;
+            exit
         fi
     fi
 

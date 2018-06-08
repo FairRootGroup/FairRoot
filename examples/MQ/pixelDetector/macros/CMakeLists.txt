@@ -14,7 +14,6 @@ Set(MaxTestTime 30)
 Add_Test(pixel_sim_TGeant3
          ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/macros/run_sim.sh 10000 \"TGeant3\")
 Math(EXPR TestTime 4*${MaxTestTime})
-Set_Tests_Properties(pixel_sim_TGeant3 PROPERTIES DEPENDS pixel_simulation)
 Set_Tests_Properties(pixel_sim_TGeant3 PROPERTIES TIMEOUT ${TestTime})
 Set_Tests_Properties(pixel_sim_TGeant3 PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
