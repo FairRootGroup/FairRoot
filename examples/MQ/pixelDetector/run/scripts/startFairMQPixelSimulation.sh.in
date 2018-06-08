@@ -139,7 +139,7 @@ fi
 ########################## start Parameter server
 SERVER="@FAIRROOT_BIN_LOCATION@/"
 SERVER+="parmq-server $TRANSPORT"
-SERVER+=" --id parmq-server  --channel-config name=updateChannel,type=rep,method=bind,rateLogging=1,address=tcp://*:5205"
+SERVER+=" --id pixSim-parmq-server  --channel-config name=updateChannel,type=rep,method=bind,rateLogging=1,address=tcp://*:5205"
 SERVER+=" $VERBOSE "
 SERVER+=" --update-channel-name updateChannel --output-name $OUTPUTPARAM $CONTROL"
 
@@ -158,13 +158,13 @@ done
 
 for (( i=0 ; i<$NOFSIMULS ; i++ ))
 do
-    ASAMPLER[i]="$SAMPLER --id sampler$i --random-seed ${RANDOMNUMBER[i]}"
+    ASAMPLER[i]="$SAMPLER --id pixSim-sampler$i --random-seed ${RANDOMNUMBER[i]}"
 done
 ########################## start FILESINK
 FILESINK="@PIXEL_BIN_LOCATION@/"
 FILESINK+="pixel-sink $TRANSPORT --in-channel data#all#"
 FILESINK+=" $VERBOSE "
-FILESINK+=" --id sink1 --channel-config name=data#all#,type=pull,method=bind,rateLogging=1,address=tcp://*:5206"
+FILESINK+=" --id pixSim-sink1 --channel-config name=data#all#,type=pull,method=bind,rateLogging=1,address=tcp://*:5206"
 FILESINK+=" --class-name FairMCEventHeader --branch-name MCEventHeader."
 FILESINK+=" --class-name TClonesArray(PixelPoint) --branch-name PixelPoint"
 FILESINK+=" --class-name TClonesArray(FairMCTrack) --branch-name MCTrack"
@@ -192,7 +192,7 @@ if [ "$COMMAND" == "interactive" ]; then
 fi
 
 if [ "$COMMAND" == "static" ]; then
-    CHECK_BEFORE="$(ps -fea | grep "channel-config" | grep "transport" | grep "control" | grep -v grep)"
+    CHECK_BEFORE="$(ps -fea | grep pixSim | grep -v grep)"
     if [ -n "$CHECK_BEFORE" ];
     then
 	echo "some example/MQ/pixel programs are still running:"
@@ -201,9 +201,9 @@ if [ "$COMMAND" == "static" ]; then
 	if [ "$FORCEKILL" == "true" ];
 	then
             echo "trying to kill..."
-            ps -fea | grep "channel-config" | grep "transport" | grep "control" | grep -v grep | awk '{print $2}' | xargs kill -9
+            ps -fea | grep pixSim | grep -v grep | awk '{print $2}' | xargs kill -9
 	else
-            return;
+            exit
 	fi
     fi
 

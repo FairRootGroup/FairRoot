@@ -111,13 +111,13 @@ fi
 ########################## start Parameter server
 SERVER="@FAIRROOT_BIN_LOCATION@/"
 SERVER+="parmq-server $TRANSPORT"
-SERVER+=" --id parmq-server --channel-config name=param,type=rep,method=bind,rateLogging=0,address=tcp://*:5105"
+SERVER+=" --id pixDet-parmq-server --channel-config name=param,type=rep,method=bind,rateLogging=0,address=tcp://*:5105"
 SERVER+=" --channel-name param --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII $CONTROL"
 
 ########################## start SAMPLER
 SAMPLER="@PIXEL_BIN_LOCATION@/"
 SAMPLER+="pixel-sampler $TRANSPORT"
-SAMPLER+=" --id sampler1 --severity info"
+SAMPLER+=" --id pixDet-sampler1 --severity info"
 SAMPLER+=" --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5106"
 if [ "$COMMAND" == "static" ]; then
     SAMPLER+=" --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=0,address=tcp://*:5108"
@@ -135,13 +135,13 @@ PROCESSOR+=" $FAIRTASKNAME $CONTROL"
 
 for (( i=0 ; i<$NOFPROCESSORS ; i++ ))
 do
-    APROCESSOR[i]="$PROCESSOR --id processor$((i+1))"
+    APROCESSOR[i]="$PROCESSOR --id pixDet-processor$((i+1))"
 done
 
 ########################## start FILESINK
 FILESINK="@PIXEL_BIN_LOCATION@/"
 FILESINK+="pixel-sink $TRANSPORT"
-FILESINK+=" --id sink1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5107"
+FILESINK+=" --id pixDet-sink1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5107"
 if [ "$COMMAND" == "static" ]; then
     FILESINK+=" --ack-channel ack --channel-config name=ack,type=push,method=connect,rateLogging=0,address=tcp://localhost:5108"
 fi
@@ -174,7 +174,7 @@ fi
 
 if [ "$COMMAND" == "static" ]; then
 
-    CHECK_BEFORE="$(ps -fea | grep "channel-config" | grep "transport" | grep "control" | grep -v grep)"
+    CHECK_BEFORE="$(ps -fea | grep pixDet | grep -v grep)"
     if [ -n "$CHECK_BEFORE" ];
     then
         echo "some example/MQ/pixel programs are still running:"
@@ -183,9 +183,9 @@ if [ "$COMMAND" == "static" ]; then
         if [ "$FORCEKILL" == "true" ];
         then
             echo "trying to kill..."
-            ps -fea | grep "channel-config" | grep "transport" | grep "control" | grep -v grep | awk '{print $2}' | xargs kill -9
+            ps -fea | grep pixDet | grep -v grep | awk '{print $2}' | xargs kill -9
         else
-            return;
+            exit
         fi
     fi
 
