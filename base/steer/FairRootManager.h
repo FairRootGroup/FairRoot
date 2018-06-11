@@ -249,7 +249,7 @@ class FairRootManager : public TObject
 
     /**public Members for multi-threading */
     Int_t  GetInstanceId() const { return fId; }
-    void   UpdateSinkFileName();
+    void   UpdateFileName(TString& fileName);
 
     // vvvvvvvvvv depracted functions, replaced by FairSink vvvvvvvvvv
     /** Return a pointer to the output File of type TFile */

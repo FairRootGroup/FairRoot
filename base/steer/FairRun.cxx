@@ -43,6 +43,7 @@ FairRun::FairRun(Bool_t isMaster)
    fTask(new FairTask("FairTaskList")),
    fRootManager(0),
    fSink(0),
+   fUserOutputFileName(),
    fRunId(0),
    fAna(kFALSE),
    fEvtHeader(NULL),
@@ -136,6 +137,7 @@ void FairRun::SetOutputFile(const char* fname)
   LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
   fSink = new FairRootFileSink(fname);
   if (fRootManager) fRootManager->SetSink(fSink);
+  fUserOutputFileName = fname;
 }
 //_____________________________________________________________________________
 
@@ -145,6 +147,7 @@ void FairRun::SetOutputFile(TFile* f)
   LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
   fSink = new FairRootFileSink(f);
   if (fRootManager) fRootManager->SetSink(fSink);
+  if (f) fUserOutputFileName = f->GetName();
 }
 //_____________________________________________________________________________
 
@@ -153,6 +156,7 @@ void FairRun::SetOutputFileName(const TString& name) {
   LOG(WARNING) << "FairRun::SetOutputFileName() deprecated. Use FairRootFileSink.";
   fSink = new FairRootFileSink(name);
   if (fRootManager) fRootManager->SetSink(fSink);
+  fUserOutputFileName = name;
 }
 //_____________________________________________________________________________
 
@@ -164,6 +168,19 @@ TFile* FairRun::GetOutputFile()
   assert(sink->GetSinkType() == kFILESINK);
   auto rootFileSink = static_cast<FairRootFileSink*>(sink);
   return rootFileSink->GetRootFile();
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+void FairRun::SetUserOutputFileName(const TString& name) {
+  fUserOutputFileName = name;
+}
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+TString FairRun::GetUserOutputFileName() const
+{
+  return fUserOutputFileName;
 }
 //_____________________________________________________________________________
 

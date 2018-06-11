@@ -36,6 +36,7 @@
 #include "FairTask.h"                   // for FairTask
 #include "FairTrajFilter.h"             // for FairTrajFilter
 #include "FairVolume.h"                 // for FairVolume
+#include "FairRootFileSink.h"           // for CloneForWorker (in MT mode only)
 
 #include <iosfwd>                       // for ostream
 #include "TDatabasePDG.h"               // for TDatabasePDG
@@ -610,7 +611,7 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
   // and pass some data from master FairRunSim object
   FairRunSim* workerRun = new FairRunSim(kFALSE);
   workerRun->SetName(fRun->GetName()); // Transport engine
-  workerRun->SetSink(fRun->GetSink());
+  workerRun->SetUserOutputFileName(fRun->GetUserOutputFileName());
 
   // Trajectories filter is created explicitly as we do not call
   // FairRunSim::Init on workers
@@ -618,7 +619,7 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     new FairTrajFilter();
   }
 
-  // Create new  FairMCApplication object on worker
+  // Create new FairMCApplication object on worker
   FairMCApplication* workerApplication = new FairMCApplication(*this);
   workerApplication->SetGenerator(fEvGen->ClonePrimaryGenerator());
 
@@ -638,7 +639,11 @@ void FairMCApplication::InitOnWorker()
   fRun = FairRunSim::Instance();
 
   // Generate per-thread file name
-  fRootManager->UpdateSinkFileName();
+  // and create a new sink on worker
+  TString workerFileName = fRun->GetUserOutputFileName();
+  fRootManager->UpdateFileName(workerFileName);
+  fRun->SetSink(new FairRootFileSink(workerFileName));
+  fRootManager->InitSink();
 
   // Cache thread-local gMC
   fMC = gMC;

@@ -34,6 +34,7 @@ class FairSink
     virtual void        Reset()    = 0;
 
     virtual Sink_Type   GetSinkType() = 0;
+    virtual TString     GetFileName () { return ""; }
 
     void  SetRunId(Int_t runId) { fRunId = runId; }
     Int_t GetRunId() const      { return fRunId;  }

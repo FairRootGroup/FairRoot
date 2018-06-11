@@ -81,10 +81,11 @@ class FairRun : public TNamed
     void SetSink(FairSink* tempSink) {
       fSink = tempSink;
       fRootManager->SetSink(tempSink);
+      fUserOutputFileName = fSink->GetFileName();
     }
-    /**
-     * return a pointer to the sink
-     */
+     /**
+      * return a pointer to the sink
+      */
     FairSink* GetSink() {
       return fSink;
     }
@@ -169,6 +170,13 @@ class FairRun : public TNamed
     TFile* GetOutputFile();
     // ^^^^^^^^^^ depracted functions, replaced by FairSink ^^^^^^^^^^
 
+    /**
+     * New functions which allow to postpone creating a new Sink in MT
+     * to be kept after clean-up of deprecated functions above
+     */
+    void SetUserOutputFileName(const TString& name);
+    TString GetUserOutputFileName() const;
+
   private:
     FairRun(const FairRun& M);
     FairRun& operator= (const  FairRun&) {
@@ -188,6 +196,8 @@ class FairRun : public TNamed
     FairRootManager*         fRootManager;
     /**Output sink*/
     FairSink*                fSink;
+    /**Output file name set by user*/
+    TString                  fUserOutputFileName;
     /**Run Id*/
     UInt_t                   fRunId;//!
     /** true for Anaylsis session*/
