@@ -48,7 +48,7 @@
 #include "TRefArray.h"                  // for TRefArray
 #include "TMCAutoLock.h"
 
-#include "FairRootFileSink.h"               // to enable file name change when running in MT mode
+#include "FairRootFileSink.h"           // to enable GetOutFile()
 
 #include <stdlib.h>                     // for exit
 #include <string.h>                     // for NULL, strcmp
@@ -1080,16 +1080,11 @@ void FairRootManager::EmitMemoryBranchWrongTypeWarning(const char* brname, const
 }
 
 //_____________________________________________________________________________
-void FairRootManager::UpdateSinkFileName()
+void FairRootManager::UpdateFileName(TString& fileName)
 {
-  if ( !fSink ) return;
-  if ( fSink->GetSinkType() == kFILESINK ) {
-    TString newFileName = ((FairRootFileSink*)fSink)->GetFileName();
-    TString tid = "_t";
-    tid += this->GetInstanceId();
-    newFileName.Insert(newFileName.Index(".root"), tid);
-    ((FairRootFileSink*)fSink)->OpenRootFile(newFileName);
-  }
+  TString tid = "_t";
+  tid += GetInstanceId();
+  fileName.Insert(fileName.Index(".root"), tid);
 }
 //_____________________________________________________________________________
 
