@@ -335,7 +335,7 @@ bool FairRootFileSink::CreatePersistentBranchesAny()
 
       // for the branch creation we need a TClass describing the object
       // get it from ROOT via the type name
-      auto cl = TClass::GetClass(tname.c_str());
+      auto cl = TClass::GetClass(tinfo);
       if(!cl) {
         LOG(FATAL) << "No TClass found for " << tname << "\n";
         return false;
