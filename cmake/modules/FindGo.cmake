@@ -45,7 +45,7 @@ macro(build_go_package pkg gopath)
   execute_process(COMMAND ${GO_EXECUTABLE} get
                   WORKING_DIRECTORY ${workdir}
                   RESULT_VARIABLE goret)
-  if(NOT "${goret}")
+  if(goret)
     message(FATAL_ERROR "Go build for ${pkg} failed!")
   endif()
 endmacro(build_go_package)
