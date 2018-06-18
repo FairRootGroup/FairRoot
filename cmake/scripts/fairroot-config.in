@@ -3,14 +3,8 @@
 _major_version=@FAIRROOT_MAJOR_VERSION@
 _minor_version=@FAIRROOT_MINOR_VERSION@
 _patch_version=@FAIRROOT_PATCH_VERSION@
-if [ $_patch_version -eq "00" ]; then
-  _patch=""
-else
-  _tmp=$(printf '%d' $_patch_version)
-  _tmp=$((_tmp+96))
-  _patch=$(printf \\$(printf '%03o' $_tmp))
-fi
-_version=v-@FAIRROOT_MAJOR_VERSION@.@FAIRROOT_MINOR_VERSION@$_patch
+
+_version=v@FAIRROOT_MAJOR_VERSION@.@FAIRROOT_MINOR_VERSION@.@FAIRROOT_PATCH_VERSION@
 
 _cc=@CMAKE_C_COMPILER@
 _cxx=@CMAKE_CXX_COMPILER@
