@@ -30,9 +30,9 @@ foreach(p
 endforeach()
 
 # Set project version
-SET(FAIRROOT_MAJOR_VERSION 17)
-SET(FAIRROOT_MINOR_VERSION 10)
-SET(FAIRROOT_PATCH_VERSION 02)
+SET(FAIRROOT_MAJOR_VERSION 18)
+SET(FAIRROOT_MINOR_VERSION 0)
+SET(FAIRROOT_PATCH_VERSION 0)
 
 # Set name of our project to "FAIRROOT".
 # Has to be done after check of cmake version
@@ -427,7 +427,7 @@ If(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                  )
 Else()
-  Set(FAIRROOT_GIT_VERSION v-17.10)
+  Set(FAIRROOT_GIT_VERSION v${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION})
 EndIf()
 Configure_File(${CMAKE_SOURCE_DIR}/cmake/scripts/fairroot-config.in ${CMAKE_BINARY_DIR}/fairroot-config @ONLY)
 
