@@ -60,7 +60,7 @@ struct RootDeserializer
     virtual ~RootDeserializer() = default;
 
     template<typename T>
-    void Deserialize(FairMQMessage& msg, T*& output)
+    void Deserialize(FairMQMessage& msg, T* output)
     {
         delete output;
         FairTMessage tm(msg.GetData(), msg.GetSize());
