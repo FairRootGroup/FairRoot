@@ -55,7 +55,7 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
             std::unique_ptr<FairMQMessage> msg(NewMessage());
             if (Receive(msg, fInputChanName) > 0)
             {
-                Deserialize<typename InputPolicy::DeserializerType>(*msg, InputPolicy::fInput); // get data from message.
+                FairMQDevice::Deserialize<typename InputPolicy::DeserializerType>(*msg, InputPolicy::fInput); // get data from message.
                 OutputPolicy::Serialize(InputPolicy::fInput); // put data into output.
                 receivedMsg++;
             }
