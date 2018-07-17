@@ -34,8 +34,6 @@ include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/Lmd/run/startMQExLmd.sh.in
                ${CMAKE_BINARY_DIR}/bin/examples/MQ/Lmd/startMQExLmd.sh)
-configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/Lmd/run/ex-lmd.json
-               ${CMAKE_BINARY_DIR}/bin/config/ex-lmd.json)
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}

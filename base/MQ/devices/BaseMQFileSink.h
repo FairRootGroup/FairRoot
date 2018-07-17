@@ -27,6 +27,7 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
     BaseMQFileSink()
         : InputPolicy()
         , OutputPolicy()
+        , fInputChanName()
     {}
 
     virtual ~BaseMQFileSink()
@@ -41,6 +42,7 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
   protected:
     virtual void InitTask()
     {
+        fInputChanName = fConfig->GetValue<std::string>("in-chan-name");
         OutputPolicy::SetFileProperties(*fConfig);
         OutputPolicy::InitOutputFile();
     }
@@ -51,7 +53,7 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
         while (CheckCurrentState(RUNNING))
         {
             std::unique_ptr<FairMQMessage> msg(NewMessage());
-            if (Receive(msg, "data-in") > 0)
+            if (Receive(msg, fInputChanName) > 0)
             {
                 Deserialize<typename InputPolicy::DeserializerType>(*msg, InputPolicy::fInput); // get data from message.
                 OutputPolicy::Serialize(InputPolicy::fInput); // put data into output.
@@ -61,6 +63,9 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
 
         LOG(info) << "Received " << receivedMsg << " messages!";
     }
+
+  private:
+    std::string fInputChanName;
 };
 
 #endif /* BASEMQFILESINK_H */

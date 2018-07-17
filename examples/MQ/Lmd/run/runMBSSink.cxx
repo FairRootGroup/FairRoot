@@ -8,7 +8,7 @@
 #include "runFairMQDevice.h"
 #include "BaseMQFileSink.h"
 
-#include "MQPolicyDef.h" // fair::mq::policy::
+#include "IOPolicy.h" // fair::mq::policy::
 #include "RootSerializer.h" // RootDeserializer
 #include "TClonesArray.h" // data type for the InputPolicy
 
@@ -34,7 +34,8 @@ void addCustomOptions(bpo::options_description& options)
         ("hit-classname",      po::value<std::string>()->default_value("FairMBSRawItem"), "Hit class name for initializing TClonesArray")
         ("output-file-option", po::value<std::string>()->default_value("RECREATE"),       "Root file option : UPDATE, RECREATE etc.")
         ("use-clones-array",   po::value<bool>()->default_value(true),                    "Use TClonesArray")
-        ("flow-mode",          po::value<bool>()->default_value(true),                    "Flow mode");
+        ("flow-mode",          po::value<bool>()->default_value(true),                    "Flow mode")
+        ("in-chan-name",       po::value<std::string>()->default_value("data"),           "input channel name");
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& config)

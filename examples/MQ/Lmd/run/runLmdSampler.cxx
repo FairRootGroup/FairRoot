@@ -26,7 +26,7 @@ void addCustomOptions(bpo::options_description& options)
         ("lmd-proc-id",     bpo::value<short>(),        "sub-event procId")
         ("lmd-sub-crate",   bpo::value<short>(),        "sub-event subCrate")
         ("lmd-control",     bpo::value<short>(),        "sub-event control")
-        ("lmd-chan-name",   bpo::value<std::string>(),  "MQ-channel name for this sub-event");
+        ("lmd-chan-name",   bpo::value<std::string>(),  "LMD output channel name");
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)

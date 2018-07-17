@@ -1,5 +1,5 @@
-#ifndef MQPOLICYDEF_H
-#define MQPOLICYDEF_H
+#ifndef IOPOLICY_H
+#define IOPOLICY_H
 
 #include <memory>
 
@@ -218,4 +218,4 @@ class OutputPolicy : public Serializer
 } // namespace mq
 } // namespace fair
 
-#endif // MQPOLICYDEF_H
+#endif // IOPOLICY_H

@@ -43,7 +43,7 @@ Set(BaseMQHDRFiles
   policies/Serialization/BinaryBaseClassSerializer.h
   policies/Serialization/BoostSerializer.h
   policies/Serialization/RootSerializer.h
-  policies/Serialization/MQPolicyDef.h
+  policies/Serialization/IOPolicy.h
   policies/Storage/RootOutFileManager.h
   policies/Storage/BinaryOutFileManager.h
   policies/Storage/BoostDataSaver.h
