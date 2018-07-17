@@ -37,7 +37,8 @@ class FairMQUnpacker : public FairMQDevice
         , fProcId(0)
         , fSubCrate(0)
         , fControl(0)
-        , fChanName()
+        , fInputChanName()
+        , fOutputChanName()
     {}
 
     FairMQUnpacker(const FairMQUnpacker&) = delete;
@@ -77,11 +78,12 @@ class FairMQUnpacker : public FairMQDevice
         fProcId = fConfig->GetValue<short>("lmd-proc-id");
         fSubCrate = fConfig->GetValue<short>("lmd-sub-crate");
         fControl = fConfig->GetValue<short>("lmd-control");
-        fChanName = fConfig->GetValue<std::string>("lmd-chan-name");
+        fInputChanName = fConfig->GetValue<std::string>("lmd-chan-name");
+        fOutputChanName = fConfig->GetValue<std::string>("out-chan-name");
 
         // combination of sub-event header value = one special channel
         // this channel MUST be defined in the json file for the MQ configuration
-        AddSubEvtKey(fType, fSubType, fProcId, fSubCrate, fControl, fChanName);
+        AddSubEvtKey(fType, fSubType, fProcId, fSubCrate, fControl, fInputChanName);
 
         // check if subevt map is configured
         if (fInputChannelName.empty() || fSubEventChanMap.size() == 0)
@@ -129,7 +131,7 @@ class FairMQUnpacker : public FairMQDevice
 
                     fUnpacker->DoUnpack(subEvtPtr, dataSize);
                     Serialize<SerializationType>(*msg, fUnpacker->GetOutputData());
-                    Send(msg, "data-out");
+                    Send(msg, fOutputChanName);
                     fUnpacker->Reset();
                 }
             }
@@ -147,7 +149,8 @@ class FairMQUnpacker : public FairMQDevice
     short fProcId;
     short fSubCrate;
     short fControl;
-    std::string fChanName;
+    std::string fInputChanName;
+    std::string fOutputChanName;
 };
 
 #endif /* !FAIRMQUNPACKER_H */

@@ -34,7 +34,7 @@
 #include "BaseSerializationPolicy.h"
 #include "BaseDeserializationPolicy.h"
 
-#include "MQPolicyDef.h"
+#include "IOPolicy.h"
 
 template <typename DataType, typename BoostArchiveOut = boost::archive::binary_oarchive>
 class BoostSerializer
