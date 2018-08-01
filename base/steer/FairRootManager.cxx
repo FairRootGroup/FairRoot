@@ -1099,4 +1099,15 @@ TFile* FairRootManager::GetOutFile()
 }
 //_____________________________________________________________________________
 
+//_____________________________________________________________________________
+TTree* FairRootManager::GetOutTree()
+{
+  LOG(WARNING) << "FairRootManager::GetOutTree() deprecated. Use separate file to store additional data.";
+  auto sink = GetSink();
+  assert(sink->GetSinkType() == kFILESINK);
+  auto rootFileSink = static_cast<FairRootFileSink*>(sink);
+  return rootFileSink->GetOutTree();
+}
+//_____________________________________________________________________________
+
 ClassImp(FairRootManager)
