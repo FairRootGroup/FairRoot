@@ -94,7 +94,7 @@ FairTrajFilter::~FairTrajFilter()
 void FairTrajFilter::Init(TString brName, TString folderName)
 {
 
-  FairRootManager::Instance()->RegisterAny(brName, fTrackCollection, kTRUE);
+  FairRootManager::Instance()->Register(brName.Data(), folderName.Data(), fTrackCollection, kTRUE);
 }
 
 void FairTrajFilter::Reset()
