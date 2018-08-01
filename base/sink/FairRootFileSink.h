@@ -50,6 +50,7 @@ public:
     virtual TString     GetFileName (){return (fRootFile?fRootFile->GetName():"");}
 
     virtual void        SetOutTree(TTree* fTree) { fOutTree=fTree;}
+    TTree*              GetOutTree() { return fOutTree; }
 
     virtual void        Fill();
 
