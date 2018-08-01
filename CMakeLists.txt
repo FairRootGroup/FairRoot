@@ -32,7 +32,7 @@ endforeach()
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
 SET(FAIRROOT_MINOR_VERSION 0)
-SET(FAIRROOT_PATCH_VERSION 0)
+SET(FAIRROOT_PATCH_VERSION 1)
 
 # Set name of our project to "FAIRROOT".
 # Has to be done after check of cmake version
