@@ -254,6 +254,8 @@ class FairRootManager : public TObject
     // vvvvvvvvvv depracted functions, replaced by FairSink vvvvvvvvvv
     /** Return a pointer to the output File of type TFile */
     TFile* GetOutFile();
+    /** Return a pointer to the output tree of type TTree */
+    TTree* GetOutTree();
     // ^^^^^^^^^^ depracted functions, replaced by FairSink ^^^^^^^^^^
   private:
 
