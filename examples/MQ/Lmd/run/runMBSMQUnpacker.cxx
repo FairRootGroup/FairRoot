@@ -21,13 +21,13 @@ namespace bpo = boost::program_options;
 void addCustomOptions(bpo::options_description& options)
 {
     options.add_options()
-        ("lmd-type",      po::value<short>(),       "sub-event type")
-        ("lmd-sub-type",  po::value<short>(),       "sub-event subType")
-        ("lmd-proc-id",   po::value<short>(),       "sub-event procId")
-        ("lmd-sub-crate", po::value<short>(),       "sub-event subCrate")
-        ("lmd-control",   po::value<short>(),       "sub-event control")
-        ("lmd-chan-name", po::value<std::string>(), "LMD input channel name")
-        ("out-chan-name", po::value<std::string>(), "output channel name");
+        ("lmd-type",      bpo::value<short>(),       "sub-event type")
+        ("lmd-sub-type",  bpo::value<short>(),       "sub-event subType")
+        ("lmd-proc-id",   bpo::value<short>(),       "sub-event procId")
+        ("lmd-sub-crate", bpo::value<short>(),       "sub-event subCrate")
+        ("lmd-control",   bpo::value<short>(),       "sub-event control")
+        ("lmd-chan-name", bpo::value<std::string>(), "LMD input channel name")
+        ("out-chan-name", bpo::value<std::string>(), "output channel name");
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)

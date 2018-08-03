@@ -28,14 +28,14 @@ namespace bpo = boost::program_options;
 void addCustomOptions(bpo::options_description& options)
 {
     options.add_options()
-        ("output-file-name",   po::value<std::string>(),                                  "Path to the input file")
-        ("output-file-tree",   po::value<std::string>()->default_value("mbstree"),        "Name of the output tree")
-        ("output-file-branch", po::value<std::string>()->default_value("FairMBSRawItem"), "Name of the output Branch")
-        ("hit-classname",      po::value<std::string>()->default_value("FairMBSRawItem"), "Hit class name for initializing TClonesArray")
-        ("output-file-option", po::value<std::string>()->default_value("RECREATE"),       "Root file option : UPDATE, RECREATE etc.")
-        ("use-clones-array",   po::value<bool>()->default_value(true),                    "Use TClonesArray")
-        ("flow-mode",          po::value<bool>()->default_value(true),                    "Flow mode")
-        ("in-chan-name",       po::value<std::string>()->default_value("data"),           "input channel name");
+        ("output-file-name",   bpo::value<std::string>(),                                  "Path to the input file")
+        ("output-file-tree",   bpo::value<std::string>()->default_value("mbstree"),        "Name of the output tree")
+        ("output-file-branch", bpo::value<std::string>()->default_value("FairMBSRawItem"), "Name of the output Branch")
+        ("hit-classname",      bpo::value<std::string>()->default_value("FairMBSRawItem"), "Hit class name for initializing TClonesArray")
+        ("output-file-option", bpo::value<std::string>()->default_value("RECREATE"),       "Root file option : UPDATE, RECREATE etc.")
+        ("use-clones-array",   bpo::value<bool>()->default_value(true),                    "Use TClonesArray")
+        ("flow-mode",          bpo::value<bool>()->default_value(true),                    "Flow mode")
+        ("in-chan-name",       bpo::value<std::string>()->default_value("data"),           "input channel name");
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& config)
