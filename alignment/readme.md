@@ -4,7 +4,7 @@ This is the alignment interface module in FairRoot. It's supposed to handle the 
 
 # Usage
 
-This approach assumes one global, perfect version of the detector geometry that is changed during runtime of the simualtion steps, but never stored to disk. This ensures that there is always one known-good geometry, which we will call ideal geometry.
+This approach assumes one global, perfect version of the detector geometry that is changed during runtime of the simualtion steps, but never stored to disk. This ensures that there is always one known-good geometry, which we will call ideal geometry. The AlignmentHandler class changes the geometry that currently loaded into the gGeoManager, so every following macro that uses the gGeoManager uses this changed geometry.
 
 The user can choose wether to apply the misalignments to the geometry or the generated data.
 
@@ -41,11 +41,21 @@ Applying to data is the other approach, where we don't touch the geometry but in
 
 # Examples
 
+```
+
+```
+
 ## Misalign Geometry
 
 TODO: Include Lumi Examples here
 
 ## Misalign Data
+
+TODO
+
+## Set physically measured position matrices to geometry 
+
+Eventually, we will want to set matrices to our geometry which were measured on the real detector. That can be by laser tracker, theodolite or any other means.
 
 TODO
 
