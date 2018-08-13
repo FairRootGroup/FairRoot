@@ -247,6 +247,8 @@ class FairRootManager : public TObject
 
     static char* GetTreeName();
 
+    static char* GetFolderName();
+
     /**public Members for multi-threading */
     Int_t  GetInstanceId() const { return fId; }
     void   UpdateFileName(TString& fileName);

@@ -213,7 +213,7 @@ Bool_t FairMixedSource::Init()
     return kTRUE;
   }
   if (!fBackgroundChain ) {
-    fBackgroundChain = new TChain(FairRootManager::GetTreeName(), "/cbmroot");
+    fBackgroundChain = new TChain(FairRootManager::GetTreeName(), Form("/%s", FairRootManager::GetFolderName()));
     LOG(info) << "FairMixedSource::Init() chain created";
   }
 
@@ -222,13 +222,16 @@ Bool_t FairMixedSource::Init()
     
 // Get the folder structure from file which describes the input tree.
     // There are two different names possible, so check both.
-    fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmroot"));
+    fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get(FairRootManager::GetFolderName()));
     if(!fCbmroot) {
-      fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmout"));
+      fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmroot"));
       if(!fCbmroot) {
-	fCbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-      } else {
-	fCbmroot->SetName("cbmroot");
+        fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmout"));
+        if(!fCbmroot) {
+	        fCbmroot= gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
+        } else {
+	        fCbmroot->SetName(FairRootManager::GetFolderName());
+        }
       }
     }
     // Get The list of branches from the input file and add it to the
@@ -467,7 +470,7 @@ void FairMixedSource::SetSignalFile(TString name, UInt_t identifier )
   } else {
     /** Set a signal file of certain type (identifier) if already exist add the file to the chain*/
     if(fSignalTypeList[identifier]==0) {
-      TChain* chain = new TChain(FairRootManager::GetTreeName(), "/cbmroot");
+      TChain* chain = new TChain(FairRootManager::GetTreeName(), Form("/%s", FairRootManager::GetFolderName()));
       fSignalTypeList[identifier]=chain;
       FairRootManager::Instance()->SetInChain(chain,identifier);
       fCurrentEntry[identifier]= 0;
@@ -545,13 +548,16 @@ Bool_t FairMixedSource::OpenBackgroundChain()
 {
   // Get the folder structure from file which describes the input tree.
   // There are two different names possible, so check both.
-  fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmroot"));
+  fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get(FairRootManager::GetFolderName()));
   if(!fCbmroot) {
-    fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmout"));
+    fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmroot"));
     if(!fCbmroot) {
-      fCbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-    } else {
-      fCbmroot->SetName("cbmroot");
+      fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmout"));
+      if(!fCbmroot) {
+        fCbmroot= gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
+      } else {
+        fCbmroot->SetName(FairRootManager::GetFolderName());
+      }
     }
   }
 
