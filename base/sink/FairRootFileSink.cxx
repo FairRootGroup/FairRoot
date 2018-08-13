@@ -117,18 +117,11 @@ Bool_t FairRootFileSink::InitSink()
 
     fRootFile->cd();
 
-    FairRun* fRun = FairRun::Instance();
+    //FairRun* fRun = FairRun::Instance();
     /**Check if a simulation run!*/
-    if(!fRun->IsAna())
-      {
-        fOutFolder= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
-        gROOT->GetListOfBrowsables()->Add(fOutFolder);
-      }
-    else
-      {
-        fOutFolder= gROOT->GetRootFolder()->AddFolder("cbmout", "Main Output Folder");
-        gROOT->GetListOfBrowsables()->Add(fOutFolder);
-      }
+    fOutFolder= gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
+    gROOT->GetListOfBrowsables()->Add(fOutFolder);
+    
     LOG(INFO) << "FairRootFileSink initialized.";
     LOG(INFO) << " - " << fOutFolder->GetName();
     LOG(INFO) << "    - " << fRootFile->GetName();
@@ -296,16 +289,8 @@ void FairRootFileSink::WriteFolder() {
   if(fOutFolder!=0) {
     fOutFolder->Write();
 
-    FairRun* fRun = FairRun::Instance();
-    /**Check if a simulation run!*/
-    if(!fRun->IsAna())
-      {
-        fOutTree =new TTree(FairRootManager::GetTreeName(), "/cbmroot", 99);
-      }
-    else
-      {
-        fOutTree =new TTree(FairRootManager::GetTreeName(), "/cbmout", 99);
-      }
+    //FairRun* fRun = FairRun::Instance();
+    fOutTree =new TTree(FairRootManager::GetTreeName(), Form("/%s", FairRootManager::GetFolderName()), 99);
     TruncateBranchNames();
     CreatePersistentBranchesAny();
   }

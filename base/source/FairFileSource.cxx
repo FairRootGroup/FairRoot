@@ -183,7 +183,7 @@ Bool_t FairFileSource::Init()
        return kTRUE;
     }
     if (!fInChain ) {
-        fInChain = new TChain(FairRootManager::GetTreeName(), "/cbmroot");
+        fInChain = new TChain(FairRootManager::GetTreeName(), Form("/%s",FairRootManager::GetFolderName()));
         LOG(debug) << "FairFileSource::Init() chain created";
 	FairRootManager::Instance()->SetInChain(fInChain);
     }
@@ -191,14 +191,18 @@ Bool_t FairFileSource::Init()
 
     // Get the folder structure from file which describes the input tree.
     // There are two different names possible, so check both.
-    fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmroot"));
-    if(!fCbmroot) {
+    fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get(FairRootManager::GetFolderName()));
+    if(!fCbmroot)
+    {
+      fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmroot"));
+      if(!fCbmroot) {
         fCbmroot= dynamic_cast <TFolder*> (fRootFile->Get("cbmout"));
         if(!fCbmroot) {
-            fCbmroot= gROOT->GetRootFolder()->AddFolder("cbmroot", "Main Folder");
+          fCbmroot= gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
         } else {
-            fCbmroot->SetName("cbmroot");
+          fCbmroot->SetName(FairRootManager::GetFolderName());
         }
+      }
     }
     // Get The list of branches from the input file and add it to the
     // actual list of existing branches.
@@ -581,17 +585,22 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     TFile* f = TFile::Open(inputFile);
 
     TFolder* added=NULL;
-    TString folderName = "/cbmout";
-    TString folderName1 = "cbmout";
-    added = dynamic_cast <TFolder*> (f->Get("cbmout"));
+    TString folderName1 = FairRootManager::GetFolderName();
+    TString folderName = Form("/%s", folderName1.Data());
+    added = dynamic_cast <TFolder*> (f->Get(folderName1));
     if(!added) {
+      folderName = "/cbmout";
+      folderName1 = "cbmout";
+      added = dynamic_cast <TFolder*> (f->Get("cbmout"));
+      if(!added) {
         folderName = "/cbmroot";
         folderName1 = "cbmroot";
         added = dynamic_cast <TFolder*> (f->Get("cbmroot"));
-	if (!added) {
-	  LOG(fatal) << "Could not find folder cbmout nor cbmroot.";
-	  exit(-1);
-	}
+	      if (!added) {
+	        LOG(fatal) << "Could not find folder cbmout nor cbmroot.";
+	        exit(-1);
+	      }
+      }
     }
     folderName1=folderName1+"_"+inputLevel;
     added->SetName(folderName1);
