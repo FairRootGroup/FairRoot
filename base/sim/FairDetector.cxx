@@ -16,6 +16,7 @@
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "FairModule.h"                 // for FairModule::svList, etc
 #include "FairVolume.h"                 // for FairVolume
+#include "FairRootManager.h"
 
 #include "TFolder.h"                    // for TFolder
 #include "TList.h"                      // for TList
@@ -140,7 +141,7 @@ void FairDetector::SaveGeoParams()
 
   if ( ! fGeoSaved  ) {
     LOG(info) << "Detector: " << GetName() << " Geometry parameters saved ... ";
-    TFolder* mf = dynamic_cast<TFolder*>(gROOT->FindObjectAny("cbmroot")) ;
+    TFolder* mf = dynamic_cast<TFolder*>(gROOT->FindObjectAny(FairRootManager::GetFolderName())) ;
     TFolder* stsf = NULL;
     if (mf ) { stsf = dynamic_cast<TFolder*> (mf->FindObjectAny(GetName())); }
     if (stsf) {

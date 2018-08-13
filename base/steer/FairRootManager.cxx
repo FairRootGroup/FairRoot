@@ -116,7 +116,7 @@ FairRootManager::FairRootManager()
     fEntryNr(0),
     fListFolder(0),
     fSource(0),
-    fSourceChain(new TChain(GetTreeName(), "/cbmroot")),
+    fSourceChain(new TChain(GetTreeName(), Form("/%s", GetFolderName()))),
     fSignalChainList(),
     fEventHeader(new FairEventHeader()),
     fUseFairLinks(kFALSE),
@@ -1052,24 +1052,67 @@ char* FairRootManager::GetTreeName()
   {
       return default_name;
   }
-  // If file is empty -> default
+
   char str[100];
-  if(NULL == fgets(str, 100, file))
+  while(NULL != fgets(str, 100, file))
   {
-      fclose(file);
-      return default_name;
+    if(TString(str).Contains("treename"))
+    {
+      char* treename = new char[100];
+      if(1 == sscanf(str, "treename=%s", treename))
+      {
+        fclose(file);
+        return treename;
+      }
+      delete [] treename;
+    }
   }
-  // If file does not contain treename key -> default
-  char* treename = new char[100];
-  if(1 != sscanf(str, "treename=%s", treename))
-  {
-      fclose(file);
-      delete[] treename;
-      return default_name;
-  }
-  // Close file and return read value
+
+  // Key "treename" was not found in file: return default
   fclose(file);
-  return treename;
+  return default_name;
+}
+
+//_____________________________________________________________________________
+char* FairRootManager::GetFolderName()
+{
+  char* default_name = (char*)"cbmout";
+  if(! FairRun::Instance()->IsAna())
+  {
+    default_name = (char*)"cbmroot";
+  }
+  char* workdir = getenv("VMCWORKDIR");
+  if(NULL == workdir)
+  {
+      return default_name;
+  }
+
+  // Open file with output tree name
+  FILE* file = fopen(Form("%s/config/rootmanager.dat",workdir), "r");
+  // If file does not exist -> default
+  if(NULL == file)
+  {
+      return default_name;
+  }
+
+  char str[100];
+  while(NULL != fgets(str, 100, file))
+  {
+    if(TString(str).Contains("foldername"))
+    {
+      char* foldername = new char[100];
+      if(1 == sscanf(str, "foldername=%s", foldername))
+      {
+        fclose(file);
+        return foldername;
+      }
+      delete [] foldername;
+    }
+  }
+
+  // Key "foldername" was not found in file: return default
+  fclose(file);
+  return default_name;
 }
 
 //_____________________________________________________________________________
