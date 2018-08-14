@@ -209,4 +209,9 @@ void FairRun::AlignGeometry() const {
 	fAlignmentHandler.AlignGeometry();
 }
 
+void FairRun::SetAlignmentMatrices(
+    const std::map<std::string, TGeoHMatrix>& alignmentMatrices) {
+	fAlignmentHandler.SetAlignmentMatrices(alignmentMatrices);
+}
+
 ClassImp(FairRun)
