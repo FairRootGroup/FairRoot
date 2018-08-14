@@ -22,6 +22,7 @@ ${CMAKE_SOURCE_DIR}/trackbase
 ${CMAKE_SOURCE_DIR}/base/source
 ${CMAKE_SOURCE_DIR}/base/sink
 ${CMAKE_SOURCE_DIR}/geane
+${CMAKE_SOURCE_DIR}/alignment
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES

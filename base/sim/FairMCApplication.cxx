@@ -987,9 +987,8 @@ void FairMCApplication::ConstructGeometry()
     delete particleIter;
   }
   fModIter->Reset();
-  while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
-    Mod->ModifyGeometry();
-  }
+
+  fRun->AlignGeometry();
 
   gGeoManager->RefreshPhysicalNodes(kFALSE);
 }
