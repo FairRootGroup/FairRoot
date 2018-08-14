@@ -206,11 +206,7 @@ MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
 
   CONVERT_LIST_TO_STRING(${LD_LIBRARY_PATH})
   set(MY_LD_LIBRARY_PATH ${output})
-
   set(my_script_name ${SCRIPT_FULL_NAME})
-
-  CONVERT_LIST_TO_STRING(${ROOT_INCLUDE_PATH})
-  set(MY_ROOT_INCLUDE_PATH ${output})
 
   IF(FAIRROOT_FOUND)
     configure_file(${FAIRROOT_CMAKEMOD_DIR}/scripts/set_env.sh.in
@@ -291,6 +287,7 @@ IF(FAIRROOT_FOUND)
 
 ELSE(FAIRROOT_FOUND)
   Set(BASE_INCLUDE_DIRECTORIES
+    ${CMAKE_SOURCE_DIR}/logger
     ${CMAKE_SOURCE_DIR}/fairtools
     ${CMAKE_SOURCE_DIR}/geobase
     ${CMAKE_SOURCE_DIR}/parbase
@@ -301,25 +298,22 @@ ELSE(FAIRROOT_FOUND)
     ${CMAKE_SOURCE_DIR}/base/sim
     ${CMAKE_SOURCE_DIR}/base/sink
     ${CMAKE_SOURCE_DIR}/base/source
+    ${CMAKE_SOURCE_DIR}/dbase
+    ${CMAKE_SOURCE_DIR}/dbase/dbInterface
+    ${CMAKE_SOURCE_DIR}/dbase/dbValidation
+    ${CMAKE_SOURCE_DIR}/dbase/dbUtils
+    ${CMAKE_SOURCE_DIR}/input/db
+    ${CMAKE_SOURCE_DIR}/dbase/dbInput
+    ${CMAKE_SOURCE_DIR}/dbase/dbIO
+    ${CMAKE_SOURCE_DIR}/alignment 
   )
-
-  If(WITH_DBASE)
-    Set(BASE_INCLUDE_DIRECTORIES
-      ${BASE_INCLUDE_DIRECTORIES}
-      ${CMAKE_SOURCE_DIR}/dbase
-      ${CMAKE_SOURCE_DIR}/dbase/dbInterface
-      ${CMAKE_SOURCE_DIR}/dbase/dbValidation
-      ${CMAKE_SOURCE_DIR}/dbase/dbUtils
-      ${CMAKE_SOURCE_DIR}/input/db
-      ${CMAKE_SOURCE_DIR}/dbase/dbInput
-      ${CMAKE_SOURCE_DIR}/dbase/dbIO
-    )
-  EndIf()
-
   Set(SYSTEM_INCLUDE_DIRECTORIES
     ${ROOT_INCLUDE_DIR}
     ${Boost_INCLUDE_DIRS}
   )  
+  Set(ROOT_INCLUDE_PATH
+      ${BASE_INCLUDE_DIRECTORIES}
+     )
 
 ENDIF(FAIRROOT_FOUND)
 
@@ -339,5 +333,6 @@ ELSE(FAIRROOT_FOUND)
 ENDIF(FAIRROOT_FOUND)
 
 Set(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
+
 
 EndMacro (SetBasicVariables)

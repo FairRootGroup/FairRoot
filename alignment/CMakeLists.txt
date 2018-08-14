@@ -1,7 +1,7 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
+ #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
@@ -11,46 +11,33 @@
 
 Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairtools
-  ${CMAKE_SOURCE_DIR}/geobase 
-  ${CMAKE_SOURCE_DIR}/parbase 
-  ${CMAKE_SOURCE_DIR}/base
-  ${CMAKE_SOURCE_DIR}/base/steer
-  ${CMAKE_SOURCE_DIR}/base/event
-  ${CMAKE_SOURCE_DIR}/base/field
-  ${CMAKE_SOURCE_DIR}/base/sim
-  ${CMAKE_SOURCE_DIR}/base/source
-  ${CMAKE_SOURCE_DIR}/base/sink
-  ${CMAKE_SOURCE_DIR}/field 
-  ${CMAKE_SOURCE_DIR}/passive
-  ${CMAKE_SOURCE_DIR}/trackbase
-  ${CMAKE_SOURCE_DIR}/alignment
+  ${FairLogger_INCDIR}
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
-  ${ROOT_INCLUDE_DIR} 
+  ${ROOT_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})
+
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
 )
- 
+
 Link_Directories(${LINK_DIRECTORIES})
 
+# List of source files
 Set(SRCS
-  FairTrackPar.cxx
-  FairTrackParP.cxx
-  FairTrackParH.cxx 
-  FairGeaneUtil.cxx
+FairAlignmentHandler.cxx
 )
 
-Set(HEADERS )
-Set(LINKDEF TrackBaseLinkDef.h)
-Set(LIBRARY_NAME TrkBase)
-Set(DEPENDENCIES Base)
-#Set(DEPENDENCIES Base Physics Matrix Core)
+Set(DEPENDENCIES
+      Geom Matrix
+)
+
+Set(LIBRARY_NAME Alignment)
 
 GENERATE_LIBRARY()

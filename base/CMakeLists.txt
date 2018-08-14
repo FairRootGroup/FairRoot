@@ -27,6 +27,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/sim
   ${CMAKE_SOURCE_DIR}/base/source
   ${CMAKE_SOURCE_DIR}/base/sink
+  ${CMAKE_SOURCE_DIR}/alignment
   ${FairLogger_INCDIR}
 )
 
@@ -155,7 +156,7 @@ If(BUILD_MBS)
   )
 
   Set(DEPENDENCIES
-      ParBase GeoBase FairTools MbsAPI
+      Alignment ParBase GeoBase FairTools MbsAPI
       Proof GeomPainter Geom VMC EG MathCore Physics
       Matrix Tree Hist RIO RHTTP Core
   )
@@ -163,7 +164,7 @@ If(BUILD_MBS)
   Set(DEFINITIONS BUILD_MBS)
 Else(BUILD_MBS)
   Set(DEPENDENCIES
-      ParBase GeoBase FairTools
+      Alignment ParBase GeoBase FairTools
       Proof GeomPainter Geom VMC EG MathCore Physics
       Matrix Tree Hist RIO RHTTP Core
   )

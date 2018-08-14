@@ -28,7 +28,8 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/sim
   ${CMAKE_SOURCE_DIR}/base/sink
   ${CMAKE_SOURCE_DIR}/base/source
-  ${CMAKE_SOURCE_DIR}/generators 
+  ${CMAKE_SOURCE_DIR}/generators
+  ${CMAKE_SOURCE_DIR}/alignment
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES

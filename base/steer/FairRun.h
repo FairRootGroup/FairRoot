@@ -14,6 +14,7 @@
 #include "TMCtls.h"                     // for multi-threading
 
 #include "FairRootManager.h"
+#include "FairAlignmentHandler.h"
 
 class FairEventHeader;
 class FairFileHeader;
@@ -184,6 +185,8 @@ class FairRun : public TNamed
     void SetUserOutputFileName(const TString& name);
     TString GetUserOutputFileName() const;
 
+    void AlignGeometry() const;
+
   private:
     FairRun(const FairRun& M);
     FairRun& operator= (const  FairRun&) {
@@ -221,6 +224,8 @@ class FairRun : public TNamed
     Bool_t                   fIsMaster;  //!
 
     Bool_t                   fMarkFill; //!
+
+    FairAlignmentHandler fAlignmentHandler;
 
     ClassDef(FairRun ,4)
 };

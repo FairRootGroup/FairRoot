@@ -204,4 +204,9 @@ TString FairRun::GetUserOutputFileName() const
 }
 //_____________________________________________________________________________
 
+
+void FairRun::AlignGeometry() const {
+	fAlignmentHandler.AlignGeometry();
+}
+
 ClassImp(FairRun)
