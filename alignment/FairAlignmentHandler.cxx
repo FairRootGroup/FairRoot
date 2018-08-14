@@ -77,7 +77,7 @@ void FairAlignmentHandler::AlignGeometryBySymlink() const {
 	}
 }
 
-void FairAlignmentHandler::SetMisalignmentMatrices(
+void FairAlignmentHandler::SetAlignmentMatrices(
     const std::map<std::string, TGeoHMatrix>& alignmentMatrices) {
 	fAlignmentMatrices = alignmentMatrices;
 }
