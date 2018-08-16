@@ -5,32 +5,32 @@
 #include "TGeoManager.h"
 #include "TGeoPhysicalNode.h"
 
+FairAlignmentHandler::FairAlignmentHandler() {
+}
 
-FairAlignmentHandler::FairAlignmentHandler() {}
-
-FairAlignmentHandler::~FairAlignmentHandler() {}
+FairAlignmentHandler::~FairAlignmentHandler() {
+}
 
 void FairAlignmentHandler::AlignGeometry() const {
 	LOG(INFO) << "aligning the geometry..." << FairLogger::endl;
 
 	TString detStr = "lmd_root";
 
-	TGeoPNEntry* entry = gGeoManager->GetAlignableEntry(detStr.Data());
-	if (entry) {
-		LOG(INFO) << "Modifying using symlinks." << FairLogger::endl;
+	LOG(INFO) << "aligning in total " << fAlignmentMatrices.size()
+			<< " volumes." << FairLogger::endl;
+	if (gGeoManager->GetNAlignable() > 0) {
 		AlignGeometryBySymlink();
-	}
-	else {
-		LOG(INFO) << "Modifying using full path." << FairLogger::endl;
+	} else {
 		AlignGeometryByFullPath();
 	}
-	LOG(DEBUG) << "Align in total " << fAlignmentMatrices.size() << " detectors." << FairLogger::endl;
+
 	LOG(INFO) << "alignment finished!" << FairLogger::endl;
 }
 
 void FairAlignmentHandler::AlignGeometryByFullPath() const {
 	TString volume_path;
 
+	LOG(INFO) << "aligning using full path." << FairLogger::endl;
 	for (auto const& alignment_entry : fAlignmentMatrices) {
 		volume_path = alignment_entry.first;
 
@@ -39,7 +39,6 @@ void FairAlignmentHandler::AlignGeometryByFullPath() const {
 		TGeoNode* volume_node = gGeoManager->GetCurrentNode();
 		TGeoMatrix* volume_matrix = volume_node->GetMatrix();
 
-		//TGeoHMatrix new_local_matrix = *volume_matrix * entry.second;
 		TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(
 				*volume_matrix * alignment_entry.second);
 		// new matrix, representing real position (from new local mis RS to the global one)
@@ -48,11 +47,13 @@ void FairAlignmentHandler::AlignGeometryByFullPath() const {
 
 		pn->Align(new_volume_matrix);
 	}
+	LOG(INFO) << "alignments applied!" << FairLogger::endl;
 }
 
 void FairAlignmentHandler::AlignGeometryBySymlink() const {
 	TString volume_path;
 
+	LOG(INFO) << "aligning using symlinks" << FairLogger::endl;
 	for (auto const& alignment_entry : fAlignmentMatrices) {
 		volume_path = alignment_entry.first;
 
@@ -69,7 +70,6 @@ void FairAlignmentHandler::AlignGeometryBySymlink() const {
 			continue;
 		}
 
-		//TGeoHMatrix nlocal = *l3 * alignment_entry.second;
 		TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(
 				*volume_matrix * alignment_entry.second);
 		// new matrix, representing real position (from new local mis RS to the global one)
@@ -78,6 +78,6 @@ void FairAlignmentHandler::AlignGeometryBySymlink() const {
 }
 
 void FairAlignmentHandler::SetAlignmentMatrices(
-    const std::map<std::string, TGeoHMatrix>& alignmentMatrices) {
+		const std::map<std::string, TGeoHMatrix>& alignmentMatrices) {
 	fAlignmentMatrices = alignmentMatrices;
 }
