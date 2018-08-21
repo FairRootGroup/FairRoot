@@ -27,6 +27,7 @@
 #include "TObject.h"                    // for TObject
 
 #include <stddef.h>                     // for NULL
+#include <cassert>			// for... well, assert
 
 //_____________________________________________________________________________
 TMCThreadLocal FairRun* FairRun::fRunInstance= 0;
