@@ -60,6 +60,7 @@
 #include <utility>                      // for pair
 #include <vector>                       // for vector
 #include <type_traits>
+#include <cassert>
 
 using std::flush;
 using std::cout;
