@@ -75,18 +75,37 @@ FairRun::~FairRun()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRun::AddTask(FairTask* t)
+void FairRun::AddTask(FairTask* task)
 {
-  fTask->Add(t);
-  fNTasks++;
-  fFileHeader->AddTaskClassName(t->ClassName());
+  fTask->Add(task);
+  StoreTaskNames(task);
 }
 //_____________________________________________________________________________
-void FairRun::SetTask(FairTask* t)
+void FairRun::StoreTaskNames(const FairTask* task)
+{
+  if(task) {
+    fFileHeader->AddTaskClassName(task->ClassName());
+    fNTasks++;
+
+    const TList* subtasks = task->GetListOfTasks();
+    if(subtasks) {
+      for(const auto subtask : *subtasks) {
+        StoreTaskNames(static_cast<FairTask*>(subtask));
+      }
+    }
+  }
+}
+//_____________________________________________________________________________
+void FairRun::SetTask(FairTask* task)
 {
   delete fTask;
-  fTask = t;
-  fFileHeader->AddTaskClassName(t->ClassName());
+  fTask = task;
+  fNTasks=0;
+  TList* tasklist = fFileHeader->GetListOfTasks();
+  if(tasklist) {
+    tasklist->Clear();
+    StoreTaskNames(task);
+  }
 }
 //_____________________________________________________________________________
 void FairRun::CreateGeometryFile(const char* geofile)

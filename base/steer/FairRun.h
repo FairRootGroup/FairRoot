@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRRUN_H
@@ -49,6 +49,7 @@ class FairRun : public TNamed
      * Add a FAIRTask to the simulation or analysis
      */
     virtual void       AddTask(FairTask* t);
+    virtual void       StoreTaskNames(const FairTask* t);
     virtual void       SetTask(FairTask* t);
     /**
      * Initialize the Simulation or analysis
@@ -96,13 +97,13 @@ class FairRun : public TNamed
       return (static_cast<Int_t>(fRunId));
     }
 
-	/** 
+	/**
      * Set the Run ID
 	 */
     void SetRunId(UInt_t runId)
 	{
-	  fRunId = runId; 
-    }    
+	  fRunId = runId;
+    }
 
     /**Get the detector specific run header*/
     FairEventHeader*  GetEventHeader();
@@ -154,6 +155,12 @@ class FairRun : public TNamed
     //** Mark/Unmark event to be filled into output. Default is TRUE. */
     void MarkFill(Bool_t flag) { fMarkFill = flag; }
 
+    //** Get option string */
+    TString GetOptions(){return fOptions;};
+
+    //** Set option string */
+    void SetOptions(const TString& s){fOptions=s;};
+
     // vvvvvvvvvv depracted functions, replaced by FairSink vvvvvvvvvv
     /**
      * Set the output file name for analysis or simulation
@@ -198,6 +205,8 @@ class FairRun : public TNamed
     FairSink*                fSink;
     /**Output file name set by user*/
     TString                  fUserOutputFileName;
+    /**Options for derived classes, to be set & parsed by user*/
+    TString                  fOptions;
     /**Run Id*/
     UInt_t                   fRunId;//!
     /** true for Anaylsis session*/
