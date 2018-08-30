@@ -42,7 +42,7 @@ class FairMQLmdSampler : public FairMQDevice
         , fNEvent(0)
         , fCurrentEvent(0)
         , fFileNames()
-        , fInputChannel(nullptr)
+        , fInputChannel()
         , fEvent(nullptr)
         , fBuffer(nullptr)
         , fEventData(nullptr)
@@ -168,7 +168,7 @@ class FairMQLmdSampler : public FairMQDevice
         /*-               GETEVT__NOMORE=3  : No more events.                 */
         /*-               GETEVT__RDERR=6   : read server or file error       */
         /*-               GETEVT__TIMEOUT=9 : when enabled by f_evt_timeout   */
-        int status = f_evt_get_event(fInputChannel, static_cast<INTS4**>(evtptr), static_cast<INTS4**>(buffptr));
+        int status = f_evt_get_event(&fInputChannel, static_cast<INTS4**>(evtptr), static_cast<INTS4**>(buffptr));
         //int fuEventCounter = fEvent->l_count;
         //int fCurrentMbsEventNo = fuEventCounter;
 
@@ -297,13 +297,12 @@ class FairMQLmdSampler : public FairMQDevice
     bool OpenNextFile(const std::string& fileName)
     {
         int inputMode = GETEVT__FILE;
-        fInputChannel = new s_evt_channel;
         void* headptr = &fInfoHeader;
         INTS4 status;
 
         LOG(info) << "File " << fileName << " will be opened.";
 
-        status = f_evt_get_open(inputMode, const_cast<char*>(fileName.c_str()), fInputChannel, static_cast<char**>(headptr), 1, 1);
+        status = f_evt_get_open(inputMode, const_cast<char*>(fileName.c_str()), &fInputChannel, static_cast<char**>(headptr), 1, 1);
 
         if (status)
         {
@@ -321,10 +320,9 @@ class FairMQLmdSampler : public FairMQDevice
 
     void Close()
     {
-        f_evt_get_close(fInputChannel);
+        f_evt_get_close(&fInputChannel);
         // Unpack((Int_t*)fBuffer, sizeof(s_bufhe), -4, -4, -4, -4, -4);  
         fCurrentEvent = 0;
-        delete fInputChannel;
     }
 
   private:
@@ -332,7 +330,7 @@ class FairMQLmdSampler : public FairMQDevice
     int fNEvent;
     int fCurrentEvent;
     std::vector<std::string> fFileNames;
-    s_evt_channel* fInputChannel;
+    s_evt_channel fInputChannel;
     s_ve10_1* fEvent;
     s_bufhe* fBuffer;
     int* fEventData;
