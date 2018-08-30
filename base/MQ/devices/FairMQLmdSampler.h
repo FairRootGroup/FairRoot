@@ -324,6 +324,7 @@ class FairMQLmdSampler : public FairMQDevice
         f_evt_get_close(fInputChannel);
         // Unpack((Int_t*)fBuffer, sizeof(s_bufhe), -4, -4, -4, -4, -4);  
         fCurrentEvent = 0;
+        delete fInputChannel;
     }
 
   private:

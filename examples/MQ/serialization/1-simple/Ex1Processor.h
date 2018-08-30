@@ -2,7 +2,7 @@
 #define EX1PROCESSOR_H
 
 #include "FairMQDevice.h"
-#include "SerializerExample.h"
+#include "RootSerializer.h"
 
 #include "TMath.h"
 
@@ -38,13 +38,13 @@ class Ex1Processor : public FairMQDevice
         while (CheckCurrentState(RUNNING))
         {
             FairMQMessagePtr msg(NewMessage());
-            if (Receive(msg,"data-in") > 0)
+            if (Receive(msg, "data1") > 0)
             {
-                Deserialize<MyDeserializer>(*msg, fInput);
+                Deserialize<RootDeserializer>(*msg, fInput);
                 receivedMsgs++;
                 Exec(fInput, fOutput);
-                Serialize<MySerializer>(*msg, fOutput);
-                Send(msg, "data-out");
+                Serialize<RootSerializer>(*msg, fOutput);
+                Send(msg, "data2");
                 sentMsgs++;
 
                 if (fNumMsgs != 0)

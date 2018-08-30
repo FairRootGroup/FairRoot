@@ -11,7 +11,7 @@ elif [ "$1" = "boost-text" ]; then
     dataFormat="boost-text"
     echo "Using: boost-text (Boost text)"
 elif [ "$1" = "flatbuffers" ]; then
-    if(@FLATBUFFERS_FOUND@); then
+    if(@FLATBUFFERS_USED@); then
         dataFormat="flatbuffers"
         echo "Using: flatbuffers (Google FlatBuffers)"
     else
@@ -19,7 +19,7 @@ elif [ "$1" = "flatbuffers" ]; then
         exit 1
     fi
 elif [ "$1" = "msgpack" ]; then
-    if(@MSGPACK_FOUND@); then
+    if(@MSGPACK_USED@); then
         dataFormat="msgpack"
         echo "Using: msgpack (MessagePack)"
     else
@@ -27,8 +27,13 @@ elif [ "$1" = "msgpack" ]; then
         exit 1
     fi
 elif [ "$1" = "protobuf" ]; then
-    dataFormat="protobuf"
-    echo "Using: protobuf (Google Protocol Buffers)"
+    if(@PROTOBUF_USED@); then
+        dataFormat="protobuf"
+        echo "Using: protobuf (Google Protocol Buffers)"
+    else
+        echo "Cannot use protobuf: library not found at build time"
+        exit 1
+    fi
 elif [ "$1" = "tmessage" ]; then
     dataFormat="tmessage"
     echo "Using: tmessage (Root TMessage)"

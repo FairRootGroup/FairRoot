@@ -1,33 +1,44 @@
-#ifndef EX1SINK_H
-#define EX1SINK_H
+#ifndef EX2SINK_H
+#define EX2SINK_H
 
+// std
+#include <iostream>
+#include <memory>
+
+// FairRoot
 #include "FairMQDevice.h"
-#include "SerializerExample.h"
+#include "SerializerExample2.h"
+#include "BoostSerializer.h"
 
+#include <boost/core/null_deleter.hpp>
+
+// root
 #include "TFile.h"
 #include "TTree.h"
 
 #include "MyHit.h"
 
-class Ex1Sink : public FairMQDevice
+class Ex2Sink : public FairMQDevice
 {
   public:
-    Ex1Sink()
-        : fInput(nullptr)
-        , fFileName()
-        , fOutFile(nullptr)
-        , fTree(nullptr)
-        , fNumMsgs(0)
+    Ex2Sink() :
+        FairMQDevice(),
+        fInput(nullptr),
+        fFileName(),
+        fOutFile(nullptr),
+        fTree(nullptr),
+        fNumMsgs(0)
     {}
 
-    Ex1Sink(const Ex1Sink&);
-    Ex1Sink& operator=(const Ex1Sink&);
+    Ex2Sink(const Ex2Sink&);
+    Ex2Sink& operator=(const Ex2Sink&);
 
-    virtual ~Ex1Sink()
+    virtual ~Ex2Sink()
     {
         if (fTree)
         {
             fTree->Write("", TObject::kOverwrite);
+
             delete fTree;
         }
 
@@ -46,10 +57,10 @@ class Ex1Sink : public FairMQDevice
     {
         fNumMsgs = fConfig->GetValue<int>("num-msgs");
         fFileName = fConfig->GetValue<std::string>("output-file");
-        fOutFile = TFile::Open(fFileName.c_str(),"RECREATE");
+        fOutFile = TFile::Open(fFileName.c_str(), "RECREATE");
         fInput = new TClonesArray("MyHit");
-        fTree = new TTree("SerializationEx1", "Test output");
-        fTree->Branch("MyHit","TClonesArray", &fInput);
+        fTree = new TTree("SerializationEx2", "output");
+        fTree->Branch("MyHit", "TClonesArray", &fInput);
     }
 
     virtual void Run()
@@ -57,10 +68,13 @@ class Ex1Sink : public FairMQDevice
         int receivedMsgs = 0;
         while (CheckCurrentState(RUNNING))
         {
-            FairMQMessagePtr msg(NewMessage());
-            if (Receive(msg, "data-in") > 0)
+            FairMQParts parts;
+            if (Receive(parts, "data2") > 0)
             {
-                Deserialize<MyDeserializer>(*msg,fInput);
+                Ex2Header header;
+                Deserialize<BoostDeserializer<Ex2Header>>(*(parts.At(0)), header);
+                Deserialize<BoostDeserializer<MyHit>>(*(parts.At(1)), fInput);
+
                 receivedMsgs++;
                 fTree->SetBranchAddress("MyHit", &fInput);
                 fTree->Fill();
@@ -85,4 +99,4 @@ class Ex1Sink : public FairMQDevice
     int fNumMsgs;
 };
 
-#endif // EX1SINK_H
+#endif

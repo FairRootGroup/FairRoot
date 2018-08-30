@@ -31,7 +31,7 @@
 #include "FairMQSamplerTask.h"
 #include "FairMQLogger.h"
 
-#include "baseMQtools.h"
+#include "BoostSerializer.h"
 
 template <typename TOut, typename TPayloadOut>
 class FairTestDetectorDigiLoader : public FairMQSamplerTask
@@ -44,7 +44,7 @@ class FairTestDetectorDigiLoader : public FairMQSamplerTask
         // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
         if (std::is_same<TPayloadOut, boost::archive::binary_oarchive>::value || std::is_same<TPayloadOut, boost::archive::text_oarchive>::value)
         {
-            if (baseMQ::tools::resolve::has_BoostSerialization<TOut, void(TPayloadOut&, const unsigned int)>::value == 0)
+            if (fair::base::serialization::has_BoostSerialization<TOut, void(TPayloadOut&, const unsigned int)>::value == 0)
             {
                 LOG(error) << "Method 'void serialize(TOut & ar, const unsigned int version)' was not found in input class";
                 LOG(error) << "Boost serialization for Output Payload requested, but the output type does not support it. Check the TOut parameter. Aborting.";

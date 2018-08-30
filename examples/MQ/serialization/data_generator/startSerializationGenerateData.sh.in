@@ -1,12 +1,6 @@
 #!/bin/bash
 
-opt=""
-
-if [ "$#" -gt 0 ]; then
-        opt=" $*"
-fi
-
-GENERATE="serialization-Ex-generate-data$opt --id test"
+GENERATE="ex-serialization-generate-data --id test"
 GENERATE+=" --output-file @CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/inputEx.root"
 GENERATE+=" --tree cbmsim"
 # output file -> InputFile of sampler

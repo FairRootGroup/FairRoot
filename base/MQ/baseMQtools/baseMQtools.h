@@ -29,20 +29,20 @@ namespace tools
 template<std::size_t>
 struct int_{};
 
-template <class Tuple, size_t Pos>
+template <typename Tuple, size_t Pos>
 std::ostream& print_tuple(std::ostream& out, const Tuple& t, int_<Pos> )
 {
     out << std::get< std::tuple_size<Tuple>::value-Pos >(t) << ',';
     return print_tuple(out, t, int_<Pos-1>());
 }
 
-template <class Tuple>
+template <typename Tuple>
 std::ostream& print_tuple(std::ostream& out, const Tuple& t, int_<1> )
 {
     return out << std::get<std::tuple_size<Tuple>::value-1>(t);
 }
 
-template <class... Args>
+template <typename... Args>
 std::ostream& operator<<(std::ostream& out, const std::tuple<Args...>& t)
 {
     out << '(';
@@ -53,83 +53,43 @@ std::ostream& operator<<(std::ostream& out, const std::tuple<Args...>& t)
 /// ///////////////////////// --- RESOLVE --- /////////////////////////
 namespace resolve
 {
-/// ////////////////////////////////////////////////////////////////////////
 /// test function member signature in given class
+
 namespace details
 {
-///////////////////////////////////////////////////////////////////////////
-// test whether T has SetFileProperties member function
-template<class T, class Sig, class=void>
-struct has_SetFileProperties:std::false_type{};
 
-template<class T, class R, class... Args>
+// test whether T has SetFileProperties member function
+template<typename T, typename Sig, typename = void>
+struct has_SetFileProperties : std::false_type{};
+
+template<typename T, typename R, typename... Args>
 struct has_SetFileProperties<T, R(Args...),
     typename std::enable_if<
-      std::is_convertible<
-        decltype(std::declval<T>().SetFileProperties(std::declval<Args>()...)),
-        R
-      >::value
-      || std::is_same<R, void>::value // all return types are compatible with void
-      // and, due to SFINAE, we can invoke T.foo(Args...) (otherwise previous clause fails)
-      >::type
-  >:std::true_type{};
+        std::is_convertible<decltype(std::declval<T>().SetFileProperties(std::declval<Args>()...)), R>::value
+        || std::is_same<R, void>::value // all return types are compatible with void
+        // and, due to SFINAE, we can invoke T.foo(Args...) (otherwise previous clause fails)
+        >::type
+    >:std::true_type{};
 
-///////////////////////////////////////////////////////////////////////////
 // test whether T has InitTClonesArray member function
-template<class T, class Sig, class=void>
-struct has_InitTClonesArray:std::false_type{};
+template<typename T, typename Sig, typename = void>
+struct has_InitTClonesArray : std::false_type{};
 
-template<class T, class R, class... Args>
+template<typename T, typename R, typename... Args>
 struct has_InitTClonesArray<T, R(Args...),
     typename std::enable_if<
-      std::is_convertible<
-        decltype(std::declval<T>().InitTClonesArray(std::declval<Args>()...)),
-        R
-      >::value
-      || std::is_same<R, void>::value // all return types are compatible with void
-      // and, due to SFINAE, we can invoke T.foo(Args...) (otherwise previous clause fails)
-    >::type
-  >:std::true_type{};
+        std::is_convertible<decltype(std::declval<T>().InitTClonesArray(std::declval<Args>()...)), R>::value
+        || std::is_same<R, void>::value // all return types are compatible with void
+        // and, due to SFINAE, we can invoke T.foo(Args...) (otherwise previous clause fails)
+        >::type
+    >:std::true_type{};
 
 } // end namespace details
 
-template <typename, typename T>
-struct has_BoostSerialization
-{
-    static_assert(std::integral_constant<T, false>::value, "Second template parameter needs to be of function type.");
-};
-
-// specialization that does the checking
-
-template <typename C, typename Ret, typename... Args>
-struct has_BoostSerialization<C, Ret(Args...)>
-{
-  private:
-    template <typename T>
-    static constexpr auto check(T*)
-        -> typename std::is_same<decltype(std::declval<T>().serialize(std::declval<Args>()...)),
-                                 Ret // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                                 >::type
-    {
-        return {};
-    }; // attempt to call it and see if the return type is correct
-
-    template <typename>
-    static constexpr std::false_type check(...)
-    {
-        return {};
-    };
-
-    typedef decltype(check<C>(0)) type;
-
-  public:
-    static constexpr bool value = type::value;
-};
-
-template<class T, class Sig>
+template<typename T, typename Sig>
 using has_SetFileProperties = std::integral_constant<bool, details::has_SetFileProperties<T, Sig>::value>;
 
-template<class T, class Sig>
+template<typename T, typename Sig>
 using has_InitTClonesArray = std::integral_constant<bool, details::has_InitTClonesArray<T, Sig>::value>;
 
 } // end namespace resolve
