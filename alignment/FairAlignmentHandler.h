@@ -17,8 +17,9 @@ public:
 	FairAlignmentHandler();
 	virtual ~FairAlignmentHandler();
 
-	void SetAlignmentMatrices(
-      const std::map<std::string, TGeoHMatrix>& alignmentMatrices);
+	void AddAlignmentMatrices(
+      const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
+	  bool invertMatrices);
 };
 
 #endif
