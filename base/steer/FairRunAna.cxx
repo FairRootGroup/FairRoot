@@ -285,6 +285,8 @@ void FairRunAna::Init()
   // create the output tree after tasks initialisation
   fRootManager->WriteFolder();
   fRootManager->WriteFileHeader(fFileHeader);
+
+  AlignGeometry();
 }
 //_____________________________________________________________________________
 

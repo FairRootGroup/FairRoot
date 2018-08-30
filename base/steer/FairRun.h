@@ -33,6 +33,7 @@ class FairField;
 
 class FairRun : public TNamed
 {
+  friend class FairMCApplication;
   public:
     /**
      * default ctor
@@ -185,9 +186,9 @@ class FairRun : public TNamed
     void SetUserOutputFileName(const TString& name);
     TString GetUserOutputFileName() const;
 
-	void SetAlignmentMatrices(
-			const std::map<std::string, TGeoHMatrix>& alignmentMatrices);
-	void AlignGeometry() const;
+	void AddAlignmentMatrices(
+			const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
+			bool invertMatrices = false);
 
   private:
     FairRun(const FairRun& M);
@@ -228,6 +229,8 @@ class FairRun : public TNamed
     Bool_t                   fMarkFill; //!
 
     FairAlignmentHandler fAlignmentHandler;
+
+    void AlignGeometry() const;
 
     ClassDef(FairRun ,4)
 };
