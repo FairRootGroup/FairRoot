@@ -9,6 +9,9 @@
 #include "FairMQDevice.h"
 #include "FairMQParts.h"
 #include "SerializerExample2.h"
+#include "RootSerializer.h"
+#include "BoostSerializer.h"
+
 #include "TMath.h"
 
 #include "MyDigi.h"
@@ -17,11 +20,10 @@
 class Ex2Processor : public FairMQDevice
 {
   public:
-    Ex2Processor() :
-        FairMQDevice(),
-        fInput(nullptr),
-        fOutput(nullptr),
-        fNumMsgs(0)
+    Ex2Processor()
+        : fInput(nullptr)
+        , fOutput(nullptr)
+        , fNumMsgs(0)
     {}
 
     Ex2Processor(const Ex2Processor&);
@@ -43,24 +45,25 @@ class Ex2Processor : public FairMQDevice
 
         while (CheckCurrentState(RUNNING))
         {
-            FairMQParts parts;
+            FairMQParts partsIn;
 
-            if (Receive(parts, "data-in") > 0)
+            if (Receive(partsIn, "data1") > 0)
             {
-                Ex2Header* header=nullptr;
-                Deserialize<SerializerEx2>(parts.AtRef(0), header);
-                Deserialize<SerializerEx2>(parts.AtRef(1), fInput);
+                Ex2Header* header = nullptr;
+                Deserialize<SerializerEx2>(*(partsIn.At(0)), header);
+                Deserialize<RootDeserializer>(*(partsIn.At(1)), fInput);
 
                 receivedMsgs++;
 
                 Exec(fInput, fOutput);
-                FairMQParts partsToSend;
-                partsToSend.AddPart(std::move(parts.At(0)));
 
-                partsToSend.AddPart(NewMessage());
-                Serialize<SerializerEx2Boost>(partsToSend.AtRef(0), *header);
-                Serialize<SerializerEx2Boost>(partsToSend.AtRef(1), fOutput);
-                Send(partsToSend, "data-out");
+                FairMQParts partsOut;
+                partsOut.AddPart(std::move(partsIn.At(0)));
+                partsOut.AddPart(NewMessage());
+
+                Serialize<BoostSerializer<Ex2Header>>(*(partsOut.At(0)), *header);
+                Serialize<BoostSerializer<MyHit>>(*(partsOut.At(1)), fOutput);
+                Send(partsOut, "data2");
                 sentMsgs++;
 
                 if (fNumMsgs != 0)
@@ -97,7 +100,6 @@ class Ex2Processor : public FairMQDevice
     }
 
   private:
-    /* data */
     TClonesArray* fInput;
     TClonesArray* fOutput;
     int fNumMsgs;

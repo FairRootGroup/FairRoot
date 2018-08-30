@@ -21,171 +21,110 @@
 #include "RooArgSet.h"
 #include "RooRandom.h"
 
-using namespace RooFit;
-
 struct RdmVarParameters
 {
-    RdmVarParameters(double Min, double Max, double Mean, double Sigma) :
-        min(Min),
-        max(Max),
-        mean(Mean),
-        sigma(Sigma)
+    RdmVarParameters(double min, double max, double mean, double sigma)
+        : fMin(min)
+        , fMax(max)
+        , fMean(mean)
+        , fSigma(sigma)
     {}
 
-    RdmVarParameters(double Mean, double Sigma) :
-        min(Mean - 6 * Sigma),
-        max(Mean + 6 * Sigma),
-        mean(Mean),
-        sigma(Sigma)
+    RdmVarParameters(double mean, double sigma)
+        : fMin(mean - 6 * sigma)
+        , fMax(mean + 6 * sigma)
+        , fMean(mean)
+        , fSigma(sigma)
     {}
 
-    double min;
-    double max;
-    double mean;
-    double sigma;
+    double fMin;
+    double fMax;
+    double fMean;
+    double fSigma;
 };
 
 struct PDFConfig
 {
-    PDFConfig() :
-        x(-10,3),
-        y(10,2),
-        z(0,0.5),
-        tErr(0.005, 0.001)
+    PDFConfig()
+        : fX(-10, 3)
+        , fY(10, 2)
+        , fZ(0, 0.5)
+        , fTErr(0.005, 0.001)
     {}
-    void Set(const RdmVarParameters& X, const RdmVarParameters& Y, const RdmVarParameters& Z, const RdmVarParameters& Terr)
+
+    void Set(const RdmVarParameters& x, const RdmVarParameters& y, const RdmVarParameters& z, const RdmVarParameters& terr)
     {
-        x = X;
-        y = Y;
-        z = Z;
-        tErr = Terr;
+        fX = x;
+        fY = y;
+        fZ = z;
+        fTErr = terr;
     }
-    RdmVarParameters x;
-    RdmVarParameters y;
-    RdmVarParameters z;
-    RdmVarParameters tErr;
+
+    RdmVarParameters fX;
+    RdmVarParameters fY;
+    RdmVarParameters fZ;
+    RdmVarParameters fTErr;
 };
 
 class MultiVariatePDF
 {
   public:
-    MultiVariatePDF(unsigned int t_start = 0) :
-        fOpt(),
-        fModel(nullptr),
-        fDataSet(nullptr),
-        x(nullptr),
-        y(nullptr),
-        z(nullptr),
-        t(nullptr),
-        tErr(nullptr),
-        mean_t(nullptr),
-        sigma_t(nullptr),
-        Gauss_x(nullptr),
-        Gauss_y(nullptr),
-        Gauss_z(nullptr),
-        Gauss_t(nullptr),
-        Gauss_tErr(nullptr)
-    {
-        Init(t_start);
-    }
+    MultiVariatePDF(unsigned int tStart = 0)
+        : MultiVariatePDF(PDFConfig(), tStart)
+    {}
 
-    MultiVariatePDF(const PDFConfig & opt, unsigned int t_start = 0) :
-        fOpt(opt),
-        fModel(nullptr),
-        fDataSet(nullptr),
-        x(nullptr),
-        y(nullptr),
-        z(nullptr),
-        t(nullptr),
-        tErr(nullptr),
-        mean_t(nullptr),
-        sigma_t(nullptr),
-        Gauss_x(nullptr),
-        Gauss_y(nullptr),
-        Gauss_z(nullptr),
-        Gauss_t(nullptr),
-        Gauss_tErr(nullptr)
+    MultiVariatePDF(const PDFConfig& opt, unsigned int tStart = 0)
+        : fOpt(opt)
+        , fX("x", "x", fOpt.fX.fMin, fOpt.fX.fMax)
+        , fY("y", "y", fOpt.fY.fMin, fOpt.fY.fMax)
+        , fZ("z", "z", fOpt.fZ.fMin, fOpt.fZ.fMax)
+        , fT("t", "t", static_cast<double>(tStart), static_cast<double>(tStart + 1))
+        , fTErr("tErr", "tErr", fOpt.fTErr.fMin, fOpt.fTErr.fMax)
+        , fMeanT("mu_t", "mean of t-distribution", (static_cast<double>(tStart) + static_cast<double>(tStart + 1)) / 2)
+        , fSigmaT("fSigmaT", "width of t-distribution", 0.1)
+        , fGaussX("fGaussX", "gaussian PDF", fX, RooFit::RooConst(fOpt.fX.fMean), RooFit::RooConst(fOpt.fX.fSigma))
+        , fGaussY("fGaussY", "gaussian PDF", fY, RooFit::RooConst(fOpt.fY.fMean), RooFit::RooConst(fOpt.fY.fSigma))
+        , fGaussZ("fGaussZ", "gaussian PDF", fZ, RooFit::RooConst(fOpt.fZ.fMean), RooFit::RooConst(fOpt.fZ.fSigma))
+        , fGaussT("fGaussT", "gaussian PDF", fT, fMeanT, fSigmaT)
+        , fGaussTErr("fGaussTErr", "gaussian PDF", fTErr, RooFit::RooConst((fTErr.getMin() + fTErr.getMax()) / 2), RooFit::RooConst(fOpt.fTErr.fSigma))
+        , fModel("fGaussXyzt_ter", "fGaussX*fGaussY*fGaussZ*fGaussT*fGaussTErr", RooArgList(fGaussX, fGaussY, fGaussZ, fGaussT, fGaussTErr))
     {
-        Init(t_start);
+        RooMsgService::instance().setGlobalKillBelow(RooFit::MsgLevel::ERROR);
+        RooRandom::randomGenerator()->SetSeed(TDatime().GetTime());
     }
 
     MultiVariatePDF(const MultiVariatePDF&) = delete;
     MultiVariatePDF operator=(const MultiVariatePDF&) = delete;
 
     ~MultiVariatePDF()
-    {
-        delete x;
-        delete y;
-        delete z;
-        delete t;
-        delete tErr;
-        delete mean_t;
-        delete sigma_t;
+    {}
 
-        delete Gauss_x;
-        delete Gauss_y;
-        delete Gauss_z;
-        delete Gauss_t;
-        delete Gauss_tErr;
-        delete fModel;
-    }
-
-    RooDataSet* GetGeneratedData(unsigned int N, unsigned int t_i)
+    RooDataSet* GetGeneratedData(unsigned int n, unsigned int ti)
     {
-        t->setRange(static_cast<double>(t_i), static_cast<double>(t_i + 1));
-        mean_t->setVal(static_cast<double>(t_i + 0.5));
-        fDataSet = fModel->generate(RooArgSet(*x, *y, *z, *t, *tErr), N);
-        return fDataSet;
+        fT.setRange(static_cast<double>(ti), static_cast<double>(ti + 1));
+        fMeanT.setVal(static_cast<double>(ti + 0.5));
+        return fModel.generate(RooArgSet(fX, fY, fZ, fT, fTErr), n);
     }
 
   private:
     PDFConfig fOpt;
-    RooProdPdf* fModel;
-    RooDataSet* fDataSet;
 
-    RooRealVar *x;
-    RooRealVar *y;
-    RooRealVar *z;
-    RooRealVar *t;
-    RooRealVar *tErr;
+    RooRealVar fX;
+    RooRealVar fY;
+    RooRealVar fZ;
+    RooRealVar fT;
+    RooRealVar fTErr;
 
-    RooRealVar *mean_t;
-    RooRealVar *sigma_t;
+    RooRealVar fMeanT;
+    RooRealVar fSigmaT;
 
-    RooGaussian *Gauss_x;
-    RooGaussian *Gauss_y;
-    RooGaussian *Gauss_z;
-    RooGaussian *Gauss_t;
-    RooGaussian *Gauss_tErr;
+    RooGaussian fGaussX;
+    RooGaussian fGaussY;
+    RooGaussian fGaussZ;
+    RooGaussian fGaussT;
+    RooGaussian fGaussTErr;
 
-    void Init(double t_start)
-    {
-        RooMsgService::instance().setGlobalKillBelow(MsgLevel::ERROR);
-        TDatime* time = new TDatime();
-        int seed = time->GetTime();
-        delete time;
-        RooRandom::randomGenerator()->SetSeed(seed);
-
-        double tmin = static_cast<double>(t_start);
-        double tmax = static_cast<double>(t_start + 1);
-
-        x = new RooRealVar("x", "x", fOpt.x.min, fOpt.x.max);
-        y = new RooRealVar("y", "y", fOpt.y.min, fOpt.y.max) ;
-        z = new RooRealVar("z", "z", fOpt.z.min, fOpt.z.max) ;
-        t = new RooRealVar("t", "t", tmin, tmax);
-        tErr = new RooRealVar("tErr", "tErr", fOpt.tErr.min, fOpt.tErr.max);
-
-        mean_t = new RooRealVar("mu_t", "mean of t-distribution", (tmin + tmax) / 2) ;
-        sigma_t = new RooRealVar("sigma_t", "width of t-distribution", 0.1) ;
-
-        Gauss_x = new RooGaussian("Gauss_x", "gaussian PDF", *x, RooConst(fOpt.x.mean), RooConst(fOpt.x.sigma));
-        Gauss_y = new RooGaussian("Gauss_y", "gaussian PDF", *y, RooConst(fOpt.y.mean), RooConst(fOpt.y.sigma));
-        Gauss_z = new RooGaussian("Gauss_z", "gaussian PDF", *z, RooConst(fOpt.z.mean), RooConst(fOpt.z.sigma));
-        Gauss_t = new RooGaussian("Gauss_t", "gaussian PDF", *t, *mean_t, *sigma_t);
-        Gauss_tErr = new RooGaussian("Gauss_tErr", "gaussian PDF", *tErr, RooConst((tErr->getMin() + tErr->getMax()) / 2), RooConst(fOpt.tErr.sigma));
-
-        fModel = new RooProdPdf("Gauss_xyzt_ter", "Gauss_x*Gauss_y*Gauss_z*Gauss_t*Gauss_tErr", RooArgList(*Gauss_x, *Gauss_y, *Gauss_z, *Gauss_t, *Gauss_tErr));
-    }
+    RooProdPdf fModel;
 };
 
 #endif /* ROODATAGENERATOR_H */

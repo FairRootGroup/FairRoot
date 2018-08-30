@@ -2,7 +2,7 @@
 #define EX1SAMPLER_H
 
 #include "FairMQDevice.h"
-#include "SerializerExample.h"
+#include "RootSerializer.h"
 
 #include "Rtypes.h"
 #include "TFile.h"
@@ -65,8 +65,8 @@ class Ex1Sampler : public FairMQDevice
         {
             FairMQMessagePtr msg(NewMessage());
             fTree->GetEntry(i);
-            Serialize<MySerializer>(*msg, fInput);
-            Send(msg, "data-out");
+            Serialize<RootSerializer>(*msg, fInput);
+            Send(msg, "data1");
             sentMsgs++;
             if (!CheckCurrentState(RUNNING))
             {

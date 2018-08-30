@@ -32,7 +32,7 @@
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorHit.h"
 
-#include "baseMQtools.h"
+#include "BoostSerializer.h"
 
 #include "TMessage.h"
 
@@ -61,7 +61,7 @@ class FairTestDetectorFileSink : public FairMQDevice
         // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
         if (std::is_same<TPayloadIn, boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn, boost::archive::text_iarchive>::value)
         {
-            if (baseMQ::tools::resolve::has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 0)
+            if (fair::base::serialization::has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 0)
             {
                 LOG(error) << "Boost serialization for Input Payload requested, but the input type does not support it. Check the TIn parameter. Aborting.";
                 exit(EXIT_FAILURE);

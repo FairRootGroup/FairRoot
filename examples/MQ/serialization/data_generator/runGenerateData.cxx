@@ -26,9 +26,7 @@
 #include "TCanvas.h"
 
 // FairRoot
-#include <options/FairMQProgOptions.h>
 #include "FairMQLogger.h"
-#include <options/FairMQProgOptions.h>
 #include "RootOutFileManager.h"
 
 // FairRoot - Tutorial 7
@@ -37,7 +35,6 @@
 #include "MyPodData.h"
 
 using namespace std;
-using namespace RooFit;
 
 // fill data payload and save to file
 template <typename T, typename ManagerType>
@@ -59,14 +56,13 @@ int main(int argc, char** argv)
         string branchname;
         string classname;
         string fileoption;
-        bool useTCA;
+        bool useTClonesArray;
         bool plotdata;
         unsigned int tmax;
-        double Nmean;
-        double Nsigma;
+        double nMean;
+        double nSigma;
 
         namespace po = boost::program_options;
-        FairMQProgOptions config;
 
         po::options_description desc("Data generator options");
         desc.add_options()
@@ -75,39 +71,56 @@ int main(int argc, char** argv)
             ("branch",          po::value<string>(&branchname)->default_value("MyDigi"),      "Name of the Branch")
             ("class-name",      po::value<string>(&classname)->default_value("MyDigi"),       "Name of the Payload class")
             ("rootfile-option", po::value<string>(&fileoption)->default_value("RECREATE"),    "Root file option.")
-            ("use-TCA",         po::value<bool>(&useTCA)->default_value(true),                "Store data bunches in TClonesArray")
+            ("use-TCA",         po::value<bool>(&useTClonesArray)->default_value(true),                "Store data bunches in TClonesArray")
             ("plot-data",       po::value<bool>(&plotdata)->default_value(false),             "Plot generated data")
             ("tmax",            po::value<unsigned int>(&tmax)->default_value(100),           "max time index=bunch number")
-            ("Nmean",           po::value<double>(&Nmean)->default_value(1595),               "mean number of generated data / bunch")
-            ("Nsigma",          po::value<double>(&Nsigma)->default_value(25.98),             "std deviation of the number of generated data / bunch")
+            ("Nmean",           po::value<double>(&nMean)->default_value(1595),               "mean number of generated data / bunch")
+            ("Nsigma",          po::value<double>(&nSigma)->default_value(25.98),             "std deviation of the number of generated data / bunch")
             ;
 
-        config.AddToCmdLineOptions(desc);
-        config.ParseAll(argc, argv, true);
+        po::variables_map vm;
+        try
+        {
+            po::store(po::parse_command_line(argc, argv, desc), vm);
+
+            if (vm.count("help"))
+            {
+                std::cout << "Basic Command Line Parameter App" << std::endl << desc << std::endl;
+                return 0;
+            }
+
+            po::notify(vm);
+        }
+        catch (po::error& e)
+        {
+            std::cerr << "error: " << e.what() << std::endl << std::endl;
+            std::cerr << desc << std::endl;
+            return 1;
+        }
 
         // Init output file manager
         RootFileManager rootman;
-        rootman.SetFileProperties(filename, treename, branchname, classname, fileoption, useTCA);
+        rootman.SetFileProperties(filename, treename, branchname, classname, fileoption, useTClonesArray);
         rootman.InitOutputFile();
 
         // Init density function for the number of digi/bunch
-        RdmVarParameters Nval(Nmean, Nsigma);
-        RooRealVar N("N", "N", Nval.min, Nval.max);
-        RooGaussian Gauss_N("Gauss_N", "gaussian PDF", N, RooConst(Nval.mean), RooConst(Nval.sigma)); // mean/sigma same as tutorial 3
+        RdmVarParameters nval(nMean, nSigma);
+        RooRealVar n("N", "N", nval.fMin, nval.fMax);
+        RooGaussian gaussN("gaussN", "gaussian PDF", n, RooFit::RooConst(nval.fMean), RooFit::RooConst(nval.fSigma)); // mean/sigma same as tutorial 3
 
-        // Init density function for the (x,y,z,t,terr) random variables
-        PDFConfig pdfconfig;// default setting (i.e. default range, mean, standard deviation)
-        MultiVariatePDF model(pdfconfig);
+        // Init density function for the (x, y, z, t, terr) random variables
+        PDFConfig pdfConfig;// default setting (i.e. default range, mean, standard deviation)
+        MultiVariatePDF model(pdfConfig);
 
         // loop over t (= bunch index), generate data from pdf, fill digi and save to file
         for (unsigned int t = 0; t < tmax; t++)
         {
-            unsigned int NDigi = static_cast<unsigned int>(Gauss_N.generate(N, 1)->get(0)->getRealValue("N"));
+            unsigned int nDigi = static_cast<unsigned int>(gaussN.generate(n, 1)->get(0)->getRealValue("N"));
             LOG(info) << "Bunch number " << t + 1 << "/" << tmax
                       << " (" << 100. * static_cast<double>(t + 1) / static_cast<double>(tmax) << " %). Number of generated digis: "
-                      << NDigi << ", payload = " << NDigi * (3 * sizeof(Int_t) + 2 * sizeof(Double_t)) << " bytes";
+                      << nDigi << ", payload = " << nDigi * (3 * sizeof(Int_t) + 2 * sizeof(Double_t)) << " bytes";
 
-            RooDataSet* simdataset = model.GetGeneratedData(NDigi, t);
+            RooDataSet* simdataset = model.GetGeneratedData(nDigi, t);
             SaveDataToFile<TDigi, RootFileManager>(rootman, simdataset);
         }
 
@@ -117,16 +130,16 @@ int main(int argc, char** argv)
         if (plotdata)
         {
             RootFileManager man;
-            man.SetFileProperties(filename, treename, branchname, classname, "READ", useTCA);
+            man.SetFileProperties(filename, treename, branchname, classname, "READ", useTClonesArray);
             vector<vector<TDigi>> data = man.GetAllObj(filename, treename, branchname);
 
-            TH2D histoxy("fxy", "digi.fxy", 100, pdfconfig.x.min, pdfconfig.x.max,  100, pdfconfig.y.min, pdfconfig.y.max);
-            TH1D histox("fx", "digi.fx", 100, pdfconfig.x.min, pdfconfig.x.max);
-            TH1D histoy("fy", "digi.fy", 100, pdfconfig.y.min, pdfconfig.y.max);
-            TH1D histoz("fz", "digi.fz", 100, pdfconfig.z.min, pdfconfig.z.max);
-            TH1D histot("ftimestamp", "digi.ftimestamp", 10*tmax,  0.,  static_cast<double>(tmax+1));
-            TH1D histoterr("ftimestampErr", "digi.ftimestampErr", 100, pdfconfig.tErr.min, pdfconfig.tErr.max);
-            TH1D histoN("f_N", "Number of digi distribution", 100, Nval.min, Nval.max);
+            TH2D histoxy("fxy", "digi.fxy", 100, pdfConfig.fX.fMin, pdfConfig.fX.fMax, 100, pdfConfig.fY.fMin, pdfConfig.fY.fMax);
+            TH1D histox("fx", "digi.fx", 100, pdfConfig.fX.fMin, pdfConfig.fX.fMax);
+            TH1D histoy("fy", "digi.fy", 100, pdfConfig.fY.fMin, pdfConfig.fY.fMax);
+            TH1D histoz("fz", "digi.fz", 100, pdfConfig.fZ.fMin, pdfConfig.fZ.fMax);
+            TH1D histot("ftimestamp", "digi.ftimestamp", 10 * tmax,  0.,  static_cast<double>(tmax + 1));
+            TH1D histoterr("ftimestampErr", "digi.ftimestampErr", 100, pdfConfig.fTErr.fMin, pdfConfig.fTErr.fMax);
+            TH1D histoN("f_N", "Number of digi distribution", 100, nval.fMin, nval.fMax);
 
             for (auto& p : data)
             {
@@ -183,7 +196,7 @@ int main(int argc, char** argv)
 template <typename T, typename ManagerType>
 void SaveDataToFile(ManagerType& outMan, RooDataSet* dataset, bool printval)
 {
-    vector<T> DataBunch;
+    vector<T> dataBunch;
     for (int i = 0; i < dataset->numEntries(); i++)
     {
         T data;
@@ -202,16 +215,16 @@ void SaveDataToFile(ManagerType& outMan, RooDataSet* dataset, bool printval)
                       << " t=" << data.GetTimeStamp()
                       << " tErr=" << data.GetTimeStampError();
         }
-        DataBunch.push_back(data);
+        dataBunch.push_back(data);
     }
 
-    outMan.AddToFile(DataBunch);
+    outMan.AddToFile(dataBunch);
 }
 
 template <typename T, typename ManagerType>
 void SavePodDataToFile(ManagerType& outMan, RooDataSet* dataset, bool printval)
 {
-    vector<T> DataBunch;
+    vector<T> dataBunch;
     for (int i = 0; i < dataset->numEntries(); i++)
     {
         T data;
@@ -230,8 +243,8 @@ void SavePodDataToFile(ManagerType& outMan, RooDataSet* dataset, bool printval)
                       << "  t=" << data.fTimeStamp
                       << "  tErr=" << data.fTimeStampError;
         }
-        DataBunch.push_back(data);
+        dataBunch.push_back(data);
     }
 
-    outMan.AddToFile(DataBunch);
+    outMan.AddToFile(dataBunch);
 }
