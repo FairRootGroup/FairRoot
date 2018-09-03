@@ -114,15 +114,15 @@ class FairLogger
     bool IsLogNeeded(fair::Severity severity);
     bool IsLogNeeded(FairLogLevel level);
 
-    void Fatal  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
-    void Error  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
-    void Warning(const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
-    void Info   (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
-    void Debug  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
-    void Debug1 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
-    void Debug2 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
-    void Debug3 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
-    void Debug4 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(severity) << content;' macro interface instead.")));
+    void Fatal  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(fatal) << content;' macro interface instead.")));
+    void Error  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(error) << content;' macro interface instead.")));
+    void Warning(const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(warn) << content;' macro interface instead.")));
+    void Info   (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(info) << content;' macro interface instead.")));
+    void Debug  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug) << content;' macro interface instead.")));
+    void Debug1 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug1) << content;' macro interface instead.")));
+    void Debug2 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug2) << content;' macro interface instead.")));
+    void Debug3 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug3) << content;' macro interface instead.")));
+    void Debug4 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug4) << content;' macro interface instead.")));
 
     static char const endl;
     static char const flush;
