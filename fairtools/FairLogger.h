@@ -112,7 +112,7 @@ class FairLogger
     }
 
     bool IsLogNeeded(fair::Severity severity);
-    bool IsLogNeeded(FairLogLevel level);
+    bool IsLogNeeded(FairLogLevel level) __attribute__((deprecated("Use 'IsLogNeeded(fair::Severity severity)' or 'fair::Logger::Logging(const fair::Severity severity)' or 'fair::Logger::Logging(const std::string& severityStr)'")));
 
     void Fatal  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(fatal) << content;' macro interface instead.")));
     void Error  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(error) << content;' macro interface instead.")));
