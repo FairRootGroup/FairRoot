@@ -81,7 +81,7 @@ class FairGenericStack : public TVirtualMCStack
 
 
     /** Update the track index in the MCTracks and MCPoints **/
-    virtual void UpdateTrackIndex(TRefArray* detArray=0) {}
+    virtual void UpdateTrackIndex(TRefArray* /* detArray=0 */) {}
 
 
     /** Set the list of detectors to be used for filltering the stack*/
