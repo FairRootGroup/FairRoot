@@ -418,7 +418,6 @@ void FairEventManager::LoadXMLDetector(TGeoNode* node, FairXMLNode* xml,Int_t de
 }
 
 Int_t FairEventManager::StringToColor(TString color) const {
-	Int_t color_val = 0;
 	if (color.Contains("k")) {
 		Int_t plus_index = color.First('+');
 		Int_t minus_index = color.First('-');
@@ -427,7 +426,7 @@ Int_t FairEventManager::StringToColor(TString color) const {
 			cut = minus_index;
 		if(cut==-1) cut = color.Length();
 		TString col_name(color( 0, cut));
-		Int_t col_val;
+		Int_t col_val = 0;
 		if (col_name.EqualTo("kWhite")) {
 			col_val = 0;
 		} else if (col_name.EqualTo("kBlack")) {
