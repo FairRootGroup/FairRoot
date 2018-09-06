@@ -211,7 +211,7 @@ void FairRun::AlignGeometry() const {
 
 void FairRun::AddAlignmentMatrices(
     const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
-  bool invertMatrices) {
+    bool invertMatrices) {
   fAlignmentHandler.AddAlignmentMatrices(alignmentMatrices, invertMatrices);
 }
 

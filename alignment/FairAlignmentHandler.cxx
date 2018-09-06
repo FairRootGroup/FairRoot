@@ -17,8 +17,8 @@ void FairAlignmentHandler::AlignGeometry() const {
 
     TString detStr = "lmd_root";
 
-    LOG(INFO) << "aligning in total " << fAlignmentMatrices.size() << " volumes."
-        << FairLogger::endl;
+    LOG(INFO) << "aligning in total " << fAlignmentMatrices.size()
+        << " volumes." << FairLogger::endl;
     if (gGeoManager->GetNAlignable() > 0) {
       AlignGeometryBySymlink();
     } else {
@@ -41,7 +41,8 @@ void FairAlignmentHandler::AlignGeometryByFullPath() const {
     TGeoNode* volume_node = gGeoManager->GetCurrentNode();
     TGeoMatrix* volume_matrix = volume_node->GetMatrix();
 
-    TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(*volume_matrix * alignment_entry.second);
+    TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(
+        *volume_matrix * alignment_entry.second);
     // new matrix, representing real position (from new local mis RS to the global one)
 
     TGeoPhysicalNode* pn = gGeoManager->MakePhysicalNode(volume_path);
@@ -71,14 +72,16 @@ void FairAlignmentHandler::AlignGeometryBySymlink() const {
       continue;
     }
 
-    TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(*volume_matrix * alignment_entry.second);
+    TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(
+        *volume_matrix * alignment_entry.second);
     // new matrix, representing real position (from new local mis RS to the global one)
     node->Align(new_volume_matrix);
   }
 }
 
 void FairAlignmentHandler::AddAlignmentMatrices(
-    const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices) {
+    const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
+    bool invertMatrices) {
   LOG(INFO) << "adding inverting matrices..." << FairLogger::endl;
   for (auto const& m : alignmentMatrices) {
     if (invertMatrices)

@@ -6,20 +6,20 @@
 #include "TGeoMatrix.h"
 
 class FairAlignmentHandler {
-	friend class FairRun;
-	std::map<std::string, TGeoHMatrix> fAlignmentMatrices;
+    friend class FairRun;
+    std::map<std::string, TGeoHMatrix> fAlignmentMatrices;
 
-	void AlignGeometry() const;
-	void AlignGeometryByFullPath() const;
-	void AlignGeometryBySymlink() const;
+    void AlignGeometry() const;
+    void AlignGeometryByFullPath() const;
+    void AlignGeometryBySymlink() const;
 
-public:
-	FairAlignmentHandler();
-	virtual ~FairAlignmentHandler();
+    void AddAlignmentMatrices(
+        const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
+        bool invertMatrices);
 
-	void AddAlignmentMatrices(
-      const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
-	  bool invertMatrices);
+  public:
+    FairAlignmentHandler();
+    virtual ~FairAlignmentHandler();
 };
 
 #endif
