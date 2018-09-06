@@ -186,9 +186,9 @@ class FairRun : public TNamed
     void SetUserOutputFileName(const TString& name);
     TString GetUserOutputFileName() const;
 
-	void AddAlignmentMatrices(
-			const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
-			bool invertMatrices = false);
+    void AddAlignmentMatrices(
+        const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
+        bool invertMatrices = false);
 
   private:
     FairRun(const FairRun& M);
