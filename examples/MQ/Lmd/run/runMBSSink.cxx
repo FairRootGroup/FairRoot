@@ -9,14 +9,14 @@
 #include "BaseMQFileSink.h"
 
 #include "IOPolicy.h" // fair::mq::policy::
-#include "RootSerializer.h" // RootDeserializer
+#include "RootSerializer.h" // RootSerializer
 #include "TClonesArray.h" // data type for the InputPolicy
 
 #include "RootOutFileManager.h" // OutputPolicy
 #include "FairMBSRawItem.h" // data type for the OutputPolicy
 
 // InputPolicy - initialize input and deserialize message into it
-using RootDefaultInputPolicy = fair::mq::policy::InputPolicy<RootDeserializer, // deserializer from msg to input
+using RootDefaultInputPolicy = fair::mq::policy::InputPolicy<RootSerializer, // deserializer from msg to input
                                                              TClonesArray, // input data type
                                                              fair::mq::policy::PointerType, // input pointer type (automatically selected)
                                                              fair::mq::policy::OpNewCreator, // input allocation

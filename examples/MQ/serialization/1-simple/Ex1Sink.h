@@ -61,7 +61,7 @@ class Ex1Sink : public FairMQDevice
             FairMQMessagePtr msg(NewMessage());
             if (Receive(msg, "data2") > 0)
             {
-                Deserialize<RootDeserializer>(*msg, fInput);
+                Deserialize<RootSerializer>(*msg, fInput);
                 receivedMsgs++;
                 fTree->SetBranchAddress("MyHit", &fInput);
                 fTree->Fill();

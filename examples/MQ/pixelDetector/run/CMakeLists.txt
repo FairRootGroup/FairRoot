@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
@@ -11,7 +11,7 @@ Set(MaxTestTime 60)
 GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelSimulation.sh ${CMAKE_CURRENT_BINARY_DIR})
 
 Add_Test(pixel_simulation
-       ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixelSimulation.sh --work-dir ${CMAKE_BINARY_DIR} -n 1000 -g TGeant3 -c static -s 6 --force-kill true -m 20)
+       ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixelSimulation.sh --work-dir ${CMAKE_BINARY_DIR} -n 1000 -g TGeant3 -c static -s 6 --force-kill true -m 20 -v veryhigh -l false)
 Set_Tests_Properties(pixel_simulation PROPERTIES TIMEOUT ${MaxTestTime})
 Set_Tests_Properties(pixel_simulation PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
 
@@ -53,17 +53,17 @@ set(PIXEL_FILE_LOCATION ${CMAKE_SOURCE_DIR})
 set(PIXEL_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector)
 set(FAIRROOT_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel.sh.in                
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel.sh.in
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixel.sh @ONLY )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelSimulation.sh.in
                 ${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelSimulation.sh @ONLY )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_3Levels.sh.in           
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_3Levels.sh.in
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixel_3Levels.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin.sh.in                
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin.sh.in
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelBin.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBinProxy.sh.in 
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBinProxy.sh.in
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelBinProxy.sh )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger.sh.in      
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger.sh.in
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFairMQPixelMerger.sh )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/pixel-dds-topology.xml
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/pixel-dds-topology.xml )
@@ -83,15 +83,15 @@ set(PIXEL_FILE_LOCATION ${CMAKE_INSTALL_PREFIX}/share/fairbase)
 set(PIXEL_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples/MQ/pixelDetector/bin)
 set(FAIRROOT_BIN_LOCATION  ${CMAKE_INSTALL_PREFIX}/bin)
 
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel.sh.in      
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel.sh.in
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel.sh_install @ONLY )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelSimulation.sh.in
                 ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelSimulation.sh_install @ONLY )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_3Levels.sh.in 
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_3Levels.sh.in
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixel_3Levels.sh_install )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin.sh.in      
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin.sh.in
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBin.sh_install )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBinProxy.sh.in 
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBinProxy.sh.in
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelBinProxy.sh_install )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger.sh.in
 		${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/startFairMQPixelMerger.sh_install )

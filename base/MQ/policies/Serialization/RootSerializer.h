@@ -38,7 +38,7 @@ struct RootSerializer
         tm->WriteObject(input);
         msg.Rebuild(tm->Buffer(),
                     tm->BufferSize(),
-                    [](void*,void* tmsg){ delete static_cast<TMessage*>(tmsg); },
+                    [](void*, void* tmsg){ delete static_cast<TMessage*>(tmsg); },
                     tm);
     }
 
@@ -49,32 +49,23 @@ struct RootSerializer
         tm->WriteObject(input.get());
         msg.Rebuild(tm->Buffer(),
                     tm->BufferSize(),
-                    [](void*,void* tmsg){ delete static_cast<TMessage*>(tmsg); },
+                    [](void*, void* tmsg){ delete static_cast<TMessage*>(tmsg); },
                     tm);
     }
-};
-
-struct RootDeserializer
-{
-    RootDeserializer() = default;
-    virtual ~RootDeserializer() = default;
 
     template<typename T>
     void Deserialize(FairMQMessage& msg, T*& output)
     {
-        if (output)
-        {
-            delete output;
-        }
+        delete output;
         FairTMessage tm(msg.GetData(), msg.GetSize());
-        output = static_cast<T*>(tm.ReadObject(tm.GetClass()));
+        output = static_cast<T*>(tm.ReadObjectAny(tm.GetClass()));
     }
 
     template<typename T>
     void Deserialize(FairMQMessage& msg, std::unique_ptr<T>& output)
     {
         FairTMessage tm(msg.GetData(), msg.GetSize());
-        output.reset(static_cast<T*>(tm.ReadObject(tm.GetClass())));
+        output.reset(static_cast<T*>(tm.ReadObjectAny(tm.GetClass())));
     }
 };
 
