@@ -86,17 +86,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3PushPull.sh.in
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3ExtraProcessor.sh.in
                ${CMAKE_BINARY_DIR}/bin/examples/advanced/Tutorial3/startMQTut3ExtraProcessor.sh)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/tut3-all-proxy.json
-               ${CMAKE_BINARY_DIR}/bin/config/tut3-all-proxy.json)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/tut3-all.json
-               ${CMAKE_BINARY_DIR}/bin/config/tut3-all.json)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/tut3-extra-processor.json
-               ${CMAKE_BINARY_DIR}/bin/config/tut3-extra-processor.json)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/tut3-push-pull.json
-               ${CMAKE_BINARY_DIR}/bin/config/tut3-push-pull.json)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/tut3-three.json
-               ${CMAKE_BINARY_DIR}/bin/config/tut3-three.json)
-
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
   ${Boost_LIBRARY_DIRS}
