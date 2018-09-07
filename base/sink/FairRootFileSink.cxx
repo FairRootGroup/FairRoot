@@ -256,14 +256,14 @@ void FairRootFileSink::Reset()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRootFileSink::FillEventHeader(FairEventHeader* feh)
+void FairRootFileSink::FillEventHeader(FairEventHeader* /* feh */)
 {
   return;
 }
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRootFileSink::RegisterImpl(const char* name, const char *folderName, void* obj) {
+void FairRootFileSink::RegisterImpl(const char* /* name */, const char *folderName, void* obj) {
   TFolder* folder=0;
   TFolder* f=0;
   f=static_cast<TFolder*>(fOutFolder->FindObjectAny(folderName));

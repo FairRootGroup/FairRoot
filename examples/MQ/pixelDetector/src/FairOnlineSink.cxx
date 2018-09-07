@@ -57,7 +57,7 @@ void FairOnlineSink::RegisterImpl(const char* , const char* , void* )
 }
 
 //_____________________________________________________________________________
-void FairOnlineSink::RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj)
+void FairOnlineSink::RegisterAny(const char* /* brname */, const std::type_info &/* oi */, const std::type_info &/* pi */, void* /* obj */)
 {
   return;
 }
