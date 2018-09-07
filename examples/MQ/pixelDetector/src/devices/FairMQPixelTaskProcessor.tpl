@@ -167,7 +167,7 @@ bool FairMQPixelTaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
 
     fInput->Clear();
 
-    for (int ipart = 0; ipart < tempObjects.size(); ipart++)
+    for (unsigned int ipart = 0; ipart < tempObjects.size(); ipart++)
         {
             if (tempObjects[ipart])
                 {
