@@ -34,8 +34,6 @@
 
 #include "BoostSerializer.h"
 
-#include "TMessage.h"
-
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 {

@@ -23,8 +23,6 @@
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/binary_object.hpp>
 
-#include "TMessage.h"
-
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorDigi.h"
 

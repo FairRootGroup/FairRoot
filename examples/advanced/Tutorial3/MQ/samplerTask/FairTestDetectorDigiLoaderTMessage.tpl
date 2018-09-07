@@ -7,13 +7,11 @@
 
 // Implementation of FairTestDetectorDigiLoader::Exec() with Root TMessage transport data format
 
+#include "RootSerializer.h"
+
 template <>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* /*opt*/)
 {
-    TMessage* message = new TMessage(kMESS_OBJECT);
-    message->WriteObject(fInput);
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(message->Buffer(),
-                                                                 message->BufferSize(),
-                                                                 [](void* /*data*/, void* obj){ delete static_cast<TMessage*>(obj); },
-                                                                 message));
+    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage());
+    RootSerializer().Serialize(*fPayload, fInput);
 }
