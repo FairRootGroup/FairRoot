@@ -34,8 +34,6 @@
 
 #include "BoostSerializer.h"
 
-#include "TMessage.h"
-
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/vector.hpp>

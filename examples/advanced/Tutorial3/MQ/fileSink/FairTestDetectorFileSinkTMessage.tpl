@@ -7,16 +7,7 @@
 
 // Implementation of FairTestDetectorFileSink::Run() with Root TMessage transport data format
 
-// special class to expose protected TMessage constructor
-class TestDetectorTMessage : public TMessage
-{
-  public:
-    TestDetectorTMessage(void* buf, Int_t len)
-        : TMessage(buf, len)
-    {
-        ResetBit(kIsOwner);
-    }
-};
+#include "RootSerializer.h"
 
 template <>
 void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
@@ -25,22 +16,14 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
     {
         ++fReceivedMsgs;
 
-        TestDetectorTMessage tm(msg->GetData(), msg->GetSize());
+        RootDeserializer().Deserialize(*msg, fOutput);
 
-        fOutput = static_cast<TClonesArray*>(tm.ReadObject(tm.GetClass()));
-
-        if (fOutput->IsEmpty())
-        {
-            LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
-        }
+        fTree->SetBranchAddress("Output", &fOutput);
 
         FairMQMessagePtr ack(fTransportFactory->CreateMessage());
         fChannels.at(fAckChannelName).at(0).Send(ack);
 
         fTree->Fill();
-
-        delete fOutput;
-        fOutput = nullptr;
 
         return true;
     });
