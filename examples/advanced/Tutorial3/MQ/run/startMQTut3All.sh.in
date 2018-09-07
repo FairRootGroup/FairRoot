@@ -61,7 +61,7 @@ SPLITTER+=" --severity debug"
 SPLITTER+=" --in-channel data1"
 SPLITTER+=" --out-channel data2"
 SPLITTER+=" --mq-config $tut3cfg"
-xterm -geometry 80x23+0+350 -hold -e @CMAKE_BINARY_DIR@/bin/$SPLITTER &
+xterm -geometry 80x23+0+350 -hold -e @FairMQ_BINDIR@/$SPLITTER &
 
 PROCESSOR1="tut3-processor"
 PROCESSOR1+=" --id processor1"
@@ -96,7 +96,7 @@ MERGER+=" --severity debug"
 MERGER+=" --in-channel data3"
 MERGER+=" --out-channel data4"
 MERGER+=" --mq-config $tut3cfg"
-xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$MERGER &
+xterm -geometry 80x23+1000+0 -hold -e @FairMQ_BINDIR@/$MERGER &
 
 FILESINK="tut3-sink"
 FILESINK+=" --id sink1"
