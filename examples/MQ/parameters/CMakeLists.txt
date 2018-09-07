@@ -15,6 +15,7 @@ Set(INCLUDE_DIRECTORIES
   ${FairMQ_INCDIR}
   ${FairMQ_INCDIR}/fairmq
   ${CMAKE_SOURCE_DIR}/examples/MQ/parameters
+  ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 

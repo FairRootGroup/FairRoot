@@ -11,6 +11,7 @@ configure_file(${CMAKE_SOURCE_DIR}/parmq/parameter-server.json ${CMAKE_BINARY_DI
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/parmq
+  ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 

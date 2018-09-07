@@ -62,7 +62,10 @@ struct RootDeserializer
     template<typename T>
     void Deserialize(FairMQMessage& msg, T*& output)
     {
-        delete output;
+        if (output)
+        {
+            delete output;
+        }
         FairTMessage tm(msg.GetData(), msg.GetSize());
         output = static_cast<T*>(tm.ReadObject(tm.GetClass()));
     }
@@ -74,12 +77,5 @@ struct RootDeserializer
         output.reset(static_cast<T*>(tm.ReadObject(tm.GetClass())));
     }
 };
-
-// using RootDefaultOutputPolicy = fair::mq::policy::OutputPolicy<RootSerializer,
-//                                                                TClonesArray,
-//                                                                fair::mq::policy::PointerType,
-//                                                                fair::mq::policy::OpNewCreator,
-//                                                                fair::mq::policy::NullptrInitializer,
-//                                                                fair::mq::policy::RawPtrDeleter>;
 
 #endif /* ROOTSERIALIZER_H */

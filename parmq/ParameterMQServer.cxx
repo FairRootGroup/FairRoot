@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -13,7 +13,7 @@
  */
 
 #include "TGeoManager.h"
-#include "TMessage.h"
+#include "RootSerializer.h"
 #include "TClass.h"
 #include "Rtypes.h"
 
@@ -28,17 +28,6 @@
 #include <options/FairMQProgOptions.h>
 
 using namespace std;
-
-// special class to expose protected TMessage constructor
-class ParMQTMessage : public TMessage
-{
-  public:
-  ParMQTMessage(void* buf, Int_t len)
-    : TMessage(buf, len)
-  {
-    ResetBit(kIsOwner);
-  }
-};
 
 ParameterMQServer::ParameterMQServer() :
     fRtdb(FairRuntimeDb::instance()),
@@ -57,14 +46,17 @@ ParameterMQServer::ParameterMQServer() :
 
 void ParameterMQServer::Init()
 {
-  fRequestChannelName = fConfig->GetValue<string>("channel-name");
-  fUpdateChannelName = fConfig->GetValue<string>("update-channel-name");
+    fRequestChannelName = fConfig->GetValue<string>("channel-name");
+    fUpdateChannelName = fConfig->GetValue<string>("update-channel-name");
 
-  if ( fRequestChannelName != "" )
-    OnData(fRequestChannelName, &ParameterMQServer::ProcessRequest);
-  if ( fUpdateChannelName != "" ) {
-    OnData(fUpdateChannelName, &ParameterMQServer::ProcessUpdate);
-  }
+    if (fRequestChannelName != "")
+    {
+        OnData(fRequestChannelName, &ParameterMQServer::ProcessRequest);
+    }
+    if (fUpdateChannelName != "")
+    {
+        OnData(fUpdateChannelName, &ParameterMQServer::ProcessUpdate);
+    }
 }
 
 void ParameterMQServer::InitTask()
@@ -76,14 +68,14 @@ void ParameterMQServer::InitTask()
     fOutputName = fConfig->GetValue<string>("output-name");
     fOutputType = fConfig->GetValue<string>("output-type");
 
-    if ( ::getenv("DDS_SESSION_ID") )
+    if (::getenv("DDS_SESSION_ID"))
     {
-        std::string DDS_SESSION_ID = ::getenv("DDS_SESSION_ID");
-	if ( fOutputName.length() > 5 )
-	{
-	    DDS_SESSION_ID = "." + DDS_SESSION_ID + ".root";
-	    fOutputName.replace(fOutputName.length()-5,5,DDS_SESSION_ID.c_str());
-	}
+        std::string ddsSessionId = ::getenv("DDS_SESSION_ID");
+        if (fOutputName.length() > 5)
+        {
+            ddsSessionId = "." + ddsSessionId + ".root";
+            fOutputName.replace(fOutputName.length() - 5, 5, ddsSessionId.c_str());
+        }
     }
 
     if (fRtdb != 0)
@@ -123,7 +115,7 @@ void ParameterMQServer::InitTask()
         }
 
         // Set output
-        if ( fUpdateChannelName == "" ) 
+        if (fUpdateChannelName == "")
         {
             if (fOutputName != "")
             {
@@ -157,102 +149,100 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
     LOG(INFO) << "Retrieving parameter...";
     // Check if the parameter name has changed to avoid getting same container repeatedly
     if (newParameterName != parameterName)
-      {
+    {
         parameterName = newParameterName;
         par = static_cast<FairParGenericSet*>(fRtdb->getContainer(parameterName.c_str()));
-      }
+    }
     fRtdb->initContainers(runId);
 
     LOG(INFO) << "Sending following parameter to the client:";
     if (par)
-      {
+    {
         par->print();
 
-        TMessage* tmsg = new TMessage(kMESS_OBJECT);
-        tmsg->WriteObject(par);
-        FairMQMessagePtr rep(NewMessage(tmsg->Buffer(),
-                                        tmsg->BufferSize(),
-                                        [](void* /*data*/, void* object){ delete static_cast<TMessage*>(object); },
-                                        tmsg));
+        FairMQMessagePtr rep(NewMessage());
+        Serialize<RootSerializer>(*rep, par);
 
         if (Send(rep, fRequestChannelName, 0) < 0)
-          {
+        {
             LOG(ERROR) << "failed sending reply";
             return false;
-          }
-      }
+        }
+    }
     else
-      {
-        LOG(ERROR) << "Parameter uninitialized!";
+    {
+        LOG(ERROR) << "Parameter uninitialized! Sending empty message back";
         // Send an empty message back to keep the REQ/REP cycle
         FairMQMessagePtr rep(NewMessage());
         if (Send(rep, fRequestChannelName, 0) < 0)
-          {
+        {
             LOG(ERROR) << "failed sending reply";
             return false;
-          }
-      }
+        }
+    }
 
     return true;
 }
 
 bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
 {
-    gGeoManager = NULL; // FairGeoParSet update deletes previous geometry because of resetting gGeoManager, so let's NULL it
+    gGeoManager = nullptr; // FairGeoParSet update deletes previous geometry because of resetting gGeoManager, so let's NULL it
 
     std::string* text;
 
     LOG(DEBUG) << "got process update message with size = " << update->GetSize() << " !";
-    if ( update->GetSize() < 20 )
+    if (update->GetSize() < 20)
+    {
+        std::string repString = string(static_cast<char*>(update->GetData()), update->GetSize());
+        LOG(INFO) << "Received string " << repString << " !";
+        if (fNofSimDevices == 0)
         {
-            std::string repString = string(static_cast<char*>(update->GetData()), update->GetSize());
-            LOG(INFO) << "Received string " << repString << " !";
-            if ( fNofSimDevices == 0 ) {
-                FairRunIdGenerator genid;
-                fRunId = genid.generateId();
-            }
-            string messageToSend = to_string(fRunId) + "_" + to_string(fNofSimDevices);
-            text = new string(messageToSend);
-            fNofSimDevices += 1;
-            LOG(INFO) << "Replying with \"" << messageToSend << "\"";
+            FairRunIdGenerator genid;
+            fRunId = genid.generateId();
         }
+        string messageToSend = to_string(fRunId) + "_" + to_string(fNofSimDevices);
+        text = new string(messageToSend);
+        fNofSimDevices += 1;
+        LOG(INFO) << "Replying with \"" << messageToSend << "\"";
+    }
     else
+    {
+        // get the run id coded in the description of FairParSet
+        FairParGenericSet* newPar;
+        Deserialize<RootDeserializer>(*update, newPar);
+        std::string parDescr = std::string(newPar->getDescription());
+        uint runId = 0;
+        if (parDescr.find("RUNID") != std::string::npos)
         {
-            ParMQTMessage tm(update->GetData(), update->GetSize());
-
-            // get the run id coded in the description of FairParSet
-            FairParGenericSet* newPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());
-            std::string parDescr = std::string(newPar->getDescription());
-            uint runId = 0;
-            if ( parDescr.find("RUNID") != std::string::npos )
-                {
-                    parDescr.erase(0,parDescr.find("RUNID")+5);
-                    runId = atoi(parDescr.data());
-                    if ( parDescr.find("RUNID") != std::string::npos )
-                        parDescr.erase(0,parDescr.find("RUNID")+5);
-                }
-            fRtdb->initContainers(runId);
-
-            newPar->setChanged(true); // trigger writing to file
-            newPar->setStatic(true); // to get rid of error
-            newPar->Print();
-
-            if ( fRtdb->addContainer(newPar) )
-                {
-                    text = new string("SUCCESS");
-                }
-            else
-                {
-                    text = new string("FAIL");
-                }
-
-            Bool_t kParameterMerged = kTRUE;
-            FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
-            parOut->open(fOutputName.data());
-            fRtdb->setOutput(parOut);
-            fRtdb->saveOutput();
-            fRtdb->closeOutput();
+            parDescr.erase(0, parDescr.find("RUNID") + 5);
+            runId = atoi(parDescr.data());
+            if (parDescr.find("RUNID") != std::string::npos)
+            {
+                parDescr.erase(0, parDescr.find("RUNID") + 5);
+            }
         }
+        fRtdb->initContainers(runId);
+
+        newPar->setChanged(true); // trigger writing to file
+        newPar->setStatic(true); // to get rid of error
+        newPar->Print();
+
+        if (fRtdb->addContainer(newPar))
+        {
+            text = new string("SUCCESS");
+        }
+        else
+        {
+            text = new string("FAIL");
+        }
+
+        Bool_t kParameterMerged = kTRUE;
+        FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
+        parOut->open(fOutputName.data());
+        fRtdb->setOutput(parOut);
+        fRtdb->saveOutput();
+        fRtdb->closeOutput();
+    }
 
     FairMQMessagePtr msg(NewMessage(const_cast<char*>(text->c_str()),
                                     text->length(),
@@ -260,9 +250,9 @@ bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
                                     text));
 
     if (Send(msg, fUpdateChannelName) < 0)
-        {
-            return false;
-        }
+    {
+        return false;
+    }
     return true;
 }
 

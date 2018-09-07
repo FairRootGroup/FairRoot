@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -20,7 +20,7 @@
 #include "FairMQExParamsParOne.h"
 #include <options/FairMQProgOptions.h>
 
-#include "TMessage.h"
+#include "RootSerializer.h"
 #include "Rtypes.h"
 
 using namespace std;
@@ -44,17 +44,6 @@ void FairMQExParamsClient::InitTask()
     fRunId = 2000;
 }
 
-// special class to expose protected TMessage constructor
-class FairMQExParamsTMessage : public TMessage
-{
-  public:
-    FairMQExParamsTMessage(void* buf, Int_t len)
-        : TMessage(buf, len)
-    {
-        ResetBit(kIsOwner);
-    }
-};
-
 bool FairMQExParamsClient::ConditionalRun()
 {
     LOG(info) << "Requesting parameter \"" << fParameterName << "\" for Run ID " << fRunId << ".";
@@ -70,8 +59,8 @@ bool FairMQExParamsClient::ConditionalRun()
         {
             if (rep->GetSize() != 0)
             {
-                FairMQExParamsTMessage tmsg(rep->GetData(), rep->GetSize());
-                FairMQExParamsParOne* par = static_cast<FairMQExParamsParOne*>(tmsg.ReadObject(tmsg.GetClass()));
+                FairMQExParamsParOne* par;
+                Deserialize<RootDeserializer>(*rep, par);
                 LOG(info) << "Received parameter from the server:";
                 par->print();
             }
