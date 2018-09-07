@@ -143,7 +143,7 @@ bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
     }
   fTree->Fill();
   
-  for ( int ipart = 0 ; ipart < tempObjects.size() ; ipart++ )
+  for ( unsigned int ipart = 0 ; ipart < tempObjects.size() ; ipart++ )
     {
       if ( tempObjects[ipart] )
         delete tempObjects[ipart];
