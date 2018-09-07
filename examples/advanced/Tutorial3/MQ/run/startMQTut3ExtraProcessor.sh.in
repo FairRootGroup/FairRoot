@@ -42,14 +42,10 @@ else
     echo "Using: binary"
 fi
 
-ID="processorx"
-
-tut3cfg="@CMAKE_BINARY_DIR@/bin/config/tut3-extra-processor.json"
-
 PROCESSOR2="tut3-processor"
-PROCESSOR2+=" --id processor2"
-PROCESSOR2+=" --severity debug"
+PROCESSOR2+=" --id extraProcessor"
 PROCESSOR2+=" --data-format $dataFormat"
-PROCESSOR2+=" --mq-config $tut3cfg"
-PROCESSOR2+=" --config-key processor"
+PROCESSOR2+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:5565"
+PROCESSOR2+="                  name=data2,type=push,method=connect,address=tcp://localhost:5570"
+PROCESSOR2+=" --data-format $dataFormat"
 xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR2 &
