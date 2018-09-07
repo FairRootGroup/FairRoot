@@ -138,8 +138,8 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
   Double_t SlopeX = f1->GetParameter(0);
   Double_t OffX = f1->GetParameter(1);
   Double_t Chi2X = f1->GetChisquare();
-  Double_t SlopeY;
-  Double_t OffY;
+  Double_t SlopeY = 0.;
+  Double_t OffY = 0.;
   Double_t Chi2Y;
 
   if ( 2 == fVersion ) {
