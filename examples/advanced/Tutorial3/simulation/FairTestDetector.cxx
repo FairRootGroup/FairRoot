@@ -41,8 +41,8 @@ FairTestDetector::FairTestDetector()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fFairTestDetectorPointCollection(new TClonesArray("FairTestDetectorPoint"))
 	, fEventNr(0)
+    , fFairTestDetectorPointCollection(new TClonesArray("FairTestDetectorPoint"))
 {
 }
 
@@ -57,8 +57,8 @@ FairTestDetector::FairTestDetector(const char* name, Bool_t active)
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
-    , fFairTestDetectorPointCollection(new TClonesArray("FairTestDetectorPoint"))
     , fEventNr(0)
+    , fFairTestDetectorPointCollection(new TClonesArray("FairTestDetectorPoint"))
 {
 }
 

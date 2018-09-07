@@ -26,8 +26,8 @@ FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask()
     : FairTask()
     , fDigiArray(NULL)
     , fHitArray(NULL)
-    , fFunctor(NULL)
 	, fTime (0.)
+    , fFunctor(NULL)
 {
 }
 // -------------------------------------------------------------------------
@@ -37,8 +37,8 @@ FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask(Int_t verbose)
     : FairTask()
     , fDigiArray(NULL)
     , fHitArray(NULL)
-    , fFunctor(NULL)
 	, fTime(0.)
+    , fFunctor(NULL)
 {
     fVerbose = verbose;
 }
