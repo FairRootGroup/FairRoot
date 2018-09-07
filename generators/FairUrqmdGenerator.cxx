@@ -87,6 +87,18 @@ FairUrqmdGenerator::~FairUrqmdGenerator()
 }
 // ------------------------------------------------------------------------
 
+namespace
+{
+  // silence fgets warnings (with a runtime error message if it actually happens)
+  // for correctness should be handled in the code instead, if this methods are still relevant in the future.
+  void skipBytes(char* bytes, size_t numBytes, FILE* file)
+  {
+    if (fgets(bytes, numBytes, file) == nullptr) {
+      LOG(error) << "Failed reading from file stream";
+    }
+  }
+
+}
 
 
 // -----   Public method ReadEvent   --------------------------------------
@@ -115,7 +127,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   // ---> Read and check first event header line from input file
   char read[200];
-  fgets(read, 200, fInputFile);
+  skipBytes(read, 200, fInputFile);
   if ( feof(fInputFile) ) {
     LOG(info) << "FairUrqmdGenerator : End of input file reached.";
     fclose(fInputFile);
@@ -130,36 +142,36 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   Int_t retval = 0;
 
   // ---> Read rest of event header
-  fgets(read, 26, fInputFile);
+  skipBytes(read, 26, fInputFile);
   retval = fscanf(fInputFile, "%d", &aProj);
   CheckReturnValue(retval);
   retval = fscanf(fInputFile, "%d", &zProj);
   CheckReturnValue(retval);
-  fgets(read, 25, fInputFile);
+  skipBytes(read, 25, fInputFile);
   retval = fscanf(fInputFile, "%d", &aTarg);
   CheckReturnValue(retval);
   retval = fscanf(fInputFile, "%d", &zTarg);
   CheckReturnValue(retval);
-  fgets(read, 200, fInputFile);
-  fgets(read, 200, fInputFile);
-  fgets(read, 36, fInputFile);
+  skipBytes(read, 200, fInputFile);
+  skipBytes(read, 200, fInputFile);
+  skipBytes(read, 36, fInputFile);
   retval = fscanf(fInputFile, "%f", &b);
   CheckReturnValue(retval);
-  fgets(read, 200, fInputFile);
-  fgets(read, 39, fInputFile);
+  skipBytes(read, 200, fInputFile);
+  skipBytes(read, 39, fInputFile);
   retval = fscanf(fInputFile, "%e", &ekin);
   CheckReturnValue(retval);
-  fgets(read, 200, fInputFile);
-  fgets(read, 7, fInputFile);
+  skipBytes(read, 200, fInputFile);
+  skipBytes(read, 7, fInputFile);
   retval = fscanf(fInputFile, "%d", &evnr);
   CheckReturnValue(retval);
-  fgets(read, 200, fInputFile);
-  for (int iline=0; iline<8; iline++)  { fgets(read, 200,fInputFile); }
+  skipBytes(read, 200, fInputFile);
+  for (int iline=0; iline<8; iline++)  { skipBytes(read, 200,fInputFile); }
   retval = fscanf(fInputFile, "%d", &ntracks);
   if (ntracks < 0 || ntracks > (INT_MAX-1)) LOG(fatal) << "Error reading the number of events from event header.";
   CheckReturnValue(retval);
-  fgets(read, 200, fInputFile);
-  fgets(read, 200, fInputFile);
+  skipBytes(read, 200, fInputFile);
+  skipBytes(read, 200, fInputFile);
 
   // ---> Calculate beta and gamma for Lorentztransformation
   TDatabasePDG* pdgDB = TDatabasePDG::Instance();
@@ -188,7 +200,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   for(int itrack=0; itrack<ntracks; itrack++) {
 
     // Read momentum and PID from file
-    fgets(read, 81, fInputFile);
+    skipBytes(read, 81, fInputFile);
     retval = fscanf(fInputFile, "%e", &ppx);
     CheckReturnValue(retval);
     retval = fscanf(fInputFile, "%e", &ppy);
@@ -203,7 +215,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
     CheckReturnValue(retval);
     retval = fscanf(fInputFile, "%d", &ichg);
     CheckReturnValue(retval);
-    fgets(read, 200, fInputFile);
+    skipBytes(read, 200, fInputFile);
 
     // Convert UrQMD type and charge to unique pid identifier
     if (ityp >= 0) { pid =  1000 * (ichg+2) + ityp; }
@@ -261,7 +273,7 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
 
     // ---> Read and check first event header line from input file
     char read[200];
-    fgets(read, 200, fInputFile);
+    skipBytes(read, 200, fInputFile);
     if ( feof(fInputFile) ) {
       LOG(info) << "FairUrqmdGenerator : End of input file reached.";
       fclose(fInputFile);
@@ -276,36 +288,36 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
     Int_t retval = 0;
 
     // ---> Read rest of event header
-    fgets(read, 26, fInputFile);
+    skipBytes(read, 26, fInputFile);
     retval = fscanf(fInputFile, "%d", &aProj);
     CheckReturnValue(retval);
     retval = fscanf(fInputFile, "%d", &zProj);
     CheckReturnValue(retval);
-    fgets(read, 25, fInputFile);
+    skipBytes(read, 25, fInputFile);
     retval = fscanf(fInputFile, "%d", &aTarg);
     CheckReturnValue(retval);
     retval = fscanf(fInputFile, "%d", &zTarg);
     CheckReturnValue(retval);
-    fgets(read, 200, fInputFile);
-    fgets(read, 200, fInputFile);
-    fgets(read, 36, fInputFile);
+    skipBytes(read, 200, fInputFile);
+    skipBytes(read, 200, fInputFile);
+    skipBytes(read, 36, fInputFile);
     retval = fscanf(fInputFile, "%f", &b);
     CheckReturnValue(retval);
-    fgets(read, 200, fInputFile);
-    fgets(read, 39, fInputFile);
+    skipBytes(read, 200, fInputFile);
+    skipBytes(read, 39, fInputFile);
     retval = fscanf(fInputFile, "%e", &ekin);
     CheckReturnValue(retval);
-    fgets(read, 200, fInputFile);
-    fgets(read, 7, fInputFile);
+    skipBytes(read, 200, fInputFile);
+    skipBytes(read, 7, fInputFile);
     retval = fscanf(fInputFile, "%d", &evnr);
     CheckReturnValue(retval);
-    fgets(read, 200, fInputFile);
-    for (int iline=0; iline<8; iline++)  { fgets(read, 200,fInputFile); }
+    skipBytes(read, 200, fInputFile);
+    for (int iline=0; iline<8; iline++)  { skipBytes(read, 200,fInputFile); }
     retval = fscanf(fInputFile, "%d", &ntracks);
     if (ntracks < 0 || ntracks > (INT_MAX-1)) LOG(fatal) << "Error reading the number of events from event header.";
     CheckReturnValue(retval);
-    fgets(read, 200, fInputFile);
-    fgets(read, 200, fInputFile);
+    skipBytes(read, 200, fInputFile);
+    skipBytes(read, 200, fInputFile);
 
     LOG(info) << "FairUrqmdGenerator: Event " << evnr << " skipped!";
 
@@ -313,8 +325,8 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
     for(int itrack=0; itrack<ntracks; itrack++) {
 
       // Read momentum and PID from file
-      fgets(read, 81, fInputFile);
-      fgets(read, 200, fInputFile);
+      skipBytes(read, 81, fInputFile);
+      skipBytes(read, 200, fInputFile);
     }
   }
   return kTRUE;
