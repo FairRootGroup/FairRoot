@@ -142,7 +142,7 @@ void FairGeaneUtil::FromPtToSD(Double_t PD[3], Double_t RD[15], Double_t H[3], I
   Double_t A[5][5], S[15], TN[3], COSL, SINL, COSL1;
 
   Double_t PM, HM, UN[3], VN[3], DI[3], TVW[3];
-  Double_t UJ, UK, VJ, VK, HA, HAM, Q, SINZ, COSZ;
+  Double_t /* UJ, */ /* UK, */ VJ, VK, HA, HAM, Q, SINZ/* , COSZ */;
 
   Double_t CFACT8 = 2.997925e-04;
 
@@ -185,8 +185,8 @@ void FairGeaneUtil::FromPtToSD(Double_t PD[3], Double_t RD[15], Double_t H[3], I
   VN[1]=TN[2]*UN[0];
   VN[2]=COSL;
 
-  UJ=UN[0]*DJ[0]+UN[1]*DJ[1]+UN[2]*DJ[2];
-  UK=UN[0]*DK[0]+UN[1]*DK[1]+UN[2]*DK[2];
+  // UJ=UN[0]*DJ[0]+UN[1]*DJ[1]+UN[2]*DJ[2];
+  // UK=UN[0]*DK[0]+UN[1]*DK[1]+UN[2]*DK[2];
   VJ=VN[0]*DJ[0]+VN[1]*DJ[1]+VN[2]*DJ[2];
   VK=VN[0]*DK[0]+VN[1]*DK[1]+VN[2]*DK[2];
 
@@ -209,7 +209,7 @@ void FairGeaneUtil::FromPtToSD(Double_t PD[3], Double_t RD[15], Double_t H[3], I
       Q=-HAM*CFACT8;
 
       SINZ=-(H[0]*UN[0]+H[1]*UN[1]+H[2]*UN[2])*HM;
-      COSZ= (H[0]*VN[0]+H[1]*VN[1]+H[2]*VN[2])*HM;
+      // COSZ= (H[0]*VN[0]+H[1]*VN[1]+H[2]*VN[2])*HM;
       A[0][3] = Q*TVW[1]*SINZ*(SINL*PD[0]);
       A[0][4] = Q*TVW[2]*SINZ*(SINL*PD[0]);
     }
@@ -680,7 +680,7 @@ void FairGeaneUtil::FromSDToPt(Double_t PD[3], Double_t RD[15], Double_t H[3],
 
   Double_t CFACT8 = 2.997925e-04;
 
-  Double_t UJ, UK, VJ, VK, HA, HAM, Q, SINZ, COSZ;
+  Double_t /* UJ, */ /* UK, */ VJ, VK, HA, HAM, Q, SINZ/* , COSZ */;
   Double_t Vec[25];
 
   // ------------------------------------------------------------------
@@ -720,8 +720,8 @@ void FairGeaneUtil::FromSDToPt(Double_t PD[3], Double_t RD[15], Double_t H[3],
   VN[1]=TN[2]*UN[0];
   VN[2]=COSL;
 
-  UJ=UN[0]*DJ[0]+UN[1]*DJ[1]+UN[2]*DJ[2];
-  UK=UN[0]*DK[0]+UN[1]*DK[1]+UN[2]*DK[2];
+  // UJ=UN[0]*DJ[0]+UN[1]*DJ[1]+UN[2]*DJ[2];
+  // UK=UN[0]*DK[0]+UN[1]*DK[1]+UN[2]*DK[2];
   VJ=VN[0]*DJ[0]+VN[1]*DJ[1]+VN[2]*DJ[2];
   VK=VN[0]*DK[0]+VN[1]*DK[1]+VN[2]*DK[2];
 
@@ -744,7 +744,7 @@ void FairGeaneUtil::FromSDToPt(Double_t PD[3], Double_t RD[15], Double_t H[3],
       Q=-HAM*CFACT8;
 
       SINZ=-(H[0]*UN[0]+H[1]*UN[1]+H[2]*UN[2])*HM;
-      COSZ= (H[0]*VN[0]+H[1]*VN[1]+H[2]*VN[2])*HM;
+      // COSZ= (H[0]*VN[0]+H[1]*VN[1]+H[2]*VN[2])*HM;
       A[0][3] = -Q*TVW[1]*SINZ*(TANL*PC[0]);
       A[0][4] = -Q*TVW[2]*SINZ*(TANL*PC[0]);
     }
@@ -1021,7 +1021,7 @@ void FairGeaneUtil::FromMarsToSC(Double_t PD[3], Double_t RD[6][6],  Double_t H[
 
 //  Double_t PDD[3], RDD[15];
 
-  Double_t SPU, DJ[3], DK[3], PM, PM3, PT;
+  Double_t SPU, DJ[3], DK[3], PM/* , PM3 *//* , PT */;
   Int_t    IERR;
   Double_t clam, slam, cphi, sphi, PC1[3], RC1[15];
   // ------------------------------------------------------------------
@@ -1033,8 +1033,8 @@ void FairGeaneUtil::FromMarsToSC(Double_t PD[3], Double_t RD[6][6],  Double_t H[
   memset(PC,0,sizeof(*PC));
 
   PM  = TMath::Sqrt(PD[0]*PD[0]+PD[1]*PD[1]+PD[2]*PD[2]);
-  PM3 = TMath::Power(PM,3);
-  PT  = TMath::Sqrt(PD[0]*PD[0]+PD[1]*PD[1]);
+  // PM3 = TMath::Power(PM,3);
+  // PT  = TMath::Sqrt(PD[0]*PD[0]+PD[1]*PD[1]);
 
   // prepare the director cosines of a virtual dtector system
   // lying on the SC transverse plane
@@ -1218,7 +1218,7 @@ void FairGeaneUtil::FromMarsToSD(Double_t PD[3], Double_t RD[6][6],
   Double_t M56[5][6], M56T[6][5], AJ[5][5], AJT[6][5];
   Double_t R6[6][6], RLC[6][6];
 //  Double_t SPU, PM, PM3, PT;
-  Double_t PM, PM3, PT;
+  Double_t PM, PM3/* , PT */;
   Double_t Rot[3][3], Rmat[6][6], Rtra[6][6];
   // ------------------------------------------------------------------
 
@@ -1341,7 +1341,7 @@ void FairGeaneUtil::FromMarsToSD(Double_t PD[3], Double_t RD[6][6],
 
   PM  = TMath::Sqrt(PDD[0]*PDD[0]+PDD[1]*PDD[1]+PDD[2]*PDD[2]);
   PM3 = TMath::Power(PM,3);
-  PT  = TMath::Sqrt(PDD[0]*PDD[0]+PDD[1]*PDD[1]);
+  // PT  = TMath::Sqrt(PDD[0]*PDD[0]+PDD[1]*PDD[1]);
 
   //
   // check if track lies in the x-y plane of the local cartesian frame
