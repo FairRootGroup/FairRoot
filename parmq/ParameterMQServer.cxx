@@ -138,15 +138,15 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
     FairParGenericSet* par = nullptr;
 
     string reqStr(static_cast<char*>(req->GetData()), req->GetSize());
-    LOG(INFO) << "Received parameter request from client: \"" << reqStr << "\"";
+    LOG(info) << "Received parameter request from client: \"" << reqStr << "\"";
 
     size_t pos = reqStr.rfind(",");
     string newParameterName = reqStr.substr(0, pos);
     int runId = stoi(reqStr.substr(pos + 1));
-    LOG(INFO) << "Parameter name: " << newParameterName;
-    LOG(INFO) << "Run ID: " << runId;
+    LOG(info) << "Parameter name: " << newParameterName;
+    LOG(info) << "Run ID: " << runId;
 
-    LOG(INFO) << "Retrieving parameter...";
+    LOG(info) << "Retrieving parameter...";
     // Check if the parameter name has changed to avoid getting same container repeatedly
     if (newParameterName != parameterName)
     {
@@ -155,7 +155,7 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
     }
     fRtdb->initContainers(runId);
 
-    LOG(INFO) << "Sending following parameter to the client:";
+    LOG(info) << "Sending following parameter to the client:";
     if (par)
     {
         par->print();
@@ -190,11 +190,11 @@ bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
 
     std::string* text;
 
-    LOG(DEBUG) << "got process update message with size = " << update->GetSize() << " !";
+    LOG(info) << "got process update message with size = " << update->GetSize() << " !";
     if (update->GetSize() < 20)
     {
         std::string repString = string(static_cast<char*>(update->GetData()), update->GetSize());
-        LOG(INFO) << "Received string " << repString << " !";
+        LOG(info) << "Received string " << repString << " !";
         if (fNofSimDevices == 0)
         {
             FairRunIdGenerator genid;
@@ -203,13 +203,13 @@ bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
         string messageToSend = to_string(fRunId) + "_" + to_string(fNofSimDevices);
         text = new string(messageToSend);
         fNofSimDevices += 1;
-        LOG(INFO) << "Replying with \"" << messageToSend << "\"";
+        LOG(info) << "Replying with \"" << messageToSend << "\"";
     }
     else
     {
         // get the run id coded in the description of FairParSet
-        FairParGenericSet* newPar;
-        Deserialize<RootDeserializer>(*update, newPar);
+        FairParGenericSet* newPar = nullptr;
+        Deserialize<RootSerializer>(*update, newPar);
         std::string parDescr = std::string(newPar->getDescription());
         uint runId = 0;
         if (parDescr.find("RUNID") != std::string::npos)

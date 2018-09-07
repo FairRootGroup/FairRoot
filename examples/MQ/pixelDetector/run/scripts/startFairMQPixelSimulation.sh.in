@@ -5,7 +5,9 @@ NOFSIMULS="1"
 TRANSPORTNAME="TGeant3"
 TRANSPORT="--transport zeromq"
 WORKDIR="@PIXEL_FILE_LOCATION@"
-VERBOSE="--severity INFO"
+SEVERITY="--severity info"
+VERBOSITY="--verbosity medium"
+COLOR="--color true"
 FORCEKILL=false
 COMMAND="interactive"
 FAIRROOTCONFIGDIR=""
@@ -57,8 +59,16 @@ case $key in
     MAXRUNNINGTIME="$2"
     shift
     ;;
-    -v|--verbose)
-    VERBOSE="--verbosity $2"
+    -y|--severity)
+    SEVERITY="--severity $2"
+    shift
+    ;;
+    -v|--verbosity)
+    VERBOSITY="--verbosity $2"
+    shift
+    ;;
+    -l|--color)
+    COLOR="--color $2"
     shift
     ;;
     -k|--force-kill)
@@ -140,7 +150,9 @@ fi
 SERVER="@FAIRROOT_BIN_LOCATION@/"
 SERVER+="parmq-server $TRANSPORT"
 SERVER+=" --id pixSim-parmq-server  --channel-config name=updateChannel,type=rep,method=bind,rateLogging=1,address=tcp://*:5205"
-SERVER+=" $VERBOSE "
+SERVER+=" $SEVERITY "
+SERVER+=" $VERBOSITY "
+SERVER+=" $COLOR "
 SERVER+=" --update-channel-name updateChannel --output-name $OUTPUTPARAM $CONTROL"
 
 ########################## start SAMPLER
@@ -148,7 +160,9 @@ SAMPLER="@PIXEL_BIN_LOCATION@/"
 SAMPLER+="run-sim $TRANSPORT"
 SAMPLER+=" --channel-config name=updateChannel,type=req,method=connect,rateLogging=1,address=tcp://localhost:5205"
 SAMPLER+=" --channel-config name=data#all#,type=push,method=connect,rateLogging=1,address=tcp://localhost:5206"
-SAMPLER+=" $VERBOSE "
+SAMPLER+=" $SEVERITY "
+SAMPLER+=" $VERBOSITY "
+SAMPLER+=" $COLOR "
 SAMPLER+=" --nof-events $NOFEVENTS $TRANSPORTNAME $FAIRROOTCONFIGDIR $CONTROL"
 
 for (( i=$NOFRANDOMNUMBERS ; i<$NOFSIMULS ; i++ ))
@@ -163,7 +177,9 @@ done
 ########################## start FILESINK
 FILESINK="@PIXEL_BIN_LOCATION@/"
 FILESINK+="pixel-sink $TRANSPORT --in-channel data#all#"
-FILESINK+=" $VERBOSE "
+FILESINK+=" $SEVERITY "
+FILESINK+=" $VERBOSITY "
+FILESINK+=" $COLOR "
 FILESINK+=" --id pixSim-sink1 --channel-config name=data#all#,type=pull,method=bind,rateLogging=1,address=tcp://*:5206"
 FILESINK+=" --class-name FairMCEventHeader --branch-name MCEventHeader."
 FILESINK+=" --class-name TClonesArray(PixelPoint) --branch-name PixelPoint"

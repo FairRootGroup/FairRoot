@@ -22,7 +22,11 @@ class Ex1Processor : public FairMQDevice
     Ex1Processor(const Ex1Processor&);
     Ex1Processor& operator=(const Ex1Processor&);
 
-    virtual ~Ex1Processor() {}
+    virtual ~Ex1Processor()
+    {
+        delete fInput;
+        delete fOutput;
+    }
 
   protected:
     virtual void Init()
@@ -41,7 +45,7 @@ class Ex1Processor : public FairMQDevice
             FairMQMessagePtr msg(NewMessage());
             if (Receive(msg, "data1") > 0)
             {
-                Deserialize<RootDeserializer>(*msg, fInput);
+                Deserialize<RootSerializer>(*msg, fInput);
                 receivedMsgs++;
                 Exec(fInput, fOutput);
                 Serialize<RootSerializer>(*msg, fOutput);

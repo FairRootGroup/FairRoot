@@ -72,8 +72,8 @@ class Ex2Sink : public FairMQDevice
             if (Receive(parts, "data2") > 0)
             {
                 Ex2Header header;
-                Deserialize<BoostDeserializer<Ex2Header>>(*(parts.At(0)), header);
-                Deserialize<BoostDeserializer<MyHit>>(*(parts.At(1)), fInput);
+                Deserialize<BoostSerializer<Ex2Header>>(*(parts.At(0)), header);
+                Deserialize<BoostSerializer<MyHit>>(*(parts.At(1)), fInput);
 
                 receivedMsgs++;
                 fTree->SetBranchAddress("MyHit", &fInput);

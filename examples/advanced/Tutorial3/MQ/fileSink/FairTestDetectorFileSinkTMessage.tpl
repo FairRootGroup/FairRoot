@@ -16,7 +16,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
     {
         ++fReceivedMsgs;
 
-        RootDeserializer().Deserialize(*msg, fOutput);
+        RootSerializer().Deserialize(*msg, fOutput);
 
         fTree->SetBranchAddress("Output", &fOutput);
 

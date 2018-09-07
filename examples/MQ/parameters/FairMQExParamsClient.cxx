@@ -59,10 +59,11 @@ bool FairMQExParamsClient::ConditionalRun()
         {
             if (rep->GetSize() != 0)
             {
-                FairMQExParamsParOne* par;
-                Deserialize<RootDeserializer>(*rep, par);
+                FairMQExParamsParOne* par = nullptr;
+                Deserialize<RootSerializer>(*rep, par);
                 LOG(info) << "Received parameter from the server:";
                 par->print();
+                delete par;
             }
             else
             {

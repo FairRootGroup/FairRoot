@@ -12,7 +12,7 @@
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>::Exec(Option_t* opt)
 {
-    RootDeserializer().Deserialize(*fPayload, fRecoTask->fDigiArray);
+    RootSerializer().Deserialize(*fPayload, fRecoTask->fDigiArray);
     fRecoTask->Exec(opt);
     RootSerializer().Serialize(*fPayload, fRecoTask->fHitArray);
 }

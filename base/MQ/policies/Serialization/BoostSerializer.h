@@ -60,7 +60,7 @@ struct has_BoostSerialization<C, Ret(Args...)>
 } // namespace base
 } // namespace fair
 
-template <typename DataType, typename BoostArchiveOut = boost::archive::binary_oarchive>
+template <typename DataType, typename BoostArchiveIn = boost::archive::binary_iarchive, typename BoostArchiveOut = boost::archive::binary_oarchive>
 class BoostSerializer
 {
   public:
@@ -109,12 +109,7 @@ class BoostSerializer
         }
         Serialize(msg, dataVec);
     }
-};
 
-template <typename DataType, typename BoostArchiveIn = boost::archive::binary_iarchive>
-class BoostDeserializer
-{
-  public:
     void Deserialize(FairMQMessage& msg, DataType& input)
     {
         std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
@@ -153,7 +148,7 @@ class BoostDeserializer
             }
             if (input->IsEmpty())
             {
-                LOG(debug) << "BoostDeserializer::Deserialize(FairMQMessage& msg, TClonesArray* input): No Output array!";
+                LOG(debug) << "BoostSerializer::Deserialize(FairMQMessage& msg, TClonesArray* input): No Output array!";
             }
         }
     }

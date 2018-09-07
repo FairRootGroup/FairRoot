@@ -51,7 +51,7 @@ class Ex2Processor : public FairMQDevice
             {
                 Ex2Header* header = nullptr;
                 Deserialize<SerializerEx2>(*(partsIn.At(0)), header);
-                Deserialize<RootDeserializer>(*(partsIn.At(1)), fInput);
+                Deserialize<RootSerializer>(*(partsIn.At(1)), fInput);
 
                 receivedMsgs++;
 
