@@ -61,7 +61,7 @@ PROXY1+=" --severity debug"
 PROXY1+=" --in-channel data1"
 PROXY1+=" --out-channel data2"
 PROXY1+=" --mq-config $tut3cfg"
-xterm -geometry 80x23+0+350 -hold -e @CMAKE_BINARY_DIR@/bin/$PROXY1 &
+xterm -geometry 80x23+0+350 -hold -e @FairMQ_BINDIR@/$PROXY1 &
 
 PROCESSOR1="tut3-processor"
 PROCESSOR1+=" --id processor1"
@@ -99,7 +99,7 @@ PROXY2+=" --severity debug"
 PROXY2+=" --in-channel data3"
 PROXY2+=" --out-channel data4"
 PROXY2+=" --mq-config $tut3cfg"
-xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/$PROXY2 &
+xterm -geometry 80x23+1000+0 -hold -e @FairMQ_BINDIR@/$PROXY2 &
 
 FILESINK="tut3-sink"
 FILESINK+=" --id sink1"
