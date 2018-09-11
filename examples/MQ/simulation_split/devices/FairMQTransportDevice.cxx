@@ -6,13 +6,13 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairMQSimDevice.cxx
+ * FairMQTransportDevice.cxx
  *
  * @since 2017.10.24
  * @author R. Karabowicz
  */
 
-#include "FairMQSimDevice.h"
+#include "FairMQTransportDevice.h"
   
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
@@ -25,12 +25,15 @@
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
 
+#include "FairGenericStack.h"
+#include "FairMCApplication.h"
+
 #include "FairEventHeader.h"
 #include "FairModule.h"
-#include "FairPrimaryGenerator.h"
 #include "FairParRootFileIo.h"
 #include "FairParSet.h"
 
+#include "TClonesArray.h"
 #include "TROOT.h"
 #include "TRint.h"
 #include "TVirtualMC.h"
@@ -38,30 +41,48 @@
 #include "TList.h"
 #include "TObjString.h"
 #include "TObjArray.h"
-#include "RootSerializer.h"
+#include "TMessage.h"
 
 using namespace std;
 
-FairMQSimDevice::FairMQSimDevice()
+// special class to expose protected TMessage constructor
+class TransTMessage : public TMessage
+{
+  public:
+  TransTMessage(void* buf, Int_t len)
+    : TMessage(buf, len)
+  {
+    ResetBit(kIsOwner);
+  }
+};
+
+FairMQTransportDevice::FairMQTransportDevice()
   : FairMQRunDevice()
-  , fSimDeviceId(0)
-  , fUpdateChannelName("updateChannel")
+  , fTransportDeviceId(0)
+  , fGeneratorChannelName("simIn")
   , fRunSim(NULL)
   , fNofEvents(1)
   , fTransportName("TGeant3")
   , fMaterialsFile("")
   , fMagneticField(NULL)
   , fDetectorArray(NULL)
-  , fPrimaryGenerator(NULL)
   , fStoreTrajFlag(false)
   , fTaskArray(NULL)
   , fFirstParameter(NULL)
   , fSecondParameter(NULL)
   , fSink(NULL)
+  , fVMC(NULL)
+  , fStack(NULL)
+  , fMCApplication(NULL)
 {
 }
 
-void FairMQSimDevice::InitTask() 
+void FairMQTransportDevice::Init()
+{
+    OnData(fGeneratorChannelName, &FairMQTransportDevice::TransportData);
+}
+
+void FairMQTransportDevice::InitTask() 
 {
   fRunSim = new FairRunSim();
 
@@ -82,7 +103,7 @@ void FairMQSimDevice::InitTask()
   if ( fUserCuts.Length() > 0 )
     fRunSim->SetUserCuts(fUserCuts);
   // ------------------------------------------------------------------------
-  
+
   // -----   Create media   -------------------------------------------------
   fRunSim->SetMaterials(fMaterialsFile.data());
   // ------------------------------------------------------------------------
@@ -118,17 +139,9 @@ void FairMQSimDevice::InitTask()
                   LOG(INFO) << " -> " << repString.data();
                   runId = stoi(repString);
                   repString = repString.substr(repString.find_first_of('_')+1,repString.length());
-                  fSimDeviceId = stoi(repString);
-                  LOG(INFO) << "runId = " << runId << "  ///  fSimDeviceId = " << fSimDeviceId;
+                  fTransportDeviceId = stoi(repString);
+                  LOG(INFO) << "runId = " << runId << "  ///  fTransportDeviceId = " << fTransportDeviceId;
               }
-      }
-  // ------------------------------------------------------------------------
-
-  // ------------------------------------------------------------------------
-  if ( fPrimaryGenerator )
-      {
-          fPrimaryGenerator->SetEventNr(fSimDeviceId*fNofEvents); // run n simulations with same run id - offset the event number
-          fRunSim->SetGenerator(fPrimaryGenerator);
       }
   // ------------------------------------------------------------------------
 
@@ -146,26 +159,34 @@ void FairMQSimDevice::InitTask()
   fRunSim->SetRunId(runId); // run n simulations with same run id - offset the event number
   fRunSim->Init();
   // ------------------------------------------------------------------------
-
+  
+  fVMC           = TVirtualMC::GetMC();
+  fMCApplication = FairMCApplication::Instance();
+  fStack         = fMCApplication->GetStack();
+  fStack->Register();
+  //  fRunSim->Run(0);
 }
 
-void FairMQSimDevice::PreRun()
+void FairMQTransportDevice::PreRun()
 {
 }
 
-bool FairMQSimDevice::ConditionalRun()
+bool FairMQTransportDevice::TransportData(FairMQMessagePtr& mPtr, int /*index*/)
 {
-    if ( fSimDeviceId == 0 )
-        UpdateParameterServer();
-    fRunSim->Run(fNofEvents);
-    return false;
+    auto message = new TransTMessage(mPtr->GetData(), mPtr->GetSize());
+    auto chunk = static_cast<TClonesArray*>(message->ReadObjectAny(message->GetClass()));
+
+    fStack->SetParticleArray(chunk);
+    fVMC->ProcessRun(1);
+
+    return true;
 }
 
-void FairMQSimDevice::UpdateParameterServer()
+void FairMQTransportDevice::UpdateParameterServer()
 {
   FairRuntimeDb* rtdb = fRunSim->GetRuntimeDb();
   
-  printf("FairMQSimDevice::UpdateParameterServer() (%d containers)\n",rtdb->getListOfContainers()->GetEntries());
+  printf("FairMQTransportDevice::UpdateParameterServer() (%d containers)\n",rtdb->getListOfContainers()->GetEntries());
 
   // send the parameters to be saved
   TIter next(rtdb->getListOfContainers());
@@ -174,25 +195,16 @@ void FairMQSimDevice::UpdateParameterServer()
     {
       std::string ridString = std::string("RUNID") + std::to_string(fRunSim->GetRunId()) + std::string("RUNID") + std::string(cont->getDescription());
       cont->setDescription(ridString.data());
-      FairMQRunDevice::SendObject(cont,fUpdateChannelName);
+      SendObject(cont,fUpdateChannelName);
     }
 
-  printf("FairMQSimDevice::UpdateParameterServer() finished\n");
+  printf("FairMQTransportDevice::UpdateParameterServer() finished\n");
 }
 
-void FairMQSimDevice::SendBranches()
-{
-    if ( !CheckCurrentState(RUNNING) )
-    {
-      fRunSim->StopMCRun();
-    }
-    FairMQRunDevice::SendBranches();
-}
-
-void FairMQSimDevice::PostRun()
+void FairMQTransportDevice::PostRun()
 {
 }
 
-FairMQSimDevice::~FairMQSimDevice()
+FairMQTransportDevice::~FairMQTransportDevice()
 {
 }

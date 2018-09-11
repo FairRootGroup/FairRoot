@@ -21,7 +21,7 @@
 #include "FairSink.h"
 
 class FairEventHeader;
-class FairMQSimDevice;
+class FairMQRunDevice;
 
 class FairOnlineSink : public FairSink
 {
@@ -52,10 +52,10 @@ class FairOnlineSink : public FairSink
     virtual void        WriteObject(TObject* /* f */, const char*, Int_t /* option = 0 */) {}
     virtual void        WriteGeometry() {}
 
-    virtual void        SetMQSimDevice(FairMQSimDevice* mrs) { fMQSimDevice = mrs;}
+    virtual void        SetMQRunDevice(FairMQRunDevice* mrs) { fMQRunDevice = mrs;}
 
  private: 
-    FairMQSimDevice* fMQSimDevice;
+    FairMQRunDevice* fMQRunDevice;
     
     FairOnlineSink(const FairOnlineSink&);
     FairOnlineSink& operator=(const FairOnlineSink&);

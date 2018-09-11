@@ -18,7 +18,7 @@
 #include "FairMQMessage.h"
 #include "FairMQProgOptions.h"
 
-#include "FairMQSimDevice.h"
+#include "FairMQRunDevice.h"
 #include "FairRootManager.h"
 
 #include "FairEventHeader.h"
@@ -41,7 +41,7 @@ using namespace std;
 
 FairOnlineSink::FairOnlineSink()
   : FairSink()
-  , fMQSimDevice(NULL)
+  , fMQRunDevice(NULL)
 {
 }
 
@@ -66,8 +66,8 @@ void  FairOnlineSink::Fill()
   /// Fill the Root tree.
   LOG(DEBUG) << "called FairOnlineSink::Fill()!!!!";
   
-  if ( fMQSimDevice )
-      fMQSimDevice->SendBranches();
+  if ( fMQRunDevice )
+      fMQRunDevice->SendBranches();
 }
  
 Bool_t FairOnlineSink::InitSink()
