@@ -41,6 +41,7 @@ devices/PixelFindHitsTask.cxx
 devices/FairMQPixelMerger.cxx
 devices/FairMQPixelFileSink.cxx
 devices/FairMQPixelFileSinkBin.cxx
+devices/FairMQRunDevice.cxx
 devices/FairMQSimDevice.cxx
 FairOnlineSink.cxx
 )
@@ -56,6 +57,7 @@ devices/FairMQPixelTaskProcessor.h
 devices/FairMQPixelTaskProcessor.tpl
 devices/FairMQPixelTaskProcessorBin.h
 devices/FairMQPixelTaskProcessorBin.tpl
+devices/FairMQRunDevice.h
 devices/FairMQSimDevice.h
 FairOnlineSink.h
 )
