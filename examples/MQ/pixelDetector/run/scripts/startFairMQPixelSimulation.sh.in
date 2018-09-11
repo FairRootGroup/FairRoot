@@ -123,9 +123,9 @@ then
     if [ "$FORCEKILL" == "true" ];
     then
         echo "trying to kill..."
-        ps -fea | grep "channel-config" | grep "transport" | grep "control" | grep -v grep | awk '{print $2}' | xargs kill -9
+        ps -fea | grep pixSim | grep -v grep | awk '{print $2}' | xargs kill -9
     else
-        return;
+        exit
     fi
 fi
 
@@ -181,9 +181,6 @@ FILESINK+=" $SEVERITY "
 FILESINK+=" $VERBOSITY "
 FILESINK+=" $COLOR "
 FILESINK+=" --id pixSim-sink1 --channel-config name=data#all#,type=pull,method=bind,rateLogging=1,address=tcp://*:5206"
-FILESINK+=" --class-name FairMCEventHeader --branch-name MCEventHeader."
-FILESINK+=" --class-name TClonesArray(PixelPoint) --branch-name PixelPoint"
-FILESINK+=" --class-name TClonesArray(FairMCTrack) --branch-name MCTrack"
 FILESINK+=" --file-name $OUTPUTFILE $CONTROL"
 
 ########################## run all

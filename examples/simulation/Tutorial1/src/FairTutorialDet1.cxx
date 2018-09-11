@@ -14,6 +14,7 @@
 #include "FairGeoVolume.h"              // for FairGeoVolume
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRun.h"                    // for FairRun
+#include "FairRunSim.h"                 // for FairRunSim
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairStack.h"                  // for FairStack
 #include "FairTutorialDet1Geo.h"        // for FairTutorialDet1Geo

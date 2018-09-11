@@ -49,8 +49,9 @@
 #include <stack>                        // for stack
 #include <utility>                      // for pair
 
+#include "TParticle.h"
+
 class TClonesArray;
-class TParticle;
 class TRefArray;
 
 class FairStack : public FairGenericStack
@@ -201,6 +202,27 @@ class FairStack : public FairGenericStack
     /** Accessors **/
     TParticle* GetParticle(Int_t trackId) const;
     TClonesArray* GetListOfParticles() { return fParticles; }
+
+    void SetParticleArray(TClonesArray* partArray) {
+        for ( Int_t ipart = 0 ; ipart < partArray->GetEntries() ; ipart++ ) {
+            ((TParticle*)(partArray->At(ipart)))->SetUniqueID(fNPrimaries);
+            fStack.push((TParticle*)partArray->At(ipart));
+            AddParticle((TParticle*)partArray->At(ipart));
+            fNParticles++;
+            fNPrimaries++;
+        }
+    }
+
+    void SetParticleArray(TClonesArray* partArray, Int_t partFrom, Int_t partTo) {
+        for ( Int_t ipart = partFrom ; ipart < partTo ; ipart++ ) {
+            ((TParticle*)(partArray->At(ipart)))->SetUniqueID(fNPrimaries);
+            ((TParticle*)(partArray->At(ipart)))->SetStatusCode(fNPrimaries);
+            fStack.push((TParticle*)partArray->At(ipart));
+            AddParticle((TParticle*)partArray->At(ipart));
+            fNParticles++;
+            fNPrimaries++;
+        }
+    }
 
     /** Clone this object (used in MT mode only) */
     virtual FairGenericStack* CloneStack() const { return new FairStack(); }

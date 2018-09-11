@@ -278,7 +278,6 @@ Int_t FairStack::GetCurrentTrackNumber() const
 void FairStack::UpdateTrackIndex(TRefArray* detList)
 {
 
-  LOG(debug) << "Updating track indizes...";
   Int_t nColl = 0;
 
   // First update mother ID in MCTracks

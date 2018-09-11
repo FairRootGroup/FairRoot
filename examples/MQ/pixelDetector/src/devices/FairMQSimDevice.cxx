@@ -42,7 +42,7 @@
 using namespace std;
 
 FairMQSimDevice::FairMQSimDevice()
-  : FairMQDevice()
+  : FairMQRunDevice()
   , fSimDeviceId(0)
   , fUpdateChannelName("updateChannel")
   , fRunSim(NULL)
@@ -173,27 +173,19 @@ void FairMQSimDevice::UpdateParameterServer()
     {
       std::string ridString = std::string("RUNID") + std::to_string(fRunSim->GetRunId()) + std::string("RUNID") + std::string(cont->getDescription());
       cont->setDescription(ridString.data());
-      SendObject(cont,fUpdateChannelName);
+      FairMQRunDevice::SendObject(cont,fUpdateChannelName);
     }
 
   printf("FairMQSimDevice::UpdateParameterServer() finished\n");
 }
 
-void FairMQSimDevice::SendObject(TObject* obj, std::string chan) {
-  FairMQMessagePtr mess(NewMessage());
-  Serialize<RootSerializer>(*mess,obj);
-
-  std::unique_ptr<FairMQMessage> rep(NewMessage());
-  
-  printf ("sending %s",obj->GetName());
-  if (Send(mess, chan) > 0)
+void FairMQSimDevice::SendBranches()
+{
+    if ( !CheckCurrentState(RUNNING) )
     {
-      if (Receive(rep, chan) > 0)
-        {
-          std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
-          LOG(INFO) << " -> " << repString.data();
-        }
+      fRunSim->StopMCRun();
     }
+    FairMQRunDevice::SendBranches();
 }
 
 void FairMQSimDevice::PostRun()
@@ -202,41 +194,4 @@ void FairMQSimDevice::PostRun()
 
 FairMQSimDevice::~FairMQSimDevice()
 {
-}
-
-void  FairMQSimDevice::SendBranches()
-{
-  /// Fill the Root tree.
-  LOG(DEBUG) << "called FairMQSimDevice::SendBranches()!!!!";
-  if ( !CheckCurrentState(RUNNING) )
-    {
-      fRunSim->StopMCRun();
-    }
-
-  TList* branchNameList = FairRootManager::Instance()->GetBranchNameList();
-  TObjString* ObjStr;
-  
-  for (auto& mi : fChannels)
-    {
-      LOG(DEBUG) << "trying channel >" << mi.first.data() << "<";
-
-      FairMQParts parts;
-      
-      for(Int_t t=0; t<branchNameList->GetEntries(); t++) 
-        {
-          ObjStr= static_cast<TObjString*>(branchNameList->TList::At(t));
-          LOG(DEBUG) << "              branch >" << ObjStr->GetString().Data() << "<";
-          std::string modifiedBranchName = std::string("#") + ObjStr->GetString().Data() + "#";
-          if ( mi.first.find(modifiedBranchName) != std::string::npos || mi.first.find("#all#") != std::string::npos ) 
-            {
-              TObject* object   = (FairRootManager::Instance()->GetObject(ObjStr->GetString()))->Clone();
-              FairMQMessagePtr mess(NewMessage());
-              Serialize<RootSerializer>(*mess,object);
-              parts.AddPart(std::move(mess));
-              LOG(DEBUG) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data() << "<";
-            }
-        }
-      if ( parts.Size() > 0 )
-        Send(parts,mi.first.data());
-    }
 }

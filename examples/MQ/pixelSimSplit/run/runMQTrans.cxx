@@ -1,12 +1,10 @@
 #include "runFairMQDevice.h"
 
 // MQRunSim
-#include "FairMQSimDevice.h"
+#include "FairMQTransportDevice.h"
 #include "FairRuntimeDb.h"
 #include "FairModule.h"
 #include "FairCave.h"
-#include "FairPrimaryGenerator.h"
-#include "FairBoxGenerator.h"
 #include "FairParRootFileIo.h"
 #include "FairParAsciiFileIo.h"
 
@@ -30,11 +28,12 @@ void addCustomOptions(bpo::options_description& options)
     options.add_options()
         ("random-seed",          bpo::value<int64_t>    ()->default_value(0)              , "Random seed number")
         ("transport-name",       bpo::value<std::string>()->default_value("TGeant3")      , "Transport name")
-        ("nof-events",           bpo::value<int64_t>    ()->required()                    , "Number of events to simulate")
         ("fairroot-config-dir",  bpo::value<std::string>()->default_value("")             , "FairRoot config dir")
         ("param-channel-name",   bpo::value<std::string>()->default_value("updateChannel"), "Parameter update channel name")
+        ("running-mode",         bpo::value<std::string>()->default_value("pp")           , "pp to pull, rr to request")
+        ("detector-library",     bpo::value<std::vector<std::string>>()                   , "detector library")
         ("run-digi-tasks",       bpo::value<bool>       ()->default_value(false)          , "Run digi tasks")
-    ;
+        ;
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& config)
@@ -52,7 +51,14 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
         tut_configdir = dir + "/common/gconfig";
     gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
-    FairMQSimDevice* run = new FairMQSimDevice();
+    FairMQTransportDevice* run = new FairMQTransportDevice();
+    run->RunInPullMode(true);
+    if ( config.GetValue<std::string> ("running-mode") == "rr" ) {
+        LOG(INFO) << "Going to request data.";
+        run->RunInPullMode(false);
+    }
+    else
+        LOG(INFO) << "Going to pull data.";
 
     //  TString outputfilename = Form("outputfile_%d.root",(int)(getpid()));
     //  FairRootFileSink* sink = new FairRootFileSink(outputfilename);
@@ -62,7 +68,6 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 
     run->SetParamUpdateChannelName(config.GetValue<std::string>("param-channel-name"));
 
-    run->SetNofEvents       (config.GetValue<int64_t>    ("nof-events"));
     run->SetTransportName   (config.GetValue<std::string>("transport-name"));
     run->SetMaterials       ("media.geo");
 
@@ -70,22 +75,10 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     FairModule* cave= new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
     detArray->Add(cave);
-    Pixel*  det = new Pixel("PixelDetector", kTRUE);
-    det->SetGeometryFileName("pixel.geo");
-    detArray->Add(det);
+    // Pixel*  det = new Pixel("PixelDetector", kTRUE);
+    // det->SetGeometryFileName("pixel.geo");
+    // detArray->Add(det);
     run->SetDetectorArray   (detArray);
-
-    TString partName[] = {"pions","eplus","proton"};
-    Int_t   partPdgC[] = {    211,     11,    2212};
-    Int_t chosenPart  = 0;
-
-    FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-    FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 100);
-    boxGen->SetPRange(1,2);
-    boxGen->SetThetaRange(0,180);
-    boxGen->SetPhiRange(0,360);
-    primGen->AddGenerator(boxGen);
-    run->SetGenerator       (primGen);
 
     run->SetStoreTraj       (false);
 

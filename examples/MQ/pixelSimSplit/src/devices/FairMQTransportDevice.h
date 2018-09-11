@@ -1,27 +1,27 @@
 /********************************************************************************
  *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
 /**
- * FairMQSimDevice.h
+ * FairMQTransportDevice.h
  *
  * @since 2018-02-01
  * @author R. Karabowicz
  */
 
-#ifndef FAIRMQSIMDEVICE_H_
-#define FAIRMQSIMDEVICE_H_
+#ifndef FAIRMQTRANSPORTDEVICE_H_
+#define FAIRMQTRANSPORTDEVICE_H_
 
 #include <string>
 #include "TString.h"
 
 #include "FairMQRunDevice.h"
 
-class FairEventHeader;
+class FairMCSplitEventHeader;
 class FairRunSim;
 class FairField;
 class FairParIo;
@@ -29,14 +29,15 @@ class FairPrimaryGenerator;
 class TObject;
 class TObjArray;
 class FairSink;
+class FairMCApplication;
+class FairGenericStack;
+class TVirtualMC;
 
-class FairMQSimDevice : public FairMQRunDevice
+class FairMQTransportDevice : public FairMQRunDevice
 {
  public:
-    FairMQSimDevice();
-    virtual ~FairMQSimDevice();
-
-    virtual void SetParamUpdateChannelName(TString tString) { fUpdateChannelName = tString; }
+    FairMQTransportDevice();
+    virtual ~FairMQTransportDevice();
 
     // ------ FairRunSim setters ------
     void SetNofEvents       (int64_t nofev)                 { fNofEvents = nofev;};
@@ -44,7 +45,6 @@ class FairMQSimDevice : public FairMQRunDevice
     void SetMaterials       (std::string str)               { fMaterialsFile = str;};
     void SetMagneticField   (FairField* field)              { fMagneticField = field;};
     void SetDetectorArray   (TObjArray* array)              { fDetectorArray = array;};
-    void SetGenerator       (FairPrimaryGenerator* primGen) { fPrimaryGenerator = primGen;};
     void SetStoreTraj       (bool flag=true)                { fStoreTrajFlag = flag;};
     void SetTaskArray       (TObjArray* array)              { fTaskArray = array;};
     void SetFirstParameter  (FairParIo* par)                { fFirstParameter  = par;};
@@ -54,26 +54,38 @@ class FairMQSimDevice : public FairMQRunDevice
     void SetSink            (FairSink* sink)                { fSink = sink;}
     // ------ ---------- -------- ------
 
-    virtual void SendBranches();
+    void SetParamUpdateChannelName(TString tString) { fUpdateChannelName = tString; }
+
+    void RunInPullMode(bool tb=true) { fRunConditional = !tb; };
+    void RunInReqMode (bool tb=true) { fRunConditional = tb; };
 
  protected:
+    bool TransportData(FairMQParts&, int);
+    //  bool TransportData(FairMQMessagePtr&, int);
+    virtual void Init();
     virtual void InitTask();
     virtual void PreRun();
     virtual void PostRun();
     virtual bool ConditionalRun();
 
  private:
-    UInt_t fSimDeviceId;
+    UInt_t fRunId;
+    UInt_t fTransportDeviceId;
+    std::string fGeneratorChannelName;
     std::string fUpdateChannelName;
 
-    FairRunSim*     fRunSim;
+    bool                  fRunConditional; // if true run ConditionalRun, if false run TransportData
+
+    TVirtualMC*           fVMC;
+    FairGenericStack*     fStack;
+    FairMCApplication*    fMCApplication;
+    FairRunSim*           fRunSim;
     // ------ FairRunSim settings ------
     int64_t               fNofEvents;
     std::string           fTransportName;
     std::string           fMaterialsFile;
     FairField*            fMagneticField;
     TObjArray*            fDetectorArray;
-    FairPrimaryGenerator* fPrimaryGenerator;
     bool                  fStoreTrajFlag;
     TObjArray*            fTaskArray;
     FairParIo*            fFirstParameter;    // first (prefered) input for parameters
@@ -83,10 +95,12 @@ class FairMQSimDevice : public FairMQRunDevice
     FairSink*             fSink;
     // ------ ---------- -------- ------
 
+    FairMCSplitEventHeader* fMCSplitEventHeader;
+    
     void UpdateParameterServer();
 
-    FairMQSimDevice(const FairMQSimDevice&);
-    FairMQSimDevice& operator=(const FairMQSimDevice&);
+    FairMQTransportDevice(const FairMQTransportDevice&);
+    FairMQTransportDevice& operator=(const FairMQTransportDevice&);
 };
 
-#endif /* FAIRMQSIMDEVICE_H_ */
+#endif /* FAIRMQTRANSPORTDEVICE_H_ */

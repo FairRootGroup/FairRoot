@@ -76,8 +76,6 @@ if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     
     # output file for sink
     OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.hits.root"
-    OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
-    OUTPUTBRANCH="--branch-name PixelHits"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFindTracks" ] ; then
     # input file and branch for the sampler device 
     FAIRTASKNAME+=" --keep-data PixelHits"
@@ -86,8 +84,6 @@ elif [ "$FAIRTASKNAME" == "--task-name PixelFindTracks" ] ; then
     
     # output file for sink
     OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
-    OUTPUTCLASS="--class-name TClonesArray(PixelHit) --class-name TClonesArray(PixelTrack)"
-    OUTPUTBRANCH="--branch-name PixelHits --branch-name PixelTracks"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFitTracks" ] ; then
     # input file and branch for the sampler device
     INPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
@@ -95,8 +91,6 @@ elif [ "$FAIRTASKNAME" == "--task-name PixelFitTracks" ] ; then
     
     # output file for sink
     OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.fitTracks.root"
-    OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
-    OUTPUTBRANCH="--branch-name PixelFitTracks"
 else
     echo "TASK $FAIRTASKNAME UNKNOWN!!!"
     exit
@@ -145,7 +139,7 @@ FILESINK+=" --id pixDet-sink1 --channel-config name=data-in,type=pull,method=bin
 if [ "$COMMAND" == "static" ]; then
     FILESINK+=" --ack-channel ack --channel-config name=ack,type=push,method=connect,rateLogging=0,address=tcp://localhost:5108"
 fi
-FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH $CONTROL"
+FILESINK+=" --file-name $OUTPUTFILE $CONTROL"
 
 ########################## run all
 if [ "$COMMAND" == "print" ]; then

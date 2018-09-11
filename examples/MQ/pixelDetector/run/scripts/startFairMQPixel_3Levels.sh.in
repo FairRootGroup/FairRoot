@@ -40,8 +40,6 @@ INPUTBRANCH="PixelDigis"
 
 # output file for sink
 OUTPUTFILE="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.3Levels.fitTracks.root"
-OUTPUTCLASS="--class-name TClonesArray(PixelTrack)"
-OUTPUTBRANCH="--branch-name PixelFitTracks"
 ###########################
 
 
@@ -109,7 +107,7 @@ xterm -geometry 80x22+1000+700 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR3_2 &
 ########################## start FILESINK
 FILESINK="pixel-sink $TRANSPORT"
 FILESINK+=" --id sink1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5330"
-FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH"
+FILESINK+=" --file-name $OUTPUTFILE"
 xterm +aw -geometry 80x22+0+700 -hold -e @PIXEL_BIN_LOCATION@/$FILESINK &
 
 

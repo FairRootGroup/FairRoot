@@ -93,7 +93,6 @@ bool FairMQPixelSampler::ConditionalRun()
 
   if ( readEventReturn != 0 ) return false;
   
-  TMessage* message[1000];
   FairMQParts parts;
   
   for ( int iobj = 0 ; iobj < fNObjects ; iobj++ ) {

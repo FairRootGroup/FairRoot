@@ -20,6 +20,7 @@
 #include "FairGeoVolume.h"              // for FairGeoVolume
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRun.h"                    // for FairRun
+#include "FairRunSim.h"                 // for FairRunSim
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairStack.h"                  // for FairStack
 #include "FairVolume.h"                 // for FairVolume
@@ -227,6 +228,19 @@ PixelPoint* Pixel::AddHit(Int_t trackID, Int_t detID,
   Int_t size = clref.GetEntriesFast();
   return new(clref[size]) PixelPoint(trackID, detID, pos, mom,
          time, length, eLoss);
+}
+
+extern "C" void ExternCreateDetector() {
+    using std::cout;
+    using std::endl;
+
+    cout << "-- ExternCreateDetector() START --" << endl;
+    FairRunSim* run = FairRunSim::Instance();
+
+    Pixel*  det = new Pixel("PixelDetector", kTRUE);
+    det->SetGeometryFileName("pixel.geo");
+    run->AddModule(det);
+    cout << "-- ExternCreateDetector(" << det->GetName() << ") DONE --" << endl;
 }
 
 ClassImp(Pixel)
