@@ -8,7 +8,7 @@ FairRoot  is distributed under the terms of the GNU Lesser General Public Licenc
 ## Release information
 Please see : https://github.com/FairRootGroup/FairRoot/releases
 
-##Getting started
+## Getting started
 Please see : http://fairroot.gsi.de/getting_started  for  details.
 
 
@@ -83,7 +83,7 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
 
 3. Install the template:
 
-   you need to copy the  [project template] (https://github.com/FairRootGroup/FairRoot/tree/dev/templates/project_template) to you own directory  
+   you need to copy the  [project template](https://github.com/FairRootGroup/FairRoot/tree/dev/templates/project_template) to you own directory  
 
     ```bash
     # Set the shell variable FAIRROOTPATH to the FairRoot installation directory
@@ -164,7 +164,7 @@ also in AlFa_DIR
 - requires new versions of VMC packages built with CMake
 and installed either in AlFa_DIR or available on path
 
- ```bash
+```bash
   cmake \
   -DCMAKE_INSTALL_PREFIX="Installation_directory_for_fairroot" \
   -DFAIRROOT_MODULAR_BUILD=ON \
