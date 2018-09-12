@@ -19,7 +19,7 @@
 
 #include "TClonesArray.h"
 #include "TList.h"
-#include "TMessage.h"
+#include "RootSerializer.h"
 
 #include "PixelPayload.h"
 #include "PixelDigi.h"

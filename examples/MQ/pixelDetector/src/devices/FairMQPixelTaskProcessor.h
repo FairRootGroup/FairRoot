@@ -21,7 +21,7 @@
 
 #include "TClonesArray.h"
 #include "TList.h"
-#include "TMessage.h"
+#include "RootSerializer.h"
 
 template<typename T>
 class FairMQPixelTaskProcessor : public FairMQDevice

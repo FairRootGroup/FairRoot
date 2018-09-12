@@ -14,7 +14,7 @@
 
 #include "FairMQPixelSampler.h"
 
-#include "TMessage.h"
+#include "RootSerializer.h"
 #include "TClonesArray.h"
 
 #include "FairMQLogger.h"
@@ -77,12 +77,6 @@ void FairMQPixelSampler::InitTask()
   LOG(info) << "Input source has " << fMaxIndex << " events.";
 }
 
-// helper function to clean up the object holding the data after it is transported.
-void free_tmessage2(void* /*data*/, void *hint)
-{
-    delete (TMessage*)hint;
-}
-
 void FairMQPixelSampler::PreRun()
 {
   if (fAckChannelName != "") {
@@ -104,9 +98,9 @@ bool FairMQPixelSampler::ConditionalRun()
   FairMQParts parts;
   
   for ( int iobj = 0 ; iobj < fNObjects ; iobj++ ) {
-    message[iobj] = new TMessage(kMESS_OBJECT);
-    message[iobj]->WriteObject(fInputObjects[iobj]);
-    parts.AddPart(NewMessage(message[iobj]->Buffer(), message[iobj]->BufferSize(), free_tmessage2, message[iobj]));
+    FairMQMessagePtr mess(NewMessage());
+    Serialize<RootSerializer>(*mess,fInputObjects[iobj]);
+    parts.AddPart(std::move(mess));
   }
   
   Send(parts, fOutputChannelName);

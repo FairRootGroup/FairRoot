@@ -6,17 +6,6 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-// special class to expose protected TMessage constructor
-class PixAltTMessage2 : public TMessage
-{
-  public:
-  PixAltTMessage2(void* buf, Int_t len)
-    : TMessage(buf, len)
-  {
-    ResetBit(kIsOwner);
-  }
-};
-
 template <typename T>
 FairMQPixAltTaskProcessorBin<T>::FairMQPixAltTaskProcessorBin()
   : FairMQDevice()
@@ -170,10 +159,10 @@ FairParGenericSet* FairMQPixAltTaskProcessorBin<T>::UpdateParameter(FairParGener
     {
       if (Receive(rep,fParamChannelName) > 0)
 	{
-	  PixAltTMessage2 tm(rep->GetData(), rep->GetSize());
-	  thisPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());
-	  LOG(warn) << "Received parameter"<< paramName <<" from the server (" << thisPar << ")";
-	  return thisPar;
+            thisPar = nullptr;
+            Deserialize<RootSerializer>(*rep,thisPar);
+            LOG(info) << "Received parameter"<< paramName <<" from the server (" << thisPar << ")";
+            return thisPar;
 	}
     } 
   return NULL;

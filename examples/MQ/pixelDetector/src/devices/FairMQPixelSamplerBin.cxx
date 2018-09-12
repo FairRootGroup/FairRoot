@@ -17,7 +17,6 @@
 #include <options/FairMQProgOptions.h>
 
 #include "FairMQMessage.h"
-#include "TMessage.h"
 
 #include "TClonesArray.h"
 
