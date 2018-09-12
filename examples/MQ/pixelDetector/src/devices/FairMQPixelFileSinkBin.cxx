@@ -19,24 +19,12 @@
 #include "FairMQLogger.h"
 #include <options/FairMQProgOptions.h>
 
-#include "TMessage.h"
 #include "TVector3.h"
 
 #include "PixelPayload.h"
 #include "PixelHit.h"
 
 using namespace std;
-
-// special class to expose protected TMessage constructor
-class PixelTMessage : public TMessage
-{
-  public:
-  PixelTMessage(void* buf, Int_t len)
-    : TMessage(buf, len)
-  {
-    ResetBit(kIsOwner);
-  }
-};
 
 FairMQPixelFileSinkBin::FairMQPixelFileSinkBin()
   : FairMQDevice()

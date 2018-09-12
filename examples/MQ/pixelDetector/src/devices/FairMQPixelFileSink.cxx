@@ -15,7 +15,7 @@
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
 
-#include "TMessage.h"
+#include "RootSerializer.h"
 
 #include "FairMCEventHeader.h"
 #include "FairMQPixelFileSink.h"
@@ -23,17 +23,6 @@
 #include <options/FairMQProgOptions.h>
 
 using namespace std;
-
-// special class to expose protected TMessage constructor
-class PixelTMessage : public TMessage
-{
-  public:
-  PixelTMessage(void* buf, Int_t len)
-    : TMessage(buf, len)
-  {
-    ResetBit(kIsOwner);
-  }
-};
 
 FairMQPixelFileSink::FairMQPixelFileSink()
   : FairMQDevice()
@@ -130,8 +119,9 @@ bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
   std::vector<TObject*> tempObjects;
   for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
     {
-      PixelTMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
-      tempObjects.push_back((TObject*)tm.ReadObject(tm.GetClass()));
+      TObject* obj = nullptr;
+      Deserialize<RootSerializer>(*parts.At(ipart),obj);
+      tempObjects.push_back(obj);
       for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
         {
           if ( strcmp(tempObjects.back()->GetName(),fBranchNames[ibr].data()) == 0 )

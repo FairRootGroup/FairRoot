@@ -38,20 +38,9 @@
 #include "TList.h"
 #include "TObjString.h"
 #include "TObjArray.h"
-#include "TMessage.h"
+#include "RootSerializer.h"
 
 using namespace std;
-
-// special class to expose protected TMessage constructor
-class SimMQTMessage : public TMessage
-{
-  public:
-  SimMQTMessage(void* buf, Int_t len)
-    : TMessage(buf, len)
-  {
-    ResetBit(kIsOwner);
-  }
-};
 
 FairMQSimDevice::FairMQSimDevice()
   : FairMQDevice()
@@ -192,13 +181,9 @@ void FairMQSimDevice::UpdateParameterServer()
 }
 
 void FairMQSimDevice::SendObject(TObject* obj, std::string chan) {
-  TMessage* tmsg = new TMessage(kMESS_OBJECT);
-  tmsg->WriteObject(obj);
+  FairMQMessagePtr mess(NewMessage());
+  Serialize<RootSerializer>(*mess,obj);
 
-  FairMQMessagePtr mess(NewMessage(tmsg->Buffer(),
-                                   tmsg->BufferSize(),
-                                   [](void* /*data*/, void* object){ delete static_cast<TMessage*>(object); },
-                                   tmsg));
   std::unique_ptr<FairMQMessage> rep(NewMessage());
   
   printf ("sending %s",obj->GetName());
@@ -246,12 +231,9 @@ void  FairMQSimDevice::SendBranches()
           if ( mi.first.find(modifiedBranchName) != std::string::npos || mi.first.find("#all#") != std::string::npos ) 
             {
               TObject* object   = (FairRootManager::Instance()->GetObject(ObjStr->GetString()))->Clone();
-              TMessage* message = new TMessage(kMESS_OBJECT);
-              message->WriteObject(object);
-              parts.AddPart(NewMessage(message->Buffer(),
-                                       message->BufferSize(),                        
-                                       [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-                                       message));
+              FairMQMessagePtr mess(NewMessage());
+              Serialize<RootSerializer>(*mess,object);
+              parts.AddPart(std::move(mess));
               LOG(DEBUG) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data() << "<";
             }
         }

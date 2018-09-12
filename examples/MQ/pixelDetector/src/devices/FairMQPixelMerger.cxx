@@ -18,20 +18,9 @@
 #include "FairMQPixelMerger.h"
 #include "FairMQLogger.h"
 
-#include "TMessage.h"
+#include "RootSerializer.h"
 
 using namespace std;
-
-// special class to expose protected TMessage constructor
-class PixelTMessage : public TMessage
-{
-  public:
-  PixelTMessage(void* buf, Int_t len)
-    : TMessage(buf, len)
-  {
-    ResetBit(kIsOwner);
-  }
-};
 
 FairMQPixelMerger::FairMQPixelMerger()
   : FairMQDevice()
@@ -68,8 +57,8 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
   // LOG(debug) << "******************************************************************************************************";
   for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
   {
-    PixelTMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
-    tempObject = (TObject*)tm.ReadObject(tm.GetClass());
+    tempObject = nullptr;
+    Deserialize<RootSerializer>(*parts.At(ipart),tempObject);
     if ( strcmp(tempObject->GetName(),"EventHeader.") == 0 )
     {
       fEventHeader = (PixelEventHeader*)tempObject;
@@ -154,23 +143,16 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
         fObjectMap.erase(fRet.first,fRet.second);
       }
 
-      TMessage* messageFEH;
-      TMessage* messageTCA[10];
+      FairMQMessagePtr messageTCA[10];
       FairMQParts partsOut;
 
-      messageFEH = new TMessage(kMESS_OBJECT);
-      messageFEH->WriteObject(fEventHeader);
-      partsOut.AddPart(NewMessage(messageFEH->Buffer(),
-                       messageFEH->BufferSize(), 
-                       [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-                       messageFEH));
+      FairMQMessagePtr messFEH(NewMessage());
+      Serialize<RootSerializer>(*messFEH,fEventHeader);
+      partsOut.AddPart(std::move(messFEH));
       for ( int iarray = 0 ; iarray < nofArrays ; iarray++ ) {
-        messageTCA[iarray] = new TMessage(kMESS_OBJECT);
-        messageTCA[iarray]->WriteObject(tempArrays[iarray]);
-        partsOut.AddPart(NewMessage(messageTCA[iarray]->Buffer(), 
-                         messageTCA[iarray]->BufferSize(), 
-                         [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-                         messageTCA[iarray]));
+        messageTCA[iarray] = NewMessage();
+        Serialize<RootSerializer>(*messageTCA[iarray],tempArrays[iarray]);
+        partsOut.AddPart(std::move(messageTCA[iarray]));
       }
       Send(partsOut, fOutputChannelName);
       fNofSentMessages++;

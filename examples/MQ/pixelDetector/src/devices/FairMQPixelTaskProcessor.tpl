@@ -6,17 +6,6 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-// special class to expose protected TMessage constructor
-class PixelTMessage2 : public TMessage
-{
-  public:
-    PixelTMessage2(void* buf, Int_t len)
-        : TMessage(buf, len)
-    {
-        ResetBit(kIsOwner);
-    }
-};
-
 template <typename T>
 FairMQPixelTaskProcessor<T>::FairMQPixelTaskProcessor()
     : fInputChannelName("data-in")
@@ -84,8 +73,9 @@ bool FairMQPixelTaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
     std::vector<TObject*> tempObjects;
     for (int ipart = 0; ipart < parts.Size(); ipart++)
     {
-        PixelTMessage2 tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
-        tempObjects.push_back((TObject*)tm.ReadObject(tm.GetClass()));
+        TObject* obj = nullptr;
+        Deserialize<RootSerializer>(*parts.At(ipart),obj);
+        tempObjects.push_back(obj);
         // LOG(trace) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
         if (strcmp(tempObjects.back()->GetName(),"EventHeader.") == 0)
         {
@@ -131,35 +121,23 @@ bool FairMQPixelTaskProcessor<T>::ProcessData(FairMQParts& parts, int /*index*/)
         if (objectToKeep) fOutput->Add(objectToKeep);
     }
 
-    TMessage* messageFEH;
-    TMessage* messageTCA[10];
     FairMQParts partsOut;
 
     if ( fEventHeader ) {
-         messageFEH = new TMessage(kMESS_OBJECT);
-         messageFEH->WriteObject(fEventHeader);
-         partsOut.AddPart(NewMessage(messageFEH->Buffer(),
-		                     messageFEH->BufferSize(),
-                                     [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-                                     messageFEH));
+        FairMQMessagePtr mess(NewMessage());
+        Serialize<RootSerializer>(*mess,fEventHeader);
+        partsOut.AddPart(std::move(mess));
     }
     else if ( fMCEventHeader ) {
-         messageFEH = new TMessage(kMESS_OBJECT);
-         messageFEH->WriteObject(fMCEventHeader);
-         partsOut.AddPart(NewMessage(messageFEH->Buffer(),
-		                     messageFEH->BufferSize(),
-                                     [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-                                     messageFEH));
+        FairMQMessagePtr mess(NewMessage());
+        Serialize<RootSerializer>(*mess,fMCEventHeader);
+        partsOut.AddPart(std::move(mess));
     }
 
-    for (int iobj = 0; iobj < fOutput->GetEntries(); iobj++)
-    {
-        messageTCA[iobj] = new TMessage(kMESS_OBJECT);
-        messageTCA[iobj]->WriteObject(fOutput->At(iobj));
-        partsOut.AddPart(NewMessage(messageTCA[iobj]->Buffer(),
-                                    messageTCA[iobj]->BufferSize(),
-                                    [](void* /*data*/, void* hint) { delete (TMessage*)hint;},
-                                    messageTCA[iobj]));
+    for (int iobj = 0; iobj < fOutput->GetEntries(); iobj++) {
+        FairMQMessagePtr mess(NewMessage());
+        Serialize<RootSerializer>(*mess,fOutput->At(iobj));
+        partsOut.AddPart(std::move(mess));
     }
 
     Send(partsOut, fOutputChannelName);
@@ -214,8 +192,8 @@ FairParGenericSet* FairMQPixelTaskProcessor<T>::UpdateParameter(FairParGenericSe
     {
         if (Receive(rep, fParamChannelName) > 0)
         {
-            PixelTMessage2 tm(rep->GetData(), rep->GetSize());
-            thisPar = (FairParGenericSet*)tm.ReadObject(tm.GetClass());
+            thisPar = nullptr;
+            Deserialize<RootSerializer>(*rep,thisPar);
             LOG(info) << "Received parameter"<< paramName <<" from the server (" << thisPar << ")";
             return thisPar;
         }
