@@ -7,3 +7,4 @@
  ################################################################################
 Add_Subdirectory(devices)
 Add_Subdirectory(run)
+Add_Subdirectory(scripts)

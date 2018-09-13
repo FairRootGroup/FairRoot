@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
@@ -56,6 +56,9 @@ class FairMQTransportDevice : public FairMQRunDevice
 
     void SetParamUpdateChannelName(TString tString) { fUpdateChannelName = tString; }
 
+    void RunInPullMode(bool tb=true) { fRunConditional = !tb; };
+    void RunInReqMode (bool tb=true) { fRunConditional = tb; };
+
  protected:
     //    bool TransportData(FairMQParts&, int);
     bool TransportData(FairMQMessagePtr&, int);
@@ -63,11 +66,14 @@ class FairMQTransportDevice : public FairMQRunDevice
     virtual void InitTask();
     virtual void PreRun();
     virtual void PostRun();
+    virtual bool ConditionalRun();
 
  private:
     UInt_t fTransportDeviceId;
     std::string fGeneratorChannelName;
     std::string fUpdateChannelName;
+
+    bool                  fRunConditional; // if true run ConditionalRun, if false run TransportData
 
     TVirtualMC*           fVMC;
     FairGenericStack*     fStack;

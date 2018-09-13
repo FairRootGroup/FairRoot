@@ -30,6 +30,7 @@
 #include "FairParSet.h"
 #include "FairStack.h"
 
+#include "RootSerializer.h"
 
 #include "TROOT.h"
 #include "TRint.h"
@@ -38,24 +39,13 @@
 #include "TList.h"
 #include "TObjString.h"
 #include "TObjArray.h"
-#include "TMessage.h"
 
 using namespace std;
 
-// special class to expose protected TMessage constructor
-class SimMQTMessage : public TMessage
-{
-  public:
-  SimMQTMessage(void* buf, Int_t len)
-    : TMessage(buf, len)
-  {
-    ResetBit(kIsOwner);
-  }
-};
-
 FairMQPrimaryGeneratorDevice::FairMQPrimaryGeneratorDevice()
   : FairMQDevice()
-  , fGeneratorChannelName("simout")
+  , fRunConditional(true)
+  , fGeneratorChannelName("primariesChannel")
   , fEventCounter(0)
   , fNofEvents(10)
   , fPrimaryGenerator(NULL)
@@ -70,6 +60,9 @@ void FairMQPrimaryGeneratorDevice::InitTask()
     fMCEventHeader = new FairMCEventHeader();
     fPrimaryGenerator->SetEvent(fMCEventHeader);
     fPrimaryGenerator->Init();
+
+    if ( !fRunConditional )
+        OnData(fGeneratorChannelName, &FairMQPrimaryGeneratorDevice::Reply);
 }
 
 void FairMQPrimaryGeneratorDevice::PreRun()
@@ -78,20 +71,24 @@ void FairMQPrimaryGeneratorDevice::PreRun()
 
 bool FairMQPrimaryGeneratorDevice::ConditionalRun()
 {
+    if ( !fRunConditional ) return false;
+    return GenerateAndSendData();
+}
+
+bool FairMQPrimaryGeneratorDevice::Reply(FairMQMessagePtr& mPtr, int /*index*/)
+{
+    return GenerateAndSendData();
+}
+
+bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
     fStack->Reset();
     fPrimaryGenerator->GenerateEvent(fStack);
-    
+
     TClonesArray* prims = fStack->GetListOfParticles();
 
-    TMessage* tmsg = new TMessage(kMESS_OBJECT);
-    tmsg->WriteObject(prims);
+    FairMQMessagePtr mess(NewMessage());
+    Serialize<RootSerializer>(*mess,prims);
 
-    FairMQMessagePtr mess(NewMessage(tmsg->Buffer(),
-                                     tmsg->BufferSize(),
-                                     [](void* /*data*/, void* object){ delete static_cast<TMessage*>(object); },
-                                     tmsg));
-    std::unique_ptr<FairMQMessage> rep(NewMessage());
-    
     if (Send(mess, fGeneratorChannelName) > 0)
         {
         }
@@ -105,7 +102,6 @@ bool FairMQPrimaryGeneratorDevice::ConditionalRun()
 
     return true;
 }
-
 
 void FairMQPrimaryGeneratorDevice::PostRun()
 {

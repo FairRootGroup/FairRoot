@@ -58,8 +58,8 @@ List(LENGTH Exe_Names _length)
 Math(EXPR _length ${_length}-1)
 
 
-set(BIN_DESTINATION share/fairbase/examples/MQ/simulation-split/bin)
-set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/simulation-split")
+set(BIN_DESTINATION share/fairbase/examples/MQ/simulation_split/bin)
+set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/simulation_split")
 
 ForEach(_file RANGE 0 ${_length})
     List(GET Exe_Names ${_file} _name)

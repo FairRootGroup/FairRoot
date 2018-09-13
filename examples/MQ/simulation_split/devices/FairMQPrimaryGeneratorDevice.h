@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
@@ -42,7 +42,11 @@ class FairMQPrimaryGeneratorDevice : public FairMQDevice
     void SetNofEvents       (int64_t nofev)                 { fNofEvents = nofev;};
     void SetGenerator       (FairPrimaryGenerator* primGen) { fPrimaryGenerator = primGen;};
 
+    void RunInPushMode(bool tb=true) { fRunConditional = tb; };
+    void RunInRepMode (bool tb=true) { fRunConditional = !tb; };
+
  protected:
+    bool Reply(FairMQMessagePtr&, int);
     virtual void InitTask();
     virtual void PreRun();
     virtual void PostRun();
@@ -51,12 +55,15 @@ class FairMQPrimaryGeneratorDevice : public FairMQDevice
  private:
     std::string fGeneratorChannelName;
 
+    bool                     fRunConditional; // if true run ConditionalRun, if false run Reply
+
     FairPrimaryGenerator*    fPrimaryGenerator;
     FairMCEventHeader*       fMCEventHeader;
     FairStack*               fStack;
     int64_t                  fNofEvents;
     int64_t                  fEventCounter;
-    
+
+    bool GenerateAndSendData();
     void SendObject(TObject* obj, std::string chan);
 
     FairMQPrimaryGeneratorDevice(const FairMQPrimaryGeneratorDevice&);
