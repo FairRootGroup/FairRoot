@@ -418,11 +418,13 @@ void FairMCApplication::InitMC(const char*, const char*)
  
   if (fMC==0) {
      LOG(fatal)<< "No MC engine defined";
+     return;
   }
   
   fStack = dynamic_cast<FairGenericStack*>(fMC->GetStack()) ;
   if(fStack==NULL) { 
-    LOG(fatal) << "No Stack defined."; 
+    LOG(fatal) << "No Stack defined.";
+    return;
   }
   fMC->SetMagField(fxField);
 
@@ -947,6 +949,7 @@ void FairMCApplication::ConstructGeometry()
 // - fSenVolumes: list of sensitive volumes
   if (!gGeoManager) {
     LOG(fatal) << "gGeoManager not initialized at FairMCApplication::ConstructGeometry\n";
+    return;
   }
 
   fModIter->Reset();

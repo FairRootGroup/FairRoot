@@ -44,6 +44,7 @@ FairTask::FairTask(const char* name, Int_t iVerbose)
     fVerbose(iVerbose),
     fInputPersistance(-1),
     fLogger(FairLogger::GetLogger()),
+    fStreamProcessing(kFALSE),
     fOutputPersistance()
 {
 
