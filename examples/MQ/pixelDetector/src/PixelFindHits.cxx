@@ -161,10 +161,16 @@ void PixelFindHits::SetParContainers() {
   
   // Get run and runtime database
   FairRun* run = FairRun::Instance();
-  if ( ! run ) LOG(fatal) << "No analysis run";
+  if ( ! run ) {
+      LOG(fatal) << "No analysis run";
+      return;
+  }
 
   FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) LOG(fatal) << "No runtime database";
+  if ( ! db ) {
+      LOG(fatal) << "No runtime database";
+      return;
+  }
 
   // Get GEM digitisation parameter container
   fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
