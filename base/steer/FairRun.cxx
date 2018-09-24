@@ -165,6 +165,9 @@ void FairRun::SetOutputFile(const char* fname)
 void FairRun::SetOutputFile(TFile* f)
 {
   LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
+  if ( !f ) {
+      return;
+  }
   fSink = new FairRootFileSink(f);
   if (fRootManager) fRootManager->SetSink(fSink);
   if (f) fUserOutputFileName = f->GetName();
