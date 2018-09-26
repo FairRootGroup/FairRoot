@@ -1,0 +1,31 @@
+#!/bin/bash
+
+DEVICE="ex-histo-device"
+DEVICE+=" --id device1"
+DEVICE+=" --channel-config name=histogram-in,type=pub,method=connect,address=tcp://localhost:5555,rateLogging=0"
+xterm -geometry 80x23+0+0 -hold -e "source @MAIN_BINARY_DIR@/config.sh &&\
+@EX_BIN_DIR@/Debug/$DEVICE" &
+
+DEVICE="ex-histo-device"
+DEVICE+=" --id device2"
+DEVICE+=" --channel-config name=histogram-in,type=pub,method=connect,address=tcp://localhost:5555,rateLogging=0"
+xterm -geometry 80x23+0+0 -hold -e "source @MAIN_BINARY_DIR@/config.sh &&\
+@EX_BIN_DIR@/Debug/$DEVICE" &
+
+DEVICE="ex-histo-device"
+DEVICE+=" --id device3"
+DEVICE+=" --channel-config name=histogram-in,type=pub,method=connect,address=tcp://localhost:5555,rateLogging=0"
+xterm -geometry 80x23+0+0 -hold -e "source @MAIN_BINARY_DIR@/config.sh &&\
+@EX_BIN_DIR@/Debug/$DEVICE" &
+
+DEVICE="ex-histo-device"
+DEVICE+=" --id device4"
+DEVICE+=" --channel-config name=histogram-in,type=pub,method=connect,address=tcp://localhost:5555,rateLogging=0"
+xterm -geometry 80x23+0+0 -hold -e "source @MAIN_BINARY_DIR@/config.sh &&\
+@EX_BIN_DIR@/Debug/$DEVICE" &
+
+SERVER="ex-histo-server"
+SERVER+=" --id server1"
+SERVER+=" --channel-config name=histogram-in,type=sub,method=bind,address=tcp://localhost:5555,rateLogging=0"
+xterm -geometry 80x23+500+0 -hold -e "source @MAIN_BINARY_DIR@/config.sh &&\
+@EX_BIN_DIR@/Debug/$SERVER" &

@@ -26,6 +26,7 @@ EndIf()
 
 If(FairMQ_FOUND)
   add_subdirectory(MQ/Lmd)
+  add_subdirectory(MQ/histogramServer)
 EndIf()
 
 If(Go_FOUND AND ZeroMQ_FOUND)
