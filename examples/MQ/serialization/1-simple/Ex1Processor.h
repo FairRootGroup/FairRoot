@@ -4,6 +4,7 @@
 #include "FairMQDevice.h"
 #include "RootSerializer.h"
 #include "TClonesArray.h"
+#include <memory>
 
 #include "TMath.h"
 
@@ -14,9 +15,7 @@ class Ex1Processor : public FairMQDevice
 {
   public:
     Ex1Processor()
-        : fInput(nullptr)
-        , fOutput(nullptr)
-        , fNumMsgs(0)
+        : fNumMsgs(0)
     {}
 
     Ex1Processor(const Ex1Processor&);
@@ -24,15 +23,12 @@ class Ex1Processor : public FairMQDevice
 
     virtual ~Ex1Processor()
     {
-        delete fInput;
-        delete fOutput;
     }
 
   protected:
     virtual void Init()
     {
         fNumMsgs = fConfig->GetValue<int>("num-msgs");
-        fOutput = new TClonesArray("MyHit");
     }
 
     virtual void Run()
@@ -42,14 +38,25 @@ class Ex1Processor : public FairMQDevice
 
         while (CheckCurrentState(RUNNING))
         {
-            FairMQMessagePtr msg(NewMessage());
-            if (Receive(msg, "data1") > 0)
+            /// RECEIVE ///
+            FairMQMessagePtr msg_in(NewMessageFor("data1", 0));
+            if (Receive(msg_in, "data1") > 0)
             {
-                Deserialize<RootSerializer>(*msg, fInput);
                 receivedMsgs++;
-                Exec(fInput, fOutput);
-                Serialize<RootSerializer>(*msg, fOutput);
-                Send(msg, "data2");
+
+                /// DESERIALIZE ///
+                std::unique_ptr<TClonesArray> digis(nullptr);
+                Deserialize<RootSerializer>(*msg_in, digis);
+
+                /// COMPUTE ///
+                TClonesArray hits = FindHits(*digis);
+
+                /// SERIALIZE ///
+                FairMQMessagePtr msg_out(NewMessageFor("data2", 0));
+                Serialize<RootSerializer>(*msg_out, &hits);
+
+                /// SEND ///
+                Send(msg_out, "data2");
                 sentMsgs++;
 
                 if (fNumMsgs != 0)
@@ -65,10 +72,11 @@ class Ex1Processor : public FairMQDevice
     }
 
     // do some random dummy task
-    void Exec(TClonesArray* digis, TClonesArray* hits)
+    TClonesArray FindHits(const TClonesArray& digis)
     {
-        hits->Delete();
-        for (int i = 0; i < digis->GetEntriesFast(); i++)
+        TClonesArray hits("MyHit");
+
+        for (int i = 0; i < digis.GetEntriesFast(); i++)
         {
             TVector3 pos;
             TVector3 dpos;
@@ -76,18 +84,18 @@ class Ex1Processor : public FairMQDevice
             // Double_t timestampErr = 0;
             Int_t fDetID = 0;
             Int_t fMCIndex = 0;
-            MyDigi* digi = static_cast<MyDigi*>(digis->At(i));
+            MyDigi* digi = static_cast<MyDigi*>(digis.At(i));
             pos.SetXYZ(digi->GetX() + 0.5, digi->GetY() + 0.5, digi->GetZ() + 0.5);
             dpos.SetXYZ(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
-            MyHit* hit = new ((*hits)[i]) MyHit(fDetID, fMCIndex, pos, dpos);
+            MyHit* hit = new ((hits)[i]) MyHit(fDetID, fMCIndex, pos, dpos);
             hit->SetTimeStamp(digi->GetTimeStamp());
             hit->SetTimeStampError(digi->GetTimeStampError());
         }
+
+        return hits;
     }
 
   private:
-    TClonesArray* fInput;
-    TClonesArray* fOutput;
     int fNumMsgs;
 };
 
