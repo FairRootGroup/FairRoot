@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include <csignal>
+#include <memory>
 #include <vector>
 
 #include "boost/program_options.hpp"
@@ -102,13 +103,14 @@ int main(int argc, char** argv)
         // loop over t (= bunch index), generate data from pdf, fill digi and save to file
         for (unsigned int t = 0; t < tmax; t++)
         {
-            unsigned int NDigi = static_cast<unsigned int>(Gauss_N.generate(N, 1)->get(0)->getRealValue("N"));
+            unique_ptr<RooDataSet> gaussSample(Gauss_N.generate(N, 1));
+            unsigned int NDigi = static_cast<unsigned int>(gaussSample->get(0)->getRealValue("N"));
             LOG(info) << "Bunch number " << t + 1 << "/" << tmax
                       << " (" << 100. * static_cast<double>(t + 1) / static_cast<double>(tmax) << " %). Number of generated digis: "
                       << NDigi << ", payload = " << NDigi * (3 * sizeof(Int_t) + 2 * sizeof(Double_t)) << " bytes";
 
-            RooDataSet* simdataset = model.GetGeneratedData(NDigi, t);
-            SaveDataToFile<TDigi, RootFileManager>(rootman, simdataset);
+            unique_ptr<RooDataSet> simdataset(model.GetGeneratedData(NDigi, t));
+            SaveDataToFile<TDigi, RootFileManager>(rootman, simdataset.get());
         }
 
         LOG(info) << "Data generation successful";
