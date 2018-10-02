@@ -98,7 +98,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         // LOG(info) << "not all parts are yet here (got " << nofReceivedParts << " out of " << nofExpectedParts << ")... adding to (size = " << fObjectMap.size() << ")";
         // LOG(info) << "+" << fMCSplitEventHeader->GetName() << "[" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "]";
         for ( int iarray = 0 ; iarray < tcaVector.size() ; iarray++ ) {
-            //            LOG(info) << "+" << tcaVector[iarray]->GetName() << "[" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "]";
+            LOG(debug) << "+ [" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "] " << tcaVector[iarray]->GetName();
             fEvCOPair.second = ((TObject*)tcaVector[iarray]);
             fObjectMap.insert(std::pair<std::pair<int,int>,std::pair<int,TObject*>>(fEvRIPair,fEvCOPair));
         }
@@ -111,6 +111,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         int currentEventPart = fMCSplitEventHeader->GetChunkStart(); 
         fRet = fObjectMap.equal_range(fEvRIPair);
         std::vector<int> trackShift;
+        LOG(debug) << "- [" << fEvRIPair.second << "][" << fEvRIPair.first << "][ALL]";
         for ( int iarray = 0 ; iarray < tcaVector.size() ; iarray++ ) {
             if ( strcmp(tcaVector[iarray]->GetName(),"MCTrack") != 0 ) continue; //  want only MCTrack array to renumber tracks and get track shifts...
             //  LOG(info) << "BEFORE ADDING, TCA \"" << tcaVector[iarray]->GetName() << "\" has " << tcaVector[iarray]->GetEntries() << " entries.";
@@ -175,7 +176,10 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         if ( printInfo )
             LOG(info) << ">> [" << fMCSplitEventHeader->GetRunID() << "][" << fMCSplitEventHeader->GetEventID() << "][" << fMCSplitEventHeader->GetChunkStart() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
     }
-    
+
+    for( MultiMapDef::iterator it = fObjectMap.begin() ; it != fObjectMap.end() ; it++ ) {
+	LOG(debug) << "= [" << it->first.second << "][" << it->first.first << "][" << it->second.first << "] " << it->second.second->GetName();
+    }
     return true;
 }
 

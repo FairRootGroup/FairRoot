@@ -84,7 +84,7 @@ bool FairMQPrimaryGeneratorDevice::Reply(FairMQMessagePtr& mPtr, int /*index*/)
 
 bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
     if ( fChunkPointer == 0 ) { // only change fChunkPointer if fChunkSize is different from -1
-        LOG(INFO) << "Reseting fStack and generating new event!!!";
+        //        LOG(INFO) << "Reseting fStack and generating new event!!!";
         fStack->Reset();
         fPrimaryGenerator->GenerateEvent(fStack);
         ++fEventCounter;
@@ -120,7 +120,7 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
     Serialize<RootSerializer>(*mess,prims);
     parts.AddPart(std::move(mess));
 
-    LOG(INFO) << "sending event " << fEventCounter << ", chunk starts at " << fChunkPointer;
+    //    LOG(INFO) << "sending event " << fEventCounter << ", chunk starts at " << fChunkPointer;
     if (Send(parts, fGeneratorChannelName) > 0)
         {
         }

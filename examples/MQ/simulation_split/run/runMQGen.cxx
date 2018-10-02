@@ -43,7 +43,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
     FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 100);
     boxGen->SetPRange(1,2);
-    boxGen->SetThetaRange(0,180);
+    boxGen->SetThetaRange(0,40);
     boxGen->SetPhiRange(0,360);
     primGen->AddGenerator(boxGen);
 
