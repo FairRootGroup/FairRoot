@@ -12,6 +12,7 @@ GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector/startFair
 
 Add_Test(pixel_simulation
        ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixelSimulation.sh --work-dir ${CMAKE_BINARY_DIR} -n 1000 -g TGeant3 -c static -s 6 --force-kill true -m 20 -v veryhigh -l false)
+Set_Tests_Properties(pixel_simulation PROPERTIES DEPENDS pixel_static)
 Set_Tests_Properties(pixel_simulation PROPERTIES TIMEOUT ${MaxTestTime})
 Set_Tests_Properties(pixel_simulation PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
 

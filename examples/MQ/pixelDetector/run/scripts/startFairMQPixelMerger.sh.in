@@ -140,7 +140,7 @@ xterm +aw -geometry 80x25+500+700 -hold -e @PIXEL_BIN_LOCATION@/$MERGER &
 ########################## start FILESINK
 FILESINK="pixel-sink $TRANSPORT"
 FILESINK+=" --id sink 1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5230"
-FILESINK+=" --file-name $OUTPUTFILE --class-name FairEventHeader --branch-name EventHeader. --class-name $OUTPUTCLASS --branch-name $OUTPUTBRANCH"
+FILESINK+=" --file-name $OUTPUTFILE"
 xterm +aw -geometry 80x25+1000+700 -hold -e @PIXEL_BIN_LOCATION@/$FILESINK &
 
 

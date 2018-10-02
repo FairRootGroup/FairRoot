@@ -181,9 +181,6 @@ FILESINK+=" $SEVERITY "
 FILESINK+=" $VERBOSITY "
 FILESINK+=" $COLOR "
 FILESINK+=" --id pixSim-sink1 --channel-config name=data#all#,type=pull,method=bind,rateLogging=1,address=tcp://*:5206"
-FILESINK+=" --class-name FairMCEventHeader --branch-name MCEventHeader."
-FILESINK+=" --class-name TClonesArray(PixelPoint) --branch-name PixelPoint"
-FILESINK+=" --class-name TClonesArray(FairMCTrack) --branch-name MCTrack"
 FILESINK+=" --file-name $OUTPUTFILE $CONTROL"
 
 ########################## run all

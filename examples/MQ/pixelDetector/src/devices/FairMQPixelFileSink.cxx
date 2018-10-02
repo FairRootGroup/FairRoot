@@ -17,7 +17,6 @@
 
 #include "RootSerializer.h"
 
-#include "FairMCEventHeader.h"
 #include "FairMQPixelFileSink.h"
 #include "FairMQLogger.h"
 #include <options/FairMQProgOptions.h>
@@ -31,8 +30,6 @@ FairMQPixelFileSink::FairMQPixelFileSink()
   , fFileName()
   , fTreeName()
  
-  , fBranchNames()
-  , fClassNames()
   , fFileOption()
   , fFlowMode(false)
   , fWrite(false)
@@ -48,19 +45,12 @@ FairMQPixelFileSink::FairMQPixelFileSink()
 void FairMQPixelFileSink::Init()
 {
   fFileName          = fConfig->GetValue<std::string>             ("file-name");
-  fClassNames        = fConfig->GetValue<std::vector<std::string>>("class-name");
-  fBranchNames       = fConfig->GetValue<std::vector<std::string>>("branch-name");
   fInputChannelName  = fConfig->GetValue<std::string>             ("in-channel");
   fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
 
   LOG(INFO) << "SHOULD CREATE THE FILE AND TREE";
   fFileOption = "RECREATE";
   fTreeName = "cbmsim";  
-
-  // fBranchNames.push_back("EventHeader.");
-  // fClassNames .push_back("FairEventHeader");
-  // fBranchNames.push_back("PixelHits");
-  // fClassNames .push_back("TClonesArray(PixelHit)");
 
   if ( ::getenv("DDS_SESSION_ID") ) {
     std::string DDS_SESSION_ID = ::getenv("DDS_SESSION_ID");
@@ -72,80 +62,42 @@ void FairMQPixelFileSink::Init()
   
   fOutFile = TFile::Open(fFileName.c_str(),fFileOption.c_str());
   
-  fTree = new TTree(fTreeName.c_str(), "/cbmout");
-
-  fFolder = new TFolder("cbmout", "Main Output Folder");
-  TFolder* foldEventHeader = fFolder->AddFolder("EvtHeader","EvtHeader");
-  TFolder* foldPixel       = fFolder->AddFolder("Pixel","Pixel");
-  
-  TList* BranchNameList = new TList();
-  
-  for ( fNObjects = 0 ; fNObjects < fBranchNames.size() ; fNObjects++ ) {
-    LOG(INFO) << "Creating output branch \"" << fClassNames[fNObjects] << "\" with name \"" << fBranchNames[fNObjects] << "\"";
-    if      ( fClassNames[fNObjects].find("TClonesArray(") == 0 ) {
-      fClassNames   [fNObjects] = fClassNames[fNObjects].substr(13,fClassNames[fNObjects].length()-12-2);
-      fOutputObjects            [fNObjects] = new    TClonesArray(fClassNames[fNObjects].c_str());
-      fTree->Branch(fBranchNames[fNObjects].c_str(),"TClonesArray", &fOutputObjects[fNObjects]);
-      foldPixel->Add(fOutputObjects[fNObjects]);
-      BranchNameList->AddLast(new TObjString(fBranchNames[fNObjects].c_str()));
-    }
-    else if ( fClassNames[fNObjects].find("FairEventHeader") == 0 ) {
-      fOutputObjects            [fNObjects] = new    FairEventHeader();
-      fTree->Branch(fBranchNames[fNObjects].c_str(),"FairEventHeader", &fOutputObjects[fNObjects]);
-      foldEventHeader->Add(fOutputObjects[fNObjects]);
-      BranchNameList->AddLast(new TObjString(fBranchNames[fNObjects].c_str()));
-    }
-    else if ( fClassNames[fNObjects].find("FairMCEventHeader") == 0 ) {
-      fOutputObjects            [fNObjects] = new    FairMCEventHeader();
-      fTree->Branch(fBranchNames[fNObjects].c_str(),"FairMCEventHeader", &fOutputObjects[fNObjects]);
-      foldEventHeader->Add(fOutputObjects[fNObjects]);
-      BranchNameList->AddLast(new TObjString(fBranchNames[fNObjects].c_str()));
-    }
-    else {
-      LOG(ERROR) << "!!! Unknown output object \"" << fClassNames[fNObjects] << "\" !!!";
-    }
-  }  
-
-  fFolder->Write();
-  BranchNameList->Write("BranchList", TObject::kSingleKey);
-  BranchNameList->Delete();
-  delete BranchNameList;
-  
   OnData(fInputChannelName, &FairMQPixelFileSink::StoreData);
 }
 
 bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
-{
-  std::vector<TObject*> tempObjects;
-  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
-    {
-      TObject* obj = nullptr;
-      Deserialize<RootSerializer>(*parts.At(ipart),obj);
-      tempObjects.push_back(obj);
-      for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ ) 
-        {
-          if ( strcmp(tempObjects.back()->GetName(),fBranchNames[ibr].data()) == 0 )
-            {
-              fOutputObjects[ibr] = tempObjects.back();
-              fTree->SetBranchAddress(fBranchNames[ibr].c_str(),&fOutputObjects[ibr]);
-            }
-        }
+{ 
+    bool creatingTree = false;
+    std::vector<TObject*> tempObjects;
+    if ( !fTree ) {
+        creatingTree = true;
+        fTree = new TTree(fTreeName.c_str(), "/cbmout");
+
     }
-  fTree->Fill();
-  
-  for ( unsigned int ipart = 0 ; ipart < tempObjects.size() ; ipart++ )
-    {
-      if ( tempObjects[ipart] )
-        delete tempObjects[ipart];
+
+    //    LOG(INFO) << "Got message with " << parts.Size() << " parts:";
+    for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) {
+        PixelTMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
+        tempObjects.push_back((TObject*)tm.ReadObject(tm.GetClass()));
+        fOutputObjects[ipart] = tempObjects.back();
+        if ( creatingTree ) 
+            fTree->Branch(tempObjects.back()->GetName(),tempObjects.back()->ClassName(),&fOutputObjects[ipart]);
+        fTree->SetBranchAddress(tempObjects.back()->GetName(),&fOutputObjects[ipart]);
     }
-  tempObjects.clear();
-  
-  if ( fAckChannelName != "" )
-    {
-      unique_ptr<FairMQMessage> msg(NewMessage());
-      Send(msg, fAckChannelName);
+    //   LOG(INFO) << "Finished branches";
+    fTree->Fill();
+
+    for ( unsigned int ipart = 0 ; ipart < tempObjects.size() ; ipart++ ) {
+        if ( tempObjects[ipart] )
+            delete tempObjects[ipart];
     }
-  return true;
+    tempObjects.clear();
+
+    if ( fAckChannelName != "" ) {
+        unique_ptr<FairMQMessage> msg(NewMessage());
+        Send(msg, fAckChannelName);
+    }
+    return true;
 }
 
 FairMQPixelFileSink::~FairMQPixelFileSink()

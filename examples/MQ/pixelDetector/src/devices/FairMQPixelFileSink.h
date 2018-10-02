@@ -19,7 +19,6 @@
 #include "TFile.h"
 #include "TFolder.h"
 #include "TTree.h"
-#include "FairEventHeader.h"
 
 #include "FairMQDevice.h"
 
@@ -30,11 +29,6 @@ class FairMQPixelFileSink : public FairMQDevice
     virtual ~FairMQPixelFileSink();
 
     void SetOutputFileName(std::string tempString) { fFileName = tempString; }
-    void AddOutputBranch  (std::string classString, std::string branchString) 
-    { 
-      fClassNames .push_back(classString); 
-      fBranchNames.push_back(branchString); 
-    }
     std::string GetOutputFileName () { return fFileName;}
 
     void SetInputChannelName (std::string tstr) {fInputChannelName = tstr;}
@@ -51,9 +45,6 @@ class FairMQPixelFileSink : public FairMQDevice
     std::string fFileName;
     std::string fTreeName;
 
-    std::vector<std::string> fBranchNames;
-    std::vector<std::string> fClassNames;
-
     std::string fFileOption;
     bool fFlowMode;
     bool fWrite;
@@ -62,8 +53,6 @@ class FairMQPixelFileSink : public FairMQDevice
     TTree* fTree;
     unsigned int    fNObjects;
     TObject**       fOutputObjects;
-    /* FairEventHeader* fEventHeader; */
-    /* TClonesArray*    fOutput; */
     TFolder* fFolder;
 
     FairMQPixelFileSink(const FairMQPixelFileSink&);
