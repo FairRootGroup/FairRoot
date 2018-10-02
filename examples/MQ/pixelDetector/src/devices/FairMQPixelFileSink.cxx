@@ -75,11 +75,10 @@ bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
 
     }
 
-    //    LOG(INFO) << "Got message with " << parts.Size() << " parts:";
     for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) {
-        PixelTMessage tm(parts.At(ipart)->GetData(), parts.At(ipart)->GetSize());
-        tempObjects.push_back((TObject*)tm.ReadObject(tm.GetClass()));
-        fOutputObjects[ipart] = tempObjects.back();
+        fOutputObjects[ipart] = nullptr;
+        Deserialize<RootSerializer> (*parts.At(ipart),fOutputObjects[ipart]);
+        tempObjects.push_back(fOutputObjects[ipart]);
         if ( creatingTree ) 
             fTree->Branch(tempObjects.back()->GetName(),tempObjects.back()->ClassName(),&fOutputObjects[ipart]);
         fTree->SetBranchAddress(tempObjects.back()->GetName(),&fOutputObjects[ipart]);
