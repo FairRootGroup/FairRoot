@@ -213,6 +213,17 @@ class FairStack : public FairGenericStack
         }
     }
 
+    void SetParticleArray(TClonesArray* partArray, Int_t partFrom, Int_t partTo) {
+        for ( Int_t ipart = partFrom ; ipart < partTo ; ipart++ ) {
+            ((TParticle*)(partArray->At(ipart)))->SetUniqueID(fNPrimaries);
+            ((TParticle*)(partArray->At(ipart)))->SetStatusCode(fNPrimaries);
+            fStack.push((TParticle*)partArray->At(ipart));
+            AddParticle((TParticle*)partArray->At(ipart));
+            fNParticles++;
+            fNPrimaries++;
+        }
+    }
+
     /** Clone this object (used in MT mode only) */
     virtual FairGenericStack* CloneStack() const { return new FairStack(); }
 

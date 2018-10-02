@@ -230,7 +230,7 @@ void FairStack::FillTrackArray()
 
   // --> Loop over fParticles array and copy selected tracks
   for (Int_t iPart=0; iPart<fNParticles; iPart++) {
-
+      
     Bool_t store = kFALSE;
 
     fStoreIter = fStoreMap.find(iPart);
@@ -271,7 +271,6 @@ void FairStack::FillTrackArray()
 void FairStack::UpdateTrackIndex(TRefArray* detList)
 {
 
-  LOG(debug) << "Updating track indizes...";
   Int_t nColl = 0;
 
   // First update mother ID in MCTracks

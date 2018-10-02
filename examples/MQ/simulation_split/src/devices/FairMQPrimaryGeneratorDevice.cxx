@@ -18,12 +18,12 @@
 #include "FairMQMessage.h"
 #include "FairMQProgOptions.h"
 
-#include "FairMCEventHeader.h"
+#include "FairMCSplitEventHeader.h"
+
 #include "FairRootManager.h"
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
 
-#include "FairEventHeader.h"
 #include "FairModule.h"
 #include "FairPrimaryGenerator.h"
 #include "FairParRootFileIo.h"
@@ -51,6 +51,8 @@ FairMQPrimaryGeneratorDevice::FairMQPrimaryGeneratorDevice()
   , fPrimaryGenerator(NULL)
   , fMCEventHeader(NULL)
   , fStack(NULL)
+  , fChunkSize(-1)
+  , fChunkPointer(0)
 {
 }
 
@@ -81,24 +83,58 @@ bool FairMQPrimaryGeneratorDevice::Reply(FairMQMessagePtr& mPtr, int /*index*/)
 }
 
 bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
-    fStack->Reset();
-    fPrimaryGenerator->GenerateEvent(fStack);
+    if ( fChunkPointer == 0 ) { // only change fChunkPointer if fChunkSize is different from -1
+        LOG(INFO) << "Reseting fStack and generating new event!!!";
+        fStack->Reset();
+        fPrimaryGenerator->GenerateEvent(fStack);
+        ++fEventCounter;
+    }
+    if ( fEventCounter > fNofEvents )
+        return false;
 
+    if ( fChunkSize > 0 ) { // should send events in chunks with maximum size of fChunkSize
+        // shouldn't do much before, just sent from fChunkPointer to fChunkPointer+fChunkSize
+    }
+
+    FairMQParts parts;
+
+    // even if sending in chunks is set, send all of the primaries anyway, the transporter takes care of transporting needed primaries
+    // create FairMCEventHeader, misuse not-yet-set fRunID to store begin
     TClonesArray* prims = fStack->GetListOfParticles();
+
+    FairMCSplitEventHeader* meh = new FairMCSplitEventHeader(123456,fEventCounter,1,0);
+    meh->SetNPrim(prims->GetEntries());
+    if ( fChunkSize > 0 ) {
+        meh->SetNPrim(fChunkPointer+fChunkSize);
+        meh->SetNofChunks ((UInt_t)(prims->GetEntries()/fChunkSize));
+        meh->SetChunkStart(fChunkPointer);
+        if ( fChunkPointer+fChunkSize > prims->GetEntries() )
+            meh->SetNPrim(prims->GetEntries()-fChunkPointer);
+    }
+
+    FairMQMessagePtr messEH(NewMessage());
+    Serialize<RootSerializer>(*messEH,meh);
+    parts.AddPart(std::move(messEH));
 
     FairMQMessagePtr mess(NewMessage());
     Serialize<RootSerializer>(*mess,prims);
+    parts.AddPart(std::move(mess));
 
-    if (Send(mess, fGeneratorChannelName) > 0)
+    LOG(INFO) << "sending event " << fEventCounter << ", chunk starts at " << fChunkPointer;
+    if (Send(parts, fGeneratorChannelName) > 0)
         {
         }
 
     int numberofparts = (int)prims->GetEntries();
 
-    fEventCounter++;
+    if ( fChunkSize > 0 ) { // should send events in chunks with maximum size of fChunkSize
+        // the whole work should be done after
+        fChunkPointer += fChunkSize;
+        if ( fChunkPointer >= numberofparts ) { // it means that already sent all primaries from this event
+            fChunkPointer = 0; // this will cause the reset of the stack and generating new event
+        }
+    }
 
-    if ( fEventCounter >= fNofEvents )
-        return false;
 
     return true;
 }

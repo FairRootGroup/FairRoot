@@ -21,7 +21,7 @@
 
 #include "FairMQRunDevice.h"
 
-class FairEventHeader;
+class FairMCSplitEventHeader;
 class FairRunSim;
 class FairField;
 class FairParIo;
@@ -60,8 +60,8 @@ class FairMQTransportDevice : public FairMQRunDevice
     void RunInReqMode (bool tb=true) { fRunConditional = tb; };
 
  protected:
-    //    bool TransportData(FairMQParts&, int);
-    bool TransportData(FairMQMessagePtr&, int);
+    bool TransportData(FairMQParts&, int);
+    //  bool TransportData(FairMQMessagePtr&, int);
     virtual void Init();
     virtual void InitTask();
     virtual void PreRun();
@@ -94,6 +94,8 @@ class FairMQTransportDevice : public FairMQRunDevice
     FairSink*             fSink;
     // ------ ---------- -------- ------
 
+    FairMCSplitEventHeader* fMCSplitEventHeader;
+    
     void UpdateParameterServer();
 
     FairMQTransportDevice(const FairMQTransportDevice&);

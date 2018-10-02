@@ -20,7 +20,7 @@
 
 #include "FairOnlineSink.h"
 
-#include "FairMCEventHeader.h"
+#include "FairMCSplitEventHeader.h"
 #include "FairRootManager.h"
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
@@ -65,6 +65,7 @@ FairMQTransportDevice::FairMQTransportDevice()
   , fVMC(NULL)
   , fStack(NULL)
   , fMCApplication(NULL)
+  , fMCSplitEventHeader(NULL)
 {
 }
 
@@ -78,6 +79,14 @@ void FairMQTransportDevice::InitTask()
 {
     fRunSim = new FairRunSim();
 
+    LOG(INFO) << "SETTING EventHeader TO FairMCSplitEventHeader!";
+    fMCSplitEventHeader = new FairMCSplitEventHeader(777777,0,0,0);
+    fRunSim->SetMCEventHeader(fMCSplitEventHeader);
+    fRunSim->SetRunId(fRunSim->GetMCEventHeader()->GetRunID());
+    LOG(INFO) << "AFTER SETTING run id = " << fRunSim->GetRunId();
+    LOG(INFO) << "or maybe via meh = " << fRunSim->GetMCEventHeader()->GetRunID();
+    LOG(INFO) << " name/title/classname = " << fRunSim->GetMCEventHeader()->GetName() << "/" << fRunSim->GetMCEventHeader()->GetTitle() << "/" << fRunSim->GetMCEventHeader()->ClassName();
+    
     fRunSim->SetSink(fSink);
 
     if ( fFirstParameter || fSecondParameter ) {
@@ -122,7 +131,7 @@ void FairMQTransportDevice::InitTask()
                                     askForRunNumber));
     std::unique_ptr<FairMQMessage> rep(NewMessage());
 
-    unsigned int runId = 0;
+    /*    unsigned int runId = 0;
     if (Send(req, fUpdateChannelName) > 0)
         {
             if (Receive(rep, fUpdateChannelName) > 0)
@@ -136,7 +145,8 @@ void FairMQTransportDevice::InitTask()
                 }
         }
     // ------------------------------------------------------------------------
-
+    */
+    
     fRunSim->SetStoreTraj(fStoreTrajFlag);
 
     // -----   Set tasks   ----------------------------------------------------
@@ -146,11 +156,14 @@ void FairMQTransportDevice::InitTask()
         }
     }
     // ------------------------------------------------------------------------
+    LOG(INFO) << "before frun->init() run id = " << fRunSim->GetMCEventHeader()->GetRunID();
 
     // -----   Initialize simulation run   ------------------------------------
-    fRunSim->SetRunId(runId); // run n simulations with same run id - offset the event number
+    //    fRunSim->SetRunId(runId); // run n simulations with same run id - offset the event number
     fRunSim->Init();
     // ------------------------------------------------------------------------
+
+    LOG(INFO) << "after frun->init() run id = " << fRunSim->GetMCEventHeader()->GetRunID();
 
     fVMC           = TVirtualMC::GetMC();
     fMCApplication = FairMCApplication::Instance();
@@ -158,6 +171,9 @@ void FairMQTransportDevice::InitTask()
     fStack->Register();
     //  fRunSim->Run(0);
     UpdateParameterServer();
+    LOG(INFO) << "end of FairMQTransportDevice::InitTask() run id = " << fRunSim->GetMCEventHeader()->GetRunID();
+    LOG(INFO) << " name/title/classname = " << fRunSim->GetMCEventHeader()->GetName() << "/" << fRunSim->GetMCEventHeader()->GetTitle() << "/" << fRunSim->GetMCEventHeader()->ClassName();
+
 }
 
 void FairMQTransportDevice::PreRun()
@@ -173,24 +189,46 @@ bool FairMQTransportDevice::ConditionalRun()
                                     requestString->length(),
                                     [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
                                     requestString));
-    FairMQMessagePtr rep(NewMessage());
+    FairMQParts parts;
+    //    FairMQMessagePtr rep(NewMessage());
 
     if (Send(req, fGeneratorChannelName) > 0)
         {
-            if (Receive(rep, fGeneratorChannelName) > 0)
+            if (Receive(parts, fGeneratorChannelName) > 0)
                 {
-                    return TransportData(rep,0);
+                    return TransportData(parts,0);
                 }
         }
     return false;
 }
 
-bool FairMQTransportDevice::TransportData(FairMQMessagePtr& mPtr, int /*index*/)
+// bool FairMQTransportDevice::TransportData(FairMQMessagePtr& mPtr, int /*index*/)
+// {
+//     TClonesArray* chunk = nullptr;
+//     Deserialize<RootSerializer>(*mPtr, chunk);
+//     fStack->SetParticleArray(chunk);
+//     fVMC->ProcessRun(1);
+
+//     return true;
+// }
+
+bool FairMQTransportDevice::TransportData(FairMQParts& mParts, int /*index*/)
 {
-    TClonesArray* chunk = nullptr;
-    Deserialize<RootSerializer>(*mPtr, chunk);
-    fStack->SetParticleArray(chunk);
-    fVMC->ProcessRun(1);
+    TClonesArray*         chunk = nullptr;
+    FairMCSplitEventHeader* meh = nullptr;
+    for ( int ipart = 0 ; ipart < mParts.Size() ; ipart++ ) {
+        TObject* obj = nullptr;
+        Deserialize<RootSerializer>(*mParts.At(ipart),obj);
+        if      (strcmp(obj->GetName(),"MCEvent") == 0)
+            meh = (FairMCSplitEventHeader*)obj;
+        else if (strcmp(obj->GetName(),"TParticles") == 0)
+            chunk = (TClonesArray*)obj;
+    }
+    if ( chunk != nullptr ) {
+        fStack->SetParticleArray(chunk,meh->GetChunkStart(),meh->GetNPrim());
+        fMCSplitEventHeader->SetRECC(meh->GetRunID(),meh->GetEventID(),meh->GetNofChunks(),meh->GetChunkStart());
+        fVMC->ProcessRun(1);
+    }
 
     return true;
 }

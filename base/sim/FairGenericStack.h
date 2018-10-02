@@ -98,6 +98,7 @@ class FairGenericStack : public TVirtualMCStack
 
     virtual TClonesArray* GetListOfParticles() { return 0; }
     virtual void SetParticleArray(TClonesArray* partArray) {}
+    virtual void SetParticleArray(TClonesArray* partArray, Int_t partFrom, Int_t partTo) {}
 
     /** Clone this object (used in MT mode only) */
     virtual FairGenericStack* CloneStack() const;

@@ -42,6 +42,8 @@ class FairMQPrimaryGeneratorDevice : public FairMQDevice
     void SetNofEvents       (int64_t nofev)                 { fNofEvents = nofev;};
     void SetGenerator       (FairPrimaryGenerator* primGen) { fPrimaryGenerator = primGen;};
 
+    void SetChunkSize(int64_t ti)    { fChunkSize = ti;};
+
     void RunInPushMode(bool tb=true) { fRunConditional = tb; };
     void RunInRepMode (bool tb=true) { fRunConditional = !tb; };
 
@@ -62,6 +64,9 @@ class FairMQPrimaryGeneratorDevice : public FairMQDevice
     FairStack*               fStack;
     int64_t                  fNofEvents;
     int64_t                  fEventCounter;
+
+    int64_t                  fChunkSize;    // to set the maximal number of primaries sent in one bunch
+    int64_t                  fChunkPointer; // to set the first primary to be sent
 
     bool GenerateAndSendData();
     void SendObject(TObject* obj, std::string chan);

@@ -13,10 +13,11 @@ set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${FairMQ_INCDIR}/fairmq/options
   ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
-  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
-  ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/devices
   ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src
   ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src/devices
+  ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/src
+  ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/src/devices
+  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
   ${FairLogger_INCDIR}
 )
 
@@ -36,16 +37,27 @@ ${Boost_LIBRARY_DIRS}
 
 link_directories( ${LINK_DIRECTORIES})
 
+set(SRCS
+FairMCSplitEventHeader.cxx
+)
+
+Set(HEADERS 
+FairMCSplitEventHeader.h
+)
+
 Set(NO_DICT_SRCS
-FairMQPrimaryGeneratorDevice.cxx
-FairMQTransportDevice.cxx
+devices/FairMQPrimaryGeneratorDevice.cxx
+devices/FairMQTransportDevice.cxx
+devices/FairMQChunkMerger.cxx
 )
 
 Set(NO_DICT_HEADERS
-FairMQPrimaryGeneratorDevice.h
-FairMQTransportDevice.h
+devices/FairMQPrimaryGeneratorDevice.h
+devices/FairMQTransportDevice.h
+devices/FairMQChunkMerger.h
 )
 
+Set(LINKDEF SimMQLinkDef.h)
 Set(LIBRARY_NAME SimMQ)
 Set(DEPENDENCIES
     Base 

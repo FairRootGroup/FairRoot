@@ -20,6 +20,7 @@ void addCustomOptions(bpo::options_description& options)
         ("random-seed",          bpo::value<int64_t>    ()->default_value(0)              , "Random seed number")
         ("nof-events",           bpo::value<int64_t>    ()->required()                    , "Number of events to simulate")
         ("running-mode",         bpo::value<std::string>()->default_value("pp")           , "pp to push, rr to reply")
+        ("chunk-size",           bpo::value<int64_t>    ()->default_value(0)              , "Max nof primaries in chunk")
     ;
 }
 
@@ -48,6 +49,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 
     FairMQPrimaryGeneratorDevice* mqDevice = new FairMQPrimaryGeneratorDevice();
     LOG(INFO) << "Going to generate " << config.GetValue<int64_t> ("nof-events") << " events.";
+    mqDevice->SetChunkSize(config.GetValue<int64_t>("chunk-size"));
     mqDevice->RunInPushMode(true);
     if ( config.GetValue<std::string> ("running-mode") == "rr" ) {
         LOG(INFO) << "Going to reply with data.";

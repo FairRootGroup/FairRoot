@@ -19,7 +19,8 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector
     ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src
     ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src/devices
-    ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/devices
+    ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/src
+    ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/src/devices
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -46,11 +47,13 @@ link_directories(${LINK_DIRECTORIES})
 Set(Exe_Names
     runMQGen
     runMQTrans
+    runMQChMer
 )
 
 set(Exe_Source
     runMQGen.cxx
     runMQTrans.cxx
+    runMQChunkMerger.cxx
 )
 
 
