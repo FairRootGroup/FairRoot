@@ -105,8 +105,6 @@ class FairDetector : public FairModule
     /** Assignment operator */
     FairDetector& operator= (const FairDetector&);
 
-    virtual void DefineSensitiveVolumes();
-
     Int_t fDetId; // Detector Id has to be set from ctr.
     FairLogger* fLogger;  //! /// FairLogger
 

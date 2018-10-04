@@ -360,8 +360,12 @@ void FairTutorialDet4::ModifyGeometryByFullPath()
 
     TGeoRotation* rrot = new TGeoRotation("rot",dphi,dtheta,dpsi);
     TGeoCombiTrans localdelta = *(new TGeoCombiTrans(dx,dy,dz, rrot));
+    TGeoHMatrix l3m = TGeoHMatrix(*l3);
+    TGeoHMatrix ldm = TGeoHMatrix(localdelta);
+
 //      localdelta.Print();
-    TGeoHMatrix nlocal = *l3 * localdelta;
+    // TGeoHMatrix nlocal = *l3 * localdelta;
+    TGeoHMatrix nlocal = l3m * ldm;
     TGeoHMatrix* nl3 = new TGeoHMatrix(nlocal); // new matrix, representing real position (from new local mis RS to the global one)
 
     TGeoPhysicalNode* pn3 = gGeoManager->MakePhysicalNode(volPath);
@@ -414,7 +418,10 @@ void FairTutorialDet4::ModifyGeometryBySymlink()
     TGeoRotation* rrot = new TGeoRotation("rot",dphi,dtheta,dpsi);
     TGeoCombiTrans localdelta = *(new TGeoCombiTrans(dx,dy,dz, rrot));
     localdelta.Print();
-    TGeoHMatrix nlocal = *l3 * localdelta;
+    TGeoHMatrix l3m = TGeoHMatrix(*l3);
+    TGeoHMatrix ldm = TGeoHMatrix(localdelta);
+    // TGeoHMatrix nlocal = *l3 * localdelta;
+    TGeoHMatrix nlocal = l3m * ldm;
     TGeoHMatrix* nl3 = new TGeoHMatrix(nlocal); // new matrix, representing real position (from new local mis RS to the global one)
 
     node->Align(nl3);
