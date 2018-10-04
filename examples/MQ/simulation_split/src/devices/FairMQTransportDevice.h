@@ -69,6 +69,7 @@ class FairMQTransportDevice : public FairMQRunDevice
     virtual bool ConditionalRun();
 
  private:
+    UInt_t fRunId;
     UInt_t fTransportDeviceId;
     std::string fGeneratorChannelName;
     std::string fUpdateChannelName;

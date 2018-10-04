@@ -102,7 +102,7 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
     // create FairMCEventHeader, misuse not-yet-set fRunID to store begin
     TClonesArray* prims = fStack->GetListOfParticles();
 
-    FairMCSplitEventHeader* meh = new FairMCSplitEventHeader(123456,fEventCounter,1,0);
+    FairMCSplitEventHeader* meh = new FairMCSplitEventHeader(0,fEventCounter,1,0); // RunId will be provided in the Transport from ParameterServer
     meh->SetNPrim(prims->GetEntries());
     if ( fChunkSize > 0 ) {
         meh->SetNPrim(fChunkPointer+fChunkSize);
