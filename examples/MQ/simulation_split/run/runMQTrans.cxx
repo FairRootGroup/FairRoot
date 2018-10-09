@@ -31,6 +31,7 @@ void addCustomOptions(bpo::options_description& options)
         ("fairroot-config-dir",  bpo::value<std::string>()->default_value("")             , "FairRoot config dir")
         ("param-channel-name",   bpo::value<std::string>()->default_value("updateChannel"), "Parameter update channel name")
         ("running-mode",         bpo::value<std::string>()->default_value("pp")           , "pp to pull, rr to request")
+        ("detector-library",     bpo::value<std::vector<std::string>>()                   , "detector library")
         ;
 }
 
@@ -73,9 +74,9 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     FairModule* cave= new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
     detArray->Add(cave);
-    Pixel*  det = new Pixel("PixelDetector", kTRUE);
-    det->SetGeometryFileName("pixel.geo");
-    detArray->Add(det);
+    // Pixel*  det = new Pixel("PixelDetector", kTRUE);
+    // det->SetGeometryFileName("pixel.geo");
+    // detArray->Add(det);
     run->SetDetectorArray   (detArray);
 
     run->SetStoreTraj       (false);

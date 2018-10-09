@@ -14,6 +14,7 @@
 #include "FairGeoVolume.h"              // for FairGeoVolume
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRun.h"                    // for FairRun
+#include "FairRunSim.h"                 // for FairRunSim
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairStack.h"                  // for FairStack
 #include "FairTutorialDet1Geo.h"        // for FairTutorialDet1Geo
@@ -226,6 +227,19 @@ void FairTutorialDet1::SetSensitiveVolumes()
   par->setInputVersion(fRun->GetRunId(),1);
 
   ProcessNodes ( volList );
+}
+
+extern "C" void ExternCreateDetector() {
+    using std::cout;
+    using std::endl;
+
+    cout << "-- ExternCreateDetector() START --" << endl;
+    FairRunSim* run = FairRunSim::Instance();
+
+    FairTutorialDet1* tutdet = new FairTutorialDet1("TUTDET", kTRUE);
+    tutdet->SetGeometryFileName("double_sector.geo");
+    run->AddModule(tutdet);
+    cout << "-- ExternCreateDetector(" << tutdet->GetName() << ") DONE --" << endl;
 }
 
 

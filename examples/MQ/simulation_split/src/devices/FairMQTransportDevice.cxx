@@ -44,6 +44,8 @@
 #include "TObjString.h"
 #include "TObjArray.h"
 
+#include <dlfcn.h>
+
 using namespace std;
 
 FairMQTransportDevice::FairMQTransportDevice()
@@ -115,6 +117,41 @@ void FairMQTransportDevice::InitTask()
     for ( int idet = 0 ; idet < fDetectorArray->GetEntries() ; idet++ ) {
         fRunSim->AddModule((FairModule*)(fDetectorArray->At(idet)));
     }
+
+    std::vector<std::string> detectorLibraries = fConfig->GetValue<std::vector<std::string>>("detector-library");
+
+    for ( unsigned int ilib = 0 ; ilib < detectorLibraries.size() ; ilib++ ) {
+        LOG(info) << " -----> library \"" << detectorLibraries.at(ilib) << "\"";
+
+        void* handle = dlopen(detectorLibraries.at(ilib).c_str(), RTLD_LAZY);
+
+        if (!handle) {
+            LOG(fatal) << "Cannot open library: " << dlerror();
+            return;
+        }
+
+        // load the symbol
+        LOG(info) << "Loading symbol ...";
+        typedef void (*det_t)();
+
+        // reset errors
+        dlerror();
+        det_t ExternCreateDetector = (det_t) dlsym(handle, "ExternCreateDetector");
+        const char *dlsym_error = dlerror();
+        if (dlsym_error) {
+            LOG(fatal) << "Cannot load symbol 'ExternCreateDetector': " << dlsym_error;
+            dlclose(handle);
+            return;
+        }
+
+        // run the function, where detector should be added to FairRunSim
+        ExternCreateDetector();
+
+        // close the library
+        cout << "NOT closing library...\n";
+        //    dlclose(handle);
+    }
+
     // ------------------------------------------------------------------------
 
     // -----   Negotiate the run number   -------------------------------------
