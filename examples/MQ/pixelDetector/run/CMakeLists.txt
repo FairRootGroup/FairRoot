@@ -21,6 +21,7 @@ Add_Test(pixel_static
 	${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixel.sh --work-dir ${CMAKE_BINARY_DIR} -p 3 --command static --force-kill true)
 Set_Tests_Properties(pixel_static PROPERTIES DEPENDS pixel_dbin_TGeant3)
 Set_Tests_Properties(pixel_static PROPERTIES TIMEOUT ${MaxTestTime})
+Set_Tests_Properties(pixel_static PROPERTIES RUN_SERIAL ON)
 Set_Tests_Properties(pixel_static PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
 
 set(INCLUDE_DIRECTORIES
