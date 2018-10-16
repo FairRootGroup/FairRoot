@@ -232,6 +232,6 @@ class FairRun : public TNamed
 
     void AlignGeometry() const;
 
-    ClassDef(FairRun ,4)
+    ClassDef(FairRun ,5)
 };
 #endif //FAIRRUN_H
