@@ -65,9 +65,6 @@ class FairTutorialDet4: public FairDetector
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
-    /**      Misalign the detector geometry        */
-    void ModifyGeometry();
-
     void SetParContainers();
 
     /**      This method is an example of how to add your own point
@@ -97,6 +94,8 @@ class FairTutorialDet4: public FairDetector
     void SetGlobalCoordinates(Bool_t val) { fGlobalCoordinates=val; }
 
     virtual FairModule* CloneModule() const;
+
+    std::map<std::string, TGeoHMatrix> getMisalignmentMatrices();
 
   private:
     void SetSensitiveVolumes();
@@ -141,14 +140,10 @@ class FairTutorialDet4: public FairDetector
 
     Bool_t CheckIfSensitive(const std::string& name);
 
-    void ModifyGeometryBySymlink();
-    void ModifyGeometryByFullPath();
-
-
     FairTutorialDet4(const FairTutorialDet4&);
     FairTutorialDet4& operator=(const FairTutorialDet4&);
 
-    ClassDef(FairTutorialDet4,2)
+    ClassDef(FairTutorialDet4,3)
 };
 
 #endif //FAIRTUTORIALDET_H

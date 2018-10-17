@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=false)
+void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=false)
 {
   
   TString dir = getenv("VMCWORKDIR");
@@ -112,100 +112,36 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
   rtdb->setOutput(parOut);
   // ------------------------------------------------------------------------
 
-  // --------- misalign the working geometry here ---------------------------
+  run->Init();
+
+  //sadly, the align parameters are only available AFTER we called fRun->Init()
 
   // We fill a std::map<std::string, TGeoHMatrix> map with all misalignment matrices
   // how you get those in your geometry is up to you
 
-  std::map<std::string, TGeoHMatrix> matrices;
-  
-  double rot[9];
-  double trans[3];
+  auto matrices = tutdet->getMisalignmentMatrices();
 
-  ifstream myfile;
-  myfile.open("misalignmentMatrices.txt");
-  std::string line;
-  std::string path;
-  while (true){
-    if(!std::getline(myfile, line)) break;
-    path = line;
-    for(int i=0; i<9; i++){
-      std::getline(myfile, line);
-      rot[i] = stod(line);
-    }
-    for(int i=0; i<3; i++){
-      std::getline(myfile, line);
-      trans[i] = stod(line);
-    }  
+  ofstream myfile;
+  myfile.open ("misalignmentMatrices.txt");
 
-    TGeoHMatrix thisMat;
-    thisMat.SetRotation(rot);
-    thisMat.SetTranslation(trans);
-    matrices[path] = thisMat;
+  double *rot;
+  double *trans;
+
+  // this can probably be done more elegantly
+  for(auto &mat : matrices){
+    myfile << mat.first << "\n";
+    rot = mat.second.GetRotationMatrix();
+    trans = mat.second.GetTranslation();
+    for(int i=0; i<9; i++)  myfile << rot[i] << "\n";
+    for(int i=0; i<3; i++)  myfile << trans[i] << "\n";
   }
+  myfile.close();
 
-  run->AddAlignmentMatrices(matrices);
   LOG(info) << "AlignHandler: all matrices added!";
 
-  // alignment must happen before fRun->Init() is called!
-  run->Init();
-  
- // -Trajectories Visualization (TGeoManager Only )
- // -----------------------------------------------
+  LOG(info) << "SUCCESS! All matrices created and saved!";
 
- // Set cuts for storing the trajectories
-  /* FairTrajFilter* trajFilter = FairTrajFilter::Instance();
-     trajFilter->SetStepSizeCut(0.01); // 1 cm
-     trajFilter->SetVertexCut(-2000., -2000., 4., 2000., 2000., 100.);
-     trajFilter->SetMomentumCutP(10e-3); // p_lab > 10 MeV
-     trajFilter->SetEnergyCut(0., 1.02); // 0 < Etot < 1.04 GeV
-     trajFilter->SetStorePrimaries(kTRUE);
-     trajFilter->SetStoreSecondaries(kTRUE);
-   */
-
-  // ------------------------------------------------------------------------
-
-   
-  // -----   Start run   ----------------------------------------------------
-  //run->CreateGeometryFile(geoFileMisaligned);
-  run->Run(nEvents);
-  //run->CreateGeometryFile(geoFile);
-  // ------------------------------------------------------------------------
-  
-  rtdb->saveOutput();
-  rtdb->print();
-
-  delete run;
-
-  // -----   Finish   -------------------------------------------------------
-
-  cout << endl << endl;
-
-  // Extract the maximal used memory an add is as Dart measurement
-  // This line is filtered by CTest and the value send to CDash
-  FairSystemInfo sysInfo;
-  Float_t maxMemory=sysInfo.GetMaxMemory();
-  cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
-  cout << maxMemory;
-  cout << "</DartMeasurement>" << endl;
-
-  timer.Stop();
-  Double_t rtime = timer.RealTime();
-  Double_t ctime = timer.CpuTime();
-
-  Float_t cpuUsage=ctime/rtime;
-  cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
-  cout << cpuUsage;
-  cout << "</DartMeasurement>" << endl;
-
-  cout << endl << endl;
-  cout << "Output file is "    << outFile << endl;
-  cout << "Parameter file is " << parFile << endl;
-  cout << "Real time " << rtime << " s, CPU time " << ctime
-       << "s" << endl << endl;
-  cout << "Macro finished successfully." << endl;
-
-  // ------------------------------------------------------------------------
+  return;
 }
 
 

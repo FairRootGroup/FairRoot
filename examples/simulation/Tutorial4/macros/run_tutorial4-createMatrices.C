@@ -117,35 +117,19 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
   // We fill a std::map<std::string, TGeoHMatrix> map with all misalignment matrices
   // how you get those in your geometry is up to you
 
-  std::map<std::string, TGeoHMatrix> matrices;
-  
-  double rot[9];
-  double trans[3];
+  cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n";
 
-  ifstream myfile;
-  myfile.open("misalignmentMatrices.txt");
-  std::string line;
-  std::string path;
-  while (true){
-    if(!std::getline(myfile, line)) break;
-    path = line;
-    for(int i=0; i<9; i++){
-      std::getline(myfile, line);
-      rot[i] = stod(line);
-    }
-    for(int i=0; i<3; i++){
-      std::getline(myfile, line);
-      trans[i] = stod(line);
-    }  
+  auto matrices = tutdet->getMisalignmentMatrices();
 
-    TGeoHMatrix thisMat;
-    thisMat.SetRotation(rot);
-    thisMat.SetTranslation(trans);
-    matrices[path] = thisMat;
+  for(auto &mat : matrices){
+    cout << "path: " << mat.first;
+    mat.second.Print(); 
   }
 
   run->AddAlignmentMatrices(matrices);
   LOG(info) << "AlignHandler: all matrices added!";
+
+  cout << "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ\n";
 
   // alignment must happen before fRun->Init() is called!
   run->Init();
