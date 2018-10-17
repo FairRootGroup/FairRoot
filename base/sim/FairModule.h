@@ -73,7 +73,9 @@ class FairModule:  public TNamed
     /**construct geometry from standard ASSCII files (Hades Format)*/
     virtual void        ConstructASCIIGeometry();
     /** Modify the geometry for the simulation run using methods of the Root geometry package */
-    virtual void        ModifyGeometry() {;}
+    virtual void        ModifyGeometry() __attribute__((deprecated("Use FairAlignmentHandler instead, see Tutorial4 for examples"))) {
+      LOG(warn) << "This function is deprecated. Use FairAlignmentHandler instead, see Tutorial4 for examples."; 
+    }
     /**construct geometry from GDML files*/
     virtual void        ConstructGDMLGeometry(TGeoMatrix*);
     /** custom settings of processes and cuts for media to be forwarded to the 

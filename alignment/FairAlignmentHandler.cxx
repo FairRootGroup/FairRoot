@@ -13,26 +13,26 @@ FairAlignmentHandler::~FairAlignmentHandler() {
 
 void FairAlignmentHandler::AlignGeometry() const {
   if (fAlignmentMatrices.size() > 0) {
-    LOG(INFO) << "aligning the geometry..." << FairLogger::endl;
+    LOG(info)<< "aligning the geometry...";
 
     TString detStr = "lmd_root";
 
-    LOG(INFO) << "aligning in total " << fAlignmentMatrices.size()
-        << " volumes." << FairLogger::endl;
+    LOG(info)<< "aligning in total " << fAlignmentMatrices.size()
+        << " volumes.";
     if (gGeoManager->GetNAlignable() > 0) {
       AlignGeometryBySymlink();
     } else {
       AlignGeometryByFullPath();
     }
 
-    LOG(INFO) << "alignment finished!" << FairLogger::endl;
+    LOG(info)<< "alignment finished!";
   }
 }
 
 void FairAlignmentHandler::AlignGeometryByFullPath() const {
   TString volume_path;
 
-  LOG(INFO) << "aligning using full path." << FairLogger::endl;
+  LOG(info)<< "aligning using full path.";
   for (auto const& alignment_entry : fAlignmentMatrices) {
     volume_path = alignment_entry.first;
 
@@ -49,13 +49,13 @@ void FairAlignmentHandler::AlignGeometryByFullPath() const {
 
     pn->Align(new_volume_matrix);
   }
-  LOG(INFO) << "alignments applied!" << FairLogger::endl;
+  LOG(info)<< "alignments applied!";
 }
 
 void FairAlignmentHandler::AlignGeometryBySymlink() const {
   TString volume_path;
 
-  LOG(INFO) << "aligning using symlinks" << FairLogger::endl;
+  LOG(info)<< "aligning using symlinks";
   for (auto const& alignment_entry : fAlignmentMatrices) {
     volume_path = alignment_entry.first;
 
@@ -82,7 +82,7 @@ void FairAlignmentHandler::AlignGeometryBySymlink() const {
 void FairAlignmentHandler::AddAlignmentMatrices(
     const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
     bool invertMatrices) {
-  LOG(INFO) << "adding inverting matrices..." << FairLogger::endl;
+  LOG(info)<< "adding inverting matrices...";
   for (auto const& m : alignmentMatrices) {
     if (invertMatrices)
       fAlignmentMatrices[m.first] *= m.second.Inverse();
