@@ -988,9 +988,17 @@ void FairMCApplication::ConstructGeometry()
   }
   fModIter->Reset();
 
-  fRun->AlignGeometry();
+  // dont use this here anymore, use FairMCApplication::MisalignGeometry
+  // fRun->AlignGeometry()
 
   gGeoManager->RefreshPhysicalNodes(kFALSE);
+}
+
+// ____________________________________________________________________________
+Bool_t FairMCApplication::MisalignGeometry()
+{
+  // call this only here
+  fRun->AlignGeometry();
 }
 
 //_____________________________________________________________________________

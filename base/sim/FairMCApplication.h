@@ -86,6 +86,8 @@ class FairMCApplication : public TVirtualMCApplication
     virtual void          BeginPrimary();                                   // MC Application
     /** Construct user geometry */
     virtual void          ConstructGeometry();                              // MC Application
+    /** Align or misalign geometry before actual run       */
+    virtual Bool_t        MisalignGeometry();
     /** Define parameters for optical processes (optional) */
     virtual void          ConstructOpGeometry();                            // MC Application
     /** Define actions at the end of event */
