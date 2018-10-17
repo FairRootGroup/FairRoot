@@ -15,8 +15,6 @@ void FairAlignmentHandler::AlignGeometry() const {
   if (fAlignmentMatrices.size() > 0) {
     LOG(info)<< "aligning the geometry...";
 
-    TString detStr = "lmd_root";
-
     LOG(info)<< "aligning in total " << fAlignmentMatrices.size()
         << " volumes.";
     if (gGeoManager->GetNAlignable() > 0) {
