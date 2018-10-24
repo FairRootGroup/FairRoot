@@ -42,7 +42,7 @@ class FairMQSamplerTask : public FairTask
     virtual void Exec(Option_t *opt);
 
     void SetEventIndex(Long64_t eventIndex);
-    void SetBranch(std::string branch);
+    void SetBranch(const std::string& branch);
 
     void GetPayload(std::unique_ptr<FairMQMessage>& msg);
     void SetTransport(std::shared_ptr<FairMQTransportFactory> factory);

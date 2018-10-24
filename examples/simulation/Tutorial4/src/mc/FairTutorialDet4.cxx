@@ -280,7 +280,7 @@ void FairTutorialDet4::ConstructGeometry()
   }
 }
 
-Bool_t FairTutorialDet4::CheckIfSensitive(std::string name)
+Bool_t FairTutorialDet4::CheckIfSensitive(const std::string& name)
 {
   TString tsname = name;
   if (tsname.Contains("tut4")) {

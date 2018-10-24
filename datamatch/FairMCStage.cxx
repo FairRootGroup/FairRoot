@@ -30,7 +30,7 @@ FairMCStage::~FairMCStage()
 {
 }
 
-FairMCStage::FairMCStage(Int_t id, std::string fileName, std::string branchName, Double_t weight)
+FairMCStage::FairMCStage(Int_t id, const std::string& fileName, const std::string& branchName, Double_t weight)
   : FairMCObject(id),
     fBranchName(branchName),
     fFileName(fileName),

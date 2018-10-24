@@ -56,8 +56,8 @@ class FairMCMatch: public TNamed
     void AddElement(Int_t type, int index, FairLink link);
     void AddElement(Int_t sourceType, int index, Int_t targetType, int link);
     void SetElements(Int_t sourceType, int index, FairMultiLinkedData* links);
-    void InitStage(Int_t type, std::string fileName, std::string branchName);
-    void InitStage(std::string fileName, std::string branchName = "");
+    void InitStage(Int_t type, const std::string& fileName, const std::string& branchName);
+    void InitStage(const std::string& fileName, const std::string& branchName = "");
     void RemoveStage(Int_t type);
     void LoadInMCLists(TClonesArray* myLinkArray);
     void ClearMCList();
@@ -95,8 +95,8 @@ class FairMCMatch: public TNamed
       return fList[type];
     }
 
-    void CreateArtificialStage(TString branchName, std::string fileName = "");
-    void CreateArtificialStage(Int_t stage, std::string fileName = "", std::string branchName = "");
+    void CreateArtificialStage(const TString& branchName, const std::string& fileName = "");
+    void CreateArtificialStage(Int_t stage, const std::string& fileName = "", const std::string& branchName = "");
 
     FairMultiLinkedData FindLinksToStage(Int_t stage);
 

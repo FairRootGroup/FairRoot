@@ -37,7 +37,7 @@ FairMultiLinkedData::FairMultiLinkedData()
 {
 }
 
-FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persistanceCheck)
+FairMultiLinkedData::FairMultiLinkedData(const std::set<FairLink>& links, Bool_t persistanceCheck)
   :TObject(),
    fLinks(links),
    fEntryNr(),
@@ -48,7 +48,7 @@ FairMultiLinkedData::FairMultiLinkedData(std::set<FairLink> links, Bool_t persis
 {
 }
 
-FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
+FairMultiLinkedData::FairMultiLinkedData(TString dataType, const std::vector<Int_t>& links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :TObject(),
    fLinks(),
    fEntryNr(),
@@ -62,7 +62,7 @@ FairMultiLinkedData::FairMultiLinkedData(TString dataType, std::vector<Int_t> li
 //  FairMultiLinkedData(ioman->GetBranchId(dataType), links, persistanceCheck, bypass, addup, mult);
 }
 
-FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
+FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, const std::vector<Int_t>& links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
   :TObject(),
    fLinks(),
    fEntryNr(),

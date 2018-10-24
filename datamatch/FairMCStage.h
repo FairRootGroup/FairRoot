@@ -27,7 +27,7 @@ class FairMCStage: public FairMCObject
 {
   public:
     FairMCStage();
-    FairMCStage(Int_t id, std::string fileName, std::string branchName, Double_t weight = 1.0);
+    FairMCStage(Int_t id, const std::string& fileName, const std::string& branchName, Double_t weight = 1.0);
 
     FairMCStage(const FairMCStage& mcStage)
       : FairMCObject(mcStage),
@@ -52,12 +52,10 @@ class FairMCStage: public FairMCObject
       return *this;
     }
 
-
-
     virtual ~FairMCStage();
 
-    void SetBranchName(std::string branchName)  { fBranchName = branchName; }
-    void SetFileName(std::string fileName)      { fFileName = fileName; }
+    void SetBranchName(const std::string& branchName)  { fBranchName = branchName; }
+    void SetFileName(const std::string& fileName)      { fFileName = fileName; }
     void SetWeight(Double_t weight)       { fWeight = weight; }
     void SetLoaded(Bool_t loaded)         { fLoaded = loaded; }
     void SetFill(Bool_t fill)           { fFill = fill; }

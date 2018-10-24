@@ -15,14 +15,14 @@
 class FairTestOutputHandler
 {
   public:
-    FairTestOutputHandler(std::string filename);
+    FairTestOutputHandler(const std::string& filename);
     FairTestOutputHandler();
     ~FairTestOutputHandler();
 
     std::string GetCaptureLine(int line);
     int GetNumberOfLines();
 
-    void SetFileName(std::string filename);
+    void SetFileName(const std::string& filename);
 
   private:
 

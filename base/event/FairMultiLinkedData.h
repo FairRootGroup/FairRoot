@@ -31,9 +31,9 @@ class FairMultiLinkedData : public  TObject
 {
   public:
     FairMultiLinkedData();///< Default constructor
-    FairMultiLinkedData(std::set<FairLink> links, Bool_t persistanceCheck = kTRUE);///< Constructor
-    FairMultiLinkedData(TString dataType, std::vector<Int_t> links, Int_t fileId = -1, Int_t evtId = -1,Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
-    FairMultiLinkedData(Int_t dataType, std::vector<Int_t> links, Int_t fileId = -1, Int_t evtId = -1, Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
+    FairMultiLinkedData(const std::set<FairLink>& links, Bool_t persistanceCheck = kTRUE);///< Constructor
+    FairMultiLinkedData(TString dataType, const std::vector<Int_t>& links, Int_t fileId = -1, Int_t evtId = -1,Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
+    FairMultiLinkedData(Int_t dataType, const std::vector<Int_t>& links, Int_t fileId = -1, Int_t evtId = -1, Bool_t persistanceCheck = kTRUE, Bool_t bypass = kFALSE, Float_t mult = 1.0);///< Constructor
 
     virtual ~FairMultiLinkedData() {};
 
@@ -104,7 +104,7 @@ class FairMultiLinkedData : public  TObject
     Bool_t fInsertHistory; //!
     Int_t fVerbose; //!
 
-    virtual void SimpleAddLinks(Int_t fileId, Int_t evtId, Int_t dataType, std::vector<Int_t> links, Bool_t, Float_t) {
+    virtual void SimpleAddLinks(Int_t fileId, Int_t evtId, Int_t dataType, const std::vector<Int_t>& links, Bool_t, Float_t) {
       for (UInt_t i = 0; i < links.size(); i++) {
         fLinks.insert(FairLink(fileId, evtId, dataType, links[i]));
       }
