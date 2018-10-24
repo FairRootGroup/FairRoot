@@ -79,7 +79,7 @@ template <class T> class _TestFairLoggerBase : public T
       fLogger->SetLogVerbosityLevel("LOW");
     }
 
-    void LogNoArguments(FairLogger* fLogger, std::string OutputString) {
+    void LogNoArguments(FairLogger* fLogger, const std::string& OutputString) {
       // Log same message for all log levels
       fLogger->Error(MESSAGE_ORIGIN, OutputString.c_str());
       fLogger->Warning(MESSAGE_ORIGIN, OutputString.c_str());
@@ -91,9 +91,7 @@ template <class T> class _TestFairLoggerBase : public T
       fLogger->Debug4(MESSAGE_ORIGIN, OutputString.c_str());
     }
 
-    std::vector<std::string> CreateExpectedOutputNoArguments(std::string loglevel,
-        std::string outString,
-        std::string filename="") {
+    std::vector<std::string> CreateExpectedOutputNoArguments(const std::string& loglevel, const std::string& outString, const std::string& filename = "") {
 
       //Put blanks to the string to have all strings the same length
       int size = loglevel.size();
@@ -127,7 +125,7 @@ template <class T> class _TestFairLoggerBase : public T
       return retVal;
     }
 
-    std::vector<std::string> CreateExpectedLogLevels(std::string loglevel) {
+    std::vector<std::string> CreateExpectedLogLevels(const std::string& loglevel) {
 
       std::vector<std::string> levelNames(TestLogs, TestLogs+8);
       std::vector<std::string>::iterator position =
@@ -136,7 +134,7 @@ template <class T> class _TestFairLoggerBase : public T
       return levelNames;
     }
 
-    void CheckScreenOutput(FairCaptureOutput handler, std::vector<std::string> v) {
+    void CheckScreenOutput(FairCaptureOutput handler, const std::vector<std::string>& v) {
       int noLines = handler.GetNumberOfLines();
       int expectedNumberOfLines = v.size();
       EXPECT_EQ(expectedNumberOfLines,noLines);
@@ -148,7 +146,7 @@ template <class T> class _TestFairLoggerBase : public T
       }
     }
 
-    void CheckFileOutput(FairTestOutputHandler handler, std::vector<std::string> v) {
+    void CheckFileOutput(FairTestOutputHandler handler, const std::vector<std::string>& v) {
       int noLines = handler.GetNumberOfLines();
       int expectedNumberOfLines = v.size();
       EXPECT_EQ(expectedNumberOfLines,noLines);

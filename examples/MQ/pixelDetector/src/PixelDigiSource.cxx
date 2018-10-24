@@ -84,7 +84,7 @@ Bool_t PixelDigiSource::Init()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-int ReadIntFromString(std::string wholestr, std::string pattern) {
+int ReadIntFromString(const std::string& wholestr, const std::string& pattern) {
   std::string tempstr = wholestr;
   tempstr.replace(0,tempstr.find(pattern)+pattern.length(),"");
   tempstr.replace(0,tempstr.find('=')+1,"");

@@ -139,7 +139,7 @@ class FairTutorialDet4: public FairDetector
      **/
     void ConstructASCIIGeometry();
 
-    Bool_t CheckIfSensitive(std::string name);
+    Bool_t CheckIfSensitive(const std::string& name);
 
     void ModifyGeometryBySymlink();
     void ModifyGeometryByFullPath();

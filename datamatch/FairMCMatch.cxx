@@ -59,7 +59,7 @@ void FairMCMatch::SetElements(Int_t sourceType, int index, FairMultiLinkedData* 
   fList[sourceType]->SetEntry(links, index);
 }
 
-void FairMCMatch::InitStage(Int_t type, std::string fileName, std::string branchName)
+void FairMCMatch::InitStage(Int_t type, const std::string& fileName, const std::string& branchName)
 {
   if (fList[type] == 0) {
     FairMCStage* newStage = new FairMCStage(type, fileName, branchName);
@@ -72,7 +72,7 @@ void FairMCMatch::InitStage(Int_t type, std::string fileName, std::string branch
   }
 }
 
-void FairMCMatch::InitStage(std::string branchName, std::string fileName)
+void FairMCMatch::InitStage(const std::string& branchName, const std::string& fileName)
 {
   FairRootManager* ioman = FairRootManager::Instance();
   if (ioman->CheckBranch(branchName.c_str()) == 1) {
@@ -254,7 +254,7 @@ FairMultiLinkedData FairMCMatch::FindLinksToStage(Int_t stage)
   return result;
 }
 
-void FairMCMatch::CreateArtificialStage(TString branchName, std::string fileName)
+void FairMCMatch::CreateArtificialStage(const TString& branchName, const std::string& fileName)
 {
   FairRootManager* ioman = FairRootManager::Instance();
   std::cout << "Create Artificial Stage for " << branchName;
@@ -266,7 +266,7 @@ void FairMCMatch::CreateArtificialStage(TString branchName, std::string fileName
   }
 }
 
-void FairMCMatch::CreateArtificialStage(Int_t stage, std::string fileName, std::string branchName)
+void FairMCMatch::CreateArtificialStage(Int_t stage, const std::string& fileName, const std::string& branchName)
 {
   FairMultiLinkedData stageLinks = FindLinksToStage(stage);
   stageLinks.SetPersistanceCheck(kFALSE);

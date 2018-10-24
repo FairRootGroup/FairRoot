@@ -56,7 +56,7 @@ void FairMQSamplerTask::Exec(Option_t* /*opt*/)
 {
 }
 
-void FairMQSamplerTask::SetBranch(string branch)
+void FairMQSamplerTask::SetBranch(const string& branch)
 {
     fBranch = branch;
 }

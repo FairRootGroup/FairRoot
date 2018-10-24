@@ -9,7 +9,7 @@
 
 #include <fstream>
 
-FairTestOutputHandler::FairTestOutputHandler(std::string filename)
+FairTestOutputHandler::FairTestOutputHandler(const std::string& filename)
   : fFileName(filename),
     fFileContent(),
     fFileContentIterator(),
@@ -32,7 +32,7 @@ FairTestOutputHandler::~FairTestOutputHandler()
   remove(fFileName.c_str());
 }
 
-void FairTestOutputHandler::SetFileName(std::string filename)
+void FairTestOutputHandler::SetFileName(cosnt std::string& filename)
 {
   fFileName = filename;
   fFileContent.clear();
