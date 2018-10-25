@@ -278,32 +278,30 @@ Bool_t FairMixedSource::Init()
     
     //  GetRunIdInfo(fInFile->GetName(), chainName);
     
-    // Add all additional input files to the input chain and do a
-    // consitency check
-    std::list<TString>::const_iterator iter;
-    for(iter = fInputChainList.begin(); iter != fInputChainList.end(); iter++) {
+    // Add all additional input files to the input chain and do a consitency check
+    for (auto fileName : fInputChainList) {
         // Store global gFile pointer for safety reasons.
         // Set gFile to old value at the end of the routine.R
         TFile* temp = gFile;
         
         // Temporarily open the input file to extract information which
         // is needed to bring the friend trees in the correct order
-        TFile* inputFile = TFile::Open((*iter));
+        TFile* inputFile = TFile::Open(fileName);
         if (inputFile->IsZombie()) {
-	  LOG(fatal) << "Error opening the file " << (*iter).Data() << " which should be added to the input chain or as friend chain";
+          LOG(fatal) << "Error opening the file " << fileName.Data() << " which should be added to the input chain or as friend chain";
         }
         
         // Check if the branchlist is the same as for the first input file.
         Bool_t isOk = CompareBranchList(inputFile, chainName);
         if ( !isOk ) {
-	  LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << (*iter).Data();
-            return kFALSE;
+          LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << fileName.Data();
+          return kFALSE;
         }
         
         // Add the runid information for all files in the chain.
         //GetRunIdInfo(inputFile->GetName(), chainName);
         // Add the file to the input chain
-        fBackgroundChain->Add( (*iter) );
+        fBackgroundChain->Add( fileName );
         
         // Close the temporarly file and restore the gFile pointer.
         inputFile->Close();
@@ -348,29 +346,28 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
   Bool_t GetASignal=kFALSE;
 
   if(fSBRatiobyN || fSBRatiobyT ) {
-    std::map<UInt_t, Double_t>::const_iterator iterN;
     Double_t ratio=0;
     if(fCurrentEntryNo==0) {
-      for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
-        ratio+=iterN->second;
-        fSignalBGN[iterN->first]=ratio;
-        LOG(debug) << "--------------Set signal no. " << iterN->first << " weight " << ratio << ".";
+      for (const auto& mi : fSignalBGN) {
+        ratio+=mi.second;
+        fSignalBGN[mi.first]=ratio;
+        LOG(debug) << "--------------Set signal no. " << mi.first << " weight " << ratio << ".";
       }
     }
     ratio=0;
-    for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
-      ratio=iterN->second;
-      LOG(debug) << "---Check signal no. " << iterN->first << " SBratio " << SBratio << " : ratio " << ratio;
+    for(const auto& mi : fSignalBGN) {
+      ratio=mi.second;
+      LOG(debug) << "---Check signal no. " << mi.first << " SBratio " << SBratio << " : ratio " << ratio;
       if(SBratio <=ratio) {
-        TChain* chain = fSignalTypeList[iterN->first];
-        UInt_t entry = fCurrentEntry[iterN->first];
+        TChain* chain = fSignalTypeList[mi.first];
+        UInt_t entry = fCurrentEntry[mi.first];
         chain->GetEntry(entry);
         fOutHeader->SetMCEntryNumber(entry);
-        fOutHeader->SetInputFileId(iterN->first);
+        fOutHeader->SetInputFileId(mi.first);
         fOutHeader->SetEventTime(GetEventTime());
         GetASignal=kTRUE;
-        fCurrentEntry[iterN->first]=entry+1;
-        LOG(debug) << "---Get entry No. " << entry << " from signal chain number --- " << iterN->first << " --- ";
+        fCurrentEntry[mi.first]=entry+1;
+        LOG(debug) << "---Get entry No. " << entry << " from signal chain number --- " << mi.first << " --- ";
         break;
       }
     }
@@ -417,10 +414,8 @@ Bool_t FairMixedSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
   // fill a set with the original branch structure
   // This allows to use functions find and erase
   std::set<TString> branches;
-  std::list<TString>::const_iterator iter;
-  for(iter = fCheckInputBranches[inputLevel]->begin();
-      iter != fCheckInputBranches[inputLevel]->end(); iter++) {
-    branches.insert(*iter);
+  for(auto li : (*fCheckInputBranches[inputLevel])) {
+    branches.insert(li);
   }
 
   // To do so we have to loop over the branches in the file and to compare
@@ -597,9 +592,8 @@ Bool_t FairMixedSource::OpenBackgroundChain()
 //_____________________________________________________________________________
 Bool_t FairMixedSource::OpenSignalChain()
 {
-  std::map<UInt_t, TChain*>::const_iterator iter;
-  for(iter = fSignalTypeList.begin(); iter != fSignalTypeList.end(); iter++) {
-    TChain* currentChain=iter->second;
+  for(const auto& mi : fSignalTypeList) {
+    TChain* currentChain=mi.second;
     // cout << "Signal chain is : " << currentChain->GetName()<< endl;
     //   currentChain->Dump();
     TFile* ChainFirstFile = currentChain->GetFile();
@@ -619,10 +613,9 @@ Bool_t   FairMixedSource::ActivateObject(TObject** obj, const char* BrName) {
   fBackgroundChain->SetBranchStatus(BrName,1);
   fBackgroundChain->SetBranchAddress(BrName,obj);
 
-  std::map<UInt_t, TChain*>::const_iterator iter;
   Int_t no=0;
-  for(iter = fSignalTypeList.begin(); iter != fSignalTypeList.end(); iter++) {
-    TChain* currentChain=iter->second;
+  for(const auto& mi : fSignalTypeList) {
+    TChain* currentChain = mi.second;
     LOG(debug2) << "Set the Branch address for signal file number " << no++ << " and  branch " << BrName;
     currentChain->SetBranchStatus(BrName,1);
     currentChain->SetBranchAddress(BrName,obj);
@@ -694,18 +687,17 @@ Int_t  FairMixedSource::CheckMaxEventNo(Int_t EvtEnd)
   Int_t MaxBG=fBackgroundChain->GetEntries();
   Int_t MaxS=0;
   Double_t ratio=0.;
-  std::map<UInt_t, Double_t>::const_iterator iterN;
-  for(iterN = fSignalBGN.begin(); iterN != fSignalBGN.end(); iterN++) {
-    TChain* chain = fSignalTypeList[iterN->first];
+  for(const auto& mi : fSignalBGN) {
+    TChain* chain = fSignalTypeList[mi.first];
     MaxS=chain->GetEntries();
-    LOG(info) << "Signal chain  No " << iterN->first << " has  : " << MaxS << " entries ";
-    ratio=iterN->second;
+    LOG(info) << "Signal chain  No " << mi.first << " has  : " << MaxS << " entries ";
+    ratio=mi.second;
     if(floor(MaxS/ratio) > MaxBG) {
       localMax=MaxBG+static_cast<Int_t>(floor(MaxBG*ratio));
-      LOG(warn) << "No of Event in Background chain is not enough for all signals in chain  " << iterN->first;
+      LOG(warn) << "No of Event in Background chain is not enough for all signals in chain  " << mi.first;
     } else {
       localMax=static_cast<Int_t>(floor(MaxS/ratio));
-      LOG(warn) << "No of Event in signal chain " << iterN->first << " is not enough, the maximum event number will be reduced to : " << localMax;
+      LOG(warn) << "No of Event in signal chain " << mi.first << " is not enough, the maximum event number will be reduced to : " << localMax;
     }
     if(MaxEventNo==0 || MaxEventNo > localMax) {
       MaxEventNo=localMax;

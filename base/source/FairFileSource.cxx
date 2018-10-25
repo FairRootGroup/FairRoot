@@ -252,24 +252,23 @@ Bool_t FairFileSource::Init()
 
     // Add all additional input files to the input chain and do a
     // consitency check
-    std::list<TString>::const_iterator iter;
-    for(iter = fInputChainList.begin(); iter != fInputChainList.end(); iter++) {
+    for (auto fileName : fInputChainList) {
         // Store global gFile pointer for safety reasons.
         // Set gFile to old value at the end of the routine.R
         TFile* temp = gFile;
 
         // Temporarily open the input file to extract information which
         // is needed to bring the friend trees in the correct order
-        TFile* inputFile = TFile::Open((*iter));
+        TFile* inputFile = TFile::Open(fileName);
         if (inputFile->IsZombie()) {
-	  LOG(fatal) << "Error opening the file " << (*iter).Data() << " which should be added to the input chain or as friend chain";
+          LOG(fatal) << "Error opening the file " << fileName.Data() << " which should be added to the input chain or as friend chain";
         }
 
         if (fCheckFileLayout) {
           // Check if the branchlist is the same as for the first input file.
           Bool_t isOk = CompareBranchList(inputFile, chainName);
           if ( !isOk ) {
-            LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << (*iter).Data() << " are different.";
+            LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << fileName.Data() << " are different.";
             return kFALSE;
           }
         }
@@ -277,7 +276,7 @@ Bool_t FairFileSource::Init()
         // Add the runid information for all files in the chain.
         //GetRunIdInfo(inputFile->GetName(), chainName);
         // Add the file to the input chain
-        fInChain->Add( (*iter) );
+        fInChain->Add( fileName );
 
         // Close the temporarly file and restore the gFile pointer.
         inputFile->Close();
@@ -383,12 +382,9 @@ void FairFileSource::AddFriendsToChain()
     // than once. This is not needed any longer, so we remove deuplicates
     // from the list and display a warning.
     std::list<TString> friendList;
-    std::list<TString>::iterator iter1;
-    for(iter1 = fFriendFileList.begin();
-        iter1 != fFriendFileList.end(); iter1++) {
-        if (find(friendList.begin(), friendList.end(), (*iter1))
-            == friendList.end()) {
-            friendList.push_back(*iter1);
+    for (auto fileName : fFriendFileList) {
+        if (find(friendList.begin(), friendList.end(), fileName) == friendList.end()) {
+            friendList.push_back(fileName);
         }
     }
     // TODO: print a warning if it was neccessary to remove a filname from the
@@ -398,9 +394,7 @@ void FairFileSource::AddFriendsToChain()
 
     Int_t friendType = 1;
     // Loop over all files which have been added as friends
-    for(iter1 = friendList.begin();
-        iter1 != friendList.end(); iter1++) {
-        std::list<TString>::iterator iter;
+    for(auto fileName : friendList) {
         TString inputLevel;
         // Loop over all already defined input levels to check if this type
         // of friend tree is already added.
@@ -409,13 +403,12 @@ void FairFileSource::AddFriendsToChain()
         // does not exist already create a new friend chain and add the file.
         Bool_t inputLevelFound = kFALSE;
         TFile* inputFile;
-        for ( iter = fInputLevel.begin(); iter !=fInputLevel.end(); iter++ ) {
-            inputLevel = (*iter);
+        for (auto level : fInputLevel) {
+            inputLevel = level;
 
-            inputFile = TFile::Open((*iter1));
+            inputFile = TFile::Open(fileName);
             if (inputFile->IsZombie()) {
-	      LOG(fatal) << "Error opening the file " << (*iter).Data()
-			 << " which should be added to the input chain or as friend chain";
+              LOG(fatal) << "Error opening the file " << level.Data() << " which should be added to the input chain or as friend chain";
             }
 
             // Check if the branchlist is already stored in the map. If it is
@@ -429,13 +422,13 @@ void FairFileSource::AddFriendsToChain()
             inputFile->Close();
         }
         if (!inputLevelFound) {
-            inputLevel= Form("FriendTree_%i",friendType);
-            CreateNewFriendChain((*iter1), inputLevel);
+            inputLevel = Form("FriendTree_%i",friendType);
+            CreateNewFriendChain(fileName, inputLevel);
             friendType++;
         }
 
         TChain* chain = static_cast<TChain*>(fFriendTypeList[inputLevel]);
-        chain->AddFile((*iter1), 1234567890, FairRootManager::GetTreeName());
+        chain->AddFile(fileName, 1234567890, FairRootManager::GetTreeName());
     }
     gFile=temp;
 
@@ -443,13 +436,9 @@ void FairFileSource::AddFriendsToChain()
     // number of event numbers as the corresponding input chain
     // CheckFriendChains();
 
-    // Add all the friend chains which have been created to the
-    // main input chain.
-    std::map< TString, TChain* >::iterator mapIterator;
-    for (mapIterator = fFriendTypeList.begin();
-         mapIterator != fFriendTypeList.end(); mapIterator++ ) {
-
-        TChain* chain = static_cast<TChain*>(mapIterator->second);
+    // Add all the friend chains which have been created to the main input chain.
+    for (const auto& mi : fFriendTypeList) {
+        TChain* chain = static_cast<TChain*>(mi.second);
         fInChain->AddFriend(chain);
     }
 
@@ -475,10 +464,8 @@ void FairFileSource::PrintFriendList( )
       LOG(info) << "    - " << chEl->GetTitle();
     }
 
-    map< TString, TChain* >::iterator mapIterator;
-    for (mapIterator = fFriendTypeList.begin();
-         mapIterator != fFriendTypeList.end(); mapIterator++ ) {
-        TChain* chain = static_cast<TChain*>(mapIterator->second);
+    for (const auto& mi : fFriendTypeList) {
+        TChain* chain = static_cast<TChain*>(mi.second);
         LOG(info) << " - " << chain->GetName();
         fileElements=chain->GetListOfFiles();
         TIter next1(fileElements);
@@ -502,9 +489,8 @@ void FairFileSource::CheckFriendChains()
     map1 = it1->second;
     std::vector<Int_t> runid;
     std::vector<Int_t> events;
-    std::multimap<TString,TArrayI>::iterator it;
-    for ( it=map1.begin() ; it != map1.end(); it++ ) {
-        TArrayI bla = (*it).second;
+    for (auto& mmi : map1) {
+        TArrayI bla = mmi.second;
         runid.push_back(bla[0]);
         events.push_back(bla[1]);
     }
@@ -514,9 +500,8 @@ void FairFileSource::CheckFriendChains()
     // If there is a mismatch stop the execution.
     Int_t errorFlag = 0;
     TString inputLevel;
-    std::list<TString>::iterator listit;
-    for ( listit=fInputLevel.begin() ; listit != fInputLevel.end(); listit++ ) {
-        inputLevel = (*listit);
+    for (auto level : fInputLevel) {
+        inputLevel = level;
         if ( !inputLevel.Contains("InputChain") ) {
             it1=fRunIdInfoAll.find(inputLevel);
             map1 = it1->second;
@@ -526,8 +511,8 @@ void FairFileSource::CheckFriendChains()
                 break;
             }
             Int_t counter = 0;
-            for ( it=map1.begin() ; it != map1.end(); it++ ) {
-                TArrayI bla = (*it).second;
+            for (auto& mmi : map1) {
+                TArrayI bla = mmi.second;
                 if ( (bla[0] != runid[counter]) || (bla[1] != events[counter]) ) {
                     errorFlag = 2;
                     //          goto error_label;
@@ -544,31 +529,24 @@ void FairFileSource::CheckFriendChains()
     // Use goto to leave double loop at once in case of error
     // error_label:
     if (errorFlag>0) {
-      LOG(error) << "The input chain and the friend chain " << inputLevel.Data()
-		 << " have a different structure:";
+      LOG(error) << "The input chain and the friend chain " << inputLevel.Data() << " have a different structure:";
         if (errorFlag == 1) {
-	  LOG(error) << "The input chain has the following runids and event numbers:";
+          LOG(error) << "The input chain has the following runids and event numbers:";
             for ( UInt_t i=0; i<runid.size(); i++) {
-	      LOG(error) << " - Runid " << runid[i] << " with " << events[i]
-			 << " events";
+              LOG(error) << " - Runid " << runid[i] << " with " << events[i] << " events";
             }
-            LOG(error) << "The " << inputLevel.Data()
-		       << " chain has the following runids and event numbers:";
-            for ( it=map1.begin() ; it != map1.end(); it++ ) {
-                TArrayI bla = (*it).second;
-                LOG(error) << " - Runid " << bla[0] << " with " << bla[1]
-			   << " events";
+            LOG(error) << "The " << inputLevel.Data() << " chain has the following runids and event numbers:";
+            for (auto& mmi : map1) {
+                TArrayI bla = mmi.second;
+                LOG(error) << " - Runid " << bla[0] << " with " << bla[1] << " events";
             }
         }
         if (errorFlag == 2) {
             Int_t counter = 0;
-            for ( it=map1.begin() ; it != map1.end(); it++ ) {
-                TArrayI bla = (*it).second;
-                LOG(error) << "Runid Input Chain, " << inputLevel.Data()
-			   << " chain: " << bla[0] << ", " << runid[counter];
-                LOG(error) << "Event number Input Chain, " << inputLevel.Data()
-			   << " chain: " << bla[1]
-			   << ", " << events[counter];
+            for (auto& mmi : map1) {
+                TArrayI bla = mmi.second;
+                LOG(error) << "Runid Input Chain, " << inputLevel.Data() << " chain: " << bla[0] << ", " << runid[counter];
+                LOG(error) << "Event number Input Chain, " << inputLevel.Data() << " chain: " << bla[1] << ", " << events[counter];
                 counter++;
             }
         }
@@ -635,10 +613,8 @@ Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
   // fill a set with the original branch structure
   // This allows to use functions find and erase
   std::set<TString> branches;
-  std::list<TString>::const_iterator iter;
-  for(iter = fCheckInputBranches[inputLevel]->begin();
-      iter != fCheckInputBranches[inputLevel]->end(); iter++) {
-    branches.insert(*iter);
+  for (auto li : *(fCheckInputBranches[inputLevel])) {
+    branches.insert(li);
   }
 
   // To do so we have to loop over the branches in the file and to compare
@@ -655,7 +631,7 @@ Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
   TList* list= dynamic_cast <TList*> (fileHandle->Get("BranchList"));
   if(list) {
     TObjString* Obj=0;
-    for(Int_t i =0; i< list->GetEntries(); i++) {
+    for (Int_t i =0; i< list->GetEntries(); i++) {
       Obj=dynamic_cast <TObjString*> (list->At(i));
       iter1=branches.find(Obj->GetString().Data());
       if (iter1 != branches.end() ) {
@@ -673,8 +649,8 @@ Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
   // same
   if (branches.size() != 0 ) {
     LOG(info) << "Compare Branch List will return kFALSE. The list has " << branches.size() << " branches:";
-    for (std::set<TString>::iterator it=branches.begin(); it!=branches.end(); ++it)
-      LOG(info) << "  -> " << *it;
+    for (auto branchName : branches)
+      LOG(info) << "  -> " << branchName;
     return kFALSE;
   }
 

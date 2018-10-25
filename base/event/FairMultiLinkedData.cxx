@@ -78,9 +78,8 @@ FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, const std::vector<Int_t
 FairLink FairMultiLinkedData::GetLink(Int_t pos) const
 {
   if (pos < static_cast<Int_t>(fLinks.size())) {
-    std::set<FairLink>::iterator it = fLinks.begin();
-    for (int i = 0; i < pos; i++) { it++; }
-    return *it;
+    // return value at iterator+pos
+    return *(std::next(fLinks.begin(), pos));
   } else {
     std::cout << "-E- FairMultiLinkedData:GetLink(pos) pos " << pos << " outside range " << fLinks.size() << std::endl;
     return FairLink();
@@ -106,10 +105,9 @@ void FairMultiLinkedData::SetLink(FairLink link, Bool_t bypass, Float_t mult)
 void FairMultiLinkedData::AddLinks(FairMultiLinkedData links, Float_t mult)
 {
   std::set<FairLink> myLinks = links.GetLinks();
-  for (std::set<FairLink>::iterator it = myLinks.begin(); it != myLinks.end(); it++) {
-    FairLink myLink = *it;
-    myLink.SetWeight(myLink.GetWeight()*mult);
-    AddLink(myLink);
+  for (auto link : myLinks) {
+    link.SetWeight(link.GetWeight()*mult);
+    AddLink(link);
   }
 }
 
@@ -239,10 +237,10 @@ void FairMultiLinkedData::InsertHistory(FairLink link)
         }
         if (pointerToLinks != 0){
 			std::set<FairLink> linkSet = pointerToLinks->GetLinks();
-			for (std::set<FairLink>::const_iterator iter = linkSet.begin(); iter!= linkSet.end(); iter++){
+			for (auto tlink : linkSet){
 				if (fVerbose > 1)
-					std::cout << "FairMultiLinkedData::InsertHistory inserting " << *iter << std::endl;
-				InsertLink(*iter);
+					std::cout << "FairMultiLinkedData::InsertHistory inserting " << tlink << std::endl;
+				InsertLink(tlink);
 			}
         }
 }
@@ -276,10 +274,9 @@ void FairMultiLinkedData::DeleteLink(Int_t /*type*/, Int_t /*index*/)
 FairMultiLinkedData FairMultiLinkedData::GetLinksWithType(Int_t type) const
 {
   FairMultiLinkedData result;
-  for (std::set<FairLink>::iterator it = fLinks.begin(); it != fLinks.end(); it++) {
-    if (it->GetType() == type) {
-      FairLink myLink = *it;
-      result.InsertLink(myLink);
+  for (auto link : fLinks) {
+    if (link.GetType() == type) {
+      result.InsertLink(link);
     }
   }
   return result;
@@ -317,10 +314,9 @@ TObject* FairMultiLinkedData::GetData(FairLink& myLink)
 void FairMultiLinkedData::SetAllWeights(Double_t weight)
 {
   std::set<FairLink> tempLinks;
-  for (std::set<FairLink>::iterator it = fLinks.begin(); it != fLinks.end(); it++) {
-    FairLink tempLink = *it;
-    tempLink.SetWeight(weight);
-    tempLinks.insert(tempLink);
+  for (auto link : fLinks) {
+    link.SetWeight(weight);
+    tempLinks.insert(link);
   }
   fLinks = tempLinks;
 }
@@ -328,10 +324,9 @@ void FairMultiLinkedData::SetAllWeights(Double_t weight)
 void FairMultiLinkedData::AddAllWeights(Double_t weight)
 {
   std::set<FairLink> tempLinks;
-  for (std::set<FairLink>::iterator it = fLinks.begin(); it != fLinks.end(); it++) {
-    FairLink tempLink = *it;
-    tempLink.SetWeight(weight + tempLink.GetWeight());
-    tempLinks.insert(tempLink);
+  for (auto link : fLinks) {
+    link.SetWeight(weight + link.GetWeight());
+    tempLinks.insert(link);
   }
   fLinks = tempLinks;
 }
@@ -339,10 +334,9 @@ void FairMultiLinkedData::AddAllWeights(Double_t weight)
 void FairMultiLinkedData::MultiplyAllWeights(Double_t weight)
 {
   std::set<FairLink> tempLinks;
-  for (std::set<FairLink>::iterator it = fLinks.begin(); it != fLinks.end(); it++) {
-    FairLink tempLink = *it;
-    tempLink.SetWeight(weight * tempLink.GetWeight());
-    tempLinks.insert(tempLink);
+  for (auto link : fLinks) {
+    link.SetWeight(weight * link.GetWeight());
+    tempLinks.insert(link);
   }
   fLinks = tempLinks;
 }

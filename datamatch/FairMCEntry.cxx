@@ -37,7 +37,7 @@ void FairMCEntry::RemoveType(Int_t type)
       fLinks.erase(it);
       it = fLinks.begin();
     } else {
-      it++;
+      ++it;
     }
   }
 }
