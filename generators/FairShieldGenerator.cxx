@@ -195,9 +195,8 @@ Int_t FairShieldGenerator::RegisterIons()
   }        // event loop
 
   FairRunSim* run = FairRunSim::Instance();
-  map<TString, FairIon*>::iterator mapIt;
-  for (mapIt=fIonMap.begin(); mapIt!=fIonMap.end(); mapIt++) {
-    FairIon* ion = (*mapIt).second;
+  for (const auto& mi : fIonMap) {
+    FairIon* ion = mi.second;
     run->AddNewIon(ion);
   }
 

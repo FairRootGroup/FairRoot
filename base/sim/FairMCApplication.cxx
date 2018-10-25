@@ -470,11 +470,9 @@ void FairMCApplication::FinishRun()
 
   LOG(debug) << "FairMCMCApplication::FinishRun() start";
 
-  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
-        listIter != listActiveDetectors.end();
-        listIter++)
+  for (auto detectorPtr : listActiveDetectors)
   {
-    (*listIter)->FinishRun();
+    detectorPtr->FinishRun();
   }
 
 
@@ -545,12 +543,10 @@ void FairMCApplication::BeginEvent()
 {
 // User actions at beginning of event
 // ---
-    
-    for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
-                                              listIter != listActiveDetectors.end();
-                                              listIter++)
+
+    for (auto detectorPtr : listActiveDetectors)
     {
-      (*listIter)->BeginEvent();
+      detectorPtr->BeginEvent();
     }
 }
 
@@ -559,31 +555,24 @@ void FairMCApplication::BeginPrimary()
 {
 // User actions at beginning of a primary track
 // ---
-    for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
-        listIter != listActiveDetectors.end();
-        listIter++)
+    for (auto detectorPtr : listActiveDetectors)
     {
-      (*listIter)->BeginPrimary();
+      detectorPtr->BeginPrimary();
     }
-
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::PreTrack()
 {
-
 // User actions at beginning of each track
 // ---
 
-  
- for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
-                                           listIter != listActiveDetectors.end();
-                                           listIter++)
- {
-    (*listIter)->PreTrack();
- }
-    
-    
+  for (auto detectorPtr : listActiveDetectors)
+  {
+    detectorPtr->PreTrack();
+  }
+
+
   fTrajAccepted=kFALSE;
   if(NULL != fTrajFilter) {
     // Get the pointer to current track
@@ -774,12 +763,9 @@ void FairMCApplication::PostTrack()
 {
 // User actions after finishing of each track
 // ---
-    
-  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
-       listIter != listActiveDetectors.end();
-       listIter++)
+  for (auto detectorPtr : listActiveDetectors)
   {
-    (*listIter)->PostTrack();
+    detectorPtr->PostTrack();
   }
 
 }
@@ -789,11 +775,9 @@ void FairMCApplication::FinishPrimary()
 {
 // User actions after finishing of a primary track
 // ---
-  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
-       listIter != listActiveDetectors.end();
-       listIter++)
+  for (auto detectorPtr : listActiveDetectors)
   {
-    (*listIter)->FinishPrimary();
+    detectorPtr->FinishPrimary();
   }
 
   fStack->FinishPrimary();
@@ -838,11 +822,9 @@ void FairMCApplication::FinishEvent()
     fFairTaskList->FinishEvent();
   }
 
-  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
-       listIter != listActiveDetectors.end();
-       listIter++)
+  for (auto detectorPtr : listActiveDetectors)
   {
-    (*listIter)->FinishEvent();
+    detectorPtr->FinishEvent();
   }
 
   if (fRootManager && fSaveCurrentEvent) {
@@ -851,11 +833,9 @@ void FairMCApplication::FinishEvent()
     fSaveCurrentEvent = kTRUE;
   }
 
-  for( std::list<FairDetector *>::iterator  listIter = listActiveDetectors.begin();
-       listIter != listActiveDetectors.end();
-       listIter++)
+  for (auto detectorPtr : listActiveDetectors)
   {
-    (*listIter)->EndOfEvent();
+    detectorPtr->EndOfEvent();
   }
     
   fStack->Reset();

@@ -380,17 +380,17 @@ void FairRootManager::TerminateTSBuffer(TString branchName)
 //_____________________________________________________________________________
 void FairRootManager::TerminateAllTSBuffer()
 {
-  for (std::map<TString, FairTSBufferFunctional*>::iterator iter = fTSBufferMap.begin(); iter != fTSBufferMap.end(); iter++)
+  for (auto& mi : fTSBufferMap)
   {
-    iter->second->Terminate();
+    mi.second->Terminate();
   }
 }
 
 //_____________________________________________________________________________
 Bool_t FairRootManager::AllDataProcessed()
 {
-  for(std::map<TString, FairTSBufferFunctional*>::iterator it = fTSBufferMap.begin(); it != fTSBufferMap.end(); it++) {
-    if (it->second->AllDataProcessed() == kFALSE && it->second->TimeOut() == kFALSE) {
+  for (auto& mi : fTSBufferMap) {
+    if (mi.second->AllDataProcessed() == kFALSE && mi.second->TimeOut() == kFALSE) {
       return kFALSE;
     }
   }
@@ -974,10 +974,8 @@ void FairRootManager::UpdateListOfTimebasedBranches()
    * Add branches that are time based to the proper list
    */
 
-  for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
-
-    if(iter->second->IsBufferingActivated()) fTimeBasedBranchNameList->AddLast(new TObjString(iter->first.Data()));
-
+  for (auto& mi : fWriteoutBufferMap) {
+    if(mi.second->IsBufferingActivated()) fTimeBasedBranchNameList->AddLast(new TObjString(mi.first.Data()));
   }
 
 }
@@ -1010,8 +1008,8 @@ FairWriteoutBuffer* FairRootManager::GetWriteoutBuffer(TString branchName)
 //_____________________________________________________________________________
 void FairRootManager::StoreWriteoutBufferData(Double_t eventTime)
 {
-  for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
-    iter->second->WriteOutData(eventTime);
+  for (auto& mi : fWriteoutBufferMap) {
+    mi.second->WriteOutData(eventTime);
   }
 }
 
@@ -1019,11 +1017,11 @@ void FairRootManager::StoreWriteoutBufferData(Double_t eventTime)
 void FairRootManager::StoreAllWriteoutBufferData()
 {
   Bool_t dataInBuffer = kFALSE;
-  for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
-    if (iter->second->GetNData() > 0) {
+  for (auto& mi : fWriteoutBufferMap) {
+    if (mi.second->GetNData() > 0) {
       dataInBuffer = kTRUE;
     }
-    iter->second->WriteOutAllData();
+    mi.second->WriteOutAllData();
   }
   fFillLastData = dataInBuffer;
 }
@@ -1031,8 +1029,8 @@ void FairRootManager::StoreAllWriteoutBufferData()
 //_____________________________________________________________________________
 void FairRootManager::DeleteOldWriteoutBufferData()
 {
-  for(std::map<TString, FairWriteoutBuffer*>::const_iterator iter = fWriteoutBufferMap.begin(); iter != fWriteoutBufferMap.end(); iter++) {
-    iter->second->DeleteOldData();
+  for (auto& mi : fWriteoutBufferMap) {
+    mi.second->DeleteOldData();
   }
 }
 

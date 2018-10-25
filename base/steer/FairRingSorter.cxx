@@ -94,8 +94,8 @@ void FairRingSorter::WriteOutElement(int index)
 		myDataField->begin()->second->Print();
 		std::cout << std::endl;
     }
-    for (it = myDataField->begin(); it != myDataField->end(); it++) {
-      fOutputData.push_back(it->second);
+    for (auto& mmi : *myDataField) {
+      fOutputData.push_back(mmi.second);
     }
     myDataField->clear();
   }
