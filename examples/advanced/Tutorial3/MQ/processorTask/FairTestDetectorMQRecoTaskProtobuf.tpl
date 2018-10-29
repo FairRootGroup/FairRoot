@@ -13,7 +13,7 @@
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(Option_t* opt)
 {
-    fRecoTask->fDigiArray->Clear();
+    fRecoTask.fDigiArray->Clear();
 
     TestDetectorProto::DigiPayload dp;
     dp.ParseFromArray(fPayload->GetData(), fPayload->GetSize());
@@ -23,22 +23,22 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     for (int i = 0; i < numEntries; ++i)
     {
         const TestDetectorProto::Digi& digi = dp.digi(i);
-        new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(digi.fx(), digi.fy(), digi.fz(), digi.ftimestamp());
-        static_cast<FairTestDetectorDigi*>(((*fRecoTask->fDigiArray)[i]))->SetTimeStampError(digi.ftimestamperror());
+        new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(digi.fx(), digi.fy(), digi.fz(), digi.ftimestamp());
+        static_cast<FairTestDetectorDigi*>(((*fRecoTask.fDigiArray)[i]))->SetTimeStampError(digi.ftimestamperror());
     }
 
-    if (!fRecoTask->fDigiArray)
+    if (!fRecoTask.fDigiArray)
     {
         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
-    fRecoTask->Exec(opt);
+    fRecoTask.Exec(opt);
 
     TestDetectorProto::HitPayload hp;
 
     for (int i = 0; i < numEntries; ++i)
     {
-        FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask->fHitArray->At(i));
+        FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
         if (!hit)
         {
             continue;

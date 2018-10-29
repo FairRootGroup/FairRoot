@@ -10,8 +10,6 @@
 #include "SerializerExample2.h"
 #include "BoostSerializer.h"
 
-#include <boost/core/null_deleter.hpp>
-
 // root
 #include "TFile.h"
 #include "TTree.h"

@@ -12,24 +12,10 @@
 
 namespace bpo = boost::program_options;
 
-using TSamplerBin         = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
-using TSamplerBoostBin    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
-using TSamplerBoostText   = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::text_oarchive>>;
-using TSamplerTMessage    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
-#ifdef PROTOBUF
-using TSamplerProtobuf    = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
-#endif
-#ifdef FLATBUFFERS
-using TSamplerFlatBuffers = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
-#endif
-#ifdef MSGPACK
-using TSamplerMsgPack     = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>;
-#endif
-
 void addCustomOptions(bpo::options_description& options)
 {
     options.add_options()
-        ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage)")
+        ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|flatbuffers|msgpack|protobuf|tmessage)")
         ("input-file", bpo::value<std::string>()->required(), "Path to the input file")
         ("parameter-file", bpo::value<std::string>()->default_value(""), "Path to the parameter file")
         ("branch", bpo::value<std::string>()->default_value("FairTestDetectorDigi"), "Name of the Branch")
@@ -42,22 +28,27 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
     std::string dataFormat = config.GetValue<std::string>("data-format");
 
-    if (dataFormat == "binary") { return new TSamplerBin; }
-    else if (dataFormat == "boost") { return new TSamplerBoostBin; }
-    else if (dataFormat == "boost-text") { return new TSamplerBoostText; }
-    else if (dataFormat == "tmessage") { return new TSamplerTMessage; }
+    if (dataFormat == "binary") { return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>; }
+    else if (dataFormat == "boost") {
+        if (fair::base::serialization::has_BoostSerialization<FairTestDetectorDigi, void(boost::archive::binary_oarchive&, const unsigned int)>::value == 0) {
+            LOG(error) << "Boost serialization for Output Payload requested, but the output type does not support it. Check the TOut parameter. Aborting.";
+            return nullptr;
+        }
+        return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
+    }
+    else if (dataFormat == "tmessage") { return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>; }
 #ifdef FLATBUFFERS
-    else if (dataFormat == "flatbuffers") { return new TSamplerFlatBuffers; }
+    else if (dataFormat == "flatbuffers") { return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>; }
 #endif
 #ifdef MSGPACK
-    else if (dataFormat == "msgpack") { return new TSamplerMsgPack; }
+    else if (dataFormat == "msgpack") { return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>; }
 #endif
 #ifdef PROTOBUF
-    else if (dataFormat == "protobuf") { return new TSamplerProtobuf; }
+    else if (dataFormat == "protobuf") { return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>; }
 #endif
     else
     {
-        LOG(error) << "No valid data format provided. (--data-format binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage). ";
+        LOG(error) << "No valid data format provided. (--data-format binary|boost|flatbuffers|msgpack|protobuf|tmessage). ";
         exit(EXIT_FAILURE);
     }
 }

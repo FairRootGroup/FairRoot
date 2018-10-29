@@ -34,22 +34,22 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 
     int numEntries = digis.size();
 
-    fRecoTask->fDigiArray->Clear();
+    fRecoTask.fDigiArray->Clear();
 
     for (int i = 0; i < numEntries; ++i)
     {
-        new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(std::get<0>(digis.at(i)), std::get<1>(digis.at(i)), std::get<2>(digis.at(i)), std::get<3>(digis.at(i)));
-        static_cast<FairTestDetectorDigi*>(((*fRecoTask->fDigiArray)[i]))->SetTimeStampError(std::get<4>(digis.at(i)));
+        new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(std::get<0>(digis.at(i)), std::get<1>(digis.at(i)), std::get<2>(digis.at(i)), std::get<3>(digis.at(i)));
+        static_cast<FairTestDetectorDigi*>(((*fRecoTask.fDigiArray)[i]))->SetTimeStampError(std::get<4>(digis.at(i)));
     }
 
-    if (!fRecoTask->fDigiArray)
+    if (!fRecoTask.fDigiArray)
     {
         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
     // execute task on the deserialized data (digis)
 
-    fRecoTask->Exec(opt);
+    fRecoTask.Exec(opt);
 
     // serialize the task results (hits)
 
@@ -60,7 +60,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 
     for (int i = 0; i < numEntries; ++i)
     {
-        FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask->fHitArray->At(i));
+        FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
         hits.push_back(std::make_tuple(hit->GetDetectorID(), hit->GetRefIndex(), hit->GetX(), hit->GetY(), hit->GetZ(), hit->GetDx(), hit->GetDy(), hit->GetDz()));
     }
 
@@ -90,25 +90,25 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 
 //     int numEntries = digis.size();
 
-//     fRecoTask->fDigiArray->Clear();
+//     fRecoTask.fDigiArray->Clear();
 
 //     for (int i = 0; i < numEntries; ++i)
 //     {
-//         new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(std::get<0>(digis.at(i)), std::get<1>(digis.at(i)), std::get<2>(digis.at(i)), std::get<3>(digis.at(i)));
+//         new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(std::get<0>(digis.at(i)), std::get<1>(digis.at(i)), std::get<2>(digis.at(i)), std::get<3>(digis.at(i)));
 //     }
 
-//     if (!fRecoTask->fDigiArray)
+//     if (!fRecoTask.fDigiArray)
 //     {
 //         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
 //     }
 
-//     fRecoTask->Exec(opt);
+//     fRecoTask.Exec(opt);
 
 //     MsgPackRef* container = new MsgPackRef();
 
 //     for (int i = 0; i < numEntries; ++i)
 //     {
-//         FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask->fHitArray->At(i));
+//         FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
 //         container->hits.push_back(std::make_tuple(hit->GetDetectorID(), hit->GetX(), hit->GetY(), hit->GetZ(), hit->GetDx(), hit->GetDy(), hit->GetDz()));
 //     }
 
@@ -120,7 +120,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 // template <>
 // void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPackStream, MsgPackStream>::Exec(Option_t* opt)
 // {
-//     fRecoTask->fDigiArray->Clear();
+//     fRecoTask.fDigiArray->Clear();
 
 //     msgpack::unpacker pac;
 
@@ -136,23 +136,23 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 //         msgpack::object digiObj = msg.get();
 //         msgpack::type::tuple<int, int, int, double, double> digi;
 //         digiObj.convert(&digi);
-//         new ((*fRecoTask->fDigiArray)[numEntries]) FairTestDetectorDigi(std::get<0>(digi), std::get<1>(digi), std::get<2>(digi), std::get<3>(digi));
+//         new ((*fRecoTask.fDigiArray)[numEntries]) FairTestDetectorDigi(std::get<0>(digi), std::get<1>(digi), std::get<2>(digi), std::get<3>(digi));
 //         numEntries++;
 //     }
 
-//     if (!fRecoTask->fDigiArray)
+//     if (!fRecoTask.fDigiArray)
 //     {
 //         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
 //     }
 
-//     fRecoTask->Exec(opt);
+//     fRecoTask.Exec(opt);
 
 //     msgpack::sbuffer* sbuf = new msgpack::sbuffer();
 //     msgpack::packer<msgpack::sbuffer> packer(sbuf);
 
 //     for (int i = 0; i < numEntries; ++i)
 //     {
-//         FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask->fHitArray->At(i));
+//         FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
 //         packer.pack(std::make_tuple(hit->GetDetectorID(), hit->GetX(), hit->GetY(), hit->GetZ(), hit->GetDx(), hit->GetDy(), hit->GetDz()));
 //     }
 

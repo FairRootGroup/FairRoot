@@ -9,9 +9,6 @@ if [ "$1" = "binary" ]; then
 elif [ "$1" = "boost" ]; then
     dataFormat="boost"
     echo "Using: boost (Boost binary)"
-elif [ "$1" = "boost-text" ]; then
-    dataFormat="boost-text"
-    echo "Using: boost-text (Boost text)"
 elif [ "$1" = "flatbuffers" ]; then
     if(@FLATBUFFERS_USED@); then
         dataFormat="flatbuffers"
@@ -47,6 +44,7 @@ fi
 SAMPLER="tut3-sampler"
 SAMPLER+=" --id sampler1"
 SAMPLER+=" --data-format $dataFormat"
+SAMPLER+=" --severity info"
 SAMPLER+=" --chain-input 99"
 SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams_$mcEngine.root"
