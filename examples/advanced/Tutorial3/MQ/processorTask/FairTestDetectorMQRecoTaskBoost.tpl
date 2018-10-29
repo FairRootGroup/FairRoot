@@ -7,65 +7,22 @@
 
 // Implementation of FairTestDetectorMQRecoTask::Exec() with Boost transport data format
 
+#include "BoostSerializer.h"
+
 // example TIn: FairTestDetectorDigi
 // example TOut: FairTestDetectorHit
-// example TPayloadIn: boost::archive::binary_iarchive, boost::archive::text_iarchive
-// example TPayloadOut: boost::archive::binary_oarchive, boost::archive::text_oarchive
+// example TPayloadIn: boost::archive::binary_iarchive
+// example TPayloadOut: boost::archive::binary_oarchive
 template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option_t* opt)
 {
-    int inputSize = fPayload->GetSize();
+    BoostSerializer<TIn>().Deserialize(*fPayload, fRecoTask.fDigiArray);
 
-    // prepare boost input archive
-    std::string msgStr(static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
-    std::istringstream iss(msgStr);
-    TPayloadIn ouputArchive(iss);
-    try
-    {
-        ouputArchive >> fDigiVector;
-    }
-    catch (boost::archive::archive_exception& e)
-    {
-        LOG(error) << e.what();
-    }
-
-    fRecoTask->fDigiArray->Clear();
-    int numEntries = fDigiVector.size();
-
-    for (int i = 0; i < numEntries; ++i)
-    {
-        new ((*fRecoTask->fDigiArray)[i]) TIn(fDigiVector.at(i));
-    }
-
-    if (!fRecoTask->fDigiArray)
-    {
+    if (!fRecoTask.fDigiArray) {
         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
-    fRecoTask->Exec(opt);
+    fRecoTask.Exec(opt);
 
-    if (inputSize > 0)
-    {
-        for (int i = 0; i < numEntries; ++i)
-        {
-            TOut* hit = static_cast<TOut*>(fRecoTask->fHitArray->At(i));
-            if (hit)
-            {
-                fHitVector.push_back(*hit);
-            }
-        }
-    }
-
-    // prepare boost output archive
-    std::ostringstream oss;
-    TPayloadOut outputArchive(oss);
-    outputArchive << fHitVector;
-    std::string* strMsg = new std::string(oss.str());
-    fPayload->Rebuild(const_cast<char*>(strMsg->c_str()),
-                      strMsg->length(),
-                      [](void* /*data*/, void* hint){ delete static_cast<std::string*>(hint); },
-                      strMsg);
-
-    fDigiVector.clear();
-    fHitVector.clear();
+    BoostSerializer<TOut>().Serialize(*fPayload, fRecoTask.fHitArray);
 }

@@ -12,7 +12,7 @@ Each device in this example implements several serialization approaches:
 To choose specific format when running the device, provide it to the start script (binary is default):
 
 ```bash
-./startMQTut3All.sh <binary|boost|boost-text|flatbuffers|msgpack|protobuf|tmessage>
+./startMQTut3All.sh <binary|boost|flatbuffers|msgpack|protobuf|tmessage>
 ```
 
 ## Topologies
@@ -24,5 +24,3 @@ The devices can be started in different topologies:
 - `startMQTut3AllProxy` : sampler -> proxy -> 3 processors -> proxy -> sink
 - `startMQTut3PushPull` : sampler -> 2 processors -> sink (load-balanced/round robin between processors)
 - `startMQTut3ExtraProcessor` : additional processor to plug into PushPull topology
-
-The configuration is done via corresponding JSON files.

@@ -7,46 +7,26 @@
 
 // Implementation of FairTestDetectorFileSink::Run() with Boost transport data format
 
+#include "BoostSerializer.h"
+
 // example TIn: FairTestDetectorHit
-// example TPayloadIn: boost::archive::binary_iarchive, boost::archive::text_iarchive
+// example TPayloadIn: boost::archive::binary_iarchive
 template <typename TIn, typename TPayloadIn>
 void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
 {
-    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/)
-    {
+    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
-        fOutput->Delete();
-        std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
-        std::istringstream iss(msgStr);
-        TPayloadIn inputArchive(iss);
 
-        try
-        {
-            inputArchive >> fHitVector;
-        }
-        catch (boost::archive::archive_exception& e)
-        {
-            LOG(error) << e.what();
-        }
+        Deserialize<BoostSerializer<TIn>>(*msg, fOutput);
 
-        int numInput = fHitVector.size();
-
-        for (int i = 0; i < numInput; ++i)
-        {
-            new ((*fOutput)[i]) TIn(fHitVector.at(i));
-        }
-
-        if (fOutput->IsEmpty())
-        {
+        if (fOutput->IsEmpty()) {
             LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
-        FairMQMessagePtr ack(fTransportFactory->CreateMessage());
-        fChannels.at(fAckChannelName).at(0).Send(ack);
+        FairMQMessagePtr ack(NewMessage());
+        Send(ack, fAckChannelName);
 
-        fTree->Fill();
-
-        fHitVector.clear();
+        fTree.Fill();
 
         return true;
     });

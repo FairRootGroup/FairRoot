@@ -15,113 +15,78 @@
 #ifndef FAIRTESTDETECTORFILESINK_H_
 #define FAIRTESTDETECTORFILESINK_H_
 
-#include <iostream>
-#include <array>
-#include <string>
+#include "FairMQDevice.h"
+#include "FairMQLogger.h"
 
 #include "Rtypes.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "TClonesArray.h"
-#include "TVector3.h"
 #include "TSystem.h"
-
-#include "FairMQDevice.h"
-#include "FairMQLogger.h"
 
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorHit.h"
 
-#include "BoostSerializer.h"
+#include <iostream>
+#include <array>
+#include <string>
+#include <memory>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/binary_object.hpp>
-
-template <typename TIn, typename TPayloadIn>
+template<typename TIn, typename TPayloadIn>
 class FairTestDetectorFileSink : public FairMQDevice
 {
   public:
     FairTestDetectorFileSink()
-        : fOutput(nullptr)
+        : fOutput(new TClonesArray("FairTestDetectorHit"))
         , fOutFile(nullptr)
-        , fTree(nullptr)
+        , fTree("MQOut", "Test output")
         , fReceivedMsgs(0)
         , fInChannelName("data2")
         , fAckChannelName("ack")
-        , fHitVector()
     {
         gSystem->ResetSignal(kSigInterrupt);
         gSystem->ResetSignal(kSigTermination);
-
-        // Check if boost serialization is available if it is chosen
-        // coverity[pointless_expression]: suppress coverity warnings on apparant if(const).
-        if (std::is_same<TPayloadIn, boost::archive::binary_iarchive>::value || std::is_same<TPayloadIn, boost::archive::text_iarchive>::value)
-        {
-            if (fair::base::serialization::has_BoostSerialization<TIn, void(TPayloadIn&, const unsigned int)>::value == 0)
-            {
-                LOG(error) << "Boost serialization for Input Payload requested, but the input type does not support it. Check the TIn parameter. Aborting.";
-                exit(EXIT_FAILURE);
-            }
-        }
     }
+
     FairTestDetectorFileSink(const FairTestDetectorFileSink&) = delete;
     FairTestDetectorFileSink operator=(const FairTestDetectorFileSink&) = delete;
 
     virtual ~FairTestDetectorFileSink()
     {
-        fTree->Write();
+        fTree.Write();
         fOutFile->Close();
-        fHitVector.clear();
-        delete fOutput;
-        delete fOutFile;
     }
 
-    virtual void InitOutputFile(std::string defaultId = "100")
+    virtual void InitOutputFile(const std::string& defaultId = "100")
     {
-        fOutput = new TClonesArray("FairTestDetectorHit");
-        char out[256];
-        sprintf(out, "filesink%s.root", defaultId.c_str());
-
-        fOutFile = TFile::Open(out, "recreate");
-        fTree = new TTree("MQOut", "Test output");
-        fTree->Branch("Output", "TClonesArray", &fOutput, 64000, 99);
+        std::string filename("filesink_" + defaultId + ".root");
+        fOutFile = std::unique_ptr<TFile>(TFile::Open(filename.c_str(), "recreate"));
+        fTree.Branch("Output", "TClonesArray", fOutput.get(), 64000, 99);
     }
 
   protected:
     virtual void Init()
     {
-        std::string inChannelName = fConfig->GetValue<std::string>("in-channel");
-        std::string ackChannelName = fConfig->GetValue<std::string>("ack-channel");
-        // check if the returned value actually exists, for the compatibility with old devices.
-        if (inChannelName != "")
-        {
-            fInChannelName = inChannelName;
-        }
-        if (ackChannelName != "")
-        {
-            fAckChannelName = ackChannelName;
-        }
+        fInChannelName = fConfig->GetValue<std::string>("in-channel");
+        fAckChannelName = fConfig->GetValue<std::string>("ack-channel");
 
-        InitOutputFile("_" + fConfig->GetValue<std::string>("data-format"));
+        InitOutputFile(fConfig->GetValue<std::string>("data-format"));
     }
+
     virtual void PostRun()
     {
-        LOG(info) << "I've received " << fReceivedMsgs << " messages!";
+        LOG(info) << "Received " << fReceivedMsgs << " messages!";
     }
+
     virtual void InitTask();
 
-
   private:
-    TClonesArray* fOutput;
-    TFile* fOutFile;
-    TTree* fTree;
+    std::unique_ptr<TClonesArray> fOutput;
+    std::unique_ptr<TFile> fOutFile;
+    TTree fTree;
     int fReceivedMsgs;
     std::string fInChannelName;
     std::string fAckChannelName;
-
-    std::vector<TIn> fHitVector;
 };
 
 // Template implementation of Run() in FairTestDetectorFileSink.tpl :

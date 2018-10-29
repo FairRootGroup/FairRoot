@@ -135,8 +135,7 @@ class FairMQSampler : public FairMQDevice
 
         fFairRunAna->Init();
         // fFairRunAna->Run(0, 0);
-        FairRootManager* ioman = FairRootManager::Instance();
-        fNumEvents = int((ioman->GetInChain())->GetEntries());
+        fNumEvents = int((FairRootManager::Instance()->GetInChain())->GetEntries());
 
         LOG(info) << "Task initialized.";
         LOG(info) << "Number of events to process: " << fNumEvents;

@@ -48,7 +48,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
         FairMQMessagePtr ack(fTransportFactory->CreateMessage());
         fChannels.at(fAckChannelName).at(0).Send(ack);
 
-        fTree->Fill();
+        fTree.Fill();
 
         return true;
     });

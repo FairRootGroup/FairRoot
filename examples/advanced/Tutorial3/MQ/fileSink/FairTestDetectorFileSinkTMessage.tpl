@@ -18,12 +18,12 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
 
         RootSerializer().Deserialize(*msg, fOutput);
 
-        fTree->SetBranchAddress("Output", &fOutput);
+        fTree.SetBranchAddress("Output", &fOutput);
 
         FairMQMessagePtr ack(fTransportFactory->CreateMessage());
         fChannels.at(fAckChannelName).at(0).Send(ack);
 
-        fTree->Fill();
+        fTree.Fill();
 
         return true;
     });

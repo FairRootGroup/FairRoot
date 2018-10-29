@@ -11,7 +11,7 @@ using namespace TestDetectorFlat;
 template <>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorFlat::DigiPayload, TestDetectorFlat::HitPayload>::Exec(Option_t* opt)
 {
-    fRecoTask->fDigiArray->Clear();
+    fRecoTask.fDigiArray->Clear();
 
     auto digiPayload = GetDigiPayload(fPayload->GetData());
     auto digis = digiPayload->digis();
@@ -19,24 +19,24 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     for (auto it = digis->begin(); it != digis->end(); ++it)
     {
-        new ((*fRecoTask->fDigiArray)[it - digis->begin()]) FairTestDetectorDigi((*it)->x(), (*it)->y(), (*it)->z(), (*it)->timestamp());
-        static_cast<FairTestDetectorDigi*>(((*fRecoTask->fDigiArray)[it - digis->begin()]))->SetTimeStampError((*it)->timestampError());
+        new ((*fRecoTask.fDigiArray)[it - digis->begin()]) FairTestDetectorDigi((*it)->x(), (*it)->y(), (*it)->z(), (*it)->timestamp());
+        static_cast<FairTestDetectorDigi*>(((*fRecoTask.fDigiArray)[it - digis->begin()]))->SetTimeStampError((*it)->timestampError());
         // LOG(info) << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " " << (*it)->timestamp() << " " << (*it)->timestampError();
     }
 
-    if (!fRecoTask->fDigiArray)
+    if (!fRecoTask.fDigiArray)
     {
         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
-    fRecoTask->Exec(opt);
+    fRecoTask.Exec(opt);
 
     flatbuffers::FlatBufferBuilder* builder = new flatbuffers::FlatBufferBuilder();
     flatbuffers::Offset<TestDetectorFlat::Hit>* hits = new flatbuffers::Offset<TestDetectorFlat::Hit>[numEntries];
 
     for (int i = 0; i < numEntries; ++i)
     {
-        FairTestDetectorHit* hit = (FairTestDetectorHit*)fRecoTask->fHitArray->At(i);
+        FairTestDetectorHit* hit = (FairTestDetectorHit*)fRecoTask.fHitArray->At(i);
         if (!hit)
         {
             continue;

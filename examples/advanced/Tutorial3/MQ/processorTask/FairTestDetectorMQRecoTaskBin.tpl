@@ -14,20 +14,20 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     TestDetectorPayload::Digi* input = static_cast<TestDetectorPayload::Digi*>(fPayload->GetData());
 
-    fRecoTask->fDigiArray->Clear();
+    fRecoTask.fDigiArray->Clear();
 
     for (int i = 0; i < numEntries; ++i)
     {
-        new ((*fRecoTask->fDigiArray)[i]) FairTestDetectorDigi(input[i].fX, input[i].fY, input[i].fZ, input[i].fTimeStamp);
-        static_cast<FairTestDetectorDigi*>(((*fRecoTask->fDigiArray)[i]))->SetTimeStampError(input[i].fTimeStampError);
+        new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(input[i].fX, input[i].fY, input[i].fZ, input[i].fTimeStamp);
+        static_cast<FairTestDetectorDigi*>(((*fRecoTask.fDigiArray)[i]))->SetTimeStampError(input[i].fTimeStampError);
     }
 
-    if (!fRecoTask->fDigiArray)
+    if (!fRecoTask.fDigiArray)
     {
         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
-    fRecoTask->Exec(opt);
+    fRecoTask.Exec(opt);
 
     size_t hitsSize = numEntries * sizeof(TestDetectorPayload::Hit);
 
@@ -39,7 +39,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     {
         for (int i = 0; i < numEntries; ++i)
         {
-            FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask->fHitArray->At(i));
+            FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
 
             output[i].detID = hit->GetDetectorID();
             output[i].mcindex = hit->GetRefIndex();
