@@ -9,6 +9,8 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
+add_subdirectory (MCStepLogger)
+
 Set(INCLUDE_DIRECTORIES
  ${CMAKE_SOURCE_DIR}/fairtools
  ${FairLogger_INCDIR}
