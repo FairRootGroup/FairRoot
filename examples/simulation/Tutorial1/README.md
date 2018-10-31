@@ -14,3 +14,12 @@ To choose Geant4 you just have to change TGeant3 to TGeant4 in line 8 of the mac
 root>.L run_tutorial1.C
 root>run_tutorial(10, "TGeant4")
 ```
+
+### Seed for the random number generator
+
+```
+TRandom3 random(seed);
+gRandom = &random;
+run->Init();
+```
+
