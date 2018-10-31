@@ -98,6 +98,10 @@ void run_tutorial1(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
   // ------------------------------------------------------------------------
 
   // -----   Initialize simulation run   ------------------------------------
+  UInt_t randomSeed = 123456;
+  TRandom3 random(randomSeed);
+  gRandom = &random;
+
   run->Init();
   // ------------------------------------------------------------------------
 
