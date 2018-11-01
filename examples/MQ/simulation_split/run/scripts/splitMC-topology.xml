@@ -1,0 +1,56 @@
+<topology id="ExampleDDS">
+
+    <property id="primariesChannel" />
+    <property id="data#all#" />
+    <property id="dataOut" />
+    <property id="updateChannel" />
+
+    <decltask id="Generator">
+      <exe reachable="true">@SPLITMC_BIN_LOCATION@/runMQGen --id splitMC-gen --channel-config name=primariesChannel,type=push,method=bind --running-mode pp --severity INFO --nof-events 1000 --chunk-size 10 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+          <id access="write">primariesChannel</id>
+        </properties>
+    </decltask>
+
+    <decltask id="Transporter">
+      <exe reachable="true">@SPLITMC_BIN_LOCATION@/runMQTrans --config-key splitMC-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect --channel-config name=primariesChannel,type=pull,method=connect --channel-config name=data#all#,type=push,method=connect --transport-name TGeant3 --running-mode pp --severity INFO --detector-library @CMAKE_BINARY_DIR@/lib/libPixel.dylib -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+          <id access="read">primariesChannel</id>
+          <id access="read">data#all#</id>
+	  <id access="read">updateChannel</id>
+        </properties>
+    </decltask>
+
+    <decltask id="Merger">
+      <exe reachable="true">@SPLITMC_BIN_LOCATION@/runMQChMer --id splitMC-merger --in-channel data#all# --channel-config name=data#all#,type=pull,method=bind --out-channel dataOut --channel-config name=dataOut,type=push,method=bind --transport zeromq --severity INFO -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+          <id access="write">data#all#</id>
+          <id access="write">dataOut</id>
+        </properties>
+    </decltask>
+    
+    <decltask id="Sink">
+      <exe reachable="true">@PIXEL_BIN_LOCATION@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect --file-name @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+            <id access="read">dataOut</id>
+        </properties>
+    </decltask>
+
+    <decltask id="ParamServer">
+      <exe reachable="true">@FAIRROOT_BIN_LOCATION@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity INFO --update-channel-name updateChannel --output-name @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.pars.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <properties>
+            <id access="write">updateChannel</id>
+        </properties>
+    </decltask>
+
+    <main id="main">
+        <task>Generator</task>
+        <task>Merger</task>
+        <task>Sink</task>
+        <task>ParamServer</task>
+        <group id="TransporterGroup" n="5">
+            <task>Transporter</task>
+        </group>
+    </main>
+
+</topology>

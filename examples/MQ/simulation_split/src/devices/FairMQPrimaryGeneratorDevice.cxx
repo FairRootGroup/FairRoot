@@ -51,7 +51,7 @@ FairMQPrimaryGeneratorDevice::FairMQPrimaryGeneratorDevice()
   , fPrimaryGenerator(NULL)
   , fMCEventHeader(NULL)
   , fStack(NULL)
-  , fChunkSize(-1)
+  , fChunkSize(0)
   , fChunkPointer(0)
 {
 }
@@ -92,7 +92,7 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
     if ( fEventCounter > fNofEvents )
         return false;
 
-    if ( fChunkSize > 0 ) { // should send events in chunks with maximum size of fChunkSize
+    if ( fChunkSize != 0 ) { // should send events in chunks with maximum size of fChunkSize
         // shouldn't do much before, just sent from fChunkPointer to fChunkPointer+fChunkSize
     }
 
@@ -104,7 +104,7 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
 
     FairMCSplitEventHeader* meh = new FairMCSplitEventHeader(0,fEventCounter,1,0); // RunId will be provided in the Transport from ParameterServer
     meh->SetNPrim(prims->GetEntries());
-    if ( fChunkSize > 0 ) {
+    if ( fChunkSize != 0 ) {
         meh->SetNPrim(fChunkPointer+fChunkSize);
         meh->SetNofChunks ((UInt_t)(prims->GetEntries()/fChunkSize));
         meh->SetChunkStart(fChunkPointer);
@@ -127,7 +127,7 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
 
     int numberofparts = (int)prims->GetEntries();
 
-    if ( fChunkSize > 0 ) { // should send events in chunks with maximum size of fChunkSize
+    if ( fChunkSize != 0 ) { // should send events in chunks with maximum size of fChunkSize
         // the whole work should be done after
         fChunkPointer += fChunkSize;
         if ( fChunkPointer >= numberofparts ) { // it means that already sent all primaries from this event

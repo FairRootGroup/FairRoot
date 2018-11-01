@@ -72,3 +72,11 @@ ForEach(_file RANGE 0 ${_length})
     Set(DEPENDENCIES Pixel SimMQ)
     GENERATE_EXECUTABLE()
 EndForEach(_file RANGE 0 ${_length})
+
+set(SPLITMC_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split)
+set(SPLITMC_FILE_LOCATION ${CMAKE_SOURCE_DIR})
+set(PIXEL_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector)
+set(FAIRROOT_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
+
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/splitMC-topology.xml
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/splitMC-topology.xml )

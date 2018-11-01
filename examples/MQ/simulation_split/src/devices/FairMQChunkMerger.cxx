@@ -43,7 +43,10 @@ FairMQChunkMerger::FairMQChunkMerger()
 
 void FairMQChunkMerger::Init()
 {
-  OnData(fInputChannelName, &FairMQChunkMerger::MergeData);
+    fInputChannelName  = fConfig->GetValue<std::string>("in-channel");
+    fOutputChannelName = fConfig->GetValue<std::string>("out-channel");
+
+    OnData(fInputChannelName, &FairMQChunkMerger::MergeData);
 }
 
 bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
