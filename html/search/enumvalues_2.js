@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['connect',['Connect',['../namespacefair_1_1mq_1_1ofi.html#af5eb187eb48c7754814d7806dd326aeaa49ab28040dfa07f53544970c6d147e1e',1,'fair::mq::ofi']]]
+  ['error',['ERROR',['../FairLogger_8h.html#a3a99952da2be9a5e2b18e021432a2b8da2fd6f336d08340583bd620a7f5694c90',1,'FairLogger.h']]]
 ];

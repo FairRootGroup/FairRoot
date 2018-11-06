@@ -26,8 +26,5 @@ var searchData=
   ['lmd_5f_5ftype_5ffile_5fheader_5f101_5f1',['LMD__TYPE_FILE_HEADER_101_1',['../sMbs_8h.html#a80ede980de9e08028c2e011ab2fd2666',1,'sMbs.h']]],
   ['lmd_5f_5ftype_5ffile_5findex_5f101_5f2',['LMD__TYPE_FILE_INDEX_101_2',['../sMbs_8h.html#adfebdacb3ced0c5f2d6d6b80aceb4d86',1,'sMbs.h']]],
   ['lmd_5f_5ftype_5ftime_5fstamp_5f11_5f1',['LMD__TYPE_TIME_STAMP_11_1',['../sMbs_8h.html#a435c43a749209e7c685273454f1b67d2',1,'sMbs.h']]],
-  ['lmd_5f_5fverbose',['LMD__VERBOSE',['../sMbs_8h.html#a4cf78bf54496b816e0f09827dd854786',1,'LMD__VERBOSE():&#160;sMbs.h'],['../sMbs_8h.html#a4cf78bf54496b816e0f09827dd854786',1,'LMD__VERBOSE():&#160;sMbs.h']]],
-  ['log',['LOG',['../Logger_8h.html#accad43a85d781d53381cd53a9894b6ae',1,'Logger.h']]],
-  ['log_5fif',['LOG_IF',['../Logger_8h.html#a09f7d88282cf92c9f231270ac113e5c6',1,'Logger.h']]],
-  ['logd',['LOGD',['../Logger_8h.html#a2f906d1de2f1b782e0575031f43b4f84',1,'Logger.h']]]
+  ['lmd_5f_5fverbose',['LMD__VERBOSE',['../sMbs_8h.html#a4cf78bf54496b816e0f09827dd854786',1,'LMD__VERBOSE():&#160;sMbs.h'],['../sMbs_8h.html#a4cf78bf54496b816e0f09827dd854786',1,'LMD__VERBOSE():&#160;sMbs.h']]]
 ];

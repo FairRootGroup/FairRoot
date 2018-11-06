@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['y',['y',['../structPDFConfig.html#a0861b68e9a269173b5cc97f939d95b5a',1,'PDFConfig::y()'],['../classMultiVariatePDF.html#a7f1c50bb36be0f9e3a4f7945d5027422',1,'MultiVariatePDF::y()'],['../classFairGeoVector.html#ac43601cf7ba3f024dacdd995895cc9eb',1,'FairGeoVector::y()'],['../structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html#a4b13caaee6d63814ff7c3ca1cb036254',1,'TestDetectorFlat::FLATBUFFERS_FINAL_CLASS::y() const '],['../structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html#a3dcba290b53974fa350bb7102f074b5e',1,'TestDetectorFlat::FLATBUFFERS_FINAL_CLASS::y() const '],['../classMyPayloadProto_1_1Digi.html#ac051a5886552635e9dc95aa530715431',1,'MyPayloadProto::Digi::y()'],['../classFairGeoVector.html#a3b0d3612a148b2d4b14b78f914c54a04',1,'FairGeoVector::Y()']]],
-  ['y_5f',['y_',['../classMyPayloadProto_1_1Digi.html#a6ad014cc8b08d2fe55085aa63aac366b',1,'MyPayloadProto::Digi']]],
-  ['y_5fin',['y_in',['../classFairDoubleHit.html#acd32a7595663d00cda433879a95ca6cf',1,'FairDoubleHit']]],
-  ['y_5fout',['y_out',['../classFairDoubleHit.html#ab3d748b4cb876de354ba604ab51fd11f',1,'FairDoubleHit']]]
+  ['z',['Z',['../classFairGeoVector.html#a01a7a0ab55a628b78873255c614b02fe',1,'FairGeoVector::Z()'],['../structPDFConfig.html#aeed6fc14e1015ff485d6d99728d077e9',1,'PDFConfig::z()'],['../classMultiVariatePDF.html#a36f04496cd83473728790a8f65599ad9',1,'MultiVariatePDF::z()'],['../classFairGeoVector.html#a82266ebfd3036348f12c4b0efc831b91',1,'FairGeoVector::z()']]],
+  ['z_5fdistance',['Z_Distance',['../Create__Tutorial4__Geometry_8C.html#aa19e360adde3ce10611b77ca49596c3d',1,'Create_Tutorial4_Geometry.C']]],
+  ['z_5fin',['z_in',['../classFairDoubleHit.html#a093984123b1d32156e9beab6a7939b6b',1,'FairDoubleHit']]],
+  ['z_5fout',['z_out',['../classFairDoubleHit.html#a98ee6b5d7dd50adaf4e87dc66dd599e6',1,'FairDoubleHit']]]
 ];

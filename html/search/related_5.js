@@ -1,4 +1,0 @@
-var searchData=
-[
-  ['swap',['swap',['../classTestDetectorProto_1_1Digi.html#a48404fbda5c7da5ddcba1b82536f80b5',1,'TestDetectorProto::Digi::swap()'],['../classTestDetectorProto_1_1Hit.html#a728c72844130fa78d47c062ca8798536',1,'TestDetectorProto::Hit::swap()'],['../classTestDetectorProto_1_1DigiPayload.html#afcaf1bb82ae22f3685168f3f1a181280',1,'TestDetectorProto::DigiPayload::swap()'],['../classTestDetectorProto_1_1HitPayload.html#ad95ddc921685f96a67abef6717f5504f',1,'TestDetectorProto::HitPayload::swap()'],['../classMyPayloadProto_1_1Digi.html#a48404fbda5c7da5ddcba1b82536f80b5',1,'MyPayloadProto::Digi::swap()'],['../classMyPayloadProto_1_1Hit.html#a728c72844130fa78d47c062ca8798536',1,'MyPayloadProto::Hit::swap()'],['../classMyPayloadProto_1_1DigiPayload.html#afcaf1bb82ae22f3685168f3f1a181280',1,'MyPayloadProto::DigiPayload::swap()'],['../classMyPayloadProto_1_1HitPayload.html#ad95ddc921685f96a67abef6717f5504f',1,'MyPayloadProto::HitPayload::swap()']]]
-];

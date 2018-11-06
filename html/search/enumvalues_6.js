@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['high',['high',['../namespacefair.html#a2846ca5e63ef1023e46fa30ddaf012d7a8d966b2253a917086c8604959e152243',1,'fair::high()'],['../namespacefair.html#a2846ca5e63ef1023e46fa30ddaf012d7ab89de3b4b81c4facfac906edf29aec8c',1,'fair::HIGH()']]]
+  ['mybuffersize',['myBufferSize',['../classMille.html#a58c69ad901fae1cee220618ec27c99a6a1a8de6b2990503a7805d0dd14f4df929',1,'Mille']]],
+  ['mymaxlabel',['myMaxLabel',['../classMille.html#aa4d7ab7e2d13c1bcaef04319f6964511a676e78045ad80e0f8b9c0893cfd3b245',1,'Mille']]]
 ];

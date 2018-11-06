@@ -1,13 +1,7 @@
 var searchData=
 [
   ['basiclibs_2ec',['basiclibs.C',['../common_2gconfig_2basiclibs_8C.html',1,'']]],
-  ['common_2eh',['Common.h',['../Common_8h.html',1,'']]],
   ['compare_2ecxx',['compare.cxx',['../compare_8cxx.html',1,'']]],
-  ['context_2ecxx',['Context.cxx',['../Context_8cxx.html',1,'']]],
-  ['context_2eh',['Context.h',['../Context_8h.html',1,'']]],
-  ['control_2ecxx',['Control.cxx',['../Control_8cxx.html',1,'']]],
-  ['control_2eh',['Control.h',['../Control_8h.html',1,'']]],
-  ['cppstl_2eh',['CppSTL.h',['../CppSTL_8h.html',1,'']]],
   ['create_5fdigis_2ec',['create_digis.C',['../create__digis_8C.html',1,'']]],
   ['create_5fdigis_5fmixed_2ec',['create_digis_mixed.C',['../create__digis__mixed_8C.html',1,'']]],
   ['create_5fmisalign_5fparameter_2ec',['create_misalign_parameter.C',['../create__misalign__parameter_8C.html',1,'']]],

@@ -1,21 +1,14 @@
 var searchData=
 [
-  ['dds',['DDS',['../classfair_1_1mq_1_1plugins_1_1DDS.html',1,'fair::mq::plugins']]],
-  ['ddsconfig',['DDSConfig',['../structfair_1_1mq_1_1plugins_1_1DDSConfig.html',1,'fair::mq::plugins']]],
-  ['device_5fready_5ffsm',['DEVICE_READY_FSM',['../structfair_1_1mq_1_1fsm_1_1FairMQFSM_1_1DEVICE__READY__FSM.html',1,'fair::mq::fsm::FairMQFSM']]],
-  ['devicecontrolerror',['DeviceControlError',['../structfair_1_1mq_1_1PluginServices_1_1DeviceControlError.html',1,'fair::mq::PluginServices']]],
-  ['devicecounter',['DeviceCounter',['../structfair_1_1mq_1_1shmem_1_1DeviceCounter.html',1,'fair::mq::shmem']]],
-  ['devicereadyfct',['DeviceReadyFct',['../structfair_1_1mq_1_1fsm_1_1FairMQFSM_1_1DeviceReadyFct.html',1,'fair::mq::fsm::FairMQFSM']]],
-  ['devicerunner',['DeviceRunner',['../classfair_1_1mq_1_1DeviceRunner.html',1,'fair::mq']]],
-  ['digi',['Digi',['../classTestDetectorProto_1_1Digi.html',1,'TestDetectorProto']]],
-  ['digi',['Digi',['../classMyPodData_1_1Digi.html',1,'MyPodData']]],
-  ['digi',['Digi',['../classPixelPayload_1_1Digi.html',1,'PixelPayload']]],
-  ['digi',['Digi',['../classMyPayloadProto_1_1Digi.html',1,'MyPayloadProto']]],
-  ['digi',['Digi',['../classTestDetectorPayload_1_1Digi.html',1,'TestDetectorPayload']]],
-  ['digibuilder',['DigiBuilder',['../structTestDetectorFlat_1_1DigiBuilder.html',1,'TestDetectorFlat']]],
-  ['digipayload',['DigiPayload',['../classMyPayloadProto_1_1DigiPayload.html',1,'MyPayloadProto']]],
-  ['digipayload',['DigiPayload',['../classTestDetectorProto_1_1DigiPayload.html',1,'TestDetectorProto']]],
-  ['digipayloadbuilder',['DigiPayloadBuilder',['../structTestDetectorFlat_1_1DigiPayloadBuilder.html',1,'TestDetectorFlat']]],
-  ['dummy2plugin',['Dummy2Plugin',['../classfair_1_1mq_1_1test_1_1Dummy2Plugin.html',1,'fair::mq::test']]],
-  ['dummyplugin',['DummyPlugin',['../classfair_1_1mq_1_1test_1_1DummyPlugin.html',1,'fair::mq::test']]]
+  ['emptycreator',['EmptyCreator',['../structfair_1_1mq_1_1policy_1_1EmptyCreator.html',1,'fair::mq::policy']]],
+  ['emptydeleter',['EmptyDeleter',['../structfair_1_1mq_1_1policy_1_1EmptyDeleter.html',1,'fair::mq::policy']]],
+  ['emptyinitializer',['EmptyInitializer',['../structfair_1_1mq_1_1policy_1_1EmptyInitializer.html',1,'fair::mq::policy']]],
+  ['eventheader',['EventHeader',['../classPixelPayload_1_1EventHeader.html',1,'PixelPayload']]],
+  ['ex1processor',['Ex1Processor',['../classEx1Processor.html',1,'']]],
+  ['ex1sampler',['Ex1Sampler',['../classEx1Sampler.html',1,'']]],
+  ['ex1sink',['Ex1Sink',['../classEx1Sink.html',1,'']]],
+  ['ex2header',['Ex2Header',['../structEx2Header.html',1,'']]],
+  ['ex2processor',['Ex2Processor',['../classEx2Processor.html',1,'']]],
+  ['ex2sampler',['Ex2Sampler',['../classEx2Sampler.html',1,'']]],
+  ['ex2sink',['Ex2Sink',['../classEx2Sink.html',1,'']]]
 ];
