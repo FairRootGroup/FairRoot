@@ -23,6 +23,8 @@ void run_DiRePr(Int_t nofFiles, TString mcEngine="TGeant3" )
 
   // Output file
   TString outFile = Form("data/testDiRePr_%df_",nofFiles);
+  if ( nofFiles == 1 )
+      outFile = "data/testDiRePr_";
   outFile = outFile + mcEngine + ".root";
 
   // -----   Timer   --------------------------------------------------------
@@ -31,20 +33,26 @@ void run_DiRePr(Int_t nofFiles, TString mcEngine="TGeant3" )
   // -----   Reconstruction run   -------------------------------------------
   FairRunAnaProof *fRun= new FairRunAnaProof("");
   TString inFile=Form("file://%s/data/testrun_%s_f%d.root",workDir.Data(),mcEngine.Data(),0);
+  if ( nofFiles == 1 )
+      inFile=Form("file://%s/data/testrun_%s.root",workDir.Data(),mcEngine.Data());
   FairFileSource *fFileSource = new FairFileSource(inFile);
   fRun->SetSource(fFileSource);
   for ( Int_t ifile = 1 ; ifile < nofFiles ; ifile++ )
     fFileSource->AddFile(Form("file://%s/data/testrun_%s_f%d.root",workDir.Data(),mcEngine.Data(),ifile));
 
   fRun->SetSink(new FairRootFileSink(outFile));
+  fRun->SetProofOutputStatus("merge");
 
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
 
   TList* fnamelist = new TList();
 
-  for ( Int_t ifile = 0 ; ifile < nofFiles ; ifile++ )
-    fnamelist->Add(new TObjString(Form("%s/data/testpar_%s_f%d.root",workDir.Data(),mcEngine.Data(),ifile)));
+  if ( nofFiles == 1 )
+      fnamelist->Add(new TObjString(Form("%s/data/testparams_%s.root",workDir.Data(),mcEngine.Data())));
+  else
+      for ( Int_t ifile = 0 ; ifile < nofFiles ; ifile++ )
+          fnamelist->Add(new TObjString(Form("%s/data/testpar_%s_f%d.root",workDir.Data(),mcEngine.Data(),ifile)));
 
   cout << "PAR LIST CREATED" << endl;
   parInput1->open(fnamelist);

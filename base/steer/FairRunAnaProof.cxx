@@ -26,6 +26,8 @@
 #include "FairMCEventHeader.h"
 #include "FairParIo.h"
 #include "FairAnaSelector.h"
+#include "FairRootFileSink.h"
+#include "FairSink.h"
 
 #include "TROOT.h"
 // #include "TTree.h"
@@ -185,7 +187,8 @@ void FairRunAnaProof::Init()
     fRootManager->RunWithTimeStamps();
   }
 
-
+  // create the output tree after tasks initialisation
+  fRootManager->InitSink();
 
   // Assure that basic info is there for the run
 
@@ -194,15 +197,14 @@ void FairRunAnaProof::Init()
     LOG(info) << "Parameter and input file are available, Assure that basic info is there for the run!";
     fRootManager->ReadEvent(0);
 
-    fEvtHeader = static_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
+    GetEventHeader();
 
-    if (fEvtHeader ==0) {
-      fEvtHeader=GetEventHeader();
-      fEvtHeader->SetRunId(fRunId);
-      //      fRootManager->SetEvtHeaderNew(kTRUE);
-    } else {
-      fRunId = fEvtHeader->GetRunId();
-    }
+    fRootManager->FillEventHeader(fEvtHeader);
+
+    fRunId = fEvtHeader->GetRunId();
+
+    //Copy the Event Header Info to Output
+    fEvtHeader->Register(kTRUE);
 
     //Copy the Event Header Info to Output
     fEvtHeader->Register();
@@ -252,8 +254,8 @@ void FairRunAnaProof::Init()
     fTrajFilter->Init();
   }
 
-  // create the output tree after tasks initialisation
-  fRootManager->InitSink();
+  fRootManager->UpdateListOfTimebasedBranches();
+
   fRootManager->WriteFolder();
   fRootManager->WriteFileHeader(fFileHeader);
 }
@@ -366,17 +368,17 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 
   fProof->AddInput(fTask);
 
+  // get file name from FairSink
+  TString fileName = fRootManager->GetSink()->GetFileName();
+  LOG(info) << " outputFileName = " << fileName.Data();
+  if ( fileName.Length() < 5 ) fileName = "proofOutput.root";
+
   fProof->AddInput(new TNamed("FAIRRUNANA_fContainerStatic",(fStatic?"kTRUE":"kFALSE")));
   fProof->AddInput(new TNamed("FAIRRUNANA_fProofOutputStatus",fProofOutputStatus.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fOutputDirectory",outDir.Data()));
-  //  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",fOutname.Data()));
+  fProof->AddInput(new TNamed("FAIRRUNANA_fOutputFileName",fileName.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput1FName",par1File.Data()));
   fProof->AddInput(new TNamed("FAIRRUNANA_fParInput2FName",par2File.Data()));
-
-  // uploading packages not needed, as the libraries are in the rootmap now
-  // fProof->ClearPackages();
-  // fProof->UploadPackage(fProofParName.Data());
-  // fProof->EnablePackage(fProofParName.Data());
 
   Int_t nofChainEntries = inChain->GetEntries();
   LOG(info) << "FairRunAnaProof::RunOnProof(): The chain seems to have " << nofChainEntries << " entries.";
