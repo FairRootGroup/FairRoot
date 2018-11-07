@@ -105,7 +105,7 @@ void FairAnaSelector::Init(TTree* tree)
       if ( outputFileName[0] != '/' ) {
 	outputFileName = Form("%s/%s",outDir->GetTitle(),outFile->GetTitle());
       }
-      outputFileName = outputFileName(outputFileName.Last('/')+1,outputFileName.Length());
+      //      outputFileName = outputFileName(outputFileName.Last('/')+1,outputFileName.Length());
       fProofFile = new TProofOutputFile(outputFileName.Data());
       if (!(fFile = fProofFile->OpenFile("RECREATE"))) {
 	Warning("SlaveBegin", "problems opening file: %s/%s",
@@ -289,7 +289,6 @@ void FairAnaSelector::SlaveTerminate()
 
     //    fFile->Close();
   }
-
   LOG(info) << "FairAnaSelector::SlaveTerminate(): Finishing...";
 }
 //_____________________________________________________________________________

@@ -14,6 +14,7 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/macro/
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/macro/run_reco.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/macro/run_digi_timebased.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/macro/run_reco_timebased.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/advanced/Tutorial3/macro/run_DiRePr.C)
 
 ForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
   Add_Test(run_sim_${_mcEngine} 
@@ -44,6 +45,12 @@ ForEach(_mcEngine IN ITEMS TGeant3 TGeant4)
   Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES DEPENDS run_digi_timebased_${_mcEngine})
   Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES TIMEOUT ${MaxTestTime})
   Set_Tests_Properties(run_reco_timebased_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+
+
+  Add_Test(run_DiRePr_${_mcEngine} ${CMAKE_BINARY_DIR}/examples/advanced/Tutorial3/macro/run_DiRePr.sh 1 \"${_mcEngine}\")
+  Set_Tests_Properties(run_DiRePr_${_mcEngine} PROPERTIES DEPENDS run_sim_${_mcEngine})
+  Set_Tests_Properties(run_DiRePr_${_mcEngine} PROPERTIES TIMEOUT ${MaxTestTime})
+  Set_Tests_Properties(run_DiRePr_${_mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 EndForEach(_mcEngine IN ITEMS TGeant3 TGeant4) 
 
 

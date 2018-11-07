@@ -42,7 +42,7 @@ class FairAnaSelector : public TSelector
     TTree*                fChain;   //!pointer to the analyzed TTree or TChain
     FairRunAnaProof*      fRunAna;
 
-    FairAnaSelector(TTree* /*tree*/ =0) : fProofFile(0), fFile(0), fChain(0), fRunAna(NULL), fLogger(FairLogger::GetLogger()), fProofSource(0), fCurrentDirectory("") { }
+    FairAnaSelector(TTree* /*tree*/ =0) : fProofFile(0), fFile(0), fChain(0), fRunAna(NULL), fProofSource(0), fCurrentDirectory("") { }
 
     virtual ~FairAnaSelector() { }
     virtual Int_t   Version() const {
@@ -74,10 +74,6 @@ class FairAnaSelector : public TSelector
     void SetFairRunAnaProof(FairRunAnaProof* runAna) {
       fRunAna = runAna;
     }
-
-  protected:
-    /** Fair Logger */
-    FairLogger*             fLogger;//!
 
   private:
 
