@@ -8,6 +8,13 @@
 
 Set(MaxTestTime 60)
 
+GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMC.sh ${CMAKE_CURRENT_BINARY_DIR})
+
+Add_Test(splitMC
+       ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
+Set_Tests_Properties(splitMC PROPERTIES TIMEOUT ${MaxTestTime})
+Set_Tests_Properties(splitMC PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
+
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
     ${CMAKE_SOURCE_DIR}/base/MQ/policies/Sampler
@@ -80,3 +87,10 @@ set(FAIRROOT_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
 
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/splitMC-topology.xml
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/splitMC-topology.xml )
+
+set(SPLITMC_FILE_LOCATION ${CMAKE_SOURCE_DIR})
+
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/splitMC-topology.xml
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMC.xml )
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/test-splitMC.sh.in
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMC.sh)

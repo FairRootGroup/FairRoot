@@ -1,0 +1,39 @@
+#!/bin/bash
+
+source $ROOTSYS/DDS_env.sh
+
+echo "***** Start dds server"
+dds-server start -s &> dds-server.dat
+
+cat dds-server.dat
+DDS_ID=$(cat dds-server.dat | grep "Set default" | awk '{print $NF}' )
+
+echo "***** Create local cluster with 10 agents"
+dds-submit -r localhost -n 10
+
+#wait 5 seconds to start agents
+sleep 5
+
+echo "***** Print number of agents available"
+dds-info -n
+
+echo "***** Activate topology"
+dds-topology --activate @SPLITMC_BIN_LOCATION@/test-splitMC.xml
+
+#wait 20 seconds to finish jobs
+sleep 20
+
+echo "***** Stop DDS"
+dds-server stop
+
+echo "***** Check the output file"
+ls -ltrh @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root | tail -1)"
+echo "There are $OUTPUT_EVENTS events in the output file."
+
+if (( $OUTPUT_EVENTS == 1000 ));
+then
+    echo "Shell script finished successfully.";
+else
+    echo "Shell script failed."
+fi
