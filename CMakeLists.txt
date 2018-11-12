@@ -13,7 +13,7 @@
 # and PANDAROOT.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.9.4 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
 
 ### CMP0025   Compiler id for Apple Clang is now AppleClang.
 ### CMP0042   MACOSX_RPATH is enabled by default.
@@ -276,7 +276,7 @@ Unset(Boost_LIBRARY_DIRS CACHE)
 set(FairRoot_Boost_COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time signals)
 list(APPEND FairRoot_Boost_COMPONENTS ${FairMQ_Boost_COMPONENTS})
 list(REMOVE_DUPLICATES FairRoot_Boost_COMPONENTS)
-find_package(Boost 1.64 COMPONENTS ${FairRoot_Boost_COMPONENTS})
+find_package(Boost 1.67 COMPONENTS ${FairRoot_Boost_COMPONENTS})
 If (Boost_FOUND)
   Set(Boost_Avail 1)
   Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Boost_LIBRARY_DIR})
