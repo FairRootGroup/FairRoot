@@ -18,7 +18,7 @@ To use the MC Step Logger the user has to **_preload_** the compiled library. It
 1. Set the **_preload_** library. Run your code. Unset the library:
 
 ```bash
-export LD_PRELOAD=/path/to/your/library/libMCStepLogger.so
+export LD_PRELOAD=/path/to/your/library/libFairMCStepLogger.so
 root UserMacro.C
 unset LD_PRELOAD
 ```
@@ -26,7 +26,7 @@ unset LD_PRELOAD
 2. Run your code with the **_preload_** library:
 
 ```bash
-LD_PRELOAD=/path/to/your/library/libMCStepLogger.so root UserMacro.C
+LD_PRELOAD=/path/to/your/library/libFairMCStepLogger.so root UserMacro.C
 ```
 
 The PRELOAD mechanism eliminates any overhead when running without the MC Step Logger.
@@ -40,7 +40,7 @@ On MAC OS the user has to specify DYLD_INSERT_LIBRARIES. Yet again, there are tw
 1. Set the **_preload_** library. Run your code. Unset the library:
 
 ```bash
-export DYLD_INSERT_LIBRARIES=/path/to/your/library/libMCStepLogger.so
+export DYLD_INSERT_LIBRARIES=/path/to/your/library/libFairMCStepLogger.so
 root UserMacro.C
 unset DYLD_INSERT_LIBRARIES
 ```
@@ -48,5 +48,5 @@ unset DYLD_INSERT_LIBRARIES
 2. Run your code with the **_preload_** library:
 
 ```bash
-DYLD_INSERT_LIBRARIES=/path/to/your/library/libMCStepLogger.so root UserMacro.C
+DYLD_INSERT_LIBRARIES=/path/to/your/library/libFairMCStepLogger.so root UserMacro.C
 ```

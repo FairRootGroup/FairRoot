@@ -26,7 +26,7 @@ set(NO_DICT_SRCS
     MCStepLoggerImpl.cxx
    )
 
-set(LIBRARY_NAME MCStepLogger)
+set(LIBRARY_NAME FairMCStepLogger)
 Set(DEPENDENCIES Core Base)
 
 GENERATE_LIBRARY()
