@@ -9,22 +9,50 @@ cat dds-server.dat
 DDS_ID=$(cat dds-server.dat | grep "Set default" | awk '{print $NF}' )
 
 echo "***** Create local cluster with 10 agents"
-dds-submit -r localhost -n 10
+dds-submit -s $DDS_ID -r localhost -n 10
 
 #wait 5 seconds to start agents
-sleep 5
+COUNTER=0
+LOOPING=1
+until [ $LOOPING -eq 0 ]; do
+    sleep 1;
+    echo "waiting $COUNTER seconds to start 10 agents ";
+    ((COUNTER++));
+    if [ $COUNTER -ge 5 ]; then LOOPING=0; fi
+    if dds-info -s $DDS_ID -n | grep -m 1 "10"; then LOOPING=0; fi
+    : ;
+done
 
 echo "***** Print number of agents available"
-dds-info -n
+NOFAGENTS=$(dds-info -s $DDS_ID -n)
+echo $NOFAGENTS
+if [ $NOFAGENTS -lt 10 ]; then
+    echo "Not enough agents. Exiting"
+    dds-server stop $DDS_ID
+    exit
+fi
 
 echo "***** Activate topology"
-dds-topology --activate @SPLITMC_BIN_LOCATION@/test-splitMC.xml
+dds-topology -s $DDS_ID --activate @SPLITMC_BIN_LOCATION@/test-splitMC.xml
 
 #wait 20 seconds to finish jobs
-sleep 20
+COUNTER=0
+LOOPING=1
+until [ $LOOPING -eq 0 ]; do
+    echo "waiting $COUNTER seconds for the output file to grow";
+    ((COUNTER++));
+    if [ $COUNTER -ge 20 ]; then LOOPING=0; fi
+    FILESIZE=0
+    if [ -f @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root ]; then
+        FILESIZE=$(ls -l @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root | awk '{print $5}')
+    fi
+    if [ $FILESIZE -ge 3000000 ]; then LOOPING=0; fi
+    sleep 1;
+    : ;
+done
 
 echo "***** Stop DDS"
-dds-server stop
+dds-server stop $DDS_ID
 
 echo "***** Check the output file"
 ls -ltrh @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root
