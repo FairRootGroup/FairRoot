@@ -13,7 +13,7 @@
 # and PANDAROOT.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.9.4 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
 
 ### CMP0025   Compiler id for Apple Clang is now AppleClang.
 ### CMP0042   MACOSX_RPATH is enabled by default.
@@ -276,7 +276,7 @@ Message("-- Looking for Boost ...")
 # for boost.
 Unset(Boost_INCLUDE_DIR CACHE)
 Unset(Boost_LIBRARY_DIRS CACHE)
-find_package(Boost 1.64 COMPONENTS thread system timer program_options random filesystem chrono exception regex
+find_package(Boost 1.67 COMPONENTS thread system timer program_options random filesystem chrono exception regex
     serialization log log_setup atomic date_time signals)
 If (Boost_FOUND)
   Set(Boost_Avail 1)
