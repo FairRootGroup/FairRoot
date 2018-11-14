@@ -6,7 +6,7 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
-Set(MaxTestTime 60)
+Set(MaxTestTime 90)
 
 GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMC.sh ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -38,9 +38,9 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
 include_directories(${INCLUDE_DIRECTORIES})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
-set(NETWORK_INTERFACE eth0)
+set(EXAMPLE_LIBRARY_EXTENSION so)
 If(APPLE)
-  set(NETWORK_INTERFACE lo0)
+  set(EXAMPLE_LIBRARY_EXTENSION dylib)
 EndIf(APPLE)
 
 set(LINK_DIRECTORIES

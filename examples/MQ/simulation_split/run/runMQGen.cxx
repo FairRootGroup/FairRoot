@@ -36,14 +36,13 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
         tut_configdir = dir + "/common/gconfig";
     gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
-    TString partName[] = {"pions","eplus","proton"};
-    Int_t   partPdgC[] = {    211,     11,    2212};
+    Int_t   partPdgC[] = {    211,     11,    2212}; //{"pions","eplus","proton"}
     Int_t chosenPart  = 0;
 
     FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
     FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 100);
     boxGen->SetPRange(1,2);
-    boxGen->SetThetaRange(0,40);
+    boxGen->SetThetaRange(0,180);
     boxGen->SetPhiRange(0,360);
     primGen->AddGenerator(boxGen);
 

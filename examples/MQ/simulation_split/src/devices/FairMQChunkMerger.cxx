@@ -22,6 +22,7 @@
 
 #include "FairMCTrack.h"
 #include "FairMCPoint.h"
+#include "FairTask.h"
 
 using namespace std;
 
@@ -59,14 +60,13 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
     //	  dataDuplicationFlag = false;
 
     std::vector<TClonesArray*> tcaVector;
-    TObject*      tempObject;
     for ( int ipart = 0 ; ipart < parts.Size() ; ++ipart ) {
-        tempObject = nullptr;
+        TObject* tempObject = nullptr;
         Deserialize<RootSerializer>(*parts.At(ipart),tempObject);
         
         //        LOG(INFO) << "Got object " << tempObject->ClassName() << " named " << tempObject->GetName();
         if ( strcmp(tempObject->GetName(),"MCEventHeader.") == 0 ) {
-            fMCSplitEventHeader = (FairMCSplitEventHeader*)tempObject;
+            fMCSplitEventHeader = dynamic_cast<FairMCSplitEventHeader*>(tempObject);
             //            LOG(info) << "GOT PART [" << fMCSplitEventHeader->GetRunID() << "][" << fMCSplitEventHeader->GetEventID() << "][" << fMCSplitEventHeader->GetChunkStart() << "]";
             fEvRIPair.first  = fMCSplitEventHeader->GetEventID();
             fEvRIPair.second = fMCSplitEventHeader->GetRunID();
@@ -92,7 +92,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
             }
         }
         else {
-            tcaVector.push_back((TClonesArray*)tempObject);
+            tcaVector.push_back(dynamic_cast<TClonesArray*>(tempObject));
         }
     }
 
@@ -100,9 +100,9 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
     if ( nofReceivedParts != nofExpectedParts ) { 
         // LOG(info) << "not all parts are yet here (got " << nofReceivedParts << " out of " << nofExpectedParts << ")... adding to (size = " << fObjectMap.size() << ")";
         // LOG(info) << "+" << fMCSplitEventHeader->GetName() << "[" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "]";
-        for ( int iarray = 0 ; iarray < tcaVector.size() ; iarray++ ) {
+        for ( int iarray = 0 ; iarray < tcaVector.size() ; ++iarray ) {
             LOG(debug) << "+ [" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "] " << tcaVector[iarray]->GetName();
-            fEvCOPair.second = ((TObject*)tcaVector[iarray]);
+            fEvCOPair.second = (dynamic_cast<TObject*>(tcaVector[iarray]));
             fObjectMap.insert(std::pair<std::pair<int,int>,std::pair<int,TObject*>>(fEvRIPair,fEvCOPair));
         }
         //        LOG(info) << "                 now we have fObjectMap (size = " << fObjectMap.size() << ")";
@@ -115,7 +115,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         fRet = fObjectMap.equal_range(fEvRIPair);
         std::vector<int> trackShift;
         LOG(debug) << "- [" << fEvRIPair.second << "][" << fEvRIPair.first << "][ALL]";
-        for ( int iarray = 0 ; iarray < tcaVector.size() ; iarray++ ) {
+        for ( int iarray = 0 ; iarray < tcaVector.size() ; ++iarray ) {
             if ( strcmp(tcaVector[iarray]->GetName(),"MCTrack") != 0 ) continue; //  want only MCTrack array to renumber tracks and get track shifts...
             //  LOG(info) << "BEFORE ADDING, TCA \"" << tcaVector[iarray]->GetName() << "\" has " << tcaVector[iarray]->GetEntries() << " entries.";
             TClonesArray* arrayToAdd;
@@ -123,9 +123,9 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
                 if ( it->second.first == fMCSplitEventHeader->GetChunkStart() ) continue;
                 if ( strcmp(tcaVector[iarray]->GetName(),it->second.second->GetName()) == 0 ) {
                     trackShift.push_back(tcaVector[iarray]->GetEntries());
-                    arrayToAdd = (TClonesArray*)it->second.second;
+                    arrayToAdd = dynamic_cast<TClonesArray*>(it->second.second);
                     for ( int iobj = 0 ; iobj < arrayToAdd->GetEntries() ; ++iobj ) {
-                        FairMCTrack* temp = (FairMCTrack*)arrayToAdd->At(iobj);
+                        FairMCTrack* temp = dynamic_cast<FairMCTrack*>(arrayToAdd->At(iobj));
                         if ( temp->GetMotherId() >= 0 ) {
                             temp->SetMotherId(temp->GetMotherId()+trackShift.back());
                         }
@@ -136,7 +136,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
             }
         }
 
-        for ( int iarray = 0 ; iarray < tcaVector.size() ; iarray++ ) {
+        for ( int iarray = 0 ; iarray < tcaVector.size() ; ++iarray ) {
             if ( strcmp(tcaVector[iarray]->GetName(),"MCTrack") == 0 ) continue; // MCTrack already done, renumber all _other_ arrays...
             //            LOG(info) << "BEFORE ADDING, TCA \"" << tcaVector[iarray]->GetName() << "\" has " << tcaVector[iarray]->GetEntries() << " entries.";
             int addedArray = 0;
@@ -147,9 +147,9 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
                 if ( strcmp(tcaVector[iarray]->GetName(),it->second.second->GetName()) == 0 ) {
                     int objShift = trackShift[addedArray++];
                     //     LOG(INFO) << "trying to add " << tcaVector[iarray]->GetName() << " and " << it->second.second->GetName() << "(shift = " << objShift << ")";
-                    arrayToAdd = (TClonesArray*)it->second.second;
+                    arrayToAdd = dynamic_cast<TClonesArray*>(it->second.second);
                     for ( int iobj = 0 ; iobj < arrayToAdd->GetEntries() ; ++iobj ) {
-                        FairMCPoint* temp = (FairMCPoint*)arrayToAdd->At(iobj);
+                        FairMCPoint* temp = dynamic_cast<FairMCPoint*>(arrayToAdd->At(iobj));
                         temp->SetTrackID(temp->GetTrackID()+objShift);
                     }
                 }
@@ -168,7 +168,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         Serialize<RootSerializer>(*messEH,fMCSplitEventHeader);
         partsOut.AddPart(std::move(messEH));
         
-        for ( int iarray = 0 ; iarray < tcaVector.size() ; iarray++ ) {
+        for ( int iarray = 0 ; iarray < tcaVector.size() ; ++iarray ) {
             FairMQMessagePtr mess(NewMessage());
             Serialize<RootSerializer>(*mess,tcaVector[iarray]);
             partsOut.AddPart(std::move(mess));
@@ -180,7 +180,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
             LOG(info) << ">> [" << fMCSplitEventHeader->GetRunID() << "][" << fMCSplitEventHeader->GetEventID() << "][" << fMCSplitEventHeader->GetChunkStart() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
     }
 
-    for( MultiMapDef::iterator it = fObjectMap.begin() ; it != fObjectMap.end() ; it++ ) {
+    for( MultiMapDef::iterator it = fObjectMap.begin() ; it != fObjectMap.end() ; ++it ) {
 	LOG(debug) << "= [" << it->first.second << "][" << it->first.first << "][" << it->second.first << "] " << it->second.second->GetName();
     }
     return true;

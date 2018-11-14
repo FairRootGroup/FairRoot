@@ -32,6 +32,7 @@
 #include "FairModule.h"
 #include "FairParRootFileIo.h"
 #include "FairParSet.h"
+#include "FairTask.h"
 
 #include "RootSerializer.h"
 
@@ -115,7 +116,7 @@ void FairMQTransportDevice::InitTask()
 
     // -----   Create geometry   ----------------------------------------------
     for ( int idet = 0 ; idet < fDetectorArray->GetEntries() ; idet++ ) {
-        fRunSim->AddModule((FairModule*)(fDetectorArray->At(idet)));
+        fRunSim->AddModule(dynamic_cast<FairModule*>(fDetectorArray->At(idet)));
     }
 
     std::vector<std::string> detectorLibraries = fConfig->GetValue<std::vector<std::string>>("detector-library");
@@ -185,7 +186,7 @@ void FairMQTransportDevice::InitTask()
     // -----   Set tasks   ----------------------------------------------------
     if ( fTaskArray ) {
         for ( int itask = 0 ; itask < fTaskArray->GetEntries() ; itask++ ) {
-            fRunSim->AddTask((FairTask*)(fTaskArray->At(itask)));
+            fRunSim->AddTask(dynamic_cast<FairTask*>(fTaskArray->At(itask)));
         }
     }
     // ------------------------------------------------------------------------
@@ -249,9 +250,9 @@ bool FairMQTransportDevice::TransportData(FairMQParts& mParts, int /*index*/)
         TObject* obj = nullptr;
         Deserialize<RootSerializer>(*mParts.At(ipart),obj);
         if      (strcmp(obj->GetName(),"MCEvent") == 0)
-            meh = (FairMCSplitEventHeader*)obj;
+            meh = dynamic_cast<FairMCSplitEventHeader*>(obj);
         else if (strcmp(obj->GetName(),"TParticles") == 0)
-            chunk = (TClonesArray*)obj;
+            chunk = dynamic_cast<TClonesArray*>(obj);
     }
     if ( chunk != nullptr ) {
         fStack->SetParticleArray(chunk,meh->GetChunkStart(),meh->GetNPrim());

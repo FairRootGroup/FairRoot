@@ -32,6 +32,7 @@ void addCustomOptions(bpo::options_description& options)
         ("param-channel-name",   bpo::value<std::string>()->default_value("updateChannel"), "Parameter update channel name")
         ("running-mode",         bpo::value<std::string>()->default_value("pp")           , "pp to pull, rr to request")
         ("detector-library",     bpo::value<std::vector<std::string>>()                   , "detector library")
+        ("run-digi-tasks",       bpo::value<bool>       ()->default_value(false)          , "Run digi tasks")
         ;
 }
 
@@ -81,21 +82,18 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 
     run->SetStoreTraj       (false);
 
-    // ---------------------------------------------------
-    if ( 1==0 )
-        {
-            // try to run digi task in the simulation device
-            TString digParFile = tutdir + "/param/pixel_digi.par";
-            FairParAsciiFileIo* parIo1 = new FairParAsciiFileIo();
-            parIo1->open(digParFile.Data(),"in");
-            run->SetFirstParameter(parIo1);
+    if ( (config.GetValue<bool>("run-digi-tasks")) == true ) {
+        // Attach tasks if needed
+        TString digParFile = tutdir + "/param/pixel_digi.par";
+        FairParAsciiFileIo* parIo1 = new FairParAsciiFileIo();
+        parIo1->open(digParFile.Data(),"in");
+        run->SetFirstParameter(parIo1);
 
-            TObjArray* taskArray = new TObjArray();
-            PixelDigitize* digiTask = new PixelDigitize();
-            taskArray->Add(digiTask);
-            run->SetTaskArray(taskArray);
-        }
-    // ---------------------------------------------------
+        TObjArray* taskArray = new TObjArray();
+        PixelDigitize* digiTask = new PixelDigitize();
+        taskArray->Add(digiTask);
+        run->SetTaskArray(taskArray);
+    }
 
     return run;
 }
