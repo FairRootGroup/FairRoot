@@ -33,7 +33,7 @@ if [ $NOFAGENTS -lt 10 ]; then
 fi
 
 echo "***** Activate topology"
-dds-topology -s $DDS_ID --activate @SPLITMC_BIN_LOCATION@/test-splitMC.xml
+dds-topology -s $DDS_ID --activate @SPLITMC_BIN_LOCATION@/test-splitMC.xml --disable-validation
 
 #wait 20 seconds to finish jobs
 COUNTER=0
