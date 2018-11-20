@@ -55,7 +55,7 @@ done
 
 echo "print Transporter logs"
 #cat dds-agents.dat | grep "Starting DDSScout" | sed -e "s#\'##g" | awk '{print $8}'
-AGENTS_WORK_DIR=$(cat dds-agents.dat | grep "Starting DDSScout" | sed -e "s#\'##g" | awk '{print $8}')
+AGENTS_WORK_DIR=$(cat dds-agents.dat | grep "Starting DDSScout" | sed "s#\'##g" | awk '{print $8}')
 echo "want to get logs from $AGENTS_WORK_DIR"
 find $AGENTS_WORK_DIR*  -name "Trans*log" | xargs -I {} cat {}
 echo "print Transporter logs"
@@ -64,7 +64,7 @@ echo "***** Stop DDS"
 dds-server stop $DDS_ID
 
 echo "***** Check the output file"
-ls -ltrh @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root
+ls -ltr @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root
 OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root | tail -1)"
 echo "There are $OUTPUT_EVENTS events in the output file."
 
