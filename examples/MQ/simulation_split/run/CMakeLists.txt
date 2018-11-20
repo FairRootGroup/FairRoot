@@ -50,7 +50,6 @@ set(LINK_DIRECTORIES
 
 link_directories(${LINK_DIRECTORIES})
 
-
 Set(Exe_Names
     runMQGen
     runMQTrans
@@ -84,6 +83,12 @@ set(SPLITMC_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split)
 set(SPLITMC_FILE_LOCATION ${CMAKE_SOURCE_DIR})
 set(PIXEL_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector)
 set(FAIRROOT_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
+
+
+Message(STATUS "Looking for DDS!!!")
+find_package(DDS)
+set(DDS_LOCATION ${DDS_INCLUDE_DIR}/../)
+MESSAGE(STATUS "Set ${DDS_LOCATION} as place to look for DDS_env.sh")
 
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/splitMC-topology.xml
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/splitMC-topology.xml )

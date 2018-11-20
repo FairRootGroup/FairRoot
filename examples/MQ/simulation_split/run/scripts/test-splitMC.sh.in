@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source $ROOTSYS/DDS_env.sh
+NOFNEEDEDAGENTS=5
+
+source @DDS_LOCATION@/DDS_env.sh
 
 echo "***** Start dds server"
 dds-server start -s &> dds-server.dat
@@ -8,8 +10,8 @@ dds-server start -s &> dds-server.dat
 cat dds-server.dat
 DDS_ID=$(cat dds-server.dat | grep "Set default" | awk '{print $NF}' )
 
-echo "***** Create local cluster with 10 agents"
-dds-submit -s $DDS_ID -r localhost -n 10 &> dds-agents.dat
+echo "***** Create local cluster with $NOFNEEDEDAGENTS agents"
+dds-submit -s $DDS_ID -r localhost -n $NOFNEEDEDAGENTS &> dds-agents.dat
 cat dds-agents.dat
 
 #wait 5 seconds to start agents
@@ -17,17 +19,17 @@ COUNTER=0
 LOOPING=1
 until [ $LOOPING -eq 0 ]; do
     sleep 1;
-    echo "waiting $COUNTER seconds to start 10 agents ";
+    echo "waiting $COUNTER seconds to start $NOFNEEDEDAGENTS agents ";
     ((COUNTER++));
     if [ $COUNTER -ge 5 ]; then LOOPING=0; fi
-    if dds-info -s $DDS_ID -n | grep -m 1 "10"; then LOOPING=0; fi
+    if dds-info -s $DDS_ID -n | grep -m 1 "$NOFNEEDEDAGENTS"; then LOOPING=0; fi
     : ;
 done
 
 echo "***** Print number of agents available"
 NOFAGENTS=$(dds-info -s $DDS_ID -n)
 echo $NOFAGENTS
-if [ $NOFAGENTS -lt 10 ]; then
+if [ $NOFAGENTS -lt $NOFNEEDEDAGENTS ]; then
     echo "Not enough agents. Exiting"
     dds-server stop $DDS_ID
     exit
@@ -52,13 +54,37 @@ until [ $LOOPING -eq 0 ]; do
     sleep 1;
     : ;
 done
+sleep 10
 
 echo "print Transporter logs"
 #cat dds-agents.dat | grep "Starting DDSScout" | sed -e "s#\'##g" | awk '{print $8}'
-AGENTS_WORK_DIR=$(cat dds-agents.dat | grep "Starting DDSScout" | sed "s#\'##g" | awk '{print $8}')
+AGENTS_WORK_DIR=$(cat dds-agents.dat | grep "Starting DDSScout" | sed "s#'##g" | awk '{print $8}')
 echo "want to get logs from $AGENTS_WORK_DIR"
+echo "=============================================================================================================================="
 find $AGENTS_WORK_DIR*  -name "Trans*log" | xargs -I {} cat {}
+echo "=============================================================================================================================="
+find $AGENTS_WORK_DIR*  -name "Merge*log" | xargs -I {} cat {}
+echo "=============================================================================================================================="
+find $AGENTS_WORK_DIR*  -name "Gener*log" | xargs -I {} cat {}
+echo "=============================================================================================================================="
+find $AGENTS_WORK_DIR*  -name "Param*log" | xargs -I {} cat {}
+echo "=============================================================================================================================="
+find $AGENTS_WORK_DIR*  -name "Sink_*log" | xargs -I {} cat {}
+echo "=============================================================================================================================="
 echo "print Transporter logs"
+
+echo "check dds states again"
+fairmq-dds-command-ui -s $DDS_ID -c c
+echo "^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^"
+
+fairmq-dds-command-ui -s $DDS_ID -c s
+sleep 1
+fairmq-dds-command-ui -s $DDS_ID -c t
+sleep 1
+fairmq-dds-command-ui -s $DDS_ID -c d
+sleep 1
+fairmq-dds-command-ui -s $DDS_ID -c q
+sleep 1
 
 echo "***** Stop DDS"
 dds-server stop $DDS_ID
@@ -67,6 +93,10 @@ echo "***** Check the output file"
 ls -ltr @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root
 OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root | tail -1)"
 echo "There are $OUTPUT_EVENTS events in the output file."
+
+echo "=============================================================================================================================="
+find $AGENTS_WORK_DIR*  -name "Sink_*log" | xargs -I {} cat {}
+echo "=============================================================================================================================="
 
 if (( $OUTPUT_EVENTS == 1 ));
 then

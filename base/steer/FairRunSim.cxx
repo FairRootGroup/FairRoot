@@ -417,16 +417,16 @@ void FairRunSim::SetMCConfig()
   //--------------------------------------Now load the Config and Cuts------------------------------------
   LOG(info) << "Now load the Config and Cuts";
   if (!LibMacro.IsNull()) {
-      LOG(info) << "LibMacro";
+      LOG(info) << "LibMacro " << LibMacro.Data();
     gROOT->LoadMacro(LibMacro.Data());
     gROOT->ProcessLine(LibFunction.Data());
   }
 
-  LOG(info) << "ConfigMacro";
+  LOG(info) << "ConfigMacro " << ConfigMacro.Data();
   gROOT->LoadMacro(ConfigMacro.Data());
   gROOT->ProcessLine("Config()");
 
-  LOG(info) << "CutsMacro";
+  LOG(info) << "CutsMacro " << cuts;
   gROOT->LoadMacro(cuts);
   gROOT->ProcessLine("SetCuts()");
   }
