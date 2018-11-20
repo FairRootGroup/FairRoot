@@ -11,9 +11,14 @@
 
 void Config()
 {
+    std::cout << "starting g3Config.C" << std::endl;
   FairRunSim *fRun = FairRunSim::Instance();
+  std::cout << "got FairRunSim instance " << fRun << std::endl;
   TString* gModel = fRun->GetGeoModel();
+  std::cout << "model is " << gModel->Data() << std::endl;
   TGeant3* geant3 = NULL;
+  std::cout << "geant3 is now " << geant3 << std::endl;
+  std::cout << "gMC is " << gMC << std::endl;
   if ( strncmp(gModel->Data(),"TGeo",4) == 0 ) {
      geant3
           = new  TGeant3TGeo("C++ Interface to Geant3");
@@ -25,6 +30,8 @@ void Config()
       // cout << "-I- G3Config: Geant3 native has been created."
       //        << endl;
   }
+  std::cout << "after creating geant3 is now " << geant3 << std::endl;
+  std::cout << "gMC is " << gMC << std::endl;
   // create Fair Specific Stack
   FairStack *st = new FairStack();
   st->SetMinPoints(0);

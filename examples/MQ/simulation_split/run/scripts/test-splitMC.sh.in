@@ -9,7 +9,8 @@ cat dds-server.dat
 DDS_ID=$(cat dds-server.dat | grep "Set default" | awk '{print $NF}' )
 
 echo "***** Create local cluster with 10 agents"
-dds-submit -s $DDS_ID -r localhost -n 10
+dds-submit -s $DDS_ID -r localhost -n 10 &> dds-agents.dat
+cat dds-agents.dat
 
 #wait 5 seconds to start agents
 COUNTER=0
@@ -46,10 +47,18 @@ until [ $LOOPING -eq 0 ]; do
     if [ -f @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root ]; then
         FILESIZE=$(ls -l @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root | awk '{print $5}')
     fi
-    if [ $FILESIZE -ge 3000000 ]; then LOOPING=0; fi
+    fairmq-dds-command-ui -s $DDS_ID -c c
+    if [ $FILESIZE -ge 100 ]; then LOOPING=0; fi
     sleep 1;
     : ;
 done
+
+echo "print Transporter logs"
+#cat dds-agents.dat | grep "Starting DDSScout" | sed -e "s#\'##g" | awk '{print $8}'
+AGENTS_WORK_DIR=$(cat dds-agents.dat | grep "Starting DDSScout" | sed -e "s#\'##g" | awk '{print $8}')
+echo "want to get logs from $AGENTS_WORK_DIR"
+find $AGENTS_WORK_DIR*  -name "Trans*log" | xargs -I {} cat {}
+echo "print Transporter logs"
 
 echo "***** Stop DDS"
 dds-server stop $DDS_ID
@@ -59,7 +68,7 @@ ls -ltrh @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.si
 OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root | tail -1)"
 echo "There are $OUTPUT_EVENTS events in the output file."
 
-if (( $OUTPUT_EVENTS == 1000 ));
+if (( $OUTPUT_EVENTS == 1 ));
 then
     echo "Shell script finished successfully.";
 else

@@ -6,7 +6,7 @@
     <property id="updateChannel" />
 
     <decltask id="Generator">
-      <exe reachable="true">@SPLITMC_BIN_LOCATION@/runMQGen --id splitMC-gen --channel-config name=primariesChannel,type=push,method=bind --running-mode pp --severity INFO --nof-events 1000 --chunk-size 10 -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+      <exe reachable="true">@SPLITMC_BIN_LOCATION@/runMQGen --id splitMC-gen --channel-config name=primariesChannel,type=push,method=bind --running-mode pp --severity INFO --nof-events 1 --chunk-size 0 -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
         <properties>
           <id access="write">primariesChannel</id>
         </properties>
@@ -48,7 +48,7 @@
         <task>Merger</task>
         <task>Sink</task>
         <task>ParamServer</task>
-        <group id="TransporterGroup" n="5">
+        <group id="TransporterGroup" n="1">
             <task>Transporter</task>
         </group>
     </main>
