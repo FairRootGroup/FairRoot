@@ -75,9 +75,9 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     FairModule* cave= new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
     detArray->Add(cave);
-    // Pixel*  det = new Pixel("PixelDetector", kTRUE);
-    // det->SetGeometryFileName("pixel.geo");
-    // detArray->Add(det);
+    Pixel*  det = new Pixel("PixelDetector", kTRUE);
+    det->SetGeometryFileName("pixel.geo");
+    detArray->Add(det);
     run->SetDetectorArray   (detArray);
 
     run->SetStoreTraj       (false);
