@@ -35,7 +35,18 @@ FairSimConfig::~FairSimConfig() {}
 
 int FairSimConfig::ParseCommandLine(int argc, char* argv[])
 {
-    po::store(po::parse_command_line(argc, argv, fDescription), fMap);
+    try
+    {
+        po::store(po::parse_command_line(argc, argv, fDescription), fMap);
+
+        po::notify(fMap);
+    }
+    catch (po::error& e)
+    {
+        LOG(error) << e.what();
+        fHelp = true;
+        return 0;
+    }
 
     if (fMap.count("help"))
     {
