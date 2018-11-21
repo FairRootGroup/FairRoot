@@ -1,0 +1,3 @@
+
+set(MYPROJ_VERSION "@MYPROJ_VERSION@")
+

@@ -19,7 +19,7 @@ class NewTask : public FairTask
     /** Default constructor **/
     NewTask();
 
-    /** Constructor with parameters (Optional)
+    /** Constructor with parameters (Optional) **/
     //  NewTask(Int_t verbose);
 
 
