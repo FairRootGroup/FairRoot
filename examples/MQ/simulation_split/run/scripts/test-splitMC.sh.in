@@ -2,7 +2,14 @@
 
 NOFNEEDEDAGENTS=5
 
+echo "*************** check paths"
+env
+
+echo "*************** load dds"
 source @DDS_LOCATION@/DDS_env.sh
+
+echo "*************** double check paths"
+env
 
 echo "***** Start dds server"
 dds-server start -s &> dds-server.dat
