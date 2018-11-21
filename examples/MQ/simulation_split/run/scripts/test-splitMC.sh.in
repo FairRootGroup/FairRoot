@@ -6,6 +6,7 @@ echo "*************** check paths"
 env
 
 echo "*************** load dds"
+source ${CMAKE_BINARY_DIR}/config.sh
 source @DDS_LOCATION@/DDS_env.sh
 
 echo "*************** double check paths"
