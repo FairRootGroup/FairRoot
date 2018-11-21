@@ -1,0 +1,23 @@
+#!/bin/bash
+
+CURRENT_DIR=`pwd`
+SOURCE_DIR=@CMAKE_SOURCE_DIR@
+MYTMPDIR=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
+
+cd $MYTMPDIR
+cp -a $SOURCE_DIR/templates/project_stl_containers .
+cd project_stl_containers
+./rename.sh TestProj Tst det
+mkdir build
+cd build
+export SIMPATH=@SIMPATH@
+export FAIRROOTPATH=@CMAKE_INSTALL_PREFIX@
+cmake -DUSE_DIFFERENT_COMPILER=true ..
+make
+if [ $? -eq 0 ]; then
+    echo 'Test successful.'
+fi
+
+cd $CURRENT_DIR
+rm -rf $MYTMPDIR
+

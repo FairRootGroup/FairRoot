@@ -346,6 +346,8 @@ add_subdirectory (eventdisplay)
 add_subdirectory (MbsAPI)
 add_subdirectory (datamatch)
 
+add_subdirectory (templates)
+
 If (FairMQ_FOUND)
   add_subdirectory (base/MQ)
   add_subdirectory (parmq)

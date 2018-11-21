@@ -32,6 +32,8 @@ If(EXTRA_FLAGS)
   Set(configure_options "${configure_options};${EXTRA_FLAGS}") 
 EndIf()
 
+Set(configure_options "${configure_options};-DCMAKE_INSTALL_PREFIX=${CTEST_BINARY_DIRECTORY}/install")
+
 If($ENV{ctest_model} MATCHES Nightly OR $ENV{ctest_model} MATCHES Profile)
 
   Find_Program(GCOV_COMMAND gcov)
@@ -74,6 +76,8 @@ Ctest_Configure(BUILD "${CTEST_BINARY_DIRECTORY}"
                )
 
 Ctest_Build(BUILD "${CTEST_BINARY_DIRECTORY}")
+
+execute_process(COMMAND ${BUILD_COMMAND} install -j$ENV{number_of_processors} WORKING_DIRECTORY ${CTEST_BINARY_DIRECTORY})
 
 Ctest_Test(BUILD "${CTEST_BINARY_DIRECTORY}" 
            PARALLEL_LEVEL $ENV{number_of_processors}
