@@ -37,9 +37,9 @@ pipeline{
       steps{
         script {
           parallel(buildMatrix([
-            [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc4.9',         fairsoft: 'may18'],
-            [os: 'MacOS10.11', arch: 'x86_64', compiler: 'AppleLLVM8.0.0', fairsoft: 'may18'],
-            [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM9.0.0', fairsoft: 'may18'],
+            [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc4.9',          fairsoft: 'may18'],
+            [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'may18'],
+            [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'may18MT'],
           ]) { spec, label ->
             sh '''\
               echo "export BUILDDIR=$PWD/build" >> Dart.cfg
