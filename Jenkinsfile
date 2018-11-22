@@ -33,12 +33,28 @@ def buildMatrix(List specs, Closure callback) {
 pipeline{
   agent none
   stages {
-    stage("Run Build/Test Matrix") {
+    stage("Run non-MT builds") {
       steps{
         script {
           parallel(buildMatrix([
             [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc4.9',          fairsoft: 'may18'],
             [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'may18'],
+          ]) { spec, label ->
+            sh '''\
+              echo "export BUILDDIR=$PWD/build" >> Dart.cfg
+              echo "export SOURCEDIR=$PWD" >> Dart.cfg
+              echo "export PATH=$SIMPATH/bin:$PATH" >> Dart.cfg
+              echo "export GIT_BRANCH=$JOB_BASE_NAME" >> Dart.cfg
+            '''
+            sh './Dart.sh alfa_ci Dart.cfg'
+          })
+        }
+      }
+    }
+    stage("Run MT builds") {
+      steps{
+        script {
+          parallel(buildMatrix([
             [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'may18MT'],
           ]) { spec, label ->
             sh '''\
