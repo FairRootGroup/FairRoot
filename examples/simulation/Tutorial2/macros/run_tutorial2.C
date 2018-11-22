@@ -1,13 +1,13 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT=false)
+void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT=true)
 {
-  
+
   TString dir = getenv("VMCWORKDIR");
   TString tutdir = dir + "/simulation/Tutorial2";
 
@@ -20,13 +20,13 @@ void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
   TString partName[] = {"pions","eplus","proton"};
   Int_t   partPdgC[] = {    211,     11,    2212};
   Int_t chosenPart  = 0;
-  
+
   Double_t momentum = 2.;
 
   Double_t theta    = 0.;
 
   TString outDir = "./";
-   
+
   // Output file name
   TString outFile = Form("%s/tutorial2_%s.mc_p%1.3f_t%1.0f_n%d.root",
 			 outDir.Data(),
@@ -34,7 +34,7 @@ void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
 			 momentum,
 			 theta,
 			 nEvents);
-  
+
   // Parameter file name
   TString parFile = Form("%s/tutorial2_%s.params_p%1.3f_t%1.0f_n%d.root",
 			 outDir.Data(),
@@ -42,7 +42,7 @@ void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
 			 momentum,
 			 theta,
 			 nEvents);
-   
+
   // Set the random seed
   gRandom->SetSeed(98989);
 
@@ -65,18 +65,18 @@ void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
   run->SetSink(new FairRootFileSink(outFile));          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
-  
+
   // -----   Create media   -------------------------------------------------
   run->SetMaterials("media.geo");       // Materials
   // ------------------------------------------------------------------------
-  
+
   // -----   Create geometry   ----------------------------------------------
   FairModule* cave= new  FairCave("CAVE");
-  cave->SetGeometryFileName("cave_vacuum.geo"); 
+  cave->SetGeometryFileName("cave_vacuum.geo");
   run->AddModule(cave);
 
   FairDetector* tutdet = new FairTutorialDet2("TUTDET", kTRUE);
-  tutdet->SetGeometryFileName("double_sector.geo"); 
+  tutdet->SetGeometryFileName("double_sector.geo");
   run->AddModule(tutdet);
   // ------------------------------------------------------------------------
 
@@ -105,11 +105,11 @@ void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
   rtdb->saveOutput();
   rtdb->print();
   // ------------------------------------------------------------------------
-   
+
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
   // ------------------------------------------------------------------------
-  
+
   // -----   Finish   -------------------------------------------------------
 
   cout << endl << endl;
@@ -140,5 +140,3 @@ void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
 
   // ------------------------------------------------------------------------
 }
-
-

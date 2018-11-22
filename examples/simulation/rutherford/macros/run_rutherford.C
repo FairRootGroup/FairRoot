@@ -1,13 +1,13 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=false)
+void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=true)
 {
-  
+
   TString dir = gSystem->Getenv("VMCWORKDIR");
   TString tutdir = dir + "/simulation/rutherford/macros";
 
@@ -26,7 +26,7 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
 
   TString parFile = outDir + "/params_";
   parFile = parFile + mcEngine + ".root";
-   
+
    // Set the random seed
   gRandom->SetSeed(98989);
 
@@ -44,12 +44,12 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
    FairLogger *logger = FairLogger::GetLogger();
   // define log file name
   logger->SetLogFileName("MyLog.log");
-  // log to screen and to file 
+  // log to screen and to file
   logger->SetLogToScreen(kTRUE);
   logger->SetLogToFile(kTRUE);
   // Print very accurate output. Levels are LOW, MEDIUM and HIGH
   logger->SetLogVerbosityLevel("HIGH");
- 
+
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
   run->SetName(mcEngine);              // Transport engine
@@ -58,23 +58,23 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
 
-  run->SetWriteRunInfoFile(kFALSE);  
+  run->SetWriteRunInfoFile(kFALSE);
   // -----   Create media   -------------------------------------------------
   run->SetMaterials("media.geo");       // Materials
   // ------------------------------------------------------------------------
-  
+
   // -----   Create geometry   ----------------------------------------------
 
   FairModule* cave= new FairCave("CAVE");
-  cave->SetGeometryFileName("cave_vacuum.geo"); 
+  cave->SetGeometryFileName("cave_vacuum.geo");
   run->AddModule(cave);
 
   FairModule* target= new FairTarget("Target");
-  target->SetGeometryFileName("target_rutherford.geo"); 
+  target->SetGeometryFileName("target_rutherford.geo");
   run->AddModule(target);
 
   FairDetector* rutherford = new FairRutherford("RutherfordDetector", kTRUE);
-  rutherford->SetGeometryFileName("rutherford.geo"); 
+  rutherford->SetGeometryFileName("rutherford.geo");
   run->AddModule(rutherford);
   // ------------------------------------------------------------------------
 
@@ -84,8 +84,8 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
 
 
   // Ion Generator
-                                               
-  FairIonGenerator *fIongen= new FairIonGenerator(2, 4, 2, 1, 0., 0., 1./20., 0., 0., -1.); 
+
+  FairIonGenerator *fIongen= new FairIonGenerator(2, 4, 2, 1, 0., 0., 1./20., 0., 0., -1.);
   primGen->AddGenerator(fIongen);
 
 
@@ -104,7 +104,7 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
   // -----   Run initialisation   -------------------------------------------
   run->Init();
   // ------------------------------------------------------------------------
-  
+
   // Set cuts for storing the trajectories.
   // Switch this on only if trajectories are stored.
   // Choose this cuts according to your needs, but be aware
@@ -128,12 +128,12 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
   rtdb->saveOutput();
   rtdb->print();
   // ------------------------------------------------------------------------
-   
+
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
   // ------------------------------------------------------------------------
   run->CreateGeometryFile(geoFile);
-  
+
   // -----   Finish   -------------------------------------------------------
 
   cout << endl << endl;
@@ -164,5 +164,3 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
 
   // ------------------------------------------------------------------------
 }
-
-
