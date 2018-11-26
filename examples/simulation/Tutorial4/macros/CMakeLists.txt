@@ -5,7 +5,9 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
- GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/macros/run_tutorial4_createMatrices.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/macros/run_tutorial4_createMatrices.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/macros/run_tutorial4_createGeometryFile.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/macros/run_tutorial4_createParameterFile.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/macros/run_tutorial4.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial4/macros/run_reco.C)
 
