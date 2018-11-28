@@ -1,13 +1,14 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=false)
+void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",
+                   Bool_t doAlign=true, Bool_t isMT=false)
 {
-  
+
   TString dir = getenv("VMCWORKDIR");
 
   TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
@@ -15,23 +16,30 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
 
   TString tut_geomdir = dir + "/common/geometry";
   gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
-  
+
   Double_t momentum = 2.;
 
   Double_t theta    = 2.;
 
-  TString outDir = "./";
+  TString outDir = "./data/";
 
   // Output file name
-  TString  outFile     ="testrun_";
-  outFile = outFile + mcEngine + ".root";
+  TString outFile{""};
+  TString geoFile{""};
+  TString parFile{""};
+  if (doAlign) {
+    outFile = "testrun_align_";
+    geoFile = "geoFile_align_";
+    parFile = "testparams_align";
+  } else {
+    outFile = "testrun_";
+    geoFile = "geoFile";
+    parFile = "testparams_";
+  }
+  outFile = outDir + outFile + mcEngine + ".root";
+  geoFile = outDir + geoFile + mcEngine + ".root";
+  parFile = outDir + parFile + mcEngine + ".root";
 
-  TString geoFile ="data/geoFile_" + mcEngine + "_full.root";
-  TString geoFileMisaligned ="data/geoFile_" + mcEngine + "_full_misaligned.root";
-
-  TString  parFile     ="testparams_";
-  parFile = parFile + mcEngine + ".root";
-  
   TList *parFileList = new TList();
 
   TString paramDir = dir + "/simulation/Tutorial4/parameters/";
@@ -39,7 +47,6 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
 
   TObjString* tutDetDigiFile = new TObjString(paramFile);
   parFileList->Add(tutDetDigiFile);
-
 
   // In general, the following parts need not be touched
   // ========================================================================
@@ -54,8 +61,8 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
   // ------------------------------------------------------------------------
 
   //Does not work with automatic loading pf libraries. The info is not in the rootmap file
-//  gLogger->SetLogScreenLevel("INFO");   
- 
+//  gLogger->SetLogScreenLevel("INFO");
+
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
   run->SetName(mcEngine);              // Transport engine
@@ -63,19 +70,20 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
   run->SetSink(new FairRootFileSink(outFile));          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
-  
+
   // -----   Create media   -------------------------------------------------
   run->SetMaterials("media.geo");       // Materials
   // ------------------------------------------------------------------------
-  
+
   // -----   Create geometry   ----------------------------------------------
   FairModule* cave= new FairCave("CAVE");
-  cave->SetGeometryFileName("cave_vacuum.geo"); 
+  cave->SetGeometryFileName("cave_vacuum.geo");
   run->AddModule(cave);
 
   FairTutorialDet4* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
-  tutdet->SetGeometryFileName("tutorial4.root"); 
-   
+  tutdet->SetGeometryFileName("tutorial4.root");
+  tutdet->SetModifyGeometry(doAlign);
+
   run->AddModule(tutdet);
   // ------------------------------------------------------------------------
 
@@ -94,11 +102,10 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
 
   primGen->AddGenerator(boxGen);
 
-  
-  run->SetGenerator(primGen);
-  // ------------------------------------------------------------------------
 
-  // -----   Initialize simulation run   ------------------------------------
+  run->SetGenerator(primGen);
+
+  // -----  Store information about particle trajectories  ------------------
   run->SetStoreTraj(kTRUE);
 
   // -----   Runtime database   ---------------------------------------------
@@ -112,44 +119,9 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
   rtdb->setOutput(parOut);
   // ------------------------------------------------------------------------
 
-  // --------- misalign the working geometry here ---------------------------
-
-  // We fill a std::map<std::string, TGeoHMatrix> map with all misalignment matrices
-  // how you get those in your geometry is up to you
-
-  std::map<std::string, TGeoHMatrix> matrices;
-  
-  double rot[9];
-  double trans[3];
-
-  ifstream myfile;
-  myfile.open("misalignmentMatrices.txt");
-  std::string line;
-  std::string path;
-  while (true){
-    if(!std::getline(myfile, line)) break;
-    path = line;
-    for(int i=0; i<9; i++){
-      std::getline(myfile, line);
-      rot[i] = stod(line);
-    }
-    for(int i=0; i<3; i++){
-      std::getline(myfile, line);
-      trans[i] = stod(line);
-    }  
-
-    TGeoHMatrix thisMat;
-    thisMat.SetRotation(rot);
-    thisMat.SetTranslation(trans);
-    matrices[path] = thisMat;
-  }
-
-  run->AddAlignmentMatrices(matrices);
-  LOG(info) << "AlignHandler: all matrices added!";
-
-  // alignment must happen before fRun->Init() is called!
+  // -----   Initialize simulation run   ------------------------------------
   run->Init();
-  
+
  // -Trajectories Visualization (TGeoManager Only )
  // -----------------------------------------------
 
@@ -165,13 +137,13 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=
 
   // ------------------------------------------------------------------------
 
-   
+
   // -----   Start run   ----------------------------------------------------
-  //run->CreateGeometryFile(geoFileMisaligned);
+  //run->CreateGeometryFile(geoFile); //misaligned geometry
   run->Run(nEvents);
-  //run->CreateGeometryFile(geoFile);
+  //run->CreateGeometryFile(geoFile); // original geometry
   // ------------------------------------------------------------------------
-  
+
   rtdb->saveOutput();
   rtdb->print();
 
