@@ -278,7 +278,7 @@ void FairTutorialDet4::ConstructGeometry()
   }
 }
 
-Bool_t FairTutorialDet4::CheckIfSensitive(const std::string& name)
+Bool_t FairTutorialDet4::CheckIfSensitive(std::string name)
 {
   TString tsname = name;
   if (tsname.Contains("tut4")) {
@@ -337,6 +337,45 @@ std::map<std::string, TGeoHMatrix> FairTutorialDet4::getMisalignmentMatrices(){
   LOG(info) << fNrOfDetectors << " misalignment matrices created!";
 
   return matrices;
+}
+
+void FairTutorialDet4::RegisterAlignmentMatrices()
+{
+
+  if (fModifyGeometry) {
+    TString volPath;
+    TString volStr   = "/cave_1/tutorial4_0/tut4_det_";
+
+    std::map<std::string, TGeoHMatrix> matrices;
+
+    for (Int_t iDet = 0; iDet < fNrOfDetectors; ++iDet) {
+      LOG(debug)<<"Create Matrix for detector nr "<<iDet;
+      volPath  = volStr;
+      volPath += iDet;
+
+      LOG(debug) << "Path: "<< volPath;
+
+      //we have to express the displacements as regards the old local RS (non misaligned BTOF)
+      Double_t dx     = fShiftX[iDet];
+      Double_t dy     = fShiftY[iDet];
+      Double_t dz     = fShiftZ[iDet];
+      Double_t dphi   = fRotX[iDet];
+      Double_t dtheta = fRotY[iDet];
+      Double_t dpsi   = fRotZ[iDet];
+
+      TGeoRotation* rrot = new TGeoRotation("rot",dphi,dtheta,dpsi);
+      TGeoCombiTrans localdelta = *(new TGeoCombiTrans(dx,dy,dz, rrot));
+      TGeoHMatrix ldm = TGeoHMatrix(localdelta);
+
+      std::string thisPath(volPath);
+      matrices[thisPath] = ldm;
+    }
+
+    LOG(info) << fNrOfDetectors << " misalignment matrices created!";
+
+    FairRun* run = FairRun::Instance();
+    run->AddAlignmentMatrices(matrices);
+  }
 }
 
 FairTutorialDet4Point* FairTutorialDet4::AddHit(Int_t trackID, Int_t detID,
