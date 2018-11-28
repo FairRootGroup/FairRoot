@@ -987,6 +987,9 @@ void FairMCApplication::ConstructGeometry()
     delete particleIter;
   }
   fModIter->Reset();
+  while((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+    Mod->RegisterAlignmentMatrices();
+  }
 
   // dont use this here anymore, use FairMCApplication::MisalignGeometry
   // fRun->AlignGeometry()

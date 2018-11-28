@@ -76,6 +76,8 @@ class FairModule:  public TNamed
     virtual void        ModifyGeometry() __attribute__((deprecated("Use FairAlignmentHandler instead, see Tutorial4 for examples"))) {
       LOG(warn) << "This function is deprecated. Use FairAlignmentHandler instead, see Tutorial4 for examples."; 
     }
+    virtual void RegisterAlignmentMatrices() {;}
+
     /**construct geometry from GDML files*/
     virtual void        ConstructGDMLGeometry(TGeoMatrix*);
     /** custom settings of processes and cuts for media to be forwarded to the 
