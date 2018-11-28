@@ -97,6 +97,10 @@ class FairTutorialDet4: public FairDetector
 
     std::map<std::string, TGeoHMatrix> getMisalignmentMatrices();
 
+    virtual void RegisterAlignmentMatrices();
+
+    virtual Bool_t CheckIfSensitive(std::string name);
+
   private:
 
     static FairTutorialDet4Geo* fgGeo;   //!
@@ -137,7 +141,6 @@ class FairTutorialDet4: public FairDetector
      **/
     void ConstructASCIIGeometry();
 
-    Bool_t CheckIfSensitive(const std::string& name);
 
     FairTutorialDet4(const FairTutorialDet4&);
     FairTutorialDet4& operator=(const FairTutorialDet4&);
