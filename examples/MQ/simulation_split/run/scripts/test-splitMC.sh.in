@@ -6,10 +6,15 @@ echo "*************** check paths"
 env
 
 echo "*************** run config.sh in ${CMAKE_BINARY_DIR}"
+cat ${CMAKE_BINARY_DIR}/config.sh
+echo "****************************************************"
 source ${CMAKE_BINARY_DIR}/config.sh
+echo "****************************************************"
+env
 echo "*************** load dds from @DDS_LOCATION@"
+cat @DDS_LOCATION@/DDS_env.sh
+echo "****************************************************"
 source @DDS_LOCATION@/DDS_env.sh
-
 echo "*************** double check paths"
 env
 
