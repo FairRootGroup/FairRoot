@@ -13,10 +13,12 @@ echo "****************************************************"
 env
 echo "*************** load dds from @DDS_LOCATION@"
 cat @DDS_LOCATION@/DDS_env.sh
-echo "****************************************************"
 source @DDS_LOCATION@/DDS_env.sh
 echo "*************** double check paths"
 env
+echo "****************************************************"
+echo "DYLD_LIBRARIES_PATH=$DYLD_LIBRARY_PATH"
+echo "****************************************************"
 
 echo "***** Start dds server"
 dds-server start -s &> dds-server.dat
