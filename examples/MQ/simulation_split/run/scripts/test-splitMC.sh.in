@@ -5,8 +5,9 @@ NOFNEEDEDAGENTS=5
 echo "*************** check paths"
 env
 
-echo "*************** load dds"
+echo "*************** run config.sh in ${CMAKE_BINARY_DIR}"
 source ${CMAKE_BINARY_DIR}/config.sh
+echo "*************** load dds from @DDS_LOCATION@"
 source @DDS_LOCATION@/DDS_env.sh
 
 echo "*************** double check paths"
