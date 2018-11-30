@@ -54,8 +54,8 @@ until [ $LOOPING -eq 0 ]; do
     ((COUNTER++));
     if [ $COUNTER -ge 20 ]; then LOOPING=0; fi
     FILESIZE=0
-    if [ -f @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root ]; then
-        FILESIZE=$(ls -l @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root | awk '{print $5}')
+    if [ -f @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root ]; then
+        FILESIZE=$(ls -l @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root | awk '{print $5}')
     fi
     fairmq-dds-command-ui -s $DDS_ID -c c
     if [ $FILESIZE -ge 100 ]; then LOOPING=0; fi
@@ -98,8 +98,8 @@ echo "***** Stop DDS"
 dds-server stop $DDS_ID
 
 echo "***** Check the output file"
-ls -ltr @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root
-OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.$DDS_ID.root | tail -1)"
+ls -ltr @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root | tail -1)"
 echo "There are $OUTPUT_EVENTS events in the output file."
 
 echo "=============================================================================================================================="

@@ -7,4 +7,3 @@
  ################################################################################
 Add_Subdirectory(src)
 Add_Subdirectory(run)
-Add_Subdirectory(scripts)

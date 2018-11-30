@@ -80,10 +80,9 @@ ForEach(_file RANGE 0 ${_length})
 EndForEach(_file RANGE 0 ${_length})
 
 set(SPLITMC_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split)
-set(SPLITMC_FILE_LOCATION ${CMAKE_SOURCE_DIR})
+set(SPLITMC_FILE_LOCATION ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/)
 set(PIXEL_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector)
 set(FAIRROOT_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
-
 
 Message(STATUS "Looking for DDS!!!")
 find_package(DDS)
@@ -93,7 +92,7 @@ MESSAGE(STATUS "Set ${DDS_LOCATION} as place to look for DDS_env.sh")
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/splitMC-topology.xml
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/splitMC-topology.xml )
 
-set(SPLITMC_FILE_LOCATION ${CMAKE_SOURCE_DIR})
+set(SPLITMC_FILE_LOCATION ${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split)
 
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/splitMC-topology.xml
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMC.xml )

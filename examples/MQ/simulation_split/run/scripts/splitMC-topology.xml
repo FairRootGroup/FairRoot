@@ -30,14 +30,14 @@
     </decltask>
     
     <decltask id="Sink">
-      <exe reachable="true">@PIXEL_BIN_LOCATION@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect --file-name @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.data.root -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+      <exe reachable="true">@PIXEL_BIN_LOCATION@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect --file-name @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.root -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
         <properties>
             <id access="read">dataOut</id>
         </properties>
     </decltask>
 
     <decltask id="ParamServer">
-      <exe reachable="true">@FAIRROOT_BIN_LOCATION@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity INFO --update-channel-name updateChannel --output-name @SPLITMC_FILE_LOCATION@/examples/MQ/simulation_split/run/scripts/DDS.simulation_TGeant3.pars.root -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+      <exe reachable="true">@FAIRROOT_BIN_LOCATION@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity INFO --update-channel-name updateChannel --output-name @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.pars.root -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
         <properties>
             <id access="write">updateChannel</id>
         </properties>
