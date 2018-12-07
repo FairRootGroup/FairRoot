@@ -21,10 +21,10 @@ echo "DYLD_LIBRARIES_PATH=$DYLD_LIBRARY_PATH"
 echo "****************************************************"
 
 echo "***** Start dds server"
-dds-server start -s &> dds-server.dat
+dds-session start &> dds-server.dat
 
 cat dds-server.dat
-DDS_ID=$(cat dds-server.dat | grep "Set default" | awk '{print $NF}' )
+DDS_ID=$(cat dds-server.dat | grep "Default DDS session is set to" | awk '{print $NF}' )
 
 echo "***** Create local cluster with $NOFNEEDEDAGENTS agents"
 dds-submit -s $DDS_ID -r localhost -n $NOFNEEDEDAGENTS &> dds-agents.dat
@@ -60,13 +60,21 @@ LOOPING=1
 until [ $LOOPING -eq 0 ]; do
     echo "waiting $COUNTER seconds for the output file to grow";
     ((COUNTER++));
-    if [ $COUNTER -ge 20 ]; then LOOPING=0; fi
+    if [ $COUNTER -ge 50 ]; then LOOPING=0; fi
     FILESIZE=0
     if [ -f @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root ]; then
         FILESIZE=$(ls -l @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root | awk '{print $5}')
     fi
-    fairmq-dds-command-ui -s $DDS_ID -c c
-    if [ $FILESIZE -ge 100 ]; then LOOPING=0; fi
+    fairmq-dds-command-ui -s $DDS_ID -c c &> dds_check.log
+    NOF_RUNNG=$(grep RUNNING dds_check.log | wc -l)
+    NOF_READY=$(grep READY   dds_check.log | wc -l)
+    NOF_AGENT=$(dds-info -s $DDS_ID -n | grep -m 1 "$NOFNEEDEDAGENTS")
+    echo "GOT $NOF_RUNNG RUNNING, $NOF_READY READY ($NOF_AGENT AGENTS)"
+    if [ $NOF_RUNNG -eq $((NOFNEEDEDAGENTS - 1)) ] && [ $NOF_READY -eq 1 ]
+    then
+       LOOPING=0;
+    fi
+#    if [ $FILESIZE -ge 100 ]; then LOOPING=0; fi
     sleep 1;
     : ;
 done
@@ -103,7 +111,7 @@ fairmq-dds-command-ui -s $DDS_ID -c q
 sleep 1
 
 echo "***** Stop DDS"
-dds-server stop $DDS_ID
+dds-session stop $DDS_ID -f
 
 echo "***** Check the output file"
 ls -ltr @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root
