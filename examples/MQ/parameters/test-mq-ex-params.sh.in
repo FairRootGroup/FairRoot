@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source @CMAKE_BINARY_DIR@/config.sh
+source @CMAKE_BINARY_DIR@/config.sh -p
 
 # setup a trap to kill everything if the test fails/timeouts
 trap 'kill -TERM $CLIENT_PID; kill -TERM $PARAMETERSERVER_PID; wait $CLIENT_PID; wait $PARAMETERSERVER_PID;' TERM
