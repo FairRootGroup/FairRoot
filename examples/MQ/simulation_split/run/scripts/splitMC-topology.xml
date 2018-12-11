@@ -14,7 +14,8 @@
 
     <decltask id="Transporter">
       <exe reachable="true">@SPLITMC_BIN_LOCATION@/runMQTrans --config-key splitMC-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect --channel-config name=primariesChannel,type=pull,method=connect --channel-config name=data#all#,type=push,method=connect --transport-name TGeant3 --running-mode pp --severity INFO -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
-        <properties>
+      <env reachable="false">@CMAKE_BINARY_DIR@/config.sh</env>
+      <properties>
           <id access="read">primariesChannel</id>
           <id access="read">data#all#</id>
 	  <id access="read">updateChannel</id>
