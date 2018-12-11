@@ -1,0 +1,59 @@
+#!/bin/bash
+
+if [ -f @SPLITMC_FILE_LOCATION@/MQ.simulation_TGeant3.data.root ]; then
+    echo "File @SPLITMC_FILE_LOCATION@/MQ.simulation_TGeant3.data.root exists. Deleting"
+    rm -rf @SPLITMC_FILE_LOCATION@/MQ.simulation_TGeant3.data.root
+fi
+
+GENERATOR="@SPLITMC_BIN_LOCATION@/runMQGen --id splitMC-gen --channel-config name=primariesChannel,type=push,method=bind,rateLogging=1,address=tcp://*:5901 --running-mode pp --severity INFO --nof-events 1 --chunk-size 0 --control static --color false"
+
+TRANSPORTER="@SPLITMC_BIN_LOCATION@/runMQTrans --config-key splitMC-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect,rateLogging=1,address=tcp://localhost:5904 --channel-config name=primariesChannel,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5901 --channel-config name=data#all#,type=push,method=connect,rateLogging=1,address=tcp://localhost:5902 --transport-name TGeant3 --running-mode pp --severity INFO --control static --color false"
+
+MERGER="@SPLITMC_BIN_LOCATION@/runMQChMer --id splitMC-merger --in-channel data#all# --channel-config name=data#all#,type=pull,method=bind,rateLogging=1,address=tcp://*:5902 --out-channel dataOut --channel-config name=dataOut,type=push,method=bind,rateLogging=1,address=tcp://*:5903 --transport zeromq --severity INFO --control static --color false"
+
+FILESINK="@PIXEL_BIN_LOCATION@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5903 --file-name @SPLITMC_FILE_LOCATION@/MQ.simulation_TGeant3.data.root --control static --color false"
+
+PARMQSERVER="@FAIRROOT_BIN_LOCATION@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind,rateLogging=1,address=tcp://*:5904 --severity INFO --update-channel-name updateChannel --output-name @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.pars.root --control static --color false"
+
+#xterm +aw -geometry 100x25+0+0     -hold -e $GENERATOR &
+#xterm +aw -geometry 100x25+0+350   -hold -e $TRANSPORTER &
+#xterm +aw -geometry 100x25+500+0   -hold -e $MERGER &
+#xterm +aw -geometry 100x25+500+350 -hold -e $FILESINK &
+#xterm +aw -geometry 100x25+500+700 -hold -e $PARMQSERVER &
+
+echo "Start devices"
+$GENERATOR   &> gen_log.dat &
+GENERATOR_PID=$!
+$TRANSPORTER &> tra_log.dat &
+TRANSPORTER_PID=$!
+$MERGER      &> mer_log.dat &
+MERGER_PID=$!
+$FILESINK    &> sin_log.dat &
+FILESINK_PID=$!
+$PARMQSERVER &> par_log.dat &
+PARMQSERVER_PID=$!
+
+echo "Wait for generator to finish"
+wait $GENERATOR_PID
+
+echo "Sleep 5 seconds"
+sleep 5
+
+echo "Kill other devices"
+kill $TRANSPORTER_PID
+kill $MERGER_PID
+kill $PARMQSERVER_PID
+kill $FILESINK_PID
+
+INPUT_EVENTS="1"
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @SPLITMC_FILE_LOCATION@/MQ.simulation_TGeant3.data.root | tail -1)"
+
+echo "There are $OUTPUT_EVENTS events in the output file."
+
+if [ "$OUTPUT_EVENTS" -eq "$INPUT_EVENTS" ];
+then
+    echo "Shell script finished successfully.";
+else
+    echo "Shell script failed.";
+fi
+

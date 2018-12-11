@@ -9,11 +9,17 @@
 Set(MaxTestTime 90)
 
 GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMC.sh ${CMAKE_CURRENT_BINARY_DIR})
+GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMQ.sh ${CMAKE_CURRENT_BINARY_DIR})
 
 Add_Test(splitMC
        ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
 Set_Tests_Properties(splitMC PROPERTIES TIMEOUT ${MaxTestTime})
 Set_Tests_Properties(splitMC PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
+
+Add_Test(splitMQ
+       ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
+Set_Tests_Properties(splitMQ PROPERTIES TIMEOUT ${MaxTestTime})
+Set_Tests_Properties(splitMQ PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
 
 set(INCLUDE_DIRECTORIES
     ${BASE_INCLUDE_DIRECTORIES}
@@ -98,3 +104,5 @@ configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/spl
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMC.xml )
 configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/test-splitMC.sh.in
 		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMC.sh)
+configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/simulation_split/run/scripts/test-splitMQ.sh.in
+		${CMAKE_BINARY_DIR}/bin/examples/MQ/simulation_split/test-splitMQ.sh)
