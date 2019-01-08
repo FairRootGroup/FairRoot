@@ -32,7 +32,7 @@ FairFastSimulation::FairFastSimulation()
     LOG(info) << "FairFastSimulation::FairFastSimulation() model set";
     
     SetModelParticles("fairFastSimModel", "all");
-    SetModelRegions("fairFastSimModel", "FastSim");
+    SetModelRegions("fairFastSimModel", "FastSimMedium");
     /// Standard constructor
     
     LOG(info) << "FairFastSimulation::FairFastSimulation() finished";

@@ -15,6 +15,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/examples/common/mcstack
   ${CMAKE_SOURCE_DIR}/examples/common/passive
   ${CMAKE_SOURCE_DIR}/generators
+  ${CMAKE_SOURCE_DIR}/base/sim/fastsim
   ${FairLogger_INCDIR}
 )
 
@@ -23,6 +24,7 @@ Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
+  ${SIMPATH}/lib
 ) 
 
 Link_Directories(${LINK_DIRECTORIES})
@@ -34,12 +36,14 @@ Set(SRCS
   FairTutorialDet1GeoPar.cxx
   FairTutorialDet1Point.cxx
   FairSimConfig.cxx
+  FairFastSimExample.cxx
+  FairFastSimExample2.cxx
 )
 
 Set(HEADERS )
 Set(LINKDEF Tutorial1LinkDef.h)
 Set(LIBRARY_NAME Tutorial1)
-Set(DEPENDENCIES MCStack Base
+Set(DEPENDENCIES MCStack Base FairFastSim
     ${Boost_PROGRAM_OPTIONS_LIBRARY})
 
 GENERATE_LIBRARY()
