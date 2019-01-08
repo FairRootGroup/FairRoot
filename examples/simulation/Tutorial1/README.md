@@ -15,6 +15,27 @@ root>.L run_tutorial1.C
 root>run_tutorial(10, "TGeant4")
 ```
 
+### Fast simulation of a detector
+Fast simulation should be implamented within the user class derived from FairFastSimDetector. In this tutorial there are two examples of such user class: FairFastSimExample and FairFastSimExample2. They differ only in the position
+of the region for the fast simulation.
+Methods, which need to be overwritten by deriving from FairFastSimDetector:
+* Initialize() - initialization
+* Register() - register output in FairRootManager
+* ConstructGeometry - define the region for the fast simulation. It should be a single active volume. Use fFastSimMedium data member as the medium.
+* EndOfEvent() - called after each event
+* Reset() - clear the array with output
+* TClonesArray* GetCollection(Int_t iColl) - return the pointer to output array with MC points.
+* FastSimProcessParticle() - implementation of fast simulation algorithm for a single particle. Called when a track is entering the region defined in ConstructGeometry(). After simulation of the detector response, the particle should be
+transported outside the region or killed. For that use:
+```
+FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
+stack->FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t zz, Double_t tt, Double_t px, Double_t py, Double_t pz, Double_t en);
+// or
+stack->FastSimStopParticle();
+```
+
+Macro to run the example with fast simulation: run_tutorial1_fastsim.C
+
 ### Seed for the random number generator
 
 ```

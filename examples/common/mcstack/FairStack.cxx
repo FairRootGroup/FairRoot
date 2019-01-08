@@ -528,9 +528,11 @@ void FairStack::FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t zz, Dou
     TLorentzVector curPos;
     TVirtualMC::GetMC()->TrackPosition(curPos);
     LOG(debug) << "track is in " << curPos.X() << "," << curPos.Y() << "," << curPos.Z() << ", moving to " << xx << "," << yy << "," << zz;
-    if ( strcmp(gMC->CurrentVolName(),gGeoManager->FindNode(xx,yy,zz)->GetVolume()->GetName()) == 0 ) {
+    TString curVolName = TString(TVirtualMC::GetMC()->CurrentVolName());
+    LOG(debug) << "gMC says track is in \"" << curVolName << "\" moving particle to \"" << gGeoManager->FindNode(xx,yy,zz)->GetVolume()->GetName() << "\".";
+    if ( curVolName.EqualTo(gGeoManager->FindNode(xx,yy,zz)->GetVolume()->GetName()) ) {
         LOG(fatal) << "FairStack::FastSimMoveParticleTo(" << xx << "," << yy << "," << zz << ": "
-                   << gMC->CurrentVolName() << " = " << gGeoManager->FindNode(xx,yy,zz)->GetVolume()->GetName() << ") crashes the simulation.";
+                   << curVolName << " = " << gGeoManager->FindNode(xx,yy,zz)->GetVolume()->GetName() << ") crashes the simulation.";
     }
 
     Int_t tobedone  = 1;

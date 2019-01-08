@@ -17,6 +17,7 @@
 #pragma link off all functions;
  
 #pragma link C++ class  FairFastSimRunConfiguration+;
+#pragma link C++ class  FairFastSimDetector+;
 
 #endif
 
