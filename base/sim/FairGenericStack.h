@@ -101,6 +101,23 @@ class FairGenericStack : public TVirtualMCStack
     /** Clone this object (used in MT mode only) */
     virtual FairGenericStack* CloneStack() const;
 
+    /** Fast simulation function to move particle to different position.
+        In Geant3 it stops the current trajectory, and starts it again in the position given by the user.
+        In Geant4 the FastSimulationModel with take over.
+        Later, the points are reindexed and the thus created tracks are not stored in the output.
+     *@param xx,yy,zz    new position    of the particle
+     *@param tt          new proper time of the particle
+     *@param px,py,pz    new momentum    of the particle
+     *@param en          new energy      of the particle
+     **/
+    virtual void          FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t zz, Double_t tt,
+                                                Double_t px, Double_t py, Double_t pz, Double_t en) {}
+    /** Fast simulation function to stop original particle. **/
+    virtual void          FastSimStopParticle  () {}
+    /** Allow FairFastSim the retrieval of moved particle position **/
+    virtual Int_t         FastSimGetMovedIndex () { return -1; }
+    virtual void          FastSimClearMovedIndex () {}
+
   protected:
     /** Copy constructor */
     FairGenericStack(const FairGenericStack&);
