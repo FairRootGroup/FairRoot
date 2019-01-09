@@ -40,6 +40,7 @@
 #include "FairGenericStack.h"           // for FairGenericStack
 
 #include "FairDetectorList.h"           // for DetectorId
+#include "FairLogger.h"
 
 #include "Rtypes.h"                     // for Int_t, Double_t, Bool_t, etc
 #include "TMCProcess.h"                 // for TMCProcess
@@ -197,6 +198,22 @@ class FairStack : public FairGenericStack
      **/
     void AddPoint(DetectorId iDet, Int_t iTrack);
 
+    /** Fast simulation function to move particle to different position.
+        In Geant3 it stops the current trajectory, and starts it again in the position given by the user.
+        In Geant4 the FastSimulationModel with take over.
+        Later, the points are reindexed and the thus created tracks are not stored in the output.
+     *@param xx,yy,zz    new position    of the particle
+     *@param tt          new proper time of the particle
+     *@param px,py,pz    new momentum    of the particle
+     *@param en          new energy      of the particle
+     **/
+    virtual void          FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t zz, Double_t tt,
+                                                Double_t px, Double_t py, Double_t pz, Double_t en);
+    /** Fast simulation function to stop original particle. **/
+    virtual void          FastSimStopParticle  ();
+    /** Allow FairFastSim the retrieval of moved particle position **/
+    virtual Int_t         FastSimGetMovedIndex () { return fFSMovedIndex; }
+    virtual void          FastSimClearMovedIndex() { fFSMovedIndex = -2; }
 
     /** Accessors **/
     TParticle* GetParticle(Int_t trackId) const;
@@ -230,9 +247,13 @@ class FairStack : public FairGenericStack
     std::map<Int_t, Int_t>::iterator  fIndexIter;       //!
 
 
+    /** FastSimulation: STL map from new track index to original track index  **/
+    std::map<Int_t, Int_t>            fFSTrackMap;        //!
+    std::map<Int_t, Int_t>::iterator  fFSTrackIter;       //!
+    Int_t                             fFSMovedIndex;      //!
+
     /** STL map from track index and detector ID to number of MCPoints **/
     std::map<std::pair<Int_t, Int_t>, Int_t> fPointsMap;     //!
-
 
     /** Some indizes and counters **/
     Int_t fCurrentTrack;  //! Index of current track
@@ -247,7 +268,6 @@ class FairStack : public FairGenericStack
     Int_t      fMinPoints;
     Double32_t fEnergyCut;
     Bool_t     fStoreMothers;
-
 
     /** Mark tracks for output using selection criteria  **/
     void SelectTracks();

@@ -20,6 +20,7 @@
 
 #include <iosfwd>                       // for ostream
 #include "TClonesArray.h"               // for TClonesArray
+#include "TGeoManager.h"                // for gGeoManager
 #include "TIterator.h"                  // for TIterator
 #include "TLorentzVector.h"             // for TLorentzVector
 #include "TParticle.h"                  // for TParticle
@@ -42,6 +43,9 @@ FairStack::FairStack(Int_t size)
     fStoreIter(),
     fIndexMap(),
     fIndexIter(),
+    fFSTrackMap(),
+    fFSTrackIter(),
+    fFSMovedIndex(-2),
     fPointsMap(),
     fCurrentTrack(-1),
     fNPrimaries(0),
@@ -102,7 +106,9 @@ void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t polz, TMCProcess proc, Int_t& ntr,
                           Double_t weight, Int_t /*is*/, Int_t /*secondparentID*/)
 {
-
+    // LOG(info) << "FairStack::PushTrack(" << toBeDone << ", " << parentId << ", " << pdgCode << ": "
+    //           << vx << ", " << vy << ", " << vz << " / "
+    //           << px << ", " << py << ", " << pz <<")";
   // --> Get TParticle array
   TClonesArray& partArray = *fParticles;
 
@@ -137,7 +143,6 @@ void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
 // -----   Virtual method PopNextTrack   -----------------------------------
 TParticle* FairStack::PopNextTrack(Int_t& iTrack)
 {
-
   // If end of stack: Return empty pointer
   if (fStack.empty()) {
     iTrack = -1;
@@ -166,7 +171,6 @@ TParticle* FairStack::PopNextTrack(Int_t& iTrack)
 // -----   Virtual method PopPrimaryForTracking   --------------------------
 TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim)
 {
-
   // Get the iPrimth particle from the fStack TClonesArray. This
   // should be a primary (if the index is correct).
 
@@ -230,7 +234,6 @@ void FairStack::FillTrackArray()
 
   // --> Loop over fParticles array and copy selected tracks
   for (Int_t iPart=0; iPart<fNParticles; iPart++) {
-
     Bool_t store = kFALSE;
 
     fStoreIter = fStoreMap.find(iPart);
@@ -311,6 +314,13 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
         FairMCPoint* point = static_cast<FairMCPoint*>(hitArray->At(iPoint));
         Int_t iTrack = point->GetTrackID();
 
+        //        LOG(debug) << "point at " << point->GetX() << "," << point->GetY() << "," << point->GetZ() << " has trackID = " << point->GetTrackID();
+        fFSTrackIter = fFSTrackMap.find(iTrack);      // check if point created by FastSimulation
+        if ( fFSTrackIter != fFSTrackMap.end() ) {    // indeed the point has been created by the FastSimulation mechanism
+            iTrack = fFSTrackIter->second;
+            point->SetTrackID(iTrack);                // set proper TrackID
+        }
+
         fIndexIter = fIndexMap.find(iTrack);
         if (fIndexIter == fIndexMap.end()) {
           LOG(fatal) << "Particle index " << iTrack << " not found in index map!";
@@ -338,6 +348,7 @@ void FairStack::Reset()
   while (! fStack.empty() ) { fStack.pop(); }
   fParticles->Clear();
   fTracks->Clear();
+  fFSTrackMap.clear();
   fPointsMap.clear();
 }
 // -------------------------------------------------------------------------
@@ -377,8 +388,13 @@ void FairStack::Print(Option_t*) const
 void FairStack::AddPoint(DetectorId detId)
 {
   Int_t iDet = detId;
-// cout << "Add point for Detektor" << iDet << endl;
-  pair<Int_t, Int_t> a(fCurrentTrack, iDet);
+  Int_t iTr = fCurrentTrack;
+  fFSTrackIter = fFSTrackMap.find(iTr);      // check if this track is not already created by FastSimulation
+  if ( fFSTrackIter != fFSTrackMap.end() ) {  // indeed the track has been created by the FastSimulation mechanism
+      iTr = fFSTrackIter->second;            // use the ID of the original track
+  }
+
+  pair<Int_t, Int_t> a(iTr, iDet);
   if ( fPointsMap.find(a) == fPointsMap.end() ) { fPointsMap[a] = 1; }
   else { fPointsMap[a]++; }
 }
@@ -391,7 +407,12 @@ void FairStack::AddPoint(DetectorId detId, Int_t iTrack)
 {
   if ( iTrack < 0 ) { return; }
   Int_t iDet = detId;
-  pair<Int_t, Int_t> a(iTrack, iDet);
+  Int_t iTr = iTrack;
+  fFSTrackIter = fFSTrackMap.find(iTr);      // check if this track is not already created by FastSimulation
+  if ( fFSTrackIter != fFSTrackMap.end() ) {  // indeed the track has been created by the FastSimulation mechanism
+      iTr = fFSTrackIter->second;            // use the ID of the original track
+  }
+  pair<Int_t, Int_t> a(iTr, iDet);
   if ( fPointsMap.find(a) == fPointsMap.end() ) { fPointsMap[a] = 1; }
   else { fPointsMap[a]++; }
 }
@@ -430,6 +451,15 @@ void FairStack::SelectTracks()
   // --> Clear storage map
   fStoreMap.clear();
 
+  // loop over tracks created by FastSim to order the tracks
+  for (  fFSTrackIter = fFSTrackMap.begin(); fFSTrackIter != fFSTrackMap.end(); ++fFSTrackIter ) {
+      for (Int_t i=0; i<fNParticles; i++) {
+          TParticle* thisPart = GetParticle(i);
+          if ( thisPart->GetMother(0) == fFSTrackIter->first )
+              thisPart->SetMother(0,fFSTrackIter->second);
+      }
+  }
+
   // --> Check particles in the fParticle array
   for (Int_t i=0; i<fNParticles; i++) {
 
@@ -454,12 +484,19 @@ void FairStack::SelectTracks()
       }
     }
 
+    // check if the track was created by the FastSim mechanism. Do not store such tracks
+    Bool_t fastSimTrack = kFALSE;
+    fFSTrackIter = fFSTrackMap.find(i);
+    if ( fFSTrackIter != fFSTrackMap.end() )
+        fastSimTrack = kTRUE;
+
     // --> Check for cuts (store primaries in any case)
     if (iMother < 0) { store = kTRUE; }
     else {
       if (!fStoreSecondaries) { store = kFALSE; }
       if (nPoints < fMinPoints) { store = kFALSE; }
       if (eKin < fEnergyCut) { store = kFALSE; }
+      if (fastSimTrack)      { store = kFALSE; }
     }
 
     // --> Set storage flag
@@ -484,6 +521,58 @@ void FairStack::SelectTracks()
 }
 // -------------------------------------------------------------------------
 
+// -------------------------------------------------------------------------
+void FairStack::FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t zz, Double_t tt,
+                                      Double_t px, Double_t py, Double_t pz, Double_t en)
+{
+    TLorentzVector curPos;
+    TVirtualMC::GetMC()->TrackPosition(curPos);
+    LOG(debug) << "track is in " << curPos.X() << "," << curPos.Y() << "," << curPos.Z() << ", moving to " << xx << "," << yy << "," << zz;
+    if ( strcmp(gMC->CurrentVolName(),gGeoManager->FindNode(xx,yy,zz)->GetVolume()->GetName()) == 0 ) {
+        LOG(fatal) << "FairStack::FastSimMoveParticleTo(" << xx << "," << yy << "," << zz << ": "
+                   << gMC->CurrentVolName() << " = " << gGeoManager->FindNode(xx,yy,zz)->GetVolume()->GetName() << ") crashes the simulation.";
+    }
+
+    Int_t tobedone  = 1;
+    Int_t parent    = 0; // do not store it as mother
+    Int_t pdg       = TVirtualMC::GetMC()->TrackPid();
+    Double_t polx   = 0.;
+    Double_t poly   = 0.;
+    Double_t polz   = 0.;
+    TMCProcess proc = kPPrimary;// not important, the track will not be saved
+    Int_t ntr       = 0;    // Track number; to be filled by the stack
+    Int_t status    = 0; // not important, the track will not be saved
+    Double_t weight = 0.;
+
+    PushTrack(tobedone, parent, pdg,
+              px, py, pz, en,
+              xx, yy, zz, tt,
+              polx, poly, polz,
+              proc, ntr, weight, status);
+    fFSMovedIndex = fNParticles-1;
+    Int_t trackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
+    fFSTrackIter = fFSTrackMap.find(trackID);      // check if this track is not already created by FastSimulation
+    if ( fFSTrackIter != fFSTrackMap.end() )       // indeed the track has been created by the FastSimulation mechanism
+        trackID = fFSTrackIter->second;            // use the ID of the original track
+    fFSTrackMap[ntr] = trackID;
+
+    LOG(debug) << "FairStack::FastSimMoveParticleTo() created track number " << ntr << " to replace track number " << trackID;
+
+    if ( strcmp(TVirtualMC::GetMC()->GetName(),"TGeant3TGeo") == 0 ) {
+        TVirtualMC::GetMC()->StopTrack();
+    }
+}
+// -------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------
+void FairStack::FastSimStopParticle()
+{
+    if ( TVirtualMC::GetMC()->IsTrackStop() )
+        LOG(fatal) << "FairStack::FastSimStopParticle() tries to stop particle that was probably moved!";
+    fFSMovedIndex = -1;
+    TVirtualMC::GetMC()->StopTrack();
+}
+// -------------------------------------------------------------------------
 
 
 ClassImp(FairStack)
