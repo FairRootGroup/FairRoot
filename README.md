@@ -8,7 +8,7 @@ FairRoot  is distributed under the terms of the GNU Lesser General Public Licenc
 ## Release information
 Please see : https://github.com/FairRootGroup/FairRoot/releases
 
-##Getting started
+## Getting started
 Please see : http://fairroot.gsi.de/getting_started  for  details.
 
 
