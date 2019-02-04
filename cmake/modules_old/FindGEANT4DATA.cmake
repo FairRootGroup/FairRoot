@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find GEANT4 data files
@@ -83,6 +83,22 @@ If (G4NEUTRONXSDATA)
 Else (G4NEUTRONXSDATA)
   Message(STATUS "NOT Found G4NEUTRONXS data")
 EndIf (G4NEUTRONXSDATA)
+
+
+FIND_PATH(G4PARTICLEXSDATA NAMES He3  PATHS
+  $ENV{G4PARTICLEXSDATA}
+  ${GEANT4_DATA}/G4PARTICLEXS
+  NO_DEFAULT_PATH
+)
+#EndIf()
+
+If (G4PARTICLEXSDATA)
+Message(STATUS "Found G4PARTICLEXSDATA data")
+Else (G4PARTICLEXSDATA)
+Message(STATUS "NOT Found G4PARTICLEXSDATA data")
+EndIf (G4PARTICLEXSDATA)
+
+
 
 Message("G4PIIDATA: $ENV{G4PIIDATA}")
 #If(DEFINED ENV{G4PIIDATA})
