@@ -32,6 +32,7 @@ if [ $same_system -eq 1 ]; then
 		export G4NeutronHPCrossSections="@G4NeutronHPCrossSections@"
 		export G4NEUTRONHPDATA="@G4NeutronHPCrossSections@"
 		export G4NEUTRONXSDATA="@G4NEUTRONXSDATA@"
+		export G4PARTICLEXSDATA="@G4PARTICLEXSDATA@"
 		export G4PIIDATA="@G4PIIDATA@"
 		export G4RADIOACTIVEDATA="@G4RADIOACTIVEDATA@"
 		export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
