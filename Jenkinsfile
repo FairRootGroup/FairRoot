@@ -27,7 +27,7 @@ def jobMatrix(String prefix, List specs, Closure callback) {
             sh '''\
               echo "source /etc/profile.d/modules.sh" >> Dart.cfg
               echo "module use /cvmfs/it.gsi.de/modulefiles" >> Dart.cfg
-              echo "module load compiler/gcc/8" >> Dart.cfg
+              echo "module load compiler/gcc/8.1.0" >> Dart.cfg
             '''
           }
 
