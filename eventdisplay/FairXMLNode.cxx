@@ -8,26 +8,34 @@
  */
 
 #include "FairXMLNode.h"
+#include "TDOMParser.h"
+#include "TXMLEngine.h"
+#include <iostream>
 
-FairXMLNode::FairXMLNode(TXMLNode* node):
-fChildren(NULL),
-fAttrib(NULL),
-fNChildren(0),
-fNAttrib(0){
-	//if(gNode == NULL) gNode = new FairXMLNode();
-	fName = node->GetNodeName();
-	fValue = node->GetText();
+
+FairXMLNode::FairXMLNode(TString name,TString value) : TNamed(name, value){
+	fChildren = new TList();
+	fChildren->SetOwner(kTRUE);
+	fAttrib = new TList();
+	fAttrib->SetOwner(kTRUE);
+}
+
+void FairXMLNode::Copy(TXMLNode* node){
+	fChildren->Clear();
+	fAttrib->Clear();
+	SetName(node->GetNodeName());
+	SetTitle(node->GetText());
+	fChildren->SetOwner(kTRUE);
+	fAttrib->SetOwner(kTRUE);
 	if(node->HasChildren()){
-		fChildren = new TList();
 		TXMLNode *child = node->GetChildren();
 		do{
 			if(child==NULL) break;
-
 			TString name = child->GetNodeName();
 			if(name!="text"){
-				FairXMLNode *tempnode = new FairXMLNode(child);
+				FairXMLNode *tempnode = new FairXMLNode();
+				tempnode->Copy(child);
 				fChildren->Add(tempnode);
-				fNChildren++;
 			}
 			if(child->HasNextNode())
 				child=child->GetNextNode();
@@ -36,83 +44,29 @@ fNAttrib(0){
 	}
 	if(node->HasAttributes()){
 		TList *atr_list = node->GetAttributes();
-		fAttrib = new TList();
 		for(int i=0;i<atr_list->GetEntries();i++){
 			TXMLAttr *atrib = (TXMLAttr*)atr_list->At(i);
 			fAttrib->Add(new FairXMLAttrib(atrib->GetName(),atrib->GetValue()));
-			fNAttrib++;
 		}
 	}
-	fMode = kModeImport;
 }
 
-FairXMLNode::FairXMLNode(TString name,TString value) {
-	fName = name;
-	fValue = value;
-	fChildren = NULL;
-	fAttrib = NULL;
-	fNChildren = 0;
-	fNAttrib = 0;
-	fMode = kModeExport;
-}
+FairXMLNode::FairXMLNode(const FairXMLNode& other):
+		FairXMLNode(other.GetName(),other.GetValue()){
+	for(int i=0;i<other.fChildren->GetEntries();i++){
+		fChildren->Add(new FairXMLNode(*(FairXMLNode*)other.fChildren->At(i)));
+	}
 
-void FairXMLNode::AddChild(FairXMLNode* node) {
-	if(node == NULL){
-		return;
+	for(int i=0;i<other.fAttrib->GetEntries();i++){
+		fAttrib->Add(new FairXMLAttrib(*(FairXMLAttrib*)other.fAttrib->At(i)));
 	}
-	if(fMode==kModeExport){
-		if(fChildren==NULL) fChildren = new TList();
-		fChildren->AddLast(node);
-		fNChildren++;
-	}
-}
-
-void FairXMLNode::AddAttrib(TString name, TString value) {
-	if(fMode==kModeExport){
-		if(fAttrib==NULL) fAttrib = new TList();
-		for(int i=0;i<fAttrib->GetEntries();i++){
-			TString temp =(( FairXMLAttrib*)fAttrib->At(i))->GetName();
-		}
-		fAttrib->Add(new FairXMLAttrib(name,value));
-		fNAttrib++;
-	}
-}
-
-Int_t FairXMLNode::GetNChildren() const {
-	if(fMode == kModeNull){
-		//FairCout::Error("dont call for null node");
-		return 0;
-	}
-	return fNChildren;
-}
-
-Int_t FairXMLNode::GetNAttributes() const {
-	if(fMode == kModeNull){
-		//FairCout::Error("not for null node");
-		return 0;
-	}
-	return fNAttrib;
 }
 
 TList* FairXMLNode::GetChildren() const {
-	if(fMode == kModeNull){
-		//FairCout::Error("no child in null node");
-		return NULL;
-	}
 	return fChildren;
 }
 
-FairXMLNode * FairXMLNode::fgNullInstance = NULL;
-
 FairXMLNode* FairXMLNode::GetChild(TString name, Int_t count) const{
-	if(fMode == kModeNull){
-		//FairCout::Error("no child in null node");
-		return FairXMLNode::NullInstance();
-	}
-	if(fNChildren==0){
-		//FairCout::Error("No children in this node");
-		return FairXMLNode::NullInstance();
-	}
 	Int_t control_index = 0;
 	for(int i=0;i<fChildren->GetEntries();i++){
 		FairXMLNode *node = (FairXMLNode*)fChildren->At(i);
@@ -123,117 +77,47 @@ FairXMLNode* FairXMLNode::GetChild(TString name, Int_t count) const{
 		if(control_index>count)
 			return node;
 	}
-	//FairCout::Error("No child found by name");
-	return FairXMLNode::NullInstance();
+	return nullptr;
+}
+
+
+FairXMLAttrib* FairXMLNode::GetAttrib(TString name) const{
+	Int_t control_index = 0;
+	for(int i=0;i<fAttrib->GetEntries();i++){
+		FairXMLAttrib *node = (FairXMLAttrib*)fAttrib->At(i);
+		TString temp = node->GetName();
+		if(temp==name){
+			return node;
+		}
+	}
+	return nullptr;
 }
 
 FairXMLNode* FairXMLNode::GetChild(Int_t index) const{
-	if(fMode == kModeNull){
-		return FairXMLNode::NullInstance();
-	}
-	if(fNChildren>index){
+	if(index<fChildren->GetEntries()){
 		return (FairXMLNode*)fChildren->At(index);
 	}else{
-		return FairXMLNode::NullInstance();
+		return nullptr;
 	}
 }
 
-Bool_t FairXMLNode::IsImport() const{
-	if(fMode==kModeImport) return kTRUE;
-	return kFALSE;
-}
-
-Bool_t FairXMLNode::IsNull() const {
-	if(fMode == kModeNull) return kTRUE;
-	return kFALSE;
-}
-
-FairXMLNode* FairXMLNode::NullInstance() {
-	if(fgNullInstance){
-		return fgNullInstance;
-	}
-	fgNullInstance = new FairXMLNode();
-	return fgNullInstance;
-}
-
-FairXMLNode::FairXMLNode() {
-	fName = "null";
-	fValue= "null";
-	fChildren = NULL;
-	fAttrib = NULL;
-	fNChildren = 0;
-	fNAttrib = 0;
-	fMode = kModeNull;
-}
-
-void FairXMLNode::SetValue(TString value) {
-	if(fMode==kModeExport){
-		fValue = value;
-	}
-}
-
-void FairXMLNode::SetName(TString name) {
-	if(fMode==kModeExport){
-		fName = name;
-	}else{
-	}
-}
-
-TString FairXMLNode::GetValue() const {
-	if(fMode==kModeNull){
-		return "";
-	}
-	return fValue;
-}
-
-const char* FairXMLNode::GetName() {
-	if(fMode==kModeNull){
-		return "";
-	}
-	return fName.Data();
-}
-
-Bool_t FairXMLNode::IsExport() const{
-	if(fMode==kModeNull){
-		return kTRUE;
-	}
-	return kFALSE;
-}
-
-TString FairXMLNode::GetAttribValue(TString name, Int_t index) const{
-	if(fMode==kModeNull){
-		return "";
-	}
-	if(fNAttrib==0){
-		return "";
-	}
-	int counter =-1;
-	for(int i=0;i<fAttrib->GetEntries();i++){
-		FairXMLAttrib *atrib = (FairXMLAttrib*)fAttrib->At(i);
-		TString title = atrib->GetName();
-		if(title == name){
-			counter++;
-		}
-		if(counter==index){
-			return atrib->GetValue();
+void FairXMLNode::AddAttrib(FairXMLAttrib* attrib) {
+	TString new_atr = attrib->GetName();
+	for(int i=0;i<GetNAttributes();i++){
+		TString atr = GetAttrib(i)->GetName();
+		if(atr.EqualTo(new_atr)){
+			std::cout<<"FairXMLNode::AddAttrib Can't have two attributes with the same name!"<<std::endl;
+			return;
 		}
 	}
-	return "";
+	fAttrib->AddLast(attrib);
 }
 
-TString FairXMLNode::GetAttribValue(Int_t index) const{
-	if(index>=fNAttrib||fMode==kModeNull){
-		return "";
+FairXMLAttrib* FairXMLNode::GetAttrib(Int_t index) const{
+	if(index<fAttrib->GetEntries()){
+		return (FairXMLAttrib*)fAttrib->At(index);
 	}else{
-		return ((FairXMLAttrib*)fAttrib->At(index))->GetValue();
-	}
-}
-
-TString FairXMLNode::GetAttribTitle(Int_t index) const{
-	if(index>=fNAttrib||fMode==kModeNull){
-		return "";
-	}else{
-		return ((FairXMLAttrib*)fAttrib->At(index))->GetName();
+		return nullptr;
 	}
 }
 
@@ -251,31 +135,79 @@ Int_t FairXMLNode::GetNChildren(TString name) const{
 Int_t FairXMLNode::GetNAttributes(TString name) const{
 	Int_t counter =0;
 	for(int i=0;i<GetNAttributes();i++){
-		if(GetAttribTitle(i)==name)
+		TString attr_name = GetAttrib(i)->GetName();
+		if(attr_name.EqualTo(name))
 			counter++;
 	}
 	return counter;
 }
 
 FairXMLNode::~FairXMLNode() {
-	if(fChildren){
-		for(int i=0;i<fChildren->GetEntries();i++){
-			fChildren->At(i)->Delete();
-		}
-		delete fChildren;
-	}
-	if(fAttrib){
-		for(int i=0;i<fAttrib->GetEntries();i++){
-			fAttrib->At(i)->Delete();
-		}
-		delete fAttrib;
-	}
-
+	delete fChildren;
+	delete fAttrib;
 }
 
-const char* FairXMLNode::GetTitle() const {
-	if(fMode==kModeNull){
-		return "";
+FairXMLFile::FairXMLFile(TString name, TString mode) :fName(name){
+	if(mode=="read"||mode=="READ"){
+		fOverwrite  = kFALSE;
+		TDOMParser *Parser = new TDOMParser();
+		Parser->SetValidate(kFALSE);
+		Parser->ParseFile(name);
+		TXMLNode *MainNode = Parser->GetXMLDocument()->GetRootNode();
+		fRootNode = new FairXMLNode();
+		fRootNode->Copy(MainNode);
+		delete Parser;
+	}else{
+		fOverwrite  = kTRUE;
+		fRootNode = nullptr;
 	}
-	return fName.Data();
+}
+
+void FairXMLFile::CreateRootNode(TString name) {
+	if(fRootNode!=nullptr) delete fRootNode;
+	fRootNode = new FairXMLNode(name);
+}
+
+void FairXMLFile::SetRootNode(FairXMLNode *node) {
+	if(fRootNode!=nullptr) delete fRootNode;
+	fRootNode = node;
+}
+
+void FairXMLFile::Close() {
+	if(fOverwrite){
+		if(fRootNode==nullptr){
+			std::cout<<"FairXMLFile::Close() No root node!"<<std::endl;
+			return;
+		}
+		TXMLEngine *engine = new TXMLEngine();
+		XMLNodePointer_t mainnode = engine->NewChild(0, 0, fRootNode->GetName());
+		ExportNode(mainnode,fRootNode,engine);
+		XMLDocPointer_t xmldoc =  engine->NewDoc();
+		engine->DocSetRootElement(xmldoc,mainnode);
+		engine->SaveDoc(xmldoc,fName);
+		engine->FreeDoc(xmldoc);
+		delete engine;
+		delete fRootNode;
+		fRootNode = nullptr;
+	}
+}
+
+void FairXMLFile::ExportNode(XMLNodePointer_t& nodePointer,
+		FairXMLNode* node, TXMLEngine *engine) const {
+	for(int i=0;i<node->GetNChildren();i++){
+		XMLNodePointer_t child = engine->NewChild(nodePointer,0,node->GetChild(i)->GetName(),node->GetChild(i)->GetValue());
+		for(int j=0;j<node->GetChild(i)->GetNAttributes();j++){
+			engine->NewAttr(child,0,node->GetChild(i)->GetAttrib(j)->GetName(),node->GetChild(i)->GetAttrib(j)->GetValue());
+		}
+		ExportNode(child,node->GetChild(i),engine);
+	}
+}
+
+FairXMLFile::~FairXMLFile() {
+	if(fRootNode!=nullptr){
+		if(fOverwrite)
+			Close();
+		else
+			delete fRootNode;
+	}
 }
