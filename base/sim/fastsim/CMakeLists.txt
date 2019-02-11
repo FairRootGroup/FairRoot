@@ -19,6 +19,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/base/sink
   ${CMAKE_SOURCE_DIR}/geobase
   ${CMAKE_SOURCE_DIR}/parbase
+  ${CMAKE_SOURCE_DIR}/alignment
   ${CMAKE_SOURCE_DIR}/base/sim/fastsim
   ${FairLogger_INCDIR}
 )
@@ -54,7 +55,7 @@ set(SRCS
 Set(DEPENDENCIES
       ParBase GeoBase FairTools
       Proof GeomPainter Geom VMC EG MathCore Physics
-      Matrix Tree Hist RIO RHTTP Core geant4vmc
+      Matrix Tree Hist RIO RHTTP Core geant4vmc G4processes
 )
 
 Set(LINKDEF FastSimLinkDef.h)
