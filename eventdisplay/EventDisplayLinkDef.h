@@ -25,6 +25,7 @@
 #pragma link C++ class  FairTimeStampPointDraw;
 #pragma link C++ class FairXMLNode;
 #pragma link C++ class FairXMLAttrib;
+#pragma link C++ class FairXMLFile;
 
 
 
