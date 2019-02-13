@@ -1,11 +1,14 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // in root all sizes are given in cm
+
+
+
 
 #include "TSystem.h"
 #include "TGeoManager.h"
@@ -20,7 +23,11 @@
 #include "TList.h"
 #include "TROOT.h"
 
+
+
 #include <iostream>
+
+
 
 // Name of geometry version and output file
 const TString geoVersion = "tutorial4";
@@ -28,13 +35,13 @@ const TString FileName = geoVersion + ".root";
 const TString FileName1 = geoVersion + "_geomanager.root";
 
 // Names of the different used materials which are used to build the modules
-// The materials are defined in the global media.geo file 
+// The materials are defined in the global media.geo file
 const TString KeepingVolumeMedium     = "air";
 const TString BoxVolumeMedium         = "silicon";
 
 // Distance of the center of the first detector layer [cm];
-const Float_t First_Z_Position = 10; 
-const Float_t Z_Distance = 10; 
+const Float_t First_Z_Position = 10;
+const Float_t Z_Distance = 10;
 
 // Silicon box for both module types
 const Float_t Module_Size_X = 80.;
@@ -52,7 +59,7 @@ void position_detector();
 void add_alignable_volumes();
 
 void Create_Tutorial4_Geometry() {
-  // Load the necessary FairRoot libraries 
+  // Load the necessary FairRoot libraries
 //  gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
 //  basiclibs();
 //  gSystem->Load("libGeoBase");
@@ -64,20 +71,20 @@ void Create_Tutorial4_Geometry() {
 
   // Get the GeoManager for later usage
   gGeoMan = (TGeoManager*) gROOT->FindObject("FAIRGeom");
-  gGeoMan->SetVisLevel(7);  
+  gGeoMan->SetVisLevel(7);
 
-  // Create the top volume 
+  // Create the top volume
 
   TGeoVolume* top = new TGeoVolumeAssembly("TOP");
   gGeoMan->SetTopVolume(top);
- 
+
   TGeoVolume* tut4 = new TGeoVolumeAssembly(geoVersion);
   top->AddNode(tut4, 1);
-  
+
   gModules = create_detector();
 
   position_detector();
- 
+
   cout<<"Voxelizing."<<endl;
   top->Voxelize("");
   gGeoMan->CloseGeometry();
@@ -92,40 +99,11 @@ void Create_Tutorial4_Geometry() {
   top->Write();
   outfile->Close();
 
-  TFile* outfile = TFile::Open(FileName1,"RECREATE");
+  TFile* outfile1 = TFile::Open(FileName1,"RECREATE");
   gGeoMan->Write();
-  outfile->Close();
+  outfile1->Close();
 
-  //  top->Draw("ogl");
-  //top->Raytrace();
 
-  // -----   Finish   -------------------------------------------------------
-
-  cout << endl << endl;
-
-  // Extract the maximal used memory an add is as Dart measurement
-  // This line is filtered by CTest and the value send to CDash
-  FairSystemInfo sysInfo;
-  Float_t maxMemory=sysInfo.GetMaxMemory();
-  cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
-  cout << maxMemory;
-  cout << "</DartMeasurement>" << endl;
-
-  timer.Stop();
-  Double_t rtime = timer.RealTime();
-  Double_t ctime = timer.CpuTime();
-
-  Float_t cpuUsage=ctime/rtime;
-  cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
-  cout << cpuUsage;
-  cout << "</DartMeasurement>" << endl;
-
-  cout << endl << endl;
-  cout << "Output file is "    << outFile << endl;
-  cout << "Parameter file is " << parFile << endl;
-  cout << "Real time " << rtime << " s, CPU time " << ctime
-       << "s" << endl << endl;
-  cout << "Macro finished successfully." << endl;
 
   // ------------------------------------------------------------------------
 }
@@ -136,7 +114,7 @@ void create_materials_from_media_file()
   FairGeoLoader* geoLoad = new FairGeoLoader("TGeo", "FairGeoLoader");
   FairGeoInterface* geoFace = geoLoad->getGeoInterface();
   TString geoPath = gSystem->Getenv("VMCWORKDIR");
-  TString geoFile = geoPath + "/geometry/media.geo";
+  TString geoFile = geoPath + "/common/geometry/media.geo";
   geoFace->setMediaFile(geoFile);
   geoFace->readMedia();
 
@@ -155,17 +133,17 @@ void create_materials_from_media_file()
 
 TGeoVolume* create_detector()
 {
- 
+
   // needed materials
   TGeoMedium* SiliconVolMed   = gGeoMan->GetMedium(BoxVolumeMedium);
 
   // Single detector_layer
   TGeoBBox* det_plane = new TGeoBBox("", Module_Size_X/2., Module_Size_Y/2., Module_Size_Z/2.);
-  TGeoVolume* det_plane_vol = 
+  TGeoVolume* det_plane_vol =
     new TGeoVolume("tut4_det", det_plane, SiliconVolMed);
-  det_plane_vol->SetLineColor(kBlue); // set line color 
-  det_plane_vol->SetTransparency(70); // set transparency 
-  TGeoTranslation* det_plane_trans 
+  det_plane_vol->SetLineColor(kBlue); // set line color
+  det_plane_vol->SetTransparency(70); // set transparency
+  TGeoTranslation* det_plane_trans
     = new TGeoTranslation("", 0., 0., 0.);
 
   return det_plane_vol;
@@ -179,7 +157,7 @@ void position_detector()
 
   Int_t numDets=0;
   for (Int_t detectorPlanes = 0; detectorPlanes < 40; detectorPlanes++) {
-    det_trans 
+    det_trans
       = new TGeoTranslation("", 0., 0., First_Z_Position+(numDets*Z_Distance));
     gGeoMan->GetVolume(geoVersion)->AddNode(gModules, numDets, det_trans);
     numDets++;
@@ -204,8 +182,8 @@ void add_alignable_volumes()
     symName += Form("%02d",detectorPlanes);
 
     cout<<"Path: "<<volPath<<", "<<symName<<endl;
-//    gGeoMan->cd(volPath);  
-   
+//    gGeoMan->cd(volPath);
+
     gGeoMan->SetAlignableEntry(symName.Data(),volPath.Data());
 
   }
