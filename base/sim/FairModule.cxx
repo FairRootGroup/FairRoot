@@ -73,7 +73,7 @@ void FairModule::ConstructOpGeometry()
 FairModule::~FairModule() {}
 
 FairModule::FairModule(const char* Name, const char* title, Bool_t Active)
-    : TNamed(Name, title)
+    : TVirtualMCSensitiveDetector(Name, title)
     , fMotherVolumeName("")
     , fgeoVer("Not defined")
     , fgeoName("Not defined")
@@ -94,7 +94,7 @@ FairModule::FairModule(const char* Name, const char* title, Bool_t Active)
 }
 
 FairModule::FairModule(const FairModule& rhs)
-    : TNamed(rhs)
+    : TVirtualMCSensitiveDetector(rhs)
     , fMotherVolumeName(rhs.fMotherVolumeName)
     , fgeoVer(rhs.fgeoVer)
     , fgeoName(rhs.fgeoName)
@@ -134,7 +134,7 @@ FairModule::FairModule(const FairModule& rhs)
 }
 
 FairModule::FairModule()
-    : TNamed()
+    : TVirtualMCSensitiveDetector()
     , fMotherVolumeName("")
     , fgeoVer("Not defined")
     , fgeoName("Not defined")
@@ -154,7 +154,7 @@ FairModule& FairModule::operator=(const FairModule& rhs)
         return *this;
 
     // base class assignment
-    TNamed::operator=(rhs);
+    TVirtualMCSensitiveDetector::operator=(rhs);
 
     // assignment operator
     fMotherVolumeName = rhs.fMotherVolumeName;
@@ -182,7 +182,7 @@ FairModule& FairModule::operator=(const FairModule& rhs)
 
 void FairModule::Streamer(TBuffer& b)
 {
-    TNamed::Streamer(b);
+    TVirtualMCSensitiveDetector::Streamer(b);
 
     if (b.IsReading()) {
         fgeoVer.Streamer(b);
@@ -282,6 +282,9 @@ void FairModule::ProcessNodes(TList* aList)
         FairGeoVolume* aVol = nullptr;
 
         if (node->isSensitive() && fActive) {
+
+            FairMCApplication::Instance()->AddSensitiveModule(volume->GetName(), this);
+
             volume->setModId(fModId);
             volume->SetModule(this);
             svList->Add(volume);
@@ -294,8 +297,9 @@ void FairModule::ProcessNodes(TList* aList)
 
 void FairModule::AddSensitiveVolume(TGeoVolume* v)
 {
-
     LOG(debug2) << "AddSensitiveVolume " << v->GetName();
+
+    FairMCApplication::Instance()->AddSensitiveModule(v->GetName(), this);
 
     // Only register volumes which are not already registered
     // Otherwise the stepping will be slowed down

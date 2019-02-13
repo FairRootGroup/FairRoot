@@ -73,8 +73,9 @@ Pixel::~Pixel()
     }
 }
 
-Bool_t Pixel::ProcessHits(FairVolume* vol)
+void Pixel::ProcessHits()
 {
+
     /** This method is called from the MC stepping */
     // Set parameters at entrance of volume. Reset ELoss.
     if (TVirtualMC::GetMC()->IsTrackEntering()) {
@@ -92,10 +93,11 @@ Bool_t Pixel::ProcessHits(FairVolume* vol)
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
         || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        fVolumeID = vol->getMCid();
+        Int_t copyNo = 0;
+        fVolumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
 
         if (fELoss == 0.) {
-            return kFALSE;
+            return;
         }
 
         // Taking stationNr and sectorNr from string is almost effortless.
@@ -124,6 +126,12 @@ Bool_t Pixel::ProcessHits(FairVolume* vol)
         FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
         stack->AddPoint(kPixel);
     }
+}
+
+void Pixel::EndOfEvent()
+{
+
+    fPixelPointCollection->Clear();
 
     return kTRUE;
 }

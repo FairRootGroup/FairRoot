@@ -42,7 +42,7 @@ FairRutherford::~FairRutherford()
     }
 }
 
-Bool_t FairRutherford::ProcessHits(FairVolume* vol)
+void FairRutherford::ProcessHits()
 {
     /** This method is called from the MC stepping */
 
@@ -62,9 +62,10 @@ Bool_t FairRutherford::ProcessHits(FairVolume* vol)
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
         || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        fVolumeID = vol->getMCid();
+        Int_t copyNo = 0;
+        fVolumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
         if (fELoss == 0.) {
-            return kFALSE;
+            return;
         }
         AddHit(fTrackID,
                fVolumeID,
@@ -78,8 +79,6 @@ Bool_t FairRutherford::ProcessHits(FairVolume* vol)
         auto stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
         stack->AddPoint(kFairRutherford);
     }
-
-    return kTRUE;
 }
 
 void FairRutherford::EndOfEvent() { fFairRutherfordPointCollection->Clear(); }

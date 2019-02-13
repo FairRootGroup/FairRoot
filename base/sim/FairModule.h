@@ -15,6 +15,7 @@
 #include "FairLogger.h"
 #include "FairRun.h"         // for FairRun
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
+#include "TVirtualMCSensitiveDetector.h"
 
 #include <Rtypes.h>      // for Bool_t, Int_t, etc
 #include <TList.h>       // for TList (ptr only), TListIter
@@ -43,7 +44,7 @@ class TVirtualMC;
  * Changelog: 29.02.2012 [O.Merle] Fixed missing material assignment for top volume.
  *                                 ... and please - add some documentation to your code.
  */
-class FairModule : public TNamed
+class FairModule : public TVirtualMCSensitiveDetector
 {
   public:
     /**default ctor*/
@@ -147,6 +148,17 @@ class FairModule : public TNamed
     TString fMotherVolumeName;                //!
     FairVolume* getFairVolume(FairGeoNode* fNode);
     void AddSensitiveVolume(TGeoVolume* v);
+
+    static thread_local TArrayI* volNumber;   //!
+    TString fMotherVolumeName;                //!
+    FairVolume* getFairVolume(FairGeoNode* fNode);
+    void AddSensitiveVolume(TGeoVolume* v);
+
+    virtual void EndOfEvent() {}
+
+    virtual void Initialize() {}
+
+    virtual void ProcessHits() {}
 
   private:
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */

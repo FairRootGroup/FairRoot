@@ -39,6 +39,7 @@ class FairRootManager;
 class FairTask;
 class FairTrajFilter;
 class FairVolume;
+class FairModule;
 class FairRunSim;
 class TChain;
 class TIterator;
@@ -105,6 +106,9 @@ class FairMCApplication : public TVirtualMCApplication
     Bool_t MisalignGeometry() override;
     /** Define parameters for optical processes (optional) */
     void ConstructOpGeometry() override;   // MC Application
+
+    virtual void ConstructSensitiveDetectors();
+
     /** Define actions at the end of event */
     void FinishEvent() override;   // MC Application
     /** Define actions at the end of primary track */
@@ -221,6 +225,11 @@ class FairMCApplication : public TVirtualMCApplication
      * Get the current application state.
      */
     FairMCApplicationState GetState() const { return fState; }
+    
+    /**
+     * Add module to the list of sensitive detectors.
+     */
+    void AddSensitiveModule(std::string volName, FairModule* module);
 
     /**
      * Return non-owning pointer to FairRadGridManager
@@ -318,6 +327,10 @@ class FairMCApplication : public TVirtualMCApplication
 
     /** Current state */
     FairMCApplicationState fState;   //!
+    
+    /** List of sensitive detectors.
+     * To be used with TVirtualMCSensitiveDetector. */
+    std::map<std::string, FairModule*> fMapSensitiveDetectors;
 
     ClassDefOverride(FairMCApplication, 5);
 

@@ -25,7 +25,7 @@ class FairFastSimDetector : public FairDetector
 
     ~FairFastSimDetector() override;
 
-    Bool_t ProcessHits(FairVolume* vol = 0) override final;
+    void ProcessHits() override final;
 
     void EndOfEvent() override {}
 

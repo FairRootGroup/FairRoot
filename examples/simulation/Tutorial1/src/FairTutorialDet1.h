@@ -42,7 +42,7 @@ class FairTutorialDet1 : public FairDetector
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */
-    Bool_t ProcessHits(FairVolume* v = nullptr) override;
+    void ProcessHits() override;
 
     /**       Registers the produced collections in FAIRRootManager.     */
     void Register() override;
