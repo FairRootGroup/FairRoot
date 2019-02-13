@@ -137,12 +137,6 @@ void FairTutorialDet4::SetParContainers()
 
 void FairTutorialDet4::Initialize()
 {
-  // Initialize sensitive volume if geometry is build from ASCII file
-  TString fileName=GetGeometryFileName();
-  if (fileName.EndsWith(".geo")) {
-    SetSensitiveVolumes();
-  }
-
   FairDetector::Initialize();
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairTutorialDet4GeoPar* par=static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
@@ -295,15 +289,7 @@ void FairTutorialDet4::ConstructASCIIGeometry()
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
 
-  FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
-  FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  fgGeo  = new FairTutorialDet4Geo();
-  LOG(debug)<<"Read Geo file "<<GetGeometryFileName();
-  fgGeo->setGeomFile(GetGeometryFileName());
-  geoFace->addGeoModule(fgGeo);
-
-  Bool_t rc = geoFace->readSet(fgGeo);
-  if (rc) { fgGeo->create(geoLoad->getGeoBuilder()); }
+    FairModule::ConstructASCIIGeometry<FairTutorialDet4Geo, FairTutorialDet4GeoPar>(fgGeo, "FairTutorialDet4GeoPar");
 }
 
 void FairTutorialDet4::ModifyGeometry()
@@ -454,35 +440,6 @@ FairTutorialDet4Point* FairTutorialDet4::AddHit(Int_t trackID, Int_t detID,
 FairModule* FairTutorialDet4::CloneModule() const
 {
   return new FairTutorialDet4(*this);
-}
-
-void FairTutorialDet4::SetSensitiveVolumes()
-{
-  TList* volList = fgGeo->getListOfVolumes();
-
-  // store geo parameter
-  FairRun* fRun = FairRun::Instance();
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet4GeoPar* par=static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
-  TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
-  TObjArray* fPassNodes = par->GetGeoPassiveNodes();
-
-  TListIter iter(volList);
-  FairGeoNode* node   = NULL;
-  FairGeoVolume* aVol=NULL;
-
-  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
-    aVol = dynamic_cast<FairGeoVolume*> ( node );
-    if ( node->isSensitive()  ) {
-      fSensNodes->AddLast( aVol );
-    } else {
-      fPassNodes->AddLast( aVol );
-    }
-  }
-  par->setChanged();
-  par->setInputVersion(fRun->GetRunId(),1);
-
-  ProcessNodes ( volList );
 }
 
 ClassImp(FairTutorialDet4)

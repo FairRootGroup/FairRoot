@@ -166,46 +166,8 @@ void FairTestDetector::ConstructGeometry()
         just copy this and use it for your detector, otherwise you can
         implement here you own way of constructing the geometry. */
 
-    FairGeoLoader* geoLoad = FairGeoLoader::Instance();
-    FairGeoInterface* geoFace = geoLoad->getGeoInterface();
     FairTestDetectorGeo* Geo = new FairTestDetectorGeo();
-    Geo->setGeomFile(GetGeometryFileName());
-    geoFace->addGeoModule(Geo);
-
-    Bool_t rc = geoFace->readSet(Geo);
-    if (rc)
-    {
-        Geo->create(geoLoad->getGeoBuilder());
-    }
-    TList* volList = Geo->getListOfVolumes();
-
-    // store geo parameter
-    FairRun* fRun = FairRun::Instance();
-    FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
-    FairTestDetectorGeoPar* par = static_cast<FairTestDetectorGeoPar*>(rtdb->getContainer("FairTestDetectorGeoPar"));
-    TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
-    TObjArray* fPassNodes = par->GetGeoPassiveNodes();
-
-    TListIter iter(volList);
-    FairGeoNode* node = NULL;
-    FairGeoVolume* aVol = NULL;
-
-    while ((node = static_cast<FairGeoNode*>(iter.Next())))
-    {
-        aVol = dynamic_cast<FairGeoVolume*>(node);
-        if (node->isSensitive())
-        {
-            fSensNodes->AddLast(aVol);
-        }
-        else
-        {
-            fPassNodes->AddLast(aVol);
-        }
-    }
-    par->setChanged();
-    par->setInputVersion(fRun->GetRunId(), 1);
-
-    ProcessNodes(volList);
+    ConstructASCIIGeometry<FairTestDetectorGeo, FairTestDetectorGeoPar>(Geo, "FairTestDetectorGeoPar");
 }
 
 FairTestDetectorPoint* FairTestDetector::AddHit(Int_t trackID,

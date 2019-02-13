@@ -99,7 +99,6 @@ class FairTutorialDet4: public FairDetector
     virtual FairModule* CloneModule() const;
 
   private:
-    void SetSensitiveVolumes();
 
     static FairTutorialDet4Geo* fgGeo;   //!
 

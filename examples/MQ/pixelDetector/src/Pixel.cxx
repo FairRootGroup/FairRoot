@@ -180,39 +180,8 @@ void Pixel::ConstructGeometry()
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
 
-  FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
-  FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  PixelGeo*  Geo  = new PixelGeo();
-  Geo->setGeomFile(GetGeometryFileName());
-  geoFace->addGeoModule(Geo);
-
-  Bool_t rc = geoFace->readSet(Geo);
-  if (rc) { Geo->create(geoLoad->getGeoBuilder()); }
-  TList* volList = Geo->getListOfVolumes();
-
-  // store geo parameter
-  FairRun* fRun = FairRun::Instance();
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  PixelGeoPar* par=static_cast<PixelGeoPar*>(rtdb->getContainer("PixelGeoPar"));
-  TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
-  TObjArray* fPassNodes = par->GetGeoPassiveNodes();
-
-  TListIter iter(volList);
-  FairGeoNode* node   = NULL;
-  FairGeoVolume* aVol=NULL;
-
-  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
-    aVol = dynamic_cast<FairGeoVolume*> ( node );
-    if ( node->isSensitive()  ) {
-      fSensNodes->AddLast( aVol );
-    } else {
-      fPassNodes->AddLast( aVol );
-    }
-  }
-  par->setChanged();
-  par->setInputVersion(fRun->GetRunId(),1);
-
-  ProcessNodes ( volList );
+    PixelGeo*  Geo  = new PixelGeo();
+    ConstructASCIIGeometry<PixelGeo, PixelGeoPar>(Geo, "PixelGeoPar");
 }
 
 void Pixel::ModifyGeometry() {  

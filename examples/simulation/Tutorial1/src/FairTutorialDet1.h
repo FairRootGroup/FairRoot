@@ -84,8 +84,6 @@ class FairTutorialDet1: public FairDetector
     virtual FairModule* CloneModule() const;
 
   private:
-    void SetSensitiveVolumes();
-
     static FairTutorialDet1Geo* fgGeo;   //!
 
     /** Track information to be stored until the track leaves the

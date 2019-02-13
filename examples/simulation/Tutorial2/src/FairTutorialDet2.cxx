@@ -83,8 +83,6 @@ FairTutorialDet2::~FairTutorialDet2()
 
 void FairTutorialDet2::Initialize()
 {
-  SetSensitiveVolumes();
-
   FairDetector::Initialize();
 /*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
@@ -174,14 +172,7 @@ void FairTutorialDet2::ConstructGeometry()
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
 
-  FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
-  FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  fgGeo  = new FairTutorialDet2Geo();
-  fgGeo->setGeomFile(GetGeometryFileName());
-  geoFace->addGeoModule(fgGeo);
-
-  Bool_t rc = geoFace->readSet(fgGeo);
-  if (rc) { fgGeo->create(geoLoad->getGeoBuilder()); }
+    ConstructASCIIGeometry<FairTutorialDet2Geo, FairTutorialDet2GeoPar>(fgGeo, "FairTutorialDet2GeoPar");
 }
 
 FairTutorialDet2Point* FairTutorialDet2::AddHit(Int_t trackID, Int_t detID,
@@ -202,35 +193,6 @@ FairTutorialDet2Point* FairTutorialDet2::AddHit(Int_t trackID, Int_t detID,
 FairModule* FairTutorialDet2::CloneModule() const
 {
   return new FairTutorialDet2(*this);
-}
-
-void FairTutorialDet2::SetSensitiveVolumes()
-{
-  TList* volList = fgGeo->getListOfVolumes();
-
-  // store geo parameter
-  FairRun* fRun = FairRun::Instance();
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet2GeoPar* par=static_cast<FairTutorialDet2GeoPar*>(rtdb->getContainer("FairTutorialDet2GeoPar"));
-  TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
-  TObjArray* fPassNodes = par->GetGeoPassiveNodes();
-
-  TListIter iter(volList);
-  FairGeoNode* node   = NULL;
-  FairGeoVolume* aVol=NULL;
-
-  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
-    aVol = dynamic_cast<FairGeoVolume*> ( node );
-    if ( node->isSensitive()  ) {
-      fSensNodes->AddLast( aVol );
-    } else {
-      fPassNodes->AddLast( aVol );
-    }
-  }
-  par->setChanged();
-  par->setInputVersion(fRun->GetRunId(),1);
-
-  ProcessNodes ( volList );
 }
 
 ClassImp(FairTutorialDet2)
