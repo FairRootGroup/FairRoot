@@ -115,6 +115,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fMC(NULL),
    fRun(NULL),
    fSaveCurrentEvent(kTRUE),
+   fState(kUnknown),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -205,6 +206,7 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
    fMC(NULL),
    fRun(NULL),
    fSaveCurrentEvent(kTRUE),
+   fState(kUnknown),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -297,6 +299,7 @@ FairMCApplication::FairMCApplication()
    fMC(NULL),
    fRun(NULL),
    fSaveCurrentEvent(kTRUE),
+   fState(kUnknown),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -400,6 +403,8 @@ FairMCApplication& FairMCApplication::operator=(const FairMCApplication& rhs)
     //gROOT->GetListOfBrowsables()->Add(fFairTaskList);
     
     fDetMap=new TRefArray(1000);
+
+    fState = rhs.fState;
   }
   
   return *this;
@@ -929,6 +934,8 @@ void FairMCApplication::ConstructGeometry()
     LOG(fatal) << "gGeoManager not initialized at FairMCApplication::ConstructGeometry\n";
   }
 
+  fState = kConstructGeometry;
+
   fModIter->Reset();
   FairModule* Mod=NULL;
   Int_t NoOfVolumes=0;
@@ -992,11 +999,15 @@ void FairMCApplication::ConstructGeometry()
   }
 
   gGeoManager->RefreshPhysicalNodes(kFALSE);
+
+  fState = kUnknown;
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::InitGeometry()
 {
+  fState = kInitGeometry;
+
   LOG(info) << "FairMCApplication::InitGeometry: "
     << fRootManager->GetInstanceId();
   
@@ -1135,6 +1146,7 @@ void FairMCApplication::InitGeometry()
 
   fGeometryIsInitialized=kTRUE;
 
+  fState = kUnknown;
 }
 
 //_____________________________________________________________________________

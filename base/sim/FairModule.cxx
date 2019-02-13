@@ -22,6 +22,7 @@
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairVolume.h"                 // for FairVolume
 #include "FairVolumeList.h"             // for FairVolumeList
+#include "FairMCApplication.h"
 
 #include "TBuffer.h"                    // for TBuffer, operator<<, etc
 #include "TCollection.h"                // for TIter
@@ -258,6 +259,14 @@ void FairModule::SetGeometryFileName(TString fname, TString)
 //__________________________________________________________________________
 void FairModule::ProcessNodes(TList* aList)
 {
+  if(kConstructGeometry != FairMCApplication::Instance()->GetState())
+  {
+      LOG(fatal) << "Detected call to FairModule::ProcessNodes() \
+      while not in FairMCApplication::ConstructGeometry()\n\
+      Call templated function FairModule::ConstructASCIIGeometry()\
+      from ConstructGeometry() of your detector class. Aborting...";
+  }
+
   if(!svList) { svList=new TRefArray(); }
   if(!vList) { vList=new FairVolumeList(); }
 
