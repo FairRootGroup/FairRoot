@@ -65,37 +65,9 @@ Bool_t FairMagnet::CheckIfSensitive(std::string /*name*/)
 
 void FairMagnet::ConstructASCIIGeometry()
 {
-  FairGeoLoader* loader=FairGeoLoader::Instance();
-  FairGeoInterface* GeoInterface =loader->getGeoInterface();
-  FairGeoMagnet* MGeo=new FairGeoMagnet();
-  MGeo->setGeomFile(GetGeometryFileName());
-  GeoInterface->addGeoModule(MGeo);
-  Bool_t rc = GeoInterface->readSet(MGeo);
-  if ( rc ) { MGeo->create(loader->getGeoBuilder()); }
-
-  TList* volList = MGeo->getListOfVolumes();
-  // store geo parameter
-  FairRun* fRun = FairRun::Instance();
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairGeoPassivePar* par=static_cast<FairGeoPassivePar*>(rtdb->getContainer("FairGeoPassivePar"));
-  TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
-  TObjArray* fPassNodes = par->GetGeoPassiveNodes();
-
-  TListIter iter(volList);
-  FairGeoNode* node   = NULL;
-  FairGeoVolume* aVol=NULL;
-
-  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
-    aVol = dynamic_cast<FairGeoVolume*> ( node );
-    if ( node->isSensitive()  ) {
-      fSensNodes->AddLast( aVol );
-    } else {
-      fPassNodes->AddLast( aVol );
-    }
-  }
-  ProcessNodes( volList );
-  par->setChanged();
-  par->setInputVersion(fRun->GetRunId(),1);
+    FairGeoMagnet* MGeo=new FairGeoMagnet();
+    
+    FairModule::ConstructASCIIGeometry<FairGeoMagnet, FairGeoPassivePar>(MGeo, "FairGeoPassivePar");
 }
 
 FairModule* FairMagnet::CloneModule() const
@@ -104,17 +76,3 @@ FairModule* FairMagnet::CloneModule() const
 }
 
 ClassImp(FairMagnet)
-
-
-
-
-
-
-
-
-
-
-
-
-
-

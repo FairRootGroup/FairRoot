@@ -84,8 +84,6 @@ class FairRutherford: public FairDetector
     virtual FairModule* CloneModule() const;
 
   private:
-    void SetSensitiveVolumes();
-
     static FairRutherfordGeo* fgGeo;   //!
 
    /** Track information to be stored until the track leaves the

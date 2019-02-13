@@ -83,8 +83,6 @@ FairTutorialDet1::~FairTutorialDet1()
 
 void FairTutorialDet1::Initialize()
 {
-  SetSensitiveVolumes();
-
   FairDetector::Initialize();
 /*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
@@ -173,14 +171,7 @@ void FairTutorialDet1::ConstructGeometry()
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
 
-  FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
-  FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  fgGeo  = new FairTutorialDet1Geo();
-  fgGeo->setGeomFile(GetGeometryFileName());
-  geoFace->addGeoModule(fgGeo);
-
-  Bool_t rc = geoFace->readSet(fgGeo);
-  if (rc) { fgGeo->create(geoLoad->getGeoBuilder()); }
+    ConstructASCIIGeometry<FairTutorialDet1Geo, FairTutorialDet1GeoPar>(fgGeo, "FairTutorialDet1GeoPar");
 }
 
 FairTutorialDet1Point* FairTutorialDet1::AddHit(Int_t trackID, Int_t detID,
@@ -198,35 +189,5 @@ FairModule* FairTutorialDet1::CloneModule() const
 {
   return new FairTutorialDet1(*this);
 }
-
-void FairTutorialDet1::SetSensitiveVolumes()
-{
-  TList* volList = fgGeo->getListOfVolumes();
-
-  // store geo parameter
-  FairRun* fRun = FairRun::Instance();
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet1GeoPar* par=static_cast<FairTutorialDet1GeoPar*>(rtdb->getContainer("FairTutorialDet1GeoPar"));
-  TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
-  TObjArray* fPassNodes = par->GetGeoPassiveNodes();
-
-  TListIter iter(volList);
-  FairGeoNode* node   = NULL;
-  FairGeoVolume* aVol=NULL;
-
-  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
-    aVol = dynamic_cast<FairGeoVolume*> ( node );
-    if ( node->isSensitive()  ) {
-      fSensNodes->AddLast( aVol );
-    } else {
-      fPassNodes->AddLast( aVol );
-    }
-  }
-  par->setChanged();
-  par->setInputVersion(fRun->GetRunId(),1);
-
-  ProcessNodes ( volList );
-}
-
 
 ClassImp(FairTutorialDet1)

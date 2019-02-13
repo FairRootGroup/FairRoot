@@ -85,8 +85,6 @@ FairRutherford::~FairRutherford()
 
 void FairRutherford::Initialize()
 {
-  SetSensitiveVolumes();
-
   FairDetector::Initialize();
 /*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
@@ -173,14 +171,7 @@ void FairRutherford::ConstructGeometry()
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
 
-  FairGeoLoader*    geoLoad = FairGeoLoader::Instance();
-  FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-  fgGeo  = new FairRutherfordGeo();
-  fgGeo->setGeomFile(GetGeometryFileName());
-  geoFace->addGeoModule(fgGeo);
-
-  Bool_t rc = geoFace->readSet(fgGeo);
-  if (rc) { fgGeo->create(geoLoad->getGeoBuilder()); }
+    ConstructASCIIGeometry<FairRutherfordGeo, FairRutherfordGeoPar>(fgGeo, "FairRutherfordGeoPar");
 }
 
 FairRutherfordPoint* FairRutherford::AddHit(Int_t trackID, Int_t detID,
@@ -198,34 +189,6 @@ FairRutherfordPoint* FairRutherford::AddHit(Int_t trackID, Int_t detID,
 FairModule* FairRutherford::CloneModule() const
 {
   return new FairRutherford(*this);
-}
-
-void FairRutherford::SetSensitiveVolumes()
-{
-  TList* volList = fgGeo->getListOfVolumes();
-
-  // store geo parameter
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairRutherfordGeoPar* par=static_cast<FairRutherfordGeoPar*>(rtdb->getContainer("FairRutherfordGeoPar"));
-  TObjArray* sensNodes = par->GetGeoSensitiveNodes();
-  TObjArray* passNodes = par->GetGeoPassiveNodes();
-
-  TListIter iter(volList);
-  FairGeoNode* node   = NULL;
-  FairGeoVolume* aVol=NULL;
-
-  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
-    aVol = dynamic_cast<FairGeoVolume*> ( node );
-    if ( node->isSensitive()  ) {
-      sensNodes->AddLast( aVol );
-    } else {
-      passNodes->AddLast( aVol );
-    }
-  }
-  par->setChanged();
-  par->setInputVersion(FairRun::Instance()->GetRunId(),1);
-
-  ProcessNodes ( volList );
 }
 
 ClassImp(FairRutherford)
