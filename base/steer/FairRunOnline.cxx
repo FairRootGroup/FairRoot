@@ -136,8 +136,12 @@ void FairRunOnline::Init()
     fIsInitialized = kTRUE;
   }
 
-  fRootManager->InitSource();
+  // we have to initialize the sink before initializing the source
+  // This is needed in case the source registers some objects to
+  // the output
+  // In this case the output must exist
   fRootManager->InitSink();
+  fRootManager->InitSource();
 
   //  FairGeoLoader* loader = new FairGeoLoader("TGeo", "Geo Loader");
   //  FairGeoInterface* GeoInterFace = loader->getGeoInterface();
