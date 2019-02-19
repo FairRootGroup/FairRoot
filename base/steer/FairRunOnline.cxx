@@ -136,8 +136,8 @@ void FairRunOnline::Init()
     fIsInitialized = kTRUE;
   }
 
-  fRootManager->InitSource();
   fRootManager->InitSink();
+  fRootManager->InitSource();
 
   //  FairGeoLoader* loader = new FairGeoLoader("TGeo", "Geo Loader");
   //  FairGeoInterface* GeoInterFace = loader->getGeoInterface();
