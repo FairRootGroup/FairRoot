@@ -623,7 +623,15 @@ void FairMonitor::StoreHistograms()
   if ( !fRunMonitor ) {
     return;
   }
+  // Create canvas a with structure of the tasks
+  // without pop up window
+  // Switch to batch mode before creating the canvas due to a crash
+  // when creating the canvas in interactive mode
+  // Switch back to the previous mode afterwards
+  Bool_t _isBatch = gROOT->IsBatch();
+  gROOT->SetBatch(kTRUE);
   this->Draw();
+  gROOT->SetBatch(_isBatch);
 
   TFile* prevFile = gFile;
 
