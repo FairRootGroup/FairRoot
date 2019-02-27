@@ -45,6 +45,7 @@ FairMonitor* FairMonitor::instance = NULL;
 FairMonitor::FairMonitor()
   : TNamed("FairMonitor","Monitor for FairRoot")
   , fRunMonitor(kFALSE)
+  , fDrawCanvas(kFALSE)
   , fRunTime(0.)
   , fRunMem(0.)
   , fTimerMap()
@@ -623,7 +624,12 @@ void FairMonitor::StoreHistograms(TFile* sinkFile)
   if ( !fRunMonitor ) {
     return;
   }
+  Bool_t wasBatch = gROOT->IsBatch();
+  if ( !fDrawCanvas && !wasBatch ) // default: switching to batch mode if draw canvas disabled
+    gROOT->SetBatch(kTRUE);
   this->Draw();
+  if ( !fDrawCanvas && !wasBatch ) // default: switching to batch mode if draw canvas disabled
+    gROOT->SetBatch(kFALSE);
 
   TFile* histoFile = sinkFile;
   if ( fOutputFileName.Length() > 1 && fOutputFileName != sinkFile->GetName() ) {
@@ -638,7 +644,6 @@ void FairMonitor::StoreHistograms(TFile* sinkFile)
     thist->Write();
   }
   fCanvas->Write();
-  fCanvas->Close();
 
   if ( histoFile != sinkFile ) {
     histoFile->Close();
