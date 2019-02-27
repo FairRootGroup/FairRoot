@@ -26,6 +26,7 @@
 #include "TFolder.h"
 #include "FairRun.h"
 #include "FairRootManager.h"            // to GetTreeName()
+#include "FairMonitor.h"                // to store histograms at the end
 #include "TGeoManager.h"                // for TGeoManager, gGeoManager
 #include "TRandom.h"                    // for TRandom, gRandom
 #include "TROOT.h"
@@ -379,6 +380,7 @@ Int_t FairRootFileSink::Write(const char*, Int_t, Int_t)
     // fOutTree->Print();
 
     fRootFile = fOutTree->GetCurrentFile();
+    FairMonitor::GetMonitor()->StoreHistograms(fRootFile);
     LOG(DEBUG) << "FairRootFileSink::Write to file: "  << fRootFile->GetName();
     fRootFile->cd();
     fOutTree->Write();

@@ -618,22 +618,20 @@ void FairMonitor::DrawHist(TString specString) {
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairMonitor::StoreHistograms()
+void FairMonitor::StoreHistograms(TFile* sinkFile)
 {
   if ( !fRunMonitor ) {
     return;
   }
   this->Draw();
 
-  TFile* prevFile = gFile;
-
-  TFile* outFile = NULL;
-  if ( fOutputFileName.Length() > 1 && fOutputFileName != gFile->GetName() ) {
-    outFile = TFile::Open(fOutputFileName,"recreate");
+  TFile* histoFile = sinkFile;
+  if ( fOutputFileName.Length() > 1 && fOutputFileName != sinkFile->GetName() ) {
+      histoFile = TFile::Open(fOutputFileName,"recreate");
   }
 
-  gFile->mkdir("MonitorResults");
-  gFile->cd("MonitorResults");
+  histoFile->mkdir("MonitorResults");
+  histoFile->cd("MonitorResults");
   TIter next(fHistList);
   while ( TH1* thist = (static_cast<TH1*>(next())) ) {
     thist->SetBins(thist->GetEntries(),0,thist->GetEntries());
@@ -642,12 +640,10 @@ void FairMonitor::StoreHistograms()
   fCanvas->Write();
   fCanvas->Close();
 
-  if ( outFile ) {
-    outFile->Close();
-    delete outFile;
+  if ( histoFile != sinkFile ) {
+    histoFile->Close();
+    delete histoFile;
   }
-
-  gDirectory = prevFile;
 }
 //_____________________________________________________________________________
 

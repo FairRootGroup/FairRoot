@@ -66,7 +66,7 @@ class FairMonitor : public TNamed
 
   TList* GetHistList() { return fHistList; }
 
-  void StoreHistograms();
+  void StoreHistograms(TFile* sinkFile);
 
   private:
     static FairMonitor* instance;
