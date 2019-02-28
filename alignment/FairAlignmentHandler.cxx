@@ -38,9 +38,13 @@ void FairAlignmentHandler::AlignGeometryByFullPath() const {
 
     TGeoNode* volume_node = gGeoManager->GetCurrentNode();
     TGeoMatrix* volume_matrix = volume_node->GetMatrix();
+    // Need to do this as since ROOT 6.14 TGeoMatrix has no multiplication operator anymore
+    // it is implimnted now in TGeoHMatrix
+
+    TGeoHMatrix local_volume_matrix=TGeoHMatrix (*volume_matrix);
 
     TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(
-        *volume_matrix * alignment_entry.second);
+        local_volume_matrix * alignment_entry.second);
     // new matrix, representing real position (from new local mis RS to the global one)
 
     TGeoPhysicalNode* pn = gGeoManager->MakePhysicalNode(volume_path);
@@ -69,9 +73,12 @@ void FairAlignmentHandler::AlignGeometryBySymlink() const {
     } else {
       continue;
     }
+    // Need to do this as since ROOT 6.14 TGeoMatrix has no multiplication operator anymore
+    // it is implimnted now in TGeoHMatrix
+    TGeoHMatrix local_volume_matrix=TGeoHMatrix (*volume_matrix);
 
     TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(
-        *volume_matrix * alignment_entry.second);
+        local_volume_matrix * alignment_entry.second);
     // new matrix, representing real position (from new local mis RS to the global one)
     node->Align(new_volume_matrix);
   }
