@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_reco( TString mcEngine="TGeant3" )
+void run_reco( TString mcEngine="TGeant3", Bool_t AlignDone=true )
 {
    // ----  Load libraries   -------------------------------------------------
   FairLogger *logger = FairLogger::GetLogger();
@@ -19,21 +19,26 @@ void run_reco( TString mcEngine="TGeant3" )
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
 
+  TString Align= "";
+  if (AlignDone) {
+    Align= "align_";
+  }
+  TString InDir = "./data/";
   // Input file (MC Events)
   TString  inFile     ="testrun_";
-  inFile = inFile + mcEngine + ".root";
+  inFile = InDir +inFile + Align + mcEngine + ".root";
 
   // Output file name
   TString  outFile     ="testreco_";
-  outFile = outFile + mcEngine + ".root";
+  outFile = InDir + outFile + Align + mcEngine + ".root";
 
   // Parameter file
   TString  parFile     ="testparams_";
-  parFile = parFile + mcEngine + ".root";
+  parFile = InDir + parFile + Align + mcEngine + ".root";
 
   // Millepede file name
   TString  milleFile     ="testmille_";
-  milleFile = milleFile + mcEngine;
+  milleFile = InDir + milleFile + Align + mcEngine;
 
   TList *parFileList = new TList();
 
