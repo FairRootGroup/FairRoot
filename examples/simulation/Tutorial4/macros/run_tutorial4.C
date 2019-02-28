@@ -30,7 +30,7 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",
   if (doAlign) {
     outFile = "testrun_align_";
     geoFile = "geoFile_align_";
-    parFile = "testparams_align";
+    parFile = "testparams_align_";
   } else {
     outFile = "testrun_";
     geoFile = "geoFile";
@@ -179,5 +179,3 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine="TGeant3",
 
   // ------------------------------------------------------------------------
 }
-
-
