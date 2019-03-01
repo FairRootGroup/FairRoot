@@ -9,6 +9,10 @@
 If(Geant3_FOUND)
   add_subdirectory(common/passive)
   add_subdirectory(common/mcstack)
+  FIND_PATH(YAML_CPP_FOUND NAMES yaml.h PATHS ${SIMPATH}/include/yaml-cpp/)
+  If(YAML_CPP_FOUND)
+    add_subdirectory(common/gconfig)
+  EndIf(YAML_CPP_FOUND)
 
   add_subdirectory(simulation/Tutorial1)
   add_subdirectory(simulation/Tutorial2)

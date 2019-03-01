@@ -5,47 +5,41 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Create a library called "libFairTools" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
-
-add_subdirectory (MCStepLogger)
-
-If(GEANT3_FOUND)
-  FIND_PATH(YAML_CPP_FOUND NAMES yaml.h PATHS ${SIMPATH}/include/yaml-cpp/)
-  If(YAML_CPP_FOUND)
-    add_subdirectory (MCConfigurator)
-  EndIf(YAML_CPP_FOUND)
-EndIf(GEANT3_FOUND)
-
 Set(INCLUDE_DIRECTORIES
- ${CMAKE_SOURCE_DIR}/fairtools
- ${FairLogger_INCDIR}
+  ${BASE_INCLUDE_DIRECTORIES}
+  ${CMAKE_SOURCE_DIR}/logger
+  ${CMAKE_SOURCE_DIR}/base/sim
+  ${CMAKE_SOURCE_DIR}/base/sim/fastsim
+  ${CMAKE_SOURCE_DIR}/fairtools/MCConfigurator
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
- ${ROOT_INCLUDE_DIR}
+  ${ROOT_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIRS}
+  ${GEANT3_INCLUDE_DIR}
+  ${GEANT4VMC_INCLUDE_DIR}
+  ${GEANT4_INCLUDE_DIR}
 )
 
-Include_Directories(${INCLUDE_DIRECTORIES})
+Include_Directories( ${INCLUDE_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
+  ${SIMPATH}/lib/
 )
-
+ 
 Link_Directories(${LINK_DIRECTORIES})
 
-# List of source files
-set(SRCS
-   FairLogger.cxx
-   FairMonitor.cxx
-   FairSystemInfo.cxx
+Set(HEADERS
+FairYamlVMCConfig.h
+)
+Set(SRCS
+FairYamlVMCConfig.cxx
 )
 
-Set(HEADERS )
-Set(LINKDEF FairToolsLinkDef.h)
-Set(LIBRARY_NAME FairTools)
-Set(DEPENDENCIES FairLogger::FairLogger Core Graf Gpad)
+Set(LINKDEF MCConfiguratorLinkDef.h)
+Set(DEPENDENCIES Base FairTools geant321 geant4vmc Pythia6 FairFastSim yaml-cpp)
+Set(LIBRARY_NAME MCConfigurator)
 
 GENERATE_LIBRARY()

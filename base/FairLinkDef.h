@@ -44,6 +44,7 @@
 #pragma link C++ class FairRunAnaProof;
 #pragma link C++ class FairRunIdGenerator;
 #pragma link C++ class FairRunSim;
+#pragma link C++ class FairGenericVMCConfig;
 #pragma link C++ class FairTrackParam+;
 #pragma link C++ class FairTrajFilter;
 #pragma link C++ class FairVolume+;
