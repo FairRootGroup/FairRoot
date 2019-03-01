@@ -101,6 +101,7 @@ sim/FairModule.cxx
 sim/FairParticle.cxx
 sim/FairPrimaryGenerator.cxx
 sim/FairRunIdGenerator.cxx
+sim/FairGenericVMCConfig.cxx
 sim/FairVolume.cxx
 sim/FairVolumeList.cxx
 

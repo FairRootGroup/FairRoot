@@ -25,6 +25,7 @@ class FairMCEventHeader;
 class FairMesh;
 class FairModule;
 class FairPrimaryGenerator;
+class FairGenericVMCConfig;
 
 /**
  * Configure the Simulation session
@@ -143,8 +144,10 @@ class FairRunSim : public FairRun
     void AddMesh (FairMesh* Mesh);
 
     void SetUserConfig(const TString& Config) {fUserConfig = Config;}
+    TString GetUserConfig()                   {return fUserConfig;}
 
     void SetUserCuts(const TString& Cuts) {fUserCuts= Cuts;}
+    TString GetUserCuts()                 {return fUserCuts;}
 
     /** Set Beam energy in GeV/c */
     void SetBeamMom(Double_t BeamMom) {  fBeamMom= BeamMom; fUseBeamMom=kTRUE;}
@@ -157,6 +160,9 @@ class FairRunSim : public FairRun
     void SetFieldContainer();
 
     void SetSimSetup(std::function<void()> f) { fSimSetup = f; fUseSimSetupFunction = true; }
+
+    void SetSimulationConfig(FairGenericVMCConfig* tconf) { fSimulationConfig = tconf; }
+    FairGenericVMCConfig* GetSimulationConfig()           { return fSimulationConfig;  }
 
     void SetIsMT(Bool_t isMT) { fIsMT = isMT; }
     Bool_t IsMT() const { return fIsMT; }
@@ -200,8 +206,9 @@ class FairRunSim : public FairRun
     TString                fUserCuts; //!                          /** Macro for geant cuts*/
     Bool_t                 fIsMT; //!                              /** MT mode option (Geant4 only)*/
     Bool_t                 fImportTGeoToVMC; //!                   /** Allow importing TGeometry to VMC */
-    std::function<void()>    fSimSetup; //!         /** A user provided function to do sim setup / instead of using macros **/ 
-    bool                     fUseSimSetupFunction = false;
+    std::function<void()>  fSimSetup; //!                          /** A user provided function to do sim setup / instead of using macros **/
+    bool                   fUseSimSetupFunction = false;
+    FairGenericVMCConfig*  fSimulationConfig;  //!                 /** Simulation configuration */
     
     ClassDef(FairRunSim ,2)
 
