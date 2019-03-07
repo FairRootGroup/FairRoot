@@ -6,9 +6,6 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
-find_package(Protobuf)
-find_package(msgpack)
-find_package(FlatBuffers)
 
 Set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}

@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
   ###########################################
@@ -20,17 +20,49 @@
   # Ex: CHANGE_FILE_EXTENSION(*.cxx *.h TRD_HEADERS "${TRD_SRCS}")
   #
   ################################################################
+  # Defines some variables with console color escape sequences
+  if(NOT WIN32 AND NOT DISABLE_COLOR)
+    string(ASCII 27 Esc)
+    set(CR       "${Esc}[m")
+    set(CB       "${Esc}[1m")
+    set(Red      "${Esc}[31m")
+    set(Green    "${Esc}[32m")
+    set(Yellow   "${Esc}[33m")
+    set(Blue     "${Esc}[34m")
+    set(Magenta  "${Esc}[35m")
+    set(Cyan     "${Esc}[36m")
+    set(White    "${Esc}[37m")
+    set(BRed     "${Esc}[1;31m")
+    set(BGreen   "${Esc}[1;32m")
+    set(BYellow  "${Esc}[1;33m")
+    set(BBlue    "${Esc}[1;34m")
+    set(BMagenta "${Esc}[1;35m")
+    set(BCyan    "${Esc}[1;36m")
+    set(BWhite   "${Esc}[1;37m")
+  endif()
+
+  MACRO(SUBDIRLIST result curdir)
+    FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+    SET(dirlist "")
+    FOREACH(child ${children})
+      IF(IS_DIRECTORY ${curdir}/${child})
+        LIST(APPEND dirlist ${child})
+      ENDIF()
+    ENDFOREACH()
+    SET(${result} ${dirlist})
+  ENDMACRO()
+
 
 MACRO (CHANGE_FILE_EXTENSION FILE_EXT1 FILE_EXT2 OUTVAR LIST)
 
    SET(BLA)
 
    IF (${FILE_EXT1} MATCHES "^[*][.]+.*$")
-     STRING(REGEX REPLACE "^[*]+([.].*)$" "\\1" FILE_EXT1_NEW ${FILE_EXT1}) 
+     STRING(REGEX REPLACE "^[*]+([.].*)$" "\\1" FILE_EXT1_NEW ${FILE_EXT1})
    ENDIF  (${FILE_EXT1} MATCHES "^[*][.]+.*$")
 
    IF (${FILE_EXT2} MATCHES "^[*][.]+.*$")
-     STRING(REGEX REPLACE "^[*]+([.].*)" "\\1" FILE_EXT2_NEW ${FILE_EXT2}) 
+     STRING(REGEX REPLACE "^[*]+([.].*)" "\\1" FILE_EXT2_NEW ${FILE_EXT2})
    ENDIF  (${FILE_EXT2} MATCHES "^[*][.]+.*$")
 
    foreach (_current_FILE ${LIST})
@@ -39,7 +71,7 @@ MACRO (CHANGE_FILE_EXTENSION FILE_EXT1 FILE_EXT2 OUTVAR LIST)
      SET (BLA ${BLA} ${test})
 
    endforeach (_current_FILE ${ARGN})
-   
+
    SET (${OUTVAR} ${BLA})
 
 
@@ -47,7 +79,7 @@ MACRO (CHANGE_FILE_EXTENSION FILE_EXT1 FILE_EXT2 OUTVAR LIST)
 ENDMACRO (CHANGE_FILE_EXTENSION)
 
   ######################################################
-  # 
+  #
   # Macro get string with a colon seperated string of
   # pathes or any other colon sperated list.
   # First the string is seperated  and the entries are
@@ -58,9 +90,9 @@ ENDMACRO (CHANGE_FILE_EXTENSION)
   # deleted from the list. Returns the list of pathes
   # (entries) wich survives the loop.
   #
-  # PATH: colon separated string of pathes or other 
+  # PATH: colon separated string of pathes or other
   #       input entries
-  # LIST_OF_KEYWORDS: list of the keywords which 
+  # LIST_OF_KEYWORDS: list of the keywords which
   #                   should be excluded in the output
   # OUTVAR: name of the variable which should be filled
   #         with the resulting output list
@@ -74,7 +106,7 @@ MACRO (CLEAN_PATH_LIST PATH LIST_OF_KEYWORDS OUTVAR)
   STRING(REGEX MATCHALL "[^:]+" PATH1 ${PATH})
 
   FOREACH(_current_PATH ${PATH1})
- 
+
     SET(KEYWORD_FOUND FALSE)
 
     FOREACH(_current_KEYWORD ${LIST_OF_KEYWORDS})
@@ -84,10 +116,10 @@ MACRO (CLEAN_PATH_LIST PATH LIST_OF_KEYWORDS OUTVAR)
       ENDIF (${_current_PATH} MATCHES "${_current_KEYWORD}")
 
     ENDFOREACH(_current_KEYWORD ${LIST_OF_KEYWORDS})
-    
+
     IF (NOT KEYWORD_FOUND)
       SET(BLA ${BLA} ${_current_PATH})
-    ENDIF (NOT KEYWORD_FOUND)  
+    ENDIF (NOT KEYWORD_FOUND)
 
   ENDFOREACH(_current_PATH ${PATH1})
 
@@ -110,7 +142,7 @@ MACRO (CHECK_OUT_OF_SOURCE_BUILD)
    IF(insource)
       FILE(REMOVE_RECURSE ${CMAKE_SOURCE_DIR}/Testing)
       FILE(REMOVE ${CMAKE_SOURCE_DIR}/DartConfiguration.tcl)
-      MESSAGE(FATAL_ERROR "FAIRROOT should be installed as an out of source build, to keep the source directory clean. Please create a extra build directory and run the command 'cmake path_to_source_dir' in this newly created directory. You have also to delete the directory CMakeFiles and the file CMakeCache.txt in the source directory. Otherwise cmake will complain even if you run it from an out-of-source directory.") 
+      MESSAGE(FATAL_ERROR "FAIRROOT should be installed as an out of source build, to keep the source directory clean. Please create a extra build directory and run the command 'cmake path_to_source_dir' in this newly created directory. You have also to delete the directory CMakeFiles and the file CMakeCache.txt in the source directory. Otherwise cmake will complain even if you run it from an out-of-source directory.")
    ENDIF(insource)
 
 ENDMACRO (CHECK_OUT_OF_SOURCE_BUILD)
@@ -160,7 +192,7 @@ ENDMACRO(UNIQUE)
 
 
 ###################################################
-# Creates a variable which stores the intersection 
+# Creates a variable which stores the intersection
 # between two lists
 ####################################################
 
@@ -186,7 +218,7 @@ MACRO(REMOVE_FROM_LIST var_name list1 list2)
   SET(${var_name} ${filter_tmp})
 ENDMACRO(REMOVE_FROM_LIST)
 
-MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME) 
+MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
 
   get_filename_component(path_name ${SCRIPT_FULL_NAME} PATH)
   get_filename_component(file_extension ${SCRIPT_FULL_NAME} EXT)
@@ -219,12 +251,12 @@ MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
   ENDIF(FAIRROOT_FOUND)
 
 
-  
+
   EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
 
 ENDMACRO (GENERATE_TEST_SCRIPT)
 
-Macro(Generate_Exe_Script _Path _ExeName) 
+Macro(Generate_Exe_Script _Path _ExeName)
 
 
   Message("PATH: ${_Path}")
@@ -248,12 +280,12 @@ EndMacro(Generate_Exe_Script)
 
 Macro (Generate_Version_Info)
 IF(FAIRROOT_FOUND)
-  
+
   Add_Custom_Target(svnheader ALL)
 
-  Add_Custom_Command(TARGET svnheader 
+  Add_Custom_Command(TARGET svnheader
                      COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${PROJECT_SOURCE_DIR}
-		     -DBINARY_DIR=${CMAKE_BINARY_DIR}	      
+		     -DBINARY_DIR=${CMAKE_BINARY_DIR}
                      -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
                      -DFAIRROOT=${FAIRROOT_CMAKEMOD_DIR}
                      -P ${FAIRROOT_CMAKEMOD_DIR}/modules/GenerateVersionInfo.cmake
@@ -261,9 +293,9 @@ IF(FAIRROOT_FOUND)
 ELSE(FAIRROOT_FOUND)
   Add_Custom_Target(svnheader ALL)
 
-  Add_Custom_Command(TARGET svnheader 
+  Add_Custom_Command(TARGET svnheader
                      COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_SOURCE_DIR}
-		     -DBINARY_DIR=${CMAKE_BINARY_DIR}	      
+		     -DBINARY_DIR=${CMAKE_BINARY_DIR}
                      -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
                      -P ${CMAKE_SOURCE_DIR}/cmake/modules/GenerateVersionInfo.cmake
 		     )
@@ -274,7 +306,7 @@ EndMacro (Generate_Version_Info)
 Macro (SetBasicVariables)
 
 IF(FAIRROOT_FOUND)
-  Set(BASE_INCLUDE_DIRECTORIES 
+  Set(BASE_INCLUDE_DIRECTORIES
     ${FAIRROOT_INCLUDE_DIR}
   )
   Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -305,12 +337,12 @@ ELSE(FAIRROOT_FOUND)
     ${CMAKE_SOURCE_DIR}/input/db
     ${CMAKE_SOURCE_DIR}/dbase/dbInput
     ${CMAKE_SOURCE_DIR}/dbase/dbIO
-    ${CMAKE_SOURCE_DIR}/alignment 
+    ${CMAKE_SOURCE_DIR}/alignment
   )
   Set(SYSTEM_INCLUDE_DIRECTORIES
     ${ROOT_INCLUDE_DIR}
     ${Boost_INCLUDE_DIRS}
-  )  
+  )
   Set(ROOT_INCLUDE_PATH
       ${BASE_INCLUDE_DIRECTORIES}
      )
@@ -320,7 +352,7 @@ ENDIF(FAIRROOT_FOUND)
 Set(BASE_LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
     ${Boost_LIBRARY_DIRS}
-)  
+)
 
 IF(FAIRROOT_FOUND)
 
@@ -329,10 +361,64 @@ IF(FAIRROOT_FOUND)
 ELSE(FAIRROOT_FOUND)
 
   Set(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)
-  
+
 ENDIF(FAIRROOT_FOUND)
 
 Set(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
 
 
 EndMacro (SetBasicVariables)
+
+
+
+macro(find_package2 qualifier pkgname)
+  cmake_parse_arguments(ARGS "" "VERSION" "COMPONENTS" ${ARGN})
+
+  string(TOUPPER ${pkgname} pkgname_upper)
+  set(old_CPP ${CMAKE_PREFIX_PATH})
+  set(CMAKE_PREFIX_PATH ${${pkgname_upper}_ROOT} $ENV{${pkgname_upper}_ROOT} ${CMAKE_PREFIX_PATH})
+  if(ARGS_COMPONENTS)
+    find_package(${pkgname} ${ARGS_VERSION} QUIET COMPONENTS ${ARGS_COMPONENTS} ${ARGS_UNPARSED_ARGUMENTS})
+  else()
+    find_package(${pkgname} ${ARGS_VERSION} QUIET ${ARGS_UNPARSED_ARGUMENTS})
+  endif()
+  set(CMAKE_PREFIX_PATH ${old_CPP})
+  unset(old_CPP)
+
+  if(${pkgname}_FOUND)
+    if(${qualifier} STREQUAL PRIVATE)
+      set(PROJECT_${pkgname}_VERSION ${ARGS_VERSION})
+      set(PROJECT_${pkgname}_COMPONENTS ${ARGS_COMPONENTS})
+      set(PROJECT_PACKAGE_DEPENDENCIES ${PROJECT_PACKAGE_DEPENDENCIES} ${pkgname})
+    elseif(${qualifier} STREQUAL PUBLIC)
+      set(PROJECT_${pkgname}_VERSION ${ARGS_VERSION})
+      set(PROJECT_${pkgname}_COMPONENTS ${ARGS_COMPONENTS})
+      set(PROJECT_PACKAGE_DEPENDENCIES ${PROJECT_PACKAGE_DEPENDENCIES} ${pkgname})
+      set(PROJECT_INTERFACE_${pkgname}_VERSION ${ARGS_VERSION})
+      set(PROJECT_INTERFACE_${pkgname}_COMPONENTS ${ARGS_COMPONENTS})
+      set(PROJECT_INTERFACE_PACKAGE_DEPENDENCIES ${PROJECT_INTERFACE_PACKAGE_DEPENDENCIES} ${pkgname})
+    elseif(${qualifier} STREQUAL INTERFACE)
+      set(PROJECT_INTERFACE_${pkgname}_VERSION ${ARGS_VERSION})
+      set(PROJECT_INTERFACE_${pkgname}_COMPONENTS ${ARGS_COMPONENTS})
+      set(PROJECT_INTERFACE_PACKAGE_DEPENDENCIES ${PROJECT_INTERFACE_PACKAGE_DEPENDENCIES} ${pkgname})
+    endif()
+  endif()
+endmacro()
+
+
+
+function(pad str width char out)
+  cmake_parse_arguments(ARGS "" "COLOR" "" ${ARGN})
+  string(LENGTH ${str} length)
+  if(ARGS_COLOR)
+    math(EXPR padding "${width}-(${length}-10*${ARGS_COLOR})")
+  else()
+    math(EXPR padding "${width}-${length}")
+  endif()
+  if(padding GREATER 0)
+    foreach(i RANGE ${padding})
+      set(str "${str}${char}")
+    endforeach()
+  endif()
+  set(${out} ${str} PARENT_SCOPE)
+endfunction()

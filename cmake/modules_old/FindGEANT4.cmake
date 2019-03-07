@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find GEANT4
@@ -32,8 +32,10 @@ FIND_PATH(GEANT4_DIR NAMES geant4-config PATHS
 
 If(GEANT4_DIR)
   Set(PATH ${PATH} ${GEANT4_DIR})
+  Execute_Process(COMMAND "${GEANT4_DIR}/geant4-config" --version
+                  OUTPUT_VARIABLE GEANT4_VERSION
+                 )
 EndIf(GEANT4_DIR)
-
 
 FIND_PATH(GEANT4_INCLUDE_DIR NAMES G4Event.hh PATHS
   ${SIMPATH}/transport/geant4/include
@@ -47,8 +49,8 @@ FIND_PATH(GEANT4_INCLUDE_DIR NAMES G4Event.hh PATHS
 
 SET(GEANT4_INCLUDE_DIR
   ${GEANT4_INCLUDE_DIR}
-  ${SIMPATH}/transport/geant4/source/interfaces/common/include 
-  ${SIMPATH}/transport/geant4/physics_lists/hadronic/Packaging/include   
+  ${SIMPATH}/transport/geant4/source/interfaces/common/include
+  ${SIMPATH}/transport/geant4/physics_lists/hadronic/Packaging/include
   ${SIMPATH}/transport/geant4/physics_lists/hadronic/QGSP/include
 )
 
@@ -57,7 +59,7 @@ FIND_PATH(GEANT4_LIB_DIR NAMES libG3toG4.so PATHS
   ${SIMPATH}/transport/geant4/lib/Linux-icc
   ${SIMPATH}/transport/geant4/lib
   ${SIMPATH}/lib
-  ${GEANT4_ROOT}/lib  
+  ${GEANT4_ROOT}/lib
   NO_DEFAULT_PATH
 )
 
@@ -81,4 +83,3 @@ else (GEANT4_FOUND)
     message(FATAL_ERROR "Looking for GEANT4... - Not found")
   endif (GEANT4_FIND_REQUIRED)
 endif (GEANT4_FOUND)
-

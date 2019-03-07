@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find PLUTO instalation
@@ -29,13 +29,14 @@ if (Pythia6_LIBRARY_DIR)
 endif(Pythia6_LIBRARY_DIR)
 
 if (Pythia6_FOUND)
-  if (NOT Pythia6_FIND_QUIETLY)     
+  SET(Pythia6_VERSION  "6.4")
+  if (NOT Pythia6_FIND_QUIETLY)
     MESSAGE(STATUS "Looking for Pythia6... - found ${Pythia6_LIBRARY_DIR}")
     SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Pythia6_LIBRARY_DIR})
+    MESSAGE(STATUS "Looking for Pythia6... - found ${Pythia6_VERSION}")
   endif (NOT Pythia6_FIND_QUIETLY)
 else (Pythia6_FOUND)
   if (Pythia6_FIND_REQUIRED)
     message(FATAL_ERROR "Looking for Pythia6... - Not found")
   endif (Pythia6_FIND_REQUIRED)
 endif (Pythia6_FOUND)
-
