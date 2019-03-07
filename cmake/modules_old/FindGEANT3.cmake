@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find GEANT3
@@ -16,6 +16,9 @@
 
 INCLUDE(CheckCXXSourceCompiles)
 
+
+
+
 MACRO (TEST_GEANT3_VERSION)
 
 # Check if SetCUTS from TGeant3 has 11 or 16 parameters
@@ -25,29 +28,30 @@ MACRO (TEST_GEANT3_VERSION)
 # If the compilation succed the library has the new version,
 # if not the library has the old version.
 
-SET(CMAKE_REQUIRED_INCLUDES ${GEANT3_INCLUDE_DIR} ${ROOT_INCLUDE_DIR}) 
-SET(CMAKE_REQUIRED_LIBRARIES 
-    ${GEANT3_LIB} 
-    ${ROOT_LIBRARY_DIR}/libCore.so 
-    Cint 
-    Hist 
+
+SET(CMAKE_REQUIRED_INCLUDES ${GEANT3_INCLUDE_DIR} ${ROOT_INCLUDE_DIR})
+SET(CMAKE_REQUIRED_LIBRARIES
+    ${GEANT3_LIB}
+    ${ROOT_LIBRARY_DIR}/libCore.so
+    Cint
+    Hist
     RIO
     Net
-    Graf 
-    Graf3d 
-    Gpad 
-    Tree 
-    Rint 
-    Postscript 
-    Matrix 
-    Physics 
-    Gui 
-    EG 
-    ${Pythia6_LIBRARY_DIR}/libPythia6.so 
-    EGPythia6 
-    VMC 
-    Geom 
-    dl   
+    Graf
+    Graf3d
+    Gpad
+    Tree
+    Rint
+    Postscript
+    Matrix
+    Physics
+    Gui
+    EG
+    ${Pythia6_LIBRARY_DIR}/libPythia6.so
+    EGPythia6
+    VMC
+    Geom
+    dl
 )
 
 check_cxx_source_compiles("
@@ -56,7 +60,7 @@ check_cxx_source_compiles("
     TGeant3* geant3= new TGeant3(\"\");
     float cut = 1.e-3;
     float usrcuts[5]={0.,0.,0.,0.,0};
-    geant3->SetCUTS(cut, cut, cut, cut ,cut, cut, cut, cut, cut, cut, cut,usrcuts); 
+    geant3->SetCUTS(cut, cut, cut, cut ,cut, cut, cut, cut, cut, cut, cut,usrcuts);
     return 0;
   }
 " TGEANT3_SETCUTS )
@@ -67,6 +71,8 @@ ELSE (TGEANT3_SETCUTS)
   MESSAGE(STATUS "Old Version of GEANT3 without GEANE support found.")
   ADD_DEFINITIONS(-DHAVE_OLD_GEANT3)
 ENDIF (TGEANT3_SETCUTS)
+
+
 
 ENDMACRO (TEST_GEANT3_VERSION)
 
@@ -104,6 +110,19 @@ FIND_PATH(GEANT3_LIBRARY_DIR NAMES libgeant321.so PATHS
   NO_DEFAULT_PATH
 )
 
+SUBDIRLIST (SUBDIRS ${GEANT3_LIBRARY_DIR})
+
+FOREACH(subdir ${SUBDIRS})
+  SET(fullpath_subdir ${GEANT3_LIBRARY_DIR}/${subdir})
+  FIND_PATH(GEANT3_CONFIG_DIR NAMES Geant3ConfigVersion.cmake PATHS ${fullpath_subdir})
+  if(EXISTS ${GEANT3_CONFIG_DIR}/Geant3ConfigVersion.cmake)
+      include(${GEANT3_CONFIG_DIR}/Geant3Config.cmake)
+      include(${GEANT3_CONFIG_DIR}/Geant3ConfigVersion.cmake)
+      set(GEANT3_VERSION ${PACKAGE_VERSION})
+   endif()
+ENDFOREACH()
+
+
 FIND_LIBRARY(GEANT3_LIB NAMES geant321 PATHS
   ${GEANT3_PATH}/lib
   ${SIMPATH}/lib
@@ -133,4 +152,3 @@ else (GEANT3_FOUND)
     message(FATAL_ERROR "Looking for GEANT3... - Not found ")
   endif (GEANT3_FIND_REQUIRED)
 endif (GEANT3_FOUND)
-

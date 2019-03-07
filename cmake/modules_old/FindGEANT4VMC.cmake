@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find GEANT4VMC
@@ -31,22 +31,22 @@ FIND_PATH(GEANT4VMC_INCLUDE_DIR NAMES TG4G3Units.h PATHS
 )
 
 #set(GEANT4VMC_INCLUDE_DIR
-#${SIMPATH}/transport/geant4_vmc/source/global/include 
-#${SIMPATH}/transport/geant4_vmc/source/geometry/include 
-#${SIMPATH}/transport/geant4_vmc/source/digits+hits/include 
-#${SIMPATH}/transport/geant4_vmc/source/physics/include 
-#${SIMPATH}/transport/geant4_vmc/source/event/include 
-#${SIMPATH}/transport/geant4_vmc/source/run/include 
-#${SIMPATH}/transport/geant4_vmc/source/interfaces/include 
-#${SIMPATH}/transport/geant4_vmc/source/visualization/include 
-#${SIMPATH}/transport/geant4_vmc/include 
-#${SIMPATH}/transport/geant4_vmc/include/geant4vmc 
-#${SIMPATH}/transport/geant4_vmc/include/g4root 
-#${SIMPATH}/transport/vgm/packages/BaseVGM/include 
-#${SIMPATH}/transport/vgm/packages/ClhepVGM/include 
-#${SIMPATH}/transport/vgm/packages/Geant4GM/include 
-#${SIMPATH}/transport/vgm/packages/RootGM/include 
-#${SIMPATH}/transport/vgm/packages/VGM/include 
+#${SIMPATH}/transport/geant4_vmc/source/global/include
+#${SIMPATH}/transport/geant4_vmc/source/geometry/include
+#${SIMPATH}/transport/geant4_vmc/source/digits+hits/include
+#${SIMPATH}/transport/geant4_vmc/source/physics/include
+#${SIMPATH}/transport/geant4_vmc/source/event/include
+#${SIMPATH}/transport/geant4_vmc/source/run/include
+#${SIMPATH}/transport/geant4_vmc/source/interfaces/include
+#${SIMPATH}/transport/geant4_vmc/source/visualization/include
+#${SIMPATH}/transport/geant4_vmc/include
+#${SIMPATH}/transport/geant4_vmc/include/geant4vmc
+#${SIMPATH}/transport/geant4_vmc/include/g4root
+#${SIMPATH}/transport/vgm/packages/BaseVGM/include
+#${SIMPATH}/transport/vgm/packages/ClhepVGM/include
+#${SIMPATH}/transport/vgm/packages/Geant4GM/include
+#${SIMPATH}/transport/vgm/packages/RootGM/include
+#${SIMPATH}/transport/vgm/packages/VGM/include
 #${SIMPATH}/transport/vgm/packages/XmlVGM/include
 #)
 
@@ -69,6 +69,19 @@ FIND_PATH(GEANT4VMC_LIBRARY_DIR NAMES libgeant4vmc.so libgeant4vmc.dylib PATHS
   ${GEANT4_VMC_ROOT}/lib/
   NO_DEFAULT_PATH
 )
+
+SUBDIRLIST (SUBDIRS ${GEANT4VMC_LIBRARY_DIR})
+
+FOREACH(subdir ${SUBDIRS})
+  SET(fullpath_subdir ${GEANT4VMC_LIBRARY_DIR}/${subdir})
+  FIND_PATH(GEANT4VMC_CONFIG_DIR NAMES Geant4VMCConfigVersion.cmake PATHS ${fullpath_subdir})
+  if(EXISTS ${GEANT4VMC_CONFIG_DIR}/Geant4VMCConfigVersion.cmake)
+      include(${GEANT4VMC_CONFIG_DIR}/Geant4VMCConfig.cmake)
+      include(${GEANT4VMC_CONFIG_DIR}/Geant4VMCConfigVersion.cmake)
+      set(GEANT4VMC_VERSION ${PACKAGE_VERSION})
+   endif()
+ENDFOREACH()
+
 
 # check for existence of header file, which is needed in FairRunConfiguration
 # The file is only present in old versions of VMC
@@ -116,7 +129,6 @@ if (GEANT4VMC_INCLUDE_DIR AND GEANT4VMC_LIBRARY_DIR AND VGM_LIBRARY_DIR)
 endif (GEANT4VMC_INCLUDE_DIR AND GEANT4VMC_LIBRARY_DIR AND VGM_LIBRARY_DIR)
 
 if (GEANT4VMC_FOUND)
-  SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${GEANT4VMC_LIBRARY_DIR} 
+  SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${GEANT4VMC_LIBRARY_DIR}
       ${VGM_LIBRARY_DIR})
 endif (GEANT4VMC_FOUND)
-
