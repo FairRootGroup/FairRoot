@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find PLUTO instalation
@@ -48,7 +48,6 @@ endif (PLUTO_INCLUDE_DIR AND PLUTO_LIBRARY_DIR)
 if (PLUTO_FOUND)
   if (NOT PLUTO_FIND_QUIETLY)
     MESSAGE(STATUS "Looking for Pluto... - found ${PLUTO_LIBRARY_DIR}")
-#    message(STATUS "Found PLUTO: ${PLUTO_LIBRARY_DIR}")
     SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${PLUTO_LIBRARY_DIR})
   endif (NOT PLUTO_FIND_QUIETLY)
 else (PLUTO_FOUND)
@@ -56,4 +55,3 @@ else (PLUTO_FOUND)
     message(FATAL_ERROR "Looking for Pluto... - Not found")
   endif (PLUTO_FIND_REQUIRED)
 endif (PLUTO_FOUND)
-

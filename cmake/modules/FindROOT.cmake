@@ -87,6 +87,7 @@ If(ROOT_CONFIG_EXECUTABLE)
   Set(ROOT_Version ${found_vers})
   Set(ROOT_VERSION_NUMBER ${found_vers})
   Set(ROOT_VERSION ${ROOT_VERSION_STRING})
+  Set(ROOT_ROOT ${ROOT_INSTALL_DIR})
 
   If(found_vers LESS req_vers)
     Set(ROOT_FOUND FALSE)

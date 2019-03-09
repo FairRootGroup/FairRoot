@@ -30,6 +30,7 @@ endif(Pythia6_LIBRARY_DIR)
 
 if (Pythia6_FOUND)
   SET(Pythia6_VERSION  "6.4")
+  SET(Pythia6_ROOT  ${Pythia6_LIBRARY_DIR})
   if (NOT Pythia6_FIND_QUIETLY)
     MESSAGE(STATUS "Looking for Pythia6... - found ${Pythia6_LIBRARY_DIR}")
     SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Pythia6_LIBRARY_DIR})

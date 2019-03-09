@@ -32,7 +32,7 @@ endforeach()
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
 SET(FAIRROOT_MINOR_VERSION 0)
-SET(FAIRROOT_PATCH_VERSION 1)
+SET(FAIRROOT_PATCH_VERSION 3)
 
 # Set name of our project to "FAIRROOT".
 # Has to be done after check of cmake version
@@ -161,8 +161,8 @@ if(SIMPATH)
 endif()
 
 # FairRoot only supports ROOT6, so check which version is available
-find_package2(PUBLIC ROOT VERSION 6.10.00 REQUIRED)
-find_package2(PUBLIC FairLogger VERSION 1.2.0 REQUIRED)
+find_package2(PUBLIC ROOT QUIET VERSION 6.10.00 REQUIRED)
+find_package2(PUBLIC FairLogger QUIET VERSION 1.2.0 REQUIRED)
 find_package2(PUBLIC Pythia6)
 find_package2(PUBLIC Pythia8)
 
@@ -238,11 +238,11 @@ else(FAIRROOT_MODULAR_BUILD)
   find_package2(PUBLIC GEANT4)
   find_package2(PUBLIC GEANT4DATA)
   find_package2(PUBLIC GEANT4VMC)
-  find_package2(PUBLIC CLHEP)
+  find_package(CLHEP)
 endif(FAIRROOT_MODULAR_BUILD)
 
-find_package2(PUBLIC CUDA)
-find_package2(PUBLIC IWYU)
+find_package(CUDA)
+find_package(IWYU)
 if(NOT DISABLE_GO)
   find_package2(PUBLIC Go VERSION 1.7)
 endif()
@@ -406,29 +406,8 @@ Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
         DESTINATION bin
         RENAME FairRootConfig.sh
        )
-
-Install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
-        DESTINATION bin
-       )
-
-Install(FILES ${CMAKE_BINARY_DIR}/FairVersion.h
-        DESTINATION include
-       )
-
-Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
-        DESTINATION bin
-        RENAME FairRootConfig.csh
-       )
-
-Install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
-        DESTINATION bin
-       )
-
-Install(DIRECTORY cmake
-        DESTINATION share/fairbase
-        PATTERN ".svn" EXCLUDE)
-
 find_package2(PUBLIC Git)
+set (Git_VERSION ${GIT_VERSION_STRING})
 
 If(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
   Execute_Process(COMMAND ${GIT_EXECUTABLE} describe --tags
@@ -489,7 +468,7 @@ endif()
 ################################################################################
 if(PROJECT_PACKAGE_DEPENDENCIES)
   message(STATUS "  ")
-  message(STATUS "  ${Cyan}DEPENDENCY FOUND     VERSION         ${CR}")
+  message(STATUS "  ${Cyan}DEPENDENCY FOUND     VERSION                   PREFIX${CR}")
   foreach(dep IN LISTS PROJECT_PACKAGE_DEPENDENCIES)
     if(${dep}_VERSION)
       if(${dep} STREQUAL DDS)
@@ -514,7 +493,19 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
     else()
       pad("${version_str}${version_req_str}" 25 " " version_padded COLOR 1)
     endif()
-    message(STATUS "  ${BWhite}${dep_padded}${CR}${version_padded}")
+    set(prefix ${${dep}_ROOT})
+    if(${dep} STREQUAL Boost)
+      set(prefix ${BOOST_ROOT})
+    endif()
+    if(${dep} STREQUAL Protobuf)
+     set(prefix ${Protobuf_INCLUDE_DIRS})
+    endif()
+    if(${dep} STREQUAL msgpack)
+    set(prefix ${Protobuf_INCLUDE_DIRS})
+    endif()
+
+    message(STATUS "  ${BWhite}${dep_padded}${CR}${version_padded}${prefix}")
+
     unset(version_str)
     unset(version_padded)
     unset(version_req_str)
