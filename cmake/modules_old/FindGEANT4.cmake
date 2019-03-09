@@ -35,6 +35,8 @@ If(GEANT4_DIR)
   Execute_Process(COMMAND "${GEANT4_DIR}/geant4-config" --version
                   OUTPUT_VARIABLE GEANT4_VERSION
                  )
+  String(STRIP ${GEANT4_VERSION} GEANT4_VERSION)
+  set(GEANT4_ROOT ${GEANT4_DIR})
 EndIf(GEANT4_DIR)
 
 FIND_PATH(GEANT4_INCLUDE_DIR NAMES G4Event.hh PATHS

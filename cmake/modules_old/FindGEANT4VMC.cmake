@@ -79,6 +79,7 @@ FOREACH(subdir ${SUBDIRS})
       include(${GEANT4VMC_CONFIG_DIR}/Geant4VMCConfig.cmake)
       include(${GEANT4VMC_CONFIG_DIR}/Geant4VMCConfigVersion.cmake)
       set(GEANT4VMC_VERSION ${PACKAGE_VERSION})
+      set(GEANT4VMC_ROOT ${GEANT4VMC_LIBRARY_DIR})
    endif()
 ENDFOREACH()
 

@@ -119,6 +119,7 @@ FOREACH(subdir ${SUBDIRS})
       include(${GEANT3_CONFIG_DIR}/Geant3Config.cmake)
       include(${GEANT3_CONFIG_DIR}/Geant3ConfigVersion.cmake)
       set(GEANT3_VERSION ${PACKAGE_VERSION})
+      set(GEANT3_ROOT ${GEANT3_LIBRARY_DIR})
    endif()
 ENDFOREACH()
 
