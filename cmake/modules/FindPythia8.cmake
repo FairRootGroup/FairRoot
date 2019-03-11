@@ -28,7 +28,7 @@ set(_pythia8dirs
     /opt/pythia8)
 
 find_path(PYTHIA8_INCLUDE_DIR
-          NAMES Pythia8/Pythia.h
+          NAMES Pythia8/Pythia.h pythia8/Pythia.h  pythia8/pythia.h Pythia8/pythia.h
           HINTS ${_pythia8dirs}
           PATH_SUFFIXES include include/Pythia8 include/pythia8
           DOC "Specify the directory containing Pythia.h.")
@@ -39,6 +39,15 @@ find_library(PYTHIA8_LIBRARY
              PATH_SUFFIXES lib
              DOC "Specify the Pythia8 library here.")
 
+find_path(PYTHIA8_LIB_DIR  NAMES libpythia8.so libpythia8.dylib PATHS
+               $ENV{PYTHIA_ROOT}/lib
+               ${PYTHIA8_DIR}/lib
+               ${AlFa_DIR}/lib
+               ${SIMPATH}/lib
+               ${SIMPATH}/generators/lib
+               NO_DEFAULT_PATH
+             )
+
 find_library(PYTHIA8_hepmcinterface_LIBRARY
              NAMES hepmcinterface pythia8tohepmc
              HINTS ${_pythia8dirs}
@@ -48,6 +57,15 @@ find_library(PYTHIA8_lhapdfdummy_LIBRARY
              NAMES lhapdfdummy
              HINTS ${_pythia8dirs}
              PATH_SUFFIXES lib)
+
+
+find_path(PYTHIA8DATA NAMES MainProgramSettings.xml PATHS
+               $ENV{PYTHIA8DATA}
+               $ENV{PYTHIA_ROOT}/share/Pythia8/xmldoc
+               ${PYTHIA8_DIR}/share/Pythia8/xmldoc
+               ${SIMPATH}/share/pythia8/xmldoc
+             )
+
 
 foreach(_lib PYTHIA8_LIBRARY PYTHIA8_hepmcinterface_LIBRARY PYTHIA8_lhapdfdummy_LIBRARY)
   if(${_lib})

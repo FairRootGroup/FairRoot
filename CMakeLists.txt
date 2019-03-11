@@ -517,7 +517,7 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
     set(prefix ${Protobuf_INCLUDE_DIRS})
     endif()
     if(${dep} STREQUAL Pythia8)
-    set(prefix ${PYTHIA8_LIBRARY})
+    set(prefix ${PYTHIA8_LIB_DIR})
     endif()
 
     message(STATUS "  ${BWhite}${dep_padded}${CR}${version_padded}${prefix}")
@@ -527,5 +527,32 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
     unset(version_req_str)
   endforeach()
 endif()
+message(STATUS "  ")
+
+message(STATUS "  ${Cyan}COMPONENT           BUILT?  INFO${CR}")
+if(BUILD_EXAMPLES)
+  set(examples_summary "${BGreen}YES${CR}    (default, disable with ${BMagenta}-DBUILD_EXAMPLES=OFF${CR})")
+else()
+  set(examples_summary "${BRed} NO${CR}    (enable with ${BMagenta}-DBBUILD_EXAMPLES=ON${CR})")
+endif()
+message(STATUS "  ${BWhite}Examples${CR}             ${examples_summary}")
+
+if(WITH_DBASE)
+  set(DBASE_summary "${BGreen} YES${CR}      (disable with ${BMagenta}-DWITH_DBASE=OFF${CR})")
+else()
+   set(DBASE_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DWITH_DBASE=ON${CR})")
+endif()
+message(STATUS "  ${BWhite}FAIR-DB${CR}             ${DBASE_summary}")
+
+if(BUILD_DOXYGEN)
+  set(doxygen_summary "${BGreen}YES${CR}    (default, disable with ${BMagenta}-DBUILD_DOXYGENS=OFF${CR})")
+else()
+  set(doxygen_summary "${BRed} NO${CR}     (enable with ${BMagenta}-DBUILD_DOXYGEN=ON${CR})")
+endif()
+message(STATUS "  ${BWhite}Doxygen${CR}             ${doxygen_summary}")
+
+
+
+
 message(STATUS "  ")
 ################################################################################
