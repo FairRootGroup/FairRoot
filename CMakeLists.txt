@@ -15,19 +15,6 @@
 # Check if cmake has the required version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
 
-### CMP0025
-### CMP0042   MACOSX_RPATH is enabled by default.
-
-foreach(p
-  CMP0025 # Compiler id for Apple Clang is now AppleClang.
-  CMP0028 # double colon for imported and alias targets
-  CMP0042 # MACOSX_RPATH is enabled by default.
-  CMP0054 # Only interpret ``if()`` arguments as variables or keywords when unquoted.
-  )
-  if(POLICY ${p})
-  cmake_policy(SET ${p} NEW)
-  endif()
-endforeach()
 
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
@@ -82,6 +69,10 @@ include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
+
+
+set_fairroot_cmake_policies()
+
 
 #Check the compiler and set the compile and link flags
 Check_Compiler()
@@ -161,10 +152,11 @@ if(SIMPATH)
 endif()
 
 # FairRoot only supports ROOT6, so check which version is available
-find_package2(PUBLIC ROOT QUIET VERSION 6.10.00 REQUIRED)
-find_package2(PUBLIC FairLogger QUIET VERSION 1.2.0 REQUIRED)
+find_package2(PUBLIC ROOT  VERSION 6.10.00 QUIET REQUIRED)
+find_package2(PUBLIC FairLogger  VERSION 1.2.0 QUIET REQUIRED)
 find_package2(PUBLIC Pythia6)
-find_package2(PUBLIC Pythia8)
+
+find_package2(PUBLIC Pythia8 QUIET)
 
 find_package2(PUBLIC Protobuf)
 find_package2(PUBLIC msgpack)
