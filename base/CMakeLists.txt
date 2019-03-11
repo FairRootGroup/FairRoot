@@ -2,7 +2,7 @@
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
  #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # Create a library called "libBase" which includes the source files given in
@@ -175,7 +175,7 @@ EXEC_PROGRAM( ${ROOT_CONFIG_EXECUTABLE}
     OUTPUT_VARIABLE ROOT_HAS_GDML )
 
 If ( ${ROOT_HAS_GDML} STREQUAL yes )
-  Message(STATUS "Build CbmModule with Gdml support")
+  Message(STATUS "Build FairModule with Gdml support")
   Add_Definitions(-DROOT_HAS_GDML)
 EndIf ( ${ROOT_HAS_GDML} STREQUAL yes )
 
