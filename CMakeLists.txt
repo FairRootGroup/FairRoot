@@ -5,12 +5,12 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# The name of our project is "FairBase".  CMakeLists files in this project can
+# The name of our project is "FairRoot".  CMakeLists files in this project can
 # refer to the root source directory of the project as ${FAIRROOT_SOURCE_DIR} or
 # as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as
 # ${FAIRROOT_BINARY_DIR} or ${CMAKE_BINARY_DIR}.
 # This difference is important for the base classes which are in FAIRROOT
-# and PANDAROOT.
+# and the subproject (i.e: CbmRoot, Pandaroot,... etc).
 
 # Check if cmake has the required version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
@@ -156,7 +156,7 @@ find_package2(PUBLIC ROOT  VERSION 6.10.00 QUIET REQUIRED)
 find_package2(PUBLIC FairLogger  VERSION 1.2.0 QUIET REQUIRED)
 find_package2(PUBLIC Pythia6)
 
-find_package2(PUBLIC Pythia8 QUIET)
+find_package2(PUBLIC Pythia8)
 
 find_package2(PUBLIC Protobuf)
 find_package2(PUBLIC msgpack)
@@ -398,6 +398,25 @@ Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
         DESTINATION bin
         RENAME FairRootConfig.sh
        )
+
+
+Install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
+          DESTINATION bin
+                )
+Install(FILES ${CMAKE_BINARY_DIR}/FairVersion.h
+          DESTINATION include
+                )
+Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
+          DESTINATION bin
+          RENAME FairRootConfig.csh
+               )
+Install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
+          DESTINATION bin
+                )
+   Install(DIRECTORY cmake
+          DESTINATION share/fairbase
+              PATTERN ".svn" EXCLUDE)
+
 find_package2(PUBLIC Git)
 set (Git_VERSION ${GIT_VERSION_STRING})
 
@@ -494,6 +513,9 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
     endif()
     if(${dep} STREQUAL msgpack)
     set(prefix ${Protobuf_INCLUDE_DIRS})
+    endif()
+    if(${dep} STREQUAL Pythia8)
+    set(prefix ${PYTHIA8_LIBRARY})
     endif()
 
     message(STATUS "  ${BWhite}${dep_padded}${CR}${version_padded}${prefix}")
