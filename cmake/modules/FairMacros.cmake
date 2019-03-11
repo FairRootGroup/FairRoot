@@ -227,7 +227,7 @@ MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
                    ${new_path}/${shell_script_name}
                   )
   ENDIF(FAIRROOT_FOUND)
-  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
+  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}" OUTPUT_VARIABLE tmp)
 ENDMACRO (GENERATE_TEST_SCRIPT)
 ################################################################################
 
@@ -248,7 +248,7 @@ Macro(Generate_Exe_Script _Path _ExeName)
                    ${new_path}/${shell_script_name}
                   )
 
-  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
+  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}" OUTPUT_VARIABLE tmp )
 
 EndMacro(Generate_Exe_Script)
 ################################################################################
@@ -338,9 +338,9 @@ EndMacro (SetBasicVariables)
 ################################################################################
 macro(find_package2 qualifier pkgname)
   cmake_parse_arguments(ARGS "" "VERSION" "COMPONENTS" ${ARGN})
-
   string(TOUPPER ${pkgname} pkgname_upper)
-  set(old_CPP ${CMAKE_PREFIX_PATH})
+  Message(STATUS "Looking for ---------------------------------${pkgname} 1")
+ set(old_CPP ${CMAKE_PREFIX_PATH})
   set(CMAKE_PREFIX_PATH ${${pkgname_upper}_ROOT} $ENV{${pkgname_upper}_ROOT} ${CMAKE_PREFIX_PATH})
   if(ARGS_COMPONENTS)
     find_package(${pkgname} ${ARGS_VERSION} QUIET COMPONENTS ${ARGS_COMPONENTS} ${ARGS_UNPARSED_ARGUMENTS})
@@ -349,13 +349,15 @@ macro(find_package2 qualifier pkgname)
   endif()
   set(CMAKE_PREFIX_PATH ${old_CPP})
   unset(old_CPP)
-
+  Message(STATUS "Found #########----######### ${pkgname}--------  2")
   if(${pkgname}_FOUND)
+    Message(STATUS "Found ################## ${pkgname}-------- 3 ")
     if(${qualifier} STREQUAL PRIVATE)
       set(PROJECT_${pkgname}_VERSION ${ARGS_VERSION})
       set(PROJECT_${pkgname}_COMPONENTS ${ARGS_COMPONENTS})
       set(PROJECT_PACKAGE_DEPENDENCIES ${PROJECT_PACKAGE_DEPENDENCIES} ${pkgname})
     elseif(${qualifier} STREQUAL PUBLIC)
+      Message(STATUS "Found Public----------------------------${pkgname}-------- 4")
       set(PROJECT_${pkgname}_VERSION ${ARGS_VERSION})
       set(PROJECT_${pkgname}_COMPONENTS ${ARGS_COMPONENTS})
       set(PROJECT_PACKAGE_DEPENDENCIES ${PROJECT_PACKAGE_DEPENDENCIES} ${pkgname})

@@ -210,7 +210,7 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
                   )
   ENDIF(FAIRROOTPATH)
 
-  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}")
+  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}" OUTPUT_VARIABLE tmp)
 
 ENDMACRO (GENERATE_ROOT_TEST_SCRIPT)
 
@@ -311,13 +311,13 @@ Macro(GENERATE_LIBRARY)
     get_filename_component(_ext ${d} EXT)
     If(NOT _ext MATCHES a$)
       set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
-    Else()      
+    Else()
       Message("Found Static library with extension ${_ext}")
       get_filename_component(_lib ${d} NAME_WE)
       set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${_lib})
     EndIf()
   endforeach()
- 
+
   ############### build the library #####################
   If(${CMAKE_GENERATOR} MATCHES Xcode)
     Add_Library(${Int_LIB} SHARED ${Int_SRCS} ${NO_DICT_SRCS} ${HDRS} ${LINKDEF})
@@ -364,4 +364,3 @@ Macro(GENERATE_EXECUTABLE)
   Set(DEPENDENCIES)
 
 EndMacro(GENERATE_EXECUTABLE)
-
