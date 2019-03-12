@@ -163,7 +163,7 @@ find_package2(PUBLIC FlatBuffers)
 
 if(FAIRROOT_MODULAR_BUILD)
   # Geant3, Geant4 installed via cmake
-  Message(STATUS "Looking for GEANT3...")
+  #Message(STATUS "Looking for GEANT3...")
   Find_Package2(PUBLIC Geant3)
   If(Geant3_DIR)
     list(APPEND PROJECT_PACKAGE_COMPONENTS Geant3)
@@ -181,7 +181,7 @@ if(FAIRROOT_MODULAR_BUILD)
     Set(GEANT3_FOUND FALSE)
     Message(Status "Looking for GEANT3... - Not found ")
   EndIf()
-  Message(STATUS "Looking for GEANT4...")
+  #Message(STATUS "Looking for GEANT4...")
   find_package2(PUBLIC Geant4)
   If(Geant4_DIR)
     Set(GEANT4_INCLUDE_DIR ${Geant4_INCLUDE_DIRS})
@@ -383,14 +383,12 @@ endif(IWYU_FOUND)
 
 
 Option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
-Message("Test_Model: ${CMAKE_BUILD_TYPE}")
+#Message("Test_Model: ${CMAKE_BUILD_TYPE}")
 If(${CMAKE_BUILD_TYPE} MATCHES PROFILE)
   Set(BUILD_UNITTESTS ON)
 EndIf()
 If(BUILD_UNITTESTS)
-
   Message("Build the unit tests.")
-
   If(GTEST_FOUND)
     Message("Add tests library and tests.")
     add_subdirectory(test)
