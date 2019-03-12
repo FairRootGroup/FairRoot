@@ -6,7 +6,7 @@ export System_="@_system@"
 if [ $same_system -eq 1 ]; then
 	export SIMPATH="@SIMPATH@"
 	export ROOTSYS="@ROOTSYS@"
-	export FAIRROOTPATH="@FAIRROOTPATH@"
+	export FAIRROOTPATH="@TARGETFAIRROOTPATH@"
 	if (@FULL_CONFIG_FILE@); then
 		export GEANT4_LIBRARY_DIR="@GEANT4_LIBRARY_DIR@"
 		export GEANT4_INCLUDE_DIR="@GEANT4_INCLUDE_DIR@"

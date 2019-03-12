@@ -6,7 +6,7 @@ setenv System_ "@_system@"
 if ( "$same_system" == "1" ) then 
 	setenv SIMPATH "@SIMPATH@"
 	setenv ROOTSYS "@ROOTSYS@"
-	setenv FAIRROOTPATH "@FAIRROOTPATH@"
+	setenv FAIRROOTPATH "@TARGETFAIRROOTPATH@"
 	if ( @FULL_CONFIG_FILE@ == true ) then
 		setenv GEANT4_LIBRARY_DIR "@GEANT4_LIBRARY_DIR@"
 		setenv GEANT4_INCLUDE_DIR "@GEANT4_INCLUDE_DIR@"
