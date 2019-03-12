@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find CLHEP
@@ -64,7 +64,7 @@ If(CLHEP_CONFIG_EXE)
     List (REMOVE_DUPLICATES _incs_found)
   EndIf (_length GREATER 1)
   Set (CLHEP_INCLUDE_DIR ${_incs_found})
-  set(CLHEP_LIBRARIES "-L${CLHEP_LIBRARY_DIR} -lCLHEP")  
+  set(CLHEP_LIBRARIES "-L${CLHEP_LIBRARY_DIR} -lCLHEP")
 
 Else(CLHEP_CONFIG_EXE)
 
@@ -74,7 +74,7 @@ Else(CLHEP_CONFIG_EXE)
     find_path(CLHEP_LIBRARY_DIR NAMES libG4clhep.so PATHS
       ${GEANT4_LIBRARY_DIR}
     )
-    set(CLHEP_LIBRARIES "-L${CLHEP_LIBRARY_DIR} -lG4clhep")  
+    set(CLHEP_LIBRARIES "-L${CLHEP_LIBRARY_DIR} -lG4clhep")
 
     FIND_PATH(CLHEP_INCLUDE_DIR NAMES CLHEP PATHS
       ${GEANT4_INCLUDE_DIR}
@@ -84,7 +84,7 @@ Else(CLHEP_CONFIG_EXE)
     )
 
   Else (GEANT4_FOUND)
-  
+
     FIND_PATH(CLHEP_INCLUDE_DIR NAMES CLHEP PATHS
       ${SIMPATH}/cern/clhep/include
       ${SIMPATH}/include
@@ -102,7 +102,7 @@ Else(CLHEP_CONFIG_EXE)
       ${SIMPATH}/lib
       NO_DEFAULT_PATH
     )
-    set(CLHEP_LIBRARIES "-L${CLHEP_LIBRARY_DIR} -lCLHEP")  
+    set(CLHEP_LIBRARIES "-L${CLHEP_LIBRARY_DIR} -lCLHEP")
   EndIf (GEANT4_FOUND)
 
 EndIf(CLHEP_CONFIG_EXE)
@@ -113,7 +113,7 @@ EndIf (CLHEP_INCLUDE_DIR AND CLHEP_LIBRARY_DIR)
 
 If (CLHEP_FOUND)
   if (NOT CLHEP_FIND_QUIETLY)
-    MESSAGE(STATUS "Looking for CLHEP... - found ${CLHEP_LIBRARY_DIR}")
+#    MESSAGE(STATUS "Looking for CLHEP... - found ${CLHEP_LIBRARY_DIR}")
 #    message(STATUS "Found CLHEP: ${CLHEP_LIBRARY_DIR}")
     SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${CLHEP_LIBRARY_DIR})
   endif (NOT CLHEP_FIND_QUIETLY)
@@ -122,4 +122,3 @@ Else (CLHEP_FOUND)
     message(FATAL_ERROR "Looking for CLHEP... - Not found")
   endif (CLHEP_FIND_REQUIRED)
 EndIf (CLHEP_FOUND)
-

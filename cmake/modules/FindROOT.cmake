@@ -70,8 +70,9 @@ If(ROOT_CONFIG_EXECUTABLE)
   String(STRIP ${ROOT_VERSION_STRING} ROOT_VERSION_STRING)
   String(STRIP ${ROOT_INSTALL_DIR} ROOT_INSTALL_DIR)
 
-  MESSAGE(STATUS "Looking for Root... - Found ${ROOT_INSTALL_DIR}/bin/root")
-  MESSAGE(STATUS "Looking for Root... - Found version is ${ROOT_VERSION_STRING} ")
+
+ # MESSAGE(STATUS "Looking for Root... - Found ${ROOT_INSTALL_DIR}/bin/root")
+ # MESSAGE(STATUS "Looking for Root... - Found version is ${ROOT_VERSION_STRING} ")
 
   # extract major, minor, and patch versions from
   # the version string given by root-config

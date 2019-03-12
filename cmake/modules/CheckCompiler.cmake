@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 MACRO ( Check_Compiler )
@@ -38,7 +38,7 @@ If(FAIRSOFT_CONFIG)
   Get_Filename_Component(FAIRSOFT_C_COMPILER ${FAIRSOFT_C_COMPILER} REALPATH)
   Get_Filename_Component(FAIRSOFT_CXX_COMPILER ${FAIRSOFT_CXX_COMPILER} REALPATH)
   Get_Filename_Component(FAIRSOFT_Fortran_COMPILER ${FAIRSOFT_Fortran_COMPILER} REALPATH)
-  
+
   Set(FAIRROOT_C_COMPILER ${CMAKE_C_COMPILER})
   Set(FAIRROOT_CXX_COMPILER ${CMAKE_CXX_COMPILER})
   Set(FAIRROOT_Fortran_COMPILER ${CMAKE_Fortran_COMPILER})
@@ -52,7 +52,22 @@ If(FAIRSOFT_CONFIG)
   Get_Filename_Component(FAIRROOT_C_COMPILER ${FAIRROOT_C_COMPILER} REALPATH)
   Get_Filename_Component(FAIRROOT_CXX_COMPILER ${FAIRROOT_CXX_COMPILER} REALPATH)
 
-  If(NOT (${FAIRSOFT_C_COMPILER} STREQUAL ${FAIRROOT_C_COMPILER}) OR NOT (${FAIRSOFT_CXX_COMPILER} STREQUAL ${FAIRROOT_CXX_COMPILER}))
+
+  Execute_Process(COMMAND ${FAIRSOFT_C_COMPILER} --version
+                 OUTPUT_VARIABLE FAIRSOFT_C_COMPILER_STRING
+                 )
+  Execute_Process(COMMAND ${FAIRROOT_C_COMPILER} --version
+                 OUTPUT_VARIABLE FAIRROOT_C_COMPILER_STRING
+                 )
+  Execute_Process(COMMAND ${FAIRSOFT_CXX_COMPILER} --version
+                 OUTPUT_VARIABLE FAIRSOFT_CXX_COMPILER_STRING
+                 )
+  Execute_Process(COMMAND ${FAIRROOT_CXX_COMPILER} --version
+                 OUTPUT_VARIABLE FAIRROOT_CXX_COMPILER_STRING
+                 )
+
+  #If(NOT (${FAIRSOFT_C_COMPILER} STREQUAL ${FAIRROOT_C_COMPILER}) OR NOT (${FAIRSOFT_CXX_COMPILER} STREQUAL ${FAIRROOT_CXX_COMPILER}))
+  If(NOT (${FAIRSOFT_C_COMPILER_STRING} STREQUAL ${FAIRROOT_C_COMPILER_STRING}) OR NOT (${FAIRSOFT_CXX_COMPILER_STRING} STREQUAL ${FAIRROOT_CXX_COMPILER_STRING}))
     execute_process(COMMAND cmake -E compare_files ${FAIRSOFT_CXX_COMPILER} ${FAIRROOT_CXX_COMPILER} RESULT_VARIABLE COMPILER_DIFF)
     If(NOT ${COMPILER_DIFF} EQUAL 0)
       Message(STATUS "C compiler used for FairSoft installation:  ${FAIRSOFT_C_COMPILER}")
@@ -68,7 +83,7 @@ If(FAIRSOFT_CONFIG)
     EndIf()
   EndIf()
 
-  If(FAIRROOT_Fortran_COMPILER) 
+  If(FAIRROOT_Fortran_COMPILER)
     If(NOT (${FAIRSOFT_Fortran_COMPILER} STREQUAL ${FAIRROOT_Fortran_COMPILER}))
       String(STRIP ${FAIRSOFT_Fortran_COMPILER} FAIRSOFT_Fortran_COMPILER)
       Message(STATUS "Fortran compiler used for FairSoft installation:  ${FAIRSOFT_Fortran_COMPILER}")
@@ -220,12 +235,12 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
       set(CMAKE_C_FLAGS_DEBUGFULL        "-g3 -fno-inline -Wno-long-long -std=iso9899:1990 -Wundef -Wcast-align -Werror-implicit-function-declaration -Wchar-subscripts -Wall -W -Wpointer-arith -Wwrite-strings -Wformat-security -Wmissing-format-attribute -fno-common")
       set(CMAKE_C_FLAGS_PROFILE          "-g3 -fno-inline -ftest-coverage -fprofile-arcs")
 
-      
+
    else (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         Message("CXX Compiler: ${CMAKE_CXX_COMPILER}")
         Message("CXX Compiler ABI: ${CMAKE_CXX_COMPILER_ABI}")
         Message("CXX Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
-        MESSAGE(FATAL_ERROR "This compiler is not known.")   
+        MESSAGE(FATAL_ERROR "This compiler is not known.")
    endif (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 
 

@@ -15,7 +15,7 @@
 # Check if cmake has the required version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
 
-
+set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
 SET(FAIRROOT_MINOR_VERSION 0)
@@ -272,10 +272,13 @@ Message("-- Looking for Boost ...")
 # for boost.
 Unset(Boost_INCLUDE_DIR CACHE)
 Unset(Boost_LIBRARY_DIRS CACHE)
-set(FairRoot_Boost_COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time signals)
-list(APPEND FairRoot_Boost_COMPONENTS ${FairMQ_Boost_COMPONENTS})
-list(REMOVE_DUPLICATES FairRoot_Boost_COMPONENTS)
-find_package2(PUBLIC Boost VERSION 1.67 COMPONENTS ${FairRoot_Boost_COMPONENTS})
+
+find_package2(PUBLIC Boost
+  VERSION 1.67 ${FairMQ_Boost_VERSION}
+  COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time signals ${FairMQ_Boost_COMPONENTS}
+)
+
+
 If (Boost_FOUND)
   Set(Boost_Avail 1)
   Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Boost_LIBRARY_DIR})
