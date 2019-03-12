@@ -7,7 +7,7 @@
 #  SQLITE_LIBRARIES - Link these to use sqlite
 #
 
-# <D.Bertini> : 
+# <D.Bertini> :
 #    Date: 11.08.2014 -- Changes to favor user local installation
 
 
@@ -17,7 +17,7 @@
               /usr/local/include
               /usr/include
               )
-	find_library(SQLITE_LIBRARIES sqlite3 
+	find_library(SQLITE_LIBRARIES sqlite3
                 NAMES sqlite3
                 PATHS
                 /usr/local/lib

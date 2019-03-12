@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 MACRO (WRITE_CONFIG_FILE filename)
@@ -13,24 +13,24 @@ MACRO (WRITE_CONFIG_FILE filename)
   List(REMOVE_ITEM LD_LIBRARY_PATH ${CMAKE_BINARY_DIR}/lib)
 
   If (INSTALL_TRUE)
-    SET(_INSTALLDIR ${CMAKE_INSTALL_PREFIX})  
-    SET(_BINDIR ${CMAKE_INSTALL_PREFIX}/bin)  
-#    SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase)  
-    SET(FAIRLIBDIR ${CMAKE_INSTALL_PREFIX}/lib)  
-    SET(_LD_LIBRARY_PATH ${FAIRLIBDIR} ${LD_LIBRARY_PATH}) 
+    SET(_INSTALLDIR ${CMAKE_INSTALL_PREFIX})
+    SET(_BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
+#    SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase)
+    SET(FAIRLIBDIR ${CMAKE_INSTALL_PREFIX}/lib)
+    SET(_LD_LIBRARY_PATH ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
   Else (INSTALL_TRUE)
-    SET(_INSTALLDIR ${CMAKE_BINARY_DIR})  
-    SET(_BINDIR ${CMAKE_BINARY_DIR})  
-#    SET(VMCWORKDIR ${CMAKE_SOURCE_DIR})  
-    SET(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)  
-    SET(_LD_LIBRARY_PATH ${FAIRLIBDIR} ${LD_LIBRARY_PATH}) 
+    SET(_INSTALLDIR ${CMAKE_BINARY_DIR})
+    SET(_BINDIR ${CMAKE_BINARY_DIR})
+#    SET(VMCWORKDIR ${CMAKE_SOURCE_DIR})
+    SET(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)
+    SET(_LD_LIBRARY_PATH ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
   EndIf (INSTALL_TRUE)
 
   If(NOT DEFINED FULL_CONFIG_FILE)
     Set(FULL_CONFIG_FILE "true")
   EndIf(NOT DEFINED FULL_CONFIG_FILE)
 
-  
+
   IF(CMAKE_SYSTEM_NAME MATCHES Linux)
     IF(FAIRROOTPATH)
       configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system.sh.in
@@ -47,8 +47,8 @@ MACRO (WRITE_CONFIG_FILE filename)
                      ${CMAKE_CURRENT_BINARY_DIR}/check_system.csh
                     )
     ENDIF(FAIRROOTPATH)
-    
-    EXECUTE_PROCESS(COMMAND lsb_release -sd 
+
+    EXECUTE_PROCESS(COMMAND lsb_release -sd
                      OUTPUT_VARIABLE _linux_flavour
                      OUTPUT_STRIP_TRAILING_WHITESPACE
                     )
@@ -58,11 +58,11 @@ MACRO (WRITE_CONFIG_FILE filename)
       STRING(REGEX REPLACE "\"$" "" _linux_flavour ${_linux_flavour})
     ENDIF(_linux_flavour)
 
-    EXECUTE_PROCESS(COMMAND uname -m 
-                    OUTPUT_VARIABLE _system 
+    EXECUTE_PROCESS(COMMAND uname -m
+                    OUTPUT_VARIABLE _system
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                    )
-   
+
   ElseIf(CMAKE_SYSTEM_NAME MATCHES Darwin)
     IF(FAIRROOTPATH)
       configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/check_system_mac.sh.in
@@ -79,17 +79,17 @@ MACRO (WRITE_CONFIG_FILE filename)
                      ${CMAKE_CURRENT_BINARY_DIR}/check_system.csh
                     )
     ENDIF(FAIRROOTPATH)
-    EXECUTE_PROCESS(COMMAND uname -sr 
+    EXECUTE_PROCESS(COMMAND uname -sr
                     OUTPUT_VARIABLE _linux_flavour
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                    )
-    EXECUTE_PROCESS(COMMAND uname -m 
-                    OUTPUT_VARIABLE _system 
+    EXECUTE_PROCESS(COMMAND uname -m
+                    OUTPUT_VARIABLE _system
                     OUTPUT_STRIP_TRAILING_WHITESPACE
                    )
   ENDIF(CMAKE_SYSTEM_NAME MATCHES Linux)
 
-   
+
   CONVERT_LIST_TO_STRING(${GEANT4_LIBRARY_DIR})
   Set(GEANT4_LIBRARY_DIR ${output})
 
@@ -137,7 +137,7 @@ MACRO (WRITE_CONFIG_FILE filename)
 
   CONVERT_LIST_TO_STRING(${CLHEP_BASE_DIR})
   Set(CLHEP_BASE_DIR ${output})
-  
+
   CONVERT_LIST_TO_STRING(${PLUTO_LIBRARY_DIR})
   Set(PLUTO_LIBRARY_DIR ${output})
 
@@ -212,7 +212,7 @@ MACRO (WRITE_CONFIG_FILE filename)
     configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/config.csh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
-    ELSE(FAIRROOTPATH)    
+    ELSE(FAIRROOTPATH)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/config.csh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
@@ -224,7 +224,7 @@ MACRO (WRITE_CONFIG_FILE filename)
     configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/config.sh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
-    ELSE(FAIRROOTPATH) 
+    ELSE(FAIRROOTPATH)
     configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/config.sh.in
 	           ${CMAKE_CURRENT_BINARY_DIR}/${filename}
                   )
@@ -247,7 +247,7 @@ MACRO (CONVERT_LIST_TO_STRING)
 
   endforeach (_current ${ARGN})
   If(tmp)
-    STRING(REGEX REPLACE "^:(.*)" "\\1" output ${tmp}) 
+    STRING(REGEX REPLACE "^:(.*)" "\\1" output ${tmp})
   Else(tmp)
     Set(output "")
   EndIf(tmp)

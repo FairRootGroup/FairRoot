@@ -29,7 +29,7 @@ project(FAIRROOT VERSION ${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${F
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
+#set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
 
 if(APPLE)
   # Configure RPATH entries on macOS
@@ -152,12 +152,10 @@ if(SIMPATH)
 endif()
 
 # FairRoot only supports ROOT6, so check which version is available
-find_package2(PUBLIC ROOT  VERSION 6.10.00 QUIET REQUIRED)
-find_package2(PUBLIC FairLogger  VERSION 1.2.0 QUIET REQUIRED)
+find_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
+find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
 find_package2(PUBLIC Pythia6)
-
 find_package2(PUBLIC Pythia8)
-
 find_package2(PUBLIC Protobuf)
 find_package2(PUBLIC msgpack)
 find_package2(PUBLIC FlatBuffers)
@@ -225,7 +223,6 @@ if(FAIRROOT_MODULAR_BUILD)
     Message(STATUS "Looking for VGM... - found ${VGM_LIBRARY_DIR}")
   EndIf()
 else(FAIRROOT_MODULAR_BUILD)
-  # For old versions of VMC packages (to be removed)
   set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules_old" ${CMAKE_MODULE_PATH})
   find_package2(PUBLIC GEANT3)
   find_package2(PUBLIC GEANT4)
@@ -235,15 +232,22 @@ else(FAIRROOT_MODULAR_BUILD)
   find_package(CLHEP)
 endif(FAIRROOT_MODULAR_BUILD)
 
-find_package(CUDA)
-find_package(IWYU)
-if(NOT DISABLE_GO)
+#find_package(CUDA)
+find_package2( PUBLIC IWYU)
+
+if(WITH_GO_EXAMPLE)
   find_package2(PUBLIC Go VERSION 1.7)
+  if(Go_FOUND)
+    set(Go_VERSION "${GO_VERSION}")
+    set(Go_ROOT "${GO_EXECUTABLE}" )
+  endif()
 endif()
+
 find_package2(PUBLIC GSL)
 if(NOT DEFINED GTEST_ROOT)
   set(GTEST_ROOT ${SIMPATH})
 endif()
+
 find_package2(PUBLIC FairMQ VERSION 1.2.3)
 
 If(WITH_DBASE)
@@ -264,7 +268,7 @@ if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
   Set(Boost_NO_SYSTEM_PATHS TRUE)
 endif()
 Set(Boost_NO_BOOST_CMAKE TRUE)
-Message("-- Looking for Boost ...")
+#Message("-- Looking for Boost ...")
 # If an older version of boost is found both of the variables below are
 # cached and in a second cmake run, a good boost version is found even
 # if the version is to old.
@@ -440,21 +444,6 @@ Install(PROGRAMS ${CMAKE_BINARY_DIR}/fairroot-config
         DESTINATION bin
        )
 
-if(NOT FAIRROOT_MINIMAL)
-
-  WRITE_CONFIG_FILE(config.sh)
-  WRITE_CONFIG_FILE(config.csh)
-
-  SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples)
-  SET(ROOT_INCLUDE_PATH ${CMAKE_INSTALL_PREFIX}/include)
-  WRITE_CONFIG_FILE(config.sh_install)
-  WRITE_CONFIG_FILE(config.csh_install)
-
-else(NOT FAIRROOT_MINIMAL)
-  WRITE_MINIMAL_CONFIG_FILE(config.sh)
-endif(NOT FAIRROOT_MINIMAL)
-
-
 
 # Summary ######################################################################
 if(CMAKE_CXX_FLAGS)
@@ -554,7 +543,19 @@ else()
 endif()
 message(STATUS "  ${BWhite}Doxygen${CR}             ${doxygen_summary}")
 
+if(BUILD_UNITTESTS)
+  set(unittests_summary "${BGreen} YES${CR}    (disable with ${BMagenta}-DBUILD_UNITTESTS=OFF${CR})")
+else()
+  set(unittests_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DBUILD_UNITTESTS=ON${CR})")
+endif()
+message(STATUS "  ${BWhite}Unit-tests${CR}          ${unittests_summary}")
 
+if(WITH_GO_EXAMPLE)
+  set(Go_summary "${BGreen} YES${CR}    (disable with ${BMagenta}-DWITH_GO_EXAMPLE=OFF${CR})")
+else()
+   set(Go_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DWITH_GO_EXAMPLE=ON${CR})")
+endif()
+message(STATUS "  ${BWhite}Go-Example ${CR}         ${Go_summary}")
 
 
 message(STATUS "  ")

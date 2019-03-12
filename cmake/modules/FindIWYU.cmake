@@ -13,7 +13,7 @@
 #
 #  IWYU_FOUND - system has include-what-you-use
 
-Message(STATUS "Looking for IWYU...")
+#Message(STATUS "Looking for IWYU...")
 
 Find_File(IWYU_BINARY NAMES include-what-you-use PATHS ENV PATH)
 
@@ -23,6 +23,7 @@ If(IWYU_BINARY)
   Execute_Process(COMMAND ${IWYU_BINARY} --version
                   OUTPUT_VARIABLE IWYU_VERSION_STRING)
 EndIf(IWYU_BINARY)
+string(STRIP "${IWYU_VERSION_STRING}" IWYU_VERSION_STRING)
 
 #string(REPLACE "include" " " ${IWYU_VERSION_STRING} IWYU_VERSION_S)
 #MESSAGE(STATUS "Looking for IWYU... - found ${IWYU_VERSION_STRING}")

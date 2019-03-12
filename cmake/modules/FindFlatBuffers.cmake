@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-MESSAGE(STATUS "Looking for FlatBuffers...")
+#MESSAGE(STATUS "Looking for FlatBuffers...")
 
 find_path(FLATBUFFERS_INCLUDE_DIR NAMES flatbuffers/flatbuffers.h PATHS
   ${FLATBUFFERS_PATH}/include

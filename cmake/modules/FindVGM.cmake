@@ -14,7 +14,7 @@
 #  VGM_DEFINITIONS - Compiler switches required for using VGM
 
 
-MESSAGE(STATUS "Looking for VGM...")
+#MESSAGE(STATUS "Looking for VGM...")
 
 FIND_PATH(VGM_LIBRARY_DIR NAMES libBaseVGM.so libBaseVGM.dylib PATHS
   ${SIMPATH}/transport/vgm/lib/Linux-g++

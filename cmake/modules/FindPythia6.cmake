@@ -12,7 +12,7 @@
 #  Pythia6_LIBRARY_DIR - The libraries directory for Pythia6
 #
 
-MESSAGE(STATUS "Looking for Pythia6...")
+#MESSAGE(STATUS "Looking for Pythia6...")
 
 FIND_PATH(Pythia6_LIBRARY_DIR NAMES libPythia6.so libPythia6.dylib PATHS
   $ENV{PYTHIA6_ROOT}/lib

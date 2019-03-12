@@ -1,19 +1,19 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find GLPK instalation
 # Once done this will define
 #
 
-MESSAGE(STATUS "Looking for GLPK ...")
+#MESSAGE(STATUS "Looking for GLPK ...")
 
 FIND_PATH(GLPK_INCLUDE_DIR NAMES glpk.h PATHS
-  ${SIMPATH}/basics/glpk/include 
-  ${SIMPATH}/include 
+  ${SIMPATH}/basics/glpk/include
+  ${SIMPATH}/include
   NO_DEFAULT_PATH
 )
 
@@ -38,4 +38,3 @@ else (GLPK_FOUND)
     message(FATAL_ERROR "Looking for GLPK... - Not found")
   endif (GLPK_FOUND_REQUIRED)
 endif (GLPK_FOUND)
-
