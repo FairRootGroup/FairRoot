@@ -42,7 +42,7 @@
 #
 #   RLIBMAP_EXECUTABLE       The rlibmap executable.
 
-Message(STATUS "Looking for Root...")
+#Message(STATUS "Looking for Root...")
 
 Set(ROOT_FOUND FALSE)
 Set(ROOT_DEFINITIONS "")

@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Try to find HEPMC instalation
@@ -11,7 +11,7 @@
 
 
 
-MESSAGE(STATUS "Looking for HepMC ...")
+#MESSAGE(STATUS "Looking for HepMC ...")
 
 FIND_PATH(HEPMC_INCLUDE_DIR NAMES HepMC/HepMCDefs.h PATHS
   ${HEPMC_DIR}/include
@@ -41,4 +41,3 @@ else (HEPMC_FOUND)
     message(FATAL_ERROR "Looking for HepMC... - Not found")
   endif (HEPMC_FOUND_REQUIRED)
 endif (HEPMC_FOUND)
-

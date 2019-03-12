@@ -339,7 +339,6 @@ EndMacro (SetBasicVariables)
 ################################################################################
 macro(find_package2 qualifier pkgname)
   cmake_parse_arguments(ARGS "" "" "VERSION;COMPONENTS" ${ARGN})
-
   string(TOUPPER ${pkgname} pkgname_upper)
   set(old_CPP ${CMAKE_PREFIX_PATH})
   set(CMAKE_PREFIX_PATH ${${pkgname_upper}_ROOT} $ENV{${pkgname_upper}_ROOT} ${CMAKE_PREFIX_PATH})
@@ -361,7 +360,6 @@ macro(find_package2 qualifier pkgname)
   endif()
   set(CMAKE_PREFIX_PATH ${old_CPP})
   unset(old_CPP)
-
   if(${pkgname}_FOUND)
     if(${qualifier} STREQUAL PRIVATE)
       set(PROJECT_${pkgname}_VERSION ${__version__})

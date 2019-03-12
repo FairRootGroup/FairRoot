@@ -8,8 +8,8 @@
 # - Try to find GEANT4 data files
 #
 
-
-MESSAGE(STATUS "Looking for GEANT4 DATA files...")
+#
+#MESSAGE(STATUS "Looking for GEANT4 DATA files...")
 
 FIND_PATH(GEANT4_DATA NAMES $ENV{G4PIIDATA} G4PII G4PII1.3 PATHS
   ${SIMPATH}/share/Geant4/data

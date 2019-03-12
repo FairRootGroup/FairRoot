@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # - Tools for building CUDA C files: libraries and build dependencies.
@@ -299,7 +299,7 @@
 ###############################################################################
 
 # FindCUDA.cmake
-Message(STATUS "Looking for CUDA...")
+#Message(STATUS "Looking for CUDA...")
 # We need to have at least this version to support the VERSION_LESS argument to 'if' (2.6.2) and unset (2.6.3)
 cmake_policy(PUSH)
 cmake_minimum_required(VERSION 2.6.3)
@@ -804,7 +804,7 @@ If(CUDA_FOUND)
   Message(STATUS "CUDA  BLAS                          : ${CUDA_CUBLAS_LIBRARIES}")
   Message(STATUS "CUDA  RAND                          : ${CUDA_curand_LIBRARY}")
   Message(STATUS "CUDA  Performance Primitives library: ${CUDA_npp_LIBRARY}")
-  
+
 EndIf(CUDA_FOUND)
 
 ###############################################################################
@@ -1286,7 +1286,7 @@ macro(CUDA_WRAP_SRCS cuda_target format generated_files)
         endif()
       endif()
       # message("_cuda_generate_dependencies = ${_cuda_generate_dependencies}")
-      
+
       # If we needed to regenerate the dependency file, do so now.
       if (_cuda_generate_dependencies)
 
@@ -1337,7 +1337,7 @@ macro(CUDA_WRAP_SRCS cuda_target format generated_files)
             # Try and reload the dependies
             cuda_include_nvcc_dependencies(${cmake_dependency_file})
           endif()
-        endif()          
+        endif()
       endif()
 
       # Build the generated file and dependency file ##########################

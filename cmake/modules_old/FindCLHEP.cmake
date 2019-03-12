@@ -20,7 +20,7 @@ if (CLHEP_INCLUDE_DIR AND CLHEP_LIBRARY_DIR)
   SET (CLHEP_PLISTS_LIB_DIR CLHEP_PLISTS_LIB_DIR-NOTFOUND)
 endif (CLHEP_INCLUDE_DIR AND CLHEP_LIBRARY_DIR)
 
-MESSAGE(STATUS "Looking for CLHEP...")
+#MESSAGE(STATUS "Looking for CLHEP...")
 
 # If we find the new clhep-config executable use it, otherwise search in the path
 Find_Program(CLHEP_CONFIG_EXE NAMES clhep-config PATHS
