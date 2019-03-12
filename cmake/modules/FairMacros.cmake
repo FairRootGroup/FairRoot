@@ -401,3 +401,20 @@ function(pad str width char out)
   set(${out} ${str} PARENT_SCOPE)
 endfunction()
 ################################################################################
+function(generate_package_components)
+  join("${PROJECT_PACKAGE_COMPONENTS}" " " COMPS)
+  set(PACKAGE_COMPONENTS "\
+####### Expanded from @PACKAGE_COMPONENTS@ by configure_package_config_file() #########
+set(${PROJECT_NAME}_PACKAGE_COMPONENTS ${COMPS})
+")
+  foreach(comp IN LISTS PROJECT_PACKAGE_COMPONENTS)
+    string(CONCAT PACKAGE_COMPONENTS ${PACKAGE_COMPONENTS} "\
+set(${PROJECT_NAME}_${comp}_FOUND TRUE)
+")
+  endforeach()
+  string(CONCAT PACKAGE_COMPONENTS ${PACKAGE_COMPONENTS} "\
+check_required_components(${PROJECT_NAME})
+")
+set(PACKAGE_COMPONENTS ${PACKAGE_COMPONENTS} PARENT_SCOPE)
+endfunction()
+################################################################################
