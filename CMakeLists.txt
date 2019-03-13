@@ -19,7 +19,7 @@ set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
 SET(FAIRROOT_MINOR_VERSION 0)
-SET(FAIRROOT_PATCH_VERSION 3)
+SET(FAIRROOT_PATCH_VERSION 7)
 
 # Set name of our project to "FAIRROOT".
 # Has to be done after check of cmake version
@@ -443,7 +443,7 @@ Install(PROGRAMS ${CMAKE_BINARY_DIR}/fairroot-config
        )
 
 
-WRITE_CONFIG_FILE(config.sh)		 
+WRITE_CONFIG_FILE(config.sh)
 WRITE_CONFIG_FILE(config.csh)
 SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples)
 SET(ROOT_INCLUDE_PATH ${CMAKE_INSTALL_PREFIX}/include)
