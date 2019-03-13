@@ -207,7 +207,7 @@ if (CMAKE_SYSTEM_NAME MATCHES Darwin)
       Execute_Process(COMMAND gfortran -print-file-name=libgfortran.dylib
                       OUTPUT_VARIABLE FORTRAN_LIBDIR
                      )
-      Get_Filename_Component(--FORTRAN_LIBDIR ${FORTRAN_LIBDIR}
+      Get_Filename_Component(FORTRAN_LIBDIR ${FORTRAN_LIBDIR}
                              PATH
                             )
       Message("-- Fortran libraries found in ${FORTRAN_LIBDIR}")
