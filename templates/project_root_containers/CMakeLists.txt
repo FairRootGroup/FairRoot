@@ -93,7 +93,7 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # mandatory
 
 
-ind_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
+find_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
 find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
 find_package2(PUBLIC Pythia6)
 find_package2(PUBLIC Pythia8)
