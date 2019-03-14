@@ -115,7 +115,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title,
    fMC(NULL),
    fRun(NULL),
    fSaveCurrentEvent(kTRUE),
-   fState(kUnknown),
+   fState(FairMCApplicationState::kUnknownState),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -206,7 +206,7 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
    fMC(NULL),
    fRun(NULL),
    fSaveCurrentEvent(kTRUE),
-   fState(kUnknown),
+   fState(FairMCApplicationState::kUnknownState),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -299,7 +299,7 @@ FairMCApplication::FairMCApplication()
    fMC(NULL),
    fRun(NULL),
    fSaveCurrentEvent(kTRUE),
-   fState(kUnknown),
+   fState(FairMCApplicationState::kUnknownState),
    fRunInfo(),
    fGeometryIsInitialized(kFALSE)
 {
@@ -934,7 +934,7 @@ void FairMCApplication::ConstructGeometry()
     LOG(fatal) << "gGeoManager not initialized at FairMCApplication::ConstructGeometry\n";
   }
 
-  fState = kConstructGeometry;
+  fState = FairMCApplicationState::kConstructGeometry;
 
   fModIter->Reset();
   FairModule* Mod=NULL;
@@ -1003,7 +1003,7 @@ void FairMCApplication::ConstructGeometry()
 
   gGeoManager->RefreshPhysicalNodes(kFALSE);
 
-  fState = kUnknown;
+  fState = FairMCApplicationState::kUnknownState;
 }
 
 // ____________________________________________________________________________
@@ -1016,7 +1016,7 @@ Bool_t FairMCApplication::MisalignGeometry()
 //_____________________________________________________________________________
 void FairMCApplication::InitGeometry()
 {
-  fState = kInitGeometry;
+  fState = FairMCApplicationState::kInitGeometry;
 
   LOG(info) << "FairMCApplication::InitGeometry: "
     << fRootManager->GetInstanceId();
@@ -1156,7 +1156,7 @@ void FairMCApplication::InitGeometry()
 
   fGeometryIsInitialized=kTRUE;
 
-  fState = kUnknown;
+  fState = FairMCApplicationState::kUnknownState;
 }
 
 //_____________________________________________________________________________
