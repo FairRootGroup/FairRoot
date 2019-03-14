@@ -1,34 +1,19 @@
 # The name of our project is “MYPROJ”.  CMakeLists files in this project can
-# refer to the root source directory of the project as ${MYPROJ_SOURCE_DIR} 
-# or as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as 
+# refer to the root source directory of the project as ${MYPROJ_SOURCE_DIR}
+# or as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as
 # ${MYPROJ_BINARY_DIR} or ${CMAKE_BINARY_DIR}.
-# This difference is important for the base classes which are in FAIRROOT 
+# This difference is important for the base classes which are in FAIRROOT
 # and the experiment part.
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.7.2 FATAL_ERROR)
-
-### CMP0025   Compiler id for Apple Clang is now AppleClang.
-### CMP0042   MACOSX_RPATH is enabled by default.
-
-foreach(p
-  CMP0025 # CMake 3.0
-  CMP0028 # double colon for imported and alias targets
-  CMP0042 # CMake 3.0
-  CMP0054 # Only interpret ``if()`` arguments as variables or keywords when unquoted.
-  )
-  if(POLICY ${p})
-  cmake_policy(SET ${p} NEW)
-  endif()
-endforeach()
-
+CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
 
 
 # Set name of our project to “MYPROJ". Has to be done
-# after check of cmake version since this is a new feature                  
+# after check of cmake version since this is a new feature
 project(MYPROJ)
 
-#In case you need Fortran 
+#In case you need Fortran
 #ENABLE_LANGUAGE(Fortran)
 
 # Check for needed environment variables
@@ -37,15 +22,15 @@ IF(NOT DEFINED ENV{FAIRROOTPATH})
 ENDIF(NOT DEFINED ENV{FAIRROOTPATH})
 
 IF(NOT DEFINED ENV{SIMPATH})
-   MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.") 
+   MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
 ENDIF(NOT DEFINED ENV{SIMPATH})
 
 SET(SIMPATH $ENV{SIMPATH})
 SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
 
-# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ 
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
- set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
+  set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
   set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"  ${CMAKE_MODULE_PATH})
   set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
 
@@ -59,6 +44,8 @@ include(WriteConfigFile)
 include(CTest)
 include(CheckCompiler)
 #include(CheckFortran)
+
+set_fairroot_cmake_policies()
 
 #Check the compiler and set the compile and link flags
 If(NOT CMAKE_BUILD_TYPE)
@@ -94,7 +81,7 @@ CHECK_OUT_OF_SOURCE_BUILD()
 # message
 IF(NOT UNIX)
   MESSAGE(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
-ENDIF(NOT UNIX)  
+ENDIF(NOT UNIX)
 
 # Check if the external packages are installed into a separate install
 # directory
@@ -105,16 +92,20 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
-find_package(ROOT 5.32.00 REQUIRED)
-find_package(Pythia8)
-find_package(Pythia6 REQUIRED)
-find_package(Geant3 REQUIRED)
-find_package(Geant4)
-find_package(GEANT4)
-find_package(GEANT4DATA)
-find_package(GEANT4VMC)
-#find_package(CLHEP)
+
+ind_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
+find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
+find_package2(PUBLIC Pythia6)
+find_package2(PUBLIC Pythia8)
+find_package2(PUBLIC GEANT3)
+find_package2(PUBLIC GEANT4)
+find_package2(PUBLIC GEANT4DATA)
+Find_Package2(PUBLIC VGM)
+find_package2(PUBLIC GEANT4VMC)
+find_package(CLHEP)
 find_package(HEPMC)
+
+
 
 Set(Boost_NO_SYSTEM_PATHS TRUE)
 Set(Boost_NO_BOOST_CMAKE TRUE)
@@ -125,15 +116,15 @@ Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
   set(BOOST_ROOT ${SIMPATH}/basics/boost)
   set(GSL_DIR ${SIMPATH}/basics/gsl)
 EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-Message("-- Looking for Boost ...")
-# If an older version of boost is found both of the variables below are
-# cached and in a second cmake run, a good boost version is found even 
-# if the version is to old. 
-# To overcome this problem both variables are cleared before checking
-# for boost.
+
 Unset(Boost_INCLUDE_DIR CACHE)
 Unset(Boost_LIBRARY_DIRS CACHE)
-find_package(Boost 1.41)
+
+find_package2(PUBLIC Boost
+  VERSION 1.67 ${FairMQ_Boost_VERSION}
+  COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time signals ${FairMQ_Boost_COMPONENTS}
+)
+
 If (Boost_FOUND)
   Set(Boost_Avail 1)
 Else (Boost_FOUND)
@@ -189,11 +180,36 @@ add_subdirectory (MyProjData)
 add_subdirectory (MyProjGenerators)
 add_subdirectory (NewDetector)
 add_subdirectory (passive)
-add_subdirectory (field)  
+add_subdirectory (field)
 
 WRITE_CONFIG_FILE(config.sh)
- 
-configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake 
+
+configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
               )
+# Summary ######################################################################
+if(CMAKE_CXX_FLAGS)
+  message(STATUS "  ")
+  message(STATUS "  ${Cyan}GLOBAL CXX FLAGS${CR}  ${BGreen}${CMAKE_CXX_FLAGS}${CR}")
+endif()
+if(CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "  ")
+  message(STATUS "  ${Cyan}BUILD TYPE         CXX FLAGS${CR}")
+  string(TOUPPER "${CMAKE_BUILD_TYPE}" selected_type)
+  foreach(type IN LISTS CMAKE_CONFIGURATION_TYPES)
+   string(TOUPPER "${type}" type_upper)
+   if(type_upper STREQUAL selected_type)
+     pad("${type}" 18 " " type_padded)
+     message(STATUS "${BGreen}* ${type_padded}${CMAKE_CXX_FLAGS_${type_upper}}${CR}")
+   else()
+     pad("${type}" 18 " " type_padded)
+     message(STATUS "  ${BWhite}${type_padded}${CR}${CMAKE_CXX_FLAGS_${type_upper}}")
+   endif()
+   unset(type_padded)
+   unset(type_upper)
+ endforeach()
+message(STATUS "  ")
+message(STATUS "  (Change the build type with ${BMagenta}-DCMAKE_BUILD_TYPE=...${CR})")
+endif()
 
+   ################################################################################
