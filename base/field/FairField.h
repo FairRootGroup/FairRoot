@@ -23,7 +23,7 @@
  ** Concrete field should implement the pure virtual methods
  ** GetBx, GetBy and GetBz and/or  GetBxyz
  **
- ** Note: Field values should be returned in kG (thanks to GEANT3)
+ ** Note: Field values should be returned in kG (thanks to Geant3)
  **/
 
 #ifndef FAIRFIELD_H
@@ -91,7 +91,7 @@ class FairField : public TVirtualMagField
     virtual Double_t GetBz(Double_t, Double_t, Double_t) {LOG(warn)<<"FairField::GetBz Should be implemented in User class"; return 0;}
 
 
-    /** Get magnetic field. For use of GEANT3
+    /** Get magnetic field. For use of Geant3
      ** @param point            Coordinates [cm]
      ** @param bField (return)  Field components [kG]
      **/

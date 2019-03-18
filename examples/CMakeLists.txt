@@ -6,7 +6,7 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-If(GEANT3_FOUND)
+If(Geant3_FOUND)
   add_subdirectory(common/passive)
   add_subdirectory(common/mcstack)
 

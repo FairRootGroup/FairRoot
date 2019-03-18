@@ -51,6 +51,7 @@ FairBoxGenerator::FairBoxGenerator() :
 
 // ------------------------------------------------------------------------
 FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
+  FairGenerator(),
   fPDGType(pdgid),fMult(mult),fPDGMass(0),fPtMin(0),fPtMax(0),
   fPhiMin(0),fPhiMax(0),fEtaMin(0),fEtaMax(0),fYMin(0),fYMax(0),
   fPMin(0),fPMax(0),fThetaMin(0),fThetaMax(0),fX(0),fY(0),fZ(0),
