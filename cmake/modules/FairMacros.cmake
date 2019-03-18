@@ -37,6 +37,7 @@ MACRO(set_fairroot_cmake_policies)
       CMP0042 # MACOSX_RPATH is enabled by default.
       CMP0048 # The ``project()`` command manages VERSION variables.
       CMP0054 # Only interpret ``if()`` arguments as variables or keywords when unquoted.
+      CMP0074 # searches prefixes specified by the <PackageName>_ROOT
     )
       if(POLICY ${policy})
         cmake_policy(SET ${policy} NEW)
@@ -341,7 +342,7 @@ macro(find_package2 qualifier pkgname)
   cmake_parse_arguments(ARGS "" "" "VERSION;COMPONENTS" ${ARGN})
   string(TOUPPER ${pkgname} pkgname_upper)
   set(old_CPP ${CMAKE_PREFIX_PATH})
-  set(CMAKE_PREFIX_PATH ${${pkgname_upper}_ROOT} $ENV{${pkgname_upper}_ROOT} ${CMAKE_PREFIX_PATH})
+  set(CMAKE_PREFIX_PATH ${${pkgname_upper}_ROOT} $ENV{${pkgname}_ROOT} ${CMAKE_PREFIX_PATH})
   unset(__version__)
   if(ARGS_VERSION)
     list(GET ARGS_VERSION 0 __version__)
