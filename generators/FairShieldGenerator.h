@@ -21,7 +21,7 @@
  ** event nr.; number of particles; beam momentum; impact parameter
  ** followed by a line for each particle of the format
  ** PID; A; Z; px; py; pz
- ** The PID must be given as for GEANT3. For ions, it is 1000. The total
+ ** The PID must be given as for Geant3. For ions, it is 1000. The total
  ** momentum is required, not momentum per nucleon.
 **/
 

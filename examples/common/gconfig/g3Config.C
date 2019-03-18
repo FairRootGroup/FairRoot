@@ -31,7 +31,7 @@ void Config()
   st->StoreSecondaries(kTRUE);
   geant3->SetStack( st ) ;
 
-  // ******* GEANT3  specific configuration for simulated Runs  *******
+  // ******* Geant3  specific configuration for simulated Runs  *******
     geant3->SetTRIG(1);         //Number of events to be processed
     geant3->SetSWIT(4, 100);
     geant3->SetDEBU(0, 0, 1);

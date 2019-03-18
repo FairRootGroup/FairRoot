@@ -20,7 +20,7 @@
  where NTRACKS is the number of tracks in the event, IEV the event number,
  and VX, VY, VZ the event vertex coordinates in cm. The header line is
  followed by NTRACKS lines of the format G3PID, PX, PY, PZ, where
- G3PID is the GEANT3 particle code, and PX, PY, PZ the cartesian
+ G3PID is the Geant3 particle code, and PX, PY, PZ the cartesian
  momentum coordinates in GeV.
  Derived from FairGenerator.
 **/
