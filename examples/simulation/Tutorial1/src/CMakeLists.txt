@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # Create a library called "libTutorial1" which includes the source files given in
@@ -25,7 +25,7 @@ Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
   ${SIMPATH}/lib
-) 
+)
 
 Link_Directories(${LINK_DIRECTORIES})
 
@@ -67,7 +67,6 @@ ForEach(_file RANGE 0 ${_length})
   List(GET Exe_Source ${_file} _src)
   Set(EXE_NAME ${_name})
   Set(SRCS ${_src})
-  Set(DEPENDENCIES Tutorial1 Passive Gen ${FairLogger_LIBRARIES})
+  Set(DEPENDENCIES Tutorial1 Passive ${FairLogger_LIBRARIES})
   GENERATE_EXECUTABLE()
 EndForEach(_file RANGE 0 ${_length})
-
