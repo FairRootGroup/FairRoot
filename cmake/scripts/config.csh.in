@@ -3,7 +3,7 @@
 setenv Linux_Flavour_ "@_linux_flavour@"
 setenv System_ "@_system@"
 . @_BINDIR@/check_system.csh
-if ( "$same_system" == "1" ) then 
+if ( "$same_system" == "1" ) then
 	setenv SIMPATH "@SIMPATH@"
 	setenv ROOTSYS "@ROOTSYS@"
 	setenv FAIRROOTPATH "@FAIRROOTPATH@"
@@ -13,16 +13,10 @@ if ( "$same_system" == "1" ) then
 		setenv GEANT4VMC_INCLUDE_DIR "@GEANT4VMC_INCLUDE_DIR@"
 		setenv GEANT4VMC_LIBRARY_DIR "@GEANT4VMC_LIBRARY_DIR@"
 		setenv GEANT4VMC_MACRO_DIR "@GEANT4VMC_MACRO_DIR@"
-		setenv CLHEP_INCLUDE_DIR "@CLHEP_INCLUDE_DIR@"
-		setenv CLHEP_LIBRARY_DIR "@CLHEP_LIBRARY_DIR@"
-		setenv CLHEP_BASE_DIR "@CLHEP_BASE_DIR@"
 		setenv PLUTO_LIBRARY_DIR "@PLUTO_LIBRARY_DIR@"
 		setenv PLUTO_INCLUDE_DIR "@PLUTO_INCLUDE_DIR@"
 		setenv PYTHIA6_LIBRARY_DIR "@PYTHIA6_LIBRARY_DIR@"
-		setenv G3SYS "@G3SYS@"
 		setenv Geant3_INCLUDE_DIRS "@Geant3_INCLUDE_DIRS@"
-		setenv Geant3_LIBRARY_DIR "@Geant3_LIBRARY_DIR@"
-		setenv Geant3_LIBRARIES "@Geant3_LIBRARIES@"
 		setenv USE_VGM "1"
 		setenv PYTHIA8DATA "@PYTHIA8DATA@"
 		setenv CLASSPATH "@MY_CLASSPATH@"
