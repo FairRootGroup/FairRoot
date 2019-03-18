@@ -102,7 +102,6 @@ find_package2(PUBLIC GEANT4)
 find_package2(PUBLIC GEANT4DATA)
 Find_Package2(PUBLIC VGM)
 find_package2(PUBLIC GEANT4VMC)
-find_package(CLHEP)
 find_package(HEPMC)
 
 

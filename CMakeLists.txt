@@ -231,7 +231,6 @@ else(FAIRROOT_MODULAR_BUILD)
   find_package2(PUBLIC GEANT4DATA)
   Find_Package2(PUBLIC VGM)
   find_package2(PUBLIC GEANT4VMC)
-  find_package(CLHEP)
 endif(FAIRROOT_MODULAR_BUILD)
 
 #find_package(CUDA)
