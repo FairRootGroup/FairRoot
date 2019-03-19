@@ -30,7 +30,7 @@ Set(SYSTEM_INCLUDE_DIRECTORIES
   ${ROOT_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
   ${Geant4_INCLUDE_DIRS}
-  ${GEANT4VMC_INCLUDE_DIR}
+  ${Geant4VMC_INCLUDE_DIRS}
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})
@@ -55,7 +55,7 @@ set(SRCS
 Set(DEPENDENCIES
       ParBase GeoBase FairTools
       Proof GeomPainter Geom VMC EG MathCore Physics
-      Matrix Tree Hist RIO RHTTP Core geant4vmc G4processes
+      Matrix Tree Hist RIO RHTTP Core Geant4VMC G4processes
 )
 
 Set(LINKDEF FastSimLinkDef.h)

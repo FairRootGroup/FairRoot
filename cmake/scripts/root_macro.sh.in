@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This macro is needed to start the Root macros used for automatic testing
-# from inside CMake using the add_test functionality. Since the tests 
+# from inside CMake using the add_test functionality. Since the tests
 # starts with a fresh environment on has to set first the correct environment
 # needed to run FairRoot.
 # Also parameters defined in add_test will be converted in the correct format
@@ -16,34 +16,25 @@ export ROOTEXE=@ROOT_INSTALL_DIR@/bin/root.exe
 export ROOT_INCLUDE_PATH=@Geant3_INCLUDE_DIRS@:@MY_ROOT_INCLUDE_PATH@
 export FAIRROOTPATH="@FAIRROOTPATH@"
 export VMCWORKDIR=@VMCWORKDIR@
-export GEANT4VMC_MACRO_DIR=@GEANT4VMC_MACRO_DIR@
+export Geant4VMC_MACRO_DIR=@Geant4VMC_MACRO_DIR@
 export USE_VGM=1
 export BOOST=@Boost_Avail@
-export G4LEDATA="@G4LEDATA@"
-export G4LEVELGAMMADATA="@G4LEVELGAMMADATA@"
-export G4NeutronHPCrossSections="@G4NeutronHPCrossSections@"
-export G4NEUTRONHPDATA="@G4NeutronHPCrossSections@"
-export G4NEUTRONXSDATA="@G4NEUTRONXSDATA@"
-export G4PIIDATA="@G4PIIDATA@"
-export G4RADIOACTIVEDATA="@G4RADIOACTIVEDATA@"
-export G4REALSURFACEDATA="@G4REALSURFACEDATA@"
-export G4SAIDXSDATA="@G4SAIDXSDATA@"
-export G4ENSDFSTATEDATA="@G4ENSDFSTATEDATA@"
+@Geant4Data_Variables@
 export G3SYS="@Geant3_SYSTEM_DIR@"
 export PYTHIA8DATA="@PYTHIA8DATA@"
 if [ -e @Geant4_DIR@/env.sh ]; then
   . @Geant4_DIR@/env.sh
 fi
 
-# Concatenate all parameters given on the command line to one 
-# comma separated string 
+# Concatenate all parameters given on the command line to one
+# comma separated string
 parameters=""
-for i in $*; do 
+for i in $*; do
   if [ -z $parameters ]; then
     parameters=$i
   else
     parameters=$(echo "$parameters,$i")
-  fi 
+  fi
 done
 
 cd @new_path@
