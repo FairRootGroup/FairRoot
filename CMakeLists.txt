@@ -199,19 +199,18 @@ if(FAIRROOT_MODULAR_BUILD)
   EndIf()
   # Checking for Genat4VMC has to be done in a better way.
   # In the moment the Geant4VMC version is hardcoded
-  Message(STATUS "Looking for GEANT4VMC...")
+  Message(STATUS "Looking for Geant4VMC...")
   Find_Package2(PUBLIC Geant4VMC)
   If(Geant4VMC_DIR)
-    Set(GEANT4VMC_INCLUDE_DIR ${Geant4VMC_INCLUDE_DIRS})
-    Set(GEANT4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/..")
-    Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${GEANT4VMC_LIBRARY_DIR})
-    Set(GEANT4VMC_SHARE_DIR "${Geant4VMC_DIR}/../../share")
-    Find_Path(GEANT4VMC_MACRO_DIR NAMES g4libs.C PATHS
-       ${GEANT4VMC_SHARE_DIR}/Geant4VMC-${Geant4VMC_VERSION}/examples/macro
+    Set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/..")
+    Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Geant4VMC_LIBRARY_DIR})
+    Set(Geant4VMC_SHARE_DIR "${Geant4VMC_DIR}/../../share")
+    Find_Path(Geant4VMC_MACRO_DIR NAMES g4libs.C PATHS
+       ${Geant4VMC_SHARE_DIR}/Geant4VMC-${Geant4VMC_VERSION}/examples/macro
        NO_DEFAULT_PATH
     )
-    Set(GEANT4VMC_FOUND TRUE)
-  #  Message(STATUS "Looking for GEANT4VMC... - found ${GEANT4VMC_LIBRARY_DIR}")
+    Set(Geant4VMC_FOUND TRUE)
+  #  Message(STATUS "Looking for Geant4VMC... - found ${Geant4VMC_LIBRARY_DIR}")
   EndIf()
 
   Find_Package2(PUBLIC VGM)
@@ -228,10 +227,8 @@ else(FAIRROOT_MODULAR_BUILD)
   set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules_old" ${CMAKE_MODULE_PATH})
   find_package2(PUBLIC Geant3)
   find_package2(PUBLIC Geant4)
-  Message(STATUS " Found Geant4 ------- ${Geant4_VERSION} --------")
-  find_package2(PUBLIC GEANT4DATA)
   Find_Package2(PUBLIC VGM)
-  find_package2(PUBLIC GEANT4VMC)
+  find_package2(PUBLIC Geant4VMC)
 endif(FAIRROOT_MODULAR_BUILD)
 
 #find_package(CUDA)

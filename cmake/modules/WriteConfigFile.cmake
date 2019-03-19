@@ -93,47 +93,26 @@ MACRO (WRITE_CONFIG_FILE filename)
   CONVERT_LIST_TO_STRING(${Geant4_INCLUDE_DIRS})
   Set(Geant4_INCLUDE_DIRS ${output})
 
-  CONVERT_LIST_TO_STRING(${GEANT4VMC_INCLUDE_DIR})
-  Set(GEANT4VMC_INCLUDE_DIR ${output})
+  CONVERT_LIST_TO_STRING(${Geant4VMC_INCLUDE_DIRS})
+  Set(Geant4VMC_INCLUDE_DIRS ${output})
 
-  CONVERT_LIST_TO_STRING(${GEANT4VMC_LIBRARY_DIR})
-  Set(GEANT4VMC_LIBRARY_DIR ${output})
+  CONVERT_LIST_TO_STRING(${Geant4VMC_CMAKE_INSTALL_LIBDIR})
+  Set(Geant4VMC_LIBRARY_DIR ${output})
 
-  CONVERT_LIST_TO_STRING(${GEANT4VMC_MACRO_DIR})
-  Set(GEANT4VMC_MACRO_DIR ${output})
+  CONVERT_LIST_TO_STRING(${Geant4VMC_MACRO_DIR})
+  Set(Geant4VMC_MACRO_DIR ${output})
 
-  CONVERT_LIST_TO_STRING(${G4LEDATA})
-  Set(G4LEDATA ${output})
-
-  CONVERT_LIST_TO_STRING(${G4LEVELGAMMADATA})
-  Set(G4LEVELGAMMADATA ${output})
-
-  CONVERT_LIST_TO_STRING(${G4PIIDATA})
-  Set(G4PIIDATA ${output})
-
-  CONVERT_LIST_TO_STRING(${G4NeutronHPCrossSections})
-  Set(G4NeutronHPCrossSections ${output})
-
-  CONVERT_LIST_TO_STRING(${G4NEUTRONHPDATA})
-  Set(G4NEUTRONHPDATA ${output})
-
-  CONVERT_LIST_TO_STRING(${G4NEUTRONXSDATA})
-  Set(G4NEUTRONXSDATA ${output})
-
-  CONVERT_LIST_TO_STRING(${G4RADIOACTIVEDATA})
-  Set(G4RADIOACTIVEDATA ${output})
-
-  CONVERT_LIST_TO_STRING(${G4REALSURFACEDATA})
-  Set(G4REALSURFACEDATA ${output})
-
-  CONVERT_LIST_TO_STRING(${CLHEP_INCLUDE_DIR})
-  Set(CLHEP_INCLUDE_DIR ${output})
-
-  CONVERT_LIST_TO_STRING(${CLHEP_LIBRARY_DIR})
-  Set(CLHEP_LIBRARY_DIR ${output})
-
-  CONVERT_LIST_TO_STRING(${CLHEP_BASE_DIR})
-  Set(CLHEP_BASE_DIR ${output})
+  set(Geant4Data_Variables "\
+  ####################### Create the data set variables for Geant4 #############
+  ")
+  foreach(DATASET  ${Geant4_DATASETS})
+        string(CONCAT Geant4Data_Variables ${Geant4Data_Variables} "\
+  export ${Geant4_DATASET_${DATASET}_ENVVAR}=${Geant4_DATASET_${DATASET}_PATH}
+  ")
+  endforeach()
+  string(CONCAT Geant4Data_Variables ${Geant4Data_Variables} "\
+  ##############################################################################
+  ")
 
   CONVERT_LIST_TO_STRING(${PLUTO_LIBRARY_DIR})
   Set(PLUTO_LIBRARY_DIR ${output})

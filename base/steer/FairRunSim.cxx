@@ -299,7 +299,7 @@ void FairRunSim::SetMCConfig()
   TString work_config=work+"/gconfig/";
   work_config.ReplaceAll("//","/");
 
-  TString Lib_config= getenv("GEANT4VMC_MACRO_DIR");
+  TString Lib_config= getenv("Geant4VMC_MACRO_DIR");
   Lib_config.ReplaceAll("//","/");
   if (!Lib_config.EndsWith("/") && !Lib_config.IsNull()) { Lib_config+="/"; }
 
