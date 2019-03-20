@@ -69,6 +69,7 @@ SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 # any of the features of the new standard
 Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
 include(CheckCXX11Features)
+include(CheckSymbolExists)
 
 # FairRoot only uses C++11 or later, so we need an compiler which supports C++11
 # Check if the used compiler support C++11. If not stop with an error message
