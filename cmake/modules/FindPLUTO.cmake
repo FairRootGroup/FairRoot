@@ -8,8 +8,8 @@
 # - Try to find PLUTO instalation
 # Once done this will define
 #
-#  PLUTO_FOUND - system has Geant3
-#  PLUTO_INCLUDE_DIR - the Geant3 include directory
+#  PLUTO_FOUND - system has PLUTO
+#  PLUTO_INCLUDE_DIR - the PLUTO include directory
 #  PLUTO_LIBRARIES - The libraries needed to use Geant3
 #  PLUTO_DEFINITIONS - Compiler switches required for using Geant3
 #
