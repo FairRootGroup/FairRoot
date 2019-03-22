@@ -2,7 +2,7 @@
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
  #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # Create a library called "libFairFastSim" which includes the source files given in
@@ -55,7 +55,7 @@ set(SRCS
 Set(DEPENDENCIES
       ParBase GeoBase FairTools
       Proof GeomPainter Geom VMC EG MathCore Physics
-      Matrix Tree Hist RIO RHTTP Core Geant4VMC G4processes
+      Matrix Tree Hist RIO RHTTP Core geant4vmc G4processes
 )
 
 Set(LINKDEF FastSimLinkDef.h)
