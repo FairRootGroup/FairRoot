@@ -30,7 +30,7 @@ FairGenericVMCConfig::~FairGenericVMCConfig()
 void FairGenericVMCConfig::Setup(const char* mcEngine)
 {
     LOG(warning) << "FairGenericVMCConfig::Setup() Using gConfig.C macro DEPRACATED.";
-    LOG(warning) << "Check FairRoot/examples/common/gconfig/ for correct implementation.";
+    LOG(warning) << "Check FairRoot/examples/common/gconfig/ for current YAML implementation.";
 
     TString lUserCuts   = FairRunSim::Instance()->GetUserCuts();
     TString lUserConfig = FairRunSim::Instance()->GetUserConfig();
