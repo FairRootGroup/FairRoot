@@ -16,6 +16,8 @@ if [ $same_system -eq 1 ]; then
 		export PLUTO_INCLUDE_DIR="@PLUTO_INCLUDE_DIR@"
 		export PYTHIA6_LIBRARY_DIR="@PYTHIA6_LIBRARY_DIR@"
 		export Geant3_INCLUDE_DIRS="@Geant3_INCLUDE_DIRS@"
+		export G3SYS="@G3SYS@"
+		export Geant3_LIBRARY_DIR="@Geant3_LIBRARY_DIR@"
 		export USE_VGM="1"
 		export PYTHIA8DATA="@PYTHIA8DATA@"
 		export CLASSPATH="@MY_CLASSPATH@"

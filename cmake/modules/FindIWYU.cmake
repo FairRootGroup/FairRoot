@@ -13,23 +13,25 @@
 #
 #  IWYU_FOUND - system has include-what-you-use
 
-#Message(STATUS "Looking for IWYU...")
 
 Find_File(IWYU_BINARY NAMES include-what-you-use PATHS ENV PATH)
 
 
 If(IWYU_BINARY)
   Set(IWYU_FOUND TRUE)
-  Execute_Process(COMMAND ${IWYU_BINARY} --version
-                  OUTPUT_VARIABLE IWYU_VERSION_STRING)
+  Execute_Process(COMMAND ${IWYU_BINARY} --version OUTPUT_VARIABLE IWYU_VERSION_STRING)
+  string(REPLACE "include-what-you-use" " " IWYU_ROOT ${IWYU_BINARY} )
 EndIf(IWYU_BINARY)
+
+MESSAGE(STATUS "Found IWYU in ${IWYU_ROOT}")
+MESSAGE(STATUS "Found IWYU in ${IWYU_BINARY}")
+
 string(STRIP "${IWYU_VERSION_STRING}" IWYU_VERSION_STRING)
+string(REPLACE "include-what-you-use" " " IWYU_VERSION_S ${IWYU_VERSION_STRING} )
+string(REPLACE "based on clang version 3.6.0 (tags/RELEASE_360/final)"  " " IWYU_VERSION_S1 ${IWYU_VERSION_S} )
+string(STRIP "${IWYU_VERSION_S1}" IWYU_VERSION_S1)
 
-#string(REPLACE "include" " " ${IWYU_VERSION_STRING} IWYU_VERSION_S)
-#MESSAGE(STATUS "Looking for IWYU... - found ${IWYU_VERSION_STRING}")
-#MESSAGE(STATUS "Looking for IWYU... - found ${IWYU_VERSION_S}")
-
-Set(IWYU_VERSION ${IWYU_VERSION_STRING})
+Set(IWYU_VERSION ${IWYU_VERSION_S1})
 
 If (IWYU_FOUND)
   If (NOT IWYU_FIND_QUIETLY)
