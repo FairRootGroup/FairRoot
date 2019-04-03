@@ -177,7 +177,6 @@ if(FAIRROOT_MODULAR_BUILD)
               NO_DEFAULT_PATH
              )
     Set(Geant3_FOUND TRUE)
-    Message(STATUS "Looking for Geant3... - found ${Geant3_LIBRARIES}")
   Else()
     Set(Geant3_FOUND FALSE)
     Message(Status "Looking for Geant3... - Not found ")
@@ -223,37 +222,38 @@ if(FAIRROOT_MODULAR_BUILD)
     Set(VGM_FOUND TRUE)
     Message(STATUS "Looking for VGM... - found ${VGM_LIBRARY_DIR}")
   EndIf()
-else(FAIRROOT_MODULAR_BUILD)
+                             #####################################################
+else(FAIRROOT_MODULAR_BUILD) #####################################################
   find_package2(PUBLIC Geant3)
-  Message(STATUS "Looking for Geant3... - found ${Geant3_DIR}")
-  find_package2(PUBLIC Geant4)
-  Message(STATUS "Looking for Geant4... - found ${Geant4_DIR}")
-  Find_Package2(PUBLIC VGM)
-  Message(STATUS "Looking for VGM... - found ${VGM_DIR}")
-  find_package2(PUBLIC Geant4VMC)
-  if(Geant4VMC_FOUND)
-    Set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/${Geant4VMC_CMAKE_INSTALL_LIBDIR}")
-    Set(Geant4VMC_SHARE_DIR "${Geant4VMC_DIR}/share")
-    Find_Path(Geant4VMC_MACRO_DIR NAMES g4libs.C PATHS
+  If(Geant3_FOUND)
+    list(APPEND PROJECT_PACKAGE_COMPONENTS Geant3)
+    Set(Geant3_LIBRARY_DIR ${Geant3_DIR}/${Geant3_CMAKE_INSTALL_LIBDIR})
+    Set(G3SYS ${Geant3_DIR})
+    SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Geant3_LIBRARY_DIR})
+    FIND_PATH(Geant3_SYSTEM_DIR NAMES data PATHS
+              ${Geant3_DIR}/../../share/geant3
+              NO_DEFAULT_PATH
+             )
+   EndIf()
+   find_package2(PUBLIC Geant4)
+   Find_Package2(PUBLIC VGM)
+   find_package2(PUBLIC Geant4VMC)
+   if(Geant4VMC_FOUND)
+     Set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/${Geant4VMC_CMAKE_INSTALL_LIBDIR}")
+     Set(Geant4VMC_SHARE_DIR "${Geant4VMC_DIR}/share")
+     Find_Path(Geant4VMC_MACRO_DIR NAMES g4libs.C PATHS
        ${Geant4VMC_SHARE_DIR}/Geant4VMC-${Geant4VMC_VERSION}/examples/macro
        NO_DEFAULT_PATH
-    )
-    Message(STATUS "Looking for Geant4VMC/g4libs... - found ${Geant4VMC_MACRO_DIR}")
-    Message(STATUS "Looking for Geant4VMC/libs... - found ${Geant4VMC_LIBRARY_DIR}")
-
-  Endif()
-  Message(STATUS "Looking for Geant4VMC... - found ${Geant4VMC_DIR}")
-  Message("Found ${Geant4VMC_ROOT}")
+     )
+   Endif()
 endif(FAIRROOT_MODULAR_BUILD)
-
+################################################################################
 #find_package(CUDA)
 find_package2( PUBLIC IWYU)
-
 if(WITH_GO_EXAMPLE)
   find_package2(PUBLIC Go VERSION 1.7)
   if(Go_FOUND)
     set(Go_VERSION "${GO_VERSION}")
-    set(Go_ROOT "${GO_EXECUTABLE}" )
   endif()
 endif()
 
@@ -440,7 +440,7 @@ Install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
 
 find_package2(PUBLIC Git)
 set (Git_VERSION ${GIT_VERSION_STRING})
-
+string(REPLACE "git" " " Git_ROOT ${GIT_EXECUTABLE} )
 If(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
   Execute_Process(COMMAND ${GIT_EXECUTABLE} describe --tags
                   OUTPUT_VARIABLE FAIRROOT_GIT_VERSION
