@@ -116,7 +116,7 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
                   )
     #EXEC_PROGRAM(/bin/chmod ARGS "u+x ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh")
     execute_process(COMMAND /bin/chmod u+x ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh OUTPUT_QUIET)
-    
+
   ELSE(FAIRROOTPATH)
     Configure_File(${PROJECT_SOURCE_DIR}/cmake/scripts/generate_dictionary_root.sh.in
                    ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
@@ -202,6 +202,7 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
 
   set(my_script_name ${SCRIPT_FULL_NAME})
 
+  Write_Geant4Data_Variables_sh()
   IF(FAIRROOTPATH)
     configure_file(${FAIRROOTPATH}/share/fairbase/cmake/scripts/root_macro.sh.in
                    ${new_path}/${shell_script_name}

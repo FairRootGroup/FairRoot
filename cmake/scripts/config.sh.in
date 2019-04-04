@@ -22,7 +22,7 @@ if [ $same_system -eq 1 ]; then
 		export PYTHIA8DATA="@PYTHIA8DATA@"
 		export CLASSPATH="@MY_CLASSPATH@"
 
-		@Geant4Data_Variables@
+		@Geant4Data_Variables_sh@
 	fi
 	export Geant3_INCLUDE_DIRS="@Geant3_INCLUDE_DIRS@"
 	export ROOT_LIBRARY_DIR="@ROOT_LIBRARY_DIR@"

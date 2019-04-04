@@ -102,17 +102,8 @@ MACRO (WRITE_CONFIG_FILE filename)
   CONVERT_LIST_TO_STRING(${Geant4VMC_MACRO_DIR})
   Set(Geant4VMC_MACRO_DIR ${output})
 
-  set(Geant4Data_Variables "\
-  ####################### Create the data set variables for Geant4 #############
-  ")
-  foreach(DATASET  ${Geant4_DATASETS})
-        string(CONCAT Geant4Data_Variables ${Geant4Data_Variables} "\
-  export ${Geant4_DATASET_${DATASET}_ENVVAR}=${Geant4_DATASET_${DATASET}_PATH}
-  ")
-  endforeach()
-  string(CONCAT Geant4Data_Variables ${Geant4Data_Variables} "\
-  ##############################################################################
-  ")
+  Write_Geant4Data_Variables_sh()
+  Write_Geant4Data_Variables_csh()
 
   CONVERT_LIST_TO_STRING(${PLUTO_LIBRARY_DIR})
   Set(PLUTO_LIBRARY_DIR ${output})

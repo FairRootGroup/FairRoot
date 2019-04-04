@@ -6,6 +6,45 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+
+
+
+################################################################################
+#    Create Bash the Variable for G4 Data files
+################################################################################
+MACRO(Write_Geant4Data_Variables_sh)
+Set(Geant4Data_Variables_sh "\
+####################### Create the data set variables for Geant4 #############
+")
+foreach(DATASET  ${Geant4_DATASETS})
+      string(CONCAT Geant4Data_Variables_sh ${Geant4Data_Variables_sh} "\
+export ${Geant4_DATASET_${DATASET}_ENVVAR}=${Geant4_DATASET_${DATASET}_PATH}
+")
+endforeach()
+string(CONCAT Geant4Data_Variables_sh ${Geant4Data_Variables_sh} "\
+##############################################################################
+")
+
+ENDMACRO()
+
+################################################################################
+#    Create CSH the Variable for G4 Data files
+################################################################################
+MACRO(Write_Geant4Data_Variables_csh)
+Set(Geant4Data_Variables_csh "\
+####################### Create the data set variables for Geant4 #############
+")
+foreach(DATASET  ${Geant4_DATASETS})
+      string(CONCAT Geant4Data_Variables_csh ${Geant4Data_Variables_csh} "\
+setenv ${Geant4_DATASET_${DATASET}_ENVVAR}  ${Geant4_DATASET_${DATASET}_PATH}
+")
+endforeach()
+string(CONCAT Geant4Data_Variables_csh ${Geant4Data_Variables_csh} "\
+##############################################################################
+")
+################################################################################
+ENDMACRO()
+
 #Defines some variables with console color escape sequences
   if(NOT WIN32 AND NOT DISABLE_COLOR)
     string(ASCII 27 Esc)
@@ -218,7 +257,7 @@ MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
   CONVERT_LIST_TO_STRING(${LD_LIBRARY_PATH})
   set(MY_LD_LIBRARY_PATH ${output})
   set(my_script_name ${SCRIPT_FULL_NAME})
-
+  Write_Geant4Data_Variables_sh()
   IF(FAIRROOT_FOUND)
     configure_file(${FAIRROOT_CMAKEMOD_DIR}/scripts/set_env.sh.in
                    ${new_path}/${shell_script_name}
@@ -244,7 +283,7 @@ Macro(Generate_Exe_Script _Path _ExeName)
         )
 
   set(my_exe_name ${EXECUTABLE_OUTPUT_PATH}/${_ExeName})
-
+  Write_Geant4Data_Variables_sh()
   configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/run_binary.sh.in
                    ${new_path}/${shell_script_name}
                   )
