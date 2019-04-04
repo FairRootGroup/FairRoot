@@ -23,7 +23,8 @@ export Geant3_LIBRARIES="@Geant3_LIBRARIES@"
 export USE_VGM="1"
 export PYTHIA8DATA="@PYTHIA8DATA@"
 export CLASSPATH="@MY_CLASSPATH@"
-@Geant4Data_Variables@
+
+@Geant4Data_Variables_sh@
 
 cd @new_path@
 

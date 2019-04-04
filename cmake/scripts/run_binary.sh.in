@@ -23,5 +23,5 @@ export USE_VGM=1
 export USE_VGM=1
 export PYTHIA8DATA=@PYTHIA8DATA@
 #export CLASSPATH=@MY_CLASSPATH@
-@Geant4Data_Variables@
+@Geant4Data_Variables_sh@
 @my_exe_name@
