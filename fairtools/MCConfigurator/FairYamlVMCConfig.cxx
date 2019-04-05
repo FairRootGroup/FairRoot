@@ -126,6 +126,8 @@ void FairYamlVMCConfig::SetupGeant4() {
                                           mtMode);
 
     TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration);
+
+    LOG(info) << geant4->GetName() << " MonteCarlo engine created!.";
 }
 
 //_____________________________________________________________________________
