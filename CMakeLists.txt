@@ -98,10 +98,7 @@ EndIf()
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
 
-Option(WITH_DBASE "Switch off the building of FairDB." OFF)
-If(WITH_DBASE)
-  Add_Definitions(-DWITH_DBASE)
-EndIf()
+
 
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
 
@@ -264,11 +261,6 @@ endif()
 
 find_package2(PUBLIC FairMQ VERSION 1.2.3)
 
-If(WITH_DBASE)
-  find_package2(PUBLIC MYSQL)
-  find_package2(PUBLIC PGSQL)
-  find_package2(PUBLIC SQLITE)
-EndIf(WITH_DBASE)
 
 If(FAIRSOFT_EXTERN)
   set(BOOST_ROOT ${SIMPATH})
@@ -352,9 +344,6 @@ EndIf()
 add_subdirectory (alignment)
 add_subdirectory (fairtools)
 add_subdirectory (base)
-If(WITH_DBASE)
-  add_subdirectory (dbase)
-EndIf()
 add_subdirectory (geobase)
 add_subdirectory (parbase)
 add_subdirectory (generators)
@@ -547,13 +536,6 @@ else()
   set(examples_summary "${BRed} NO${CR}    (enable with ${BMagenta}-DBBUILD_EXAMPLES=ON${CR})")
 endif()
 message(STATUS "  ${BWhite}Examples${CR}             ${examples_summary}")
-
-if(WITH_DBASE)
-  set(DBASE_summary "${BGreen} YES${CR}      (disable with ${BMagenta}-DWITH_DBASE=OFF${CR})")
-else()
-   set(DBASE_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DWITH_DBASE=ON${CR})")
-endif()
-message(STATUS "  ${BWhite}FAIR-DB${CR}             ${DBASE_summary}")
 
 if(BUILD_DOXYGEN)
   set(doxygen_summary "${BGreen}YES${CR}    (default, disable with ${BMagenta}-DBUILD_DOXYGENS=OFF${CR})")

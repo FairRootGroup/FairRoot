@@ -126,21 +126,6 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
     root [1] .q
     ```
 
-## Build with data base module (-DWITH_DBASE)
-
-The data base interface is now in a separate repository, to use it you have to download it first:
-
-```bash
- cd FairRoot
- mkdir dbase
- cd dbase
- git clone https://github.com/denisbertini/dbase .
-
-```
-
-The interface to data bases can be switched on by setting the the cmake flage -DWITH_DBASE=ON
-
-__Warning__: This option will change the inheritance tree of the parameter objects.
 
 
 ## Modular (custom) installation of FairRoot:
