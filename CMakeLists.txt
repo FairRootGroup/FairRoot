@@ -25,11 +25,9 @@ SET(FAIRROOT_PATCH_VERSION 7)
 # Has to be done after check of cmake version
 # This also sets ${FAIRROOT_VERSION} to the provided VERSION value, which would be empty if not set here explicitly
 project(FAIRROOT VERSION ${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION})
-
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
-#set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/cuda" ${CMAKE_MODULE_PATH})
 
 if(APPLE)
   # Configure RPATH entries on macOS
@@ -64,16 +62,14 @@ If(NOT _HAS_CXX11_FLAG)
   Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11. CbmRoot can only be compiled with compilers supporting C++11. Please install such a compiler.")
 EndIf()
 
-
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
 
-
+# set cmake policies
 set_fairroot_cmake_policies()
-
 
 #Check the compiler and set the compile and link flags
 Check_Compiler()
@@ -97,8 +93,6 @@ EndIf()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
-
-
 
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
 
@@ -158,94 +152,31 @@ find_package2(PUBLIC Protobuf)
 find_package2(PUBLIC msgpack)
 find_package2(PUBLIC FlatBuffers)
 
+find_package2(PUBLIC Geant3)
+if(Geant3_FOUND)
+  list(APPEND PROJECT_PACKAGE_COMPONENTS Geant3)
+  Set(Geant3_LIBRARY_DIR ${Geant3_DIR}/${Geant3_CMAKE_INSTALL_LIBDIR})
+  Set(G3SYS ${Geant3_DIR})
+  SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Geant3_LIBRARY_DIR})
+  FIND_PATH(Geant3_SYSTEM_DIR NAMES data PATHS
+           ${Geant3_DIR}/../../share/geant3
+           NO_DEFAULT_PATH)
+endif()
 
-if(FAIRROOT_MODULAR_BUILD)
-  # Geant3, Geant4 installed via cmake
-  #Message(STATUS "Looking for Geant3...")
-  Find_Package2(PUBLIC Geant3)
-  If(Geant3_DIR)
-    list(APPEND PROJECT_PACKAGE_COMPONENTS Geant3)
-    Set(Geant3_INCLUDE_DIRS ${Geant3_INCLUDE_DIRS})
-    Set(Geant3_LIBRARIES ${Geant3_LIBRARIES})
-    Set(Geant3_LIBRARY_DIR ${Geant3_DIR}/..)
-    SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Geant3_LIBRARY_DIR})
-    FIND_PATH(Geant3_SYSTEM_DIR NAMES data PATHS
-              ${Geant3_DIR}/../../share/geant3
-              NO_DEFAULT_PATH
-             )
-    Set(Geant3_FOUND TRUE)
-  Else()
-    Set(Geant3_FOUND FALSE)
-    Message(Status "Looking for Geant3... - Not found ")
-  EndIf()
-  #Message(STATUS "Looking for GEANT4...")
-  find_package2(PUBLIC Geant4)
-  If(Geant4_DIR)
-    Set(Geant4_INCLUDE_DIRS ${Geant4_INCLUDE_DIRS})
-    Set(GEANT4_LIBRARY_DIR "${Geant4_DIR}/..")
-    Set(MYLD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${GEANT4_LIBRARY_DIR})
-    Set(GEANT4_SHARE_DIR "${Geant4_DIR}/../../share")
-    Set(GEANT4_FOUND TRUE)
-  #  Message(STATUS "Looking for GEANT4... - found ${GEANT4_LIBRARY_DIR}")
-    Set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules_old" ${CMAKE_MODULE_PATH})
-    Find_Package2(PUBLIC GEANT4DATA)
-  Else()
-    Set(GEANT4_FOUND FALSE)
-    Message(Status "Looking for GEANT4... - Not found ")
-  EndIf()
-  # Checking for Genat4VMC has to be done in a better way.
-  # In the moment the Geant4VMC version is hardcoded
-  Message(STATUS "Looking for Geant4VMC...")
-  Find_Package2(PUBLIC Geant4VMC)
-  If(Geant4VMC_DIR)
-    Set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/..")
-    Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Geant4VMC_LIBRARY_DIR})
-    Set(DYLD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Geant4VMC_LIBRARY_DIR})
-    Set(Geant4VMC_SHARE_DIR "${Geant4VMC_DIR}/../../share")
-    Find_Path(Geant4VMC_MACRO_DIR NAMES g4libs.C PATHS
-       ${Geant4VMC_SHARE_DIR}/Geant4VMC-${Geant4VMC_VERSION}/examples/macro
-       NO_DEFAULT_PATH
-    )
-    Set(Geant4VMC_FOUND TRUE)
-  #  Message(STATUS "Looking for Geant4VMC... - found ${Geant4VMC_LIBRARY_DIR}")
-  EndIf()
+find_package2(PUBLIC Geant4)
 
-  Find_Package2(PUBLIC VGM)
+Find_Package2(PUBLIC VGM)
 
-  If(VGM_DIR)
-    Set(VGM_INCLUDE_DIR ${VGM_INCLUDE_DIRS})
-    Set(VGM_LIBRARY_DIR "${VGM_DIR}/..")
-    Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${VGM_LIBRARY_DIR})
-    Set(VGM_FOUND TRUE)
-    Message(STATUS "Looking for VGM... - found ${VGM_LIBRARY_DIR}")
-  EndIf()
-                             #####################################################
-else(FAIRROOT_MODULAR_BUILD) #####################################################
-  find_package2(PUBLIC Geant3)
-  If(Geant3_FOUND)
-    list(APPEND PROJECT_PACKAGE_COMPONENTS Geant3)
-    Set(Geant3_LIBRARY_DIR ${Geant3_DIR}/${Geant3_CMAKE_INSTALL_LIBDIR})
-    Set(G3SYS ${Geant3_DIR})
-    SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Geant3_LIBRARY_DIR})
-    FIND_PATH(Geant3_SYSTEM_DIR NAMES data PATHS
-              ${Geant3_DIR}/../../share/geant3
-              NO_DEFAULT_PATH
-             )
-   EndIf()
-   find_package2(PUBLIC Geant4)
-   Find_Package2(PUBLIC VGM)
-   find_package2(PUBLIC Geant4VMC)
-   if(Geant4VMC_FOUND)
-     Set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/${Geant4VMC_CMAKE_INSTALL_LIBDIR}")
-     Set(Geant4VMC_SHARE_DIR "${Geant4VMC_DIR}/share")
-     Find_Path(Geant4VMC_MACRO_DIR NAMES g4libs.C PATHS
-       ${Geant4VMC_SHARE_DIR}/Geant4VMC-${Geant4VMC_VERSION}/examples/macro
-       NO_DEFAULT_PATH
-     )
-   Endif()
-endif(FAIRROOT_MODULAR_BUILD)
-################################################################################
-#find_package(CUDA)
+find_package2(PUBLIC Geant4VMC)
+if(Geant4VMC_FOUND)
+  Set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/${Geant4VMC_CMAKE_INSTALL_LIBDIR}")
+  Set(Geant4VMC_SHARE_DIR "${Geant4VMC_DIR}/share")
+  Find_Path(Geant4VMC_MACRO_DIR NAMES g4libs.C PATHS
+    ${Geant4VMC_SHARE_DIR}/Geant4VMC-${Geant4VMC_VERSION}/examples/macro
+    NO_DEFAULT_PATH
+  )
+Endif()
+
 find_package2( PUBLIC IWYU)
 if(WITH_GO_EXAMPLE)
   find_package2(PUBLIC Go VERSION 1.7)
