@@ -82,7 +82,7 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
 Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
 {
   if ( 0 == fnamelist->GetEntries() ) {
-    LOG(error) << "The defined list of parameter files is empty. There are no parameters initialized from the ASCII files."; 
+    LOG(error) << "The defined list of parameter files is empty. There are no parameters initialized from the ASCII files.";
     return kFALSE;
   }
   TString outFileName = gSystem->WorkingDirectory();
@@ -100,7 +100,7 @@ Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
     TString strParPath = string->GetString();
     gSystem->ExpandPathName(strParPath);
     if (gSystem->AccessPathName(strParPath))
-        LOG(FATAL) << "Parameter file " << strParPath << " does not exist." << FairLogger::endl;
+        LOG(fatal) << "Parameter file " << strParPath << " does not exist.";
     //    cout <<  string->GetString() <<endl;
     catCommand += string->GetString();
     catCommand += " ";
