@@ -124,8 +124,8 @@ class FairLogger
     void Debug3 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug3) << content;' macro interface instead.")));
     void Debug4 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug4) << content;' macro interface instead.")));
 
-    static char const endl;
-    static char const flush;
+    static char const endl __attribute__((deprecated("Line break is now added automatically by the LOG macro, this variable only adds empty space.")));
+    static char const flush __attribute__((deprecated("Data is now flushed automatically by the LOG macro, this variable only adds empty space.")));
 
     void SetScreenStreamToCerr(bool /* useCerr */)
     {
