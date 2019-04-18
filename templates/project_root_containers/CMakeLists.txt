@@ -36,6 +36,10 @@ SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
 
 Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
 
+# set cmake policies
+include(FairRootCmakePolicies)
+set_fairroot_cmake_policies()
+
 find_package(FairRoot)
 
 # Load some basic macros which are needed later on
@@ -44,8 +48,6 @@ include(WriteConfigFile)
 include(CTest)
 include(CheckCompiler)
 #include(CheckFortran)
-
-set_fairroot_cmake_policies()
 
 #Check the compiler and set the compile and link flags
 If(NOT CMAKE_BUILD_TYPE)
