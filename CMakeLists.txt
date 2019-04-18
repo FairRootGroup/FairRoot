@@ -62,14 +62,15 @@ If(NOT _HAS_CXX11_FLAG)
   Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11. CbmRoot can only be compiled with compilers supporting C++11. Please install such a compiler.")
 EndIf()
 
+# set cmake policies
+include(FairRootCmakePolicies)
+set_fairroot_cmake_policies()
+
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
-
-# set cmake policies
-set_fairroot_cmake_policies()
 
 #Check the compiler and set the compile and link flags
 Check_Compiler()
