@@ -1011,6 +1011,7 @@ Bool_t FairMCApplication::MisalignGeometry()
 {
   // call this only here
   fRun->AlignGeometry();
+  return true;
 }
 
 //_____________________________________________________________________________
