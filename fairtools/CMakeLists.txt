@@ -11,7 +11,7 @@
 
 add_subdirectory (MCStepLogger)
 
-If(GEANT3_FOUND)
+If(Geant3_FOUND)
   FIND_PATH(YAML_CPP_FOUND NAMES yaml.h PATHS ${SIMPATH}/include/yaml-cpp/)
   If(YAML_CPP_FOUND)
     add_subdirectory (MCConfigurator)
