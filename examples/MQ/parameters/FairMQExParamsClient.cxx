@@ -18,7 +18,6 @@
 #include "FairMQLogger.h"
 #include "FairMQExParamsClient.h"
 #include "FairMQExParamsParOne.h"
-#include <options/FairMQProgOptions.h>
 
 #include "RootSerializer.h"
 #include "Rtypes.h"

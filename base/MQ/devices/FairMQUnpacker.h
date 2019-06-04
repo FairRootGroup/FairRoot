@@ -16,7 +16,6 @@
 #define FAIRMQUNPACKER_H
 
 #include "FairMQDevice.h"
-#include <options/FairMQProgOptions.h>
 #include "RootSerializer.h"
 
 #include <stdexcept>

@@ -32,7 +32,6 @@ extern "C"
 #include "FairMQLogger.h"
 #include "FairMQDevice.h"
 #include "FairMQMessage.h"
-#include <options/FairMQProgOptions.h> // device->fConfig
 
 class FairMQLmdSampler : public FairMQDevice
 {

@@ -37,7 +37,6 @@
 #include "FairMQDevice.h"
 #include "FairMQSamplerTask.h"
 #include "FairMQLogger.h"
-#include <options/FairMQProgOptions.h>
 
 /**
  * Reads simulated digis from a root file and samples the digi as a time-series UDP stream.
