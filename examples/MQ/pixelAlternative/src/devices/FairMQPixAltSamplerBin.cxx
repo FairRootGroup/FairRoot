@@ -17,7 +17,6 @@
 
 #include "FairMQPixAltSamplerBin.h"
 #include "FairMQLogger.h"
-#include <options/FairMQProgOptions.h>
 
 #include "FairMQMessage.h"
 

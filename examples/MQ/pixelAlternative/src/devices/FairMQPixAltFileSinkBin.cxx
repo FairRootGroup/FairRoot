@@ -17,7 +17,6 @@
 
 #include "FairMQPixAltFileSinkBin.h"
 #include "FairMQLogger.h"
-#include <options/FairMQProgOptions.h>
 
 #include "PixelPayload.h"
 #include "PixelHit.h"

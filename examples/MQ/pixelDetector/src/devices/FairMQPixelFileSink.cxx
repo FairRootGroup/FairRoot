@@ -20,7 +20,6 @@
 #include "FairMCEventHeader.h"
 #include "FairMQPixelFileSink.h"
 #include "FairMQLogger.h"
-#include <options/FairMQProgOptions.h>
 
 using namespace std;
 

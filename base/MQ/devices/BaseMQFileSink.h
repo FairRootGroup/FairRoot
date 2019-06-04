@@ -18,7 +18,6 @@
 
 #include "FairMQDevice.h"
 #include "FairMQLogger.h"
-#include <options/FairMQProgOptions.h>
 
 template <typename InputPolicy, typename OutputPolicy>
 class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPolicy

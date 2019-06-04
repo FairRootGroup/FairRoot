@@ -25,7 +25,6 @@
 
 #include "ParameterMQServer.h"
 #include "FairMQLogger.h"
-#include <options/FairMQProgOptions.h>
 
 using namespace std;
 
