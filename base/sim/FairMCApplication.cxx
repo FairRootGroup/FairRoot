@@ -588,7 +588,7 @@ void FairMCApplication::PreTrack()
     if(fTrajAccepted) {
       // Add trajectory to geo manager
       //    Int_t trackId = fStack->GetCurrentTrackNumber();
-      TGeoTrack* fTrack=fTrajFilter->AddTrack(particle);
+      TGeoTrack* fTrack=fTrajFilter->CheckAddTrack(fMC->GetStack()->GetCurrentTrackNumber(),particle);
       // TLorentzVector pos;
       fMC->TrackPosition(fTrkPos);
       fTrack->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
@@ -667,7 +667,7 @@ void FairMCApplication::Stepping()
   // Work around for Fluka VMC, which does not call
   // MCApplication::PreTrack()
   static Int_t TrackId = 0;
-  if ( fMcVersion ==2 && fMC->GetStack()->GetCurrentTrackNumber() != TrackId ) {
+  if ( fMcVersion ==2 || fMC->GetStack()->GetCurrentTrackNumber() != TrackId ) {
     PreTrack();
     TrackId = fMC->GetStack()->GetCurrentTrackNumber();
   }

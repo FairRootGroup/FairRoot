@@ -14,6 +14,8 @@
 #include "G4VPhysicalVolume.hh"
 #include "G4Electron.hh"
 #include "G4Gamma.hh"
+#include "G4ParticleTable.hh"
+#include "G4StackManager.hh"
 
 #include "G4SystemOfUnits.hh"
 
@@ -68,16 +70,43 @@ void FairFastSimModel::DoIt(const G4FastTrack& fastTrack,
     //     fastTrack.GetPrimaryTrack()->GetTouchableHandle();
     // G4String name = theTouchable->GetVolume()->GetName();
 
-    int movedParticleIndex = ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex();
+    int firstSecondary = 0;
+    int nofSecondaries = 0;
+    int movedParticleIndex = ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex(firstSecondary,nofSecondaries);
     if ( movedParticleIndex == -2 ) {
         FairMCApplication::Instance()->Stepping();
-        movedParticleIndex = ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex();
+        movedParticleIndex = ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex(firstSecondary,nofSecondaries);
     }
+    TClonesArray* particles = ((FairGenericStack*)(gMC->GetStack()))->GetListOfParticles();
+    if ( nofSecondaries != 0 ) {
+        fastStep.SetNumberOfSecondaryTracks(nofSecondaries);
 
+        int addedParticleIndex = firstSecondary;
+        G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
+        for ( int ipart = 0 ; ipart < nofSecondaries ; ipart++ ) {
+            if ( addedParticleIndex == movedParticleIndex ) addedParticleIndex++; // added protection in case user adds, moves and adds again
+            TParticle* particle = (TParticle*)particles->At(addedParticleIndex);
+
+            G4ParticleDefinition* particleDefinition = 0;
+            particleDefinition = particleTable->FindParticle(particle->GetPdgCode());
+            if ( !particleDefinition )
+                LOG(fatal) << "FairFastSimModel::DoIt() PDG " << particle->GetPdgCode() << " unknown!";
+            G4ThreeVector pos(particle->Vx()*10.,particle->Vy()*10.,particle->Vz()*10.); //change from cm to mm
+            G4ThreeVector mom(particle->Px()*1000.,particle->Py()*1000.,particle->Pz()*1000.);
+            G4ThreeVector pol(0.,0.,0.); // get polarisation
+            G4double      tim = particle->T()*10.e9;  // change from ns to s
+            G4double      len = 0.;
+            G4double      ek  = particle->Ek()*1000.;
+            G4DynamicParticle dynParticle(particleDefinition,mom.unit(),ek);
+            G4Track* tempTrack =
+                fastStep.CreateSecondaryTrack(dynParticle, pos, tim, false);
+            tempTrack->SetTouchableHandle(fastTrack.GetPrimaryTrack()->GetTouchableHandle());
+            addedParticleIndex++;
+        }
+    }
+ 
     LOG(debug) << "FairFastSimModel::DoIt() moving particle " << gMC->GetStack()->GetCurrentTrackNumber() << " (pos #" << movedParticleIndex << ").";
     if ( movedParticleIndex != -1 ) {
-        TClonesArray* particles = ((FairGenericStack*)(gMC->GetStack()))->GetListOfParticles();
-
         TParticle* particle = (TParticle*)particles->At(movedParticleIndex);
 
         LOG(debug) << "FAST SIM (moving particle to <" << particle->Vx() << "," << particle->Vy() << "," << particle->Vz() << "," << particle->T() << "> with p=<"

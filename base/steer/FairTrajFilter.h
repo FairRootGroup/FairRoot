@@ -116,6 +116,7 @@ class FairTrajFilter
   public:
     TGeoTrack* AddTrack(Int_t trackId, Int_t pdgCode);
     TGeoTrack* AddTrack(TParticle* p);
+    TGeoTrack* CheckAddTrack(Int_t trackId, TParticle* p);
     TGeoTrack* GetCurrentTrk() {return fCurrentTrk;}
 
     void Init(TString brName="GeoTracks", TString folderName="MCGeoTrack");

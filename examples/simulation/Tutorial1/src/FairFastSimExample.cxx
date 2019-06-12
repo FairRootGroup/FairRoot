@@ -92,8 +92,17 @@ void FairFastSimExample::FastSimProcessParticle()
 
     FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
 
+    stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
+                                0.1,0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
+    stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
+                                -0.1,-0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
     stack->FastSimMoveParticleTo(
         12.5, 12.5, 20. + 5. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), fMom.E());
+
+    stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
+                                -0.1,0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
+    stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
+                                0.1,-0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
 
 //    stack->FastSimMoveParticleTo(
 //        25., 25., 20. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), fMom.E());

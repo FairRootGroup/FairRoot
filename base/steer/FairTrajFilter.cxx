@@ -337,7 +337,22 @@ TGeoTrack* FairTrajFilter::AddTrack(TParticle* p)
   return fCurrentTrk;
 }
 
-
+TGeoTrack* FairTrajFilter::CheckAddTrack(Int_t trackId, TParticle* p)
+{
+    TClonesArray& clref = *fTrackCollection;
+    Int_t tsize = clref.GetEntriesFast();
+    for ( Int_t itr = tsize-1 ; itr >= 0 ; --itr ) {
+        TGeoTrack* tempTrack = dynamic_cast<TGeoTrack*>(clref.At(itr));
+        if ( tempTrack->GetId() == trackId ) {
+            fCurrentTrk = tempTrack;
+            return fCurrentTrk;
+        }
+    }
+    // track with given trackId not found, creating new one
+    Int_t pdgCode = p->GetPdgCode();
+    fCurrentTrk = new(clref[tsize]) TGeoTrack(trackId,pdgCode,0,p);
+    return fCurrentTrk;
+}
 
 TGeoTrack* FairTrajFilter::GetTrack(Int_t trackId)
 {
