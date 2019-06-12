@@ -46,6 +46,8 @@ FairStack::FairStack(Int_t size)
     fFSTrackMap(),
     fFSTrackIter(),
     fFSMovedIndex(-2),
+    fFSFirstSecondary(-2),
+    fFSNofSecondaries(0),
     fPointsMap(),
     fCurrentTrack(-1),
     fNPrimaries(0),
@@ -268,7 +270,14 @@ void FairStack::FillTrackArray()
 }
 // -------------------------------------------------------------------------
 
-
+Int_t FairStack::GetCurrentTrackNumber() const
+{
+    std::map<Int_t, Int_t>::const_iterator tempIter = fFSTrackMap.find(fCurrentTrack);      // check if the track was created by FastSimulation
+    if ( tempIter != fFSTrackMap.end() ) {
+        return tempIter->second;
+    }
+    return fCurrentTrack;
+}
 
 // -----   Public method UpdateTrackIndex   --------------------------------
 void FairStack::UpdateTrackIndex(TRefArray* detList)
@@ -573,6 +582,27 @@ void FairStack::FastSimStopParticle()
         LOG(fatal) << "FairStack::FastSimStopParticle() tries to stop particle that was probably moved!";
     fFSMovedIndex = -1;
     TVirtualMC::GetMC()->StopTrack();
+}
+// -------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------
+void FairStack::FastSimPushSecondary(Int_t parentID, Int_t pdgCode,
+                                     Double_t xx, Double_t yy, Double_t zz, Double_t tt,
+                                     Double_t px, Double_t py, Double_t pz, Double_t en,
+                                     Double_t polx, Double_t poly, Double_t polz, TMCProcess proc,
+                                     Double_t weight, Int_t is)
+{
+    Int_t tobedone  = 1;
+
+    Int_t ntr       = 0;    // Track number; to be filled by the stack
+    PushTrack(tobedone, parentID, pdgCode,
+              px, py, pz, en,
+              xx, yy, zz, tt,
+              polx, poly, polz,
+              proc, ntr, weight, is);
+    if ( fFSNofSecondaries == 0 )
+        fFSFirstSecondary = fNParticles-1;
+    fFSNofSecondaries++;
 }
 // -------------------------------------------------------------------------
 
