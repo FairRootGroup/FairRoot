@@ -169,10 +169,6 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
     fNTracks = 0;
     fEvent->Reset();
 
-    // Create event vertex
-    MakeVertex();
-    fEvent->SetVertex(fVertex);
-
     // Create beam angle
     // Here we only randomly generate two angles (anglex, angley)
     // for the event and later on (in AddTrack())
@@ -180,6 +176,11 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
     if (fBeamAngle) {
       MakeBeamAngle();
     }
+
+    // Create event vertex
+    MakeVertex();
+    fEvent->SetVertex(fVertex);
+
 
     // Create event plane
     // Randomly generate an angle by which each track added (in AddTrack())

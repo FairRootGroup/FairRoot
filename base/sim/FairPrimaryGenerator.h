@@ -247,7 +247,7 @@ protected:
       To be called at the beginning of the event from the
       GenerateEvent method.
   **/
-  void MakeVertex();
+  virtual void MakeVertex();
 
   /** Private method MakeBeamAngle. If beam angle smearing in xy
   is switched on, all tracks in an event are rotated by a Gaussianlike
@@ -256,7 +256,7 @@ protected:
   To be called at the beginning of the event from the GenerateEvent
   method.
   **/
-  void MakeBeamAngle();
+  virtual void MakeBeamAngle();
 
   /** Private method MakeEventPlane. If the rotation of the event around the
       z-axis by a random angle is switched on, the complete event is rotated
