@@ -16,7 +16,7 @@ If(Geant3_FOUND)
   If(YAML_CPP_FOUND)
     add_subdirectory (MCConfigurator)
   EndIf(YAML_CPP_FOUND)
-EndIf(GEANT3_FOUND)
+EndIf()
 
 Set(INCLUDE_DIRECTORIES
  ${CMAKE_SOURCE_DIR}/fairtools
