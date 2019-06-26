@@ -9,7 +9,7 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-add_subdirectory (sim/fastsim)
+#add_subdirectory (sim/fastsim)
 
 If(NOT DEFINED BUILD_MBS)
   Set(BUILD_MBS TRUE)
@@ -51,9 +51,13 @@ If(BUILD_MBS)
   )
 EndIf(BUILD_MBS)
 
+get_target_property(VAR Boost::serialization INTERFACE_INCLUDE_DIRECTORIES)
+#message(FATAL_ERROR "${VAR} $<TARGET_PROPERTY:Boost::serialization,INTERFACE_INCLUDE_DIRECTORIES>")
+
 Set(SYSTEM_INCLUDE_DIRECTORIES
   ${ROOT_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
+  ${VAR}
 )
 
 

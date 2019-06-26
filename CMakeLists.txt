@@ -13,7 +13,8 @@
 # and the subproject (i.e: CbmRoot, Pandaroot,... etc).
 
 # Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.12.0 FATAL_ERROR)
+set(BUILD_SHARED_LIBS ON)
 
 set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
@@ -205,19 +206,19 @@ EndIf(FAIRSOFT_EXTERN)
 if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
   Set(Boost_NO_SYSTEM_PATHS TRUE)
 endif()
-Set(Boost_NO_BOOST_CMAKE TRUE)
+#Set(Boost_NO_BOOST_CMAKE TRUE)
 #Message("-- Looking for Boost ...")
 # If an older version of boost is found both of the variables below are
 # cached and in a second cmake run, a good boost version is found even
 # if the version is to old.
 # To overcome this problem both variables are cleared before checking
 # for boost.
-Unset(Boost_INCLUDE_DIR CACHE)
-Unset(Boost_LIBRARY_DIRS CACHE)
+#Unset(Boost_INCLUDE_DIR CACHE)
+#Unset(Boost_LIBRARY_DIRS CACHE)
 
 find_package2(PUBLIC Boost
   VERSION 1.67 ${FairMQ_Boost_VERSION}
-  COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time signals ${FairMQ_Boost_COMPONENTS}
+  COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time ${FairMQ_Boost_COMPONENTS}
 )
 
 
