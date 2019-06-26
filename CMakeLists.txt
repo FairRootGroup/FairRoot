@@ -229,7 +229,6 @@ find_package2(PUBLIC Boost
 
 if (NOT Boost_INCLUDE_DIRS)
   get_target_property(Boost_INCLUDE_DIRS Boost::serialization INTERFACE_INCLUDE_DIRECTORIES)
-  message(FATAL "${Boost_INCLUDE_DIRS}")
 endif()
 
 If (Boost_FOUND)
