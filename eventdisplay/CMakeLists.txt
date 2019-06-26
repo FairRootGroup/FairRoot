@@ -25,12 +25,9 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/alignment
 )
 
-get_target_property(VAR Boost::serialization INTERFACE_INCLUDE_DIRECTORIES)
-
 Set(SYSTEM_INCLUDE_DIRECTORIES
   ${ROOT_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
-  ${VAR}
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})
