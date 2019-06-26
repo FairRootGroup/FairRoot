@@ -221,6 +221,10 @@ find_package2(PUBLIC Boost
   COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time ${FairMQ_Boost_COMPONENTS}
 )
 
+if (NOT Boost_INCLUDE_DIRS)
+  get_target_property(Boost_INCLUDE_DIRS Boost::serialization INTERFACE_INCLUDE_DIRECTORIES)
+  message(FATAL "${Boost_INCLUDE_DIRS}")
+endif()
 
 If (Boost_FOUND)
   Set(Boost_Avail 1)
