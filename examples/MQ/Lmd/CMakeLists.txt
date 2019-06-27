@@ -37,7 +37,6 @@ configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/Lmd/run/startMQExLmd.sh.in
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
-    ${Boost_LIBRARY_DIRS}
 )
 
 link_directories(${LINK_DIRECTORIES})
@@ -81,10 +80,6 @@ ForEach(_file RANGE 0 ${_length})
     Set(DEPENDENCIES
         FairMQ::FairMQ
         BaseMQ
-        ${Boost_THREAD_LIBRARY}
-        ${Boost_SYSTEM_LIBRARY}
-        ${Boost_SERIALIZATION_LIBRARY}
-        ${Boost_PROGRAM_OPTIONS_LIBRARY}
         MbsTutorial
         ExLmd
     )

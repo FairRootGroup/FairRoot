@@ -16,22 +16,13 @@
 Set(Boost_USE_STATIC_LIBS TRUE)
 find_package(Boost COMPONENTS unit_test_framework)
 
-Message("LIBS: ${Boost_LIBRARIES}")
-
 set(INCLUDE_DIRECTORIES
  ${CMAKE_SOURCE_DIR}
- ${Boost_INCLUDE_DIRS}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
 
-set(LINK_DIRECTORIES
- ${Boost_LIBRARY_DIRS}
-)
-
-link_directories( ${LINK_DIRECTORIES})
-
 ############### build the library #####################
 add_library(FairTest SHARED FairTestOutputHandler.cxx FairCaptureOutputNew.cxx )
-target_link_libraries(FairTest ${Boost_LIBRARIES} )
+target_link_libraries(FairTest Boost::unit_test_framework)
 

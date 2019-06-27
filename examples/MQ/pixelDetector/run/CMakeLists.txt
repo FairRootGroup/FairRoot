@@ -145,7 +145,6 @@ Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run/scripts/run_pixe
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
-    ${Boost_LIBRARY_DIRS}
 )
 
 link_directories(${LINK_DIRECTORIES})

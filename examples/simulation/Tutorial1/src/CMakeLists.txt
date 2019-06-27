@@ -43,8 +43,7 @@ Set(SRCS
 Set(HEADERS )
 Set(LINKDEF Tutorial1LinkDef.h)
 Set(LIBRARY_NAME Tutorial1)
-Set(DEPENDENCIES MCStack Base FairFastSim
-    ${Boost_PROGRAM_OPTIONS_LIBRARY})
+Set(DEPENDENCIES MCStack Base FairFastSim Boost::program_options)
 
 GENERATE_LIBRARY()
 

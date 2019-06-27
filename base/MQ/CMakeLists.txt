@@ -19,7 +19,6 @@ Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
-  ${Boost_LIBRARY_DIRS}
 )
 
 Link_Directories(${LINK_DIRECTORIES})
@@ -56,10 +55,6 @@ set(DEPENDENCIES
   ParBase
   FairTools
   GeoBase
-  ${Boost_THREAD_LIBRARY}
-  ${Boost_TIMER_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_FILESYSTEM_LIBRARY}
   FairMQ::FairMQ
 )
 

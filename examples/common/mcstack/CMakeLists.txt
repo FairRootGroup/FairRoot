@@ -37,6 +37,6 @@ Set(SRCS
 
 Set(LINKDEF MCStackLinkDef.h)
 Set(LIBRARY_NAME MCStack)
-Set(DEPENDENCIES Base EG Physics Core)
+Set(DEPENDENCIES Base EG Physics Core FairTools)
 
 GENERATE_LIBRARY()

@@ -22,10 +22,6 @@ set(INCLUDE_DIRECTORIES
     ${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/
 )
 
-set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
-)
-
 include_directories(${INCLUDE_DIRECTORIES})
 include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
@@ -50,7 +46,6 @@ file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_io)
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
-    ${Boost_LIBRARY_DIRS}
 )
 
 link_directories(${LINK_DIRECTORIES})
@@ -68,9 +63,8 @@ set(DEPENDENCIES
     Base
     FairMQ::FairMQ
     BaseMQ
-    ${Boost_SERIALIZATION_LIBRARY}
-    ${Boost_PROGRAM_OPTIONS_LIBRARY}
-    Net
+    Boost::serialization
+    Boost::program_options
     Minuit
     XMLIO
     MathMore
