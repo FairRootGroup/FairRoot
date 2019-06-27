@@ -63,6 +63,11 @@ if(CMAKE_GENERATOR STREQUAL "Ninja" AND
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fdiagnostics-color=always")
 endif()
 
+# Set a default if not specified by the user
+if(NOT DEFINED BUILD_SHARED_LIBS)
+  set(BUILD_SHARED_LIBS ON)
+endif()
+
 SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 
 # Check if the compiler support specific C++11 features
@@ -227,15 +232,18 @@ EndIf(FAIRSOFT_EXTERN)
 if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
   Set(Boost_NO_SYSTEM_PATHS TRUE)
 endif()
-Set(Boost_NO_BOOST_CMAKE TRUE)
-#Message("-- Looking for Boost ...")
-# If an older version of boost is found both of the variables below are
-# cached and in a second cmake run, a good boost version is found even
-# if the version is to old.
-# To overcome this problem both variables are cleared before checking
-# for boost.
-Unset(Boost_INCLUDE_DIR CACHE)
-Unset(Boost_LIBRARY_DIRS CACHE)
+if(NOT DEFINED Boost_NO_BOOST_CMAKE)
+  Set(Boost_NO_BOOST_CMAKE TRUE)
+endif()
+if(Boost_NO_BOOST_CMAKE)
+  # If an older version of boost is found both of the variables below are
+  # cached and in a second cmake run, a good boost version is found even
+  # if the version is to old.
+  # To overcome this problem both variables are cleared before checking
+  # for boost.
+  Unset(Boost_INCLUDE_DIR CACHE)
+  Unset(Boost_LIBRARY_DIRS CACHE)
+endif()
 
 find_package2(PUBLIC Boost
   VERSION 1.67
