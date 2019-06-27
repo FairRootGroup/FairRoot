@@ -253,7 +253,6 @@ find_package2(PUBLIC Boost
 
 If (Boost_FOUND)
   Set(Boost_Avail 1)
-  Set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Boost_LIBRARY_DIR})
 Else (Boost_FOUND)
   Set(Boost_Avail 0)
 EndIf (Boost_FOUND)

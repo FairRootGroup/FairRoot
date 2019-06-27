@@ -30,7 +30,6 @@ Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
-${Boost_LIBRARY_DIRS}
 )
 
 link_directories( ${LINK_DIRECTORIES})
@@ -118,11 +117,6 @@ Set(DEPENDENCIES
     BaseMQ
     Gen
     Passive
-    Net
-    ${Boost_THREAD_LIBRARY}
-    ${Boost_SYSTEM_LIBRARY}
-    ${Boost_SERIALIZATION_LIBRARY}
-   ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )
 
 GENERATE_LIBRARY()

@@ -73,7 +73,6 @@ Install(FILES ${CMAKE_BINARY_DIR}/examples/MQ/pixelAlternative/run/scripts/start
 
 set(LINK_DIRECTORIES
     ${ROOT_LIBRARY_DIR}
-    ${Boost_LIBRARY_DIRS}
 )
 
 link_directories(${LINK_DIRECTORIES})

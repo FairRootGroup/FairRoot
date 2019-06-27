@@ -85,7 +85,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3ExtraProcessor.sh.i
 
 Set(LINK_DIRECTORIES
   ${ROOT_LIBRARY_DIR}
-  ${Boost_LIBRARY_DIRS}
 )
 
 If(msgpack_FOUND)
@@ -173,11 +172,11 @@ Set(LINKDEF FairTestDetectorLinkDef.h)
 Set(LIBRARY_NAME FairTestDetector)
 
 Set(DEPENDENCIES
-  Base MCStack FairMQ::FairMQ BaseMQ Net
-  ${Boost_THREAD_LIBRARY}
-  ${Boost_SYSTEM_LIBRARY}
-  ${Boost_SERIALIZATION_LIBRARY}
-  ${Boost_PROGRAM_OPTIONS_LIBRARY})
+  Base MCStack FairMQ::FairMQ BaseMQ
+  Boost::thread
+  Boost::system
+  Boost::serialization
+  Boost::program_options)
 
 
 If(Protobuf_FOUND)
