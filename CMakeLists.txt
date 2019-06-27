@@ -330,11 +330,11 @@ add_subdirectory (datamatch)
 
 add_subdirectory (templates)
 
-If (FairMQ_FOUND)
+If (FairMQ_FOUND AND Boost_FOUND)
   add_subdirectory (base/MQ)
   add_subdirectory (parmq)
 Else ()
-  Message(STATUS "base/MQ and parmq will not be built, because FairMQ was not found.")
+  Message(STATUS "base/MQ and parmq will not be built, because FairMQ and/or Boost was not found.")
 EndIf ()
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
