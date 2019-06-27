@@ -74,7 +74,6 @@ pipeline{
             [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev_mt'],
             [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev'],
             [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev_mt'],
-            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'feb19'],
           ]) { spec, label ->
             sh './Dart.sh alfa_ci Dart.cfg'
           }
