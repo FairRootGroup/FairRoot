@@ -15,7 +15,7 @@
 
 #include "FairGenericVMCConfig.h"
 
-#include "yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 
 class TString;
 

@@ -14,6 +14,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/fairtools/MCConfigurator
   ${CMAKE_SOURCE_DIR}/examples/common/mcstack
   ${CMAKE_SOURCE_DIR}/examples/common/gconfig
+  ${YAML_CPP_INCLUDE_DIR}
 )
 
 Include_Directories(${INCLUDE_DIRECTORIES})

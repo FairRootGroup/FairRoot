@@ -248,6 +248,12 @@ Else()
   )
 EndIf()
 
+find_package2(PUBLIC yaml-cpp)
+if(yaml-cpp_FOUND AND TARGET yaml-cpp AND YAML_CPP_INCLUDE_DIR)
+  set_target_properties(yaml-cpp PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES ${YAML_CPP_INCLUDE_DIR}
+  )
+endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
 
@@ -450,6 +456,9 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
     endif()
     if(${dep} STREQUAL Pythia8)
     set(prefix ${PYTHIA8_LIB_DIR})
+    endif()
+    if(${dep} STREQUAL yaml-cpp)
+      get_filename_component(prefix ${YAML_CPP_INCLUDE_DIR}/.. ABSOLUTE)
     endif()
 
     message(STATUS "  ${BWhite}${dep_padded}${CR}${version_padded}${prefix}")
