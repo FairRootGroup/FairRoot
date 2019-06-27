@@ -14,6 +14,7 @@
 
 # Check if cmake has the required version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
+cmake_policy(VERSION 3.11...3.14)
 
 set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
@@ -76,10 +77,6 @@ include(CheckSymbolExists)
 If(NOT _HAS_CXX11_FLAG)
   Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11. CbmRoot can only be compiled with compilers supporting C++11. Please install such a compiler.")
 EndIf()
-
-# set cmake policies
-include(FairRootCmakePolicies)
-set_fairroot_cmake_policies()
 
 # Load some basic macros which are needed later on
 include(FairMacros)

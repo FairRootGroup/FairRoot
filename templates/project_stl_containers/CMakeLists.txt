@@ -7,7 +7,7 @@
 
 # Check if cmake has the required version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
-
+cmake_policy(VERSION 3.11...3.14)
 
 # Set name of our project to “MYPROJ". Has to be done
 # after check of cmake version since this is a new feature
@@ -35,10 +35,6 @@ SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
   set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
 
 Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
-
-# set cmake policies
-include(FairRootCmakePolicies)
-set_fairroot_cmake_policies()
 
 find_package(FairRoot)
 
