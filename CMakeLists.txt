@@ -142,6 +142,7 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 
 if(SIMPATH)
   set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
+  set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${SIMPATH}/lib)
 endif()
 
 # FairRoot only supports ROOT6, so check which version is available
