@@ -94,6 +94,10 @@ CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
 
+if(SIMPATH)
+  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
+  set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${SIMPATH}/lib)
+endif()
 
 find_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
 find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
