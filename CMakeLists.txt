@@ -156,10 +156,7 @@ find_package2(PUBLIC FlatBuffers)
 
 find_package2(PUBLIC Geant3)
 if(Geant3_FOUND)
-  list(APPEND PROJECT_PACKAGE_COMPONENTS Geant3)
   Set(Geant3_LIBRARY_DIR ${Geant3_DIR}/${Geant3_CMAKE_INSTALL_LIBDIR})
-  Set(G3SYS ${Geant3_DIR})
-  SET(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${Geant3_LIBRARY_DIR})
   FIND_PATH(Geant3_SYSTEM_DIR NAMES data PATHS
            ${Geant3_DIR}/../../share/geant3
            NO_DEFAULT_PATH)
@@ -501,6 +498,16 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
     endif()
 
     message(STATUS "  ${BWhite}${dep_padded}${CR}${version_padded}${prefix}")
+
+    if(${dep} STREQUAL Geant3)
+      message(STATUS "                                          G3SYS: ${Geant3_SYSTEM_DIR}")
+    endif()
+    if(${dep} STREQUAL Geant4)
+      foreach(dataset IN LISTS Geant4_DATASETS)
+        pad(${Geant4_DATASET_${dataset}_ENVVAR} 20 " " envvar_padded LEFT)
+        message(STATUS "                          ${envvar_padded}: ${Geant4_DATASET_${dataset}_PATH}")
+      endforeach()
+    endif()
 
     unset(version_str)
     unset(version_padded)
