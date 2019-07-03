@@ -20,6 +20,7 @@ Set(CTEST_BUILD_COMMAND "${BUILD_COMMAND} -j$ENV{number_of_processors}")
 
 String(TOUPPER $ENV{ctest_model} _Model)
 Set(configure_options "-DCMAKE_BUILD_TYPE=${_Model}")
+Set(configure_options "${configure_options};-DDISABLE_COLOR=ON")
 
 Set(USE_LAUNCHERS $ENV{USE_LAUNCHERS})
 If(USE_LAUNCHERS)
