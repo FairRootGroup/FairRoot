@@ -61,6 +61,9 @@ Set(MBSAPI_HEADERS
 ############### build the library #####################
 add_library(MbsAPI SHARED ${MBSAPI_SRCS})
 set_target_properties(MbsAPI PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "9")
+  target_compile_options(MbsAPI PRIVATE "-Wno-stringop-overflow")
+endif()
 
 ############### install the library ###################
 
