@@ -341,8 +341,7 @@ ELSE(FAIRROOT_FOUND)
   )
   Set(ROOT_INCLUDE_PATH
       ${BASE_INCLUDE_DIRECTORIES}
-     )
-
+  )
 ENDIF(FAIRROOT_FOUND)
 
 Set(BASE_LINK_DIRECTORIES
@@ -355,6 +354,11 @@ ELSE(FAIRROOT_FOUND)
   Set(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)
 ENDIF(FAIRROOT_FOUND)
 Set(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
+
+include_directories(${BASE_INCLUDE_DIRECTORIES})
+include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+link_directories(${BASE_LINK_DIRECTORIES})
+
 EndMacro (SetBasicVariables)
 
 ################################################################################
