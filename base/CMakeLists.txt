@@ -147,7 +147,7 @@ If(BUILD_MBS)
   Set(DEPENDENCIES
       Alignment ParBase GeoBase FairTools MbsAPI
       Proof GeomPainter Geom VMC EG MathCore Physics
-      Matrix Tree Hist RIO RHTTP Core
+      Matrix Tree Hist RIO RHTTP Core Boost::serialization
   )
 
   Set(DEFINITIONS BUILD_MBS)
