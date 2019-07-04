@@ -53,20 +53,7 @@ If(BUILD_MBS)
   )
 EndIf(BUILD_MBS)
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
-  ${ROOT_INCLUDE_DIR}
-)
-
-
 Include_Directories(${INCLUDE_DIRECTORIES})
-
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR}
-)
-
-Link_Directories(${LINK_DIRECTORIES})
 
 # List of source files
 set(SRCS
