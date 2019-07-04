@@ -21,6 +21,7 @@
  * gcc-wall wall mode
  */
 #define _SVID_SOURCE
+#define _DEFAULT_SOURCE
 
 #include "FairRunIdGenerator.h"
 #include <sys/errno.h>                  // for errno, EAGAIN, EINTR
