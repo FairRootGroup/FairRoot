@@ -2,6 +2,7 @@
 
 NOFNEEDEDAGENTS=5
 
+export LC_ALL=C
 source @DDS_LOCATION@/DDS_env.sh
 
 echo "***** Start dds server"
@@ -41,6 +42,7 @@ dds-topology -s $DDS_ID --activate @SPLITMC_BIN_LOCATION@/test-splitMC.xml --dis
 COUNTER=0
 LOOPING=1
 until [ $LOOPING -eq 0 ]; do
+    sleep 1;
     echo "waiting $COUNTER seconds for the output file to grow";
     ((COUNTER++));
     if [ $COUNTER -ge 50 ]; then LOOPING=0; fi
@@ -60,6 +62,8 @@ until [ $LOOPING -eq 0 ]; do
     fi
     : ;
 done
+
+sleep 2
 
 echo "check dds states again"
 fairmq-dds-command-ui -s $DDS_ID -c c

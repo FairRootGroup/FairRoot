@@ -24,7 +24,6 @@ set(INCLUDE_DIRECTORIES
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
     ${SYSTEM_INCLUDE_DIRECTORIES}
-    ${ZeroMQ_INCLUDE_DIR}
 )
 
 include_directories( ${INCLUDE_DIRECTORIES})
@@ -69,10 +68,7 @@ Set(DEPENDENCIES
     Gen
     Passive
     Pixel
-    ${Boost_THREAD_LIBRARY} 
-    ${Boost_SYSTEM_LIBRARY} 
-    ${Boost_SERIALIZATION_LIBRARY} 
-   ${Boost_PROGRAM_OPTIONS_LIBRARY}
+    Boost::program_options
 )
 
 GENERATE_LIBRARY()
