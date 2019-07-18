@@ -12,9 +12,6 @@
  * @author R. Karabowicz
  */
 
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-
 #include "FairMQChunkMerger.h"
 #include "FairMQLogger.h"
 

@@ -12,9 +12,6 @@
  * @author R. Karabowicz
  */
 
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-
 #include "FairMQPixAltSamplerBin.h"
 #include "FairMQLogger.h"
 
@@ -231,18 +228,17 @@ bool FairMQPixAltSamplerBin::ReadRootFile()
 
 void FairMQPixAltSamplerBin::PostRun() 
 {
-  if ( fAckChannelName != "" ) {
-    try
-      {
-	fAckListener->join();
-      }
-    catch(boost::thread_resource_error& e)
-      {
-	LOG(error) << e.what();
-	exit(EXIT_FAILURE);
-      }
-  }
-
+    if ( fAckChannelName != "" ) {
+        try
+            {
+                fAckListener->join();
+            }
+        catch (std::runtime_error &ex)
+            {
+                LOG(error) << ex.what();
+                exit(EXIT_FAILURE);
+            }
+    }
   LOG(info) << "PostRun() finished!";
 }
 
