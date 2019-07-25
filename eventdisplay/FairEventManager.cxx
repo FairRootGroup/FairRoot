@@ -60,6 +60,8 @@ FairEventManager::FairEventManager()
    fEvtMaxEnergy(10),
    fRPhiPlane{0,0,10,0},
    fRhoZPlane{-1,0,0,0},
+   fRphiCam(TGLViewer::kCameraOrthoXOY),
+   fRhoCam(TGLViewer::kCameraOrthoZOY),
    fRPhiView(NULL),
    fRhoZView(NULL),
    fMultiView(NULL),
@@ -303,7 +305,7 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
 }
 
 void FairEventManager::SetViewers(TEveViewer* RPhi, TEveViewer* RhoZ) {
-	RPhi->GetGLViewer()->SetCurrentCamera(TGLViewer::kCameraOrthoXOY);
+	RPhi->GetGLViewer()->SetCurrentCamera(fRphiCam);
 	   // set clip plane and camera parameters
 	RPhi->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
 	RPhi->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRPhiPlane);
@@ -315,7 +317,7 @@ void FairEventManager::SetViewers(TEveViewer* RPhi, TEveViewer* RhoZ) {
 	RPhi->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightTop, false);
 	RPhi->GetGLViewer()->GetLightSet()->SetLight(TGLLightSet::kLightBottom, false);
 
-	RhoZ->GetGLViewer()->SetCurrentCamera(TGLViewer::kCameraOrthoZOY);
+	RhoZ->GetGLViewer()->SetCurrentCamera(fRhoCam);
 	   // set clip plane and camera parameters
 	RhoZ->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
 	RhoZ->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRhoZPlane);
@@ -335,19 +337,21 @@ void FairEventManager::SetViewers(TEveViewer* RPhi, TEveViewer* RhoZ) {
 }
 
 void FairEventManager::SetRPhiPlane(Double_t a, Double_t b, Double_t c,
-		Double_t d) {
+		Double_t d,TGLViewer::ECameraType camtype) {
 	fRPhiPlane[0] =a;
 	fRPhiPlane[1] =b;
 	fRPhiPlane[2] =c;
 	fRPhiPlane[3] =d;
+	fRphiCam =camtype;
 }
 
 void FairEventManager::SetRhoZPlane(Double_t a, Double_t b, Double_t c,
-		Double_t d) {
+		Double_t d,TGLViewer::ECameraType camtype) {
 	fRhoZPlane[0] =a;
 	fRhoZPlane[1] =b;
 	fRhoZPlane[2] =c;
 	fRhoZPlane[3] =d;
+	fRhoCam = camtype;
 }
 
 void FairEventManager::LoadXMLSettings() {
