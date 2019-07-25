@@ -58,8 +58,8 @@ class FairEventManager : public TEveEventManager
     virtual Float_t GetEvtMinEnergy() {return fEvtMinEnergy ;}
     virtual Float_t GetMaxEnergy() {return fMaxEnergy;}
     virtual Float_t GetMinEnergy() {return fMinEnergy;}
-    virtual void SetRPhiPlane(Double_t a, Double_t b, Double_t c, Double_t d);
-    virtual void SetRhoZPlane(Double_t a, Double_t b, Double_t c, Double_t d);
+    virtual void SetRPhiPlane(Double_t a, Double_t b, Double_t c, Double_t d,TGLViewer::ECameraType camtype);
+    virtual void SetRhoZPlane(Double_t a, Double_t b, Double_t c, Double_t d,TGLViewer::ECameraType camtype);
     void UpdateEditor();
     virtual void AddParticlesToPdgDataBase(Int_t pdg=0);
     ClassDef(FairEventManager,1);
@@ -91,6 +91,8 @@ class FairEventManager : public TEveEventManager
     Float_t fEvtMaxEnergy;         //!
     Double_t fRPhiPlane[4];			//!
     Double_t fRhoZPlane[4];	//!
+    TGLViewer::ECameraType fRphiCam;	//!
+    TGLViewer::ECameraType fRhoCam;	//!
     TEveViewer *fRPhiView;	//!
     TEveViewer *fRhoZView;	//!
     TEveViewer *fMultiView;	//!
