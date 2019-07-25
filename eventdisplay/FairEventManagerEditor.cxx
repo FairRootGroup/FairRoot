@@ -108,9 +108,7 @@ void FairEventManagerEditor::Init()
   title1->AddFrame(f2);
 
   fVizPri = new TGCheckButton(title1, "Primary Only");
-  AddFrame(fVizPri, new TGLayoutHints(kLHintsTop, 3, 1, 1, 0));
   fVizPri->Connect("Toggled(Bool_t)", "FairEventManagerEditor", this, "DoVizPri()");
-
   title1->AddFrame(fVizPri);
 
   TGHorizontalFrame* f1 = new TGHorizontalFrame(title1);
