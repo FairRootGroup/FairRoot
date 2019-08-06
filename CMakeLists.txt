@@ -248,8 +248,9 @@ EndIf()
 
 find_package2(PUBLIC yaml-cpp)
 if(yaml-cpp_FOUND AND TARGET yaml-cpp AND YAML_CPP_INCLUDE_DIR)
+  get_filename_component(YAML_CPP_INCLUDE_DIR "${YAML_CPP_INCLUDE_DIR}" ABSOLUTE)
   set_target_properties(yaml-cpp PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES ${YAML_CPP_INCLUDE_DIR}
+    INTERFACE_INCLUDE_DIRECTORIES "${YAML_CPP_INCLUDE_DIR}"
   )
 endif()
 
