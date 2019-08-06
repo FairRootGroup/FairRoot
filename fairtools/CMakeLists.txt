@@ -11,7 +11,7 @@
 
 add_subdirectory (MCStepLogger)
 
-If(Geant3_FOUND AND yaml-cpp_FOUND)
+If(TARGET FairFastSim)
   add_subdirectory (MCConfigurator)
 EndIf()
 
