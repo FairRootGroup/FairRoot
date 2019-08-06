@@ -182,7 +182,9 @@ ENDIF(HAS_CXX11_SHAREDPOINTER)
 # the project's entire directory structure.
 
 add_subdirectory (MyProjData)
-add_subdirectory (MyProjGenerators)
+if(TARGET pythia8 AND TARGET Pythia6)
+  add_subdirectory (MyProjGenerators)
+endif()
 add_subdirectory (NewDetector)
 add_subdirectory (passive)
 add_subdirectory (field)
