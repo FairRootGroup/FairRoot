@@ -215,7 +215,7 @@ Unset(Boost_LIBRARY_DIRS CACHE)
 
 find_package2(PUBLIC Boost
   VERSION 1.67
-  COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time signals
+  COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time
   ADD_REQUIREMENTS_OF FairMQ
 )
 
