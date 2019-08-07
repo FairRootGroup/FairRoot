@@ -27,6 +27,7 @@
 #include "TMCProcess.h"                 // for TMCProcess
 
 #include <stddef.h>                     // for NULL
+#include <map>
 
 class FairLogger;
 class TParticle;
@@ -111,9 +112,9 @@ class FairGenericStack : public TVirtualMCStack
      *@param en          new energy      of the particle
      **/
     virtual void          FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t zz, Double_t tt,
-                                                Double_t px, Double_t py, Double_t pz, Double_t en) {}
+                                                Double_t px, Double_t py, Double_t pz, Double_t en);
     /** Fast simulation function to stop original particle. **/
-    virtual void          FastSimStopParticle  () {}
+    virtual void          FastSimStopParticle  ();
     /** Fast simulation function to generate secondaries.
      *@param xx,yy,zz    position    of the particle
      *@param tt          proper time of the particle
@@ -124,10 +125,10 @@ class FairGenericStack : public TVirtualMCStack
                                                Double_t xx, Double_t yy, Double_t zz, Double_t tt,
                                                Double_t px, Double_t py, Double_t pz, Double_t en,
                                                Double_t polx, Double_t poly, Double_t polz, TMCProcess proc,
-                                               Double_t weight, Int_t is) {}
+                                               Double_t weight, Int_t is);
     /** Allow FairFastSim the retrieval of moved particle position, p1 and p2 to get secondaries **/
-    virtual Int_t         FastSimGetMovedIndex (Int_t& p1, Int_t& p2) { return -1; }
-    virtual void          FastSimClearMovedIndex () {}
+    virtual Int_t FastSimGetMovedIndex (Int_t& p1, Int_t& p2) { p1 = fFSFirstSecondary; p2 = fFSNofSecondaries; return fFSMovedIndex; }
+    virtual void FastSimClearMovedIndex () { fFSMovedIndex = -2; fFSFirstSecondary = -2; fFSNofSecondaries = 0; }
 
   protected:
     /** Copy constructor */
@@ -146,6 +147,13 @@ class FairGenericStack : public TVirtualMCStack
 
     /**Verbosity level*/
     Int_t fVerbose;
+    
+    /** FastSimulation: STL map from new track index to original track index  **/
+    std::map<Int_t, Int_t>            fFSTrackMap;        //!
+    std::map<Int_t, Int_t>::iterator  fFSTrackIter;       //!
+    Int_t                             fFSMovedIndex;      //!
+    Int_t                             fFSFirstSecondary;  //!
+    Int_t                             fFSNofSecondaries;  //!
 
     ClassDef(FairGenericStack,1)
 };

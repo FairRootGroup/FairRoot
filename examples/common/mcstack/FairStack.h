@@ -198,34 +198,6 @@ class FairStack : public FairGenericStack
      **/
     void AddPoint(DetectorId iDet, Int_t iTrack);
 
-    /** Fast simulation function to move particle to different position.
-        In Geant3 it stops the current trajectory, and starts it again in the position given by the user.
-        In Geant4 the FastSimulationModel with take over.
-        Later, the points are reindexed and the thus created tracks are not stored in the output.
-     *@param xx,yy,zz    new position    of the particle
-     *@param tt          new proper time of the particle
-     *@param px,py,pz    new momentum    of the particle
-     *@param en          new energy      of the particle
-     **/
-    virtual void          FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t zz, Double_t tt,
-                                                Double_t px, Double_t py, Double_t pz, Double_t en);
-    /** Fast simulation function to stop original particle. **/
-    virtual void          FastSimStopParticle  ();
-    /** Fast simulation function to generate secondaries.
-     *@param xx,yy,zz    position    of the particle
-     *@param tt          proper time of the particle
-     *@param px,py,pz    momentum    of the particle
-     *@param en          energy      of the particle
-     **/
-    virtual void          FastSimPushSecondary(Int_t parentID, Int_t pdgCode,
-                                               Double_t xx, Double_t yy, Double_t zz, Double_t tt,
-                                               Double_t px, Double_t py, Double_t pz, Double_t en,
-                                               Double_t polx, Double_t poly, Double_t polz, TMCProcess proc,
-                                               Double_t weight, Int_t is);
-    /** Allow FairFastSim the retrieval of moved particle position **/
-    virtual Int_t         FastSimGetMovedIndex (Int_t& p1, Int_t& p2) { p1 = fFSFirstSecondary; p2 = fFSNofSecondaries; return fFSMovedIndex; }
-    virtual void          FastSimClearMovedIndex() { fFSMovedIndex = -2; fFSFirstSecondary = -2; fFSNofSecondaries = 0; }
-
     /** Accessors **/
     TParticle* GetParticle(Int_t trackId) const;
     TClonesArray* GetListOfParticles() { return fParticles; }
@@ -256,14 +228,6 @@ class FairStack : public FairGenericStack
     /** STL map from particle index to track index  **/
     std::map<Int_t, Int_t>            fIndexMap;        //!
     std::map<Int_t, Int_t>::iterator  fIndexIter;       //!
-
-
-    /** FastSimulation: STL map from new track index to original track index  **/
-    std::map<Int_t, Int_t>            fFSTrackMap;        //!
-    std::map<Int_t, Int_t>::iterator  fFSTrackIter;       //!
-    Int_t                             fFSMovedIndex;      //!
-    Int_t                             fFSFirstSecondary;  //!
-    Int_t                             fFSNofSecondaries;  //!
 
     /** STL map from track index and detector ID to number of MCPoints **/
     std::map<std::pair<Int_t, Int_t>, Int_t> fPointsMap;     //!
