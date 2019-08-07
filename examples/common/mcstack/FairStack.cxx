@@ -319,11 +319,7 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
         Int_t iTrack = point->GetTrackID();
 
         //        LOG(debug) << "point at " << point->GetX() << "," << point->GetY() << "," << point->GetZ() << " has trackID = " << point->GetTrackID();
-        fFSTrackIter = fFSTrackMap.find(iTrack);      // check if point created by FastSimulation
-        if ( fFSTrackIter != fFSTrackMap.end() ) {    // indeed the point has been created by the FastSimulation mechanism
-            iTrack = fFSTrackIter->second;
-            point->SetTrackID(iTrack);                // set proper TrackID
-        }
+        FastSimUpdateTrackIndex<FairMCPoint>(point, iTrack);
 
         fIndexIter = fIndexMap.find(iTrack);
         if (fIndexIter == fIndexMap.end()) {
