@@ -93,7 +93,9 @@ void FairFastSimModel::DoIt(const G4FastTrack& fastTrack,
                 LOG(fatal) << "FairFastSimModel::DoIt() PDG " << particle->GetPdgCode() << " unknown!";
             G4ThreeVector pos(particle->Vx()*10.,particle->Vy()*10.,particle->Vz()*10.); //change from cm to mm
             G4ThreeVector mom(particle->Px()*1000.,particle->Py()*1000.,particle->Pz()*1000.);
-            G4ThreeVector pol(0.,0.,0.); // get polarisation
+            TVector3 polVect;
+            particle->GetPolarisation(polVect);
+            G4ThreeVector pol(polVect.X(),polVect.Y(),polVect.Z()); // get polarisation
             G4double      tim = particle->T()*10.e9;  // change from ns to s
             G4double      len = 0.;
             G4double      ek  = particle->Ek()*1000.;
