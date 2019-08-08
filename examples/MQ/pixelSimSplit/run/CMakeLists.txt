@@ -11,10 +11,10 @@ Set(MaxTestTime 90)
 GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit/test-splitMC.sh ${CMAKE_CURRENT_BINARY_DIR})
 GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit/test-splitMQ.sh ${CMAKE_CURRENT_BINARY_DIR})
 
-Add_Test(pixelSplitDDS
-       ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
-Set_Tests_Properties(pixelSplitDDS PROPERTIES TIMEOUT ${MaxTestTime})
-Set_Tests_Properties(pixelSplitDDS PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
+#Add_Test(pixelSplitDDS
+#       ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
+#Set_Tests_Properties(pixelSplitDDS PROPERTIES TIMEOUT ${MaxTestTime})
+#Set_Tests_Properties(pixelSplitDDS PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
 
 Add_Test(pixelSplitMQ
          ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
