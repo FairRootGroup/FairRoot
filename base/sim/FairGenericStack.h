@@ -28,6 +28,7 @@
 
 #include <stddef.h>                     // for NULL
 #include <map>
+#include <tuple>
 
 class FairLogger;
 class TParticle;
@@ -127,7 +128,7 @@ class FairGenericStack : public TVirtualMCStack
                                                Double_t polx, Double_t poly, Double_t polz, TMCProcess proc,
                                                Double_t weight, Int_t is);
     /** Allow FairFastSim the retrieval of moved particle position, p1 and p2 to get secondaries **/
-    virtual Int_t FastSimGetMovedIndex (Int_t& p1, Int_t& p2) { p1 = fFSFirstSecondary; p2 = fFSNofSecondaries; return fFSMovedIndex; }
+    virtual std::tuple<Int_t, Int_t, Int_t> FastSimGetMovedIndex() { return std::make_tuple(fFSMovedIndex, fFSFirstSecondary, fFSNofSecondaries); }
     virtual void FastSimClearMovedIndex () { fFSMovedIndex = -2; fFSFirstSecondary = -2; fFSNofSecondaries = 0; }
     
     template<typename T> void FastSimUpdateTrackIndex(T* point, Int_t& iTrack);

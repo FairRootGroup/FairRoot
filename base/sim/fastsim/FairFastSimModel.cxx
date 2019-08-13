@@ -70,12 +70,13 @@ void FairFastSimModel::DoIt(const G4FastTrack& fastTrack,
     //     fastTrack.GetPrimaryTrack()->GetTouchableHandle();
     // G4String name = theTouchable->GetVolume()->GetName();
 
-    int firstSecondary = 0;
-    int nofSecondaries = 0;
-    int movedParticleIndex = ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex(firstSecondary,nofSecondaries);
+    int firstSecondary(0);
+    int nofSecondaries(0);
+    int movedParticleIndex(0);
+    std::tie(movedParticleIndex,firstSecondary,nofSecondaries) = ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex();
     if ( movedParticleIndex == -2 ) {
         FairMCApplication::Instance()->Stepping();
-        movedParticleIndex = ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex(firstSecondary,nofSecondaries);
+        std::tie(movedParticleIndex,firstSecondary,nofSecondaries) = ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex();
     }
     TClonesArray* particles = ((FairGenericStack*)(gMC->GetStack()))->GetListOfParticles();
     if ( nofSecondaries != 0 ) {
