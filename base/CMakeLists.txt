@@ -9,7 +9,10 @@
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-add_subdirectory (sim/fastsim)
+# only build fastsim module if Geant4 was found
+if (Geant4_FOUND)
+  add_subdirectory (sim/fastsim)
+endif()
 
 If(NOT DEFINED BUILD_MBS)
   Set(BUILD_MBS TRUE)
