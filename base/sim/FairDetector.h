@@ -79,6 +79,8 @@ class FairDetector : public FairModule
       return fDetId;
     }
 
+    virtual void DefineSensitiveVolumes();
+
   protected:
     /** Copy constructor */
     FairDetector(const FairDetector&);

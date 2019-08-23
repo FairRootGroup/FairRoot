@@ -80,7 +80,10 @@ class Pixel: public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
-  private:
+    virtual Bool_t      CheckIfSensitive(std::string name);
+    virtual FairModule* CloneModule() const;
+
+ private:
     /** Track information to be stored until the track leaves the
     active volume.
     */

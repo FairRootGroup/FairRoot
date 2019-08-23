@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
+void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0, Bool_t isMT = kFALSE)
 {
   TString dir = getenv("VMCWORKDIR");
   TString tutdir = dir + "/MQ/pixelDetector";
@@ -50,6 +50,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
   // -----   Create simulation run   ----------------------------------------
   FairRunSim* run = new FairRunSim();
   run->SetName(mcEngine);              // Transport engine
+  run->SetIsMT(isMT);                  // Multi-threading mode (Geant4 only)
   run->SetSink(new FairRootFileSink(outFile));
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------

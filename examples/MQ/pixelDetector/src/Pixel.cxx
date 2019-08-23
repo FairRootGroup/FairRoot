@@ -59,6 +59,20 @@ Pixel::Pixel(const char* name, Bool_t active)
 {
 }
 
+Pixel::Pixel(const Pixel& rhs)
+  : FairDetector(rhs),
+    fTrackID(-1),
+    fVolumeID(-1),
+    fPos(),
+    fMom(),
+    fTime(-1.),
+    fLength(-1.),
+    fELoss(-1),
+    fMisalignDetector(kFALSE),
+    fPixelPointCollection(new TClonesArray("PixelPoint"))
+{
+}
+
 Pixel::~Pixel()
 {
   if (fPixelPointCollection) {
@@ -136,8 +150,8 @@ void Pixel::Register()
       only during the simulation.
   */
 
-  FairRootManager::Instance()->Register("PixelPoint", "Pixel",
-                                        fPixelPointCollection, kTRUE);
+    FairRootManager::Instance()->Register("PixelPoint", "Pixel",
+                                          fPixelPointCollection, kTRUE);
 }
 
 TClonesArray* Pixel::GetCollection(Int_t iColl) const
@@ -161,8 +175,17 @@ void Pixel::ConstructGeometry()
     ConstructASCIIGeometry<PixelGeo, PixelGeoPar>(Geo, "PixelGeoPar");
 }
 
-void Pixel::ModifyGeometry() {
-  if (!fMisalignDetector) {
+Bool_t Pixel::CheckIfSensitive(std::string name)
+{
+  TString tsname = name;
+  if (tsname.Contains("Pixel")) {
+    return kTRUE;
+  }
+  return kFALSE;
+}
+
+void Pixel::ModifyGeometry() {  
+  if ( !fMisalignDetector ) {
     return;
   }
   if (0==gGeoManager) {
@@ -204,6 +227,11 @@ PixelPoint* Pixel::AddHit(Int_t trackID, Int_t detID,
   Int_t size = clref.GetEntriesFast();
   return new(clref[size]) PixelPoint(trackID, detID, pos, mom,
          time, length, eLoss);
+}
+
+FairModule* Pixel::CloneModule() const
+{
+  return new Pixel(*this);
 }
 
 extern "C" void ExternCreateDetector() {

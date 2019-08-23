@@ -65,6 +65,9 @@ class TParticle;
 #include <stdlib.h>                     // for getenv, exit
 #include <utility>                      // for pair
 
+#include <mutex>          // std::mutex
+std::mutex mtx;           // mutex for critical section
+
 using std::pair;
 
 FairMCApplication* FairMCApplication::fgMasterInstance = 0;
@@ -596,6 +599,7 @@ void FairMCApplication::PreTrack()
 //_____________________________________________________________________________
 TVirtualMCApplication* FairMCApplication::CloneForWorker() const
 {
+  mtx.lock();
   LOG(info) << "FairMCApplication::CloneForWorker ";
 
   // Create new FairRunSim object on worker
@@ -613,6 +617,8 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
   // Create new FairMCApplication object on worker
   FairMCApplication* workerApplication = new FairMCApplication(*this);
   workerApplication->SetGenerator(fEvGen->ClonePrimaryGenerator());
+
+  mtx.unlock();
 
   return workerApplication;
 }
