@@ -316,6 +316,7 @@ EndIf()
 # the project's entire directory structure.
 add_subdirectory (alignment)
 add_subdirectory (fairtools)
+option(BUILD_MBS "Build MBS" ON)
 add_subdirectory (base)
 add_subdirectory (geobase)
 add_subdirectory (parbase)

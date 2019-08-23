@@ -1,178 +1,232 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libBase" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-If(Geant4_FOUND AND Geant4VMC_FOUND)
-  add_subdirectory (sim/fastsim)
-EndIf()
+if(Geant4_FOUND AND Geant4VMC_FOUND)
+  add_subdirectory(sim/fastsim)
+endif()
 
-If(NOT DEFINED BUILD_MBS)
-  Set(BUILD_MBS TRUE)
-EndIf(NOT DEFINED BUILD_MBS)
+set(target Base)
 
-Set(INCLUDE_DIRECTORIES
-  ${CMAKE_SOURCE_DIR}/logger
-  ${CMAKE_SOURCE_DIR}/fairtools
-  ${CMAKE_SOURCE_DIR}/geobase
-  ${CMAKE_SOURCE_DIR}/parbase
-  ${CMAKE_SOURCE_DIR}/base
-  ${CMAKE_SOURCE_DIR}/base/steer
-  ${CMAKE_SOURCE_DIR}/base/event
-  ${CMAKE_SOURCE_DIR}/base/field
-  ${CMAKE_SOURCE_DIR}/base/sim
-  ${CMAKE_SOURCE_DIR}/base/source
-  ${CMAKE_SOURCE_DIR}/base/sink
-  ${CMAKE_SOURCE_DIR}/alignment
-  ${FairLogger_INCDIR}
+set(sources
+  steer/FairAnaSelector.cxx
+  steer/FairRadGridManager.cxx
+  steer/FairRadLenManager.cxx
+  steer/FairRadMapManager.cxx
+  steer/FairRingSorter.cxx
+  steer/FairRingSorterTask.cxx
+  steer/FairRootManager.cxx
+  steer/FairRun.cxx
+  steer/FairRunAna.cxx
+  steer/FairRunAnaProof.cxx
+  steer/FairRunSim.cxx
+  steer/FairTSBufferFunctional.cxx
+  steer/FairTask.cxx
+  steer/FairTrajFilter.cxx
+  steer/FairWriteoutBuffer.cxx
+  steer/FairRunOnline.cxx
+  steer/FairLinkManager.cxx
+
+  sim/FairBaseContFact.cxx
+  sim/FairBaseParSet.cxx
+  sim/FairGeoParSet.cxx
+  sim/FairDetector.cxx
+  sim/FairGeaneApplication.cxx
+  sim/FairGenerator.cxx
+  sim/FairGenericStack.cxx
+  sim/FairIon.cxx
+  sim/FairMCApplication.cxx
+  sim/FairModule.cxx
+  sim/FairParticle.cxx
+  sim/FairPrimaryGenerator.cxx
+  sim/FairRunIdGenerator.cxx
+  sim/FairGenericVMCConfig.cxx
+  sim/FairVolume.cxx
+  sim/FairVolumeList.cxx
+
+  event/FairEventBuilder.cxx
+  event/FairEventBuilderManager.cxx
+  event/FairEventHeader.cxx
+  event/FairFileHeader.cxx
+  event/FairFileInfo.cxx
+  event/FairHit.cxx
+  event/FairLink.cxx
+  event/FairMCEventHeader.cxx
+  event/FairMCPoint.cxx
+  event/FairMesh.cxx
+  event/FairMultiLinkedData.cxx
+  event/FairMultiLinkedData_Interface.cxx
+  event/FairRadLenPoint.cxx
+  event/FairRadMapPoint.cxx
+  event/FairRecoEventHeader.cxx
+  event/FairRunInfo.cxx
+  event/FairTimeStamp.cxx
+  event/FairTrackParam.cxx
+  event/FairPrintFairLinks.cxx
+
+  field/FairField.cxx
+  field/FairFieldFactory.cxx
+  field/FairPropagator.cxx
+  field/FairRKPropagator.cxx
+
+  source/FairSource.cxx
+  source/FairFileSource.cxx
+  source/FairMixedSource.cxx
+  source/FairOnlineSource.cxx
+
+  $<$<BOOL:${BUILD_MBS}>:source/FairLmdSource.cxx>
+  $<$<BOOL:${BUILD_MBS}>:source/FairRemoteSource.cxx>
+  $<$<BOOL:${BUILD_MBS}>:source/FairMbsSource.cxx>
+  $<$<BOOL:${BUILD_MBS}>:source/FairUnpack.cxx>
+  $<$<BOOL:${BUILD_MBS}>:source/MRevBuffer.cxx>
+  $<$<BOOL:${BUILD_MBS}>:source/FairMbsStreamSource.cxx>
+  $<$<BOOL:${BUILD_MBS}>:source/exitCli.c>
+  $<$<BOOL:${BUILD_MBS}>:source/rclose.c>
+  $<$<BOOL:${BUILD_MBS}>:source/swaplw.c>
+
+  sink/FairSink.cxx
+  sink/FairRootFileSink.cxx
 )
 
+set(headers
+  event/FairMCPoint.h
+  event/FairTrackParam.h
+  event/FairRadLenPoint.h
+  event/FairTimeStamp.h
+  event/FairMCEventHeader.h
+  event/FairEventHeader.h
+  event/FairRadMapPoint.h
+  event/FairMultiLinkedData_Interface.h
+  event/FairMesh.h
+  event/FairHit.h
+  event/FairFileHeader.h
+  event/FairFileInfo.h
+  event/FairMultiLinkedData.h
+  event/FairLink.h
+  event/FairEventBuilderManager.h
+  event/FairRecoEventHeader.h
+  event/FairEventBuilder.h
+  event/FairRunInfo.h
+  event/FairPrintFairLinks.h
 
-If(WITH_DBASE)
-  Set(INCLUDE_DIRECTORIES
-     ${INCLUDE_DIRECTORIES}
-     ${CMAKE_SOURCE_DIR}/dbase/dbInterface
-     ${CMAKE_SOURCE_DIR}/dbase/dbValidation
-     ${CMAKE_SOURCE_DIR}/dbase/dbUtils
-     ${CMAKE_SOURCE_DIR}/input/db
-     ${CMAKE_SOURCE_DIR}/dbase/dbInput
-   )
-EndIf(WITH_DBASE)
+  steer/FairWriteoutBuffer.h
+  steer/FairRadMapManager.h
+  steer/FairRunAnaProof.h
+  steer/FairAnaSelector.h
+  steer/FairTask.h
+  steer/FairRunOnline.h
+  steer/FairRadGridManager.h
+  steer/FairWriteoutBufferAbsBasis.h
+  steer/FairLinkManager.h
+  steer/FairRingSorter.h
+  steer/FairRunAna.h
+  steer/FairRootManager.h
+  steer/FairRingSorterTask.h
+  steer/FairTrajFilter.h
+  steer/FairRun.h
+  steer/FairRunSim.h
+  steer/FairTSBufferFunctional.h
+  steer/FairRadLenManager.h
 
+  field/FairFieldFactory.h
+  field/FairPropagator.h
+  field/FairField.h
+  field/FairRKPropagator.h
 
-If(BUILD_MBS)
-  Set(INCLUDE_DIRECTORIES
-     ${INCLUDE_DIRECTORIES}
-     ${CMAKE_SOURCE_DIR}/MbsAPI
-  )
-EndIf(BUILD_MBS)
+  sink/FairRootFileSink.h
+  sink/FairSink.h
 
-Include_Directories(${INCLUDE_DIRECTORIES})
+  source/ptrevmbsdef.h
+  source/FairMixedSource.h
+  source/FairUnpack.h
+  source/FairMbsSource.h
+  source/FairLmdSource.h
+  source/FairFileSource.h
+  source/FairMbsStreamSource.h
+  source/FairOnlineSource.h
+  source/MRevBuffer.h
+  source/FairRemoteSource.h
+  source/ptrevcomm.h
+  source/FairSource.h
 
-# List of source files
-set(SRCS
-
-steer/FairAnaSelector.cxx
-steer/FairRadGridManager.cxx
-steer/FairRadLenManager.cxx
-steer/FairRadMapManager.cxx
-steer/FairRingSorter.cxx
-steer/FairRingSorterTask.cxx
-steer/FairRootManager.cxx
-steer/FairRun.cxx
-steer/FairRunAna.cxx
-steer/FairRunAnaProof.cxx
-steer/FairRunSim.cxx
-steer/FairTSBufferFunctional.cxx
-steer/FairTask.cxx
-steer/FairTrajFilter.cxx
-steer/FairWriteoutBuffer.cxx
-steer/FairRunOnline.cxx
-steer/FairLinkManager.cxx
-
-sim/FairBaseContFact.cxx
-sim/FairBaseParSet.cxx
-sim/FairGeoParSet.cxx
-sim/FairDetector.cxx
-sim/FairGeaneApplication.cxx
-sim/FairGenerator.cxx
-sim/FairGenericStack.cxx
-sim/FairIon.cxx
-sim/FairMCApplication.cxx
-sim/FairModule.cxx
-sim/FairParticle.cxx
-sim/FairPrimaryGenerator.cxx
-sim/FairRunIdGenerator.cxx
-sim/FairGenericVMCConfig.cxx
-sim/FairVolume.cxx
-sim/FairVolumeList.cxx
-
-event/FairEventBuilder.cxx
-event/FairEventBuilderManager.cxx
-event/FairEventHeader.cxx
-event/FairFileHeader.cxx
-event/FairFileInfo.cxx
-event/FairHit.cxx
-event/FairLink.cxx
-event/FairMCEventHeader.cxx
-event/FairMCPoint.cxx
-event/FairMesh.cxx
-event/FairMultiLinkedData.cxx
-event/FairMultiLinkedData_Interface.cxx
-event/FairRadLenPoint.cxx
-event/FairRadMapPoint.cxx
-event/FairRecoEventHeader.cxx
-event/FairRunInfo.cxx
-event/FairTimeStamp.cxx
-event/FairTrackParam.cxx
-event/FairPrintFairLinks.cxx
-
-field/FairField.cxx
-field/FairFieldFactory.cxx
-field/FairPropagator.cxx
-field/FairRKPropagator.cxx
-
-source/FairSource.cxx
-source/FairFileSource.cxx
-source/FairMixedSource.cxx
-source/FairOnlineSource.cxx
-
-sink/FairSink.cxx
-sink/FairRootFileSink.cxx
+  sim/FairGeoParSet.h
+  sim/FairGeaneApplication.h
+  sim/FairParticle.h
+  sim/FairVolume.h
+  sim/FairGenericVMCConfig.h
+  sim/FairPrimaryGenerator.h
+  sim/FairBaseContFact.h
+  sim/FairVolumeList.h
+  sim/FairMCApplication.h
+  sim/FairModule.h
+  sim/FairGenericStack.h
+  sim/FairRunIdGenerator.h
+  sim/FairBaseParSet.h
+  sim/FairGenerator.h
+  sim/FairIon.h
+  sim/FairDoubleHit.h
+  sim/FairDetector.h
 )
 
-If(BUILD_MBS)
-  Set(SRCS
-      ${SRCS}
-      source/FairLmdSource.cxx
-      source/FairRemoteSource.cxx
-      source/FairMbsSource.cxx
-      source/FairUnpack.cxx
-      source/MRevBuffer.cxx
-      source/FairMbsStreamSource.cxx
-   )
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/steer>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sim>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/event>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/field>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/source>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sink>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
-  Set(NO_DICT_SRCS
-      source/exitCli.c
-      source/rclose.c
-      source/swaplw.c
-  )
+  # DELETE US ONCE MODERNIZED TARGETS
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/fairtools>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/geobase>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/parbase>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/alignment>
+  $<$<BOOL:${BUILD_MBS}>:$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/MbsAPI>>
+  # DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+target_link_libraries(${target} PUBLIC
+  Alignment
+  ParBase
+  GeoBase
+  FairTools
+  Boost::serialization
+  $<$<BOOL:${BUILD_MBS}>:MbsAPI>
 
-  Set(DEPENDENCIES
-      Alignment ParBase GeoBase FairTools MbsAPI
-      Proof GeomPainter Geom VMC EG MathCore Physics
-      Matrix Tree Hist RIO RHTTP Core Boost::serialization
-  )
-
-  Set(DEFINITIONS BUILD_MBS)
-Else(BUILD_MBS)
-  Set(DEPENDENCIES
-      Alignment ParBase GeoBase FairTools
-      Proof GeomPainter Geom VMC EG MathCore Physics
-      Matrix Tree Hist RIO RHTTP Core
-  )
-EndIf(BUILD_MBS)
-
-EXEC_PROGRAM( ${ROOT_CONFIG_EXECUTABLE}
-    ARGS "--has-gdml"
-    OUTPUT_VARIABLE ROOT_HAS_GDML )
-
-If ( ${ROOT_HAS_GDML} STREQUAL yes )
-  Message(STATUS "Build FairModule with Gdml support")
-  Add_Definitions(-DROOT_HAS_GDML)
-EndIf ( ${ROOT_HAS_GDML} STREQUAL yes )
-
-If ( ${ROOT_HAS_GDML} STREQUAL yes )
- Set (DEPENDENCIES ${DEPENDENCIES} Gdml)
-EndIf ( ${ROOT_HAS_GDML} STREQUAL yes )
-
-Set(LINKDEF FairLinkDef.h)
-Set(LIBRARY_NAME Base)
-
-GENERATE_LIBRARY()
+  Proof
+  GeomPainter
+  Geom
+  VMC
+  EG
+  MathCore
+  Physics
+  Matrix
+  Tree
+  Hist
+  RIO
+  RHTTP
+  Core
+  $<$<BOOL:${ROOT_GDML_FOUND}>:Gdml>
+)
+target_compile_definitions(${target} PRIVATE
+  $<$<BOOL:${BUILD_MBS}>:BUILD_MBS>
+  $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT_HAS_GDML>
+)
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF FairLinkDef.h
+)
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  #LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
