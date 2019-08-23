@@ -31,6 +31,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 # Define CMAKE_INSTALL_*DIR family of variables
 include(GNUInstallDirs)
+include(FairRootTargetRootDictionary)
 
 # Define install dirs
 set(PROJECT_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR})
