@@ -84,6 +84,8 @@ class FairTutorialDet1: public FairDetector
 
     virtual FairModule* CloneModule() const;
 
+    virtual Bool_t      CheckIfSensitive(std::string name);
+
   private:
     static FairTutorialDet1Geo* fgGeo;   //!
 

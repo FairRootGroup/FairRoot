@@ -149,6 +149,15 @@ void FairTutorialDet1::Reset()
   fFairTutorialDet1PointCollection->Clear();
 }
 
+Bool_t FairTutorialDet1::CheckIfSensitive(std::string name)
+{
+  TString tsname = name;
+  if (tsname.Contains("tutdet")) {
+    return kTRUE;
+  }
+  return kFALSE;
+}
+
 void FairTutorialDet1::ConstructGeometry()
 {
   /** If you are using the standard ASCII input for the geometry
