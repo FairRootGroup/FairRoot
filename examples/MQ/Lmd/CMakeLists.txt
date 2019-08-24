@@ -47,7 +47,7 @@ Set(SRCS
 )
 
 Set(DEPENDENCIES
-  Base MbsAPI MbsTutorial FairMQ::FairMQ
+  Base MbsAPI MbsTutorial FairMQ::FairMQ Net
 )
 
 Set(LINKDEF LmdLinkDef.h)

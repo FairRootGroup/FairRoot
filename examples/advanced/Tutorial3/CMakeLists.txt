@@ -173,7 +173,7 @@ Set(LINKDEF FairTestDetectorLinkDef.h)
 Set(LIBRARY_NAME FairTestDetector)
 
 Set(DEPENDENCIES
-  Base MCStack FairMQ::FairMQ BaseMQ
+  Base MCStack FairMQ::FairMQ BaseMQ Net
   ${Boost_THREAD_LIBRARY}
   ${Boost_SYSTEM_LIBRARY}
   ${Boost_SERIALIZATION_LIBRARY}
