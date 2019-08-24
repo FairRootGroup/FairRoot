@@ -70,6 +70,7 @@ set(DEPENDENCIES
     BaseMQ
     ${Boost_SERIALIZATION_LIBRARY}
     ${Boost_PROGRAM_OPTIONS_LIBRARY}
+    Net
     Minuit
     XMLIO
     MathMore

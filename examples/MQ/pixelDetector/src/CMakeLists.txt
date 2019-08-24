@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 # Create a library called "libPixel" which includes the source files given in
@@ -31,7 +31,7 @@ Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 set(LINK_DIRECTORIES
 ${ROOT_LIBRARY_DIR}
 ${Boost_LIBRARY_DIRS}
-) 
+)
 
 link_directories( ${LINK_DIRECTORIES})
 
@@ -83,7 +83,7 @@ PixelHit.cxx
 PixelTrack.cxx
 )
 
-Set(HEADERS 
+Set(HEADERS
 Pixel.h
 PixelContFact.h
 PixelDigitize.h
@@ -110,17 +110,18 @@ PixelPayload.h
 Set(LINKDEF PixelLinkDef.h)
 Set(LIBRARY_NAME Pixel)
 Set(DEPENDENCIES
-    Base 
+    Base
     GeoBase
     ParBase
     MCStack
     FairMQ::FairMQ
-    BaseMQ 
+    BaseMQ
     Gen
     Passive
-    ${Boost_THREAD_LIBRARY} 
-    ${Boost_SYSTEM_LIBRARY} 
-    ${Boost_SERIALIZATION_LIBRARY} 
+    Net
+    ${Boost_THREAD_LIBRARY}
+    ${Boost_SYSTEM_LIBRARY}
+    ${Boost_SERIALIZATION_LIBRARY}
    ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )
 
