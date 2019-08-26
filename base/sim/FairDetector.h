@@ -79,13 +79,13 @@ class FairDetector : public FairModule
       return fDetId;
     }
 
-    virtual void DefineSensitiveVolumes();
-
   protected:
     /** Copy constructor */
     FairDetector(const FairDetector&);
     /** Assignment operator */
     FairDetector& operator= (const FairDetector&);
+
+    void DefineSensitiveVolumes();
 
     Int_t fDetId; // Detector Id has to be set from ctr.
     FairLogger* fLogger;  //! /// FairLogger
