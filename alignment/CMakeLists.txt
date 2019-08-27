@@ -32,7 +32,6 @@ target_link_directories(${target} PUBLIC
 )
 
 target_link_libraries(${target} PUBLIC
-  FairLogger::FairLogger
   FairRoot::FairTools
   # TODO: clean the following
   Geom
