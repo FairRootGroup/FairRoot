@@ -13,41 +13,6 @@ endif()
 set(target Base)
 
 set(sources
-  steer/FairAnaSelector.cxx
-  steer/FairRadGridManager.cxx
-  steer/FairRadLenManager.cxx
-  steer/FairRadMapManager.cxx
-  steer/FairRingSorter.cxx
-  steer/FairRingSorterTask.cxx
-  steer/FairRootManager.cxx
-  steer/FairRun.cxx
-  steer/FairRunAna.cxx
-  steer/FairRunAnaProof.cxx
-  steer/FairRunSim.cxx
-  steer/FairTSBufferFunctional.cxx
-  steer/FairTask.cxx
-  steer/FairTrajFilter.cxx
-  steer/FairWriteoutBuffer.cxx
-  steer/FairRunOnline.cxx
-  steer/FairLinkManager.cxx
-
-  sim/FairBaseContFact.cxx
-  sim/FairBaseParSet.cxx
-  sim/FairGeoParSet.cxx
-  sim/FairDetector.cxx
-  sim/FairGeaneApplication.cxx
-  sim/FairGenerator.cxx
-  sim/FairGenericStack.cxx
-  sim/FairIon.cxx
-  sim/FairMCApplication.cxx
-  sim/FairModule.cxx
-  sim/FairParticle.cxx
-  sim/FairPrimaryGenerator.cxx
-  sim/FairRunIdGenerator.cxx
-  sim/FairGenericVMCConfig.cxx
-  sim/FairVolume.cxx
-  sim/FairVolumeList.cxx
-
   event/FairEventBuilder.cxx
   event/FairEventBuilderManager.cxx
   event/FairEventHeader.cxx
@@ -58,118 +23,153 @@ set(sources
   event/FairMCEventHeader.cxx
   event/FairMCPoint.cxx
   event/FairMesh.cxx
-  event/FairMultiLinkedData.cxx
   event/FairMultiLinkedData_Interface.cxx
+  event/FairMultiLinkedData.cxx
+  event/FairPrintFairLinks.cxx
   event/FairRadLenPoint.cxx
   event/FairRadMapPoint.cxx
   event/FairRecoEventHeader.cxx
   event/FairRunInfo.cxx
   event/FairTimeStamp.cxx
   event/FairTrackParam.cxx
-  event/FairPrintFairLinks.cxx
 
   field/FairField.cxx
   field/FairFieldFactory.cxx
   field/FairPropagator.cxx
   field/FairRKPropagator.cxx
 
-  source/FairSource.cxx
+  sim/FairBaseContFact.cxx
+  sim/FairBaseParSet.cxx
+  sim/FairDetector.cxx
+  # sim/FairDoubleHit.cxx # TODO: should this be added?
+  sim/FairGeaneApplication.cxx
+  sim/FairGenerator.cxx
+  sim/FairGenericStack.cxx
+  sim/FairGenericVMCConfig.cxx
+  sim/FairGeoParSet.cxx
+  sim/FairIon.cxx
+  sim/FairMCApplication.cxx
+  sim/FairModule.cxx
+  sim/FairParticle.cxx
+  sim/FairPrimaryGenerator.cxx
+  sim/FairRunIdGenerator.cxx
+  sim/FairVolume.cxx
+  sim/FairVolumeList.cxx
+
+  sink/FairRootFileSink.cxx
+  sink/FairSink.cxx
+
   source/FairFileSource.cxx
   source/FairMixedSource.cxx
   source/FairOnlineSource.cxx
-
+  source/FairSource.cxx
+  $<$<BOOL:${BUILD_MBS}>:source/exitCli.c>
   $<$<BOOL:${BUILD_MBS}>:source/FairLmdSource.cxx>
-  $<$<BOOL:${BUILD_MBS}>:source/FairRemoteSource.cxx>
   $<$<BOOL:${BUILD_MBS}>:source/FairMbsSource.cxx>
+  $<$<BOOL:${BUILD_MBS}>:source/FairMbsStreamSource.cxx>
+  $<$<BOOL:${BUILD_MBS}>:source/FairRemoteSource.cxx>
   $<$<BOOL:${BUILD_MBS}>:source/FairUnpack.cxx>
   $<$<BOOL:${BUILD_MBS}>:source/MRevBuffer.cxx>
-  $<$<BOOL:${BUILD_MBS}>:source/FairMbsStreamSource.cxx>
-  $<$<BOOL:${BUILD_MBS}>:source/exitCli.c>
   $<$<BOOL:${BUILD_MBS}>:source/rclose.c>
   $<$<BOOL:${BUILD_MBS}>:source/swaplw.c>
 
-  sink/FairSink.cxx
-  sink/FairRootFileSink.cxx
+  steer/FairAnaSelector.cxx
+  steer/FairLinkManager.cxx
+  steer/FairRadGridManager.cxx
+  steer/FairRadLenManager.cxx
+  steer/FairRadMapManager.cxx
+  steer/FairRingSorter.cxx
+  steer/FairRingSorterTask.cxx
+  steer/FairRootManager.cxx
+  steer/FairRun.cxx
+  steer/FairRunAna.cxx
+  steer/FairRunAnaProof.cxx
+  steer/FairRunOnline.cxx
+  steer/FairRunSim.cxx
+  steer/FairTask.cxx
+  steer/FairTrajFilter.cxx
+  steer/FairTSBufferFunctional.cxx
+  steer/FairWriteoutBuffer.cxx
 )
 
 set(headers
-  event/FairMCPoint.h
-  event/FairTrackParam.h
-  event/FairRadLenPoint.h
-  event/FairTimeStamp.h
-  event/FairMCEventHeader.h
+  event/FairEventBuilder.h
+  event/FairEventBuilderManager.h
   event/FairEventHeader.h
-  event/FairRadMapPoint.h
-  event/FairMultiLinkedData_Interface.h
-  event/FairMesh.h
-  event/FairHit.h
   event/FairFileHeader.h
   event/FairFileInfo.h
-  event/FairMultiLinkedData.h
+  event/FairHit.h
   event/FairLink.h
-  event/FairEventBuilderManager.h
-  event/FairRecoEventHeader.h
-  event/FairEventBuilder.h
-  event/FairRunInfo.h
+  event/FairMCEventHeader.h
+  event/FairMCPoint.h
+  event/FairMesh.h
+  event/FairMultiLinkedData_Interface.h
+  event/FairMultiLinkedData.h
   event/FairPrintFairLinks.h
+  event/FairRadLenPoint.h
+  event/FairRadMapPoint.h
+  event/FairRecoEventHeader.h
+  event/FairRunInfo.h
+  event/FairTimeStamp.h
+  event/FairTrackParam.h
 
-  steer/FairWriteoutBuffer.h
-  steer/FairRadMapManager.h
-  steer/FairRunAnaProof.h
-  steer/FairAnaSelector.h
-  steer/FairTask.h
-  steer/FairRunOnline.h
-  steer/FairRadGridManager.h
-  steer/FairWriteoutBufferAbsBasis.h
-  steer/FairLinkManager.h
-  steer/FairRingSorter.h
-  steer/FairRunAna.h
-  steer/FairRootManager.h
-  steer/FairRingSorterTask.h
-  steer/FairTrajFilter.h
-  steer/FairRun.h
-  steer/FairRunSim.h
-  steer/FairTSBufferFunctional.h
-  steer/FairRadLenManager.h
-
+  field/FairField.h
   field/FairFieldFactory.h
   field/FairPropagator.h
-  field/FairField.h
   field/FairRKPropagator.h
+
+  sim/FairBaseContFact.h
+  sim/FairBaseParSet.h
+  sim/FairDetector.h
+  sim/FairDoubleHit.h
+  sim/FairGeaneApplication.h
+  sim/FairGenerator.h
+  sim/FairGenericStack.h
+  sim/FairGenericVMCConfig.h
+  sim/FairGeoParSet.h
+  sim/FairIon.h
+  sim/FairMCApplication.h
+  sim/FairModule.h
+  sim/FairParticle.h
+  sim/FairPrimaryGenerator.h
+  sim/FairRunIdGenerator.h
+  sim/FairVolume.h
+  sim/FairVolumeList.h
 
   sink/FairRootFileSink.h
   sink/FairSink.h
 
-  source/ptrevmbsdef.h
-  source/FairMixedSource.h
-  source/FairUnpack.h
-  source/FairMbsSource.h
-  source/FairLmdSource.h
   source/FairFileSource.h
-  source/FairMbsStreamSource.h
+  source/FairMixedSource.h
   source/FairOnlineSource.h
-  source/MRevBuffer.h
-  source/FairRemoteSource.h
-  source/ptrevcomm.h
   source/FairSource.h
+  source/FairLmdSource.h
+  source/FairMbsSource.h
+  source/FairMbsStreamSource.h
+  source/FairRemoteSource.h
+  source/FairUnpack.h
+  source/MRevBuffer.h
+  source/ptrevcomm.h
+  source/ptrevmbsdef.h
 
-  sim/FairGeoParSet.h
-  sim/FairGeaneApplication.h
-  sim/FairParticle.h
-  sim/FairVolume.h
-  sim/FairGenericVMCConfig.h
-  sim/FairPrimaryGenerator.h
-  sim/FairBaseContFact.h
-  sim/FairVolumeList.h
-  sim/FairMCApplication.h
-  sim/FairModule.h
-  sim/FairGenericStack.h
-  sim/FairRunIdGenerator.h
-  sim/FairBaseParSet.h
-  sim/FairGenerator.h
-  sim/FairIon.h
-  sim/FairDoubleHit.h
-  sim/FairDetector.h
+  steer/FairAnaSelector.h
+  steer/FairLinkManager.h
+  steer/FairRadGridManager.h
+  steer/FairRadLenManager.h
+  steer/FairRadMapManager.h
+  steer/FairRingSorter.h
+  steer/FairRingSorterTask.h
+  steer/FairRootManager.h
+  steer/FairRun.h
+  steer/FairRunAna.h
+  steer/FairRunAnaProof.h
+  steer/FairRunOnline.h
+  steer/FairRunSim.h
+  steer/FairTask.h
+  steer/FairTrajFilter.h
+  steer/FairTSBufferFunctional.h
+  steer/FairWriteoutBuffer.h
+  steer/FairWriteoutBufferAbsBasis.h
 )
 
 add_library(${target} SHARED ${sources} ${headers})
