@@ -68,3 +68,13 @@ fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF ParBaseLinkDef.h
 )
+
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
+
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
