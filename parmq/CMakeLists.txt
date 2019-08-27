@@ -1,64 +1,64 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-configure_file(${CMAKE_SOURCE_DIR}/parmq/parameter-server.json ${CMAKE_BINARY_DIR}/bin/config/parameter-server.json)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/parameter-server.json ${CMAKE_BINARY_DIR}/bin/config/parameter-server.json)
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/parmq
-  ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
-  ${CMAKE_CURRENT_BINARY_DIR}
-)
+set(target ParMQ)
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
-  ${SYSTEM_INCLUDE_DIRECTORIES}
-)
-
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR}
-)
-
-Link_Directories(${LINK_DIRECTORIES})
-
-Set(SRCS
+set(sources
   ParameterMQServer.cxx
 )
 
-Set(DEPENDENCIES
-  ${DEPENDENCIES}
-  Base
-  ParBase
+set(headers
+  ParameterMQServer.cxx
+)
+
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR} # Net
+)
+
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::BaseMQ # Serialization policies
+  FairRoot::ParBase # FairRuntimeDb, ...
+  FairRoot::FairTools # FairLogger
   FairMQ::FairMQ
+  # TODO: clean the following
+  # which ROOT libs for TGeoManager, TClass, RTypes
 )
 
-Set(LIBRARY_NAME ParMQ)
-
-GENERATE_LIBRARY()
-
-Set(Exe_Names
-  parmq-server
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 )
 
-Set(Exe_Source
-  runParameterMQServer.cxx
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-list(LENGTH Exe_Names _length)
-math(EXPR _length ${_length}-1)
+add_executable(parmq-server runParameterMQServer.cxx)
+target_link_libraries(parmq-server PRIVATE ParMQ)
 
-ForEach(_file RANGE 0 ${_length})
-  list(GET Exe_Names ${_file} _name)
-  list(GET Exe_Source ${_file} _src)
-  Set(EXE_NAME ${_name})
-  Set(SRCS ${_src})
-  Set(DEPENDENCIES ParMQ)
-  GENERATE_EXECUTABLE()
-EndForEach(_file RANGE 0 ${_length})
+install(TARGETS parmq-server
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
