@@ -185,7 +185,6 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
   # DELETE US ONCE MODERNIZED TARGETS
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/geobase>
   $<$<BOOL:${BUILD_MBS}>:$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/MbsAPI>>
   # DELETE ME ONCE USING root targets
   ${ROOT_INCLUDE_DIR}
@@ -195,7 +194,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Alignment
   FairRoot::FairTools
   FairRoot::ParBase
-  GeoBase
+  FairRoot::GeoBase
   Boost::serialization
   $<$<BOOL:${BUILD_MBS}>:MbsAPI>
 

@@ -1,74 +1,107 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libBase" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(INCLUDE_DIRECTORIES
-  ${CMAKE_SOURCE_DIR}/fairtools
-  ${CMAKE_SOURCE_DIR}/geobase
+set(target GeoBase)
+
+set(sources
+  FairGeoAsciiIo.cxx
+  FairGeoAssembly.cxx
+  FairGeoBasicShape.cxx
+  FairGeoBrik.cxx
+  FairGeoBuilder.cxx
+  FairGeoCompositeVolume.cxx
+  FairGeoCone.cxx
+  FairGeoCons.cxx
+  FairGeoEltu.cxx
+  FairGeoInterface.cxx
+  FairGeoIo.cxx
+  FairGeoLoader.cxx
+  FairGeoMatrix.cxx
+  FairGeoMedia.cxx
+  FairGeoMedium.cxx
+  FairGeoNode.cxx
+  FairGeoOldAsciiIo.cxx
+  FairGeoPcon.cxx
+  FairGeoPgon.cxx
+  FairGeoRootBuilder.cxx
+  FairGeoRotation.cxx
+  FairGeoSet.cxx
+  FairGeoShapes.cxx
+  FairGeoSphe.cxx
+  FairGeoTorus.cxx
+  FairGeoTransform.cxx
+  FairGeoTrap.cxx
+  FairGeoTrd1.cxx
+  FairGeoTube.cxx
+  FairGeoTubs.cxx
+  FairGeoVector.cxx
+  FairGeoVolume.cxx
 )
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
-  ${ROOT_INCLUDE_DIR} 
+set(headers
+  FairGeoAsciiIo.h
+  FairGeoAssembly.h
+  FairGeoBasicShape.h
+  FairGeoBrik.h
+  FairGeoBuilder.h
+  FairGeoCompositeVolume.h
+  FairGeoCone.h
+  FairGeoCons.h
+  FairGeoEltu.h
+  FairGeoInterface.h
+  FairGeoIo.h
+  FairGeoLoader.h
+  FairGeoMatrix.h
+  FairGeoMedia.h
+  FairGeoMedium.h
+  FairGeoNode.h
+  FairGeoOldAsciiIo.h
+  FairGeoPcon.h
+  FairGeoPgon.h
+  FairGeoRootBuilder.h
+  FairGeoRotation.h
+  FairGeoSet.h
+  FairGeoShapes.h
+  FairGeoSphe.h
+  FairGeoTorus.h
+  FairGeoTransform.h
+  FairGeoTrap.h
+  FairGeoTrd1.h
+  FairGeoTube.h
+  FairGeoTubs.h
+  FairGeoVector.h
+  FairGeoVolume.h
 )
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
 
-Set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR} 
-)
- 
-Link_Directories(${LINK_DIRECTORIES})
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
-
-set(SRCS
-
-FairGeoAssembly.cxx
-FairGeoCone.cxx	
-FairGeoCons.cxx 
-FairGeoEltu.cxx 
-FairGeoBuilder.cxx  
-FairGeoInterface.cxx  
-FairGeoIo.cxx  
-FairGeoLoader.cxx  
-FairGeoMatrix.cxx 
-FairGeoMedia.cxx	 
-FairGeoMedium.cxx 
-FairGeoNode.cxx 
-FairGeoOldAsciiIo.cxx 
-FairGeoPcon.cxx  
-FairGeoPgon.cxx 
-FairGeoRootBuilder.cxx  
-FairGeoRotation.cxx 
-FairGeoSet.cxx  
-FairGeoShapes.cxx 
-FairGeoSphe.cxx  
-FairGeoTransform.cxx 
-FairGeoTrap.cxx	
-FairGeoTrd1.cxx 
-FairGeoTube.cxx  
-FairGeoTubs.cxx  
-FairGeoTorus.cxx 
-FairGeoVector.cxx  
-FairGeoVolume.cxx 
-FairGeoCompositeVolume.cxx 
-FairGeoAsciiIo.cxx	
-FairGeoBrik.cxx 
-FairGeoBasicShape.cxx 
- 
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
 )
 
-Set(HEADERS )
-Set(LINKDEF GeoBaseLinkDef.h)
-Set(LIBRARY_NAME GeoBase)
-Set(DEPENDENCIES Geom Graf3d Core FairTools)
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
+)
 
-GENERATE_LIBRARY()
+target_link_libraries(${target} PUBLIC
+  FairRoot::FairTools
+  # TODO: clean the following
+  Core
+  Geom
+  Graf3d
+)
 
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF GeoBaseLinkDef.h
+)
