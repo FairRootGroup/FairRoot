@@ -1,48 +1,65 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libFairTools" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-add_subdirectory (MCStepLogger)
+add_subdirectory(MCStepLogger)
 
-If(TARGET FairFastSim)
-  add_subdirectory (MCConfigurator)
-EndIf()
+if(TARGET FairFastSim)
+  add_subdirectory(MCConfigurator)
+endif()
 
-Set(INCLUDE_DIRECTORIES
- ${CMAKE_SOURCE_DIR}/fairtools
- ${FairLogger_INCDIR}
+set(target FairTools)
+
+set(sources
+  FairLogger.cxx
+  FairMonitor.cxx
+  FairSystemInfo.cxx
 )
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
- ${ROOT_INCLUDE_DIR}
+set(headers
+  FairLogger.h
+  FairMonitor.h
+  FairSystemInfo.h
 )
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
 
-Set(LINK_DIRECTORIES
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
 )
 
-Link_Directories(${LINK_DIRECTORIES})
-
-# List of source files
-set(SRCS
-   FairLogger.cxx
-   FairMonitor.cxx
-   FairSystemInfo.cxx
+target_link_libraries(${target} PUBLIC
+  FairLogger::FairLogger
+  # TODO: clean the following
+  Core
+  Graf
+  Gpad
 )
 
-Set(HEADERS )
-Set(LINKDEF FairToolsLinkDef.h)
-Set(LIBRARY_NAME FairTools)
-Set(DEPENDENCIES FairLogger::FairLogger Core Graf Gpad)
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF FairToolsLinkDef.h
+)
 
-GENERATE_LIBRARY()
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
+
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
