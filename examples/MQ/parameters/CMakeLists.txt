@@ -40,8 +40,9 @@ Set(NO_DICT_SRCS
 set(DEPENDENCIES
   ${DEPENDENCIES}
   FairMQ::FairMQ
-  Base
+  FairRoot::Base
   MCStack
+  Net # TMessage
 )
 
 set(LINKDEF "FairMQExParamsLinkDef.h")
