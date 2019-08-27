@@ -163,6 +163,18 @@ endif()
 # FairRoot only supports ROOT6, so check which version is available
 find_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
 find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
+
+foreach(dep IN LISTS FairLogger_PACKAGE_DEPENDENCIES)
+if(NOT dep STREQUAL "Boost")
+  find_package2(PUBLIC ${dep} REQUIRED VERSION ${FairLogger_${dep}_VERSION})
+  set(PROJECT_${dep}_VERSION ${FairLogger_${dep}_VERSION})
+  if(dep STREQUAL "fmt") # handling of external fmt installation
+    get_target_property(FMT_INCLUDE_DIR fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
+    set(FairLogger_INCDIR ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR})
+  endif()
+endif()
+endforeach()
+
 find_package2(PUBLIC Pythia6)
 find_package2(PUBLIC Pythia8)
 find_package2(PUBLIC Protobuf)
@@ -515,6 +527,9 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
       get_filename_component(prefix ${IWYU_BINARY}/.. ABSOLUTE)
     elseif(${dep} STREQUAL yaml-cpp)
       get_filename_component(prefix ${YAML_CPP_INCLUDE_DIR}/.. ABSOLUTE)
+    elseif(${dep} STREQUAL fmt)
+      get_target_property(fmt_include fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
+      get_filename_component(prefix ${fmt_include}/.. ABSOLUTE)
     endif()
 
     message(STATUS "  ${BWhite}${dep_padded}${CR}${version_padded}${prefix}")
