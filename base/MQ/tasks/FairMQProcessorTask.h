@@ -17,8 +17,6 @@
 
 #include <vector>
 
-#include <boost/function.hpp>
-
 #include "FairTask.h"
 
 #include "FairMQMessage.h"

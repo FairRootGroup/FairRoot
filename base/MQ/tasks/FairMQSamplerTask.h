@@ -19,8 +19,6 @@
 #include <string>
 #include <memory>
 
-#include <boost/function.hpp>
-
 #include "FairMQMessage.h"
 #include "FairMQTransportFactory.h"
 
