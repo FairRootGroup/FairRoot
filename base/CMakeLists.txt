@@ -174,6 +174,7 @@ set(headers
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
+
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/steer>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sim>
@@ -187,13 +188,13 @@ target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/fairtools>
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/geobase>
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/parbase>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/alignment>
   $<$<BOOL:${BUILD_MBS}>:$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/MbsAPI>>
   # DELETE ME ONCE USING root targets
   ${ROOT_INCLUDE_DIR}
 )
+
 target_link_libraries(${target} PUBLIC
-  Alignment
+  FairRoot::Alignment
   ParBase
   GeoBase
   FairTools
@@ -215,18 +216,22 @@ target_link_libraries(${target} PUBLIC
   Core
   $<$<BOOL:${ROOT_GDML_FOUND}>:Gdml>
 )
+
 target_compile_definitions(${target} PRIVATE
   $<$<BOOL:${BUILD_MBS}>:BUILD_MBS>
   $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT_HAS_GDML>
 )
+
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF FairLinkDef.h
 )
+
 install(TARGETS ${target}
   LIBRARY DESTINATION lib
   #LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 )
+
 install(FILES ${headers}
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )

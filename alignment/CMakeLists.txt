@@ -1,42 +1,51 @@
  ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ # Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Create a library called "libBase" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
 
-Set(INCLUDE_DIRECTORIES
-  ${CMAKE_SOURCE_DIR}/fairtools
-  ${FairLogger_INCDIR}
+set(target Alignment)
+
+set(sources
+  FairAlignmentHandler.cxx
 )
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
+set(headers
+  FairAlignmentHandler.h
+)
+
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE US ONCE MODERNIZED TARGETS
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/fairtools>
+  # TODO: DELETE ME ONCE USING root targets
   ${ROOT_INCLUDE_DIR}
 )
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
+target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
 )
 
-Link_Directories(${LINK_DIRECTORIES})
-
-# List of source files
-Set(SRCS
-FairAlignmentHandler.cxx
+target_link_libraries(${target} PUBLIC
+  FairLogger::FairLogger
+  # TODO: clean the following
+  Geom
+  Matrix
 )
 
-Set(DEPENDENCIES
-      Geom Matrix
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 )
 
-Set(LIBRARY_NAME Alignment)
-
-GENERATE_LIBRARY()
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
