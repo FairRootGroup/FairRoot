@@ -1,34 +1,65 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libBase" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/field 
-  ${CMAKE_SOURCE_DIR}/passive
-  ${CMAKE_SOURCE_DIR}/trackbase
-)
+set(target TrkBase)
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-
-Set(SRCS
-  FairTrackPar.cxx
-  FairTrackParP.cxx
-  FairTrackParH.cxx 
+set(sources
   FairGeaneUtil.cxx
+  FairTrackPar.cxx
+  FairTrackParH.cxx
+  FairTrackParP.cxx
 )
 
-Set(HEADERS )
-Set(LINKDEF TrackBaseLinkDef.h)
-Set(LIBRARY_NAME TrkBase)
-Set(DEPENDENCIES Base Boost::serialization)
-#Set(DEPENDENCIES Base Physics Matrix Core)
+set(headers
+  FairGeaneUtil.h
+  FairTrackPar.h
+  FairTrackParH.h
+  FairTrackParP.h
+)
 
-GENERATE_LIBRARY()
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
+)
+
+target_link_libraries(${target} PUBLIC
+  FairRoot::FairTools
+  FairRoot::Base # FairRunAna, FairField
+  Boost::boost
+  Boost::serialization
+  # TODO: clean the following
+  # needed: TMath, TMatrixT, TMatrixTBase, TMatrixTUtils, TMathBase, TObject, Rtypes, TVector3
+  Physics
+  Matrix
+  Core
+)
+
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF TrackBaseLinkDef.h
+)
+
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
+
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
