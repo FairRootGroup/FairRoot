@@ -1,54 +1,62 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libBase" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-set(INCLUDE_DIRECTORIES
-${CMAKE_SOURCE_DIR}/fairtools
-${CMAKE_SOURCE_DIR}/geobase
-${CMAKE_SOURCE_DIR}/parbase
-${CMAKE_SOURCE_DIR}/base
-${CMAKE_SOURCE_DIR}/base/steer
-${CMAKE_SOURCE_DIR}/base/event
-${CMAKE_SOURCE_DIR}/base/field
-${CMAKE_SOURCE_DIR}/base/sim
-${CMAKE_SOURCE_DIR}/trackbase
-${CMAKE_SOURCE_DIR}/base/source
-${CMAKE_SOURCE_DIR}/base/sink
-${CMAKE_SOURCE_DIR}/geane
-${CMAKE_SOURCE_DIR}/alignment
-)
+set(target Geane)
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
-  ${ROOT_INCLUDE_DIR}
-  ${Geant3_INCLUDE_DIRS}
-  ${Geant3_INCLUDE_DIRS}
-)
-
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR}
-)
-
-Link_Directories(${LINK_DIRECTORIES})
-
-
-Set(SRCS
+set(sources
   FairGeane.cxx
   FairGeanePro.cxx
 )
 
-Set(HEADERS )
-Set(LINKDEF GeaneLinkDef.h)
-Set(LIBRARY_NAME Geane)
-Set(DEPENDENCIES Base TrkBase VMC)
+set(headers
+  FairGeane.h
+  FairGeanePro.h
+)
 
-GENERATE_LIBRARY()
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: delete me once using targets
+  $<BUILD_INTERFACE:${Geant3_INCLUDE_DIRS}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
+  ${Geant3_LIBRARY_DIR}
+  ${Geant4_LIBRARY_DIR}
+  ${Geant4VMC_LIBRARY_DIR}
+)
+
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairField, FairTask, FairPropagator
+  FairRoot::TrkBase # FairTrackPar
+  # TODO: clean the following
+  VMC
+)
+
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF GeaneLinkDef.h
+)
+
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
+
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
