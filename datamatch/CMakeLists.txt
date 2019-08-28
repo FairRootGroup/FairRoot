@@ -1,42 +1,71 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libFairDataMatch" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_CURRENT_SOURCE_DIR}
+set(target FairDataMatch)
+
+set(sources
+  FairMCDataCrawler.cxx
+  FairMCEntry.cxx
+  FairMCList.cxx
+  FairMCMatch.cxx
+  FairMCMatchCreatorTask.cxx
+  FairMCMatchLoaderTask.cxx
+  FairMCMatchSelectorTask.cxx
+  FairMCObject.cxx
+  FairMCResult.cxx
+  FairMCStage.cxx
 )
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-
-set(SRCS
-FairMCMatch.cxx
-FairMCMatchCreatorTask.cxx
-FairMCMatchLoaderTask.cxx
-FairMCMatchSelectorTask.cxx
-FairMCObject.cxx
-FairMCStage.cxx
-FairMCResult.cxx
-FairMCEntry.cxx
-FairMCList.cxx
-FairMCDataCrawler.cxx
+set(headers
+  FairMCDataCrawler.h
+  FairMCEntry.h
+  FairMCList.h
+  FairMCMatch.h
+  FairMCMatchCreatorTask.h
+  FairMCMatchLoaderTask.h
+  FairMCMatchSelectorTask.h
+  FairMCObject.h
+  FairMCResult.h
+  FairMCStage.h
 )
 
-Set(HEADERS )
-Set(LINKDEF FairMCMatchLinkDef.h)
-Set(LIBRARY_NAME FairDataMatch)
-Set(DEPENDENCIES Base Core)
-#    FairTools ParBase GeoBase 
-#    Proof GeomPainter Geom VMC EG MathCore Physics 
-#    Matrix Tree Hist RIO Core
-#)
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
 
-GENERATE_LIBRARY()
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
+)
+
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairMultiLinkedData, FairRootManager, FairLink
+  # TODO: clean the following
+  Core
+)
+
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF FairMCMatchLinkDef.h
+)
+
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
+
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
