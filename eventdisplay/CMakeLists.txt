@@ -58,7 +58,7 @@ target_link_directories(${target} PUBLIC
 )
 
 target_link_libraries(${target} PUBLIC
-  FairLogger::FairLogger
+  FairRoot::FairTools
   FairRoot::Base # FairRootManager, FairRunAna, FairTSBufferFunctional, FairTimeStamp, FairEventManager
   # TODO: clean the following
   # needed: TClonesArray, TEveBoxSet, RTypes, TGLabel, TGLayout, TGNumberEntry, TXMLNode.h, TList.h, TXMLAttr, TXMLEngine

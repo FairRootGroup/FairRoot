@@ -198,6 +198,8 @@ Find_Package2(PUBLIC VGM)
 
 find_package2(PUBLIC Geant4VMC)
 if(Geant4VMC_FOUND)
+  # TODO: upstream this
+  set_target_properties(geant4vmc PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${Geant4VMC_INCLUDE_DIRS}")
   Set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/${Geant4VMC_CMAKE_INSTALL_LIBDIR}")
   Set(Geant4VMC_SHARE_DIR "${Geant4VMC_DIR}/share")
   Find_Path(Geant4VMC_MACRO_DIR NAMES g4libs.C PATHS
