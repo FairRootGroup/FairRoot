@@ -40,7 +40,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::FairTools # FairLogger
   FairMQ::FairMQ
   # TODO: clean the following
-  # which ROOT libs for TGeoManager, TClass, RTypes
+  # which ROOT libs for TGeoManager, TClass, RTypes ?
 )
 
 install(TARGETS ${target}

@@ -1,41 +1,83 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libEventDisplay" 
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
+# Create a library called "libEventDisplay"
 # 06.12.07  M. Al-Turany
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/trackbase 
-  ${CMAKE_SOURCE_DIR}/geane
-  ${CMAKE_SOURCE_DIR}/eventdisplay
+set(target EventDisplay)
+
+set(sources
+  FairBoxSet.cxx
+  FairBoxSetDraw.cxx
+  FairBoxSetEditor.cxx
+  FairEventManager.cxx
+  FairEventManagerEditor.cxx
+  FairHitDraw.cxx
+  FairHitPointSetDraw.cxx
+  FairMCPointDraw.cxx
+  FairMCTracks.cxx
+  FairMCTracksEditor.cxx
+  FairPointSetDraw.cxx
+  FairTimeStampPointDraw.cxx
+  FairXMLNode.cxx
 )
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-
-set(SRCS
-FairEventManager.cxx  
-FairMCTracks.cxx
-FairEventManagerEditor.cxx
-FairMCTracksEditor.cxx
-FairBoxSet.cxx
-FairBoxSetDraw.cxx
-FairBoxSetEditor.cxx
-FairPointSetDraw.cxx
-FairMCPointDraw.cxx
-FairHitDraw.cxx
-FairHitPointSetDraw.cxx
-FairTimeStampPointDraw.cxx
-FairXMLNode.cxx
+set(headers
+  FairBoxSet.h
+  FairBoxSetDraw.h
+  FairBoxSetEditor.h
+  FairEventManager.h
+  FairEventManagerEditor.h
+  FairHitDraw.h
+  FairHitPointSetDraw.h
+  FairMCPointDraw.h
+  FairMCTracks.h
+  FairMCTracksEditor.h
+  FairPointSetDraw.h
+  FairTimeStampPointDraw.h
+  FairXMLNode.h
 )
 
-Set(HEADERS )
-Set(LINKDEF EventDisplayLinkDef.h)
-Set(LIBRARY_NAME EventDisplay)
-Set(DEPENDENCIES Base Eve XMLIO XMLParser)
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
 
-GENERATE_LIBRARY()
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
+)
+
+target_link_libraries(${target} PUBLIC
+  FairLogger::FairLogger
+  FairRoot::Base # FairRootManager, FairRunAna, FairTSBufferFunctional, FairTimeStamp, FairEventManager
+  # TODO: clean the following
+  # needed: TClonesArray, TEveBoxSet, RTypes, TGLabel, TGLayout, TGNumberEntry, TXMLNode.h, TList.h, TXMLAttr, TXMLEngine
+  Eve
+  XMLIO
+  XMLParser
+)
+
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF EventDisplayLinkDef.h
+)
+
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
+
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
