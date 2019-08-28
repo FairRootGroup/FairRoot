@@ -1,32 +1,36 @@
 # @author Sandro Wenzel
 # @brief  cmake setup for module Utilities/MCStepLogger
 
-set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
+set(target FairMCStepLogger)
+
+set(sources
+  MCStepInterceptor.cxx
+  MCStepLoggerImpl.cxx
 )
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
- ${ROOT_INCLUDE_DIR}
+add_library(${target} SHARED ${sources})
+add_library(FairRoot::${target} ALIAS ${target})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
 )
 
-Include_Directories( ${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
+target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
 )
 
-Link_Directories(${LINK_DIRECTORIES})
-
-set(HEADERS
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base
+  # TODO: clean the following
+  Core
 )
 
-set(NO_DICT_SRCS
-    MCStepInterceptor.cxx
-    MCStepLoggerImpl.cxx
-   )
-
-set(LIBRARY_NAME FairMCStepLogger)
-Set(DEPENDENCIES Core Base)
-
-GENERATE_LIBRARY()
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
