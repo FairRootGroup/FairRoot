@@ -94,9 +94,9 @@ function(fairroot_target_root_dictionary target)
   get_property(lib_output_dir
                TARGET ${target}
                PROPERTY LIBRARY_OUTPUT_DIRECTORY)
-  if(NOT lib_output_dir)
-    set(lib_output_dir ${CMAKE_CURRENT_BINARY_DIR})
-  endif()
+  # if(NOT lib_output_dir)
+    set(lib_output_dir ${CMAKE_BINARY_DIR}/lib)
+  # endif()
 
   # Define the names of generated files
   get_property(basename TARGET ${target} PROPERTY OUTPUT_NAME)
