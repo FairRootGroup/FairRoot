@@ -7,7 +7,7 @@
  ********************************************************************************/
 #include "FairCaptureOutputNew.h"
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <iostream>
 
@@ -29,10 +29,12 @@ void FairCaptureOutputNew::BeginCapture()
     exit(1);
   }
   if (fCaptureStdOut) {
-    testing::internal::CaptureStdout();
+    // TODO: reimplement these tests via GTest function EXPECT_WRITE
+    // testing::internal::CaptureStdout();
   }
   if (fCaptureStdErr) {
-    testing::internal::CaptureStderr();
+    // TODO: reimplement these tests via GTest function EXPECT_WRITE
+    // testing::internal::CaptureStderr();
   }
 }
 
@@ -40,10 +42,12 @@ void FairCaptureOutputNew::EndCapture()
 {
   std::string tmpOutput;
   if (fCaptureStdOut) {
-    tmpOutput = testing::internal::GetCapturedStdout();
+    // TODO: reimplement these tests via GTest function EXPECT_WRITE
+    // tmpOutput = testing::internal::GetCapturedStdout();
   }
   if (fCaptureStdErr) {
-    tmpOutput = testing::internal::GetCapturedStderr();
+    // TODO: reimplement these tests via GTest function EXPECT_WRITE
+    // tmpOutput = testing::internal::GetCapturedStderr();
   }
 
   const std::string& sep = "\n";

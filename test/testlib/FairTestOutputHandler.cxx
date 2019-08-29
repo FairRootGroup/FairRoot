@@ -32,7 +32,7 @@ FairTestOutputHandler::~FairTestOutputHandler()
   remove(fFileName.c_str());
 }
 
-void FairTestOutputHandler::SetFileName(cosnt std::string& filename)
+void FairTestOutputHandler::SetFileName(const std::string& filename)
 {
   fFileName = filename;
   fFileContent.clear();

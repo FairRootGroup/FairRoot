@@ -153,6 +153,9 @@ endif()
 # directory
 CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
 
+# Set option(s)
+option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
+
 # searches for needed packages
 # REQUIRED means that cmake will stop if this packages are not found
 # For example the framework can run without GEANT4, but ROOT is
@@ -248,9 +251,16 @@ if(Boost_NO_BOOST_CMAKE)
   Unset(Boost_LIBRARY_DIRS CACHE)
 endif()
 
+# TODO: clean this list
+list(APPEND boost_dependencies thread system timer program_options random filesystem chrono exception regex serialization atomic date_time)
+
+if(BUILD_UNITTESTS)
+ list(APPEND boost_dependencies unit_test_framework)
+endif()
+
 find_package2(PUBLIC Boost
   VERSION 1.67
-  COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time
+  COMPONENTS ${boost_dependencies}
   ADD_REQUIREMENTS_OF FairMQ
 )
 
@@ -366,19 +376,14 @@ if(IWYU_FOUND)
 
 endif(IWYU_FOUND)
 
-
-Option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
-#Message("Test_Model: ${CMAKE_BUILD_TYPE}")
-If(${CMAKE_BUILD_TYPE} MATCHES PROFILE)
-  Set(BUILD_UNITTESTS ON)
-EndIf()
-If(BUILD_UNITTESTS)
-  Message("Build the unit tests.")
-  If(GTEST_FOUND)
-    Message("Add tests library and tests.")
-    add_subdirectory(test)
-  EndIf(GTEST_FOUND)
-EndIf(BUILD_UNITTESTS)
+if(${CMAKE_BUILD_TYPE} MATCHES PROFILE)
+  set(BUILD_UNITTESTS ON)
+endif()
+if(BUILD_UNITTESTS)
+  find_package2(PRIVATE GTest REQUIRED VERSION 1.7.0)
+  message(STATUS "Building the unit tests.")
+  add_subdirectory(test)
+endif()
 
 if(BUILD_EXAMPLES)
   Install(DIRECTORY examples/common/gconfig examples/common/geometry
@@ -585,14 +590,14 @@ if(BUILD_UNITTESTS)
 else()
   set(unittests_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DBUILD_UNITTESTS=ON${CR})")
 endif()
-message(STATUS "  ${BWhite}Unit-tests${CR}          ${unittests_summary}")
+message(STATUS "  ${BWhite}Unit tests${CR}          ${unittests_summary}")
 
 if(WITH_GO_EXAMPLE)
   set(Go_summary "${BGreen} YES${CR}    (disable with ${BMagenta}-DWITH_GO_EXAMPLE=OFF${CR})")
 else()
    set(Go_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DWITH_GO_EXAMPLE=ON${CR})")
 endif()
-message(STATUS "  ${BWhite}Go-Example ${CR}         ${Go_summary}")
+message(STATUS "  ${BWhite}Go Example ${CR}         ${Go_summary}")
 
 
 message(STATUS "  ")

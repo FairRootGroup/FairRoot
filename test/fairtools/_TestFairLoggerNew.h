@@ -8,11 +8,11 @@
 #include "FairLogger.h"
 
 #include "FairCaptureOutputNew.h"
-#include "FairTestNewOutputHandler.h"
+// #include "FairTestNewOutputHandler.h"
 #include "FairTestOutputHandler.h"
 
 #include "gtest/gtest.h"
-#include "gtest/gtest-spi.h"
+// #include "gtest/gtest-spi.h"
 
 #include <cstdio>
 #include <cstdlib>
