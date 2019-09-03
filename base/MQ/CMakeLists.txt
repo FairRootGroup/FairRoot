@@ -36,7 +36,7 @@ set(headers
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/devices>
@@ -67,10 +67,5 @@ target_link_libraries(${target} PUBLIC
   Net # TMessage
 )
 
-install(TARGETS ${target}
-  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR}
-)
-
-install(FILES ${headers}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

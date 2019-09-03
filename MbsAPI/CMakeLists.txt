@@ -38,7 +38,7 @@ set(headers
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "9")
   target_compile_options(${target} PRIVATE "-Wno-stringop-overflow")
@@ -60,10 +60,5 @@ target_compile_definitions(${target} PRIVATE
   $<$<BOOL:${HAS_CLOCK_REALTIME}>:_HAS_CLOCK_REALTIME>
 )
 
-install(TARGETS ${target}
-  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR}
-)
-
-install(FILES ${headers}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
