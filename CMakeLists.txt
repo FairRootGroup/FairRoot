@@ -251,8 +251,7 @@ if(Boost_NO_BOOST_CMAKE)
   Unset(Boost_LIBRARY_DIRS CACHE)
 endif()
 
-# TODO: clean this list
-list(APPEND boost_dependencies thread system timer program_options random filesystem chrono exception regex serialization atomic date_time)
+list(APPEND boost_dependencies filesystem serialization)
 
 if(BUILD_UNITTESTS)
  list(APPEND boost_dependencies unit_test_framework)
