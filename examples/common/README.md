@@ -6,7 +6,7 @@ This directory contains common stuff needed by different examples for simulation
 
 Set of macros needed to steer the simulation e.g: cuts, physics lists, external decays, etc.
 
-## mcstack 
+## mcstack
 
 Example implementation of a particle stack for simulation
 

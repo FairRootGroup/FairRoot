@@ -184,8 +184,6 @@ target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sink>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
-  # DELETE US ONCE MODERNIZED TARGETS
-  $<$<BOOL:${BUILD_MBS}>:$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/MbsAPI>>
   # DELETE ME ONCE USING root targets
   ${ROOT_INCLUDE_DIR}
 )
@@ -196,7 +194,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ParBase
   FairRoot::GeoBase
   Boost::serialization
-  $<$<BOOL:${BUILD_MBS}>:MbsAPI>
+  $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
 
   Proof
   GeomPainter
@@ -217,6 +215,7 @@ target_link_libraries(${target} PUBLIC
 target_compile_definitions(${target} PRIVATE
   $<$<BOOL:${BUILD_MBS}>:BUILD_MBS>
   $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT_HAS_GDML>
+  # $<$<PLATFORM_ID:Linux>:Linux>
 )
 
 fairroot_target_root_dictionary(${target}

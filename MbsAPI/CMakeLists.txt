@@ -1,74 +1,71 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libBase" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
-if (CMAKE_SYSTEM_NAME MATCHES Linux)
-   ADD_DEFINITIONS(-DLinux  -DSYSTEM64  -D_LARGEFILE64_SOURCE)
-endif (CMAKE_SYSTEM_NAME MATCHES Linux)
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-if (CMAKE_SYSTEM_NAME MATCHES Darwin)
-   ADD_DEFINITIONS(-DDarwin  -DSYSTEM64  -D_LARGEFILE64_SOURCE)
-endif (CMAKE_SYSTEM_NAME MATCHES Darwin)
+set(target MbsAPI)
 
-CHECK_SYMBOL_EXISTS(CLOCK_REALTIME "time.h" HAS_CLOCK_REALTIME)
-If (HAS_CLOCK_REALTIME)
-  ADD_DEFINITIONS(-D_HAS_CLOCK_REALTIME)
-EndIf()
-
-Set(INCLUDE_DIRECTORIES
-  ${CMAKE_SOURCE_DIR}/MbsAPI
-)
-
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-# List of source files
-Set(MBSAPI_SRCS
+set(sources
   f_evt.c
-  fLmd.c
-  f_ut_utime.c
   f_stccomm.c
+  f_ut_utime.c
+  fLmd.c
 )
 
-# list of header files
-Set(MBSAPI_HEADERS
-  fLmd.h
-  s_evhe.h
-  s_evhe_swap.h
-  sMbs.h
-  s_ves10_1.h
-  s_ves10_1_swap.h
-  s_ve10_1.h
-  s_ve10_1_swap.h
+set(headers
   f_evt.h
-  f_ut_utime.h
-  s_bufhe.h
-  s_bufhe_swap.h
-  s_filhe.h
-  s_filhe_swap.h
-  portnum_def.h
-  s_stdint.h
-  typedefs.h
   f_stccomm.h
+  f_ut_utime.h
+  fLmd.h
+  portnum_def.h
+  s_bufhe_swap.h
+  s_bufhe.h
+  s_evhe_swap.h
+  s_evhe.h
+  s_filhe_swap.h
+  s_filhe.h
+  s_stdint.h
+  s_ve10_1_swap.h
+  s_ve10_1.h
+  s_ves10_1_swap.h
+  s_ves10_1.h
+  sMbs.h
+  typedefs.h
 )
 
-############### build the library #####################
-add_library(MbsAPI SHARED ${MBSAPI_SRCS})
-set_target_properties(MbsAPI PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
+
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "9")
-  target_compile_options(MbsAPI PRIVATE "-Wno-stringop-overflow")
+  target_compile_options(${target} PRIVATE "-Wno-stringop-overflow")
 endif()
 
-############### install the library ###################
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
-install(FILES ${MBSAPI_HEADERS}
-        DESTINATION include
-       )
+check_symbol_exists(CLOCK_REALTIME "time.h" HAS_CLOCK_REALTIME)
+target_compile_definitions(${target} PRIVATE
+  $<$<PLATFORM_ID:Linux>:Linux>
+  $<$<PLATFORM_ID:Linux>:SYSTEM64>
+  $<$<PLATFORM_ID:Linux>:_LARGEFILE64_SOURCE>
+  $<$<PLATFORM_ID:Darwin>:Darwin>
+  $<$<PLATFORM_ID:Darwin>:SYSTEM64>
+  $<$<PLATFORM_ID:Darwin>:_LARGEFILE64_SOURCE>
+  $<$<BOOL:${HAS_CLOCK_REALTIME}>:_HAS_CLOCK_REALTIME>
+)
 
-install(TARGETS MbsAPI DESTINATION lib)
+install(TARGETS ${target}
+  LIBRARY DESTINATION lib
+  # TODO: change to?:
+  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+)
+
+install(FILES ${headers}
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
