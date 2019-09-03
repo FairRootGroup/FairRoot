@@ -109,14 +109,7 @@ void FairFastSimExample2::Register()
         this collection will not be written to the file, it will exist
         only during the simulation.
     */
-    if (!gMC->IsMT())
-    {
-        FairRootManager::Instance()->Register("FastSimPoint2", "FastSimDetDet", fPointsArray, kTRUE);
-    }
-    else
-    {
-        FairRootManager::Instance()->RegisterAny("FastSimPoint2", fPointsArray, kTRUE);
-    }
+    FairRootManager::Instance()->Register("FastSimPoint2", "FastSimDetDet", fPointsArray, kTRUE);
 }
 
 TClonesArray* FairFastSimExample2::GetCollection(Int_t iColl) const

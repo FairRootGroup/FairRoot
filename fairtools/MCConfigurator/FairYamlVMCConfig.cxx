@@ -123,6 +123,11 @@ void FairYamlVMCConfig::SetupGeant4()
     }
     bool mtMode = FairRunSim::Instance()->IsMT();
 
+    if (fYamlConfig["Geant4_Multithreaded"]) {
+        mtMode = fYamlConfig["Geant4_Multithreaded"].as<bool>();
+        //        LOG(info) << "Setting Geant4 multithreaded to " << (mtMode?"true":"false");
+    }
+
     FairFastSimRunConfiguration* runConfiguration
         = new FairFastSimRunConfiguration(fYamlConfig["Geant4_UserGeometry"]  .as<std::string>(),
                                           fYamlConfig["Geant4_PhysicsList"]   .as<std::string>(),

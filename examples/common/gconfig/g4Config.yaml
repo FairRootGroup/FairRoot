@@ -2,7 +2,7 @@ Geant4_UserGeometry:     "geomRoot"
 Geant4_PhysicsList:      "QGSP_BERT_EMV"
 Geant4_SpecialProcess:   "stepLimiter+specialCuts+specialControls"
 Geant4_SpecialStacking:  false
-#Geant4_Multithreaded:   false
+Geant4_Multithreaded:    false
 
 Geant4_MaxNStep:         10000    #default is 30000
 Geant4_Commands:

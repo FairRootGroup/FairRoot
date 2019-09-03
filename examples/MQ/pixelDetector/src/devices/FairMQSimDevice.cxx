@@ -29,6 +29,9 @@
 
 #include <cstdio> // printf
 
+#include <mutex>          // std::mutex
+std::mutex mtx;           // mutex for critical section
+
 using namespace std;
 
 FairMQSimDevice::FairMQSimDevice()
@@ -65,6 +68,8 @@ void FairMQSimDevice::InitTask()
   }
 
   fRunSim->SetName(fTransportName.data());
+  //  fRunSim->SetSimulationConfig(new FairVMCConfig());
+  fRunSim->SetIsMT(kFALSE);
 
   if (fUserConfig.Length() > 0)
     fRunSim->SetUserConfig(fUserConfig);

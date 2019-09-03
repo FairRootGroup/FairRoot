@@ -57,7 +57,10 @@ class FairOnlineSink : public FairSink
     virtual void      WriteObject(TObject* /* f */, const char*, Int_t /* option = 0 */) {}
     virtual void      WriteGeometry() {}
 
-    virtual void      SetMQRunDevice(FairMQRunDevice* mrs) { fMQRunDevice = mrs; }
+    virtual void        SetMQRunDevice(FairMQRunDevice* mrs) { fMQRunDevice = mrs;}
+    virtual FairMQRunDevice*       GetMQRunDevice()   { return fMQRunDevice;}
+
+    virtual FairSink*   CloneSink();
 
  private:
     FairMQRunDevice* fMQRunDevice;
